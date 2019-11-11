@@ -1,8 +1,12 @@
-import ButtonCount from './components/ButtonCount/index.js'
+import MazInput from './packages/MazInput/index.js'
+import MazCheckbox from './packages/MazCheckbox/index.js'
+
 import { version } from './../package.json'
+import './theme'
 
 const components = [
-  ButtonCount
+  MazInput,
+  MazCheckbox
 ]
 
 const install = (Vue, opts = {}) => {
@@ -17,7 +21,8 @@ if (typeof window !== 'undefined' && window.Vue) {
 
 export {
   version,
-  ButtonCount
+  MazInput,
+  MazCheckbox
 }
 
 export default {

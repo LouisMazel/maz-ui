@@ -22,7 +22,9 @@
     "before-publish": "npm audit && npm run lint && npm i && npm run build",
     "ui": "vue ui"
   },
-  "dependencies": {},
+  "dependencies": {
+    "style-helpers": "^0.2.8"
+  },
   "peerDependencies": {
     "core-js": "^3.3.2",
     "vue": "^2.6.10"
@@ -33,6 +35,8 @@
     "@vue/cli-service": "^4.0.0",
     "@vue/eslint-config-standard": "^4.0.0",
     "babel-eslint": "^10.0.3",
+    "color-transformer-ui": "0.0.3",
+    "css-vars-ponyfill": "^2.1.2",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
     "nuxt": "^2.10.2",
