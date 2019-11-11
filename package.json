@@ -17,11 +17,14 @@
     "build:docs": "vue-cli-service build --dest docs --mode production",
     "delete-docs-report": "rm ./docs/report.html",
     "delete-dist-report": "rm ./dist/report.html",
+    "delete:demo": "npm run delete-docs-report && npm run delete-dist-report",
     "delete:reports": "npm run delete-docs-report && npm run delete-dist-report",
     "before-publish": "npm audit && npm run lint && npm i && npm run build",
     "ui": "vue ui"
   },
   "dependencies": {
+  },
+  "peerDependencies": {
     "core-js": "^3.3.2",
     "vue": "^2.6.10"
   },

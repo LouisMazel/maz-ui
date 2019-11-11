@@ -1,11 +1,18 @@
 import ButtonCount from './components/ButtonCount'
 
-export default {
-  install (Vue, options) {
-    if (!options || !options.store) {
-      throw new Error('Please initialise plugin with a Vuex store.')
-    }
+const components = [
+  ButtonCount
+]
 
-    Vue.component('dummy-button', ButtonCount)
-  }
+const install = (Vue, opts = {}) => {
+  components.forEach(component => {
+    Vue.component(component.name, component)
+  })
 }
+
+// auto install
+if (typeof window !== 'undefined' && window.Vue) {
+  install(window.Vue)
+}
+
+export { install }

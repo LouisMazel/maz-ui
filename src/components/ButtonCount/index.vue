@@ -7,6 +7,7 @@
 </template>
 <script>
   export default {
+    name: 'ButtonCount',
     data () {
       return {
         count: 0
