@@ -1,6 +1,6 @@
 {
   "name": "vue-mazel-ui",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "dist/vue-mazel-ui.common.js",
   "description": "A components library for VueJs",
   "author": "Louis Mazel <me@loicmazuel.com>",
@@ -9,7 +9,7 @@
     "serve:nuxt": "nuxt src",
     "serve:build": "vue-cli-service serve --mode production",
     "lint": "npm run lint:js && npm run lint:style",
-    "lint:fix": "vue-cli-service lint",
+    "lint:js": "vue-cli-service lint",
     "lint:style": "stylelint 'src/**/*.scss' 'src/**/*.vue'",
     "lint:style:fix": "stylelint 'src/**/*.scss' 'src/**/*.vue' --fix",
     "build": "npm run build:lib && npm run build:docs",
@@ -22,8 +22,7 @@
     "before-publish": "npm audit && npm run lint && npm i && npm run build",
     "ui": "vue ui"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "peerDependencies": {
     "core-js": "^3.3.2",
     "vue": "^2.6.10"
