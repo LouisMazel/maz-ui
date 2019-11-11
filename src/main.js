@@ -1,6 +1,10 @@
 import Vue from 'vue'
 import App from './App.vue'
 
+import VueMazelUi from './lib'
+
+Vue.use(VueMazelUi)
+
 Vue.config.productionTip = false
 
 new Vue({
