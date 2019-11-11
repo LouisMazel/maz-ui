@@ -1,4 +1,5 @@
 import ButtonCount from './components/ButtonCount/index.js'
+import { version } from './../package.json'
 
 const components = [
   ButtonCount
@@ -10,12 +11,16 @@ const install = (Vue, opts = {}) => {
   })
 }
 
-// auto install
 if (typeof window !== 'undefined' && window.Vue) {
   install(window.Vue)
 }
 
-export default {
-  install,
+export {
+  version,
   ButtonCount
+}
+
+export default {
+  version,
+  install
 }
