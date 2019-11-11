@@ -1,4 +1,4 @@
-import ButtonCount from './components/ButtonCount'
+import ButtonCount from './components/ButtonCount/index.js'
 
 const components = [
   ButtonCount
