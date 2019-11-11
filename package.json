@@ -1,11 +1,25 @@
 {
   "name": "vue-mazel-ui",
   "version": "0.1.0",
-  "private": true,
+  "main": "dist/vue-mazel-ui.common.js",
+  "description": "A components library for VueJs",
+  "author": "Louis Mazel <me@loicmazuel.com>",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "serve": "vue-cli-service serve --mode development --open",
+    "serve:nuxt": "nuxt src",
+    "serve:build": "vue-cli-service serve --mode production",
+    "lint": "npm run lint:js && npm run lint:style",
+    "lint:fix": "vue-cli-service lint",
+    "lint:style": "stylelint 'src/**/*.scss' 'src/**/*.vue'",
+    "lint:style:fix": "stylelint 'src/**/*.scss' 'src/**/*.vue' --fix",
+    "build": "npm run build:lib && npm run build:docs",
+    "build:lib": "vue-cli-service build --target lib --name vue-mazel-ui src/lib.js",
+    "build:docs": "vue-cli-service build --dest docs --mode production",
+    "delete-docs-report": "rm ./docs/report.html",
+    "delete-dist-report": "rm ./dist/report.html",
+    "delete:reports": "npm run delete-docs-report && npm run delete-dist-report",
+    "before-publish": "npm audit && npm run lint && npm i && npm run build",
+    "ui": "vue ui"
   },
   "dependencies": {
     "core-js": "^3.3.2",
@@ -19,8 +33,38 @@
     "babel-eslint": "^10.0.3",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+    "nuxt": "^2.10.2",
     "sass": "^1.19.0",
     "sass-loader": "^8.0.0",
+    "stylelint": "^11.1.1",
+    "stylelint-config-standard": "^19.0.0",
+    "stylelint-order": "^3.1.1",
+    "stylelint-scss": "^3.12.1",
     "vue-template-compiler": "^2.6.10"
-  }
+  },
+  "engines": {
+    "node": ">= 6.0.0",
+    "npm": ">= 3.0.0"
+  },
+  "files": [
+    "dist/",
+    "nuxt/"
+  ],
+  "bugs": {
+    "url": "https://github.com/chronotruck/vue-mazel-ui/issues"
+  },
+  "homepage": "https://github.com/chronotruck/vue-mazel-ui",
+  "keywords": [
+    "vue",
+    "components",
+    "vue-component",
+    "framework",
+    "library",
+    "ui"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chronotruck/vue-select-input-ui.git"
+  },
+  "license": "MIT"
 }
