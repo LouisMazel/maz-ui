@@ -98,8 +98,6 @@
 
 <style lang="scss" scoped>
   .maz-sidebar-doc {
-    padding: 20px 40px;
-
     &__container {
       padding: 0;
     }

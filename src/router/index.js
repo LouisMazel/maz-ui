@@ -15,6 +15,7 @@ const router = new Router({
     {
       path: '/documentation',
       name: 'Documentation',
+      redirect: { name: 'Install' },
       component: () => import(/* webpackChunkName: "documentation" */ '@/views/Documentation'),
       children: [
         {

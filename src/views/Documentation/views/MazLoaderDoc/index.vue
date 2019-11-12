@@ -1,6 +1,8 @@
 <template>
   <div class="maz-loader-doc">
-    <h1 class="text-center">MazLoader</h1>
+    <h2 class="text-center">
+      MazLoader
+    </h2>
     <ComponentContainer class="p-4 m-4">
       <MazLoader />
     </ComponentContainer>

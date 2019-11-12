@@ -5,7 +5,7 @@
     >
       <LeftSidebarContent />
     </MazSidebar>
-    <div class="documentation__container flex-1">
+    <div class="documentation__container flex-1 pl-5 pr-5 pt-3 pb-3">
       <router-view />
     </div>
   </div>

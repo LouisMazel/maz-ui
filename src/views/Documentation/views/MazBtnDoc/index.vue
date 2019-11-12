@@ -28,13 +28,13 @@
           :type="type"
           outline
         >
-          {{ type }} lg
+          {{ type }} outline
         </MazBtn>
         <MazBtn
           :type="type"
           loader
         >
-          {{ type }} lg
+          {{ type }} loader
         </MazBtn>
       </div>
     </ComponentContainer>

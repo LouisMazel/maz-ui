@@ -4,7 +4,7 @@
       Development
     </h3>
     <router-link
-      class="btn btn-white btn-sm mb-2"
+      class="menu-item btn btn-white btn-sm mb-2"
       :to="{
         name: 'Install'
       }"
@@ -12,7 +12,7 @@
       Install
     </router-link>
     <router-link
-      class="btn btn-white btn-sm"
+      class="menu-item btn btn-white btn-sm"
       :to="{
         name: 'GetStarted'
       }"
@@ -26,12 +26,12 @@
       <router-link
         v-for="route in routesComponents"
         :key="route.name"
-        class="btn btn-white btn-sm mb-2"
+        class="menu-item btn btn-white btn-sm mb-2"
         :to="{
           name: route.name
         }"
       >
-        {{ route.name.slice(0, -3) }}
+        {{ route.name.substring(3).slice(0, -3) }}
       </router-link>
     </div>
   </div>
@@ -53,5 +53,10 @@
   .left-sidebar-content {
     background-color: var(--maz-bg-color);
     overflow-y: auto;
+
+    .menu-item.router-link-active {
+      background-color: var(--maz-bg-color);
+      border: 1px solid var(--maz-primary-color);
+    }
   }
 </style>
