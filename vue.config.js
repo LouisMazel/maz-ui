@@ -4,5 +4,5 @@ module.exports = {
       openAnalyzer: false
     }
   },
-  publicPath: './'
+  publicPath: '/'
 }

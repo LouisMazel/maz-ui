@@ -1,8 +1,10 @@
 <template>
   <header class="header bg-color">
     <div class="px-4 p-2 flex align-center justify-content-between">
-      <a
-        href="#"
+      <router-link
+        :to="{
+          name: 'Home'
+        }"
         class="flex logo"
       >
         <img
@@ -18,13 +20,31 @@
             Components & CSS Library
           </p>
         </div>
-      </a>
+      </router-link>
+      <div>
+        <router-link
+          class="btn"
+          :to="{
+            name: 'Home'
+          }"
+        >
+          Home
+        </router-link>
+        <router-link
+          class="btn"
+          :to="{
+            name: 'Documentation'
+          }"
+        >
+          Documentation
+        </router-link>
+      </div>
       <div class="flex">
         <div class="flex align-center mr-4">
           <p class="fs-14 mr-2">
             Dark mode
           </p>
-          <MazCheckbox
+          <MazSwitch
             v-model="darkMode"
           />
         </div>
@@ -48,13 +68,8 @@
 </template>
 
 <script>
-  import MazCheckbox from '@/packages/MazCheckbox/_main.vue'
-
   export default {
     name: 'Header',
-    components: {
-      MazCheckbox
-    },
     data () {
       return {
         darkMode: false
@@ -65,7 +80,7 @@
 
 <style lang="scss" scoped>
   .header {
-    border-bottom: 1px solid var(--second-color);
+    border-bottom: 1px solid var(--maz-text-color-dark);
 
     a.logo {
       text-decoration: none;

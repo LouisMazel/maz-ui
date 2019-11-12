@@ -1,5 +1,5 @@
 <template>
-  <div class="maz-checkbox">
+  <div class="maz-switch">
     <input
       :id="uniqueId"
       v-bind="$attrs"
@@ -7,12 +7,12 @@
       :name="name"
       :checked="value"
       :disabled="disabled"
-      class="maz-checkbox__input"
+      class="maz-switch__input"
       @change="$emit('input', $event.target.checked)"
     >
     <label
       :for="uniqueId"
-      class="maz-checkbox__toggle"
+      class="maz-switch__toggle"
     >
       <span />
     </label>
@@ -23,13 +23,13 @@
   import uniqueId from './../mixins/uniqueId'
 
   export default {
-    name: 'MazCheckbox',
+    name: 'MazSwitch',
     mixins: [uniqueId],
     props: {
       value: { type: Boolean, required: true },
       disabled: { type: Boolean, default: false },
-      id: { type: String, default: 'maz-checkbox' },
-      name: { type: String, default: 'maz-checkbox' }
+      id: { type: String, default: 'maz-switch' },
+      name: { type: String, default: 'maz-switch' }
     }
   }
 </script>
@@ -39,7 +39,7 @@
   $primary-light: var(--maz-primary-color-transparency);
   $gray: #9A9999;
 
-  .maz-checkbox {
+  .maz-switch {
     &__input {
       display: none;
     }

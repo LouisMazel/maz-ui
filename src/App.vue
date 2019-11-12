@@ -1,15 +1,12 @@
 <template>
-  <div id="app">
+  <div
+    id="app"
+    class="flex flex-direction-column w-100"
+  >
     <Header />
-    <div class="container">
-      <br>
-      <MazInput
-        v-model="inputValue"
-      />
-      <MazCheckbox
-        v-model="checkboxValue"
-      />
-    </div>
+    <router-view
+      class=" flex-1"
+    />
   </div>
 </template>
 
@@ -20,12 +17,6 @@
     name: 'App',
     components: {
       Header
-    },
-    data () {
-      return {
-        inputValue: '',
-        checkboxValue: true
-      }
     }
   }
 </script>

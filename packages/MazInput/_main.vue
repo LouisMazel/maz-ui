@@ -117,7 +117,12 @@
           return this.value
         },
         set (value) {
-          this.$emit('input', value)
+          this.$emit(
+            'input',
+            this.hasNumberType
+              ? !value ? 0 : parseInt(value)
+              : value
+          )
         }
       },
       labelValue () {
@@ -129,6 +134,9 @@
         let { hint } = this
         if (this.required && hint) hint += ` *`
         return hint
+      },
+      hasNumberType () {
+        return this.type === 'number'
       }
     },
     methods: {
@@ -144,7 +152,10 @@
         this.isFocus = false
       },
       clear () {
-        this.$emit('input', null)
+        this.$emit(
+          'input',
+          this.hasNumberType ? 0 : ''
+        )
         this.$emit('clear')
       },
       keyUp (e) {
@@ -158,7 +169,7 @@
 </script>
 
 <style lang="scss" scoped>
-  @import '@/packages/scss/vars';
+  @import '@/../packages/scss/vars';
 
   .maz-input {
     position: relative;
