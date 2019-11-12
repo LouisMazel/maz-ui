@@ -23,7 +23,9 @@ const componentsRoutesBuild = componentsRoutes.map((route) => {
 
 const router = new Router({
   mode: 'history',
-  base: '/',
+  base: process.env.NODE_ENV === 'production'
+    ? '/vue-mazel-ui/'
+    : '/',
   routes: [
     {
       path: '/',
