@@ -1,15 +1,17 @@
 <template>
   <transition
-    :name="transitionName"
+    name="dialog-fade"
     class="maz-dialog"
+    @after-enter="afterEnter"
+    @after-leave="afterLeave"
   >
     <div
-      v-show="value"
+
       class="maz-dialog__mask"
+      @click="$emit('close')"
     >
       <div class="maz-dialog__wrapper flex align-center">
         <div
-          v-click-outside="clickOutside"
           :style="widthStyle"
           class="maz-dialog__container flex flex-direction-column"
         >
@@ -32,7 +34,7 @@
               <div
                 v-if="hasClose"
                 class="flex close-modal"
-                @click="$emit('input', false)"
+                @click="$emit('close', false)"
               >
                 <i class="ctk-font icon-ctk-close" />
               </div>
@@ -50,7 +52,7 @@
             <slot name="footer">
               <MazBtn
                 size="sm"
-                @click="$emit('input', false)"
+                @click="$emit('close', false)"
               >
                 Close
               </MazBtn>
@@ -80,11 +82,9 @@
       clickOutside: vClickOutside.directive
     },
     props: {
-      value: { type: Boolean, required: true },
       maxWidth: { type: String, default: '500px' },
       persistent: { type: Boolean, default: false },
       hasClose: { type: Boolean, default: true },
-      transitionName: { type: String, default: 'modal' },
       hideHeader: { type: Boolean, default: false },
       hideFooter: { type: Boolean, default: false },
       noValidation: { type: Boolean, default: false },
@@ -101,8 +101,14 @@
     methods: {
       clickOutside () {
         if (!this.persistent) {
-          this.$emit('input', false)
+          this.$emit('close', false)
         }
+      },
+      afterEnter () {
+        this.$emit('opened')
+      },
+      afterLeave () {
+        this.$emit('closed')
       }
     }
   }
@@ -141,7 +147,7 @@
       background-color: #FFF;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
       transition: all 0.3s ease;
-      border-radius: 0.3rem;
+      border-radius: var(--maz-border-radius);
 
       @media only screen and (max-width: var(--maz-breakpoint-tablet)) {
         width: 100%;
@@ -150,8 +156,8 @@
 
     &__header {
       background-color: var(--maz-bg-color-dark);
-      border-top-left-radius: 0.3rem;
-      border-top-right-radius: 0.3rem;
+      border-top-left-radius: var(--maz-border-radius);
+      border-top-right-radius: var(--maz-border-radius);
       border: none;
       color: var(--maz-text-color-dark);
 
@@ -182,31 +188,35 @@
   }
 
   /** Modal animation **/
-  // .modal-enter,
-  // .modal-leave-active {
-  //   transform: translate3d(0, 0, 0);
-  //   transition: all 0.3s ease;
-  //   opacity: 0;
-  // }
-
-  // .modal-enter .modal-container,
-  // .modal-leave-active .modal-container {
-  //   transition: all 0.3s ease;
-  //   transform: translate3d(0, -300px, 0);
-  //   opacity: 0;
-  //   visibility: visible;
-  // }
-  .modal-enter {
-    opacity: 0;
+  .dialog-fade-enter-active .maz-dialog__container {
+    animation: dialog-fade-in 0.4s;
   }
 
-  .modal-leave-active {
-    opacity: 0;
+  .dialog-fade-leave-active .maz-dialog__container {
+    animation: dialog-fade-out 0.4s;
   }
 
-  .modal-enter .modal-container,
-  .modal-leave-active .modal-container {
-    -webkit-transform: scale(1.1);
-    transform: scale(1.1);
+  @keyframes dialog-fade-in {
+    0% {
+      transform: translate3d(0, -30px, 0);
+      opacity: 0;
+    }
+
+    100% {
+      transform: translate3d(0, 0, 0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes dialog-fade-out {
+    0% {
+      transform: translate3d(0, 0, 0);
+      opacity: 1;
+    }
+
+    100% {
+      transform: translate3d(0, -30px, 0);
+      opacity: 0;
+    }
   }
 </style>
