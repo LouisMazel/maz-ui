@@ -1,14 +1,16 @@
 <template>
-  <div class="maz-loader-doc">
-    <h1 class="text-center">MazLoader</h1>
+  <div class="maz-spinner-doc">
+    <h2 class="text-center">
+      MazSpinner
+    </h2>
     <ComponentContainer class="p-4 m-4">
-      <MazLoader />
+      <MazSpinner />
     </ComponentContainer>
   </div>
 </template>
 
 <script>
   export default {
-    name: 'MazLoaderDoc'
+    name: 'MazSpinnerDoc'
   }
 </script>

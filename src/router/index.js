@@ -28,6 +28,11 @@ const router = new Router({
           component: () => import(/* webpackChunkName: "documentation~get-started" */ '@/views/Documentation/views/GetStarted')
         },
         {
+          path: 'maz-btn',
+          name: 'MazBtnDoc',
+          component: () => import(/* webpackChunkName: "documentation~maz-btn" */ '@/views/Documentation/views/MazBtnDoc')
+        },
+        {
           path: 'maz-input',
           name: 'MazInputDoc',
           component: () => import(/* webpackChunkName: "documentation~maz-input" */ '@/views/Documentation/views/MazInputDoc')
@@ -46,6 +51,11 @@ const router = new Router({
           path: 'maz-loader',
           name: 'MazLoaderDoc',
           component: () => import(/* webpackChunkName: "documentation~maz-loader" */ '@/views/Documentation/views/MazLoaderDoc')
+        },
+        {
+          path: 'maz-spinner',
+          name: 'MazSpinnerDoc',
+          component: () => import(/* webpackChunkName: "documentation~maz-spinner" */ '@/views/Documentation/views/MazSpinnerDoc')
         }
       ]
     },

@@ -164,7 +164,6 @@
         left: inherit;
 
         button {
-          border-right: 1px solid #CCC;
           box-shadow: -2px 1px 3px rgba(232, 237, 250, 1);
         }
       }

@@ -3,9 +3,11 @@
     <h2 class="text-center">
       MazInput
     </h2>
-    <MazInput
-      v-model="inputValue"
-    />
+    <ComponentContainer class="p-4 m-4">
+      <MazInput
+        v-model="inputValue"
+      />
+    </ComponentContainer>
   </div>
 </template>
 

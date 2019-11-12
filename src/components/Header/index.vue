@@ -1,14 +1,17 @@
 <template>
-  <header class="header bg-color">
-    <div class="px-4 p-2 flex align-center justify-content-between">
+  <header
+    class="header bg-color"
+    role="banner"
+  >
+    <nav class="px-4 flex justify-content-between">
       <router-link
         :to="{
           name: 'Home'
         }"
-        class="flex logo"
+        class="flex header__logo py-2"
       >
         <img
-          class="header__logo mr-2"
+          class="header__logo__img mr-2"
           alt="Vue logo"
           src="@/assets/img/logo.png"
         >
@@ -21,9 +24,9 @@
           </p>
         </div>
       </router-link>
-      <div>
+      <div class="header__menu flex">
         <router-link
-          class="btn"
+          class="header__menu__item flex align-center"
           :to="{
             name: 'Home'
           }"
@@ -31,7 +34,7 @@
           Home
         </router-link>
         <router-link
-          class="btn"
+          class="header__menu__item flex align-center"
           :to="{
             name: 'Documentation'
           }"
@@ -51,7 +54,7 @@
         <a
           href="https://www.loicmazuel.com/"
           target="_blank"
-          class="flex"
+          class="flex align-center"
         >
           <div class="header__title flex flex-direction-column flex-end">
             <h3>
@@ -63,7 +66,7 @@
           </div>
         </a>
       </div>
-    </div>
+    </nav>
   </header>
 </template>
 
@@ -82,12 +85,31 @@
   .header {
     border-bottom: 1px solid var(--maz-text-color-dark);
 
-    a.logo {
+    &__logo {
       text-decoration: none;
+
+      &__img {
+        height: 50px;
+      }
     }
 
-    &__logo {
-      height: 50px;
+    &__menu {
+      &__item {
+        text-decoration: none;
+        padding: 0 20px;
+        border-bottom: 2px solid transparent;
+        transition: all 0.5s;
+
+        &:hover {
+          border-bottom: 2px solid var(--maz-primary-color);
+          background-color: var(--maz-primary-color-transparency);
+          color: var(--maz-bg-color);
+        }
+
+        &.router-link-exact-active {
+          border-bottom: 2px solid var(--maz-primary-color);
+        }
+      }
     }
   }
 </style>

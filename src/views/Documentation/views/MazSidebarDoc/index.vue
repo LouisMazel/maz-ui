@@ -1,6 +1,9 @@
 <template>
-  <div class="maz-sidebar-doc h-100 flex">
-    <div class="maz-sidebar-doc__container flex flex-1 pos-r br-8">
+  <div class="maz-sidebar-doc h-100 flex flex-direction-column">
+    <h1 class="text-center">
+      MazSidebar
+    </h1>
+    <ComponentContainer class="maz-sidebar-doc__container flex flex-1">
       <MazSidebar
         v-model="hasLeftSidebarOpen"
         class="h-100"
@@ -14,38 +17,39 @@
           SideBar Content Example
         </div>
       </MazSidebar>
-      <div class="maz-sidebar-doc__container__content p-4 flex flex-direction-column align-center justify-content-center flex-1">
-        <button
-          class="btn btn-success mb-2"
+      <div class="maz-sidebar-doc__content p-4 flex flex-direction-column align-center justify-content-center flex-1">
+        <MazBtn
+          type="success"
+          size="sm"
           @click="loader = !loader"
         >
           Toggle loader
-        </button>
+        </MazBtn>
         <MazInput
           v-model="width"
           type="number"
-          label="Sidebar width value"
+          label="Sidebar width"
         />
         <div class="switch-container shadow flex">
-          <p> Has left sidebar is open</p>
+          <p>Has left sidebar is open</p>
           <MazSwitch
             v-model="hasLeftSidebarOpen"
           />
         </div>
         <div class="switch-container shadow flex">
-          <p> Has right sidebar is open</p>
+          <p>Has right sidebar is open</p>
           <MazSwitch
             v-model="hasRightSidebarOpen"
           />
         </div>
         <div class="switch-container shadow flex">
-          <p> Has shadow</p>
+          <p>Has shadow</p>
           <MazSwitch
             v-model="hasShadow"
           />
         </div>
         <div class="switch-container close-btn flex">
-          <p> Has close btn</p>
+          <p>Has close btn</p>
           <MazSwitch
             v-model="hasCloseBtn"
           />
@@ -71,7 +75,7 @@
           SideBar Content Example
         </div>
       </MazSidebar>
-    </div>
+    </ComponentContainer>
   </div>
 </template>
 
@@ -94,20 +98,21 @@
 
 <style lang="scss" scoped>
   .maz-sidebar-doc {
-    padding: 20px;
+    padding: 20px 40px;
 
     &__container {
-      border: 2px solid var(--maz-text-color-dark);
-      overflow: hidden;
+      padding: 0;
+    }
 
-      &__content {
-        .switch-container {
-          margin-bottom: 10px;
+    &__content {
+      & * {
+        margin-bottom: 0.5rem;
+      }
 
-          p {
-            margin-right: 20px;
-            font-size: 14px;
-          }
+      .switch-container {
+        p {
+          margin-right: 20px;
+          font-size: 14px;
         }
       }
     }

@@ -13,7 +13,7 @@ export default ({ color, lightColor, darkColor, validColor, borderRadius, errorC
     '--maz-bg-color-dark': darkColor,
     '--maz-error-color': errorColor,
     '--maz-valid-color': validColor,
-    '--maz-hover-color': ShadeColor(lightColor, -8),
+    '--maz-hover-color': '#F2F2F2',
     '--maz-hover-color-dark': ShadeColor(darkColor, 20),
     '--maz-muted-color': '#747474',
     '--maz-muted-color-dark': 'rgba(255, 255, 255, 0.3)',

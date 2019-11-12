@@ -1,11 +1,13 @@
 <template>
   <div class="maz-switch-doc">
     <h2 class="text-center">
-      MazInput
+      MazSwitchDoc
     </h2>
-    <MazSwitch
-      v-model="checkboxValue"
-    />
+    <ComponentContainer>
+      <MazSwitch
+        v-model="checkboxValue"
+      />
+    </ComponentContainer>
   </div>
 </template>
 

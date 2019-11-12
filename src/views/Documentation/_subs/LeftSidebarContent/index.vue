@@ -24,36 +24,14 @@
     </h3>
     <div class="left-sidebar-content__content flex flex-direction-column">
       <router-link
+        v-for="route in routesComponents"
+        :key="route.name"
         class="btn btn-white btn-sm mb-2"
         :to="{
-          name: 'MazInputDoc'
+          name: route.name
         }"
       >
-        MazInput
-      </router-link>
-      <router-link
-        class="btn btn-white btn-sm mb-2"
-        :to="{
-          name: 'MazSwitchDoc'
-        }"
-      >
-        MazSwitch
-      </router-link>
-      <router-link
-        class="btn btn-white btn-sm mb-2"
-        :to="{
-          name: 'MazSidebarDoc'
-        }"
-      >
-        MazSidebar
-      </router-link>
-      <router-link
-        class="btn btn-white btn-sm mb-2"
-        :to="{
-          name: 'MazLoaderDoc'
-        }"
-      >
-        MazLoader
+        {{ route.name.slice(0, -3) }}
       </router-link>
     </div>
   </div>
@@ -61,7 +39,13 @@
 
 <script>
   export default {
-    name: 'LeftSidebarContent'
+    name: 'LeftSidebarContent',
+    computed: {
+      routesComponents () {
+        return this.$router.options.routes.filter(route => route.path === '/documentation')[0]
+          .children.filter(child => child.path.startsWith('maz-'))
+      }
+    }
   }
 </script>
 
