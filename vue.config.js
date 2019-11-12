@@ -4,5 +4,7 @@ module.exports = {
       openAnalyzer: false
     }
   },
-  publicPath: '/'
+  publicPath: process.env.NODE_ENV === 'production'
+    ? '.'
+    : '/'
 }
