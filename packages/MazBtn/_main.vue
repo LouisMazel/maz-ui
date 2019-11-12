@@ -1,12 +1,12 @@
 <template>
   <button
     :id="uniqueId"
-    class="maz-btn btn flex align-center"
+    class="maz-btn btn flex align-center justify-content-center"
     :class="[
       classes
     ]"
     v-bind="$attrs"
-    :disabled="loader"
+    :disabled="loader || disabled"
     @click="$emit('click')"
   >
     <span
@@ -38,6 +38,7 @@
     props: {
       id: { type: String, default: 'MazBtn' },
       loader: { type: Boolean, default: false },
+      disabled: { type: Boolean, default: false },
       type: { type: String, default: 'primary' },
       size: { type: String, default: 'md' },
       outline: { type: Boolean, default: false },
@@ -71,6 +72,12 @@
       margin-right: auto;
       left: 0;
       right: 0;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      background-color: var(--maz-third-color);
+      box-shadow: none;
     }
   }
 </style>

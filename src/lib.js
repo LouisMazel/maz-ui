@@ -3,6 +3,7 @@ import MazCheckbox from '@/../packages/MazCheckbox/index.js'
 import MazDialog from '@/../packages/MazDialog/index.js'
 import MazInput from '@/../packages/MazInput/index.js'
 import MazLoader from '@/../packages/MazLoader/index.js'
+import MazSelect from '@/../packages/MazSelect/index.js'
 import MazSidebar from '@/../packages/MazSidebar/index.js'
 import MazSpinner from '@/../packages/MazSpinner/index.js'
 import MazSwitch from '@/../packages/MazSwitch/index.js'
@@ -10,12 +11,15 @@ import MazTransitionExpand from '@/../packages/MazTransitionExpand/index.js'
 
 import { version } from '@/../package.json'
 import './theme'
+import './utils/polyfill'
+import '@babel/polyfill'
 
 const components = [
   MazBtn,
   MazCheckbox,
   MazDialog,
   MazInput,
+  MazSelect,
   MazSwitch,
   MazSidebar,
   MazSpinner,
@@ -39,6 +43,7 @@ export {
   MazCheckbox,
   MazDialog,
   MazInput,
+  MazSelect,
   MazSwitch,
   MazSidebar,
   MazSpinner,

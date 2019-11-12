@@ -1,28 +1,20 @@
 <template>
   <div
     id="app"
-    class="flex flex-direction-column w-100"
+    class="flex flex-direction-column"
   >
-    <Header />
-    <router-view
-      class=" flex-1"
-    />
+    <NavHeader />
+    <router-view />
   </div>
 </template>
 
 <script>
-  import Header from './components/Header'
+  import NavHeader from './components/NavHeader'
 
   export default {
     name: 'App',
     components: {
-      Header
+      NavHeader
     }
   }
 </script>
-
-<style lang="scss">
-  #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  }
-</style>

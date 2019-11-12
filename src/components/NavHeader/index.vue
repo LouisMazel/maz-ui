@@ -42,41 +42,22 @@
           Documentation
         </router-link>
       </div>
-      <div class="flex">
-        <!-- <div class="flex align-center mr-4">
-          <p class="fs-14 mr-2">
-            Dark mode
-          </p>
-          <MazSwitch
-            v-model="darkMode"
-          />
-        </div> -->
-        <a
-          href="https://www.loicmazuel.com/"
-          target="_blank"
-          class="flex align-center"
-        >
-          <div class="header__title flex flex-direction-column flex-end">
-            <h3>
-              Made by LouisMazel
-            </h3>
-            <p class="fs-14 text-muted">
-              With VueJS
-            </p>
-          </div>
-        </a>
+      <div class="flex align-center">
+        <div class="flex align-center">
+          <SocialButtons />
+        </div>
       </div>
     </nav>
   </header>
 </template>
 
 <script>
+  import SocialButtons from '@/components/SocialButtons'
+
   export default {
     name: 'Header',
-    data () {
-      return {
-        darkMode: false
-      }
+    components: {
+      SocialButtons
     }
   }
 </script>

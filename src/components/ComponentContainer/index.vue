@@ -13,6 +13,5 @@
 <style lang="scss" scoped>
   .component-container {
     border: 1px solid var(--maz-text-color-dark);
-    overflow: hidden;
   }
 </style>

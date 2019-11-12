@@ -6,7 +6,7 @@
     >
       <LeftSidebarContent />
     </MazSidebar>
-    <div class="documentation__container flex-1 pl-5 pr-5 pt-3 pb-3">
+    <div class="documentation__container flex-1 px-5 py-3">
       <router-view />
     </div>
   </div>
@@ -30,10 +30,11 @@
 
 <style lang="scss" scoped>
   .documentation {
-    overflow: hidden;
+    min-height: 0;
 
     &__container {
       overflow-x: auto;
+      min-height: 0;
     }
   }
 </style>

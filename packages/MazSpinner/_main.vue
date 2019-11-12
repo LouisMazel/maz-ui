@@ -34,3 +34,20 @@
     }
   }
 </script>
+
+<style lang="scss" scoped>
+  .maz-spinner {
+    &.spinner-anim {
+      // width: 24px;
+      animation: spin 0.6s linear infinite;
+
+      &__info path {
+        fill: var(--maz-primary-color);
+      }
+
+      &__white path {
+        fill: white;
+      }
+    }
+  }
+</style>
