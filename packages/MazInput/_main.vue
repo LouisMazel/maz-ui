@@ -15,7 +15,7 @@
   >
     <input
       v-if="!textarea"
-      :id="id"
+      :id="uniqueId"
       ref="MazInput"
       v-model="inputValue"
       v-bind="$attrs"
@@ -32,7 +32,7 @@
     >
     <textarea
       v-else
-      :id="id"
+      :id="uniqueId"
       ref="MazInput"
       v-model="inputValue"
       v-bind="$attrs"
@@ -48,7 +48,7 @@
     />
     <label
       ref="label"
-      :for="id"
+      :for="uniqueId"
       :class="error ? 'text-danger' : null"
       class="maz-input__label"
       @click="focusInput"
@@ -83,9 +83,13 @@
 </template>
 
 <script>
+  import uniqueId from './../mixins/uniqueId'
+
   export default {
     name: 'MazInput',
+    mixins: [uniqueId],
     props: {
+      id: { type: String, default: 'MazInput' },
       value: { type: [String, Number], required: true },
       label: { type: String, default: 'Enter text' },
       hint: { type: String, default: null },
@@ -93,8 +97,7 @@
       color: { type: String, default: 'dodgerblue' },
       disabled: { type: Boolean, default: false },
       dark: { type: Boolean, default: false },
-      darkColor: { type: String, default: '#424242' },
-      id: { type: String, default: 'MazInput' },
+      darkColor: { type: String, default: '#21222E' },
       size: { type: String, default: null },
       type: { type: String, default: 'text' },
       readonly: { type: Boolean, default: false },

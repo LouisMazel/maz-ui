@@ -2,6 +2,7 @@
   <div class="documentation flex">
     <MazSidebar
       v-model="hasLeftSidebarOpen"
+      :width="250"
     >
       <LeftSidebarContent />
     </MazSidebar>

@@ -1,5 +1,6 @@
 <template>
   <transition
+    class="maz-transition-expand"
     name="expand"
     @enter="enter"
     @after-enter="afterEnter"
@@ -11,7 +12,7 @@
 
 <script>
   export default {
-    name: 'TransitionExpand',
+    name: 'MazTransitionExpand',
     methods: {
       enter (element) {
         const width = getComputedStyle(element).width
@@ -70,5 +71,18 @@
     transform: translateZ(0);
     backface-visibility: hidden;
     perspective: 1000px;
+  }
+
+  .expand-enter-active,
+  .expand-leave-active {
+    transition: 500ms ease-in-out;
+    transition-property: opacity, height;
+    overflow: hidden;
+  }
+
+  .expand-enter,
+  .expand-leave-to {
+    height: 0;
+    opacity: 0;
   }
 </style>

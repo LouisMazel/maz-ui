@@ -1,7 +1,8 @@
 import { ShadeColor, HexToRgba, isColorName, colorNameToHex } from 'color-transformer-ui'
+import { pascalCaseToKebabCase } from '@/utils'
 
-export default ({ color, lightColor, darkColor, validColor, borderRadius, errorColor }) => {
-  return {
+export default ({ color, lightColor, darkColor, validColor, borderRadius, errorColor, breakPoints }) => {
+  const theme = {
     '--maz-text-color': 'black',
     '--maz-text-color-dark': '#F2F2F2',
     '--maz-primary-color': color,
@@ -22,4 +23,8 @@ export default ({ color, lightColor, darkColor, validColor, borderRadius, errorC
     '--maz-valid-color-transparency': isColorName(validColor) ? HexToRgba(colorNameToHex(validColor), 0.7) : HexToRgba(validColor, 0.7),
     '--maz-border-radius': `${borderRadius}px`
   }
+  Object.entries(breakPoints).map(entry => {
+    theme[`--maz-${pascalCaseToKebabCase(entry[0])}`] = entry[1]
+  })
+  return theme
 }

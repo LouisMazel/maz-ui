@@ -4,9 +4,11 @@
       {{ this.$route.name.substring(3).slice(0, -3) }}
     </h2>
     <ComponentContainer>
-      <MazSwitch
+      <MazCheckbox
         v-model="checkboxValue"
-      />
+      >
+        Checkbox label
+      </MazCheckbox>
     </ComponentContainer>
   </div>
 </template>

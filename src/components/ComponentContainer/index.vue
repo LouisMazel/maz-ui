@@ -1,5 +1,5 @@
 <template>
-  <div class="component-container pos-r br-8 bg-white p-4 m-4">
+  <div class="component-container pos-r br-8 bg-white p-4 m-4 shadow-container">
     <slot />
   </div>
 </template>
@@ -14,6 +14,5 @@
   .component-container {
     border: 1px solid var(--maz-text-color-dark);
     overflow: hidden;
-    box-shadow: 0 0 8px 0 rgba(232, 237, 250, 0.6), 0 2px 4px 0 rgba(232, 237, 250, 0.5);
   }
 </style>

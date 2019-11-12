@@ -1,16 +1,16 @@
 <template>
   <div
-    class="lm-checkbox flex align-center"
+    class="maz-checkbox flex align-center"
   >
     <input
-      :id="`checkbox-${id}`"
+      :id="uniqueId"
       :checked="value"
       type="checkbox"
       class="mr-2"
-      @change="onChange($event.target.checked)"
+      @change="$emit('input', $event.target.checked)"
     >
     <label
-      :for="`checkbox-${id}`"
+      :for="uniqueId"
       class="m-0 flex align-center"
     >
       <slot />
@@ -19,28 +19,20 @@
 </template>
 
 <script>
+  import uniqueId from './../mixins/uniqueId'
+
   export default {
-    name: 'LmCheckbox',
+    name: 'MazCheckbox',
+    mixins: [uniqueId],
     props: {
-      id: {
-        type: String,
-        required: true
-      },
-      value: {
-        default: false,
-        type: Boolean
-      }
-    },
-    methods: {
-      onChange (event) {
-        this.$emit('input', event)
-      }
+      id: { type: String, default: 'MazCheckbox' },
+      value: { default: false, type: Boolean }
     }
   }
 </script>
 
 <style lang="scss" scoped>
-  .lm-checkbox {
+  .maz-checkbox {
     padding: 2px 8px;
     transition: all 0.2s;
     cursor: pointer;
@@ -65,17 +57,17 @@
       content: '';
       position: absolute;
       left: 0;
-      top: 3px;
+      top: 4px;
       width: 15px;
       height: 15px;
-      border: 1px solid #FFF;
+      border: 1px solid var(--maz-primary-color);
       background: transparent;
       border-radius: 4px;
       transition: all 0.2s;
     }
 
     [type='checkbox']:not(:checked) + label::before {
-      border: 1px solid #CCC;
+      border: 1px solid var(--maz-primary-color);
       transition: all 0.2s;
     }
 
@@ -83,12 +75,12 @@
     [type='checkbox']:checked + label::after {
       content: ' ';
       position: absolute;
-      top: 6px;
+      top: 7px;
       left: 3px;
       font-size: 14px;
       width: 9px;
       height: 9px;
-      background-color: #FFF;
+      background-color: var(--maz-primary-color);
       transition: all 0.2s;
       border-radius: 2px;
     }
@@ -96,13 +88,13 @@
     [type='checkbox']:not(:checked) + label::after {
       opacity: 0;
       transform: scale(0);
-      color: #FFF;
+      color: var(--maz-primary-color);
     }
 
     [type='checkbox']:checked + label::after {
       opacity: 1;
       transform: scale(1);
-      color: #FFF;
+      color: var(--maz-primary-color);
     }
   }
 </style>

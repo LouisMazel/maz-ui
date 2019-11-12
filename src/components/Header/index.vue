@@ -43,14 +43,14 @@
         </router-link>
       </div>
       <div class="flex">
-        <div class="flex align-center mr-4">
+        <!-- <div class="flex align-center mr-4">
           <p class="fs-14 mr-2">
             Dark mode
           </p>
           <MazSwitch
             v-model="darkMode"
           />
-        </div>
+        </div> -->
         <a
           href="https://www.loicmazuel.com/"
           target="_blank"

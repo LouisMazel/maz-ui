@@ -4,20 +4,14 @@
       Development
     </h3>
     <router-link
-      class="menu-item btn btn-white btn-sm mb-2"
+      v-for="route in routesStartedDoc"
+      :key="route.name"
+      class="menu-item btn btn-primary-outline btn-sm mb-2"
       :to="{
-        name: 'Install'
+        name: route.name
       }"
     >
-      Install
-    </router-link>
-    <router-link
-      class="menu-item btn btn-white btn-sm"
-      :to="{
-        name: 'GetStarted'
-      }"
-    >
-      Get started
+      {{ route.path | capitalize }}
     </router-link>
     <h3 class="my-3">
       Components
@@ -26,12 +20,12 @@
       <router-link
         v-for="route in routesComponents"
         :key="route.name"
-        class="menu-item btn btn-white btn-sm mb-2"
+        class="menu-item btn btn-primary-outline btn-sm mb-2"
         :to="{
           name: route.name
         }"
       >
-        {{ route.name.substring(3).slice(0, -3) }}
+        {{ route.path | capitalize }}
       </router-link>
     </div>
   </div>
@@ -41,9 +35,13 @@
   export default {
     name: 'LeftSidebarContent',
     computed: {
+      routesStartedDoc () {
+        return this.$router.options.routes.filter(route => route.path === '/documentation')[0]
+          .children.filter(child => child.name === 'Install' || child.name === 'GetStarted')
+      },
       routesComponents () {
         return this.$router.options.routes.filter(route => route.path === '/documentation')[0]
-          .children.filter(child => child.path.startsWith('maz-'))
+          .children.filter(child => child.name !== 'Install' && child.name !== 'GetStarted')
       }
     }
   }
@@ -54,9 +52,14 @@
     background-color: var(--maz-bg-color);
     overflow-y: auto;
 
-    .menu-item.router-link-active {
-      background-color: var(--maz-bg-color);
-      border: 1px solid var(--maz-primary-color);
+    .menu-item {
+      border: none;
+      color: var(--maz-text-color);
+
+      &.router-link-active {
+        background-color: var(--maz-bg-color);
+        border: 1px solid var(--maz-primary-color);
+      }
     }
   }
 </style>

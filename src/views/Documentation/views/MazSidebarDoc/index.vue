@@ -1,8 +1,8 @@
 <template>
   <div class="maz-sidebar-doc h-100 flex flex-direction-column">
-    <h1 class="text-center">
+    <h2 class="text-center">
       MazSidebar
-    </h1>
+    </h2>
     <ComponentContainer class="maz-sidebar-doc__container flex flex-1">
       <MazSidebar
         v-model="hasLeftSidebarOpen"

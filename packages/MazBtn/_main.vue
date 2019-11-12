@@ -1,5 +1,6 @@
 <template>
   <button
+    :id="uniqueId"
     class="maz-btn btn flex align-center"
     :class="[
       classes
@@ -26,12 +27,16 @@
 
 <script>
   import MazSpinner from '../MazSpinner'
+  import uniqueId from './../mixins/uniqueId'
+
   export default {
     name: 'MazBtn',
     components: {
       MazSpinner
     },
+    mixins: [uniqueId],
     props: {
+      id: { type: String, default: 'MazBtn' },
       loader: { type: Boolean, default: false },
       type: { type: String, default: 'primary' },
       size: { type: String, default: 'md' },

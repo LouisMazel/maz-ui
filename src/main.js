@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import './assets/scss/main.scss'
 import './components'
+import './filters'
 
 import router from './router'
 
