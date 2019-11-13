@@ -4,15 +4,22 @@
       Install
     </h2>
     <h3>NPM</h3>
-    <CodeContainer>npm i vue-mazel-ui -S</CodeContainer>
+    <CodeContainer
+      :code="`npm i vue-mazel-ui -S`"
+      language="bash"
+    />
 
     <h3>Yarn</h3>
-    <CodeContainer>yarn add vue-mazel-ui</CodeContainer>
+    <CodeContainer
+      :code="`yarn add vue-mazel-ui`"
+      language="bash"
+    />
 
     <h3>CDN</h3>
-    <CodeContainer>
-      {{ cdnCode.trim() }}
-    </CodeContainer>
+    <CodeContainer
+      :code="cdnCode"
+      language="html"
+    />
   </div>
 </template>
 
@@ -21,12 +28,10 @@
     name: 'Install',
     data () {
       return {
-        cdnCode: `
-      <!-- import du CSS -->
-      <link rel="stylesheet" href="https://unpkg.com/vue-mazel-ui/dist/vue-mazel-ui.css">
-      <!-- import du JavaScript -->
-      <script src="https://unpkg.com/vue-mazel-ui/dist/vue-mazel-ui.common.js"><script>
-      `
+        cdnCode: `<!-- import du CSS -->
+<link rel="stylesheet" href="https://unpkg.com/vue-mazel-ui/dist/vue-mazel-ui.css">
+<!-- import du JavaScript -->
+<script src="https://unpkg.com/vue-mazel-ui/dist/vue-mazel-ui.common.js"><script>`
       }
     }
   }
