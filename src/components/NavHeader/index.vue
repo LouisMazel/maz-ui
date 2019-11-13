@@ -76,6 +76,7 @@
 
     &__menu {
       &__item {
+        font-weight: 300;
         text-decoration: none;
         padding: 0 20px;
         border-bottom: 2px solid transparent;
@@ -83,8 +84,8 @@
 
         &:hover {
           border-bottom: 2px solid var(--maz-primary-color);
-          background-color: var(--maz-primary-color-transparency);
-          color: var(--maz-bg-color);
+          // background-color: var(--maz-primary-color-transparency);
+          // color: var(--maz-bg-color);
         }
 
         &.router-link-exact-active {

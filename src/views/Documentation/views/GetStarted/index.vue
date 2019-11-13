@@ -16,11 +16,6 @@
       render: h => h(App)<br>
       });
     </CodeContainer>
-    <h3>Yarn</h3>
-    <CodeContainer>
-      yarn add vue-mazel-ui
-    </CodeContainer>
-    <h3>CDN</h3>
   </div>
 </template>
 

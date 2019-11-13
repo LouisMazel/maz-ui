@@ -23,9 +23,9 @@
       return {
         cdnCode: `
       <!-- import du CSS -->
-      <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+      <link rel="stylesheet" href="https://unpkg.com/vue-mazel-ui/dist/vue-mazel-ui.css">
       <!-- import du JavaScript -->
-      <script src="https://unpkg.com/element-ui/lib/index.js"><script>
+      <script src="https://unpkg.com/vue-mazel-ui/dist/vue-mazel-ui.common.js"><script>
       `
       }
     }

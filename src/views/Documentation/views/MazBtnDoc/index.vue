@@ -1,9 +1,9 @@
 <template>
   <div class="maz-btn-doc">
-    <h2 class="text-center">
-      MazBtn
+    <h2>
+      {{ this.$route.name.substring(3).slice(0, -3) }}
     </h2>
-    <ComponentContainer class="flex flex-direction-column p-4 m-4">
+    <ComponentContainer class="flex flex-direction-column">
       <div
         v-for="type in btnTypes"
         :key="type"

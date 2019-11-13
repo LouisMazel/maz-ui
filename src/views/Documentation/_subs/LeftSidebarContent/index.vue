@@ -6,12 +6,12 @@
     <router-link
       v-for="route in routesStartedDoc"
       :key="route.name"
-      class="menu-item btn btn-primary-outline btn-sm mb-2"
+      class="menu-item btn btn-white btn-sm mb-2"
       :to="{
         name: route.name
       }"
     >
-      {{ route.path | capitalize }}
+      {{ route.path.replace('-', ' ') | capitalize }}
     </router-link>
     <h3 class="my-3">
       Components
@@ -20,7 +20,7 @@
       <router-link
         v-for="route in routesComponents"
         :key="route.name"
-        class="menu-item btn btn-primary-outline btn-sm mb-2"
+        class="menu-item btn btn-white btn-sm mb-2"
         :to="{
           name: route.name
         }"
@@ -54,11 +54,11 @@
 
     .menu-item {
       border: none;
-      color: var(--maz-text-color);
+      color: black;
+      font-weight: 300;
 
       &.router-link-active {
-        background-color: var(--maz-bg-color);
-        border: 1px solid var(--maz-primary-color);
+        color: var(--maz-primary-color);
       }
     }
   }

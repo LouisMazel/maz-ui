@@ -1,6 +1,6 @@
 @import 'style-helpers';
 @import './_variables';
-@import url('https://fonts.googleapis.com/css?family=Roboto:400,500,700|Material+Icons');
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons');
 @import './../icons/index';
 
 html,
@@ -21,6 +21,10 @@ h4,
 h5,
 h6 {
   font-weight: 400;
+}
+
+h1,
+h2 {
   color: var(--maz-primary-color);
 }
 

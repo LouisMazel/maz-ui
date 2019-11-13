@@ -1,7 +1,7 @@
 <template>
   <div class="maz-sidebar-doc h-100 flex flex-direction-column">
-    <h2 class="text-center">
-      MazSidebar
+    <h2>
+      {{ this.$route.name.substring(3).slice(0, -3) }}
     </h2>
     <ComponentContainer class="maz-sidebar-doc__container flex flex-1">
       <MazSidebar

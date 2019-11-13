@@ -1,8 +1,8 @@
 <template>
   <div class="home">
     <div class="container">
-      <h2>
-        Home
+      <h2 class="text-center my-3">
+        A components & CSS library to build your interface
       </h2>
     </div>
     <NavFooter />
@@ -19,3 +19,11 @@
     }
   }
 </script>
+
+<style lang="scss" scoped>
+  .home {
+    h2 {
+      color: var(--maz-text-color);
+    }
+  }
+</style>

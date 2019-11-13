@@ -1,6 +1,6 @@
 <template>
   <div class="maz-dialog-doc">
-    <h2 class="text-center">
+    <h2>
       {{ this.$route.name.substring(3).slice(0, -3) }}
     </h2>
     <ComponentContainer>

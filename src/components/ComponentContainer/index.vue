@@ -1,5 +1,5 @@
 <template>
-  <div class="component-container pos-r br-8 bg-white p-4 m-4 shadow-container">
+  <div class="component-container pos-r br-8 bg-white p-4 my-4 shadow-container">
     <slot />
   </div>
 </template>

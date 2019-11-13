@@ -1,9 +1,9 @@
 <template>
   <div class="maz-spinner-doc">
-    <h2 class="text-center">
-      MazSpinner
+    <h2>
+      {{ this.$route.name.substring(3).slice(0, -3) }}
     </h2>
-    <ComponentContainer class="p-4 m-4">
+    <ComponentContainer>
       <MazSpinner />
     </ComponentContainer>
   </div>
