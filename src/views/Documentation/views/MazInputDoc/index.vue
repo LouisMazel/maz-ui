@@ -20,6 +20,9 @@
             :valid="type === 'valid'"
             :disabled="type === 'disabled'"
             :clearable="type === 'clearable'"
+            :hint="type === 'hint' ? 'Hint value' : null"
+            :loader="type === 'loader'"
+            :required="type === 'required'"
             :size="type === 'sm' ? 'sm' : type === 'lg' ? 'lg' : null"
           />
         </ComponentContainer>
@@ -30,6 +33,9 @@
             :valid="type === 'valid'"
             :disabled="type === 'disabled'"
             :clearable="type === 'clearable'"
+            :hint="type === 'hint' ? 'Hint value' : null"
+            :loader="type === 'loader'"
+            :required="type === 'required'"
             :size="type === 'sm' ? 'sm' : type === 'lg' ? 'lg' : null"
           />
         </ComponentContainer>
@@ -48,6 +54,9 @@
             :valid="type === 'valid'"
             :disabled="type === 'disabled'"
             :clearable="type === 'clearable'"
+            :hint="type === 'hint' ? 'Hint value' : null"
+            :loader="type === 'loader'"
+            :required="type === 'required'"
             :size="type === 'sm' ? 'sm' : type === 'lg' ? 'lg' : null"
             dark
           />
@@ -59,6 +68,9 @@
             :valid="type === 'valid'"
             :disabled="type === 'disabled'"
             :clearable="type === 'clearable'"
+            :hint="type === 'hint' ? 'Hint value' : null"
+            :loader="type === 'loader'"
+            :required="type === 'required'"
             :size="type === 'sm' ? 'sm' : type === 'lg' ? 'lg' : null"
             dark
           />
