@@ -1,6 +1,6 @@
 <template>
   <footer
-    class="nav-footer"
+    class="nav-footer flex-fixed"
     role="contentinfo"
   >
     <nav class="nav-footer-content container flex align-center justify-content-between py-4">

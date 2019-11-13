@@ -1,12 +1,12 @@
 <template>
   <header
-    class="header bg-color"
+    class="header bg-color flex-fixed"
     role="banner"
   >
     <nav class="px-4 flex justify-content-between">
       <router-link
         :to="{
-          name: 'Home'
+          name: 'Documentation'
         }"
         class="flex header__logo py-2"
       >

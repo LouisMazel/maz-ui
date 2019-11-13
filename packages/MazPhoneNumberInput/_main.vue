@@ -59,7 +59,6 @@
   </div>
 </template>
 <script>
-  import 'style-helpers'
   /* eslint-disable */
   import { countries, countriesIso } from './assets/js/phoneCodeCountries.js'
   import examples from 'libphonenumber-js/examples.mobile.json'

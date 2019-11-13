@@ -14,6 +14,7 @@ import { version } from '@/../package.json'
 import './theme'
 import './utils/polyfill'
 import '@babel/polyfill'
+import 'style-helpers'
 
 const components = [
   MazBtn,

@@ -1,12 +1,12 @@
 <template>
-  <div class="left-sidebar-content flex flex-direction-column p-4 h-100">
+  <div class="left-sidebar-content p-4 h-100">
     <h3 class="mb-3">
       Development
     </h3>
     <router-link
       v-for="route in routesStartedDoc"
       :key="route.name"
-      class="menu-item btn btn-white btn-sm mb-2"
+      class="menu-item btn btn-white btn-sm mb-2 w-100"
       :to="{
         name: route.name
       }"
@@ -16,11 +16,11 @@
     <h3 class="my-3">
       Components
     </h3>
-    <div class="left-sidebar-content__content flex flex-direction-column">
+    <div class="left-sidebar-content__content">
       <router-link
         v-for="route in routesComponents"
         :key="route.name"
-        class="menu-item btn btn-white btn-sm mb-2"
+        class="menu-item btn btn-white btn-sm mb-2 w-100"
         :to="{
           name: route.name
         }"

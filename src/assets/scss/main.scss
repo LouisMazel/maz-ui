@@ -1,4 +1,3 @@
-@import 'style-helpers';
 @import './_variables';
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons');
 @import './../icons/index';
@@ -9,8 +8,7 @@ body,
   font: $base-font-weight $base-font-size $base-font-family;
   line-height: $base-line-height;
   font-kerning: normal;
-  max-height: 100vh;
-  min-height: 100vh;
+  height: 100%;
   color: var(--maz-text-color);
 }
 

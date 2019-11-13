@@ -6,10 +6,8 @@
     >
       <LeftSidebarContent />
     </MazSidebar>
-    <div class="documentation__container flex-1 flex flex-direction-column">
-      <div class="flex-1 flex px-5 py-3">
-        <router-view class="flex-1" />
-      </div>
+    <div class="documentation__container flex-1">
+      <router-view class="px-5 py-3" />
       <NavFooter />
     </div>
   </div>
@@ -39,7 +37,6 @@
 
     &__container {
       overflow-x: auto;
-      min-height: 0;
     }
   }
 </style>
