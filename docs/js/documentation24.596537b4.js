@@ -1,2 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["documentation24"],{"2fa6":function(a,t,e){"use strict";e.r(t);var n=function(){var a=this,t=a.$createElement,e=a._self._c||t;return e("div",{staticClass:"maz-loader-doc"},[e("h2",{staticClass:"text-center"},[a._v(" MazLoader ")]),e("ComponentContainer",{staticClass:"p-4 m-4"},[e("MazLoader")],1)],1)},o=[],s={name:"MazLoaderDoc"},c=s,r=e("2877"),l=Object(r["a"])(c,n,o,!1,null,null,null);t["default"]=l.exports}}]);
-//# sourceMappingURL=documentation24.596537b4.js.map
