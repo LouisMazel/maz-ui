@@ -19,9 +19,10 @@
 <style lang="scss" scoped>
   .component-container {
     // border: 1px solid var(--maz-text-color-dark);
-    color: var(--maz-text-color-dark);
+    color: var(--maz-text-color);
 
     &.is-dark {
+      color: var(--maz-text-color-dark);
       background-color: var(--maz-bg-color-dark);
     }
   }
