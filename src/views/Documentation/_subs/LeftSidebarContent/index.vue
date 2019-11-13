@@ -11,7 +11,7 @@
         name: route.name
       }"
     >
-      {{ route.path.replace('-', ' ') | capitalize }}
+      {{ getRouteName(route.path) | capitalize }}
     </router-link>
     <h3 class="my-3">
       Components
@@ -25,13 +25,15 @@
           name: route.name
         }"
       >
-        {{ route.path | capitalize }}
+        {{ getRouteName(route.path) | capitalize }}
       </router-link>
     </div>
   </div>
 </template>
 
 <script>
+  import { replaceAll } from '@/utils'
+
   export default {
     name: 'LeftSidebarContent',
     computed: {
@@ -42,6 +44,11 @@
       routesComponents () {
         return this.$router.options.routes.filter(route => route.path === '/documentation')[0]
           .children.filter(child => child.name !== 'Install' && child.name !== 'GetStarted')
+      }
+    },
+    methods: {
+      getRouteName (string) {
+        return replaceAll(string, '-', ' ')
       }
     }
   }

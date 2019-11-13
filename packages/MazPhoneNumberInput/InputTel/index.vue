@@ -10,61 +10,47 @@
       'is-dark': dark,
       'has-hint': hint
     }, size]"
-    class="maz-input"
+    class="input-tel"
     @click="focusInput"
   >
     <input
-      v-if="!textarea"
-      :id="uniqueId"
-      ref="MazInput"
+      :id="id"
+      ref="InputTel"
       v-model="inputValue"
       v-bind="$attrs"
       :placeholder="labelValue"
       :type="type"
-      class="maz-input__input"
+      class="input-tel__input"
       :disabled="disabled"
       :required="required"
+      :class="{
+        'no-country-selector': noCountrySelector
+      }"
       @keydown="keyDown"
       @keyup="keyUp"
       @focus="onFocus"
       @blur="onBlur"
       @click="$emit('click')"
     >
-    <textarea
-      v-else
-      :id="uniqueId"
-      ref="MazInput"
-      v-model="inputValue"
-      v-bind="$attrs"
-      :placeholder="labelValue"
-      :type="type"
-      :required="required"
-      class="maz-input__input textarea"
-      @keydown="keyDown"
-      @keyup="keyUp"
-      @focus="onFocus"
-      @blur="onBlur"
-      @click="$emit('click')"
-    />
     <label
       ref="label"
-      :for="uniqueId"
+      :for="id"
       :class="error ? 'text-danger' : null"
-      class="maz-input__label"
+      class="input-tel__label"
       @click="focusInput"
     >
       {{ hintValue || labelValue }}
     </label>
 
     <button
-      v-if="clearable && inputValue && !textarea"
-      class="maz-input__clear"
+      v-if="clearable && inputValue"
+      class="input-tel__clear"
       title="clear"
       type="button"
       tabindex="-1"
       @click="clear"
     >
-      <span class="maz-input__clear__effect" />
+      <span class="input-tel__clear__effect" />
       <span>
         ✕
       </span>
@@ -72,43 +58,36 @@
 
     <div
       v-if="loader"
-      class="maz-input__loader"
-      :class="{ textarea }"
+      class="input-tel__loader"
     >
       <div
-        class="maz-input__loader__progress-bar"
+        class="input-tel__loader__progress-bar"
       />
     </div>
   </div>
 </template>
 
 <script>
-  import uniqueId from './../mixins/uniqueId'
-
   export default {
-    name: 'MazInput',
-    mixins: [uniqueId],
+    name: 'InputTel',
     props: {
-      id: { type: String, default: 'MazInput' },
-      value: { type: [String, Number], required: true },
+      value: { type: [String, Number], default: null },
       label: { type: String, default: 'Enter text' },
       hint: { type: String, default: null },
       error: { type: Boolean, default: Boolean },
-      color: { type: String, default: 'dodgerblue' },
       disabled: { type: Boolean, default: false },
       dark: { type: Boolean, default: false },
-      darkColor: { type: String, default: '#21222E' },
+      id: { type: String, default: 'InputTel' },
       size: { type: String, default: null },
-      type: { type: String, default: 'text' },
+      type: { type: String, default: 'tel' },
       readonly: { type: Boolean, default: false },
       valid: { type: Boolean, default: false },
-      validColor: { type: String, default: 'yellowgreen' },
       required: { type: Boolean, default: false },
-      textarea: { type: Boolean, default: false },
       loader: { type: Boolean, default: false },
-      clearable: { type: Boolean, default: false }
+      clearable: { type: Boolean, default: false },
+      noCountrySelector: { type: Boolean, default: false }
     },
-    data () {
+    data: function () {
       return {
         isFocus: false
       }
@@ -119,31 +98,21 @@
           return this.value
         },
         set (value) {
-          this.$emit(
-            'input',
-            this.hasNumberType
-              ? !value ? 0 : parseInt(value)
-              : value
-          )
+          this.$emit('input', value)
         }
       },
       labelValue () {
-        let { label } = this
-        if (this.required && label) label += ` *`
-        return label
+        const { label } = this
+        return this.required && label ? `${label} *` : label
       },
       hintValue () {
-        let { hint } = this
-        if (this.required && hint) hint += ` *`
-        return hint
-      },
-      hasNumberType () {
-        return this.type === 'number'
+        const { hint } = this
+        return this.required && hint ? `${hint} *` : hint
       }
     },
     methods: {
       focusInput () {
-        this.$refs.MazInput.focus()
+        this.$refs.InputTel.focus()
       },
       onFocus: function () {
         this.$emit('focus')
@@ -154,10 +123,7 @@
         this.isFocus = false
       },
       clear () {
-        this.$emit(
-          'input',
-          this.hasNumberType ? 0 : ''
-        )
+        this.$emit('input', null)
         this.$emit('clear')
       },
       keyUp (e) {
@@ -171,15 +137,30 @@
 </script>
 
 <style lang="scss" scoped>
-  @import '@/../packages/scss/vars';
+  $primary-color: var(--maz-primary-color);
+  $second-color: var(--maz-second-color);
+  $second-color-dark: var(--maz-second-color-dark);
+  $third-color: var(--maz-third-color);
+  $third-color-dark: var(--maz-third-color-dark);
+  $muted-color: var(--maz-muted-color);
+  $muted-color-dark: var(--maz-muted-color-dark);
+  $hover-color: var(--maz-hover-color);
+  $hover-color-dark: var(--maz-hover-color-dark);
+  $bg-color: var(--maz-bg-color);
+  $bg-color-dark: var(--maz-bg-color-dark);
+  $valid-color: var(--maz-valid-color);
+  $error-color: var(--maz-error-color);
+  $error-color-transparency: var(--maz-error-color-transparency);
+  $primary-color-transparency: var(--maz-primary-color-transparency);
+  $valid-color-transparency: var(--maz-valid-color-transparency);
+  $border-radius: var(--maz-border-radius);
+  $disabled-color: #747474;
 
-  .maz-input {
+  .input-tel {
     position: relative;
-
-    &:not(.maz-input__input.textarea) {
-      height: 42px;
-      min-height: 42px;
-    }
+    font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    height: 42px;
+    min-height: 42px;
 
     &__label {
       position: absolute;
@@ -208,16 +189,13 @@
       font-size: 14px;
       z-index: 0;
       caret-color: $primary-color;
+      margin-left: -1px;
+      height: 42px;
+      min-height: 42px;
 
-      &:not(.textarea) {
-        height: 42px;
-        min-height: 42px;
-      }
-
-      &.textarea {
-        padding: 8px 12px 0 12px;
-        min-height: 88px !important;
-        resize: vertical;
+      &:not(.no-country-selector) {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
       }
 
       &::-webkit-input-placeholder {
@@ -275,7 +253,7 @@
         outline: none;
       }
 
-      & > span:not(.maz-input__clear__effect) {
+      & > span:not(.input-tel__clear__effect) {
         position: relative;
         top: 1px;
       }
@@ -297,7 +275,7 @@
       &:hover {
         color: white;
 
-        .maz-input__clear__effect {
+        .input-tel__clear__effect {
           transform: scale(1);
           opacity: 0.6;
         }
@@ -305,7 +283,7 @@
     }
 
     &.is-dark {
-      .maz-input {
+      .input-tel {
         &__label {
           color: $second-color-dark;
         }
@@ -363,7 +341,7 @@
     }
 
     &.is-focused {
-      .maz-input {
+      .input-tel {
         &__input {
           border-color: $primary-color;
           box-shadow: 0 0 0 0.2rem $primary-color-transparency;
@@ -375,13 +353,13 @@
       }
 
       &.has-error {
-        .maz-input__input {
+        .input-tel__input {
           box-shadow: 0 0 0 0.2rem $error-color-transparency;
         }
       }
 
       &.is-valid {
-        .maz-input__input {
+        .input-tel__input {
           border-color: $valid-color;
           box-shadow: 0 0 0 0.2rem $valid-color-transparency;
         }
@@ -389,54 +367,46 @@
     }
 
     &.has-value {
-      .maz-input__label {
+      .input-tel__label {
         opacity: 1;
         transform: translateY(0);
         font-size: 11px;
       }
 
-      .maz-input__input {
+      .input-tel__input {
         padding-top: 14px;
-
-        &.textarea {
-          padding-top: 20px;
-        }
       }
     }
 
     &.has-value,
     &.has-hint {
-      .maz-input__label {
+      .input-tel__label {
         opacity: 1;
         transform: translateY(0);
         font-size: 11px;
       }
 
-      .maz-input__input {
+      .input-tel__input {
         padding-top: 14px;
-
-        &.textarea {
-          padding-top: 20px;
-        }
       }
     }
 
     &.is-valid {
-      .maz-input__input {
+      .input-tel__input {
         border-color: $valid-color;
       }
 
-      .maz-input__label {
+      .input-tel__label {
         color: $valid-color;
       }
     }
 
     &.has-error {
-      .maz-input__input {
+      .input-tel__input {
         border-color: $error-color;
       }
 
-      .maz-input__label {
+      .input-tel__label {
         color: $error-color;
       }
     }
@@ -444,7 +414,7 @@
     &.is-disabled {
       cursor: not-allowed;
 
-      .maz-input__input {
+      .input-tel__input {
         border-color: #CCC;
         background-color: #F2F2F2;
         color: $disabled-color;
@@ -474,70 +444,52 @@
         }
       }
 
-      .maz-input__label,
-      .maz-input__input,
-      .maz-input__toggle__arrow {
+      .input-tel__label,
+      .input-tel__input,
+      .input-tel__toggle__arrow {
         cursor: not-allowed;
         color: $disabled-color;
       }
     }
 
     &.sm {
-      &:not(.maz-input__input.textarea) {
+      height: 36px;
+      min-height: 36px;
+
+      .input-tel__input {
+        font-size: 12px;
         height: 36px;
         min-height: 36px;
       }
 
-      .maz-input__input {
-        font-size: 12px;
-
-        &:not(.textarea) {
-          height: 36px;
-          min-height: 36px;
-        }
-      }
-
-      .maz-input__label {
+      .input-tel__label {
         font-size: 10px;
       }
 
       &.has-value {
-        .maz-input__input {
+        .input-tel__input {
           padding-top: 12px;
-
-          &.textarea {
-            padding-top: 18px;
-          }
         }
       }
     }
 
     &.lg {
-      &:not(.maz-input__input.textarea) {
+      height: 48px;
+      min-height: 48px;
+
+      .input-tel__input {
+        font-size: 16px;
         height: 48px;
         min-height: 48px;
       }
 
-      .maz-input__input {
-        font-size: 16px;
-
-        &:not(.textarea) {
-          height: 48px;
-          min-height: 48px;
-        }
-      }
-
-      .maz-input__label {
+      .input-tel__label {
         font-size: 14px;
       }
 
       &.has-value {
-        .maz-input__input {
+        .input-tel__input {
           padding-top: 16px;
-
-          &.textarea {
-            padding-top: 26px;
-          }
         }
       }
     }
@@ -550,10 +502,6 @@
       position: absolute;
       overflow: hidden;
       border-radius: 4px;
-
-      &.textarea {
-        bottom: 6px;
-      }
 
       &__progress-bar {
         background-color: $primary-color;

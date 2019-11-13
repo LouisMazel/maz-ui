@@ -25,14 +25,14 @@
         </div>
       </router-link>
       <div class="header__menu flex">
-        <router-link
+        <!-- <router-link
           class="header__menu__item flex align-center"
           :to="{
             name: 'Home'
           }"
         >
           Home
-        </router-link>
+        </router-link> -->
         <router-link
           class="header__menu__item flex align-center"
           :to="{
@@ -76,16 +76,15 @@
 
     &__menu {
       &__item {
-        font-weight: 300;
         text-decoration: none;
         padding: 0 20px;
         border-bottom: 2px solid transparent;
         transition: all 0.5s;
+        outline: none;
 
+        &:focus,
         &:hover {
-          border-bottom: 2px solid var(--maz-primary-color);
-          // background-color: var(--maz-primary-color-transparency);
-          // color: var(--maz-bg-color);
+          background-color: var(--maz-text-color-dark);
         }
 
         &.router-link-exact-active {

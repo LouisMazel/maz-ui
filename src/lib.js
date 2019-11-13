@@ -1,13 +1,14 @@
-import MazBtn from '@/../packages/MazBtn/index.js'
-import MazCheckbox from '@/../packages/MazCheckbox/index.js'
-import MazDialog from '@/../packages/MazDialog/index.js'
-import MazInput from '@/../packages/MazInput/index.js'
-import MazLoader from '@/../packages/MazLoader/index.js'
-import MazSelect from '@/../packages/MazSelect/index.js'
-import MazSidebar from '@/../packages/MazSidebar/index.js'
-import MazSpinner from '@/../packages/MazSpinner/index.js'
-import MazSwitch from '@/../packages/MazSwitch/index.js'
-import MazTransitionExpand from '@/../packages/MazTransitionExpand/index.js'
+import MazBtn from '@/../packages/MazBtn'
+import MazCheckbox from '@/../packages/MazCheckbox'
+import MazDialog from '@/../packages/MazDialog'
+import MazInput from '@/../packages/MazInput'
+import MazLoader from '@/../packages/MazLoader'
+import MazPhoneNumberInput from '@/../packages/MazPhoneNumberInput'
+import MazSelect from '@/../packages/MazSelect'
+import MazSidebar from '@/../packages/MazSidebar'
+import MazSpinner from '@/../packages/MazSpinner'
+import MazSwitch from '@/../packages/MazSwitch'
+import MazTransitionExpand from '@/../packages/MazTransitionExpand'
 
 import { version } from '@/../package.json'
 import './theme'
@@ -19,11 +20,12 @@ const components = [
   MazCheckbox,
   MazDialog,
   MazInput,
+  MazLoader,
+  MazPhoneNumberInput,
   MazSelect,
   MazSwitch,
   MazSidebar,
   MazSpinner,
-  MazLoader,
   MazTransitionExpand
 ]
 
@@ -43,11 +45,12 @@ export {
   MazCheckbox,
   MazDialog,
   MazInput,
+  MazLoader,
+  MazPhoneNumberInput,
   MazSelect,
   MazSwitch,
   MazSidebar,
   MazSpinner,
-  MazLoader,
   MazTransitionExpand
 }
 

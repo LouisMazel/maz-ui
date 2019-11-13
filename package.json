@@ -37,6 +37,7 @@
     "css-vars-ponyfill": "^2.1.2",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+    "libphonenumber-js": "^1.7.26",
     "nuxt": "^2.10.2",
     "sass": "^1.19.0",
     "sass-loader": "^8.0.0",
