@@ -28,7 +28,7 @@ const router = new Router({
     : '/',
   routes: [
     {
-      path: '/',
+      path: '/home',
       name: 'Home',
       component: () => import(/* webpackChunkName: "home" */ '@/views/Home')
     },
@@ -43,7 +43,7 @@ const router = new Router({
     },
     {
       path: '*',
-      redirect: { name: 'Home' }
+      redirect: { name: 'Documentation' }
     }
   ]
 })
