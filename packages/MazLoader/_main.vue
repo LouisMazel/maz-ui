@@ -21,6 +21,7 @@
       position: relative;
       width: 64px;
       height: 64px;
+      animation: custom-loader-anim 10s cubic-bezier(0.5, 0, 0.5, 1) infinite;
     }
 
     &__anim div {
