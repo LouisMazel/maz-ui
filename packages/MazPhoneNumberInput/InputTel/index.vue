@@ -87,7 +87,7 @@
       clearable: { type: Boolean, default: false },
       noCountrySelector: { type: Boolean, default: false }
     },
-    data: function () {
+    data () {
       return {
         isFocus: false
       }
@@ -401,7 +401,7 @@
       }
     }
 
-    &.has-error {
+    &.has-error:not(.is-valid) {
       .input-tel__input {
         border-color: $error-color;
       }

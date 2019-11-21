@@ -56,6 +56,7 @@
         v-show="isFocus"
         ref="countriesList"
         class="country-selector__list"
+        :class="{ 'has-calling-code': showCodeOnList }"
       >
         <div
           v-for="item in countriesSorted"
@@ -74,6 +75,10 @@
           >
             <div :class="`iti-flag-small iti-flag ${item.iso2.toLowerCase()}`" />
           </div>
+          <span
+            v-if="showCodeOnList"
+            class="country-selector__list__item__calling-code flex-fixed"
+          >+{{ item.dialCode }}</span>
           <div class="dots-text">
             {{ item.name }}
           </div>
@@ -109,7 +114,8 @@
       preferredCountries: { type: Array, default: null },
       onlyCountries: { type: Array, default: null },
       ignoredCountries: { type: Array, default: Array },
-      noFlags: { type: Boolean, default: false }
+      noFlags: { type: Boolean, default: false },
+      showCodeOnList: { type: Boolean, default: false }
     },
     data () {
       return {
@@ -274,12 +280,11 @@
     &__input {
       cursor: pointer;
       background-color: $bg-color;
-      transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
       position: relative;
       width: 100%;
       height: 42px;
       min-height: 42px;
-      padding-right: 18px;
+      padding-right: 22px;
       font-weight: 400;
       appearance: none;
       outline: none;
@@ -289,32 +294,8 @@
       z-index: 0;
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
-      padding-left: 40px;
+      padding-left: 8px;
       color: $text-color;
-
-      &::-webkit-input-placeholder {
-        color: $text-color;
-      }
-
-      &::-moz-placeholder {
-        color: $text-color;
-      }
-
-      &:-ms-input-placeholder {
-        color: $text-color;
-      }
-
-      &::-ms-input-placeholder {
-        color: $text-color;
-      }
-
-      &:-moz-placeholder {
-        color: $text-color;
-      }
-
-      &::placeholder {
-        color: $text-color;
-      }
     }
 
     &__toggle {
@@ -362,6 +343,10 @@
       min-width: 230px;
       box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
 
+      &.has-calling-code {
+        min-width: 270px;
+      }
+
       &__item {
         padding: 0 10px;
         text-overflow: ellipsis;
@@ -374,6 +359,11 @@
           margin-right: 10px;
         }
 
+        &__calling-code {
+          width: 45px;
+          color: var(--maz-muted-color);
+        }
+
         &:hover,
         &.keyboard-selected {
           background-color: $hover-color;
@@ -383,6 +373,10 @@
           color: #FFF;
           background-color: $primary-color;
           font-weight: 600;
+
+          .country-selector__list__item__calling-code {
+            color: #FFF;
+          }
         }
       }
     }
@@ -440,12 +434,26 @@
               background-color: $hover-color-dark;
             }
           }
+
+          &__calling-code {
+            color: var(--phone-number-muted-color-dark);
+          }
         }
       }
 
       .country-selector__input,
       .country-selector__list {
         color: $second-color-dark;
+      }
+    }
+
+    &.is-valid {
+      .country-selector__input {
+        border-color: $valid-color;
+      }
+
+      .country-selector__label {
+        color: $valid-color;
       }
     }
 
@@ -467,7 +475,6 @@
 
       &.is-valid {
         .country-selector__input {
-          border-color: $valid-color;
           box-shadow: 0 0 0 0.2rem $valid-color-transparency;
         }
       }
@@ -480,6 +487,12 @@
 
       .country-selector__label {
         color: $error-color;
+      }
+    }
+
+    &.has-value {
+      .country-selector__input {
+        padding-left: 40px;
       }
     }
 

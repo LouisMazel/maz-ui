@@ -26,6 +26,7 @@
         :ignored-countries="ignoredCountries"
         :label="t.countrySelectorLabel"
         :no-flags="noFlags"
+        :show-code-on-list="showCodeOnList"
         :size="size"
         class="input-country-selector"
       >
@@ -108,7 +109,8 @@
       noUseBrowserLocale: { type: Boolean, default: false },
       fetchCountry: { type: Boolean, default: false },
       noCountrySelector: { type: Boolean, default: false },
-      borderRadius: { type: Number, default: 4 }
+      borderRadius: { type: Number, default: 4 },
+      showCodeOnList: { type: Boolean, default: false }
     },
     data () {
       return {
