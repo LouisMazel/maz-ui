@@ -6,7 +6,7 @@
 [![npm](https://img.shields.io/npm/dt/vue-mazel-ui.svg?style=flat-square)](https://www.npmjs.com/package/vue-mazel-ui)
 [![Codacy grade](https://img.shields.io/codacy/grade/3d15a7c11bfe47c69a2aed93cc67cc29.svg?style=flat-square)](https://www.codacy.com/app/LouisMazel/vue-mazel-ui)
 
-[![npm](https://nodei.co/npm/vue-mazel-ui.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/vue-mazel-ui.js)
+[![npm](https://nodei.co/npm/vue-mazel-ui.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/vue-mazel-ui)
 
 > [vue-mazel-ui](https://github.com/LouisMazel/vue-mazel-ui) is a component & CSS library for [Vue](https://vuejs.org)
 
