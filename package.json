@@ -13,6 +13,7 @@
     "lint:style": "stylelint 'src/**/*.scss' 'src/**/*.vue'",
     "lint:style:fix": "stylelint 'src/**/*.scss' 'src/**/*.vue' --fix",
     "build": "npm run build:lib && npm run build:docs",
+    "build:report": "npm run build:lib && npm run build:docs -- --report",
     "build:lib": "vue-cli-service build --target lib --name vue-mazel-ui src/lib.js",
     "build:docs": "vue-cli-service build --dest docs --mode production",
     "delete-docs-report": "rm ./docs/report.html",
