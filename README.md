@@ -8,7 +8,7 @@
 
 [![npm](https://nodei.co/npm/vue-mazel-ui.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/vue-mazel-ui.js)
 
-[vue-mazel-ui](https://github.com/LouisMazel/vue-mazel-ui) is a component & CSS library for [Vue](https://vuejs.org)
+> [vue-mazel-ui](https://github.com/LouisMazel/vue-mazel-ui) is a component & CSS library for [Vue](https://vuejs.org)
 
 ## Project setup
 
