@@ -11,8 +11,9 @@
     :class="{
       'is-close': !isOpen,
       'is-absolute': absolute,
-      'has-shadow': !withoutShadow,
-      'is-right': right
+      'has-shadow': !noShadow,
+      'is-right': right,
+      'is-dark': dark
     }"
   >
     <transition
@@ -27,7 +28,7 @@
       </div>
     </transition>
     <div
-      v-if="!withoutCloseBtn"
+      v-if="!noCloseBtn"
       class="maz-sidebar__close-btn"
     >
       <button
@@ -35,9 +36,10 @@
         @click="isOpen = !isOpen"
       >
         <slot name="button-icon">
-          <span>
-            {{ btnArrow }}
-          </span>
+          <component
+            :is="componentArrow"
+            :white="dark"
+          />
         </slot>
       </button>
     </div>
@@ -55,14 +57,16 @@
 <script>
   import MazLoader from '../MazLoader'
   import uniqueId from './../mixins/uniqueId'
+  import ArrowLeft from './_subs/ArrowLeft'
+  import ArrowRight from './_subs/ArrowRight'
 
   /**
    * Generic component used to show a togglable sidebar (left or right) in the layout
    * @module component - MazSidebar
    * @param {boolean} loader - Show / hide the loader inside the sidebar component
    * @param {number} width - The sidebar width
-   * @param {boolean} [withoutCloseBtn=false] - Specify if the sidebar should have or not the toggle button
-   * @param {boolean} [withoutShadow=false] - Specify if the sidebar should have the drop shadow
+   * @param {boolean} [noCloseBtn=false] - Specify if the sidebar should have or not the toggle button
+   * @param {boolean} [noShadow=false] - Specify if the sidebar should have the drop shadow
    * @param {boolean} [absolute=false] - Specify if the sidebar should be positionned in an absolute way.
    * @param {boolean} [isOpen=false] - Is the sidebar open or not
    * @param {boolean} [right=false] - Specify the sidebar direction, by default the sidebar is positionned in the left side.
@@ -71,7 +75,9 @@
   export default {
     name: 'MazSidebar',
     components: {
-      MazLoader
+      MazLoader,
+      ArrowLeft,
+      ArrowRight
     },
     mixins: [uniqueId],
     props: {
@@ -79,10 +85,11 @@
       id: { type: String, default: 'MazSidebar' },
       loader: { type: Boolean, default: false },
       width: { type: Number, default: 350 },
-      withoutCloseBtn: { type: Boolean, default: false },
-      withoutShadow: { type: Boolean, default: false },
+      noCloseBtn: { type: Boolean, default: false },
+      noShadow: { type: Boolean, default: false },
       absolute: { type: Boolean, default: false },
-      right: { type: Boolean, default: false }
+      right: { type: Boolean, default: false },
+      dark: { type: Boolean, default: false }
     },
     computed: {
       isOpen: {
@@ -93,10 +100,10 @@
           this.$emit('input', value)
         }
       },
-      btnArrow () {
+      componentArrow () {
         return this.isOpen
-          ? this.right ? '►' : '◀'
-          : this.right ? '◀' : '►'
+          ? this.right ? 'ArrowRight' : 'ArrowLeft'
+          : this.right ? 'ArrowLeft' : 'ArrowRight'
       }
     }
   }
@@ -104,7 +111,7 @@
 
 <style lang="scss" scoped>
   .maz-sidebar {
-    background-color: #FFF;
+    background-color: white;
     position: relative;
     transition-duration: 0.2s;
     transform: translateX(0);
@@ -122,6 +129,7 @@
       button {
         background-color: rgba(darken(#FFF, 10%), 0.9);
         box-shadow: 2px 1px 3px rgba(232, 237, 250, 1);
+        border-radius: 0 8px 8px 0;
         width: 23px;
         height: 48px;
         outline: 0;
@@ -132,13 +140,35 @@
     }
 
     &__load-layer {
-      background: rgba(0, 0, 0, 0.15);
+      background-color: rgba(0, 0, 0, 0.15);
       position: absolute;
       top: 0;
       right: 0;
       left: 0;
       bottom: 0;
       z-index: 10;
+    }
+
+    &.is-dark {
+      background-color: var(--maz-bg-color-dark);
+
+      .maz-sidebar {
+        &__load-layer {
+          background-color: var(--maz-muted-color-dark);
+        }
+
+        &__close-btn {
+          button {
+            background-color: var(--maz-hover-color-dark);
+            color: white;
+            box-shadow: 2px 1px 3px rgba(232, 237, 250, 1);
+
+            svg path {
+              fill: white;
+            }
+          }
+        }
+      }
     }
 
     &.has-shadow {
@@ -165,6 +195,7 @@
 
         button {
           box-shadow: -2px 1px 3px rgba(232, 237, 250, 1);
+          border-radius: 4px 0 0 4px;
         }
       }
     }

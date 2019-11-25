@@ -1,5 +1,5 @@
 <template>
-  <div class="maz-sidebar-doc h-100 flex flex-direction-column">
+  <div class="maz-sidebar-doc h-100 flex flex-direction-column flex-1">
     <h2>
       {{ this.$route.name.substring(3).slice(0, -3) }}
     </h2>
@@ -9,11 +9,15 @@
         class="h-100"
         :loader="loader"
         :width="width"
-        :without-shadow="!hasShadow"
-        :without-close-btn="!hasCloseBtn"
+        :no-shadow="!hasShadow"
+        :no-close-btn="!hasCloseBtn"
         :absolute="absolute"
+        :dark="dark"
       >
-        <div class="flex flex-1 align-center justify-content-center">
+        <div
+          class="flex flex-1 align-center justify-content-center"
+          :class="{ 'text-white': dark }"
+        >
           SideBar Content Example
         </div>
       </MazSidebar>
@@ -22,6 +26,13 @@
           type="success"
           size="sm"
           @click="loader = !loader"
+        >
+          Toggle loader
+        </MazBtn>
+        <MazBtn
+          type="dark"
+          size="sm"
+          @click="dark = !dark"
         >
           Toggle loader
         </MazBtn>
@@ -66,12 +77,16 @@
         class="h-100"
         :loader="loader"
         :width="width"
-        :without-shadow="!hasShadow"
-        :without-close-btn="!hasCloseBtn"
+        :no-shadow="!hasShadow"
+        :no-close-btn="!hasCloseBtn"
         :absolute="absolute"
         right
+        :dark="!dark"
       >
-        <div class="flex flex-1 align-center justify-content-center">
+        <div
+          class="flex flex-1 align-center justify-content-center"
+          :class="{ 'text-white': !dark }"
+        >
           SideBar Content Example
         </div>
       </MazSidebar>
@@ -90,7 +105,8 @@
         width: 350,
         hasShadow: true,
         hasCloseBtn: true,
-        absolute: false
+        absolute: false,
+        dark: false
       }
     }
   }

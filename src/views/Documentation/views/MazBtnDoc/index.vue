@@ -1,8 +1,16 @@
 <template>
   <div class="maz-btn-doc">
-    <h2>
-      {{ this.$route.name.substring(3).slice(0, -3) }}
-    </h2>
+    <div class="flex justify-content-between">
+      <h2>
+        {{ this.$route.name.substring(3).slice(0, -3) }}
+      </h2>
+      <MazBtn
+        ref="maz-button"
+        size="sm"
+      >
+        Show option
+      </MazBtn>
+    </div>
     <div class="flex flex-wrap justify-content-around">
       <ComponentContainer class="flex flex-direction-column">
         <h3 class="mb-3">
@@ -115,6 +123,9 @@
           'sm', '', 'lg'
         ]
       }
+    },
+    mounted () {
+      console.log('MazBtn', this.$refs['maz-button']._props)
     }
   }
 </script>

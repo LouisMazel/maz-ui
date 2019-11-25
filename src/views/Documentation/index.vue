@@ -10,6 +10,14 @@
       <router-view class="px-5 py-3" />
       <NavFooter />
     </div>
+    <MazSidebar
+      v-model="hasRightSidebarOpen"
+      :width="250"
+      right
+      no-close-btn
+    >
+      <LeftSidebarContent />
+    </MazSidebar>
   </div>
 </template>
 
@@ -25,7 +33,8 @@
     },
     data () {
       return {
-        hasLeftSidebarOpen: true
+        hasLeftSidebarOpen: true,
+        hasRightSidebarOpen: false
       }
     }
   }
