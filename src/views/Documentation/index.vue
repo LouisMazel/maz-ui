@@ -42,7 +42,13 @@
           >
             <td>{{ prop[0] }}</td>
             <td>{{ prop[1].type.name }}</td>
-            <td>{{ prop[1].default }}</td>
+            <td>
+              {{
+                (typeof prop[1].default === 'function'
+                  ? prop[1].default.name
+                  : prop[1].default === false ? 'false' : prop[1].default) || 'null'
+              }}
+            </td>
           </tr>
         </table>
       </div>
@@ -55,6 +61,7 @@
   import NavFooter from '@/components/NavFooter'
   import MazBtn from './../../../packages/MazBtn'
   import MazInput from './../../../packages/MazInput'
+  import MazPhoneNumberInput from './../../../packages/MazPhoneNumberInput'
   import { EventBus } from '@/services/EventBus'
 
   export default {
@@ -64,6 +71,7 @@
       /* eslint-disable vue/no-unused-components */
       MazBtn,
       MazInput,
+      MazPhoneNumberInput,
       /* eslint-enable */
       NavFooter
     },
@@ -78,6 +86,7 @@
         return this.$route.name.slice(0, -3)
       },
       currentProps () {
+        console.log('Object.entries(this.$options.components[this.currentComponent].props)', Object.entries(this.$options.components[this.currentComponent].props))
         return Object.entries(this.$options.components[this.currentComponent].props)
       }
     },
@@ -106,16 +115,15 @@
       border-spacing: 0;
       border-radius: 8px;
       border-collapse: collapse;
-      display: block;
       width: 100%;
       table-layout: fixed;
       overflow-wrap: break-word;
-      overflow: auto;
+      overflow: hidden;
       word-break: break-all;
       margin-top: 0;
       margin-bottom: 16px;
       font-size: 14px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+      box-shadow: 0 0 8px rgba(232, 237, 250, 1);
     }
 
     table tr {
@@ -129,7 +137,7 @@
     }
 
     table tr:nth-child(2n) {
-      background-color: #F6F8FA;
+      background-color: var(--maz-hover-color);
     }
   }
 </style>
