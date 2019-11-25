@@ -93,7 +93,7 @@
       value: { type: [String, Number], required: true },
       label: { type: String, default: 'Enter text' },
       hint: { type: String, default: null },
-      error: { type: Boolean, default: Boolean },
+      error: { type: Boolean, default: false },
       color: { type: String, default: 'dodgerblue' },
       disabled: { type: Boolean, default: false },
       dark: { type: Boolean, default: false },

@@ -5,10 +5,10 @@
         {{ this.$route.name.substring(3).slice(0, -3) }}
       </h2>
       <MazBtn
-        ref="maz-button"
         size="sm"
+        @click="showOptions"
       >
-        Show option
+        Show options
       </MazBtn>
     </div>
     <div class="flex flex-wrap justify-content-around">
@@ -112,6 +112,7 @@
 </template>
 
 <script>
+  import { EventBus } from '@/services/EventBus'
   export default {
     name: 'MazBtnDoc',
     data () {
@@ -124,8 +125,10 @@
         ]
       }
     },
-    mounted () {
-      console.log('MazBtn', this.$refs['maz-button']._props)
+    methods: {
+      showOptions () {
+        EventBus.$emit('open-right-sidebar')
+      }
     }
   }
 </script>
