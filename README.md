@@ -10,36 +10,37 @@
 
 > [vue-mazel-ui](https://github.com/LouisMazel/vue-mazel-ui) is a component & CSS library for [Vue](https://vuejs.org)
 
-## Project setup
+## Documentation & Components
 
-```bash
-npm install vue-mazel-ui -S
+[Documentation & Components](https://louismazel.github.io/vue-mazel-ui/#/documentation/install)
+
+## Install
+
+```shell
+npm install element-ui -S
 ```
 
-### Compiles and hot-reloads for development
+## Quick Start
 
-```bash
-npm run serve
+```javascript
+import Vue from 'vue'
+import VueMazelUi from 'vue-mazel-ui'
+
+Vue.use(Element)
+
+// or
+import {
+  MazSelect,
+  MazButton
+  // ...
+} from 'vue-mazel-ui'
+
+Vue.component(MazSelect.name, MazSelect)
+Vue.component(MazButton.name, MazButton)
 ```
 
-### Compiles and minifies for production
+For more informations, see the [Install Documentation](https://louismazel.github.io/vue-mazel-ui/#/documentation/install)
 
-```bash
-npm run build
-```
+## LICENSE
 
-### Run your tests
-
-```bash
-npm run test
-```
-
-### Lints and fixes files
-
-```bash
-npm run lint
-```
-
-### Customize configuration
-
-See [Configuration Reference](https://cli.vuejs.org/config/).
+[MIT](LICENSE)
