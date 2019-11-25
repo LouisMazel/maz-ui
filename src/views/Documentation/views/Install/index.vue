@@ -5,13 +5,13 @@
     </h2>
     <h3>NPM</h3>
     <CodeContainer
-      :code="`npm i vue-mazel-ui -S`"
+      code="npm i vue-mazel-ui -S"
       language="bash"
     />
 
     <h3>Yarn</h3>
     <CodeContainer
-      :code="`yarn add vue-mazel-ui`"
+      code="yarn add vue-mazel-ui"
       language="bash"
     />
 
