@@ -1,16 +1,5 @@
 <template>
   <div class="maz-btn-doc">
-    <div class="flex justify-content-between">
-      <h2>
-        {{ this.$route.name.substring(3).slice(0, -3) }}
-      </h2>
-      <MazBtn
-        size="sm"
-        @click="showOptions"
-      >
-        Show options
-      </MazBtn>
-    </div>
     <div class="flex flex-wrap justify-content-around">
       <ComponentContainer class="flex flex-direction-column">
         <h3 class="mb-3">
@@ -112,7 +101,6 @@
 </template>
 
 <script>
-  import { EventBus } from '@/services/EventBus'
   export default {
     name: 'MazBtnDoc',
     data () {
@@ -123,11 +111,6 @@
         btnSizes: [
           'sm', '', 'lg'
         ]
-      }
-    },
-    methods: {
-      showOptions () {
-        EventBus.$emit('open-right-sidebar')
       }
     }
   }

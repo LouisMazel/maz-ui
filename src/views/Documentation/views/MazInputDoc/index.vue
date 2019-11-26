@@ -1,8 +1,5 @@
 <template>
   <div class="maz-input-doc">
-    <h2>
-      {{ this.$route.name.substring(3).slice(0, -3) }}
-    </h2>
     <div
       v-for="type in inputTypes"
       :key="type"

@@ -7,6 +7,17 @@
       <LeftSidebarContent />
     </MazSidebar>
     <div class="documentation__container flex-1">
+      <div class="flex justify-content-between px-5 py-3">
+        <h2>
+          {{ currentComponent | capitalize }}
+        </h2>
+        <MazBtn
+          size="sm"
+          @click="showOptions"
+        >
+          Show options
+        </MazBtn>
+      </div>
       <router-view class="px-5 py-3" />
       <NavFooter />
     </div>
@@ -59,10 +70,10 @@
 <script>
   import LeftSidebarContent from './_subs/LeftSidebarContent'
   import NavFooter from '@/components/NavFooter'
-  import MazBtn from './../../../packages/MazBtn'
-  import MazInput from './../../../packages/MazInput'
-  import MazPhoneNumberInput from './../../../packages/MazPhoneNumberInput'
-  import { EventBus } from '@/services/EventBus'
+  import {
+    MazBtn, MazInput, MazSelect, MazPhoneNumberInput, MazSwitch, MazCheckbox,
+    MazDialog, MazLoader, MazSidebar, MazSpinner, MazTransitionExpand
+  } from './../../lib'
 
   export default {
     name: 'Documentation',
@@ -72,6 +83,14 @@
       MazBtn,
       MazInput,
       MazPhoneNumberInput,
+      MazSelect,
+      MazSwitch,
+      MazCheckbox,
+      MazDialog,
+      MazLoader,
+      MazSidebar,
+      MazSpinner,
+      MazTransitionExpand,
       /* eslint-enable */
       NavFooter
     },
@@ -86,18 +105,12 @@
         return this.$route.name.slice(0, -3)
       },
       currentProps () {
-        console.log('Object.entries(this.$options.components[this.currentComponent].props)', Object.entries(this.$options.components[this.currentComponent].props))
         return Object.entries(this.$options.components[this.currentComponent].props)
       }
     },
-    created () {
-      EventBus.$on('open-right-sidebar', () => {
+    methods: {
+      showOptions () {
         this.hasRightSidebarOpen = !this.hasRightSidebarOpen
-      })
-    },
-    beforeDestroy () {
-      if (process.env.NODE_ENV === 'production') {
-        EventBus.$off('open-right-sidebar')
       }
     }
   }
