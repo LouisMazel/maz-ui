@@ -22,6 +22,7 @@
       <NavFooter />
     </div>
     <MazSidebar
+      v-if="$route.name !== 'Install' && $route.name !== 'GetStarted'"
       v-model="hasRightSidebarOpen"
       :width="500"
       right
