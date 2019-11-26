@@ -17,7 +17,7 @@
 ## Install
 
 ```shell
-npm install element-ui -S
+npm install vue-mazel-ui -S
 ```
 
 ## Quick Start
@@ -26,7 +26,7 @@ npm install element-ui -S
 import Vue from 'vue'
 import VueMazelUi from 'vue-mazel-ui'
 
-Vue.use(Element)
+Vue.use(VueMazelUi)
 
 // or
 import {
