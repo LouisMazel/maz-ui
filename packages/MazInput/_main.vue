@@ -177,8 +177,8 @@
     position: relative;
 
     &:not(.maz-input__input.textarea) {
-      height: 42px;
-      min-height: 42px;
+      height: 40px;
+      min-height: 40px;
     }
 
     &__label {
@@ -210,8 +210,8 @@
       caret-color: $primary-color;
 
       &:not(.textarea) {
-        height: 42px;
-        min-height: 42px;
+        height: 40px;
+        min-height: 40px;
       }
 
       &.textarea {
@@ -519,7 +519,7 @@
       }
 
       .maz-input__input {
-        font-size: 16px;
+        font-size: 14px;
 
         &:not(.textarea) {
           height: 48px;

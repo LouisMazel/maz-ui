@@ -1,0 +1,11 @@
+@import './variables/colors.scss';
+
+a {
+  color: $primary-color;
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+  }
+}

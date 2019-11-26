@@ -1,0 +1,29 @@
+table.md {
+  border-spacing: 0;
+  border-radius: 8px;
+  border-collapse: collapse;
+  width: 100%;
+  table-layout: fixed;
+  overflow-wrap: break-word;
+  overflow: hidden;
+  word-break: break-all;
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 14px;
+  box-shadow: 0 0 8px rgba(232, 237, 250, 1);
+
+  tr {
+    background-color: var(--maz-bg-color);
+    width: 100%;
+
+    th,
+    td {
+      padding: 6px 13px;
+      text-align: left;
+    }
+
+    &:nth-child(2n) {
+      background-color: var(--maz-hover-color);
+    }
+  }
+}

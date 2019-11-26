@@ -1,0 +1,22 @@
+@import './variables/_colors.scss';
+@import './variables/_color_types.scss';
+
+.badge {
+  background: $grey-color-light;
+  height: 22px;
+  line-height: 22px;
+  border-radius: 22px;
+  padding: 0 5px;
+  font-size: 12px;
+  color: #888;
+  font-weight: 500;
+}
+
+@each $name, $color in $color_types {
+  @if (type-of($color) == 'color') {
+    .badge-#{$name} {
+      background-color: $color;
+      color: #FFF;
+    }
+  }
+}

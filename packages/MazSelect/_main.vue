@@ -236,24 +236,7 @@
 </script>
 
 <style lang="scss" scoped>
-  $primary-color: var(--maz-primary-color);
-  $second-color: var(--maz-second-color);
-  $second-color-dark: var(--maz-second-color-dark);
-  $third-color: var(--maz-third-color);
-  $third-color-dark: var(--maz-third-color-dark);
-  $muted-color: var(--maz-muted-color);
-  $muted-color-dark: var(--maz-muted-color-dark);
-  $hover-color: var(--maz-hover-color);
-  $hover-color-dark: var(--maz-hover-color-dark);
-  $bg-color: var(--maz-bg-color);
-  $bg-color-dark: var(--maz-bg-color-dark);
-  $valid-color: var(--maz-valid-color);
-  $error-color: var(--maz-error-color);
-  $error-color-transparency: var(--maz-error-color-transparency);
-  $primary-color-transparency: var(--maz-primary-color-transparency);
-  $valid-color-transparency: var(--maz-valid-color-transparency);
-  $border-radius: var(--maz-border-radius);
-  $disabled-color: #747474;
+  @import '@/../packages/scss/vars';
 
   .text-muted {
     color: $muted-color;
@@ -262,8 +245,8 @@
   .maz-select {
     font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
     position: relative;
-    height: 42px;
-    min-height: 42px;
+    height: 40px;
+    min-height: 40px;
 
     &__label {
       position: absolute;
@@ -283,8 +266,8 @@
       background-color: $bg-color;
       position: relative;
       width: 100%;
-      height: 42px;
-      min-height: 42px;
+      height: 40px;
+      min-height: 40px;
       padding-right: 18px;
       padding-left: 10px;
       font-weight: 400;
@@ -603,7 +586,7 @@
       .maz-select__input {
         height: 48px;
         min-height: 48px;
-        font-size: 16px;
+        font-size: 14px;
       }
 
       .maz-select__label {

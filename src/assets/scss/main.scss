@@ -26,56 +26,6 @@ h2 {
   color: var(--maz-primary-color);
 }
 
-.btn {
-  &-white,
-  &-light {
-    color: var(--maz-text-color);
-  }
-}
-
 .shadow-container {
   box-shadow: 0 0 8px 0 rgba(232, 237, 250, 0.6), 0 2px 4px 0 rgba(232, 237, 250, 0.5);
-}
-
-// TODO: Add to style-helpers
-
-.over-hid {
-  overflow: hidden;
-}
-
-.m-h-0 {
-  min-height: 0;
-}
-
-.m-h-100 {
-  min-height: 100%;
-}
-
-table.md {
-  border-spacing: 0;
-  border-radius: 8px;
-  border-collapse: collapse;
-  width: 100%;
-  table-layout: fixed;
-  overflow-wrap: break-word;
-  overflow: hidden;
-  word-break: break-all;
-  margin-top: 0;
-  margin-bottom: 16px;
-  font-size: 14px;
-  box-shadow: 0 0 8px rgba(232, 237, 250, 1);
-
-  tr {
-    background-color: white;
-    width: 100%;
-
-    th,
-    td {
-      padding: 6px 13px;
-    }
-
-    &:nth-child(2n) {
-      background-color: var(--maz-hover-color);
-    }
-  }
 }

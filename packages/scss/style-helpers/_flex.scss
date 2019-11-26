@@ -1,0 +1,110 @@
+.fluid {
+  width: 100%;
+}
+
+.fill-height {
+  align-items: center;
+  display: flex;
+  height: 100%;
+  flex: 1 1 100%;
+}
+
+.spacer {
+  flex-grow: 1;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.flex {
+  display: flex;             /* NEW, Spec - Opera 12.1, Firefox 20+ */
+}
+
+.flex-start {
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.flex-end {
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.flex-direction-column {
+  flex-direction: column;
+}
+
+.flex-direction-column-reverse {
+  flex-direction: column-reverse;
+}
+
+.flex-direction-row {
+  flex-direction: row;
+}
+
+.flex-direction-row-reverse {
+  flex-direction: row-reverse;
+}
+
+.justify-content-right,
+.justify-content-end {
+  justify-content: flex-end;
+}
+
+.justify-content-center {
+  justify-content: center;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+.justify-content-around {
+  justify-content: space-around;
+}
+
+.flex-fill {
+  flex: 0 1 auto;
+}
+
+.flex-fixed {
+  flex: 0 0 auto;
+}
+
+.flex-1 {
+  flex: 1;                  /* NEW, Spec - Opera 12.1, Firefox 20+ */
+}
+
+.flex-100 {
+  flex: 3 1 100%;
+  order: 1;
+}
+
+.flex-75 {
+  flex: 2 1 75%;
+  order: 2;
+}
+
+.flex-50 {
+  flex: 2 1 50%;
+  order: 2;
+}
+
+.flex-33 {
+  flex: 2 1 33%;
+  order: 2;
+}
+
+.flex-25 {
+  flex: 2 1 25%;
+  order: 1;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-grow {
+  flex-grow: 1;
+}

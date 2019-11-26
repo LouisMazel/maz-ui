@@ -20,14 +20,12 @@
       <div class="maz-sidebar-doc__content p-4 flex flex-direction-column align-center justify-content-center flex-1">
         <MazBtn
           type="success"
-          size="sm"
           @click="loader = !loader"
         >
           Toggle loader
         </MazBtn>
         <MazBtn
           type="dark"
-          size="sm"
           @click="dark = !dark"
         >
           Toggle Dark

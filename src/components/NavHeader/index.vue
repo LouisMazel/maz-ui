@@ -34,7 +34,7 @@
           Home
         </router-link> -->
         <router-link
-          class="header__menu__item flex align-center"
+          class="header__menu__item flex align-center fs-16"
           :to="{
             name: 'Documentation'
           }"

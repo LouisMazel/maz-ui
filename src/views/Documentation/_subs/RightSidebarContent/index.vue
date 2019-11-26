@@ -7,7 +7,6 @@
         {{ currentComponent | capitalize }}
       </h3>
       <MazBtn
-        size="sm"
         rounded
         outline
         @click="$emit('close')"
@@ -26,20 +25,24 @@
         <th>Props</th>
         <th>Type</th>
         <th>Default</th>
+        <th>Required</th>
       </tr>
       <tr
         v-for="(prop, i) in currentProps"
         :key="i"
         class="prop"
       >
-        <td>{{ prop[0] }}</td>
+        <td>{{ prop[0] | kebab }}</td>
         <td>{{ prop[1].type.name }}</td>
-        <td>
+        <td :class="{ 'text-muted' :prop[1].default !== false && !prop[1].default }">
           {{
             (typeof prop[1].default === 'function'
               ? prop[1].default.name
               : prop[1].default === false ? 'false' : prop[1].default) || 'null'
           }}
+        </td>
+        <td :class="{ 'text-muted': !prop[1].required }">
+          {{ prop[1].required || 'false' }}
         </td>
       </tr>
     </table>

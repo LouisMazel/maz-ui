@@ -1,0 +1,22 @@
+
+.bg-white {
+  background-color: white;
+}
+
+.bg-grey {
+  background-color: #F2F2F2;
+}
+
+.bg-black {
+  background-color: #000;
+}
+
+@import './variables/_color_types.scss';
+
+@each $name, $color in $color_types {
+  @if (type-of($color) == 'color') {
+    .bg-#{$name} {
+      background-color: $color;
+    }
+  }
+}

@@ -3,14 +3,12 @@
     <ComponentContainer>
       <div class="flex">
         <MazBtn
-          size="sm"
           class="mr-2"
           @click="hasDialogOpen = true"
         >
           Open Basic Dialog
         </MazBtn>
         <MazBtn
-          size="sm"
           type="success"
           class="mr-2"
           @click="hasDialogOpenSuccess = true"
@@ -18,7 +16,6 @@
           Open Success Dialog
         </MazBtn>
         <MazBtn
-          size="sm"
           type="danger"
           @click="hasDialogOpenDanger = true"
         >

@@ -1,0 +1,25 @@
+@import './variables/_colors.scss';
+@import './variables/_color_types.scss';
+
+$dot-size: 6px;
+
+.dot {
+  width: $dot-size;
+  height: $dot-size;
+  border-radius: $dot-size;
+  background-color: $primary-color;
+}
+
+@each $name, $color in $color_types {
+  @if (type-of($color) == 'color') {
+    .dot-#{$name} {
+      background-color: $color;
+
+      &-outline {
+        background-color: transparent;
+        border: 1px solid $color;
+        color: $color;
+      }
+    }
+  }
+}

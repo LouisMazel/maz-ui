@@ -1,0 +1,43 @@
+@import './_bg_colors.scss';
+@import './_label.scss';
+@import './_dot.scss';
+@import './_link.scss';
+@import './_btn.scss';
+@import './_badge.scss';
+@import './_table.scss';
+@import './_animation.scss';
+@import './_overflow.scss';
+@import './_position.scss';
+@import './_flex.scss';
+@import './_typo.scss';
+@import './_container_size.scss';
+@import './_spacing.scss';
+@import './_width_height.scss';
+@import './_border_radiuses.scss';
+@import './_fonts.scss';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+hr,
+dl,
+dd,
+ol,
+ul,
+figure {
+  margin: 0;
+  padding: 0;
+}

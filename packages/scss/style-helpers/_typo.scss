@@ -1,0 +1,53 @@
+.text-white {
+  color: white;
+}
+
+.text-muted-white {
+  color: rgba(255, 255, 255, 0.54);
+}
+
+.text-muted {
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.text-strong {
+  font-weight: 500;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+@import './variables/_color_types.scss';
+
+@each $name, $color in $color_types {
+  @if (type-of($color) == 'color') {
+    .text-#{$name} {
+      color: $color;
+    }
+  }
+}
+
+@import './variables/_mixins.scss';
+
+.dots-text {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.dots-text-3 {
+  @include multiLineEllipsis($lineHeight: 1.3em, $lineCount: 3, $bgColor: white);
+}
+
+.dots-text-2 {
+  @include multiLineEllipsis($lineHeight: 1.3em, $lineCount: 2, $bgColor: white);
+}

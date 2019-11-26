@@ -51,7 +51,6 @@
           >
             <slot name="footer">
               <MazBtn
-                size="sm"
                 @click="$emit('close', false)"
               >
                 Close
@@ -60,7 +59,6 @@
                 v-if="!noValidation"
                 class="ml-3"
                 type="danger"
-                size="sm"
                 @click="$emit('validate')"
               >
                 Confirm

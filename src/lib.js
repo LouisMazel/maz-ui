@@ -15,6 +15,7 @@ import './theme'
 import './utils/polyfill'
 import '@babel/polyfill'
 import 'style-helpers'
+import '@/../packages/scss/style-helpers/index.scss'
 
 const components = [
   MazBtn,

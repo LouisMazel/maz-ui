@@ -1,0 +1,24 @@
+@import './variables/_colors.scss';
+@import './variables/_color_types.scss';
+
+.label {
+  border-radius: 2px;
+  padding: 2px 4px;
+  color: #FFF;
+  font-size: 10px;
+  background-color: $primary-color;
+}
+
+@each $name, $color in $color_types {
+  @if (type-of($color) == 'color') {
+    .label-#{$name} {
+      background-color: $color;
+
+      &-outline {
+        background-color: transparent;
+        border: 1px solid $color;
+        color: $color;
+      }
+    }
+  }
+}

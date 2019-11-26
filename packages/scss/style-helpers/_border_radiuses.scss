@@ -1,0 +1,17 @@
+@import './variables/_radiuses.scss';
+
+@each $size, $value in $radiuses {
+  .br-#{$size} {
+    border-radius: #{$value};
+  }
+
+  .brt-#{$size} {
+    border-top-left-radius: #{$value};
+    border-top-right-radius: #{$value};
+  }
+
+  .brb-#{$size} {
+    border-bottom-right-radius: #{$value};
+    border-bottom-left-radius: #{$value};
+  }
+}

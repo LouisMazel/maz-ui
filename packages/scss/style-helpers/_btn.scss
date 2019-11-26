@@ -1,0 +1,122 @@
+$default-size: 40px;
+$medium-size: 36px;
+$small-size: 32px;
+$mini-size: 30px;
+
+.btn {
+  border: 1px solid transparent;
+  text-decoration: none;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+  background-color: $primary-color;
+  color: white;
+  display: inline-block;
+  border-radius: 8px;
+  height: $default-size;
+  line-height: normal;
+  padding: 0 20px;
+  font-size: 14px;
+  font-weight: inherit;
+  margin: 0;
+  width: auto;
+  overflow: visible;
+  -webkit-font-smoothing: inherit;
+  -moz-osx-font-smoothing: inherit;
+
+  &:hover,
+  &:focus {
+    background-color: darken($primary-color, 10%);
+    box-shadow: 0 0 0 0.2rem rgba($primary-color, 0.5);
+  }
+
+  &-rounded {
+    border-radius: $default-size;
+  }
+
+  &-md {
+    height: $medium-size;
+    padding: 0 20px;
+    font-size: 14px;
+
+    &.btn-rounded {
+      border-radius: $medium-size;
+    }
+  }
+
+  &-sm {
+    height: $small-size;
+    padding: 0 16px;
+    font-size: 12px;
+
+    &.btn-rounded {
+      border-radius: $small-size;
+    }
+  }
+
+  &-mini {
+    height: $mini-size;
+    padding: 0 15px;
+    font-size: 12px;
+
+    &.btn-rounded {
+      border-radius: $mini-size;
+    }
+  }
+
+  &-disabled,
+  &:disabled {
+    background-color: $grey-color;
+  }
+
+  &-white,
+  &-light {
+    color: var(--maz-text-color);
+  }
+}
+
+a.btn {
+  text-decoration: none;
+  line-height: $default-size;
+
+  &-sm {
+    line-height: $small-size;
+  }
+
+  &-lg {
+    line-height: $mini-size;
+  }
+
+  &:hover,
+  &:focus {
+    text-decoration: none;
+  }
+}
+
+@import './variables/_color_types.scss';
+
+@each $name, $color in $color_types {
+  @if (type-of($color) == 'color') {
+    .btn-#{$name} {
+      background-color: $color;
+
+      &:hover,
+      &:focus {
+        background-color: darken($color, 10%);
+        box-shadow: 0 0 0 0.2rem rgba($color, 0.5);
+      }
+
+      &-outline {
+        background-color: transparent;
+        border: 1px solid $color;
+        color: $color;
+
+        &:hover,
+        &:focus {
+          background-color: transparent;
+          box-shadow: 0 0 0 0.2rem rgba($color, 0.5);
+        }
+      }
+    }
+  }
+}

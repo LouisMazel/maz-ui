@@ -1,0 +1,10 @@
+@import './_responsive.scss';
+@import './_color_types.scss';
+@import './_colors.scss';
+@import './_radiuses.scss';
+@import './_mixins.scss';
+
+$font-sizes: 12, 14, 16, 18, 20, 22, 26 !default;
+$font-weights: 300, 400, 500 !default;
+$spacing-sizes: 0, 0.25rem, 0.5rem, 1rem, 1.5rem, 3rem !default;
+$pms: 'padding', 'margin';

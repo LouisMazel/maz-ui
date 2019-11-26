@@ -15,7 +15,6 @@
           {{ currentComponent | capitalize }}
         </h2>
         <MazBtn
-          size="sm"
           @click="showOptions"
         >
           Show options

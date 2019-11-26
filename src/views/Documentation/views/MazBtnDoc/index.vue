@@ -58,16 +58,6 @@
           >
             {{ type }} {{ size }}
           </MazBtn>
-          <MazBtn
-            v-for="size in btnSizes"
-            :key="`rounded-outline-${type}-${size}`"
-            :size="size"
-            :type="type"
-            outline
-            rounded
-          >
-            {{ type }} {{ size }}
-          </MazBtn>
         </div>
       </ComponentContainer>
       <ComponentContainer class="flex flex-direction-column">
@@ -82,15 +72,6 @@
             :key="`loader-${size}`"
             :size="size"
             loader
-          >
-            Loader {{ size }}
-          </MazBtn>
-          <MazBtn
-            v-for="size in btnSizes"
-            :key="`loader-rounded-${size}`"
-            :size="size"
-            loader
-            rounded
           >
             Loader {{ size }}
           </MazBtn>
@@ -109,7 +90,7 @@
           'primary', 'secondary', 'success', 'danger', 'warning', 'grey', 'info', 'light', 'dark', 'default', 'white', 'black'
         ],
         btnSizes: [
-          'sm', '', 'lg'
+          'd', 'md', 'sm', 'mini'
         ]
       }
     }
