@@ -27,14 +27,12 @@
     "vue": "^2.6.10"
   },
   "devDependencies": {
-    "@babel/polyfill": "^7.7.0",
     "@vue/cli-plugin-babel": "^4.0.0",
     "@vue/cli-plugin-eslint": "^4.0.0",
     "@vue/cli-service": "^4.0.0",
     "@vue/eslint-config-standard": "^4.0.0",
     "babel-eslint": "^10.0.3",
     "color-transformer-ui": "0.0.3",
-    "core-js": "^3.3.2",
     "css-vars-ponyfill": "^2.1.2",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
