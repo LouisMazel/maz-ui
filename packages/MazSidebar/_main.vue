@@ -2,10 +2,9 @@
   <div
     :id="uniqueId"
     ref="MazSidebar"
-    class="maz-sidebar flex flex-fixed"
+    class="maz-sidebar flex flex-fixed m-h-100 mh-100"
     :style="
       'width:' + (isOpen ? (Number.isInteger(width) ? width + 'px;' : width) : '0px;') +
-        'max-width:' + (isOpen ? (Number.isInteger(width) ? width + 'px;' : width) : '0px;') +
         'flex: 0 0 ' + (isOpen ? width + 'px;' : '0px;')
     "
     :class="{

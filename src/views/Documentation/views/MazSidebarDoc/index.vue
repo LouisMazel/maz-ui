@@ -1,12 +1,8 @@
 <template>
-  <div class="maz-sidebar-doc h-100 flex flex-direction-column flex-1">
-    <h2>
-      {{ this.$route.name.substring(3).slice(0, -3) }}
-    </h2>
-    <ComponentContainer class="maz-sidebar-doc__container flex flex-1">
+  <div class="maz-sidebar-doc">
+    <ComponentContainer class="maz-sidebar-doc__container flex over-hid">
       <MazSidebar
         v-model="hasLeftSidebarOpen"
-        class="h-100"
         :loader="loader"
         :width="width"
         :no-shadow="!hasShadow"
@@ -34,7 +30,7 @@
           size="sm"
           @click="dark = !dark"
         >
-          Toggle loader
+          Toggle Dark
         </MazBtn>
         <MazInput
           v-model="width"
@@ -74,7 +70,6 @@
       </div>
       <MazSidebar
         v-model="hasRightSidebarOpen"
-        class="h-100"
         :loader="loader"
         :width="width"
         :no-shadow="!hasShadow"

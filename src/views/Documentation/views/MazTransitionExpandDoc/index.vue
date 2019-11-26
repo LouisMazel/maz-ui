@@ -1,8 +1,5 @@
 <template>
   <div class="maz-transition-expand-doc">
-    <h2>
-      {{ this.$route.name.substring(3).slice(0, -3) }}
-    </h2>
     <ComponentContainer class="flex flex-direction-column">
       <div class="flex justify-content-center">
         <MazBtn
@@ -15,7 +12,7 @@
       <br>
       <div class="flex flex-1 flex-start">
         <ComponentContainer
-          class="maz-expand-container flex-1"
+          class="maz-expand-container flex-1 mr-4"
         >
           <h3 class="mb-2">
             Expand component 1
