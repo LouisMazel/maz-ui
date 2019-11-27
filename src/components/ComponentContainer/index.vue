@@ -1,6 +1,6 @@
 <template>
   <div
-    class="component-container pos-r br-8 bg-white p-4 my-4 shadow-container"
+    class="component-container pos-r br-4 bg-white p-4 my-4 shadow-container"
     :class="{ 'is-dark': dark }"
   >
     <slot />

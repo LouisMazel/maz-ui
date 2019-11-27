@@ -25,8 +25,7 @@
     </ComponentContainer>
 
     <MazDialog
-      v-show="hasDialogOpen"
-      @close="hasDialogOpen = false"
+      v-model="hasDialogOpen"
     >
       <div slot="title">
         Basic Dialog
@@ -35,9 +34,8 @@
     </MazDialog>
 
     <MazDialog
-      v-show="hasDialogOpenSuccess"
+      v-model="hasDialogOpenSuccess"
       success
-      @close="hasDialogOpenSuccess = false"
     >
       <div slot="title">
         Success Dialog
@@ -46,14 +44,13 @@
     </MazDialog>
 
     <MazDialog
-      v-show="hasDialogOpenDanger"
+      v-model="hasDialogOpenDanger"
       danger
-      @close="hasDialogOpenDanger = false"
     >
       <div slot="title">
         Danger Dialog
       </div>
-      Dialog Content Success
+      Dialog Content Danger
     </MazDialog>
   </div>
 </template>

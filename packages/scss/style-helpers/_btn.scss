@@ -5,20 +5,20 @@ $mini-size: 30px;
 
 .btn {
   border: 1px solid transparent;
-  text-decoration: none;
   outline: none;
   cursor: pointer;
   transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
   background-color: $primary-color;
   color: white;
   display: inline-block;
-  border-radius: 8px;
-  height: $default-size;
-  line-height: normal;
-  padding: 0 20px;
+  border-radius: var(--maz-border-radius);
+  line-height: 1;
+  box-sizing: border-box;
+  padding: 12px 20px;
   font-size: 14px;
   font-weight: inherit;
   margin: 0;
+  user-select: none;
   width: auto;
   overflow: visible;
   -webkit-font-smoothing: inherit;
@@ -30,62 +30,33 @@ $mini-size: 30px;
     box-shadow: 0 0 0 0.2rem rgba($primary-color, 0.5);
   }
 
-  &-rounded {
-    border-radius: $default-size;
+  &--rounded {
+    border-radius: 20px;
   }
 
-  &-md {
-    height: $medium-size;
-    padding: 0 20px;
+  &--md {
+    padding: 10px 20px;
     font-size: 14px;
-
-    &.btn-rounded {
-      border-radius: $medium-size;
-    }
   }
 
-  &-sm {
-    height: $small-size;
-    padding: 0 16px;
+  &--sm {
+    padding: 9px 15px;
     font-size: 12px;
-
-    &.btn-rounded {
-      border-radius: $small-size;
-    }
   }
 
-  &-mini {
-    height: $mini-size;
-    padding: 0 15px;
+  &--mini {
+    padding: 7px 15px;
     font-size: 12px;
-
-    &.btn-rounded {
-      border-radius: $mini-size;
-    }
   }
 
-  &-disabled,
-  &:disabled {
-    background-color: $grey-color;
-  }
-
-  &-white,
-  &-light {
-    color: var(--maz-text-color);
+  &--white,
+  &--light {
+    color: var(--maz-second-color);
   }
 }
 
 a.btn {
   text-decoration: none;
-  line-height: $default-size;
-
-  &-sm {
-    line-height: $small-size;
-  }
-
-  &-lg {
-    line-height: $mini-size;
-  }
 
   &:hover,
   &:focus {
@@ -97,7 +68,7 @@ a.btn {
 
 @each $name, $color in $color_types {
   @if (type-of($color) == 'color') {
-    .btn-#{$name} {
+    .btn--#{$name} {
       background-color: $color;
 
       &:hover,
@@ -106,7 +77,7 @@ a.btn {
         box-shadow: 0 0 0 0.2rem rgba($color, 0.5);
       }
 
-      &-outline {
+      &--outline {
         background-color: transparent;
         border: 1px solid $color;
         color: $color;
@@ -119,4 +90,16 @@ a.btn {
       }
     }
   }
+}
+
+.btn--default--outline {
+  color: var(--maz-second-color);
+}
+
+.btn--disabled:disabled {
+  box-shadow: none;
+  background-color: var(--maz-third-color);
+  border: 1px solid var(--maz-third-color);
+  color: white;
+  cursor: not-allowed;
 }

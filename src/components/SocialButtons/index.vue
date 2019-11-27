@@ -6,7 +6,7 @@
       :title="social.name"
       :href="social.url"
       target="_blank"
-      class="btn btn-white btn-rounded flex align-center"
+      class="btn btn--white btn-rounded flex align-center"
     >
       <i :class="`icon-${social.name}`" />
     </a>

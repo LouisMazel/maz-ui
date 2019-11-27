@@ -14,7 +14,7 @@
           <h3 class="mb-2">
             Expand component 1
           </h3>
-          <MazTransitionExpand class="example shadow-container br-8 text-center">
+          <MazTransitionExpand class="example shadow-container br-4 text-center">
             <div
               v-show="!isShown"
             >
@@ -40,7 +40,7 @@
           <h3 class="mb-2">
             Expand component 2
           </h3>
-          <MazTransitionExpand class="example shadow-container br-8 text-center">
+          <MazTransitionExpand class="example shadow-container br-4 text-center">
             <div
               v-show="isShown"
             >

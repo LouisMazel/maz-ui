@@ -6,7 +6,7 @@
     <router-link
       v-for="route in routesStartedDoc"
       :key="route.name"
-      class="menu-item btn btn-white mb-2 w-100"
+      class="menu-item btn btn--white mb-2 w-100"
       :to="{
         name: route.name
       }"
@@ -20,7 +20,7 @@
       <router-link
         v-for="route in routesComponents"
         :key="route.name"
-        class="menu-item btn btn-white mb-2 w-100"
+        class="menu-item btn btn--white mb-2 w-100"
         :to="{
           name: route.name
         }"

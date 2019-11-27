@@ -1,12 +1,12 @@
 <template>
   <button
     :id="uniqueId"
-    class="maz-btn btn flex align-center justify-content-center"
+    class="maz-btn btn"
     :class="[
       classes
     ]"
     v-bind="$attrs"
-    :disabled="loader || disabled"
+    :disabled="isDisabled"
     @click="$emit('click')"
   >
     <span
@@ -16,12 +16,15 @@
     >
       <slot />
     </span>
-    <MazSpinner
+    <div
       v-if="loader"
-      class="maz-btn__spinner"
-      :size="30"
-      white
-    />
+      class="maz-btn__spinner flex align-center justify-content-center"
+    >
+      <MazSpinner
+        :size="25"
+        white
+      />
+    </div>
   </button>
 </template>
 
@@ -40,18 +43,23 @@
       loader: { type: Boolean, default: false },
       disabled: { type: Boolean, default: false },
       type: { type: String, default: 'primary' },
-      size: { type: String, default: 'md' },
+      size: { type: String, default: null },
       outline: { type: Boolean, default: false },
       rounded: { type: Boolean, default: false }
     },
     computed: {
+      isDisabled () {
+        const { disabled, loader } = this
+        return loader || disabled
+      },
       classes () {
-        const { type, size, outline, rounded } = this
+        const { type, size, outline, rounded, isDisabled } = this
         return [
-          ...(type ? [`btn-${type}`] : [null]),
-          ...(size ? [`btn-${size}`] : [null]),
-          ...(outline ? [`btn-${type}-outline`] : [null]),
-          ...(rounded ? [`btn-rounded`] : [null])
+          ...(type ? [`btn--${type}`] : [null]),
+          ...(size ? [`btn--${size}`] : [null]),
+          ...(outline ? [`btn--${type}--outline`] : [null]),
+          ...(rounded ? [`btn--rounded`] : [null]),
+          ...(isDisabled ? [`btn--disabled`] : [null])
         ]
       }
     }
@@ -71,13 +79,9 @@
       margin-left: auto;
       margin-right: auto;
       left: 0;
+      top: 0;
       right: 0;
-    }
-
-    &:disabled {
-      cursor: not-allowed;
-      background-color: var(--maz-third-color);
-      box-shadow: none;
+      bottom: 0;
     }
   }
 </style>
