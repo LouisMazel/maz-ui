@@ -16,7 +16,7 @@ module.exports = {
     'no-trailing-spaces': 'error',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'no-extra-semi': 'error',
-    semi: ['error', 'never'],
+    'semi': ['error', 'never'],
     'no-var': 'error',
     'vue/attributes-order': 'error',
     'vue/no-confusing-v-for-v-if': 'error',
@@ -32,7 +32,8 @@ module.exports = {
         args: 'after-used',
         ignoreRestSiblings: false
       }
-    ]
+    ],
+    'func-style': 'error'
   },
   parserOptions: {
     parser: 'babel-eslint'
