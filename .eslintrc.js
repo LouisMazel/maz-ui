@@ -24,7 +24,15 @@ module.exports = {
     'vue/order-in-components': 'error',
     'vue/this-in-template': 'error',
     'vue/script-indent': 'error',
-    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off'
+    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'no-unused-vars': [
+      'error',
+      {
+        vars: 'all',
+        args: 'after-used',
+        ignoreRestSiblings: false
+      }
+    ]
   },
   parserOptions: {
     parser: 'babel-eslint'

@@ -29,7 +29,7 @@ const components = [
   MazSpinner,
   MazTransitionExpand
 ]
-
+// eslint-disable-next-line
 const install = (Vue, opts = {}) => {
   components.forEach(component => {
     Vue.component(component.name, component)
