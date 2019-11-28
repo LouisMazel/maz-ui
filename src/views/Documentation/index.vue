@@ -9,7 +9,7 @@
     <div class="documentation__container flex flex-direction-column flex-1">
       <div
         v-if="$route.name !== 'Install' && $route.name !== 'GetStarted'"
-        class="flex justify-content-between px-5 py-3"
+        class="flex justify-content-between px-5 py-3 align-center"
       >
         <h2>
           {{ currentComponent | capitalize }}
