@@ -1,17 +1,17 @@
 @import './_colors.scss';
 
 $color_types: (
-  primary: $primary-color,
-  secondary: $secondary-color,
-  success: $success-color,
-  danger: $danger-color,
-  grey: $grey-color,
-  grey-light: $grey-color-light,
-  info: $info-color,
-  warning: $warning-color,
-  light: $light-color,
-  dark: $dark-color,
-  default: $default-color,
-  white: white,
-  black: black
+  'primary': $primary-color,
+  'secondary': $secondary-color,
+  'success': $success-color,
+  'danger': $danger-color,
+  'grey': $grey-color,
+  'grey-light': $grey-color-light,
+  'info': $info-color,
+  'warning': $warning-color,
+  'light': $light-color,
+  'dark': $dark-color,
+  'default': $default-color,
+  'white': white,
+  'black': black
 );

@@ -417,7 +417,7 @@
           }
 
           &__calling-code {
-            color: var(--phone-number-muted-color-dark);
+            color: var(--maz-muted-color-dark);
           }
         }
       }

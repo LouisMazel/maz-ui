@@ -12,7 +12,7 @@ import MazTransitionExpand from '@/../packages/MazTransitionExpand'
 
 import { version } from '@/../package.json'
 import './theme'
-import './utils/polyfill'
+// import './utils/polyfill'
 import '@/../packages/scss/style-helpers/index.scss'
 
 const components = [
