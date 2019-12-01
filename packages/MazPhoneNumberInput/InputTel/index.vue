@@ -145,6 +145,14 @@
     height: 40px;
     min-height: 40px;
 
+    &:hover {
+      z-index: 1;
+
+      .input-tel__input {
+        border-color: $primary-color;
+      }
+    }
+
     &__label {
       position: absolute;
       top: 4px;
@@ -270,6 +278,12 @@
     }
 
     &.is-dark {
+      &:hover {
+        .input-tel__input {
+          border-color: $primary-color;
+        }
+      }
+
       .input-tel {
         &__label {
           color: $second-color-dark;
@@ -381,7 +395,8 @@
     }
 
     &.is-valid {
-      .input-tel__input {
+      .input-tel__input,
+      .input-tel__input:hover {
         border-color: $valid-color;
       }
 

@@ -9,7 +9,7 @@
       class="select-country-container"
     >
       <CountrySelector
-        :id="`${id}_country_selector`"
+        :id="`${uniqueId}_country_selector`"
         ref="CountrySelector"
         v-model="countryCode"
         :items="codesCountries"
@@ -36,7 +36,7 @@
     </div>
     <div class="flex-1">
       <InputTel
-        :id="`${id}_phone_number`"
+        :id="`${uniqueId}_phone_number`"
         ref="PhoneNumberInput"
         v-model="phoneNumber"
         :label="t.phoneNumberLabel"
