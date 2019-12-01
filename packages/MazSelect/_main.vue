@@ -171,7 +171,6 @@
     },
     methods: {
       toggleList () {
-        console.log('toggleList')
         this.hasListOpen ? this.closeList() : this.openList()
       },
       openList () {
@@ -188,7 +187,6 @@
         this.$emit('blur')
       },
       updateValue (val) {
-        console.log('UPDATE')
         this.tmpValue = val
         this.$emit('input', val || null)
         this.closeList()
