@@ -324,6 +324,8 @@
     }
 
     &.is-focused {
+      z-index: 1;
+
       .input-tel {
         &__input {
           border-color: $primary-color;

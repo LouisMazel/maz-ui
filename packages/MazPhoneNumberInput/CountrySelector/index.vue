@@ -477,6 +477,8 @@
     }
 
     &.is-focused {
+      z-index: 1;
+
       .country-selector {
         &__input {
           border-color: $primary-color;

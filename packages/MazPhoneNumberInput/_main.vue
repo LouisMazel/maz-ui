@@ -16,7 +16,6 @@
         :countries-height="countriesHeight"
         :error="shouldChooseCountry"
         :hint="shouldChooseCountry ? t.countrySelectorError : null"
-        :dark="dark"
         :disabled="disabled"
         :valid="isValid && !noValidatorState"
         :preferred-countries="preferredCountries"
@@ -26,6 +25,7 @@
         :no-flags="noFlags"
         :show-code-on-list="showCodeOnList"
         :size="size"
+        :dark="dark"
         class="input-country-selector"
       >
         <slot
