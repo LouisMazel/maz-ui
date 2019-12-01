@@ -267,6 +267,14 @@
     z-index: 0;
     user-select: none;
 
+    &:hover {
+      z-index: 1;
+
+      .country-selector__input {
+        border-color: $primary-color !important;
+      }
+    }
+
     &__label {
       position: absolute;
       top: 3px;

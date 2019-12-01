@@ -28,7 +28,7 @@
       class="maz-select__input"
       readonly
       @keydown="keyboardNav"
-      @click="$emit('click')"
+      @click.prevent="$emit('click')"
       @focus="isFocus = true"
       @blur="closeList"
     >
@@ -183,11 +183,9 @@
         }
       },
       closeList () {
-        if (this.hasListOpen) {
-          this.isFocus = false
-          this.hasListOpen = false
-          this.$emit('blur')
-        }
+        this.isFocus = false
+        this.hasListOpen = false
+        this.$emit('blur')
       },
       updateValue (val) {
         this.tmpValue = val
@@ -261,6 +259,12 @@
     min-height: 40px;
     z-index: 0;
     user-select: none;
+
+    &:hover {
+      .maz-select__input {
+        border-color: $primary-color;
+      }
+    }
 
     &__label {
       position: absolute;
@@ -383,6 +387,10 @@
           border-color: $third-color-dark;
           color: $second-color-dark;
 
+          &:hover {
+            border-color: $primary-color;
+          }
+
           &::-webkit-input-placeholder {
             color: $second-color-dark;
           }
@@ -433,73 +441,6 @@
           }
         }
       }
-
-      &__label {
-        color: $second-color-dark;
-      }
-
-      &__input {
-        background-color: $bg-color-dark;
-        border-color: $third-color-dark;
-
-        &::-webkit-input-placeholder {
-          color: $second-color-dark;
-        }
-
-        &::-moz-placeholder {
-          color: $second-color-dark;
-        }
-
-        &:-ms-input-placeholder {
-          color: $second-color-dark;
-        }
-
-        &::-ms-input-placeholder {
-          color: $second-color-dark;
-        }
-
-        &:-moz-placeholder {
-          color: $second-color-dark;
-        }
-
-        &::placeholder {
-          color: $second-color-dark;
-        }
-      }
-
-      &__toggle {
-        &__arrow {
-          color: $second-color-dark;
-
-          path.arrow {
-            fill: $second-color-dark;
-          }
-        }
-      }
-
-      &__options-list {
-        background-color: $bg-color-dark;
-
-        &__item {
-          padding: 0 10px;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          overflow: hidden;
-          font-size: 12px;
-          cursor: pointer;
-
-          &:hover,
-          &.keyboard-selected {
-            background-color: $hover-color-dark;
-          }
-
-          &.selected {
-            color: #FFF;
-            background-color: $primary-color;
-            font-weight: 600;
-          }
-        }
-      }
     }
 
     &.has-value,
@@ -537,7 +478,8 @@
     }
 
     &.has-error {
-      .maz-select__input {
+      .maz-select__input,
+      .maz-select__input:hover {
         border-color: $error-color;
       }
 
@@ -553,15 +495,19 @@
     }
 
     &.is-valid {
-      .maz-select {
-        &__input {
-          border-color: $valid-color;
+      .maz-select__input,
+      .maz-select__input:hover {
+        border-color: $valid-color;
+      }
+
+      &.is-focused {
+        .maz-select__input {
           box-shadow: 0 0 0 0.2rem $valid-color-transparency;
         }
+      }
 
-        &__label {
-          color: $valid-color;
-        }
+      .maz-select__label {
+        color: $valid-color;
       }
     }
 

@@ -218,6 +218,10 @@
         resize: vertical;
       }
 
+      &:hover {
+        border-color: $primary-color;
+      }
+
       &::-webkit-input-placeholder {
         color: $second-color;
       }
@@ -312,6 +316,10 @@
           background-color: $bg-color-dark;
           border: 1px solid $third-color-dark;
           color: $second-color-dark;
+
+          &:hover {
+            border-color: $primary-color;
+          }
 
           &::-webkit-input-placeholder {
             color: $second-color-dark;
@@ -420,7 +428,8 @@
     }
 
     &.is-valid {
-      .maz-input__input {
+      .maz-input__input,
+      .maz-input__input:hover {
         border-color: $valid-color;
       }
 
@@ -430,7 +439,8 @@
     }
 
     &.has-error {
-      .maz-input__input {
+      .maz-input__input,
+      .maz-input__input:hover {
         border-color: $error-color;
       }
 

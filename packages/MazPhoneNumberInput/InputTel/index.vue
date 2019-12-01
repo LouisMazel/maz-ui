@@ -176,6 +176,10 @@
       height: 40px;
       min-height: 40px;
 
+      &:hover {
+        border-color: $primary-color;
+      }
+
       &:not(.no-country-selector) {
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
