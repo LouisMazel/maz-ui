@@ -1,7 +1,7 @@
 <template>
   <div
     ref="parent"
-    v-click-outside="onBlur"
+    v-click-outside="closeList"
     :class="[{
       'is-focused': isFocus,
       'has-value': value,
@@ -10,11 +10,12 @@
       'is-disabled': disabled,
       'is-dark': dark,
       'no-flags': noFlags,
+      'has-list-open': hasListOpen,
       'is-valid': valid
     }, size]"
     class="country-selector"
-    @click="onFocus"
     @keydown="keyboardNav"
+    @click.prevent="toggleList"
   >
     <div
       v-if="value && !noFlags"
@@ -30,16 +31,29 @@
       :disabled="disabled"
       class="country-selector__input"
       readonly
-      @focus="onFocus"
-      @click="$emit('click')"
+      @focus="isFocus = true"
+      @blur="isFocus = false"
     >
     <div
       class="country-selector__toggle"
     >
       <slot name="arrow">
-        <div class="country-selector__toggle__arrow">
-          ▼
-        </div>
+        <svg
+          mlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          class="country-selector__toggle__arrow"
+        >
+          <path
+            class="arrow"
+            d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"
+          />
+          <path
+            fill="none"
+            d="M0 0h24v24H0V0z"
+          />
+        </svg>
       </slot>
     </div>
     <label
@@ -47,13 +61,12 @@
       :for="id"
       :class="error ? 'text-danger' : null"
       class="country-selector__label"
-      @click="onFocus"
     >
       {{ hint || label }}
     </label>
     <Transition name="slide">
       <div
-        v-show="isFocus"
+        v-show="hasListOpen"
         ref="countriesList"
         class="country-selector__list"
         :class="{ 'has-calling-code': showCodeOnList }"
@@ -103,23 +116,22 @@
       label: { type: String, default: 'Choose country' },
       hint: { type: String, default: String },
       size: { type: String, default: String },
-      error: { type: Boolean, default: Boolean },
+      error: { type: Boolean, default: false },
       disabled: { type: Boolean, default: false },
       valid: { type: Boolean, default: false },
-      validColor: { type: String, default: 'yellowgreen' },
-      color: { type: String, default: String },
       dark: { type: Boolean, default: false },
       id: { type: String, default: 'CountrySelector' },
       items: { type: Array, default: Array, required: true },
       preferredCountries: { type: Array, default: null },
       onlyCountries: { type: Array, default: null },
-      ignoredCountries: { type: Array, default: Array },
+      ignoredCountries: { type: Array, default: null },
       noFlags: { type: Boolean, default: false },
       showCodeOnList: { type: Boolean, default: false }
     },
     data () {
       return {
         isFocus: false,
+        hasListOpen: false,
         selectedIndex: null,
         tmpValue: this.value,
         query: ''
@@ -162,24 +174,29 @@
       }
     },
     mounted () {
-      this.$parent.$on('phone-number-focused', () => { this.isFocus = false })
+      this.$parent.$on('phone-number-focused', this.closeList)
     },
     methods: {
-      onFocus () {
+      toggleList () {
+        this.hasListOpen ? this.closeList() : this.openList()
+      },
+      openList () {
         if (!this.disabled) {
-          this.$emit('focus')
           this.isFocus = true
-          if (this.value) {
-            this.scrollToSelectedOnFocus(this.selectedCountryIndex)
-          }
+          this.hasListOpen = true
+          this.$emit('focus')
+          if (this.value && this.hasListOpen) this.scrollToSelectedOnFocus(this.selectedCountryIndex)
         }
       },
-      onBlur () {
-        this.$emit('blur')
-        this.isFocus = false
+      closeList () {
+        if (this.hasListOpen) {
+          this.isFocus = false
+          this.hasListOpen = false
+          this.$emit('blur')
+        }
       },
       updateValue (iso2) {
-        this.isFocus = false
+        this.closeList()
         this.tmpValue = iso2
         this.$emit('input', iso2)
       },
@@ -191,11 +208,12 @@
       keyboardNav (e) {
         const code = e.keyCode
         if (code === 40 || code === 38) {
+          // arrow up down
           if (e.view && e.view.event) {
             // TODO : It's not compatible with FireFox
             e.view.event.preventDefault()
           }
-          // down arrow
+          if (!this.hasListOpen) this.openList()
           let index = code === 40 ? this.tmpValueIndex + 1 : this.tmpValueIndex - 1
           if (index === -1 || index >= this.countriesSorted.length) {
             index = index === -1
@@ -205,10 +223,11 @@
           this.tmpValue = this.countriesSorted[index].iso2
           this.scrollToSelectedOnFocus(index)
         } else if (code === 13) {
-          // enter key
-          this.updateValue(this.tmpValue)
+          // enter
+          this.hasListOpen ? this.updateValue(this.tmpValue) : this.openList()
         } else if (code === 27) {
-          this.onBlur()
+          // escape
+          this.closeList()
         } else {
           // typing a country's name
           clearTimeout(this.queryTimer)
@@ -245,6 +264,8 @@
     position: relative;
     height: 40px;
     min-height: 40px;
+    z-index: 0;
+    user-select: none;
 
     &__label {
       position: absolute;
@@ -281,16 +302,20 @@
 
     &__toggle {
       position: absolute;
-      right: 10px;
-      top: calc(50% - 8px);
+      right: 5px;
+      top: calc(50% - 10px);
       transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
       text-align: center;
       display: inline-block;
+      cursor: pointer;
+      height: 24px;
 
       &__arrow {
         color: $second-color;
-        font-size: 15px;
-        transform: scaleY(0.5);
+
+        path.arrow {
+          fill: $second-color;
+        }
       }
     }
 
@@ -300,6 +325,7 @@
       top: 21px;
       left: 11px;
       z-index: 1;
+      cursor: pointer;
 
       img {
         position: absolute;
@@ -403,6 +429,10 @@
         &__toggle {
           &__arrow {
             color: $second-color-dark;
+
+            path.arrow {
+              fill: $second-color-dark;
+            }
           }
         }
 
@@ -438,12 +468,16 @@
       }
     }
 
-    &.is-focused {
+    &.has-list-open {
       .country-selector {
         &__toggle {
           transform: rotate(180deg);
         }
+      }
+    }
 
+    &.is-focused {
+      .country-selector {
         &__input {
           border-color: $primary-color;
           box-shadow: 0 0 0 0.2rem $primary-color-transparency;

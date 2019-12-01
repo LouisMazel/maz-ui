@@ -9,6 +9,7 @@
       <MazBtn
         rounded
         outline
+        size="sm"
         @click="$emit('close')"
       >
         X
