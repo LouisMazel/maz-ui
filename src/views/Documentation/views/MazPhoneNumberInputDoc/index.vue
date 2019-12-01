@@ -8,12 +8,9 @@
         />
       </ComponentContainer>
       <ComponentContainer>
-        <MazPhoneNumberInput
-          v-model="phoneNumber"
-          valid
-        />
-      </ComponentContainer>
-      <ComponentContainer>
+        <p class="mb-2">
+          Error
+        </p>
         <MazPhoneNumberInput
           v-model="phoneNumber"
           error
@@ -22,20 +19,16 @@
     </div>
     <div class="flex-1">
       <h4>Dark</h4>
-      <ComponentContainer>
+      <ComponentContainer dark>
         <MazPhoneNumberInput
           v-model="phoneNumber"
           dark
         />
       </ComponentContainer>
-      <ComponentContainer>
-        <MazPhoneNumberInput
-          v-model="phoneNumber"
-          valid
-          dark
-        />
-      </ComponentContainer>
-      <ComponentContainer>
+      <ComponentContainer dark>
+        <p class="mb-2">
+          Error
+        </p>
         <MazPhoneNumberInput
           v-model="phoneNumber"
           error
