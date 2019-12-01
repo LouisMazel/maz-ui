@@ -1,6 +1,6 @@
 <template>
   <div class="home flex-1 flex flex-direction-column">
-    <div class="container flex-1 flex flex-direction-column align-center justify-content-center">
+    <div class="container flex-1 flex flex-direction-column align-center justify-content-center py-4">
       <img
         class="home__logo"
         src="@/assets/img/logo.png"
@@ -17,36 +17,36 @@
         code="npm i vue-mazel-ui -S"
         class="mb-3"
       />
-      <div class="flex">
+      <div class="flex flex-start flex-wrap mt-3 align-center justify-content-center">
         <router-link
-          class="btn mt-3 btn--primary--outline mr-3"
+          class="btn btn--primary--outline mr-3 mb-3"
           :to="{ name: 'Install' }"
         >
           Installation
         </router-link>
         <router-link
-          class="btn mt-3 btn--primary--outline mr-3"
+          class="btn btn--primary--outline mr-3"
           :to="{ name: 'GetStarted' }"
         >
           Get started
         </router-link>
         <router-link
-          class="btn mt-3 btn--primary--outline"
+          class="btn btn--primary--outline"
           :to="{ name: 'MazBtnDoc' }"
         >
           Components
         </router-link>
       </div>
-      <div class="flex">
+      <div class="flex flex-start flex-wrap mt-3 align-center justify-content-center">
         <a
-          class="btn mt-3 btn--dark--outline mr-4"
+          class="btn btn--dark--outline mr-4"
           href="https://github.com/LouisMazel/vue-mazel-ui"
           target="_blank"
         >
           Github
         </a>
         <a
-          class="btn mt-3 btn--danger--outline"
+          class="btn btn--danger--outline"
           href="https://www.npmjs.com/package/vue-mazel-ui"
           target="_blank"
         >

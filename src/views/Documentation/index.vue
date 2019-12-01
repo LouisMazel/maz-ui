@@ -4,6 +4,7 @@
       v-model="hasLeftSidebarOpen"
       :width="250"
       :dark="hasDarkTheme"
+      :absolute="isAbsolute"
     >
       <LeftSidebarContent />
     </MazSidebar>
@@ -53,8 +54,9 @@
     },
     data () {
       return {
-        hasLeftSidebarOpen: true,
-        hasRightSidebarOpen: false
+        hasLeftSidebarOpen: !(window.innerWidth < 767),
+        hasRightSidebarOpen: false,
+        isAbsolute: window.innerWidth < 767
       }
     },
     computed: {

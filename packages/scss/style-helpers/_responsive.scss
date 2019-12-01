@@ -1,0 +1,43 @@
+@import './variables/_responsive.scss';
+
+.hidden-4k {
+  @media only screen and (max-width: $breakpoint-4k) {
+    display: none;
+  }
+}
+
+.hidden-laptop {
+  @media only screen and (max-width: $breakpoint-laptop-l) {
+    display: none;
+  }
+}
+
+.hidden-laptop-s {
+  @media only screen and (max-width: $breakpoint-laptop-s) {
+    display: none;
+  }
+}
+
+.hidden-tablet {
+  @media only screen and (max-width: $breakpoint-tablet) {
+    display: none;
+  }
+}
+
+.hidden-mobile {
+  @media only screen and (max-width: $breakpoint-mobile-l) {
+    display: none;
+  }
+}
+
+.hidden-mobile-m {
+  @media only screen and (max-width: $breakpoint-mobile-m) {
+    display: none;
+  }
+}
+
+.hidden-mobile-s {
+  @media only screen and (max-width: $breakpoint-mobile-s) {
+    display: none;
+  }
+}

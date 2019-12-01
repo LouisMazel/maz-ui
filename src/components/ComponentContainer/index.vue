@@ -57,7 +57,7 @@
 <style lang="scss" scoped>
   .component-container {
     color: var(--maz-text-color);
-    min-width: 320px;
+    min-width: 200px;
 
     &__footer {
       border-top: 1px solid var(--maz-text-color-dark);

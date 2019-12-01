@@ -15,7 +15,7 @@
           alt="Vue logo"
           src="@/assets/img/logo.png"
         >
-        <div class="header__title flex flex-direction-column">
+        <div class="header__title flex flex-direction-column hidden-mobile">
           <h1 class="fs-20">
             Vue Mazel Ui
           </h1>
@@ -42,7 +42,7 @@
           Documentation
         </router-link>
       </div>
-      <div class="flex align-center">
+      <div class="flex align-center hidden-mobile">
         <div class="flex align-center">
           <MazSwitch
             v-model="darkTheme"
@@ -120,8 +120,10 @@
       }
     }
 
-    &__title__sub {
-      color: var(--maz-muted-color);
+    &__title {
+      &__sub {
+        color: var(--maz-muted-color);
+      }
     }
   }
 

@@ -4,7 +4,7 @@
     role="contentinfo"
   >
     <nav class="nav-footer-content container flex align-center justify-content-between py-4">
-      <div class="flex">
+      <div class="flex hidden-tablet">
         <RouterLink
           :to="{ name: 'Home' }"
           class="mr-3"
@@ -17,7 +17,7 @@
           Documentation
         </RouterLink>
       </div>
-      <div class="nav-footer-content__logo">
+      <div class="nav-footer-content__logo hidden-tablet">
         <img
           src="@/assets/img/logo.png"
           alt="logo-loic-mazuel"
