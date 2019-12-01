@@ -15,7 +15,7 @@ export default ({ color, lightColor, darkColor, validColor, borderRadius, errorC
     '--maz-error-color': errorColor,
     '--maz-valid-color': validColor,
     '--maz-hover-color': '#F2F2F2',
-    '--maz-hover-color-dark': ShadeColor(darkColor, 20),
+    '--maz-hover-color-dark': ShadeColor(darkColor, 40),
     '--maz-muted-color': '#747474',
     '--maz-muted-color-dark': 'rgba(255, 255, 255, 0.3)',
     '--maz-primary-color-transparency': isColorName(color) ? HexToRgba(colorNameToHex(color), 0.7) : HexToRgba(color, 0.7),

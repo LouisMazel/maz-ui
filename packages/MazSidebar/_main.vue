@@ -10,7 +10,7 @@
     :class="{
       'is-close': !isOpen,
       'is-absolute': absolute,
-      'has-shadow': !noShadow,
+      'has-shadow': !noShadow && !dark,
       'is-right': right,
       'is-dark': dark
     }"
@@ -37,7 +37,7 @@
         <slot name="button-icon">
           <component
             :is="componentArrow"
-            :white="dark"
+            :dark="dark"
           />
         </slot>
       </button>
@@ -127,7 +127,6 @@
 
       button {
         background-color: rgba(darken(#FFF, 10%), 0.9);
-        box-shadow: 2px 1px 3px rgba(232, 237, 250, 1);
         border-radius: 0 8px 8px 0;
         width: 23px;
         height: 48px;
@@ -150,6 +149,7 @@
 
     &.is-dark {
       background-color: var(--maz-bg-color-dark);
+      border-right: 1px solid var(--maz-hover-color-dark);
 
       .maz-sidebar {
         &__load-layer {
@@ -160,7 +160,6 @@
           button {
             background-color: var(--maz-hover-color-dark);
             color: white;
-            box-shadow: 2px 1px 3px rgba(232, 237, 250, 1);
 
             svg path {
               fill: white;
@@ -175,6 +174,10 @@
 
       &.is-right {
         box-shadow: -2px -1px 8px rgba(232, 237, 250, 0.6);
+      }
+
+      .maz-sidebar__close-btn button {
+        box-shadow: 2px 1px 3px rgba(232, 237, 250, 1);
       }
     }
 

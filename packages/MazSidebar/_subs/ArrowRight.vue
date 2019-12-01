@@ -4,7 +4,7 @@
     width="24"
     height="24"
     viewBox="0 0 24 24"
-    :class="{ 'is-white': white }"
+    :class="{ 'is-white': dark }"
   >
     <path
       class="arrow"
@@ -21,7 +21,7 @@
   export default {
     name: 'ArrowRight',
     props: {
-      white: { type: Boolean, default: false }
+      dark: { type: Boolean, default: false }
     }
   }
 </script>

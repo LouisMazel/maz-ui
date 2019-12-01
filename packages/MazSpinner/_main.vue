@@ -1,8 +1,8 @@
 <template>
   <svg
     :class="{
-      'spinner-anim__white': white,
-      'spinner-anim__info': !white
+      'spinner-anim__white': dark,
+      'spinner-anim__info': !dark
     }"
     :width="`${size}px`"
     :height="`${size}px`"
@@ -27,7 +27,7 @@
         type: Number,
         default: 40
       },
-      white: {
+      dark: {
         type: Boolean,
         default: false
       }

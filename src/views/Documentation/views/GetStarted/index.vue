@@ -4,11 +4,17 @@
       Get Started
     </h2>
     <h3>NPM</h3>
-    <CodeContainer :code="codeBase" />
+    <CodeContainer
+      :code="codeBase"
+      class="my-4"
+    />
 
     Or use some components
 
-    <CodeContainer :code="codeCustom" />
+    <CodeContainer
+      :code="codeCustom"
+      class="my-4"
+    />
   </div>
 </template>
 

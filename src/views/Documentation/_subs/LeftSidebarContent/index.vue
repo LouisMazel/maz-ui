@@ -56,7 +56,6 @@
 
 <style lang="scss" scoped>
   .left-sidebar-content {
-    background-color: var(--maz-bg-color);
     overflow-y: auto;
 
     .menu-item {
@@ -67,6 +66,16 @@
       &.router-link-active {
         color: var(--maz-primary-color);
       }
+    }
+  }
+
+  .is-dark .menu-item {
+    background-color: var(--maz-bg-color-dark);
+    color: var(--maz-text-color-dark);
+
+    &:hover,
+    &:focus {
+      background-color: var(--maz-hover-color-dark);
     }
   }
 </style>

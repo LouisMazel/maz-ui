@@ -1,6 +1,6 @@
 <template>
   <div
-    :id="uniqueId"
+    :id="id"
     ref="MazSelect"
     v-click-outside="closeList"
     :class="[{
@@ -14,10 +14,10 @@
       'is-valid': valid
     }, size]"
     class="maz-select"
-    @click.prevent="toggleList"
+    @click.stop="toggleList"
   >
     <input
-      :id="id"
+      :id="uniqueId"
       ref="SelectInputUiInput"
       v-bind="$attrs"
       :name="name"
@@ -28,9 +28,8 @@
       class="maz-select__input"
       readonly
       @keydown="keyboardNav"
-      @click.prevent="$emit('click')"
-      @focus="isFocus = true"
-      @blur="closeList"
+      @focus.prevent="isFocus = true"
+      @blur.prevent="closeList"
     >
     <div class="maz-select__toggle">
       <slot name="arrow">
@@ -54,7 +53,7 @@
     </div>
     <label
       ref="label"
-      :for="id"
+      :for="uniqueId"
       :class="error ? 'text-danger' : null"
       class="maz-select__label"
     >
@@ -172,6 +171,7 @@
     },
     methods: {
       toggleList () {
+        console.log('toggleList')
         this.hasListOpen ? this.closeList() : this.openList()
       },
       openList () {
@@ -188,6 +188,7 @@
         this.$emit('blur')
       },
       updateValue (val) {
+        console.log('UPDATE')
         this.tmpValue = val
         this.$emit('input', val || null)
         this.closeList()

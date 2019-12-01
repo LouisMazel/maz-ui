@@ -6,7 +6,7 @@
     <nav class="px-4 flex justify-content-between">
       <router-link
         :to="{
-          name: 'Documentation'
+          name: 'Home'
         }"
         class="flex header__logo py-2"
       >
@@ -19,20 +19,20 @@
           <h1 class="fs-20">
             Vue Mazel Ui
           </h1>
-          <p class="fs-14 text-muted">
+          <p class="fs-14 header__title__sub">
             Components & CSS Library
           </p>
         </div>
       </router-link>
       <div class="header__menu flex">
-        <!-- <router-link
-          class="header__menu__item flex align-center"
+        <router-link
+          class="header__menu__item flex align-center fs-16 home"
           :to="{
             name: 'Home'
           }"
         >
           Home
-        </router-link> -->
+        </router-link>
         <router-link
           class="header__menu__item flex align-center fs-16"
           :to="{
@@ -67,7 +67,8 @@
 
 <style lang="scss" scoped>
   .header {
-    border-bottom: 1px solid var(--maz-text-color-dark);
+    background-color: var(--maz-bg-color);
+    border-bottom: 1px solid var(--maz-hover-color);
 
     &__logo {
       text-decoration: none;
@@ -87,11 +88,37 @@
 
         &:focus,
         &:hover {
-          background-color: var(--maz-text-color-dark);
+          background-color: var(--maz-hover-color);
         }
 
-        &.router-link-exact-active {
+        &.router-link-exact-active.home {
           border-bottom: 2px solid var(--maz-primary-color);
+        }
+
+        &.router-link-active:not(.home) {
+          border-bottom: 2px solid var(--maz-primary-color);
+        }
+      }
+    }
+
+    &__title__sub {
+      color: var(--maz-muted-color);
+    }
+  }
+
+  .is-dark {
+    .header {
+      background-color: var(--maz-bg-color-dark);
+      border-color: var(--maz-hover-color-dark);
+
+      &__title__sub {
+        color: var(--maz-text-color-dark);
+      }
+
+      &__menu__item {
+        &:focus,
+        &:hover {
+          background-color: var(--maz-hover-color-dark);
         }
       }
     }

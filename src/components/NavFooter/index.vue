@@ -4,7 +4,13 @@
     role="contentinfo"
   >
     <nav class="nav-footer-content container flex align-center justify-content-between py-4">
-      <div class="flex flex-direction-column">
+      <div class="flex">
+        <RouterLink
+          :to="{ name: 'Home' }"
+          class="mr-3"
+        >
+          Home
+        </RouterLink>
         <RouterLink
           :to="{ name: 'Documentation' }"
         >
@@ -56,9 +62,10 @@
   .nav-footer {
     color: var(--maz-third-color);
     border-top: 1px solid var(--maz-text-color-dark);
+    background-color: var(--maz-bg-color);
 
     &-subs {
-      background-color: var(--maz-text-color-dark);
+      background-color: var(--maz-hover-color);
 
       a {
         color: var(--maz-muted-color);
@@ -92,6 +99,15 @@
           margin-bottom: 20px;
         }
       }
+    }
+  }
+
+  .is-dark .nav-footer {
+    background-color: var(--maz-bg-color-dark);
+    border-color: var(--maz-hover-color-dark);
+
+    &-subs {
+      background-color: var(--maz-hover-color-dark);
     }
   }
 </style>

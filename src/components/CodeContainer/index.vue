@@ -2,6 +2,9 @@
   <pre
     v-highlightjs="code"
     class="code-container"
+    :class="{
+      'is-dark': dark
+    }"
   >
     <code
       class="code-container__content"
@@ -17,7 +20,8 @@
     name: 'CodeContainer',
     props: {
       code: { type: String, required: true },
-      language: { type: String, default: 'javascript' }
+      language: { type: String, default: 'javascript' },
+      dark: { type: Boolean, default: false }
     }
   }
 </script>
@@ -34,10 +38,14 @@
     -webkit-font-smoothing: auto;
     overflow-x: auto;
     padding: 0 20px;
-    margin: 20px 0;
 
     &__content {
       background-color: transparent;
+    }
+
+    &.is-dark {
+      background-color: #FAFAFA;
+      border: 1px solid #EAEEFB;
     }
   }
 </style>

@@ -1,13 +1,19 @@
 <template>
   <div class="maz-input-doc">
+    <ComponentContainer
+      :code="codeExample"
+    >
+      <MazInput
+        v-model="exampleValue"
+        label="Custom label/placeholder text"
+      />
+    </ComponentContainer>
     <div
       v-for="type in inputTypes"
       :key="type"
       class="flex mt-3 flex-wrap"
     >
-      <div
-        class="flex-component flex-1"
-      >
+      <div class="flex-component flex-1">
         <h3>{{ type | capitalize }}</h3>
         <h4>Light mode</h4>
         <ComponentContainer>
@@ -37,9 +43,7 @@
           />
         </ComponentContainer>
       </div>
-      <div
-        class="flex-component flex-1"
-      >
+      <div class="flex-component flex-1">
         <h3 class="text-white">
           -
         </h3>
@@ -87,7 +91,22 @@
         disabledValue: '',
         inputTypes: [
           'basic', 'error', 'valid', 'disabled', 'hint', 'clearable', 'sm', 'lg', 'required', 'loader'
-        ]
+        ],
+        exampleValue: '',
+        codeExample: `<template>
+  <MazInput
+    v-model="exampleValue"
+    label="Custom label/placeholder text"
+  />
+</template>
+
+export default {
+  data () {
+    return {
+      exampleValue: ''
+    }
+  }
+}`
       }
     }
   }

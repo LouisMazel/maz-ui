@@ -7,18 +7,21 @@
     <CodeContainer
       code="npm i vue-mazel-ui -S"
       language="bash"
+      class="my-4"
     />
 
     <h3>Yarn</h3>
     <CodeContainer
       code="yarn add vue-mazel-ui"
       language="bash"
+      class="my-4"
     />
 
     <h3>CDN</h3>
     <CodeContainer
       :code="cdnCode"
       language="html"
+      class="my-4"
     />
   </div>
 </template>

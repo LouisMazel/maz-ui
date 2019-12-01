@@ -15,45 +15,53 @@
         X
       </MazBtn>
     </div>
-    <h4
-      class="mb-2"
+    <div
+      v-if="currentProps.length"
+      class="props-api"
     >
-      Props API
-    </h4>
-
-    <table class="md">
-      <tr>
-        <th>Props</th>
-        <th>Type</th>
-        <th>Default</th>
-        <th>Required</th>
-      </tr>
-      <tr
-        v-for="(prop, i) in currentProps"
-        :key="i"
-        class="prop"
+      <h4
+        class="mb-2"
       >
-        <td>{{ prop[0] | kebab }}</td>
-        <td>{{ prop[1].type.name }}</td>
-        <td :class="{ 'text-muted' :prop[1].default !== false && !prop[1].default }">
-          {{
-            (typeof prop[1].default === 'function'
-              ? prop[1].default.name
-              : prop[1].default === false ? 'false' : prop[1].default) || 'null'
-          }}
-        </td>
-        <td :class="{ 'text-muted': !prop[1].required }">
-          {{ prop[1].required || 'false' }}
-        </td>
-      </tr>
-    </table>
+        Props API
+      </h4>
+
+      <table class="md">
+        <tr>
+          <th>Props</th>
+          <th>Type</th>
+          <th>Default</th>
+          <th>Required</th>
+        </tr>
+        <tr
+          v-for="(prop, i) in currentProps"
+          :key="i"
+          class="prop"
+        >
+          <td>{{ prop[0] | kebab }}</td>
+          <td>{{ prop[1].type.name }}</td>
+          <td :class="{ 'text-muted' :prop[1].default !== false && !prop[1].default }">
+            {{
+              (typeof prop[1].default === 'function'
+                ? prop[1].default.name
+                : prop[1].default === false ? 'false' : prop[1].default) || 'null'
+            }}
+          </td>
+          <td :class="{ 'text-muted': !prop[1].required }">
+            {{ prop[1].required || 'false' }}
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div v-else>
+      No option
+    </div>
   </div>
 </template>
 
 <script>
   import {
     MazBtn, MazInput, MazSelect, MazPhoneNumberInput, MazSwitch, MazCheckbox,
-    MazDialog, MazLoader, MazSidebar, MazSpinner, MazTransitionExpand
+    MazDialog, MazLoader, MazSidebar, MazSpinner, MazTransitionExpand, MazCollapse
   } from '@/lib'
 
   export default {
@@ -70,7 +78,8 @@
       MazLoader,
       MazSidebar,
       MazSpinner,
-      MazTransitionExpand
+      MazTransitionExpand,
+      MazCollapse
       /* eslint-enable */
     },
     computed: {

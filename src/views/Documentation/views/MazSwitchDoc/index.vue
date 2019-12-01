@@ -1,6 +1,8 @@
 <template>
   <div class="maz-switch-doc">
-    <ComponentContainer>
+    <ComponentContainer
+      :code="codeExample"
+    >
       <MazSwitch
         v-model="checkboxValue"
       />
@@ -13,7 +15,20 @@
     name: 'MazSwitchDoc',
     data () {
       return {
-        checkboxValue: false
+        checkboxValue: false,
+        codeExample: `<template>
+  <MazSwitch
+    v-model="checkboxValue"
+  />
+</template>
+
+export default {
+  data () {
+    return {
+      checkboxValue: false
+    }
+  }
+}`
       }
     }
   }

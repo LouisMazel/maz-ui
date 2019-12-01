@@ -10,6 +10,7 @@
     @click="$emit('click')"
   >
     <span
+      class="flex align-center justify-content-center"
       :class="{
         hidden: loader
       }"
@@ -22,7 +23,7 @@
     >
       <MazSpinner
         :size="25"
-        white
+        dark
       />
     </div>
   </button>

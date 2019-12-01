@@ -27,6 +27,9 @@ $mini-size: 30px;
   &:hover,
   &:focus {
     background-color: darken($primary-color, 10%);
+  }
+
+  &:focus {
     box-shadow: 0 0 0 0.2rem rgba($primary-color, 0.5);
   }
 
@@ -74,17 +77,24 @@ a.btn {
       &:hover,
       &:focus {
         background-color: darken($color, 10%);
+      }
+
+      &:focus {
         box-shadow: 0 0 0 0.2rem rgba($color, 0.5);
       }
 
       &--outline {
-        background-color: transparent;
+        background-color: rgba($color, 0.05);
         border: 1px solid $color;
         color: $color;
 
         &:hover,
         &:focus {
-          background-color: transparent;
+          background-color: $color;
+          color: white;
+        }
+
+        &:focus {
           box-shadow: 0 0 0 0.2rem rgba($color, 0.5);
         }
       }

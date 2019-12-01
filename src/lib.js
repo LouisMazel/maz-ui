@@ -1,5 +1,6 @@
 import MazBtn from '@/../packages/MazBtn'
 import MazCheckbox from '@/../packages/MazCheckbox'
+import MazCollapse from '@/../packages/MazCollapse'
 import MazDialog from '@/../packages/MazDialog'
 import MazInput from '@/../packages/MazInput'
 import MazLoader from '@/../packages/MazLoader'
@@ -18,6 +19,7 @@ import '@/../packages/scss/style-helpers/index.scss'
 const components = [
   MazBtn,
   MazCheckbox,
+  MazCollapse,
   MazDialog,
   MazInput,
   MazLoader,
@@ -43,6 +45,7 @@ export {
   version,
   MazBtn,
   MazCheckbox,
+  MazCollapse,
   MazDialog,
   MazInput,
   MazLoader,

@@ -33,7 +33,7 @@
         // Force repaint to make sure the
         // animation is triggered correctly.
         /* eslint-disable */
-        getComputedStyle(element).height 
+        getComputedStyle(element).height
         /* eslint-enable */
 
         // Trigger the animation.
@@ -75,7 +75,7 @@
 
   .expand-enter-active,
   .expand-leave-active {
-    transition: 500ms ease-in-out;
+    transition: 300ms ease-in-out;
     transition-property: opacity, height;
     overflow: hidden;
   }

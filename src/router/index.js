@@ -6,7 +6,7 @@ Vue.use(Router)
 
 const componentsRoutes = [
   'Install', 'GetStarted', 'MazBtnDoc', 'MazInputDoc', 'MazSelectDoc', 'MazPhoneNumberInputDoc', 'MazSwitchDoc', 'MazCheckboxDoc', 'MazSidebarDoc',
-  'MazLoaderDoc', 'MazSpinnerDoc', 'MazTransitionExpandDoc', 'MazDialogDoc'
+  'MazLoaderDoc', 'MazSpinnerDoc', 'MazCollapseDoc', 'MazTransitionExpandDoc', 'MazDialogDoc'
 ]
 
 const componentsRoutesBuild = componentsRoutes.map((route) => {
@@ -27,7 +27,7 @@ const router = new Router({
     : '/',
   routes: [
     {
-      path: '/home',
+      path: '/',
       name: 'Home',
       component: () => import(/* webpackChunkName: "home" */ '@/views/Home')
     },
@@ -42,7 +42,7 @@ const router = new Router({
     },
     {
       path: '*',
-      redirect: { name: 'Documentation' }
+      redirect: { name: 'Home' }
     }
   ]
 })

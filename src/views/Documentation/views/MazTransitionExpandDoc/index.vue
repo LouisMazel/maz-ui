@@ -1,6 +1,9 @@
 <template>
   <div class="maz-transition-expand-doc">
-    <ComponentContainer class="flex flex-direction-column">
+    <ComponentContainer
+      class="flex flex-direction-column"
+      :code="code"
+    >
       <div class="flex justify-content-center">
         <MazBtn @click="isShown = !isShown">
           Toggle Expand
@@ -70,7 +73,36 @@
     name: 'MazTransitionExpandDoc',
     data () {
       return {
-        isShown: false
+        isShown: false,
+        code: `<template>
+  <MazTransitionExpand>
+    <div
+      v-show="isShown"
+    >
+      <p>Content expand</p>
+      <p>Content expand</p>
+      <p>Content expand</p>
+      <p>Content expand</p>
+      <p>Content expand</p>
+      <p>Content expand</p>
+      <p>Content expand</p>
+      <p>Content expand</p>
+      <p>Content expand</p>
+      <p>Content expand</p>
+      <p>Content expand</p>
+      <p>Content expand</p>
+      <p>Content expand</p>
+    </div>
+  </MazTransitionExpand>
+</template>
+
+export default {
+  data () {
+    return {
+      isShown: false
+    }
+  }
+}`
       }
     }
   }

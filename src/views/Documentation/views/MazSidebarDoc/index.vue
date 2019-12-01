@@ -1,6 +1,6 @@
 <template>
   <div class="maz-sidebar-doc">
-    <ComponentContainer class="maz-sidebar-doc__container flex over-hid">
+    <div class="maz-sidebar-doc__container pos-r br-4 over-hid my-4 shadow-container flex">
       <MazSidebar
         v-model="hasLeftSidebarOpen"
         :loader="loader"
@@ -83,7 +83,7 @@
           SideBar Content Example
         </div>
       </MazSidebar>
-    </ComponentContainer>
+    </div>
   </div>
 </template>
 
