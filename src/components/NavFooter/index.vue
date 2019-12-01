@@ -25,7 +25,7 @@
         >
       </div>
       <div class="flex align-center">
-        <SocialButtons />
+        <SocialButtons class="mr-2" />
         <VersionNumber />
       </div>
     </nav>

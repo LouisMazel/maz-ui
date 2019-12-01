@@ -74,7 +74,7 @@
         display: block;
         background: white;
         border-radius: 10px;
-        box-shadow: 0 3px 8px rgba($gray, 0.5);
+        box-shadow: 0 3px 8px rgba(black, 0.2);
         transition: all 0.2s ease;
 
         &::before {

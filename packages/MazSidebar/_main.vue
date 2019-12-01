@@ -10,7 +10,7 @@
     :class="{
       'is-close': !isOpen,
       'is-absolute': absolute,
-      'has-shadow': !noShadow && !dark,
+      'has-shadow': !noShadow,
       'is-right': right,
       'is-dark': dark
     }"
@@ -170,14 +170,18 @@
     }
 
     &.has-shadow {
-      box-shadow: 2px 1px 8px rgba(232, 237, 250, 0.6);
-
-      &.is-right {
-        box-shadow: -2px -1px 8px rgba(232, 237, 250, 0.6);
-      }
+      box-shadow: 2px 1px 8px rgba(0, 0, 0, 0.1);
 
       .maz-sidebar__close-btn button {
-        box-shadow: 2px 1px 3px rgba(232, 237, 250, 1);
+        box-shadow: 2px 1px 3px rgba(0, 0, 0, 0.1);
+      }
+
+      &.is-right {
+        box-shadow: -2px -1px 8px rgba(0, 0, 0, 0.1);
+
+        .maz-sidebar__close-btn button {
+          box-shadow: -2px -1px 8px rgba(0, 0, 0, 0.1);
+        }
       }
     }
 
@@ -196,7 +200,6 @@
         left: inherit;
 
         button {
-          box-shadow: -2px 1px 3px rgba(232, 237, 250, 1);
           border-radius: 4px 0 0 4px;
         }
       }
@@ -208,7 +211,7 @@
       max-width: 90%;
     }
 
-    &.is-right.is-absolute {
+    &.is-absolute.is-right {
       right: 0;
       left: inherit;
     }

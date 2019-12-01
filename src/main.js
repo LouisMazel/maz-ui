@@ -11,8 +11,9 @@ import VueHighlightJS from 'vue-highlightjs'
 
 import javascript from 'highlight.js/lib/languages/javascript'
 import bash from 'highlight.js/lib/languages/bash'
-
 import 'highlight.js/styles/default.css'
+
+import store from './store'
 
 Vue.use(VueHighlightJS, {
   languages: {
@@ -25,6 +26,7 @@ Vue.use(VueMazelUi)
 Vue.config.productionTip = false
 
 new Vue({
+  store,
   router,
   render: h => h(App)
 }).$mount('#app')

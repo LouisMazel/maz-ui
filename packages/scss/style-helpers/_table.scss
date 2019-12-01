@@ -1,6 +1,6 @@
 table.md {
   border-spacing: 0;
-  border-radius: 4px;
+  border-radius: var(--maz-border-radius);
   border-collapse: collapse;
   width: 100%;
   table-layout: fixed;
@@ -10,7 +10,7 @@ table.md {
   margin-top: 0;
   margin-bottom: 16px;
   font-size: 14px;
-  box-shadow: 0 0 8px rgba(232, 237, 250, 1);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
 
   tr {
     background-color: var(--maz-bg-color);
@@ -24,6 +24,22 @@ table.md {
 
     &:nth-child(2n) {
       background-color: var(--maz-hover-color);
+    }
+  }
+}
+
+.is-dark table.md {
+  color: var(--maz-text-color-dark);
+
+  tr {
+    background-color: var(--maz-bg-color-dark);
+
+    &:nth-child(2n) {
+      background-color: var(--maz-hover-color-dark);
+    }
+
+    td.text-muted {
+      color: var(--maz-muted-color-dark);
     }
   }
 }

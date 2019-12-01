@@ -6,7 +6,7 @@
       :title="social.name"
       :href="social.url"
       target="_blank"
-      class="btn btn--white btn--rounded flex align-center"
+      class="btn btn--white btn--rounded btn--mini flex align-center"
     >
       <i :class="`icon-${social.name}`" />
     </a>
@@ -41,6 +41,17 @@
 
       i {
         font-size: 22px;
+      }
+    }
+  }
+
+  .is-dark .social-buttons {
+    a {
+      background-color: var(--maz-bg-color-dark);
+
+      &:hover,
+      &:focus {
+        background-color: var(--maz-hover-color-dark);
       }
     }
   }

@@ -44,7 +44,11 @@
       </div>
       <div class="flex align-center">
         <div class="flex align-center">
-          <SocialButtons />
+          <MazSwitch
+            v-model="darkTheme"
+            class="mr-2"
+          />
+          <SocialButtons class="mr-2" />
           <VersionNumber />
         </div>
       </div>
@@ -55,12 +59,27 @@
 <script>
   import SocialButtons from '@/components/SocialButtons'
   import VersionNumber from '@/components/VersionNumber'
+  import { mapGetters, mapActions } from 'vuex'
 
   export default {
     name: 'Header',
     components: {
       SocialButtons,
       VersionNumber
+    },
+    computed: {
+      ...mapGetters(['hasDarkTheme']),
+      darkTheme: {
+        get () {
+          return this.hasDarkTheme
+        },
+        set (val) {
+          return this.setDarkTheme(val)
+        }
+      }
+    },
+    methods: {
+      ...mapActions(['setDarkTheme'])
     }
   }
 </script>

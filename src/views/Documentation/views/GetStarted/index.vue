@@ -9,7 +9,7 @@
       class="my-4"
     />
 
-    Or use some components
+    <p>Or use some components</p>
 
     <CodeContainer
       :code="codeCustom"

@@ -3,7 +3,7 @@
     id="app"
     class="flex flex-direction-column"
     :class="{
-      'is-dark': isDark
+      'is-dark': hasDarkTheme
     }"
   >
     <NavHeader />
@@ -13,16 +13,15 @@
 
 <script>
   import NavHeader from './components/NavHeader'
+  import { mapGetters } from 'vuex'
 
   export default {
     name: 'App',
     components: {
       NavHeader
     },
-    data () {
-      return {
-        isDark: false
-      }
+    computed: {
+      ...mapGetters(['hasDarkTheme'])
     }
   }
 </script>
@@ -31,9 +30,11 @@
   #app.is-dark {
     background-color: var(--maz-bg-color-dark);
 
-    h1,
-    h2,
-    h3 {
+    h3,
+    h4,
+    h5,
+    h6,
+    p {
       color: var(--maz-text-color-dark);
     }
   }

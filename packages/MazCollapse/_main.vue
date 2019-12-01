@@ -90,6 +90,11 @@
       .maz-collapse {
         &__header-btn {
           color: var(--maz-text-color-dark);
+
+          &:hover,
+          &:focus {
+            background-color: var(--maz-hover-color-dark);
+          }
         }
 
         &__content {

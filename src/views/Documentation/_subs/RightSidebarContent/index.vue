@@ -96,7 +96,6 @@
 
 <style lang="scss" scoped>
   .right-sidebar-content {
-    background-color: var(--maz-bg-color);
     overflow-y: auto;
   }
 </style>
