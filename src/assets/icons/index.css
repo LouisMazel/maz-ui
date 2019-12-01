@@ -14,7 +14,7 @@
 [class*=' icon-ctk'] { */
 [class^='icon-'],
 [class*=' icon-'] {
-  font-family: 'icomoon' !important;
+  font-family: 'icomoon';
   speak: none;
   font-style: normal;
   font-weight: normal;
