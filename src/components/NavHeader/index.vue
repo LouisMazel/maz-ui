@@ -45,6 +45,7 @@
       <div class="flex align-center">
         <div class="flex align-center">
           <SocialButtons />
+          <VersionNumber />
         </div>
       </div>
     </nav>
@@ -53,11 +54,13 @@
 
 <script>
   import SocialButtons from '@/components/SocialButtons'
+  import VersionNumber from '@/components/VersionNumber'
 
   export default {
     name: 'Header',
     components: {
-      SocialButtons
+      SocialButtons,
+      VersionNumber
     }
   }
 </script>

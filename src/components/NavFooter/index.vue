@@ -18,7 +18,10 @@
           class="nav-footer-content__logo__img"
         >
       </div>
-      <SocialButtons class="flex align-center" />
+      <div class="flex align-center">
+        <SocialButtons />
+        <VersionNumber />
+      </div>
     </nav>
     <div class="nav-footer-subs py-2">
       <div class="container flex flex-end">
@@ -38,11 +41,13 @@
 
 <script>
   import SocialButtons from '@/components/SocialButtons'
+  import VersionNumber from '@/components/VersionNumber'
 
   export default {
     name: 'NavFooter',
     components: {
-      SocialButtons
+      SocialButtons,
+      VersionNumber
     }
   }
 </script>

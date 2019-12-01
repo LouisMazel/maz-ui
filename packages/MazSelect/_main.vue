@@ -5,6 +5,7 @@
     v-click-outside="closeList"
     :class="[{
       'is-focused': isFocus,
+      'has-list-open': hasListOpen,
       'has-value': value,
       'has-hint': hint,
       'has-error': error,
@@ -13,7 +14,7 @@
       'is-valid': valid
     }, size]"
     class="maz-select"
-    @click="focusInput"
+    @click.prevent="toggleList"
   >
     <input
       :id="id"
@@ -26,18 +27,29 @@
       :required="required"
       class="maz-select__input"
       readonly
-      @focus="openList"
       @keydown="keyboardNav"
       @click="$emit('click')"
+      @focus="isFocus = true"
+      @blur="closeList"
     >
-    <div
-      class="maz-select__toggle"
-      @click="focusInput"
-    >
+    <div class="maz-select__toggle">
       <slot name="arrow">
-        <div class="maz-select__toggle__arrow">
-          ▼
-        </div>
+        <svg
+          mlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          class="maz-select__toggle__arrow"
+        >
+          <path
+            class="arrow"
+            d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"
+          />
+          <path
+            fill="none"
+            d="M0 0h24v24H0V0z"
+          />
+        </svg>
       </slot>
     </div>
     <label
@@ -50,7 +62,7 @@
     </label>
     <Transition name="slide">
       <div
-        v-show="isFocus"
+        v-show="hasListOpen"
         ref="optionsList"
         class="maz-select__options-list"
         :style="[itemListHeight]"
@@ -98,22 +110,20 @@
       label: { type: String, default: 'Select option' },
       hint: { type: String, default: null },
       size: { type: String, default: null },
-      error: { type: Boolean, default: Boolean },
+      error: { type: Boolean, default: false },
       disabled: { type: Boolean, default: false },
       required: { type: Boolean, default: false },
       valid: { type: Boolean, default: false },
-      validColor: { type: String, default: 'yellowgreen' },
-      color: { type: String, default: 'dodgerblue' },
       dark: { type: Boolean, default: false },
-      darkColor: { type: String, default: '#424242' },
       id: { type: String, default: 'MazSelect' },
       name: { type: String, default: 'MazSelect' },
-      options: { type: Array, default: Array, required: true }
+      options: { type: Array, required: true }
     },
     data () {
       return {
         isFocus: false,
         selectedIndex: null,
+        hasListOpen: false,
         query: '',
         tmpValue: this.value
       }
@@ -161,22 +171,23 @@
       }
     },
     methods: {
-      focusInput () {
-        this.$refs.SelectInputUiInput.focus()
+      toggleList () {
+        this.hasListOpen ? this.closeList() : this.openList()
       },
       openList () {
         if (!this.disabled) {
           this.$emit('focus')
           this.isFocus = true
-          if (this.value) {
-            this.scrollToSelectedOnFocus(this.selectedValueIndex)
-          }
+          this.hasListOpen = true
+          if (this.value && this.hasListOpen) this.scrollToSelectedOnFocus(this.selectedValueIndex)
         }
       },
       closeList () {
-        this.$refs.SelectInputUiInput.blur()
-        this.$emit('blur')
-        this.isFocus = false
+        if (this.hasListOpen) {
+          this.isFocus = false
+          this.hasListOpen = false
+          this.$emit('blur')
+        }
       },
       updateValue (val) {
         this.tmpValue = val
@@ -195,7 +206,7 @@
             // TODO : It's not compatible with FireFox
             e.view.event.preventDefault()
           }
-          // down arrow
+          if (!this.hasListOpen) this.openList()
           let index = code === 40 ? this.tmpValueIndex + 1 : this.tmpValueIndex - 1
           if (index === -1 || index >= this.options.length) {
             index = index === -1
@@ -206,6 +217,7 @@
           this.scrollToSelectedOnFocus(index)
         } else if (code === 13) {
           // enter key
+          this.hasListOpen ? this.updateValue(this.tmpValue) : this.openList()
           this.updateValue(this.tmpValue)
         } else if (code === 27) {
           // escape key
@@ -247,6 +259,8 @@
     position: relative;
     height: 40px;
     min-height: 40px;
+    z-index: 0;
+    user-select: none;
 
     &__label {
       position: absolute;
@@ -304,17 +318,20 @@
 
     &__toggle {
       position: absolute;
-      right: 10px;
+      right: 5px;
       top: calc(50% - 10px);
       transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
       text-align: center;
       display: inline-block;
       cursor: pointer;
+      height: 24px;
 
       &__arrow {
         color: $second-color;
-        font-size: 15px;
-        transform: scaleY(0.5);
+
+        path.arrow {
+          fill: $second-color;
+        }
       }
     }
 
@@ -453,6 +470,10 @@
       &__toggle {
         &__arrow {
           color: $second-color-dark;
+
+          path.arrow {
+            fill: $second-color-dark;
+          }
         }
       }
 
@@ -494,10 +515,16 @@
       }
     }
 
-    &.is-focused {
-      .maz-select__toggle {
-        transform: rotate(180deg);
+    &.has-list-open {
+      .maz-select {
+        &__toggle {
+          transform: rotate(180deg);
+        }
       }
+    }
+
+    &.is-focused {
+      z-index: 1;
 
       .maz-select__input {
         border-color: $primary-color;
