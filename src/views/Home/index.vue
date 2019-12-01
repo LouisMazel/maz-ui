@@ -6,10 +6,10 @@
         src="@/assets/img/logo.png"
         alt="vue mazel ui logo"
       >
-      <h2 class="my-3">
+      <h2 class="my-3 text-center">
         A components & CSS library to build your interface
       </h2>
-      <p class="mb-3">
+      <p class="mb-3 text-center">
         A beautiful design system
       </p>
       <CodeContainer
