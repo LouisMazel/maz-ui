@@ -14,8 +14,12 @@ import MazTransitionExpand from '@/../packages/MazTransitionExpand'
 
 import { version } from '@/../package.json'
 import './theme'
-// import './utils/polyfill'
-import '@/../packages/scss/style-helpers/index.scss'
+
+if (process.env.NODE_ENV === 'production') {
+  require('../dist/vue-mazel-ui.css')
+} else {
+  require('../packages/scss/style-helpers/index.scss')
+}
 
 const components = [
   MazBtn,
