@@ -6,5 +6,8 @@ module.exports = {
   },
   publicPath: process.env.NODE_ENV === 'production'
     ? '/vue-mazel-ui/'
-    : '/'
+    : '/',
+  css: {
+    extract: false
+  }
 }

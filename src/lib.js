@@ -15,10 +15,10 @@ import MazTransitionExpand from '@/../packages/MazTransitionExpand'
 import { version } from '@/../package.json'
 import './theme'
 
-if (process.env.NODE_ENV === 'production') {
-  require('../dist/vue-mazel-ui.css')
-} else {
+if (process.env.NODE_ENV === 'development' && process.env.VUE_APP_MAZ === 'development') {
   require('../packages/scss/style-helpers/index.scss')
+} else {
+  require('../dist/vue-mazel-ui.css')
 }
 
 const components = [
