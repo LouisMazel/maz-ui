@@ -1,16 +1,16 @@
 <template>
   <div class="maz-transition-expand-doc">
     <ComponentContainer
-      class="flex flex-direction-column"
+      class="flex direction-column"
       :code="code"
     >
-      <div class="flex justify-content-center">
+      <div class="flex justify-center">
         <MazBtn @click="isShown = !isShown">
           Toggle Expand
         </MazBtn>
       </div>
       <br>
-      <div class="flex flex-1 flex-start">
+      <div class="flex flex-1 align-start">
         <ComponentContainer
           class="maz-expand-container flex-1 mr-4"
         >

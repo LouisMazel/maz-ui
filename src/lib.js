@@ -2,6 +2,7 @@ import MazBtn from '@/../packages/MazBtn'
 import MazCheckbox from '@/../packages/MazCheckbox'
 import MazCollapse from '@/../packages/MazCollapse'
 import MazDialog from '@/../packages/MazDialog'
+import MazFlex from '@/../packages/MazFlex'
 import MazInput from '@/../packages/MazInput'
 import MazLoader from '@/../packages/MazLoader'
 import MazPhoneNumberInput from '@/../packages/MazPhoneNumberInput'
@@ -21,6 +22,7 @@ const components = [
   MazCheckbox,
   MazCollapse,
   MazDialog,
+  MazFlex,
   MazInput,
   MazLoader,
   MazPhoneNumberInput,
@@ -47,6 +49,7 @@ export {
   MazCheckbox,
   MazCollapse,
   MazDialog,
+  MazFlex,
   MazInput,
   MazLoader,
   MazPhoneNumberInput,

@@ -1,6 +1,6 @@
 <template>
   <div class="right-sidebar-content p-2">
-    <div class="flex justify-content-between">
+    <div class="flex space-between">
       <h3
         class="mb-2"
       >

@@ -21,7 +21,7 @@
     >
       <div
         v-show="isOpen"
-        class="maz-sidebar__content flex flex-1 w-100 flex-direction-column"
+        class="maz-sidebar__content flex flex-1 w-100 direction-column"
       >
         <slot />
       </div>
@@ -31,7 +31,7 @@
       class="maz-sidebar__close-btn"
     >
       <button
-        class="flex align-center justify-content-center"
+        class="flex align-center justify-center"
         @click="isOpen = !isOpen"
       >
         <slot name="button-icon">
@@ -44,7 +44,7 @@
     </div>
     <div
       v-show="loader && isOpen"
-      class="maz-sidebar__load-layer flex align-center justify-content-center"
+      class="maz-sidebar__load-layer flex align-center justify-center"
     >
       <slot name="content-loader">
         <MazLoader />

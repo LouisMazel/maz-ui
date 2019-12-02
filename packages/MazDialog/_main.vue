@@ -16,11 +16,11 @@
         <div
           v-click-outside="closeDialog"
           :style="widthStyle"
-          class="maz-dialog__container flex flex-direction-column"
+          class="maz-dialog__container flex direction-column"
         >
           <div
             v-if="!hideHeader"
-            class="maz-dialog__header flex justify-content-between align-center p-3"
+            class="maz-dialog__header flex space-between align-center p-3"
           >
             <p class="fw-400 fs-20 m-0 w-100">
               <slot name="title">
@@ -48,7 +48,7 @@
           </div>
           <div
             v-if="!hideFooter"
-            class="maz-dialog__footer flex flex-end p-3"
+            class="maz-dialog__footer flex align-end p-3"
           >
             <slot name="footer">
               <MazBtn

@@ -3,7 +3,7 @@
     class="header bg-color flex-fixed"
     role="banner"
   >
-    <nav class="px-4 flex justify-content-between">
+    <nav class="px-4 flex space-between">
       <router-link
         :to="{
           name: 'Home'
@@ -15,7 +15,7 @@
           alt="Vue logo"
           src="@/assets/img/logo.png"
         >
-        <div class="header__title flex flex-direction-column hidden-mobile">
+        <div class="header__title flex direction-column hidden-mobile">
           <h1 class="fs-20">
             Vue Mazel Ui
           </h1>

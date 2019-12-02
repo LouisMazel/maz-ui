@@ -11,13 +11,13 @@
         :dark="dark"
       >
         <div
-          class="flex flex-1 align-center justify-content-center"
+          class="flex flex-1 align-center justify-center"
           :class="{ 'text-white': dark }"
         >
           SideBar Content Example
         </div>
       </MazSidebar>
-      <div class="maz-sidebar-doc__content p-4 flex flex-direction-column align-center justify-content-center flex-1">
+      <div class="maz-sidebar-doc__content p-4 flex direction-column align-center justify-center flex-1">
         <MazBtn
           type="success"
           @click="loader = !loader"
@@ -77,7 +77,7 @@
         :dark="!dark"
       >
         <div
-          class="flex flex-1 align-center justify-content-center"
+          class="flex flex-1 align-center justify-center"
           :class="{ 'text-white': !dark }"
         >
           SideBar Content Example

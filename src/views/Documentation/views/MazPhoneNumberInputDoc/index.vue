@@ -7,7 +7,7 @@
         v-model="phoneNumberExample"
       />
     </ComponentContainer>
-    <div class="flex flex-wrap">
+    <div class="flex flex--wrap">
       <div class="flex-1 mr-4">
         <h3>Light</h3>
         <ComponentContainer>

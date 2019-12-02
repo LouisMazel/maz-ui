@@ -11,7 +11,7 @@
         name: route.name
       }"
     >
-      {{ getRouteName(route.path) | capitalize }}
+      {{ getPageName(route.path) | capitalize }}
     </router-link>
     <h3 class="my-3">
       Components
@@ -25,14 +25,14 @@
           name: route.name
         }"
       >
-        {{ getRouteName(route.path) | capitalize }}
+        {{ getComponentName(route.name) }}
       </router-link>
     </div>
   </div>
 </template>
 
 <script>
-  import { replaceAll } from '@/utils'
+  import { replaceAll, pascalCaseToKebabCase } from '@/utils'
 
   export default {
     name: 'LeftSidebarContent',
@@ -47,7 +47,10 @@
       }
     },
     methods: {
-      getRouteName (string) {
+      getComponentName (string) {
+        return pascalCaseToKebabCase(string.slice(0, -3))
+      },
+      getPageName (string) {
         return replaceAll(string, '-', ' ')
       }
     }

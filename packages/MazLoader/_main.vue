@@ -1,6 +1,6 @@
 <template>
   <div
-    class="maz-loader flex align-center justify-content-center"
+    class="maz-loader flex align-center justify-center"
     :class="{
       'is-dark': dark
     }"

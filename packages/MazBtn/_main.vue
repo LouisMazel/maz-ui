@@ -10,7 +10,7 @@
     @click="$emit('click')"
   >
     <span
-      class="flex align-center justify-content-center"
+      class="flex align-center justify-center"
       :class="{
         hidden: loader
       }"
@@ -19,7 +19,7 @@
     </span>
     <div
       v-if="loader"
-      class="maz-btn__spinner flex align-center justify-content-center"
+      class="maz-btn__spinner flex align-center justify-center"
     >
       <MazSpinner
         :size="25"

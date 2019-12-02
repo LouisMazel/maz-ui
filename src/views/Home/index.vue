@@ -1,6 +1,6 @@
 <template>
-  <div class="home flex-1 flex flex-direction-column">
-    <div class="container flex-1 flex flex-direction-column align-center justify-content-center py-4">
+  <div class="home flex-1 flex direction-column">
+    <div class="container flex-1 flex direction-column align-center justify-center py-4">
       <img
         class="home__logo"
         src="@/assets/img/logo.png"
@@ -17,7 +17,7 @@
         code="npm i vue-mazel-ui -S"
         class="mb-3"
       />
-      <div class="flex flex-start flex-wrap mt-3 align-center justify-content-center">
+      <div class="flex align-start flex--wrap mt-3 align-center justify-center">
         <router-link
           class="btn btn--primary--outline mr-3 mb-3"
           :to="{ name: 'Install' }"
@@ -37,7 +37,7 @@
           Components
         </router-link>
       </div>
-      <div class="flex flex-start flex-wrap mt-3 align-center justify-content-center">
+      <div class="flex align-start flex--wrap mt-3 align-center justify-center">
         <a
           class="btn btn--dark--outline mr-4"
           href="https://github.com/LouisMazel/vue-mazel-ui"

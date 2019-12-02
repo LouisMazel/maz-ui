@@ -3,7 +3,7 @@
     class="nav-footer flex-fixed"
     role="contentinfo"
   >
-    <nav class="nav-footer-content container flex align-center justify-content-between py-4">
+    <nav class="nav-footer-content container flex align-center space-between py-4">
       <div class="flex hidden-tablet">
         <RouterLink
           :to="{ name: 'Home' }"
@@ -30,7 +30,7 @@
       </div>
     </nav>
     <div class="nav-footer-subs py-2">
-      <div class="container flex flex-end">
+      <div class="container flex align-end">
         <a
           href="https://www.loicmazuel.com/"
           target="_blank"

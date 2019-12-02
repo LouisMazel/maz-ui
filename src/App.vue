@@ -1,7 +1,7 @@
 <template>
   <div
     id="app"
-    class="flex flex-direction-column"
+    class="flex direction-column"
     :class="{
       'is-dark': hasDarkTheme
     }"

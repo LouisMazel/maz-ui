@@ -1,5 +1,5 @@
 <template>
-  <div class="maz-collapse-doc flex flex-wrap">
+  <div class="maz-collapse-doc flex flex--wrap">
     <div class="flex-1 mr-4">
       <ComponentContainer
         :code="codeLight"

@@ -11,7 +11,7 @@
     <div
       v-for="type in inputTypes"
       :key="type"
-      class="flex mt-3 flex-wrap"
+      class="flex mt-3 flex--wrap"
     >
       <div class="flex-component flex-1">
         <h3>{{ type | capitalize }}</h3>
