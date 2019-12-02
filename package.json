@@ -73,8 +73,5 @@
     "type": "git",
     "url": "git+https://github.com/chronotruck/vue-select-input-ui.git"
   },
-  "license": "MIT",
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
-  }
+  "license": "MIT"
 }
