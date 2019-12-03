@@ -13,7 +13,28 @@ import MazSwitch from '@/../packages/MazSwitch'
 import MazTransitionExpand from '@/../packages/MazTransitionExpand'
 
 import { version } from '@/../package.json'
-import './theme'
+// import './theme'
+
+import cssVars from 'css-vars-ponyfill'
+import { color, darkColor, validColor, borderRadius, lightColor, errorColor } from './theme/_subs/Vars'
+import breakPoints from './theme/_subs/BreakPoints'
+import GetTheme from './theme/_subs/GetTheme'
+
+const theme = GetTheme(
+  {
+    color,
+    darkColor,
+    validColor,
+    borderRadius,
+    lightColor,
+    errorColor,
+    breakPoints
+  }
+)
+
+cssVars({
+  variables: theme
+})
 
 if (process.env.NODE_ENV === 'development' && process.env.VUE_APP_MAZ === 'development') {
   require('../packages/scss/style-helpers/index.scss')
@@ -38,6 +59,9 @@ const components = [
 ]
 // eslint-disable-next-line
 const install = (Vue, opts = {}) => {
+  cssVars({
+    variables: theme
+  })
   components.forEach(component => {
     Vue.component(component.name, component)
   })
