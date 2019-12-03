@@ -3,20 +3,14 @@
     :id="uniqueId"
     class="maz-btn btn"
     :class="[
-      classes
+      classes,
+      { hidden: loader }
     ]"
     v-bind="$attrs"
     :disabled="isDisabled"
     @click="$emit('click')"
   >
-    <span
-      class="flex align-center justify-center"
-      :class="{
-        hidden: loader
-      }"
-    >
-      <slot />
-    </span>
+    <slot />
     <div
       v-if="loader"
       class="maz-btn__spinner flex align-center justify-center"
@@ -71,7 +65,7 @@
   .maz-btn {
     position: relative;
 
-    .hidden {
+    &.hidden {
       color: transparent;
     }
 
