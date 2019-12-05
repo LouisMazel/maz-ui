@@ -76,6 +76,7 @@
 <style lang="scss" scoped>
   .documentation {
     min-height: 0;
+    overflow-y: hidden;
 
     &__container {
       overflow-x: auto;

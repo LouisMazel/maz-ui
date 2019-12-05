@@ -126,7 +126,7 @@
       left: 100%;
 
       button {
-        background-color: rgba(darken(#FFF, 10%), 0.9);
+        background-color: #DDD;
         border-radius: 0 8px 8px 0;
         width: 23px;
         height: 48px;

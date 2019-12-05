@@ -18,6 +18,7 @@
       <ArrowDown
         class="maz-collapse__header-btn__arrow ml-2"
         :dark="dark"
+        :color="arrowColor"
       />
     </MazBtn>
     <MazTransitionExpand class="maz-collapse__content">
@@ -42,7 +43,8 @@
     },
     props: {
       open: { type: Boolean, default: false },
-      dark: { type: Boolean, default: false }
+      dark: { type: Boolean, default: false },
+      arrowColor: { type: String, default: null }
     },
     data () {
       return {
