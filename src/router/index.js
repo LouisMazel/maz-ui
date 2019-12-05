@@ -6,7 +6,7 @@ Vue.use(Router)
 
 const componentsRoutes = [
   'Install', 'GetStarted', 'MazBtnDoc', 'MazInputDoc', 'MazSelectDoc', 'MazPhoneNumberInputDoc', 'MazSwitchDoc', 'MazCheckboxDoc', 'MazSidebarDoc',
-  'MazLoaderDoc', 'MazSpinnerDoc', 'MazCollapseDoc', 'MazTransitionExpandDoc', 'MazDialogDoc', 'MazFlexDoc'
+  'MazPaginationDoc', 'MazLoaderDoc', 'MazSpinnerDoc', 'MazCollapseDoc', 'MazTransitionExpandDoc', 'MazDialogDoc', 'MazFlexDoc'
 ]
 
 const componentsRoutesBuild = componentsRoutes.map((route) => {

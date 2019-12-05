@@ -61,7 +61,8 @@
 <script>
   import {
     MazBtn, MazInput, MazSelect, MazPhoneNumberInput, MazSwitch, MazCheckbox,
-    MazDialog, MazLoader, MazSidebar, MazSpinner, MazTransitionExpand, MazCollapse
+    MazDialog, MazLoader, MazSidebar, MazSpinner, MazTransitionExpand, MazCollapse,
+    MazPagination
   } from '@/lib'
 
   export default {
@@ -70,13 +71,14 @@
       /* eslint-disable vue/no-unused-components */
       MazBtn,
       MazInput,
-      MazPhoneNumberInput,
       MazSelect,
       MazSwitch,
       MazCheckbox,
       MazDialog,
       MazLoader,
       MazSidebar,
+      MazPagination,
+      MazPhoneNumberInput,
       MazSpinner,
       MazTransitionExpand,
       MazCollapse

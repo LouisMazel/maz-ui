@@ -5,6 +5,7 @@ import MazDialog from '@/../packages/MazDialog'
 import MazFlex from '@/../packages/MazFlex'
 import MazInput from '@/../packages/MazInput'
 import MazLoader from '@/../packages/MazLoader'
+import MazPagination from '@/../packages/MazPagination'
 import MazPhoneNumberInput from '@/../packages/MazPhoneNumberInput'
 import MazSelect from '@/../packages/MazSelect'
 import MazSidebar from '@/../packages/MazSidebar'
@@ -29,6 +30,7 @@ const components = [
   MazFlex,
   MazInput,
   MazLoader,
+  MazPagination,
   MazPhoneNumberInput,
   MazSelect,
   MazSwitch,
@@ -56,6 +58,7 @@ export {
   MazFlex,
   MazInput,
   MazLoader,
+  MazPagination,
   MazPhoneNumberInput,
   MazSelect,
   MazSwitch,

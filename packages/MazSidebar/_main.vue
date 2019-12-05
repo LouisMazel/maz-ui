@@ -56,8 +56,8 @@
 <script>
   import MazLoader from '../MazLoader'
   import uniqueId from './../mixins/uniqueId'
-  import ArrowLeft from './_subs/ArrowLeft'
-  import ArrowRight from './_subs/ArrowRight'
+  import ArrowLeft from '../_subs/ArrowLeft'
+  import ArrowRight from '../_subs/ArrowRight'
 
   /**
    * Generic component used to show a togglable sidebar (left or right) in the layout

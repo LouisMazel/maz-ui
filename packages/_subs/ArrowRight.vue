@@ -7,6 +7,7 @@
     :class="{ 'is-white': dark }"
   >
     <path
+      :fill="color"
       class="arrow"
       d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"
     />
@@ -21,7 +22,8 @@
   export default {
     name: 'ArrowRight',
     props: {
-      dark: { type: Boolean, default: false }
+      dark: { type: Boolean, default: false },
+      color: { type: String, default: null }
     }
   }
 </script>
