@@ -1,8 +1,8 @@
 <template>
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
+    :width="size"
+    :height="size"
     viewBox="0 0 24 24"
     :class="{ 'is-white': dark }"
   >
@@ -23,7 +23,8 @@
     name: 'ArrowLeft',
     props: {
       dark: { type: Boolean, default: false },
-      color: { type: String, default: null }
+      color: { type: String, default: null },
+      size: { type: Number, default: 24 }
     }
   }
 </script>

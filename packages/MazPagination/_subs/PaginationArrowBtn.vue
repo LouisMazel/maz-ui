@@ -6,7 +6,7 @@
     <component
       :is="`Arrow${right ? 'Right' : 'Left'}`"
       color="#6F6A6A"
-      :size="80"
+      :size="28"
     />
   </button>
 </template>

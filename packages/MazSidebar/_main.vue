@@ -170,17 +170,17 @@
     }
 
     &.has-shadow {
-      box-shadow: 2px 1px 8px rgba(0, 0, 0, 0.1);
+      box-shadow: 2px 5px 8px rgba(0, 0, 0, 0.1);
 
       .maz-sidebar__close-btn button {
         box-shadow: 2px 1px 3px rgba(0, 0, 0, 0.1);
       }
 
       &.is-right {
-        box-shadow: -2px -1px 8px rgba(0, 0, 0, 0.1);
+        box-shadow: -2px 5px 8px rgba(0, 0, 0, 0.1);
 
         .maz-sidebar__close-btn button {
-          box-shadow: -2px -1px 8px rgba(0, 0, 0, 0.1);
+          box-shadow: -2px 1px 8px rgba(0, 0, 0, 0.1);
         }
       }
     }
