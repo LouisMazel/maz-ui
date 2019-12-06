@@ -40,7 +40,8 @@
       type: { type: String, default: 'primary' },
       size: { type: String, default: null },
       outline: { type: Boolean, default: false },
-      rounded: { type: Boolean, default: false }
+      rounded: { type: Boolean, default: false },
+      fab: { type: Boolean, default: false }
     },
     computed: {
       isDisabled () {
@@ -48,12 +49,13 @@
         return loader || disabled
       },
       classes () {
-        const { type, size, outline, rounded, isDisabled } = this
+        const { type, size, outline, rounded, isDisabled, fab } = this
         return [
           ...(type ? [`btn--${type}`] : [null]),
           ...(size ? [`btn--${size}`] : [null]),
           ...(outline ? [`btn--${type}--outline`] : [null]),
           ...(rounded ? [`btn--rounded`] : [null]),
+          ...(fab ? [`btn--fab`] : [null]),
           ...(isDisabled ? [`btn--disabled`] : [null])
         ]
       }

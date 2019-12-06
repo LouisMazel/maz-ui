@@ -22,6 +22,11 @@
         Primary default
       </MazBtn>
       <MazBtn
+        fab
+      >
+        fab
+      </MazBtn>
+      <MazBtn
         loader
       >
         Primary default
@@ -88,6 +93,26 @@
           rounded
         >
           {{ type }} {{ size }}
+        </MazBtn>
+      </div>
+    </ComponentContainer>
+    <ComponentContainer>
+      <h3 class="mb-3">
+        Fab
+      </h3>
+      <div
+        v-for="type in btnTypes"
+        :key="`fab-${type}`"
+        class="btn-container"
+      >
+        <MazBtn
+          v-for="size in btnSizes"
+          :key="`fab-${type}-${size}`"
+          :size="size"
+          :type="type"
+          fab
+        >
+          {{ size || 'default' }}
         </MazBtn>
       </div>
     </ComponentContainer>

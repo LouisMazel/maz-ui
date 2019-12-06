@@ -52,6 +52,28 @@ $mini-size: 30px;
     font-size: 12px;
   }
 
+  &--fab {
+    border-radius: 50%;
+    padding: 0;
+    height: 40px;
+    width: 40px;
+
+    &.btn--md {
+      height: 36px;
+      width: 36px;
+    }
+
+    &.btn--sm {
+      height: 32px;
+      width: 32px;
+    }
+
+    &.btn--mini {
+      height: 28px;
+      width: 28px;
+    }
+  }
+
   &--white,
   &--light {
     color: $secondary-color;
