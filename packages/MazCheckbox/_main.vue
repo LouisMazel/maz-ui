@@ -60,14 +60,14 @@
       top: 4px;
       width: 15px;
       height: 15px;
-      border: 1px solid var(--maz-primary-color);
+      border: 1px solid $primary-color;
       background: transparent;
       border-radius: 4px;
       transition: all 0.2s;
     }
 
     [type='checkbox']:not(:checked) + label::before {
-      border: 1px solid var(--maz-primary-color);
+      border: 1px solid $primary-color;
       transition: all 0.2s;
     }
 
@@ -80,7 +80,7 @@
       font-size: 14px;
       width: 9px;
       height: 9px;
-      background-color: var(--maz-primary-color);
+      background-color: $primary-color;
       transition: all 0.2s;
       border-radius: 2px;
     }
@@ -88,13 +88,13 @@
     [type='checkbox']:not(:checked) + label::after {
       opacity: 0;
       transform: scale(0);
-      color: var(--maz-primary-color);
+      color: $primary-color;
     }
 
     [type='checkbox']:checked + label::after {
       opacity: 1;
       transform: scale(1);
-      color: var(--maz-primary-color);
+      color: $primary-color;
     }
   }
 </style>

@@ -26,7 +26,7 @@
   text-align: right;
 }
 
-@import './variables/_color_types.scss';
+@import './variables/_color_types';
 
 @each $name, $color in $color_types {
   @if (type-of($color) == 'color') {
@@ -36,7 +36,7 @@
   }
 }
 
-@import './variables/_mixins.scss';
+@import './mixins';
 
 .dots-text {
   text-overflow: ellipsis;

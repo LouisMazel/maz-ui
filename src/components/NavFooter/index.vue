@@ -60,15 +60,15 @@
 
 <style lang="scss" scoped>
   .nav-footer {
-    color: var(--maz-third-color);
-    border-top: 1px solid var(--maz-text-color-dark);
-    background-color: var(--maz-bg-color);
+    color: $third-color;
+    border-top: 1px solid $text-color-dark;
+    background-color: $bg-color;
 
     &-subs {
-      background-color: var(--maz-hover-color);
+      background-color: $hover-color;
 
       a {
-        color: var(--maz-muted-color);
+        color: $muted-color;
       }
     }
 
@@ -92,7 +92,7 @@
         }
       }
 
-      @media screen and (max-width: var(--maz-breakpoint-tablet)) {
+      @media screen and (max-width: $breakpoint-tablet) {
         flex-direction: column;
 
         & > * {
@@ -103,11 +103,11 @@
   }
 
   .is-dark .nav-footer {
-    background-color: var(--maz-bg-color-dark);
-    border-color: var(--maz-hover-color-dark);
+    background-color: $bg-color-dark;
+    border-color: $hover-color-dark;
 
     &-subs {
-      background-color: var(--maz-hover-color-dark);
+      background-color: $hover-color-dark;
     }
   }
 </style>

@@ -35,8 +35,8 @@
 </script>
 
 <style lang="scss" scoped>
-  $primary: var(--maz-primary-color);
-  $primary-light: var(--maz-primary-color-transparency);
+  $primary: $primary-color;
+  $primary-light: $primary-color-transparency;
   $gray: #9A9999;
 
   .maz-switch {

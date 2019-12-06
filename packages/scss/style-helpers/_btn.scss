@@ -11,7 +11,7 @@ $mini-size: 30px;
   background-color: $primary-color;
   color: white;
   display: inline-block;
-  border-radius: var(--maz-border-radius);
+  border-radius: $border-radius;
   line-height: 1;
   box-sizing: border-box;
   padding: 12px 20px;
@@ -54,7 +54,7 @@ $mini-size: 30px;
 
   &--white,
   &--light {
-    color: var(--maz-second-color);
+    color: $secondary-color;
   }
 }
 
@@ -67,7 +67,7 @@ a.btn {
   }
 }
 
-@import './variables/_color_types.scss';
+@import './variables/_color_types';
 
 @each $name, $color in $color_types {
   @if (type-of($color) == 'color') {
@@ -103,13 +103,13 @@ a.btn {
 }
 
 .btn--default--outline {
-  color: var(--maz-second-color);
+  color: $secondary-color;
 }
 
 .btn--disabled:disabled {
   box-shadow: none;
-  background-color: var(--maz-third-color);
-  border: 1px solid var(--maz-third-color);
+  background-color: $disabled-color;
+  border: 1px solid $disabled-color;
   color: white;
   cursor: not-allowed;
 }

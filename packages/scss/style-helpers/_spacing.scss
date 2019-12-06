@@ -1,4 +1,4 @@
-@import './variables/index.scss';
+@import './variables';
 
 @function set-var-class($var) {
   @if ($var == 'margin') {

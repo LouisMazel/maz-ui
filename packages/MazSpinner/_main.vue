@@ -42,7 +42,7 @@
       animation: spin 0.6s linear infinite;
 
       &__info path {
-        fill: var(--maz-primary-color);
+        fill: $primary-color;
       }
 
       &__white path {

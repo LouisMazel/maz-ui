@@ -28,14 +28,14 @@
 
 <style lang="scss">
   #app.is-dark {
-    background-color: var(--maz-bg-color-dark);
+    background-color: $bg-color-dark;
 
     h3,
     h4,
     h5,
     h6,
     p {
-      color: var(--maz-text-color-dark);
+      color: $text-color-dark;
     }
   }
 </style>

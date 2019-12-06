@@ -86,8 +86,8 @@
 
 <style lang="scss" scoped>
   .header {
-    background-color: var(--maz-bg-color);
-    border-bottom: 1px solid var(--maz-hover-color);
+    background-color: $bg-color;
+    border-bottom: 1px solid $hover-color;
 
     &__logo {
       text-decoration: none;
@@ -107,39 +107,39 @@
 
         &:focus,
         &:hover {
-          background-color: var(--maz-hover-color);
+          background-color: $hover-color;
         }
 
         &.router-link-exact-active.home {
-          border-bottom: 2px solid var(--maz-primary-color);
+          border-bottom: 2px solid $primary-color;
         }
 
         &.router-link-active:not(.home) {
-          border-bottom: 2px solid var(--maz-primary-color);
+          border-bottom: 2px solid $primary-color;
         }
       }
     }
 
     &__title {
       &__sub {
-        color: var(--maz-muted-color);
+        color: $muted-color;
       }
     }
   }
 
   .is-dark {
     .header {
-      background-color: var(--maz-bg-color-dark);
-      border-color: var(--maz-hover-color-dark);
+      background-color: $bg-color-dark;
+      border-color: $hover-color-dark;
 
       &__title__sub {
-        color: var(--maz-text-color-dark);
+        color: $text-color-dark;
       }
 
       &__menu__item {
         &:focus,
         &:hover {
-          background-color: var(--maz-hover-color-dark);
+          background-color: $hover-color-dark;
         }
       }
     }

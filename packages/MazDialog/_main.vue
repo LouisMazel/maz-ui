@@ -143,7 +143,7 @@
 
     &__body {
       max-height: 100vh;
-      color: var(--maz-text-color);
+      color: $text-color;
     }
 
     &__container {
@@ -151,19 +151,19 @@
       background-color: #FFF;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
       transition: all 0.3s ease;
-      border-radius: var(--maz-border-radius);
+      border-radius: $border-radius;
 
-      @media only screen and (max-width: var(--maz-breakpoint-tablet)) {
+      @media only screen and (max-width: $breakpoint-tablet) {
         width: 100%;
       }
     }
 
     &__header {
-      background-color: var(--maz-bg-color-dark);
-      border-top-left-radius: var(--maz-border-radius);
-      border-top-right-radius: var(--maz-border-radius);
+      background-color: $bg-color-dark;
+      border-top-left-radius: $border-radius;
+      border-top-right-radius: $border-radius;
       border: none;
-      color: var(--maz-text-color-dark);
+      color: $text-color-dark;
 
       h5 {
         color: white;
@@ -184,13 +184,13 @@
 
     &--success {
       .maz-dialog__header {
-        background-color: var(--maz-valid-color);
+        background-color: $success-color;
       }
     }
 
     &--danger {
       .maz-dialog__header {
-        background-color: var(--maz-error-color);
+        background-color: $danger-color;
       }
     }
   }

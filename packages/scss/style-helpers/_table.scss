@@ -1,6 +1,6 @@
 table.md {
   border-spacing: 0;
-  border-radius: var(--maz-border-radius);
+  border-radius: $border-radius;
   border-collapse: collapse;
   width: 100%;
   table-layout: fixed;
@@ -13,7 +13,7 @@ table.md {
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
 
   tr {
-    background-color: var(--maz-bg-color);
+    background-color: $bg-color;
     width: 100%;
 
     th,
@@ -23,23 +23,23 @@ table.md {
     }
 
     &:nth-child(2n) {
-      background-color: var(--maz-hover-color);
+      background-color: $hover-color;
     }
   }
 }
 
 .is-dark table.md {
-  color: var(--maz-text-color-dark);
+  color: $text-color-dark;
 
   tr {
-    background-color: var(--maz-bg-color-dark);
+    background-color: $bg-color-dark;
 
     &:nth-child(2n) {
-      background-color: var(--maz-hover-color-dark);
+      background-color: $hover-color-dark;
     }
 
     td.text-muted {
-      color: var(--maz-muted-color-dark);
+      color: $muted-color-dark;
     }
   }
 }

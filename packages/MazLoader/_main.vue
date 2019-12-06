@@ -42,7 +42,7 @@
           width: 6px;
           height: 6px;
           border-radius: 50%;
-          background-color: var(--maz-primary-color);
+          background-color: $primary-color;
           margin: -3px 0 0 -3px;
         }
 

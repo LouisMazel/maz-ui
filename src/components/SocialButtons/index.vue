@@ -33,7 +33,7 @@
   .social-buttons {
     a {
       margin-right: 15px;
-      color: var(--maz-primary-color);
+      color: $primary-color;
 
       &:last-child {
         margin-right: 0;
@@ -47,11 +47,11 @@
 
   .is-dark .social-buttons {
     a {
-      background-color: var(--maz-bg-color-dark);
+      background-color: $bg-color-dark;
 
       &:hover,
       &:focus {
-        background-color: var(--maz-hover-color-dark);
+        background-color: $hover-color-dark;
       }
     }
   }

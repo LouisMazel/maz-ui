@@ -148,17 +148,17 @@
     }
 
     &.is-dark {
-      background-color: var(--maz-bg-color-dark);
-      border-right: 1px solid var(--maz-hover-color-dark);
+      background-color: $bg-color-dark;
+      border-right: 1px solid $hover-color-dark;
 
       .maz-sidebar {
         &__load-layer {
-          background-color: var(--maz-muted-color-dark);
+          background-color: $muted-color-dark;
         }
 
         &__close-btn {
           button {
-            background-color: var(--maz-hover-color-dark);
+            background-color: $hover-color-dark;
             color: white;
 
             svg path {

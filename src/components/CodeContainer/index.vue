@@ -39,7 +39,7 @@
     font-size: 12px;
     background-color: #FAFAFA;
     border: 1px solid #EAEEFB;
-    border-radius: var(--maz-border-radius);
+    border-radius: $border-radius;
     -webkit-font-smoothing: auto;
     overflow-x: auto;
     padding: 0 20px;
@@ -49,12 +49,12 @@
     }
 
     &.is-dark {
-      background-color: var(--maz-hover-color-dark);
+      background-color: $hover-color-dark;
       border: 1px solid #535673;
 
       .hljs,
       .hljs-subst {
-        color: var(--maz-text-color-dark);
+        color: $text-color-dark;
       }
     }
   }

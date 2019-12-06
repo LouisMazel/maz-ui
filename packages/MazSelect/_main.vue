@@ -245,7 +245,6 @@
 </script>
 
 <style lang="scss" scoped>
-  @import '@/../packages/scss/vars';
 
   .text-muted {
     color: $muted-color;
@@ -274,7 +273,7 @@
       opacity: 0;
       transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
       font-size: 11px;
-      color: $second-color;
+      color: $secondary-color;
     }
 
     &__input {
@@ -295,27 +294,27 @@
       z-index: 0;
 
       &::-webkit-input-placeholder {
-        color: $second-color;
+        color: $secondary-color;
       }
 
       &::-moz-placeholder {
-        color: $second-color;
+        color: $secondary-color;
       }
 
       &:-ms-input-placeholder {
-        color: $second-color;
+        color: $secondary-color;
       }
 
       &::-ms-input-placeholder {
-        color: $second-color;
+        color: $secondary-color;
       }
 
       &:-moz-placeholder {
-        color: $second-color;
+        color: $secondary-color;
       }
 
       &::placeholder {
-        color: $second-color;
+        color: $secondary-color;
       }
     }
 
@@ -330,10 +329,10 @@
       height: 24px;
 
       &__arrow {
-        color: $second-color;
+        color: $secondary-color;
 
         path.arrow {
-          fill: $second-color;
+          fill: $secondary-color;
         }
       }
     }
@@ -378,46 +377,46 @@
     &.is-dark {
       .maz-select {
         &__label {
-          color: $second-color-dark;
+          color: $secondary-color-dark;
         }
 
         &__input {
           background-color: $bg-color-dark;
           border-color: $third-color-dark;
-          color: $second-color-dark;
+          color: $secondary-color-dark;
 
           &:hover {
             border-color: $primary-color;
           }
 
           &::-webkit-input-placeholder {
-            color: $second-color-dark;
+            color: $secondary-color-dark;
           }
 
           &::-moz-placeholder {
-            color: $second-color-dark;
+            color: $secondary-color-dark;
           }
 
           &:-ms-input-placeholder {
-            color: $second-color-dark;
+            color: $secondary-color-dark;
           }
 
           &::-ms-input-placeholder {
-            color: $second-color-dark;
+            color: $secondary-color-dark;
           }
 
           &:-moz-placeholder {
-            color: $second-color-dark;
+            color: $secondary-color-dark;
           }
 
           &::placeholder {
-            color: $second-color-dark;
+            color: $secondary-color-dark;
           }
         }
 
         &__toggle {
           &__arrow {
-            color: $second-color-dark;
+            color: $secondary-color-dark;
           }
         }
 
@@ -425,7 +424,7 @@
           background-color: $bg-color-dark;
 
           &__item {
-            color: $second-color-dark;
+            color: $secondary-color-dark;
 
             &:hover,
             &.keyboard-selected {
@@ -479,34 +478,34 @@
     &.has-error {
       .maz-select__input,
       .maz-select__input:hover {
-        border-color: $error-color;
+        border-color: $danger-color;
       }
 
       &.is-focused {
         .maz-select__input {
-          box-shadow: 0 0 0 0.2rem $error-color-transparency;
+          box-shadow: 0 0 0 0.2rem $danger-color-transparency;
         }
       }
 
       .maz-select__label {
-        color: $error-color;
+        color: $danger-color;
       }
     }
 
     &.is-valid {
       .maz-select__input,
       .maz-select__input:hover {
-        border-color: $valid-color;
+        border-color: $success-color;
       }
 
       &.is-focused {
         .maz-select__input {
-          box-shadow: 0 0 0 0.2rem $valid-color-transparency;
+          box-shadow: 0 0 0 0.2rem $success-color-transparency;
         }
       }
 
       .maz-select__label {
-        color: $valid-color;
+        color: $success-color;
       }
     }
 

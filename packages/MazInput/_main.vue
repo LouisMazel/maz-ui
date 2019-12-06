@@ -169,8 +169,6 @@
 </script>
 
 <style lang="scss" scoped>
-  @import '@/../packages/scss/vars';
-
   .maz-input {
     position: relative;
 
@@ -188,7 +186,7 @@
       opacity: 0;
       transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
       font-size: 11px;
-      color: $second-color;
+      color: $secondary-color;
     }
 
     &__input {
@@ -223,27 +221,27 @@
       }
 
       &::-webkit-input-placeholder {
-        color: $second-color;
+        color: $secondary-color;
       }
 
       &::-moz-placeholder {
-        color: $second-color;
+        color: $secondary-color;
       }
 
       &:-ms-input-placeholder {
-        color: $second-color;
+        color: $secondary-color;
       }
 
       &::-ms-input-placeholder {
-        color: $second-color;
+        color: $secondary-color;
       }
 
       &:-moz-placeholder {
-        color: $second-color;
+        color: $secondary-color;
       }
 
       &::placeholder {
-        color: $second-color;
+        color: $secondary-color;
       }
 
       &__input:-webkit-autofill,
@@ -251,7 +249,7 @@
       &__input:-webkit-autofill:focus,
       &__input:-webkit-autofill:active {
         box-shadow: 0 0 0 1000px $bg-color inset !important;
-        -webkit-text-fill-color: $second-color !important;
+        -webkit-text-fill-color: $secondary-color !important;
       }
     }
 
@@ -268,7 +266,7 @@
       appearance: none;
       border: none;
       background: transparent;
-      color: $second-color;
+      color: $secondary-color;
       border-radius: $clear-size;
       cursor: pointer;
       font-size: 12px;
@@ -309,40 +307,40 @@
     &.is-dark {
       .maz-input {
         &__label {
-          color: $second-color-dark;
+          color: $secondary-color-dark;
         }
 
         &__input {
           background-color: $bg-color-dark;
           border: 1px solid $third-color-dark;
-          color: $second-color-dark;
+          color: $secondary-color-dark;
 
           &:hover {
             border-color: $primary-color;
           }
 
           &::-webkit-input-placeholder {
-            color: $second-color-dark;
+            color: $secondary-color-dark;
           }
 
           &::-moz-placeholder {
-            color: $second-color-dark;
+            color: $secondary-color-dark;
           }
 
           &:-ms-input-placeholder {
-            color: $second-color-dark;
+            color: $secondary-color-dark;
           }
 
           &::-ms-input-placeholder {
-            color: $second-color-dark;
+            color: $secondary-color-dark;
           }
 
           &:-moz-placeholder {
-            color: $second-color-dark;
+            color: $secondary-color-dark;
           }
 
           &::placeholder {
-            color: $second-color-dark;
+            color: $secondary-color-dark;
           }
 
           &__input:-webkit-autofill,
@@ -350,12 +348,12 @@
           &__input:-webkit-autofill:focus,
           &__input:-webkit-autofill:active {
             box-shadow: 0 0 0 1000px $bg-color-dark inset !important;
-            -webkit-text-fill-color: $second-color-dark !important;
+            -webkit-text-fill-color: $secondary-color-dark !important;
           }
         }
 
         &__clear {
-          color: $second-color-dark;
+          color: $secondary-color-dark;
 
           &__effect {
             background-color: $muted-color-dark;
@@ -382,14 +380,14 @@
 
       &.has-error {
         .maz-input__input {
-          box-shadow: 0 0 0 0.2rem $error-color-transparency;
+          box-shadow: 0 0 0 0.2rem $danger-color-transparency;
         }
       }
 
       &.is-valid {
         .maz-input__input {
-          border-color: $valid-color;
-          box-shadow: 0 0 0 0.2rem $valid-color-transparency;
+          border-color: $success-color;
+          box-shadow: 0 0 0 0.2rem $success-color-transparency;
         }
       }
     }
@@ -430,22 +428,22 @@
     &.is-valid {
       .maz-input__input,
       .maz-input__input:hover {
-        border-color: $valid-color;
+        border-color: $success-color;
       }
 
       .maz-input__label {
-        color: $valid-color;
+        color: $success-color;
       }
     }
 
     &.has-error {
       .maz-input__input,
       .maz-input__input:hover {
-        border-color: $error-color;
+        border-color: $danger-color;
       }
 
       .maz-input__label {
-        color: $error-color;
+        color: $danger-color;
       }
     }
 

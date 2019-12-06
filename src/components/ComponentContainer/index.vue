@@ -56,11 +56,11 @@
 
 <style lang="scss" scoped>
   .component-container {
-    color: var(--maz-text-color);
+    color: $text-color;
     min-width: 200px;
 
     &__footer {
-      border-top: 1px solid var(--maz-text-color-dark);
+      border-top: 1px solid $text-color-dark;
       overflow: hidden;
 
       &__collapse {
@@ -69,12 +69,12 @@
     }
 
     &.is-dark {
-      color: var(--maz-text-color-dark);
-      background-color: var(--maz-bg-color-dark);
-      border: 1px solid var(--maz-hover-color-dark);
+      color: $text-color-dark;
+      background-color: $bg-color-dark;
+      border: 1px solid $hover-color-dark;
 
       .component-container__footer {
-        border-color: var(--maz-hover-color-dark);
+        border-color: $hover-color-dark;
 
         &__collapse {
           border: none;

@@ -256,7 +256,6 @@
 
 <style lang="scss" scoped>
   @import './assets/iti-flags/flags.css';
-  @import '@/../packages/scss/vars';
 
   // Light Theme
   .country-selector {
@@ -284,7 +283,7 @@
       opacity: 0;
       transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
       font-size: 11px;
-      color: $second-color;
+      color: $secondary-color;
     }
 
     &__input {
@@ -319,10 +318,10 @@
       height: 24px;
 
       &__arrow {
-        color: $second-color;
+        color: $secondary-color;
 
         path.arrow {
-          fill: $second-color;
+          fill: $secondary-color;
         }
       }
     }
@@ -376,7 +375,7 @@
 
         &__calling-code {
           width: 45px;
-          color: var(--maz-muted-color);
+          color: $muted-color;
         }
 
         &:hover,
@@ -400,46 +399,46 @@
     &.is-dark {
       .country-selector {
         &__label {
-          color: $second-color-dark;
+          color: $secondary-color-dark;
         }
 
         &__input {
           cursor: pointer;
           background-color: $bg-color-dark;
           border: 1px solid $third-color-dark;
-          color: $second-color-dark;
+          color: $secondary-color-dark;
 
           &::-webkit-input-placeholder {
-            color: $second-color-dark;
+            color: $secondary-color-dark;
           }
 
           &::-moz-placeholder {
-            color: $second-color-dark;
+            color: $secondary-color-dark;
           }
 
           &:-ms-input-placeholder {
-            color: $second-color-dark;
+            color: $secondary-color-dark;
           }
 
           &::-ms-input-placeholder {
-            color: $second-color-dark;
+            color: $secondary-color-dark;
           }
 
           &:-moz-placeholder {
-            color: $second-color-dark;
+            color: $secondary-color-dark;
           }
 
           &::placeholder {
-            color: $second-color-dark;
+            color: $secondary-color-dark;
           }
         }
 
         &__toggle {
           &__arrow {
-            color: $second-color-dark;
+            color: $secondary-color-dark;
 
             path.arrow {
-              fill: $second-color-dark;
+              fill: $secondary-color-dark;
             }
           }
         }
@@ -455,24 +454,24 @@
           }
 
           &__calling-code {
-            color: var(--maz-muted-color-dark);
+            color: $muted-color-dark;
           }
         }
       }
 
       .country-selector__input,
       .country-selector__list {
-        color: $second-color-dark;
+        color: $secondary-color-dark;
       }
     }
 
     &.is-valid {
       .country-selector__input {
-        border-color: $valid-color;
+        border-color: $success-color;
       }
 
       .country-selector__label {
-        color: $valid-color;
+        color: $success-color;
       }
     }
 
@@ -500,18 +499,18 @@
 
       &.is-valid {
         .country-selector__input {
-          box-shadow: 0 0 0 0.2rem $valid-color-transparency;
+          box-shadow: 0 0 0 0.2rem $success-color-transparency;
         }
       }
     }
 
     &.has-error {
       .country-selector__input {
-        border-color: $error-color;
+        border-color: $danger-color;
       }
 
       .country-selector__label {
-        color: $error-color;
+        color: $danger-color;
       }
     }
 

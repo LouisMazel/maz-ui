@@ -56,15 +56,15 @@
 
 <style lang="scss" scoped>
   .maz-collapse {
-    color: var(--maz-text-color);
-    border-radius: var(--maz-border-radius);
+    color: $text-color;
+    border-radius: $border-radius;
     overflow: hidden;
-    border: 1px solid var(--maz-hover-color);
+    border: 1px solid $hover-color;
 
     &__header-btn {
       background-color: transparent;
       border: none;
-      color: var(--maz-text-color);
+      color: $text-color;
       width: 100%;
       outline: none;
       font-size: 14px;
@@ -75,7 +75,7 @@
     }
 
     &__content {
-      border-top: 1px solid var(--maz-text-color-dark);
+      border-top: 1px solid $text-color-dark;
     }
 
     &.is-open {
@@ -85,22 +85,22 @@
     }
 
     &.is-dark {
-      color: var(--maz-text-color-dark);
-      background-color: var(--maz-bg-color-dark);
-      border: 1px solid var(--maz-third-color-dark);
+      color: $text-color-dark;
+      background-color: $bg-color-dark;
+      border: 1px solid $third-color-dark;
 
       .maz-collapse {
         &__header-btn {
-          color: var(--maz-text-color-dark);
+          color: $text-color-dark;
 
           &:hover,
           &:focus {
-            background-color: var(--maz-hover-color-dark);
+            background-color: $hover-color-dark;
           }
         }
 
         &__content {
-          border-color: var(--maz-third-color-dark);
+          border-color: $third-color-dark;
         }
       }
     }

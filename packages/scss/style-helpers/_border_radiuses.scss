@@ -1,4 +1,4 @@
-@import './variables/_radiuses.scss';
+@import './variables/_radiuses';
 
 @each $size, $value in $radiuses {
   .br-#{$size} {

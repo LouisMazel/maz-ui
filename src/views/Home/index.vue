@@ -78,29 +78,29 @@
     }
 
     h2 {
-      color: var(--maz-text-color);
+      color: $text-color;
     }
 
     p {
-      color: var(--maz-muted-color);
+      color: $muted-color;
     }
   }
 
   .is-dark {
     .home {
       h2 {
-        color: var(--maz-text-color-dark);
+        color: $text-color-dark;
       }
 
       .btn--dark--outline {
-        background-color: var(--maz-bg-color-dark);
-        color: var(--maz-text-color-dark);
-        border-color: var(--maz-text-color-dark);
+        background-color: $bg-color-dark;
+        color: $text-color-dark;
+        border-color: $text-color-dark;
 
         &:hover,
         &:focus {
-          background-color: var(--maz-text-color-dark);
-          color: var(--maz-bg-color-dark);
+          background-color: $text-color-dark;
+          color: $bg-color-dark;
         }
       }
     }

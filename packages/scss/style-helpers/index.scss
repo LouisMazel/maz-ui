@@ -1,3 +1,5 @@
+@import './mixins';
+@import './variables';
 @import './_bg_colors.scss';
 @import './_label.scss';
 @import './_dot.scss';
@@ -16,7 +18,6 @@
 @import './_border_radiuses.scss';
 @import './_fonts.scss';
 @import './_responsive.scss';
-@import './variables/_base.scss';
 
 *,
 *::before,
@@ -51,7 +52,7 @@ body,
   line-height: $base-line-height;
   font-kerning: normal;
   height: 100%;
-  color: var(--maz-text-color);
+  color: $text-color;
 }
 
 h1,
@@ -65,5 +66,5 @@ h6 {
 
 h1,
 h2 {
-  color: var(--maz-primary-color);
+  color: $primary-color;
 }

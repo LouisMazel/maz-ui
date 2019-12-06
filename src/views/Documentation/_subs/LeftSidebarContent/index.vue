@@ -67,18 +67,18 @@
       font-weight: 300;
 
       &.router-link-active {
-        color: var(--maz-primary-color);
+        color: $primary-color;
       }
     }
   }
 
   .is-dark .menu-item {
-    background-color: var(--maz-bg-color-dark);
-    color: var(--maz-text-color-dark);
+    background-color: $bg-color-dark;
+    color: $text-color-dark;
 
     &:hover,
     &:focus {
-      background-color: var(--maz-hover-color-dark);
+      background-color: $hover-color-dark;
     }
   }
 </style>
