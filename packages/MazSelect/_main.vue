@@ -2,7 +2,6 @@
   <div
     :id="id"
     ref="MazSelect"
-    v-click-outside="closeList"
     :class="[{
       'is-focused': isFocus,
       'has-list-open': hasListOpen,
@@ -14,7 +13,7 @@
       'is-valid': valid
     }, size]"
     class="maz-select"
-    @click.stop="toggleList"
+    @blur.capture="handleBlur"
   >
     <input
       :id="uniqueId"
@@ -28,10 +27,13 @@
       class="maz-select__input"
       readonly
       @keydown="keyboardNav"
-      @focus.prevent="isFocus = true"
-      @blur.prevent="closeList"
+      @focus="isFocus = true"
+      @click.stop="toggleList"
     >
-    <div class="maz-select__toggle">
+    <div
+      class="maz-select__toggle"
+      @click.stop="toggleList"
+    >
       <slot name="arrow">
         <svg
           mlns="http://www.w3.org/2000/svg"
@@ -92,14 +94,10 @@
 </template>
 
 <script>
-  import { directive } from 'v-click-outside'
   import uniqueId from './../mixins/uniqueId'
 
   export default {
     name: 'MazSelect',
-    directives: {
-      clickOutside: directive
-    },
     mixins: [uniqueId],
     props: {
       itemHeight: { type: Number, default: 35 },
@@ -170,26 +168,41 @@
       }
     },
     methods: {
+      handleBlur (e) {
+        if (e.relatedTarget === null) return
+        this.isFocus = false
+        this.closeList()
+      },
       toggleList () {
         this.hasListOpen ? this.closeList() : this.openList()
       },
       openList () {
         if (!this.disabled) {
-          this.$emit('focus')
+          this.$emit('open')
           this.isFocus = true
           this.hasListOpen = true
+          this.selectFirstValue()
           if (this.value && this.hasListOpen) this.scrollToSelectedOnFocus(this.selectedValueIndex)
         }
       },
       closeList () {
-        this.isFocus = false
+        this.$emit('close')
         this.hasListOpen = false
-        this.$emit('blur')
       },
-      updateValue (val) {
+      async reset () {
+        this.closeList()
+        await this.$nextTick()
+        this.$refs.SelectInputUiInput.focus()
+      },
+      selectFirstValue () {
+        if (this.value) return
+        this.$emit('input', this.options[0].value)
+      },
+      async updateValue (val) {
         this.tmpValue = val
         this.$emit('input', val || null)
-        this.closeList()
+        await this.$nextTick()
+        this.reset()
       },
       scrollToSelectedOnFocus (arrayIndex) {
         this.$nextTick(() => {
@@ -215,7 +228,6 @@
         } else if (code === 13) {
           // enter key
           this.hasListOpen ? this.updateValue(this.tmpValue) : this.openList()
-          this.updateValue(this.tmpValue)
         } else if (code === 27) {
           // escape key
           this.closeList()
@@ -255,7 +267,6 @@
     position: relative;
     height: 40px;
     min-height: 40px;
-    z-index: 0;
     user-select: none;
 
     &:hover {
@@ -360,6 +371,7 @@
         overflow: hidden;
         font-size: 12px;
         cursor: pointer;
+        color: $text-color;
 
         &:hover,
         &.keyboard-selected {
