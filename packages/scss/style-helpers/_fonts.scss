@@ -1,4 +1,4 @@
-@import './variables';
+@import './variables/index';
 
 // Font-size
 @each $size in $font-sizes {

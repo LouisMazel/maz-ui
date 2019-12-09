@@ -36,7 +36,7 @@
   }
 }
 
-@import './mixins';
+@import './mixins/index';
 
 .dots-text {
   text-overflow: ellipsis;
