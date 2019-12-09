@@ -1,7 +1,11 @@
 <template>
-  <div class="music-pagination flex align-center justify-center">
-    <div class="music-pagination__container flex align-center">
+  <div
+    class="maz-pagination flex align-center justify-center"
+    :class="{ 'is-dark': dark }"
+  >
+    <div class="maz-pagination__container flex align-center">
       <PaginationArrowBtn
+        :dark="dark"
         @click="previous"
       />
       <template
@@ -23,6 +27,7 @@
       </template>
 
       <PaginationArrowBtn
+        :dark="dark"
         right
         @click="next"
       />
@@ -47,7 +52,8 @@
     props: {
       value: { type: Number, required: true },
       pageCount: { type: Number, required: true },
-      pageRange: { type: Number, default: 3 }
+      pageRange: { type: Number, default: 3 },
+      dark: { type: Boolean, default: false }
     },
     computed: {
       currentPage: {
@@ -146,14 +152,18 @@
 </script>
 
 <style lang="scss" scoped>
-  .music-pagination {
-    padding: 40px 0;
-
+  .maz-pagination {
     &__container {
       height: 50px;
-      border-radius: var(--maz-border-radius);
+      border-radius: 50px;
       padding: 0 10px;
-      background-color: var(--maz-hover-color);
+      background-color: $hover-color;
+    }
+
+    &.is-dark {
+      .maz-pagination__container {
+        background-color: $bg-color-dark-l;
+      }
     }
   }
 </style>

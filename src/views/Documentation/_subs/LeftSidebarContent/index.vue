@@ -17,10 +17,26 @@
       Components
     </h3>
     <div class="left-sidebar-content__content">
+      <h4 class="my-3">
+        Form
+      </h4>
       <router-link
-        v-for="route in routesComponents"
+        v-for="route in routesFormComponents"
         :key="route.name"
-        class="menu-item btn btn--white mb-2 w-100"
+        class="menu-item btn btn--white w-100"
+        :to="{
+          name: route.name
+        }"
+      >
+        {{ getComponentName(route.name) }}
+      </router-link>
+      <h4 class="my-3">
+        User Interface
+      </h4>
+      <router-link
+        v-for="route in routesUiComponents"
+        :key="route.name"
+        class="menu-item btn btn--white w-100"
         :to="{
           name: route.name
         }"
@@ -41,9 +57,13 @@
         return this.$router.options.routes.filter(route => route.path === '/documentation')[0]
           .children.filter(child => child.name === 'Install' || child.name === 'GetStarted')
       },
-      routesComponents () {
+      routesFormComponents () {
         return this.$router.options.routes.filter(route => route.path === '/documentation')[0]
-          .children.filter(child => child.name !== 'Install' && child.name !== 'GetStarted')
+          .children.filter(child => child.name !== 'Install' && child.name !== 'GetStarted').slice(0, 6)
+      },
+      routesUiComponents () {
+        return this.$router.options.routes.filter(route => route.path === '/documentation')[0]
+          .children.filter(child => child.name !== 'Install' && child.name !== 'GetStarted').slice(6)
       }
     },
     methods: {
@@ -65,6 +85,11 @@
       border: none;
       color: black;
       font-weight: 300;
+      margin-bottom: 0.5em;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
 
       &.router-link-active {
         color: $primary-color;

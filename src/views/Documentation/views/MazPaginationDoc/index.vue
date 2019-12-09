@@ -3,9 +3,16 @@
     <ComponentContainer
       :code="codeExample"
     >
+      <MazBtn
+        class="mb-4"
+        @click="dark = !dark"
+      >
+        Toggle dark mode
+      </MazBtn>
       <MazPagination
         v-model="currentPage"
         :page-count="pageCount"
+        :dark="dark"
       />
     </ComponentContainer>
   </div>
@@ -16,6 +23,7 @@
     name: 'MazSwitchDoc',
     data () {
       return {
+        dark: false,
         currentPage: 11,
         pageCount: 32,
         codeExample: `<template>

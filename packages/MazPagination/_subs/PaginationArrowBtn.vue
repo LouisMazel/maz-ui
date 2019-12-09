@@ -1,14 +1,17 @@
 <template>
-  <button
+  <MazBtn
     class="pagination-arrow-btn flex align-center justify-center flex-fixed"
+    size="sm"
+    fab
     @click="$emit('click')"
   >
     <component
       :is="`Arrow${right ? 'Right' : 'Left'}`"
       color="#6F6A6A"
+      :dark="dark"
       :size="28"
     />
-  </button>
+  </MazBtn>
 </template>
 
 <script>
@@ -22,25 +25,17 @@
       ArrowRight
     },
     props: {
-      right: { type: Boolean, default: false }
+      right: { type: Boolean, default: false },
+      dark: { type: Boolean, default: false }
     }
   }
 </script>
 
 <style lang="scss" scoped>
   .pagination-arrow-btn {
-    border: 0;
-    padding: 0;
-    margin: 0;
-    outline: none;
-    line-height: 1;
-    cursor: pointer;
-    height: 35px;
-    width: 35px;
-    border-radius: 50%;
     background-color: transparent;
     margin-right: 10px;
-    color: black;
+    color: $text-color;
 
     &:last-child {
       margin-right: 0;
@@ -50,8 +45,22 @@
       cursor: unset;
     }
 
-    &:hover:not(:disabled) {
+    &:hover,
+    &:focus {
       background-color: darken(white, 20%);
+      box-shadow: 0 0 0 0.2rem rgba(darken(white, 20%), 0.5);
+    }
+  }
+
+  .maz-pagination.is-dark {
+    .pagination-arrow-btn {
+      color: $text-color-dark;
+
+      &:hover,
+      &:focus {
+        background-color: lighten($hover-color-dark, 5%);
+        box-shadow: 0 0 0 0.2rem darken($hover-color-dark, 5%);
+      }
     }
   }
 </style>

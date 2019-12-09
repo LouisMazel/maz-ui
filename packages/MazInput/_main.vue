@@ -311,7 +311,7 @@
         }
 
         &__input {
-          background-color: $bg-color-dark;
+          background-color: $bg-color-dark-l;
           border: 1px solid $third-color-dark;
           color: $secondary-color-dark;
 

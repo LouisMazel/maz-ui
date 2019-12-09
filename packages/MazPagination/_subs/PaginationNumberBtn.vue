@@ -1,14 +1,16 @@
 <template>
-  <button
+  <MazBtn
     class="pagination-number-btn flex align-center justify-center flex-fixed"
     :disabled="disabled"
     :class="{
       'active': active
     }"
+    fab
+    size="sm"
     @click="$emit('click')"
   >
     <slot />
-  </button>
+  </MazBtn>
 </template>
 
 <script>
@@ -23,29 +25,24 @@
 
 <style lang="scss" scoped>
   .pagination-number-btn {
-    border: 0;
-    padding: 0;
-    margin: 0;
-    outline: none;
-    line-height: 1;
-    cursor: pointer;
     height: 35px;
     width: 35px;
     background-color: transparent;
-    border-radius: 50%;
     margin-right: 10px;
-    color: black;
+    color: $text-color;
 
     &:last-child {
       margin-right: 0;
     }
 
     &:disabled {
-      cursor: unset;
+      cursor: not-allowed;
     }
 
-    &:hover:not(:disabled) {
+    &:hover,
+    &:focus {
       background-color: darken(white, 20%);
+      box-shadow: 0 0 0 0.2rem rgba(darken(white, 20%), 0.5);
     }
 
     &.active {
@@ -54,6 +51,23 @@
 
       &:hover {
         background-color: lighten(black, 20%);
+      }
+    }
+  }
+
+  .maz-pagination.is-dark {
+    .pagination-number-btn {
+      color: $text-color-dark;
+
+      &:hover,
+      &:focus {
+        background-color: lighten($hover-color-dark, 5%);
+        box-shadow: 0 0 0 0.2rem darken($hover-color-dark, 5%);
+      }
+
+      &.active {
+        background-color: $bg-color;
+        color: $text-color;
       }
     }
   }
