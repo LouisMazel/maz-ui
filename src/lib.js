@@ -17,8 +17,6 @@ import { version } from '@/../package.json'
 
 if (process.env.NODE_ENV === 'development' && process.env.VUE_APP_MAZ === 'development') {
   require('../packages/scss/style-helpers/index.scss')
-} else {
-  require('../dist/vue-mazel-ui.css')
 }
 
 const components = [

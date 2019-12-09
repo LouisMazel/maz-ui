@@ -25,6 +25,7 @@
       return {
         codeBase: `import Vue from 'vue';
 import VueMazelUi from 'vue-mazel-ui';
+import 'vue-mazel-ui/dist/vue-mazel-ui.css';
 import App from './App.vue';
 
 Vue.use(VueMazelUi);
@@ -34,7 +35,8 @@ new Vue({
   render: h => h(App)
 });`,
         codeCustom: `import Vue from 'vue';
-import { MazBtn, MazSelect } from 'element-ui';
+import 'vue-mazel-ui/dist/vue-mazel-ui.css';
+import { MazBtn, MazSelect } from 'vue-mazel-ui';
 import App from './App.vue';
 
 Vue.component(MazBtn.name, MazBtn);
