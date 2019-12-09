@@ -35,7 +35,7 @@
   }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   #app.is-dark {
     background-color: $bg-color-dark;
 

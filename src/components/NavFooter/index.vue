@@ -16,6 +16,11 @@
         >
           Documentation
         </RouterLink>
+        <RouterLink
+          :to="{ name: 'UsedBy' }"
+        >
+          Used by
+        </RouterLink>
       </div>
       <div class="nav-footer-content__logo hidden-tablet">
         <img

@@ -41,6 +41,14 @@
         >
           Documentation
         </router-link>
+        <router-link
+          class="header__menu__item flex align-center fs-16"
+          :to="{
+            name: 'UsedBy'
+          }"
+        >
+          Used by
+        </router-link>
       </div>
       <div class="flex align-center hidden-mobile">
         <div class="flex align-center">

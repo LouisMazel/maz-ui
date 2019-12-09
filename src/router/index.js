@@ -32,6 +32,11 @@ const router = new Router({
       component: () => import(/* webpackChunkName: "home" */ '@/views/Home')
     },
     {
+      path: '/used-by',
+      name: 'UsedBy',
+      component: () => import(/* webpackChunkName: "used-by" */ '@/views/UsedBy')
+    },
+    {
       path: '/documentation',
       name: 'Documentation',
       redirect: { name: 'Install' },
