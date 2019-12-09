@@ -1,6 +1,6 @@
 {
   "name": "vue-mazel-ui",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "main": "dist/vue-mazel-ui.common.js",
   "description": "A components library for VueJs",
   "author": "Louis Mazel <me@loicmazuel.com>",
@@ -31,7 +31,6 @@
     "@vue/cli-plugin-eslint": "^4.0.0",
     "@vue/cli-service": "^4.0.0",
     "@vue/eslint-config-standard": "^4.0.0",
-    "autoprefixer": "^9.7.3",
     "babel-eslint": "^10.0.3",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
