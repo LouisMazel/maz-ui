@@ -113,3 +113,9 @@ export default {
     }
   }
 </script>
+
+<style lang="scss" scoped>
+  .maz-select {
+    z-index: 1;
+  }
+</style>

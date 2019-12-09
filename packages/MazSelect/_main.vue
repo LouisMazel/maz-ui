@@ -68,9 +68,10 @@
         class="maz-select__options-list"
         :style="[itemListHeight]"
       >
-        <div
+        <button
           v-for="({ label: l, value: v }, i) in options"
           :key="i"
+          tabindex="-1"
           :class="[
             {'selected': value === v},
             {'keyboard-selected': tmpValue === v}
@@ -87,7 +88,7 @@
           >
             {{ l }}
           </div>
-        </div>
+        </button>
       </div>
     </Transition>
   </div>
@@ -169,7 +170,7 @@
     },
     methods: {
       handleBlur (e) {
-        if (e.relatedTarget === null) return
+        if (this.$el.contains(e.relatedTarget)) return
         this.isFocus = false
         this.closeList()
       },
@@ -302,7 +303,6 @@
       border: 1px solid $third-color;
       border-radius: $border-radius;
       font-size: 13px;
-      z-index: 0;
 
       &::-webkit-input-placeholder {
         color: $secondary-color;
@@ -349,12 +349,12 @@
     }
 
     &__options-list {
+      z-index: 9;
       padding: 0;
       list-style: none;
       min-width: 230px;
       overflow-y: auto;
       overflow-x: hidden;
-      z-index: 9;
       margin: 0;
       max-width: 100%;
       position: absolute;
@@ -371,7 +371,11 @@
         overflow: hidden;
         font-size: 12px;
         cursor: pointer;
+        background-color: transparent;
+        border: none;
         color: $text-color;
+        width: 100%;
+        outline: none;
 
         &:hover,
         &.keyboard-selected {
@@ -475,8 +479,6 @@
     }
 
     &.is-focused {
-      z-index: 1;
-
       .maz-select__input {
         border-color: $primary-color;
         box-shadow: 0 0 0 0.2rem $primary-color-transparency;
