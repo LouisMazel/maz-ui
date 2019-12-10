@@ -50,7 +50,7 @@
           v-for="size in btnSizes"
           :key="`normal-${type}-${size}`"
           :size="size"
-          :type="type"
+          :color="type"
         >
           {{ type }} {{ size }}
         </MazBtn>
@@ -69,7 +69,7 @@
           v-for="size in btnSizes"
           :key="`outline-${type}-${size}`"
           :size="size"
-          :type="type"
+          :color="type"
           outline
         >
           {{ type }} {{ size }}
@@ -89,7 +89,7 @@
           v-for="size in btnSizes"
           :key="`rounded-${type}-${size}`"
           :size="size"
-          :type="type"
+          :color="type"
           rounded
         >
           {{ type }} {{ size }}
@@ -109,7 +109,7 @@
           v-for="size in btnSizes"
           :key="`fab-${type}-${size}`"
           :size="size"
-          :type="type"
+          :color="type"
           fab
         >
           {{ size || 'default' }}

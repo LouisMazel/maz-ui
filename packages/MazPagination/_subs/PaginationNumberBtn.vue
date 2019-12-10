@@ -7,7 +7,7 @@
     }"
     fab
     size="sm"
-    @click="$emit('click')"
+    @click="handleClick"
   >
     <slot />
   </MazBtn>
@@ -19,6 +19,11 @@
     props: {
       active: { type: Boolean, default: false },
       disabled: { type: Boolean, default: false }
+    },
+    methods: {
+      handleClick (evt) {
+        this.$emit('click', evt)
+      }
     }
   }
 </script>

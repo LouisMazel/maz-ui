@@ -30,7 +30,7 @@
       @keyup="keyUp"
       @focus="onFocus"
       @blur="onBlur"
-      @click="$emit('click')"
+      @click="$emit('click', $event)"
     >
     <label
       ref="label"

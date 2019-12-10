@@ -3,7 +3,7 @@
     class="pagination-arrow-btn flex align-center justify-center flex-fixed"
     size="sm"
     fab
-    @click="$emit('click')"
+    @click="handleClick"
   >
     <component
       :is="`Arrow${right ? 'Right' : 'Left'}`"
@@ -27,6 +27,11 @@
     props: {
       right: { type: Boolean, default: false },
       dark: { type: Boolean, default: false }
+    },
+    methods: {
+      handleClick (evt) {
+        this.$emit('click', evt)
+      }
     }
   }
 </script>

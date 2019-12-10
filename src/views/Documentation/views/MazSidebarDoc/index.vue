@@ -19,20 +19,20 @@
       </MazSidebar>
       <div class="maz-sidebar-doc__content p-4 flex direction-column align-center justify-center flex-1">
         <MazBtn
-          type="success"
+          color="success"
           @click="loader = !loader"
         >
           Toggle loader
         </MazBtn>
         <MazBtn
-          type="dark"
+          color="dark"
           @click="dark = !dark"
         >
           Toggle Dark
         </MazBtn>
         <MazInput
           v-model="width"
-          type="number"
+          color="number"
           label="Sidebar width"
         />
         <div class="switch-container shadow flex">

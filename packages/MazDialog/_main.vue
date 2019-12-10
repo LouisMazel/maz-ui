@@ -48,11 +48,11 @@
           </div>
           <div
             v-if="!hideFooter"
-            class="maz-dialog__footer flex align-end p-3"
+            class="maz-dialog__footer flex align-end justify-end p-3"
           >
             <slot name="footer">
               <MazBtn
-                type="default"
+                color="default"
                 outline
                 size="md"
                 @click="$emit('input', false)"
@@ -62,7 +62,7 @@
               <MazBtn
                 v-if="!noValidation"
                 class="ml-3"
-                type="primary"
+                color="primary"
                 size="md"
                 @click="$emit('validate')"
               >
