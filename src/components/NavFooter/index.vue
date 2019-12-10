@@ -4,10 +4,9 @@
     role="contentinfo"
   >
     <nav class="nav-footer-content container flex align-center space-between py-4">
-      <div class="flex hidden-tablet">
+      <div class="flex direction-column hidden-tablet">
         <RouterLink
           :to="{ name: 'Home' }"
-          class="mr-3"
         >
           Home
         </RouterLink>
@@ -19,7 +18,7 @@
         <RouterLink
           :to="{ name: 'UsedBy' }"
         >
-          Used by
+          Made with Mazel UI
         </RouterLink>
       </div>
       <div class="nav-footer-content__logo hidden-tablet">
@@ -35,14 +34,14 @@
       </div>
     </nav>
     <div class="nav-footer-subs py-2">
-      <div class="container flex align-end">
+      <div class="container flex justify-end">
         <a
           href="https://www.loicmazuel.com/"
           target="_blank"
-          class="flex align-center"
+          class="flex"
         >
           <p class="fs-14">
-            © Loïc Mazuel | Website made with VueJS
+            © Loïc Mazuel
           </p>
         </a>
       </div>

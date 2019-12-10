@@ -16,6 +16,7 @@
           v-for="(project, i) in projects"
           :key="`project-${i}`"
           :project="project"
+          class="used-by__projects-list__item"
         />
       </div>
     </MazFlex>
@@ -37,13 +38,17 @@
       return {
         projects: [
           {
-            id: '1',
             name: 'Vue Smart List UI',
             description: 'An intelligent interface for displaying a list of data and performing filters, sorting and searching on it. Also to display the details of the data.',
             githubUrl: 'https://github.com/LouisMazel/vue-smart-list-ui',
             imgUrl: require('@/assets/img/projects/vue-smart-list-ui.png'),
-            demoUrl: 'https://louismazel.github.io/vue-smart-list-ui/',
-            keywords: ['VueJS', 'MomentJS', 'Smart', 'List', 'Table', 'Filter', 'Sort', 'Search', 'Interface', 'Theme']
+            demoUrl: 'https://louismazel.github.io/vue-smart-list-ui/'
+          },
+          {
+            name: 'Freelance Personnal Website',
+            description: 'Freelance Personnal Website',
+            imgUrl: require('@/assets/img/projects/loicmazuel.png'),
+            demoUrl: 'https://www.loicmazuel.com/'
           }
         ]
       }
@@ -54,6 +59,10 @@
 <style lang="scss" scoped>
   .used-by {
     color: $text-color;
+
+    .used-by__projects-list__item {
+      margin: 0 20px;
+    }
   }
 
   .is-dark {

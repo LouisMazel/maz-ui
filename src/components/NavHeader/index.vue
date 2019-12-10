@@ -47,7 +47,7 @@
             name: 'UsedBy'
           }"
         >
-          Used by
+          Made with Mazel UI
         </router-link>
       </div>
       <div class="flex align-center hidden-mobile">

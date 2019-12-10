@@ -3,7 +3,7 @@
     <a
       v-if="project.githubUrl"
       :href="project.githubUrl"
-      class="btn btn--white--outline flex align-center"
+      class="btn btn--white--outline btn--white flex align-center"
       target="_blank"
     >
       GITHUB
@@ -11,7 +11,7 @@
     <a
       v-if="project.npmUrl"
       :href="project.npmUrl"
-      class="btn btn--danger--outline btn-npm ml-3"
+      class="btn btn--danger--outline btn--npm ml-3"
       target="_blank"
     >
       <svg viewBox="0 0 780 250">
@@ -46,9 +46,9 @@
 
 <style lang="scss" scoped>
   .project-preview-footer {
-    border-top: 1px solid $bg-color-dark;
+    border-top: 1px solid $hover-color;
 
-    .btn-npm svg {
+    .btn--npm svg {
       width: 35px;
 
       path {
@@ -56,12 +56,12 @@
       }
     }
 
-    .btn-white svg {
-      width: 25px;
-
-      path {
-        fill: $dark-color;
-      }
+    .btn--white:hover {
+      color: $bg-color-dark;
     }
+  }
+
+  .is-dark .project-preview-footer {
+    border-top: 1px solid $bg-color-dark;
   }
 </style>

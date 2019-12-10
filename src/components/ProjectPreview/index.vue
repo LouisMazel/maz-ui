@@ -15,7 +15,7 @@
         <a
           :href="project.demoUrl"
           target="_blank"
-          class="btn btn--primary btn--rounded"
+          class="btn btn--primary--outline btn--rounded"
         >
           <i class="material-icons">
             visibility
@@ -49,13 +49,11 @@
 
 <style lang="scss" scoped>
   .project-preview {
-    background-color: $bg-color-dark-l;
-    border: 1px solid $bg-color-dark-l;
+    background-color: $bg-color;
+    border: 1px solid $hover-color;
     text-decoration: none;
     transition: all 300ms;
     position: relative;
-    // overflow: hidden;
-    max-width: 400px;
 
     &-header {
       overflow: hidden;
@@ -93,19 +91,28 @@
 
     &:hover,
     &:focus {
-      background-color: lighten($bg-color-dark, 5%);
+      background-color: darken($bg-color, 5%);
       transform: translateY(-3px);
-      box-shadow: 0 3px 12px $bg-color-dark;
+      box-shadow: 0 3px 12px darken($bg-color, 10%);
       outline: none;
     }
 
     &__img {
       max-width: 100%;
       min-width: 288px;
-      // &:hover,
-      // &:focus {
-      //   bac
-      // }
+    }
+  }
+
+  .is-dark {
+    .project-preview {
+      background-color: $bg-color-dark-l;
+      border-color: $hover-color-dark;
+
+      &:hover,
+      &:focus {
+        background-color: lighten($bg-color-dark, 5%);
+        box-shadow: 0 3px 12px $bg-color-dark;
+      }
     }
   }
 </style>

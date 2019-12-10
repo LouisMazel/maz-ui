@@ -4,24 +4,16 @@
       <h4 class="fs-18 mb-2">
         {{ project.name }}
       </h4>
-      <p class="mb-2 text-white-muted">
+      <p class="mb-2">
         {{ project.description }}
       </p>
     </div>
-    <!-- <Keywords
-      :keywords="project.keywords"
-    /> -->
   </div>
 </template>
 
 <script>
-  // import Keywords from '@/components/Keywords'
-
   export default {
     name: 'ProjectPreview',
-    // components: {
-    //   Keywords
-    // },
     props: {
       project: {
         type: Object,
@@ -35,12 +27,22 @@
   .project-preview-content {
     &__text {
       h4 {
-        color: $text-color-dark;
+        color: $text-color;
       }
 
       p {
-        color: rgba($text-color-dark, 0.54);
+        color: rgba($text-color, 0.54);
       }
+    }
+  }
+
+  .is-dark .project-preview-content {
+    h4 {
+      color: $text-color-dark;
+    }
+
+    p {
+      color: rgba($text-color-dark, 0.54);
     }
   }
 </style>
