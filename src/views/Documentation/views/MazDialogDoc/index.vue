@@ -4,7 +4,7 @@
       <div class="flex">
         <MazBtn
           class="mr-2"
-          @click="hasDialogOpen = true"
+          @click.stop="hasDialogOpen = true"
         >
           Open Basic Dialog
         </MazBtn>
@@ -17,7 +17,7 @@
           Dialog Content Basic
         </MazDialog>
         <MazBtn
-          type="success"
+          color="success"
           class="mr-2"
           @click="hasDialogOpenSuccess = true"
         >
@@ -33,7 +33,7 @@
           Dialog Content Success
         </MazDialog>
         <MazBtn
-          type="danger"
+          color="danger"
           @click="hasDialogOpenDanger = true"
         >
           Open Danger Dialog
@@ -76,7 +76,7 @@
     Dialog Content Basic
   </MazDialog>
   <MazBtn
-    type="success"
+    color="success"
     class="mr-2"
     @click="hasDialogOpenSuccess = true"
   >
@@ -92,7 +92,7 @@
     Dialog Content Success
   </MazDialog>
   <MazBtn
-    type="danger"
+    color="danger"
     @click="hasDialogOpenDanger = true"
   >
     Open Danger Dialog

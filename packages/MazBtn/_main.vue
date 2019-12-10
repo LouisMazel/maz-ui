@@ -7,8 +7,9 @@
       { hidden: loader }
     ]"
     v-bind="$attrs"
+    :type="type"
     :disabled="isDisabled"
-    @click="$emit('click')"
+    @click="handleClick"
   >
     <slot />
     <div
@@ -35,10 +36,11 @@
     mixins: [uniqueId],
     props: {
       id: { type: String, default: 'MazBtn' },
+      color: { type: String, default: 'primary' },
+      size: { type: String, default: null },
+      type: { type: String, default: 'button' },
       loader: { type: Boolean, default: false },
       disabled: { type: Boolean, default: false },
-      type: { type: String, default: 'primary' },
-      size: { type: String, default: null },
       outline: { type: Boolean, default: false },
       rounded: { type: Boolean, default: false },
       fab: { type: Boolean, default: false }
@@ -49,15 +51,20 @@
         return loader || disabled
       },
       classes () {
-        const { type, size, outline, rounded, isDisabled, fab } = this
+        const { color, size, outline, rounded, isDisabled, fab } = this
         return [
-          ...(type ? [`btn--${type}`] : [null]),
+          ...(color ? [`btn--${color}`] : [null]),
           ...(size ? [`btn--${size}`] : [null]),
-          ...(outline ? [`btn--${type}--outline`] : [null]),
+          ...(outline ? [`btn--${color}--outline`] : [null]),
           ...(rounded ? [`btn--rounded`] : [null]),
           ...(fab ? [`btn--fab`] : [null]),
           ...(isDisabled ? [`btn--disabled`] : [null])
         ]
+      }
+    },
+    methods: {
+      handleClick (evt) {
+        this.$emit('click', evt)
       }
     }
   }

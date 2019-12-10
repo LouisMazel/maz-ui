@@ -52,7 +52,7 @@
           >
             <slot name="footer">
               <MazBtn
-                type="default"
+                color="default"
                 outline
                 size="md"
                 @click="$emit('input', false)"
@@ -62,7 +62,7 @@
               <MazBtn
                 v-if="!noValidation"
                 class="ml-3"
-                type="primary"
+                color="primary"
                 size="md"
                 @click="$emit('validate')"
               >

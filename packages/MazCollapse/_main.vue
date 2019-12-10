@@ -8,7 +8,7 @@
   >
     <MazBtn
       class="maz-collapse__header-btn flex align-center justify-center br-0"
-      :type="dark ? 'dark' : 'white'"
+      :color="dark ? 'dark' : 'white'"
       size="md"
       @click="isOpen = !isOpen"
     >
