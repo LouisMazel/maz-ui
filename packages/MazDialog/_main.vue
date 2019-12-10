@@ -48,7 +48,7 @@
           </div>
           <div
             v-if="!hideFooter"
-            class="maz-dialog__footer flex align-end p-3"
+            class="maz-dialog__footer flex align-end justify-end p-3"
           >
             <slot name="footer">
               <MazBtn
