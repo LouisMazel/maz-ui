@@ -1,15 +1,15 @@
 import Vue from 'vue'
 import App from './App.vue'
-import './assets/scss/main.scss'
-import './components'
-import './filters'
 
 import router from './router'
 
 import VueHighlightJS from 'vue-highlightjs'
-
 import javascript from 'highlight.js/lib/languages/javascript'
 import bash from 'highlight.js/lib/languages/bash'
+import './components'
+import './filters'
+
+import './assets/scss/main.scss'
 import 'highlight.js/styles/default.css'
 
 import store from './store'

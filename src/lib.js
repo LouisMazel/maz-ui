@@ -1,3 +1,5 @@
+import '../packages/scss/style-helpers/index.scss'
+
 import MazBtn from '@/../packages/MazBtn'
 import MazCheckbox from '@/../packages/MazCheckbox'
 import MazCollapse from '@/../packages/MazCollapse'
@@ -14,8 +16,6 @@ import MazSwitch from '@/../packages/MazSwitch'
 import MazTransitionExpand from '@/../packages/MazTransitionExpand'
 
 import { version } from '@/../package.json'
-
-import '../packages/scss/style-helpers/index.scss'
 
 const components = [
   MazBtn,

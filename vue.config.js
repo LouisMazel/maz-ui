@@ -8,7 +8,6 @@ module.exports = {
     ? '/vue-mazel-ui/'
     : '/',
   css: {
-    extract: false,
     loaderOptions: {
       sass: {
         prependData: `@import "@/../packages/scss/vars";`
