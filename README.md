@@ -16,14 +16,19 @@
 
 ## Install
 
+[Detail & CDN](https://louismazel.github.io/vue-mazel-ui/#/documentation/get-started)
+
 ```shell
 npm install vue-mazel-ui -S
 ```
 
 ## Quick Start
 
+[Detail](https://louismazel.github.io/vue-mazel-ui/#/documentation/get-started)
+
 ```javascript
 import Vue from 'vue'
+import 'vue-mazel-ui/dist/vue-mazel-ui.css';
 import VueMazelUi from 'vue-mazel-ui'
 
 Vue.use(VueMazelUi)

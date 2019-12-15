@@ -31,7 +31,10 @@
     name: 'Install',
     data () {
       return {
-        cdnCode: `<script src="https://unpkg.com/vue-mazel-ui/dist/vue-mazel-ui.common.js"><script>`
+        cdnCode: `<!-- import du CSS -->
+<link rel="stylesheet" href="https://unpkg.com/vue-mazel-ui/dist/vue-mazel-ui.css">
+<!-- import du JavaScript -->
+<script src="https://unpkg.com/vue-mazel-ui/dist/vue-mazel-ui.common.js"><script>`
       }
     }
   }
