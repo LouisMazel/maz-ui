@@ -16,7 +16,7 @@
 
 ## Install
 
-[Detail & CDN](https://louismazel.github.io/vue-mazel-ui/#/documentation/get-started)
+[Detail & CDN](https://louismazel.github.io/vue-mazel-ui/#/documentation/install)
 
 ```shell
 npm install vue-mazel-ui -S
