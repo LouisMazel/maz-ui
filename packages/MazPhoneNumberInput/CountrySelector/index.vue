@@ -1,7 +1,6 @@
 <template>
   <div
     ref="parent"
-    v-click-outside="closeList"
     :class="[{
       'is-focused': isFocus,
       'has-value': value,
@@ -14,8 +13,7 @@
       'is-valid': valid
     }, size]"
     class="country-selector"
-    @keydown="keyboardNav"
-    @click.prevent="toggleList"
+    @blur.capture="handleBlur"
   >
     <div
       v-if="value && !noFlags"
@@ -32,10 +30,12 @@
       class="country-selector__input"
       readonly
       @focus="isFocus = true"
-      @blur="isFocus = false"
+      @keydown="keyboardNav"
+      @click.stop="toggleList"
     >
     <div
       class="country-selector__toggle"
+      @click.stop="toggleList"
     >
       <slot name="arrow">
         <svg
@@ -102,14 +102,10 @@
 </template>
 
 <script>
-  import { directive } from 'v-click-outside'
   import { getCountryCallingCode } from 'libphonenumber-js'
 
   export default {
     name: 'CountrySelector',
-    directives: {
-      clickOutside: directive
-    },
     props: {
       countriesHeight: { type: Number, default: 35 },
       value: { type: [String, Object], default: null },
@@ -161,7 +157,7 @@
             ? this.countriesFiltered
             : this.countriesList
       },
-      selectedCountryIndex () {
+      selectedValueIndex () {
         return this.value
           ? this.countriesSorted.findIndex(c => c.iso2 === this.value)
           : null
@@ -177,33 +173,47 @@
       this.$parent.$on('phone-number-focused', this.closeList)
     },
     methods: {
+      handleBlur (e) {
+        window.console.log('e.relatedTarget', e.relatedTarget)
+        if (this.$el.contains(e.relatedTarget)) return
+        this.isFocus = false
+        this.closeList()
+      },
       toggleList () {
         this.hasListOpen ? this.closeList() : this.openList()
       },
       openList () {
         if (!this.disabled) {
+          this.$emit('open')
           this.isFocus = true
           this.hasListOpen = true
-          this.$emit('focus')
-          if (this.value && this.hasListOpen) this.scrollToSelectedOnFocus(this.selectedCountryIndex)
+          this.selectFirstValue()
+          if (this.value) this.scrollToSelectedOnFocus(this.selectedValueIndex)
         }
       },
       closeList () {
-        if (this.hasListOpen) {
-          this.isFocus = false
-          this.hasListOpen = false
-          this.$emit('blur')
-        }
+        this.$emit('close')
+        this.hasListOpen = false
       },
-      updateValue (iso2) {
+      async reset () {
         this.closeList()
-        this.tmpValue = iso2
-        this.$emit('input', iso2)
+        await this.$nextTick()
+        this.$refs.CountrySelector.focus()
+      },
+      async updateValue (val) {
+        this.tmpValue = val
+        this.$emit('input', val || null)
+        await this.$nextTick()
+        this.reset()
       },
       scrollToSelectedOnFocus (arrayIndex) {
         this.$nextTick(() => {
           this.$refs.countriesList.scrollTop = arrayIndex * this.countriesHeight - (this.countriesHeight * 3)
         })
+      },
+      selectFirstValue () {
+        if (this.value) return
+        this.$emit('input', this.countriesSorted[0].iso2)
       },
       keyboardNav (e) {
         const code = e.keyCode
@@ -340,22 +350,23 @@
     }
 
     &__list {
-      border-radius: $border-radius;
-      background-color: $bg-color;
-      padding: 0;
-      list-style: none;
+      max-width: 100%;
       height: 210px;
       max-height: 210px;
-      overflow-y: auto;
-      overflow-x: hidden;
-      z-index: 9;
-      margin: 0;
-      max-width: 100%;
-      position: absolute;
       top: 100%;
       width: 100%;
       min-width: 230px;
+      position: absolute;
+      border-radius: $border-radius;
+      background-color: $bg-color;
+      overflow: hidden;
       box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+      z-index: 9;
+      list-style: none;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 0;
+      margin: 0;
 
       &.has-calling-code {
         min-width: 270px;
@@ -449,7 +460,7 @@
           &__item {
             &:hover,
             &.keyboard-selected {
-              background-color: $hover-color-dark;
+              background-color: lighten($hover-color-dark, 10%);
             }
           }
 

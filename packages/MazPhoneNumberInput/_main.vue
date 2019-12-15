@@ -1,6 +1,6 @@
 <template>
   <div
-    :id="uniqueId"
+    :id="id"
     :class="[{ 'dark': dark }, size]"
     class="maz-phone-number-input flex"
   >
@@ -87,7 +87,6 @@
     props: {
       value: { type: String, default: null },
       id: { type: String, default: 'MazPhoneNumberInput' },
-      dark: { type: Boolean, default: false },
       disabled: { type: Boolean, default: false },
       defaultCountryCode: { type: String, default: null },
       size: { type: String, default: null },
@@ -104,8 +103,9 @@
       noUseBrowserLocale: { type: Boolean, default: false },
       fetchCountry: { type: Boolean, default: false },
       noCountrySelector: { type: Boolean, default: false },
-      borderRadius: { type: Number, default: 4 },
-      showCodeOnList: { type: Boolean, default: false }
+      showCodeOnList: { type: Boolean, default: false },
+      dark: { type: Boolean, default: false },
+      borderRadius: { type: Number, default: 4 }
     },
     data () {
       return {

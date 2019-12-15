@@ -144,8 +144,6 @@
     min-height: 40px;
 
     &:hover {
-      z-index: 1;
-
       .input-tel__input {
         border-color: $primary-color;
       }
