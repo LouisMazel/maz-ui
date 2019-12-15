@@ -12,7 +12,7 @@
 
 ## Documentation & Components
 
-[Documentation & Components](https://louismazel.github.io/vue-mazel-ui/#/documentation/install)
+[Documentation & Components](https://louismazel.github.io/vue-mazel-ui/)
 
 ## Install
 

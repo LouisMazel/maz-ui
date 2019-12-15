@@ -32,7 +32,7 @@
         </router-link>
         <router-link
           class="btn btn--primary--outline"
-          :to="{ name: 'MazBtnDoc' }"
+          :to="{ name: 'MazInputDoc' }"
         >
           Components
         </router-link>
