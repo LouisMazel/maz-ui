@@ -66,13 +66,13 @@
     :items="items"
   />
   <MazBtnGroup
-    v-model="btnGroupValue"
-    :items="items"
+    v-model="btnGroupValueBoolean"
+    :items="itemsBoolean"
     color="info"
   />
   <MazBtnGroup
-    v-model="btnGroupValue"
-    :items="items"
+    v-model="btnGroupValueString"
+    :items="itemsString"
     rounded
     color="success"
   />
@@ -88,10 +88,22 @@ export default {
   data () {
     return {
       btnGroupValue: 1,
+      btnGroupValueBoolean: false,
+      btnGroupValueString: null,
       items: [
-        { label: 'button 1', value: 1 },
-        { label: 'button 2', value: 2 },
-        { label: 'button 3', value: 3 }
+        { label: 'Number 1', value: 1 },
+        { label: 'Number 2', value: 2 },
+        { label: 'Number 3', value: 3 }
+      ],
+      itemsBoolean: [
+        { label: 'Boolean true', value: true },
+        { label: 'Boolean false', value: false }
+      ],
+      itemsString: [
+        { label: 'String foo', value: 'foo' },
+        { label: 'String bar', value: 'bar' },
+        { label: 'String toto', value: 'toto' },
+        { label: 'String tata', value: 'tata' }
       ]
     }
   }
