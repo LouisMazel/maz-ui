@@ -1,6 +1,7 @@
 import '../packages/scss/style-helpers/index.scss'
 
 import MazBtn from '@/../packages/MazBtn'
+import MazBtnGroup from '@/../packages/MazBtnGroup'
 import MazCheckbox from '@/../packages/MazCheckbox'
 import MazCollapse from '@/../packages/MazCollapse'
 import MazDialog from '@/../packages/MazDialog'
@@ -19,6 +20,7 @@ import { version } from '@/../package.json'
 
 const components = [
   MazBtn,
+  MazBtnGroup,
   MazCheckbox,
   MazCollapse,
   MazDialog,
@@ -47,6 +49,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 export {
   version,
   MazBtn,
+  MazBtnGroup,
   MazCheckbox,
   MazCollapse,
   MazDialog,

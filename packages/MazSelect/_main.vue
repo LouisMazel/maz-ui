@@ -101,10 +101,13 @@
     name: 'MazSelect',
     mixins: [uniqueId],
     props: {
-      itemHeight: { type: Number, default: 35 },
-      listHeight: { type: Number, default: 210 },
-      borderRadius: { type: Number, default: 4 },
-      value: { type: [String, Object], default: null },
+      value: {
+        required: true,
+        validator: prop => ['number', 'string', 'boolean'].includes(typeof prop) || prop === null
+      },
+      options: { type: Array, required: true },
+      id: { type: String, default: 'MazSelect' },
+      name: { type: String, default: 'MazSelect' },
       label: { type: String, default: 'Select option' },
       hint: { type: String, default: null },
       size: { type: String, default: null },
@@ -113,9 +116,9 @@
       required: { type: Boolean, default: false },
       valid: { type: Boolean, default: false },
       dark: { type: Boolean, default: false },
-      id: { type: String, default: 'MazSelect' },
-      name: { type: String, default: 'MazSelect' },
-      options: { type: Array, required: true }
+      itemHeight: { type: Number, default: 35 },
+      listHeight: { type: Number, default: 210 },
+      borderRadius: { type: Number, default: 4 }
     },
     data () {
       return {

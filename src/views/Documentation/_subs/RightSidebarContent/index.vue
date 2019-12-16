@@ -38,7 +38,15 @@
           class="prop"
         >
           <td>{{ prop[0] | kebab }}</td>
-          <td>{{ prop[1].type.name }}</td>
+          <td v-if="prop[1].type">
+            {{ prop[1].type.name }}
+          </td>
+          <td
+            v-else
+            class="text-muted"
+          >
+            {{ 'Multiple' }}
+          </td>
           <td :class="{ 'text-muted' :prop[1].default !== false && !prop[1].default }">
             {{
               (typeof prop[1].default === 'function'
@@ -60,7 +68,7 @@
 
 <script>
   import {
-    MazBtn, MazInput, MazSelect, MazPhoneNumberInput, MazSwitch, MazCheckbox,
+    MazBtn, MazBtnGroup, MazInput, MazSelect, MazPhoneNumberInput, MazSwitch, MazCheckbox,
     MazDialog, MazLoader, MazSidebar, MazSpinner, MazTransitionExpand, MazCollapse,
     MazPagination
   } from '@/lib'
@@ -70,6 +78,7 @@
     components: {
       /* eslint-disable vue/no-unused-components */
       MazBtn,
+      MazBtnGroup,
       MazInput,
       MazSelect,
       MazSwitch,

@@ -89,16 +89,19 @@
     name: 'MazInput',
     mixins: [uniqueId],
     props: {
+      value: {
+        required: true,
+        validator: prop => ['number', 'string'].includes(typeof prop) || prop === null
+      },
       id: { type: String, default: 'MazInput' },
-      value: { type: [String, Number], required: true },
       label: { type: String, default: 'Enter text' },
       hint: { type: String, default: null },
-      error: { type: Boolean, default: false },
       color: { type: String, default: 'dodgerblue' },
-      disabled: { type: Boolean, default: false },
-      dark: { type: Boolean, default: false },
       size: { type: String, default: null },
       type: { type: String, default: 'text' },
+      error: { type: Boolean, default: false },
+      disabled: { type: Boolean, default: false },
+      dark: { type: Boolean, default: false },
       readonly: { type: Boolean, default: false },
       valid: { type: Boolean, default: false },
       required: { type: Boolean, default: false },

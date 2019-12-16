@@ -6,7 +6,6 @@
       classes,
       { hidden: loader }
     ]"
-    v-bind="$attrs"
     :type="type"
     :disabled="isDisabled"
     @click="handleClick"
@@ -43,7 +42,8 @@
       disabled: { type: Boolean, default: false },
       outline: { type: Boolean, default: false },
       rounded: { type: Boolean, default: false },
-      fab: { type: Boolean, default: false }
+      fab: { type: Boolean, default: false },
+      active: { type: Boolean, default: false }
     },
     computed: {
       isDisabled () {
@@ -51,14 +51,15 @@
         return loader || disabled
       },
       classes () {
-        const { color, size, outline, rounded, isDisabled, fab } = this
+        const { color, size, outline, rounded, isDisabled, fab, active } = this
         return [
           ...(color ? [`btn--${color}`] : [null]),
           ...(size ? [`btn--${size}`] : [null]),
           ...(outline ? [`btn--${color}--outline`] : [null]),
           ...(rounded ? [`btn--rounded`] : [null]),
           ...(fab ? [`btn--fab`] : [null]),
-          ...(isDisabled ? [`btn--disabled`] : [null])
+          ...(isDisabled ? [`btn--disabled`] : [null]),
+          ...(active ? [`active`] : [null])
         ]
       }
     },

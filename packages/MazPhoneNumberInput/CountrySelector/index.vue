@@ -379,6 +379,7 @@
         overflow: hidden;
         font-size: 12px;
         cursor: pointer;
+        color: $text-color;
 
         &__flag-container {
           margin-right: 10px;
@@ -458,6 +459,8 @@
           background-color: $bg-color-dark-l;
 
           &__item {
+            color: $text-color-dark;
+
             &:hover,
             &.keyboard-selected {
               background-color: lighten($hover-color-dark, 10%);

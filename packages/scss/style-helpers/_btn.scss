@@ -29,7 +29,12 @@ $mini-size: 30px;
     background-color: darken($primary-color, 10%);
   }
 
-  &:focus {
+  &.active {
+    background-color: $primary-color;
+  }
+
+  &:focus,
+  &.active {
     box-shadow: 0 0 0 0.2rem rgba($primary-color, 0.5);
   }
 
@@ -84,7 +89,8 @@ a.btn {
   text-decoration: none;
 
   &:hover,
-  &:focus {
+  &:focus,
+  &.active {
     text-decoration: none;
   }
 }
@@ -101,7 +107,12 @@ a.btn {
         background-color: darken($color, 10%);
       }
 
-      &:focus {
+      &.active {
+        background-color: $color;
+      }
+
+      &:focus,
+      &.active {
         box-shadow: 0 0 0 0.2rem rgba($color, 0.5);
       }
 
@@ -111,12 +122,14 @@ a.btn {
         color: $color;
 
         &:hover,
-        &:focus {
+        &:focus,
+        &.active {
           background-color: $color;
           color: white;
         }
 
-        &:focus {
+        &:focus,
+        &.active {
           box-shadow: 0 0 0 0.2rem rgba($color, 0.5);
         }
       }
