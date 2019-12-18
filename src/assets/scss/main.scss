@@ -4,3 +4,14 @@
 .shadow-container {
   box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.1);
 }
+
+.hljs-type,
+.hljs-string,
+.hljs-number,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-quote,
+.hljs-template-tag,
+.hljs-deletion {
+  color: dodgerblue;
+}

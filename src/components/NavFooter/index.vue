@@ -30,7 +30,7 @@
       </div>
     </nav>
     <div class="nav-footer-subs py-2">
-      <div class="container flex align-end">
+      <div class="container flex justify-end">
         <a
           href="https://www.loicmazuel.com/"
           target="_blank"

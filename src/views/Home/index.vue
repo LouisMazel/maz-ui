@@ -6,20 +6,20 @@
         src="@/assets/img/logo-base-dodgerblue.png"
         alt="vue mazel ui logo"
       >
-      <h2 class="my-3 text-center">
-        A components & CSS library to build your interface
+      <h2 class="mt-3 mb-2 text-center">
+        A Vue.js library to build your interface
       </h2>
-      <p class="mb-3 text-center">
-        A beautiful design system
+      <p class="mb-5 text-center">
+        Components & CSS framework
       </p>
       <CodeContainer
         language="bash"
         code="npm i vue-mazel-ui -S"
-        class="mb-3"
+        class="mb-5"
       />
-      <div class="flex align-start flex--wrap mt-3 align-center justify-center">
+      <div class="flex align-start flex--wrap my-3 align-center justify-center">
         <router-link
-          class="btn btn--primary--outline mr-3 mb-3"
+          class="btn btn--primary--outline mr-3"
           :to="{ name: 'Install' }"
         >
           Installation
@@ -74,7 +74,8 @@
     // background-image: linear-gradient(to right top, dodgerblue, #00B7FF, #00D4E0, #00E688, #A8EB12);
 
     &__logo {
-      height: 120px;
+      max-height: 120px;
+      max-width: 100%;
     }
 
     h2 {

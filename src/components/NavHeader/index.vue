@@ -8,7 +8,7 @@
         :to="{
           name: 'Home'
         }"
-        class="flex header__logo py-2"
+        class="flex header__logo py-2 align-center"
       >
         <img
           class="header__logo__img mr-2"
@@ -17,7 +17,7 @@
         >
         <div class="header__title flex direction-column hidden-mobile">
           <h1 class="fs-20">
-            Vue Mazel Ui
+            Mazel UI
           </h1>
           <p class="fs-14 header__title__sub">
             Components & CSS Library
@@ -93,7 +93,7 @@
       text-decoration: none;
 
       &__img {
-        height: 50px;
+        height: 40px;
       }
     }
 
