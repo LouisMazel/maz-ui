@@ -19,7 +19,7 @@
       </div>
       <div class="nav-footer-content__logo hidden-tablet">
         <img
-          src="@/assets/img/logo.png"
+          src="@/assets/img/logo-vue-mazel-ui.png"
           alt="logo-loic-mazuel"
           class="nav-footer-content__logo__img"
         >

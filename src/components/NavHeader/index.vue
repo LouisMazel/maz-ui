@@ -13,7 +13,7 @@
         <img
           class="header__logo__img mr-2"
           alt="Vue logo"
-          src="@/assets/img/logo.png"
+          src="@/assets/img/logo-base-dodgerblue.png"
         >
         <div class="header__title flex direction-column hidden-mobile">
           <h1 class="fs-20">

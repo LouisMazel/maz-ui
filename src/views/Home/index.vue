@@ -3,7 +3,7 @@
     <div class="container flex-1 flex direction-column align-center justify-center py-4">
       <img
         class="home__logo"
-        src="@/assets/img/logo.png"
+        src="@/assets/img/logo-base-dodgerblue.png"
         alt="vue mazel ui logo"
       >
       <h2 class="my-3 text-center">
