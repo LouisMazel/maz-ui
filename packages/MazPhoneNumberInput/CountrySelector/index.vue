@@ -22,7 +22,7 @@
       <div :class="`iti-flag-small iti-flag ${value.toLowerCase()}`" />
     </div>
     <input
-      :id="id"
+      :id="uniqueId"
       ref="CountrySelector"
       :value="callingCode"
       :placeholder="label"
@@ -58,9 +58,9 @@
     </div>
     <label
       ref="label"
-      :for="id"
       :class="error ? 'text-danger' : null"
       class="country-selector__label"
+      @click.stop="toggleList"
     >
       {{ hint || label }}
     </label>
@@ -70,32 +70,39 @@
         ref="countriesList"
         class="country-selector__list"
         :class="{ 'has-calling-code': showCodeOnList }"
+        :style="[listHeight]"
       >
-        <div
-          v-for="item in countriesSorted"
-          :key="item.code"
-          :class="[
-            {'selected': value === item.iso2},
-            {'keyboard-selected': value !== item.iso2 && tmpValue === item.iso2}
-          ]"
-          class="flex align-center country-selector__list__item"
-          :style="[itemHeight]"
-          @click.stop="updateValue(item.iso2)"
+        <VirtualList
+          :size="countriesHeight"
+          :remain="7"
+          :start="indexItemToShow"
         >
-          <div
-            v-if="!noFlags"
-            class="country-selector__list__item__flag-container"
+          <button
+            v-for="item in countriesSorted"
+            :key="item.code"
+            :class="[
+              {'selected': value === item.iso2},
+              {'keyboard-selected': value !== item.iso2 && tmpValue === item.iso2}
+            ]"
+            class="flex align-center country-selector__list__item"
+            :style="[itemHeight]"
+            @click.stop="updateValue(item.iso2)"
           >
-            <div :class="`iti-flag-small iti-flag ${item.iso2.toLowerCase()}`" />
-          </div>
-          <span
-            v-if="showCodeOnList"
-            class="country-selector__list__item__calling-code flex-fixed"
-          >+{{ item.dialCode }}</span>
-          <div class="dots-text">
-            {{ item.name }}
-          </div>
-        </div>
+            <div
+              v-if="!noFlags"
+              class="country-selector__list__item__flag-container"
+            >
+              <div :class="`iti-flag-small iti-flag ${item.iso2.toLowerCase()}`" />
+            </div>
+            <span
+              v-if="showCodeOnList"
+              class="country-selector__list__item__calling-code flex-fixed"
+            >+{{ item.dialCode }}</span>
+            <div class="dots-text">
+              {{ item.name }}
+            </div>
+          </button>
+        </VirtualList>
       </div>
     </Transition>
   </div>
@@ -103,11 +110,16 @@
 
 <script>
   import { getCountryCallingCode } from 'libphonenumber-js'
+  import VirtualList from 'vue-virtual-scroll-list'
 
   export default {
     name: 'CountrySelector',
+    components: {
+      VirtualList
+    },
     props: {
       countriesHeight: { type: Number, default: 35 },
+      id: { type: String, default: 'CountrySelector' },
       value: { type: [String, Object], default: null },
       label: { type: String, default: 'Choose country' },
       hint: { type: String, default: String },
@@ -116,7 +128,6 @@
       disabled: { type: Boolean, default: false },
       valid: { type: Boolean, default: false },
       dark: { type: Boolean, default: false },
-      id: { type: String, default: 'CountrySelector' },
       items: { type: Array, default: Array, required: true },
       preferredCountries: { type: Array, default: null },
       onlyCountries: { type: Array, default: null },
@@ -130,10 +141,20 @@
         hasListOpen: false,
         selectedIndex: null,
         tmpValue: this.value,
-        query: ''
+        query: '',
+        indexItemToShow: 0
       }
     },
     computed: {
+      uniqueId () {
+        return `${this.id}-${this._uid}`
+      },
+      listHeight () {
+        return {
+          height: `${this.countriesHeight * 7}px`,
+          maxHeight: `${this.countriesHeight * 7}px`
+        }
+      },
       itemHeight () {
         return {
           height: `${this.countriesHeight}px`
@@ -169,12 +190,11 @@
         return this.value ? `+${getCountryCallingCode(this.value)}` : null
       }
     },
-    mounted () {
-      this.$parent.$on('phone-number-focused', this.closeList)
-    },
+    // mounted () {
+    //   this.$parent.$on('phone-number-focused', this.closeList)
+    // },
     methods: {
       handleBlur (e) {
-        window.console.log('e.relatedTarget', e.relatedTarget)
         if (this.$el.contains(e.relatedTarget)) return
         this.isFocus = false
         this.closeList()
@@ -193,22 +213,18 @@
       },
       closeList () {
         this.$emit('close')
+        this.isFocus = false
         this.hasListOpen = false
-      },
-      async reset () {
-        this.closeList()
-        await this.$nextTick()
-        this.$refs.CountrySelector.focus()
       },
       async updateValue (val) {
         this.tmpValue = val
         this.$emit('input', val || null)
         await this.$nextTick()
-        this.reset()
+        this.closeList()
       },
       scrollToSelectedOnFocus (arrayIndex) {
         this.$nextTick(() => {
-          this.$refs.countriesList.scrollTop = arrayIndex * this.countriesHeight - (this.countriesHeight * 3)
+          this.indexItemToShow = arrayIndex - 3
         })
       },
       selectFirstValue () {
@@ -240,23 +256,30 @@
           this.closeList()
         } else {
           // typing a country's name
-          clearTimeout(this.queryTimer)
-          this.queryTimer = setTimeout(() => {
-            this.query = ''
-          }, 1000)
-          const q = String.fromCharCode(code)
-          if (code === 8 && this.query !== '') {
-            this.query = this.query.substring(0, this.query.length - 1)
-          } else if (/[a-zA-Z-e ]/.test(q)) {
-            this.query += e.key
-            const countries = this.preferredCountries ? this.countriesSorted.slice(this.preferredCountries.length) : this.countriesSorted
-            const resultIndex = countries.findIndex(c => {
-              this.tmpValue = c.iso2
-              return c.name.toLowerCase().startsWith(this.query)
-            })
-            if (resultIndex !== -1) {
-              this.scrollToSelectedOnFocus(resultIndex + (this.preferredCountries ? this.preferredCountries.length : 0))
-            }
+          this.searching(e)
+        }
+      },
+      searching (e) {
+        const code = e.keyCode
+        clearTimeout(this.queryTimer)
+        this.queryTimer = setTimeout(() => {
+          this.query = ''
+        }, 2000)
+        const q = String.fromCharCode(code)
+        if (code === 8 && this.query !== '') {
+          this.query = this.query.substring(0, this.query.length - 1)
+        } else if (/[a-zA-Z-e ]/.test(q)) {
+          if (!this.hasListOpen) this.openList()
+          this.query += q.toLowerCase()
+          const countries = this.preferredCountries
+            ? this.countriesSorted.slice(this.preferredCountries.length)
+            : this.countriesSorted
+          const resultIndex = countries.findIndex(c => {
+            this.tmpValue = c.iso2
+            return c.name.toLowerCase().startsWith(this.query)
+          })
+          if (resultIndex !== -1) {
+            this.scrollToSelectedOnFocus(resultIndex + (this.preferredCountries ? this.preferredCountries.length : 0))
           }
         }
       }
@@ -351,8 +374,6 @@
 
     &__list {
       max-width: 100%;
-      height: 210px;
-      max-height: 210px;
       top: 100%;
       width: 100%;
       min-width: 230px;
@@ -380,6 +401,10 @@
         font-size: 12px;
         cursor: pointer;
         color: $text-color;
+        background-color: transparent;
+        width: 100%;
+        border: 0;
+        outline: none;
 
         &__flag-container {
           margin-right: 10px;
@@ -490,6 +515,8 @@
     }
 
     &.has-list-open {
+      z-index: 1;
+
       .country-selector {
         &__toggle {
           transform: rotate(180deg);

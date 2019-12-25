@@ -55,9 +55,9 @@
     </div>
     <label
       ref="label"
-      :for="uniqueId"
       :class="error ? 'text-danger' : null"
       class="maz-select__label"
+      @click.stop="toggleList"
     >
       {{ hintValue || labelShown }}
     </label>
@@ -68,27 +68,33 @@
         class="maz-select__options-list"
         :style="[itemListHeight]"
       >
-        <button
-          v-for="({ label: l, value: v }, i) in options"
-          :key="i"
-          tabindex="-1"
-          :class="[
-            {'selected': value === v},
-            {'keyboard-selected': tmpValue === v}
-          ]"
-          class="flex align-center maz-select__options-list__item"
-          :style="[optionHeight]"
-          @click.stop="updateValue(v)"
+        <VirtualList
+          :size="itemHeight"
+          :remain="itemsRemain"
+          :start="indexItemToShow"
         >
-          <div
-            class="dots-text"
-            :class="{
-              'text-muted': !v
-            }"
+          <button
+            v-for="({ label: l, value: v }, i) in options"
+            :key="i"
+            tabindex="-1"
+            :class="[
+              {'selected': value === v},
+              {'keyboard-selected': tmpValue === v}
+            ]"
+            class="flex align-center maz-select__options-list__item"
+            :style="[optionHeight]"
+            @click.stop="updateValue(v)"
           >
-            {{ l }}
-          </div>
-        </button>
+            <div
+              class="dots-text"
+              :class="{
+                'text-muted': !v && value !== v
+              }"
+            >
+              {{ l }}
+            </div>
+          </button>
+        </VirtualList>
       </div>
     </Transition>
   </div>
@@ -96,9 +102,13 @@
 
 <script>
   import uniqueId from './../mixins/uniqueId'
+  import VirtualList from 'vue-virtual-scroll-list'
 
   export default {
     name: 'MazSelect',
+    components: {
+      VirtualList
+    },
     mixins: [uniqueId],
     props: {
       value: {
@@ -126,7 +136,8 @@
         selectedIndex: null,
         hasListOpen: false,
         query: '',
-        tmpValue: this.value
+        tmpValue: this.value,
+        indexItemToShow: 0
       }
     },
     computed: {
@@ -143,6 +154,9 @@
           maxHeight: `${this.listHeight}px`
         }
       },
+      itemsRemain () {
+        return this.options.length > 7 ? 7 : this.options.length
+      },
       tmpValueIndex () {
         return this.options.findIndex(c => c.value === this.tmpValue)
       },
@@ -153,7 +167,7 @@
       },
       valueShown () {
         const valueSelected = this.options.filter(c => c.value === this.value)[0]
-        return valueSelected ? valueSelected.label : null
+        return valueSelected && valueSelected.value ? valueSelected.label : null
       },
       labelShown () {
         let label = this.label
@@ -210,7 +224,7 @@
       },
       scrollToSelectedOnFocus (arrayIndex) {
         this.$nextTick(() => {
-          this.$refs.optionsList.scrollTop = arrayIndex * this.itemHeight - (this.itemHeight * 3)
+          this.indexItemToShow = arrayIndex - 3
         })
       },
       keyboardNav (e) {
@@ -237,22 +251,27 @@
           this.closeList()
         } else {
           // typing an option's name
-          clearTimeout(this.queryTimer)
-          this.queryTimer = setTimeout(() => {
-            this.query = ''
-          }, 1000)
-          const q = String.fromCharCode(code)
-          if (code === 8 && this.query !== '') {
-            this.query = this.query.substring(0, this.query.length - 1)
-          } else if (/[a-zA-Z-e ]/.test(q)) {
-            this.query += e.key
-            const resultIndex = this.options.findIndex(o => {
-              this.tmpValue = o.value
-              return o.label.toLowerCase().startsWith(this.query)
-            })
-            if (resultIndex !== -1) {
-              this.scrollToSelectedOnFocus(resultIndex)
-            }
+          this.searching(e)
+        }
+      },
+      searching (e) {
+        const code = e.keyCode
+        clearTimeout(this.queryTimer)
+        this.queryTimer = setTimeout(() => {
+          this.query = ''
+        }, 2000)
+        const q = String.fromCharCode(code)
+        if (code === 8 && this.query !== '') {
+          this.query = this.query.substring(0, this.query.length - 1)
+        } else if (/[a-zA-Z-e ]/.test(q)) {
+          if (!this.hasListOpen) this.openList()
+          this.query += q.toLowerCase()
+          const resultIndex = this.options.findIndex(o => {
+            this.tmpValue = o.value
+            return o.label.toLowerCase().startsWith(this.query)
+          })
+          if (resultIndex !== -1) {
+            this.scrollToSelectedOnFocus(resultIndex)
           }
         }
       }

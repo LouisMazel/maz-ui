@@ -83,7 +83,7 @@
         selectValue: '',
         selectValueExample: '',
         options: [
-          { label: 'None' },
+          { label: 'None', value: null },
           { label: 'First option', value: 'first' },
           { label: 'Second option', value: 'second' },
           { label: 'Third option', value: 'third' }
@@ -101,7 +101,7 @@ export default {
     return {
       selectValueExample: '',
       options: [
-        { label: 'None' },
+        { label: 'None', value: null },
         { label: 'First option', value: 'first' },
         { label: 'Second option', value: 'second' },
         { label: 'Third option', value: 'third' }
@@ -113,9 +113,3 @@ export default {
     }
   }
 </script>
-
-<style lang="scss" scoped>
-  .maz-select {
-    z-index: 1;
-  }
-</style>

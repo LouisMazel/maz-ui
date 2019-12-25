@@ -26,7 +26,7 @@
         </ComponentContainer>
       </div>
       <div class="flex-1">
-        <h4>Dark</h4>
+        <h3>Dark</h3>
         <ComponentContainer dark>
           <MazPhoneNumberInput
             v-model="phoneNumber"
