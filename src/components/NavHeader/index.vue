@@ -17,7 +17,7 @@
         >
         <div class="header__title flex direction-column hidden-mobile">
           <h1 class="fs-20">
-            Mazel UI
+            Maz UI
           </h1>
           <p class="fs-14 header__title__sub">
             Components & CSS Library

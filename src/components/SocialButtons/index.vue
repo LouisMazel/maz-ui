@@ -21,7 +21,7 @@
         socialMedias: [
           {
             name: 'github',
-            url: 'https://github.com/LouisMazel/vue-mazel-ui'
+            url: 'https://github.com/LouisMazel/maz-ui'
           }
         ]
       }

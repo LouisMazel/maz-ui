@@ -13,7 +13,7 @@ import 'highlight.js/styles/default.css'
 import './assets/scss/main.scss'
 
 import store from './store'
-import VueMazelUi from './lib'
+import MazUi from './lib'
 
 Vue.use(VueHighlightJS, {
   languages: {
@@ -21,7 +21,7 @@ Vue.use(VueHighlightJS, {
     bash
   }
 })
-Vue.use(VueMazelUi)
+Vue.use(MazUi)
 
 Vue.config.productionTip = false
 

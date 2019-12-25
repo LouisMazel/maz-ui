@@ -24,19 +24,19 @@
     data () {
       return {
         codeBase: `import Vue from 'vue';
-import 'vue-mazel-ui/dist/vue-mazel-ui.css';
-import VueMazelUi from 'vue-mazel-ui';
+import 'maz-ui/dist/maz-ui.css';
+import MazUi from 'maz-ui';
 import App from './App.vue';
 
-Vue.use(VueMazelUi);
+Vue.use(MazUi);
 
 new Vue({
   el: '#app',
   render: h => h(App)
 });`,
         codeCustom: `import Vue from 'vue';
-import 'vue-mazel-ui/dist/vue-mazel-ui.css';
-import { MazBtn, MazSelect } from 'vue-mazel-ui';
+import 'maz-ui/dist/maz-ui.css';
+import { MazBtn, MazSelect } from 'maz-ui';
 import App from './App.vue';
 
 Vue.component(MazBtn.name, MazBtn);

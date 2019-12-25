@@ -2,7 +2,7 @@
   <a
     target="_blank"
     class="version-number"
-    href="https://www.npmjs.com/package/vue-mazel-ui"
+    href="https://www.npmjs.com/package/maz-ui"
   >
     {{ versionNumber }}
   </a>

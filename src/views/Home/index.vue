@@ -4,7 +4,7 @@
       <img
         class="home__logo"
         src="@/assets/img/logo-base-dodgerblue.png"
-        alt="vue mazel ui logo"
+        alt="maz ui logo"
       >
       <h2 class="mt-3 mb-2 text-center">
         A Vue.js library to build your interface
@@ -14,7 +14,7 @@
       </p>
       <CodeContainer
         language="bash"
-        code="npm i vue-mazel-ui -S"
+        code="npm i maz-ui -S"
         class="mb-5"
       />
       <div class="flex align-start flex--wrap my-3 align-center justify-center">
@@ -40,14 +40,14 @@
       <div class="flex align-start flex--wrap mt-3 align-center justify-center">
         <a
           class="btn btn--dark--outline mr-4"
-          href="https://github.com/LouisMazel/vue-mazel-ui"
+          href="https://github.com/LouisMazel/maz-ui"
           target="_blank"
         >
           Github
         </a>
         <a
           class="btn btn--danger--outline"
-          href="https://www.npmjs.com/package/vue-mazel-ui"
+          href="https://www.npmjs.com/package/maz-ui"
           target="_blank"
         >
           NPM
