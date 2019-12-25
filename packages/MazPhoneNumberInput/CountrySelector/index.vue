@@ -86,6 +86,7 @@
             ]"
             class="flex align-center country-selector__list__item"
             :style="[itemHeight]"
+            tabindex="-1"
             @click.stop="updateValue(item.iso2)"
           >
             <div
