@@ -1,55 +1,66 @@
 <template>
   <div
-    :id="uniqueId"
-    ref="MazSidebar"
-    class="maz-sidebar flex flex-fixed m-h-100 mh-100"
-    :style="
-      'width:' + (isOpen ? (Number.isInteger(width) ? width + 'px;' : width) : '0px;') +
-        'flex: 0 0 ' + (isOpen ? width + 'px;' : '0px;')
-    "
+    class="maz-sidebar"
     :class="{
-      'is-close': !isOpen,
-      'is-absolute': absolute,
-      'has-shadow': !noShadow,
-      'is-right': right,
       'is-dark': dark
     }"
   >
-    <transition
-      name="fade"
-      mode="in-out"
+    <div
+      :id="uniqueId"
+      ref="MazSidebar"
+      class="maz-sidebar__wrapper flex flex-fixed m-h-100 mh-100"
+      :style="
+        'width:' + (isOpen ? (Number.isInteger(width) ? width + 'px;' : width) : '0px;') +
+          'flex: 0 0 ' + (isOpen ? width + 'px;' : '0px;')
+      "
+      :class="{
+        'is-close': !isOpen,
+        'is-absolute': absolute,
+        'has-shadow': !noShadow,
+        'is-right': right
+      }"
     >
+      <transition
+        name="fade"
+        mode="in-out"
+      >
+        <div
+          v-show="isOpen"
+          class="maz-sidebar__wrapper__content flex flex-1 w-100 direction-column"
+        >
+          <slot />
+        </div>
+      </transition>
       <div
-        v-show="isOpen"
-        class="maz-sidebar__content flex flex-1 w-100 direction-column"
+        v-if="!noCloseBtn"
+        class="maz-sidebar__wrapper__close-btn"
       >
-        <slot />
+        <button
+          class="flex align-center justify-center"
+          @click="isOpen = !isOpen"
+        >
+          <slot name="button-icon">
+            <component
+              :is="componentArrow"
+              :dark="dark"
+            />
+          </slot>
+        </button>
       </div>
-    </transition>
-    <div
-      v-if="!noCloseBtn"
-      class="maz-sidebar__close-btn"
-    >
-      <button
-        class="flex align-center justify-center"
-        @click="isOpen = !isOpen"
+      <div
+        v-show="loader && isOpen"
+        class="maz-sidebar__wrapper__load-layer flex align-center justify-center"
       >
-        <slot name="button-icon">
-          <component
-            :is="componentArrow"
-            :dark="dark"
-          />
+        <slot name="content-loader">
+          <MazLoader />
         </slot>
-      </button>
+      </div>
     </div>
     <div
-      v-show="loader && isOpen"
-      class="maz-sidebar__load-layer flex align-center justify-center"
-    >
-      <slot name="content-loader">
-        <MazLoader />
-      </slot>
-    </div>
+      v-if="layer && isOpen"
+      class="maz-sidebar__wrapper__opacity-layer"
+      @click="isOpen = false"
+    />
   </div>
 </template>
 
@@ -69,6 +80,8 @@
    * @param {boolean} [absolute=false] - Specify if the sidebar should be positionned in an absolute way.
    * @param {boolean} [isOpen=false] - Is the sidebar open or not
    * @param {boolean} [right=false] - Specify the sidebar direction, by default the sidebar is positionned in the left side.
+   * @param {boolean} [dark=false] - Specify the dark mode
+   * @param {boolean} [layer=false] - Specify
    * @emits toggle-menu
    */
   export default {
@@ -82,13 +95,14 @@
     props: {
       value: { type: Boolean, required: true },
       id: { type: String, default: 'MazSidebar' },
-      loader: { type: Boolean, default: false },
       width: { type: Number, default: 350 },
+      loader: { type: Boolean, default: false },
       noCloseBtn: { type: Boolean, default: false },
       noShadow: { type: Boolean, default: false },
       absolute: { type: Boolean, default: false },
       right: { type: Boolean, default: false },
-      dark: { type: Boolean, default: false }
+      dark: { type: Boolean, default: false },
+      layer: { type: Boolean, default: true }
     },
     computed: {
       isOpen: {

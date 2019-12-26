@@ -99,7 +99,7 @@
         hasShadow: true,
         hasCloseBtn: true,
         absolute: false,
-        dark: false
+        dark: true
       }
     }
   }
