@@ -8,10 +8,10 @@ const sourcemaps = require('gulp-sourcemaps')
 
 const onError = (err) => {
   notify.onError({
-    title:    'Gulp',
+    title: 'Gulp',
     subtitle: 'Failure!',
-    message:  'Error: <%= error.message %>',
-    sound:    'Basso'
+    message: 'Error: <%= error.message %>',
+    sound: 'Basso'
   })(err)
 }
 
@@ -23,19 +23,18 @@ const sassOptions = {
 // ---------------
 
 const compile = () => {
-  return src('src/index.scss')
+  return src('packages/scss/index.scss')
     .pipe(plumber({ errorHandler: onError }))
     .pipe(sourcemaps.init())
     .pipe(sass.sync(sassOptions).on('error', sass.logError))
     .pipe(prefix())
     .pipe(rename('maz-ui.css'))
     .pipe(sass.sync({ outputStyle: 'compressed' }).on('error', sass.logError))
-    .pipe(rename({ suffix: '.min' }))
-    .pipe(dest('./dist/'))
+    .pipe(dest('dist'))
 }
 
 const watcher = () => {
-  watch('src/**/*.scss', compile)
+  watch('packages/scss/**/*.scss', compile)
 }
 
 // BUILD TASKS
