@@ -287,7 +287,3 @@
     }
   }
 </script>
-
-<style lang="scss" scoped>
-  @import './assets/iti-flags/flags.css';
-</style>
