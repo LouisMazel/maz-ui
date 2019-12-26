@@ -324,7 +324,7 @@
       outline: none;
       border: 1px solid $third-color;
       border-radius: $border-radius;
-      font-size: 13px;
+      font-size: 14px;
 
       &::-webkit-input-placeholder {
         color: $secondary-color;

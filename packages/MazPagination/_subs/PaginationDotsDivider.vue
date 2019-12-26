@@ -12,7 +12,6 @@
 
 <style lang="scss" scoped>
   .pagination-dots-divider {
-    font-family: var(--bold-font-family);
     color: $text-color;
     user-select: none;
     height: 35px;

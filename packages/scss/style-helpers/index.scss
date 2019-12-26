@@ -51,20 +51,4 @@ body,
   font: $base-font-weight $base-font-size $base-font-family;
   line-height: $base-line-height;
   font-kerning: normal;
-  height: 100%;
-  color: $text-color;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-weight: 400;
-}
-
-h1,
-h2 {
-  color: $primary-color;
 }
