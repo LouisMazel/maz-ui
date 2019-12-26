@@ -1,0 +1,32 @@
+.maz-btn-group {
+  &__item {
+    margin-right: -1px;
+    z-index: 0;
+    border-radius: 0;
+
+    &.active,
+    &:focus {
+      z-index: 1;
+    }
+
+    &:first-child:not(.rounded) {
+      border-top-left-radius: $border-radius;
+      border-bottom-left-radius: $border-radius;
+    }
+
+    &:last-child:not(.rounded) {
+      border-top-right-radius: $border-radius;
+      border-bottom-right-radius: $border-radius;
+    }
+
+    &:first-child.rounded {
+      border-top-left-radius: 20px;
+      border-bottom-left-radius: 20px;
+    }
+
+    &:last-child.rounded {
+      border-top-right-radius: 20px;
+      border-bottom-right-radius: 20px;
+    }
+  }
+}

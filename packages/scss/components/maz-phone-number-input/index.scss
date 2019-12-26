@@ -1,0 +1,25 @@
+.maz-phone-number-input {
+  @import './country-selector';
+  @import './input-tel';
+
+  .select-country-container {
+    flex: 0 0 120px;
+    width: 120px;
+    min-width: 120px;
+    max-width: 120px;
+  }
+
+  &.sm .select-country-container {
+    flex: 0 0 110px;
+    width: 110px;
+    min-width: 110px;
+    max-width: 110px;
+  }
+
+  &.lg .select-country-container {
+    flex: 0 0 130px;
+    width: 130px;
+    min-width: 130px;
+    max-width: 130px;
+  }
+}

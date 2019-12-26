@@ -1,0 +1,362 @@
+.maz-select {
+  font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  position: relative;
+  height: 40px;
+  min-height: 40px;
+  user-select: none;
+
+  &:hover {
+    .maz-select__input {
+      border-color: $primary-color;
+    }
+  }
+
+  .text-muted {
+    color: $muted-color;
+  }
+
+  &__label {
+    position: absolute;
+    top: 3px;
+    cursor: pointer;
+    left: 11px;
+    transform: translateY(25%);
+    opacity: 0;
+    transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+    font-size: 11px;
+    color: $secondary-color;
+  }
+
+  &__input {
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+    background-color: $bg-color;
+    position: relative;
+    width: 100%;
+    height: 40px;
+    min-height: 40px;
+    padding-right: 18px;
+    padding-left: 10px;
+    font-weight: 400;
+    outline: none;
+    border: 1px solid $third-color;
+    border-radius: $border-radius;
+    font-size: 14px;
+
+    &::-webkit-input-placeholder {
+      color: $secondary-color;
+    }
+
+    &::-moz-placeholder {
+      color: $secondary-color;
+    }
+
+    &:-ms-input-placeholder {
+      color: $secondary-color;
+    }
+
+    &::-ms-input-placeholder {
+      color: $secondary-color;
+    }
+
+    &:-moz-placeholder {
+      color: $secondary-color;
+    }
+
+    &::placeholder {
+      color: $secondary-color;
+    }
+  }
+
+  &__toggle {
+    position: absolute;
+    right: 5px;
+    top: calc(50% - 10px);
+    transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+    text-align: center;
+    display: inline-block;
+    cursor: pointer;
+    height: 24px;
+
+    &__arrow {
+      color: $secondary-color;
+
+      path.arrow {
+        fill: $secondary-color;
+      }
+    }
+  }
+
+  &__options-list {
+    z-index: 9;
+    padding: 0;
+    list-style: none;
+    min-width: 230px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin: 0;
+    max-width: 100%;
+    position: absolute;
+    top: 100%;
+    border-radius: $border-radius;
+    width: 100%;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    background-color: $bg-color;
+
+    &__item {
+      padding: 0 10px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      font-size: 12px;
+      cursor: pointer;
+      background-color: transparent;
+      border: none;
+      color: $text-color;
+      width: 100%;
+      outline: none;
+
+      &:hover,
+      &.keyboard-selected {
+        background-color: $hover-color;
+      }
+
+      &.selected {
+        color: #FFF;
+        background-color: $primary-color;
+        font-weight: 600;
+      }
+    }
+  }
+
+  &.is-dark {
+    .maz-select {
+      &__label {
+        color: $secondary-color-dark;
+      }
+
+      &__input {
+        background-color: $bg-color-dark-l;
+        border-color: $third-color-dark;
+        color: $secondary-color-dark;
+
+        &:hover {
+          border-color: $primary-color;
+        }
+
+        &::-webkit-input-placeholder {
+          color: $secondary-color-dark;
+        }
+
+        &::-moz-placeholder {
+          color: $secondary-color-dark;
+        }
+
+        &:-ms-input-placeholder {
+          color: $secondary-color-dark;
+        }
+
+        &::-ms-input-placeholder {
+          color: $secondary-color-dark;
+        }
+
+        &:-moz-placeholder {
+          color: $secondary-color-dark;
+        }
+
+        &::placeholder {
+          color: $secondary-color-dark;
+        }
+      }
+
+      &__toggle {
+        &__arrow {
+          color: $secondary-color-dark;
+        }
+      }
+
+      &__options-list {
+        background-color: $bg-color-dark;
+
+        &__item {
+          color: $secondary-color-dark;
+
+          &:hover,
+          &.keyboard-selected {
+            background-color: $hover-color-dark;
+          }
+
+          &.selected {
+            color: #FFF;
+            background-color: $primary-color;
+            font-weight: 600;
+          }
+        }
+      }
+    }
+  }
+
+  &.has-value,
+  &.has-hint {
+    .maz-select__label {
+      opacity: 1;
+      transform: translateY(0);
+      font-size: 11px;
+    }
+
+    .maz-select__input {
+      padding-top: 14px;
+    }
+  }
+
+  &.has-list-open {
+    .maz-select {
+      &__toggle {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  &.is-focused {
+    .maz-select__input {
+      border-color: $primary-color;
+      box-shadow: 0 0 0 0.2rem $primary-color-transparency;
+    }
+
+    .maz-select__label {
+      color: $primary-color;
+    }
+  }
+
+  &.has-error {
+    .maz-select__input,
+    .maz-select__input:hover {
+      border-color: $danger-color;
+    }
+
+    &.is-focused {
+      .maz-select__input {
+        box-shadow: 0 0 0 0.2rem $danger-color-transparency;
+      }
+    }
+
+    .maz-select__label {
+      color: $danger-color;
+    }
+  }
+
+  &.is-valid {
+    .maz-select__input,
+    .maz-select__input:hover {
+      border-color: $success-color;
+    }
+
+    &.is-focused {
+      .maz-select__input {
+        box-shadow: 0 0 0 0.2rem $success-color-transparency;
+      }
+    }
+
+    .maz-select__label {
+      color: $success-color;
+    }
+  }
+
+  &.is-disabled {
+    cursor: not-allowed;
+
+    .maz-select__input {
+      border-color: #CCC;
+      background-color: #F2F2F2;
+      color: $disabled-color;
+
+      &::-webkit-input-placeholder {
+        color: $disabled-color;
+      }
+
+      &::-moz-placeholder {
+        color: $disabled-color;
+      }
+
+      &:-ms-input-placeholder {
+        color: $disabled-color;
+      }
+
+      &::-ms-input-placeholder {
+        color: $disabled-color;
+      }
+
+      &:-moz-placeholder {
+        color: $disabled-color;
+      }
+
+      &::placeholder {
+        color: $disabled-color;
+      }
+    }
+
+    .maz-select__label,
+    .maz-select__input,
+    .maz-select__toggle__arrow {
+      cursor: not-allowed;
+      color: $disabled-color;
+    }
+  }
+
+  &.lg {
+    height: 48px;
+    min-height: 48px;
+
+    .maz-select__input {
+      height: 48px;
+      min-height: 48px;
+      font-size: 14px;
+    }
+
+    .maz-select__label {
+      font-size: 14px;
+    }
+
+    &.has-value {
+      .maz-select__input {
+        padding-top: 18px;
+      }
+    }
+  }
+
+  &.sm {
+    height: 36px;
+    min-height: 36px;
+
+    .maz-select__input {
+      height: 36px;
+      min-height: 36px;
+      font-size: 12px;
+    }
+
+    .maz-select__label {
+      font-size: 10px;
+    }
+
+    &.has-value {
+      .maz-select__input {
+        padding-top: 12px;
+      }
+    }
+  }
+
+  .slide-enter-active,
+  .slide-leave-active {
+    opacity: 1;
+    z-index: 998;
+    transition: all 0.3s;
+    transform: translateY(0);
+  }
+
+  .slide-enter,
+  .slide-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
+    z-index: 998;
+    transform: translateY(-20px);
+  }
+}

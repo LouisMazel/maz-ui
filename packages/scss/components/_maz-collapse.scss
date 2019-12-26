@@ -1,0 +1,50 @@
+.maz-collapse {
+  color: $text-color;
+  border-radius: $border-radius;
+  overflow: hidden;
+  border: 1px solid $hover-color;
+
+  &__header-btn {
+    background-color: transparent;
+    border: none;
+    color: $text-color;
+    width: 100%;
+    outline: none;
+    font-size: 14px;
+
+    &__arrow {
+      transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+    }
+  }
+
+  &__content {
+    border-top: 1px solid $text-color-dark;
+  }
+
+  &.is-open {
+    .maz-collapse__header-btn__arrow {
+      transform: rotate(180deg);
+    }
+  }
+
+  &.is-dark {
+    color: $text-color-dark;
+    background-color: $bg-color-dark;
+    border: 1px solid $third-color-dark;
+
+    .maz-collapse {
+      &__header-btn {
+        color: $text-color-dark;
+
+        &:hover,
+        &:focus {
+          background-color: $hover-color-dark;
+        }
+      }
+
+      &__content {
+        border-color: $third-color-dark;
+      }
+    }
+  }
+}
