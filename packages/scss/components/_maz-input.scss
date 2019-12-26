@@ -221,22 +221,6 @@
     }
   }
 
-  &.has-value {
-    .maz-input__label {
-      opacity: 1;
-      transform: translateY(0);
-      font-size: 11px;
-    }
-
-    .maz-input__input {
-      padding-top: 14px;
-
-      &.textarea {
-        padding-top: 20px;
-      }
-    }
-  }
-
   &.has-value,
   &.has-hint {
     .maz-input__label {
@@ -245,11 +229,13 @@
       font-size: 11px;
     }
 
-    .maz-input__input {
-      padding-top: 14px;
+    &:not(.has-no-label) {
+      .maz-input__input {
+        padding-top: 14px;
 
-      &.textarea {
-        padding-top: 20px;
+        &.textarea {
+          padding-top: 20px;
+        }
       }
     }
   }
@@ -336,7 +322,7 @@
       font-size: 10px;
     }
 
-    &.has-value {
+    &.has-value:not(.has-no-label) {
       .maz-input__input {
         padding-top: 12px;
 
@@ -366,7 +352,7 @@
       font-size: 14px;
     }
 
-    &.has-value {
+    &.has-value:not(.has-no-label) {
       .maz-input__input {
         padding-top: 16px;
 

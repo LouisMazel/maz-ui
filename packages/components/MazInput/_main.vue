@@ -8,7 +8,8 @@
       'has-error': error,
       'is-disabled': disabled,
       'is-dark': dark,
-      'has-hint': hint
+      'has-hint': hint,
+      'has-no-label': !hasLabel && !hint
     }, size]"
     class="maz-input"
     @click="focusInput"
@@ -47,6 +48,7 @@
       @click="$emit('click', $event)"
     />
     <label
+      v-if="hasLabel || hint"
       ref="label"
       :for="uniqueId"
       :class="error ? 'text-danger' : null"
@@ -107,7 +109,8 @@
       required: { type: Boolean, default: false },
       textarea: { type: Boolean, default: false },
       loader: { type: Boolean, default: false },
-      clearable: { type: Boolean, default: false }
+      clearable: { type: Boolean, default: false },
+      noLabel: { type: Boolean, default: false }
     },
     data () {
       return {
@@ -140,6 +143,9 @@
       },
       hasNumberType () {
         return this.type === 'number'
+      },
+      hasLabel () {
+        return !this.noLabel
       }
     },
     methods: {
