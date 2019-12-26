@@ -8,11 +8,11 @@
         :no-shadow="!hasShadow"
         :no-close-btn="!hasCloseBtn"
         :absolute="absolute"
-        :dark="dark"
+        :dark="hasDarkTheme"
       >
         <div
           class="flex flex-1 align-center justify-center"
-          :class="{ 'text-white': dark }"
+          :class="{ 'text-white': hasDarkTheme }"
         >
           SideBar Content Example
         </div>
@@ -32,7 +32,7 @@
         </MazBtn>
         <MazInput
           v-model="width"
-          color="number"
+          type="number"
           label="Sidebar width"
         />
         <div class="switch-container shadow flex">
@@ -74,11 +74,12 @@
         :no-close-btn="!hasCloseBtn"
         :absolute="absolute"
         right
-        :dark="!dark"
+        layer
+        :dark="hasDarkTheme"
       >
         <div
           class="flex flex-1 align-center justify-center"
-          :class="{ 'text-white': !dark }"
+          :class="{ 'text-white': hasDarkTheme }"
         >
           SideBar Content Example
         </div>
@@ -88,6 +89,8 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
+
   export default {
     name: 'MazSidebarDoc',
     data () {
@@ -101,6 +104,9 @@
         absolute: false,
         dark: true
       }
+    },
+    computed: {
+      ...mapGetters(['hasDarkTheme'])
     }
   }
 </script>

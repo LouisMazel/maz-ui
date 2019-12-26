@@ -102,7 +102,7 @@
       absolute: { type: Boolean, default: false },
       right: { type: Boolean, default: false },
       dark: { type: Boolean, default: false },
-      layer: { type: Boolean, default: true }
+      layer: { type: Boolean, default: false }
     },
     computed: {
       isOpen: {

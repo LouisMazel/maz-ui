@@ -98,7 +98,6 @@
   &.is-dark {
     .maz-sidebar__wrapper {
       background-color: $bg-color-dark;
-      border-right: 1px solid $hover-color-dark;
 
       &__load-layer {
         background-color: $muted-color-dark;

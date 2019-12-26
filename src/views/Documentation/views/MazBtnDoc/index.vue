@@ -36,6 +36,11 @@
       >
         Primary default
       </MazBtn>
+      <MazBtn
+        block
+      >
+        Primary block
+      </MazBtn>
     </ComponentContainer>
     <ComponentContainer>
       <h3 class="mb-3">
@@ -192,6 +197,11 @@
     disabled
   >
     Primary default
+  </MazBtn>
+  <MazBtn
+    block
+  >
+    Primary block
   </MazBtn>
 </template>`
       }
