@@ -1,6 +1,6 @@
 {
   "name": "maz-ui",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "main": "dist/maz-ui.common.js",
   "description": "A components library for VueJs",
   "author": "Louis Mazel <me@loicmazuel.com>",
