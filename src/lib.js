@@ -1,6 +1,3 @@
-import '../packages/scss/style-helpers/index.scss'
-import '../packages/scss/components/index.scss'
-
 import MazBtn from '@/../packages/components/MazBtn'
 import MazBtnGroup from '@/../packages/components/MazBtnGroup'
 import MazCheckbox from '@/../packages/components/MazCheckbox'
