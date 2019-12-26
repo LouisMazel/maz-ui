@@ -24,12 +24,6 @@
         >
           Toggle loader
         </MazBtn>
-        <MazBtn
-          color="dark"
-          @click="dark = !dark"
-        >
-          Toggle Dark
-        </MazBtn>
         <MazInput
           v-model="width"
           type="number"
@@ -101,8 +95,7 @@
         width: 350,
         hasShadow: true,
         hasCloseBtn: true,
-        absolute: false,
-        dark: true
+        absolute: false
       }
     },
     computed: {
