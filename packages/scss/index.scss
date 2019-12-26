@@ -1,3 +1,4 @@
 @import './iti-flags/flags.css';
-@import './style-helpers';
-@import './components';
+@import './style-helpers/variables/index';
+@import './style-helpers/index';
+@import './components/index';

@@ -1,7 +1,7 @@
 last 2 versions
 ff >= 45
 ie 11
-not ie <= 9
+not ie < 9
 edge >= 15
 safari >= 9
 chrome >= 45
