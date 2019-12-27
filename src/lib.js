@@ -3,6 +3,7 @@ import MazBtnGroup from '@/../packages/components/MazBtnGroup'
 import MazCheckbox from '@/../packages/components/MazCheckbox'
 import MazCollapse from '@/../packages/components/MazCollapse'
 import MazDialog from '@/../packages/components/MazDialog'
+import MazDropzone from '@/../packages/components/MazDropzone'
 import MazFlex from '@/../packages/components/MazFlex'
 import MazInput from '@/../packages/components/MazInput'
 import MazLoader from '@/../packages/components/MazLoader'
@@ -22,6 +23,7 @@ const components = [
   MazCheckbox,
   MazCollapse,
   MazDialog,
+  MazDropzone,
   MazFlex,
   MazInput,
   MazLoader,
@@ -51,6 +53,7 @@ export {
   MazCheckbox,
   MazCollapse,
   MazDialog,
+  MazDropzone,
   MazFlex,
   MazInput,
   MazLoader,

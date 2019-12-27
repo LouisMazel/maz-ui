@@ -59,11 +59,11 @@
       },
       routesFormComponents () {
         return this.$router.options.routes.filter(route => route.path === '/documentation')[0]
-          .children.filter(child => child.name !== 'Install' && child.name !== 'GetStarted').slice(0, 7)
+          .children.filter(child => child.name !== 'Install' && child.name !== 'GetStarted').slice(0, 8)
       },
       routesUiComponents () {
         return this.$router.options.routes.filter(route => route.path === '/documentation')[0]
-          .children.filter(child => child.name !== 'Install' && child.name !== 'GetStarted').slice(7)
+          .children.filter(child => child.name !== 'Install' && child.name !== 'GetStarted').slice(8)
       }
     },
     methods: {

@@ -25,7 +25,7 @@
     },
     mounted () {
       const date = new Date().toTimeString()
-      if (date > '16:30') {
+      if (date > '18:30' && date < '8:30') {
         this.setDarkTheme(true)
       }
     },

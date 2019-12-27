@@ -1,0 +1,103 @@
+#MazDropzone {
+  border: 1px dashed $hover-color;
+  min-height: 245px;
+  background-color: $bg-color;
+  color: $muted-color;
+  cursor: pointer;
+
+  .dz-preview {
+    margin: 0;
+    min-height: auto;
+    background: transparent;
+  }
+
+  .dz-progress {
+    overflow: visible;
+    background-color: $hover-color;
+    width: 150px;
+    left: calc(50% - 35px);
+
+    .dz-upload {
+      background-color: $primary-color;
+      border-radius: 16px;
+    }
+
+    .progress-title {
+      display: inline-block;
+      position: relative;
+      top: -30px;
+    }
+  }
+
+  .dz-message {
+    margin: 0;
+  }
+
+  .dz-success-mark {
+    i.material-icons {
+      background: rgba($primary-color, 0.8);
+      border-radius: 50%;
+      color: white;
+      font-size: 70px;
+    }
+  }
+
+  .dz-error-mark {
+    i.material-icons {
+      background: rgba($danger-color, 0.8);
+      border-radius: 50%;
+      color: white;
+      font-size: 70px;
+    }
+  }
+
+  .dz-preview .dz-image {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+    border-radius: $border-radius;
+    border: 1px dashed $hover-color;
+
+    > div {
+      width: inherit;
+      height: inherit;
+      background-size: contain;
+    }
+
+    > img {
+      width: 100%;
+    }
+  }
+
+  .dz-preview .dz-details {
+    width: 200px;
+    height: 200px;
+    color: white;
+    background-color: rgba($primary-color, 0.8);
+    transition: opacity 0.2s linear;
+    text-align: center;
+    border-radius: $border-radius;
+  }
+
+  &:hover {
+    background-color: $hover-color;
+
+    .dz-message i.material-icons {
+      color: $primary-color !important;
+    }
+  }
+
+  &.is-dark {
+    background-color: $bg-color-dark;
+    border-color: darken($text-color-dark, 20%);
+    color: darken($hover-color, 20%);
+
+    &:hover {
+      background-color: $hover-color-dark;
+    }
+
+    .dz-preview .dz-image {
+      border-color: darken($text-color-dark, 20%);
+    }
+  }
+}

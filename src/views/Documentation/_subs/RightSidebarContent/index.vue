@@ -70,7 +70,7 @@
   import {
     MazBtn, MazBtnGroup, MazInput, MazSelect, MazPhoneNumberInput, MazSwitch, MazCheckbox,
     MazDialog, MazLoader, MazSidebar, MazSpinner, MazTransitionExpand, MazCollapse,
-    MazPagination
+    MazPagination, MazDropzone
   } from '@/lib'
 
   export default {
@@ -84,6 +84,7 @@
       MazSwitch,
       MazCheckbox,
       MazDialog,
+      MazDropzone,
       MazLoader,
       MazSidebar,
       MazPagination,
