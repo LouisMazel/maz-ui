@@ -3,7 +3,7 @@
     id="MazDropzone"
     ref="mazDropzone"
     :options="dropzoneOptions"
-    class="w-100 h-100 flex align-center justify-center br-4"
+    class="w-100 h-100 flex align-center justify-center"
     :class="{ 'is-dark': dark }"
     @vdropzone-file-added="reset"
     @vdropzone-success="fileSended"
