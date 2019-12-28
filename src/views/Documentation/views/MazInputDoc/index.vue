@@ -13,11 +13,27 @@
       :code="codePasswordExample"
     >
       <MazInput
+        v-model="emailValue"
+        name="test-password"
+        label="E-mail"
+        autocomplete="new-email"
+        class="mb-3"
+      >
+        <i
+          slot="input-icon-left"
+          class="material-icons"
+        >
+          email
+        </i>
+      </MazInput>
+      <MazInput
         v-model="passwordValue"
         name="test-password"
-        label="Password type"
+        label="Password"
         type="password"
         autocomplete="new-password"
+        left-icon-name="lock"
+        right-icon-name="lock"
         clearable
       />
     </ComponentContainer>
@@ -28,7 +44,6 @@
     >
       <div class="flex-component flex-1">
         <h3>{{ type | capitalize }}</h3>
-        <h4>Light mode</h4>
         <ComponentContainer>
           <MazInput
             v-model="inputValue"
@@ -72,6 +87,7 @@
           'basic', 'error', 'valid', 'disabled', 'hint', 'clearable', 'sm', 'lg', 'required', 'loader'
         ],
         exampleValue: '',
+        emailValue: 'youremail@domain.com',
         passwordValue: 'password',
         codeExample: `<template>
   <MazInput

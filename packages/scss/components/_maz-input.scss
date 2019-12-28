@@ -86,6 +86,23 @@
     }
   }
 
+  &__icon {
+    position: absolute;
+    z-index: 1;
+    color: $disabled-color;
+    font-size: 18px;
+    top: 0;
+    bottom: 0;
+
+    &.left {
+      left: 8px;
+    }
+
+    &.right {
+      right: 8px;
+    }
+  }
+
   &__toggle-btn {
     $clear-size: 24px;
 
@@ -99,7 +116,7 @@
     appearance: none;
     border: none;
     background: transparent;
-    color: $secondary-color;
+    color: $muted-color;
     border-radius: $clear-size;
     cursor: pointer;
     font-size: 12px;
@@ -127,7 +144,7 @@
       transition: transform 200ms;
     }
 
-    &.--password.has-clear-btn {
+    &.password.has-clear-btn {
       right: 40px;
     }
 
@@ -141,6 +158,22 @@
     }
   }
 
+  &.has-left-icon {
+    .maz-input__input {
+      padding-left: 40px;
+    }
+
+    .maz-input__label {
+      left: 40px;
+    }
+  }
+
+  &.has-right-icon {
+    .maz-input__input {
+      padding-right: 40px;
+    }
+  }
+
   &.is-focused {
     .maz-input {
       &__input {
@@ -149,6 +182,10 @@
       }
 
       &__label {
+        color: $primary-color;
+      }
+
+      &__icon {
         color: $primary-color;
       }
     }

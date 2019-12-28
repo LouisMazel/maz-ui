@@ -9,11 +9,22 @@
       'is-disabled': disabled,
       'is-dark': dark,
       'has-hint': hint,
-      'has-no-label': !hasLabel && !hint
+      'has-no-label': !hasLabel && !hint,
+      'has-left-icon': hasLeftIcon,
+      'has-right-icon': hasRightIcon
     }, size]"
     class="maz-input"
     @click="focusInput"
   >
+    <div
+      v-for="({ name, position }, i) in inputIcons"
+      :key="`input-icon-${i}`"
+      :class="`maz-input__icon flex align-center justify-center ${position}`"
+    >
+      <slot :name="`input-icon-${position}`">
+        <i class="material-icons">{{ name }}</i>
+      </slot>
+    </div>
     <input
       v-if="!textarea"
       :id="uniqueId"
@@ -23,7 +34,9 @@
       :placeholder="labelValue"
       :type="getType"
       class="maz-input__input"
-      :class="{ 'has-right-btn': hasClearBtn || hasPasswordBtn }"
+      :class="{
+        'has-right-btn': hasClearBtn || hasPasswordBtn
+      }"
       :disabled="disabled"
       :required="required"
       @keydown="keyDown"
@@ -79,7 +92,7 @@
       <button
         v-if="hasPasswordBtn"
         key="password-button"
-        class="maz-input__toggle-btn --password flex align-center justify-center"
+        class="maz-input__toggle-btn password flex align-center justify-center"
         :class="{ 'has-clear-btn': hasClearBtn }"
         title="clear"
         type="button"
@@ -122,6 +135,8 @@
       color: { type: String, default: 'dodgerblue' },
       size: { type: String, default: null },
       type: { type: String, default: 'text' },
+      leftIconName: { type: String, default: null },
+      rightIconName: { type: String, default: null },
       error: { type: Boolean, default: false },
       disabled: { type: Boolean, default: false },
       dark: { type: Boolean, default: false },
@@ -177,6 +192,18 @@
       },
       hasClearBtn () {
         return this.clearable && this.inputValue && !this.textarea
+      },
+      hasLeftIcon () {
+        return this.leftIconName || this.$slots['input-icon-left']
+      },
+      hasRightIcon () {
+        return this.rightIconName || this.$slots['input-icon-right']
+      },
+      inputIcons () {
+        return [
+          ...(this.hasLeftIcon ? [{ position: 'left', name: this.leftIconName }] : []),
+          ...(this.hasRightIcon ? [{ position: 'right', name: this.rightIconName }] : [])
+        ]
       }
     },
     methods: {
