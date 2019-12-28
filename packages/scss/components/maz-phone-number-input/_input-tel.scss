@@ -83,7 +83,7 @@
     }
   }
 
-  &__clear {
+  &__toggle-btn {
     $clear-size: 24px;
 
     position: absolute;
@@ -105,9 +105,9 @@
       outline: none;
     }
 
-    & > span:not(.input-tel__clear__effect) {
+    &__icon {
       position: relative;
-      top: 1px;
+      font-size: 18px;
     }
 
     &__effect {
@@ -127,7 +127,7 @@
     &:hover {
       color: white;
 
-      .input-tel__clear__effect {
+      .input-tel__toggle-btn__effect {
         transform: scale(1);
         opacity: 0.6;
       }
@@ -392,7 +392,7 @@
       }
     }
 
-    &__clear {
+    &__toggle-btn {
       color: $secondary-color-dark;
 
       &__effect {

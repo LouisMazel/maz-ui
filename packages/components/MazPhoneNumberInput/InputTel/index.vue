@@ -42,19 +42,23 @@
       {{ hintValue || labelValue }}
     </label>
 
-    <button
-      v-if="clearable && inputValue"
-      class="input-tel__clear"
-      title="clear"
-      type="button"
-      tabindex="-1"
-      @click="clear"
+    <transition
+      name="scale"
     >
-      <span class="input-tel__clear__effect" />
-      <span>
-        ✕
-      </span>
-    </button>
+      <button
+        v-if="clearable && inputValue"
+        class="input-tel__toggle-btn flex align-center justify-center"
+        title="clear"
+        type="button"
+        tabindex="-1"
+        @click="clear"
+      >
+        <span class="input-tel__toggle-btn__effect" />
+        <i class="maz-input__toggle-btn__icon material-icons">
+          close
+        </i>
+      </button>
+    </transition>
 
     <div
       v-if="loader"
@@ -84,7 +88,7 @@
       valid: { type: Boolean, default: false },
       required: { type: Boolean, default: false },
       loader: { type: Boolean, default: false },
-      clearable: { type: Boolean, default: false },
+      clearable: { type: Boolean, default: true },
       noCountrySelector: { type: Boolean, default: false }
     },
     data () {

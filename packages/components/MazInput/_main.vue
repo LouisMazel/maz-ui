@@ -58,35 +58,40 @@
     >
       {{ hintValue || labelValue }}
     </label>
-
-    <button
-      v-if="hasClearBtn"
-      class="maz-input__toggle-btn --clear flex align-center justify-center"
-      title="clear"
-      type="button"
-      tabindex="-1"
-      @click="clear"
+    <transition-group
+      name="scale"
     >
-      <span class="maz-input__toggle-btn__effect" />
-      <i class="maz-input__toggle-btn__icon material-icons">
-        close
-      </i>
-    </button>
+      <button
+        v-if="hasClearBtn"
+        key="clear-button"
+        class="maz-input__toggle-btn --clear flex align-center justify-center"
+        title="clear"
+        type="button"
+        tabindex="-1"
+        @click="clear"
+      >
+        <span class="maz-input__toggle-btn__effect" />
+        <i class="maz-input__toggle-btn__icon material-icons">
+          close
+        </i>
+      </button>
 
-    <button
-      v-if="hasPasswordBtn"
-      class="maz-input__toggle-btn --password flex align-center justify-center"
-      :class="{ 'has-clear-btn': hasClearBtn }"
-      title="clear"
-      type="button"
-      tabindex="-1"
-      @click="showPassword = !showPassword"
-    >
-      <span class="maz-input__toggle-btn__effect" />
-      <i class="maz-input__toggle-btn__icon material-icons">
-        {{ showPassword ? 'visibility_off' : 'visibility' }}
-      </i>
-    </button>
+      <button
+        v-if="hasPasswordBtn"
+        key="password-button"
+        class="maz-input__toggle-btn --password flex align-center justify-center"
+        :class="{ 'has-clear-btn': hasClearBtn }"
+        title="clear"
+        type="button"
+        tabindex="-1"
+        @click="showPassword = !showPassword"
+      >
+        <span class="maz-input__toggle-btn__effect" />
+        <i class="maz-input__toggle-btn__icon material-icons">
+          {{ showPassword ? 'visibility_off' : 'visibility' }}
+        </i>
+      </button>
+    </transition-group>
 
     <div
       v-if="loader"
