@@ -13,11 +13,20 @@
       :code="codePasswordExample"
     >
       <MazInput
+        v-model="nameValue"
+        label="Name"
+        autocomplete="new-name"
+        class="mb-3"
+        left-icon-name="person"
+        right-icon-name="lock"
+        clearable
+      />
+      <MazInput
         v-model="emailValue"
-        name="test-password"
         label="E-mail"
         autocomplete="new-email"
         class="mb-3"
+        clearable
       >
         <i
           slot="input-icon-left"
@@ -28,7 +37,6 @@
       </MazInput>
       <MazInput
         v-model="passwordValue"
-        name="test-password"
         label="Password"
         type="password"
         autocomplete="new-password"
@@ -87,6 +95,7 @@
           'basic', 'error', 'valid', 'disabled', 'hint', 'clearable', 'sm', 'lg', 'required', 'loader'
         ],
         exampleValue: '',
+        nameValue: null,
         emailValue: 'youremail@domain.com',
         passwordValue: 'password',
         codeExample: `<template>

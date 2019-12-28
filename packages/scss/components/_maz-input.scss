@@ -144,8 +144,16 @@
       transition: transform 200ms;
     }
 
+    &.has-right-icon {
+      right: 40px;
+    }
+
     &.password.has-clear-btn {
       right: 40px;
+
+      &.has-right-icon {
+        right: 70px;
+      }
     }
 
     &:hover {

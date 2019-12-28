@@ -81,6 +81,7 @@
         title="clear"
         type="button"
         tabindex="-1"
+        :class="{ 'has-right-icon': hasRightIcon }"
         @click="clear"
       >
         <span class="maz-input__toggle-btn__effect" />
@@ -93,7 +94,10 @@
         v-if="hasPasswordBtn"
         key="password-button"
         class="maz-input__toggle-btn password flex align-center justify-center"
-        :class="{ 'has-clear-btn': hasClearBtn }"
+        :class="{
+          'has-clear-btn': hasClearBtn,
+          'has-right-icon': hasRightIcon
+        }"
         title="clear"
         type="button"
         tabindex="-1"
