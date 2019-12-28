@@ -74,7 +74,7 @@
     // background-image: linear-gradient(to right top, dodgerblue, #00B7FF, #00D4E0, #00E688, #A8EB12);
 
     &__logo {
-      max-height: 120px;
+      max-height: 100px;
       max-width: 100%;
     }
 
