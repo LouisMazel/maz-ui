@@ -51,7 +51,6 @@
           browserIsNotSupported: 'Your browser is not supported',
           fileIsTooBig: `The file is too big (maximum: ${this.maxFilesize} MB)`,
           invalidFileType: `Invalid file (PNG or JPG under ${this.maxFilesize}MB)`,
-          loadingProgress: 'Loading in progress...',
           dictRemoveFile: 'Remove',
           dictCancelUpload: 'Cancel upload'
         }
@@ -89,9 +88,6 @@
                   <div class="dz-size"><span data-dz-size></span></div>
               </div>
               <div class="dz-progress m-0">
-                <span class="progress-title text-center">
-                  ${this.t.loadingProgress}
-                </span>
                 <span class="dz-upload" data-dz-uploadprogress></span>
               </div>
               <div class="dz-success-mark text-center">
