@@ -26,25 +26,24 @@
       transform: rotate(180deg);
     }
   }
+}
 
-  &.is-dark {
+.is-dark .maz-collapse,
+.is-dark.maz-collapse {
+  color: $text-color-dark;
+  background-color: $bg-color-dark;
+  border: 1px solid $third-color-dark;
+
+  &__header-btn {
     color: $text-color-dark;
-    background-color: $bg-color-dark;
-    border: 1px solid $third-color-dark;
 
-    .maz-collapse {
-      &__header-btn {
-        color: $text-color-dark;
-
-        &:hover,
-        &:focus {
-          background-color: $hover-color-dark;
-        }
-      }
-
-      &__content {
-        border-color: $third-color-dark;
-      }
+    &:hover,
+    &:focus {
+      background-color: $hover-color-dark;
     }
+  }
+
+  &__content {
+    border-color: $third-color-dark;
   }
 }

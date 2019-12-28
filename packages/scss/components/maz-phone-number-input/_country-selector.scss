@@ -139,78 +139,6 @@
     }
   }
 
-  // Dark Theme
-  &.is-dark {
-    .country-selector {
-      &__label {
-        color: $secondary-color-dark;
-      }
-
-      &__input {
-        cursor: pointer;
-        background-color: $bg-color-dark-l;
-        border: 1px solid $third-color-dark;
-        color: $secondary-color-dark;
-
-        &::-webkit-input-placeholder {
-          color: $secondary-color-dark;
-        }
-
-        &::-moz-placeholder {
-          color: $secondary-color-dark;
-        }
-
-        &:-ms-input-placeholder {
-          color: $secondary-color-dark;
-        }
-
-        &::-ms-input-placeholder {
-          color: $secondary-color-dark;
-        }
-
-        &:-moz-placeholder {
-          color: $secondary-color-dark;
-        }
-
-        &::placeholder {
-          color: $secondary-color-dark;
-        }
-      }
-
-      &__toggle {
-        &__arrow {
-          color: $secondary-color-dark;
-
-          path.arrow {
-            fill: $secondary-color-dark;
-          }
-        }
-      }
-
-      &__list {
-        background-color: $bg-color-dark-l;
-
-        &__item {
-          color: $text-color-dark;
-
-          &:hover,
-          &.keyboard-selected {
-            background-color: lighten($hover-color-dark, 10%);
-          }
-        }
-
-        &__calling-code {
-          color: $muted-color-dark;
-        }
-      }
-    }
-
-    .country-selector__input,
-    .country-selector__list {
-      color: $secondary-color-dark;
-    }
-  }
-
   &.is-valid {
     .country-selector__input {
       border-color: $success-color;
@@ -415,3 +343,73 @@
     transform: translateY(-20px);
   }
 }
+
+.is-dark .country-selector,
+.is-dark.country-selector {
+  &__label {
+    color: $secondary-color-dark;
+  }
+
+  &__input {
+    cursor: pointer;
+    background-color: $bg-color-dark-l;
+    border: 1px solid $third-color-dark;
+    color: $secondary-color-dark;
+
+    &::-webkit-input-placeholder {
+      color: $secondary-color-dark;
+    }
+
+    &::-moz-placeholder {
+      color: $secondary-color-dark;
+    }
+
+    &:-ms-input-placeholder {
+      color: $secondary-color-dark;
+    }
+
+    &::-ms-input-placeholder {
+      color: $secondary-color-dark;
+    }
+
+    &:-moz-placeholder {
+      color: $secondary-color-dark;
+    }
+
+    &::placeholder {
+      color: $secondary-color-dark;
+    }
+  }
+
+  &__toggle {
+    &__arrow {
+      color: $secondary-color-dark;
+
+      path.arrow {
+        fill: $secondary-color-dark;
+      }
+    }
+  }
+
+  &__list {
+    background-color: $bg-color-dark-l;
+
+    &__item {
+      color: $text-color-dark;
+
+      &:hover,
+      &.keyboard-selected {
+        background-color: lighten($hover-color-dark, 10%);
+      }
+    }
+
+    &__calling-code {
+      color: $muted-color-dark;
+    }
+  }
+}
+
+// .country-selector__input,
+// .country-selector__list {
+//   color: $secondary-color-dark;
+// }

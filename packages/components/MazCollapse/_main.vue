@@ -17,7 +17,7 @@
       </slot>
       <ArrowDown
         class="maz-collapse__header-btn__arrow ml-2"
-        :dark="dark"
+        :white="dark"
         :color="arrowColor"
       />
     </MazBtn>

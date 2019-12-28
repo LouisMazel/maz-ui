@@ -87,18 +87,19 @@
       color: $primary-color !important;
     }
   }
+}
 
-  &.is-dark {
-    background-color: $bg-color-dark;
+.is-dark #MazDropzone,
+#MazDropzone.is-dark {
+  background-color: $bg-color-dark;
+  border-color: darken($text-color-dark, 20%);
+  color: darken($hover-color, 20%);
+
+  &:hover {
+    background-color: $hover-color-dark;
+  }
+
+  .dz-preview .dz-image {
     border-color: darken($text-color-dark, 20%);
-    color: darken($hover-color, 20%);
-
-    &:hover {
-      background-color: $hover-color-dark;
-    }
-
-    .dz-preview .dz-image {
-      border-color: darken($text-color-dark, 20%);
-    }
   }
 }

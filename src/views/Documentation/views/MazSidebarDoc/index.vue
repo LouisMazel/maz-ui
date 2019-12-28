@@ -8,7 +8,7 @@
         :no-shadow="!hasShadow"
         :no-close-btn="!hasCloseBtn"
         :absolute="absolute"
-        :dark="hasDarkTheme"
+        :layer="layer"
       >
         <div
           class="flex flex-1 align-center justify-center"
@@ -59,6 +59,12 @@
             v-model="absolute"
           />
         </div>
+        <div class="switch-container absolute flex">
+          <p>has Layer</p>
+          <MazSwitch
+            v-model="layer"
+          />
+        </div>
       </div>
       <MazSidebar
         v-model="hasRightSidebarOpen"
@@ -68,8 +74,7 @@
         :no-close-btn="!hasCloseBtn"
         :absolute="absolute"
         right
-        layer
-        :dark="hasDarkTheme"
+        :layer="layer"
       >
         <div
           class="flex flex-1 align-center justify-center"
@@ -92,10 +97,11 @@
         hasLeftSidebarOpen: true,
         hasRightSidebarOpen: false,
         loader: false,
-        width: 350,
+        width: 300,
         hasShadow: true,
         hasCloseBtn: true,
-        absolute: false
+        absolute: false,
+        layer: false
       }
     },
     computed: {

@@ -1,3 +1,7 @@
 .arrow-left.is-white path.arrow {
   fill: white;
 }
+
+.is-dark .arrow-left path.arrow {
+  fill: white;
+}

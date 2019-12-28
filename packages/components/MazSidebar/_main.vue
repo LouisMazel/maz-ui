@@ -95,7 +95,7 @@
     props: {
       value: { type: Boolean, required: true },
       id: { type: String, default: 'MazSidebar' },
-      width: { type: Number, default: 350 },
+      width: { type: Number, default: 300 },
       loader: { type: Boolean, default: false },
       noCloseBtn: { type: Boolean, default: false },
       noShadow: { type: Boolean, default: false },

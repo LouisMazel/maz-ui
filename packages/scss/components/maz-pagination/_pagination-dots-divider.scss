@@ -7,8 +7,9 @@
   margin-right: 10px;
 }
 
+.is-dark,
 .maz-pagination.is-dark {
   .pagination-dots-divider {
-    color: $muted-color-dark;
+    color: white;
   }
 }

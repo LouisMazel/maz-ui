@@ -21,8 +21,9 @@
       v-model="inputValue"
       v-bind="$attrs"
       :placeholder="labelValue"
-      :type="type"
+      :type="getType"
       class="maz-input__input"
+      :class="{ 'has-right-btn': hasClearBtn || hasPasswordBtn }"
       :disabled="disabled"
       :required="required"
       @keydown="keyDown"
@@ -59,17 +60,32 @@
     </label>
 
     <button
-      v-if="clearable && inputValue && !textarea"
-      class="maz-input__clear"
+      v-if="hasClearBtn"
+      class="maz-input__toggle-btn --clear flex align-center justify-center"
       title="clear"
       type="button"
       tabindex="-1"
       @click="clear"
     >
-      <span class="maz-input__clear__effect" />
-      <span>
-        ✕
-      </span>
+      <span class="maz-input__toggle-btn__effect" />
+      <i class="maz-input__toggle-btn__icon material-icons">
+        close
+      </i>
+    </button>
+
+    <button
+      v-if="hasPasswordBtn"
+      class="maz-input__toggle-btn --password flex align-center justify-center"
+      :class="{ 'has-clear-btn': hasClearBtn }"
+      title="clear"
+      type="button"
+      tabindex="-1"
+      @click="showPassword = !showPassword"
+    >
+      <span class="maz-input__toggle-btn__effect" />
+      <i class="maz-input__toggle-btn__icon material-icons">
+        {{ showPassword ? 'visibility_off' : 'visibility' }}
+      </i>
     </button>
 
     <div
@@ -114,7 +130,8 @@
     },
     data () {
       return {
-        isFocus: false
+        isFocus: false,
+        showPassword: false
       }
     },
     computed: {
@@ -146,6 +163,15 @@
       },
       hasLabel () {
         return !this.noLabel
+      },
+      getType () {
+        return this.showPassword ? 'text' : this.type
+      },
+      hasPasswordBtn () {
+        return this.type === 'password' && this.inputValue
+      },
+      hasClearBtn () {
+        return this.clearable && this.inputValue && !this.textarea
       }
     },
     methods: {

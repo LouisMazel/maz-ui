@@ -11,7 +11,6 @@
     </ComponentContainer>
     <div class="flex flex--wrap">
       <div class="flex-1 mr-4">
-        <h3>Light</h3>
         <ComponentContainer>
           <MazSelect
             v-model="selectValue"
@@ -35,38 +34,6 @@
           <MazSelect
             v-model="selectValue"
             :options="options"
-            valid
-          />
-        </ComponentContainer>
-      </div>
-      <div class="flex-1">
-        <h3>Dark</h3>
-        <ComponentContainer dark>
-          <MazSelect
-            v-model="selectValue"
-            :options="options"
-            dark
-          />
-        </ComponentContainer>
-        <p>
-          Error
-        </p>
-        <ComponentContainer dark>
-          <MazSelect
-            v-model="selectValue"
-            :options="options"
-            dark
-            error
-          />
-        </ComponentContainer>
-        <p>
-          Valid
-        </p>
-        <ComponentContainer dark>
-          <MazSelect
-            v-model="selectValue"
-            :options="options"
-            dark
             valid
           />
         </ComponentContainer>

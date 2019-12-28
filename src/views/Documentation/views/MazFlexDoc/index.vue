@@ -188,6 +188,7 @@
       background-color: yellowgreen;
       color: white;
       height: 100px;
+      border-radius: $border-radius;
     }
 
     .flex-1 {
@@ -195,12 +196,14 @@
       background-color: dodgerblue;
       color: white;
       border: 1px solid white;
+      border-radius: $border-radius;
     }
 
     & div {
       background-color: dodgerblue;
       padding: 10px;
       border: 1px solid white;
+      border-radius: $border-radius;
     }
   }
 </style>

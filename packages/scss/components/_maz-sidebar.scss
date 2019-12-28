@@ -94,29 +94,30 @@
       left: inherit;
     }
   }
+}
 
-  &.is-dark {
-    .maz-sidebar__wrapper {
-      background-color: $bg-color-dark;
+.is-dark .maz-sidebar,
+.is-dark.maz-sidebar {
+  .maz-sidebar__wrapper {
+    background-color: $bg-color-dark;
 
-      &__load-layer {
-        background-color: $muted-color-dark;
-      }
+    &__load-layer {
+      background-color: $muted-color-dark;
+    }
 
-      &__close-btn {
-        button {
-          background-color: $hover-color-dark;
-          color: white;
+    &__close-btn {
+      button {
+        background-color: $hover-color-dark;
+        color: white;
 
-          svg path.arrow {
-            fill: white;
-          }
+        svg path.arrow {
+          fill: white;
         }
       }
+    }
 
-      &__opacity-layer {
-        background-color: rgba(255, 255, 255, 0.15);
-      }
+    &__opacity-layer {
+      background-color: rgba(255, 255, 255, 0.15);
     }
   }
 }

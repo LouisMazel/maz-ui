@@ -18,14 +18,12 @@
   }
 }
 
-.maz-pagination.is-dark {
-  .pagination-arrow-btn {
-    color: $text-color-dark;
+.is-dark .pagination-arrow-btn {
+  color: $text-color-dark;
 
-    &:hover,
-    &:focus {
-      background-color: lighten($hover-color-dark, 5%);
-      box-shadow: 0 0 0 0.2rem darken($hover-color-dark, 5%);
-    }
+  &:hover,
+  &:focus {
+    background-color: lighten($hover-color-dark, 5%);
+    box-shadow: 0 0 0 0.2rem darken($hover-color-dark, 5%);
   }
 }

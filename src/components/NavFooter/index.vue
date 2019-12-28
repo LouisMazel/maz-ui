@@ -17,7 +17,7 @@
           Documentation
         </RouterLink>
       </div>
-      <div class="nav-footer-content__logo hidden-tablet">
+      <div class="nav-footer-content__logo hidden-tablet flex align-center">
         <img
           src="@/assets/img/logo-maz-ui.png"
           alt="logo-loic-mazuel"

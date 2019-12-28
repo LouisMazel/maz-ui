@@ -97,12 +97,6 @@
     }
   }
 
-  &.is-dark {
-    .maz-loader__anim div::after {
-      background-color: white;
-    }
-  }
-
   @keyframes custom-loader-anim {
     0% {
       transform: rotate(0deg);
@@ -111,5 +105,12 @@
     100% {
       transform: rotate(360deg);
     }
+  }
+}
+
+.is-dark .maz-loader,
+.is-dark.maz-loader {
+  .maz-loader__anim div::after {
+    background-color: white;
   }
 }

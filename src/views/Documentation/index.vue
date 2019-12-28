@@ -3,7 +3,6 @@
     <MazSidebar
       v-model="hasLeftSidebarOpen"
       :width="250"
-      :dark="hasDarkTheme"
       :absolute="isAbsolute"
     >
       <LeftSidebarContent />
@@ -16,11 +15,21 @@
         <h2>
           {{ currentComponent | capitalize }}
         </h2>
-        <MazBtn
-          @click="showOptions"
-        >
-          Show options
-        </MazBtn>
+        <div class="flex-fixed">
+          <MazBtn
+            outline
+            class="mr-2"
+            @click="setDarkTheme(!hasDarkTheme)"
+          >
+            Toggle Dark Mode
+          </MazBtn>
+          <MazBtn
+            color="info"
+            @click="showOptions"
+          >
+            Show options
+          </MazBtn>
+        </div>
       </div>
       <router-view class="px-5 py-3 flex-1" />
       <NavFooter />
@@ -32,7 +41,6 @@
       right
       absolute
       no-close-btn
-      :dark="hasDarkTheme"
     >
       <RightSidebarContent @close="hasRightSidebarOpen = !hasRightSidebarOpen" />
     </MazSidebar>
@@ -43,7 +51,7 @@
   import LeftSidebarContent from './_subs/LeftSidebarContent'
   import RightSidebarContent from './_subs/RightSidebarContent'
   import NavFooter from '@/components/NavFooter'
-  import { mapGetters } from 'vuex'
+  import { mapGetters, mapActions } from 'vuex'
 
   export default {
     name: 'Documentation',
@@ -66,6 +74,7 @@
       }
     },
     methods: {
+      ...mapActions(['setDarkTheme']),
       showOptions () {
         this.hasRightSidebarOpen = !this.hasRightSidebarOpen
       }

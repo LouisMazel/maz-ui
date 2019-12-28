@@ -10,7 +10,6 @@
         :url="url"
         :headers="headers"
         :max-filesize="maxFilesize"
-        :dark="hasDarkTheme"
         @file-upload-error="error"
         @file-upload-success="success"
       />
@@ -27,8 +26,6 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
-
   export default {
     name: 'MazDropzoneDoc',
     data () {
@@ -43,7 +40,6 @@
     :url="url"
     :headers="headers"
     :max-filesize="maxFilesize"
-    :dark="hasDarkTheme"
     @file-upload-error="error"
     @file-upload-success="success"
   />
@@ -82,9 +78,6 @@ export default {
   }
 }`
       }
-    },
-    computed: {
-      ...mapGetters(['hasDarkTheme'])
     },
     methods: {
       error (error) {

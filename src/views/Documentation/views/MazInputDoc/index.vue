@@ -5,7 +5,20 @@
     >
       <MazInput
         v-model="exampleValue"
+        clearable
         label="Custom label/placeholder text"
+      />
+    </ComponentContainer>
+    <ComponentContainer
+      :code="codePasswordExample"
+    >
+      <MazInput
+        v-model="passwordValue"
+        name="test-password"
+        label="Password type"
+        type="password"
+        autocomplete="new-password"
+        clearable
       />
     </ComponentContainer>
     <div
@@ -43,40 +56,6 @@
           />
         </ComponentContainer>
       </div>
-      <div class="flex-component flex-1">
-        <h3 class="text-white">
-          -
-        </h3>
-        <h4>Dark mode</h4>
-        <ComponentContainer dark>
-          <MazInput
-            v-model="inputValue"
-            :error="type === 'error'"
-            :valid="type === 'valid'"
-            :disabled="type === 'disabled'"
-            :clearable="type === 'clearable'"
-            :hint="type === 'hint' ? 'Hint value' : null"
-            :loader="type === 'loader'"
-            :required="type === 'required'"
-            :size="type === 'sm' ? 'sm' : type === 'lg' ? 'lg' : null"
-            dark
-          />
-        </ComponentContainer>
-        <ComponentContainer dark>
-          <MazInput
-            v-model="withValue"
-            :error="type === 'error'"
-            :valid="type === 'valid'"
-            :disabled="type === 'disabled'"
-            :clearable="type === 'clearable'"
-            :hint="type === 'hint' ? 'Hint value' : null"
-            :loader="type === 'loader'"
-            :required="type === 'required'"
-            :size="type === 'sm' ? 'sm' : type === 'lg' ? 'lg' : null"
-            dark
-          />
-        </ComponentContainer>
-      </div>
     </div>
   </div>
 </template>
@@ -93,7 +72,22 @@
           'basic', 'error', 'valid', 'disabled', 'hint', 'clearable', 'sm', 'lg', 'required', 'loader'
         ],
         exampleValue: '',
+        passwordValue: 'password',
         codeExample: `<template>
+  <MazInput
+    v-model="exampleValue"
+    label="Custom label/placeholder text"
+  />
+</template>
+
+export default {
+  data () {
+    return {
+      exampleValue: ''
+    }
+  }
+}`,
+        codePasswordExample: `<template>
   <MazInput
     v-model="exampleValue"
     label="Custom label/placeholder text"

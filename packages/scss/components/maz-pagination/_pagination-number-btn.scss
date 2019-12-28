@@ -21,6 +21,12 @@
 
   &.active {
     background-color: black;
+    box-shadow: none;
+
+    &:focus {
+      box-shadow: 0 0 0 0.2rem rgba(black, 0.5);
+    }
+
     color: white;
 
     &:hover {
@@ -29,7 +35,8 @@
   }
 }
 
-.maz-pagination.is-dark {
+.maz-pagination.is-dark,
+.is-dark {
   .pagination-number-btn {
     color: $text-color-dark;
 
@@ -42,6 +49,10 @@
     &.active {
       background-color: $bg-color;
       color: $text-color;
+
+      &:focus {
+        box-shadow: 0 0 0 0.2rem rgba(white, 0.5);
+      }
     }
   }
 }

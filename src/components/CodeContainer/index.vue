@@ -2,9 +2,6 @@
   <pre
     v-highlightjs="code"
     class="code-container"
-    :class="{
-      'is-dark': dark || hasDarkTheme
-    }"
   >
     <code
       class="code-container__content"
@@ -16,17 +13,12 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
-
   export default {
     name: 'CodeContainer',
     props: {
       code: { type: String, required: true },
       language: { type: String, default: 'javascript' },
       dark: { type: Boolean, default: false }
-    },
-    computed: {
-      ...mapGetters(['hasDarkTheme'])
     }
   }
 </script>
@@ -47,15 +39,15 @@
     &__content {
       background-color: transparent;
     }
+  }
 
-    &.is-dark {
-      background-color: $hover-color-dark;
-      border: 1px solid #535673;
+  .is-dark .code-container {
+    background-color: $hover-color-dark;
+    border: 1px solid #535673;
 
-      .hljs,
-      .hljs-subst {
-        color: $text-color-dark;
-      }
+    .hljs,
+    .hljs-subst {
+      color: $text-color-dark;
     }
   }
 </style>

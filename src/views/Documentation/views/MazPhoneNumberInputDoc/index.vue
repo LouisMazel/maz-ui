@@ -9,38 +9,23 @@
     </ComponentContainer>
     <div class="flex flex--wrap">
       <div class="flex-1 mr-4">
-        <h3>Light</h3>
+        <p class="mb-2">
+          Basic
+        </p>
         <ComponentContainer>
           <MazPhoneNumberInput
             v-model="phoneNumber"
-          />
-        </ComponentContainer>
-        <ComponentContainer>
-          <p class="mb-2">
-            Error
-          </p>
-          <MazPhoneNumberInput
-            v-model="phoneNumber"
-            error
           />
         </ComponentContainer>
       </div>
       <div class="flex-1">
-        <h3>Dark</h3>
-        <ComponentContainer dark>
-          <MazPhoneNumberInput
-            v-model="phoneNumber"
-            dark
-          />
-        </ComponentContainer>
-        <ComponentContainer dark>
-          <p class="mb-2">
-            Error
-          </p>
+        <p class="mb-2">
+          Error
+        </p>
+        <ComponentContainer>
           <MazPhoneNumberInput
             v-model="phoneNumber"
             error
-            dark
           />
         </ComponentContainer>
       </div>

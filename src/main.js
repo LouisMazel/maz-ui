@@ -8,11 +8,9 @@ import javascript from 'highlight.js/lib/languages/javascript'
 import bash from 'highlight.js/lib/languages/bash'
 import './components'
 import './filters'
-
-import '../packages/scss/index.scss'
-
 import 'highlight.js/styles/default.css'
 import './assets/scss/main.scss'
+import '../packages/scss/index.scss'
 
 import store from './store'
 import MazUi from './lib'

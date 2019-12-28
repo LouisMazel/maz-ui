@@ -9,7 +9,8 @@
       class="maz-dialog maz-dialog--mask"
       :class="{
         'maz-dialog--success': success,
-        'maz-dialog--danger': danger
+        'maz-dialog--danger': danger,
+        'is-dark': dark
       }"
     >
       <div class="maz-dialog__wrapper flex align-center">
@@ -95,7 +96,8 @@
       hideFooter: { type: Boolean, default: false },
       noValidation: { type: Boolean, default: false },
       success: { type: Boolean, default: false },
-      danger: { type: Boolean, default: false }
+      danger: { type: Boolean, default: false },
+      dark: { type: Boolean, default: false }
     },
     computed: {
       widthStyle () {

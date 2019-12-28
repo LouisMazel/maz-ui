@@ -134,70 +134,6 @@
     }
   }
 
-  &.is-dark {
-    &:hover {
-      .input-tel__input {
-        border-color: $primary-color;
-      }
-    }
-
-    .input-tel {
-      &__label {
-        color: $secondary-color-dark;
-      }
-
-      &__input {
-        background-color: $bg-color-dark-l;
-        border: 1px solid $third-color-dark;
-        color: $secondary-color-dark;
-
-        &::-webkit-input-placeholder {
-          color: $secondary-color-dark;
-        }
-
-        &::-moz-placeholder {
-          color: $secondary-color-dark;
-        }
-
-        &:-ms-input-placeholder {
-          color: $secondary-color-dark;
-        }
-
-        &::-ms-input-placeholder {
-          color: $secondary-color-dark;
-        }
-
-        &:-moz-placeholder {
-          color: $secondary-color-dark;
-        }
-
-        &::placeholder {
-          color: $secondary-color-dark;
-        }
-
-        &__input:-webkit-autofill,
-        &__input:-webkit-autofill:hover,
-        &__input:-webkit-autofill:focus,
-        &__input:-webkit-autofill:active {
-          box-shadow: 0 0 0 1000px $bg-color-dark inset !important;
-          -webkit-text-fill-color: $secondary-color-dark !important;
-        }
-      }
-
-      &__clear {
-        color: $secondary-color-dark;
-
-        &__effect {
-          background-color: $muted-color-dark;
-        }
-
-        &:hover {
-          color: white;
-        }
-      }
-    }
-  }
-
   &.is-focused {
     z-index: 1;
 
@@ -400,6 +336,72 @@
 
     to {
       left: 100%;
+    }
+  }
+}
+
+.is-dark .input-tel,
+.is-dark.input-tel {
+  &:hover,
+  &.is-focused {
+    .input-tel__input {
+      border-color: $primary-color;
+    }
+  }
+
+  .input-tel {
+    &__label {
+      color: $secondary-color-dark;
+    }
+
+    &__input {
+      background-color: $bg-color-dark-l;
+      border: 1px solid $third-color-dark;
+      color: $secondary-color-dark;
+
+      &::-webkit-input-placeholder {
+        color: $secondary-color-dark;
+      }
+
+      &::-moz-placeholder {
+        color: $secondary-color-dark;
+      }
+
+      &:-ms-input-placeholder {
+        color: $secondary-color-dark;
+      }
+
+      &::-ms-input-placeholder {
+        color: $secondary-color-dark;
+      }
+
+      &:-moz-placeholder {
+        color: $secondary-color-dark;
+      }
+
+      &::placeholder {
+        color: $secondary-color-dark;
+      }
+
+      &__input:-webkit-autofill,
+      &__input:-webkit-autofill:hover,
+      &__input:-webkit-autofill:focus,
+      &__input:-webkit-autofill:active {
+        box-shadow: 0 0 0 1000px $bg-color-dark inset !important;
+        -webkit-text-fill-color: $secondary-color-dark !important;
+      }
+    }
+
+    &__clear {
+      color: $secondary-color-dark;
+
+      &__effect {
+        background-color: $muted-color-dark;
+      }
+
+      &:hover {
+        color: white;
+      }
     }
   }
 }

@@ -1,9 +1,6 @@
 <template>
   <div
     class="component-container pos-r br-4 bg-white my-4 shadow-container"
-    :class="{
-      'is-dark': dark || hasDarkTheme
-    }"
   >
     <div class="p-4">
       <slot />
@@ -14,7 +11,6 @@
     >
       <MazCollapse
         class="component-container__footer__collapse"
-        :dark="dark || hasDarkTheme"
       >
         <div
           slot="header-text"
@@ -34,8 +30,6 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
-
   export default {
     name: 'ComponentContainer',
     props: {
@@ -47,9 +41,6 @@
       return {
         showCode: false
       }
-    },
-    computed: {
-      ...mapGetters(['hasDarkTheme'])
     }
   }
 </script>
@@ -67,18 +58,19 @@
         border: none;
       }
     }
+  }
 
-    &.is-dark {
-      color: $text-color-dark;
-      background-color: $bg-color-dark;
-      border: 1px solid $hover-color-dark;
+  .is-dark .component-container,
+  .is-dark.component-container {
+    color: $text-color-dark;
+    background-color: $bg-color-dark;
+    border: 1px solid $hover-color-dark;
 
-      .component-container__footer {
-        border-color: $hover-color-dark;
+    .component-container__footer {
+      border-color: $hover-color-dark;
 
-        &__collapse {
-          border: none;
-        }
+      &__collapse {
+        border: none;
       }
     }
   }

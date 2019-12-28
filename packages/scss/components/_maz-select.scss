@@ -129,73 +129,6 @@
     }
   }
 
-  &.is-dark {
-    .maz-select {
-      &__label {
-        color: $secondary-color-dark;
-      }
-
-      &__input {
-        background-color: $bg-color-dark-l;
-        border-color: $third-color-dark;
-        color: $secondary-color-dark;
-
-        &:hover {
-          border-color: $primary-color;
-        }
-
-        &::-webkit-input-placeholder {
-          color: $secondary-color-dark;
-        }
-
-        &::-moz-placeholder {
-          color: $secondary-color-dark;
-        }
-
-        &:-ms-input-placeholder {
-          color: $secondary-color-dark;
-        }
-
-        &::-ms-input-placeholder {
-          color: $secondary-color-dark;
-        }
-
-        &:-moz-placeholder {
-          color: $secondary-color-dark;
-        }
-
-        &::placeholder {
-          color: $secondary-color-dark;
-        }
-      }
-
-      &__toggle {
-        &__arrow {
-          color: $secondary-color-dark;
-        }
-      }
-
-      &__options-list {
-        background-color: $bg-color-dark;
-
-        &__item {
-          color: $secondary-color-dark;
-
-          &:hover,
-          &.keyboard-selected {
-            background-color: $hover-color-dark;
-          }
-
-          &.selected {
-            color: #FFF;
-            background-color: $primary-color;
-            font-weight: 600;
-          }
-        }
-      }
-    }
-  }
-
   &.has-value,
   &.has-hint {
     .maz-select__label {
@@ -358,5 +291,71 @@
     opacity: 0;
     z-index: 998;
     transform: translateY(-20px);
+  }
+}
+
+.is-dark .maz-select,
+.is-dark.maz-select {
+  &__label {
+    color: $secondary-color-dark;
+  }
+
+  &__input {
+    background-color: $bg-color-dark-l;
+    border-color: $third-color-dark;
+    color: $secondary-color-dark;
+
+    &:hover {
+      border-color: $primary-color;
+    }
+
+    &::-webkit-input-placeholder {
+      color: $secondary-color-dark;
+    }
+
+    &::-moz-placeholder {
+      color: $secondary-color-dark;
+    }
+
+    &:-ms-input-placeholder {
+      color: $secondary-color-dark;
+    }
+
+    &::-ms-input-placeholder {
+      color: $secondary-color-dark;
+    }
+
+    &:-moz-placeholder {
+      color: $secondary-color-dark;
+    }
+
+    &::placeholder {
+      color: $secondary-color-dark;
+    }
+  }
+
+  &__toggle {
+    &__arrow {
+      color: $secondary-color-dark;
+    }
+  }
+
+  &__options-list {
+    background-color: $bg-color-dark;
+
+    &__item {
+      color: $secondary-color-dark;
+
+      &:hover,
+      &.keyboard-selected {
+        background-color: $hover-color-dark;
+      }
+
+      &.selected {
+        color: #FFF;
+        background-color: $primary-color;
+        font-weight: 600;
+      }
+    }
   }
 }

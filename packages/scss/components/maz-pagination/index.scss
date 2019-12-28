@@ -9,10 +9,11 @@
     padding: 0 10px;
     background-color: $hover-color;
   }
+}
 
-  &.is-dark {
-    .maz-pagination__container {
-      background-color: $bg-color-dark-l;
-    }
+.is-dark .maz-pagination,
+.is-dark.maz-pagination {
+  .maz-pagination__container {
+    background-color: $bg-color-dark-l;
   }
 }
