@@ -9,6 +9,7 @@
     @vdropzone-success="fileSended"
     @vdropzone-thumbnail="thumbnail"
     @vdropzone-error="fileError"
+    @vdropzone-removed-file="removeFile"
   />
 </template>
 
@@ -163,6 +164,9 @@
       },
       removeAllFiles () {
         this.$refs.mazDropzone.removeAllFiles()
+      },
+      removeFile (e) {
+        this.$emit('file-removed', e)
       }
     }
   }

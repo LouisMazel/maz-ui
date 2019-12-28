@@ -12,6 +12,7 @@
         :max-filesize="maxFilesize"
         @file-upload-error="error"
         @file-upload-success="success"
+        @file-removed="successMessage = null"
       />
       <div
         v-if="errorMessage"
@@ -19,6 +20,14 @@
       >
         <span class="text-danger">
           {{ errorMessage }}
+        </span>
+      </div>
+      <div
+        v-if="successMessage"
+        class="dropzone-success flex justify-center mt-2"
+      >
+        <span class="text-success">
+          {{ successMessage }}
         </span>
       </div>
     </ComponentContainer>
@@ -34,6 +43,7 @@
         headers: { 'My-Awesome-Header': 'header value' },
         maxFilesize: 2,
         errorMessage: null,
+        successMessage: null,
         codeExample: `<template>
   <MazDropzone
     ref="mazDropzone"
@@ -59,7 +69,8 @@ export default {
       url: 'https://httpbin.org/post',
       headers: { 'My-Awesome-Header': 'header value' },
       maxFilesize: 1,
-      errorMessage: null
+      errorMessage: null,
+      successMessage: null
     }
   },
   methods: {
@@ -71,9 +82,7 @@ export default {
       }
     },
     success () {
-      setTimeout(() => {
-        this.$refs.mazDropzone.removeAllFiles()
-      }, 2000)
+      this.successMessage = 'Files uploaded !'
     }
   }
 }`
@@ -88,9 +97,7 @@ export default {
         }
       },
       success () {
-        setTimeout(() => {
-          this.$refs.mazDropzone.removeAllFiles()
-        }, 2000)
+        this.successMessage = 'Files uploaded !'
       }
     }
   }
