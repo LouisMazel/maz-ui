@@ -12,6 +12,10 @@
     outline: none;
     font-size: 14px;
 
+    &:focus {
+      box-shadow: none;
+    }
+
     &__arrow {
       transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
     }
@@ -32,7 +36,7 @@
 .is-dark.maz-collapse {
   color: $text-color-dark;
   background-color: $bg-color-dark;
-  border: 1px solid $third-color-dark;
+  border: 1px solid lighten($hover-color-dark, 10%);
 
   &__header-btn {
     color: $text-color-dark;
@@ -44,6 +48,6 @@
   }
 
   &__content {
-    border-color: $third-color-dark;
+    border-color: lighten($hover-color-dark, 10%);
   }
 }

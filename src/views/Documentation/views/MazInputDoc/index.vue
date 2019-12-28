@@ -18,7 +18,7 @@
         autocomplete="new-name"
         class="mb-3"
         left-icon-name="person"
-        right-icon-name="lock"
+        right-icon-name="favorite"
         clearable
       />
       <MazInput
@@ -41,7 +41,6 @@
         type="password"
         autocomplete="new-password"
         left-icon-name="lock"
-        right-icon-name="lock"
         clearable
       />
     </ComponentContainer>
@@ -88,14 +87,14 @@
     name: 'MazInputDoc',
     data () {
       return {
-        inputValue: '',
+        inputValue: null,
         withValue: 'The value entered',
         disabledValue: '',
         inputTypes: [
           'basic', 'error', 'valid', 'disabled', 'hint', 'clearable', 'sm', 'lg', 'required', 'loader'
         ],
-        exampleValue: '',
-        nameValue: null,
+        exampleValue: null,
+        nameValue: 'your name',
         emailValue: 'youremail@domain.com',
         passwordValue: 'password',
         codeExample: `<template>
@@ -114,15 +113,44 @@ export default {
 }`,
         codePasswordExample: `<template>
   <MazInput
-    v-model="exampleValue"
-    label="Custom label/placeholder text"
+    v-model="nameValue"
+    label="Name"
+    autocomplete="new-name"
+    class="mb-3"
+    left-icon-name="person"
+    right-icon-name="favorite"
+    clearable
+  />
+  <MazInput
+    v-model="emailValue"
+    label="E-mail"
+    autocomplete="new-email"
+    class="mb-3"
+    clearable
+  >
+    <i
+      slot="input-icon-left"
+      class="material-icons"
+    >
+      email
+    </i>
+  </MazInput>
+  <MazInput
+    v-model="passwordValue"
+    label="Password"
+    type="password"
+    autocomplete="new-password"
+    left-icon-name="lock"
+    clearable
   />
 </template>
 
 export default {
   data () {
     return {
-      exampleValue: ''
+      nameValue: 'your name',
+      emailValue: 'youremail@domain.com',
+      passwordValue: 'password'
     }
   }
 }`

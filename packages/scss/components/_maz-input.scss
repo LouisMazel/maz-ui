@@ -15,7 +15,7 @@
     opacity: 0;
     transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
     font-size: 11px;
-    color: $secondary-color;
+    color: $muted-color;
   }
 
   &__input {
@@ -54,27 +54,27 @@
     }
 
     &::-webkit-input-placeholder {
-      color: $secondary-color;
+      color: $muted-color;
     }
 
     &::-moz-placeholder {
-      color: $secondary-color;
+      color: $muted-color;
     }
 
     &:-ms-input-placeholder {
-      color: $secondary-color;
+      color: $muted-color;
     }
 
     &::-ms-input-placeholder {
-      color: $secondary-color;
+      color: $muted-color;
     }
 
     &:-moz-placeholder {
-      color: $secondary-color;
+      color: $muted-color;
     }
 
     &::placeholder {
-      color: $secondary-color;
+      color: $muted-color;
     }
 
     &__input:-webkit-autofill,
@@ -82,7 +82,7 @@
     &__input:-webkit-autofill:focus,
     &__input:-webkit-autofill:active {
       box-shadow: 0 0 0 1000px $bg-color inset !important;
-      -webkit-text-fill-color: $secondary-color !important;
+      -webkit-text-fill-color: $muted-color !important;
     }
   }
 

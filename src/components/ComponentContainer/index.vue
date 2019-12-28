@@ -1,6 +1,6 @@
 <template>
   <div
-    class="component-container pos-r br-4 bg-white my-4 shadow-container"
+    class="component-container pos-r bg-white my-4 shadow-container"
   >
     <div class="p-4">
       <slot />
@@ -49,6 +49,7 @@
   .component-container {
     color: $text-color;
     min-width: 200px;
+    border-radius: $border-radius;
 
     &__footer {
       border-top: 1px solid $text-color-dark;
@@ -56,6 +57,12 @@
 
       &__collapse {
         border: none;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+
+        &.open {
+          border-radius: 0;
+        }
       }
     }
   }

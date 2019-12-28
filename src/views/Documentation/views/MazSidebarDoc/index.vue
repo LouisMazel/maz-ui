@@ -1,6 +1,6 @@
 <template>
   <div class="maz-sidebar-doc">
-    <div class="maz-sidebar-doc__container pos-r br-4 over-hid my-4 shadow-container flex">
+    <div class="maz-sidebar-doc__container pos-r over-hid my-4 shadow-container flex">
       <MazSidebar
         v-model="hasLeftSidebarOpen"
         :loader="loader"
@@ -114,6 +114,7 @@
   .maz-sidebar-doc {
     &__container {
       padding: 0;
+      border-radius: $border-radius;
     }
 
     &__content {
