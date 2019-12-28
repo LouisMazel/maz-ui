@@ -52,6 +52,7 @@
     :max-filesize="maxFilesize"
     @file-upload-error="error"
     @file-upload-success="success"
+    @file-removed="successMessage = null"
   />
   <div
     v-if="errorMessage"
@@ -59,6 +60,14 @@
   >
     <span class="text-danger">
       {{ errorMessage }}
+    </span>
+  </div>
+  <div
+    v-if="successMessage"
+    class="dropzone-success flex justify-center mt-2"
+  >
+    <span class="text-success">
+      {{ successMessage }}
     </span>
   </div>
 </template>
