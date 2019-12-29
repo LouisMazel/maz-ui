@@ -4,6 +4,7 @@
       v-model="hasLeftSidebarOpen"
       :width="250"
       :absolute="isAbsolute"
+      :layer="isAbsolute"
     >
       <LeftSidebarContent />
     </MazSidebar>

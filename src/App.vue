@@ -3,7 +3,8 @@
     id="app"
     class="flex direction-column"
     :class="{
-      'is-dark': hasDarkTheme
+      'is-dark': hasDarkTheme,
+      'documentation': isDocPage
     }"
   >
     <NavHeader />
@@ -21,7 +22,10 @@
       NavHeader
     },
     computed: {
-      ...mapGetters(['hasDarkTheme'])
+      ...mapGetters(['hasDarkTheme']),
+      isDocPage () {
+        return this.$route.matched.some(m => m.name === 'Documentation')
+      }
     },
     mounted () {
       const date = new Date().toTimeString()

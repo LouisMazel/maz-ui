@@ -15,7 +15,7 @@
           alt="Vue logo"
           src="@/assets/img/logo-base-dodgerblue.png"
         >
-        <div class="header__title flex direction-column hidden-mobile">
+        <div class="header__title flex direction-column hidden-tablet">
           <h1 class="fs-20">
             Maz UI
           </h1>
@@ -26,7 +26,7 @@
       </router-link>
       <div class="header__menu flex">
         <router-link
-          class="header__menu__item flex align-center fs-16 home"
+          class="header__menu__item flex align-center home"
           :to="{
             name: 'Home'
           }"
@@ -34,7 +34,7 @@
           Home
         </router-link>
         <router-link
-          class="header__menu__item flex align-center fs-16"
+          class="header__menu__item flex align-center"
           :to="{
             name: 'Documentation'
           }"

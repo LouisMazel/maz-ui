@@ -2,10 +2,17 @@
 @import './../icons';
 
 html,
-body,
-#app {
+body {
   height: 100%;
   color: $text-color;
+}
+
+#app {
+  min-height: 100%;
+
+  &.documentation {
+    height: 100%;
+  }
 }
 
 h1,
