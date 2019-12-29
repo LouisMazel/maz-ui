@@ -99,7 +99,7 @@
               v-if="showCodeOnList"
               class="country-selector__list__item__calling-code flex-fixed"
             >+{{ item.dialCode }}</span>
-            <div class="dots-text">
+            <div class="dots-text flex-1 text-left">
               {{ item.name }}
             </div>
           </button>

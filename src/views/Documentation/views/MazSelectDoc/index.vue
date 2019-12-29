@@ -10,7 +10,7 @@
       />
     </ComponentContainer>
     <div class="flex flex--wrap">
-      <div class="flex-1 mr-4">
+      <div class="flex-1">
         <ComponentContainer>
           <MazSelect
             v-model="selectValue"
