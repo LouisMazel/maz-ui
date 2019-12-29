@@ -70,7 +70,7 @@
   import {
     MazBtn, MazBtnGroup, MazInput, MazSelect, MazPhoneNumberInput, MazSwitch, MazCheckbox,
     MazDialog, MazLoader, MazSidebar, MazSpinner, MazTransitionExpand, MazCollapse,
-    MazPagination, MazDropzone
+    MazPagination, MazDropzone, MazReadMore
   } from '@/lib'
 
   export default {
@@ -79,6 +79,7 @@
       /* eslint-disable vue/no-unused-components */
       MazBtn,
       MazBtnGroup,
+      MazCollapse,
       MazInput,
       MazSelect,
       MazSwitch,
@@ -89,9 +90,9 @@
       MazSidebar,
       MazPagination,
       MazPhoneNumberInput,
+      MazReadMore,
       MazSpinner,
-      MazTransitionExpand,
-      MazCollapse
+      MazTransitionExpand
       /* eslint-enable */
     },
     computed: {

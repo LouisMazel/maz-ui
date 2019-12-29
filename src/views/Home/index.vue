@@ -7,54 +7,56 @@
         {{ modeBtnText }}
       </MazBtn>
     </div>
-    <div class="home__main flex flex-1">
-      <div class="home__content flex direction-column align-center justify-center p-4">
-        <h2 class="mt-3 mb-2 text-center">
-          A Vue.js library to build your interface
+    <div class="home__main flex flex-1 container">
+      <div class="home__content flex direction-column justify-center p-4">
+        <h2 class="mb-2">
+          A library to build your interfaces with <span class="text-primary">Vue.js</span>
         </h2>
-        <p class="mb-5 text-center">
-          Components & CSS framework
-        </p>
-        <CodeContainer
-          language="bash"
-          code="npm i maz-ui -S"
-          class="mb-4"
-        />
-        <div class="flex align-start flex--wrap my-3 align-center justify-center">
-          <router-link
-            class="btn btn--primary--outline mr-2 mb-2"
-            :to="{ name: 'Install' }"
-          >
-            Installation
-          </router-link>
-          <router-link
-            class="btn btn--primary--outline mr-2 mb-2"
-            :to="{ name: 'GetStarted' }"
-          >
-            Get started
-          </router-link>
-          <router-link
-            class="btn btn--primary--outline"
-            :to="{ name: 'MazInputDoc' }"
-          >
-            Components
-          </router-link>
-        </div>
-        <div class="flex align-start flex--wrap align-center justify-center">
-          <a
-            class="btn btn--dark--outline mr-4"
-            href="https://github.com/LouisMazel/maz-ui"
-            target="_blank"
-          >
-            Github
-          </a>
-          <a
-            class="btn btn--danger--outline"
-            href="https://www.npmjs.com/package/maz-ui"
-            target="_blank"
-          >
-            NPM
-          </a>
+        <h3 class="subtitle mb-5 fs-16">
+          UI Components & CSS framework
+        </h3>
+        <div class="flex flex-center direction-column">
+          <CodeContainer
+            language="bash"
+            code="npm i maz-ui -S"
+            class="mb-4"
+          />
+          <div class="flex align-start flex--wrap my-3 align-center justify-center">
+            <router-link
+              class="btn btn--primary--outline mr-2 mb-2"
+              :to="{ name: 'Install' }"
+            >
+              Installation
+            </router-link>
+            <router-link
+              class="btn btn--primary--outline mr-2 mb-2"
+              :to="{ name: 'GetStarted' }"
+            >
+              Get started
+            </router-link>
+            <router-link
+              class="btn btn--primary--outline"
+              :to="{ name: 'MazInputDoc' }"
+            >
+              Components
+            </router-link>
+          </div>
+          <div class="flex align-start flex--wrap align-center justify-center">
+            <a
+              class="btn btn--dark--outline mr-4"
+              href="https://github.com/LouisMazel/maz-ui"
+              target="_blank"
+            >
+              Github
+            </a>
+            <a
+              class="btn btn--danger--outline"
+              href="https://www.npmjs.com/package/maz-ui"
+              target="_blank"
+            >
+              NPM
+            </a>
+          </div>
         </div>
       </div>
       <div class="home__illu-container flex align-center justify-center p-4">
@@ -122,10 +124,11 @@
 
     h2 {
       color: $text-color;
+      font-size: 30px;
     }
 
-    p {
-      color: $muted-color;
+    h3.subtitle {
+      color: $primary-color;
     }
   }
 
@@ -133,6 +136,10 @@
     .home {
       h2 {
         color: $text-color-dark;
+      }
+
+      h3.subtitle {
+        color: $primary-color !important;
       }
 
       .btn--dark--outline {

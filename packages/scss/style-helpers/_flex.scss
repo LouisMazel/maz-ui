@@ -53,6 +53,11 @@
     justify-content: space-around;
   }
 
+  &.flex-center {
+    justify-content: center;
+    align-items: center;
+  }
+
   &.flex--wrap {
     flex-wrap: wrap;
   }
