@@ -10,6 +10,7 @@
     @vdropzone-thumbnail="thumbnail"
     @vdropzone-error="fileError"
     @vdropzone-removed-file="removeFile"
+    @vdropzone-sending="sending"
   />
 </template>
 
@@ -163,6 +164,9 @@
       },
       removeFile (e) {
         this.$emit('file-removed', e)
+      },
+      sending (e) {
+        this.$emit('file-sending', e)
       }
     }
   }
