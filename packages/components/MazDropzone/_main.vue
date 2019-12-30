@@ -147,9 +147,7 @@
        * @function fileSended
        */
       fileSended (file, response) {
-        setTimeout(() => {
-          this.$emit('file-upload-success', response)
-        }, 2000)
+        this.$emit('file-upload-success', response)
       },
       /**
        * Called when an error occured while uploading the file.
