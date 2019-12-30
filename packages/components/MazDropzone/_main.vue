@@ -165,8 +165,8 @@
       removeFile (e) {
         this.$emit('file-removed', e)
       },
-      sending (e) {
-        this.$emit('file-sending', e)
+      sending (file, xhr, formData) {
+        this.$emit('file-sending', file, xhr, formData)
       }
     }
   }
