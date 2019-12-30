@@ -538,11 +538,13 @@
 .vue-dropzone > .dz-preview .dz-image:hover img { transform: none; -webkit-filter: none; }
 .vue-dropzone > .dz-preview .dz-details { bottom: 0; top: 0; color: #FFF; background-color: rgba(33, 150, 243, 0.8); transition: opacity 0.2s linear; text-align: left; }
 .vue-dropzone > .dz-preview .dz-details .dz-filename { overflow: hidden; }
+
 .vue-dropzone > .dz-preview .dz-details .dz-filename span,
 .vue-dropzone > .dz-preview .dz-details .dz-size span { background-color: transparent; }
 .vue-dropzone > .dz-preview .dz-details .dz-filename:not(:hover) span { border: none; }
 .vue-dropzone > .dz-preview .dz-details .dz-filename:hover span { background-color: transparent; border: none; }
 .vue-dropzone > .dz-preview .dz-progress .dz-upload { background: #CCC; }
+
 .vue-dropzone > .dz-preview .dz-remove {
   position: absolute;
   z-index: 30;
@@ -566,8 +568,10 @@
   }
 }
 .vue-dropzone > .dz-preview:hover .dz-remove { opacity: 1; }
+
 .vue-dropzone > .dz-preview .dz-error-mark,
 .vue-dropzone > .dz-preview .dz-success-mark { margin-left: auto; margin-top: auto; width: 100%; top: 35%; left: 0; }
+
 .vue-dropzone > .dz-preview .dz-error-mark svg,
 .vue-dropzone > .dz-preview .dz-success-mark svg { margin-left: auto; margin-right: auto; }
 .vue-dropzone > .dz-preview .dz-error-message { margin-left: auto; margin-right: auto; left: 0; width: 100%; text-align: center; }

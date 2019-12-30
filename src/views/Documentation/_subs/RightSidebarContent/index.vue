@@ -70,7 +70,7 @@
   import {
     MazBtn, MazBtnGroup, MazInput, MazSelect, MazPhoneNumberInput, MazSwitch, MazCheckbox,
     MazDialog, MazLoader, MazSidebar, MazSpinner, MazTransitionExpand, MazCollapse,
-    MazPagination, MazDropzone, MazReadMore
+    MazPagination, MazDropzone, MazReadMore, MazResponsiveMenu
   } from '@/lib'
 
   export default {
@@ -91,6 +91,7 @@
       MazPagination,
       MazPhoneNumberInput,
       MazReadMore,
+      MazResponsiveMenu,
       MazSpinner,
       MazTransitionExpand
       /* eslint-enable */

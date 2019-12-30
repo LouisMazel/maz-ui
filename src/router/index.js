@@ -6,7 +6,7 @@ Vue.use(Router)
 
 const componentsRoutes = [
   'Install', 'GetStarted', 'MazInputDoc', 'MazSelectDoc', 'MazPhoneNumberInputDoc', 'MazDropzoneDoc', 'MazBtnDoc', 'MazBtnGroupDoc', 'MazSwitchDoc', 'MazCheckboxDoc', 'MazSidebarDoc',
-  'MazPaginationDoc', 'MazLoaderDoc', 'MazSpinnerDoc', 'MazCollapseDoc', 'MazReadMoreDoc', 'MazTransitionExpandDoc', 'MazDialogDoc', 'MazFlexDoc'
+  'MazPaginationDoc', 'MazLoaderDoc', 'MazSpinnerDoc', 'MazCollapseDoc', 'MazReadMoreDoc', 'MazResponsiveMenuDoc', 'MazTransitionExpandDoc', 'MazDialogDoc', 'MazFlexDoc'
 ]
 
 const componentsRoutesBuild = componentsRoutes.map((route) => {
@@ -39,6 +39,11 @@ const router = new Router({
       children: [
         ...componentsRoutesBuild
       ]
+    },
+    {
+      path: '/made-with-maz-ui',
+      name: 'MadeWithMazUi',
+      component: () => import(/* webpackChunkName: "used-by" */ '@/views/MadeWithMazUi')
     },
     {
       path: '*',

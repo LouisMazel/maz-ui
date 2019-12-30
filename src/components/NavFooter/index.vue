@@ -3,8 +3,8 @@
     class="nav-footer flex-fixed"
     role="contentinfo"
   >
-    <nav class="nav-footer-content px-4 flex align-center space-between py-4">
-      <div class="flex hidden-tablet">
+    <nav class="nav-footer-content container px-4 flex align-center space-between py-4">
+      <div class="flex direction-column hidden-tablet">
         <RouterLink
           :to="{ name: 'Home' }"
           class="mr-3"
@@ -16,8 +16,13 @@
         >
           Documentation
         </RouterLink>
+        <RouterLink
+          :to="{ name: 'MadeWithMazUi' }"
+        >
+          Made with Maz UI
+        </RouterLink>
       </div>
-      <div class="nav-footer-content__logo hidden-tablet flex align-center">
+      <div class="nav-footer-content__logo direction-column hidden-tablet flex align-center">
         <img
           src="@/assets/img/logo-maz-ui.png"
           alt="logo-loic-mazuel"
@@ -34,10 +39,10 @@
         <a
           href="https://www.loicmazuel.com/"
           target="_blank"
-          class="flex align-center"
+          class="flex"
         >
           <p class="fs-14">
-            © Loïc Mazuel | Website made with VueJS
+            © Loïc Mazuel
           </p>
         </a>
       </div>

@@ -3,7 +3,7 @@
     class="header bg-color flex-fixed"
     role="banner"
   >
-    <nav class="px-4 flex space-between">
+    <nav class="px-4 flex space-between container">
       <router-link
         :to="{
           name: 'Home'
@@ -24,7 +24,7 @@
           </p>
         </div>
       </router-link>
-      <div class="header__menu flex">
+      <div class="header__menu flex hidden-mobile">
         <router-link
           class="header__menu__item flex align-center home"
           :to="{
@@ -41,6 +41,12 @@
         >
           Documentation
         </router-link>
+        <router-link
+          class="header__menu__item flex align-center"
+          :to="{ name: 'MadeWithMazUi' }"
+        >
+          Made with Maz UI
+        </router-link>
       </div>
       <div class="flex align-center hidden-mobile">
         <div class="flex align-center">
@@ -48,24 +54,34 @@
             v-model="darkTheme"
             class="mr-2"
           />
-          <SocialButtons class="mr-2" />
-          <VersionNumber />
+          <SocialButtons class="mr-2 hidden-laptop-s" />
         </div>
       </div>
+      <MazResponsiveMenu
+        :routes="routes"
+        class="py-2 show-mobile"
+      />
     </nav>
   </header>
 </template>
 
 <script>
   import SocialButtons from '@/components/SocialButtons'
-  import VersionNumber from '@/components/VersionNumber'
   import { mapGetters, mapActions } from 'vuex'
 
   export default {
     name: 'Header',
     components: {
-      SocialButtons,
-      VersionNumber
+      SocialButtons
+    },
+    data () {
+      return {
+        routes: [
+          { label: 'Home', name: 'Home' },
+          { label: 'Documentation', name: 'Documentation' },
+          { label: 'Mad with Maz Ui', name: 'MadeWithMazUi' }
+        ]
+      }
     },
     computed: {
       ...mapGetters(['hasDarkTheme']),

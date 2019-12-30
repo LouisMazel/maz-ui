@@ -41,3 +41,59 @@
     display: none;
   }
 }
+
+.show-4k {
+  display: none;
+
+  @media only screen and (max-width: $breakpoint-4k) {
+    display: inherit;
+  }
+}
+
+.show-laptop {
+  display: none;
+
+  @media only screen and (max-width: $breakpoint-laptop-l) {
+    display: inherit;
+  }
+}
+
+.show-laptop-s {
+  display: none;
+
+  @media only screen and (max-width: $breakpoint-laptop-s) {
+    display: inherit;
+  }
+}
+
+.show-tablet {
+  display: none;
+
+  @media only screen and (max-width: $breakpoint-tablet) {
+    display: inherit;
+  }
+}
+
+.show-mobile {
+  display: none;
+
+  @media only screen and (max-width: $breakpoint-mobile-l) {
+    display: inherit;
+  }
+}
+
+.show-mobile-m {
+  display: none;
+
+  @media only screen and (max-width: $breakpoint-mobile-m) {
+    display: inherit;
+  }
+}
+
+.show-mobile-s {
+  display: none;
+
+  @media only screen and (max-width: $breakpoint-mobile-s) {
+    display: inherit;
+  }
+}
