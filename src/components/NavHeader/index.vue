@@ -3,7 +3,10 @@
     class="header bg-color flex-fixed"
     role="banner"
   >
-    <nav class="px-4 flex space-between container">
+    <nav
+      class="px-4 flex space-between"
+      :class="{ container: !isDocPage }"
+    >
       <router-link
         :to="{
           name: 'Home'
@@ -92,6 +95,9 @@
         set (val) {
           return this.setDarkTheme(val)
         }
+      },
+      isDocPage () {
+        return this.$route.matched.some(m => m.name === 'Documentation')
       }
     },
     methods: {

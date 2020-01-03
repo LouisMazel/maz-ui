@@ -10,11 +10,19 @@
         </MazBtn>
         <MazDialog
           v-model="hasDialogOpen"
+          max-width="800px"
+          persistent
+          hide-footer
         >
           <div slot="title">
-            Basic Dialog
+            Dropzone Dialog
           </div>
-          Dialog Content Basic
+          <MazDropzone
+            ref="mazDropzone"
+            :url="url"
+            :headers="headers"
+            :max-filesize="maxFilesize"
+          />
         </MazDialog>
         <MazBtn
           color="success"
@@ -60,6 +68,11 @@
         hasDialogOpen: false,
         hasDialogOpenDanger: false,
         hasDialogOpenSuccess: false,
+        url: 'https://httpbin.org/post',
+        headers: { 'My-Awesome-Header': 'header value' },
+        maxFilesize: 2,
+        errorMessage: null,
+        successMessage: null,
         codeExample: `<template>
   <MazBtn
     class="mr-2"
