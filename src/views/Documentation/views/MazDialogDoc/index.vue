@@ -11,13 +11,14 @@
         <MazDialog
           v-model="hasDialogOpen"
           max-width="800px"
-          persistent
           hide-footer
+          :excluded-classes="['dz-hidden-input']"
         >
           <div slot="title">
             Dropzone Dialog
           </div>
           <MazDropzone
+            id="mazDropzone"
             ref="mazDropzone"
             :url="url"
             :headers="headers"
@@ -82,11 +83,20 @@
   </MazBtn>
   <MazDialog
     v-model="hasDialogOpen"
+    max-width="800px"
+    hide-footer
+    :excluded-classes="['dz-hidden-input']"
   >
     <div slot="title">
-      Basic Dialog
+      Dropzone Dialog
     </div>
-    Dialog Content Basic
+    <MazDropzone
+      id="mazDropzone"
+      ref="mazDropzone"
+      :url="url"
+      :headers="headers"
+      :max-filesize="maxFilesize"
+    />
   </MazDialog>
   <MazBtn
     color="success"

@@ -1,4 +1,4 @@
-#MazDropzone {
+.maz-dropzone {
   border: 1px dashed $hover-color;
   min-height: 245px;
   background-color: $bg-color;
@@ -89,8 +89,8 @@
   }
 }
 
-.is-dark #MazDropzone,
-#MazDropzone.is-dark {
+.is-dark .maz-dropzone,
+.maz-dropzone.is-dark {
   background-color: $bg-color-dark;
   border-color: darken($text-color-dark, 20%);
   color: darken($hover-color, 20%);

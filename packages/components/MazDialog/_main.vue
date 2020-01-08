@@ -15,7 +15,7 @@
     >
       <div class="maz-dialog__wrapper flex align-center">
         <div
-          v-click-outside="closeDialog"
+          v-click-outside="vcoConfig"
           :style="widthStyle"
           class="maz-dialog__container dialog-animation flex direction-column"
           @keydown.esc="closeDialog"
@@ -97,7 +97,18 @@
       noValidation: { type: Boolean, default: false },
       success: { type: Boolean, default: false },
       danger: { type: Boolean, default: false },
-      dark: { type: Boolean, default: false }
+      dark: { type: Boolean, default: false },
+      excludedClasses: { type: Array, default: Array }
+    },
+    data () {
+      return {
+        vcoConfig: {
+          handler: this.closeDialog,
+          middleware: this.preventClickOutside,
+          events: ['click'],
+          isActive: true
+        }
+      }
     },
     computed: {
       widthStyle () {
@@ -107,6 +118,9 @@
       }
     },
     methods: {
+      preventClickOutside () {
+        return !this.excludedClasses.includes(event.target.className)
+      },
       closeDialog () {
         if (!this.persistent) {
           this.$emit('input', false)

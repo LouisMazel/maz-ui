@@ -1,9 +1,9 @@
 <template>
   <VueDropzone
-    id="MazDropzone"
+    :id="id"
     ref="mazDropzone"
     :options="dropzoneOptions"
-    class="w-100 h-100 flex align-center justify-center"
+    class="maz-dropzone w-100 h-100 flex align-center justify-center"
     :class="{ 'is-dark': dark }"
     @vdropzone-file-added="fileAdded"
     @vdropzone-success="fileSended"
@@ -35,6 +35,7 @@
     components: { VueDropzone },
     props: {
       url: { type: String, required: true },
+      id: { type: String, default: 'MazDropzone' },
       acceptedFiles: { type: String, default: 'image/*' },
       paramName: { type: String, default: 'file-name' },
       headers: { type: Object, required: true },
