@@ -1,12 +1,5 @@
 <template>
   <div class="home flex-1 flex direction-column">
-    <div class="home__header flex align-center justify-center p-4">
-      <MazBtn
-        @click="setDarkTheme(!hasDarkTheme)"
-      >
-        {{ modeBtnText }}
-      </MazBtn>
-    </div>
     <div class="home__main flex flex-1 container">
       <div class="home__content flex direction-column justify-center p-4">
         <h2 class="mb-2">
@@ -72,7 +65,7 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex'
+  import { mapGetters } from 'vuex'
   import NavFooter from '@/components/NavFooter'
 
   export default {
@@ -84,13 +77,7 @@
       ...mapGetters(['hasDarkTheme']),
       illuPath () {
         return this.hasDarkTheme ? require('@/assets/img/maz-ui-illu-dark.png') : require('@/assets/img/maz-ui-illu.png')
-      },
-      modeBtnText () {
-        return this.hasDarkTheme ? 'Enable Light Mode' : 'Enable Dark Mode'
       }
-    },
-    methods: {
-      ...mapActions(['setDarkTheme'])
     }
   }
 </script>

@@ -52,30 +52,26 @@
         </router-link>
       </div>
       <div class="flex align-center hidden-mobile">
-        <div class="flex align-center">
-          <MazSwitch
-            v-model="darkTheme"
-            class="mr-2"
-          />
-          <SocialButtons class="mr-2 hidden-laptop-s" />
-        </div>
+        <SocialButtons class="hidden-laptop-s" />
       </div>
       <MazResponsiveMenu
         :routes="routes"
         class="py-2 show-mobile"
       />
     </nav>
+    <DarkSwitchBanner />
   </header>
 </template>
 
 <script>
   import SocialButtons from '@/components/SocialButtons'
-  import { mapGetters, mapActions } from 'vuex'
+  import DarkSwitchBanner from '@/components/DarkSwitchBanner'
 
   export default {
     name: 'Header',
     components: {
-      SocialButtons
+      SocialButtons,
+      DarkSwitchBanner
     },
     data () {
       return {
@@ -87,21 +83,9 @@
       }
     },
     computed: {
-      ...mapGetters(['hasDarkTheme']),
-      darkTheme: {
-        get () {
-          return this.hasDarkTheme
-        },
-        set (val) {
-          return this.setDarkTheme(val)
-        }
-      },
       isDocPage () {
         return this.$route.matched.some(m => m.name === 'Documentation')
       }
-    },
-    methods: {
-      ...mapActions(['setDarkTheme'])
     }
   }
 </script>
