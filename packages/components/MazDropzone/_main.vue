@@ -5,7 +5,7 @@
     :options="dropzoneOptions"
     class="w-100 h-100 flex align-center justify-center"
     :class="{ 'is-dark': dark }"
-    @vdropzone-file-added="reset"
+    @vdropzone-file-added="fileAdded"
     @vdropzone-success="fileSended"
     @vdropzone-thumbnail="thumbnail"
     @vdropzone-error="fileError"
@@ -133,7 +133,14 @@
           })(this)), 1)
         }
       },
-
+      /**
+       * Called whenever a new file is dropped in the zone.
+       * @function fileAdded
+       */
+      fileAdded (file) {
+        this.$emit('file-added', file)
+        this.reset()
+      },
       /**
        * Called whenever a new file is dropped in the zone. Should reset
        * the error messages.
