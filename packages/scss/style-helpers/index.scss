@@ -48,7 +48,8 @@ figure {
 html,
 body,
 #app,
-button {
+button,
+input {
   font: $base-font-weight $base-font-size $base-font-family;
   line-height: $base-line-height;
   font-kerning: normal;
