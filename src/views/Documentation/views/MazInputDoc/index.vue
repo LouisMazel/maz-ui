@@ -41,7 +41,15 @@
         type="password"
         autocomplete="new-password"
         left-icon-name="lock"
+        class="mb-3"
         clearable
+      />
+      <MazInput
+        v-model="commentValue"
+        label="Comment"
+        autocomplete="new-comment"
+        left-icon-name="comment"
+        textarea
       />
     </ComponentContainer>
     <div
@@ -97,6 +105,7 @@
         nameValue: 'your name',
         emailValue: 'youremail@domain.com',
         passwordValue: 'password',
+        commentValue: 'Your comment',
         codeExample: `<template>
   <MazInput
     v-model="exampleValue"
@@ -143,6 +152,13 @@ export default {
     left-icon-name="lock"
     clearable
   />
+  <MazInput
+    v-model="commentValue"
+    label="Comment"
+    autocomplete="new-comment"
+    left-icon-name="comment"
+    textarea
+  />
 </template>
 
 export default {
@@ -150,7 +166,8 @@ export default {
     return {
       nameValue: 'your name',
       emailValue: 'youremail@domain.com',
-      passwordValue: 'password'
+      passwordValue: 'password',
+      commentValue: 'Your comment'
     }
   }
 }`

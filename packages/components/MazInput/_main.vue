@@ -19,7 +19,11 @@
     <div
       v-for="({ name, position }, i) in inputIcons"
       :key="`input-icon-${i}`"
-      :class="`maz-input__icon flex align-center justify-center ${position}`"
+      class="maz-input__icon flex align-center justify-center"
+      :class="[
+        position,
+        textarea ? 'align-start pt-2' : 'align-center'
+      ]"
     >
       <slot :name="`input-icon-${position}`">
         <i class="material-icons">{{ name }}</i>

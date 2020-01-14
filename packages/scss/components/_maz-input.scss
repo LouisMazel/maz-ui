@@ -1,11 +1,6 @@
 .maz-input {
   position: relative;
 
-  &:not(.maz-input__input.textarea) {
-    height: 40px;
-    min-height: 40px;
-  }
-
   &__label {
     position: absolute;
     top: 4px;
@@ -295,11 +290,6 @@
   }
 
   &.sm {
-    &:not(.maz-input__input.textarea) {
-      height: 36px;
-      min-height: 36px;
-    }
-
     .maz-input__input {
       font-size: 12px;
 
@@ -325,11 +315,6 @@
   }
 
   &.lg {
-    &:not(.maz-input__input.textarea) {
-      height: 48px;
-      min-height: 48px;
-    }
-
     .maz-input__input {
       font-size: 14px;
 
