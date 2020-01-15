@@ -68,33 +68,27 @@
         class="maz-select__options-list"
         :style="[itemListHeight]"
       >
-        <VirtualList
-          :size="itemHeight"
-          :remain="itemsRemain"
-          :start="indexItemToShow"
+        <button
+          v-for="({ label: l, value: v }, i) in options"
+          :key="i"
+          tabindex="-1"
+          :class="[
+            {'selected': value === v},
+            {'keyboard-selected': tmpValue === v}
+          ]"
+          class="flex align-center maz-select__options-list__item"
+          :style="[optionHeight]"
+          @click.stop="updateValue(v)"
         >
-          <button
-            v-for="({ label: l, value: v }, i) in options"
-            :key="i"
-            tabindex="-1"
-            :class="[
-              {'selected': value === v},
-              {'keyboard-selected': tmpValue === v}
-            ]"
-            class="flex align-center maz-select__options-list__item"
-            :style="[optionHeight]"
-            @click.stop="updateValue(v)"
+          <div
+            class="dots-text"
+            :class="{
+              'text-muted': !v && value !== v
+            }"
           >
-            <div
-              class="dots-text"
-              :class="{
-                'text-muted': !v && value !== v
-              }"
-            >
-              {{ l }}
-            </div>
-          </button>
-        </VirtualList>
+            {{ l }}
+          </div>
+        </button>
       </div>
     </Transition>
   </div>
@@ -102,13 +96,9 @@
 
 <script>
   import uniqueId from './../../mixins/uniqueId'
-  import VirtualList from 'vue-virtual-scroll-list'
 
   export default {
     name: 'MazSelect',
-    components: {
-      VirtualList
-    },
     mixins: [uniqueId],
     props: {
       value: {
@@ -224,7 +214,7 @@
       },
       scrollToSelectedOnFocus (arrayIndex) {
         this.$nextTick(() => {
-          this.indexItemToShow = arrayIndex - 3
+          this.$refs.optionsList.scrollTop = arrayIndex * this.itemHeight - (this.itemHeight * 3)
         })
       },
       keyboardNav (e) {
