@@ -3,7 +3,7 @@
 .slide-leave-active {
   opacity: 1;
   z-index: 998;
-  transition: all 0.3s;
+  transition: all .3s;
   transform: translateY(0);
 }
 
@@ -19,7 +19,7 @@
 .slideinvert-leave-active {
   opacity: 1;
   z-index: 998;
-  transition: all 0.3s;
+  transition: all .3s;
   transform: translateY(0);
 }
 
@@ -36,7 +36,7 @@
 .slideprev-leave-active,
 .slideprev-enter-active {
   position: absolute;
-  transition: all 0.3s;
+  transition: all .3s;
 }
 
 .slidenext-enter,
@@ -55,7 +55,7 @@
 .slidevprev-leave-active,
 .slidevprev-enter-active {
   position: absolute;
-  transition: all 0.3s;
+  transition: all .3s;
 }
 
 .slidevnext-enter,
@@ -86,7 +86,7 @@
 /** SPINNER ANIM **/
 
 .spinner-anim {
-  animation: spin 0.6s linear infinite;
+  animation: spin .6s linear infinite;
 }
 
 @-webkit-keyframes spin {
@@ -100,11 +100,11 @@
 }
 
 .dialog-fade-enter-active .dialog-animation {
-  animation: dialog-fade-in 0.4s;
+  animation: dialog-fade-in .4s;
 }
 
 .dialog-fade-leave-active .dialog-animation {
-  animation: dialog-fade-out 0.4s;
+  animation: dialog-fade-out .4s;
 }
 
 @keyframes dialog-fade-in {
@@ -148,12 +148,12 @@
 .scale-leave-active {
   opacity: 1;
   z-index: 1;
-  transition: all 300ms cubic-bezier(0.4, 0.52, 0.26, 0.9);
+  transition: all 300ms cubic-bezier(.4, .52, .26, .9);
 }
 
 .scale-enter,
 .scale-leave-to {
-  opacity: 0.4;
+  opacity: .4;
   z-index: 1;
   transform: scale(0);
 }

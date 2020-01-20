@@ -1,5 +1,5 @@
 export default (val) => {
   if (!val) return ''
-  val = val.toString()
-  return val.charAt(0).toUpperCase() + val.slice(1)
+  const string = val.toString()
+  return string.charAt(0).toUpperCase() + string.slice(1)
 }

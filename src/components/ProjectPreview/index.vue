@@ -71,7 +71,7 @@
         background-color: transparent;
         transition: 300ms ease-in-out;
         transition-property: opacity, height;
-        transform: scale(0.3);
+        transform: scale(.3);
       }
 
       &:hover {
@@ -83,7 +83,7 @@
           opacity: 1;
           border-radius: 0;
           transform: scale(1);
-          background-color: rgba(black, 0.3);
+          background-color: rgba(black, .3);
         }
       }
     }

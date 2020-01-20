@@ -1,6 +1,8 @@
 module.exports = {
   root: true,
   env: {
+    browser: true,
+    es6: true,
     node: true
   },
   extends: [
@@ -33,7 +35,19 @@ module.exports = {
         ignoreRestSiblings: false
       }
     ],
-    'func-style': 'error'
+    'func-style': 'error',
+    'no-param-reassign': [
+      'warn',
+      { props: false }
+    ],
+    'max-len': [
+      'warn',
+      {
+        code: 200
+      }
+    ],
+    'no-undef': ['error', { typeof: true }],
+    'no-loop-func': 'warn'
   },
   parserOptions: {
     parser: 'babel-eslint'

@@ -36,7 +36,7 @@
 
   .dz-success-mark {
     i.material-icons {
-      background: rgba($primary-color, 0.8);
+      background: rgba($primary-color, .8);
       border-radius: 50%;
       color: white;
       font-size: 70px;
@@ -45,7 +45,7 @@
 
   .dz-error-mark {
     i.material-icons {
-      background: rgba($danger-color, 0.8);
+      background: rgba($danger-color, .8);
       border-radius: 50%;
       color: white;
       font-size: 70px;
@@ -74,8 +74,8 @@
     width: 200px;
     height: 200px;
     color: white;
-    background-color: rgba($primary-color, 0.8);
-    transition: opacity 0.2s linear;
+    background-color: rgba($primary-color, .8);
+    transition: opacity .2s linear;
     text-align: center;
     border-radius: $border-radius;
   }

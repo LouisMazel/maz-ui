@@ -87,7 +87,7 @@
       }
 
       &__logo__img {
-        opacity: 0.6;
+        opacity: .6;
         height: 60px;
         transition: all 300ms;
 

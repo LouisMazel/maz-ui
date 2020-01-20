@@ -20,7 +20,7 @@
     left: 11px;
     transform: translateY(25%);
     opacity: 0;
-    transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition: all .25s cubic-bezier(.645, .045, .355, 1);
     font-size: 11px;
     color: $secondary-color;
   }
@@ -50,7 +50,7 @@
     position: absolute;
     right: 5px;
     top: calc(50% - 10px);
-    transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition: all .25s cubic-bezier(.645, .045, .355, 1);
     text-align: center;
     display: inline-block;
     cursor: pointer;
@@ -87,7 +87,7 @@
     border-radius: $border-radius;
     background-color: $bg-color;
     overflow: hidden;
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
     z-index: 9;
     list-style: none;
     overflow-y: auto;
@@ -164,7 +164,7 @@
     .country-selector {
       &__input {
         border-color: $primary-color;
-        box-shadow: 0 0 0 0.2rem $primary-color-transparency;
+        box-shadow: 0 0 0 .2rem $primary-color-transparency;
       }
 
       &__label {
@@ -174,7 +174,7 @@
 
     &.is-valid {
       .country-selector__input {
-        box-shadow: 0 0 0 0.2rem $success-color-transparency;
+        box-shadow: 0 0 0 .2rem $success-color-transparency;
       }
     }
   }
@@ -278,11 +278,13 @@
       top: 16px;
 
       img {
-        zoom: 0.3;
+        zoom: .3;
         color: red;
+
         /* stylelint-disable */
-        -moz-transform: scale(0.3);
+        -moz-transform: scale(.3);
         -moz-transform-origin: 0 0;
+
         /* stylelint-enable */
       }
     }
@@ -312,10 +314,12 @@
       top: 25px;
 
       img {
-        zoom: 0.45;
+        zoom: .45;
+
         /* stylelint-disable */
-        -moz-transform: scale(0.45);
+        -moz-transform: scale(.45);
         -moz-transform-origin: 0 0;
+
         /* stylelint-enable */
       }
     }
@@ -331,7 +335,7 @@
   .slide-leave-active {
     opacity: 1;
     z-index: 998;
-    transition: all 0.3s;
+    transition: all .3s;
     transform: translateY(0);
   }
 

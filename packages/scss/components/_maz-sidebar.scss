@@ -2,7 +2,7 @@
   &__wrapper {
     background-color: white;
     position: relative;
-    transition-duration: 0.2s;
+    transition-duration: .2s;
     transform: translateX(0);
     z-index: 9;
 
@@ -28,7 +28,7 @@
     }
 
     &__load-layer {
-      background-color: rgba(0, 0, 0, 0.15);
+      background-color: rgba(0, 0, 0, .15);
       position: absolute;
       top: 0;
       right: 0;
@@ -44,21 +44,21 @@
       right: 0;
       left: 0;
       bottom: 0;
-      background-color: rgba(0, 0, 0, 0.15);
+      background-color: rgba(0, 0, 0, .15);
     }
 
     &.has-shadow {
-      box-shadow: 2px 5px 8px rgba(0, 0, 0, 0.1);
+      box-shadow: 2px 5px 8px rgba(0, 0, 0, .1);
 
       .maz-sidebar__wrapper__close-btn button {
-        box-shadow: 2px 1px 3px rgba(0, 0, 0, 0.1);
+        box-shadow: 2px 1px 3px rgba(0, 0, 0, .1);
       }
 
       &.is-right {
-        box-shadow: -2px 5px 8px rgba(0, 0, 0, 0.1);
+        box-shadow: -2px 5px 8px rgba(0, 0, 0, .1);
 
         .maz-sidebar__wrapper__close-btn button {
-          box-shadow: -2px 1px 8px rgba(0, 0, 0, 0.1);
+          box-shadow: -2px 1px 8px rgba(0, 0, 0, .1);
         }
       }
     }
@@ -117,7 +117,7 @@
     }
 
     &__opacity-layer {
-      background-color: rgba(255, 255, 255, 0.15);
+      background-color: rgba(255, 255, 255, .15);
     }
   }
 }
