@@ -6,10 +6,10 @@
     position: relative;
     width: 64px;
     height: 64px;
-    animation: custom-loader-anim 10s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    animation: custom-loader-anim 10s cubic-bezier(.5, 0, .5, 1) infinite;
 
     div {
-      animation: custom-loader-anim 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+      animation: custom-loader-anim 1.2s cubic-bezier(.5, 0, .5, 1) infinite;
       transform-origin: 32px 32px;
 
       &::after {
@@ -24,7 +24,7 @@
       }
 
       &:nth-child(1) {
-        animation-delay: -0.036s;
+        animation-delay: -.036s;
       }
 
       &:nth-child(1)::after {
@@ -33,7 +33,7 @@
       }
 
       &:nth-child(2) {
-        animation-delay: -0.072s;
+        animation-delay: -.072s;
       }
 
       &:nth-child(2)::after {
@@ -42,7 +42,7 @@
       }
 
       &:nth-child(3) {
-        animation-delay: -0.108s;
+        animation-delay: -.108s;
       }
 
       &:nth-child(3)::after {
@@ -51,7 +51,7 @@
       }
 
       &:nth-child(4) {
-        animation-delay: -0.144s;
+        animation-delay: -.144s;
       }
 
       &:nth-child(4)::after {
@@ -60,7 +60,7 @@
       }
 
       &:nth-child(5) {
-        animation-delay: -0.18s;
+        animation-delay: -.18s;
       }
 
       &:nth-child(5)::after {
@@ -69,7 +69,7 @@
       }
 
       &:nth-child(6) {
-        animation-delay: -0.216s;
+        animation-delay: -.216s;
       }
 
       &:nth-child(6)::after {
@@ -78,7 +78,7 @@
       }
 
       &:nth-child(7) {
-        animation-delay: -0.252s;
+        animation-delay: -.252s;
       }
 
       &:nth-child(7)::after {
@@ -87,7 +87,7 @@
       }
 
       &:nth-child(8) {
-        animation-delay: -0.288s;
+        animation-delay: -.288s;
       }
 
       &:nth-child(8)::after {

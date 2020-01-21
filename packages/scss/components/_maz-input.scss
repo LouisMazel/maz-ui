@@ -8,7 +8,7 @@
     left: 13px;
     transform: translateY(25%);
     opacity: 0;
-    transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition: all .25s cubic-bezier(.645, .045, .355, 1);
     font-size: 11px;
     color: $muted-color;
   }
@@ -16,7 +16,7 @@
   &__input {
     cursor: pointer;
     background-color: $bg-color;
-    transition-duration: 0.3s;
+    transition-duration: .3s;
     position: relative;
     width: 100%;
     padding: 0 12px;
@@ -156,7 +156,7 @@
 
       .maz-input__toggle-btn__effect {
         transform: scale(1);
-        opacity: 0.6;
+        opacity: .6;
       }
     }
   }
@@ -181,7 +181,7 @@
     .maz-input {
       &__input {
         border-color: $primary-color;
-        box-shadow: 0 0 0 0.2rem $primary-color-transparency;
+        box-shadow: 0 0 0 .2rem $primary-color-transparency;
       }
 
       &__label {
@@ -195,14 +195,14 @@
 
     &.has-error {
       .maz-input__input {
-        box-shadow: 0 0 0 0.2rem $danger-color-transparency;
+        box-shadow: 0 0 0 .2rem $danger-color-transparency;
       }
     }
 
     &.is-valid {
       .maz-input__input {
         border-color: $success-color;
-        box-shadow: 0 0 0 0.2rem $success-color-transparency;
+        box-shadow: 0 0 0 .2rem $success-color-transparency;
       }
     }
   }

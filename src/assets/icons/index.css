@@ -2,8 +2,7 @@
 @font-face {
   font-family: 'icomoon';
   src: url('~@/assets/icons/fonts/icomoon.eot?swtefj');
-  src:
-    url('~@/assets/icons/fonts/icomoon.eot?swtefj#iefix') format('embedded-opentype'),
+  src: url('~@/assets/icons/fonts/icomoon.eot?swtefj#iefix') format('embedded-opentype'),
     url('~@/assets/icons/fonts/icomoon.ttf?swtefj') format('truetype'),
     url('~@/assets/icons/fonts/icomoon.woff?swtefj') format('woff'),
     url('~@/assets/icons/fonts/icomoon.svg?swtefj#icomoon') format('svg');
@@ -13,8 +12,8 @@
 
 /* [class^='icon-ctk'],
 [class*=' icon-ctk'] { */
-[class^='icon-'],
-[class*=' icon-'] {
+[class^= 'icon-'],
+[class*= ' icon-'] {
   font-family: 'icomoon';
   speak: none;
   font-style: normal;

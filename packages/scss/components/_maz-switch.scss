@@ -23,7 +23,7 @@
       display: block;
       background: $gray;
       border-radius: 8px;
-      transition: all 0.2s ease;
+      transition: all .2s ease;
     }
 
     span {
@@ -35,8 +35,8 @@
       display: block;
       background: white;
       border-radius: 10px;
-      box-shadow: 0 3px 8px rgba(black, 0.2);
-      transition: all 0.2s ease;
+      box-shadow: 0 3px 8px rgba(black, .2);
+      transition: all .2s ease;
 
       &::before {
         content: '';
@@ -45,7 +45,7 @@
         margin: -18px;
         width: 56px;
         height: 56px;
-        background: rgba($primary-color, 0.5);
+        background: rgba($primary-color, .5);
         border-radius: 50%;
         transform: scale(0);
         opacity: 1;
@@ -62,12 +62,12 @@
     span {
       background: $primary-color;
       transform: translateX(20px);
-      box-shadow: 0 3px 8px rgba($primary-color, 0.2);
+      box-shadow: 0 3px 8px rgba($primary-color, .2);
 
       &::before {
         transform: scale(1);
         opacity: 0;
-        transition: all 0.4s ease;
+        transition: all .4s ease;
       }
     }
   }
