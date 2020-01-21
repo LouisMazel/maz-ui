@@ -22,7 +22,6 @@ module.exports = {
     'no-duplicate-selectors': true,
     'color-hex-length': 'short',
     'color-named': 'always-where-possible',
-    'selector-no-qualifying-type': true,
     'selector-combinator-space-after': 'always',
     'selector-attribute-quotes': 'always',
     'selector-attribute-operator-space-before': 'never',

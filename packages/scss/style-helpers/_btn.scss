@@ -22,6 +22,7 @@ $mini-size: 30px;
   width: auto;
   overflow: visible;
   -webkit-font-smoothing: inherit;
+  text-decoration: none;
   -moz-osx-font-smoothing: inherit;
 
   &:hover,
@@ -36,6 +37,12 @@ $mini-size: 30px;
   &:focus,
   &.active {
     box-shadow: 0 0 0 .2rem rgba($primary-color, .5);
+  }
+
+  &:hover,
+  &:focus,
+  &.active {
+    text-decoration: none;
   }
 
   &--rounded {
@@ -86,16 +93,6 @@ $mini-size: 30px;
   &--white,
   &--light {
     color: $secondary-color;
-  }
-}
-
-a.btn {
-  text-decoration: none;
-
-  &:hover,
-  &:focus,
-  &.active {
-    text-decoration: none;
   }
 }
 

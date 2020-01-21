@@ -80,7 +80,7 @@
     &__arrow {
       color: $secondary-color;
 
-      path.arrow {
+      .arrow {
         fill: $secondary-color;
       }
     }
@@ -120,7 +120,7 @@
       }
 
       &.selected {
-        color: #FFF;
+        color: white;
         background-color: $primary-color;
         font-weight: 600;
       }
@@ -350,7 +350,7 @@
       }
 
       &.selected {
-        color: #FFF;
+        color: white;
         background-color: $primary-color;
         font-weight: 600;
       }

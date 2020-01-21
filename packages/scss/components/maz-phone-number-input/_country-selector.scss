@@ -127,12 +127,12 @@
       }
 
       &.selected {
-        color: #FFF;
+        color: white;
         background-color: $primary-color;
         font-weight: 600;
 
         .country-selector__list__item__calling-code {
-          color: #FFF;
+          color: white;
         }
       }
     }

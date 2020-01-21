@@ -35,8 +35,8 @@
   }
 
   .dz-success-mark {
-    i.material-icons {
-      background: rgba($primary-color, .8);
+    .material-icons {
+      background-color: rgba($primary-color, .8);
       border-radius: 50%;
       color: white;
       font-size: 70px;
@@ -44,8 +44,8 @@
   }
 
   .dz-error-mark {
-    i.material-icons {
-      background: rgba($danger-color, .8);
+    .material-icons {
+      background-color: rgba($danger-color, .8);
       border-radius: 50%;
       color: white;
       font-size: 70px;
@@ -83,7 +83,7 @@
   &:hover {
     background-color: $hover-color;
 
-    .dz-message i.material-icons {
+    .dz-message .material-icons {
       color: $primary-color !important;
     }
   }

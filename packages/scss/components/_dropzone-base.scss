@@ -536,7 +536,7 @@
 .vue-dropzone > .dz-preview .dz-image { border-radius: 0; width: 100%; height: 100%; }
 .vue-dropzone > .dz-preview .dz-image img:not([src]) { width: 200px; height: 200px; }
 .vue-dropzone > .dz-preview .dz-image:hover img { transform: none; -webkit-filter: none; }
-.vue-dropzone > .dz-preview .dz-details { bottom: 0; top: 0; color: #FFF; background-color: rgba(33, 150, 243, .8); transition: opacity .2s linear; text-align: left; }
+.vue-dropzone > .dz-preview .dz-details { bottom: 0; top: 0; color: white; background-color: rgba(33, 150, 243, .8); transition: opacity .2s linear; text-align: left; }
 .vue-dropzone > .dz-preview .dz-details .dz-filename { overflow: hidden; }
 
 .vue-dropzone > .dz-preview .dz-details .dz-filename span,
@@ -548,13 +548,13 @@
 .vue-dropzone > .dz-preview .dz-remove {
   position: absolute;
   z-index: 30;
-  color: #FFF;
+  color: white;
   margin-left: 15px;
   padding: 10px;
   top: inherit;
   bottom: 15px;
   border-radius: $border-radius;
-  border: 1px #FFF solid;
+  border: 1px white solid;
   text-decoration: none !important;
   text-transform: uppercase;
   font-size: 12px;
