@@ -108,7 +108,7 @@
         text-decoration: none;
         padding: 0 20px;
         border-bottom: 2px solid transparent;
-        transition: all 0.5s;
+        transition: all .5s;
         outline: none;
 
         &:focus,

@@ -7,7 +7,7 @@ $mini-size: 30px;
   border: 1px solid transparent;
   outline: none;
   cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition: all .25s cubic-bezier(.645, .045, .355, 1);
   background-color: $primary-color;
   color: white;
   display: inline-block;
@@ -22,6 +22,7 @@ $mini-size: 30px;
   width: auto;
   overflow: visible;
   -webkit-font-smoothing: inherit;
+  text-decoration: none;
   -moz-osx-font-smoothing: inherit;
 
   &:hover,
@@ -35,7 +36,13 @@ $mini-size: 30px;
 
   &:focus,
   &.active {
-    box-shadow: 0 0 0 0.2rem rgba($primary-color, 0.5);
+    box-shadow: 0 0 0 .2rem rgba($primary-color, .5);
+  }
+
+  &:hover,
+  &:focus,
+  &.active {
+    text-decoration: none;
   }
 
   &--rounded {
@@ -89,16 +96,6 @@ $mini-size: 30px;
   }
 }
 
-a.btn {
-  text-decoration: none;
-
-  &:hover,
-  &:focus,
-  &.active {
-    text-decoration: none;
-  }
-}
-
 @import './variables/_color_types';
 
 @each $name, $color in $color_types {
@@ -117,11 +114,11 @@ a.btn {
 
       &:focus,
       &.active {
-        box-shadow: 0 0 0 0.2rem rgba($color, 0.5);
+        box-shadow: 0 0 0 .2rem rgba($color, .5);
       }
 
       &--outline {
-        background-color: rgba($color, 0.05);
+        background-color: rgba($color, .05);
         border: 1px solid $color;
         color: $color;
 
@@ -134,7 +131,7 @@ a.btn {
 
         &:focus,
         &.active {
-          box-shadow: 0 0 0 0.2rem rgba($color, 0.5);
+          box-shadow: 0 0 0 .2rem rgba($color, .5);
         }
       }
     }

@@ -31,7 +31,7 @@
       }
 
       p {
-        color: rgba($text-color, 0.54);
+        color: rgba($text-color, .54);
       }
     }
   }
@@ -42,7 +42,7 @@
     }
 
     p {
-      color: rgba($text-color-dark, 0.54);
+      color: rgba($text-color-dark, .54);
     }
   }
 </style>

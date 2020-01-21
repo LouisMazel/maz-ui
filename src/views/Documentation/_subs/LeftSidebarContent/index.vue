@@ -85,7 +85,7 @@
       border: none;
       color: black;
       font-weight: 300;
-      margin-bottom: 0.5em;
+      margin-bottom: .5em;
 
       &:last-child {
         margin-bottom: 0;

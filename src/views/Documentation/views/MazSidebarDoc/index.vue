@@ -119,7 +119,7 @@
 
     &__content {
       & * {
-        margin-bottom: 0.5rem;
+        margin-bottom: .5rem;
       }
 
       .switch-container {

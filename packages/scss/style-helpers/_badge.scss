@@ -16,7 +16,7 @@
   @if (type-of($color) == 'color') {
     .badge-#{$name} {
       background-color: $color;
-      color: #FFF;
+      color: white;
     }
   }
 }
