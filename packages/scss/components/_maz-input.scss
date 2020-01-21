@@ -181,7 +181,7 @@
     .maz-input {
       &__input {
         border-color: $primary-color;
-        box-shadow: 0 0 0 .2rem $primary-color-transparency;
+        box-shadow: 0 0 0 .143rem $primary-color-transparency;
       }
 
       &__label {
@@ -195,14 +195,14 @@
 
     &.has-error {
       .maz-input__input {
-        box-shadow: 0 0 0 .2rem $danger-color-transparency;
+        box-shadow: 0 0 0 .143rem $danger-color-transparency;
       }
     }
 
     &.is-valid {
       .maz-input__input {
         border-color: $success-color;
-        box-shadow: 0 0 0 .2rem $success-color-transparency;
+        box-shadow: 0 0 0 .143rem $success-color-transparency;
       }
     }
   }

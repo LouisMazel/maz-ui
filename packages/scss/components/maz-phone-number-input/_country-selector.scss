@@ -164,7 +164,7 @@
     .country-selector {
       &__input {
         border-color: $primary-color;
-        box-shadow: 0 0 0 .2rem $primary-color-transparency;
+        box-shadow: 0 0 0 .143rem $primary-color-transparency;
       }
 
       &__label {
@@ -174,7 +174,7 @@
 
     &.is-valid {
       .country-selector__input {
-        box-shadow: 0 0 0 .2rem $success-color-transparency;
+        box-shadow: 0 0 0 .143rem $success-color-transparency;
       }
     }
   }

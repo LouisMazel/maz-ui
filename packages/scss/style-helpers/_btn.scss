@@ -36,7 +36,7 @@ $mini-size: 30px;
 
   &:focus,
   &.active {
-    box-shadow: 0 0 0 .2rem rgba($primary-color, .5);
+    box-shadow: 0 0 0 .143rem rgba($primary-color, .5);
   }
 
   &:hover,
@@ -114,7 +114,7 @@ $mini-size: 30px;
 
       &:focus,
       &.active {
-        box-shadow: 0 0 0 .2rem rgba($color, .5);
+        box-shadow: 0 0 0 .143rem rgba($color, .5);
       }
 
       &--outline {
@@ -131,7 +131,7 @@ $mini-size: 30px;
 
         &:focus,
         &.active {
-          box-shadow: 0 0 0 .2rem rgba($color, .5);
+          box-shadow: 0 0 0 .143rem rgba($color, .5);
         }
       }
     }

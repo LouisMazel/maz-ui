@@ -16,7 +16,7 @@
   &:hover,
   &:focus {
     background-color: darken(white, 20%);
-    box-shadow: 0 0 0 .2rem rgba(darken(white, 20%), .5);
+    box-shadow: 0 0 0 .143rem rgba(darken(white, 20%), .5);
   }
 
   &.active {
@@ -24,7 +24,7 @@
     box-shadow: none;
 
     &:focus {
-      box-shadow: 0 0 0 .2rem rgba(black, .5);
+      box-shadow: 0 0 0 .143rem rgba(black, .5);
     }
 
     color: white;
@@ -43,7 +43,7 @@
     &:hover,
     &:focus {
       background-color: lighten($hover-color-dark, 5%);
-      box-shadow: 0 0 0 .2rem darken($hover-color-dark, 5%);
+      box-shadow: 0 0 0 .143rem darken($hover-color-dark, 5%);
     }
 
     &.active {
@@ -51,7 +51,7 @@
       color: $text-color;
 
       &:focus {
-        box-shadow: 0 0 0 .2rem rgba(white, .5);
+        box-shadow: 0 0 0 .143rem rgba(white, .5);
       }
     }
   }

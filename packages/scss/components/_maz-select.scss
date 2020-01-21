@@ -151,7 +151,7 @@
   &.is-focused {
     .maz-select__input {
       border-color: $primary-color;
-      box-shadow: 0 0 0 .2rem $primary-color-transparency;
+      box-shadow: 0 0 0 .143rem $primary-color-transparency;
     }
 
     .maz-select__label {
@@ -167,7 +167,7 @@
 
     &.is-focused {
       .maz-select__input {
-        box-shadow: 0 0 0 .2rem $danger-color-transparency;
+        box-shadow: 0 0 0 .143rem $danger-color-transparency;
       }
     }
 
@@ -184,7 +184,7 @@
 
     &.is-focused {
       .maz-select__input {
-        box-shadow: 0 0 0 .2rem $success-color-transparency;
+        box-shadow: 0 0 0 .143rem $success-color-transparency;
       }
     }
 
