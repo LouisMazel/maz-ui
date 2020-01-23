@@ -22,7 +22,7 @@
       <div :class="`iti-flag-small iti-flag ${value.toLowerCase()}`" />
     </div>
     <input
-      :id="uniqueId"
+      :id="id"
       ref="CountrySelector"
       :value="callingCode"
       :placeholder="label"
@@ -120,7 +120,7 @@
     },
     props: {
       countriesHeight: { type: Number, default: 35 },
-      id: { type: String, default: 'CountrySelector' },
+      id: { type: String, default: null },
       value: { type: [String, Object], default: null },
       label: { type: String, default: 'Choose country' },
       hint: { type: String, default: String },
@@ -147,9 +147,6 @@
       }
     },
     computed: {
-      uniqueId () {
-        return `${this.id}-${this._uid}`
-      },
       listHeight () {
         return {
           height: `${(this.countriesHeight + 1) * 7}px`,

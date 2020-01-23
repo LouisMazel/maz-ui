@@ -137,7 +137,7 @@
         required: true,
         validator: prop => ['number', 'string'].includes(typeof prop) || prop === null
       },
-      id: { type: String, default: 'MazInput' },
+      id: { type: String, default: null },
       label: { type: String, default: 'Enter text' },
       hint: { type: String, default: null },
       color: { type: String, default: 'dodgerblue' },

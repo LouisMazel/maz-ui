@@ -94,7 +94,7 @@
     mixins: [uniqueId],
     props: {
       value: { type: Boolean, required: true },
-      id: { type: String, default: 'MazSidebar' },
+      id: { type: String, default: null },
       width: { type: Number, default: 300 },
       loader: { type: Boolean, default: false },
       noCloseBtn: { type: Boolean, default: false },

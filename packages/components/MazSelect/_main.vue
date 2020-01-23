@@ -106,7 +106,7 @@
         validator: prop => ['number', 'string', 'boolean'].includes(typeof prop) || prop === null
       },
       options: { type: Array, required: true },
-      id: { type: String, default: 'MazSelect' },
+      id: { type: String, default: null },
       name: { type: String, default: 'MazSelect' },
       label: { type: String, default: 'Select option' },
       hint: { type: String, default: null },

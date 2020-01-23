@@ -1,7 +1,11 @@
 export default {
   computed: {
     uniqueId () {
-      return `${this.id}-${this._uid}`
+      if (this.id) {
+        return `${this.id}`
+      } else {
+        return `${this.$options.name}-${this._uid}`
+      }
     }
   }
 }

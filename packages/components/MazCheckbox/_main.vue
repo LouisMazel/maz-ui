@@ -25,7 +25,7 @@
     name: 'MazCheckbox',
     mixins: [uniqueId],
     props: {
-      id: { type: String, default: 'MazCheckbox' },
+      id: { type: String, default: null },
       value: { default: false, type: Boolean }
     }
   }

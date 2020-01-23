@@ -28,8 +28,8 @@
     props: {
       value: { type: Boolean, required: true },
       disabled: { type: Boolean, default: false },
-      id: { type: String, default: 'maz-switch' },
-      name: { type: String, default: 'maz-switch' }
+      id: { type: String, default: null },
+      name: { type: String, default: null }
     }
   }
 </script>

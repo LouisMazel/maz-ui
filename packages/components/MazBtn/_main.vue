@@ -34,7 +34,7 @@
     },
     mixins: [uniqueId],
     props: {
-      id: { type: String, default: 'MazBtn' },
+      id: { type: String, default: null },
       color: { type: String, default: 'primary' },
       type: { type: String, default: 'button' },
       size: { type: String, default: null },

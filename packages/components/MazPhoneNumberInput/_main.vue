@@ -66,6 +66,8 @@
   import CountrySelector from './CountrySelector'
   import locales from './assets/locales'
 
+  import uniqueId from './../../mixins/uniqueId'
+
   const browserLocale = () => {
     if (!window) return null
     const browserLocale = window.navigator.userLanguage || window.navigator.language
@@ -84,9 +86,10 @@
       InputTel,
       CountrySelector
     },
+    mixins: [uniqueId],
     props: {
       value: { type: String, default: null },
-      id: { type: String, default: 'MazPhoneNumberInput' },
+      id: { type: String, default: null },
       disabled: { type: Boolean, default: false },
       defaultCountryCode: { type: String, default: null },
       size: { type: String, default: null },
@@ -116,9 +119,6 @@
       }
     },
     computed: {
-      uniqueId () {
-        return `${this.id}-${this._uid}`
-      },
       t () {
         return {
           ...locales,
