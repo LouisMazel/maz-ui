@@ -22,7 +22,7 @@
     transform: translateY(25%);
     opacity: 0;
     transition: all .25s cubic-bezier(.645, .045, .355, 1);
-    font-size: 0.786em;
+    font-size: .786em;
     color: $secondary-color;
   }
 
@@ -106,7 +106,7 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden;
-      font-size: 0.857em;
+      font-size: .857em;
       cursor: pointer;
       background-color: transparent;
       border: none;
@@ -132,7 +132,7 @@
     .maz-select__label {
       opacity: 1;
       transform: translateY(0);
-      font-size: 0.786em;
+      font-size: .786em;
     }
 
     .maz-select__input {
@@ -262,11 +262,11 @@
     .maz-select__input {
       height: 36px;
       min-height: 36px;
-      font-size: 0.857em;
+      font-size: .857em;
     }
 
     .maz-select__label {
-      font-size: 0.714em;
+      font-size: .714em;
     }
 
     &.has-value {

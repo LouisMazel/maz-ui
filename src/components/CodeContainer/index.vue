@@ -28,7 +28,7 @@
     display: block;
     font-family: monospace;
     white-space: pre;
-    font-size: 0.857em;
+    font-size: .857em;
     background-color: #FAFAFA;
     border: 1px solid #EAEEFB;
     border-radius: $border-radius;

@@ -17,7 +17,7 @@
     transform: translateY(25%);
     opacity: 0;
     transition: all .25s cubic-bezier(.645, .045, .355, 1);
-    font-size: 0.786em;
+    font-size: .786em;
     color: $secondary-color;
   }
 
@@ -98,7 +98,7 @@
     color: $secondary-color;
     border-radius: $clear-size;
     cursor: pointer;
-    font-size: 0.857em;
+    font-size: .857em;
 
     &:focus {
       outline: none;
@@ -165,7 +165,7 @@
     .input-tel__label {
       opacity: 1;
       transform: translateY(0);
-      font-size: 0.786em;
+      font-size: .786em;
     }
 
     .input-tel__input {
@@ -178,7 +178,7 @@
     .input-tel__label {
       opacity: 1;
       transform: translateY(0);
-      font-size: 0.786em;
+      font-size: .786em;
     }
 
     .input-tel__input {
@@ -253,13 +253,13 @@
     min-height: 36px;
 
     .input-tel__input {
-      font-size: 0.857em;
+      font-size: .857em;
       height: 36px;
       min-height: 36px;
     }
 
     .input-tel__label {
-      font-size: 0.714em;
+      font-size: .714em;
     }
 
     &.has-value {
