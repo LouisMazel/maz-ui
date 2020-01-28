@@ -3,10 +3,6 @@
     // width: 24px;
     animation: spin .6s linear infinite;
 
-    &__info path {
-      fill: $primary-color;
-    }
-
     &__white path {
       fill: white;
     }

@@ -40,7 +40,7 @@
       }
 
       i {
-        font-size: 22px;
+        font-size: 1.571em;
       }
     }
   }

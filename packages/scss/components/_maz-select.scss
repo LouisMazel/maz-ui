@@ -22,7 +22,7 @@
     transform: translateY(25%);
     opacity: 0;
     transition: all .25s cubic-bezier(.645, .045, .355, 1);
-    font-size: 11px;
+    font-size: 0.786em;
     color: $secondary-color;
   }
 
@@ -40,7 +40,7 @@
     outline: none;
     border: 1px solid $third-color;
     border-radius: $border-radius;
-    font-size: 14px;
+    font-size: 1em;
 
     &::-webkit-input-placeholder {
       color: $secondary-color;
@@ -106,7 +106,7 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden;
-      font-size: 12px;
+      font-size: 0.857em;
       cursor: pointer;
       background-color: transparent;
       border: none;
@@ -132,7 +132,7 @@
     .maz-select__label {
       opacity: 1;
       transform: translateY(0);
-      font-size: 11px;
+      font-size: 0.786em;
     }
 
     .maz-select__input {
@@ -241,11 +241,11 @@
     .maz-select__input {
       height: 48px;
       min-height: 48px;
-      font-size: 14px;
+      font-size: 1em;
     }
 
     .maz-select__label {
-      font-size: 14px;
+      font-size: 1em;
     }
 
     &.has-value {
@@ -262,11 +262,11 @@
     .maz-select__input {
       height: 36px;
       min-height: 36px;
-      font-size: 12px;
+      font-size: 0.857em;
     }
 
     .maz-select__label {
-      font-size: 10px;
+      font-size: 0.714em;
     }
 
     &.has-value {

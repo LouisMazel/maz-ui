@@ -13,8 +13,9 @@
     <label
       :for="uniqueId"
       class="maz-switch__toggle"
+      :class="[bgColorClassTransparency]"
     >
-      <span />
+      <span :class="[bgColorClass]" />
     </label>
   </div>
 </template>
@@ -29,7 +30,16 @@
       value: { type: Boolean, required: true },
       disabled: { type: Boolean, default: false },
       id: { type: String, default: null },
-      name: { type: String, default: null }
+      name: { type: String, default: null },
+      color: { type: String, default: 'primary' }
+    },
+    computed: {
+      bgColorClassTransparency () {
+        return this.value ? `bg-${this.color}-before-transparency` : `bg-grey-before-transparency`
+      },
+      bgColorClass () {
+        return this.value ? `bg-${this.color}` : `bg-white`
+      }
     }
   }
 </script>

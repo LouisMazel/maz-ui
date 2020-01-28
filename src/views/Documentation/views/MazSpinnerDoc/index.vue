@@ -4,7 +4,7 @@
       <ComponentContainer
         class="text-center"
       >
-        <MazSpinner />
+        <MazSpinner :dark="hasDarkTheme" />
       </ComponentContainer>
     </div>
     <div class="flex-1">
@@ -14,7 +14,7 @@
       >
         <MazSpinner
           :size="60"
-          dark
+          :dark="hasDarkTheme"
         />
       </ComponentContainer>
     </div>
@@ -22,7 +22,12 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
+
   export default {
-    name: 'MazSpinnerDoc'
+    name: 'MazSpinnerDoc',
+    computed: {
+      ...mapGetters(['hasDarkTheme'])
+    }
   }
 </script>

@@ -111,7 +111,7 @@
 
     h2 {
       color: $text-color;
-      font-size: 30px;
+      font-size: 2.143em;
     }
 
     h3.subtitle {

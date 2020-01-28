@@ -1,9 +1,8 @@
 <template>
   <svg
-    :class="{
-      'spinner-anim__white': dark,
-      'spinner-anim__info': !dark
-    }"
+    :class="[{
+      'spinner-anim__white': dark
+    }, fillColorClass]"
     :width="`${size}px`"
     :height="`${size}px`"
     version="1.1"
@@ -23,13 +22,13 @@
   export default {
     name: 'MazSpinner',
     props: {
-      size: {
-        type: Number,
-        default: 40
-      },
-      dark: {
-        type: Boolean,
-        default: false
+      size: { type: Number, default: 40 },
+      dark: { type: Boolean, default: false },
+      color: { type: String, default: 'primary' }
+    },
+    computed: {
+      fillColorClass () {
+        return `fill-${this.color}`
       }
     }
   }

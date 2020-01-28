@@ -125,7 +125,7 @@
       .switch-container {
         p {
           margin-right: 20px;
-          font-size: 14px;
+          font-size: 1em;
         }
       }
     }

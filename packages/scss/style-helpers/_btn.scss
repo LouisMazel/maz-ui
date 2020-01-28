@@ -15,7 +15,7 @@ $mini-size: 30px;
   line-height: 1;
   box-sizing: border-box;
   padding: 12px 20px;
-  font-size: 14px;
+  font-size: 1em;
   font-weight: inherit;
   margin: 0;
   user-select: none;
@@ -55,17 +55,17 @@ $mini-size: 30px;
 
   &--md {
     padding: 10px 20px;
-    font-size: 14px;
+    font-size: 1em;
   }
 
   &--sm {
     padding: 9px 15px;
-    font-size: 12px;
+    font-size: 0.857em;
   }
 
   &--mini {
     padding: 7px 15px;
-    font-size: 12px;
+    font-size: 0.857em;
   }
 
   &--fab {

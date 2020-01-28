@@ -9,7 +9,7 @@
     transform: translateY(25%);
     opacity: 0;
     transition: all .25s cubic-bezier(.645, .045, .355, 1);
-    font-size: 11px;
+    font-size: 0.786em;
     color: $muted-color;
   }
 
@@ -25,7 +25,7 @@
     outline: none;
     border: 1px solid $third-color;
     border-radius: $border-radius;
-    font-size: 14px;
+    font-size: 1em;
     z-index: 0;
     caret-color: $primary-color;
 
@@ -85,7 +85,7 @@
     position: absolute;
     z-index: 1;
     color: $disabled-color;
-    font-size: 18px;
+    font-size: 1.286em;
     top: 0;
     bottom: 0;
 
@@ -114,7 +114,7 @@
     color: $muted-color;
     border-radius: $clear-size;
     cursor: pointer;
-    font-size: 12px;
+    font-size: 0.857em;
 
     &:focus {
       outline: none;
@@ -122,7 +122,7 @@
 
     &__icon {
       position: relative;
-      font-size: 18px;
+      font-size: 1.286em;
     }
 
     &__effect {
@@ -212,7 +212,7 @@
     .maz-input__label {
       opacity: 1;
       transform: translateY(0);
-      font-size: 11px;
+      font-size: 0.786em;
     }
 
     &:not(.has-no-label) {
@@ -291,7 +291,7 @@
 
   &.sm {
     .maz-input__input {
-      font-size: 12px;
+      font-size: 0.857em;
 
       &:not(.textarea) {
         height: 36px;
@@ -300,7 +300,7 @@
     }
 
     .maz-input__label {
-      font-size: 10px;
+      font-size: 0.714em;
     }
 
     &.has-value:not(.has-no-label) {
@@ -316,7 +316,7 @@
 
   &.lg {
     .maz-input__input {
-      font-size: 14px;
+      font-size: 1em;
 
       &:not(.textarea) {
         height: 48px;
@@ -325,7 +325,7 @@
     }
 
     .maz-input__label {
-      font-size: 14px;
+      font-size: 1em;
     }
 
     &.has-value:not(.has-no-label) {

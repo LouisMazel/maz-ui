@@ -21,7 +21,7 @@
     transform: translateY(25%);
     opacity: 0;
     transition: all .25s cubic-bezier(.645, .045, .355, 1);
-    font-size: 11px;
+    font-size: 0.786em;
     color: $secondary-color;
   }
 
@@ -38,7 +38,7 @@
     outline: none;
     border: 1px solid $third-color;
     border-radius: $border-radius;
-    font-size: 13px;
+    font-size: 0.929em;
     z-index: 0;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
@@ -104,7 +104,7 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden;
-      font-size: 12px;
+      font-size: 0.857em;
       cursor: pointer;
       color: $text-color;
       background-color: transparent;
@@ -200,7 +200,7 @@
     .country-selector__label {
       opacity: 1;
       transform: translateY(0);
-      font-size: 11px;
+      font-size: 0.786em;
     }
 
     .country-selector__input {
@@ -267,11 +267,11 @@
     .country-selector__input {
       height: 36px;
       min-height: 36px;
-      font-size: 12px;
+      font-size: 0.857em;
     }
 
     .country-selector__label {
-      font-size: 10px;
+      font-size: 0.714em;
     }
 
     .country-selector__country-flag {
@@ -303,11 +303,11 @@
     .country-selector__input {
       height: 48px;
       min-height: 48px;
-      font-size: 14px;
+      font-size: 1em;
     }
 
     .country-selector__label {
-      font-size: 14px;
+      font-size: 1em;
     }
 
     .country-selector__country-flag {
