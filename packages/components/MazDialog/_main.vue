@@ -29,19 +29,15 @@
                 Header
               </slot>
             </p>
-
-            <!-- Close button -->
-            <transition name="fade">
-              <div
-                v-if="hasClose"
-                class="flex close-modal"
-                @click="$emit('input', false)"
-              >
-                <i class="material-icons">
-                  close
-                </i>
-              </div>
-            </transition>
+            <div
+              v-if="hasClose"
+              class="flex close-modal"
+              @click="$emit('input', false)"
+            >
+              <i class="material-icons">
+                close
+              </i>
+            </div>
           </div>
           <div
             class="maz-dialog__body p-3"
