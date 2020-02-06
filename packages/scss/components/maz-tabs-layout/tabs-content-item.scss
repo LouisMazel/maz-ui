@@ -1,0 +1,16 @@
+.tabs-content-item {
+  position: relative;
+  overflow-y: hidden;
+  width: 100%;
+  flex: 1 0 100%;
+  transition: all .5s;
+  will-change: height;
+
+  &.no-shadow {
+    box-shadow: none;
+  }
+
+  &.h-0 {
+    height: 0;
+  }
+}

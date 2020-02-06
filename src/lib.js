@@ -16,6 +16,7 @@ import MazSidebar from '@/../packages/components/MazSidebar'
 import MazSpinner from '@/../packages/components/MazSpinner'
 import MazSwitch from '@/../packages/components/MazSwitch'
 import MazTransitionExpand from '@/../packages/components/MazTransitionExpand'
+import { TabsBar as MazTabsBar, TabsContent as MazTabContent, TabsContentItem as MazTabsContentItem } from '@/../packages/components/MazTabsLayout'
 
 import { version } from '@/../package.json'
 
@@ -37,6 +38,9 @@ const components = [
   MazSwitch,
   MazSidebar,
   MazSpinner,
+  MazTabsBar,
+  MazTabContent,
+  MazTabsContentItem,
   MazTransitionExpand
 ]
 // eslint-disable-next-line
@@ -69,6 +73,9 @@ export {
   MazSwitch,
   MazSidebar,
   MazSpinner,
+  MazTabsBar,
+  MazTabContent,
+  MazTabsContentItem,
   MazTransitionExpand
 }
 

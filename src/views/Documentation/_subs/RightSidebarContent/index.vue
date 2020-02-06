@@ -101,7 +101,8 @@
         return this.$route.name.slice(0, -3)
       },
       currentProps () {
-        const props = this.$options.components[this.currentComponent].props
+        let props
+        if (this.$options.components[this.currentComponent]) props = this.$options.components[this.currentComponent].props
         return props ? Object.entries(props) : []
       }
     }

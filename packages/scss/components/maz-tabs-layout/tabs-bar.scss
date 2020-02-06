@@ -1,0 +1,65 @@
+.tabs-bar {
+  height: 45px;
+  flex: 0 0 45px;
+  background-color: $bg-color;
+  position: relative;
+
+  &__item {
+    cursor: pointer;
+    transition: all .5s;
+    background: transparent;
+    appearance: none;
+    border: none;
+    outline: none;
+    color: $text-color;
+    padding: 0;
+    user-select: none;
+    padding-bottom: 3px;
+
+    &.active {
+      color: $primary-color;
+      font-weight: 500;
+      position: relative;
+    }
+
+    &.disabled {
+      color: #CCC;
+      cursor: not-allowed;
+    }
+
+    &:hover {
+      background-color: $hover-color;
+    }
+  }
+
+  &__indicator {
+    transition: all .5s;
+    height: 3px;
+    text-align: center;
+    position: absolute;
+    bottom: 0;
+
+    .sub-bar {
+      margin: 0 auto;
+      background: $primary-color;
+      height: 3px;
+    }
+  }
+}
+
+.is-dark .tabs-bar,
+.tabs-bar.is-dark {
+  background-color: $bg-color-dark;
+
+  .tabs-bar__item {
+    color: $text-color-dark;
+
+    &:hover {
+      background-color: $hover-color-dark;
+    }
+
+    &.disabled {
+      color: $muted-color-dark;
+    }
+  }
+}

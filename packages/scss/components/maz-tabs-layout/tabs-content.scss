@@ -1,0 +1,7 @@
+.tabs-content {
+  position: relative;
+  transition: all .5s;
+  will-change: height;
+  z-index: 1;
+  // overflow: hidden;
+}
