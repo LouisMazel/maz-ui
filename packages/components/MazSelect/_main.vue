@@ -26,8 +26,12 @@
       :required="required"
       class="maz-select__input"
       readonly
+      @keyup="$emit('keyup', $event)"
+      @blur="$emit('blur', $event)"
+      @change="$emit('change', $event)"
+      @click="$emit('click', $event)"
       @keydown="keyboardNav"
-      @focus="isFocus = true"
+      @focus="onFocus"
       @click.stop="toggleList"
     >
     <div
@@ -176,12 +180,17 @@
       }
     },
     methods: {
+      onFocus (e) {
+        this.isFocus = true
+        this.$emit('focus', e)
+      },
       handleBlur (e) {
         if (this.$el.contains(e.relatedTarget)) return
         this.isFocus = false
         this.closeList()
       },
-      toggleList () {
+      toggleList (e) {
+        this.$emit('click', e)
         this.hasListOpen ? this.closeList() : this.openList()
       },
       openList () {
@@ -243,6 +252,7 @@
           // typing an option's name
           this.searching(e)
         }
+        this.$emit('keydown', e)
       },
       searching (e) {
         const code = e.keyCode

@@ -49,7 +49,10 @@ const router = new Router({
       path: '*',
       redirect: { name: 'Home' }
     }
-  ]
+  ],
+  scrollBehavior () {
+    return { x: 0, y: 0 }
+  }
 })
 
 export default router

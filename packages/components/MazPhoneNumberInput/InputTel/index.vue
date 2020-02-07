@@ -30,6 +30,7 @@
       @keyup="keyUp"
       @focus="onFocus"
       @blur="onBlur"
+      @change="$emit('change', $event)"
       @click="$emit('click', $event)"
     >
     <label
@@ -118,12 +119,12 @@
       focusInput () {
         this.$refs.InputTel.focus()
       },
-      onFocus: function () {
-        this.$emit('focus')
+      onFocus (e) {
+        this.$emit('focus', e)
         this.isFocus = true
       },
-      onBlur: function () {
-        this.$emit('blur')
+      onBlur (e) {
+        this.$emit('blur', e)
         this.isFocus = false
       },
       clear () {
