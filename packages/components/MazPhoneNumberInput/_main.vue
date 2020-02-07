@@ -51,8 +51,9 @@
         v-bind="$attrs"
         class="input-phone-number"
         @keydown="(e) => { lastKeyPressed = e.keyCode }"
-        @focus="$emit('phone-number-focused')"
-        @blur="$emit('phone-number-blur')"
+        @focus="$emit('focus', $event)"
+        @blur="$emit('blur', $event)"
+        @change="$emit('change', $event)"
       />
     </div>
   </div>
@@ -238,12 +239,11 @@
       setLocale (locale) {
         const countryAvailable = isCountryAvailable(locale)
         if (countryAvailable && locale) {
-          this.countryCode = locale
+          this.userLocale = countryAvailable ? locale : null
         } else if (!countryAvailable && locale) {
           // If default country code is not available
           console.warn(`The locale ${locale} is not available`)
         }
-        this.userLocale = countryAvailable ? locale : null
       },
       async fetchCountryCode () {
         try {

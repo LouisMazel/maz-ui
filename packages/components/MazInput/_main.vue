@@ -38,6 +38,7 @@
       :placeholder="labelValue"
       :type="getType"
       class="maz-input__input"
+      :aria-label="label"
       :class="{
         'has-right-btn': hasClearBtn || hasPasswordBtn
       }"
@@ -47,6 +48,7 @@
       @keyup="keyUp"
       @focus="onFocus"
       @blur="onBlur"
+      @change="$emit('change', $event)"
       @click="$emit('click', $event)"
     >
     <textarea
@@ -154,7 +156,8 @@
       textarea: { type: Boolean, default: false },
       loader: { type: Boolean, default: false },
       clearable: { type: Boolean, default: false },
-      noLabel: { type: Boolean, default: false }
+      noLabel: { type: Boolean, default: false },
+      noRequiredSymbol: { type: Boolean, default: false }
     },
     data () {
       return {
@@ -178,7 +181,7 @@
       },
       labelValue () {
         let { label } = this
-        if (this.required && label) label += ` *`
+        if (this.required && label && !this.noRequiredSymbol) label += ` *`
         return label
       },
       hintValue () {
@@ -218,12 +221,12 @@
       focusInput () {
         this.$refs.MazInput.focus()
       },
-      onFocus: function () {
-        this.$emit('focus')
+      onFocus (e) {
+        this.$emit('focus', e)
         this.isFocus = true
       },
-      onBlur: function () {
-        this.$emit('blur')
+      onBlur (e) {
+        this.$emit('blur', e)
         this.isFocus = false
       },
       clear () {
