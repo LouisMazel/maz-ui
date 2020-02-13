@@ -16,7 +16,7 @@ import MazSidebar from '@/../packages/components/MazSidebar'
 import MazSpinner from '@/../packages/components/MazSpinner'
 import MazSwitch from '@/../packages/components/MazSwitch'
 import MazTransitionExpand from '@/../packages/components/MazTransitionExpand'
-import { TabsBar as MazTabsBar, TabsContent as MazTabContent, TabsContentItem as MazTabsContentItem } from '@/../packages/components/MazTabsLayout'
+import { TabsBar as MazTabsBar, TabsContent as MazTabsContent, TabsContentItem as MazTabsContentItem } from '@/../packages/components/MazTabsLayout'
 
 import { version } from '@/../package.json'
 
@@ -39,7 +39,7 @@ const components = [
   MazSidebar,
   MazSpinner,
   MazTabsBar,
-  MazTabContent,
+  MazTabsContent,
   MazTabsContentItem,
   MazTransitionExpand
 ]
@@ -74,7 +74,7 @@ export {
   MazSidebar,
   MazSpinner,
   MazTabsBar,
-  MazTabContent,
+  MazTabsContent,
   MazTabsContentItem,
   MazTransitionExpand
 }

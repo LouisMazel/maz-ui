@@ -76,6 +76,7 @@
           v-for="({ label: l, value: v }, i) in options"
           :key="i"
           tabindex="-1"
+          type="button"
           :class="[
             {'selected': value === v},
             {'keyboard-selected': tmpValue === v}
