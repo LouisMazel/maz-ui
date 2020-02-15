@@ -2,10 +2,8 @@
   <div
     class="maz-search"
     :class="{ 'is-dark': dark }"
-    @click="openList"
     @blur.capture="handleBlur"
   >
-    tmp : {{ tmpValue }}
     <MazInput
       ref="textField"
       v-model="query"
@@ -15,7 +13,7 @@
       @keyup="$emit('keyup', $event)"
       @blur="$emit('blur', $event)"
       @change="$emit('change', $event)"
-      @click="$emit('click', $event)"
+      @click="openList"
     />
     <transition name="slide">
       <div
@@ -24,24 +22,23 @@
         class="maz-search__items"
       >
         <button
-          v-for="(result, i) in items"
+          v-for="(item, i) in items"
           :key="i"
           ref="item"
           type="button"
           tabindex="-1"
           :class="[
-            {'selected': value === itemValue ? result[itemValue] : result},
-            {'keyboard-selected': tmpValue === itemValue ? result[itemValue] : result}
+            {'selected': value === (itemValue ? item[itemValue] : item)},
+            {'keyboard-selected': tmpValue === (itemValue ? item[itemValue] : item)}
           ]"
           class="maz-search__items__item"
-          @click.prevent="updateValue(result)"
+          @click.prevent="updateValue((itemValue ? item[itemValue] : item))"
         >
-          {{ itemValue ? result[itemValue] : result }}
           <slot
-            :item="result"
+            :item="item"
             tag="div"
           >
-            {{ itemText ? result[itemText] : result }}
+            {{ itemText ? item[itemText] : item }}
           </slot>
         </button>
       </div>
@@ -79,12 +76,19 @@
     },
     computed: {
       tmpValueIndex () {
-        return this.items.findIndex(c => c === this.tmpValue)
+        return this.items.findIndex(c => (this.itemValue ? c[this.itemValue] : c) === this.tmpValue)
+      },
+      selectedValueIndex () {
+        return this.value
+          ? this.items.findIndex(c => (this.itemValue ? c[this.itemValue] : c) === this.value)
+          : null
       }
     },
     methods: {
       openList () {
         this.hasListOpen = true
+        console.log('selectedValueIndex', this.selectedValueIndex, this.tmpValueIndex)
+        if (this.value) this.scrollToSelectedOnFocus(this.selectedValueIndex)
       },
       closeList () {
         this.$emit('close')
@@ -100,9 +104,10 @@
         this.isFocus = false
         this.closeList()
       },
-      async updateValue (result) {
-        const sendedValue = this.itemValue ? result[this.itemValue] : result
-        this.$emit('input', sendedValue)
+      async updateValue (item) {
+        const sendedValue = this.itemValue ? item[this.itemValue] : item
+        console.log('sendedValue', sendedValue, item)
+        this.$emit('input', item)
         await this.$nextTick()
         this.reset()
       },
@@ -112,8 +117,7 @@
       scrollToSelectedOnFocus (arrayIndex) {
         this.$nextTick(() => {
           const itemHeight = this.$refs.item[0].clientHeight
-          console.log('itemHeight', itemHeight)
-          this.$refs.itemsList.scrollTop = arrayIndex * itemHeight - (itemHeight * 3)
+          this.$refs.itemsList.scrollTop = arrayIndex * itemHeight - (itemHeight)
         })
       },
       keyboardNav (e) {
@@ -131,7 +135,7 @@
               ? this.items.length - 1
               : 0
           }
-          this.tmpValue = this.itemValue ? this.items[index][this.itemValue] : this.items[index]
+          this.tmpValue = (this.itemValue ? this.items[index][this.itemValue] : this.items[index])
           this.scrollToSelectedOnFocus(index)
         } else if (code === 13) {
           // enter key
@@ -198,14 +202,14 @@
   .maz-search.is-dark {
     .maz-search {
       &__items {
-        background-color: $bg-color-dark;
+        background-color: $bg-color-dark-l;
 
         &__item {
           color: $secondary-color-dark;
 
           &:hover,
           &.keyboard-selected {
-            background-color: $hover-color-dark;
+            background-color: $hover-color-dark-l;
           }
 
           &.selected {
