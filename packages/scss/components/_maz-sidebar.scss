@@ -38,7 +38,7 @@
     }
 
     &__opacity-layer {
-      z-index: 8;
+      z-index: 9;
       position: absolute;
       top: 0;
       right: 0;
@@ -117,7 +117,7 @@
     }
 
     &__opacity-layer {
-      background-color: rgba(255, 255, 255, .15);
+      background-color: rgba(#303144, .7);
     }
   }
 }

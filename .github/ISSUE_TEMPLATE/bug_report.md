@@ -1,14 +1,13 @@
 ---
+
 name: Bug report
-about: Report any issues / bugs you've found. Could be a typo, visual issue, functional
-  issue, etc.
-title: '(BUG)'
+about:
+Report any issues / bugs you've found. Could be a typo, visual issue, functional
+issue, etc.
+title: "(BUG)"
 labels: bug
-assignees: ''
-
----
-
-## Describe the bug
+assignees: ""
+---## Describe the bug
 
 A clear and concise description of what the bug is.
 
@@ -18,10 +17,10 @@ Describe us how we could reproduce the bug you're trying to report.
 
 Example:
 
- 1. Go to '...'
- 2. Click on '....'
- 3. Scroll down to '....'
- 4. See error
+1.  Go to '...'
+2.  Click on '....'
+3.  Scroll down to '....'
+4.  See error
 
 ## Expected behavior
 

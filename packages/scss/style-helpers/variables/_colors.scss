@@ -27,4 +27,5 @@ $text-color-dark: #F2F2F2 !default;
 $bg-color-dark: #21222E !default;
 $bg-color-dark-l: #303144 !default;
 $hover-color-dark: #2E2F40 !default;
+$hover-color-dark-l: lighten(#303144, 10%) !default;
 $muted-color-dark: rgba(255, 255, 255, .3) !default;

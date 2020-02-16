@@ -19,7 +19,7 @@
     <div
       v-for="({ name, position }, i) in inputIcons"
       :key="`input-icon-${i}`"
-      class="maz-input__icon flex align-center justify-center"
+      class="maz-input__icon flex flex-center"
       :class="[
         position,
         textarea ? 'align-start pt-2' : 'align-center'
@@ -83,7 +83,7 @@
       <button
         v-if="hasClearBtn"
         key="clear-button"
-        class="maz-input__toggle-btn --clear flex align-center justify-center"
+        class="maz-input__toggle-btn --clear flex flex-center"
         title="clear"
         type="button"
         tabindex="-1"
@@ -99,7 +99,7 @@
       <button
         v-if="hasPasswordBtn"
         key="password-button"
-        class="maz-input__toggle-btn password flex align-center justify-center"
+        class="maz-input__toggle-btn password flex flex-center"
         :class="{
           'has-clear-btn': hasClearBtn,
           'has-right-icon': hasRightIcon

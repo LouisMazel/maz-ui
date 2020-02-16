@@ -27,21 +27,21 @@ npm install maz-ui -S
 [Detail](https://louismazel.github.io/maz-ui/#/documentation/get-started)
 
 ```javascript
-import Vue from 'vue'
-import 'maz-ui/dist/maz-ui.css';
-import MazUi from 'maz-ui'
+import Vue from "vue";
+import "maz-ui/dist/maz-ui.css";
+import MazUi from "maz-ui";
 
-Vue.use(MazUi)
+Vue.use(MazUi);
 
 // or
 import {
   MazSelect,
   MazButton
   // ...
-} from 'maz-ui'
+} from "maz-ui";
 
-Vue.component(MazSelect.name, MazSelect)
-Vue.component(MazButton.name, MazButton)
+Vue.component(MazSelect.name, MazSelect);
+Vue.component(MazButton.name, MazButton);
 ```
 
 For more informations, see the [Install Documentation](https://louismazel.github.io/maz-ui/#/documentation/install)
