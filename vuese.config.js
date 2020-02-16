@@ -1,4 +1,3 @@
 module.exports = {
-  include: ['./packages/**/*'],
-  markdownDir: '*'
+  include: ['./packages/**/*']
 }
