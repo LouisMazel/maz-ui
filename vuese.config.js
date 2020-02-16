@@ -1,4 +1,5 @@
 module.exports = {
   include: ['./packages/**/*'],
-  markdownDir: '*'
+  markdownDir: '*',
+  markdownFile: 'README'
 }
