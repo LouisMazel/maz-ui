@@ -1,14 +1,16 @@
-# TabsContentItem
+# TabsContent
 
 ## Slots
 
-<!-- @vuese:TabsContentItem:slots:start -->
+<!-- @vuese:TabsContent:slots:start -->
 
 | Name    | Description | Default Slot Content |
 | ------- | ----------- | -------------------- |
 | default | -           | -                    |
 
-<!-- @vuese:TabsContentItem:slots:end -->
+<!-- @vuese:TabsContent:slots:end -->
+
+s:end -->
 
 olean`|`false`|-|
 

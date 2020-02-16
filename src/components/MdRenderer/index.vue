@@ -12,7 +12,7 @@
     },
     computed: {
       dynamicComponent () {
-        const markdown = require(`@/../packages/components/${this.fileName}/${this.fileName}.md`)
+        const markdown = require(`@/../packages/components/${this.fileName}/README.md`)
         return markdown.vue.component
       }
     }

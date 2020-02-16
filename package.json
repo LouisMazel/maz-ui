@@ -15,7 +15,7 @@
     "lint:md:fix": "prettier '**/*.md' --write",
     "lint:style": "stylelint 'src/**/*.scss' 'src/**/*.css' 'packages/**/*.scss' 'packages/**/*.css' 'src/**/*.vue'",
     "lint:style:fix": "stylelint 'src/**/*.scss' 'src/**/*.css' 'packages/**/*.scss' 'packages/**/*.css' 'src/**/*.vue' --fix",
-    "build": "npm run gen:docs && npm run build:lib && npm run build:docs && npm run delete:demo",
+    "build": "npm run gen:docs && npm run lint:md:fix && npm run build:lib && npm run build:docs && npm run delete:demo",
     "build:lib": "vue-cli-service build --target lib --name maz-ui src/lib.js && npm run build:css",
     "build:css": "npm run build:css:compile && npm run build:css:copy-files",
     "build:css:copy-files": "ncp packages/scss/ dist/scss --stopOnErr",
@@ -26,7 +26,7 @@
     "delete:demo": "rm ./dist/demo.html",
     "delete:reports": "rm ./docs/report.html && rm ./dist/report.html",
     "ui": "vue ui",
-    "before-publish": "npm audit && npm run lint && npm i && npm run build",
+    "before-publish": "npm run lint && npm i && npm run build",
     "publish-npm:beta": "npm publish --tag beta",
     "publish-npm": "npm publish"
   },
