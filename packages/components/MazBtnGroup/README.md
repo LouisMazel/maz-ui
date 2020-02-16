@@ -3,11 +3,12 @@
 ## Props
 
 <!-- @vuese:MazBtnGroup:props:start -->
-
-| Name    | Description | Type      | Required | Default |
-| ------- | ----------- | --------- | -------- | ------- |
-| value   | -           | —         | `true`   | -       |
-| items   | -           | `Array`   | `true`   | -       |
-| rounded | -           | `Boolean` | `false`  | -       |
+|Name|Description|Type|Required|Default|
+|---|---|---|---|---|
+|value|-|—|`true`|-|
+|items|-|`Array`|`true`|-|
+|rounded|-|`Boolean`|`false`|-|
 
 <!-- @vuese:MazBtnGroup:props:end -->
+
+

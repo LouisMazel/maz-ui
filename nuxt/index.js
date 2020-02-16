@@ -1,10 +1,10 @@
 const { resolve } = require('path')
 
-module.exports = function VueSelectInputUi () {
+module.exports = function MazUi () {
   this.addPlugin({
     ssr: false,
     src: resolve(__dirname, 'plugin.js'),
-    fileName: 'vue-select-input-ui.js'
+    fileName: 'maz-ui.js'
   })
 }
 
