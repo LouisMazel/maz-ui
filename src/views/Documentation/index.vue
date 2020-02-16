@@ -18,17 +18,9 @@
         </h2>
         <div class="flex-fixed">
           <MazBtn
-            outline
-            class="mr-2"
-            @click="setDarkTheme(!hasDarkTheme)"
-          >
-            Toggle Dark Mode
-          </MazBtn>
-          <MazBtn
-            color="info"
             @click="showOptions"
           >
-            Show options
+            Show Documentation
           </MazBtn>
         </div>
       </div>
@@ -38,9 +30,10 @@
     <MazSidebar
       v-if="$route.name !== 'Install' && $route.name !== 'GetStarted'"
       v-model="hasRightSidebarOpen"
-      :width="500"
+      :width="700"
       right
       absolute
+      layer
       no-close-btn
     >
       <RightSidebarContent @close="hasRightSidebarOpen = !hasRightSidebarOpen" />
@@ -52,7 +45,7 @@
   import LeftSidebarContent from './_subs/LeftSidebarContent'
   import RightSidebarContent from './_subs/RightSidebarContent'
   import NavFooter from '@/components/NavFooter'
-  import { mapGetters, mapActions } from 'vuex'
+  import { mapGetters } from 'vuex'
 
   export default {
     name: 'Documentation',
@@ -75,7 +68,6 @@
       }
     },
     methods: {
-      ...mapActions(['setDarkTheme']),
       showOptions () {
         this.hasRightSidebarOpen = !this.hasRightSidebarOpen
       }

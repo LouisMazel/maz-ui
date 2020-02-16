@@ -89,7 +89,7 @@
     },
     mixins: [uniqueId],
     props: {
-      value: { type: String, default: null },
+      value: { type: String, required: true },
       id: { type: String, default: null },
       disabled: { type: Boolean, default: false },
       defaultCountryCode: { type: String, default: null },

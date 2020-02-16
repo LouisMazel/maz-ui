@@ -34,11 +34,13 @@
           class="maz-search__items__item"
           @click.prevent="updateValue((itemValue ? item[itemValue] : item))"
         >
+          <!-- Item template -->
           <slot
             :item="item"
             tag="div"
           >
-            {{ itemText ? item[itemText] : item }}
+            <!-- `<p>item value</p>` -->
+            <p>{{ itemText ? item[itemText] : item }}</p>
           </slot>
         </button>
       </div>
@@ -58,9 +60,13 @@
       MazInput
     },
     props: {
+      // Array of your results request
       items: { type: Array, default: null },
+      // It's a key name of your result object to be returned in the model
       itemValue: { type: String, default: null },
+      // It's a key name of your result object to be shown in the list
       itemText: { type: String, default: null },
+      // Enable or disable the darkmode
       dark: { type: Boolean, default: false },
       value: {
         validator: prop => ['string', 'number', 'boolean', 'object', 'array'].includes(typeof prop) || prop === null,
@@ -87,7 +93,6 @@
     methods: {
       openList () {
         this.hasListOpen = true
-        console.log('selectedValueIndex', this.selectedValueIndex, this.tmpValueIndex)
         if (this.value) this.scrollToSelectedOnFocus(this.selectedValueIndex)
       },
       closeList () {
@@ -105,8 +110,6 @@
         this.closeList()
       },
       async updateValue (item) {
-        const sendedValue = this.itemValue ? item[this.itemValue] : item
-        console.log('sendedValue', sendedValue, item)
         this.$emit('input', item)
         await this.$nextTick()
         this.reset()

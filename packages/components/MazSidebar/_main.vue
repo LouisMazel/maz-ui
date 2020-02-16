@@ -2,17 +2,14 @@
   <div
     class="maz-sidebar"
     :class="{
-      'is-dark': dark
+      'is-dark': dark,
     }"
   >
     <div
       :id="uniqueId"
       ref="MazSidebar"
       class="maz-sidebar__wrapper flex flex-fixed m-h-100 mh-100"
-      :style="
-        'width:' + (isOpen ? (Number.isInteger(width) ? width + 'px;' : width) : '0px;') +
-          'flex: 0 0 ' + (isOpen ? width + 'px;' : '0px;')
-      "
+      :style="[wrapperStyle]"
       :class="{
         'is-close': !isOpen,
         'is-absolute': absolute,
@@ -111,6 +108,13 @@
         },
         set (value) {
           this.$emit('input', value)
+        }
+      },
+      wrapperStyle () {
+        return {
+          width: `${this.isOpen ? this.width : 0}px`,
+          flex: `0 0 ${this.isOpen ? this.width : 0}px`,
+          zIndex: this.isOpen && this.layer ? 10 : 9
         }
       },
       componentArrow () {
