@@ -1,15 +1,13 @@
-# TabsContentItem
+# TabsBar
 
-## Slots
+## Props
 
-<!-- @vuese:TabsContentItem:slots:start -->
+<!-- @vuese:TabsBar:props:start -->
 
-| Name    | Description | Default Slot Content |
-| ------- | ----------- | -------------------- |
-| default | -           | -                    |
-
-<!-- @vuese:TabsContentItem:slots:end -->
-
-olean`|`false`|-|
+| Name  | Description | Type      | Required | Default |
+| ----- | ----------- | --------- | -------- | ------- |
+| items | -           | `Array`   | `true`   | -       |
+| value | -           | `Number`  | `true`   | -       |
+| dark  | -           | `Boolean` | `false`  | -       |
 
 <!-- @vuese:TabsBar:props:end -->
