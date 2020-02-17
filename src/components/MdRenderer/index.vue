@@ -161,6 +161,16 @@
     .send { color: $success-color; }
     .server { color: #79B; }
     .error { color: $danger-color; }
+
+    blockquote {
+      background: $hover-color;
+      border-left: 5px solid #CCC;
+      padding: .5em 10px;
+    }
+
+    blockquote p {
+      display: inline;
+    }
   }
 
   .is-dark .frontmatter-markdown {
@@ -194,6 +204,11 @@
     pre {
       background-color: $hover-color-dark-l;
       border: 1px solid $hover-color-dark-l;
+    }
+
+    blockquote {
+      background: $hover-color-dark;
+      border-left: 5px solid $hover-color-dark-l;
     }
   }
 </style>

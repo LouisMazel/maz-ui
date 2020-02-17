@@ -1,16 +1,18 @@
 # MazSearch
 
+> UI search input component
+
 ## Props
 
 <!-- @vuese:MazSearch:props:start -->
 
 | Name      | Description                                                       | Type      | Required | Default |
 | --------- | ----------------------------------------------------------------- | --------- | -------- | ------- |
-| items     | Array of your results request                                     | `Array`   | `false`  | -       |
 | value     | Is the value return when you select an item                       | —         | `true`   | -       |
+| items     | Array of your results request                                     | `Array`   | `false`  | -       |
 | itemValue | It's a key name of your result object to be returned in the model | `String`  | `false`  | -       |
 | itemText  | It's a key name of your result object to be shown in the list     | `String`  | `false`  | -       |
-| dark      | Enable or disable the darkmode                                    | `Boolean` | `false`  | -       |
+| dark      | Enable or disable the `dark-mode`                                 | `Boolean` | `false`  | -       |
 | loader    | Is the value return when you select an item                       | `Boolean` | `false`  | -       |
 | noData    | to show `no-data` slot (when you request has no results)          | `Boolean` | `false`  | -       |
 
@@ -20,12 +22,10 @@
 
 <!-- @vuese:MazSearch:events:start -->
 
-| Event Name | Description | Parameters |
-| ---------- | ----------- | ---------- |
-| close      | -           | -          |
-| input      | -           | -          |
-| request    | -           | -          |
-| keydown    | -           | -          |
+| Event Name | Description                                                                | Parameters                                                             |
+| ---------- | -------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| input      | event sended when user select an item in the items list                    | The argument is a the item or an item[key] if you use `item-value`     |
+| request    | event sended after debounce --> you must start the request with this event | The argument is a string value representing the query the user entered |
 
 <!-- @vuese:MazSearch:events:end -->
 

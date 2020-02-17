@@ -2,7 +2,6 @@
   <div
     class="maz-search"
     :class="{ 'is-dark': dark }"
-    @blur.capture="handleBlur"
   >
     <MazInput
       ref="textField"
@@ -12,9 +11,9 @@
       @input="debouncedSearch"
       @keydown="keyboardNav"
       @keyup="$emit('keyup', $event)"
-      @blur="$emit('blur', $event)"
+      @blur="handleBlur"
       @change="$emit('change', $event)"
-      @click="openList"
+      @focus="openList"
     />
     <transition name="slide">
       <div
@@ -66,27 +65,30 @@
   import MazInput from '../MazInput'
   import { debounce } from '@/../packages/utils'
 
+  /**
+   * > UI search input component
+  */
   export default {
     name: 'MazSearch',
     components: {
       MazInput
     },
     props: {
-      // Array of your results request
-      items: {
-        type: Array,
-        default: null
-      },
       // Is the value return when you select an item
       value: {
         validator: prop => ['string', 'number', 'boolean', 'object', 'array'].includes(typeof prop) || prop === null,
         required: true
       },
+      // Array of your results request
+      items: {
+        type: Array,
+        default: null
+      },
       // It's a key name of your result object to be returned in the model
       itemValue: { type: String, default: null },
       // It's a key name of your result object to be shown in the list
       itemText: { type: String, default: null },
-      // Enable or disable the darkmode
+      // Enable or disable the `dark-mode`
       dark: { type: Boolean, default: false },
       // Is the value return when you select an item
       loader: { type: Boolean, default: false },
@@ -116,31 +118,38 @@
         return (!this.items || !this.items.length) && !this.hasEmptyQuery && this.noData
       }
     },
+    watch: {
+      query (oldValue, newValue) {
+        if (oldValue !== newValue && !this.hasListOpen) this.openList()
+      }
+    },
     methods: {
       openList () {
         this.hasListOpen = true
         if (this.value) this.scrollToSelectedOnFocus(this.selectedValueIndex)
       },
       closeList () {
-        this.$emit('close')
         this.hasListOpen = false
       },
       async reset () {
         this.closeList()
         await this.$nextTick()
-        this.$refs.textField.$refs.MazInput.focus()
+        // this.$refs.textField.$refs.MazInput.focus()
       },
       handleBlur (e) {
         if (this.$el.contains(e.relatedTarget)) return
-        this.isFocus = false
         this.closeList()
       },
       async updateValue (item) {
+        // event sended when user select an item in the items list
+        // @arg The argument is a the item or an item[key] if you use `item-value`
         this.$emit('input', item)
         await this.$nextTick()
         this.reset()
       },
       debouncedSearch: debounce(function (q) {
+        // event sended after debounce --> you must start the request with this event
+        // @arg The argument is a string value representing the query the user entered
         this.$emit('request', q)
       }, 500),
       scrollToSelectedOnFocus (arrayIndex) {
@@ -173,7 +182,6 @@
           // escape key
           this.closeList()
         }
-        this.$emit('keydown', e)
       }
     }
   }
