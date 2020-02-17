@@ -134,7 +134,7 @@
       font-family: Monaco, monospace;
       font-size: 10pt;
       border-radius: 3px;
-      background-color: $hover-color;
+      background-color: #DEDEDE;
       color: inherit;
     }
 

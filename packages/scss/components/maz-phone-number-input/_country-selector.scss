@@ -80,7 +80,7 @@
 
   &__list {
     max-width: 100%;
-    top: 100%;
+    top: calc(100% + .143em);
     width: 100%;
     min-width: 245px;
     position: absolute;

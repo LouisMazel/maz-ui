@@ -8,6 +8,7 @@
       ref="textField"
       v-model="query"
       v-bind="$attrs"
+      :loader="loader"
       @input="debouncedSearch"
       @keydown="keyboardNav"
       @keyup="$emit('keyup', $event)"
@@ -17,7 +18,7 @@
     />
     <transition name="slide">
       <div
-        v-if="items.length && hasListOpen"
+        v-if="hasListOpen"
         ref="itemsList"
         class="maz-search__items"
       >
@@ -43,14 +44,25 @@
             <p>{{ itemText ? item[itemText] : item }}</p>
           </slot>
         </button>
+        <!-- No data template -->
+        <slot
+          v-if="hasNoDataSlot"
+          name="no-data"
+          tag="div"
+        >
+          <!-- `<p>No data</p>` -->
+          <div class="maz-search__items__item">
+            <p class="text-center">
+              No data
+            </p>
+          </div>
+        </slot>
       </div>
     </transition>
   </div>
 </template>
 
 <script>
-  // TODO: Deep Value (itemValue) work with keyboard
-
   import MazInput from '../MazInput'
   import { debounce } from '@/../packages/utils'
 
@@ -61,17 +73,25 @@
     },
     props: {
       // Array of your results request
-      items: { type: Array, default: null },
+      items: {
+        type: Array,
+        default: null
+      },
+      // Is the value return when you select an item
+      value: {
+        validator: prop => ['string', 'number', 'boolean', 'object', 'array'].includes(typeof prop) || prop === null,
+        required: true
+      },
       // It's a key name of your result object to be returned in the model
       itemValue: { type: String, default: null },
       // It's a key name of your result object to be shown in the list
       itemText: { type: String, default: null },
       // Enable or disable the darkmode
       dark: { type: Boolean, default: false },
-      value: {
-        validator: prop => ['string', 'number', 'boolean', 'object', 'array'].includes(typeof prop) || prop === null,
-        required: true
-      }
+      // Is the value return when you select an item
+      loader: { type: Boolean, default: false },
+      // to show `no-data` slot (when you request has no results)
+      noData: { type: Boolean, default: false }
     },
     data () {
       return {
@@ -88,6 +108,12 @@
         return this.value
           ? this.items.findIndex(c => (this.itemValue ? c[this.itemValue] : c) === this.value)
           : null
+      },
+      hasEmptyQuery () {
+        return this.query === null || this.query === ''
+      },
+      hasNoDataSlot () {
+        return (!this.items || !this.items.length) && !this.hasEmptyQuery && this.noData
       }
     },
     methods: {
@@ -119,8 +145,8 @@
       }, 500),
       scrollToSelectedOnFocus (arrayIndex) {
         this.$nextTick(() => {
-          const itemHeight = this.$refs.item[0].clientHeight
-          this.$refs.itemsList.scrollTop = arrayIndex * itemHeight - (itemHeight)
+          const itemHeight = this.$refs.item && this.$refs.item[0] && this.$refs.item[0].clientHeight
+          if (this.$refs.itemsList) this.$refs.itemsList.scrollTop = arrayIndex * itemHeight - (itemHeight)
         })
       },
       keyboardNav (e) {
@@ -152,76 +178,3 @@
     }
   }
 </script>
-
-<style lang="scss" scoped>
-  .maz-search {
-    position: relative;
-
-    &__items {
-      z-index: 9;
-      padding: 0;
-      list-style: none;
-      overflow-y: auto;
-      overflow-x: hidden;
-      margin: 0;
-      max-width: 100%;
-      position: absolute;
-      top: 100%;
-      border-radius: $border-radius;
-      width: 100%;
-      box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
-      background-color: $bg-color;
-      max-height: 250px;
-
-      &__item {
-        padding: 7px 10px;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-        font-size: 1em;
-        cursor: pointer;
-        background-color: transparent;
-        border: none;
-        color: $text-color;
-        width: 100%;
-        outline: none;
-        text-align: left;
-
-        &:hover,
-        &.keyboard-selected {
-          background-color: $hover-color;
-        }
-
-        &.selected {
-          color: white;
-          background-color: $primary-color;
-          font-weight: 600;
-        }
-      }
-    }
-  }
-
-  .is-dark .maz-search,
-  .maz-search.is-dark {
-    .maz-search {
-      &__items {
-        background-color: $bg-color-dark-l;
-
-        &__item {
-          color: $secondary-color-dark;
-
-          &:hover,
-          &.keyboard-selected {
-            background-color: $hover-color-dark-l;
-          }
-
-          &.selected {
-            color: white;
-            background-color: $primary-color;
-            font-weight: 600;
-          }
-        }
-      }
-    }
-  }
-</style>

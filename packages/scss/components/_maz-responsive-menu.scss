@@ -5,7 +5,7 @@
   &-collapse {
     background-color: $bg-color;
     position: absolute;
-    top: 100%;
+    top: calc(100% + .143em);
     right: 0;
     overflow: hidden;
     z-index: 1;

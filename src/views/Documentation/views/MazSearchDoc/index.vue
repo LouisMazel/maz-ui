@@ -53,6 +53,13 @@
             </div>
           </div>
         </template>
+        <template v-slot:no-data>
+          <div
+            class="item flex flex-center"
+          >
+            <p>No data custom template</p>
+          </div>
+        </template>
       </MazSearch>
     </ComponentContainer>
   </div>
@@ -69,7 +76,7 @@
         selectedItem2: null,
         users,
         loader: false,
-        results: [],
+        results: null,
         codeExample: `<template>
   <MazSearch
     v-model="selectedItem"
@@ -104,13 +111,14 @@ export default {
 }`,
         codeExample2: `<template>
   <MazSearch
-    v-model="selectedItem"
+    v-model="selectedItem2"
     :items="results"
     label="Search a person"
     left-icon-name="search"
     :loader="loader"
     clearable
-    item-value="test"
+    item-value="email"
+    :no-data="!results && !results.length"
     @request="searchResults"
   >
     <template v-slot="{ item }">
@@ -126,6 +134,13 @@ export default {
           <p>{{ item.first_name }} {{ item.last_name }}</p>
           <span class="text-muted">{{ item.email }}</span>
         </div>
+      </div>
+    </template>
+    <template v-slot:no-data>
+      <div
+        class="item flex flex-center"
+      >
+        <p>No data custom template</p>
       </div>
     </template>
   </MazSearch>
