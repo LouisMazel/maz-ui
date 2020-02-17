@@ -10,9 +10,11 @@
       class="maz-collapse__header-btn flex align-center justify-center br-0"
       :color="dark ? 'dark' : 'white'"
       size="md"
-      @click="isOpen = !isOpen"
+      @click="openContent"
     >
+      <!-- Header slot: replace the text in collapse button -->
       <slot name="header-text">
+        <!-- `Default Header` -->
         Default Header
       </slot>
       <ArrowDown
@@ -22,9 +24,11 @@
       />
     </MazBtn>
     <MazTransitionExpand class="maz-collapse__content">
-      <div v-if="isOpen">
+      <div v-show="hasContentOpen">
+        <!-- Content default slot -->
         <slot>
-          Default Content
+          <!-- `<p>Default Content</p>` -->
+          <p>Default Content</p>
         </slot>
       </div>
     </MazTransitionExpand>
@@ -35,6 +39,10 @@
   import MazTransitionExpand from '../MazTransitionExpand'
   import ArrowDown from '../_subs/ArrowDown'
 
+  /**
+  * > MazCollpase is a component to show or not content
+  */
+
   export default {
     name: 'MazCollapse',
     components: {
@@ -42,13 +50,36 @@
       ArrowDown
     },
     props: {
+      // Set `true` to open the component by default
       open: { type: Boolean, default: false },
+      // Set `true` to enable dark mode
       dark: { type: Boolean, default: false },
-      arrowColor: { type: String, default: null }
+      // Is the color of the arrow, must be a hex color
+      arrowColor: { type: String, default: 'black' }
     },
     data () {
       return {
         isOpen: this.open
+      }
+    },
+    computed: {
+      hasContentOpen: {
+        get () {
+          return this.isOpen
+        },
+        set (value) {
+          this.isOpen = value
+        }
+      }
+    },
+    watch: {
+      open (val) {
+        this.isOpen = val
+      }
+    },
+    methods: {
+      openContent () {
+        this.isOpen = !this.isOpen
       }
     }
   }

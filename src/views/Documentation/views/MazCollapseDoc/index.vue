@@ -4,9 +4,9 @@
       <ComponentContainer
         :code="codeLight"
       >
-        <MazCollapse>
+        <MazCollapse class="mb-5">
           <div slot="header-text">
-            Toggle collapse
+            Standalone collapse
           </div>
           <div class="p-4">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br>
@@ -14,6 +14,24 @@
             Lorem ipsum dolor sit amet, consectetur adipiscing elit.
           </div>
         </MazCollapse>
+
+        <MazCollapse :open="hasCollapseOpen">
+          <div slot="header-text">
+            Programmatically collapse 2
+          </div>
+          <div class="p-4">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          </div>
+        </MazCollapse>
+
+        <MazBtn
+          class="mt-3"
+          @click="hasCollapseOpen = !hasCollapseOpen"
+        >
+          Toggle collapse 2
+        </MazBtn>
       </ComponentContainer>
     </div>
   </div>
@@ -24,29 +42,43 @@
     name: 'MazCollapseDoc',
     data () {
       return {
-        codeLight: `<MazCollapse>
+        hasCollapseOpen: true,
+        codeLight: `<MazCollapse class="mb-5">
   <div slot="header-text">
-    Toggle collapse
+    Standalone collapse
   </div>
   <div class="p-4">
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit.
   </div>
-</MazCollapse>`,
-        codeDark: `<MazCollapse
-  dark
-  open
+</MazCollapse>
+
+<MazCollapse :open="hasCollapseOpen">
+  <div slot="header-text">
+    Programmatically collapse 2
+  </div>
+  <div class="p-4">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  </div>
+</MazCollapse>
+
+<MazBtn
+  class="mt-3"
+  @click="hasCollapseOpen = !hasCollapseOpen"
 >
-  <div slot="header-text">
-    Toggle collapse
-  </div>
-  <div class="p-4">
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-  </div>
-</MazCollapse>`
+  Open Collapse 2
+</MazBtn>
+
+export default {
+  data () {
+    return {
+      hasCollapseOpen: true
+    }
+  }
+}`
       }
     }
   }
