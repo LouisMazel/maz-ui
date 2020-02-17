@@ -88,6 +88,7 @@
     font-size: 1.286em;
     top: 0;
     bottom: 0;
+    cursor: pointer;
 
     &.left {
       left: 8px;
@@ -190,19 +191,42 @@
 
       &__icon {
         color: $primary-color;
+
+        path.arrow {
+          fill: $primary-color;
+        }
       }
     }
 
     &.has-error {
-      .maz-input__input {
-        box-shadow: 0 0 0 .143rem $danger-color-transparency;
+      .maz-input {
+        &__input {
+          box-shadow: 0 0 0 .143rem $danger-color-transparency;
+        }
+
+        &__icon {
+          color: $danger-color;
+
+          path.arrow {
+            fill: $danger-color;
+          }
+        }
       }
     }
 
     &.is-valid {
-      .maz-input__input {
-        border-color: $success-color;
-        box-shadow: 0 0 0 .143rem $success-color-transparency;
+      .maz-input {
+        &__input {
+          box-shadow: 0 0 0 .143rem $success-color-transparency;
+        }
+
+        &__icon {
+          color: $success-color;
+
+          path.arrow {
+            fill: $success-color;
+          }
+        }
       }
     }
   }

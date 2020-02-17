@@ -1,71 +1,49 @@
 <template>
   <div
-    :id="id"
-    ref="MazSelect"
-    :class="[{
-      'is-focused': isFocus,
-      'has-list-open': hasListOpen,
-      'has-value': value,
-      'has-hint': hint,
-      'has-error': error,
-      'is-disabled': disabled,
-      'is-dark': dark,
-      'is-valid': valid
-    }, size]"
     class="maz-select"
-    @blur.capture="handleBlur"
+    :class="[{
+      'has-list-open': hasListOpen
+    }]"
+    @click.stop="toggleList"
   >
-    <input
-      :id="uniqueId"
-      ref="SelectInputUiInput"
-      v-bind="$attrs"
-      :name="name"
+    <MazInput
+      ref="textField"
       :value="valueShown"
-      :placeholder="labelShown"
-      :disabled="disabled"
-      :required="required"
-      class="maz-select__input"
+      v-bind="$attrs"
       readonly
-      @keyup="$emit('keyup', $event)"
-      @blur="$emit('blur', $event)"
-      @change="$emit('change', $event)"
-      @click="$emit('click', $event)"
       @keydown="keyboardNav"
-      @focus="onFocus"
-      @click.stop="toggleList"
+      @keyup="$emit('keyup', $event)"
+      @blur.capture="handleBlur"
+      @change="$emit('change', $event)"
     >
-    <div
-      class="maz-select__toggle"
-      @click.stop="toggleList"
-    >
-      <slot name="arrow">
-        <svg
-          mlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          class="maz-select__toggle__arrow"
-        >
-          <path
-            class="arrow"
-            d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"
-          />
-          <path
-            fill="none"
-            d="M0 0h24v24H0V0z"
-          />
-        </svg>
-      </slot>
-    </div>
-    <label
-      ref="label"
-      :class="error ? 'text-danger' : null"
-      class="maz-select__label"
-      @click.stop="toggleList"
-    >
-      {{ hintValue || labelShown }}
-    </label>
-    <Transition name="slide">
+      <div
+        slot="input-icon-right"
+        class="maz-select__toggle"
+        @click.stop="toggleList"
+      >
+        <!-- The arrow icon -->
+        <slot name="arrow">
+          <!-- the arrow svg -->
+          <svg
+            mlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            class="maz-select__toggle__arrow"
+          >
+            <path
+              class="arrow"
+              d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"
+            />
+            <path
+              fill="none"
+              d="M0 0h24v24H0V0z"
+            />
+          </svg>
+        </slot>
+      </div>
+    </MazInput>
+    <transition name="slide">
       <div
         v-show="hasListOpen"
         ref="optionsList"
@@ -95,15 +73,21 @@
           </div>
         </button>
       </div>
-    </Transition>
+    </transition>
   </div>
 </template>
 
 <script>
+  import MazInput from '../MazInput'
   import uniqueId from './../../mixins/uniqueId'
+
+  /**
+   * > Beautiful select input
+   */
 
   export default {
     name: 'MazSelect',
+    components: { MazInput },
     mixins: [uniqueId],
     props: {
       // is the value of the input
@@ -113,27 +97,15 @@
       },
       // list of the options
       options: { type: Array, required: true },
-      // is the input id
-      id: { type: String, default: null },
-      // is the input name
-      name: { type: String, default: 'MazSelect' },
-      // is the input label
-      label: { type: String, default: 'Select option' },
-      // is the input label
-      hint: { type: String, default: null },
-      size: { type: String, default: null },
-      error: { type: Boolean, default: false },
-      disabled: { type: Boolean, default: false },
-      required: { type: Boolean, default: false },
-      valid: { type: Boolean, default: false },
+      // When is `true` the select has the dark style
       dark: { type: Boolean, default: false },
+      // Item in list height in pixel
       itemHeight: { type: Number, default: 35 },
-      listHeight: { type: Number, default: 210 },
-      borderRadius: { type: Number, default: 4 }
+      // List height in pixel
+      listHeight: { type: Number, default: 210 }
     },
     data () {
       return {
-        isFocus: false,
         selectedIndex: null,
         hasListOpen: false,
         query: '',
@@ -142,9 +114,6 @@
       }
     },
     computed: {
-      uniqueId () {
-        return `${this.id}-${this._uid}`
-      },
       optionHeight () {
         return {
           height: `${this.itemHeight}px`
@@ -154,9 +123,6 @@
         return {
           maxHeight: `${this.listHeight}px`
         }
-      },
-      itemsRemain () {
-        return this.options.length > 7 ? 7 : this.options.length
       },
       tmpValueIndex () {
         return this.options.findIndex(c => c.value === this.tmpValue)
@@ -169,16 +135,6 @@
       valueShown () {
         const valueSelected = this.options.filter(c => c.value === this.value)[0]
         return valueSelected && valueSelected.value ? valueSelected.label : null
-      },
-      labelShown () {
-        let label = this.label
-        if (this.required && label) label += ` *`
-        return label
-      },
-      hintValue () {
-        let hint = this.hint
-        if (this.required && hint) hint += ` *`
-        return hint
       }
     },
     watch: {
@@ -187,21 +143,18 @@
       }
     },
     methods: {
-      onFocus (e) {
-        this.isFocus = true
-        this.$emit('focus', e)
-      },
       handleBlur (e) {
         if (this.$el.contains(e.relatedTarget)) return
         this.isFocus = false
         this.closeList()
       },
-      toggleList (e) {
-        this.$emit('click', e)
+      toggleList () {
         this.hasListOpen ? this.closeList() : this.openList()
+        this.$refs.textField.focusInput()
       },
       openList () {
         if (!this.disabled) {
+          // sended when the list is open
           this.$emit('open')
           this.isFocus = true
           this.hasListOpen = true
@@ -210,16 +163,19 @@
         }
       },
       closeList () {
+        // sended when the list is close
         this.$emit('close')
         this.hasListOpen = false
       },
       async reset () {
         this.closeList()
         await this.$nextTick()
-        this.$refs.SelectInputUiInput.focus()
+        this.$refs.textField.focusInput()
       },
       selectFirstValue () {
         if (this.value) return
+        // return the select input
+        // @arg the option value selected
         this.$emit('input', this.options[0].value)
       },
       async updateValue (val) {
@@ -259,7 +215,6 @@
           // typing an option's name
           this.searching(e)
         }
-        this.$emit('keydown', e)
       },
       searching (e) {
         const code = e.keyCode

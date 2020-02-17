@@ -3,13 +3,26 @@
     <ComponentContainer
       :code="codeExample"
     >
-      <MazSwitch
-        v-for="type in btnTypes"
-        :key="`switch-${type}`"
-        v-model="checkboxValue"
-        :color="type"
-        class="mb-2"
-      />
+      <div
+        class="flex flex--wrap"
+      >
+        <div
+          v-for="type in btnTypes"
+          :key="`switch-${type}`"
+          class="px-3"
+        >
+          <p
+            class="mb-3 text-center"
+          >
+            {{ type }}
+          </p>
+          <MazSwitch
+            v-model="checkboxValue"
+            :color="type"
+            class="mb-2"
+          />
+        </div>
+      </div>
     </ComponentContainer>
   </div>
 </template>
@@ -22,7 +35,7 @@
         btnTypes: [
           'primary', 'secondary', 'third', 'success', 'danger', 'warning', 'grey', 'info', 'light', 'dark', 'default', 'white', 'black'
         ],
-        checkboxValue: false,
+        checkboxValue: true,
         codeExample: `<template>
   <MazSwitch
     v-model="checkboxValue"
@@ -32,7 +45,7 @@
 export default {
   data () {
     return {
-      checkboxValue: false
+      checkboxValue: true
     }
   }
 }`

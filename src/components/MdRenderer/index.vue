@@ -12,6 +12,7 @@
     },
     computed: {
       dynamicComponent () {
+        if (this.fileName === 'MazTabsLayout') return
         const markdown = require(`@/../packages/components/${this.fileName}/README.md`)
         return markdown.vue.component
       }
@@ -164,7 +165,7 @@
 
     blockquote {
       background: $hover-color;
-      border-left: 5px solid #CCC;
+      border-left: 5px solid $primary-color;
       padding: .5em 10px;
     }
 
@@ -208,7 +209,6 @@
 
     blockquote {
       background: $hover-color-dark;
-      border-left: 5px solid $hover-color-dark-l;
     }
   }
 </style>
