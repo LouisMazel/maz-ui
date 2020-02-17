@@ -15,7 +15,7 @@
           </div>
         </MazCollapse>
 
-        <MazCollapse :open="hasCollapseOpen">
+        <MazCollapse v-model="hasCollapseOpen">
           <div slot="header-text">
             Programmatically collapse 2
           </div>
@@ -54,7 +54,7 @@
   </div>
 </MazCollapse>
 
-<MazCollapse :open="hasCollapseOpen">
+<MazCollapse v-model="hasCollapseOpen">
   <div slot="header-text">
     Programmatically collapse 2
   </div>

@@ -7,7 +7,7 @@
       ref="textField"
       v-model="query"
       v-bind="$attrs"
-      :loader="loader"
+      :loading="loading"
       @input="debouncedSearch"
       @keydown="keyboardNav"
       @keyup="$emit('keyup', $event)"
@@ -91,7 +91,7 @@
       // Enable or disable the `dark-mode`
       dark: { type: Boolean, default: false },
       // Is the value return when you select an item
-      loader: { type: Boolean, default: false },
+      loading: { type: Boolean, default: false },
       // to show `no-data` slot (when you request has no results)
       noData: { type: Boolean, default: false }
     },

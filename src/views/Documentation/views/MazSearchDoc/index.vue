@@ -13,7 +13,7 @@
       <MazSearch
         v-model="selectedItem"
         :items="results"
-        :loader="loader"
+        :loading="loading"
         item-text="label"
         @request="searchResults"
       />
@@ -33,7 +33,7 @@
         :items="results"
         label="Search a person"
         left-icon-name="search"
-        :loader="loader"
+        :loading="loading"
         clearable
         item-value="email"
         @request="searchResults"
@@ -75,13 +75,13 @@
         selectedItem: null,
         selectedItem2: null,
         users,
-        loader: false,
+        loading: false,
         results: null,
         codeExample: `<template>
   <MazSearch
     v-model="selectedItem"
     :items="results"
-    :loader="loader"
+    :loading="loading"
     item-text="label"
     @request="searchResults"
   />
@@ -91,20 +91,20 @@ export default {
   data () {
     return {
       selectedItem: null,
-      loader: false,
+      loading: false,
       results: [],
     }
   },
   methods: {
     async searchResults (query) {
       try {
-        this.loader = true
+        this.loading = true
         const response = await // your request
         this.results = response
       } catch (err) {
         throw new Error(err)
       } finally {
-        this.loader = false
+        this.loading = false
       }
     }
   }
@@ -115,7 +115,7 @@ export default {
     :items="results"
     label="Search a person"
     left-icon-name="search"
-    :loader="loader"
+    :loading="loading"
     clearable
     item-value="email"
     :no-data="!results && !results.length"
@@ -150,20 +150,20 @@ export default {
   data () {
     return {
       selectedItem: null,
-      loader: false,
+      loading: false,
       results: [],
     }
   },
   methods: {
     async searchResults (query) {
       try {
-        this.loader = true
+        this.loading = true
         const response = await // your request
         this.results = response
       } catch (err) {
         throw new Error(err)
       } finally {
-        this.loader = false
+        this.loading = false
       }
     }
   }
@@ -189,9 +189,9 @@ export default {
     },
     methods: {
       searchResults (query) {
-        this.loader = true
+        this.loading = true
         setTimeout(() => {
-          this.loader = false
+          this.loading = false
           if (query === '') this.results = []
           else {
             const random = users.sort(() => 0.5 - Math.random()).slice(0, Math.round(Math.random() * 10) + 10)

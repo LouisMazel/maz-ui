@@ -62,7 +62,7 @@
     </transition>
 
     <div
-      v-if="loader"
+      v-if="loading"
       class="input-tel__loader"
     >
       <div
@@ -88,7 +88,7 @@
       readonly: { type: Boolean, default: false },
       valid: { type: Boolean, default: false },
       required: { type: Boolean, default: false },
-      loader: { type: Boolean, default: false },
+      loading: { type: Boolean, default: false },
       clearable: { type: Boolean, default: true },
       noCountrySelector: { type: Boolean, default: false }
     },

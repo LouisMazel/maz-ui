@@ -67,7 +67,7 @@
             :disabled="type === 'disabled'"
             :clearable="type === 'clearable'"
             :hint="type === 'hint' ? 'Hint value' : null"
-            :loader="type === 'loader'"
+            :loading="type === 'loading'"
             :required="type === 'required'"
             :size="type === 'sm' ? 'sm' : type === 'lg' ? 'lg' : null"
           />
@@ -80,7 +80,7 @@
             :disabled="type === 'disabled'"
             :clearable="type === 'clearable'"
             :hint="type === 'hint' ? 'Hint value' : null"
-            :loader="type === 'loader'"
+            :loading="type === 'loading'"
             :required="type === 'required'"
             :size="type === 'sm' ? 'sm' : type === 'lg' ? 'lg' : null"
           />
@@ -99,7 +99,7 @@
         withValue: 'The value entered',
         disabledValue: '',
         inputTypes: [
-          'basic', 'error', 'valid', 'disabled', 'hint', 'clearable', 'sm', 'lg', 'required', 'loader'
+          'basic', 'error', 'valid', 'disabled', 'hint', 'clearable', 'sm', 'lg', 'required', 'loading'
         ],
         exampleValue: null,
         nameValue: 'your name',

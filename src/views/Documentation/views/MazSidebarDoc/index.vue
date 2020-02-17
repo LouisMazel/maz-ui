@@ -3,7 +3,7 @@
     <div class="maz-sidebar-doc__container pos-r over-hid my-4 shadow-container flex">
       <MazSidebar
         v-model="hasLeftSidebarOpen"
-        :loader="loader"
+        :loading="loading"
         :width="width"
         :no-shadow="!hasShadow"
         :no-close-btn="!hasCloseBtn"
@@ -20,9 +20,9 @@
       <div class="maz-sidebar-doc__content p-4 flex direction-column align-center justify-center flex-1">
         <MazBtn
           color="success"
-          @click="loader = !loader"
+          @click="loading = !loading"
         >
-          Toggle loader
+          Toggle loading
         </MazBtn>
         <MazInput
           v-model="width"
@@ -68,7 +68,7 @@
       </div>
       <MazSidebar
         v-model="hasRightSidebarOpen"
-        :loader="loader"
+        :loading="loading"
         :width="width"
         :no-shadow="!hasShadow"
         :no-close-btn="!hasCloseBtn"
@@ -96,7 +96,7 @@
       return {
         hasLeftSidebarOpen: true,
         hasRightSidebarOpen: false,
-        loader: false,
+        loading: false,
         width: 300,
         hasShadow: true,
         hasCloseBtn: true,

@@ -13,7 +13,7 @@
 | itemValue | It's a key name of your result object to be returned in the model | `String`  | `false`  | -       |
 | itemText  | It's a key name of your result object to be shown in the list     | `String`  | `false`  | -       |
 | dark      | Enable or disable the `dark-mode`                                 | `Boolean` | `false`  | -       |
-| loader    | Is the value return when you select an item                       | `Boolean` | `false`  | -       |
+| loading   | Is the value return when you select an item                       | `Boolean` | `false`  | -       |
 | noData    | to show `no-data` slot (when you request has no results)          | `Boolean` | `false`  | -       |
 
 <!-- @vuese:MazSearch:props:end -->

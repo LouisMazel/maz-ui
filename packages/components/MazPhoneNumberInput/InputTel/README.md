@@ -18,7 +18,7 @@
 | readonly          | -           | `Boolean`           | `false`  | -          |
 | valid             | -           | `Boolean`           | `false`  | -          |
 | required          | -           | `Boolean`           | `false`  | -          |
-| loader            | -           | `Boolean`           | `false`  | -          |
+| loading           | -           | `Boolean`           | `false`  | -          |
 | clearable         | -           | `Boolean`           | `false`  | -          |
 | noCountrySelector | -           | `Boolean`           | `false`  | -          |
 

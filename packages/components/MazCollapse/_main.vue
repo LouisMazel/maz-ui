@@ -50,8 +50,8 @@
       ArrowDown
     },
     props: {
-      // Set `true` to open the component by default
-      open: { type: Boolean, default: false },
+      // Value is a Boolean to open or close the collapse
+      value: { type: Boolean, default: false },
       // Set `true` to enable dark mode
       dark: { type: Boolean, default: false },
       // Is the color of the arrow, must be a hex color
@@ -59,7 +59,7 @@
     },
     data () {
       return {
-        isOpen: this.open
+        isOpen: this.value
       }
     },
     computed: {
@@ -68,18 +68,21 @@
           return this.isOpen
         },
         set (value) {
+          // return a `true` or `false` if the collapse is open or not
+          // @arg Boolean
+          this.$emit('input', value)
           this.isOpen = value
         }
       }
     },
     watch: {
-      open (val) {
+      value (val) {
         this.isOpen = val
       }
     },
     methods: {
       openContent () {
-        this.isOpen = !this.isOpen
+        this.hasContentOpen = !this.hasContentOpen
       }
     }
   }

@@ -11,7 +11,7 @@ Generic component used to show a togglable sidebar (left or right) in the layout
 | value      | -           | `Boolean` | `true`   | -       |
 | id         | -           | `String`  | `false`  | -       |
 | width      | -           | `Number`  | `false`  | 300     |
-| loader     | -           | `Boolean` | `false`  | -       |
+| loading    | -           | `Boolean` | `false`  | -       |
 | noCloseBtn | -           | `Boolean` | `false`  | -       |
 | noShadow   | -           | `Boolean` | `false`  | -       |
 | absolute   | -           | `Boolean` | `false`  | -       |

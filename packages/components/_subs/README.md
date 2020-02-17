@@ -1,8 +1,8 @@
-# ArrowDown
+# ArrowLeft
 
 ## Props
 
-<!-- @vuese:ArrowDown:props:start -->
+<!-- @vuese:ArrowLeft:props:start -->
 
 | Name  | Description | Type      | Required | Default |
 | ----- | ----------- | --------- | -------- | ------- |
@@ -10,4 +10,4 @@
 | color | -           | `String`  | `false`  | -       |
 | size  | -           | `Number`  | `false`  | 24      |
 
-<!-- @vuese:ArrowDown:props:end -->
+<!-- @vuese:ArrowLeft:props:end -->

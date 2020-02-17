@@ -29,17 +29,23 @@
       <MazBtn
         loader
       >
-        Primary default
+        Primary loader
       </MazBtn>
       <MazBtn
         disabled
       >
-        Primary default
+        Primary disabled
       </MazBtn>
       <MazBtn
         block
       >
         Primary block
+      </MazBtn>
+      <MazBtn
+        href="/#/documentation/btn"
+        disabled
+      >
+        It's a link
       </MazBtn>
     </ComponentContainer>
     <ComponentContainer>
@@ -168,40 +174,47 @@
           'primary', 'secondary', 'success', 'danger', 'warning', 'grey', 'info', 'light', 'dark', 'default', 'white', 'black'
         ],
         btnSizes: [
-          '', 'md', 'sm', 'mini'
+          'lg', '', 'md', 'sm', 'mini'
         ],
         codeExample: `<template>
   <MazBtn>
     Primary default
   </MazBtn>
-
   <MazBtn
     rounded
   >
     Primary default
   </MazBtn>
-
   <MazBtn
     outline
   >
     Primary default
   </MazBtn>
-
+  <MazBtn
+    fab
+  >
+    fab
+  </MazBtn>
   <MazBtn
     loader
   >
-    Primary default
+    Primary loader
   </MazBtn>
-
   <MazBtn
     disabled
   >
-    Primary default
+    Primary disabled
   </MazBtn>
   <MazBtn
     block
   >
     Primary block
+  </MazBtn>
+  <MazBtn
+    href="/#/documentation/btn"
+    disabled
+  >
+    It's a link
   </MazBtn>
 </template>`
       }

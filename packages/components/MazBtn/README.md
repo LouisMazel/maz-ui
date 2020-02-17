@@ -1,22 +1,24 @@
 # MazBtn
 
+> Simple button component
+
 ## Props
 
 <!-- @vuese:MazBtn:props:start -->
 
-| Name     | Description | Type      | Required | Default |
-| -------- | ----------- | --------- | -------- | ------- |
-| id       | -           | `String`  | `false`  | -       |
-| color    | -           | `String`  | `false`  | primary |
-| type     | -           | `String`  | `false`  | button  |
-| size     | -           | `String`  | `false`  | -       |
-| loader   | -           | `Boolean` | `false`  | -       |
-| disabled | -           | `Boolean` | `false`  | -       |
-| outline  | -           | `Boolean` | `false`  | -       |
-| rounded  | -           | `Boolean` | `false`  | -       |
-| fab      | -           | `Boolean` | `false`  | -       |
-| active   | -           | `Boolean` | `false`  | -       |
-| block    | -           | `Boolean` | `false`  | -       |
+| Name     | Description                                                                                                                                                                         | Type      | Required | Default |
+| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | -------- | ------- |
+| id       | is the id of the button                                                                                                                                                             | `String`  | `false`  | -       |
+| color    | is color type (`'primary'` / `'secondary'` / `'third'` / `'success'` / `'danger'` / `'grey'` / `'info'` / `'warning'` / `'light'` / `'dark'` / `'default'` / `'white'` / `'black'`) | `String`  | `false`  | primary |
+| type     | is the button type (button, submit or something else)                                                                                                                               | `String`  | `false`  | button  |
+| size     | button size (`'lg'` / `'md'` / `'mini'` / `'fab'`)                                                                                                                                  | `String`  | `false`  | -       |
+| loading  | is a `boolean` to show the loader & disable it                                                                                                                                      | `Boolean` | `false`  | -       |
+| disabled | is a `boolean` to disable the button                                                                                                                                                | `Boolean` | `false`  | -       |
+| outline  | apply the outline style                                                                                                                                                             | `Boolean` | `false`  | -       |
+| rounded  | apply the rounded style                                                                                                                                                             | `Boolean` | `false`  | -       |
+| fab      | apply the fab style                                                                                                                                                                 | `Boolean` | `false`  | -       |
+| active   | apply the focus style                                                                                                                                                               | `Boolean` | `false`  | -       |
+| block    | take 100% of the width                                                                                                                                                              | `Boolean` | `false`  | -       |
 
 <!-- @vuese:MazBtn:props:end -->
 
@@ -24,9 +26,9 @@
 
 <!-- @vuese:MazBtn:events:start -->
 
-| Event Name | Description | Parameters |
-| ---------- | ----------- | ---------- |
-| click      | -           | -          |
+| Event Name | Description              | Parameters |
+| ---------- | ------------------------ | ---------- |
+| click      | return the default event | -          |
 
 <!-- @vuese:MazBtn:events:end -->
 
@@ -34,9 +36,9 @@
 
 <!-- @vuese:MazBtn:slots:start -->
 
-| Name    | Description | Default Slot Content |
-| ------- | ----------- | -------------------- |
-| default | -           | -                    |
+| Name    | Description               | Default Slot Content |
+| ------- | ------------------------- | -------------------- |
+| default | Add your button text here | -                    |
 
 <!-- @vuese:MazBtn:slots:end -->
 

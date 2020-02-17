@@ -1,7 +1,7 @@
 
-import TabsBarComponent from './_subs/TabsBar'
-import TabsContentComponent from './_subs/TabsContent'
-import TabsContentItemComponent from './_subs/TabsContentItem'
+import TabsBarComponent from './TabsBar'
+import TabsContentComponent from './TabsContent'
+import TabsContentItemComponent from './TabsContentItem'
 
 TabsBarComponent.install = (Vue) => {
   Vue.component(TabsBarComponent.name, TabsBar)

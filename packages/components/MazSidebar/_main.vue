@@ -45,7 +45,7 @@
         </button>
       </div>
       <div
-        v-show="loader && isOpen"
+        v-show="loading && isOpen"
         class="maz-sidebar__wrapper__load-layer flex align-center justify-center"
       >
         <slot name="content-loader">
@@ -70,7 +70,7 @@
   /**
    * Generic component used to show a togglable sidebar (left or right) in the layout
    * @module component - MazSidebar
-   * @param {boolean} loader - Show / hide the loader inside the sidebar component
+   * @param {boolean} loading - Show / hide the loader inside the sidebar component
    * @param {number} width - The sidebar width
    * @param {boolean} [noCloseBtn=false] - Specify if the sidebar should have or not the toggle button
    * @param {boolean} [noShadow=false] - Specify if the sidebar should have the drop shadow
@@ -93,7 +93,7 @@
       value: { type: Boolean, required: true },
       id: { type: String, default: null },
       width: { type: Number, default: 300 },
-      loader: { type: Boolean, default: false },
+      loading: { type: Boolean, default: false },
       noCloseBtn: { type: Boolean, default: false },
       noShadow: { type: Boolean, default: false },
       absolute: { type: Boolean, default: false },

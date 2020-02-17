@@ -6,13 +6,23 @@
 
 <!-- @vuese:MazCollapse:props:start -->
 
-| Name       | Description                                    | Type      | Required | Default |
-| ---------- | ---------------------------------------------- | --------- | -------- | ------- |
-| open       | Set `true` to open the component by default    | `Boolean` | `false`  | -       |
-| dark       | Set `true` to enable dark mode                 | `Boolean` | `false`  | -       |
-| arrowColor | Is the color of the arrow, must be a hex color | `String`  | `false`  | black   |
+| Name       | Description                                      | Type      | Required | Default |
+| ---------- | ------------------------------------------------ | --------- | -------- | ------- |
+| value      | Value is a Boolean to open or close the collapse | `Boolean` | `false`  | -       |
+| dark       | Set `true` to enable dark mode                   | `Boolean` | `false`  | -       |
+| arrowColor | Is the color of the arrow, must be a hex color   | `String`  | `false`  | black   |
 
 <!-- @vuese:MazCollapse:props:end -->
+
+## Events
+
+<!-- @vuese:MazCollapse:events:start -->
+
+| Event Name | Description                                               | Parameters |
+| ---------- | --------------------------------------------------------- | ---------- |
+| input      | return a `true` or `false` if the collapse is open or not | Boolean    |
+
+<!-- @vuese:MazCollapse:events:end -->
 
 ## Slots
 

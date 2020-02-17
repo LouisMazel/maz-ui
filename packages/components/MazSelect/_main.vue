@@ -106,14 +106,20 @@
     name: 'MazSelect',
     mixins: [uniqueId],
     props: {
+      // is the value of the input
       value: {
         required: true,
         validator: prop => ['number', 'string', 'boolean'].includes(typeof prop) || prop === null
       },
+      // list of the options
       options: { type: Array, required: true },
+      // is the input id
       id: { type: String, default: null },
+      // is the input name
       name: { type: String, default: 'MazSelect' },
+      // is the input label
       label: { type: String, default: 'Select option' },
+      // is the input label
       hint: { type: String, default: null },
       size: { type: String, default: null },
       error: { type: Boolean, default: false },
