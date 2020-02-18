@@ -1,8 +1,8 @@
-# TabsBar
+# MazTabsBar
 
 ## Props
 
-<!-- @vuese:TabsBar:props:start -->
+<!-- @vuese:MazTabsBar:props:start -->
 
 | Name  | Description | Type      | Required | Default |
 | ----- | ----------- | --------- | -------- | ------- |
@@ -10,4 +10,4 @@
 | value | -           | `Number`  | `true`   | -       |
 | dark  | -           | `Boolean` | `false`  | -       |
 
-<!-- @vuese:TabsBar:props:end -->
+<!-- @vuese:MazTabsBar:props:end -->

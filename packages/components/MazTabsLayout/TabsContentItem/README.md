@@ -1,11 +1,11 @@
-# TabsContentItem
+# MazTabsContentItem
 
 ## Slots
 
-<!-- @vuese:TabsContentItem:slots:start -->
+<!-- @vuese:MazTabsContentItem:slots:start -->
 
 | Name    | Description | Default Slot Content |
 | ------- | ----------- | -------------------- |
 | default | -           | -                    |
 
-<!-- @vuese:TabsContentItem:slots:end -->
+<!-- @vuese:MazTabsContentItem:slots:end -->
