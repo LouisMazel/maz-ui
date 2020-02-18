@@ -13,7 +13,7 @@
 
 <script>
   export default {
-    name: 'TabsContentItem',
+    name: 'MazTabsContentItem',
     data () {
       return {
         currentIndex: null,

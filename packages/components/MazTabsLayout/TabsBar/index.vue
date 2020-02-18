@@ -28,7 +28,7 @@
 
 <script>
   export default {
-    name: 'TabsBar',
+    name: 'MazTabsBar',
     props: {
       items: { type: Array, required: true },
       value: { type: Number, required: true },

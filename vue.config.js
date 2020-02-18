@@ -1,14 +1,6 @@
 const Mode = require('frontmatter-markdown-loader/mode')
 
 module.exports = {
-  // configureWebpack: {
-  //   module: {
-  //     rules: [ {
-  //       test: /\.md$/,
-  //       loader: 'frontmatter-markdown-loader'
-  //     }]
-  //   }
-  // },
   chainWebpack: config => {
     config.module
       .rule('markdown')

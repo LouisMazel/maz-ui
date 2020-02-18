@@ -13,7 +13,7 @@
 
 <script>
   export default {
-    name: 'TabsContent',
+    name: 'MazTabsContent',
     computed: {
       currentTab () {
         const tabsBarComponent = this.$parent.$children.find(c => typeof c.$refs.TabsBar !== 'undefined')
