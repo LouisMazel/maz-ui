@@ -56,8 +56,9 @@ if (typeof window !== 'undefined' && window.Vue) {
   install(window.Vue)
 }
 
-export {
+export default {
   version,
+  install,
   MazBtn,
   MazBtnGroup,
   MazCheckbox,
@@ -80,9 +81,4 @@ export {
   MazTabsContent,
   MazTabsContentItem,
   MazTransitionExpand
-}
-
-export default {
-  version,
-  install
 }
