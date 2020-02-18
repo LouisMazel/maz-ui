@@ -63,7 +63,7 @@
                 class="ml-3"
                 color="primary"
                 size="md"
-                @click="$emit('validate')"
+                @click="onConfirm"
               >
                 Confirm
               </MazBtn>
@@ -127,6 +127,10 @@
       },
       afterLeave () {
         this.$emit('closed')
+      },
+      onConfirm () {
+        // sended when you click on confirm button
+        this.$emit('confirm')
       }
     }
   }
