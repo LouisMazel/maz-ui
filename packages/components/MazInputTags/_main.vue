@@ -146,7 +146,9 @@
       },
       removeLastTag () {
         if (this.inputValue === null || this.inputValue === '') {
-          this.$emit('input', this.tags.slice(0, -1))
+          const tagsArray = JSON.parse(JSON.stringify(this.tags))
+          tagsArray.slice(0, -1)
+          this.$emit('input', tagsArray)
         }
       },
       removeTag (i) {
