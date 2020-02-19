@@ -62,7 +62,7 @@
 
 <script>
   import MazInput from '../MazInput'
-  import { debounce } from '@/../packages/utils'
+  import { debounce } from '../../utils'
 
   /**
    * > UI search input component. The search component extends MazInput, so all props/options of [MazInput](/#/documentation/input) are available here.
