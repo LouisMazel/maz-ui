@@ -53,16 +53,16 @@
           color="dark"
           @click="hasDialogOpenDark = true"
         >
-          Open Danger Dialog
+          Open Dark Dialog
         </MazBtn>
         <MazDialog
           v-model="hasDialogOpenDark"
           dark
         >
           <div slot="title">
-            Danger Dialog
+            Dark Dialog
           </div>
-          Dialog Content Danger
+          Dialog Content Dark
         </MazDialog>
       </div>
     </ComponentContainer>

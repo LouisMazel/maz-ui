@@ -21,7 +21,7 @@
           @keydown.esc="closeDialog"
         >
           <div
-            v-if="!hideHeader"
+            v-if="!noHeader"
             class="maz-dialog__header flex space-between align-center p-3"
           >
             <p class="fw-400 fs-20 m-0 w-100">
@@ -51,7 +51,7 @@
             </slot>
           </div>
           <div
-            v-if="!hideFooter"
+            v-if="!noHeader"
             class="maz-dialog__footer flex align-end justify-end p-3"
           >
             <!-- Replace the footer bar -->
