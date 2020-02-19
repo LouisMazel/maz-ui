@@ -57,6 +57,7 @@
         </MazBtn>
         <MazDialog
           v-model="hasDialogOpenDark"
+          no-footer
           dark
         >
           <div slot="title">

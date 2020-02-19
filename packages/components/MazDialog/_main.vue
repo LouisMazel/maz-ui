@@ -51,7 +51,7 @@
             </slot>
           </div>
           <div
-            v-if="!noHeader"
+            v-if="!noFooter"
             class="maz-dialog__footer flex align-end justify-end p-3"
           >
             <!-- Replace the footer bar -->
