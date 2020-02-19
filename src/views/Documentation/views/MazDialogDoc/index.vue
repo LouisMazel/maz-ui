@@ -11,19 +11,11 @@
         <MazDialog
           v-model="hasDialogOpen"
           max-width="800px"
-          hide-footer
-          :excluded-classes="['dz-hidden-input']"
         >
           <div slot="title">
-            Dropzone Dialog
+            Basic Dialog
           </div>
-          <MazDropzone
-            id="mazDropzone"
-            ref="mazDropzone"
-            :url="url"
-            :headers="headers"
-            :max-filesize="maxFilesize"
-          />
+          Dialog Content basic
         </MazDialog>
         <MazBtn
           color="success"
@@ -43,6 +35,7 @@
         </MazDialog>
         <MazBtn
           color="danger"
+          class="mr-2"
           @click="hasDialogOpenDanger = true"
         >
           Open Danger Dialog
@@ -50,6 +43,21 @@
         <MazDialog
           v-model="hasDialogOpenDanger"
           danger
+        >
+          <div slot="title">
+            Danger Dialog
+          </div>
+          Dialog Content Danger
+        </MazDialog>
+        <MazBtn
+          color="dark"
+          @click="hasDialogOpenDark = true"
+        >
+          Open Danger Dialog
+        </MazBtn>
+        <MazDialog
+          v-model="hasDialogOpenDark"
+          dark
         >
           <div slot="title">
             Danger Dialog
@@ -69,34 +77,22 @@
         hasDialogOpen: false,
         hasDialogOpenDanger: false,
         hasDialogOpenSuccess: false,
-        url: 'https://httpbin.org/post',
-        headers: { 'My-Awesome-Header': 'header value' },
-        maxFilesize: 2,
-        errorMessage: null,
-        successMessage: null,
+        hasDialogOpenDark: false,
         codeExample: `<template>
   <MazBtn
     class="mr-2"
-    @click="hasDialogOpen = true"
+    @click.stop="hasDialogOpen = true"
   >
     Open Basic Dialog
   </MazBtn>
   <MazDialog
     v-model="hasDialogOpen"
     max-width="800px"
-    hide-footer
-    :excluded-classes="['dz-hidden-input']"
   >
     <div slot="title">
-      Dropzone Dialog
+      Basic Dialog
     </div>
-    <MazDropzone
-      id="mazDropzone"
-      ref="mazDropzone"
-      :url="url"
-      :headers="headers"
-      :max-filesize="maxFilesize"
-    />
+    Dialog Content basic
   </MazDialog>
   <MazBtn
     color="success"

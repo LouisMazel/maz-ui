@@ -154,7 +154,7 @@
       },
       openList () {
         if (!this.disabled) {
-          // sended when the list is open
+          // sent when the list is open
           this.$emit('open')
           this.isFocus = true
           this.hasListOpen = true
@@ -163,7 +163,7 @@
         }
       },
       closeList () {
-        // sended when the list is close
+        // sent when the list is close
         this.$emit('close')
         this.hasListOpen = false
       },

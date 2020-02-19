@@ -38,11 +38,11 @@
 | Event Name | Description                                       | Parameters |
 | ---------- | ------------------------------------------------- | ---------- |
 | input      | return the input value (in `@input` or `v-model`) | input      |
-| focus      | send the focus event                              | event      |
-| blur       | send the blur event                               | event      |
-| clear      | sended when the input is clear                    | -          |
-| keyup      | send the keyup event                              | event      |
-| keydown    | send the keydown event                            | event      |
+| focus      | sent the focus event                              | event      |
+| blur       | sent the blur event                               | event      |
+| clear      | sent when the input is clear                      | -          |
+| keyup      | sent the keyup event                              | event      |
+| keydown    | sent the keydown event                            | event      |
 
 <!-- @vuese:MazInput:events:end -->
 

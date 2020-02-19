@@ -20,11 +20,11 @@
 
 <!-- @vuese:MazSelect:events:start -->
 
-| Event Name | Description                   | Parameters                |
-| ---------- | ----------------------------- | ------------------------- |
-| open       | sended when the list is open  | -                         |
-| close      | sended when the list is close | -                         |
-| input      | return the select input       | the option value selected |
+| Event Name | Description                 | Parameters                |
+| ---------- | --------------------------- | ------------------------- |
+| open       | sent when the list is open  | -                         |
+| close      | sent when the list is close | -                         |
+| input      | return the select input     | the option value selected |
 
 <!-- @vuese:MazSelect:events:end -->
 

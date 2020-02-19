@@ -251,13 +251,13 @@
         this.$refs.MazInput.focus()
       },
       onFocus (e) {
-        // send the focus event
+        // sent the focus event
         // @arg event
         this.$emit('focus', e)
         this.isFocus = true
       },
       onBlur (e) {
-        // send the blur event
+        // sent the blur event
         // @arg event
         this.$emit('blur', e)
         this.isFocus = false
@@ -267,16 +267,16 @@
           'input',
           this.hasNumberType ? 0 : ''
         )
-        // sended when the input is clear
+        // sent when the input is clear
         this.$emit('clear')
       },
       keyUp (e) {
-        // send the keyup event
+        // sent the keyup event
         // @arg event
         this.$emit('keyup', e)
       },
       keyDown (e) {
-        // send the keydown event
+        // sent the keydown event
         // @arg event
         this.$emit('keydown', e)
       }

@@ -138,14 +138,14 @@
         this.closeList()
       },
       async updateValue (item) {
-        // event sended when user select an item in the items list
+        // event sent when user select an item in the items list
         // @arg The argument is a the item or an item[key] if you use `item-value`
         this.$emit('input', item)
         await this.$nextTick()
         this.reset()
       },
       debouncedSearch: debounce(function (q) {
-        // event sended after debounce --> you must start the request with this event
+        // event sent after debounce --> you must start the request with this event
         // @arg The argument is a string value representing the query the user entered
         this.$emit('request', q)
       }, 500),
