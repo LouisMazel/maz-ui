@@ -3,39 +3,39 @@
     <ComponentContainer
       :code="codeExample"
     >
-      <TabsBar
+      <MazTabsBar
         v-model="activeTabIndex"
         :items="tabs"
       />
       <div style="overflow: hidden;">
-        <TabsContent class="m-3">
-          <TabsContentItem
+        <MazTabsContent class="m-3">
+          <MazTabsContentItem
             class="flex flex-center direction-column"
           >
             <p>111111111111111111111111111111111111111</p>
-          </TabsContentItem>
-          <TabsContentItem
+          </MazTabsContentItem>
+          <MazTabsContentItem
             class="flex flex-center direction-column"
           >
             <p>222222222222222222222222222222222222222</p>
             <p>222222222222222222222222222222222222222</p>
-          </TabsContentItem>
-          <TabsContentItem
+          </MazTabsContentItem>
+          <MazTabsContentItem
             class="flex flex-center direction-column"
           >
             <p>333333333333333333333333333333333333333</p>
             <p>333333333333333333333333333333333333333</p>
             <p>333333333333333333333333333333333333333</p>
-          </TabsContentItem>
-          <TabsContentItem
+          </MazTabsContentItem>
+          <MazTabsContentItem
             class="flex flex-center direction-column"
           >
             <p>444444444444444444444444444444444444444</p>
             <p>444444444444444444444444444444444444444</p>
             <p>444444444444444444444444444444444444444</p>
             <p>444444444444444444444444444444444444444</p>
-          </TabsContentItem>
-          <TabsContentItem
+          </MazTabsContentItem>
+          <MazTabsContentItem
             class="flex flex-center direction-column"
           >
             <p>4</p>
@@ -43,8 +43,8 @@
             <p>4</p>
             <p>4</p>
             <p>4</p>
-          </TabsContentItem>
-          <TabsContentItem
+          </MazTabsContentItem>
+          <MazTabsContentItem
             class="flex flex-center direction-column"
           >
             <p>5</p>
@@ -53,8 +53,8 @@
             <p>5</p>
             <p>5</p>
             <p>5</p>
-          </TabsContentItem>
-        </TabsContent>
+          </MazTabsContentItem>
+        </MazTabsContent>
       </div>
     </ComponentContainer>
   </div>

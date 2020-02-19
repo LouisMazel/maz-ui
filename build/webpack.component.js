@@ -4,8 +4,7 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 const Components = require('./components.js')
 const config = require('./config')
-console.log('Components', Components)
-console.log('Components', config)
+
 const webpackConfig = {
   mode: 'production',
   entry: Components,
