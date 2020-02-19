@@ -19,7 +19,7 @@
     >
       <MazBtn
         v-for="(tag, i) in tags"
-        :key="tag"
+        :key="`tag-${tag}-${i}`"
         class="maz-input-tags__tag flex align-center"
         :disabled="disabled"
         :size="size"
