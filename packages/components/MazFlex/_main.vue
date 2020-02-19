@@ -10,7 +10,7 @@
 </template>
 
 <script>
-  import { pascalCaseToKebabCase } from '@/utils'
+  import { pascalCaseToKebabCase } from '../../utils'
 
   const classesWithNumber = ['flex1', 'flex25', 'flex33', 'flex50', 'flex75', 'flex100']
   const hasNumberClass = (key) => classesWithNumber.includes(key)

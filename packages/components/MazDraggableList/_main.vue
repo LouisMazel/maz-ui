@@ -10,11 +10,11 @@
       <transition-group
         type="transition"
         tag="div"
-        :name="!drag ? 'slide' : null"
+        :name="!drag ? 'flip-list' : null"
       >
         <div
           v-for="(item, i) in value"
-          :key="`item-${i}`"
+          :key="Object.values(item)[0]"
           class="maz-draggable-list__item flex align-center space-between"
         >
           <!-- Default item displayed in list -->
