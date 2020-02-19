@@ -5,7 +5,7 @@ const Components = require('./components.js')
 let externals = {}
 
 Object.keys(Components).forEach(function (key) {
-  externals[`maz-ui/packages/components/${key}`] = `maz-ui/dist/${key}`
+  externals[`maz-ui/packages/components/${key}`] = `maz-ui/lib/${key}`
 })
 
 externals = [Object.assign({

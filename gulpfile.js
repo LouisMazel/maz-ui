@@ -30,7 +30,7 @@ const compile = () => {
     .pipe(prefix())
     .pipe(rename('maz-ui.css'))
     .pipe(sass.sync({ outputStyle: 'compressed' }).on('error', sass.logError))
-    .pipe(dest('dist'))
+    .pipe(dest('lib'))
 }
 
 const watcher = () => {

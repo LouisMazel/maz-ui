@@ -32,9 +32,9 @@
     data () {
       return {
         cdnCode: `<!-- import du CSS -->
-<link rel="stylesheet" href="https://unpkg.com/maz-ui/dist/maz-ui.css">
+<link rel="stylesheet" href="https://unpkg.com/maz-ui/lib/maz-ui.css">
 <!-- import du JavaScript -->
-<script src="https://unpkg.com/maz-ui/dist/maz-ui.common.js"><script>`
+<script src="https://unpkg.com/maz-ui/lib/maz-ui.common.js"><script>`
       }
     }
   }

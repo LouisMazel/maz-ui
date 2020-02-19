@@ -10,7 +10,7 @@ module.exports = {
     app: ['./src/lib.js']
   },
   output: {
-    path: path.resolve(process.cwd(), './dist'),
+    path: path.resolve(process.cwd(), './lib'),
     publicPath: '/dist/',
     filename: 'maz-ui.common.js',
     chunkFilename: '[id].js',

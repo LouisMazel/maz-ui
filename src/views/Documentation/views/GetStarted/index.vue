@@ -46,7 +46,7 @@
     data () {
       return {
         codeBase: `import Vue from 'vue';
-import 'maz-ui/dist/maz-ui.css';
+import 'maz-ui/lib/maz-ui.css';
 import MazUi from 'maz-ui';
 import App from './App.vue';
 
@@ -57,7 +57,7 @@ new Vue({
   render: h => h(App)
 });`,
         codeCustom: `import Vue from 'vue';
-import 'maz-ui/dist/maz-ui.css';
+import 'maz-ui/lib/maz-ui.css';
 import { MazBtn, MazSelect } from 'maz-ui';
 import App from './App.vue';
 

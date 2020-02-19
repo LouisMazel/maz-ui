@@ -1,5 +1,5 @@
 import Vue from 'vue'
 import MazUi from 'maz-ui'
-import 'maz-ui/dist/maz-ui.css'
+import 'maz-ui/lib/maz-ui.css'
 
 Vue.use(MazUi)
