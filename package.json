@@ -1,6 +1,6 @@
 {
   "name": "maz-ui",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "main": "dist/maz-ui.common.js",
   "description": "A components library for VueJs",
   "author": "Louis Mazel <me@loicmazuel.com>",
@@ -64,7 +64,8 @@
     "vue-router": "^3.1.5",
     "vue-template-compiler": "^2.6.11",
     "vue-virtual-scroller": "^1.0.0-rc.2",
-    "vue2-dropzone": "3.5.2"
+    "vue2-dropzone": "3.5.2",
+    "vuedraggable": "^2.23.2"
   },
   "engines": {
     "node": ">= 6.0.0",
