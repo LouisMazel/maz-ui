@@ -147,12 +147,14 @@
       removeLastTag () {
         if (this.inputValue === null || this.inputValue === '') {
           const tagsArray = JSON.parse(JSON.stringify(this.tags))
-          tagsArray.slice(0, -1)
+          tagsArray.pop()
           this.$emit('input', tagsArray)
         }
       },
       removeTag (i) {
-        this.tags.splice(i, 1)
+        const tagsArray = JSON.parse(JSON.stringify(this.tags))
+        tagsArray.splice(i, 1)
+        this.$emit('input', tagsArray)
       },
       cleanTags () {
         this.$emit('input', null)
