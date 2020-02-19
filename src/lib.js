@@ -6,6 +6,7 @@ import MazDialog from '../packages/components/MazDialog'
 import MazDropzone from '../packages/components/MazDropzone'
 import MazFlex from '../packages/components/MazFlex'
 import MazInput from '../packages/components/MazInput'
+import MazInputTags from '../packages/components/MazInputTags'
 import MazLoader from '../packages/components/MazLoader'
 import MazPagination from '../packages/components/MazPagination'
 import MazPhoneNumberInput from '../packages/components/MazPhoneNumberInput'
@@ -30,6 +31,7 @@ const components = [
   MazDropzone,
   MazFlex,
   MazInput,
+  MazInputTags,
   MazLoader,
   MazPagination,
   MazPhoneNumberInput,
@@ -67,6 +69,7 @@ export {
   MazDropzone,
   MazFlex,
   MazInput,
+  MazInputTags,
   MazLoader,
   MazPagination,
   MazPhoneNumberInput,

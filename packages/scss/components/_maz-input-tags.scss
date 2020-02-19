@@ -1,0 +1,298 @@
+.maz-input-tags {
+  $this: &;
+
+  position: relative;
+  border: 1px solid $third-color;
+  border-radius: $border-radius;
+  padding: 2px 8px;
+  width: 100%;
+  min-height: 40px;
+  background-color: $bg-color;
+  overflow: hidden;
+  transition-duration: .3s;
+
+  &:hover:not(.is-disabled) {
+    border-color: $primary-color;
+  }
+
+  &.is-focused:not(.is-disabled) {
+    border-color: $primary-color;
+    box-shadow: 0 0 0 .143rem $primary-color-transparency;
+
+    &.has-error {
+      border-color: $danger-color;
+      box-shadow: 0 0 0 .143rem $danger-color-transparency;
+    }
+
+    &.is-valid {
+      border-color: $success-color;
+      box-shadow: 0 0 0 .143rem $success-color-transparency;
+    }
+  }
+
+  &__input {
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    transition-duration: .3s;
+    position: relative;
+    font-weight: 400;
+    appearance: none;
+    outline: none;
+    font-size: 1em;
+    z-index: 0;
+    caret-color: $primary-color;
+    min-width: 100px;
+    padding-right: 4px;
+    padding-bottom: 4px;
+    padding-top: 4px;
+
+    &::-webkit-input-placeholder {
+      color: $muted-color;
+    }
+
+    &::-moz-placeholder {
+      color: $muted-color;
+    }
+
+    &:-ms-input-placeholder {
+      color: $muted-color;
+    }
+
+    &::-ms-input-placeholder {
+      color: $muted-color;
+    }
+
+    &:-moz-placeholder {
+      color: $muted-color;
+    }
+
+    &::placeholder {
+      color: $muted-color;
+    }
+
+    &__input:-webkit-autofill,
+    &__input:-webkit-autofill:hover,
+    &__input:-webkit-autofill:focus,
+    &__input:-webkit-autofill:active {
+      box-shadow: 0 0 0 1000px $bg-color inset !important;
+      -webkit-text-fill-color: $muted-color !important;
+    }
+  }
+
+  &__tag {
+    margin-right: 4px;
+    margin-bottom: 4px;
+    margin-top: 4px;
+    border-radius: 4px;
+    padding: 5px 4px 5px 7px;
+    color: white;
+
+    &__text {
+      font-size: .875em;
+      margin-right: 5px;
+    }
+
+    &__clear {
+      font-size: 1em;
+    }
+  }
+
+  &__toggle-btn {
+    $clear-size: 24px;
+
+    position: absolute;
+    top: 1px;
+    bottom: 0;
+    right: 8px;
+    margin: auto 0;
+    width: $clear-size;
+    height: $clear-size;
+    appearance: none;
+    border: none;
+    background-color: transparent;
+    color: $muted-color;
+    border-radius: $clear-size;
+    cursor: pointer;
+    font-size: .857em;
+
+    &:focus {
+      outline: none;
+    }
+
+    &__icon {
+      position: relative;
+      font-size: 1.286em;
+    }
+
+    &__effect {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: $clear-size;
+      height: $clear-size;
+      background-color: $muted-color;
+      border-radius: $clear-size;
+      transform: scale(0);
+      transition: transform 200ms;
+    }
+
+    &:hover {
+      color: white;
+
+      .maz-input-tags__toggle-btn__effect {
+        transform: scale(1);
+        opacity: .6;
+      }
+    }
+  }
+
+  &.is-disabled {
+    cursor: not-allowed;
+    border-color: #CCC;
+    background-color: #F2F2F2;
+    color: $disabled-color;
+
+    #{$this}__input {
+      cursor: not-allowed;
+      color: $disabled-color;
+
+      &::-webkit-input-placeholder {
+        color: $disabled-color;
+      }
+
+      &::-moz-placeholder {
+        color: $disabled-color;
+      }
+
+      &:-ms-input-placeholder {
+        color: $disabled-color;
+      }
+
+      &::-ms-input-placeholder {
+        color: $disabled-color;
+      }
+
+      &:-moz-placeholder {
+        color: $disabled-color;
+      }
+
+      &::placeholder {
+        color: $disabled-color;
+      }
+    }
+  }
+
+  &__loader {
+    bottom: 0;
+    height: 2px;
+    left: $border-radius / 2;
+    width: calc(100% - 8px);
+    position: absolute;
+    overflow: hidden;
+    border-radius: 8px;
+
+    &.textarea {
+      bottom: 6px;
+    }
+
+    &__progress-bar {
+      background-color: $primary-color;
+      display: block;
+      position: absolute;
+      content: '';
+      left: -200px;
+      width: 200px;
+      height: 2px;
+      animation: loading 2s linear infinite;
+    }
+  }
+
+  &.sm {
+    min-height: 36px;
+
+    #{$this}__input {
+      font-size: .857em;
+    }
+
+    #{$this}__tag {
+      padding: 3px 2px 3px 5px;
+
+      &__text {
+        margin-right: 5px;
+      }
+    }
+  }
+
+  &.lg {
+    min-height: 48px;
+
+    #{$this}__input {
+      font-size: 1em;
+    }
+
+    #{$this}__tag {
+      padding: 8px 5px 8px 10px;
+
+      &__text {
+        margin-right: 5px;
+      }
+    }
+  }
+}
+
+.is-dark .maz-input-tags,
+.is-dark.maz-input-tags {
+  background-color: $bg-color-dark-l;
+  border: 1px solid $third-color-dark;
+
+  &__input {
+    color: $secondary-color-dark;
+
+    &::-webkit-input-placeholder {
+      color: $secondary-color-dark;
+    }
+
+    &::-moz-placeholder {
+      color: $secondary-color-dark;
+    }
+
+    &:-ms-input-placeholder {
+      color: $secondary-color-dark;
+    }
+
+    &::-ms-input-placeholder {
+      color: $secondary-color-dark;
+    }
+
+    &:-moz-placeholder {
+      color: $secondary-color-dark;
+    }
+
+    &::placeholder {
+      color: $secondary-color-dark;
+    }
+
+    &__input:-webkit-autofill,
+    &__input:-webkit-autofill:hover,
+    &__input:-webkit-autofill:focus,
+    &__input:-webkit-autofill:active {
+      box-shadow: 0 0 0 1000px $bg-color-dark inset !important;
+      -webkit-text-fill-color: $secondary-color-dark !important;
+    }
+  }
+
+  &__toggle-btn {
+    color: $secondary-color-dark;
+
+    &__effect {
+      background-color: $muted-color-dark;
+    }
+
+    &:hover {
+      color: white;
+    }
+  }
+}

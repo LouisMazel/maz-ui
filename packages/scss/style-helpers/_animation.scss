@@ -15,6 +15,21 @@
 }
 
 /** Slide animation **/
+.tags-enter-active,
+.tags-leave-active {
+  opacity: 1;
+  transition: all .3s;
+  position: absolute;
+  transform: translateY(0);
+}
+
+.tags-enter,
+.tags-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+  transform: translateX(-100%);
+}
+
+/** Slide animation **/
 .slideinvert-enter-active,
 .slideinvert-leave-active {
   opacity: 1;
@@ -156,4 +171,33 @@
   opacity: .4;
   z-index: 1;
   transform: scale(0);
+}
+
+// loader input bar anim
+
+@keyframes loading {
+  from {
+    left: -200px;
+    width: 30%;
+  }
+
+  50% {
+    width: 30%;
+  }
+
+  70% {
+    width: 70%;
+  }
+
+  80% {
+    left: 50%;
+  }
+
+  95% {
+    left: 120%;
+  }
+
+  to {
+    left: 100%;
+  }
 }

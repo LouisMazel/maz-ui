@@ -153,8 +153,6 @@
       label: { type: String, default: 'Enter text' },
       // replace the label if is present
       hint: { type: String, default: null },
-      // applyt the color (in hex format)
-      color: { type: String, default: 'dodgerblue' },
       // input size (`'lg'` / `'sm'`)
       size: { type: String, default: null },
       // is the input size (`text` or `number`)

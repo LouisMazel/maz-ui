@@ -12,7 +12,6 @@
 | id               | input id                                                               | `String`  | `false`  | -          |
 | label            | value of the input                                                     | `String`  | `false`  | Enter text |
 | hint             | replace the label if is present                                        | `String`  | `false`  | -          |
-| color            | applyt the color (in hex format)                                       | `String`  | `false`  | dodgerblue |
 | size             | input size (`'lg'` / `'sm'`)                                           | `String`  | `false`  | -          |
 | type             | is the input size (`text` or `number`)                                 | `String`  | `false`  | text       |
 | leftIconName     | should be a [material icon](https://material.io/resources/icons/) name | `String`  | `false`  | -          |
