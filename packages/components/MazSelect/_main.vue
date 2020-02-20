@@ -97,6 +97,8 @@
       },
       // list of the options
       options: { type: Array, required: true },
+      // When is `true` the select is disabled
+      disabled: { type: Boolean, default: false },
       // When is `true` the select has the dark style
       dark: { type: Boolean, default: false },
       // Item in list height in pixel
@@ -154,6 +156,7 @@
       },
       openList () {
         if (!this.disabled) {
+          if (this.disabled) return
           // sent when the list is open
           this.$emit('open')
           this.isFocus = true
