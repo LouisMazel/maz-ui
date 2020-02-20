@@ -17,7 +17,6 @@
           :key="`${itemKey ? item[itemKey] : Object.values(item)[0]}`"
           class="maz-draggable-list__item flex align-center space-between"
         >
-          {{ `${itemKey ? item[itemKey] : Object.values(item)[0]}` }}
           <!-- Default item displayed in list -->
           <slot
             :item="item"
