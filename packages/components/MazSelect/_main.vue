@@ -176,7 +176,9 @@
         if (this.value) return
         // return the select input
         // @arg the option value selected
-        this.$emit('input', this.options[0].value)
+        const value = this.options[0].value || null
+        this.tmpValue = value
+        this.$emit('input', value)
       },
       async updateValue (val) {
         this.tmpValue = val
