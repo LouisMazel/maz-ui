@@ -14,7 +14,7 @@
       >
         <div
           v-for="(item, i) in value"
-          :key="Object.values(item)[0]"
+          :key="itemKey ? item[itemKey] : Object.values(item)[0]"
           class="maz-draggable-list__item flex align-center space-between"
         >
           <!-- Default item displayed in list -->
@@ -46,7 +46,9 @@
     components: { draggable },
     props: {
       // Must be an `Array` (use `v-model`)
-      value: { type: Array, required: true }
+      value: { type: Array, required: true },
+      // is the item's key to build le list (must be different for each item)
+      itemKey: { type: String, default: null }
     },
     data () {
       return {
