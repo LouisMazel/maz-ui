@@ -14,7 +14,7 @@
       >
         <div
           v-for="(item, i) in value"
-          :key="itemKey ? item[itemKey] : Object.values(item)[0]"
+          :key="`${itemKey ? item[itemKey] : Object.values(item)[0]}-${i}`"
           class="maz-draggable-list__item flex align-center space-between"
         >
           <!-- Default item displayed in list -->
