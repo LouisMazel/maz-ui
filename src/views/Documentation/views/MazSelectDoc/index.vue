@@ -72,7 +72,7 @@ export default {
         { label: 'First option', value: 'first' },
         { label: 'Second option', value: 'second' },
         { label: 'Third option', value: 'third' }
-      ],
+      ]
     }
   }
 }`

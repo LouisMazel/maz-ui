@@ -11,6 +11,8 @@
       :value="valueShown"
       v-bind="$attrs"
       readonly
+      :label="label"
+      :disabled="disabled"
       @keydown="keyboardNav"
       @keyup="$emit('keyup', $event)"
       @blur.capture="handleBlur"
@@ -104,7 +106,9 @@
       // Item in list height in pixel
       itemHeight: { type: Number, default: 35 },
       // List height in pixel
-      listHeight: { type: Number, default: 210 }
+      listHeight: { type: Number, default: 210 },
+      // The input label
+      label: { type: String, default: 'Select option' }
     },
     data () {
       return {
