@@ -1,6 +1,11 @@
 <template>
   <div class="md-renderer">
-    <component :is="dynamicComponent" />
+    <component
+      :is="component"
+      v-for="(component, i) in dynamicComponents"
+      :key="i"
+    />
+    {{ dynamicComponents }}
   </div>
 </template>
 
@@ -11,10 +16,25 @@
       fileName: { type: String, required: true }
     },
     computed: {
-      dynamicComponent () {
-        if (this.fileName === 'MazTabsLayout') return
-        const markdown = require(`@/../packages/components/${this.fileName}/README.md`)
-        return markdown.vue.component
+      dynamicComponents () {
+        let components
+        if (this.fileName === 'MazList') {
+          components = [
+            require(`@/../packages/components/MazList/README.md`).vue.component,
+            require(`@/../packages/components/MazList/MazListItem/README.md`).vue.component
+          ]
+        } else if (this.fileName === 'MazTabsLayout') {
+          components = [
+            require(`@/../packages/components/MazTabsLayout/MazTabsBar/README.md`).vue.component,
+            require(`@/../packages/components/MazTabsLayout/MazTabsContent/README.md`).vue.component,
+            require(`@/../packages/components/MazTabsLayout/MazTabsContentItem/README.md`).vue.component
+          ]
+        } else {
+          components = [
+            require(`@/../packages/components/${this.fileName}/README.md`).vue.component
+          ]
+        }
+        return components
       }
     }
   }
