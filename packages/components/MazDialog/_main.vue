@@ -34,7 +34,7 @@
             <div
               v-if="!noClose"
               class="flex close-modal"
-              @click="closeDialog"
+              @click="$emit('input', false)"
             >
               <i class="material-icons">
                 close
