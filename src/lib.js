@@ -12,6 +12,8 @@ import MazDropzone from '../packages/components/MazDropzone/index.js'
 import MazFlex from '../packages/components/MazFlex/index.js'
 import MazInput from '../packages/components/MazInput/index.js'
 import MazInputTags from '../packages/components/MazInputTags/index.js'
+import MazList from '../packages/components/MazList/index.js'
+import MazListItem from '../packages/components/MazList/MazListItem/index.js'
 import MazLoader from '../packages/components/MazLoader/index.js'
 import MazPagination from '../packages/components/MazPagination/index.js'
 import MazPhoneNumberInput from '../packages/components/MazPhoneNumberInput/index.js'
@@ -39,6 +41,8 @@ const components = [
   MazFlex,
   MazInput,
   MazInputTags,
+  MazList,
+  MazListItem,
   MazLoader,
   MazPagination,
   MazPhoneNumberInput,
@@ -78,6 +82,8 @@ export default {
   MazFlex,
   MazInput,
   MazInputTags,
+  MazList,
+  MazListItem,
   MazLoader,
   MazPagination,
   MazPhoneNumberInput,

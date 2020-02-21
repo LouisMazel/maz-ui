@@ -8,7 +8,7 @@ const componentsRoutes = [
   'Install', 'GetStarted', 'MazInputDoc', 'MazInputTagsDoc', 'MazSelectDoc', 'MazSearchDoc',
   'MazPhoneNumberInputDoc', 'MazDropzoneDoc', 'MazBtnDoc', 'MazBtnGroupDoc', 'MazSwitchDoc', 'MazCheckboxDoc',
   'MazSidebarDoc', 'MazTabsLayoutDoc', 'MazPaginationDoc', 'MazLoaderDoc', 'MazSpinnerDoc', 'MazCollapseDoc',
-  'MazDraggableListDoc', 'MazReadMoreDoc', 'MazResponsiveMenuDoc', 'MazTransitionExpandDoc', 'MazDialogDoc', 'MazFlexDoc'
+  'MazListDoc', 'MazDraggableListDoc', 'MazReadMoreDoc', 'MazResponsiveMenuDoc', 'MazTransitionExpandDoc', 'MazDialogDoc', 'MazFlexDoc'
 ]
 
 const componentsRoutesBuild = componentsRoutes.map((route) => {

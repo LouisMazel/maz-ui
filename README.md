@@ -35,12 +35,12 @@ Vue.use(MazUi);
 
 // or
 import {
-  MazSelect,
+  MazInput,
   MazButton
   // ...
 } from "maz-ui";
 
-Vue.component(MazSelect.name, MazSelect);
+Vue.component(MazInput.name, MazInput);
 Vue.component(MazButton.name, MazButton);
 ```
 
