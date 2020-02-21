@@ -123,7 +123,7 @@
 
       &:hover,
       &.keyboard-selected {
-        background-color: $hover-color;
+        background-color: darken($hover-color, 5%);
       }
 
       &.selected {
@@ -402,7 +402,7 @@
 
       &:hover,
       &.keyboard-selected {
-        background-color: lighten($hover-color-dark, 10%);
+        background-color: lighten($hover-color-dark-l, 5%);
       }
     }
 

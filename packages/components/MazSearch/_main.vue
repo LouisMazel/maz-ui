@@ -130,7 +130,7 @@
       },
       async reset () {
         this.closeList()
-        await this.$nextTick()
+        this.query = null
         // this.$refs.textField.$refs.MazInput.focus()
       },
       handleBlur (e) {

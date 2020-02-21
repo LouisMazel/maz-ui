@@ -173,11 +173,6 @@ export default {
   .item {
     height: 60px;
 
-    &:hover,
-    &.keyboard-selected {
-      background-color: $hover-color;
-    }
-
     img {
       border-radius: 50%;
       height: 40px;
