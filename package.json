@@ -32,6 +32,12 @@
     "publish-npm:beta": "npm publish --tag beta",
     "publish-npm": "npm publish"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint",
+      "pre-push": "npm run lint"
+    }
+  },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.1.2",
     "@vue/cli-plugin-eslint": "^4.1.2",
@@ -49,6 +55,7 @@
     "gulp-rename": "^2.0.0",
     "gulp-sass": "^4.0.2",
     "gulp-sourcemaps": "^2.6.5",
+    "husky": "^4.2.3",
     "json-templater": "^1.2.0",
     "libphonenumber-js": "^1.7.30",
     "ncp": "^2.0.0",
