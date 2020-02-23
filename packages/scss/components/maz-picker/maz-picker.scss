@@ -1,0 +1,28 @@
+.maz-picker {
+  width: 100%;
+  margin: 0 auto;
+  text-align: left;
+  font-size: 14px;
+  border-radius: 4px;
+  position: relative;
+
+  .time-picker-overlay {
+    z-index: 2;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, .4);
+  }
+}
+
+@media screen and (max-width: 415px) {
+  .time-picker-overlay {
+    display: none;
+  }
+
+  .maz-picker:not(.inline) {
+    position: inherit !important;
+  }
+}

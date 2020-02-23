@@ -1,0 +1,92 @@
+.datepicker-buttons-container {
+  padding: 5px;
+  border-top: 1px solid #EAEAEA;
+  background-color: white;
+  z-index: 1;
+  display: flex !important;
+
+  .datepicker-button {
+    padding: 0 20px;
+    position: relative;
+    background-color: white;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    height: 30px;
+    font-size: 14px;
+    outline: none;
+    cursor: pointer;
+    color: white;
+    font-weight: 500;
+
+    &-content {
+      position: relative;
+    }
+
+    svg {
+      position: relative;
+      transition: all 450ms cubic-bezier(.23, 1, .32, 1) 0ms;
+      fill: #00C853;
+    }
+
+    .datepicker-button-effect {
+      position: absolute;
+      background: #00C853;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      height: 30px;
+      border-radius: 4px;
+      width: 100%;
+      transition: all 450ms cubic-bezier(.23, 1, .32, 1) 0ms;
+      transform: scale(0);
+    }
+
+    &:hover {
+      border: 1px solid transparent;
+
+      .datepicker-button-effect {
+        transform: scale(1);
+      }
+
+      svg {
+        fill: white !important;
+      }
+
+      .datepicker-button-content {
+        color: white !important;
+      }
+    }
+
+    &.now {
+      &.right-margin {
+        margin-right: 10px;
+      }
+
+      .datepicker-button-content {
+        color: dodgerblue;
+      }
+
+      .datepicker-button-effect {
+        background: dodgerblue;
+      }
+    }
+
+    &.validate {
+      border: 1px solid #EAEAEA;
+    }
+  }
+
+  &.is-dark,
+  &.is-dark .datepicker-button {
+    background-color: #424242;
+
+    &:not(.now) {
+      border-color: lighten(#424242, 20%);
+    }
+
+    svg {
+      fill: white !important;
+    }
+  }
+}

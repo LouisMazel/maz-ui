@@ -1,0 +1,207 @@
+
+.field {
+  position: relative;
+
+  &.is-dark {
+    .field-label {
+      color: rgba(255, 255, 255, .7);
+    }
+
+    .field-input {
+      background-color: #424242;
+      border-color: rgba(255, 255, 255, .7);
+      color: rgba(255, 255, 255, .7);
+    }
+
+    &.is-disabled {
+      .field-label,
+      .field-input {
+        color: black;
+      }
+    }
+  }
+
+  &-label {
+    position: absolute;
+    top: 5px;
+    cursor: pointer;
+    left: 13px;
+    transform: translateY(25%);
+    opacity: 0;
+    transition: all .25s cubic-bezier(.645, .045, .355, 1);
+    font-size: 11px;
+    color: rgba(0, 0, 0, .54);
+  }
+
+  &-input {
+    cursor: pointer;
+    background-color: white;
+    transition-duration: .3s;
+    position: relative;
+    width: 100%;
+    height: 42px;
+    min-height: 42px;
+    padding-left: 12px;
+    padding-right: 44px;
+    font-weight: 400;
+    outline: none;
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: 4px;
+    font-size: 14px;
+    z-index: 0;
+
+    &.no-clear-button {
+      padding: 0 12px;
+    }
+  }
+
+  &-clear-button {
+    position: absolute;
+    right: 12px;
+  }
+
+  &.has-error {
+    .field-input {
+      border-color: orangered;
+      padding-top: 14px;
+    }
+
+    .field-label {
+      opacity: 1;
+      transform: translateY(0);
+      font-size: 11px;
+    }
+  }
+
+  &.has-value {
+    .field-label {
+      opacity: 1;
+      transform: translateY(0);
+      font-size: 11px;
+    }
+
+    &:not(.no-label) {
+      .field-input {
+        padding-top: 14px;
+      }
+    }
+  }
+
+  &.is-focused {
+    .field-input {
+      border-color: dodgerblue;
+    }
+
+    .field-label {
+      color: dodgerblue;
+    }
+  }
+
+  &.is-disabled {
+    .field-input {
+      border-color: #CCC;
+      background: #F2F2F2;
+    }
+
+    .field-label,
+    .field-input {
+      cursor: default;
+    }
+  }
+
+  .text-danger {
+    color: orangered;
+  }
+
+  &.is-dark {
+    ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+      color: rgba(255, 255, 255, .7);
+    }
+
+    :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+      color: rgba(255, 255, 255, .7);
+      opacity: 1;
+    }
+
+    ::-moz-placeholder { /* Mozilla Firefox 19+ */
+      color: rgba(255, 255, 255, .7);
+      opacity: 1;
+    }
+
+    :-ms-input-placeholder { /* Internet Explorer 10-11 */
+      color: rgba(255, 255, 255, .7);
+    }
+
+    ::-ms-input-placeholder { /* Microsoft Edge */
+      color: rgba(255, 255, 255, .7);
+    }
+
+    ::placeholder { /* Most modern browsers support this now. */
+      color: rgba(255, 255, 255, .7);
+    }
+
+    &.is-disabled {
+      ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+        color: #424242;
+      }
+
+      :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+        color: #424242;
+        opacity: 1;
+      }
+
+      ::-moz-placeholder { /* Mozilla Firefox 19+ */
+        color: #424242;
+        opacity: 1;
+      }
+
+      :-ms-input-placeholder { /* Internet Explorer 10-11 */
+        color: #424242;
+      }
+
+      ::-ms-input-placeholder { /* Microsoft Edge */
+        color: #424242;
+      }
+
+      ::placeholder { /* Most modern browsers support this now. */
+        color: #424242;
+      }
+    }
+  }
+
+  &.sm {
+    .field-input {
+      height: 36px;
+      min-height: 36px;
+      font-size: 12px;
+    }
+
+    .field-label {
+      font-size: 10px;
+    }
+
+    &.has-value:not(.no-label) {
+      .field-input {
+        padding-top: 12px;
+      }
+    }
+  }
+
+  &.lg {
+    .field-input {
+      height: 48px;
+      min-height: 48px;
+      font-size: 16px;
+    }
+
+    .field-label {
+      font-size: 14px;
+    }
+
+    &.has-value:not(.no-label) {
+      .field-input {
+        padding-top: 16px;
+      }
+    }
+  }
+}

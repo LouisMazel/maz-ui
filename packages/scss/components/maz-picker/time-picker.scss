@@ -1,0 +1,155 @@
+.time-picker-column::-webkit-scrollbar {
+  display: none;
+}
+
+.time-picker {
+  width: 160px;
+  max-width: 160px;
+  position: relative;
+  z-index: 1;
+
+  &.inline {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  &::after,
+  &::before {
+    content: '';
+    top: 50%;
+    position: absolute;
+    margin: 0 auto;
+    margin-top: -14px;
+    height: 30px;
+    z-index: -1;
+    width: 85%;
+    left: 0;
+    right: 0;
+    box-sizing: border-box;
+    text-align: left;
+    border-top: 1px solid #CCC;
+    border-bottom: 1px solid #CCC;
+  }
+
+  &-column {
+    position: relative;
+    overflow-y: auto;
+
+    &-item {
+      height: 28px;
+      min-height: 28px;
+      padding: 0;
+      color: #252525;
+      cursor: pointer;
+      position: relative;
+      border: none;
+      background: transparent;
+      font-size: 13px;
+      width: 100%;
+      outline: none;
+
+      &-effect {
+        position: absolute;
+        opacity: .6;
+        background: dodgerblue;
+        height: 24px;
+        width: 70%;
+        top: 2px;
+        left: 15%;
+        transition: all 450ms cubic-bezier(.23, 1, .32, 1) 0ms;
+        transform: scale(0);
+        border-radius: 4px;
+
+        &:hover {
+          transform: scale(1);
+        }
+      }
+
+      &-text {
+        position: relative;
+      }
+
+      &:hover {
+        .time-picker-column-item-text {
+          color: white;
+          transition: all 450ms cubic-bezier(.23, 1, .32, 1) 0ms;
+        }
+
+        .time-picker-column-item-effect {
+          transform: scale(1);
+        }
+      }
+
+      &.active {
+        color: white;
+        font-weight: bold;
+
+        .time-picker-column-item-effect {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      &.disabled {
+        .time-picker-column-item-text {
+          color: #CCC;
+
+          &:hover {
+            color: #CCC !important;
+          }
+        }
+
+        .time-picker-column-item-effect {
+          transform: scale(0) !important;
+          opacity: 0 !important;
+        }
+
+        &.active {
+          .time-picker-column-item-effect {
+            background-color: #EAEAEA !important;
+            transform: scale(1) !important;
+            opacity: 1 !important;
+          }
+        }
+      }
+    }
+  }
+
+  &.with-border {
+    border-left: 1px solid #EAEAEA;
+
+    &.is-dark {
+      border-left: 1px solid #757575;
+    }
+  }
+
+  &.is-dark {
+    .time-picker-column-item-text {
+      color: white;
+    }
+  }
+}
+
+@media screen and (max-width: 415px) {
+  .time-picker.inline {
+    flex: auto;
+    border-left: none;
+  }
+
+  .time-picker:not(.inline) {
+    border: 0;
+    border-top: 1px solid #EAEAEA;
+    width: 100%;
+    max-width: 100%;
+    height: unset !important;
+    overflow: hidden;
+
+    &.dark {
+      border-top: 1px solid #757575;
+    }
+  }
+
+  .timepicker-container.is-dark {
+    border-color: lighten(#424242, 20%);
+  }
+}

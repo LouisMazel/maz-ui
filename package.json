@@ -57,6 +57,8 @@
     "husky": "^4.2.3",
     "json-templater": "^1.2.0",
     "libphonenumber-js": "^1.7.30",
+    "moment": "^2.24.0",
+    "moment-range": "^4.0.2",
     "ncp": "^2.0.0",
     "node-sass": "^4.13.1",
     "nuxt": "^2.11.0",

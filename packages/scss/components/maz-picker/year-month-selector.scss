@@ -1,0 +1,19 @@
+.year-month-selector {
+  position: absolute;
+  background-color: white;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  color: #424242;
+  padding: 10px;
+
+  &.dark {
+    color: white;
+    background-color: #424242;
+  }
+
+  .month-button {
+    text-transform: capitalize;
+  }
+}

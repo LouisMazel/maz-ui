@@ -5,7 +5,6 @@
       v-for="(component, i) in dynamicComponents"
       :key="i"
     />
-    {{ dynamicComponents }}
   </div>
 </template>
 

@@ -1,0 +1,16 @@
+.week-days {
+  height: 41px;
+  text-transform: capitalize;
+
+  &.is-dark .week-days-container {
+    color: #A8A8A8 !important;
+  }
+
+  @media screen and (max-width: 415px) {
+    &:not(.inline) {
+      .datepicker-week {
+        height: 21px !important;
+      }
+    }
+  }
+}
