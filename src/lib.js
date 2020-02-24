@@ -17,6 +17,7 @@ import MazListItem from '../packages/components/MazList/MazListItem/index.js'
 import MazLoader from '../packages/components/MazLoader/index.js'
 import MazPagination from '../packages/components/MazPagination/index.js'
 import MazPicker from '../packages/components/MazPicker/index.js'
+import MazPickerNew from '../packages/components/MazPickerNew/index.js'
 import MazPhoneNumberInput from '../packages/components/MazPhoneNumberInput/index.js'
 import MazReadMore from '../packages/components/MazReadMore/index.js'
 import MazResponsiveMenu from '../packages/components/MazResponsiveMenu/index.js'
@@ -47,6 +48,7 @@ const components = [
   MazLoader,
   MazPagination,
   MazPicker,
+  MazPickerNew,
   MazPhoneNumberInput,
   MazReadMore,
   MazResponsiveMenu,
@@ -89,6 +91,7 @@ export default {
   MazLoader,
   MazPagination,
   MazPicker,
+  MazPickerNew,
   MazPhoneNumberInput,
   MazReadMore,
   MazResponsiveMenu,

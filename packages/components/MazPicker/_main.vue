@@ -15,7 +15,6 @@
       :dark="dark"
       :hint="hint"
       :error="error"
-      :is-focus="hasPickerOpen"
       :color="color"
       :label="label"
       :no-label="noLabel"

@@ -7,6 +7,14 @@
         id="mazPicker"
         v-model="pickerValue"
       />
+
+      <br>
+
+      <MazPickerNew
+        id="mazPickerNew"
+        v-model="pickerValue"
+        label="Select date"
+      />
     </ComponentContainer>
   </div>
 </template>
