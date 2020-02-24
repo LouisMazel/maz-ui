@@ -3,7 +3,7 @@
     class="year-month-selector flex direction-column"
     :class="{'dark': dark}"
   >
-    <div class="flex justify-content-right">
+    <div class="flex justify-end">
       <CustomButton
         :color="dark ? '#757575' : '#424242'"
         :dark="dark"
@@ -15,7 +15,7 @@
         </span>
       </CustomButton>
     </div>
-    <div class="flex-1 flex flex--wrap flex-center">
+    <div class="flex-1 flex flex--wrap space-between align-center">
       <CustomButton
         v-for="(m, index) in months"
         :key="index"

@@ -94,9 +94,9 @@
     </div>
     <div
       v-else
-      class="flex justify-content-between"
+      class="flex space-between"
     >
-      <div class="flex justify-content-between">
+      <div class="flex space-between">
         <span class="header-picker-range dots-text flex-1">
           {{ getRangeDatesFormatted }}
         </span>

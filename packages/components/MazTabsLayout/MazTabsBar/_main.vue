@@ -1,7 +1,7 @@
 <template>
   <div
     ref="MazTabsBar"
-    class="tabs-bar flex flex-direction-column"
+    class="tabs-bar flex direction-column"
     :class="{
       'is-dark': dark
     }"
@@ -11,7 +11,7 @@
         v-for="({ label, disabled }, index) in items"
         :key="index"
         :class="{active : value === index, disabled: disabled }"
-        class="tabs-bar__item text-center flex-1 align-center flex justify-center h-100 mh-100"
+        class="tabs-bar__item text-center flex-1 flex fle-center h-100 mh-100"
         @click="disabled ? null : $emit('input', index)"
       >
         {{ label }}

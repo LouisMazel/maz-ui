@@ -1,6 +1,6 @@
 <template>
   <button
-    class="custom-button flex align-center justify-content-center"
+    class="custom-button flex flex-center"
     :class="{
       'is-dark': dark,
       'with-border': withBorder,
@@ -21,7 +21,7 @@
       class="custom-button-effect"
     />
     <span
-      class="custom-button-content flex align-center justify-content-center flex-1"
+      class="custom-button-content flex flex-center flex-1"
       :style="[colorStyle]"
     >
       <slot :style="[colorStyle]" />
