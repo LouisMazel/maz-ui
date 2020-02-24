@@ -47,7 +47,7 @@ $mini-size: 30px;
   }
 
   &--rounded {
-    border-radius: 20px;
+    border-radius: 50px;
   }
 
   &--block {
@@ -79,6 +79,11 @@ $mini-size: 30px;
     padding: 0;
     height: 40px;
     width: 40px;
+
+    &.btn--lg {
+      height: 50px;
+      width: 50px;
+    }
 
     &.btn--md {
       height: 36px;
