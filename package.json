@@ -32,9 +32,13 @@
     "publish-npm:beta": "npm publish --tag beta",
     "publish-npm": "npm publish"
   },
+  "lint-staged": {
+    "*.{js,vue}": "npm run lint:js",
+    "*.{css,vue}": "npm run lint:style"
+  },
   "husky": {
     "hooks": {
-      "pre-push": "npm run lint"
+      "pre-commit": "lint-staged"
     }
   },
   "devDependencies": {
@@ -57,6 +61,7 @@
     "husky": "^4.2.3",
     "json-templater": "^1.2.0",
     "libphonenumber-js": "^1.7.30",
+    "lint-staged": "^10.0.8",
     "ncp": "^2.0.0",
     "node-sass": "^4.13.1",
     "nuxt": "^2.11.0",
