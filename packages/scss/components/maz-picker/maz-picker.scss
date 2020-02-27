@@ -3,7 +3,7 @@
   margin: 0 auto;
   text-align: left;
   font-size: 14px;
-  border-radius: 4px;
+  border-radius: $border-radius;
   position: relative;
 
   .time-picker-overlay {

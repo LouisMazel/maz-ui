@@ -6,7 +6,23 @@
       <MazPicker
         id="mazPicker"
         v-model="pickerValue"
+        dark
       />
+
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+
+      <!-- <MazPicker
+        id="mazPicker2"
+        v-model="pickerValue"
+        dark
+      /> -->
 
       <br>
 
@@ -14,6 +30,7 @@
         id="mazPickerNew"
         v-model="pickerValue"
         label="Select date"
+        dark
       />
     </ComponentContainer>
   </div>
@@ -24,7 +41,7 @@
     name: 'MazPickerDoc',
     data () {
       return {
-        pickerValue: null,
+        pickerValue: '2020-02-03',
         codeExample: `<template>
 </template>`
       }

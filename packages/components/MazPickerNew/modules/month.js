@@ -3,7 +3,7 @@ import { extendMoment } from 'moment-range'
 const moment = extendMoment(Moment)
 
 export default class Month {
-  constructor (month, year, locale) {
+  constructor (month, year, locale = 'fr') {
     moment.locale(locale)
     this.start = moment([year, month])
     this.end = this.start.clone().endOf('month')
@@ -33,7 +33,7 @@ export default class Month {
   }
 }
 
-export const getWeekDays = (locale, firstDay) => {
+export const getWeekDays = (locale, firstDay = 1) => {
   const firstDayNumber = firstDay === 0
     ? 7
     : firstDay || moment.localeData(locale).firstDayOfWeek()

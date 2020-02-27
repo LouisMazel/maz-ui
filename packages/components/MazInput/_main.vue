@@ -2,7 +2,7 @@
   <div
     ref="parent"
     :class="[{
-      'is-focused': isFocus,
+      'is-focused': isFocus || focus,
       'is-valid': valid,
       'has-value': value,
       'has-error': error,
@@ -182,7 +182,9 @@
       // When is `true` the input has not label
       noLabel: { type: Boolean, default: false },
       // When is `true` and is `required`, the `*` symbol is not showing
-      noRequiredSymbol: { type: Boolean, default: false }
+      noRequiredSymbol: { type: Boolean, default: false },
+      // force focus style input
+      focus: { type: Boolean, default: false }
     },
     data () {
       return {

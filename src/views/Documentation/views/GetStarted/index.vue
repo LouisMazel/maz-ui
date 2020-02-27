@@ -78,7 +78,7 @@ new Vue({
     [
       "component",
       {
-        "libraryName": "maz-ui"
+        "libraryName": "maz-ui",
         "style": false
       }
     ]
