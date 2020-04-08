@@ -13,11 +13,7 @@
         }"
         class="flex header__logo py-2 align-center"
       >
-        <img
-          class="header__logo__img mr-2"
-          alt="Vue logo"
-          src="@/assets/img/logo-base-dodgerblue.png"
-        >
+        <LogoSvg class="header__logo__img mr-2" />
         <div class="header__title flex direction-column hidden-tablet">
           <h1 class="fs-20">
             Maz UI
@@ -64,12 +60,14 @@
 </template>
 
 <script>
+  import LogoSvg from '@/components/LogoSvg'
   import SocialButtons from '@/components/SocialButtons'
   import DarkSwitchBanner from '@/components/DarkSwitchBanner'
 
   export default {
     name: 'Header',
     components: {
+      LogoSvg,
       SocialButtons,
       DarkSwitchBanner
     },
@@ -99,6 +97,7 @@
       text-decoration: none;
 
       &__img {
+        width: 100px;
         height: 40px;
       }
     }
