@@ -11,11 +11,12 @@
     "serve:docs": "vuese serve --open",
     "eslint": "eslint ./build --fix",
     "lint": "npm run lint:js && npm run lint:style && npm run lint:md",
-    "lint:js": "vue-cli-service lint",
+    "lint:js": "vue-cli-service lint --no-fix",
+    "lint:js:fix": "vue-cli-service lint",
     "lint:md": "prettier '**/*.md' --check",
     "lint:md:fix": "prettier '**/*.md' --write",
-    "lint:style": "stylelint 'src/**/*.scss' 'src/**/*.css' 'packages/**/*.scss' 'packages/**/*.css' 'src/**/*.vue'",
-    "lint:style:fix": "stylelint 'src/**/*.scss' 'src/**/*.css' 'packages/**/*.scss' 'packages/**/*.css' 'src/**/*.vue' --fix",
+    "lint:style": "stylelint 'src/**/*.{scss,css,vue}' 'packages/**/*.{scss,css,vue}",
+    "lint:style:fix": "npm run lint -- --fix",
     "clean": "rimraf lib",
     "build": "npm run clean && npm run gen:docs && npm run build:entry && npm run build:lib && npm run build:css && npm run build:docs",
     "build:entry": "node build/build-entry.js",
@@ -34,7 +35,7 @@
   },
   "lint-staged": {
     "*.{js,vue}": "npm run lint:js",
-    "*.{css,vue}": "npm run lint:style"
+    "*.{css,scss,vue}": "npm run lint:style"
   },
   "husky": {
     "hooks": {
