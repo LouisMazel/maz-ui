@@ -83,8 +83,9 @@
 
     .menu-item {
       border: none;
-      color: black;
-      font-weight: 300;
+      color: #333;
+      box-shadow: none;
+      font-weight: 500;
       margin-bottom: .5em;
 
       &:last-child {

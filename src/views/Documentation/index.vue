@@ -2,7 +2,7 @@
   <div class="documentation flex flex-1 pos-r">
     <MazSidebar
       v-model="hasLeftSidebarOpen"
-      :width="250"
+      :width="300"
       :absolute="isAbsolute"
       :layer="isAbsolute"
     >
@@ -11,7 +11,7 @@
     <div class="documentation__container flex direction-column flex-1">
       <div
         v-if="$route.name !== 'Install' && $route.name !== 'GetStarted'"
-        class="flex space-between px-5 py-3 align-center"
+        class="flex space-between px-5 py-3 align-center flex--wrap"
       >
         <h2>
           {{ currentComponent | capitalize }}
@@ -30,7 +30,7 @@
     <MazSidebar
       v-if="$route.name !== 'Install' && $route.name !== 'GetStarted'"
       v-model="hasRightSidebarOpen"
-      :width="700"
+      :width="900"
       right
       absolute
       layer

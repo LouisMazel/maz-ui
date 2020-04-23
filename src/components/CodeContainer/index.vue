@@ -28,9 +28,8 @@
     display: block;
     font-family: monospace;
     white-space: pre;
-    font-size: .857em;
     background-color: #FAFAFA;
-    border: 1px solid #EAEEFB;
+    border: 2px solid #EAEEFB;
     border-radius: $border-radius;
     -webkit-font-smoothing: auto;
     overflow-x: auto;
@@ -43,7 +42,7 @@
 
   .is-dark .code-container {
     background-color: $hover-color-dark;
-    border: 1px solid #535673;
+    border-color: #535673;
 
     .hljs,
     .hljs-subst {

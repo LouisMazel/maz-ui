@@ -31,12 +31,12 @@
     font-weight: 400;
     appearance: none;
     outline: none;
-    border: 1px solid $third-color;
+    border: 2px solid $third-color;
     border-radius: $border-radius;
     font-size: 1em;
     z-index: 0;
     caret-color: $primary-color;
-    margin-left: -1px;
+    margin-left: -2px;
     height: 40px;
     min-height: 40px;
 
@@ -328,7 +328,7 @@
 
     &__input {
       background-color: $bg-color-dark-l;
-      border: 1px solid $third-color-dark;
+      border-color: $third-color-dark;
       color: $secondary-color-dark;
 
       &::-webkit-input-placeholder {

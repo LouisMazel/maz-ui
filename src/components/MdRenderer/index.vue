@@ -5,7 +5,6 @@
       v-for="(component, i) in dynamicComponents"
       :key="i"
     />
-    {{ dynamicComponents }}
   </div>
 </template>
 
@@ -43,45 +42,45 @@
 <style lang="scss">
   .frontmatter-markdown {
     margin: auto;
-    max-width: 42em;
+    max-width: 800px;
     background-color: $bg-color;
 
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-      font-weight: bold;
-    }
+    // h1,
+    // h2,
+    // h3,
+    // h4,
+    // h5,
+    // h6 {
+    //   font-weight: bold;
+    // }
 
     h1 {
-      color: $text-color;
-      font-size: 28pt;
+      color: #333;
+      font-size: 2em;
     }
 
     h2 {
       border-bottom: 1px solid $hover-color;
-      color: $text-color;
-      font-size: 24px;
+      color: #333;
+      font-size: 1.5em;
     }
 
     h3 {
-      font-size: 18px;
+      font-size: 1.3em;
     }
 
     h4 {
-      font-size: 16px;
+      font-size: 1.2em;
     }
 
     h5 {
-      font-size: 14px;
+      font-size: 1.1em;
     }
 
     h6 {
       color: $muted-color;
       background-color: inherit;
-      font-size: 14px;
+      font-size: 1em;
     }
 
     hr {
@@ -185,7 +184,8 @@
 
     blockquote {
       background: $hover-color;
-      border-left: 5px solid $primary-color;
+      border-left: 4px solid $primary-color;
+      border-radius: $border-radius;
       padding: .5em 10px;
     }
 
