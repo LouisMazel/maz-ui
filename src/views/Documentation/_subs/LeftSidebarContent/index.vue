@@ -6,7 +6,7 @@
     <router-link
       v-for="route in routesStartedDoc"
       :key="route.name"
-      class="menu-item btn btn--white mb-2 w-100"
+      class="menu-item btn btn--white mb-2 w-100 no-shadow text-color bg-color border-none"
       :to="{
         name: route.name
       }"
@@ -23,7 +23,7 @@
       <router-link
         v-for="route in routesFormComponents"
         :key="route.name"
-        class="menu-item btn btn--white w-100"
+        class="menu-item btn btn--white w-100 no-shadow text-color bg-color border-none"
         :to="{
           name: route.name
         }"
@@ -36,7 +36,7 @@
       <router-link
         v-for="route in routesUiComponents"
         :key="route.name"
-        class="menu-item btn btn--white w-100"
+        class="menu-item btn btn--white w-100 no-shadow text-color bg-color border-none"
         :to="{
           name: route.name
         }"
@@ -82,9 +82,7 @@
     overflow-y: auto;
 
     .menu-item {
-      border: none;
-      color: black;
-      font-weight: 300;
+      font-weight: 500;
       margin-bottom: .5em;
 
       &:last-child {
@@ -98,9 +96,6 @@
   }
 
   .is-dark .menu-item {
-    background-color: $bg-color-dark;
-    color: $text-color-dark;
-
     &:hover,
     &:focus {
       background-color: $hover-color-dark;

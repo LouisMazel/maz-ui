@@ -1,6 +1,6 @@
 <template>
   <header
-    class="header bg-color flex-fixed"
+    class="header bg-color flex-fixed bg-color border-color border-bottom-1 border-bottom-solid"
     role="banner"
   >
     <nav
@@ -13,18 +13,14 @@
         }"
         class="flex header__logo py-2 align-center"
       >
-        <img
-          class="header__logo__img mr-2"
-          alt="Vue logo"
-          src="@/assets/img/logo-base-dodgerblue.png"
-        >
-        <div class="header__title flex direction-column hidden-tablet">
+        <LogoSvg class="header__logo__img mr-2" />
+        <div class="header__title flex direction-column hidden-tablet pos-r top-4">
           <h1 class="fs-20">
             Maz UI
           </h1>
-          <p class="fs-14 header__title__sub">
+          <h2 class="fs-14 header__title__sub text-color">
             Components & CSS Library
-          </p>
+          </h2>
         </div>
       </router-link>
       <div class="header__menu flex hidden-mobile">
@@ -64,12 +60,14 @@
 </template>
 
 <script>
+  import LogoSvg from '@/components/LogoSvg'
   import SocialButtons from '@/components/SocialButtons'
   import DarkSwitchBanner from '@/components/DarkSwitchBanner'
 
   export default {
     name: 'Header',
     components: {
+      LogoSvg,
       SocialButtons,
       DarkSwitchBanner
     },
@@ -92,13 +90,11 @@
 
 <style lang="scss" scoped>
   .header {
-    background-color: $bg-color;
-    border-bottom: 1px solid $hover-color;
-
     &__logo {
       text-decoration: none;
 
       &__img {
+        width: 100px;
         height: 40px;
       }
     }
@@ -135,13 +131,6 @@
 
   .is-dark {
     .header {
-      background-color: $bg-color-dark;
-      border-color: $hover-color-dark;
-
-      &__title__sub {
-        color: $text-color-dark;
-      }
-
       &__menu__item {
         &:focus,
         &:hover {

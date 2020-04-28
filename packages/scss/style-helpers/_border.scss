@@ -1,0 +1,54 @@
+@import './variables/_sizes';
+@import './variables/_positions';
+@import './variables/_border-styles';
+@import './variables/_color_types';
+@import './variables/_states';
+
+.border-color {
+  border-color: $hover-color;
+}
+
+.border-none {
+  border: none;
+}
+
+.border-color-dark {
+  border-color: $hover-color-dark;
+}
+
+.is-dark.border-color,
+.is-dark .border-color {
+  border-color: $hover-color-dark;
+}
+
+@each $name, $color in $color_types {
+  @if (type-of($color) == 'color') {
+    .border-#{$name} {
+      border-color: $color;
+    }
+  }
+}
+
+@each $style in $border-styles {
+  .border-#{$style} {
+    border-style: #{$style};
+  }
+
+  @each $position in $positions {
+    .border-#{$position}-#{$style} {
+      border-#{$position}-style: #{$style};
+    }
+  }
+}
+
+@each $size in $sizes {
+  .border-#{$size} {
+    border-width: #{$size}px;
+  }
+
+  @each $position in $positions {
+    .border-#{$position}-#{$size} {
+      border-#{$position}-width: #{$size}px;
+    }
+  }
+}

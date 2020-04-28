@@ -2,6 +2,7 @@
   <div
     class="maz-search"
     :class="{ 'is-dark': dark }"
+    @blur.capture="closeList"
   >
     <MazInput
       ref="textField"
@@ -9,10 +10,9 @@
       v-bind="$attrs"
       @input="debouncedSearch"
       @keydown="keyboardNav"
-      @keyup="$emit('keyup', $event)"
-      @blur="handleBlur"
-      @change="$emit('change', $event)"
       @focus="openList"
+      @keyup="$emit('keyup', $event)"
+      @change="$emit('change', $event)"
     />
     <transition name="slide">
       <div
@@ -31,7 +31,7 @@
             {'keyboard-selected': tmpValue === (itemValue ? item[itemValue] : item)}
           ]"
           class="maz-search__items__item"
-          @click.prevent="updateValue((itemValue ? item[itemValue] : item))"
+          @click.stop="updateValue((itemValue ? item[itemValue] : item))"
         >
           <!-- Item template -->
           <slot
@@ -117,7 +117,7 @@
     },
     watch: {
       query (oldValue, newValue) {
-        if (oldValue !== newValue && !this.hasListOpen) this.openList()
+        if (oldValue !== newValue && !this.hasListOpen && !this.hasEmptyQuery) this.openList()
       }
     },
     methods: {
@@ -131,11 +131,6 @@
       async reset () {
         this.closeList()
         this.query = null
-        // this.$refs.textField.$refs.MazInput.focus()
-      },
-      handleBlur (e) {
-        if (this.$el.contains(e.relatedTarget)) return
-        this.closeList()
       },
       async updateValue (item) {
         // event sent when user select an item in the items list

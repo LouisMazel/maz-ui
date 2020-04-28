@@ -5,10 +5,11 @@ $small-size: 32px;
 $mini-size: 30px;
 
 .btn {
-  border: 1px solid transparent;
+  border: 2px solid transparent;
   outline: none;
   cursor: pointer;
   transition: all .25s cubic-bezier(.645, .045, .355, 1);
+  box-shadow: 0 2px 5px 0 rgba(3, 6, 26, .15);
   background-color: $primary-color;
   color: white;
   display: inline-block;
@@ -35,8 +36,7 @@ $mini-size: 30px;
     background-color: $primary-color;
   }
 
-  &:focus,
-  &.active {
+  &:focus {
     box-shadow: 0 0 0 .143rem rgba($primary-color, .5);
   }
 
@@ -47,7 +47,7 @@ $mini-size: 30px;
   }
 
   &--rounded {
-    border-radius: 20px;
+    border-radius: 50px;
   }
 
   &--block {
@@ -80,6 +80,11 @@ $mini-size: 30px;
     height: 40px;
     width: 40px;
 
+    &.btn--lg {
+      height: 50px;
+      width: 50px;
+    }
+
     &.btn--md {
       height: 36px;
       width: 36px;
@@ -100,6 +105,10 @@ $mini-size: 30px;
   &--light {
     color: $secondary-color;
   }
+
+  &--no-shadow {
+    box-shadow: none;
+  }
 }
 
 @import './variables/_color_types';
@@ -118,14 +127,14 @@ $mini-size: 30px;
         background-color: $color;
       }
 
-      &:focus,
-      &.active {
+      &:focus {
         box-shadow: 0 0 0 .143rem rgba($color, .5);
       }
 
       &--outline {
         background-color: rgba($color, .05);
-        border: 1px solid $color;
+        box-shadow: none;
+        border-color: $color;
         color: $color;
 
         &:hover,
@@ -135,8 +144,7 @@ $mini-size: 30px;
           color: white;
         }
 
-        &:focus,
-        &.active {
+        &:focus {
           box-shadow: 0 0 0 .143rem rgba($color, .5);
         }
       }
@@ -145,13 +153,13 @@ $mini-size: 30px;
 }
 
 .btn--default--outline {
-  color: $secondary-color;
+  color: $default-color;
 }
 
 .btn--disabled:disabled {
   box-shadow: none;
   background-color: $disabled-color;
-  border: 1px solid $disabled-color;
+  border-color: $disabled-color;
   color: white;
   cursor: not-allowed;
 }

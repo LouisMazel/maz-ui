@@ -1,6 +1,6 @@
 {
   "name": "maz-ui",
-  "version": "0.7.0",
+  "version": "1.0.0",
   "main": "lib/maz-ui.common.js",
   "description": "A components library for VueJs",
   "author": "Louis Mazel <me@loicmazuel.com>",
@@ -11,11 +11,12 @@
     "serve:docs": "vuese serve --open",
     "eslint": "eslint ./build --fix",
     "lint": "npm run lint:js && npm run lint:style && npm run lint:md",
-    "lint:js": "vue-cli-service lint",
+    "lint:js": "vue-cli-service lint --no-fix",
+    "lint:js:fix": "vue-cli-service lint",
     "lint:md": "prettier '**/*.md' --check",
     "lint:md:fix": "prettier '**/*.md' --write",
-    "lint:style": "stylelint 'src/**/*.scss' 'src/**/*.css' 'packages/**/*.scss' 'packages/**/*.css' 'src/**/*.vue'",
-    "lint:style:fix": "stylelint 'src/**/*.scss' 'src/**/*.css' 'packages/**/*.scss' 'packages/**/*.css' 'src/**/*.vue' --fix",
+    "lint:style": "stylelint 'src/**/*.{scss,css,vue}' 'packages/**/*.{scss,css,vue}' ",
+    "lint:style:fix": "npm run lint -- --fix",
     "clean": "rimraf lib",
     "build": "npm run clean && npm run gen:docs && npm run build:entry && npm run build:lib && npm run build:css && npm run build:docs",
     "build:entry": "node build/build-entry.js",
@@ -32,9 +33,13 @@
     "publish-npm:beta": "npm publish --tag beta",
     "publish-npm": "npm publish"
   },
+  "lint-staged": {
+    "*.{js,vue}": "npm run lint:js",
+    "*.{css,scss,vue}": "npm run lint:style"
+  },
   "husky": {
     "hooks": {
-      "pre-push": "npm run lint"
+      "pre-commit": "lint-staged"
     }
   },
   "devDependencies": {
@@ -59,6 +64,7 @@
     "libphonenumber-js": "^1.7.30",
     "moment": "^2.24.0",
     "moment-range": "^4.0.2",
+    "lint-staged": "^10.0.8",
     "ncp": "^2.0.0",
     "node-sass": "^4.13.1",
     "nuxt": "^2.11.0",

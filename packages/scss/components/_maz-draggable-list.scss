@@ -5,9 +5,9 @@
   &__item {
     position: relative;
     padding: .75rem 1.25rem;
-    margin-bottom: -1px;
+    margin-bottom: -2px;
     background-color: $bg-color;
-    border: 1px solid $hover-color;
+    border: 2px solid $hover-color;
     cursor: move;
     width: 100%;
     font-size: .875em;
@@ -47,7 +47,7 @@
   .maz-draggable-list__item {
     background-color: $bg-color-dark;
     color: $text-color-dark;
-    border: 1px solid $hover-color-dark;
+    border-color: $hover-color-dark;
 
     & > * {
       color: $text-color-dark;

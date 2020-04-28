@@ -27,9 +27,9 @@
         fab
       </MazBtn>
       <MazBtn
-        loader
+        loading
       >
-        Primary loader
+        Primary loading
       </MazBtn>
       <MazBtn
         disabled
@@ -43,7 +43,6 @@
       </MazBtn>
       <MazBtn
         href="/#/documentation/btn"
-        disabled
       >
         It's a link
       </MazBtn>
@@ -129,18 +128,18 @@
     </ComponentContainer>
     <ComponentContainer>
       <h3 class="mb-3">
-        Loader
+        loading
       </h3>
       <div
         class="btn-container"
       >
         <MazBtn
           v-for="size in btnSizes"
-          :key="`loader-${size}`"
+          :key="`loading-${size}`"
           :size="size"
-          loader
+          loading
         >
-          Loader {{ size }}
+          loading {{ size }}
         </MazBtn>
       </div>
     </ComponentContainer>
@@ -153,7 +152,7 @@
       >
         <MazBtn
           v-for="size in btnSizes"
-          :key="`loader-${size}`"
+          :key="`loading-${size}`"
           :size="size"
           disabled
           outline
@@ -171,7 +170,7 @@
     data () {
       return {
         btnTypes: [
-          'primary', 'secondary', 'success', 'danger', 'warning', 'grey', 'info', 'light', 'dark', 'default', 'white', 'black'
+          'primary', 'secondary', 'third', 'success', 'danger', 'warning', 'grey', 'info', 'light', 'dark', 'default', 'white', 'black'
         ],
         btnSizes: [
           'lg', '', 'md', 'sm', 'mini'
@@ -196,9 +195,9 @@
     fab
   </MazBtn>
   <MazBtn
-    loader
+    loading
   >
-    Primary loader
+    Primary loading
   </MazBtn>
   <MazBtn
     disabled
@@ -212,7 +211,6 @@
   </MazBtn>
   <MazBtn
     href="/#/documentation/btn"
-    disabled
   >
     It's a link
   </MazBtn>

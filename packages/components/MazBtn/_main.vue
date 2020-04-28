@@ -65,7 +65,9 @@
       // apply the focus style
       active: { type: Boolean, default: false },
       // take 100% of the width
-      block: { type: Boolean, default: false }
+      block: { type: Boolean, default: false },
+      // remove shadow/elevation
+      noShadow: { type: Boolean, default: false }
     },
     computed: {
       componentType () {
@@ -79,16 +81,17 @@
         return loading || disabled
       },
       classes () {
-        const { color, size, outline, rounded, isDisabled, fab, active, block } = this
+        const { color, size, outline, rounded, isDisabled, fab, active, block, noShadow } = this
         return [
           ...(color ? [`btn--${color}`] : [null]),
           ...(size ? [`btn--${size}`] : [null]),
           ...(outline ? [`btn--${color}--outline`] : [null]),
           ...(rounded ? [`btn--rounded`] : [null]),
           ...(block ? [`btn--block`] : [null]),
-          ...(fab ? [`btn--fab`] : [null]),
+          ...(fab ? [`btn--fab dots-text`] : [null]),
           ...(isDisabled ? [`btn--disabled`] : [null]),
-          ...(active ? [`active`] : [null])
+          ...(active ? [`active`] : [null]),
+          ...(noShadow ? [`no-shadow`] : [null])
         ]
       }
     },

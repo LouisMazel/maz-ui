@@ -9,9 +9,3 @@
     name: 'TimePicker'
   }
 </script>
-
-<style lang="scss" scoped>
-  .time-picker {
-
-  }
-</style>

@@ -2,7 +2,8 @@
   <div
     class="maz-select"
     :class="[{
-      'has-list-open': hasListOpen
+      'has-list-open': hasListOpen,
+      'is-dark': dark
     }]"
     @click.stop="toggleList"
   >
