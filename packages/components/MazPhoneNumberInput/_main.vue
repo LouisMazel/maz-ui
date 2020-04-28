@@ -1,7 +1,7 @@
 <template>
   <div
     :id="id"
-    :class="[{ 'dark': dark }, size]"
+    :class="[{ 'is-dark': dark }, size]"
     class="maz-phone-number-input flex"
   >
     <div
@@ -25,7 +25,6 @@
         :no-flags="noFlags"
         :show-code-on-list="showCodeOnList"
         :size="size"
-        :dark="dark"
         class="input-country-selector"
       >
         <slot
@@ -41,7 +40,6 @@
         v-model="phoneNumber"
         :label="t.phoneNumberLabel"
         :hint="hintValue"
-        :dark="dark"
         :disabled="disabled"
         :size="size"
         :error="error"
@@ -192,8 +190,9 @@
     },
     methods: {
       getAsYouTypeFormat (payload) {
-        const asYouType = new AsYouType(payload.countryCode)
-        return asYouType.input(payload.phoneNumber)
+        const { countryCode, phoneNumber } = payload
+        const asYouType = new AsYouType(countryCode)
+        return phoneNumber ? asYouType.input(phoneNumber) : null
       },
       getParsePhoneNumberFromString ({ phoneNumber, countryCode }) {
         const parsing = phoneNumber && countryCode ? parsePhoneNumberFromString(phoneNumber, countryCode) : null
