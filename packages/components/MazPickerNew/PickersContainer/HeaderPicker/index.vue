@@ -1,6 +1,6 @@
 <template>
   <div
-    class="header-picker p-2"
+    class="header-picker p-2 bg-primary text-white"
   >
     <p class="header-picker__year">
       {{ year }}
@@ -30,9 +30,6 @@
 
 <style lang="scss" scoped>
   .header-picker {
-    background-color: $primary-color;
-    color: white;
-
     &__year {
       opacity: .7;
     }

@@ -9,8 +9,9 @@
       v-for="(day, i) in monthDays"
       :key="i"
       tabindex="-1"
-      class="month-picker__day"
+      class="month-picker__day text-color bg-color-light"
       size="mini"
+      no-shadow
       @click="selectDay(day)"
     >
       {{ day.format('D') }}
@@ -19,7 +20,7 @@
 </template>
 
 <script>
-  import Month from '../../../modules/Month'
+  import Month from '../../../modules/month'
 
   export default {
     name: 'MonthPicker',
@@ -57,20 +58,6 @@
       width: 35px;
       height: 35px;
       font-size: .875em;
-
-      &:not(.selected) {
-        color: $text-color;
-      }
-
-      &:not(:hover) {
-        background-color: transparent;
-      }
-    }
-  }
-
-  .is-dark .month-picker {
-    &__day {
-      color: $text-color-dark;
     }
   }
 </style>

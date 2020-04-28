@@ -21,7 +21,7 @@
       :name="position !== 'bottom' ? 'slide' : 'slideinvert'"
     >
       <PickersContainer
-        v-if="hasPickerOpen"
+        v-if="!hasPickerOpen"
         :date-moment="dateMoment"
       />
     </transition>

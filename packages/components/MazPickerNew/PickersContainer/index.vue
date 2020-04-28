@@ -1,5 +1,5 @@
 <template>
-  <div class="pickers-container">
+  <div class="pickers-container bg-color-light">
     <HeaderPicker
       :date-moment="dateMoment"
     />
@@ -26,16 +26,10 @@
 
 <style lang="scss" scoped>
   .pickers-container {
-    background-color: $bg-color;
     border-radius: $border-radius;
     box-shadow: 0 0 8px 0 rgba(0, 0, 0, .1);
     position: absolute;
-    top: calc(100% + .143em);
     overflow: hidden;
     z-index: 999;
-  }
-
-  .is-dark .pickers-container {
-    background-color: $bg-color-dark;
   }
 </style>

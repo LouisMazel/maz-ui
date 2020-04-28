@@ -6,7 +6,6 @@
       <MazPicker
         id="mazPicker"
         v-model="pickerValue"
-        dark
       />
 
       <br>
@@ -30,7 +29,6 @@
         id="mazPickerNew"
         v-model="pickerValue"
         label="Select date"
-        dark
       />
     </ComponentContainer>
   </div>

@@ -11,7 +11,7 @@
 </template>
 
 <script>
-  import { getWeekDays } from '../../../modules/Month'
+  import { getWeekDays } from '../../../modules/month'
 
   export default {
     name: 'WeekDaysLabes',
