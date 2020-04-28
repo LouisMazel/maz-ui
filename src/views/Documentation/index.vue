@@ -45,7 +45,6 @@
   import LeftSidebarContent from './_subs/LeftSidebarContent'
   import RightSidebarContent from './_subs/RightSidebarContent'
   import NavFooter from '@/components/NavFooter'
-  import { mapGetters } from 'vuex'
 
   export default {
     name: 'Documentation',
@@ -62,7 +61,6 @@
       }
     },
     computed: {
-      ...mapGetters(['hasDarkTheme']),
       currentComponent () {
         return this.$route.name.slice(0, -3)
       }

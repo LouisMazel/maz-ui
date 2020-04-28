@@ -1,6 +1,8 @@
 @import './variables/index';
 @import './mixins/index';
 @import './_bg_colors';
+@import './_border_radiuses';
+@import './_border';
 @import './_fill_colors';
 @import './_label';
 @import './_dot';
@@ -9,14 +11,15 @@
 @import './_badge';
 @import './_table';
 @import './_animation';
+@import './_offsets';
 @import './_overflow';
 @import './_position';
 @import './_flex';
-@import './_typo';
+@import './_text';
 @import './_container_size';
+@import './_shadow';
 @import './_spacing';
 @import './_width_height';
-@import './_border_radiuses';
 @import './_fonts';
 @import './_responsive';
 
@@ -54,4 +57,16 @@ input {
   font: $base-font-weight $base-font-size $base-font-family;
   line-height: $base-line-height;
   font-kerning: normal;
+}
+
+html,
+body,
+#app {
+  color: $text-color;
+}
+
+html.is-dark,
+.is-dark body,
+.is-dark #app {
+  color: $text-color-dark;
 }

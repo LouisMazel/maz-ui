@@ -11,8 +11,7 @@
         :layer="layer"
       >
         <div
-          class="flex flex-1 align-center justify-center"
-          :class="{ 'text-white': hasDarkTheme }"
+          class="flex flex-1 align-center justify-center text-color"
         >
           SideBar Content Example
         </div>
@@ -77,8 +76,7 @@
         :layer="layer"
       >
         <div
-          class="flex flex-1 align-center justify-center"
-          :class="{ 'text-white': hasDarkTheme }"
+          class="flex flex-1 align-center justify-center text-color"
         >
           SideBar Content Example
         </div>
@@ -88,8 +86,6 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
-
   export default {
     name: 'MazSidebarDoc',
     data () {
@@ -103,9 +99,6 @@
         absolute: false,
         layer: false
       }
-    },
-    computed: {
-      ...mapGetters(['hasDarkTheme'])
     }
   }
 </script>

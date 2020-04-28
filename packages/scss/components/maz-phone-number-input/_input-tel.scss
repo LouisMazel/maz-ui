@@ -3,12 +3,6 @@
   height: 40px;
   min-height: 40px;
 
-  &:hover {
-    .input-tel__input {
-      border-color: $primary-color;
-    }
-  }
-
   &__label {
     position: absolute;
     top: 4px;
@@ -18,7 +12,7 @@
     opacity: 0;
     transition: all .25s cubic-bezier(.645, .045, .355, 1);
     font-size: .786em;
-    color: $secondary-color;
+    color: $input-text-color;
   }
 
   &__input {
@@ -31,7 +25,7 @@
     font-weight: 400;
     appearance: none;
     outline: none;
-    border: 2px solid $third-color;
+    border: 2px solid $border-color;
     border-radius: $border-radius;
     font-size: 1em;
     z-index: 0;
@@ -40,45 +34,33 @@
     height: 40px;
     min-height: 40px;
 
-    &:hover {
-      border-color: $primary-color;
-    }
-
     &:not(.no-country-selector) {
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
     }
 
     &::-webkit-input-placeholder {
-      color: $secondary-color;
+      color: $input-text-color;
     }
 
     &::-moz-placeholder {
-      color: $secondary-color;
+      color: $input-text-color;
     }
 
     &:-ms-input-placeholder {
-      color: $secondary-color;
+      color: $input-text-color;
     }
 
     &::-ms-input-placeholder {
-      color: $secondary-color;
+      color: $input-text-color;
     }
 
     &:-moz-placeholder {
-      color: $secondary-color;
+      color: $input-text-color;
     }
 
     &::placeholder {
-      color: $secondary-color;
-    }
-
-    &__input:-webkit-autofill,
-    &__input:-webkit-autofill:hover,
-    &__input:-webkit-autofill:focus,
-    &__input:-webkit-autofill:active {
-      box-shadow: 0 0 0 1000px $bg-color inset !important;
-      -webkit-text-fill-color: $secondary-color !important;
+      color: $input-text-color;
     }
   }
 
@@ -95,7 +77,7 @@
     appearance: none;
     border: none;
     background: transparent;
-    color: $secondary-color;
+    color: $input-text-color;
     border-radius: $clear-size;
     cursor: pointer;
     font-size: .857em;
@@ -139,7 +121,6 @@
     .input-tel {
       &__input {
         border-color: $primary-color;
-        box-shadow: 0 0 0 .143rem $primary-color-transparency;
       }
 
       &__label {
@@ -147,16 +128,9 @@
       }
     }
 
-    &.has-error {
-      .input-tel__input {
-        box-shadow: 0 0 0 .143rem $danger-color-transparency;
-      }
-    }
-
     &.is-valid {
       .input-tel__input {
         border-color: $success-color;
-        box-shadow: 0 0 0 .143rem $success-color-transparency;
       }
     }
   }
@@ -211,7 +185,6 @@
     cursor: not-allowed;
 
     .input-tel__input {
-      border-color: #CCC;
       background-color: #F2F2F2;
       color: $disabled-color;
 
@@ -323,49 +296,41 @@
 
   .input-tel {
     &__label {
-      color: $secondary-color-dark;
+      color: $input-text-color-dark;
     }
 
     &__input {
       background-color: $bg-color-dark-l;
-      border-color: $third-color-dark;
-      color: $secondary-color-dark;
+      border-color: $border-color-dark;
+      color: $input-text-color-dark;
 
       &::-webkit-input-placeholder {
-        color: $secondary-color-dark;
+        color: $input-text-color-dark;
       }
 
       &::-moz-placeholder {
-        color: $secondary-color-dark;
+        color: $input-text-color-dark;
       }
 
       &:-ms-input-placeholder {
-        color: $secondary-color-dark;
+        color: $input-text-color-dark;
       }
 
       &::-ms-input-placeholder {
-        color: $secondary-color-dark;
+        color: $input-text-color-dark;
       }
 
       &:-moz-placeholder {
-        color: $secondary-color-dark;
+        color: $input-text-color-dark;
       }
 
       &::placeholder {
-        color: $secondary-color-dark;
-      }
-
-      &__input:-webkit-autofill,
-      &__input:-webkit-autofill:hover,
-      &__input:-webkit-autofill:focus,
-      &__input:-webkit-autofill:active {
-        box-shadow: 0 0 0 1000px $bg-color-dark inset !important;
-        -webkit-text-fill-color: $secondary-color-dark !important;
+        color: $input-text-color-dark;
       }
     }
 
     &__toggle-btn {
-      color: $secondary-color-dark;
+      color: $input-text-color-dark;
 
       &__effect {
         background-color: $muted-color-dark;

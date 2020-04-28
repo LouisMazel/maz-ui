@@ -2,31 +2,24 @@
   $this: &;
 
   position: relative;
-  border: 2px solid $third-color;
+  border: 2px solid $border-color;
   border-radius: $border-radius;
-  padding: 2px 8px;
+  padding: 0 8px;
   width: 100%;
   min-height: 40px;
   background-color: $bg-color;
   overflow: hidden;
   transition-duration: .3s;
 
-  &:hover:not(.is-disabled) {
-    border-color: $primary-color;
-  }
-
   &.is-focused:not(.is-disabled) {
     border-color: $primary-color;
-    box-shadow: 0 0 0 .143rem $primary-color-transparency;
 
     &.has-error {
       border-color: $danger-color;
-      box-shadow: 0 0 0 .143rem $danger-color-transparency;
     }
 
     &.is-valid {
       border-color: $success-color;
-      box-shadow: 0 0 0 .143rem $success-color-transparency;
     }
   }
 
@@ -69,14 +62,6 @@
 
     &::placeholder {
       color: $muted-color;
-    }
-
-    &__input:-webkit-autofill,
-    &__input:-webkit-autofill:hover,
-    &__input:-webkit-autofill:focus,
-    &__input:-webkit-autofill:active {
-      box-shadow: 0 0 0 1000px $bg-color inset !important;
-      -webkit-text-fill-color: $muted-color !important;
     }
   }
 
@@ -215,6 +200,7 @@
 
     #{$this}__input {
       font-size: .857em;
+      min-height: 32px;
     }
 
     #{$this}__tag {
@@ -231,6 +217,7 @@
 
     #{$this}__input {
       font-size: 1em;
+      min-height: 44px;
     }
 
     #{$this}__tag {
@@ -246,46 +233,38 @@
 .is-dark .maz-input-tags,
 .is-dark.maz-input-tags {
   background-color: $bg-color-dark-l;
-  border-color: $third-color-dark;
+  border-color: $border-color-dark;
 
   &__input {
-    color: $secondary-color-dark;
+    color: $input-text-color-dark;
 
     &::-webkit-input-placeholder {
-      color: $secondary-color-dark;
+      color: $input-text-color-dark;
     }
 
     &::-moz-placeholder {
-      color: $secondary-color-dark;
+      color: $input-text-color-dark;
     }
 
     &:-ms-input-placeholder {
-      color: $secondary-color-dark;
+      color: $input-text-color-dark;
     }
 
     &::-ms-input-placeholder {
-      color: $secondary-color-dark;
+      color: $input-text-color-dark;
     }
 
     &:-moz-placeholder {
-      color: $secondary-color-dark;
+      color: $input-text-color-dark;
     }
 
     &::placeholder {
-      color: $secondary-color-dark;
-    }
-
-    &__input:-webkit-autofill,
-    &__input:-webkit-autofill:hover,
-    &__input:-webkit-autofill:focus,
-    &__input:-webkit-autofill:active {
-      box-shadow: 0 0 0 1000px $bg-color-dark inset !important;
-      -webkit-text-fill-color: $secondary-color-dark !important;
+      color: $input-text-color-dark;
     }
   }
 
   &__toggle-btn {
-    color: $secondary-color-dark;
+    color: $input-text-color-dark;
 
     &__effect {
       background-color: $muted-color-dark;

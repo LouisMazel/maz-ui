@@ -27,3 +27,16 @@
     }
   }
 }
+
+.bg-color {
+  background-color: $bg-color;
+}
+
+.bg-color-dark {
+  background-color: $bg-color-dark;
+}
+
+.is-dark.bg-color,
+.is-dark .bg-color {
+  background-color: $bg-color-dark;
+}

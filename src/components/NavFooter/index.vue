@@ -65,7 +65,7 @@
 
 <style lang="scss" scoped>
   .nav-footer {
-    color: $third-color;
+    color: $border-color;
     border-top: 1px solid $text-color-dark;
     background-color: $bg-color;
 

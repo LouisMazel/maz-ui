@@ -34,6 +34,7 @@
     -webkit-font-smoothing: auto;
     overflow-x: auto;
     padding: 0 20px;
+    font-size: .925em;
 
     &__content {
       background-color: transparent;

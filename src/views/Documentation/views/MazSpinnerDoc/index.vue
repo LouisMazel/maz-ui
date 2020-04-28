@@ -8,7 +8,6 @@
           v-for="color in colors"
           :key="`spinner-${color}`"
           :color="color"
-          :dark="hasDarkTheme"
         />
       </ComponentContainer>
     </div>
@@ -21,7 +20,6 @@
           v-for="size in sizes"
           :key="`spinner-${size}`"
           :size="size"
-          :dark="hasDarkTheme"
         />
       </ComponentContainer>
     </div>
@@ -29,8 +27,6 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
-
   export default {
     name: 'MazSpinnerDoc',
     data () {
@@ -42,9 +38,6 @@
           20, 40, 60, 80, 100, 120, 140
         ]
       }
-    },
-    computed: {
-      ...mapGetters(['hasDarkTheme'])
     }
   }
 </script>

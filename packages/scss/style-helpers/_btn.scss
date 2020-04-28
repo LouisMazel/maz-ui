@@ -36,8 +36,7 @@ $mini-size: 30px;
     background-color: $primary-color;
   }
 
-  &:focus,
-  &.active {
+  &:focus {
     box-shadow: 0 0 0 .143rem rgba($primary-color, .5);
   }
 
@@ -106,6 +105,10 @@ $mini-size: 30px;
   &--light {
     color: $secondary-color;
   }
+
+  &--no-shadow {
+    box-shadow: none;
+  }
 }
 
 @import './variables/_color_types';
@@ -124,8 +127,7 @@ $mini-size: 30px;
         background-color: $color;
       }
 
-      &:focus,
-      &.active {
+      &:focus {
         box-shadow: 0 0 0 .143rem rgba($color, .5);
       }
 
@@ -142,8 +144,7 @@ $mini-size: 30px;
           color: white;
         }
 
-        &:focus,
-        &.active {
+        &:focus {
           box-shadow: 0 0 0 .143rem rgba($color, .5);
         }
       }
@@ -152,7 +153,7 @@ $mini-size: 30px;
 }
 
 .btn--default--outline {
-  color: $secondary-color;
+  color: $default-color;
 }
 
 .btn--disabled:disabled {
