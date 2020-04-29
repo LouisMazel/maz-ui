@@ -9,15 +9,6 @@
         locale="en"
       />
 
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-
       <!-- <MazPicker
         id="mazPicker2"
         v-model="pickerValue"

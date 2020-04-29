@@ -16,7 +16,7 @@
         class="month-picker__day text-color bg-color-light flex flex-center"
         size="mini"
         tabindex="-1"
-        no-shadow
+        :no-shadow="!dateMoment.isSame(day)"
         :disabled="isDisabled(day)"
         :active="dateMoment.isSame(day)"
         :class="{

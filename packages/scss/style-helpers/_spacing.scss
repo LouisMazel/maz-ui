@@ -1,4 +1,4 @@
-@import './variables/index';
+@import './variables/spacing';
 
 @function set-var-class($var) {
   @if ($var == 'margin') {

@@ -35,7 +35,7 @@
       :name="pickerTransition"
     >
       <PickersContainer
-        v-if="hasPickerOpen"
+        v-if="!hasPickerOpen"
         v-model="dateMoment"
         :locale="locale"
         :position="position"

@@ -43,7 +43,7 @@
   text-align: right;
 }
 
-@import './variables/_color_types';
+@import './variables/color_types';
 
 @each $name, $color in $color_types {
   @if (type-of($color) == 'color') {

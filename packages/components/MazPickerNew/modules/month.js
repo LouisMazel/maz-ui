@@ -61,6 +61,6 @@ export const getWeekDays = (locale = 'en', firstDay = null) => {
   return days
 }
 
-export const getMonthsShort = (locale) => {
-  return Array.apply(0, Array(12)).map((_, i) => moment().locale(locale).month(i).format('MMM'))
+export const getMonthsShort = () => {
+  return Array.apply(0, Array(12)).map((_, i) => moment().month(i).format('MMM'))
 }

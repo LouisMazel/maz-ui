@@ -1,9 +1,9 @@
 <template>
-  <div class="calendar px-2 pos-r mw-100">
+  <div class="calendar px-2 pos-r mw-100 over-hid">
     <MonthYearSwitcher
       :month="month"
-      class="mt-2"
       @change-month="changeMonth"
+      @open-month-year-selector="yearMonthSelectorMode = $event"
     />
     <WeekDaysLabels
       :locale="locale"
@@ -18,8 +18,13 @@
       :disabled-dates="disabledDates"
       :disabled-weekly="disabledWeekly"
       :is-visible="isVisible"
-      class="mb-2"
+      class="pb-2"
       @change-month="changeMonth"
+    />
+    <YearMonthSelector
+      v-model="yearMonthSelectorMode"
+      :month="month"
+      @change-month-year="changeMonthYear"
     />
   </div>
 </template>
@@ -28,11 +33,12 @@
   import WeekDaysLabels from './WeekDaysLabels'
   import MonthPicker from './MonthPicker'
   import MonthYearSwitcher from './MonthYearSwitcher'
+  import YearMonthSelector from './YearMonthSelector'
   import Month from './../../modules/month'
 
   export default {
     name: 'Calendar',
-    components: { WeekDaysLabels, MonthPicker, MonthYearSwitcher },
+    components: { WeekDaysLabels, MonthPicker, MonthYearSwitcher, YearMonthSelector },
     props: {
       value: { type: Object, required: true },
       locale: { type: String, required: true },
@@ -45,7 +51,8 @@
     },
     data () {
       return {
-        month: null
+        month: null,
+        yearMonthSelectorMode: null
       }
     },
     computed: {
@@ -76,6 +83,9 @@
           year += (val === 'prev' ? -1 : +1)
           month = (val === 'prev' ? 11 : 0)
         }
+        this.month = new Month(month, year, this.locale)
+      },
+      changeMonthYear ({ month, year }) {
         this.month = new Month(month, year, this.locale)
       }
     }

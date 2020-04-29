@@ -1,11 +1,11 @@
 <template>
-  <div class="month-year-switcher flex space-between align-center mt-2 py-2">
+  <div class="month-year-switcher flex space-between align-center py-2">
     <MazBtn
       fab
       no-shadow
-      color="transparent"
+      color="light"
       size="sm"
-      class="flex flex-center"
+      class="flex flex-center bg-transparent"
       tabindex="-1"
       @click="changeMonth('prev')"
     >
@@ -16,7 +16,8 @@
         no-shadow
         tabindex="-1"
         color="transparent"
-        class="text-color p-2"
+        class="text-color p-2 mr-1"
+        @click="$emit('open-month-year-selector', 'month')"
       >
         {{ monthFormatted | capitalize }}
       </MazBtn>
@@ -25,6 +26,7 @@
         no-shadow
         color="transparent"
         class="text-color p-2"
+        @click="$emit('open-month-year-selector', 'year')"
       >
         {{ year }}
       </MazBtn>

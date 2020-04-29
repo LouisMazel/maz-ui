@@ -111,7 +111,7 @@ $mini-size: 30px;
   }
 }
 
-@import './variables/_color_types';
+@import './variables/color_types';
 
 @each $name, $color in $color_types {
   @if (type-of($color) == 'color') {
@@ -128,7 +128,7 @@ $mini-size: 30px;
       }
 
       &:focus {
-        box-shadow: 0 0 0 .143rem rgba($color, .3);
+        box-shadow: 0 0 0 .143rem rgba($color, .6);
       }
 
       &--outline {
@@ -145,7 +145,7 @@ $mini-size: 30px;
         }
 
         &:focus {
-          box-shadow: 0 0 0 .143rem rgba($color, .3);
+          box-shadow: 0 2px 5px 0 rgba(3, 6, 26, .15);
         }
       }
     }
