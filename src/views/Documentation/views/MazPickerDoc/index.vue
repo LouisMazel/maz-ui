@@ -6,6 +6,7 @@
       <MazPicker
         id="mazPicker"
         v-model="pickerValue"
+        locale="en"
       />
 
       <br>
@@ -25,10 +26,21 @@
 
       <br>
 
+      <p class="mb-2">
+        Value : {{ pickerValue || null }}
+      </p>
+      <p class="mb-2">
+        Formatted value : {{ pickerFormatted || null }}
+      </p>
+
       <MazPickerNew
-        id="mazPickerNew"
         v-model="pickerValue"
         label="Select date"
+        formatted="ll"
+        locale="en"
+        clearable
+        size="lg"
+        @formatted="pickerFormatted = $event"
       />
     </ComponentContainer>
   </div>
@@ -39,7 +51,8 @@
     name: 'MazPickerDoc',
     data () {
       return {
-        pickerValue: '2020-02-03',
+        pickerValue: '2020-02-14',
+        pickerFormatted: null,
         codeExample: `<template>
 </template>`
       }

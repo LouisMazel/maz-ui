@@ -1,17 +1,23 @@
 <template>
   <div class="footer-picker p-2 flex justify-end">
     <MazBtn
+      v-if="hasNow"
       outline
       size="md"
-      class="mr-2"
+      color="grey"
+      tabindex="-1"
+      @click="now"
     >
-      Now
+      {{ nowTranslation }}
     </MazBtn>
     <MazBtn
+      v-if="hasValidate"
       outline
       size="md"
+      tabindex="-1"
       color="success"
       class="footer-picker__validate"
+      @click="validate"
     >
       <i class="material-icons">
         check
@@ -21,8 +27,23 @@
 </template>
 
 <script>
+  import { EventBus } from './../../utils'
+
   export default {
-    name: 'FooterPicker'
+    name: 'FooterPicker',
+    props: {
+      hasValidate: { type: Boolean, required: true },
+      hasNow: { type: Boolean, required: true },
+      nowTranslation: { type: String, required: true }
+    },
+    methods: {
+      validate () {
+        EventBus.$emit('validate')
+      },
+      now () {
+        EventBus.$emit('now')
+      }
+    }
   }
 </script>
 
@@ -33,6 +54,10 @@
     &__validate {
       padding-top: 4px;
       padding-bottom: 4px;
+    }
+
+    > :nth-child(2) {
+      margin-left: .5rem;
     }
   }
 

@@ -1,7 +1,11 @@
+.arrow-down path.arrow {
+  fill: $text-color;
+}
+
 .arrow-down.is-white path.arrow {
   fill: white;
 }
 
 .is-dark .arrow-down path.arrow {
-  fill: white;
+  fill: $text-color-dark;
 }

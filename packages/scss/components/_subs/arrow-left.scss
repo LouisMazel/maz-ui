@@ -1,7 +1,11 @@
+.arrow-left path.arrow {
+  fill: $text-color;
+}
+
 .arrow-left.is-white path.arrow {
   fill: white;
 }
 
 .is-dark .arrow-left path.arrow {
-  fill: white;
+  fill: $text-color-dark;
 }

@@ -103,7 +103,7 @@ $mini-size: 30px;
 
   &--white,
   &--light {
-    color: $secondary-color;
+    color: $grey-color;
   }
 
   &--no-shadow {
@@ -128,7 +128,7 @@ $mini-size: 30px;
       }
 
       &:focus {
-        box-shadow: 0 0 0 .143rem rgba($color, .5);
+        box-shadow: 0 0 0 .143rem rgba($color, .3);
       }
 
       &--outline {
@@ -145,7 +145,7 @@ $mini-size: 30px;
         }
 
         &:focus {
-          box-shadow: 0 0 0 .143rem rgba($color, .5);
+          box-shadow: 0 0 0 .143rem rgba($color, .3);
         }
       }
     }
