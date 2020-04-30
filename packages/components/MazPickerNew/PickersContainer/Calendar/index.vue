@@ -1,5 +1,8 @@
 <template>
-  <div class="calendar pos-r mw-100 over-hid">
+  <div
+    ref="Calendar"
+    class="calendar pos-r mw-100 over-hid"
+  >
     <MonthYearSwitcher
       :months="months"
       class="px-2"
@@ -10,7 +13,7 @@
       <div
         v-for="(month, i) in months"
         :key="`month-${i}`"
-        class="calendar__months"
+        class="calendar__months flex-1"
         :class="{ 'has-double': hasDouble }"
       >
         <WeekDaysLabels
@@ -18,6 +21,7 @@
           class="p-2"
         />
         <MonthPicker
+          ref="MonthPicker"
           v-model="dateMoment"
           :month="month"
           :min-date="minDate"
@@ -54,7 +58,7 @@
     components: { WeekDaysLabels, MonthPicker, MonthYearSwitcher, YearMonthSelector },
     props: {
       value: { type: Object, required: true },
-      locale: { type: String, required: true },
+      locale: { type: String, default: null },
       minDate: { type: Object, default: null },
       maxDate: { type: Object, default: null },
       noWeekendsDays: { type: Boolean, default: false },
@@ -82,17 +86,27 @@
     watch: {
       value: {
         handler (newValue, oldValue) {
-          if (!this.months || (newValue.month() !== oldValue.month() && !this.hasDouble)) {
+          if (!this.months || (newValue.month() !== oldValue.month() && !this.checkIfValueIsInMonths(newValue.month()))) {
+            if (this.months) this.focusCalendar()
             this.months = this.getMonth({
               year: this.value.year(),
               month: this.value.month()
             })
+            // re-focus the current day to active the trigger blur for close the date picker on clik outside
           }
         },
         immediate: true
       }
     },
     methods: {
+      focusCalendar () {
+        setTimeout(() => {
+          document.querySelector('.month-picker__day.active').focus()
+        }, 500)
+      },
+      checkIfValueIsInMonths (newMonth) {
+        return this.months.some(m => m.month === newMonth)
+      },
       changeMonth (val) {
         let month = this.months[0].month + (val === 'prev' ? -1 : +1)
         let year = this.months[0].year

@@ -58,7 +58,7 @@
           :key="i"
           :active="currentMonth === i"
           :class="[currentMonth !== i ? 'hover-color focus-none border-2 border-color text-primary': 'focus-primary']"
-          class="year-month-selector__btn bg-transparent no-shadow px-3"
+          class="year-month-selector__btn bg-transparent no-shadow px-3 flex-20 mx-3"
           tabindex="-1"
           @click="selectMonth(i)"
         >
@@ -82,7 +82,7 @@
 </template>
 
 <script>
-  import { getMonthsShort } from '../../../modules/month'
+  import { getMonthsByFormat } from '../../../modules/month'
   import ArrowIcon from './../../../../_subs/ArrowIcon'
 
   const ArrayRange = (start, end) => {
@@ -98,7 +98,7 @@
     props: {
       value: { type: String, default: null },
       month: { type: Object, required: true },
-      hasDouble: { type: Boolean, required: false }
+      hasDouble: { type: Boolean, required: true }
     },
     data () {
       return {
@@ -134,11 +134,11 @@
       },
       getMonths () {
         this.years = []
-        this.months = getMonthsShort()
+        this.months = getMonthsByFormat(this.hasDouble ? 'MMMM' : 'MMM')
       },
-      getYears () {
+      getYears (offset = this.hasDouble ? 17 : 7) {
         this.months = []
-        this.years = ArrayRange(this.month.year - 7, this.month.year + 7)
+        this.years = ArrayRange(this.month.year - offset, this.month.year + offset)
       },
       selectMonth (monthNumber) {
         this.$emit('change-month-year', { month: monthNumber, year: this.currentYear })
@@ -149,8 +149,9 @@
         this.closePanel()
       },
       updateYears (period) {
-        const offsetYears = period === 'next' ? 14 : -14
-        this.years = ArrayRange(this.years[0] + offsetYears, this.years[14] + offsetYears)
+        const offset = this.hasDouble ? 17 : 7
+        const offsetYears = period === 'next' ? offset : -offset
+        this.years = ArrayRange(this.years[0] + offsetYears, this.years[this.years.length - 1] + offsetYears)
       }
     }
   }

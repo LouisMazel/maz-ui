@@ -16,7 +16,7 @@
   export default {
     name: 'WeekDaysLabes',
     props: {
-      locale: { type: String, required: true }
+      locale: { type: String, default: null }
     },
     computed: {
       weekDays () {

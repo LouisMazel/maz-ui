@@ -3,7 +3,7 @@
     <ComponentContainer
       :code="codeExample"
       language="html"
-      class="btn-container"
+      class="btn-container flex flex-start"
     >
       <h3 class="mb-3">
         Examples

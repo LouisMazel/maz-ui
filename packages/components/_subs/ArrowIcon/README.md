@@ -1,13 +1,14 @@
-# ArrowRight
+# ArrowIcon
 
 ## Props
 
-<!-- @vuese:ArrowRight:props:start -->
+<!-- @vuese:ArrowIcon:props:start -->
 
-| Name  | Description | Type      | Required | Default |
-| ----- | ----------- | --------- | -------- | ------- |
-| dark  | -           | `Boolean` | `false`  | -       |
-| color | -           | `String`  | `false`  | -       |
-| size  | -           | `Number`  | `false`  | 24      |
+| Name        | Description | Type      | Required | Default |
+| ----------- | ----------- | --------- | -------- | ------- |
+| dark        | -           | `Boolean` | `false`  | -       |
+| color       | -           | `String`  | `false`  | -       |
+| size        | -           | `Number`  | `false`  | 24      |
+| orientation | -           | `String`  | `false`  | bottom  |
 
-<!-- @vuese:ArrowRight:props:end -->
+<!-- @vuese:ArrowIcon:props:end -->

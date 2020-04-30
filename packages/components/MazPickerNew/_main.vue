@@ -13,6 +13,7 @@
       :id="uniqueId"
       v-model="inputValue"
       v-bind="$attrs"
+      :label="label"
       readonly
       :focus="hasPickerOpen"
       @focus="openPicker(true)"
@@ -37,11 +38,11 @@
         v-if="hasPickerOpen"
         v-model="dateMoment"
         :locale="locale"
-        :position="position"
+        :position="calcPosition"
         :has-header="hasHeader"
         :has-footer="hasFooter"
         :has-validate="hasValidate"
-        :has-double="doubleCalendar"
+        :has-double="hasDouble"
         :is-visible="hasPickerOpen"
         :has-now="hasNow"
         :now-translation="nowTranslation"
@@ -72,10 +73,12 @@
   }
 
   const NOT_ALLOWED_CLASSES_TO_CLOSE = [
-    'month-picker__day',
-    'year-month-selector__btn',
-    'year-month-selector__close'
+    ['month-picker__day', 'is-disabled'],
+    ['year-month-selector__btn'],
+    ['year-month-selector__close']
   ]
+
+  const updateComputedDataWithProps = () => 'updated'
 
   export default {
     name: 'MazPickerNew',
@@ -90,9 +93,12 @@
       // if is `true`, the picker is open
       open: { type: Boolean, default: false },
       // moment JS locale
-      locale: { type: String, default: getDefaultLocale() },
+      locale: {
+        validator: prop => ['string'].includes(typeof prop) || prop === null,
+        default: getDefaultLocale()
+      },
       // override the date picker postion (top / bottom / left / right)
-      position: { type: String, default: 'bottom left' },
+      position: { type: String, default: null },
       // format returned
       format: { type: String, default: 'YYYY-MM-DD' },
       // format of input
@@ -126,16 +132,20 @@
       // show double calendar
       doubleCalendar: { type: Boolean, default: false },
       // Enable range mode to select periode
-      rangeMode: { type: Boolean, default: false }
+      range: { type: Boolean, default: false },
+      // Change placeholder/label of input
+      label: { type: String, default: 'Select date' }
     },
     data () {
       return {
-        isOpen: null
+        isOpen: null,
+        calcPosition: 'bottom left'
       }
     },
     computed: {
       inputValue: {
         get () {
+          updateComputedDataWithProps(this.locale)
           return this.value ? moment(this.value, this.format).format(this.formatted) : null
         },
         set () {
@@ -144,6 +154,7 @@
       },
       dateMoment: {
         get () {
+          updateComputedDataWithProps(this.locale)
           return this.value ? moment(this.value, this.format) : moment()
         },
         set (value) {
@@ -162,7 +173,7 @@
         return this.isOpen || this.open || this.inline
       },
       pickerTransition () {
-        return this.position.includes('bottom') ? 'slide' : 'slideinvert'
+        return this.calcPosition.includes('bottom') ? 'slide' : 'slideinvert'
       },
       hasHeader () {
         return !this.noHeader
@@ -178,6 +189,9 @@
       },
       disabledDatesMoment () {
         return this.disabledDates.map(d => moment(d, this.format))
+      },
+      hasDouble () {
+        return this.doubleCalendar || this.range
       }
     },
     watch: {
@@ -199,10 +213,21 @@
           }
         },
         immediate: true
+      },
+      locale: {
+        async handler (locale) {
+          moment.locale(locale)
+        },
+        immediate: true
+      },
+      isOpen (value) {
+        if (value) {
+          console.log('okokokokok')
+          this.calcPosition = this.position || `${this.getPosition()} left`
+        }
       }
     },
     mounted () {
-      moment.locale(this.locale)
       EventBus.$on('validate', this.closePicker)
       EventBus.$on('now', () => { this.emitValue(moment()) })
       EventBus.$on('close', this.closePicker)
@@ -224,28 +249,31 @@
       closePicker (e = {}) {
         if (
           this.$el.contains(e.relatedTarget) ||
-          NOT_ALLOWED_CLASSES_TO_CLOSE.some(c => e.target?.className?.includes(c) ?? false)
+          NOT_ALLOWED_CLASSES_TO_CLOSE.some(classes =>
+            classes.every(c =>
+              (e.target?.classList ?? []).contains(c)
+            )
+          )
         ) return
         this.isOpen = false
-      }
-    },
-    getPosition () {
-      if (this.position) return this.position
-      const parentRect = this.$refs.parent.getBoundingClientRect()
-      const windowHeight = window.innerHeight
-      let datePickerHeight = 445
+      },
+      getPosition () {
+        const parentRect = this.$refs.mazPicker.getBoundingClientRect()
+        const windowHeight = window.innerHeight
+        let datePickerHeight = 417
 
-      datePickerHeight = this.noButton ? datePickerHeight - 41 : datePickerHeight
-      datePickerHeight = this.noHeader ? datePickerHeight - 58 : datePickerHeight
-      if (parentRect.top < datePickerHeight) {
-        // No place on top --> bottom
-        return 'bottom'
-      } else if (windowHeight - (parentRect.height + datePickerHeight + parentRect.top) >= 0) {
-        // Have place on bottom --> bottom
-        return 'bottom'
-      } else {
-        // No place on bottom --> top
-        return 'top'
+        datePickerHeight = this.noButton ? datePickerHeight - 54 : datePickerHeight
+        datePickerHeight = this.noHeader ? datePickerHeight - 64 : datePickerHeight
+        if (parentRect.top < datePickerHeight) {
+          // No place on top --> bottom
+          return 'bottom'
+        } else if (windowHeight - (parentRect.height + datePickerHeight + parentRect.top) >= 0) {
+          // Have place on bottom --> bottom
+          return 'bottom'
+        } else {
+          // No place on bottom --> top
+          return 'top'
+        }
       }
     }
   }

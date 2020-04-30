@@ -19,7 +19,7 @@
 | valid             | -           | `Boolean`           | `false`  | -          |
 | required          | -           | `Boolean`           | `false`  | -          |
 | loading           | -           | `Boolean`           | `false`  | -          |
-| clearable         | -           | `Boolean`           | `false`  | -          |
+| clearable         | -           | `Boolean`           | `false`  | true       |
 | noCountrySelector | -           | `Boolean`           | `false`  | -          |
 
 <!-- @vuese:InputTel:props:end -->
@@ -36,5 +36,7 @@
 | clear      | -           | -          |
 | keyup      | -           | -          |
 | keydown    | -           | -          |
+| change     | -           | -          |
+| click      | -           | -          |
 
 <!-- @vuese:InputTel:events:end -->

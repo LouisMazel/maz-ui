@@ -38,7 +38,7 @@
     components: { HeaderPicker, Calendar, FooterPicker },
     props: {
       value: { type: Object, required: true },
-      locale: { type: String, required: true },
+      locale: { type: String, default: null },
       position: { type: String, required: true },
       hasHeader: { type: Boolean, required: true },
       hasFooter: { type: Boolean, required: true },

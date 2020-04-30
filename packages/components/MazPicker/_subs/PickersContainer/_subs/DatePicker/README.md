@@ -15,16 +15,16 @@
 | locale          | -           | `String`            | `false`  | -       |
 | inline          | -           | `Boolean`           | `false`  | -       |
 | noWeekendsDays  | -           | `Boolean`           | `false`  | -       |
-| disabledWeekly  | -           | `Array`             | `false`  | []      |
+| disabledWeekly  | -           | `Array`             | `false`  | -       |
 | range           | -           | `Boolean`           | `false`  | -       |
-| disabledDates   | -           | `Array`             | `false`  | []      |
-| enabledDates    | -           | `Array`             | `false`  | []      |
+| disabledDates   | -           | `Array`             | `false`  | -       |
+| enabledDates    | -           | `Array`             | `false`  | -       |
 | dark            | -           | `Boolean`           | `false`  | -       |
 | month           | -           | `Object`            | `false`  | -       |
 | height          | -           | `Number`            | `false`  | -       |
 | noShortcuts     | -           | `Boolean`           | `false`  | -       |
 | firstDayOfWeek  | -           | `Number`            | `false`  | -       |
-| customShortcuts | -           | `Array`             | `false`  | []      |
+| customShortcuts | -           | `Array`             | `false`  | -       |
 | visible         | -           | `Boolean`           | `false`  | -       |
 
 <!-- @vuese:DatePicker:props:end -->

@@ -18,7 +18,7 @@
       </MazSidebar>
       <div class="maz-sidebar-doc__content p-4 flex direction-column align-center justify-center flex-1">
         <MazBtn
-          color="success"
+          color="third"
           @click="loading = !loading"
         >
           Toggle loading

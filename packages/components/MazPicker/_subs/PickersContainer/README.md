@@ -49,5 +49,6 @@
 | ---------- | ----------- | ---------- |
 | input      | -           | -          |
 | close      | -           | -          |
+| validate   | -           | -          |
 
 <!-- @vuese:PickersContainer:events:end -->

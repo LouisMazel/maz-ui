@@ -21,12 +21,12 @@
 | Event Name | Description | Parameters |
 | ---------- | ----------- | ---------- |
 | input      | -           | -          |
+| back       | -           | -          |
 
 <!-- @vuese:YearMonthSelector:events:end -->
 
-s:start -->
-|Event Name|Description|Parameters|
-|---|---|---|
-|change-range|-|-|
+| Event Name   | Description | Parameters |
+| ------------ | ----------- | ---------- |
+| change-range | -           | -          |
 
 <!-- @vuese:RangeShortcuts:events:end -->

@@ -21,7 +21,7 @@
         :active="dateMoment.isSame(day)"
         :class="{
           'highlight': isToday(day),
-          'text-muted': !isSameMonth(day),
+          'is-disabled text-muted fw-400': !isSameMonth(day),
           'is-keyboard-selected': isKeyboardSelected(day)
         }"
         @click="selectDay(day)"

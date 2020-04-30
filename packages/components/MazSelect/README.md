@@ -27,6 +27,8 @@
 | open       | sent when the list is open  | -          |
 | close      | sent when the list is close | -          |
 | input      | -                           | -          |
+| keyup      | -                           | -          |
+| change     | -                           | -          |
 
 <!-- @vuese:MazSelect:events:end -->
 
