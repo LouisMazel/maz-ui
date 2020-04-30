@@ -17,20 +17,10 @@
     &:focus {
       box-shadow: none;
     }
-
-    &__arrow {
-      transition: all .25s cubic-bezier(.645, .045, .355, 1);
-    }
   }
 
   &__content {
     border-top: 2px solid $text-color-dark;
-  }
-
-  &.is-open {
-    .maz-collapse__header-btn__arrow {
-      transform: rotate(180deg);
-    }
   }
 }
 

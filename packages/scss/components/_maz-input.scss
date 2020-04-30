@@ -407,14 +407,8 @@
   }
 
   &__toggle-btn {
-    color: $border-color-dark;
-
     &__effect {
       background-color: lighten($border-color-dark, 10%);
-    }
-
-    &:hover {
-      color: white;
     }
   }
 }

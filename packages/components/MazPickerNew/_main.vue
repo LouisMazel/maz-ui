@@ -6,7 +6,7 @@
     :class="{
       'is-dark': dark
     }"
-    @blur.capture="closePicker"
+    @blur.capture="closePicker($event, 'blur')"
   >
     <MazInput
       v-if="!inline"
@@ -20,13 +20,12 @@
       <div
         slot="input-icon-right"
         class="maz-picker__arrow flex flex-center"
-        :class="{ 'rotate': hasPickerOpen }"
-        tabindex="0"
+        tabindex="-1"
       >
         <!-- The arrow icon -->
         <slot name="arrow">
           <!-- the arrow svg -->
-          <ArrowDown />
+          <ArrowIcon :orientation="hasPickerOpen ? 'up': null" />
         </slot>
       </div>
     </MazInput>
@@ -35,7 +34,7 @@
       :name="pickerTransition"
     >
       <PickersContainer
-        v-if="!hasPickerOpen"
+        v-if="hasPickerOpen"
         v-model="dateMoment"
         :locale="locale"
         :position="position"
@@ -60,7 +59,7 @@
 <script>
   import PickersContainer from './PickersContainer'
   import uniqueId from './../../mixins/uniqueId'
-  import ArrowDown from './../_subs/ArrowDown'
+  import ArrowIcon from './../_subs/ArrowIcon'
   import moment from 'moment'
   import { getDefaultLocale, EventBus } from './utils'
 
@@ -71,9 +70,15 @@
     }
   }
 
+  const NOT_ALLOWED_CLASSES_TO_CLOSE = [
+    'month-picker__day',
+    'year-month-selector__btn',
+    'year-month-selector__close'
+  ]
+
   export default {
     name: 'MazPickerNew',
-    components: { PickersContainer, ArrowDown },
+    components: { PickersContainer, ArrowIcon },
     mixins: [uniqueId],
     props: {
       // input value
@@ -106,7 +111,7 @@
       // to remove the `now` button
       noNow: { type: Boolean, default: false },
       // translation of now of button
-      nowTranslation: { type: String, default: 'Now' },
+      nowTranslation: { type: String, default: 'Today' },
       // all week-ends days disabled
       noWeekendsDays: { type: Boolean, default: false },
       // close picker on select date
@@ -193,7 +198,7 @@
     },
     mounted () {
       moment.locale(this.locale)
-      EventBus.$on('validate', () => { this.closePicker() })
+      EventBus.$on('validate', this.closePicker)
       EventBus.$on('now', () => { this.emitValue(moment()) })
       EventBus.$on('close', this.closePicker)
     },
@@ -212,7 +217,10 @@
         this.isOpen = true
       },
       closePicker (e = {}) {
-        if (this.$el.contains(e.relatedTarget)) return
+        if (
+          this.$el.contains(e.relatedTarget) ||
+          NOT_ALLOWED_CLASSES_TO_CLOSE.some(c => e.target?.className?.includes(c) ?? false)
+        ) return
         this.isOpen = false
       }
     },
@@ -244,11 +252,8 @@
 
     .maz-picker__arrow {
       color: $border-color;
+      outline: none;
       transition: all .25s cubic-bezier(.645, .045, .355, 1);
-
-      &.rotate {
-        transform: rotate(180deg);
-      }
 
       svg path.arrow {
         fill: $border-color;

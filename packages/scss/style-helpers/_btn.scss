@@ -28,22 +28,15 @@ $mini-size: 30px;
   -moz-osx-font-smoothing: inherit;
 
   &:hover,
-  &:focus {
-    background-color: darken($primary-color, 10%);
-  }
-
-  &.active {
-    background-color: $primary-color;
-  }
-
-  &:focus {
-    box-shadow: 0 0 0 .143rem rgba($primary-color, .5);
-  }
-
-  &:hover,
   &:focus,
   &.active {
+    background-color: darken($primary-color, 10%);
     text-decoration: none;
+  }
+
+  &:focus,
+  &.active {
+    box-shadow: 0 0 0 .143rem rgba($primary-color, .5);
   }
 
   &--rounded {
@@ -119,15 +112,13 @@ $mini-size: 30px;
       background-color: $color;
 
       &:hover,
-      &:focus {
+      &:focus,
+      &.active {
         background-color: darken($color, 10%);
       }
 
+      &:focus,
       &.active {
-        background-color: $color;
-      }
-
-      &:focus {
         box-shadow: 0 0 0 .143rem rgba($color, .6);
       }
 

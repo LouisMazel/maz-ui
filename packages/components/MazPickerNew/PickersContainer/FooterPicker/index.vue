@@ -2,10 +2,9 @@
   <div class="footer-picker p-2 flex justify-end">
     <MazBtn
       v-if="hasNow"
-      outline
       size="md"
-      color="grey"
       tabindex="-1"
+      class="footer-picker__now bg-transparent no-shadow px-3 hover-color focus-none border-2 border-color text-primary"
       @click="now"
     >
       {{ nowTranslation }}

@@ -6,7 +6,6 @@
       <MazPicker
         id="mazPicker"
         v-model="pickerValue"
-        locale="en"
       />
 
       <!-- <MazPicker
@@ -28,9 +27,9 @@
         v-model="pickerValue"
         label="Select date"
         formatted="ll"
-        locale="en"
         clearable
         size="lg"
+        open
         @formatted="pickerFormatted = $event"
       />
     </ComponentContainer>

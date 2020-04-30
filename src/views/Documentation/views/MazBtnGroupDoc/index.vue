@@ -6,28 +6,64 @@
       class="btn-container"
     >
       <h3 class="mb-3">
-        Example
+        Examples
       </h3>
+
+      <h4 class="mb-3">
+        LG primary
+      </h4>
       <MazBtnGroup
         v-model="btnGroupValue"
         :items="items"
+        size="lg"
       />
+      <h4 class="mb-3">
+        Secondary
+      </h4>
       <MazBtnGroup
         v-model="btnGroupValueBoolean"
         :items="itemsBoolean"
-        color="info"
+        color="secondary"
       />
+      <h4 class="mb-3">
+        SM third outline
+      </h4>
+      <MazBtnGroup
+        v-model="btnGroupValueBoolean"
+        :items="itemsBoolean"
+        outline
+        size="md"
+        color="third"
+      />
+      <h4 class="mb-3">
+        SM third rounded
+      </h4>
       <MazBtnGroup
         v-model="btnGroupValueString"
         :items="itemsString"
         rounded
+        size="sm"
+        color="third"
+      />
+      <h4 class="mb-3">
+        MINI success rounded outline
+      </h4>
+      <MazBtnGroup
+        v-model="btnGroupValueMini"
+        :items="itemsMini"
+        rounded
+        outline
+        size="mini"
         color="success"
       />
+
+      <h4 class="mb-3">
+        Disabled
+      </h4>
       <MazBtnGroup
         v-model="btnGroupValue"
         :items="items"
         disabled
-        rounded
       />
 
       <p>Number value : {{ btnGroupValue }}</p>
@@ -45,6 +81,7 @@
         btnGroupValue: 1,
         btnGroupValueBoolean: false,
         btnGroupValueString: null,
+        btnGroupValueMini: null,
         items: [
           { label: 'Number 1', value: 1 },
           { label: 'Number 2', value: 2 },
@@ -60,27 +97,68 @@
           { label: 'String toto', value: 'toto' },
           { label: 'String tata', value: 'tata' }
         ],
+        itemsMini: [
+          { label: 'Mini foo', value: 'foo' },
+          { label: 'Mini bar', value: 'bar' },
+          { label: 'Mini toto', value: 'toto' },
+          { label: 'Mini tata', value: 'tata' }
+        ],
         codeExample: `<template>
+  <h4 class="mb-3">
+    LG primary
+  </h4>
   <MazBtnGroup
     v-model="btnGroupValue"
     :items="items"
+    size="lg"
   />
+  <h4 class="mb-3">
+    Secondary
+  </h4>
   <MazBtnGroup
     v-model="btnGroupValueBoolean"
     :items="itemsBoolean"
-    color="info"
+    color="secondary"
   />
+  <h4 class="mb-3">
+    SM third outline
+  </h4>
+  <MazBtnGroup
+    v-model="btnGroupValueBoolean"
+    :items="itemsBoolean"
+    outline
+    size="md"
+    color="third"
+  />
+  <h4 class="mb-3">
+    SM third rounded
+  </h4>
   <MazBtnGroup
     v-model="btnGroupValueString"
     :items="itemsString"
     rounded
+    size="sm"
+    color="third"
+  />
+  <h4 class="mb-3">
+    MINI success rounded outline
+  </h4>
+  <MazBtnGroup
+    v-model="btnGroupValueMini"
+    :items="itemsMini"
+    rounded
+    outline
+    size="mini"
     color="success"
   />
+
+  <h4 class="mb-3">
+    Disabled
+  </h4>
   <MazBtnGroup
     v-model="btnGroupValue"
     :items="items"
     disabled
-    rounded
   />
 </template>
 
@@ -90,6 +168,7 @@ export default {
       btnGroupValue: 1,
       btnGroupValueBoolean: false,
       btnGroupValueString: null,
+      btnGroupValueMini: null,
       items: [
         { label: 'Number 1', value: 1 },
         { label: 'Number 2', value: 2 },
@@ -104,6 +183,12 @@ export default {
         { label: 'String bar', value: 'bar' },
         { label: 'String toto', value: 'toto' },
         { label: 'String tata', value: 'tata' }
+      ],
+      itemsMini: [
+        { label: 'Mini foo', value: 'foo' },
+        { label: 'Mini bar', value: 'bar' },
+        { label: 'Mini toto', value: 'toto' },
+        { label: 'Mini tata', value: 'tata' }
       ]
     }
   }

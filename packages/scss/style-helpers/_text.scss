@@ -1,30 +1,48 @@
 .text-color {
   color: $text-color;
+  fill: $text-color;
 }
 
 .text-color-dark {
   color: $text-color-dark;
+  fill: $text-color-dark;
 }
 
 .is-dark.text-color,
 .is-dark .text-color {
   color: $text-color-dark;
+  fill: $text-color-dark;
 }
 
 .text-white {
   color: white;
+  fill: white;
 }
 
 .text-muted-white {
   color: rgba(255, 255, 255, .54);
+  fill: rgba(255, 255, 255, .54);
 }
 
 .text-muted {
   color: rgba(0, 0, 0, .54);
+  fill: rgba(0, 0, 0, .54);
 }
 
 .is-dark .text-muted {
   color: rgba(255, 255, 255, .54);
+  fill: rgba(255, 255, 255, .54);
+}
+
+@import './variables/color_types';
+
+@each $name, $color in $color_types {
+  @if (type-of($color) == 'color') {
+    .text-#{$name} {
+      color: $color;
+      fill: $color;
+    }
+  }
 }
 
 .text-strong {
@@ -41,16 +59,6 @@
 
 .text-right {
   text-align: right;
-}
-
-@import './variables/color_types';
-
-@each $name, $color in $color_types {
-  @if (type-of($color) == 'color') {
-    .text-#{$name} {
-      color: $color;
-    }
-  }
 }
 
 @import './mixins/index';

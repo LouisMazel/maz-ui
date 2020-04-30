@@ -6,7 +6,6 @@
       class="maz-btn-group__item flex-1"
       :class="{ 'rounded': rounded }"
       :active="val === value"
-      :outline="val !== value"
       :rounded="rounded"
       v-bind="$attrs"
       @click="$emit('input', val)"

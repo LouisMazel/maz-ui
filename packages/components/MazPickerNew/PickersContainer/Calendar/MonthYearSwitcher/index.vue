@@ -3,20 +3,21 @@
     <MazBtn
       fab
       no-shadow
-      color="light"
-      size="sm"
-      class="flex flex-center bg-transparent"
+      color="grey"
+      size="mini"
+      class="flex flex-center bg-transparent hover-color focus-none"
       tabindex="-1"
       @click="changeMonth('prev')"
     >
-      <ArrowLeft />
+      <ArrowIcon orientation="left" />
     </MazBtn>
     <div>
       <MazBtn
         no-shadow
         tabindex="-1"
-        color="transparent"
-        class="text-color p-2 mr-1"
+        size="lg"
+        color="grey"
+        class="text-color bg-transparent hover-color focus-none p-2 mr-1"
         @click="$emit('open-month-year-selector', 'month')"
       >
         {{ monthFormatted | capitalize }}
@@ -24,8 +25,9 @@
       <MazBtn
         tabindex="-1"
         no-shadow
-        color="transparent"
-        class="text-color p-2"
+        color="grey"
+        size="lg"
+        class="text-color bg-transparent hover-color focus-none p-2"
         @click="$emit('open-month-year-selector', 'year')"
       >
         {{ year }}
@@ -34,24 +36,23 @@
     <MazBtn
       fab
       no-shadow
-      color="transparent"
-      size="sm"
+      color="grey"
+      size="mini"
       tabindex="-1"
-      class="flex flex-center"
+      class="flex flex-center bg-transparent hover-color focus-none"
       @click="changeMonth('next')"
     >
-      <ArrowRight />
+      <ArrowIcon orientation="right" />
     </MazBtn>
   </div>
 </template>
 
 <script>
-  import ArrowLeft from './../../../../_subs/ArrowLeft'
-  import ArrowRight from './../../../../_subs/ArrowRight'
+  import ArrowIcon from './../../../../_subs/ArrowIcon'
 
   export default {
     name: 'MonthYearSwitcher',
-    components: { ArrowLeft, ArrowRight },
+    components: { ArrowIcon },
     props: {
       month: { type: Object, required: true }
     },

@@ -18,7 +18,7 @@
       :disabled-dates="disabledDates"
       :disabled-weekly="disabledWeekly"
       :is-visible="isVisible"
-      class="pb-2"
+      class="py-2"
       @change-month="changeMonth"
     />
     <YearMonthSelector

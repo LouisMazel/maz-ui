@@ -141,8 +141,8 @@
 
 <style lang="scss" scoped>
   .month-picker {
-    min-height: 200px;
-    min-width: 284px;
+    min-height: 210px;
+    min-width: 290px;
     width: 100%;
     overflow: hidden;
 

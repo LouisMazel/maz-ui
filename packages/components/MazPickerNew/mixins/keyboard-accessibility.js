@@ -49,7 +49,7 @@ export default {
         } else if (e.keyCode === 27) {
           EventBus.$emit('close')
         }
-        // if ('activeElement' in document) document.activeElement.blur()
+        if ('activeElement' in document) document.activeElement.blur()
       } catch (err) {
         throw new Error('An error occured while switch date' + err)
       }
