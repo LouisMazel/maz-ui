@@ -20,7 +20,7 @@
         class="text-color bg-transparent hover-color focus-none p-2 mr-1"
         @click="$emit('open-month-year-selector', 'month')"
       >
-        {{ monthFormatted | capitalize }}
+        {{ getMonthFormatted() }}
       </MazBtn>
       <MazBtn
         tabindex="-1"
@@ -54,19 +54,20 @@
     name: 'MonthYearSwitcher',
     components: { ArrowIcon },
     props: {
-      month: { type: Object, required: true }
+      months: { type: Array, required: true }
     },
     computed: {
-      monthFormatted () {
-        return this.month.getFormatted()
-      },
       year () {
-        return this.month.getYear()
+        const years = this.months.map(m => m.getYear())
+        return Array.from(new Set(years)).join(' - ')
       }
     },
     methods: {
       changeMonth (val) {
         this.$emit('change-month', val)
+      },
+      getMonthFormatted () {
+        return this.months.map(m => this.$options.filters.capitalize(m.getFormatted())).join(' - ')
       }
     }
   }

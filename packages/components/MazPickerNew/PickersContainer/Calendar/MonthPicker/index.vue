@@ -26,7 +26,7 @@
         }"
         @click="selectDay(day)"
       >
-        {{ day.format('D') }}
+        {{ hasDouble && isDisabled(day) ? null : day.format('D') }}
       </MazBtn>
     </div>
   </TransitionGroup>
@@ -45,7 +45,8 @@
       noWeekendsDays: { type: Boolean, default: false },
       disabledDates: { type: Array, required: true },
       disabledWeekly: { type: Array, required: true },
-      isVisible: { type: Boolean, required: true }
+      isVisible: { type: Boolean, required: true },
+      hasDouble: { type: Boolean, required: true }
     },
     data () {
       return {
@@ -72,11 +73,11 @@
       previousMonthDays () {
         return this.month.getPreviousMonthDays()
       },
-      nextMonthDays () {
-        return this.month.getNextMonthDays()
-      },
       monthDays () {
         return this.month.getMonthDays()
+      },
+      nextMonthDays () {
+        return this.month.getNextMonthDays()
       },
       weekStart () {
         return this.month.getWeekStart()
@@ -112,7 +113,8 @@
           day.isAfter(this.maxDate) ||
           (this.noWeekendsDays && this.isWeekEndDay(day)) ||
           this.isDateDisabled(day) ||
-          this.isDayDisabledWeekly(day)
+          this.isDayDisabledWeekly(day) ||
+          (!this.isSameMonth(day) && this.hasDouble)
       },
       isWeekEndDay (day) {
         const dayConst = day.day()
@@ -141,13 +143,13 @@
 
 <style lang="scss" scoped>
   .month-picker {
-    min-height: 210px;
-    min-width: 290px;
+    min-height: 215px;
+    min-width: 300px;
     width: 100%;
     overflow: hidden;
 
     &--long {
-      min-height: 242px;
+      min-height: 256px;
     }
 
     &__days {
@@ -173,7 +175,7 @@
         background-color: rgba($primary-color, .5);
       }
 
-      &.highlight:not(.active)::before,
+      &.highlight:not(.active):not(.btn--disabled)::before,
       &.is-keyboard-selected:not(.active)::before {
         $circle-size: 26px;
 

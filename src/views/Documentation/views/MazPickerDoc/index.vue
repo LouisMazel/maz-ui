@@ -51,6 +51,8 @@
         formatted="ll"
         clearable
         size="lg"
+        open
+        double-calendar
         @formatted="pickerFormatted = $event"
       />
     </ComponentContainer>

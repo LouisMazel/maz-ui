@@ -1,29 +1,42 @@
 <template>
-  <div class="calendar px-2 pos-r mw-100 over-hid">
+  <div class="calendar pos-r mw-100 over-hid">
     <MonthYearSwitcher
-      :month="month"
+      :months="months"
+      class="px-2"
       @change-month="changeMonth"
       @open-month-year-selector="yearMonthSelectorMode = $event"
     />
-    <WeekDaysLabels
-      :locale="locale"
-      class="mt-2 mb-3"
-    />
-    <MonthPicker
-      v-model="dateMoment"
-      :month="month"
-      :min-date="minDate"
-      :max-date="maxDate"
-      :no-weekends-days="noWeekendsDays"
-      :disabled-dates="disabledDates"
-      :disabled-weekly="disabledWeekly"
-      :is-visible="isVisible"
-      class="py-2"
-      @change-month="changeMonth"
-    />
+    <div class="flex">
+      <div
+        v-for="(month, i) in months"
+        :key="`month-${i}`"
+        class="calendar__months"
+        :class="{ 'has-double': hasDouble }"
+      >
+        <WeekDaysLabels
+          :locale="locale"
+          class="p-2"
+        />
+        <MonthPicker
+          v-model="dateMoment"
+          :month="month"
+          :min-date="minDate"
+          :max-date="maxDate"
+          :no-keyboard="hasDouble"
+          :has-double="hasDouble"
+          :no-weekends-days="noWeekendsDays"
+          :disabled-dates="disabledDates"
+          :disabled-weekly="disabledWeekly"
+          :is-visible="isVisible"
+          class="p-2"
+          @change-month="changeMonth"
+        />
+      </div>
+    </div>
     <YearMonthSelector
       v-model="yearMonthSelectorMode"
-      :month="month"
+      :month="months[0]"
+      :has-double="hasDouble"
       @change-month-year="changeMonthYear"
     />
   </div>
@@ -47,11 +60,12 @@
       noWeekendsDays: { type: Boolean, default: false },
       disabledDates: { type: Array, required: true },
       disabledWeekly: { type: Array, required: true },
-      isVisible: { type: Boolean, default: false }
+      isVisible: { type: Boolean, default: false },
+      hasDouble: { type: Boolean, required: true }
     },
     data () {
       return {
-        month: null,
+        months: null,
         yearMonthSelectorMode: null
       }
     },
@@ -68,8 +82,11 @@
     watch: {
       value: {
         handler (newValue, oldValue) {
-          if (!this.month || newValue.month() !== oldValue.month()) {
-            this.month = new Month(this.value.month(), this.value.year())
+          if (!this.months || (newValue.month() !== oldValue.month() && !this.hasDouble)) {
+            this.months = this.getMonth({
+              year: this.value.year(),
+              month: this.value.month()
+            })
           }
         },
         immediate: true
@@ -77,17 +94,36 @@
     },
     methods: {
       changeMonth (val) {
-        let month = this.month.month + (val === 'prev' ? -1 : +1)
-        let year = this.month.year
+        let month = this.months[0].month + (val === 'prev' ? -1 : +1)
+        let year = this.months[0].year
         if (month > 11 || month < 0) {
           year += (val === 'prev' ? -1 : +1)
           month = (val === 'prev' ? 11 : 0)
         }
-        this.month = new Month(month, year, this.locale)
+        this.months = this.getMonth({ year, month })
       },
-      changeMonthYear ({ month, year }) {
-        this.month = new Month(month, year, this.locale)
+      changeMonthYear (payload) {
+        this.months = this.getMonth(payload)
+      },
+      getMonth ({ month, year }) {
+        const number = Array.from(Array(this.hasDouble ? 2 : 1).keys())
+        return number.map((i) => {
+          const newMonthNumber = month + i
+          const monthNumber = newMonthNumber === 12 ? 0 : newMonthNumber
+          const yearNumber = newMonthNumber === 12 ? year + 1 : year
+          return new Month(monthNumber, yearNumber, this.locale)
+        })
       }
     }
   }
 </script>
+
+<style lang="scss" scoped>
+  .calendar__months.has-double {
+    border-top: 2px solid $hover-color;
+  }
+
+  .is-dark .calendar__months.has-double {
+    border-color: $hover-color-dark;
+  }
+</style>

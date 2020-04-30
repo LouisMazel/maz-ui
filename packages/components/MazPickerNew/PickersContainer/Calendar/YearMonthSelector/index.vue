@@ -97,7 +97,8 @@
     components: { ArrowIcon },
     props: {
       value: { type: String, default: null },
-      month: { type: Object, required: true }
+      month: { type: Object, required: true },
+      hasDouble: { type: Boolean, required: false }
     },
     data () {
       return {

@@ -48,7 +48,7 @@
 
 <style lang="scss" scoped>
   .footer-picker {
-    border-top: 1px solid $hover-color;
+    border-top: 2px solid $hover-color;
 
     &__validate {
       padding-top: 4px;
@@ -61,6 +61,6 @@
   }
 
   .is-dark .footer-picker {
-    border-top: 1px solid $hover-color-dark;
+    border-color: $hover-color-dark;
   }
 </style>

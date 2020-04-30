@@ -17,6 +17,7 @@
       :disabled-dates="disabledDates"
       :disabled-weekly="disabledWeekly"
       :is-visible="isVisible"
+      :has-double="hasDouble"
     />
     <FooterPicker
       v-if="hasFooter"
@@ -51,7 +52,8 @@
       inline: { type: Boolean, default: false },
       isVisible: { type: Boolean, default: false },
       disabledDates: { type: Array, required: true },
-      disabledWeekly: { type: Array, required: true }
+      disabledWeekly: { type: Array, required: true },
+      hasDouble: { type: Boolean, required: true }
     },
     computed: {
       dateMoment: {

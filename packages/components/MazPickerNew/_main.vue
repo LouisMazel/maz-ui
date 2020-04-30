@@ -41,6 +41,7 @@
         :has-header="hasHeader"
         :has-footer="hasFooter"
         :has-validate="hasValidate"
+        :has-double="doubleCalendar"
         :is-visible="hasPickerOpen"
         :has-now="hasNow"
         :now-translation="nowTranslation"
@@ -118,10 +119,14 @@
       autoClose: { type: Boolean, default: false },
       // Inline picker UI (no input, no dialog)
       inline: { type: Boolean, default: false },
-      // disabled dates `Array of dates`,
+      // disabled dates `Array of dates (same format as the value/format attribute)`,
       disabledDates: { type: Array, default: Array },
       // Days of the week which are disabled every week, in Array format with day index, Sunday as 0 and Saturday as 6: `[0,4,6]`
-      disabledWeekly: { type: Array, default: Array }
+      disabledWeekly: { type: Array, default: Array },
+      // show double calendar
+      doubleCalendar: { type: Boolean, default: false },
+      // Enable range mode to select periode
+      rangeMode: { type: Boolean, default: false }
     },
     data () {
       return {
