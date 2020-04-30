@@ -20,7 +20,7 @@
     >
       <MazSpinner
         :size="25"
-        dark
+        :color="color"
       />
     </div>
   </component>

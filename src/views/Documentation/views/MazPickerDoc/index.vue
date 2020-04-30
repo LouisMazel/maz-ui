@@ -28,8 +28,29 @@
         label="Select date"
         formatted="ll"
         clearable
+        size="sm"
+        @formatted="pickerFormatted = $event"
+      />
+
+      <br>
+
+      <MazPickerNew
+        v-model="pickerValue"
+        label="Select date"
+        formatted="ll"
+        clearable
+        size="md"
+        @formatted="pickerFormatted = $event"
+      />
+
+      <br>
+
+      <MazPickerNew
+        v-model="pickerValue"
+        label="Select date"
+        formatted="ll"
+        clearable
         size="lg"
-        open
         @formatted="pickerFormatted = $event"
       />
     </ComponentContainer>

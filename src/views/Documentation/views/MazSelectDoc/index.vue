@@ -12,25 +12,28 @@
     <div class="flex flex--wrap">
       <div class="flex-1">
         <ComponentContainer>
+          <h4 class="mb-3">
+            Basic
+          </h4>
           <MazSelect
             v-model="selectValue"
             :options="options"
           />
         </ComponentContainer>
-        <p>
-          Error
-        </p>
         <ComponentContainer>
+          <h4 class="mb-3">
+            Error
+          </h4>
           <MazSelect
             v-model="selectValue"
             :options="options"
             error
           />
         </ComponentContainer>
-        <p>
-          Valid
-        </p>
         <ComponentContainer>
+          <h4 class="mb-3">
+            Valid
+          </h4>
           <MazSelect
             v-model="selectValue"
             :options="options"

@@ -21,7 +21,6 @@
     computed: {
       weekDays () {
         return getWeekDays(this.locale)
-        // this.firstDayOfWeek
       }
     }
   }

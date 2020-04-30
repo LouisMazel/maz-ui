@@ -4,9 +4,9 @@
       :code="codeExample"
       language="js"
     >
-      <h2 class="mb-3">
+      <h4 class="mb-3">
         Basic use
-      </h2>
+      </h4>
       <p class="mb-3">
         v-model="{{ selectedItem || 'null' }}"
       </p>
@@ -22,9 +22,9 @@
       :code="codeExample2"
       language="js"
     >
-      <h2 class="mb-3">
+      <h4 class="mb-3">
         Custom
-      </h2>
+      </h4>
       <p class="mb-3">
         v-model="{{ selectedItem2 || 'null' }}"
       </p>

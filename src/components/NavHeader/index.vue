@@ -25,14 +25,6 @@
       </router-link>
       <div class="header__menu flex align-center hidden-mobile">
         <router-link
-          class="header__menu__item flex align-center home btn btn--white btn--md bg-transparent no-shadow mr-1"
-          :to="{
-            name: 'Home'
-          }"
-        >
-          Home
-        </router-link>
-        <router-link
           class="header__menu__item flex align-center btn btn--white btn--md bg-transparent no-shadow mr-1"
           :to="{
             name: 'Documentation'
@@ -110,8 +102,7 @@
           background-color: $hover-color;
         }
 
-        &.router-link-exact-active,
-        &.router-link-active:not(.home) {
+        &.router-link-active {
           color: $primary-color;
         }
       }
