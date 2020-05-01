@@ -1,33 +1,35 @@
-# TimePicker
+# ButtonValidate
 
 ## Props
 
-<!-- @vuese:TimePicker:props:start -->
+<!-- @vuese:ButtonValidate:props:start -->
 
-| Name           | Description | Type                | Required | Default |
-| -------------- | ----------- | ------------------- | -------- | ------- |
-| value          | -           | `String`            | `false`  | -       |
-| format         | -           | `String`            | `false`  | -       |
-| minuteInterval | -           | `String` / `Number` | `false`  | 1       |
-| height         | -           | `Number`            | `true`   | -       |
-| color          | -           | `String`            | `false`  | -       |
-| inline         | -           | `Boolean`           | `false`  | -       |
-| visible        | -           | `Boolean`           | `false`  | -       |
-| onlyTime       | -           | `Boolean`           | `false`  | -       |
-| dark           | -           | `Boolean`           | `false`  | -       |
-| disabledHours  | -           | `Array`             | `false`  | []      |
-| minTime        | -           | `String`            | `false`  | -       |
-| behaviour      | -           | `Object`            | `false`  | -       |
-| maxTime        | -           | `String`            | `false`  | -       |
+| Name                 | Description                       | Type      | Required | Default |
+| -------------------- | --------------------------------- | --------- | -------- | ------- |
+| dark                 | TODO: Remove wrong default values | `Boolean` | `false`  | -       |
+| buttonColor          | -                                 | `String`  | `false`  | -       |
+| buttonNowTranslation | -                                 | `String`  | `false`  | -       |
+| onlyTime             | -                                 | `Boolean` | `false`  | -       |
+| noButtonNow          | -                                 | `Boolean` | `false`  | -       |
+| range                | -                                 | `Boolean` | `false`  | -       |
+| hasButtonValidate    | -                                 | `Boolean` | `false`  | -       |
 
-<!-- @vuese:TimePicker:props:end -->
+<!-- @vuese:ButtonValidate:props:end -->
 
 ## Events
 
-<!-- @vuese:TimePicker:events:start -->
+<!-- @vuese:ButtonValidate:events:start -->
 
 | Event Name | Description | Parameters |
 | ---------- | ----------- | ---------- |
-| input      | -           | -          |
+| now        | -           | -          |
+| validate   | -           | -          |
+
+<!-- @vuese:ButtonValidate:events:end -->
+
+rt -->
+|Event Name|Description|Parameters|
+|---|---|---|
+|input|-|-|
 
 <!-- @vuese:TimePicker:events:end -->

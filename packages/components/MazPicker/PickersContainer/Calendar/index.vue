@@ -87,7 +87,7 @@
       value: {
         handler (newValue, oldValue) {
           if (!this.months || (newValue.month() !== oldValue.month() && !this.checkIfValueIsInMonths(newValue.month()))) {
-            if (this.months) this.focusCalendar()
+            if (this.months) this.focusCurrentDay()
             this.months = this.getMonth({
               year: this.value.year(),
               month: this.value.month()
@@ -99,9 +99,10 @@
       }
     },
     methods: {
-      focusCalendar () {
+      focusCurrentDay () {
         setTimeout(() => {
-          document.querySelector('.month-picker__day.active').focus()
+          const elem = document.querySelector('.month-picker__day.active')
+          if (elem) elem.focus()
         }, 500)
       },
       checkIfValueIsInMonths (newMonth) {

@@ -1,25 +1,29 @@
-# RangeShortcuts
-
-Component used to show a list of the shortcuts currently available and select one of them.
+# YearMonthSelector
 
 ## Props
 
-<!-- @vuese:RangeShortcuts:props:start -->
+<!-- @vuese:YearMonthSelector:props:start -->
 
-| Name            | Description | Type      | Required | Default |
-| --------------- | ----------- | --------- | -------- | ------- |
-| value           | -           | `String`  | `false`  | -       |
-| color           | -           | `String`  | `false`  | -       |
-| dark            | -           | `Boolean` | `false`  | -       |
-| dateTime        | -           | `Object`  | `false`  | -       |
-| customShortcuts | -           | `Array`   | `false`  | []      |
-| height          | -           | `Number`  | `true`   | -       |
+| Name   | Description | Type      | Required | Default |
+| ------ | ----------- | --------- | -------- | ------- |
+| locale | -           | `String`  | `false`  | -       |
+| dark   | -           | `Boolean` | `false`  | -       |
+| color  | -           | `String`  | `false`  | -       |
+| mode   | -           | `String`  | `false`  | -       |
+| month  | -           | `Object`  | `false`  | -       |
 
-<!-- @vuese:RangeShortcuts:props:end -->
+<!-- @vuese:YearMonthSelector:props:end -->
 
 ## Events
 
-<!-- @vuese:RangeShortcuts:events:start -->
+<!-- @vuese:YearMonthSelector:events:start -->
+
+| Event Name | Description | Parameters |
+| ---------- | ----------- | ---------- |
+| input      | -           | -          |
+| back       | -           | -          |
+
+<!-- @vuese:YearMonthSelector:events:end -->
 
 | Event Name   | Description | Parameters |
 | ------------ | ----------- | ---------- |

@@ -63,7 +63,7 @@
   import uniqueId from './../../mixins/uniqueId'
   import ArrowIcon from './../_subs/ArrowIcon'
   import moment from 'moment'
-  import { getDefaultLocale, EventBus } from './utils'
+  import { getDefaultLocale, EventBus, checkIfTargetIsAllowedToCloseComponent } from './utils'
 
   const hasDateBetweenMinMaxDate = (date, minDate, maxDate) => {
     return {
@@ -100,9 +100,9 @@
       },
       // override the date picker postion (top / bottom / left / right)
       position: { type: String, default: null },
-      // format returned
+      // the value in `v-model` will be returned in this format
       format: { type: String, default: 'YYYY-MM-DD' },
-      // format of input
+      // the value in `@formatted` event & shown in input will be formatted with this
       formatted: { type: String, default: 'LL' },
       // minimum date the user can set (same format as the model)
       minDate: { type: String, default: null },
@@ -150,7 +150,7 @@
           return this.value ? moment(this.value, this.format).format(this.formatted) : null
         },
         set () {
-          this.$emit('input', null)
+          this.emitValue(null)
         }
       },
       dateMoment: {
@@ -205,8 +205,8 @@
               minDateMoment,
               maxDateMoment
             )
-            if (isAfter) this.$emit('input', this.maxDateMoment)
-            if (isBefore) this.$emit('input', this.minDateMoment)
+            if (isAfter) this.emitValue(this.maxDateMoment)
+            if (isBefore) this.emitValue(this.minDateMoment)
 
             // return the date value (in `@formatted` event)
             // @arg date formatted with "formatted" option
@@ -217,6 +217,7 @@
       },
       locale: {
         async handler (locale) {
+          console.log('locale', locale)
           moment.locale(locale)
         },
         immediate: true
@@ -239,21 +240,19 @@
     },
     methods: {
       emitValue (value) {
+        let valueToSend
+        if (value instanceof moment) valueToSend = value.format(this.format)
+        else valueToSend = value || null
         // return the date value (in `@input` or `v-model`)
         // @arg date formatted with "format" option
-        this.$emit('input', value.format(this.format))
+        this.$emit('input', valueToSend)
       },
       openPicker () {
         this.isOpen = true
       },
       closePicker (e = {}) {
         if (
-          this.$el.contains(e.relatedTarget) ||
-          NOT_ALLOWED_CLASSES_TO_CLOSE.some(classes =>
-            classes.every(c =>
-              (e.target?.classList ?? []).contains(c)
-            )
-          )
+          this.$el.contains(e.relatedTarget) || checkIfTargetIsAllowedToCloseComponent(NOT_ALLOWED_CLASSES_TO_CLOSE, e.target)
         ) return
         this.isOpen = false
       },
