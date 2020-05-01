@@ -1,5 +1,6 @@
 <template>
   <div
+    :id="`Calendar${_uid}`"
     ref="Calendar"
     class="calendar pos-r mw-100 over-hid"
   >
@@ -26,7 +27,7 @@
           :month="month"
           :min-date="minDate"
           :max-date="maxDate"
-          :no-keyboard="hasDouble"
+          :has-keyboard="hasKeyboard"
           :has-double="hasDouble"
           :no-weekends-days="noWeekendsDays"
           :disabled-dates="disabledDates"
@@ -65,7 +66,8 @@
       disabledDates: { type: Array, required: true },
       disabledWeekly: { type: Array, required: true },
       isVisible: { type: Boolean, default: false },
-      hasDouble: { type: Boolean, required: true }
+      hasDouble: { type: Boolean, required: true },
+      hasKeyboard: { type: Boolean, required: true }
     },
     data () {
       return {
@@ -81,16 +83,26 @@
         set (day) {
           this.$emit('input', day)
         }
+      },
+      currentValue () {
+        return this.value.end ? this.value.end : this.value
       }
     },
     watch: {
       value: {
         handler (newValue, oldValue) {
-          if (!this.months || (newValue.month() !== oldValue.month() && !this.checkIfValueIsInMonths(newValue.month()))) {
+          // update months if use click on a day of next or previous month
+          if (
+            !this.months ||
+            (
+              !this.hasDouble &&
+            (newValue.month() !== oldValue.month() && !this.checkIfValueIsInMonths(newValue.month()))
+            )
+          ) {
             if (this.months) this.focusCurrentDay()
             this.months = this.getMonth({
-              year: this.value.year(),
-              month: this.value.month()
+              year: this.currentValue.year(),
+              month: this.currentValue.month()
             })
             // re-focus the current day to active the trigger blur for close the date picker on clik outside
           }
@@ -101,7 +113,7 @@
     methods: {
       focusCurrentDay () {
         setTimeout(() => {
-          const elem = document.querySelector('.month-picker__day.active')
+          const elem = document.querySelector(`#Calendar${this._uid} .month-picker__day.active`)
           if (elem) elem.focus()
         }, 500)
       },

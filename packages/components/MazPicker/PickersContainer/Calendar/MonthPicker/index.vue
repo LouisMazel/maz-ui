@@ -16,13 +16,15 @@
         class="month-picker__day text-color bg-color-light flex flex-center"
         size="mini"
         tabindex="-1"
-        :no-shadow="!dateMoment.isSame(day)"
+        :no-shadow="!isSelectedDate(day)"
         :disabled="isDisabled(day)"
-        :active="dateMoment.isSame(day)"
+        :active="isSelectedDate(day)"
         :class="{
           'highlight': isToday(day),
           'is-disabled text-muted fw-400': !isSameMonth(day),
-          'is-keyboard-selected': isKeyboardSelected(day)
+          'is-keyboard-selected': isKeyboardSelected(day),
+          'is-in-range': isBetween(day) && !isDisabled(day),
+          'is-last-in-range': isLastInRange(day)
         }"
         @click="selectDay(day)"
       >
@@ -81,6 +83,9 @@
       },
       weekStart () {
         return this.month.getWeekStart()
+      },
+      isRangeMode () {
+        return !!this.value.start
       }
     },
     watch: {
@@ -105,8 +110,16 @@
       isToday (day) {
         return day.isSame(new Date(), 'day')
       },
+      isBetween (day) {
+        return day.isBetween(this.value.start, this.value.end, null, '[]')
+      },
+      isLastInRange (day) {
+        return day.isSame(this.value.end)
+      },
       isSelectedDate (day) {
-        return this.dateMoment.isSame(day, 'day')
+        return this.isRangeMode
+          ? this.dateMoment.start.isSame(day, 'day') || this.dateMoment.end.isSame(day, 'day')
+          : this.dateMoment.isSame(day, 'day')
       },
       isDisabled (day) {
         return day.isBefore(this.minDate) ||
@@ -135,7 +148,21 @@
         return day.isSame(this.keyboardSelectedDay)
       },
       selectDay (day) {
-        this.dateMoment = day
+        if (!this.isRangeMode) {
+          this.dateMoment = day
+          return
+        }
+        if (day.isBefore(this.value.start)) {
+          this.dateMoment = {
+            start: day,
+            end: null
+          }
+        } else {
+          this.dateMoment = {
+            ...this.dateMoment.start,
+            end: day
+          }
+        }
       }
     }
   }
@@ -143,19 +170,19 @@
 
 <style lang="scss" scoped>
   .month-picker {
-    min-height: 215px;
+    min-height: 194px;
     min-width: 300px;
     width: 100%;
     overflow: hidden;
 
     &--long {
-      min-height: 256px;
+      min-height: 231px;
     }
 
     &__days {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      grid-gap: 10px;
+      grid-gap: 5px;
       width: 100%;
       justify-items: center;
     }
@@ -169,11 +196,6 @@
       font-size: 1em;
       z-index: 1;
       position: relative;
-
-      &:hover {
-        color: white;
-        background-color: rgba($primary-color, .5);
-      }
 
       &.highlight:not(.active):not(.btn--disabled)::before,
       &.is-keyboard-selected:not(.active)::before {
@@ -197,10 +219,38 @@
         }
       }
 
+      &.is-in-range {
+        color: white;
+        // position: absolute;
+        // left: -5px;
+        // right: -5px;
+        background-color: rgba($primary-color, .6);
+        width: calc(100% + 5px);
+
+        &:not(.active) {
+          border-radius: 0;
+        }
+
+        &.active:not(.is-last-in-range) {
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+        }
+
+        &.is-last-in-range {
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+        }
+      }
+
       &.active:not(:disabled) {
         color: white;
         background-color: $primary-color;
         font-weight: 600;
+      }
+
+      &:hover {
+        color: white;
+        background-color: rgba($primary-color, .4);
       }
 
       &:disabled {

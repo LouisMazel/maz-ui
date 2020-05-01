@@ -7,6 +7,7 @@
     <HeaderPicker
       v-if="hasHeader"
       :value="dateMoment"
+      :locale="locale"
     />
     <Calendar
       v-model="dateMoment"
@@ -18,6 +19,7 @@
       :disabled-weekly="disabledWeekly"
       :is-visible="isVisible"
       :has-double="hasDouble"
+      :has-keyboard="hasKeyboard"
     />
     <FooterPicker
       v-if="hasFooter"
@@ -35,7 +37,11 @@
 
   export default {
     name: 'PickersContainer',
-    components: { HeaderPicker, Calendar, FooterPicker },
+    components: {
+      HeaderPicker,
+      Calendar,
+      FooterPicker
+    },
     props: {
       value: { type: Object, required: true },
       locale: { type: String, default: null },
@@ -53,7 +59,9 @@
       isVisible: { type: Boolean, default: false },
       disabledDates: { type: Array, required: true },
       disabledWeekly: { type: Array, required: true },
-      hasDouble: { type: Boolean, required: true }
+      hasDouble: { type: Boolean, required: true },
+      hasKeyboard: { type: Boolean, required: true },
+      hasRange: { type: Boolean, required: true }
     },
     computed: {
       dateMoment: {

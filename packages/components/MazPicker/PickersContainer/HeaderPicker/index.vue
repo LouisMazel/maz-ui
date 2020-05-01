@@ -30,30 +30,41 @@
 </template>
 
 <script>
+
+  const FORMAT_OPTIONS = {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric'
+  }
+
   export default {
     name: 'HeaderPicker',
     props: {
-      value: { type: Object, required: true }
+      value: { type: Object, required: true },
+      locale: { type: String, required: true }
     },
     data () {
       return {
         transitionName: 'slidevnext',
-        currentDate: this.value
+        currentDate: this.currentValue
       }
     },
     computed: {
+      currentValue () {
+        return this.value.end ? this.value.end : this.value
+      },
       year () {
-        return this.value.year()
+        return this.currentValue.year()
       },
       dateFormatted () {
-        return this.value.format('ddd D MMM')
+        return new Intl.DateTimeFormat(this.locale, FORMAT_OPTIONS).format(this.currentValue.toDate())
       }
     },
     watch: {
-      value (value) {
-        const newValueIsSmaller = this.currentDate > value
+      value () {
+        const newValueIsSmaller = this.currentDate > this.currentValue
         this.transitionName = newValueIsSmaller ? 'slidevprev' : 'slidevnext'
-        this.$nextTick(() => { this.currentDate = value })
+        this.$nextTick(() => { this.currentDate = this.currentValue })
       }
     }
   }

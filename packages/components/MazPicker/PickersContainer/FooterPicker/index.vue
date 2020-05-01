@@ -36,11 +36,11 @@
       nowTranslation: { type: String, required: true }
     },
     methods: {
-      validate () {
-        EventBus.$emit('validate')
+      validate (e) {
+        EventBus.$emit('validate', e)
       },
-      now () {
-        EventBus.$emit('now')
+      now (e) {
+        EventBus.$emit('now', e)
       }
     }
   }

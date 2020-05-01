@@ -1,7 +1,7 @@
 <template>
   <div
     :id="uniqueId"
-    ref="mazPicker"
+    ref="MazPicker"
     class="maz-picker"
     :class="{
       'is-dark': dark
@@ -31,11 +31,18 @@
       </div>
     </MazInput>
 
+    {{ value }}
+    <br>
+    {{ dateMoment }}
+    <br>
+    {{ inputValue }}
+
     <transition
       :name="pickerTransition"
     >
       <PickersContainer
         v-if="hasPickerOpen"
+        ref="PickersContainer"
         v-model="dateMoment"
         :locale="locale"
         :position="calcPosition"
@@ -43,6 +50,8 @@
         :has-footer="hasFooter"
         :has-validate="hasValidate"
         :has-double="hasDouble"
+        :has-range="!range"
+        :has-keyboard="hasKeyboard"
         :is-visible="hasPickerOpen"
         :has-now="hasNow"
         :now-translation="nowTranslation"
@@ -63,14 +72,15 @@
   import uniqueId from './../../mixins/uniqueId'
   import ArrowIcon from './../_subs/ArrowIcon'
   import moment from 'moment'
-  import { getDefaultLocale, EventBus, checkIfTargetIsAllowedToCloseComponent } from './utils'
-
-  const hasDateBetweenMinMaxDate = (date, minDate, maxDate) => {
-    return {
-      isBefore: date.isBefore(minDate),
-      isAfter: date.isAfter(maxDate)
-    }
-  }
+  import {
+    getDefaultLocale,
+    EventBus,
+    checkIfTargetIsAllowedToCloseComponent,
+    hasDateBetweenMinMaxDate,
+    updateComputedDataWithProps,
+    getDateMoment,
+    getFormattedValue
+  } from './utils'
 
   const NOT_ALLOWED_CLASSES_TO_CLOSE = [
     ['month-picker__day', 'is-disabled'],
@@ -78,18 +88,19 @@
     ['year-month-selector__close']
   ]
 
-  const updateComputedDataWithProps = () => 'updated'
-
   export default {
     name: 'MazPicker',
-    components: { PickersContainer, ArrowIcon },
+    components: {
+      PickersContainer,
+      ArrowIcon
+    },
     mixins: [uniqueId],
     props: {
       // v-model --> input value
       // must be is the same format like
       value: {
         validator: prop => ['string', 'object'].includes(typeof prop) || prop === null,
-        required: true
+        default: null
       },
       // if is `true`, the picker is open
       open: { type: Boolean, default: false },
@@ -135,7 +146,9 @@
       // Enable range mode to select periode
       range: { type: Boolean, default: false },
       // Change placeholder/label of input
-      label: { type: String, default: 'Select date' }
+      label: { type: String, default: 'Select date' },
+      // Disabled keyboard accessibility & navigation
+      noKeyboard: { type: Boolean, default: false }
     },
     data () {
       return {
@@ -147,7 +160,7 @@
       inputValue: {
         get () {
           updateComputedDataWithProps(this.locale)
-          return this.value ? moment(this.value, this.format).format(this.formatted) : null
+          return getFormattedValue(this.value, this.format, this.formatted, this.range)
         },
         set () {
           this.emitValue(null)
@@ -156,7 +169,7 @@
       dateMoment: {
         get () {
           updateComputedDataWithProps(this.locale)
-          return this.value ? moment(this.value, this.format) : moment()
+          return getDateMoment(this.value, this.format, this.range)
         },
         set (value) {
           this.emitValue(value)
@@ -186,7 +199,10 @@
         return !this.inline && !this.autoClose
       },
       hasNow () {
-        return !this.noNow
+        return !this.noNow && !this.range
+      },
+      hasKeyboard () {
+        return !this.noKeyboard && !this.hasDouble && !this.range
       },
       disabledDatesMoment () {
         return this.disabledDates.map(d => moment(d, this.format))
@@ -198,27 +214,30 @@
     watch: {
       dateMoment: {
         handler (value) {
-          const { minDateMoment, maxDateMoment } = this
+          const { minDateMoment, maxDateMoment, range } = this
           if (value && (minDateMoment || maxDateMoment)) {
             const { isBefore, isAfter } = hasDateBetweenMinMaxDate(
               value,
               minDateMoment,
-              maxDateMoment
+              maxDateMoment,
+              range
             )
             if (isAfter) this.emitValue(this.maxDateMoment)
             if (isBefore) this.emitValue(this.minDateMoment)
 
-            // return the date value (in `@formatted` event)
-            // @arg date formatted with "formatted" option
-            if (this.value) this.$emit('formatted', value.format(this.formatted))
+            this.emitFormatted(value)
           }
         },
         immediate: true
       },
       locale: {
-        async handler (locale) {
-          console.log('locale', locale)
+        handler (locale) {
           moment.locale(locale)
+          // TODO: import moment locales async
+          // import(`moment/locale/${locale}.js`).then(module => {
+          //   console.log('module', module)
+          //   moment.locale(locale)
+          // })
         },
         immediate: true
       },
@@ -247,6 +266,11 @@
         // @arg date formatted with "format" option
         this.$emit('input', valueToSend)
       },
+      emitFormatted (value) {
+        // return the date value (in `@formatted` event)
+        // @arg date formatted with "formatted" option
+        if (this.value) this.$emit('formatted', getFormattedValue(value, this.format, this.formatted, this.range))
+      },
       openPicker () {
         this.isOpen = true
       },
@@ -257,12 +281,17 @@
         this.isOpen = false
       },
       getPosition () {
-        const parentRect = this.$refs.mazPicker.getBoundingClientRect()
-        const windowHeight = window.innerHeight
-        let datePickerHeight = 417
+        const DOUBLE_PICKER_HEIGHT = 435
+        const PICKER_HEIGHT = 386
+        const HEADER_HEIGHT = 64
+        const FOOTER_HEIGHT = 54
 
-        datePickerHeight = this.noButton ? datePickerHeight - 54 : datePickerHeight
-        datePickerHeight = this.noHeader ? datePickerHeight - 64 : datePickerHeight
+        const parentRect = this.$refs.MazPicker.getBoundingClientRect()
+        const windowHeight = window.innerHeight
+        let datePickerHeight = this.hasDouble ? DOUBLE_PICKER_HEIGHT : PICKER_HEIGHT
+
+        datePickerHeight = this.noFooter ? datePickerHeight - HEADER_HEIGHT : datePickerHeight
+        datePickerHeight = this.noHeader ? datePickerHeight - FOOTER_HEIGHT : datePickerHeight
         if (parentRect.top < datePickerHeight) {
           // No place on top --> bottom
           return 'bottom'

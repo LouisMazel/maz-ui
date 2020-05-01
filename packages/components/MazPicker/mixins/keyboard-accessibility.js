@@ -7,7 +7,7 @@ import { EventBus } from './../utils'
 
 export default {
   props: {
-    noKeyboard: { type: Boolean, default: false }
+    hasKeyboard: { type: Boolean, default: true }
   },
   data () {
     return {
@@ -47,7 +47,7 @@ export default {
         } else if (e.keyCode === 35) {
           this.nextMonth()
         } else if (e.keyCode === 27) {
-          EventBus.$emit('close')
+          EventBus.$emit('close', e)
         }
         // if ('activeElement' in document) document.activeElement.blur()
       } catch (err) {
@@ -118,7 +118,7 @@ export default {
     }
   },
   mounted () {
-    if (!this.noKeyboard && (this.inline || this.isVisible)) {
+    if (this.hasKeyboard && (this.inline || this.isVisible)) {
       window.addEventListener('keydown', this.keyPressed)
     }
   },
@@ -127,7 +127,7 @@ export default {
   },
   watch: {
     isVisible (value) {
-      if (!this.noKeyboard && value) {
+      if (this.hasKeyboard && value) {
         window.addEventListener('keydown', this.keyPressed)
       } else {
         window.removeEventListener('keydown', this.keyPressed)
@@ -135,6 +135,7 @@ export default {
     },
     value: {
       handler (value) {
+        if (!this.hasKeyboard) return
         this.keyboardSelectedDay = value.clone()
       },
       immediate: true

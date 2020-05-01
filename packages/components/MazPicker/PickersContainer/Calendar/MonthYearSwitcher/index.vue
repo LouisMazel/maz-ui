@@ -5,7 +5,7 @@
       no-shadow
       color="grey"
       size="mini"
-      class="flex flex-center bg-transparent hover-color focus-none"
+      class="month-year-switcher__previous flex flex-center bg-transparent hover-color focus-none"
       tabindex="-1"
       @click="changeMonth('prev')"
     >
