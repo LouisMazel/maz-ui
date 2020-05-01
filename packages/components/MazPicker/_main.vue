@@ -31,12 +31,6 @@
       </div>
     </MazInput>
 
-    {{ value }}
-    <br>
-    {{ dateMoment }}
-    <br>
-    {{ inputValue }}
-
     <transition
       :name="pickerTransition"
     >
@@ -61,6 +55,7 @@
         :disabled-dates="disabledDatesMoment"
         :disabled-weekly="disabledWeekly"
         :auto-close="autoClose"
+        :shortcuts="shortcuts"
         :inline="inline"
       />
     </transition>
@@ -142,13 +137,27 @@
       // Days of the week which are disabled every week, in Array format with day index, Sunday as 0 and Saturday as 6: `[0,4,6]`
       disabledWeekly: { type: Array, default: Array },
       // show double calendar
-      doubleCalendar: { type: Boolean, default: false },
+      double: { type: Boolean, default: false },
       // Enable range mode to select periode
       range: { type: Boolean, default: false },
       // Change placeholder/label of input
       label: { type: String, default: 'Select date' },
       // Disabled keyboard accessibility & navigation
-      noKeyboard: { type: Boolean, default: false }
+      noKeyboard: { type: Boolean, default: false },
+      // shortcuts for range mode
+      shortcuts: {
+        type: Array,
+        default: () => ([
+          { key: 'thisWeek', label: 'This week', value: 'isoWeek' },
+          { key: 'lastWeek', label: 'Last week', value: '-isoWeek' },
+          { key: 'last7Days', label: 'Last 7 days', value: 7 },
+          { key: 'last30Days', label: 'Last 30 days', value: 30 },
+          { key: 'thisMonth', label: 'This month', value: 'month' },
+          { key: 'lastMonth', label: 'Last month', value: '-month' },
+          { key: 'thisYear', label: 'This year', value: 'year' },
+          { key: 'lastYear', label: 'Last year', value: '-year' }
+        ])
+      }
     },
     data () {
       return {
@@ -208,14 +217,14 @@
         return this.disabledDates.map(d => moment(d, this.format))
       },
       hasDouble () {
-        return this.doubleCalendar || this.range
+        return this.double || this.range
       }
     },
     watch: {
       dateMoment: {
         handler (value) {
           const { minDateMoment, maxDateMoment, range } = this
-          if (value && (minDateMoment || maxDateMoment)) {
+          if (!range && value && (minDateMoment || maxDateMoment)) {
             const { isBefore, isAfter } = hasDateBetweenMinMaxDate(
               value,
               minDateMoment,
@@ -260,8 +269,15 @@
     methods: {
       emitValue (value) {
         let valueToSend
-        if (value instanceof moment) valueToSend = value.format(this.format)
-        else valueToSend = value || null
+        if (this.range) {
+          const { start, end } = value
+          valueToSend = {
+            start: start instanceof moment ? start.format(this.format) : null,
+            end: end instanceof moment ? end.format(this.format) : null
+          }
+        } else {
+          valueToSend = value instanceof moment ? value.format(this.format) : null
+        }
         // return the date value (in `@input` or `v-model`)
         // @arg date formatted with "format" option
         this.$emit('input', valueToSend)

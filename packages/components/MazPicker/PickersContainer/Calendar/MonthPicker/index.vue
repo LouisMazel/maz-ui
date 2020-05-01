@@ -15,7 +15,6 @@
         :key="i"
         class="month-picker__day text-color bg-color-light flex flex-center"
         size="mini"
-        tabindex="-1"
         :no-shadow="!isSelectedDate(day)"
         :disabled="isDisabled(day)"
         :active="isSelectedDate(day)"
@@ -40,7 +39,7 @@
     name: 'MonthPicker',
     mixins: [KeyboardAccessibility],
     props: {
-      value: { type: Object, required: true },
+      value: { type: Object, default: null },
       month: { type: Object, required: true },
       minDate: { type: Object, default: null },
       maxDate: { type: Object, default: null },
@@ -53,18 +52,11 @@
     data () {
       return {
         transitionDaysName: 'slidenext',
-        currentMonth: this.month
+        currentMonth: this.month,
+        hoverredDay: null
       }
     },
     computed: {
-      dateMoment: {
-        get () {
-          return this.value
-        },
-        set (day) {
-          this.$emit('input', day)
-        }
-      },
       allDays () {
         return [
           ...this.previousMonthDays,
@@ -85,7 +77,7 @@
         return this.month.getWeekStart()
       },
       isRangeMode () {
-        return !!this.value.start
+        return !!this.value && Object.keys(this.value).includes('start')
       }
     },
     watch: {
@@ -111,15 +103,17 @@
         return day.isSame(new Date(), 'day')
       },
       isBetween (day) {
+        if (!this.isRangeMode) return false
         return day.isBetween(this.value.start, this.value.end, null, '[]')
       },
       isLastInRange (day) {
+        if (!this.isRangeMode) return false
         return day.isSame(this.value.end)
       },
       isSelectedDate (day) {
         return this.isRangeMode
-          ? this.dateMoment.start.isSame(day, 'day') || this.dateMoment.end.isSame(day, 'day')
-          : this.dateMoment.isSame(day, 'day')
+          ? (this.value?.start?.isSame(day, 'day') ?? false) || (this.value?.end?.isSame(day, 'day') ?? false)
+          : this.value ? this.value.isSame(day, 'day') : false
       },
       isDisabled (day) {
         return day.isBefore(this.minDate) ||
@@ -138,31 +132,35 @@
         return this.month.month === day.month()
       },
       isDateDisabled (day) {
-        return this.disabledDates.some(d => d.isSame(day))
+        return this.disabledDates.some(d => d.isSame(day, 'day'))
       },
       isDayDisabledWeekly (day) {
         const dayConst = day.day()
         return this.disabledWeekly.includes(dayConst)
       },
       isKeyboardSelected (day) {
-        return day.isSame(this.keyboardSelectedDay)
+        return day.isSame(this.keyboardSelectedDay, 'day')
       },
       selectDay (day) {
+        let valueToSend
         if (!this.isRangeMode) {
-          this.dateMoment = day
+          valueToSend = day
           return
         }
-        if (day.isBefore(this.value.start)) {
-          this.dateMoment = {
+        const { start, end } = this.value
+        if (!start || (start && end) || day.isBefore(this.value.start)) {
+          valueToSend = {
             start: day,
             end: null
           }
         } else {
-          this.dateMoment = {
-            ...this.dateMoment.start,
+          valueToSend = {
+            start: this.value.start,
             end: day
           }
         }
+
+        this.$emit('input', valueToSend)
       }
     }
   }

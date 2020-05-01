@@ -112,7 +112,7 @@
         :code="doubleExample"
       >
         <h4 class="mb-3">
-          Double-calendar - size="lg" - format="DD-MM-YYYY" - label="Select date in big calander"
+          double - size="lg" - format="DD-MM-YYYY" - label="Select date in big calander"
         </h4>
 
         <p>
@@ -128,7 +128,7 @@
           format="DD-MM-YYYY"
           clearable
           size="lg"
-          double-calendar
+          double
           :locale="locale"
           @formatted="pickerFormatted3 = $event"
         />
@@ -162,7 +162,7 @@
         :code="inlineExample"
       >
         <h4 class="mb-3">
-          Inline - Double-calendar
+          Inline - Double
         </h4>
 
         <p>
@@ -172,12 +172,13 @@
           Formatted value : {{ pickerFormatted4 || 'null' }}
         </p>
 
-        <!-- <MazPicker
+        <MazPicker
           v-model="pickerValue4"
           inline
+          double
           :locale="locale"
           @formatted="pickerFormatted4 = $event"
-        /> -->
+        />
       </ComponentContainer>
     </div>
   </div>
@@ -250,7 +251,7 @@ export default {
     format="DD-MM-YYYY"
     clearable
     size="lg"
-    double-calendar
+    double
     @formatted="pickerFormatted3 = $event"
   />
 </template>
@@ -269,7 +270,7 @@ export default {
   <MazPicker
     v-model="pickerValue3"
     inline
-    double-calendar
+    double
     @formatted="pickerFormatted3 = $event"
   />
 </template>

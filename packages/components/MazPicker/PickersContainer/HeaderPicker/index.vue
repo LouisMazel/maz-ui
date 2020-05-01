@@ -23,13 +23,14 @@
         v-for="date in [dateFormatted]"
         :key="date"
       >
-        {{ value ? date : '...' | capitalize }}
+        {{ value ? date : '-' | capitalize }}
       </span>
     </TransitionGroup>
   </div>
 </template>
 
 <script>
+  import moment from 'moment'
 
   const FORMAT_OPTIONS = {
     weekday: 'long',
@@ -40,18 +41,24 @@
   export default {
     name: 'HeaderPicker',
     props: {
-      value: { type: Object, required: true },
+      value: { type: Object, default: null },
       locale: { type: String, required: true }
     },
     data () {
       return {
         transitionName: 'slidevnext',
-        currentDate: this.currentValue
+        currentDate: null
       }
     },
     computed: {
+      isRangeMode () {
+        return !!this.value && Object.keys(this.value).includes('start')
+      },
       currentValue () {
-        return this.value.end ? this.value.end : this.value
+        if (this.isRangeMode) {
+          return this.value.end || moment()
+        }
+        return this.value || moment()
       },
       year () {
         return this.currentValue.year()

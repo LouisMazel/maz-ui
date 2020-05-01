@@ -33,11 +33,11 @@ export const getDateMoment = (value, format, range) => {
   if (range) {
     if (typeof value === 'string') throw new Error(`[MazPicker] range mode is enable: value must be an object like this '{ start: null, end: null }' or 'null'`)
     return {
-      start: value && value.start ? moment(value.start, format) : moment(),
-      end: value && value.end ? moment(value.end, format) : moment()
+      start: value && value.start ? moment(value.start, format) : null,
+      end: value && value.end ? moment(value.end, format) : null
     }
   } else {
-    return value ? moment(value, format) : moment()
+    return value ? moment(value, format) : null
   }
 }
 

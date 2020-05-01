@@ -135,7 +135,7 @@ export default {
     },
     value: {
       handler (value) {
-        if (!this.hasKeyboard) return
+        if (!this.hasKeyboard || !this.value) return
         this.keyboardSelectedDay = value.clone()
       },
       immediate: true

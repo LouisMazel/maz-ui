@@ -19,6 +19,7 @@
       :disabled-weekly="disabledWeekly"
       :is-visible="isVisible"
       :has-double="hasDouble"
+      :shortcuts="shortcuts"
       :has-keyboard="hasKeyboard"
     />
     <FooterPicker
@@ -43,7 +44,7 @@
       FooterPicker
     },
     props: {
-      value: { type: Object, required: true },
+      value: { type: Object, default: null },
       locale: { type: String, default: null },
       position: { type: String, required: true },
       hasHeader: { type: Boolean, required: true },
@@ -61,15 +62,16 @@
       disabledWeekly: { type: Array, required: true },
       hasDouble: { type: Boolean, required: true },
       hasKeyboard: { type: Boolean, required: true },
-      hasRange: { type: Boolean, required: true }
+      hasRange: { type: Boolean, required: true },
+      shortcuts: { type: Array, default: null }
     },
     computed: {
       dateMoment: {
         get () {
           return this.value
         },
-        set (day) {
-          this.$emit('input', day)
+        set (value) {
+          this.$emit('input', value)
         }
       }
     }

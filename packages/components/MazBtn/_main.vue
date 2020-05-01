@@ -11,6 +11,8 @@
     :type="isLink ? null : type"
     :disabled="isLink ? null : isDisabled"
     @click="isLink ? null : handleClick($event)"
+    @mouseenter="emitMouseEnter($event)"
+    @mouseleave="emitMouseLeave($event)"
   >
     <!-- Add your button text here -->
     <slot />
@@ -97,8 +99,16 @@
     },
     methods: {
       handleClick (e) {
-        // return the default event
+        // return click event
         this.$emit('click', e)
+      },
+      emitMouseEnter (e) {
+        // return mouseenter event
+        this.$emit('mouseenter', e)
+      },
+      emitMouseLeave (e) {
+        // return mouseleave event
+        this.$emit('mouseleave', e)
       }
     }
   }
