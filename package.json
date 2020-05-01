@@ -15,7 +15,7 @@
     "lint:js:fix": "vue-cli-service lint",
     "lint:md": "prettier '**/*.md' --check",
     "lint:md:fix": "prettier '**/*.md' --write",
-    "lint:style": "stylelint 'src/**/*.{scss,css,vue}' 'packages/**/*.{scss,css,vue}'",
+    "lint:style": "stylelint './**/*.{css,scss,vue}'",
     "lint:style:fix": "npm run lint -- --fix",
     "clean": "rimraf lib",
     "build": "npm run clean && npm run gen:docs && npm run build:entry && npm run build:lib && npm run build:css && npm run build:docs",
