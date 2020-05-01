@@ -1,6 +1,6 @@
 <template>
   <div class="home flex-1 flex direction-column">
-    <div class="home__main flex flex-1 container">
+    <div class="home__main flex flex-1 container flex-center">
       <div class="home__content flex direction-column justify-center p-4">
         <h2 class="mb-2">
           A library to build your interfaces with <span class="text-primary">Vue.js</span>

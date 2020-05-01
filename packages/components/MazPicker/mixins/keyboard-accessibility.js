@@ -1,23 +1,17 @@
-import moment from 'moment'
 /*
   * Vue mixin to inject the required methods, events to handle the date navigation
   * with the keyboard.
   * @module mixin - keyboardAccessibility
 */
+import { EventBus } from './../utils'
+
 export default {
   props: {
     noKeyboard: { type: Boolean, default: false }
   },
   data () {
     return {
-      newValue: null
-    }
-  },
-  computed: {
-    currentValue () {
-      return this.range
-        ? this.newValue || this.value.end || this.value.start || moment()
-        : this.newValue || this.value || moment()
+      keyboardSelectedDay: null
     }
   },
   methods: {
@@ -37,99 +31,94 @@ export default {
       if (e.keyCode === 38 || e.keyCode === 40 || e.keyCode === 35 || e.keyCode === 36) {
         e.view.event.preventDefault()
       }
-      if (this.isKeyboardActive) {
-        try {
-          if (e.keyCode === 38) {
-            this.previousWeek()
-          } else if (e.keyCode === 37) {
-            this.previousDay()
-          } else if (e.keyCode === 39) {
-            this.nextDay()
-          } else if (e.keyCode === 40) {
-            this.nextWeek()
-          } else if (e.keyCode === 32 || e.keyCode === 13) {
-            this.selectThisDay()
-          } else if (e.keyCode === 36) {
-            this.previousMonth()
-          } else if (e.keyCode === 35) {
-            this.nextMonth()
-          } else if (e.keyCode === 27) {
-            this.$emit('close')
-          }
-          if ('activeElement' in document) document.activeElement.blur()
-        } catch (err) {
-          window.console.error('An error occured while switch date', e)
+      try {
+        if (e.keyCode === 38) {
+          this.previousWeek()
+        } else if (e.keyCode === 37) {
+          this.previousDay()
+        } else if (e.keyCode === 39) {
+          this.nextDay()
+        } else if (e.keyCode === 40) {
+          this.nextWeek()
+        } else if (e.keyCode === 32 || e.keyCode === 13) {
+          this.selectDay(this.keyboardSelectedDay)
+        } else if (e.keyCode === 36) {
+          this.previousMonth()
+        } else if (e.keyCode === 35) {
+          this.nextMonth()
+        } else if (e.keyCode === 27) {
+          EventBus.$emit('close')
         }
+        // if ('activeElement' in document) document.activeElement.blur()
+      } catch (err) {
+        throw new Error('An error occured while switch date' + err)
       }
     },
     previousWeek () {
-      const newValue = moment(this.currentValue).subtract(1, 'week')
-      if (!this.isDisabled(newValue)) {
-        this.newValue = newValue
+      const keyboardSelectedDay = this.keyboardSelectedDay.clone().subtract(1, 'week')
+      if (!this.isDisabled(keyboardSelectedDay)) {
+        this.keyboardSelectedDay = keyboardSelectedDay
         this.checkMonth()
       }
     },
     previousDay () {
-      const newValue = moment(this.currentValue).subtract(1, 'days')
-      if (!this.isDisabled(newValue)) {
-        this.newValue = newValue
+      const keyboardSelectedDay = this.keyboardSelectedDay.clone().subtract(1, 'days')
+      if (!this.isDisabled(keyboardSelectedDay)) {
+        this.keyboardSelectedDay = keyboardSelectedDay
         this.checkMonth()
       }
     },
     nextDay () {
-      const newValue = moment(this.currentValue).add(1, 'days')
-      if (!this.isDisabled(newValue)) {
-        this.newValue = newValue
+      const keyboardSelectedDay = this.keyboardSelectedDay.clone().add(1, 'days')
+      if (!this.isDisabled(keyboardSelectedDay)) {
+        this.keyboardSelectedDay = keyboardSelectedDay
         this.checkMonth()
       }
     },
     nextWeek () {
-      const newValue = moment(this.currentValue).add(1, 'week')
-      if (!this.isDisabled(newValue)) {
-        this.newValue = newValue
+      const keyboardSelectedDay = this.keyboardSelectedDay.clone().add(1, 'week')
+      if (!this.isDisabled(keyboardSelectedDay)) {
+        this.keyboardSelectedDay = keyboardSelectedDay
         this.checkMonth()
       }
     },
     previousMonth () {
-      const newValue = moment(this.currentValue).subtract(1, 'month')
-      if (!this.isDisabled(newValue)) {
-        this.newValue = newValue
+      const keyboardSelectedDay = this.keyboardSelectedDay.clone().subtract(1, 'month')
+      if (!this.isDisabled(keyboardSelectedDay)) {
+        this.keyboardSelectedDay = keyboardSelectedDay
         this.checkMonth()
       }
     },
     nextMonth () {
-      const newValue = moment(this.currentValue).add(1, 'month')
-      if (!this.isDisabled(newValue)) {
-        this.newValue = newValue
+      const keyboardSelectedDay = this.keyboardSelectedDay.clone().add(1, 'month')
+      if (!this.isDisabled(keyboardSelectedDay)) {
+        this.keyboardSelectedDay = keyboardSelectedDay
         this.checkMonth()
       }
     },
-    selectThisDay () {
-      this.selectDate(this.currentValue)
-    },
     checkMonth () {
       this.$nextTick(() => {
-        const newYear = parseInt(this.newValue.format('YYYY'))
+        const newYear = parseInt(this.keyboardSelectedDay.format('YYYY'))
         const currentYear = this.month.year
         const isSameYear = newYear === currentYear
-        if (parseInt(this.newValue.format('MM') - 1) !== this.month.month && isSameYear) {
-          if (parseInt(this.newValue.format('MM') - 1) > this.month.month) {
-            this.changeMonth('next')
+        if (parseInt(this.keyboardSelectedDay.format('MM') - 1) !== this.month.month && isSameYear) {
+          if (parseInt(this.keyboardSelectedDay.format('MM') - 1) > this.month.month) {
+            this.$emit('change-month', 'next')
           } else {
-            this.changeMonth('prev')
+            this.$emit('change-month', 'prev')
           }
         } else if (!isSameYear) {
           if (newYear > currentYear) {
-            this.changeMonth('next')
+            this.$emit('change-month', 'next')
           } else {
-            this.changeMonth('prev')
+            this.$emit('change-month', 'prev')
           }
         }
       })
     }
   },
   mounted () {
-    if (!this.noKeyboard && (this.inline || this.visible)) {
+    if (!this.noKeyboard && (this.inline || this.isVisible)) {
       window.addEventListener('keydown', this.keyPressed)
     }
   },
@@ -137,12 +126,18 @@ export default {
     window.removeEventListener('keydown', this.keyPressed)
   },
   watch: {
-    visible (value) {
+    isVisible (value) {
       if (!this.noKeyboard && value) {
         window.addEventListener('keydown', this.keyPressed)
       } else {
         window.removeEventListener('keydown', this.keyPressed)
       }
+    },
+    value: {
+      handler (value) {
+        this.keyboardSelectedDay = value.clone()
+      },
+      immediate: true
     }
   }
 }

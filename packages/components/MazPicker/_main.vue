@@ -1,426 +1,296 @@
 <template>
   <div
-    :id="`${$attrs.id}-wrapper`"
-    ref="parent"
-    v-click-outside="closePicker"
+    :id="uniqueId"
+    ref="mazPicker"
     class="maz-picker"
+    :class="{
+      'is-dark': dark
+    }"
+    @blur.capture="closePicker($event, 'blur')"
   >
-    <!-- Input  -->
     <MazInput
-      v-if="hasInput"
-      :id="`${$attrs.id}-input`"
-      ref="custom-input"
-      v-model="dateFormatted"
+      v-if="!inline"
+      :id="uniqueId"
+      v-model="inputValue"
       v-bind="$attrs"
-      :dark="dark"
-      :hint="hint"
-      :error="error"
-      :color="color"
       :label="label"
-      :no-label="noLabel"
-      :clearable="!noClearButton"
-      @focus="toggleDatePicker(true)"
-    />
+      readonly
+      :focus="hasPickerOpen"
+      @focus="openPicker(true)"
+    >
+      <div
+        slot="input-icon-right"
+        class="maz-picker__arrow flex flex-center"
+        tabindex="-1"
+      >
+        <!-- The arrow icon -->
+        <slot name="arrow">
+          <!-- Default arrow svg `<ArrowIcon />` -->
+          <ArrowIcon :orientation="hasPickerOpen ? 'up': null" />
+        </slot>
+      </div>
+    </MazInput>
 
-    <slot
-      v-else
-    />
-
-    <div
-      v-if="hasPickerOpen && overlay"
-      class="time-picker-overlay"
-      @click.stop="closePicker"
-    />
-
-    <!-- Date picker container -->
-    <PickersContainer
-      v-if="!isDisabled"
-      :id="`${$attrs.id}-picker-container`"
-      ref="agenda"
-      v-model="dateTime"
-      :visible="hasPickerOpen"
-      :position="pickerPosition"
-      :inline="inline"
-      :color="color"
-      :button-color="buttonColor"
-      :dark="dark"
-      :no-header="noHeader"
-      :only-time="onlyTime"
-      :only-date="hasOnlyDate"
-      :minute-interval="minuteInterval"
-      :locale="locale"
-      :min-date="minDate"
-      :max-date="maxDate"
-      :format="format"
-      :no-weekends-days="noWeekendsDays"
-      :disabled-weekly="disabledWeekly"
-      :has-button-validate="hasButtonValidate"
-      :has-no-button="hasNoButton"
-      :range="range"
-      :disabled-dates="disabledDates"
-      :disabled-hours="disabledHours"
-      :enabled-dates="enabledDates"
-      :no-shortcuts="noShortcuts"
-      :button-now-translation="buttonNowTranslation"
-      :no-button-now="noButtonNow"
-      :first-day-of-week="firstDayOfWeek"
-      :shortcut="shortcut"
-      :custom-shortcuts="customShortcuts"
-      :no-keyboard="noKeyboard"
-      :right="right"
-      :behaviour="_behaviour"
-      @validate="validate"
-      @close="closePicker"
-    />
+    <transition
+      :name="pickerTransition"
+    >
+      <PickersContainer
+        v-if="hasPickerOpen"
+        v-model="dateMoment"
+        :locale="locale"
+        :position="calcPosition"
+        :has-header="hasHeader"
+        :has-footer="hasFooter"
+        :has-validate="hasValidate"
+        :has-double="hasDouble"
+        :is-visible="hasPickerOpen"
+        :has-now="hasNow"
+        :now-translation="nowTranslation"
+        :min-date="minDateMoment"
+        :max-date="maxDateMoment"
+        :no-weekends-days="noWeekendsDays"
+        :disabled-dates="disabledDatesMoment"
+        :disabled-weekly="disabledWeekly"
+        :auto-close="autoClose"
+        :inline="inline"
+      />
+    </transition>
   </div>
 </template>
 
 <script>
+  import PickersContainer from './PickersContainer'
+  import uniqueId from './../../mixins/uniqueId'
+  import ArrowIcon from './../_subs/ArrowIcon'
   import moment from 'moment'
-  import vClickOutside from 'v-click-outside'
+  import { getDefaultLocale, EventBus } from './utils'
 
-  import PickersContainer from './_subs/PickersContainer'
-
-  import { getDefaultLocale } from './utils'
-
-  // import props from './props'
-
-  const updateMomentLocale = (locale, firstDayOfWeek) => {
-    moment.locale(locale)
-    if (firstDayOfWeek) {
-      const firstDayNumber = Number.isInteger(firstDayOfWeek) && firstDayOfWeek === 0
-        ? 7
-        : firstDayOfWeek || moment.localeData(locale).firstDayOfWeek()
-      moment.updateLocale(locale, {
-        week: {
-          dow: firstDayNumber
-        }
-      })
+  const hasDateBetweenMinMaxDate = (date, minDate, maxDate) => {
+    return {
+      isBefore: date.isBefore(minDate),
+      isAfter: date.isAfter(maxDate)
     }
   }
 
-  const nearestMinutes = (interval, date, format) => {
-    const roundedMinutes = Math.ceil(date.minute() / interval) * interval
-    return moment(date.clone().minute(roundedMinutes).second(0), format)
-  }
+  const NOT_ALLOWED_CLASSES_TO_CLOSE = [
+    ['month-picker__day', 'is-disabled'],
+    ['year-month-selector__btn'],
+    ['year-month-selector__close']
+  ]
 
-  /**
-   * Object containing the default behaviour values of the calendar.
-   * Those values can be overrided by the `behaviour` property.
-   * @const defaultBehaviour
-   */
-  const defaultBehaviour = {
-    time: {
-      nearestIfDisabled: true
-    }
-  }
+  const updateComputedDataWithProps = () => 'updated'
 
   export default {
     name: 'MazPicker',
-    components: {
-      PickersContainer
-    },
-    directives: {
-      clickOutside: vClickOutside.directive
-    },
-    inheritAttrs: false,
+    components: { PickersContainer, ArrowIcon },
+    mixins: [uniqueId],
     props: {
-      value: { type: [String, Object], default: null },
-      label: { type: String, default: 'Select date & time' },
-      noLabel: { type: Boolean, default: false },
-      hint: { type: String, default: null },
-      error: { type: Boolean, default: null },
-      color: { type: String, default: 'dodgerblue' },
-      buttonColor: { type: String, default: null },
-      dark: { type: Boolean, default: false },
-      overlay: { type: Boolean, default: false },
-      inline: { type: Boolean, default: false },
-      position: { type: String, default: null },
-      locale: { type: String, default: getDefaultLocale() },
-      formatted: { type: String, default: 'llll' },
-      format: { type: String, default: 'YYYY-MM-DD hh:mm a' },
-      outputFormat: { type: String, default: null },
-      minuteInterval: { type: [String, Number], default: 1 },
-      minDate: { type: String, default: null },
-      maxDate: { type: String, default: null },
-      autoClose: { type: Boolean, default: false },
-      onlyTime: { type: Boolean, default: false },
-      onlyDate: { type: Boolean, default: false },
-      noHeader: { type: Boolean, default: false },
-      range: { type: Boolean, default: false },
-      noWeekendsDays: { type: Boolean, default: false },
-      disabledWeekly: { type: Array, default: Array },
-      noShortcuts: { type: Boolean, default: false },
-      noButton: { type: Boolean, default: false },
-      disabledDates: { type: Array, default: Array },
-      disabledHours: { type: Array, default: Array },
-      enabledDates: { type: Array, default: Array },
-      open: { type: Boolean, default: false },
-      persistent: { type: Boolean, default: false },
-      inputSize: { type: String, default: null },
-      buttonNowTranslation: { type: String, default: null },
-      noButtonNow: { type: Boolean, default: false },
-      noButtonValidate: { type: Boolean, default: false },
-      firstDayOfWeek: { type: Number, default: null },
-      shortcut: { type: String, default: null },
-      customShortcuts: {
-        type: Array,
-        default: () => ([
-          { key: 'thisWeek', label: 'This week', value: 'isoWeek' },
-          { key: 'lastWeek', label: 'Last week', value: '-isoWeek' },
-          { key: 'last7Days', label: 'Last 7 days', value: 7 },
-          { key: 'last30Days', label: 'Last 30 days', value: 30 },
-          { key: 'thisMonth', label: 'This month', value: 'month' },
-          { key: 'lastMonth', label: 'Last month', value: '-month' },
-          { key: 'thisYear', label: 'This year', value: 'year' },
-          { key: 'lastYear', label: 'Last year', value: '-year' }
-        ])
+      // v-model --> input value
+      // must be is the same format like
+      value: {
+        validator: prop => ['string', 'object'].includes(typeof prop) || prop === null,
+        required: true
       },
-      noValueToCustomElem: { type: Boolean, default: false },
-      behaviour: { type: Object, default: () => ({}) },
-      noKeyboard: { type: Boolean, default: false },
-      right: { type: Boolean, default: false },
-      noClearButton: { type: Boolean, default: false }
+      // if is `true`, the picker is open
+      open: { type: Boolean, default: false },
+      // moment JS locale
+      locale: {
+        validator: prop => ['string'].includes(typeof prop) || prop === null,
+        default: getDefaultLocale()
+      },
+      // override the date picker postion (top / bottom / left / right)
+      position: { type: String, default: null },
+      // format returned
+      format: { type: String, default: 'YYYY-MM-DD' },
+      // format of input
+      formatted: { type: String, default: 'LL' },
+      // minimum date the user can set (same format as the model)
+      minDate: { type: String, default: null },
+      // maximum date the user can set (same format as the model)
+      maxDate: { type: String, default: null },
+      // set dark mode
+      dark: { type: Boolean, default: false },
+      // set dark mode
+      persistent: { type: Boolean, default: false },
+      // to remove the picker's header
+      noHeader: { type: Boolean, default: false },
+      // to remove the picker's footer (buttons container)
+      noFooter: { type: Boolean, default: false },
+      // to remove the `now` button
+      noNow: { type: Boolean, default: false },
+      // translation of now of button
+      nowTranslation: { type: String, default: 'Today' },
+      // all week-ends days disabled
+      noWeekendsDays: { type: Boolean, default: false },
+      // close picker on select date
+      autoClose: { type: Boolean, default: false },
+      // Inline picker UI (no input, no dialog)
+      inline: { type: Boolean, default: false },
+      // disabled dates `Array of dates (same format as the value/format attribute)`,
+      disabledDates: { type: Array, default: Array },
+      // Days of the week which are disabled every week, in Array format with day index, Sunday as 0 and Saturday as 6: `[0,4,6]`
+      disabledWeekly: { type: Array, default: Array },
+      // show double calendar
+      doubleCalendar: { type: Boolean, default: false },
+      // Enable range mode to select periode
+      range: { type: Boolean, default: false },
+      // Change placeholder/label of input
+      label: { type: String, default: 'Select date' }
     },
     data () {
       return {
-        pickerOpen: false,
-        pickerPosition: this.position
+        isOpen: null,
+        calcPosition: 'bottom left'
       }
     },
     computed: {
+      inputValue: {
+        get () {
+          updateComputedDataWithProps(this.locale)
+          return this.value ? moment(this.value, this.format).format(this.formatted) : null
+        },
+        set () {
+          this.$emit('input', null)
+        }
+      },
+      dateMoment: {
+        get () {
+          updateComputedDataWithProps(this.locale)
+          return this.value ? moment(this.value, this.format) : moment()
+        },
+        set (value) {
+          this.emitValue(value)
+
+          if (this.autoClose) this.closePicker()
+        }
+      },
+      minDateMoment () {
+        return moment(this.minDate, this.format)
+      },
+      maxDateMoment () {
+        return moment(this.maxDate, this.format)
+      },
       hasPickerOpen () {
-        return this.persistent || this.pickerOpen
+        return this.isOpen || this.open || this.inline
       },
-      hasNoButton () {
-        return this.noButton
+      pickerTransition () {
+        return this.calcPosition.includes('bottom') ? 'slide' : 'slideinvert'
       },
-      hasButtonValidate () {
+      hasHeader () {
+        return !this.noHeader
+      },
+      hasFooter () {
+        return !this.noFooter
+      },
+      hasValidate () {
         return !this.inline && !this.autoClose
       },
-      hasOnlyDate () {
-        return this.onlyDate || this.range
+      hasNow () {
+        return !this.noNow
       },
-      dateFormatted: {
-        get () {
-          const dateFormatted = this.range
-            ? this.getRangeDatesFormatted(this.locale)
-            : this.getDateFormatted(this.locale)
-          this.$emit('formatted-value', dateFormatted)
-          return dateFormatted
-        },
-        set (value) {
-          this.$emit('input', value)
-        }
+      disabledDatesMoment () {
+        return this.disabledDates.map(d => moment(d, this.format))
       },
-      hasCustomElem () {
-        return this.$slots.default
-      },
-      hasInput () {
-        return !this.inline && !this.$slots.default
-      },
-      dateTime: {
-        get () {
-          const dateTime = this.range
-            ? { start: this.value && this.value.start ? moment(this.value.start, this.formatOutput).format('YYYY-MM-DD') : null,
-                end: this.value && this.value.end ? moment(this.value.end, this.formatOutput).format('YYYY-MM-DD') : null }
-            : this.getDateTime()
-          return dateTime
-        },
-        set (value) {
-          if (this.autoClose && this.range && (value.end && value.start)) {
-            this.closePicker()
-          } else if (this.autoClose && !this.range) {
-            this.closePicker()
-          }
-          const newValue = this.range ? this.getRangeDateToSend(value) : this.getDateTimeToSend(value)
-          this.$emit('input', newValue)
-          if (this.hasCustomElem && !this.noValueToCustomElem) {
-            this.$nextTick(() => {
-              this.setValueToCustomElem()
-            })
-          }
-        }
-      },
-      formatOutput () {
-        return this.outputFormat || this.format
-      },
-      /**
-       * Returns true if the field is disabled
-       * @function isDisabled
-       * @returns {boolean}
-       */
-      isDisabled () {
-        return typeof this.$attrs.disabled !== 'undefined' && this.$attrs.disabled !== false
-      },
-      /**
-       * Returns the behaviour object with the overrided values
-       * @function _behaviour
-       * @returns {Object}
-       */
-      _behaviour () {
-        const { time } = defaultBehaviour
-
-        return {
-          time: {
-            ...time,
-            ...this.behaviour.time
-          }
-        }
+      hasDouble () {
+        return this.doubleCalendar || this.range
       }
     },
     watch: {
-      open (val) {
-        if (this.isDisabled) return
-        this.pickerOpen = val
+      dateMoment: {
+        handler (value) {
+          const { minDateMoment, maxDateMoment } = this
+          if (value && (minDateMoment || maxDateMoment)) {
+            const { isBefore, isAfter } = hasDateBetweenMinMaxDate(
+              value,
+              minDateMoment,
+              maxDateMoment
+            )
+            if (isAfter) this.$emit('input', this.maxDateMoment)
+            if (isBefore) this.$emit('input', this.minDateMoment)
+
+            // return the date value (in `@formatted` event)
+            // @arg date formatted with "formatted" option
+            if (this.value) this.$emit('formatted', value.format(this.formatted))
+          }
+        },
+        immediate: true
       },
-      locale (value) {
-        updateMomentLocale(value, this.firstDayOfWeek)
+      locale: {
+        async handler (locale) {
+          moment.locale(locale)
+        },
+        immediate: true
+      },
+      isOpen (value) {
+        if (value) {
+          this.calcPosition = this.position || `${this.getPosition()} left`
+        }
       }
     },
     mounted () {
-      updateMomentLocale(this.locale, this.firstDayOfWeek)
-      this.pickerPosition = this.getPosition()
-      this.pickerOpen = this.open
-      if (this.hasCustomElem) {
-        this.addEventToTriggerElement()
-        if (!this.noValueToCustomElem) {
-          this.setValueToCustomElem()
-        }
-      }
-      if (this.format === 'YYYY-MM-DD hh:mm a' && this.onlyTime) {
-        console.warn(`A (time) format must be indicated/ (Ex : format="HH:mm")`)
-      }
+      EventBus.$on('validate', this.closePicker)
+      EventBus.$on('now', () => { this.emitValue(moment()) })
+      EventBus.$on('close', this.closePicker)
     },
     beforeDestroy () {
-      this.$emit('destroy')
-      if (this.hasCustomElem) {
-        this.addEventToTriggerElement()
-      }
+      EventBus.$off('validate')
+      EventBus.$off('now')
+      EventBus.$off('close')
     },
     methods: {
-      setValueToCustomElem () {
-        /**
-         * TODO: Find a way (perhaps), to bind default attrs to custom element.
-         */
-        const target = this.$slots.default[0]
-        if (target) {
-          if (target.tag === 'input') {
-            target.elm.value = this.dateFormatted
-          } else {
-            target.elm.innerHTML = this.dateFormatted ? this.dateFormatted : this.label
-          }
-        } else {
-          window.console.warn(`Impossible to find custom element`)
-        }
+      emitValue (value) {
+        // return the date value (in `@input` or `v-model`)
+        // @arg date formatted with "format" option
+        this.$emit('input', value.format(this.format))
       },
-      addEventToTriggerElement () {
-        const target = this.$slots.default[0].elm
-        if (target) {
-          target.addEventListener('click', () => {
-            this.toggleDatePicker()
-          })
-        } else {
-          window.console.warn(`Impossible to find custom element`)
-        }
+      openPicker () {
+        this.isOpen = true
       },
-      getRangeDatesFormatted () {
-        const hasStartValues = this.value && this.value.start
-        const hasEndValues = this.value && this.value.end
-        if (hasStartValues || hasEndValues) {
-          const datesFormatted = hasStartValues ? `${moment(this.value.start, this.formatOutput).set({ hour: 0, minute: 0, second: 0 }).format(this.formatted)}` : '...'
-          return hasEndValues ? `${datesFormatted} - ${moment(this.value.end, this.formatOutput).set({ hour: 23, minute: 59, second: 59 }).format(this.formatted)}` : `${datesFormatted} - ...`
-        } else {
-          return null
-        }
-      },
-      getDateFormatted () {
-        const date = this.value
-          ? moment(this.value, this.formatOutput).format(this.formatted)
-          : null
-        return date
-      },
-      getRangeDateToSend (payload) {
-        const { start, end } = typeof payload !== 'undefined' ? payload : this.value
-        return start || end
-          ? { start: start ? moment(start, 'YYYY-MM-DD').set({ hour: 0, minute: 0, second: 0 }).format(this.formatOutput) : null,
-              end: end ? moment(end, 'YYYY-MM-DD').set({ hour: 23, minute: 59, second: 59 }).format(this.formatOutput) : null,
-              shortcut: payload.value }
-          : { start: moment().format(this.formatOutput),
-              end: moment().format(this.formatOutput),
-              shortcut: payload.value }
-      },
-      getDateTimeToSend (value) {
-        const dateTime = typeof value !== 'undefined' ? value : this.value
-        const dateToSend = dateTime
-          ? moment(dateTime, 'YYYY-MM-DD HH:mm')
-          : null
-        const dateTimeToSend = dateToSend ? nearestMinutes(this.minuteInterval, moment(dateToSend), 'YYYY-MM-DD HH:mm').format(this.formatOutput) : null
-        return dateTimeToSend
-      },
-      getDateTime () {
-        const date = this.value
-          ? moment(this.value, this.formatOutput)
-          : null
-        return date ? nearestMinutes(this.minuteInterval, date, this.formatOutput).format('YYYY-MM-DD HH:mm') : null
-      },
-      /**
-       * Closes the datepicker
-       * @function closePicker
-       */
-      closePicker () {
-        if (this.pickerOpen) {
-          this.$emit('is-hidden')
-          this.pickerOpen = false
-          this.setBodyOverflow(false)
-        }
-      },
-      toggleDatePicker (val) {
-        if (this.isDisabled) return
-        const isOpen = (val === false || val === true) ? val : !this.pickerOpen
-        this.setBodyOverflow(isOpen)
-        this.pickerOpen = isOpen
-
-        if (isOpen) {
-          this.$emit('is-shown')
-        }
-
-        if (this.pickerOpen && !this.position) {
-          this.pickerPosition = this.getPosition()
-        }
-      },
-      setBodyOverflow (value) {
-        if (window.innerWidth < 412) {
-          const body = document.getElementsByTagName('body')[0]
-          body.style.overflow = value ? 'hidden' : null
-        }
+      closePicker (e = {}) {
+        if (
+          this.$el.contains(e.relatedTarget) ||
+          NOT_ALLOWED_CLASSES_TO_CLOSE.some(classes =>
+            classes.every(c =>
+              (e.target?.classList ?? []).contains(c)
+            )
+          )
+        ) return
+        this.isOpen = false
       },
       getPosition () {
-        if (this.position) {
-          return this.position
-        } else {
-          const parentRect = this.$refs.parent.getBoundingClientRect()
-          const windowHeight = window.innerHeight
-          let datePickerHeight = 445
+        const parentRect = this.$refs.mazPicker.getBoundingClientRect()
+        const windowHeight = window.innerHeight
+        let datePickerHeight = 417
 
-          datePickerHeight = this.noButton ? datePickerHeight - 41 : datePickerHeight
-          datePickerHeight = this.noHeader ? datePickerHeight - 58 : datePickerHeight
-          if (parentRect.top < datePickerHeight) {
-            // No place on top --> bottom
-            return 'bottom'
-          } else if (windowHeight - (parentRect.height + datePickerHeight + parentRect.top) >= 0) {
-            // Have place on bottom --> bottom
-            return 'bottom'
-          } else {
-            // No place on bottom --> top
-            return 'top'
-          }
+        datePickerHeight = this.noButton ? datePickerHeight - 54 : datePickerHeight
+        datePickerHeight = this.noHeader ? datePickerHeight - 64 : datePickerHeight
+        if (parentRect.top < datePickerHeight) {
+          // No place on top --> bottom
+          return 'bottom'
+        } else if (windowHeight - (parentRect.height + datePickerHeight + parentRect.top) >= 0) {
+          // Have place on bottom --> bottom
+          return 'bottom'
+        } else {
+          // No place on bottom --> top
+          return 'top'
         }
-      },
-      validate () {
-        this.$emit('validate')
-        this.closePicker()
       }
     }
   }
 </script>
+
+<style lang="scss">
+  .maz-picker {
+    position: relative;
+
+    .maz-picker__arrow {
+      color: $border-color;
+      outline: none;
+      transition: all .25s cubic-bezier(.645, .045, .355, 1);
+
+      svg path.arrow {
+        fill: $border-color;
+      }
+    }
+  }
+</style>

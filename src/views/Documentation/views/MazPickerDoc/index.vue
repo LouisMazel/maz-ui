@@ -37,7 +37,7 @@
         Formatted value : {{ pickerFormatted || null }}
       </p>
 
-      <MazPickerNew
+      <MazPicker
         v-model="pickerValue"
         :locale="locale"
         @formatted="pickerFormatted = $event"
@@ -56,7 +56,7 @@
         Formatted value : {{ pickerFormatted2 || null }}
       </p>
 
-      <MazPickerNew
+      <MazPicker
         v-model="pickerValue2"
         clearable
         size="sm"
@@ -78,7 +78,7 @@
         Formatted value : {{ pickerFormatted3 || null }}
       </p>
 
-      <MazPickerNew
+      <MazPicker
         v-model="pickerValue3"
         label="Select date in big calendar"
         format="DD-MM-YYYY"
@@ -102,7 +102,7 @@
         Formatted value : {{ pickerRangeValuesFormatted || null }}
       </p>
 
-      <MazPickerNew
+      <MazPicker
         v-model="pickerRangeValues"
         range
         inline
@@ -123,7 +123,7 @@
         Formatted value : {{ pickerRangeValuesFormatted || null }}
       </p>
 
-      <MazPickerNew
+      <MazPicker
         v-model="pickerRangeValues"
         label="Select period"
         range

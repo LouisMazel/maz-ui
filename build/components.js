@@ -14,7 +14,6 @@ module.exports = {
   'maz-loader': './packages/components/MazLoader/index.js',
   'maz-pagination': './packages/components/MazPagination/index.js',
   'maz-picker': './packages/components/MazPicker/index.js',
-  'maz-picker-new': './packages/components/MazPickerNew/index.js',
   'maz-phone-number-input': './packages/components/MazPhoneNumberInput/index.js',
   'maz-read-more': './packages/components/MazReadMore/index.js',
   'maz-responsive-menu': './packages/components/MazResponsiveMenu/index.js',
