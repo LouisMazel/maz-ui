@@ -257,7 +257,7 @@
     $disabled-color-text: darken($disabled-color, 10%);
 
     .maz-input__input {
-      border-color: $border-color;
+      border-color: $disabled-color-text;
       background-color: $disabled-color;
       color: $disabled-color-text;
 

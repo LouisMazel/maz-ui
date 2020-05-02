@@ -99,7 +99,7 @@
 
         &:focus,
         &:hover {
-          background-color: $hover-color;
+          background-color: $hover-bg-color;
         }
 
         &.router-link-active {
@@ -120,7 +120,7 @@
       &__menu__item {
         &:focus,
         &:hover {
-          background-color: $hover-color-dark;
+          background-color: $hover-bg-color-dark;
         }
       }
     }

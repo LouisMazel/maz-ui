@@ -1,6 +1,6 @@
 <template>
   <div
-    class="pickers-container bg-color-light"
+    class="pickers-container bg-color-light elevation"
     :class="[position, { 'inline': inline }]"
     tabindex="0"
   >
@@ -62,7 +62,6 @@
       disabledWeekly: { type: Array, required: true },
       hasDouble: { type: Boolean, required: true },
       hasKeyboard: { type: Boolean, required: true },
-      hasRange: { type: Boolean, required: true },
       shortcuts: { type: Array, default: null }
     },
     computed: {
@@ -86,7 +85,6 @@
     outline: none;
 
     &:not(.inline) {
-      box-shadow: 0 0 8px 0 rgba(0, 0, 0, .1);
       position: absolute;
       top: 100%;
       left: 0;

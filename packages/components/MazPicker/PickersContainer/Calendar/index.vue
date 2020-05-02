@@ -13,7 +13,7 @@
       :height="200"
       @change-range="$emit('input', $event)"
     />
-    <div class="over-hid">
+    <div class="over-hid flex-1 flex-fixed">
       <MonthYearSwitcher
         :months="months"
         class="px-2"
@@ -25,7 +25,7 @@
           v-for="(month, i) in months"
           :key="`month-${i}`"
           class="calendar__months flex-1"
-          :class="{ 'has-double': hasDouble }"
+          :class="{ 'has-double border-top-2 border-top-solid border-color': hasDouble }"
         >
           <WeekDaysLabels
             :locale="locale"
@@ -42,9 +42,11 @@
             :no-weekends-days="noWeekendsDays"
             :disabled-dates="disabledDates"
             :disabled-weekly="disabledWeekly"
+            :hoverred-day="hoverredDay"
             :is-visible="isVisible"
             class="p-2"
             @change-month="changeMonth"
+            @hoverred-day="hoverredDay = $event"
           />
         </div>
       </div>
@@ -94,7 +96,8 @@
     data () {
       return {
         months: [],
-        yearMonthSelectorMode: null
+        yearMonthSelectorMode: null,
+        hoverredDay: null
       }
     },
     computed: {
@@ -171,13 +174,3 @@
     }
   }
 </script>
-
-<style lang="scss" scoped>
-  .calendar__months.has-double {
-    border-top: 2px solid $hover-color;
-  }
-
-  .is-dark .calendar__months.has-double {
-    border-color: $hover-color-dark;
-  }
-</style>

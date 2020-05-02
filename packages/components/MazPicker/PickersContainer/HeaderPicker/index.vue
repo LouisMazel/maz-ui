@@ -22,8 +22,9 @@
       <span
         v-for="date in [dateFormatted]"
         :key="date"
+        class="dots-text"
       >
-        {{ value ? date : '-' | capitalize }}
+        {{ dateFormatted ? date : '-' }}
       </span>
     </TransitionGroup>
   </div>
@@ -31,12 +32,7 @@
 
 <script>
   import moment from 'moment'
-
-  const FORMAT_OPTIONS = {
-    weekday: 'long',
-    month: 'long',
-    day: 'numeric'
-  }
+  import { getFormattedValuesIntl } from './../../utils'
 
   export default {
     name: 'HeaderPicker',
@@ -64,7 +60,14 @@
         return this.currentValue.year()
       },
       dateFormatted () {
-        return new Intl.DateTimeFormat(this.locale, FORMAT_OPTIONS).format(this.currentValue.toDate())
+        const dates = []
+        const { locale } = this
+        if (this.isRangeMode) {
+          dates.push(this.value.start, this.value.end)
+        } else {
+          dates.push(this.value)
+        }
+        return getFormattedValuesIntl({ locale, dates })
       }
     },
     watch: {
@@ -82,13 +85,13 @@
     overflow: hidden;
 
     &__year {
-      height: 24px;
       opacity: .7;
+      height: 21px;
     }
 
     &__date {
-      height: 30px;
       min-height: 0;
+      height: 26px;
       font-size: 1.285em;
     }
   }

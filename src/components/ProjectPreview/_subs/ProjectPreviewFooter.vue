@@ -46,7 +46,7 @@
 
 <style lang="scss" scoped>
   .project-preview-footer {
-    border-top: 1px solid $hover-color;
+    border-top: 1px solid $hover-bg-color;
 
     .btn--npm svg {
       width: 35px;

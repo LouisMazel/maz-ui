@@ -44,7 +44,6 @@
         :has-footer="hasFooter"
         :has-validate="hasValidate"
         :has-double="hasDouble"
-        :has-range="!range"
         :has-keyboard="hasKeyboard"
         :is-visible="hasPickerOpen"
         :has-now="hasNow"
@@ -217,14 +216,18 @@
         return this.disabledDates.map(d => moment(d, this.format))
       },
       hasDouble () {
-        return this.double || this.range
+        return this.double
       }
     },
     watch: {
       dateMoment: {
         handler (value) {
           const { minDateMoment, maxDateMoment, range } = this
-          if (!range && value && (minDateMoment || maxDateMoment)) {
+          if (value && (minDateMoment || maxDateMoment)) {
+            this.emitFormatted(value)
+
+            if (range) return
+
             const { isBefore, isAfter } = hasDateBetweenMinMaxDate(
               value,
               minDateMoment,
@@ -233,27 +236,24 @@
             )
             if (isAfter) this.emitValue(this.maxDateMoment)
             if (isBefore) this.emitValue(this.minDateMoment)
-
-            this.emitFormatted(value)
           }
         },
         immediate: true
       },
       locale: {
         handler (locale) {
-          moment.locale(locale)
-          // TODO: import moment locales async
-          // import(`moment/locale/${locale}.js`).then(module => {
-          //   console.log('module', module)
-          //   moment.locale(locale)
-          // })
+          import(/* webpackChunkName: "locale-[request]" */ `moment/locale/${locale}.js`).then(module => {
+            console.log('module', module)
+            moment.locale(locale)
+          })
         },
         immediate: true
       },
-      isOpen (value) {
-        if (value) {
-          this.calcPosition = this.position || `${this.getPosition()} left`
-        }
+      hasPickerOpen: {
+        handler (value) {
+          if (value) this.calcPosition = this.position || `${this.getPosition()} left`
+        },
+        immediate: true
       }
     },
     mounted () {
@@ -297,11 +297,12 @@
         this.isOpen = false
       },
       getPosition () {
+        if (!this.$refs.MazPicker) return
+
         const DOUBLE_PICKER_HEIGHT = 435
         const PICKER_HEIGHT = 386
-        const HEADER_HEIGHT = 64
+        const HEADER_HEIGHT = 61
         const FOOTER_HEIGHT = 54
-
         const parentRect = this.$refs.MazPicker.getBoundingClientRect()
         const windowHeight = window.innerHeight
         let datePickerHeight = this.hasDouble ? DOUBLE_PICKER_HEIGHT : PICKER_HEIGHT

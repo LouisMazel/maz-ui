@@ -42,7 +42,7 @@
   }
 
   .is-dark .code-container {
-    background-color: $hover-color-dark;
+    background-color: $hover-bg-color-dark;
     border-color: #535673;
 
     .hljs,

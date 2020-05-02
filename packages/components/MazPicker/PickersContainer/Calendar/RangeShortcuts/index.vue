@@ -5,14 +5,14 @@
         width: `${150}px`
       }
     ]"
-    class="range-shortcuts flex flex-1 direction-column px-2 py-1"
+    class="range-shortcuts flex direction-column px-2 py-1 border-color border-right-2 border-right-solid"
   >
     <MazBtn
       v-for="shortcut in shortcuts"
       :key="shortcut.key"
       :active="selectedShortcut === shortcut.key"
       size="sm"
-      :class="[selectedShortcut !== shortcut.key ? 'hover-color focus-none border-2 border-color text-primary': 'focus-primary']"
+      :class="[selectedShortcut !== shortcut.key ? 'hover-bg-color no-focus-bg border-2 border-color text-primary': 'focus-primary']"
       class="shortcut-button flex-1 my-1 bg-transparent no-shadow"
       @click="select(shortcut)"
     >

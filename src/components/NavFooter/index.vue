@@ -70,7 +70,7 @@
     background-color: $bg-color;
 
     &-subs {
-      background-color: $hover-color;
+      background-color: $hover-bg-color;
 
       a {
         color: $muted-color;
@@ -109,10 +109,10 @@
 
   .is-dark .nav-footer {
     background-color: $bg-color-dark;
-    border-color: $hover-color-dark;
+    border-color: $hover-bg-color-dark;
 
     &-subs {
-      background-color: $hover-color-dark;
+      background-color: $hover-bg-color-dark;
     }
   }
 </style>

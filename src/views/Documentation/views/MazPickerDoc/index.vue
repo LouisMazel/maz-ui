@@ -84,7 +84,7 @@
         />
       </ComponentContainer>
 
-      <ComponentContainer
+      <!-- <ComponentContainer
         :code="clearableExample"
       >
         <h4 class="mb-3">
@@ -152,7 +152,9 @@
           v-model="pickerRangeValues"
           label="Select period"
           range
+          double
           open
+          position="bottom right"
           :locale="locale"
           @formatted="pickerRangeValuesFormatted = $event"
         />
@@ -180,6 +182,27 @@
           @formatted="pickerFormatted4 = $event"
         />
       </ComponentContainer>
+
+      <ComponentContainer
+        :code="inlineExample"
+      >
+        <h4 class="mb-3">
+          Disabled
+        </h4>
+
+        <p>
+          Value : {{ pickerValue4 || 'null' }}
+        </p>
+        <p class="mb-2">
+          Formatted value : {{ pickerFormatted4 || 'null' }}
+        </p>
+
+        <MazPicker
+          v-model="pickerValue4"
+          disabled
+          :locale="locale"
+        />
+      </ComponentContainer> -->
     </div>
   </div>
 </template>

@@ -20,11 +20,14 @@
         :active="isSelectedDate(day)"
         :class="{
           'highlight': isToday(day),
-          'is-disabled text-muted fw-400': !isSameMonth(day),
+          'is-disabled text-muted fw-400': !hasDouble && !isSameMonth(day),
           'is-keyboard-selected': isKeyboardSelected(day),
-          'is-in-range': isBetween(day) && !isDisabled(day),
+          'is-in-range': !isDisabled(day) && isBetween(day),
+          'is-between-hoverred': value && value.start && !isDisabled(day) && isBetweenHoverred(day),
           'is-last-in-range': isLastInRange(day)
         }"
+        @mouseenter="$emit('hoverred-day', day)"
+        @mouseleave="$emit('hoverred-day', null)"
         @click="selectDay(day)"
       >
         {{ hasDouble && isDisabled(day) ? null : day.format('D') }}
@@ -47,13 +50,13 @@
       disabledDates: { type: Array, required: true },
       disabledWeekly: { type: Array, required: true },
       isVisible: { type: Boolean, required: true },
-      hasDouble: { type: Boolean, required: true }
+      hasDouble: { type: Boolean, required: true },
+      hoverredDay: { type: Object, default: null }
     },
     data () {
       return {
         transitionDaysName: 'slidenext',
-        currentMonth: this.month,
-        hoverredDay: null
+        currentMonth: this.month
       }
     },
     computed: {
@@ -102,6 +105,10 @@
       isToday (day) {
         return day.isSame(new Date(), 'day')
       },
+      isBetweenHoverred (day) {
+        if (!this.isRangeMode || this.value.end) return false
+        return day.isBetween(this.value.start, this.hoverredDay, null, '[]')
+      },
       isBetween (day) {
         if (!this.isRangeMode) return false
         return day.isBetween(this.value.start, this.value.end, null, '[]')
@@ -142,21 +149,21 @@
         return day.isSame(this.keyboardSelectedDay, 'day')
       },
       selectDay (day) {
-        let valueToSend
+        let valueToSend = day
         if (!this.isRangeMode) {
           valueToSend = day
-          return
-        }
-        const { start, end } = this.value
-        if (!start || (start && end) || day.isBefore(this.value.start)) {
-          valueToSend = {
-            start: day,
-            end: null
-          }
         } else {
-          valueToSend = {
-            start: this.value.start,
-            end: day
+          const { start, end } = this.value
+          if (!start || (start && end) || day.isBefore(this.value.start)) {
+            valueToSend = {
+              start: day,
+              end: null
+            }
+          } else {
+            valueToSend = {
+              start: this.value.start,
+              end: day
+            }
           }
         }
 
@@ -169,7 +176,7 @@
 <style lang="scss" scoped>
   .month-picker {
     min-height: 194px;
-    min-width: 300px;
+    min-width: 268px;
     width: 100%;
     overflow: hidden;
 
@@ -217,11 +224,13 @@
         }
       }
 
+      &.is-between-hoverred {
+        color: white;
+        background-color: rgba($primary-color, .4);
+      }
+
       &.is-in-range {
         color: white;
-        // position: absolute;
-        // left: -5px;
-        // right: -5px;
         background-color: rgba($primary-color, .6);
         width: calc(100% + 5px);
 

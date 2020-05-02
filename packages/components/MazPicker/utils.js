@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import moment from 'moment'
+import capitalizeText from './../../../src/filters/capitalize'
 
 export const getDefaultLocale = () => {
   if (typeof window === 'undefined') return null
@@ -49,4 +50,20 @@ export const getFormattedValue = (value, format, formatted, range) => {
   } else {
     return null
   }
+}
+
+const DEFAULT_FORMAT_OPTIONS = {
+  weekday: 'long',
+  month: 'long',
+  day: 'numeric'
+}
+
+export const getFormattedValuesIntl = (payload = {}) => {
+  const {
+    locale = 'en',
+    opts = DEFAULT_FORMAT_OPTIONS,
+    dates = [new Date()]
+  } = payload
+  const filteredDates = dates.filter(d => d)
+  return filteredDates.map(d => d ? capitalizeText(new Intl.DateTimeFormat(locale, opts).format(d)) : null).join(' - ')
 }

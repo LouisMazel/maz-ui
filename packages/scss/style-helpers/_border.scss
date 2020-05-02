@@ -5,20 +5,20 @@
 @import './variables/_states';
 
 .border-color {
-  border-color: $hover-color;
+  border-color: $border-color;
 }
 
-.border-none {
+.no-border {
   border: none;
 }
 
 .border-color-dark {
-  border-color: $hover-color-dark;
+  border-color: $border-color-dark;
 }
 
 .is-dark.border-color,
 .is-dark .border-color {
-  border-color: $hover-color-dark;
+  border-color: $border-color-dark;
 }
 
 @each $name, $color in $color_types {

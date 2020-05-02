@@ -71,10 +71,10 @@
   .is-dark.component-container {
     color: $text-color-dark;
     background-color: $bg-color-dark;
-    border: 1px solid $hover-color-dark;
+    border: 1px solid $hover-bg-color-dark;
 
     .component-container__footer {
-      border-color: $hover-color-dark;
+      border-color: $hover-bg-color-dark;
 
       &__collapse {
         border: none;

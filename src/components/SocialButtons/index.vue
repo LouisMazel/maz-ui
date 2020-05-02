@@ -54,7 +54,7 @@
 
       &:hover,
       &:focus {
-        background-color: $hover-color-dark;
+        background-color: $hover-bg-color-dark;
       }
     }
   }

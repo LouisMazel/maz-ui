@@ -49,7 +49,7 @@
 <style lang="scss" scoped>
   .project-preview {
     background-color: $bg-color;
-    border: 1px solid $hover-color;
+    border: 1px solid $hover-bg-color;
     text-decoration: none;
     transition: all 300ms;
     position: relative;
@@ -105,7 +105,7 @@
   .is-dark {
     .project-preview {
       background-color: $bg-color-dark-l;
-      border-color: $hover-color-dark;
+      border-color: $hover-bg-color-dark;
 
       &:hover,
       &:focus {
