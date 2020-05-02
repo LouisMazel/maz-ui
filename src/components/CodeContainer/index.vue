@@ -29,7 +29,7 @@
     font-family: monospace;
     white-space: pre;
     background-color: #FAFAFA;
-    border: 2px solid #EAEEFB;
+    border: $border-width solid #EAEEFB;
     border-radius: $border-radius;
     -webkit-font-smoothing: auto;
     overflow-x: auto;

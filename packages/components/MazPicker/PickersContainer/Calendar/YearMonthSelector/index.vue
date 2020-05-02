@@ -57,7 +57,7 @@
           v-for="(m, i) in months"
           :key="i"
           :active="currentMonth === i"
-          :class="[currentMonth !== i ? 'hover-bg-color no-focus-bg border-2 border-color text-primary': 'focus-primary']"
+          :class="[currentMonth !== i ? 'hover-bg-color no-focus-bg border border-color text-primary': 'focus-primary']"
           class="year-month-selector__btn bg-transparent no-shadow px-3 flex-20 mx-3"
           tabindex="-1"
           @click="selectMonth(i)"
@@ -70,7 +70,7 @@
           :active="currentYear === year"
           size="md"
           tabindex="-1"
-          :class="[currentYear !== year ? 'hover-bg-color no-focus-bg border-2 border-color text-primary': 'focus-primary']"
+          :class="[currentYear !== year ? 'hover-bg-color no-focus-bg border border-color text-primary': 'focus-primary']"
           class="year-month-selector__btn bg-transparent no-shadow"
           @click="selectYear(year)"
         >

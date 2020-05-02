@@ -38,7 +38,7 @@
       v-bind="$attrs"
       :placeholder="labelValue"
       :type="getType"
-      class="maz-input__input"
+      class="maz-input__input border border-color border-solid"
       :aria-label="label"
       :class="{
         'has-right-btn': hasClearBtn || hasPasswordBtn
@@ -63,7 +63,7 @@
       :type="type"
       :required="required"
       :readonly="readonly"
-      class="maz-input__input textarea"
+      class="maz-input__input textarea border border-color border-solid"
       @keydown="keyDown"
       @keyup="keyUp"
       @focus="onFocus"

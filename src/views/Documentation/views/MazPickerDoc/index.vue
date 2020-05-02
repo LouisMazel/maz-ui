@@ -9,10 +9,10 @@
 
     <br>
     <p class="mb-3">
-      You can use any locale available in moment package
+      You can use any locale available in moment package. Locales are dynamically imported.
     </p>
 
-    <p class="fw-700 mb-3">
+    <!-- <p class="fw-700 mb-3">
       This component is based on
       <a
         target="_blank"
@@ -35,9 +35,8 @@
       >
         here
       </a>
-    </p>
+    </p> -->
 
-    <br>
     <div class="flex flex-1 ">
       <MazBtnGroup
         v-model="locale"
@@ -45,7 +44,7 @@
       />
     </div>
 
-    <hr class="border-top-2 border-solid border-color my-3">
+    <hr class="border-top border-solid border-color my-3">
 
     <p class="fw-700 mb-3">
       Top or bottom position of pickers is calculate
@@ -60,7 +59,7 @@
       :code="positionCodeExample"
     />
 
-    <hr class="border-top-2 border-solid border-color my-3">
+    <hr class="border-top border-solid border-color my-3">
 
     <div class="examples my-3">
       <ComponentContainer
@@ -84,7 +83,7 @@
         />
       </ComponentContainer>
 
-      <!-- <ComponentContainer
+      <ComponentContainer
         :code="clearableExample"
       >
         <h4 class="mb-3">
@@ -202,7 +201,7 @@
           disabled
           :locale="locale"
         />
-      </ComponentContainer> -->
+      </ComponentContainer>
     </div>
   </div>
 </template>

@@ -1,5 +1,5 @@
 .maz-dropzone {
-  border: 2px dashed $hover-bg-color;
+  border: $border-width dashed $hover-bg-color;
   min-height: 245px;
   background-color: $bg-color;
   color: $muted-color;

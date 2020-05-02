@@ -242,8 +242,7 @@
       },
       locale: {
         handler (locale) {
-          import(/* webpackChunkName: "locale-[request]" */ `moment/locale/${locale}.js`).then(module => {
-            console.log('module', module)
+          import(/* webpackChunkName: "locale-[request]" */ `moment/locale/${locale}.js`).then(() => {
             moment.locale(locale)
           })
         },
@@ -329,12 +328,23 @@
     position: relative;
 
     .maz-picker__arrow {
-      color: $border-color;
+      color: $icon-color;
       outline: none;
       transition: all .25s cubic-bezier(.645, .045, .355, 1);
 
       svg path.arrow {
-        fill: $border-color;
+        fill: $icon-color;
+      }
+    }
+  }
+
+  .is-dark.maz-picker,
+  .is-dark .maz-picker {
+    .maz-picker__arrow {
+      color: $icon-color-dark;
+
+      svg path.arrow {
+        fill: $icon-color-dark;
       }
     }
   }

@@ -5,7 +5,7 @@ $small-size: 32px;
 $mini-size: 30px;
 
 .btn {
-  border: 2px solid transparent;
+  border: $border-width solid transparent;
   outline: none;
   cursor: pointer;
   transition: all 250ms cubic-bezier(.645, .045, .355, 1);

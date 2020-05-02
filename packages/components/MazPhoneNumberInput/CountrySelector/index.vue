@@ -38,22 +38,7 @@
       @click.stop="toggleList"
     >
       <slot name="arrow">
-        <svg
-          mlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          class="country-selector__toggle__arrow"
-        >
-          <path
-            class="arrow"
-            d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"
-          />
-          <path
-            fill="none"
-            d="M0 0h24v24H0V0z"
-          />
-        </svg>
+        <ArrowIcon />
       </slot>
     </div>
     <label
@@ -113,11 +98,12 @@
 <script>
   import { getCountryCallingCode } from 'libphonenumber-js'
   import { RecycleScroller } from 'vue-virtual-scroller'
+  import ArrowIcon from './../../_subs/ArrowIcon'
 
   export default {
     name: 'CountrySelector',
     components: {
-      RecycleScroller
+      RecycleScroller, ArrowIcon
     },
     props: {
       countriesHeight: { type: Number, default: 35 },

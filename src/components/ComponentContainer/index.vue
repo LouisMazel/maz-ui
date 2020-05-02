@@ -7,7 +7,7 @@
     </div>
     <div
       v-if="code"
-      class="component-container__footer"
+      class="component-container__footer border-top border-color border-top-solid"
     >
       <MazCollapse
         class="component-container__footer__collapse"
@@ -52,7 +52,6 @@
     border-radius: $border-radius;
 
     &__footer {
-      border-top: 1px solid $text-color-dark;
       overflow: hidden;
 
       &__collapse {
@@ -71,7 +70,7 @@
   .is-dark.component-container {
     color: $text-color-dark;
     background-color: $bg-color-dark;
-    border: 1px solid $hover-bg-color-dark;
+    border: $border-width solid $hover-bg-color-dark;
 
     .component-container__footer {
       border-color: $hover-bg-color-dark;

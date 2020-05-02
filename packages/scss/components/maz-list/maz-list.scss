@@ -13,7 +13,7 @@
   }
 
   &.no-shadow {
-    border: 2px solid $hover-bg-color;
+    border: $border-width solid $hover-bg-color;
   }
 }
 

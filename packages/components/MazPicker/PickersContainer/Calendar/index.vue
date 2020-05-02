@@ -2,7 +2,7 @@
   <div
     :id="`Calendar${_uid}`"
     ref="Calendar"
-    class="calendar pos-r mw-100 over-hid flex"
+    class="calendar pos-r mw-100 overflow-hidden flex"
   >
     <!-- !noShortcuts -->
     <!-- :value="shortcut" -->
@@ -13,7 +13,7 @@
       :height="200"
       @change-range="$emit('input', $event)"
     />
-    <div class="over-hid flex-1 flex-fixed">
+    <div class="overflow-hidden flex-1 flex-fixed">
       <MonthYearSwitcher
         :months="months"
         class="px-2"
@@ -25,7 +25,7 @@
           v-for="(month, i) in months"
           :key="`month-${i}`"
           class="calendar__months flex-1"
-          :class="{ 'has-double border-top-2 border-top-solid border-color': hasDouble }"
+          :class="{ 'has-double border-top border-top-solid border-color': hasDouble }"
         >
           <WeekDaysLabels
             :locale="locale"

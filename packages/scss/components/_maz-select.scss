@@ -8,10 +8,10 @@
     height: 24px;
 
     &__arrow {
-      color: $border-color;
+      color: $icon-color;
 
       .arrow {
-        fill: $border-color;
+        fill: $icon-color;
       }
     }
   }
@@ -70,7 +70,11 @@
 .is-dark.maz-select {
   &__toggle {
     &__arrow {
-      color: $secondary-color-dark;
+      color: $icon-color-dark;
+
+      .arrow {
+        fill: $icon-color-dark;
+      }
     }
   }
 
@@ -78,7 +82,7 @@
     background-color: $bg-color-dark;
 
     &__item {
-      color: $secondary-color-dark;
+      color: $border-color-dark;
 
       &:hover,
       &.keyboard-selected {

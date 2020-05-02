@@ -1,6 +1,6 @@
 <template>
   <footer
-    class="nav-footer flex-fixed"
+    class="nav-footer flex-fixed border-top-1 border-top-solid border-color"
     role="contentinfo"
   >
     <nav class="nav-footer-content container px-4 flex align-center space-between py-4">
@@ -66,7 +66,6 @@
 <style lang="scss" scoped>
   .nav-footer {
     color: $border-color;
-    border-top: 1px solid $text-color-dark;
     background-color: $bg-color;
 
     &-subs {

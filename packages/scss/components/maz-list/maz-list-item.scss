@@ -2,7 +2,7 @@
   position: relative;
   padding: .75rem 1.25rem;
   border: none;
-  border-bottom: 2px solid $hover-bg-color;
+  border-bottom: $border-width solid $hover-bg-color;
   margin: 0;
   color: $text-color;
   text-align: left;
