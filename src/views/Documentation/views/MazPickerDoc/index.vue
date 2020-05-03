@@ -65,20 +65,29 @@
       <ComponentContainer
         :code="codeExample"
       >
-        <h4 class="mb-3">
+        <h3>
+          Date Time Picker
+        </h3>
+        <h5 class="mb-3">
           Basic
-        </h4>
+        </h5>
+
+        <p class="mb-3">
+          <strong>Options:</strong>
+          none
+        </p>
 
         <p>
-          Value : {{ pickerValue || 'null' }}
+          <strong>Value</strong>: {{ pickerValue || 'null' }}
         </p>
         <p class="mb-2">
-          Formatted value : {{ pickerFormatted || 'null' }}
+          <strong>Formatted value</strong>: {{ pickerFormatted || 'null' }}
         </p>
 
         <MazPicker
           v-model="pickerValue"
           :locale="locale"
+          format="DD-MM-YYYY HH:mm"
           @formatted="pickerFormatted = $event"
         />
       </ComponentContainer>
@@ -86,21 +95,30 @@
       <ComponentContainer
         :code="clearableExample"
       >
-        <h4 class="mb-3">
-          Clearable - size="sm" - formatted="ll"
-        </h4>
+        <h3>
+          Date Picker
+        </h3>
+        <h5 class="mb-3">
+          Small input size clearable with input value formatted
+        </h5>
+
+        <p class="mb-3">
+          <strong>Options:</strong>
+          no-time - clearable - size="sm" - formatted="ll"
+        </p>
 
         <p>
-          Value : {{ pickerValue2 || 'null' }}
+          <strong>Value</strong>: {{ pickerValue2 || 'null' }}
         </p>
         <p class="mb-2">
-          Formatted value : {{ pickerFormatted2 || 'null' }}
+          <strong>Formatted value</strong>: {{ pickerFormatted2 || 'null' }}
         </p>
 
         <MazPicker
           v-model="pickerValue2"
           clearable
           size="sm"
+          no-time
           formatted="ll"
           :locale="locale"
           @formatted="pickerFormatted2 = $event"
@@ -110,22 +128,30 @@
       <ComponentContainer
         :code="doubleExample"
       >
-        <h4 class="mb-3">
-          double - size="lg" - format="DD-MM-YYYY" - label="Select date in big calander"
-        </h4>
+        <h3>
+          Double Date Picker
+        </h3>
+        <h5 class="mb-3">
+          Large input size - french format - custom placeholder
+        </h5>
+
+        <p class="mb-3">
+          <strong>Options:</strong>
+          double - size="lg" - format="DD-MM-YYYY" - label="Select date in big calander" - no-time
+        </p>
 
         <p>
-          Value : {{ pickerValue3 || 'null' }}
+          <strong>Value</strong>: {{ pickerValue3 || 'null' }}
         </p>
         <p class="mb-2">
-          Formatted value : {{ pickerFormatted3 || 'null' }}
+          <strong>Formatted value</strong>: {{ pickerFormatted3 || 'null' }}
         </p>
 
         <MazPicker
           v-model="pickerValue3"
           label="Select date in big calendar"
           format="DD-MM-YYYY"
-          clearable
+          no-time
           size="lg"
           double
           :locale="locale"
@@ -136,15 +162,23 @@
       <ComponentContainer
         :code="rangeExample"
       >
-        <h4 class="mb-3">
-          Range
-        </h4>
+        <h3>
+          Range Double Date Picker
+        </h3>
+        <h5 class="mb-3">
+          Position forced
+        </h5>
+
+        <p class="mb-3">
+          <strong>Options:</strong>
+          range - double - position="top right" - label="Select period"
+        </p>
 
         <p>
-          Value : {{ pickerRangeValues || 'null' }}
+          <strong>Value</strong>: {{ pickerRangeValues || 'null' }}
         </p>
         <p class="mb-2">
-          Formatted value : {{ pickerRangeValuesFormatted || 'null' }}
+          <strong>Formatted value</strong>: {{ pickerRangeValuesFormatted || 'null' }}
         </p>
 
         <MazPicker
@@ -152,8 +186,7 @@
           label="Select period"
           range
           double
-          open
-          position="bottom right"
+          position="top right"
           :locale="locale"
           @formatted="pickerRangeValuesFormatted = $event"
         />
@@ -162,21 +195,32 @@
       <ComponentContainer
         :code="inlineExample"
       >
-        <h4 class="mb-3">
-          Inline - Double
-        </h4>
+        <h3>
+          Inline Double Date Time Picker
+        </h3>
+        <h5 class="mb-3">
+          Min & max dates provided & without time picker
+        </h5>
+
+        <p class="mb-3">
+          <strong>Options:</strong>
+          inline - min-date="2020-05-05" - max-date="2020-05-27" - no-time
+        </p>
 
         <p>
-          Value : {{ pickerValue4 || 'null' }}
+          <strong>Value</strong>: {{ pickerValue4 || 'null' }}
         </p>
         <p class="mb-2">
-          Formatted value : {{ pickerFormatted4 || 'null' }}
+          <strong>Formatted value</strong>: {{ pickerFormatted4 || 'null' }}
         </p>
 
         <MazPicker
           v-model="pickerValue4"
           inline
+          no-time
           double
+          min-date="2020-05-05"
+          max-date="2020-06-22"
           :locale="locale"
           @formatted="pickerFormatted4 = $event"
         />
@@ -185,9 +229,38 @@
       <ComponentContainer
         :code="inlineExample"
       >
-        <h4 class="mb-3">
+        <h3>
+          Time Picker
+        </h3>
+        <h5 class="mb-3">
+          Min & max dates provided & without time picker
+        </h5>
+
+        <p class="mb-3">
+          <strong>Options:</strong>
+          no-date
+        </p>
+
+        <p>
+          <strong>Value</strong>: {{ pickerValue5 || 'null' }}
+        </p>
+        <p class="mb-2">
+          <strong>Formatted value</strong>: {{ pickerFormatted5 || 'null' }}
+        </p>
+
+        <MazPicker
+          v-model="pickerValue5"
+          no-date
+          :locale="locale"
+        />
+      </ComponentContainer>
+
+      <ComponentContainer
+        :code="inlineExample"
+      >
+        <h3 class="mb-3">
           Disabled
-        </h4>
+        </h3>
 
         <p>
           Value : {{ pickerValue4 || 'null' }}
@@ -227,7 +300,7 @@
           { label: 'Spanish', value: 'es' },
           { label: 'Russian', value: 'ru' }
         ],
-        pickerValue: null,
+        pickerValue: '22-03-2020 01:13',
         pickerFormatted: null,
         codeExample: `<template>
   <MazPicker
@@ -286,22 +359,40 @@ export default {
     }
   }
 }`,
-        pickerValue4: null,
+        pickerValue4: '2020-05-15',
         pickerFormatted4: null,
         inlineExample: `<template>
   <MazPicker
-    v-model="pickerValue3"
+    v-model="pickerValue4"
     inline
     double
-    @formatted="pickerFormatted3 = $event"
+    @formatted="pickerFormatted4 = $event"
   />
 </template>
 
 export default {
   data () {
     return {
-      pickerFormatted3: null,
-      pickerValue4: null
+      pickerValue4: null,
+      pickerFormatted4: null
+    }
+  }
+}`,
+        pickerValue5: null,
+        pickerFormatted5: null,
+        timeExample: `<template>
+  <MazPicker
+    v-model="pickerValue4"
+    no-time
+    @formatted="pickerFormatted4 = $event"
+  />
+</template>
+
+export default {
+  data () {
+    return {
+      pickerValue4: null,
+      pickerFormatted4: null
     }
   }
 }`,
@@ -309,9 +400,13 @@ export default {
         pickerRangeValuesFormatted: null,
         rangeExample: `<template>
   <MazPicker
-    v-model="pickerValue3"
+    v-model="pickerRangeValues"
+    label="Select period"
     range
-    @formatted="pickerFormatted3 = $event"
+    double
+    position="bottom right"
+    :locale="locale"
+    @formatted="pickerRangeValuesFormatted = $event"
   />
 </template>
 

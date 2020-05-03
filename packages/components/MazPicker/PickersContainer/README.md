@@ -6,7 +6,9 @@
 
 | Name           | Description | Type      | Required | Default |
 | -------------- | ----------- | --------- | -------- | ------- |
-| value          | -           | `Object`  | `true`   | -       |
+| value          | -           | `Object`  | `false`  | -       |
+| format         | -           | `String`  | `false`  | -       |
+| shortcut       | -           | `String`  | `false`  | -       |
 | locale         | -           | `String`  | `false`  | -       |
 | position       | -           | `String`  | `true`   | -       |
 | hasHeader      | -           | `Boolean` | `true`   | -       |
@@ -23,6 +25,14 @@
 | disabledDates  | -           | `Array`   | `true`   | -       |
 | disabledWeekly | -           | `Array`   | `true`   | -       |
 | hasDouble      | -           | `Boolean` | `true`   | -       |
+| hasKeyboard    | -           | `Boolean` | `true`   | -       |
+| hasTime        | -           | `Boolean` | `true`   | -       |
+| hasDate        | -           | `Boolean` | `true`   | -       |
+| shortcuts      | -           | `Array`   | `false`  | -       |
+| hasShortcuts   | -           | `Boolean` | `true`   | -       |
+| minuteInterval | -           | `Number`  | `true`   | -       |
+| disabledHours  | -           | `Array`   | `true`   | -       |
+| behaviour      | -           | `Object`  | `true`   | -       |
 
 <!-- @vuese:PickersContainer:props:end -->
 

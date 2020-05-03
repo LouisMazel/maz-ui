@@ -2,6 +2,7 @@
   <div
     :style="[
       {
+        height: `${height}px`,
         width: `${150}px`
       }
     ]"
@@ -12,6 +13,7 @@
       :key="shortcut.key"
       :active="selectedShortcut === shortcut.key"
       size="sm"
+      tabindex="-1"
       :class="[selectedShortcut !== shortcut.key ? 'hover-bg-color no-focus-bg border border-color text-primary': 'focus-primary']"
       class="shortcut-button flex-1 my-1 bg-transparent no-shadow"
       @click="select(shortcut)"
@@ -25,6 +27,7 @@
 
 <script>
   import moment from 'moment'
+  import { EventBus } from './../../../utils'
 
   const SHORTCUT_TYPES = ['day', 'date', '-day', 'isoWeek', 'quarter', '-isoWeek', 'month', '-month', 'year', '-year', 'week', '-week']
 
@@ -38,9 +41,10 @@
     name: 'RangeShortcuts',
     props: {
       value: { type: String, default: null },
+      height: { type: Number, required: true },
       shortcuts: {
         type: Array,
-        default: () => ([]),
+        default: Array,
         validator: val => val.every(shortcut => {
           const isValueInteger = Number.isInteger(shortcut.value)
           const isFunction = typeof shortcut.value === 'function'
@@ -61,6 +65,12 @@
         },
         immediate: true
       }
+    },
+    mounted () {
+      EventBus.$on('day-selected', () => { this.selectedShortcut = null })
+    },
+    beforeDestroy () {
+      EventBus.$off('day-selected')
     },
     methods: {
       init () {

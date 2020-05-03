@@ -76,6 +76,7 @@
       :for="uniqueId"
       :class="error ? 'text-danger' : null"
       class="maz-input__label"
+      tabindex="-1"
       @click="focusInput"
     >
       {{ hintValue || labelValue }}
@@ -179,7 +180,7 @@
       loading: { type: Boolean, default: false },
       // When is `true` the input can be clear with a button on the right
       clearable: { type: Boolean, default: false },
-      // When is `true` the input has not label
+      // When is `true` the input has not label (top placeholder when value is not empty)
       noLabel: { type: Boolean, default: false },
       // When is `true` and is `required`, the `*` symbol is not showing
       noRequiredSymbol: { type: Boolean, default: false },

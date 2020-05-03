@@ -1,49 +1,113 @@
 <template>
   <div
-    class="header-picker p-2 bg-primary text-white"
+    class="header-picker p-2 bg-primary text-white flex space-between"
   >
-    <TransitionGroup
-      :name="transitionName"
-      tag="div"
-      class="header-picker__year dots-text"
+    <div
+      v-if="hasDate"
+      class="flex-1"
     >
-      <span
-        v-for="y in [year]"
-        :key="y"
+      <TransitionGroup
+        :name="transitionName"
+        tag="div"
+        class="header-picker__year dots-text"
       >
-        {{ y }}
-      </span>
-    </TransitionGroup>
-    <TransitionGroup
-      :name="transitionName"
-      tag="div"
-      class="header-picker__date dots-text"
+        <span
+          v-for="y in [year]"
+          :key="y"
+        >
+          {{ y }}
+        </span>
+      </TransitionGroup>
+      <TransitionGroup
+        :name="transitionName"
+        tag="div"
+        class="header-picker__date dots-text"
+      >
+        <span
+          v-for="date in [dateFormatted]"
+          :key="date"
+          class="dots-text "
+        >
+          {{ dateFormatted ? date : '-' }}
+        </span>
+      </TransitionGroup>
+    </div>
+    <div
+      v-if="hasTime && !isTwelveFormat"
+      class="header-picker__time flex"
+      :class="[
+        !hasDate ? 'flex-center': 'align-end'
+      ]"
     >
-      <span
-        v-for="date in [dateFormatted]"
-        :key="date"
-        class="dots-text"
+      <TransitionGroup
+        v-if="timeFormatted.hour"
+        :name="transitionName"
+        class="header-picker__hour flex justify-end"
       >
-        {{ dateFormatted ? date : '-' }}
+        <span
+          v-for="hour in [timeFormatted.hour]"
+          :key="hour"
+        >
+          {{ hour }}
+        </span>
+      </TransitionGroup>
+      <span
+        class="header-picker__dots-divider"
+      >
+        {{ timeFormatted.hour ? ':' : '-' }}
       </span>
-    </TransitionGroup>
+      <TransitionGroup
+        v-if="timeFormatted.minute"
+        :name="transitionName"
+        class="header-picker__minute"
+      >
+        <span
+          v-for="min in [timeFormatted.minute]"
+          :key="min"
+        >
+          {{ min }}
+        </span>
+      </TransitionGroup>
+    </div>
+    <div
+      v-else-if="hasTime"
+      class="header-picker__time flex"
+      :class="[
+        !hasDate ? 'flex-center': 'align-end'
+      ]"
+    >
+      <TransitionGroup
+        :name="transitionName"
+        class="header-picker__twelve flex justify-center"
+      >
+        <span
+          v-for="(time, i) in [timeFormatted]"
+          :key="`${time}-${i}`"
+        >
+          {{ timeFormatted || '-' }}
+        </span>
+      </TransitionGroup>
+    </div>
   </div>
 </template>
 
 <script>
   import moment from 'moment'
-  import { getFormattedValuesIntl } from './../../utils'
+  import { getFormattedValuesIntl, getTimeFormat } from './../../utils'
 
   export default {
     name: 'HeaderPicker',
     props: {
       value: { type: Object, default: null },
-      locale: { type: String, required: true }
+      locale: { type: String, required: true },
+      hasTime: { type: Boolean, required: true },
+      hasDate: { type: Boolean, required: true },
+      format: { type: String, required: true }
     },
     data () {
       return {
         transitionName: 'slidevnext',
-        currentDate: null
+        currentDate: this.value
       }
     },
     computed: {
@@ -68,13 +132,28 @@
           dates.push(this.value)
         }
         return getFormattedValuesIntl({ locale, dates })
+      },
+      timeFormatted () {
+        return !this.isTwelveFormat ? {
+          hour: this?.value?.format('HH') ?? null,
+          minute: this?.value?.format('mm') ?? null
+        } : this?.value?.format(this.timeFormat) ?? null
+      },
+      timeFormat () {
+        return getTimeFormat(this.format)
+      },
+      isTwelveFormat () {
+        return this.timeFormat.includes('A') || this.timeFormat.includes('a')
       }
     },
     watch: {
-      value () {
-        const newValueIsSmaller = this.currentDate > this.currentValue
-        this.transitionName = newValueIsSmaller ? 'slidevprev' : 'slidevnext'
-        this.$nextTick(() => { this.currentDate = this.currentValue })
+      value: {
+        handler () {
+          const newValueIsSmaller = this.currentDate ? this.currentValue.isBefore(this.currentDate) : false
+          this.transitionName = newValueIsSmaller ? 'slidevprev' : 'slidevnext'
+          this.$nextTick(() => { this.currentDate = this.currentValue })
+        },
+        immediate: true
       }
     }
   }
@@ -85,14 +164,50 @@
     overflow: hidden;
 
     &__year {
+      position: relative;
+      overflow: hidden;
       opacity: .7;
       height: 21px;
+      line-height: 21px;
     }
 
     &__date {
+      position: relative;
+      overflow: hidden;
       min-height: 0;
-      height: 26px;
+      height: 22px;
+      line-height: 22px;
       font-size: 1.285em;
+    }
+
+    &__time {
+      width: 147px;
+      height: 43px;
+      font-size: 1.285em;
+    }
+
+    &__hour,
+    &__minute,
+    &__dots-divider {
+      position: relative;
+      overflow: hidden;
+      min-height: 0;
+      height: 22px;
+      line-height: 22px;
+    }
+
+    &__twelve {
+      position: relative;
+      overflow: hidden;
+      min-height: 0;
+      height: 22px;
+      line-height: 22px;
+      width: 80px;
+    }
+
+    &__hour,
+    &__minute {
+      width: 22px;
     }
   }
 </style>

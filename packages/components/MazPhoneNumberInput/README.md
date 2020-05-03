@@ -6,7 +6,7 @@
 
 | Name               | Description | Type      | Required | Default |
 | ------------------ | ----------- | --------- | -------- | ------- |
-| value              | -           | `String`  | `true`   | -       |
+| value              | -           | —         | `false`  | -       |
 | id                 | -           | `String`  | `false`  | -       |
 | disabled           | -           | `Boolean` | `false`  | -       |
 | defaultCountryCode | -           | `String`  | `false`  | -       |

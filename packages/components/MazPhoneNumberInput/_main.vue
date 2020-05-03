@@ -87,7 +87,10 @@
     },
     mixins: [uniqueId],
     props: {
-      value: { type: String, required: true },
+      value: {
+        validator: prop => ['string', 'number'].includes(typeof prop) || prop === null,
+        default: null
+      },
       id: { type: String, default: null },
       disabled: { type: Boolean, default: false },
       defaultCountryCode: { type: String, default: null },

@@ -13,8 +13,8 @@ export const getDefaultLocale = () => {
 export const EventBus = new Vue()
 
 export const checkIfTargetIsAllowedToCloseComponent = (classesArray, target) => {
-  // if (!target) return false
-  classesArray.some(classes =>
+  if (!target) return false
+  return classesArray.some(classes =>
     classes.every(c =>
       (target.classList ?? []).contains(c)
     )
@@ -28,7 +28,7 @@ export const hasDateBetweenMinMaxDate = (date, minDate, maxDate, range) => {
   }
 }
 
-export const updateComputedDataWithProps = () => 'updated'
+export const forceUpdateComputedData = () => 'updated'
 
 export const getDateMoment = (value, format, range) => {
   if (range) {
@@ -43,13 +43,10 @@ export const getDateMoment = (value, format, range) => {
 }
 
 export const getFormattedValue = (value, format, formatted, range) => {
-  if (range && value) {
-    return `${value.start ? moment(value.start, format).format(formatted) : '...'} - ${value.end ? moment(value.end, format).format(formatted) : '...'}`
-  } else if (value) {
-    return value ? moment(value, format).format(formatted) : null
-  } else {
-    return null
-  }
+  const formatValue = (v) => capitalizeText(moment(v, format).format(formatted))
+  return range && value
+    ? `${value.start ? formatValue(value.start) : '...'} - ${value.end ? formatValue(value.end) : '...'}`
+    : value ? formatValue(value) : null
 }
 
 const DEFAULT_FORMAT_OPTIONS = {
@@ -64,6 +61,47 @@ export const getFormattedValuesIntl = (payload = {}) => {
     opts = DEFAULT_FORMAT_OPTIONS,
     dates = [new Date()]
   } = payload
-  const filteredDates = dates.filter(d => d)
-  return filteredDates.map(d => d ? capitalizeText(new Intl.DateTimeFormat(locale, opts).format(d)) : null).join(' - ')
+  return dates.map(d => d ? capitalizeText(new Intl.DateTimeFormat(locale, opts).format(d)) : '...').join(' - ')
+}
+
+export const ArrayHourRange = (start, end, twoDigit, isAfternoon, disabledHours) => {
+  return Array(end - start + 1).fill().map((_, idx) => {
+    const n = start + idx
+    const number = !isAfternoon ? n : n + 12
+    const numberToTest = (number < 10 ? '0' : '') + number
+    return {
+      value: number,
+      item: (twoDigit && (n < 10) ? '0' : '') + n,
+      disabled: disabledHours.includes(numberToTest)
+    }
+  })
+}
+
+export const ArrayMinuteRange = (start, end, twoDigit, step = 1, disabledMinutes) => {
+  const len = Math.floor(end / step) - start
+
+  return Array(len).fill().map((_, idx) => {
+    const number = start + idx * step
+    const txtMinute = (twoDigit && (number < 10) ? '0' : '') + number
+    return {
+      value: number,
+      item: txtMinute,
+      disabled: disabledMinutes.includes(txtMinute)
+    }
+  })
+}
+
+export const debounce = (fn, time) => {
+  let timeout
+
+  return function () {
+    const functionCall = () => fn.apply(this, arguments)
+    clearTimeout(timeout)
+    timeout = setTimeout(functionCall, time)
+  }
+}
+
+export const getTimeFormat = (format) => {
+  const hasTime = format.includes('T')
+  return hasTime ? format.split('T')[1] : format.split(' ').slice(1).join(' ')
 }

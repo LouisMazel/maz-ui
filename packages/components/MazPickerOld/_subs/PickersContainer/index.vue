@@ -111,7 +111,7 @@
     inheritAttrs: false,
     props: {
       value: { type: [String, Object], default: null },
-      visible: { type: Boolean, required: true, default: false },
+      visible: { type: Boolean, required: true },
       position: { type: String, default: 'bottom' },
       inline: { type: Boolean, default: false },
       dark: { type: Boolean, default: false },
