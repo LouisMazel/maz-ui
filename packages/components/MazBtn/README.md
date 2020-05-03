@@ -19,6 +19,7 @@
 | fab      | apply the fab style                                                                                                                                                                 | `Boolean` | `false`  | -       |
 | active   | apply the focus style                                                                                                                                                               | `Boolean` | `false`  | -       |
 | block    | take 100% of the width                                                                                                                                                              | `Boolean` | `false`  | -       |
+| noShadow | remove shadow/elevation                                                                                                                                                             | `Boolean` | `false`  | -       |
 
 <!-- @vuese:MazBtn:props:end -->
 

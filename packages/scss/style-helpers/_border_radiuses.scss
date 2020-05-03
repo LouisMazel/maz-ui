@@ -1,17 +1,27 @@
-@import './variables/_radiuses';
+@import './variables/radiuses';
+@import './variables/positions';
+@import './variables/sizes';
 
-@each $size, $value in $radiuses {
-  .br-#{$size} {
-    border-radius: #{$value};
+.border-radius {
+  border-radius: $border-radius;
+}
+
+@each $position in $positions {
+  .border-#{$position}-radius {
+    border-#{$position}-left-radius: $border-radius;
+    border-#{$position}-right-radius: $border-radius;
+  }
+}
+
+@each $size in $sizes {
+  .border-radius-#{$size} {
+    border-radius: #{$size}px;
   }
 
-  .brt-#{$size} {
-    border-top-left-radius: #{$value};
-    border-top-right-radius: #{$value};
-  }
-
-  .brb-#{$size} {
-    border-bottom-right-radius: #{$value};
-    border-bottom-left-radius: #{$value};
+  @each $position in $positions {
+    .border-#{$position}-radius {
+      border-#{$position}-left-radius: #{$size};
+      border-#{$position}-right-radius: #{$size};
+    }
   }
 }

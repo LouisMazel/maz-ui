@@ -7,7 +7,7 @@
     padding: .75rem 1.25rem;
     margin-bottom: -2px;
     background-color: $bg-color;
-    border: 2px solid $hover-color;
+    border: $border-width solid $hover-bg-color;
     cursor: move;
     width: 100%;
     font-size: .875em;
@@ -18,7 +18,7 @@
     }
 
     &:hover {
-      background-color: $hover-color;
+      background-color: $hover-bg-color;
     }
 
     &:first-child {
@@ -47,14 +47,14 @@
   .maz-draggable-list__item {
     background-color: $bg-color-dark;
     color: $text-color-dark;
-    border-color: $hover-color-dark;
+    border-color: $hover-bg-color-dark;
 
     & > * {
       color: $text-color-dark;
     }
 
     &:hover {
-      background-color: $hover-color-dark;
+      background-color: $hover-bg-color-dark;
     }
   }
 }

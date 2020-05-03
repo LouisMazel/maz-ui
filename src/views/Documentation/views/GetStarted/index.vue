@@ -20,7 +20,7 @@
     <p>First, install babel-plugin-component:</p>
 
     <CodeContainer
-      :code="`npm install babel-plugin-component -D`"
+      :code="codeBabelPLugin"
       class="my-4"
     />
 
@@ -45,40 +45,46 @@
     name: 'GetStarted',
     data () {
       return {
-        codeBase: `import Vue from 'vue';
-import 'maz-ui/lib/maz-ui.css';
-import MazUi from 'maz-ui';
-import App from './App.vue';
+        codeBase: `import Vue from 'vue'
+import 'maz-ui/lib/maz-ui.css'
+import MazUi from 'maz-ui'
+import App from './App.vue'
 
-Vue.use(MazUi);
+Vue.use(MazUi)
 
 new Vue({
   el: '#app',
   render: h => h(App)
-});`,
-        codeCustom: `import Vue from 'vue';
-import 'maz-ui/lib/maz-ui.css';
-import { MazBtn, MazSelect } from 'maz-ui';
-import App from './App.vue';
+})`,
+        codeBabelPLugin: `npm install babel-plugin-component -D
 
-Vue.component(MazBtn.name, MazBtn);
-Vue.component(MazSelect.name, MazSelect);
-/* ou
- * Vue.use(MazBtn)
- * Vue.use(MazSelect)
+/*
+ * or yarn add babel-plugin-component -D
+ */`,
+        codeCustom: `import Vue from 'vue'
+import 'maz-ui/lib/maz-ui.css'
+import { MazBtn, MazSelect } from 'maz-ui'
+import App from './App.vue'
+
+Vue.use(MazBtn)
+Vue.use(MazSelect)
+
+/* or
+ * Vue.component(MazBtn.name, MazBtn)
+ * Vue.component(MazSelect.name, MazSelect)
  */
 
 new Vue({
   el: '#app',
   render: h => h(App)
-});`,
+})`,
         configBabelPluginComponent: `{
   "presets": [["es2015", { "modules": false }]],
   "plugins": [
     [
       "component",
       {
-        "libraryName": "maz-ui"
+        "libraryName": "maz-ui",
         "style": false
       }
     ]

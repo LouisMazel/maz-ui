@@ -1,4 +1,4 @@
-@import './variables/_color_types';
+@import './variables/color_types';
 
 @each $name, $color in $color_types {
   @if (type-of($color) == 'color') {
@@ -28,15 +28,25 @@
   }
 }
 
-.bg-color {
+.bg-color,
+.bg-color-light {
   background-color: $bg-color;
+}
+
+.is-dark.bg-color,
+.is-dark .bg-color {
+  background-color: $bg-color-dark;
 }
 
 .bg-color-dark {
   background-color: $bg-color-dark;
 }
 
-.is-dark.bg-color,
-.is-dark .bg-color {
-  background-color: $bg-color-dark;
+.bg-color-light-dark {
+  background-color: $bg-color-dark-l;
+}
+
+.is-dark.bg-color-light,
+.is-dark .bg-color-light {
+  background-color: $bg-color-dark-l;
 }

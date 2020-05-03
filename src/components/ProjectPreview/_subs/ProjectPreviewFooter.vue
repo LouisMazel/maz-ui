@@ -1,13 +1,15 @@
 <template>
-  <div class="project-preview-footer p-3 flex justify-end">
-    <a
+  <div class="project-preview-footer p-3 flex justify-end border-top border-top-solid border-color">
+    <MazBtn
       v-if="project.githubUrl"
       :href="project.githubUrl"
-      class="btn btn--white--outline btn--white flex align-center"
+      class="flex flex-center"
+      color="dark"
+      outline
       target="_blank"
     >
       GITHUB
-    </a>
+    </MazBtn>
     <a
       v-if="project.npmUrl"
       :href="project.npmUrl"
@@ -46,8 +48,6 @@
 
 <style lang="scss" scoped>
   .project-preview-footer {
-    border-top: 1px solid $hover-color;
-
     .btn--npm svg {
       width: 35px;
 
@@ -59,9 +59,5 @@
     .btn--white:hover {
       color: $bg-color-dark;
     }
-  }
-
-  .is-dark .project-preview-footer {
-    border-top: 1px solid $bg-color-dark;
   }
 </style>

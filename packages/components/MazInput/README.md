@@ -27,6 +27,7 @@
 | clearable        | When is `true` the input can be clear with a button on the right       | `Boolean` | `false`  | -          |
 | noLabel          | When is `true` the input has not label                                 | `Boolean` | `false`  | -          |
 | noRequiredSymbol | When is `true` and is `required`, the `*` symbol is not showing        | `Boolean` | `false`  | -          |
+| focus            | force focus style input                                                | `Boolean` | `false`  | -          |
 
 <!-- @vuese:MazInput:props:end -->
 
@@ -42,6 +43,8 @@
 | clear      | sent when the input is clear                      | -          |
 | keyup      | sent the keyup event                              | event      |
 | keydown    | sent the keydown event                            | event      |
+| change     | -                                                 | -          |
+| click      | -                                                 | -          |
 
 <!-- @vuese:MazInput:events:end -->
 

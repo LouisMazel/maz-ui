@@ -1,0 +1,270 @@
+<template>
+  <TransitionGroup
+    class="month-picker"
+    :class="{ 'month-picker--long': (monthDays.length + weekStart) > 35 }"
+    tag="div"
+    :name="transitionDaysName"
+  >
+    <div
+      v-for="m in [month]"
+      :key="m.month"
+      class="month-picker__days"
+    >
+      <MazBtn
+        v-for="(day, i) in allDays"
+        :key="i"
+        class="month-picker__day text-color bg-color-light flex flex-center"
+        size="mini"
+        :no-shadow="!isSelectedDate(day)"
+        :disabled="isDisabled(day)"
+        :active="isSelectedDate(day)"
+        :class="{
+          'highlight': isToday(day),
+          'is-disabled text-muted fw-400': !hasDouble && !isSameMonth(day),
+          'is-keyboard-selected': isKeyboardSelected(day),
+          'is-in-range': !isDisabled(day) && isBetween(day),
+          'is-between-hoverred': value && value.start && !isDisabled(day) && isBetweenHoverred(day),
+          'is-last-in-range': isLastInRange(day)
+        }"
+        @mouseenter="$emit('hoverred-day', day)"
+        @mouseleave="$emit('hoverred-day', null)"
+        @click="selectDay(day)"
+      >
+        {{ hasDouble && isDisabled(day) ? null : day.format('D') }}
+      </MazBtn>
+    </div>
+  </TransitionGroup>
+</template>
+
+<script>
+  import KeyboardAccessibility from './../../../mixins/keyboard-accessibility'
+  export default {
+    name: 'MonthPicker',
+    mixins: [KeyboardAccessibility],
+    props: {
+      value: { type: Object, default: null },
+      month: { type: Object, required: true },
+      minDate: { type: Object, default: null },
+      maxDate: { type: Object, default: null },
+      noWeekendsDays: { type: Boolean, default: false },
+      disabledDates: { type: Array, required: true },
+      disabledWeekly: { type: Array, required: true },
+      isVisible: { type: Boolean, required: true },
+      hasDouble: { type: Boolean, required: true },
+      hoverredDay: { type: Object, default: null }
+    },
+    data () {
+      return {
+        transitionDaysName: 'slidenext',
+        currentMonth: this.month
+      }
+    },
+    computed: {
+      allDays () {
+        return [
+          ...this.previousMonthDays,
+          ...this.monthDays,
+          ...this.nextMonthDays
+        ]
+      },
+      previousMonthDays () {
+        return this.month.getPreviousMonthDays()
+      },
+      monthDays () {
+        return this.month.getMonthDays()
+      },
+      nextMonthDays () {
+        return this.month.getNextMonthDays()
+      },
+      weekStart () {
+        return this.month.getWeekStart()
+      },
+      isRangeMode () {
+        return !!this.value && Object.keys(this.value).includes('start')
+      }
+    },
+    watch: {
+      month (value) {
+        const newValueIsSmaller = this.currentMonth.start > value.start
+        this.transitionDaysName = newValueIsSmaller ? 'slideprev' : 'slidenext'
+        this.$nextTick(() => { this.currentMonth = value })
+      },
+      value: {
+        handler (value) {
+          if (this.noWeekendsDays && this.isWeekEndDay(value)) {
+            console.warn(`MazPicker: the value provide is a weekend day and you use the option 'no-weekends-days'`)
+          }
+          if (this.isDateDisabled(value)) {
+            console.warn(`MazPicker: the value provide is a disabled date by th option 'disabled-dates'`)
+          }
+        },
+        immediate: true
+      }
+    },
+    methods: {
+      isToday (day) {
+        return day.isSame(new Date(), 'day')
+      },
+      isBetweenHoverred (day) {
+        if (!this.isRangeMode || this.value.end) return false
+        return day.isBetween(this.value.start, this.hoverredDay, null, '[]')
+      },
+      isBetween (day) {
+        if (!this.isRangeMode) return false
+        return day.isBetween(this.value.start, this.value.end, null, '[]')
+      },
+      isLastInRange (day) {
+        if (!this.isRangeMode) return false
+        return day.isSame(this.value.end)
+      },
+      isSelectedDate (day) {
+        return this.isRangeMode
+          ? (this.value?.start?.isSame(day, 'day') ?? false) || (this.value?.end?.isSame(day, 'day') ?? false)
+          : this.value ? this.value.isSame(day, 'day') : false
+      },
+      isDisabled (day) {
+        return day.isBefore(this.minDate) ||
+          day.isAfter(this.maxDate) ||
+          (this.noWeekendsDays && this.isWeekEndDay(day)) ||
+          this.isDateDisabled(day) ||
+          this.isDayDisabledWeekly(day) ||
+          (!this.isSameMonth(day) && this.hasDouble)
+      },
+      isWeekEndDay (day) {
+        const dayConst = day.day()
+        const weekendsDaysNumbers = [6, 0]
+        return this.noWeekendsDays ? weekendsDaysNumbers.indexOf(dayConst) > -1 : false
+      },
+      isSameMonth (day) {
+        return this.month.month === day.month()
+      },
+      isDateDisabled (day) {
+        return this.disabledDates.some(d => d.isSame(day, 'day'))
+      },
+      isDayDisabledWeekly (day) {
+        const dayConst = day.day()
+        return this.disabledWeekly.includes(dayConst)
+      },
+      isKeyboardSelected (day) {
+        return day.isSame(this.keyboardSelectedDay, 'day')
+      },
+      selectDay (day) {
+        let valueToSend = day
+        if (!this.isRangeMode) {
+          valueToSend = day
+        } else {
+          const { start, end } = this.value
+          if (!start || (start && end) || day.isBefore(this.value.start)) {
+            valueToSend = {
+              start: day,
+              end: null
+            }
+          } else {
+            valueToSend = {
+              start: this.value.start,
+              end: day
+            }
+          }
+        }
+
+        this.$emit('input', valueToSend)
+      }
+    }
+  }
+</script>
+
+<style lang="scss" scoped>
+  .month-picker {
+    min-height: 194px;
+    min-width: 268px;
+    width: 100%;
+    overflow: hidden;
+
+    &--long {
+      min-height: 231px;
+    }
+
+    &__days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      grid-gap: 5px;
+      width: 100%;
+      justify-items: center;
+    }
+
+    &__day {
+      $day-size: 32px;
+
+      padding: 0;
+      width: $day-size;
+      height: $day-size;
+      font-size: 1em;
+      z-index: 1;
+      position: relative;
+
+      &.highlight:not(.active):not(.btn--disabled)::before,
+      &.is-keyboard-selected:not(.active)::before {
+        $circle-size: 26px;
+
+        content: '';
+        position: absolute;
+        height: $circle-size;
+        width: $circle-size;
+        border-radius: $circle-size;
+        background-color: rgba(black, .15);
+        z-index: -1;
+      }
+
+      &.is-keyboard-selected {
+        font-weight: 700;
+
+        &:not(.active)::before {
+          border-radius: $border-radius;
+          background-color: rgba(black, .15);
+        }
+      }
+
+      &.is-between-hoverred {
+        color: white;
+        background-color: rgba($primary-color, .4);
+      }
+
+      &.is-in-range {
+        color: white;
+        background-color: rgba($primary-color, .6);
+        width: calc(100% + 5px);
+
+        &:not(.active) {
+          border-radius: 0;
+        }
+
+        &.active:not(.is-last-in-range) {
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+        }
+
+        &.is-last-in-range {
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+        }
+      }
+
+      &.active:not(:disabled) {
+        color: white;
+        background-color: $primary-color;
+        font-weight: 600;
+      }
+
+      &:hover {
+        color: white;
+        background-color: rgba($primary-color, .4);
+      }
+
+      &:disabled {
+        color: rgba(black, .25);
+        background-color: transparent;
+        border: none;
+      }
+    }
+  }
+</style>

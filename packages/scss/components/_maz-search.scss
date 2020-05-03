@@ -33,7 +33,7 @@
 
       &:hover,
       &.keyboard-selected {
-        background-color: darken($hover-color, 5%);
+        background-color: darken($hover-bg-color, 5%);
       }
 
       &.selected {
@@ -52,11 +52,11 @@
       background-color: $bg-color-dark-l;
 
       &__item {
-        color: $secondary-color-dark;
+        color: $border-color;
 
         &:hover,
         &.keyboard-selected {
-          background-color: lighten($hover-color-dark-l, 5%);
+          background-color: lighten($hover-bg-color-dark-l, 5%);
         }
 
         &.selected {

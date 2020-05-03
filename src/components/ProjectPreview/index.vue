@@ -1,16 +1,16 @@
 <template>
   <div
-    class="project-preview br-8 text-white flex direction-column space-between"
+    class="project-preview border-radius text-white flex direction-column space-between overflow-hidden border border-solid border-color"
   >
-    <div class="project-preview-header brt-8">
+    <div class="project-preview-header border-top-radius">
       <img
-        class="project-preview__img brt-8"
+        class="project-preview__img border-top-radius"
         :src="project.imgUrl"
         :alt="`image illustration ${project.name}`"
       >
       <div
         v-if="project.demoUrl"
-        class="layer brt-4 flex align-center justify-center"
+        class="layer flex align-center justify-center"
       >
         <a
           :href="project.demoUrl"
@@ -49,7 +49,6 @@
 <style lang="scss" scoped>
   .project-preview {
     background-color: $bg-color;
-    border: 1px solid $hover-color;
     text-decoration: none;
     transition: all 300ms;
     position: relative;
@@ -90,7 +89,6 @@
 
     &:hover,
     &:focus {
-      background-color: darken($bg-color, 5%);
       transform: translateY(-3px);
       box-shadow: 0 3px 12px darken($bg-color, 10%);
       outline: none;
@@ -105,7 +103,6 @@
   .is-dark {
     .project-preview {
       background-color: $bg-color-dark-l;
-      border-color: $hover-color-dark;
 
       &:hover,
       &:focus {

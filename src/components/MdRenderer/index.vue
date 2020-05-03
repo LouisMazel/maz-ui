@@ -60,7 +60,7 @@
     }
 
     h2 {
-      border-bottom: 1px solid $hover-color;
+      border-bottom: 1px solid $hover-bg-color;
       color: #333;
       font-size: 1.5em;
     }
@@ -86,8 +86,8 @@
     hr {
       height: .2em;
       border: 0;
-      color: $hover-color;
-      background-color: $hover-color;
+      color: $hover-bg-color;
+      background-color: $hover-bg-color;
     }
 
     p,
@@ -113,13 +113,13 @@
     table,
     th,
     td {
-      border: 1px solid $hover-color;
+      border: 1px solid $hover-bg-color;
       border-radius: 3px;
       padding: 5px;
     }
 
     tr:nth-child(even) {
-      background-color: $hover-color;
+      background-color: $hover-bg-color;
     }
 
     a,
@@ -131,7 +131,7 @@
 
     #message {
       border-radius: 6px;
-      border: 1px solid $hover-color;
+      border: 1px solid $hover-bg-color;
       display: block;
       width: 100%;
       height: 60px;
@@ -143,8 +143,8 @@
       font-size: 10pt;
       padding: 4px 6px;
       border-radius: 5px;
-      border: 1px solid $hover-color;
-      background-color: $hover-color;
+      border: 1px solid $hover-bg-color;
+      background-color: $hover-bg-color;
     }
 
     code,
@@ -159,13 +159,13 @@
     }
 
     code {
-      border: 1px solid $hover-color;
+      border: 1px solid $hover-bg-color;
       margin: 0 2px;
       padding: 0 5px;
     }
 
     pre {
-      border: 1px solid $hover-color;
+      border: 1px solid $hover-bg-color;
       overflow: auto;
       padding: 4px 8px;
     }
@@ -176,14 +176,14 @@
       padding: 0;
     }
 
-    #ws { background-color: $hover-color; }
+    #ws { background-color: $hover-bg-color; }
 
     .send { color: $success-color; }
     .server { color: #79B; }
     .error { color: $danger-color; }
 
     blockquote {
-      background: $hover-color;
+      background: $hover-bg-color;
       border-left: 4px solid $primary-color;
       border-radius: $border-radius;
       padding: .5em 10px;
@@ -203,7 +203,7 @@
     }
 
     h2 {
-      border-bottom: 1px solid $hover-color-dark;
+      border-bottom: 1px solid $hover-bg-color-dark;
       color: $text-color-dark;
     }
 
@@ -214,21 +214,21 @@
     table,
     th,
     td {
-      border: 1px solid $hover-color-dark;
+      border: 1px solid $hover-bg-color-dark;
     }
 
     tr:nth-child(even) {
-      background-color: $hover-color-dark;
+      background-color: $hover-bg-color-dark;
     }
 
     code,
     pre {
-      background-color: $hover-color-dark-l;
-      border: 1px solid $hover-color-dark-l;
+      background-color: $hover-bg-color-dark-l;
+      border: 1px solid $hover-bg-color-dark-l;
     }
 
     blockquote {
-      background: $hover-color-dark;
+      background: $hover-bg-color-dark;
     }
   }
 </style>

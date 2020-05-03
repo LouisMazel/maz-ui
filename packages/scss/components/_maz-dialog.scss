@@ -76,12 +76,12 @@
 .is-dark .maz-dialog,
 .is-dark.maz-dialog {
   &__body {
-    background-color: $hover-color-dark;
+    background-color: $hover-bg-color-dark;
     color: $text-color-dark;
   }
 
   &__footer {
-    background-color: $hover-color-dark;
+    background-color: $hover-bg-color-dark;
 
     button {
       color: $text-color-dark;

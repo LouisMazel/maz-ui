@@ -194,14 +194,14 @@
       padding: 10px;
       background-color: dodgerblue;
       color: white;
-      border: 2px solid white;
+      border: $border-width solid white;
       border-radius: $border-radius;
     }
 
     & div {
       background-color: dodgerblue;
       padding: 10px;
-      border: 2px solid white;
+      border: $border-width solid white;
       border-radius: $border-radius;
     }
   }

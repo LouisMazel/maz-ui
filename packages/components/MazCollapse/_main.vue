@@ -7,7 +7,7 @@
     }"
   >
     <MazBtn
-      class="maz-collapse__header-btn flex align-center justify-center br-0"
+      class="maz-collapse__header-btn flex align-center justify-center border-radius-0"
       :color="dark ? 'dark' : 'white'"
       size="md"
       @click="openContent"
@@ -17,10 +17,11 @@
         <!-- `Default Header` -->
         Default Header
       </slot>
-      <ArrowDown
+      <ArrowIcon
         class="maz-collapse__header-btn__arrow ml-2"
         :white="dark"
         :color="arrowColor"
+        :orientation="isOpen ? 'up': null"
       />
     </MazBtn>
     <MazTransitionExpand class="maz-collapse__content">
@@ -37,7 +38,7 @@
 
 <script>
   import MazTransitionExpand from '../MazTransitionExpand'
-  import ArrowDown from '../_subs/ArrowDown'
+  import ArrowIcon from '../_subs/ArrowIcon'
 
   /**
   * > MazCollpase is a component to show or not content
@@ -47,7 +48,7 @@
     name: 'MazCollapse',
     components: {
       MazTransitionExpand,
-      ArrowDown
+      ArrowIcon
     },
     props: {
       // Value is a Boolean to open or close the collapse

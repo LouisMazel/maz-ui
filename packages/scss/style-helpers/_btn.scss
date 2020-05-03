@@ -5,10 +5,10 @@ $small-size: 32px;
 $mini-size: 30px;
 
 .btn {
-  border: 2px solid transparent;
+  border: $border-width solid transparent;
   outline: none;
   cursor: pointer;
-  transition: all .25s cubic-bezier(.645, .045, .355, 1);
+  transition: all 250ms cubic-bezier(.645, .045, .355, 1);
   box-shadow: 0 2px 5px 0 rgba(3, 6, 26, .15);
   background-color: $primary-color;
   color: white;
@@ -28,22 +28,15 @@ $mini-size: 30px;
   -moz-osx-font-smoothing: inherit;
 
   &:hover,
-  &:focus {
-    background-color: darken($primary-color, 10%);
-  }
-
-  &.active {
-    background-color: $primary-color;
-  }
-
-  &:focus {
-    box-shadow: 0 0 0 .143rem rgba($primary-color, .5);
-  }
-
-  &:hover,
   &:focus,
   &.active {
+    background-color: darken($primary-color, 10%);
     text-decoration: none;
+  }
+
+  &:focus,
+  &.active {
+    box-shadow: 0 0 0 .143rem rgba($primary-color, .5);
   }
 
   &--rounded {
@@ -103,7 +96,7 @@ $mini-size: 30px;
 
   &--white,
   &--light {
-    color: $secondary-color;
+    color: $grey-color;
   }
 
   &--no-shadow {
@@ -111,7 +104,7 @@ $mini-size: 30px;
   }
 }
 
-@import './variables/_color_types';
+@import './variables/color_types';
 
 @each $name, $color in $color_types {
   @if (type-of($color) == 'color') {
@@ -119,16 +112,14 @@ $mini-size: 30px;
       background-color: $color;
 
       &:hover,
-      &:focus {
+      &:focus,
+      &.active {
         background-color: darken($color, 10%);
       }
 
+      &:focus,
       &.active {
-        background-color: $color;
-      }
-
-      &:focus {
-        box-shadow: 0 0 0 .143rem rgba($color, .5);
+        box-shadow: 0 0 0 .143rem rgba($color, .6);
       }
 
       &--outline {
@@ -145,7 +136,7 @@ $mini-size: 30px;
         }
 
         &:focus {
-          box-shadow: 0 0 0 .143rem rgba($color, .5);
+          box-shadow: 0 2px 5px 0 rgba(3, 6, 26, .15);
         }
       }
     }

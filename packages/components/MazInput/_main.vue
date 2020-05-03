@@ -2,7 +2,7 @@
   <div
     ref="parent"
     :class="[{
-      'is-focused': isFocus,
+      'is-focused': isFocus || focus,
       'is-valid': valid,
       'has-value': value,
       'has-error': error,
@@ -38,7 +38,7 @@
       v-bind="$attrs"
       :placeholder="labelValue"
       :type="getType"
-      class="maz-input__input"
+      class="maz-input__input border border-color border-solid"
       :aria-label="label"
       :class="{
         'has-right-btn': hasClearBtn || hasPasswordBtn
@@ -63,7 +63,7 @@
       :type="type"
       :required="required"
       :readonly="readonly"
-      class="maz-input__input textarea"
+      class="maz-input__input textarea border border-color border-solid"
       @keydown="keyDown"
       @keyup="keyUp"
       @focus="onFocus"
@@ -182,7 +182,9 @@
       // When is `true` the input has not label
       noLabel: { type: Boolean, default: false },
       // When is `true` and is `required`, the `*` symbol is not showing
-      noRequiredSymbol: { type: Boolean, default: false }
+      noRequiredSymbol: { type: Boolean, default: false },
+      // force focus style input
+      focus: { type: Boolean, default: false }
     },
     data () {
       return {

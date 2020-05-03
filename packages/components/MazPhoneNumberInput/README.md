@@ -38,6 +38,9 @@
 | ---------- | ----------- | ---------- |
 | update     | -           | -          |
 | input      | -           | -          |
+| focus      | -           | -          |
+| blur       | -           | -          |
+| change     | -           | -          |
 
 <!-- @vuese:MazPhoneNumberInput:events:end -->
 

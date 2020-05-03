@@ -1,6 +1,6 @@
 <template>
   <div class="maz-sidebar-doc">
-    <div class="maz-sidebar-doc__container pos-r over-hid my-4 shadow-container flex">
+    <div class="maz-sidebar-doc__container pos-r overflow-hidden my-4 shadow-container flex">
       <MazSidebar
         v-model="hasLeftSidebarOpen"
         :loading="loading"
@@ -18,7 +18,7 @@
       </MazSidebar>
       <div class="maz-sidebar-doc__content p-4 flex direction-column align-center justify-center flex-1">
         <MazBtn
-          color="success"
+          color="third"
           @click="loading = !loading"
         >
           Toggle loading

@@ -6,7 +6,7 @@
     <router-link
       v-for="route in routesStartedDoc"
       :key="route.name"
-      class="menu-item btn btn--white mb-2 w-100 no-shadow text-color bg-color border-none"
+      class="menu-item btn btn--white mb-2 w-100 no-shadow text-color bg-color no-border hover-bg-color"
       :to="{
         name: route.name
       }"
@@ -23,7 +23,7 @@
       <router-link
         v-for="route in routesFormComponents"
         :key="route.name"
-        class="menu-item btn btn--white w-100 no-shadow text-color bg-color border-none"
+        class="menu-item btn btn--white w-100 no-shadow text-color bg-color no-border hover-bg-color"
         :to="{
           name: route.name
         }"
@@ -36,7 +36,7 @@
       <router-link
         v-for="route in routesUiComponents"
         :key="route.name"
-        class="menu-item btn btn--white w-100 no-shadow text-color bg-color border-none"
+        class="menu-item btn btn--white w-100 no-shadow text-color bg-color no-border hover-bg-color"
         :to="{
           name: route.name
         }"
@@ -59,11 +59,11 @@
       },
       routesFormComponents () {
         return this.$router.options.routes.filter(route => route.path === '/documentation')[0]
-          .children.filter(child => child.name !== 'Install' && child.name !== 'GetStarted').slice(0, 10)
+          .children.filter(child => child.name !== 'Install' && child.name !== 'GetStarted').slice(0, 11)
       },
       routesUiComponents () {
         return this.$router.options.routes.filter(route => route.path === '/documentation')[0]
-          .children.filter(child => child.name !== 'Install' && child.name !== 'GetStarted').slice(10)
+          .children.filter(child => child.name !== 'Install' && child.name !== 'GetStarted').slice(11)
       }
     },
     methods: {
@@ -92,13 +92,6 @@
       &.router-link-active {
         color: $primary-color;
       }
-    }
-  }
-
-  .is-dark .menu-item {
-    &:hover,
-    &:focus {
-      background-color: $hover-color-dark;
     }
   }
 </style>

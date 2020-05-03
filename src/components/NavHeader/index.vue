@@ -23,17 +23,9 @@
           </h2>
         </div>
       </router-link>
-      <div class="header__menu flex hidden-mobile">
+      <div class="header__menu flex align-center hidden-mobile">
         <router-link
-          class="header__menu__item flex align-center home"
-          :to="{
-            name: 'Home'
-          }"
-        >
-          Home
-        </router-link>
-        <router-link
-          class="header__menu__item flex align-center"
+          class="header__menu__item btn btn--white no-shadow bg-color no-border hover-bg-color mr-1"
           :to="{
             name: 'Documentation'
           }"
@@ -41,7 +33,7 @@
           Documentation
         </router-link>
         <router-link
-          class="header__menu__item flex align-center"
+          class="header__menu__item btn btn--white no-shadow bg-color no-border hover-bg-color"
           :to="{ name: 'MadeWithMazUi' }"
         >
           Made with Maz UI
@@ -101,23 +93,12 @@
 
     &__menu {
       &__item {
-        text-decoration: none;
-        padding: 0 20px;
-        border-bottom: 2px solid transparent;
+        font-weight: 500;
         transition: all .5s;
         outline: none;
 
-        &:focus,
-        &:hover {
-          background-color: $hover-color;
-        }
-
-        &.router-link-exact-active.home {
-          border-bottom: 2px solid $primary-color;
-        }
-
-        &.router-link-active:not(.home) {
-          border-bottom: 2px solid $primary-color;
+        &.router-link-active {
+          color: $primary-color;
         }
       }
     }
@@ -125,17 +106,6 @@
     &__title {
       &__sub {
         color: $muted-color;
-      }
-    }
-  }
-
-  .is-dark {
-    .header {
-      &__menu__item {
-        &:focus,
-        &:hover {
-          background-color: $hover-color-dark;
-        }
       }
     }
   }
