@@ -16,8 +16,7 @@
       :hint="hint"
       :error="error"
       :color="color"
-      :label="label"
-      :no-label="noLabel"
+      :placeholder="placeholder"
       :clearable="!noClearButton"
       @focus="toggleDatePicker(true)"
     />
@@ -126,8 +125,7 @@
     inheritAttrs: false,
     props: {
       value: { type: [String, Object], default: null },
-      label: { type: String, default: 'Select date & time' },
-      noLabel: { type: Boolean, default: false },
+      placeholder: { type: String, default: 'Select date & time' },
       hint: { type: String, default: null },
       error: { type: Boolean, default: null },
       color: { type: String, default: 'dodgerblue' },
@@ -308,7 +306,7 @@
           if (target.tag === 'input') {
             target.elm.value = this.dateFormatted
           } else {
-            target.elm.innerHTML = this.dateFormatted ? this.dateFormatted : this.label
+            target.elm.innerHTML = this.dateFormatted ? this.dateFormatted : this.placeholder
           }
         } else {
           window.console.warn(`Impossible to find custom element`)

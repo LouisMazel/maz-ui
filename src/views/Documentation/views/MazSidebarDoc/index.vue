@@ -26,7 +26,7 @@
         <MazInput
           v-model="width"
           type="number"
-          label="Sidebar width"
+          placeholder="Sidebar width"
         />
         <div class="switch-container shadow flex">
           <p>Has left sidebar is open</p>

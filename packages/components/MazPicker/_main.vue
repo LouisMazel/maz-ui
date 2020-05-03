@@ -13,7 +13,7 @@
       :id="uniqueId"
       v-model="inputValue"
       v-bind="$attrs"
-      :label="label"
+      :placeholder="placeholder"
       readonly
       :focus="hasPickerOpen"
       @focus="openPicker(true)"
@@ -151,8 +151,8 @@
       double: { type: Boolean, default: false },
       // Enable range mode to select periode
       range: { type: Boolean, default: false },
-      // Change placeholder/label of input
-      label: { type: String, default: 'Select date' },
+      // Change placeholder & label of input
+      placeholder: { type: String, default: 'Select date' },
       // Disabled keyboard accessibility & navigation
       noKeyboard: { type: Boolean, default: false },
       // shortcuts for range mode

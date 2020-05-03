@@ -12,7 +12,7 @@
       :value="valueShown"
       v-bind="$attrs"
       readonly
-      :label="label"
+      :placeholder="placeholder"
       :disabled="disabled"
       @keydown="keyboardNav"
       @keyup="$emit('keyup', $event)"
@@ -68,9 +68,10 @@
         >
           <div
             class="dots-text"
-            :class="{
-              'text-muted': !v && value !== v
-            }"
+            :class="[
+              { 'text-muted' : !v && value !== v },
+              value === v ? 'text-white' : 'text-color'
+            ]"
           >
             {{ l }}
           </div>
@@ -109,7 +110,7 @@
       // List height in pixel
       listHeight: { type: Number, default: 210 },
       // The input label
-      label: { type: String, default: 'Select option' }
+      placeholder: { type: String, default: 'Select option' }
     },
     data () {
       return {

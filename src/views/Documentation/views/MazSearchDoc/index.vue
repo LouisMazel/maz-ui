@@ -31,7 +31,7 @@
       <MazSearch
         v-model="selectedItem2"
         :items="results"
-        label="Search a person"
+        placeholder="Search a person"
         left-icon-name="search"
         :loading="loading"
         clearable
@@ -113,7 +113,7 @@ export default {
   <MazSearch
     v-model="selectedItem2"
     :items="results"
-    label="Search a person"
+    placeholder="Search a person"
     left-icon-name="search"
     :loading="loading"
     clearable

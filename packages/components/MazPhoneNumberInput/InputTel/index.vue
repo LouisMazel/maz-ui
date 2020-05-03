@@ -18,7 +18,7 @@
       ref="InputTel"
       v-model="inputValue"
       v-bind="$attrs"
-      :placeholder="labelValue"
+      :placeholder="placeholderValue"
       :type="type"
       class="input-tel__input"
       :disabled="disabled"
@@ -40,7 +40,7 @@
       class="input-tel__label"
       @click="focusInput"
     >
-      {{ hintValue || labelValue }}
+      {{ hintValue || placeholderValue }}
     </label>
 
     <transition
@@ -80,7 +80,7 @@
         validator: prop => ['string', 'number'].includes(typeof prop) || prop === null,
         default: null
       },
-      label: { type: String, default: 'Enter text' },
+      placeholder: { type: String, default: 'Enter text' },
       hint: { type: String, default: null },
       error: { type: Boolean, default: Boolean },
       disabled: { type: Boolean, default: false },
@@ -109,9 +109,9 @@
           this.$emit('input', value)
         }
       },
-      labelValue () {
-        const { label } = this
-        return this.required && label ? `${label} *` : label
+      placeholderValue () {
+        const { placeholder } = this
+        return this.required && placeholder ? `${placeholder} *` : placeholder
       },
       hintValue () {
         const { hint } = this

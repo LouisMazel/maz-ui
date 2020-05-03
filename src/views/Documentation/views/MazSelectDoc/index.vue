@@ -5,7 +5,7 @@
     >
       <MazSelect
         v-model="selectValueExample"
-        label="Custom label/placeholder text"
+        placeholder="Custom label & placeholder text"
         :options="options"
       />
     </ComponentContainer>
@@ -61,7 +61,7 @@
         codeExample: `<template>
   <MazSelect
     v-model="selectValueExample"
-    label="Custom label/placeholder text"
+    placeholder="Custom label/placeholder text"
     :options="options"
   />
 </template>

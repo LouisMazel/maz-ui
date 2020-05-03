@@ -2,7 +2,7 @@ import { getDefaultLocale } from './utils'
 
 export default {
   value: { type: [String, Object], default: null },
-  label: { type: String, default: 'Select date & time' },
+  placeholder: { type: String, default: 'Select date & time' },
   noLabel: { type: Boolean, default: false },
   hint: { type: String, default: null },
   error: { type: Boolean, default: null },

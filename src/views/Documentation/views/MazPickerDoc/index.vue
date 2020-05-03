@@ -137,7 +137,7 @@
 
         <p class="mb-3">
           <strong>Options:</strong>
-          double - size="lg" - format="DD-MM-YYYY" - label="Select date in big calander" - no-time
+          double - size="lg" - format="DD-MM-YYYY" - placeholder="Select date in big calander" - no-time
         </p>
 
         <p>
@@ -149,7 +149,7 @@
 
         <MazPicker
           v-model="pickerValue3"
-          label="Select date in big calendar"
+          placeholder="Select date in big calendar"
           format="DD-MM-YYYY"
           no-time
           size="lg"
@@ -171,7 +171,7 @@
 
         <p class="mb-3">
           <strong>Options:</strong>
-          range - double - position="top right" - label="Select period"
+          range - double - position="top right" - placeholder="Select period"
         </p>
 
         <p>
@@ -183,7 +183,7 @@
 
         <MazPicker
           v-model="pickerRangeValues"
-          label="Select period"
+          placeholder="Select period"
           range
           double
           position="top right"
@@ -342,7 +342,7 @@ export default {
         doubleExample: `<template>
   <MazPicker
     v-model="pickerValue3"
-    label="Select date in big calendar"
+    placeholder="Select date in big calendar"
     format="DD-MM-YYYY"
     clearable
     size="lg"
@@ -401,7 +401,7 @@ export default {
         rangeExample: `<template>
   <MazPicker
     v-model="pickerRangeValues"
-    label="Select period"
+    placeholder="Select period"
     range
     double
     position="bottom right"
