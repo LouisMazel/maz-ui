@@ -1,11 +1,11 @@
 <template>
   <div class="home flex-1 flex direction-column">
-    <div class="home__main flex flex-1 container">
+    <div class="home__main flex flex-1 container flex-center">
       <div class="home__content flex direction-column justify-center p-4">
         <h2 class="mb-2">
-          A library to build your interfaces with <span class="text-primary">Vue.js</span>
+          A library to build your interfaces with <span class="text-primary">Vue.JS & Nuxt.JS</span>
         </h2>
-        <h3 class="subtitle mb-5 fs-16">
+        <h3 class="subtitle mb-5">
           UI Components & CSS framework
         </h3>
         <div class="flex flex-center direction-column">
@@ -110,7 +110,7 @@
     }
 
     h2 {
-      color: $text-color;
+      color: #444352;
       font-size: 2.143em;
     }
 

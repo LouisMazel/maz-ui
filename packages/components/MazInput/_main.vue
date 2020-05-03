@@ -2,7 +2,7 @@
   <div
     ref="parent"
     :class="[{
-      'is-focused': isFocus,
+      'is-focused': isFocus || focus,
       'is-valid': valid,
       'has-value': value,
       'has-error': error,
@@ -36,10 +36,10 @@
       ref="MazInput"
       v-model="inputValue"
       v-bind="$attrs"
-      :placeholder="labelValue"
+      :placeholder="placeholderValue"
       :type="getType"
-      class="maz-input__input"
-      :aria-label="label"
+      class="maz-input__input border border-color border-solid"
+      :aria-label="placeholder"
       :class="{
         'has-right-btn': hasClearBtn || hasPasswordBtn
       }"
@@ -59,11 +59,11 @@
       ref="MazInput"
       v-model="inputValue"
       v-bind="$attrs"
-      :placeholder="labelValue"
+      :placeholder="placeholderValue"
       :type="type"
       :required="required"
       :readonly="readonly"
-      class="maz-input__input textarea"
+      class="maz-input__input textarea border border-color border-solid"
       @keydown="keyDown"
       @keyup="keyUp"
       @focus="onFocus"
@@ -76,9 +76,10 @@
       :for="uniqueId"
       :class="error ? 'text-danger' : null"
       class="maz-input__label"
+      tabindex="-1"
       @click="focusInput"
     >
-      {{ hintValue || labelValue }}
+      {{ hintValue || placeholderValue }}
     </label>
     <transition-group
       name="scale"
@@ -150,7 +151,7 @@
       // input id
       id: { type: String, default: null },
       // value of the input
-      label: { type: String, default: 'Enter text' },
+      placeholder: { type: String, default: 'Enter text' },
       // replace the label if is present
       hint: { type: String, default: null },
       // input size (`'lg'` / `'sm'`)
@@ -179,10 +180,12 @@
       loading: { type: Boolean, default: false },
       // When is `true` the input can be clear with a button on the right
       clearable: { type: Boolean, default: false },
-      // When is `true` the input has not label
+      // When is `true` the input has not label (top placeholder when value is not empty)
       noLabel: { type: Boolean, default: false },
       // When is `true` and is `required`, the `*` symbol is not showing
-      noRequiredSymbol: { type: Boolean, default: false }
+      noRequiredSymbol: { type: Boolean, default: false },
+      // force focus style input
+      focus: { type: Boolean, default: false }
     },
     data () {
       return {
@@ -206,10 +209,10 @@
           )
         }
       },
-      labelValue () {
-        let { label } = this
-        if (this.required && label && !this.noRequiredSymbol) label += ` *`
-        return label
+      placeholderValue () {
+        let { placeholder } = this
+        if (this.required && placeholder && !this.noRequiredSymbol) placeholder += ` *`
+        return placeholder
       },
       hintValue () {
         let { hint } = this

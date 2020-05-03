@@ -187,7 +187,6 @@
       padding: 10px;
       background-color: yellowgreen;
       color: white;
-      height: 100px;
       border-radius: $border-radius;
     }
 
@@ -195,14 +194,14 @@
       padding: 10px;
       background-color: dodgerblue;
       color: white;
-      border: 1px solid white;
+      border: $border-width solid white;
       border-radius: $border-radius;
     }
 
     & div {
       background-color: dodgerblue;
       padding: 10px;
-      border: 1px solid white;
+      border: $border-width solid white;
       border-radius: $border-radius;
     }
   }

@@ -1,15 +1,18 @@
 <template>
   <div class="social-buttons">
-    <a
+    <MazBtn
       v-for="social in socialMedias"
       :key="social.name"
       :title="social.name"
       :href="social.url"
       target="_blank"
-      class="btn btn--white btn--rounded btn--mini flex align-center"
+      color="white"
+      rounded
+      size="mini"
+      no-shadow
     >
       <i :class="`icon-${social.name}`" />
-    </a>
+    </MazBtn>
   </div>
 </template>
 
@@ -51,7 +54,7 @@
 
       &:hover,
       &:focus {
-        background-color: $hover-color-dark;
+        background-color: $hover-bg-color-dark;
       }
     }
   }

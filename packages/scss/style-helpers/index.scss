@@ -1,24 +1,30 @@
 @import './variables/index';
 @import './mixins/index';
-@import './_bg_colors';
-@import './_fill_colors';
-@import './_label';
-@import './_dot';
-@import './_link';
-@import './_btn';
-@import './_badge';
-@import './_table';
-@import './_animation';
-@import './_overflow';
-@import './_position';
-@import './_flex';
-@import './_typo';
-@import './_container_size';
-@import './_spacing';
-@import './_width_height';
-@import './_border_radiuses';
-@import './_fonts';
-@import './_responsive';
+@import './link';
+@import './btn';
+@import './badge';
+@import './table';
+@import './label';
+@import './dot';
+@import './bg_colors';
+@import './border_radiuses';
+@import './border';
+@import './hover';
+@import './focus';
+@import './elevation';
+@import './fill_colors';
+@import './animation';
+@import './offsets';
+@import './overflow';
+@import './position';
+@import './flex';
+@import './text';
+@import './container_size';
+@import './shadow';
+@import './spacing';
+@import './width_height';
+@import './fonts';
+@import './responsive';
 
 *,
 *::before,
@@ -46,6 +52,15 @@ figure {
   padding: 0;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: normal;
+}
+
 html,
 body,
 #app,
@@ -54,4 +69,16 @@ input {
   font: $base-font-weight $base-font-size $base-font-family;
   line-height: $base-line-height;
   font-kerning: normal;
+}
+
+html,
+body,
+#app {
+  color: $text-color;
+}
+
+html.is-dark,
+.is-dark body,
+.is-dark #app {
+  color: $text-color-dark;
 }

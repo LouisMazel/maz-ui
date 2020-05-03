@@ -1,0 +1,13 @@
+.pos-r {
+  position: relative;
+}
+
+.pos-a {
+  position: absolute;
+}
+
+@each $position in $orientations {
+  .position-#{$position} {
+    position: #{$position};
+  }
+}

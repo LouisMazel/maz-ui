@@ -5,12 +5,13 @@
     position: absolute;
     top: 4px;
     cursor: pointer;
+    outline: none;
     left: 13px;
     transform: translateY(25%);
     opacity: 0;
     transition: all .25s cubic-bezier(.645, .045, .355, 1);
     font-size: .786em;
-    color: $muted-color;
+    color: $placeholder-color;
   }
 
   &__input {
@@ -23,7 +24,6 @@
     font-weight: 400;
     appearance: none;
     outline: none;
-    border: 1px solid $third-color;
     border-radius: $border-radius;
     font-size: 1em;
     z-index: 0;
@@ -44,47 +44,35 @@
       padding-right: 30px;
     }
 
-    &:hover {
-      border-color: $primary-color;
-    }
-
     &::-webkit-input-placeholder {
-      color: $muted-color;
+      color: $placeholder-color;
     }
 
     &::-moz-placeholder {
-      color: $muted-color;
+      color: $placeholder-color;
     }
 
     &:-ms-input-placeholder {
-      color: $muted-color;
+      color: $placeholder-color;
     }
 
     &::-ms-input-placeholder {
-      color: $muted-color;
+      color: $placeholder-color;
     }
 
     &:-moz-placeholder {
-      color: $muted-color;
+      color: $placeholder-color;
     }
 
     &::placeholder {
-      color: $muted-color;
-    }
-
-    &__input:-webkit-autofill,
-    &__input:-webkit-autofill:hover,
-    &__input:-webkit-autofill:focus,
-    &__input:-webkit-autofill:active {
-      box-shadow: 0 0 0 1000px $bg-color inset !important;
-      -webkit-text-fill-color: $muted-color !important;
+      color: $placeholder-color;
     }
   }
 
   &__icon {
     position: absolute;
     z-index: 1;
-    color: $disabled-color;
+    color: $icon-color;
     font-size: 1.286em;
     top: 0;
     bottom: 0;
@@ -112,10 +100,10 @@
     appearance: none;
     border: none;
     background: transparent;
-    color: $muted-color;
+    color: $icon-color;
     border-radius: $clear-size;
     cursor: pointer;
-    font-size: .857em;
+    font-size: 1em;
 
     &:focus {
       outline: none;
@@ -134,7 +122,7 @@
       bottom: 0;
       width: $clear-size;
       height: $clear-size;
-      background-color: $muted-color;
+      background-color: darken($border-color, 10%);
       border-radius: $clear-size;
       transform: scale(0);
       transition: transform 200ms;
@@ -182,7 +170,6 @@
     .maz-input {
       &__input {
         border-color: $primary-color;
-        box-shadow: 0 0 0 .143rem $primary-color-transparency;
       }
 
       &__label {
@@ -200,10 +187,6 @@
 
     &.has-error {
       .maz-input {
-        &__input {
-          box-shadow: 0 0 0 .143rem $danger-color-transparency;
-        }
-
         &__icon {
           color: $danger-color;
 
@@ -216,10 +199,6 @@
 
     &.is-valid {
       .maz-input {
-        &__input {
-          box-shadow: 0 0 0 .143rem $success-color-transparency;
-        }
-
         &__icon {
           color: $success-color;
 
@@ -275,33 +254,35 @@
   &.is-disabled {
     cursor: not-allowed;
 
+    $disabled-color-text: darken($disabled-color, 10%);
+
     .maz-input__input {
-      border-color: #CCC;
-      background-color: #F2F2F2;
-      color: $disabled-color;
+      border-color: $disabled-color-text;
+      background-color: $disabled-color;
+      color: $disabled-color-text;
 
       &::-webkit-input-placeholder {
-        color: $disabled-color;
+        color: $disabled-color-text;
       }
 
       &::-moz-placeholder {
-        color: $disabled-color;
+        color: $disabled-color-text;
       }
 
       &:-ms-input-placeholder {
-        color: $disabled-color;
+        color: $disabled-color-text;
       }
 
       &::-ms-input-placeholder {
-        color: $disabled-color;
+        color: $disabled-color-text;
       }
 
       &:-moz-placeholder {
-        color: $disabled-color;
+        color: $disabled-color-text;
       }
 
       &::placeholder {
-        color: $disabled-color;
+        color: $disabled-color-text;
       }
     }
 
@@ -309,7 +290,7 @@
     .maz-input__input,
     .maz-input__toggle__arrow {
       cursor: not-allowed;
-      color: $disabled-color;
+      color: $disabled-color-text;
     }
   }
 
@@ -365,7 +346,7 @@
 
   &__loader {
     bottom: 1px;
-    height: 2px;
+    height: $border-width;
     left: $border-radius / 2;
     width: calc(100% - 8px);
     position: absolute;
@@ -392,60 +373,47 @@
 .is-dark .maz-input,
 .is-dark.maz-input {
   &__label {
-    color: $secondary-color-dark;
+    color: $placeholder-color-dark;
   }
 
   &__input {
     background-color: $bg-color-dark-l;
-    border: 1px solid $third-color-dark;
-    color: $secondary-color-dark;
-
-    &:hover {
-      border-color: $primary-color;
-    }
+    color: $text-color-dark;
 
     &::-webkit-input-placeholder {
-      color: $secondary-color-dark;
+      color: $placeholder-color-dark;
     }
 
     &::-moz-placeholder {
-      color: $secondary-color-dark;
+      color: $placeholder-color-dark;
     }
 
     &:-ms-input-placeholder {
-      color: $secondary-color-dark;
+      color: $placeholder-color-dark;
     }
 
     &::-ms-input-placeholder {
-      color: $secondary-color-dark;
+      color: $placeholder-color-dark;
     }
 
     &:-moz-placeholder {
-      color: $secondary-color-dark;
+      color: $placeholder-color-dark;
     }
 
     &::placeholder {
-      color: $secondary-color-dark;
-    }
-
-    &__input:-webkit-autofill,
-    &__input:-webkit-autofill:hover,
-    &__input:-webkit-autofill:focus,
-    &__input:-webkit-autofill:active {
-      box-shadow: 0 0 0 1000px $bg-color-dark inset !important;
-      -webkit-text-fill-color: $secondary-color-dark !important;
+      color: $placeholder-color-dark;
     }
   }
 
+  &__icon {
+    color: $icon-color-dark;
+  }
+
   &__toggle-btn {
-    color: $secondary-color-dark;
+    color: $icon-color-dark;
 
     &__effect {
-      background-color: $muted-color-dark;
-    }
-
-    &:hover {
-      color: white;
+      background-color: darken($icon-color-dark, 10%);
     }
   }
 }

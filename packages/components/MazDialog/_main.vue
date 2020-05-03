@@ -17,7 +17,7 @@
         <div
           v-click-outside="vcoConfig"
           :style="widthStyle"
-          class="maz-dialog__container dialog-animation flex direction-column"
+          class="maz-dialog__container dialog-animation flex direction-column bg-color border-radius overflow-hidden"
           @keydown.esc="closeDialog"
         >
           <div

@@ -1,0 +1,100 @@
+.custom-button {
+  padding: 0 20px;
+  position: relative;
+  background-color: white;
+  border: 1px solid transparent;
+  border-radius: $border-radius;
+  height: 30px;
+  font-size: 13px;
+  outline: none;
+  cursor: pointer;
+  // color: white;
+  font-weight: 500;
+
+  &-content {
+    position: relative;
+  }
+
+  svg {
+    position: relative;
+    transition: all 450ms cubic-bezier(.23, 1, .32, 1) 0ms;
+    fill: dodgerblue;
+  }
+
+  .custom-button-effect {
+    position: absolute;
+    background: dodgerblue;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 30px;
+    border-radius: $border-radius;
+    width: 100%;
+    transition: all 450ms cubic-bezier(.23, 1, .32, 1) 0ms;
+    transform: scale(0);
+  }
+
+  &.with-border {
+    border: 1px solid #EAEAEA;
+  }
+
+  &:hover,
+  &.is-hover {
+    border: 1px solid transparent !important;
+
+    .custom-button-effect {
+      transform: scale(1);
+      opacity: (.6);
+    }
+
+    svg {
+      fill: white !important;
+    }
+
+    .custom-button-content {
+      color: white !important;
+    }
+  }
+
+  &.is-selected {
+    border: 1px solid transparent !important;
+
+    .custom-button-effect {
+      transform: scale(1);
+      opacity: (1);
+    }
+
+    svg {
+      fill: white !important;
+    }
+
+    .custom-button-content {
+      color: white !important;
+    }
+  }
+
+  &.is-dark {
+    background-color: #424242;
+
+    &.with-border {
+      border-color: lighten(#424242, 20%);
+    }
+
+    svg {
+      fill: white !important;
+    }
+  }
+
+  &.round {
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+
+    .custom-button-effect {
+      border-radius: 50%;
+      height: 24px;
+    }
+  }
+}

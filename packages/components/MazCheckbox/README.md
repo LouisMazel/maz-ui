@@ -11,6 +11,16 @@
 
 <!-- @vuese:MazCheckbox:props:end -->
 
+## Events
+
+<!-- @vuese:MazCheckbox:events:start -->
+
+| Event Name | Description | Parameters |
+| ---------- | ----------- | ---------- |
+| input      | -           | -          |
+
+<!-- @vuese:MazCheckbox:events:end -->
+
 ## Slots
 
 <!-- @vuese:MazCheckbox:slots:start -->

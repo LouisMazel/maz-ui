@@ -1,7 +1,7 @@
 <template>
   <div
     :id="id"
-    :class="[{ 'dark': dark }, size]"
+    :class="[{ 'is-dark': dark }, size]"
     class="maz-phone-number-input flex"
   >
     <div
@@ -21,11 +21,10 @@
         :preferred-countries="preferredCountries"
         :only-countries="onlyCountries"
         :ignored-countries="ignoredCountries"
-        :label="t.countrySelectorLabel"
+        :placeholder="t.countrySelectorLabel"
         :no-flags="noFlags"
         :show-code-on-list="showCodeOnList"
         :size="size"
-        :dark="dark"
         class="input-country-selector"
       >
         <slot
@@ -39,9 +38,8 @@
         :id="`${uniqueId}_phone_number`"
         ref="PhoneNumberInput"
         v-model="phoneNumber"
-        :label="t.phoneNumberLabel"
+        :placeholder="t.phoneNumberLabel"
         :hint="hintValue"
-        :dark="dark"
         :disabled="disabled"
         :size="size"
         :error="error"
@@ -89,7 +87,10 @@
     },
     mixins: [uniqueId],
     props: {
-      value: { type: String, required: true },
+      value: {
+        validator: prop => ['string', 'number'].includes(typeof prop) || prop === null,
+        default: null
+      },
       id: { type: String, default: null },
       disabled: { type: Boolean, default: false },
       defaultCountryCode: { type: String, default: null },
@@ -192,8 +193,9 @@
     },
     methods: {
       getAsYouTypeFormat (payload) {
-        const asYouType = new AsYouType(payload.countryCode)
-        return asYouType.input(payload.phoneNumber)
+        const { countryCode, phoneNumber } = payload
+        const asYouType = new AsYouType(countryCode)
+        return phoneNumber ? asYouType.input(phoneNumber) : null
       },
       getParsePhoneNumberFromString ({ phoneNumber, countryCode }) {
         const parsing = phoneNumber && countryCode ? parsePhoneNumberFromString(phoneNumber, countryCode) : null

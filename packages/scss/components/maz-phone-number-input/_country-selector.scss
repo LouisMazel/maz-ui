@@ -7,10 +7,6 @@
 
   &:hover {
     z-index: 1;
-
-    .country-selector__input {
-      border-color: $primary-color !important;
-    }
   }
 
   &__label {
@@ -22,7 +18,7 @@
     opacity: 0;
     transition: all .25s cubic-bezier(.645, .045, .355, 1);
     font-size: .786em;
-    color: $secondary-color;
+    color: $placeholder-color;
   }
 
   &__input {
@@ -36,7 +32,7 @@
     font-weight: 400;
     appearance: none;
     outline: none;
-    border: 1px solid $third-color;
+    border: $border-width solid $border-color;
     border-radius: $border-radius;
     font-size: .929em;
     z-index: 0;
@@ -55,13 +51,10 @@
     display: inline-block;
     cursor: pointer;
     height: 24px;
+    color: $icon-color;
 
-    &__arrow {
-      color: $secondary-color;
-
-      path.arrow {
-        fill: $secondary-color;
-      }
+    svg path.arrow {
+      fill: $icon-color;
     }
   }
 
@@ -80,7 +73,6 @@
 
   &__list {
     max-width: 100%;
-    top: calc(100% + .143em);
     width: 100%;
     min-width: 245px;
     position: absolute;
@@ -123,7 +115,7 @@
 
       &:hover,
       &.keyboard-selected {
-        background-color: darken($hover-color, 5%);
+        background-color: darken($hover-bg-color, 5%);
       }
 
       &.selected {
@@ -164,17 +156,10 @@
     .country-selector {
       &__input {
         border-color: $primary-color;
-        box-shadow: 0 0 0 .143rem $primary-color-transparency;
       }
 
       &__label {
         color: $primary-color;
-      }
-    }
-
-    &.is-valid {
-      .country-selector__input {
-        box-shadow: 0 0 0 .143rem $success-color-transparency;
       }
     }
   }
@@ -350,47 +335,45 @@
 .is-dark .country-selector,
 .is-dark.country-selector {
   &__label {
-    color: $secondary-color-dark;
+    color: $placeholder-color-dark;
   }
 
   &__input {
     cursor: pointer;
     background-color: $bg-color-dark-l;
-    border: 1px solid $third-color-dark;
-    color: $secondary-color-dark;
+    border-color: $border-color-dark;
+    color: $text-color-dark;
 
     &::-webkit-input-placeholder {
-      color: $secondary-color-dark;
+      color: $placeholder-color-dark;
     }
 
     &::-moz-placeholder {
-      color: $secondary-color-dark;
+      color: $placeholder-color-dark;
     }
 
     &:-ms-input-placeholder {
-      color: $secondary-color-dark;
+      color: $placeholder-color-dark;
     }
 
     &::-ms-input-placeholder {
-      color: $secondary-color-dark;
+      color: $placeholder-color-dark;
     }
 
     &:-moz-placeholder {
-      color: $secondary-color-dark;
+      color: $placeholder-color-dark;
     }
 
     &::placeholder {
-      color: $secondary-color-dark;
+      color: $placeholder-color-dark;
     }
   }
 
   &__toggle {
-    &__arrow {
-      color: $secondary-color-dark;
+    color: $icon-color-dark;
 
-      path.arrow {
-        fill: $secondary-color-dark;
-      }
+    svg path.arrow {
+      fill: $icon-color-dark;
     }
   }
 
@@ -402,7 +385,7 @@
 
       &:hover,
       &.keyboard-selected {
-        background-color: lighten($hover-color-dark-l, 5%);
+        background-color: lighten($hover-bg-color-dark-l, 5%);
       }
     }
 
@@ -414,5 +397,5 @@
 
 // .country-selector__input,
 // .country-selector__list {
-//   color: $secondary-color-dark;
+//   color: $placeholder-color-dark;
 // }

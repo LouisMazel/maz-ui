@@ -18,34 +18,36 @@
     user-select: none;
   }
 
-  [type= 'checkbox']:not(:checked) + label::before,
-  [type= 'checkbox']:checked + label::before {
+  [type= 'checkbox'] + label::before {
+    border: $border-width solid transparent;
     content: '';
     position: absolute;
     left: 0;
-    top: 4px;
-    width: 15px;
-    height: 15px;
-    border: 1px solid $primary-color;
+    top: 2px;
+    width: 18px;
+    height: 18px;
     background: transparent;
     border-radius: 4px;
     transition: all .2s;
   }
 
   [type= 'checkbox']:not(:checked) + label::before {
-    border: 1px solid $primary-color;
-    transition: all .2s;
+    border-color: darken($border-color, 10%);
+  }
+
+  [type= 'checkbox']:checked + label::before {
+    border-color: $primary-color;
   }
 
   [type= 'checkbox']:not(:checked) + label::after,
   [type= 'checkbox']:checked + label::after {
-    content: ' ';
+    content: '';
     position: absolute;
-    top: 7px;
-    left: 3px;
+    top: 6px;
+    left: 4px;
     font-size: 1em;
-    width: 9px;
-    height: 9px;
+    width: 10px;
+    height: 10px;
     background-color: $primary-color;
     transition: all .2s;
     border-radius: 2px;

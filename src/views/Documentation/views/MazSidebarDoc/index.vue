@@ -1,6 +1,6 @@
 <template>
   <div class="maz-sidebar-doc">
-    <div class="maz-sidebar-doc__container pos-r over-hid my-4 shadow-container flex">
+    <div class="maz-sidebar-doc__container pos-r overflow-hidden my-4 shadow-container flex">
       <MazSidebar
         v-model="hasLeftSidebarOpen"
         :loading="loading"
@@ -11,15 +11,14 @@
         :layer="layer"
       >
         <div
-          class="flex flex-1 align-center justify-center"
-          :class="{ 'text-white': hasDarkTheme }"
+          class="flex flex-1 align-center justify-center text-color"
         >
           SideBar Content Example
         </div>
       </MazSidebar>
       <div class="maz-sidebar-doc__content p-4 flex direction-column align-center justify-center flex-1">
         <MazBtn
-          color="success"
+          color="third"
           @click="loading = !loading"
         >
           Toggle loading
@@ -27,7 +26,7 @@
         <MazInput
           v-model="width"
           type="number"
-          label="Sidebar width"
+          placeholder="Sidebar width"
         />
         <div class="switch-container shadow flex">
           <p>Has left sidebar is open</p>
@@ -77,8 +76,7 @@
         :layer="layer"
       >
         <div
-          class="flex flex-1 align-center justify-center"
-          :class="{ 'text-white': hasDarkTheme }"
+          class="flex flex-1 align-center justify-center text-color"
         >
           SideBar Content Example
         </div>
@@ -88,8 +86,6 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
-
   export default {
     name: 'MazSidebarDoc',
     data () {
@@ -103,9 +99,6 @@
         absolute: false,
         layer: false
       }
-    },
-    computed: {
-      ...mapGetters(['hasDarkTheme'])
     }
   }
 </script>

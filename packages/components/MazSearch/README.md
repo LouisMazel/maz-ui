@@ -25,6 +25,8 @@
 | ---------- | ------------------------------------------------------------------------ | ---------------------------------------------------------------------- |
 | input      | event sent when user select an item in the items list                    | The argument is a the item or an item[key] if you use `item-value`     |
 | request    | event sent after debounce --> you must start the request with this event | The argument is a string value representing the query the user entered |
+| keyup      | -                                                                        | -                                                                      |
+| change     | -                                                                        | -                                                                      |
 
 <!-- @vuese:MazSearch:events:end -->
 

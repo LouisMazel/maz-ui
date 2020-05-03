@@ -8,10 +8,10 @@
     height: 24px;
 
     &__arrow {
-      color: $secondary-color;
+      color: $icon-color;
 
       .arrow {
-        fill: $secondary-color;
+        fill: $icon-color;
       }
     }
   }
@@ -25,7 +25,7 @@
     margin: 0;
     max-width: 100%;
     position: absolute;
-    top: calc(100% + .143em);
+    top: 100%;
     border-radius: $border-radius;
     width: 100%;
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
@@ -46,7 +46,7 @@
 
       &:hover,
       &.keyboard-selected {
-        background-color: darken($hover-color, 5%);
+        background-color: darken($hover-bg-color, 5%);
       }
 
       &.selected {
@@ -70,7 +70,11 @@
 .is-dark.maz-select {
   &__toggle {
     &__arrow {
-      color: $secondary-color-dark;
+      color: $icon-color-dark;
+
+      .arrow {
+        fill: $icon-color-dark;
+      }
     }
   }
 
@@ -78,11 +82,11 @@
     background-color: $bg-color-dark;
 
     &__item {
-      color: $secondary-color-dark;
+      color: $border-color-dark;
 
       &:hover,
       &.keyboard-selected {
-        background-color: lighten($hover-color-dark-l, 5%);
+        background-color: lighten($hover-bg-color-dark-l, 5%);
       }
 
       &.selected {

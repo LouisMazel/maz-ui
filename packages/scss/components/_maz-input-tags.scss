@@ -2,31 +2,24 @@
   $this: &;
 
   position: relative;
-  border: 1px solid $third-color;
+  border: $border-width solid $border-color;
   border-radius: $border-radius;
-  padding: 2px 8px;
+  padding: 0 8px;
   width: 100%;
   min-height: 40px;
   background-color: $bg-color;
   overflow: hidden;
   transition-duration: .3s;
 
-  &:hover:not(.is-disabled) {
-    border-color: $primary-color;
-  }
-
   &.is-focused:not(.is-disabled) {
     border-color: $primary-color;
-    box-shadow: 0 0 0 .143rem $primary-color-transparency;
 
     &.has-error {
       border-color: $danger-color;
-      box-shadow: 0 0 0 .143rem $danger-color-transparency;
     }
 
     &.is-valid {
       border-color: $success-color;
-      box-shadow: 0 0 0 .143rem $success-color-transparency;
     }
   }
 
@@ -46,37 +39,30 @@
     padding-right: 4px;
     padding-bottom: 4px;
     padding-top: 4px;
+    color: $text-color;
 
     &::-webkit-input-placeholder {
-      color: $muted-color;
+      color: $placeholder-color;
     }
 
     &::-moz-placeholder {
-      color: $muted-color;
+      color: $placeholder-color;
     }
 
     &:-ms-input-placeholder {
-      color: $muted-color;
+      color: $placeholder-color;
     }
 
     &::-ms-input-placeholder {
-      color: $muted-color;
+      color: $placeholder-color;
     }
 
     &:-moz-placeholder {
-      color: $muted-color;
+      color: $placeholder-color;
     }
 
     &::placeholder {
-      color: $muted-color;
-    }
-
-    &__input:-webkit-autofill,
-    &__input:-webkit-autofill:hover,
-    &__input:-webkit-autofill:focus,
-    &__input:-webkit-autofill:active {
-      box-shadow: 0 0 0 1000px $bg-color inset !important;
-      -webkit-text-fill-color: $muted-color !important;
+      color: $placeholder-color;
     }
   }
 
@@ -111,7 +97,7 @@
     appearance: none;
     border: none;
     background-color: transparent;
-    color: $muted-color;
+    color: $icon-color;
     border-radius: $clear-size;
     cursor: pointer;
     font-size: .857em;
@@ -133,7 +119,7 @@
       bottom: 0;
       width: $clear-size;
       height: $clear-size;
-      background-color: $muted-color;
+      background-color: darken($border-color, 10%);
       border-radius: $clear-size;
       transform: scale(0);
       transition: transform 200ms;
@@ -187,7 +173,7 @@
 
   &__loader {
     bottom: 0;
-    height: 2px;
+    height: $border-width;
     left: $border-radius / 2;
     width: calc(100% - 8px);
     position: absolute;
@@ -215,6 +201,7 @@
 
     #{$this}__input {
       font-size: .857em;
+      min-height: 32px;
     }
 
     #{$this}__tag {
@@ -231,6 +218,7 @@
 
     #{$this}__input {
       font-size: 1em;
+      min-height: 44px;
     }
 
     #{$this}__tag {
@@ -246,53 +234,41 @@
 .is-dark .maz-input-tags,
 .is-dark.maz-input-tags {
   background-color: $bg-color-dark-l;
-  border: 1px solid $third-color-dark;
+  border-color: $border-color-dark;
 
   &__input {
-    color: $secondary-color-dark;
+    color: $text-color-dark;
 
     &::-webkit-input-placeholder {
-      color: $secondary-color-dark;
+      color: $placeholder-color-dark;
     }
 
     &::-moz-placeholder {
-      color: $secondary-color-dark;
+      color: $placeholder-color-dark;
     }
 
     &:-ms-input-placeholder {
-      color: $secondary-color-dark;
+      color: $placeholder-color-dark;
     }
 
     &::-ms-input-placeholder {
-      color: $secondary-color-dark;
+      color: $placeholder-color-dark;
     }
 
     &:-moz-placeholder {
-      color: $secondary-color-dark;
+      color: $placeholder-color-dark;
     }
 
     &::placeholder {
-      color: $secondary-color-dark;
-    }
-
-    &__input:-webkit-autofill,
-    &__input:-webkit-autofill:hover,
-    &__input:-webkit-autofill:focus,
-    &__input:-webkit-autofill:active {
-      box-shadow: 0 0 0 1000px $bg-color-dark inset !important;
-      -webkit-text-fill-color: $secondary-color-dark !important;
+      color: $placeholder-color-dark;
     }
   }
 
   &__toggle-btn {
-    color: $secondary-color-dark;
+    color: $icon-color-dark;
 
     &__effect {
-      background-color: $muted-color-dark;
-    }
-
-    &:hover {
-      color: white;
+      background-color: darken($icon-color-dark, 10%);
     }
   }
 }

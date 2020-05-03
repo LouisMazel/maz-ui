@@ -1,6 +1,6 @@
 <template>
   <footer
-    class="nav-footer flex-fixed"
+    class="nav-footer flex-fixed border-top-1 border-top-solid border-color"
     role="contentinfo"
   >
     <nav class="nav-footer-content container px-4 flex align-center space-between py-4">
@@ -65,12 +65,11 @@
 
 <style lang="scss" scoped>
   .nav-footer {
-    color: $third-color;
-    border-top: 1px solid $text-color-dark;
+    color: $border-color;
     background-color: $bg-color;
 
     &-subs {
-      background-color: $hover-color;
+      background-color: $hover-bg-color;
 
       a {
         color: $muted-color;
@@ -109,10 +108,10 @@
 
   .is-dark .nav-footer {
     background-color: $bg-color-dark;
-    border-color: $hover-color-dark;
+    border-color: $hover-bg-color-dark;
 
     &-subs {
-      background-color: $hover-color-dark;
+      background-color: $hover-bg-color-dark;
     }
   }
 </style>

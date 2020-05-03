@@ -1,0 +1,45 @@
+table.md {
+  border-spacing: 0;
+  border-radius: $border-radius;
+  border-collapse: collapse;
+  width: 100%;
+  table-layout: fixed;
+  overflow-wrap: break-word;
+  overflow: hidden;
+  word-break: break-all;
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 1em;
+  box-shadow: 0 0 8px rgba(0, 0, 0, .2);
+
+  tr {
+    background-color: $bg-color;
+    width: 100%;
+
+    th,
+    td {
+      padding: 6px 13px;
+      text-align: left;
+    }
+
+    &:nth-child(2n) {
+      background-color: $hover-bg-color;
+    }
+  }
+}
+
+.is-dark table.md {
+  color: $text-color-dark;
+
+  tr {
+    background-color: $bg-color-dark;
+
+    &:nth-child(2n) {
+      background-color: $hover-bg-color-dark;
+    }
+
+    td.text-muted {
+      color: $muted-color-dark;
+    }
+  }
+}
