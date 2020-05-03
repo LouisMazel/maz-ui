@@ -40,7 +40,6 @@
       value: { type: String, required: false, default: null },
       color: { type: String, default: null },
       dark: { type: Boolean, default: false },
-      dateTime: { type: Object, default: null },
       customShortcuts: {
         type: Array,
         default: () => ([]),

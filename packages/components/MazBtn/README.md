@@ -27,9 +27,11 @@
 
 <!-- @vuese:MazBtn:events:start -->
 
-| Event Name | Description              | Parameters |
-| ---------- | ------------------------ | ---------- |
-| click      | return the default event | -          |
+| Event Name | Description             | Parameters |
+| ---------- | ----------------------- | ---------- |
+| click      | return click event      | -          |
+| mouseenter | return mouseenter event | -          |
+| mouseleave | return mouseleave event | -          |
 
 <!-- @vuese:MazBtn:events:end -->
 

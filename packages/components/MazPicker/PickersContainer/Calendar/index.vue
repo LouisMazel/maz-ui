@@ -4,16 +4,19 @@
     ref="Calendar"
     class="calendar pos-r mw-100 overflow-hidden flex"
   >
-    <!-- !noShortcuts -->
-    <!-- :value="shortcut" -->
     <RangeShortcuts
-      v-if="isRangeMode"
+      v-if="hasShortcuts"
       ref="RangeShortcuts"
       :shortcuts="shortcuts"
-      :height="200"
+      :value="shortcut"
+      :height="contentHeight"
       @change-range="$emit('input', $event)"
     />
-    <div class="overflow-hidden flex-1 flex-fixed">
+    <div
+      v-if="hasDate"
+      ref="MonthsContainer"
+      class="overflow-hidden flex-1 flex-fixed"
+    >
       <MonthYearSwitcher
         :months="months"
         class="px-2"
@@ -25,6 +28,7 @@
           v-for="(month, i) in months"
           :key="`month-${i}`"
           class="calendar__months flex-1"
+          style="min-width: 268px;"
           :class="{ 'has-double border-top border-top-solid border-color': hasDouble }"
         >
           <WeekDaysLabels
@@ -58,6 +62,18 @@
         @change-month-year="changeMonthYear"
       />
     </div>
+    <TimePicker
+      v-if="hasTime"
+      v-model="dateMoment"
+      :format="format"
+      :height="contentHeight"
+      :min-date="minDate"
+      :max-date="maxDate"
+      :has-date="hasDate"
+      :minute-interval="minuteInterval"
+      :disabled-hours="disabledHours"
+      :behaviour="behaviour"
+    />
   </div>
 </template>
 
@@ -67,9 +83,12 @@
   import MonthYearSwitcher from './MonthYearSwitcher'
   import YearMonthSelector from './YearMonthSelector'
   import RangeShortcuts from './RangeShortcuts'
+  import TimePicker from './TimePicker'
   import Month from './../../modules/month'
 
   import moment from 'moment'
+
+  const CONTENT_HEIGHT = 275
 
   export default {
     name: 'Calendar',
@@ -78,10 +97,13 @@
       MonthPicker,
       MonthYearSwitcher,
       YearMonthSelector,
-      RangeShortcuts
+      RangeShortcuts,
+      TimePicker
     },
     props: {
       value: { type: Object, default: null },
+      format: { type: String, default: null },
+      shortcut: { type: String, default: null },
       locale: { type: String, default: null },
       minDate: { type: Object, default: null },
       maxDate: { type: Object, default: null },
@@ -91,13 +113,20 @@
       isVisible: { type: Boolean, default: false },
       hasDouble: { type: Boolean, required: true },
       hasKeyboard: { type: Boolean, required: true },
-      shortcuts: { type: Array, default: null }
+      shortcuts: { type: Array, default: null },
+      hasShortcuts: { type: Boolean, required: true },
+      hasTime: { type: Boolean, required: true },
+      hasDate: { type: Boolean, required: true },
+      minuteInterval: { type: Number, required: true },
+      disabledHours: { type: Array, required: true },
+      behaviour: { type: Object, required: true }
     },
     data () {
       return {
         months: [],
         yearMonthSelectorMode: null,
-        hoverredDay: null
+        hoverredDay: null,
+        contentHeight: CONTENT_HEIGHT
       }
     },
     computed: {
@@ -114,7 +143,7 @@
       },
       currentValue () {
         if (this.isRangeMode) {
-          return this.value.start || moment()
+          return this.value.end || this.value.start || moment()
         }
         return this.value || moment()
       }
@@ -122,11 +151,17 @@
     watch: {
       value: {
         handler (newValue, oldValue) {
+          const newCurrentValue = this.isRangeMode && newValue
+            ? newValue.end || newValue.start
+            : newValue
+          const oldCurrentValue = this.isRangeMode && oldValue
+            ? oldValue.end || oldValue.start
+            : oldValue
+
           if (
-            !this.months.length || (!this.hasDouble && this.monthsAreDifferent(newValue, oldValue) && !this.valueIsInMonths(newValue.month()))
+            !this.months.length || this.isDifferentYear(newCurrentValue, oldCurrentValue) ||
+            (this.monthsAreDifferent(newCurrentValue, oldCurrentValue) && !this.valueIsInMonths(newCurrentValue.month()))
           ) {
-            // re-focus the current day to active the trigger blur for close the date picker on clik outside
-            if (this.months) this.focusCurrentDay()
             this.months = this.getMonths({
               year: this.currentValue.year(),
               month: this.currentValue.month()
@@ -134,14 +169,20 @@
           }
         },
         immediate: true
+      },
+      months () {
+        this.resizeShortCuts()
       }
     },
+    mounted () {
+      this.resizeShortCuts()
+    },
     methods: {
-      focusCurrentDay () {
-        setTimeout(() => {
-          const elem = document.querySelector(`#Calendar${this._uid} .month-picker__day.active`)
-          if (elem) elem.focus()
-        }, 500)
+      resizeShortCuts () {
+        this.contentHeight = CONTENT_HEIGHT
+        this.$nextTick(() => {
+          this.contentHeight = this.$refs.MonthsContainer ? this.$refs.MonthsContainer.clientHeight : CONTENT_HEIGHT
+        })
       },
       monthsAreDifferent (newValue, oldValue) {
         if (!newValue || !oldValue) return false
@@ -149,6 +190,10 @@
       },
       valueIsInMonths (newMonth) {
         return this.months.some(m => m.month === newMonth)
+      },
+      isDifferentYear (newCurrentValue, oldCurrentValue) {
+        if (!newCurrentValue || !oldCurrentValue) return false
+        return newCurrentValue.year() !== oldCurrentValue.year()
       },
       changeMonth (val) {
         let month = this.months[0].month + (val === 'prev' ? -1 : +1)

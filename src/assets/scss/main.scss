@@ -26,15 +26,17 @@ h6 {
 }
 
 h1 {
-  font-size: 3em;
-  line-height: normal;
   font-family: GeomanistBold, sans-serif;
+  color: $primary-color;
+}
+
+h1,
+h2 {
   color: $primary-color;
 }
 
 h2,
 h3 {
-  color: $primary-color;
   font-family: GeomanistMedium, sans-serif;
 }
 

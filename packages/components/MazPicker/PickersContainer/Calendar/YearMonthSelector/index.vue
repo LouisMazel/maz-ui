@@ -57,8 +57,11 @@
           v-for="(m, i) in months"
           :key="i"
           :active="currentMonth === i"
-          :class="[currentMonth !== i ? 'hover-bg-color no-focus-bg border border-color text-primary': 'focus-primary']"
-          class="year-month-selector__btn bg-transparent no-shadow px-3 flex-20 mx-3"
+          :class="[
+            currentMonth !== i ? 'hover-bg-color no-focus-bg border border-color text-primary': 'focus-primary',
+            { 'mx-3': hasDouble }
+          ]"
+          class="year-month-selector__btn bg-transparent no-shadow px-3 flex-20 mx-1"
           tabindex="-1"
           @click="selectMonth(i)"
         >

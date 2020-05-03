@@ -2,7 +2,7 @@
 @import './variables/_positions';
 
 @each $size in $sizes {
-  @each $position in $positions {
+  @each $position in $orientations {
     .#{$position}-#{$size} {
       #{$position}: #{$size}px;
     }

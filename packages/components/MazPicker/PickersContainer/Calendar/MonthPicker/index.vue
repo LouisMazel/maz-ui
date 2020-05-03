@@ -1,6 +1,6 @@
 <template>
   <TransitionGroup
-    class="month-picker"
+    class="month-picker pos-r"
     :class="{ 'month-picker--long': (monthDays.length + weekStart) > 35 }"
     tag="div"
     :name="transitionDaysName"
@@ -10,27 +10,32 @@
       :key="m.month"
       class="month-picker__days"
     >
+      <div
+        v-for="(w, i) in Array.from(Array(weekStart).keys())"
+        :key="`previous-${i}`"
+      />
       <MazBtn
         v-for="(day, i) in allDays"
         :key="i"
         class="month-picker__day text-color bg-color-light flex flex-center"
         size="mini"
+        tabindex="-1"
         :no-shadow="!isSelectedDate(day)"
         :disabled="isDisabled(day)"
         :active="isSelectedDate(day)"
         :class="{
           'highlight': isToday(day),
-          'is-disabled text-muted fw-400': !hasDouble && !isSameMonth(day),
           'is-keyboard-selected': isKeyboardSelected(day),
           'is-in-range': !isDisabled(day) && isBetween(day),
           'is-between-hoverred': value && value.start && !isDisabled(day) && isBetweenHoverred(day),
+          'is-first-in-range': isFirstInRange(day),
           'is-last-in-range': isLastInRange(day)
         }"
         @mouseenter="$emit('hoverred-day', day)"
         @mouseleave="$emit('hoverred-day', null)"
         @click="selectDay(day)"
       >
-        {{ hasDouble && isDisabled(day) ? null : day.format('D') }}
+        {{ day.format('D') }}
       </MazBtn>
     </div>
   </TransitionGroup>
@@ -38,6 +43,8 @@
 
 <script>
   import KeyboardAccessibility from './../../../mixins/keyboard-accessibility'
+  import { EventBus } from './../../../utils'
+
   export default {
     name: 'MonthPicker',
     mixins: [KeyboardAccessibility],
@@ -60,27 +67,31 @@
       }
     },
     computed: {
-      allDays () {
-        return [
-          ...this.previousMonthDays,
-          ...this.monthDays,
-          ...this.nextMonthDays
-        ]
+      dateMoment: {
+        get () {
+          return this.value
+        },
+        set (value) {
+          const valueToEmit = this.isRangeMode
+            ? value
+            : value.set({
+              hour: value?.hour() ?? 0,
+              minute: value?.minute() ?? 0
+            })
+          this.$emit('input', valueToEmit)
+        }
       },
-      previousMonthDays () {
-        return this.month.getPreviousMonthDays()
+      allDays () {
+        return this.monthDays
       },
       monthDays () {
         return this.month.getMonthDays()
-      },
-      nextMonthDays () {
-        return this.month.getNextMonthDays()
       },
       weekStart () {
         return this.month.getWeekStart()
       },
       isRangeMode () {
-        return !!this.value && Object.keys(this.value).includes('start')
+        return !!this.dateMoment && Object.keys(this.dateMoment).includes('start')
       }
     },
     watch: {
@@ -88,17 +99,14 @@
         const newValueIsSmaller = this.currentMonth.start > value.start
         this.transitionDaysName = newValueIsSmaller ? 'slideprev' : 'slidenext'
         this.$nextTick(() => { this.currentMonth = value })
-      },
-      value: {
-        handler (value) {
-          if (this.noWeekendsDays && this.isWeekEndDay(value)) {
-            console.warn(`MazPicker: the value provide is a weekend day and you use the option 'no-weekends-days'`)
-          }
-          if (this.isDateDisabled(value)) {
-            console.warn(`MazPicker: the value provide is a disabled date by th option 'disabled-dates'`)
-          }
-        },
-        immediate: true
+      }
+    },
+    mounted () {
+      if (this.noWeekendsDays && this.isWeekEndDay(this.dateMoment)) {
+        console.warn(`MazPicker: the value provide is a weekend day and you use the option 'no-weekends-days'`)
+      }
+      if (this.isDateDisabled(this.dateMoment)) {
+        console.warn(`MazPicker: the value provide is a disabled date by th option 'disabled-dates'`)
       }
     },
     methods: {
@@ -106,37 +114,37 @@
         return day.isSame(new Date(), 'day')
       },
       isBetweenHoverred (day) {
-        if (!this.isRangeMode || this.value.end) return false
-        return day.isBetween(this.value.start, this.hoverredDay, null, '[]')
+        if (!this.isRangeMode || this.dateMoment.end) return false
+        return day.isBetween(this.dateMoment.start, this.hoverredDay, null, '[]')
       },
       isBetween (day) {
         if (!this.isRangeMode) return false
-        return day.isBetween(this.value.start, this.value.end, null, '[]')
+        return day.isBetween(this.dateMoment.start, this.dateMoment.end, null, '[]')
+      },
+      isFirstInRange (day) {
+        if (!this.isRangeMode) return false
+        return day.isSame(this.dateMoment.start, 'day')
       },
       isLastInRange (day) {
         if (!this.isRangeMode) return false
-        return day.isSame(this.value.end)
+        return day.isSame(this.dateMoment.end, 'day')
       },
       isSelectedDate (day) {
         return this.isRangeMode
-          ? (this.value?.start?.isSame(day, 'day') ?? false) || (this.value?.end?.isSame(day, 'day') ?? false)
-          : this.value ? this.value.isSame(day, 'day') : false
+          ? (this.dateMoment?.start?.isSame(day, 'day') ?? false) || (this.dateMoment?.end?.isSame(day, 'day') ?? false)
+          : this.dateMoment ? this.dateMoment.isSame(day, 'day') : false
       },
       isDisabled (day) {
         return day.isBefore(this.minDate) ||
           day.isAfter(this.maxDate) ||
           (this.noWeekendsDays && this.isWeekEndDay(day)) ||
           this.isDateDisabled(day) ||
-          this.isDayDisabledWeekly(day) ||
-          (!this.isSameMonth(day) && this.hasDouble)
+          this.isDayDisabledWeekly(day)
       },
       isWeekEndDay (day) {
         const dayConst = day.day()
         const weekendsDaysNumbers = [6, 0]
         return this.noWeekendsDays ? weekendsDaysNumbers.indexOf(dayConst) > -1 : false
-      },
-      isSameMonth (day) {
-        return this.month.month === day.month()
       },
       isDateDisabled (day) {
         return this.disabledDates.some(d => d.isSame(day, 'day'))
@@ -149,25 +157,24 @@
         return day.isSame(this.keyboardSelectedDay, 'day')
       },
       selectDay (day) {
+        EventBus.$emit('day-selected')
         let valueToSend = day
-        if (!this.isRangeMode) {
-          valueToSend = day
-        } else {
-          const { start, end } = this.value
-          if (!start || (start && end) || day.isBefore(this.value.start)) {
+        if (this.isRangeMode) {
+          const { start, end } = this.dateMoment
+          if (!start || (start && end) || day.isBefore(this.dateMoment.start)) {
             valueToSend = {
               start: day,
               end: null
             }
           } else {
             valueToSend = {
-              start: this.value.start,
+              start: this.dateMoment.start,
               end: day
             }
           }
         }
 
-        this.$emit('input', valueToSend)
+        this.dateMoment = valueToSend
       }
     }
   }
@@ -243,7 +250,7 @@
           border-bottom-right-radius: 0;
         }
 
-        &.is-last-in-range {
+        &.is-last-in-range:not(.is-first-in-range) {
           border-top-left-radius: 0;
           border-bottom-left-radius: 0;
         }

@@ -2,18 +2,24 @@
   <div
     class="pickers-container bg-color-light elevation"
     :class="[position, { 'inline': inline }]"
-    tabindex="0"
+    tabindex="-1"
   >
     <HeaderPicker
       v-if="hasHeader"
       :value="dateMoment"
       :locale="locale"
+      :has-time="hasTime"
+      :has-date="hasDate"
+      :format="format"
     />
     <Calendar
       v-model="dateMoment"
+      :format="format"
       :locale="locale"
+      :shortcut="shortcut"
       :min-date="minDate"
       :max-date="maxDate"
+      :minute-interval="minuteInterval"
       :no-weekends-days="noWeekendsDays"
       :disabled-dates="disabledDates"
       :disabled-weekly="disabledWeekly"
@@ -21,6 +27,11 @@
       :has-double="hasDouble"
       :shortcuts="shortcuts"
       :has-keyboard="hasKeyboard"
+      :has-time="hasTime"
+      :has-date="hasDate"
+      :has-shortcuts="hasShortcuts"
+      :disabled-hours="disabledHours"
+      :behaviour="behaviour"
     />
     <FooterPicker
       v-if="hasFooter"
@@ -45,6 +56,8 @@
     },
     props: {
       value: { type: Object, default: null },
+      format: { type: String, default: null },
+      shortcut: { type: String, default: null },
       locale: { type: String, default: null },
       position: { type: String, required: true },
       hasHeader: { type: Boolean, required: true },
@@ -62,7 +75,13 @@
       disabledWeekly: { type: Array, required: true },
       hasDouble: { type: Boolean, required: true },
       hasKeyboard: { type: Boolean, required: true },
-      shortcuts: { type: Array, default: null }
+      hasTime: { type: Boolean, required: true },
+      hasDate: { type: Boolean, required: true },
+      shortcuts: { type: Array, default: null },
+      hasShortcuts: { type: Boolean, required: true },
+      minuteInterval: { type: Number, required: true },
+      disabledHours: { type: Array, required: true },
+      behaviour: { type: Object, required: true }
     },
     computed: {
       dateMoment: {
@@ -88,16 +107,16 @@
       position: absolute;
       top: 100%;
       left: 0;
-    }
 
-    &.top {
-      top: inherit;
-      bottom: 100%;
-    }
+      &.top {
+        top: inherit;
+        bottom: 100%;
+      }
 
-    &.right {
-      left: inherit;
-      right: 0;
+      &.right {
+        left: inherit;
+        right: 0;
+      }
     }
   }
 </style>

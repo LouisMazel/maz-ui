@@ -3,17 +3,17 @@
     <MazBtn
       v-if="project.githubUrl"
       :href="project.githubUrl"
-      class="flex flex-center"
-      color="dark"
-      outline
+      class="mr-2"
+      :color="hasDarkTheme ? 'white' : 'dark'"
       target="_blank"
     >
       GITHUB
     </MazBtn>
-    <a
+    <MazBtn
       v-if="project.npmUrl"
       :href="project.npmUrl"
-      class="btn btn--danger--outline btn--npm ml-3"
+      color="danger"
+      class="mr-2"
       target="_blank"
     >
       <svg viewBox="0 0 780 250">
@@ -22,19 +22,21 @@
           d="M240,250h100v-50h100V0H240V250z M340,50h50v100h-50V50z M480,0v200h100V50h50v150h50V50h50v150h50V0H480z M0,200h100V50h50v150h50V0H0V200z"
         />
       </svg>
-    </a>
-    <a
+    </MazBtn>
+    <MazBtn
       v-if="project.demoUrl"
       :href="project.demoUrl"
-      class="btn btn--primary--outline ml-3"
+      color="primary"
       target="_blank"
     >
       SHOW PROJECT
-    </a>
+    </MazBtn>
   </div>
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
+
   export default {
     name: 'ProjectPreviewFooter',
     props: {
@@ -42,6 +44,9 @@
         type: Object,
         required: true
       }
+    },
+    computed: {
+      ...mapGetters(['hasDarkTheme'])
     }
   }
 </script>

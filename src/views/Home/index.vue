@@ -3,7 +3,7 @@
     <div class="home__main flex flex-1 container flex-center">
       <div class="home__content flex direction-column justify-center p-4">
         <h2 class="mb-2">
-          A library to build your interfaces with <span class="text-primary">Vue.js</span>
+          A library to build your interfaces with <span class="text-primary">Vue.JS & Nuxt.JS</span>
         </h2>
         <h3 class="subtitle mb-5">
           UI Components & CSS framework

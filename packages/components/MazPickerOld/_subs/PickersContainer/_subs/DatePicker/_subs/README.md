@@ -25,8 +25,8 @@
 
 <!-- @vuese:YearMonthSelector:events:end -->
 
-| Event Name   | Description | Parameters |
-| ------------ | ----------- | ---------- |
-| change-range | -           | -          |
+| ers          |
+| ------------ |
+| change-range | - | - |
 
 <!-- @vuese:RangeShortcuts:events:end -->

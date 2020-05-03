@@ -48,7 +48,7 @@
     >
       <button
         v-if="clearable && inputValue"
-        class="input-tel__toggle-btn flex align-center justify-center"
+        class="input-tel__toggle-btn flex flex-center"
         title="clear"
         type="button"
         tabindex="-1"
@@ -76,7 +76,10 @@
   export default {
     name: 'InputTel',
     props: {
-      value: { type: [String, Number], default: null },
+      value: {
+        validator: prop => ['string', 'number'].includes(typeof prop) || prop === null,
+        default: null
+      },
       label: { type: String, default: 'Enter text' },
       hint: { type: String, default: null },
       error: { type: Boolean, default: Boolean },

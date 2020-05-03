@@ -2,7 +2,7 @@
   <div class="documentation flex flex-1 pos-r">
     <MazSidebar
       v-model="hasLeftSidebarOpen"
-      :width="270"
+      :width="280"
       :absolute="isAbsolute"
       :layer="isAbsolute"
     >

@@ -4,6 +4,7 @@
   * @module mixin - keyboardAccessibility
 */
 import { EventBus } from './../utils'
+import moment from 'moment'
 
 export default {
   props: {
@@ -12,6 +13,16 @@ export default {
   data () {
     return {
       keyboardSelectedDay: null
+    }
+  },
+  computed: {
+    currentValue () {
+      const currentValue = (
+        this.isRangeMode
+          ? this.keyboardSelectedDay || this.value.end || this.value.start || moment()
+          : this.keyboardSelectedDay || this.value || moment()
+      )
+      return currentValue instanceof moment ? currentValue.clone() : currentValue
     }
   },
   methods: {
@@ -55,42 +66,42 @@ export default {
       }
     },
     previousWeek () {
-      const keyboardSelectedDay = this.keyboardSelectedDay.clone().subtract(1, 'week')
+      const keyboardSelectedDay = this.currentValue.subtract(1, 'week')
       if (!this.isDisabled(keyboardSelectedDay)) {
         this.keyboardSelectedDay = keyboardSelectedDay
         this.checkMonth()
       }
     },
     previousDay () {
-      const keyboardSelectedDay = this.keyboardSelectedDay.clone().subtract(1, 'days')
+      const keyboardSelectedDay = this.currentValue.subtract(1, 'days')
       if (!this.isDisabled(keyboardSelectedDay)) {
         this.keyboardSelectedDay = keyboardSelectedDay
         this.checkMonth()
       }
     },
     nextDay () {
-      const keyboardSelectedDay = this.keyboardSelectedDay.clone().add(1, 'days')
+      const keyboardSelectedDay = this.currentValue.add(1, 'days')
       if (!this.isDisabled(keyboardSelectedDay)) {
         this.keyboardSelectedDay = keyboardSelectedDay
         this.checkMonth()
       }
     },
     nextWeek () {
-      const keyboardSelectedDay = this.keyboardSelectedDay.clone().add(1, 'week')
+      const keyboardSelectedDay = this.currentValue.add(1, 'week')
       if (!this.isDisabled(keyboardSelectedDay)) {
         this.keyboardSelectedDay = keyboardSelectedDay
         this.checkMonth()
       }
     },
     previousMonth () {
-      const keyboardSelectedDay = this.keyboardSelectedDay.clone().subtract(1, 'month')
+      const keyboardSelectedDay = this.currentValue.subtract(1, 'month')
       if (!this.isDisabled(keyboardSelectedDay)) {
         this.keyboardSelectedDay = keyboardSelectedDay
         this.checkMonth()
       }
     },
     nextMonth () {
-      const keyboardSelectedDay = this.keyboardSelectedDay.clone().add(1, 'month')
+      const keyboardSelectedDay = this.currentValue.add(1, 'month')
       if (!this.isDisabled(keyboardSelectedDay)) {
         this.keyboardSelectedDay = keyboardSelectedDay
         this.checkMonth()
@@ -98,11 +109,11 @@ export default {
     },
     checkMonth () {
       this.$nextTick(() => {
-        const newYear = parseInt(this.keyboardSelectedDay.format('YYYY'))
+        const newYear = parseInt(this.currentValue.format('YYYY'))
         const currentYear = this.month.year
         const isSameYear = newYear === currentYear
-        if (parseInt(this.keyboardSelectedDay.format('MM') - 1) !== this.month.month && isSameYear) {
-          if (parseInt(this.keyboardSelectedDay.format('MM') - 1) > this.month.month) {
+        if (parseInt(this.currentValue.format('MM') - 1) !== this.month.month && isSameYear) {
+          if (parseInt(this.currentValue.format('MM') - 1) > this.month.month) {
             this.$emit('change-month', 'next')
           } else {
             this.$emit('change-month', 'prev')
@@ -132,13 +143,6 @@ export default {
       } else {
         window.removeEventListener('keydown', this.keyPressed)
       }
-    },
-    value: {
-      handler (value) {
-        if (!this.hasKeyboard || !this.value) return
-        this.keyboardSelectedDay = value.clone()
-      },
-      immediate: true
     }
   }
 }

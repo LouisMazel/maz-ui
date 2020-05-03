@@ -6,7 +6,7 @@
   border-radius: $border-radius;
 }
 
-@each $position in $positions {
+@each $position in $orientations {
   .border-#{$position}-radius {
     border-#{$position}-left-radius: $border-radius;
     border-#{$position}-right-radius: $border-radius;
@@ -18,7 +18,7 @@
     border-radius: #{$size}px;
   }
 
-  @each $position in $positions {
+  @each $position in $orientations {
     .border-#{$position}-radius {
       border-#{$position}-left-radius: #{$size};
       border-#{$position}-right-radius: #{$size};

@@ -80,7 +80,7 @@
     color: $icon-color;
     border-radius: $clear-size;
     cursor: pointer;
-    font-size: .857em;
+    font-size: 1em;
 
     &:focus {
       outline: none;
@@ -99,7 +99,7 @@
       bottom: 0;
       width: $clear-size;
       height: $clear-size;
-      background-color: $muted-color;
+      background-color: darken($border-color, 10%);
       border-radius: $clear-size;
       transform: scale(0);
       transition: transform 200ms;

@@ -34,7 +34,7 @@
     border-style: #{$style};
   }
 
-  @each $position in $positions {
+  @each $position in $orientations {
     .border-#{$position}-#{$style} {
       border-#{$position}-style: #{$style};
     }
@@ -46,7 +46,7 @@
     border-width: #{$size}px;
   }
 
-  @each $position in $positions {
+  @each $position in $orientations {
     .border-#{$position}-#{$size} {
       border-#{$position}-width: #{$size}px;
     }
@@ -57,7 +57,7 @@
   border-width: $border-width;
 }
 
-@each $position in $positions {
+@each $position in $orientations {
   .border-#{$position} {
     border-#{$position}-width: #{$border-width};
   }

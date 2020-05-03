@@ -14,7 +14,7 @@
         class="flex header__logo py-2 align-center"
       >
         <LogoSvg class="header__logo__img mr-2" />
-        <div class="header__title flex direction-column hidden-tablet pos-r top-4">
+        <div class="header__title flex justify-center direction-column hidden-tablet pos-r">
           <h1 class="fs-20">
             Maz UI
           </h1>

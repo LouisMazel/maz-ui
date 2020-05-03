@@ -3,6 +3,9 @@
     <h3 class="mb-3">
       Development
     </h3>
+    <h4 class="my-3">
+      General
+    </h4>
     <router-link
       v-for="route in routesStartedDoc"
       :key="route.name"
@@ -12,6 +15,33 @@
       }"
     >
       {{ getPageName(route.path) | capitalize }}
+    </router-link>
+    <h4 class="my-3">
+      Maz-CLI
+    </h4>
+    <router-link
+      class="menu-item btn btn--white mb-2 w-100 no-shadow text-color bg-color no-border hover-bg-color"
+      :to="{
+        name: 'Install'
+      }"
+    >
+      Generate Vue.JS x MazUI App
+    </router-link>
+    <router-link
+      class="menu-item btn btn--white mb-2 w-100 no-shadow text-color bg-color no-border hover-bg-color"
+      :to="{
+        name: 'Install'
+      }"
+    >
+      Generate Vue.JS x Nuxt App
+    </router-link>
+    <router-link
+      class="menu-item btn btn--white mb-2 w-100 no-shadow text-color bg-color no-border hover-bg-color"
+      :to="{
+        name: 'Install'
+      }"
+    >
+      Generate Vue.JS x Nuxt x Prismic App
     </router-link>
     <h3 class="my-3">
       Components

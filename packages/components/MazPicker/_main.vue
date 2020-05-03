@@ -40,13 +40,17 @@
         v-model="dateMoment"
         :locale="locale"
         :position="calcPosition"
+        :format="format"
         :has-header="hasHeader"
         :has-footer="hasFooter"
         :has-validate="hasValidate"
         :has-double="hasDouble"
         :has-keyboard="hasKeyboard"
-        :is-visible="hasPickerOpen"
         :has-now="hasNow"
+        :has-time="hasTime"
+        :has-date="hasDate"
+        :is-visible="hasPickerOpen"
+        :minute-interval="minuteInterval"
         :now-translation="nowTranslation"
         :min-date="minDateMoment"
         :max-date="maxDateMoment"
@@ -55,6 +59,10 @@
         :disabled-weekly="disabledWeekly"
         :auto-close="autoClose"
         :shortcuts="shortcuts"
+        :shortcut="shortcut"
+        :has-shortcuts="hasShortcuts"
+        :disabled-hours="disabledHours"
+        :behaviour="behaviour"
         :inline="inline"
       />
     </transition>
@@ -71,16 +79,20 @@
     EventBus,
     checkIfTargetIsAllowedToCloseComponent,
     hasDateBetweenMinMaxDate,
-    updateComputedDataWithProps,
+    forceUpdateComputedData,
     getDateMoment,
     getFormattedValue
   } from './utils'
 
   const NOT_ALLOWED_CLASSES_TO_CLOSE = [
-    ['month-picker__day', 'is-disabled'],
     ['year-month-selector__btn'],
     ['year-month-selector__close']
   ]
+
+  const DOUBLE_PICKER_HEIGHT = 435
+  const PICKER_HEIGHT = 386
+  const HEADER_HEIGHT = 57
+  const FOOTER_HEIGHT = 54
 
   export default {
     name: 'MazPicker',
@@ -106,9 +118,9 @@
       // override the date picker postion (top / bottom / left / right)
       position: { type: String, default: null },
       // the value in `v-model` will be returned in this format
-      format: { type: String, default: 'YYYY-MM-DD' },
+      format: { type: String, default: 'YYYY-MM-DD hh:mm a' },
       // the value in `@formatted` event & shown in input will be formatted with this
-      formatted: { type: String, default: 'LL' },
+      formatted: { type: String, default: 'llll' },
       // minimum date the user can set (same format as the model)
       minDate: { type: String, default: null },
       // maximum date the user can set (same format as the model)
@@ -124,7 +136,7 @@
       // to remove the `now` button
       noNow: { type: Boolean, default: false },
       // translation of now of button
-      nowTranslation: { type: String, default: 'Today' },
+      nowTranslation: { type: String, default: 'Now' },
       // all week-ends days disabled
       noWeekendsDays: { type: Boolean, default: false },
       // close picker on select date
@@ -156,19 +168,38 @@
           { key: 'thisYear', label: 'This year', value: 'year' },
           { key: 'lastYear', label: 'Last year', value: '-year' }
         ])
-      }
+      },
+      // pre selected shortcut: provide a shortcut key
+      shortcut: { type: String, default: null },
+      // Disabled time picker
+      noShortcuts: { type: Boolean, default: false },
+      // Disabled time picker
+      noTime: { type: Boolean, default: false },
+      // Disabled date picker
+      noDate: { type: Boolean, default: false },
+      // Change minute interval in time picker
+      minuteInterval: { type: Number, default: 1 },
+      // Must be an Array of hours in 24h format ('00' to '23') : `['00','01','02','03','04','05','06','07','19','20','21','22','23']`
+      disabledHours: { type: Array, default: Array },
+      behaviour: { type: Object,
+                   default: () => ({
+                     time: {
+                       nearestIfDisabled: true
+                     }
+                   }) }
     },
     data () {
       return {
         isOpen: null,
-        calcPosition: 'bottom left'
+        calcPosition: 'bottom left',
+        update: false
       }
     },
     computed: {
       inputValue: {
         get () {
-          updateComputedDataWithProps(this.locale)
-          return getFormattedValue(this.value, this.format, this.formatted, this.range)
+          forceUpdateComputedData(this.update)
+          return this.$options.filters.capitalize(getFormattedValue(this.value, this.format, this.formatted, this.range))
         },
         set () {
           this.emitValue(null)
@@ -176,7 +207,7 @@
       },
       dateMoment: {
         get () {
-          updateComputedDataWithProps(this.locale)
+          forceUpdateComputedData(this.update)
           return getDateMoment(this.value, this.format, this.range)
         },
         set (value) {
@@ -186,10 +217,10 @@
         }
       },
       minDateMoment () {
-        return moment(this.minDate, this.format)
+        return this.minDate ? moment(this.minDate, this.format) : null
       },
       maxDateMoment () {
-        return moment(this.maxDate, this.format)
+        return this.maxDate ? moment(this.maxDate, this.format) : null
       },
       hasPickerOpen () {
         return this.isOpen || this.open || this.inline
@@ -201,22 +232,31 @@
         return !this.noHeader
       },
       hasFooter () {
-        return !this.noFooter
+        return !this.noFooter && (this.hasValidate || this.hasNow)
       },
       hasValidate () {
-        return !this.inline && !this.autoClose
+        return !this.inline && !this.autoClose && !this.open
       },
       hasNow () {
         return !this.noNow && !this.range
       },
       hasKeyboard () {
-        return !this.noKeyboard && !this.hasDouble && !this.range
+        return !this.noKeyboard && !this.hasDouble
       },
       disabledDatesMoment () {
         return this.disabledDates.map(d => moment(d, this.format))
       },
       hasDouble () {
         return this.double
+      },
+      hasTime () {
+        return !this.noTime && !this.range
+      },
+      hasDate () {
+        return !this.noDate
+      },
+      hasShortcuts () {
+        return !this.noShortcuts && this.range
       }
     },
     watch: {
@@ -224,8 +264,6 @@
         handler (value) {
           const { minDateMoment, maxDateMoment, range } = this
           if (value && (minDateMoment || maxDateMoment)) {
-            this.emitFormatted(value)
-
             if (range) return
 
             const { isBefore, isAfter } = hasDateBetweenMinMaxDate(
@@ -237,42 +275,60 @@
             if (isAfter) this.emitValue(this.maxDateMoment)
             if (isBefore) this.emitValue(this.minDateMoment)
           }
+          this.emitFormatted(value)
         },
         immediate: true
       },
       locale: {
         handler (locale) {
+          if (locale === 'en') return
           import(/* webpackChunkName: "locale-[request]" */ `moment/locale/${locale}.js`).then(() => {
             moment.locale(locale)
+            this.update = !this.update
           })
         },
         immediate: true
       },
       hasPickerOpen: {
-        handler (value) {
-          if (value) this.calcPosition = this.position || `${this.getPosition()} left`
+        async handler (value) {
+          const verticalPosition = await this.getVerticalPosition()
+          if (value) this.calcPosition = this.position || `${verticalPosition} left`
         },
         immediate: true
       }
     },
     mounted () {
-      EventBus.$on('validate', this.closePicker)
-      EventBus.$on('now', () => { this.emitValue(moment()) })
-      EventBus.$on('close', this.closePicker)
+      EventBus.$on('validate', () => {
+        this.closePicker()
+        // emit when the user click on validate button
+        this.$emit('validate')
+      })
+      EventBus.$on('now', () => {
+        this.emitValue(moment())
+        // emit when the user click on now button
+        this.$emit('now')
+      })
+      EventBus.$on('close', () => { this.closePicker() })
     },
     beforeDestroy () {
       EventBus.$off('validate')
       EventBus.$off('now')
       EventBus.$off('close')
+      // emit on before destroy
+      this.$emit('destroy')
     },
     methods: {
       emitValue (value) {
         let valueToSend
         if (this.range) {
-          const { start, end } = value
-          valueToSend = {
-            start: start instanceof moment ? start.format(this.format) : null,
-            end: end instanceof moment ? end.format(this.format) : null
+          if (value) {
+            const { start, end } = value
+            valueToSend = {
+              start: start instanceof moment ? start.format(this.format) : null,
+              end: end instanceof moment ? end.format(this.format) : null
+            }
+          } else {
+            valueToSend = null
           }
         } else {
           valueToSend = value instanceof moment ? value.format(this.format) : null
@@ -282,26 +338,29 @@
         this.$emit('input', valueToSend)
       },
       emitFormatted (value) {
-        // return the date value (in `@formatted` event)
-        // @arg date formatted with "formatted" option
-        if (this.value) this.$emit('formatted', getFormattedValue(value, this.format, this.formatted, this.range))
+        if (this.value) {
+          // return the date value (in `@formatted` event)
+          // @arg date formatted with "formatted" option
+          this.$emit('formatted', getFormattedValue(value, this.format, this.formatted, this.range))
+        }
       },
       openPicker () {
         this.isOpen = true
+        // emit when picker is show
+        this.$emit('is-shown')
       },
       closePicker (e = {}) {
         if (
           this.$el.contains(e.relatedTarget) || checkIfTargetIsAllowedToCloseComponent(NOT_ALLOWED_CLASSES_TO_CLOSE, e.target)
         ) return
         this.isOpen = false
+        // emit when picker is hide
+        this.$emit('is-hidden')
       },
-      getPosition () {
-        if (!this.$refs.MazPicker) return
+      async getVerticalPosition () {
+        // if (!this.$refs.MazPicker) return
+        await this.$nextTick()
 
-        const DOUBLE_PICKER_HEIGHT = 435
-        const PICKER_HEIGHT = 386
-        const HEADER_HEIGHT = 61
-        const FOOTER_HEIGHT = 54
         const parentRect = this.$refs.MazPicker.getBoundingClientRect()
         const windowHeight = window.innerHeight
         let datePickerHeight = this.hasDouble ? DOUBLE_PICKER_HEIGHT : PICKER_HEIGHT
@@ -326,6 +385,7 @@
 <style lang="scss">
   .maz-picker {
     position: relative;
+    font-weight: 300;
 
     .maz-picker__arrow {
       color: $icon-color;
