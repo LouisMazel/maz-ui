@@ -23,7 +23,7 @@ table.md {
     }
 
     &:nth-child(2n) {
-      background-color: $hover-color;
+      background-color: $hover-bg-color;
     }
   }
 }
@@ -35,7 +35,7 @@ table.md {
     background-color: $bg-color-dark;
 
     &:nth-child(2n) {
-      background-color: $hover-color-dark;
+      background-color: $hover-bg-color-dark;
     }
 
     td.text-muted {

@@ -2,7 +2,7 @@
   $this: &;
 
   position: relative;
-  border: 2px solid $border-color;
+  border: $border-width solid $border-color;
   border-radius: $border-radius;
   padding: 0 8px;
   width: 100%;
@@ -39,29 +39,30 @@
     padding-right: 4px;
     padding-bottom: 4px;
     padding-top: 4px;
+    color: $text-color;
 
     &::-webkit-input-placeholder {
-      color: $muted-color;
+      color: $placeholder-color;
     }
 
     &::-moz-placeholder {
-      color: $muted-color;
+      color: $placeholder-color;
     }
 
     &:-ms-input-placeholder {
-      color: $muted-color;
+      color: $placeholder-color;
     }
 
     &::-ms-input-placeholder {
-      color: $muted-color;
+      color: $placeholder-color;
     }
 
     &:-moz-placeholder {
-      color: $muted-color;
+      color: $placeholder-color;
     }
 
     &::placeholder {
-      color: $muted-color;
+      color: $placeholder-color;
     }
   }
 
@@ -96,7 +97,7 @@
     appearance: none;
     border: none;
     background-color: transparent;
-    color: $border-color;
+    color: $icon-color;
     border-radius: $clear-size;
     cursor: pointer;
     font-size: .857em;
@@ -172,7 +173,7 @@
 
   &__loader {
     bottom: 0;
-    height: 2px;
+    height: $border-width;
     left: $border-radius / 2;
     width: calc(100% - 8px);
     position: absolute;
@@ -236,42 +237,38 @@
   border-color: $border-color-dark;
 
   &__input {
-    color: $input-text-color-dark;
+    color: $text-color-dark;
 
     &::-webkit-input-placeholder {
-      color: $input-text-color-dark;
+      color: $placeholder-color-dark;
     }
 
     &::-moz-placeholder {
-      color: $input-text-color-dark;
+      color: $placeholder-color-dark;
     }
 
     &:-ms-input-placeholder {
-      color: $input-text-color-dark;
+      color: $placeholder-color-dark;
     }
 
     &::-ms-input-placeholder {
-      color: $input-text-color-dark;
+      color: $placeholder-color-dark;
     }
 
     &:-moz-placeholder {
-      color: $input-text-color-dark;
+      color: $placeholder-color-dark;
     }
 
     &::placeholder {
-      color: $input-text-color-dark;
+      color: $placeholder-color-dark;
     }
   }
 
   &__toggle-btn {
-    color: $input-text-color-dark;
+    color: $icon-color-dark;
 
     &__effect {
-      background-color: $muted-color-dark;
-    }
-
-    &:hover {
-      color: white;
+      background-color: darken($icon-color-dark, 10%);
     }
   }
 }

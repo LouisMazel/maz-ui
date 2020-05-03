@@ -22,38 +22,59 @@
       <span
         v-for="date in [dateFormatted]"
         :key="date"
+        class="dots-text"
       >
-        {{ value ? date : '...' | capitalize }}
+        {{ dateFormatted ? date : '-' }}
       </span>
     </TransitionGroup>
   </div>
 </template>
 
 <script>
+  import moment from 'moment'
+  import { getFormattedValuesIntl } from './../../utils'
+
   export default {
     name: 'HeaderPicker',
     props: {
-      value: { type: Object, required: true }
+      value: { type: Object, default: null },
+      locale: { type: String, required: true }
     },
     data () {
       return {
         transitionName: 'slidevnext',
-        currentDate: this.value
+        currentDate: null
       }
     },
     computed: {
+      isRangeMode () {
+        return !!this.value && Object.keys(this.value).includes('start')
+      },
+      currentValue () {
+        if (this.isRangeMode) {
+          return this.value.end || moment()
+        }
+        return this.value || moment()
+      },
       year () {
-        return this.value.year()
+        return this.currentValue.year()
       },
       dateFormatted () {
-        return this.value.format('ddd D MMM')
+        const dates = []
+        const { locale } = this
+        if (this.isRangeMode) {
+          dates.push(this.value.start, this.value.end)
+        } else {
+          dates.push(this.value)
+        }
+        return getFormattedValuesIntl({ locale, dates })
       }
     },
     watch: {
-      value (value) {
-        const newValueIsSmaller = this.currentDate > value
+      value () {
+        const newValueIsSmaller = this.currentDate > this.currentValue
         this.transitionName = newValueIsSmaller ? 'slidevprev' : 'slidevnext'
-        this.$nextTick(() => { this.currentDate = value })
+        this.$nextTick(() => { this.currentDate = this.currentValue })
       }
     }
   }
@@ -64,13 +85,13 @@
     overflow: hidden;
 
     &__year {
-      height: 24px;
       opacity: .7;
+      height: 21px;
     }
 
     &__date {
-      height: 30px;
       min-height: 0;
+      height: 26px;
       font-size: 1.285em;
     }
   }

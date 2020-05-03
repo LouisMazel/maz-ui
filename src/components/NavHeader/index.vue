@@ -25,7 +25,7 @@
       </router-link>
       <div class="header__menu flex align-center hidden-mobile">
         <router-link
-          class="header__menu__item flex align-center btn btn--white btn--md bg-transparent no-shadow mr-1"
+          class="header__menu__item btn btn--white no-shadow bg-color no-border hover-bg-color mr-1"
           :to="{
             name: 'Documentation'
           }"
@@ -33,7 +33,7 @@
           Documentation
         </router-link>
         <router-link
-          class="header__menu__item flex align-center btn btn--white btn--md bg-transparent no-shadow mr-1"
+          class="header__menu__item btn btn--white no-shadow bg-color no-border hover-bg-color"
           :to="{ name: 'MadeWithMazUi' }"
         >
           Made with Maz UI
@@ -97,11 +97,6 @@
         transition: all .5s;
         outline: none;
 
-        &:focus,
-        &:hover {
-          background-color: $hover-color;
-        }
-
         &.router-link-active {
           color: $primary-color;
         }
@@ -111,17 +106,6 @@
     &__title {
       &__sub {
         color: $muted-color;
-      }
-    }
-  }
-
-  .is-dark {
-    .header {
-      &__menu__item {
-        &:focus,
-        &:hover {
-          background-color: $hover-color-dark;
-        }
       }
     }
   }

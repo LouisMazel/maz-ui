@@ -18,7 +18,7 @@
     opacity: 0;
     transition: all .25s cubic-bezier(.645, .045, .355, 1);
     font-size: .786em;
-    color: $input-text-color;
+    color: $placeholder-color;
   }
 
   &__input {
@@ -32,7 +32,7 @@
     font-weight: 400;
     appearance: none;
     outline: none;
-    border: 2px solid $border-color;
+    border: $border-width solid $border-color;
     border-radius: $border-radius;
     font-size: .929em;
     z-index: 0;
@@ -51,13 +51,10 @@
     display: inline-block;
     cursor: pointer;
     height: 24px;
+    color: $icon-color;
 
-    &__arrow {
-      color: $input-text-color;
-
-      path.arrow {
-        fill: $input-text-color;
-      }
+    svg path.arrow {
+      fill: $icon-color;
     }
   }
 
@@ -118,7 +115,7 @@
 
       &:hover,
       &.keyboard-selected {
-        background-color: darken($hover-color, 5%);
+        background-color: darken($hover-bg-color, 5%);
       }
 
       &.selected {
@@ -338,47 +335,45 @@
 .is-dark .country-selector,
 .is-dark.country-selector {
   &__label {
-    color: $input-text-color-dark;
+    color: $placeholder-color-dark;
   }
 
   &__input {
     cursor: pointer;
     background-color: $bg-color-dark-l;
     border-color: $border-color-dark;
-    color: $input-text-color-dark;
+    color: $text-color-dark;
 
     &::-webkit-input-placeholder {
-      color: $input-text-color-dark;
+      color: $placeholder-color-dark;
     }
 
     &::-moz-placeholder {
-      color: $input-text-color-dark;
+      color: $placeholder-color-dark;
     }
 
     &:-ms-input-placeholder {
-      color: $input-text-color-dark;
+      color: $placeholder-color-dark;
     }
 
     &::-ms-input-placeholder {
-      color: $input-text-color-dark;
+      color: $placeholder-color-dark;
     }
 
     &:-moz-placeholder {
-      color: $input-text-color-dark;
+      color: $placeholder-color-dark;
     }
 
     &::placeholder {
-      color: $input-text-color-dark;
+      color: $placeholder-color-dark;
     }
   }
 
   &__toggle {
-    &__arrow {
-      color: $input-text-color-dark;
+    color: $icon-color-dark;
 
-      path.arrow {
-        fill: $input-text-color-dark;
-      }
+    svg path.arrow {
+      fill: $icon-color-dark;
     }
   }
 
@@ -390,7 +385,7 @@
 
       &:hover,
       &.keyboard-selected {
-        background-color: lighten($hover-color-dark-l, 5%);
+        background-color: lighten($hover-bg-color-dark-l, 5%);
       }
     }
 
@@ -402,5 +397,5 @@
 
 // .country-selector__input,
 // .country-selector__list {
-//   color: $input-text-color-dark;
+//   color: $placeholder-color-dark;
 // }

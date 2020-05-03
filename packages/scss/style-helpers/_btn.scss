@@ -5,10 +5,10 @@ $small-size: 32px;
 $mini-size: 30px;
 
 .btn {
-  border: 2px solid transparent;
+  border: $border-width solid transparent;
   outline: none;
   cursor: pointer;
-  transition: all .25s cubic-bezier(.645, .045, .355, 1);
+  transition: all 250ms cubic-bezier(.645, .045, .355, 1);
   box-shadow: 0 2px 5px 0 rgba(3, 6, 26, .15);
   background-color: $primary-color;
   color: white;

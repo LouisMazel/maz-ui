@@ -2,7 +2,7 @@
   color: $text-color;
   border-radius: $border-radius;
   overflow: hidden;
-  border: 2px solid $hover-color;
+  border: $border-width solid $hover-bg-color;
 
   &__header-btn {
     background-color: transparent;
@@ -20,7 +20,7 @@
   }
 
   &__content {
-    border-top: 2px solid $text-color-dark;
+    border-top: $border-width solid $text-color-dark;
   }
 }
 
@@ -28,18 +28,18 @@
 .is-dark.maz-collapse {
   color: $text-color-dark;
   background-color: $bg-color-dark;
-  border-color: lighten($hover-color-dark, 10%);
+  border-color: lighten($hover-bg-color-dark, 10%);
 
   &__header-btn {
     color: $text-color-dark;
 
     &:hover,
     &:focus {
-      background-color: $hover-color-dark;
+      background-color: $hover-bg-color-dark;
     }
   }
 
   &__content {
-    border-color: lighten($hover-color-dark, 10%);
+    border-color: lighten($hover-bg-color-dark, 10%);
   }
 }

@@ -12,7 +12,7 @@
     opacity: 0;
     transition: all .25s cubic-bezier(.645, .045, .355, 1);
     font-size: .786em;
-    color: $input-text-color;
+    color: $placeholder-color;
   }
 
   &__input {
@@ -25,7 +25,7 @@
     font-weight: 400;
     appearance: none;
     outline: none;
-    border: 2px solid $border-color;
+    border: $border-width solid $border-color;
     border-radius: $border-radius;
     font-size: 1em;
     z-index: 0;
@@ -40,27 +40,27 @@
     }
 
     &::-webkit-input-placeholder {
-      color: $input-text-color;
+      color: $placeholder-color;
     }
 
     &::-moz-placeholder {
-      color: $input-text-color;
+      color: $placeholder-color;
     }
 
     &:-ms-input-placeholder {
-      color: $input-text-color;
+      color: $placeholder-color;
     }
 
     &::-ms-input-placeholder {
-      color: $input-text-color;
+      color: $placeholder-color;
     }
 
     &:-moz-placeholder {
-      color: $input-text-color;
+      color: $placeholder-color;
     }
 
     &::placeholder {
-      color: $input-text-color;
+      color: $placeholder-color;
     }
   }
 
@@ -77,7 +77,7 @@
     appearance: none;
     border: none;
     background: transparent;
-    color: $input-text-color;
+    color: $icon-color;
     border-radius: $clear-size;
     cursor: pointer;
     font-size: .857em;
@@ -265,12 +265,12 @@
 
   &__loader {
     bottom: 0;
-    height: 2px;
+    height: $border-width;
     left: 2px;
     width: calc(100% - 4px);
     position: absolute;
     overflow: hidden;
-    border-radius: 4px;
+    border-radius: $border-radius;
 
     &__progress-bar {
       background-color: $primary-color;
@@ -296,48 +296,44 @@
 
   .input-tel {
     &__label {
-      color: $input-text-color-dark;
+      color: $placeholder-color-dark;
     }
 
     &__input {
       background-color: $bg-color-dark-l;
       border-color: $border-color-dark;
-      color: $input-text-color-dark;
+      color: $text-color-dark;
 
       &::-webkit-input-placeholder {
-        color: $input-text-color-dark;
+        color: $placeholder-color-dark;
       }
 
       &::-moz-placeholder {
-        color: $input-text-color-dark;
+        color: $placeholder-color-dark;
       }
 
       &:-ms-input-placeholder {
-        color: $input-text-color-dark;
+        color: $placeholder-color-dark;
       }
 
       &::-ms-input-placeholder {
-        color: $input-text-color-dark;
+        color: $placeholder-color-dark;
       }
 
       &:-moz-placeholder {
-        color: $input-text-color-dark;
+        color: $placeholder-color-dark;
       }
 
       &::placeholder {
-        color: $input-text-color-dark;
+        color: $placeholder-color-dark;
       }
     }
 
     &__toggle-btn {
-      color: $input-text-color-dark;
+      color: $icon-color-dark;
 
       &__effect {
-        background-color: $muted-color-dark;
-      }
-
-      &:hover {
-        color: white;
+        background-color: darken($icon-color-dark, 10%);
       }
     }
   }

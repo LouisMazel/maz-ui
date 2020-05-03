@@ -15,15 +15,19 @@
         :key="i"
         class="month-picker__day text-color bg-color-light flex flex-center"
         size="mini"
-        tabindex="-1"
-        :no-shadow="!dateMoment.isSame(day)"
+        :no-shadow="!isSelectedDate(day)"
         :disabled="isDisabled(day)"
-        :active="dateMoment.isSame(day)"
+        :active="isSelectedDate(day)"
         :class="{
           'highlight': isToday(day),
-          'is-disabled text-muted fw-400': !isSameMonth(day),
-          'is-keyboard-selected': isKeyboardSelected(day)
+          'is-disabled text-muted fw-400': !hasDouble && !isSameMonth(day),
+          'is-keyboard-selected': isKeyboardSelected(day),
+          'is-in-range': !isDisabled(day) && isBetween(day),
+          'is-between-hoverred': value && value.start && !isDisabled(day) && isBetweenHoverred(day),
+          'is-last-in-range': isLastInRange(day)
         }"
+        @mouseenter="$emit('hoverred-day', day)"
+        @mouseleave="$emit('hoverred-day', null)"
         @click="selectDay(day)"
       >
         {{ hasDouble && isDisabled(day) ? null : day.format('D') }}
@@ -38,7 +42,7 @@
     name: 'MonthPicker',
     mixins: [KeyboardAccessibility],
     props: {
-      value: { type: Object, required: true },
+      value: { type: Object, default: null },
       month: { type: Object, required: true },
       minDate: { type: Object, default: null },
       maxDate: { type: Object, default: null },
@@ -46,7 +50,8 @@
       disabledDates: { type: Array, required: true },
       disabledWeekly: { type: Array, required: true },
       isVisible: { type: Boolean, required: true },
-      hasDouble: { type: Boolean, required: true }
+      hasDouble: { type: Boolean, required: true },
+      hoverredDay: { type: Object, default: null }
     },
     data () {
       return {
@@ -55,14 +60,6 @@
       }
     },
     computed: {
-      dateMoment: {
-        get () {
-          return this.value
-        },
-        set (day) {
-          this.$emit('input', day)
-        }
-      },
       allDays () {
         return [
           ...this.previousMonthDays,
@@ -81,6 +78,9 @@
       },
       weekStart () {
         return this.month.getWeekStart()
+      },
+      isRangeMode () {
+        return !!this.value && Object.keys(this.value).includes('start')
       }
     },
     watch: {
@@ -105,8 +105,22 @@
       isToday (day) {
         return day.isSame(new Date(), 'day')
       },
+      isBetweenHoverred (day) {
+        if (!this.isRangeMode || this.value.end) return false
+        return day.isBetween(this.value.start, this.hoverredDay, null, '[]')
+      },
+      isBetween (day) {
+        if (!this.isRangeMode) return false
+        return day.isBetween(this.value.start, this.value.end, null, '[]')
+      },
+      isLastInRange (day) {
+        if (!this.isRangeMode) return false
+        return day.isSame(this.value.end)
+      },
       isSelectedDate (day) {
-        return this.dateMoment.isSame(day, 'day')
+        return this.isRangeMode
+          ? (this.value?.start?.isSame(day, 'day') ?? false) || (this.value?.end?.isSame(day, 'day') ?? false)
+          : this.value ? this.value.isSame(day, 'day') : false
       },
       isDisabled (day) {
         return day.isBefore(this.minDate) ||
@@ -125,17 +139,35 @@
         return this.month.month === day.month()
       },
       isDateDisabled (day) {
-        return this.disabledDates.some(d => d.isSame(day))
+        return this.disabledDates.some(d => d.isSame(day, 'day'))
       },
       isDayDisabledWeekly (day) {
         const dayConst = day.day()
         return this.disabledWeekly.includes(dayConst)
       },
       isKeyboardSelected (day) {
-        return day.isSame(this.keyboardSelectedDay)
+        return day.isSame(this.keyboardSelectedDay, 'day')
       },
       selectDay (day) {
-        this.dateMoment = day
+        let valueToSend = day
+        if (!this.isRangeMode) {
+          valueToSend = day
+        } else {
+          const { start, end } = this.value
+          if (!start || (start && end) || day.isBefore(this.value.start)) {
+            valueToSend = {
+              start: day,
+              end: null
+            }
+          } else {
+            valueToSend = {
+              start: this.value.start,
+              end: day
+            }
+          }
+        }
+
+        this.$emit('input', valueToSend)
       }
     }
   }
@@ -143,19 +175,19 @@
 
 <style lang="scss" scoped>
   .month-picker {
-    min-height: 215px;
-    min-width: 300px;
+    min-height: 194px;
+    min-width: 268px;
     width: 100%;
     overflow: hidden;
 
     &--long {
-      min-height: 256px;
+      min-height: 231px;
     }
 
     &__days {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      grid-gap: 10px;
+      grid-gap: 5px;
       width: 100%;
       justify-items: center;
     }
@@ -169,11 +201,6 @@
       font-size: 1em;
       z-index: 1;
       position: relative;
-
-      &:hover {
-        color: white;
-        background-color: rgba($primary-color, .5);
-      }
 
       &.highlight:not(.active):not(.btn--disabled)::before,
       &.is-keyboard-selected:not(.active)::before {
@@ -197,10 +224,40 @@
         }
       }
 
+      &.is-between-hoverred {
+        color: white;
+        background-color: rgba($primary-color, .4);
+      }
+
+      &.is-in-range {
+        color: white;
+        background-color: rgba($primary-color, .6);
+        width: calc(100% + 5px);
+
+        &:not(.active) {
+          border-radius: 0;
+        }
+
+        &.active:not(.is-last-in-range) {
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+        }
+
+        &.is-last-in-range {
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+        }
+      }
+
       &.active:not(:disabled) {
         color: white;
         background-color: $primary-color;
         font-weight: 600;
+      }
+
+      &:hover {
+        color: white;
+        background-color: rgba($primary-color, .4);
       }
 
       &:disabled {

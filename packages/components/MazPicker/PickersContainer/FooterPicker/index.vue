@@ -1,10 +1,10 @@
 <template>
-  <div class="footer-picker p-2 flex justify-end">
+  <div class="footer-picker p-2 flex justify-end border-top border-top-solid border-color">
     <MazBtn
       v-if="hasNow"
       size="md"
       tabindex="-1"
-      class="footer-picker__now bg-transparent no-shadow px-3 hover-color focus-none border-2 border-color text-primary"
+      class="footer-picker__now bg-transparent no-shadow px-3 hover-bg-color no-focus-bg border border-color text-primary"
       @click="now"
     >
       {{ nowTranslation }}
@@ -36,11 +36,11 @@
       nowTranslation: { type: String, required: true }
     },
     methods: {
-      validate () {
-        EventBus.$emit('validate')
+      validate (e) {
+        EventBus.$emit('validate', e)
       },
-      now () {
-        EventBus.$emit('now')
+      now (e) {
+        EventBus.$emit('now', e)
       }
     }
   }
@@ -48,8 +48,6 @@
 
 <style lang="scss" scoped>
   .footer-picker {
-    border-top: 2px solid $hover-color;
-
     &__validate {
       padding-top: 4px;
       padding-bottom: 4px;
@@ -58,9 +56,5 @@
     > :nth-child(2) {
       margin-left: .5rem;
     }
-  }
-
-  .is-dark .footer-picker {
-    border-color: $hover-color-dark;
   }
 </style>

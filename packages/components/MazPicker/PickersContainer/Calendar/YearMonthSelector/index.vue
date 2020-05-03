@@ -14,7 +14,7 @@
             no-shadow
             size="mini"
             color="grey"
-            class="flex flex-center mr-1 bg-transparent hover-color focus-none"
+            class="flex flex-center mr-1 bg-transparent hover-bg-color no-focus-bg"
             tabindex="-1"
             @click="updateYears('prev')"
           >
@@ -28,7 +28,7 @@
             no-shadow
             size="mini"
             color="grey"
-            class="flex flex-center mr-1 bg-transparent hover-color focus-none"
+            class="flex flex-center mr-1 bg-transparent hover-bg-color no-focus-bg"
             tabindex="-1"
             @click="updateYears('next')"
           >
@@ -44,7 +44,7 @@
           size="mini"
           color="grey"
           tabindex="-1"
-          class="year-month-selector__close bg-transparent hover-color focus-none"
+          class="year-month-selector__close bg-transparent hover-bg-color no-focus-bg"
           @click="closePanel"
         >
           <i class="material-icons text-color fs-20">
@@ -57,7 +57,7 @@
           v-for="(m, i) in months"
           :key="i"
           :active="currentMonth === i"
-          :class="[currentMonth !== i ? 'hover-color focus-none border-2 border-color text-primary': 'focus-primary']"
+          :class="[currentMonth !== i ? 'hover-bg-color no-focus-bg border border-color text-primary': 'focus-primary']"
           class="year-month-selector__btn bg-transparent no-shadow px-3 flex-20 mx-3"
           tabindex="-1"
           @click="selectMonth(i)"
@@ -70,7 +70,7 @@
           :active="currentYear === year"
           size="md"
           tabindex="-1"
-          :class="[currentYear !== year ? 'hover-color focus-none border-2 border-color text-primary': 'focus-primary']"
+          :class="[currentYear !== year ? 'hover-bg-color no-focus-bg border border-color text-primary': 'focus-primary']"
           class="year-month-selector__btn bg-transparent no-shadow"
           @click="selectYear(year)"
         >

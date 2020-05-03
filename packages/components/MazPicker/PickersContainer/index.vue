@@ -1,12 +1,13 @@
 <template>
   <div
-    class="pickers-container bg-color-light"
+    class="pickers-container bg-color-light elevation"
     :class="[position, { 'inline': inline }]"
     tabindex="0"
   >
     <HeaderPicker
       v-if="hasHeader"
       :value="dateMoment"
+      :locale="locale"
     />
     <Calendar
       v-model="dateMoment"
@@ -18,6 +19,8 @@
       :disabled-weekly="disabledWeekly"
       :is-visible="isVisible"
       :has-double="hasDouble"
+      :shortcuts="shortcuts"
+      :has-keyboard="hasKeyboard"
     />
     <FooterPicker
       v-if="hasFooter"
@@ -35,9 +38,13 @@
 
   export default {
     name: 'PickersContainer',
-    components: { HeaderPicker, Calendar, FooterPicker },
+    components: {
+      HeaderPicker,
+      Calendar,
+      FooterPicker
+    },
     props: {
-      value: { type: Object, required: true },
+      value: { type: Object, default: null },
       locale: { type: String, default: null },
       position: { type: String, required: true },
       hasHeader: { type: Boolean, required: true },
@@ -53,15 +60,17 @@
       isVisible: { type: Boolean, default: false },
       disabledDates: { type: Array, required: true },
       disabledWeekly: { type: Array, required: true },
-      hasDouble: { type: Boolean, required: true }
+      hasDouble: { type: Boolean, required: true },
+      hasKeyboard: { type: Boolean, required: true },
+      shortcuts: { type: Array, default: null }
     },
     computed: {
       dateMoment: {
         get () {
           return this.value
         },
-        set (day) {
-          this.$emit('input', day)
+        set (value) {
+          this.$emit('input', value)
         }
       }
     }
@@ -76,7 +85,6 @@
     outline: none;
 
     &:not(.inline) {
-      box-shadow: 0 0 8px 0 rgba(0, 0, 0, .1);
       position: absolute;
       top: 100%;
       left: 0;

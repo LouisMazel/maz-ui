@@ -19,7 +19,7 @@
   }
 
   [type= 'checkbox'] + label::before {
-    border: 2px solid transparent;
+    border: $border-width solid transparent;
     content: '';
     position: absolute;
     left: 0;
