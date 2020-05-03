@@ -45,16 +45,3 @@
     }
   }
 </script>
-
-<style lang="scss" scoped>
-  .footer-picker {
-    &__validate {
-      padding-top: 4px;
-      padding-bottom: 4px;
-    }
-
-    > :nth-child(2) {
-      margin-left: .5rem;
-    }
-  }
-</style>

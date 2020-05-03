@@ -3,10 +3,10 @@
     :style="[
       {
         height: `${height}px`,
-        width: `${150}px`
+        width: `${140}px`
       }
     ]"
-    class="range-shortcuts flex direction-column px-2 py-1 border-color border-right border-right-solid"
+    class="range-shortcuts flex direction-column px-2 py-1 border-color border-right border-right-solid overflow-y-auto"
   >
     <MazBtn
       v-for="shortcut in shortcuts"
@@ -179,9 +179,3 @@
     }
   }
 </script>
-
-<style lang="scss" scoped>
-  .range-shortcuts {
-    overflow-y: auto;
-  }
-</style>

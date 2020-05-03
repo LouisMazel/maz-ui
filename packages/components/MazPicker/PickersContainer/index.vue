@@ -95,28 +95,3 @@
     }
   }
 </script>
-
-<style lang="scss" scoped>
-  .pickers-container {
-    border-radius: $border-radius;
-    overflow: hidden;
-    z-index: 9;
-    outline: none;
-
-    &:not(.inline) {
-      position: absolute;
-      top: 100%;
-      left: 0;
-
-      &.top {
-        top: inherit;
-        bottom: 100%;
-      }
-
-      &.right {
-        left: inherit;
-        right: 0;
-      }
-    }
-  }
-</style>

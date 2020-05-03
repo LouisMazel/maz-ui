@@ -1,10 +1,33 @@
-@import './button-validate.scss';
-@import './custom-button.scss';
-@import './date-pickers.scss';
+.maz-picker {
+  position: relative;
+  font-weight: 300;
+
+  .maz-picker__arrow {
+    color: $icon-color;
+    outline: none;
+    transition: all .25s cubic-bezier(.645, .045, .355, 1);
+
+    svg path.arrow {
+      fill: $icon-color;
+    }
+  }
+}
+
+.is-dark.maz-picker,
+.is-dark .maz-picker {
+  .maz-picker__arrow {
+    color: $icon-color-dark;
+
+    svg path.arrow {
+      fill: $icon-color-dark;
+    }
+  }
+}
+
+@import './footer-picker.scss';
 @import './header-picker.scss';
-@import './maz-picker.scss';
+@import './month-picker.scss';
 @import './pickers-container.scss';
-@import './range-shortcuts.scss';
 @import './time-picker.scss';
-@import './week-days.scss';
+@import './week-days-labels.scss';
 @import './year-month-selector.scss';

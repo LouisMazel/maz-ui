@@ -4,7 +4,67 @@
   position: relative;
   z-index: 1;
 
-  &::-webkit-scrollbar {
-    display: none;
+  $item-height: 28px;
+
+  .maz-btn {
+    transition: 0ms;
+  }
+
+  &::after,
+  &::before {
+    content: '';
+    top: calc(50% - 19px);
+    position: absolute;
+    height: 38px;
+    z-index: -1;
+    left: 0;
+    right: 0;
+    border-top: $border-width solid $border-color;
+    border-bottom: $border-width solid $border-color;
+  }
+
+  &__column {
+    position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    // hide scroll bar
+    overflow: -moz-scrollbars-none;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    &__item {
+      height: $item-height;
+      width: 45px;
+
+      &:hover {
+        background-color: rgba($primary-color, .4);
+        color: white;
+      }
+
+      &.active {
+        color: white;
+        background-color: $primary-color;
+        font-weight: bold;
+      }
+
+      &:disabled {
+        color: rgba(black, .25);
+        background-color: transparent;
+        border: none;
+      }
+    }
+  }
+}
+
+.is-dark .time-picker,
+.is-dark.time-picker {
+  &::after,
+  &::before {
+    border-color: $border-color-dark;
   }
 }

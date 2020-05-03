@@ -1,4 +1,6 @@
 .country-selector {
+  @import './iti-flags/index.scss';
+
   position: relative;
   height: 40px;
   min-height: 40px;
