@@ -44,6 +44,30 @@ Vue.component(MazInput.name, MazInput);
 Vue.component(MazButton.name, MazButton);
 ```
 
+## Contribute
+
+### Setting up development server
+
+Install the development dependencies by running:
+
+```shell
+npm install # npm ci
+```
+
+Once your dependencies are installed, start the development server with:
+
+```shell
+npm run serve
+```
+
+### Lint
+
+```shell
+npm run lint
+```
+
+This will start the development server available at http://localhost:8080.
+
 For more informations, see the [Install Documentation](https://louismazel.github.io/maz-ui/#/documentation/install)
 
 ## LICENSE
