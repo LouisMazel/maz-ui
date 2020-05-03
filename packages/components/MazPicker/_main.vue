@@ -13,7 +13,7 @@
       :id="uniqueId"
       v-model="inputValue"
       v-bind="$attrs"
-      :label="label"
+      :placeholder="placeholder"
       readonly
       :focus="hasPickerOpen"
       @focus="openPicker(true)"
@@ -138,6 +138,8 @@
       maxDate: { type: String, default: null },
       // set dark mode
       dark: { type: Boolean, default: false },
+      // set dark mode
+      persistent: { type: Boolean, default: false },
       // to remove the picker's header
       noHeader: { type: Boolean, default: false },
       // to remove the picker's footer (buttons container)
@@ -161,7 +163,7 @@
       // Enable range mode to select periode
       range: { type: Boolean, default: false },
       // Change placeholder/label of input
-      label: { type: String, default: 'Select date' },
+      placeholder: { type: String, default: 'Select date' },
       // Disabled keyboard accessibility & navigation
       noKeyboard: { type: Boolean, default: false },
       // pre selected shortcut: provide a shortcut key

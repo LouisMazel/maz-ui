@@ -6,7 +6,7 @@
       <MazInput
         v-model="exampleValue"
         clearable
-        label="Custom label/placeholder text"
+        placeholder="Custom label & placeholder text"
       />
     </ComponentContainer>
     <ComponentContainer
@@ -14,7 +14,7 @@
     >
       <MazInput
         v-model="nameValue"
-        label="Name"
+        placeholder="Name"
         autocomplete="new-name"
         class="mb-3"
         left-icon-name="person"
@@ -23,7 +23,7 @@
       />
       <MazInput
         v-model="emailValue"
-        label="E-mail"
+        placeholder="E-mail"
         autocomplete="new-email"
         class="mb-3"
         clearable
@@ -37,7 +37,7 @@
       </MazInput>
       <MazInput
         v-model="passwordValue"
-        label="Password"
+        placeholder="Password"
         type="password"
         autocomplete="new-password"
         left-icon-name="lock"
@@ -46,7 +46,7 @@
       />
       <MazInput
         v-model="commentValue"
-        label="Comment"
+        placeholder="Comment"
         autocomplete="new-comment"
         left-icon-name="comment"
         textarea
@@ -109,7 +109,7 @@
         codeExample: `<template>
   <MazInput
     v-model="exampleValue"
-    label="Custom label/placeholder text"
+    placeholder="Custom placeholder/placeholder text"
   />
 </template>
 
@@ -123,7 +123,7 @@ export default {
         codePasswordExample: `<template>
   <MazInput
     v-model="nameValue"
-    label="Name"
+    placeholder="Name"
     autocomplete="new-name"
     class="mb-3"
     left-icon-name="person"
@@ -132,7 +132,7 @@ export default {
   />
   <MazInput
     v-model="emailValue"
-    label="E-mail"
+    placeholder="E-mail"
     autocomplete="new-email"
     class="mb-3"
     clearable
@@ -146,7 +146,7 @@ export default {
   </MazInput>
   <MazInput
     v-model="passwordValue"
-    label="Password"
+    placeholder="Password"
     type="password"
     autocomplete="new-password"
     left-icon-name="lock"
@@ -154,7 +154,7 @@ export default {
   />
   <MazInput
     v-model="commentValue"
-    label="Comment"
+    placeholder="Comment"
     autocomplete="new-comment"
     left-icon-name="comment"
     textarea

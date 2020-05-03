@@ -25,7 +25,7 @@
       :id="id"
       ref="CountrySelector"
       :value="callingCode"
-      :placeholder="label"
+      :placeholder="placeholder"
       :disabled="disabled"
       class="country-selector__input"
       readonly
@@ -47,7 +47,7 @@
       class="country-selector__label"
       @click.stop="toggleList"
     >
-      {{ hint || label }}
+      {{ hint || placeholder }}
     </label>
     <Transition name="slide">
       <div
@@ -109,7 +109,7 @@
       countriesHeight: { type: Number, default: 35 },
       id: { type: String, default: null },
       value: { type: [String, Object], default: null },
-      label: { type: String, default: 'Choose country' },
+      placeholder: { type: String, default: 'Choose country' },
       hint: { type: String, default: String },
       size: { type: String, default: String },
       error: { type: Boolean, default: false },

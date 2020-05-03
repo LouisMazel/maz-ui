@@ -36,10 +36,10 @@
       ref="MazInput"
       v-model="inputValue"
       v-bind="$attrs"
-      :placeholder="labelValue"
+      :placeholder="placeholderValue"
       :type="getType"
       class="maz-input__input border border-color border-solid"
-      :aria-label="label"
+      :aria-label="placeholder"
       :class="{
         'has-right-btn': hasClearBtn || hasPasswordBtn
       }"
@@ -59,7 +59,7 @@
       ref="MazInput"
       v-model="inputValue"
       v-bind="$attrs"
-      :placeholder="labelValue"
+      :placeholder="placeholderValue"
       :type="type"
       :required="required"
       :readonly="readonly"
@@ -79,7 +79,7 @@
       tabindex="-1"
       @click="focusInput"
     >
-      {{ hintValue || labelValue }}
+      {{ hintValue || placeholderValue }}
     </label>
     <transition-group
       name="scale"
@@ -151,7 +151,7 @@
       // input id
       id: { type: String, default: null },
       // value of the input
-      label: { type: String, default: 'Enter text' },
+      placeholder: { type: String, default: 'Enter text' },
       // replace the label if is present
       hint: { type: String, default: null },
       // input size (`'lg'` / `'sm'`)
@@ -209,10 +209,10 @@
           )
         }
       },
-      labelValue () {
-        let { label } = this
-        if (this.required && label && !this.noRequiredSymbol) label += ` *`
-        return label
+      placeholderValue () {
+        let { placeholder } = this
+        if (this.required && placeholder && !this.noRequiredSymbol) placeholder += ` *`
+        return placeholder
       },
       hintValue () {
         let { hint } = this

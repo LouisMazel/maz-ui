@@ -8,20 +8,20 @@
       </p>
       <MazInputTags
         v-model="exampleValue"
-        label="Add tags"
+        placeholder="Add tags"
         clearable
         size="lg"
         class="mb-3"
       />
       <MazInputTags
         v-model="exampleValue"
-        label="Add tags"
+        placeholder="Add tags"
         clearable
         class="mb-3"
       />
       <MazInputTags
         v-model="exampleValue"
-        label="Add tags"
+        placeholder="Add tags"
         clearable
         size="sm"
       />
@@ -41,20 +41,20 @@
   </p>
   <MazInputTags
     v-model="exampleValue"
-    label="Add tags"
+    placeholder="Add tags"
     clearable
     size="lg"
     class="mb-3"
   />
   <MazInputTags
     v-model="exampleValue"
-    label="Add tags"
+    placeholder="Add tags"
     clearable
     class="mb-3"
   />
   <MazInputTags
     v-model="exampleValue"
-    label="Add tags"
+    placeholder="Add tags"
     clearable
     size="sm"
   />
