@@ -29,7 +29,7 @@
     "build:report": "npm run build:lib -- --report && npm run build:docs -- --report",
     "delete:reports": "rm ./docs/report.html && rm ./lib/report.html",
     "ui": "vue ui",
-    "before-publish": "npm run lint && npm i && npm run build",
+    "pre-publish": "npm run lint && npm i && npm run build",
     "publish-npm:beta": "npm publish --tag beta",
     "publish-npm": "npm publish"
   },

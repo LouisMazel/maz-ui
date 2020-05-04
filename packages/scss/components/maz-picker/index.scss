@@ -11,6 +11,10 @@
       fill: $icon-color;
     }
   }
+
+  &__overlay {
+    display: none;
+  }
 }
 
 .is-dark.maz-picker,
@@ -31,3 +35,4 @@
 @import './time-picker.scss';
 @import './week-days-labels.scss';
 @import './year-month-selector.scss';
+@import './responsive.scss'

@@ -8,7 +8,7 @@
     z-index: 1050;
     width: 100%;
     height: 100%;
-    background-color: rgba(#303144, .7);
+    background-color: $overlay-color;
     transition: all .3s ease;
     overflow-y: auto;
     overflow-x: hidden;

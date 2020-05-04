@@ -188,7 +188,7 @@
             ? this.setLocale(browserLocale())
             : null
       } catch (err) {
-        console.error(err)
+        throw new Error(err)
       }
     },
     methods: {

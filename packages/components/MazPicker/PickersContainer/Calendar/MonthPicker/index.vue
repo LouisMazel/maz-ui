@@ -75,8 +75,8 @@
           const valueToEmit = this.isRangeMode
             ? value
             : value.set({
-              hour: value?.hour() ?? 0,
-              minute: value?.minute() ?? 0
+              hour: this?.value?.hour() ?? 0,
+              minute: this?.value?.minute() ?? 0
             })
           this.$emit('input', valueToEmit)
         }
@@ -103,10 +103,10 @@
     },
     mounted () {
       if (this.noWeekendsDays && this.isWeekEndDay(this.dateMoment)) {
-        console.warn(`MazPicker: the value provide is a weekend day and you use the option 'no-weekends-days'`)
+        throw new Error(`[MazPicker]: the value provide is a weekend day and you use the option 'no-weekends-days'`)
       }
       if (this.isDateDisabled(this.dateMoment)) {
-        console.warn(`MazPicker: the value provide is a disabled date by th option 'disabled-dates'`)
+        throw new Error(`[MazPicker]: the value provide is a disabled date by the option 'disabled-dates'`)
       }
     },
     methods: {

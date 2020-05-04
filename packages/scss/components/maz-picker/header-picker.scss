@@ -1,5 +1,7 @@
 .header-picker {
   overflow: hidden;
+  position: relative;
+  height: 60px;
 
   &__year {
     position: relative;
@@ -20,7 +22,7 @@
 
   &__time {
     width: 147px;
-    height: 43px;
+    height: 100%;
     font-size: 1.285em;
   }
 
@@ -46,5 +48,13 @@
   &__hour,
   &__minute {
     width: 22px;
+  }
+
+  &__close {
+    display: none;
+
+    i {
+      font-size: 20px;
+    }
   }
 }

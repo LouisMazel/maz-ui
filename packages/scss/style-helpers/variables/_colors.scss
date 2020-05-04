@@ -19,6 +19,7 @@ $disabled-color:          #F2F2F2 !default;
 $border-color:            #F2F2F2 !default;
 $placeholder-color:       lighten($muted-color, 20%) !default;
 $icon-color:              darken($border-color, 8%) !default;
+$overlay-color:           rgba(#303144, .7);
 
 /*
 * DARK
@@ -26,14 +27,15 @@ $icon-color:              darken($border-color, 8%) !default;
 
 $third-color-dark:        rgba(255, 255, 255, .5) !default;
 $dark-color:              #24292E !default;
-$grey-color-dark:           darken($grey-color, 25%) !default;
+$grey-color-dark:         darken($grey-color, 25%) !default;
 $text-color-dark:         #EEE !default;
 $bg-color-dark:           #21222E !default;
 $bg-color-dark-l:         #303144 !default;
 $hover-bg-color-dark:     #2E2F40 !default;
-$hover-bg-color-dark-l:     lighten(#303144, 10%) !default;
+$hover-bg-color-dark-l:   lighten(#303144, 10%) !default;
 $muted-color-dark:        rgba(255, 255, 255, .3) !default;
 $disabled-color-dark:     #CCC !default;
-$border-color-dark:         lighten(#303144, 5%) !default;
+$border-color-dark:       lighten(#303144, 5%) !default;
 $placeholder-color-dark:  rgba(255, 255, 255, .6) !default;
-$icon-color-dark:           lighten($border-color-dark, 20%) !default;
+$icon-color-dark:         lighten($border-color-dark, 20%) !default;
+$overlay-color-dark:      rgba(86, 87, 117, .7);

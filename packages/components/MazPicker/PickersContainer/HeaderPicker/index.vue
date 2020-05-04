@@ -1,10 +1,10 @@
 <template>
   <div
-    class="header-picker p-2 bg-primary text-white flex space-between"
+    class="header-picker p-2 bg-primary text-white flex"
   >
     <div
       v-if="hasDate"
-      class="flex-1"
+      class="header-picker__date-container flex-1 flex direction-column space-around"
     >
       <TransitionGroup
         :name="transitionName"
@@ -88,12 +88,23 @@
         </span>
       </TransitionGroup>
     </div>
+    <MazBtn
+      fab
+      size="mini"
+      no-shadow
+      class="header-picker__close"
+      @click="close"
+    >
+      <i class="material-icons">
+        close
+      </i>
+    </MazBtn>
   </div>
 </template>
 
 <script>
   import moment from 'moment'
-  import { getFormattedValuesIntl, getTimeFormat } from './../../utils'
+  import { getFormattedValuesIntl, getTimeFormat, EventBus } from './../../utils'
 
   export default {
     name: 'HeaderPicker',
@@ -154,6 +165,11 @@
           this.$nextTick(() => { this.currentDate = this.currentValue })
         },
         immediate: true
+      }
+    },
+    methods: {
+      close (e) {
+        EventBus.$emit('close', e)
       }
     }
   }

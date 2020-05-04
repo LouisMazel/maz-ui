@@ -15,7 +15,7 @@
     <div
       v-if="hasDate"
       ref="MonthsContainer"
-      class="overflow-hidden flex-1 flex-fixed"
+      class="calendar__months-container overflow-hidden flex-1"
     >
       <MonthYearSwitcher
         :months="months"
@@ -23,7 +23,7 @@
         @change-month="changeMonth"
         @open-month-year-selector="yearMonthSelectorMode = $event"
       />
-      <div class="flex">
+      <div class="flex overflow-x-auto">
         <div
           v-for="(month, i) in months"
           :key="`month-${i}`"

@@ -25,13 +25,3 @@
     }
   }
 </script>
-
-<style lang="scss" scoped>
-  .week-days-labels {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    grid-gap: 10px;
-    justify-items: center;
-    font-size: .875em;
-  }
-</style>

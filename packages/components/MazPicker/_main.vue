@@ -31,6 +31,13 @@
       </div>
     </MazInput>
 
+    <button
+      v-if="hasOverlay"
+      tabindex="-1"
+      class="maz-picker__overlay"
+      @click="closePicker"
+    />
+
     <transition
       :name="pickerTransition"
     >
@@ -186,7 +193,10 @@
                      time: {
                        nearestIfDisabled: true
                      }
-                   }) }
+                   })
+      },
+      // Disable the overlay on mobile
+      noOverlay: { type: Boolean, default: false }
     },
     data () {
       return {
@@ -257,6 +267,9 @@
       },
       hasShortcuts () {
         return !this.noShortcuts && this.range
+      },
+      hasOverlay () {
+        return !this.noOverlay && this.hasPickerOpen && !this.inline
       }
     },
     watch: {
