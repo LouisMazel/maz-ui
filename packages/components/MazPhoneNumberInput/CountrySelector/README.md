@@ -9,7 +9,7 @@
 | countriesHeight    | -           | `Number`            | `false`  | 35             |
 | id                 | -           | `String`            | `false`  | -              |
 | value              | -           | `String` / `Object` | `false`  | -              |
-| label              | -           | `String`            | `false`  | Choose country |
+| placeholder        | -           | `String`            | `false`  | Choose country |
 | hint               | -           | `String`            | `false`  | -              |
 | size               | -           | `String`            | `false`  | -              |
 | error              | -           | `Boolean`           | `false`  | -              |

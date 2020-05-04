@@ -10,7 +10,7 @@
 | ---------------- | -------------------------------------------------------------------------------- | --------- | -------- | ---------- |
 | value            | value of the input                                                               | —         | `true`   | -          |
 | id               | input id                                                                         | `String`  | `false`  | -          |
-| label            | value of the input                                                               | `String`  | `false`  | Enter text |
+| placeholder      | value of the input                                                               | `String`  | `false`  | Enter text |
 | hint             | replace the label if is present                                                  | `String`  | `false`  | -          |
 | size             | input size (`'lg'` / `'sm'`)                                                     | `String`  | `false`  | -          |
 | type             | is the input size (`text` or `number`)                                           | `String`  | `false`  | text       |

@@ -7,7 +7,7 @@
 | Name              | Description | Type      | Required | Default    |
 | ----------------- | ----------- | --------- | -------- | ---------- |
 | value             | -           | —         | `false`  | -          |
-| label             | -           | `String`  | `false`  | Enter text |
+| placeholder       | -           | `String`  | `false`  | Enter text |
 | hint              | -           | `String`  | `false`  | -          |
 | error             | -           | `Boolean` | `false`  | -          |
 | disabled          | -           | `Boolean` | `false`  | -          |

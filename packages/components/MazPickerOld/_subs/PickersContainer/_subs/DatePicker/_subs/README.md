@@ -1,17 +1,16 @@
-# WeekDays
+# YearMonthSelector
 
 ## Props
 
-<!-- @vuese:WeekDays:props:start -->
+<!-- @vuese:YearMonthSelector:props:start -->
 
-| Name     | Description | Type      | Required | Default |
-| -------- | ----------- | --------- | -------- | ------- |
-| weekDays | -           | `Array`   | `true`   | -       |
-| dark     | -           | `Boolean` | `false`  | -       |
-
-<!-- @vuese:WeekDays:props:end -->
-
-alse`|-| |mode|-|`String`|`false`|-| |month|-|`Object`|`false`|-|
+| Name   | Description | Type      | Required | Default |
+| ------ | ----------- | --------- | -------- | ------- |
+| locale | -           | `String`  | `false`  | -       |
+| dark   | -           | `Boolean` | `false`  | -       |
+| color  | -           | `String`  | `false`  | -       |
+| mode   | -           | `String`  | `false`  | -       |
+| month  | -           | `Object`  | `false`  | -       |
 
 <!-- @vuese:YearMonthSelector:props:end -->
 

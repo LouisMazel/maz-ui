@@ -6,15 +6,15 @@
 
 <!-- @vuese:MazSelect:props:start -->
 
-| Name       | Description                                  | Type      | Required | Default       |
-| ---------- | -------------------------------------------- | --------- | -------- | ------------- |
-| value      | is the value of the input                    | —         | `true`   | -             |
-| options    | list of the options                          | `Array`   | `true`   | -             |
-| disabled   | When is `true` the select is disabled        | `Boolean` | `false`  | -             |
-| dark       | When is `true` the select has the dark style | `Boolean` | `false`  | -             |
-| itemHeight | Item in list height in pixel                 | `Number`  | `false`  | 35            |
-| listHeight | List height in pixel                         | `Number`  | `false`  | 210           |
-| label      | The input label                              | `String`  | `false`  | Select option |
+| Name        | Description                                  | Type      | Required | Default       |
+| ----------- | -------------------------------------------- | --------- | -------- | ------------- |
+| value       | is the value of the input                    | —         | `true`   | -             |
+| options     | list of the options                          | `Array`   | `true`   | -             |
+| disabled    | When is `true` the select is disabled        | `Boolean` | `false`  | -             |
+| dark        | When is `true` the select has the dark style | `Boolean` | `false`  | -             |
+| itemHeight  | Item in list height in pixel                 | `Number`  | `false`  | 35            |
+| listHeight  | List height in pixel                         | `Number`  | `false`  | 210           |
+| placeholder | The input label                              | `String`  | `false`  | Select option |
 
 <!-- @vuese:MazSelect:props:end -->
 
