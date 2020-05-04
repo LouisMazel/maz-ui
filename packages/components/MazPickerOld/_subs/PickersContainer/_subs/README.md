@@ -1,35 +1,33 @@
-# ButtonValidate
+# HeaderPicker
 
 ## Props
 
-<!-- @vuese:ButtonValidate:props:start -->
+<!-- @vuese:HeaderPicker:props:start -->
 
-| Name                 | Description                       | Type      | Required | Default |
-| -------------------- | --------------------------------- | --------- | -------- | ------- |
-| dark                 | TODO: Remove wrong default values | `Boolean` | `false`  | -       |
-| buttonColor          | -                                 | `String`  | `false`  | -       |
-| buttonNowTranslation | -                                 | `String`  | `false`  | -       |
-| onlyTime             | -                                 | `Boolean` | `false`  | -       |
-| noButtonNow          | -                                 | `Boolean` | `false`  | -       |
-| range                | -                                 | `Boolean` | `false`  | -       |
-| hasButtonValidate    | -                                 | `Boolean` | `false`  | -       |
+| Name           | Description | Type                | Required | Default |
+| -------------- | ----------- | ------------------- | -------- | ------- |
+| value          | -           | `String` / `Object` | `false`  | -       |
+| color          | -           | `String`            | `false`  | -       |
+| onlyTime       | -           | `Boolean`           | `false`  | -       |
+| transitionName | -           | `String`            | `false`  | -       |
+| format         | -           | `String`            | `false`  | -       |
+| timeFormat     | -           | `String`            | `false`  | -       |
+| noTime         | -           | `Boolean`           | `false`  | -       |
+| range          | -           | `Boolean`           | `false`  | -       |
+| dark           | -           | `Boolean`           | `false`  | -       |
 
-<!-- @vuese:ButtonValidate:props:end -->
+<!-- @vuese:HeaderPicker:props:end -->
+
+String`|`false`|-| |behaviour|-|`Object`|`false`|-| |maxTime|-|`String`|`false`|-|
+
+<!-- @vuese:TimePicker:props:end -->
 
 ## Events
 
-<!-- @vuese:ButtonValidate:events:start -->
+<!-- @vuese:TimePicker:events:start -->
 
 | Event Name | Description | Parameters |
 | ---------- | ----------- | ---------- |
-| now        | -           | -          |
-| validate   | -           | -          |
-
-<!-- @vuese:ButtonValidate:events:end -->
-
-rt -->
-|Event Name|Description|Parameters|
-|---|---|---|
-|input|-|-|
+| input      | -           | -          |
 
 <!-- @vuese:TimePicker:events:end -->

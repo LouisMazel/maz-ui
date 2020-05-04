@@ -1,66 +1,11 @@
 <template>
   <div class="maz-picker-doc">
-    <p class="fw-700 mb-3">
-      This component is based on <a
-        target="_blank"
-        href="https://momentjs.com/"
-      >MomentJS</a>
-    </p>
-
-    <br>
-    <p class="mb-3">
-      You can use any locale available in moment package. Locales are dynamically imported.
-    </p>
-
-    <!-- <p class="fw-700 mb-3">
-      This component is based on
-      <a
-        target="_blank"
-        href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat"
-      >
-        native Intl.DateTimeFormat
-      </a>
-    </p>
-
-    <p>
-      The locale of the picker is automatically set with the browser locale
-    </p>
-
-    <p>
-      You can use any locale supported by Intl.DateTimeFormat.
-      Check
-      <a
-        target="_blank"
-        href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/supportedLocalesOf"
-      >
-        here
-      </a>
-    </p> -->
-
-    <div class="flex flex-1 ">
-      <MazBtnGroup
-        v-model="locale"
-        :items="locales"
-      />
-    </div>
-
-    <hr class="border-top border-solid border-color my-3">
-
-    <p class="fw-700 mb-3">
-      Top or bottom position of pickers is calculate
-    </p>
-
-    <p class="mb-3">
-      You can set the position with "position" props attribute :
-    </p>
-
-    <CodeContainer
-      language="html"
-      :code="positionCodeExample"
-    />
-
-    <hr class="border-top border-solid border-color my-3">
-
+    <MazBtn
+      color="third"
+      href="#infos"
+    >
+      More Infos
+    </MazBtn>
     <div class="examples my-3">
       <ComponentContainer
         :code="codeExample"
@@ -72,7 +17,7 @@
           Basic
         </h5>
 
-        <p class="mb-3">
+        <p>
           <strong>Options:</strong>
           none
         </p>
@@ -80,7 +25,7 @@
         <p>
           <strong>Value</strong>: {{ pickerValue || 'null' }}
         </p>
-        <p class="mb-2">
+        <p>
           <strong>Formatted value</strong>: {{ pickerFormatted || 'null' }}
         </p>
 
@@ -102,7 +47,7 @@
           Small input size clearable with input value formatted
         </h5>
 
-        <p class="mb-3">
+        <p>
           <strong>Options:</strong>
           no-time - clearable - size="sm" - formatted="ll"
         </p>
@@ -110,7 +55,7 @@
         <p>
           <strong>Value</strong>: {{ pickerValue2 || 'null' }}
         </p>
-        <p class="mb-2">
+        <p>
           <strong>Formatted value</strong>: {{ pickerFormatted2 || 'null' }}
         </p>
 
@@ -135,7 +80,7 @@
           Large input size - french format - custom placeholder
         </h5>
 
-        <p class="mb-3">
+        <p>
           <strong>Options:</strong>
           double - size="lg" - format="DD-MM-YYYY" - label="Select date in big calander" - no-time
         </p>
@@ -143,7 +88,7 @@
         <p>
           <strong>Value</strong>: {{ pickerValue3 || 'null' }}
         </p>
-        <p class="mb-2">
+        <p>
           <strong>Formatted value</strong>: {{ pickerFormatted3 || 'null' }}
         </p>
 
@@ -169,7 +114,7 @@
           Position forced
         </h5>
 
-        <p class="mb-3">
+        <p>
           <strong>Options:</strong>
           range - double - position="top right" - label="Select period"
         </p>
@@ -177,7 +122,7 @@
         <p>
           <strong>Value</strong>: {{ pickerRangeValues || 'null' }}
         </p>
-        <p class="mb-2">
+        <p>
           <strong>Formatted value</strong>: {{ pickerRangeValuesFormatted || 'null' }}
         </p>
 
@@ -202,7 +147,7 @@
           Min & max dates provided & without time picker
         </h5>
 
-        <p class="mb-3">
+        <p>
           <strong>Options:</strong>
           inline - min-date="2020-05-05" - max-date="2020-05-27" - no-time
         </p>
@@ -210,7 +155,7 @@
         <p>
           <strong>Value</strong>: {{ pickerValue4 || 'null' }}
         </p>
-        <p class="mb-2">
+        <p>
           <strong>Formatted value</strong>: {{ pickerFormatted4 || 'null' }}
         </p>
 
@@ -236,7 +181,7 @@
           Min & max dates provided & without time picker
         </h5>
 
-        <p class="mb-3">
+        <p>
           <strong>Options:</strong>
           no-date
         </p>
@@ -244,7 +189,7 @@
         <p>
           <strong>Value</strong>: {{ pickerValue5 || 'null' }}
         </p>
-        <p class="mb-2">
+        <p>
           <strong>Formatted value</strong>: {{ pickerFormatted5 || 'null' }}
         </p>
 
@@ -265,7 +210,7 @@
         <p>
           Value : {{ pickerValue4 || 'null' }}
         </p>
-        <p class="mb-2">
+        <p>
           Formatted value : {{ pickerFormatted4 || 'null' }}
         </p>
 
@@ -276,6 +221,193 @@
         />
       </ComponentContainer>
     </div>
+
+    <hr class="border-top border-solid border-color my-3">
+
+    <h2
+      id="infos"
+      class="mb-3"
+    >
+      More informations
+    </h2>
+
+    <h3 class="mb-2">
+      Locales
+    </h3>
+
+    <p class="fw-700 mb-3">
+      This component is based on <a
+        target="_blank"
+        href="https://momentjs.com/"
+      >MomentJS</a>
+    </p>
+
+    <p>
+      You can use any locale available in moment package. Locales are dynamically imported.
+    </p>
+
+    <div class="flex flex-1 ">
+      <MazBtnGroup
+        v-model="locale"
+        outline
+        :items="locales"
+      />
+    </div>
+
+    <hr class="border-top border-solid border-color my-3">
+
+    <h3 class="mb-2">
+      Position
+    </h3>
+
+    <p class="fw-700 mb-3">
+      Vertical (Top or bottom) position is auto calculate
+    </p>
+
+    <p>
+      You can force the position with "position" props attribute :
+    </p>
+
+    <CodeContainer
+      language="html"
+      :code="positionCodeExample"
+    />
+
+    <hr class="border-top border-solid border-color my-3">
+
+    <h3 class="mb-2">
+      Keyboard Accessible
+    </h3>
+
+    <table class="md shadow-container">
+      <tr>
+        <th>Key</th>
+        <th>Action</th>
+      </tr>
+      <tr>
+        <td>Arrow Right</td>
+        <td>Next Day</td>
+      </tr>
+      <tr>
+        <td>Arrow Left</td>
+        <td>Previous Day</td>
+      </tr>
+      <tr>
+        <td>Arrow Down</td>
+        <td>Same day on next Day</td>
+      </tr>
+      <tr>
+        <td>Arrow Up</td>
+        <td>Same day on previous Day</td>
+      </tr>
+      <tr>
+        <td>Page Down</td>
+        <td>Same day on previous month</td>
+      </tr>
+      <tr>
+        <td>Page Up</td>
+        <td>Same day on next month</td>
+      </tr>
+      <tr>
+        <td>Enter or Space</td>
+        <td>Select day</td>
+      </tr>
+      <tr>
+        <td>Escape</td>
+        <td>Close component</td>
+      </tr>
+    </table>
+
+    <hr class="border-top border-solid border-color my-3">
+
+    <h3 class="mb-2">
+      Shortcut
+    </h3>
+
+    <h5 class="mb-2">
+      Only for the range mode
+    </h5>
+
+    <p>
+      Shortcut types allowed are :
+    </p>
+    <CodeContainer
+      code="['day', '-day', 'isoWeek', '-isoWeek', 'quarter', 'month', '-month', 'year', '-year', 'week', '-week']"
+      class="mb-3"
+    />
+    <p>
+      For each shortcut, a key, label and value must be specified.
+      The key is a unique key for that specific shortcut.
+      Additional values can be passed as a callback function that will be called whenever the user clicks on the shortcut.
+      The callback receives an object as first argument with the start and end values, with the shortcut object itself.
+      You can use this feature for translate existings shortcuts.
+      If the value of shortcut is a number (Integer), this number correspond to number of day (for 5 --> Last 5 days).
+    </p>
+
+    <p>
+      If the value of shortcut is a function, we'll use it to generate the start and end values.
+      This function should return an object with the start & end values. Both values must be a moment object.
+      The function is called when the user clicks on the shortcut button.
+    </p>
+
+    <CodeContainer
+      code="[{
+  key: 'customValue',
+  label: 'My custom thing',
+  value: () => {
+    return {
+      start: moment(),
+      end: moment().add(2, 'days')
+    }
+  },
+  callback: ({ start, end }) => {
+    console.log('My shortcut was clicked with values: ', start, end)
+  }
+}];"
+    />
+    <hr class="border-top border-solid border-color my-3">
+
+    <h3>
+      Behaviour
+    </h3>
+    <p>
+      In order to avoid having too much properties in the component, We're adding a behaviour property that is an object including some annex behaviour values.
+    </p>
+
+    <p>The default value for this object is:</p>
+
+    <CodeContainer
+      class="mb-2"
+      code="{
+  time: {
+    nearestIfDisabled: true;
+  }
+}"
+    />
+
+    <p>
+      To override those values, pass a new object with the values you want to override:
+    </p>
+
+    <CodeContainer
+      class="mb-2"
+      language="html"
+      code="<MazPicker
+  :behaviour='{
+    time: {
+      nearest-if-disabled: false
+    }
+  }'
+/>"
+    />
+
+    <p>
+      If true, it will select the nearest available hour in the timepicker, if the current selected hour is disabled.
+      Per example, if the hour is 12 but all the hours have been disabled until 14, then the 14 will be selected by default.
+      Set false to disable this behaviour; the current hour will remain selected even if it has been disabled. The user cannot re-select it.
+    </p>
+
+    <hr class="border-top border-solid border-color my-3">
   </div>
 </template>
 

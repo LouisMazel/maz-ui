@@ -2,11 +2,12 @@
   <div class="right-sidebar-content p-3">
     <div class="flex justify-end">
       <MazBtn
-        rounded
-        size="sm"
+        fab
         @click="$emit('close')"
       >
-        X
+        <i class="material-icons fs-20 flex flex-center">
+          close
+        </i>
       </MazBtn>
     </div>
     <MdRenderer :file-name="currentComponent" />

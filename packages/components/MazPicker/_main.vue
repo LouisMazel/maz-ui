@@ -101,6 +101,10 @@
   const HEADER_HEIGHT = 57
   const FOOTER_HEIGHT = 54
 
+  /**
+   * > Date, Time & Range Picker
+   */
+
   export default {
     name: 'MazPicker',
     components: {
@@ -126,7 +130,7 @@
       position: { type: String, default: null },
       // the value in `v-model` will be returned in this format
       format: { type: String, default: 'YYYY-MM-DD hh:mm a' },
-      // the value in `@formatted` event & shown in input will be formatted with this
+      // the value in `@formatted` event & shown in input will be formatted with this (formats availables on [MomentJS](https://momentjs.com/))
       formatted: { type: String, default: 'llll' },
       // minimum date the user can set (same format as the model)
       minDate: { type: String, default: null },
@@ -134,8 +138,6 @@
       maxDate: { type: String, default: null },
       // set dark mode
       dark: { type: Boolean, default: false },
-      // set dark mode
-      persistent: { type: Boolean, default: false },
       // to remove the picker's header
       noHeader: { type: Boolean, default: false },
       // to remove the picker's footer (buttons container)
@@ -162,6 +164,31 @@
       label: { type: String, default: 'Select date' },
       // Disabled keyboard accessibility & navigation
       noKeyboard: { type: Boolean, default: false },
+      // pre selected shortcut: provide a shortcut key
+      // Disabled time picker
+      noTime: { type: Boolean, default: false },
+      // Disabled date picker
+      noDate: { type: Boolean, default: false },
+      // Change minute interval in time picker
+      minuteInterval: { type: Number, default: 1 },
+      // Must be an Array of hours in 24h format ('00' to '23') : `['00','01','02','03','04','05','06','07','19','20','21','22','23']`
+      disabledHours: { type: Array, default: Array },
+      // Disable the overlay on mobile
+      noOverlay: { type: Boolean, default: false },
+      // If true, it will select the nearest available hour in the timepicker, if the current selected hour is disabled.
+      behaviour: {
+        type: Object,
+        default: () => {
+          return {
+            time: {
+              nearestIfDisabled: true
+            }
+          }
+        }
+      },
+      shortcut: { type: String, default: null },
+      // Disabled time picker
+      noShortcuts: { type: Boolean, default: false },
       // shortcuts for range mode
       shortcuts: {
         type: Array,
@@ -175,28 +202,7 @@
           { key: 'thisYear', label: 'This year', value: 'year' },
           { key: 'lastYear', label: 'Last year', value: '-year' }
         ])
-      },
-      // pre selected shortcut: provide a shortcut key
-      shortcut: { type: String, default: null },
-      // Disabled time picker
-      noShortcuts: { type: Boolean, default: false },
-      // Disabled time picker
-      noTime: { type: Boolean, default: false },
-      // Disabled date picker
-      noDate: { type: Boolean, default: false },
-      // Change minute interval in time picker
-      minuteInterval: { type: Number, default: 1 },
-      // Must be an Array of hours in 24h format ('00' to '23') : `['00','01','02','03','04','05','06','07','19','20','21','22','23']`
-      disabledHours: { type: Array, default: Array },
-      behaviour: { type: Object,
-                   default: () => ({
-                     time: {
-                       nearestIfDisabled: true
-                     }
-                   })
-      },
-      // Disable the overlay on mobile
-      noOverlay: { type: Boolean, default: false }
+      }
     },
     data () {
       return {

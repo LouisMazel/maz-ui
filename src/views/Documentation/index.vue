@@ -20,17 +20,17 @@
           <MazBtn
             @click="showOptions"
           >
-            Show Documentation
+            Show Options, Events & Slots
           </MazBtn>
         </div>
       </div>
-      <router-view class="px-5 py-3 flex-1" />
+      <router-view class="content px-5 py-3 flex-1" />
       <NavFooter />
     </div>
     <MazSidebar
       v-if="$route.name !== 'Install' && $route.name !== 'GetStarted'"
       v-model="hasRightSidebarOpen"
-      :width="900"
+      :width="1000"
       right
       absolute
       layer
@@ -81,5 +81,11 @@
     &__container {
       overflow-x: auto;
     }
+  }
+</style>
+
+<style lang="scss">
+  .content p {
+    margin-bottom: 15px;
   }
 </style>
