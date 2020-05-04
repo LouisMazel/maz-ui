@@ -5,20 +5,29 @@ import { pascalCaseToKebabCase } from '@/utils'
 Vue.use(Router)
 
 const componentsRoutes = [
-  'Install', 'GetStarted', 'MazInputDoc', 'MazPickerDoc', 'MazInputTagsDoc', 'MazSelectDoc', 'MazSearchDoc',
+  'Install', 'GetStarted', 'CliInstall', 'Theme', 'MazInputDoc', 'MazPickerDoc', 'MazInputTagsDoc', 'MazSelectDoc', 'MazSearchDoc',
   'MazPhoneNumberInputDoc', 'MazDropzoneDoc', 'MazBtnDoc', 'MazBtnGroupDoc', 'MazSwitchDoc', 'MazCheckboxDoc',
   'MazSidebarDoc', 'MazTabsLayoutDoc', 'MazPaginationDoc', 'MazLoaderDoc', 'MazSpinnerDoc', 'MazCollapseDoc',
   'MazListDoc', 'MazDraggableListDoc', 'MazReadMoreDoc', 'MazResponsiveMenuDoc', 'MazTransitionExpandDoc', 'MazDialogDoc', 'MazFlexDoc'
 ]
 
+const isGeneralDoc = (name) => ['Install', 'GetStarted'].includes(name)
+const isCliDoc = (name) => ['CliInstall'].includes(name)
+const isThemeDoc = (name) => ['Theme'].includes(name)
+
 const componentsRoutesBuild = componentsRoutes.map((route) => {
-  const kebabCaseRouteName = route === 'Install' || route === 'GetStarted'
+  const kebabCaseRouteName = isGeneralDoc(route) || isCliDoc(route) || isThemeDoc(route)
     ? pascalCaseToKebabCase(route)
     : pascalCaseToKebabCase(route).substring(4).slice(0, -4)
   return {
     path: kebabCaseRouteName,
     name: route,
-    component: () => import(/* webpackChunkName: "documentation" */ `@/views/Documentation/views/${route}`)
+    component: () => {
+      if (isGeneralDoc(route)) return import(/* webpackChunkName: "[request]" */ `@/views/Documentation/views/general/${route}`)
+      else if (isCliDoc(route)) return import(/* webpackChunkName: "[request]" */ `@/views/Documentation/views/cli/${route}`)
+      else if (isThemeDoc(route)) return import(/* webpackChunkName: "[request]" */ `@/views/Documentation/views/theme/${route}`)
+      else return import(/* webpackChunkName: "[request]" */ `@/views/Documentation/views/components/${route}`)
+    }
   }
 })
 

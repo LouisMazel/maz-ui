@@ -82,17 +82,19 @@ h6 {
 .hljs-selector-class,
 .hljs-quote,
 .hljs-template-tag,
-.hljs-deletion {
-  color: dodgerblue;
+.hljs-deletion,
+.hljs-variable,
+.hljs-literal {
+  color: $primary-color;
 }
 
-.is-dark {
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    color: $text-color-dark;
-  }
-}
+// .is-dark {
+//   h1,
+//   h2,
+//   h3,
+//   h4,
+//   h5,
+//   h6 {
+//     color: $text-color-dark;
+//   }
+// }

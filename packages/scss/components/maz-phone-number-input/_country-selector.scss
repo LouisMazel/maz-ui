@@ -53,10 +53,10 @@
     display: inline-block;
     cursor: pointer;
     height: 24px;
-    color: $icon-color;
+    color: $input-icon-color;
 
     svg path.arrow {
-      fill: $icon-color;
+      fill: $input-icon-color;
     }
   }
 
@@ -372,10 +372,10 @@
   }
 
   &__toggle {
-    color: $icon-color-dark;
+    color: $input-icon-color-dark;
 
     svg path.arrow {
-      fill: $icon-color-dark;
+      fill: $input-icon-color-dark;
     }
   }
 

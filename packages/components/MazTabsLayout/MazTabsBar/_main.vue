@@ -6,12 +6,12 @@
       'is-dark': dark
     }"
   >
-    <div class="flex w-100 align-center">
+    <div class="flex w-100 h-100">
       <button
         v-for="({ label, disabled }, index) in items"
         :key="index"
         :class="{active : value === index, disabled: disabled }"
-        class="tabs-bar__item text-center flex-1 flex fle-center h-100 mh-100"
+        class="tabs-bar__item text-center flex-1 flex flex-center h-100 mh-100"
         @click="disabled ? null : $emit('input', index)"
       >
         {{ label }}

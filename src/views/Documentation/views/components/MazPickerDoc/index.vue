@@ -1,8 +1,8 @@
 <template>
   <div class="maz-picker-doc">
     <MazBtn
-      color="third"
       href="#infos"
+      color="third"
     >
       More Infos
     </MazBtn>
@@ -249,7 +249,6 @@
     <div class="flex flex-1 ">
       <MazBtnGroup
         v-model="locale"
-        outline
         :items="locales"
       />
     </div>
@@ -378,9 +377,10 @@
 
     <CodeContainer
       class="mb-2"
+      language="javascript"
       code="{
   time: {
-    nearestIfDisabled: true;
+    nearestIfDisabled: true
   }
 }"
     />
@@ -406,8 +406,6 @@
       Per example, if the hour is 12 but all the hours have been disabled until 14, then the 14 will be selected by default.
       Set false to disable this behaviour; the current hour will remain selected even if it has been disabled. The user cannot re-select it.
     </p>
-
-    <hr class="border-top border-solid border-color my-3">
   </div>
 </template>
 

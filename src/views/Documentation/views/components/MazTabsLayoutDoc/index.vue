@@ -12,47 +12,37 @@
           <MazTabsContentItem
             class="flex flex-center direction-column"
           >
-            <p>111111111111111111111111111111111111111</p>
+            <p>Text content 1</p>
           </MazTabsContentItem>
           <MazTabsContentItem
             class="flex flex-center direction-column"
           >
-            <p>222222222222222222222222222222222222222</p>
-            <p>222222222222222222222222222222222222222</p>
+            <p>Text content 2</p>
+            <p>Text content 2</p>
           </MazTabsContentItem>
           <MazTabsContentItem
             class="flex flex-center direction-column"
           >
-            <p>333333333333333333333333333333333333333</p>
-            <p>333333333333333333333333333333333333333</p>
-            <p>333333333333333333333333333333333333333</p>
+            <p>Text content 3</p>
+            <p>Text content 3</p>
+            <p>Text content 3</p>
           </MazTabsContentItem>
           <MazTabsContentItem
             class="flex flex-center direction-column"
           >
-            <p>444444444444444444444444444444444444444</p>
-            <p>444444444444444444444444444444444444444</p>
-            <p>444444444444444444444444444444444444444</p>
-            <p>444444444444444444444444444444444444444</p>
+            <p>Text content 4</p>
+            <p>Text content 4</p>
+            <p>Text content 4</p>
+            <p>Text content 4</p>
           </MazTabsContentItem>
           <MazTabsContentItem
             class="flex flex-center direction-column"
           >
-            <p>4</p>
-            <p>4</p>
-            <p>4</p>
-            <p>4</p>
-            <p>4</p>
-          </MazTabsContentItem>
-          <MazTabsContentItem
-            class="flex flex-center direction-column"
-          >
-            <p>5</p>
-            <p>5</p>
-            <p>5</p>
-            <p>5</p>
-            <p>5</p>
-            <p>5</p>
+            <p>Text content 5</p>
+            <p>Text content 5</p>
+            <p>Text content 5</p>
+            <p>Text content 5</p>
+            <p>Text content 5</p>
           </MazTabsContentItem>
         </MazTabsContent>
       </div>
@@ -83,47 +73,37 @@
       <MazTabsContentItem
         class="flex flex-center direction-column"
       >
-        <p>111111111111111111111111111111111111111</p>
+        <p>Text content 1</p>
       </MazTabsContentItem>
       <MazTabsContentItem
         class="flex flex-center direction-column"
       >
-        <p>222222222222222222222222222222222222222</p>
-        <p>222222222222222222222222222222222222222</p>
+        <p>Text content 2</p>
+        <p>Text content 2</p>
       </MazTabsContentItem>
       <MazTabsContentItem
         class="flex flex-center direction-column"
       >
-        <p>333333333333333333333333333333333333333</p>
-        <p>333333333333333333333333333333333333333</p>
-        <p>333333333333333333333333333333333333333</p>
+        <p>Text content 3</p>
+        <p>Text content 3</p>
+        <p>Text content 3</p>
       </MazTabsContentItem>
       <MazTabsContentItem
         class="flex flex-center direction-column"
       >
-        <p>444444444444444444444444444444444444444</p>
-        <p>444444444444444444444444444444444444444</p>
-        <p>444444444444444444444444444444444444444</p>
-        <p>444444444444444444444444444444444444444</p>
+        <p>Text content 4</p>
+        <p>Text content 4</p>
+        <p>Text content 4</p>
+        <p>Text content 4</p>
       </MazTabsContentItem>
       <MazTabsContentItem
         class="flex flex-center direction-column"
       >
-        <p>4</p>
-        <p>4</p>
-        <p>4</p>
-        <p>4</p>
-        <p>4</p>
-      </MazTabsContentItem>
-      <MazTabsContentItem
-        class="flex flex-center direction-column"
-      >
-        <p>5</p>
-        <p>5</p>
-        <p>5</p>
-        <p>5</p>
-        <p>5</p>
-        <p>5</p>
+        <p>Text content 5</p>
+        <p>Text content 5</p>
+        <p>Text content 5</p>
+        <p>Text content 5</p>
+        <p>Text content 5</p>
       </MazTabsContentItem>
     </MazTabsContent>
   </div>

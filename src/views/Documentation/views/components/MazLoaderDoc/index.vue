@@ -1,15 +1,8 @@
 <template>
   <div class="maz-loader-doc">
-    <ComponentContainer :code="code">
-      <MazLoader />
-    </ComponentContainer>
     <ComponentContainer
-      dark
-      :code="code2"
+      :code="code"
     >
-      <MazLoader dark />
-    </ComponentContainer>
-    <ComponentContainer dark>
       <MazLoader />
     </ComponentContainer>
   </div>
@@ -22,9 +15,6 @@
       return {
         code: `<template>
   <MazLoader />
-</template>`,
-        code2: `<template>
-  <MazLoader dark />
 </template>`
       }
     }

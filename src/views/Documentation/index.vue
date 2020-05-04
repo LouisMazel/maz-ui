@@ -10,7 +10,7 @@
     </MazSidebar>
     <div class="documentation__container flex direction-column flex-1">
       <div
-        v-if="$route.name !== 'Install' && $route.name !== 'GetStarted'"
+        v-if="isComponentRoute"
         class="flex space-between px-5 py-3 align-center flex--wrap"
       >
         <h2>
@@ -28,7 +28,7 @@
       <NavFooter />
     </div>
     <MazSidebar
-      v-if="$route.name !== 'Install' && $route.name !== 'GetStarted'"
+      v-if="isComponentRoute"
       v-model="hasRightSidebarOpen"
       :width="1000"
       right
@@ -45,6 +45,10 @@
   import LeftSidebarContent from './_subs/LeftSidebarContent'
   import RightSidebarContent from './_subs/RightSidebarContent'
   import NavFooter from '@/components/NavFooter'
+
+  const isGeneralDoc = (name) => ['Install', 'GetStarted'].includes(name)
+  const isCliDoc = (name) => ['CliInstall'].includes(name)
+  const isThemeDoc = (name) => ['Theme'].includes(name)
 
   export default {
     name: 'Documentation',
@@ -63,6 +67,10 @@
     computed: {
       currentComponent () {
         return this.$route.name.slice(0, -3)
+      },
+      isComponentRoute () {
+        const { name } = this.$route
+        return !isGeneralDoc(name) && !isCliDoc(name) && !isThemeDoc(name)
       }
     },
     methods: {
@@ -85,7 +93,16 @@
 </style>
 
 <style lang="scss">
-  .content p {
-    margin-bottom: 15px;
+  .content {
+    > p,
+    > h1,
+    > h2,
+    > h3,
+    > h4,
+    > h5,
+    > h6,
+    > .code-container {
+      margin-bottom: 15px;
+    }
   }
 </style>

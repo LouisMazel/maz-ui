@@ -8,10 +8,10 @@
     height: 24px;
 
     &__arrow {
-      color: $icon-color;
+      color: $input-icon-color;
 
       .arrow {
-        fill: $icon-color;
+        fill: $input-icon-color;
       }
     }
   }
@@ -70,10 +70,10 @@
 .is-dark.maz-select {
   &__toggle {
     &__arrow {
-      color: $icon-color-dark;
+      color: $input-icon-color-dark;
 
       .arrow {
-        fill: $icon-color-dark;
+        fill: $input-icon-color-dark;
       }
     }
   }

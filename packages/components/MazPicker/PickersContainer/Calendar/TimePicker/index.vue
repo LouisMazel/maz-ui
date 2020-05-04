@@ -1,8 +1,11 @@
 <template>
   <div
     ref="TimePicker"
-    :style="[{height: `${height}px`}]"
-    class="time-picker flex flex-fixed flex-1 border-left border-left-solid border-color"
+    :style="[{height: `${hasDate ? height : 150}px`}]"
+    class="time-picker flex flex-fixed flex-1"
+    :class="{
+      'border-left border-left-solid border-color': hasDate
+    }"
   >
     <div
       v-for="column in columns"
@@ -76,6 +79,7 @@
       maxDate: { type: Object, default: null },
       minuteInterval: { type: Number, required: true },
       height: { type: Number, required: true },
+      hasDate: { type: Boolean, required: true },
       disabledHours: { type: Array, required: true },
       behaviour: { type: Object, default: Object }
     },

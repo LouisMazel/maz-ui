@@ -28,10 +28,16 @@
               Get started
             </router-link>
             <router-link
-              class="btn btn--primary--outline"
+              class="btn btn--primary--outline mr-2"
               :to="{ name: 'MazInputDoc' }"
             >
               Components
+            </router-link>
+            <router-link
+              class="btn btn--primary--outline mr-2"
+              :to="{ name: 'Theme' }"
+            >
+              Theme
             </router-link>
           </div>
           <div class="flex align-start flex--wrap align-center justify-center">

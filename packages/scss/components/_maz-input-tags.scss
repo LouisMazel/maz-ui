@@ -97,7 +97,7 @@
     appearance: none;
     border: none;
     background-color: transparent;
-    color: $icon-color;
+    color: $input-icon-color;
     border-radius: $clear-size;
     cursor: pointer;
     font-size: .857em;
@@ -265,10 +265,10 @@
   }
 
   &__toggle-btn {
-    color: $icon-color-dark;
+    color: $input-icon-color-dark;
 
     &__effect {
-      background-color: darken($icon-color-dark, 10%);
+      background-color: darken($input-icon-color-dark, 10%);
     }
   }
 }

@@ -22,26 +22,21 @@
     <router-link
       class="menu-item btn btn--white mb-2 w-100 no-shadow text-color bg-color no-border hover-bg-color"
       :to="{
-        name: 'Install'
+        name: 'CliInstall'
       }"
     >
-      Generate Vue.JS x MazUI App
+      Create project w/ Nuxt.JS x Prismic
     </router-link>
+    <h4 class="my-3">
+      Theme
+    </h4>
     <router-link
       class="menu-item btn btn--white mb-2 w-100 no-shadow text-color bg-color no-border hover-bg-color"
       :to="{
-        name: 'Install'
+        name: 'Theme'
       }"
     >
-      Generate Vue.JS x Nuxt App
-    </router-link>
-    <router-link
-      class="menu-item btn btn--white mb-2 w-100 no-shadow text-color bg-color no-border hover-bg-color"
-      :to="{
-        name: 'Install'
-      }"
-    >
-      Generate Vue.JS x Nuxt x Prismic App
+      Use your own colors & text properties
     </router-link>
     <h3 class="my-3">
       Components
@@ -80,20 +75,24 @@
 <script>
   import { replaceAll, pascalCaseToKebabCase } from '@/utils'
 
+  const isGeneralDoc = (name) => ['Install', 'GetStarted'].includes(name)
+  const isCliDoc = (name) => ['CliInstall'].includes(name)
+  const isThemeDoc = (name) => ['Theme'].includes(name)
+
   export default {
     name: 'LeftSidebarContent',
     computed: {
       routesStartedDoc () {
         return this.$router.options.routes.filter(route => route.path === '/documentation')[0]
-          .children.filter(child => child.name === 'Install' || child.name === 'GetStarted')
+          .children.filter(child => isGeneralDoc(child.name))
       },
       routesFormComponents () {
         return this.$router.options.routes.filter(route => route.path === '/documentation')[0]
-          .children.filter(child => child.name !== 'Install' && child.name !== 'GetStarted').slice(0, 11)
+          .children.filter(({ name }) => !isGeneralDoc(name) && !isCliDoc(name) && !isThemeDoc(name)).slice(0, 12)
       },
       routesUiComponents () {
         return this.$router.options.routes.filter(route => route.path === '/documentation')[0]
-          .children.filter(child => child.name !== 'Install' && child.name !== 'GetStarted').slice(11)
+          .children.filter(({ name }) => !isGeneralDoc(name) && !isCliDoc(name) && !isThemeDoc(name)).slice(12)
       }
     },
     methods: {
@@ -114,6 +113,7 @@
     .menu-item {
       font-weight: 500;
       margin-bottom: .5em;
+      line-height: normal;
 
       &:last-child {
         margin-bottom: 0;

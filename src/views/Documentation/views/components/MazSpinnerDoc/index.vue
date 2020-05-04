@@ -2,25 +2,29 @@
   <div class="maz-spinner-doc flex flex--wrap">
     <div class="flex-1 mr-4">
       <ComponentContainer
-        class="text-center"
+        :code="code1"
       >
-        <MazSpinner
-          v-for="color in colors"
-          :key="`spinner-${color}`"
-          :color="color"
-        />
+        <div class="text-center">
+          <MazSpinner
+            v-for="color in colors"
+            :key="`spinner-${color}`"
+            :color="color"
+          />
+        </div>
       </ComponentContainer>
     </div>
     <div class="flex-1">
       <ComponentContainer
         dark
-        class="flex flex-center"
+        :code="code2"
       >
-        <MazSpinner
-          v-for="size in sizes"
-          :key="`spinner-${size}`"
-          :size="size"
-        />
+        <div class="flex flex-center">
+          <MazSpinner
+            v-for="size in sizes"
+            :key="`spinner-${size}`"
+            :size="size"
+          />
+        </div>
       </ComponentContainer>
     </div>
   </div>
@@ -36,7 +40,13 @@
         ],
         sizes: [
           20, 40, 60, 80, 100, 120, 140
-        ]
+        ],
+        code1: `<MazSpinner
+  :color="YOUR_COLOR"
+/>`,
+        code2: `<MazSpinner
+  :size="YOUR_SIZE"
+/>`
       }
     }
   }
