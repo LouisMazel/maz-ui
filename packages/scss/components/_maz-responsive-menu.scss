@@ -32,7 +32,7 @@
 .is-dark .maz-responsive-menu {
   &-collapse {
     background-color: $bg-color-dark;
-    border: 1px solid $hover-bg-color-dark;
+    border: 1px solid $hover-color-dark;
 
     &__items {
       color: $text-color-dark;
@@ -43,7 +43,7 @@
 
       &:hover:not(.router-link-exact-active),
       &:focus:not(.router-link-exact-active) {
-        background-color: $hover-bg-color-dark;
+        background-color: $hover-color-dark;
       }
     }
   }

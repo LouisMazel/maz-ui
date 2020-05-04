@@ -26,6 +26,7 @@
 
   &__container {
     margin: 30px auto;
+    background-color: white;
     box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
     transition: all .3s ease;
     border-radius: $border-radius;
@@ -75,12 +76,12 @@
 .is-dark .maz-dialog,
 .is-dark.maz-dialog {
   &__body {
-    background-color: $hover-bg-color-dark;
+    background-color: $hover-color-dark;
     color: $text-color-dark;
   }
 
   &__footer {
-    background-color: $hover-bg-color-dark;
+    background-color: $hover-color-dark;
 
     button {
       color: $text-color-dark;

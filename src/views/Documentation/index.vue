@@ -2,7 +2,7 @@
   <div class="documentation flex flex-1 pos-r">
     <MazSidebar
       v-model="hasLeftSidebarOpen"
-      :width="280"
+      :width="250"
       :absolute="isAbsolute"
       :layer="isAbsolute"
     >
@@ -11,7 +11,7 @@
     <div class="documentation__container flex direction-column flex-1">
       <div
         v-if="$route.name !== 'Install' && $route.name !== 'GetStarted'"
-        class="flex space-between px-5 py-3 align-center flex--wrap"
+        class="flex space-between px-5 py-3 align-center"
       >
         <h2>
           {{ currentComponent | capitalize }}
@@ -30,7 +30,7 @@
     <MazSidebar
       v-if="$route.name !== 'Install' && $route.name !== 'GetStarted'"
       v-model="hasRightSidebarOpen"
-      :width="900"
+      :width="700"
       right
       absolute
       layer
@@ -45,6 +45,7 @@
   import LeftSidebarContent from './_subs/LeftSidebarContent'
   import RightSidebarContent from './_subs/RightSidebarContent'
   import NavFooter from '@/components/NavFooter'
+  import { mapGetters } from 'vuex'
 
   export default {
     name: 'Documentation',
@@ -61,6 +62,7 @@
       }
     },
     computed: {
+      ...mapGetters(['hasDarkTheme']),
       currentComponent () {
         return this.$route.name.slice(0, -3)
       }

@@ -37,8 +37,9 @@
           @click="isOpen = !isOpen"
         >
           <slot name="button-icon">
-            <ArrowIcon
-              :orientation="isOpen ? 'left' : 'right'"
+            <component
+              :is="componentArrow"
+              :dark="dark"
             />
           </slot>
         </button>
@@ -63,7 +64,8 @@
 <script>
   import MazLoader from '../MazLoader'
   import uniqueId from './../../mixins/uniqueId'
-  import ArrowIcon from '../_subs/ArrowIcon'
+  import ArrowLeft from '../_subs/ArrowLeft'
+  import ArrowRight from '../_subs/ArrowRight'
 
   /**
    * Generic component used to show a togglable sidebar (left or right) in the layout
@@ -83,28 +85,20 @@
     name: 'MazSidebar',
     components: {
       MazLoader,
-      ArrowIcon
+      ArrowLeft,
+      ArrowRight
     },
     mixins: [uniqueId],
     props: {
-      // Boolean to open or not the sidebar
       value: { type: Boolean, required: true },
       id: { type: String, default: null },
-      // Size bar width
       width: { type: Number, default: 300 },
-      // Show loading layer
       loading: { type: Boolean, default: false },
-      // So that the user cannot close the sidebar
       noCloseBtn: { type: Boolean, default: false },
-      // Remove shadow UI
       noShadow: { type: Boolean, default: false },
-      // the sidebar goes over the content
       absolute: { type: Boolean, default: false },
-      // Must be activated if you want to integrate it on the right side
       right: { type: Boolean, default: false },
-      // Dark mode
       dark: { type: Boolean, default: false },
-      // Gray layer above the content, if you click on it, the side bar closes
       layer: { type: Boolean, default: false }
     },
     computed: {
@@ -122,6 +116,11 @@
           flex: `0 0 ${this.isOpen ? this.width : 0}px`,
           zIndex: this.isOpen && this.layer ? 10 : 9
         }
+      },
+      componentArrow () {
+        return this.isOpen
+          ? this.right ? 'ArrowRight' : 'ArrowLeft'
+          : this.right ? 'ArrowLeft' : 'ArrowRight'
       }
     }
   }

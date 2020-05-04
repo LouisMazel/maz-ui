@@ -1,5 +1,5 @@
 .maz-dropzone {
-  border: $border-width dashed $border-color;
+  border: 1px dashed $hover-color;
   min-height: 245px;
   background-color: $bg-color;
   color: $muted-color;
@@ -14,7 +14,7 @@
 
   .dz-progress {
     overflow: visible;
-    background-color: $hover-bg-color;
+    background-color: $hover-color;
     width: 150px;
     left: calc(50% - 35px);
 
@@ -57,7 +57,7 @@
     height: 200px;
     margin: 0 auto;
     border-radius: $border-radius;
-    border-color: $hover-bg-color;
+    border: 1px dashed $hover-color;
 
     > div {
       width: inherit;
@@ -81,7 +81,7 @@
   }
 
   &:hover {
-    background-color: $hover-bg-color;
+    background-color: $hover-color;
 
     .dz-message .material-icons {
       color: $primary-color !important;
@@ -92,11 +92,11 @@
 .is-dark .maz-dropzone,
 .maz-dropzone.is-dark {
   background-color: $bg-color-dark;
-  border-color: $border-color-dark;
-  color: darken($hover-bg-color, 20%);
+  border-color: darken($text-color-dark, 20%);
+  color: darken($hover-color, 20%);
 
   &:hover {
-    background-color: $hover-bg-color-dark;
+    background-color: $hover-color-dark;
   }
 
   .dz-preview .dz-image {

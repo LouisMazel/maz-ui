@@ -3,6 +3,12 @@
   height: 40px;
   min-height: 40px;
 
+  &:hover {
+    .input-tel__input {
+      border-color: $primary-color;
+    }
+  }
+
   &__label {
     position: absolute;
     top: 4px;
@@ -12,7 +18,7 @@
     opacity: 0;
     transition: all .25s cubic-bezier(.645, .045, .355, 1);
     font-size: .786em;
-    color: $placeholder-color;
+    color: $secondary-color;
   }
 
   &__input {
@@ -25,14 +31,18 @@
     font-weight: 400;
     appearance: none;
     outline: none;
-    border: $border-width solid $border-color;
+    border: 1px solid $third-color;
     border-radius: $border-radius;
     font-size: 1em;
     z-index: 0;
     caret-color: $primary-color;
-    margin-left: -2px;
+    margin-left: -1px;
     height: 40px;
     min-height: 40px;
+
+    &:hover {
+      border-color: $primary-color;
+    }
 
     &:not(.no-country-selector) {
       border-top-left-radius: 0;
@@ -40,27 +50,35 @@
     }
 
     &::-webkit-input-placeholder {
-      color: $placeholder-color;
+      color: $secondary-color;
     }
 
     &::-moz-placeholder {
-      color: $placeholder-color;
+      color: $secondary-color;
     }
 
     &:-ms-input-placeholder {
-      color: $placeholder-color;
+      color: $secondary-color;
     }
 
     &::-ms-input-placeholder {
-      color: $placeholder-color;
+      color: $secondary-color;
     }
 
     &:-moz-placeholder {
-      color: $placeholder-color;
+      color: $secondary-color;
     }
 
     &::placeholder {
-      color: $placeholder-color;
+      color: $secondary-color;
+    }
+
+    &__input:-webkit-autofill,
+    &__input:-webkit-autofill:hover,
+    &__input:-webkit-autofill:focus,
+    &__input:-webkit-autofill:active {
+      box-shadow: 0 0 0 1000px $bg-color inset !important;
+      -webkit-text-fill-color: $secondary-color !important;
     }
   }
 
@@ -77,10 +95,10 @@
     appearance: none;
     border: none;
     background: transparent;
-    color: $icon-color;
+    color: $secondary-color;
     border-radius: $clear-size;
     cursor: pointer;
-    font-size: 1em;
+    font-size: .857em;
 
     &:focus {
       outline: none;
@@ -99,7 +117,7 @@
       bottom: 0;
       width: $clear-size;
       height: $clear-size;
-      background-color: darken($border-color, 10%);
+      background-color: $muted-color;
       border-radius: $clear-size;
       transform: scale(0);
       transition: transform 200ms;
@@ -121,6 +139,7 @@
     .input-tel {
       &__input {
         border-color: $primary-color;
+        box-shadow: 0 0 0 .143rem $primary-color-transparency;
       }
 
       &__label {
@@ -128,9 +147,16 @@
       }
     }
 
+    &.has-error {
+      .input-tel__input {
+        box-shadow: 0 0 0 .143rem $danger-color-transparency;
+      }
+    }
+
     &.is-valid {
       .input-tel__input {
         border-color: $success-color;
+        box-shadow: 0 0 0 .143rem $success-color-transparency;
       }
     }
   }
@@ -185,6 +211,7 @@
     cursor: not-allowed;
 
     .input-tel__input {
+      border-color: #CCC;
       background-color: #F2F2F2;
       color: $disabled-color;
 
@@ -265,12 +292,12 @@
 
   &__loader {
     bottom: 0;
-    height: $border-width;
+    height: 2px;
     left: 2px;
     width: calc(100% - 4px);
     position: absolute;
     overflow: hidden;
-    border-radius: $border-radius;
+    border-radius: 4px;
 
     &__progress-bar {
       background-color: $primary-color;
@@ -296,44 +323,56 @@
 
   .input-tel {
     &__label {
-      color: $placeholder-color-dark;
+      color: $secondary-color-dark;
     }
 
     &__input {
       background-color: $bg-color-dark-l;
-      border-color: $border-color-dark;
-      color: $text-color-dark;
+      border: 1px solid $third-color-dark;
+      color: $secondary-color-dark;
 
       &::-webkit-input-placeholder {
-        color: $placeholder-color-dark;
+        color: $secondary-color-dark;
       }
 
       &::-moz-placeholder {
-        color: $placeholder-color-dark;
+        color: $secondary-color-dark;
       }
 
       &:-ms-input-placeholder {
-        color: $placeholder-color-dark;
+        color: $secondary-color-dark;
       }
 
       &::-ms-input-placeholder {
-        color: $placeholder-color-dark;
+        color: $secondary-color-dark;
       }
 
       &:-moz-placeholder {
-        color: $placeholder-color-dark;
+        color: $secondary-color-dark;
       }
 
       &::placeholder {
-        color: $placeholder-color-dark;
+        color: $secondary-color-dark;
+      }
+
+      &__input:-webkit-autofill,
+      &__input:-webkit-autofill:hover,
+      &__input:-webkit-autofill:focus,
+      &__input:-webkit-autofill:active {
+        box-shadow: 0 0 0 1000px $bg-color-dark inset !important;
+        -webkit-text-fill-color: $secondary-color-dark !important;
       }
     }
 
     &__toggle-btn {
-      color: $icon-color-dark;
+      color: $secondary-color-dark;
 
       &__effect {
-        background-color: darken($icon-color-dark, 10%);
+        background-color: $muted-color-dark;
+      }
+
+      &:hover {
+        color: white;
       }
     }
   }

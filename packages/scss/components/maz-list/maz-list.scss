@@ -13,12 +13,12 @@
   }
 
   &.no-shadow {
-    border: $border-width solid $hover-bg-color;
+    border: 1px solid $hover-color;
   }
 }
 
 .is-dark .maz-list,
 .is-dark.maz-list {
   background-color: $bg-color-dark;
-  border-color: $hover-bg-color-dark;
+  border: 1px solid $hover-color-dark;
 }

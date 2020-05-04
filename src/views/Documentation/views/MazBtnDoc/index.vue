@@ -5,9 +5,9 @@
       language="html"
       class="btn-container"
     >
-      <h4 class="mb-3">
+      <h3 class="mb-3">
         Example
-      </h4>
+      </h3>
       <MazBtn>
         Primary default
       </MazBtn>
@@ -27,9 +27,9 @@
         fab
       </MazBtn>
       <MazBtn
-        loading
+        loader
       >
-        Primary loading
+        Primary loader
       </MazBtn>
       <MazBtn
         disabled
@@ -43,14 +43,15 @@
       </MazBtn>
       <MazBtn
         href="/#/documentation/btn"
+        disabled
       >
         It's a link
       </MazBtn>
     </ComponentContainer>
     <ComponentContainer>
-      <h4 class="mb-3">
+      <h3 class="mb-3">
         Basic
-      </h4>
+      </h3>
       <div
         v-for="type in btnTypes"
         :key="`normal-${type}`"
@@ -67,9 +68,9 @@
       </div>
     </ComponentContainer>
     <ComponentContainer>
-      <h4 class="mb-3">
+      <h3 class="mb-3">
         Outline
-      </h4>
+      </h3>
       <div
         v-for="type in btnTypes"
         :key="`ountline-${type}`"
@@ -87,9 +88,9 @@
       </div>
     </ComponentContainer>
     <ComponentContainer>
-      <h4 class="mb-3">
+      <h3 class="mb-3">
         Rounded
-      </h4>
+      </h3>
       <div
         v-for="type in btnTypes"
         :key="`rounded-${type}`"
@@ -107,9 +108,9 @@
       </div>
     </ComponentContainer>
     <ComponentContainer>
-      <h4 class="mb-3">
+      <h3 class="mb-3">
         Fab
-      </h4>
+      </h3>
       <div
         v-for="type in btnTypes"
         :key="`fab-${type}`"
@@ -127,35 +128,32 @@
       </div>
     </ComponentContainer>
     <ComponentContainer>
-      <h4 class="mb-3">
-        loading
-      </h4>
+      <h3 class="mb-3">
+        Loader
+      </h3>
       <div
-        v-for="type in btnTypes"
-        :key="`loading-${type}`"
         class="btn-container"
       >
         <MazBtn
           v-for="size in btnSizes"
-          :key="`loading-${size}`"
+          :key="`loader-${size}`"
           :size="size"
-          :color="type"
-          loading
+          loader
         >
-          loading {{ size }}
+          Loader {{ size }}
         </MazBtn>
       </div>
     </ComponentContainer>
     <ComponentContainer>
-      <h4 class="mb-3">
+      <h3 class="mb-3">
         Disabled
-      </h4>
+      </h3>
       <div
         class="btn-container"
       >
         <MazBtn
           v-for="size in btnSizes"
-          :key="`loading-${size}`"
+          :key="`loader-${size}`"
           :size="size"
           disabled
           outline
@@ -173,7 +171,7 @@
     data () {
       return {
         btnTypes: [
-          'primary', 'secondary', 'third', 'success', 'danger', 'warning', 'grey', 'info', 'light', 'dark', 'default', 'white', 'black'
+          'primary', 'secondary', 'success', 'danger', 'warning', 'grey', 'info', 'light', 'dark', 'default', 'white', 'black'
         ],
         btnSizes: [
           'lg', '', 'md', 'sm', 'mini'
@@ -198,9 +196,9 @@
     fab
   </MazBtn>
   <MazBtn
-    loading
+    loader
   >
-    Primary loading
+    Primary loader
   </MazBtn>
   <MazBtn
     disabled
@@ -214,6 +212,7 @@
   </MazBtn>
   <MazBtn
     href="/#/documentation/btn"
+    disabled
   >
     It's a link
   </MazBtn>

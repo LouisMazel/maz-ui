@@ -28,13 +28,13 @@
     display: block;
     font-family: monospace;
     white-space: pre;
+    font-size: .857em;
     background-color: #FAFAFA;
-    border: $border-width solid #EAEEFB;
+    border: 1px solid #EAEEFB;
     border-radius: $border-radius;
     -webkit-font-smoothing: auto;
     overflow-x: auto;
     padding: 0 20px;
-    font-size: .925em;
 
     &__content {
       background-color: transparent;
@@ -42,8 +42,8 @@
   }
 
   .is-dark .code-container {
-    background-color: $hover-bg-color-dark;
-    border-color: #535673;
+    background-color: $hover-color-dark;
+    border: 1px solid #535673;
 
     .hljs,
     .hljs-subst {

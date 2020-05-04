@@ -4,9 +4,9 @@
       :code="codeExample"
       language="js"
     >
-      <h4 class="mb-3">
+      <h2 class="mb-3">
         Basic use
-      </h4>
+      </h2>
       <p class="mb-3">
         v-model="{{ selectedItem || 'null' }}"
       </p>
@@ -22,16 +22,16 @@
       :code="codeExample2"
       language="js"
     >
-      <h4 class="mb-3">
+      <h2 class="mb-3">
         Custom
-      </h4>
+      </h2>
       <p class="mb-3">
         v-model="{{ selectedItem2 || 'null' }}"
       </p>
       <MazSearch
         v-model="selectedItem2"
         :items="results"
-        placeholder="Search a person"
+        label="Search a person"
         left-icon-name="search"
         :loading="loading"
         clearable
@@ -113,7 +113,7 @@ export default {
   <MazSearch
     v-model="selectedItem2"
     :items="results"
-    placeholder="Search a person"
+    label="Search a person"
     left-icon-name="search"
     :loading="loading"
     clearable

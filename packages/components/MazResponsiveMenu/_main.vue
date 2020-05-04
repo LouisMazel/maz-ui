@@ -18,7 +18,7 @@
           exclude: ['button-open'],
           handler: 'close'
         }"
-        class="maz-responsive-menu-collapse flex direction-column border-radius"
+        class="maz-responsive-menu-collapse flex direction-column br-8"
       >
         <RouterLink
           v-for="({ name, label }, i) in routes"

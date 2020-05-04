@@ -5,72 +5,34 @@
       language="html"
       class="btn-container"
     >
-      <div class="flex flex-start direction-column">
-        <h3 class="mb-3">
-          Examples
-        </h3>
+      <h3 class="mb-3">
+        Example
+      </h3>
+      <MazBtnGroup
+        v-model="btnGroupValue"
+        :items="items"
+      />
+      <MazBtnGroup
+        v-model="btnGroupValueBoolean"
+        :items="itemsBoolean"
+        color="info"
+      />
+      <MazBtnGroup
+        v-model="btnGroupValueString"
+        :items="itemsString"
+        rounded
+        color="success"
+      />
+      <MazBtnGroup
+        v-model="btnGroupValue"
+        :items="items"
+        disabled
+        rounded
+      />
 
-        <h5 class="mb-3">
-          LG primary
-        </h5>
-        <MazBtnGroup
-          v-model="btnGroupValue"
-          :items="items"
-          size="lg"
-        />
-        <h5 class="mb-3">
-          Secondary
-        </h5>
-        <MazBtnGroup
-          v-model="btnGroupValueBoolean"
-          :items="itemsBoolean"
-          color="secondary"
-        />
-        <h5 class="mb-3">
-          SM third outline
-        </h5>
-        <MazBtnGroup
-          v-model="btnGroupValueBoolean"
-          :items="itemsBoolean"
-          outline
-          size="md"
-          color="third"
-        />
-        <h5 class="mb-3">
-          SM third rounded
-        </h5>
-        <MazBtnGroup
-          v-model="btnGroupValueString"
-          :items="itemsString"
-          rounded
-          size="sm"
-          color="third"
-        />
-        <h5 class="mb-3">
-          MINI success rounded outline
-        </h5>
-        <MazBtnGroup
-          v-model="btnGroupValueMini"
-          :items="itemsMini"
-          rounded
-          outline
-          size="mini"
-          color="success"
-        />
-
-        <h5 class="mb-3">
-          Disabled
-        </h5>
-        <MazBtnGroup
-          v-model="btnGroupValue"
-          :items="items"
-          disabled
-        />
-
-        <p>Number value : {{ btnGroupValue }}</p>
-        <p>Boolean value : {{ btnGroupValueBoolean }}</p>
-        <p>String value : {{ btnGroupValueString || 'null' }}</p>
-      </div>
+      <p>Number value : {{ btnGroupValue }}</p>
+      <p>Boolean value : {{ btnGroupValueBoolean }}</p>
+      <p>String value : {{ btnGroupValueString || 'null' }}</p>
     </ComponentContainer>
   </div>
 </template>
@@ -83,7 +45,6 @@
         btnGroupValue: 1,
         btnGroupValueBoolean: false,
         btnGroupValueString: null,
-        btnGroupValueMini: null,
         items: [
           { label: 'Number 1', value: 1 },
           { label: 'Number 2', value: 2 },
@@ -99,68 +60,27 @@
           { label: 'String toto', value: 'toto' },
           { label: 'String tata', value: 'tata' }
         ],
-        itemsMini: [
-          { label: 'Mini foo', value: 'foo' },
-          { label: 'Mini bar', value: 'bar' },
-          { label: 'Mini toto', value: 'toto' },
-          { label: 'Mini tata', value: 'tata' }
-        ],
         codeExample: `<template>
-  <h5 class="mb-3">
-    LG primary
-  </h5>
   <MazBtnGroup
     v-model="btnGroupValue"
     :items="items"
-    size="lg"
   />
-  <h5 class="mb-3">
-    Secondary
-  </h5>
   <MazBtnGroup
     v-model="btnGroupValueBoolean"
     :items="itemsBoolean"
-    color="secondary"
+    color="info"
   />
-  <h5 class="mb-3">
-    SM third outline
-  </h5>
-  <MazBtnGroup
-    v-model="btnGroupValueBoolean"
-    :items="itemsBoolean"
-    outline
-    size="md"
-    color="third"
-  />
-  <h5 class="mb-3">
-    SM third rounded
-  </h5>
   <MazBtnGroup
     v-model="btnGroupValueString"
     :items="itemsString"
     rounded
-    size="sm"
-    color="third"
-  />
-  <h5 class="mb-3">
-    MINI success rounded outline
-  </h5>
-  <MazBtnGroup
-    v-model="btnGroupValueMini"
-    :items="itemsMini"
-    rounded
-    outline
-    size="mini"
     color="success"
   />
-
-  <h5 class="mb-3">
-    Disabled
-  </h5>
   <MazBtnGroup
     v-model="btnGroupValue"
     :items="items"
     disabled
+    rounded
   />
 </template>
 
@@ -170,7 +90,6 @@ export default {
       btnGroupValue: 1,
       btnGroupValueBoolean: false,
       btnGroupValueString: null,
-      btnGroupValueMini: null,
       items: [
         { label: 'Number 1', value: 1 },
         { label: 'Number 2', value: 2 },
@@ -185,12 +104,6 @@ export default {
         { label: 'String bar', value: 'bar' },
         { label: 'String toto', value: 'toto' },
         { label: 'String tata', value: 'tata' }
-      ],
-      itemsMini: [
-        { label: 'Mini foo', value: 'foo' },
-        { label: 'Mini bar', value: 'bar' },
-        { label: 'Mini toto', value: 'toto' },
-        { label: 'Mini tata', value: 'tata' }
       ]
     }
   }

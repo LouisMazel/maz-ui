@@ -5,7 +5,7 @@ import { pascalCaseToKebabCase } from '@/utils'
 Vue.use(Router)
 
 const componentsRoutes = [
-  'Install', 'GetStarted', 'MazInputDoc', 'MazPickerDoc', 'MazInputTagsDoc', 'MazSelectDoc', 'MazSearchDoc',
+  'Install', 'GetStarted', 'MazInputDoc', 'MazInputTagsDoc', 'MazSelectDoc', 'MazSearchDoc',
   'MazPhoneNumberInputDoc', 'MazDropzoneDoc', 'MazBtnDoc', 'MazBtnGroupDoc', 'MazSwitchDoc', 'MazCheckboxDoc',
   'MazSidebarDoc', 'MazTabsLayoutDoc', 'MazPaginationDoc', 'MazLoaderDoc', 'MazSpinnerDoc', 'MazCollapseDoc',
   'MazListDoc', 'MazDraggableListDoc', 'MazReadMoreDoc', 'MazResponsiveMenuDoc', 'MazTransitionExpandDoc', 'MazDialogDoc', 'MazFlexDoc'

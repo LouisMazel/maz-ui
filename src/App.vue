@@ -1,7 +1,7 @@
 <template>
   <div
     id="app"
-    class="flex direction-column bg-color"
+    class="flex direction-column"
     :class="{
       'is-dark': hasDarkTheme,
       'documentation': isDocPage
@@ -29,7 +29,7 @@
     },
     mounted () {
       const date = new Date().toTimeString()
-      if (date < '06:30' || date > '21:00') {
+      if (date < '08:30' || date > '18:30') {
         this.setDarkTheme(true)
       }
     },
@@ -41,6 +41,8 @@
 
 <style lang="scss">
   #app.is-dark {
+    background-color: $bg-color-dark;
+
     h3,
     h4,
     h5,

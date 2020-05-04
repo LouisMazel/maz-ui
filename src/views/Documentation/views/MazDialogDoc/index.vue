@@ -57,6 +57,7 @@
         </MazBtn>
         <MazDialog
           v-model="hasDialogOpenDark"
+          no-footer
           dark
         >
           <div slot="title">
@@ -125,24 +126,14 @@
     </div>
     Dialog Content Danger
   </MazDialog>
-  <MazDialog
-    v-model="hasDialogOpenDark"
-    dark
-  >
-    <div slot="title">
-      Dark Dialog
-    </div>
-    Dialog Content Dark
-  </MazDialog>
 </template>
 
 export default {
   data () {
     return {
       hasDialogOpen: false,
-        hasDialogOpenDanger: false,
-        hasDialogOpenSuccess: false,
-        hasDialogOpenDark: false
+      hasDialogOpenDanger: false,
+      hasDialogOpenSuccess: false
     }
   }
 }`

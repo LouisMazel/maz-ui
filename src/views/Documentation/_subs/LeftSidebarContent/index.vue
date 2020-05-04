@@ -3,45 +3,15 @@
     <h3 class="mb-3">
       Development
     </h3>
-    <h4 class="my-3">
-      General
-    </h4>
     <router-link
       v-for="route in routesStartedDoc"
       :key="route.name"
-      class="menu-item btn btn--white mb-2 w-100 no-shadow text-color bg-color no-border hover-bg-color"
+      class="menu-item btn btn--white mb-2 w-100"
       :to="{
         name: route.name
       }"
     >
       {{ getPageName(route.path) | capitalize }}
-    </router-link>
-    <h4 class="my-3">
-      Maz-CLI
-    </h4>
-    <router-link
-      class="menu-item btn btn--white mb-2 w-100 no-shadow text-color bg-color no-border hover-bg-color"
-      :to="{
-        name: 'Install'
-      }"
-    >
-      Generate Vue.JS x MazUI App
-    </router-link>
-    <router-link
-      class="menu-item btn btn--white mb-2 w-100 no-shadow text-color bg-color no-border hover-bg-color"
-      :to="{
-        name: 'Install'
-      }"
-    >
-      Generate Vue.JS x Nuxt App
-    </router-link>
-    <router-link
-      class="menu-item btn btn--white mb-2 w-100 no-shadow text-color bg-color no-border hover-bg-color"
-      :to="{
-        name: 'Install'
-      }"
-    >
-      Generate Vue.JS x Nuxt x Prismic App
     </router-link>
     <h3 class="my-3">
       Components
@@ -53,7 +23,7 @@
       <router-link
         v-for="route in routesFormComponents"
         :key="route.name"
-        class="menu-item btn btn--white w-100 no-shadow text-color bg-color no-border hover-bg-color"
+        class="menu-item btn btn--white w-100"
         :to="{
           name: route.name
         }"
@@ -66,7 +36,7 @@
       <router-link
         v-for="route in routesUiComponents"
         :key="route.name"
-        class="menu-item btn btn--white w-100 no-shadow text-color bg-color no-border hover-bg-color"
+        class="menu-item btn btn--white w-100"
         :to="{
           name: route.name
         }"
@@ -89,11 +59,11 @@
       },
       routesFormComponents () {
         return this.$router.options.routes.filter(route => route.path === '/documentation')[0]
-          .children.filter(child => child.name !== 'Install' && child.name !== 'GetStarted').slice(0, 11)
+          .children.filter(child => child.name !== 'Install' && child.name !== 'GetStarted').slice(0, 10)
       },
       routesUiComponents () {
         return this.$router.options.routes.filter(route => route.path === '/documentation')[0]
-          .children.filter(child => child.name !== 'Install' && child.name !== 'GetStarted').slice(11)
+          .children.filter(child => child.name !== 'Install' && child.name !== 'GetStarted').slice(10)
       }
     },
     methods: {
@@ -112,7 +82,9 @@
     overflow-y: auto;
 
     .menu-item {
-      font-weight: 500;
+      border: none;
+      color: black;
+      font-weight: 300;
       margin-bottom: .5em;
 
       &:last-child {
@@ -122,6 +94,16 @@
       &.router-link-active {
         color: $primary-color;
       }
+    }
+  }
+
+  .is-dark .menu-item {
+    background-color: $bg-color-dark;
+    color: $text-color-dark;
+
+    &:hover,
+    &:focus {
+      background-color: $hover-color-dark;
     }
   }
 </style>

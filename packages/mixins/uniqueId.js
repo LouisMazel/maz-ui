@@ -1,9 +1,8 @@
 export default {
   computed: {
     uniqueId () {
-      const id = this.id || this.$attrs.id
-      if (id) {
-        return `${id}`
+      if (this.id) {
+        return `${this.id}`
       } else {
         return `${this.$options.name}-${this._uid}`
       }

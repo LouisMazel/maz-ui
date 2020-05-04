@@ -1,0 +1,29 @@
+@import './variables/_color_types';
+
+@each $name, $color in $color_types {
+  @if (type-of($color) == 'color') {
+    .bg-#{$name} {
+      background-color: $color;
+    }
+
+    .bg-#{$name}-after::after {
+      background-color: $color;
+    }
+
+    .bg-#{$name}-before::before {
+      background-color: $color;
+    }
+
+    .bg-#{$name}-transparency {
+      background-color: rgba($color, .5);
+    }
+
+    .bg-#{$name}-after-transparency::after {
+      background-color: rgba($color, .5);
+    }
+
+    .bg-#{$name}-before-transparency::before {
+      background-color: rgba($color, .5);
+    }
+  }
+}

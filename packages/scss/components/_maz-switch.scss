@@ -52,6 +52,7 @@
   &__input:checked + &__toggle {
     span {
       transform: translateX(20px);
+      box-shadow: 0 3px 8px rgba($primary-color, .2);
 
       &::before {
         transform: scale(1);

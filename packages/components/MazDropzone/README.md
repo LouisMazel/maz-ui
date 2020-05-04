@@ -14,7 +14,7 @@
 | translations   | -           | `Object`  | `false`  | -           |
 | maxFiles       | -           | `Number`  | `false`  | 1           |
 | maxFilesize    | -           | `Number`  | `false`  | 2           |
-| addRemoveLinks | -           | `Boolean` | `false`  | true        |
+| addRemoveLinks | -           | `Boolean` | `false`  | -           |
 | dark           | -           | `Boolean` | `false`  | -           |
 
 <!-- @vuese:MazDropzone:props:end -->

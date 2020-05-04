@@ -2,13 +2,11 @@
   color: $text-color;
   border-radius: $border-radius;
   overflow: hidden;
-  border: $border-width solid $hover-bg-color;
+  border: 1px solid $hover-color;
 
   &__header-btn {
     background-color: transparent;
     border: none;
-    border-radius: 0;
-    box-shadow: none;
     color: $text-color;
     width: 100%;
     outline: none;
@@ -17,10 +15,20 @@
     &:focus {
       box-shadow: none;
     }
+
+    &__arrow {
+      transition: all .25s cubic-bezier(.645, .045, .355, 1);
+    }
   }
 
   &__content {
-    border-top: $border-width solid $text-color-dark;
+    border-top: 1px solid $text-color-dark;
+  }
+
+  &.is-open {
+    .maz-collapse__header-btn__arrow {
+      transform: rotate(180deg);
+    }
   }
 }
 
@@ -28,18 +36,18 @@
 .is-dark.maz-collapse {
   color: $text-color-dark;
   background-color: $bg-color-dark;
-  border-color: lighten($hover-bg-color-dark, 10%);
+  border: 1px solid lighten($hover-color-dark, 10%);
 
   &__header-btn {
     color: $text-color-dark;
 
     &:hover,
     &:focus {
-      background-color: $hover-bg-color-dark;
+      background-color: $hover-color-dark;
     }
   }
 
   &__content {
-    border-color: lighten($hover-bg-color-dark, 10%);
+    border-color: lighten($hover-color-dark, 10%);
   }
 }

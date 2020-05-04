@@ -18,7 +18,7 @@
       ref="InputTel"
       v-model="inputValue"
       v-bind="$attrs"
-      :placeholder="placeholderValue"
+      :placeholder="labelValue"
       :type="type"
       class="input-tel__input"
       :disabled="disabled"
@@ -40,7 +40,7 @@
       class="input-tel__label"
       @click="focusInput"
     >
-      {{ hintValue || placeholderValue }}
+      {{ hintValue || labelValue }}
     </label>
 
     <transition
@@ -48,7 +48,7 @@
     >
       <button
         v-if="clearable && inputValue"
-        class="input-tel__toggle-btn flex flex-center"
+        class="input-tel__toggle-btn flex align-center justify-center"
         title="clear"
         type="button"
         tabindex="-1"
@@ -76,11 +76,8 @@
   export default {
     name: 'InputTel',
     props: {
-      value: {
-        validator: prop => ['string', 'number'].includes(typeof prop) || prop === null,
-        default: null
-      },
-      placeholder: { type: String, default: 'Enter text' },
+      value: { type: [String, Number], default: null },
+      label: { type: String, default: 'Enter text' },
       hint: { type: String, default: null },
       error: { type: Boolean, default: Boolean },
       disabled: { type: Boolean, default: false },
@@ -109,9 +106,9 @@
           this.$emit('input', value)
         }
       },
-      placeholderValue () {
-        const { placeholder } = this
-        return this.required && placeholder ? `${placeholder} *` : placeholder
+      labelValue () {
+        const { label } = this
+        return this.required && label ? `${label} *` : label
       },
       hintValue () {
         const { hint } = this

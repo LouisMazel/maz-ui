@@ -1,6 +1,4 @@
 @import './../icons';
-@import './../../../packages/scss/index.scss';
-@import './load-fonts';
 
 html,
 body {
@@ -22,53 +20,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-weight: normal;
-}
-
-h1 {
-  font-family: GeomanistBold, sans-serif;
-  color: $primary-color;
-}
-
-h1,
-h2 {
-  color: $primary-color;
-}
-
-h2,
-h3 {
-  font-family: GeomanistMedium, sans-serif;
-}
-
-h4,
-h5,
-h6 {
-  font-family: GeomanistLight, sans-serif;
-}
-
-button,
-a {
-  font-weight: normal;
-}
-
-h2 {
-  font-size: 2em;
-}
-
-h3 {
-  font-size: 1.7em;
-}
-
-h4 {
-  font-size: 1.5em;
-}
-
-h5 {
-  font-size: 1.3em;
-}
-
-h6 {
-  font-size: 1.1em;
+  font-weight: 400;
 }
 
 .shadow-container {

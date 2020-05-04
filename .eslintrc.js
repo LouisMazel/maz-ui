@@ -47,11 +47,7 @@ module.exports = {
       }
     ],
     'no-undef': ['error', { typeof: true }],
-    'no-loop-func': 'warn',
-    indent: ['error', 2, {
-      ignoredNodes: ['TemplateLiteral']
-    }],
-    'template-curly-spacing': 'off'
+    'no-loop-func': 'warn'
   },
   parserOptions: {
     parser: 'babel-eslint'

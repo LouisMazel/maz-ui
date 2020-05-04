@@ -28,7 +28,7 @@
     }
 
     &:hover {
-      background-color: $hover-bg-color;
+      background-color: $hover-color;
     }
   }
 
@@ -55,7 +55,7 @@
     color: $text-color-dark;
 
     &:hover {
-      background-color: $hover-bg-color-dark;
+      background-color: $hover-color-dark;
     }
 
     &.disabled {

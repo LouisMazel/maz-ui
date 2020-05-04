@@ -130,7 +130,7 @@
       },
       async reset () {
         this.closeList()
-        // this.query = null
+        this.query = null
       },
       async updateValue (item) {
         // event sent when user select an item in the items list

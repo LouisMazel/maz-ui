@@ -1,0 +1,31 @@
+<template>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    :width="size"
+    :height="size"
+    viewBox="0 0 24 24"
+    class="arrow-left"
+    :class="{ 'is-white': dark }"
+  >
+    <path
+      :fill="color"
+      class="arrow"
+      d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"
+    />
+    <path
+      fill="none"
+      d="M0 0h24v24H0V0z"
+    />
+  </svg>
+</template>
+
+<script>
+  export default {
+    name: 'ArrowLeft',
+    props: {
+      dark: { type: Boolean, default: false },
+      color: { type: String, default: null },
+      size: { type: Number, default: 24 }
+    }
+  }
+</script>

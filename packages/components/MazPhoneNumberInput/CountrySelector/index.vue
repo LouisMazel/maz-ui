@@ -25,7 +25,7 @@
       :id="id"
       ref="CountrySelector"
       :value="callingCode"
-      :placeholder="placeholder"
+      :placeholder="label"
       :disabled="disabled"
       class="country-selector__input"
       readonly
@@ -38,7 +38,22 @@
       @click.stop="toggleList"
     >
       <slot name="arrow">
-        <ArrowIcon />
+        <svg
+          mlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          class="country-selector__toggle__arrow"
+        >
+          <path
+            class="arrow"
+            d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"
+          />
+          <path
+            fill="none"
+            d="M0 0h24v24H0V0z"
+          />
+        </svg>
       </slot>
     </div>
     <label
@@ -47,7 +62,7 @@
       class="country-selector__label"
       @click.stop="toggleList"
     >
-      {{ hint || placeholder }}
+      {{ hint || label }}
     </label>
     <Transition name="slide">
       <div
@@ -98,18 +113,17 @@
 <script>
   import { getCountryCallingCode } from 'libphonenumber-js'
   import { RecycleScroller } from 'vue-virtual-scroller'
-  import ArrowIcon from './../../_subs/ArrowIcon'
 
   export default {
     name: 'CountrySelector',
     components: {
-      RecycleScroller, ArrowIcon
+      RecycleScroller
     },
     props: {
       countriesHeight: { type: Number, default: 35 },
       id: { type: String, default: null },
       value: { type: [String, Object], default: null },
-      placeholder: { type: String, default: 'Choose country' },
+      label: { type: String, default: 'Choose country' },
       hint: { type: String, default: String },
       size: { type: String, default: String },
       error: { type: Boolean, default: false },

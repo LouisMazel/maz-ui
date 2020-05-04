@@ -5,9 +5,9 @@
     fab
     @click="handleClick"
   >
-    <ArrowIcon
+    <component
+      :is="`Arrow${right ? 'Right' : 'Left'}`"
       color="#6F6A6A"
-      :orientation="right ? 'right' : 'left'"
       :dark="dark"
       :size="28"
     />
@@ -15,20 +15,22 @@
 </template>
 
 <script>
-  import ArrowIcon from '../../_subs/ArrowIcon'
+  import ArrowLeft from '../../_subs/ArrowLeft'
+  import ArrowRight from '../../_subs/ArrowRight'
 
   export default {
     name: 'PaginationArrowBtn',
     components: {
-      ArrowIcon
+      ArrowLeft,
+      ArrowRight
     },
     props: {
       right: { type: Boolean, default: false },
       dark: { type: Boolean, default: false }
     },
     methods: {
-      handleClick (e) {
-        this.$emit('click', e)
+      handleClick (evt) {
+        this.$emit('click', evt)
       }
     }
   }

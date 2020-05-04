@@ -14,16 +14,6 @@
 
 <!-- @vuese:MazSwitch:props:end -->
 
-## Events
-
-<!-- @vuese:MazSwitch:events:start -->
-
-| Event Name | Description | Parameters |
-| ---------- | ----------- | ---------- |
-| input      | -           | -          |
-
-<!-- @vuese:MazSwitch:events:end -->
-
 ## MixIns
 
 <!-- @vuese:MazSwitch:mixIns:start -->

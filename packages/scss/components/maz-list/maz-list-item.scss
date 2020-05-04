@@ -2,7 +2,7 @@
   position: relative;
   padding: .75rem 1.25rem;
   border: none;
-  border-bottom: $border-width solid $hover-bg-color;
+  border-bottom: 1px solid $hover-color;
   margin: 0;
   color: $text-color;
   text-align: left;
@@ -15,7 +15,7 @@
   }
 
   &.has-hover:hover {
-    background-color: $hover-bg-color;
+    background-color: $hover-color;
   }
 
   &:first-child {
@@ -33,9 +33,9 @@
 
 .is-dark .maz-list-item {
   color: $text-color-dark;
-  border-color: $hover-bg-color-dark;
+  border-color: $hover-color-dark;
 
   &.has-hover:hover {
-    background-color: $hover-bg-color-dark;
+    background-color: $hover-color-dark;
   }
 }

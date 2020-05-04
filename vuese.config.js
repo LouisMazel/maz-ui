@@ -1,6 +1,5 @@
 module.exports = {
-  include: ['./packages/components/**/*'],
-  // exclude: ['./packages/components/MazPicker'],
+  include: ['./packages/**/*'],
   genType: 'markdown',
   markdownDir: '*',
   markdownFile: 'README'
