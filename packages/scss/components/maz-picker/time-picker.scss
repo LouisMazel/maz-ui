@@ -61,8 +61,8 @@
   }
 }
 
-.is-dark .time-picker,
-.is-dark.time-picker {
+.maz-is-dark .time-picker,
+.maz-is-dark.time-picker {
   &::after,
   &::before {
     border-color: $border-color-dark;

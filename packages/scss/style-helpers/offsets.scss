@@ -3,7 +3,7 @@
 
 @each $size in $sizes {
   @each $position in $orientations {
-    .#{$position}-#{$size} {
+    .#{$prefix}#{$position}-#{$size} {
       #{$position}: #{$size}px;
     }
   }

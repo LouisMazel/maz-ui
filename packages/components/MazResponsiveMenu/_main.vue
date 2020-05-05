@@ -1,29 +1,29 @@
 <template>
   <div
-    class="maz-responsive-menu flex align-center"
+    class="maz-responsive-menu maz-flex maz-align-center"
   >
     <button
       ref="button-open"
-      class="btn btn--primary--outline btn--icon"
+      class="maz-btn maz-btn--primary--outline maz-btn--icon"
       @click="open = !open"
     >
       <i class="material-icons">
         menu
       </i>
     </button>
-    <transition name="slide">
+    <transition name="maz-slide">
       <div
         v-if="open"
         v-closable="{
           exclude: ['button-open'],
           handler: 'close'
         }"
-        class="maz-responsive-menu-collapse flex direction-column border-radius"
+        class="maz-responsive-menu-collapse maz-flex maz-direction-column maz-border-radius"
       >
         <RouterLink
           v-for="({ name, label }, i) in routes"
           :key="`routes-${i}`"
-          class="maz-responsive-menu-collapse__items dots-text"
+          class="maz-responsive-menu-collapse__items maz-dots-text"
           :to="{ name }"
           @click.native="open = false"
         >

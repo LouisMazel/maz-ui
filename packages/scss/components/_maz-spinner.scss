@@ -1,8 +1,5 @@
 .maz-spinner {
   &.spinner-anim {
-    // width: 24px;
-    animation: spin .6s linear infinite;
-
     &__white path {
       fill: white;
     }

@@ -108,8 +108,8 @@
   }
 }
 
-.is-dark .maz-loader,
-.is-dark.maz-loader {
+.maz-is-dark .maz-loader,
+.maz-is-dark.maz-loader {
   .maz-loader__anim div::after {
     background-color: white;
   }

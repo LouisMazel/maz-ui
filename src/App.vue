@@ -1,9 +1,9 @@
 <template>
   <div
     id="app"
-    class="flex direction-column bg-color"
+    class="maz-flex maz-direction-column maz-bg-color"
     :class="{
-      'is-dark': hasDarkTheme,
+      'maz-is-dark': hasDarkTheme,
       documentation: isDocPage
     }"
   >
@@ -40,7 +40,7 @@ export default {
 </script>
 
 <style lang="scss">
-  #app.is-dark {
+  #app.maz-is-dark {
     h3,
     h4,
     h5,

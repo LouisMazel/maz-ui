@@ -1,6 +1,6 @@
 @import './variables/responsive';
 
-.container {
+.#{$prefix}container {
   width: 100%;
   padding-right: 15px;
   padding-left: 15px;
@@ -9,31 +9,31 @@
 }
 
 @media (max-width: $breakpoint-tablet) {
-  .container {
+  .#{$prefix}container {
     max-width: 100%;
   }
 }
 
 @media (min-width: $breakpoint-tablet) {
-  .container {
+  .#{$prefix}container {
     max-width: $breakpoint-tablet;
   }
 }
 
 @media (min-width: $breakpoint-laptop-s) {
-  .container {
+  .#{$prefix}container {
     max-width: $breakpoint-laptop-s;
   }
 }
 
 @media (min-width: $breakpoint-laptop-l) {
-  .container {
+  .#{$prefix}container {
     max-width: $breakpoint-laptop-l;
   }
 }
 
 @media (min-width: $breakpoint-4k) {
-  .container {
+  .#{$prefix}container {
     max-width: $breakpoint-4k;
   }
 }

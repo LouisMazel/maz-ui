@@ -4,11 +4,14 @@
     direction-column
     flex1
     class="used-by">
-    <MazFlex flex1>
-      <h2 class="text-center my-4">
+    <MazFlex
+      flex1
+      direction-column
+    >
+      <h2 class="maz-text-center maz-my-4">
         Projects Made With Mazel UI
       </h2>
-      <div class="container used-by__projects-list flex align-center pt-2 pb-5">
+      <div class="maz-container used-by__projects-list maz-flex maz-pt-2 maz-pb-5">
         <ProjectPreview
           v-for="(project, i) in projects"
           :key="`project-${i}`"
@@ -86,7 +89,7 @@ export default {
     }
   }
 
-  .is-dark {
+  .maz-is-dark {
     .used-by {
       color: $text-color-dark;
     }

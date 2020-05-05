@@ -1,9 +1,9 @@
 <template>
-  <div class="maz-btn-group flex">
+  <div class="maz-btn-group maz-flex">
     <MazBtn
       v-for="({ label, value: val }, i) in items"
       :key="`maz-btn-group-item-${i}`"
-      class="maz-btn-group__item flex-1"
+      class="maz-btn-group__item maz-flex-1"
       :class="{ 'rounded': rounded }"
       :active="val === value"
       :rounded="rounded"

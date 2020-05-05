@@ -1,5 +1,5 @@
 <template>
-  <div class="maz-draggable-list mb-3">
+  <div class="maz-draggable-list maz-mb-3">
     <draggable
       v-model="items"
       v-bind="dragOptions"
@@ -10,12 +10,12 @@
       <transition-group
         type="transition"
         tag="div"
-        :name="!drag ? 'flip-list' : null"
+        :name="!drag ? 'maz-flip-list' : null"
       >
         <div
           v-for="(item, i) in value"
           :key="`${itemKey ? item[itemKey] : Object.values(item)[0]}`"
-          class="maz-draggable-list__item flex align-center space-between"
+          class="maz-draggable-list__item maz-flex maz-align-center maz-space-between"
         >
           <!-- Default item displayed in list -->
           <slot

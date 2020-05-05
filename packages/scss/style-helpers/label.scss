@@ -1,7 +1,7 @@
 @import './variables/_colors';
 @import './variables/color_types';
 
-.label {
+.#{$prefix}label {
   border-radius: 2px;
   padding: 2px 4px;
   color: white;
@@ -11,7 +11,7 @@
 
 @each $name, $color in $color_types {
   @if (type-of($color) == 'color') {
-    .label-#{$name} {
+    .#{$prefix}label-#{$name} {
       background-color: $color;
 
       &-outline {

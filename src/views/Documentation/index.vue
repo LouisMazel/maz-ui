@@ -1,5 +1,5 @@
 <template>
-  <div class="documentation flex flex-1 pos-r">
+  <div class="documentation maz-flex maz-flex-1 maz-position-relative">
     <MazSidebar
       v-model="hasLeftSidebarOpen"
       :width="280"
@@ -8,21 +8,21 @@
     >
       <LeftSidebarContent />
     </MazSidebar>
-    <div class="documentation__container flex direction-column flex-1">
+    <div class="documentation__container maz-flex maz-direction-column maz-flex-1">
       <div
         v-if="isComponentRoute"
-        class="flex space-between px-5 py-5 align-center flex--wrap"
+        class="maz-flex maz-space-between maz-px-5 maz-py-5 maz-align-center maz-flex-wrap"
       >
         <h2>
           {{ currentComponent | capitalize }}
         </h2>
-        <div class="flex-fixed">
+        <div class="maz-flex-fixed">
           <MazBtn @click="showOptions">
             Show Options, Events & Slots
           </MazBtn>
         </div>
       </div>
-      <router-view class="content px-5 py-5 flex-1" />
+      <router-view class="content maz-px-5 maz-py-5 maz-flex-1" />
       <NavFooter />
     </div>
     <MazSidebar

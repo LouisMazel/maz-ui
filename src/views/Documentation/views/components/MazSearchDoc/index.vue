@@ -3,10 +3,10 @@
     <ComponentContainer
       :code="codeExample"
       language="js">
-      <h4 class="mb-3">
+      <h4 class="maz-mb-3">
         Basic use
       </h4>
-      <p class="mb-3">v-model="{{ selectedItem || 'null' }}"</p>
+      <p class="maz-mb-3">v-model="{{ selectedItem || 'null' }}"</p>
       <MazSearch
         v-model="selectedItem"
         :items="results"
@@ -18,10 +18,10 @@
     <ComponentContainer
       :code="codeExample2"
       language="js">
-      <h4 class="mb-3">
+      <h4 class="maz-mb-3">
         Custom
       </h4>
-      <p class="mb-3">v-model="{{ selectedItem2 || 'null' }}"</p>
+      <p class="maz-mb-3">v-model="{{ selectedItem2 || 'null' }}"</p>
       <MazSearch
         v-model="selectedItem2"
         :items="results"
@@ -33,19 +33,19 @@
         @request="searchResults"
       >
         <template v-slot="{ item }">
-          <div class="item flex align-center">
+          <div class="item maz-flex maz-align-center">
             <img
               :src="item.image"
               :alt="item.label"
-              class="mr-3" />
+              class="maz-mr-3" />
             <div>
               <p>{{ item.first_name }} {{ item.last_name }}</p>
-              <span class="text-muted">{{ item.email }}</span>
+              <span class="maz-text-muted">{{ item.email }}</span>
             </div>
           </div>
         </template>
         <template v-slot:no-data>
-          <div class="item flex flex-center">
+          <div class="item maz-flex maz-flex-center">
             <p>No data custom template</p>
           </div>
         </template>
@@ -112,7 +112,7 @@ export default {
   >
     <template v-slot="{ item }">
       <div
-        class="item flex align-center"
+        class="item maz-flex maz-align-center"
       >
         <img
           :src="item.image"
@@ -127,7 +127,7 @@ export default {
     </template>
     <template v-slot:no-data>
       <div
-        class="item flex flex-center"
+        class="item maz-flex maz-flex-center"
       >
         <p>No data custom template</p>
       </div>

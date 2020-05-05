@@ -1,19 +1,19 @@
 <template>
   <div class="maz-input-tags-doc">
     <ComponentContainer :code="codeExample">
-      <p class="mb-2">v-model: {{ exampleValue }}</p>
+      <p class="maz-mb-2">v-model: {{ exampleValue }}</p>
       <MazInputTags
         v-model="exampleValue"
         placeholder="Add tags"
         clearable
         size="lg"
-        class="mb-3"
+        class="maz-mb-3"
       />
       <MazInputTags
         v-model="exampleValue"
         placeholder="Add tags"
         clearable
-        class="mb-3"
+        class="maz-mb-3"
       />
       <MazInputTags
         v-model="exampleValue"
@@ -40,13 +40,13 @@ export default {
     placeholder="Add tags"
     clearable
     size="lg"
-    class="mb-3"
+    class="maz-mb-3"
   />
   <MazInputTags
     v-model="exampleValue"
     placeholder="Add tags"
     clearable
-    class="mb-3"
+    class="maz-mb-3"
   />
   <MazInputTags
     v-model="exampleValue"

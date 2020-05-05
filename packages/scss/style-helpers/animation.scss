@@ -1,106 +1,106 @@
 /** Slide animation **/
-.slide-enter-active,
-.slide-leave-active {
+.#{$prefix}slide-enter-active,
+.#{$prefix}slide-leave-active {
   opacity: 1;
   z-index: 998;
   transition: all .3s;
   transform: translateY(0);
 }
 
-.slide-enter,
-.slide-leave-to /* .fade-leave-active below version 2.1.8 */ {
+.#{$prefix}slide-enter,
+.#{$prefix}slide-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
   z-index: 998;
   transform: translateY(-20px);
 }
 
 /** Slide animation **/
-.tags-enter-active,
-.tags-leave-active {
+.#{$prefix}tags-enter-active,
+.#{$prefix}tags-leave-active {
   opacity: 1;
   transition: all .3s;
   position: absolute;
   transform: translateY(0);
 }
 
-.tags-enter,
-.tags-leave-to /* .fade-leave-active below version 2.1.8 */ {
+.#{$prefix}tags-enter,
+.#{$prefix}tags-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
   transform: translateX(-100%);
 }
 
 /** Slide animation **/
-.slideinvert-enter-active,
-.slideinvert-leave-active {
+.#{$prefix}slideinvert-enter-active,
+.#{$prefix}slideinvert-leave-active {
   opacity: 1;
   z-index: 998;
   transition: all .3s;
   transform: translateY(0);
 }
 
-.slideinvert-enter,
-.slideinvert-leave-to /* .fade-leave-active below version 2.1.8 */ {
+.#{$prefix}slideinvert-enter,
+.#{$prefix}slideinvert-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
   z-index: 998;
   transform: translateY(40px);
 }
 
 /** Slide next/prev animation  **/
-.slidenext-leave-active,
-.slidenext-enter-active,
-.slideprev-leave-active,
-.slideprev-enter-active {
+.#{$prefix}slidenext-leave-active,
+.#{$prefix}slidenext-enter-active,
+.#{$prefix}slideprev-leave-active,
+.#{$prefix}slideprev-enter-active {
   position: absolute;
   transition: all .3s;
 }
 
-.slidenext-enter,
-.slideprev-leave-to {
+.#{$prefix}slidenext-enter,
+.#{$prefix}slideprev-leave-to {
   transform: translateX(100%);
 }
 
-.slidenext-leave-to,
-.slideprev-enter {
+.#{$prefix}slidenext-leave-to,
+.#{$prefix}slideprev-enter {
   transform: translateX(-100%);
 }
 
 /** Slide vertical animation  **/
-.slidevnext-leave-active,
-.slidevnext-enter-active,
-.slidevprev-leave-active,
-.slidevprev-enter-active {
+.#{$prefix}slidevnext-leave-active,
+.#{$prefix}slidevnext-enter-active,
+.#{$prefix}slidevprev-leave-active,
+.#{$prefix}slidevprev-enter-active {
   position: absolute;
   transition: all .3s;
 }
 
-.slidevnext-enter,
-.slidevprev-leave-to {
+.#{$prefix}slidevnext-enter,
+.#{$prefix}slidevprev-leave-to {
   transform: translateY(100%);
   opacity: 0;
 }
 
-.slidevnext-leave-to,
-.slidevprev-enter {
+.#{$prefix}slidevnext-leave-to,
+.#{$prefix}slidevprev-enter {
   transform: translateY(-100%);
   opacity: 0;
 }
 
 @media screen and (max-width: 415px) {
-  .slide-enter-active,
-  .slide-leave-active {
+  .#{$prefix}slide-enter-active,
+  .#{$prefix}slide-leave-active {
     transition: all 0s;
   }
 
   /** Slide animation **/
-  .slideinvert-enter-active,
-  .slideinvert-leave-active {
+  .#{$prefix}slideinvert-enter-active,
+  .#{$prefix}slideinvert-leave-active {
     transition: all 0s;
   }
 }
 
 /** SPINNER ANIM **/
 
-.spinner-anim {
+.#{$prefix}spinner-anim {
   animation: spin .6s linear infinite;
 }
 
@@ -114,11 +114,11 @@
   100% { transform: rotate(360deg); }
 }
 
-.dialog-fade-enter-active .dialog-animation {
+.#{$prefix}dialog-fade-enter-active .#{$prefix}dialog-animation {
   animation: dialog-fade-in .4s;
 }
 
-.dialog-fade-leave-active .dialog-animation {
+.#{$prefix}dialog-fade-leave-active .#{$prefix}dialog-animation {
   animation: dialog-fade-out .4s;
 }
 
@@ -146,28 +146,28 @@
   }
 }
 
-.expand-enter-active,
-.expand-leave-active {
+.#{$prefix}expand-enter-active,
+.#{$prefix}expand-leave-active {
   transition: 300ms ease-in-out;
   transition-property: opacity, height;
   overflow: hidden;
 }
 
-.expand-enter,
-.expand-leave-to {
+.#{$prefix}expand-enter,
+.#{$prefix}expand-leave-to {
   height: 0;
   opacity: 0;
 }
 
-.scale-enter-active,
-.scale-leave-active {
+.#{$prefix}scale-enter-active,
+.#{$prefix}scale-leave-active {
   opacity: 1;
   z-index: 1;
   transition: all 300ms cubic-bezier(.4, .52, .26, .9);
 }
 
-.scale-enter,
-.scale-leave-to {
+.#{$prefix}scale-enter,
+.#{$prefix}scale-leave-to {
   opacity: .4;
   z-index: 1;
   transform: scale(0);
@@ -202,6 +202,6 @@
   }
 }
 
-.flip-list-move {
+.#{$prefix}flip-list-move {
   transition: transform .6s;
 }

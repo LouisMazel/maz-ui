@@ -35,10 +35,10 @@ export default {
   },
   computed: {
     bgColorClassTransparency () {
-      return this.value ? `bg-${this.color}-before-transparency` : 'bg-grey-before-transparency'
+      return this.value ? `maz-bg-${this.color}-before-transparency` : 'maz-bg-grey-before-transparency'
     },
     bgColorClass () {
-      return this.value ? `bg-${this.color}` : 'bg-white'
+      return this.value ? `maz-bg-${this.color}` : 'maz-bg-white'
     }
   }
 }

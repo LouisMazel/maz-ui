@@ -1,7 +1,7 @@
 <template>
   <div
     class="maz-search"
-    :class="{ 'is-dark': dark }"
+    :class="{ 'maz-is-dark': dark }"
     @blur.capture="closeList"
   >
     <MazInput

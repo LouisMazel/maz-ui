@@ -1,4 +1,4 @@
-table.md {
+table.#{$prefix}md {
   border-spacing: 0;
   border-radius: $border-radius;
   border-collapse: collapse;
@@ -27,7 +27,7 @@ table.md {
   }
 }
 
-.is-dark table.md {
+.#{$prefix}is-dark table.#{$prefix}md {
   color: $text-color-dark;
 
   tr {
@@ -35,10 +35,6 @@ table.md {
 
     &:nth-child(2n) {
       background-color: $hover-bg-color-dark;
-    }
-
-    td.text-muted {
-      color: $muted-color-dark;
     }
   }
 }

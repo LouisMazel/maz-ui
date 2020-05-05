@@ -1,22 +1,22 @@
 <template>
   <div class="maz-transition-expand-doc">
     <ComponentContainer
-      class="flex direction-column"
+      class="maz-flex maz-direction-column"
       :code="code">
-      <div class="flex justify-center">
+      <div class="maz-flex maz-justify-center">
         <MazBtn @click="isShown = !isShown">
           Toggle Expand
         </MazBtn>
       </div>
       <br />
-      <div class="flex flex--wrap space-between">
-        <div class="flex-1">
-          <h3 class="mb-2">
+      <div class="maz-flex maz-flex-wrap maz-space-between">
+        <div class="maz-flex-1">
+          <h3 class="maz-mb-2">
             Expand component 1
           </h3>
-          <ComponentContainer class="maz-expand-container flex-1">
+          <ComponentContainer class="maz-expand-container maz-flex-1">
             <MazTransitionExpand
-              class="example border-radius text-center"
+              class="example maz-border-radius maz-text-center"
             >
               <div v-show="!isShown">
                 <p>Content expand</p>
@@ -36,13 +36,13 @@
             </MazTransitionExpand>
           </ComponentContainer>
         </div>
-        <div class="flex-1">
-          <h3 class="mb-2">
+        <div class="maz-flex-1">
+          <h3 class="maz-mb-2">
             Expand component 2
           </h3>
-          <ComponentContainer class="maz-expand-container flex-1">
+          <ComponentContainer class="maz-expand-container maz-flex-1">
             <MazTransitionExpand
-              class="example border-radius text-center"
+              class="example maz-border-radius maz-text-center"
             >
               <div v-show="isShown">
                 <p>Content expand</p>

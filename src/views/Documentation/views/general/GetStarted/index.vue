@@ -3,14 +3,44 @@
     <h2>
       Get Started
     </h2>
-    <h3>NPM</h3>
+    <h3>Vue.JS</h3>
     <CodeContainer
       :code="codeBase"
-      class="my-4" />
+    />
 
-    <h2>
-      On demande
+    <h3 class="">
+      Nuxt.JS
+    </h3>
+
+    <CodeContainer
+      :code="`// nuxt.config.js
+
+module.exports = {
+  plugins: [
+    ...
+    '~/plugins/maz-ui'
+    ...
+  ]
+}`"
+    />
+
+    <CodeContainer
+      :code="`// plugin/maz-ui/index.js
+
+import Vue from 'vue'
+import 'maz-ui/lib/maz-ui.css'
+import MazUi from 'maz-ui'
+
+Vue.use(MazUi)`"
+    />
+
+    <h2 class="mt-3">
+      On demand
     </h2>
+
+    <h4>
+      Imported only the components you need
+    </h4>
 
     <p>
       With the help of babel-plugin-component, we can import components we
@@ -21,19 +51,49 @@
 
     <CodeContainer
       :code="codeBabelPLugin"
-      class="my-4" />
+    />
 
-    <p>Then edit .babelrc:</p>
+    <h3>
+      Vue.JS babel config
+    </h3>
 
     <CodeContainer
       :code="configBabelPluginComponent"
-      class="my-4" />
+    />
 
-    <p>Now you can do that</p>
+    <h3>
+      Nuxt.JS babel config
+    </h3>
+
+    <CodeContainer
+      :code="`// nuxt.config.js
+
+module.exports = {
+  plugins: [
+    ...
+    '~/plugins/maz-ui'
+    ...
+  ],
+  build: {
+    babel: {
+      plugins: [
+        ['component', {
+          libraryName: 'maz-ui',
+          style: false
+        }]
+      ]
+    }
+  }
+}`"
+    />
+
+    <h3>
+      Now import component as you want
+    </h3>
 
     <CodeContainer
       :code="codeCustom"
-      class="my-4" />
+    />
   </div>
 </template>
 
@@ -42,26 +102,23 @@ export default {
   name: 'GetStarted',
   data () {
     return {
-      codeBase: `import Vue from 'vue'
+      codeBase: `// main.js
+
+import Vue from 'vue'
 import 'maz-ui/lib/maz-ui.css'
 import MazUi from 'maz-ui'
-import App from './App.vue'
 
-Vue.use(MazUi)
-
-new Vue({
-  el: '#app',
-  render: h => h(App)
-})`,
+Vue.use(MazUi)`,
       codeBabelPLugin: `npm install babel-plugin-component -D
 
 /*
  * or yarn add babel-plugin-component -D
  */`,
-      codeCustom: `import Vue from 'vue'
+      codeCustom: `// main.js or
+
+import Vue from 'vue'
 import 'maz-ui/lib/maz-ui.css'
 import { MazBtn, MazSelect } from 'maz-ui'
-import App from './App.vue'
 
 Vue.use(MazBtn)
 Vue.use(MazSelect)
@@ -69,14 +126,10 @@ Vue.use(MazSelect)
 /* or
  * Vue.component(MazBtn.name, MazBtn)
  * Vue.component(MazSelect.name, MazSelect)
- */
+ */`,
+      configBabelPluginComponent: `// .babelrc
 
-new Vue({
-  el: '#app',
-  render: h => h(App)
-})`,
-      configBabelPluginComponent: `{
-  "presets": [["es2015", { "modules": false }]],
+{
   "plugins": [
     [
       "component",

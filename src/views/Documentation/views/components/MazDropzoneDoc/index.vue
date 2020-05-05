@@ -3,7 +3,7 @@
     <ComponentContainer
       :code="codeExample"
       language="js"
-      class="flex direction-column"
+      class="maz-flex maz-direction-column"
     >
       <MazDropzone
         ref="mazDropzone"
@@ -16,14 +16,14 @@
       />
       <div
         v-if="errorMessage"
-        class="dropzone-error flex justify-center mt-2">
+        class="dropzone-error maz-flex maz-justify-center maz-mt-2">
         <span class="text-danger">
           {{ errorMessage }}
         </span>
       </div>
       <div
         v-if="successMessage"
-        class="dropzone-success flex justify-center mt-2"
+        class="dropzone-success maz-flex maz-justify-center maz-mt-2"
       >
         <span class="text-success">
           {{ successMessage }}
@@ -55,7 +55,7 @@ export default {
   />
   <div
     v-if="errorMessage"
-    class="dropzone-error flex justify-center mt-2"
+    class="dropzone-error maz-flex maz-justify-center mt-2"
   >
     <span class="text-danger">
       {{ errorMessage }}
@@ -63,7 +63,7 @@ export default {
   </div>
   <div
     v-if="successMessage"
-    class="dropzone-success flex justify-center mt-2"
+    class="dropzone-success maz-flex maz-justify-center mt-2"
   >
     <span class="text-success">
       {{ successMessage }}

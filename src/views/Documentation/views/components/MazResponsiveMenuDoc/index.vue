@@ -1,7 +1,7 @@
 <template>
   <div class="maz-read-more-doc">
     <ComponentContainer :code="codeExample">
-      <div class="flex justify-end">
+      <div class="maz-flex maz-justify-end">
         <MazResponsiveMenu :routes="routes" />
       </div>
     </ComponentContainer>

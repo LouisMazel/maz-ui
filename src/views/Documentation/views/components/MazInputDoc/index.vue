@@ -12,7 +12,7 @@
         v-model="nameValue"
         placeholder="Name"
         autocomplete="new-name"
-        class="mb-3"
+        class="maz-mb-3"
         left-icon-name="person"
         right-icon-name="favorite"
         clearable
@@ -21,7 +21,7 @@
         v-model="emailValue"
         placeholder="E-mail"
         autocomplete="new-email"
-        class="mb-3"
+        class="maz-mb-3"
         clearable
       >
         <i
@@ -36,7 +36,7 @@
         type="password"
         autocomplete="new-password"
         left-icon-name="lock"
-        class="mb-3"
+        class="maz-mb-3"
         clearable
       />
       <MazInput
@@ -50,8 +50,8 @@
     <div
       v-for="type in inputTypes"
       :key="type"
-      class="flex mt-3 flex--wrap">
-      <div class="flex-component flex-1">
+      class="flex maz-mt-3 maz-flex-wrap">
+      <div class="flex-component maz-flex-1">
         <h3>{{ type | capitalize }}</h3>
         <ComponentContainer>
           <MazInput
@@ -128,7 +128,7 @@ export default {
     v-model="nameValue"
     placeholder="Name"
     autocomplete="new-name"
-    class="mb-3"
+    class="maz-mb-3"
     left-icon-name="person"
     right-icon-name="favorite"
     clearable
@@ -137,7 +137,7 @@ export default {
     v-model="emailValue"
     placeholder="E-mail"
     autocomplete="new-email"
-    class="mb-3"
+    class="maz-mb-3"
     clearable
   >
     <i

@@ -2,7 +2,7 @@
   <div
     ref="TimePicker"
     :style="[{height: `${hasDate ? height : 150}px`}]"
-    class="time-picker flex flex-fixed flex-1"
+    class="time-picker maz-flex maz-flex-fixed maz-flex-1"
     :class="{
       'border-left border-left-solid border-color': hasDate
     }"
@@ -12,7 +12,7 @@
       :key="column.type"
       :ref="column.type"
       :class="`time-picker__column-${column.type}`"
-      class="time-picker__column flex-1 flex direction-column align-center"
+      class="time-picker__column maz-flex-1 maz-flex maz-direction-column maz-align-center"
       @scroll="noScrollEvent
         ? null
         : column.type === 'hours' ? onScrollHours($event) : column.type === 'minutes' ? onScrollMinutes($event) : onScrollApms($event)
@@ -29,7 +29,7 @@
           size="mini"
           :no-shadow="!isActive(column.type, item.value)"
           tabindex="-1"
-          class="time-picker__column__item flex flex-center bg-transparent text-color p-0"
+          class="time-picker__column__item maz-flex maz-flex-center maz-bg-transparent maz-text-color maz-p-0"
           :active="isActive(column.type, item.value)"
           :disabled="item.disabled"
           @click="item.disabled ? null : setTime(item.value, column.type)"
@@ -54,7 +54,7 @@ import {
 } from './../../../utils'
 
 const scrollSmoothElement = (elem, parentHeight, hasSmoothEffect) => {
-  const selected = elem.querySelector('.time-picker__column__item.active')
+  const selected = elem.querySelector('.time-picker__column__item.maz-active')
   if (selected) {
     const boundsSelected = selected.getBoundingClientRect()
     const boundsElem = elem.getBoundingClientRect()

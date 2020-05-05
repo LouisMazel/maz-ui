@@ -285,8 +285,8 @@
   }
 }
 
-.is-dark .input-tel,
-.is-dark.input-tel {
+.maz-is-dark .input-tel,
+.maz-is-dark.input-tel {
   &.is-focused {
     .input-tel__input {
       border-color: $primary-color;

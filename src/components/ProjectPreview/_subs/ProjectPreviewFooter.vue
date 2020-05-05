@@ -1,11 +1,11 @@
 <template>
   <div
-    class="project-preview-footer p-3 flex justify-end border-top border-top-solid border-color"
+    class="project-preview-footer maz-p-3 maz-flex maz-justify-end maz-border-top maz-border-top-solid maz-border-color"
   >
     <MazBtn
       v-if="project.githubUrl"
       :href="project.githubUrl"
-      class="mr-2"
+      class="maz-mr-2"
       :color="hasDarkTheme ? 'white' : 'dark'"
       target="_blank"
     >
@@ -15,7 +15,7 @@
       v-if="project.npmUrl"
       :href="project.npmUrl"
       color="danger"
-      class="mr-2"
+      class="maz-mr-2"
       target="_blank"
     >
       <svg viewBox="0 0 780 250">

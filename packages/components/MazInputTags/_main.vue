@@ -1,26 +1,26 @@
 <template>
   <div
-    class="maz-input-tags flex flex--wrap align-center"
+    class="maz-input-tags maz-flex maz-flex--wrap maz-align-center"
     :class="[{
       'is-focused': isFocus,
       'is-valid': valid,
       'has-value': value,
       'has-error': error,
       'is-disabled': disabled,
-      'is-dark': dark
+      'maz-is-dark': dark
     }, size]"
     @focus.capture="isFocus = true"
     @blur.capture="isFocus = false"
   >
     <transition-group
       tag="div"
-      name="tags"
-      class="flex flex--wrap align-center flex-1"
+      name="maz-tags"
+      class="maz-flex maz-flex--wrap maz-align-center maz-flex-1"
     >
       <MazBtn
         v-for="(tag, i) in tags"
         :key="`tag-${tag}-${i}`"
-        class="maz-input-tags__tag flex align-center"
+        class="maz-input-tags__tag maz-flex maz-align-center"
         :disabled="disabled"
         :size="size"
         @click.stop="removeTag(i)"
@@ -41,14 +41,14 @@
         :aria-label="placeholder"
         :disabled="disabled"
         :readonly="readonly"
-        class="maz-input-tags__input flex-1"
+        class="maz-input-tags__input maz-flex-1"
         @keydown.enter.prevent="addTags"
         @keydown.delete="removeLastTag"
       >
       <button
         v-if="hasClearBtn"
         key="clear-button"
-        class="maz-input-tags__toggle-btn --clear flex flex-center"
+        class="maz-input-tags__toggle-btn --clear maz-flex maz-flex-center"
         title="clear"
         type="button"
         tabindex="-1"

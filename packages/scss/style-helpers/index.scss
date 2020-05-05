@@ -1,9 +1,8 @@
 @import './variables/index';
 @import './mixins/index';
-@import './link';
 @import './btn';
 @import './badge';
-@import './table';
+@import './table_md';
 @import './label';
 @import './dot';
 @import './bg_colors';
@@ -25,58 +24,4 @@
 @import './width_height';
 @import './fonts';
 @import './responsive';
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-body,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-blockquote,
-pre,
-hr,
-dl,
-dd,
-figure {
-  margin: 0;
-  padding: 0;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  line-height: normal;
-}
-
-html,
-body,
-#app,
-button,
-input {
-  font: $base-font-weight $base-font-size $base-font-family;
-  line-height: $base-line-height;
-  font-kerning: normal;
-}
-
-html,
-body,
-#app {
-  color: $text-color;
-}
-
-html.is-dark,
-.is-dark body,
-.is-dark #app {
-  color: $text-color-dark;
-}
+@import './html_elements';

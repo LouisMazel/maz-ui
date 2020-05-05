@@ -1,13 +1,13 @@
 <template>
   <div
-    class="maz-collapse pos-r"
+    class="maz-collapse maz-position-relative"
     :class="{
-      'is-dark': dark,
+      'maz-is-dark': dark,
       'is-open': isOpen
     }"
   >
     <MazBtn
-      class="maz-collapse__header-btn flex align-center justify-center border-radius-0"
+      class="maz-collapse__header-btn maz-flex maz-flex-center maz-border-radius-0"
       :color="dark ? 'dark' : 'white'"
       size="md"
       @click="openContent"
@@ -18,7 +18,7 @@
         Default Header
       </slot>
       <ArrowIcon
-        class="maz-collapse__header-btn__arrow ml-2"
+        class="maz-collapse__header-btn__arrow maz-ml-2"
         :white="dark"
         :color="arrowColor"
         :orientation="isOpen ? 'up': null"

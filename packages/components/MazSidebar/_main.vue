@@ -2,12 +2,12 @@
   <div
     class="maz-sidebar"
     :class="{
-      'is-dark': dark
+      'maz-is-dark': dark
     }">
     <div
       :id="uniqueId"
       ref="MazSidebar"
-      class="maz-sidebar__wrapper flex flex-fixed m-h-100 mh-100"
+      class="maz-sidebar__wrapper maz-flex maz-flex-fixed maz-m-h-100 maz-mh-100"
       :style="[wrapperStyle]"
       :class="{
         'is-close': !isOpen,
@@ -21,7 +21,7 @@
         mode="in-out">
         <div
           v-show="isOpen"
-          class="maz-sidebar__wrapper__content flex flex-1 w-100 direction-column"
+          class="maz-sidebar__wrapper__content maz-flex maz-flex-1 maz-w-100 maz-direction-column"
         >
           <slot />
         </div>
@@ -30,7 +30,7 @@
         v-if="!noCloseBtn"
         class="maz-sidebar__wrapper__close-btn">
         <button
-          class="flex align-center justify-center"
+          class="maz-flex maz-flex-center"
           @click="isOpen = !isOpen">
           <slot name="button-icon">
             <ArrowIcon :orientation="isOpen ? 'left' : 'right'" />
@@ -39,7 +39,7 @@
       </div>
       <div
         v-show="loading && isOpen"
-        class="maz-sidebar__wrapper__load-layer flex align-center justify-center"
+        class="maz-sidebar__wrapper__load-layer maz-flex maz-flex-center"
       >
         <slot name="content-loader">
           <MazLoader />

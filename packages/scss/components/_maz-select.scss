@@ -66,8 +66,8 @@
   }
 }
 
-.is-dark .maz-select,
-.is-dark.maz-select {
+.maz-is-dark .maz-select,
+.maz-is-dark.maz-select {
   &__toggle {
     &__arrow {
       color: $input-icon-color-dark;

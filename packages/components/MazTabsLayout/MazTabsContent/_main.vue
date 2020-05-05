@@ -5,7 +5,7 @@
       tabsContainerState,
       { height: height }
     ]"
-    class="tabs-content flex align-start"
+    class="tabs-content maz-flex maz-align-start"
   >
     <slot />
   </div>

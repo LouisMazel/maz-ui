@@ -1,6 +1,6 @@
 <template>
   <MazBtn
-    class="pagination-number-btn flex align-center justify-center flex-fixed"
+    class="pagination-number-btn maz-flex maz-flex-center maz-flex-fixed"
     :disabled="disabled"
     :class="{
       'active': active

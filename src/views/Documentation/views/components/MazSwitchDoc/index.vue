@@ -1,19 +1,19 @@
 <template>
   <div class="maz-switch-doc">
     <ComponentContainer :code="codeExample">
-      <div class="flex flex--wrap">
+      <div class="maz-flex maz-flex-wrap">
         <div
           v-for="type in btnTypes"
           :key="`switch-${type}`"
-          class="px-3"
+          class="maz-px-3"
         >
-          <p class="mb-3 text-center">
+          <p class="maz-mb-3 maz-text-center">
             {{ type }}
           </p>
           <MazSwitch
             v-model="checkboxValue"
             :color="type"
-            class="mb-2" />
+            class="maz-mb-2" />
         </div>
       </div>
     </ComponentContainer>

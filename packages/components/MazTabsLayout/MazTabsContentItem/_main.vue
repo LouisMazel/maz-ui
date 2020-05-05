@@ -3,7 +3,7 @@
     :id="_uid"
     ref="MazTabsContentItem"
     :class="{
-      'h-0' : !isCurrent && hasHZero
+      'maz-h-0' : !isCurrent && hasHZero
     }"
     class="tabs-content-item"
   >

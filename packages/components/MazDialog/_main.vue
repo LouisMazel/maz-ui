@@ -1,6 +1,6 @@
 <template>
   <transition
-    name="dialog-fade"
+    name="maz-dialog-fade"
     @after-enter="afterEnter"
     @after-leave="afterLeave"
   >
@@ -10,21 +10,21 @@
       :class="{
         'maz-dialog--success': success,
         'maz-dialog--danger': danger,
-        'is-dark': dark
+        'maz-is-dark': dark
       }"
     >
-      <div class="maz-dialog__wrapper flex align-center">
+      <div class="maz-dialog__wrapper maz-flex maz-align-center">
         <div
           v-click-outside="vcoConfig"
           :style="widthStyle"
-          class="maz-dialog__container dialog-animation flex direction-column bg-color border-radius overflow-hidden"
+          class="maz-dialog__container maz-dialog-animation maz-flex maz-direction-column maz-bg-color maz-border-radius maz-overflow-hidden"
           @keydown.esc="closeDialog"
         >
           <div
             v-if="!noHeader"
-            class="maz-dialog__header flex space-between align-center p-3"
+            class="maz-dialog__header maz-flex maz-space-between maz-align-center maz-p-3"
           >
-            <p class="fw-400 fs-20 m-0 w-100">
+            <p class="maz-fw-400 maz-fs-20 maz-m-0 maz-w-100">
               <!-- Replace the text title -->
               <slot name="title">
                 <!-- Header -->
@@ -33,7 +33,7 @@
             </p>
             <div
               v-if="!noClose"
-              class="flex close-modal"
+              class="maz-flex close-modal"
               @click="$emit('input', false)"
             >
               <i class="material-icons">
@@ -42,7 +42,7 @@
             </div>
           </div>
           <div
-            class="maz-dialog__body p-3"
+            class="maz-dialog__body maz-p-3"
           >
             <!-- Replace the content -->
             <slot>
@@ -52,7 +52,7 @@
           </div>
           <div
             v-if="!noFooter"
-            class="maz-dialog__footer flex align-end justify-end p-3"
+            class="maz-dialog__footer maz-flex maz-align-end maz-justify-end maz-p-3"
           >
             <!-- Replace the footer bar -->
             <slot name="footer">
@@ -67,7 +67,7 @@
               </MazBtn>
               <MazBtn
                 v-if="!noConfirm"
-                class="ml-3"
+                class="maz-ml-3"
                 size="md"
                 :color="buttonConfirmColor"
                 @click="onConfirm($event)"

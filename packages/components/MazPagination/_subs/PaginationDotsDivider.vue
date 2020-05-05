@@ -1,5 +1,5 @@
 <template>
-  <div class="pagination-dots-divider flex align-center justify-center flex-fixed">
+  <div class="pagination-dots-divider maz-flex maz-flex-center maz-flex-fixed">
     ...
   </div>
 </template>

@@ -1,48 +1,48 @@
 @import './variables/_responsive';
 
-.hidden-4k {
+.#{$prefix}hidden-4k {
   @media only screen and (max-width: $breakpoint-4k) {
     display: none;
   }
 }
 
-.hidden-laptop {
+.#{$prefix}hidden-laptop {
   @media only screen and (max-width: $breakpoint-laptop-l) {
     display: none;
   }
 }
 
-.hidden-laptop-s {
+.#{$prefix}hidden-laptop-s {
   @media only screen and (max-width: $breakpoint-laptop-s) {
     display: none;
   }
 }
 
-.hidden-tablet {
+.#{$prefix}hidden-tablet {
   @media only screen and (max-width: $breakpoint-tablet) {
     display: none;
   }
 }
 
-.hidden-mobile {
+.#{$prefix}hidden-mobile {
   @media only screen and (max-width: $breakpoint-mobile-l) {
     display: none;
   }
 }
 
-.hidden-mobile-m {
+.#{$prefix}hidden-mobile-m {
   @media only screen and (max-width: $breakpoint-mobile-m) {
     display: none;
   }
 }
 
-.hidden-mobile-s {
+.#{$prefix}hidden-mobile-s {
   @media only screen and (max-width: $breakpoint-mobile-s) {
     display: none;
   }
 }
 
-.show-4k {
+.#{$prefix}show-4k {
   display: none;
 
   @media only screen and (max-width: $breakpoint-4k) {
@@ -50,7 +50,7 @@
   }
 }
 
-.show-laptop {
+.#{$prefix}show-laptop {
   display: none;
 
   @media only screen and (max-width: $breakpoint-laptop-l) {
@@ -58,7 +58,7 @@
   }
 }
 
-.show-laptop-s {
+.#{$prefix}show-laptop-s {
   display: none;
 
   @media only screen and (max-width: $breakpoint-laptop-s) {
@@ -66,7 +66,7 @@
   }
 }
 
-.show-tablet {
+.#{$prefix}show-tablet {
   display: none;
 
   @media only screen and (max-width: $breakpoint-tablet) {
@@ -74,7 +74,7 @@
   }
 }
 
-.show-mobile {
+.#{$prefix}show-mobile {
   display: none;
 
   @media only screen and (max-width: $breakpoint-mobile-l) {
@@ -82,7 +82,7 @@
   }
 }
 
-.show-mobile-m {
+.#{$prefix}show-mobile-m {
   display: none;
 
   @media only screen and (max-width: $breakpoint-mobile-m) {
@@ -90,7 +90,7 @@
   }
 }
 
-.show-mobile-s {
+.#{$prefix}show-mobile-s {
   display: none;
 
   @media only screen and (max-width: $breakpoint-mobile-s) {

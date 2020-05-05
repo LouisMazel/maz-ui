@@ -1,13 +1,13 @@
 <template>
   <div
-    class="dark-switch-banner w-100 p-3 flex flex-center border-color border-top-1 border-top-solid"
+    class="dark-switch-banner maz-w-100 maz-p-3 maz-flex maz-flex-center maz-border-color maz-border-top-1 maz-border-top-solid"
   >
-    <p class="text-muted">
+    <p class="maz-text-muted">
       Switch Dark Theme
     </p>
     <MazSwitch
       v-model="darkTheme"
-      class="ml-2"
+      class="maz-ml-2"
     />
   </div>
 </template>
