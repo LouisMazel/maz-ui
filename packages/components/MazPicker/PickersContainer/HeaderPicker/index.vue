@@ -1,15 +1,15 @@
 <template>
   <div
-    class="header-picker p-2 bg-primary text-white flex"
+    class="header-picker maz-p-2 maz-bg-primary maz-text-white maz-flex"
   >
     <div
       v-if="hasDate"
-      class="header-picker__date-container flex-1 flex direction-column space-around"
+      class="header-picker__date-container maz-flex-1 maz-flex maz-direction-column maz-space-around"
     >
       <TransitionGroup
         :name="transitionName"
         tag="div"
-        class="header-picker__year dots-text"
+        class="header-picker__year maz-dots-text"
       >
         <span
           v-for="y in [year]"
@@ -21,12 +21,12 @@
       <TransitionGroup
         :name="transitionName"
         tag="div"
-        class="header-picker__date dots-text"
+        class="header-picker__date maz-dots-text"
       >
         <span
           v-for="date in [dateFormatted]"
           :key="date"
-          class="dots-text "
+          class="maz-dots-text"
         >
           {{ dateFormatted ? date : '-' }}
         </span>
@@ -34,15 +34,15 @@
     </div>
     <div
       v-if="hasTime && !isTwelveFormat"
-      class="header-picker__time flex"
+      class="header-picker__time maz-flex"
       :class="[
-        !hasDate ? 'flex-center': 'align-end'
+        !hasDate ? 'maz-flex-center': 'maz-align-end'
       ]"
     >
       <TransitionGroup
         v-if="timeFormatted.hour"
         :name="transitionName"
-        class="header-picker__hour flex justify-end"
+        class="header-picker__hour maz-flex maz-justify-end"
       >
         <span
           v-for="hour in [timeFormatted.hour]"
@@ -71,14 +71,14 @@
     </div>
     <div
       v-else-if="hasTime"
-      class="header-picker__time flex"
+      class="header-picker__time maz-flex"
       :class="[
-        !hasDate ? 'flex-center': 'align-end'
+        !hasDate ? 'maz-flex-center': 'maz-align-end'
       ]"
     >
       <TransitionGroup
         :name="transitionName"
-        class="header-picker__twelve flex justify-center"
+        class="header-picker__twelve maz-flex maz-justify-center"
       >
         <span
           v-for="(time, i) in [timeFormatted]"

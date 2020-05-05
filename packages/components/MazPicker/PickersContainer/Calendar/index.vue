@@ -2,7 +2,7 @@
   <div
     :id="`Calendar${_uid}`"
     ref="Calendar"
-    class="calendar pos-r mw-100 overflow-hidden flex"
+    class="calendar maz-position-relative maz-mw-100 maz-overflow-hidden maz-flex"
   >
     <RangeShortcuts
       v-if="hasShortcuts"
@@ -15,25 +15,25 @@
     <div
       v-if="hasDate"
       ref="MonthsContainer"
-      class="calendar__months-container overflow-hidden flex-1"
+      class="calendar__months-container maz-overflow-hidden maz-flex-1"
     >
       <MonthYearSwitcher
         :months="months"
-        class="px-2"
+        class="maz-px-2"
         @change-month="changeMonth"
         @open-month-year-selector="yearMonthSelectorMode = $event"
       />
-      <div class="flex overflow-x-auto">
+      <div class="maz-flex maz-overflow-x-auto">
         <div
           v-for="(month, i) in months"
           :key="`month-${i}`"
-          class="calendar__months flex-1"
+          class="calendar__months maz-flex-1"
           style="min-width: 268px;"
-          :class="{ 'has-double border-top border-top-solid border-color': hasDouble }"
+          :class="{ 'has-double maz-border-top maz-border-top-solid maz-border-color': hasDouble }"
         >
           <WeekDaysLabels
             :locale="locale"
-            class="p-2"
+            class="maz-p-2"
           />
           <MonthPicker
             ref="MonthPicker"
@@ -48,7 +48,7 @@
             :disabled-weekly="disabledWeekly"
             :hoverred-day="hoverredDay"
             :is-visible="isVisible"
-            class="p-2"
+            class="maz-p-2"
             @change-month="changeMonth"
             @hoverred-day="hoverredDay = $event"
           />

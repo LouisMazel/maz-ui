@@ -139,34 +139,34 @@
     cursor: not-allowed;
     border-color: #CCC;
     background-color: #F2F2F2;
-    color: $disabled-color;
+    color: $grey-color;
 
     #{$this}__input {
       cursor: not-allowed;
-      color: $disabled-color;
+      color: $grey-color;
 
       &::-webkit-input-placeholder {
-        color: $disabled-color;
+        color: $grey-color;
       }
 
       &::-moz-placeholder {
-        color: $disabled-color;
+        color: $grey-color;
       }
 
       &:-ms-input-placeholder {
-        color: $disabled-color;
+        color: $grey-color;
       }
 
       &::-ms-input-placeholder {
-        color: $disabled-color;
+        color: $grey-color;
       }
 
       &:-moz-placeholder {
-        color: $disabled-color;
+        color: $grey-color;
       }
 
       &::placeholder {
-        color: $disabled-color;
+        color: $grey-color;
       }
     }
   }
@@ -231,8 +231,8 @@
   }
 }
 
-.is-dark .maz-input-tags,
-.is-dark.maz-input-tags {
+.maz-is-dark .maz-input-tags,
+.maz-is-dark.maz-input-tags {
   background-color: $bg-color-dark-l;
   border-color: $border-color-dark;
 

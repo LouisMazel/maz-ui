@@ -7,10 +7,10 @@
         :options="options"
       />
     </ComponentContainer>
-    <div class="flex flex--wrap">
-      <div class="flex-1">
+    <div class="maz-flex maz-flex-wrap">
+      <div class="maz-flex-1">
         <ComponentContainer>
-          <h4 class="mb-3">
+          <h4 class="maz-mb-3">
             Basic
           </h4>
           <MazSelect
@@ -18,7 +18,7 @@
             :options="options" />
         </ComponentContainer>
         <ComponentContainer>
-          <h4 class="mb-3">
+          <h4 class="maz-mb-3">
             Error
           </h4>
           <MazSelect
@@ -27,7 +27,7 @@
             error />
         </ComponentContainer>
         <ComponentContainer>
-          <h4 class="mb-3">
+          <h4 class="maz-mb-3">
             Valid
           </h4>
           <MazSelect

@@ -72,8 +72,8 @@
   }
 }
 
-.is-dark .maz-dialog,
-.is-dark.maz-dialog {
+.maz-is-dark .maz-dialog,
+.maz-is-dark.maz-dialog {
   &__body {
     background-color: $hover-bg-color-dark;
     color: $text-color-dark;

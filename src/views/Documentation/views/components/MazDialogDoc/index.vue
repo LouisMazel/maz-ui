@@ -1,9 +1,9 @@
 <template>
   <div class="maz-dialog-doc">
     <ComponentContainer :code="codeExample">
-      <div class="flex">
+      <div class="maz-flex">
         <MazBtn
-          class="mr-2"
+          class="maz-mr-2"
           @click.stop="hasDialogOpen = true">
           Open Basic Dialog
         </MazBtn>
@@ -17,7 +17,7 @@
         </MazDialog>
         <MazBtn
           color="success"
-          class="mr-2"
+          class="maz-mr-2"
           @click="hasDialogOpenSuccess = true"
         >
           Open Success Dialog
@@ -32,7 +32,7 @@
         </MazDialog>
         <MazBtn
           color="danger"
-          class="mr-2"
+          class="maz-mr-2"
           @click="hasDialogOpenDanger = true">
           Open Danger Dialog
         </MazBtn>
@@ -73,7 +73,7 @@ export default {
       hasDialogOpenDark: false,
       codeExample: `<template>
   <MazBtn
-    class="mr-2"
+    class="maz-mr-2"
     @click.stop="hasDialogOpen = true"
   >
     Open Basic Dialog
@@ -89,7 +89,7 @@ export default {
   </MazDialog>
   <MazBtn
     color="success"
-    class="mr-2"
+    class="maz-mr-2"
     @click="hasDialogOpenSuccess = true"
   >
     Open Success Dialog

@@ -5,12 +5,11 @@
     </h2>
 
     <h3>
-      How to use your own colors and text styles ?
+      How to use change components colors ?
     </h3>
 
     <p>
-      To change globally the colors and text style you have to override Maz-UI
-      CSS variables
+      To change the colors and text style you have to override Maz-UI CSS variables
     </p>
 
     <p>
@@ -138,19 +137,7 @@ $overlay-color-dark:      rgba(86, 87, 117, .7);
 */
 
 $border-radius: 8px !default;
-$border-width: 1.5px !default;
-
-/*
-* RESPONSIVE BREAKPOINTS
-*/
-
-$breakpoint-mobile-s: 320px !default;
-$breakpoint-mobile-m: 375px !default;
-$breakpoint-mobile-l: 425px !default;
-$breakpoint-tablet: 768px !default;
-$breakpoint-laptop-s: 1024px !default;
-$breakpoint-laptop-l: 1440px !default;
-$breakpoint-4k: 1920px !default;"
+$border-width: 1.5px !default;"
       language="scss"
     />
   </div>

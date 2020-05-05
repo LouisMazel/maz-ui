@@ -3,7 +3,7 @@
     :is="componentType"
     :id="uniqueId"
     v-bind="$attrs"
-    class="maz-btn btn"
+    class="maz-btn"
     :class="[
       classes,
       { hidden: loading }
@@ -18,7 +18,7 @@
     <slot />
     <div
       v-if="loading"
-      class="maz-btn__spinner flex align-center justify-center"
+      class="maz-btn__spinner maz-flex maz-flex-center"
     >
       <MazSpinner
         :size="25"
@@ -85,15 +85,15 @@ export default {
     classes () {
       const { color, size, outline, rounded, isDisabled, fab, active, block, noShadow } = this
       return [
-        ...(color ? [`btn--${color}`] : [null]),
-        ...(size ? [`btn--${size}`] : [null]),
-        ...(outline ? [`btn--${color}--outline`] : [null]),
-        ...(rounded ? ['btn--rounded'] : [null]),
-        ...(block ? ['btn--block'] : [null]),
-        ...(fab ? ['btn--fab dots-text'] : [null]),
-        ...(isDisabled ? ['btn--disabled'] : [null]),
-        ...(active ? ['active'] : [null]),
-        ...(noShadow ? ['no-shadow'] : [null])
+        ...(color ? [`maz-btn--${color}`] : [null]),
+        ...(size ? [`maz-btn--${size}`] : [null]),
+        ...(outline ? [`maz-btn--${color}--outline`] : [null]),
+        ...(rounded ? ['maz-btn--rounded'] : [null]),
+        ...(block ? ['maz-btn--block'] : [null]),
+        ...(fab ? ['maz-btn--fab maz-dots-text'] : [null]),
+        ...(isDisabled ? ['maz-btn--disabled'] : [null]),
+        ...(active ? ['maz-active'] : [null]),
+        ...(noShadow ? ['maz-no-shadow'] : [null])
       ]
     }
   },

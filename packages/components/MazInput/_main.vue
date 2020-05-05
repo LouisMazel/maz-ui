@@ -7,7 +7,7 @@
       'has-value': value,
       'has-error': error,
       'is-disabled': disabled,
-      'is-dark': dark,
+      'maz-is-dark': dark,
       'has-hint': hint,
       'has-no-label': !hasLabel && !hint,
       'has-left-icon': hasLeftIcon,
@@ -19,10 +19,10 @@
     <div
       v-for="({ name, position }, i) in inputIcons"
       :key="`input-icon-${i}`"
-      class="maz-input__icon flex"
+      class="maz-input__icon maz-flex"
       :class="[
         position,
-        textarea ? 'align-start pt-2' : 'align-center'
+        textarea ? 'maz-align-start maz-pt-2' : 'maz-align-center'
       ]"
     >
       <!-- Icon slot (`input-icon-left` / `input-icon-right`) -->
@@ -38,7 +38,7 @@
       v-bind="$attrs"
       :placeholder="placeholderValue"
       :type="getType"
-      class="maz-input__input border border-color border-solid"
+      class="maz-input__input maz-border maz-border-color maz-border-solid"
       :aria-label="placeholder"
       :class="{
         'has-right-btn': hasClearBtn || hasPasswordBtn
@@ -63,7 +63,7 @@
       :type="type"
       :required="required"
       :readonly="readonly"
-      class="maz-input__input textarea border border-color border-solid"
+      class="maz-input__input textarea maz-border maz-border-color maz-border-solid"
       @keydown="keyDown"
       @keyup="keyUp"
       @focus="onFocus"
@@ -74,7 +74,7 @@
       v-if="hasLabel || hint"
       ref="label"
       :for="uniqueId"
-      :class="error ? 'text-danger' : null"
+      :class="error ? 'maz-text-danger' : null"
       class="maz-input__label"
       tabindex="-1"
       @click="focusInput"
@@ -87,7 +87,7 @@
       <button
         v-if="hasClearBtn"
         key="clear-button"
-        class="maz-input__toggle-btn --clear flex flex-center"
+        class="maz-input__toggle-btn --clear maz-flex maz-flex-center"
         title="clear"
         type="button"
         tabindex="-1"
@@ -103,7 +103,7 @@
       <button
         v-if="hasPasswordBtn"
         key="password-button"
-        class="maz-input__toggle-btn password flex flex-center"
+        class="maz-input__toggle-btn password maz-flex maz-flex-center"
         :class="{
           'has-clear-btn': hasClearBtn,
           'has-right-icon': hasRightIcon

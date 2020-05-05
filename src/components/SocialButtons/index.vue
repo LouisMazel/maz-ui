@@ -48,7 +48,7 @@ export default {
     }
   }
 
-  .is-dark .social-buttons {
+  .maz-is-dark .social-buttons {
     a {
       background-color: $bg-color-dark;
 

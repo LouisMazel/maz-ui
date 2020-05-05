@@ -1,32 +1,32 @@
 <template>
   <header
-    class="header bg-color flex-fixed bg-color border-color border-bottom-1 border-bottom-solid"
+    class="header maz-bg-color maz-flex-fixed maz-bg-color maz-border-color maz-border-bottom-1 maz-border-bottom-solid"
     role="banner"
   >
     <nav
-      class="px-4 flex space-between"
-      :class="{ container: !isDocPage }">
+      class="maz-px-4 maz-flex maz-space-between"
+      :class="{ 'maz-container': !isDocPage }">
       <router-link
         :to="{
           name: 'Home'
         }"
-        class="flex header__logo py-2 align-center"
+        class="maz-flex header__logo maz-py-2 maz-align-center"
       >
-        <LogoSvg class="header__logo__img mr-2" />
+        <LogoSvg class="header__logo__img maz-mr-2" />
         <div
-          class="header__title flex justify-center direction-column hidden-tablet pos-r"
+          class="header__title maz-flex maz-justify-center maz-direction-column maz-hidden-tablet maz-position-relative"
         >
-          <h1 class="fs-20">
+          <h1 class="maz-fs-20">
             Maz UI
           </h1>
-          <h2 class="fs-14 header__title__sub text-color">
+          <h2 class="maz-fs-14 header__title__sub maz-text-color">
             Components & CSS Library
           </h2>
         </div>
       </router-link>
-      <div class="header__menu flex align-center hidden-mobile">
+      <div class="header__menu maz-flex maz-align-center maz-hidden-mobile">
         <router-link
-          class="header__menu__item btn btn--white no-shadow bg-color no-border hover-bg-color mr-1"
+          class="header__menu__item maz-btn maz-btn--white maz-no-shadow maz-bg-color maz-no-border maz-hover-bg-color maz-mr-1"
           :to="{
             name: 'Documentation'
           }"
@@ -34,18 +34,18 @@
           Documentation
         </router-link>
         <router-link
-          class="header__menu__item btn btn--white no-shadow bg-color no-border hover-bg-color"
+          class="header__menu__item maz-btn maz-btn--white maz-no-shadow maz-bg-color maz-no-border maz-hover-bg-color"
           :to="{ name: 'MadeWithMazUi' }"
         >
           Made with Maz UI
         </router-link>
       </div>
-      <div class="flex align-center hidden-mobile">
-        <SocialButtons class="hidden-laptop-s" />
+      <div class="flex maz-align-center maz-hidden-mobile">
+        <SocialButtons class="maz-hidden-laptop-s" />
       </div>
       <MazResponsiveMenu
         :routes="routes"
-        class="py-2 show-mobile" />
+        class="maz-py-2 maz-show-mobile" />
     </nav>
     <DarkSwitchBanner />
   </header>

@@ -1,11 +1,11 @@
 <template>
-  <div class="right-sidebar-content p-3">
-    <div class="flex justify-end">
+  <div class="right-sidebar-content maz-p-3">
+    <div class="maz-flex maz-justify-end">
       <MazBtn
         fab
         @click="$emit('close')"
       >
-        <i class="material-icons fs-20 flex flex-center">
+        <i class="material-icons maz-fs-20 maz-flex maz-flex-center">
           close
         </i>
       </MazBtn>

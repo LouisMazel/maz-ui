@@ -3,7 +3,7 @@
 
 $dot-size: 6px;
 
-.dot {
+.#{$prefix}dot {
   width: $dot-size;
   height: $dot-size;
   border-radius: $dot-size;
@@ -12,7 +12,7 @@ $dot-size: 6px;
 
 @each $name, $color in $color_types {
   @if (type-of($color) == 'color') {
-    .dot-#{$name} {
+    .#{$prefix}dot-#{$name} {
       background-color: $color;
 
       &-outline {

@@ -1,21 +1,21 @@
 <template>
   <div
-    class="project-preview border-radius text-white flex direction-column space-between overflow-hidden border border-solid border-color"
+    class="project-preview border-radius maz-text-white maz-flex maz-direction-column maz-space-between maz-overflow-hidden maz-border maz-border-solid maz-border-color"
   >
-    <div class="project-preview-header border-top-radius">
+    <div class="project-preview-header maz-border-top-radius">
       <img
-        class="project-preview__img border-top-radius"
+        class="project-preview__img maz-border-top-radius"
         :src="project.imgUrl"
         :alt="`image illustration ${project.name}`"
       />
       <div
         v-if="project.demoUrl"
-        class="layer flex align-center justify-center"
+        class="layer maz-flex maz-align-center maz-justify-center"
       >
         <a
           :href="project.demoUrl"
           target="_blank"
-          class="btn btn--primary--outline btn--rounded"
+          class="maz-btn maz-btn--primary--outline maz-btn--rounded"
         >
           <i class="material-icons">
             visibility
@@ -100,7 +100,7 @@ export default {
     }
   }
 
-  .is-dark {
+  .maz-is-dark {
     .project-preview {
       background-color: $bg-color-dark-l;
 

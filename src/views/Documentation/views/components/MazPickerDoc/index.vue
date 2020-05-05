@@ -1,6 +1,6 @@
 <template>
   <div class="maz-picker-doc">
-    <p class="fw-700 mb-3">
+    <p class="maz-fw-700 maz-mb-3">
       This component is based on
       <a
         target="_blank"
@@ -8,7 +8,7 @@
     </p>
 
     <br />
-    <p class="mb-3">
+    <p class="maz-mb-3">
       You can use any locale available in moment package. Locales are
       dynamically imported.
     </p>
@@ -38,17 +38,17 @@
       </a>
     </p>-->
 
-    <div class="flex flex-1">
+    <div class="maz-flex maz-flex-1">
       <MazBtnGroup
         v-model="locale"
         :items="locales" />
     </div>
 
-    <hr class="border-top border-solid border-color my-3" />
+    <hr class="maz-border-top maz-border-solid maz-border-color maz-my-3" />
 
-    <p class="fw-700 mb-3">Top or bottom position of pickers is calculate</p>
+    <p class="maz-fw-700 maz-mb-3">Top or bottom position of pickers is calculate</p>
 
-    <p class="mb-3">
+    <p class="maz-mb-3">
       You can set the position with "position" props attribute :
     </p>
 
@@ -56,14 +56,14 @@
       language="html"
       :code="positionCodeExample" />
 
-    <hr class="border-top border-solid border-color my-3" />
+    <hr class="maz-border-top maz-border-solid maz-border-color maz-my-3" />
 
-    <div class="examples my-3">
+    <div class="examples maz-my-3">
       <ComponentContainer :code="codeExample">
         <h3>Date Time Picker</h3>
-        <h5 class="mb-3">Basic</h5>
+        <h5 class="maz-mb-3">Basic</h5>
 
-        <p class="mb-3">
+        <p class="maz-mb-3">
           <strong>Options:</strong>
           none
         </p>
@@ -72,7 +72,7 @@
           <strong>Value</strong>
           : {{ pickerValue || 'null' }}
         </p>
-        <p class="mb-2">
+        <p class="maz-mb-2">
           <strong>Formatted value</strong>
           : {{ pickerFormatted || 'null' }}
         </p>
@@ -87,11 +87,11 @@
 
       <ComponentContainer :code="clearableExample">
         <h3>Date Picker</h3>
-        <h5 class="mb-3">
+        <h5 class="maz-mb-3">
           Small input size clearable with input value formatted
         </h5>
 
-        <p class="mb-3">
+        <p class="maz-mb-3">
           <strong>Options:</strong>
           no-time - clearable - size="sm" - formatted="ll" - placeholder="Select
           date"
@@ -101,7 +101,7 @@
           <strong>Value</strong>
           : {{ pickerValue2 || 'null' }}
         </p>
-        <p class="mb-2">
+        <p class="maz-mb-2">
           <strong>Formatted value</strong>
           : {{ pickerFormatted2 || 'null' }}
         </p>
@@ -120,11 +120,11 @@
 
       <ComponentContainer :code="doubleExample">
         <h3>Double Date Picker</h3>
-        <h5 class="mb-3">
+        <h5 class="maz-mb-3">
           Large input size - french format - custom placeholder
         </h5>
 
-        <p class="mb-3">
+        <p class="maz-mb-3">
           <strong>Options:</strong>
           double - size="lg" - format="DD-MM-YYYY" - placeholder="Select date in
           big calander" - no-time
@@ -134,7 +134,7 @@
           <strong>Value</strong>
           : {{ pickerValue3 || 'null' }}
         </p>
-        <p class="mb-2">
+        <p class="maz-mb-2">
           <strong>Formatted value</strong>
           : {{ pickerFormatted3 || 'null' }}
         </p>
@@ -153,9 +153,9 @@
 
       <ComponentContainer :code="rangeExample">
         <h3>Range Double Date Picker</h3>
-        <h5 class="mb-3">Position forced</h5>
+        <h5 class="maz-mb-3">Position forced</h5>
 
-        <p class="mb-3">
+        <p class="maz-mb-3">
           <strong>Options:</strong>
           range - double - position="top right" - placeholder="Select period"
         </p>
@@ -164,7 +164,7 @@
           <strong>Value</strong>
           : {{ pickerRangeValues || 'null' }}
         </p>
-        <p class="mb-2">
+        <p class="maz-mb-2">
           <strong>Formatted value</strong>
           :
           {{ pickerRangeValuesFormatted || 'null' }}
@@ -183,9 +183,9 @@
 
       <ComponentContainer :code="inlineExample">
         <h3>Inline Double Date Time Picker</h3>
-        <h5 class="mb-3">Min & max dates provided & without time picker</h5>
+        <h5 class="maz-mb-3">Min & max dates provided & without time picker</h5>
 
-        <p class="mb-3">
+        <p class="maz-mb-3">
           <strong>Options:</strong>
           inline - min-date="2020-05-05" - max-date="2020-05-27" - no-time
         </p>
@@ -194,7 +194,7 @@
           <strong>Value</strong>
           : {{ pickerValue4 || 'null' }}
         </p>
-        <p class="mb-2">
+        <p class="maz-mb-2">
           <strong>Formatted value</strong>
           : {{ pickerFormatted4 || 'null' }}
         </p>
@@ -213,9 +213,9 @@
 
       <ComponentContainer :code="inlineExample">
         <h3>Time Picker</h3>
-        <h5 class="mb-3">Min & max dates provided & without time picker</h5>
+        <h5 class="maz-mb-3">Min & max dates provided & without time picker</h5>
 
-        <p class="mb-3">
+        <p class="maz-mb-3">
           <strong>Options:</strong>
           no-date - placeholder="Select time"
         </p>
@@ -224,7 +224,7 @@
           <strong>Value</strong>
           : {{ pickerValue5 || 'null' }}
         </p>
-        <p class="mb-2">
+        <p class="maz-mb-2">
           <strong>Formatted value</strong>
           : {{ pickerFormatted5 || 'null' }}
         </p>
@@ -238,10 +238,10 @@
       </ComponentContainer>
 
       <ComponentContainer :code="inlineExample">
-        <h3 class="mb-3">Disabled</h3>
+        <h3 class="maz-mb-3">Disabled</h3>
 
         <p>Value : {{ pickerValue4 || 'null' }}</p>
-        <p class="mb-2">Formatted value : {{ pickerFormatted4 || 'null' }}</p>
+        <p class="maz-mb-2">Formatted value : {{ pickerFormatted4 || 'null' }}</p>
 
         <MazPicker
           v-model="pickerValue4"

@@ -50,8 +50,8 @@ export default {
         const value = entry[1]
         if (value) {
           return hasNumberClass(key)
-            ? `flex-${key.split('flex')[1]}`
-            : pascalCaseToKebabCase(key)
+            ? `maz-flex-${key.split('flex')[1]}`
+            : `maz-${pascalCaseToKebabCase(key)}`
         }
       })
     }

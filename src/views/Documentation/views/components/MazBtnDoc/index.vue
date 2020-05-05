@@ -5,36 +5,36 @@
       language="html"
       class="btn-container"
     >
-      <h4 class="mb-3">
+      <h4 class="maz-mb-3">
         Example
       </h4>
       <MazBtn>
-        Primary default
+        Basic
       </MazBtn>
       <MazBtn rounded>
-        Primary default
+        Rounded
       </MazBtn>
       <MazBtn outline>
-        Primary default
+        Outline
       </MazBtn>
       <MazBtn fab>
-        fab
+        Fab
       </MazBtn>
       <MazBtn loading>
-        Primary loading
+        Loading
       </MazBtn>
       <MazBtn disabled>
-        Primary disabled
+        Disabled
       </MazBtn>
       <MazBtn block>
-        Primary block
+        Block
       </MazBtn>
       <MazBtn href="/#/documentation/btn">
         It's a link
       </MazBtn>
     </ComponentContainer>
     <ComponentContainer>
-      <h4 class="mb-3">
+      <h4 class="maz-mb-3">
         Basic
       </h4>
       <div
@@ -53,7 +53,7 @@
       </div>
     </ComponentContainer>
     <ComponentContainer>
-      <h4 class="mb-3">
+      <h4 class="maz-mb-3">
         Outline
       </h4>
       <div
@@ -73,7 +73,7 @@
       </div>
     </ComponentContainer>
     <ComponentContainer>
-      <h4 class="mb-3">
+      <h4 class="maz-mb-3">
         Rounded
       </h4>
       <div
@@ -93,7 +93,7 @@
       </div>
     </ComponentContainer>
     <ComponentContainer>
-      <h4 class="mb-3">
+      <h4 class="maz-mb-3">
         Fab
       </h4>
       <div
@@ -112,7 +112,7 @@
       </div>
     </ComponentContainer>
     <ComponentContainer>
-      <h4 class="mb-3">
+      <h4 class="maz-mb-3">
         loading
       </h4>
       <div
@@ -132,7 +132,7 @@
       </div>
     </ComponentContainer>
     <ComponentContainer>
-      <h4 class="mb-3">
+      <h4 class="maz-mb-3">
         Disabled
       </h4>
       <div class="btn-container">
@@ -170,44 +170,30 @@ export default {
         'white',
         'black'
       ],
-      btnSizes: ['lg', '', 'md', 'sm', 'mini'],
+      btnSizes: ['lg', 'basic', 'md', 'sm', 'mini'],
       codeExample: `<template>
   <MazBtn>
-    Primary default
+    Basic
   </MazBtn>
-  <MazBtn
-    rounded
-  >
-    Primary default
+  <MazBtn rounded>
+    Rounded
   </MazBtn>
-  <MazBtn
-    outline
-  >
-    Primary default
+  <MazBtn outline>
+    Outline
   </MazBtn>
-  <MazBtn
-    fab
-  >
-    fab
+  <MazBtn fab>
+    Fab
   </MazBtn>
-  <MazBtn
-    loading
-  >
-    Primary loading
+  <MazBtn loading>
+    Loading
   </MazBtn>
-  <MazBtn
-    disabled
-  >
-    Primary disabled
+  <MazBtn disabled>
+    Disabled
   </MazBtn>
-  <MazBtn
-    block
-  >
-    Primary block
+  <MazBtn block>
+    Block
   </MazBtn>
-  <MazBtn
-    href="/#/documentation/btn"
-  >
+  <MazBtn href="/#/documentation/btn">
     It's a link
   </MazBtn>
 </template>`

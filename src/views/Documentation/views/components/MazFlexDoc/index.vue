@@ -3,7 +3,7 @@
     <ComponentContainer
       :code="codeExample"
       language="html">
-      <h3 class="mb-3">
+      <h3 class="maz-mb-3">
         Example
       </h3>
       <div class="demo">
@@ -305,14 +305,14 @@ export default {
 
 <style lang="scss">
   .maz-flex-doc .demo {
-    .flex {
+    .maz-flex {
       padding: 10px;
       background-color: yellowgreen;
       color: white;
       border-radius: $border-radius;
     }
 
-    .flex-1 {
+    .maz-flex-1 {
       padding: 10px;
       background-color: dodgerblue;
       color: white;

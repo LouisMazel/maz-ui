@@ -6,7 +6,7 @@
         width: `${140}px`
       }
     ]"
-    class="range-shortcuts flex direction-column px-2 py-1 border-color border-right border-right-solid overflow-y-auto"
+    class="range-shortcuts maz-flex maz-direction-column maz-px-2 maz-py-1 maz-border-color maz-border-right maz-border-right-solid maz-overflow-y-auto"
   >
     <MazBtn
       v-for="shortcut in shortcuts"
@@ -14,11 +14,11 @@
       :active="selectedShortcut === shortcut.key"
       size="sm"
       tabindex="-1"
-      :class="[selectedShortcut !== shortcut.key ? 'hover-bg-color no-focus-bg border border-color text-primary': 'focus-primary']"
-      class="shortcut-button flex-1 my-1 bg-transparent no-shadow"
+      :class="[selectedShortcut !== shortcut.key ? 'maz-hover-bg-color maz-no-focus-bg maz-border maz-border-color maz-text-primary': 'maz-focus-primary']"
+      class="shortcut-button maz-flex-1 maz-my-1 maz-bg-transparent maz-no-shadow"
       @click="select(shortcut)"
     >
-      <span class="flex-1">
+      <span class="maz-flex-1">
         {{ shortcut.label }}
       </span>
     </MazBtn>

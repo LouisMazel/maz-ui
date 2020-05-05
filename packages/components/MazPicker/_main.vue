@@ -4,7 +4,7 @@
     ref="MazPicker"
     class="maz-picker"
     :class="{
-      'is-dark': dark
+      'maz-is-dark': dark
     }"
     @blur.capture="closePicker($event, 'blur')"
   >
@@ -20,7 +20,7 @@
     >
       <div
         slot="input-icon-right"
-        class="maz-picker__arrow flex flex-center"
+        class="maz-picker__arrow maz-flex maz-flex-center"
         tabindex="-1"
       >
         <!-- The arrow icon -->

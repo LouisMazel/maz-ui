@@ -1,10 +1,10 @@
 <template>
-  <div class="footer-picker p-2 flex justify-end border-top border-top-solid border-color">
+  <div class="footer-picker maz-p-2 maz-flex maz-justify-end maz-border-top maz-border-top-solid maz-border-color">
     <MazBtn
       v-if="hasNow"
       size="md"
       tabindex="-1"
-      class="footer-picker__now bg-transparent no-shadow px-3 hover-bg-color no-focus-bg border border-color text-primary"
+      class="footer-picker__now maz-bg-transparent maz-no-shadow maz-px-3 maz-hover-bg-color maz-no-focus-bg maz-border maz-border-color maz-text-primary"
       @click="now"
     >
       {{ nowTranslation }}

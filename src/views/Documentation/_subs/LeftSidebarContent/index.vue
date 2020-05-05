@@ -1,75 +1,75 @@
 <template>
-  <div class="left-sidebar-content p-4 h-100">
-    <h3 class="mb-3">
+  <div class="left-sidebar-content maz-p-4 maz-h-100">
+    <h3 class="maz-mb-3">
       Development
     </h3>
-    <h4 class="my-3">
+    <h4 class="maz-my-3">
       General
     </h4>
     <router-link
       v-for="route in routesStartedDoc"
       :key="route.name"
-      class="menu-item btn btn--white mb-2 w-100 no-shadow text-color bg-color no-border hover-bg-color"
+      class="menu-item maz-btn maz-btn--white maz-mb-2 maz-w-100 maz-no-shadow maz-text-color maz-bg-color maz-no-border maz-hover-bg-color"
       :to="{
         name: route.name
       }"
     >
       {{ getPageName(route.path) | capitalize }}
     </router-link>
-    <h4 class="my-3">
+    <h4 class="maz-my-3">
       Maz-CLI
     </h4>
     <router-link
-      class="menu-item btn btn--white mb-2 w-100 no-shadow text-color bg-color no-border hover-bg-color"
+      class="menu-item maz-btn maz-btn--white maz-mb-2 maz-w-100 maz-no-shadow maz-text-color maz-bg-color maz-no-border maz-hover-bg-color"
       :to="{
         name: 'CliInstall'
       }"
     >
       Create project w/ Nuxt.JS x Prismic
     </router-link>
-    <h4 class="my-3">
+    <h4 class="maz-my-3">
       Theme
     </h4>
     <router-link
-      class="menu-item btn btn--white mb-2 w-100 no-shadow text-color bg-color no-border hover-bg-color"
+      class="menu-item maz-btn maz-btn--white maz-mb-2 maz-w-100 maz-no-shadow maz-text-color maz-bg-color maz-no-border maz-hover-bg-color"
       :to="{
         name: 'Colors'
       }"
     >
-      Colors
+      Basic colors
     </router-link>
     <router-link
-      class="menu-item btn btn--white mb-2 w-100 no-shadow text-color bg-color no-border hover-bg-color"
+      class="menu-item maz-btn maz-btn--white maz-mb-2 maz-w-100 maz-no-shadow maz-text-color maz-bg-color maz-no-border maz-hover-bg-color"
       :to="{
         name: 'Theme'
       }"
     >
-      Use your own colors & text properties
+      Use your own colors
     </router-link>
-    <h3 class="my-3">
+    <h3 class="maz-my-3">
       Components
     </h3>
     <div class="left-sidebar-content__content">
-      <h4 class="my-3">
+      <h4 class="maz-my-3">
         Form
       </h4>
       <router-link
         v-for="route in routesFormComponents"
         :key="route.name"
-        class="menu-item btn btn--white w-100 no-shadow text-color bg-color no-border hover-bg-color"
+        class="menu-item maz-btn maz-btn--white maz-w-100 maz-no-shadow maz-text-color maz-bg-color maz-no-border maz-hover-bg-color"
         :to="{
           name: route.name
         }"
       >
         {{ getComponentName(route.name) }}
       </router-link>
-      <h4 class="my-3">
+      <h4 class="maz-my-3">
         User Interface
       </h4>
       <router-link
         v-for="route in routesUiComponents"
         :key="route.name"
-        class="menu-item btn btn--white w-100 no-shadow text-color bg-color no-border hover-bg-color"
+        class="menu-item maz-btn maz-btn--white maz-w-100 maz-no-shadow maz-text-color maz-bg-color maz-no-border maz-hover-bg-color"
         :to="{
           name: route.name
         }"
@@ -102,7 +102,7 @@ export default {
           ({ name }) =>
             !isGeneralDoc(name) && !isCliDoc(name) && !isThemeDoc(name)
         )
-        .slice(0, 12)
+        .slice(0, 11)
     },
     routesUiComponents () {
       return this.$router.options.routes
@@ -111,7 +111,7 @@ export default {
           ({ name }) =>
             !isGeneralDoc(name) && !isCliDoc(name) && !isThemeDoc(name)
         )
-        .slice(12)
+        .slice(11)
     }
   },
   methods: {

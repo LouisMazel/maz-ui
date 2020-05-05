@@ -1,8 +1,8 @@
 <template>
-  <div class="maz-spinner-doc flex flex--wrap">
-    <div class="flex-1 mr-4">
+  <div class="maz-spinner-doc maz-flex maz-flex-wrap">
+    <div class="maz-flex-1 maz-mr-4">
       <ComponentContainer :code="code1">
-        <div class="text-center">
+        <div class="maz-text-center">
           <MazSpinner
             v-for="color in colors"
             :key="`spinner-${color}`"
@@ -11,11 +11,11 @@
         </div>
       </ComponentContainer>
     </div>
-    <div class="flex-1">
+    <div class="maz-flex-1">
       <ComponentContainer
         dark
         :code="code2">
-        <div class="flex flex-center">
+        <div class="maz-flex maz-flex-center maz-flex-wrap">
           <MazSpinner
             v-for="size in sizes"
             :key="`spinner-${size}`"

@@ -1,8 +1,8 @@
 <template>
   <div
     :id="id"
-    :class="[{ 'is-dark': dark }, size]"
-    class="maz-phone-number-input flex"
+    :class="[{ 'maz-is-dark': dark }, size]"
+    class="maz-phone-number-input maz-flex"
   >
     <div
       v-if="!noCountrySelector"
@@ -33,7 +33,7 @@
         />
       </CountrySelector>
     </div>
-    <div class="flex-1">
+    <div class="maz-flex-1">
       <InputTel
         :id="`${uniqueId}_phone_number`"
         ref="PhoneNumberInput"

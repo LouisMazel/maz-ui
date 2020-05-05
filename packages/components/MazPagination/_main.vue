@@ -1,9 +1,9 @@
 <template>
   <div
-    class="maz-pagination flex align-center justify-center"
-    :class="{ 'is-dark': dark }"
+    class="maz-pagination maz-flex maz-flex-center"
+    :class="{ 'maz-is-dark': dark }"
   >
-    <div class="maz-pagination__container flex align-center">
+    <div class="maz-pagination__container maz-flex maz-align-center">
       <PaginationArrowBtn
         :dark="dark"
         @click="previous"

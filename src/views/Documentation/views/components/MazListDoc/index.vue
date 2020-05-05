@@ -3,10 +3,10 @@
     <ComponentContainer :code="codeExample">
       <div class="lists-container">
         <div class="list-1">
-          <h2 class="mb-2">
+          <h2 class="maz-mb-2">
             Basic list
           </h2>
-          <p class="text-muted mb-3">
+          <p class="maz-text-muted maz-mb-3">
             Any options
           </p>
           <MazList>
@@ -14,19 +14,19 @@
               v-for="item in items"
               :key="`list-1-${item.id}`">
               <p>{{ item.title }}</p>
-              <p class="text-muted">
+              <p class="maz-text-muted">
                 {{ item.id }}
               </p>
             </MazListItem>
           </MazList>
         </div>
-        <div class="list-2">
-          <h2 class="mb-2">
+        <div class="maz-list-2">
+          <h2 class="maz-mb-2">
             Hover & animate list
           </h2>
           <MazBtn
             size="sm"
-            class="mb-2"
+            class="maz-mb-2"
             @click="reorderItems">
             Shuffle items
           </MazBtn>
@@ -39,17 +39,17 @@
               tag="button"
             >
               <p>{{ item.title }}</p>
-              <p class="text-muted">
+              <p class="maz-text-muted">
                 {{ item.id }}
               </p>
             </MazListItem>
           </MazList>
         </div>
         <div class="list-3">
-          <h2 class="mb-2">
+          <h2 class="maz-mb-2">
             Scrollable list & no-shadow
           </h2>
-          <p class="text-muted mb-3">
+          <p class="maz-text-muted maz-mb-3">
             Just set `max-height` CSS property to the list
           </p>
           <MazList
@@ -61,7 +61,7 @@
               tag="button"
             >
               <p>{{ item.title }}</p>
-              <p class="text-muted">
+              <p class="maz-text-muted">
                 {{ item.id }}
               </p>
             </MazListItem>
@@ -91,10 +91,10 @@ export default {
       codeExample: `<template>
   <div class="lists-container">
     <div class="list-1">
-      <h2 class="mb-2">
+      <h2 class="maz-mb-2">
         Basic list
       </h2>
-      <p class="text-muted mb-3">
+      <p class="maz-text-muted maz-mb-3">
         Any options
       </p>
       <MazList>
@@ -103,19 +103,19 @@ export default {
           :key="list-1-{YOUR-ITEM-ID}"
         >
           <p>{{ item.title }}</p>
-          <p class="text-muted">
+          <p class="maz-text-muted">
             {{ item.id }}
           </p>
         </MazListItem>
       </MazList>
     </div>
     <div class="list-2">
-      <h2 class="mb-2">
+      <h2 class="maz-maz-mb-2">
         Hover & animate list
       </h2>
       <MazBtn
         size="sm"
-        class="mb-2"
+        class="maz-mb-2"
         @click="reorderItems"
       >
         Shuffle items
@@ -131,17 +131,17 @@ export default {
           tag="button"
         >
           <p>{{ item.title }}</p>
-          <p class="text-muted">
+          <p class="maz-text-muted">
             {{ item.id }}
           </p>
         </MazListItem>
       </MazList>
     </div>
     <div class="list-3">
-      <h2 class="mb-2">
+      <h2 class="maz-mb-2">
         Scrollable list & no-shadow
       </h2>
-      <p class="text-muted mb-3">
+      <p class="maz-text-muted maz-mb-3">
         Just set 'max-height' CSS property to the list
       </p>
       <MazList

@@ -2,24 +2,24 @@
 @import './variables/positions';
 @import './variables/sizes';
 
-.border-radius {
+.#{$prefix}border-radius {
   border-radius: $border-radius;
 }
 
 @each $position in $orientations {
-  .border-#{$position}-radius {
+  .#{$prefix}border-#{$position}-radius {
     border-#{$position}-left-radius: $border-radius;
     border-#{$position}-right-radius: $border-radius;
   }
 }
 
 @each $size in $sizes {
-  .border-radius-#{$size} {
+  .#{$prefix}border-radius-#{$size} {
     border-radius: #{$size}px;
   }
 
   @each $position in $orientations {
-    .border-#{$position}-radius {
+    .#{$prefix}border-#{$position}-radius {
       border-#{$position}-left-radius: #{$size};
       border-#{$position}-right-radius: #{$size};
     }

@@ -1,7 +1,7 @@
 <template>
   <div class="maz-sidebar-doc">
     <div
-      class="maz-sidebar-doc__container pos-r overflow-hidden my-4 elevation flex"
+      class="maz-sidebar-doc__container maz-position-relative maz-overflow-hidden maz-my-4 maz-elevation maz-flex"
     >
       <MazSidebar
         v-model="hasLeftSidebarOpen"
@@ -12,12 +12,12 @@
         :absolute="absolute"
         :layer="layer"
       >
-        <div class="flex flex-1 align-center justify-center text-color">
+        <div class="maz-flex maz-flex-1 maz-align-center maz-justify-center maz-text-color">
           SideBar Content Example
         </div>
       </MazSidebar>
       <div
-        class="maz-sidebar-doc__content p-4 flex direction-column align-center justify-center flex-1"
+        class="maz-sidebar-doc__content maz-p-4 maz-flex maz-direction-column maz-align-center maz-justify-center maz-flex-1"
       >
         <MazBtn
           color="third"
@@ -28,27 +28,27 @@
           v-model="width"
           type="number"
           placeholder="Sidebar width" />
-        <div class="switch-container shadow flex">
+        <div class="switch-container maz-flex">
           <p>Has left sidebar is open</p>
           <MazSwitch v-model="hasLeftSidebarOpen" />
         </div>
-        <div class="switch-container shadow flex">
+        <div class="switch-container maz-flex">
           <p>Has right sidebar is open</p>
           <MazSwitch v-model="hasRightSidebarOpen" />
         </div>
-        <div class="switch-container shadow flex">
+        <div class="switch-container maz-flex">
           <p>Has shadow</p>
           <MazSwitch v-model="hasShadow" />
         </div>
-        <div class="switch-container close-btn flex">
+        <div class="switch-container close-btn maz-flex">
           <p>Has close btn</p>
           <MazSwitch v-model="hasCloseBtn" />
         </div>
-        <div class="switch-container absolute flex">
+        <div class="switch-container maz-flex">
           <p>Is absolute</p>
           <MazSwitch v-model="absolute" />
         </div>
-        <div class="switch-container absolute flex">
+        <div class="switch-container maz-flex">
           <p>has Layer</p>
           <MazSwitch v-model="layer" />
         </div>
@@ -63,7 +63,7 @@
         right
         :layer="layer"
       >
-        <div class="flex flex-1 align-center justify-center text-color">
+        <div class="maz-flex maz-flex-1 maz-flex-center maz-text-color">
           SideBar Content Example
         </div>
       </MazSidebar>

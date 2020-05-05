@@ -28,8 +28,8 @@
   }
 }
 
-.is-dark.maz-responsive-menu,
-.is-dark .maz-responsive-menu {
+.maz-is-dark.maz-responsive-menu,
+.maz-is-dark .maz-responsive-menu {
   &-collapse {
     background-color: $bg-color-dark;
     border: 1px solid $hover-bg-color-dark;

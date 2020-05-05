@@ -1,99 +1,99 @@
-.flex {
+.#{$prefix}flex {
   display: flex;
 
-  &.fluid {
+  &.#{$prefix}fluid {
     width: 100%;
   }
 
-  &.direction-column {
+  &.#{$prefix}direction-column {
     flex-direction: column;
   }
 
-  &.direction-column-reverse {
+  &.#{$prefix}direction-column-reverse {
     flex-direction: column-reverse;
   }
 
-  &.direction-row {
+  &.#{$prefix}direction-row {
     flex-direction: row;
   }
 
-  &.direction-row-reverse {
+  &.#{$prefix}direction-row-reverse {
     flex-direction: row-reverse;
   }
 
-  &.align-center {
+  &.#{$prefix}align-center {
     align-items: center;
   }
 
-  &.align-start {
+  &.#{$prefix}align-start {
     align-items: flex-start;
   }
 
-  &.align-end {
+  &.#{$prefix}align-end {
     align-items: flex-end;
   }
 
-  &.justify-start {
+  &.#{$prefix}justify-start {
     justify-content: flex-start;
   }
 
-  &.justify-end {
+  &.#{$prefix}justify-end {
     justify-content: flex-end;
   }
 
-  &.justify-center {
+  &.#{$prefix}justify-center {
     justify-content: center;
   }
 
-  &.space-between {
+  &.#{$prefix}space-between {
     justify-content: space-between;
   }
 
-  &.space-around {
+  &.#{$prefix}space-around {
     justify-content: space-around;
   }
 
-  &.flex-center {
+  &.#{$prefix}flex-center {
     justify-content: center;
     align-items: center;
   }
 
-  &.flex-start {
+  &.#{$prefix}flex-start {
     justify-content: flex-start;
     align-items: flex-start;
   }
 
-  &.flex-end {
+  &.#{$prefix}flex-end {
     justify-content: flex-end;
     align-items: flex-end;
   }
 
-  &.flex--wrap {
+  &.#{$prefix}flex-wrap {
     flex-wrap: wrap;
   }
 
-  &.flex--grow {
+  &.#{$prefix}flex-grow {
     // spacer
     flex-grow: 1;
   }
 }
 
-.flex-fill {
+.#{$prefix}flex-fill {
   flex: 0 1 auto;
 }
 
-.flex-fixed {
+.#{$prefix}flex-fixed {
   flex: 0 0 auto;
 }
 
-.flex-1 {
+.#{$prefix}flex-1 {
   flex: 1;
 }
 
 @import './variables/percents';
 
 @each $percent, $value in $percents {
-  .flex-#{$percent} {
+  .#{$prefix}flex-#{$percent} {
     flex: 0 1 #{$value};
   }
 }

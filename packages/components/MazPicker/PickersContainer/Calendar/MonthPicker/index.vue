@@ -1,6 +1,6 @@
 <template>
   <TransitionGroup
-    class="month-picker pos-r"
+    class="month-picker maz-position-relative"
     :class="{ 'month-picker--long': (monthDays.length + weekStart) > 35 }"
     tag="div"
     :name="transitionDaysName"
@@ -17,7 +17,7 @@
       <MazBtn
         v-for="(day, i) in allDays"
         :key="i"
-        class="month-picker__day text-color bg-color-light flex flex-center"
+        class="month-picker__day maz-text-color maz-bg-color-light maz-flex maz-flex-center"
         size="mini"
         tabindex="-1"
         :no-shadow="!isSelectedDate(day)"

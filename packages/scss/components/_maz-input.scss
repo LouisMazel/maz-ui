@@ -262,7 +262,7 @@
   &.is-disabled {
     cursor: not-allowed;
 
-    $disabled-color-text: darken($disabled-color, 10%);
+    $disabled-color-text: darken($disabled-color, 20%);
 
     .maz-input__input {
       border-color: $disabled-color-text;
@@ -378,8 +378,8 @@
   }
 }
 
-.is-dark .maz-input,
-.is-dark.maz-input {
+.maz-is-dark .maz-input,
+.maz-is-dark.maz-input {
   &__label {
     color: $placeholder-color-dark;
   }

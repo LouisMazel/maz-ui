@@ -1,6 +1,6 @@
 <template>
   <MazBtn
-    class="pagination-arrow-btn flex align-center justify-center flex-fixed"
+    class="pagination-arrow-btn maz-flex maz-flex-center maz-flex-fixed"
     size="sm"
     fab
     @click="handleClick"

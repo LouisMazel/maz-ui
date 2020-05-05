@@ -7,7 +7,7 @@
       'has-value': value,
       'has-error': error,
       'is-disabled': disabled,
-      'is-dark': dark,
+      'maz-is-dark': dark,
       'has-hint': hint
     }, size]"
     class="input-tel"
@@ -36,7 +36,7 @@
     <label
       ref="label"
       :for="id"
-      :class="error ? 'text-danger' : null"
+      :class="error ? 'maz-text-danger' : null"
       class="input-tel__label"
       @click="focusInput"
     >
@@ -48,7 +48,7 @@
     >
       <button
         v-if="clearable && inputValue"
-        class="input-tel__toggle-btn flex flex-center"
+        class="input-tel__toggle-btn maz-flex maz-flex-center"
         title="clear"
         type="button"
         tabindex="-1"

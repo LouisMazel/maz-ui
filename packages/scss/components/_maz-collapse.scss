@@ -24,8 +24,8 @@
   }
 }
 
-.is-dark .maz-collapse,
-.is-dark.maz-collapse {
+.maz-is-dark .maz-collapse,
+.maz-is-dark.maz-collapse {
   color: $text-color-dark;
   background-color: $bg-color-dark;
   border-color: lighten($hover-bg-color-dark, 10%);

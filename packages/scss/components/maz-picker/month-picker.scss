@@ -26,8 +26,8 @@
     z-index: 1;
     position: relative;
 
-    &.highlight:not(.active):not(.btn--disabled)::before,
-    &.is-keyboard-selected:not(.active)::before {
+    &.highlight:not(.maz-active):not(.btn--disabled)::before,
+    &.is-keyboard-selected:not(.maz-active)::before {
       $circle-size: 26px;
 
       content: '';
@@ -42,7 +42,7 @@
     &.is-keyboard-selected {
       font-weight: 700;
 
-      &:not(.active)::before {
+      &:not(.maz-active)::before {
         border-radius: $border-radius;
         background-color: rgba(black, .15);
       }
@@ -58,11 +58,11 @@
       background-color: rgba($primary-color, .6);
       width: calc(100% + 5px);
 
-      &:not(.active) {
+      &:not(.maz-active) {
         border-radius: 0;
       }
 
-      &.active:not(.is-last-in-range) {
+      &.maz-active:not(.is-last-in-range) {
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
       }
@@ -73,7 +73,7 @@
       }
     }
 
-    &.active:not(:disabled) {
+    &.maz-active:not(:disabled) {
       color: white;
       background-color: $primary-color;
       font-weight: 600;

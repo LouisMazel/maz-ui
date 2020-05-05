@@ -28,7 +28,7 @@
     }
 
     &__load-layer {
-      background-color: rgba(0, 0, 0, .15);
+      background-color: lighten($overlay-color, 50%);
       position: absolute;
       top: 0;
       right: 0;
@@ -44,7 +44,7 @@
       right: 0;
       left: 0;
       bottom: 0;
-      background-color: rgba(0, 0, 0, .15);
+      background-color: lighten($overlay-color, 50%);
     }
 
     &.has-shadow {
@@ -96,13 +96,13 @@
   }
 }
 
-.is-dark .maz-sidebar,
-.is-dark.maz-sidebar {
+.maz-is-dark .maz-sidebar,
+.maz-is-dark.maz-sidebar {
   .maz-sidebar__wrapper {
     background-color: $bg-color-dark;
 
     &__load-layer {
-      background-color: $muted-color-dark;
+      background-color: $overlay-color-dark;
     }
 
     &__close-btn {
@@ -117,7 +117,7 @@
     }
 
     &__opacity-layer {
-      background-color: rgba(#303144, .7);
+      background-color: $overlay-color-dark;
     }
   }
 }

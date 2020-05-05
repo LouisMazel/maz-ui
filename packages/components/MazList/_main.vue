@@ -2,12 +2,12 @@
   <div
     class="maz-list"
     :class="{
-      'no-shadow': noShadow,
-      'is-dark': dark
+      'maz-no-shadow': noShadow,
+      'maz-is-dark': dark
     }"
   >
     <transition-group
-      :name="transition ? `flip-list` : null"
+      :name="transition ? `maz-flip-list` : null"
       tag="div"
     >
       <!-- Place `<MazListItem>` -->

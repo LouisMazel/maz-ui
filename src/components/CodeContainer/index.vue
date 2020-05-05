@@ -4,7 +4,7 @@
     class="code-container"
   >
     <code
-      class="code-container__content"
+      class="code-container__content maz-elevation"
       :class="[language]"
     >
       <slot />

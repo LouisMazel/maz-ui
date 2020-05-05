@@ -6,18 +6,18 @@
       class="btn-container"
     >
       <div class="flex flex-start direction-column">
-        <h3 class="mb-3">
+        <h3 class="maz-mb-3">
           Examples
         </h3>
 
-        <h5 class="mb-3">
+        <h5 class="maz-mb-3">
           LG primary
         </h5>
         <MazBtnGroup
           v-model="btnGroupValue"
           :items="items"
           size="lg" />
-        <h5 class="mb-3">
+        <h5 class="maz-mb-3">
           Secondary
         </h5>
         <MazBtnGroup
@@ -25,7 +25,7 @@
           :items="itemsBoolean"
           color="secondary"
         />
-        <h5 class="mb-3">
+        <h5 class="maz-mb-3">
           SM third outline
         </h5>
         <MazBtnGroup
@@ -35,7 +35,7 @@
           size="md"
           color="third"
         />
-        <h5 class="mb-3">
+        <h5 class="maz-mb-3">
           SM third rounded
         </h5>
         <MazBtnGroup
@@ -45,7 +45,7 @@
           size="sm"
           color="third"
         />
-        <h5 class="mb-3">
+        <h5 class="maz-mb-3">
           MINI success rounded outline
         </h5>
         <MazBtnGroup
@@ -57,7 +57,7 @@
           color="success"
         />
 
-        <h5 class="mb-3">
+        <h5 class="maz-mb-3">
           Disabled
         </h5>
         <MazBtnGroup
@@ -104,7 +104,7 @@ export default {
         { label: 'Mini tata', value: 'tata' }
       ],
       codeExample: `<template>
-  <h5 class="mb-3">
+  <h5 class="maz-mb-3">
     LG primary
   </h5>
   <MazBtnGroup
@@ -112,7 +112,7 @@ export default {
     :items="items"
     size="lg"
   />
-  <h5 class="mb-3">
+  <h5 class="maz-mb-3">
     Secondary
   </h5>
   <MazBtnGroup
@@ -120,7 +120,7 @@ export default {
     :items="itemsBoolean"
     color="secondary"
   />
-  <h5 class="mb-3">
+  <h5 class="maz-mb-3">
     SM third outline
   </h5>
   <MazBtnGroup
@@ -130,7 +130,7 @@ export default {
     size="md"
     color="third"
   />
-  <h5 class="mb-3">
+  <h5 class="maz-mb-3">
     SM third rounded
   </h5>
   <MazBtnGroup
@@ -140,7 +140,7 @@ export default {
     size="sm"
     color="third"
   />
-  <h5 class="mb-3">
+  <h5 class="maz-mb-3">
     MINI success rounded outline
   </h5>
   <MazBtnGroup
@@ -152,7 +152,7 @@ export default {
     color="success"
   />
 
-  <h5 class="mb-3">
+  <h5 class="maz-mb-3">
     Disabled
   </h5>
   <MazBtnGroup

@@ -334,8 +334,8 @@
   }
 }
 
-.is-dark .country-selector,
-.is-dark.country-selector {
+.maz-is-dark .country-selector,
+.maz-is-dark.country-selector {
   &__label {
     color: $placeholder-color-dark;
   }

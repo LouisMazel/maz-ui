@@ -1,22 +1,22 @@
 <template>
   <div class="maz-draggable-list-doc">
     <ComponentContainer :code="codeExample">
-      <div class="demo-container flex flex--wrap">
+      <div class="demo-container maz-flex maz-flex-wrap">
         <MazDraggableList
           v-model="list"
-          class="flex-1 mr-3" />
+          class="maz-flex-1 maz-mr-3" />
         <MazDraggableList
           v-model="list"
           v-slot="{ item, index }"
-          class="flex-1"
+          class="maz-flex-1"
         >
-          <div class="flex space-between w-100 align-center">
+          <div class="maz-flex maz-space-between maz-w-100 maz-align-center">
             <p>label: {{ item.label }}</p>
             <p>index: {{ index }}</p>
             <MazBtn
               fab
               size="sm">
-              <i class="material-icons fs-20">
+              <i class="material-icons maz-fs-20">
                 edit
               </i>
             </MazBtn>
@@ -44,17 +44,17 @@ export default {
         { label: 'sixth', value: 5 }
       ],
       codeExample: `<template>
-  <div class="demo-container flex flex--wrap">
+  <div class="demo-container maz-flex maz-flex-wrap">
     <MazDraggableList
       v-model="list"
-      class="flex-1 mr-3"
+      class="maz-flex-1 maz-mr-3"
     />
     <MazDraggableList
       v-model="list"
       v-slot="{ item, index }"
-      class="flex-1"
+      class="maz-flex-1"
     >
-      <div class="flex space-between w-100 align-center">
+      <div class="maz-flex space-between w-100 align-center">
         <p>
           label: {{ item.label }}
         </p>
@@ -65,7 +65,7 @@ export default {
           fab
           size="sm"
         >
-          <i class="material-icons fs-20">
+          <i class="material-icons maz-fs-20">
             edit
           </i>
         </MazBtn>

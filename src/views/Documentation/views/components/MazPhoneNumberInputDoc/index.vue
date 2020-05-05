@@ -3,17 +3,17 @@
     <ComponentContainer :code="codeExample">
       <MazPhoneNumberInput v-model="phoneNumberExample" />
     </ComponentContainer>
-    <div class="flex flex--wrap">
-      <div class="flex-1 mr-4">
-        <p class="mb-2">
+    <div class="maz-flex maz-flex-wrap">
+      <div class="maz-flex-1 maz-mr-4">
+        <p class="maz-mb-2">
           Basic
         </p>
         <ComponentContainer>
           <MazPhoneNumberInput v-model="phoneNumber" />
         </ComponentContainer>
       </div>
-      <div class="flex-1">
-        <p class="mb-2">
+      <div class="maz-flex-1">
+        <p class="maz-mb-2">
           Error
         </p>
         <ComponentContainer>

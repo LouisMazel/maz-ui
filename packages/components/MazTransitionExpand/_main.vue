@@ -1,7 +1,7 @@
 <template>
   <transition
     class="maz-transition-expand"
-    name="expand"
+    name="maz-expand"
     @enter="enter"
     @after-enter="afterEnter"
     @leave="leave"

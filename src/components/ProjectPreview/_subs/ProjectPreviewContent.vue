@@ -38,7 +38,7 @@ export default {
     }
   }
 
-  .is-dark .project-preview-content {
+  .maz-is-dark .project-preview-content {
     h4 {
       color: $text-color-dark;
     }

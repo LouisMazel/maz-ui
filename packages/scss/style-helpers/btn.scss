@@ -1,10 +1,4 @@
-$large-size: 44px;
-$default-size: 40px;
-$medium-size: 36px;
-$small-size: 32px;
-$mini-size: 30px;
-
-.btn {
+.#{$prefix}btn {
   border: $border-width solid transparent;
   outline: none;
   cursor: pointer;
@@ -29,13 +23,13 @@ $mini-size: 30px;
 
   &:hover,
   &:focus,
-  &.active {
+  &.#{$prefix}active {
     background-color: darken($primary-color, 10%);
     text-decoration: none;
   }
 
   &:focus,
-  &.active {
+  &.#{$prefix}active {
     box-shadow: 0 0 0 .143rem rgba($primary-color, .5);
   }
 
@@ -73,22 +67,22 @@ $mini-size: 30px;
     height: 40px;
     width: 40px;
 
-    &.btn--lg {
+    &.#{$prefix}btn--lg {
       height: 50px;
       width: 50px;
     }
 
-    &.btn--md {
+    &.#{$prefix}btn--md {
       height: 36px;
       width: 36px;
     }
 
-    &.btn--sm {
+    &.#{$prefix}btn--sm {
       height: 32px;
       width: 32px;
     }
 
-    &.btn--mini {
+    &.#{$prefix}btn--mini {
       height: 28px;
       width: 28px;
     }
@@ -96,7 +90,7 @@ $mini-size: 30px;
 
   &--white,
   &--light {
-    color: $grey-color;
+    color: $text-color;
   }
 
   &--no-shadow {
@@ -108,17 +102,17 @@ $mini-size: 30px;
 
 @each $name, $color in $color_types {
   @if (type-of($color) == 'color') {
-    .btn--#{$name} {
+    .#{$prefix}btn--#{$name} {
       background-color: $color;
 
       &:hover,
       &:focus,
-      &.active {
+      &.#{$prefix}active {
         background-color: darken($color, 10%);
       }
 
       &:focus,
-      &.active {
+      &.#{$prefix}active {
         box-shadow: 0 0 0 .143rem rgba($color, .6);
       }
 
@@ -130,7 +124,7 @@ $mini-size: 30px;
 
         &:hover,
         &:focus,
-        &.active {
+        &.#{$prefix}active {
           background-color: $color;
           color: white;
         }
@@ -143,14 +137,14 @@ $mini-size: 30px;
   }
 }
 
-.btn--default--outline {
+.#{$prefix}btn--default--outline {
   color: $default-color;
 }
 
-.btn--disabled:disabled {
+.#{$prefix}btn--disabled:disabled {
   box-shadow: none;
   background-color: $disabled-color;
   border-color: $disabled-color;
-  color: white;
+  color: $grey-color;
   cursor: not-allowed;
 }

@@ -200,7 +200,7 @@ export default {
     }
   }
 
-  .is-dark .frontmatter-markdown {
+  .maz-is-dark .frontmatter-markdown {
     background-color: $bg-color-dark;
     color: $text-color-dark;
 

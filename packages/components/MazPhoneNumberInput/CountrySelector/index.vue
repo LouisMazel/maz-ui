@@ -7,7 +7,7 @@
       'has-hint': hint,
       'has-error': error,
       'is-disabled': disabled,
-      'is-dark': dark,
+      'maz-is-dark': dark,
       'no-flags': noFlags,
       'has-list-open': hasListOpen,
       'is-valid': valid
@@ -43,7 +43,7 @@
     </div>
     <label
       ref="label"
-      :class="error ? 'text-danger' : null"
+      :class="error ? 'maz-text-danger' : null"
       class="country-selector__label"
       @click.stop="toggleList"
     >
@@ -69,7 +69,7 @@
               {'selected': value === item.iso2},
               {'keyboard-selected': value !== item.iso2 && tmpValue === item.iso2}
             ]"
-            class="flex align-center country-selector__list__item"
+            class="maz-flex maz-align-center country-selector__list__item"
             :style="[itemHeight]"
             tabindex="-1"
             type="button"
@@ -83,9 +83,9 @@
             </div>
             <span
               v-if="showCodeOnList"
-              class="country-selector__list__item__calling-code flex-fixed"
+              class="country-selector__list__item__calling-code maz-flex-fixed"
             >+{{ item.dialCode }}</span>
-            <div class="dots-text flex-1 text-left">
+            <div class="maz-dots-text maz-flex-1 maz-text-left">
               {{ item.name }}
             </div>
           </button>
