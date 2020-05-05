@@ -6,15 +6,15 @@
 import { EventBus } from './../utils'
 import moment from 'moment'
 
-const addListerner = ({ keyPressed }) => {
-  if (typeof window === 'undefined') return null
-  window.addEventListener('keydown', keyPressed)
-}
+// const addListerner = ({ keyPressed }) => {
+//   if (typeof window === 'undefined') return null
+//   window.addEventListener('keydown', keyPressed)
+// }
 
-const removeListerner = ({ keyPressed }) => {
-  if (typeof window === 'undefined') return null
-  window.removeEventListener('keydown', keyPressed)
-}
+// const removeListerner = ({ keyPressed }) => {
+//   if (typeof window === 'undefined') return null
+//   window.removeEventListener('keydown', keyPressed)
+// }
 
 export default {
   props: {
@@ -151,21 +151,21 @@ export default {
   },
   mounted () {
     if (this.hasKeyboard && (this.inline || this.isVisible)) {
-      const { keyPressed } = this
-      addListerner({ keyPressed })
+      // const { keyPressed } = this
+      // addListerner({ keyPressed })
     }
   },
   beforeDestroy () {
-    const { keyPressed } = this
-    removeListerner({ keyPressed })
+    // const { keyPressed } = this
+    // removeListerner({ keyPressed })
   },
   watch: {
     isVisible (value) {
-      const { keyPressed } = this
+      // const { keyPressed } = this
       if (this.hasKeyboard && value) {
-        addListerner({ keyPressed })
+        // addListerner({ keyPressed })
       } else {
-        removeListerner({ keyPressed })
+        // removeListerner({ keyPressed })
       }
     }
   }
