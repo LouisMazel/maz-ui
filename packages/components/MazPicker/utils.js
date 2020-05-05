@@ -3,12 +3,11 @@ import moment from 'moment'
 import capitalizeText from './../../../src/filters/capitalize'
 
 export const getDefaultLocale = () => {
-  // if (typeof window === 'undefined') return 'en'
-  return 'en'
+  if (typeof window === 'undefined') return 'en'
 
-  // const { userLanguage, language } = window.navigator
-  // const locale = (userLanguage || language || 'en').substr(0, 2)
-  // return locale
+  const { userLanguage, language } = window?.navigator
+  const locale = (userLanguage || language || 'en').substr(0, 2)
+  return locale
 }
 
 export const EventBus = new Vue()

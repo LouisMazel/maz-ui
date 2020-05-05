@@ -303,10 +303,8 @@ export default {
     locale: {
       handler (locale) {
         if (locale === 'en') return
-          import(/* webpackChunkName: "locale-[request]" */ `moment/locale/${locale}.js`).then(() => {
-            moment.locale(locale)
-            this.update = !this.update
-          })
+        moment.locale(locale)
+        this.update = !this.update
       },
       immediate: true
     },

@@ -1,5 +1,4 @@
 const Mode = require('frontmatter-markdown-loader/mode')
-const webpack = require('webpack')
 
 module.exports = {
   chainWebpack: config => {
@@ -13,14 +12,6 @@ module.exports = {
           mode: [Mode.VUE_COMPONENT]
         }
       })
-  },
-  configureWebpack: {
-    plugins: [
-      new webpack.IgnorePlugin({
-        resourceRegExp: /^\.\/locale$/,
-        contextRegExp: /moment$/
-      })
-    ]
   },
   pluginOptions: {
     webpackBundleAnalyzer: {
