@@ -76,7 +76,7 @@
 <script>
 export default {
   name: 'MazBtnGroupDoc',
-  data() {
+  data () {
     return {
       btnGroupValue: 1,
       btnGroupValueBoolean: false,

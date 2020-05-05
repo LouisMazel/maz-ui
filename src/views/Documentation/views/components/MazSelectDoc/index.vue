@@ -43,7 +43,7 @@
 <script>
 export default {
   name: 'MazInputDoc',
-  data() {
+  data () {
     return {
       selectValue: '',
       selectValueExample: '',

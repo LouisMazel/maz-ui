@@ -59,7 +59,7 @@ import users from '@/mocks/users'
 
 export default {
   name: 'MazSearchDoc',
-  data() {
+  data () {
     return {
       selectedItem: null,
       selectedItem2: null,
@@ -172,7 +172,7 @@ export default {
     }
   },
   methods: {
-    searchResults(query) {
+    searchResults (query) {
       this.loading = true
       setTimeout(() => {
         this.loading = false

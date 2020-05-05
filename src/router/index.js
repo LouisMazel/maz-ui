@@ -99,7 +99,7 @@ const router = new Router({
       redirect: { name: 'Home' }
     }
   ],
-  scrollBehavior() {
+  scrollBehavior () {
     return { x: 0, y: 0 }
   }
 })

@@ -23,7 +23,7 @@ export default {
     MdRenderer
   },
   computed: {
-    currentComponent() {
+    currentComponent () {
       return this.$route.name.slice(0, -3)
     }
   }

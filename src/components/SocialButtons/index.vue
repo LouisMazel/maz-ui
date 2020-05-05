@@ -19,7 +19,7 @@
 <script>
 export default {
   name: 'SocialButtons',
-  data() {
+  data () {
     return {
       socialMedias: [
         {

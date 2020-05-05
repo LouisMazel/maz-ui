@@ -87,7 +87,7 @@
 <script>
 export default {
   name: 'MazInputDoc',
-  data() {
+  data () {
     return {
       inputValue: null,
       withValue: 'The value entered',

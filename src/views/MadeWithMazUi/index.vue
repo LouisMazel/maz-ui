@@ -30,7 +30,7 @@ export default {
     NavFooter,
     ProjectPreview
   },
-  data() {
+  data () {
     return {
       projects: [
         {

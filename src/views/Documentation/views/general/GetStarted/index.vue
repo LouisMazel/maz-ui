@@ -40,7 +40,7 @@
 <script>
 export default {
   name: 'GetStarted',
-  data() {
+  data () {
     return {
       codeBase: `import Vue from 'vue'
 import 'maz-ui/lib/maz-ui.css'

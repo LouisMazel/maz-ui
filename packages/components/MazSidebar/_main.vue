@@ -103,14 +103,14 @@ export default {
   },
   computed: {
     isOpen: {
-      get() {
+      get () {
         return this.value
       },
-      set(value) {
+      set (value) {
         this.$emit('input', value)
       }
     },
-    wrapperStyle() {
+    wrapperStyle () {
       return {
         width: `${this.isOpen ? this.width : 0}px`,
         flex: `0 0 ${this.isOpen ? this.width : 0}px`,

@@ -29,7 +29,7 @@
 <script>
 export default {
   name: 'MazInputDoc',
-  data() {
+  data () {
     return {
       phoneNumber: '',
       phoneNumberExample: '',

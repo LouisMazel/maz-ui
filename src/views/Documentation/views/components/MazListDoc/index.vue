@@ -75,7 +75,7 @@
 <script>
 export default {
   name: 'MazListDoc',
-  data() {
+  data () {
     return {
       items: [
         { id: 0, title: 'Item 1' },
@@ -185,7 +185,7 @@ export default {
     }
   },
   methods: {
-    reorderItems() {
+    reorderItems () {
       this.items.sort(() => Math.random() - 0.5)
     }
   }

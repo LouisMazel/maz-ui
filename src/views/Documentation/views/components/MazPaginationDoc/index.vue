@@ -11,7 +11,7 @@
 <script>
 export default {
   name: 'MazSwitchDoc',
-  data() {
+  data () {
     return {
       currentPage: 11,
       pageCount: 32,

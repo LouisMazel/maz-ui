@@ -11,7 +11,7 @@
 <script>
 export default {
   name: 'MazReadMoreDoc',
-  data() {
+  data () {
     return {
       routes: [
         { label: 'Home', name: 'Home' },

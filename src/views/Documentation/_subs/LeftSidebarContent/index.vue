@@ -90,12 +90,12 @@ const isThemeDoc = name => ['Theme', 'Colors'].includes(name)
 export default {
   name: 'LeftSidebarContent',
   computed: {
-    routesStartedDoc() {
+    routesStartedDoc () {
       return this.$router.options.routes
         .filter(route => route.path === '/documentation')[0]
         .children.filter(child => isGeneralDoc(child.name))
     },
-    routesFormComponents() {
+    routesFormComponents () {
       return this.$router.options.routes
         .filter(route => route.path === '/documentation')[0]
         .children.filter(
@@ -104,7 +104,7 @@ export default {
         )
         .slice(0, 12)
     },
-    routesUiComponents() {
+    routesUiComponents () {
       return this.$router.options.routes
         .filter(route => route.path === '/documentation')[0]
         .children.filter(
@@ -115,10 +115,10 @@ export default {
     }
   },
   methods: {
-    getComponentName(string) {
+    getComponentName (string) {
       return pascalCaseToKebabCase(string.slice(0, -3))
     },
-    getPageName(string) {
+    getPageName (string) {
       return replaceAll(string, '-', ' ')
     }
   }

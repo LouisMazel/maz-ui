@@ -36,7 +36,7 @@
 <script>
 export default {
   name: 'MazDropzoneDoc',
-  data() {
+  data () {
     return {
       url: 'https://httpbin.org/post',
       headers: { 'My-Awesome-Header': 'header value' },
@@ -97,7 +97,7 @@ export default {
     }
   },
   methods: {
-    error(error) {
+    error (error) {
       if (error) {
         this.errorMessage =
           typeof error === 'string' ? error : error.error.title
@@ -105,7 +105,7 @@ export default {
         this.errorMessage = null
       }
     },
-    success() {
+    success () {
       this.successMessage = 'Files uploaded !'
     }
   }

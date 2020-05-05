@@ -35,6 +35,7 @@ module.exports = {
     indent: ['error', 2, {
       ignoredNodes: ['TemplateLiteral']
     }],
+    "space-before-function-paren": ["error", "always"],
     'template-curly-spacing': 'off',
     // 'template-curly-spacing': 'off',
     // PRETTIER RULES

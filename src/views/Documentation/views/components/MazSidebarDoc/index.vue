@@ -74,7 +74,7 @@
 <script>
 export default {
   name: 'MazSidebarDoc',
-  data() {
+  data () {
     return {
       hasLeftSidebarOpen: true,
       hasRightSidebarOpen: false,

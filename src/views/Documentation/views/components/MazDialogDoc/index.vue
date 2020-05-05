@@ -65,7 +65,7 @@
 <script>
 export default {
   name: 'MazDialogDoc',
-  data() {
+  data () {
     return {
       hasDialogOpen: false,
       hasDialogOpenDanger: false,

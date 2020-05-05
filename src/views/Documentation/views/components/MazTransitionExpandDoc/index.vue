@@ -70,7 +70,7 @@
 <script>
 export default {
   name: 'MazTransitionExpandDoc',
-  data() {
+  data () {
     return {
       isShown: false,
       code: `<template>

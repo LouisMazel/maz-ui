@@ -61,7 +61,7 @@ export default {
     color: { type: String, default: 'dodgerblue' }
   },
   computed: {
-    colorStyle() {
+    colorStyle () {
       return {
         fill: this.color
       }

@@ -1,5 +1,5 @@
 export default {
-  hasDarkTheme(state) {
+  hasDarkTheme (state) {
     return state.darkTheme
   }
 }

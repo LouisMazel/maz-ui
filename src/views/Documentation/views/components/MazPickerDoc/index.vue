@@ -263,7 +263,7 @@ const getDefaultLocale = () => {
 
 export default {
   name: 'MazPickerDoc',
-  data() {
+  data () {
     return {
       locale: getDefaultLocale(),
       locales: [

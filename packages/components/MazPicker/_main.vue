@@ -379,7 +379,7 @@ export default {
       this.$emit('is-hidden')
     },
     async getVerticalPosition () {
-      // if (!this.$refs.MazPicker) return
+      if (typeof window === 'undefined') return 'top'
       await this.$nextTick()
 
       const parentRect = this.$refs.MazPicker.getBoundingClientRect()

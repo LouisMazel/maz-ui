@@ -33,7 +33,7 @@
 <script>
 export default {
   name: 'MazDraggableListDoc',
-  data() {
+  data () {
     return {
       list: [
         { label: 'first', value: 0 },
@@ -101,7 +101,7 @@ export default {
     }
   },
   methods: {
-    resetOrder() {
+    resetOrder () {
       this.list.sort((a, b) => a.value - b.value)
     }
   }

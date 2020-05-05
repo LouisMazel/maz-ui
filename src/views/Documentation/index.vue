@@ -57,7 +57,7 @@ export default {
       RightSidebarContent, // eslint-disable-line
     NavFooter
   },
-  data() {
+  data () {
     return {
       hasLeftSidebarOpen: !(window.innerWidth < 767),
       hasRightSidebarOpen: false,
@@ -65,16 +65,16 @@ export default {
     }
   },
   computed: {
-    currentComponent() {
+    currentComponent () {
       return this.$route.name.slice(0, -3)
     },
-    isComponentRoute() {
+    isComponentRoute () {
       const { name } = this.$route
       return !isGeneralDoc(name) && !isCliDoc(name) && !isThemeDoc(name)
     }
   },
   methods: {
-    showOptions() {
+    showOptions () {
       this.hasRightSidebarOpen = !this.hasRightSidebarOpen
     }
   }

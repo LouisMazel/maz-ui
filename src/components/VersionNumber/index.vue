@@ -14,7 +14,7 @@ import { version } from '../../lib'
 export default {
   name: 'VersionNumber',
   computed: {
-    versionNumber() {
+    versionNumber () {
       return version
     }
   }

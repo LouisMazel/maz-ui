@@ -84,7 +84,7 @@ export default {
   },
   computed: {
     ...mapGetters(['hasDarkTheme']),
-    illuPath() {
+    illuPath () {
       return this.hasDarkTheme
         ? require('@/assets/img/maz-ui-illu-dark.png')
         : require('@/assets/img/maz-ui-illu.png')

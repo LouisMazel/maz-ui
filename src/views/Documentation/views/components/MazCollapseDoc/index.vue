@@ -37,7 +37,7 @@
 <script>
 export default {
   name: 'MazCollapseDoc',
-  data() {
+  data () {
     return {
       hasCollapseOpen: true,
       codeLight: `<MazCollapse class="mb-5">

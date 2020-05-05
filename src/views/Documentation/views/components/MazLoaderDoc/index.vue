@@ -9,7 +9,7 @@
 <script>
 export default {
   name: 'MazLoaderDoc',
-  data() {
+  data () {
     return {
       code: `<template>
   <MazLoader />

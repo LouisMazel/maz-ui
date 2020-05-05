@@ -23,11 +23,11 @@ export default {
   },
   computed: {
     ...mapGetters(['hasDarkTheme']),
-    isDocPage() {
+    isDocPage () {
       return this.$route.matched.some(m => m.name === 'Documentation')
     }
   },
-  mounted() {
+  mounted () {
     const date = new Date().toTimeString()
     if (date < '06:30' || date > '21:00') {
       this.setDarkTheme(true)

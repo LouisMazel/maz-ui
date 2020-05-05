@@ -30,7 +30,7 @@
 <script>
 export default {
   name: 'MazSpinnerDoc',
-  data() {
+  data () {
     return {
       colors: [
         'primary',

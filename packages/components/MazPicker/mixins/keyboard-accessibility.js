@@ -10,13 +10,13 @@ export default {
   props: {
     hasKeyboard: { type: Boolean, default: true }
   },
-  data() {
+  data () {
     return {
       keyboardSelectedDay: null
     }
   },
   computed: {
-    currentValue() {
+    currentValue () {
       const currentValue = this.isRangeMode
         ? this.keyboardSelectedDay ||
           this.value.end ||
@@ -29,7 +29,7 @@ export default {
     }
   },
   methods: {
-    keyPressed(e) {
+    keyPressed (e) {
       /*
         13 : Enter
         27 : Escape
@@ -73,49 +73,49 @@ export default {
         throw new Error('An error occured while switch date' + err)
       }
     },
-    previousWeek() {
+    previousWeek () {
       const keyboardSelectedDay = this.currentValue.subtract(1, 'week')
       if (!this.isDisabled(keyboardSelectedDay)) {
         this.keyboardSelectedDay = keyboardSelectedDay
         this.checkMonth()
       }
     },
-    previousDay() {
+    previousDay () {
       const keyboardSelectedDay = this.currentValue.subtract(1, 'days')
       if (!this.isDisabled(keyboardSelectedDay)) {
         this.keyboardSelectedDay = keyboardSelectedDay
         this.checkMonth()
       }
     },
-    nextDay() {
+    nextDay () {
       const keyboardSelectedDay = this.currentValue.add(1, 'days')
       if (!this.isDisabled(keyboardSelectedDay)) {
         this.keyboardSelectedDay = keyboardSelectedDay
         this.checkMonth()
       }
     },
-    nextWeek() {
+    nextWeek () {
       const keyboardSelectedDay = this.currentValue.add(1, 'week')
       if (!this.isDisabled(keyboardSelectedDay)) {
         this.keyboardSelectedDay = keyboardSelectedDay
         this.checkMonth()
       }
     },
-    previousMonth() {
+    previousMonth () {
       const keyboardSelectedDay = this.currentValue.subtract(1, 'month')
       if (!this.isDisabled(keyboardSelectedDay)) {
         this.keyboardSelectedDay = keyboardSelectedDay
         this.checkMonth()
       }
     },
-    nextMonth() {
+    nextMonth () {
       const keyboardSelectedDay = this.currentValue.add(1, 'month')
       if (!this.isDisabled(keyboardSelectedDay)) {
         this.keyboardSelectedDay = keyboardSelectedDay
         this.checkMonth()
       }
     },
-    checkMonth() {
+    checkMonth () {
       this.$nextTick(() => {
         const newYear = parseInt(this.currentValue.format('YYYY'))
         const currentYear = this.month.year
@@ -139,16 +139,19 @@ export default {
       })
     }
   },
-  mounted() {
+  mounted () {
+    if (typeof window === 'undefined') return
     if (this.hasKeyboard && (this.inline || this.isVisible)) {
       window.addEventListener('keydown', this.keyPressed)
     }
   },
-  beforeDestroy() {
+  beforeDestroy () {
+    if (typeof window === 'undefined') return
     window.removeEventListener('keydown', this.keyPressed)
   },
   watch: {
-    isVisible(value) {
+    isVisible (value) {
+      if (typeof window === 'undefined') return
       if (this.hasKeyboard && value) {
         window.addEventListener('keydown', this.keyPressed)
       } else {

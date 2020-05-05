@@ -28,7 +28,7 @@
 <script>
 export default {
   name: 'MazInputTagsDoc',
-  data() {
+  data () {
     return {
       exampleValue: ['maz-ui', 'input', 'tags'],
       codeExample: `<template>

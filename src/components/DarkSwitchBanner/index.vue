@@ -20,10 +20,10 @@ export default {
   computed: {
     ...mapGetters(['hasDarkTheme']),
     darkTheme: {
-      get() {
+      get () {
         return this.hasDarkTheme
       },
-      set(val) {
+      set (val) {
         return this.setDarkTheme(val)
       }
     }

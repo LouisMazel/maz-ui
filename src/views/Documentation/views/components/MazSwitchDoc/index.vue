@@ -23,7 +23,7 @@
 <script>
 export default {
   name: 'MazSwitchDoc',
-  data() {
+  data () {
     return {
       btnTypes: [
         'primary',

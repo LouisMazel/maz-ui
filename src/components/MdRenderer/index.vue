@@ -15,7 +15,7 @@ export default {
     fileName: { type: String, required: true }
   },
   computed: {
-    dynamicComponents() {
+    dynamicComponents () {
       let components
       if (this.fileName === 'MazList') {
         components = [

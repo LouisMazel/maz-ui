@@ -153,7 +153,7 @@
 <script>
 export default {
   name: 'MazBtnDoc',
-  data() {
+  data () {
     return {
       btnTypes: [
         'primary',

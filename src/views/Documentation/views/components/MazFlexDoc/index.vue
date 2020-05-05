@@ -146,7 +146,7 @@
 <script>
 export default {
   name: 'MazFlexDoc',
-  data() {
+  data () {
     return {
       codeExample: `<template>
   <div class="demo">

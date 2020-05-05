@@ -40,7 +40,7 @@
 <script>
 export default {
   name: 'MazTabsLayoutDoc',
-  data() {
+  data () {
     return {
       activeTabIndex: 0,
       tabs: [

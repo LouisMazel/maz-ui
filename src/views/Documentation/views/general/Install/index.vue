@@ -26,7 +26,7 @@
 <script>
 export default {
   name: 'Install',
-  data() {
+  data () {
     return {
       cdnCode: `<!-- import du CSS -->
 <link rel="stylesheet" href="https://unpkg.com/maz-ui/lib/maz-ui.css">

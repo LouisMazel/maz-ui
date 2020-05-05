@@ -30,7 +30,7 @@ export default {
     code: { type: String, default: null },
     language: { type: String, default: 'html' }
   },
-  data() {
+  data () {
     return {
       showCode: false
     }

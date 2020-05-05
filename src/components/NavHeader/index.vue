@@ -63,7 +63,7 @@ export default {
     SocialButtons,
     DarkSwitchBanner
   },
-  data() {
+  data () {
     return {
       routes: [
         { label: 'Home', name: 'Home' },
@@ -73,7 +73,7 @@ export default {
     }
   },
   computed: {
-    isDocPage() {
+    isDocPage () {
       return this.$route.matched.some(m => m.name === 'Documentation')
     }
   }

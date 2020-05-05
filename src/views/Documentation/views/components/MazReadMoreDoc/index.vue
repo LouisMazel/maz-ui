@@ -13,7 +13,7 @@
 <script>
 export default {
   name: 'MazReadMoreDoc',
-  data() {
+  data () {
     return {
       text: `
           At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti
