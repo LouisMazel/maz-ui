@@ -287,7 +287,6 @@
 
 .is-dark .input-tel,
 .is-dark.input-tel {
-  &:hover,
   &.is-focused {
     .input-tel__input {
       border-color: $primary-color;
