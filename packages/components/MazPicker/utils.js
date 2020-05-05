@@ -32,7 +32,7 @@ export const forceUpdateComputedData = () => 'updated'
 
 export const getDateMoment = (value, format, range) => {
   if (range) {
-    if (typeof value === 'string') throw new Error(`[MazPicker] range mode is enable: value must be an object like this '{ start: null, end: null }' or 'null'`)
+    if (typeof value === 'string') throw new Error('[MazPicker] range mode is enable: value must be an object like this \'{ start: null, end: null }\' or \'null\'')
     return {
       start: value && value.start ? moment(value.start, format) : null,
       end: value && value.end ? moment(value.end, format) : null

@@ -1,42 +1,47 @@
 <template>
-  <div class="md-renderer">
-    <component
-      :is="component"
-      v-for="(component, i) in dynamicComponents"
-      :key="i"
-    />
-  </div>
+	<div class="md-renderer">
+		<component
+			:is="component"
+			v-for="(component, i) in dynamicComponents"
+			:key="i"
+		/>
+	</div>
 </template>
 
 <script>
-  export default {
-    name: 'MdRenderer',
-    props: {
-      fileName: { type: String, required: true }
-    },
-    computed: {
-      dynamicComponents () {
-        let components
-        if (this.fileName === 'MazList') {
-          components = [
-            require(`@/../packages/components/MazList/README.md`).vue.component,
-            require(`@/../packages/components/MazList/MazListItem/README.md`).vue.component
-          ]
-        } else if (this.fileName === 'MazTabsLayout') {
-          components = [
-            require(`@/../packages/components/MazTabsLayout/MazTabsBar/README.md`).vue.component,
-            require(`@/../packages/components/MazTabsLayout/MazTabsContent/README.md`).vue.component,
-            require(`@/../packages/components/MazTabsLayout/MazTabsContentItem/README.md`).vue.component
-          ]
-        } else {
-          components = [
-            require(`@/../packages/components/${this.fileName}/README.md`).vue.component
-          ]
-        }
-        return components
+export default {
+  name: 'MdRenderer',
+  props: {
+    fileName: { type: String, required: true }
+  },
+  computed: {
+    dynamicComponents() {
+      let components
+      if (this.fileName === 'MazList') {
+        components = [
+          require('@/../packages/components/MazList/README.md').vue.component,
+          require('@/../packages/components/MazList/MazListItem/README.md').vue
+            .component
+        ]
+      } else if (this.fileName === 'MazTabsLayout') {
+        components = [
+          require('@/../packages/components/MazTabsLayout/MazTabsBar/README.md')
+            .vue.component,
+          require('@/../packages/components/MazTabsLayout/MazTabsContent/README.md')
+            .vue.component,
+          require('@/../packages/components/MazTabsLayout/MazTabsContentItem/README.md')
+            .vue.component
+        ]
+      } else {
+        components = [
+          require(`@/../packages/components/${this.fileName}/README.md`).vue
+            .component
+        ]
       }
+      return components
     }
   }
+}
 </script>
 
 <style lang="scss">
@@ -44,15 +49,6 @@
     margin: auto;
     max-width: 800px;
     background-color: $bg-color;
-
-    // h1,
-    // h2,
-    // h3,
-    // h4,
-    // h5,
-    // h6 {
-    //   font-weight: bold;
-    // }
 
     h1 {
       color: #333;
@@ -124,7 +120,7 @@
 
     a,
     a:visited {
-      color: #4183C4;
+      color: dodgerblue;
       background-color: inherit;
       text-decoration: none;
     }
@@ -176,11 +172,21 @@
       padding: 0;
     }
 
-    #ws { background-color: $hover-bg-color; }
+    #ws {
+      background-color: $hover-bg-color;
+    }
 
-    .send { color: $success-color; }
-    .server { color: #79B; }
-    .error { color: $danger-color; }
+    .send {
+      color: $success-color;
+    }
+
+    .server {
+      color: #79B;
+    }
+
+    .error {
+      color: $danger-color;
+    }
 
     blockquote {
       background: $hover-bg-color;

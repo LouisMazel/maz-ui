@@ -1,47 +1,41 @@
 <template>
-  <div
-    class="component-container pos-r bg-white my-4 shadow-container"
-  >
-    <div class="p-4">
-      <slot />
-    </div>
-    <div
-      v-if="code"
-      class="component-container__footer border-top border-color border-top-solid"
-    >
-      <MazCollapse
-        class="component-container__footer__collapse"
-      >
-        <div
-          slot="header-text"
-        >
-          Show code
-        </div>
-        <div class="px-4">
-          <CodeContainer
-            :language="language"
-            :code="code"
-          />
-        </div>
-      </MazCollapse>
-    </div>
-  </div>
+	<div class="component-container pos-r bg-white my-4 shadow-container">
+		<div class="p-4">
+			<slot />
+		</div>
+		<div
+			v-if="code"
+			class="component-container__footer border-top border-color border-top-solid"
+		>
+			<MazCollapse class="component-container__footer__collapse">
+				<div slot="header-text">
+					Show code
+				</div>
+				<div class="px-4">
+					<CodeContainer
+						:language="language"
+						:code="code"
+					/>
+				</div>
+			</MazCollapse>
+		</div>
+	</div>
 </template>
 
 <script>
-  export default {
-    name: 'ComponentContainer',
-    props: {
-      dark: { type: Boolean, default: false },
-      code: { type: String, default: null },
-      language: { type: String, default: 'html' }
-    },
-    data () {
-      return {
-        showCode: false
-      }
+export default {
+  name: 'ComponentContainer',
+  props: {
+    dark: { type: Boolean, default: false },
+    code: { type: String, default: null },
+    language: { type: String, default: 'html' }
+  },
+  data() {
+    return {
+      showCode: false
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>

@@ -1,50 +1,49 @@
 <template>
-  <div class="maz-dropzone-doc">
-    <ComponentContainer
-      :code="codeExample"
-      language="js"
-      class="flex direction-column"
-    >
-      <MazDropzone
-        ref="mazDropzone"
-        :url="url"
-        :headers="headers"
-        :max-filesize="maxFilesize"
-        @file-upload-error="error"
-        @file-upload-success="success"
-        @file-removed="successMessage = null"
-      />
-      <div
-        v-if="errorMessage"
-        class="dropzone-error flex justify-center mt-2"
-      >
-        <span class="text-danger">
-          {{ errorMessage }}
-        </span>
-      </div>
-      <div
-        v-if="successMessage"
-        class="dropzone-success flex justify-center mt-2"
-      >
-        <span class="text-success">
-          {{ successMessage }}
-        </span>
-      </div>
-    </ComponentContainer>
-  </div>
+	<div class="maz-dropzone-doc">
+		<ComponentContainer
+			:code="codeExample"
+			language="js"
+			class="flex direction-column"
+		>
+			<MazDropzone
+				ref="mazDropzone"
+				:url="url"
+				:headers="headers"
+				:max-filesize="maxFilesize"
+				@file-upload-error="error"
+				@file-upload-success="success"
+				@file-removed="successMessage = null"
+			/>
+			<div
+				v-if="errorMessage"
+				class="dropzone-error flex justify-center mt-2">
+				<span class="text-danger">
+					{{ errorMessage }}
+				</span>
+			</div>
+			<div
+				v-if="successMessage"
+				class="dropzone-success flex justify-center mt-2"
+			>
+				<span class="text-success">
+					{{ successMessage }}
+				</span>
+			</div>
+		</ComponentContainer>
+	</div>
 </template>
 
 <script>
-  export default {
-    name: 'MazDropzoneDoc',
-    data () {
-      return {
-        url: 'https://httpbin.org/post',
-        headers: { 'My-Awesome-Header': 'header value' },
-        maxFilesize: 2,
-        errorMessage: null,
-        successMessage: null,
-        codeExample: `<template>
+export default {
+  name: 'MazDropzoneDoc',
+  data() {
+    return {
+      url: 'https://httpbin.org/post',
+      headers: { 'My-Awesome-Header': 'header value' },
+      maxFilesize: 2,
+      errorMessage: null,
+      successMessage: null,
+      codeExample: `<template>
   <MazDropzone
     ref="mazDropzone"
     :url="url"
@@ -95,19 +94,20 @@ export default {
     }
   }
 }`
+    }
+  },
+  methods: {
+    error(error) {
+      if (error) {
+        this.errorMessage =
+          typeof error === 'string' ? error : error.error.title
+      } else {
+        this.errorMessage = null
       }
     },
-    methods: {
-      error (error) {
-        if (error) {
-          this.errorMessage = typeof error === 'string' ? error : error.error.title
-        } else {
-          this.errorMessage = null
-        }
-      },
-      success () {
-        this.successMessage = 'Files uploaded !'
-      }
+    success() {
+      this.successMessage = 'Files uploaded !'
     }
   }
+}
 </script>

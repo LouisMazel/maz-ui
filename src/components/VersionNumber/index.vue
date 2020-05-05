@@ -1,22 +1,22 @@
 <template>
-  <a
-    target="_blank"
-    class="version-number"
-    href="https://www.npmjs.com/package/maz-ui"
-  >
-    {{ versionNumber }}
-  </a>
+	<a
+		target="_blank"
+		class="version-number"
+		href="https://www.npmjs.com/package/maz-ui"
+	>
+		{{ versionNumber }}
+	</a>
 </template>
 
 <script>
-  import { version } from '../../lib'
+import { version } from '../../lib'
 
-  export default {
-    name: 'VersionNumber',
-    computed: {
-      versionNumber () {
-        return version
-      }
+export default {
+  name: 'VersionNumber',
+  computed: {
+    versionNumber() {
+      return version
     }
   }
+}
 </script>

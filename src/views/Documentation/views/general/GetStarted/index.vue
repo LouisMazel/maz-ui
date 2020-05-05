@@ -1,51 +1,48 @@
 <template>
-  <div class="get-started">
-    <h2>
-      Get Started
-    </h2>
-    <h3>NPM</h3>
-    <CodeContainer
-      :code="codeBase"
-      class="my-4"
-    />
+	<div class="get-started">
+		<h2>
+			Get Started
+		</h2>
+		<h3>NPM</h3>
+		<CodeContainer
+			:code="codeBase"
+			class="my-4" />
 
-    <h2>
-      On demande
-    </h2>
+		<h2>
+			On demande
+		</h2>
 
-    <p>
-      With the help of babel-plugin-component, we can import components we actually need, making the project smaller than otherwise.
-    </p>
+		<p>
+			With the help of babel-plugin-component, we can import components we
+			actually need, making the project smaller than otherwise.
+		</p>
 
-    <p>First, install babel-plugin-component:</p>
+		<p>First, install babel-plugin-component:</p>
 
-    <CodeContainer
-      :code="codeBabelPLugin"
-      class="my-4"
-    />
+		<CodeContainer
+			:code="codeBabelPLugin"
+			class="my-4" />
 
-    <p>Then edit .babelrc:</p>
+		<p>Then edit .babelrc:</p>
 
-    <CodeContainer
-      :code="configBabelPluginComponent"
-      class="my-4"
-    />
+		<CodeContainer
+			:code="configBabelPluginComponent"
+			class="my-4" />
 
-    <p>Now you can do that</p>
+		<p>Now you can do that</p>
 
-    <CodeContainer
-      :code="codeCustom"
-      class="my-4"
-    />
-  </div>
+		<CodeContainer
+			:code="codeCustom"
+			class="my-4" />
+	</div>
 </template>
 
 <script>
-  export default {
-    name: 'GetStarted',
-    data () {
-      return {
-        codeBase: `import Vue from 'vue'
+export default {
+  name: 'GetStarted',
+  data() {
+    return {
+      codeBase: `import Vue from 'vue'
 import 'maz-ui/lib/maz-ui.css'
 import MazUi from 'maz-ui'
 import App from './App.vue'
@@ -56,12 +53,12 @@ new Vue({
   el: '#app',
   render: h => h(App)
 })`,
-        codeBabelPLugin: `npm install babel-plugin-component -D
+      codeBabelPLugin: `npm install babel-plugin-component -D
 
 /*
  * or yarn add babel-plugin-component -D
  */`,
-        codeCustom: `import Vue from 'vue'
+      codeCustom: `import Vue from 'vue'
 import 'maz-ui/lib/maz-ui.css'
 import { MazBtn, MazSelect } from 'maz-ui'
 import App from './App.vue'
@@ -78,7 +75,7 @@ new Vue({
   el: '#app',
   render: h => h(App)
 })`,
-        configBabelPluginComponent: `{
+      configBabelPluginComponent: `{
   "presets": [["es2015", { "modules": false }]],
   "plugins": [
     [
@@ -90,9 +87,9 @@ new Vue({
     ]
   ]
 }`
-      }
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>

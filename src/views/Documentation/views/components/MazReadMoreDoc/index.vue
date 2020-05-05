@@ -1,23 +1,21 @@
 <template>
-  <div class="maz-read-more-doc">
-    <ComponentContainer
-      :code="codeExample"
-    >
-      <MazReadMore
-        :text="text"
-        :truncate-length="450"
-        :translations="translations"
-      />
-    </ComponentContainer>
-  </div>
+	<div class="maz-read-more-doc">
+		<ComponentContainer :code="codeExample">
+			<MazReadMore
+				:text="text"
+				:truncate-length="450"
+				:translations="translations"
+			/>
+		</ComponentContainer>
+	</div>
 </template>
 
 <script>
-  export default {
-    name: 'MazReadMoreDoc',
-    data () {
-      return {
-        text: `
+export default {
+  name: 'MazReadMoreDoc',
+  data() {
+    return {
+      text: `
           At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti
           quos dolores et quas molestias excepturi sint occaecati cupiditate non provident,
           similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.
@@ -26,11 +24,11 @@
           repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus,
           ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat
         `,
-        translations: {
-          readMore: 'Read more',
-          readLess: 'Read less'
-        },
-        codeExample: `<template>
+      translations: {
+        readMore: 'Read more',
+        readLess: 'Read less'
+      },
+      codeExample: `<template>
   <MazReadMore
     :text="text"
     :truncate-length="450"
@@ -57,7 +55,7 @@ export default {
     }
   }
 }`
-      }
     }
   }
+}
 </script>

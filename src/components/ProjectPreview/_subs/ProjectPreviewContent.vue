@@ -1,26 +1,28 @@
 <template>
-  <div class="project-preview-content flex-1 flex direction-column space-between p-3">
-    <div class="project-preview-content__text">
-      <h4 class="fs-18 mb-2">
-        {{ project.name }}
-      </h4>
-      <p class="mb-2">
-        {{ project.description }}
-      </p>
-    </div>
-  </div>
+	<div
+		class="project-preview-content flex-1 flex direction-column space-between p-3"
+	>
+		<div class="project-preview-content__text">
+			<h4 class="fs-18 mb-2">
+				{{ project.name }}
+			</h4>
+			<p class="mb-2">
+				{{ project.description }}
+			</p>
+		</div>
+	</div>
 </template>
 
 <script>
-  export default {
-    name: 'ProjectPreview',
-    props: {
-      project: {
-        type: Object,
-        required: true
-      }
+export default {
+  name: 'ProjectPreview',
+  props: {
+    project: {
+      type: Object,
+      required: true
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>

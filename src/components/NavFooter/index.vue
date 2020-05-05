@@ -1,66 +1,64 @@
 <template>
-  <footer
-    class="nav-footer flex-fixed border-top-1 border-top-solid border-color"
-    role="contentinfo"
-  >
-    <nav class="nav-footer-content container px-4 flex align-center space-between py-4">
-      <div class="flex direction-column hidden-tablet">
-        <RouterLink
-          :to="{ name: 'Home' }"
-          class="mr-3"
-        >
-          Home
-        </RouterLink>
-        <RouterLink
-          :to="{ name: 'Documentation' }"
-        >
-          Documentation
-        </RouterLink>
-        <RouterLink
-          :to="{ name: 'MadeWithMazUi' }"
-        >
-          Made with Maz UI
-        </RouterLink>
-      </div>
-      <div class="nav-footer-content__logo direction-column hidden-tablet flex align-center">
-        <img
-          src="@/assets/img/logo-maz-ui.png"
-          alt="logo-loic-mazuel"
-          class="nav-footer-content__logo__img"
-        >
-      </div>
-      <div class="flex align-center">
-        <SocialButtons class="mr-2" />
-        <VersionNumber />
-      </div>
-    </nav>
-    <div class="nav-footer-subs py-2">
-      <div class="px-4 flex justify-end">
-        <a
-          href="https://www.loicmazuel.com/"
-          target="_blank"
-          class="flex"
-        >
-          <p class="fs-14">
-            © Loïc Mazuel
-          </p>
-        </a>
-      </div>
-    </div>
-  </footer>
+	<footer
+		class="nav-footer flex-fixed border-top-1 border-top-solid border-color"
+		role="contentinfo"
+	>
+		<nav
+			class="nav-footer-content container px-4 flex align-center space-between py-4"
+		>
+			<div class="flex direction-column hidden-tablet">
+				<RouterLink
+					:to="{ name: 'Home' }"
+					class="mr-3">
+					Home
+				</RouterLink>
+				<RouterLink :to="{ name: 'Documentation' }">
+					Documentation
+				</RouterLink>
+				<RouterLink :to="{ name: 'MadeWithMazUi' }">
+					Made with Maz UI
+				</RouterLink>
+			</div>
+			<div
+				class="nav-footer-content__logo direction-column hidden-tablet flex align-center"
+			>
+				<img
+					src="@/assets/img/logo-maz-ui.png"
+					alt="logo-loic-mazuel"
+					class="nav-footer-content__logo__img"
+				/>
+			</div>
+			<div class="flex align-center">
+				<SocialButtons class="mr-2" />
+				<VersionNumber />
+			</div>
+		</nav>
+		<div class="nav-footer-subs py-2">
+			<div class="px-4 flex justify-end">
+				<a
+					href="https://www.loicmazuel.com/"
+					target="_blank"
+					class="flex">
+					<p class="fs-14">
+						© Loïc Mazuel
+					</p>
+				</a>
+			</div>
+		</div>
+	</footer>
 </template>
 
 <script>
-  import SocialButtons from '@/components/SocialButtons'
-  import VersionNumber from '@/components/VersionNumber'
+import SocialButtons from '@/components/SocialButtons'
+import VersionNumber from '@/components/VersionNumber'
 
-  export default {
-    name: 'NavFooter',
-    components: {
-      SocialButtons,
-      VersionNumber
-    }
+export default {
+  name: 'NavFooter',
+  components: {
+    SocialButtons,
+    VersionNumber
   }
+}
 </script>
 
 <style lang="scss" scoped>

@@ -1,8 +1,8 @@
 /*
-  * Vue mixin to inject the required methods, events to handle the date navigation
-  * with the keyboard.
-  * @module mixin - keyboardAccessibility
-*/
+ * Vue mixin to inject the required methods, events to handle the date navigation
+ * with the keyboard.
+ * @module mixin - keyboardAccessibility
+ */
 import { EventBus } from './../utils'
 import moment from 'moment'
 
@@ -10,23 +10,26 @@ export default {
   props: {
     hasKeyboard: { type: Boolean, default: true }
   },
-  data () {
+  data() {
     return {
       keyboardSelectedDay: null
     }
   },
   computed: {
-    currentValue () {
-      const currentValue = (
-        this.isRangeMode
-          ? this.keyboardSelectedDay || this.value.end || this.value.start || moment()
-          : this.keyboardSelectedDay || this.value || moment()
-      )
-      return currentValue instanceof moment ? currentValue.clone() : currentValue
+    currentValue() {
+      const currentValue = this.isRangeMode
+        ? this.keyboardSelectedDay ||
+          this.value.end ||
+          this.value.start ||
+          moment()
+        : this.keyboardSelectedDay || this.value || moment()
+      return currentValue instanceof moment
+        ? currentValue.clone()
+        : currentValue
     }
   },
   methods: {
-    keyPressed (e) {
+    keyPressed(e) {
       /*
         13 : Enter
         27 : Escape
@@ -39,7 +42,12 @@ export default {
         40 : Down
         40 : Right
       */
-      if (e.keyCode === 38 || e.keyCode === 40 || e.keyCode === 35 || e.keyCode === 36) {
+      if (
+        e.keyCode === 38 ||
+        e.keyCode === 40 ||
+        e.keyCode === 35 ||
+        e.keyCode === 36
+      ) {
         e.view.event.preventDefault()
       }
       try {
@@ -65,54 +73,57 @@ export default {
         throw new Error('An error occured while switch date' + err)
       }
     },
-    previousWeek () {
+    previousWeek() {
       const keyboardSelectedDay = this.currentValue.subtract(1, 'week')
       if (!this.isDisabled(keyboardSelectedDay)) {
         this.keyboardSelectedDay = keyboardSelectedDay
         this.checkMonth()
       }
     },
-    previousDay () {
+    previousDay() {
       const keyboardSelectedDay = this.currentValue.subtract(1, 'days')
       if (!this.isDisabled(keyboardSelectedDay)) {
         this.keyboardSelectedDay = keyboardSelectedDay
         this.checkMonth()
       }
     },
-    nextDay () {
+    nextDay() {
       const keyboardSelectedDay = this.currentValue.add(1, 'days')
       if (!this.isDisabled(keyboardSelectedDay)) {
         this.keyboardSelectedDay = keyboardSelectedDay
         this.checkMonth()
       }
     },
-    nextWeek () {
+    nextWeek() {
       const keyboardSelectedDay = this.currentValue.add(1, 'week')
       if (!this.isDisabled(keyboardSelectedDay)) {
         this.keyboardSelectedDay = keyboardSelectedDay
         this.checkMonth()
       }
     },
-    previousMonth () {
+    previousMonth() {
       const keyboardSelectedDay = this.currentValue.subtract(1, 'month')
       if (!this.isDisabled(keyboardSelectedDay)) {
         this.keyboardSelectedDay = keyboardSelectedDay
         this.checkMonth()
       }
     },
-    nextMonth () {
+    nextMonth() {
       const keyboardSelectedDay = this.currentValue.add(1, 'month')
       if (!this.isDisabled(keyboardSelectedDay)) {
         this.keyboardSelectedDay = keyboardSelectedDay
         this.checkMonth()
       }
     },
-    checkMonth () {
+    checkMonth() {
       this.$nextTick(() => {
         const newYear = parseInt(this.currentValue.format('YYYY'))
         const currentYear = this.month.year
         const isSameYear = newYear === currentYear
-        if (parseInt(this.currentValue.format('MM') - 1) !== this.month.month && isSameYear) {
+        if (
+          parseInt(this.currentValue.format('MM') - 1) !== this.month.month &&
+          isSameYear
+        ) {
           if (parseInt(this.currentValue.format('MM') - 1) > this.month.month) {
             this.$emit('change-month', 'next')
           } else {
@@ -128,16 +139,16 @@ export default {
       })
     }
   },
-  mounted () {
+  mounted() {
     if (this.hasKeyboard && (this.inline || this.isVisible)) {
       window.addEventListener('keydown', this.keyPressed)
     }
   },
-  beforeDestroy () {
+  beforeDestroy() {
     window.removeEventListener('keydown', this.keyPressed)
   },
   watch: {
-    isVisible (value) {
+    isVisible(value) {
       if (this.hasKeyboard && value) {
         window.addEventListener('keydown', this.keyPressed)
       } else {

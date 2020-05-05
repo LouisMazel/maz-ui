@@ -13,5 +13,9 @@ export const getCurrency = (number, local, currencyString, round) => {
     numberToFormat = Math.floor(numberToFormat)
     numberOfDecimal = 0
   }
-  return new Intl.NumberFormat(local, { style: 'currency', currency: currencyString || 'EUR', minimumFractionDigits: numberOfDecimal }).format(numberToFormat)
+  return new Intl.NumberFormat(local, {
+    style: 'currency',
+    currency: currencyString || 'EUR',
+    minimumFractionDigits: numberOfDecimal
+  }).format(numberToFormat)
 }
