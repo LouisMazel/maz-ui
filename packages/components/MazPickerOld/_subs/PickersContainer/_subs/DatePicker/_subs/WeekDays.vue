@@ -14,11 +14,11 @@
 </template>
 
 <script>
-  export default {
-    name: 'WeekDays',
-    props: {
-      weekDays: { type: Array, required: true },
-      dark: { type: Boolean, default: null }
-    }
+export default {
+  name: 'WeekDays',
+  props: {
+    weekDays: { type: Array, required: true },
+    dark: { type: Boolean, default: null }
   }
+}
 </script>

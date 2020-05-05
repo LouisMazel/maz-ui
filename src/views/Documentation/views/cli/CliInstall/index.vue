@@ -5,12 +5,10 @@
     </h2>
 
     <p>
-      <a
-        href="https://github.com/LouisMazel/maz-cli"
-        target="_blank"
-      >
+      <a href="https://github.com/LouisMazel/maz-cli" target="_blank">
         Maz-CLI
-      </a> is a command line interface to generate projects with Maz-UI
+      </a>
+      is a command line interface to generate projects with Maz-UI
     </p>
 
     <h3>
@@ -28,13 +26,10 @@
     </h3>
 
     <p>
-      With Maz-CLI you can generate a <a
-        href="https://nuxtjs.org/"
-        target="_blank"
-      >Nuxt.JS</a> project with the headless CMS <a
-        href="https://prismic.io/"
-        target="_blank"
-      >Prismic</a> and Maz-UI
+      With Maz-CLI you can generate a
+      <a href="https://nuxtjs.org/" target="_blank">Nuxt.JS</a> project with the
+      headless CMS <a href="https://prismic.io/" target="_blank">Prismic</a> and
+      Maz-UI
     </p>
 
     <h4>
@@ -58,7 +53,8 @@
         Website public URL or future URL. Can be changed
       </li>
       <li>
-        <strong>optionnal</strong>: If you want use a client e-mail to use contact form and receive email requests on you email
+        <strong>optionnal</strong>: If you want use a client e-mail to use
+        contact form and receive email requests on you email
         <ul>
           <li>
             Mailgun account:
@@ -97,13 +93,11 @@
     </h4>
 
     <p>
-      From the temrinal, launch this command in your workspace directory and and give the answers to the information requested to generate the project
+      From the temrinal, launch this command in your workspace directory and and
+      give the answers to the information requested to generate the project
     </p>
 
-    <CodeContainer
-      code="maz create <app-name>"
-      language="bash"
-    />
+    <CodeContainer code="maz create <app-name>" language="bash" />
 
     <p />
 
@@ -134,7 +128,7 @@
 </template>
 
 <script>
-  export default {
-    name: 'CliInstall'
-  }
+export default {
+  name: 'CliInstall'
+}
 </script>

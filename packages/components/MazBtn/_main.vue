@@ -29,87 +29,87 @@
 </template>
 
 <script>
-  import MazSpinner from '../MazSpinner'
-  import uniqueId from './../../mixins/uniqueId'
+import MazSpinner from '../MazSpinner'
+import uniqueId from './../../mixins/uniqueId'
 
-  /**
-   * > Simple button component
-   */
+/**
+ * > Simple button component
+ */
 
-  export default {
-    name: 'MazBtn',
-    components: {
-      MazSpinner
+export default {
+  name: 'MazBtn',
+  components: {
+    MazSpinner
+  },
+  mixins: [uniqueId],
+  props: {
+    // is the id of the button
+    id: { type: String, default: null },
+    // is color type (`'primary'` / `'secondary'` / `'third'` / `'success'` / `'danger'` / `'grey'` / `'info'` / `'warning'` / `'light'` / `'dark'` / `'default'` / `'white'` / `'black'`)
+    color: {
+      type: String,
+      default: 'primary'
     },
-    mixins: [uniqueId],
-    props: {
-      // is the id of the button
-      id: { type: String, default: null },
-      // is color type (`'primary'` / `'secondary'` / `'third'` / `'success'` / `'danger'` / `'grey'` / `'info'` / `'warning'` / `'light'` / `'dark'` / `'default'` / `'white'` / `'black'`)
-      color: {
-        type: String,
-        default: 'primary'
-      },
-      // is the button type (button, submit or something else)
-      type: { type: String, default: 'button' },
-      // button size (`'lg'` / `'md'` / `'mini'` / `'fab'`)
-      size: { type: String, default: null },
-      // is a `boolean` to show the loader & disable it
-      loading: { type: Boolean, default: false },
-      // is a `boolean` to disable the button
-      disabled: { type: Boolean, default: false },
-      // apply the outline style
-      outline: { type: Boolean, default: false },
-      // apply the rounded style
-      rounded: { type: Boolean, default: false },
-      // apply the fab style
-      fab: { type: Boolean, default: false },
-      // apply the focus style
-      active: { type: Boolean, default: false },
-      // take 100% of the width
-      block: { type: Boolean, default: false },
-      // remove shadow/elevation
-      noShadow: { type: Boolean, default: false }
+    // is the button type (button, submit or something else)
+    type: { type: String, default: 'button' },
+    // button size (`'lg'` / `'md'` / `'mini'` / `'fab'`)
+    size: { type: String, default: null },
+    // is a `boolean` to show the loader & disable it
+    loading: { type: Boolean, default: false },
+    // is a `boolean` to disable the button
+    disabled: { type: Boolean, default: false },
+    // apply the outline style
+    outline: { type: Boolean, default: false },
+    // apply the rounded style
+    rounded: { type: Boolean, default: false },
+    // apply the fab style
+    fab: { type: Boolean, default: false },
+    // apply the focus style
+    active: { type: Boolean, default: false },
+    // take 100% of the width
+    block: { type: Boolean, default: false },
+    // remove shadow/elevation
+    noShadow: { type: Boolean, default: false }
+  },
+  computed: {
+    componentType () {
+      return this.$attrs.href ? 'a' : 'button'
     },
-    computed: {
-      componentType () {
-        return this.$attrs.href ? 'a' : 'button'
-      },
-      isLink () {
-        return this.componentType === 'a'
-      },
-      isDisabled () {
-        const { disabled, loading } = this
-        return loading || disabled
-      },
-      classes () {
-        const { color, size, outline, rounded, isDisabled, fab, active, block, noShadow } = this
-        return [
-          ...(color ? [`btn--${color}`] : [null]),
-          ...(size ? [`btn--${size}`] : [null]),
-          ...(outline ? [`btn--${color}--outline`] : [null]),
-          ...(rounded ? [`btn--rounded`] : [null]),
-          ...(block ? [`btn--block`] : [null]),
-          ...(fab ? [`btn--fab dots-text`] : [null]),
-          ...(isDisabled ? [`btn--disabled`] : [null]),
-          ...(active ? [`active`] : [null]),
-          ...(noShadow ? [`no-shadow`] : [null])
-        ]
-      }
+    isLink () {
+      return this.componentType === 'a'
     },
-    methods: {
-      handleClick (e) {
-        // return click event
-        this.$emit('click', e)
-      },
-      emitMouseEnter (e) {
-        // return mouseenter event
-        this.$emit('mouseenter', e)
-      },
-      emitMouseLeave (e) {
-        // return mouseleave event
-        this.$emit('mouseleave', e)
-      }
+    isDisabled () {
+      const { disabled, loading } = this
+      return loading || disabled
+    },
+    classes () {
+      const { color, size, outline, rounded, isDisabled, fab, active, block, noShadow } = this
+      return [
+        ...(color ? [`btn--${color}`] : [null]),
+        ...(size ? [`btn--${size}`] : [null]),
+        ...(outline ? [`btn--${color}--outline`] : [null]),
+        ...(rounded ? ['btn--rounded'] : [null]),
+        ...(block ? ['btn--block'] : [null]),
+        ...(fab ? ['btn--fab dots-text'] : [null]),
+        ...(isDisabled ? ['btn--disabled'] : [null]),
+        ...(active ? ['active'] : [null]),
+        ...(noShadow ? ['no-shadow'] : [null])
+      ]
+    }
+  },
+  methods: {
+    handleClick (e) {
+      // return click event
+      this.$emit('click', e)
+    },
+    emitMouseEnter (e) {
+      // return mouseenter event
+      this.$emit('mouseenter', e)
+    },
+    emitMouseLeave (e) {
+      // return mouseleave event
+      this.$emit('mouseleave', e)
     }
   }
+}
 </script>

@@ -26,22 +26,22 @@
 </template>
 
 <script>
-  import { EventBus } from './../../utils'
+import { EventBus } from './../../utils'
 
-  export default {
-    name: 'FooterPicker',
-    props: {
-      hasValidate: { type: Boolean, required: true },
-      hasNow: { type: Boolean, required: true },
-      nowTranslation: { type: String, required: true }
+export default {
+  name: 'FooterPicker',
+  props: {
+    hasValidate: { type: Boolean, required: true },
+    hasNow: { type: Boolean, required: true },
+    nowTranslation: { type: String, required: true }
+  },
+  methods: {
+    validate (e) {
+      EventBus.$emit('validate', e)
     },
-    methods: {
-      validate (e) {
-        EventBus.$emit('validate', e)
-      },
-      now (e) {
-        EventBus.$emit('now', e)
-      }
+    now (e) {
+      EventBus.$emit('now', e)
     }
   }
+}
 </script>

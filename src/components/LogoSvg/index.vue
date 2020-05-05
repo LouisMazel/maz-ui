@@ -55,24 +55,24 @@
 </template>
 
 <script>
-  export default {
-    name: 'LogoSvg',
-    props: {
-      color: { type: String, default: 'dodgerblue' }
-    },
-    computed: {
-      colorStyle () {
-        return {
-          fill: this.color
-        }
+export default {
+  name: 'LogoSvg',
+  props: {
+    color: { type: String, default: 'dodgerblue' }
+  },
+  computed: {
+    colorStyle() {
+      return {
+        fill: this.color
       }
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>
-  .logo-svg svg {
-    height: 100%;
-    width: 100%;
-  }
+.logo-svg svg {
+  height: 100%;
+  width: 100%;
+}
 </style>

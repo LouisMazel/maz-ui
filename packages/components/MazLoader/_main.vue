@@ -12,10 +12,10 @@
 </template>
 
 <script>
-  export default {
-    name: 'MazLoader',
-    props: {
-      dark: { type: Boolean, default: false }
-    }
+export default {
+  name: 'MazLoader',
+  props: {
+    dark: { type: Boolean, default: false }
   }
+}
 </script>

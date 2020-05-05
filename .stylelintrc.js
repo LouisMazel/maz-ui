@@ -1,9 +1,6 @@
 module.exports = {
   extends: 'stylelint-config-standard',
-  plugins: [
-    'stylelint-scss',
-    'stylelint-order'
-  ],
+  plugins: ['stylelint-scss', 'stylelint-order'],
   rules: {
     'color-hex-case': 'upper',
     'string-quotes': 'single',
@@ -13,12 +10,9 @@ module.exports = {
     'property-no-vendor-prefix': true,
     'value-no-vendor-prefix': true,
     'at-rule-no-unknown': null,
-    'order/order': [
-      'custom-properties',
-      'declarations'
-    ],
+    'order/order': ['custom-properties', 'declarations'],
     'no-descending-specificity': null,
-    'indentation': 2,
+    indentation: 2,
     'no-duplicate-selectors': true,
     'color-hex-length': 'short',
     'color-named': 'always-where-possible',

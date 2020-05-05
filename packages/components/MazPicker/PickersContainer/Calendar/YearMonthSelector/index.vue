@@ -85,77 +85,77 @@
 </template>
 
 <script>
-  import { getMonthsByFormat } from '../../../modules/month'
-  import ArrowIcon from './../../../../_subs/ArrowIcon'
+import { getMonthsByFormat } from '../../../modules/month'
+import ArrowIcon from './../../../../_subs/ArrowIcon'
 
-  const ArrayRange = (start, end) => {
-    return Array(end - start + 1).fill().map((_, idx) => {
-      const n = start + idx
-      return n
-    })
-  }
+const ArrayRange = (start, end) => {
+  return Array(end - start + 1).fill().map((_, idx) => {
+    const n = start + idx
+    return n
+  })
+}
 
-  export default {
-    name: 'YearMonthSelector',
-    components: { ArrowIcon },
-    props: {
-      value: { type: String, default: null },
-      month: { type: Object, required: true },
-      hasDouble: { type: Boolean, required: true }
+export default {
+  name: 'YearMonthSelector',
+  components: { ArrowIcon },
+  props: {
+    value: { type: String, default: null },
+    month: { type: Object, required: true },
+    hasDouble: { type: Boolean, required: true }
+  },
+  data () {
+    return {
+      years: [],
+      months: []
+    }
+  },
+  computed: {
+    isOpen () {
+      return this.value !== null
     },
-    data () {
-      return {
-        years: [],
-        months: []
-      }
+    currentMonth () {
+      return this.month.month
     },
-    computed: {
-      isOpen () {
-        return this.value !== null
-      },
-      currentMonth () {
-        return this.month.month
-      },
-      currentYear () {
-        return this.month.year
-      },
-      isMonthMode () {
-        return this.value === 'month'
-      }
+    currentYear () {
+      return this.month.year
     },
-    watch: {
-      value: {
-        handler () {
-          this.isMonthMode ? this.getMonths() : this.getYears()
-        },
-        immediate: true
-      }
+    isMonthMode () {
+      return this.value === 'month'
+    }
+  },
+  watch: {
+    value: {
+      handler () {
+        this.isMonthMode ? this.getMonths() : this.getYears()
+      },
+      immediate: true
+    }
+  },
+  methods: {
+    closePanel () {
+      this.$emit('input', null)
     },
-    methods: {
-      closePanel () {
-        this.$emit('input', null)
-      },
-      getMonths () {
-        this.years = []
-        this.months = getMonthsByFormat(this.hasDouble ? 'MMMM' : 'MMM')
-      },
-      getYears (offset = this.hasDouble ? 17 : 7) {
-        this.months = []
-        this.years = ArrayRange(this.month.year - offset, this.month.year + offset)
-      },
-      selectMonth (monthNumber) {
-        this.$emit('change-month-year', { month: monthNumber, year: this.currentYear })
-        this.closePanel()
-      },
-      selectYear (year) {
-        this.$emit('change-month-year', { month: this.currentMonth, year: year })
-        this.closePanel()
-      },
-      updateYears (period) {
-        const offset = this.hasDouble ? 17 : 7
-        const offsetYears = period === 'next' ? offset : -offset
-        this.years = ArrayRange(this.years[0] + offsetYears, this.years[this.years.length - 1] + offsetYears)
-      }
+    getMonths () {
+      this.years = []
+      this.months = getMonthsByFormat(this.hasDouble ? 'MMMM' : 'MMM')
+    },
+    getYears (offset = this.hasDouble ? 17 : 7) {
+      this.months = []
+      this.years = ArrayRange(this.month.year - offset, this.month.year + offset)
+    },
+    selectMonth (monthNumber) {
+      this.$emit('change-month-year', { month: monthNumber, year: this.currentYear })
+      this.closePanel()
+    },
+    selectYear (year) {
+      this.$emit('change-month-year', { month: this.currentMonth, year: year })
+      this.closePanel()
+    },
+    updateYears (period) {
+      const offset = this.hasDouble ? 17 : 7
+      const offsetYears = period === 'next' ? offset : -offset
+      this.years = ArrayRange(this.years[0] + offsetYears, this.years[this.years.length - 1] + offsetYears)
     }
   }
+}
 </script>

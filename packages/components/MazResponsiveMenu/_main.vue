@@ -35,27 +35,27 @@
 </template>
 
 <script>
-  import VClosable from './../../directives/VClosable'
+import VClosable from './../../directives/VClosable'
 
-  export default {
-    name: 'MazResponsiveMenu',
-    directives: {
-      closable: VClosable
-    },
-    props: {
-      routes: { type: Array, required: true }
-    },
-    data () {
-      return {
-        open: false
-      }
-    },
-    methods: {
-      close () {
-        if (this.open) {
-          this.open = false
-        }
+export default {
+  name: 'MazResponsiveMenu',
+  directives: {
+    closable: VClosable
+  },
+  props: {
+    routes: { type: Array, required: true }
+  },
+  data () {
+    return {
+      open: false
+    }
+  },
+  methods: {
+    close () {
+      if (this.open) {
+        this.open = false
       }
     }
   }
+}
 </script>

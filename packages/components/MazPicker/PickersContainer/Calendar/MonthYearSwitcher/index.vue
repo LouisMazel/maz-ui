@@ -54,30 +54,30 @@
 </template>
 
 <script>
-  import ArrowIcon from './../../../../_subs/ArrowIcon'
+import ArrowIcon from './../../../../_subs/ArrowIcon'
 
-  export default {
-    name: 'MonthYearSwitcher',
-    components: { ArrowIcon },
-    props: {
-      months: { type: Array, required: true }
+export default {
+  name: 'MonthYearSwitcher',
+  components: { ArrowIcon },
+  props: {
+    months: { type: Array, required: true }
+  },
+  computed: {
+    year () {
+      const years = this.months.map(m => m.getYear())
+      return Array.from(new Set(years)).join(' - ')
     },
-    computed: {
-      year () {
-        const years = this.months.map(m => m.getYear())
-        return Array.from(new Set(years)).join(' - ')
-      },
-      isDouble () {
-        return this.months && this.months.length > 1
-      }
+    isDouble () {
+      return this.months && this.months.length > 1
+    }
+  },
+  methods: {
+    changeMonth (val) {
+      this.$emit('change-month', val)
     },
-    methods: {
-      changeMonth (val) {
-        this.$emit('change-month', val)
-      },
-      getMonthFormatted () {
-        return this.months.map(m => this.$options.filters.capitalize(m.getFormatted())).join(' - ')
-      }
+    getMonthFormatted () {
+      return this.months.map(m => this.$options.filters.capitalize(m.getFormatted())).join(' - ')
     }
   }
+}
 </script>

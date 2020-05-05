@@ -35,43 +35,43 @@
 </template>
 
 <script>
-  import draggable from 'vuedraggable'
+import draggable from 'vuedraggable'
 
-  /**
-   * > Smart Draggable List
-   */
+/**
+ * > Smart Draggable List
+ */
 
-  export default {
-    name: 'MazDraggableList',
-    components: { draggable },
-    props: {
-      // Must be an `Array` (use `v-model`)
-      value: { type: Array, required: true },
-      // is the item's key to build le list (must be different for each item)
-      itemKey: { type: String, default: null }
-    },
-    data () {
-      return {
-        drag: false,
-        dragOptions: {
-          animation: 200,
-          group: 'description',
-          disabled: false,
-          ghostClass: 'ghost'
-        }
+export default {
+  name: 'MazDraggableList',
+  components: { draggable },
+  props: {
+    // Must be an `Array` (use `v-model`)
+    value: { type: Array, required: true },
+    // is the item's key to build le list (must be different for each item)
+    itemKey: { type: String, default: null }
+  },
+  data () {
+    return {
+      drag: false,
+      dragOptions: {
+        animation: 200,
+        group: 'description',
+        disabled: false,
+        ghostClass: 'ghost'
       }
-    },
-    computed: {
-      items: {
-        get () {
-          return this.value
-        },
-        set (value) {
-          // update the v-model
-          // @arg list updated
-          this.$emit('input', value)
-        }
+    }
+  },
+  computed: {
+    items: {
+      get () {
+        return this.value
+      },
+      set (value) {
+        // update the v-model
+        // @arg list updated
+        this.$emit('input', value)
       }
     }
   }
+}
 </script>

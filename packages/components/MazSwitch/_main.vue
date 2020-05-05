@@ -21,25 +21,25 @@
 </template>
 
 <script>
-  import uniqueId from './../../mixins/uniqueId'
+import uniqueId from './../../mixins/uniqueId'
 
-  export default {
-    name: 'MazSwitch',
-    mixins: [uniqueId],
-    props: {
-      value: { type: Boolean, required: true },
-      disabled: { type: Boolean, default: false },
-      id: { type: String, default: null },
-      name: { type: String, default: null },
-      color: { type: String, default: 'primary' }
+export default {
+  name: 'MazSwitch',
+  mixins: [uniqueId],
+  props: {
+    value: { type: Boolean, required: true },
+    disabled: { type: Boolean, default: false },
+    id: { type: String, default: null },
+    name: { type: String, default: null },
+    color: { type: String, default: 'primary' }
+  },
+  computed: {
+    bgColorClassTransparency () {
+      return this.value ? `bg-${this.color}-before-transparency` : 'bg-grey-before-transparency'
     },
-    computed: {
-      bgColorClassTransparency () {
-        return this.value ? `bg-${this.color}-before-transparency` : `bg-grey-before-transparency`
-      },
-      bgColorClass () {
-        return this.value ? `bg-${this.color}` : `bg-white`
-      }
+    bgColorClass () {
+      return this.value ? `bg-${this.color}` : 'bg-white'
     }
   }
+}
 </script>

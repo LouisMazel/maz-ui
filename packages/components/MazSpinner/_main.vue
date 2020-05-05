@@ -19,17 +19,17 @@
 </template>
 
 <script>
-  export default {
-    name: 'MazSpinner',
-    props: {
-      size: { type: Number, default: 40 },
-      dark: { type: Boolean, default: false },
-      color: { type: String, default: 'primary' }
-    },
-    computed: {
-      fillColorClass () {
-        return `fill-${this.color}`
-      }
+export default {
+  name: 'MazSpinner',
+  props: {
+    size: { type: Number, default: 40 },
+    dark: { type: Boolean, default: false },
+    color: { type: String, default: 'primary' }
+  },
+  computed: {
+    fillColorClass () {
+      return `fill-${this.color}`
     }
   }
+}
 </script>

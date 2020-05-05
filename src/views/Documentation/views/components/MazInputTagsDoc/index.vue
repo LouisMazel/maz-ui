@@ -1,11 +1,7 @@
 <template>
   <div class="maz-input-tags-doc">
-    <ComponentContainer
-      :code="codeExample"
-    >
-      <p class="mb-2">
-        v-model: {{ exampleValue }}
-      </p>
+    <ComponentContainer :code="codeExample">
+      <p class="mb-2">v-model: {{ exampleValue }}</p>
       <MazInputTags
         v-model="exampleValue"
         placeholder="Add tags"
@@ -30,12 +26,12 @@
 </template>
 
 <script>
-  export default {
-    name: 'MazInputTagsDoc',
-    data () {
-      return {
-        exampleValue: ['maz-ui', 'input', 'tags'],
-        codeExample: `<template>
+export default {
+  name: 'MazInputTagsDoc',
+  data() {
+    return {
+      exampleValue: ['maz-ui', 'input', 'tags'],
+      codeExample: `<template>
   <p class="mb-2">
     v-model: {{ exampleValue }}
   </p>
@@ -67,7 +63,7 @@ export default {
     }
   }
 }`
-      }
     }
   }
+}
 </script>

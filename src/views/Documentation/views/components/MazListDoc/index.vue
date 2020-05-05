@@ -1,8 +1,6 @@
 <template>
   <div class="maz-list-doc">
-    <ComponentContainer
-      :code="codeExample"
-    >
+    <ComponentContainer :code="codeExample">
       <div class="lists-container">
         <div class="list-1">
           <h2 class="mb-2">
@@ -12,10 +10,7 @@
             Any options
           </p>
           <MazList>
-            <MazListItem
-              v-for="(item) in items"
-              :key="`list-1-${item.id}`"
-            >
+            <MazListItem v-for="item in items" :key="`list-1-${item.id}`">
               <p>{{ item.title }}</p>
               <p class="text-muted">
                 {{ item.id }}
@@ -27,19 +22,13 @@
           <h2 class="mb-2">
             Hover & animate list
           </h2>
-          <MazBtn
-            size="sm"
-            class="mb-2"
-            @click="reorderItems"
-          >
+          <MazBtn size="sm" class="mb-2" @click="reorderItems">
             Shuffle items
           </MazBtn>
 
-          <MazList
-            transition
-          >
+          <MazList transition>
             <MazListItem
-              v-for="(item) in items"
+              v-for="item in items"
               :key="`list-2-${item.id}`"
               hover
               tag="button"
@@ -58,12 +47,9 @@
           <p class="text-muted mb-3">
             Just set `max-height` CSS property to the list
           </p>
-          <MazList
-            no-shadow
-            class="scrollable-list"
-          >
+          <MazList no-shadow class="scrollable-list">
             <MazListItem
-              v-for="(item) in items"
+              v-for="item in items"
               :key="`list-3-${item.id}`"
               tag="button"
             >
@@ -80,22 +66,22 @@
 </template>
 
 <script>
-  export default {
-    name: 'MazListDoc',
-    data () {
-      return {
-        items: [
-          { id: 0, title: 'Item 1' },
-          { id: 1, title: 'Item 2' },
-          { id: 2, title: 'Item 3' },
-          { id: 3, title: 'Item 4' },
-          { id: 4, title: 'Item 5' },
-          { id: 5, title: 'Item 6' },
-          { id: 6, title: 'Item 7' },
-          { id: 7, title: 'Item 8' },
-          { id: 8, title: 'Item 1' }
-        ],
-        codeExample: `<template>
+export default {
+  name: 'MazListDoc',
+  data() {
+    return {
+      items: [
+        { id: 0, title: 'Item 1' },
+        { id: 1, title: 'Item 2' },
+        { id: 2, title: 'Item 3' },
+        { id: 3, title: 'Item 4' },
+        { id: 4, title: 'Item 5' },
+        { id: 5, title: 'Item 6' },
+        { id: 6, title: 'Item 7' },
+        { id: 7, title: 'Item 8' },
+        { id: 8, title: 'Item 1' }
+      ],
+      codeExample: `<template>
   <div class="lists-container">
     <div class="list-1">
       <h2 class="mb-2">
@@ -189,31 +175,31 @@ export default {
     }
   }
 }`
-      }
-    },
-    methods: {
-      reorderItems () {
-        this.items.sort(() => Math.random() - 0.5)
-      }
+    }
+  },
+  methods: {
+    reorderItems() {
+      this.items.sort(() => Math.random() - 0.5)
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>
-  .maz-list-doc {
-    .lists-container {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: repeat(1, auto);
-      grid-gap: 30px;
+.maz-list-doc {
+  .lists-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(1, auto);
+    grid-gap: 30px;
 
-      @media only screen and (max-width: $breakpoint-laptop-s) {
-        grid-template-columns: repeat(1, 1fr);
-      }
+    @media only screen and (max-width: $breakpoint-laptop-s) {
+      grid-template-columns: repeat(1, 1fr);
+    }
 
-      .scrollable-list {
-        max-height: 250px;
-      }
+    .scrollable-list {
+      max-height: 250px;
     }
   }
+}
 </style>

@@ -73,73 +73,73 @@
 </template>
 
 <script>
-  export default {
-    name: 'InputTel',
-    props: {
-      value: {
-        validator: prop => ['string', 'number'].includes(typeof prop) || prop === null,
-        default: null
-      },
-      placeholder: { type: String, default: 'Enter text' },
-      hint: { type: String, default: null },
-      error: { type: Boolean, default: Boolean },
-      disabled: { type: Boolean, default: false },
-      dark: { type: Boolean, default: false },
-      id: { type: String, default: 'InputTel' },
-      size: { type: String, default: null },
-      type: { type: String, default: 'tel' },
-      readonly: { type: Boolean, default: false },
-      valid: { type: Boolean, default: false },
-      required: { type: Boolean, default: false },
-      loading: { type: Boolean, default: false },
-      clearable: { type: Boolean, default: true },
-      noCountrySelector: { type: Boolean, default: false }
+export default {
+  name: 'InputTel',
+  props: {
+    value: {
+      validator: prop => ['string', 'number'].includes(typeof prop) || prop === null,
+      default: null
     },
-    data () {
-      return {
-        isFocus: false
+    placeholder: { type: String, default: 'Enter text' },
+    hint: { type: String, default: null },
+    error: { type: Boolean, default: Boolean },
+    disabled: { type: Boolean, default: false },
+    dark: { type: Boolean, default: false },
+    id: { type: String, default: 'InputTel' },
+    size: { type: String, default: null },
+    type: { type: String, default: 'tel' },
+    readonly: { type: Boolean, default: false },
+    valid: { type: Boolean, default: false },
+    required: { type: Boolean, default: false },
+    loading: { type: Boolean, default: false },
+    clearable: { type: Boolean, default: true },
+    noCountrySelector: { type: Boolean, default: false }
+  },
+  data () {
+    return {
+      isFocus: false
+    }
+  },
+  computed: {
+    inputValue: {
+      get () {
+        return this.value
+      },
+      set (value) {
+        this.$emit('input', value)
       }
     },
-    computed: {
-      inputValue: {
-        get () {
-          return this.value
-        },
-        set (value) {
-          this.$emit('input', value)
-        }
-      },
-      placeholderValue () {
-        const { placeholder } = this
-        return this.required && placeholder ? `${placeholder} *` : placeholder
-      },
-      hintValue () {
-        const { hint } = this
-        return this.required && hint ? `${hint} *` : hint
-      }
+    placeholderValue () {
+      const { placeholder } = this
+      return this.required && placeholder ? `${placeholder} *` : placeholder
     },
-    methods: {
-      focusInput () {
-        this.$refs.InputTel.focus()
-      },
-      onFocus (e) {
-        this.$emit('focus', e)
-        this.isFocus = true
-      },
-      onBlur (e) {
-        this.$emit('blur', e)
-        this.isFocus = false
-      },
-      clear () {
-        this.$emit('input', null)
-        this.$emit('clear')
-      },
-      keyUp (e) {
-        this.$emit('keyup', e)
-      },
-      keyDown (e) {
-        this.$emit('keydown', e)
-      }
+    hintValue () {
+      const { hint } = this
+      return this.required && hint ? `${hint} *` : hint
+    }
+  },
+  methods: {
+    focusInput () {
+      this.$refs.InputTel.focus()
+    },
+    onFocus (e) {
+      this.$emit('focus', e)
+      this.isFocus = true
+    },
+    onBlur (e) {
+      this.$emit('blur', e)
+      this.isFocus = false
+    },
+    clear () {
+      this.$emit('input', null)
+      this.$emit('clear')
+    },
+    keyUp (e) {
+      this.$emit('keyup', e)
+    },
+    keyDown (e) {
+      this.$emit('keydown', e)
     }
   }
+}
 </script>

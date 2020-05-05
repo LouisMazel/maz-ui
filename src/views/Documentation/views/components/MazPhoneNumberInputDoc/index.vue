@@ -1,11 +1,7 @@
 <template>
   <div class="maz-input-doc">
-    <ComponentContainer
-      :code="codeExample"
-    >
-      <MazPhoneNumberInput
-        v-model="phoneNumberExample"
-      />
+    <ComponentContainer :code="codeExample">
+      <MazPhoneNumberInput v-model="phoneNumberExample" />
     </ComponentContainer>
     <div class="flex flex--wrap">
       <div class="flex-1 mr-4">
@@ -13,9 +9,7 @@
           Basic
         </p>
         <ComponentContainer>
-          <MazPhoneNumberInput
-            v-model="phoneNumber"
-          />
+          <MazPhoneNumberInput v-model="phoneNumber" />
         </ComponentContainer>
       </div>
       <div class="flex-1">
@@ -23,10 +17,7 @@
           Error
         </p>
         <ComponentContainer>
-          <MazPhoneNumberInput
-            v-model="phoneNumber"
-            error
-          />
+          <MazPhoneNumberInput v-model="phoneNumber" error />
         </ComponentContainer>
       </div>
     </div>
@@ -34,13 +25,13 @@
 </template>
 
 <script>
-  export default {
-    name: 'MazInputDoc',
-    data () {
-      return {
-        phoneNumber: '',
-        phoneNumberExample: '',
-        codeExample: `<template>
+export default {
+  name: 'MazInputDoc',
+  data() {
+    return {
+      phoneNumber: '',
+      phoneNumberExample: '',
+      codeExample: `<template>
   <MazPhoneNumberInput
     v-model="phoneNumberExample"
   />
@@ -53,7 +44,7 @@ export default {
     }
   }
 }`
-      }
     }
   }
+}
 </script>

@@ -4,7 +4,7 @@
     class="flex direction-column bg-color"
     :class="{
       'is-dark': hasDarkTheme,
-      'documentation': isDocPage
+      documentation: isDocPage
     }"
   >
     <NavHeader />
@@ -13,43 +13,43 @@
 </template>
 
 <script>
-  import NavHeader from './components/NavHeader'
-  import { mapGetters, mapActions } from 'vuex'
+import NavHeader from './components/NavHeader'
+import { mapGetters, mapActions } from 'vuex'
 
-  export default {
-    name: 'App',
-    components: {
-      NavHeader
-    },
-    computed: {
-      ...mapGetters(['hasDarkTheme']),
-      isDocPage () {
-        return this.$route.matched.some(m => m.name === 'Documentation')
-      }
-    },
-    mounted () {
-      const date = new Date().toTimeString()
-      if (date < '06:30' || date > '21:00') {
-        this.setDarkTheme(true)
-      }
-    },
-    methods: {
-      ...mapActions(['setDarkTheme'])
+export default {
+  name: 'App',
+  components: {
+    NavHeader
+  },
+  computed: {
+    ...mapGetters(['hasDarkTheme']),
+    isDocPage() {
+      return this.$route.matched.some(m => m.name === 'Documentation')
     }
+  },
+  mounted() {
+    const date = new Date().toTimeString()
+    if (date < '06:30' || date > '21:00') {
+      this.setDarkTheme(true)
+    }
+  },
+  methods: {
+    ...mapActions(['setDarkTheme'])
   }
+}
 </script>
 
 <style lang="scss">
-  #app.is-dark {
-    h3,
-    h4,
-    h5,
-    h6,
-    p,
-    ul,
-    li,
-    ol {
-      color: $text-color-dark;
-    }
+#app.is-dark {
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  ul,
+  li,
+  ol {
+    color: $text-color-dark;
   }
+}
 </style>

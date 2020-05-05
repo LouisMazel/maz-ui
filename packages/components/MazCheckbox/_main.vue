@@ -19,14 +19,14 @@
 </template>
 
 <script>
-  import uniqueId from './../../mixins/uniqueId'
+import uniqueId from './../../mixins/uniqueId'
 
-  export default {
-    name: 'MazCheckbox',
-    mixins: [uniqueId],
-    props: {
-      id: { type: String, default: null },
-      value: { default: false, type: Boolean }
-    }
+export default {
+  name: 'MazCheckbox',
+  mixins: [uniqueId],
+  props: {
+    id: { type: String, default: null },
+    value: { default: false, type: Boolean }
   }
+}
 </script>

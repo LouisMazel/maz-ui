@@ -16,20 +16,20 @@
 </template>
 
 <script>
-  import MazBtn from '../MazBtn'
+import MazBtn from '../MazBtn'
 
-  export default {
-    name: 'MazBtnGroup',
-    components: {
-      MazBtn
+export default {
+  name: 'MazBtnGroup',
+  components: {
+    MazBtn
+  },
+  props: {
+    value: {
+      required: true,
+      validator: prop => ['string', 'number', 'boolean'].includes(typeof prop) || prop === null
     },
-    props: {
-      value: {
-        required: true,
-        validator: prop => ['string', 'number', 'boolean'].includes(typeof prop) || prop === null
-      },
-      items: { type: Array, required: true },
-      rounded: { type: Boolean, default: false }
-    }
+    items: { type: Array, required: true },
+    rounded: { type: Boolean, default: false }
   }
+}
 </script>

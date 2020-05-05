@@ -9,12 +9,15 @@
     </h3>
 
     <p>
-      To change globally the colors and text style you have to override Maz-UI CSS variables
+      To change globally the colors and text style you have to override Maz-UI
+      CSS variables
     </p>
 
     <p>
-      Instead of importing the basic CSS file (<strong>'maz-ui/lib/maz-ui.css'</strong>). <br>
-      You must import the Maz-UI SCSS at the top of your main CSS file and place your own variables just before importing, follow this example:
+      Instead of importing the basic CSS file
+      (<strong>'maz-ui/lib/maz-ui.css'</strong>). <br />
+      You must import the Maz-UI SCSS at the top of your main CSS file and place
+      your own variables just before importing, follow this example:
     </p>
 
     <CodeContainer
@@ -127,7 +130,7 @@ $breakpoint-4k: 1920px !default;"
 </template>
 
 <script>
-  export default {
-    name: 'Theme'
-  }
+export default {
+  name: 'Theme'
+}
 </script>

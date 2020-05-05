@@ -11,17 +11,17 @@
 </template>
 
 <script>
-  import { getWeekDays } from '../../../modules/month'
+import { getWeekDays } from '../../../modules/month'
 
-  export default {
-    name: 'WeekDaysLabes',
-    props: {
-      locale: { type: String, default: null }
-    },
-    computed: {
-      weekDays () {
-        return getWeekDays(this.locale)
-      }
+export default {
+  name: 'WeekDaysLabes',
+  props: {
+    locale: { type: String, default: null }
+  },
+  computed: {
+    weekDays () {
+      return getWeekDays(this.locale)
     }
   }
+}
 </script>

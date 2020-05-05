@@ -43,55 +43,55 @@
 </template>
 
 <script>
-  import HeaderPicker from './HeaderPicker'
-  import Calendar from './Calendar'
-  import FooterPicker from './FooterPicker'
+import HeaderPicker from './HeaderPicker'
+import Calendar from './Calendar'
+import FooterPicker from './FooterPicker'
 
-  export default {
-    name: 'PickersContainer',
-    components: {
-      HeaderPicker,
-      Calendar,
-      FooterPicker
-    },
-    props: {
-      value: { type: Object, default: null },
-      format: { type: String, default: null },
-      shortcut: { type: String, default: null },
-      locale: { type: String, default: null },
-      position: { type: String, required: true },
-      hasHeader: { type: Boolean, required: true },
-      hasFooter: { type: Boolean, required: true },
-      hasValidate: { type: Boolean, required: true },
-      hasNow: { type: Boolean, required: true },
-      nowTranslation: { type: String, required: true },
-      minDate: { type: Object, default: null },
-      maxDate: { type: Object, default: null },
-      noWeekendsDays: { type: Boolean, default: false },
-      autoClose: { type: Boolean, default: false },
-      inline: { type: Boolean, default: false },
-      isVisible: { type: Boolean, default: false },
-      disabledDates: { type: Array, required: true },
-      disabledWeekly: { type: Array, required: true },
-      hasDouble: { type: Boolean, required: true },
-      hasKeyboard: { type: Boolean, required: true },
-      hasTime: { type: Boolean, required: true },
-      hasDate: { type: Boolean, required: true },
-      shortcuts: { type: Array, default: null },
-      hasShortcuts: { type: Boolean, required: true },
-      minuteInterval: { type: Number, required: true },
-      disabledHours: { type: Array, required: true },
-      behaviour: { type: Object, required: true }
-    },
-    computed: {
-      dateMoment: {
-        get () {
-          return this.value
-        },
-        set (value) {
-          this.$emit('input', value)
-        }
+export default {
+  name: 'PickersContainer',
+  components: {
+    HeaderPicker,
+    Calendar,
+    FooterPicker
+  },
+  props: {
+    value: { type: Object, default: null },
+    format: { type: String, default: null },
+    shortcut: { type: String, default: null },
+    locale: { type: String, default: null },
+    position: { type: String, required: true },
+    hasHeader: { type: Boolean, required: true },
+    hasFooter: { type: Boolean, required: true },
+    hasValidate: { type: Boolean, required: true },
+    hasNow: { type: Boolean, required: true },
+    nowTranslation: { type: String, required: true },
+    minDate: { type: Object, default: null },
+    maxDate: { type: Object, default: null },
+    noWeekendsDays: { type: Boolean, default: false },
+    autoClose: { type: Boolean, default: false },
+    inline: { type: Boolean, default: false },
+    isVisible: { type: Boolean, default: false },
+    disabledDates: { type: Array, required: true },
+    disabledWeekly: { type: Array, required: true },
+    hasDouble: { type: Boolean, required: true },
+    hasKeyboard: { type: Boolean, required: true },
+    hasTime: { type: Boolean, required: true },
+    hasDate: { type: Boolean, required: true },
+    shortcuts: { type: Array, default: null },
+    hasShortcuts: { type: Boolean, required: true },
+    minuteInterval: { type: Number, required: true },
+    disabledHours: { type: Array, required: true },
+    behaviour: { type: Object, required: true }
+  },
+  computed: {
+    dateMoment: {
+      get () {
+        return this.value
+      },
+      set (value) {
+        this.$emit('input', value)
       }
     }
   }
+}
 </script>

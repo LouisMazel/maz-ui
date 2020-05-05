@@ -21,13 +21,13 @@
 </template>
 
 <script>
-  export default {
-    name: 'ArrowIcon',
-    props: {
-      dark: { type: Boolean, default: false },
-      color: { type: String, default: null },
-      size: { type: Number, default: 24 },
-      orientation: { type: String, default: 'bottom' }
-    }
+export default {
+  name: 'ArrowIcon',
+  props: {
+    dark: { type: Boolean, default: false },
+    color: { type: String, default: null },
+    size: { type: Number, default: 24 },
+    orientation: { type: String, default: 'bottom' }
   }
+}
 </script>

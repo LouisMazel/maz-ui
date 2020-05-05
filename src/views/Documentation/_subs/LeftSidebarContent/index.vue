@@ -81,55 +81,66 @@
 </template>
 
 <script>
-  import { replaceAll, pascalCaseToKebabCase } from '@/utils'
+import { replaceAll, pascalCaseToKebabCase } from '@/utils'
 
-  const isGeneralDoc = (name) => ['Install', 'GetStarted'].includes(name)
-  const isCliDoc = (name) => ['CliInstall'].includes(name)
-  const isThemeDoc = (name) => ['Theme', 'Colors'].includes(name)
+const isGeneralDoc = name => ['Install', 'GetStarted'].includes(name)
+const isCliDoc = name => ['CliInstall'].includes(name)
+const isThemeDoc = name => ['Theme', 'Colors'].includes(name)
 
-  export default {
-    name: 'LeftSidebarContent',
-    computed: {
-      routesStartedDoc () {
-        return this.$router.options.routes.filter(route => route.path === '/documentation')[0]
-          .children.filter(child => isGeneralDoc(child.name))
-      },
-      routesFormComponents () {
-        return this.$router.options.routes.filter(route => route.path === '/documentation')[0]
-          .children.filter(({ name }) => !isGeneralDoc(name) && !isCliDoc(name) && !isThemeDoc(name)).slice(0, 12)
-      },
-      routesUiComponents () {
-        return this.$router.options.routes.filter(route => route.path === '/documentation')[0]
-          .children.filter(({ name }) => !isGeneralDoc(name) && !isCliDoc(name) && !isThemeDoc(name)).slice(12)
-      }
+export default {
+  name: 'LeftSidebarContent',
+  computed: {
+    routesStartedDoc() {
+      return this.$router.options.routes
+        .filter(route => route.path === '/documentation')[0]
+        .children.filter(child => isGeneralDoc(child.name))
     },
-    methods: {
-      getComponentName (string) {
-        return pascalCaseToKebabCase(string.slice(0, -3))
-      },
-      getPageName (string) {
-        return replaceAll(string, '-', ' ')
-      }
+    routesFormComponents() {
+      return this.$router.options.routes
+        .filter(route => route.path === '/documentation')[0]
+        .children.filter(
+          ({ name }) =>
+            !isGeneralDoc(name) && !isCliDoc(name) && !isThemeDoc(name)
+        )
+        .slice(0, 12)
+    },
+    routesUiComponents() {
+      return this.$router.options.routes
+        .filter(route => route.path === '/documentation')[0]
+        .children.filter(
+          ({ name }) =>
+            !isGeneralDoc(name) && !isCliDoc(name) && !isThemeDoc(name)
+        )
+        .slice(12)
+    }
+  },
+  methods: {
+    getComponentName(string) {
+      return pascalCaseToKebabCase(string.slice(0, -3))
+    },
+    getPageName(string) {
+      return replaceAll(string, '-', ' ')
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>
-  .left-sidebar-content {
-    overflow-y: auto;
+.left-sidebar-content {
+  overflow-y: auto;
 
-    .menu-item {
-      font-weight: 500;
-      margin-bottom: .5em;
-      line-height: normal;
+  .menu-item {
+    font-weight: 500;
+    margin-bottom: .5em;
+    line-height: normal;
 
-      &:last-child {
-        margin-bottom: 0;
-      }
+    &:last-child {
+      margin-bottom: 0;
+    }
 
-      &.router-link-active {
-        color: $primary-color;
-      }
+    &.router-link-active {
+      color: $primary-color;
     }
   }
+}
 </style>

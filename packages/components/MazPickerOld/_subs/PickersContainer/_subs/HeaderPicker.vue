@@ -106,71 +106,71 @@
 </template>
 
 <script>
-  import moment from 'moment'
+import moment from 'moment'
 
-  export default {
-    name: 'HeaderPicker',
-    props: {
-      value: { type: [String, Object], default: null },
-      color: { type: String, default: null },
-      onlyTime: { type: Boolean, default: null },
-      transitionName: { type: String, default: null },
-      format: { type: String, default: null },
-      timeFormat: { type: String, default: null },
-      noTime: { type: Boolean, default: null },
-      range: { type: Boolean, default: null },
-      dark: { type: Boolean, default: null }
-    },
-    computed: {
-      bgStyle () {
-        return {
-          padding: this.onlyTime ? '10px 0' : '10px 0 10px 10px',
-          backgroundColor: this.color
-        }
-      },
-      dateTime () {
-        const date = this.value
-          ? this.range
-            ? (this.value.end || this.value.start)
-              ? moment(this.value.end ? this.value.end : this.value.start, 'YYYY-MM-DD HH:mm')
-              : moment()
-            : moment(this.value, 'YYYY-MM-DD HH:mm')
-          : moment()
-        return date
-      },
-      year () {
-        return this.dateTime.format('YYYY')
-      },
-      getDateFormatted () {
-        return this.dateTime.format('ddd D MMM')
-      },
-      isFormatTwelve () {
-        return this.format ? (this.format.indexOf('a') > -1) || (this.format.indexOf('A') > -1) : false
-      },
-      getRangeDatesFormatted () {
-        const hasStartValues = this.value && this.value.start
-        const hasEndValues = this.value && this.value.end
-        if (!hasStartValues && !hasEndValues) {
-          return '... - ...'
-        } else if (hasStartValues || hasEndValues) {
-          const datesFormatted = hasStartValues ? `${moment(this.value.start).format('ll')}` : '...'
-          return hasEndValues ? `${datesFormatted} - ${moment(this.value.end).format('ll')}` : `${datesFormatted} - ...`
-        } else {
-          return null
-        }
+export default {
+  name: 'HeaderPicker',
+  props: {
+    value: { type: [String, Object], default: null },
+    color: { type: String, default: null },
+    onlyTime: { type: Boolean, default: null },
+    transitionName: { type: String, default: null },
+    format: { type: String, default: null },
+    timeFormat: { type: String, default: null },
+    noTime: { type: Boolean, default: null },
+    range: { type: Boolean, default: null },
+    dark: { type: Boolean, default: null }
+  },
+  computed: {
+    bgStyle () {
+      return {
+        padding: this.onlyTime ? '10px 0' : '10px 0 10px 10px',
+        backgroundColor: this.color
       }
     },
-    methods: {
-      getTimePickerWidth () {
-        const width = this.onlyTime ? '100%' : '160px'
-        const result = {
-          flex: `0 0 ${width}`,
-          width: `${width}`,
-          minWidth: `${width}`,
-          maxWidth: `${width}`
-        }
-        return result
+    dateTime () {
+      const date = this.value
+        ? this.range
+          ? (this.value.end || this.value.start)
+            ? moment(this.value.end ? this.value.end : this.value.start, 'YYYY-MM-DD HH:mm')
+            : moment()
+          : moment(this.value, 'YYYY-MM-DD HH:mm')
+        : moment()
+      return date
+    },
+    year () {
+      return this.dateTime.format('YYYY')
+    },
+    getDateFormatted () {
+      return this.dateTime.format('ddd D MMM')
+    },
+    isFormatTwelve () {
+      return this.format ? (this.format.indexOf('a') > -1) || (this.format.indexOf('A') > -1) : false
+    },
+    getRangeDatesFormatted () {
+      const hasStartValues = this.value && this.value.start
+      const hasEndValues = this.value && this.value.end
+      if (!hasStartValues && !hasEndValues) {
+        return '... - ...'
+      } else if (hasStartValues || hasEndValues) {
+        const datesFormatted = hasStartValues ? `${moment(this.value.start).format('ll')}` : '...'
+        return hasEndValues ? `${datesFormatted} - ${moment(this.value.end).format('ll')}` : `${datesFormatted} - ...`
+      } else {
+        return null
       }
     }
+  },
+  methods: {
+    getTimePickerWidth () {
+      const width = this.onlyTime ? '100%' : '160px'
+      const result = {
+        flex: `0 0 ${width}`,
+        width: `${width}`,
+        minWidth: `${width}`,
+        maxWidth: `${width}`
+      }
+      return result
+    }
   }
+}
 </script>

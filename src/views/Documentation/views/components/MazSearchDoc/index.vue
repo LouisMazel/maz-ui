@@ -1,15 +1,10 @@
 <template>
   <div class="maz-search-doc">
-    <ComponentContainer
-      :code="codeExample"
-      language="js"
-    >
+    <ComponentContainer :code="codeExample" language="js">
       <h4 class="mb-3">
         Basic use
       </h4>
-      <p class="mb-3">
-        v-model="{{ selectedItem || 'null' }}"
-      </p>
+      <p class="mb-3">v-model="{{ selectedItem || 'null' }}"</p>
       <MazSearch
         v-model="selectedItem"
         :items="results"
@@ -18,16 +13,11 @@
         @request="searchResults"
       />
     </ComponentContainer>
-    <ComponentContainer
-      :code="codeExample2"
-      language="js"
-    >
+    <ComponentContainer :code="codeExample2" language="js">
       <h4 class="mb-3">
         Custom
       </h4>
-      <p class="mb-3">
-        v-model="{{ selectedItem2 || 'null' }}"
-      </p>
+      <p class="mb-3">v-model="{{ selectedItem2 || 'null' }}"</p>
       <MazSearch
         v-model="selectedItem2"
         :items="results"
@@ -39,14 +29,8 @@
         @request="searchResults"
       >
         <template v-slot="{ item }">
-          <div
-            class="item flex align-center"
-          >
-            <img
-              :src="item.image"
-              :alt="item.label"
-              class="mr-3"
-            >
+          <div class="item flex align-center">
+            <img :src="item.image" :alt="item.label" class="mr-3" />
             <div>
               <p>{{ item.first_name }} {{ item.last_name }}</p>
               <span class="text-muted">{{ item.email }}</span>
@@ -54,9 +38,7 @@
           </div>
         </template>
         <template v-slot:no-data>
-          <div
-            class="item flex flex-center"
-          >
+          <div class="item flex flex-center">
             <p>No data custom template</p>
           </div>
         </template>
@@ -66,18 +48,18 @@
 </template>
 
 <script>
-  import users from '@/mocks/users'
+import users from '@/mocks/users'
 
-  export default {
-    name: 'MazSearchDoc',
-    data () {
-      return {
-        selectedItem: null,
-        selectedItem2: null,
-        users,
-        loading: false,
-        results: null,
-        codeExample: `<template>
+export default {
+  name: 'MazSearchDoc',
+  data() {
+    return {
+      selectedItem: null,
+      selectedItem2: null,
+      users,
+      loading: false,
+      results: null,
+      codeExample: `<template>
   <MazSearch
     v-model="selectedItem"
     :items="results"
@@ -109,7 +91,7 @@ export default {
     }
   }
 }`,
-        codeExample2: `<template>
+      codeExample2: `<template>
   <MazSearch
     v-model="selectedItem2"
     :items="results"
@@ -180,34 +162,36 @@ export default {
     }
   }
 </style>`
-      }
-    },
-    methods: {
-      searchResults (query) {
-        this.loading = true
-        setTimeout(() => {
-          this.loading = false
-          if (query === '') this.results = []
-          else {
-            const random = users.sort(() => 0.5 - Math.random()).slice(0, Math.round(Math.random() * 10) + 10)
-            this.results = random
-          }
-        }, 1000)
-      }
+    }
+  },
+  methods: {
+    searchResults(query) {
+      this.loading = true
+      setTimeout(() => {
+        this.loading = false
+        if (query === '') this.results = []
+        else {
+          const random = users
+            .sort(() => 0.5 - Math.random())
+            .slice(0, Math.round(Math.random() * 10) + 10)
+          this.results = random
+        }
+      }, 1000)
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>
-  .maz-search-doc {
-    .item {
-      height: 60px;
+.maz-search-doc {
+  .item {
+    height: 60px;
 
-      img {
-        border-radius: 50%;
-        height: 40px;
-        width: 40px;
-      }
+    img {
+      border-radius: 50%;
+      height: 40px;
+      width: 40px;
     }
   }
+}
 </style>

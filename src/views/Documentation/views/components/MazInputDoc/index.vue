@@ -1,17 +1,13 @@
 <template>
   <div class="maz-input-doc">
-    <ComponentContainer
-      :code="codeExample"
-    >
+    <ComponentContainer :code="codeExample">
       <MazInput
         v-model="exampleValue"
         clearable
         placeholder="Custom label & placeholder text"
       />
     </ComponentContainer>
-    <ComponentContainer
-      :code="codePasswordExample"
-    >
+    <ComponentContainer :code="codePasswordExample">
       <MazInput
         v-model="nameValue"
         placeholder="Name"
@@ -28,10 +24,7 @@
         class="mb-3"
         clearable
       >
-        <i
-          slot="input-icon-left"
-          class="material-icons"
-        >
+        <i slot="input-icon-left" class="material-icons">
           email
         </i>
       </MazInput>
@@ -52,11 +45,7 @@
         textarea
       />
     </ComponentContainer>
-    <div
-      v-for="type in inputTypes"
-      :key="type"
-      class="flex mt-3 flex--wrap"
-    >
+    <div v-for="type in inputTypes" :key="type" class="flex mt-3 flex--wrap">
       <div class="flex-component flex-1">
         <h3>{{ type | capitalize }}</h3>
         <ComponentContainer>
@@ -91,22 +80,31 @@
 </template>
 
 <script>
-  export default {
-    name: 'MazInputDoc',
-    data () {
-      return {
-        inputValue: null,
-        withValue: 'The value entered',
-        disabledValue: '',
-        inputTypes: [
-          'basic', 'error', 'valid', 'disabled', 'hint', 'clearable', 'sm', 'lg', 'required', 'loading'
-        ],
-        exampleValue: null,
-        nameValue: 'your name',
-        emailValue: 'youremail@domain.com',
-        passwordValue: 'password',
-        commentValue: 'Your comment',
-        codeExample: `<template>
+export default {
+  name: 'MazInputDoc',
+  data() {
+    return {
+      inputValue: null,
+      withValue: 'The value entered',
+      disabledValue: '',
+      inputTypes: [
+        'basic',
+        'error',
+        'valid',
+        'disabled',
+        'hint',
+        'clearable',
+        'sm',
+        'lg',
+        'required',
+        'loading'
+      ],
+      exampleValue: null,
+      nameValue: 'your name',
+      emailValue: 'youremail@domain.com',
+      passwordValue: 'password',
+      commentValue: 'Your comment',
+      codeExample: `<template>
   <MazInput
     v-model="exampleValue"
     placeholder="Custom placeholder/placeholder text"
@@ -120,7 +118,7 @@ export default {
     }
   }
 }`,
-        codePasswordExample: `<template>
+      codePasswordExample: `<template>
   <MazInput
     v-model="nameValue"
     placeholder="Name"
@@ -171,18 +169,18 @@ export default {
     }
   }
 }`
-      }
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>
-  .maz-input-doc {
-    .flex {
-      &-component {
-        margin: 5px;
-        min-width: 250px;
-      }
+.maz-input-doc {
+  .flex {
+    &-component {
+      margin: 5px;
+      min-width: 250px;
     }
   }
+}
 </style>

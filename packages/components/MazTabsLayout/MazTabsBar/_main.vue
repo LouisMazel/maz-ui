@@ -27,20 +27,20 @@
 </template>
 
 <script>
-  export default {
-    name: 'MazTabsBar',
-    props: {
-      items: { type: Array, required: true },
-      value: { type: Number, required: true },
-      dark: { type: Boolean, default: false }
-    },
-    computed: {
-      tabsIndicatorState () {
-        return {
-          transform: `translateX(${this.value}00%)`,
-          width: `${100 / this.items.length}%`
-        }
+export default {
+  name: 'MazTabsBar',
+  props: {
+    items: { type: Array, required: true },
+    value: { type: Number, required: true },
+    dark: { type: Boolean, default: false }
+  },
+  computed: {
+    tabsIndicatorState () {
+      return {
+        transform: `translateX(${this.value}00%)`,
+        width: `${100 / this.items.length}%`
       }
     }
   }
+}
 </script>

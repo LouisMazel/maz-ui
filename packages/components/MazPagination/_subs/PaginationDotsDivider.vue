@@ -5,7 +5,7 @@
 </template>
 
 <script>
-  export default {
-    name: 'PaginationDotsDivider'
-  }
+export default {
+  name: 'PaginationDotsDivider'
+}
 </script>

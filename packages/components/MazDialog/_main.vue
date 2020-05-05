@@ -83,87 +83,87 @@
 </template>
 
 <script>
-  import vClickOutside from 'v-click-outside'
+import vClickOutside from 'v-click-outside'
 
-  export default {
-    name: 'MazDialog',
-    directives: {
-      clickOutside: vClickOutside.directive
-    },
-    props: {
-      // `true` if dialog is open / `false` if is close
-      value: { type: Boolean, required: true },
-      // is the `max-width` of the dialog
-      maxWidth: { type: String, default: '500px' },
-      // if is `true`, is not possible to close he dialog with a click outside
-      persistent: { type: Boolean, default: false },
-      // remove the header
-      noHeader: { type: Boolean, default: false },
-      // remove the footer
-      noFooter: { type: Boolean, default: false },
-      // remove the close button
-      noClose: { type: Boolean, default: false },
-      // remove the confirm button
-      noConfirm: { type: Boolean, default: false },
-      // add "success" style to the dialog
-      success: { type: Boolean, default: false },
-      // add "danger" style to the dialog
-      danger: { type: Boolean, default: false },
-      // add "dark" style to the dialog
-      dark: { type: Boolean, default: false },
-      // exclude elements classes (elements sometimes can close the dialog)
-      excludedClasses: { type: Array, default: Array }
-    },
-    data () {
-      return {
-        vcoConfig: {
-          handler: this.closeDialog,
-          middleware: this.preventClickOutside,
-          events: ['click'],
-          isActive: true
-        }
-      }
-    },
-    computed: {
-      widthStyle () {
-        return {
-          maxWidth: this.maxWidth
-        }
-      },
-      buttonConfirmColor () {
-        return this.danger
-          ? 'danger'
-          : this.success
-            ? 'success'
-            : 'primary'
-      }
-    },
-    methods: {
-      preventClickOutside () {
-        return !this.excludedClasses.includes(event.target.className)
-      },
-      closeDialog () {
-        if (!this.persistent) {
-          // sent when dialog is close
-          // @arg Boolean `false`
-          this.$emit('input', false)
-        }
-      },
-      afterEnter (e) {
-        // sent when after dialog is open
-        // @arg event
-        this.$emit('opened', e)
-      },
-      afterLeave (e) {
-        // sent when after dialog is close
-        // @arg event
-        this.$emit('closed', e)
-      },
-      onConfirm (e) {
-        // sent when you click on confirm button
-        // @arg event
-        this.$emit('confirm', e)
+export default {
+  name: 'MazDialog',
+  directives: {
+    clickOutside: vClickOutside.directive
+  },
+  props: {
+    // `true` if dialog is open / `false` if is close
+    value: { type: Boolean, required: true },
+    // is the `max-width` of the dialog
+    maxWidth: { type: String, default: '500px' },
+    // if is `true`, is not possible to close he dialog with a click outside
+    persistent: { type: Boolean, default: false },
+    // remove the header
+    noHeader: { type: Boolean, default: false },
+    // remove the footer
+    noFooter: { type: Boolean, default: false },
+    // remove the close button
+    noClose: { type: Boolean, default: false },
+    // remove the confirm button
+    noConfirm: { type: Boolean, default: false },
+    // add "success" style to the dialog
+    success: { type: Boolean, default: false },
+    // add "danger" style to the dialog
+    danger: { type: Boolean, default: false },
+    // add "dark" style to the dialog
+    dark: { type: Boolean, default: false },
+    // exclude elements classes (elements sometimes can close the dialog)
+    excludedClasses: { type: Array, default: Array }
+  },
+  data () {
+    return {
+      vcoConfig: {
+        handler: this.closeDialog,
+        middleware: this.preventClickOutside,
+        events: ['click'],
+        isActive: true
       }
     }
+  },
+  computed: {
+    widthStyle () {
+      return {
+        maxWidth: this.maxWidth
+      }
+    },
+    buttonConfirmColor () {
+      return this.danger
+        ? 'danger'
+        : this.success
+          ? 'success'
+          : 'primary'
+    }
+  },
+  methods: {
+    preventClickOutside () {
+      return !this.excludedClasses.includes(event.target.className)
+    },
+    closeDialog () {
+      if (!this.persistent) {
+        // sent when dialog is close
+        // @arg Boolean `false`
+        this.$emit('input', false)
+      }
+    },
+    afterEnter (e) {
+      // sent when after dialog is open
+      // @arg event
+      this.$emit('opened', e)
+    },
+    afterLeave (e) {
+      // sent when after dialog is close
+      // @arg event
+      this.$emit('closed', e)
+    },
+    onConfirm (e) {
+      // sent when you click on confirm button
+      // @arg event
+      this.$emit('confirm', e)
+    }
   }
+}
 </script>

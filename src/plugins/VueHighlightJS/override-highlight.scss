@@ -1,14 +1,4 @@
-.code-container,
-.hljs {
-  // display: block;
-  // font-family: monospace;
-  // white-space: pre;
-  // background-color: $bg-color-dark;
-  // border: $border-width solid $border-color-dark; // #EAEEFB;
-  // -webkit-font-smoothing: auto;
-  font-size: .925em;
-  // color: $primary-color;
-
+.code-container {
   .hljs {
     background-color: transparent;
     background-color: $bg-color-dark;
@@ -53,16 +43,3 @@
     color: $text-color-dark;
   }
 }
-
-// .hljs-type,
-// .hljs-string,
-// .hljs-number,
-// .hljs-selector-id,
-// .hljs-selector-class,
-// .hljs-quote,
-// .hljs-template-tag,
-// .hljs-deletion,
-// .hljs-variable,
-// .hljs-literal {
-//   color: $primary-color;
-// }

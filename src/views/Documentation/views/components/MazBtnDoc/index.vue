@@ -11,39 +11,25 @@
       <MazBtn>
         Primary default
       </MazBtn>
-      <MazBtn
-        rounded
-      >
+      <MazBtn rounded>
         Primary default
       </MazBtn>
-      <MazBtn
-        outline
-      >
+      <MazBtn outline>
         Primary default
       </MazBtn>
-      <MazBtn
-        fab
-      >
+      <MazBtn fab>
         fab
       </MazBtn>
-      <MazBtn
-        loading
-      >
+      <MazBtn loading>
         Primary loading
       </MazBtn>
-      <MazBtn
-        disabled
-      >
+      <MazBtn disabled>
         Primary disabled
       </MazBtn>
-      <MazBtn
-        block
-      >
+      <MazBtn block>
         Primary block
       </MazBtn>
-      <MazBtn
-        href="/#/documentation/btn"
-      >
+      <MazBtn href="/#/documentation/btn">
         It's a link
       </MazBtn>
     </ComponentContainer>
@@ -110,11 +96,7 @@
       <h4 class="mb-3">
         Fab
       </h4>
-      <div
-        v-for="type in btnTypes"
-        :key="`fab-${type}`"
-        class="btn-container"
-      >
+      <div v-for="type in btnTypes" :key="`fab-${type}`" class="btn-container">
         <MazBtn
           v-for="size in btnSizes"
           :key="`fab-${type}-${size}`"
@@ -150,9 +132,7 @@
       <h4 class="mb-3">
         Disabled
       </h4>
-      <div
-        class="btn-container"
-      >
+      <div class="btn-container">
         <MazBtn
           v-for="size in btnSizes"
           :key="`loading-${size}`"
@@ -168,17 +148,27 @@
 </template>
 
 <script>
-  export default {
-    name: 'MazBtnDoc',
-    data () {
-      return {
-        btnTypes: [
-          'primary', 'secondary', 'third', 'success', 'danger', 'warning', 'grey', 'info', 'light', 'dark', 'default', 'white', 'black'
-        ],
-        btnSizes: [
-          'lg', '', 'md', 'sm', 'mini'
-        ],
-        codeExample: `<template>
+export default {
+  name: 'MazBtnDoc',
+  data() {
+    return {
+      btnTypes: [
+        'primary',
+        'secondary',
+        'third',
+        'success',
+        'danger',
+        'warning',
+        'grey',
+        'info',
+        'light',
+        'dark',
+        'default',
+        'white',
+        'black'
+      ],
+      btnSizes: ['lg', '', 'md', 'sm', 'mini'],
+      codeExample: `<template>
   <MazBtn>
     Primary default
   </MazBtn>
@@ -218,15 +208,15 @@
     It's a link
   </MazBtn>
 </template>`
-      }
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>
-  .btn-container {
-    * {
-      margin: 5px;
-    }
+.btn-container {
+  * {
+    margin: 5px;
   }
+}
 </style>

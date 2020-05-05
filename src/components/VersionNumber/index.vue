@@ -9,14 +9,14 @@
 </template>
 
 <script>
-  import { version } from '../../lib'
+import { version } from '../../lib'
 
-  export default {
-    name: 'VersionNumber',
-    computed: {
-      versionNumber () {
-        return version
-      }
+export default {
+  name: 'VersionNumber',
+  computed: {
+    versionNumber() {
+      return version
     }
   }
+}
 </script>

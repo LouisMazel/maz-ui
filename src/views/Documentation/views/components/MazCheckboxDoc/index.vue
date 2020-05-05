@@ -1,11 +1,7 @@
 <template>
   <div class="maz-checkbox-doc">
-    <ComponentContainer
-      :code="codeExample"
-    >
-      <MazCheckbox
-        v-model="checkboxValue"
-      >
+    <ComponentContainer :code="codeExample">
+      <MazCheckbox v-model="checkboxValue">
         Checkbox label
       </MazCheckbox>
     </ComponentContainer>
@@ -13,12 +9,12 @@
 </template>
 
 <script>
-  export default {
-    name: 'MazCheckboxDoc',
-    data () {
-      return {
-        checkboxValue: false,
-        codeExample: `<template>
+export default {
+  name: 'MazCheckboxDoc',
+  data() {
+    return {
+      checkboxValue: false,
+      codeExample: `<template>
   <MazCheckbox
     v-model="checkboxValue"
   >
@@ -33,7 +29,7 @@ export default {
     }
   }
 }`
-      }
     }
   }
+}
 </script>

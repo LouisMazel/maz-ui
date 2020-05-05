@@ -44,67 +44,67 @@
 </template>
 
 <script>
-  import { getMonthsShort } from '../../../../../modules/month'
-  import CustomButton from '../../../../../_subs/CustomButton'
+import { getMonthsShort } from '../../../../../modules/month'
+import CustomButton from '../../../../../_subs/CustomButton'
 
-  const ArrayRange = (start, end) => {
-    return Array(end - start + 1).fill().map((_, idx) => {
-      const n = start + idx
-      return n
-    })
-  }
+const ArrayRange = (start, end) => {
+  return Array(end - start + 1).fill().map((_, idx) => {
+    const n = start + idx
+    return n
+  })
+}
 
-  export default {
-    name: 'YearMonthSelector',
-    components: {
-      CustomButton
+export default {
+  name: 'YearMonthSelector',
+  components: {
+    CustomButton
+  },
+  props: {
+    locale: { type: String, default: null },
+    dark: { type: Boolean, default: null },
+    color: { type: String, default: null },
+    mode: { type: String, default: null },
+    month: { type: Object, default: null }
+  },
+  data () {
+    return {
+      months: null,
+      years: null
+    }
+  },
+  computed: {
+    currentMonth () {
+      return this.month.month
     },
-    props: {
-      locale: { type: String, default: null },
-      dark: { type: Boolean, default: null },
-      color: { type: String, default: null },
-      mode: { type: String, default: null },
-      month: { type: Object, default: null }
+    currentYear () {
+      return this.month.year
     },
-    data () {
-      return {
-        months: null,
-        years: null
-      }
+    isMonthMode () {
+      return this.mode === 'month'
+    }
+  },
+  mounted () {
+    if (this.isMonthMode) {
+      this.getMonths()
+    } else {
+      this.getYears()
+    }
+  },
+  methods: {
+    getMonths () {
+      this.years = null
+      this.months = getMonthsShort(this.locale)
     },
-    computed: {
-      currentMonth () {
-        return this.month.month
-      },
-      currentYear () {
-        return this.month.year
-      },
-      isMonthMode () {
-        return this.mode === 'month'
-      }
+    getYears () {
+      this.months = null
+      this.years = ArrayRange(this.month.year - 7, this.month.year + 7)
     },
-    mounted () {
-      if (this.isMonthMode) {
-        this.getMonths()
-      } else {
-        this.getYears()
-      }
+    selectMonth (monthNumber) {
+      this.$emit('input', { month: monthNumber, year: this.currentYear })
     },
-    methods: {
-      getMonths () {
-        this.years = null
-        this.months = getMonthsShort(this.locale)
-      },
-      getYears () {
-        this.months = null
-        this.years = ArrayRange(this.month.year - 7, this.month.year + 7)
-      },
-      selectMonth (monthNumber) {
-        this.$emit('input', { month: monthNumber, year: this.currentYear })
-      },
-      selectYear (year) {
-        this.$emit('input', { month: this.currentMonth, year: year })
-      }
+    selectYear (year) {
+      this.$emit('input', { month: this.currentMonth, year: year })
     }
   }
+}
 </script>

@@ -1,16 +1,14 @@
 <template>
   <div class="maz-collapse-doc flex flex--wrap">
     <div class="flex-1">
-      <ComponentContainer
-        :code="codeLight"
-      >
+      <ComponentContainer :code="codeLight">
         <MazCollapse class="mb-5">
           <div slot="header-text">
             Standalone collapse
           </div>
           <div class="p-4">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br />
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br />
             Lorem ipsum dolor sit amet, consectetur adipiscing elit.
           </div>
         </MazCollapse>
@@ -20,16 +18,13 @@
             Programmatically collapse 2
           </div>
           <div class="p-4">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br />
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br />
             Lorem ipsum dolor sit amet, consectetur adipiscing elit.
           </div>
         </MazCollapse>
 
-        <MazBtn
-          class="mt-3"
-          @click="hasCollapseOpen = !hasCollapseOpen"
-        >
+        <MazBtn class="mt-3" @click="hasCollapseOpen = !hasCollapseOpen">
           Toggle collapse 2
         </MazBtn>
       </ComponentContainer>
@@ -38,12 +33,12 @@
 </template>
 
 <script>
-  export default {
-    name: 'MazCollapseDoc',
-    data () {
-      return {
-        hasCollapseOpen: true,
-        codeLight: `<MazCollapse class="mb-5">
+export default {
+  name: 'MazCollapseDoc',
+  data() {
+    return {
+      hasCollapseOpen: true,
+      codeLight: `<MazCollapse class="mb-5">
   <div slot="header-text">
     Standalone collapse
   </div>
@@ -79,7 +74,7 @@ export default {
     }
   }
 }`
-      }
     }
   }
+}
 </script>

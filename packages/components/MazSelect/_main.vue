@@ -82,172 +82,172 @@
 </template>
 
 <script>
-  import MazInput from '../MazInput'
-  import uniqueId from './../../mixins/uniqueId'
+import MazInput from '../MazInput'
+import uniqueId from './../../mixins/uniqueId'
 
-  /**
-   * > Beautiful select input
-   */
+/**
+ * > Beautiful select input
+ */
 
-  export default {
-    name: 'MazSelect',
-    components: { MazInput },
-    mixins: [uniqueId],
-    props: {
-      // is the value of the input
-      value: {
-        required: true,
-        validator: prop => ['number', 'string', 'boolean'].includes(typeof prop) || prop === null
-      },
-      // list of the options
-      options: { type: Array, required: true },
-      // When is `true` the select is disabled
-      disabled: { type: Boolean, default: false },
-      // When is `true` the select has the dark style
-      dark: { type: Boolean, default: false },
-      // Item in list height in pixel
-      itemHeight: { type: Number, default: 35 },
-      // List height in pixel
-      listHeight: { type: Number, default: 210 },
-      // The input label
-      placeholder: { type: String, default: 'Select option' }
+export default {
+  name: 'MazSelect',
+  components: { MazInput },
+  mixins: [uniqueId],
+  props: {
+    // is the value of the input
+    value: {
+      required: true,
+      validator: prop => ['number', 'string', 'boolean'].includes(typeof prop) || prop === null
     },
-    data () {
+    // list of the options
+    options: { type: Array, required: true },
+    // When is `true` the select is disabled
+    disabled: { type: Boolean, default: false },
+    // When is `true` the select has the dark style
+    dark: { type: Boolean, default: false },
+    // Item in list height in pixel
+    itemHeight: { type: Number, default: 35 },
+    // List height in pixel
+    listHeight: { type: Number, default: 210 },
+    // The input label
+    placeholder: { type: String, default: 'Select option' }
+  },
+  data () {
+    return {
+      selectedIndex: null,
+      hasListOpen: false,
+      query: '',
+      tmpValue: this.value,
+      indexItemToShow: 0
+    }
+  },
+  computed: {
+    optionHeight () {
       return {
-        selectedIndex: null,
-        hasListOpen: false,
-        query: '',
-        tmpValue: this.value,
-        indexItemToShow: 0
+        height: `${this.itemHeight}px`
       }
     },
-    computed: {
-      optionHeight () {
-        return {
-          height: `${this.itemHeight}px`
+    itemListHeight () {
+      return {
+        maxHeight: `${this.listHeight}px`
+      }
+    },
+    tmpValueIndex () {
+      return this.options.findIndex(c => c.value === this.tmpValue)
+    },
+    selectedValueIndex () {
+      return this.value
+        ? this.options.findIndex(c => c.value === this.value)
+        : null
+    },
+    valueShown () {
+      const valueSelected = this.options.filter(c => c.value === this.value)[0]
+      return valueSelected && valueSelected.value ? valueSelected.label : null
+    }
+  },
+  watch: {
+    value (val) {
+      this.tmpValue = val
+    }
+  },
+  methods: {
+    handleBlur (e) {
+      if (this.$el.contains(e.relatedTarget)) return
+      this.isFocus = false
+      this.closeList()
+    },
+    toggleList () {
+      this.hasListOpen ? this.closeList() : this.openList()
+      this.$refs.textField.focusInput()
+    },
+    openList () {
+      if (!this.disabled) {
+        if (this.disabled) return
+        // sent when the list is open
+        this.$emit('open')
+        this.isFocus = true
+        this.hasListOpen = true
+        this.selectFirstValue()
+        if (this.value && this.hasListOpen) this.scrollToSelectedOnFocus(this.selectedValueIndex)
+      }
+    },
+    closeList () {
+      // sent when the list is close
+      this.$emit('close')
+      this.hasListOpen = false
+    },
+    async reset () {
+      this.closeList()
+      await this.$nextTick()
+      this.$refs.textField.focusInput()
+    },
+    selectFirstValue () {
+      if (this.value) return
+      // return the select input
+      // @arg the option value selected
+      const value = this.options[0].value || null
+      this.tmpValue = value
+      this.$emit('input', value)
+    },
+    async updateValue (val) {
+      this.tmpValue = val
+      this.$emit('input', val || null)
+      await this.$nextTick()
+      this.reset()
+    },
+    scrollToSelectedOnFocus (arrayIndex) {
+      this.$nextTick(() => {
+        this.$refs.optionsList.scrollTop = arrayIndex * this.itemHeight - (this.itemHeight * 3)
+      })
+    },
+    keyboardNav (e) {
+      const code = e.keyCode
+      if (code === 40 || code === 38) {
+        if (e.view && e.view.event) {
+          // TODO : It's not compatible with FireFox
+          e.view.event.preventDefault()
         }
-      },
-      itemListHeight () {
-        return {
-          maxHeight: `${this.listHeight}px`
+        if (!this.hasListOpen) this.openList()
+        let index = code === 40 ? this.tmpValueIndex + 1 : this.tmpValueIndex - 1
+        if (index === -1 || index >= this.options.length) {
+          index = index === -1
+            ? this.options.length - 1
+            : 0
         }
-      },
-      tmpValueIndex () {
-        return this.options.findIndex(c => c.value === this.tmpValue)
-      },
-      selectedValueIndex () {
-        return this.value
-          ? this.options.findIndex(c => c.value === this.value)
-          : null
-      },
-      valueShown () {
-        const valueSelected = this.options.filter(c => c.value === this.value)[0]
-        return valueSelected && valueSelected.value ? valueSelected.label : null
-      }
-    },
-    watch: {
-      value (val) {
-        this.tmpValue = val
-      }
-    },
-    methods: {
-      handleBlur (e) {
-        if (this.$el.contains(e.relatedTarget)) return
-        this.isFocus = false
+        this.tmpValue = this.options[index].value
+        this.scrollToSelectedOnFocus(index)
+      } else if (code === 13) {
+        // enter key
+        this.hasListOpen ? this.updateValue(this.tmpValue) : this.openList()
+      } else if (code === 27) {
+        // escape key
         this.closeList()
-      },
-      toggleList () {
-        this.hasListOpen ? this.closeList() : this.openList()
-        this.$refs.textField.focusInput()
-      },
-      openList () {
-        if (!this.disabled) {
-          if (this.disabled) return
-          // sent when the list is open
-          this.$emit('open')
-          this.isFocus = true
-          this.hasListOpen = true
-          this.selectFirstValue()
-          if (this.value && this.hasListOpen) this.scrollToSelectedOnFocus(this.selectedValueIndex)
-        }
-      },
-      closeList () {
-        // sent when the list is close
-        this.$emit('close')
-        this.hasListOpen = false
-      },
-      async reset () {
-        this.closeList()
-        await this.$nextTick()
-        this.$refs.textField.focusInput()
-      },
-      selectFirstValue () {
-        if (this.value) return
-        // return the select input
-        // @arg the option value selected
-        const value = this.options[0].value || null
-        this.tmpValue = value
-        this.$emit('input', value)
-      },
-      async updateValue (val) {
-        this.tmpValue = val
-        this.$emit('input', val || null)
-        await this.$nextTick()
-        this.reset()
-      },
-      scrollToSelectedOnFocus (arrayIndex) {
-        this.$nextTick(() => {
-          this.$refs.optionsList.scrollTop = arrayIndex * this.itemHeight - (this.itemHeight * 3)
+      } else {
+        // typing an option's name
+        this.searching(e)
+      }
+    },
+    searching (e) {
+      const code = e.keyCode
+      clearTimeout(this.queryTimer)
+      this.queryTimer = setTimeout(() => {
+        this.query = ''
+      }, 2000)
+      const q = String.fromCharCode(code)
+      if (code === 8 && this.query !== '') {
+        this.query = this.query.substring(0, this.query.length - 1)
+      } else if (/[a-zA-Z-e ]/.test(q)) {
+        if (!this.hasListOpen) this.openList()
+        this.query += q.toLowerCase()
+        const resultIndex = this.options.findIndex(o => {
+          this.tmpValue = o.value
+          return o.label.toLowerCase().startsWith(this.query)
         })
-      },
-      keyboardNav (e) {
-        const code = e.keyCode
-        if (code === 40 || code === 38) {
-          if (e.view && e.view.event) {
-            // TODO : It's not compatible with FireFox
-            e.view.event.preventDefault()
-          }
-          if (!this.hasListOpen) this.openList()
-          let index = code === 40 ? this.tmpValueIndex + 1 : this.tmpValueIndex - 1
-          if (index === -1 || index >= this.options.length) {
-            index = index === -1
-              ? this.options.length - 1
-              : 0
-          }
-          this.tmpValue = this.options[index].value
-          this.scrollToSelectedOnFocus(index)
-        } else if (code === 13) {
-          // enter key
-          this.hasListOpen ? this.updateValue(this.tmpValue) : this.openList()
-        } else if (code === 27) {
-          // escape key
-          this.closeList()
-        } else {
-          // typing an option's name
-          this.searching(e)
-        }
-      },
-      searching (e) {
-        const code = e.keyCode
-        clearTimeout(this.queryTimer)
-        this.queryTimer = setTimeout(() => {
-          this.query = ''
-        }, 2000)
-        const q = String.fromCharCode(code)
-        if (code === 8 && this.query !== '') {
-          this.query = this.query.substring(0, this.query.length - 1)
-        } else if (/[a-zA-Z-e ]/.test(q)) {
-          if (!this.hasListOpen) this.openList()
-          this.query += q.toLowerCase()
-          const resultIndex = this.options.findIndex(o => {
-            this.tmpValue = o.value
-            return o.label.toLowerCase().startsWith(this.query)
-          })
-          if (resultIndex !== -1) {
-            this.scrollToSelectedOnFocus(resultIndex)
-          }
+        if (resultIndex !== -1) {
+          this.scrollToSelectedOnFocus(resultIndex)
         }
       }
     }
   }
+}
 </script>

@@ -133,154 +133,154 @@
 </template>
 
 <script>
-  import uniqueId from './../../mixins/uniqueId'
+import uniqueId from './../../mixins/uniqueId'
 
-  /**
-   * > Beautiful input UI with loading & error manager
-   */
+/**
+ * > Beautiful input UI with loading & error manager
+ */
 
-  export default {
-    name: 'MazInput',
-    mixins: [uniqueId],
-    props: {
-      // value of the input
-      value: {
-        required: true,
-        validator: prop => ['number', 'string'].includes(typeof prop) || prop === null
-      },
-      // input id
-      id: { type: String, default: null },
-      // value of the input
-      placeholder: { type: String, default: 'Enter text' },
-      // replace the label if is present
-      hint: { type: String, default: null },
-      // input size (`'lg'` / `'sm'`)
-      size: { type: String, default: null },
-      // is the input size (`text` or `number`)
-      type: { type: String, default: 'text' },
-      // should be a [material icon](https://material.io/resources/icons/) name
-      leftIconName: { type: String, default: null },
-      // should be a [material icon](https://material.io/resources/icons/) name
-      rightIconName: { type: String, default: null },
-      // When is `true` the input has the error style (red)
-      error: { type: Boolean, default: false },
-      // When is `true` the input is disable
-      disabled: { type: Boolean, default: false },
-      // When is `true` the input has the dark theme
-      dark: { type: Boolean, default: false },
-      // When is `true` the input is on readonly mode
-      readonly: { type: Boolean, default: false },
-      // When is `true` the input has the valid style (green)
-      valid: { type: Boolean, default: false },
-      // When is `true` the input become required & has the `*` symbol
-      required: { type: Boolean, default: false },
-      // When is `true` the input is a textarea
-      textarea: { type: Boolean, default: false },
-      // When is `true` the input is a textarea
-      loading: { type: Boolean, default: false },
-      // When is `true` the input can be clear with a button on the right
-      clearable: { type: Boolean, default: false },
-      // When is `true` the input has not label (top placeholder when value is not empty)
-      noLabel: { type: Boolean, default: false },
-      // When is `true` and is `required`, the `*` symbol is not showing
-      noRequiredSymbol: { type: Boolean, default: false },
-      // force focus style input
-      focus: { type: Boolean, default: false }
+export default {
+  name: 'MazInput',
+  mixins: [uniqueId],
+  props: {
+    // value of the input
+    value: {
+      required: true,
+      validator: prop => ['number', 'string'].includes(typeof prop) || prop === null
     },
-    data () {
-      return {
-        isFocus: false,
-        showPassword: false
-      }
-    },
-    computed: {
-      inputValue: {
-        get () {
-          return this.value
-        },
-        set (value) {
-          // return the input value (in `@input` or `v-model`)
-          // @arg input
-          this.$emit(
-            'input',
-            this.hasNumberType
-              ? !value ? 0 : parseInt(value)
-              : value
-          )
-        }
+    // input id
+    id: { type: String, default: null },
+    // value of the input
+    placeholder: { type: String, default: 'Enter text' },
+    // replace the label if is present
+    hint: { type: String, default: null },
+    // input size (`'lg'` / `'sm'`)
+    size: { type: String, default: null },
+    // is the input size (`text` or `number`)
+    type: { type: String, default: 'text' },
+    // should be a [material icon](https://material.io/resources/icons/) name
+    leftIconName: { type: String, default: null },
+    // should be a [material icon](https://material.io/resources/icons/) name
+    rightIconName: { type: String, default: null },
+    // When is `true` the input has the error style (red)
+    error: { type: Boolean, default: false },
+    // When is `true` the input is disable
+    disabled: { type: Boolean, default: false },
+    // When is `true` the input has the dark theme
+    dark: { type: Boolean, default: false },
+    // When is `true` the input is on readonly mode
+    readonly: { type: Boolean, default: false },
+    // When is `true` the input has the valid style (green)
+    valid: { type: Boolean, default: false },
+    // When is `true` the input become required & has the `*` symbol
+    required: { type: Boolean, default: false },
+    // When is `true` the input is a textarea
+    textarea: { type: Boolean, default: false },
+    // When is `true` the input is a textarea
+    loading: { type: Boolean, default: false },
+    // When is `true` the input can be clear with a button on the right
+    clearable: { type: Boolean, default: false },
+    // When is `true` the input has not label (top placeholder when value is not empty)
+    noLabel: { type: Boolean, default: false },
+    // When is `true` and is `required`, the `*` symbol is not showing
+    noRequiredSymbol: { type: Boolean, default: false },
+    // force focus style input
+    focus: { type: Boolean, default: false }
+  },
+  data () {
+    return {
+      isFocus: false,
+      showPassword: false
+    }
+  },
+  computed: {
+    inputValue: {
+      get () {
+        return this.value
       },
-      placeholderValue () {
-        let { placeholder } = this
-        if (this.required && placeholder && !this.noRequiredSymbol) placeholder += ` *`
-        return placeholder
-      },
-      hintValue () {
-        let { hint } = this
-        if (this.required && hint) hint += ` *`
-        return hint
-      },
-      hasNumberType () {
-        return this.type === 'number'
-      },
-      hasLabel () {
-        return !this.noLabel
-      },
-      getType () {
-        return this.showPassword ? 'text' : this.type
-      },
-      hasPasswordBtn () {
-        return this.type === 'password' && this.inputValue
-      },
-      hasClearBtn () {
-        return this.clearable && this.inputValue && !this.textarea
-      },
-      hasLeftIcon () {
-        return this.leftIconName || this.$slots['input-icon-left']
-      },
-      hasRightIcon () {
-        return this.rightIconName || this.$slots['input-icon-right']
-      },
-      inputIcons () {
-        return [
-          ...(this.hasLeftIcon ? [{ position: 'left', name: this.leftIconName }] : []),
-          ...(this.hasRightIcon ? [{ position: 'right', name: this.rightIconName }] : [])
-        ]
-      }
-    },
-    methods: {
-      focusInput () {
-        this.$refs.MazInput.focus()
-      },
-      onFocus (e) {
-        // sent the focus event
-        // @arg event
-        this.$emit('focus', e)
-        this.isFocus = true
-      },
-      onBlur (e) {
-        // sent the blur event
-        // @arg event
-        this.$emit('blur', e)
-        this.isFocus = false
-      },
-      clear () {
+      set (value) {
+        // return the input value (in `@input` or `v-model`)
+        // @arg input
         this.$emit(
           'input',
-          this.hasNumberType ? 0 : ''
+          this.hasNumberType
+            ? !value ? 0 : parseInt(value)
+            : value
         )
-        // sent when the input is clear
-        this.$emit('clear')
-      },
-      keyUp (e) {
-        // sent the keyup event
-        // @arg event
-        this.$emit('keyup', e)
-      },
-      keyDown (e) {
-        // sent the keydown event
-        // @arg event
-        this.$emit('keydown', e)
       }
+    },
+    placeholderValue () {
+      let { placeholder } = this
+      if (this.required && placeholder && !this.noRequiredSymbol) placeholder += ' *'
+      return placeholder
+    },
+    hintValue () {
+      let { hint } = this
+      if (this.required && hint) hint += ' *'
+      return hint
+    },
+    hasNumberType () {
+      return this.type === 'number'
+    },
+    hasLabel () {
+      return !this.noLabel
+    },
+    getType () {
+      return this.showPassword ? 'text' : this.type
+    },
+    hasPasswordBtn () {
+      return this.type === 'password' && this.inputValue
+    },
+    hasClearBtn () {
+      return this.clearable && this.inputValue && !this.textarea
+    },
+    hasLeftIcon () {
+      return this.leftIconName || this.$slots['input-icon-left']
+    },
+    hasRightIcon () {
+      return this.rightIconName || this.$slots['input-icon-right']
+    },
+    inputIcons () {
+      return [
+        ...(this.hasLeftIcon ? [{ position: 'left', name: this.leftIconName }] : []),
+        ...(this.hasRightIcon ? [{ position: 'right', name: this.rightIconName }] : [])
+      ]
+    }
+  },
+  methods: {
+    focusInput () {
+      this.$refs.MazInput.focus()
+    },
+    onFocus (e) {
+      // sent the focus event
+      // @arg event
+      this.$emit('focus', e)
+      this.isFocus = true
+    },
+    onBlur (e) {
+      // sent the blur event
+      // @arg event
+      this.$emit('blur', e)
+      this.isFocus = false
+    },
+    clear () {
+      this.$emit(
+        'input',
+        this.hasNumberType ? 0 : ''
+      )
+      // sent when the input is clear
+      this.$emit('clear')
+    },
+    keyUp (e) {
+      // sent the keyup event
+      // @arg event
+      this.$emit('keyup', e)
+    },
+    keyDown (e) {
+      // sent the keydown event
+      // @arg event
+      this.$emit('keydown', e)
     }
   }
+}
 </script>

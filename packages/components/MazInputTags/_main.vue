@@ -73,93 +73,93 @@
 </template>
 
 <script>
-  import uniqueId from './../../mixins/uniqueId'
+import uniqueId from './../../mixins/uniqueId'
 
-  /**
-   * > UI Input tags
-   */
-  export default {
-    name: 'MazInputTags',
-    mixins: [uniqueId],
-    props: {
-      // Input value, can be a `Array` of `String` or `null`
-      value: {
-        validator: prop => Array.isArray(prop) || prop === null,
-        required: true
-      },
-      // input id
-      id: { type: String, default: null },
-      // input placeholder
-      placeholder: { type: String, default: 'Add tags' },
-      // When is `true` the input is disable
-      disabled: { type: Boolean, default: false },
-      // When is `true` the input has the dark theme
-      dark: { type: Boolean, default: false },
-      // When is `true` the input is on readonly mode
-      readonly: { type: Boolean, default: false },
-      // When is `true` the input has the error style (red)
-      error: { type: Boolean, default: false },
-      // When is `true` the input has the valid style (green)
-      valid: { type: Boolean, default: false },
-      // When is `true` the input become required & has the `*` symbol
-      required: { type: Boolean, default: false },
-      // When is `true` the input is a textarea
-      loading: { type: Boolean, default: false },
-      // When is `true` the input can be clear with a button on the right
-      clearable: { type: Boolean, default: false },
-      // input size (`'lg'` / `'sm'`)
-      size: { type: String, default: null }
+/**
+ * > UI Input tags
+ */
+export default {
+  name: 'MazInputTags',
+  mixins: [uniqueId],
+  props: {
+    // Input value, can be a `Array` of `String` or `null`
+    value: {
+      validator: prop => Array.isArray(prop) || prop === null,
+      required: true
     },
-    data () {
-      return {
-        inputValue: null,
-        isFocus: false
-      }
-    },
-    computed: {
-      tags: {
-        get () {
-          return this.value
-        },
-        set (value) {
-          if (!value) return
-          if (Array.isArray(this.tags)) {
-            const tagsArray = JSON.parse(JSON.stringify(this.tags))
-            tagsArray.push(value)
-            // return the list of current tags
-            // @arg `Array` or `null`
-            this.$emit('input', tagsArray)
-          } else {
-            // return the list of tags (`Array` of `String`)
-            this.$emit('input', Array(value))
-          }
-        }
+    // input id
+    id: { type: String, default: null },
+    // input placeholder
+    placeholder: { type: String, default: 'Add tags' },
+    // When is `true` the input is disable
+    disabled: { type: Boolean, default: false },
+    // When is `true` the input has the dark theme
+    dark: { type: Boolean, default: false },
+    // When is `true` the input is on readonly mode
+    readonly: { type: Boolean, default: false },
+    // When is `true` the input has the error style (red)
+    error: { type: Boolean, default: false },
+    // When is `true` the input has the valid style (green)
+    valid: { type: Boolean, default: false },
+    // When is `true` the input become required & has the `*` symbol
+    required: { type: Boolean, default: false },
+    // When is `true` the input is a textarea
+    loading: { type: Boolean, default: false },
+    // When is `true` the input can be clear with a button on the right
+    clearable: { type: Boolean, default: false },
+    // input size (`'lg'` / `'sm'`)
+    size: { type: String, default: null }
+  },
+  data () {
+    return {
+      inputValue: null,
+      isFocus: false
+    }
+  },
+  computed: {
+    tags: {
+      get () {
+        return this.value
       },
-      hasClearBtn () {
-        return this.clearable && this.tags && this.tags.length
-      }
-    },
-    methods: {
-      addTags () {
-        this.tags = this.inputValue
-        this.inputValue = null
-      },
-      removeLastTag () {
-        if (this.inputValue === null || this.inputValue === '') {
+      set (value) {
+        if (!value) return
+        if (Array.isArray(this.tags)) {
           const tagsArray = JSON.parse(JSON.stringify(this.tags))
-          tagsArray.pop()
+          tagsArray.push(value)
+          // return the list of current tags
+          // @arg `Array` or `null`
           this.$emit('input', tagsArray)
+        } else {
+          // return the list of tags (`Array` of `String`)
+          this.$emit('input', Array(value))
         }
-      },
-      removeTag (i) {
-        const tagsArray = JSON.parse(JSON.stringify(this.tags))
-        tagsArray.splice(i, 1)
-        this.$emit('input', tagsArray)
-      },
-      cleanTags () {
-        this.$emit('input', null)
-        this.inputValue = null
       }
+    },
+    hasClearBtn () {
+      return this.clearable && this.tags && this.tags.length
+    }
+  },
+  methods: {
+    addTags () {
+      this.tags = this.inputValue
+      this.inputValue = null
+    },
+    removeLastTag () {
+      if (this.inputValue === null || this.inputValue === '') {
+        const tagsArray = JSON.parse(JSON.stringify(this.tags))
+        tagsArray.pop()
+        this.$emit('input', tagsArray)
+      }
+    },
+    removeTag (i) {
+      const tagsArray = JSON.parse(JSON.stringify(this.tags))
+      tagsArray.splice(i, 1)
+      this.$emit('input', tagsArray)
+    },
+    cleanTags () {
+      this.$emit('input', null)
+      this.inputValue = null
     }
   }
+}
 </script>

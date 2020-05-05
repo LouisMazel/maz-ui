@@ -14,16 +14,16 @@
 </template>
 
 <script>
-  export default {
-    name: 'PaginationNumberBtn',
-    props: {
-      active: { type: Boolean, default: false },
-      disabled: { type: Boolean, default: false }
-    },
-    methods: {
-      handleClick (evt) {
-        this.$emit('click', evt)
-      }
+export default {
+  name: 'PaginationNumberBtn',
+  props: {
+    active: { type: Boolean, default: false },
+    disabled: { type: Boolean, default: false }
+  },
+  methods: {
+    handleClick (evt) {
+      this.$emit('click', evt)
     }
   }
+}
 </script>

@@ -7,7 +7,7 @@
 </template>
 
 <script>
-  export default {
-    name: 'Colors'
-  }
+export default {
+  name: 'Colors'
+}
 </script>

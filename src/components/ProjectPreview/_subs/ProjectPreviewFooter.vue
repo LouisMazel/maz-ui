@@ -1,5 +1,7 @@
 <template>
-  <div class="project-preview-footer p-3 flex justify-end border-top border-top-solid border-color">
+  <div
+    class="project-preview-footer p-3 flex justify-end border-top border-top-solid border-color"
+  >
     <MazBtn
       v-if="project.githubUrl"
       :href="project.githubUrl"
@@ -35,34 +37,34 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 
-  export default {
-    name: 'ProjectPreviewFooter',
-    props: {
-      project: {
-        type: Object,
-        required: true
-      }
-    },
-    computed: {
-      ...mapGetters(['hasDarkTheme'])
+export default {
+  name: 'ProjectPreviewFooter',
+  props: {
+    project: {
+      type: Object,
+      required: true
     }
+  },
+  computed: {
+    ...mapGetters(['hasDarkTheme'])
   }
+}
 </script>
 
 <style lang="scss" scoped>
-  .project-preview-footer {
-    .btn--npm svg {
-      width: 35px;
+.project-preview-footer {
+  .btn--npm svg {
+    width: 35px;
 
-      path {
-        fill: $danger-color;
-      }
-    }
-
-    .btn--white:hover {
-      color: $bg-color-dark;
+    path {
+      fill: $danger-color;
     }
   }
+
+  .btn--white:hover {
+    color: $bg-color-dark;
+  }
+}
 </style>

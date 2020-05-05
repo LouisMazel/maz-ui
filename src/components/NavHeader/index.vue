@@ -3,10 +3,7 @@
     class="header bg-color flex-fixed bg-color border-color border-bottom-1 border-bottom-solid"
     role="banner"
   >
-    <nav
-      class="px-4 flex space-between"
-      :class="{ container: !isDocPage }"
-    >
+    <nav class="px-4 flex space-between" :class="{ container: !isDocPage }">
       <router-link
         :to="{
           name: 'Home'
@@ -14,7 +11,9 @@
         class="flex header__logo py-2 align-center"
       >
         <LogoSvg class="header__logo__img mr-2" />
-        <div class="header__title flex justify-center direction-column hidden-tablet pos-r">
+        <div
+          class="header__title flex justify-center direction-column hidden-tablet pos-r"
+        >
           <h1 class="fs-20">
             Maz UI
           </h1>
@@ -42,71 +41,68 @@
       <div class="flex align-center hidden-mobile">
         <SocialButtons class="hidden-laptop-s" />
       </div>
-      <MazResponsiveMenu
-        :routes="routes"
-        class="py-2 show-mobile"
-      />
+      <MazResponsiveMenu :routes="routes" class="py-2 show-mobile" />
     </nav>
     <DarkSwitchBanner />
   </header>
 </template>
 
 <script>
-  import LogoSvg from '@/components/LogoSvg'
-  import SocialButtons from '@/components/SocialButtons'
-  import DarkSwitchBanner from '@/components/DarkSwitchBanner'
+import LogoSvg from '@/components/LogoSvg'
+import SocialButtons from '@/components/SocialButtons'
+import DarkSwitchBanner from '@/components/DarkSwitchBanner'
 
-  export default {
-    name: 'Header',
-    components: {
-      LogoSvg,
-      SocialButtons,
-      DarkSwitchBanner
-    },
-    data () {
-      return {
-        routes: [
-          { label: 'Home', name: 'Home' },
-          { label: 'Documentation', name: 'Documentation' },
-          { label: 'Mad with Maz Ui', name: 'MadeWithMazUi' }
-        ]
-      }
-    },
-    computed: {
-      isDocPage () {
-        return this.$route.matched.some(m => m.name === 'Documentation')
-      }
+export default {
+  name: 'Header',
+  components: {
+    LogoSvg,
+    SocialButtons,
+    DarkSwitchBanner
+  },
+  data() {
+    return {
+      routes: [
+        { label: 'Home', name: 'Home' },
+        { label: 'Documentation', name: 'Documentation' },
+        { label: 'Mad with Maz Ui', name: 'MadeWithMazUi' }
+      ]
+    }
+  },
+  computed: {
+    isDocPage() {
+      return this.$route.matched.some(m => m.name === 'Documentation')
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>
-  .header {
-    &__logo {
-      text-decoration: none;
+.header {
+  &__logo {
+    text-decoration: none;
 
-      &__img {
-        width: 100px;
-        height: 40px;
-      }
+    &__img {
+      width: 100px;
+      height: 40px;
     }
+  }
 
-    &__menu {
-      &__item {
-        font-weight: 500;
-        transition: all .5s;
-        outline: none;
+  &__menu {
+    &__item {
+      font-weight: 500;
+      transition: all .5s;
+      outline: none;
 
-        &.router-link-active {
-          color: $primary-color;
-        }
-      }
-    }
-
-    &__title {
-      &__sub {
-        color: $muted-color;
+      &.router-link-active {
+        color: $primary-color;
       }
     }
   }
+
+  &__title {
+    &__sub {
+      color: $muted-color;
+    }
+  }
+}
 </style>

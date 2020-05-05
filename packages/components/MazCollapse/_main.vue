@@ -37,54 +37,54 @@
 </template>
 
 <script>
-  import MazTransitionExpand from '../MazTransitionExpand'
-  import ArrowIcon from '../_subs/ArrowIcon'
+import MazTransitionExpand from '../MazTransitionExpand'
+import ArrowIcon from '../_subs/ArrowIcon'
 
-  /**
-  * > MazCollpase is a component to show or not content
-  */
+/**
+ * > MazCollpase is a component to show or not content
+ */
 
-  export default {
-    name: 'MazCollapse',
-    components: {
-      MazTransitionExpand,
-      ArrowIcon
-    },
-    props: {
-      // Value is a Boolean to open or close the collapse
-      value: { type: Boolean, default: false },
-      // Set `true` to enable dark mode
-      dark: { type: Boolean, default: false },
-      // Is the color of the arrow, must be a hex color
-      arrowColor: { type: String, default: 'black' }
-    },
-    data () {
-      return {
-        isOpen: this.value
-      }
-    },
-    computed: {
-      hasContentOpen: {
-        get () {
-          return this.isOpen
-        },
-        set (value) {
-          // return a `true` or `false` if the collapse is open or not
-          // @arg Boolean
-          this.$emit('input', value)
-          this.isOpen = value
-        }
-      }
-    },
-    watch: {
-      value (val) {
-        this.isOpen = val
-      }
-    },
-    methods: {
-      openContent () {
-        this.hasContentOpen = !this.hasContentOpen
+export default {
+  name: 'MazCollapse',
+  components: {
+    MazTransitionExpand,
+    ArrowIcon
+  },
+  props: {
+    // Value is a Boolean to open or close the collapse
+    value: { type: Boolean, default: false },
+    // Set `true` to enable dark mode
+    dark: { type: Boolean, default: false },
+    // Is the color of the arrow, must be a hex color
+    arrowColor: { type: String, default: 'black' }
+  },
+  data () {
+    return {
+      isOpen: this.value
+    }
+  },
+  computed: {
+    hasContentOpen: {
+      get () {
+        return this.isOpen
+      },
+      set (value) {
+        // return a `true` or `false` if the collapse is open or not
+        // @arg Boolean
+        this.$emit('input', value)
+        this.isOpen = value
       }
     }
+  },
+  watch: {
+    value (val) {
+      this.isOpen = val
+    }
+  },
+  methods: {
+    openContent () {
+      this.hasContentOpen = !this.hasContentOpen
+    }
   }
+}
 </script>

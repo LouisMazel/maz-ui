@@ -51,42 +51,42 @@
 </template>
 
 <script>
-  import moment from 'moment'
+import moment from 'moment'
 
-  export default {
-    name: 'ButtonValidate',
-    props: {
-      /**
-       * TODO: Remove wrong default values
-       */
-      dark: { type: Boolean, default: null },
-      buttonColor: { type: String, default: null },
-      buttonNowTranslation: { type: String, default: null },
-      onlyTime: { type: Boolean, default: null },
-      noButtonNow: { type: Boolean, default: null },
-      range: { type: Boolean, default: null },
-      hasButtonValidate: { type: Boolean, default: null }
-    },
-    computed: {
-      colorStyle () {
-        return {
-          color: this.buttonColor,
-          fill: this.buttonColor
-        }
-      },
-      bgStyle () {
-        return {
-          backgroundColor: this.buttonColor
-        }
-      },
-      hasButtonNow () {
-        return !this.onlyTime && !this.noButtonNow && !this.range
+export default {
+  name: 'ButtonValidate',
+  props: {
+    /**
+     * TODO: Remove wrong default values
+     */
+    dark: { type: Boolean, default: null },
+    buttonColor: { type: String, default: null },
+    buttonNowTranslation: { type: String, default: null },
+    onlyTime: { type: Boolean, default: null },
+    noButtonNow: { type: Boolean, default: null },
+    range: { type: Boolean, default: null },
+    hasButtonValidate: { type: Boolean, default: null }
+  },
+  computed: {
+    colorStyle () {
+      return {
+        color: this.buttonColor,
+        fill: this.buttonColor
       }
     },
-    methods: {
-      emitNow () {
-        this.$emit('now', moment().format('YYYY-MM-DD HH:mm'))
+    bgStyle () {
+      return {
+        backgroundColor: this.buttonColor
       }
+    },
+    hasButtonNow () {
+      return !this.onlyTime && !this.noButtonNow && !this.range
+    }
+  },
+  methods: {
+    emitNow () {
+      this.$emit('now', moment().format('YYYY-MM-DD HH:mm'))
     }
   }
+}
 </script>

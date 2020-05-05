@@ -103,74 +103,74 @@
 </template>
 
 <script>
-  import moment from 'moment'
-  import { getFormattedValuesIntl, getTimeFormat, EventBus } from './../../utils'
+import moment from 'moment'
+import { getFormattedValuesIntl, getTimeFormat, EventBus } from './../../utils'
 
-  export default {
-    name: 'HeaderPicker',
-    props: {
-      value: { type: Object, default: null },
-      locale: { type: String, required: true },
-      hasTime: { type: Boolean, required: true },
-      hasDate: { type: Boolean, required: true },
-      format: { type: String, required: true }
+export default {
+  name: 'HeaderPicker',
+  props: {
+    value: { type: Object, default: null },
+    locale: { type: String, required: true },
+    hasTime: { type: Boolean, required: true },
+    hasDate: { type: Boolean, required: true },
+    format: { type: String, required: true }
+  },
+  data () {
+    return {
+      transitionName: 'slidevnext',
+      currentDate: this.value
+    }
+  },
+  computed: {
+    isRangeMode () {
+      return !!this.value && Object.keys(this.value).includes('start')
     },
-    data () {
-      return {
-        transitionName: 'slidevnext',
-        currentDate: this.value
+    currentValue () {
+      if (this.isRangeMode) {
+        return this.value.end || moment()
       }
+      return this.value || moment()
     },
-    computed: {
-      isRangeMode () {
-        return !!this.value && Object.keys(this.value).includes('start')
-      },
-      currentValue () {
-        if (this.isRangeMode) {
-          return this.value.end || moment()
-        }
-        return this.value || moment()
-      },
-      year () {
-        return this.currentValue.year()
-      },
-      dateFormatted () {
-        const dates = []
-        const { locale } = this
-        if (this.isRangeMode) {
-          dates.push(this.value.start, this.value.end)
-        } else {
-          dates.push(this.value)
-        }
-        return getFormattedValuesIntl({ locale, dates })
-      },
-      timeFormatted () {
-        return !this.isTwelveFormat ? {
-          hour: this?.value?.format('HH') ?? null,
-          minute: this?.value?.format('mm') ?? null
-        } : this?.value?.format(this.timeFormat) ?? null
-      },
-      timeFormat () {
-        return getTimeFormat(this.format)
-      },
-      isTwelveFormat () {
-        return this.timeFormat.includes('A') || this.timeFormat.includes('a')
-      }
+    year () {
+      return this.currentValue.year()
     },
-    watch: {
-      value: {
-        handler () {
-          const newValueIsSmaller = this.currentDate ? this.currentValue.isBefore(this.currentDate) : false
-          this.transitionName = newValueIsSmaller ? 'slidevprev' : 'slidevnext'
-          this.$nextTick(() => { this.currentDate = this.currentValue })
-        },
-        immediate: true
+    dateFormatted () {
+      const dates = []
+      const { locale } = this
+      if (this.isRangeMode) {
+        dates.push(this.value.start, this.value.end)
+      } else {
+        dates.push(this.value)
       }
+      return getFormattedValuesIntl({ locale, dates })
     },
-    methods: {
-      close (e) {
-        EventBus.$emit('close', e)
-      }
+    timeFormatted () {
+      return !this.isTwelveFormat ? {
+        hour: this?.value?.format('HH') ?? null,
+        minute: this?.value?.format('mm') ?? null
+      } : this?.value?.format(this.timeFormat) ?? null
+    },
+    timeFormat () {
+      return getTimeFormat(this.format)
+    },
+    isTwelveFormat () {
+      return this.timeFormat.includes('A') || this.timeFormat.includes('a')
+    }
+  },
+  watch: {
+    value: {
+      handler () {
+        const newValueIsSmaller = this.currentDate ? this.currentValue.isBefore(this.currentDate) : false
+        this.transitionName = newValueIsSmaller ? 'slidevprev' : 'slidevnext'
+        this.$nextTick(() => { this.currentDate = this.currentValue })
+      },
+      immediate: true
+    }
+  },
+  methods: {
+    close (e) {
+      EventBus.$emit('close', e)
     }
   }
+}
 </script>
