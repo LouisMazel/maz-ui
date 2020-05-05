@@ -11,7 +11,7 @@
       <h2 class="maz-text-center maz-my-4">
         Projects Made With Mazel UI
       </h2>
-      <div class="maz-container used-by__projects-list maz-flex maz-align-center maz-pt-2 maz-pb-5">
+      <div class="maz-container used-by__projects-list maz-flex maz-pt-2 maz-pb-5">
         <ProjectPreview
           v-for="(project, i) in projects"
           :key="`project-${i}`"

@@ -40,7 +40,7 @@
           Made with Maz UI
         </router-link>
       </div>
-      <div class="flex maz-align-center maz-hidden-mobile">
+      <div class="maz-flex maz-align-center maz-hidden-mobile">
         <SocialButtons class="maz-hidden-laptop-s" />
       </div>
       <MazResponsiveMenu
@@ -96,6 +96,7 @@ export default {
         font-weight: 500;
         transition: all .5s;
         outline: none;
+        color: white;
 
         &.router-link-active {
           color: $primary-color;

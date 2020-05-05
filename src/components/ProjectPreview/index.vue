@@ -1,6 +1,6 @@
 <template>
   <div
-    class="project-preview border-radius maz-text-white maz-flex maz-direction-column maz-space-between maz-overflow-hidden maz-border maz-border-solid maz-border-color"
+    class="project-preview maz-border-radius maz-text-white maz-flex maz-direction-column maz-space-between maz-overflow-hidden maz-border maz-border-solid maz-border-color"
   >
     <div class="project-preview-header maz-border-top-radius">
       <img

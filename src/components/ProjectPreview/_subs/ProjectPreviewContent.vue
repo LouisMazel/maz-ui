@@ -1,12 +1,12 @@
 <template>
   <div
-    class="project-preview-content flex-1 flex direction-column space-between p-3"
+    class="project-preview-content maz-flex-1 maz-flex maz-direction-column maz-space-between maz-p-3"
   >
     <div class="project-preview-content__text">
-      <h4 class="fs-18 mb-2">
+      <h4 class="maz-fs-18 maz-mb-2">
         {{ project.name }}
       </h4>
-      <p class="mb-2">
+      <p class="maz-mb-2">
         {{ project.description }}
       </p>
     </div>
