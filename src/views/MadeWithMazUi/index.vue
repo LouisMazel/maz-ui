@@ -53,42 +53,42 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.used-by {
-  color: $text-color;
+  .used-by {
+    color: $text-color;
 
-  @media only screen and (max-width: $breakpoint-laptop-s) {
-    &__main {
-      flex-direction: column-reverse;
-    }
-  }
-
-  &__projects-list {
     @media only screen and (max-width: $breakpoint-laptop-s) {
-      flex-direction: column;
+      &__main {
+        flex-direction: column-reverse;
+      }
     }
 
-    &__item {
-      margin-right: 40px;
-
+    &__projects-list {
       @media only screen and (max-width: $breakpoint-laptop-s) {
-        margin-right: 0;
-        margin-bottom: 40px;
+        flex-direction: column;
+      }
+
+      &__item {
+        margin-right: 40px;
+
+        @media only screen and (max-width: $breakpoint-laptop-s) {
+          margin-right: 0;
+          margin-bottom: 40px;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
 
         &:last-child {
-          margin-bottom: 0;
+          margin-right: 0;
         }
-      }
-
-      &:last-child {
-        margin-right: 0;
       }
     }
   }
-}
 
-.is-dark {
-  .used-by {
-    color: $text-color-dark;
+  .is-dark {
+    .used-by {
+      color: $text-color-dark;
+    }
   }
-}
 </style>

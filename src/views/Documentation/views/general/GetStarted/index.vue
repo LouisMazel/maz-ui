@@ -93,13 +93,13 @@ new Vue({
 </script>
 
 <style lang="scss" scoped>
-.get-started {
-  h2 {
-    margin-bottom: 20px;
-  }
+  .get-started {
+    h2 {
+      margin-bottom: 20px;
+    }
 
-  p {
-    margin-bottom: 15px;
+    p {
+      margin-bottom: 15px;
+    }
   }
-}
 </style>

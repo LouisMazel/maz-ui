@@ -71,8 +71,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.logo-svg svg {
-  height: 100%;
-  width: 100%;
-}
+  .logo-svg svg {
+    height: 100%;
+    width: 100%;
+  }
 </style>

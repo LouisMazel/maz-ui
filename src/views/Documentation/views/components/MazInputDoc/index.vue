@@ -180,12 +180,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.maz-input-doc {
-  .flex {
-    &-component {
-      margin: 5px;
-      min-width: 250px;
+  .maz-input-doc {
+    .flex {
+      &-component {
+        margin: 5px;
+        min-width: 250px;
+      }
     }
   }
-}
 </style>

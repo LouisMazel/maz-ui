@@ -82,26 +82,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.documentation {
-  min-height: 0;
-  overflow-y: hidden;
+  .documentation {
+    min-height: 0;
+    overflow-y: hidden;
 
-  &__container {
-    overflow-x: auto;
+    &__container {
+      overflow-x: auto;
+    }
   }
-}
 </style>
 
 <style lang="scss">
-.content {
-  > p,
-  > h1,
-  > h2,
-  > h3,
-  > h4,
-  > h5,
-  > h6 {
-    margin-bottom: 15px;
+  .content {
+    > p,
+    > h1,
+    > h2,
+    > h3,
+    > h4,
+    > h5,
+    > h6 {
+      margin-bottom: 15px;
+    }
   }
-}
 </style>

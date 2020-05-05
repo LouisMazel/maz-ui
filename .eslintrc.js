@@ -64,9 +64,9 @@ module.exports = {
       }
     ],
     "vue/html-indent": ["error", "tab", {
-      "baseIndent": 1,
+      baseIndent: 1,
     }],
-    "vue/script-indent": ["error", 2, { baseIndent: 0 }],
+    "vue/script-indent": ["error", 2, { baseIndent: 1 }],
     "vue/component-name-in-template-casing": ["error", "PascalCase"],
     "vue/attributes-order": "error",
     "vue/no-confusing-v-for-v-if": "error",

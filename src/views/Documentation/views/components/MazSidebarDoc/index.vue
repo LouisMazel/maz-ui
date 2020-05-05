@@ -90,23 +90,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.maz-sidebar-doc {
-  &__container {
-    padding: 0;
-    border-radius: $border-radius;
-  }
-
-  &__content {
-    & * {
-      margin-bottom: .5rem;
+  .maz-sidebar-doc {
+    &__container {
+      padding: 0;
+      border-radius: $border-radius;
     }
 
-    .switch-container {
-      p {
-        margin-right: 20px;
-        font-size: 1em;
+    &__content {
+      & * {
+        margin-bottom: .5rem;
+      }
+
+      .switch-container {
+        p {
+          margin-right: 20px;
+          font-size: 1em;
+        }
       }
     }
   }
-}
 </style>

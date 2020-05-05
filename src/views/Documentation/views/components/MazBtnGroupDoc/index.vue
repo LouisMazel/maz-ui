@@ -199,9 +199,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.btn-container {
-  .maz-btn-group {
-    margin-bottom: 20px;
+  .btn-container {
+    .maz-btn-group {
+      margin-bottom: 20px;
+    }
   }
-}
 </style>

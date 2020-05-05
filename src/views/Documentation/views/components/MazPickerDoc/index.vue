@@ -403,20 +403,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.maz-picker-doc {
-  .examples {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 20px;
-    align-items: start;
+  .maz-picker-doc {
+    .examples {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-gap: 20px;
+      align-items: start;
 
-    @media screen and (max-width: $breakpoint-laptop-s) {
-      grid-template-columns: repeat(1, 1fr);
-    }
+      @media screen and (max-width: $breakpoint-laptop-s) {
+        grid-template-columns: repeat(1, 1fr);
+      }
 
-    > div {
-      margin: 0;
+      > div {
+        margin: 0;
+      }
     }
   }
-}
 </style>

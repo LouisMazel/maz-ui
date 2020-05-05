@@ -39,38 +39,38 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.component-container {
-  color: $text-color;
-  min-width: 200px;
-  border-radius: $border-radius;
+  .component-container {
+    color: $text-color;
+    min-width: 200px;
+    border-radius: $border-radius;
 
-  &__footer {
-    overflow: hidden;
+    &__footer {
+      overflow: hidden;
 
-    &__collapse {
-      border: none;
-      border-top-left-radius: 0;
-      border-top-right-radius: 0;
+      &__collapse {
+        border: none;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
 
-      &.open {
-        border-radius: 0;
+        &.open {
+          border-radius: 0;
+        }
       }
     }
   }
-}
 
-.is-dark .component-container,
-.is-dark.component-container {
-  color: $text-color-dark;
-  background-color: $bg-color-dark;
-  border: $border-width solid $hover-bg-color-dark;
+  .is-dark .component-container,
+  .is-dark.component-container {
+    color: $text-color-dark;
+    background-color: $bg-color-dark;
+    border: $border-width solid $hover-bg-color-dark;
 
-  .component-container__footer {
-    border-color: $hover-bg-color-dark;
+    .component-container__footer {
+      border-color: $hover-bg-color-dark;
 
-    &__collapse {
-      border: none;
+      &__collapse {
+        border: none;
+      }
     }
   }
-}
 </style>

@@ -304,27 +304,27 @@ export default {
 </script>
 
 <style lang="scss">
-.maz-flex-doc .demo {
-  .flex {
-    padding: 10px;
-    background-color: yellowgreen;
-    color: white;
-    border-radius: $border-radius;
-  }
+  .maz-flex-doc .demo {
+    .flex {
+      padding: 10px;
+      background-color: yellowgreen;
+      color: white;
+      border-radius: $border-radius;
+    }
 
-  .flex-1 {
-    padding: 10px;
-    background-color: dodgerblue;
-    color: white;
-    border: $border-width solid white;
-    border-radius: $border-radius;
-  }
+    .flex-1 {
+      padding: 10px;
+      background-color: dodgerblue;
+      color: white;
+      border: $border-width solid white;
+      border-radius: $border-radius;
+    }
 
-  & div {
-    background-color: dodgerblue;
-    padding: 10px;
-    border: $border-width solid white;
-    border-radius: $border-radius;
+    & div {
+      background-color: dodgerblue;
+      padding: 10px;
+      border: $border-width solid white;
+      border-radius: $border-radius;
+    }
   }
-}
 </style>

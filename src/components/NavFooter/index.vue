@@ -62,54 +62,54 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.nav-footer {
-  color: $border-color;
-  background-color: $bg-color;
+  .nav-footer {
+    color: $border-color;
+    background-color: $bg-color;
 
-  &-subs {
-    background-color: $hover-bg-color;
+    &-subs {
+      background-color: $hover-bg-color;
 
-    a {
-      color: $muted-color;
-    }
-  }
-
-  &-content {
-    li {
-      margin-right: 15px;
-
-      &:last-child {
-        margin-right: 0;
+      a {
+        color: $muted-color;
       }
     }
 
-    &__logo__img {
-      opacity: .6;
-      height: 60px;
-      transition: all 300ms;
+    &-content {
+      li {
+        margin-right: 15px;
 
-      &:hover {
-        opacity: 1;
-        transform: scale(1.1);
+        &:last-child {
+          margin-right: 0;
+        }
       }
-    }
 
-    @media screen and (max-width: $breakpoint-tablet) {
-      flex-direction: column;
+      &__logo__img {
+        opacity: .6;
+        height: 60px;
+        transition: all 300ms;
 
-      & > * {
-        margin-bottom: 20px;
+        &:hover {
+          opacity: 1;
+          transform: scale(1.1);
+        }
+      }
+
+      @media screen and (max-width: $breakpoint-tablet) {
+        flex-direction: column;
+
+        & > * {
+          margin-bottom: 20px;
+        }
       }
     }
   }
-}
 
-.is-dark .nav-footer {
-  background-color: $bg-color-dark;
-  border-color: $hover-bg-color-dark;
+  .is-dark .nav-footer {
+    background-color: $bg-color-dark;
+    border-color: $hover-bg-color-dark;
 
-  &-subs {
-    background-color: $hover-bg-color-dark;
+    &-subs {
+      background-color: $hover-bg-color-dark;
+    }
   }
-}
 </style>

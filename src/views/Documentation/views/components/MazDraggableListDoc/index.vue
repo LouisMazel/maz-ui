@@ -109,11 +109,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.maz-draggable-list-doc .demo-container {
-  flex-direction: column;
+  .maz-draggable-list-doc .demo-container {
+    flex-direction: column;
 
-  :first-child {
-    margin-right: 0;
+    :first-child {
+      margin-right: 0;
+    }
   }
-}
 </style>

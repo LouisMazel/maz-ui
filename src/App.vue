@@ -40,16 +40,16 @@ export default {
 </script>
 
 <style lang="scss">
-#app.is-dark {
-  h3,
-  h4,
-  h5,
-  h6,
-  p,
-  ul,
-  li,
-  ol {
-    color: $text-color-dark;
+  #app.is-dark {
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    ul,
+    li,
+    ol {
+      color: $text-color-dark;
+    }
   }
-}
 </style>

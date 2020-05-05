@@ -94,63 +94,63 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.home {
-  // background-image: linear-gradient(to right top, dodgerblue, #00B7FF, #00D4E0, #00E688, #A8EB12);
-  @media only screen and (max-width: $breakpoint-mobile-l) {
-    &__header button {
-      width: 100%;
-    }
-  }
-
-  @media only screen and (max-width: $breakpoint-laptop-s) {
-    &__main {
-      flex-direction: column-reverse;
-    }
-  }
-
-  &__illu-container {
-    flex: 0 0 60%;
-
-    &__illu {
-      max-width: 100%;
-    }
-  }
-
-  &__content {
-    flex: 0 0 40%;
-  }
-
-  h2 {
-    color: #444352;
-    font-size: 2.143em;
-  }
-
-  h3.subtitle {
-    color: $primary-color;
-  }
-}
-
-.is-dark {
   .home {
+    // background-image: linear-gradient(to right top, dodgerblue, #00B7FF, #00D4E0, #00E688, #A8EB12);
+    @media only screen and (max-width: $breakpoint-mobile-l) {
+      &__header button {
+        width: 100%;
+      }
+    }
+
+    @media only screen and (max-width: $breakpoint-laptop-s) {
+      &__main {
+        flex-direction: column-reverse;
+      }
+    }
+
+    &__illu-container {
+      flex: 0 0 60%;
+
+      &__illu {
+        max-width: 100%;
+      }
+    }
+
+    &__content {
+      flex: 0 0 40%;
+    }
+
     h2 {
-      color: $text-color-dark;
+      color: #444352;
+      font-size: 2.143em;
     }
 
     h3.subtitle {
-      color: $primary-color !important;
+      color: $primary-color;
     }
+  }
 
-    .btn--dark--outline {
-      background-color: $bg-color-dark;
-      color: $text-color-dark;
-      border-color: $text-color-dark;
+  .is-dark {
+    .home {
+      h2 {
+        color: $text-color-dark;
+      }
 
-      &:hover,
-      &:focus {
-        background-color: $text-color-dark;
-        color: $bg-color-dark;
+      h3.subtitle {
+        color: $primary-color !important;
+      }
+
+      .btn--dark--outline {
+        background-color: $bg-color-dark;
+        color: $text-color-dark;
+        border-color: $text-color-dark;
+
+        &:hover,
+        &:focus {
+          background-color: $text-color-dark;
+          color: $bg-color-dark;
+        }
       }
     }
   }
-}
 </style>

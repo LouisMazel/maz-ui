@@ -31,7 +31,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.right-sidebar-content {
-  overflow-y: auto;
-}
+  .right-sidebar-content {
+    overflow-y: auto;
+  }
 </style>

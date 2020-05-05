@@ -190,15 +190,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.maz-search-doc {
-  .item {
-    height: 60px;
+  .maz-search-doc {
+    .item {
+      height: 60px;
 
-    img {
-      border-radius: 50%;
-      height: 40px;
-      width: 40px;
+      img {
+        border-radius: 50%;
+        height: 40px;
+        width: 40px;
+      }
     }
   }
-}
 </style>

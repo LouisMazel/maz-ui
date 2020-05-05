@@ -81,32 +81,32 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.header {
-  &__logo {
-    text-decoration: none;
+  .header {
+    &__logo {
+      text-decoration: none;
 
-    &__img {
-      width: 100px;
-      height: 40px;
+      &__img {
+        width: 100px;
+        height: 40px;
+      }
     }
-  }
 
-  &__menu {
-    &__item {
-      font-weight: 500;
-      transition: all .5s;
-      outline: none;
+    &__menu {
+      &__item {
+        font-weight: 500;
+        transition: all .5s;
+        outline: none;
 
-      &.router-link-active {
-        color: $primary-color;
+        &.router-link-active {
+          color: $primary-color;
+        }
+      }
+    }
+
+    &__title {
+      &__sub {
+        color: $muted-color;
       }
     }
   }
-
-  &__title {
-    &__sub {
-      color: $muted-color;
-    }
-  }
-}
 </style>

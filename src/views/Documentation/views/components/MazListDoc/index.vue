@@ -193,20 +193,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.maz-list-doc {
-  .lists-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(1, auto);
-    grid-gap: 30px;
+  .maz-list-doc {
+    .lists-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(1, auto);
+      grid-gap: 30px;
 
-    @media only screen and (max-width: $breakpoint-laptop-s) {
-      grid-template-columns: repeat(1, 1fr);
-    }
+      @media only screen and (max-width: $breakpoint-laptop-s) {
+        grid-template-columns: repeat(1, 1fr);
+      }
 
-    .scrollable-list {
-      max-height: 250px;
+      .scrollable-list {
+        max-height: 250px;
+      }
     }
   }
-}
 </style>

@@ -33,29 +33,29 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.social-buttons {
-  a {
-    margin-right: 15px;
-    color: $primary-color;
+  .social-buttons {
+    a {
+      margin-right: 15px;
+      color: $primary-color;
 
-    &:last-child {
-      margin-right: 0;
-    }
+      &:last-child {
+        margin-right: 0;
+      }
 
-    i {
-      font-size: 1.571em;
-    }
-  }
-}
-
-.is-dark .social-buttons {
-  a {
-    background-color: $bg-color-dark;
-
-    &:hover,
-    &:focus {
-      background-color: $hover-bg-color-dark;
+      i {
+        font-size: 1.571em;
+      }
     }
   }
-}
+
+  .is-dark .social-buttons {
+    a {
+      background-color: $bg-color-dark;
+
+      &:hover,
+      &:focus {
+        background-color: $hover-bg-color-dark;
+      }
+    }
+  }
 </style>

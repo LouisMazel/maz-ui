@@ -26,25 +26,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.project-preview-content {
-  &__text {
+  .project-preview-content {
+    &__text {
+      h4 {
+        color: $text-color;
+      }
+
+      p {
+        color: rgba($text-color, .54);
+      }
+    }
+  }
+
+  .is-dark .project-preview-content {
     h4 {
-      color: $text-color;
+      color: $text-color-dark;
     }
 
     p {
-      color: rgba($text-color, .54);
+      color: rgba($text-color-dark, .54);
     }
   }
-}
-
-.is-dark .project-preview-content {
-  h4 {
-    color: $text-color-dark;
-  }
-
-  p {
-    color: rgba($text-color-dark, .54);
-  }
-}
 </style>

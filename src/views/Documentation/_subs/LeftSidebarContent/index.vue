@@ -126,21 +126,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.left-sidebar-content {
-  overflow-y: auto;
+  .left-sidebar-content {
+    overflow-y: auto;
 
-  .menu-item {
-    font-weight: 500;
-    margin-bottom: .5em;
-    line-height: normal;
+    .menu-item {
+      font-weight: 500;
+      margin-bottom: .5em;
+      line-height: normal;
 
-    &:last-child {
-      margin-bottom: 0;
-    }
+      &:last-child {
+        margin-bottom: 0;
+      }
 
-    &.router-link-active {
-      color: $primary-color;
+      &.router-link-active {
+        color: $primary-color;
+      }
     }
   }
-}
 </style>

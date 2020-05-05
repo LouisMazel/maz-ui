@@ -217,9 +217,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.btn-container {
-  * {
-    margin: 5px;
+  .btn-container {
+    * {
+      margin: 5px;
+    }
   }
-}
 </style>
