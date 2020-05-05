@@ -27,20 +27,22 @@
       </h4>
       <div class="flex flex--wrap">
         <div
-          class="elevation p-5 border-radius flex-33"
+          class="elevation p-5 border-radius flex-33 flex flex-center"
           :class="`bg-${color}`"
-        />
+        >
+          {{ `.bg-${color}` }}
+        </div>
         <div
           class="colors__classes flex-1 px-5"
         >
-          <p :class="`fs-16 text-${color}`">{{ `text-${color}` }}</p>
-          <p :class="`fs-16 bg-${color}`">{{ `bg-${color}` }}</p>
-          <p :class="`fs-16 border-${color} border-solid border-width`">{{ `border-${color}` }} (with border-solid border-width) </p>
+          <p :class="`fs-16 text-${color}`">{{ `.text-${color}` }}</p>
+          <p :class="`fs-16 bg-${color}`">{{ `.bg-${color}` }}</p>
+          <p :class="`fs-16 border-${color} border-solid border-width`">{{ `.border-${color}` }} (with .border-solid .border-width) </p>
           <div class="flex">
-            <p class="mr-2 fs-16">{{ `focus-bg-${color}` }}</p> <button :class="`fs-16 focus-bg-${color}`">Focus me</button>
+            <p class="mr-2 fs-16">{{ `.focus-bg-${color}` }}</p> <button :class="`fs-16 focus-bg-${color}`">Focus me</button>
           </div>
           <div class="flex">
-            <p class="mr-2 fs-16">{{ `hover-bg-${color}` }}</p> <button :class="`fs-16 hover-bg-${color}`">Hover me</button>
+            <p class="mr-2 fs-16">{{ `.hover-bg-${color}` }}</p> <button :class="`fs-16 hover-bg-${color}`">Hover me</button>
           </div>
         </div>
       </div>

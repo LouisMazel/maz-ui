@@ -5,7 +5,7 @@
     </h2>
 
     <h3>
-      How to use your own colors and text styles
+      How to use your own colors and text styles ?
     </h3>
 
     <p>
@@ -16,6 +16,7 @@
     <p>
       Instead of importing the basic CSS file
       (<strong>'maz-ui/lib/maz-ui.css'</strong>). <br />
+
       You must import the Maz-UI SCSS at the top of your main CSS file and place
       your own variables just before importing, follow this example:
     </p>
@@ -24,8 +25,8 @@
       code="// main.scss
 
 $primary-color:     red;
-$default-color:     blue;
-$success-color:     yellow;
+$secondary-color:   blue;
+$third-color:       yellow;
 $border-radius:     4px;
 $base-font-size:    16px;
 $base-font-family:  'Roboto';
@@ -40,6 +41,32 @@ $base-font-family:  'Roboto';
 // Your own CSS"
       language="scss"
     />
+
+    <h3>
+      How to use Maz-UI SCSS globally in your app ?
+    </h3>
+
+    <p>
+      If you want override maz-ui SCSS variables, load your file at first and then load the maz-ui SCSS vars file:
+    </p>
+
+    <CodeContainer
+      code="// vue.config.js
+
+module.exports = {
+  css: {
+    loaderOptions: {
+      sass: {
+        prependData: `
+          @import './src/scss/my-own-vars.scss';
+          @import 'maz-ui/scss/vars.scss';
+        `
+      }
+    }
+  }
+}"
+    />
+
 
     <h3>
       All default variables
