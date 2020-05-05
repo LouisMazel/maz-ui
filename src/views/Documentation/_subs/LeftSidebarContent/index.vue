@@ -38,6 +38,14 @@
     >
       Use your own colors & text properties
     </router-link>
+    <router-link
+      class="menu-item btn btn--white mb-2 w-100 no-shadow text-color bg-color no-border hover-bg-color"
+      :to="{
+        name: 'Colors'
+      }"
+    >
+      Colors
+    </router-link>
     <h3 class="my-3">
       Components
     </h3>
@@ -77,7 +85,7 @@
 
   const isGeneralDoc = (name) => ['Install', 'GetStarted'].includes(name)
   const isCliDoc = (name) => ['CliInstall'].includes(name)
-  const isThemeDoc = (name) => ['Theme'].includes(name)
+  const isThemeDoc = (name) => ['Theme', 'Colors'].includes(name)
 
   export default {
     name: 'LeftSidebarContent',

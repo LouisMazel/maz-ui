@@ -74,27 +74,3 @@ h6 {
 .shadow-container {
   box-shadow: 0 0 8px 0 rgba(0, 0, 0, .1);
 }
-
-.hljs-type,
-.hljs-string,
-.hljs-number,
-.hljs-selector-id,
-.hljs-selector-class,
-.hljs-quote,
-.hljs-template-tag,
-.hljs-deletion,
-.hljs-variable,
-.hljs-literal {
-  color: $primary-color;
-}
-
-// .is-dark {
-//   h1,
-//   h2,
-//   h3,
-//   h4,
-//   h5,
-//   h6 {
-//     color: $text-color-dark;
-//   }
-// }

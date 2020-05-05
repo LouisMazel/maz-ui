@@ -59,8 +59,8 @@ $base-line-height: 1.5 !default;
 // MAJORS COLORS
 
 $primary-color:           dodgerblue !default;
-$secondary-color:         #C41AF9 !default;
-$third-color:             #1CD1A1 !default;
+$secondary-color:         #1CD1A1 !default;
+$third-color:             #C41AF9 !default;
 $danger-color:            orangered !default;
 $success-color:           yellowgreen !default;
 $info-color:              #17A2B8 !default;
@@ -70,19 +70,21 @@ $default-color:           #CCC !default;
 $text-color:              #212121 !default;
 $bg-color:                white !default;
 $dark-color:              #24292E !default;
+$grey-color:              #999 !default;
+$placeholder-color:       #A7A7A7 !default;
+$input-icon-color:        #DEDEDE !default;
+$text-muted:              rgba(black, .54) !default;
+$text-muted-dark:         rgba(white, .54) !default;
 
 // OTHERS COLORS
 
 $black-color:             black !default;
 $white-color:             white !default;
-$grey-color:              #999 !default;
 $hover-bg-color:          #F2F2F2 !default;
 $hover-bg-color-l:        white !default;
 $muted-color:             #747474 !default;
 $border-color:            #EEE !default;
 $disabled-color:          #F2F2F2 !default;
-$placeholder-color:       #A7A7A7 !default;
-$input-icon-color:              #DEDEDE !default;
 $overlay-color:           rgba(#303144, .7);
 
 /*
@@ -98,7 +100,7 @@ $muted-color-dark:        rgba(255, 255, 255, .3) !default;
 $disabled-color-dark:     #CCC !default;
 $border-color-dark:       #3B3C53 !default;
 $placeholder-color-dark:  rgba(255, 255, 255, .6) !default;
-$input-icon-color-dark:         #65678F !default;
+$input-icon-color-dark:   #65678F !default;
 $overlay-color-dark:      rgba(86, 87, 117, .7);
 
 /*

@@ -48,7 +48,7 @@
 
   const isGeneralDoc = (name) => ['Install', 'GetStarted'].includes(name)
   const isCliDoc = (name) => ['CliInstall'].includes(name)
-  const isThemeDoc = (name) => ['Theme'].includes(name)
+  const isThemeDoc = (name) => ['Theme', 'Colors'].includes(name)
 
   export default {
     name: 'Documentation',
@@ -100,8 +100,7 @@
     > h3,
     > h4,
     > h5,
-    > h6,
-    > .code-container {
+    > h6 {
       margin-bottom: 15px;
     }
   }

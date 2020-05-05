@@ -19,19 +19,15 @@
   fill: white;
 }
 
-.text-muted-white {
-  color: rgba(255, 255, 255, .54);
-  fill: rgba(255, 255, 255, .54);
-}
-
 .text-muted {
-  color: rgba(0, 0, 0, .54);
-  fill: rgba(0, 0, 0, .54);
+  color: $text-muted;
+  fill: $text-muted;
 }
 
-.is-dark .text-muted {
-  color: rgba(255, 255, 255, .54);
-  fill: rgba(255, 255, 255, .54);
+.is-dark .text-muted,
+.text-muted-dark {
+  color: $text-muted-dark;
+  fill: $text-muted-dark;
 }
 
 @import './variables/color_types';

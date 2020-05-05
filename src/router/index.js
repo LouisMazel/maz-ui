@@ -5,7 +5,7 @@ import { pascalCaseToKebabCase } from '@/utils'
 Vue.use(Router)
 
 const componentsRoutes = [
-  'Install', 'GetStarted', 'CliInstall', 'Theme', 'MazInputDoc', 'MazPickerDoc', 'MazInputTagsDoc', 'MazSelectDoc', 'MazSearchDoc',
+  'Install', 'GetStarted', 'CliInstall', 'Theme', 'Colors', 'MazInputDoc', 'MazPickerDoc', 'MazInputTagsDoc', 'MazSelectDoc', 'MazSearchDoc',
   'MazPhoneNumberInputDoc', 'MazDropzoneDoc', 'MazBtnDoc', 'MazBtnGroupDoc', 'MazSwitchDoc', 'MazCheckboxDoc',
   'MazSidebarDoc', 'MazTabsLayoutDoc', 'MazPaginationDoc', 'MazLoaderDoc', 'MazSpinnerDoc', 'MazCollapseDoc',
   'MazListDoc', 'MazDraggableListDoc', 'MazReadMoreDoc', 'MazResponsiveMenuDoc', 'MazTransitionExpandDoc', 'MazDialogDoc', 'MazFlexDoc'
@@ -13,7 +13,7 @@ const componentsRoutes = [
 
 const isGeneralDoc = (name) => ['Install', 'GetStarted'].includes(name)
 const isCliDoc = (name) => ['CliInstall'].includes(name)
-const isThemeDoc = (name) => ['Theme'].includes(name)
+const isThemeDoc = (name) => ['Theme', 'Colors'].includes(name)
 
 const componentsRoutesBuild = componentsRoutes.map((route) => {
   const kebabCaseRouteName = isGeneralDoc(route) || isCliDoc(route) || isThemeDoc(route)

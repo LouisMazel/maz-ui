@@ -14,11 +14,10 @@
       >
         <div
           slot="header-text"
-          class="fs-12"
         >
           Show code
         </div>
-        <div class="p-4">
+        <div class="px-4">
           <CodeContainer
             :language="language"
             :code="code"

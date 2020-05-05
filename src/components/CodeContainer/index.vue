@@ -22,32 +22,3 @@
     }
   }
 </script>
-
-<style lang="scss" scoped>
-  .code-container {
-    display: block;
-    font-family: monospace;
-    white-space: pre;
-    background-color: #FAFAFA;
-    border: $border-width solid #EAEEFB;
-    border-radius: $border-radius;
-    -webkit-font-smoothing: auto;
-    overflow-x: auto;
-    padding: 0 20px;
-    font-size: .925em;
-
-    &__content {
-      background-color: transparent;
-    }
-  }
-
-  .is-dark .code-container {
-    background-color: $hover-bg-color-dark;
-    border-color: #535673;
-
-    .hljs,
-    .hljs-subst {
-      color: $text-color-dark;
-    }
-  }
-</style>

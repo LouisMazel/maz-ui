@@ -163,7 +163,7 @@
       // Enable range mode to select periode
       range: { type: Boolean, default: false },
       // Change placeholder/label of input
-      placeholder: { type: String, default: 'Select date' },
+      placeholder: { type: String, default: 'Select date time' },
       // Disabled keyboard accessibility & navigation
       noKeyboard: { type: Boolean, default: false },
       // pre selected shortcut: provide a shortcut key
