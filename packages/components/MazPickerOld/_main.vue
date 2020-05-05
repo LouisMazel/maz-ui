@@ -1,77 +1,77 @@
 <template>
-  <div
-    :id="`${$attrs.id}-wrapper`"
-    ref="parent"
-    v-click-outside="closePicker"
-    class="maz-picker"
-  >
-    <!-- Input  -->
-    <MazInput
-      v-if="hasInput"
-      :id="`${$attrs.id}-input`"
-      ref="custom-input"
-      v-model="dateFormatted"
-      v-bind="$attrs"
-      :dark="dark"
-      :hint="hint"
-      :error="error"
-      :color="color"
-      :placeholder="placeholder"
-      :clearable="!noClearButton"
-      @focus="toggleDatePicker(true)"
-    />
+	<div
+		:id="`${$attrs.id}-wrapper`"
+		ref="parent"
+		v-click-outside="closePicker"
+		class="maz-picker"
+	>
+		<!-- Input  -->
+		<MazInput
+			v-if="hasInput"
+			:id="`${$attrs.id}-input`"
+			ref="custom-input"
+			v-model="dateFormatted"
+			v-bind="$attrs"
+			:dark="dark"
+			:hint="hint"
+			:error="error"
+			:color="color"
+			:placeholder="placeholder"
+			:clearable="!noClearButton"
+			@focus="toggleDatePicker(true)"
+		/>
 
-    <slot
-      v-else
-    />
+		<slot
+			v-else
+		/>
 
-    <div
-      v-if="hasPickerOpen && overlay"
-      class="time-picker-overlay"
-      @click.stop="closePicker"
-    />
+		<div
+			v-if="hasPickerOpen && overlay"
+			class="time-picker-overlay"
+			@click.stop="closePicker"
+		/>
 
-    <!-- Date picker container -->
-    <PickersContainer
-      v-if="!isDisabled"
-      :id="`${$attrs.id}-picker-container`"
-      ref="agenda"
-      v-model="dateTime"
-      :visible="hasPickerOpen"
-      :position="pickerPosition"
-      :inline="inline"
-      :color="color"
-      :button-color="buttonColor"
-      :dark="dark"
-      :no-header="noHeader"
-      :only-time="onlyTime"
-      :only-date="hasOnlyDate"
-      :minute-interval="minuteInterval"
-      :locale="locale"
-      :min-date="minDate"
-      :max-date="maxDate"
-      :format="format"
-      :no-weekends-days="noWeekendsDays"
-      :disabled-weekly="disabledWeekly"
-      :has-button-validate="hasButtonValidate"
-      :has-no-button="hasNoButton"
-      :range="range"
-      :disabled-dates="disabledDates"
-      :disabled-hours="disabledHours"
-      :enabled-dates="enabledDates"
-      :no-shortcuts="noShortcuts"
-      :button-now-translation="buttonNowTranslation"
-      :no-button-now="noButtonNow"
-      :first-day-of-week="firstDayOfWeek"
-      :shortcut="shortcut"
-      :custom-shortcuts="customShortcuts"
-      :no-keyboard="noKeyboard"
-      :right="right"
-      :behaviour="_behaviour"
-      @validate="validate"
-      @close="closePicker"
-    />
-  </div>
+		<!-- Date picker container -->
+		<PickersContainer
+			v-if="!isDisabled"
+			:id="`${$attrs.id}-picker-container`"
+			ref="agenda"
+			v-model="dateTime"
+			:visible="hasPickerOpen"
+			:position="pickerPosition"
+			:inline="inline"
+			:color="color"
+			:button-color="buttonColor"
+			:dark="dark"
+			:no-header="noHeader"
+			:only-time="onlyTime"
+			:only-date="hasOnlyDate"
+			:minute-interval="minuteInterval"
+			:locale="locale"
+			:min-date="minDate"
+			:max-date="maxDate"
+			:format="format"
+			:no-weekends-days="noWeekendsDays"
+			:disabled-weekly="disabledWeekly"
+			:has-button-validate="hasButtonValidate"
+			:has-no-button="hasNoButton"
+			:range="range"
+			:disabled-dates="disabledDates"
+			:disabled-hours="disabledHours"
+			:enabled-dates="enabledDates"
+			:no-shortcuts="noShortcuts"
+			:button-now-translation="buttonNowTranslation"
+			:no-button-now="noButtonNow"
+			:first-day-of-week="firstDayOfWeek"
+			:shortcut="shortcut"
+			:custom-shortcuts="customShortcuts"
+			:no-keyboard="noKeyboard"
+			:right="right"
+			:behaviour="_behaviour"
+			@validate="validate"
+			@close="closePicker"
+		/>
+	</div>
 </template>
 
 <script>
@@ -221,8 +221,10 @@ export default {
     dateTime: {
       get () {
         const dateTime = this.range
-          ? { start: this.value && this.value.start ? moment(this.value.start, this.formatOutput).format('YYYY-MM-DD') : null,
-              end: this.value && this.value.end ? moment(this.value.end, this.formatOutput).format('YYYY-MM-DD') : null }
+          ? {
+            start: this.value && this.value.start ? moment(this.value.start, this.formatOutput).format('YYYY-MM-DD') : null,
+            end: this.value && this.value.end ? moment(this.value.end, this.formatOutput).format('YYYY-MM-DD') : null
+          }
           : this.getDateTime()
         return dateTime
       },
@@ -342,12 +344,16 @@ export default {
     getRangeDateToSend (payload) {
       const { start, end } = typeof payload !== 'undefined' ? payload : this.value
       return start || end
-        ? { start: start ? moment(start, 'YYYY-MM-DD').set({ hour: 0, minute: 0, second: 0 }).format(this.formatOutput) : null,
-            end: end ? moment(end, 'YYYY-MM-DD').set({ hour: 23, minute: 59, second: 59 }).format(this.formatOutput) : null,
-            shortcut: payload.value }
-        : { start: moment().format(this.formatOutput),
-            end: moment().format(this.formatOutput),
-            shortcut: payload.value }
+        ? {
+          start: start ? moment(start, 'YYYY-MM-DD').set({ hour: 0, minute: 0, second: 0 }).format(this.formatOutput) : null,
+          end: end ? moment(end, 'YYYY-MM-DD').set({ hour: 23, minute: 59, second: 59 }).format(this.formatOutput) : null,
+          shortcut: payload.value
+        }
+        : {
+          start: moment().format(this.formatOutput),
+          end: moment().format(this.formatOutput),
+          shortcut: payload.value
+        }
     },
     getDateTimeToSend (value) {
       const dateTime = typeof value !== 'undefined' ? value : this.value

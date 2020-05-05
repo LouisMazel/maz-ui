@@ -1,135 +1,135 @@
 <template>
-  <div
-    ref="parent"
-    :class="[{
-      'is-focused': isFocus || focus,
-      'is-valid': valid,
-      'has-value': value,
-      'has-error': error,
-      'is-disabled': disabled,
-      'is-dark': dark,
-      'has-hint': hint,
-      'has-no-label': !hasLabel && !hint,
-      'has-left-icon': hasLeftIcon,
-      'has-right-icon': hasRightIcon
-    }, size]"
-    class="maz-input"
-    @click="focusInput"
-  >
-    <div
-      v-for="({ name, position }, i) in inputIcons"
-      :key="`input-icon-${i}`"
-      class="maz-input__icon flex"
-      :class="[
-        position,
-        textarea ? 'align-start pt-2' : 'align-center'
-      ]"
-    >
-      <!-- Icon slot (`input-icon-left` / `input-icon-right`) -->
-      <slot :name="`input-icon-${position}`">
-        <i class="material-icons">{{ name }}</i>
-      </slot>
-    </div>
-    <input
-      v-if="!textarea"
-      :id="uniqueId"
-      ref="MazInput"
-      v-model="inputValue"
-      v-bind="$attrs"
-      :placeholder="placeholderValue"
-      :type="getType"
-      class="maz-input__input border border-color border-solid"
-      :aria-label="placeholder"
-      :class="{
-        'has-right-btn': hasClearBtn || hasPasswordBtn
-      }"
-      :disabled="disabled"
-      :required="required"
-      :readonly="readonly"
-      @keydown="keyDown"
-      @keyup="keyUp"
-      @focus="onFocus"
-      @blur="onBlur"
-      @change="$emit('change', $event)"
-      @click="$emit('click', $event)"
-    >
-    <textarea
-      v-else
-      :id="uniqueId"
-      ref="MazInput"
-      v-model="inputValue"
-      v-bind="$attrs"
-      :placeholder="placeholderValue"
-      :type="type"
-      :required="required"
-      :readonly="readonly"
-      class="maz-input__input textarea border border-color border-solid"
-      @keydown="keyDown"
-      @keyup="keyUp"
-      @focus="onFocus"
-      @blur="onBlur"
-      @click="$emit('click', $event)"
-    />
-    <label
-      v-if="hasLabel || hint"
-      ref="label"
-      :for="uniqueId"
-      :class="error ? 'text-danger' : null"
-      class="maz-input__label"
-      tabindex="-1"
-      @click="focusInput"
-    >
-      {{ hintValue || placeholderValue }}
-    </label>
-    <transition-group
-      name="scale"
-    >
-      <button
-        v-if="hasClearBtn"
-        key="clear-button"
-        class="maz-input__toggle-btn --clear flex flex-center"
-        title="clear"
-        type="button"
-        tabindex="-1"
-        :class="{ 'has-right-icon': hasRightIcon }"
-        @click="clear"
-      >
-        <span class="maz-input__toggle-btn__effect" />
-        <i class="maz-input__toggle-btn__icon material-icons">
-          close
-        </i>
-      </button>
+	<div
+		ref="parent"
+		:class="[{
+			'is-focused': isFocus || focus,
+			'is-valid': valid,
+			'has-value': value,
+			'has-error': error,
+			'is-disabled': disabled,
+			'is-dark': dark,
+			'has-hint': hint,
+			'has-no-label': !hasLabel && !hint,
+			'has-left-icon': hasLeftIcon,
+			'has-right-icon': hasRightIcon
+		}, size]"
+		class="maz-input"
+		@click="focusInput"
+	>
+		<div
+			v-for="({ name, position }, i) in inputIcons"
+			:key="`input-icon-${i}`"
+			class="maz-input__icon flex"
+			:class="[
+				position,
+				textarea ? 'align-start pt-2' : 'align-center'
+			]"
+		>
+			<!-- Icon slot (`input-icon-left` / `input-icon-right`) -->
+			<slot :name="`input-icon-${position}`">
+				<i class="material-icons">{{ name }}</i>
+			</slot>
+		</div>
+		<input
+			v-if="!textarea"
+			:id="uniqueId"
+			ref="MazInput"
+			v-model="inputValue"
+			v-bind="$attrs"
+			:placeholder="placeholderValue"
+			:type="getType"
+			class="maz-input__input border border-color border-solid"
+			:aria-label="placeholder"
+			:class="{
+				'has-right-btn': hasClearBtn || hasPasswordBtn
+			}"
+			:disabled="disabled"
+			:required="required"
+			:readonly="readonly"
+			@keydown="keyDown"
+			@keyup="keyUp"
+			@focus="onFocus"
+			@blur="onBlur"
+			@change="$emit('change', $event)"
+			@click="$emit('click', $event)"
+		>
+		<textarea
+			v-else
+			:id="uniqueId"
+			ref="MazInput"
+			v-model="inputValue"
+			v-bind="$attrs"
+			:placeholder="placeholderValue"
+			:type="type"
+			:required="required"
+			:readonly="readonly"
+			class="maz-input__input textarea border border-color border-solid"
+			@keydown="keyDown"
+			@keyup="keyUp"
+			@focus="onFocus"
+			@blur="onBlur"
+			@click="$emit('click', $event)"
+		/>
+		<label
+			v-if="hasLabel || hint"
+			ref="label"
+			:for="uniqueId"
+			:class="error ? 'text-danger' : null"
+			class="maz-input__label"
+			tabindex="-1"
+			@click="focusInput"
+		>
+			{{ hintValue || placeholderValue }}
+		</label>
+		<transition-group
+			name="scale"
+		>
+			<button
+				v-if="hasClearBtn"
+				key="clear-button"
+				class="maz-input__toggle-btn --clear flex flex-center"
+				title="clear"
+				type="button"
+				tabindex="-1"
+				:class="{ 'has-right-icon': hasRightIcon }"
+				@click="clear"
+			>
+				<span class="maz-input__toggle-btn__effect" />
+				<i class="maz-input__toggle-btn__icon material-icons">
+					close
+				</i>
+			</button>
 
-      <button
-        v-if="hasPasswordBtn"
-        key="password-button"
-        class="maz-input__toggle-btn password flex flex-center"
-        :class="{
-          'has-clear-btn': hasClearBtn,
-          'has-right-icon': hasRightIcon
-        }"
-        title="clear"
-        type="button"
-        tabindex="-1"
-        @click="showPassword = !showPassword"
-      >
-        <span class="maz-input__toggle-btn__effect" />
-        <i class="maz-input__toggle-btn__icon material-icons">
-          {{ showPassword ? 'visibility_off' : 'visibility' }}
-        </i>
-      </button>
-    </transition-group>
+			<button
+				v-if="hasPasswordBtn"
+				key="password-button"
+				class="maz-input__toggle-btn password flex flex-center"
+				:class="{
+					'has-clear-btn': hasClearBtn,
+					'has-right-icon': hasRightIcon
+				}"
+				title="clear"
+				type="button"
+				tabindex="-1"
+				@click="showPassword = !showPassword"
+			>
+				<span class="maz-input__toggle-btn__effect" />
+				<i class="maz-input__toggle-btn__icon material-icons">
+					{{ showPassword ? 'visibility_off' : 'visibility' }}
+				</i>
+			</button>
+		</transition-group>
 
-    <div
-      v-if="loading"
-      class="maz-input__loader"
-      :class="{ textarea }"
-    >
-      <div
-        class="maz-input__loader__progress-bar"
-      />
-    </div>
-  </div>
+		<div
+			v-if="loading"
+			class="maz-input__loader"
+			:class="{ textarea }"
+		>
+			<div
+				class="maz-input__loader__progress-bar"
+			/>
+		</div>
+	</div>
 </template>
 
 <script>

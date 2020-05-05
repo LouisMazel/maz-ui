@@ -1,96 +1,96 @@
 <template>
-  <Transition
-    :name="position === 'bottom' ? 'slide' : 'slideinvert'"
-  >
-    <div
-      v-show="visible || inline"
-      :class="{'inline': inline, 'is-dark': dark, 'visible': visible}"
-      :style="responsivePosition"
-      class="datetimepicker flex"
-      @click.stop
-    >
-      <div
-        :style="[responsivePosition, width]"
-        class="datepicker flex direction-column"
-        :class="{ 'right': right }"
-      >
-        <HeaderPicker
-          v-if="!noHeader"
-          :key="componentKey"
-          v-model="value"
-          :color="color"
-          :only-time="onlyTime"
-          :format="format"
-          :time-format="timeFormat"
-          :transition-name="transitionName"
-          :no-time="onlyDate"
-          :dark="dark"
-          :range="range"
-        />
-        <div class="pickers-container flex">
-          <!-- NEED 'YYYY-MM-DD' format -->
-          <DatePicker
-            v-if="!onlyTime"
-            :id="$attrs.id"
-            v-model="date"
-            :dark="dark"
-            :month="month"
-            :inline="inline"
-            :no-weekends-days="noWeekendsDays"
-            :disabled-weekly="disabledWeekly"
-            :color="color"
-            :min-date="minDate"
-            :max-date="maxDate"
-            :disabled-dates="disabledDates"
-            :enabled-dates="enabledDates"
-            :range="range"
-            :no-shortcuts="noShortcuts"
-            :height="height"
-            :first-day-of-week="firstDayOfWeek"
-            :visible="visible"
-            :shortcut="shortcut"
-            :custom-shortcuts="customShortcuts"
-            :no-keyboard="noKeyboard"
-            :locale="locale"
-            @change-month="changeMonth"
-            @change-year-month="changeYearMonth"
-            @close="$emit('close')"
-          />
-          <!-- NEED 'HH:mm' format -->
-          <TimePicker
-            v-if="!onlyDate"
-            ref="TimePicker"
-            v-model="time"
-            :dark="dark"
-            :color="color"
-            :inline="inline"
-            :format="timeFormat"
-            :only-time="onlyTime"
-            :minute-interval="minuteInterval"
-            :visible="visible"
-            :height="height"
-            :disabled-hours="disabledHours"
-            :min-time="minTime"
-            :max-time="maxTime"
-            :behaviour="behaviour"
-          />
-        </div>
-        <ButtonValidate
-          v-if="!hasNoButton && !(inline && range)"
-          class="button-validate flex-fixed"
-          :dark="dark"
-          :button-color="buttonColor"
-          :button-now-translation="buttonNowTranslation"
-          :only-time="onlyTime"
-          :no-button-now="noButtonNow"
-          :range="range"
-          :has-button-validate="hasButtonValidate"
-          @validate="$emit('validate')"
-          @now="setNow"
-        />
-      </div>
-    </div>
-  </Transition>
+	<Transition
+		:name="position === 'bottom' ? 'slide' : 'slideinvert'"
+	>
+		<div
+			v-show="visible || inline"
+			:class="{'inline': inline, 'is-dark': dark, 'visible': visible}"
+			:style="responsivePosition"
+			class="datetimepicker flex"
+			@click.stop
+		>
+			<div
+				:style="[responsivePosition, width]"
+				class="datepicker flex direction-column"
+				:class="{ 'right': right }"
+			>
+				<HeaderPicker
+					v-if="!noHeader"
+					:key="componentKey"
+					v-model="value"
+					:color="color"
+					:only-time="onlyTime"
+					:format="format"
+					:time-format="timeFormat"
+					:transition-name="transitionName"
+					:no-time="onlyDate"
+					:dark="dark"
+					:range="range"
+				/>
+				<div class="pickers-container flex">
+					<!-- NEED 'YYYY-MM-DD' format -->
+					<DatePicker
+						v-if="!onlyTime"
+						:id="$attrs.id"
+						v-model="date"
+						:dark="dark"
+						:month="month"
+						:inline="inline"
+						:no-weekends-days="noWeekendsDays"
+						:disabled-weekly="disabledWeekly"
+						:color="color"
+						:min-date="minDate"
+						:max-date="maxDate"
+						:disabled-dates="disabledDates"
+						:enabled-dates="enabledDates"
+						:range="range"
+						:no-shortcuts="noShortcuts"
+						:height="height"
+						:first-day-of-week="firstDayOfWeek"
+						:visible="visible"
+						:shortcut="shortcut"
+						:custom-shortcuts="customShortcuts"
+						:no-keyboard="noKeyboard"
+						:locale="locale"
+						@change-month="changeMonth"
+						@change-year-month="changeYearMonth"
+						@close="$emit('close')"
+					/>
+					<!-- NEED 'HH:mm' format -->
+					<TimePicker
+						v-if="!onlyDate"
+						ref="TimePicker"
+						v-model="time"
+						:dark="dark"
+						:color="color"
+						:inline="inline"
+						:format="timeFormat"
+						:only-time="onlyTime"
+						:minute-interval="minuteInterval"
+						:visible="visible"
+						:height="height"
+						:disabled-hours="disabledHours"
+						:min-time="minTime"
+						:max-time="maxTime"
+						:behaviour="behaviour"
+					/>
+				</div>
+				<ButtonValidate
+					v-if="!hasNoButton && !(inline && range)"
+					class="button-validate flex-fixed"
+					:dark="dark"
+					:button-color="buttonColor"
+					:button-now-translation="buttonNowTranslation"
+					:only-time="onlyTime"
+					:no-button-now="noButtonNow"
+					:range="range"
+					:has-button-validate="hasButtonValidate"
+					@validate="$emit('validate')"
+					@now="setNow"
+				/>
+			</div>
+		</div>
+	</Transition>
 </template>
 
 <script>
@@ -220,8 +220,10 @@ export default {
           ? this.onlyTime
             ? null
             : this.range
-              ? { start: this.value.start ? moment(this.value.start).format('YYYY-MM-DD') : null,
-                  end: this.value.end ? moment(this.value.end).format('YYYY-MM-DD') : null }
+              ? {
+                start: this.value.start ? moment(this.value.start).format('YYYY-MM-DD') : null,
+                end: this.value.end ? moment(this.value.end).format('YYYY-MM-DD') : null
+              }
               : moment(this.value, 'YYYY-MM-DD HH:mm').format('YYYY-MM-DD')
           : this.range
             ? { start: null, end: null }

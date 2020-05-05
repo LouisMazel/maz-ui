@@ -1,44 +1,44 @@
 <template>
-  <TransitionGroup
-    class="month-picker pos-r"
-    :class="{ 'month-picker--long': (monthDays.length + weekStart) > 35 }"
-    tag="div"
-    :name="transitionDaysName"
-  >
-    <div
-      v-for="m in [month]"
-      :key="m.month"
-      class="month-picker__days"
-    >
-      <div
-        v-for="(w, i) in Array.from(Array(weekStart).keys())"
-        :key="`previous-${i}`"
-      />
-      <MazBtn
-        v-for="(day, i) in allDays"
-        :key="i"
-        class="month-picker__day text-color bg-color-light flex flex-center"
-        size="mini"
-        tabindex="-1"
-        :no-shadow="!isSelectedDate(day)"
-        :disabled="isDisabled(day)"
-        :active="isSelectedDate(day)"
-        :class="{
-          'highlight': isToday(day),
-          'is-keyboard-selected': isKeyboardSelected(day),
-          'is-in-range': !isDisabled(day) && isBetween(day),
-          'is-between-hoverred': value && value.start && !isDisabled(day) && isBetweenHoverred(day),
-          'is-first-in-range': isFirstInRange(day),
-          'is-last-in-range': isLastInRange(day)
-        }"
-        @mouseenter="$emit('hoverred-day', day)"
-        @mouseleave="$emit('hoverred-day', null)"
-        @click="selectDay(day)"
-      >
-        {{ day.format('D') }}
-      </MazBtn>
-    </div>
-  </TransitionGroup>
+	<TransitionGroup
+		class="month-picker pos-r"
+		:class="{ 'month-picker--long': (monthDays.length + weekStart) > 35 }"
+		tag="div"
+		:name="transitionDaysName"
+	>
+		<div
+			v-for="m in [month]"
+			:key="m.month"
+			class="month-picker__days"
+		>
+			<div
+				v-for="(w, i) in Array.from(Array(weekStart).keys())"
+				:key="`previous-${i}`"
+			/>
+			<MazBtn
+				v-for="(day, i) in allDays"
+				:key="i"
+				class="month-picker__day text-color bg-color-light flex flex-center"
+				size="mini"
+				tabindex="-1"
+				:no-shadow="!isSelectedDate(day)"
+				:disabled="isDisabled(day)"
+				:active="isSelectedDate(day)"
+				:class="{
+					'highlight': isToday(day),
+					'is-keyboard-selected': isKeyboardSelected(day),
+					'is-in-range': !isDisabled(day) && isBetween(day),
+					'is-between-hoverred': value && value.start && !isDisabled(day) && isBetweenHoverred(day),
+					'is-first-in-range': isFirstInRange(day),
+					'is-last-in-range': isLastInRange(day)
+				}"
+				@mouseenter="$emit('hoverred-day', day)"
+				@mouseleave="$emit('hoverred-day', null)"
+				@click="selectDay(day)"
+			>
+				{{ day.format('D') }}
+			</MazBtn>
+		</div>
+	</TransitionGroup>
 </template>
 
 <script>

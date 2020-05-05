@@ -1,39 +1,39 @@
 <template>
-  <div
-    class="maz-collapse pos-r"
-    :class="{
-      'is-dark': dark,
-      'is-open': isOpen
-    }"
-  >
-    <MazBtn
-      class="maz-collapse__header-btn flex align-center justify-center border-radius-0"
-      :color="dark ? 'dark' : 'white'"
-      size="md"
-      @click="openContent"
-    >
-      <!-- Header slot: replace the text in collapse button -->
-      <slot name="header-text">
-        <!-- `Default Header` -->
-        Default Header
-      </slot>
-      <ArrowIcon
-        class="maz-collapse__header-btn__arrow ml-2"
-        :white="dark"
-        :color="arrowColor"
-        :orientation="isOpen ? 'up': null"
-      />
-    </MazBtn>
-    <MazTransitionExpand class="maz-collapse__content">
-      <div v-show="hasContentOpen">
-        <!-- Content default slot -->
-        <slot>
-          <!-- `<p>Default Content</p>` -->
-          <p>Default Content</p>
-        </slot>
-      </div>
-    </MazTransitionExpand>
-  </div>
+	<div
+		class="maz-collapse pos-r"
+		:class="{
+			'is-dark': dark,
+			'is-open': isOpen
+		}"
+	>
+		<MazBtn
+			class="maz-collapse__header-btn flex align-center justify-center border-radius-0"
+			:color="dark ? 'dark' : 'white'"
+			size="md"
+			@click="openContent"
+		>
+			<!-- Header slot: replace the text in collapse button -->
+			<slot name="header-text">
+				<!-- `Default Header` -->
+				Default Header
+			</slot>
+			<ArrowIcon
+				class="maz-collapse__header-btn__arrow ml-2"
+				:white="dark"
+				:color="arrowColor"
+				:orientation="isOpen ? 'up': null"
+			/>
+		</MazBtn>
+		<MazTransitionExpand class="maz-collapse__content">
+			<div v-show="hasContentOpen">
+				<!-- Content default slot -->
+				<slot>
+					<!-- `<p>Default Content</p>` -->
+					<p>Default Content</p>
+				</slot>
+			</div>
+		</MazTransitionExpand>
+	</div>
 </template>
 
 <script>

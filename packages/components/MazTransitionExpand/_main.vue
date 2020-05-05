@@ -1,13 +1,13 @@
 <template>
-  <transition
-    class="maz-transition-expand"
-    name="expand"
-    @enter="enter"
-    @after-enter="afterEnter"
-    @leave="leave"
-  >
-    <slot />
-  </transition>
+	<transition
+		class="maz-transition-expand"
+		name="expand"
+		@enter="enter"
+		@after-enter="afterEnter"
+		@leave="leave"
+	>
+		<slot />
+	</transition>
 </template>
 
 <script>

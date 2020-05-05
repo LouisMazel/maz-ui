@@ -1,53 +1,53 @@
 <template>
-  <div
-    ref="time-picker"
-    :class="{'inline': inline, 'is-dark': dark, 'with-border': !onlyTime }"
-    :style="[{height: `${height}px`}]"
-    class="time-picker flex flex-fixed flex-1"
-  >
-    <div
-      v-for="column in columns"
-      :key="column.type"
-      :ref="column.type"
-      :class="[`time-picker-column-${column.type}`]"
-      class="time-picker-column flex-1 flex direction-column text-center"
-      @scroll="noScrollEvent
-        ? null
-        : column.type === 'hours' ? onScrollHours($event) : column.type === 'minutes' ? onScrollMinutes($event) : onScrollApms($event)
-      "
-    >
-      <div>
-        <div
-          class="before"
-          :style="[columnPadding]"
-        />
-        <button
-          v-for="item in column.items"
-          :key="item.item"
-          type="button"
-          tabindex="-1"
-          class="time-picker-column-item flex flex-center"
-          :class="{
-            active: isActive(column.type, item.value),
-            disabled: item.disabled
-          }"
-          @click="item.disabled ? null : setTime(item.value, column.type)"
-        >
-          <span
-            :style="styleColor"
-            class="time-picker-column-item-effect"
-          />
-          <span class="time-picker-column-item-text flex-1">
-            {{ item.item }}
-          </span>
-        </button>
-        <div
-          class="after"
-          :style="[columnPadding]"
-        />
-      </div>
-    </div>
-  </div>
+	<div
+		ref="time-picker"
+		:class="{'inline': inline, 'is-dark': dark, 'with-border': !onlyTime }"
+		:style="[{height: `${height}px`}]"
+		class="time-picker flex flex-fixed flex-1"
+	>
+		<div
+			v-for="column in columns"
+			:key="column.type"
+			:ref="column.type"
+			:class="[`time-picker-column-${column.type}`]"
+			class="time-picker-column flex-1 flex direction-column text-center"
+			@scroll="noScrollEvent
+				? null
+				: column.type === 'hours' ? onScrollHours($event) : column.type === 'minutes' ? onScrollMinutes($event) : onScrollApms($event)
+			"
+		>
+			<div>
+				<div
+					class="before"
+					:style="[columnPadding]"
+				/>
+				<button
+					v-for="item in column.items"
+					:key="item.item"
+					type="button"
+					tabindex="-1"
+					class="time-picker-column-item flex flex-center"
+					:class="{
+						active: isActive(column.type, item.value),
+						disabled: item.disabled
+					}"
+					@click="item.disabled ? null : setTime(item.value, column.type)"
+				>
+					<span
+						:style="styleColor"
+						class="time-picker-column-item-effect"
+					/>
+					<span class="time-picker-column-item-text flex-1">
+						{{ item.item }}
+					</span>
+				</button>
+				<div
+					class="after"
+					:style="[columnPadding]"
+				/>
+			</div>
+		</div>
+	</div>
 </template>
 <script>
 import moment from 'moment'

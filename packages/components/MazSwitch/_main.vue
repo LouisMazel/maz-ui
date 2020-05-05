@@ -1,23 +1,23 @@
 <template>
-  <div class="maz-switch">
-    <input
-      :id="uniqueId"
-      v-bind="$attrs"
-      type="checkbox"
-      :name="name"
-      :checked="value"
-      :disabled="disabled"
-      class="maz-switch__input"
-      @change="$emit('input', $event.target.checked)"
-    >
-    <label
-      :for="uniqueId"
-      class="maz-switch__toggle"
-      :class="[bgColorClassTransparency]"
-    >
-      <span :class="[bgColorClass]" />
-    </label>
-  </div>
+	<div class="maz-switch">
+		<input
+			:id="uniqueId"
+			v-bind="$attrs"
+			type="checkbox"
+			:name="name"
+			:checked="value"
+			:disabled="disabled"
+			class="maz-switch__input"
+			@change="$emit('input', $event.target.checked)"
+		>
+		<label
+			:for="uniqueId"
+			class="maz-switch__toggle"
+			:class="[bgColorClassTransparency]"
+		>
+			<span :class="[bgColorClass]" />
+		</label>
+	</div>
 </template>
 
 <script>

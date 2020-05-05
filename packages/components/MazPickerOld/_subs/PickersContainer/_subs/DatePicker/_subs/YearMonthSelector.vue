@@ -1,46 +1,46 @@
 <template>
-  <div
-    class="year-month-selector flex direction-column"
-    :class="{'dark': dark}"
-  >
-    <div class="flex justify-end">
-      <CustomButton
-        :color="dark ? '#757575' : '#424242'"
-        :dark="dark"
-        with-border
-        @click="$emit('back')"
-      >
-        <span class="fs-16">
-          ✕
-        </span>
-      </CustomButton>
-    </div>
-    <div class="flex-1 flex flex--wrap space-between align-center">
-      <CustomButton
-        v-for="(m, index) in months"
-        :key="index"
-        :color="color"
-        :selected="currentMonth === index"
-        :dark="dark"
-        class="month-button"
-        with-border
-        @click="selectMonth(index)"
-      >
-        {{ m }}
-      </CustomButton>
-      <CustomButton
-        v-for="year in years"
-        :key="year"
-        :color="color"
-        :dark="dark"
-        :selected="currentYear === year"
-        with-border
-        @click="selectYear(year)"
-      >
-        {{ year }}
-      </CustomButton>
-    </div>
-  </div>
+	<div
+		class="year-month-selector flex direction-column"
+		:class="{'dark': dark}"
+	>
+		<div class="flex justify-end">
+			<CustomButton
+				:color="dark ? '#757575' : '#424242'"
+				:dark="dark"
+				with-border
+				@click="$emit('back')"
+			>
+				<span class="fs-16">
+					✕
+				</span>
+			</CustomButton>
+		</div>
+		<div class="flex-1 flex flex--wrap space-between align-center">
+			<CustomButton
+				v-for="(m, index) in months"
+				:key="index"
+				:color="color"
+				:selected="currentMonth === index"
+				:dark="dark"
+				class="month-button"
+				with-border
+				@click="selectMonth(index)"
+			>
+				{{ m }}
+			</CustomButton>
+			<CustomButton
+				v-for="year in years"
+				:key="year"
+				:color="color"
+				:dark="dark"
+				:selected="currentYear === year"
+				with-border
+				@click="selectYear(year)"
+			>
+				{{ year }}
+			</CustomButton>
+		</div>
+	</div>
 </template>
 
 <script>

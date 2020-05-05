@@ -1,85 +1,85 @@
 <template>
-  <transition
-    name="dialog-fade"
-    @after-enter="afterEnter"
-    @after-leave="afterLeave"
-  >
-    <div
-      v-if="value"
-      class="maz-dialog maz-dialog--mask"
-      :class="{
-        'maz-dialog--success': success,
-        'maz-dialog--danger': danger,
-        'is-dark': dark
-      }"
-    >
-      <div class="maz-dialog__wrapper flex align-center">
-        <div
-          v-click-outside="vcoConfig"
-          :style="widthStyle"
-          class="maz-dialog__container dialog-animation flex direction-column bg-color border-radius overflow-hidden"
-          @keydown.esc="closeDialog"
-        >
-          <div
-            v-if="!noHeader"
-            class="maz-dialog__header flex space-between align-center p-3"
-          >
-            <p class="fw-400 fs-20 m-0 w-100">
-              <!-- Replace the text title -->
-              <slot name="title">
-                <!-- Header -->
-                Header
-              </slot>
-            </p>
-            <div
-              v-if="!noClose"
-              class="flex close-modal"
-              @click="$emit('input', false)"
-            >
-              <i class="material-icons">
-                close
-              </i>
-            </div>
-          </div>
-          <div
-            class="maz-dialog__body p-3"
-          >
-            <!-- Replace the content -->
-            <slot>
-              <!-- `<p>Content</p>` -->
-              <p>Content</p>
-            </slot>
-          </div>
-          <div
-            v-if="!noFooter"
-            class="maz-dialog__footer flex align-end justify-end p-3"
-          >
-            <!-- Replace the footer bar -->
-            <slot name="footer">
-              <!-- Two `<MazBtn />` -->
-              <MazBtn
-                color="default"
-                outline
-                size="md"
-                @click="closeDialog"
-              >
-                Close
-              </MazBtn>
-              <MazBtn
-                v-if="!noConfirm"
-                class="ml-3"
-                size="md"
-                :color="buttonConfirmColor"
-                @click="onConfirm($event)"
-              >
-                Confirm
-              </MazBtn>
-            </slot>
-          </div>
-        </div>
-      </div>
-    </div>
-  </transition>
+	<transition
+		name="dialog-fade"
+		@after-enter="afterEnter"
+		@after-leave="afterLeave"
+	>
+		<div
+			v-if="value"
+			class="maz-dialog maz-dialog--mask"
+			:class="{
+				'maz-dialog--success': success,
+				'maz-dialog--danger': danger,
+				'is-dark': dark
+			}"
+		>
+			<div class="maz-dialog__wrapper flex align-center">
+				<div
+					v-click-outside="vcoConfig"
+					:style="widthStyle"
+					class="maz-dialog__container dialog-animation flex direction-column bg-color border-radius overflow-hidden"
+					@keydown.esc="closeDialog"
+				>
+					<div
+						v-if="!noHeader"
+						class="maz-dialog__header flex space-between align-center p-3"
+					>
+						<p class="fw-400 fs-20 m-0 w-100">
+							<!-- Replace the text title -->
+							<slot name="title">
+								<!-- Header -->
+								Header
+							</slot>
+						</p>
+						<div
+							v-if="!noClose"
+							class="flex close-modal"
+							@click="$emit('input', false)"
+						>
+							<i class="material-icons">
+								close
+							</i>
+						</div>
+					</div>
+					<div
+						class="maz-dialog__body p-3"
+					>
+						<!-- Replace the content -->
+						<slot>
+							<!-- `<p>Content</p>` -->
+							<p>Content</p>
+						</slot>
+					</div>
+					<div
+						v-if="!noFooter"
+						class="maz-dialog__footer flex align-end justify-end p-3"
+					>
+						<!-- Replace the footer bar -->
+						<slot name="footer">
+							<!-- Two `<MazBtn />` -->
+							<MazBtn
+								color="default"
+								outline
+								size="md"
+								@click="closeDialog"
+							>
+								Close
+							</MazBtn>
+							<MazBtn
+								v-if="!noConfirm"
+								class="ml-3"
+								size="md"
+								:color="buttonConfirmColor"
+								@click="onConfirm($event)"
+							>
+								Confirm
+							</MazBtn>
+						</slot>
+					</div>
+				</div>
+			</div>
+		</div>
+	</transition>
 </template>
 
 <script>

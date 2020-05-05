@@ -1,70 +1,76 @@
 <template>
-  <div class="maz-btn-doc">
-    <ComponentContainer
-      :code="codeExample"
-      language="html"
-      class="btn-container"
-    >
-      <div class="flex flex-start direction-column">
-        <h3 class="mb-3">
-          Examples
-        </h3>
+	<div class="maz-btn-doc">
+		<ComponentContainer
+			:code="codeExample"
+			language="html"
+			class="btn-container"
+		>
+			<div class="flex flex-start direction-column">
+				<h3 class="mb-3">
+					Examples
+				</h3>
 
-        <h5 class="mb-3">
-          LG primary
-        </h5>
-        <MazBtnGroup v-model="btnGroupValue" :items="items" size="lg" />
-        <h5 class="mb-3">
-          Secondary
-        </h5>
-        <MazBtnGroup
-          v-model="btnGroupValueBoolean"
-          :items="itemsBoolean"
-          color="secondary"
-        />
-        <h5 class="mb-3">
-          SM third outline
-        </h5>
-        <MazBtnGroup
-          v-model="btnGroupValueBoolean"
-          :items="itemsBoolean"
-          outline
-          size="md"
-          color="third"
-        />
-        <h5 class="mb-3">
-          SM third rounded
-        </h5>
-        <MazBtnGroup
-          v-model="btnGroupValueString"
-          :items="itemsString"
-          rounded
-          size="sm"
-          color="third"
-        />
-        <h5 class="mb-3">
-          MINI success rounded outline
-        </h5>
-        <MazBtnGroup
-          v-model="btnGroupValueMini"
-          :items="itemsMini"
-          rounded
-          outline
-          size="mini"
-          color="success"
-        />
+				<h5 class="mb-3">
+					LG primary
+				</h5>
+				<MazBtnGroup
+					v-model="btnGroupValue"
+					:items="items"
+					size="lg" />
+				<h5 class="mb-3">
+					Secondary
+				</h5>
+				<MazBtnGroup
+					v-model="btnGroupValueBoolean"
+					:items="itemsBoolean"
+					color="secondary"
+				/>
+				<h5 class="mb-3">
+					SM third outline
+				</h5>
+				<MazBtnGroup
+					v-model="btnGroupValueBoolean"
+					:items="itemsBoolean"
+					outline
+					size="md"
+					color="third"
+				/>
+				<h5 class="mb-3">
+					SM third rounded
+				</h5>
+				<MazBtnGroup
+					v-model="btnGroupValueString"
+					:items="itemsString"
+					rounded
+					size="sm"
+					color="third"
+				/>
+				<h5 class="mb-3">
+					MINI success rounded outline
+				</h5>
+				<MazBtnGroup
+					v-model="btnGroupValueMini"
+					:items="itemsMini"
+					rounded
+					outline
+					size="mini"
+					color="success"
+				/>
 
-        <h5 class="mb-3">
-          Disabled
-        </h5>
-        <MazBtnGroup v-model="btnGroupValue" :items="items" disabled />
+				<h5 class="mb-3">
+					Disabled
+				</h5>
+				<MazBtnGroup
+					v-model="btnGroupValue"
+					:items="items"
+					disabled />
 
-        <p>Number value : {{ btnGroupValue }}</p>
-        <p>Boolean value : {{ btnGroupValueBoolean }}</p>
-        <p>String value : {{ btnGroupValueString || 'null' }}</p>
-      </div>
-    </ComponentContainer>
-  </div>
+				<p>Number value : {{ btnGroupValue }}</p>
+				<p>Boolean value : {{ btnGroupValueBoolean }}</p>
+				<p>String value : {{ btnGroupValueString || 'null' }}</p>
+			</div>
+		</ComponentContainer>
+	</div>
 </template>
 
 <script>

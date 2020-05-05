@@ -1,15 +1,15 @@
 <template>
-  <div
-    id="app"
-    class="flex direction-column bg-color"
-    :class="{
-      'is-dark': hasDarkTheme,
-      documentation: isDocPage
-    }"
-  >
-    <NavHeader />
-    <router-view />
-  </div>
+	<div
+		id="app"
+		class="flex direction-column bg-color"
+		:class="{
+			'is-dark': hasDarkTheme,
+			documentation: isDocPage
+		}"
+	>
+		<NavHeader />
+		<router-view />
+	</div>
 </template>
 
 <script>

@@ -1,75 +1,75 @@
 <template>
-  <div
-    ref="parent"
-    :class="[{
-      'is-focused': isFocus,
-      'is-valid': valid,
-      'has-value': value,
-      'has-error': error,
-      'is-disabled': disabled,
-      'is-dark': dark,
-      'has-hint': hint
-    }, size]"
-    class="input-tel"
-    @click="focusInput"
-  >
-    <input
-      :id="id"
-      ref="InputTel"
-      v-model="inputValue"
-      v-bind="$attrs"
-      :placeholder="placeholderValue"
-      :type="type"
-      class="input-tel__input"
-      :disabled="disabled"
-      :required="required"
-      :class="{
-        'no-country-selector': noCountrySelector
-      }"
-      @keydown="keyDown"
-      @keyup="keyUp"
-      @focus="onFocus"
-      @blur="onBlur"
-      @change="$emit('change', $event)"
-      @click="$emit('click', $event)"
-    >
-    <label
-      ref="label"
-      :for="id"
-      :class="error ? 'text-danger' : null"
-      class="input-tel__label"
-      @click="focusInput"
-    >
-      {{ hintValue || placeholderValue }}
-    </label>
+	<div
+		ref="parent"
+		:class="[{
+			'is-focused': isFocus,
+			'is-valid': valid,
+			'has-value': value,
+			'has-error': error,
+			'is-disabled': disabled,
+			'is-dark': dark,
+			'has-hint': hint
+		}, size]"
+		class="input-tel"
+		@click="focusInput"
+	>
+		<input
+			:id="id"
+			ref="InputTel"
+			v-model="inputValue"
+			v-bind="$attrs"
+			:placeholder="placeholderValue"
+			:type="type"
+			class="input-tel__input"
+			:disabled="disabled"
+			:required="required"
+			:class="{
+				'no-country-selector': noCountrySelector
+			}"
+			@keydown="keyDown"
+			@keyup="keyUp"
+			@focus="onFocus"
+			@blur="onBlur"
+			@change="$emit('change', $event)"
+			@click="$emit('click', $event)"
+		>
+		<label
+			ref="label"
+			:for="id"
+			:class="error ? 'text-danger' : null"
+			class="input-tel__label"
+			@click="focusInput"
+		>
+			{{ hintValue || placeholderValue }}
+		</label>
 
-    <transition
-      name="scale"
-    >
-      <button
-        v-if="clearable && inputValue"
-        class="input-tel__toggle-btn flex flex-center"
-        title="clear"
-        type="button"
-        tabindex="-1"
-        @click="clear"
-      >
-        <span class="input-tel__toggle-btn__effect" />
-        <i class="maz-input__toggle-btn__icon material-icons">
-          close
-        </i>
-      </button>
-    </transition>
+		<transition
+			name="scale"
+		>
+			<button
+				v-if="clearable && inputValue"
+				class="input-tel__toggle-btn flex flex-center"
+				title="clear"
+				type="button"
+				tabindex="-1"
+				@click="clear"
+			>
+				<span class="input-tel__toggle-btn__effect" />
+				<i class="maz-input__toggle-btn__icon material-icons">
+					close
+				</i>
+			</button>
+		</transition>
 
-    <div
-      v-if="loading"
-      class="input-tel__loader"
-    >
-      <div
-        class="input-tel__loader__progress-bar"
-      />
-    </div>
-  </div>
+		<div
+			v-if="loading"
+			class="input-tel__loader"
+		>
+			<div
+				class="input-tel__loader__progress-bar"
+			/>
+		</div>
+	</div>
 </template>
 
 <script>

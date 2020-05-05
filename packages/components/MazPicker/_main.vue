@@ -1,79 +1,79 @@
 <template>
-  <div
-    :id="uniqueId"
-    ref="MazPicker"
-    class="maz-picker"
-    :class="{
-      'is-dark': dark
-    }"
-    @blur.capture="closePicker($event, 'blur')"
-  >
-    <MazInput
-      v-if="!inline"
-      :id="uniqueId"
-      v-model="inputValue"
-      v-bind="$attrs"
-      :placeholder="placeholder"
-      readonly
-      :focus="hasPickerOpen"
-      @focus="openPicker(true)"
-    >
-      <div
-        slot="input-icon-right"
-        class="maz-picker__arrow flex flex-center"
-        tabindex="-1"
-      >
-        <!-- The arrow icon -->
-        <slot name="arrow">
-          <!-- Default arrow svg `<ArrowIcon />` -->
-          <ArrowIcon :orientation="hasPickerOpen ? 'up': null" />
-        </slot>
-      </div>
-    </MazInput>
+	<div
+		:id="uniqueId"
+		ref="MazPicker"
+		class="maz-picker"
+		:class="{
+			'is-dark': dark
+		}"
+		@blur.capture="closePicker($event, 'blur')"
+	>
+		<MazInput
+			v-if="!inline"
+			:id="uniqueId"
+			v-model="inputValue"
+			v-bind="$attrs"
+			:placeholder="placeholder"
+			readonly
+			:focus="hasPickerOpen"
+			@focus="openPicker(true)"
+		>
+			<div
+				slot="input-icon-right"
+				class="maz-picker__arrow flex flex-center"
+				tabindex="-1"
+			>
+				<!-- The arrow icon -->
+				<slot name="arrow">
+					<!-- Default arrow svg `<ArrowIcon />` -->
+					<ArrowIcon :orientation="hasPickerOpen ? 'up': null" />
+				</slot>
+			</div>
+		</MazInput>
 
-    <button
-      v-if="hasOverlay"
-      tabindex="-1"
-      class="maz-picker__overlay"
-      @click="closePicker"
-    />
+		<button
+			v-if="hasOverlay"
+			tabindex="-1"
+			class="maz-picker__overlay"
+			@click="closePicker"
+		/>
 
-    <transition
-      :name="pickerTransition"
-    >
-      <PickersContainer
-        v-if="hasPickerOpen"
-        ref="PickersContainer"
-        v-model="dateMoment"
-        :locale="locale"
-        :position="calcPosition"
-        :format="format"
-        :has-header="hasHeader"
-        :has-footer="hasFooter"
-        :has-validate="hasValidate"
-        :has-double="hasDouble"
-        :has-keyboard="hasKeyboard"
-        :has-now="hasNow"
-        :has-time="hasTime"
-        :has-date="hasDate"
-        :is-visible="hasPickerOpen"
-        :minute-interval="minuteInterval"
-        :now-translation="nowTranslation"
-        :min-date="minDateMoment"
-        :max-date="maxDateMoment"
-        :no-weekends-days="noWeekendsDays"
-        :disabled-dates="disabledDatesMoment"
-        :disabled-weekly="disabledWeekly"
-        :auto-close="autoClose"
-        :shortcuts="shortcuts"
-        :shortcut="shortcut"
-        :has-shortcuts="hasShortcuts"
-        :disabled-hours="disabledHours"
-        :behaviour="behaviour"
-        :inline="inline"
-      />
-    </transition>
-  </div>
+		<transition
+			:name="pickerTransition"
+		>
+			<PickersContainer
+				v-if="hasPickerOpen"
+				ref="PickersContainer"
+				v-model="dateMoment"
+				:locale="locale"
+				:position="calcPosition"
+				:format="format"
+				:has-header="hasHeader"
+				:has-footer="hasFooter"
+				:has-validate="hasValidate"
+				:has-double="hasDouble"
+				:has-keyboard="hasKeyboard"
+				:has-now="hasNow"
+				:has-time="hasTime"
+				:has-date="hasDate"
+				:is-visible="hasPickerOpen"
+				:minute-interval="minuteInterval"
+				:now-translation="nowTranslation"
+				:min-date="minDateMoment"
+				:max-date="maxDateMoment"
+				:no-weekends-days="noWeekendsDays"
+				:disabled-dates="disabledDatesMoment"
+				:disabled-weekly="disabledWeekly"
+				:auto-close="autoClose"
+				:shortcuts="shortcuts"
+				:shortcut="shortcut"
+				:has-shortcuts="hasShortcuts"
+				:disabled-hours="disabledHours"
+				:behaviour="behaviour"
+				:inline="inline"
+			/>
+		</transition>
+	</div>
 </template>
 
 <script>

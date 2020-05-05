@@ -1,156 +1,158 @@
 <template>
-  <div
-    :id="`${id}-DatePicker`"
-    :class="{'flex-1 inline': inline, 'p-0 range flex-1': range, 'is-dark': dark, 'has-shortcuts': range && !noShortcuts}"
-    class="datepicker-container flex flex-fixed"
-  >
-    <RangeShortcuts
-      v-if="range && !noShortcuts"
-      ref="range-shortcuts"
-      :value="shortcut"
-      :color="color"
-      :dark="dark"
-      :custom-shortcuts="customShortcuts"
-      :height="height"
-      @change-range="$emit('input', $event)"
-    />
-    <div class="calendar w-100">
-      <div class="datepicker-controls flex flex-center">
-        <div class="arrow-month h-100">
-          <button
-            type="button"
-            tabindex="-1"
-            class="datepicker-button datepicker-prev text-center h-100 flex align-center"
-            @click="changeMonth('prev')"
-          >
-            <svg viewBox="0 0 1000 1000">
-              <path
-                d="M336.2 274.5l-210.1 210h805.4c13 0 23 10 23 23s-10 23-23 23H126.1l210.1 210.1c11
+	<div
+		:id="`${id}-DatePicker`"
+		:class="{'flex-1 inline': inline, 'p-0 range flex-1': range, 'is-dark': dark, 'has-shortcuts': range && !noShortcuts}"
+		class="datepicker-container flex flex-fixed"
+	>
+		<RangeShortcuts
+			v-if="range && !noShortcuts"
+			ref="range-shortcuts"
+			:value="shortcut"
+			:color="color"
+			:dark="dark"
+			:custom-shortcuts="customShortcuts"
+			:height="height"
+			@change-range="$emit('input', $event)"
+		/>
+		<div class="calendar w-100">
+			<div class="datepicker-controls flex flex-center">
+				<div class="arrow-month h-100">
+					<button
+						type="button"
+						tabindex="-1"
+						class="datepicker-button datepicker-prev text-center h-100 flex align-center"
+						@click="changeMonth('prev')"
+					>
+						<svg viewBox="0 0 1000 1000">
+							<path
+								d="M336.2 274.5l-210.1 210h805.4c13 0 23 10 23 23s-10 23-23 23H126.1l210.1 210.1c11
                 11 11 21 0 32-5 5-10 7-16 7s-11-2-16-7l-249.1-249c-11-11-11-21 0-32l249.1-249.1c21-21.1 53 10.9 32 32z"
-              />
-            </svg>
-          </button>
-        </div>
-        <div
-          class="datepicker-container-label flex-1 flex justify-center"
-        >
-          <TransitionGroup
-            :name="transitionLabelName"
-            class="h-100 flex align-center flex-1 flex justify-end"
-          >
-            <CustomButton
-              v-for="m in [month]"
-              :key="m.month"
-              class="date-buttons fs-16 padding-button"
-              :color="color"
-              :dark="dark"
-              @click="selectingYearMonth = 'month'"
-            >
-              {{ monthFormatted }}
-            </CustomButton>
-          </TransitionGroup>
-          <TransitionGroup
-            :name="transitionLabelName"
-            class="h-100 flex align-center flex-1 flex"
-          >
-            <CustomButton
-              v-for="y in [year]"
-              :key="y"
-              class="date-buttons fs-16 padding-button"
-              :color="color"
-              :dark="dark"
-              @click="selectingYearMonth = 'year'"
-            >
-              {{ year }}
-            </CustomButton>
-          </TransitionGroup>
-        </div>
-        <div class="arrow-month h-100 text-right">
-          <button
-            type="button"
-            tabindex="-1"
-            class="datepicker-button datepicker-next text-center h-100 flex align-center justify-end"
-            @click="changeMonth('next')"
-          >
-            <svg viewBox="0 0 1000 1000">
-              <path d="M694.4 242.4l249.1 249.1c11 11 11 21 0 32L694.4 772.7c-5 5-10 7-16 7s-11-2-16-7c-11-11-11-21 0-32l210.1-210.1H67.1c-13 0-23-10-23-23s10-23 23-23h805.4L662.4 274.5c-21-21.1 11-53.1 32-32.1z" />
-            </svg>
-          </button>
-        </div>
-      </div>
-      <WeekDays
-        :week-days="weekDays"
-        :dark="dark"
-      />
-      <div
-        :style="{height: (monthDays.length + weekStart) > 35 ? '250px' : '210px'}"
-        class="month-container"
-      >
-        <TransitionGroup :name="transitionDaysName">
-          <div
-            v-for="m in [month]"
-            :key="m.month"
-            class="datepicker-days flex"
-          >
-            <div
-              v-for="start in weekStart"
-              :key="start + 'startEmptyDay'"
-              class="datepicker-day flex flex-center"
-            />
-            <button
-              v-for="day in monthDays"
-              :key="day.format('D')"
-              :class="{
-                selected: isSelected(day) && !isDisabled(day),
-                disabled: (isDisabled(day) || isWeekEndDay(day)),
-                enable: !(isDisabled(day) || isWeekEndDay(day)),
-                between: isBetween(day) && range,
-                first: firstInRange(day) && range,
-                last: lastInRange(day) && !!value.end && range
-              }"
-              :disabled="isDisabled(day) || isWeekEndDay(day)"
-              type="button"
-              tabindex="-1"
-              class="datepicker-day flex flex-center"
-              @click="selectDate(day)"
-            >
-              <span
-                v-if="isToday(day)"
-                class="datepicker-today"
-              />
-              <span
-                v-show="!isDisabled(day) || isSelected(day)"
-                :style="bgStyle"
-                class="datepicker-day-effect"
-              />
-              <span
-                v-if="isKeyboardSelected(day)"
-                class="datepicker-day-keyboard-selected"
-              />
-              <span class="datepicker-day-text flex-1">
-                {{ day.format('D') }}
-              </span>
-            </button>
-            <div
-              v-for="end in endEmptyDays"
-              :key="end + 'endEmptyDay'"
-              class="datepicker-day flex flex-center"
-            />
-          </div>
-        </TransitionGroup>
-      </div>
-      <YearMonthSelector
-        v-if="selectingYearMonth"
-        :locale="locale"
-        :color="color"
-        :dark="dark"
-        :mode="selectingYearMonth"
-        :month="month"
-        @input="selectYearMonth"
-        @back="selectingYearMonth = null"
-      />
-    </div>
-  </div>
+							/>
+						</svg>
+					</button>
+				</div>
+				<div
+					class="datepicker-container-label flex-1 flex justify-center"
+				>
+					<TransitionGroup
+						:name="transitionLabelName"
+						class="h-100 flex align-center flex-1 flex justify-end"
+					>
+						<CustomButton
+							v-for="m in [month]"
+							:key="m.month"
+							class="date-buttons fs-16 padding-button"
+							:color="color"
+							:dark="dark"
+							@click="selectingYearMonth = 'month'"
+						>
+							{{ monthFormatted }}
+						</CustomButton>
+					</TransitionGroup>
+					<TransitionGroup
+						:name="transitionLabelName"
+						class="h-100 flex align-center flex-1 flex"
+					>
+						<CustomButton
+							v-for="y in [year]"
+							:key="y"
+							class="date-buttons fs-16 padding-button"
+							:color="color"
+							:dark="dark"
+							@click="selectingYearMonth = 'year'"
+						>
+							{{ year }}
+						</CustomButton>
+					</TransitionGroup>
+				</div>
+				<div class="arrow-month h-100 text-right">
+					<button
+						type="button"
+						tabindex="-1"
+						class="datepicker-button datepicker-next text-center h-100 flex align-center justify-end"
+						@click="changeMonth('next')"
+					>
+						<svg viewBox="0 0 1000 1000">
+							<path
+								d="M694.4 242.4l249.1 249.1c11 11 11 21 0 32L694.4 772.7c-5 5-10 7-16 7s-11-2-16-7c-11-11-11-21
+                0-32l210.1-210.1H67.1c-13 0-23-10-23-23s10-23 23-23h805.4L662.4 274.5c-21-21.1 11-53.1 32-32.1z" />
+						</svg>
+					</button>
+				</div>
+			</div>
+			<WeekDays
+				:week-days="weekDays"
+				:dark="dark"
+			/>
+			<div
+				:style="{height: (monthDays.length + weekStart) > 35 ? '250px' : '210px'}"
+				class="month-container"
+			>
+				<TransitionGroup :name="transitionDaysName">
+					<div
+						v-for="m in [month]"
+						:key="m.month"
+						class="datepicker-days flex"
+					>
+						<div
+							v-for="start in weekStart"
+							:key="start + 'startEmptyDay'"
+							class="datepicker-day flex flex-center"
+						/>
+						<button
+							v-for="day in monthDays"
+							:key="day.format('D')"
+							:class="{
+								selected: isSelected(day) && !isDisabled(day),
+								disabled: (isDisabled(day) || isWeekEndDay(day)),
+								enable: !(isDisabled(day) || isWeekEndDay(day)),
+								between: isBetween(day) && range,
+								first: firstInRange(day) && range,
+								last: lastInRange(day) && !!value.end && range
+							}"
+							:disabled="isDisabled(day) || isWeekEndDay(day)"
+							type="button"
+							tabindex="-1"
+							class="datepicker-day flex flex-center"
+							@click="selectDate(day)"
+						>
+							<span
+								v-if="isToday(day)"
+								class="datepicker-today"
+							/>
+							<span
+								v-show="!isDisabled(day) || isSelected(day)"
+								:style="bgStyle"
+								class="datepicker-day-effect"
+							/>
+							<span
+								v-if="isKeyboardSelected(day)"
+								class="datepicker-day-keyboard-selected"
+							/>
+							<span class="datepicker-day-text flex-1">
+								{{ day.format('D') }}
+							</span>
+						</button>
+						<div
+							v-for="end in endEmptyDays"
+							:key="end + 'endEmptyDay'"
+							class="datepicker-day flex flex-center"
+						/>
+					</div>
+				</TransitionGroup>
+			</div>
+			<YearMonthSelector
+				v-if="selectingYearMonth"
+				:locale="locale"
+				:color="color"
+				:dark="dark"
+				:mode="selectingYearMonth"
+				:month="month"
+				@input="selectYearMonth"
+				@back="selectingYearMonth = null"
+			/>
+		</div>
+	</div>
 </template>
 
 <script>

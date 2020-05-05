@@ -1,35 +1,43 @@
 <template>
-  <div class="maz-input-doc">
-    <ComponentContainer :code="codeExample">
-      <MazSelect
-        v-model="selectValueExample"
-        placeholder="Custom label & placeholder text"
-        :options="options"
-      />
-    </ComponentContainer>
-    <div class="flex flex--wrap">
-      <div class="flex-1">
-        <ComponentContainer>
-          <h4 class="mb-3">
-            Basic
-          </h4>
-          <MazSelect v-model="selectValue" :options="options" />
-        </ComponentContainer>
-        <ComponentContainer>
-          <h4 class="mb-3">
-            Error
-          </h4>
-          <MazSelect v-model="selectValue" :options="options" error />
-        </ComponentContainer>
-        <ComponentContainer>
-          <h4 class="mb-3">
-            Valid
-          </h4>
-          <MazSelect v-model="selectValue" :options="options" valid />
-        </ComponentContainer>
-      </div>
-    </div>
-  </div>
+	<div class="maz-input-doc">
+		<ComponentContainer :code="codeExample">
+			<MazSelect
+				v-model="selectValueExample"
+				placeholder="Custom label & placeholder text"
+				:options="options"
+			/>
+		</ComponentContainer>
+		<div class="flex flex--wrap">
+			<div class="flex-1">
+				<ComponentContainer>
+					<h4 class="mb-3">
+						Basic
+					</h4>
+					<MazSelect
+						v-model="selectValue"
+						:options="options" />
+				</ComponentContainer>
+				<ComponentContainer>
+					<h4 class="mb-3">
+						Error
+					</h4>
+					<MazSelect
+						v-model="selectValue"
+						:options="options"
+						error />
+				</ComponentContainer>
+				<ComponentContainer>
+					<h4 class="mb-3">
+						Valid
+					</h4>
+					<MazSelect
+						v-model="selectValue"
+						:options="options"
+						valid />
+				</ComponentContainer>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script>

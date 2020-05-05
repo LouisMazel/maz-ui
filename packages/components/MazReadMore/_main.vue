@@ -1,19 +1,19 @@
 <template>
-  <div class="maz-read-more flex direction-column">
-    <p :class="[textClass]">
-      {{ textToShow }}
-    </p>
-    <a
-      v-if="isTextLong"
-      href="#"
-      aria-role="button"
-      @click.prevent="textVisible = !textVisible"
-    >
-      {{ textVisible
-        ? t.readLess
-        : t.readMore }}
-    </a>
-  </div>
+	<div class="maz-read-more flex direction-column">
+		<p :class="[textClass]">
+			{{ textToShow }}
+		</p>
+		<a
+			v-if="isTextLong"
+			href="#"
+			aria-role="button"
+			@click.prevent="textVisible = !textVisible"
+		>
+			{{ textVisible
+				? t.readLess
+				: t.readMore }}
+		</a>
+	</div>
 </template>
 
 <script>

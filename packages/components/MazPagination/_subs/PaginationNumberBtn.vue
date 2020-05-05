@@ -1,16 +1,16 @@
 <template>
-  <MazBtn
-    class="pagination-number-btn flex align-center justify-center flex-fixed"
-    :disabled="disabled"
-    :class="{
-      'active': active
-    }"
-    fab
-    size="sm"
-    @click="handleClick"
-  >
-    <slot />
-  </MazBtn>
+	<MazBtn
+		class="pagination-number-btn flex align-center justify-center flex-fixed"
+		:disabled="disabled"
+		:class="{
+			'active': active
+		}"
+		fab
+		size="sm"
+		@click="handleClick"
+	>
+		<slot />
+	</MazBtn>
 </template>
 
 <script>

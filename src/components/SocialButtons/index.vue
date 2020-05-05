@@ -1,19 +1,19 @@
 <template>
-  <div class="social-buttons">
-    <MazBtn
-      v-for="social in socialMedias"
-      :key="social.name"
-      :title="social.name"
-      :href="social.url"
-      target="_blank"
-      color="white"
-      rounded
-      size="mini"
-      no-shadow
-    >
-      <i :class="`icon-${social.name}`" />
-    </MazBtn>
-  </div>
+	<div class="social-buttons">
+		<MazBtn
+			v-for="social in socialMedias"
+			:key="social.name"
+			:title="social.name"
+			:href="social.url"
+			target="_blank"
+			color="white"
+			rounded
+			size="mini"
+			no-shadow
+		>
+			<i :class="`icon-${social.name}`" />
+		</MazBtn>
+	</div>
 </template>
 
 <script>

@@ -1,17 +1,26 @@
 <template>
-  <div class="install">
-    <h2 class="mb-4">
-      Install
-    </h2>
-    <h3>NPM</h3>
-    <CodeContainer code="npm i maz-ui -S" language="bash" class="my-4" />
+	<div class="install">
+		<h2 class="mb-4">
+			Install
+		</h2>
+		<h3>NPM</h3>
+		<CodeContainer
+			code="npm i maz-ui -S"
+			language="bash"
+			class="my-4" />
 
-    <h3>Yarn</h3>
-    <CodeContainer code="yarn add maz-ui" language="bash" class="my-4" />
+		<h3>Yarn</h3>
+		<CodeContainer
+			code="yarn add maz-ui"
+			language="bash"
+			class="my-4" />
 
-    <h3>CDN</h3>
-    <CodeContainer :code="cdnCode" language="html" class="my-4" />
-  </div>
+		<h3>CDN</h3>
+		<CodeContainer
+			:code="cdnCode"
+			language="html"
+			class="my-4" />
+	</div>
 </template>
 
 <script>

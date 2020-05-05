@@ -1,45 +1,45 @@
 <template>
-  <div
-    class="pickers-container bg-color-light elevation"
-    :class="[position, { 'inline': inline }]"
-    tabindex="-1"
-  >
-    <HeaderPicker
-      v-if="hasHeader"
-      :value="dateMoment"
-      :locale="locale"
-      :has-time="hasTime"
-      :has-date="hasDate"
-      :format="format"
-    />
-    <Calendar
-      v-model="dateMoment"
-      :format="format"
-      :locale="locale"
-      :shortcut="shortcut"
-      :min-date="minDate"
-      :max-date="maxDate"
-      :minute-interval="minuteInterval"
-      :no-weekends-days="noWeekendsDays"
-      :disabled-dates="disabledDates"
-      :disabled-weekly="disabledWeekly"
-      :is-visible="isVisible"
-      :has-double="hasDouble"
-      :shortcuts="shortcuts"
-      :has-keyboard="hasKeyboard"
-      :has-time="hasTime"
-      :has-date="hasDate"
-      :has-shortcuts="hasShortcuts"
-      :disabled-hours="disabledHours"
-      :behaviour="behaviour"
-    />
-    <FooterPicker
-      v-if="hasFooter"
-      :has-validate="hasValidate"
-      :has-now="hasNow"
-      :now-translation="nowTranslation"
-    />
-  </div>
+	<div
+		class="pickers-container bg-color-light elevation"
+		:class="[position, { 'inline': inline }]"
+		tabindex="-1"
+	>
+		<HeaderPicker
+			v-if="hasHeader"
+			:value="dateMoment"
+			:locale="locale"
+			:has-time="hasTime"
+			:has-date="hasDate"
+			:format="format"
+		/>
+		<Calendar
+			v-model="dateMoment"
+			:format="format"
+			:locale="locale"
+			:shortcut="shortcut"
+			:min-date="minDate"
+			:max-date="maxDate"
+			:minute-interval="minuteInterval"
+			:no-weekends-days="noWeekendsDays"
+			:disabled-dates="disabledDates"
+			:disabled-weekly="disabledWeekly"
+			:is-visible="isVisible"
+			:has-double="hasDouble"
+			:shortcuts="shortcuts"
+			:has-keyboard="hasKeyboard"
+			:has-time="hasTime"
+			:has-date="hasDate"
+			:has-shortcuts="hasShortcuts"
+			:disabled-hours="disabledHours"
+			:behaviour="behaviour"
+		/>
+		<FooterPicker
+			v-if="hasFooter"
+			:has-validate="hasValidate"
+			:has-now="hasNow"
+			:now-translation="nowTranslation"
+		/>
+	</div>
 </template>
 
 <script>

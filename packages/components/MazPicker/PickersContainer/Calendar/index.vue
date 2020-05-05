@@ -1,80 +1,80 @@
 <template>
-  <div
-    :id="`Calendar${_uid}`"
-    ref="Calendar"
-    class="calendar pos-r mw-100 overflow-hidden flex"
-  >
-    <RangeShortcuts
-      v-if="hasShortcuts"
-      ref="RangeShortcuts"
-      :shortcuts="shortcuts"
-      :value="shortcut"
-      :height="contentHeight"
-      @change-range="$emit('input', $event)"
-    />
-    <div
-      v-if="hasDate"
-      ref="MonthsContainer"
-      class="calendar__months-container overflow-hidden flex-1"
-    >
-      <MonthYearSwitcher
-        :months="months"
-        class="px-2"
-        @change-month="changeMonth"
-        @open-month-year-selector="yearMonthSelectorMode = $event"
-      />
-      <div class="flex overflow-x-auto">
-        <div
-          v-for="(month, i) in months"
-          :key="`month-${i}`"
-          class="calendar__months flex-1"
-          style="min-width: 268px;"
-          :class="{ 'has-double border-top border-top-solid border-color': hasDouble }"
-        >
-          <WeekDaysLabels
-            :locale="locale"
-            class="p-2"
-          />
-          <MonthPicker
-            ref="MonthPicker"
-            v-model="dateMoment"
-            :month="month"
-            :min-date="minDate"
-            :max-date="maxDate"
-            :has-keyboard="hasKeyboard"
-            :has-double="hasDouble"
-            :no-weekends-days="noWeekendsDays"
-            :disabled-dates="disabledDates"
-            :disabled-weekly="disabledWeekly"
-            :hoverred-day="hoverredDay"
-            :is-visible="isVisible"
-            class="p-2"
-            @change-month="changeMonth"
-            @hoverred-day="hoverredDay = $event"
-          />
-        </div>
-      </div>
-      <YearMonthSelector
-        v-if="months.length"
-        v-model="yearMonthSelectorMode"
-        :month="months[0]"
-        :has-double="hasDouble"
-        @change-month-year="changeMonthYear"
-      />
-    </div>
-    <TimePicker
-      v-if="hasTime"
-      v-model="dateMoment"
-      :format="format"
-      :height="contentHeight"
-      :min-date="minDate"
-      :max-date="maxDate"
-      :has-date="hasDate"
-      :minute-interval="minuteInterval"
-      :disabled-hours="disabledHours"
-      :behaviour="behaviour"
-    />
-  </div>
+	<div
+		:id="`Calendar${_uid}`"
+		ref="Calendar"
+		class="calendar pos-r mw-100 overflow-hidden flex"
+	>
+		<RangeShortcuts
+			v-if="hasShortcuts"
+			ref="RangeShortcuts"
+			:shortcuts="shortcuts"
+			:value="shortcut"
+			:height="contentHeight"
+			@change-range="$emit('input', $event)"
+		/>
+		<div
+			v-if="hasDate"
+			ref="MonthsContainer"
+			class="calendar__months-container overflow-hidden flex-1"
+		>
+			<MonthYearSwitcher
+				:months="months"
+				class="px-2"
+				@change-month="changeMonth"
+				@open-month-year-selector="yearMonthSelectorMode = $event"
+			/>
+			<div class="flex overflow-x-auto">
+				<div
+					v-for="(month, i) in months"
+					:key="`month-${i}`"
+					class="calendar__months flex-1"
+					style="min-width: 268px;"
+					:class="{ 'has-double border-top border-top-solid border-color': hasDouble }"
+				>
+					<WeekDaysLabels
+						:locale="locale"
+						class="p-2"
+					/>
+					<MonthPicker
+						ref="MonthPicker"
+						v-model="dateMoment"
+						:month="month"
+						:min-date="minDate"
+						:max-date="maxDate"
+						:has-keyboard="hasKeyboard"
+						:has-double="hasDouble"
+						:no-weekends-days="noWeekendsDays"
+						:disabled-dates="disabledDates"
+						:disabled-weekly="disabledWeekly"
+						:hoverred-day="hoverredDay"
+						:is-visible="isVisible"
+						class="p-2"
+						@change-month="changeMonth"
+						@hoverred-day="hoverredDay = $event"
+					/>
+				</div>
+			</div>
+			<YearMonthSelector
+				v-if="months.length"
+				v-model="yearMonthSelectorMode"
+				:month="months[0]"
+				:has-double="hasDouble"
+				@change-month-year="changeMonthYear"
+			/>
+		</div>
+		<TimePicker
+			v-if="hasTime"
+			v-model="dateMoment"
+			:format="format"
+			:height="contentHeight"
+			:min-date="minDate"
+			:max-date="maxDate"
+			:has-date="hasDate"
+			:minute-interval="minuteInterval"
+			:disabled-hours="disabledHours"
+			:behaviour="behaviour"
+		/>
+	</div>
 </template>
 
 <script>

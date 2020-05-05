@@ -1,24 +1,24 @@
 <template>
-  <div
-    :class="{'is-dark': dark}"
-    :style="[{height: `${height}px`}]"
-    class="shortcuts-container"
-  >
-    <CustomButton
-      v-for="shortcut in customShortcuts"
-      :key="shortcut.key"
-      :dark="dark"
-      :color="color"
-      :selected="selectedShortcut === shortcut.key"
-      with-border
-      class="shortcut-button"
-      @click="select(shortcut)"
-    >
-      <span class="fs-12 flex-1">
-        {{ shortcut.label }}
-      </span>
-    </CustomButton>
-  </div>
+	<div
+		:class="{'is-dark': dark}"
+		:style="[{height: `${height}px`}]"
+		class="shortcuts-container"
+	>
+		<CustomButton
+			v-for="shortcut in customShortcuts"
+			:key="shortcut.key"
+			:dark="dark"
+			:color="color"
+			:selected="selectedShortcut === shortcut.key"
+			with-border
+			class="shortcut-button"
+			@click="select(shortcut)"
+		>
+			<span class="fs-12 flex-1">
+				{{ shortcut.label }}
+			</span>
+		</CustomButton>
+	</div>
 </template>
 
 <script>

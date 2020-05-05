@@ -1,108 +1,108 @@
 <template>
-  <div
-    :style="bgStyle"
-    class="header-picker"
-    :class="{'is-dark': dark}"
-  >
-    <div
-      v-if="!onlyTime"
-      class="header-picker-year"
-    >
-      <TransitionGroup :name="transitionName">
-        <div
-          v-for="y in [year]"
-          :key="y"
-        >
-          {{ y }}
-        </div>
-      </TransitionGroup>
-    </div>
+	<div
+		:style="bgStyle"
+		class="header-picker"
+		:class="{'is-dark': dark}"
+	>
+		<div
+			v-if="!onlyTime"
+			class="header-picker-year"
+		>
+			<TransitionGroup :name="transitionName">
+				<div
+					v-for="y in [year]"
+					:key="y"
+				>
+					{{ y }}
+				</div>
+			</TransitionGroup>
+		</div>
 
-    <div
-      v-if="!range"
-      class="flex space-between"
-    >
-      <TransitionGroup
-        v-if="!onlyTime"
-        :name="transitionName"
-        class="header-picker-date dots-text flex-1"
-      >
-        <span
-          v-for="dateFormatted in [getDateFormatted]"
-          :key="dateFormatted"
-        >
-          {{ value ? getDateFormatted : '...' }}
-        </span>
-      </TransitionGroup>
-      <div
-        v-if="!isFormatTwelve && !noTime && value"
-        class="header-picker-time flex"
-        :style="[getTimePickerWidth()]"
-        :class="[!onlyTime ? 'pl-10' : 'flex-1 justify-center']"
-      >
-        <TransitionGroup
-          :name="transitionName"
-          class="dots-text time-number header-picker-hour flex justify-end"
-        >
-          <span
-            v-for="hour in [dateTime.format('HH')]"
-            :key="hour"
-          >
-            {{ hour }}
-          </span>
-        </TransitionGroup>
-        <span>:</span>
-        <TransitionGroup
-          :name="transitionName"
-          class="dots-text time-number header-picker-minute flex justify-start"
-        >
-          <span
-            v-for="min in [dateTime.format('mm')]"
-            :key="min"
-          >
-            {{ min }}
-          </span>
-        </TransitionGroup>
-      </div>
-      <div
-        v-else-if="!noTime && value"
-        :style="[getTimePickerWidth()]"
-        class="header-picker-time flex flex-fixed"
-        :class="[!onlyTime ? 'pl-10' : 'flex-1 justify-center']"
-      >
-        <TransitionGroup
-          :name="transitionName"
-          class="dots-text header-picker-hour twelve"
-        >
-          <span
-            v-for="hour in [dateTime.format(timeFormat)]"
-            :key="hour"
-            class="flex-fixed"
-          >
-            {{ hour }}
-          </span>
-        </TransitionGroup>
-      </div>
-      <div
-        v-else-if="!noTime"
-        :style="[getTimePickerWidth()]"
-        class="header-picker-time flex flex-fixed"
-        :class="[!onlyTime ? 'pl-10' : 'flex-1 justify-center']"
-      >
-        <span>...</span>
-      </div>
-    </div>
-    <div
-      v-else
-      class="flex space-between"
-    >
-      <div class="flex space-between">
-        <span class="header-picker-range dots-text flex-1">
-          {{ getRangeDatesFormatted }}
-        </span>
-      </div>
-    </div>
-  </div>
+		<div
+			v-if="!range"
+			class="flex space-between"
+		>
+			<TransitionGroup
+				v-if="!onlyTime"
+				:name="transitionName"
+				class="header-picker-date dots-text flex-1"
+			>
+				<span
+					v-for="dateFormatted in [getDateFormatted]"
+					:key="dateFormatted"
+				>
+					{{ value ? getDateFormatted : '...' }}
+				</span>
+			</TransitionGroup>
+			<div
+				v-if="!isFormatTwelve && !noTime && value"
+				class="header-picker-time flex"
+				:style="[getTimePickerWidth()]"
+				:class="[!onlyTime ? 'pl-10' : 'flex-1 justify-center']"
+			>
+				<TransitionGroup
+					:name="transitionName"
+					class="dots-text time-number header-picker-hour flex justify-end"
+				>
+					<span
+						v-for="hour in [dateTime.format('HH')]"
+						:key="hour"
+					>
+						{{ hour }}
+					</span>
+				</TransitionGroup>
+				<span>:</span>
+				<TransitionGroup
+					:name="transitionName"
+					class="dots-text time-number header-picker-minute flex justify-start"
+				>
+					<span
+						v-for="min in [dateTime.format('mm')]"
+						:key="min"
+					>
+						{{ min }}
+					</span>
+				</TransitionGroup>
+			</div>
+			<div
+				v-else-if="!noTime && value"
+				:style="[getTimePickerWidth()]"
+				class="header-picker-time flex flex-fixed"
+				:class="[!onlyTime ? 'pl-10' : 'flex-1 justify-center']"
+			>
+				<TransitionGroup
+					:name="transitionName"
+					class="dots-text header-picker-hour twelve"
+				>
+					<span
+						v-for="hour in [dateTime.format(timeFormat)]"
+						:key="hour"
+						class="flex-fixed"
+					>
+						{{ hour }}
+					</span>
+				</TransitionGroup>
+			</div>
+			<div
+				v-else-if="!noTime"
+				:style="[getTimePickerWidth()]"
+				class="header-picker-time flex flex-fixed"
+				:class="[!onlyTime ? 'pl-10' : 'flex-1 justify-center']"
+			>
+				<span>...</span>
+			</div>
+		</div>
+		<div
+			v-else
+			class="flex space-between"
+		>
+			<div class="flex space-between">
+				<span class="header-picker-range dots-text flex-1">
+					{{ getRangeDatesFormatted }}
+				</span>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script>

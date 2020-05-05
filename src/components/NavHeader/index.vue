@@ -1,50 +1,54 @@
 <template>
-  <header
-    class="header bg-color flex-fixed bg-color border-color border-bottom-1 border-bottom-solid"
-    role="banner"
-  >
-    <nav class="px-4 flex space-between" :class="{ container: !isDocPage }">
-      <router-link
-        :to="{
-          name: 'Home'
-        }"
-        class="flex header__logo py-2 align-center"
-      >
-        <LogoSvg class="header__logo__img mr-2" />
-        <div
-          class="header__title flex justify-center direction-column hidden-tablet pos-r"
-        >
-          <h1 class="fs-20">
-            Maz UI
-          </h1>
-          <h2 class="fs-14 header__title__sub text-color">
-            Components & CSS Library
-          </h2>
-        </div>
-      </router-link>
-      <div class="header__menu flex align-center hidden-mobile">
-        <router-link
-          class="header__menu__item btn btn--white no-shadow bg-color no-border hover-bg-color mr-1"
-          :to="{
-            name: 'Documentation'
-          }"
-        >
-          Documentation
-        </router-link>
-        <router-link
-          class="header__menu__item btn btn--white no-shadow bg-color no-border hover-bg-color"
-          :to="{ name: 'MadeWithMazUi' }"
-        >
-          Made with Maz UI
-        </router-link>
-      </div>
-      <div class="flex align-center hidden-mobile">
-        <SocialButtons class="hidden-laptop-s" />
-      </div>
-      <MazResponsiveMenu :routes="routes" class="py-2 show-mobile" />
-    </nav>
-    <DarkSwitchBanner />
-  </header>
+	<header
+		class="header bg-color flex-fixed bg-color border-color border-bottom-1 border-bottom-solid"
+		role="banner"
+	>
+		<nav
+			class="px-4 flex space-between"
+			:class="{ container: !isDocPage }">
+			<router-link
+				:to="{
+					name: 'Home'
+				}"
+				class="flex header__logo py-2 align-center"
+			>
+				<LogoSvg class="header__logo__img mr-2" />
+				<div
+					class="header__title flex justify-center direction-column hidden-tablet pos-r"
+				>
+					<h1 class="fs-20">
+						Maz UI
+					</h1>
+					<h2 class="fs-14 header__title__sub text-color">
+						Components & CSS Library
+					</h2>
+				</div>
+			</router-link>
+			<div class="header__menu flex align-center hidden-mobile">
+				<router-link
+					class="header__menu__item btn btn--white no-shadow bg-color no-border hover-bg-color mr-1"
+					:to="{
+						name: 'Documentation'
+					}"
+				>
+					Documentation
+				</router-link>
+				<router-link
+					class="header__menu__item btn btn--white no-shadow bg-color no-border hover-bg-color"
+					:to="{ name: 'MadeWithMazUi' }"
+				>
+					Made with Maz UI
+				</router-link>
+			</div>
+			<div class="flex align-center hidden-mobile">
+				<SocialButtons class="hidden-laptop-s" />
+			</div>
+			<MazResponsiveMenu
+				:routes="routes"
+				class="py-2 show-mobile" />
+		</nav>
+		<DarkSwitchBanner />
+	</header>
 </template>
 
 <script>

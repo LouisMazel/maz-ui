@@ -1,9 +1,9 @@
 <template>
-  <div class="maz-loader-doc">
-    <ComponentContainer :code="code">
-      <MazLoader />
-    </ComponentContainer>
-  </div>
+	<div class="maz-loader-doc">
+		<ComponentContainer :code="code">
+			<MazLoader />
+		</ComponentContainer>
+	</div>
 </template>
 
 <script>

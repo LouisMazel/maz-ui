@@ -45,8 +45,8 @@ const componentsRoutesBuild = componentsRoutes.map(route => {
     isGeneralDoc(route) || isCliDoc(route) || isThemeDoc(route)
       ? pascalCaseToKebabCase(route)
       : pascalCaseToKebabCase(route)
-          .substring(4)
-          .slice(0, -4)
+        .substring(4)
+        .slice(0, -4)
   return {
     path: kebabCaseRouteName,
     name: route,

@@ -1,63 +1,63 @@
 <template>
-  <div
-    :id="id"
-    :class="[{ 'is-dark': dark }, size]"
-    class="maz-phone-number-input flex"
-  >
-    <div
-      v-if="!noCountrySelector"
-      class="select-country-container"
-    >
-      <CountrySelector
-        :id="`${uniqueId}_country_selector`"
-        ref="CountrySelector"
-        v-model="countryCode"
-        :items="codesCountries"
-        :countries-height="countriesHeight"
-        :error="shouldChooseCountry"
-        :hint="shouldChooseCountry ? t.countrySelectorError : null"
-        :disabled="disabled"
-        :valid="isValid && !noValidatorState"
-        :preferred-countries="preferredCountries"
-        :only-countries="onlyCountries"
-        :ignored-countries="ignoredCountries"
-        :placeholder="t.countrySelectorLabel"
-        :no-flags="noFlags"
-        :show-code-on-list="showCodeOnList"
-        :size="size"
-        class="input-country-selector"
-      >
-        <slot
-          slot="arrow"
-          name="arrow"
-        />
-      </CountrySelector>
-    </div>
-    <div class="flex-1">
-      <InputTel
-        :id="`${uniqueId}_phone_number`"
-        ref="PhoneNumberInput"
-        v-model="phoneNumber"
-        :placeholder="t.phoneNumberLabel"
-        :hint="hintValue"
-        :disabled="disabled"
-        :size="size"
-        :error="error"
-        :valid="isValid && !noValidatorState"
-        :required="required"
-        :no-country-selector="noCountrySelector"
-        v-bind="$attrs"
-        class="input-phone-number"
-        @keydown="(e) => { lastKeyPressed = e.keyCode }"
-        @focus="$emit('focus', $event)"
-        @blur="$emit('blur', $event)"
-        @change="$emit('change', $event)"
-      />
-    </div>
-  </div>
+	<div
+		:id="id"
+		:class="[{ 'is-dark': dark }, size]"
+		class="maz-phone-number-input flex"
+	>
+		<div
+			v-if="!noCountrySelector"
+			class="select-country-container"
+		>
+			<CountrySelector
+				:id="`${uniqueId}_country_selector`"
+				ref="CountrySelector"
+				v-model="countryCode"
+				:items="codesCountries"
+				:countries-height="countriesHeight"
+				:error="shouldChooseCountry"
+				:hint="shouldChooseCountry ? t.countrySelectorError : null"
+				:disabled="disabled"
+				:valid="isValid && !noValidatorState"
+				:preferred-countries="preferredCountries"
+				:only-countries="onlyCountries"
+				:ignored-countries="ignoredCountries"
+				:placeholder="t.countrySelectorLabel"
+				:no-flags="noFlags"
+				:show-code-on-list="showCodeOnList"
+				:size="size"
+				class="input-country-selector"
+			>
+				<slot
+					slot="arrow"
+					name="arrow"
+				/>
+			</CountrySelector>
+		</div>
+		<div class="flex-1">
+			<InputTel
+				:id="`${uniqueId}_phone_number`"
+				ref="PhoneNumberInput"
+				v-model="phoneNumber"
+				:placeholder="t.phoneNumberLabel"
+				:hint="hintValue"
+				:disabled="disabled"
+				:size="size"
+				:error="error"
+				:valid="isValid && !noValidatorState"
+				:required="required"
+				:no-country-selector="noCountrySelector"
+				v-bind="$attrs"
+				class="input-phone-number"
+				@keydown="(e) => { lastKeyPressed = e.keyCode }"
+				@focus="$emit('focus', $event)"
+				@blur="$emit('blur', $event)"
+				@change="$emit('change', $event)"
+			/>
+		</div>
+	</div>
 </template>
 <script>
-  /* eslint-disable */
+/* eslint-disable */
   import { countries, countriesIso } from './assets/js/phoneCodeCountries.js'
   import examples from 'libphonenumber-js/examples.mobile.json'
   import { parsePhoneNumberFromString, AsYouType, getExampleNumber } from 'libphonenumber-js'
@@ -153,7 +153,7 @@
       shouldChooseCountry () {
         return !this.countryCode && !!this.phoneNumber
       },
-      phoneFormatted () {
+      phoneFormatted (effef) {
         return this.results.formatInternational
       },
       isValid () {

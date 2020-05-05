@@ -1,31 +1,31 @@
 <template>
-  <component
-    :is="componentType"
-    :id="uniqueId"
-    v-bind="$attrs"
-    class="maz-btn btn"
-    :class="[
-      classes,
-      { hidden: loading }
-    ]"
-    :type="isLink ? null : type"
-    :disabled="isLink ? null : isDisabled"
-    @click="isLink ? null : handleClick($event)"
-    @mouseenter="emitMouseEnter($event)"
-    @mouseleave="emitMouseLeave($event)"
-  >
-    <!-- Add your button text here -->
-    <slot />
-    <div
-      v-if="loading"
-      class="maz-btn__spinner flex align-center justify-center"
-    >
-      <MazSpinner
-        :size="25"
-        :color="color"
-      />
-    </div>
-  </component>
+	<component
+		:is="componentType"
+		:id="uniqueId"
+		v-bind="$attrs"
+		class="maz-btn btn"
+		:class="[
+			classes,
+			{ hidden: loading }
+		]"
+		:type="isLink ? null : type"
+		:disabled="isLink ? null : isDisabled"
+		@click="isLink ? null : handleClick($event)"
+		@mouseenter="emitMouseEnter($event)"
+		@mouseleave="emitMouseLeave($event)"
+	>
+		<!-- Add your button text here -->
+		<slot />
+		<div
+			v-if="loading"
+			class="maz-btn__spinner flex align-center justify-center"
+		>
+			<MazSpinner
+				:size="25"
+				:color="color"
+			/>
+		</div>
+	</component>
 </template>
 
 <script>

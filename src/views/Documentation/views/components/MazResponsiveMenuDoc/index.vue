@@ -1,11 +1,11 @@
 <template>
-  <div class="maz-read-more-doc">
-    <ComponentContainer :code="codeExample">
-      <div class="flex justify-end">
-        <MazResponsiveMenu :routes="routes" />
-      </div>
-    </ComponentContainer>
-  </div>
+	<div class="maz-read-more-doc">
+		<ComponentContainer :code="codeExample">
+			<div class="flex justify-end">
+				<MazResponsiveMenu :routes="routes" />
+			</div>
+		</ComponentContainer>
+	</div>
 </template>
 
 <script>

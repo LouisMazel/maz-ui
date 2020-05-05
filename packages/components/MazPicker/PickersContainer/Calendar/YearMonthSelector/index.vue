@@ -1,87 +1,87 @@
 <template>
-  <transition name="slide">
-    <div
-      v-if="isOpen"
-      class="year-month-selector bg-color-light p-2 flex direction-column"
-    >
-      <div class="flex justify-end align-center">
-        <div
-          v-if="value === 'year'"
-          class="flex align-center"
-        >
-          <MazBtn
-            fab
-            no-shadow
-            size="mini"
-            color="grey"
-            class="flex flex-center mr-1 bg-transparent hover-bg-color no-focus-bg"
-            tabindex="-1"
-            @click="updateYears('prev')"
-          >
-            <ArrowIcon
-              orientation="left"
-              color="text-grey"
-            />
-          </MazBtn>
-          <MazBtn
-            fab
-            no-shadow
-            size="mini"
-            color="grey"
-            class="flex flex-center mr-1 bg-transparent hover-bg-color no-focus-bg"
-            tabindex="-1"
-            @click="updateYears('next')"
-          >
-            <ArrowIcon
-              orientation="right"
-              color="text-grey"
-            />
-          </MazBtn>
-        </div>
-        <MazBtn
-          fab
-          no-shadow
-          size="mini"
-          color="grey"
-          tabindex="-1"
-          class="year-month-selector__close bg-transparent hover-bg-color no-focus-bg"
-          @click="closePanel"
-        >
-          <i class="material-icons text-color fs-20">
-            close
-          </i>
-        </MazBtn>
-      </div>
-      <div class="flex-1 flex flex--wrap space-between align-center pt-2">
-        <MazBtn
-          v-for="(m, i) in months"
-          :key="i"
-          :active="currentMonth === i"
-          :class="[
-            currentMonth !== i ? 'hover-bg-color no-focus-bg border border-color text-primary': 'focus-primary',
-            { 'mx-3': hasDouble }
-          ]"
-          class="year-month-selector__btn bg-transparent no-shadow px-3 flex-20 mx-1"
-          tabindex="-1"
-          @click="selectMonth(i)"
-        >
-          {{ m | capitalize }}
-        </MazBtn>
-        <MazBtn
-          v-for="year in years"
-          :key="year"
-          :active="currentYear === year"
-          size="md"
-          tabindex="-1"
-          :class="[currentYear !== year ? 'hover-bg-color no-focus-bg border border-color text-primary': 'focus-primary']"
-          class="year-month-selector__btn bg-transparent no-shadow"
-          @click="selectYear(year)"
-        >
-          {{ year }}
-        </MazBtn>
-      </div>
-    </div>
-  </transition>
+	<transition name="slide">
+		<div
+			v-if="isOpen"
+			class="year-month-selector bg-color-light p-2 flex direction-column"
+		>
+			<div class="flex justify-end align-center">
+				<div
+					v-if="value === 'year'"
+					class="flex align-center"
+				>
+					<MazBtn
+						fab
+						no-shadow
+						size="mini"
+						color="grey"
+						class="flex flex-center mr-1 bg-transparent hover-bg-color no-focus-bg"
+						tabindex="-1"
+						@click="updateYears('prev')"
+					>
+						<ArrowIcon
+							orientation="left"
+							color="text-grey"
+						/>
+					</MazBtn>
+					<MazBtn
+						fab
+						no-shadow
+						size="mini"
+						color="grey"
+						class="flex flex-center mr-1 bg-transparent hover-bg-color no-focus-bg"
+						tabindex="-1"
+						@click="updateYears('next')"
+					>
+						<ArrowIcon
+							orientation="right"
+							color="text-grey"
+						/>
+					</MazBtn>
+				</div>
+				<MazBtn
+					fab
+					no-shadow
+					size="mini"
+					color="grey"
+					tabindex="-1"
+					class="year-month-selector__close bg-transparent hover-bg-color no-focus-bg"
+					@click="closePanel"
+				>
+					<i class="material-icons text-color fs-20">
+						close
+					</i>
+				</MazBtn>
+			</div>
+			<div class="flex-1 flex flex--wrap space-between align-center pt-2">
+				<MazBtn
+					v-for="(m, i) in months"
+					:key="i"
+					:active="currentMonth === i"
+					:class="[
+						currentMonth !== i ? 'hover-bg-color no-focus-bg border border-color text-primary': 'focus-primary',
+						{ 'mx-3': hasDouble }
+					]"
+					class="year-month-selector__btn bg-transparent no-shadow px-3 flex-20 mx-1"
+					tabindex="-1"
+					@click="selectMonth(i)"
+				>
+					{{ m | capitalize }}
+				</MazBtn>
+				<MazBtn
+					v-for="year in years"
+					:key="year"
+					:active="currentYear === year"
+					size="md"
+					tabindex="-1"
+					:class="[currentYear !== year ? 'hover-bg-color no-focus-bg border border-color text-primary': 'focus-primary']"
+					class="year-month-selector__btn bg-transparent no-shadow"
+					@click="selectYear(year)"
+				>
+					{{ year }}
+				</MazBtn>
+			</div>
+		</div>
+	</transition>
 </template>
 
 <script>

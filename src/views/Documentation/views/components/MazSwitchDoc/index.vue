@@ -1,20 +1,23 @@
 <template>
-  <div class="maz-switch-doc">
-    <ComponentContainer :code="codeExample">
-      <div class="flex flex--wrap">
-        <div
-          v-for="type in btnTypes"
-          :key="`switch-${type}`"
-          class="px-3"
-        >
-          <p class="mb-3 text-center">
-            {{ type }}
-          </p>
-          <MazSwitch v-model="checkboxValue" :color="type" class="mb-2" />
-        </div>
-      </div>
-    </ComponentContainer>
-  </div>
+	<div class="maz-switch-doc">
+		<ComponentContainer :code="codeExample">
+			<div class="flex flex--wrap">
+				<div
+					v-for="type in btnTypes"
+					:key="`switch-${type}`"
+					class="px-3"
+				>
+					<p class="mb-3 text-center">
+						{{ type }}
+					</p>
+					<MazSwitch
+						v-model="checkboxValue"
+						:color="type"
+						class="mb-2" />
+				</div>
+			</div>
+		</ComponentContainer>
+	</div>
 </template>
 
 <script>

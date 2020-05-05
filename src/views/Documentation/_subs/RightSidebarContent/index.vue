@@ -1,14 +1,17 @@
 <template>
-  <div class="right-sidebar-content p-3">
-    <div class="flex justify-end">
-      <MazBtn fab @click="$emit('close')">
-        <i class="material-icons fs-20 flex flex-center">
-          close
-        </i>
-      </MazBtn>
-    </div>
-    <MdRenderer :file-name="currentComponent" />
-  </div>
+	<div class="right-sidebar-content p-3">
+		<div class="flex justify-end">
+			<MazBtn
+				fab
+				@click="$emit('close')"
+			>
+				<i class="material-icons fs-20 flex flex-center">
+					close
+				</i>
+			</MazBtn>
+		</div>
+		<MdRenderer :file-name="currentComponent" />
+	</div>
 </template>
 
 <script>

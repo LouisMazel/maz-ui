@@ -1,11 +1,11 @@
 <template>
-  <div class="maz-checkbox-doc">
-    <ComponentContainer :code="codeExample">
-      <MazCheckbox v-model="checkboxValue">
-        Checkbox label
-      </MazCheckbox>
-    </ComponentContainer>
-  </div>
+	<div class="maz-checkbox-doc">
+		<ComponentContainer :code="codeExample">
+			<MazCheckbox v-model="checkboxValue">
+				Checkbox label
+			</MazCheckbox>
+		</ComponentContainer>
+	</div>
 </template>
 
 <script>
