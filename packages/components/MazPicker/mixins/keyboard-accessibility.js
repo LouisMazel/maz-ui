@@ -7,12 +7,12 @@ import { EventBus } from './../utils'
 import moment from 'moment'
 
 const addListerner = ({ keyPressed }) => {
-  if (typeof window === 'undefined') return
+  if (typeof window === 'undefined') return null
   window.addEventListener('keydown', keyPressed)
 }
 
 const removeListerner = ({ keyPressed }) => {
-  if (typeof window === 'undefined') return
+  if (typeof window === 'undefined') return null
   window.removeEventListener('keydown', keyPressed)
 }
 

@@ -3,9 +3,9 @@ import moment from 'moment'
 import capitalizeText from './../../../src/filters/capitalize'
 
 export const getDefaultLocale = () => {
-  if (typeof window === 'undefined') return null
+  if (typeof window === 'undefined') return 'en'
 
-  const { userLanguage, language } = window.navigator
+  const { userLanguage, language } = window?.navigator ?? {}
   const locale = (userLanguage || language || 'en').substr(0, 2)
   return locale
 }
