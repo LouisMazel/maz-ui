@@ -90,30 +90,10 @@
   flex: 1;
 }
 
-.flex-100 {
-  flex: 0 1 100%;
-}
+@import './variables/percents';
 
-.flex-75 {
-  flex: 0 1 75%;
-}
-
-.flex-50 {
-  flex: 0 1 50%;
-}
-
-.flex-33 {
-  flex: 0 1 33.33%;
-}
-
-.flex-25 {
-  flex: 0 1 25%;
-}
-
-.flex-20 {
-  flex: 0 1 20%;
-}
-
-.flex-16 {
-  flex: 0 1 16.66%;
+@each $percent, $value in $percents {
+  .flex-#{$percent} {
+    flex: 0 1 #{$value};
+  }
 }

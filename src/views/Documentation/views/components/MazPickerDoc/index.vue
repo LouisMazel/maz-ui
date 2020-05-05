@@ -1,19 +1,19 @@
 <template>
-	<div class="maz-picker-doc">
-		<p class="fw-700 mb-3">
-			This component is based on
-			<a
-				target="_blank"
-				href="https://momentjs.com/">MomentJS</a>
-		</p>
+  <div class="maz-picker-doc">
+    <p class="fw-700 mb-3">
+      This component is based on
+      <a
+        target="_blank"
+        href="https://momentjs.com/">MomentJS</a>
+    </p>
 
-		<br />
-		<p class="mb-3">
-			You can use any locale available in moment package. Locales are
-			dynamically imported.
-		</p>
+    <br />
+    <p class="mb-3">
+      You can use any locale available in moment package. Locales are
+      dynamically imported.
+    </p>
 
-		<!-- <p class="fw-700 mb-3">
+    <!-- <p class="fw-700 mb-3">
       This component is based on
       <a
         target="_blank"
@@ -38,218 +38,218 @@
       </a>
     </p>-->
 
-		<div class="flex flex-1">
-			<MazBtnGroup
-				v-model="locale"
-				:items="locales" />
-		</div>
+    <div class="flex flex-1">
+      <MazBtnGroup
+        v-model="locale"
+        :items="locales" />
+    </div>
 
-		<hr class="border-top border-solid border-color my-3" />
+    <hr class="border-top border-solid border-color my-3" />
 
-		<p class="fw-700 mb-3">Top or bottom position of pickers is calculate</p>
+    <p class="fw-700 mb-3">Top or bottom position of pickers is calculate</p>
 
-		<p class="mb-3">
-			You can set the position with "position" props attribute :
-		</p>
+    <p class="mb-3">
+      You can set the position with "position" props attribute :
+    </p>
 
-		<CodeContainer
-			language="html"
-			:code="positionCodeExample" />
+    <CodeContainer
+      language="html"
+      :code="positionCodeExample" />
 
-		<hr class="border-top border-solid border-color my-3" />
+    <hr class="border-top border-solid border-color my-3" />
 
-		<div class="examples my-3">
-			<ComponentContainer :code="codeExample">
-				<h3>Date Time Picker</h3>
-				<h5 class="mb-3">Basic</h5>
+    <div class="examples my-3">
+      <ComponentContainer :code="codeExample">
+        <h3>Date Time Picker</h3>
+        <h5 class="mb-3">Basic</h5>
 
-				<p class="mb-3">
-					<strong>Options:</strong>
-					none
-				</p>
+        <p class="mb-3">
+          <strong>Options:</strong>
+          none
+        </p>
 
-				<p>
-					<strong>Value</strong>
-					: {{ pickerValue || 'null' }}
-				</p>
-				<p class="mb-2">
-					<strong>Formatted value</strong>
-					: {{ pickerFormatted || 'null' }}
-				</p>
+        <p>
+          <strong>Value</strong>
+          : {{ pickerValue || 'null' }}
+        </p>
+        <p class="mb-2">
+          <strong>Formatted value</strong>
+          : {{ pickerFormatted || 'null' }}
+        </p>
 
-				<MazPicker
-					v-model="pickerValue"
-					:locale="locale"
-					format="DD-MM-YYYY HH:mm"
-					@formatted="pickerFormatted = $event"
-				/>
-			</ComponentContainer>
+        <MazPicker
+          v-model="pickerValue"
+          :locale="locale"
+          format="DD-MM-YYYY HH:mm"
+          @formatted="pickerFormatted = $event"
+        />
+      </ComponentContainer>
 
-			<ComponentContainer :code="clearableExample">
-				<h3>Date Picker</h3>
-				<h5 class="mb-3">
-					Small input size clearable with input value formatted
-				</h5>
+      <ComponentContainer :code="clearableExample">
+        <h3>Date Picker</h3>
+        <h5 class="mb-3">
+          Small input size clearable with input value formatted
+        </h5>
 
-				<p class="mb-3">
-					<strong>Options:</strong>
-					no-time - clearable - size="sm" - formatted="ll" - placeholder="Select
-					date"
-				</p>
+        <p class="mb-3">
+          <strong>Options:</strong>
+          no-time - clearable - size="sm" - formatted="ll" - placeholder="Select
+          date"
+        </p>
 
-				<p>
-					<strong>Value</strong>
-					: {{ pickerValue2 || 'null' }}
-				</p>
-				<p class="mb-2">
-					<strong>Formatted value</strong>
-					: {{ pickerFormatted2 || 'null' }}
-				</p>
+        <p>
+          <strong>Value</strong>
+          : {{ pickerValue2 || 'null' }}
+        </p>
+        <p class="mb-2">
+          <strong>Formatted value</strong>
+          : {{ pickerFormatted2 || 'null' }}
+        </p>
 
-				<MazPicker
-					v-model="pickerValue2"
-					clearable
-					placeholder="Select date"
-					size="sm"
-					no-time
-					formatted="ll"
-					:locale="locale"
-					@formatted="pickerFormatted2 = $event"
-				/>
-			</ComponentContainer>
+        <MazPicker
+          v-model="pickerValue2"
+          clearable
+          placeholder="Select date"
+          size="sm"
+          no-time
+          formatted="ll"
+          :locale="locale"
+          @formatted="pickerFormatted2 = $event"
+        />
+      </ComponentContainer>
 
-			<ComponentContainer :code="doubleExample">
-				<h3>Double Date Picker</h3>
-				<h5 class="mb-3">
-					Large input size - french format - custom placeholder
-				</h5>
+      <ComponentContainer :code="doubleExample">
+        <h3>Double Date Picker</h3>
+        <h5 class="mb-3">
+          Large input size - french format - custom placeholder
+        </h5>
 
-				<p class="mb-3">
-					<strong>Options:</strong>
-					double - size="lg" - format="DD-MM-YYYY" - placeholder="Select date in
-					big calander" - no-time
-				</p>
+        <p class="mb-3">
+          <strong>Options:</strong>
+          double - size="lg" - format="DD-MM-YYYY" - placeholder="Select date in
+          big calander" - no-time
+        </p>
 
-				<p>
-					<strong>Value</strong>
-					: {{ pickerValue3 || 'null' }}
-				</p>
-				<p class="mb-2">
-					<strong>Formatted value</strong>
-					: {{ pickerFormatted3 || 'null' }}
-				</p>
+        <p>
+          <strong>Value</strong>
+          : {{ pickerValue3 || 'null' }}
+        </p>
+        <p class="mb-2">
+          <strong>Formatted value</strong>
+          : {{ pickerFormatted3 || 'null' }}
+        </p>
 
-				<MazPicker
-					v-model="pickerValue3"
-					placeholder="Select date in big calendar"
-					format="DD-MM-YYYY"
-					no-time
-					size="lg"
-					double
-					:locale="locale"
-					@formatted="pickerFormatted3 = $event"
-				/>
-			</ComponentContainer>
+        <MazPicker
+          v-model="pickerValue3"
+          placeholder="Select date in big calendar"
+          format="DD-MM-YYYY"
+          no-time
+          size="lg"
+          double
+          :locale="locale"
+          @formatted="pickerFormatted3 = $event"
+        />
+      </ComponentContainer>
 
-			<ComponentContainer :code="rangeExample">
-				<h3>Range Double Date Picker</h3>
-				<h5 class="mb-3">Position forced</h5>
+      <ComponentContainer :code="rangeExample">
+        <h3>Range Double Date Picker</h3>
+        <h5 class="mb-3">Position forced</h5>
 
-				<p class="mb-3">
-					<strong>Options:</strong>
-					range - double - position="top right" - placeholder="Select period"
-				</p>
+        <p class="mb-3">
+          <strong>Options:</strong>
+          range - double - position="top right" - placeholder="Select period"
+        </p>
 
-				<p>
-					<strong>Value</strong>
-					: {{ pickerRangeValues || 'null' }}
-				</p>
-				<p class="mb-2">
-					<strong>Formatted value</strong>
-					:
-					{{ pickerRangeValuesFormatted || 'null' }}
-				</p>
+        <p>
+          <strong>Value</strong>
+          : {{ pickerRangeValues || 'null' }}
+        </p>
+        <p class="mb-2">
+          <strong>Formatted value</strong>
+          :
+          {{ pickerRangeValuesFormatted || 'null' }}
+        </p>
 
-				<MazPicker
-					v-model="pickerRangeValues"
-					placeholder="Select period"
-					range
-					double
-					position="top right"
-					:locale="locale"
-					@formatted="pickerRangeValuesFormatted = $event"
-				/>
-			</ComponentContainer>
+        <MazPicker
+          v-model="pickerRangeValues"
+          placeholder="Select period"
+          range
+          double
+          position="top right"
+          :locale="locale"
+          @formatted="pickerRangeValuesFormatted = $event"
+        />
+      </ComponentContainer>
 
-			<ComponentContainer :code="inlineExample">
-				<h3>Inline Double Date Time Picker</h3>
-				<h5 class="mb-3">Min & max dates provided & without time picker</h5>
+      <ComponentContainer :code="inlineExample">
+        <h3>Inline Double Date Time Picker</h3>
+        <h5 class="mb-3">Min & max dates provided & without time picker</h5>
 
-				<p class="mb-3">
-					<strong>Options:</strong>
-					inline - min-date="2020-05-05" - max-date="2020-05-27" - no-time
-				</p>
+        <p class="mb-3">
+          <strong>Options:</strong>
+          inline - min-date="2020-05-05" - max-date="2020-05-27" - no-time
+        </p>
 
-				<p>
-					<strong>Value</strong>
-					: {{ pickerValue4 || 'null' }}
-				</p>
-				<p class="mb-2">
-					<strong>Formatted value</strong>
-					: {{ pickerFormatted4 || 'null' }}
-				</p>
+        <p>
+          <strong>Value</strong>
+          : {{ pickerValue4 || 'null' }}
+        </p>
+        <p class="mb-2">
+          <strong>Formatted value</strong>
+          : {{ pickerFormatted4 || 'null' }}
+        </p>
 
-				<MazPicker
-					v-model="pickerValue4"
-					inline
-					no-time
-					double
-					min-date="2020-05-05"
-					max-date="2020-06-22"
-					:locale="locale"
-					@formatted="pickerFormatted4 = $event"
-				/>
-			</ComponentContainer>
+        <MazPicker
+          v-model="pickerValue4"
+          inline
+          no-time
+          double
+          min-date="2020-05-05"
+          max-date="2020-06-22"
+          :locale="locale"
+          @formatted="pickerFormatted4 = $event"
+        />
+      </ComponentContainer>
 
-			<ComponentContainer :code="inlineExample">
-				<h3>Time Picker</h3>
-				<h5 class="mb-3">Min & max dates provided & without time picker</h5>
+      <ComponentContainer :code="inlineExample">
+        <h3>Time Picker</h3>
+        <h5 class="mb-3">Min & max dates provided & without time picker</h5>
 
-				<p class="mb-3">
-					<strong>Options:</strong>
-					no-date - placeholder="Select time"
-				</p>
+        <p class="mb-3">
+          <strong>Options:</strong>
+          no-date - placeholder="Select time"
+        </p>
 
-				<p>
-					<strong>Value</strong>
-					: {{ pickerValue5 || 'null' }}
-				</p>
-				<p class="mb-2">
-					<strong>Formatted value</strong>
-					: {{ pickerFormatted5 || 'null' }}
-				</p>
+        <p>
+          <strong>Value</strong>
+          : {{ pickerValue5 || 'null' }}
+        </p>
+        <p class="mb-2">
+          <strong>Formatted value</strong>
+          : {{ pickerFormatted5 || 'null' }}
+        </p>
 
-				<MazPicker
-					v-model="pickerValue5"
-					placeholder="Select time"
-					no-date
-					:locale="locale"
-				/>
-			</ComponentContainer>
+        <MazPicker
+          v-model="pickerValue5"
+          placeholder="Select time"
+          no-date
+          :locale="locale"
+        />
+      </ComponentContainer>
 
-			<ComponentContainer :code="inlineExample">
-				<h3 class="mb-3">Disabled</h3>
+      <ComponentContainer :code="inlineExample">
+        <h3 class="mb-3">Disabled</h3>
 
-				<p>Value : {{ pickerValue4 || 'null' }}</p>
-				<p class="mb-2">Formatted value : {{ pickerFormatted4 || 'null' }}</p>
+        <p>Value : {{ pickerValue4 || 'null' }}</p>
+        <p class="mb-2">Formatted value : {{ pickerFormatted4 || 'null' }}</p>
 
-				<MazPicker
-					v-model="pickerValue4"
-					disabled
-					:locale="locale" />
-			</ComponentContainer>
-		</div>
-	</div>
+        <MazPicker
+          v-model="pickerValue4"
+          disabled
+          :locale="locale" />
+      </ComponentContainer>
+    </div>
+  </div>
 </template>
 
 <script>

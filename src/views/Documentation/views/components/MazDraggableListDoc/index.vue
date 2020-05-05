@@ -1,33 +1,33 @@
 <template>
-	<div class="maz-draggable-list-doc">
-		<ComponentContainer :code="codeExample">
-			<div class="demo-container flex flex--wrap">
-				<MazDraggableList
-					v-model="list"
-					class="flex-1 mr-3" />
-				<MazDraggableList
-					v-model="list"
-					v-slot="{ item, index }"
-					class="flex-1"
-				>
-					<div class="flex space-between w-100 align-center">
-						<p>label: {{ item.label }}</p>
-						<p>index: {{ index }}</p>
-						<MazBtn
-							fab
-							size="sm">
-							<i class="material-icons fs-20">
-								edit
-							</i>
-						</MazBtn>
-					</div>
-				</MazDraggableList>
-			</div>
-			<MazBtn @click="resetOrder">
-				Reset order
-			</MazBtn>
-		</ComponentContainer>
-	</div>
+  <div class="maz-draggable-list-doc">
+    <ComponentContainer :code="codeExample">
+      <div class="demo-container flex flex--wrap">
+        <MazDraggableList
+          v-model="list"
+          class="flex-1 mr-3" />
+        <MazDraggableList
+          v-model="list"
+          v-slot="{ item, index }"
+          class="flex-1"
+        >
+          <div class="flex space-between w-100 align-center">
+            <p>label: {{ item.label }}</p>
+            <p>index: {{ index }}</p>
+            <MazBtn
+              fab
+              size="sm">
+              <i class="material-icons fs-20">
+                edit
+              </i>
+            </MazBtn>
+          </div>
+        </MazDraggableList>
+      </div>
+      <MazBtn @click="resetOrder">
+        Reset order
+      </MazBtn>
+    </ComponentContainer>
+  </div>
 </template>
 
 <script>

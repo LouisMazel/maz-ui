@@ -1,75 +1,75 @@
 <template>
-	<div
-		class="maz-input-tags flex flex--wrap align-center"
-		:class="[{
-			'is-focused': isFocus,
-			'is-valid': valid,
-			'has-value': value,
-			'has-error': error,
-			'is-disabled': disabled,
-			'is-dark': dark
-		}, size]"
-		@focus.capture="isFocus = true"
-		@blur.capture="isFocus = false"
-	>
-		<transition-group
-			tag="div"
-			name="tags"
-			class="flex flex--wrap align-center flex-1"
-		>
-			<MazBtn
-				v-for="(tag, i) in tags"
-				:key="`tag-${tag}-${i}`"
-				class="maz-input-tags__tag flex align-center"
-				:disabled="disabled"
-				:size="size"
-				@click.stop="removeTag(i)"
-			>
-				<span class="maz-input-tags__tag__text">
-					{{ tag }}
-				</span>
-				<i class="maz-input-tags__tag__clear material-icons">
-					close
-				</i>
-			</MazBtn>
-			<input
-				key="input-tags"
-				v-model="inputValue"
-				v-bind="$attrs"
-				type="text"
-				:placeholder="placeholder"
-				:aria-label="placeholder"
-				:disabled="disabled"
-				:readonly="readonly"
-				class="maz-input-tags__input flex-1"
-				@keydown.enter.prevent="addTags"
-				@keydown.delete="removeLastTag"
-			>
-			<button
-				v-if="hasClearBtn"
-				key="clear-button"
-				class="maz-input-tags__toggle-btn --clear flex flex-center"
-				title="clear"
-				type="button"
-				tabindex="-1"
-				:disabled="disabled"
-				@click="cleanTags"
-			>
-				<span class="maz-input-tags__toggle-btn__effect" />
-				<i class="maz-input-tags__toggle-btn__icon material-icons">
-					close
-				</i>
-			</button>
-		</transition-group>
-		<div
-			v-if="loading"
-			class="maz-input-tags__loader"
-		>
-			<div
-				class="maz-input__loader__progress-bar"
-			/>
-		</div>
-	</div>
+  <div
+    class="maz-input-tags flex flex--wrap align-center"
+    :class="[{
+      'is-focused': isFocus,
+      'is-valid': valid,
+      'has-value': value,
+      'has-error': error,
+      'is-disabled': disabled,
+      'is-dark': dark
+    }, size]"
+    @focus.capture="isFocus = true"
+    @blur.capture="isFocus = false"
+  >
+    <transition-group
+      tag="div"
+      name="tags"
+      class="flex flex--wrap align-center flex-1"
+    >
+      <MazBtn
+        v-for="(tag, i) in tags"
+        :key="`tag-${tag}-${i}`"
+        class="maz-input-tags__tag flex align-center"
+        :disabled="disabled"
+        :size="size"
+        @click.stop="removeTag(i)"
+      >
+        <span class="maz-input-tags__tag__text">
+          {{ tag }}
+        </span>
+        <i class="maz-input-tags__tag__clear material-icons">
+          close
+        </i>
+      </MazBtn>
+      <input
+        key="input-tags"
+        v-model="inputValue"
+        v-bind="$attrs"
+        type="text"
+        :placeholder="placeholder"
+        :aria-label="placeholder"
+        :disabled="disabled"
+        :readonly="readonly"
+        class="maz-input-tags__input flex-1"
+        @keydown.enter.prevent="addTags"
+        @keydown.delete="removeLastTag"
+      >
+      <button
+        v-if="hasClearBtn"
+        key="clear-button"
+        class="maz-input-tags__toggle-btn --clear flex flex-center"
+        title="clear"
+        type="button"
+        tabindex="-1"
+        :disabled="disabled"
+        @click="cleanTags"
+      >
+        <span class="maz-input-tags__toggle-btn__effect" />
+        <i class="maz-input-tags__toggle-btn__icon material-icons">
+          close
+        </i>
+      </button>
+    </transition-group>
+    <div
+      v-if="loading"
+      class="maz-input-tags__loader"
+    >
+      <div
+        class="maz-input__loader__progress-bar"
+      />
+    </div>
+  </div>
 </template>
 
 <script>

@@ -1,15 +1,15 @@
 <template>
-	<div
-		class="dark-switch-banner w-100 p-3 flex flex-center border-color border-top-1 border-top-solid"
-	>
-		<p class="text-muted">
-			Switch Dark Theme
-		</p>
-		<MazSwitch
-			v-model="darkTheme"
-			class="ml-2"
-		/>
-	</div>
+  <div
+    class="dark-switch-banner w-100 p-3 flex flex-center border-color border-top-1 border-top-solid"
+  >
+    <p class="text-muted">
+      Switch Dark Theme
+    </p>
+    <MazSwitch
+      v-model="darkTheme"
+      class="ml-2"
+    />
+  </div>
 </template>
 
 <script>

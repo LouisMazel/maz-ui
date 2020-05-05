@@ -1,24 +1,24 @@
 <template>
-	<MazFlex
-		flex
-		direction-column
-		flex1
-		class="used-by">
-		<MazFlex flex1>
-			<h2 class="text-center my-4">
-				Projects Made With Mazel UI
-			</h2>
-			<div class="container used-by__projects-list flex align-center pt-2 pb-5">
-				<ProjectPreview
-					v-for="(project, i) in projects"
-					:key="`project-${i}`"
-					:project="project"
-					class="used-by__projects-list__item"
-				/>
-			</div>
-		</MazFlex>
-		<NavFooter />
-	</MazFlex>
+  <MazFlex
+    flex
+    direction-column
+    flex1
+    class="used-by">
+    <MazFlex flex1>
+      <h2 class="text-center my-4">
+        Projects Made With Mazel UI
+      </h2>
+      <div class="container used-by__projects-list flex align-center pt-2 pb-5">
+        <ProjectPreview
+          v-for="(project, i) in projects"
+          :key="`project-${i}`"
+          :project="project"
+          class="used-by__projects-list__item"
+        />
+      </div>
+    </MazFlex>
+    <NavFooter />
+  </MazFlex>
 </template>
 
 <script>

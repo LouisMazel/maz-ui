@@ -1,14 +1,14 @@
 <template>
-	<div
-		ref="MazTabsContent"
-		:style="[
-			tabsContainerState,
-			{ height: height }
-		]"
-		class="tabs-content flex align-start"
-	>
-		<slot />
-	</div>
+  <div
+    ref="MazTabsContent"
+    :style="[
+      tabsContainerState,
+      { height: height }
+    ]"
+    class="tabs-content flex align-start"
+  >
+    <slot />
+  </div>
 </template>
 
 <script>

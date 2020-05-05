@@ -1,75 +1,75 @@
 <template>
-	<div class="maz-list-doc">
-		<ComponentContainer :code="codeExample">
-			<div class="lists-container">
-				<div class="list-1">
-					<h2 class="mb-2">
-						Basic list
-					</h2>
-					<p class="text-muted mb-3">
-						Any options
-					</p>
-					<MazList>
-						<MazListItem
-							v-for="item in items"
-							:key="`list-1-${item.id}`">
-							<p>{{ item.title }}</p>
-							<p class="text-muted">
-								{{ item.id }}
-							</p>
-						</MazListItem>
-					</MazList>
-				</div>
-				<div class="list-2">
-					<h2 class="mb-2">
-						Hover & animate list
-					</h2>
-					<MazBtn
-						size="sm"
-						class="mb-2"
-						@click="reorderItems">
-						Shuffle items
-					</MazBtn>
+  <div class="maz-list-doc">
+    <ComponentContainer :code="codeExample">
+      <div class="lists-container">
+        <div class="list-1">
+          <h2 class="mb-2">
+            Basic list
+          </h2>
+          <p class="text-muted mb-3">
+            Any options
+          </p>
+          <MazList>
+            <MazListItem
+              v-for="item in items"
+              :key="`list-1-${item.id}`">
+              <p>{{ item.title }}</p>
+              <p class="text-muted">
+                {{ item.id }}
+              </p>
+            </MazListItem>
+          </MazList>
+        </div>
+        <div class="list-2">
+          <h2 class="mb-2">
+            Hover & animate list
+          </h2>
+          <MazBtn
+            size="sm"
+            class="mb-2"
+            @click="reorderItems">
+            Shuffle items
+          </MazBtn>
 
-					<MazList transition>
-						<MazListItem
-							v-for="item in items"
-							:key="`list-2-${item.id}`"
-							hover
-							tag="button"
-						>
-							<p>{{ item.title }}</p>
-							<p class="text-muted">
-								{{ item.id }}
-							</p>
-						</MazListItem>
-					</MazList>
-				</div>
-				<div class="list-3">
-					<h2 class="mb-2">
-						Scrollable list & no-shadow
-					</h2>
-					<p class="text-muted mb-3">
-						Just set `max-height` CSS property to the list
-					</p>
-					<MazList
-						no-shadow
-						class="scrollable-list">
-						<MazListItem
-							v-for="item in items"
-							:key="`list-3-${item.id}`"
-							tag="button"
-						>
-							<p>{{ item.title }}</p>
-							<p class="text-muted">
-								{{ item.id }}
-							</p>
-						</MazListItem>
-					</MazList>
-				</div>
-			</div>
-		</ComponentContainer>
-	</div>
+          <MazList transition>
+            <MazListItem
+              v-for="item in items"
+              :key="`list-2-${item.id}`"
+              hover
+              tag="button"
+            >
+              <p>{{ item.title }}</p>
+              <p class="text-muted">
+                {{ item.id }}
+              </p>
+            </MazListItem>
+          </MazList>
+        </div>
+        <div class="list-3">
+          <h2 class="mb-2">
+            Scrollable list & no-shadow
+          </h2>
+          <p class="text-muted mb-3">
+            Just set `max-height` CSS property to the list
+          </p>
+          <MazList
+            no-shadow
+            class="scrollable-list">
+            <MazListItem
+              v-for="item in items"
+              :key="`list-3-${item.id}`"
+              tag="button"
+            >
+              <p>{{ item.title }}</p>
+              <p class="text-muted">
+                {{ item.id }}
+              </p>
+            </MazListItem>
+          </MazList>
+        </div>
+      </div>
+    </ComponentContainer>
+  </div>
 </template>
 
 <script>

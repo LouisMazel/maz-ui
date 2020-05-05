@@ -1,17 +1,17 @@
 <template>
-	<VueDropzone
-		:id="id"
-		ref="mazDropzone"
-		:options="dropzoneOptions"
-		class="maz-dropzone w-100 h-100 flex align-center justify-center"
-		:class="{ 'is-dark': dark }"
-		@vdropzone-file-added="fileAdded"
-		@vdropzone-success="fileSended"
-		@vdropzone-thumbnail="thumbnail"
-		@vdropzone-error="fileError"
-		@vdropzone-removed-file="removeFile"
-		@vdropzone-sending="sending"
-	/>
+  <VueDropzone
+    :id="id"
+    ref="mazDropzone"
+    :options="dropzoneOptions"
+    class="maz-dropzone w-100 h-100 flex align-center justify-center"
+    :class="{ 'is-dark': dark }"
+    @vdropzone-file-added="fileAdded"
+    @vdropzone-success="fileSended"
+    @vdropzone-thumbnail="thumbnail"
+    @vdropzone-error="fileError"
+    @vdropzone-removed-file="removeFile"
+    @vdropzone-sending="sending"
+  />
 </template>
 
 <script>

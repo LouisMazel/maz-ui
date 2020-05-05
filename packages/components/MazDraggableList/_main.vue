@@ -1,37 +1,37 @@
 <template>
-	<div class="maz-draggable-list mb-3">
-		<draggable
-			v-model="items"
-			v-bind="dragOptions"
-			group="modules"
-			@start="drag = true"
-			@end="drag = false"
-		>
-			<transition-group
-				type="transition"
-				tag="div"
-				:name="!drag ? 'flip-list' : null"
-			>
-				<div
-					v-for="(item, i) in value"
-					:key="`${itemKey ? item[itemKey] : Object.values(item)[0]}`"
-					class="maz-draggable-list__item flex align-center space-between"
-				>
-					<!-- Default item displayed in list -->
-					<slot
-						:item="item"
-						:index="i"
-						tag="div"
-					>
-						<!-- `<span>{{ item }}</span>` -->
-						<span>
-							{{ item }}
-						</span>
-					</slot>
-				</div>
-			</transition-group>
-		</draggable>
-	</div>
+  <div class="maz-draggable-list mb-3">
+    <draggable
+      v-model="items"
+      v-bind="dragOptions"
+      group="modules"
+      @start="drag = true"
+      @end="drag = false"
+    >
+      <transition-group
+        type="transition"
+        tag="div"
+        :name="!drag ? 'flip-list' : null"
+      >
+        <div
+          v-for="(item, i) in value"
+          :key="`${itemKey ? item[itemKey] : Object.values(item)[0]}`"
+          class="maz-draggable-list__item flex align-center space-between"
+        >
+          <!-- Default item displayed in list -->
+          <slot
+            :item="item"
+            :index="i"
+            tag="div"
+          >
+            <!-- `<span>{{ item }}</span>` -->
+            <span>
+              {{ item }}
+            </span>
+          </slot>
+        </div>
+      </transition-group>
+    </draggable>
+  </div>
 </template>
 
 <script>

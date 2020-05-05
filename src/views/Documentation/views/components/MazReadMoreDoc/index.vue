@@ -1,13 +1,13 @@
 <template>
-	<div class="maz-read-more-doc">
-		<ComponentContainer :code="codeExample">
-			<MazReadMore
-				:text="text"
-				:truncate-length="450"
-				:translations="translations"
-			/>
-		</ComponentContainer>
-	</div>
+  <div class="maz-read-more-doc">
+    <ComponentContainer :code="codeExample">
+      <MazReadMore
+        :text="text"
+        :truncate-length="450"
+        :translations="translations"
+      />
+    </ComponentContainer>
+  </div>
 </template>
 
 <script>

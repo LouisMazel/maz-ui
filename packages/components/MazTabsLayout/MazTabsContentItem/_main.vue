@@ -1,14 +1,14 @@
 <template>
-	<div
-		:id="_uid"
-		ref="MazTabsContentItem"
-		:class="{
-			'h-0' : !isCurrent && hasHZero
-		}"
-		class="tabs-content-item"
-	>
-		<slot />
-	</div>
+  <div
+    :id="_uid"
+    ref="MazTabsContentItem"
+    :class="{
+      'h-0' : !isCurrent && hasHZero
+    }"
+    class="tabs-content-item"
+  >
+    <slot />
+  </div>
 </template>
 
 <script>

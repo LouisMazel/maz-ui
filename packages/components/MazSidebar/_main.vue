@@ -1,57 +1,57 @@
 <template>
-	<div
-		class="maz-sidebar"
-		:class="{
-			'is-dark': dark
-		}">
-		<div
-			:id="uniqueId"
-			ref="MazSidebar"
-			class="maz-sidebar__wrapper flex flex-fixed m-h-100 mh-100"
-			:style="[wrapperStyle]"
-			:class="{
-				'is-close': !isOpen,
-				'is-absolute': absolute,
-				'has-shadow': !noShadow,
-				'is-right': right
-			}"
-		>
-			<transition
-				name="fade"
-				mode="in-out">
-				<div
-					v-show="isOpen"
-					class="maz-sidebar__wrapper__content flex flex-1 w-100 direction-column"
-				>
-					<slot />
-				</div>
-			</transition>
-			<div
-				v-if="!noCloseBtn"
-				class="maz-sidebar__wrapper__close-btn">
-				<button
-					class="flex align-center justify-center"
-					@click="isOpen = !isOpen">
-					<slot name="button-icon">
-						<ArrowIcon :orientation="isOpen ? 'left' : 'right'" />
-					</slot>
-				</button>
-			</div>
-			<div
-				v-show="loading && isOpen"
-				class="maz-sidebar__wrapper__load-layer flex align-center justify-center"
-			>
-				<slot name="content-loader">
-					<MazLoader />
-				</slot>
-			</div>
-		</div>
-		<div
-			v-if="layer && isOpen"
-			class="maz-sidebar__wrapper__opacity-layer"
-			@click="isOpen = false"
-		/>
-	</div>
+  <div
+    class="maz-sidebar"
+    :class="{
+      'is-dark': dark
+    }">
+    <div
+      :id="uniqueId"
+      ref="MazSidebar"
+      class="maz-sidebar__wrapper flex flex-fixed m-h-100 mh-100"
+      :style="[wrapperStyle]"
+      :class="{
+        'is-close': !isOpen,
+        'is-absolute': absolute,
+        'has-shadow': !noShadow,
+        'is-right': right
+      }"
+    >
+      <transition
+        name="fade"
+        mode="in-out">
+        <div
+          v-show="isOpen"
+          class="maz-sidebar__wrapper__content flex flex-1 w-100 direction-column"
+        >
+          <slot />
+        </div>
+      </transition>
+      <div
+        v-if="!noCloseBtn"
+        class="maz-sidebar__wrapper__close-btn">
+        <button
+          class="flex align-center justify-center"
+          @click="isOpen = !isOpen">
+          <slot name="button-icon">
+            <ArrowIcon :orientation="isOpen ? 'left' : 'right'" />
+          </slot>
+        </button>
+      </div>
+      <div
+        v-show="loading && isOpen"
+        class="maz-sidebar__wrapper__load-layer flex align-center justify-center"
+      >
+        <slot name="content-loader">
+          <MazLoader />
+        </slot>
+      </div>
+    </div>
+    <div
+      v-if="layer && isOpen"
+      class="maz-sidebar__wrapper__opacity-layer"
+      @click="isOpen = false"
+    />
+  </div>
 </template>
 
 <script>

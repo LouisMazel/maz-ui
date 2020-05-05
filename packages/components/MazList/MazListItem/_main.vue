@@ -1,15 +1,15 @@
 <template>
-	<component
-		:is="tag"
-		class="maz-list-item"
-		:class="{
-			'has-hover': hover,
-			'cursor-pointer': tag === 'button'
-		}"
-	>
-		<!-- Place your item text here -->
-		<slot />
-	</component>
+  <component
+    :is="tag"
+    class="maz-list-item"
+    :class="{
+      'has-hover': hover,
+      'cursor-pointer': tag === 'button'
+    }"
+  >
+    <!-- Place your item text here -->
+    <slot />
+  </component>
 </template>
 
 <script>

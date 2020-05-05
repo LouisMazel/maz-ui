@@ -1,44 +1,44 @@
 <template>
-	<div class="documentation flex flex-1 pos-r">
-		<MazSidebar
-			v-model="hasLeftSidebarOpen"
-			:width="280"
-			:absolute="isAbsolute"
-			:layer="isAbsolute"
-		>
-			<LeftSidebarContent />
-		</MazSidebar>
-		<div class="documentation__container flex direction-column flex-1">
-			<div
-				v-if="isComponentRoute"
-				class="flex space-between px-5 py-3 align-center flex--wrap"
-			>
-				<h2>
-					{{ currentComponent | capitalize }}
-				</h2>
-				<div class="flex-fixed">
-					<MazBtn @click="showOptions">
-						Show Options, Events & Slots
-					</MazBtn>
-				</div>
-			</div>
-			<router-view class="content px-5 py-3 flex-1" />
-			<NavFooter />
-		</div>
-		<MazSidebar
-			v-if="isComponentRoute"
-			v-model="hasRightSidebarOpen"
-			:width="1000"
-			right
-			absolute
-			layer
-			no-close-btn
-		>
-			<RightSidebarContent
-				@close="hasRightSidebarOpen = !hasRightSidebarOpen"
-			/>
-		</MazSidebar>
-	</div>
+  <div class="documentation flex flex-1 pos-r">
+    <MazSidebar
+      v-model="hasLeftSidebarOpen"
+      :width="280"
+      :absolute="isAbsolute"
+      :layer="isAbsolute"
+    >
+      <LeftSidebarContent />
+    </MazSidebar>
+    <div class="documentation__container flex direction-column flex-1">
+      <div
+        v-if="isComponentRoute"
+        class="flex space-between px-5 py-5 align-center flex--wrap"
+      >
+        <h2>
+          {{ currentComponent | capitalize }}
+        </h2>
+        <div class="flex-fixed">
+          <MazBtn @click="showOptions">
+            Show Options, Events & Slots
+          </MazBtn>
+        </div>
+      </div>
+      <router-view class="content px-5 py-5 flex-1" />
+      <NavFooter />
+    </div>
+    <MazSidebar
+      v-if="isComponentRoute"
+      v-model="hasRightSidebarOpen"
+      :width="1000"
+      right
+      absolute
+      layer
+      no-close-btn
+    >
+      <RightSidebarContent
+        @close="hasRightSidebarOpen = !hasRightSidebarOpen"
+      />
+    </MazSidebar>
+  </div>
 </template>
 
 <script>

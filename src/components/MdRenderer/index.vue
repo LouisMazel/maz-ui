@@ -1,11 +1,11 @@
 <template>
-	<div class="md-renderer">
-		<component
-			:is="component"
-			v-for="(component, i) in dynamicComponents"
-			:key="i"
-		/>
-	</div>
+  <div class="md-renderer">
+    <component
+      :is="component"
+      v-for="(component, i) in dynamicComponents"
+      :key="i"
+    />
+  </div>
 </template>
 
 <script>

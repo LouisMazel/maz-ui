@@ -1,84 +1,84 @@
 <template>
-	<div
-		class="maz-select"
-		:class="[{
-			'has-list-open': hasListOpen,
-			'is-dark': dark
-		}]"
-		@click.stop="toggleList"
-	>
-		<MazInput
-			ref="textField"
-			:value="valueShown"
-			v-bind="$attrs"
-			readonly
-			:placeholder="placeholder"
-			:disabled="disabled"
-			@keydown="keyboardNav"
-			@keyup="$emit('keyup', $event)"
-			@blur.capture="handleBlur"
-			@change="$emit('change', $event)"
-		>
-			<div
-				slot="input-icon-right"
-				class="maz-select__toggle"
-				@click.stop="toggleList"
-			>
-				<!-- The arrow icon -->
-				<slot name="arrow">
-					<!-- the arrow svg -->
-					<svg
-						mlns="http://www.w3.org/2000/svg"
-						width="24"
-						height="24"
-						viewBox="0 0 24 24"
-						class="maz-select__toggle__arrow"
-					>
-						<path
-							class="arrow"
-							d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"
-						/>
-						<path
-							fill="none"
-							d="M0 0h24v24H0V0z"
-						/>
-					</svg>
-				</slot>
-			</div>
-		</MazInput>
-		<transition name="slide">
-			<div
-				v-show="hasListOpen"
-				ref="optionsList"
-				class="maz-select__options-list"
-				:style="[itemListHeight]"
-			>
-				<button
-					v-for="({ label: l, value: v }, i) in options"
-					:key="i"
-					tabindex="-1"
-					type="button"
-					:class="[
-						{'selected': value === v},
-						{'keyboard-selected': tmpValue === v}
-					]"
-					class="flex align-center maz-select__options-list__item"
-					:style="[optionHeight]"
-					@click.stop="updateValue(v)"
-				>
-					<div
-						class="dots-text"
-						:class="[
-							{ 'text-muted' : !v && value !== v },
-							value === v ? 'text-white' : 'text-color'
-						]"
-					>
-						{{ l }}
-					</div>
-				</button>
-			</div>
-		</transition>
-	</div>
+  <div
+    class="maz-select"
+    :class="[{
+      'has-list-open': hasListOpen,
+      'is-dark': dark
+    }]"
+    @click.stop="toggleList"
+  >
+    <MazInput
+      ref="textField"
+      :value="valueShown"
+      v-bind="$attrs"
+      readonly
+      :placeholder="placeholder"
+      :disabled="disabled"
+      @keydown="keyboardNav"
+      @keyup="$emit('keyup', $event)"
+      @blur.capture="handleBlur"
+      @change="$emit('change', $event)"
+    >
+      <div
+        slot="input-icon-right"
+        class="maz-select__toggle"
+        @click.stop="toggleList"
+      >
+        <!-- The arrow icon -->
+        <slot name="arrow">
+          <!-- the arrow svg -->
+          <svg
+            mlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            class="maz-select__toggle__arrow"
+          >
+            <path
+              class="arrow"
+              d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"
+            />
+            <path
+              fill="none"
+              d="M0 0h24v24H0V0z"
+            />
+          </svg>
+        </slot>
+      </div>
+    </MazInput>
+    <transition name="slide">
+      <div
+        v-show="hasListOpen"
+        ref="optionsList"
+        class="maz-select__options-list"
+        :style="[itemListHeight]"
+      >
+        <button
+          v-for="({ label: l, value: v }, i) in options"
+          :key="i"
+          tabindex="-1"
+          type="button"
+          :class="[
+            {'selected': value === v},
+            {'keyboard-selected': tmpValue === v}
+          ]"
+          class="flex align-center maz-select__options-list__item"
+          :style="[optionHeight]"
+          @click.stop="updateValue(v)"
+        >
+          <div
+            class="dots-text"
+            :class="[
+              { 'text-muted' : !v && value !== v },
+              value === v ? 'text-white' : 'text-color'
+            ]"
+          >
+            {{ l }}
+          </div>
+        </button>
+      </div>
+    </transition>
+  </div>
 </template>
 
 <script>

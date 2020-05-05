@@ -1,27 +1,27 @@
 <template>
-	<div class="theme">
-		<h2>
-			Theme
-		</h2>
+  <div class="theme">
+    <h2>
+      Theme
+    </h2>
 
-		<h3>
-			How to use your own colors and text styles
-		</h3>
+    <h3>
+      How to use your own colors and text styles
+    </h3>
 
-		<p>
-			To change globally the colors and text style you have to override Maz-UI
-			CSS variables
-		</p>
+    <p>
+      To change globally the colors and text style you have to override Maz-UI
+      CSS variables
+    </p>
 
-		<p>
-			Instead of importing the basic CSS file
-			(<strong>'maz-ui/lib/maz-ui.css'</strong>). <br />
-			You must import the Maz-UI SCSS at the top of your main CSS file and place
-			your own variables just before importing, follow this example:
-		</p>
+    <p>
+      Instead of importing the basic CSS file
+      (<strong>'maz-ui/lib/maz-ui.css'</strong>). <br />
+      You must import the Maz-UI SCSS at the top of your main CSS file and place
+      your own variables just before importing, follow this example:
+    </p>
 
-		<CodeContainer
-			code="// main.scss
+    <CodeContainer
+      code="// main.scss
 
 $primary-color:     red;
 $default-color:     blue;
@@ -38,20 +38,20 @@ $base-font-family:  'Roboto';
 */
 
 // Your own CSS"
-			language="scss"
-		/>
+      language="scss"
+    />
 
-		<h3>
-			All default variables
-		</h3>
+    <h3>
+      All default variables
+    </h3>
 
-		<CodeContainer
-			code="/*
+    <CodeContainer
+      code="/*
 * FONT BASIC
 */
 
 $base-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol' !default;
-$base-font-size:   14px !default;
+$base-font-size:   16px !default;
 $base-font-weight: 400 !default;
 $base-line-height: 1.5 !default;
 
@@ -124,9 +124,9 @@ $breakpoint-tablet: 768px !default;
 $breakpoint-laptop-s: 1024px !default;
 $breakpoint-laptop-l: 1440px !default;
 $breakpoint-4k: 1920px !default;"
-			language="scss"
-		/>
-	</div>
+      language="scss"
+    />
+  </div>
 </template>
 
 <script>

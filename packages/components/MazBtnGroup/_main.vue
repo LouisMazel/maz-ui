@@ -1,18 +1,18 @@
 <template>
-	<div class="maz-btn-group flex">
-		<MazBtn
-			v-for="({ label, value: val }, i) in items"
-			:key="`maz-btn-group-item-${i}`"
-			class="maz-btn-group__item flex-1"
-			:class="{ 'rounded': rounded }"
-			:active="val === value"
-			:rounded="rounded"
-			v-bind="$attrs"
-			@click="$emit('input', val)"
-		>
-			{{ label }}
-		</MazBtn>
-	</div>
+  <div class="maz-btn-group flex">
+    <MazBtn
+      v-for="({ label, value: val }, i) in items"
+      :key="`maz-btn-group-item-${i}`"
+      class="maz-btn-group__item flex-1"
+      :class="{ 'rounded': rounded }"
+      :active="val === value"
+      :rounded="rounded"
+      v-bind="$attrs"
+      @click="$emit('input', val)"
+    >
+      {{ label }}
+    </MazBtn>
+  </div>
 </template>
 
 <script>

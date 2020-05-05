@@ -1,11 +1,11 @@
 <template>
-	<div class="maz-pagination-doc">
-		<ComponentContainer :code="codeExample">
-			<MazPagination
-				v-model="currentPage"
-				:page-count="pageCount" />
-		</ComponentContainer>
-	</div>
+  <div class="maz-pagination-doc">
+    <ComponentContainer :code="codeExample">
+      <MazPagination
+        v-model="currentPage"
+        :page-count="pageCount" />
+    </ComponentContainer>
+  </div>
 </template>
 
 <script>

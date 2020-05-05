@@ -1,12 +1,12 @@
 <template>
-	<div
-		class="maz-flex"
-		:class="[
-			classes
-		]"
-	>
-		<slot />
-	</div>
+  <div
+    class="maz-flex"
+    :class="[
+      classes
+    ]"
+  >
+    <slot />
+  </div>
 </template>
 
 <script>

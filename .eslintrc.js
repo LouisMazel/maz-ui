@@ -63,7 +63,7 @@ module.exports = {
         }
       }
     ],
-    "vue/html-indent": ["error", "tab", {
+    "vue/html-indent": ["error", 2, {
       baseIndent: 1,
     }],
     "vue/script-indent": ["error", 2, { baseIndent: 1 }],

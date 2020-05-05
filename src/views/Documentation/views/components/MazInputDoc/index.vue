@@ -1,87 +1,87 @@
 <template>
-	<div class="maz-input-doc">
-		<ComponentContainer :code="codeExample">
-			<MazInput
-				v-model="exampleValue"
-				clearable
-				placeholder="Custom label & placeholder text"
-			/>
-		</ComponentContainer>
-		<ComponentContainer :code="codePasswordExample">
-			<MazInput
-				v-model="nameValue"
-				placeholder="Name"
-				autocomplete="new-name"
-				class="mb-3"
-				left-icon-name="person"
-				right-icon-name="favorite"
-				clearable
-			/>
-			<MazInput
-				v-model="emailValue"
-				placeholder="E-mail"
-				autocomplete="new-email"
-				class="mb-3"
-				clearable
-			>
-				<i
-					slot="input-icon-left"
-					class="material-icons">
-					email
-				</i>
-			</MazInput>
-			<MazInput
-				v-model="passwordValue"
-				placeholder="Password"
-				type="password"
-				autocomplete="new-password"
-				left-icon-name="lock"
-				class="mb-3"
-				clearable
-			/>
-			<MazInput
-				v-model="commentValue"
-				placeholder="Comment"
-				autocomplete="new-comment"
-				left-icon-name="comment"
-				textarea
-			/>
-		</ComponentContainer>
-		<div
-			v-for="type in inputTypes"
-			:key="type"
-			class="flex mt-3 flex--wrap">
-			<div class="flex-component flex-1">
-				<h3>{{ type | capitalize }}</h3>
-				<ComponentContainer>
-					<MazInput
-						v-model="inputValue"
-						:error="type === 'error'"
-						:valid="type === 'valid'"
-						:disabled="type === 'disabled'"
-						:clearable="type === 'clearable'"
-						:hint="type === 'hint' ? 'Hint value' : null"
-						:loading="type === 'loading'"
-						:required="type === 'required'"
-						:size="type === 'sm' ? 'sm' : type === 'lg' ? 'lg' : null"
-					/>
-				</ComponentContainer>
-				<ComponentContainer>
-					<MazInput
-						v-model="withValue"
-						:error="type === 'error'"
-						:valid="type === 'valid'"
-						:disabled="type === 'disabled'"
-						:clearable="type === 'clearable'"
-						:hint="type === 'hint' ? 'Hint value' : null"
-						:loading="type === 'loading'"
-						:required="type === 'required'"
-						:size="type === 'sm' ? 'sm' : type === 'lg' ? 'lg' : null"
-					/>
-				</ComponentContainer>
-			</div>
-		</div>
-	</div>
+  <div class="maz-input-doc">
+    <ComponentContainer :code="codeExample">
+      <MazInput
+        v-model="exampleValue"
+        clearable
+        placeholder="Custom label & placeholder text"
+      />
+    </ComponentContainer>
+    <ComponentContainer :code="codePasswordExample">
+      <MazInput
+        v-model="nameValue"
+        placeholder="Name"
+        autocomplete="new-name"
+        class="mb-3"
+        left-icon-name="person"
+        right-icon-name="favorite"
+        clearable
+      />
+      <MazInput
+        v-model="emailValue"
+        placeholder="E-mail"
+        autocomplete="new-email"
+        class="mb-3"
+        clearable
+      >
+        <i
+          slot="input-icon-left"
+          class="material-icons">
+          email
+        </i>
+      </MazInput>
+      <MazInput
+        v-model="passwordValue"
+        placeholder="Password"
+        type="password"
+        autocomplete="new-password"
+        left-icon-name="lock"
+        class="mb-3"
+        clearable
+      />
+      <MazInput
+        v-model="commentValue"
+        placeholder="Comment"
+        autocomplete="new-comment"
+        left-icon-name="comment"
+        textarea
+      />
+    </ComponentContainer>
+    <div
+      v-for="type in inputTypes"
+      :key="type"
+      class="flex mt-3 flex--wrap">
+      <div class="flex-component flex-1">
+        <h3>{{ type | capitalize }}</h3>
+        <ComponentContainer>
+          <MazInput
+            v-model="inputValue"
+            :error="type === 'error'"
+            :valid="type === 'valid'"
+            :disabled="type === 'disabled'"
+            :clearable="type === 'clearable'"
+            :hint="type === 'hint' ? 'Hint value' : null"
+            :loading="type === 'loading'"
+            :required="type === 'required'"
+            :size="type === 'sm' ? 'sm' : type === 'lg' ? 'lg' : null"
+          />
+        </ComponentContainer>
+        <ComponentContainer>
+          <MazInput
+            v-model="withValue"
+            :error="type === 'error'"
+            :valid="type === 'valid'"
+            :disabled="type === 'disabled'"
+            :clearable="type === 'clearable'"
+            :hint="type === 'hint' ? 'Hint value' : null"
+            :loading="type === 'loading'"
+            :required="type === 'required'"
+            :size="type === 'sm' ? 'sm' : type === 'lg' ? 'lg' : null"
+          />
+        </ComponentContainer>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>

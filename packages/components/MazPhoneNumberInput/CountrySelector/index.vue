@@ -1,98 +1,98 @@
 <template>
-	<div
-		ref="parent"
-		:class="[{
-			'is-focused': isFocus,
-			'has-value': value,
-			'has-hint': hint,
-			'has-error': error,
-			'is-disabled': disabled,
-			'is-dark': dark,
-			'no-flags': noFlags,
-			'has-list-open': hasListOpen,
-			'is-valid': valid
-		}, size]"
-		class="country-selector"
-		@blur.capture="handleBlur"
-	>
-		<div
-			v-if="value && !noFlags"
-			class="country-selector__country-flag"
-		>
-			<div :class="`iti-flag-small iti-flag ${value.toLowerCase()}`" />
-		</div>
-		<input
-			:id="id"
-			ref="CountrySelector"
-			:value="callingCode"
-			:placeholder="placeholder"
-			:disabled="disabled"
-			class="country-selector__input"
-			readonly
-			@focus="isFocus = true"
-			@keydown="keyboardNav"
-			@click.stop="toggleList"
-		>
-		<div
-			class="country-selector__toggle"
-			@click.stop="toggleList"
-		>
-			<slot name="arrow">
-				<ArrowIcon />
-			</slot>
-		</div>
-		<label
-			ref="label"
-			:class="error ? 'text-danger' : null"
-			class="country-selector__label"
-			@click.stop="toggleList"
-		>
-			{{ hint || placeholder }}
-		</label>
-		<Transition name="slide">
-			<div
-				v-show="hasListOpen"
-				ref="countriesList"
-				class="country-selector__list"
-				:class="{ 'has-calling-code': showCodeOnList }"
-				:style="[listHeight]"
-			>
-				<RecycleScroller
-					v-slot="{ item }"
-					:items="countriesSorted"
-					:item-size="1"
-					key-field="iso2"
-				>
-					<button
-						:key="`item-${item.code}`"
-						:class="[
-							{'selected': value === item.iso2},
-							{'keyboard-selected': value !== item.iso2 && tmpValue === item.iso2}
-						]"
-						class="flex align-center country-selector__list__item"
-						:style="[itemHeight]"
-						tabindex="-1"
-						type="button"
-						@click.stop="updateValue(item.iso2)"
-					>
-						<div
-							v-if="!noFlags"
-							class="country-selector__list__item__flag-container"
-						>
-							<div :class="`iti-flag-small iti-flag ${item.iso2.toLowerCase()}`" />
-						</div>
-						<span
-							v-if="showCodeOnList"
-							class="country-selector__list__item__calling-code flex-fixed"
-						>+{{ item.dialCode }}</span>
-						<div class="dots-text flex-1 text-left">
-							{{ item.name }}
-						</div>
-					</button>
-				</RecycleScroller>
-			</div>
-		</Transition>
-	</div>
+  <div
+    ref="parent"
+    :class="[{
+      'is-focused': isFocus,
+      'has-value': value,
+      'has-hint': hint,
+      'has-error': error,
+      'is-disabled': disabled,
+      'is-dark': dark,
+      'no-flags': noFlags,
+      'has-list-open': hasListOpen,
+      'is-valid': valid
+    }, size]"
+    class="country-selector"
+    @blur.capture="handleBlur"
+  >
+    <div
+      v-if="value && !noFlags"
+      class="country-selector__country-flag"
+    >
+      <div :class="`iti-flag-small iti-flag ${value.toLowerCase()}`" />
+    </div>
+    <input
+      :id="id"
+      ref="CountrySelector"
+      :value="callingCode"
+      :placeholder="placeholder"
+      :disabled="disabled"
+      class="country-selector__input"
+      readonly
+      @focus="isFocus = true"
+      @keydown="keyboardNav"
+      @click.stop="toggleList"
+    >
+    <div
+      class="country-selector__toggle"
+      @click.stop="toggleList"
+    >
+      <slot name="arrow">
+        <ArrowIcon />
+      </slot>
+    </div>
+    <label
+      ref="label"
+      :class="error ? 'text-danger' : null"
+      class="country-selector__label"
+      @click.stop="toggleList"
+    >
+      {{ hint || placeholder }}
+    </label>
+    <Transition name="slide">
+      <div
+        v-show="hasListOpen"
+        ref="countriesList"
+        class="country-selector__list"
+        :class="{ 'has-calling-code': showCodeOnList }"
+        :style="[listHeight]"
+      >
+        <RecycleScroller
+          v-slot="{ item }"
+          :items="countriesSorted"
+          :item-size="1"
+          key-field="iso2"
+        >
+          <button
+            :key="`item-${item.code}`"
+            :class="[
+              {'selected': value === item.iso2},
+              {'keyboard-selected': value !== item.iso2 && tmpValue === item.iso2}
+            ]"
+            class="flex align-center country-selector__list__item"
+            :style="[itemHeight]"
+            tabindex="-1"
+            type="button"
+            @click.stop="updateValue(item.iso2)"
+          >
+            <div
+              v-if="!noFlags"
+              class="country-selector__list__item__flag-container"
+            >
+              <div :class="`iti-flag-small iti-flag ${item.iso2.toLowerCase()}`" />
+            </div>
+            <span
+              v-if="showCodeOnList"
+              class="country-selector__list__item__calling-code flex-fixed"
+            >+{{ item.dialCode }}</span>
+            <div class="dots-text flex-1 text-left">
+              {{ item.name }}
+            </div>
+          </button>
+        </RecycleScroller>
+      </div>
+    </Transition>
+  </div>
 </template>
 
 <script>

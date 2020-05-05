@@ -1,63 +1,63 @@
 <template>
-	<div
-		class="maz-search"
-		:class="{ 'is-dark': dark }"
-		@blur.capture="closeList"
-	>
-		<MazInput
-			ref="textField"
-			v-model="query"
-			v-bind="$attrs"
-			@input="debouncedSearch"
-			@keydown="keyboardNav"
-			@focus="openList"
-			@keyup="$emit('keyup', $event)"
-			@change="$emit('change', $event)"
-		/>
-		<transition name="slide">
-			<div
-				v-if="hasListOpen"
-				ref="itemsList"
-				class="maz-search__items"
-			>
-				<button
-					v-for="(item, i) in items"
-					:key="i"
-					ref="item"
-					type="button"
-					tabindex="-1"
-					:class="[
-						{'selected': value === (itemValue ? item[itemValue] : item)},
-						{'keyboard-selected': tmpValue === (itemValue ? item[itemValue] : item)}
-					]"
-					class="maz-search__items__item"
-					@click.stop="updateValue((itemValue ? item[itemValue] : item))"
-				>
-					<!-- Item template -->
-					<slot
-						:item="item"
-						tag="div"
-					>
-						<!-- `<p>item value</p>` -->
-						<p>{{ itemText ? item[itemText] : item }}</p>
-					</slot>
-				</button>
-				<!-- No data template -->
-				<slot
-					v-if="hasNoDataSlot"
-					name="no-data"
-					tag="div"
-				>
-					<!-- `<p>No data</p>` -->
-					<div class="maz-search__items__item">
-						<p class="text-center">
-							No data
-						</p>
-					</div>
-				</slot>
-			</div>
-		</transition>
-	</div>
+  <div
+    class="maz-search"
+    :class="{ 'is-dark': dark }"
+    @blur.capture="closeList"
+  >
+    <MazInput
+      ref="textField"
+      v-model="query"
+      v-bind="$attrs"
+      @input="debouncedSearch"
+      @keydown="keyboardNav"
+      @focus="openList"
+      @keyup="$emit('keyup', $event)"
+      @change="$emit('change', $event)"
+    />
+    <transition name="slide">
+      <div
+        v-if="hasListOpen"
+        ref="itemsList"
+        class="maz-search__items"
+      >
+        <button
+          v-for="(item, i) in items"
+          :key="i"
+          ref="item"
+          type="button"
+          tabindex="-1"
+          :class="[
+            {'selected': value === (itemValue ? item[itemValue] : item)},
+            {'keyboard-selected': tmpValue === (itemValue ? item[itemValue] : item)}
+          ]"
+          class="maz-search__items__item"
+          @click.stop="updateValue((itemValue ? item[itemValue] : item))"
+        >
+          <!-- Item template -->
+          <slot
+            :item="item"
+            tag="div"
+          >
+            <!-- `<p>item value</p>` -->
+            <p>{{ itemText ? item[itemText] : item }}</p>
+          </slot>
+        </button>
+        <!-- No data template -->
+        <slot
+          v-if="hasNoDataSlot"
+          name="no-data"
+          tag="div"
+        >
+          <!-- `<p>No data</p>` -->
+          <div class="maz-search__items__item">
+            <p class="text-center">
+              No data
+            </p>
+          </div>
+        </slot>
+      </div>
+    </transition>
+  </div>
 </template>
 
 <script>

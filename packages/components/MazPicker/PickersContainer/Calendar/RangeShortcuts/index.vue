@@ -1,28 +1,28 @@
 <template>
-	<div
-		:style="[
-			{
-				height: `${height}px`,
-				width: `${140}px`
-			}
-		]"
-		class="range-shortcuts flex direction-column px-2 py-1 border-color border-right border-right-solid overflow-y-auto"
-	>
-		<MazBtn
-			v-for="shortcut in shortcuts"
-			:key="shortcut.key"
-			:active="selectedShortcut === shortcut.key"
-			size="sm"
-			tabindex="-1"
-			:class="[selectedShortcut !== shortcut.key ? 'hover-bg-color no-focus-bg border border-color text-primary': 'focus-primary']"
-			class="shortcut-button flex-1 my-1 bg-transparent no-shadow"
-			@click="select(shortcut)"
-		>
-			<span class="flex-1">
-				{{ shortcut.label }}
-			</span>
-		</MazBtn>
-	</div>
+  <div
+    :style="[
+      {
+        height: `${height}px`,
+        width: `${140}px`
+      }
+    ]"
+    class="range-shortcuts flex direction-column px-2 py-1 border-color border-right border-right-solid overflow-y-auto"
+  >
+    <MazBtn
+      v-for="shortcut in shortcuts"
+      :key="shortcut.key"
+      :active="selectedShortcut === shortcut.key"
+      size="sm"
+      tabindex="-1"
+      :class="[selectedShortcut !== shortcut.key ? 'hover-bg-color no-focus-bg border border-color text-primary': 'focus-primary']"
+      class="shortcut-button flex-1 my-1 bg-transparent no-shadow"
+      @click="select(shortcut)"
+    >
+      <span class="flex-1">
+        {{ shortcut.label }}
+      </span>
+    </MazBtn>
+  </div>
 </template>
 
 <script>

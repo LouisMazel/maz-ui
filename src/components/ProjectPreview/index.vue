@@ -1,31 +1,31 @@
 <template>
-	<div
-		class="project-preview border-radius text-white flex direction-column space-between overflow-hidden border border-solid border-color"
-	>
-		<div class="project-preview-header border-top-radius">
-			<img
-				class="project-preview__img border-top-radius"
-				:src="project.imgUrl"
-				:alt="`image illustration ${project.name}`"
-			/>
-			<div
-				v-if="project.demoUrl"
-				class="layer flex align-center justify-center"
-			>
-				<a
-					:href="project.demoUrl"
-					target="_blank"
-					class="btn btn--primary--outline btn--rounded"
-				>
-					<i class="material-icons">
-						visibility
-					</i>
-				</a>
-			</div>
-		</div>
-		<ProjectPreviewContent :project="project" />
-		<ProjectPreviewFooter :project="project" />
-	</div>
+  <div
+    class="project-preview border-radius text-white flex direction-column space-between overflow-hidden border border-solid border-color"
+  >
+    <div class="project-preview-header border-top-radius">
+      <img
+        class="project-preview__img border-top-radius"
+        :src="project.imgUrl"
+        :alt="`image illustration ${project.name}`"
+      />
+      <div
+        v-if="project.demoUrl"
+        class="layer flex align-center justify-center"
+      >
+        <a
+          :href="project.demoUrl"
+          target="_blank"
+          class="btn btn--primary--outline btn--rounded"
+        >
+          <i class="material-icons">
+            visibility
+          </i>
+        </a>
+      </div>
+    </div>
+    <ProjectPreviewContent :project="project" />
+    <ProjectPreviewFooter :project="project" />
+  </div>
 </template>
 
 <script>

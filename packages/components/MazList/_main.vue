@@ -1,19 +1,19 @@
 <template>
-	<div
-		class="maz-list"
-		:class="{
-			'no-shadow': noShadow,
-			'is-dark': dark
-		}"
-	>
-		<transition-group
-			:name="transition ? `flip-list` : null"
-			tag="div"
-		>
-			<!-- Place `<MazListItem>` -->
-			<slot />
-		</transition-group>
-	</div>
+  <div
+    class="maz-list"
+    :class="{
+      'no-shadow': noShadow,
+      'is-dark': dark
+    }"
+  >
+    <transition-group
+      :name="transition ? `flip-list` : null"
+      tag="div"
+    >
+      <!-- Place `<MazListItem>` -->
+      <slot />
+    </transition-group>
+  </div>
 </template>
 
 <script>

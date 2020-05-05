@@ -1,8 +1,8 @@
 <template>
-	<pre
-		v-highlightjs="code"
-		class="code-container"
-	>
+  <pre
+    v-highlightjs="code"
+    class="code-container"
+  >
     <code
       class="code-container__content"
       :class="[language]"

@@ -1,48 +1,48 @@
 <template>
-	<div
-		ref="TimePicker"
-		:style="[{height: `${hasDate ? height : 150}px`}]"
-		class="time-picker flex flex-fixed flex-1"
-		:class="{
-			'border-left border-left-solid border-color': hasDate
-		}"
-	>
-		<div
-			v-for="column in columns"
-			:key="column.type"
-			:ref="column.type"
-			:class="`time-picker__column-${column.type}`"
-			class="time-picker__column flex-1 flex direction-column align-center"
-			@scroll="noScrollEvent
-				? null
-				: column.type === 'hours' ? onScrollHours($event) : column.type === 'minutes' ? onScrollMinutes($event) : onScrollApms($event)
-			"
-		>
-			<div>
-				<div
-					class="before"
-					:style="[columnPadding]"
-				/>
-				<MazBtn
-					v-for="item in column.items"
-					:key="item.item"
-					size="mini"
-					:no-shadow="!isActive(column.type, item.value)"
-					tabindex="-1"
-					class="time-picker__column__item flex flex-center bg-transparent text-color p-0"
-					:active="isActive(column.type, item.value)"
-					:disabled="item.disabled"
-					@click="item.disabled ? null : setTime(item.value, column.type)"
-				>
-					{{ item.item }}
-				</MazBtn>
-				<div
-					class="after"
-					:style="[columnPadding]"
-				/>
-			</div>
-		</div>
-	</div>
+  <div
+    ref="TimePicker"
+    :style="[{height: `${hasDate ? height : 150}px`}]"
+    class="time-picker flex flex-fixed flex-1"
+    :class="{
+      'border-left border-left-solid border-color': hasDate
+    }"
+  >
+    <div
+      v-for="column in columns"
+      :key="column.type"
+      :ref="column.type"
+      :class="`time-picker__column-${column.type}`"
+      class="time-picker__column flex-1 flex direction-column align-center"
+      @scroll="noScrollEvent
+        ? null
+        : column.type === 'hours' ? onScrollHours($event) : column.type === 'minutes' ? onScrollMinutes($event) : onScrollApms($event)
+      "
+    >
+      <div>
+        <div
+          class="before"
+          :style="[columnPadding]"
+        />
+        <MazBtn
+          v-for="item in column.items"
+          :key="item.item"
+          size="mini"
+          :no-shadow="!isActive(column.type, item.value)"
+          tabindex="-1"
+          class="time-picker__column__item flex flex-center bg-transparent text-color p-0"
+          :active="isActive(column.type, item.value)"
+          :disabled="item.disabled"
+          @click="item.disabled ? null : setTime(item.value, column.type)"
+        >
+          {{ item.item }}
+        </MazBtn>
+        <div
+          class="after"
+          :style="[columnPadding]"
+        />
+      </div>
+    </div>
+  </div>
 </template>
 <script>
 import moment from 'moment'

@@ -1,38 +1,38 @@
 <template>
-	<div
-		class="maz-pagination flex align-center justify-center"
-		:class="{ 'is-dark': dark }"
-	>
-		<div class="maz-pagination__container flex align-center">
-			<PaginationArrowBtn
-				:dark="dark"
-				@click="previous"
-			/>
-			<template
-				v-for="({ number, isActive, disabled, divider }, i) in pages"
-			>
-				<PaginationDotsDivider
-					v-if="divider"
-					:key="`pagination-btn-${number}-${i}`"
-				/>
-				<PaginationNumberBtn
-					v-else
-					:key="`pagination-btn-${number}-${i}`"
-					:disabled="disabled"
-					:active="isActive"
-					@click="emitPageValue(number)"
-				>
-					{{ number }}
-				</PaginationNumberBtn>
-			</template>
+  <div
+    class="maz-pagination flex align-center justify-center"
+    :class="{ 'is-dark': dark }"
+  >
+    <div class="maz-pagination__container flex align-center">
+      <PaginationArrowBtn
+        :dark="dark"
+        @click="previous"
+      />
+      <template
+        v-for="({ number, isActive, disabled, divider }, i) in pages"
+      >
+        <PaginationDotsDivider
+          v-if="divider"
+          :key="`pagination-btn-${number}-${i}`"
+        />
+        <PaginationNumberBtn
+          v-else
+          :key="`pagination-btn-${number}-${i}`"
+          :disabled="disabled"
+          :active="isActive"
+          @click="emitPageValue(number)"
+        >
+          {{ number }}
+        </PaginationNumberBtn>
+      </template>
 
-			<PaginationArrowBtn
-				:dark="dark"
-				right
-				@click="next"
-			/>
-		</div>
-	</div>
+      <PaginationArrowBtn
+        :dark="dark"
+        right
+        @click="next"
+      />
+    </div>
+  </div>
 </template>
 
 <script>

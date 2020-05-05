@@ -17,4 +17,4 @@ $color_types: (
   'black': black,
   'transparent': transparent,
   'light-grey': $hover-bg-color
-);
+) !default;
