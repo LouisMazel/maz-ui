@@ -96,7 +96,6 @@ export default {
         font-weight: 500;
         transition: all .5s;
         outline: none;
-        color: white;
 
         &.router-link-active {
           color: $primary-color;
@@ -108,6 +107,12 @@ export default {
       &__sub {
         color: $muted-color;
       }
+    }
+  }
+
+  .maz-is-dark {
+    .header__menu__item {
+      color: white;
     }
   }
 </style>

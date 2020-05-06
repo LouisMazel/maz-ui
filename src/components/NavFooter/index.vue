@@ -34,7 +34,7 @@
       </div>
     </nav>
     <div class="nav-footer-subs maz-py-2">
-      <div class="max-px-4 maz-flex maz-justify-end">
+      <div class="maz-px-4 maz-flex maz-justify-end">
         <a
           href="https://www.loicmazuel.com/"
           target="_blank"
