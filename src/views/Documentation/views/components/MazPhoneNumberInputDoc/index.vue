@@ -19,7 +19,8 @@
         <ComponentContainer>
           <MazPhoneNumberInput
             v-model="phoneNumber"
-            error />
+            error
+          />
         </ComponentContainer>
       </div>
     </div>

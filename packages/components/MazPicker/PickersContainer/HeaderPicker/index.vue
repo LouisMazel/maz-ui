@@ -117,7 +117,7 @@ export default {
   },
   data () {
     return {
-      transitionName: 'slidevnext',
+      transitionName: 'maz-slidevnext',
       currentDate: this.value
     }
   },
@@ -161,7 +161,7 @@ export default {
     value: {
       handler () {
         const newValueIsSmaller = this.currentDate ? this.currentValue.isBefore(this.currentDate) : false
-        this.transitionName = newValueIsSmaller ? 'slidevprev' : 'slidevnext'
+        this.transitionName = newValueIsSmaller ? 'maz-slidevprev' : 'maz-slidevnext'
         this.$nextTick(() => { this.currentDate = this.currentValue })
       },
       immediate: true

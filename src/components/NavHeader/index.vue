@@ -5,7 +5,8 @@
   >
     <nav
       class="maz-px-4 maz-flex maz-space-between"
-      :class="{ 'maz-container': !isDocPage }">
+      :class="{ 'maz-container': !isDocPage }"
+    >
       <router-link
         :to="{
           name: 'Home'
@@ -45,7 +46,8 @@
       </div>
       <MazResponsiveMenu
         :routes="routes"
-        class="maz-py-2 maz-show-mobile" />
+        class="maz-py-2 maz-show-mobile"
+      />
     </nav>
     <DarkSwitchBanner />
   </header>

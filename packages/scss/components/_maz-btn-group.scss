@@ -4,7 +4,7 @@
     z-index: 0;
     border-radius: 0;
 
-    &.active,
+    &.maz-active,
     &:focus {
       z-index: 1;
     }

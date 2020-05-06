@@ -26,7 +26,8 @@
       >
         <i
           slot="input-icon-left"
-          class="material-icons">
+          class="material-icons"
+        >
           email
         </i>
       </MazInput>
@@ -50,7 +51,8 @@
     <div
       v-for="type in inputTypes"
       :key="type"
-      class="flex maz-mt-3 maz-flex-wrap">
+      class="flex maz-mt-3 maz-flex-wrap"
+    >
       <div class="flex-component maz-flex-1">
         <h3>{{ type | capitalize }}</h3>
         <ComponentContainer>

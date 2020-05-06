@@ -4,7 +4,8 @@
       This component is based on
       <a
         target="_blank"
-        href="https://momentjs.com/">MomentJS</a>
+        href="https://momentjs.com/"
+      >MomentJS</a>
     </p>
 
     <br />
@@ -41,12 +42,15 @@
     <div class="maz-flex maz-flex-1">
       <MazBtnGroup
         v-model="locale"
-        :items="locales" />
+        :items="locales"
+      />
     </div>
 
     <hr class="maz-border-top maz-border-solid maz-border-color maz-my-3" />
 
-    <p class="maz-fw-700 maz-mb-3">Top or bottom position of pickers is calculate</p>
+    <p class="maz-fw-700 maz-mb-3">
+      Top or bottom position of pickers is calculate
+    </p>
 
     <p class="maz-mb-3">
       You can set the position with "position" props attribute :
@@ -54,14 +58,17 @@
 
     <CodeContainer
       language="html"
-      :code="positionCodeExample" />
+      :code="positionCodeExample"
+    />
 
     <hr class="maz-border-top maz-border-solid maz-border-color maz-my-3" />
 
     <div class="examples maz-my-3">
       <ComponentContainer :code="codeExample">
         <h3>Date Time Picker</h3>
-        <h5 class="maz-mb-3">Basic</h5>
+        <h5 class="maz-mb-3">
+          Basic
+        </h5>
 
         <p class="maz-mb-3">
           <strong>Options:</strong>
@@ -80,6 +87,7 @@
         <MazPicker
           v-model="pickerValue"
           :locale="locale"
+          open
           format="DD-MM-YYYY HH:mm"
           @formatted="pickerFormatted = $event"
         />
@@ -153,7 +161,9 @@
 
       <ComponentContainer :code="rangeExample">
         <h3>Range Double Date Picker</h3>
-        <h5 class="maz-mb-3">Position forced</h5>
+        <h5 class="maz-mb-3">
+          Position forced
+        </h5>
 
         <p class="maz-mb-3">
           <strong>Options:</strong>
@@ -183,7 +193,9 @@
 
       <ComponentContainer :code="inlineExample">
         <h3>Inline Double Date Time Picker</h3>
-        <h5 class="maz-mb-3">Min & max dates provided & without time picker</h5>
+        <h5 class="maz-mb-3">
+          Min & max dates provided & without time picker
+        </h5>
 
         <p class="maz-mb-3">
           <strong>Options:</strong>
@@ -213,7 +225,9 @@
 
       <ComponentContainer :code="inlineExample">
         <h3>Time Picker</h3>
-        <h5 class="maz-mb-3">Min & max dates provided & without time picker</h5>
+        <h5 class="maz-mb-3">
+          Min & max dates provided & without time picker
+        </h5>
 
         <p class="maz-mb-3">
           <strong>Options:</strong>
@@ -238,15 +252,20 @@
       </ComponentContainer>
 
       <ComponentContainer :code="inlineExample">
-        <h3 class="maz-mb-3">Disabled</h3>
+        <h3 class="maz-mb-3">
+          Disabled
+        </h3>
 
         <p>Value : {{ pickerValue4 || 'null' }}</p>
-        <p class="maz-mb-2">Formatted value : {{ pickerFormatted4 || 'null' }}</p>
+        <p class="maz-mb-2">
+          Formatted value : {{ pickerFormatted4 || 'null' }}
+        </p>
 
         <MazPicker
           v-model="pickerValue4"
           disabled
-          :locale="locale" />
+          :locale="locale"
+        />
       </ComponentContainer>
     </div>
   </div>

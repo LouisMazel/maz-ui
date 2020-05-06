@@ -26,7 +26,8 @@
 
         <MazBtn
           class="maz-mt-3"
-          @click="hasCollapseOpen = !hasCollapseOpen">
+          @click="hasCollapseOpen = !hasCollapseOpen"
+        >
           Toggle collapse 2
         </MazBtn>
       </ComponentContainer>

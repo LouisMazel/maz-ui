@@ -3,6 +3,9 @@
     :id="`Calendar${_uid}`"
     ref="Calendar"
     class="calendar maz-position-relative maz-mw-100 maz-overflow-hidden maz-flex"
+    :class="{
+      'is-range': isRangeMode
+    }"
   >
     <RangeShortcuts
       v-if="hasShortcuts"

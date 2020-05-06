@@ -54,6 +54,10 @@
   .tabs-bar__item {
     color: $text-color-dark;
 
+    &.active {
+      color: $primary-color;
+    }
+
     &:hover {
       background-color: $hover-bg-color-dark;
     }

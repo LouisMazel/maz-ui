@@ -1,5 +1,5 @@
 <template>
-  <transition name="slide">
+  <transition name="maz-slide">
     <div
       v-if="isOpen"
       class="year-month-selector maz-bg-color-light maz-p-2 maz-flex maz-direction-column"

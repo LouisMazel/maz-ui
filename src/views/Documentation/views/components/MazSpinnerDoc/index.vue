@@ -14,7 +14,8 @@
     <div class="maz-flex-1">
       <ComponentContainer
         dark
-        :code="code2">
+        :code="code2"
+      >
         <div class="maz-flex maz-flex-center maz-flex-wrap">
           <MazSpinner
             v-for="size in sizes"

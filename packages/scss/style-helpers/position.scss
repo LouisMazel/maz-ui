@@ -6,7 +6,9 @@
   position: absolute;
 }
 
-@each $position in $orientations {
+@import './variables/positions';
+
+@each $position in $positions {
   .#{$prefix}position-#{$position} {
     position: #{$position};
   }

@@ -49,7 +49,7 @@
     >
       {{ hint || placeholder }}
     </label>
-    <Transition name="slide">
+    <Transition name="maz-slide">
       <div
         v-show="hasListOpen"
         ref="countriesList"

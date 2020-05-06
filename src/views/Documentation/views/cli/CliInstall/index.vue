@@ -32,7 +32,8 @@
       With Maz-CLI you can generate a
       <a
         href="https://nuxtjs.org/"
-        target="_blank">Nuxt.JS</a> project with the
+        target="_blank"
+      >Nuxt.JS</a> project with the
       headless CMS
       <a
         href="https://prismic.io/"

@@ -44,7 +44,7 @@
     </label>
 
     <transition
-      name="scale"
+      name="maz-scale"
     >
       <button
         v-if="clearable && inputValue"

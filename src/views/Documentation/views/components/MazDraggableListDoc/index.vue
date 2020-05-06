@@ -4,7 +4,8 @@
       <div class="demo-container maz-flex maz-flex-wrap">
         <MazDraggableList
           v-model="list"
-          class="maz-flex-1 maz-mr-3" />
+          class="maz-flex-1 maz-mr-3"
+        />
         <MazDraggableList
           v-model="list"
           v-slot="{ item, index }"
@@ -15,7 +16,8 @@
             <p>index: {{ index }}</p>
             <MazBtn
               fab
-              size="sm">
+              size="sm"
+            >
               <i class="material-icons maz-fs-20">
                 edit
               </i>

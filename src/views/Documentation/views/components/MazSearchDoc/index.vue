@@ -2,11 +2,14 @@
   <div class="maz-search-doc">
     <ComponentContainer
       :code="codeExample"
-      language="js">
+      language="js"
+    >
       <h4 class="maz-mb-3">
         Basic use
       </h4>
-      <p class="maz-mb-3">v-model="{{ selectedItem || 'null' }}"</p>
+      <p class="maz-mb-3">
+        v-model="{{ selectedItem || 'null' }}"
+      </p>
       <MazSearch
         v-model="selectedItem"
         :items="results"
@@ -17,11 +20,14 @@
     </ComponentContainer>
     <ComponentContainer
       :code="codeExample2"
-      language="js">
+      language="js"
+    >
       <h4 class="maz-mb-3">
         Custom
       </h4>
-      <p class="maz-mb-3">v-model="{{ selectedItem2 || 'null' }}"</p>
+      <p class="maz-mb-3">
+        v-model="{{ selectedItem2 || 'null' }}"
+      </p>
       <MazSearch
         v-model="selectedItem2"
         :items="results"
@@ -37,7 +43,8 @@
             <img
               :src="item.image"
               :alt="item.label"
-              class="maz-mr-3" />
+              class="maz-mr-3"
+            />
             <div>
               <p>{{ item.first_name }} {{ item.last_name }}</p>
               <span class="maz-text-muted">{{ item.email }}</span>

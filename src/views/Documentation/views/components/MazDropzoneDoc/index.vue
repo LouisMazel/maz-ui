@@ -16,7 +16,8 @@
       />
       <div
         v-if="errorMessage"
-        class="dropzone-error maz-flex maz-justify-center maz-mt-2">
+        class="dropzone-error maz-flex maz-justify-center maz-mt-2"
+      >
         <span class="text-danger">
           {{ errorMessage }}
         </span>

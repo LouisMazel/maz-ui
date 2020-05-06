@@ -2,7 +2,8 @@
   <div class="maz-flex-doc">
     <ComponentContainer
       :code="codeExample"
-      language="html">
+      language="html"
+    >
       <h3 class="maz-mb-3">
         Example
       </h3>
@@ -19,7 +20,8 @@
         flex align-center
         <MazFlex
           flex
-          align-center>
+          align-center
+        >
           <div>
             div 1
           </div>
@@ -51,7 +53,8 @@
         flex space-between
         <MazFlex
           flex
-          space-between>
+          space-between
+        >
           <div>
             div 1
           </div>
@@ -62,7 +65,8 @@
         flex space-around
         <MazFlex
           flex
-          space-around>
+          space-around
+        >
           <div>
             div 1
           </div>
@@ -73,7 +77,8 @@
         flex justify-end
         <MazFlex
           flex
-          justify-end>
+          justify-end
+        >
           <div>
             div 1
           </div>
@@ -84,7 +89,8 @@
         flex justify-center
         <MazFlex
           flex
-          justify-center>
+          justify-center
+        >
           <div>
             div 1
           </div>
@@ -95,7 +101,8 @@
         flex direction-column
         <MazFlex
           flex
-          direction-column>
+          direction-column
+        >
           <div>
             div 1
           </div>
@@ -106,7 +113,8 @@
         flex direction-column
         <MazFlex
           flex
-          direction-column-reverse>
+          direction-column-reverse
+        >
           <div>
             div 1
           </div>
@@ -118,7 +126,8 @@
         <MazFlex
           flex
           direction-column-reverse
-          align-start>
+          align-start
+        >
           <div>
             div 1
           </div>
@@ -130,7 +139,8 @@
         <MazFlex
           flex
           direction-column-reverse
-          align-end>
+          align-end
+        >
           <div>
             div 1
           </div>

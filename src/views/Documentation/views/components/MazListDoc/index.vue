@@ -12,7 +12,8 @@
           <MazList>
             <MazListItem
               v-for="item in items"
-              :key="`list-1-${item.id}`">
+              :key="`list-1-${item.id}`"
+            >
               <p>{{ item.title }}</p>
               <p class="maz-text-muted">
                 {{ item.id }}
@@ -27,7 +28,8 @@
           <MazBtn
             size="sm"
             class="maz-mb-2"
-            @click="reorderItems">
+            @click="reorderItems"
+          >
             Shuffle items
           </MazBtn>
 
@@ -54,7 +56,8 @@
           </p>
           <MazList
             no-shadow
-            class="scrollable-list">
+            class="scrollable-list"
+          >
             <MazListItem
               v-for="item in items"
               :key="`list-3-${item.id}`"

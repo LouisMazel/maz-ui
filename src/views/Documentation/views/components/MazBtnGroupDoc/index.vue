@@ -16,7 +16,8 @@
         <MazBtnGroup
           v-model="btnGroupValue"
           :items="items"
-          size="lg" />
+          size="lg"
+        />
         <h5 class="maz-mb-3">
           Secondary
         </h5>
@@ -63,7 +64,8 @@
         <MazBtnGroup
           v-model="btnGroupValue"
           :items="items"
-          disabled />
+          disabled
+        />
 
         <p>Number value : {{ btnGroupValue }}</p>
         <p>Boolean value : {{ btnGroupValueBoolean }}</p>

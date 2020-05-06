@@ -3,7 +3,8 @@
     class="maz-sidebar"
     :class="{
       'maz-is-dark': dark
-    }">
+    }"
+  >
     <div
       :id="uniqueId"
       ref="MazSidebar"
@@ -18,7 +19,8 @@
     >
       <transition
         name="fade"
-        mode="in-out">
+        mode="in-out"
+      >
         <div
           v-show="isOpen"
           class="maz-sidebar__wrapper__content maz-flex maz-flex-1 maz-w-100 maz-direction-column"
@@ -28,10 +30,12 @@
       </transition>
       <div
         v-if="!noCloseBtn"
-        class="maz-sidebar__wrapper__close-btn">
+        class="maz-sidebar__wrapper__close-btn"
+      >
         <button
           class="maz-flex maz-flex-center"
-          @click="isOpen = !isOpen">
+          @click="isOpen = !isOpen"
+        >
           <slot name="button-icon">
             <ArrowIcon :orientation="isOpen ? 'left' : 'right'" />
           </slot>

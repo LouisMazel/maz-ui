@@ -3,7 +3,8 @@
     flex
     direction-column
     flex1
-    class="used-by">
+    class="used-by"
+  >
     <MazFlex
       flex1
       direction-column

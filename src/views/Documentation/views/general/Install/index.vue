@@ -7,19 +7,22 @@
     <CodeContainer
       code="npm i maz-ui -S"
       language="bash"
-      class="maz-my-4" />
+      class="maz-my-4"
+    />
 
     <h3>Yarn</h3>
     <CodeContainer
       code="yarn add maz-ui"
       language="bash"
-      class="maz-my-4" />
+      class="maz-my-4"
+    />
 
     <h3>CDN</h3>
     <CodeContainer
       :code="cdnCode"
       language="html"
-      class="maz-my-4" />
+      class="maz-my-4"
+    />
   </div>
 </template>
 

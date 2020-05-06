@@ -3,7 +3,8 @@
     <ComponentContainer :code="codeExample">
       <MazPagination
         v-model="currentPage"
-        :page-count="pageCount" />
+        :page-count="pageCount"
+      />
     </ComponentContainer>
   </div>
 </template>

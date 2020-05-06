@@ -22,12 +22,14 @@
         <MazBtn
           color="third"
           @click="loading = !loading"
-        >Toggle loading</MazBtn
         >
+          Toggle loading
+        </MazBtn>
         <MazInput
           v-model="width"
           type="number"
-          placeholder="Sidebar width" />
+          placeholder="Sidebar width"
+        />
         <div class="switch-container maz-flex">
           <p>Has left sidebar is open</p>
           <MazSwitch v-model="hasLeftSidebarOpen" />

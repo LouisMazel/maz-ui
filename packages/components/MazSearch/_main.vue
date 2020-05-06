@@ -14,7 +14,7 @@
       @keyup="$emit('keyup', $event)"
       @change="$emit('change', $event)"
     />
-    <transition name="slide">
+    <transition name="maz-slide">
       <div
         v-if="hasListOpen"
         ref="itemsList"

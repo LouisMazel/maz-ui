@@ -13,7 +13,8 @@
           <MazSwitch
             v-model="checkboxValue"
             :color="type"
-            class="maz-mb-2" />
+            class="maz-mb-2"
+          />
         </div>
       </div>
     </ComponentContainer>

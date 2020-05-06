@@ -1,7 +1,9 @@
 <template>
   <div class="maz-input-tags-doc">
     <ComponentContainer :code="codeExample">
-      <p class="maz-mb-2">v-model: {{ exampleValue }}</p>
+      <p class="maz-mb-2">
+        v-model: {{ exampleValue }}
+      </p>
       <MazInputTags
         v-model="exampleValue"
         placeholder="Add tags"

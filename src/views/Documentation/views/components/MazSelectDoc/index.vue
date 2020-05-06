@@ -15,7 +15,8 @@
           </h4>
           <MazSelect
             v-model="selectValue"
-            :options="options" />
+            :options="options"
+          />
         </ComponentContainer>
         <ComponentContainer>
           <h4 class="maz-mb-3">
@@ -24,7 +25,8 @@
           <MazSelect
             v-model="selectValue"
             :options="options"
-            error />
+            error
+          />
         </ComponentContainer>
         <ComponentContainer>
           <h4 class="maz-mb-3">
@@ -33,7 +35,8 @@
           <MazSelect
             v-model="selectValue"
             :options="options"
-            valid />
+            valid
+          />
         </ComponentContainer>
       </div>
     </div>

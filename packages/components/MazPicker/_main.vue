@@ -244,7 +244,7 @@ export default {
       return this.isOpen || this.open || this.inline
     },
     pickerTransition () {
-      return this.calcPosition.includes('bottom') ? 'slide' : 'slideinvert'
+      return this.calcPosition.includes('bottom') ? 'maz-slide' : 'maz-slideinvert'
     },
     hasHeader () {
       return !this.noHeader

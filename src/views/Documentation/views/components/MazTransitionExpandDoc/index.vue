@@ -2,7 +2,8 @@
   <div class="maz-transition-expand-doc">
     <ComponentContainer
       class="maz-flex maz-direction-column"
-      :code="code">
+      :code="code"
+    >
       <div class="maz-flex maz-justify-center">
         <MazBtn @click="isShown = !isShown">
           Toggle Expand

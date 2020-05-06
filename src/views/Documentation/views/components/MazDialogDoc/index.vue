@@ -4,12 +4,14 @@
       <div class="maz-flex">
         <MazBtn
           class="maz-mr-2"
-          @click.stop="hasDialogOpen = true">
+          @click.stop="hasDialogOpen = true"
+        >
           Open Basic Dialog
         </MazBtn>
         <MazDialog
           v-model="hasDialogOpen"
-          max-width="800px">
+          max-width="800px"
+        >
           <div slot="title">
             Basic Dialog
           </div>
@@ -24,7 +26,8 @@
         </MazBtn>
         <MazDialog
           v-model="hasDialogOpenSuccess"
-          success>
+          success
+        >
           <div slot="title">
             Success Dialog
           </div>
@@ -33,12 +36,14 @@
         <MazBtn
           color="danger"
           class="maz-mr-2"
-          @click="hasDialogOpenDanger = true">
+          @click="hasDialogOpenDanger = true"
+        >
           Open Danger Dialog
         </MazBtn>
         <MazDialog
           v-model="hasDialogOpenDanger"
-          danger>
+          danger
+        >
           <div slot="title">
             Danger Dialog
           </div>
@@ -46,12 +51,14 @@
         </MazDialog>
         <MazBtn
           color="dark"
-          @click="hasDialogOpenDark = true">
+          @click="hasDialogOpenDark = true"
+        >
           Open Dark Dialog
         </MazBtn>
         <MazDialog
           v-model="hasDialogOpenDark"
-          dark>
+          dark
+        >
           <div slot="title">
             Dark Dialog
           </div>

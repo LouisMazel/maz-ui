@@ -3,7 +3,8 @@
     :style="[
       {
         height: `${height}px`,
-        width: `${140}px`
+        width: `${140}px`,
+        minWidth: `${140}px`
       }
     ]"
     class="range-shortcuts maz-flex maz-direction-column maz-px-2 maz-py-1 maz-border-color maz-border-right maz-border-right-solid maz-overflow-y-auto"

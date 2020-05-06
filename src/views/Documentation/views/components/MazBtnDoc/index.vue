@@ -99,7 +99,8 @@
       <div
         v-for="type in btnTypes"
         :key="`fab-${type}`"
-        class="btn-container">
+        class="btn-container"
+      >
         <MazBtn
           v-for="size in btnSizes"
           :key="`fab-${type}-${size}`"

@@ -9,7 +9,8 @@
       <div class="maz-flex maz-direction-column maz-hidden-tablet">
         <RouterLink
           :to="{ name: 'Home' }"
-          class="maz-mr-3">
+          class="maz-mr-3"
+        >
           Home
         </RouterLink>
         <RouterLink :to="{ name: 'Documentation' }">
@@ -38,7 +39,8 @@
         <a
           href="https://www.loicmazuel.com/"
           target="_blank"
-          class="maz-flex">
+          class="maz-flex"
+        >
           <p class="maz-fs-14">
             © Loïc Mazuel
           </p>

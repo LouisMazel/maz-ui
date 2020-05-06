@@ -1,4 +1,4 @@
-@media only screen and (max-width: $breakpoint-mobile-l) {
+@media only screen and (max-width: $breakpoint-tablet) {
   .maz-picker__overlay {
     display: block;
     position: fixed;
@@ -20,13 +20,13 @@
   .pickers-container:not(.inline).right {
     position: fixed;
     bottom: auto;
-    margin: 5px;
-    max-width: calc(100% - 10px);
-    width: calc(100% - 10px);
+    margin: 10px;
+    max-width: calc(100% - 20px);
+    width: calc(100% - 20px);
     display: flex;
     flex-direction: column;
     z-index: 100;
-    max-height: calc(100vh - 10px);
+    max-height: calc(100vh - 20px);
     top: 50%;
     transform: translateY(-50%);
 
@@ -44,7 +44,9 @@
     }
 
     .calendar {
-      flex-direction: column;
+      &:not(.is-range) {
+        flex-direction: column;
+      }
       // flex: 1;
 
       &__months-container {

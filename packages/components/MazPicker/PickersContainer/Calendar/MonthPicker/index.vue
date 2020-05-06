@@ -62,7 +62,7 @@ export default {
   },
   data () {
     return {
-      transitionDaysName: 'slidenext',
+      transitionDaysName: 'maz-slidenext',
       currentMonth: this.month
     }
   },
@@ -97,7 +97,7 @@ export default {
   watch: {
     month (value) {
       const newValueIsSmaller = this.currentMonth.start > value.start
-      this.transitionDaysName = newValueIsSmaller ? 'slideprev' : 'slidenext'
+      this.transitionDaysName = newValueIsSmaller ? 'maz-slideprev' : 'maz-slidenext'
       this.$nextTick(() => { this.currentMonth = value })
     }
   },

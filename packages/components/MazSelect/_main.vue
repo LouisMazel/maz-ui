@@ -46,7 +46,7 @@
         </slot>
       </div>
     </MazInput>
-    <transition name="slide">
+    <transition name="maz-slide">
       <div
         v-show="hasListOpen"
         ref="optionsList"

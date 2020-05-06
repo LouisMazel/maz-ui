@@ -3,7 +3,8 @@
     <ComponentContainer :code="codeExample">
       <MazTabsBar
         v-model="activeTabIndex"
-        :items="tabs" />
+        :items="tabs"
+      />
       <div style="overflow: hidden;">
         <MazTabsContent class="maz-m-3">
           <MazTabsContentItem class="maz-flex maz-flex-center maz-direction-column">
