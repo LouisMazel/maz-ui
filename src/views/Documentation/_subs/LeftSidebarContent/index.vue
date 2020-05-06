@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import { replaceAll, pascalCaseToKebabCase } from '@/utils'
+import { replaceAll, pascalCaseToKebabCase } from '@/../utils'
 
 const isGeneralDoc = name => ['Install', 'GetStarted'].includes(name)
 const isCliDoc = name => ['CliInstall'].includes(name)

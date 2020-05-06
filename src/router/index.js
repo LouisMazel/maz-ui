@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import { pascalCaseToKebabCase } from '@/utils'
+import { pascalCaseToKebabCase } from '@/../utils'
 
 Vue.use(Router)
 

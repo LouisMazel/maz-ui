@@ -26,6 +26,7 @@
     "build:css:copy-files": "ncp packages/scss/ lib/scss --stopOnErr",
     "build:css:compile": "gulp compileScss",
     "gen:docs": "vuese gen && npm run lint:md:fix",
+    "gen:scss": "node build/gen-cssfile",
     "build:docs": "vue-cli-service build --dest docs --mode production",
     "build:report": "npm run build:lib -- --report && npm run build:docs -- --report",
     "delete:reports": "rm ./docs/report.html && rm ./lib/report.html",
