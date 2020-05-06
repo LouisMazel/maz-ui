@@ -111,7 +111,7 @@ export default {
   }
 
   .maz-is-dark {
-    .header__menu__item {
+    .header__menu__item:not(.router-link-active) {
       color: white;
     }
   }
