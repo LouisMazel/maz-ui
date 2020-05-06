@@ -7,9 +7,7 @@ module.exports = {
   },
   extends: [
     "plugin:vue/strongly-recommended",
-    "eslint:recommended",
-    "@vue/prettier",
-    "prettier/vue"
+    "eslint:recommended"
   ],
   plugins: ["vue"],
   parserOptions: {
@@ -32,19 +30,15 @@ module.exports = {
     "no-unused-vars": ["error"],
     "no-undef": ["error", { typeof: true }],
     "no-loop-func": "warn",
-    indent: ['error', 2, {
-      ignoredNodes: ['TemplateLiteral']
-    }],
+    indent: [
+      "error",
+      2,
+      {
+        ignoredNodes: ["TemplateLiteral"]
+      }
+    ],
     "space-before-function-paren": ["error", "always"],
-    'template-curly-spacing': 'off',
-    // 'template-curly-spacing': 'off',
-    // PRETTIER RULES
-    "prettier/prettier": {
-      tabWidth: 2,
-      singleQuote: true,
-      trailingComma: "none",
-      semi: false
-    },
+    "template-curly-spacing": "off",
     // VUE RULES
     "vue/max-attributes-per-line": [
       "error",
@@ -64,9 +58,13 @@ module.exports = {
         }
       }
     ],
-    "vue/html-indent": ["error", 2, {
-      baseIndent: 1,
-    }],
+    "vue/html-indent": [
+      "error",
+      2,
+      {
+        baseIndent: 1
+      }
+    ],
     "vue/script-indent": ["error", 2, { baseIndent: 1 }],
     "vue/component-name-in-template-casing": ["error", "PascalCase"],
     "vue/attributes-order": "error",
