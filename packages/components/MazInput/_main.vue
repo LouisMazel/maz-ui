@@ -10,8 +10,8 @@
       'maz-is-dark': dark,
       'has-hint': hint,
       'has-no-label': !hasLabel && !hint,
-      'has-left-icon': hasLeftIcon,
-      'has-right-icon': hasRightIcon
+      'has-left-icon': hasLeftIcon(),
+      'has-right-icon': hasRightIcon()
     }, size]"
     class="maz-input"
     @click="focusInput"
@@ -25,8 +25,8 @@
         textarea ? 'maz-align-start maz-pt-2' : 'maz-align-center'
       ]"
     >
-      <!-- Icon slot (`input-icon-left` / `input-icon-right`) -->
-      <slot :name="`input-icon-${position}`">
+      <!-- Icon slot (`icon-left` / `icon-right`) -->
+      <slot :name="`icon-${position}`">
         <i class="material-icons">{{ name }}</i>
       </slot>
     </div>
@@ -91,7 +91,7 @@
         title="clear"
         type="button"
         tabindex="-1"
-        :class="{ 'has-right-icon': hasRightIcon }"
+        :class="{ 'has-right-icon': hasRightIcon() }"
         @click="clear"
       >
         <span class="maz-input__toggle-btn__effect" />
@@ -106,7 +106,7 @@
         class="maz-input__toggle-btn password maz-flex maz-flex-center"
         :class="{
           'has-clear-btn': hasClearBtn,
-          'has-right-icon': hasRightIcon
+          'has-right-icon': hasRightIcon()
         }"
         title="clear"
         type="button"
@@ -234,20 +234,20 @@ export default {
     hasClearBtn () {
       return this.clearable && this.inputValue && !this.textarea
     },
-    hasLeftIcon () {
-      return this.leftIconName || this.$slots['input-icon-left']
-    },
-    hasRightIcon () {
-      return this.rightIconName || this.$slots['input-icon-right']
-    },
     inputIcons () {
       return [
-        ...(this.hasLeftIcon ? [{ position: 'left', name: this.leftIconName }] : []),
-        ...(this.hasRightIcon ? [{ position: 'right', name: this.rightIconName }] : [])
+        ...(this.hasLeftIcon() ? [{ position: 'left', name: this.leftIconName }] : []),
+        ...(this.hasRightIcon() ? [{ position: 'right', name: this.rightIconName }] : [])
       ]
     }
   },
   methods: {
+    hasLeftIcon () {
+      return this.leftIconName || this.$slots['icon-left']
+    },
+    hasRightIcon () {
+      return this.rightIconName || this.$slots['icon-right']
+    },
     focusInput () {
       this.$refs.MazInput.focus()
     },

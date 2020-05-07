@@ -25,10 +25,18 @@
         clearable
       >
         <i
+          v-if="hasIcon"
           slot="input-icon-left"
           class="material-icons"
         >
           email
+        </i>
+        <i
+          v-if="hasIcon"
+          slot="input-icon-right"
+          class="material-icons"
+        >
+          done
         </i>
       </MazInput>
       <MazInput
@@ -92,6 +100,7 @@ export default {
   data () {
     return {
       inputValue: null,
+      hasIcon: true,
       withValue: 'The value entered',
       disabledValue: '',
       inputTypes: [
@@ -142,12 +151,26 @@ export default {
     class="maz-mb-3"
     clearable
   >
-    <i
-      slot="input-icon-left"
-      class="material-icons"
+    <MazInput
+      v-model="emailValue"
+      placeholder="E-mail"
+      autocomplete="new-email"
+      class="maz-mb-3"
+      clearable
     >
-      email
-    </i>
+      <i
+        slot="input-icon-left"
+        class="material-icons"
+      >
+        lock
+      </i>
+      <i
+        slot="input-icon-right"
+        class="material-icons"
+      >
+        email
+      </i>
+    </MazInput>
   </MazInput>
   <MazInput
     v-model="passwordValue"
