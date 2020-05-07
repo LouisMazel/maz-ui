@@ -52,9 +52,9 @@
 
 <!-- @vuese:MazInput:slots:start -->
 
-| Name                     | Description                                        | Default Slot Content |
-| ------------------------ | -------------------------------------------------- | -------------------- |
-| `input-icon-${position}` | Icon slot (`input-icon-left` / `input-icon-right`) | -                    |
+| Name               | Description                            | Default Slot Content |
+| ------------------ | -------------------------------------- | -------------------- |
+| `icon-${position}` | Icon slot (`icon-left` / `icon-right`) | -                    |
 
 <!-- @vuese:MazInput:slots:end -->
 
