@@ -37,6 +37,7 @@
           done
         </i>
       </MazInput>
+
       <MazInput
         v-model="passwordValue"
         placeholder="Password"

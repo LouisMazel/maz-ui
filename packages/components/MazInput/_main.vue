@@ -17,19 +17,27 @@
     @click="focusInput"
   >
     <div
-      v-for="({ name, position }, i) in inputIcons"
-      :key="`input-icon-${i}`"
-      class="maz-input__icon maz-flex"
-      :class="[
-        position,
-        textarea ? 'maz-align-start maz-pt-2' : 'maz-align-center'
-      ]"
+      class="maz-input__icon maz-flex left"
+      :class="[textarea ? 'maz-align-start maz-pt-2' : 'maz-align-center']"
     >
-      <!-- Icon slot (`icon-left` / `icon-right`) -->
-      <slot :name="`icon-${position}`">
-        <i class="material-icons">{{ name }}</i>
+      <!-- Icon slot (`icon-left`) -->
+      <slot :name="`icon-left`">
+        <!-- none -->
+        <i class="material-icons">{{ leftIconName }}</i>
       </slot>
     </div>
+
+    <div
+      class="maz-input__icon maz-flex right"
+      :class="[textarea ? 'maz-align-start maz-pt-2' : 'maz-align-center']"
+    >
+      <!-- Icon slot (`icon-right`) -->
+      <slot :name="`icon-right`">
+        <!-- none -->
+        <i class="material-icons">{{ rightIconName }}</i>
+      </slot>
+    </div>
+
     <input
       v-if="!textarea"
       :id="uniqueId"

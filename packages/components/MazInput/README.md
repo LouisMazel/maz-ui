@@ -52,9 +52,10 @@
 
 <!-- @vuese:MazInput:slots:start -->
 
-| Name               | Description                            | Default Slot Content |
-| ------------------ | -------------------------------------- | -------------------- |
-| `icon-${position}` | Icon slot (`icon-left` / `icon-right`) | -                    |
+| Name         | Description              | Default Slot Content                                |
+| ------------ | ------------------------ | --------------------------------------------------- |
+| `icon-left`  | Icon slot (`icon-left`)  | `<i class="material-icons">{{ leftIconName }}</i>`  |
+| `icon-right` | Icon slot (`icon-right`) | `<i class="material-icons">{{ rightIconName }}</i>` |
 
 <!-- @vuese:MazInput:slots:end -->
 
