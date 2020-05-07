@@ -4,69 +4,72 @@
   box-sizing: border-box;
 }
 
-.html.maz-ui {
-  font: $base-font-weight $base-font-size $base-font-family;
-  line-height: $base-line-height;
-  font-kerning: normal;
+@import './mixins/font_family';
+
+html {
+  @include font_family();
+
   color: $text-color;
 
   &.#{$prefix}is-dark {
     color: $text-color-dark;
   }
-}
 
-body,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-blockquote,
-pre,
-hr,
-dl,
-dd,
-figure {
-  margin: 0;
-  padding: 0;
-}
+  body,
+  #app {
+    @include font_family();
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  line-height: normal;
-}
+    color: $text-color;
+    background-color: $bg-color;
+  }
 
-body,
-#app,
-button,
-input {
-  font: $base-font-weight $base-font-size $base-font-family;
-  line-height: $base-line-height;
-  font-kerning: normal;
-}
+  .#{$prefix}is-dark body,
+  body.#{$prefix}is-dark,
+  .#{$prefix}is-dark #app,
+  #app.#{$prefix}is-dark {
+    color: $text-color-dark;
+    background-color: $bg-color-dark;
+  }
 
-body,
-#app {
-  color: $text-color;
-}
+  body,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  blockquote,
+  pre,
+  hr,
+  dl,
+  dd,
+  figure {
+    margin: 0;
+    padding: 0;
+  }
 
-.#{$prefix}is-dark body,
-.#{$prefix}is-dark #app {
-  color: $text-color-dark;
-}
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    line-height: normal;
+  }
 
-a {
-  color: $primary-color;
-  text-decoration: none;
+  a {
+    color: $primary-color;
+    text-decoration: none;
 
-  &:hover,
-  &:focus {
-    text-decoration: underline;
+    &:hover,
+    &:focus {
+      text-decoration: underline;
+    }
+  }
+
+  button,
+  input {
+    @include font_family();
   }
 }

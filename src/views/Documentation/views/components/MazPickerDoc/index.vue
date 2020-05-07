@@ -87,7 +87,6 @@
         <MazPicker
           v-model="pickerValue"
           :locale="locale"
-          open
           format="DD-MM-YYYY HH:mm"
           @formatted="pickerFormatted = $event"
         />
