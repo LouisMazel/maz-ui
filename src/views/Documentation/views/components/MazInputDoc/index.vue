@@ -25,15 +25,13 @@
         clearable
       >
         <i
-          v-if="hasIcon"
-          slot="input-icon-left"
+          slot="icon-left"
           class="material-icons"
         >
           email
         </i>
         <i
-          v-if="hasIcon"
-          slot="input-icon-right"
+          slot="icon-right"
           class="material-icons"
         >
           done
@@ -100,7 +98,6 @@ export default {
   data () {
     return {
       inputValue: null,
-      hasIcon: true,
       withValue: 'The value entered',
       disabledValue: '',
       inputTypes: [
