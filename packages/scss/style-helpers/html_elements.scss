@@ -14,62 +14,62 @@ html {
   &.#{$prefix}is-dark {
     color: $text-color-dark;
   }
+}
 
-  body,
-  #app {
-    @include font_family();
+body,
+#app {
+  @include font_family();
 
-    color: $text-color;
-    background-color: $bg-color;
+  color: $text-color;
+  background-color: $bg-color;
+}
+
+.#{$prefix}is-dark body,
+body.#{$prefix}is-dark,
+.#{$prefix}is-dark #app,
+#app.#{$prefix}is-dark {
+  color: $text-color-dark;
+  background-color: $bg-color-dark;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+hr,
+dl,
+dd,
+figure {
+  margin: 0;
+  padding: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: normal;
+}
+
+a {
+  color: $primary-color;
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    text-decoration: underline;
   }
+}
 
-  .#{$prefix}is-dark body,
-  body.#{$prefix}is-dark,
-  .#{$prefix}is-dark #app,
-  #app.#{$prefix}is-dark {
-    color: $text-color-dark;
-    background-color: $bg-color-dark;
-  }
-
-  body,
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  p,
-  blockquote,
-  pre,
-  hr,
-  dl,
-  dd,
-  figure {
-    margin: 0;
-    padding: 0;
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    line-height: normal;
-  }
-
-  a {
-    color: $primary-color;
-    text-decoration: none;
-
-    &:hover,
-    &:focus {
-      text-decoration: underline;
-    }
-  }
-
-  button,
-  input {
-    @include font_family();
-  }
+button,
+input {
+  @include font_family();
 }
