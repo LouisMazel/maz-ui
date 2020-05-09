@@ -23,7 +23,7 @@
     "build:entry": "node build/build-entry.js",
     "build:lib": "webpack --config build/webpack.conf.js && webpack --config build/webpack.common.js && webpack --config build/webpack.component.js",
     "build:css": "node build/gen-scss-index && npm run build:css:compile && npm run build:css:copy-files",
-    "build:css:compile": "gulp compile",
+    "build:css:compile": "gulp compile --gulpfile build/gulpfile.js",
     "build:css:copy-files": "ncp packages/scss/ lib/scss --stopOnErr",
     "gen:docs": "vuese gen && npm run lint:md:fix",
     "gen:css": "node build/gen-scss-index",

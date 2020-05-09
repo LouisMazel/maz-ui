@@ -1,8 +1,15 @@
 <template>
   <div class="get-started">
-    <h2>
-      Get Started
-    </h2>
+    <div class="get-started__header maz-flex maz-space-between maz-align-center">
+      <h2>
+        Get Started
+      </h2>
+      <MazBtn
+        href="#allComponents"
+      >
+        List of all components
+      </MazBtn>
+    </div>
     <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
     <div class="get-started__container maz-flex">
       <div class="get-started__item maz-flex-1 maz-p-4 maz-w-100">
@@ -95,13 +102,17 @@ module.exports = {
           :code="`// plugin/maz-ui/index.js
 
 import Vue from 'vue'
+import 'maz-ui/lib/maz-ui.css'
 import MazUi from 'maz-ui'
 
 Vue.use(MazUi)`"
         />
       </div>
     </div>
-    <div class="get-started__item maz-px-4">
+    <div
+      id="allComponents"
+      class="get-started__item maz-px-4"
+    >
       <h3 class="maz-mb-0">
         All components you can import
       </h3>
@@ -177,6 +188,7 @@ export default {
       codeBase: `// main.js
 
 import Vue from 'vue'
+import 'maz-ui/lib/maz-ui.css'
 import MazUi from 'maz-ui'
 
 Vue.use(MazUi)`,

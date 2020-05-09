@@ -8,7 +8,7 @@ const COMPONENTS_WITHOUT_STYLE = ['maz-flex', 'maz-list-item', 'maz-tabs-content
 Components = Object.keys(Components)
 const basepath = path.resolve(__dirname, './../packages/scss')
 
-let indexContent = '@import \'./../style-helpers/index.scss\';\n@import \'./_maz-arrow-icon.scss\';\n'
+let indexContent = '@import url(\'https://fonts.googleapis.com/css?family=Material+Icons\');\n@import \'./../style-helpers/index.scss\';\n@import \'./_maz-arrow-icon.scss\';\n'
 
 Components.forEach(key => {
   if (COMPONENTS_WITHOUT_STYLE.includes(key)) return
