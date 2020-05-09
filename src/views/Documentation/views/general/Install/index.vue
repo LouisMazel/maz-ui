@@ -3,7 +3,9 @@
     <h2 class="maz-mb-4">
       Install
     </h2>
+
     <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
+
     <h3>NPM</h3>
     <CodeContainer
       code="npm i maz-ui -S"
