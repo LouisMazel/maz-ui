@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["MazLoaderDoc"],{"51af":function(e,a,t){"use strict";t.r(a);var n=function(){var e=this,a=e.$createElement,t=e._self._c||a;return t("div",{staticClass:"maz-loader-doc"},[t("ComponentContainer",{attrs:{code:e.code}},[t("MazLoader")],1)],1)},o=[],r={name:"MazLoaderDoc",data:function(){return{code:"<template>\n  <MazLoader />\n</template>"}}},c=r,d=t("2877"),l=Object(d["a"])(c,n,o,!1,null,null,null);a["default"]=l.exports}}]);
+//# sourceMappingURL=MazLoaderDoc.1a5a0987.js.map
