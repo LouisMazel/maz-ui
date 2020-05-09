@@ -1,0 +1,6 @@
+.maz-tabs-content {
+  position: relative;
+  transition: transform 300ms;
+  will-change: height;
+  z-index: 1;
+}

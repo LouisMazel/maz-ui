@@ -5,7 +5,7 @@
     :class="{
       'maz-h-0' : !isCurrent && hasHZero
     }"
-    class="tabs-content-item"
+    class="maz-tabs-content-item"
   >
     <slot />
   </div>
