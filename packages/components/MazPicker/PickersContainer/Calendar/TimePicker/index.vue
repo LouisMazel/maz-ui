@@ -52,6 +52,7 @@ import {
   debounce,
   getTimeFormat
 } from './../../../utils'
+import MazBtn from '../../../../MazBtn'
 
 const scrollSmoothElement = (elem, parentHeight, hasSmoothEffect) => {
   const selected = elem.querySelector('.time-picker__column__item.maz-active')
@@ -72,6 +73,7 @@ const ITEM_HEIGHT = 28
 
 export default {
   name: 'TimePicker',
+  components: { MazBtn },
   props: {
     value: { type: Object, default: Object },
     format: { type: String, default: null },

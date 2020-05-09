@@ -29,6 +29,7 @@
 <script>
 import moment from 'moment'
 import { EventBus } from './../../../utils'
+import MazBtn from '../../../../MazBtn'
 
 const SHORTCUT_TYPES = ['day', 'date', '-day', 'isoWeek', 'quarter', '-isoWeek', 'month', '-month', 'year', '-year', 'week', '-week']
 
@@ -40,6 +41,7 @@ const SHORTCUT_TYPES = ['day', 'date', '-day', 'isoWeek', 'quarter', '-isoWeek',
  */
 export default {
   name: 'RangeShortcuts',
+  components: { MazBtn },
   props: {
     value: { type: String, default: null },
     height: { type: Number, required: true },

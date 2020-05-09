@@ -87,6 +87,7 @@
 <script>
 import { getMonthsByFormat } from '../../../modules/month'
 import ArrowIcon from './../../../../_subs/ArrowIcon'
+import MazBtn from '../../../../MazBtn'
 
 const ArrayRange = (start, end) => {
   return Array(end - start + 1).fill().map((_, idx) => {
@@ -97,7 +98,7 @@ const ArrayRange = (start, end) => {
 
 export default {
   name: 'YearMonthSelector',
-  components: { ArrowIcon },
+  components: { ArrowIcon, MazBtn },
   props: {
     value: { type: String, default: null },
     month: { type: Object, required: true },

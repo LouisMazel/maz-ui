@@ -43,10 +43,12 @@
 
 <script>
 import KeyboardAccessibility from './../../../mixins/keyboard-accessibility'
+import MazBtn from '../../../../MazBtn'
 import { EventBus } from './../../../utils'
 
 export default {
   name: 'MonthPicker',
+  components: { MazBtn },
   mixins: [KeyboardAccessibility],
   props: {
     value: { type: Object, default: null },

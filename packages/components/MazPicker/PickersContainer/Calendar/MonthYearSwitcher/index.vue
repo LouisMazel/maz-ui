@@ -55,10 +55,11 @@
 
 <script>
 import ArrowIcon from './../../../../_subs/ArrowIcon'
+import MazBtn from '../../../../MazBtn'
 
 export default {
   name: 'MonthYearSwitcher',
-  components: { ArrowIcon },
+  components: { ArrowIcon, MazBtn },
   props: {
     months: { type: Array, required: true }
   },

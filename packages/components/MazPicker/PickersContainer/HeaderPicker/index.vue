@@ -104,10 +104,12 @@
 
 <script>
 import moment from 'moment'
+import MazBtn from '../../../MazBtn'
 import { getFormattedValuesIntl, getTimeFormat, EventBus } from './../../utils'
 
 export default {
   name: 'HeaderPicker',
+  components: { MazBtn },
   props: {
     value: { type: Object, default: null },
     locale: { type: String, required: true },

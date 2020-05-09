@@ -27,9 +27,11 @@
 
 <script>
 import { EventBus } from './../../utils'
+import MazBtn from '../../../MazBtn'
 
 export default {
   name: 'FooterPicker',
+  components: { MazBtn },
   props: {
     hasValidate: { type: Boolean, required: true },
     hasNow: { type: Boolean, required: true },
