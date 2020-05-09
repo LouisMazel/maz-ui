@@ -113,8 +113,11 @@ Vue.use(MazUi)`"
         />
       </div>
     </div>
-    <div
+    <hr
       id="allComponents"
+      class="maz-border-top maz-border-solid maz-border-color maz-my-5"
+    >
+    <div
       class="get-started__item maz-px-4"
     >
       <h3 class="maz-mb-0">
