@@ -28,7 +28,7 @@ npm install maz-ui -S
 
 ```javascript
 import Vue from "vue";
-import "maz-ui/lib/maz-ui.css";
+import "maz-ui/lib/css/index.css";
 import MazUi from "maz-ui";
 
 Vue.use(MazUi);

@@ -56,7 +56,12 @@ module.exports = {
   build: {
     babel: {
       plugins: [
-        ['component', { libraryName: 'maz-ui' }]
+        [
+          'component', {
+            libraryName: 'maz-ui',
+            styleLibraryName: 'css'
+          }
+        ]
       ]
     }
   }
@@ -101,7 +106,7 @@ module.exports = {
           :code="`// plugin/maz-ui/index.js
 
 import Vue from 'vue'
-import 'maz-ui/lib/maz-ui.css'
+import 'maz-ui/lib/css/index.css'
 import MazUi from 'maz-ui'
 
 Vue.use(MazUi)`"
@@ -187,7 +192,7 @@ export default {
       codeBase: `// main.js
 
 import Vue from 'vue'
-import 'maz-ui/lib/maz-ui.css'
+import 'maz-ui/lib/css/index.css'
 import MazUi from 'maz-ui'
 
 Vue.use(MazUi)`,
@@ -215,7 +220,12 @@ Vue.use(MazSelect)
 
 {
   "plugins": [
-    ['component', { libraryName: 'maz-ui' }]
+    [
+      'component', {
+        libraryName: 'maz-ui',
+        styleLibraryName: 'css'
+      }
+    ]
   ]
 }`
     }

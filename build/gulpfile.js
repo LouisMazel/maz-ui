@@ -26,7 +26,7 @@ const compileComponentsSingleFileCss = () => {
     .pipe(sass.sync())
     .pipe(prefix())
     .pipe(sass.sync({ outputStyle: 'compressed' }).on('error', sass.logError))
-    .pipe(dest('./../lib/theme-maz'))
+    .pipe(dest('./../lib/css'))
 }
 
 const compileScss = () => {
@@ -39,7 +39,7 @@ const compileScss = () => {
     .pipe(rename('maz-ui.css'))
     .pipe(dest('./../lib'))
     .pipe(rename('index.css'))
-    .pipe(dest('./../lib/theme-maz'))
+    .pipe(dest('./../lib/css'))
 }
 
 const compileBase = () => {
@@ -50,7 +50,7 @@ const compileBase = () => {
     .pipe(prefix())
     .pipe(rename('base.css'))
     .pipe(sass.sync({ outputStyle: 'compressed' }).on('error', sass.logError))
-    .pipe(dest('./../lib/theme-maz'))
+    .pipe(dest('./../lib/css'))
 }
 
 const watcher = () => {

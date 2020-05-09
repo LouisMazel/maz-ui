@@ -14,7 +14,7 @@
 
     <p>
       Instead of importing the basic CSS file
-      (<strong>'maz-ui/lib/maz-ui.css'</strong>). <br />
+      (<strong>'maz-ui/lib/css/index.css'</strong>). <br />
 
       You must import the Maz-UI SCSS at the top of your main CSS file and place
       your own variables just before importing, follow this example:
@@ -46,7 +46,7 @@ $base-font-family:  'Roboto';
     </h3>
 
     <p>
-      If you want override maz-ui SCSS variables, load your file at first and then load the maz-ui SCSS vars file:
+      If you want override maz-ui SCSS variables, load your file at first and then load the maz-ui SCSS variables file:
     </p>
 
     <CodeContainer
@@ -57,8 +57,8 @@ module.exports = {
     loaderOptions: {
       sass: {
         prependData: `
-          @import './src/scss/my-own-vars.scss';
-          @import 'maz-ui/scss/vars.scss';
+          @import './src/scss/my-own-variables.scss';
+          @import 'maz-ui/scss/variables.scss';
         `
       }
     }

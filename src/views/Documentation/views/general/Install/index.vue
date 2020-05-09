@@ -32,7 +32,7 @@ export default {
   data () {
     return {
       cdnCode: `<!-- import du CSS -->
-<link rel="stylesheet" href="https://unpkg.com/maz-ui/lib/maz-ui.css">
+<link rel="stylesheet" href="https://unpkg.com/maz-ui/lib/css/index.css">
 <!-- import du JavaScript -->
 <script src="https://unpkg.com/maz-ui/lib/maz-ui.common.js"><script>`
     }
