@@ -28,18 +28,14 @@ h6 {
   font-weight: normal;
 }
 
-h1 {
-  font-family: GeomanistBold, sans-serif;
-  color: $primary-color;
-}
-
 h1,
 h2 {
   color: $primary-color;
+  font-family: GeomanistMedium, sans-serif;
 }
 
-h2,
 h3 {
+  font-size: 1.7em;
   font-family: GeomanistMedium, sans-serif;
 }
 
@@ -56,10 +52,6 @@ a {
 
 h2 {
   font-size: 2em;
-}
-
-h3 {
-  font-size: 1.7em;
 }
 
 h4 {

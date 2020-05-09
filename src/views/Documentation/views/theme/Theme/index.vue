@@ -66,6 +66,25 @@ module.exports = {
 }"
     />
 
+    <strong>
+      IMPORTANT: If you use the "on demand" mode with babel, you have to disable the import of css files:
+    </strong>
+
+    <CodeContainer
+      code="// .babelrc
+
+{
+  'plugins': [
+    [
+      'component', {
+        libraryName: 'maz-ui',
+        styleLibraryName: false
+      }
+    ]
+  ]
+}`"
+    />
+
 
     <h3>
       All default variables
