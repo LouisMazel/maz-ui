@@ -21,7 +21,7 @@
             Maz UI
           </h1>
           <h2 class="maz-fs-14 header__title__sub maz-text-color">
-            Components & CSS Library
+            UI Components Library
           </h2>
         </div>
       </router-link>

@@ -3,7 +3,7 @@
     <div class="home__main maz-flex maz-flex-1 maz-container maz-flex-center">
       <div class="home__content maz-flex maz-direction-column maz-justify-center maz-p-4">
         <h2 class="maz-mb-2 maz-text-center">
-          Components Library to build your interfaces with
+          Components library to build your interfaces with
           <span class="maz-text-primary">Vue.JS & Nuxt.JS</span>
         </h2>
         <div class="maz-flex maz-flex-center maz-direction-column">
@@ -19,19 +19,19 @@
               class="maz-btn maz-btn--secondary maz-mr-2 maz-mb-2"
               :to="{ name: 'GetStarted' }"
             >
-              Get started
+              GET STARTED
             </router-link>
             <router-link
               class="maz-btn maz-btn--primary maz-mr-2"
               :to="{ name: 'MazInputDoc' }"
             >
-              Components
+              COMPONENTS
             </router-link>
             <router-link
               class="maz-btn maz-btn--third maz-mr-2"
               :to="{ name: 'Theme' }"
             >
-              Theme
+              THEME
             </router-link>
           </div>
         </div>
