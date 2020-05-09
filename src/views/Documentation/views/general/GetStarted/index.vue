@@ -38,7 +38,6 @@
 
         <CodeContainer
           :code="configBabelPluginComponent"
-          language="json"
         />
 
         <h4>
