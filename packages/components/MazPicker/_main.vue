@@ -80,6 +80,8 @@
 import PickersContainer from './PickersContainer'
 import uniqueId from './../../mixins/uniqueId'
 import ArrowIcon from './../_subs/ArrowIcon'
+import MazInput from './../MazInput'
+
 import moment from 'moment'
 import {
   getDefaultLocale,
@@ -109,7 +111,8 @@ export default {
   name: 'MazPicker',
   components: {
     PickersContainer,
-    ArrowIcon
+    ArrowIcon,
+    MazInput
   },
   mixins: [uniqueId],
   props: {

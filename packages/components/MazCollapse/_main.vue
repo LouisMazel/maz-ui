@@ -39,6 +39,7 @@
 <script>
 import MazTransitionExpand from '../MazTransitionExpand'
 import ArrowIcon from '../_subs/ArrowIcon'
+import MazBtn from '../MazBtn'
 
 /**
  * > MazCollpase is a component to show or not content
@@ -48,7 +49,8 @@ export default {
   name: 'MazCollapse',
   components: {
     MazTransitionExpand,
-    ArrowIcon
+    ArrowIcon,
+    MazBtn
   },
   props: {
     // Value is a Boolean to open or close the collapse

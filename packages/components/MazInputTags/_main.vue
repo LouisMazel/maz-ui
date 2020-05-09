@@ -74,12 +74,14 @@
 
 <script>
 import uniqueId from './../../mixins/uniqueId'
+import MazBtn from '../MazBtn'
 
 /**
  * > UI Input tags
  */
 export default {
   name: 'MazInputTags',
+  components: { MazBtn },
   mixins: [uniqueId],
   props: {
     // Input value, can be a `Array` of `String` or `null`

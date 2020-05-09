@@ -84,9 +84,11 @@
 
 <script>
 import vClickOutside from 'v-click-outside'
+import MazBtn from '../MazBtn'
 
 export default {
   name: 'MazDialog',
+  components: { MazBtn },
   directives: {
     clickOutside: vClickOutside.directive
   },

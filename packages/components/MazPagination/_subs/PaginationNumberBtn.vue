@@ -14,8 +14,11 @@
 </template>
 
 <script>
+import MazBtn from '../../MazBtn'
+
 export default {
   name: 'PaginationNumberBtn',
+  components: { MazBtn },
   props: {
     active: { type: Boolean, default: false },
     disabled: { type: Boolean, default: false }

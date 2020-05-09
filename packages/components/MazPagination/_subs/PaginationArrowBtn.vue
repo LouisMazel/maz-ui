@@ -16,11 +16,12 @@
 
 <script>
 import ArrowIcon from '../../_subs/ArrowIcon'
+import MazBtn from '../../MazBtn'
 
 export default {
   name: 'PaginationArrowBtn',
   components: {
-    ArrowIcon
+    ArrowIcon, MazBtn
   },
   props: {
     right: { type: Boolean, default: false },
