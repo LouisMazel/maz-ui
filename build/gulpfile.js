@@ -36,8 +36,6 @@ const compileScss = () => {
     .pipe(sass.sync({ outputStyle: 'expanded' }).on('error', sass.logError))
     .pipe(prefix())
     .pipe(sass.sync({ outputStyle: 'compressed' }).on('error', sass.logError))
-    .pipe(rename('maz-ui.css'))
-    .pipe(dest('./../lib'))
     .pipe(rename('index.css'))
     .pipe(dest('./../lib/css'))
 }

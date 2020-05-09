@@ -2,9 +2,9 @@
   <div
     class="dark-switch-banner maz-w-100 maz-p-3 maz-flex maz-flex-center maz-border-color maz-border-top-1 maz-border-top-solid"
   >
-    <p class="maz-text-muted">
+    <strong class="maz-text-primary">
       Switch Dark Theme
-    </p>
+    </strong>
     <MazSwitch
       v-model="darkTheme"
       class="maz-ml-2"
