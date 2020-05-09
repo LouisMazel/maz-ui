@@ -7,6 +7,7 @@
   &__toggle {
     transition: all .25s cubic-bezier(.645, .045, .355, 1);
     cursor: pointer;
+    outline: none;
     height: 24px;
 
     &__arrow {

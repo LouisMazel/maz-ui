@@ -19,7 +19,7 @@
       @focus="openPicker(true)"
     >
       <div
-        slot="input-icon-right"
+        slot="icon-right"
         class="maz-picker__arrow maz-flex maz-flex-center"
         tabindex="-1"
       >

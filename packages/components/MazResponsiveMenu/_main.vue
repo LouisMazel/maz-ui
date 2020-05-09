@@ -35,12 +35,12 @@
 </template>
 
 <script>
-import VClosable from './../../directives/VClosable'
+import closable from './../../directives/VClosable'
 
 export default {
   name: 'MazResponsiveMenu',
   directives: {
-    closable: VClosable
+    closable
   },
   props: {
     routes: { type: Array, required: true }

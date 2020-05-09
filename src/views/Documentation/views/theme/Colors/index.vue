@@ -19,7 +19,11 @@
           class="maz-elevation maz-p-5 maz-border-radius maz-flex maz-flex-center"
           :class="`maz-bg-${name}`"
         >
-          <h4>
+          <h4
+            :class="{
+              'text-white': name === 'black' || name === 'dark'
+            }"
+          >
             {{ value }}
           </h4>
         </div>
@@ -55,11 +59,25 @@ export default {
 
 <style lang="scss" scoped>
   .colors {
-    &__classes {
-      min-width: 200px;
+    &__items {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-gap: 20px;
 
-      p {
-        margin-bottom: 10px;
+      h4 {
+        color: $text-color !important;
+
+        &.text-white {
+          color: white !important;
+        }
+      }
+
+      @media screen and (max-width: $breakpoint-laptop-m) {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      @media screen and (max-width: $breakpoint-laptop-s) {
+        grid-template-columns: repeat(2, 1fr);
       }
     }
   }

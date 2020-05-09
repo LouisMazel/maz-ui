@@ -5,7 +5,7 @@
       'has-list-open': hasListOpen,
       'maz-is-dark': dark
     }]"
-    @click.stop="toggleList"
+    @blur.capture="closeList($event)"
   >
     <MazInput
       ref="textField"
@@ -14,15 +14,16 @@
       readonly
       :placeholder="placeholder"
       :disabled="disabled"
+      :focus="hasListOpen"
       @keydown="keyboardNav"
       @keyup="$emit('keyup', $event)"
-      @blur.capture="handleBlur"
+      @focus="openList()"
       @change="$emit('change', $event)"
     >
       <div
-        slot="input-icon-right"
+        slot="icon-right"
         class="maz-select__toggle"
-        @click.stop="toggleList"
+        tabindex="-1"
       >
         <!-- The arrow icon -->
         <slot name="arrow">
@@ -62,15 +63,15 @@
             {'selected': value === v},
             {'keyboard-selected': tmpValue === v}
           ]"
-          class="flex align-center maz-select__options-list__item"
+          class="flex align-center maz-select__options-list__item maz-text-left"
           :style="[optionHeight]"
           @click.stop="updateValue(v)"
         >
           <div
             class="dots-text"
             :class="[
-              { 'text-muted' : !v && value !== v },
-              value === v ? 'text-white' : 'text-color'
+              { 'maz-text-muted' : !v && value !== v },
+              value === v ? 'maz-text-white' : 'maz-text-color'
             ]"
           >
             {{ l }}
@@ -151,14 +152,11 @@ export default {
     }
   },
   methods: {
-    handleBlur (e) {
+    closeList (e = {}) {
       if (this.$el.contains(e.relatedTarget)) return
+      this.$emit('close')
+      this.hasListOpen = false
       this.isFocus = false
-      this.closeList()
-    },
-    toggleList () {
-      this.hasListOpen ? this.closeList() : this.openList()
-      this.$refs.textField.focusInput()
     },
     openList () {
       if (!this.disabled) {
@@ -171,15 +169,9 @@ export default {
         if (this.value && this.hasListOpen) this.scrollToSelectedOnFocus(this.selectedValueIndex)
       }
     },
-    closeList () {
-      // sent when the list is close
-      this.$emit('close')
-      this.hasListOpen = false
-    },
     async reset () {
       this.closeList()
       await this.$nextTick()
-      this.$refs.textField.focusInput()
     },
     selectFirstValue () {
       if (this.value) return
