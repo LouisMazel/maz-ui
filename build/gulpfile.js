@@ -29,7 +29,7 @@ const compileComponentsSingleFileCss = () => {
     .pipe(dest('./../lib/css'))
 }
 
-const compileScss = () => {
+const compileCss = () => {
   return src('./../packages/scss/index.scss')
     .pipe(plumber({ errorHandler: onError }))
     .pipe(sourcemaps.init())
@@ -41,7 +41,7 @@ const compileScss = () => {
 }
 
 const compileBase = () => {
-  return src('./../packages/scss/style-helpers/index.scss')
+  return src('./../packages/scss/base.scss')
     .pipe(plumber({ errorHandler: onError }))
     .pipe(sourcemaps.init())
     .pipe(sass.sync({ outputStyle: 'expanded' }).on('error', sass.logError))
@@ -52,11 +52,11 @@ const compileBase = () => {
 }
 
 const watcher = () => {
-  watch('packages/scss/**/*.scss', compileScss, compileComponentsSingleFileCss)
+  watch('packages/scss/**/*.scss', compileBase, compileCss, compileComponentsSingleFileCss)
 }
 
 // BUILD TASKS
 // ------------
 
-exports.default = series(compileBase, compileScss, compileComponentsSingleFileCss, watcher)
-exports.compile = series(compileBase, compileScss, compileComponentsSingleFileCss)
+exports.default = series(compileBase, compileCss, compileComponentsSingleFileCss, watcher)
+exports.compile = series(compileBase, compileCss, compileComponentsSingleFileCss)
