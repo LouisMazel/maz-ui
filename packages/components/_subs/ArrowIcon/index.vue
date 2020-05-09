@@ -4,7 +4,7 @@
     :width="size"
     :height="size"
     viewBox="0 0 24 24"
-    class="arrow-icon"
+    class="maz-arrow-icon"
     :class="[{ 'is-white': dark }, orientation]"
   >
     <path

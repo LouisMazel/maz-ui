@@ -16,7 +16,7 @@
       />
       <div
         v-if="errorMessage"
-        class="dropzone-error maz-flex maz-justify-center maz-mt-2"
+        class="dropzone-error maz-flex maz-justify-center maz-text-danger maz-mt-2"
       >
         <span class="text-danger">
           {{ errorMessage }}
@@ -24,7 +24,7 @@
       </div>
       <div
         v-if="successMessage"
-        class="dropzone-success maz-flex maz-justify-center maz-mt-2"
+        class="dropzone-success maz-flex maz-justify-center maz-text-success maz-mt-2"
       >
         <span class="text-success">
           {{ successMessage }}
@@ -56,7 +56,7 @@ export default {
   />
   <div
     v-if="errorMessage"
-    class="dropzone-error maz-flex maz-justify-center mt-2"
+    class="dropzone-error maz-flex maz-justify-center maz-text-success mt-2"
   >
     <span class="text-danger">
       {{ errorMessage }}
@@ -64,7 +64,7 @@ export default {
   </div>
   <div
     v-if="successMessage"
-    class="dropzone-success maz-flex maz-justify-center mt-2"
+    class="dropzone-success maz-flex maz-justify-center maz-text-success mt-2"
   >
     <span class="text-success">
       {{ successMessage }}

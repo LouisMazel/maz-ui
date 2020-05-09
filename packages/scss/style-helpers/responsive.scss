@@ -12,6 +12,12 @@
   }
 }
 
+.#{$prefix}hidden-laptop-m {
+  @media only screen and (max-width: $breakpoint-laptop-m) {
+    display: none;
+  }
+}
+
 .#{$prefix}hidden-laptop-s {
   @media only screen and (max-width: $breakpoint-laptop-s) {
     display: none;
@@ -54,6 +60,14 @@
   display: none;
 
   @media only screen and (max-width: $breakpoint-laptop-l) {
+    display: inherit;
+  }
+}
+
+.#{$prefix}show-laptop-m {
+  display: none;
+
+  @media only screen and (max-width: $breakpoint-laptop-m) {
     display: inherit;
   }
 }

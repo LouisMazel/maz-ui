@@ -16,13 +16,14 @@
     }
 
     .hljs-variable,
-    .hljs-string {
+    .hljs-keyword,
+    .hljs-attr {
       color: $primary-color;
     }
 
-    .hljs-attr,
     .hljs-number,
-    .hljs-literal {
+    .hljs-literal,
+    .hljs-string {
       color: $secondary-color;
     }
 

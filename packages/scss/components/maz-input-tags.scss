@@ -1,0 +1,276 @@
+@import './../style-helpers/variables/index.scss';
+
+.maz-input-tags {
+  $this: &;
+
+  position: relative;
+  border: $border-width solid $border-color;
+  border-radius: $border-radius;
+  padding: 0 8px;
+  width: 100%;
+  min-height: 40px;
+  background-color: $bg-color;
+  overflow: hidden;
+  transition-duration: .3s;
+
+  &.is-focused:not(.is-disabled) {
+    border-color: $primary-color;
+
+    &.has-error {
+      border-color: $danger-color;
+    }
+
+    &.is-valid {
+      border-color: $success-color;
+    }
+  }
+
+  &__input {
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    transition-duration: .3s;
+    position: relative;
+    font-weight: 400;
+    appearance: none;
+    outline: none;
+    font-size: 1em;
+    z-index: 0;
+    caret-color: $primary-color;
+    min-width: 100px;
+    padding-right: 4px;
+    padding-bottom: 4px;
+    padding-top: 4px;
+    color: $text-color;
+
+    &::-webkit-input-placeholder {
+      color: $placeholder-color;
+    }
+
+    &::-moz-placeholder {
+      color: $placeholder-color;
+    }
+
+    &:-ms-input-placeholder {
+      color: $placeholder-color;
+    }
+
+    &::-ms-input-placeholder {
+      color: $placeholder-color;
+    }
+
+    &:-moz-placeholder {
+      color: $placeholder-color;
+    }
+
+    &::placeholder {
+      color: $placeholder-color;
+    }
+  }
+
+  &__tag {
+    margin-right: 4px;
+    margin-bottom: 4px;
+    margin-top: 4px;
+    border-radius: 4px;
+    padding: 5px 4px 5px 7px;
+    color: white;
+
+    &__text {
+      font-size: .875em;
+      margin-right: 5px;
+    }
+
+    &__clear {
+      font-size: 1em;
+    }
+  }
+
+  &__toggle-btn {
+    $clear-size: 24px;
+
+    position: absolute;
+    top: 1px;
+    bottom: 0;
+    right: 8px;
+    margin: auto 0;
+    width: $clear-size;
+    height: $clear-size;
+    appearance: none;
+    border: none;
+    background-color: transparent;
+    color: $input-icon-color;
+    border-radius: $clear-size;
+    cursor: pointer;
+    font-size: .857em;
+
+    &:focus {
+      outline: none;
+    }
+
+    &__icon {
+      position: relative;
+      font-size: 1.286em;
+    }
+
+    &__effect {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: $clear-size;
+      height: $clear-size;
+      background-color: darken($border-color, 10%);
+      border-radius: $clear-size;
+      transform: scale(0);
+      transition: transform 200ms;
+    }
+
+    &:hover {
+      color: white;
+
+      .maz-input-tags__toggle-btn__effect {
+        transform: scale(1);
+        opacity: .6;
+      }
+    }
+  }
+
+  &.is-disabled {
+    cursor: not-allowed;
+    border-color: #CCC;
+    background-color: #F2F2F2;
+    color: $grey-color;
+
+    #{$this}__input {
+      cursor: not-allowed;
+      color: $grey-color;
+
+      &::-webkit-input-placeholder {
+        color: $grey-color;
+      }
+
+      &::-moz-placeholder {
+        color: $grey-color;
+      }
+
+      &:-ms-input-placeholder {
+        color: $grey-color;
+      }
+
+      &::-ms-input-placeholder {
+        color: $grey-color;
+      }
+
+      &:-moz-placeholder {
+        color: $grey-color;
+      }
+
+      &::placeholder {
+        color: $grey-color;
+      }
+    }
+  }
+
+  &__loader {
+    bottom: 0;
+    height: $border-width;
+    left: $border-radius / 2;
+    width: calc(100% - 8px);
+    position: absolute;
+    overflow: hidden;
+    border-radius: 8px;
+
+    &.textarea {
+      bottom: 6px;
+    }
+
+    &__progress-bar {
+      background-color: $primary-color;
+      display: block;
+      position: absolute;
+      content: '';
+      left: -200px;
+      width: 200px;
+      height: 2px;
+      animation: loading 2s linear infinite;
+    }
+  }
+
+  &.sm {
+    min-height: 36px;
+
+    #{$this}__input {
+      font-size: .857em;
+      min-height: 32px;
+    }
+
+    #{$this}__tag {
+      padding: 3px 2px 3px 5px;
+
+      &__text {
+        margin-right: 5px;
+      }
+    }
+  }
+
+  &.lg {
+    min-height: 48px;
+
+    #{$this}__input {
+      font-size: 1em;
+      min-height: 44px;
+    }
+
+    #{$this}__tag {
+      padding: 8px 5px 8px 10px;
+
+      &__text {
+        margin-right: 5px;
+      }
+    }
+  }
+}
+
+.maz-is-dark .maz-input-tags,
+.maz-is-dark.maz-input-tags {
+  background-color: $bg-color-dark-l;
+  border-color: $border-color-dark;
+
+  &__input {
+    color: $text-color-dark;
+
+    &::-webkit-input-placeholder {
+      color: $placeholder-color-dark;
+    }
+
+    &::-moz-placeholder {
+      color: $placeholder-color-dark;
+    }
+
+    &:-ms-input-placeholder {
+      color: $placeholder-color-dark;
+    }
+
+    &::-ms-input-placeholder {
+      color: $placeholder-color-dark;
+    }
+
+    &:-moz-placeholder {
+      color: $placeholder-color-dark;
+    }
+
+    &::placeholder {
+      color: $placeholder-color-dark;
+    }
+  }
+
+  &__toggle-btn {
+    color: $input-icon-color-dark;
+
+    &__effect {
+      background-color: darken($input-icon-color-dark, 10%);
+    }
+  }
+}

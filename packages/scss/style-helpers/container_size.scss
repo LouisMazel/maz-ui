@@ -26,6 +26,12 @@
   }
 }
 
+@media (min-width: $breakpoint-laptop-m) {
+  .#{$prefix}container {
+    max-width: $breakpoint-laptop-m;
+  }
+}
+
 @media (min-width: $breakpoint-laptop-l) {
   .#{$prefix}container {
     max-width: $breakpoint-laptop-l;

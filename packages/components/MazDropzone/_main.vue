@@ -85,14 +85,14 @@ export default {
               <div class="dz-image">
                   <div data-dz-thumbnail-bg></div>
               </div>
-              <div class="dz-details flex direction-column align-center justify-center">
+              <div class="dz-details maz-flex maz-direction-column maz-align-center maz-justify-center">
                   <div class="dz-filename"><span data-dz-name></span></div>
                   <div class="dz-size"><span data-dz-size></span></div>
               </div>
               <div class="dz-progress m-0">
                 <span class="dz-upload" data-dz-uploadprogress></span>
               </div>
-              <div class="dz-success-mark text-center">
+              <div class="dz-success-mark maz-text-center">
                 <i class="material-icons" aria-hidden="true">done</i>
               </div>
               <div class="dz-error-mark">
