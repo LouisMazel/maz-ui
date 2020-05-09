@@ -1,6 +1,9 @@
 @import './../style-helpers/variables/index.scss';
 
 .maz-picker {
+  @import './maz-btn.scss';
+  @import './_maz-arrow-icon.scss';
+
   position: relative;
   font-weight: 300;
 

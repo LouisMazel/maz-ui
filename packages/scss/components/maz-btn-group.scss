@@ -1,6 +1,8 @@
 @import './../style-helpers/variables/index.scss';
 
 .maz-btn-group {
+  @import './maz-btn.scss';
+
   &__item {
     margin-right: -2px;
     z-index: 0;

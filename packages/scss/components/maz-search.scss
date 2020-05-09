@@ -1,6 +1,8 @@
 @import './../style-helpers/variables/index.scss';
 
 .maz-search {
+  @import './maz-input.scss';
+
   position: relative;
 
   &__items {

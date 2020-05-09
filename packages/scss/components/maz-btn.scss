@@ -1,4 +1,6 @@
 .maz-btn {
+  @import './maz-spinner.scss';
+
   position: relative;
 
   &.hidden {

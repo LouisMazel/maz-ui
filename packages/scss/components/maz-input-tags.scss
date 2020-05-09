@@ -1,6 +1,8 @@
 @import './../style-helpers/variables/index.scss';
 
 .maz-input-tags {
+  @import './maz-btn.scss';
+
   $this: &;
 
   position: relative;

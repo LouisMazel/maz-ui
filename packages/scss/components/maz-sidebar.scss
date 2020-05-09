@@ -1,6 +1,9 @@
 @import './../style-helpers/variables/index.scss';
 
 .maz-sidebar {
+  @import './maz-loader.scss';
+  @import './_maz-arrow-icon.scss';
+
   &__wrapper {
     background-color: white;
     position: relative;
