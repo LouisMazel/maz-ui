@@ -52,11 +52,11 @@ const compileBase = () => {
 }
 
 const watcher = () => {
-  watch('packages/scss/**/*.scss', compileBase, compileCss, compileComponentsSingleFileCss)
+  watch('packages/scss/**/*.scss', compileComponentsSingleFileCss, compileBase, compileCss)
 }
 
 // BUILD TASKS
 // ------------
 
-exports.default = series(compileBase, compileCss, compileComponentsSingleFileCss, watcher)
-exports.compile = series(compileBase, compileCss, compileComponentsSingleFileCss)
+exports.default = series(compileComponentsSingleFileCss, compileBase, compileCss, watcher)
+exports.compile = series(compileComponentsSingleFileCss, compileBase, compileCss)
