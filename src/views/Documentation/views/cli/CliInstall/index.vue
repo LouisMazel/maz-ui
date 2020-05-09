@@ -4,6 +4,8 @@
       Maz-Cli
     </h2>
 
+    <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
+
     <p>
       <a
         href="https://github.com/LouisMazel/maz-cli"

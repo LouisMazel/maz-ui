@@ -4,6 +4,8 @@
       Theme
     </h2>
 
+    <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
+
     <h3>
       How to use change components colors ?
     </h3>

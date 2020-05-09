@@ -4,6 +4,8 @@
       Basic colors
     </h2>
 
+    <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
+
     <div
       class="colors__items maz-mb-4"
     >
