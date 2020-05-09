@@ -1,5 +1,5 @@
 export default {
   hasDarkTheme (state) {
-    return state.darkTheme
+    return localStorage.getItem('use-dark-theme') === 'true' || state.darkTheme
   }
 }
