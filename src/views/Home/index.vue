@@ -71,11 +71,6 @@ export default {
 <style lang="scss" scoped>
   .home {
     // background-image: linear-gradient(to right top, dodgerblue, #00B7FF, #00D4E0, #00E688, #A8EB12);
-    @media only screen and (max-width: $breakpoint-mobile-l) {
-      &__header button {
-        width: 100%;
-      }
-    }
 
     @media only screen and (max-width: $breakpoint-laptop-s) {
       &__main {

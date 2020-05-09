@@ -3,6 +3,9 @@
     <h2 class="maz-mb-4">
       Install
     </h2>
+
+    <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
+
     <h3>NPM</h3>
     <CodeContainer
       code="npm i maz-ui -S"
@@ -32,7 +35,7 @@ export default {
   data () {
     return {
       cdnCode: `<!-- import du CSS -->
-<link rel="stylesheet" href="https://unpkg.com/maz-ui/lib/maz-ui.css">
+<link rel="stylesheet" href="https://unpkg.com/maz-ui/lib/css/index.css">
 <!-- import du JavaScript -->
 <script src="https://unpkg.com/maz-ui/lib/maz-ui.common.js"><script>`
     }

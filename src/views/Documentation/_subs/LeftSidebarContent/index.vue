@@ -133,6 +133,7 @@ export default {
       font-weight: 500;
       margin-bottom: .5em;
       line-height: normal;
+      text-align: left;
 
       &:last-child {
         margin-bottom: 0;

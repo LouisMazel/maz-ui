@@ -11,17 +11,19 @@ export default {
       const { handler, exclude } = binding.value
       // This variable indicates if the clicked element is excluded
       let clickedOnExcludedEl = false
-      exclude.forEach(refName => {
-        // We only run this code if we haven't detected
-        // any excluded element yet
-        if (!clickedOnExcludedEl) {
-          // Get the element using the reference name
-          const excludedEl = vnode.context.$refs[refName]
-          // See if this excluded element
-          // is the same element the user just clicked on
-          clickedOnExcludedEl = excludedEl.contains(e.target)
-        }
-      })
+      if (exclude && exclude.length) {
+        exclude.forEach(refName => {
+          // We only run this code if we haven't detected
+          // any excluded element yet
+          if (!clickedOnExcludedEl) {
+            // Get the element using the reference name
+            const excludedEl = vnode.context.$refs[refName]
+            // See if this excluded element
+            // is the same element the user just clicked on
+            clickedOnExcludedEl = excludedEl.contains(e.target)
+          }
+        })
+      }
       // We check to see if the clicked element is not
       // the dialog element and not excluded
       if (!el.contains(e.target) && !clickedOnExcludedEl) {

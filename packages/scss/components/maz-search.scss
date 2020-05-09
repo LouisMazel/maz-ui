@@ -1,0 +1,71 @@
+@import './../style-helpers/variables/index.scss';
+
+.maz-search {
+  position: relative;
+
+  &__items {
+    z-index: 9;
+    padding: 0;
+    list-style: none;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin: 0;
+    max-width: 100%;
+    position: absolute;
+    top: calc(100% + .143em);
+    border-radius: $border-radius;
+    width: 100%;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
+    background-color: $bg-color;
+    max-height: 250px;
+
+    &__item {
+      padding: 7px 10px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      font-size: 1em;
+      cursor: pointer;
+      background-color: transparent;
+      border: none;
+      color: $text-color;
+      width: 100%;
+      outline: none;
+      text-align: left;
+
+      &:hover,
+      &.keyboard-selected {
+        background-color: darken($hover-bg-color, 5%);
+      }
+
+      &.selected {
+        color: white;
+        background-color: $primary-color;
+        font-weight: 600;
+      }
+    }
+  }
+}
+
+.maz-is-dark .maz-search,
+.maz-search.maz-is-dark {
+  .maz-search {
+    &__items {
+      background-color: $bg-color-dark-l;
+
+      &__item {
+        color: $border-color;
+
+        &:hover,
+        &.keyboard-selected {
+          background-color: lighten($hover-bg-color-dark-l, 5%);
+        }
+
+        &.selected {
+          color: white;
+          background-color: $primary-color;
+        }
+      }
+    }
+  }
+}

@@ -157,13 +157,13 @@ export default {
       clearable
     >
       <i
-        slot="input-icon-left"
+        slot="icon-left"
         class="material-icons"
       >
         lock
       </i>
       <i
-        slot="input-icon-right"
+        slot="icon-right"
         class="material-icons"
       >
         email

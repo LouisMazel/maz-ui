@@ -22,13 +22,13 @@
 
 <!-- @vuese:MazSelect:events:start -->
 
-| Event Name | Description                 | Parameters |
-| ---------- | --------------------------- | ---------- |
-| open       | sent when the list is open  | -          |
-| close      | sent when the list is close | -          |
-| input      | -                           | -          |
-| keyup      | -                           | -          |
-| change     | -                           | -          |
+| Event Name | Description                | Parameters |
+| ---------- | -------------------------- | ---------- |
+| close      | -                          | -          |
+| open       | sent when the list is open | -          |
+| input      | -                          | -          |
+| keyup      | -                          | -          |
+| change     | -                          | -          |
 
 <!-- @vuese:MazSelect:events:end -->
 
