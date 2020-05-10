@@ -1,5 +1,10 @@
 <template>
-  <div class="maz-draggable-list maz-mb-3">
+  <div
+    class="maz-draggable-list maz-mb-3"
+    :class="{
+      'maz-is-dark': dark
+    }"
+  >
     <draggable
       v-model="items"
       v-bind="dragOptions"
@@ -48,7 +53,9 @@ export default {
     // Must be an `Array` (use `v-model`)
     value: { type: Array, required: true },
     // is the item's key to build le list (must be different for each item)
-    itemKey: { type: String, default: null }
+    itemKey: { type: String, default: null },
+    // set dark theme
+    dark: { type: Boolean, default: false }
   },
   data () {
     return {

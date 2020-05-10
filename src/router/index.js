@@ -10,6 +10,7 @@ const componentsRoutes = [
   'CliInstall',
   'Theme',
   'Colors',
+  'DarkMode',
   'MazInputDoc',
   'MazPickerDoc',
   'MazInputTagsDoc',
@@ -38,7 +39,7 @@ const componentsRoutes = [
 
 const isGeneralDoc = name => ['Install', 'GetStarted'].includes(name)
 const isCliDoc = name => ['CliInstall'].includes(name)
-const isThemeDoc = name => ['Theme', 'Colors'].includes(name)
+const isThemeDoc = name => ['Theme', 'Colors', 'DarkMode'].includes(name)
 
 const componentsRoutesBuild = componentsRoutes.map(route => {
   const kebabCaseRouteName =

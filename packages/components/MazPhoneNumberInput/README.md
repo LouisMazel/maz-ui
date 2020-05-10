@@ -19,9 +19,9 @@
 | noFlags            | Remove flags in country selector                                                                                                                                                   | `Boolean` | `false`  | -       |
 | noExample          | Remove the number example from the label input                                                                                                                                     | `Boolean` | `false`  | -       |
 | countriesHeight    | Change the height of country item in list                                                                                                                                          | `Number`  | `false`  | 30      |
-| noUseBrowserLocale | Disable use of browser locale to init the country selector                                                                                                                         | `Boolean` | `false`  | -       |
-| fetchCountry       | if is `:fetch-country="true"`, you enable the fetch of the locale                                                                                                                  | `Boolean` | `false`  | -       |
-| noCountrySelector  | Remove the country selector                                                                                                                                                        | `Boolean` | `false`  | -       |
+| noUseBrowserLocale | Disable use of browser locale to init the country selector (usefull for Nuxt.JS)                                                                                                   | `Boolean` | `false`  | -       |
+| fetchCountry       | Fetch country code via https://ip2c.org/s - Network needed - (Do not use it with default-country-code options)                                                                     | `Boolean` | `false`  | -       |
+| noCountrySelector  | The country selector is not shown, you can validate your phone number with the country code set                                                                                    | `Boolean` | `false`  | -       |
 | showCodeOnList     | Show the country phone code in the list                                                                                                                                            | `Boolean` | `false`  | -       |
 | dark               | Enable the dark mode                                                                                                                                                               | `Boolean` | `false`  | -       |
 
@@ -31,13 +31,13 @@
 
 <!-- @vuese:MazPhoneNumberInput:events:start -->
 
-| Event Name | Description    | Parameters              |
-| ---------- | -------------- | ----------------------- |
-| update     | sent on update | Object with all results |
-| input      | -              | -                       |
-| focus      | -              | -                       |
-| blur       | -              | -                       |
-| change     | -              | -                       |
+| Event Name | Description             | Parameters                                                         |
+| ---------- | ----------------------- | ------------------------------------------------------------------ |
+| update     | sent when the user tape | Object with all paser values                                       |
+| input      | sent when the user tape | Phone number value formatted in e164 format (international format) |
+| focus      | -                       | -                                                                  |
+| blur       | -                       | -                                                                  |
+| change     | -                       | -                                                                  |
 
 <!-- @vuese:MazPhoneNumberInput:events:end -->
 

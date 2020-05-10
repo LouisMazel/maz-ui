@@ -48,7 +48,7 @@ import NavFooter from '@/components/NavFooter'
 
 const isGeneralDoc = name => ['Install', 'GetStarted'].includes(name)
 const isCliDoc = name => ['CliInstall'].includes(name)
-const isThemeDoc = name => ['Theme', 'Colors'].includes(name)
+const isThemeDoc = name => ['Theme', 'Colors', 'DarkMode'].includes(name)
 
 export default {
   name: 'Documentation',

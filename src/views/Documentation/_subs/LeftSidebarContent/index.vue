@@ -46,6 +46,14 @@
     >
       Use your own colors
     </router-link>
+    <router-link
+      class="menu-item maz-btn maz-btn--white maz-mb-2 maz-w-100 maz-no-shadow maz-text-color maz-bg-color maz-no-border maz-hover-bg-color"
+      :to="{
+        name: 'DarkMode'
+      }"
+    >
+      Use dark mode
+    </router-link>
     <h3 class="maz-my-3">
       Components
     </h3>
@@ -85,7 +93,7 @@ import { replaceAll, pascalCaseToKebabCase } from '@/../utils'
 
 const isGeneralDoc = name => ['Install', 'GetStarted'].includes(name)
 const isCliDoc = name => ['CliInstall'].includes(name)
-const isThemeDoc = name => ['Theme', 'Colors'].includes(name)
+const isThemeDoc = name => ['Theme', 'Colors', 'DarkMode'].includes(name)
 
 export default {
   name: 'LeftSidebarContent',
