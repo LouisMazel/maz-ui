@@ -24,6 +24,36 @@
         size="sm"
       />
     </ComponentContainer>
+
+    <hr
+      id="howToUseIt"
+      class="maz-border-top maz-border-solid maz-border-color maz-my-5"
+    >
+
+    <h3>
+      How to use it ?
+    </h3>
+
+    <CodeContainer
+      language="html"
+      code="<template>
+  <MazInputTags
+    v-model=&quot;exampleValue&quot;
+  />
+</template>
+
+<script>
+  import { MazInputTags } from 'maz-ui'
+  export default {
+    components: { MazInputTags }
+    data () {
+      return {
+        exampleValue: null
+      }
+    }
+  }
+</script>"
+    />
   </div>
 </template>
 

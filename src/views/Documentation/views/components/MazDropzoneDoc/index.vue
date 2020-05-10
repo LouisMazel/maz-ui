@@ -31,6 +31,38 @@
         </span>
       </div>
     </ComponentContainer>
+
+    <hr
+      id="howToUseIt"
+      class="maz-border-top maz-border-solid maz-border-color maz-my-5"
+    >
+
+    <h3>
+      How to use it ?
+    </h3>
+
+    <CodeContainer
+      language="html"
+      code="<template>
+  <MazDropzone
+    :url=&quot;url&quot;
+    :headers=&quot;headers&quot;
+  />
+</template>
+
+<script>
+  import { MazDropzone } from 'maz-ui'
+  export default {
+    components: { MazDropzone }
+    data () {
+      return {
+        url: 'https://httpbin.org/post',
+        headers: { 'My-Awesome-Header': 'header value' },
+      }
+    }
+  }
+</script>"
+    />
   </div>
 </template>
 

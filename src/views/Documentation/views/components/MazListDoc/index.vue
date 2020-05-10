@@ -72,6 +72,39 @@
         </div>
       </div>
     </ComponentContainer>
+
+    <hr
+      id="howToUseIt"
+      class="maz-border-top maz-border-solid maz-border-color maz-my-5"
+    >
+
+    <h3>
+      How to use it ?
+    </h3>
+
+    <CodeContainer
+      language="html"
+      code="<template>
+  <MazList>
+    <MazListItem>
+      List item content
+    </MazListItem>
+    <MazListItem>
+      List item content
+    </MazListItem>
+    <MazListItem>
+      List item content
+    </MazListItem>
+  </MazList>
+</template>
+
+<script>
+  import { MazList, MazListItem } from 'maz-ui'
+  export default {
+    components: { MazList, MazListItem }
+  }
+</script>"
+    />
   </div>
 </template>
 

@@ -1,5 +1,9 @@
 @import './../style-helpers/variables/index.scss';
 
+$SM_SIZE: 2.57rem !default;
+$MD_SIZE: 2.85rem !default;
+$LG_SIZE: 3.42rem !default;
+
 .maz-input-tags {
   $this: &;
 
@@ -8,7 +12,7 @@
   border-radius: $border-radius;
   padding: 0 8px;
   width: 100%;
-  min-height: 40px;
+  min-height: $MD_SIZE;
   background-color: $bg-color;
   overflow: hidden;
   transition-duration: .3s;
@@ -199,7 +203,7 @@
   }
 
   &.sm {
-    min-height: 36px;
+    min-height: $SM_SIZE;
 
     #{$this}__input {
       font-size: .857em;
@@ -216,7 +220,7 @@
   }
 
   &.lg {
-    min-height: 48px;
+    min-height: $LG_SIZE;
 
     #{$this}__input {
       font-size: 1em;

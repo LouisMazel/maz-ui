@@ -35,6 +35,50 @@
         </MazTabsContent>
       </div>
     </ComponentContainer>
+
+    <hr
+      id="howToUseIt"
+      class="maz-border-top maz-border-solid maz-border-color maz-my-5"
+    >
+
+    <h3>
+      How to use it ?
+    </h3>
+
+    <CodeContainer
+      language="html"
+      code="<template>
+  <MazTabsBar
+    v-model=&quot;activeTabIndex&quot;
+    :items=&quot;tabs&quot;
+  />
+  <MazTabsContent class=&quot;maz-m-3&quot;>
+    <MazTabsContentItem class=&quot;maz-flex maz-flex-center maz-direction-column&quot;>
+      <p>Text content 1</p>
+    </MazTabsContentItem>
+    <MazTabsContentItem class=&quot;maz-flex maz-flex-center maz-direction-column&quot;>
+      <p>Text content 2</p>
+      <p>Text content 2</p>
+    </MazTabsContentItem>
+  </MazTabsContent>
+</template>
+
+<script>
+  import { MazTabsBar, MazTabsContent, MazTabsContentItem } from 'maz-ui'
+  export default {
+    components: { MazTabsBar, MazTabsContent, MazTabsContentItem }
+    data () {
+      return {
+        activeTabIndex: 0,
+        tabs: [
+          { label: 'First Tab' },
+          { label: 'Second Tab' }
+        ]
+      }
+    }
+  }
+</script>"
+    />
   </div>
 </template>
 

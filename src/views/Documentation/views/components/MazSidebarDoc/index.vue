@@ -70,6 +70,36 @@
         </div>
       </MazSidebar>
     </div>
+
+    <hr
+      id="howToUseIt"
+      class="maz-border-top maz-border-solid maz-border-color maz-my-5"
+    >
+
+    <h3>
+      How to use it ?
+    </h3>
+
+    <CodeContainer
+      language="html"
+      code="<template>
+  <MazSideBar
+    v-model=&quot;value&quot;
+  />
+</template>
+
+<script>
+  import { MazSideBar } from 'maz-ui'
+  export default {
+    components: { MazSideBar }
+    data () {
+      return {
+        value: false
+      }
+    }
+  }
+</script>"
+    />
   </div>
 </template>
 

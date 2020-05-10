@@ -2,10 +2,12 @@ $flag-icon-css-path: '~flag-icon-css/flags';
 
 @import 'flag-icon-css/css/flag-icon.css';
 
+$SM_SIZE: 2.57rem !default;
+$MD_SIZE: 2.85rem !default;
+$LG_SIZE: 3.42rem !default;
+
 .country-selector {
   position: relative;
-  height: 40px;
-  min-height: 40px;
   z-index: 0;
   user-select: none;
 
@@ -31,8 +33,8 @@ $flag-icon-css-path: '~flag-icon-css/flags';
     background-color: $bg-color;
     position: relative;
     width: 100%;
-    height: 40px;
-    min-height: 40px;
+    height: $MD_SIZE;
+    min-height: $MD_SIZE;
     padding-right: 22px;
     font-weight: 400;
     appearance: none;
@@ -255,12 +257,9 @@ $flag-icon-css-path: '~flag-icon-css/flags';
   }
 
   &.sm {
-    height: 36px;
-    min-height: 36px;
-
     .country-selector__input {
-      height: 36px;
-      min-height: 36px;
+      height: $SM_SIZE;
+      min-height: $SM_SIZE;
       font-size: .857em;
     }
 
@@ -280,12 +279,9 @@ $flag-icon-css-path: '~flag-icon-css/flags';
   }
 
   &.lg {
-    height: 48px;
-    min-height: 48px;
-
     .country-selector__input {
-      height: 48px;
-      min-height: 48px;
+      height: $LG_SIZE;
+      min-height: $LG_SIZE;
       font-size: 1em;
     }
 

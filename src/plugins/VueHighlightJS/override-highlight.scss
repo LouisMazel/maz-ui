@@ -11,7 +11,9 @@
       color: #F92672;
     }
 
-    .hljs-built_in {
+    .hljs-built_in,
+    .hljs-regexp,
+    .hljs-template-variable {
       color: $text-color-dark;
     }
 

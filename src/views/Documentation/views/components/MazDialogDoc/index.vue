@@ -66,6 +66,41 @@
         </MazDialog>
       </div>
     </ComponentContainer>
+
+    <hr
+      id="howToUseIt"
+      class="maz-border-top maz-border-solid maz-border-color maz-my-5"
+    >
+
+    <h3>
+      How to use it ?
+    </h3>
+
+    <CodeContainer
+      language="html"
+      code="<template>
+  <MazDialog
+    v-model=&quot;hasDialogOpen&quot;
+  >
+    <div slot=&quot;title&quot;>
+      Basic Dialog
+    </div>
+    Dialog Content basic
+  </MazDialog>
+</template>
+
+<script>
+  import { MazDialog } from 'maz-ui'
+  export default {
+    components: { MazDialog },
+    data () {
+      return {
+        hasDialogOpen: false
+      }
+    }
+  }
+</script>"
+    />
   </div>
 </template>
 

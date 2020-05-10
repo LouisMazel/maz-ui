@@ -17,8 +17,15 @@
           {{ currentComponent | capitalize }}
         </h2>
         <div class="maz-flex-fixed">
+          <MazBtn
+            color="secondary"
+            href="#howToUseIt"
+            class="maz-mr-2"
+          >
+            How to use it ?
+          </MazBtn>
           <MazBtn @click="showOptions">
-            Show Options, Events & Slots
+            Options - Events - Slots
           </MazBtn>
         </div>
       </div>

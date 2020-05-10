@@ -1,5 +1,9 @@
 @import './../../style-helpers/variables/index.scss';
 
+$SM_SIZE: 2.57rem !default;
+$MD_SIZE: 2.85rem !default;
+$LG_SIZE: 3.42rem !default;
+
 .maz-input {
   position: relative;
 
@@ -40,8 +44,8 @@
     }
 
     &:not(.textarea) {
-      height: 40px;
-      min-height: 40px;
+      height: $MD_SIZE;
+      min-height: $MD_SIZE;
     }
 
     &.textarea {
@@ -300,8 +304,8 @@
       font-size: .857em;
 
       &:not(.textarea) {
-        height: 36px;
-        min-height: 36px;
+        height: $SM_SIZE;
+        min-height: $SM_SIZE;
       }
     }
 
@@ -325,8 +329,8 @@
       font-size: 1em;
 
       &:not(.textarea) {
-        height: 48px;
-        min-height: 48px;
+        height: $LG_SIZE;
+        min-height: $LG_SIZE;
       }
     }
 

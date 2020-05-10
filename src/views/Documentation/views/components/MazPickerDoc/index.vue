@@ -253,6 +253,36 @@
         />
       </ComponentContainer>
     </div>
+
+    <hr
+      id="howToUseIt"
+      class="maz-border-top maz-border-solid maz-border-color maz-my-5"
+    >
+
+    <h3>
+      How to use it ?
+    </h3>
+
+    <CodeContainer
+      language="html"
+      code="<template>
+  <MazPicker
+    v-model=&quot;pickerValue&quot;
+  />
+</template>
+
+<script>
+  import { MazPicker } from 'maz-ui'
+  export default {
+    components: { MazPicker }
+    data () {
+      return {
+        pickerValue: null
+      }
+    }
+  }
+</script>"
+    />
   </div>
 </template>
 

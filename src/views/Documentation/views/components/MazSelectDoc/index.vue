@@ -50,6 +50,43 @@
         </ComponentContainer>
       </div>
     </div>
+
+    <hr
+      id="howToUseIt"
+      class="maz-border-top maz-border-solid maz-border-color maz-my-5"
+    >
+
+    <h3>
+      How to use it ?
+    </h3>
+
+    <CodeContainer
+      language="html"
+      code="<template>
+  <MazSelect
+    v-model=&quot;value&quot;
+    :options=&quot;options&quot;
+  />
+</template>
+
+<script>
+  import { MazSelect } from 'maz-ui'
+  export default {
+    components: { MazSelect }
+    data () {
+      return {
+        value: null,
+        options: [
+          { label: 'None', value: null },
+          { label: 'First option', value: 'first' },
+          { label: 'Second option', value: 'second' },
+          { label: 'Third option', value: 'third' }
+        ]
+      }
+    }
+  }
+</script>"
+    />
   </div>
 </template>
 

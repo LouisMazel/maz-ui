@@ -34,7 +34,7 @@ $primary-color:     red;
 $secondary-color:   blue;
 $third-color:       yellow;
 $border-radius:     4px;
-$base-font-size:    16px;
+$base-font-size:    14px;
 $base-font-family:  'Roboto';
 // All available variables are just below
 

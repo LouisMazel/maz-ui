@@ -62,12 +62,12 @@
 
     <CodeContainer
       language="javascript"
-      code="translations='{
+      code=":translations=&quot;{
   countrySelectorLabel: 'Code pays',
   countrySelectorError: 'Choisir un pays',
   phoneNumberLabel: 'Numéro de téléphone',
   example: 'Exemple :'
-}"
+}&quot;"
     />
 
     <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
@@ -187,12 +187,42 @@
         />
       </ComponentContainer>
     </div>
+
+    <hr
+      id="howToUseIt"
+      class="maz-border-top maz-border-solid maz-border-color maz-my-5"
+    >
+
+    <h3>
+      How to use it ?
+    </h3>
+
+    <CodeContainer
+      language="html"
+      code="<template>
+  <MazPhoneNumberInput
+    v-model=&quot;phoneNumber&quot;
+  />
+</template>
+
+<script>
+  import { MazPhoneNumberInput } from 'maz-ui'
+  export default {
+    components: { MazPhoneNumberInput }
+    data () {
+      return {
+        phoneNumber: null
+      }
+    }
+  }
+</script>"
+    />
   </div>
 </template>
 
 <script>
 export default {
-  name: 'MazInputDoc',
+  name: 'MazPhoneNumberInputDoc',
   data () {
     return {
       phoneNumber: null,

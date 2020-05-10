@@ -18,6 +18,36 @@
         </div>
       </div>
     </ComponentContainer>
+
+    <hr
+      id="howToUseIt"
+      class="maz-border-top maz-border-solid maz-border-color maz-my-5"
+    >
+
+    <h3>
+      How to use it ?
+    </h3>
+
+    <CodeContainer
+      language="html"
+      code="<template>
+  <MazSwitch
+    v-model=&quot;value&quot;
+  />
+</template>
+
+<script>
+  import { MazSwitch } from 'maz-ui'
+  export default {
+    components: { MazSwitch }
+    data () {
+      return {
+        value: false
+      }
+    }
+  }
+</script>"
+    />
   </div>
 </template>
 

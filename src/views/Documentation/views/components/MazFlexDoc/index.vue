@@ -150,6 +150,29 @@
         </MazFlex>
       </div>
     </ComponentContainer>
+
+    <hr
+      id="howToUseIt"
+      class="maz-border-top maz-border-solid maz-border-color maz-my-5"
+    >
+
+    <h3>
+      How to use it ?
+    </h3>
+
+    <CodeContainer
+      language="html"
+      code="<template>
+  <MazFlex />
+</template>
+
+<script>
+  import { MazFlex } from 'maz-ui'
+  export default {
+    components: { MazFlex }
+  }
+</script>"
+    />
   </div>
 </template>
 
@@ -317,7 +340,7 @@ export default {
   .maz-flex-doc .demo {
     .maz-flex {
       padding: 10px;
-      background-color: yellowgreen;
+      background-color: $secondary-color;
       color: white;
       border-radius: $border-radius;
     }

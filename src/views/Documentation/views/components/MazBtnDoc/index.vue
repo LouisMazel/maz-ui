@@ -1,13 +1,13 @@
 <template>
   <div class="maz-btn-doc">
+    <h3>
+      Examples
+    </h3>
     <ComponentContainer
       :code="codeExample"
       language="html"
       class="btn-container"
     >
-      <h4 class="maz-mb-3">
-        Example
-      </h4>
       <MazBtn>
         Basic
       </MazBtn>
@@ -148,6 +148,30 @@
         </MazBtn>
       </div>
     </ComponentContainer>
+
+    <hr
+      id="howToUseIt"
+      class="maz-border-top maz-border-solid maz-border-color maz-my-5"
+    >
+    <h3>
+      How to use it ?
+    </h3>
+    <CodeContainer
+      language="html"
+      class="maz-mb-0"
+      code="<template>
+  <MazBtn>
+    Basic
+  </MazBtn>
+</template>
+
+<script>
+  import { MazBtn } from 'maz-ui'
+  export default {
+    components: { Mazbtn }
+  }
+</script>"
+    />
   </div>
 </template>
 

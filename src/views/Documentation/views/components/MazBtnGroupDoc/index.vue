@@ -1,5 +1,8 @@
 <template>
   <div class="maz-btn-doc">
+    <h3>
+      Examples
+    </h3>
     <ComponentContainer
       :code="codeExample"
       language="html"
@@ -72,6 +75,42 @@
         <p>String value : {{ btnGroupValueString || 'null' }}</p>
       </div>
     </ComponentContainer>
+
+    <hr
+      id="howToUseIt"
+      class="maz-border-top maz-border-solid maz-border-color maz-my-5"
+    >
+
+    <h3>
+      How to use it ?
+    </h3>
+    <CodeContainer
+      language="html"
+      class="maz-mb-0"
+      code="<template>
+  <MazBtnGroup
+    v-model=&quot;btnGroupValue&quot;
+    :items=&quot;items&quot;
+  />
+</template>
+
+<script>
+  import { MazBtnGroup } from 'maz-ui'
+  export default {
+    components: { MazBtnGroup },
+    data () {
+      return {
+        btnGroupValue: null,
+        items: [
+          { label: 'Number 1', value: 1 },
+          { label: 'Number 2', value: 2 },
+          { label: 'Number 3', value: 3 }
+        ]
+      }
+    }
+  }
+</script>"
+    />
   </div>
 </template>
 

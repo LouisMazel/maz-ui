@@ -65,6 +65,52 @@
         </div>
       </div>
     </ComponentContainer>
+
+    <hr
+      id="howToUseIt"
+      class="maz-border-top maz-border-solid maz-border-color maz-my-5"
+    >
+
+    <h3>
+      How to use it ?
+    </h3>
+
+    <CodeContainer
+      language="html"
+      code="<template>
+  <MazTransitionExpand>
+    <div
+      v-show=&quot;isShown&quot;
+    >
+      <p>Content expand</p>
+      <p>Content expand</p>
+      <p>Content expand</p>
+      <p>Content expand</p>
+      <p>Content expand</p>
+      <p>Content expand</p>
+      <p>Content expand</p>
+      <p>Content expand</p>
+      <p>Content expand</p>
+      <p>Content expand</p>
+      <p>Content expand</p>
+      <p>Content expand</p>
+      <p>Content expand</p>
+    </div>
+  </MazTransitionExpand>
+</template>
+
+<script>
+  import { MazTransitionExpand } from 'maz-ui'
+  export default {
+    components: { MazTransitionExpand },
+    data () {
+      return {
+        isShow: false
+      }
+    }
+  }
+</script>"
+    />
   </div>
 </template>
 

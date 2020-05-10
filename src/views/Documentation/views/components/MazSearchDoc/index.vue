@@ -66,6 +66,44 @@
         </template>
       </MazSearch>
     </ComponentContainer>
+
+    <hr
+      id="howToUseIt"
+      class="maz-border-top maz-border-solid maz-border-color maz-my-5"
+    >
+
+    <h3>
+      How to use it ?
+    </h3>
+
+    <CodeContainer
+      language="html"
+      code="<template>
+  <MazSearch
+    v-model=&quot;query&quot;
+    :items=&quot;items&quot;
+    @request=&quot;searchResults&quot;
+  />
+</template>
+
+<script>
+  import { MazSearch } from 'maz-ui'
+  export default {
+    components: { MazSearch }
+    data () {
+      return {
+        query: null,
+        items: []
+      }
+    },
+    methods: {
+      searchResults (query) {
+        // get items on your api
+      }
+    }
+  }
+</script>"
+    />
   </div>
 </template>
 

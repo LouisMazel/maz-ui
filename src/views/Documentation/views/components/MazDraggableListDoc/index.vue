@@ -29,6 +29,43 @@
         Reset order
       </MazBtn>
     </ComponentContainer>
+
+    <hr
+      id="howToUseIt"
+      class="maz-border-top maz-border-solid maz-border-color maz-my-5"
+    >
+
+    <h3>
+      How to use it ?
+    </h3>
+
+    <CodeContainer
+      language="html"
+      code="<template>
+  <MazDraggableList
+    v-model=&quot;list&quot;
+  />
+</template>
+
+<script>
+  import { MazDraggableList } from 'maz-ui'
+  export default {
+    components: { MazDraggableList }
+    data () {
+      return {
+        list: [
+          { label: 'first', value: 0 },
+          { label: 'second', value: 1 },
+          { label: 'third', value: 2 },
+          { label: 'fourth', value: 3 },
+          { label: 'fifth', value: 4 },
+          { label: 'sixth', value: 5 }
+        ]
+      }
+    }
+  }
+</script>"
+    />
   </div>
 </template>
 

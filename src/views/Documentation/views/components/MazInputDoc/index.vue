@@ -65,38 +65,69 @@
     <div
       v-for="type in inputTypes"
       :key="type"
-      class="flex maz-mt-3 maz-flex-wrap"
     >
-      <div class="flex-component maz-flex-1">
+      <div class="flex-component">
         <h3>{{ type | capitalize }}</h3>
-        <ComponentContainer>
-          <MazInput
-            v-model="inputValue"
-            :error="type === 'error'"
-            :valid="type === 'valid'"
-            :disabled="type === 'disabled'"
-            :clearable="type === 'clearable'"
-            :hint="type === 'hint' ? 'Hint value' : null"
-            :loading="type === 'loading'"
-            :required="type === 'required'"
-            :size="type === 'sm' ? 'sm' : type === 'lg' ? 'lg' : null"
-          />
-        </ComponentContainer>
-        <ComponentContainer>
-          <MazInput
-            v-model="withValue"
-            :error="type === 'error'"
-            :valid="type === 'valid'"
-            :disabled="type === 'disabled'"
-            :clearable="type === 'clearable'"
-            :hint="type === 'hint' ? 'Hint value' : null"
-            :loading="type === 'loading'"
-            :required="type === 'required'"
-            :size="type === 'sm' ? 'sm' : type === 'lg' ? 'lg' : null"
-          />
-        </ComponentContainer>
+        <div class="maz-flex maz-flex-wrap">
+          <ComponentContainer class="maz-flex-1 maz-mr-2">
+            <MazInput
+              v-model="inputValue"
+              :error="type === 'error'"
+              :valid="type === 'valid'"
+              :disabled="type === 'disabled'"
+              :clearable="type === 'clearable'"
+              :hint="type === 'hint' ? 'Hint value' : null"
+              :loading="type === 'loading'"
+              :required="type === 'required'"
+              :size="type === 'sm' ? 'sm' : type === 'lg' ? 'lg' : null"
+            />
+          </ComponentContainer>
+          <ComponentContainer class="maz-flex-1">
+            <MazInput
+              v-model="withValue"
+              :error="type === 'error'"
+              :valid="type === 'valid'"
+              :disabled="type === 'disabled'"
+              :clearable="type === 'clearable'"
+              :hint="type === 'hint' ? 'Hint value' : null"
+              :loading="type === 'loading'"
+              :required="type === 'required'"
+              :size="type === 'sm' ? 'sm' : type === 'lg' ? 'lg' : null"
+            />
+          </ComponentContainer>
+        </div>
       </div>
     </div>
+
+    <hr
+      id="howToUseIt"
+      class="maz-border-top maz-border-solid maz-border-color maz-my-5"
+    >
+
+    <h3>
+      How to use it ?
+    </h3>
+
+    <CodeContainer
+      language="html"
+      code="<template>
+  <MazInput
+    v-model=&quot;exampleValue&quot;
+  />
+</template>
+
+<script>
+  import { MazInput } from 'maz-ui'
+  export default {
+    components: { MazInput }
+    data () {
+      return {
+        exampleValue: null
+      }
+    }
+  }
+</script>"
+    />
   </div>
 </template>
 
