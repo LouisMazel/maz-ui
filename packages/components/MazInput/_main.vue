@@ -10,9 +10,8 @@
       'maz-is-dark': dark,
       'has-hint': hint,
       'has-no-label': !hasLabel && !hint,
-      'has-left-icon': hasLeftIcon(),
-      'has-right-icon': hasRightIcon()
-    }, size]"
+      'has-left-icon': hasLeftIcon()
+    }, size, `has-${leftNumberIcon}-right-icon`]"
     class="maz-input"
     @click="focusInput"
   >
@@ -51,7 +50,7 @@
       class="maz-input__input maz-border maz-border-color maz-border-solid"
       :aria-label="placeholder"
       :class="{
-        'has-right-btn': hasClearBtn || hasPasswordBtn
+        'has-right-icon': hasClearBtn || hasPasswordBtn || hasRightIcon()
       }"
       :disabled="disabled"
       :required="required"
@@ -92,7 +91,7 @@
       {{ hintValue || placeholderValue }}
     </label>
     <transition-group
-      name="scale"
+      name="maz-scale"
     >
       <button
         v-if="hasClearBtn"
@@ -104,7 +103,6 @@
         :class="{ 'has-right-icon': hasRightIcon() }"
         @click="clear"
       >
-        <span class="maz-input__toggle-btn__effect" />
         <i class="maz-input__toggle-btn__icon material-icons">
           close
         </i>
@@ -123,7 +121,6 @@
         tabindex="-1"
         @click="showPassword = !showPassword"
       >
-        <span class="maz-input__toggle-btn__effect" />
         <i class="maz-input__toggle-btn__icon material-icons">
           {{ showPassword ? 'visibility_off' : 'visibility' }}
         </i>
@@ -249,6 +246,14 @@ export default {
         ...(this.hasLeftIcon() ? [{ position: 'left', name: this.leftIconName }] : []),
         ...(this.hasRightIcon() ? [{ position: 'right', name: this.rightIconName }] : [])
       ]
+    },
+    leftNumberIcon () {
+      const array = [
+        !!this.hasRightIcon(),
+        !!this.hasClearBtn,
+        !!this.hasPasswordBtn
+      ]
+      return array.filter(a => a).length
     }
   },
   methods: {

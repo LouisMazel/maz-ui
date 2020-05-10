@@ -1,3 +1,3 @@
 export default {
-  darkTheme: localStorage.getItem('use-dark-theme') || false
+  darkTheme: localStorage.getItem('use-dark-theme') === 'true' || false
 }

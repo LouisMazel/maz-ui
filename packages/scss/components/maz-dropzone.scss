@@ -1,5 +1,5 @@
 @import './../style-helpers/variables/index.scss';
-@import './maz-dropzone/dropzone-base.scss';
+@import './maz-dropzone/_maz-dropzone-base.scss';
 
 .maz-dropzone {
   border: $border-width dashed $border-color;

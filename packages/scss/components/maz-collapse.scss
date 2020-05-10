@@ -1,10 +1,6 @@
 @import './../style-helpers/variables/index.scss';
 
 .maz-collapse {
-  @import './maz-transition-expand.scss';
-  @import './maz-btn.scss';
-  @import './_maz-arrow-icon.scss';
-
   color: $text-color;
   border-radius: $border-radius;
   overflow: hidden;

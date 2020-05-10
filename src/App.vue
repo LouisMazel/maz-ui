@@ -29,8 +29,8 @@ export default {
   },
   mounted () {
     const date = new Date().toTimeString()
-    if (date < '06:30' || date > '21:00') {
-      this.setDarkTheme(true)
+    if (date < '06:15' || date > '21:20') {
+      if (localStorage.getItem('use-dark-theme') === null) this.setDarkTheme(true)
     }
   },
   methods: {

@@ -46,7 +46,14 @@
         left-icon-name="lock"
         class="maz-mb-3"
         clearable
-      />
+      >
+        <i
+          slot="icon-right"
+          class="material-icons"
+        >
+          done
+        </i>
+      </MazInput>
       <MazInput
         v-model="commentValue"
         placeholder="Comment"
