@@ -1,6 +1,6 @@
 <template>
   <div class="maz-switch-doc">
-    <ComponentContainer :code="codeExample">
+    <ComponentContainer>
       <div class="maz-flex maz-flex-wrap">
         <div
           v-for="type in btnTypes"
@@ -71,20 +71,7 @@ export default {
         'white',
         'black'
       ],
-      checkboxValue: true,
-      codeExample: `<template>
-  <MazSwitch
-    v-model="checkboxValue"
-  />
-</template>
-
-export default {
-  data () {
-    return {
       checkboxValue: true
-    }
-  }
-}`
     }
   }
 }
