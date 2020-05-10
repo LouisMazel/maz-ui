@@ -24,6 +24,9 @@ const onError = err => {
 const compileComponentsSingleFileCss = () => {
   return src('./../packages/scss/components/*.scss')
     .pipe(sass.sync())
+    .pipe(sass({
+      includePaths: ['node_modules']
+    }))
     .pipe(prefix())
     .pipe(sass.sync({ outputStyle: 'compressed' }).on('error', sass.logError))
     .pipe(dest('./../lib/css'))
