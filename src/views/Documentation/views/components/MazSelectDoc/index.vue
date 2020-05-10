@@ -1,5 +1,15 @@
 <template>
   <div class="maz-input-doc">
+    <h3>
+      Informations
+    </h3>
+
+    <p>
+      This component uses <router-link :to="{name: 'MazInputDoc'}">
+        MazInput
+      </router-link> and therefore inherits all these options
+    </p>
+
     <ComponentContainer :code="codeExample">
       <MazSelect
         v-model="selectValueExample"

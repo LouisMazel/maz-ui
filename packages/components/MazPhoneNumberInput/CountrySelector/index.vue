@@ -18,8 +18,10 @@
     <div
       v-if="value && !noFlags"
       class="country-selector__country-flag"
+      tabindex="-1"
+      @click.stop="toggleList"
     >
-      <div :class="`iti-flag-small iti-flag ${value.toLowerCase()}`" />
+      <div :class="`flag-icon flag-icon-${value.toLowerCase()}`" />
     </div>
     <input
       :id="id"
@@ -35,6 +37,7 @@
     >
     <div
       class="country-selector__toggle"
+      tabindex="-1"
       @click.stop="toggleList"
     >
       <slot name="arrow">
@@ -45,13 +48,14 @@
       ref="label"
       :class="error ? 'maz-text-danger' : null"
       class="country-selector__label"
+      tabindex="-1"
       @click.stop="toggleList"
     >
       {{ hint || placeholder }}
     </label>
     <Transition name="maz-slide">
       <div
-        v-show="hasListOpen"
+        v-if="hasListOpen"
         ref="countriesList"
         class="country-selector__list"
         :class="{ 'has-calling-code': showCodeOnList }"
@@ -79,7 +83,7 @@
               v-if="!noFlags"
               class="country-selector__list__item__flag-container"
             >
-              <div :class="`iti-flag-small iti-flag ${item.iso2.toLowerCase()}`" />
+              <div :class="`flag-icon flag-icon-${item.iso2.toLowerCase()}`" />
             </div>
             <span
               v-if="showCodeOnList"
@@ -136,7 +140,7 @@ export default {
   computed: {
     listHeight () {
       return {
-        height: `${(this.countriesHeight + 1) * 7}px`,
+        height: `${(this.countriesHeight + 1) * (this.countriesSorted.length < 7 ? this.countriesSorted.length : 7)}px`,
         maxHeight: `${(this.countriesHeight + 1) * 7}px`
       }
     },
@@ -187,7 +191,7 @@ export default {
       this.closeList()
     },
     toggleList () {
-      this.$refs.countriesList.offsetParent ? this.closeList() : this.openList()
+      this.hasListOpen ? this.closeList() : this.openList()
     },
     openList () {
       if (!this.disabled) {
@@ -210,9 +214,13 @@ export default {
       await this.$nextTick()
       this.closeList()
     },
-    scrollToSelectedOnFocus (arrayIndex) {
-      this.$nextTick(() => {
-        this.$refs.countriesList.scrollTop = arrayIndex * (this.countriesHeight + 1) - ((this.countriesHeight + 1) * 3)
+    async scrollToSelectedOnFocus (arrayIndex) {
+      await this.$nextTick()
+      const elem = this.$refs.countriesList
+      const scrollValue = arrayIndex * (this.countriesHeight + 1) - ((this.countriesHeight + 1) * 3)
+      await this.$nextTick()
+      elem.scrollBy({
+        top: scrollValue,
       })
     },
     selectFirstValue () {

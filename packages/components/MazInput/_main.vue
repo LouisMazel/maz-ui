@@ -16,7 +16,7 @@
     @click="focusInput"
   >
     <div
-      v-if="hasLeftIcon"
+      v-if="hasLeftIcon()"
       class="maz-input__icon maz-flex left"
       :class="[textarea ? 'maz-align-start maz-pt-2' : 'maz-align-center']"
     >
@@ -28,7 +28,7 @@
     </div>
 
     <div
-      v-if="hasRightIcon"
+      v-if="hasRightIcon()"
       class="maz-input__icon maz-flex right"
       :class="[textarea ? 'maz-align-start maz-pt-2' : 'maz-align-center']"
     >

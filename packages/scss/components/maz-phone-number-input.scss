@@ -21,7 +21,29 @@
     min-width: 130px;
     max-width: 130px;
   }
+
+  .maz-input {
+    &:not(.has-border-radius) {
+      .maz-input__input {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        margin-left: - $border-width - 1;
+      }
+    }
+
+    &__input {
+      z-index: 0;
+
+      &:focus {
+        z-index: 1;
+      }
+    }
+
+    &__label,
+    &__toggle-btn {
+      z-index: 1;
+    }
+  }
 }
 
-@import './maz-phone-number-input/input-tel';
 @import './maz-phone-number-input/country-selector';

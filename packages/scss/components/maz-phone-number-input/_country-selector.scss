@@ -1,6 +1,8 @@
-.country-selector {
-  @import './iti-flags/index.scss';
+$flag-icon-css-path: '~flag-icon-css/flags';
 
+@import '~flag-icon-css/sass/flag-icon.scss';
+
+.country-selector {
   position: relative;
   height: 40px;
   min-height: 40px;
@@ -13,6 +15,7 @@
 
   &__label {
     position: absolute;
+    outline: none;
     top: 3px;
     cursor: pointer;
     left: 11px;
@@ -50,6 +53,7 @@
     top: calc(50% - 10px);
     transition: all .25s cubic-bezier(.645, .045, .355, 1);
     text-align: center;
+    outline: none;
     display: inline-block;
     cursor: pointer;
     height: 24px;
@@ -61,15 +65,16 @@
   }
 
   &__country-flag {
+    outline: none;
     margin: auto 0;
     position: absolute;
-    top: 21px;
+    top: 17px;
     left: 11px;
     z-index: 1;
     cursor: pointer;
 
-    img {
-      position: absolute;
+    .flag-icon {
+      width: 16px;
     }
   }
 
@@ -132,6 +137,20 @@
     }
   }
 
+  &.is-focused {
+    z-index: 1;
+
+    .country-selector {
+      &__input {
+        border-color: $primary-color;
+      }
+
+      &__label {
+        color: $primary-color;
+      }
+    }
+  }
+
   &.is-valid {
     .country-selector__input {
       border-color: $success-color;
@@ -148,20 +167,6 @@
     .country-selector {
       &__toggle {
         transform: rotate(180deg);
-      }
-    }
-  }
-
-  &.is-focused {
-    z-index: 1;
-
-    .country-selector {
-      &__input {
-        border-color: $primary-color;
-      }
-
-      &__label {
-        color: $primary-color;
       }
     }
   }
@@ -200,33 +205,35 @@
     .country-selector {
       cursor: not-allowed;
 
+      $disabled-color-text: darken($disabled-color, 20%);
+
       &__input {
-        border-color: #CCC;
-        background-color: #F2F2F2;
-        color: $disabled-color;
+        border-color: $border-color;
+        background-color: $disabled-color;
+        color: $disabled-color-text;
 
         &::-webkit-input-placeholder {
-          color: $disabled-color;
+          color: $disabled-color-text;
         }
 
         &::-moz-placeholder {
-          color: $disabled-color;
+          color: $disabled-color-text;
         }
 
         &:-ms-input-placeholder {
-          color: $disabled-color;
+          color: $disabled-color-text;
         }
 
         &::-ms-input-placeholder {
-          color: $disabled-color;
+          color: $disabled-color-text;
         }
 
         &:-moz-placeholder {
-          color: $disabled-color;
+          color: $disabled-color-text;
         }
 
         &::placeholder {
-          color: $disabled-color;
+          color: $disabled-color-text;
         }
       }
 
@@ -236,7 +243,7 @@
       &__country-flag,
       &__country-flag > div {
         cursor: not-allowed;
-        color: $disabled-color;
+        color: $disabled-color-text;
       }
     }
   }
@@ -263,17 +270,6 @@
 
     .country-selector__country-flag {
       top: 16px;
-
-      img {
-        zoom: .3;
-        color: red;
-
-        /* stylelint-disable */
-        -moz-transform: scale(.3);
-        -moz-transform-origin: 0 0;
-
-        /* stylelint-enable */
-      }
     }
 
     &.has-value {
@@ -299,16 +295,6 @@
 
     .country-selector__country-flag {
       top: 25px;
-
-      img {
-        zoom: .45;
-
-        /* stylelint-disable */
-        -moz-transform: scale(.45);
-        -moz-transform-origin: 0 0;
-
-        /* stylelint-enable */
-      }
     }
 
     &.has-value {
@@ -381,8 +367,3 @@
     }
   }
 }
-
-// .country-selector__input,
-// .country-selector__list {
-//   color: $placeholder-color-dark;
-// }

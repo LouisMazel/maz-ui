@@ -19,11 +19,11 @@ const allCountries = [
     'as',
     '1684'
   ],
-  [
-    'Andorra',
-    'ad',
-    '376'
-  ],
+  // [
+  //   'Andorra',
+  //   'ad',
+  //   '376'
+  // ],
   [
     'Angola',
     'ao',

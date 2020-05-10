@@ -1,8 +1,13 @@
 <template>
   <div class="theme">
-    <h2>
-      Theme
-    </h2>
+    <div class="theme__header maz-flex maz-space-between maz-align-center">
+      <h2>
+        Theme
+      </h2>
+      <MazBtn href="#all_vars">
+        All default SCSS variables
+      </MazBtn>
+    </div>
 
     <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
 
@@ -42,6 +47,8 @@ $base-font-family:  'Roboto';
 // Your own CSS"
       language="scss"
     />
+
+    <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
 
     <h3>
       How to use Maz-UI SCSS globally in your app ?
@@ -87,6 +94,10 @@ module.exports = {
 }`"
     />
 
+    <hr
+      id="all_vars"
+      class="maz-border-top maz-border-solid maz-border-color maz-my-5"
+    >
 
     <h3>
       All default variables

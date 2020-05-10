@@ -17,7 +17,7 @@
         :error="shouldChooseCountry"
         :hint="shouldChooseCountry ? t.countrySelectorError : null"
         :disabled="disabled"
-        :valid="isValid && !noValidatorState"
+        :valid="isValid && !noValidation"
         :preferred-countries="preferredCountries"
         :only-countries="onlyCountries"
         :ignored-countries="ignoredCountries"
@@ -27,27 +27,31 @@
         :size="size"
         class="input-country-selector"
       >
+        <!-- slot arrow: change the arrow icon -->
         <slot
           slot="arrow"
           name="arrow"
-        />
+        >
+          <!-- `<ArrowIcon />` -->
+        </slot>
       </CountrySelector>
     </div>
     <div class="maz-flex-1">
-      <InputTel
+      <MazInput
         :id="`${uniqueId}_phone_number`"
         ref="PhoneNumberInput"
-        v-model="phoneNumber"
+        v-model="inputValue"
         :placeholder="t.phoneNumberLabel"
         :hint="hintValue"
         :disabled="disabled"
         :size="size"
-        :error="error"
-        :valid="isValid && !noValidatorState"
-        :required="required"
-        :no-country-selector="noCountrySelector"
+        :valid="isValid && !noValidation"
         v-bind="$attrs"
+        clearable
         class="input-phone-number"
+        :class="{
+          'has-border-radius': noCountrySelector
+        }"
         @keydown="(e) => { lastKeyPressed = e.keyCode }"
         @focus="$emit('focus', $event)"
         @blur="$emit('blur', $event)"
@@ -61,9 +65,9 @@
   import { countries, countriesIso } from './assets/js/phoneCodeCountries.js'
   import examples from 'libphonenumber-js/examples.mobile.json'
   import { parsePhoneNumberFromString, AsYouType, getExampleNumber } from 'libphonenumber-js'
-  import InputTel from './InputTel'
   import CountrySelector from './CountrySelector'
   import locales from './assets/locales'
+  import MazInput from './../MazInput'
 
   import uniqueId from './../../mixins/uniqueId'
 
@@ -82,8 +86,8 @@
   export default {
     name: 'MazPhoneNumberInput',
     components: {
-      InputTel,
-      CountrySelector
+      CountrySelector,
+      MazInput
     },
     mixins: [uniqueId],
     props: {
@@ -93,31 +97,44 @@
       },
       id: { type: String, default: null },
       disabled: { type: Boolean, default: false },
+      // set default country code (Ex: `default-country-code="FR"`)
       defaultCountryCode: { type: String, default: null },
+      // Same as MazInput (options: `sm|md|lg`)
       size: { type: String, default: null },
+      // Countries selected will be at the top of the list - Ex : `preferred-countries="['FR', 'BE', 'DE']`
       preferredCountries: { type: Array, default: null },
+      // Only countries selected are in list - Ex : `only-countries="['FR', 'BE', 'DE']`
       onlyCountries: { type: Array, default: null },
+      // Countries seleted are remove from the list - Ex : `ignored-countries="['FR', 'BE', 'DE']`
       ignoredCountries: { type: Array, default: Array },
+      // Translate text in component - By default `{ countrySelectorLabel: 'Country code', countrySelectorError: 'Choose country', phoneNumberLabel: 'Phone number', example: 'Example:' }`
       translations: { type: Object, default: null },
-      noValidatorState: { type: Boolean, default: false },
+      // Remove the validation UI state (success border color)
+      noValidation: { type: Boolean, default: false },
+      // Remove flags in country selector
       noFlags: { type: Boolean, default: false },
-      error: { type: Boolean, default: false },
+      // Remove the number example from the label input
       noExample: { type: Boolean, default: false },
-      required: { type: Boolean, default: false },
+      // Change the height of country item in list
       countriesHeight: { type: Number, default: 30 },
+      // Disable use of browser locale to init the country selector (usefull for Nuxt.JS)
       noUseBrowserLocale: { type: Boolean, default: false },
+      // Fetch country code via https://ip2c.org/s - Network needed - (Do not use it with default-country-code options)
       fetchCountry: { type: Boolean, default: false },
+      // The country selector is not shown, you can validate your phone number with the country code set
       noCountrySelector: { type: Boolean, default: false },
+      // Show the country phone code in the list
       showCodeOnList: { type: Boolean, default: false },
-      dark: { type: Boolean, default: false },
-      borderRadius: { type: Number, default: 4 }
+      // Enable the dark mode
+      dark: { type: Boolean, default: false }
     },
     data () {
       return {
         results: {},
         inputFocused: false,
         userLocale: this.defaultCountryCode,
-        lastKeyPressed: null
+        lastKeyPressed: null,
+        inputValueFormatted: null
       }
     },
     computed: {
@@ -130,28 +147,33 @@
       codesCountries () {
         return countries
       },
+      inputValue: {
+        get () {
+          return this.inputValueFormatted || this.value
+        },
+        set (value) {
+          const { countryCode } = this
+          this.inputValueFormatted = this.getAsYouTypeFormat({
+            phoneNumber: value,
+            countryCode
+          })
+          this.emitValues({countryCode, phoneNumber: value})
+        }
+      },
       countryCode: {
         get () {
           return this.results.countryCode || this.userLocale
         },
         set (newCountry) {
-          this.emitValues({countryCode: newCountry, phoneNumber: this.phoneNumber})
+          this.emitValues({countryCode: newCountry, phoneNumber: this.inputValue})
           if (this.inputFocused) {
             this.$refs.PhoneNumberInput.$el.querySelector('input').focus()
           }
           this.inputFocused = true
         }
       },
-      phoneNumber: {
-        get () {
-          return this.value
-        },
-        set (newPhone) {
-          this.emitValues({countryCode: this.countryCode, phoneNumber: newPhone})
-        }
-      },
       shouldChooseCountry () {
-        return !this.countryCode && !!this.phoneNumber
+        return !this.countryCode && !!this.inputValue
       },
       phoneFormatted (effef) {
         return this.results.formatInternational
@@ -164,7 +186,7 @@
         return phoneNumber ? phoneNumber.formatNational() : null
       },
       hasEmptyPhone () {
-        return this.phoneNumber === '' || this.phoneNumber === null
+        return this.inputValue === '' || this.inputValue === null
       },
       hintValue () {
         return  this.noExample || !this.phoneNumberExample
@@ -174,7 +196,7 @@
     },
     async mounted () {
       try {
-        if (this.phoneNumber && this.defaultCountryCode) this.emitValues({countryCode: this.defaultCountryCode, phoneNumber: this.phoneNumber})
+        if (this.inputValue && this.defaultCountryCode) this.emitValues({countryCode: this.defaultCountryCode, phoneNumber: this.inputValue})
 
         if (this.defaultCountryCode && this.fetchCountry)
           throw new Error(`MazPhoneNumberInput: Do not use 'fetch-country' and 'default-country-code' options in the same time`)
@@ -223,25 +245,28 @@
         }
       },
       emitValues (payload) {
-        let asYouType = this.getAsYouTypeFormat(payload)
         const backSpacePressed = this.lastKeyPressed === 8
 
         this.$nextTick(() => {
-          const lastCharacOfPhoneNumber = this.phoneNumber ? this.phoneNumber.trim().slice(-1) : false
+          const lastCharacOfPhoneNumber = this.inputValue ? this.inputValue.trim().slice(-1) : false
           if (backSpacePressed && lastCharacOfPhoneNumber && (lastCharacOfPhoneNumber.slice(-1) === ')')) {
-            asYouType = this.phoneNumber.slice(0, -2)
-            payload.phoneNumber = this.phoneNumber.slice(0, -2)
+            payload.phoneNumber = this.inputValue.slice(0, -2)
           }
 
           this.results = this.getParsePhoneNumberFromString(payload)
+          // sent when the user tape
+          // @arg Object with all paser values
           this.$emit('update', this.results)
-          this.$emit('input', asYouType)
+          // sent when the user tape
+          // @arg Phone number value formatted in e164 format (international format)
+          this.$emit('input', this.results.e164)
         })
       },
       setLocale (locale) {
         const countryAvailable = isCountryAvailable(locale)
         if (countryAvailable && locale) {
           this.userLocale = countryAvailable ? locale : null
+          if (this.inputValue) this.emitValues({countryCode: this.userLocale, phoneNumber: this.inputValue})
         } else if (!countryAvailable && locale) {
           // If default country code is not available
           console.warn(`The locale ${locale} is not available`)

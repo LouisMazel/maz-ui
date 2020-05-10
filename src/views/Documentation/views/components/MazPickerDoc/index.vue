@@ -1,5 +1,17 @@
 <template>
   <div class="maz-picker-doc">
+    <h3>
+      Informations
+    </h3>
+
+    <p>
+      This component uses <router-link :to="{name: 'MazInputDoc'}">
+        MazInput
+      </router-link> and therefore inherits all these options
+    </p>
+
+    <hr class="maz-border-top maz-border-solid maz-border-color maz-my-3" />
+
     <p class="maz-fw-700 maz-mb-3">
       This component is based on
       <a
@@ -8,36 +20,10 @@
       >MomentJS</a>
     </p>
 
-    <br />
     <p class="maz-mb-3">
       You can use any locale available in moment package. Locales are
       dynamically imported.
     </p>
-
-    <!-- <p class="fw-700 mb-3">
-      This component is based on
-      <a
-        target="_blank"
-        href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat"
-      >
-        native Intl.DateTimeFormat
-      </a>
-    </p>
-
-    <p>
-      The locale of the picker is automatically set with the browser locale
-    </p>
-
-    <p>
-      You can use any locale supported by Intl.DateTimeFormat.
-      Check
-      <a
-        target="_blank"
-        href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/supportedLocalesOf"
-      >
-        here
-      </a>
-    </p>-->
 
     <div class="maz-flex maz-flex-1">
       <MazBtnGroup

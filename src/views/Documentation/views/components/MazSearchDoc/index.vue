@@ -1,8 +1,17 @@
 <template>
   <div class="maz-search-doc">
+    <h3>
+      Informations
+    </h3>
+
+    <p>
+      This component uses <router-link :to="{name: 'MazInputDoc'}">
+        MazInput
+      </router-link> and therefore inherits all these options
+    </p>
+
     <ComponentContainer
       :code="codeExample"
-      language="js"
     >
       <h4 class="maz-mb-3">
         Basic use
@@ -20,7 +29,6 @@
     </ComponentContainer>
     <ComponentContainer
       :code="codeExample2"
-      language="js"
     >
       <h4 class="maz-mb-3">
         Custom
