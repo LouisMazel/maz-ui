@@ -149,7 +149,10 @@
       },
       inputValue: {
         get () {
-          return this.inputValueFormatted || this.value
+          return this.inputValueFormatted || this.getAsYouTypeFormat({
+            phoneNumber: this.value,
+            countryCode: this.countryCode
+          })
         },
         set (value) {
           const { countryCode } = this
