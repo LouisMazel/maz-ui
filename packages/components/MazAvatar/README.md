@@ -4,14 +4,16 @@
 
 <!-- @vuese:MazAvatar:props:start -->
 
-| Name       | Description | Type      | Required | Default |
-| ---------- | ----------- | --------- | -------- | ------- |
-| pictureSrc | -           | `String`  | `false`  | -       |
-| avatarUrl  | -           | `String`  | `false`  | -       |
-| size       | -           | `Number`  | `false`  | 80      |
-| bordered   | -           | `Boolean` | `false`  | -       |
-| editable   | -           | `Boolean` | `false`  | -       |
-| square     | -           | `Boolean` | `false`  | -       |
+| Name        | Description                                    | Type      | Required | Default |
+| ----------- | ---------------------------------------------- | --------- | -------- | ------- |
+| src         | url or path of the image                       | `String`  | `false`  | -       |
+| url         | url or path to link another page               | `String`  | `false`  | -       |
+| target      | target attribute of link (if url is provide)   | `String`  | `false`  | \_self  |
+| size        | size of avatar                                 | `Number`  | `false`  | 80      |
+| bordered    | add border around the avatar                   | `Boolean` | `false`  | -       |
+| editable    | add an edit layer & emit `edit` event on click | `Boolean` | `false`  | -       |
+| square      | Make the avatar square                         | `Boolean` | `false`  | -       |
+| noElevation | Remove the shadow behind the avatar            | `Boolean` | `false`  | -       |
 
 <!-- @vuese:MazAvatar:props:end -->
 

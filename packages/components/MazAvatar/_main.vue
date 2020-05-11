@@ -57,10 +57,13 @@ export default {
     target: { type: String, default: '_self' },
     // size of avatar
     size: { type: Number, default: 80 },
-    // add white borders to avatar
+    // add border around the avatar
     bordered: { type: Boolean, default: false },
+    // add an edit layer & emit `edit` event on click
     editable: { type: Boolean, default: false },
+    // Make the avatar square
     square: { type: Boolean, default: false },
+    // Remove the shadow behind the avatar
     noElevation: { type: Boolean, default: false }
   },
   computed: {
