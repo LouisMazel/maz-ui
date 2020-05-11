@@ -23,6 +23,8 @@ const componentsRoutes = [
   'MazSwitchDoc',
   'MazCheckboxDoc',
   'MazSidebarDoc',
+  'MazDialogDoc',
+  'MazAvatarDoc',
   'MazTabsLayoutDoc',
   'MazPaginationDoc',
   'MazLoaderDoc',
@@ -33,7 +35,6 @@ const componentsRoutes = [
   'MazReadMoreDoc',
   'MazResponsiveMenuDoc',
   'MazTransitionExpandDoc',
-  'MazDialogDoc',
   'MazFlexDoc'
 ]
 
