@@ -6,7 +6,7 @@
 
 | Name        | Description                                    | Type      | Required | Default |
 | ----------- | ---------------------------------------------- | --------- | -------- | ------- |
-| src         | url or path of the image                       | `String`  | `false`  | -       |
+| src         | url or path of the image                       | `String`  | `true`   | -       |
 | url         | url or path to link another page               | `String`  | `false`  | -       |
 | target      | target attribute of link (if url is provide)   | `String`  | `false`  | \_self  |
 | size        | size of avatar                                 | `Number`  | `false`  | 80      |

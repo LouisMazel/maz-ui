@@ -5,7 +5,9 @@
     </h3>
     <ComponentContainer
       code="<template>
-  <MazAvatar />
+  <MazAvatar
+    src=&quot;http://www.placecage.com/80/80&quot;
+  />
 
   <MazAvatar
     src=&quot;http://www.placecage.com/120/120&quot;
@@ -38,12 +40,14 @@
     >
       <div class="maz-flex maz-flex-wrap">
         <div class="demo maz-flex-1 maz-flex maz-direction-column maz-align-center">
-          <MazAvatar />
+          <MazAvatar
+            src="http://www.placecage.com/80/80"
+          />
           <h4 class="maz-my-3 maz-text-center">
             Default
           </h4>
           <h5 class="maz-mb-3 maz-text-center">
-            No image src provide - Show default SVG
+            Just the src image path provide
           </h5>
           <p>
             <strong>Options:</strong> none
