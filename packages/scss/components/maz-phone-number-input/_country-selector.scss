@@ -1,12 +1,10 @@
-$flag-icon-css-path: '~flag-icon-css/flags';
-
-@import 'flag-icon-css/css/flag-icon.css';
-
 $SM_SIZE: 2.57rem !default;
 $MD_SIZE: 2.85rem !default;
 $LG_SIZE: 3.42rem !default;
 
 .country-selector {
+  @import './flags/index.scss';
+
   position: relative;
   z-index: 0;
   user-select: none;
@@ -70,7 +68,7 @@ $LG_SIZE: 3.42rem !default;
     outline: none;
     margin: auto 0;
     position: absolute;
-    top: 17px;
+    top: 20px;
     left: 11px;
     z-index: 1;
     cursor: pointer;

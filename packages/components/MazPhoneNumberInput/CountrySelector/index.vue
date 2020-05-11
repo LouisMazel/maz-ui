@@ -21,7 +21,7 @@
       tabindex="-1"
       @click.stop="toggleList"
     >
-      <div :class="`flag-icon flag-icon-${value.toLowerCase()}`" />
+      <div :class="`maz-flag maz-flag-${value.toLowerCase()}`" />
     </div>
     <input
       :id="id"
@@ -83,7 +83,8 @@
               v-if="!noFlags"
               class="country-selector__list__item__flag-container"
             >
-              <div :class="`flag-icon flag-icon-${item.iso2.toLowerCase()}`" />
+              <!-- <div :class="`flag-icon flag-icon-${item.iso2.toLowerCase()}`" /> -->
+              <div :class="`maz-flag maz-flag-${item.iso2.toLowerCase()}`" />
             </div>
             <span
               v-if="showCodeOnList"

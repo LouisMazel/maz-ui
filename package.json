@@ -53,7 +53,6 @@
     "core-js": "^3.6.5",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
-    "flag-icon-css": "^3.4.6",
     "frontmatter-markdown-loader": "^3.4.1",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^7.0.1",
