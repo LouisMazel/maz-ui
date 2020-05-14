@@ -17,7 +17,7 @@
       <MazBtn
         v-for="(day, i) in allDays"
         :key="i"
-        class="month-picker__day maz-text-color maz-bg-color-light maz-flex maz-flex-center"
+        class="month-picker__day maz-text-color maz-bg-transparent maz-flex maz-flex-center"
         size="mini"
         tabindex="-1"
         :no-shadow="!isSelectedDate(day)"

@@ -3,7 +3,7 @@
     <div
       v-for="(days, i) in weekDays"
       :key="i"
-      class="week-days-labels__days maz-text-muted maz-fs-11"
+      class="week-days-labels__days maz-text-muted"
     >
       {{ days | capitalize }}
     </div>

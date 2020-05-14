@@ -11,7 +11,7 @@
   line-height: 1;
   box-sizing: border-box;
   padding: 12px 20px;
-  font-size: 1em;
+  font-size: 1rem;
   font-weight: inherit;
   margin: 0;
   user-select: none;
@@ -44,22 +44,22 @@
 
   &--lg {
     padding: 16px 22px;
-    font-size: 1.143em;
+    font-size: 1.143rem;
   }
 
   &--md {
     padding: 10px 20px;
-    font-size: 1em;
+    font-size: 1rem;
   }
 
   &--sm {
     padding: 9px 15px;
-    font-size: .857em;
+    font-size: .857rem;
   }
 
   &--mini {
     padding: 7px 15px;
-    font-size: .857em;
+    font-size: .857rem;
   }
 
   &--fab {

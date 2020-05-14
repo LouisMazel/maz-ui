@@ -136,7 +136,7 @@ export default {
       .switch-container {
         p {
           margin-right: 20px;
-          font-size: 1em;
+          font-size: 1rem;
         }
       }
     }

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="pickers-container maz-bg-color-light maz-elevation"
+    class="pickers-container maz-elevation"
     :class="[position, { 'inline': inline }]"
     tabindex="-1"
   >

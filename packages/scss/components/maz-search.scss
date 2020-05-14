@@ -24,7 +24,7 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden;
-      font-size: 1em;
+      font-size: 1rem;
       cursor: pointer;
       background-color: transparent;
       border: none;
@@ -51,7 +51,7 @@
 .maz-search.maz-is-dark {
   .maz-search {
     &__items {
-      background-color: $bg-color-dark-l;
+      background-color: $bg-color-dark-light;
 
       &__item {
         color: $border-color;

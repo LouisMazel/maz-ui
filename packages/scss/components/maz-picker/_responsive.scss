@@ -59,9 +59,16 @@
         border-left-width: 0;
         border-top-width: $border-width;
         border-top-style: solid;
+        border-color: $border-color;
         flex: none;
         height: 150px !important;
       }
+    }
+  }
+
+  .maz-is-dark {
+    .time-picker {
+      border-color: $border-color-dark !important;
     }
   }
 }

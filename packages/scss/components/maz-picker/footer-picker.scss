@@ -2,6 +2,10 @@
   &__validate {
     padding-top: 4px;
     padding-bottom: 4px;
+
+    i.material-icons {
+      font-size: 20px;
+    }
   }
 
   > :nth-child(2) {

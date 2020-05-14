@@ -2,7 +2,7 @@
   <div class="footer-picker maz-p-2 maz-flex maz-justify-end maz-border-top maz-border-top-solid maz-border-color">
     <MazBtn
       v-if="hasNow"
-      size="md"
+      size="mini"
       tabindex="-1"
       class="footer-picker__now maz-bg-transparent maz-no-shadow maz-px-3 maz-hover-bg-color maz-no-focus-bg maz-border maz-border-color maz-text-primary"
       @click="now"
@@ -12,7 +12,7 @@
     <MazBtn
       v-if="hasValidate"
       outline
-      size="md"
+      size="mini"
       tabindex="-1"
       color="success"
       class="footer-picker__validate"

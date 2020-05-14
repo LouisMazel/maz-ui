@@ -66,9 +66,9 @@
 }
 
 .#{$prefix}dots-text-3 {
-  @include multiLineEllipsis($lineHeight: 1.3em, $lineCount: 3, $bgColor: white);
+  @include multiLineEllipsis($lineHeight: 1.3rem, $lineCount: 3, $bgColor: white);
 }
 
 .#{$prefix}dots-text-2 {
-  @include multiLineEllipsis($lineHeight: 1.3em, $lineCount: 2, $bgColor: white);
+  @include multiLineEllipsis($lineHeight: 1.3rem, $lineCount: 2, $bgColor: white);
 }

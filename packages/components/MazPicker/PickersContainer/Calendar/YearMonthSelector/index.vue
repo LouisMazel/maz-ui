@@ -2,7 +2,7 @@
   <transition name="maz-slide">
     <div
       v-if="isOpen"
-      class="year-month-selector maz-bg-color-light maz-p-2 maz-flex maz-direction-column"
+      class="year-month-selector maz-p-2 maz-flex maz-direction-column"
     >
       <div class="maz-flex maz-justify-end maz-align-center">
         <div

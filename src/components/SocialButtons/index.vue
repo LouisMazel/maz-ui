@@ -43,7 +43,7 @@ export default {
       }
 
       i {
-        font-size: 1.571em;
+        font-size: 1.571rem;
       }
     }
   }

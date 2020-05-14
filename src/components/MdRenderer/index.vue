@@ -52,35 +52,35 @@ export default {
 
     h1 {
       color: #333;
-      font-size: 2em;
+      font-size: 2rem;
     }
 
     h2 {
       border-bottom: 1px solid $hover-bg-color;
       color: #333;
-      font-size: 1.5em;
+      font-size: 1.5rem;
     }
 
     h3 {
-      font-size: 1.3em;
+      font-size: 1.3rem;
     }
 
     h4 {
-      font-size: 1.2em;
+      font-size: 1.2rem;
     }
 
     h5 {
-      font-size: 1.1em;
+      font-size: 1.1rem;
     }
 
     h6 {
       color: $muted-color;
       background-color: inherit;
-      font-size: 1em;
+      font-size: 1rem;
     }
 
     hr {
-      height: .2em;
+      height: .2rem;
       border: 0;
       color: $hover-bg-color;
       background-color: $hover-bg-color;

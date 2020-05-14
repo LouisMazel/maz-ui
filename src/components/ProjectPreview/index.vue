@@ -102,7 +102,7 @@ export default {
 
   .maz-is-dark {
     .project-preview {
-      background-color: $bg-color-dark-l;
+      background-color: $bg-color-dark-light;
 
       &:hover,
       &:focus {

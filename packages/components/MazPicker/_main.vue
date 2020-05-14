@@ -234,7 +234,8 @@ export default {
       set (value) {
         this.emitValue(value)
 
-        if (this.autoClose) this.closePicker()
+        if (this.autoClose && !this.range) this.closePicker()
+        if (this.autoClose && this.range && value.start && value.end) this.closePicker()
       }
     },
     minDateMoment () {

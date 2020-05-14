@@ -22,7 +22,7 @@ $LG_SIZE: 3.42rem !default;
     transform: translateY(25%);
     opacity: 0;
     transition: all .25s cubic-bezier(.645, .045, .355, 1);
-    font-size: .786em;
+    font-size: .786rem;
     color: $placeholder-color;
   }
 
@@ -39,7 +39,7 @@ $LG_SIZE: 3.42rem !default;
     outline: none;
     border: $border-width solid $border-color;
     border-radius: $border-radius;
-    font-size: .929em;
+    font-size: .929rem;
     z-index: 0;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
@@ -103,7 +103,7 @@ $LG_SIZE: 3.42rem !default;
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden;
-      font-size: .857em;
+      font-size: .857rem;
       cursor: pointer;
       color: $text-color;
       background-color: transparent;
@@ -192,7 +192,7 @@ $LG_SIZE: 3.42rem !default;
     .country-selector__label {
       opacity: 1;
       transform: translateY(0);
-      font-size: .786em;
+      font-size: .786rem;
     }
 
     .country-selector__input {
@@ -258,11 +258,11 @@ $LG_SIZE: 3.42rem !default;
     .country-selector__input {
       height: $SM_SIZE;
       min-height: $SM_SIZE;
-      font-size: .857em;
+      font-size: .857rem;
     }
 
     .country-selector__label {
-      font-size: .714em;
+      font-size: .714rem;
     }
 
     .country-selector__country-flag {
@@ -280,11 +280,11 @@ $LG_SIZE: 3.42rem !default;
     .country-selector__input {
       height: $LG_SIZE;
       min-height: $LG_SIZE;
-      font-size: 1em;
+      font-size: 1rem;
     }
 
     .country-selector__label {
-      font-size: 1em;
+      font-size: 1rem;
     }
 
     .country-selector__country-flag {
@@ -307,7 +307,7 @@ $LG_SIZE: 3.42rem !default;
 
   &__input {
     cursor: pointer;
-    background-color: $bg-color-dark-l;
+    background-color: $bg-color-dark-light;
     border-color: $border-color-dark;
     color: $text-color-dark;
 
@@ -345,7 +345,7 @@ $LG_SIZE: 3.42rem !default;
   }
 
   &__list {
-    background-color: $bg-color-dark-l;
+    background-color: $bg-color-dark-light;
 
     &__item {
       color: $text-color-dark;

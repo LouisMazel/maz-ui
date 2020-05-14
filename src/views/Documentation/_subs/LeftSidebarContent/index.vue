@@ -139,7 +139,7 @@ export default {
 
     .menu-item {
       font-weight: 500;
-      margin-bottom: .5em;
+      margin-bottom: .5rem;
       line-height: normal;
       text-align: left;
 

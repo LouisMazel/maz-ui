@@ -1,4 +1,5 @@
 .pickers-container {
+  background-color: $bg-color;
   border-radius: $border-radius;
   overflow: hidden;
   z-index: 9;
@@ -21,4 +22,9 @@
       right: 0;
     }
   }
+}
+
+.maz-is-dark.pickers-container,
+.maz-is-dark .pickers-container {
+  background-color: $bg-color-dark-light;
 }

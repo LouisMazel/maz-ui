@@ -38,7 +38,7 @@ $LG_SIZE: 3.42rem !default;
     font-weight: 400;
     appearance: none;
     outline: none;
-    font-size: 1em;
+    font-size: 1rem;
     z-index: 0;
     caret-color: $primary-color;
     min-width: 100px;
@@ -81,12 +81,12 @@ $LG_SIZE: 3.42rem !default;
     color: white;
 
     &__text {
-      font-size: .875em;
+      font-size: .875rem;
       margin-right: 5px;
     }
 
     &__clear {
-      font-size: 1em;
+      font-size: 1rem;
     }
   }
 
@@ -106,7 +106,7 @@ $LG_SIZE: 3.42rem !default;
     color: $input-icon-color;
     border-radius: $clear-size;
     cursor: pointer;
-    font-size: .857em;
+    font-size: .857rem;
 
     &:focus {
       outline: none;
@@ -114,7 +114,7 @@ $LG_SIZE: 3.42rem !default;
 
     &__icon {
       position: relative;
-      font-size: 1.286em;
+      font-size: 1.286rem;
     }
 
     &__effect {
@@ -223,7 +223,7 @@ $LG_SIZE: 3.42rem !default;
     min-height: $LG_SIZE;
 
     #{$this}__input {
-      font-size: 1em;
+      font-size: 1rem;
       min-height: 44px;
     }
 
@@ -239,7 +239,7 @@ $LG_SIZE: 3.42rem !default;
 
 .maz-is-dark .maz-input-tags,
 .maz-is-dark.maz-input-tags {
-  background-color: $bg-color-dark-l;
+  background-color: $bg-color-dark-light;
   border-color: $border-color-dark;
 
   &__input {

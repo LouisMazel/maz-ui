@@ -85,18 +85,18 @@
   opacity: 0;
 }
 
-@media screen and (max-width: 415px) {
-  .#{$prefix}slide-enter-active,
-  .#{$prefix}slide-leave-active {
-    transition: all 0s;
-  }
+// @media screen and (max-width: 415px) {
+//   .#{$prefix}slide-enter-active,
+//   .#{$prefix}slide-leave-active {
+//     transition: all 0s;
+//   }
 
-  /** Slide animation **/
-  .#{$prefix}slideinvert-enter-active,
-  .#{$prefix}slideinvert-leave-active {
-    transition: all 0s;
-  }
-}
+//   /** Slide animation **/
+//   .#{$prefix}slideinvert-enter-active,
+//   .#{$prefix}slideinvert-leave-active {
+//     transition: all 0s;
+//   }
+// }
 
 /** SPINNER ANIM **/
 

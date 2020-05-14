@@ -92,7 +92,7 @@ export default {
 
     h2 {
       color: #444352;
-      font-size: 2.143em;
+      font-size: 2.143rem;
       line-height: 1.5;
     }
 
