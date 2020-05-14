@@ -20,7 +20,6 @@
         :key="i"
         no-shadow
         tabindex="-1"
-        size="lg"
         color="grey"
         class="maz-text-color maz-bg-transparent maz-hover-bg-color maz-no-focus-bg maz-p-2 maz-mr-1"
         @click="$emit('open-month-year-selector', 'month')"
@@ -32,7 +31,6 @@
         tabindex="-1"
         no-shadow
         color="grey"
-        size="lg"
         class="maz-text-color maz-bg-transparent maz-hover-bg-color maz-no-focus-bg maz-p-2"
         @click="$emit('open-month-year-selector', 'year')"
       >
