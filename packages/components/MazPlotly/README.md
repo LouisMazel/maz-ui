@@ -1,8 +1,8 @@
-# MazPloty
+# MazPlotly
 
 ## Props
 
-<!-- @vuese:MazPloty:props:start -->
+<!-- @vuese:MazPlotly:props:start -->
 
 | Name   | Description | Type     | Required | Default |
 | ------ | ----------- | -------- | -------- | ------- |
@@ -10,14 +10,14 @@
 | layout | -           | `Object` | `false`  | -       |
 | id     | -           | `String` | `false`  | -       |
 
-<!-- @vuese:MazPloty:props:end -->
+<!-- @vuese:MazPlotly:props:end -->
 
 ## MixIns
 
-<!-- @vuese:MazPloty:mixIns:start -->
+<!-- @vuese:MazPlotly:mixIns:start -->
 
 | MixIn    |
 | -------- |
 | uniqueId |
 
-<!-- @vuese:MazPloty:mixIns:end -->
+<!-- @vuese:MazPlotly:mixIns:end -->
