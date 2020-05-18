@@ -169,7 +169,6 @@ export default {
     placeholder: { type: String, default: 'Select date time' },
     // Disabled keyboard accessibility & navigation
     noKeyboard: { type: Boolean, default: false },
-    // pre selected shortcut: provide a shortcut key
     // Disabled time picker
     noTime: { type: Boolean, default: false },
     // Disabled date picker
@@ -191,6 +190,7 @@ export default {
         }
       }
     },
+    // pre selected shortcut: provide a shortcut key
     shortcut: { type: String, default: null },
     // Disabled time picker
     noShortcuts: { type: Boolean, default: false },

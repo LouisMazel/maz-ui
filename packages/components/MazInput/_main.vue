@@ -101,7 +101,7 @@
         type="button"
         tabindex="-1"
         :class="{ 'has-right-icon': hasRightIcon() }"
-        @click="clear"
+        @click.stop="clear"
       >
         <i class="maz-input__toggle-btn__icon material-icons">
           close
