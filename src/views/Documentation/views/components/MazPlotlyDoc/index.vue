@@ -1,7 +1,7 @@
 <template>
-  <div class="maz-ploty-doc">
+  <div class="maz-plotly-doc">
     <ComponentContainer>
-      <MazPloty
+      <MazPlotly
         :data="data"
         :layout="layout"
         :display-mode-bar="false"
@@ -20,7 +20,7 @@
     <CodeContainer
       language="html"
       code="<template>
-  <MazPloty
+  <MazPlotly
     :data=&quot;data&quot;
     :layout=&quot;layout&quot;
     :display-mode-bar=&quot;false&quot;
@@ -28,9 +28,9 @@
 </template>
 
 <script>
-  import { MazPloty } from 'maz-ui'
+  import { MazPlotly } from 'maz-ui'
   export default {
-    components: { MazPloty }
+    components: { MazPlotly }
     data () {
       return {
         data: [{
@@ -54,7 +54,7 @@
 
 <script>
 export default {
-  name: 'MazPlotyDoc',
+  name: 'MazPlotlyDoc',
   data () {
     return {
       data: [{

@@ -1,7 +1,7 @@
 <template>
   <div
     :id="uniqueId"
-    class="maz-ploty"
+    class="maz-plotly"
   />
 </template>
 <script>
@@ -12,7 +12,7 @@ import { camelize } from './helper.js'
 import uniqueId from './../../mixins/uniqueId'
 
 export default {
-  name: 'MazPloty',
+  name: 'MazPlotly',
   mixins: [uniqueId],
   inheritAttrs: false,
   props: {
