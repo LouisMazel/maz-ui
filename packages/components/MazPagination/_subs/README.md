@@ -1,25 +1,27 @@
-# PaginationNumberBtn
+# PaginationArrowBtn
 
 ## Props
 
-<!-- @vuese:PaginationNumberBtn:props:start -->
+<!-- @vuese:PaginationArrowBtn:props:start -->
 
-| Name     | Description | Type      | Required | Default |
-| -------- | ----------- | --------- | -------- | ------- |
-| active   | -           | `Boolean` | `false`  | -       |
-| disabled | -           | `Boolean` | `false`  | -       |
+| Name  | Description | Type      | Required | Default |
+| ----- | ----------- | --------- | -------- | ------- |
+| right | -           | `Boolean` | `false`  | -       |
+| dark  | -           | `Boolean` | `false`  | -       |
 
-<!-- @vuese:PaginationNumberBtn:props:end -->
+<!-- @vuese:PaginationArrowBtn:props:end -->
 
 ## Events
 
-<!-- @vuese:PaginationNumberBtn:events:start -->
+<!-- @vuese:PaginationArrowBtn:events:start -->
 
 | Event Name | Description | Parameters |
 | ---------- | ----------- | ---------- |
 | click      | -           | -          |
 
-<!-- @vuese:PaginationNumberBtn:events:end -->
+<!-- @vuese:PaginationArrowBtn:events:end -->
+
+end -->
 
 ## Slots
 
