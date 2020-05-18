@@ -70,6 +70,7 @@
     "ncp": "^2.0.0",
     "node-sass": "^4.14.0",
     "nuxt": "^2.12.2",
+    "plotly.js-dist": "^1.54.1",
     "prettier": "1.19.1",
     "progress-bar-webpack-plugin": "^2.1.0",
     "rimraf": "^3.0.2",
