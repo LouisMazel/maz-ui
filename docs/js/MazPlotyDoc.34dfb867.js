@@ -1,2 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["MazPlotyDoc"],{"0293":function(t,n,o){"use strict";o.r(n);var c=function(){var t=this,n=t.$createElement,o=t._self._c||n;return o("div",{staticClass:"maz-ploty-doc"},[o("ComponentContainer",[o("MazPloty")],1)],1)},e=[],a={name:"MazPlotyDoc"},s=a,i=(o("9e40"),o("2877")),l=Object(i["a"])(s,c,e,!1,null,"c3643c3c",null);n["default"]=l.exports},2530:function(t,n,o){},"9e40":function(t,n,o){"use strict";var c=o("2530"),e=o.n(c);e.a}}]);
-//# sourceMappingURL=MazPlotyDoc.34dfb867.js.map
