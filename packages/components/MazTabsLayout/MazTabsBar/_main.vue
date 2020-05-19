@@ -42,9 +42,9 @@ export default {
     }
   },
   watch: {
-    value: {
+    tabActive: {
       handler (value) {
-        this.tabActive = value
+        this.$emit('input', value)
         this.getTabsIndicatorState()
       },
       immediate: true
