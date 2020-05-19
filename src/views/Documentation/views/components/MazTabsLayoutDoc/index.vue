@@ -4,11 +4,46 @@
       <MazTabsBar
         v-model="activeTabIndex"
         :items="tabs"
-        align-left
       />
+      <div style="overflow: hidden;">
+        <MazTabsContent>
+          <MazTabsContentItem class="maz-p-3 maz-text-center">
+            <p>Text content 1</p>
+          </MazTabsContentItem>
+          <MazTabsContentItem class="maz-p-3 maz-text-center">
+            <p>Text content 2</p>
+            <p>Text content 2</p>
+          </MazTabsContentItem>
+          <MazTabsContentItem class="maz-p-3 maz-text-center">
+            <p>Text content 3</p>
+            <p>Text content 3</p>
+            <p>Text content 3</p>
+          </MazTabsContentItem>
+          <MazTabsContentItem class="maz-p-3 maz-text-center">
+            <p>Text content 4</p>
+            <p>Text content 4</p>
+            <p>Text content 4</p>
+            <p>Text content 4</p>
+          </MazTabsContentItem>
+          <MazTabsContentItem class="maz-p-3 maz-text-center">
+            <p>Text content 5</p>
+            <p>Text content 5</p>
+            <p>Text content 5</p>
+            <p>Text content 5</p>
+            <p>Text content 5</p>
+          </MazTabsContentItem>
+        </MazTabsContent>
+      </div>
+    </ComponentContainer>
+
+    <ComponentContainer :code="codeExample">
+      <h3 class="maz-mb-3">
+        Tabs bar align left
+      </h3>
       <MazTabsBar
         v-model="activeTabIndex"
         :items="tabs"
+        align-left
       />
       <div style="overflow: hidden;">
         <MazTabsContent>
