@@ -3,9 +3,18 @@
 
 .maz-tabs-bar {
   height: 45px;
-  flex: 0 0 45px;
   background-color: $bg-color;
   position: relative;
+
+  $this: &;
+
+  display: flex;
+
+  &:not(.align-left) {
+    #{$this}__item {
+      flex: 1;
+    }
+  }
 
   &__item {
     cursor: pointer;
@@ -17,6 +26,8 @@
     color: $text-color;
     padding: 0;
     user-select: none;
+    padding-left: 10px;
+    padding-right: 10px;
     padding-bottom: 3px;
 
     &.active {
@@ -46,6 +57,7 @@
       margin: 0 auto;
       background: $primary-color;
       height: 3px;
+      width: 100%;
     }
   }
 }

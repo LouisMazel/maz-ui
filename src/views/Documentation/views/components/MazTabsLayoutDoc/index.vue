@@ -4,28 +4,33 @@
       <MazTabsBar
         v-model="activeTabIndex"
         :items="tabs"
+        align-left
+      />
+      <MazTabsBar
+        v-model="activeTabIndex"
+        :items="tabs"
       />
       <div style="overflow: hidden;">
-        <MazTabsContent class="maz-m-3">
-          <MazTabsContentItem class="maz-flex maz-flex-center maz-direction-column">
+        <MazTabsContent>
+          <MazTabsContentItem class="maz-p-3 maz-text-center">
             <p>Text content 1</p>
           </MazTabsContentItem>
-          <MazTabsContentItem class="maz-flex maz-flex-center maz-direction-column">
+          <MazTabsContentItem class="maz-p-3 maz-text-center">
             <p>Text content 2</p>
             <p>Text content 2</p>
           </MazTabsContentItem>
-          <MazTabsContentItem class="maz-flex maz-flex-center maz-direction-column">
+          <MazTabsContentItem class="maz-p-3 maz-text-center">
             <p>Text content 3</p>
             <p>Text content 3</p>
             <p>Text content 3</p>
           </MazTabsContentItem>
-          <MazTabsContentItem class="maz-flex maz-flex-center maz-direction-column">
+          <MazTabsContentItem class="maz-p-3 maz-text-center">
             <p>Text content 4</p>
             <p>Text content 4</p>
             <p>Text content 4</p>
             <p>Text content 4</p>
           </MazTabsContentItem>
-          <MazTabsContentItem class="maz-flex maz-flex-center maz-direction-column">
+          <MazTabsContentItem class="maz-p-3 maz-text-center">
             <p>Text content 5</p>
             <p>Text content 5</p>
             <p>Text content 5</p>
@@ -51,11 +56,11 @@
   <MazTabsBar
     :items=&quot;tabs&quot;
   />
-  <MazTabsContent class=&quot;maz-m-3&quot;>
-    <MazTabsContentItem class=&quot;maz-flex maz-flex-center maz-direction-column&quot;>
+  <MazTabsContent>
+    <MazTabsContentItem>
       <p>Text content 1</p>
     </MazTabsContentItem>
-    <MazTabsContentItem class=&quot;maz-flex maz-flex-center maz-direction-column&quot;>
+    <MazTabsContentItem>
       <p>Text content 2</p>
       <p>Text content 2</p>
     </MazTabsContentItem>
@@ -99,36 +104,26 @@ export default {
     :items="tabs"
   />
   <div style="overflow: hidden;">
-    <MazTabsContent class="maz-m-3">
-      <MazTabsContentItem
-        class="maz-flex maz-flex-center maz-direction-column"
-      >
+    <MazTabsContent>
+      <MazTabsContentItem class="maz-p-3 maz-text-center">
         <p>Text content 1</p>
       </MazTabsContentItem>
-      <MazTabsContentItem
-        class="maz-flex maz-flex-center maz-direction-column"
-      >
+      <MazTabsContentItem class="maz-p-3 maz-text-center">
         <p>Text content 2</p>
         <p>Text content 2</p>
       </MazTabsContentItem>
-      <MazTabsContentItem
-        class="maz-flex maz-flex-center maz-direction-column"
-      >
+      <MazTabsContentItem class="maz-p-3 maz-text-center">
         <p>Text content 3</p>
         <p>Text content 3</p>
         <p>Text content 3</p>
       </MazTabsContentItem>
-      <MazTabsContentItem
-        class="maz-flex maz-flex-center maz-direction-column"
-      >
+      <MazTabsContentItem class="maz-p-3 maz-text-center">
         <p>Text content 4</p>
         <p>Text content 4</p>
         <p>Text content 4</p>
         <p>Text content 4</p>
       </MazTabsContentItem>
-      <MazTabsContentItem
-        class="maz-flex maz-flex-center maz-direction-column"
-      >
+      <MazTabsContentItem class="maz-p-3 maz-text-center">
         <p>Text content 5</p>
         <p>Text content 5</p>
         <p>Text content 5</p>

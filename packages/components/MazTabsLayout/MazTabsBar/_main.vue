@@ -1,22 +1,22 @@
 <template>
   <div
     ref="MazTabsBar"
-    class="maz-tabs-bar maz-flex maz-direction-column"
+    class="maz-tabs-bar"
     :class="{
-      'maz-is-dark': dark
+      'maz-is-dark': dark,
+      'align-left': alignLeft
     }"
   >
-    <div class="maz-flex maz-w-100 maz-h-100">
-      <button
-        v-for="({ label, disabled }, index) in items"
-        :key="index"
-        :class="{active : tabActive === index, disabled: disabled }"
-        class="maz-tabs-bar__item maz-text-center maz-flex-1 maz-flex maz-flex-center maz-h-100 maz-mh-100"
-        @click.stop="disabled ? null : selectTab(index)"
-      >
-        {{ label }}
-      </button>
-    </div>
+    <button
+      v-for="({ label, disabled }, index) in items"
+      :key="index"
+      ref="MazTabsBarItem"
+      :class="{active : tabActive === index, disabled: disabled }"
+      class="maz-tabs-bar__item maz-flex maz-flex-center maz-dots-text"
+      @click.stop="disabled ? null : selectTab(index)"
+    >
+      {{ label }}
+    </button>
     <div
       :style="tabsIndicatorState"
       class="maz-tabs-bar__indicator"
@@ -32,30 +32,38 @@ export default {
   props: {
     items: { type: Array, required: true },
     value: { type: Number, default: 0 },
-    dark: { type: Boolean, default: false }
+    dark: { type: Boolean, default: false },
+    alignLeft: { type: Boolean, default: false }
   },
   data () {
     return {
-      tabActive: this.value
-    }
-  },
-  computed: {
-    tabsIndicatorState () {
-      return {
-        transform: `translateX(${this.tabActive}00%)`,
-        width: `${100 / this.items.length}%`
-      }
+      tabActive: this.value,
+      tabsIndicatorState: {}
     }
   },
   watch: {
-    value (value) {
-      this.tabActive = value
+    value: {
+      handler (value) {
+        this.tabActive = value
+        this.getTabsIndicatorState()
+      },
+      immediate: true
     }
   },
   methods: {
     selectTab (value) {
       this.tabActive = value
       this.$emit('input', value)
+    },
+    async getTabsIndicatorState () {
+      await this.$nextTick()
+      const tabsItem = this.$refs.MazTabsBarItem ? this.$refs.MazTabsBarItem[this.tabActive] : null
+      const indicatorWidth = tabsItem ? tabsItem.clientWidth : tabsItem
+      const translateXValue = tabsItem ? tabsItem.offsetLeft : tabsItem
+      this.tabsIndicatorState = {
+        transform: `translateX(${translateXValue}px)`,
+        width: `${indicatorWidth}px`
+      }
     }
   }
 }
