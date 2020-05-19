@@ -227,34 +227,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-  .maz-tabs-bar {
-    background-color: transparent;
-    // height: 40px;
-    margin-bottom: 40px;
-    // margin-left: -10px;
-
-    &__item {
-      font-size: 1.0714rem;
-      color: $text-color;
-      // font-weight: bold;
-
-      &:not(.active) {
-        opacity: .5;
-      }
-
-      &.active {
-        font-weight: bold;
-        color: $text-color;
-      }
-    }
-
-    &__indicator .maz-sub-bar {
-      width: 60%;
-      margin: 0 auto;
-      box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .15);
-    }
-  }
-
-</style>
