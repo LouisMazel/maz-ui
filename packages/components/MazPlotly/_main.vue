@@ -78,7 +78,6 @@ export default {
   methods: {
     ...methods,
     onResize () {
-      console.log('onResizeok')
       Plotly.Plots.resize(this.$el)
     },
     schedule (context) {
