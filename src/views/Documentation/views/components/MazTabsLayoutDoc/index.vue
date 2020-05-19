@@ -49,7 +49,6 @@
       language="html"
       code="<template>
   <MazTabsBar
-    v-model=&quot;activeTabIndex&quot;
     :items=&quot;tabs&quot;
   />
   <MazTabsContent class=&quot;maz-m-3&quot;>
@@ -69,7 +68,6 @@
     components: { MazTabsBar, MazTabsContent, MazTabsContentItem }
     data () {
       return {
-        activeTabIndex: 0,
         tabs: [
           { label: 'First Tab' },
           { label: 'Second Tab' }

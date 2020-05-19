@@ -23,8 +23,8 @@ export default {
   computed: {
     currentTab () {
       const tabsBarComponent = this.$parent.$parent.$children.find(c => typeof c.$refs.MazTabsBar !== 'undefined')
-      const { value } = tabsBarComponent
-      return value
+      const { tabActive } = tabsBarComponent
+      return tabActive
     },
     isCurrent () {
       const isCurrent = this.currentTab === this.currentIndex
