@@ -36,12 +36,45 @@
       </div>
     </ComponentContainer>
 
-    <ComponentContainer :code="codeExample">
+    <ComponentContainer
+      code="<template>
+  <MazTabsBar
+    :items=&quot;tabs&quot;
+    align-left
+  />
+  <MazTabsContent>
+    <MazTabsContentItem>
+      <p>Text content 1</p>
+    </MazTabsContentItem>
+    <MazTabsContentItem>
+      <p>Text content 2</p>
+      <p>Text content 2</p>
+    </MazTabsContentItem>
+  </MazTabsContent>
+</template>
+
+<script>
+  import { MazTabsBar, MazTabsContent, MazTabsContentItem } from 'maz-ui'
+  export default {
+    components: { MazTabsBar, MazTabsContent, MazTabsContentItem }
+    data () {
+      return {
+        tabs: [
+          { label: 'First Tab' },
+          { label: 'Second Tab' },
+          { label: 'Third Tab' },
+          { label: 'Fourth Tab' },
+          { label: 'Disabled Tab', disabled: true }
+        ]
+      }
+    }
+  }
+</script>"
+    >
       <h3 class="maz-mb-3">
         Tabs bar align left
       </h3>
       <MazTabsBar
-        v-model="activeTabIndex"
         :items="tabs"
         align-left
       />
