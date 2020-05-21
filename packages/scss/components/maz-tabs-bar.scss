@@ -41,8 +41,10 @@
       cursor: not-allowed;
     }
 
-    &:hover {
+    &:hover,
+    &:focus {
       background-color: $hover-bg-color;
+      text-decoration: none;
     }
   }
 

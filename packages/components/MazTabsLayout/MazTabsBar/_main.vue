@@ -7,16 +7,17 @@
       'align-left': alignLeft
     }"
   >
-    <button
+    <a
       v-for="({ label, disabled }, index) in items"
       :key="index"
       ref="MazTabsBarItem"
       :class="{active : tabActive === index, disabled: disabled }"
       class="maz-tabs-bar__item maz-flex maz-flex-center maz-dots-text"
-      @click.stop="disabled ? null : selectTab(index)"
+      :href="noUseAnchor ? null : `#${labelNormalize(label)}`"
+      @click="disabled ? null : selectTab(index)"
     >
       {{ label }}
-    </button>
+    </a>
     <div
       :style="tabsIndicatorState"
       class="maz-tabs-bar__indicator"
@@ -27,17 +28,33 @@
 </template>
 
 <script>
+
+const toSnakeCase = string => {
+  return string.replace(/\W+/g, ' ')
+    .split(/ |\B(?=[A-Z])/)
+    .map(word => word.toLowerCase())
+    .join('_')
+}
+
+const getIndexOfCurrentAnchor = (tabs) => {
+  if (typeof window === 'undefined') return 0
+  const anchor = window.location.hash.replace('#', '')
+  const index = tabs.findIndex(({ label }) => toSnakeCase(label) === anchor)
+  return index === -1 ? 0 : index
+}
+
 export default {
   name: 'MazTabsBar',
   props: {
     items: { type: Array, required: true },
     value: { type: Number, default: 0 },
     dark: { type: Boolean, default: false },
-    alignLeft: { type: Boolean, default: false }
+    alignLeft: { type: Boolean, default: false },
+    noUseAnchor: { type: Boolean, default: false }
   },
   data () {
     return {
-      tabActive: this.value,
+      tabActive: this.noUseAnchor ? this.value : getIndexOfCurrentAnchor(this.items),
       tabsIndicatorState: {}
     }
   },
@@ -51,6 +68,9 @@ export default {
     }
   },
   methods: {
+    labelNormalize (label) {
+      return toSnakeCase(label)
+    },
     selectTab (value) {
       this.tabActive = value
       this.$emit('input', value)

@@ -160,10 +160,10 @@ export default {
     return {
       activeTabIndex: 0,
       tabs: [
-        { label: 'Speculators' },
-        { label: 'Exchange Platform' },
-        { label: 'DEX' },
-        { label: 'Fourth Tab Fourth Tab Fourth Tab ' },
+        { label: 'First Tab' },
+        { label: 'Second Tab' },
+        { label: 'Third Tab' },
+        { label: 'Fourth Tab' },
         { label: 'Disabled Tab', disabled: true }
       ],
       codeExample: `<template>
