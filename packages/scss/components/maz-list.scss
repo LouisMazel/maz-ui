@@ -10,11 +10,11 @@
   margin-right: -1px;
   max-width: 100%;
 
-  &:not(.no-shadow) {
+  &:not(.maz-no-shadow) {
     box-shadow: 0 0 8px 0 rgba(0, 0, 0, .1);
   }
 
-  &.no-shadow {
+  &.maz-no-shadow {
     border: $border-width solid $hover-bg-color;
   }
 }
