@@ -170,6 +170,7 @@
           placeholder="Select period"
           range
           double
+          formatted="ll"
           position="top right"
           :locale="locale"
           @formatted="pickerRangeValuesFormatted = $event"

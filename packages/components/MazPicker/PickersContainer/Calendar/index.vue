@@ -146,7 +146,7 @@ export default {
     },
     currentValue () {
       if (this.isRangeMode) {
-        return this.value.end || this.value.start || moment()
+        return this.value.start || this.value.end || moment()
       }
       return this.value || moment()
     }
