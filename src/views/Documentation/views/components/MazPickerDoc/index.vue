@@ -237,6 +237,39 @@
         />
       </ComponentContainer>
 
+      <ComponentContainer :code="rangeShortcutsExample">
+        <h3>Range Double Date Picker</h3>
+        <h5 class="maz-mb-3">
+          Custom shortcuts
+        </h5>
+
+        <p class="maz-mb-3">
+          <strong>Options:</strong>
+          range - double - placeholder="Select period" - custom-shortcuts
+        </p>
+
+        <p>
+          <strong>Value</strong>
+          : {{ pickerRangeValues || 'null' }}
+        </p>
+        <p class="maz-mb-2">
+          <strong>Formatted value</strong>
+          :
+          {{ pickerRangeValuesFormatted || 'null' }}
+        </p>
+
+        <MazPicker
+          v-model="pickerRangeValues"
+          placeholder="Select period"
+          range
+          double
+          formatted="ll"
+          :locale="locale"
+          :shortcuts="[{ key: 'thisQuarter', label: 'This quarter', value: 'quarter' }]"
+          @formatted="pickerRangeValuesFormatted = $event"
+        />
+      </ComponentContainer>
+
       <ComponentContainer :code="inlineExample">
         <h3 class="maz-mb-3">
           Disabled
@@ -275,7 +308,7 @@
 <script>
   import { MazPicker } from 'maz-ui'
   export default {
-    components: { MazPicker }
+    components: { MazPicker },
     data () {
       return {
         pickerValue: null
@@ -408,6 +441,26 @@ export default {
       pickerRangeValues: null,
       pickerRangeValuesFormatted: null,
       rangeExample: `<template>
+  <MazPicker
+    v-model="pickerRangeValues"
+    placeholder="Select period"
+    range
+    double
+    position="bottom right"
+    :locale="locale"
+    @formatted="pickerRangeValuesFormatted = $event"
+  />
+</template>
+
+export default {
+  data () {
+    return {
+      pickerFormatted3: null,
+      pickerValue4: null
+    }
+  }
+}`,
+      rangeShortcutsExample: `<template>
   <MazPicker
     v-model="pickerRangeValues"
     placeholder="Select period"

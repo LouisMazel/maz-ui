@@ -146,7 +146,7 @@ export default {
     },
     currentValue () {
       if (this.isRangeMode) {
-        return this.value.start || this.value.end || moment()
+        return this.value.end || this.value.start || moment()
       }
       return this.value || moment()
     }
@@ -165,20 +165,23 @@ export default {
           !this.months.length || this.isDifferentYear(newCurrentValue, oldCurrentValue) ||
           (this.monthsAreDifferent(newCurrentValue, oldCurrentValue) && !this.valueIsInMonths(newCurrentValue.month()))
         ) {
+          const currentYear = this.currentValue.year()
+          const currentMonth = this.currentValue.month()
+          const hasRangeValuesOnDifferentsMonths = this.value.start && this.value.end && this.value.start.month() !== this.value.end.month()
           this.months = this.getMonths({
-            year: this.currentValue.year(),
-            month: this.currentValue.month()
+            year: currentYear,
+            month: hasRangeValuesOnDifferentsMonths ? currentMonth - 1 : currentMonth
           })
         }
       },
       immediate: true
     },
-    months () {
-      this.resizeShortCuts()
+    months: {
+      handler () {
+        this.resizeShortCuts()
+      },
+      immediate: true
     }
-  },
-  mounted () {
-    this.resizeShortCuts()
   },
   methods: {
     resizeShortCuts () {
@@ -211,8 +214,8 @@ export default {
       this.months = this.getMonths(payload)
     },
     getMonths ({ month, year }) {
-      const number = Array.from(Array(this.hasDouble ? 2 : 1).keys())
-      return number.map((i) => {
+      const numberOfMonths = Array.from(Array(this.hasDouble ? 2 : 1).keys())
+      return numberOfMonths.map((i) => {
         const newMonthNumber = month + i
         const monthNumber = newMonthNumber === 12 ? 0 : newMonthNumber
         const yearNumber = newMonthNumber === 12 ? year + 1 : year

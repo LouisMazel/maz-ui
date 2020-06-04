@@ -31,7 +31,7 @@ import moment from 'moment'
 import { EventBus } from './../../../utils'
 import MazBtn from '../../../../MazBtn'
 
-const SHORTCUT_TYPES = ['day', 'date', '-day', 'isoWeek', 'quarter', '-isoWeek', 'month', '-month', 'year', '-year', 'week', '-week']
+const SHORTCUT_TYPES = ['day', 'date', '-day', 'isoWeek', '-isoWeek', 'month', '-month', 'quarter', 'year', '-year', 'week', '-week']
 
 /**
  * Component used to show a list of the shortcuts currently available
