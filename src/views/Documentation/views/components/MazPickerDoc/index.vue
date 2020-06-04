@@ -265,7 +265,7 @@
           double
           formatted="ll"
           :locale="locale"
-          :shortcuts="[{ key: 'thisQuarter', label: 'This quarter', value: 'quarter' }]"
+          :shortcuts="customShortcuts"
           @formatted="pickerRangeValuesFormatted = $event"
         />
       </ComponentContainer>
@@ -321,6 +321,8 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 const getDefaultLocale = () => {
   if (typeof window === 'undefined') return null
 
@@ -328,6 +330,31 @@ const getDefaultLocale = () => {
   const locale = (userLanguage || language || 'en').substr(0, 2)
   return locale
 }
+
+const CUSTOM_SHORTCUTS = [
+  { key: 'lastMonth', label: 'Last month', value: '-month' },
+  { key: 'lastQuarter', label: 'Last quarter', value: 'quarter' },
+  {
+    key: 'lastSemester',
+    label: 'Last semester',
+    value: () => ({
+      start: moment().subtract(6, 'months'),
+      end: moment()
+    })
+  },
+  { key: 'lastYear', label: 'Last year', value: '-year' },
+  {
+    key: 'origin',
+    label: 'Since origin',
+    value: () => ({
+      start: moment().subtract(5, 'years'),
+      end: moment()
+    }),
+    callback: ({ start, end, shortcuts }) => {
+      console.log('payload', start, end, shortcuts)
+    }
+  }
+]
 
 export default {
   name: 'MazPickerDoc',
@@ -455,18 +482,19 @@ export default {
 export default {
   data () {
     return {
-      pickerFormatted3: null,
-      pickerValue4: null
+      pickerRangeValues: null,
+      pickerRangeValuesFormatted: null
     }
   }
 }`,
+      customShortcuts: CUSTOM_SHORTCUTS,
       rangeShortcutsExample: `<template>
   <MazPicker
     v-model="pickerRangeValues"
     placeholder="Select period"
     range
     double
-    position="bottom right"
+    shortcuts="customShortcuts"
     :locale="locale"
     @formatted="pickerRangeValuesFormatted = $event"
   />
@@ -475,8 +503,32 @@ export default {
 export default {
   data () {
     return {
-      pickerFormatted3: null,
-      pickerValue4: null
+      pickerRangeValues: null,
+      pickerRangeValuesFormatted: null,
+      customShortcuts: [
+        { key: 'lastMonth', label: 'Last month', value: '-month' },
+        { key: 'lastQuarter', label: 'Last quarter', value: 'quarter' },
+        {
+          key: 'lastSemester',
+          label: 'Last semester',
+          value: () => ({
+            start: moment().subtract(6, 'months'),
+            end: moment()
+          })
+        },
+        { key: 'lastYear', label: 'Last year', value: '-year' },
+        {
+          key: 'origin',
+          label: 'Since origin',
+          value: () => ({
+            start: moment().subtract(5, 'years'),
+            end: moment()
+          }),
+          callback: ({ start, end, shortcuts }) => {
+            console.log('payload', start, end, shortcuts)
+          }
+        }
+      ]
     }
   }
 }`,
