@@ -59,7 +59,8 @@
       @keyup="keyUp"
       @focus="onFocus"
       @blur="onBlur"
-      @change="$emit('change', $event)"
+      @paste="onPaste"
+      @change="onChange"
       @click="$emit('click', $event)"
     >
     <textarea
@@ -77,6 +78,8 @@
       @keyup="keyUp"
       @focus="onFocus"
       @blur="onBlur"
+      @paste="onPaste"
+      @change="onChange"
       @click="$emit('click', $event)"
     />
     <label
@@ -277,6 +280,16 @@ export default {
       // @arg event
       this.$emit('blur', e)
       this.isFocus = false
+    },
+    onPaste (e) {
+      // sent when text is past in the textfield
+      // @arg event
+      this.$emit('paste', e)
+    },
+    onChange (e) {
+      // sent on input change
+      // @arg event
+      this.$emit('change', e)
     },
     clear () {
       this.$emit(
