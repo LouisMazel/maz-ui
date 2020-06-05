@@ -2,10 +2,10 @@
 @import './variables/color_types';
 
 .#{$prefix}label {
-  border-radius: 2px;
+  border-radius: 4px;
   padding: 2px 4px;
   color: white;
-  font-size: .714rem;
+  font-size: .857rem;
   background-color: $primary-color;
 }
 

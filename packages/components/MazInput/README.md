@@ -40,10 +40,11 @@
 | input      | return the input value (in `@input` or `v-model`) | input      |
 | focus      | sent the focus event                              | event      |
 | blur       | sent the blur event                               | event      |
+| paste      | sent when text is past in the textfield           | event      |
+| change     | sent on input change                              | event      |
 | clear      | sent when the input is clear                      | -          |
 | keyup      | sent the keyup event                              | event      |
 | keydown    | sent the keydown event                            | event      |
-| change     | -                                                 | -          |
 | click      | -                                                 | -          |
 
 <!-- @vuese:MazInput:events:end -->
