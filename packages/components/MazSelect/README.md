@@ -41,7 +41,7 @@
 | Name       | Description      | Default Slot Content                                       |
 | ---------- | ---------------- | ---------------------------------------------------------- |
 | arrow      | The arrow icon   | the arrow svg                                              |
-| default    | Item template    | `<div class="maz-dots-text">{{ option.label }}</div>`      |
+| default    | Item template    | `<span>{{ option.label }}</span>`                          |
 | no-results | No data template | `<i class="material-icons maz-text-danger">search_off</i>` |
 
 <!-- @vuese:MazSelect:slots:end -->

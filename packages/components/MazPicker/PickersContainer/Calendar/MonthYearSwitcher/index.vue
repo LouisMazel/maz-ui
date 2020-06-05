@@ -12,22 +12,25 @@
       <ArrowIcon orientation="left" />
     </MazBtn>
     <div
-      class="maz-flex-1 maz-flex"
-      :class="[isDouble ? 'maz-space-around' : 'maz-flex-center']"
+      class="maz-flex-1 maz-flex maz-flex-center"
     >
       <MazBtn
-        v-for="(m, i) in months"
-        :key="i"
         no-shadow
         tabindex="-1"
         color="grey"
         class="maz-text-color maz-bg-transparent maz-hover-bg-color maz-no-focus-bg maz-p-2 maz-mr-1"
         @click="$emit('open-month-year-selector', 'month')"
       >
-        {{ m.getFormatted() | capitalize }}
+        <span
+          v-for="(m, i) in months"
+          :key="i"
+        >
+          {{ m.getFormatted() | capitalize }}
+
+          <span v-if="months.length > 1 && i === 0">-</span>
+        </span>
       </MazBtn>
       <MazBtn
-        v-if="!isDouble"
         tabindex="-1"
         no-shadow
         color="grey"

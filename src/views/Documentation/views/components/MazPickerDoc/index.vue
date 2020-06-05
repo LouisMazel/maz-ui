@@ -237,6 +237,39 @@
         />
       </ComponentContainer>
 
+      <ComponentContainer :code="rangeShortcutsExample">
+        <h3>Range Double Date Picker</h3>
+        <h5 class="maz-mb-3">
+          Custom shortcuts
+        </h5>
+
+        <p class="maz-mb-3">
+          <strong>Options:</strong>
+          range - double - placeholder="Select period" - custom-shortcuts
+        </p>
+
+        <p>
+          <strong>Value</strong>
+          : {{ pickerRangeValues || 'null' }}
+        </p>
+        <p class="maz-mb-2">
+          <strong>Formatted value</strong>
+          :
+          {{ pickerRangeValuesFormatted || 'null' }}
+        </p>
+
+        <MazPicker
+          v-model="pickerRangeValues"
+          placeholder="Select period"
+          range
+          double
+          formatted="ll"
+          :locale="locale"
+          :shortcuts="customShortcuts"
+          @formatted="pickerRangeValuesFormatted = $event"
+        />
+      </ComponentContainer>
+
       <ComponentContainer :code="inlineExample">
         <h3 class="maz-mb-3">
           Disabled
@@ -275,7 +308,7 @@
 <script>
   import { MazPicker } from 'maz-ui'
   export default {
-    components: { MazPicker }
+    components: { MazPicker },
     data () {
       return {
         pickerValue: null
@@ -288,6 +321,8 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 const getDefaultLocale = () => {
   if (typeof window === 'undefined') return null
 
@@ -295,6 +330,31 @@ const getDefaultLocale = () => {
   const locale = (userLanguage || language || 'en').substr(0, 2)
   return locale
 }
+
+const CUSTOM_SHORTCUTS = [
+  { key: 'lastMonth', label: 'Last month', value: '-month' },
+  { key: 'lastQuarter', label: 'Last quarter', value: 'quarter' },
+  {
+    key: 'lastSemester',
+    label: 'Last semester',
+    value: () => ({
+      start: moment().subtract(6, 'months'),
+      end: moment()
+    })
+  },
+  { key: 'lastYear', label: 'Last year', value: '-year' },
+  {
+    key: 'origin',
+    label: 'Since origin',
+    value: () => ({
+      start: moment().subtract(5, 'years'),
+      end: moment()
+    }),
+    callback: ({ start, end, shortcuts }) => {
+      console.log('payload', start, end, shortcuts)
+    }
+  }
+]
 
 export default {
   name: 'MazPickerDoc',
@@ -422,8 +482,53 @@ export default {
 export default {
   data () {
     return {
-      pickerFormatted3: null,
-      pickerValue4: null
+      pickerRangeValues: null,
+      pickerRangeValuesFormatted: null
+    }
+  }
+}`,
+      customShortcuts: CUSTOM_SHORTCUTS,
+      rangeShortcutsExample: `<template>
+  <MazPicker
+    v-model="pickerRangeValues"
+    placeholder="Select period"
+    range
+    double
+    shortcuts="customShortcuts"
+    :locale="locale"
+    @formatted="pickerRangeValuesFormatted = $event"
+  />
+</template>
+
+export default {
+  data () {
+    return {
+      pickerRangeValues: null,
+      pickerRangeValuesFormatted: null,
+      customShortcuts: [
+        { key: 'lastMonth', label: 'Last month', value: '-month' },
+        { key: 'lastQuarter', label: 'Last quarter', value: 'quarter' },
+        {
+          key: 'lastSemester',
+          label: 'Last semester',
+          value: () => ({
+            start: moment().subtract(6, 'months'),
+            end: moment()
+          })
+        },
+        { key: 'lastYear', label: 'Last year', value: '-year' },
+        {
+          key: 'origin',
+          label: 'Since origin',
+          value: () => ({
+            start: moment().subtract(5, 'years'),
+            end: moment()
+          }),
+          callback: ({ start, end, shortcuts }) => {
+            console.log('payload', start, end, shortcuts)
+          }
+        }
+      ]
     }
   }
 }`,
