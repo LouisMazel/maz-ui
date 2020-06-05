@@ -14,6 +14,7 @@
 | dark              | When is `true` the select has the dark style                | `Boolean` | `false`  | -                 |
 | itemHeight        | Item in list height in pixel                                | `Number`  | `false`  | 35                |
 | listHeight        | List height in pixel                                        | `Number`  | `false`  | 210               |
+| listWidth         | List width in pixel                                         | `Number`  | `false`  | -                 |
 | placeholder       | The input label                                             | `String`  | `false`  | Select option     |
 | search            | When is `true` the select has an input to search in options | `Boolean` | `false`  | -                 |
 | searchPlaceholder | the search input placeholder                                | `String`  | `false`  | Search in options |
