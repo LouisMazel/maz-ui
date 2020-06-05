@@ -38,7 +38,7 @@
             :item="item"
             tag="div"
           >
-            <!-- `<p>item value</p>` -->
+            <!-- `<p>{{ item value }}</p>` -->
             <p>{{ itemText ? item[itemText] : item }}</p>
           </slot>
         </button>
@@ -48,11 +48,11 @@
           name="no-data"
           tag="div"
         >
-          <!-- `<p>No data</p>` -->
-          <div class="maz-search__items__item">
-            <p class="text-center">
-              No data
-            </p>
+          <!-- `<i class="material-icons maz-text-danger">search_off</i>` -->
+          <div class="maz-p-1 maz-flex maz-flex-center">
+            <i class="material-icons maz-text-danger">
+              search_off
+            </i>
           </div>
         </slot>
       </div>

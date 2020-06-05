@@ -273,7 +273,7 @@ export default {
           : this.countriesSorted
         const resultIndex = countries.findIndex(c => {
           this.tmpValue = c.iso2
-          return c.name.toLowerCase().startsWith(this.query)
+          return c.name.toLowerCase().includes(this.query)
         })
         if (resultIndex !== -1) {
           this.scrollToSelectedOnFocus(resultIndex + (this.preferredCountries ? this.preferredCountries.length : 0))

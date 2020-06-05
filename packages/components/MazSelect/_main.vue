@@ -15,7 +15,7 @@
       :placeholder="placeholder"
       :disabled="disabled"
       :focus="hasListOpen"
-      @keydown="keyboardNav"
+      @keydown="search ? null : keyboardNav($event)"
       @keyup="$emit('keyup', $event)"
       @focus="openList()"
       @change="$emit('change', $event)"
@@ -54,29 +54,63 @@
         class="maz-select__options-list"
         :style="[itemListHeight]"
       >
+        <MazInput
+          v-if="search"
+          ref="SearchInput"
+          :value="searchQuery"
+          :placeholder="searchPlaceholder"
+          size="sm"
+          no-label
+          name="search_in_options"
+          autocomplete="new_search_in_options"
+          class="maz-m-1"
+          @input="searchInOptions"
+          @keydown.enter="updateValue(tmpValue)"
+          @keydown.esc="closeList"
+        />
         <button
-          v-for="({ label: l, value: v }, i) in options"
+          v-for="(option, i) in optionsShown"
           :key="i"
           tabindex="-1"
           type="button"
           :class="[
-            {'selected': value === v},
-            {'keyboard-selected': tmpValue === v}
+            {'selected': value === option.value},
+            {'keyboard-selected': tmpValue === option.value}
           ]"
-          class="flex align-center maz-select__options-list__item maz-text-left"
+          class="maz-select__options-list__item flex align-center maz-text-left"
           :style="[optionHeight]"
-          @click.stop="updateValue(v)"
+          @click.stop="updateValue(option.value)"
         >
-          <div
-            class="dots-text"
-            :class="[
-              { 'maz-text-muted' : !v && value !== v },
-              value === v ? 'maz-text-white' : 'maz-text-color'
-            ]"
+          <!-- Item template -->
+          <slot
+            :item="option"
+            tag="div"
           >
-            {{ l }}
-          </div>
+            <!-- `<span>{{ option.label }}</span>`-->
+            <span
+              class="maz-dots-text"
+              :class="[
+                { 'maz-text-muted' : !option.value && value !== option.value },
+                value === option.value ? 'maz-text-white' : 'maz-text-color'
+              ]"
+            >
+              {{ option.label }}
+            </span>
+          </slot>
         </button>
+        <!-- No data template -->
+        <slot
+          v-if="!optionsShown.length"
+          name="no-results"
+          tag="div"
+        >
+          <!-- `<i class="material-icons maz-text-danger">search_off</i>` -->
+          <div class="maz-select__options-list__no-results maz-p-1 maz-flex maz-flex-center">
+            <i class="material-icons maz-text-danger">
+              search_off
+            </i>
+          </div>
+        </slot>
       </div>
     </transition>
   </div>
@@ -111,7 +145,11 @@ export default {
     // List height in pixel
     listHeight: { type: Number, default: 210 },
     // The input label
-    placeholder: { type: String, default: 'Select option' }
+    placeholder: { type: String, default: 'Select option' },
+    // When is `true` the select has an input to search in options
+    search: { type: Boolean, default: false },
+    // the search input placeholder
+    searchPlaceholder: { type: String, default: 'Search in options' }
   },
   data () {
     return {
@@ -119,7 +157,9 @@ export default {
       hasListOpen: false,
       query: '',
       tmpValue: this.value,
-      indexItemToShow: 0
+      indexItemToShow: 0,
+      searchQuery: null,
+      filteredOptions: null
     }
   },
   computed: {
@@ -144,6 +184,9 @@ export default {
     valueShown () {
       const valueSelected = this.options.filter(c => c.value === this.value)[0]
       return valueSelected && valueSelected.value ? valueSelected.label : null
+    },
+    optionsShown () {
+      return this.filteredOptions || this.options
     }
   },
   watch: {
@@ -166,12 +209,18 @@ export default {
         this.isFocus = true
         this.hasListOpen = true
         this.selectFirstValue()
+        if (this.search) this.focusSearchInput()
         if (this.value && this.hasListOpen) this.scrollToSelectedOnFocus(this.selectedValueIndex)
       }
+    },
+    clearSearch () {
+      this.searchQuery = null
+      this.filteredOptions = null
     },
     async reset () {
       this.closeList()
       await this.$nextTick()
+      this.clearSearch()
     },
     selectFirstValue () {
       if (this.value) return
@@ -186,6 +235,11 @@ export default {
       this.$emit('input', val || null)
       await this.$nextTick()
       this.reset()
+    },
+    async focusSearchInput () {
+      await this.$nextTick()
+      const { SearchInput } = this.$refs
+      SearchInput.$el.querySelector('input').focus()
     },
     scrollToSelectedOnFocus (arrayIndex) {
       this.$nextTick(() => {
@@ -221,8 +275,8 @@ export default {
     },
     searching (e) {
       const code = e.keyCode
-      clearTimeout(this.queryTimer)
-      this.queryTimer = setTimeout(() => {
+      clearTimeout(queryTimer)
+      const queryTimer = setTimeout(() => {
         this.query = ''
       }, 2000)
       const q = String.fromCharCode(code)
@@ -233,12 +287,21 @@ export default {
         this.query += q.toLowerCase()
         const resultIndex = this.options.findIndex(o => {
           this.tmpValue = o.value
-          return o.label.toLowerCase().startsWith(this.query)
+          return o.label.toLowerCase().includes(this.query)
         })
         if (resultIndex !== -1) {
           this.scrollToSelectedOnFocus(resultIndex)
         }
       }
+    },
+    searchInOptions (query) {
+      this.searchQuery = query
+      const searchQuery = query // .toLowerCase()
+      const filteredOptions = this.options.filter(o => {
+        return o.label.toLowerCase().includes(searchQuery)
+      })
+      this.tmpValue = filteredOptions.length ? filteredOptions[0].value : null
+      this.filteredOptions = filteredOptions
     }
   }
 }
