@@ -83,7 +83,7 @@
         >
           <!-- Item template -->
           <slot
-            :item="option"
+            :option="{ ...option, isSelected: value === option.value }"
             tag="div"
           >
             <!-- `<span>{{ option.label }}</span>`-->

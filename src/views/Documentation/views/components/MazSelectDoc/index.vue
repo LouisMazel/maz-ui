@@ -48,11 +48,27 @@
     :options=&quot;options&quot;
     search
     search-placeholder=&quot;Search in options&quot;
-  />
+  >
+    <template
+      v-slot=&quot;{ option }&quot;
+    >
+      <div
+        v-if=&quot;option.value&quot;
+        class=&quot;maz-flex maz-flex-start&quot;
+      >
+        <div class=&quot;maz-label maz-label-secondary&quot;>
+          {\{ option.label }\}
+        </div>
+        <span class=&quot;maz-ml-2&quot;>
+          is selected: {\{ option.isSelected }\}
+        </span>
+      </div>
+    </template>
+  </MazSelect>
 </template>"
     >
       <h4>
-        Search & custom items list
+        Search & custom options list
       </h4>
       <p class="maz-mb-3 maz-text-muted">
         Select input with search textfield
@@ -64,15 +80,18 @@
         search-placeholder="Search in options"
       >
         <template
-          v-slot="{ item }"
+          v-slot="{ option }"
         >
           <div
-            v-if="item.value"
+            v-if="option.value"
             class="maz-flex maz-flex-start"
           >
             <div class="maz-label maz-label-secondary">
-              {{ item.label }}
+              {{ option.label }}
             </div>
+            <span class="maz-ml-2">
+              is selected: {{ option.isSelected }}
+            </span>
           </div>
         </template>
       </MazSelect>
