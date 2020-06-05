@@ -3,7 +3,8 @@
     class="maz-list"
     :class="{
       'maz-no-shadow': noShadow,
-      'maz-is-dark': dark
+      'maz-is-dark': dark,
+      'no-scroll': noScroll
     }"
   >
     <transition-group
@@ -24,7 +25,10 @@ export default {
     transition: { type: Boolean, default: false },
     // remove the shadow effect behind the list
     noShadow: { type: Boolean, default: false },
-    dark: { type: Boolean, default: false }
+    // set dark mode
+    dark: { type: Boolean, default: false },
+    // remove overflow css property & scroll
+    noScroll: { type: Boolean, default: false }
   }
 }
 </script>

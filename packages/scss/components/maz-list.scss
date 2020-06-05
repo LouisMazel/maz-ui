@@ -3,12 +3,15 @@
 .maz-list {
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
-  overflow-x: hidden;
   border-radius: $border-radius;
   margin-left: -1px;
   margin-right: -1px;
   max-width: 100%;
+
+  &:not(.no-scroll) {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
 
   &:not(.maz-no-shadow) {
     box-shadow: 0 0 8px 0 rgba(0, 0, 0, .1);
