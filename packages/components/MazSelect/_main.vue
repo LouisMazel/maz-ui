@@ -50,9 +50,8 @@
     <transition name="maz-slide">
       <div
         v-show="hasListOpen"
-        ref="optionsList"
-        class="maz-select__options-list"
-        :style="[itemListHeight]"
+        class="maz-select__options-list maz-flex maz-direction-column"
+        :style="[itemListSize]"
       >
         <MazInput
           v-if="search"
@@ -68,49 +67,54 @@
           @keydown.enter="updateValue(tmpValue)"
           @keydown.esc="closeList"
         />
-        <button
-          v-for="(option, i) in optionsShown"
-          :key="i"
-          tabindex="-1"
-          type="button"
-          :class="[
-            {'selected': value === option.value},
-            {'keyboard-selected': tmpValue === option.value}
-          ]"
-          class="maz-select__options-list__item flex align-center maz-text-left"
-          :style="[optionHeight]"
-          @click.stop="updateValue(option.value)"
+        <div
+          ref="optionsList"
+          class="maz-select__options-list__items-container maz-flex maz-direction-column"
         >
-          <!-- Item template -->
+          <button
+            v-for="(option, i) in optionsShown"
+            :key="i"
+            tabindex="-1"
+            type="button"
+            :class="[
+              {'selected': value === option.value},
+              {'keyboard-selected': tmpValue === option.value}
+            ]"
+            class="maz-select__options-list__item flex align-center maz-text-left"
+            :style="[optionHeight]"
+            @click.stop="updateValue(option.value)"
+          >
+            <!-- Item template -->
+            <slot
+              :option="{ ...option, isSelected: value === option.value }"
+              tag="div"
+            >
+              <!-- `<span>{{ option.label }}</span>`-->
+              <span
+                class="maz-dots-text"
+                :class="[
+                  { 'maz-text-muted' : !option.value && value !== option.value },
+                  value === option.value ? 'maz-text-white' : 'maz-text-color'
+                ]"
+              >
+                {{ option.label }}
+              </span>
+            </slot>
+          </button>
+          <!-- No data template -->
           <slot
-            :option="{ ...option, isSelected: value === option.value }"
+            v-if="!optionsShown.length"
+            name="no-results"
             tag="div"
           >
-            <!-- `<span>{{ option.label }}</span>`-->
-            <span
-              class="maz-dots-text"
-              :class="[
-                { 'maz-text-muted' : !option.value && value !== option.value },
-                value === option.value ? 'maz-text-white' : 'maz-text-color'
-              ]"
-            >
-              {{ option.label }}
-            </span>
+            <!-- `<i class="material-icons maz-text-danger">search_off</i>` -->
+            <div class="maz-select__options-list__no-results maz-p-1 maz-flex maz-flex-center">
+              <i class="material-icons maz-text-danger">
+                search_off
+              </i>
+            </div>
           </slot>
-        </button>
-        <!-- No data template -->
-        <slot
-          v-if="!optionsShown.length"
-          name="no-results"
-          tag="div"
-        >
-          <!-- `<i class="material-icons maz-text-danger">search_off</i>` -->
-          <div class="maz-select__options-list__no-results maz-p-1 maz-flex maz-flex-center">
-            <i class="material-icons maz-text-danger">
-              search_off
-            </i>
-          </div>
-        </slot>
+        </div>
       </div>
     </transition>
   </div>
@@ -144,6 +148,8 @@ export default {
     itemHeight: { type: Number, default: 35 },
     // List height in pixel
     listHeight: { type: Number, default: 210 },
+    // List width in pixel
+    listWidth: { type: Number, default: null },
     // The input label
     placeholder: { type: String, default: 'Select option' },
     // When is `true` the select has an input to search in options
@@ -165,12 +171,15 @@ export default {
   computed: {
     optionHeight () {
       return {
-        height: `${this.itemHeight}px`
+        height: `${this.itemHeight}px`,
+        flex: `0 0 ${this.itemHeight}px`
       }
     },
-    itemListHeight () {
+    itemListSize () {
       return {
-        maxHeight: `${this.listHeight}px`
+        maxHeight: `${this.listHeight}px`,
+        width: `${this.listWidth}px`,
+        maxWidth: `${this.listWidth}px`
       }
     },
     tmpValueIndex () {
