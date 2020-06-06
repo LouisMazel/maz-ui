@@ -1,0 +1,12 @@
+{
+  "editor.formatOnSave": false,
+  "editor.formatOnPaste": false,
+  "javascript.format.enable": false,
+  "eslint.alwaysShowStatus": true,
+  "eslint.options": {
+    "extensions": [".html", ".js", ".vue", ".jsx"]
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
+}

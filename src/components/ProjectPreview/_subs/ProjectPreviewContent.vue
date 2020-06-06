@@ -1,10 +1,12 @@
 <template>
-  <div class="project-preview-content flex-1 flex direction-column space-between p-3">
+  <div
+    class="project-preview-content maz-flex-1 maz-flex maz-direction-column maz-space-between maz-p-3"
+  >
     <div class="project-preview-content__text">
-      <h4 class="fs-18 mb-2">
+      <h4 class="maz-fs-18 maz-mb-2">
         {{ project.name }}
       </h4>
-      <p class="mb-2">
+      <p class="maz-mb-2">
         {{ project.description }}
       </p>
     </div>
@@ -12,15 +14,15 @@
 </template>
 
 <script>
-  export default {
-    name: 'ProjectPreview',
-    props: {
-      project: {
-        type: Object,
-        required: true
-      }
+export default {
+  name: 'ProjectPreview',
+  props: {
+    project: {
+      type: Object,
+      required: true
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -36,7 +38,7 @@
     }
   }
 
-  .is-dark .project-preview-content {
+  .maz-is-dark .project-preview-content {
     h4 {
       color: $text-color-dark;
     }

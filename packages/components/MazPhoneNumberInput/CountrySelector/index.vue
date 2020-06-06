@@ -7,7 +7,7 @@
       'has-hint': hint,
       'has-error': error,
       'is-disabled': disabled,
-      'is-dark': dark,
+      'maz-is-dark': dark,
       'no-flags': noFlags,
       'has-list-open': hasListOpen,
       'is-valid': valid
@@ -18,14 +18,16 @@
     <div
       v-if="value && !noFlags"
       class="country-selector__country-flag"
+      tabindex="-1"
+      @click.stop="toggleList"
     >
-      <div :class="`iti-flag-small iti-flag ${value.toLowerCase()}`" />
+      <div :class="`maz-flag maz-flag-${value.toLowerCase()}`" />
     </div>
     <input
       :id="id"
       ref="CountrySelector"
       :value="callingCode"
-      :placeholder="label"
+      :placeholder="placeholder"
       :disabled="disabled"
       class="country-selector__input"
       readonly
@@ -35,38 +37,25 @@
     >
     <div
       class="country-selector__toggle"
+      tabindex="-1"
       @click.stop="toggleList"
     >
       <slot name="arrow">
-        <svg
-          mlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          class="country-selector__toggle__arrow"
-        >
-          <path
-            class="arrow"
-            d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"
-          />
-          <path
-            fill="none"
-            d="M0 0h24v24H0V0z"
-          />
-        </svg>
+        <ArrowIcon />
       </slot>
     </div>
     <label
       ref="label"
-      :class="error ? 'text-danger' : null"
+      :class="error ? 'maz-text-danger' : null"
       class="country-selector__label"
+      tabindex="-1"
       @click.stop="toggleList"
     >
-      {{ hint || label }}
+      {{ hint || placeholder }}
     </label>
-    <Transition name="slide">
+    <Transition name="maz-slide">
       <div
-        v-show="hasListOpen"
+        v-if="hasListOpen"
         ref="countriesList"
         class="country-selector__list"
         :class="{ 'has-calling-code': showCodeOnList }"
@@ -84,7 +73,7 @@
               {'selected': value === item.iso2},
               {'keyboard-selected': value !== item.iso2 && tmpValue === item.iso2}
             ]"
-            class="flex align-center country-selector__list__item"
+            class="maz-flex maz-align-center country-selector__list__item"
             :style="[itemHeight]"
             tabindex="-1"
             type="button"
@@ -94,13 +83,14 @@
               v-if="!noFlags"
               class="country-selector__list__item__flag-container"
             >
-              <div :class="`iti-flag-small iti-flag ${item.iso2.toLowerCase()}`" />
+              <!-- <div :class="`flag-icon flag-icon-${item.iso2.toLowerCase()}`" /> -->
+              <div :class="`maz-flag maz-flag-${item.iso2.toLowerCase()}`" />
             </div>
             <span
               v-if="showCodeOnList"
-              class="country-selector__list__item__calling-code flex-fixed"
+              class="country-selector__list__item__calling-code maz-flex-fixed"
             >+{{ item.dialCode }}</span>
-            <div class="dots-text flex-1 text-left">
+            <div class="maz-dots-text maz-flex-1 maz-text-left">
               {{ item.name }}
             </div>
           </button>
@@ -111,178 +101,185 @@
 </template>
 
 <script>
-  import { getCountryCallingCode } from 'libphonenumber-js'
-  import { RecycleScroller } from 'vue-virtual-scroller'
+import { getCountryCallingCode } from 'libphonenumber-js'
+import { RecycleScroller } from 'vue-virtual-scroller'
+import ArrowIcon from './../../_subs/ArrowIcon'
 
-  export default {
-    name: 'CountrySelector',
-    components: {
-      RecycleScroller
-    },
-    props: {
-      countriesHeight: { type: Number, default: 35 },
-      id: { type: String, default: null },
-      value: { type: [String, Object], default: null },
-      label: { type: String, default: 'Choose country' },
-      hint: { type: String, default: String },
-      size: { type: String, default: String },
-      error: { type: Boolean, default: false },
-      disabled: { type: Boolean, default: false },
-      valid: { type: Boolean, default: false },
-      dark: { type: Boolean, default: false },
-      items: { type: Array, default: Array, required: true },
-      preferredCountries: { type: Array, default: null },
-      onlyCountries: { type: Array, default: null },
-      ignoredCountries: { type: Array, default: null },
-      noFlags: { type: Boolean, default: false },
-      showCodeOnList: { type: Boolean, default: false }
-    },
-    data () {
+export default {
+  name: 'CountrySelector',
+  components: {
+    RecycleScroller, ArrowIcon
+  },
+  props: {
+    countriesHeight: { type: Number, default: 35 },
+    id: { type: String, default: null },
+    value: { type: [String, Object], default: null },
+    placeholder: { type: String, default: 'Choose country' },
+    hint: { type: String, default: String },
+    size: { type: String, default: String },
+    error: { type: Boolean, default: false },
+    disabled: { type: Boolean, default: false },
+    valid: { type: Boolean, default: false },
+    dark: { type: Boolean, default: false },
+    items: { type: Array, default: Array, required: true },
+    preferredCountries: { type: Array, default: null },
+    onlyCountries: { type: Array, default: null },
+    ignoredCountries: { type: Array, default: null },
+    noFlags: { type: Boolean, default: false },
+    showCodeOnList: { type: Boolean, default: false }
+  },
+  data () {
+    return {
+      isFocus: false,
+      hasListOpen: false,
+      selectedIndex: null,
+      tmpValue: this.value,
+      query: '',
+      indexItemToShow: 0
+    }
+  },
+  computed: {
+    listHeight () {
       return {
-        isFocus: false,
-        hasListOpen: false,
-        selectedIndex: null,
-        tmpValue: this.value,
-        query: '',
-        indexItemToShow: 0
+        height: `${(this.countriesHeight + 1) * (this.countriesSorted.length < 7 ? this.countriesSorted.length : 7)}px`,
+        maxHeight: `${(this.countriesHeight + 1) * 7}px`
       }
     },
-    computed: {
-      listHeight () {
-        return {
-          height: `${(this.countriesHeight + 1) * 7}px`,
-          maxHeight: `${(this.countriesHeight + 1) * 7}px`
-        }
-      },
-      itemHeight () {
-        return {
-          height: `${this.countriesHeight}px`
-        }
-      },
-      countriesList () {
-        return this.items.filter(item => !this.ignoredCountries.includes(item.iso2))
-      },
-      countriesFiltered () {
-        const countries = this.onlyCountries || this.preferredCountries
-        return countries.map(country => this.countriesList.find(item => item.iso2.includes(country)))
-      },
-      otherCountries () {
-        return this.countriesList.filter(item => !this.preferredCountries.includes(item.iso2))
-      },
-      countriesSorted () {
-        return this.preferredCountries
-          ? [ ...this.countriesFiltered,
-              ...this.otherCountries ]
-          : this.onlyCountries
-            ? this.countriesFiltered
-            : this.countriesList
-      },
-      selectedValueIndex () {
-        return this.value
-          ? this.countriesSorted.findIndex(c => c.iso2 === this.value)
-          : null
-      },
-      tmpValueIndex () {
-        return this.countriesSorted.findIndex(c => c.iso2 === this.tmpValue)
-      },
-      callingCode () {
-        return this.value ? `+${getCountryCallingCode(this.value)}` : null
+    itemHeight () {
+      return {
+        height: `${this.countriesHeight}px`
       }
     },
-    // mounted () {
-    //   this.$parent.$on('phone-number-focused', this.closeList)
-    // },
-    methods: {
-      handleBlur (e) {
-        if (this.$el.contains(e.relatedTarget)) return
-        this.isFocus = false
-        this.closeList()
-      },
-      toggleList () {
-        this.$refs.countriesList.offsetParent ? this.closeList() : this.openList()
-      },
-      openList () {
-        if (!this.disabled) {
-          this.$refs.CountrySelector.focus()
-          this.$emit('open')
-          this.isFocus = true
-          this.hasListOpen = true
-          this.selectFirstValue()
-          if (this.value) this.scrollToSelectedOnFocus(this.selectedValueIndex)
+    countriesList () {
+      return this.items.filter(item => !this.ignoredCountries.includes(item.iso2))
+    },
+    countriesFiltered () {
+      const countries = this.onlyCountries || this.preferredCountries
+      return countries.map(country => this.countriesList.find(item => item.iso2.includes(country)))
+    },
+    otherCountries () {
+      return this.countriesList.filter(item => !this.preferredCountries.includes(item.iso2))
+    },
+    countriesSorted () {
+      return this.preferredCountries
+        ? [
+          ...this.countriesFiltered,
+          ...this.otherCountries
+        ]
+        : this.onlyCountries
+          ? this.countriesFiltered
+          : this.countriesList
+    },
+    selectedValueIndex () {
+      return this.value
+        ? this.countriesSorted.findIndex(c => c.iso2 === this.value)
+        : null
+    },
+    tmpValueIndex () {
+      return this.countriesSorted.findIndex(c => c.iso2 === this.tmpValue)
+    },
+    callingCode () {
+      return this.value ? `+${getCountryCallingCode(this.value)}` : null
+    }
+  },
+  // mounted () {
+  //   this.$parent.$on('phone-number-focused', this.closeList)
+  // },
+  methods: {
+    handleBlur (e) {
+      if (this.$el.contains(e.relatedTarget)) return
+      this.isFocus = false
+      this.closeList()
+    },
+    toggleList () {
+      this.hasListOpen ? this.closeList() : this.openList()
+    },
+    openList () {
+      if (!this.disabled) {
+        this.$refs.CountrySelector.focus()
+        this.$emit('open')
+        this.isFocus = true
+        this.hasListOpen = true
+        this.selectFirstValue()
+        if (this.value) this.scrollToSelectedOnFocus(this.selectedValueIndex)
+      }
+    },
+    closeList () {
+      this.$emit('close')
+      this.isFocus = false
+      this.hasListOpen = false
+    },
+    async updateValue (val) {
+      this.tmpValue = val
+      this.$emit('input', val || null)
+      await this.$nextTick()
+      this.closeList()
+    },
+    async scrollToSelectedOnFocus (arrayIndex) {
+      await this.$nextTick()
+      const elem = this.$refs.countriesList
+      const scrollValue = arrayIndex * (this.countriesHeight + 1) - ((this.countriesHeight + 1) * 3)
+      await this.$nextTick()
+      elem.scrollBy({
+        top: scrollValue,
+      })
+    },
+    selectFirstValue () {
+      if (this.value) return
+      this.$emit('input', this.countriesSorted[0].iso2)
+    },
+    keyboardNav (e) {
+      const code = e.keyCode
+      if (code === 40 || code === 38) {
+        // arrow up down
+        if (e.view && e.view.event) {
+          // TODO : It's not compatible with FireFox
+          e.view.event.preventDefault()
         }
-      },
-      closeList () {
-        this.$emit('close')
-        this.isFocus = false
-        this.hasListOpen = false
-      },
-      async updateValue (val) {
-        this.tmpValue = val
-        this.$emit('input', val || null)
-        await this.$nextTick()
+        if (!this.hasListOpen) this.openList()
+        let index = code === 40 ? this.tmpValueIndex + 1 : this.tmpValueIndex - 1
+        if (index === -1 || index >= this.countriesSorted.length) {
+          index = index === -1
+            ? this.countriesSorted.length - 1
+            : 0
+        }
+        this.tmpValue = this.countriesSorted[index].iso2
+        this.scrollToSelectedOnFocus(index)
+      } else if (code === 13) {
+        // enter
+        this.hasListOpen ? this.updateValue(this.tmpValue) : this.openList()
+      } else if (code === 27) {
+        // escape
         this.closeList()
-      },
-      scrollToSelectedOnFocus (arrayIndex) {
-        this.$nextTick(() => {
-          this.$refs.countriesList.scrollTop = arrayIndex * (this.countriesHeight + 1) - ((this.countriesHeight + 1) * 3)
+      } else {
+        // typing a country's name
+        this.searching(e)
+      }
+    },
+    searching (e) {
+      const code = e.keyCode
+      clearTimeout(this.queryTimer)
+      this.queryTimer = setTimeout(() => {
+        this.query = ''
+      }, 2000)
+      const q = String.fromCharCode(code)
+      if (code === 8 && this.query !== '') {
+        this.query = this.query.substring(0, this.query.length - 1)
+      } else if (/[a-zA-Z-e ]/.test(q)) {
+        if (!this.hasListOpen) this.openList()
+        this.query += q.toLowerCase()
+        const countries = this.preferredCountries
+          ? this.countriesSorted.slice(this.preferredCountries.length)
+          : this.countriesSorted
+        const resultIndex = countries.findIndex(c => {
+          this.tmpValue = c.iso2
+          return c.name.toLowerCase().includes(this.query)
         })
-      },
-      selectFirstValue () {
-        if (this.value) return
-        this.$emit('input', this.countriesSorted[0].iso2)
-      },
-      keyboardNav (e) {
-        const code = e.keyCode
-        if (code === 40 || code === 38) {
-          // arrow up down
-          if (e.view && e.view.event) {
-            // TODO : It's not compatible with FireFox
-            e.view.event.preventDefault()
-          }
-          if (!this.hasListOpen) this.openList()
-          let index = code === 40 ? this.tmpValueIndex + 1 : this.tmpValueIndex - 1
-          if (index === -1 || index >= this.countriesSorted.length) {
-            index = index === -1
-              ? this.countriesSorted.length - 1
-              : 0
-          }
-          this.tmpValue = this.countriesSorted[index].iso2
-          this.scrollToSelectedOnFocus(index)
-        } else if (code === 13) {
-          // enter
-          this.hasListOpen ? this.updateValue(this.tmpValue) : this.openList()
-        } else if (code === 27) {
-          // escape
-          this.closeList()
-        } else {
-          // typing a country's name
-          this.searching(e)
-        }
-      },
-      searching (e) {
-        const code = e.keyCode
-        clearTimeout(this.queryTimer)
-        this.queryTimer = setTimeout(() => {
-          this.query = ''
-        }, 2000)
-        const q = String.fromCharCode(code)
-        if (code === 8 && this.query !== '') {
-          this.query = this.query.substring(0, this.query.length - 1)
-        } else if (/[a-zA-Z-e ]/.test(q)) {
-          if (!this.hasListOpen) this.openList()
-          this.query += q.toLowerCase()
-          const countries = this.preferredCountries
-            ? this.countriesSorted.slice(this.preferredCountries.length)
-            : this.countriesSorted
-          const resultIndex = countries.findIndex(c => {
-            this.tmpValue = c.iso2
-            return c.name.toLowerCase().startsWith(this.query)
-          })
-          if (resultIndex !== -1) {
-            this.scrollToSelectedOnFocus(resultIndex + (this.preferredCountries ? this.preferredCountries.length : 0))
-          }
+        if (resultIndex !== -1) {
+          this.scrollToSelectedOnFocus(resultIndex + (this.preferredCountries ? this.preferredCountries.length : 0))
         }
       }
     }
   }
+}
 </script>

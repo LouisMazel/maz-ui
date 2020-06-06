@@ -1,0 +1,34 @@
+@import './variables/color_types';
+
+.#{$prefix}hover-bg-color:hover {
+  background-color: $hover-bg-color;
+}
+
+.#{$prefix}no-hover-bg:hover {
+  background: transparent;
+}
+
+.#{$prefix}hover-bg-color-light:hover {
+  background-color: $hover-bg-color-l;
+}
+
+.#{$prefix}hover-bg-color-dark:hover {
+  background-color: $hover-bg-color-dark;
+}
+
+.#{$prefix}hover-bg-color-dark-light:hover {
+  background-color: $hover-bg-color-dark-l;
+}
+
+.#{$prefix}is-dark.#{$prefix}hover-bg-color:hover,
+.#{$prefix}is-dark .#{$prefix}hover-bg-color:hover {
+  background-color: $hover-bg-color-dark;
+}
+
+@each $name, $color in $color_types {
+  @if (type-of($color) == 'color') {
+    .#{$prefix}hover-bg-#{$name}:hover {
+      background-color: $color;
+    }
+  }
+}

@@ -1,6 +1,6 @@
 <template>
   <MazBtn
-    class="pagination-number-btn flex align-center justify-center flex-fixed"
+    class="pagination-number-btn maz-flex maz-flex-center maz-flex-fixed"
     :disabled="disabled"
     :class="{
       'active': active
@@ -14,16 +14,19 @@
 </template>
 
 <script>
-  export default {
-    name: 'PaginationNumberBtn',
-    props: {
-      active: { type: Boolean, default: false },
-      disabled: { type: Boolean, default: false }
-    },
-    methods: {
-      handleClick (evt) {
-        this.$emit('click', evt)
-      }
+import MazBtn from '../../MazBtn'
+
+export default {
+  name: 'PaginationNumberBtn',
+  components: { MazBtn },
+  props: {
+    active: { type: Boolean, default: false },
+    disabled: { type: Boolean, default: false }
+  },
+  methods: {
+    handleClick (evt) {
+      this.$emit('click', evt)
     }
   }
+}
 </script>

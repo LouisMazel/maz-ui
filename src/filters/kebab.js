@@ -1,6 +1,6 @@
-import { pascalCaseToKebabCase } from '@/utils'
+import { pascalCaseToKebabCase } from '@/../utils'
 
-export default (q) => {
+export default q => {
   if (!q) return ''
   return pascalCaseToKebabCase(q)
 }

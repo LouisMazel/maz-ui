@@ -8,7 +8,8 @@
 | ---------- | ---------------------------------------- | --------- | -------- | ------- |
 | transition | active the transition animation          | `Boolean` | `false`  | -       |
 | noShadow   | remove the shadow effect behind the list | `Boolean` | `false`  | -       |
-| dark       | -                                        | `Boolean` | `false`  | -       |
+| dark       | set dark mode                            | `Boolean` | `false`  | -       |
+| noScroll   | remove overflow css property & scroll    | `Boolean` | `false`  | -       |
 
 <!-- @vuese:MazList:props:end -->
 

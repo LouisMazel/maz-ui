@@ -1,0 +1,21 @@
+@import './../style-helpers/variables/index.scss';
+
+.maz-pagination {
+  &__container {
+    height: 50px;
+    border-radius: 50px;
+    padding: 0 10px;
+    background-color: $hover-bg-color;
+  }
+}
+
+.maz-is-dark .maz-pagination,
+.maz-is-dark.maz-pagination {
+  .maz-pagination__container {
+    background-color: $bg-color-dark-light;
+  }
+}
+
+@import './maz-pagination/pagination-arrow-btn';
+@import './maz-pagination/pagination-dots-divider';
+@import './maz-pagination/pagination-number-btn';

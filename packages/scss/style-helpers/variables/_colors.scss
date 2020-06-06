@@ -1,31 +1,52 @@
-$primary-color:    dodgerblue !default;
-$secondary-color:  #747474 !default;
-$secondary-color-dark:  rgba(255, 255, 255, .7) !default;
-$third-color:  #CCC !default;
-$third-color-dark:  rgba(255, 255, 255, .7) !default;
-$danger-color:     orangered !default;
-$success-color:    yellowgreen !default;
-$info-color:       #17A2B8 !default;
-$warning-color:    #FFA300 !default;
-$light-color:      whitesmoke !default;
-$default-color:    #CCC !default;
-$black-color:      black !default;
-$white-color:      white !default;
-$grey-color: #999 !default;
-$text-color: black !default;
-$bg-color: white !default;
-$hover-color: #F2F2F2 !default;
-$muted-color: #747474 !default;
-$disabled-color: #CCC !default;
-$primary-color-transparency: rgba($primary-color, .7) !default;
-$danger-color-transparency: rgba($danger-color, .7) !default;
-$success-color-transparency: rgba($success-color, .7) !default;
 
-$dark-color:       #24292E !default;
-$grey-color-dark:  darken($grey-color, 25%) !default;
-$text-color-dark: #F2F2F2 !default;
-$bg-color-dark: #21222E !default;
-$bg-color-dark-l: #303144 !default;
-$hover-color-dark: #2E2F40 !default;
-$hover-color-dark-l: lighten(#303144, 10%) !default;
-$muted-color-dark: rgba(255, 255, 255, .3) !default;
+/*
+* COLORS BASIC
+*/
+
+// MAJORS COLORS
+
+$primary-color:           dodgerblue !default;
+$secondary-color:         #1CD1A1 !default;
+$third-color:             #C41AF9 !default;
+$danger-color:            orangered !default;
+$success-color:           yellowgreen !default;
+$info-color:              #17A2B8 !default;
+$warning-color:           #FFA300 !default;
+$light-color:             whitesmoke !default;
+$default-color:           #CCC !default;
+$text-color:              #212121 !default;
+$bg-color:                white !default;
+$bg-color-light:          #F2F2F2 !default;
+$dark-color:              #24292E !default;
+$grey-color:              #999 !default;
+$placeholder-color:       #A7A7A7 !default;
+$input-icon-color:        #DEDEDE !default;
+$text-muted:              rgba(black, .54) !default;
+$text-muted-dark:         rgba(white, .54) !default;
+
+// OTHERS COLORS
+
+$black-color:             black !default;
+$white-color:             white !default;
+$hover-bg-color:          #F2F2F2 !default;
+$hover-bg-color-l:        white !default;
+$muted-color:             #747474 !default;
+$border-color:            #EEE !default;
+$disabled-color:          #F2F2F2 !default;
+$overlay-color:           rgba(#303144, .7);
+
+/*
+* DARK THEME SPECIFIC
+*/
+
+$text-color-dark:         #EEE !default;
+$bg-color-dark:           #21222E !default;
+$bg-color-dark-light:         #303144 !default;
+$hover-bg-color-dark:     #2E2F40 !default;
+$hover-bg-color-dark-l:   #2E2F40 !default;
+$muted-color-dark:        rgba(255, 255, 255, .3) !default;
+$disabled-color-dark:     #CCC !default;
+$border-color-dark:       #3B3C53 !default;
+$placeholder-color-dark:  rgba(255, 255, 255, .6) !default;
+$input-icon-color-dark:   #65678F !default;
+$overlay-color-dark:      rgba(86, 87, 117, .7);

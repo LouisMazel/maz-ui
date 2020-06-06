@@ -1,0 +1,55 @@
+@import './variables/color_types';
+
+@each $name, $color in $color_types {
+  @if (type-of($color) == 'color') {
+    .#{$prefix}bg-#{$name} {
+      background-color: $color;
+    }
+
+    .#{$prefix}bg-#{$name}-after::after {
+      background-color: $color;
+    }
+
+    .#{$prefix}bg-#{$name}-before::before {
+      background-color: $color;
+    }
+
+    .#{$prefix}bg-#{$name}-transparency {
+      background-color: rgba($color, .5);
+    }
+
+    .#{$prefix}bg-#{$name}-after-transparency::after {
+      background-color: rgba($color, .5);
+    }
+
+    .#{$prefix}bg-#{$name}-before-transparency::before {
+      background-color: rgba($color, .5);
+    }
+  }
+}
+
+.#{$prefix}bg-color {
+  background-color: $bg-color;
+}
+
+.#{$prefix}bg-color-light {
+  background-color: $bg-color-light;
+}
+
+.#{$prefix}is-dark.#{$prefix}bg-color,
+.#{$prefix}is-dark .#{$prefix}bg-color {
+  background-color: $bg-color-dark;
+}
+
+.#{$prefix}bg-color-dark {
+  background-color: $bg-color-dark;
+}
+
+.#{$prefix}bg-color-light-dark {
+  background-color: $bg-color-dark-light;
+}
+
+.#{$prefix}is-dark.#{$prefix}bg-color-light,
+.#{$prefix}is-dark .#{$prefix}bg-color-light {
+  background-color: $bg-color-dark-light;
+}

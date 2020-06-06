@@ -1,0 +1,10 @@
+.maz-tabs-content-item {
+  position: relative;
+  overflow-y: hidden;
+  width: 100%;
+  flex: 1 0 100%;
+
+  &.h-0 {
+    height: 0;
+  }
+}

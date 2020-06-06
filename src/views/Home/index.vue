@@ -1,63 +1,47 @@
 <template>
-  <div class="home flex-1 flex direction-column">
-    <div class="home__main flex flex-1 container">
-      <div class="home__content flex direction-column justify-center p-4">
-        <h2 class="mb-2">
-          A library to build your interfaces with <span class="text-primary">Vue.js</span>
+  <div class="home maz-flex-1 maz-flex maz-direction-column">
+    <div class="home__main maz-flex maz-flex-1 maz-container maz-flex-center">
+      <div class="home__content maz-flex maz-direction-column maz-justify-center maz-p-4">
+        <h2 class="maz-mb-2 maz-text-center">
+          Components library to build your interfaces with
+          <span class="maz-text-primary">Vue.JS & Nuxt.JS</span>
         </h2>
-        <h3 class="subtitle mb-5 fs-16">
-          UI Components & CSS framework
-        </h3>
-        <div class="flex flex-center direction-column">
+        <div class="maz-flex maz-flex-center maz-direction-column">
           <CodeContainer
             language="bash"
             code="npm i maz-ui -S"
             class="mb-4"
           />
-          <div class="flex align-start flex--wrap my-3 align-center justify-center">
+          <div
+            class="maz-flex maz-align-start maz-flex-wrap maz-my-3 maz-align-center maz-justify-center"
+          >
             <router-link
-              class="btn btn--primary--outline mr-2 mb-2"
-              :to="{ name: 'Install' }"
-            >
-              Installation
-            </router-link>
-            <router-link
-              class="btn btn--primary--outline mr-2 mb-2"
+              class="maz-btn maz-btn--secondary maz-mr-2 maz-mb-2"
               :to="{ name: 'GetStarted' }"
             >
-              Get started
+              GET STARTED
             </router-link>
             <router-link
-              class="btn btn--primary--outline"
+              class="maz-btn maz-btn--primary maz-mr-2"
               :to="{ name: 'MazInputDoc' }"
             >
-              Components
+              COMPONENTS
             </router-link>
-          </div>
-          <div class="flex align-start flex--wrap align-center justify-center">
-            <a
-              class="btn btn--dark--outline mr-4"
-              href="https://github.com/LouisMazel/maz-ui"
-              target="_blank"
+            <router-link
+              class="maz-btn maz-btn--third maz-mr-2"
+              :to="{ name: 'Theme' }"
             >
-              Github
-            </a>
-            <a
-              class="btn btn--danger--outline"
-              href="https://www.npmjs.com/package/maz-ui"
-              target="_blank"
-            >
-              NPM
-            </a>
+              THEME
+            </router-link>
           </div>
         </div>
       </div>
-      <div class="home__illu-container flex align-center justify-center p-4">
+      <div class="home__illu-container maz-flex maz-align-center maz-justify-center maz-p-4">
         <img
           class="home__illu-container__illu"
           :src="illuPath"
           alt="maz ui logo"
-        >
+        />
       </div>
     </div>
     <NavFooter />
@@ -65,31 +49,28 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
-  import NavFooter from '@/components/NavFooter'
+import { mapGetters } from 'vuex'
+import NavFooter from '@/components/NavFooter'
 
-  export default {
-    name: 'Home',
-    components: {
-      NavFooter
-    },
-    computed: {
-      ...mapGetters(['hasDarkTheme']),
-      illuPath () {
-        return this.hasDarkTheme ? require('@/assets/img/maz-ui-illu-dark.png') : require('@/assets/img/maz-ui-illu.png')
-      }
+export default {
+  name: 'Home',
+  components: {
+    NavFooter
+  },
+  computed: {
+    ...mapGetters(['hasDarkTheme']),
+    illuPath () {
+      return this.hasDarkTheme
+        ? require('@/assets/img/maz-ui-illu-dark.png')
+        : require('@/assets/img/maz-ui-illu.png')
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>
   .home {
     // background-image: linear-gradient(to right top, dodgerblue, #00B7FF, #00D4E0, #00E688, #A8EB12);
-    @media only screen and (max-width: $breakpoint-mobile-l) {
-      &__header button {
-        width: 100%;
-      }
-    }
 
     @media only screen and (max-width: $breakpoint-laptop-s) {
       &__main {
@@ -110,8 +91,9 @@
     }
 
     h2 {
-      color: $text-color;
-      font-size: 2.143em;
+      color: #444352;
+      font-size: 2.143rem;
+      line-height: 1.5;
     }
 
     h3.subtitle {
@@ -119,7 +101,7 @@
     }
   }
 
-  .is-dark {
+  .maz-is-dark {
     .home {
       h2 {
         color: $text-color-dark;
@@ -129,7 +111,7 @@
         color: $primary-color !important;
       }
 
-      .btn--dark--outline {
+      .maz-btn--dark--outline {
         background-color: $bg-color-dark;
         color: $text-color-dark;
         border-color: $text-color-dark;

@@ -1,9 +1,6 @@
-@import './_base';
-@import './_responsive';
-@import './_color_types';
-@import './_colors';
-@import './_radiuses';
-@import './_typo';
-@import './_spacing';
-
-$spacing-sizes: 0, .25rem, .5rem, 1rem, 1.5rem, 3rem !default;
+@import './_prefix';
+@import './base';
+@import './responsive';
+@import './colors';
+@import './radiuses';
+@import './borders';

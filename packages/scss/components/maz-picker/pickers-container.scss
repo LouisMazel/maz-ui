@@ -1,0 +1,30 @@
+.pickers-container {
+  background-color: $bg-color;
+  border-radius: $border-radius;
+  overflow: hidden;
+  z-index: 9;
+  outline: none;
+
+  $this: &;
+
+  &:not(.inline) {
+    position: absolute;
+    top: 100%;
+    left: 0;
+
+    &.top {
+      top: inherit;
+      bottom: 100%;
+    }
+
+    &.right {
+      left: inherit;
+      right: 0;
+    }
+  }
+}
+
+.maz-is-dark.pickers-container,
+.maz-is-dark .pickers-container {
+  background-color: $bg-color-dark-light;
+}

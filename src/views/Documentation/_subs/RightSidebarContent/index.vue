@@ -1,12 +1,13 @@
 <template>
-  <div class="right-sidebar-content p-3">
-    <div class="flex justify-end">
+  <div class="right-sidebar-content maz-p-3">
+    <div class="maz-flex maz-justify-end">
       <MazBtn
-        rounded
-        size="sm"
+        fab
         @click="$emit('close')"
       >
-        X
+        <i class="material-icons maz-fs-20 maz-flex maz-flex-center">
+          close
+        </i>
       </MazBtn>
     </div>
     <MdRenderer :file-name="currentComponent" />
@@ -14,19 +15,19 @@
 </template>
 
 <script>
-  import MdRenderer from '@/components/MdRenderer'
+import MdRenderer from '@/components/MdRenderer'
 
-  export default {
-    name: 'RightSidebarContent',
-    components: {
-      MdRenderer
-    },
-    computed: {
-      currentComponent () {
-        return this.$route.name.slice(0, -3)
-      }
+export default {
+  name: 'RightSidebarContent',
+  components: {
+    MdRenderer
+  },
+  computed: {
+    currentComponent () {
+      return this.$route.name.slice(0, -3)
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>

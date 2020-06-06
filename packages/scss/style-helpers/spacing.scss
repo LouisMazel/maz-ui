@@ -1,0 +1,50 @@
+@import './variables/spacing';
+
+@function set-var-class($var) {
+  @if ($var == 'margin') {
+    @return 'm';
+  }
+
+  @else {
+    @return 'p';
+  }
+}
+
+// Font-size
+@each $pm in $pms {
+  @each $size in $spacing-sizes {
+    $p: set-var-class($pm);
+
+    $i: index($spacing-sizes, $size) - 1;
+
+    .#{$prefix}#{$p}r-#{$i} {
+      #{$pm}-right: #{$size};
+    }
+
+    .#{$prefix}#{$p}t-#{$i} {
+      #{$pm}-top: #{$size};
+    }
+
+    .#{$prefix}#{$p}b-#{$i} {
+      #{$pm}-bottom: #{$size};
+    }
+
+    .#{$prefix}#{$p}l-#{$i} {
+      #{$pm}-left: #{$size};
+    }
+
+    .#{$prefix}#{$p}x-#{$i} {
+      #{$pm}-left: #{$size};
+      #{$pm}-right: #{$size};
+    }
+
+    .#{$prefix}#{$p}y-#{$i} {
+      #{$pm}-top: #{$size};
+      #{$pm}-bottom: #{$size};
+    }
+
+    .#{$prefix}#{$p}-#{$i} {
+      #{$pm}: #{$size};
+    }
+  }
+}

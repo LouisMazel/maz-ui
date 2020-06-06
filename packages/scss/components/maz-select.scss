@@ -1,0 +1,106 @@
+@import './../style-helpers/variables/index.scss';
+
+.maz-select {
+  position: relative;
+  user-select: none;
+
+  &__toggle {
+    transition: all .25s cubic-bezier(.645, .045, .355, 1);
+    cursor: pointer;
+    outline: none;
+    height: 24px;
+
+    &__arrow {
+      color: $input-icon-color;
+
+      .arrow {
+        fill: $input-icon-color;
+      }
+    }
+  }
+
+  &__options-list {
+    z-index: 9;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    overflow: hidden;
+    top: 100%;
+    border-radius: $border-radius;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
+    background-color: $bg-color;
+
+    &__items-container {
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    &__item {
+      padding: 0 10px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      font-size: .857rem;
+      cursor: pointer;
+      background-color: transparent;
+      border: none;
+      color: $text-color;
+      outline: none;
+
+      &:hover,
+      &.keyboard-selected {
+        background-color: darken($hover-bg-color, 5%);
+      }
+
+      &.selected {
+        color: white;
+        background-color: $primary-color;
+        font-weight: 600;
+      }
+    }
+
+    &__no-results i {
+      font-size: 2.3rem;
+    }
+  }
+
+  &.has-list-open {
+    .maz-select {
+      &__toggle {
+        transform: rotate(180deg);
+      }
+    }
+  }
+}
+
+.maz-is-dark .maz-select,
+.maz-is-dark.maz-select {
+  &__toggle {
+    &__arrow {
+      color: $input-icon-color-dark;
+
+      .arrow {
+        fill: $input-icon-color-dark;
+      }
+    }
+  }
+
+  &__options-list {
+    background-color: $bg-color-dark;
+
+    &__item {
+      color: $border-color-dark;
+
+      &:hover,
+      &.keyboard-selected {
+        background-color: lighten($hover-bg-color-dark-l, 5%);
+      }
+
+      &.selected {
+        color: white;
+        background-color: $primary-color;
+        font-weight: 600;
+      }
+    }
+  }
+}

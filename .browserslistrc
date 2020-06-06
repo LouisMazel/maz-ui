@@ -5,3 +5,5 @@ not ie <= 8
 edge >= 15
 safari >= 9
 chrome >= 45
+> 1%
+not dead

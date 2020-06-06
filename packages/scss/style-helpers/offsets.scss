@@ -1,0 +1,10 @@
+@import './variables/_sizes';
+@import './variables/_positions';
+
+@each $size in $sizes {
+  @each $position in $orientations {
+    .#{$prefix}#{$position}-#{$size} {
+      #{$position}: #{$size}px;
+    }
+  }
+}

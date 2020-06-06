@@ -7,11 +7,12 @@
   >
     <MazFlex
       flex1
+      direction-column
     >
-      <h2 class="text-center my-4">
+      <h2 class="maz-text-center maz-my-4">
         Projects Made With Mazel UI
       </h2>
-      <div class="container used-by__projects-list flex align-center pt-2 pb-5">
+      <div class="maz-container used-by__projects-list maz-flex maz-pt-2 maz-pb-5">
         <ProjectPreview
           v-for="(project, i) in projects"
           :key="`project-${i}`"
@@ -25,33 +26,34 @@
 </template>
 
 <script>
-  import NavFooter from '@/components/NavFooter'
-  import ProjectPreview from '@/components/ProjectPreview'
-  export default {
-    name: 'UsedBy',
-    components: {
-      NavFooter,
-      ProjectPreview
-    },
-    data () {
-      return {
-        projects: [
-          {
-            name: 'Vue Smart List UI',
-            description: 'An intelligent interface for displaying a list of data and performing filters, sorting and searching on it. Also to display the details of the data.',
-            githubUrl: 'https://github.com/LouisMazel/vue-smart-list-ui',
-            imgUrl: require('@/assets/img/projects/vue-smart-list-ui.png'),
-            demoUrl: 'https://louismazel.github.io/vue-smart-list-ui/'
-          },
-          {
-            name: 'Freelance Personnal Website',
-            imgUrl: require('@/assets/img/projects/loicmazuel.png'),
-            demoUrl: 'https://www.loicmazuel.com/'
-          }
-        ]
-      }
+import NavFooter from '@/components/NavFooter'
+import ProjectPreview from '@/components/ProjectPreview'
+export default {
+  name: 'UsedBy',
+  components: {
+    NavFooter,
+    ProjectPreview
+  },
+  data () {
+    return {
+      projects: [
+        {
+          name: 'Vue Smart List UI',
+          description:
+            'An intelligent interface for displaying a list of data and performing filters, sorting and searching on it. Also to display the details of the data.',
+          githubUrl: 'https://github.com/LouisMazel/vue-smart-list-ui',
+          imgUrl: require('@/assets/img/projects/vue-smart-list-ui.png'),
+          demoUrl: 'https://louismazel.github.io/vue-smart-list-ui/'
+        },
+        {
+          name: 'Freelance Personnal Website',
+          imgUrl: require('@/assets/img/projects/loicmazuel.png'),
+          demoUrl: 'https://www.loicmazuel.com/'
+        }
+      ]
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -88,7 +90,7 @@
     }
   }
 
-  .is-dark {
+  .maz-is-dark {
     .used-by {
       color: $text-color-dark;
     }

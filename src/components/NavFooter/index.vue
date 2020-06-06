@@ -1,47 +1,47 @@
 <template>
   <footer
-    class="nav-footer flex-fixed"
+    class="nav-footer maz-flex-fixed maz-border-top-1 maz-border-top-solid maz-border-color"
     role="contentinfo"
   >
-    <nav class="nav-footer-content container px-4 flex align-center space-between py-4">
-      <div class="flex direction-column hidden-tablet">
+    <nav
+      class="nav-footer-content maz-container maz-px-4 maz-flex maz-align-center maz-space-between maz-py-4"
+    >
+      <div class="maz-flex maz-direction-column maz-hidden-tablet">
         <RouterLink
           :to="{ name: 'Home' }"
-          class="mr-3"
+          class="maz-mr-3"
         >
           Home
         </RouterLink>
-        <RouterLink
-          :to="{ name: 'Documentation' }"
-        >
+        <RouterLink :to="{ name: 'Documentation' }">
           Documentation
         </RouterLink>
-        <RouterLink
-          :to="{ name: 'MadeWithMazUi' }"
-        >
+        <RouterLink :to="{ name: 'MadeWithMazUi' }">
           Made with Maz UI
         </RouterLink>
       </div>
-      <div class="nav-footer-content__logo direction-column hidden-tablet flex align-center">
+      <div
+        class="nav-footer-content__logo maz-flex maz-direction-column maz-hidden-tablet maz-align-center"
+      >
         <img
           src="@/assets/img/logo-maz-ui.png"
           alt="logo-loic-mazuel"
           class="nav-footer-content__logo__img"
-        >
+        />
       </div>
-      <div class="flex align-center">
+      <div class="maz-flex maz-align-center">
         <SocialButtons class="mr-2" />
         <VersionNumber />
       </div>
     </nav>
-    <div class="nav-footer-subs py-2">
-      <div class="px-4 flex justify-end">
+    <div class="nav-footer-subs maz-py-2">
+      <div class="maz-px-4 maz-flex maz-justify-end">
         <a
           href="https://www.loicmazuel.com/"
           target="_blank"
-          class="flex"
+          class="maz-flex"
         >
-          <p class="fs-14">
+          <p class="maz-fs-14">
             © Loïc Mazuel
           </p>
         </a>
@@ -51,26 +51,25 @@
 </template>
 
 <script>
-  import SocialButtons from '@/components/SocialButtons'
-  import VersionNumber from '@/components/VersionNumber'
+import SocialButtons from '@/components/SocialButtons'
+import VersionNumber from '@/components/VersionNumber'
 
-  export default {
-    name: 'NavFooter',
-    components: {
-      SocialButtons,
-      VersionNumber
-    }
+export default {
+  name: 'NavFooter',
+  components: {
+    SocialButtons,
+    VersionNumber
   }
+}
 </script>
 
 <style lang="scss" scoped>
   .nav-footer {
-    color: $third-color;
-    border-top: 1px solid $text-color-dark;
+    color: $border-color;
     background-color: $bg-color;
 
     &-subs {
-      background-color: $hover-color;
+      background-color: $hover-bg-color;
 
       a {
         color: $muted-color;
@@ -107,12 +106,12 @@
     }
   }
 
-  .is-dark .nav-footer {
+  .maz-is-dark .nav-footer {
     background-color: $bg-color-dark;
-    border-color: $hover-color-dark;
+    border-color: $hover-bg-color-dark;
 
     &-subs {
-      background-color: $hover-color-dark;
+      background-color: $hover-bg-color-dark;
     }
   }
 </style>

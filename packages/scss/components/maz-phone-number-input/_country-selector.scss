@@ -1,28 +1,29 @@
+$SM_SIZE: 2.57rem !default;
+$MD_SIZE: 2.85rem !default;
+$LG_SIZE: 3.42rem !default;
+
 .country-selector {
+  @import './flags/index.scss';
+
   position: relative;
-  height: 40px;
-  min-height: 40px;
   z-index: 0;
   user-select: none;
 
   &:hover {
     z-index: 1;
-
-    .country-selector__input {
-      border-color: $primary-color !important;
-    }
   }
 
   &__label {
     position: absolute;
+    outline: none;
     top: 3px;
     cursor: pointer;
     left: 11px;
     transform: translateY(25%);
     opacity: 0;
     transition: all .25s cubic-bezier(.645, .045, .355, 1);
-    font-size: .786em;
-    color: $secondary-color;
+    font-size: .786rem;
+    color: $placeholder-color;
   }
 
   &__input {
@@ -30,15 +31,15 @@
     background-color: $bg-color;
     position: relative;
     width: 100%;
-    height: 40px;
-    min-height: 40px;
+    height: $MD_SIZE;
+    min-height: $MD_SIZE;
     padding-right: 22px;
     font-weight: 400;
     appearance: none;
     outline: none;
-    border: 1px solid $third-color;
+    border: $border-width solid $border-color;
     border-radius: $border-radius;
-    font-size: .929em;
+    font-size: .929rem;
     z-index: 0;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
@@ -52,35 +53,33 @@
     top: calc(50% - 10px);
     transition: all .25s cubic-bezier(.645, .045, .355, 1);
     text-align: center;
+    outline: none;
     display: inline-block;
     cursor: pointer;
     height: 24px;
+    color: $input-icon-color;
 
-    &__arrow {
-      color: $secondary-color;
-
-      path.arrow {
-        fill: $secondary-color;
-      }
+    svg path.arrow {
+      fill: $input-icon-color;
     }
   }
 
   &__country-flag {
+    outline: none;
     margin: auto 0;
     position: absolute;
-    top: 21px;
+    top: 20px;
     left: 11px;
     z-index: 1;
     cursor: pointer;
 
-    img {
-      position: absolute;
+    .flag-icon {
+      width: 16px;
     }
   }
 
   &__list {
     max-width: 100%;
-    top: calc(100% + .143em);
     width: 100%;
     min-width: 245px;
     position: absolute;
@@ -104,7 +103,7 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden;
-      font-size: .857em;
+      font-size: .857rem;
       cursor: pointer;
       color: $text-color;
       background-color: transparent;
@@ -123,7 +122,7 @@
 
       &:hover,
       &.keyboard-selected {
-        background-color: darken($hover-color, 5%);
+        background-color: darken($hover-bg-color, 5%);
       }
 
       &.selected {
@@ -134,6 +133,20 @@
         .country-selector__list__item__calling-code {
           color: white;
         }
+      }
+    }
+  }
+
+  &.is-focused {
+    z-index: 1;
+
+    .country-selector {
+      &__input {
+        border-color: $primary-color;
+      }
+
+      &__label {
+        color: $primary-color;
       }
     }
   }
@@ -154,27 +167,6 @@
     .country-selector {
       &__toggle {
         transform: rotate(180deg);
-      }
-    }
-  }
-
-  &.is-focused {
-    z-index: 1;
-
-    .country-selector {
-      &__input {
-        border-color: $primary-color;
-        box-shadow: 0 0 0 .143rem $primary-color-transparency;
-      }
-
-      &__label {
-        color: $primary-color;
-      }
-    }
-
-    &.is-valid {
-      .country-selector__input {
-        box-shadow: 0 0 0 .143rem $success-color-transparency;
       }
     }
   }
@@ -200,7 +192,7 @@
     .country-selector__label {
       opacity: 1;
       transform: translateY(0);
-      font-size: .786em;
+      font-size: .786rem;
     }
 
     .country-selector__input {
@@ -213,33 +205,35 @@
     .country-selector {
       cursor: not-allowed;
 
+      $disabled-color-text: darken($disabled-color, 20%);
+
       &__input {
-        border-color: #CCC;
-        background-color: #F2F2F2;
-        color: $disabled-color;
+        border-color: $border-color;
+        background-color: $disabled-color;
+        color: $disabled-color-text;
 
         &::-webkit-input-placeholder {
-          color: $disabled-color;
+          color: $disabled-color-text;
         }
 
         &::-moz-placeholder {
-          color: $disabled-color;
+          color: $disabled-color-text;
         }
 
         &:-ms-input-placeholder {
-          color: $disabled-color;
+          color: $disabled-color-text;
         }
 
         &::-ms-input-placeholder {
-          color: $disabled-color;
+          color: $disabled-color-text;
         }
 
         &:-moz-placeholder {
-          color: $disabled-color;
+          color: $disabled-color-text;
         }
 
         &::placeholder {
-          color: $disabled-color;
+          color: $disabled-color-text;
         }
       }
 
@@ -249,7 +243,7 @@
       &__country-flag,
       &__country-flag > div {
         cursor: not-allowed;
-        color: $disabled-color;
+        color: $disabled-color-text;
       }
     }
   }
@@ -261,32 +255,18 @@
   }
 
   &.sm {
-    height: 36px;
-    min-height: 36px;
-
     .country-selector__input {
-      height: 36px;
-      min-height: 36px;
-      font-size: .857em;
+      height: $SM_SIZE;
+      min-height: $SM_SIZE;
+      font-size: .857rem;
     }
 
     .country-selector__label {
-      font-size: .714em;
+      font-size: .714rem;
     }
 
     .country-selector__country-flag {
       top: 16px;
-
-      img {
-        zoom: .3;
-        color: red;
-
-        /* stylelint-disable */
-        -moz-transform: scale(.3);
-        -moz-transform-origin: 0 0;
-
-        /* stylelint-enable */
-      }
     }
 
     &.has-value {
@@ -297,31 +277,18 @@
   }
 
   &.lg {
-    height: 48px;
-    min-height: 48px;
-
     .country-selector__input {
-      height: 48px;
-      min-height: 48px;
-      font-size: 1em;
+      height: $LG_SIZE;
+      min-height: $LG_SIZE;
+      font-size: 1rem;
     }
 
     .country-selector__label {
-      font-size: 1em;
+      font-size: 1rem;
     }
 
     .country-selector__country-flag {
       top: 25px;
-
-      img {
-        zoom: .45;
-
-        /* stylelint-disable */
-        -moz-transform: scale(.45);
-        -moz-transform-origin: 0 0;
-
-        /* stylelint-enable */
-      }
     }
 
     &.has-value {
@@ -330,79 +297,62 @@
       }
     }
   }
-
-  .slide-enter-active,
-  .slide-leave-active {
-    opacity: 1;
-    z-index: 998;
-    transition: all .3s;
-    transform: translateY(0);
-  }
-
-  .slide-enter,
-  .slide-leave-to /* .fade-leave-active below version 2.1.8 */ {
-    opacity: 0;
-    z-index: 998;
-    transform: translateY(-20px);
-  }
 }
 
-.is-dark .country-selector,
-.is-dark.country-selector {
+.maz-is-dark .country-selector,
+.maz-is-dark.country-selector {
   &__label {
-    color: $secondary-color-dark;
+    color: $placeholder-color-dark;
   }
 
   &__input {
     cursor: pointer;
-    background-color: $bg-color-dark-l;
-    border: 1px solid $third-color-dark;
-    color: $secondary-color-dark;
+    background-color: $bg-color-dark-light;
+    border-color: $border-color-dark;
+    color: $text-color-dark;
 
     &::-webkit-input-placeholder {
-      color: $secondary-color-dark;
+      color: $placeholder-color-dark;
     }
 
     &::-moz-placeholder {
-      color: $secondary-color-dark;
+      color: $placeholder-color-dark;
     }
 
     &:-ms-input-placeholder {
-      color: $secondary-color-dark;
+      color: $placeholder-color-dark;
     }
 
     &::-ms-input-placeholder {
-      color: $secondary-color-dark;
+      color: $placeholder-color-dark;
     }
 
     &:-moz-placeholder {
-      color: $secondary-color-dark;
+      color: $placeholder-color-dark;
     }
 
     &::placeholder {
-      color: $secondary-color-dark;
+      color: $placeholder-color-dark;
     }
   }
 
   &__toggle {
-    &__arrow {
-      color: $secondary-color-dark;
+    color: $input-icon-color-dark;
 
-      path.arrow {
-        fill: $secondary-color-dark;
-      }
+    svg path.arrow {
+      fill: $input-icon-color-dark;
     }
   }
 
   &__list {
-    background-color: $bg-color-dark-l;
+    background-color: $bg-color-dark-light;
 
     &__item {
       color: $text-color-dark;
 
       &:hover,
       &.keyboard-selected {
-        background-color: lighten($hover-color-dark-l, 5%);
+        background-color: lighten($hover-bg-color-dark-l, 5%);
       }
     }
 
@@ -411,8 +361,3 @@
     }
   }
 }
-
-// .country-selector__input,
-// .country-selector__list {
-//   color: $secondary-color-dark;
-// }

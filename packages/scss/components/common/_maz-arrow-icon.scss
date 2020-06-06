@@ -1,0 +1,29 @@
+@import './../../style-helpers/variables/index.scss';
+
+.maz-arrow-icon {
+  transition: all .25s cubic-bezier(.645, .045, .355, 1);
+
+  path.arrow {
+    fill: $text-color;
+  }
+
+  &.is-white path.arrow {
+    fill: white;
+  }
+
+  &.up {
+    transform: rotate(180deg);
+  }
+
+  &.right {
+    transform: rotate(-90deg);
+  }
+
+  &.left {
+    transform: rotate(90deg);
+  }
+}
+
+.maz-is-dark .maz-arrow-icon path.arrow {
+  fill: $text-color-dark;
+}

@@ -1,0 +1,15 @@
+@import './variables/text';
+
+// Font-size
+@each $size in $font-sizes {
+  .#{$prefix}fs-#{$size} {
+    font-size: #{$size}px;
+  }
+}
+
+// Font-weight
+@each $weight in $font-weights {
+  .#{$prefix}fw-#{$weight} {
+    font-weight: #{$weight};
+  }
+}

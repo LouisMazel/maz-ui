@@ -1,0 +1,60 @@
+.header-picker {
+  overflow: hidden;
+  position: relative;
+  height: 60px;
+
+  &__year {
+    position: relative;
+    overflow: hidden;
+    opacity: .7;
+    height: 21px;
+    line-height: 21px;
+  }
+
+  &__date {
+    position: relative;
+    overflow: hidden;
+    min-height: 0;
+    height: 22px;
+    line-height: 22px;
+    font-size: 1.285rem;
+  }
+
+  &__time {
+    width: 147px;
+    height: 100%;
+    font-size: 1.285rem;
+  }
+
+  &__hour,
+  &__minute,
+  &__dots-divider {
+    position: relative;
+    overflow: hidden;
+    min-height: 0;
+    height: 22px;
+    line-height: 22px;
+  }
+
+  &__twelve {
+    position: relative;
+    overflow: hidden;
+    min-height: 0;
+    height: 22px;
+    line-height: 22px;
+    width: 80px;
+  }
+
+  &__hour,
+  &__minute {
+    width: 22px;
+  }
+
+  &__close {
+    display: none;
+
+    i {
+      font-size: 20px;
+    }
+  }
+}

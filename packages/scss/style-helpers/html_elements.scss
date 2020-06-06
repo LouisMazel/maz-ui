@@ -1,0 +1,79 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+@import './mixins/font_family';
+
+html {
+  @include font_family();
+
+  color: $text-color;
+
+  &.#{$prefix}is-dark {
+    color: $text-color-dark;
+  }
+}
+
+body,
+#app {
+  @include font_family();
+
+  color: $text-color;
+  background-color: $bg-color;
+}
+
+textarea {
+  @include font_family();
+}
+
+.#{$prefix}is-dark body,
+body.#{$prefix}is-dark,
+.#{$prefix}is-dark #app,
+#app.#{$prefix}is-dark {
+  color: $text-color-dark;
+  background-color: $bg-color-dark;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+hr,
+dl,
+dd,
+figure {
+  margin: 0;
+  padding: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: normal;
+}
+
+a {
+  color: $primary-color;
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+  }
+}
+
+button,
+input {
+  @include font_family();
+}

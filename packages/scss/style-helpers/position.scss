@@ -1,0 +1,15 @@
+.#{$prefix}pos-r {
+  position: relative;
+}
+
+.#{$prefix}pos-a {
+  position: absolute;
+}
+
+@import './variables/positions';
+
+@each $position in $positions {
+  .#{$prefix}position-#{$position} {
+    position: #{$position};
+  }
+}

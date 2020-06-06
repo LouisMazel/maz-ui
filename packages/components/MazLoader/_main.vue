@@ -1,8 +1,8 @@
 <template>
   <div
-    class="maz-loader flex align-center justify-center"
+    class="maz-loader maz-flex maz-flex-center"
     :class="{
-      'is-dark': dark
+      'maz-is-dark': dark
     }"
   >
     <div class="maz-loader__anim">
@@ -12,10 +12,10 @@
 </template>
 
 <script>
-  export default {
-    name: 'MazLoader',
-    props: {
-      dark: { type: Boolean, default: false }
-    }
+export default {
+  name: 'MazLoader',
+  props: {
+    dark: { type: Boolean, default: false }
   }
+}
 </script>

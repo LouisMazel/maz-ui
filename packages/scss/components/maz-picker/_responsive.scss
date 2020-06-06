@@ -1,0 +1,74 @@
+@media only screen and (max-width: $breakpoint-tablet) {
+  .maz-picker__overlay {
+    display: block;
+    position: fixed;
+    z-index: 99;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color: $overlay-color;
+    width: 100%;
+    margin: 0;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .pickers-container:not(.inline),
+  .pickers-container:not(.inline).top,
+  .pickers-container:not(.inline).right {
+    position: fixed;
+    bottom: auto;
+    margin: 10px;
+    max-width: calc(100% - 20px);
+    width: calc(100% - 20px);
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+    max-height: calc(100vh - 20px);
+    top: 50%;
+    transform: translateY(-50%);
+
+    .header-picker {
+      &__close {
+        display: block;
+        position: absolute;
+        top: 4px;
+        right: 4px;
+      }
+
+      &__time {
+        width: auto;
+      }
+    }
+
+    .calendar {
+      &:not(.is-range) {
+        flex-direction: column;
+      }
+      // flex: 1;
+
+      &__months-container {
+        flex: none;
+      }
+
+      .time-picker {
+        width: 100%;
+        max-width: 100%;
+        border-left-width: 0;
+        border-top-width: $border-width;
+        border-top-style: solid;
+        border-color: $border-color;
+        flex: none;
+        height: 150px !important;
+      }
+    }
+  }
+
+  .maz-is-dark {
+    .time-picker {
+      border-color: $border-color-dark !important;
+    }
+  }
+}

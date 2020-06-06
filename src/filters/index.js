@@ -14,6 +14,6 @@ const filters = {
   kebab
 }
 
-Object.keys(filters).forEach((filter) => {
+Object.keys(filters).forEach(filter => {
   Vue.filter(filter, filters[filter])
 })

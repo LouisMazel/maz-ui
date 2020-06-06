@@ -1,0 +1,64 @@
+@import './variables/sizes';
+@import './variables/positions';
+@import './variables/borders';
+@import './variables/color_types';
+@import './variables/states';
+
+.#{$prefix}border-color {
+  border-color: $border-color;
+}
+
+.#{$prefix}is-dark.#{$prefix}border-color,
+.#{$prefix}is-dark .#{$prefix}border-color {
+  border-color: $border-color-dark;
+}
+
+.#{$prefix}no-border {
+  border: none;
+}
+
+.#{$prefix}border-color-dark {
+  border-color: $border-color-dark;
+}
+
+@each $name, $color in $color_types {
+  @if (type-of($color) == 'color') {
+    .#{$prefix}border-#{$name} {
+      border-color: $color;
+    }
+  }
+}
+
+@each $style in $border-styles {
+  .#{$prefix}border-#{$style} {
+    border-style: #{$style};
+  }
+
+  @each $position in $orientations {
+    .#{$prefix}border-#{$position}-#{$style} {
+      border-#{$position}-style: #{$style};
+    }
+  }
+}
+
+@each $size in $sizes {
+  .#{$prefix}border-#{$size} {
+    border-width: #{$size}px;
+  }
+
+  @each $position in $orientations {
+    .#{$prefix}border-#{$position}-#{$size} {
+      border-#{$position}-width: #{$size}px;
+    }
+  }
+}
+
+.#{$prefix}border {
+  border-width: $border-width;
+}
+
+@each $position in $orientations {
+  .#{$prefix}border-#{$position} {
+    border-#{$position}-width: #{$border-width};
+  }
+}

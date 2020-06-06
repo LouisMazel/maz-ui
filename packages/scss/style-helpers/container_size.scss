@@ -1,0 +1,45 @@
+@import './variables/responsive';
+
+.#{$prefix}container {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (max-width: $breakpoint-tablet) {
+  .#{$prefix}container {
+    max-width: 100%;
+  }
+}
+
+@media (min-width: $breakpoint-tablet) {
+  .#{$prefix}container {
+    max-width: $breakpoint-tablet;
+  }
+}
+
+@media (min-width: $breakpoint-laptop-s) {
+  .#{$prefix}container {
+    max-width: $breakpoint-laptop-s;
+  }
+}
+
+@media (min-width: $breakpoint-laptop-m) {
+  .#{$prefix}container {
+    max-width: $breakpoint-laptop-m;
+  }
+}
+
+@media (min-width: $breakpoint-laptop-l) {
+  .#{$prefix}container {
+    max-width: $breakpoint-laptop-l;
+  }
+}
+
+@media (min-width: $breakpoint-4k) {
+  .#{$prefix}container {
+    max-width: $breakpoint-4k;
+  }
+}

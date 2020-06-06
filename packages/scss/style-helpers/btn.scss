@@ -1,0 +1,151 @@
+.#{$prefix}btn {
+  border: $border-width solid transparent;
+  outline: none;
+  cursor: pointer;
+  transition: all 200ms ease-in-out;
+  box-shadow: 0 2px 5px 0 rgba(3, 6, 26, .15);
+  background-color: $primary-color;
+  color: white;
+  display: inline-block;
+  border-radius: $border-radius;
+  line-height: 1;
+  box-sizing: border-box;
+  padding: 12px 20px;
+  font-size: 1rem;
+  font-weight: inherit;
+  margin: 0;
+  user-select: none;
+  width: auto;
+  overflow: visible;
+  -webkit-font-smoothing: inherit;
+  text-decoration: none;
+  text-align: center;
+  -moz-osx-font-smoothing: inherit;
+
+  &:hover,
+  &:focus,
+  &.#{$prefix}active {
+    background-color: darken($primary-color, 10%);
+    text-decoration: none;
+  }
+
+  &:focus,
+  &.#{$prefix}active {
+    box-shadow: 0 0 0 .143rem rgba($primary-color, .5);
+  }
+
+  &--rounded {
+    border-radius: 50px;
+  }
+
+  &--block {
+    width: 100%;
+  }
+
+  &--lg {
+    padding: 16px 22px;
+    font-size: 1.143rem;
+  }
+
+  &--md {
+    padding: 10px 20px;
+    font-size: 1rem;
+  }
+
+  &--sm {
+    padding: 9px 15px;
+    font-size: .857rem;
+  }
+
+  &--mini {
+    padding: 7px 15px;
+    font-size: .857rem;
+  }
+
+  &--fab {
+    border-radius: 50%;
+    padding: 0;
+    height: 40px;
+    width: 40px;
+
+    &.#{$prefix}btn--lg {
+      height: 50px;
+      width: 50px;
+    }
+
+    &.#{$prefix}btn--md {
+      height: 36px;
+      width: 36px;
+    }
+
+    &.#{$prefix}btn--sm {
+      height: 32px;
+      width: 32px;
+    }
+
+    &.#{$prefix}btn--mini {
+      height: 28px;
+      width: 28px;
+    }
+  }
+
+  &--white,
+  &--light {
+    color: $text-color;
+  }
+
+  &--no-shadow {
+    box-shadow: none;
+  }
+}
+
+@import './variables/color_types';
+
+@each $name, $color in $color_types {
+  @if (type-of($color) == 'color') {
+    .#{$prefix}btn--#{$name} {
+      background-color: $color;
+
+      &:hover,
+      &:focus,
+      &.#{$prefix}active {
+        background-color: darken($color, 10%);
+      }
+
+      &:focus,
+      &.#{$prefix}active {
+        box-shadow: 0 0 0 .143rem rgba($color, .6);
+      }
+
+      &--outline {
+        background-color: rgba($color, .05);
+        box-shadow: none;
+        border-color: $color;
+        color: $color;
+
+        &:hover,
+        &:focus,
+        &.#{$prefix}active {
+          background-color: $color;
+          color: white;
+        }
+
+        &:focus {
+          box-shadow: 0 2px 5px 0 rgba(3, 6, 26, .15);
+        }
+      }
+    }
+  }
+}
+
+.#{$prefix}btn--default--outline {
+  color: $default-color;
+}
+
+.#{$prefix}btn--disabled:disabled {
+  box-shadow: none;
+  background-color: $disabled-color;
+  border-color: $disabled-color;
+  color: $grey-color;
+  cursor: not-allowed;
+}

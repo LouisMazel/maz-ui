@@ -1,13 +1,13 @@
 <template>
   <MazBtn
-    class="pagination-arrow-btn flex align-center justify-center flex-fixed"
+    class="pagination-arrow-btn maz-flex maz-flex-center maz-flex-fixed"
     size="sm"
     fab
     @click="handleClick"
   >
-    <component
-      :is="`Arrow${right ? 'Right' : 'Left'}`"
+    <ArrowIcon
       color="#6F6A6A"
+      :orientation="right ? 'right' : 'left'"
       :dark="dark"
       :size="28"
     />
@@ -15,23 +15,22 @@
 </template>
 
 <script>
-  import ArrowLeft from '../../_subs/ArrowLeft'
-  import ArrowRight from '../../_subs/ArrowRight'
+import ArrowIcon from '../../_subs/ArrowIcon'
+import MazBtn from '../../MazBtn'
 
-  export default {
-    name: 'PaginationArrowBtn',
-    components: {
-      ArrowLeft,
-      ArrowRight
-    },
-    props: {
-      right: { type: Boolean, default: false },
-      dark: { type: Boolean, default: false }
-    },
-    methods: {
-      handleClick (evt) {
-        this.$emit('click', evt)
-      }
+export default {
+  name: 'PaginationArrowBtn',
+  components: {
+    ArrowIcon, MazBtn
+  },
+  props: {
+    right: { type: Boolean, default: false },
+    dark: { type: Boolean, default: false }
+  },
+  methods: {
+    handleClick (e) {
+      this.$emit('click', e)
     }
   }
+}
 </script>

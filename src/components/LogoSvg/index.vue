@@ -55,19 +55,19 @@
 </template>
 
 <script>
-  export default {
-    name: 'LogoSvg',
-    props: {
-      color: { type: String, default: 'dodgerblue' }
-    },
-    computed: {
-      colorStyle () {
-        return {
-          fill: this.color
-        }
+export default {
+  name: 'LogoSvg',
+  props: {
+    color: { type: String, default: 'dodgerblue' }
+  },
+  computed: {
+    colorStyle () {
+      return {
+        fill: this.color
       }
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>

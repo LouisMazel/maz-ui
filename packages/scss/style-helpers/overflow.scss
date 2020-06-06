@@ -1,0 +1,20 @@
+
+@import './variables/overflows';
+
+.#{$prefix}over-hid {
+  overflow: hidden;
+}
+
+@each $overflow in $overflows {
+  .#{$prefix}overflow-#{$overflow} {
+    overflow: #{$overflow};
+  }
+
+  .#{$prefix}overflow-y-#{$overflow} {
+    overflow-y: #{$overflow};
+  }
+
+  .#{$prefix}overflow-x-#{$overflow} {
+    overflow-x: #{$overflow};
+  }
+}

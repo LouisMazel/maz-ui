@@ -18,13 +18,11 @@ module.exports = {
       openAnalyzer: false
     }
   },
-  publicPath: process.env.NODE_ENV === 'production'
-    ? '/maz-ui/'
-    : '/',
+  publicPath: process.env.NODE_ENV === 'production' ? '/maz-ui/' : '/',
   css: {
     loaderOptions: {
       sass: {
-        prependData: `@import "@/../packages/scss/vars";`
+        prependData: '@import "@/../packages/scss/variables";'
       }
     }
   }

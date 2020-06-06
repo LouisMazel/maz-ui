@@ -1,0 +1,27 @@
+@import './variables/radiuses';
+@import './variables/positions';
+@import './variables/sizes';
+
+.#{$prefix}border-radius {
+  border-radius: $border-radius;
+}
+
+@each $position in $orientations {
+  .#{$prefix}border-#{$position}-radius {
+    border-#{$position}-left-radius: $border-radius;
+    border-#{$position}-right-radius: $border-radius;
+  }
+}
+
+@each $size in $sizes {
+  .#{$prefix}border-radius-#{$size} {
+    border-radius: #{$size}px;
+  }
+
+  @each $position in $orientations {
+    .#{$prefix}border-#{$position}-radius {
+      border-#{$position}-left-radius: #{$size};
+      border-#{$position}-right-radius: #{$size};
+    }
+  }
+}

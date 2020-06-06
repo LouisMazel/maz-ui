@@ -1,0 +1,29 @@
+@import './../style-helpers/variables/index.scss';
+
+.maz-list {
+  display: flex;
+  flex-direction: column;
+  border-radius: $border-radius;
+  margin-left: -1px;
+  margin-right: -1px;
+  max-width: 100%;
+
+  &:not(.no-scroll) {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  &:not(.maz-no-shadow) {
+    box-shadow: 0 0 8px 0 rgba(0, 0, 0, .1);
+  }
+
+  &.maz-no-shadow {
+    border: $border-width solid $hover-bg-color;
+  }
+}
+
+.maz-is-dark .maz-list,
+.maz-is-dark.maz-list {
+  background-color: $bg-color-dark;
+  border-color: $hover-bg-color-dark;
+}

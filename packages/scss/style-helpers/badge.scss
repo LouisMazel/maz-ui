@@ -1,0 +1,22 @@
+@import './variables/_colors';
+@import './variables/color_types';
+
+.#{$prefix}badge {
+  background: $grey-color;
+  height: 22px;
+  line-height: 22px;
+  border-radius: 22px;
+  padding: 0 5px;
+  font-size: .857rem;
+  color: #888;
+  font-weight: 500;
+}
+
+@each $name, $color in $color_types {
+  @if (type-of($color) == 'color') {
+    .#{$prefix}badge-#{$name} {
+      background-color: $color;
+      color: white;
+    }
+  }
+}

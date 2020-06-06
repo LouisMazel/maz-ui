@@ -1,0 +1,13 @@
+@import './variables/color_types';
+
+.#{$prefix}no-focus-bg:focus {
+  background-color: transparent;
+}
+
+@each $name, $color in $color_types {
+  @if (type-of($color) == 'color') {
+    .#{$prefix}focus-bg-#{$name}:focus {
+      background-color: $color;
+    }
+  }
+}

@@ -6,10 +6,11 @@
 
 <!-- @vuese:MazDraggableList:props:start -->
 
-| Name    | Description                                                          | Type     | Required | Default |
-| ------- | -------------------------------------------------------------------- | -------- | -------- | ------- |
-| value   | Must be an `Array` (use `v-model`)                                   | `Array`  | `true`   | -       |
-| itemKey | is the item's key to build le list (must be different for each item) | `String` | `false`  | -       |
+| Name    | Description                                                          | Type      | Required | Default |
+| ------- | -------------------------------------------------------------------- | --------- | -------- | ------- |
+| value   | Must be an `Array` (use `v-model`)                                   | `Array`   | `true`   | -       |
+| itemKey | is the item's key to build le list (must be different for each item) | `String`  | `false`  | -       |
+| dark    | set dark theme                                                       | `Boolean` | `false`  | -       |
 
 <!-- @vuese:MazDraggableList:props:end -->
 

@@ -1,0 +1,40 @@
+@import './../style-helpers/variables/index.scss';
+
+.maz-picker {
+  position: relative;
+  font-weight: 300;
+
+  .maz-picker__arrow {
+    color: $input-icon-color;
+    outline: none;
+    transition: all .25s cubic-bezier(.645, .045, .355, 1);
+
+    svg path.arrow {
+      fill: $input-icon-color;
+    }
+  }
+
+  &__overlay {
+    display: none;
+  }
+}
+
+.maz-is-dark.maz-picker,
+.maz-is-dark .maz-picker {
+  .maz-picker__arrow {
+    color: $input-icon-color-dark;
+
+    svg path.arrow {
+      fill: $input-icon-color-dark;
+    }
+  }
+}
+
+@import './maz-picker/footer-picker.scss';
+@import './maz-picker/header-picker.scss';
+@import './maz-picker/month-picker.scss';
+@import './maz-picker/pickers-container.scss';
+@import './maz-picker/time-picker.scss';
+@import './maz-picker/week-days-labels.scss';
+@import './maz-picker/year-month-selector.scss';
+@import './maz-picker/_responsive.scss';

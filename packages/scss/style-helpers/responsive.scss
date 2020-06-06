@@ -1,0 +1,113 @@
+@import './variables/_responsive';
+
+.#{$prefix}hidden-4k {
+  @media only screen and (max-width: $breakpoint-4k) {
+    display: none;
+  }
+}
+
+.#{$prefix}hidden-laptop {
+  @media only screen and (max-width: $breakpoint-laptop-l) {
+    display: none;
+  }
+}
+
+.#{$prefix}hidden-laptop-m {
+  @media only screen and (max-width: $breakpoint-laptop-m) {
+    display: none;
+  }
+}
+
+.#{$prefix}hidden-laptop-s {
+  @media only screen and (max-width: $breakpoint-laptop-s) {
+    display: none;
+  }
+}
+
+.#{$prefix}hidden-tablet {
+  @media only screen and (max-width: $breakpoint-tablet) {
+    display: none;
+  }
+}
+
+.#{$prefix}hidden-mobile {
+  @media only screen and (max-width: $breakpoint-mobile-l) {
+    display: none;
+  }
+}
+
+.#{$prefix}hidden-mobile-m {
+  @media only screen and (max-width: $breakpoint-mobile-m) {
+    display: none;
+  }
+}
+
+.#{$prefix}hidden-mobile-s {
+  @media only screen and (max-width: $breakpoint-mobile-s) {
+    display: none;
+  }
+}
+
+.#{$prefix}show-4k {
+  display: none;
+
+  @media only screen and (max-width: $breakpoint-4k) {
+    display: inherit;
+  }
+}
+
+.#{$prefix}show-laptop {
+  display: none;
+
+  @media only screen and (max-width: $breakpoint-laptop-l) {
+    display: inherit;
+  }
+}
+
+.#{$prefix}show-laptop-m {
+  display: none;
+
+  @media only screen and (max-width: $breakpoint-laptop-m) {
+    display: inherit;
+  }
+}
+
+.#{$prefix}show-laptop-s {
+  display: none;
+
+  @media only screen and (max-width: $breakpoint-laptop-s) {
+    display: inherit;
+  }
+}
+
+.#{$prefix}show-tablet {
+  display: none;
+
+  @media only screen and (max-width: $breakpoint-tablet) {
+    display: inherit;
+  }
+}
+
+.#{$prefix}show-mobile {
+  display: none;
+
+  @media only screen and (max-width: $breakpoint-mobile-l) {
+    display: inherit;
+  }
+}
+
+.#{$prefix}show-mobile-m {
+  display: none;
+
+  @media only screen and (max-width: $breakpoint-mobile-m) {
+    display: inherit;
+  }
+}
+
+.#{$prefix}show-mobile-s {
+  display: none;
+
+  @media only screen and (max-width: $breakpoint-mobile-s) {
+    display: inherit;
+  }
+}

@@ -1,17 +1,17 @@
 <template>
   <div
-    class="maz-checkbox flex align-center"
+    class="maz-checkbox maz-flex maz-align-center"
   >
     <input
       :id="uniqueId"
       :checked="value"
       type="checkbox"
-      class="mr-2"
+      class="maz-mr-2"
       @change="$emit('input', $event.target.checked)"
     >
     <label
       :for="uniqueId"
-      class="m-0 flex align-center"
+      class="maz-m-0 maz-flex maz-align-center"
     >
       <slot />
     </label>
@@ -19,14 +19,14 @@
 </template>
 
 <script>
-  import uniqueId from './../../mixins/uniqueId'
+import uniqueId from './../../mixins/uniqueId'
 
-  export default {
-    name: 'MazCheckbox',
-    mixins: [uniqueId],
-    props: {
-      id: { type: String, default: null },
-      value: { default: false, type: Boolean }
-    }
+export default {
+  name: 'MazCheckbox',
+  mixins: [uniqueId],
+  props: {
+    id: { type: String, default: null },
+    value: { default: false, type: Boolean }
   }
+}
 </script>

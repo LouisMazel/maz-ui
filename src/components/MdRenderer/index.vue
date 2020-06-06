@@ -5,90 +5,85 @@
       v-for="(component, i) in dynamicComponents"
       :key="i"
     />
-    {{ dynamicComponents }}
   </div>
 </template>
 
 <script>
-  export default {
-    name: 'MdRenderer',
-    props: {
-      fileName: { type: String, required: true }
-    },
-    computed: {
-      dynamicComponents () {
-        let components
-        if (this.fileName === 'MazList') {
-          components = [
-            require(`@/../packages/components/MazList/README.md`).vue.component,
-            require(`@/../packages/components/MazList/MazListItem/README.md`).vue.component
-          ]
-        } else if (this.fileName === 'MazTabsLayout') {
-          components = [
-            require(`@/../packages/components/MazTabsLayout/MazTabsBar/README.md`).vue.component,
-            require(`@/../packages/components/MazTabsLayout/MazTabsContent/README.md`).vue.component,
-            require(`@/../packages/components/MazTabsLayout/MazTabsContentItem/README.md`).vue.component
-          ]
-        } else {
-          components = [
-            require(`@/../packages/components/${this.fileName}/README.md`).vue.component
-          ]
-        }
-        return components
+export default {
+  name: 'MdRenderer',
+  props: {
+    fileName: { type: String, required: true }
+  },
+  computed: {
+    dynamicComponents () {
+      let components
+      if (this.fileName === 'MazList') {
+        components = [
+          require('@/../packages/components/MazList/README.md').vue.component,
+          require('@/../packages/components/MazList/MazListItem/README.md').vue
+            .component
+        ]
+      } else if (this.fileName === 'MazTabsLayout') {
+        components = [
+          require('@/../packages/components/MazTabsLayout/MazTabsBar/README.md')
+            .vue.component,
+          require('@/../packages/components/MazTabsLayout/MazTabsContent/README.md')
+            .vue.component,
+          require('@/../packages/components/MazTabsLayout/MazTabsContentItem/README.md')
+            .vue.component
+        ]
+      } else {
+        components = [
+          require(`@/../packages/components/${this.fileName}/README.md`).vue
+            .component
+        ]
       }
+      return components
     }
   }
+}
 </script>
 
 <style lang="scss">
   .frontmatter-markdown {
     margin: auto;
-    max-width: 42em;
+    max-width: 800px;
     background-color: $bg-color;
 
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-      font-weight: bold;
-    }
-
     h1 {
-      color: $text-color;
-      font-size: 28pt;
+      color: #333;
+      font-size: 2rem;
     }
 
     h2 {
-      border-bottom: 1px solid $hover-color;
-      color: $text-color;
-      font-size: 24px;
+      border-bottom: 1px solid $hover-bg-color;
+      color: #333;
+      font-size: 1.5rem;
     }
 
     h3 {
-      font-size: 18px;
+      font-size: 1.3rem;
     }
 
     h4 {
-      font-size: 16px;
+      font-size: 1.2rem;
     }
 
     h5 {
-      font-size: 14px;
+      font-size: 1.1rem;
     }
 
     h6 {
       color: $muted-color;
       background-color: inherit;
-      font-size: 14px;
+      font-size: 1rem;
     }
 
     hr {
-      height: .2em;
+      height: .2rem;
       border: 0;
-      color: $hover-color;
-      background-color: $hover-color;
+      color: $hover-bg-color;
+      background-color: $hover-bg-color;
     }
 
     p,
@@ -114,25 +109,25 @@
     table,
     th,
     td {
-      border: 1px solid $hover-color;
+      border: 1px solid $hover-bg-color;
       border-radius: 3px;
       padding: 5px;
     }
 
     tr:nth-child(even) {
-      background-color: $hover-color;
+      background-color: $hover-bg-color;
     }
 
     a,
     a:visited {
-      color: #4183C4;
+      color: dodgerblue;
       background-color: inherit;
       text-decoration: none;
     }
 
     #message {
       border-radius: 6px;
-      border: 1px solid $hover-color;
+      border: 1px solid $hover-bg-color;
       display: block;
       width: 100%;
       height: 60px;
@@ -144,8 +139,8 @@
       font-size: 10pt;
       padding: 4px 6px;
       border-radius: 5px;
-      border: 1px solid $hover-color;
-      background-color: $hover-color;
+      border: 1px solid $hover-bg-color;
+      background-color: $hover-bg-color;
     }
 
     code,
@@ -160,13 +155,13 @@
     }
 
     code {
-      border: 1px solid $hover-color;
+      border: 1px solid $hover-bg-color;
       margin: 0 2px;
       padding: 0 5px;
     }
 
     pre {
-      border: 1px solid $hover-color;
+      border: 1px solid $hover-bg-color;
       overflow: auto;
       padding: 4px 8px;
     }
@@ -177,15 +172,26 @@
       padding: 0;
     }
 
-    #ws { background-color: $hover-color; }
+    #ws {
+      background-color: $hover-bg-color;
+    }
 
-    .send { color: $success-color; }
-    .server { color: #79B; }
-    .error { color: $danger-color; }
+    .send {
+      color: $success-color;
+    }
+
+    .server {
+      color: #79B;
+    }
+
+    .error {
+      color: $danger-color;
+    }
 
     blockquote {
-      background: $hover-color;
-      border-left: 5px solid $primary-color;
+      background: $hover-bg-color;
+      border-left: 4px solid $primary-color;
+      border-radius: $border-radius;
       padding: .5em 10px;
     }
 
@@ -194,7 +200,7 @@
     }
   }
 
-  .is-dark .frontmatter-markdown {
+  .maz-is-dark .frontmatter-markdown {
     background-color: $bg-color-dark;
     color: $text-color-dark;
 
@@ -203,7 +209,7 @@
     }
 
     h2 {
-      border-bottom: 1px solid $hover-color-dark;
+      border-bottom: 1px solid $hover-bg-color-dark;
       color: $text-color-dark;
     }
 
@@ -214,21 +220,21 @@
     table,
     th,
     td {
-      border: 1px solid $hover-color-dark;
+      border: 1px solid $hover-bg-color-dark;
     }
 
     tr:nth-child(even) {
-      background-color: $hover-color-dark;
+      background-color: $hover-bg-color-dark;
     }
 
     code,
     pre {
-      background-color: $hover-color-dark-l;
-      border: 1px solid $hover-color-dark-l;
+      background-color: $hover-bg-color-dark-l;
+      border: 1px solid $hover-bg-color-dark-l;
     }
 
     blockquote {
-      background: $hover-color-dark;
+      background: $hover-bg-color-dark;
     }
   }
 </style>

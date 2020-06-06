@@ -1,21 +1,21 @@
 <template>
   <div
-    class="project-preview br-8 text-white flex direction-column space-between"
+    class="project-preview maz-border-radius maz-text-white maz-flex maz-direction-column maz-space-between maz-overflow-hidden maz-border maz-border-solid maz-border-color"
   >
-    <div class="project-preview-header brt-8">
+    <div class="project-preview-header maz-border-top-radius">
       <img
-        class="project-preview__img brt-8"
+        class="project-preview__img maz-border-top-radius"
         :src="project.imgUrl"
         :alt="`image illustration ${project.name}`"
-      >
+      />
       <div
         v-if="project.demoUrl"
-        class="layer brt-4 flex align-center justify-center"
+        class="layer maz-flex maz-align-center maz-justify-center"
       >
         <a
           :href="project.demoUrl"
           target="_blank"
-          class="btn btn--primary--outline btn--rounded"
+          class="maz-btn maz-btn--primary--outline maz-btn--rounded"
         >
           <i class="material-icons">
             visibility
@@ -29,27 +29,26 @@
 </template>
 
 <script>
-  import ProjectPreviewFooter from './_subs/ProjectPreviewFooter'
-  import ProjectPreviewContent from './_subs/ProjectPreviewContent'
-  export default {
-    name: 'ProjectPreview',
-    components: {
-      ProjectPreviewFooter,
-      ProjectPreviewContent
-    },
-    props: {
-      project: {
-        type: Object,
-        required: true
-      }
+import ProjectPreviewFooter from './_subs/ProjectPreviewFooter'
+import ProjectPreviewContent from './_subs/ProjectPreviewContent'
+export default {
+  name: 'ProjectPreview',
+  components: {
+    ProjectPreviewFooter,
+    ProjectPreviewContent
+  },
+  props: {
+    project: {
+      type: Object,
+      required: true
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>
   .project-preview {
     background-color: $bg-color;
-    border: 1px solid $hover-color;
     text-decoration: none;
     transition: all 300ms;
     position: relative;
@@ -90,7 +89,6 @@
 
     &:hover,
     &:focus {
-      background-color: darken($bg-color, 5%);
       transform: translateY(-3px);
       box-shadow: 0 3px 12px darken($bg-color, 10%);
       outline: none;
@@ -102,10 +100,9 @@
     }
   }
 
-  .is-dark {
+  .maz-is-dark {
     .project-preview {
-      background-color: $bg-color-dark-l;
-      border-color: $hover-color-dark;
+      background-color: $bg-color-dark-light;
 
       &:hover,
       &:focus {

@@ -4,6 +4,7 @@
   background-color: transparent;
   margin-right: 10px;
   color: $text-color;
+  box-shadow: none;
 
   &:last-child {
     margin-right: 0;
@@ -35,15 +36,15 @@
   }
 }
 
-.maz-pagination.is-dark,
-.is-dark {
+.maz-pagination.maz-is-dark,
+.maz-is-dark {
   .pagination-number-btn {
     color: $text-color-dark;
 
     &:hover,
     &:focus {
-      background-color: lighten($hover-color-dark, 5%);
-      box-shadow: 0 0 0 .143rem darken($hover-color-dark, 5%);
+      background-color: lighten($hover-bg-color-dark, 5%);
+      box-shadow: 0 0 0 .143rem darken($hover-bg-color-dark, 5%);
     }
 
     &.active {

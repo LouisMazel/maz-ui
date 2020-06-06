@@ -7,7 +7,7 @@
 </template>
 
 <script>
-  export default {
-    name: 'NuxtPage'
-  }
+export default {
+  name: 'NuxtPage'
+}
 </script>

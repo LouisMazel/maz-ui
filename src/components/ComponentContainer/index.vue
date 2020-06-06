@@ -1,24 +1,17 @@
 <template>
-  <div
-    class="component-container pos-r bg-white my-4 shadow-container"
-  >
-    <div class="p-4">
+  <div class="component-container maz-position-relative maz-bg-white maz-my-4 maz-elevation">
+    <div class="maz-p-4">
       <slot />
     </div>
     <div
       v-if="code"
-      class="component-container__footer"
+      class="component-container__footer maz-border-top maz-border-color maz-border-top-solid"
     >
-      <MazCollapse
-        class="component-container__footer__collapse"
-      >
-        <div
-          slot="header-text"
-          class="fs-12"
-        >
+      <MazCollapse class="component-container__footer__collapse">
+        <div slot="header-text">
           Show code
         </div>
-        <div class="p-4">
+        <div class="maz-px-4">
           <CodeContainer
             :language="language"
             :code="code"
@@ -30,19 +23,19 @@
 </template>
 
 <script>
-  export default {
-    name: 'ComponentContainer',
-    props: {
-      dark: { type: Boolean, default: false },
-      code: { type: String, default: null },
-      language: { type: String, default: 'html' }
-    },
-    data () {
-      return {
-        showCode: false
-      }
+export default {
+  name: 'ComponentContainer',
+  props: {
+    dark: { type: Boolean, default: false },
+    code: { type: String, default: null },
+    language: { type: String, default: 'html' }
+  },
+  data () {
+    return {
+      showCode: false
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -52,7 +45,6 @@
     border-radius: $border-radius;
 
     &__footer {
-      border-top: 1px solid $text-color-dark;
       overflow: hidden;
 
       &__collapse {
@@ -67,14 +59,14 @@
     }
   }
 
-  .is-dark .component-container,
-  .is-dark.component-container {
+  .maz-is-dark .component-container,
+  .maz-is-dark.component-container {
     color: $text-color-dark;
     background-color: $bg-color-dark;
-    border: 1px solid $hover-color-dark;
+    border: $border-width solid $hover-bg-color-dark;
 
     .component-container__footer {
-      border-color: $hover-color-dark;
+      border-color: $hover-bg-color-dark;
 
       &__collapse {
         border: none;

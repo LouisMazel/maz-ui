@@ -1,0 +1,43 @@
+@import './../style-helpers/variables/index.scss';
+
+.maz-list-item {
+  position: relative;
+  padding: .75rem 1.25rem;
+  border: none;
+  border-bottom: $border-width solid $hover-bg-color;
+  margin: 0;
+  color: $text-color;
+  text-align: left;
+  width: 100%;
+  outline: none;
+  background-color: transparent;
+
+  &.cursor-pointer {
+    cursor: pointer;
+  }
+
+  &.has-hover:hover {
+    background-color: $hover-bg-color;
+  }
+
+  &:first-child {
+    border-top-left-radius: $border-radius;
+    border-top-right-radius: $border-radius;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+    border-bottom-right-radius: $border-radius;
+    border-bottom-left-radius: $border-radius;
+    border-bottom: none;
+  }
+}
+
+.maz-is-dark .maz-list-item {
+  color: $text-color-dark;
+  border-color: $hover-bg-color-dark;
+
+  &.has-hover:hover {
+    background-color: $hover-bg-color-dark;
+  }
+}

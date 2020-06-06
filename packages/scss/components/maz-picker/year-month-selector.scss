@@ -1,0 +1,15 @@
+.year-month-selector {
+  position: absolute;
+  background-color: $bg-color;
+  height: 100%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+}
+
+.maz-is-dark.year-month-selector,
+.maz-is-dark .year-month-selector {
+  background-color: $bg-color-dark-light;
+}

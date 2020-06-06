@@ -1,0 +1,74 @@
+.#{$prefix}text-color {
+  color: $text-color;
+  fill: $text-color;
+}
+
+.#{$prefix}text-color-dark {
+  color: $text-color-dark;
+  fill: $text-color-dark;
+}
+
+.#{$prefix}is-dark.#{$prefix}text-color,
+.#{$prefix}is-dark .#{$prefix}text-color {
+  color: $text-color-dark;
+  fill: $text-color-dark;
+}
+
+.#{$prefix}text-white {
+  color: white;
+  fill: white;
+}
+
+.#{$prefix}text-muted {
+  color: $text-muted;
+  fill: $text-muted;
+}
+
+.#{$prefix}is-dark .#{$prefix}text-muted,
+.#{$prefix}text-muted-dark {
+  color: $text-muted-dark;
+  fill: $text-muted-dark;
+}
+
+@import './variables/color_types';
+
+@each $name, $color in $color_types {
+  @if (type-of($color) == 'color') {
+    .#{$prefix}text-#{$name} {
+      color: $color;
+      fill: $color;
+    }
+  }
+}
+
+.#{$prefix}text-strong {
+  font-weight: 500;
+}
+
+.#{$prefix}text-center {
+  text-align: center;
+}
+
+.#{$prefix}text-left {
+  text-align: left;
+}
+
+.#{$prefix}text-right {
+  text-align: right;
+}
+
+@import './mixins/index';
+
+.#{$prefix}dots-text {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.#{$prefix}dots-text-3 {
+  @include multiLineEllipsis($lineHeight: 1.3rem, $lineCount: 3, $bgColor: white);
+}
+
+.#{$prefix}dots-text-2 {
+  @include multiLineEllipsis($lineHeight: 1.3rem, $lineCount: 2, $bgColor: white);
+}

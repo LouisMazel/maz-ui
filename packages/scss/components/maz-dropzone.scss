@@ -1,0 +1,114 @@
+@import './../style-helpers/variables/index.scss';
+@import './maz-dropzone/_maz-dropzone-base.scss';
+
+.maz-dropzone {
+  border: $border-width dashed $border-color;
+  min-height: 245px;
+  background-color: $bg-color;
+  color: $muted-color;
+  cursor: pointer;
+  border-radius: $border-radius;
+  transition: all 300ms ease-in-out;
+
+  .dz-preview {
+    margin: 0;
+    min-height: auto;
+    background: transparent;
+
+    &.dz-image-preview {
+      background-color: transparent;
+    }
+  }
+
+  .dz-progress {
+    overflow: visible;
+    background-color: $hover-bg-color;
+    width: 150px;
+    left: calc(50% - 35px);
+
+    .dz-upload {
+      background-color: $primary-color;
+      border-radius: 16px;
+    }
+
+    .progress-title {
+      display: inline-block;
+      position: relative;
+      top: -30px;
+    }
+  }
+
+  .dz-message {
+    margin: 0;
+    text-align: center;
+  }
+
+  .dz-success-mark {
+    .material-icons {
+      background-color: rgba($primary-color, .8);
+      border-radius: 50%;
+      color: white;
+      font-size: 70px;
+    }
+  }
+
+  .dz-error-mark {
+    .material-icons {
+      background-color: rgba($danger-color, .8);
+      border-radius: 50%;
+      color: white;
+      font-size: 70px;
+    }
+  }
+
+  .dz-preview .dz-image {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+    border-radius: $border-radius;
+    border-color: $hover-bg-color;
+
+    > div {
+      width: inherit;
+      height: inherit;
+      background-size: contain;
+    }
+
+    > img {
+      width: 100%;
+    }
+  }
+
+  .dz-preview .dz-details {
+    width: 200px;
+    height: 200px;
+    color: white;
+    background-color: rgba($primary-color, .8);
+    transition: opacity .2s linear;
+    text-align: center;
+    border-radius: $border-radius;
+  }
+
+  &:hover {
+    background-color: $hover-bg-color;
+
+    .dz-message .material-icons {
+      color: $primary-color !important;
+    }
+  }
+}
+
+.maz-is-dark .maz-dropzone,
+.maz-dropzone.maz-is-dark {
+  background-color: $bg-color-dark;
+  border-color: $border-color-dark;
+  color: darken($hover-bg-color, 20%);
+
+  &:hover {
+    background-color: $hover-bg-color-dark;
+  }
+
+  .dz-preview .dz-image {
+    border-color: darken($text-color-dark, 20%);
+  }
+}
