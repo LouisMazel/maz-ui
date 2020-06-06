@@ -69,7 +69,9 @@ export default {
     // take 100% of the width
     block: { type: Boolean, default: false },
     // remove shadow/elevation
-    noShadow: { type: Boolean, default: false }
+    noShadow: { type: Boolean, default: false },
+    // material icon name
+    icon: { type: Boolean, default: null }
   },
   computed: {
     componentType () {

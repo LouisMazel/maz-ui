@@ -16,7 +16,7 @@
     >
       {{ getPageName(route.path) | capitalize }}
     </router-link>
-    <h4 class="maz-my-3">
+    <!-- <h4 class="maz-my-3">
       Maz-CLI
     </h4>
     <router-link
@@ -26,7 +26,7 @@
       }"
     >
       Create project w/ Nuxt.JS x Prismic
-    </router-link>
+    </router-link> -->
     <h4 class="maz-my-3">
       Theme
     </h4>

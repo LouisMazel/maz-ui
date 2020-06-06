@@ -24,6 +24,10 @@ body,
   background-color: $bg-color;
 }
 
+textarea {
+  @include font_family();
+}
+
 .#{$prefix}is-dark body,
 body.#{$prefix}is-dark,
 .#{$prefix}is-dark #app,

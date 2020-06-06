@@ -229,7 +229,8 @@ export default {
 
 <style lang="scss" scoped>
   .btn-container {
-    * {
+    button,
+    a {
       margin: 5px;
     }
   }
