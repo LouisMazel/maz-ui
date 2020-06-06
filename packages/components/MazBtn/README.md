@@ -20,6 +20,7 @@
 | active   | apply the focus style                                                                                                                                                               | `Boolean` | `false`  | -       |
 | block    | take 100% of the width                                                                                                                                                              | `Boolean` | `false`  | -       |
 | noShadow | remove shadow/elevation                                                                                                                                                             | `Boolean` | `false`  | -       |
+| icon     | material icon name                                                                                                                                                                  | `Boolean` | `false`  | -       |
 
 <!-- @vuese:MazBtn:props:end -->
 
