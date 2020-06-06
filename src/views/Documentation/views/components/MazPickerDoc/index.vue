@@ -21,8 +21,7 @@
     </p>
 
     <p class="maz-mb-3">
-      You can use any locale available in moment package. Locales are
-      dynamically imported.
+      You can use any locale available in moment package.
     </p>
 
     <div class="maz-flex maz-flex-1">
@@ -39,7 +38,7 @@
     </p>
 
     <p class="maz-mb-3">
-      You can set the position with "position" props attribute :
+      But you can set the position with "position" props attribute :
     </p>
 
     <CodeContainer
