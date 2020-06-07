@@ -12,20 +12,44 @@
     <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
 
     <h3>
-      How to use change components colors ?
+      How to change components colors and text style ?
     </h3>
 
     <p>
-      To change the colors and text style you have to override Maz-UI CSS variables
+      To use your own colors and text style you have to override Maz-UI SCSS variables
     </p>
+
+    <h4 class="maz-mt-6">
+      Use SCSS style files instead CSS style files
+    </h4>
 
     <p>
-      Instead of importing the basic CSS file
-      (<strong>'maz-ui/lib/css/index.css'</strong>). <br />
-
-      You must import the Maz-UI SCSS at the top of your main CSS file and place
-      your own variables just before importing, follow this example:
+      Use this configuration of <strong>babel-plugin-component</strong>
     </p>
+
+    <CodeContainer
+      code="// .babelrc
+
+{
+  plugins: [
+    [
+      'component', {
+        libraryName: 'maz-ui',
+        styleLibraryName: 'scss',
+        ext: '.scss'
+      }
+    ]
+  ]
+}"
+    />
+
+    <p>
+      At the top of your main CSS file, place your own variables. Follow this example:
+    </p>
+
+    <i class="maz-text-muted">
+      To avoid mistakes, the <strong>main.css</strong> should be import in the <strong>main.js</strong>
+    </i>
 
     <CodeContainer
       code="// main.scss
@@ -36,13 +60,6 @@ $third-color:       yellow;
 $border-radius:     4px;
 $base-font-size:    14px;
 $base-font-family:  'Roboto';
-// All available variables are just below
-
-@import 'maz-ui/lib/scss/index.scss';
-
-/*
-* Optional: You can override the components CSS after the import
-*/
 
 // Your own CSS"
       language="scss"
@@ -51,11 +68,11 @@ $base-font-family:  'Roboto';
     <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
 
     <h3>
-      How to use Maz-UI SCSS globally in your app ?
+      How to use your SCSS variables & Maz-UI SCSS variables globally in your app ?
     </h3>
 
     <p>
-      If you want override maz-ui SCSS variables, load your file at first and then load the maz-ui SCSS variables file:
+      With <strong>sass-loader</strong> you can do it. Load your variables file at first and then load the maz-ui SCSS variables file:
     </p>
 
     <CodeContainer
@@ -75,23 +92,30 @@ module.exports = {
 }"
     />
 
-    <strong>
-      IMPORTANT: If you use the "on demand" mode with babel, you have to disable the import of css files:
-    </strong>
+    <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
+
+    <h3>
+      How to override CSS of maz-ui components ?
+    </h3>
+
+    <p>
+      To avoid adding <strong>!important`</strong> to your CSS property, the best solution is to load your file which overloads the CSS with <strong>sass-loader</strong>:
+    </p>
 
     <CodeContainer
-      code="// .babelrc
+      code="// vue.config.js
 
-{
-  'plugins': [
-    [
-      'component', {
-        libraryName: 'maz-ui',
-        styleLibraryName: false
+module.exports = {
+  css: {
+    loaderOptions: {
+      sass: {
+        prependData: `
+          @import './src/scss/maz-ui/scss/your-own-css-file.scss';
+        `
       }
-    ]
-  ]
-}`"
+    }
+  }
+}"
     />
 
     <hr
