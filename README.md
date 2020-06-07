@@ -22,11 +22,11 @@
 npm install maz-ui -S
 ```
 
-## On demande install
+### On demande install
 
 To optimize your bundle size, it's recommanded to use the [on demand install](https://louismazel.github.io/maz-ui/#/documentation/get-started)
 
-## Quick Start - Fully install (not recommanded)
+### Quick Start - Fully install (not recommanded)
 
 ```javascript
 import Vue from "vue";
