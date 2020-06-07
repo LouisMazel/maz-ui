@@ -12,11 +12,11 @@
     <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
 
     <h3>
-      How to use change components colors ?
+      How to change components colors ?
     </h3>
 
     <p>
-      To change the colors and text style you have to override Maz-UI CSS variables
+      To change the colors and text style you have to override Maz-UI SCSS variables
     </p>
 
     <p>
@@ -87,7 +87,7 @@ module.exports = {
     [
       'component', {
         libraryName: 'maz-ui',
-        styleLibraryName: false
+        style: false
       }
     ]
   ]
