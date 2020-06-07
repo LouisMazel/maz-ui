@@ -8,7 +8,7 @@
 
 [![npm](https://nodei.co/npm/maz-ui.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/maz-ui)
 
-> [Maz-ui](https://github.com/LouisMazel/maz-ui) is a component library for [Vue](https://vuejs.org)
+> [Maz-ui](https://github.com/LouisMazel/maz-ui) is a component library for [VueJS](https://vuejs.org) & [NuxtJS](https://nuxtjs.org/)
 
 ## Documentation & Components
 
@@ -16,15 +16,17 @@
 
 ## Install
 
-[Detail & CDN](https://louismazel.github.io/maz-ui/#/documentation/install)
+[Detail & CDN](https://louismazel.github.io/maz-ui/#/documentation/get-started)
 
 ```shell
 npm install maz-ui -S
 ```
 
-## Quick Start
+## On demande installation
 
-[Detail](https://louismazel.github.io/maz-ui/#/documentation/get-started)
+To optimize your bundle size, it's recommanded to use the [on demand install](https://louismazel.github.io/maz-ui/#/documentation/get-started)
+
+## Quick Start: Fully install [not recommanded]
 
 ```javascript
 import Vue from "vue";
@@ -36,12 +38,12 @@ Vue.use(MazUi);
 // or
 import {
   MazInput,
-  MazButton
+  MazBtn
   // ...
 } from "maz-ui";
 
-Vue.component(MazInput.name, MazInput);
-Vue.component(MazButton.name, MazButton);
+Vue.use(MazInput);
+Vue.use(MazBtn);
 ```
 
 ## Contribute
