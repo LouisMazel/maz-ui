@@ -49,6 +49,13 @@ export default {
           name: 'Freelance Personnal Website',
           imgUrl: require('@/assets/img/projects/loicmazuel.png'),
           demoUrl: 'https://www.loicmazuel.com/'
+        },
+        {
+          name: 'Jellynote.com',
+          description:
+            'French startup: Help you to learn music easier',
+          imgUrl: require('@/assets/img/projects/jellynote.jpg'),
+          demoUrl: 'https://www.jellynote.com/'
         }
       ]
     }
