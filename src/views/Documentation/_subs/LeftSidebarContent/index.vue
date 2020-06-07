@@ -44,7 +44,7 @@
         name: 'Theme'
       }"
     >
-      Use your own colors
+      Use your own colors & style
     </router-link>
     <router-link
       class="menu-item maz-btn maz-btn--white maz-mb-2 maz-w-100 maz-no-shadow maz-text-color maz-bg-color maz-no-border maz-hover-bg-color"

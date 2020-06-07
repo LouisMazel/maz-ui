@@ -5,7 +5,6 @@ import { pascalCaseToKebabCase } from '@/../utils'
 Vue.use(Router)
 
 const componentsRoutes = [
-  'Install',
   'GetStarted',
   // 'CliInstall',
   'Theme',
@@ -86,7 +85,7 @@ const router = new Router({
     {
       path: '/documentation',
       name: 'Documentation',
-      redirect: { name: 'Install' },
+      redirect: { name: 'GetStarted' },
       component: () =>
         import(/* webpackChunkName: "documentation" */ '@/views/Documentation'),
       children: [...componentsRoutesBuild]

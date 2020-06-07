@@ -10,42 +10,67 @@
         List of all components
       </MazBtn>
     </div>
+
     <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
-    <div class="get-started__container maz-flex">
-      <div class="get-started__item maz-flex-1 maz-p-4 maz-w-100">
-        <h3 class="mt-3">
-          On demand (recommanded)
-        </h3>
 
-        <h4>
-          Imported only the components you need
-        </h4>
+    <h3>Install maz-ui</h3>
+    <CodeContainer
+      code="npm i maz-ui -S
 
-        <p>
-          With the help of babel-plugin-component, we can import components we
-          actually need, making the project smaller than otherwise.
-        </p>
+/*
+ * or yarn add maz-ui
+ */"
+      class="maz-my-4"
+    />
 
-        <p>First, install babel-plugin-component:</p>
+    <hr class="maz-border-top maz-border-solid maz-border-color maz-mb-5">
+    <h3 class="maz-mb-2">
+      On demand
+    </h3>
 
-        <CodeContainer
-          :code="codeBabelPLugin"
-        />
+    <h4>
+      Import only the components you need
+    </h4>
 
-        <h4>
-          Vue.JS babel config
-        </h4>
+    <p>
+      With the help of <a href="https://www.npmjs.com/package/babel-plugin-component"><strong>babel-plugin-component</strong></a>, we can import components we
+      actually need, making the project smaller than otherwise.
+    </p>
 
-        <CodeContainer
-          :code="configBabelPluginComponent"
-        />
+    <p>First, install babel-plugin-component:</p>
 
-        <h4>
-          Nuxt.JS babel config
-        </h4>
+    <CodeContainer
+      code="npm install babel-plugin-component -D
 
-        <CodeContainer
-          :code="`// nuxt.config.js
+/*
+ * or yarn add babel-plugin-component -D
+ */"
+    />
+
+    <h4>
+      Babel config
+    </h4>
+
+    <CodeContainer
+      code="// .babelrc
+
+{
+  plugins: [
+    [
+      'component', {
+        libraryName: 'maz-ui',
+        styleLibraryName: 'css'
+      }
+    ]
+  ]
+}"
+    />
+    <h4>
+      Nuxt.JS babel config
+    </h4>
+
+    <CodeContainer
+      :code="`// nuxt.config.js
 
 module.exports = {
   plugins: [
@@ -66,66 +91,40 @@ module.exports = {
     }
   }
 }`"
-        />
+    />
 
-        <h4>
-          Now import component as you want
-        </h4>
+    <h4>
+      Now import component as you want
+    </h4>
 
-        <CodeContainer
-          :code="codeCustom"
-        />
-      </div>
-
-      <div class="get-started__item maz-flex-1 maz-p-4 maz-border-left">
-        <h3>Fully install</h3>
-
-        <h4>Vue.JS</h4>
-
-        <CodeContainer
-          :code="codeBase"
-        />
-
-        <h4 class="">
-          Nuxt.JS
-        </h4>
-
-        <CodeContainer
-          :code="`// nuxt.config.js
-
-module.exports = {
-  plugins: [
-    ...
-    './plugins/maz-ui'
-    ...
-  ]
-}`"
-        />
-
-        <CodeContainer
-          :code="`// plugin/maz-ui/index.js
+    <CodeContainer
+      code="/*
+* main.js
+* ./plugin/maz-ui/index.js for Nuxt.JS
+*/
 
 import Vue from 'vue'
-import 'maz-ui/lib/css/index.css'
-import MazUi from 'maz-ui'
+import { MazBtn, MazInput } from 'maz-ui'
 
-Vue.use(MazUi)`"
-        />
-      </div>
-    </div>
+Vue.use(MazBtn)
+Vue.use(MazInput)
+
+/* or
+ * Vue.component(MazBtn.name, MazBtn)
+ * Vue.component(MazInput.name, MazInput)
+ */"
+    />
     <hr
       id="allComponents"
       class="maz-border-top maz-border-solid maz-border-color maz-my-5"
     >
-    <div
-      class="get-started__item maz-px-4"
-    >
-      <h3 class="maz-mb-0">
-        All components you can import
-      </h3>
-      <CodeContainer
-        :code="`import Vue from 'vue'
+    <h3 class="maz-mb-0">
+      All components you can import
+    </h3>
+    <CodeContainer
+      :code="`import Vue from 'vue'
 import {
+  MazAvatar,
   MazBtn,
   MazBtnGroup,
   MazCheckbox,
@@ -141,6 +140,7 @@ import {
   MazLoader,
   MazPagination,
   MazPicker,
+  MazPlotly,
   MazPhoneNumberInput,
   MazReadMore,
   MazResponsiveMenu,
@@ -152,9 +152,10 @@ import {
   MazTabsBar,
   MazTabsContent,
   MazTabsContentItem,
-  MazTransitionExpand
+  MazTransitionExpand,
 } from 'maz-ui'
 
+Vue.use(MazAvatar)
 Vue.use(MazBtn)
 Vue.use(MazBtnGroup)
 Vue.use(MazCheckbox)
@@ -170,6 +171,7 @@ Vue.use(MazListItem)
 Vue.use(MazLoader)
 Vue.use(MazPagination)
 Vue.use(MazPicker)
+Vue.use(MazPlotly)
 Vue.use(MazPhoneNumberInput)
 Vue.use(MazReadMore)
 Vue.use(MazResponsiveMenu)
@@ -182,66 +184,18 @@ Vue.use(MazTabsBar)
 Vue.use(MazTabsContent)
 Vue.use(MazTabsContentItem)
 Vue.use(MazTransitionExpand)`"
-      />
-    </div>
+    />
   </div>
 </template>
 
 <script>
 export default {
-  name: 'GetStarted',
-  data () {
-    return {
-      codeBase: `// main.js
-
-import Vue from 'vue'
-import 'maz-ui/lib/css/index.css'
-import MazUi from 'maz-ui'
-
-Vue.use(MazUi)`,
-      codeBabelPLugin: `npm install babel-plugin-component -D
-
-/*
- * or yarn add babel-plugin-component -D
- */`,
-      codeCustom: `/*
-* main.js
-* ./plugin/maz-ui/index.js for Nuxt.JS
-*/
-
-import Vue from 'vue'
-import { MazBtn, MazSelect } from 'maz-ui'
-
-Vue.use(MazBtn)
-Vue.use(MazSelect)
-
-/* or
- * Vue.component(MazBtn.name, MazBtn)
- * Vue.component(MazSelect.name, MazSelect)
- */`,
-      configBabelPluginComponent: `// .babelrc
-
-{
-  "plugins": [
-    [
-      'component', {
-        libraryName: 'maz-ui',
-        styleLibraryName: 'css'
-      }
-    ]
-  ]
-}`
-    }
-  }
+  name: 'GetStarted'
 }
 </script>
 
 <style lang="scss" scoped>
   .get-started {
-    h3:not(.maz-mb-0) {
-      margin-bottom: 30px;
-    }
-
     p {
       margin: 15px 0;
     }
