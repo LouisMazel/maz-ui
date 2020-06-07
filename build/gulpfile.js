@@ -33,7 +33,7 @@ const compileComponentsSingleFileCss = () => {
 }
 
 const buildScssLibrary = () => {
-  const components = src('./../packages/scss/components/*.scss')
+  const components = src('./../packages/scss/components/**/*')
     .pipe(dest('./../lib/scss'))
   const base = src('./../packages/scss/base.scss')
     .pipe(dest('./../lib/scss'))
