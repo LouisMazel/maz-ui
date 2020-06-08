@@ -8,7 +8,7 @@
       'has-error': error,
       'is-disabled': disabled,
       'maz-is-dark': dark
-    }, size]"
+    }, size, `maz-input-tags--${color}`]"
     @focus.capture="isFocus = true"
     @blur.capture="isFocus = false"
   >
@@ -22,6 +22,7 @@
         :key="`tag-${tag}-${i}`"
         class="maz-input-tags__tag maz-flex maz-align-center"
         :disabled="disabled"
+        :color="color"
         :size="size"
         @click.stop="removeTag(i)"
       >
@@ -110,7 +111,9 @@ export default {
     // When is `true` the input can be clear with a button on the right
     clearable: { type: Boolean, default: false },
     // input size (`'lg'` / `'sm'`)
-    size: { type: String, default: null }
+    size: { type: String, default: null },
+    // color option
+    color: { type: String, default: 'primary' }
   },
   data () {
     return {

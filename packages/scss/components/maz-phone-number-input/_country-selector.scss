@@ -2,8 +2,6 @@ $SM_SIZE: 2.57rem !default;
 $MD_SIZE: 2.85rem !default;
 $LG_SIZE: 3.42rem !default;
 
-@import './../../style-helpers/variables/color_types.scss';
-
 .country-selector {
   @import './flags/index.scss';
 

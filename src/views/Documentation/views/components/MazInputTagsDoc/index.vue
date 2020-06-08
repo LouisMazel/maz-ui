@@ -15,12 +15,14 @@
         v-model="exampleValue"
         placeholder="Add tags"
         clearable
+        color="secondary"
         class="maz-mb-3"
       />
       <MazInputTags
         v-model="exampleValue"
         placeholder="Add tags"
         clearable
+        color="third"
         size="sm"
       />
     </ComponentContainer>
@@ -78,12 +80,14 @@ export default {
     v-model="exampleValue"
     placeholder="Add tags"
     clearable
+    color="secondary"
     class="maz-mb-3"
   />
   <MazInputTags
     v-model="exampleValue"
     placeholder="Add tags"
     clearable
+    color="third"
     size="sm"
   />
 </template>
