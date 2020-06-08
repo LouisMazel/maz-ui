@@ -62,6 +62,36 @@
         textarea
       />
     </ComponentContainer>
+
+
+    <h3>Colors</h3>
+
+    <ComponentContainer
+      :key="color"
+      v-model="inputValue"
+      class="maz-flex-1 maz-mr-2"
+      code="<template>
+  <MazInput
+    :color=&quot;YOUR_COLOR&quot;
+  />
+</template>"
+    >
+      <div class="maz-flex maz-flex-wrap">
+        <MazInput
+          v-for="color in inputColors"
+          :key="color"
+          v-model="inputValue"
+          :color="color"
+          :placeholder="color"
+          class="maz-mr-2 maz-mb-2"
+        />
+      </div>
+      <p>
+        <strong>Colors list:</strong>
+        {{ inputColors }}
+      </p>
+    </ComponentContainer>
+
     <div
       v-for="type in inputTypes"
       :key="type"
@@ -150,6 +180,21 @@ export default {
         'lg',
         'required',
         'loading'
+      ],
+      inputColors: [
+        'primary',
+        'secondary',
+        'third',
+        'success',
+        'danger',
+        'warning',
+        'grey',
+        'info',
+        'light',
+        'dark',
+        'default',
+        'white',
+        'black'
       ],
       exampleValue: null,
       nameValue: 'your name',
