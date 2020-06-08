@@ -6,12 +6,13 @@
       'is-valid': valid,
       'has-value': value,
       'has-error': error,
+      'has-warning': warning,
       'is-disabled': disabled,
       'maz-is-dark': dark,
       'has-hint': hint,
       'has-no-label': !hasLabel && !hint,
-      'has-left-icon': hasLeftIcon()
-    }, size, `has-${leftNumberIcon}-right-icon`]"
+      'has-left-icon': hasLeftIcon(),
+    }, size, `has-${leftNumberIcon}-right-icon`, `maz-input--${color}`]"
     class="maz-input"
     @click="focusInput"
   >
@@ -172,8 +173,10 @@ export default {
     leftIconName: { type: String, default: null },
     // should be a [material icon](https://material.io/resources/icons/) name
     rightIconName: { type: String, default: null },
-    // When is `true` the input has the error style (red)
+    // When is `true` the input has the error style ($danger-color)
     error: { type: Boolean, default: false },
+    // When is `true` the input has the warning style ($warning-color)
+    warning: { type: Boolean, default: false },
     // When is `true` the input is disable
     disabled: { type: Boolean, default: false },
     // When is `true` the input has the dark theme
@@ -195,7 +198,9 @@ export default {
     // When is `true` and is `required`, the `*` symbol is not showing
     noRequiredSymbol: { type: Boolean, default: false },
     // force focus style input
-    focus: { type: Boolean, default: false }
+    focus: { type: Boolean, default: false },
+    // color name in basic colors
+    color: { type: String, default: 'primary' }
   },
   data () {
     return {

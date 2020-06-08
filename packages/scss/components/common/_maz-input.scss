@@ -33,7 +33,6 @@ $LG_SIZE: 3.42rem !default;
     border-radius: $border-radius;
     font-size: 1rem;
     z-index: 0;
-    caret-color: $primary-color;
 
     &::-webkit-autofill,
     &::-webkit-autofill:hover,
@@ -172,20 +171,24 @@ $LG_SIZE: 3.42rem !default;
   }
 
   &.is-focused {
-    .maz-input {
-      &__input {
-        border-color: $primary-color;
-      }
+    @each $name, $color in $color_types {
+      &.maz-input--#{$name} {
+        .maz-input {
+          &__input {
+            border-color: $color;
+          }
 
-      &__label {
-        color: $primary-color;
-      }
+          &__label {
+            color: $color;
+          }
 
-      &__icon {
-        color: $primary-color;
+          &__icon {
+            color: $color;
 
-        path.arrow {
-          fill: $primary-color;
+            path.arrow {
+              fill: $color;
+            }
+          }
         }
       }
     }
@@ -197,6 +200,18 @@ $LG_SIZE: 3.42rem !default;
 
           path.arrow {
             fill: $danger-color;
+          }
+        }
+      }
+    }
+
+    &.has-warning {
+      .maz-input {
+        &__icon {
+          color: $warning-color;
+
+          path.arrow {
+            fill: $warning-color;
           }
         }
       }
@@ -253,6 +268,17 @@ $LG_SIZE: 3.42rem !default;
 
     .maz-input__label {
       color: $danger-color;
+    }
+  }
+
+  &.has-warning {
+    .maz-input__input,
+    .maz-input__input:hover {
+      border-color: $warning-color;
+    }
+
+    .maz-input__label {
+      color: $warning-color;
     }
   }
 
@@ -363,7 +389,6 @@ $LG_SIZE: 3.42rem !default;
     }
 
     &__progress-bar {
-      background-color: $primary-color;
       display: block;
       position: absolute;
       content: '';
@@ -371,6 +396,20 @@ $LG_SIZE: 3.42rem !default;
       width: 200px;
       height: 2px;
       animation: loading 2s linear infinite;
+    }
+  }
+
+  @each $name, $color in $color_types {
+    &--#{$name} {
+      .maz-input {
+        &__loader__progress-bar {
+          background-color: $color;
+        }
+
+        &__input {
+          caret-color: $primary-color;
+        }
+      }
     }
   }
 }
