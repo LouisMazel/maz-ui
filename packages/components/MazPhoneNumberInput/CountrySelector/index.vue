@@ -10,8 +10,8 @@
       'maz-is-dark': dark,
       'no-flags': noFlags,
       'has-list-open': hasListOpen,
-      'is-valid': valid
-    }, size]"
+      'is-valid': success
+    }, size, `country-selector--${color}`]"
     class="country-selector"
     @blur.capture="handleBlur"
   >
@@ -119,14 +119,15 @@ export default {
     size: { type: String, default: String },
     error: { type: Boolean, default: false },
     disabled: { type: Boolean, default: false },
-    valid: { type: Boolean, default: false },
+    success: { type: Boolean, default: false },
     dark: { type: Boolean, default: false },
     items: { type: Array, default: Array, required: true },
     preferredCountries: { type: Array, default: null },
     onlyCountries: { type: Array, default: null },
     ignoredCountries: { type: Array, default: null },
     noFlags: { type: Boolean, default: false },
-    showCodeOnList: { type: Boolean, default: false }
+    showCodeOnList: { type: Boolean, default: false },
+    color: { type: String, default: 'primary' }
   },
   data () {
     return {

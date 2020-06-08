@@ -2,6 +2,8 @@ $SM_SIZE: 2.57rem !default;
 $MD_SIZE: 2.85rem !default;
 $LG_SIZE: 3.42rem !default;
 
+@import './../../style-helpers/variables/color_types.scss';
+
 .country-selector {
   @import './flags/index.scss';
 
@@ -127,7 +129,6 @@ $LG_SIZE: 3.42rem !default;
 
       &.selected {
         color: white;
-        background-color: $primary-color;
         font-weight: 600;
 
         .country-selector__list__item__calling-code {
@@ -140,13 +141,25 @@ $LG_SIZE: 3.42rem !default;
   &.is-focused {
     z-index: 1;
 
-    .country-selector {
-      &__input {
-        border-color: $primary-color;
-      }
+    @each $name, $color in $color_types {
+      &.country-selector--#{$name} {
+        .country-selector {
+          &__input {
+            border-color: $color;
+          }
 
-      &__label {
-        color: $primary-color;
+          &__label {
+            color: $color;
+          }
+        }
+      }
+    }
+  }
+
+  @each $name, $color in $color_types {
+    &.country-selector--#{$name} {
+      .country-selector__list__item.selected {
+        background-color: $color;
       }
     }
   }

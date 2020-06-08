@@ -67,7 +67,6 @@
     <h3>Colors</h3>
 
     <ComponentContainer
-      :key="color"
       v-model="inputValue"
       class="maz-flex-1 maz-mr-2"
       code="<template>
@@ -103,7 +102,8 @@
             <MazInput
               v-model="inputValue"
               :error="type === 'error'"
-              :valid="type === 'valid'"
+              :warning="type === 'warning'"
+              :success="type === 'valid'"
               :disabled="type === 'disabled'"
               :clearable="type === 'clearable'"
               :hint="type === 'hint' ? 'Hint value' : null"
@@ -116,7 +116,8 @@
             <MazInput
               v-model="withValue"
               :error="type === 'error'"
-              :valid="type === 'valid'"
+              :warning="type === 'warning'"
+              :success="type === 'valid'"
               :disabled="type === 'disabled'"
               :clearable="type === 'clearable'"
               :hint="type === 'hint' ? 'Hint value' : null"
@@ -172,6 +173,7 @@ export default {
       inputTypes: [
         'basic',
         'error',
+        'warning',
         'valid',
         'disabled',
         'hint',

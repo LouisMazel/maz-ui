@@ -134,6 +134,7 @@
 
         <MazPhoneNumberInput
           v-model="phoneNumber"
+          color="third"
           @update="results = getJson($event)"
         />
 

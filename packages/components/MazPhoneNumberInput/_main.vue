@@ -17,10 +17,11 @@
         :error="shouldChooseCountry"
         :hint="shouldChooseCountry ? t.countrySelectorError : null"
         :disabled="disabled"
-        :valid="isValid && !noValidation"
+        :success="isValid && !noValidation"
         :preferred-countries="preferredCountries"
         :only-countries="onlyCountries"
         :ignored-countries="ignoredCountries"
+        :color="color"
         :placeholder="t.countrySelectorLabel"
         :no-flags="noFlags"
         :show-code-on-list="showCodeOnList"
@@ -45,9 +46,10 @@
         :hint="hintValue"
         :disabled="disabled"
         :size="size"
-        :valid="isValid && !noValidation"
+        :success="isValid && !noValidation"
         v-bind="$attrs"
         clearable
+        :color="color"
         class="input-phone-number"
         :class="{
           'has-border-radius': noCountrySelector
@@ -126,7 +128,9 @@
       // Show the country phone code in the list
       showCodeOnList: { type: Boolean, default: false },
       // Enable the dark mode
-      dark: { type: Boolean, default: false }
+      dark: { type: Boolean, default: false },
+      // Use color
+      color: { type: String, default: 'primary' }
     },
     data () {
       return {

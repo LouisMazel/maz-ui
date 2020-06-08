@@ -3,7 +3,7 @@
     class="maz-input-tags maz-flex maz-flex--wrap maz-align-center"
     :class="[{
       'is-focused': isFocus,
-      'is-valid': valid,
+      'is-valid': success,
       'has-value': value,
       'has-error': error,
       'is-disabled': disabled,
@@ -102,7 +102,7 @@ export default {
     // When is `true` the input has the error style (red)
     error: { type: Boolean, default: false },
     // When is `true` the input has the valid style (green)
-    valid: { type: Boolean, default: false },
+    success: { type: Boolean, default: false },
     // When is `true` the input become required & has the `*` symbol
     required: { type: Boolean, default: false },
     // When is `true` the input is a textarea

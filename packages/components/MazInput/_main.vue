@@ -3,7 +3,7 @@
     ref="parent"
     :class="[{
       'is-focused': isFocus || focus,
-      'is-valid': valid,
+      'is-valid': success,
       'has-value': value,
       'has-error': error,
       'has-warning': warning,
@@ -183,8 +183,8 @@ export default {
     dark: { type: Boolean, default: false },
     // When is `true` the input is on readonly mode
     readonly: { type: Boolean, default: false },
-    // When is `true` the input has the valid style (green)
-    valid: { type: Boolean, default: false },
+    // When is `true` the input has the valid style ($success-color)
+    success: { type: Boolean, default: false },
     // When is `true` the input become required & has the `*` symbol
     required: { type: Boolean, default: false },
     // When is `true` the input is a textarea
