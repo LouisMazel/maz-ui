@@ -16,7 +16,8 @@
 | type             | is the input size (`text` or `number`)                                           | `String`  | `false`  | text       |
 | leftIconName     | should be a [material icon](https://material.io/resources/icons/) name           | `String`  | `false`  | -          |
 | rightIconName    | should be a [material icon](https://material.io/resources/icons/) name           | `String`  | `false`  | -          |
-| error            | When is `true` the input has the error style (red)                               | `Boolean` | `false`  | -          |
+| error            | When is `true` the input has the error style (\$danger-color)                    | `Boolean` | `false`  | -          |
+| warning          | When is `true` the input has the warning style (\$warning-color)                 | `Boolean` | `false`  | -          |
 | disabled         | When is `true` the input is disable                                              | `Boolean` | `false`  | -          |
 | dark             | When is `true` the input has the dark theme                                      | `Boolean` | `false`  | -          |
 | readonly         | When is `true` the input is on readonly mode                                     | `Boolean` | `false`  | -          |
@@ -28,6 +29,7 @@
 | noLabel          | When is `true` the input has not label (top placeholder when value is not empty) | `Boolean` | `false`  | -          |
 | noRequiredSymbol | When is `true` and is `required`, the `*` symbol is not showing                  | `Boolean` | `false`  | -          |
 | focus            | force focus style input                                                          | `Boolean` | `false`  | -          |
+| color            | color name in basic colors                                                       | `String`  | `false`  | primary    |
 
 <!-- @vuese:MazInput:props:end -->
 
