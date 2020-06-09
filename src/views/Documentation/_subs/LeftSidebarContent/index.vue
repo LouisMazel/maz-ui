@@ -110,7 +110,7 @@ export default {
           ({ name }) =>
             !isGeneralDoc(name) && !isCliDoc(name) && !isThemeDoc(name)
         )
-        .slice(0, 11)
+        .slice(0, 13)
     },
     routesUiComponents () {
       return this.$router.options.routes
@@ -119,7 +119,7 @@ export default {
           ({ name }) =>
             !isGeneralDoc(name) && !isCliDoc(name) && !isThemeDoc(name)
         )
-        .slice(11)
+        .slice(13)
     }
   },
   methods: {

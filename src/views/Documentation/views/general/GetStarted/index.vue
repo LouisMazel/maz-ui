@@ -142,6 +142,7 @@ import {
   MazPicker,
   MazPlotly,
   MazPhoneNumberInput,
+  MazRadio,
   MazReadMore,
   MazResponsiveMenu,
   MazSearch,
@@ -174,6 +175,7 @@ Vue.use(MazPagination)
 Vue.use(MazPicker)
 Vue.use(MazPlotly)
 Vue.use(MazPhoneNumberInput)
+Vue.use(MazRadio)
 Vue.use(MazReadMore)
 Vue.use(MazResponsiveMenu)
 Vue.use(MazSearch)
