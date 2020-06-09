@@ -22,6 +22,7 @@ module.exports = {
   'maz-search': './packages/components/MazSearch/index.js',
   'maz-select': './packages/components/MazSelect/index.js',
   'maz-sidebar': './packages/components/MazSidebar/index.js',
+  'maz-slider': './packages/components/MazSlider/index.js',
   'maz-spinner': './packages/components/MazSpinner/index.js',
   'maz-switch': './packages/components/MazSwitch/index.js',
   'maz-tabs-bar': './packages/components/MazTabsLayout/MazTabsBar/index.js',
