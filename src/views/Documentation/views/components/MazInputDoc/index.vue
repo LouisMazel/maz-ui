@@ -81,6 +81,8 @@
           :key="color"
           v-model="inputValue"
           :color="color"
+          left-icon-name="email"
+          right-icon-name="check"
           :placeholder="color"
           class="maz-mr-2 maz-mb-2"
         />

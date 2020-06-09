@@ -4,7 +4,7 @@
     :class="[{
       'has-list-open': hasListOpen,
       'maz-is-dark': dark
-    }]"
+    }, `maz-select--${color}`]"
     @blur.capture="closeList($event)"
   >
     <MazInput
@@ -12,6 +12,7 @@
       :value="valueShown"
       v-bind="$attrs"
       readonly
+      :color="color"
       :placeholder="placeholder"
       :disabled="disabled"
       :focus="hasListOpen"
@@ -155,7 +156,9 @@ export default {
     // When is `true` the select has an input to search in options
     search: { type: Boolean, default: false },
     // the search input placeholder
-    searchPlaceholder: { type: String, default: 'Search in options' }
+    searchPlaceholder: { type: String, default: 'Search in options' },
+    // the search input placeholder
+    color: { type: String, default: 'primary' }
   },
   data () {
     return {

@@ -54,7 +54,6 @@
 
       &.selected {
         color: white;
-        background-color: $primary-color;
         font-weight: 600;
       }
     }
@@ -68,6 +67,14 @@
     .maz-select {
       &__toggle {
         transform: rotate(180deg);
+      }
+    }
+  }
+
+  @each $name, $color in $color_types {
+    &--#{$name} {
+      .maz-select__options-list__item.selected {
+        background-color: $color;
       }
     }
   }
@@ -92,14 +99,8 @@
       color: $border-color-dark;
 
       &:hover,
-      &.keyboard-selected {
+      &.keyboard-selected:not(.selected) {
         background-color: lighten($hover-bg-color-dark-l, 5%);
-      }
-
-      &.selected {
-        color: white;
-        background-color: $primary-color;
-        font-weight: 600;
       }
     }
   }
