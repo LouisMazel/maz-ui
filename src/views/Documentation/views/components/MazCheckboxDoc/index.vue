@@ -12,7 +12,7 @@
         :color="color"
         class="maz-mb-2"
       >
-        Checkbox label
+        Checkbox - color="{{ color }}"
       </MazCheckbox>
     </ComponentContainer>
     <hr
