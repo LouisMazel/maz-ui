@@ -249,39 +249,6 @@ $LG_SIZE: 3.42rem !default;
     }
   }
 
-  &.is-valid {
-    .maz-input__input,
-    .maz-input__input:hover {
-      border-color: $success-color;
-    }
-
-    .maz-input__label {
-      color: $success-color;
-    }
-  }
-
-  &.has-error {
-    .maz-input__input,
-    .maz-input__input:hover {
-      border-color: $danger-color;
-    }
-
-    .maz-input__label {
-      color: $danger-color;
-    }
-  }
-
-  &.has-warning {
-    .maz-input__input,
-    .maz-input__input:hover {
-      border-color: $warning-color;
-    }
-
-    .maz-input__label {
-      color: $warning-color;
-    }
-  }
-
   &.is-disabled {
     cursor: not-allowed;
 
@@ -409,6 +376,66 @@ $LG_SIZE: 3.42rem !default;
         &__input {
           caret-color: $primary-color;
         }
+      }
+    }
+  }
+
+  &.is-valid {
+    .maz-input__input,
+    .maz-input__input:hover,
+    .maz-input__input:focus {
+      border-color: $success-color;
+    }
+
+    .maz-input__label {
+      color: $success-color !important;
+    }
+
+    .maz-input__icon {
+      color: $success-color;
+
+      path.arrow {
+        fill: $success-color;
+      }
+    }
+  }
+
+  &.has-warning {
+    .maz-input__input,
+    .maz-input__input:hover,
+    .maz-input__input:focus {
+      border-color: $warning-color;
+    }
+
+    .maz-input__label {
+      color: $warning-color !important;
+    }
+
+    .maz-input__icon {
+      color: $warning-color;
+
+      path.arrow {
+        fill: $warning-color;
+      }
+    }
+  }
+
+  &.has-error {
+    .maz-input__input,
+    .maz-input__input:hover,
+    .maz-input__input:focus {
+      border-color: $danger-color;
+    }
+
+    .maz-input__label {
+      color: $danger-color !important;
+    }
+
+    .maz-input__icon {
+      color: $danger-color;
+
+      path.arrow {
+        fill: $danger-color;
       }
     }
   }

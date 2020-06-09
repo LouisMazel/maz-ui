@@ -40,8 +40,15 @@
 
       &.selected {
         color: white;
-        background-color: $primary-color;
         font-weight: 600;
+      }
+    }
+  }
+
+  @each $name, $color in $color_types {
+    &--#{$name} {
+      .maz-search__items__item.selected {
+        background-color: $color;
       }
     }
   }
@@ -57,13 +64,8 @@
         color: $border-color;
 
         &:hover,
-        &.keyboard-selected {
+        &.keyboard-selected:not(.selected) {
           background-color: lighten($hover-bg-color-dark-l, 5%);
-        }
-
-        &.selected {
-          color: white;
-          background-color: $primary-color;
         }
       }
     }

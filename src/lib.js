@@ -26,6 +26,7 @@ import MazResponsiveMenu from '../packages/components/MazResponsiveMenu/index.js
 import MazSearch from '../packages/components/MazSearch/index.js'
 import MazSelect from '../packages/components/MazSelect/index.js'
 import MazSidebar from '../packages/components/MazSidebar/index.js'
+import MazSlider from '../packages/components/MazSlider/index.js'
 import MazSpinner from '../packages/components/MazSpinner/index.js'
 import MazSwitch from '../packages/components/MazSwitch/index.js'
 import MazTabsBar from '../packages/components/MazTabsLayout/MazTabsBar/index.js'
@@ -59,6 +60,7 @@ const components = [
   MazSearch,
   MazSelect,
   MazSidebar,
+  MazSlider,
   MazSpinner,
   MazSwitch,
   MazTabsBar,
@@ -104,6 +106,7 @@ export default {
   MazSearch,
   MazSelect,
   MazSidebar,
+  MazSlider,
   MazSpinner,
   MazSwitch,
   MazTabsBar,

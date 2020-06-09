@@ -72,7 +72,6 @@
         <MazPicker
           v-model="pickerValue"
           :locale="locale"
-          format="DD-MM-YYYY HH:mm"
           @formatted="pickerFormatted = $event"
         />
       </ComponentContainer>
@@ -86,7 +85,7 @@
         <p class="maz-mb-3">
           <strong>Options:</strong>
           no-time - clearable - size="sm" - formatted="ll" - placeholder="Select
-          date"
+          date" - color="secondary"
         </p>
 
         <p>
@@ -104,6 +103,7 @@
           placeholder="Select date"
           size="sm"
           no-time
+          color="secondary"
           formatted="ll"
           :locale="locale"
           @formatted="pickerFormatted2 = $event"
@@ -151,7 +151,7 @@
 
         <p class="maz-mb-3">
           <strong>Options:</strong>
-          range - double - position="top right" - placeholder="Select period"
+          range - double - position="top right" - placeholder="Select period" - color="third"
         </p>
 
         <p>
@@ -167,6 +167,7 @@
         <MazPicker
           v-model="pickerRangeValues"
           placeholder="Select period"
+          color="third"
           range
           double
           formatted="ll"

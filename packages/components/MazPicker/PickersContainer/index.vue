@@ -11,11 +11,13 @@
       :has-time="hasTime"
       :has-date="hasDate"
       :format="format"
+      :color="color"
     />
     <Calendar
       v-model="dateMoment"
       :format="format"
       :locale="locale"
+      :color="color"
       :shortcut="shortcut"
       :min-date="minDate"
       :max-date="maxDate"
@@ -60,6 +62,7 @@ export default {
     shortcut: { type: String, default: null },
     locale: { type: String, default: null },
     position: { type: String, required: true },
+    color: { type: String, required: true },
     hasHeader: { type: Boolean, required: true },
     hasFooter: { type: Boolean, required: true },
     hasValidate: { type: Boolean, required: true },

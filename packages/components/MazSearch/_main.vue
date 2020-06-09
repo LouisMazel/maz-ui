@@ -1,13 +1,14 @@
 <template>
   <div
     class="maz-search"
-    :class="{ 'maz-is-dark': dark }"
+    :class="[{ 'maz-is-dark': dark }, `maz-search--${color}`]"
     @blur.capture="closeList"
   >
     <MazInput
       ref="textField"
       v-model="query"
       v-bind="$attrs"
+      :color="color"
       @input="debouncedSearch"
       @keydown="keyboardNav"
       @focus="openList"
@@ -90,7 +91,9 @@ export default {
     // Enable or disable the `dark-mode`
     dark: { type: Boolean, default: false },
     // to show `no-data` slot (when you request has no results)
-    noData: { type: Boolean, default: false }
+    noData: { type: Boolean, default: false },
+    // Choose your color
+    color: { type: String, default: 'primary' }
   },
   data () {
     return {

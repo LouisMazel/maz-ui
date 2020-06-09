@@ -17,18 +17,6 @@ $LG_SIZE: 3.42rem !default;
   overflow: hidden;
   transition-duration: .3s;
 
-  &.is-focused:not(.is-disabled) {
-    border-color: $primary-color;
-
-    &.has-error {
-      border-color: $danger-color;
-    }
-
-    &.is-valid {
-      border-color: $success-color;
-    }
-  }
-
   &__input {
     cursor: pointer;
     border: none;
@@ -40,7 +28,6 @@ $LG_SIZE: 3.42rem !default;
     outline: none;
     font-size: 1rem;
     z-index: 0;
-    caret-color: $primary-color;
     min-width: 100px;
     padding-right: 4px;
     padding-bottom: 4px;
@@ -69,6 +56,28 @@ $LG_SIZE: 3.42rem !default;
 
     &::placeholder {
       color: $placeholder-color;
+    }
+  }
+
+  @each $name, $color in $color_types {
+    &.maz-input-tags--#{$name} {
+      &.is-focused:not(.is-disabled) {
+        border-color: $color;
+      }
+
+      .maz-input-tags__input {
+        caret-color: $color;
+      }
+    }
+  }
+
+  &.is-focused:not(.is-disabled) {
+    &.has-error {
+      border-color: $danger-color;
+    }
+
+    &.is-valid {
+      border-color: $success-color;
     }
   }
 

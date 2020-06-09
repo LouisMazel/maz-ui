@@ -8,9 +8,20 @@
   border-color: $border-color;
 }
 
+@each $state, $color in $states {
+  .#{$prefix}border-color-#{$state}:#{$state} {
+    border-color: darken($border-color, 10%);
+  }
+}
+
 .#{$prefix}is-dark.#{$prefix}border-color,
 .#{$prefix}is-dark .#{$prefix}border-color {
   border-color: $border-color-dark;
+}
+
+.#{$prefix}is-dark.#{$prefix}border-color-hover:hover,
+.#{$prefix}is-dark .#{$prefix}border-color-hover:hover {
+  border-color: lighten($border-color-dark, 10%);
 }
 
 .#{$prefix}no-border {
@@ -19,6 +30,13 @@
 
 .#{$prefix}border-color-dark {
   border-color: $border-color-dark;
+}
+
+@each $state, $color in $states {
+  .#{$prefix}border-color-dark-#{$state}:#{$state} {
+    border-color: darken($border-color, 10%);
+    border-color: darken($border-color-dark, 10%);
+  }
 }
 
 @each $name, $color in $color_types {

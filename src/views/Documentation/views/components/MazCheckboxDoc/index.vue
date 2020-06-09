@@ -5,8 +5,14 @@
     </h3>
 
     <ComponentContainer>
-      <MazCheckbox v-model="checkboxValue">
-        Checkbox label
+      <MazCheckbox
+        v-for="color in colors"
+        :key="color"
+        v-model="checkboxValue"
+        :color="color"
+        class="maz-mb-2"
+      >
+        Checkbox - color="{{ color }}"
       </MazCheckbox>
       <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
       <strong>Value</strong>: {{ checkboxValue }}
@@ -44,11 +50,14 @@
 </template>
 
 <script>
+import { COLORS } from '@/constantes'
+
 export default {
   name: 'MazCheckboxDoc',
   data () {
     return {
-      checkboxValue: false
+      checkboxValue: true,
+      colors: COLORS
     }
   }
 }

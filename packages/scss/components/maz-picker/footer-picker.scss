@@ -12,3 +12,11 @@
     margin-left: .5rem;
   }
 }
+
+@each $name, $color in $color_types {
+  .maz-picker--#{$name} {
+    .footer-picker__now {
+      color: $color;
+    }
+  }
+}
