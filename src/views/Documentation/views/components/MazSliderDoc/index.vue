@@ -55,24 +55,107 @@
         Multiple values
       </h3>
       <h4>
-        With labels & custom size (default: 8)
+        With labels
+      </h4>
+      <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
+      <MazSlider
+        v-model="multipleSilders"
+        :labels="multipleSildersLabels"
+      />
+      <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
+      <strong>
+        v-model:
+      </strong>
+      {{ multipleSilders }}
+    </ComponentContainer>
+
+    <ComponentContainer
+      code="<template>
+  <MazSlider
+    v-model=&quot;multipleSilders&quot;
+    :labels=&quot;multipleSildersLabels&quot;
+  />
+  </div>
+</template>
+
+<script>
+  export default {
+    data () {
+      return {
+        multipleSilders: [25, 50, 75],
+        multipleSildersLabels: ['Small', 'Middle', 'Big']
+      }
+    }
+  }
+</script>"
+    >
+      <h3 class="maz-mb-3">
+        Size & colors
+      </h3>
+      <h4>
+        Default: color="primary" size="8"
       </h4>
       <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
       <h5>
+        Default
+      </h5>
+      <MazSlider
+        v-model="multipleSilders"
+        :labels="multipleSildersLabels"
+      />
+      <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
+      <h5>
+        color="secondary"
+        :size="2"
+      </h5>
+      <MazSlider
+        v-model="multipleSilders"
+        :labels="multipleSildersLabels"
+        color="secondary"
+        :size="2"
+      />
+      <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
+      <h5>
+        color="third"
         :size="4"
       </h5>
       <MazSlider
         v-model="multipleSilders"
         :labels="multipleSildersLabels"
+        color="third"
         :size="4"
       />
       <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
       <h5>
+        color="warning"
+        :size="6"
+      </h5>
+      <MazSlider
+        v-model="multipleSilders"
+        :labels="multipleSildersLabels"
+        color="warning"
+        :size="6"
+      />
+      <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
+      <h5>
+        color="danger"
+        :size="10"
+      </h5>
+      <MazSlider
+        v-model="multipleSilders"
+        :labels="multipleSildersLabels"
+        color="danger"
+        :size="10"
+      />
+      <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
+      <h5>
+        color="success"
         :size="12"
       </h5>
       <MazSlider
         v-model="multipleSilders"
         :labels="multipleSildersLabels"
+        color="success"
         :size="12"
       />
       <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
@@ -81,6 +164,7 @@
       </strong>
       {{ multipleSilders }}
     </ComponentContainer>
+
 
     <ComponentContainer
       code="<template>
@@ -146,7 +230,7 @@
 </script>"
     >
       <h3 class="maz-mb-3">
-        No divider: No differents colors between cursors
+        No-divider: No differents colors between cursors
       </h3>
       <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
       <MazSlider

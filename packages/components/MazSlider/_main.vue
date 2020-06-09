@@ -2,6 +2,7 @@
   <div
     :style="[wrapperStyle]"
     class="maz-slider"
+    :class="[`maz-slider--${color}`]"
     @mousemove="handleMousemove"
     @mouseup="handleMouseup"
     @mouseleave="handleMouseup"
@@ -78,7 +79,9 @@ export default {
     // remove div in different colors
     noDivider: { type: Boolean, default: false },
     // become a logarithmic slider (exponential)
-    log: { type: Boolean, default: false }
+    log: { type: Boolean, default: false },
+    // main slider color
+    color: { type: String, default: 'primary' }
   },
   data () {
     return {
@@ -129,7 +132,7 @@ export default {
       const { labels, sizeValue } = this
       return {
         padding: `${sizeValue * 1.5}px ${sizeValue * 5.5}px`,
-        paddingTop: labels ? `${sizeValue * 3}px` : `${sizeValue * 1.5}px`
+        paddingTop: labels ? `${sizeValue * 4}px` : `${sizeValue * 1.5}px`
       }
     }
   },
@@ -285,52 +288,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-  .maz-slider {
-    &__bar {
-      position: relative;
-      border-radius: calc(#{$border-radius} * 2);
-      background-color: $primary-color;
-    }
-
-    &__divider {
-      position: absolute;
-      border-radius: 2em;
-      height: 100%;
-    }
-
-    &__btn {
-      position: absolute;
-      outline: none;
-      cursor: pointer;
-      color: $text-color;
-      border-radius: 1em;
-      box-shadow: 0 0 6px 0 rgba(48, 48, 48, .3);
-      border: none;
-      font-size: 1.2em;
-      background-color: $bg-color;
-      padding: 0 4px;
-      font-weight: bold;
-      line-height: 1;
-      transition: box-shadow 300ms ease-in-out, width 300ms ease-in-out, transform 300ms ease-in-out;
-      z-index: 1;
-      user-select: none;
-
-      &.active-cursor {
-        box-shadow: 0 0 0 .143rem rgba($primary-color, .6);
-        z-index: 2;
-        transform: scale(1.3);
-      }
-
-      &::before {
-        content: attr(data-label);
-        color: $text-color;
-        font-size: .888em;
-        font-weight: normal;
-        position: absolute;
-        top: -1.8em;
-      }
-    }
-  }
-</style>
