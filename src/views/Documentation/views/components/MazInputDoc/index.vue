@@ -165,6 +165,7 @@
 </template>
 
 <script>
+import { COLORS } from '@/constantes'
 export default {
   name: 'MazInputDoc',
   data () {
@@ -185,21 +186,7 @@ export default {
         'required',
         'loading'
       ],
-      inputColors: [
-        'primary',
-        'secondary',
-        'third',
-        'success',
-        'danger',
-        'warning',
-        'grey',
-        'info',
-        'light',
-        'dark',
-        'default',
-        'white',
-        'black'
-      ],
+      inputColors: COLORS,
       exampleValue: null,
       nameValue: 'your name',
       emailValue: 'youremail@domain.com',
