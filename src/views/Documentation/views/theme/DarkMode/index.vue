@@ -42,32 +42,6 @@
 </html>"
       language="html"
     />
-
-    <div
-      class="dark-mode__items maz-mb-4"
-    >
-      <div
-        v-for="({ name, value }, i) in colors"
-        :key="i"
-        class="dark-mode__items__color maz-mb-3"
-      >
-        <h4 class="maz-mb-3">
-          {{ name | capitalize }}
-        </h4>
-        <div
-          class="maz-elevation maz-p-5 maz-border-radius maz-flex maz-flex-center"
-          :class="`maz-bg-${name}`"
-        >
-          <h4
-            :class="{
-              'text-white': name === 'black' || name === 'dark'
-            }"
-          >
-            {{ value }}
-          </h4>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 

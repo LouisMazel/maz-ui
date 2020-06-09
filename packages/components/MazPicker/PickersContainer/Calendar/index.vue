@@ -12,6 +12,7 @@
       ref="RangeShortcuts"
       :shortcuts="shortcuts"
       :value="shortcut"
+      :color="color"
       :height="contentHeight"
       @change-range="$emit('input', $event)"
     />
@@ -61,6 +62,7 @@
         v-if="months.length"
         v-model="yearMonthSelectorMode"
         :month="months[0]"
+        :color="color"
         :has-double="hasDouble"
         @change-month-year="changeMonthYear"
       />
@@ -108,6 +110,7 @@ export default {
     format: { type: String, default: null },
     shortcut: { type: String, default: null },
     locale: { type: String, default: null },
+    color: { type: String, default: null },
     minDate: { type: Object, default: null },
     maxDate: { type: Object, default: null },
     noWeekendsDays: { type: Boolean, default: false },

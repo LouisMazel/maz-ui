@@ -37,10 +37,6 @@
     border-color: darken($border-color, 10%);
   }
 
-  [type= 'checkbox']:checked + label::before {
-    border-color: $primary-color;
-  }
-
   [type= 'checkbox']:not(:checked) + label::after,
   [type= 'checkbox']:checked + label::after {
     content: '';
@@ -50,7 +46,6 @@
     font-size: 1rem;
     width: 10px;
     height: 10px;
-    background-color: $primary-color;
     transition: all .2s;
     border-radius: 2px;
   }
@@ -58,12 +53,24 @@
   [type= 'checkbox']:not(:checked) + label::after {
     opacity: 0;
     transform: scale(0);
-    color: $primary-color;
   }
 
   [type= 'checkbox']:checked + label::after {
     opacity: 1;
     transform: scale(1);
-    color: $primary-color;
+  }
+
+  @each $name, $color in $color_types {
+    &--#{$name} {
+      [type= 'checkbox']:checked + label::before {
+        border-color: $color;
+      }
+
+      [type= 'checkbox']:not(:checked) + label::after,
+      [type= 'checkbox']:checked + label::after {
+        background-color: $color;
+        color: $color;
+      }
+    }
   }
 }

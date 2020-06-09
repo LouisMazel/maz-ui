@@ -1,6 +1,7 @@
 <template>
   <div
     class="maz-checkbox maz-flex maz-align-center"
+    :class="[`maz-checkbox--${color}`]"
   >
     <input
       :id="uniqueId"
@@ -26,6 +27,7 @@ export default {
   mixins: [uniqueId],
   props: {
     id: { type: String, default: null },
+    color: { type: String, default: 'primary' },
     value: { default: false, type: Boolean }
   }
 }

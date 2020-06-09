@@ -107,6 +107,29 @@
     </ComponentContainer>
     <ComponentContainer>
       <h4 class="maz-mb-3">
+        Colors
+      </h4>
+
+      <div class="maz-flex maz-flex-wrap">
+        <MazSelect
+          v-for="color in inputColors"
+          :key="color"
+          v-model="selectValue"
+          :options="options"
+          :placeholder="color"
+          :color="color"
+          class="maz-mb-2 maz-mr-2"
+        />
+      </div>
+
+
+      <p>
+        <strong>Colors list:</strong>
+        {{ inputColors }}
+      </p>
+    </ComponentContainer>
+    <ComponentContainer>
+      <h4 class="maz-mb-3">
         Error
       </h4>
       <MazSelect
@@ -117,12 +140,12 @@
     </ComponentContainer>
     <ComponentContainer>
       <h4 class="maz-mb-3">
-        Valid
+        Success
       </h4>
       <MazSelect
         v-model="selectValue"
         :options="options"
-        valid
+        success
       />
     </ComponentContainer>
 
@@ -166,6 +189,8 @@
 </template>
 
 <script>
+import { COLORS } from '@/constantes'
+
 export default {
   name: 'MazInputDoc',
   data () {
@@ -177,7 +202,8 @@ export default {
         { label: 'First option', value: 'first' },
         { label: 'Second option', value: 'second' },
         { label: 'Third option', value: 'third' }
-      ]
+      ],
+      inputColors: COLORS
     }
   }
 }

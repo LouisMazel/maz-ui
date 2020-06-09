@@ -67,7 +67,6 @@
     <h3>Colors</h3>
 
     <ComponentContainer
-      :key="color"
       v-model="inputValue"
       class="maz-flex-1 maz-mr-2"
       code="<template>
@@ -82,6 +81,8 @@
           :key="color"
           v-model="inputValue"
           :color="color"
+          left-icon-name="email"
+          right-icon-name="check"
           :placeholder="color"
           class="maz-mr-2 maz-mb-2"
         />
@@ -103,7 +104,8 @@
             <MazInput
               v-model="inputValue"
               :error="type === 'error'"
-              :valid="type === 'valid'"
+              :warning="type === 'warning'"
+              :success="type === 'valid'"
               :disabled="type === 'disabled'"
               :clearable="type === 'clearable'"
               :hint="type === 'hint' ? 'Hint value' : null"
@@ -116,7 +118,8 @@
             <MazInput
               v-model="withValue"
               :error="type === 'error'"
-              :valid="type === 'valid'"
+              :warning="type === 'warning'"
+              :success="type === 'valid'"
               :disabled="type === 'disabled'"
               :clearable="type === 'clearable'"
               :hint="type === 'hint' ? 'Hint value' : null"
@@ -162,6 +165,7 @@
 </template>
 
 <script>
+import { COLORS } from '@/constantes'
 export default {
   name: 'MazInputDoc',
   data () {
@@ -172,6 +176,7 @@ export default {
       inputTypes: [
         'basic',
         'error',
+        'warning',
         'valid',
         'disabled',
         'hint',
@@ -181,21 +186,7 @@ export default {
         'required',
         'loading'
       ],
-      inputColors: [
-        'primary',
-        'secondary',
-        'third',
-        'success',
-        'danger',
-        'warning',
-        'grey',
-        'info',
-        'light',
-        'dark',
-        'default',
-        'white',
-        'black'
-      ],
+      inputColors: COLORS,
       exampleValue: null,
       nameValue: 'your name',
       emailValue: 'youremail@domain.com',

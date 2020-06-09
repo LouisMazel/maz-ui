@@ -3,9 +3,9 @@
     :id="uniqueId"
     ref="MazPicker"
     class="maz-picker"
-    :class="{
+    :class="[{
       'maz-is-dark': dark
-    }"
+    }, `maz-picker--${color}`]"
     @blur.capture="closePicker($event, 'blur')"
   >
     <MazInput
@@ -15,6 +15,7 @@
       v-bind="$attrs"
       :placeholder="placeholder"
       readonly
+      :color="color"
       :focus="hasPickerOpen"
       @focus="openPicker(true)"
     >
@@ -71,6 +72,7 @@
         :disabled-hours="disabledHours"
         :behaviour="behaviour"
         :inline="inline"
+        :color="color"
       />
     </transition>
   </div>
@@ -207,7 +209,9 @@ export default {
         { key: 'thisYear', label: 'This year', value: 'year' },
         { key: 'lastYear', label: 'Last year', value: '-year' }
       ])
-    }
+    },
+    // choose main color
+    color: { type: String, default: 'primary' }
   },
   data () {
     return {
