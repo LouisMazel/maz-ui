@@ -390,6 +390,14 @@ $LG_SIZE: 3.42rem !default;
     .maz-input__label {
       color: $success-color !important;
     }
+
+    .maz-input__icon {
+      color: $success-color;
+
+      path.arrow {
+        fill: $success-color;
+      }
+    }
   }
 
   &.has-warning {
@@ -402,6 +410,14 @@ $LG_SIZE: 3.42rem !default;
     .maz-input__label {
       color: $warning-color !important;
     }
+
+    .maz-input__icon {
+      color: $warning-color;
+
+      path.arrow {
+        fill: $warning-color;
+      }
+    }
   }
 
   &.has-error {
@@ -413,6 +429,14 @@ $LG_SIZE: 3.42rem !default;
 
     .maz-input__label {
       color: $danger-color !important;
+    }
+
+    .maz-input__icon {
+      color: $danger-color;
+
+      path.arrow {
+        fill: $danger-color;
+      }
     }
   }
 }
