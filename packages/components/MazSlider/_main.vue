@@ -24,7 +24,7 @@
         ref="Cursor"
         tabindex="-1"
         :data-label="getLabel(i)"
-        class="maz-slider__btn maz-flex maz-flex-center"
+        class="maz-slider__btn maz-flex maz-flex-center maz-bg-color-light"
         :class="{
           'active-cursor': i === activeCursor
         }"
@@ -36,7 +36,7 @@
           orientation="left"
           :size="sizeValue * 2"
         />
-        <span>
+        <span class="maz-text-color">
           {{ tmpValues[i] }}
         </span>
         <ArrowIcon

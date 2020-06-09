@@ -24,6 +24,7 @@
     outline: none;
     color: $text-color;
     padding: 0;
+    border-radius: $border-radius;
     user-select: none;
     padding-left: 10px;
     padding-right: 10px;
@@ -31,7 +32,6 @@
 
     &.active {
       color: $primary-color;
-      font-weight: 500;
       position: relative;
     }
 
@@ -58,7 +58,7 @@
       margin: 0 auto;
       background: $primary-color;
       height: 2px;
-      width: 100%;
+      width: 60%;
     }
   }
 }
@@ -74,7 +74,8 @@
       color: $primary-color;
     }
 
-    &:hover {
+    &:hover,
+    &:focus {
       background-color: $hover-bg-color-dark;
     }
 

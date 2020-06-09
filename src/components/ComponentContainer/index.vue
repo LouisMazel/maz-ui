@@ -1,6 +1,6 @@
 <template>
   <div class="component-container maz-position-relative maz-bg-white maz-my-4 maz-elevation">
-    <div class="maz-p-4">
+    <div class="maz-p-4 maz-bg-color">
       <slot />
     </div>
     <div

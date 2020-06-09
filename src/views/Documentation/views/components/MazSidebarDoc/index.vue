@@ -129,6 +129,8 @@ export default {
     }
 
     &__content {
+      background-color: $bg-color-light;
+
       & * {
         margin-bottom: .5rem;
       }
@@ -139,6 +141,12 @@ export default {
           font-size: 1rem;
         }
       }
+    }
+  }
+
+  .maz-is-dark {
+    .maz-sidebar-doc__content {
+      background-color: darken($bg-color-dark-light, 5%);
     }
   }
 </style>
