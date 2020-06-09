@@ -29,7 +29,7 @@
       :value="callingCode"
       :placeholder="placeholder"
       :disabled="disabled"
-      class="country-selector__input"
+      class="country-selector__input maz-border-color-hover"
       readonly
       @focus="isFocus = true"
       @keydown="keyboardNav"

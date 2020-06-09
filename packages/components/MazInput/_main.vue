@@ -48,7 +48,7 @@
       v-bind="$attrs"
       :placeholder="placeholderValue"
       :type="getType"
-      class="maz-input__input maz-border maz-border-color maz-border-solid"
+      class="maz-input__input maz-border maz-border-color maz-border-color-hover maz-border-solid"
       :aria-label="placeholder"
       :class="{
         'has-right-icon': hasClearBtn || hasPasswordBtn || hasRightIcon()
@@ -74,7 +74,7 @@
       :type="type"
       :required="required"
       :readonly="readonly"
-      class="maz-input__input textarea maz-border maz-border-color maz-border-solid"
+      class="maz-input__input textarea maz-border maz-border-color maz-border-color-hover maz-border-solid"
       @keydown="keyDown"
       @keyup="keyUp"
       @focus="onFocus"

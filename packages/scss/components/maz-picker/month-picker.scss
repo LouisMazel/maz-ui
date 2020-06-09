@@ -50,12 +50,10 @@
 
     &.is-between-hoverred {
       color: white;
-      background-color: rgba($primary-color, .4);
     }
 
     &.is-in-range {
       color: white;
-      background-color: rgba($primary-color, .6);
       width: calc(100% + 5px);
 
       &:not(.maz-active) {
@@ -75,19 +73,42 @@
 
     &.maz-active:not(:disabled) {
       color: white;
-      background-color: $primary-color;
       font-weight: 600;
     }
 
     &:hover {
       color: white;
-      background-color: rgba($primary-color, .4);
     }
 
     &:disabled {
       color: rgba(black, .25);
       background-color: transparent;
       border: none;
+    }
+  }
+}
+
+@each $name, $color in $color_types {
+  .maz-picker--#{$name} {
+    .month-picker {
+      &__day {
+        &.is-between-hoverred {
+          background-color: rgba($color, .4);
+        }
+
+        &.is-in-range {
+          background-color: rgba($color, .6);
+        }
+
+        &.maz-active:not(:disabled) {
+          background-color: $color;
+          box-shadow: 0 0 0 .143rem rgba($color, .6);
+        }
+
+        &:hover {
+          background-color: rgba($color, .4);
+        }
+      }
     }
   }
 }

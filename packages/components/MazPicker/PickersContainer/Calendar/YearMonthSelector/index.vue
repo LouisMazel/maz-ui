@@ -56,9 +56,10 @@
         <MazBtn
           v-for="(m, i) in months"
           :key="i"
+          :color="color"
           :active="currentMonth === i"
           :class="[
-            currentMonth !== i ? 'maz-hover-bg-color maz-no-focus-bg maz-border maz-border-color maz-text-primary': 'maz-focus-primary',
+            currentMonth !== i ? `maz-hover-bg-color maz-no-focus-bg maz-border maz-border-color maz-text-${color}`: `maz-focus-${color}`,
             { 'mx-3': hasDouble }
           ]"
           class="year-month-selector__btn maz-bg-transparent maz-no-shadow maz-px-3 maz-flex-20 maz-mx-1"
@@ -70,10 +71,11 @@
         <MazBtn
           v-for="year in years"
           :key="year"
+          :color="color"
           :active="currentYear === year"
           size="md"
           tabindex="-1"
-          :class="[currentYear !== year ? 'maz-hover-bg-color maz-no-focus-bg maz-border maz-border-color maz-text-primary': 'maz-focus-primary']"
+          :class="[currentYear !== year ? `maz-hover-bg-color maz-no-focus-bg maz-border maz-border-color maz-text-${color}`: `maz-focus-${color}`]"
           class="year-month-selector__btn maz-bg-transparent maz-no-shadow"
           @click="selectYear(year)"
         >
@@ -101,6 +103,7 @@ export default {
   components: { ArrowIcon, MazBtn },
   props: {
     value: { type: String, default: null },
+    color: { type: String, default: null },
     month: { type: Object, required: true },
     hasDouble: { type: Boolean, required: true }
   },

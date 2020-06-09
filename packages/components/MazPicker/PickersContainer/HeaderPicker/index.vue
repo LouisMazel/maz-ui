@@ -1,6 +1,7 @@
 <template>
   <div
-    class="header-picker maz-p-2 maz-bg-primary maz-text-white maz-flex"
+    class="header-picker maz-p-2 maz-text-white maz-flex"
+    :class="[`maz-bg-${color}`]"
   >
     <div
       v-if="hasDate"
@@ -115,7 +116,8 @@ export default {
     locale: { type: String, required: true },
     hasTime: { type: Boolean, required: true },
     hasDate: { type: Boolean, required: true },
-    format: { type: String, required: true }
+    format: { type: String, required: true },
+    color: { type: String, required: true }
   },
   data () {
     return {

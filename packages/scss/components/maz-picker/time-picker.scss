@@ -42,13 +42,11 @@
       width: 45px;
 
       &:hover {
-        background-color: rgba($primary-color, .4);
         color: white;
       }
 
       &.maz-active {
         color: white;
-        background-color: $primary-color;
         font-weight: bold;
       }
 
@@ -56,6 +54,21 @@
         color: rgba(black, .25);
         background-color: transparent;
         border: none;
+      }
+    }
+  }
+}
+
+@each $name, $color in $color_types {
+  .maz-picker--#{$name} {
+    .time-picker__column__item {
+      &:hover {
+        background-color: rgba($color, .4);
+      }
+
+      &.maz-active {
+        background-color: $color;
+        box-shadow: 0 0 0 .143rem rgba($color, .6);
       }
     }
   }

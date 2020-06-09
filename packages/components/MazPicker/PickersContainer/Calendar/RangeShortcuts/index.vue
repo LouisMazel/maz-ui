@@ -14,8 +14,9 @@
       :key="shortcut.key"
       :active="selectedShortcut === shortcut.key"
       size="sm"
+      :color="color"
       tabindex="-1"
-      :class="[selectedShortcut !== shortcut.key ? 'maz-hover-bg-color maz-no-focus-bg maz-border maz-border-color maz-text-primary': 'maz-focus-primary']"
+      :class="[selectedShortcut !== shortcut.key ? `maz-hover-bg-color maz-no-focus-bg maz-border maz-border-color maz-text-${color}`: `maz-focus-${color}`]"
       class="shortcut-button maz-flex-1 maz-my-1 maz-bg-transparent maz-no-shadow"
       @click="select(shortcut)"
     >
@@ -44,6 +45,7 @@ export default {
   components: { MazBtn },
   props: {
     value: { type: String, default: null },
+    color: { type: String, default: null },
     height: { type: Number, required: true },
     shortcuts: {
       type: Array,
