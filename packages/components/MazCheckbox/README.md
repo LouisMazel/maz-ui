@@ -4,11 +4,12 @@
 
 <!-- @vuese:MazCheckbox:props:start -->
 
-| Name  | Description | Type      | Required | Default |
-| ----- | ----------- | --------- | -------- | ------- |
-| id    | -           | `String`  | `false`  | -       |
-| color | -           | `String`  | `false`  | primary |
-| value | -           | `Boolean` | `false`  | -       |
+| Name  | Description | Type      | Required | Default      |
+| ----- | ----------- | --------- | -------- | ------------ |
+| value | -           | `Boolean` | `true`   | -            |
+| id    | -           | `String`  | `false`  | -            |
+| color | -           | `String`  | `false`  | primary      |
+| name  | -           | `String`  | `false`  | maz-checkbox |
 
 <!-- @vuese:MazCheckbox:props:end -->
 

@@ -1,43 +1,45 @@
-# MazCheckbox
+# MazRadio
 
 ## Props
 
-<!-- @vuese:MazCheckbox:props:start -->
+<!-- @vuese:MazRadio:props:start -->
 
-| Name  | Description | Type      | Required | Default |
-| ----- | ----------- | --------- | -------- | ------- |
-| id    | -           | `String`  | `false`  | -       |
-| color | -           | `String`  | `false`  | primary |
-| value | -           | `Boolean` | `false`  | -       |
+| Name       | Description | Type     | Required | Default   |
+| ---------- | ----------- | -------- | -------- | --------- |
+| value      | -           | `String` | `true`   | -         |
+| id         | -           | `String` | `false`  | -         |
+| color      | -           | `String` | `false`  | primary   |
+| name       | -           | `String` | `false`  | maz-radio |
+| radioValue | -           | `String` | `true`   | -         |
 
-<!-- @vuese:MazCheckbox:props:end -->
+<!-- @vuese:MazRadio:props:end -->
 
 ## Events
 
-<!-- @vuese:MazCheckbox:events:start -->
+<!-- @vuese:MazRadio:events:start -->
 
 | Event Name | Description | Parameters |
 | ---------- | ----------- | ---------- |
 | input      | -           | -          |
 
-<!-- @vuese:MazCheckbox:events:end -->
+<!-- @vuese:MazRadio:events:end -->
 
 ## Slots
 
-<!-- @vuese:MazCheckbox:slots:start -->
+<!-- @vuese:MazRadio:slots:start -->
 
 | Name    | Description | Default Slot Content |
 | ------- | ----------- | -------------------- |
 | default | -           | -                    |
 
-<!-- @vuese:MazCheckbox:slots:end -->
+<!-- @vuese:MazRadio:slots:end -->
 
 ## MixIns
 
-<!-- @vuese:MazCheckbox:mixIns:start -->
+<!-- @vuese:MazRadio:mixIns:start -->
 
 | MixIn    |
 | -------- |
 | uniqueId |
 
-<!-- @vuese:MazCheckbox:mixIns:end -->
+<!-- @vuese:MazRadio:mixIns:end -->
