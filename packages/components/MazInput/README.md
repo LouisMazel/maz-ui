@@ -21,7 +21,7 @@
 | disabled         | When is `true` the input is disable                                              | `Boolean` | `false`  | -          |
 | dark             | When is `true` the input has the dark theme                                      | `Boolean` | `false`  | -          |
 | readonly         | When is `true` the input is on readonly mode                                     | `Boolean` | `false`  | -          |
-| valid            | When is `true` the input has the valid style (green)                             | `Boolean` | `false`  | -          |
+| success          | When is `true` the input has the valid style (\$success-color)                   | `Boolean` | `false`  | -          |
 | required         | When is `true` the input become required & has the `*` symbol                    | `Boolean` | `false`  | -          |
 | textarea         | When is `true` the input is a textarea                                           | `Boolean` | `false`  | -          |
 | loading          | When is `true` the input is a textarea                                           | `Boolean` | `false`  | -          |

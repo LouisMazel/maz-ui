@@ -1,16 +1,16 @@
 <template>
   <div
-    class="maz-checkbox"
-    :class="[`maz-checkbox--${color}`]"
+    class="maz-radio maz-flex maz-align-center"
+    :class="[`maz-radio--${color}`]"
   >
     <input
       :id="uniqueId"
-      :checked="value"
-      v-bind="$attrs"
+      :checked="value === radioValue"
       :name="name"
-      type="checkbox"
+      :value="radioValue"
+      type="radio"
       class="maz-mr-2"
-      @change="$emit('input', $event.target.checked)"
+      @change="$emit('input', $event.target.value)"
     >
     <label
       :for="uniqueId"
@@ -25,13 +25,14 @@
 import uniqueId from './../../mixins/uniqueId'
 
 export default {
-  name: 'MazCheckbox',
+  name: 'MazRadio',
   mixins: [uniqueId],
   props: {
-    value: { type: Boolean, required: true },
+    value: { type: String, required: true },
     id: { type: String, default: null },
     color: { type: String, default: 'primary' },
-    name: { type: String, default: 'maz-checkbox'}
+    name: { type: String, default: 'maz-radio'},
+    radioValue: { type: String, required: true }
   }
 }
 </script>

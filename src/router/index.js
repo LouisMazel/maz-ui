@@ -20,6 +20,7 @@ const componentsRoutes = [
   'MazSearchDoc',
   'MazSliderDoc',
   'MazSwitchDoc',
+  'MazRadioDoc',
   'MazCheckboxDoc',
   'MazDropzoneDoc',
   'MazPlotlyDoc',

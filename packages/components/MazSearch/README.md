@@ -14,6 +14,7 @@
 | itemText  | It's a key name of your result object to be shown in the list     | `String`  | `false`  | -       |
 | dark      | Enable or disable the `dark-mode`                                 | `Boolean` | `false`  | -       |
 | noData    | to show `no-data` slot (when you request has no results)          | `Boolean` | `false`  | -       |
+| color     | Choose your color                                                 | `String`  | `false`  | primary |
 
 <!-- @vuese:MazSearch:props:end -->
 
