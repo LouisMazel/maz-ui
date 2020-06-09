@@ -11,6 +11,7 @@
 | shortcut       | -           | `String`  | `false`  | -       |
 | locale         | -           | `String`  | `false`  | -       |
 | position       | -           | `String`  | `true`   | -       |
+| color          | -           | `String`  | `true`   | -       |
 | hasHeader      | -           | `Boolean` | `true`   | -       |
 | hasFooter      | -           | `Boolean` | `true`   | -       |
 | hasValidate    | -           | `Boolean` | `true`   | -       |

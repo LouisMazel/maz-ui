@@ -17,6 +17,7 @@ module.exports = {
   'maz-picker': './packages/components/MazPicker/index.js',
   'maz-plotly': './packages/components/MazPlotly/index.js',
   'maz-phone-number-input': './packages/components/MazPhoneNumberInput/index.js',
+  'maz-radio': './packages/components/MazRadio/index.js',
   'maz-read-more': './packages/components/MazReadMore/index.js',
   'maz-responsive-menu': './packages/components/MazResponsiveMenu/index.js',
   'maz-search': './packages/components/MazSearch/index.js',

@@ -10,6 +10,7 @@
 | format         | -           | `String`  | `false`  | -       |
 | shortcut       | -           | `String`  | `false`  | -       |
 | locale         | -           | `String`  | `false`  | -       |
+| color          | -           | `String`  | `false`  | -       |
 | minDate        | -           | `Object`  | `false`  | -       |
 | maxDate        | -           | `Object`  | `false`  | -       |
 | noWeekendsDays | -           | `Boolean` | `false`  | -       |

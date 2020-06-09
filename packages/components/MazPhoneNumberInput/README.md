@@ -24,6 +24,7 @@
 | noCountrySelector  | The country selector is not shown, you can validate your phone number with the country code set                                                                                    | `Boolean` | `false`  | -       |
 | showCodeOnList     | Show the country phone code in the list                                                                                                                                            | `Boolean` | `false`  | -       |
 | dark               | Enable the dark mode                                                                                                                                                               | `Boolean` | `false`  | -       |
+| color              | Use color                                                                                                                                                                          | `String`  | `false`  | primary |
 
 <!-- @vuese:MazPhoneNumberInput:props:end -->
 

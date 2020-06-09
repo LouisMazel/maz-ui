@@ -14,7 +14,7 @@
 | size               | -           | `String`            | `false`  | -              |
 | error              | -           | `Boolean`           | `false`  | -              |
 | disabled           | -           | `Boolean`           | `false`  | -              |
-| valid              | -           | `Boolean`           | `false`  | -              |
+| success            | -           | `Boolean`           | `false`  | -              |
 | dark               | -           | `Boolean`           | `false`  | -              |
 | items              | -           | `Array`             | `true`   | -              |
 | preferredCountries | -           | `Array`             | `false`  | -              |
@@ -22,6 +22,7 @@
 | ignoredCountries   | -           | `Array`             | `false`  | -              |
 | noFlags            | -           | `Boolean`           | `false`  | -              |
 | showCodeOnList     | -           | `Boolean`           | `false`  | -              |
+| color              | -           | `String`            | `false`  | primary        |
 
 <!-- @vuese:CountrySelector:props:end -->
 

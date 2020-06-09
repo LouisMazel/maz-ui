@@ -1,15 +1,23 @@
 <template>
-  <div class="maz-checkbox-doc">
+  <div class="maz-radio-doc">
     <h3>
       Examples
     </h3>
 
     <ComponentContainer>
-      <MazCheckbox v-model="checkboxValue">
-        Checkbox label
-      </MazCheckbox>
+      <MazRadio
+        v-for="color in colors"
+        :key="color"
+        v-model="radioValue"
+        :color="color"
+        :radio-value="color"
+        class="maz-mb-2"
+      >
+        Radio - color="{{ color }}"
+      </MazRadio>
+
       <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
-      <strong>Value</strong>: {{ checkboxValue }}
+      <strong>Value</strong>: {{ radioValue }}
     </ComponentContainer>
     <hr
       id="howToUseIt"
@@ -23,18 +31,18 @@
       language="html"
       class="maz-mb-0"
       code="<template>
-  <MazCheckbox v-model=&quot;checkboxValue&quot;>
+  <MazRadio v-model=&quot;radioValue&quot;>
     Checkbox label
-  </MazCheckbox>
+  </MazRadio>
 </template>
 
 <script>
-  import { MazCheckbox } from 'maz-ui'
+  import { MazRadio } from 'maz-ui'
   export default {
-    components: { MazCheckbox },
+    components: { MazRadio },
     data () {
       return {
-        checkboxValue: true
+        radioValue: false
       }
     }
   }
@@ -44,11 +52,14 @@
 </template>
 
 <script>
+import { COLORS } from '@/constantes'
+
 export default {
-  name: 'MazCheckboxDoc',
+  name: 'MazRadioDoc',
   data () {
     return {
-      checkboxValue: false
+      radioValue: 'primary',
+      colors: COLORS
     }
   }
 }

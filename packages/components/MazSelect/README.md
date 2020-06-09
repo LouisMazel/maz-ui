@@ -18,6 +18,7 @@
 | placeholder       | The input label                                             | `String`  | `false`  | Select option     |
 | search            | When is `true` the select has an input to search in options | `Boolean` | `false`  | -                 |
 | searchPlaceholder | the search input placeholder                                | `String`  | `false`  | Search in options |
+| color             | the search input placeholder                                | `String`  | `false`  | primary           |
 
 <!-- @vuese:MazSelect:props:end -->
 
