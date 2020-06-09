@@ -42,6 +42,7 @@
         placeholder="Search a person"
         left-icon-name="search"
         :loading="loading"
+        color="secondary"
         clearable
         item-value="email"
         @request="searchResults"
@@ -158,6 +159,7 @@ export default {
     placeholder="Search a person"
     left-icon-name="search"
     :loading="loading"
+    color="secondary"
     clearable
     item-value="email"
     :no-data="!results && !results.length"
