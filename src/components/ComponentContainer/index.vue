@@ -1,6 +1,6 @@
 <template>
-  <div class="component-container maz-position-relative maz-bg-white maz-my-4 maz-elevation">
-    <div class="maz-p-4 maz-bg-color">
+  <div class="component-container maz-position-relative maz-bg-white maz-my-4 maz-elevation maz-border-radius">
+    <div class="maz-p-4 maz-bg-color maz-border-radius">
       <slot />
     </div>
     <div
@@ -26,7 +26,6 @@
 export default {
   name: 'ComponentContainer',
   props: {
-    dark: { type: Boolean, default: false },
     code: { type: String, default: null },
     language: { type: String, default: 'html' }
   },
@@ -42,7 +41,6 @@ export default {
   .component-container {
     color: $text-color;
     min-width: 200px;
-    border-radius: $border-radius;
 
     &__footer {
       overflow: hidden;

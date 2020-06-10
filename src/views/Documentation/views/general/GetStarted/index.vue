@@ -150,6 +150,7 @@ import {
   MazSlider,
   MazSidebar,
   MazSpinner,
+  MazStepper,
   MazSwitch,
   MazTabsBar,
   MazTabsContent,
@@ -183,6 +184,7 @@ Vue.use(MazSelect)
 Vue.use(MazSlider)
 Vue.use(MazSidebar)
 Vue.use(MazSpinner)
+Vue.use(MazStepper)
 Vue.use(MazSwitch)
 Vue.use(MazTabsBar)
 Vue.use(MazTabsContent)

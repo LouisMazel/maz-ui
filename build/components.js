@@ -25,6 +25,7 @@ module.exports = {
   'maz-sidebar': './packages/components/MazSidebar/index.js',
   'maz-slider': './packages/components/MazSlider/index.js',
   'maz-spinner': './packages/components/MazSpinner/index.js',
+  'maz-stepper': './packages/components/MazStepper/index.js',
   'maz-switch': './packages/components/MazSwitch/index.js',
   'maz-tabs-bar': './packages/components/MazTabsLayout/MazTabsBar/index.js',
   'maz-tabs-content': './packages/components/MazTabsLayout/MazTabsContent/index.js',

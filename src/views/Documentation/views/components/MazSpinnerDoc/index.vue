@@ -54,25 +54,13 @@
 </template>
 
 <script>
+import { COLORS } from '@/constantes'
+
 export default {
   name: 'MazSpinnerDoc',
   data () {
     return {
-      colors: [
-        'primary',
-        'secondary',
-        'third',
-        'success',
-        'danger',
-        'warning',
-        'grey',
-        'info',
-        'light',
-        'dark',
-        'default',
-        'white',
-        'black'
-      ],
+      colors: COLORS,
       sizes: [20, 40, 60, 80, 100, 120, 140],
       code1: `<MazSpinner
   :color="YOUR_COLOR"
