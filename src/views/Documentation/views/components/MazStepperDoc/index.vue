@@ -51,13 +51,17 @@
 </script>"
         >
           <h4>
-            size="20" - show-step-number - shadow
+            Multiple options
           </h4>
+          <h5 class="maz-text-muted">
+            size="20" - show-step-number - shadow - variant="square"
+          </h5>
           <hr class="maz-border-top maz-border-solid maz-border-color maz-mt-3 maz-mb-5">
           <MazStepper
             v-model="activeStep"
             :steps="5"
             :size="20"
+            variant="square"
             show-step-number
             shadow
           />
@@ -90,7 +94,6 @@
             v-model="activeStep"
             :steps="5"
             disabled
-            show-step-number
             space="between"
           />
         </ComponentContainer>

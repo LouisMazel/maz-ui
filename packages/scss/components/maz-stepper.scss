@@ -8,6 +8,10 @@
       border-radius: 50%;
     }
 
+    &--square {
+      border-radius: calc(1em / 3);
+    }
+
     &:not(.is-active) {
       background-color: $bg-color-light;
       color: darken($bg-color-light, 40%);
