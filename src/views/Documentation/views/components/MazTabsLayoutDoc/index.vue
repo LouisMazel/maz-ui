@@ -231,8 +231,8 @@ export default {
   name: 'MazTabsLayoutDoc',
   data () {
     return {
-      activeTab: 1,
-      stepper: 1,
+      activeTab: 2,
+      stepper: 2,
       tabs: [
         { label: 'First Tab' },
         { label: 'Second Tab' },
