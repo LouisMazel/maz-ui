@@ -4,9 +4,9 @@
 
 <!-- @vuese:MazTabsContent:props:start -->
 
-| Name      | Description | Type     | Required | Default |
-| --------- | ----------- | -------- | -------- | ------- |
-| activeTab | -           | `Number` | `false`  | -       |
+| Name      | Description                                                  | Type     | Required | Default |
+| --------- | ------------------------------------------------------------ | -------- | -------- | ------- |
+| activeTab | set the current active tab (use it you don't use MazTabsBar) | `Number` | `false`  | -       |
 
 <!-- @vuese:MazTabsContent:props:end -->
 
