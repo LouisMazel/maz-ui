@@ -176,25 +176,13 @@
 </template>
 
 <script>
+import { COLORS } from '@/constantes'
+
 export default {
   name: 'MazBtnDoc',
   data () {
     return {
-      btnTypes: [
-        'primary',
-        'secondary',
-        'third',
-        'success',
-        'danger',
-        'warning',
-        'grey',
-        'info',
-        'light',
-        'dark',
-        'default',
-        'white',
-        'black'
-      ],
+      btnTypes: COLORS,
       btnSizes: ['lg', 'basic', 'md', 'sm', 'mini'],
       codeExample: `<template>
   <MazBtn>

@@ -27,6 +27,7 @@ const componentsRoutes = [
   'MazSidebarDoc',
   'MazDialogDoc',
   'MazAvatarDoc',
+  'MazStepperDoc',
   'MazTabsLayoutDoc',
   'MazPaginationDoc',
   'MazLoaderDoc',
