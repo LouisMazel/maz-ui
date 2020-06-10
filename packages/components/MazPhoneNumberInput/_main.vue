@@ -201,6 +201,15 @@
           : this.hasEmptyPhone || this.isValid ? null : `${this.t.example} ${this.phoneNumberExample}`
       },
     },
+    watch: {
+      defaultCountryCode (newValue, oldValue) {
+        if (newValue === oldValue) return
+        this.setLocale(newValue)
+      },
+      value (value) {
+        this.inputValue = value
+      }
+    },
     async mounted () {
       try {
         if (this.inputValue && this.defaultCountryCode) this.emitValues({countryCode: this.defaultCountryCode, phoneNumber: this.inputValue})
@@ -288,12 +297,6 @@
         } catch (err) {
           console.error(err)
         }
-      }
-    },
-    watch: {
-      defaultCountryCode (newValue, oldValue) {
-        if (newValue === oldValue) return
-        this.setLocale(newValue)
       }
     }
   }
