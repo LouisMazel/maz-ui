@@ -22,7 +22,8 @@ export default {
   },
   computed: {
     currentTab () {
-      const tabsBarComponent = this.$parent.$parent.$children.find(c => typeof c.$refs.MazTabsBar !== 'undefined')
+      const tabsBarComponent = this.$parent.$parent.$children.find(c => typeof c.$refs.MazTabsContent !== 'undefined')
+      if (!tabsBarComponent) return 1
       const { tabActive } = tabsBarComponent
       return tabActive
     },
