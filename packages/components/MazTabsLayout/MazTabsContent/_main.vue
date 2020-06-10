@@ -14,6 +14,10 @@
 <script>
 export default {
   name: 'MazTabsContent',
+  props: {
+    // set the current active tab (use it you don't use MazTabsBar)
+    activeTab: { type: Number, default: null }
+  },
   data () {
     return {
       height: 0
@@ -21,6 +25,8 @@ export default {
   },
   computed: {
     currentTab () {
+      const { activeTab } = this
+      if (Number.isInteger(activeTab)) return activeTab - 1
       const tabsBarComponent = this.$parent.$children.find(c => typeof c.$refs.MazTabsBar !== 'undefined')
       const { tabActive } = tabsBarComponent
       return tabActive

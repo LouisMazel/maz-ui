@@ -46,22 +46,27 @@ const getIndexOfCurrentAnchor = (tabs) => {
 export default {
   name: 'MazTabsBar',
   props: {
+    // tabs objects - ex: `[ { label: 'First Tab' }, { label: 'Second Tab', disabled: true }]`
     items: { type: Array, required: true },
-    value: { type: Number, default: 0 },
+    // current tab active
+    value: { type: Number, default: 1 },
+    // set the dark theme
     dark: { type: Boolean, default: false },
+    // the tabs bar will be align on left
     alignLeft: { type: Boolean, default: false },
+    // you should use the history mode with VueRouter
     noUseAnchor: { type: Boolean, default: false }
   },
   data () {
     return {
-      tabActive: this.noUseAnchor ? this.value : getIndexOfCurrentAnchor(this.items),
+      tabActive: this.noUseAnchor ? this.value - 1 : getIndexOfCurrentAnchor(this.items),
       tabsIndicatorState: {}
     }
   },
   watch: {
     tabActive: {
       handler (value) {
-        this.$emit('input', value)
+        this.$emit('input', value + 1)
         this.getTabsIndicatorState()
       },
       immediate: true
@@ -73,7 +78,7 @@ export default {
     },
     selectTab (value) {
       this.tabActive = value
-      this.$emit('input', value)
+      this.$emit('input', value + 1)
     },
     async getTabsIndicatorState () {
       await this.$nextTick()
