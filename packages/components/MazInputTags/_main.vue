@@ -1,6 +1,6 @@
 <template>
   <div
-    class="maz-input-tags maz-flex maz-flex--wrap maz-align-center maz-border-color-hover"
+    class="maz-input-tags maz-flex maz-flex-wrap maz-align-center maz-border-color-hover"
     :class="[{
       'is-focused': isFocus,
       'is-valid': success,
@@ -15,11 +15,11 @@
     <transition-group
       tag="div"
       name="maz-tags"
-      class="maz-flex maz-flex--wrap maz-align-center maz-flex-1"
+      class="maz-flex maz-flex-wrap maz-align-center maz-flex-1"
     >
       <MazBtn
         v-for="(tag, i) in tags"
-        :key="`tag-${tag}-${i}`"
+        :key="i"
         class="maz-input-tags__tag maz-flex maz-align-center"
         :disabled="disabled"
         :color="color"
