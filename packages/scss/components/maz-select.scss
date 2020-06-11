@@ -98,6 +98,7 @@
       border: none;
       color: $text-color;
       outline: none;
+      transition: all 300ms ease-in-out;
 
       &:hover,
       &.keyboard-selected {

@@ -194,8 +194,8 @@ export default {
     itemHeight: { type: Number, default: 35 },
     // List height in pixel
     listHeight: { type: Number, default: 260 },
-    // List width in pixel
-    listWidth: { type: Number, default: null },
+    // List width in pixel or percent (:list-width="100", list-width="100%")
+    listWidth: { type: [Number, String], default: null },
     // The select has no label in the input
     placeholder: { type: String, default: 'Select option' },
     // When is `true` the select you select multiple values
@@ -262,10 +262,12 @@ export default {
       }
     },
     itemListSize () {
+      const { listHeight, listWidth } = this
+      const width = !Number.isInteger(listWidth) ? listWidth : `${listWidth}px`
       return {
-        maxHeight: `${this.listHeight}px`,
-        width: `${this.listWidth}px`,
-        maxWidth: `${this.listWidth}px`
+        maxHeight: `${listHeight}px`,
+        width,
+        maxWidth: width
       }
     },
     tmpValueIndex () {
