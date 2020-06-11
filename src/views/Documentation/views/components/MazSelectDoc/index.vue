@@ -111,10 +111,11 @@
   <MazSelect
     v-model=&quot;multipleValues&quot;
     :options=&quot;optionsMultiple&quot;
-    search
-    size=&quot;lg&quot;
     multiple
+    clearable
+    search
     search-placeholder=&quot;Search in options&quot;
+    size=&quot;lg&quot;
     color=&quot;info&quot;
   >
     <i
@@ -138,10 +139,11 @@
       <MazSelect
         v-model="multipleValues"
         :options="optionsMultiple"
-        search
-        size="lg"
         multiple
+        clearable
+        search
         search-placeholder="Search in options"
+        size="lg"
         color="info"
       >
         <i

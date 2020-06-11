@@ -18,11 +18,11 @@
       <transition-group
         tag="div"
         name="maz-tags"
-        class="maz-flex maz-flex--wrap maz-align-center maz-flex-1"
+        class="maz-flex maz-align-center maz-flex-1"
       >
         <MazBtn
           v-for="({ value: v, label }, i) in selectedOptions"
-          :key="`tag-${v}-${i}`"
+          :key="i"
           class="maz-select__tag maz-flex maz-align-center"
           :disabled="disabled"
           :color="color"
@@ -49,6 +49,7 @@
       :placeholder="placeholderShown"
       :disabled="disabled"
       :focus="hasListOpen"
+      @clear="emitValues(null)"
       @keydown="search ? null : keyboardNav($event)"
       @keyup="$emit('keyup', $event)"
       @focus="openList"
@@ -258,9 +259,11 @@ export default {
         : null
     },
     valueShown () {
-      const { multiple, options } = this
-      const valueSelected = options.filter(c => c.value === this.value)[0]
-      return valueSelected && valueSelected.value && !multiple ? valueSelected.label : null
+      const { multiple, options, values, value } = this
+      const valueSelected = options.filter(({ value: v }) => v === value)[0]
+      return valueSelected && valueSelected.value && !multiple
+        ? valueSelected.label
+        : values[0] ? ' ' : null
     },
     optionsShown () {
       return this.filteredOptions || this.options
@@ -424,10 +427,11 @@ export default {
       overflow-y: hidden;
       overflow-x: auto;
       position: absolute;
-      top: 7px;
+      top: 5px;
       left: 8px;
-      bottom: 7px;
+      bottom: 5px;
       z-index: 1;
+      padding-left: 2px;
       max-width: calc(100% - 80px);
 
       &.maz-left-offset {

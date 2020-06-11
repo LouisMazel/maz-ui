@@ -19,14 +19,14 @@
 .#{$prefix}tags-leave-active {
   opacity: 1;
   transition: all 300ms;
-  position: absolute;
-  transform: translateY(0);
+  // position: absolute;
+  transform: translateX(0);
 }
 
 .#{$prefix}tags-enter,
 .#{$prefix}tags-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
-  position: absolute;
+  // position: absolute;
   transform: translateX(-100%);
 }
 
@@ -204,5 +204,5 @@
 }
 
 .#{$prefix}flip-list-move {
-  transition: transform .6s;
+  transition: transform 600ms;
 }
