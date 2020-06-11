@@ -2,7 +2,7 @@
   <div
     class="maz-select"
     :class="[{
-      'has-list-open': hasListOpen,
+      'has-list-open': hasOpenList,
       'maz-is-dark': dark
     }, `maz-select--${color}`]"
     @blur.capture="closeList($event)"
@@ -48,9 +48,9 @@
       :size="size"
       :placeholder="placeholderShown"
       :disabled="disabled"
-      :focus="hasListOpen"
+      :focus="hasOpenList"
       @clear="emitValues(null)"
-      @keydown="search ? null : keyboardNav($event)"
+      @keydown.prevent="search ? null : keyboardNav($event)"
       @keyup="$emit('keyup', $event)"
       @focus="openList"
       @change="$emit('change', $event)"
@@ -87,10 +87,14 @@
         </slot>
       </div>
     </MazInput>
-    <transition name="maz-slide">
+    <transition :name="listTransition">
       <div
-        v-show="hasListOpen"
-        class="maz-select__options-list maz-flex maz-direction-column"
+        v-show="hasOpenList"
+        class="maz-select__options-list maz-flex"
+        :class="[
+          hasPositionTop ? 'maz-select__options-list--top maz-direction-column-reverse' : 'maz-direction-column',
+          { 'maz-select__options-list--right': hasPositionRight }
+        ]"
         :style="[itemListSize]"
       >
         <MazInput
@@ -102,11 +106,10 @@
           size="sm"
           no-label
           name="new_search_in_options"
-          autocomplete="new_search_in_options"
+          autocomplete="off"
           class="maz-m-1"
           @input="searchInOptions"
           @keydown="keyboardNav"
-          @keydown.enter="updateValue(tmpValue)"
           @keydown.esc="closeList"
         />
         <div
@@ -120,7 +123,7 @@
             type="button"
             :class="[
               {'selected': values.length && values.includes(option.value) },
-              {'keyboard-selected': tmpValue && tmpValue === option.value}
+              {'keyboard-selected': tmpValue === option.value}
             ]"
             class="maz-select__options-list__item flex align-center maz-text-left"
             :style="[optionHeight]"
@@ -143,7 +146,7 @@
               </span>
             </slot>
           </button>
-          <!-- No data template -->
+          <!-- No results template -->
           <slot
             v-if="!optionsShown.length"
             name="no-results"
@@ -206,11 +209,15 @@ export default {
     // the search input placeholder
     color: { type: String, default: 'primary' },
     // input size
-    size: { type: String, default: 'md' }
+    size: { type: String, default: 'md' },
+    // When is `true` the option list is open
+    open: { type: Boolean, default: false },
+    // set the position of option list (`top`, `top right`, `bottom right`)
+    position: { type: String, default: 'left bottom' }
   },
   data () {
     return {
-      hasListOpen: false,
+      listIsOpen: false,
       query: '',
       tmpValue: null,
       searchQuery: null,
@@ -218,6 +225,18 @@ export default {
     }
   },
   computed: {
+    hasPositionTop () {
+      return this.position.includes('top')
+    },
+    hasPositionRight () {
+      return this.position.includes('right')
+    },
+    listTransition () {
+      return this.position.includes('bottom') ? 'maz-slide' : 'maz-slideinvert'
+    },
+    hasOpenList () {
+      return this.open || this.listIsOpen
+    },
     values () {
       const { multiple, value } = this
       if (multiple && !Array.isArray(value) && value !== null) throw new Error('[MazSelect] value should be an array or null')
@@ -250,7 +269,7 @@ export default {
       }
     },
     tmpValueIndex () {
-      return this.options.findIndex(c => c.value === this.tmpValue)
+      return this.optionsShown.findIndex(c => c.value === this.tmpValue)
     },
     selectedValueIndex () {
       const { values, options } = this
@@ -301,20 +320,20 @@ export default {
     closeList (e = {}) {
       if (this.$el.contains(e.relatedTarget)) return
       this.$emit('close')
-      this.hasListOpen = false
+      this.listIsOpen = false
       this.isFocus = false
     },
     openList () {
-      const { disabled, search, values, hasListOpen } = this
+      const { disabled, search, values } = this
       if (!disabled) {
         if (disabled) return
         // sent when the list is open
         this.$emit('open')
         this.isFocus = true
-        this.hasListOpen = true
+        this.listIsOpen = true
         this.selectFirstValue()
         if (search) this.focusSearchInput()
-        if (values.length && hasListOpen) this.scrollToSelectedOnFocus(this.selectedValueIndex)
+        if (values.length) this.scrollToSelectedOnFocus(this.selectedValueIndex)
       }
     },
     clearSearch () {
@@ -322,10 +341,10 @@ export default {
       this.filteredOptions = null
     },
     async reset () {
+      this.clearSearch()
       if (this.multiple) return
       this.closeList()
       await this.$nextTick()
-      this.clearSearch()
     },
     selectFirstValue () {
       const { multiple, value, options } = this
@@ -361,28 +380,25 @@ export default {
     },
     keyboardNav (e) {
       const code = e.keyCode
-      const { hasListOpen, tmpValueIndex, options, openList } = this
+      const { hasOpenList, tmpValueIndex, optionsShown, openList, tmpValue, search } = this
       if (code === 40 || code === 38) {
-        if (e.view && e.view.event) {
-          // TODO : It's not compatible with FireFox
-          e.view.event.preventDefault()
-        }
-        if (!hasListOpen) openList()
+        if (!hasOpenList) openList()
         let index = code === 40 ? tmpValueIndex + 1 : tmpValueIndex - 1
-        if (index === -1 || index >= options.length) {
+        if (index === -1 || index >= optionsShown.length) {
           index = index === -1
-            ? options.length - 1
+            ? optionsShown.length - 1
             : 0
         }
-        this.tmpValue = options[index].value
+        this.tmpValue = optionsShown[index].value
         this.scrollToSelectedOnFocus(index)
       } else if (code === 13) {
         // enter key
-        // this.hasListOpen ? this.updateValue(this.tmpValue) : this.openList()
+        e.preventDefault()
+        hasOpenList ? this.updateValue(tmpValue) : this.openList()
       } else if (code === 27) {
         // escape key
         this.closeList()
-      } else {
+      } else if (!search) {
         // typing an option's name
         this.searching(e)
       }
@@ -397,7 +413,7 @@ export default {
       if (code === 8 && this.query !== '') {
         this.query = this.query.substring(0, this.query.length - 1)
       } else if (/[a-zA-Z-e ]/.test(q)) {
-        if (!this.hasListOpen) this.openList()
+        if (!this.hasOpenList) this.openList()
         this.query += q.toLowerCase()
         const resultIndex = this.options.findIndex(o => {
           this.tmpValue = o.value
@@ -409,11 +425,10 @@ export default {
       }
     },
     searchInOptions (query) {
-      this.searchQuery = query
-      const searchQuery = query // .toLowerCase()
-      const filteredOptions = this.options.filter(o => {
-        return o.label.toLowerCase().includes(searchQuery)
-      })
+      this.searchQuery = query === '' ? null : query
+      if (!this.searchQuery) return this.filteredOptions = this.options
+      const searchQuery = query.toLowerCase()
+      const filteredOptions = this.options.filter(o => o.value && o.label.toLowerCase().includes(searchQuery))
       this.tmpValue = filteredOptions.length ? filteredOptions[0].value : null
       this.filteredOptions = filteredOptions
     }
