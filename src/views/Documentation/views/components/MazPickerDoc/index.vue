@@ -174,7 +174,14 @@
           position="top right"
           :locale="locale"
           @formatted="pickerRangeValuesFormatted = $event"
-        />
+        >
+          <i
+            slot="icon-left"
+            class="material-icons"
+          >
+            date_range
+          </i>
+        </MazPicker>
       </ComponentContainer>
 
       <ComponentContainer :code="inlineExample">
@@ -476,7 +483,14 @@ export default {
     position="bottom right"
     :locale="locale"
     @formatted="pickerRangeValuesFormatted = $event"
-  />
+  >
+    <i
+      slot="icon-left"
+      class="material-icons"
+    >
+      date_range
+    </i>
+  </MazPicker>
 </template>
 
 export default {
