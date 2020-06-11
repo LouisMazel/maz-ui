@@ -7,18 +7,52 @@
     }, `maz-select--${color}`]"
     @blur.capture="closeList($event)"
   >
+    <div
+      v-if="multiple"
+      ref="SelectedTags"
+      class="maz-select__tags maz-flex maz-align-center"
+      :class="{
+        'maz-left-offset': hasLeftIcon
+      }"
+    >
+      <transition-group
+        tag="div"
+        name="maz-tags"
+        class="maz-flex maz-align-center maz-flex-1"
+      >
+        <MazBtn
+          v-for="({ value: v, label }, i) in selectedOptions"
+          :key="i"
+          class="maz-select__tag maz-flex maz-align-center"
+          :disabled="disabled"
+          :color="color"
+          :size="size"
+          @click.stop="removeOption(v)"
+        >
+          <span class="maz-select__tag__text">
+            {{ label }}
+          </span>
+          <i class="maz-select__tag__clear material-icons">
+            close
+          </i>
+        </MazBtn>
+      </transition-group>
+    </div>
     <MazInput
       ref="textField"
       :value="valueShown"
       v-bind="$attrs"
       readonly
+      :no-label="hasNoLabel"
       :color="color"
-      :placeholder="placeholder"
+      :size="size"
+      :placeholder="placeholderShown"
       :disabled="disabled"
       :focus="hasListOpen"
+      @clear="emitValues(null)"
       @keydown="search ? null : keyboardNav($event)"
       @keyup="$emit('keyup', $event)"
-      @focus="openList()"
+      @focus="openList"
       @change="$emit('change', $event)"
     >
       <!-- custom left icon -->
@@ -62,14 +96,16 @@
         <MazInput
           v-if="search"
           ref="SearchInput"
+          :color="color"
           :value="searchQuery"
           :placeholder="searchPlaceholder"
           size="sm"
           no-label
-          name="search_in_options"
+          name="new_search_in_options"
           autocomplete="new_search_in_options"
           class="maz-m-1"
           @input="searchInOptions"
+          @keydown="keyboardNav"
           @keydown.enter="updateValue(tmpValue)"
           @keydown.esc="closeList"
         />
@@ -83,8 +119,8 @@
             tabindex="-1"
             type="button"
             :class="[
-              {'selected': value === option.value},
-              {'keyboard-selected': tmpValue === option.value}
+              {'selected': values.length && values.includes(option.value) },
+              {'keyboard-selected': tmpValue && tmpValue === option.value}
             ]"
             class="maz-select__options-list__item flex align-center maz-text-left"
             :style="[optionHeight]"
@@ -92,15 +128,15 @@
           >
             <!-- Item template -->
             <slot
-              :option="{ ...option, isSelected: value === option.value }"
+              :option="{ ...option, isSelected: values.includes(option.value) }"
               tag="div"
             >
               <!-- `<span>{{ option.label }}</span>`-->
               <span
                 class="maz-dots-text"
                 :class="[
-                  { 'maz-text-muted' : !option.value && value !== option.value },
-                  value === option.value ? 'maz-text-white' : 'maz-text-color'
+                  { 'maz-text-muted' : !option.value },
+                  values.includes(option.value) ? 'maz-text-white' : 'maz-text-color'
                 ]"
               >
                 {{ option.label }}
@@ -128,6 +164,7 @@
 
 <script>
 import MazInput from '../MazInput'
+import MazBtn from '../MazBtn'
 import uniqueId from './../../mixins/uniqueId'
 
 /**
@@ -136,13 +173,13 @@ import uniqueId from './../../mixins/uniqueId'
 
 export default {
   name: 'MazSelect',
-  components: { MazInput },
+  components: { MazInput, MazBtn },
   mixins: [uniqueId],
   props: {
     // is the value of the input
     value: {
       required: true,
-      validator: prop => ['number', 'string', 'boolean'].includes(typeof prop) || prop === null
+      validator: prop => ['number', 'string', 'boolean'].includes(typeof prop) || Array.isArray(prop) || prop === null
     },
     // list of the options
     options: { type: Array, required: true },
@@ -153,30 +190,52 @@ export default {
     // Item in list height in pixel
     itemHeight: { type: Number, default: 35 },
     // List height in pixel
-    listHeight: { type: Number, default: 210 },
+    listHeight: { type: Number, default: 260 },
     // List width in pixel
     listWidth: { type: Number, default: null },
-    // The input label
+    // The select has no label in the input
     placeholder: { type: String, default: 'Select option' },
+    // When is `true` the select you select multiple values
+    noLabel: { type: Boolean, default: false },
+    // When is `true` the select you select multiple values
+    multiple: { type: Boolean, default: false },
     // When is `true` the select has an input to search in options
     search: { type: Boolean, default: false },
     // the search input placeholder
     searchPlaceholder: { type: String, default: 'Search in options' },
     // the search input placeholder
-    color: { type: String, default: 'primary' }
+    color: { type: String, default: 'primary' },
+    // input size
+    size: { type: String, default: 'md' }
   },
   data () {
     return {
-      selectedIndex: null,
       hasListOpen: false,
       query: '',
-      tmpValue: this.value,
-      indexItemToShow: 0,
+      tmpValue: null,
       searchQuery: null,
       filteredOptions: null
     }
   },
   computed: {
+    values () {
+      const { multiple, value } = this
+      if (multiple && !Array.isArray(value) && value !== null) throw new Error('[MazSelect] value should be an array or null')
+      if (!multiple && Array.isArray(value)) throw new Error('[MazSelect] value should be a string, a number or null')
+      return value
+        ? multiple ? [...value]: [value]
+        : []
+    },
+    hasLeftIcon () {
+      return this.$attrs.leftIconName || this.$slots['icon-left']
+    },
+    placeholderShown () {
+      const { placeholder, multiple, values } = this
+      return multiple && values.length ? null : placeholder
+    },
+    hasNoLabel () {
+      return this.multiple || this.noLabel
+    },
     optionHeight () {
       return {
         height: `${this.itemHeight}px`,
@@ -194,24 +253,51 @@ export default {
       return this.options.findIndex(c => c.value === this.tmpValue)
     },
     selectedValueIndex () {
-      return this.value
-        ? this.options.findIndex(c => c.value === this.value)
+      const { values, options } = this
+      return values.length
+        ? options.findIndex(c => c.value === values[values.length - 1])
         : null
     },
     valueShown () {
-      const valueSelected = this.options.filter(c => c.value === this.value)[0]
-      return valueSelected && valueSelected.value ? valueSelected.label : null
+      const { multiple, options, values, value } = this
+      const valueSelected = options.filter(({ value: v }) => v === value)[0]
+      return valueSelected && valueSelected.value && !multiple
+        ? valueSelected.label
+        : values[0] ? ' ' : null
     },
     optionsShown () {
       return this.filteredOptions || this.options
+    },
+    selectedOptions () {
+      const { values, options } = this
+      const optionsSelected = []
+      values.forEach(v => optionsSelected.push(options.find(({ value }) => v === value)))
+      return optionsSelected
     }
   },
   watch: {
-    value (val) {
-      this.tmpValue = val
+    value: {
+      handler () {
+        const { multiple } = this
+        if (multiple) this.scrollTags()
+      },
+      immediate: true
     }
   },
   methods: {
+    async scrollTags () {
+      await this.$nextTick()
+      const { SelectedTags } = this.$refs
+      SelectedTags.scrollLeft = SelectedTags.clientWidth
+    },
+    removeOption (value) {
+      const { values, multiple } = this
+      const leftValues = values.filter(v => v !== value)
+      const valueToReturn = leftValues.length
+        ? multiple ? leftValues : leftValues[0]
+        : null
+      this.emitValues(valueToReturn)
+    },
     closeList (e = {}) {
       if (this.$el.contains(e.relatedTarget)) return
       this.$emit('close')
@@ -219,15 +305,16 @@ export default {
       this.isFocus = false
     },
     openList () {
-      if (!this.disabled) {
-        if (this.disabled) return
+      const { disabled, search, values, hasListOpen } = this
+      if (!disabled) {
+        if (disabled) return
         // sent when the list is open
         this.$emit('open')
         this.isFocus = true
         this.hasListOpen = true
         this.selectFirstValue()
-        if (this.search) this.focusSearchInput()
-        if (this.value && this.hasListOpen) this.scrollToSelectedOnFocus(this.selectedValueIndex)
+        if (search) this.focusSearchInput()
+        if (values.length && hasListOpen) this.scrollToSelectedOnFocus(this.selectedValueIndex)
       }
     },
     clearSearch () {
@@ -235,53 +322,63 @@ export default {
       this.filteredOptions = null
     },
     async reset () {
+      if (this.multiple) return
       this.closeList()
       await this.$nextTick()
       this.clearSearch()
     },
     selectFirstValue () {
-      if (this.value) return
-      // return the select input
-      // @arg the option value selected
-      const value = this.options[0].value || null
-      this.tmpValue = value
-      this.$emit('input', value)
+      const { multiple, value, options } = this
+      if (value || multiple) return
+      const valueToReturn = options[0].value || null
+      this.tmpValue = valueToReturn
+      this.emitValues(valueToReturn, true)
     },
-    async updateValue (val) {
-      this.tmpValue = val
-      this.$emit('input', val || null)
-      await this.$nextTick()
-      this.reset()
+    updateValue (value) {
+      const { multiple, values, removeOption } = this
+      if (values.includes(value)) return removeOption(value)
+      this.tmpValue = value
+      if (value) values.push(value)
+      const valueToReturn = multiple && value ? values : value
+      this.emitValues(valueToReturn)
     },
     async focusSearchInput () {
       await this.$nextTick()
       const { SearchInput } = this.$refs
       SearchInput.$el.querySelector('input').focus()
     },
-    scrollToSelectedOnFocus (arrayIndex) {
-      this.$nextTick(() => {
-        this.$refs.optionsList.scrollTop = arrayIndex * this.itemHeight - (this.itemHeight * 3)
-      })
+    async emitValues (values, noReset) {
+      // return the select input
+      // @arg the option value selected
+      this.$emit('input', values)
+      if (noReset) return
+      await this.$nextTick()
+      this.reset()
+    },
+    async scrollToSelectedOnFocus (arrayIndex) {
+      await this.$nextTick()
+      this.$refs.optionsList.scrollTop = arrayIndex * this.itemHeight - (this.itemHeight * 3)
     },
     keyboardNav (e) {
       const code = e.keyCode
+      const { hasListOpen, tmpValueIndex, options, openList } = this
       if (code === 40 || code === 38) {
         if (e.view && e.view.event) {
           // TODO : It's not compatible with FireFox
           e.view.event.preventDefault()
         }
-        if (!this.hasListOpen) this.openList()
-        let index = code === 40 ? this.tmpValueIndex + 1 : this.tmpValueIndex - 1
-        if (index === -1 || index >= this.options.length) {
+        if (!hasListOpen) openList()
+        let index = code === 40 ? tmpValueIndex + 1 : tmpValueIndex - 1
+        if (index === -1 || index >= options.length) {
           index = index === -1
-            ? this.options.length - 1
+            ? options.length - 1
             : 0
         }
-        this.tmpValue = this.options[index].value
+        this.tmpValue = options[index].value
         this.scrollToSelectedOnFocus(index)
       } else if (code === 13) {
         // enter key
-        this.hasListOpen ? this.updateValue(this.tmpValue) : this.openList()
+        // this.hasListOpen ? this.updateValue(this.tmpValue) : this.openList()
       } else if (code === 27) {
         // escape key
         this.closeList()
@@ -323,3 +420,47 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+  .maz-select {
+    &__tags {
+      overflow-y: hidden;
+      overflow-x: auto;
+      position: absolute;
+      top: 5px;
+      left: 8px;
+      bottom: 5px;
+      z-index: 1;
+      padding-left: 2px;
+      max-width: calc(100% - 80px);
+
+      &.maz-left-offset {
+        left: 40px;
+      }
+    }
+
+    &__tag {
+      margin-right: 4px;
+      border-radius: 4px;
+      padding: 5px 4px 5px 7px;
+      color: white;
+
+      &__text {
+        font-size: .875rem;
+        margin-right: 5px;
+      }
+
+      &__clear {
+        font-size: 1rem;
+      }
+
+      &.maz-btn--sm {
+        padding: 3px 2px 3px 5px;
+      }
+
+      &.maz-btn--lg {
+        padding: 8px 5px 8px 10px;
+      }
+    }
+  }
+</style>

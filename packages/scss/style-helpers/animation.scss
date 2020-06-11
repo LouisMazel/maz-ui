@@ -3,7 +3,7 @@
 .#{$prefix}slide-leave-active {
   opacity: 1;
   z-index: 998;
-  transition: all .3s;
+  transition: all 300ms;
   transform: translateY(0);
 }
 
@@ -18,14 +18,15 @@
 .#{$prefix}tags-enter-active,
 .#{$prefix}tags-leave-active {
   opacity: 1;
-  transition: all .3s;
-  position: absolute;
-  transform: translateY(0);
+  transition: all 300ms;
+  // position: absolute;
+  transform: translateX(0);
 }
 
 .#{$prefix}tags-enter,
 .#{$prefix}tags-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
+  // position: absolute;
   transform: translateX(-100%);
 }
 
@@ -34,7 +35,7 @@
 .#{$prefix}slideinvert-leave-active {
   opacity: 1;
   z-index: 998;
-  transition: all .3s;
+  transition: all 300ms;
   transform: translateY(0);
 }
 
@@ -51,7 +52,7 @@
 .#{$prefix}slideprev-leave-active,
 .#{$prefix}slideprev-enter-active {
   position: absolute;
-  transition: all .3s;
+  transition: all 300ms;
 }
 
 .#{$prefix}slidenext-enter,
@@ -70,7 +71,7 @@
 .#{$prefix}slidevprev-leave-active,
 .#{$prefix}slidevprev-enter-active {
   position: absolute;
-  transition: all .3s;
+  transition: all 300ms;
 }
 
 .#{$prefix}slidevnext-enter,
@@ -203,5 +204,5 @@
 }
 
 .#{$prefix}flip-list-move {
-  transition: transform .6s;
+  transition: transform 600ms;
 }

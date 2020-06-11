@@ -221,10 +221,6 @@ $LG_SIZE: 3.42rem !default;
 
     #{$this}__tag {
       padding: 3px 2px 3px 5px;
-
-      &__text {
-        margin-right: 5px;
-      }
     }
   }
 
@@ -238,10 +234,6 @@ $LG_SIZE: 3.42rem !default;
 
     #{$this}__tag {
       padding: 8px 5px 8px 10px;
-
-      &__text {
-        margin-right: 5px;
-      }
     }
   }
 }
