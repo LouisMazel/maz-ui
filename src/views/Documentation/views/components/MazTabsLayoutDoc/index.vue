@@ -231,7 +231,6 @@ export default {
   name: 'MazTabsLayoutDoc',
   data () {
     return {
-      showText: false,
       activeTab: 2,
       stepper: 2,
       tabs: [
