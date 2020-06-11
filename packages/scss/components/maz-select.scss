@@ -53,7 +53,6 @@
       }
 
       &.selected {
-        color: white;
         font-weight: 600;
       }
     }
@@ -75,6 +74,11 @@
     &--#{$name} {
       .maz-select__options-list__item.selected {
         background-color: $color;
+
+        &:hover,
+        &.keyboard-selected {
+          background-color: darken($color, 10%);
+        }
       }
     }
   }
