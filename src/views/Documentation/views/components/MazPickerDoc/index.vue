@@ -375,7 +375,7 @@ export default {
         { label: 'Spanish', value: 'es' },
         { label: 'Russian', value: 'ru' }
       ],
-      pickerValue: '22-03-2020 01:13',
+      pickerValue: null,
       pickerFormatted: null,
       codeExample: `<template>
   <MazPicker
@@ -392,7 +392,7 @@ export default {
     }
   }
 }`,
-      pickerValue2: null,
+      pickerValue2: '2020-02-03',
       pickerFormatted2: null,
       clearableExample: `<template>
   <MazPicker
