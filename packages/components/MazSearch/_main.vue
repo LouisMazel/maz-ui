@@ -14,7 +14,18 @@
       @focus="openList"
       @keyup="$emit('keyup', $event)"
       @change="$emit('change', $event)"
-    />
+    >
+      <!-- Custom left icon -->
+      <slot
+        slot="icon-left"
+        name="icon-left"
+      />
+      <!-- Custom right icon -->
+      <slot
+        slot="icon-right"
+        name="icon-right"
+      />
+    </MazInput>
     <transition name="maz-slide">
       <div
         v-if="hasListOpen"

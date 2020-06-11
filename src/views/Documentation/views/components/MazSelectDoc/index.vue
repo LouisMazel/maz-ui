@@ -49,6 +49,12 @@
     search
     search-placeholder=&quot;Search in options&quot;
   >
+    <i
+      slot=&quot;icon-left&quot;
+      class=&quot;material-icons&quot;
+    >
+      add
+    </i>
     <template
       v-slot=&quot;{ option }&quot;
     >
@@ -68,7 +74,7 @@
 </template>"
     >
       <h4>
-        Search & custom options list
+        Search - custom options list - custom left icon
       </h4>
       <p class="maz-mb-3 maz-text-muted">
         Select input with search textfield
@@ -79,6 +85,12 @@
         search
         search-placeholder="Search in options"
       >
+        <i
+          slot="icon-left"
+          class="material-icons"
+        >
+          add
+        </i>
         <template
           v-slot="{ option }"
         >

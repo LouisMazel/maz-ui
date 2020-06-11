@@ -21,6 +21,11 @@
       @focus="openList()"
       @change="$emit('change', $event)"
     >
+      <!-- custom left icon -->
+      <slot
+        slot="icon-left"
+        name="icon-left"
+      />
       <div
         slot="icon-right"
         class="maz-select__toggle"

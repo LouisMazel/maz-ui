@@ -19,6 +19,11 @@
       :focus="hasPickerOpen"
       @focus="openPicker(true)"
     >
+      <!-- Custom left icon -->
+      <slot
+        slot="icon-left"
+        name="icon-left"
+      />
       <div
         slot="icon-right"
         class="maz-picker__arrow maz-flex maz-flex-center"
