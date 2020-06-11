@@ -41,9 +41,24 @@ export default {
     currentTab: {
       async handler () {
         await this.$nextTick()
-        this.height = this.$children[this.currentTab].$el.offsetHeight
+        const { currentTab } = this
+        this.height = this.$children[currentTab].$el.offsetHeight
+        this.resizeObserver()
       },
       immediate: true
+    }
+  },
+  methods: {
+    resizeObserver () {
+      const { $children, currentTab } = this
+      const resizeObserver = new ResizeObserver(entries => {
+        for (const entry of entries) {
+          this.height = entry.target.offsetHeight
+        }
+      })
+
+      $children.forEach(d => resizeObserver.unobserve(d.$el))
+      resizeObserver.observe($children[currentTab].$el)
     }
   }
 }
