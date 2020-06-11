@@ -35,9 +35,11 @@
 
 <!-- @vuese:MazSearch:slots:start -->
 
-| Name    | Description      | Default Slot Content                                       |
-| ------- | ---------------- | ---------------------------------------------------------- |
-| default | Item template    | `<p>{{ item value }}</p>`                                  |
-| no-data | No data template | `<i class="material-icons maz-text-danger">search_off</i>` |
+| Name       | Description       | Default Slot Content                                       |
+| ---------- | ----------------- | ---------------------------------------------------------- |
+| icon-left  | Custom left icon  | -                                                          |
+| icon-right | Custom right icon | -                                                          |
+| default    | Item template     | `<p>{{ item value }}</p>`                                  |
+| no-data    | No data template  | `<i class="material-icons maz-text-danger">search_off</i>` |
 
 <!-- @vuese:MazSearch:slots:end -->

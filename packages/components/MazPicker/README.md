@@ -64,9 +64,10 @@
 
 <!-- @vuese:MazPicker:slots:start -->
 
-| Name  | Description    | Default Slot Content              |
-| ----- | -------------- | --------------------------------- |
-| arrow | The arrow icon | Default arrow svg `<ArrowIcon />` |
+| Name      | Description      | Default Slot Content              |
+| --------- | ---------------- | --------------------------------- |
+| icon-left | Custom left icon | -                                 |
+| arrow     | The arrow icon   | Default arrow svg `<ArrowIcon />` |
 
 <!-- @vuese:MazPicker:slots:end -->
 
