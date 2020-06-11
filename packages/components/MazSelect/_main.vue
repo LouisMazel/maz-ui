@@ -27,7 +27,7 @@
           :disabled="disabled"
           :color="color"
           :size="size"
-          @click.stop="removeOption(v)"
+          @click.prevent.stop="removeOption(v)"
         >
           <span class="maz-select__tag__text">
             {{ label }}
@@ -124,7 +124,7 @@
             ]"
             class="maz-select__options-list__item flex align-center maz-text-left"
             :style="[optionHeight]"
-            @click.stop="updateValue(option.value)"
+            @click.prevent.stop="updateValue(option.value)"
           >
             <!-- Item template -->
             <slot
