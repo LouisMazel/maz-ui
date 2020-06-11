@@ -392,7 +392,7 @@ export default {
     }
   }
 }`,
-      pickerValue2: '2020-02-03',
+      pickerValue2: null,
       pickerFormatted2: null,
       clearableExample: `<template>
   <MazPicker

@@ -148,10 +148,11 @@ export default {
       return !!this.value && Object.keys(this.value).includes('start')
     },
     currentValue () {
+      const { value } = this
       if (this.isRangeMode) {
-        return this.value.end || this.value.start || moment()
+        return value.end || value.start || moment()
       }
-      return this.value || moment()
+      return value || moment()
     }
   },
   watch: {
@@ -168,9 +169,10 @@ export default {
           !this.months.length || this.isDifferentYear(newCurrentValue, oldCurrentValue) ||
           (this.monthsAreDifferent(newCurrentValue, oldCurrentValue) && !this.valueIsInMonths(newCurrentValue.month()))
         ) {
+          const { value } = this
           const currentYear = this.currentValue.year()
           const currentMonth = this.currentValue.month()
-          const hasRangeValuesOnDifferentsMonths = this.value.start && this.value.end && this.value.start.month() !== this.value.end.month()
+          const hasRangeValuesOnDifferentsMonths = value && value.start && value.end && value.start.month() !== value.end.month()
           this.months = this.getMonths({
             year: currentYear,
             month: hasRangeValuesOnDifferentsMonths ? currentMonth - 1 : currentMonth
