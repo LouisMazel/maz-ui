@@ -22,7 +22,7 @@
       >
         <MazBtn
           v-for="({ value: v, label }, i) in selectedOptions"
-          :key="i"
+          :key="`tags-${i}`"
           class="maz-select__tag maz-flex maz-align-center"
           :disabled="disabled"
           :color="color"
