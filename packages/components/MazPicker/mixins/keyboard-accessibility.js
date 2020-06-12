@@ -70,6 +70,7 @@ export default {
         } else if (e.keyCode === 40) {
           this.nextWeek()
         } else if (e.keyCode === 32 || e.keyCode === 13) {
+          e.preventDefault()
           this.selectDay(this.keyboardSelectedDay)
         } else if (e.keyCode === 36) {
           this.previousMonth()
@@ -80,7 +81,7 @@ export default {
         }
         // if ('activeElement' in document) document.activeElement.blur()
       } catch (err) {
-        throw new Error('An error occured while switch date' + err)
+        throw new Error('An error occured while switch date ' + err)
       }
     },
     previousWeek () {
@@ -106,7 +107,9 @@ export default {
     },
     nextWeek () {
       const keyboardSelectedDay = this.currentValue.add(1, 'week')
+      console.log('this.isDisabled(keyboardSelectedDay)', this.isDisabled(keyboardSelectedDay))
       if (!this.isDisabled(keyboardSelectedDay)) {
+        console.log('okokokok')
         this.keyboardSelectedDay = keyboardSelectedDay
         this.checkMonth()
       }
