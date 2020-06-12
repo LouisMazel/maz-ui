@@ -107,9 +107,7 @@ export default {
     },
     nextWeek () {
       const keyboardSelectedDay = this.currentValue.add(1, 'week')
-      console.log('this.isDisabled(keyboardSelectedDay)', this.isDisabled(keyboardSelectedDay))
       if (!this.isDisabled(keyboardSelectedDay)) {
-        console.log('okokokok')
         this.keyboardSelectedDay = keyboardSelectedDay
         this.checkMonth()
       }
