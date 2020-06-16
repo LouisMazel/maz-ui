@@ -123,6 +123,19 @@
   animation: dialog-fade-out .4s;
 }
 
+.#{$prefix}bottom-sheet-enter-active .#{$prefix}bottom-sheet-animation,
+.#{$prefix}bottom-sheet-leave-active .#{$prefix}bottom-sheet-animation {
+  opacity: 1;
+  transition: all 300ms;
+  transform: translateY(0);
+}
+
+.#{$prefix}bottom-sheet-enter .#{$prefix}bottom-sheet-animation,
+.#{$prefix}bottom-sheet-leave-to .#{$prefix}bottom-sheet-animation/* .fade-leave-active below version 2.1.8 */ {
+  opacity: 1;
+  transform: translateY(100%);
+}
+
 @keyframes dialog-fade-in {
   0% {
     transform: translate3d(0, -30px, 0);

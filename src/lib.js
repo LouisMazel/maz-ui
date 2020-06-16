@@ -3,6 +3,7 @@
 /* eslint-disable */
 
 import MazAvatar from '../packages/components/MazAvatar/index.js'
+import MazBottomSheet from '../packages/components/MazBottomSheet/index.js'
 import MazBtn from '../packages/components/MazBtn/index.js'
 import MazBtnGroup from '../packages/components/MazBtnGroup/index.js'
 import MazCheckbox from '../packages/components/MazCheckbox/index.js'
@@ -38,6 +39,7 @@ import { version } from '../package.json'
 
 const components = [
   MazAvatar,
+  MazBottomSheet,
   MazBtn,
   MazBtnGroup,
   MazCheckbox,
@@ -85,6 +87,7 @@ export default {
   version,
   install,
   MazAvatar,
+  MazBottomSheet,
   MazBtn,
   MazBtnGroup,
   MazCheckbox,

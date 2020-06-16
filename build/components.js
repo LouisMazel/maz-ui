@@ -1,5 +1,6 @@
 module.exports = {
   'maz-avatar': './packages/components/MazAvatar/index.js',
+  'maz-bottom-sheet': './packages/components/MazBottomSheet/index.js',
   'maz-btn': './packages/components/MazBtn/index.js',
   'maz-btn-group': './packages/components/MazBtnGroup/index.js',
   'maz-checkbox': './packages/components/MazCheckbox/index.js',
