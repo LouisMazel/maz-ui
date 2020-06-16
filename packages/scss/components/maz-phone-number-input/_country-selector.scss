@@ -183,6 +183,8 @@ $LG_SIZE: 3.42rem !default;
   }
 
   &.has-error {
+    z-index: 1;
+
     .country-selector__input {
       border-color: $danger-color;
     }

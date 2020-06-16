@@ -164,7 +164,7 @@ export default {
     },
     inputValue: {
       get () {
-        return this.inputValueFormatted || this.value
+        return this.inputValueFormatted
       },
       set (phoneNumber) {
         const { countryCode, getAsYouTypeFormat, emitValues } = this
@@ -210,25 +210,24 @@ export default {
     defaultCountryCode (newValue, oldValue) {
       if (newValue === oldValue) return
       this.setLocale(newValue)
-    },
-    value (value) {
-      this.inputValue = value
     }
   },
   async mounted () {
     try {
-      if (this.inputValue && this.defaultCountryCode) this.emitValues({countryCode: this.defaultCountryCode, phoneNumber: this.inputValue})
+      const { defaultCountryCode, fetchCountry, noUseBrowserLocale, fetchCountryCode, setLocale, value } = this
+      if (value) this.inputValue = value
+      // if (inputValue && defaultCountryCode) this.emitValues({countryCode: defaultCountryCode, phoneNumber: inputValue})
 
-      if (this.defaultCountryCode && this.fetchCountry)
+      if (defaultCountryCode && fetchCountry)
         throw new Error('MazPhoneNumberInput: Do not use \'fetch-country\' and \'default-country-code\' options in the same time')
-      if (this.defaultCountryCode && this.noUseBrowserLocale)
+      if (defaultCountryCode && noUseBrowserLocale)
         throw new Error('MazPhoneNumberInput: If you use a \'default-country-code\', do not use \'no-use-browser-locale\' options')
-      if (this.defaultCountryCode) return
+      if (defaultCountryCode) return
 
-      this.fetchCountry
-        ? this.fetchCountryCode()
-        : !this.noUseBrowserLocale
-          ? this.setLocale(browserLocale())
+      fetchCountry
+        ? fetchCountryCode()
+        : !noUseBrowserLocale
+          ? setLocale(browserLocale())
           : null
     } catch (err) {
       throw new Error(err)
@@ -238,7 +237,6 @@ export default {
     getAsYouTypeFormat (payload) {
       const { countryCode, phoneNumber } = payload
       const asYouType = new AsYouType(countryCode)
-      // console.log('asYouType.input(phoneNumber)', asYouType.input(phoneNumber))
       return phoneNumber ? asYouType.input(phoneNumber) : null
     },
     getParsePhoneNumberFromString ({ phoneNumber, countryCode }) {
