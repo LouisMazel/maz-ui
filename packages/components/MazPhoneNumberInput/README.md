@@ -39,6 +39,7 @@
 | focus      | -                       | -                                                                  |
 | blur       | -                       | -                                                                  |
 | change     | -                       | -                                                                  |
+| clear      | -                       | -                                                                  |
 
 <!-- @vuese:MazPhoneNumberInput:events:end -->
 

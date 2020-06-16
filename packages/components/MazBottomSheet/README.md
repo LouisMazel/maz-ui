@@ -1,8 +1,8 @@
-# NBottomSheet
+# MazBottomSheet
 
 ## Props
 
-<!-- @vuese:NBottomSheet:props:start -->
+<!-- @vuese:MazBottomSheet:props:start -->
 
 | Name            | Description | Type      | Required | Default |
 | --------------- | ----------- | --------- | -------- | ------- |
@@ -13,25 +13,25 @@
 | noPadding       | -           | `Boolean` | `false`  | -       |
 | noOverlay       | -           | `Boolean` | `false`  | -       |
 
-<!-- @vuese:NBottomSheet:props:end -->
+<!-- @vuese:MazBottomSheet:props:end -->
 
 ## Events
 
-<!-- @vuese:NBottomSheet:events:start -->
+<!-- @vuese:MazBottomSheet:events:start -->
 
 | Event Name | Description                  | Parameters |
 | ---------- | ---------------------------- | ---------- |
 | input      | Return state of bottom sheet | Boolean    |
 | close      | Emit on close sheet          | -          |
 
-<!-- @vuese:NBottomSheet:events:end -->
+<!-- @vuese:MazBottomSheet:events:end -->
 
 ## Slots
 
-<!-- @vuese:NBottomSheet:slots:start -->
+<!-- @vuese:MazBottomSheet:slots:start -->
 
 | Name    | Description  | Default Slot Content       |
 | ------- | ------------ | -------------------------- |
 | default | Slot content | `<h1>Default content</h1>` |
 
-<!-- @vuese:NBottomSheet:slots:end -->
+<!-- @vuese:MazBottomSheet:slots:end -->
