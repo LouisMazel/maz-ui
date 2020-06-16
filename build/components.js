@@ -1,5 +1,6 @@
 module.exports = {
   'maz-avatar': './packages/components/MazAvatar/index.js',
+  'maz-bottom-sheet': './packages/components/MazBottomSheet/index.js',
   'maz-btn': './packages/components/MazBtn/index.js',
   'maz-btn-group': './packages/components/MazBtnGroup/index.js',
   'maz-checkbox': './packages/components/MazCheckbox/index.js',
@@ -16,6 +17,7 @@ module.exports = {
   'maz-pagination': './packages/components/MazPagination/index.js',
   'maz-picker': './packages/components/MazPicker/index.js',
   'maz-plotly': './packages/components/MazPlotly/index.js',
+  'maz-progress-bar': './packages/components/MazProgressBar/index.js',
   'maz-phone-number-input': './packages/components/MazPhoneNumberInput/index.js',
   'maz-radio': './packages/components/MazRadio/index.js',
   'maz-read-more': './packages/components/MazReadMore/index.js',

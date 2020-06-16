@@ -75,7 +75,7 @@
 </template>"
     >
       <h4>
-        Search - custom options list
+        Search - custom options list - position="top right"
       </h4>
       <p class="maz-mb-3 maz-text-muted">
         Select input with search textfield
@@ -84,6 +84,7 @@
         v-model="selectValue"
         :options="options"
         search
+        position="top right"
         search-placeholder="Search in options"
       >
         <template
@@ -154,7 +155,8 @@
         </i>
       </MazSelect>
     </ComponentContainer>
-    <!-- <ComponentContainer>
+
+    <ComponentContainer>
       <h4 class="maz-mb-3">
         Basic
       </h4>
@@ -163,6 +165,7 @@
         :options="options"
       />
     </ComponentContainer>
+
     <ComponentContainer>
       <h4 class="maz-mb-3">
         Colors
@@ -205,7 +208,17 @@
         :options="options"
         success
       />
-    </ComponentContainer> -->
+    </ComponentContainer>
+    <ComponentContainer>
+      <h4 class="maz-mb-3">
+        Warning
+      </h4>
+      <MazSelect
+        v-model="selectValue"
+        :options="options"
+        warning
+      />
+    </ComponentContainer>
 
     <hr
       id="howToUseIt"

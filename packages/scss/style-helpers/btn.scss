@@ -89,6 +89,39 @@
     }
   }
 
+  &--icon {
+    padding: 0 10px;
+    height: 40px;
+
+    i {
+      font-size: 24px;
+    }
+
+    &.#{$prefix}btn--lg {
+      height: 48px;
+    }
+
+    &.#{$prefix}btn--md {
+      height: 36px;
+    }
+
+    &.#{$prefix}btn--sm {
+      height: 32px;
+
+      i {
+        font-size: 22px;
+      }
+    }
+
+    &.#{$prefix}btn--mini {
+      height: 28px;
+
+      i {
+        font-size: 20px;
+      }
+    }
+  }
+
   &--white,
   &--light {
     color: $text-color;

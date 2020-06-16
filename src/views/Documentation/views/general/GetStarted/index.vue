@@ -125,6 +125,7 @@ Vue.use(MazInput)
       :code="`import Vue from 'vue'
 import {
   MazAvatar,
+  MazBottomSheet,
   MazBtn,
   MazBtnGroup,
   MazCheckbox,
@@ -141,6 +142,7 @@ import {
   MazPagination,
   MazPicker,
   MazPlotly,
+  MazProgressBar,
   MazPhoneNumberInput,
   MazRadio,
   MazReadMore,
@@ -159,6 +161,7 @@ import {
 } from 'maz-ui'
 
 Vue.use(MazAvatar)
+Vue.use(MazBottomSheet)
 Vue.use(MazBtn)
 Vue.use(MazBtnGroup)
 Vue.use(MazCheckbox)
@@ -175,6 +178,7 @@ Vue.use(MazLoader)
 Vue.use(MazPagination)
 Vue.use(MazPicker)
 Vue.use(MazPlotly)
+Vue.use(MazProgressBar)
 Vue.use(MazPhoneNumberInput)
 Vue.use(MazRadio)
 Vue.use(MazReadMore)

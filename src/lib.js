@@ -3,6 +3,7 @@
 /* eslint-disable */
 
 import MazAvatar from '../packages/components/MazAvatar/index.js'
+import MazBottomSheet from '../packages/components/MazBottomSheet/index.js'
 import MazBtn from '../packages/components/MazBtn/index.js'
 import MazBtnGroup from '../packages/components/MazBtnGroup/index.js'
 import MazCheckbox from '../packages/components/MazCheckbox/index.js'
@@ -19,6 +20,7 @@ import MazLoader from '../packages/components/MazLoader/index.js'
 import MazPagination from '../packages/components/MazPagination/index.js'
 import MazPicker from '../packages/components/MazPicker/index.js'
 import MazPlotly from '../packages/components/MazPlotly/index.js'
+import MazProgressBar from '../packages/components/MazProgressBar/index.js'
 import MazPhoneNumberInput from '../packages/components/MazPhoneNumberInput/index.js'
 import MazRadio from '../packages/components/MazRadio/index.js'
 import MazReadMore from '../packages/components/MazReadMore/index.js'
@@ -38,6 +40,7 @@ import { version } from '../package.json'
 
 const components = [
   MazAvatar,
+  MazBottomSheet,
   MazBtn,
   MazBtnGroup,
   MazCheckbox,
@@ -54,6 +57,7 @@ const components = [
   MazPagination,
   MazPicker,
   MazPlotly,
+  MazProgressBar,
   MazPhoneNumberInput,
   MazRadio,
   MazReadMore,
@@ -85,6 +89,7 @@ export default {
   version,
   install,
   MazAvatar,
+  MazBottomSheet,
   MazBtn,
   MazBtnGroup,
   MazCheckbox,
@@ -101,6 +106,7 @@ export default {
   MazPagination,
   MazPicker,
   MazPlotly,
+  MazProgressBar,
   MazPhoneNumberInput,
   MazRadio,
   MazReadMore,

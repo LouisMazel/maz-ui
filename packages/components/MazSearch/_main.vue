@@ -168,10 +168,6 @@ export default {
       if (!Array.isArray(this.items) || !this.items.length) return
       const code = e.keyCode
       if (code === 40 || code === 38) {
-        if (e.view && e.view.event) {
-          // TODO : It's not compatible with FireFox
-          e.view.event.preventDefault()
-        }
         if (!this.hasListOpen) this.openList()
         let index = code === 40 ? this.tmpValueIndex + 1 : this.tmpValueIndex - 1
         if (index === -1 || index >= this.items.length) {
@@ -183,6 +179,7 @@ export default {
         this.scrollToSelectedOnFocus(index)
       } else if (code === 13) {
         // enter key
+        e.preventDefault()
         this.hasListOpen ? this.updateValue(this.tmpValue) : this.openList()
       } else if (code === 27) {
         // escape key

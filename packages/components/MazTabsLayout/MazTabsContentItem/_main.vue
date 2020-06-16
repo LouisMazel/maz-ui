@@ -1,10 +1,6 @@
 <template>
   <div
-    :id="_uid"
     ref="MazTabsContentItem"
-    :class="{
-      'maz-h-0' : !isCurrent && hasHZero
-    }"
     class="maz-tabs-content-item"
   >
     <slot />
@@ -13,43 +9,6 @@
 
 <script>
 export default {
-  name: 'MazTabsContentItem',
-  data () {
-    return {
-      currentIndex: null,
-      hasHZero: true
-    }
-  },
-  computed: {
-    currentTab () {
-      const tabsBarComponent = this.$parent.$parent.$children.find(c => typeof c.$refs.MazTabsContent !== 'undefined')
-      if (!tabsBarComponent) return 1
-      const { tabActive } = tabsBarComponent
-      return tabActive
-    },
-    isCurrent () {
-      const isCurrent = this.currentTab === this.currentIndex
-      return isCurrent
-    }
-  },
-  watch: {
-    isCurrent (oldValue, newValue) {
-      if (newValue) {
-        setTimeout(() => {
-          this.hasHZero = true
-        }, 300)
-      } else this.hasHZero = false
-    }
-  },
-  mounted () {
-    this.getCurrentIndex()
-  },
-  methods: {
-    getCurrentIndex () {
-      this.$nextTick(() => {
-        this.currentIndex = this.$parent.$children.findIndex(c => c._uid === this._uid)
-      })
-    }
-  }
+  name: 'MazTabsContentItem'
 }
 </script>

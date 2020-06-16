@@ -18,14 +18,14 @@
     >
       <img
         :src="picturePath"
-        alt="creator profile picture"
+        :alt="alt"
         class="maz-avatar__picture"
       >
     </a>
     <img
       v-else
       :src="picturePath"
-      alt="creator profile picture"
+      :alt="alt"
       class="maz-avatar__picture"
       @click="editable ? $emit('edit', $event) : null"
     >
@@ -53,6 +53,8 @@ export default {
     src: { type: String, required: true },
     // url or path to link another page
     url: { type: String, default: null },
+    // alt text of image
+    alt: { type: String, default: 'avatar image' },
     // target attribute of link (if url is provide)
     target: { type: String, default: '_self' },
     // size of avatar

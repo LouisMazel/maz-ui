@@ -1,6 +1,10 @@
 .#{$prefix}flex {
   display: flex;
 
+  &-inline {
+    display: inline-flex;
+  }
+
   &.#{$prefix}fluid {
     width: 100%;
   }

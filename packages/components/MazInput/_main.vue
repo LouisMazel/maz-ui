@@ -249,12 +249,6 @@ export default {
     hasClearBtn () {
       return this.clearable && this.inputValue && !this.textarea
     },
-    inputIcons () {
-      return [
-        ...(this.hasLeftIcon() ? [{ position: 'left', name: this.leftIconName }] : []),
-        ...(this.hasRightIcon() ? [{ position: 'right', name: this.rightIconName }] : [])
-      ]
-    },
     leftNumberIcon () {
       const array = [
         !!this.hasRightIcon(),

@@ -1,0 +1,89 @@
+<template>
+  <transition
+    name="maz-bottom-sheet"
+    class="maz-bottom-sheet"
+  >
+    <div
+      v-if="value"
+      class="maz-bottom-sheet__mask"
+      :class="{
+        'is-open': value,
+        'no-overlay': noOverlay
+      }"
+    >
+      <div
+        v-click-outside="vcoConfig"
+        class="maz-bottom-sheet__wrapper"
+      >
+        <div
+          class="maz-bottom-sheet__container maz-bottom-sheet-animation maz-bg-color-light maz-position-relative"
+          :class="{
+            'maz-py-6': !noPadding
+          }"
+        >
+          <!-- Slot content -->
+          <slot>
+            <!-- `<h1>Default content</h1>` -->
+            <div class="maz-flex maz-direction-column maz-flex-center">
+              <h1>Default content</h1>
+            </div>
+          </slot>
+          <MazBtn
+            v-if="!noClose"
+            size="mini"
+            class="maz-bottom-sheet__close"
+            fab
+            color="transparent"
+            @click="$emit('input', false)"
+          >
+            <i class="material-icons maz-text-color">close</i>
+          </MazBtn>
+        </div>
+      </div>
+    </div>
+  </transition>
+</template>
+
+<script>
+import vClickOutside from 'v-click-outside'
+import MazBtn from '../MazBtn'
+
+export default {
+  name: 'MazBottomSheet',
+  components: { MazBtn },
+  directives: {
+    clickOutside: vClickOutside.directive
+  },
+  props: {
+    value: { type: Boolean, required: false },
+    excludedClasses: { type: Array, default: Array },
+    persistent: { type: Boolean, required: false },
+    noClose: { type: Boolean, required: false },
+    noPadding: { type: Boolean, required: false },
+    noOverlay: { type: Boolean, required: false }
+  },
+  data () {
+    return {
+      vcoConfig: {
+        handler: this.closeSheet,
+        middleware: this.preventClickOutside,
+        events: ['click'],
+        isActive: true
+      }
+    }
+  },
+  methods: {
+    preventClickOutside () {
+      return !this.excludedClasses.includes(event.target.className)
+    },
+    closeSheet () {
+      if (this.persistent) return
+      // Return state of bottom sheet
+      // @arg Boolean
+      this.$emit('input', false)
+      // Emit on close sheet
+      this.$emit('close')
+    }
+  }
+}
+</script>

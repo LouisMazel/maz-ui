@@ -233,10 +233,6 @@ export default {
       const code = e.keyCode
       if (code === 40 || code === 38) {
         // arrow up down
-        if (e.view && e.view.event) {
-          // TODO : It's not compatible with FireFox
-          e.view.event.preventDefault()
-        }
         if (!this.hasListOpen) this.openList()
         let index = code === 40 ? this.tmpValueIndex + 1 : this.tmpValueIndex - 1
         if (index === -1 || index >= this.countriesSorted.length) {
@@ -248,6 +244,7 @@ export default {
         this.scrollToSelectedOnFocus(index)
       } else if (code === 13) {
         // enter
+        e.preventDefault()
         this.hasListOpen ? this.updateValue(this.tmpValue) : this.openList()
       } else if (code === 27) {
         // escape

@@ -6,7 +6,10 @@
     class="maz-btn"
     :class="[
       classes,
-      { hidden: loading }
+      {
+        hidden: loading,
+        'maz-flex-inline maz-flex maz-flex-center': hasIcon()
+      }
     ]"
     :type="isLink ? null : type"
     :disabled="isLink ? null : isDisabled"
@@ -14,8 +17,36 @@
     @mouseenter="emitMouseEnter($event)"
     @mouseleave="emitMouseLeave($event)"
   >
-    <!-- Add your button text here -->
+    <div
+      v-if="hasLeftIcon()"
+      class="maz-flex maz-flex-center"
+      :class="{
+        'maz-mr-2': !fab && hasSlotDefault()
+      }"
+    >
+      <!-- Icon slot (`icon-left`) -->
+      <slot :name="`icon-left`">
+        <!-- none -->
+        <i class="material-icons">{{ leftIconName }}</i>
+      </slot>
+    </div>
+
     <slot />
+
+    <div
+      v-if="hasRightIcon()"
+      class="maz-flex maz-flex-center"
+      :class="{
+        'maz-ml-2': !fab && hasSlotDefault()
+      }"
+    >
+      <!-- Icon slot (`icon-right`) -->
+      <slot :name="`icon-right`">
+        <!-- none -->
+        <i class="material-icons">{{ rightIconName }}</i>
+      </slot>
+    </div>
+    <!-- Add your button text here -->
     <div
       v-if="loading"
       class="maz-btn__spinner maz-flex maz-flex-center"
@@ -70,8 +101,10 @@ export default {
     block: { type: Boolean, default: false },
     // remove shadow/elevation
     noShadow: { type: Boolean, default: false },
-    // material icon name
-    icon: { type: Boolean, default: null }
+    // should be a [material icon](https://material.io/resources/icons/) name
+    leftIconName: { type: String, default: null },
+    // should be a [material icon](https://material.io/resources/icons/) name
+    rightIconName: { type: String, default: null }
   },
   computed: {
     componentType () {
@@ -85,7 +118,7 @@ export default {
       return loading || disabled
     },
     classes () {
-      const { color, size, outline, rounded, isDisabled, fab, active, block, noShadow } = this
+      const { color, size, outline, rounded, isDisabled, fab, active, block, noShadow, hasIcon } = this
       return [
         ...(color ? [`maz-btn--${color}`] : [null]),
         ...(size ? [`maz-btn--${size}`] : [null]),
@@ -95,11 +128,24 @@ export default {
         ...(fab ? ['maz-btn--fab maz-dots-text'] : [null]),
         ...(isDisabled ? ['maz-btn--disabled'] : [null]),
         ...(active ? ['maz-active'] : [null]),
-        ...(noShadow ? ['maz-no-shadow'] : [null])
+        ...(noShadow ? ['maz-no-shadow'] : [null]),
+        ...(hasIcon() ? ['maz-btn--icon'] : [null])
       ]
     }
   },
   methods: {
+    hasSlotDefault () {
+      return this.$slots['default']
+    },
+    hasIcon () {
+      return this.hasLeftIcon() || this.hasRightIcon()
+    },
+    hasLeftIcon () {
+      return this.leftIconName || this.$slots['icon-left']
+    },
+    hasRightIcon () {
+      return this.rightIconName || this.$slots['icon-right']
+    },
     handleClick (e) {
       // return click event
       this.$emit('click', e)

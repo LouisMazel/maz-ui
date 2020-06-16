@@ -5,35 +5,34 @@
         v-model="activeTab"
         :items="tabs"
       />
-      <div style="overflow: hidden;">
-        <MazTabsContent>
-          <MazTabsContentItem class="maz-p-3 maz-text-center">
-            <p>Text content 1</p>
-          </MazTabsContentItem>
-          <MazTabsContentItem class="maz-p-3 maz-text-center">
-            <p>Text content 2</p>
-            <p>Text content 2</p>
-          </MazTabsContentItem>
-          <MazTabsContentItem class="maz-p-3 maz-text-center">
-            <p>Text content 3</p>
-            <p>Text content 3</p>
-            <p>Text content 3</p>
-          </MazTabsContentItem>
-          <MazTabsContentItem class="maz-p-3 maz-text-center">
-            <p>Text content 4</p>
-            <p>Text content 4</p>
-            <p>Text content 4</p>
-            <p>Text content 4</p>
-          </MazTabsContentItem>
-          <MazTabsContentItem class="maz-p-3 maz-text-center">
-            <p>Text content 5</p>
-            <p>Text content 5</p>
-            <p>Text content 5</p>
-            <p>Text content 5</p>
-            <p>Text content 5</p>
-          </MazTabsContentItem>
-        </MazTabsContent>
-      </div>
+      <MazTabsContent>
+        <MazTabsContentItem class="maz-p-3 maz-text-center">
+          <p>Text content 1</p>
+        </MazTabsContentItem>
+        <MazTabsContentItem class="maz-p-3 maz-text-center">
+          <p>Text content 2</p>
+          <p>Text content 2</p>
+          <p>Text content 2</p>
+        </MazTabsContentItem>
+        <MazTabsContentItem class="maz-p-3 maz-text-center">
+          <p>Text content 3</p>
+          <p>Text content 3</p>
+          <p>Text content 3</p>
+        </MazTabsContentItem>
+        <MazTabsContentItem class="maz-p-3 maz-text-center">
+          <p>Text content 4</p>
+          <p>Text content 4</p>
+          <p>Text content 4</p>
+          <p>Text content 4</p>
+        </MazTabsContentItem>
+        <MazTabsContentItem class="maz-p-3 maz-text-center">
+          <p>Text content 5</p>
+          <p>Text content 5</p>
+          <p>Text content 5</p>
+          <p>Text content 5</p>
+          <p>Text content 5</p>
+        </MazTabsContentItem>
+      </MazTabsContent>
     </ComponentContainer>
 
     <ComponentContainer
@@ -79,55 +78,51 @@
         :items="tabs"
         align-left
       />
-      <div style="overflow: hidden;">
-        <MazTabsContent>
-          <MazTabsContentItem class="maz-p-3 maz-text-center">
-            <p>Text content 1</p>
-          </MazTabsContentItem>
-          <MazTabsContentItem class="maz-p-3 maz-text-center">
-            <p>Text content 2</p>
-            <p>Text content 2</p>
-          </MazTabsContentItem>
-          <MazTabsContentItem class="maz-p-3 maz-text-center">
-            <p>Text content 3</p>
-            <p>Text content 3</p>
-            <p>Text content 3</p>
-          </MazTabsContentItem>
-          <MazTabsContentItem class="maz-p-3 maz-text-center">
-            <p>Text content 4</p>
-            <p>Text content 4</p>
-            <p>Text content 4</p>
-            <p>Text content 4</p>
-          </MazTabsContentItem>
-          <MazTabsContentItem class="maz-p-3 maz-text-center">
-            <p>Text content 5</p>
-            <p>Text content 5</p>
-            <p>Text content 5</p>
-            <p>Text content 5</p>
-            <p>Text content 5</p>
-          </MazTabsContentItem>
-        </MazTabsContent>
-      </div>
+      <MazTabsContent>
+        <MazTabsContentItem class="maz-p-3 maz-text-center">
+          <p>Text content 1</p>
+        </MazTabsContentItem>
+        <MazTabsContentItem class="maz-p-3 maz-text-center">
+          <p>Text content 2</p>
+          <p>Text content 2</p>
+        </MazTabsContentItem>
+        <MazTabsContentItem class="maz-p-3 maz-text-center">
+          <p>Text content 3</p>
+          <p>Text content 3</p>
+          <p>Text content 3</p>
+        </MazTabsContentItem>
+        <MazTabsContentItem class="maz-p-3 maz-text-center">
+          <p>Text content 4</p>
+          <p>Text content 4</p>
+          <p>Text content 4</p>
+          <p>Text content 4</p>
+        </MazTabsContentItem>
+        <MazTabsContentItem class="maz-p-3 maz-text-center">
+          <p>Text content 5</p>
+          <p>Text content 5</p>
+          <p>Text content 5</p>
+          <p>Text content 5</p>
+          <p>Text content 5</p>
+        </MazTabsContentItem>
+      </MazTabsContent>
     </ComponentContainer>
 
     <ComponentContainer
       code="<template>
-  <div style=&quot;overflow: hidden;&quot;>
-    <MazTabsContent :active-tab=&quot;stepper&quot;>
-      <MazTabsContentItem class=&quot;maz-p-3 maz-text-center&quot;>
-        <p>Text content 1</p>
-      </MazTabsContentItem>
-      <MazTabsContentItem class=&quot;maz-p-3 maz-text-center&quot;>
-        <p>Text content 2</p>
-        <p>Text content 2</p>
-      </MazTabsContentItem>
-      <MazTabsContentItem class=&quot;maz-p-3 maz-text-center&quot;>
-        <p>Text content 3</p>
-        <p>Text content 3</p>
-        <p>Text content 3</p>
-      </MazTabsContentItem>
-    </MazTabsContent>
-  </div>
+  <MazTabsContent :active-tab=&quot;stepper&quot;>
+    <MazTabsContentItem class=&quot;maz-p-3 maz-text-center&quot;>
+      <p>Text content 1</p>
+    </MazTabsContentItem>
+    <MazTabsContentItem class=&quot;maz-p-3 maz-text-center&quot;>
+      <p>Text content 2</p>
+      <p>Text content 2</p>
+    </MazTabsContentItem>
+    <MazTabsContentItem class=&quot;maz-p-3 maz-text-center&quot;>
+      <p>Text content 3</p>
+      <p>Text content 3</p>
+      <p>Text content 3</p>
+    </MazTabsContentItem>
+  </MazTabsContent>
   <div class=&quot;maz-flex-center maz-flex maz-mt-4&quot;>
     <MazStepper
       v-model=&quot;stepper&quot;
@@ -156,22 +151,20 @@
       <h4 class="maz-mb-3">
         Example with MazStepper
       </h4>
-      <div style="overflow: hidden;">
-        <MazTabsContent :active-tab="stepper">
-          <MazTabsContentItem class="maz-p-3 maz-text-center">
-            <p>Text content 1</p>
-          </MazTabsContentItem>
-          <MazTabsContentItem class="maz-p-3 maz-text-center">
-            <p>Text content 2</p>
-            <p>Text content 2</p>
-          </MazTabsContentItem>
-          <MazTabsContentItem class="maz-p-3 maz-text-center">
-            <p>Text content 3</p>
-            <p>Text content 3</p>
-            <p>Text content 3</p>
-          </MazTabsContentItem>
-        </MazTabsContent>
-      </div>
+      <MazTabsContent :active-tab="stepper">
+        <MazTabsContentItem class="maz-p-3 maz-text-center">
+          <p>Text content 1</p>
+        </MazTabsContentItem>
+        <MazTabsContentItem class="maz-p-3 maz-text-center">
+          <p>Text content 2</p>
+          <p>Text content 2</p>
+        </MazTabsContentItem>
+        <MazTabsContentItem class="maz-p-3 maz-text-center">
+          <p>Text content 3</p>
+          <p>Text content 3</p>
+          <p>Text content 3</p>
+        </MazTabsContentItem>
+      </MazTabsContent>
       <div class="maz-flex-center maz-flex maz-mt-4">
         <MazStepper
           v-model="stepper"
@@ -245,35 +238,33 @@ export default {
     v-model="activeTab"
     :items="tabs"
   />
-  <div style="overflow: hidden;">
-    <MazTabsContent>
-      <MazTabsContentItem class="maz-p-3 maz-text-center">
-        <p>Text content 1</p>
-      </MazTabsContentItem>
-      <MazTabsContentItem class="maz-p-3 maz-text-center">
-        <p>Text content 2</p>
-        <p>Text content 2</p>
-      </MazTabsContentItem>
-      <MazTabsContentItem class="maz-p-3 maz-text-center">
-        <p>Text content 3</p>
-        <p>Text content 3</p>
-        <p>Text content 3</p>
-      </MazTabsContentItem>
-      <MazTabsContentItem class="maz-p-3 maz-text-center">
-        <p>Text content 4</p>
-        <p>Text content 4</p>
-        <p>Text content 4</p>
-        <p>Text content 4</p>
-      </MazTabsContentItem>
-      <MazTabsContentItem class="maz-p-3 maz-text-center">
-        <p>Text content 5</p>
-        <p>Text content 5</p>
-        <p>Text content 5</p>
-        <p>Text content 5</p>
-        <p>Text content 5</p>
-      </MazTabsContentItem>
-    </MazTabsContent>
-  </div>
+  <MazTabsContent>
+    <MazTabsContentItem class="maz-p-3 maz-text-center">
+      <p>Text content 1</p>
+    </MazTabsContentItem>
+    <MazTabsContentItem class="maz-p-3 maz-text-center">
+      <p>Text content 2</p>
+      <p>Text content 2</p>
+    </MazTabsContentItem>
+    <MazTabsContentItem class="maz-p-3 maz-text-center">
+      <p>Text content 3</p>
+      <p>Text content 3</p>
+      <p>Text content 3</p>
+    </MazTabsContentItem>
+    <MazTabsContentItem class="maz-p-3 maz-text-center">
+      <p>Text content 4</p>
+      <p>Text content 4</p>
+      <p>Text content 4</p>
+      <p>Text content 4</p>
+    </MazTabsContentItem>
+    <MazTabsContentItem class="maz-p-3 maz-text-center">
+      <p>Text content 5</p>
+      <p>Text content 5</p>
+      <p>Text content 5</p>
+      <p>Text content 5</p>
+      <p>Text content 5</p>
+    </MazTabsContentItem>
+  </MazTabsContent>
 </template>
 
 import { MazTabsBar, MazTabsContent, MazTabsContentItem } from 'maz-ui'

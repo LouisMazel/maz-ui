@@ -114,8 +114,9 @@
     </ComponentContainer>
     <ComponentContainer>
       <h4 class="maz-mb-3">
-        loading
+        Loading
       </h4>
+
       <div
         v-for="type in btnTypes"
         :key="`loading-${type}`"
@@ -129,6 +130,172 @@
           loading
         >
           loading {{ size }}
+        </MazBtn>
+      </div>
+    </ComponentContainer>
+    <ComponentContainer
+      code="<template>
+  <MazBtn
+    left-icon-name=&quot;person&quot;
+    right-icon-name=&quot;delete&quot;
+  >
+    Icon
+  </MazBtn>
+  <MazBtn>
+    <i
+      slot=&quot;icon-left&quot;
+      class=&quot;material-icons&quot;
+    >
+      lock
+    </i>
+    Slot icon
+    <i
+      slot=&quot;icon-right&quot;
+      class=&quot;material-icons&quot;
+    >
+      room
+    </i>
+  </MazBtn>
+  <MazBtn
+    left-icon-name=&quot;person&quot;
+    right-icon-name=&quot;delete&quot;
+    outline
+    color=&quot;secondary&quot;
+  >
+    outline
+  </MazBtn>
+  <MazBtn
+    left-icon-name=&quot;person&quot;
+    fab
+    color=&quot;third&quot;
+  />
+  <MazBtn
+    left-icon-name=&quot;person&quot;
+    right-icon-name=&quot;delete&quot;
+    rounded
+    color=&quot;danger&quot;
+  >
+    rounded
+  </MazBtn>
+  <MazBtn
+    left-icon-name=&quot;person&quot;
+    right-icon-name=&quot;delete&quot;
+    disabled
+  >
+    Disabled
+  </MazBtn>
+  <MazBtn
+    left-icon-name=&quot;person&quot;
+    right-icon-name=&quot;delete&quot;
+    loading
+  >
+    Loading
+  </MazBtn>
+</template>"
+    >
+      <h4
+        id="icon"
+        class="maz-mb-3"
+      >
+        Icon
+      </h4>
+      <div class="maz-mb-3">
+        <MazBtn
+          v-for="size in btnSizes"
+          :key="`loading-${size}`"
+          :size="size"
+          class="maz-mr-2 maz-mb-2"
+          left-icon-name="person"
+          right-icon-name="delete"
+        >
+          Icon
+        </MazBtn>
+      </div>
+      <div class="maz-mb-3">
+        <MazBtn
+          v-for="size in btnSizes"
+          :key="`loading-${size}`"
+          :size="size"
+          class="maz-mr-2 maz-mb-2"
+        >
+          <i
+            slot="icon-left"
+            class="material-icons"
+          >
+            lock
+          </i>
+          Slot icon
+          <i
+            slot="icon-right"
+            class="material-icons"
+          >
+            room
+          </i>
+        </MazBtn>
+      </div>
+      <div class="maz-mb-3">
+        <MazBtn
+          v-for="size in btnSizes"
+          :key="`loading-${size}`"
+          :size="size"
+          class="maz-mr-2 maz-mb-2"
+          left-icon-name="person"
+          right-icon-name="delete"
+          outline
+          color="secondary"
+        >
+          outline
+        </MazBtn>
+      </div>
+      <div class="maz-mb-3">
+        <MazBtn
+          v-for="size in btnSizes"
+          :key="`loading-${size}`"
+          :size="size"
+          class="maz-mr-2 maz-mb-2"
+          left-icon-name="person"
+          fab
+          color="third"
+        />
+      </div>
+      <div class="maz-mb-3">
+        <MazBtn
+          v-for="size in btnSizes"
+          :key="`loading-${size}`"
+          :size="size"
+          class="maz-mr-2 maz-mb-2"
+          left-icon-name="person"
+          right-icon-name="delete"
+          rounded
+          color="danger"
+        >
+          rounded
+        </MazBtn>
+      </div>
+      <div class="maz-mb-3">
+        <MazBtn
+          v-for="size in btnSizes"
+          :key="`loading-${size}`"
+          :size="size"
+          class="maz-mr-2 maz-mb-2"
+          left-icon-name="person"
+          right-icon-name="delete"
+          disabled
+        >
+          Disabled
+        </MazBtn>
+      </div>
+      <div>
+        <MazBtn
+          v-for="size in btnSizes"
+          :key="`loading-${size}`"
+          :size="size"
+          class="maz-mr-2 maz-mb-2"
+          left-icon-name="person"
+          right-icon-name="delete"
+          loading
+        >
+          Loading
         </MazBtn>
       </div>
     </ComponentContainer>

@@ -375,7 +375,7 @@ export default {
         { label: 'Spanish', value: 'es' },
         { label: 'Russian', value: 'ru' }
       ],
-      pickerValue: '22-03-2020 01:13',
+      pickerValue: null,
       pickerFormatted: null,
       codeExample: `<template>
   <MazPicker
