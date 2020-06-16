@@ -125,6 +125,7 @@ Vue.use(MazInput)
       :code="`import Vue from 'vue'
 import {
   MazAvatar,
+  MazBottomSheet,
   MazBtn,
   MazBtnGroup,
   MazCheckbox,
@@ -159,6 +160,7 @@ import {
 } from 'maz-ui'
 
 Vue.use(MazAvatar)
+Vue.use(MazBottomSheet)
 Vue.use(MazBtn)
 Vue.use(MazBtnGroup)
 Vue.use(MazCheckbox)
