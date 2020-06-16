@@ -24,6 +24,7 @@ const componentsRoutes = [
   'MazCheckboxDoc',
   'MazDropzoneDoc',
   'MazPlotlyDoc',
+  'MazProgressBarDoc',
   'MazSidebarDoc',
   'MazDialogDoc',
   'MazAvatarDoc',

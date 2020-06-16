@@ -141,6 +141,7 @@ import {
   MazPagination,
   MazPicker,
   MazPlotly,
+  MazProgressBar,
   MazPhoneNumberInput,
   MazRadio,
   MazReadMore,
@@ -175,6 +176,7 @@ Vue.use(MazLoader)
 Vue.use(MazPagination)
 Vue.use(MazPicker)
 Vue.use(MazPlotly)
+Vue.use(MazProgressBar)
 Vue.use(MazPhoneNumberInput)
 Vue.use(MazRadio)
 Vue.use(MazReadMore)

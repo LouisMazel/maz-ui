@@ -1,7 +1,10 @@
 <template>
   <div class="maz-progress-bar maz-flex maz-align-center maz-bg-color-light">
     <div
-      class="maz-progress-bar__bg"
+      class="maz-progress-bar__bg maz-border-radius"
+      :class="[{
+        'maz-border-radius-0': noRadius
+      }, bgColor ? `maz-bg-${bgColor}` : null]"
       :style="[getOuterStyle]"
     />
     <div
@@ -12,7 +15,7 @@
       :style="getLineStyle"
     >
       <div
-        v-if="anim"
+        v-if="animated"
         class="maz-progress-bar__line__anim maz-border-radius"
         :class="[{
           'maz-border-radius-0': !noRadius
@@ -26,16 +29,18 @@
 export default {
   name: 'MazProgressBar',
   props: {
-    // progress value integer
+    // progress value integer, should be between `0` and `100`
     percent: { type: Number, required: true },
     // disable border radius
     noRadius: { type: Boolean, default: false },
     // enable white animation progress
-    anim: { type: Boolean, default: false },
+    animated: { type: Boolean, default: false },
     // progress bar height
     height: { type: Number, default: 4 },
     // use basic colors from 'maz-ui' or hex/name colors, you can use array with hex colors to set an linear-gradient background
-    color: { type: [String, Array, Function], default: 'primary' }
+    color: { type: [String, Array, Function], default: 'primary' },
+    // use basic colors from 'maz-ui'
+    bgColor: { type: [String, Array, Function], default: null }
   },
   computed: {
     getOuterStyle (){
@@ -64,66 +69,7 @@ export default {
   mounted () {
     const { percent } = this
     const test = percent >= 0 && percent <= 100
-    if (!test) throw new Error('[MazUi][ProgressBar] The progress bar percent should between 0 and 100')
+    if (!test) throw new Error('[ProgressBar] The progress bar percent should between 0 and 100')
   }
 }
 </script>
-
-<style lang="scss" scoped>
-  .maz-progress-bar {
-    color: $text-color;
-    font-size: 14px;
-    position: relative;
-    width: 100%;
-
-    &__bg {
-      width: 100%;
-      position: relative;
-    }
-
-    &__line {
-      position: absolute;
-      top: 0;
-      left: 0;
-      background-color: $default-color;
-      transition: all 500ms ease-in-out;
-
-      @each $name, $color in $color_types {
-        &--#{$name} {
-          background-color: $color;
-        }
-      }
-
-      &__anim {
-        background-color: white;
-        height: inherit;
-        border-radius: 10px;
-        opacity: 0;
-        animation: n-anim 2s cubic-bezier(0, 0, .2, 1) infinite;
-      }
-    }
-
-    @keyframes n-anim {
-      0% {
-        width: 0;
-        opacity: .2;
-      }
-
-      70% {
-        width: 0;
-        opacity: .6;
-      }
-
-      100% {
-        width: 100%;
-        opacity: 0;
-      }
-    }
-
-    @keyframes n-flow {
-      from { filter: hue-rotate(0deg); }
-      to { filter: hue-rotate(360deg); }
-    }
-  }
-
-</style>
