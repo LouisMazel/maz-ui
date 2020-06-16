@@ -58,6 +58,7 @@
         @focus="$emit('focus', $event)"
         @blur="$emit('blur', $event)"
         @change="$emit('change', $event)"
+        @clear="$emit('clear', $event)"
       >
         <!-- Custom left icon -->
         <slot
