@@ -1,13 +1,19 @@
 <template>
   <div
-    ref="MazTabsContent"
+    class="maz-overflow-hidden"
     :style="[
-      tabsContainerState,
       { height: `${height}px` }
     ]"
-    class="maz-tabs-content maz-flex maz-align-start"
   >
-    <slot />
+    <div
+      ref="MazTabsContent"
+      :style="[
+        tabsContainerState
+      ]"
+      class="maz-tabs-content maz-flex maz-align-start"
+    >
+      <slot />
+    </div>
   </div>
 </template>
 
@@ -49,16 +55,16 @@ export default {
     }
   },
   methods: {
-    resizeObserver () {
+    async resizeObserver () {
       const { $children, currentTab } = this
       const resizeObserver = new ResizeObserver(entries => {
         for (const entry of entries) {
-          this.height = entry.target.offsetHeight
+          const { offsetHeight, classList } = entry.target
+          if (offsetHeight && !classList.value.includes('maz-h-0')) this.height = entry.target.offsetHeight
         }
       })
-
       $children.forEach(d => resizeObserver.unobserve(d.$el))
-      resizeObserver.observe($children[currentTab].$el)
+      setTimeout(() => { resizeObserver.observe($children[currentTab].$el) }, 500)
     }
   }
 }
