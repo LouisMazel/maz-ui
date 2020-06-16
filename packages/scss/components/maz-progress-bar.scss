@@ -1,0 +1,57 @@
+@import './../style-helpers/variables/index.scss';
+
+.maz-progress-bar {
+  color: $text-color;
+  font-size: 14px;
+  position: relative;
+  width: 100%;
+
+  &__bg {
+    width: 100%;
+    position: relative;
+  }
+
+  &__line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: $default-color;
+    transition: all 500ms ease-in-out;
+
+    @each $name, $color in $color_types {
+      &--#{$name} {
+        background-color: $color;
+      }
+    }
+
+    &__anim {
+      background-color: white;
+      height: inherit;
+      border-radius: $border-radius;
+      opacity: 0;
+      animation: n-anim 2s cubic-bezier(0, 0, .2, 1) infinite;
+    }
+  }
+
+  @keyframes n-anim {
+    0% {
+      width: 0;
+      opacity: .2;
+    }
+
+    70% {
+      width: 0;
+      opacity: .6;
+    }
+
+    100% {
+      width: 100%;
+      opacity: 0;
+    }
+  }
+
+  @keyframes n-flow {
+    from { filter: hue-rotate(0deg); }
+    to { filter: hue-rotate(360deg); }
+  }
+}
