@@ -11,10 +11,8 @@
         <MazDialog
           v-model="hasDialogOpen"
           :max-width="800"
+          title="Basic Dialog"
         >
-          <div slot="title">
-            Basic Dialog
-          </div>
           Dialog Content basic
         </MazDialog>
         <MazBtn
@@ -27,10 +25,8 @@
         <MazDialog
           v-model="hasDialogOpenSuccess"
           success
+          title="Success Dialog"
         >
-          <div slot="title">
-            Success Dialog
-          </div>
           Dialog Content Success
         </MazDialog>
         <MazBtn
@@ -55,134 +51,127 @@
         <MazDialog
           v-model="hasDialogOpenDanger"
           danger
+          title="Danger Dialog"
         >
-          <div slot="title">
-            Danger Dialog
-          </div>
           Dialog Content Danger
         </MazDialog>
         <MazDialog
           v-model="hasDialogOpenDark"
           dark
+          title="Dark Dialog"
         >
-          <div slot="title">
-            Dark Dialog
-          </div>
           Dark dialog content
         </MazDialog>
         <MazDialog
           v-model="hasDialogOpenFullSize"
           fullsize
+          title="Full size dialog"
         >
-          <div slot="title">
-            Full size dialog
-          </div>
-
           <h3 class="maz-my-5 maz-text-center">
             Full size dialog content
           </h3>
-          <h3 class="maz-my-5 maz-text-center">
-            Full size dialog content
-          </h3>
-          <h3 class="maz-my-5 maz-text-center">
-            Full size dialog content
-          </h3>
-          <h3 class="maz-my-5 maz-text-center">
-            Full size dialog content
-          </h3>
-          <h3 class="maz-my-5 maz-text-center">
-            Full size dialog content
-          </h3>
-          <h3 class="maz-my-5 maz-text-center">
-            Full size dialog content
-          </h3>
-          <h3 class="maz-my-5 maz-text-center">
-            Full size dialog content
-          </h3>
-          <h3 class="maz-my-5 maz-text-center">
-            Full size dialog content
-          </h3>
-          <h3 class="maz-my-5 maz-text-center">
-            Full size dialog content
-          </h3>
-          <h3 class="maz-my-5 maz-text-center">
-            Full size dialog content
-          </h3>
-          <h3 class="maz-my-5 maz-text-center">
-            Full size dialog content
-          </h3>
-          <h3 class="maz-my-5 maz-text-center">
-            Full size dialog content
-          </h3>
-          <h3 class="maz-my-5 maz-text-center">
-            Full size dialog content
-          </h3>
-          <h3 class="maz-my-5 maz-text-center">
-            Full size dialog content
-          </h3>
-          <h3 class="maz-my-5 maz-text-center">
-            Full size dialog content
-          </h3>
-          <h3 class="maz-my-5 maz-text-center">
-            Full size dialog content
-          </h3>
-          <h3 class="maz-my-5 maz-text-center">
-            Full size dialog content
-          </h3>
-          <h3 class="maz-my-5 maz-text-center">
-            Full size dialog content
-          </h3>
-          <h3 class="maz-my-5 maz-text-center">
-            Full size dialog content
-          </h3>
-          <h3 class="maz-my-5 maz-text-center">
-            Full size dialog content
-          </h3>
-          <h3 class="maz-my-5 maz-text-center">
-            Full size dialog content
-          </h3>
-          <h3 class="maz-my-5 maz-text-center">
-            Full size dialog content
-          </h3>
-          <h3 class="maz-my-5 maz-text-center">
-            Full size dialog content
-          </h3>
-          <h3 class="maz-my-5 maz-text-center">
-            Full size dialog content
-          </h3>
-          <h3 class="maz-my-5 maz-text-center">
-            Full size dialog content
-          </h3>
-          <h3 class="maz-my-5 maz-text-center">
-            Full size dialog content
-          </h3>
-          <h3 class="maz-my-5 maz-text-center">
-            Full size dialog content
-          </h3>
-          <h3 class="maz-my-5 maz-text-center">
-            Full size dialog content
-          </h3>
-          <h3 class="maz-my-5 maz-text-center">
-            Full size dialog content
-          </h3>
-          <h3 class="maz-my-5 maz-text-center">
-            Full size dialog content
-          </h3>
-          <h3 class="maz-my-5 maz-text-center">
-            Full size dialog content
-          </h3>
-          <h3 class="maz-my-5 maz-text-center">
-            Full size dialog content
-          </h3>
-          <h3 class="maz-my-5 maz-text-center">
-            Full size dialog content
-          </h3>
-          <h3 class="maz-my-5 maz-text-center">
-            Full size dialog content
-          </h3>
-          <h3 class="maz-my-5 maz-text-center">
-            Full size dialog content
-          </h3>
+          <h4 class="maz-my-5 maz-text-center">
+            Scroll content
+          </h4>
+          <h4 class="maz-my-5 maz-text-center">
+            Scroll content
+          </h4>
+          <h4 class="maz-my-5 maz-text-center">
+            Scroll content
+          </h4>
+          <h4 class="maz-my-5 maz-text-center">
+            Scroll content
+          </h4>
+          <h4 class="maz-my-5 maz-text-center">
+            Scroll content
+          </h4>
+          <h4 class="maz-my-5 maz-text-center">
+            Scroll content
+          </h4>
+          <h4 class="maz-my-5 maz-text-center">
+            Scroll content
+          </h4>
+          <h4 class="maz-my-5 maz-text-center">
+            Scroll content
+          </h4>
+          <h4 class="maz-my-5 maz-text-center">
+            Scroll content
+          </h4>
+          <h4 class="maz-my-5 maz-text-center">
+            Scroll content
+          </h4>
+          <h4 class="maz-my-5 maz-text-center">
+            Scroll content
+          </h4>
+          <h4 class="maz-my-5 maz-text-center">
+            Scroll content
+          </h4>
+          <h4 class="maz-my-5 maz-text-center">
+            Scroll content
+          </h4>
+          <h4 class="maz-my-5 maz-text-center">
+            Scroll content
+          </h4>
+          <h4 class="maz-my-5 maz-text-center">
+            Scroll content
+          </h4>
+          <h4 class="maz-my-5 maz-text-center">
+            Scroll content
+          </h4>
+          <h4 class="maz-my-5 maz-text-center">
+            Scroll content
+          </h4>
+          <h4 class="maz-my-5 maz-text-center">
+            Scroll content
+          </h4>
+          <h4 class="maz-my-5 maz-text-center">
+            Scroll content
+          </h4>
+          <h4 class="maz-my-5 maz-text-center">
+            Scroll content
+          </h4>
+          <h4 class="maz-my-5 maz-text-center">
+            Scroll content
+          </h4>
+          <h4 class="maz-my-5 maz-text-center">
+            Scroll content
+          </h4>
+          <h4 class="maz-my-5 maz-text-center">
+            Scroll content
+          </h4>
+          <h4 class="maz-my-5 maz-text-center">
+            Scroll content
+          </h4>
+          <h4 class="maz-my-5 maz-text-center">
+            Scroll content
+          </h4>
+          <h4 class="maz-my-5 maz-text-center">
+            Scroll content
+          </h4>
+          <h4 class="maz-my-5 maz-text-center">
+            Scroll content
+          </h4>
+          <h4 class="maz-my-5 maz-text-center">
+            Scroll content
+          </h4>
+          <h4 class="maz-my-5 maz-text-center">
+            Scroll content
+          </h4>
+          <h4 class="maz-my-5 maz-text-center">
+            Scroll content
+          </h4>
+          <h4 class="maz-my-5 maz-text-center">
+            Scroll content
+          </h4>
+          <h4 class="maz-my-5 maz-text-center">
+            Scroll content
+          </h4>
+          <h4 class="maz-my-5 maz-text-center">
+            Scroll content
+          </h4>
+          <h4 class="maz-my-5 maz-text-center">
+            Scroll content
+          </h4>
         </MazDialog>
       </div>
     </ComponentContainer>
@@ -244,10 +233,8 @@ export default {
   <MazDialog
     v-model="hasDialogOpen"
     :max-width="800"
+    title="Basic Dialog"
   >
-    <div slot="title">
-      Basic Dialog
-    </div>
     Dialog Content basic
   </MazDialog>
   <MazBtn
@@ -260,10 +247,8 @@ export default {
   <MazDialog
     v-model="hasDialogOpenSuccess"
     success
+    title="Success Dialog"
   >
-    <div slot="title">
-      Success Dialog
-    </div>
     Dialog Content Success
   </MazDialog>
   <MazBtn
@@ -288,28 +273,22 @@ export default {
   <MazDialog
     v-model="hasDialogOpenDanger"
     danger
+    title="Danger Dialog"
   >
-    <div slot="title">
-      Danger Dialog
-    </div>
     Dialog Content Danger
   </MazDialog>
   <MazDialog
     v-model="hasDialogOpenDark"
     dark
+    title="Dark Dialog"
   >
-    <div slot="title">
-      Dark Dialog
-    </div>
     Dialog Content Dark
   </MazDialog>
   <MazDialog
     v-model="hasDialogOpenFullSize"
     fullsize
+    title="Full size dialog"
   >
-    <div slot="title">
-      Full size dialog
-    </div>
 
     <h3 class="maz-my-5 maz-text-center">
       Full size dialog content

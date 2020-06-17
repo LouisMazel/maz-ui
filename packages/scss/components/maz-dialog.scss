@@ -45,10 +45,11 @@
     border: none;
     color: $text-color-dark;
 
-    h5 {
+    &__title {
       color: white;
-      margin-top: 0;
       font-size: 1.25rem !important;
+      margin: 0;
+      padding: 0;
     }
 
     .close-modal i {
@@ -103,12 +104,5 @@
         overflow-y: auto;
       }
     }
-  }
-}
-
-.maz-is-dark .maz-dialog,
-.maz-is-dark.maz-dialog {
-  &__body {
-    color: $text-color-dark;
   }
 }

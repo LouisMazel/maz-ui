@@ -25,13 +25,14 @@
             v-if="!noHeader"
             class="maz-dialog__header maz-flex maz-space-between maz-align-center maz-p-3"
           >
-            <p class="maz-fw-400 maz-fs-20 maz-m-0 maz-w-100">
-              <!-- Replace the text title -->
-              <slot name="title">
-                <!-- Header -->
-                Header
-              </slot>
-            </p>
+            <!-- Replace the title element text -->
+            <slot name="title">
+              <!-- `<p class="maz-dialog__header__title">Title header</p>` -->
+              <p class="maz-dialog__header__title">
+                {{ title }}
+              </p>
+            </slot>
+
             <div
               v-if="!noClose"
               class="maz-flex close-modal"
@@ -43,7 +44,7 @@
             </div>
           </div>
           <div
-            class="maz-dialog__body maz-p-3"
+            class="maz-dialog__body maz-p-3 maz-text-color"
           >
             <!-- Replace the content -->
             <slot>
@@ -117,7 +118,9 @@ export default {
     // exclude elements classes (elements sometimes can close the dialog)
     excludedClasses: { type: Array, default: Array },
     // make dialog fullsize
-    fullsize: { type: Boolean, default: false }
+    fullsize: { type: Boolean, default: false },
+    // title of the dialog
+    title: { type: String, default: 'Header title' }
   },
   data () {
     return {
