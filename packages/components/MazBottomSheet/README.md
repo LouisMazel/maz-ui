@@ -12,6 +12,7 @@
 | noClose         | -           | `Boolean` | `false`  | -       |
 | noPadding       | -           | `Boolean` | `false`  | -       |
 | noOverlay       | -           | `Boolean` | `false`  | -       |
+| dark            | -           | `Boolean` | `false`  | -       |
 
 <!-- @vuese:MazBottomSheet:props:end -->
 
