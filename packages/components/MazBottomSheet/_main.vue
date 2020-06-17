@@ -8,7 +8,8 @@
       class="maz-bottom-sheet__mask"
       :class="{
         'is-open': value,
-        'no-overlay': noOverlay
+        'no-overlay': noOverlay,
+        'maz-is-dark': dark
       }"
     >
       <div
@@ -16,7 +17,7 @@
         class="maz-bottom-sheet__wrapper"
       >
         <div
-          class="maz-bottom-sheet__container maz-bottom-sheet-animation maz-bg-color-light maz-position-relative"
+          class="maz-bottom-sheet__container maz-bottom-sheet-animation maz-bg-color maz-position-relative"
           :class="{
             'maz-py-6': !noPadding
           }"
@@ -33,6 +34,7 @@
             size="mini"
             class="maz-bottom-sheet__close"
             fab
+            no-shadow
             color="transparent"
             @click="$emit('input', false)"
           >
@@ -60,7 +62,8 @@ export default {
     persistent: { type: Boolean, required: false },
     noClose: { type: Boolean, required: false },
     noPadding: { type: Boolean, required: false },
-    noOverlay: { type: Boolean, required: false }
+    noOverlay: { type: Boolean, required: false },
+    dark: { type: Boolean, required: false }
   },
   data () {
     return {
