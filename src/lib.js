@@ -29,6 +29,7 @@ import MazSearch from '../packages/components/MazSearch/index.js'
 import MazSelect from '../packages/components/MazSelect/index.js'
 import MazSidebar from '../packages/components/MazSidebar/index.js'
 import MazSlider from '../packages/components/MazSlider/index.js'
+import MazSmartSearch from '../packages/components/MazSmartSearch/index.js'
 import MazSpinner from '../packages/components/MazSpinner/index.js'
 import MazStepper from '../packages/components/MazStepper/index.js'
 import MazSwitch from '../packages/components/MazSwitch/index.js'
@@ -66,6 +67,7 @@ const components = [
   MazSelect,
   MazSidebar,
   MazSlider,
+  MazSmartSearch,
   MazSpinner,
   MazStepper,
   MazSwitch,
@@ -115,6 +117,7 @@ export default {
   MazSelect,
   MazSidebar,
   MazSlider,
+  MazSmartSearch,
   MazSpinner,
   MazStepper,
   MazSwitch,

@@ -150,6 +150,7 @@ import {
   MazSearch,
   MazSelect,
   MazSlider,
+  MazSmartSearch,
   MazSidebar,
   MazSpinner,
   MazStepper,
@@ -186,6 +187,7 @@ Vue.use(MazResponsiveMenu)
 Vue.use(MazSearch)
 Vue.use(MazSelect)
 Vue.use(MazSlider)
+Vue.use(MazSmartSearch)
 Vue.use(MazSidebar)
 Vue.use(MazSpinner)
 Vue.use(MazStepper)
