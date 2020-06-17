@@ -10,6 +10,7 @@
       :class="{
         'maz-dialog--success': success,
         'maz-dialog--danger': danger,
+        'maz-dialog--fullsize': fullsize,
         'maz-is-dark': dark
       }"
     >
@@ -17,20 +18,21 @@
         <div
           v-click-outside="vcoConfig"
           :style="widthStyle"
-          class="maz-dialog__container maz-dialog-animation maz-flex maz-direction-column maz-bg-color maz-border-radius maz-overflow-hidden"
+          class="maz-dialog__container maz-dialog-animation maz-flex maz-direction-column maz-bg-color maz-border-radius"
           @keydown.esc="closeDialog"
         >
           <div
             v-if="!noHeader"
             class="maz-dialog__header maz-flex maz-space-between maz-align-center maz-p-3"
           >
-            <p class="maz-fw-400 maz-fs-20 maz-m-0 maz-w-100">
-              <!-- Replace the text title -->
-              <slot name="title">
-                <!-- Header -->
-                Header
-              </slot>
-            </p>
+            <!-- Replace the title element text -->
+            <slot name="title">
+              <!-- `<p class="maz-dialog__header__title">Title header</p>` -->
+              <p class="maz-dialog__header__title">
+                {{ title }}
+              </p>
+            </slot>
+
             <div
               v-if="!noClose"
               class="maz-flex close-modal"
@@ -42,7 +44,7 @@
             </div>
           </div>
           <div
-            class="maz-dialog__body maz-p-3"
+            class="maz-dialog__body maz-p-3 maz-text-color"
           >
             <!-- Replace the content -->
             <slot>
@@ -95,8 +97,8 @@ export default {
   props: {
     // `true` if dialog is open / `false` if is close
     value: { type: Boolean, required: true },
-    // is the `max-width` of the dialog
-    maxWidth: { type: String, default: '500px' },
+    // is the `max-width` of the dialog in pixels
+    maxWidth: { type: Number, default: 500 },
     // if is `true`, is not possible to close he dialog with a click outside
     persistent: { type: Boolean, default: false },
     // remove the header
@@ -114,7 +116,11 @@ export default {
     // add "dark" style to the dialog
     dark: { type: Boolean, default: false },
     // exclude elements classes (elements sometimes can close the dialog)
-    excludedClasses: { type: Array, default: Array }
+    excludedClasses: { type: Array, default: Array },
+    // make dialog fullsize
+    fullsize: { type: Boolean, default: false },
+    // title of the dialog
+    title: { type: String, default: 'Header title' }
   },
   data () {
     return {
@@ -128,8 +134,9 @@ export default {
   },
   computed: {
     widthStyle () {
+      const { fullsize, maxWidth } = this
       return {
-        maxWidth: this.maxWidth
+        maxWidth: fullsize ? null : `${maxWidth}px`
       }
     },
     buttonConfirmColor () {
