@@ -166,11 +166,11 @@
         <MazPhoneNumberInput
           v-model="phoneNumberExample"
           no-flags
-          default-country-code="FR"
           show-code-on-list
           :preferred-countries="['FR', 'BE', 'DE']"
           @update="resultsExample = getJson($event)"
         />
+        <!-- no-use-browser-locale -->
 
         <hr class="maz-border-top maz-border-solid maz-border-color maz-my-3">
 
@@ -227,7 +227,7 @@ export default {
     return {
       phoneNumber: null,
       results: null,
-      phoneNumberExample: '0665656565',
+      phoneNumberExample: '+33365656565',
       resultsExample: null,
       codeExample: `<template>
   <p>

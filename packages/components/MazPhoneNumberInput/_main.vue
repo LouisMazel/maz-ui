@@ -164,7 +164,8 @@ export default {
     },
     inputValue: {
       get () {
-        return this.inputValueFormatted
+        const { results, inputValueFormatted, isValid } = this
+        return results && results.formatNational && isValid ? results.formatNational : inputValueFormatted
       },
       set (phoneNumber) {
         const { countryCode, getAsYouTypeFormat, emitValues } = this
@@ -179,8 +180,8 @@ export default {
       get () {
         return this.results.countryCode || this.userLocale
       },
-      set (newCountry) {
-        this.emitValues({countryCode: newCountry, phoneNumber: this.inputValue})
+      set (countryCode) {
+        this.emitValues({countryCode, phoneNumber: this.inputValue})
         if (this.inputFocused) {
           this.$refs.PhoneNumberInput.$el.querySelector('input').focus()
         }
@@ -201,9 +202,10 @@ export default {
       return this.inputValue === '' || this.inputValue === null
     },
     hintValue () {
-      return  this.noExample || !this.phoneNumberExample
+      const { noExample, phoneNumberExample, hasEmptyPhone, isValid, t, } = this
+      return  noExample || !phoneNumberExample
         ? null
-        : this.hasEmptyPhone || this.isValid ? null : `${this.t.example} ${this.phoneNumberExample}`
+        : hasEmptyPhone || isValid ? null : `${t.example} ${phoneNumberExample}`
     },
   },
   watch: {
@@ -216,7 +218,6 @@ export default {
     try {
       const { defaultCountryCode, fetchCountry, noUseBrowserLocale, fetchCountryCode, setLocale, value } = this
       if (value) this.inputValue = value
-      // if (inputValue && defaultCountryCode) this.emitValues({countryCode: defaultCountryCode, phoneNumber: inputValue})
 
       if (defaultCountryCode && fetchCountry)
         throw new Error('MazPhoneNumberInput: Do not use \'fetch-country\' and \'default-country-code\' options in the same time')
@@ -237,12 +238,13 @@ export default {
     getAsYouTypeFormat (payload) {
       const { countryCode, phoneNumber } = payload
       const asYouType = new AsYouType(countryCode)
-      return phoneNumber ? asYouType.input(phoneNumber) : null
+      const formatted = phoneNumber ? asYouType.input(phoneNumber) : null
+      return formatted
     },
     getParsePhoneNumberFromString ({ phoneNumber, countryCode }) {
-      const parsing = phoneNumber && countryCode ? parsePhoneNumberFromString(phoneNumber, countryCode) : null
+      const parsing = phoneNumber ? parsePhoneNumberFromString(phoneNumber, countryCode) : null
       return {
-        countryCode: countryCode,
+        countryCode,
         isValid: false,
         ...(phoneNumber && (phoneNumber !== '')
           ? { phoneNumber : phoneNumber }
@@ -250,6 +252,7 @@ export default {
         ),
         ...(parsing
           ? {
+            countryCode: parsing.country || countryCode,
             countryCallingCode: parsing.countryCallingCode,
             formattedNumber: parsing.number,
             nationalNumber: parsing.nationalNumber,
@@ -264,23 +267,22 @@ export default {
         )
       }
     },
-    emitValues (payload) {
+    async emitValues (payload) {
       const backSpacePressed = this.lastKeyPressed === 8
 
-      this.$nextTick(() => {
-        const lastCharacOfPhoneNumber = this.inputValue ? this.inputValue.trim().slice(-1) : false
-        if (backSpacePressed && lastCharacOfPhoneNumber && (lastCharacOfPhoneNumber.slice(-1) === ')')) {
-          payload.phoneNumber = this.inputValue.slice(0, -2)
-        }
+      await this.$nextTick()
+      const lastCharacOfPhoneNumber = this.inputValue ? this.inputValue.trim().slice(-1) : false
+      if (backSpacePressed && lastCharacOfPhoneNumber && (lastCharacOfPhoneNumber.slice(-1) === ')')) {
+        payload.phoneNumber = this.inputValue.slice(0, -2)
+      }
 
-        this.results = this.getParsePhoneNumberFromString(payload)
-        // sent when the user tape
-        // @arg Object with all paser values
-        this.$emit('update', this.results)
-        // sent when the user tape
-        // @arg Phone number value formatted in e164 format (international format)
-        this.$emit('input', this.results.e164)
-      })
+      this.results = this.getParsePhoneNumberFromString(payload)
+      // sent when the user tape
+      // @arg Object with all paser values
+      this.$emit('update', this.results)
+      // sent when the user tape
+      // @arg Phone number value formatted in e164 format (international format)
+      this.$emit('input', this.results.e164)
     },
     setLocale (locale) {
       const countryAvailable = isCountryAvailable(locale)
