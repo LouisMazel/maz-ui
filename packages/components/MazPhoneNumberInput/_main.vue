@@ -111,10 +111,10 @@
   </div>
 </template>
 <script>
-import { countries, countriesIso } from './assets/js/phoneCodeCountries.js'
+import { countries, countriesIso } from './constantes/js/phoneCodeCountries.js'
 import examples from 'libphonenumber-js/examples.mobile.json'
 import { parsePhoneNumberFromString, AsYouType, getExampleNumber, getCountryCallingCode } from 'libphonenumber-js'
-import locales from './assets/locales'
+import locales from './constantes/locales'
 import MazInput from './../MazInput'
 import MazSelect from './../MazSelect'
 
