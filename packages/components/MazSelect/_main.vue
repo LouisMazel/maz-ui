@@ -216,7 +216,9 @@ export default {
     // set the position of option list (`top`, `top right`, `bottom right`)
     position: { type: String, default: 'left bottom' },
     // set label key and value key - Ex: `{ labelKey: '<your_object_key>', valueKey: '<your_object_key>', searchKey: '<your_object_key>' }`
-    config: { type: Object, default: () => ({ labelKey: 'label', valueKey: 'value', searchKey: 'label' }) }
+    config: { type: Object, default: () => ({ labelKey: 'label', valueKey: 'value', searchKey: 'label' }) },
+    // force value shown on input
+    inputValue: { type: String, default: null }
   },
   data () {
     return {
@@ -285,6 +287,7 @@ export default {
         : null
     },
     valueShown () {
+      if (this.inputValue) return this.inputValue
       const { multiple, options, values, value, config } = this
       const valueSelected = options.find(o => o[config.valueKey] === value)
       const result = valueSelected && valueSelected[config.labelKey] && !multiple
