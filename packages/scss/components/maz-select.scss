@@ -29,6 +29,12 @@
     z-index: 1;
     padding-left: 2px;
     max-width: calc(100% - 80px);
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
 
     &.maz-left-offset {
       left: 40px;

@@ -16,6 +16,7 @@
       }"
     >
       <transition-group
+        ref="SelectedTagsContainer"
         tag="div"
         name="maz-tags"
         class="maz-flex maz-align-center maz-flex-1"
@@ -308,8 +309,8 @@ export default {
   methods: {
     async scrollTags () {
       await this.$nextTick()
-      const { SelectedTags } = this.$refs
-      SelectedTags.scrollLeft = SelectedTags.clientWidth
+      const { SelectedTags, SelectedTagsContainer } = this.$refs
+      SelectedTags.scrollLeft = SelectedTagsContainer.$el.clientWidth
     },
     removeOption (value) {
       const { values, multiple } = this
