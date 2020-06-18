@@ -215,8 +215,8 @@ export default {
     open: { type: Boolean, default: false },
     // set the position of option list (`top`, `top right`, `bottom right`)
     position: { type: String, default: 'left bottom' },
-    // set label key and value key - Ex: `{ labelKey: '<your_object_key>', valueKey: '<your_object_key>' }`
-    config: { type: Object, default: () => ({ labelKey: 'label', valueKey: 'value' }) }
+    // set label key and value key - Ex: `{ labelKey: '<your_object_key>', valueKey: '<your_object_key>', searchKey: '<your_object_key>' }`
+    config: { type: Object, default: () => ({ labelKey: 'label', valueKey: 'value', searchKey: 'label' }) }
   },
   data () {
     return {
@@ -275,7 +275,8 @@ export default {
       }
     },
     tmpValueIndex () {
-      return this.optionsShown.findIndex(c => c.value === this.tmpValue)
+      const { config, tmpValue, optionsShown } = this
+      return optionsShown.findIndex(c => c[config.valueKey] === tmpValue)
     },
     selectedValueIndex () {
       const { values, options, config } = this
@@ -362,7 +363,7 @@ export default {
     },
     updateValue (value) {
       const { multiple, values, removeOption } = this
-      if (values.includes(value)) return removeOption(value)
+      if (values.includes(value) && multiple) return removeOption(value)
       this.tmpValue = value
       if (value) values.push(value)
       const valueToReturn = multiple && value ? values : value
@@ -387,7 +388,7 @@ export default {
     },
     keyboardNav (e) {
       const code = e.keyCode
-      const { hasOpenList, tmpValueIndex, optionsShown, openList, tmpValue, search } = this
+      const { hasOpenList, tmpValueIndex, optionsShown, openList, tmpValue, search, config } = this
       if (code === 40 || code === 38) {
         if (!hasOpenList) openList()
         let index = code === 40 ? tmpValueIndex + 1 : tmpValueIndex - 1
@@ -396,7 +397,7 @@ export default {
             ? optionsShown.length - 1
             : 0
         }
-        this.tmpValue = optionsShown[index].value
+        this.tmpValue = optionsShown[index][config.valueKey]
         this.scrollToSelectedOnFocus(index)
       } else if (code === 13) {
         // enter key
@@ -425,7 +426,7 @@ export default {
         this.query += q.toLowerCase()
         const resultIndex = options.findIndex(o => {
           this.tmpValue = o[config.valueKey]
-          return o[[config.labelKey]].toLowerCase().includes(this.query)
+          return o[config.searchKey].toLowerCase().includes(this.query)
         })
         if (resultIndex !== -1) {
           this.scrollToSelectedOnFocus(resultIndex)
@@ -437,8 +438,8 @@ export default {
       this.searchQuery = query === '' ? null : query
       if (!this.searchQuery) return this.filteredOptions = options
       const searchQuery = query.toLowerCase()
-      const filteredOptions = options.filter(o => o[config.valueKey] && o[config.labelKey].toLowerCase().includes(searchQuery))
-      this.tmpValue = filteredOptions.length ? filteredOptions[0].value : null
+      const filteredOptions = options.filter(o => o[config.valueKey] && o[config.searchKey].toLowerCase().includes(searchQuery))
+      this.tmpValue = filteredOptions.length ? filteredOptions[0][config.valueKey] : null
       this.filteredOptions = filteredOptions
     }
   }
