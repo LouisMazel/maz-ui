@@ -5,38 +5,74 @@
     class="maz-phone-number-input maz-flex"
   >
     <div
-      v-if="!noCountrySelector"
-      class="select-country-container"
+      v-if="countryCode && !noFlags"
+      class="maz-phone-number-input__country-flag"
+      tabindex="-1"
     >
-      <CountrySelector
-        :id="`${uniqueId}_country_selector`"
-        ref="CountrySelector"
-        v-model="countryCode"
-        :items="codesCountries"
-        :countries-height="countriesHeight"
-        :error="shouldChooseCountry"
-        :hint="shouldChooseCountry ? t.countrySelectorError : null"
-        :disabled="disabled"
-        :success="isValid && !noValidation"
-        :preferred-countries="preferredCountries"
-        :only-countries="onlyCountries"
-        :ignored-countries="ignoredCountries"
-        :color="color"
-        :placeholder="t.countrySelectorLabel"
-        :no-flags="noFlags"
-        :show-code-on-list="showCodeOnList"
-        :size="size"
-        class="input-country-selector"
-      >
-        <!-- slot arrow: change the arrow icon -->
-        <slot
-          slot="arrow"
-          name="arrow"
-        >
-          <!-- `<ArrowIcon />` -->
-        </slot>
-      </CountrySelector>
+      <div :class="`maz-flag maz-flag-${countryCode.toLowerCase()}`" />
     </div>
+    <MazSelect
+      v-if="!noCountrySelector"
+      v-model="countryCode"
+      :options="countriesSorted"
+      :placeholder="t.countrySelectorLabel"
+      search
+      :search-placeholder="t.countrySelectorSearchPlaceholder"
+      :items-height="countriesHeight"
+      :error="shouldChooseCountry"
+      :hint="shouldChooseCountry ? t.countrySelectorError : null"
+      :size="size"
+      :success="isValid && !noValidation"
+      :disabled="disabled"
+      :input-value="callingCode"
+      :list-width="250"
+      :config="{
+        labelKey: 'dialCode',
+        searchKey: 'name',
+        valueKey: 'iso2'
+      }"
+      :color="color"
+      class="country-selector"
+      :class="{
+        'no-padding-left': noFlags || !countryCode
+      }"
+    >
+      <template v-slot="{ option }">
+        <div
+          class="maz-flex maz-align-center"
+        >
+          <div
+            v-if="!noFlags"
+            class="country-selector__flag-container maz-mr-2"
+          >
+            <div :class="`maz-flag maz-flag-${option.iso2.toLowerCase()}`" />
+          </div>
+          <span
+            v-if="showCodeOnList"
+            class="country-selector__calling-code maz-flex-fixed maz-text-muted"
+            :class="{
+              'maz-text-muted-dark': option.isSelected
+            }"
+          >
+            +{{ option.dialCode }}
+          </span>
+          <div
+            class="maz-dots-text maz-flex-1 maz-text-left maz-text-color"
+            :class="{
+              'maz-text-white': option.isSelected
+            }"
+          >
+            {{ option.name }}
+          </div>
+        </div>
+      </template>
+    </MazSelect>
+    <!-- <CountrySelector
+      :id="`${uniqueId}_country_selector`"
+      ref="CountrySelector"
+      v-model="countryCode"
+      class="input-country-selector"
+    /> -->
     <div class="maz-flex-1">
       <MazInput
         :id="`${uniqueId}_phone_number`"
@@ -77,10 +113,10 @@
 <script>
 import { countries, countriesIso } from './assets/js/phoneCodeCountries.js'
 import examples from 'libphonenumber-js/examples.mobile.json'
-import { parsePhoneNumberFromString, AsYouType, getExampleNumber } from 'libphonenumber-js'
-import CountrySelector from './CountrySelector'
+import { parsePhoneNumberFromString, AsYouType, getExampleNumber, getCountryCallingCode } from 'libphonenumber-js'
 import locales from './assets/locales'
 import MazInput from './../MazInput'
+import MazSelect from './../MazSelect'
 
 import uniqueId from './../../mixins/uniqueId'
 
@@ -99,8 +135,9 @@ const isCountryAvailable = (locale) => {
 export default {
   name: 'MazPhoneNumberInput',
   components: {
-    CountrySelector,
-    MazInput
+    // CountrySelector,
+    MazInput,
+    MazSelect
   },
   mixins: [uniqueId],
   props: {
@@ -146,7 +183,6 @@ export default {
   data () {
     return {
       results: {},
-      inputFocused: false,
       userLocale: this.defaultCountryCode,
       lastKeyPressed: null,
       inputValueFormatted: null
@@ -181,12 +217,14 @@ export default {
         return this.results.countryCode || this.userLocale
       },
       set (countryCode) {
+        if (!countryCode) return
         this.emitValues({countryCode, phoneNumber: this.inputValue})
-        if (this.inputFocused) {
-          this.$refs.PhoneNumberInput.$el.querySelector('input').focus()
-        }
-        this.inputFocused = true
+        this.$refs.PhoneNumberInput.$el.querySelector('input').focus()
       }
+    },
+    callingCode () {
+      const { countryCode } = this
+      return countryCode ? `+${getCountryCallingCode(countryCode)}` : null
     },
     shouldChooseCountry () {
       return !this.countryCode && !!this.inputValue
@@ -207,6 +245,26 @@ export default {
         ? null
         : hasEmptyPhone || isValid ? null : `${t.example} ${phoneNumberExample}`
     },
+    countriesList () {
+      return this.codesCountries.filter(item => !this.ignoredCountries.includes(item.iso2))
+    },
+    countriesFiltered () {
+      const countries = this.onlyCountries || this.preferredCountries
+      return countries.map(country => this.countriesList.find(item => item.iso2.includes(country)))
+    },
+    otherCountries () {
+      return this.countriesList.filter(item => !this.preferredCountries.includes(item.iso2))
+    },
+    countriesSorted () {
+      return this.preferredCountries
+        ? [
+          ...this.countriesFiltered,
+          ...this.otherCountries
+        ]
+        : this.onlyCountries
+          ? this.countriesFiltered
+          : this.countriesList
+    }
   },
   watch: {
     defaultCountryCode (newValue, oldValue) {

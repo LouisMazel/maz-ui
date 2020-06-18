@@ -168,8 +168,8 @@
 
         <MazPhoneNumberInput
           v-model="phoneNumberExample"
-          no-flags
           show-code-on-list
+          no-use-browser-locale
           :preferred-countries="['FR', 'BE', 'DE']"
           @update="resultsExample = getJson($event)"
         />

@@ -12,7 +12,7 @@ $LG_SIZE: 3.42rem !default;
     top: 4px;
     cursor: pointer;
     outline: none;
-    left: 13px;
+    left: 12px;
     transform: translateY(25%);
     opacity: 0;
     transition: all .25s cubic-bezier(.645, .045, .355, 1);
@@ -384,7 +384,7 @@ $LG_SIZE: 3.42rem !default;
     .maz-input__input,
     .maz-input__input:hover,
     .maz-input__input:focus {
-      border-color: $success-color;
+      border-color: $success-color !important;
     }
 
     .maz-input__label {

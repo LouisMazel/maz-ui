@@ -1,28 +1,80 @@
 @import './../style-helpers/variables/index.scss';
+@import './maz-phone-number-input/flags/index.scss';
+
+$SM_SIZE: 125px;
+$MD_SIZE: 138px;
+$LG_SIZE: 145px;
 
 .maz-phone-number-input {
-  .select-country-container {
-    flex: 0 0 120px;
-    width: 120px;
-    min-width: 120px;
-    max-width: 120px;
+  position: relative;
+
+  &__country-flag {
+    position: absolute;
+    bottom: 5px;
+    left: 12px;
+    z-index: 2;
   }
 
-  &.sm .select-country-container {
-    flex: 0 0 110px;
-    width: 110px;
-    min-width: 110px;
-    max-width: 110px;
+  .country-selector {
+    flex: 0 0 $MD_SIZE;
+    width: $MD_SIZE;
+    min-width: $MD_SIZE;
+    max-width: $MD_SIZE;
+
+    &:focus,
+    &.has-list-open {
+      z-index: 1;
+    }
+
+    .maz-input {
+      &.has-error {
+        z-index: 1;
+      }
+
+      &__input {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+    }
+
+    &:not(.no-padding-left) {
+      .maz-input__input {
+        padding-left: 40px;
+      }
+    }
+
+    .maz-select__options-list {
+      .maz-input__input {
+        border-top-right-radius: $border-radius;
+        border-bottom-right-radius: $border-radius;
+        padding-left: 12px;
+      }
+    }
+
+    &__calling-code {
+      width: 45px;
+    }
   }
 
-  &.lg .select-country-container {
-    flex: 0 0 130px;
-    width: 130px;
-    min-width: 130px;
-    max-width: 130px;
+  &.sm .country-selector {
+    flex: 0 0 $SM_SIZE;
+    width: $SM_SIZE;
+    min-width: $SM_SIZE;
+    max-width: $SM_SIZE;
   }
 
-  .maz-input {
+  &.lg .country-selector {
+    flex: 0 0 $LG_SIZE;
+    width: $LG_SIZE;
+    min-width: $LG_SIZE;
+    max-width: $LG_SIZE;
+  }
+
+  .maz-input.input-phone-number {
+    .maz-input__input {
+      transition: z-index 0ms;
+    }
+
     &:not(.has-border-radius) {
       .maz-input__input {
         border-top-left-radius: 0;
@@ -31,19 +83,17 @@
       }
     }
 
-    &__input {
-      z-index: 0;
+    // &__input {
+    //   z-index: 0;
 
-      &:focus {
-        z-index: 1;
-      }
-    }
+    //   &:focus {
+    //     z-index: 1;
+    //   }
+    // }
 
-    &__label,
-    &__toggle-btn {
-      z-index: 1;
-    }
+    // &__label,
+    // &__toggle-btn {
+    //   z-index: 1;
+    // }
   }
 }
-
-@import './maz-phone-number-input/country-selector';
