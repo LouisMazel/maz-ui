@@ -1,5 +1,7 @@
 <template>
-  <div class="documentation maz-flex maz-flex-1 maz-position-relative">
+  <div
+    class="documentation maz-flex maz-flex-1 maz-position-relative"
+  >
     <MazSidebar
       v-model="hasLeftSidebarOpen"
       :width="280"
@@ -8,7 +10,10 @@
     >
       <LeftSidebarContent />
     </MazSidebar>
-    <div class="documentation__container maz-flex maz-direction-column maz-flex-1">
+    <div
+      ref="DocumentationContainer"
+      class="documentation__container maz-flex maz-direction-column maz-flex-1"
+    >
       <div
         v-if="isComponentRoute"
         class="maz-flex maz-space-between maz-px-5 maz-py-5 maz-align-center maz-flex-wrap"
@@ -76,8 +81,18 @@ export default {
       return this.$route.name.slice(0, -3)
     },
     isComponentRoute () {
+      const { routeName } = this
+      return !isGeneralDoc(routeName) && !isCliDoc(routeName) && !isThemeDoc(routeName)
+    },
+    routeName () {
       const { name } = this.$route
-      return !isGeneralDoc(name) && !isCliDoc(name) && !isThemeDoc(name)
+      return name
+    }
+  },
+  watch: {
+    async routeName () {
+      await this.$nextTick()
+      this.$refs.DocumentationContainer.scrollTop = 0
     }
   },
   methods: {
