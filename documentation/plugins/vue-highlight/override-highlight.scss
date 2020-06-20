@@ -1,0 +1,48 @@
+.code-container {
+  .hljs {
+    background-color: transparent;
+    background-color: $bg-color-dark;
+    // border: $border-width solid #EAEEFB;
+    border-radius: $border-radius;
+    padding: 20px;
+    color: $text-color-dark;
+
+    .hljs-name {
+      color: #F92672;
+    }
+
+    .hljs-built_in,
+    .hljs-regexp,
+    .hljs-template-variable {
+      color: $text-color-dark;
+    }
+
+    .hljs-variable,
+    .hljs-keyword,
+    .hljs-attr {
+      color: $primary-color;
+    }
+
+    .hljs-number,
+    .hljs-literal,
+    .hljs-string {
+      color: $secondary-color;
+    }
+
+    .hljs-params {
+      color: $third-color;
+    }
+
+    .hljs-comment {
+      color: $text-muted-dark;
+    }
+  }
+}
+
+.maz-is-dark .code-container {
+  .hljs {
+    border-color: #535673;
+    background-color: lighten($bg-color-dark, 5%);
+    color: $text-color-dark;
+  }
+}
