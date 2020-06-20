@@ -1,6 +1,6 @@
 <template>
   <div
-    class="maz-checkbox"
+    class="maz-base-component maz-checkbox"
     :class="[`maz-checkbox--${color}`]"
   >
     <input

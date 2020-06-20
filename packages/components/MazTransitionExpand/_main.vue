@@ -1,6 +1,6 @@
 <template>
   <transition
-    class="maz-transition-expand"
+    class="maz-base-component maz-transition-expand"
     name="maz-expand"
     @enter="enter"
     @after-enter="afterEnter"

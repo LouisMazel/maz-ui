@@ -1,6 +1,6 @@
 <template>
   <div
-    class="maz-input-tags maz-flex maz-flex-wrap maz-align-center maz-border-color-hover"
+    class="maz-base-component maz-input-tags maz-flex maz-flex-wrap maz-align-center maz-border-color-hover"
     :class="[{
       'is-focused': isFocus,
       'is-valid': success,

@@ -1,0 +1,20 @@
+html { font-size: $base-font-size; }
+
+.maz-base-component {
+  &,
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  @import './mixins/font_family';
+
+  @include font_family();
+
+  color: $text-color;
+
+  &.#{$prefix}is-dark {
+    color: $text-color-dark;
+  }
+}

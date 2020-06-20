@@ -1,7 +1,7 @@
 <template>
   <component
     :is="tag"
-    class="maz-list-item"
+    class="maz-base-component maz-list-item"
     :class="{
       'has-hover': hover,
       'cursor-pointer': tag === 'button'

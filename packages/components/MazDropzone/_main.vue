@@ -3,7 +3,7 @@
     :id="id"
     ref="mazDropzone"
     :options="dropzoneOptions"
-    class="maz-dropzone maz-w-100 maz-h-100 maz-flex maz-flex-center"
+    class="maz-base-component maz-dropzone maz-w-100 maz-h-100 maz-flex maz-flex-center"
     :class="{ 'maz-is-dark': dark }"
     @vdropzone-file-added="fileAdded"
     @vdropzone-success="fileSended"

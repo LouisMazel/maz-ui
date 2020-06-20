@@ -41,6 +41,7 @@ export default {
   .component-container {
     color: $text-color;
     min-width: 200px;
+    border: $border-width solid transparent;
 
     &__footer {
       overflow: hidden;

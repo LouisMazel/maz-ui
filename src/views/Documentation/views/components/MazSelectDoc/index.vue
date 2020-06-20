@@ -58,7 +58,7 @@
     >
       <div
         v-if=&quot;option.value&quot;
-        class=&quot;maz-flex maz-flex-start&quot;
+        class=&quot;maz-flex maz-flex-start maz-text-color&quot;
         :class=&quot;{
           'maz-text-white': option.isSelected
         }&quot;
@@ -92,7 +92,7 @@
         >
           <div
             v-if="option.value"
-            class="maz-flex maz-flex-start"
+            class="maz-flex maz-flex-start maz-text-color"
             :class="{
               'maz-text-white': option.isSelected
             }"

@@ -1,7 +1,7 @@
 <template>
   <transition
     name="maz-bottom-sheet"
-    class="maz-bottom-sheet"
+    class="maz-base-component maz-bottom-sheet"
   >
     <div
       v-if="value"

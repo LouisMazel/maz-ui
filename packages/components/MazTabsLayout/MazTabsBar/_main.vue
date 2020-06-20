@@ -1,7 +1,7 @@
 <template>
   <div
     ref="MazTabsBar"
-    class="maz-tabs-bar"
+    class="maz-base-component maz-tabs-bar"
     :class="{
       'maz-is-dark': dark,
       'align-left': alignLeft

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="maz-stepper maz-flex maz-w-100"
+    class="maz-base-component maz-stepper maz-flex maz-w-100"
     :class="[{
       'maz-is-dark': dark
     },`maz-stepper--${color}`, `maz-space-${space}`]"

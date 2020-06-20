@@ -1,7 +1,7 @@
 <template>
   <div
     :style="[wrapperStyle]"
-    class="maz-slider"
+    class="maz-base-component maz-slider"
     :class="[`maz-slider--${color}`]"
     @mousemove="handleMousemove"
     @mouseup="handleMouseup"

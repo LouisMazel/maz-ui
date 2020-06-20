@@ -1,6 +1,6 @@
 <template>
   <div
-    class="maz-select"
+    class="maz-base-component maz-select"
     :class="[{
       'has-list-open': hasOpenList,
       'maz-is-dark': dark
@@ -290,7 +290,7 @@ export default {
       if (this.inputValue) return this.inputValue
       const { multiple, options, values, value, config } = this
       const valueSelected = options.find(o => o[config.valueKey] === value)
-      const result = valueSelected && valueSelected[config.labelKey] && !multiple
+      const result = valueSelected && valueSelected[config.valueKey] && !multiple
         ? valueSelected[config.labelKey]
         : values[0] ? ' ' : null
       return result

@@ -2,7 +2,7 @@
   <div
     :id="id"
     :class="[{ 'maz-is-dark': dark }, size]"
-    class="maz-phone-number-input maz-flex"
+    class="maz-base-component maz-phone-number-input maz-flex"
   >
     <div
       v-if="countryCode && !noFlags"

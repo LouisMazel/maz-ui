@@ -1,5 +1,5 @@
 <template>
-  <div class="maz-btn-group maz-flex">
+  <div class="maz-base-component maz-btn-group maz-flex">
     <MazBtn
       v-for="({ label, value: val }, i) in items"
       :key="`maz-btn-group-item-${i}`"

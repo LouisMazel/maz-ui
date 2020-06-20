@@ -1,6 +1,6 @@
 <template>
   <div
-    class="maz-responsive-menu maz-flex maz-align-center"
+    class="maz-base-component maz-responsive-menu maz-flex maz-align-center"
   >
     <button
       ref="button-open"

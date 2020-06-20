@@ -13,7 +13,7 @@
       'has-no-label': !hasLabel && !hint,
       'has-left-icon': hasLeftIcon(),
     }, size, `has-${leftNumberIcon}-right-icon`, `maz-input--${color}`]"
-    class="maz-input"
+    class="maz-base-component maz-input"
     @click="focusInput"
   >
     <div
@@ -74,7 +74,7 @@
       :type="type"
       :required="required"
       :readonly="readonly"
-      class="maz-input__input textarea maz-border maz-border-color maz-border-color-hover maz-border-solid"
+      class="maz-input__input maz-textarea maz-border maz-border-color maz-border-color-hover maz-border-solid"
       @keydown="keyDown"
       @keyup="keyUp"
       @focus="onFocus"
