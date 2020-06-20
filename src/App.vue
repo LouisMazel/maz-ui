@@ -38,18 +38,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-  #app.maz-is-dark {
-    h3,
-    h4,
-    h5,
-    h6,
-    p,
-    ul,
-    li,
-    ol {
-      color: $text-color-dark;
-    }
-  }
-</style>

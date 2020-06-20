@@ -18,31 +18,8 @@ html {
   width: 100%;
   background-color: whitesmoke;
 
-  &.#{$prefix}is-dark {
-    color: $text-color-dark;
-  }
-
   body {
     height: 100%;
-  }
-
-  #app {
-    min-height: 100%;
-
-    &.documentation {
-      height: 100%;
-    }
-  }
-
-  body,
-  #app {
-    color: $text-color;
-    background-color: $bg-color;
-
-    &.#{$prefix}is-dark {
-      color: $text-color-dark;
-      background-color: $bg-color-dark;
-    }
   }
 
   button,
@@ -124,6 +101,27 @@ html {
     &:hover,
     &:focus {
       text-decoration: underline;
+    }
+  }
+
+  #app {
+    min-height: 100%;
+
+    &.documentation {
+      height: 100%;
+    }
+
+    &.maz-is-dark {
+      h3,
+      h4,
+      h5,
+      h6,
+      p,
+      ul,
+      li,
+      ol {
+        color: $text-color-dark;
+      }
     }
   }
 }
