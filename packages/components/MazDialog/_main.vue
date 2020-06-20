@@ -6,7 +6,7 @@
   >
     <div
       v-if="value"
-      class="maz-dialog maz-dialog--mask"
+      class="maz-base-component maz-dialog maz-dialog--mask"
       :class="{
         'maz-dialog--success': success,
         'maz-dialog--danger': danger,

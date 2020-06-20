@@ -1,6 +1,6 @@
 <template>
   <div
-    class="maz-flex"
+    class="maz-base-component maz-flex"
     :class="[
       classes
     ]"

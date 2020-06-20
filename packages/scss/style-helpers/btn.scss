@@ -1,4 +1,6 @@
 .#{$prefix}btn {
+  @include font_family();
+
   border: $border-width solid transparent;
   outline: none;
   cursor: pointer;

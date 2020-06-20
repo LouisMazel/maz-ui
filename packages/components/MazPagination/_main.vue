@@ -1,6 +1,6 @@
 <template>
   <div
-    class="maz-pagination maz-flex maz-flex-center"
+    class="maz-base-component maz-pagination maz-flex maz-flex-center"
     :class="{ 'maz-is-dark': dark }"
   >
     <div class="maz-pagination__container maz-flex maz-align-center">

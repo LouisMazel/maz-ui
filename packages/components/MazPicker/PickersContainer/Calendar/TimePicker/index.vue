@@ -199,7 +199,7 @@ export default {
           .filter(h => h >= minEnabledHour && h <= maxEnabledHour)
 
         if (!enabledHours.includes(this.hour) && this.behaviour && this.behaviour.time && this.behaviour.time.nearestIfDisabled) {
-            this.hour = enabledHours[0] // eslint-disable-line
+          this.hour = enabledHours[0] // eslint-disable-line
           this.emitValue()
         }
 

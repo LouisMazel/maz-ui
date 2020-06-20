@@ -1,6 +1,6 @@
 <template>
   <div
-    class="maz-sidebar"
+    class="maz-base-component maz-sidebar"
     :class="{
       'maz-is-dark': dark
     }"

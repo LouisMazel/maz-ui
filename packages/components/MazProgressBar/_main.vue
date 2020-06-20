@@ -1,5 +1,5 @@
 <template>
-  <div class="maz-progress-bar maz-flex maz-align-center maz-bg-color-light">
+  <div class="maz-base-component maz-progress-bar maz-flex maz-align-center maz-bg-color-light">
     <div
       class="maz-progress-bar__bg maz-border-radius"
       :class="[{

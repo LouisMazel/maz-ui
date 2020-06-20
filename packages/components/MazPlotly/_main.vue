@@ -1,7 +1,7 @@
 <template>
   <div
     :id="uniqueId"
-    class="maz-plotly"
+    class="maz-base-component maz-plotly"
   />
 </template>
 <script>

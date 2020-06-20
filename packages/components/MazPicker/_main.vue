@@ -2,7 +2,7 @@
   <div
     :id="uniqueId"
     ref="MazPicker"
-    class="maz-picker"
+    class="maz-base-component maz-picker"
     :class="[{
       'maz-is-dark': dark
     }, `maz-picker--${color}`]"

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="maz-loader maz-flex maz-flex-center"
+    class="maz-base-component maz-loader maz-flex maz-flex-center"
     :class="{
       'maz-is-dark': dark
     }"

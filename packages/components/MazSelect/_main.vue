@@ -1,6 +1,6 @@
 <template>
   <div
-    class="maz-select"
+    class="maz-base-component maz-select"
     :class="[{
       'has-list-open': hasOpenList,
       'maz-is-dark': dark
@@ -16,21 +16,22 @@
       }"
     >
       <transition-group
+        ref="SelectedTagsContainer"
         tag="div"
         name="maz-tags"
         class="maz-flex maz-align-center maz-flex-1"
       >
         <MazBtn
-          v-for="({ value: v, label }, i) in selectedOptions"
+          v-for="(option, i) in selectedOptions"
           :key="`tags-${i}`"
           class="maz-select__tag maz-flex maz-align-center"
           :disabled="disabled"
           :color="color"
           :size="size"
-          @click.prevent.stop="removeOption(v)"
+          @click.prevent.stop="removeOption(option[config.valueKey])"
         >
           <span class="maz-select__tag__text">
-            {{ label }}
+            {{ option[config.labelKey] }}
           </span>
           <i class="maz-select__tag__clear material-icons">
             close
@@ -122,27 +123,27 @@
             tabindex="-1"
             type="button"
             :class="[
-              {'selected': values.length && values.includes(option.value) },
-              {'keyboard-selected': tmpValue === option.value}
+              {'selected': values.length && values.includes(option[config.valueKey]) },
+              {'keyboard-selected': tmpValue === option[config.valueKey]}
             ]"
             class="maz-select__options-list__item flex align-center maz-text-left"
             :style="[optionHeight]"
-            @click.prevent.stop="updateValue(option.value)"
+            @click.prevent.stop="updateValue(option[config.valueKey])"
           >
             <!-- Item template -->
             <slot
-              :option="{ ...option, isSelected: values.includes(option.value) }"
+              :option="{ ...option, isSelected: values.includes(option[config.valueKey]) }"
               tag="div"
             >
               <!-- `<span>{{ option.label }}</span>`-->
               <span
                 class="maz-dots-text"
                 :class="[
-                  { 'maz-text-muted' : !option.value },
-                  values.includes(option.value) ? 'maz-text-white' : 'maz-text-color'
+                  { 'maz-text-muted' : !option[config.valueKey] },
+                  values.includes(option[config.valueKey]) ? 'maz-text-white' : 'maz-text-color'
                 ]"
               >
-                {{ option.label }}
+                {{ option[config.labelKey] }}
               </span>
             </slot>
           </button>
@@ -213,7 +214,11 @@ export default {
     // When is `true` the option list is open
     open: { type: Boolean, default: false },
     // set the position of option list (`top`, `top right`, `bottom right`)
-    position: { type: String, default: 'left bottom' }
+    position: { type: String, default: 'left bottom' },
+    // set label key and value key - Ex: `{ labelKey: '<your_object_key>', valueKey: '<your_object_key>', searchKey: '<your_object_key>' }`
+    config: { type: Object, default: () => ({ labelKey: 'label', valueKey: 'value', searchKey: 'label' }) },
+    // force value shown on input
+    inputValue: { type: String, default: null }
   },
   data () {
     return {
@@ -238,7 +243,8 @@ export default {
       return this.open || this.listIsOpen
     },
     values () {
-      const { multiple, value } = this
+      const { multiple, value, options } = this
+      if (!options) throw new Error('[MazSelect] options should be provide')
       if (multiple && !Array.isArray(value) && value !== null) throw new Error('[MazSelect] value should be an array or null')
       if (!multiple && Array.isArray(value)) throw new Error('[MazSelect] value should be a string, a number or null')
       return value
@@ -271,28 +277,31 @@ export default {
       }
     },
     tmpValueIndex () {
-      return this.optionsShown.findIndex(c => c.value === this.tmpValue)
+      const { config, tmpValue, optionsShown } = this
+      return optionsShown.findIndex(c => c[config.valueKey] === tmpValue)
     },
     selectedValueIndex () {
-      const { values, options } = this
+      const { values, options, config } = this
       return values.length
-        ? options.findIndex(c => c.value === values[values.length - 1])
+        ? options.findIndex(c => c[config.valueKey] === values[values.length - 1])
         : null
     },
     valueShown () {
-      const { multiple, options, values, value } = this
-      const valueSelected = options.filter(({ value: v }) => v === value)[0]
-      return valueSelected && valueSelected.value && !multiple
-        ? valueSelected.label
+      if (this.inputValue) return this.inputValue
+      const { multiple, options, values, value, config } = this
+      const valueSelected = options.find(o => o[config.valueKey] === value)
+      const result = valueSelected && valueSelected[config.valueKey] && !multiple
+        ? valueSelected[config.labelKey]
         : values[0] ? ' ' : null
+      return result
     },
     optionsShown () {
       return this.filteredOptions || this.options
     },
     selectedOptions () {
-      const { values, options } = this
+      const { values, options, config } = this
       const optionsSelected = []
-      values.forEach(v => optionsSelected.push(options.find(({ value }) => v === value)))
+      values.forEach(v => optionsSelected.push(options.find((o) => v === o[config.valueKey])))
       return optionsSelected
     }
   },
@@ -308,8 +317,8 @@ export default {
   methods: {
     async scrollTags () {
       await this.$nextTick()
-      const { SelectedTags } = this.$refs
-      SelectedTags.scrollLeft = SelectedTags.clientWidth
+      const { SelectedTags, SelectedTagsContainer } = this.$refs
+      SelectedTags.scrollLeft = SelectedTagsContainer.$el.clientWidth
     },
     removeOption (value) {
       const { values, multiple } = this
@@ -349,15 +358,15 @@ export default {
       await this.$nextTick()
     },
     selectFirstValue () {
-      const { multiple, value, options } = this
+      const { multiple, value, options, config } = this
       if (value || multiple) return
-      const valueToReturn = options[0].value || null
+      const valueToReturn = options[0][config.valueKey] || null
       this.tmpValue = valueToReturn
       this.emitValues(valueToReturn, true)
     },
     updateValue (value) {
       const { multiple, values, removeOption } = this
-      if (values.includes(value)) return removeOption(value)
+      if (values.includes(value) && multiple) return removeOption(value)
       this.tmpValue = value
       if (value) values.push(value)
       const valueToReturn = multiple && value ? values : value
@@ -382,7 +391,7 @@ export default {
     },
     keyboardNav (e) {
       const code = e.keyCode
-      const { hasOpenList, tmpValueIndex, optionsShown, openList, tmpValue, search } = this
+      const { hasOpenList, tmpValueIndex, optionsShown, openList, tmpValue, search, config } = this
       if (code === 40 || code === 38) {
         if (!hasOpenList) openList()
         let index = code === 40 ? tmpValueIndex + 1 : tmpValueIndex - 1
@@ -391,7 +400,7 @@ export default {
             ? optionsShown.length - 1
             : 0
         }
-        this.tmpValue = optionsShown[index].value
+        this.tmpValue = optionsShown[index][config.valueKey]
         this.scrollToSelectedOnFocus(index)
       } else if (code === 13) {
         // enter key
@@ -406,6 +415,7 @@ export default {
       }
     },
     searching (e) {
+      const { config, options } = this
       const code = e.keyCode
       clearTimeout(queryTimer)
       const queryTimer = setTimeout(() => {
@@ -417,9 +427,9 @@ export default {
       } else if (/[a-zA-Z-e ]/.test(q)) {
         if (!this.hasOpenList) this.openList()
         this.query += q.toLowerCase()
-        const resultIndex = this.options.findIndex(o => {
-          this.tmpValue = o.value
-          return o.label.toLowerCase().includes(this.query)
+        const resultIndex = options.findIndex(o => {
+          this.tmpValue = o[config.valueKey]
+          return o[config.searchKey].toLowerCase().includes(this.query)
         })
         if (resultIndex !== -1) {
           this.scrollToSelectedOnFocus(resultIndex)
@@ -427,11 +437,12 @@ export default {
       }
     },
     searchInOptions (query) {
+      const { config, options } = this
       this.searchQuery = query === '' ? null : query
-      if (!this.searchQuery) return this.filteredOptions = this.options
+      if (!this.searchQuery) return this.filteredOptions = options
       const searchQuery = query.toLowerCase()
-      const filteredOptions = this.options.filter(o => o.value && o.label.toLowerCase().includes(searchQuery))
-      this.tmpValue = filteredOptions.length ? filteredOptions[0].value : null
+      const filteredOptions = options.filter(o => o[config.valueKey] && o[config.searchKey].toLowerCase().includes(searchQuery))
+      this.tmpValue = filteredOptions.length ? filteredOptions[0][config.valueKey] : null
       this.filteredOptions = filteredOptions
     }
   }

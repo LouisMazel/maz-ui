@@ -47,11 +47,10 @@
 
 <!-- @vuese:MazPhoneNumberInput:slots:start -->
 
-| Name       | Description                       | Default Slot Content |
-| ---------- | --------------------------------- | -------------------- |
-| arrow      | slot arrow: change the arrow icon | `<ArrowIcon />`      |
-| icon-left  | Custom left icon                  | -                    |
-| icon-right | Custom right icon                 | -                    |
+| Name       | Description       | Default Slot Content |
+| ---------- | ----------------- | -------------------- |
+| icon-left  | Custom left icon  | -                    |
+| icon-right | Custom right icon | -                    |
 
 <!-- @vuese:MazPhoneNumberInput:slots:end -->
 

@@ -18,13 +18,16 @@
 
     <ul>
       <li>
+        <strong>Auto-detect</strong> country calling code with phone number provided
+      </li>
+      <li>
         You can set <strong>preferred-countries</strong>, <strong>ignored-countries</strong> or have <strong>only-countries</strong>
       </li>
       <li>
         Validation UI state: input becomes green ($success-color) when the phone number is valid (can be disabled by <strong>no-validation</strong> attr)
       </li>
       <li>
-        Multi options to getting country code : By default the component get the country code via the browser (disable it with no-use-browser-locale)
+        <strong>Multi options to getting country code</strong> : By default the component get the country code via the browser (disable it with no-use-browser-locale)
         or you can use fetch-country to get the country code via https://ip2c.org/s (network needed) - you can use default-country-code option instead to set one
       </li>
       <li>
@@ -165,12 +168,13 @@
 
         <MazPhoneNumberInput
           v-model="phoneNumberExample"
-          no-flags
-          default-country-code="FR"
           show-code-on-list
+          no-use-browser-locale
           :preferred-countries="['FR', 'BE', 'DE']"
+          size="lg"
           @update="resultsExample = getJson($event)"
         />
+        <!-- no-use-browser-locale -->
 
         <hr class="maz-border-top maz-border-solid maz-border-color maz-my-3">
 
@@ -227,7 +231,7 @@ export default {
     return {
       phoneNumber: null,
       results: null,
-      phoneNumberExample: '0665656565',
+      phoneNumberExample: '+33656565656',
       resultsExample: null,
       codeExample: `<template>
   <p>
@@ -260,7 +264,6 @@ export default {
   <MazPhoneNumberInput
     v-model="phoneNumberExample"
     no-flags
-    default-country-code="FR"
     show-code-on-list
     :preferred-countries="['FR', 'BE', 'DE']"
     @update="resultsExample = getJson($event)"
@@ -270,7 +273,7 @@ export default {
 export default {
   data () {
     return {
-      phoneNumberExample: '0665656565',
+      phoneNumberExample: '+3365656565',
       resultsExample: null
     }
   }
@@ -296,6 +299,10 @@ export default {
       @media screen and (max-width: $breakpoint-laptop-s) {
         grid-template-columns: repeat(1, 1fr);
       }
+    }
+
+    ul li {
+      margin-bottom: 8px;
     }
   }
 </style>
