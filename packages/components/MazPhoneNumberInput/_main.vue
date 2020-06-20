@@ -4,15 +4,17 @@
     :class="[{ 'maz-is-dark': dark }, size]"
     class="maz-base-component maz-phone-number-input maz-flex"
   >
-    <div
+    <button
       v-if="countryCode && !noFlags"
       class="maz-phone-number-input__country-flag"
       tabindex="-1"
+      @click="focusCountrySelector"
     >
       <div :class="`maz-flag maz-flag-${countryCode.toLowerCase()}`" />
-    </div>
+    </button>
     <MazSelect
       v-if="!noCountrySelector"
+      ref="CountrySelector"
       v-model="countryCode"
       :options="countriesSorted"
       :placeholder="t.countrySelectorLabel"
@@ -67,12 +69,7 @@
         </div>
       </template>
     </MazSelect>
-    <!-- <CountrySelector
-      :id="`${uniqueId}_country_selector`"
-      ref="CountrySelector"
-      v-model="countryCode"
-      class="input-country-selector"
-    /> -->
+
     <div class="maz-flex-1">
       <MazInput
         :id="`${uniqueId}_phone_number`"
@@ -217,9 +214,10 @@ export default {
         return this.results.countryCode || this.userLocale
       },
       set (countryCode) {
+        const { emitValues, $refs, inputValue } = this
         if (!countryCode) return
-        this.emitValues({countryCode, phoneNumber: this.inputValue})
-        this.$refs.PhoneNumberInput.$el.querySelector('input').focus()
+        emitValues({countryCode, phoneNumber: inputValue})
+        $refs.PhoneNumberInput.$el.querySelector('input').focus()
       }
     },
     callingCode () {
@@ -293,6 +291,10 @@ export default {
     }
   },
   methods: {
+    async focusCountrySelector () {
+      await this.$nextTick()
+      this.$refs.CountrySelector.$el.querySelector('input').focus()
+    },
     getAsYouTypeFormat (payload) {
       const { countryCode, phoneNumber } = payload
       const asYouType = new AsYouType(countryCode)
@@ -326,15 +328,17 @@ export default {
       }
     },
     async emitValues (payload) {
-      const backSpacePressed = this.lastKeyPressed === 8
+      const { inputValue, lastKeyPressed, getParsePhoneNumberFromString } = this
+
+      const backSpacePressed = lastKeyPressed === 8
 
       await this.$nextTick()
-      const lastCharacOfPhoneNumber = this.inputValue ? this.inputValue.trim().slice(-1) : false
+      const lastCharacOfPhoneNumber = inputValue ? inputValue.trim().slice(-1) : false
       if (backSpacePressed && lastCharacOfPhoneNumber && (lastCharacOfPhoneNumber.slice(-1) === ')')) {
-        payload.phoneNumber = this.inputValue.slice(0, -2)
+        return this.inputValue = inputValue.slice(0, -2)
       }
 
-      this.results = this.getParsePhoneNumberFromString(payload)
+      this.results = getParsePhoneNumberFromString(payload)
       // sent when the user tape
       // @arg Object with all paser values
       this.$emit('update', this.results)
@@ -343,10 +347,11 @@ export default {
       this.$emit('input', this.results.e164)
     },
     setLocale (locale) {
+      const { emitValues, inputValue } = this
       const countryAvailable = isCountryAvailable(locale)
       if (countryAvailable && locale) {
         this.userLocale = countryAvailable ? locale : null
-        if (this.inputValue) this.emitValues({countryCode: this.userLocale, phoneNumber: this.inputValue})
+        if (inputValue) emitValues({countryCode: this.userLocale, phoneNumber: inputValue})
       } else if (!countryAvailable && locale) {
         // If default country code is not available
         console.warn(`The locale ${locale} is not available`)
@@ -359,7 +364,7 @@ export default {
         const result = (responseText || '').toString()
         if (result && result[0] === '1') this.setLocale(result.substr(2, 2))
       } catch (err) {
-        throw new Error('[MazPhoneNumberInput] Error while fetching country code')
+        return new Error('[MazPhoneNumberInput] Error while fetching country code')
       }
     }
   }

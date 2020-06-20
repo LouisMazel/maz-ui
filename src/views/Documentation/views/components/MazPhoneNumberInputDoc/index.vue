@@ -171,6 +171,7 @@
           show-code-on-list
           no-use-browser-locale
           :preferred-countries="['FR', 'BE', 'DE']"
+          size="lg"
           @update="resultsExample = getJson($event)"
         />
         <!-- no-use-browser-locale -->

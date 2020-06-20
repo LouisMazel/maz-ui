@@ -1,18 +1,23 @@
 @import './../style-helpers/variables/index.scss';
 @import './maz-phone-number-input/flags/index.scss';
 
-$SM_SIZE: 125px;
-$MD_SIZE: 138px;
-$LG_SIZE: 145px;
+$SM_SIZE: 8.929rem;
+$MD_SIZE: 9.857rem;
+$LG_SIZE: 10.357rem;
 
 .maz-phone-number-input {
   position: relative;
 
   &__country-flag {
     position: absolute;
-    bottom: 5px;
-    left: 12px;
+    bottom: .429rem;
+    left: .857rem;
     z-index: 2;
+    outline: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
   }
 
   .country-selector {
@@ -52,22 +57,38 @@ $LG_SIZE: 145px;
     }
 
     &__calling-code {
-      width: 45px;
+      width: 3.214rem;
     }
   }
 
-  &.sm .country-selector {
-    flex: 0 0 $SM_SIZE;
-    width: $SM_SIZE;
-    min-width: $SM_SIZE;
-    max-width: $SM_SIZE;
+  &.sm {
+    .maz-phone-number-input__country-flag {
+      bottom: .357rem;
+
+      > div {
+        height: .857rem;
+      }
+    }
+
+    .country-selector {
+      flex: 0 0 $SM_SIZE;
+      width: $SM_SIZE;
+      min-width: $SM_SIZE;
+      max-width: $SM_SIZE;
+    }
   }
 
-  &.lg .country-selector {
-    flex: 0 0 $LG_SIZE;
-    width: $LG_SIZE;
-    min-width: $LG_SIZE;
-    max-width: $LG_SIZE;
+  &.lg {
+    .maz-phone-number-input__country-flag {
+      bottom: .643rem;
+    }
+
+    .country-selector {
+      flex: 0 0 $LG_SIZE;
+      width: $LG_SIZE;
+      min-width: $LG_SIZE;
+      max-width: $LG_SIZE;
+    }
   }
 
   .maz-input.input-phone-number {
