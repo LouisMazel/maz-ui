@@ -1,6 +1,6 @@
 <template>
   <div
-    class="maz-search"
+    class="maz-base-component maz-search"
     :class="[{ 'maz-is-dark': dark }, `maz-search--${color}`]"
     @blur.capture="closeList"
   >

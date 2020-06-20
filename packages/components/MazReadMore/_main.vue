@@ -1,5 +1,5 @@
 <template>
-  <div class="maz-read-more maz-flex maz-direction-column">
+  <div class="maz-base-component maz-read-more maz-flex maz-direction-column">
     <p :class="[textClass]">
       {{ textToShow }}
     </p>

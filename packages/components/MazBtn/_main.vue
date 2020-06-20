@@ -3,7 +3,7 @@
     :is="componentType"
     :id="uniqueId"
     v-bind="$attrs"
-    class="maz-btn"
+    class="maz-base-component maz-btn"
     :class="[
       classes,
       {

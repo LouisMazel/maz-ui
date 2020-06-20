@@ -1,4 +1,5 @@
 @import './../../style-helpers/variables/index.scss';
+@import './../../style-helpers/mixins/index.scss';
 
 $SM_SIZE: 2.57rem !default;
 $MD_SIZE: 2.85rem !default;
@@ -42,15 +43,17 @@ $LG_SIZE: 3.42rem !default;
       -webkit-text-fill-color: $text-color !important;
     }
 
-    &:not(.textarea) {
+    &:not(.maz-textarea) {
       height: $MD_SIZE;
       min-height: $MD_SIZE;
     }
 
-    &.textarea {
+    &.maz-textarea {
       padding: 8px 12px 0 12px;
       min-height: 88px !important;
       resize: vertical;
+
+      @include font_family();
     }
 
     &::-webkit-input-placeholder {
@@ -242,7 +245,7 @@ $LG_SIZE: 3.42rem !default;
       .maz-input__input {
         padding-top: 14px;
 
-        &.textarea {
+        &.maz-textarea {
           padding-top: 20px;
         }
       }
@@ -296,7 +299,7 @@ $LG_SIZE: 3.42rem !default;
     .maz-input__input {
       font-size: .857rem;
 
-      &:not(.textarea) {
+      &:not(.maz-textarea) {
         height: $SM_SIZE;
         min-height: $SM_SIZE;
       }
@@ -310,7 +313,7 @@ $LG_SIZE: 3.42rem !default;
       .maz-input__input {
         padding-top: 12px;
 
-        &.textarea {
+        &.maz-textarea {
           padding-top: 18px;
         }
       }
@@ -321,7 +324,7 @@ $LG_SIZE: 3.42rem !default;
     .maz-input__input {
       font-size: 1rem;
 
-      &:not(.textarea) {
+      &:not(.maz-textarea) {
         height: $LG_SIZE;
         min-height: $LG_SIZE;
       }
@@ -335,7 +338,7 @@ $LG_SIZE: 3.42rem !default;
       .maz-input__input {
         padding-top: 16px;
 
-        &.textarea {
+        &.maz-textarea {
           padding-top: 26px;
         }
       }
@@ -351,7 +354,7 @@ $LG_SIZE: 3.42rem !default;
     overflow: hidden;
     border-radius: 8px;
 
-    &.textarea {
+    &.maz-textarea {
       bottom: 6px;
     }
 

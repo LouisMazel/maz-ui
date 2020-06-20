@@ -1,6 +1,6 @@
 <template>
   <div
-    class="maz-list"
+    class="maz-base-component maz-list"
     :class="{
       'maz-no-shadow': noShadow,
       'maz-is-dark': dark,

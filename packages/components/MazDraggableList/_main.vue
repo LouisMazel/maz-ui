@@ -1,6 +1,6 @@
 <template>
   <div
-    class="maz-draggable-list maz-mb-3"
+    class="maz-base-component maz-draggable-list maz-mb-3"
     :class="{
       'maz-is-dark': dark
     }"

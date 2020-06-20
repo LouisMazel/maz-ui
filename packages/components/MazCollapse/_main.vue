@@ -1,6 +1,6 @@
 <template>
   <div
-    class="maz-collapse maz-position-relative"
+    class="maz-base-component maz-collapse maz-position-relative"
     :class="{
       'maz-is-dark': dark,
       'is-open': isOpen

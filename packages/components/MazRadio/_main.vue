@@ -1,6 +1,6 @@
 <template>
   <div
-    class="maz-radio maz-flex maz-align-center"
+    class="maz-base-component maz-radio maz-flex maz-align-center"
     :class="[`maz-radio--${color}`]"
   >
     <input

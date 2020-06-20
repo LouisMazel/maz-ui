@@ -1,6 +1,6 @@
 <template>
   <div
-    class="maz-avatar maz-flex maz-flex-center maz-flex-fixed"
+    class="maz-base-component maz-avatar maz-flex maz-flex-center maz-flex-fixed"
     :style="[pictureSize]"
     :class="{
       'has-link': !!url,

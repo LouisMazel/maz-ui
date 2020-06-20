@@ -1,67 +1,130 @@
-@import './../icons';
+// @import './../icons/index.css';
 
 $base-font-size:   14px;
 
 @import './../../../packages/scss/index.scss';
 @import './load-fonts';
 
-html,
-body {
-  height: 100%;
-  color: $text-color;
-}
+html {
+  // font-size: $base-font-size;
+  // @include font_family();
 
-#app {
-  min-height: 100%;
+  // *,
+  // *::before,
+  // *::after {
+  //   box-sizing: border-box;
+  // }
 
-  &.documentation {
-    height: 100%;
-  }
-}
+  // height: 100%;
+  // width: 100%;
+  // background-color: whitesmoke;
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-weight: normal;
-}
+  // &.#{$prefix}is-dark {
+  //   color: $text-color-dark;
+  // }
 
-h1,
-h2 {
-  color: $primary-color;
-  font-family: GeomanistMedium, sans-serif;
-}
+  // body {
+  //   height: 100%;
+  // }
 
-h3 {
-  font-size: 1.7rem;
-  font-family: GeomanistMedium, sans-serif;
-}
+  // #app {
+  //   min-height: 100%;
 
-h4,
-h5,
-h6 {
-  font-family: GeomanistLight, sans-serif;
-}
+  //   &.documentation {
+  //     height: 100%;
+  //   }
+  // }
 
-button,
-a {
-  font-weight: normal;
-}
+  // body,
+  // #app {
+  //   color: $text-color;
+  //   background-color: $bg-color;
 
-h2 {
-  font-size: 2rem;
-}
+  //   &.#{$prefix}is-dark {
+  //     color: $text-color-dark;
+  //     background-color: $bg-color-dark;
+  //   }
+  // }
 
-h4 {
-  font-size: 1.5rem;
-}
+  // button,
+  // input,
+  // textarea {
+  //   @include font_family();
+  // }
 
-h5 {
-  font-size: 1.3rem;
-}
+  // body,
+  // h1,
+  // h2,
+  // h3,
+  // h4,
+  // h5,
+  // h6,
+  // p,
+  // blockquote,
+  // pre,
+  // hr,
+  // dl,
+  // dd,
+  // figure {
+  //   margin: 0;
+  //   padding: 0;
+  // }
 
-h6 {
-  font-size: 1.1rem;
+  // h1,
+  // h2,
+  // h3,
+  // h4,
+  // h5,
+  // h6 {
+  //   line-height: normal;
+  //   font-weight: normal;
+  // }
+
+  // h1,
+  // h2 {
+  //   color: $primary-color;
+  //   font-family: GeomanistMedium, sans-serif;
+  // }
+
+  // h3 {
+  //   font-size: 1.7rem;
+  //   font-family: GeomanistMedium, sans-serif;
+  // }
+
+  // h4,
+  // h5,
+  // h6 {
+  //   font-family: GeomanistLight, sans-serif;
+  // }
+
+  // button,
+  // a {
+  //   font-weight: normal;
+  // }
+
+  // h2 {
+  //   font-size: 2rem;
+  // }
+
+  // h4 {
+  //   font-size: 1.5rem;
+  // }
+
+  // h5 {
+  //   font-size: 1.3rem;
+  // }
+
+  // h6 {
+  //   font-size: 1.1rem;
+  // }
+
+  // a {
+  //   color: $primary-color;
+  //   text-decoration: none;
+
+  //   &:hover,
+  //   &:focus {
+  //     text-decoration: underline;
+  //   }
+  // }
 }

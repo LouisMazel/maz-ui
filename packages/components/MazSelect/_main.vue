@@ -1,6 +1,6 @@
 <template>
   <div
-    class="maz-select"
+    class="maz-base-component maz-select"
     :class="[{
       'has-list-open': hasOpenList,
       'maz-is-dark': dark

@@ -1,7 +1,7 @@
 <template>
   <div
     id="app"
-    class="maz-flex maz-direction-column maz-bg-color"
+    class="maz-flex maz-direction-column maz-bg-color maz-text-color"
     :class="{
       'maz-is-dark': hasDarkTheme,
       documentation: isDocPage

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="maz-overflow-hidden"
+    class="maz-base-component maz-overflow-hidden"
     :style="[
       { height: `${height}px` }
     ]"

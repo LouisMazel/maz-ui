@@ -1,7 +1,7 @@
 <template>
   <div
     ref="MazTabsContentItem"
-    class="maz-tabs-content-item"
+    class="maz-base-component maz-tabs-content-item"
   >
     <slot />
   </div>
