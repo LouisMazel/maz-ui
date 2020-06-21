@@ -1,8 +1,4 @@
-
-$base-font-size: 14px;
-
 @import '@/assets/icons/index.css';
-@import './../../packages/scss/index.scss';
 @import './load-fonts';
 
 html {
@@ -104,9 +100,13 @@ html {
     }
   }
 
+  #__nuxt,
+  #__layout,
   #app {
-    min-height: 100%;
+    height: 100%;
+  }
 
+  #__layout {
     &.documentation {
       height: 100%;
     }

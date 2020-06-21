@@ -34,7 +34,7 @@
           </MazBtn>
         </div>
       </div>
-      <router-view class="content maz-px-5 maz-py-5 maz-flex-1" />
+      <nuxt class="content maz-px-5 maz-py-5 maz-flex-1" />
       <NavFooter />
     </div>
     <MazSidebar
@@ -54,8 +54,8 @@
 </template>
 
 <script>
-import LeftSidebarContent from './_subs/LeftSidebarContent'
-import RightSidebarContent from './_subs/RightSidebarContent'
+import LeftSidebarContent from '@/components/LeftSidebarContent'
+import RightSidebarContent from '@/components/RightSidebarContent'
 import NavFooter from '@/components/NavFooter'
 
 const isGeneralDoc = name => ['Install', 'GetStarted'].includes(name)
@@ -66,14 +66,14 @@ export default {
   name: 'Documentation',
   components: {
     LeftSidebarContent,
-    RightSidebarContent, // eslint-disable-line
+      RightSidebarContent, // eslint-disable-line
     NavFooter
   },
   data () {
     return {
-      hasLeftSidebarOpen: !(window.innerWidth < 767),
+      hasLeftSidebarOpen: true, // !(window.innerWidth < 767),
       hasRightSidebarOpen: false,
-      isAbsolute: window.innerWidth < 767
+      isAbsolute: false // window.innerWidth < 767
     }
   },
   computed: {

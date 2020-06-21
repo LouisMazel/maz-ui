@@ -7,18 +7,18 @@
       class="nav-footer-content maz-container maz-px-4 maz-flex maz-align-center maz-space-between maz-py-4"
     >
       <div class="maz-flex maz-direction-column maz-hidden-tablet">
-        <RouterLink
-          :to="{ name: 'Home' }"
+        <NuxtLink
+          :to="{ name: 'index' }"
           class="maz-mr-3"
         >
           Home
-        </RouterLink>
-        <RouterLink :to="{ name: 'Documentation' }">
+        </NuxtLink>
+        <NuxtLink :to="{ name: 'get-started' }">
           Documentation
-        </RouterLink>
-        <RouterLink :to="{ name: 'MadeWithMazUi' }">
+        </NuxtLink>
+        <NuxtLink :to="{ name: 'made-with-maz-ui' }">
           Made with Maz UI
-        </RouterLink>
+        </NuxtLink>
       </div>
       <div
         class="nav-footer-content__logo maz-flex maz-direction-column maz-hidden-tablet maz-align-center"

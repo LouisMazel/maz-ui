@@ -7,9 +7,9 @@
       class="maz-px-4 maz-flex maz-space-between"
       :class="{ 'maz-container': !isDocPage }"
     >
-      <router-link
+      <NuxtLink
         :to="{
-          name: 'Home'
+          name: 'index'
         }"
         class="maz-flex header__logo maz-py-2 maz-align-center"
       >
@@ -24,22 +24,22 @@
             UI Components Library
           </h2>
         </div>
-      </router-link>
+      </NuxtLink>
       <div class="header__menu maz-flex maz-align-center maz-hidden-mobile">
-        <router-link
+        <NuxtLink
           class="header__menu__item maz-btn maz-btn--white maz-no-shadow maz-bg-color maz-no-border maz-hover-bg-color maz-mr-1"
           :to="{
-            name: 'Documentation'
+            name: 'documentation'
           }"
         >
           Documentation
-        </router-link>
-        <router-link
+        </NuxtLink>
+        <NuxtLink
           class="header__menu__item maz-btn maz-btn--white maz-no-shadow maz-bg-color maz-no-border maz-hover-bg-color"
-          :to="{ name: 'MadeWithMazUi' }"
+          :to="{ name: 'made-with-maz-ui' }"
         >
           Made with Maz UI
-        </router-link>
+        </NuxtLink>
       </div>
       <div class="maz-flex maz-align-center maz-hidden-mobile">
         <SocialButtons class="maz-hidden-laptop-s" />
@@ -68,15 +68,15 @@ export default {
   data () {
     return {
       routes: [
-        { label: 'Home', name: 'Home' },
-        { label: 'Documentation', name: 'Documentation' },
-        { label: 'Mad with Maz Ui', name: 'MadeWithMazUi' }
+        { label: 'Home', name: 'index' },
+        { label: 'Documentation', name: 'get-started' },
+        { label: 'Mad with Maz Ui', name: 'made-with-maz-ui' }
       ]
     }
   },
   computed: {
     isDocPage () {
-      return this.$route.matched.some(m => m.name === 'Documentation')
+      return this.$route.matched.some(m => m.name === 'documentation')
     }
   }
 }
@@ -99,7 +99,7 @@ export default {
         transition: all .5s;
         outline: none;
 
-        &.router-link-active {
+        &.nuxt-link-active {
           color: $primary-color;
         }
       }
@@ -113,7 +113,7 @@ export default {
   }
 
   .maz-is-dark {
-    .header__menu__item:not(.router-link-active) {
+    .header__menu__item:not(.NuxtLink-active) {
       color: white;
     }
   }

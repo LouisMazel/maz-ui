@@ -1,3 +1,6 @@
+import FMMode from 'frontmatter-markdown-loader/mode'
+import path from 'path'
+
 export default {
   /*
    ** Nuxt rendering mode
@@ -25,12 +28,8 @@ export default {
   /*
    ** Global CSS
    */
-  css: [],
-  /*
-   ** Plugins to load before mounting the App
-   ** https://nuxtjs.org/guide/plugins
-   */
-  plugins: ['~/plugins'],
+  css: ['~/assets/scss/main.scss'],
+  plugins: ['~/filters', '~/plugins'],
   /*
    ** Nuxt.js dev-modules
    */
@@ -41,12 +40,29 @@ export default {
   ],
   styleResources: {
     scss: [
-      './../packages/scss/variables.scss'
+      '~/assets/scss/_variables.scss',
+      '~/../packages/scss/index.scss'
     ]
   },
   /*
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
    */
-  build: {},
+  build: {
+    extend (config) {
+      config.module.rules.push(
+        {
+          test: /\.md$/,
+          loader: 'frontmatter-markdown-loader',
+          include: path.resolve(__dirname, './../packages'),
+          options: {
+            mode: [FMMode.VUE_COMPONENT],
+            vue: {
+              root: 'markdown-body'
+            }
+          }
+        }
+      )
+    }
+  }
 }
