@@ -31,7 +31,7 @@
     <NuxtLink
       class="menu-item maz-btn maz-btn--white maz-mb-2 maz-w-100 maz-no-shadow maz-text-color maz-bg-color maz-no-border maz-hover-bg-color"
       :to="{
-        name: 'colors'
+        name: 'documentation-colors'
       }"
     >
       Basic colors
@@ -39,7 +39,7 @@
     <NuxtLink
       class="menu-item maz-btn maz-btn--white maz-mb-2 maz-w-100 maz-no-shadow maz-text-color maz-bg-color maz-no-border maz-hover-bg-color"
       :to="{
-        name: 'theme'
+        name: 'documentation-theme'
       }"
     >
       Use your own colors & style
@@ -47,7 +47,7 @@
     <NuxtLink
       class="menu-item maz-btn maz-btn--white maz-mb-2 maz-w-100 maz-no-shadow maz-text-color maz-bg-color maz-no-border maz-hover-bg-color"
       :to="{
-        name: 'dark-mode'
+        name: 'documentation-dark-mode'
       }"
     >
       Use dark mode
@@ -90,7 +90,7 @@
 
 const isGeneralDoc = name => ['documentation-get-started'].includes(name)
 const isCliDoc = name => ['cli-install'].includes(name)
-const isThemeDoc = name => ['theme', 'colors', 'dark-mode'].includes(name)
+const isThemeDoc = name => ['documentation-theme', 'documentation-colors', 'documentation-dark-mode'].includes(name)
 
 export default {
   name: 'LeftSidebarContent',
@@ -106,7 +106,7 @@ export default {
     },
     routesUiComponents () {
       return this.$router.options.routes
-        .filter(route => route.path.includes('/documentation/'))
+        .find(route => route.name === 'documentation').children
         .filter(
           ({ name }) =>
             !isGeneralDoc(name) && !isCliDoc(name) && !isThemeDoc(name)

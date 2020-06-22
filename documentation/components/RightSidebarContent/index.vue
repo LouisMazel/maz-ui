@@ -10,21 +10,33 @@
         </i>
       </MazBtn>
     </div>
-    <!-- <MdRenderer :file-name="currentComponent" /> -->
+    <MdRenderer :file-name="currentComponent" />
   </div>
 </template>
 
 <script>
-// import MdRenderer from '@/components/MdRenderer'
+import MdRenderer from '@/components/MdRenderer'
+
+const toPascalCase = (string) => {
+  return `${string}`
+    .replace(new RegExp(/[-_]+/, 'g'), ' ')
+    .replace(new RegExp(/[^\w\s]/, 'g'), '')
+    .replace(
+      new RegExp(/\s+(.)(\w+)/, 'g'),
+      ($1, $2, $3) => `${$2.toUpperCase() + $3.toLowerCase()}`
+    )
+    .replace(new RegExp(/\s/, 'g'), '')
+    .replace(new RegExp(/\w/), s => s.toUpperCase())
+}
 
 export default {
   name: 'RightSidebarContent',
   components: {
-    // MdRenderer
+    MdRenderer
   },
   computed: {
     currentComponent () {
-      return this.$route.name.slice(0)
+      return toPascalCase(this.$route.name.substring(14))
     }
   }
 }

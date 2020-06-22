@@ -4,6 +4,7 @@
       :is="component"
       v-for="(component, i) in dynamicComponents"
       :key="i"
+      class="frontmatter-markdown"
     />
   </div>
 </template>
@@ -53,6 +54,7 @@ export default {
     h1 {
       color: #333;
       font-size: 2rem;
+      margin-bottom: 20px;
     }
 
     h2 {
@@ -191,7 +193,7 @@ export default {
     blockquote {
       background: $hover-bg-color;
       border-left: 4px solid $primary-color;
-      border-radius: $border-radius;
+      // border-radius: $border-radius;
       padding: .5em 10px;
     }
 

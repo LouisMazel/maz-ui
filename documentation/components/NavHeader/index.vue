@@ -84,6 +84,8 @@ export default {
 
 <style lang="scss" scoped>
   .header {
+    z-index: 9;
+
     &__logo {
       text-decoration: none;
 

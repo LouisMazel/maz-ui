@@ -1,5 +1,6 @@
 @import '@/assets/icons/index.css';
 @import './load-fonts';
+@import '@/../packages/scss/index.scss';
 
 html {
   @include font_family();

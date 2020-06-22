@@ -41,7 +41,7 @@ export default {
   styleResources: {
     scss: [
       '~/assets/scss/_variables.scss',
-      '~/../packages/scss/index.scss'
+      '~/../packages/scss/variables.scss'
     ]
   },
   /*
