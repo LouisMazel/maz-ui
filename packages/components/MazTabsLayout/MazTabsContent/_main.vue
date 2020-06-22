@@ -18,6 +18,8 @@
 </template>
 
 <script>
+import Ro from 'resize-observer-polyfill'
+
 export default {
   name: 'MazTabsContent',
   props: {
@@ -57,8 +59,10 @@ export default {
   methods: {
     async resizeObserver () {
       const { $children, currentTab } = this
-      const resizeObserver = new ResizeObserver(entries => {
+
+      const resizeObserver = new Ro(entries => {
         for (const entry of entries) {
+          console.log('okokokok')
           const { offsetHeight, classList } = entry.target
           if (offsetHeight && !classList.value.includes('maz-h-0')) this.height = entry.target.offsetHeight
         }

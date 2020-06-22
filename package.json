@@ -45,6 +45,9 @@
       "pre-commit": "lint-staged"
     }
   },
+  "dependencies": {
+    "resize-observer-polyfill": "^1.5.1"
+  },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.3.1",
     "@vue/cli-plugin-eslint": "^4.3.1",
