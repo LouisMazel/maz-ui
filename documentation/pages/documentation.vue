@@ -7,10 +7,10 @@
 <script>
 export default {
   name: 'Documentation',
-  middleware: [
-    function ({ redirect }) {
-      redirect('/documentation/get-started')
-    },
-  ],
+  // middleware: [
+  //   function ({ redirect }) {
+  //     redirect('/documentation/get-started')
+  //   },
+  // ],
 }
 </script>
