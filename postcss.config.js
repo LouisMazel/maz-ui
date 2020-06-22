@@ -1,6 +1,8 @@
 module.exports = {
   plugins: {
-    autoprefixer: {},
+    autoprefixer: {
+      grid: 'autoplace'
+    },
     'postcss-import': {},
     'postcss-url': {}
   }

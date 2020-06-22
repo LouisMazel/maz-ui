@@ -18,7 +18,7 @@
           {{ name | capitalize }}
         </h4>
         <div
-          class="maz-elevation maz-p-5 maz-border-radius maz-flex maz-flex-center"
+          class="colors__items__color__item maz-elevation maz-border-radius maz-flex maz-flex-center"
           :class="`maz-bg-${name}`"
         >
           <h4
@@ -63,8 +63,13 @@ export default {
   .colors {
     &__items {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      grid-template-rows: 1fr 1fr 1fr 1fr;
       grid-gap: 20px;
+
+      &__color__item {
+        height: 82px;
+      }
 
       h4 {
         color: $text-color !important;
@@ -75,11 +80,13 @@ export default {
       }
 
       @media screen and (max-width: $breakpoint-laptop-m) {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
       }
 
       @media screen and (max-width: $breakpoint-laptop-s) {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
       }
     }
   }

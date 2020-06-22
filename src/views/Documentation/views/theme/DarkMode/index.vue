@@ -61,28 +61,3 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-  .dark-mode {
-    &__items {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      grid-gap: 20px;
-
-      h4 {
-        color: $text-color !important;
-
-        &.text-white {
-          color: white !important;
-        }
-      }
-
-      @media screen and (max-width: $breakpoint-laptop-m) {
-        grid-template-columns: repeat(3, 1fr);
-      }
-
-      @media screen and (max-width: $breakpoint-laptop-s) {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-  }
-</style>

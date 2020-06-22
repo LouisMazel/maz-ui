@@ -1,3 +1,11 @@
+import 'core-js/es/array/find'
+import 'core-js/es/array/from'
+import 'core-js/es/array/fill'
+import 'core-js/es/array/find-index'
+import 'core-js/es/object/assign'
+// import 'core-js/es/object/keys'
+import 'core-js/es/array/keys'
+
 import Vue from 'vue'
 import App from './App.vue'
 

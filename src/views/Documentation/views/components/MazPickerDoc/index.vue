@@ -560,16 +560,18 @@ export default {
   .maz-picker-doc {
     .examples {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto;
       grid-gap: 20px;
-      align-items: start;
 
       @media screen and (max-width: $breakpoint-laptop-s) {
-        grid-template-columns: repeat(1, 1fr);
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
       }
 
       > div {
         margin: 0;
+        align-items: start;
       }
     }
   }

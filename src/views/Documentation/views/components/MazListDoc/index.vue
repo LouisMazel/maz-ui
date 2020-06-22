@@ -232,12 +232,13 @@ export default {
   .maz-list-doc {
     .lists-container {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: repeat(1, auto);
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: 1fr;
       grid-gap: 30px;
 
       @media only screen and (max-width: $breakpoint-laptop-s) {
-        grid-template-columns: repeat(1, 1fr);
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr 1fr;
       }
 
       .scrollable-list {

@@ -62,7 +62,6 @@ export default {
 
       const resizeObserver = new Ro(entries => {
         for (const entry of entries) {
-          console.log('okokokok')
           const { offsetHeight, classList } = entry.target
           if (offsetHeight && !classList.value.includes('maz-h-0')) this.height = entry.target.offsetHeight
         }

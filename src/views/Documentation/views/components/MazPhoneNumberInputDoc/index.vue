@@ -292,13 +292,17 @@ export default {
   .maz-phone-number-doc {
     .examples {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto;
       grid-gap: 20px;
-      align-items: start;
+      // align-items: start;
 
       @media screen and (max-width: $breakpoint-laptop-s) {
-        grid-template-columns: repeat(1, 1fr);
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
       }
+
+      > * { align-items: start; }
     }
 
     ul li {
