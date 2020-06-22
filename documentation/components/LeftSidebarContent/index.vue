@@ -9,7 +9,7 @@
     <NuxtLink
       class="menu-item maz-btn maz-btn--white maz-mb-2 maz-w-100 maz-no-shadow maz-text-color maz-bg-color maz-no-border maz-hover-bg-color"
       :to="{
-        name: 'get-started'
+        name: 'documentation-get-started'
       }"
     >
       Get started
@@ -87,9 +87,8 @@
 </template>
 
 <script>
-import { replaceAll, pascalCaseToKebabCase } from '@/../utils'
 
-const isGeneralDoc = name => ['install', 'get-started'].includes(name)
+const isGeneralDoc = name => ['documentation-get-started'].includes(name)
 const isCliDoc = name => ['cli-install'].includes(name)
 const isThemeDoc = name => ['theme', 'colors', 'dark-mode'].includes(name)
 
@@ -98,7 +97,7 @@ export default {
   computed: {
     routesFormComponents () {
       return this.$router.options.routes
-        .filter(route => route.path.includes('/documentation/'))
+        .find(route => route.name === 'documentation').children
         .filter(
           ({ name }) =>
             !isGeneralDoc(name) && !isCliDoc(name) && !isThemeDoc(name)
@@ -117,10 +116,7 @@ export default {
   },
   methods: {
     getComponentName (string) {
-      return pascalCaseToKebabCase(string.slice(0, -3))
-    },
-    getPageName (string) {
-      return replaceAll(string, '-', ' ')
+      return string.substring(14)
     }
   }
 }
@@ -140,7 +136,7 @@ export default {
         margin-bottom: 0;
       }
 
-      &.NuxtLink-active {
+      &.nuxt-link-exact-active {
         color: $primary-color;
       }
     }

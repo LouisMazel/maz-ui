@@ -1,16 +1,15 @@
 <template>
-  <div class="documentation">
-    Doc
-  </div>
+  <NuxtChild />
 </template>
 
 <script>
 export default {
   name: 'Documentation',
-  // middleware: [
-  //   function ({ redirect }) {
-  //     redirect('/documentation/get-started')
-  //   },
-  // ],
+  layout: 'documentation',
+  middleware ({ route, redirect }) {
+    if (route.name === 'documentation') {
+      return redirect({ name: 'documentation-get-started' })
+    }
+  }
 }
 </script>

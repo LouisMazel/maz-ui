@@ -17,19 +17,19 @@
           >
             <NuxtLink
               class="maz-btn maz-btn--secondary maz-mr-2 maz-mb-2"
-              :to="{ name: 'get-started' }"
+              :to="{ name: 'documentation-get-started' }"
             >
               GET STARTED
             </NuxtLink>
             <NuxtLink
               class="maz-btn maz-btn--primary maz-mr-2"
-              :to="{ name: 'maz-input-doc' }"
+              :to="{ name: 'documentation-maz-btn' }"
             >
               COMPONENTS
             </NuxtLink>
             <NuxtLink
               class="maz-btn maz-btn--third maz-mr-2"
-              :to="{ name: 'theme' }"
+              :to="{ name: 'documentation-theme' }"
             >
               THEME
             </NuxtLink>

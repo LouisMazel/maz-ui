@@ -69,7 +69,7 @@ export default {
     return {
       routes: [
         { label: 'Home', name: 'index' },
-        { label: 'Documentation', name: 'get-started' },
+        { label: 'Documentation', name: 'documentation-get-started' },
         { label: 'Mad with Maz Ui', name: 'made-with-maz-ui' }
       ]
     }

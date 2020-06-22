@@ -13,7 +13,7 @@
         >
           Home
         </NuxtLink>
-        <NuxtLink :to="{ name: 'get-started' }">
+        <NuxtLink :to="{ name: 'documentation-get-started' }">
           Documentation
         </NuxtLink>
         <NuxtLink :to="{ name: 'made-with-maz-ui' }">
