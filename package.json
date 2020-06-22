@@ -45,6 +45,11 @@
       "pre-commit": "lint-staged"
     }
   },
+  "dependencies": {
+    "libphonenumber-js": "^1.7.51",
+    "moment": "2.24.0",
+    "moment-range": "^4.0.2"
+  },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.3.1",
     "@vue/cli-plugin-eslint": "^4.3.1",
@@ -66,11 +71,8 @@
     "gulp-sourcemaps": "^2.6.5",
     "husky": "^4.2.5",
     "json-templater": "^1.2.0",
-    "libphonenumber-js": "^1.7.51",
     "lint-staged": "^10.2.2",
     "merge-stream": "^2.0.0",
-    "moment": "2.24.0",
-    "moment-range": "^4.0.2",
     "ncp": "^2.0.0",
     "node-sass": "^4.14.0",
     "nuxt": "^2.12.2",
