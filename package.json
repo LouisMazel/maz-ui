@@ -1,6 +1,6 @@
 {
   "name": "maz-ui",
-  "version": "1.2.2",
+  "version": "1.2.3-beta.0",
   "main": "lib/maz-ui.common.js",
   "description": "A components library for VueJs",
   "author": "Louis Mazel <me@loicmazuel.com>",
@@ -50,6 +50,7 @@
     "moment": "2.24.0",
     "moment-range": "^4.0.2",
     "plotly.js-dist": "^1.54.1",
+    "resize-observer-polyfill": "^1.5.1",
     "vue2-dropzone": "3.5.2",
     "vuedraggable": "^2.23.2",
     "vue-virtual-scroller": "^1.0.10",
