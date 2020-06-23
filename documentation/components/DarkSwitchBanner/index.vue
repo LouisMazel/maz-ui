@@ -24,6 +24,7 @@ export default {
         return this.hasDarkTheme
       },
       set (val) {
+        console.log('okokok')
         return this.setDarkTheme(val)
       }
     }

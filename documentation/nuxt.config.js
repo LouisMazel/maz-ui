@@ -49,6 +49,10 @@ export default {
    ** See https://nuxtjs.org/api/configuration-build/
    */
   build: {
+    loaders: {
+      scss: { sourceMap: process.env.NODE_ENV === 'production' },
+      vue: { cacheBusting: process.env.NODE_ENV === 'production' },
+    },
     extend (config) {
       config.module.rules.push(
         {

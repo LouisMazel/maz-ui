@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 import NavHeader from '@/components/NavHeader'
 
@@ -26,6 +26,15 @@ export default {
   },
   computed: {
     ...mapGetters(['hasDarkTheme']),
+  },
+  mounted () {
+    const date = new Date().toTimeString()
+    if (date < '06:15' || date > '21:20') {
+      if (localStorage.getItem('use-dark-theme') === null) this.setDarkTheme(true)
+    }
+  },
+  methods: {
+    ...mapActions(['setDarkTheme'])
   }
 }
 </script>

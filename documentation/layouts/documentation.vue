@@ -2,6 +2,9 @@
   <div
     id="app"
     class="documentation maz-flex maz-flex-1 maz-direction-column maz-position-relative maz-bg-color maz-text-color"
+    :class="{
+      'maz-is-dark': hasDarkTheme
+    }"
   >
     <NavHeader />
     <div class="maz-flex maz-flex-1 maz-h-100">
@@ -67,6 +70,8 @@ const isGeneralDoc = name => ['documentation-get-started'].includes(name)
 const isCliDoc = name => ['documentation-cli-install'].includes(name)
 const isThemeDoc = name => ['documentation-theme', 'documentation-colors', 'documentation-dark-mode'].includes(name)
 
+import { mapGetters, mapActions } from 'vuex'
+
 const regex = /-(\w)/g
 const camelize = str => str.replace(regex, (_, c) => (c ? c.toUpperCase() : ''))
 
@@ -86,6 +91,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['hasDarkTheme']),
     currentComponent () {
       return camelize(this.$route.name.substring(14))
     },
@@ -104,7 +110,14 @@ export default {
       this.$refs.DocumentationContainer.scrollTop = 0
     }
   },
+  mounted () {
+    const date = new Date().toTimeString()
+    if (date < '06:15' || date > '21:20') {
+      if (localStorage.getItem('use-dark-theme') === null) this.setDarkTheme(true)
+    }
+  },
   methods: {
+    ...mapActions(['setDarkTheme']),
     showOptions () {
       this.hasRightSidebarOpen = !this.hasRightSidebarOpen
     }
