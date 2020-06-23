@@ -62,7 +62,6 @@ export default {
 
       const resizeObserver = new Ro(entries => {
         for (const entry of entries) {
-          console.log('okokokok')
           const { offsetHeight, classList } = entry.target
           if (offsetHeight && !classList.contains('maz-tabs-content')) this.height = entry.target.offsetHeight
         }
