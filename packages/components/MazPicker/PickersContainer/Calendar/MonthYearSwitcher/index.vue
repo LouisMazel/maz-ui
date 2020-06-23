@@ -57,6 +57,7 @@
 <script>
 import ArrowIcon from './../../../../_subs/ArrowIcon'
 import MazBtn from '../../../../MazBtn'
+import capitalize from './../../../../../filters/capitalize'
 
 export default {
   name: 'MonthYearSwitcher',
@@ -78,7 +79,7 @@ export default {
       this.$emit('change-month', val)
     },
     getMonthFormatted () {
-      return this.months.map(m => this.$options.filters.capitalize(m.getFormatted())).join(' - ')
+      return this.months.map(m => capitalize(m.getFormatted())).join(' - ')
     }
   }
 }

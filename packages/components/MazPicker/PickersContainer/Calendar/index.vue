@@ -182,19 +182,15 @@ export default {
       immediate: true
     },
     months: {
-      handler () {
-        this.resizeShortCuts()
+      async handler () {
+        await this.$nextTick()
+        const { MonthsContainer } = this.$refs
+        this.contentHeight = MonthsContainer.clientHeight ? MonthsContainer.clientHeight : CONTENT_HEIGHT
       },
       immediate: true
     }
   },
   methods: {
-    resizeShortCuts () {
-      this.contentHeight = CONTENT_HEIGHT
-      this.$nextTick(() => {
-        this.contentHeight = this.$refs.MonthsContainer ? this.$refs.MonthsContainer.clientHeight : CONTENT_HEIGHT
-      })
-    },
     monthsAreDifferent (newValue, oldValue) {
       if (!newValue || !oldValue) return false
       return newValue.month() !== oldValue.month()

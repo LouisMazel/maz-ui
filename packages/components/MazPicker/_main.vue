@@ -88,6 +88,7 @@ import PickersContainer from './PickersContainer'
 import uniqueId from './../../mixins/uniqueId'
 import ArrowIcon from './../_subs/ArrowIcon'
 import MazInput from './../MazInput'
+import capitalize from './../../filters/capitalize'
 
 import moment from 'moment'
 import {
@@ -229,7 +230,7 @@ export default {
     inputValue: {
       get () {
         forceUpdateComputedData(this.update)
-        return this.$options.filters.capitalize(getFormattedValue(this.value, this.format, this.formatted, this.range))
+        return capitalize(getFormattedValue(this.value, this.format, this.formatted, this.range))
       },
       set () {
         this.emitValue(null)
