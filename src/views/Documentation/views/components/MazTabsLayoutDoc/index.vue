@@ -12,7 +12,6 @@
         <MazTabsContentItem class="maz-p-3 maz-text-center">
           <p>Text content 2</p>
           <p>Text content 2</p>
-          <p>Text content 2</p>
         </MazTabsContentItem>
         <MazTabsContentItem class="maz-p-3 maz-text-center">
           <p>Text content 3</p>
