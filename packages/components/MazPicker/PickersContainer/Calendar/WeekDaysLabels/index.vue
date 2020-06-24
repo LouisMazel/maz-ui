@@ -5,7 +5,7 @@
       :key="i"
       class="week-days-labels__days maz-text-muted"
     >
-      {{ days | capitalize }}
+      {{ days }}
     </div>
   </div>
 </template>

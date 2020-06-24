@@ -1,5 +1,7 @@
 import Moment from 'moment'
 import { extendMoment } from 'moment-range'
+import capitalize from './../../../filters/capitalize'
+
 const moment = extendMoment(Moment)
 
 export default class Month {
@@ -19,7 +21,7 @@ export default class Month {
   }
 
   getFormatted () {
-    return this.start.format('MMMM')
+    return capitalize(this.start.format('MMMM'))
   }
 
   getYear () {
@@ -58,9 +60,9 @@ export const getWeekDays = (locale = 'en', firstDay = null) => {
   const keep = days.splice(firstDayNumber)
   const stay = days
   days = keep.concat(stay)
-  return days
+  return days.map(d => capitalize(d))
 }
 
 export const getMonthsByFormat = (format) => {
-  return Array.apply(0, Array(12)).map((_, i) => moment().month(i).format(format))
+  return Array.apply(0, Array(12)).map((_, i) => capitalize(moment().month(i).format(format)))
 }
