@@ -11,7 +11,7 @@
       documentation: isDocPage
     }" -->
     <NavHeader />
-    <nuxt />
+    <nuxt role="main" />
   </div>
 </template>
 

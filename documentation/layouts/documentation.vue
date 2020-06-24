@@ -7,7 +7,7 @@
     }"
   >
     <NavHeader />
-    <div class="maz-flex maz-flex-1 maz-h-100">
+    <div class="maz-flex maz-flex-1 maz-m-h-0">
       <MazSidebar
         v-model="hasLeftSidebarOpen"
         :width="280"
@@ -40,7 +40,10 @@
             </MazBtn>
           </div>
         </div>
-        <nuxt class="content maz-px-5 maz-py-5 maz-flex-1" />
+        <nuxt
+          role="main"
+          class="content maz-px-5 maz-py-5 maz-flex-1"
+        />
         <NavFooter />
       </div>
       <MazSidebar

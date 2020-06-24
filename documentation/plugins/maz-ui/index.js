@@ -1,3 +1,3 @@
 import Vue from 'vue'
-import MazUi from './../../../nuxt'
+import MazUi from './../../../packages'
 Vue.use(MazUi)

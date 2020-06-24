@@ -7,13 +7,13 @@ clean: ## Clean node modules
 
 reinstall: ## Reinstall dependencies without package-lock.json
 	npm i
-	npm i documentation
+	cd documentation && npm i
 
 install-lib: ## Install node modules of library
 	npm ci
 
 install-doc: ## Install node modules of documentation
-	npm ci documentation
+	cd documentation && npm ci
 
 install: ## Install node modules
 	make install-lib
@@ -23,9 +23,7 @@ serve: ## Run dev server
 	npm run serve
 
 start: ## Install node modules, build app and run dev server
-	make clean
-	make install
-	make serve
+	make clean install serve
 
 publish:
 	npm version $(version) && npm run pre-publish && gaa && gc -m "[build][$(version)]" && ggp && npm publish

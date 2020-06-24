@@ -47,6 +47,7 @@
       left: 0;
       bottom: 0;
       background-color: lighten($overlay-color, 50%);
+      cursor: pointer;
     }
 
     &.has-shadow {

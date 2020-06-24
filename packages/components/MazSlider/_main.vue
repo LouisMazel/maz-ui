@@ -11,6 +11,7 @@
       ref="MazSlider"
       class="maz-slider__bar maz-flex maz-flex-center"
       :style="[barStyle]"
+      role="slider"
     >
       <div
         v-for="(div, i) in dividers"
@@ -23,6 +24,7 @@
         :key="`cursor-${i}`"
         ref="Cursor"
         tabindex="-1"
+        type="button"
         :data-label="getLabel(i)"
         class="maz-slider__btn maz-flex maz-flex-center maz-bg-color-light"
         :class="{

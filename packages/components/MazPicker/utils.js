@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import moment from 'moment'
-import capitalizeText from './../../../src/filters/capitalize'
+import capitalizeText from './../../filters/capitalize'
 
 export const getDefaultLocale = () => {
   if (typeof window === 'undefined') return 'en'

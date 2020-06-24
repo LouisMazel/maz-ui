@@ -1,6 +1,6 @@
 <template>
   <header
-    class="header maz-bg-color maz-flex-fixed maz-bg-color maz-border-color maz-border-bottom-1 maz-border-bottom-solid"
+    class="header maz-flex-fixed maz-bg-color maz-border-color maz-border-bottom-1 maz-border-bottom-solid"
     role="banner"
   >
     <nav
@@ -25,7 +25,10 @@
           </h2>
         </div>
       </NuxtLink>
-      <div class="header__menu maz-flex maz-align-center maz-hidden-mobile">
+      <div
+        role="navigation"
+        class="header__menu maz-flex maz-align-center maz-hidden-mobile"
+      >
         <NuxtLink
           class="header__menu__item maz-btn maz-btn--white maz-no-shadow maz-bg-color maz-no-border maz-hover-bg-color maz-mr-1"
           :to="{
@@ -47,6 +50,7 @@
       <MazResponsiveMenu
         :routes="routes"
         class="maz-py-2 maz-show-mobile"
+        role="navigation"
       />
     </nav>
     <DarkSwitchBanner />
@@ -84,7 +88,7 @@ export default {
 
 <style lang="scss" scoped>
   .header {
-    z-index: 9;
+    z-index: 10;
 
     &__logo {
       text-decoration: none;
