@@ -90,6 +90,10 @@ export default {
   .header {
     z-index: 10;
 
+    nav {
+      transition: all 500ms ease-in-out;
+    }
+
     &__logo {
       text-decoration: none;
 

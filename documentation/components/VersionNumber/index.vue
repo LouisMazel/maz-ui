@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { version } from '../../../packages'
+import { version } from '../../../package.json'
 
 export default {
   name: 'VersionNumber',

@@ -29,7 +29,11 @@ export default {
    ** Global CSS
    */
   css: ['~/assets/scss/main.scss'],
-  plugins: ['~/filters', '~/plugins'],
+  plugins: [
+    '~/filters',
+    '~/plugins',
+    { src: '~/plugins/maz-ui/client.js', mode: 'client' }
+  ],
   /*
    ** Nuxt.js dev-modules
    */
@@ -51,15 +55,14 @@ export default {
    */
   build: {
     loaders: {
-      scss: { sourceMap: process.env.NODE_ENV === 'production' },
-      vue: { cacheBusting: process.env.NODE_ENV === 'production' },
+      scss: { sourceMap: process.env.NODE_ENV === 'production' }
     },
     extend (config) {
       config.module.rules.push(
         {
           test: /\.md$/,
           loader: 'frontmatter-markdown-loader',
-          include: path.resolve(__dirname, './../packages'),
+          include: path.resolve(__dirname, './../packages/components/'),
           options: {
             mode: [FMMode.VUE_COMPONENT],
             vue: {

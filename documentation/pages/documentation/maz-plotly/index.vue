@@ -1,11 +1,13 @@
 <template>
   <div class="maz-plotly-doc">
     <ComponentContainer>
-      <MazPlotly
-        :data="data"
-        :layout="layout"
-        :display-mode-bar="false"
-      />
+      <no-ssr>
+        <MazPlotly
+          :data="data"
+          :layout="layout"
+          :display-mode-bar="false"
+        />
+      </no-ssr>
     </ComponentContainer>
 
     <hr
@@ -58,15 +60,16 @@ export default {
   data () {
     return {
       data: [{
-        x: [1, 2, 3, 4],
-        y: [10, 11, 12, 13],
-        mode: 'markers',
-        marker: {
-          size: [40, 60, 80, 100]
-        }
+        x: [0, 1, 2, 3, 4, 5],
+        y: [1.5, 1, 1.3, 0.7, 0.8, 0.9],
+        type: 'scatter'
+      },{
+        x: [0, 1, 2, 3, 4, 5],
+        y: [1, 0.5, 0.7, -1.2, 0.3, 0.4],
+        type: 'bar'
       }],
       layout:{
-        title: 'Marker Size'
+        title: 'Line Chart and a Bar Chart'
       }
     }
   }

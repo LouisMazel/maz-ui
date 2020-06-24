@@ -36,7 +36,7 @@ export default {
       const { activeTab } = this
       if (Number.isInteger(activeTab)) return activeTab - 1
       const tabsBarComponent = this.$parent.$children.find(c => typeof c.$refs.MazTabsBar !== 'undefined')
-      const { valueComputed } = tabsBarComponent
+      const { valueComputed } = tabsBarComponent || { valueComputed: 0 }
       return valueComputed
     },
     tabsContainerState () {

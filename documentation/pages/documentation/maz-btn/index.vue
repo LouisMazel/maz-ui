@@ -26,7 +26,7 @@
       <MazBtn block>
         Block
       </MazBtn>
-      <MazBtn href="/#/documentation/btn">
+      <MazBtn href="/documentation/maz-btn">
         It's a link
       </MazBtn>
     </ComponentContainer>
@@ -370,7 +370,7 @@ export default {
   <MazBtn block>
     Block
   </MazBtn>
-  <MazBtn href="/#/documentation/btn">
+  <MazBtn href="/documentation/maz-btn">
     It's a link
   </MazBtn>
 </template>`

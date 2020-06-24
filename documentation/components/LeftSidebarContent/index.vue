@@ -92,26 +92,37 @@ const isGeneralDoc = name => ['documentation-get-started'].includes(name)
 const isCliDoc = name => ['cli-install'].includes(name)
 const isThemeDoc = name => ['documentation-theme', 'documentation-colors', 'documentation-dark-mode'].includes(name)
 
+const formComponentsRoutes = [
+  'documentation-maz-btn',
+  'documentation-maz-btn-group',
+  'documentation-maz-checkbox',
+  'documentation-maz-dropzone',
+  'documentation-maz-input',
+  'documentation-maz-input-tags',
+  'documentation-maz-phone-number-input',
+  'documentation-maz-picker',
+  'documentation-maz-radio',
+  'documentation-maz-search',
+  'documentation-maz-select',
+  'documentation-maz-slider',
+  'documentation-maz-switch'
+]
+
 export default {
   name: 'LeftSidebarContent',
   computed: {
     routesFormComponents () {
       return this.$router.options.routes
         .find(route => route.name === 'documentation').children
-        .filter(
-          ({ name }) =>
-            !isGeneralDoc(name) && !isCliDoc(name) && !isThemeDoc(name)
-        )
-        .slice(0, 13)
+        .filter(({ name }) => formComponentsRoutes.includes(name))
     },
     routesUiComponents () {
       return this.$router.options.routes
         .find(route => route.name === 'documentation').children
         .filter(
           ({ name }) =>
-            !isGeneralDoc(name) && !isCliDoc(name) && !isThemeDoc(name)
+            !formComponentsRoutes.includes(name) && !isGeneralDoc(name) && !isCliDoc(name) && !isThemeDoc(name)
         )
-        .slice(13)
     }
   },
   methods: {

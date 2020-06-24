@@ -10,7 +10,6 @@ import MazCheckbox from './components/MazCheckbox/index.js'
 import MazCollapse from './components/MazCollapse/index.js'
 import MazDialog from './components/MazDialog/index.js'
 import MazDraggableList from './components/MazDraggableList/index.js'
-import MazDropzone from './components/MazDropzone/index.js'
 import MazFlex from './components/MazFlex/index.js'
 import MazInput from './components/MazInput/index.js'
 import MazInputTags from './components/MazInputTags/index.js'
@@ -19,7 +18,6 @@ import MazListItem from './components/MazList/MazListItem/index.js'
 import MazLoader from './components/MazLoader/index.js'
 import MazPagination from './components/MazPagination/index.js'
 import MazPicker from './components/MazPicker/index.js'
-import MazPlotly from './components/MazPlotly/index.js'
 import MazProgressBar from './components/MazProgressBar/index.js'
 import MazPhoneNumberInput from './components/MazPhoneNumberInput/index.js'
 import MazRadio from './components/MazRadio/index.js'
@@ -47,7 +45,6 @@ const components = [
   MazCollapse,
   MazDialog,
   MazDraggableList,
-  MazDropzone,
   MazFlex,
   MazInput,
   MazInputTags,
@@ -56,7 +53,6 @@ const components = [
   MazLoader,
   MazPagination,
   MazPicker,
-  MazPlotly,
   MazProgressBar,
   MazPhoneNumberInput,
   MazRadio,
@@ -80,7 +76,6 @@ const install = (Vue, opts = {}) => {
     Vue.component(component.name, component)
   })
 }
-
 if (typeof window !== 'undefined' && window.Vue) {
   install(window.Vue)
 }
@@ -96,7 +91,6 @@ export default {
   MazCollapse,
   MazDialog,
   MazDraggableList,
-  MazDropzone,
   MazFlex,
   MazInput,
   MazInputTags,
@@ -105,7 +99,6 @@ export default {
   MazLoader,
   MazPagination,
   MazPicker,
-  MazPlotly,
   MazProgressBar,
   MazPhoneNumberInput,
   MazRadio,

@@ -1,3 +1,3 @@
 import './global-components'
-import './maz-ui'
+import './maz-ui/server.js'
 import './vue-highlight'

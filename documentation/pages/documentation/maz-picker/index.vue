@@ -43,7 +43,11 @@
 
     <CodeContainer
       language="html"
-      :code="positionCodeExample"
+      code="<MazPicker
+  v-model=&quot;pickerValue&quot;
+  position=&quot;top right&quot;
+  @formatted=&quot;pickerFormatted = $event&quot;
+/>"
     />
 
     <hr class="maz-border-top maz-border-solid maz-border-color maz-my-3" />
@@ -367,7 +371,7 @@ export default {
   name: 'MazPickerDoc',
   data () {
     return {
-      locale: getDefaultLocale(),
+      locale: 'en',
       locales: [
         { label: 'English', value: 'en' },
         { label: 'French', value: 'fr' },
@@ -545,13 +549,11 @@ export default {
       ]
     }
   }
-}`,
-      positionCodeExample: `<MazPicker
-  v-model="pickerValue"
-  position="top right"
-  @formatted="pickerFormatted = $event"
-/>`
+}`
     }
+  },
+  mounted () {
+    this.locale = getDefaultLocale()
   }
 }
 </script>

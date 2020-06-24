@@ -16,7 +16,7 @@
 
 ## Install
 
-[Detail & CDN](https://louismazel.github.io/maz-ui/#/documentation/get-started)
+[Detail & CDN](/maz-ui/documentation/get-started)
 
 ```shell
 npm install maz-ui -S
@@ -24,7 +24,7 @@ npm install maz-ui -S
 
 ### On demande install
 
-To optimize your bundle size, it's recommanded to use the [on demand install](https://louismazel.github.io/maz-ui/#/documentation/get-started)
+To optimize your bundle size, it's recommanded to use the [on demand install](/maz-ui/documentation/get-started)
 
 ### Quick Start - Fully install (not recommanded)
 
@@ -70,7 +70,7 @@ npm run lint
 
 This will start the development server available at http://localhost:8080.
 
-For more informations, see the [Install Documentation](https://louismazel.github.io/maz-ui/#/documentation/install)
+For more informations, see the [Install Documentation](https://louismazel.github.io/maz-ui/documentation/get-started)
 
 ## LICENSE
 

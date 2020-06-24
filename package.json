@@ -16,7 +16,7 @@
     "lint:style:fix": "npm run lint:style -- --fix",
     "clean": "rimraf lib",
     "build": "npm run clean && npm run gen:docs && npm run build:entry && npm run build:lib && npm run build:css && npm run build:docs",
-    "build:entry": "node build/build-entry.js",
+    "build:entry": "node build/build-entries.js",
     "build:lib": "webpack --config build/webpack.conf.js && webpack --config build/webpack.common.js && webpack --config build/webpack.component.js",
     "build:css": "node build/gen-scss-index && npm run build:css:compile && npm run build:scss:compile",
     "build:css:compile": "gulp compile --gulpfile build/gulpfile.js",

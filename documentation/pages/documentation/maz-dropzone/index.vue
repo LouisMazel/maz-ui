@@ -5,15 +5,17 @@
       language="js"
       class="maz-flex maz-direction-column"
     >
-      <MazDropzone
-        ref="mazDropzone"
-        :url="url"
-        :headers="headers"
-        :max-filesize="maxFilesize"
-        @file-upload-error="error"
-        @file-upload-success="success"
-        @file-removed="successMessage = null"
-      />
+      <no-ssr>
+        <MazDropzone
+          ref="mazDropzone"
+          :url="url"
+          :headers="headers"
+          :max-filesize="maxFilesize"
+          @file-upload-error="error"
+          @file-upload-success="success"
+          @file-removed="successMessage = null"
+        />
+      </no-ssr>
       <div
         v-if="errorMessage"
         class="dropzone-error maz-flex maz-justify-center maz-text-danger maz-mt-2"
