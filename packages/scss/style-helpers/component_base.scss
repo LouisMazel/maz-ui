@@ -13,8 +13,9 @@ html { font-size: $base-font-size; }
   @include font_family();
 
   color: $text-color;
+}
 
-  &.#{$prefix}is-dark {
-    color: $text-color-dark;
-  }
+.maz-is-dark.maz-base-component,
+.maz-is-dark .maz-base-component {
+  color: $text-color-dark;
 }

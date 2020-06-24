@@ -5,7 +5,6 @@
   "description": "A components library for VueJs",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "scripts": {
-    "serve": "nuxt documentation",
     "eslint": "eslint ./build --fix",
     "lint": "npm run lint:js && npm run lint:style && npm run lint:md",
     "lint:fix": "npm run lint:js:fix && npm run lint:style:fix && npm run lint:md:fix",
@@ -25,7 +24,6 @@
     "build:css:copy-files": "ncp packages/scss/ lib/scss --stopOnErr",
     "gen:docs": "vuese gen && npm run lint:md:fix",
     "gen:css": "node build/gen-scss-index",
-    "build:docs": "nuxt generate",
     "build:report": "npm run build:lib -- --report && npm run build:docs -- --report",
     "delete:reports": "rm ./docs/report.html && rm ./lib/report.html",
     "ui": "vue ui",
@@ -76,7 +74,6 @@
     "lint-staged": "^10.2.2",
     "merge-stream": "^2.0.0",
     "ncp": "^2.0.0",
-    "nuxt": "^2.13.0",
     "progress-bar-webpack-plugin": "^2.1.0",
     "rimraf": "^3.0.2",
     "stylelint": "^11.1.1",

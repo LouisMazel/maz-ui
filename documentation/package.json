@@ -1,8 +1,16 @@
 {
   "name": "documentation",
   "private": true,
+  "scripts": {
+    "serve": "nuxt",
+    "build": "nuxt export"
+  },
   "dependencies": {
-    "nuxt": "^2.13.0"
+    "cookie-universal-nuxt": "^2.1.4",
+    "frontmatter-markdown-loader": "^3.6.0",
+    "nuxt": "^2.13.0",
+    "universal-cookie": "^4.0.3",
+    "vue-highlightjs": "^1.3.3"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^3.0.0",
@@ -15,7 +23,6 @@
     "babel-jest": "^26.0.1",
     "eslint": "^7.2.0",
     "eslint-plugin-nuxt": "^1.0.0",
-    "frontmatter-markdown-loader": "^3.6.0",
     "husky": "^4.2.5",
     "jest": "^26.0.1",
     "lint-staged": "^10.2.11",
@@ -24,7 +31,6 @@
     "sass-loader": "^8.0.2",
     "stylelint": "^13.6.1",
     "stylelint-config-standard": "^20.0.0",
-    "vue-highlightjs": "^1.3.3",
     "vue-jest": "^3.0.4"
   }
 }

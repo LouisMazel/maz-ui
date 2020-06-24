@@ -19,8 +19,11 @@ install: ## Install node modules
 	make install-lib
 	make install-doc
 
+install-dep: ## Install node modules
+	cd documentation && npm i $(dep) -S
+
 serve: ## Run dev server
-	npm run serve
+	cd documentation && npm run serve
 
 start: ## Install node modules, build app and run dev server
 	make clean install serve

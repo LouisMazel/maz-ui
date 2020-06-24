@@ -115,8 +115,9 @@ export default {
   },
   mounted () {
     const date = new Date().toTimeString()
-    if (date < '06:15' || date > '21:20') {
-      if (localStorage.getItem('use-dark-theme') === null) this.setDarkTheme(true)
+    const darkCookieValue = this.$cookies.get('use-dark-theme')
+    if ((date < '06:15' || date > '21:20' && darkCookieValue === null) || darkCookieValue) {
+      this.setDarkTheme(true)
     }
   },
   methods: {
@@ -140,7 +141,7 @@ export default {
 </style>
 
 <style lang="scss">
-  .documentation {
+  #app.documentation {
     .content {
       > p,
       > h1,

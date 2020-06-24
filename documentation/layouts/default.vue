@@ -1,17 +1,15 @@
 <template>
   <div
     id="app"
-    class="maz-flex maz-direction-column maz-bg-color maz-text-color"
+    class="home maz-flex maz-direction-column maz-bg-color maz-text-color"
     :class="{
       'maz-is-dark': hasDarkTheme
     }"
   >
-    <!-- :class="{
-      'maz-is-dark': hasDarkTheme,
-      documentation: isDocPage
-    }" -->
     <NavHeader />
-    <nuxt role="main" />
+    <nuxt
+      role="main"
+    />
   </div>
 </template>
 
@@ -29,8 +27,9 @@ export default {
   },
   mounted () {
     const date = new Date().toTimeString()
-    if (date < '06:15' || date > '21:20') {
-      if (localStorage.getItem('use-dark-theme') === null) this.setDarkTheme(true)
+    const darkCookieValue = this.$cookies.get('use-dark-theme')
+    if ((date < '06:15' || date > '21:20' && darkCookieValue === null) || darkCookieValue) {
+      this.setDarkTheme(true)
     }
   },
   methods: {

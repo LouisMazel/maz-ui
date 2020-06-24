@@ -104,7 +104,13 @@ html {
   #__nuxt,
   #__layout,
   #app {
-    height: 100%;
+    &:not(.home) {
+      height: 100%;
+    }
+
+    &.home {
+      min-height: 100%;
+    }
   }
 
   #__layout {
