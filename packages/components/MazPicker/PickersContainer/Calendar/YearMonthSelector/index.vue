@@ -66,7 +66,7 @@
           tabindex="-1"
           @click="selectMonth(i)"
         >
-          {{ m | capitalize }}
+          {{ m }}
         </MazBtn>
         <MazBtn
           v-for="year in years"
