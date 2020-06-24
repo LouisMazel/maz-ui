@@ -25,7 +25,7 @@
           v-for="(m, i) in months"
           :key="i"
         >
-          {{ m.getFormatted() | capitalize }}
+          {{ m.getFormatted() }}
 
           <span v-if="months.length > 1 && i === 0">-</span>
         </span>
@@ -57,7 +57,6 @@
 <script>
 import ArrowIcon from './../../../../_subs/ArrowIcon'
 import MazBtn from '../../../../MazBtn'
-import capitalize from './../../../../../filters/capitalize'
 
 export default {
   name: 'MonthYearSwitcher',
@@ -77,9 +76,6 @@ export default {
   methods: {
     changeMonth (val) {
       this.$emit('change-month', val)
-    },
-    getMonthFormatted () {
-      return this.months.map(m => capitalize(m.getFormatted())).join(' - ')
     }
   }
 }
