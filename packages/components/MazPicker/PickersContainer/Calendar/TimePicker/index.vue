@@ -4,7 +4,7 @@
     :style="[{height: `${hasDate ? height : 150}px`}]"
     class="time-picker maz-flex maz-flex-fixed maz-flex-1"
     :class="{
-      'border-left border-left-solid border-color': hasDate
+      'maz-border-left maz-border-left-solid maz-border-color': hasDate
     }"
   >
     <div
@@ -269,8 +269,10 @@ export default {
       },
       immediate: true
     },
-    height (newValue, oldValue) {
-      if (newValue !== oldValue) this.initPositionView(['hours'])
+    async height (newValue, oldValue) {
+      if (newValue === oldValue) return
+      await this.$nextTick()
+      this.initPositionView()
     }
   },
   mounted () {

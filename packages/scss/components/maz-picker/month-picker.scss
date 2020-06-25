@@ -82,7 +82,6 @@
 
     &:disabled {
       color: rgba(black, .25);
-      background-color: transparent;
       border: none;
     }
   }
@@ -108,7 +107,17 @@
         &:hover {
           background-color: rgba($color, .4);
         }
+
+        &:disabled {
+          background-color: transparent;
+        }
       }
     }
+  }
+}
+
+.maz-is-dark {
+  .maz-picker .month-picker__day:disabled {
+    color: darken($text-muted-dark, 50%);
   }
 }
