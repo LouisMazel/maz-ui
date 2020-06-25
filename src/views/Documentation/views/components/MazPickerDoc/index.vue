@@ -72,6 +72,7 @@
         <MazPicker
           v-model="pickerValue"
           :locale="locale"
+          open
           @formatted="pickerFormatted = $event"
         />
       </ComponentContainer>

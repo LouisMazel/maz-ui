@@ -267,7 +267,7 @@ export default {
       return !this.noFooter && (this.hasValidate || this.hasNow)
     },
     hasValidate () {
-      return !this.inline && !this.autoClose && !this.open
+      return !this.inline && !this.autoClose
     },
     hasNow () {
       return !this.noNow && !this.range
