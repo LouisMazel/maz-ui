@@ -37,21 +37,21 @@
     }
   },
   "dependencies": {
-    "libphonenumber-js": "^1.7.51",
+    "libphonenumber-js": "^1.7.54",
     "moment": "2.24.0",
     "moment-range": "^4.0.2",
-    "plotly.js-dist": "^1.54.1",
+    "plotly.js-dist": "^1.54.5",
     "resize-observer-polyfill": "^1.5.1",
-    "vue2-dropzone": "3.5.2",
-    "vuedraggable": "^2.23.2",
+    "v-click-outside": "^3.0.1",
     "vue-virtual-scroller": "^1.0.10",
-    "v-click-outside": "^3.0.1"
+    "vue2-dropzone": "3.5.2",
+    "vuedraggable": "^2.23.2"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.3.1",
-    "@vue/cli-plugin-eslint": "^4.3.1",
-    "@vue/cli-service": "^4.3.1",
-    "@vuese/cli": "^2.10.0",
+    "@vue/cli-plugin-babel": "^4.4.6",
+    "@vue/cli-plugin-eslint": "^4.4.6",
+    "@vue/cli-service": "^4.4.6",
+    "@vuese/cli": "^2.13.0",
     "babel-eslint": "^10.1.0",
     "core-js": "^3.6.5",
     "del": "^5.1.0",
@@ -67,7 +67,7 @@
     "gulp-sourcemaps": "^2.6.5",
     "husky": "^4.2.5",
     "json-templater": "^1.2.0",
-    "lint-staged": "^10.2.2",
+    "lint-staged": "^10.2.11",
     "merge-stream": "^2.0.0",
     "ncp": "^2.0.0",
     "progress-bar-webpack-plugin": "^2.1.0",
@@ -75,18 +75,17 @@
     "stylelint": "^11.1.1",
     "stylelint-config-standard": "^19.0.0",
     "stylelint-order": "^3.1.1",
-    "stylelint-scss": "^3.17.1",
+    "stylelint-scss": "^3.18.0",
     "uppercamelcase": "^3.0.0",
     "vue": "^2.6.11",
-    "webpack-cli": "^3.3.11"
+    "webpack-cli": "^3.3.12"
   },
   "engines": {
     "node": ">= 6.0.0",
     "npm": ">= 3.0.0"
   },
   "files": [
-    "lib/",
-    "nuxt/"
+    "lib/"
   ],
   "bugs": {
     "url": "https://github.com/LouisMazel/maz-ui/issues"
