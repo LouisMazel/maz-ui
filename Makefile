@@ -41,10 +41,10 @@ serve-build:
 	cd documentation && npm run serve:build
 
 deploy-doc:
-	make build-doc && cd documentation && npm run deploy
+	make gen-vuese && make build-doc && cd documentation && npm run deploy
 
 publish:
-	npm version $(version) && npm run pre-publish && gaa && gc -m "[build][$(version)]" && ggp && npm publish
+	npm version $(version) && npm run pre-publish && npm publish
 
 publish-beta:
-	npm version $(version) && npm run pre-publish && gaa && gc -m "[build][$(version)]" && ggp && npm run publish:beta
+	npm version $(version) && npm run pre-publish && npm publish --tag beta

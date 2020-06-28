@@ -17,15 +17,12 @@
     "build": "npm run clean && npm run build:entries && npm run build:lib && npm run build:css",
     "build:entries": "node build/build-entries.js",
     "build:lib": "webpack --config build/webpack.conf.js && webpack --config build/webpack.common.js && webpack --config build/webpack.component.js",
-    "build:css": "node build/gen-scss-index && npm run build:css:compile && npm run build:scss:compile",
+    "build:css": "node gen:css && npm run build:css:compile && npm run build:scss:compile",
+    "gen:css": "node build/gen-scss-index",
     "build:css:compile": "gulp compile --gulpfile build/gulpfile.js",
     "build:scss:compile": "gulp buildScssLibrary --gulpfile build/gulpfile.js",
-    "build:css:copy-files": "ncp packages/scss/ lib/scss --stopOnErr",
     "gen:docs": "vuese gen && npm run lint:md:fix",
-    "gen:css": "node build/gen-scss-index",
-    "ui": "vue ui",
-    "pre-publish": "npm run lint:fix && npm i && npm run build",
-    "publish-npm:beta": "npm publish --tag beta"
+    "pre-publish": "npm run lint:fix && npm i && npm run build"
   },
   "lint-staged": {
     "*.{js,vue}": "npm run lint:js",
@@ -69,7 +66,6 @@
     "json-templater": "^1.2.0",
     "lint-staged": "^10.2.11",
     "merge-stream": "^2.0.0",
-    "ncp": "^2.0.0",
     "progress-bar-webpack-plugin": "^2.1.0",
     "rimraf": "^3.0.2",
     "stylelint": "^13.6.1",
