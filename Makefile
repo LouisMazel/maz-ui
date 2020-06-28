@@ -28,6 +28,9 @@ serve: ## Run dev server
 start: ## Install node modules, build app and run dev server
 	make clean install serve
 
+build-entries:
+	npm run build:entries
+
 build-doc:
 	cd documentation && npm run build:gh-pages && npm run export:gh-pages
 
