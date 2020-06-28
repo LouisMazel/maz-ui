@@ -7,7 +7,7 @@
 | Name            | Description | Type      | Required | Default |
 | --------------- | ----------- | --------- | -------- | ------- |
 | value           | -           | `Boolean` | `false`  | -       |
-| excludedClasses | -           | `Array`   | `false`  | -       |
+| excludedClasses | -           | `Array`   | `false`  | Array   |
 | persistent      | -           | `Boolean` | `false`  | -       |
 | noClose         | -           | `Boolean` | `false`  | -       |
 | noPadding       | -           | `Boolean` | `false`  | -       |

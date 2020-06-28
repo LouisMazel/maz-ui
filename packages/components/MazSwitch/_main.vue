@@ -8,7 +8,7 @@
       :checked="value"
       :disabled="disabled"
       class="maz-switch__input"
-      @change="$emit('input', $event.target.checked)"
+      @change="emit"
     >
     <label
       :for="uniqueId"
@@ -39,6 +39,13 @@ export default {
     },
     bgColorClass () {
       return this.value ? `maz-bg-${this.color}` : 'maz-bg-white'
+    }
+  },
+  methods: {
+    emit (e) {
+      // Return the input value
+      // @arg Boolean
+      this.$emit('input', e.target.checked)
     }
   }
 }

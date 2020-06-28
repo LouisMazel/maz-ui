@@ -9,7 +9,7 @@
 | value     | -           | `Number`  | `true`   | -       |
 | pageCount | -           | `Number`  | `true`   | -       |
 | pageRange | -           | `Number`  | `false`  | 3       |
-| dark      | -           | `Boolean` | `false`  | -       |
+| dark      | -           | `Boolean` | `false`  | false   |
 
 <!-- @vuese:MazPagination:props:end -->
 

@@ -1,6 +1,6 @@
 # MazSearch
 
-> UI search input component. The search component extends MazInput, so all props/options of [MazInput](/#/documentation/input) are available here.
+> UI search input component. The search component extends MazInput, so all props/options of [MazInput](/documentation/maz-input) are available here.
 
 ## Props
 
@@ -9,11 +9,11 @@
 | Name      | Description                                                       | Type      | Required | Default |
 | --------- | ----------------------------------------------------------------- | --------- | -------- | ------- |
 | value     | Is the value return when you select an item                       | —         | `true`   | -       |
-| items     | Array of your results request                                     | `Array`   | `false`  | -       |
-| itemValue | It's a key name of your result object to be returned in the model | `String`  | `false`  | -       |
-| itemText  | It's a key name of your result object to be shown in the list     | `String`  | `false`  | -       |
-| dark      | Enable or disable the `dark-mode`                                 | `Boolean` | `false`  | -       |
-| noData    | to show `no-data` slot (when you request has no results)          | `Boolean` | `false`  | -       |
+| items     | Array of your results request                                     | `Array`   | `false`  | null    |
+| itemValue | It's a key name of your result object to be returned in the model | `String`  | `false`  | null    |
+| itemText  | It's a key name of your result object to be shown in the list     | `String`  | `false`  | null    |
+| dark      | Enable or disable the `dark-mode`                                 | `Boolean` | `false`  | false   |
+| noData    | to show `no-data` slot (when you request has no results)          | `Boolean` | `false`  | false   |
 | color     | Choose your color                                                 | `String`  | `false`  | primary |
 
 <!-- @vuese:MazSearch:props:end -->

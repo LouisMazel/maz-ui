@@ -341,7 +341,7 @@ export default {
           }
         }
         this.$nextTick(() => {
-          const pad = this.$refs.TimePicker.clientHeight / 2 - ITEM_HEIGHT / 2
+          const pad = (this.$refs?.TimePicker?.clientHeight ?? 100) / 2 - ITEM_HEIGHT / 2
           run(pad)
         })
       } else {
@@ -375,7 +375,7 @@ export default {
       containers.forEach((container) => {
         if (!this.$refs[container]) return
         const elem = this.$refs[container][0]
-        const timePickerHeight = this.$refs.TimePicker.clientHeight
+        const timePickerHeight = this.$refs.TimePicker?.clientHeight ?? null
         // elem.scrollTop = 0
         scrollSmoothElement(elem, timePickerHeight, hasSmoothEffect)
       })

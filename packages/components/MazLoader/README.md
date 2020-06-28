@@ -6,6 +6,6 @@
 
 | Name | Description | Type      | Required | Default |
 | ---- | ----------- | --------- | -------- | ------- |
-| dark | -           | `Boolean` | `false`  | -       |
+| dark | -           | `Boolean` | `false`  | false   |
 
 <!-- @vuese:MazLoader:props:end -->

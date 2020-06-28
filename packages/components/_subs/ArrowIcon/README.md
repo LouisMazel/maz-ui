@@ -6,8 +6,8 @@
 
 | Name        | Description | Type      | Required | Default |
 | ----------- | ----------- | --------- | -------- | ------- |
-| dark        | -           | `Boolean` | `false`  | -       |
-| color       | -           | `String`  | `false`  | -       |
+| dark        | -           | `Boolean` | `false`  | false   |
+| color       | -           | `String`  | `false`  | null    |
 | size        | -           | `Number`  | `false`  | 24      |
 | orientation | -           | `String`  | `false`  | bottom  |
 

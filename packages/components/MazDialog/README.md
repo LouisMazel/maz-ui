@@ -8,16 +8,16 @@
 | --------------- | --------------------------------------------------------------------- | --------- | -------- | ------------ |
 | value           | `true` if dialog is open / `false` if is close                        | `Boolean` | `true`   | -            |
 | maxWidth        | is the `max-width` of the dialog in pixels                            | `Number`  | `false`  | 500          |
-| persistent      | if is `true`, is not possible to close he dialog with a click outside | `Boolean` | `false`  | -            |
-| noHeader        | remove the header                                                     | `Boolean` | `false`  | -            |
-| noFooter        | remove the footer                                                     | `Boolean` | `false`  | -            |
-| noClose         | remove the close button                                               | `Boolean` | `false`  | -            |
-| noConfirm       | remove the confirm button                                             | `Boolean` | `false`  | -            |
-| success         | add "success" style to the dialog                                     | `Boolean` | `false`  | -            |
-| danger          | add "danger" style to the dialog                                      | `Boolean` | `false`  | -            |
-| dark            | add "dark" style to the dialog                                        | `Boolean` | `false`  | -            |
-| excludedClasses | exclude elements classes (elements sometimes can close the dialog)    | `Array`   | `false`  | -            |
-| fullsize        | make dialog fullsize                                                  | `Boolean` | `false`  | -            |
+| persistent      | if is `true`, is not possible to close he dialog with a click outside | `Boolean` | `false`  | false        |
+| noHeader        | remove the header                                                     | `Boolean` | `false`  | false        |
+| noFooter        | remove the footer                                                     | `Boolean` | `false`  | false        |
+| noClose         | remove the close button                                               | `Boolean` | `false`  | false        |
+| noConfirm       | remove the confirm button                                             | `Boolean` | `false`  | false        |
+| success         | add "success" style to the dialog                                     | `Boolean` | `false`  | false        |
+| danger          | add "danger" style to the dialog                                      | `Boolean` | `false`  | false        |
+| dark            | add "dark" style to the dialog                                        | `Boolean` | `false`  | false        |
+| excludedClasses | exclude elements classes (elements sometimes can close the dialog)    | `Array`   | `false`  | Array        |
+| fullsize        | make dialog fullsize                                                  | `Boolean` | `false`  | false        |
 | title           | title of the dialog                                                   | `String`  | `false`  | Header title |
 
 <!-- @vuese:MazDialog:props:end -->

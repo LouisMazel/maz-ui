@@ -186,7 +186,7 @@ export default {
         this.contentHeight = CONTENT_HEIGHT
         await this.$nextTick()
         const { MonthsContainer } = this.$refs
-        this.contentHeight = MonthsContainer.clientHeight ? MonthsContainer.clientHeight : CONTENT_HEIGHT
+        this.contentHeight = MonthsContainer && MonthsContainer.clientHeight ? MonthsContainer.clientHeight : CONTENT_HEIGHT
       },
       immediate: true
     }

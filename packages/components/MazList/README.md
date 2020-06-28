@@ -6,10 +6,10 @@
 
 | Name       | Description                              | Type      | Required | Default |
 | ---------- | ---------------------------------------- | --------- | -------- | ------- |
-| transition | active the transition animation          | `Boolean` | `false`  | -       |
-| noShadow   | remove the shadow effect behind the list | `Boolean` | `false`  | -       |
-| dark       | set dark mode                            | `Boolean` | `false`  | -       |
-| noScroll   | remove overflow css property & scroll    | `Boolean` | `false`  | -       |
+| transition | active the transition animation          | `Boolean` | `false`  | false   |
+| noShadow   | remove the shadow effect behind the list | `Boolean` | `false`  | false   |
+| dark       | set dark mode                            | `Boolean` | `false`  | false   |
+| noScroll   | remove overflow css property & scroll    | `Boolean` | `false`  | false   |
 
 <!-- @vuese:MazList:props:end -->
 

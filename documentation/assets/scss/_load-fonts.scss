@@ -1,0 +1,22 @@
+/* stylelint-disable */
+@font-face {
+  font-family: GeomanistLight;
+  src: url('~@/assets/fonts/geomanist-regular-webfont.eot');
+  src: url('~@/assets/fonts/geomanist-regular-webfont.eot#iefix') format('embedded-opentype'),
+    url('~@/assets/fonts/geomanist-regular-webfont.woff') format('woff'),
+    url('~@/assets/fonts/geomanist-regular-webfont.woff2') format('woff2'),
+    url('~@/assets/fonts/geomanist-regular-webfont.ttf') format('truetype'),
+    url('~@/assets/fonts/geomanist-regular-webfont.svg') format('svg');
+}
+
+@font-face {
+  font-family: GeomanistMedium;
+  src: url('~@/assets/fonts/geomanist-book.woff');
+  src: url('~@/assets/fonts/geomanist-book.woff') format('woff');
+}
+
+// @font-face {
+//   font-family: GeomanistBold;
+//   src: url('~@/assets/fonts/geomanist-medium.woff');
+//   src: url('~@/assets/fonts/geomanist-medium.woff') format('woff');
+// }

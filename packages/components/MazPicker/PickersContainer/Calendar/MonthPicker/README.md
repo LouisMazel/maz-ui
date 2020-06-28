@@ -6,15 +6,16 @@
 
 | Name           | Description | Type      | Required | Default |
 | -------------- | ----------- | --------- | -------- | ------- |
-| value          | -           | `Object`  | `true`   | -       |
+| value          | -           | `Object`  | `false`  | null    |
 | month          | -           | `Object`  | `true`   | -       |
-| minDate        | -           | `Object`  | `false`  | -       |
-| maxDate        | -           | `Object`  | `false`  | -       |
-| noWeekendsDays | -           | `Boolean` | `false`  | -       |
+| minDate        | -           | `Object`  | `false`  | null    |
+| maxDate        | -           | `Object`  | `false`  | null    |
+| noWeekendsDays | -           | `Boolean` | `false`  | false   |
 | disabledDates  | -           | `Array`   | `true`   | -       |
 | disabledWeekly | -           | `Array`   | `true`   | -       |
 | isVisible      | -           | `Boolean` | `true`   | -       |
 | hasDouble      | -           | `Boolean` | `true`   | -       |
+| hoverredDay    | -           | `Object`  | `false`  | null    |
 
 <!-- @vuese:MonthPicker:props:end -->
 
@@ -22,9 +23,11 @@
 
 <!-- @vuese:MonthPicker:events:start -->
 
-| Event Name | Description | Parameters |
-| ---------- | ----------- | ---------- |
-| input      | -           | -          |
+| Event Name   | Description | Parameters |
+| ------------ | ----------- | ---------- |
+| input        | -           | -          |
+| day-selected | -           | -          |
+| hoverred-day | -           | -          |
 
 <!-- @vuese:MonthPicker:events:end -->
 

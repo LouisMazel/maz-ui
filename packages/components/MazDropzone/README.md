@@ -11,11 +11,11 @@
 | acceptedFiles  | -           | `String`  | `false`  | image/\*    |
 | paramName      | -           | `String`  | `false`  | file-name   |
 | headers        | -           | `Object`  | `true`   | -           |
-| translations   | -           | `Object`  | `false`  | -           |
+| translations   | -           | `Object`  | `false`  | null        |
 | maxFiles       | -           | `Number`  | `false`  | 1           |
 | maxFilesize    | -           | `Number`  | `false`  | 2           |
 | addRemoveLinks | -           | `Boolean` | `false`  | true        |
-| dark           | -           | `Boolean` | `false`  | -           |
+| dark           | -           | `Boolean` | `false`  | false       |
 
 <!-- @vuese:MazDropzone:props:end -->
 

@@ -20,7 +20,7 @@
         }"
         class="maz-responsive-menu-collapse maz-flex maz-direction-column maz-border-radius"
       >
-        <RouterLink
+        <router-link
           v-for="({ name, label }, i) in routes"
           :key="`routes-${i}`"
           class="maz-responsive-menu-collapse__items maz-dots-text"
@@ -28,7 +28,7 @@
           @click.native="open = false"
         >
           {{ label }}
-        </RouterLink>
+        </router-link>
       </div>
     </transition>
   </div>

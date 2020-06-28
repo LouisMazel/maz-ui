@@ -7,17 +7,17 @@
       'align-left': alignLeft
     }"
   >
-    <a
+    <router-link
       v-for="({ label, disabled }, index) in items"
       :key="index"
       ref="MazTabsBarItem"
       :class="{active : valueComputed === index, disabled: disabled }"
       class="maz-tabs-bar__item maz-flex maz-flex-center maz-dots-text"
-      :href="noUseAnchor ? null : `#${labelNormalize(label)}`"
-      @click="disabled ? null : valueComputed = index"
+      :to="noUseAnchor ? null : `#${labelNormalize(label)}`"
+      @click.native="disabled ? null : valueComputed = index"
     >
       {{ label }}
-    </a>
+    </router-link>
     <div
       :style="tabsIndicatorState"
       class="maz-tabs-bar__indicator"
@@ -97,8 +97,8 @@ export default {
     async getTabsIndicatorState () {
       await this.$nextTick()
       const tabsItem = this.$refs.MazTabsBarItem ? this.$refs.MazTabsBarItem[this.valueComputed] : null
-      const indicatorWidth = tabsItem ? tabsItem.clientWidth : tabsItem
-      const translateXValue = tabsItem ? tabsItem.offsetLeft : tabsItem
+      const indicatorWidth = tabsItem ? tabsItem.$el.clientWidth : 0
+      const translateXValue = tabsItem ? tabsItem.$el.offsetLeft : 0
       this.tabsIndicatorState = {
         transform: `translateX(${translateXValue}px)`,
         width: `${indicatorWidth}px`

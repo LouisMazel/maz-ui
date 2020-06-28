@@ -8,8 +8,8 @@
 
 | Name       | Description                                      | Type      | Required | Default |
 | ---------- | ------------------------------------------------ | --------- | -------- | ------- |
-| value      | Value is a Boolean to open or close the collapse | `Boolean` | `false`  | -       |
-| dark       | Set `true` to enable dark mode                   | `Boolean` | `false`  | -       |
+| value      | Value is a Boolean to open or close the collapse | `Boolean` | `false`  | false   |
+| dark       | Set `true` to enable dark mode                   | `Boolean` | `false`  | false   |
 | arrowColor | Is the color of the arrow, must be a hex color   | `String`  | `false`  | black   |
 
 <!-- @vuese:MazCollapse:props:end -->

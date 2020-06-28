@@ -316,7 +316,6 @@ export default {
     },
     locale: {
       handler (locale) {
-        if (locale === 'en') return
         moment.locale(locale)
         this.update = !this.update
       },

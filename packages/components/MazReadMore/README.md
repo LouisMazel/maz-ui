@@ -6,9 +6,9 @@
 
 | Name           | Description | Type     | Required | Default |
 | -------------- | ----------- | -------- | -------- | ------- |
-| text           | -           | `String` | `false`  | -       |
-| textClass      | -           | `String` | `false`  | -       |
+| text           | -           | `String` | `false`  | null    |
+| textClass      | -           | `String` | `false`  | null    |
 | truncateLength | -           | `Number` | `false`  | 200     |
-| translations   | -           | `Object` | `false`  | -       |
+| translations   | -           | `Object` | `false`  | null    |
 
 <!-- @vuese:MazReadMore:props:end -->
