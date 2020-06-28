@@ -16,8 +16,7 @@ install-doc: ## Install node modules of documentation
 	cd documentation && npm ci
 
 install: ## Install node modules
-	make install-lib
-	make install-doc
+	make install-lib install-doc
 
 install-dep: ## Install node modules
 	cd documentation && npm i $(dep) -S
@@ -35,16 +34,21 @@ build-doc:
 	cd documentation && npm run build:gh-pages && npm run export:gh-pages
 
 gen-vuese:
-	npm run gen:docs
+	npm run gen:docs && git add -A && git commit -m "[build] components documentation" && git push origin HEAD
 
 serve-build:
 	cd documentation && npm run serve:build
 
 deploy-doc:
-	make gen-vuese && make build-doc && cd documentation && npm run deploy
+	make gen-vuese build-doc
+	cd documentation && npm run deploy
 
 publish:
-	npm version $(version) && npm run pre-publish && npm publish
+	npm version $(version)
+	npm run pre-publish
+	npm publish
 
 publish-beta:
-	npm version $(version) && npm run pre-publish && npm publish --tag beta
+	npm version $(version)
+	npm run pre-publish
+	npm publish --tag beta

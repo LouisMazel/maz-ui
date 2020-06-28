@@ -6,6 +6,6 @@
 
 | Name   | Description | Type     | Required | Default |
 | ------ | ----------- | -------- | -------- | ------- |
-| locale | -           | `String` | `false`  | -       |
+| locale | -           | `String` | `false`  | null    |
 
 <!-- @vuese:WeekDaysLabes:props:end -->

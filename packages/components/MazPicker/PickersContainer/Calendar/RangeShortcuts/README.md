@@ -8,10 +8,10 @@ Component used to show a list of the shortcuts currently available and select on
 
 | Name      | Description | Type     | Required | Default |
 | --------- | ----------- | -------- | -------- | ------- |
-| value     | -           | `String` | `false`  | -       |
-| color     | -           | `String` | `false`  | -       |
+| value     | -           | `String` | `false`  | null    |
+| color     | -           | `String` | `false`  | null    |
 | height    | -           | `Number` | `true`   | -       |
-| shortcuts | -           | `Array`  | `false`  | -       |
+| shortcuts | -           | `Array`  | `false`  | Array   |
 
 <!-- @vuese:RangeShortcuts:props:end -->
 

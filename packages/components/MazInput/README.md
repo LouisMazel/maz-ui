@@ -9,26 +9,26 @@
 | Name             | Description                                                                      | Type      | Required | Default    |
 | ---------------- | -------------------------------------------------------------------------------- | --------- | -------- | ---------- |
 | value            | value of the input                                                               | —         | `true`   | -          |
-| id               | input id                                                                         | `String`  | `false`  | -          |
+| id               | input id                                                                         | `String`  | `false`  | null       |
 | placeholder      | value of the input                                                               | `String`  | `false`  | Enter text |
-| hint             | replace the label if is present                                                  | `String`  | `false`  | -          |
-| size             | input size (`'lg'` / `'sm'`)                                                     | `String`  | `false`  | -          |
+| hint             | replace the label if is present                                                  | `String`  | `false`  | null       |
+| size             | input size (`'lg'` / `'sm'`)                                                     | `String`  | `false`  | null       |
 | type             | is the input size (`text` or `number`)                                           | `String`  | `false`  | text       |
-| leftIconName     | should be a [material icon](https://material.io/resources/icons/) name           | `String`  | `false`  | -          |
-| rightIconName    | should be a [material icon](https://material.io/resources/icons/) name           | `String`  | `false`  | -          |
-| error            | When is `true` the input has the error style (\$danger-color)                    | `Boolean` | `false`  | -          |
-| warning          | When is `true` the input has the warning style (\$warning-color)                 | `Boolean` | `false`  | -          |
-| disabled         | When is `true` the input is disable                                              | `Boolean` | `false`  | -          |
-| dark             | When is `true` the input has the dark theme                                      | `Boolean` | `false`  | -          |
-| readonly         | When is `true` the input is on readonly mode                                     | `Boolean` | `false`  | -          |
-| success          | When is `true` the input has the valid style (\$success-color)                   | `Boolean` | `false`  | -          |
-| required         | When is `true` the input become required & has the `*` symbol                    | `Boolean` | `false`  | -          |
-| textarea         | When is `true` the input is a textarea                                           | `Boolean` | `false`  | -          |
-| loading          | When is `true` the input is a textarea                                           | `Boolean` | `false`  | -          |
-| clearable        | When is `true` the input can be clear with a button on the right                 | `Boolean` | `false`  | -          |
-| noLabel          | When is `true` the input has not label (top placeholder when value is not empty) | `Boolean` | `false`  | -          |
-| noRequiredSymbol | When is `true` and is `required`, the `*` symbol is not showing                  | `Boolean` | `false`  | -          |
-| focus            | force focus style input                                                          | `Boolean` | `false`  | -          |
+| leftIconName     | should be a [material icon](https://material.io/resources/icons/) name           | `String`  | `false`  | null       |
+| rightIconName    | should be a [material icon](https://material.io/resources/icons/) name           | `String`  | `false`  | null       |
+| error            | When is `true` the input has the error style (\$danger-color)                    | `Boolean` | `false`  | false      |
+| warning          | When is `true` the input has the warning style (\$warning-color)                 | `Boolean` | `false`  | false      |
+| disabled         | When is `true` the input is disable                                              | `Boolean` | `false`  | false      |
+| dark             | When is `true` the input has the dark theme                                      | `Boolean` | `false`  | false      |
+| readonly         | When is `true` the input is on readonly mode                                     | `Boolean` | `false`  | false      |
+| success          | When is `true` the input has the valid style (\$success-color)                   | `Boolean` | `false`  | false      |
+| required         | When is `true` the input become required & has the `*` symbol                    | `Boolean` | `false`  | false      |
+| textarea         | When is `true` the input is a textarea                                           | `Boolean` | `false`  | false      |
+| loading          | When is `true` the input is a textarea                                           | `Boolean` | `false`  | false      |
+| clearable        | When is `true` the input can be clear with a button on the right                 | `Boolean` | `false`  | false      |
+| noLabel          | When is `true` the input has not label (top placeholder when value is not empty) | `Boolean` | `false`  | false      |
+| noRequiredSymbol | When is `true` and is `required`, the `*` symbol is not showing                  | `Boolean` | `false`  | false      |
+| focus            | force focus style input                                                          | `Boolean` | `false`  | false      |
 | color            | color name in basic colors                                                       | `String`  | `false`  | primary    |
 
 <!-- @vuese:MazInput:props:end -->

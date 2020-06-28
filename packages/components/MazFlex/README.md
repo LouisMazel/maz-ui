@@ -6,30 +6,30 @@
 
 | Name                   | Description | Type      | Required | Default |
 | ---------------------- | ----------- | --------- | -------- | ------- |
-| flex                   | -           | `Boolean` | `false`  | -       |
-| directionColumn        | -           | `Boolean` | `false`  | -       |
-| directionColumnReverse | -           | `Boolean` | `false`  | -       |
-| directionRow           | -           | `Boolean` | `false`  | -       |
-| directionRowReverse    | -           | `Boolean` | `false`  | -       |
-| alignStart             | -           | `Boolean` | `false`  | -       |
-| alignEnd               | -           | `Boolean` | `false`  | -       |
-| alignCenter            | -           | `Boolean` | `false`  | -       |
-| justifyEnd             | -           | `Boolean` | `false`  | -       |
-| justifyStart           | -           | `Boolean` | `false`  | -       |
-| justifyCenter          | -           | `Boolean` | `false`  | -       |
-| spaceBetween           | -           | `Boolean` | `false`  | -       |
-| spaceAround            | -           | `Boolean` | `false`  | -       |
-| flex1                  | -           | `Boolean` | `false`  | -       |
-| flex100                | -           | `Boolean` | `false`  | -       |
-| flex75                 | -           | `Boolean` | `false`  | -       |
-| flex50                 | -           | `Boolean` | `false`  | -       |
-| flex33                 | -           | `Boolean` | `false`  | -       |
-| flex25                 | -           | `Boolean` | `false`  | -       |
-| fill                   | -           | `Boolean` | `false`  | -       |
-| fluid                  | -           | `Boolean` | `false`  | -       |
-| wrap                   | -           | `Boolean` | `false`  | -       |
-| grow                   | -           | `Boolean` | `false`  | -       |
-| fixed                  | -           | `Boolean` | `false`  | -       |
+| flex                   | -           | `Boolean` | `false`  | false   |
+| directionColumn        | -           | `Boolean` | `false`  | false   |
+| directionColumnReverse | -           | `Boolean` | `false`  | false   |
+| directionRow           | -           | `Boolean` | `false`  | false   |
+| directionRowReverse    | -           | `Boolean` | `false`  | false   |
+| alignStart             | -           | `Boolean` | `false`  | false   |
+| alignEnd               | -           | `Boolean` | `false`  | false   |
+| alignCenter            | -           | `Boolean` | `false`  | false   |
+| justifyEnd             | -           | `Boolean` | `false`  | false   |
+| justifyStart           | -           | `Boolean` | `false`  | false   |
+| justifyCenter          | -           | `Boolean` | `false`  | false   |
+| spaceBetween           | -           | `Boolean` | `false`  | false   |
+| spaceAround            | -           | `Boolean` | `false`  | false   |
+| flex1                  | -           | `Boolean` | `false`  | false   |
+| flex100                | -           | `Boolean` | `false`  | false   |
+| flex75                 | -           | `Boolean` | `false`  | false   |
+| flex50                 | -           | `Boolean` | `false`  | false   |
+| flex33                 | -           | `Boolean` | `false`  | false   |
+| flex25                 | -           | `Boolean` | `false`  | false   |
+| fill                   | -           | `Boolean` | `false`  | false   |
+| fluid                  | -           | `Boolean` | `false`  | false   |
+| wrap                   | -           | `Boolean` | `false`  | false   |
+| grow                   | -           | `Boolean` | `false`  | false   |
+| fixed                  | -           | `Boolean` | `false`  | false   |
 
 <!-- @vuese:MazFlex:props:end -->
 

@@ -7,7 +7,7 @@
 | Name  | Description | Type      | Required | Default      |
 | ----- | ----------- | --------- | -------- | ------------ |
 | value | -           | `Boolean` | `true`   | -            |
-| id    | -           | `String`  | `false`  | -            |
+| id    | -           | `String`  | `false`  | null         |
 | color | -           | `String`  | `false`  | primary      |
 | name  | -           | `String`  | `false`  | maz-checkbox |
 

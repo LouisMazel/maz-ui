@@ -9,15 +9,15 @@ Generic component used to show a togglable sidebar (left or right) in the layout
 | Name       | Description                                                           | Type      | Required | Default |
 | ---------- | --------------------------------------------------------------------- | --------- | -------- | ------- |
 | value      | Boolean to open or not the sidebar                                    | `Boolean` | `true`   | -       |
-| id         | -                                                                     | `String`  | `false`  | -       |
+| id         | -                                                                     | `String`  | `false`  | null    |
 | width      | Size bar width                                                        | `Number`  | `false`  | 300     |
-| loading    | Show loading layer                                                    | `Boolean` | `false`  | -       |
-| noCloseBtn | So that the user cannot close the sidebar                             | `Boolean` | `false`  | -       |
-| noShadow   | Remove shadow UI                                                      | `Boolean` | `false`  | -       |
-| absolute   | the sidebar goes over the content                                     | `Boolean` | `false`  | -       |
-| right      | Must be activated if you want to integrate it on the right side       | `Boolean` | `false`  | -       |
-| dark       | Dark mode                                                             | `Boolean` | `false`  | -       |
-| layer      | Gray layer above the content, if you click on it, the side bar closes | `Boolean` | `false`  | -       |
+| loading    | Show loading layer                                                    | `Boolean` | `false`  | false   |
+| noCloseBtn | So that the user cannot close the sidebar                             | `Boolean` | `false`  | false   |
+| noShadow   | Remove shadow UI                                                      | `Boolean` | `false`  | false   |
+| absolute   | the sidebar goes over the content                                     | `Boolean` | `false`  | false   |
+| right      | Must be activated if you want to integrate it on the right side       | `Boolean` | `false`  | false   |
+| dark       | Dark mode                                                             | `Boolean` | `false`  | false   |
+| layer      | Gray layer above the content, if you click on it, the side bar closes | `Boolean` | `false`  | false   |
 
 <!-- @vuese:MazSidebar:props:end -->
 

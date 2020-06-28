@@ -6,8 +6,8 @@
 
 | Name     | Description | Type      | Required | Default |
 | -------- | ----------- | --------- | -------- | ------- |
-| active   | -           | `Boolean` | `false`  | -       |
-| disabled | -           | `Boolean` | `false`  | -       |
+| active   | -           | `Boolean` | `false`  | false   |
+| disabled | -           | `Boolean` | `false`  | false   |
 
 <!-- @vuese:PaginationNumberBtn:props:end -->
 

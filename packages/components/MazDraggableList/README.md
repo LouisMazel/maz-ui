@@ -9,8 +9,8 @@
 | Name    | Description                                                          | Type      | Required | Default |
 | ------- | -------------------------------------------------------------------- | --------- | -------- | ------- |
 | value   | Must be an `Array` (use `v-model`)                                   | `Array`   | `true`   | -       |
-| itemKey | is the item's key to build le list (must be different for each item) | `String`  | `false`  | -       |
-| dark    | set dark theme                                                       | `Boolean` | `false`  | -       |
+| itemKey | is the item's key to build le list (must be different for each item) | `String`  | `false`  | null    |
+| dark    | set dark theme                                                       | `Boolean` | `false`  | false   |
 
 <!-- @vuese:MazDraggableList:props:end -->
 

@@ -6,8 +6,8 @@
 
 | Name      | Description | Type      | Required | Default |
 | --------- | ----------- | --------- | -------- | ------- |
-| value     | -           | `String`  | `false`  | -       |
-| color     | -           | `String`  | `false`  | -       |
+| value     | -           | `String`  | `false`  | null    |
+| color     | -           | `String`  | `false`  | null    |
 | month     | -           | `Object`  | `true`   | -       |
 | hasDouble | -           | `Boolean` | `true`   | -       |
 

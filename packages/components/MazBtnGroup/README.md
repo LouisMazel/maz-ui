@@ -8,7 +8,7 @@
 | ------- | ----------- | --------- | -------- | ------- |
 | value   | -           | —         | `true`   | -       |
 | items   | -           | `Array`   | `true`   | -       |
-| rounded | -           | `Boolean` | `false`  | -       |
+| rounded | -           | `Boolean` | `false`  | false   |
 
 <!-- @vuese:MazBtnGroup:props:end -->
 

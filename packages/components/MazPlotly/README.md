@@ -6,9 +6,9 @@
 
 | Name   | Description | Type     | Required | Default |
 | ------ | ----------- | -------- | -------- | ------- |
-| data   | -           | `Array`  | `false`  | -       |
-| layout | -           | `Object` | `false`  | -       |
-| id     | -           | `String` | `false`  | -       |
+| data   | -           | `Array`  | `false`  | null    |
+| layout | -           | `Object` | `false`  | null    |
+| id     | -           | `String` | `false`  | null    |
 
 <!-- @vuese:MazPlotly:props:end -->
 

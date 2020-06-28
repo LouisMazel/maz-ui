@@ -7,9 +7,9 @@
 | Name     | Description | Type      | Required | Default |
 | -------- | ----------- | --------- | -------- | ------- |
 | value    | -           | `Boolean` | `true`   | -       |
-| disabled | -           | `Boolean` | `false`  | -       |
-| id       | -           | `String`  | `false`  | -       |
-| name     | -           | `String`  | `false`  | -       |
+| disabled | -           | `Boolean` | `false`  | false   |
+| id       | -           | `String`  | `false`  | null    |
+| name     | -           | `String`  | `false`  | null    |
 | color    | -           | `String`  | `false`  | primary |
 
 <!-- @vuese:MazSwitch:props:end -->
@@ -18,9 +18,9 @@
 
 <!-- @vuese:MazSwitch:events:start -->
 
-| Event Name | Description | Parameters |
-| ---------- | ----------- | ---------- |
-| input      | -           | -          |
+| Event Name | Description            | Parameters |
+| ---------- | ---------------------- | ---------- |
+| input      | Return the input value | Boolean    |
 
 <!-- @vuese:MazSwitch:events:end -->
 
