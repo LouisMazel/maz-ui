@@ -3,7 +3,11 @@
   "private": true,
   "scripts": {
     "serve": "nuxt",
-    "build": "nuxt export"
+    "serve:build": "nuxt serve",
+    "build": "nuxt build && nuxt export",
+    "build:gh-pages": "DEPLOY_ENV=GH_PAGES nuxt build",
+    "export:gh-pages": "DEPLOY_ENV=GH_PAGES nuxt export",
+    "deploy": "push-dir --dir=dist --branch=gh-pages --cleanup"
   },
   "dependencies": {
     "cookie-universal-nuxt": "^2.1.4",
@@ -15,8 +19,10 @@
   "devDependencies": {
     "@nuxtjs/style-resources": "^1.0.0",
     "babel-core": "7.0.0-bridge.0",
+    "cross-env": "^7.0.2",
     "node-sass": "^4.14.1",
     "path": "^0.12.7",
+    "push-dir": "^0.4.1",
     "sass-loader": "^8.0.2"
   }
 }

@@ -1,5 +1,13 @@
 import FMMode from 'frontmatter-markdown-loader/mode'
 import path from 'path'
+import link from './config/link'
+import meta from './config/meta'
+
+const routerBase = process.env.DEPLOY_ENV === 'GH_PAGES' ? {
+  router: {
+    base: '/maz-ui/'
+  }
+} : {}
 
 export default {
   /*
@@ -8,22 +16,16 @@ export default {
    */
   mode: 'universal',
   target: 'static',
+  // buildDir: './../docs',
   /*
    ** Headers of the page
    ** See https://nuxtjs.org/api/configuration-head
    */
   head: {
-    title: process.env.npm_package_name || '',
-    meta: [
-      { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      {
-        hid: 'description',
-        name: 'description',
-        content: process.env.npm_package_description || '',
-      },
-    ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    title: 'Maz UI | A components library for Vue.JS & Nuxt.JS',
+    titleTemplate: '%s | Maz UI',
+    meta,
+    link,
   },
   /*
    ** Global CSS
@@ -47,6 +49,7 @@ export default {
       '~/../packages/scss/variables.scss'
     ]
   },
+  ...routerBase,
   /*
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
