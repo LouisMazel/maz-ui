@@ -1,5 +1,5 @@
 
-.PHONY: clean resintall install-lib install-doc install serve start publish publish-beta build-doc serve-build deploy-doc
+.PHONY: clean resintall install-lib install-doc install serve start publish publish-beta build-doc serve-build deploy-doc gen-vuese
 
 clean: ## Clean node modules
 	rm -rf ./node_modules
@@ -35,7 +35,7 @@ build-doc:
 	cd documentation && npm run build:gh-pages && npm run export:gh-pages
 
 gen-vuese:
-	cd documentation && npm run gen:docs
+	npm run gen:docs
 
 serve-build:
 	cd documentation && npm run serve:build
