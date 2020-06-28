@@ -34,7 +34,7 @@ build-doc:
 	cd documentation && npm run build:gh-pages && npm run export:gh-pages
 
 gen-vuese:
-	npm run gen:docs && git add -A && git commit -m "[build] components documentation" && git push origin HEAD
+	npm run gen:docs
 
 serve-build:
 	cd documentation && npm run serve:build
