@@ -183,6 +183,7 @@ export default {
     },
     months: {
       async handler () {
+        this.contentHeight = CONTENT_HEIGHT
         await this.$nextTick()
         const { MonthsContainer } = this.$refs
         this.contentHeight = MonthsContainer.clientHeight ? MonthsContainer.clientHeight : CONTENT_HEIGHT
