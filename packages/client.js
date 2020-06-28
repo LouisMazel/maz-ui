@@ -4,10 +4,11 @@
 
 import MazDropzone from './components/MazDropzone/index.js'
 import MazPlotly from './components/MazPlotly/index.js'
+import { version } from './../package.json'
 
 const components = [
   MazDropzone,
-  MazPlotly
+  MazPlotly,
 ]
 
 const install = (Vue, opts = {}) => {
@@ -21,13 +22,14 @@ if (typeof window !== 'undefined' && window.Vue) {
 }
 
 export default {
+  version,
   install,
   MazDropzone,
   MazPlotly
 }
 
 export {
+  version,
   install
 }
-
 /* eslint-enable */
