@@ -38,8 +38,6 @@ export default {
    ** Nuxt.js dev-modules
    */
   buildModules: [
-    '@nuxtjs/eslint-module',
-    '@nuxtjs/stylelint-module',
     '@nuxtjs/style-resources',
     'cookie-universal-nuxt'
   ],
@@ -54,6 +52,15 @@ export default {
    ** See https://nuxtjs.org/api/configuration-build/
    */
   build: {
+    babel: {
+      presets () {
+        return [
+          ['@vue/cli-plugin-babel/preset', {
+            useBuiltIns: 'entry'
+          }]
+        ]
+      }
+    },
     loaders: {
       scss: { sourceMap: process.env.NODE_ENV === 'production' }
     },

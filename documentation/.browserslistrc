@@ -1,0 +1,9 @@
+last 2 versions
+ff >= 45
+ie 11
+not ie <= 8
+edge >= 15
+safari >= 9
+chrome >= 45
+> 1%
+not dead
