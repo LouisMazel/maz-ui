@@ -1,6 +1,6 @@
 <template>
   <div class="maz-read-more-doc">
-    <ComponentContainer :code="codeExample">
+    <ComponentContainer>
       <div class="maz-flex maz-justify-end">
         <MazResponsiveMenu :routes="routes" />
       </div>
@@ -30,10 +30,10 @@
     data () {
       return {
         routes: [
-          { label: 'Home', name: 'Home' },
-          { label: 'Documentation', name: 'Documentation' },
-          { label: 'Mad with Maz Ui', name: 'MadeWithMazUi' },
-          { label: 'Responsive Menu Doc', name: 'MazResponsiveMenuDoc' }
+          { label: 'Home', name: 'index' },
+          { label: 'Documentation', name: 'documentation' },
+          { label: 'Made with Maz Ui', name: 'made-with-maz-ui' },
+          { label: 'Responsive Menu Doc', name: 'documentation-maz-responsive-menu' }
         ]
       }
     }
@@ -49,29 +49,11 @@ export default {
   data () {
     return {
       routes: [
-        { label: 'Home', name: 'Home' },
-        { label: 'Documentation', name: 'Documentation' },
-        { label: 'Mad with Maz Ui', name: 'MadeWithMazUi' },
-        { label: 'Responsive Menu Doc', name: 'MazResponsiveMenuDoc' }
-      ],
-      codeExample: `<template>
-  <MazResponsiveMenu
-    :routes="routes"
-  />
-</template>
-
-export default {
-  data () {
-    return {
-      routes: [
-        { label: 'Home', name: 'Home' },
-        { label: 'Documentation', name: 'Documentation' },
-        { label: 'Mad with Maz Ui', name: 'MadeWithMazUi' },
-        { label: 'Responsive Menu Doc', name: 'MazResponsiveMenuDoc' }
+        { label: 'Home', name: 'index' },
+        { label: 'Documentation', name: 'documentation' },
+        { label: 'Made with Maz Ui', name: 'made-with-maz-ui' },
+        { label: 'Responsive Menu Doc', name: 'documentation-maz-responsive-menu' }
       ]
-    }
-  }
-}`
     }
   }
 }

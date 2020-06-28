@@ -2,7 +2,6 @@
 
 .maz-responsive-menu {
   position: relative;
-  width: 66px;
 
   &-collapse {
     background-color: $bg-color;
@@ -18,12 +17,13 @@
       color: $text-color;
       text-decoration: none !important;
 
-      &.router-link-exact-active {
+      &.router-link-exact-active,
+      &.nuxt-link-exact-active {
         color: $primary-color;
       }
 
-      &:hover:not(.router-link-exact-active),
-      &:focus:not(.router-link-exact-active) {
+      &:hover:not(.router-link-exact-active):not(.nuxt-link-exact-active),
+      &:focus:not(.router-link-exact-active):not(.nuxt-link-exact-active) {
         background-color: #EAEAEA;
       }
     }
