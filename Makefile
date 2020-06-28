@@ -1,5 +1,5 @@
 
-.PHONY: clean resintall install-lib install-doc install serve start publish build-doc serve-build deploy-doc
+.PHONY: clean resintall install-lib install-doc install serve start publish publish-beta build-doc serve-build deploy-doc
 
 clean: ## Clean node modules
 	rm -rf ./node_modules
@@ -39,3 +39,6 @@ deploy-doc:
 
 publish:
 	npm version $(version) && npm run pre-publish && gaa && gc -m "[build][$(version)]" && ggp && npm publish
+
+publish-beta:
+	npm version $(version) && npm run pre-publish && gaa && gc -m "[build][$(version)]" && ggp && npm run publish:beta

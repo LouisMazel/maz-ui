@@ -5,7 +5,6 @@
   "description": "A components library for VueJs",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "scripts": {
-    "eslint": "eslint ./build --fix",
     "lint": "npm run lint:js && npm run lint:style && npm run lint:md",
     "lint:fix": "npm run lint:js:fix && npm run lint:style:fix && npm run lint:md:fix",
     "lint:js": "eslint './**/*.{js,vue}'",
@@ -14,7 +13,7 @@
     "lint:md:fix": "prettier '**/*.md' --write",
     "lint:style": "stylelint './**/*.{css,scss,vue}'",
     "lint:style:fix": "npm run lint:style -- --fix",
-    "clean": "rimraf lib",
+    "clean": "n lib",
     "build": "npm run clean && npm run gen:docs && npm run build:entry && npm run build:lib && npm run build:css && npm run build:docs",
     "build:entry": "node build/build-entries.js",
     "build:lib": "webpack --config build/webpack.conf.js && webpack --config build/webpack.common.js && webpack --config build/webpack.component.js",
@@ -28,8 +27,7 @@
     "delete:reports": "rm ./docs/report.html && rm ./lib/report.html",
     "ui": "vue ui",
     "pre-publish": "npm run lint:fix && npm i && npm run build",
-    "publish-npm:beta": "npm publish --tag beta",
-    "publish-npm": "npm publish"
+    "publish-npm:beta": "npm publish --tag beta"
   },
   "lint-staged": {
     "*.{js,vue}": "npm run lint:js",
