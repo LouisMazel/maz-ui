@@ -34,16 +34,6 @@ import "maz-ui/lib/css/index.css";
 import MazUi from "maz-ui";
 
 Vue.use(MazUi);
-
-// or
-import {
-  MazInput,
-  MazBtn
-  // ...
-} from "maz-ui";
-
-Vue.use(MazInput);
-Vue.use(MazBtn);
 ```
 
 ## Contribute
