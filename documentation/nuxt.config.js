@@ -22,6 +22,9 @@ export default {
    ** See https://nuxtjs.org/api/configuration-head
    */
   head: {
+    htmlAttrs: {
+      lang: 'en',
+    },
     title: 'Maz UI | A components library for Vue.JS & Nuxt.JS',
     titleTemplate: '%s | Maz UI',
     meta,
