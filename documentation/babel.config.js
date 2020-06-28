@@ -1,4 +1,5 @@
 module.exports = {
+  plugins: ['@babel/plugin-proposal-optional-chaining'],
   presets: [
     [
       '@vue/cli-plugin-babel/preset',
@@ -11,7 +12,7 @@ module.exports = {
     test: {
       presets: [
         [
-          '@babel/preset-env',
+          '@vue/cli-plugin-babel/preset',
           {
             targets: {
               node: 'current'
@@ -20,6 +21,5 @@ module.exports = {
         ]
       ]
     }
-  },
-  plugins: ['@babel/plugin-proposal-optional-chaining']
+  }
 }
