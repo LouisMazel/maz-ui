@@ -1,3 +1,4 @@
 **/*.min.css
-/docs/
 /lib/
+/documentation/node_modules/
+/documentation/dist/

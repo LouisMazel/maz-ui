@@ -14,7 +14,7 @@
     "lint:style": "stylelint './**/*.{css,scss,vue}'",
     "lint:style:fix": "npm run lint:style -- --fix",
     "clean": "rimraf lib",
-    "build": "npm run clean && npm run build:entry && npm run build:lib && npm run build:css",
+    "build": "npm run clean && npm run build:entries && npm run build:lib && npm run build:css",
     "build:entries": "node build/build-entries.js",
     "build:lib": "webpack --config build/webpack.conf.js && webpack --config build/webpack.common.js && webpack --config build/webpack.component.js",
     "build:css": "node build/gen-scss-index && npm run build:css:compile && npm run build:scss:compile",
@@ -78,7 +78,9 @@
     "stylelint-scss": "^3.18.0",
     "uppercamelcase": "^3.0.0",
     "vue": "^2.6.11",
-    "webpack-cli": "^3.3.12"
+    "vue-template-compiler": "^2.6.11",
+    "webpack-cli": "^3.3.12",
+    "webpack-node-externals": "^1.7.2"
   },
   "engines": {
     "node": ">= 6.0.0",

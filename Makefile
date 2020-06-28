@@ -34,6 +34,9 @@ build-entries:
 build-doc:
 	cd documentation && npm run build:gh-pages && npm run export:gh-pages
 
+gen-vuese:
+	cd documentation && npm run gen:docs
+
 serve-build:
 	cd documentation && npm run serve:build
 
