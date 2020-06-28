@@ -318,7 +318,7 @@ export default {
     async scrollTags () {
       await this.$nextTick()
       const { SelectedTags, SelectedTagsContainer } = this.$refs
-      SelectedTags.scrollLeft = SelectedTagsContainer.$el.clientWidth
+      if (SelectedTags) SelectedTags.scrollLeft = SelectedTagsContainer?.$el?.clientWidth ?? null
     },
     removeOption (value) {
       const { values, multiple } = this

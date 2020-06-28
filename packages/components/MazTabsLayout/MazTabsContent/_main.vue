@@ -50,7 +50,7 @@ export default {
       async handler () {
         await this.$nextTick()
         const { currentTab } = this
-        this.height = this.$children[currentTab].$el.offsetHeight
+        this.height = this.$children[currentTab]?.$el?.offsetHeight ?? 0
         this.resizeObserver()
       },
       immediate: true
@@ -63,7 +63,7 @@ export default {
       const resizeObserver = new Ro(entries => {
         for (const entry of entries) {
           const { offsetHeight, classList } = entry.target
-          if (offsetHeight && !classList.contains('maz-tabs-content')) this.height = entry.target.offsetHeight
+          if (offsetHeight && !classList.contains('maz-tabs-content')) this.height = entry?.target?.offsetHeight ?? 0
         }
       })
       $children.forEach(d => resizeObserver.unobserve(d.$el))
