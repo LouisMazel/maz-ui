@@ -8,6 +8,7 @@
 | -------------- | ----------- | --------- | -------- | ------- |
 | value          | -           | `Object`  | `false`  | null    |
 | month          | -           | `Object`  | `true`   | -       |
+| color          | -           | `String`  | `true`   | -       |
 | minDate        | -           | `Object`  | `false`  | null    |
 | maxDate        | -           | `Object`  | `false`  | null    |
 | noWeekendsDays | -           | `Boolean` | `false`  | false   |

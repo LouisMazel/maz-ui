@@ -6,9 +6,11 @@
 
 | Name           | Description | Type      | Required | Default |
 | -------------- | ----------- | --------- | -------- | ------- |
+| value          | -           | `Object`  | `false`  | null    |
 | hasValidate    | -           | `Boolean` | `true`   | -       |
 | hasNow         | -           | `Boolean` | `true`   | -       |
 | nowTranslation | -           | `String`  | `true`   | -       |
+| color          | -           | `String`  | `true`   | -       |
 
 <!-- @vuese:FooterPicker:props:end -->
 
