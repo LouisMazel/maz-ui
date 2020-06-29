@@ -1,5 +1,9 @@
 <template>
   <div class="maz-btn-doc">
+    <p class="maz-mb-3">
+      Supports <strong>link HTML element</strong>, <strong>router-link</strong> & <strong>nuxt-link</strong>
+    </p>
+
     <h3>
       Examples
     </h3>
@@ -28,6 +32,9 @@
       </MazBtn>
       <MazBtn href="/documentation/maz-btn">
         It's a link
+      </MazBtn>
+      <MazBtn :to="{ name: 'documentation-maz-btn' }">
+        It's a router link
       </MazBtn>
     </ComponentContainer>
     <ComponentContainer>
@@ -372,6 +379,9 @@ export default {
   </MazBtn>
   <MazBtn href="/documentation/maz-btn">
     It's a link
+  </MazBtn>
+  <MazBtn :to="{ name: 'documentation-maz-btn' }">
+    It's a router link
   </MazBtn>
 </template>`
     }

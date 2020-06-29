@@ -5,6 +5,10 @@
         Get Started
       </h2>
       <MazBtn
+        v-scroll-to="{
+          el: '#allComponents',
+          container: '.documentation__container'
+        }"
         href="#allComponents"
       >
         List of all components
