@@ -15,8 +15,8 @@
 </template>
 
 <script>
-import ArrowIcon from '../../_subs/ArrowIcon'
-import MazBtn from '../../MazBtn'
+import ArrowIcon from '../../../_subs/ArrowIcon'
+import MazBtn from '../../../MazBtn'
 
 export default {
   name: 'PaginationArrowBtn',

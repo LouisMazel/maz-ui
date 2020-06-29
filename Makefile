@@ -40,7 +40,7 @@ serve-build:
 	cd documentation && npm run serve:build
 
 deploy-doc:
-	make gen-vuese build-doc
+	make build-doc
 	cd documentation && npm run deploy
 
 publish:

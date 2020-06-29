@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import MazBtn from '../../MazBtn'
+import MazBtn from '../../../MazBtn'
 
 export default {
   name: 'PaginationNumberBtn',

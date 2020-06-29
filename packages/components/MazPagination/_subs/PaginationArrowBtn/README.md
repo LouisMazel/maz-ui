@@ -20,15 +20,3 @@
 | click      | -           | -          |
 
 <!-- @vuese:PaginationArrowBtn:events:end -->
-
-end -->
-
-## Slots
-
-<!-- @vuese:PaginationNumberBtn:slots:start -->
-
-| Name    | Description | Default Slot Content |
-| ------- | ----------- | -------------------- |
-| default | -           | -                    |
-
-<!-- @vuese:PaginationNumberBtn:slots:end -->
