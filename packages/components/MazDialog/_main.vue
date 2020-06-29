@@ -19,7 +19,6 @@
           v-click-outside="vcoConfig"
           :style="widthStyle"
           class="maz-dialog__container maz-dialog-animation maz-flex maz-direction-column maz-bg-color maz-border-radius"
-          @keydown.esc="closeDialog"
         >
           <div
             v-if="!noHeader"
@@ -88,6 +87,16 @@
 import vClickOutside from 'v-click-outside'
 import MazBtn from '../MazBtn'
 
+const addListerner = (keyPressHandler) => {
+  if (typeof window === 'undefined') return null
+  window.addEventListener('keydown', keyPressHandler)
+}
+
+const removeListerner = (keyPressHandler) => {
+  if (typeof window === 'undefined') return null
+  window.removeEventListener('keydown', keyPressHandler)
+}
+
 export default {
   name: 'MazDialog',
   components: { MazBtn },
@@ -147,7 +156,28 @@ export default {
           : 'primary'
     }
   },
+  watch: {
+    value: {
+      async handler (value) {
+        if (value) {
+          addListerner(this.keyPressHandler)
+          await this.$nextTick()
+        }
+        else removeListerner(this.keyPressHandler)
+      },
+      immediate: true
+    }
+  },
+  beforeDestroy () {
+    removeListerner(this.keyPressHandler)
+  },
   methods: {
+    keyPressHandler (e) {
+      if (e.keyCode === 27) {
+        // escape
+        this.closeDialog()
+      }
+    },
     preventClickOutside () {
       return !this.excludedClasses.includes(event.target.className)
     },
