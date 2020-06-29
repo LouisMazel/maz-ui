@@ -44,7 +44,8 @@ export default {
    */
   buildModules: [
     '@nuxtjs/style-resources',
-    'cookie-universal-nuxt'
+    'cookie-universal-nuxt',
+    'vue-scrollto/nuxt'
   ],
   styleResources: {
     scss: [

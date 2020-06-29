@@ -4,7 +4,13 @@
       <h2>
         Theme
       </h2>
-      <MazBtn href="#all_vars">
+      <MazBtn
+        v-scroll-to="{
+          el: '#all_vars',
+          container: '.documentation__container'
+        }"
+        href="#all_vars"
+      >
         All default SCSS variables
       </MazBtn>
     </div>

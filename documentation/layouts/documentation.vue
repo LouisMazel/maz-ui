@@ -29,6 +29,10 @@
           </h2>
           <div class="maz-flex-fixed">
             <MazBtn
+              v-scroll-to="{
+                el: '#howToUseIt',
+                container: '.documentation__container'
+              }"
               color="secondary"
               href="#howToUseIt"
               class="maz-mr-2"

@@ -73,6 +73,7 @@ export default {
     MazSpinner
   },
   mixins: [uniqueId],
+  inheritAttrs: false,
   props: {
     // is the id of the button
     id: { type: String, default: null },
@@ -108,7 +109,10 @@ export default {
   },
   computed: {
     componentType () {
-      return this.$attrs.href ? 'a' : 'button'
+      const { href, to } = this.$attrs
+      if (href) return 'a'
+      else if (to) return 'router-link'
+      return 'button'
     },
     isLink () {
       return this.componentType === 'a'
