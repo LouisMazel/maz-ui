@@ -47,8 +47,10 @@ publish:
 	npm version $(version)
 	npm run pre-publish
 	npm publish
+	git push origin HEAD
 
 publish-beta:
 	npm version $(version)
 	npm run pre-publish
 	npm publish --tag beta
+	git push origin HEAD
