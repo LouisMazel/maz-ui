@@ -50,6 +50,7 @@
             :no-weekends-days="noWeekendsDays"
             :disabled-dates="disabledDates"
             :disabled-weekly="disabledWeekly"
+            :color="color"
             :hoverred-day="hoverredDay"
             :is-visible="isVisible"
             class="maz-p-2"

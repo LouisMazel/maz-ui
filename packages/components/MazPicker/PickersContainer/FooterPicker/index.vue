@@ -4,7 +4,8 @@
       v-if="hasNow"
       size="mini"
       tabindex="-1"
-      class="footer-picker__now maz-bg-transparent maz-no-shadow maz-px-3 maz-hover-bg-color maz-no-focus-bg maz-border maz-border-color maz-text-primary"
+      :color="color"
+      class="footer-picker__now maz-bg-transparent maz-no-shadow maz-px-3 maz-hover-bg-color maz-no-focus-bg maz-border maz-border-color"
       @click="now"
     >
       {{ nowTranslation }}
@@ -14,6 +15,7 @@
       outline
       size="mini"
       tabindex="-1"
+      :disabled="!currentValue"
       color="success"
       class="footer-picker__validate"
       @click="validate"
@@ -33,9 +35,22 @@ export default {
   name: 'FooterPicker',
   components: { MazBtn },
   props: {
+    value: { type: Object, default: null },
     hasValidate: { type: Boolean, required: true },
     hasNow: { type: Boolean, required: true },
-    nowTranslation: { type: String, required: true }
+    nowTranslation: { type: String, required: true },
+    color: { type: String, required: true }
+  },
+  computed: {
+    isRangeMode () {
+      return !!this.value && Object.keys(this.value).includes('start')
+    },
+    currentValue () {
+      if (this.isRangeMode) {
+        return this.value.end
+      }
+      return this.value
+    }
   },
   methods: {
     validate (e) {
