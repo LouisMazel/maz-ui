@@ -198,6 +198,10 @@ $LG_SIZE: 3.42rem !default;
 
     &.has-error {
       .maz-input {
+        &__input {
+          border-color: $danger-color;
+        }
+
         &__icon {
           color: $danger-color;
 
@@ -210,6 +214,10 @@ $LG_SIZE: 3.42rem !default;
 
     &.has-warning {
       .maz-input {
+        &__input {
+          border-color: $warning-color;
+        }
+
         &__icon {
           color: $warning-color;
 
@@ -221,6 +229,10 @@ $LG_SIZE: 3.42rem !default;
     }
 
     &.is-valid {
+      &__input {
+        border-color: $success-color;
+      }
+
       .maz-input {
         &__icon {
           color: $success-color;
