@@ -52,6 +52,9 @@ export default {
     }],
     '@nuxtjs/robots'
   ],
+  sitemap: {
+    hostname: 'https://louismazel.github.io/maz-ui/'
+  },
   styleResources: {
     scss: [
       '~/assets/scss/_variables.scss',
