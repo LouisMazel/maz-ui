@@ -26,15 +26,27 @@
 </template>
 
 <script>
-import NavFooter from '@/components/NavFooter'
-import ProjectPreview from '@/components/ProjectPreview'
+import NavFooter from '~/components/NavFooter'
+import ProjectPreview from '~/components/ProjectPreview'
+
+import meta from '~/config/meta'
+
 export default {
   name: 'MadeWithMazUi',
   components: {
     NavFooter,
     ProjectPreview
   },
-  data () {
+  head () {
+    return {
+      title: 'Made with Maz UI',
+      meta: meta({
+        description: 'Discover some projects realized with the Maz UI components for Vue.JS and Nuxt.JS',
+        title: 'Made with Maz UI | Maz UI'
+      })
+    }
+  },
+  asyncData () {
     return {
       projects: [
         {

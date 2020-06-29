@@ -51,9 +51,18 @@
 <script>
 import { mapGetters } from 'vuex'
 import NavFooter from '@/components/NavFooter'
+import meta from '~/config/meta'
 
 export default {
   name: 'Home',
+  head () {
+    return {
+      meta: meta({
+        description: 'Build your amazing interfaces with Maz UI - Components library for Vue.JS & Nuxt.JS',
+        title: 'Maz UI - Components library for Vue.JS & Nuxt.JS'
+      })
+    }
+  },
   components: {
     NavFooter
   },

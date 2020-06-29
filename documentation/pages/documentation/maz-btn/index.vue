@@ -27,14 +27,14 @@
       <MazBtn disabled>
         Disabled
       </MazBtn>
-      <MazBtn block>
-        Block
-      </MazBtn>
       <MazBtn href="/documentation/maz-btn">
         It's a link
       </MazBtn>
       <MazBtn :to="{ name: 'documentation-maz-btn' }">
         It's a router link
+      </MazBtn>
+      <MazBtn block>
+        Block
       </MazBtn>
     </ComponentContainer>
     <ComponentContainer>

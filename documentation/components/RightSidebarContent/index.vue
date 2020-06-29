@@ -16,18 +16,7 @@
 
 <script>
 import MdRenderer from '@/components/MdRenderer'
-
-const toPascalCase = (string) => {
-  return `${string}`
-    .replace(new RegExp(/[-_]+/, 'g'), ' ')
-    .replace(new RegExp(/[^\w\s]/, 'g'), '')
-    .replace(
-      new RegExp(/\s+(.)(\w+)/, 'g'),
-      ($1, $2, $3) => `${$2.toUpperCase() + $3.toLowerCase()}`
-    )
-    .replace(new RegExp(/\s/, 'g'), '')
-    .replace(new RegExp(/\w/), s => s.toUpperCase())
-}
+import { toPascalCase } from '~/utils'
 
 export default {
   name: 'RightSidebarContent',

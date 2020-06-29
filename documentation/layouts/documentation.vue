@@ -92,9 +92,9 @@ export default {
   },
   data () {
     return {
-      hasLeftSidebarOpen: true, // !(window.innerWidth < 767),
-      hasRightSidebarOpen: false,
-      isAbsolute: false // window.innerWidth < 767
+      hasLeftSidebarOpen: true,
+      isAbsolute: false,
+      hasRightSidebarOpen: false
     }
   },
   computed: {
@@ -123,6 +123,8 @@ export default {
     if (((date < '06:15' || date > '21:20') && darkCookieValue === null) || darkCookieValue) {
       this.setDarkTheme(true)
     }
+    this.hasLeftSidebarOpen = !(window.innerWidth < 767)
+    this.isAbsolute = window.innerWidth < 767
   },
   methods: {
     ...mapActions(['setDarkTheme']),
