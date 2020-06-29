@@ -45,7 +45,7 @@ export const getDateMoment = (value, format, range) => {
 export const getFormattedValue = (value, format, formatted, range) => {
   const formatValue = (v) => capitalizeText(moment(v, format).format(formatted))
   return range && value
-    ? `${value.start ? formatValue(value.start) : '...'} - ${value.end ? formatValue(value.end) : '...'}`
+    ? value.start || value.end ? `${value.start ? formatValue(value.start) : '...'} - ${value.end ? formatValue(value.end) : '...'}` : null
     : value ? formatValue(value) : null
 }
 

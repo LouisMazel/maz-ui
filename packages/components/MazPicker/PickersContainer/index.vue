@@ -37,6 +37,8 @@
     />
     <FooterPicker
       v-if="hasFooter"
+      :color="color"
+      :value="dateMoment"
       :has-validate="hasValidate"
       :has-now="hasNow"
       :now-translation="nowTranslation"

@@ -19,6 +19,7 @@
         :key="i"
         class="month-picker__day maz-text-color maz-bg-transparent maz-flex maz-flex-center"
         size="mini"
+        :color="color"
         tabindex="-1"
         :no-shadow="!isSelectedDate(day)"
         :disabled="isDisabled(day)"
@@ -53,6 +54,7 @@ export default {
   props: {
     value: { type: Object, default: null },
     month: { type: Object, required: true },
+    color: { type: String, required: true },
     minDate: { type: Object, default: null },
     maxDate: { type: Object, default: null },
     noWeekendsDays: { type: Boolean, default: false },
