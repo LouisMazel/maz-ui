@@ -333,6 +333,7 @@
 
 <script>
 import moment from 'moment'
+import meta from '~/config/meta'
 
 const getDefaultLocale = () => {
   if (typeof window === 'undefined') return null
@@ -369,6 +370,13 @@ const CUSTOM_SHORTCUTS = [
 
 export default {
   name: 'MazPickerDoc',
+  head () {
+    return {
+      meta: meta({
+        img: 'maz-picker'
+      })
+    }
+  },
   data () {
     return {
       locale: 'en',
