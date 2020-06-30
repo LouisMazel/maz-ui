@@ -140,6 +140,10 @@
           @update="results = getJson($event)"
         />
 
+        <MazBtn @click="phoneNumber = '+33658584729'">
+          phoneNumber = '+33658584729'
+        </MazBtn>
+
         <hr class="maz-border-top maz-border-solid maz-border-color maz-my-3">
 
         <p>

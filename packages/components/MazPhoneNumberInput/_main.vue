@@ -72,7 +72,7 @@
 
     <div class="maz-flex-1">
       <MazInput
-        :id="`${uniqueId}_phone_number`"
+        :id="uniqueId ? `${uniqueId}_phone_number` : null"
         ref="PhoneNumberInput"
         v-model="inputValue"
         :placeholder="t.phoneNumberLabel"
@@ -214,8 +214,8 @@ export default {
         return this.results.countryCode || this.userLocale
       },
       set (countryCode) {
-        const { emitValues, $refs, inputValue } = this
         if (!countryCode) return
+        const { emitValues, $refs, inputValue } = this
         emitValues({countryCode, phoneNumber: inputValue})
         $refs.PhoneNumberInput.$el.querySelector('input').focus()
       }
@@ -265,6 +265,16 @@ export default {
     }
   },
   watch: {
+    value (phoneNumber, oldPhoneNumber) {
+      if (phoneNumber === oldPhoneNumber) return
+      const { countryCode, nationalNumber } = this.getParsePhoneNumberFromString({ phoneNumber })
+      const asYouType = this.getAsYouTypeFormat({
+        phoneNumber: nationalNumber || phoneNumber,
+        countryCode: countryCode || this.countryCode
+      })
+      const phoneNumberToSet = asYouType || phoneNumber
+      if (phoneNumberToSet) this.inputValue = phoneNumberToSet
+    },
     defaultCountryCode (newValue, oldValue) {
       if (newValue === oldValue) return
       this.setLocale(newValue)
