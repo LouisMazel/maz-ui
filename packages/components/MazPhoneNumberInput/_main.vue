@@ -132,7 +132,6 @@ const isCountryAvailable = (locale) => {
 export default {
   name: 'MazPhoneNumberInput',
   components: {
-    // CountrySelector,
     MazInput,
     MazSelect
   },
@@ -267,13 +266,15 @@ export default {
   watch: {
     value (phoneNumber, oldPhoneNumber) {
       if (phoneNumber === oldPhoneNumber) return
-      const { countryCode, nationalNumber } = this.getParsePhoneNumberFromString({ phoneNumber })
-      const asYouType = this.getAsYouTypeFormat({
-        phoneNumber: nationalNumber || phoneNumber,
-        countryCode: countryCode || this.countryCode
-      })
-      const phoneNumberToSet = asYouType || phoneNumber
-      if (phoneNumberToSet) this.inputValue = phoneNumberToSet
+      if (phoneNumber) {
+        const { countryCode, emitValues, getAsYouTypeFormat } = this
+        emitValues({ countryCode, phoneNumber })
+        this.inputValueFormatted = getAsYouTypeFormat({
+          phoneNumber,
+          countryCode
+        })
+      }
+      else this.inputValue = null
     },
     defaultCountryCode (newValue, oldValue) {
       if (newValue === oldValue) return
@@ -344,7 +345,7 @@ export default {
 
       await this.$nextTick()
       const lastCharacOfPhoneNumber = inputValue ? inputValue.trim().slice(-1) : false
-      if (backSpacePressed && lastCharacOfPhoneNumber && (lastCharacOfPhoneNumber.slice(-1) === ')')) {
+      if (backSpacePressed && lastCharacOfPhoneNumber && (lastCharacOfPhoneNumber === ')')) {
         return this.inputValue = inputValue.slice(0, -2)
       }
 
@@ -354,7 +355,7 @@ export default {
       this.$emit('update', this.results)
       // sent when the user tape
       // @arg Phone number value formatted in e164 format (international format)
-      this.$emit('input', this.results.e164)
+      this.$emit('input', this.results.e164 || this.results.phoneNumber)
     },
     setLocale (locale) {
       const { emitValues, inputValue } = this

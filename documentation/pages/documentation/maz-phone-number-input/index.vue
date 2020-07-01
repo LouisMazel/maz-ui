@@ -79,46 +79,48 @@
       Keyboard accessibility
     </h3>
     <table class="maz-md">
-      <tr>
-        <th>
-          Entries
-        </th>
-        <th>
-          Actions
-        </th>
-      </tr>
-      <tr>
-        <td>
-          ArrowDown
-        </td>
-        <td>
-          Navigation down in countries list
-        </td>
-      </tr>
-      <tr>
-        <td>
-          ArrowUp
-        </td>
-        <td>
-          Navigation up in countries list
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Escape
-        </td>
-        <td>
-          Close countries list
-        </td>
-      </tr>
-      <tr>
-        <td>
-          All letters characters
-        </td>
-        <td>
-          Searching country name in countries list (should be open)
-        </td>
-      </tr>
+      <tbody>
+        <tr>
+          <th>
+            Entries
+          </th>
+          <th>
+            Actions
+          </th>
+        </tr>
+        <tr>
+          <td>
+            ArrowDown
+          </td>
+          <td>
+            Navigation down in countries list
+          </td>
+        </tr>
+        <tr>
+          <td>
+            ArrowUp
+          </td>
+          <td>
+            Navigation up in countries list
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Escape
+          </td>
+          <td>
+            Close countries list
+          </td>
+        </tr>
+        <tr>
+          <td>
+            All letters characters
+          </td>
+          <td>
+            Searching country name in countries list (should be open)
+          </td>
+        </tr>
+      </tbody>
     </table>
 
     <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
@@ -265,6 +267,7 @@ export default {
     v-model="phoneNumberExample"
     no-flags
     show-code-on-list
+    size="lg"
     :preferred-countries="['FR', 'BE', 'DE']"
     @update="resultsExample = getJson($event)"
   />
