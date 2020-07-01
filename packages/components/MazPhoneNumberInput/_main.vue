@@ -267,12 +267,9 @@ export default {
     value (phoneNumber, oldPhoneNumber) {
       if (phoneNumber === oldPhoneNumber) return
       if (phoneNumber) {
-        const { countryCode, emitValues, getAsYouTypeFormat } = this
-        emitValues({ countryCode, phoneNumber })
-        this.inputValueFormatted = getAsYouTypeFormat({
-          phoneNumber,
-          countryCode
-        })
+        // const { countryCode, emitValues } = this
+        // emitValues({ countryCode, phoneNumber })
+        this.inputValue = phoneNumber
       }
       else this.inputValue = null
     },
@@ -308,8 +305,9 @@ export default {
     },
     getAsYouTypeFormat (payload) {
       const { countryCode, phoneNumber } = payload
+      if (!phoneNumber) return null
       const asYouType = new AsYouType(countryCode)
-      const formatted = phoneNumber ? asYouType.input(phoneNumber) : null
+      const formatted = asYouType.input(phoneNumber)
       return formatted
     },
     getParsePhoneNumberFromString ({ phoneNumber, countryCode }) {
@@ -353,9 +351,10 @@ export default {
       // sent when the user tape
       // @arg Object with all paser values
       this.$emit('update', this.results)
+      const { isValid, e164, phoneNumber } = this.results
       // sent when the user tape
       // @arg Phone number value formatted in e164 format (international format)
-      this.$emit('input', this.results.e164 || this.results.phoneNumber)
+      this.$emit('input', isValid ? e164 : phoneNumber)
     },
     setLocale (locale) {
       const { emitValues, inputValue } = this
