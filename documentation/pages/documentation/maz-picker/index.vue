@@ -373,7 +373,7 @@ export default {
   head () {
     return {
       meta: meta({
-        img: 'maz-picker'
+        description: 'MazPicker is a stand-alone component for select dates & time. Use range, date & time mode - Dark mode support - For Vue.JS and Nuxt.JS',
       })
     }
   },

@@ -20,6 +20,6 @@ export default [
   {
     hid: 'description',
     name: 'description',
-    content: 'Build your amazing interfaces with Maz UI - Components library for Vue.JS & Nuxt.JS'
+    content: 'Build your amazing interfaces with Maz UI and its stand-alone components - Stand-alone components library for Vue.JS & Nuxt.JS'
   }
 ]

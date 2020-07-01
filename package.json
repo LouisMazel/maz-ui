@@ -2,7 +2,7 @@
   "name": "maz-ui",
   "version": "1.2.12",
   "main": "lib/maz-ui.common.js",
-  "description": "A components library for VueJs",
+  "description": "A stand-alone components library for Vue.Js & Nuxt.Js",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "scripts": {
     "lint": "npm run lint:js && npm run lint:style && npm run lint:md",

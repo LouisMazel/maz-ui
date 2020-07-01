@@ -3,7 +3,7 @@
     <div class="home__main maz-flex maz-flex-1 maz-container maz-flex-center">
       <div class="home__content maz-flex maz-direction-column maz-justify-center maz-p-4">
         <h2 class="maz-mb-2 maz-text-center">
-          Components library to build your interfaces with
+          Stand-alone components library to build your interfaces with
           <span class="maz-text-primary">Vue.JS & Nuxt.JS</span>
         </h2>
         <div class="maz-flex maz-flex-center maz-direction-column">
@@ -58,8 +58,8 @@ export default {
   head () {
     return {
       meta: meta({
-        description: 'Build your amazing interfaces with Maz UI - Components library for Vue.JS & Nuxt.JS',
-        title: 'Maz UI - Components library for Vue.JS & Nuxt.JS'
+        description: 'Build your amazing interfaces with Maz UI and its stand-alone components - Stand-alone components library for Vue.JS & Nuxt.JS',
+        title: 'Maz UI - Stand-alone components library for Vue.JS & Nuxt.JS'
       })
     }
   },
