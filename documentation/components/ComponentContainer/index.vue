@@ -28,11 +28,6 @@ export default {
   props: {
     code: { type: String, default: null },
     language: { type: String, default: 'html' }
-  },
-  data () {
-    return {
-      showCode: false
-    }
   }
 }
 </script>

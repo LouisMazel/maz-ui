@@ -8,7 +8,7 @@
 
 [![npm](https://nodei.co/npm/maz-ui.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/maz-ui)
 
-> [Maz-ui](https://github.com/LouisMazel/maz-ui) is a component library for [VueJS](https://vuejs.org) & [NuxtJS](https://nuxtjs.org/)
+> [Maz-ui](https://github.com/LouisMazel/maz-ui) is a stand-alone components library for [VueJS](https://vuejs.org) & [NuxtJS](https://nuxtjs.org/)
 
 ## Documentation & Components
 

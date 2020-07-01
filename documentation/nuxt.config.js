@@ -1,7 +1,7 @@
 import FMMode from 'frontmatter-markdown-loader/mode'
 import path from 'path'
 import link from './config/link'
-import meta from './config/meta'
+import meta from './config/defaultMeta'
 
 const routerBase = process.env.DEPLOY_ENV === 'GH_PAGES' ? {
   router: {
@@ -16,7 +16,6 @@ export default {
    */
   mode: 'universal',
   target: 'static',
-  // buildDir: './../docs',
   /*
    ** Headers of the page
    ** See https://nuxtjs.org/api/configuration-head
@@ -25,15 +24,16 @@ export default {
     htmlAttrs: {
       lang: 'en',
     },
-    title: 'Maz UI | A components library for Vue.JS & Nuxt.JS',
+    title: 'Maz UI - Stand-alone components library for Vue.JS & Nuxt.JS',
     titleTemplate: '%s | Maz UI',
-    meta,
     link,
+    meta
   },
   /*
    ** Global CSS
    */
   css: ['~/assets/scss/main.scss'],
+  loading: { color: 'dodgerblue' },
   plugins: [
     '~/filters',
     '~/plugins',
@@ -43,10 +43,18 @@ export default {
    ** Nuxt.js dev-modules
    */
   buildModules: [
+    '@nuxtjs/sitemap',
     '@nuxtjs/style-resources',
     'cookie-universal-nuxt',
-    'vue-scrollto/nuxt'
+    'vue-scrollto/nuxt',
+    ['@nuxtjs/google-analytics', {
+      id: 'UA-171163623-1'
+    }],
+    '@nuxtjs/robots'
   ],
+  sitemap: {
+    hostname: 'https://louismazel.github.io/'
+  },
   styleResources: {
     scss: [
       '~/assets/scss/_variables.scss',

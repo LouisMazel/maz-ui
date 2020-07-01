@@ -1,0 +1,1 @@
+export default process.env.DEPLOY_ENV === 'GH_PAGES' ? 'https://louismazel.github.io/maz-ui/'  : '/'

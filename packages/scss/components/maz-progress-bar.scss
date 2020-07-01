@@ -6,6 +6,10 @@
   position: relative;
   width: 100%;
 
+  &:not(.maz-border-radius-0) {
+    border-radius: $border-radius;
+  }
+
   &__bg {
     width: 100%;
     position: relative;

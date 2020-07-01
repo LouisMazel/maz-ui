@@ -48,7 +48,7 @@
 <script>
 export default {
   name: 'DarkMode',
-  data () {
+  asyncData () {
     return {
       componentExample: `<template>
   <MazInput
