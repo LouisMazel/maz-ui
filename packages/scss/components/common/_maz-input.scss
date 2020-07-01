@@ -1,19 +1,19 @@
 @import './../../style-helpers/variables/index.scss';
 @import './../../style-helpers/mixins/index.scss';
 
-$SM_SIZE: 2.57rem !default;
-$MD_SIZE: 2.85rem !default;
-$LG_SIZE: 3.42rem !default;
+$LG_SIZE: 3.571rem !default;
+$MD_SIZE: 2.857rem !default;
+$SM_SIZE: 2.286rem !default;
 
 .maz-input {
   position: relative;
 
   &__label {
     position: absolute;
-    top: 4px;
+    top: .2857rem;
     cursor: pointer;
     outline: none;
-    left: 12px;
+    left: .8571rem;
     transform: translateY(25%);
     opacity: 0;
     transition: all .25s cubic-bezier(.645, .045, .355, 1);
@@ -27,7 +27,7 @@ $LG_SIZE: 3.42rem !default;
     transition-duration: .3s;
     position: relative;
     width: 100%;
-    padding: 0 12px;
+    padding: 0 .8571rem;
     font-weight: 400;
     appearance: none;
     outline: none;
@@ -49,8 +49,8 @@ $LG_SIZE: 3.42rem !default;
     }
 
     &.maz-textarea {
-      padding: 8px 12px 0 12px;
-      min-height: 88px !important;
+      padding: .5714rem .8571rem 0 .8571rem;
+      min-height: 6.429rem !important;
       resize: vertical;
 
       @include font_family();
@@ -91,21 +91,21 @@ $LG_SIZE: 3.42rem !default;
     cursor: pointer;
 
     &.left {
-      left: 8px;
+      left: .5714rem;
     }
 
     &.right {
-      right: 8px;
+      right: .5714rem;
     }
   }
 
   &__toggle-btn {
-    $clear-size: 24px;
+    $clear-size: 1.714rem;
 
     position: absolute;
     top: 0;
     bottom: 0;
-    right: 8px;
+    right: .5714rem;
     margin: auto 0;
     width: $clear-size;
     height: $clear-size;
@@ -128,14 +128,14 @@ $LG_SIZE: 3.42rem !default;
     }
 
     &.has-right-icon {
-      right: 40px;
+      right: 2.857rem;
     }
 
     &.password.has-clear-btn {
-      right: 40px;
+      right: 2.857rem;
 
       &.has-right-icon {
-        right: 70px;
+        right: 5rem;
       }
     }
 
@@ -147,29 +147,29 @@ $LG_SIZE: 3.42rem !default;
 
   &.has-left-icon {
     .maz-input__input {
-      padding-left: 40px;
+      padding-left: 2.857rem;
     }
 
     .maz-input__label {
-      left: 40px;
+      left: 2.857rem;
     }
   }
 
   &.has-1-right-icon {
     .maz-input__input {
-      padding-right: 35px;
+      padding-right: 2.5rem;
     }
   }
 
   &.has-2-right-icon {
     .maz-input__input {
-      padding-right: 65px;
+      padding-right: 4.643rem;
     }
   }
 
   &.has-3-right-icon {
     .maz-input__input {
-      padding-right: 95px;
+      padding-right: 6.786rem;
     }
   }
 
@@ -255,10 +255,10 @@ $LG_SIZE: 3.42rem !default;
 
     &:not(.has-no-label) {
       .maz-input__input {
-        padding-top: 14px;
+        padding-top: 1rem;
 
         &.maz-textarea {
-          padding-top: 20px;
+          padding-top: 1.429rem;
         }
       }
     }
@@ -323,10 +323,10 @@ $LG_SIZE: 3.42rem !default;
 
     &.has-value:not(.has-no-label) {
       .maz-input__input {
-        padding-top: 12px;
+        padding-top: .8571rem;
 
         &.maz-textarea {
-          padding-top: 18px;
+          padding-top: 1.286rem;
         }
       }
     }
@@ -334,7 +334,7 @@ $LG_SIZE: 3.42rem !default;
 
   &.lg {
     .maz-input__input {
-      font-size: 1rem;
+      font-size: 1.143rem;
 
       &:not(.maz-textarea) {
         height: $LG_SIZE;
@@ -348,10 +348,10 @@ $LG_SIZE: 3.42rem !default;
 
     &.has-value:not(.has-no-label) {
       .maz-input__input {
-        padding-top: 16px;
+        padding-top: 1.143rem;
 
         &.maz-textarea {
-          padding-top: 26px;
+          padding-top: 1.857rem;
         }
       }
     }
@@ -361,13 +361,13 @@ $LG_SIZE: 3.42rem !default;
     bottom: 1px;
     height: $border-width;
     left: $border-radius / 2;
-    width: calc(100% - 8px);
+    width: calc(100% - .5714rem);
     position: absolute;
     overflow: hidden;
-    border-radius: 8px;
+    border-radius: $border-radius;
 
     &.maz-textarea {
-      bottom: 6px;
+      bottom: .4286rem;
     }
 
     &__progress-bar {
@@ -376,7 +376,7 @@ $LG_SIZE: 3.42rem !default;
       content: '';
       left: -200px;
       width: 200px;
-      height: 2px;
+      height: .1429rem;
       animation: loading 2s linear infinite;
     }
   }

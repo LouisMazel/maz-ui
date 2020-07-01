@@ -1,8 +1,8 @@
 @import './../style-helpers/variables/index.scss';
 
-$SM_SIZE: 2.57rem !default;
-$MD_SIZE: 2.85rem !default;
-$LG_SIZE: 3.42rem !default;
+$LG_SIZE: 3.571rem !default;
+$MD_SIZE: 2.857rem !default;
+$SM_SIZE: 2.286rem !default;
 
 .maz-input-tags {
   $this: &;
@@ -10,7 +10,7 @@ $LG_SIZE: 3.42rem !default;
   position: relative;
   border: $border-width solid $border-color;
   border-radius: $border-radius;
-  padding: 0 8px;
+  padding: 0 .5714rem;
   width: 100%;
   min-height: $MD_SIZE;
   background-color: $bg-color;
@@ -29,9 +29,9 @@ $LG_SIZE: 3.42rem !default;
     font-size: 1rem;
     z-index: 0;
     min-width: 100px;
-    padding-right: 4px;
-    padding-bottom: 4px;
-    padding-top: 4px;
+    padding-right: .2857rem;
+    padding-bottom: .2857rem;
+    padding-top: .2857rem;
     color: $text-color;
 
     &::-webkit-input-placeholder {
@@ -82,16 +82,15 @@ $LG_SIZE: 3.42rem !default;
   }
 
   &__tag {
-    margin-right: 4px;
-    margin-bottom: 4px;
-    margin-top: 4px;
-    border-radius: 4px;
-    padding: 5px 4px 5px 7px;
+    margin-right: .2857rem;
+    margin-bottom: .2857rem;
+    margin-top: .2857rem;
+    border-radius: .2857rem;
+    padding: .4286rem .2857rem .4286rem .5rem;
     color: white;
 
     &__text {
-      font-size: .875rem;
-      margin-right: 5px;
+      margin-right: .3571rem;
     }
 
     &__clear {
@@ -100,12 +99,12 @@ $LG_SIZE: 3.42rem !default;
   }
 
   &__toggle-btn {
-    $clear-size: 24px;
+    $clear-size: 1.714rem;
 
     position: absolute;
     top: 1px;
     bottom: 0;
-    right: 8px;
+    right: .5714rem;
     margin: auto 0;
     width: $clear-size;
     height: $clear-size;
@@ -190,14 +189,10 @@ $LG_SIZE: 3.42rem !default;
     bottom: 0;
     height: $border-width;
     left: $border-radius / 2;
-    width: calc(100% - 8px);
+    width: calc(100% - .5714rem);
     position: absolute;
     overflow: hidden;
-    border-radius: 8px;
-
-    &.textarea {
-      bottom: 6px;
-    }
+    border-radius: $border-radius;
 
     &__progress-bar {
       background-color: $primary-color;
@@ -206,7 +201,7 @@ $LG_SIZE: 3.42rem !default;
       content: '';
       left: -200px;
       width: 200px;
-      height: 2px;
+      height: .1429rem;
       animation: loading 2s linear infinite;
     }
   }
@@ -216,11 +211,12 @@ $LG_SIZE: 3.42rem !default;
 
     #{$this}__input {
       font-size: .857em;
-      min-height: 32px;
+      min-height: 2.286rem;
     }
 
     #{$this}__tag {
-      padding: 3px 2px 3px 5px;
+      font-size: .857em;
+      padding: .2143rem .1429rem .2143rem .3571rem;
     }
   }
 
@@ -228,12 +224,13 @@ $LG_SIZE: 3.42rem !default;
     min-height: $LG_SIZE;
 
     #{$this}__input {
-      font-size: 1rem;
-      min-height: 44px;
+      font-size: 1.143rem;
+      min-height: 3.286rem;
     }
 
     #{$this}__tag {
-      padding: 8px 5px 8px 10px;
+      font-size: 1.143rem;
+      padding: .6429rem .3571rem .6429rem .7143rem;
     }
   }
 }

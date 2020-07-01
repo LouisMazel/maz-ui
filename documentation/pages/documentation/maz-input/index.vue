@@ -8,59 +8,61 @@
       />
     </ComponentContainer>
     <ComponentContainer :code="codePasswordExample">
-      <MazInput
-        v-model="nameValue"
-        placeholder="Name"
-        autocomplete="new-name"
-        class="maz-mb-3"
-        left-icon-name="person"
-        right-icon-name="favorite"
-        clearable
-      />
-      <MazInput
-        v-model="emailValue"
-        placeholder="E-mail"
-        autocomplete="new-email"
-        class="maz-mb-3"
-        clearable
-      >
-        <i
-          slot="icon-left"
-          class="material-icons"
+      <form>
+        <MazInput
+          v-model="nameValue"
+          placeholder="Name"
+          autocomplete="new-name"
+          class="maz-mb-3"
+          left-icon-name="person"
+          right-icon-name="favorite"
+          clearable
+        />
+        <MazInput
+          v-model="emailValue"
+          placeholder="E-mail"
+          autocomplete="new-email"
+          class="maz-mb-3"
+          clearable
         >
-          email
-        </i>
-        <i
-          slot="icon-right"
-          class="material-icons"
-        >
-          done
-        </i>
-      </MazInput>
+          <i
+            slot="icon-left"
+            class="material-icons"
+          >
+            email
+          </i>
+          <i
+            slot="icon-right"
+            class="material-icons"
+          >
+            done
+          </i>
+        </MazInput>
 
-      <MazInput
-        v-model="passwordValue"
-        placeholder="Password"
-        type="password"
-        autocomplete="new-password"
-        left-icon-name="lock"
-        class="maz-mb-3"
-        clearable
-      >
-        <i
-          slot="icon-right"
-          class="material-icons"
+        <MazInput
+          v-model="passwordValue"
+          placeholder="Password"
+          type="password"
+          autocomplete="new-password"
+          left-icon-name="lock"
+          class="maz-mb-3"
+          clearable
         >
-          done
-        </i>
-      </MazInput>
-      <MazInput
-        v-model="commentValue"
-        placeholder="Comment"
-        autocomplete="new-comment"
-        left-icon-name="comment"
-        textarea
-      />
+          <i
+            slot="icon-right"
+            class="material-icons"
+          >
+            done
+          </i>
+        </MazInput>
+        <MazInput
+          v-model="commentValue"
+          placeholder="Comment"
+          autocomplete="new-comment"
+          left-icon-name="comment"
+          textarea
+        />
+      </form>
     </ComponentContainer>
 
 
@@ -108,6 +110,7 @@
               :success="type === 'valid'"
               :disabled="type === 'disabled'"
               :clearable="type === 'clearable'"
+              :textarea="type === 'textarea'"
               :hint="type === 'hint' ? 'Hint value' : null"
               :loading="type === 'loading'"
               :required="type === 'required'"
@@ -122,6 +125,7 @@
               :success="type === 'valid'"
               :disabled="type === 'disabled'"
               :clearable="type === 'clearable'"
+              :textarea="type === 'textarea'"
               :hint="type === 'hint' ? 'Hint value' : null"
               :loading="type === 'loading'"
               :required="type === 'required'"
@@ -175,16 +179,17 @@ export default {
       disabledValue: '',
       inputTypes: [
         'basic',
+        'sm',
+        'lg',
         'error',
         'warning',
         'valid',
         'disabled',
         'hint',
         'clearable',
-        'sm',
-        'lg',
         'required',
-        'loading'
+        'loading',
+        'textarea'
       ],
       inputColors: COLORS,
       exampleValue: null,

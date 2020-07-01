@@ -3,15 +3,14 @@
     <p class="maz-mb-3">
       Supports <strong>link HTML element</strong>, <strong>router-link</strong> & <strong>nuxt-link</strong>
     </p>
-
-    <h3>
-      Examples
-    </h3>
     <ComponentContainer
       :code="codeExample"
       language="html"
       class="btn-container"
     >
+      <h4 class="maz-mb-3">
+        Basic
+      </h4>
       <MazBtn rounded>
         Rounded
       </MazBtn>
@@ -39,7 +38,7 @@
     </ComponentContainer>
     <ComponentContainer>
       <h4 class="maz-mb-3">
-        Basic
+        Colors & sizes
       </h4>
       <div
         v-for="type in btnTypes"
@@ -112,7 +111,7 @@
           :color="type"
           fab
         >
-          {{ size || 'default' }}
+          {{ size }}
         </MazBtn>
       </div>
     </ComponentContainer>
@@ -354,7 +353,7 @@ export default {
   data () {
     return {
       btnTypes: COLORS,
-      btnSizes: ['lg', 'basic', 'md', 'sm', 'mini'],
+      btnSizes: ['xl', 'lg', 'md', 'sm', 'mini'],
       codeExample: `<template>
   <MazBtn>
     Basic

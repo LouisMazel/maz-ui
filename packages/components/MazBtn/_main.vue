@@ -77,15 +77,15 @@ export default {
   props: {
     // is the id of the button
     id: { type: String, default: null },
-    // is color type (`'primary'` / `'secondary'` / `'third'` / `'success'` / `'danger'` / `'grey'` / `'info'` / `'warning'` / `'light'` / `'dark'` / `'default'` / `'white'` / `'black'`)
+    // is color type (`primary` / `secondary` / `third` / `success` / `danger` / `grey` / `info` / `warning` / `light` / `dark` / `default` / `white` / `black`)
     color: {
       type: String,
       default: 'primary'
     },
     // is the button type (button, submit or something else)
     type: { type: String, default: 'button' },
-    // button size (`'lg'` / `'md'` / `'mini'` / `'fab'`)
-    size: { type: String, default: null },
+    // button size (`xl`, `lg` / `md` / `sm` / `mini`)
+    size: { type: String, default: 'md' },
     // is a `boolean` to show the loader & disable it
     loading: { type: Boolean, default: false },
     // is a `boolean` to disable the button
