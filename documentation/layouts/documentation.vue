@@ -44,6 +44,16 @@
             </MazBtn>
           </div>
         </div>
+        <div
+          v-if="description"
+          class="documentation__component-desc maz-px-5 maz-py-2"
+        >
+          <div class="documentation__component-desc__container maz-p-3 maz-bg-color-light">
+            <h3>
+              {{ description }}
+            </h3>
+          </div>
+        </div>
         <nuxt
           role="main"
           class="content maz-px-5 maz-py-5 maz-flex-1"
@@ -82,6 +92,12 @@ import { mapGetters, mapActions } from 'vuex'
 const regex = /-(\w)/g
 const camelize = str => str.replace(regex, (_, c) => (c ? c.toUpperCase() : ''))
 
+import { replaceAll, capitalizeAll } from '~/utils'
+import meta from '~/config/meta'
+import descriptions from '~/config/descriptions'
+
+const NOT_COMPONENT_ROUTES = ['get-started', 'colors', 'theme', 'dark-mode']
+
 export default {
   name: 'Documentation',
   components: {
@@ -89,6 +105,20 @@ export default {
     LeftSidebarContent,
     RightSidebarContent, // eslint-disable-line
     NavFooter
+  },
+  head () {
+    const componentName = this.$route.name.substring(14)
+    const pageTitle = capitalizeAll(replaceAll(componentName, '-', ' '))
+    console.log('componentName', componentName, descriptions[componentName])
+    return {
+      title: `${pageTitle}`,
+      titleTemplate: '%s | Documentation | Maz UI',
+      meta: meta({
+        description: descriptions[componentName] || `${pageTitle} is a stand-alone component for Vue.JS and Nuxt.JS - Dark mode support`,
+        title: `${pageTitle} | Documentation | Maz UI`,
+        ...(!NOT_COMPONENT_ROUTES.includes(componentName) ? { img: componentName } : {})
+      })
+    }
   },
   data () {
     return {
@@ -109,6 +139,10 @@ export default {
     routeName () {
       const { name } = this.$route
       return name
+    },
+    description () {
+      const componentName = this.$route.name.substring(14)
+      return descriptions[componentName]
     }
   },
   watch: {
@@ -149,7 +183,18 @@ export default {
 </style>
 
 <style lang="scss">
-  #app.documentation {
+  .documentation {
+    &__component-desc {
+      &__container {
+        border-left: $border-width solid $primary-color;
+
+        h3 {
+          font-size: 1.2rem;
+          line-height: 1.5;
+        }
+      }
+    }
+
     .content {
       > p,
       > h1,

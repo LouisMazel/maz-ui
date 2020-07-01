@@ -333,7 +333,6 @@
 
 <script>
 import moment from 'moment'
-import meta from '~/config/meta'
 
 const getDefaultLocale = () => {
   if (typeof window === 'undefined') return null
@@ -370,13 +369,6 @@ const CUSTOM_SHORTCUTS = [
 
 export default {
   name: 'MazPickerDoc',
-  head () {
-    return {
-      meta: meta({
-        description: 'MazPicker is a stand-alone component for select dates & time. Use range, date & time mode - Dark mode support - For Vue.JS and Nuxt.JS',
-      })
-    }
-  },
   data () {
     return {
       locale: 'en',
