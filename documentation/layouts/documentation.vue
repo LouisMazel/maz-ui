@@ -7,7 +7,7 @@
     }"
   >
     <NavHeader />
-    <div class="maz-flex maz-flex-1 maz-m-h-0">
+    <div class="maz-flex maz-flex-1 maz-m-h-0 maz-position-relative">
       <MazSidebar
         v-model="hasLeftSidebarOpen"
         :width="280"
@@ -63,7 +63,7 @@
       <MazSidebar
         v-if="isComponentRoute"
         v-model="hasRightSidebarOpen"
-        :width="1000"
+        :width="1300"
         right
         absolute
         layer

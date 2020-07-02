@@ -15,5 +15,15 @@ export default {
   'maz-slider': 'MazSlider is a stand-alone component replaces the standard html input range with a beautiful design system. Many options like multiple cursors and values, colors, sizes and logarithmic/exponential values',
   'maz-switch': 'MazSwitch is a stand-alone component. It\'s like checkbox with a different design. colors options available.',
   // UI components
+  'maz-avatar': 'MazAvatar is a stand-alone component. Typically used to display circular or square user profile pictures. This component will allow you to dynamically size, border and shadow. Can become a link if you give a URL. Editable option will show a button with blur effect and return an event on click',
+  'maz-bottom-sheet': 'MazBottom is a stand-alone component like a simple dialog but at the bottom of screen',
+  'maz-collapse': 'MazCollapse is a stand-alone component to show or hide content with animation with click or programmatically',
+  'maz-dialog': 'MazDialog is a stand-alone dialog component to show important informations to the user or propose specific action. Many options available: You can hide the header or the footer, full-size layout, differents states etc.',
+  'maz-draggable-list': 'MazDraggableList is a stand-alone component to display a list and allow reorder items by dragg and drop. Works with vuedraggable. Custom item template available, see examples',
+  'maz-flex': 'MazFlex is a stand-alone component. It\'s a container to manage flexbox CSS properties',
+  'maz-list': 'MazList is a stand-alone component to display a simple list. No-scroll, no-shadow and transition options available.',
+  'maz-loader': 'MazLoader is a stand-alone component to display a simple loader. Color option available soon.',
+  'maz-pagination': 'MazPagination is a stand-alone component to handle the pagination of items API or pages.',
+  'maz-plotly': 'MazPloty is a stand-alone component to display Plotly.JS graphics. It\'s a wrapper not SSR compatible with Nuxt.JS',
 }
 /* eslint-enable max-len */

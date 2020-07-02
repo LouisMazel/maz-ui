@@ -1,8 +1,8 @@
 <template>
   <div class="maz-avatar-doc">
-    <h3>
+    <h4>
       Examples
-    </h3>
+    </h4>
     <ComponentContainer
       code="<template>
   <MazAvatar
@@ -43,12 +43,12 @@
           <MazAvatar
             src="http://www.placecage.com/80/80"
           />
-          <h4 class="maz-my-3 maz-text-center">
+          <h5 class="maz-my-3 maz-text-center">
             Default
-          </h4>
-          <h5 class="maz-mb-3 maz-text-center">
-            Just the src image path provide
           </h5>
+          <h6 class="maz-mb-3 maz-text-center">
+            Just the src image path provide
+          </h6>
           <p>
             <strong>Options:</strong> none
           </p>
@@ -61,12 +61,12 @@
             :size="120"
             @edit="editPicture"
           />
-          <h4 class="maz-my-3 maz-text-center">
+          <h5 class="maz-my-3 maz-text-center">
             Editable
-          </h4>
-          <h5 class="maz-mb-3 maz-text-center">
-            On hover: Add an "edit" layer & on click return <strong>@edit</strong> event on click
           </h5>
+          <h6 class="maz-mb-3 maz-text-center">
+            On hover: Add an "edit" layer & on click return <strong>@edit</strong> event on click
+          </h6>
           <p>
             <strong>Options:</strong> editable - bordered - src="PATH" - size="120"
           </p>
@@ -80,12 +80,12 @@
             square
             :size="160"
           />
-          <h4 class="maz-my-3 maz-text-center">
+          <h5 class="maz-my-3 maz-text-center">
             Square & link avatar
-          </h4>
-          <h5 class="maz-mb-3 maz-text-center">
-            The avatar becomes a link to the url you gave
           </h5>
+          <h6 class="maz-mb-3 maz-text-center">
+            The avatar becomes a link to the url you gave
+          </h6>
           <p>
             <strong>Options:</strong> square - src="PATH" - url="URL" - size="160" - target="_blank" - no-elevation
           </p>
@@ -98,9 +98,9 @@
       class="maz-border-top maz-border-solid maz-border-color maz-my-5"
     >
 
-    <h3>
+    <h4>
       How to use it ?
-    </h3>
+    </h4>
     <CodeContainer
       language="html"
       class="maz-mb-0"

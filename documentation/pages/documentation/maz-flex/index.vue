@@ -4,9 +4,9 @@
       :code="codeExample"
       language="html"
     >
-      <h3 class="maz-mb-3">
+      <h4 class="maz-mb-3">
         Example
-      </h3>
+      </h4>
       <div class="demo">
         flex
         <MazFlex flex>
@@ -156,9 +156,9 @@
       class="maz-border-top maz-border-solid maz-border-color maz-my-5"
     >
 
-    <h3>
+    <h4>
       How to use it ?
-    </h3>
+    </h4>
 
     <CodeContainer
       language="html"

@@ -24,6 +24,15 @@
             </MazBtn>
           </div>
         </MazDraggableList>
+
+        <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
+        <p>
+          The list in data object is updated. Value :
+        </p>
+        <CodeContainer
+          :code="`${listValue}` || 'null'"
+          language="json"
+        />
       </div>
       <MazBtn @click="resetOrder">
         Reset order
@@ -35,9 +44,9 @@
       class="maz-border-top maz-border-solid maz-border-color maz-my-5"
     >
 
-    <h3>
+    <h4>
       How to use it ?
-    </h3>
+    </h4>
 
     <CodeContainer
       language="html"
@@ -139,9 +148,17 @@ export default {
 }`
     }
   },
+  computed: {
+    listValue () {
+      return this.getJson(this.list)
+    }
+  },
   methods: {
     resetOrder () {
       this.list.sort((a, b) => a.value - b.value)
+    },
+    getJson (e) {
+      return JSON.stringify(e).replace(/,/g, ',\n').replace(/{/g, '{\n').replace(/}/g, '\n}')
     }
   }
 }

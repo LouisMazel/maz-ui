@@ -3,9 +3,9 @@
     <ComponentContainer :code="codeExample">
       <div class="lists-container">
         <div class="list-1">
-          <h2 class="maz-mb-2">
+          <h4 class="maz-mb-2">
             Basic list
-          </h2>
+          </h4>
           <p class="maz-text-muted maz-mb-3">
             Any options
           </p>
@@ -22,9 +22,9 @@
           </MazList>
         </div>
         <div class="maz-list-2">
-          <h2 class="maz-mb-2">
+          <h4 class="maz-mb-2">
             Hover & animate list
-          </h2>
+          </h4>
           <MazBtn
             size="sm"
             class="maz-mb-2"
@@ -48,9 +48,9 @@
           </MazList>
         </div>
         <div class="list-3">
-          <h2 class="maz-mb-2">
+          <h4 class="maz-mb-2">
             Scrollable list & no-shadow
-          </h2>
+          </h4>
           <p class="maz-text-muted maz-mb-3">
             Just set `max-height` CSS property to the list
           </p>
@@ -127,9 +127,9 @@ export default {
       codeExample: `<template>
   <div class="lists-container">
     <div class="list-1">
-      <h2 class="maz-mb-2">
+      <h4 class="maz-mb-2">
         Basic list
-      </h2>
+      </h4>
       <p class="maz-text-muted maz-mb-3">
         Any options
       </p>
@@ -146,9 +146,9 @@ export default {
       </MazList>
     </div>
     <div class="list-2">
-      <h2 class="maz-maz-mb-2">
+      <h4 class="maz-maz-mb-2">
         Hover & animate list
-      </h2>
+      </h4>
       <MazBtn
         size="sm"
         class="maz-mb-2"
@@ -174,9 +174,9 @@ export default {
       </MazList>
     </div>
     <div class="list-3">
-      <h2 class="maz-mb-2">
+      <h4 class="maz-mb-2">
         Scrollable list & no-shadow
-      </h2>
+      </h4>
       <p class="maz-text-muted maz-mb-3">
         Just set 'max-height' CSS property to the list
       </p>

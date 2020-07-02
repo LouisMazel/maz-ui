@@ -48,8 +48,9 @@ export default {
 <style lang="scss">
   .frontmatter-markdown {
     margin: auto;
-    max-width: 800px;
+    padding: 20px;
     background-color: $bg-color;
+    font-size: 13px;
 
     h1 {
       color: #333;
@@ -59,6 +60,7 @@ export default {
 
     h2 {
       border-bottom: 1px solid $hover-bg-color;
+      font-family: GeomanistLight, sans-serif;
       color: #333;
       font-size: 1.5rem;
     }

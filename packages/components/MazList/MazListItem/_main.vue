@@ -6,6 +6,7 @@
       'has-hover': hover,
       'cursor-pointer': tag === 'button'
     }"
+    @click="$emit('click', $event)"
   >
     <!-- Place your item text here -->
     <slot />

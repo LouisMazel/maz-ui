@@ -1,8 +1,8 @@
 <template>
   <div class="maz-avatar-doc">
-    <h3>
+    <h4>
       Examples
-    </h3>
+    </h4>
 
     <ComponentContainer
       code="<template>
@@ -11,9 +11,9 @@
   </MazBtn>
   <MazBottomSheet v-model=&quot;isOpen&quot;>
     <div class=&quot;maz-p-6&quot;>
-      <h1 class=&quot;maz-text-center maz-text-color maz-mb-6&quot;>
+      <h3 class=&quot;maz-text-center maz-text-color maz-mb-6&quot;>
         Your content
-      </h1>
+      </h3>
       <div class=&quot;maz-flex maz-flex-center&quot;>
         <MazBtn
           outline
@@ -41,9 +41,9 @@
       </MazBtn>
       <MazBottomSheet v-model="isOpen">
         <div class="maz-p-6">
-          <h1 class="maz-text-center maz-text-color maz-mb-6">
+          <h3 class="maz-text-center maz-text-color maz-mb-6">
             Your content
-          </h1>
+          </h3>
           <div class="maz-flex maz-flex-center">
             <MazBtn
               outline
@@ -61,9 +61,9 @@
       class="maz-border-top maz-border-solid maz-border-color maz-my-5"
     >
 
-    <h3>
+    <h4>
       How to use it ?
-    </h3>
+    </h4>
     <CodeContainer
       language="html"
       class="maz-mb-0"

@@ -67,123 +67,123 @@
           fullsize
           title="Full size dialog"
         >
-          <h3 class="maz-my-5 maz-text-center">
+          <h5 class="maz-my-6 maz-text-center">
             Full size dialog content
-          </h3>
-          <h4 class="maz-my-5 maz-text-center">
+          </h5>
+          <p class="maz-my-6 maz-text-center">
             Scroll content
-          </h4>
-          <h4 class="maz-my-5 maz-text-center">
+          </p>
+          <p class="maz-my-6 maz-text-center">
             Scroll content
-          </h4>
-          <h4 class="maz-my-5 maz-text-center">
+          </p>
+          <p class="maz-my-6 maz-text-center">
             Scroll content
-          </h4>
-          <h4 class="maz-my-5 maz-text-center">
+          </p>
+          <p class="maz-my-6 maz-text-center">
             Scroll content
-          </h4>
-          <h4 class="maz-my-5 maz-text-center">
+          </p>
+          <p class="maz-my-6 maz-text-center">
             Scroll content
-          </h4>
-          <h4 class="maz-my-5 maz-text-center">
+          </p>
+          <p class="maz-my-6 maz-text-center">
             Scroll content
-          </h4>
-          <h4 class="maz-my-5 maz-text-center">
+          </p>
+          <p class="maz-my-6 maz-text-center">
             Scroll content
-          </h4>
-          <h4 class="maz-my-5 maz-text-center">
+          </p>
+          <p class="maz-my-6 maz-text-center">
             Scroll content
-          </h4>
-          <h4 class="maz-my-5 maz-text-center">
+          </p>
+          <p class="maz-my-6 maz-text-center">
             Scroll content
-          </h4>
-          <h4 class="maz-my-5 maz-text-center">
+          </p>
+          <p class="maz-my-6 maz-text-center">
             Scroll content
-          </h4>
-          <h4 class="maz-my-5 maz-text-center">
+          </p>
+          <p class="maz-my-6 maz-text-center">
             Scroll content
-          </h4>
-          <h4 class="maz-my-5 maz-text-center">
+          </p>
+          <p class="maz-my-6 maz-text-center">
             Scroll content
-          </h4>
-          <h4 class="maz-my-5 maz-text-center">
+          </p>
+          <p class="maz-my-6 maz-text-center">
             Scroll content
-          </h4>
-          <h4 class="maz-my-5 maz-text-center">
+          </p>
+          <p class="maz-my-6 maz-text-center">
             Scroll content
-          </h4>
-          <h4 class="maz-my-5 maz-text-center">
+          </p>
+          <p class="maz-my-6 maz-text-center">
             Scroll content
-          </h4>
-          <h4 class="maz-my-5 maz-text-center">
+          </p>
+          <p class="maz-my-6 maz-text-center">
             Scroll content
-          </h4>
-          <h4 class="maz-my-5 maz-text-center">
+          </p>
+          <p class="maz-my-6 maz-text-center">
             Scroll content
-          </h4>
-          <h4 class="maz-my-5 maz-text-center">
+          </p>
+          <p class="maz-my-6 maz-text-center">
             Scroll content
-          </h4>
-          <h4 class="maz-my-5 maz-text-center">
+          </p>
+          <p class="maz-my-6 maz-text-center">
             Scroll content
-          </h4>
-          <h4 class="maz-my-5 maz-text-center">
+          </p>
+          <p class="maz-my-6 maz-text-center">
             Scroll content
-          </h4>
-          <h4 class="maz-my-5 maz-text-center">
+          </p>
+          <p class="maz-my-6 maz-text-center">
             Scroll content
-          </h4>
-          <h4 class="maz-my-5 maz-text-center">
+          </p>
+          <p class="maz-my-6 maz-text-center">
             Scroll content
-          </h4>
-          <h4 class="maz-my-5 maz-text-center">
+          </p>
+          <p class="maz-my-6 maz-text-center">
             Scroll content
-          </h4>
-          <h4 class="maz-my-5 maz-text-center">
+          </p>
+          <p class="maz-my-6 maz-text-center">
             Scroll content
-          </h4>
-          <h4 class="maz-my-5 maz-text-center">
+          </p>
+          <p class="maz-my-6 maz-text-center">
             Scroll content
-          </h4>
-          <h4 class="maz-my-5 maz-text-center">
+          </p>
+          <p class="maz-my-6 maz-text-center">
             Scroll content
-          </h4>
-          <h4 class="maz-my-5 maz-text-center">
+          </p>
+          <p class="maz-my-6 maz-text-center">
             Scroll content
-          </h4>
-          <h4 class="maz-my-5 maz-text-center">
+          </p>
+          <p class="maz-my-6 maz-text-center">
             Scroll content
-          </h4>
-          <h4 class="maz-my-5 maz-text-center">
+          </p>
+          <p class="maz-my-6 maz-text-center">
             Scroll content
-          </h4>
-          <h4 class="maz-my-5 maz-text-center">
+          </p>
+          <p class="maz-my-6 maz-text-center">
             Scroll content
-          </h4>
-          <h4 class="maz-my-5 maz-text-center">
+          </p>
+          <p class="maz-my-6 maz-text-center">
             Scroll content
-          </h4>
-          <h4 class="maz-my-5 maz-text-center">
+          </p>
+          <p class="maz-my-6 maz-text-center">
             Scroll content
-          </h4>
-          <h4 class="maz-my-5 maz-text-center">
+          </p>
+          <p class="maz-my-6 maz-text-center">
             Scroll content
-          </h4>
-          <h4 class="maz-my-5 maz-text-center">
+          </p>
+          <p class="maz-my-6 maz-text-center">
             Scroll content
-          </h4>
+          </p>
         </MazDialog>
       </div>
     </ComponentContainer>
 
     <hr
       id="howToUseIt"
-      class="maz-border-top maz-border-solid maz-border-color maz-my-5"
+      class="maz-border-top maz-border-solid maz-border-color maz-my-6"
     >
 
-    <h3>
+    <h4>
       How to use it ?
-    </h3>
+    </h4>
 
     <CodeContainer
       language="html"
@@ -290,109 +290,109 @@ export default {
     title="Full size dialog"
   >
 
-    <h3 class="maz-my-5 maz-text-center">
+    <h3 class="maz-my-6 maz-text-center">
       Full size dialog content
     </h3>
-    <h3 class="maz-my-5 maz-text-center">
+    <h3 class="maz-my-6 maz-text-center">
       Full size dialog content
     </h3>
-    <h3 class="maz-my-5 maz-text-center">
+    <h3 class="maz-my-6 maz-text-center">
       Full size dialog content
     </h3>
-    <h3 class="maz-my-5 maz-text-center">
+    <h3 class="maz-my-6 maz-text-center">
       Full size dialog content
     </h3>
-    <h3 class="maz-my-5 maz-text-center">
+    <h3 class="maz-my-6 maz-text-center">
       Full size dialog content
     </h3>
-    <h3 class="maz-my-5 maz-text-center">
+    <h3 class="maz-my-6 maz-text-center">
       Full size dialog content
     </h3>
-    <h3 class="maz-my-5 maz-text-center">
+    <h3 class="maz-my-6 maz-text-center">
       Full size dialog content
     </h3>
-    <h3 class="maz-my-5 maz-text-center">
+    <h3 class="maz-my-6 maz-text-center">
       Full size dialog content
     </h3>
-    <h3 class="maz-my-5 maz-text-center">
+    <h3 class="maz-my-6 maz-text-center">
       Full size dialog content
     </h3>
-    <h3 class="maz-my-5 maz-text-center">
+    <h3 class="maz-my-6 maz-text-center">
       Full size dialog content
     </h3>
-    <h3 class="maz-my-5 maz-text-center">
+    <h3 class="maz-my-6 maz-text-center">
       Full size dialog content
     </h3>
-    <h3 class="maz-my-5 maz-text-center">
+    <h3 class="maz-my-6 maz-text-center">
       Full size dialog content
     </h3>
-    <h3 class="maz-my-5 maz-text-center">
+    <h3 class="maz-my-6 maz-text-center">
       Full size dialog content
     </h3>
-    <h3 class="maz-my-5 maz-text-center">
+    <h3 class="maz-my-6 maz-text-center">
       Full size dialog content
     </h3>
-    <h3 class="maz-my-5 maz-text-center">
+    <h3 class="maz-my-6 maz-text-center">
       Full size dialog content
     </h3>
-    <h3 class="maz-my-5 maz-text-center">
+    <h3 class="maz-my-6 maz-text-center">
       Full size dialog content
     </h3>
-    <h3 class="maz-my-5 maz-text-center">
+    <h3 class="maz-my-6 maz-text-center">
       Full size dialog content
     </h3>
-    <h3 class="maz-my-5 maz-text-center">
+    <h3 class="maz-my-6 maz-text-center">
       Full size dialog content
     </h3>
-    <h3 class="maz-my-5 maz-text-center">
+    <h3 class="maz-my-6 maz-text-center">
       Full size dialog content
     </h3>
-    <h3 class="maz-my-5 maz-text-center">
+    <h3 class="maz-my-6 maz-text-center">
       Full size dialog content
     </h3>
-    <h3 class="maz-my-5 maz-text-center">
+    <h3 class="maz-my-6 maz-text-center">
       Full size dialog content
     </h3>
-    <h3 class="maz-my-5 maz-text-center">
+    <h3 class="maz-my-6 maz-text-center">
       Full size dialog content
     </h3>
-    <h3 class="maz-my-5 maz-text-center">
+    <h3 class="maz-my-6 maz-text-center">
       Full size dialog content
     </h3>
-    <h3 class="maz-my-5 maz-text-center">
+    <h3 class="maz-my-6 maz-text-center">
       Full size dialog content
     </h3>
-    <h3 class="maz-my-5 maz-text-center">
+    <h3 class="maz-my-6 maz-text-center">
       Full size dialog content
     </h3>
-    <h3 class="maz-my-5 maz-text-center">
+    <h3 class="maz-my-6 maz-text-center">
       Full size dialog content
     </h3>
-    <h3 class="maz-my-5 maz-text-center">
+    <h3 class="maz-my-6 maz-text-center">
       Full size dialog content
     </h3>
-    <h3 class="maz-my-5 maz-text-center">
+    <h3 class="maz-my-6 maz-text-center">
       Full size dialog content
     </h3>
-    <h3 class="maz-my-5 maz-text-center">
+    <h3 class="maz-my-6 maz-text-center">
       Full size dialog content
     </h3>
-    <h3 class="maz-my-5 maz-text-center">
+    <h3 class="maz-my-6 maz-text-center">
       Full size dialog content
     </h3>
-    <h3 class="maz-my-5 maz-text-center">
+    <h3 class="maz-my-6 maz-text-center">
       Full size dialog content
     </h3>
-    <h3 class="maz-my-5 maz-text-center">
+    <h3 class="maz-my-6 maz-text-center">
       Full size dialog content
     </h3>
-    <h3 class="maz-my-5 maz-text-center">
+    <h3 class="maz-my-6 maz-text-center">
       Full size dialog content
     </h3>
-    <h3 class="maz-my-5 maz-text-center">
+    <h3 class="maz-my-6 maz-text-center">
       Full size dialog content
     </h3>
-    <h3 class="maz-my-5 maz-text-center">
+    <h3 class="maz-my-6 maz-text-center">
       Full size dialog content
     </h3>
   </MazDialog>
