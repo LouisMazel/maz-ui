@@ -18,9 +18,9 @@
   }
 </script>"
     >
-      <h3 class="maz-mb-3">
+      <h4 class="maz-mb-3">
         Basic
-      </h3>
+      </h4>
       <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
       <MazSlider
         v-model="slider"
@@ -51,12 +51,12 @@
   }
 </script>"
     >
-      <h3 class="maz-mb-3">
+      <h4 class="maz-mb-3">
         Multiple values
-      </h3>
-      <h4>
-        With labels
       </h4>
+      <h5>
+        With labels
+      </h5>
       <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
       <MazSlider
         v-model="multipleSilders"
@@ -89,12 +89,12 @@
   }
 </script>"
     >
-      <h3 class="maz-mb-3">
+      <h4 class="maz-mb-3">
         Size & colors
-      </h3>
-      <h4>
-        Default: color="primary" size="8"
       </h4>
+      <h5>
+        Default: color="primary" size="8"
+      </h5>
       <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
       <h5>
         Default
@@ -189,12 +189,12 @@
   }
 </script>"
     >
-      <h3 class="maz-mb-3">
+      <h4 class="maz-mb-3">
         Logarithmic/exponential slider
-      </h3>
-      <h4>
-        With min & max values (50, 50000)
       </h4>
+      <h5>
+        With min & max values (50, 50000)
+      </h5>
       <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
       <MazSlider
         v-model="logSilders"
@@ -229,9 +229,9 @@
   }
 </script>"
     >
-      <h3 class="maz-mb-3">
+      <h4 class="maz-mb-3">
         No-divider: No differents colors between cursors
-      </h3>
+      </h4>
       <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
       <MazSlider
         v-model="multipleSilders"
@@ -249,9 +249,9 @@
       class="maz-border-top maz-border-solid maz-border-color maz-my-5"
     >
 
-    <h3>
+    <h4>
       How to use it ?
-    </h3>
+    </h4>
 
     <CodeContainer
       language="html"

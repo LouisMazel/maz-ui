@@ -1,8 +1,8 @@
 <template>
   <div class="maz-picker-doc">
-    <h3>
+    <h4>
       Informations
-    </h3>
+    </h4>
 
     <p>
       This component uses <router-link :to="{name: 'documentation-maz-input'}">
@@ -54,10 +54,10 @@
 
     <div class="examples maz-my-3">
       <ComponentContainer :code="codeExample">
-        <h3>Date Time Picker</h3>
-        <h5 class="maz-mb-3">
+        <h5>Date Time Picker</h5>
+        <h6 class="maz-mb-3">
           Basic
-        </h5>
+        </h6>
 
         <p class="maz-mb-3">
           <strong>Options:</strong>
@@ -81,10 +81,10 @@
       </ComponentContainer>
 
       <ComponentContainer :code="clearableExample">
-        <h3>Date Picker</h3>
-        <h5 class="maz-mb-3">
+        <h5>Date Picker</h5>
+        <h6 class="maz-mb-3">
           Small input size clearable with input value formatted
-        </h5>
+        </h6>
 
         <p class="maz-mb-3">
           <strong>Options:</strong>
@@ -115,10 +115,10 @@
       </ComponentContainer>
 
       <ComponentContainer :code="doubleExample">
-        <h3>Double Date Picker</h3>
-        <h5 class="maz-mb-3">
+        <h5>Double Date Picker</h5>
+        <h6 class="maz-mb-3">
           Large input size - french format - custom placeholder
-        </h5>
+        </h6>
 
         <p class="maz-mb-3">
           <strong>Options:</strong>
@@ -148,10 +148,10 @@
       </ComponentContainer>
 
       <ComponentContainer :code="rangeExample">
-        <h3>Range Double Date Picker</h3>
-        <h5 class="maz-mb-3">
+        <h5>Range Double Date Picker</h5>
+        <h6 class="maz-mb-3">
           Position forced
-        </h5>
+        </h6>
 
         <p class="maz-mb-3">
           <strong>Options:</strong>
@@ -189,10 +189,10 @@
       </ComponentContainer>
 
       <ComponentContainer :code="inlineExample">
-        <h3>Inline Double Date Time Picker</h3>
-        <h5 class="maz-mb-3">
+        <h5>Inline Double Date Time Picker</h5>
+        <h6 class="maz-mb-3">
           Min & max dates provided & without time picker
-        </h5>
+        </h6>
 
         <p class="maz-mb-3">
           <strong>Options:</strong>
@@ -221,10 +221,10 @@
       </ComponentContainer>
 
       <ComponentContainer :code="inlineExample">
-        <h3>Time Picker</h3>
-        <h5 class="maz-mb-3">
+        <h5>Time Picker</h5>
+        <h6 class="maz-mb-3">
           Min & max dates provided & without time picker
-        </h5>
+        </h6>
 
         <p class="maz-mb-3">
           <strong>Options:</strong>
@@ -249,10 +249,10 @@
       </ComponentContainer>
 
       <ComponentContainer :code="rangeShortcutsExample">
-        <h3>Range Double Date Picker</h3>
-        <h5 class="maz-mb-3">
+        <h5>Range Double Date Picker</h5>
+        <h6 class="maz-mb-3">
           Custom shortcuts
-        </h5>
+        </h6>
 
         <p class="maz-mb-3">
           <strong>Options:</strong>
@@ -282,9 +282,9 @@
       </ComponentContainer>
 
       <ComponentContainer :code="inlineExample">
-        <h3 class="maz-mb-3">
+        <h5 class="maz-mb-3">
           Disabled
-        </h3>
+        </h5>
 
         <p>Value : {{ pickerValue4 || 'null' }}</p>
         <p class="maz-mb-2">
@@ -304,9 +304,9 @@
       class="maz-border-top maz-border-solid maz-border-color maz-my-5"
     >
 
-    <h3>
+    <h4>
       How to use it ?
-    </h3>
+    </h4>
 
     <CodeContainer
       language="html"

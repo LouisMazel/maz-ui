@@ -13,6 +13,5 @@ export default ({ description, title, img = 'maz-ui-cover' }) => [
   // twitter
   (title ? { hid: 'twitter:title', name: 'twitter:title', content: title } : {}),
   (description ? { hid: 'twitter:description', name: 'twitter:description', content: description } : {}),
-  { hid: 'twitter:image', name: 'twitter:image', content: `${LINK_BASE}img/${img}.jpg` },
-  { hid: 'google-site-verification', name: 'google-site-verification', content: 'snu4cvJ7Djbi4aVNKj-7RSP9NGvGqW_Vrilis_iUmT0' }
+  { hid: 'twitter:image', name: 'twitter:image', content: `${LINK_BASE}img/${img}.jpg` }
 ]

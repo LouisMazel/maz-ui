@@ -66,7 +66,7 @@
     </ComponentContainer>
 
 
-    <h3>Colors</h3>
+    <h4>Colors</h4>
 
     <ComponentContainer
       v-model="inputValue"
@@ -100,7 +100,7 @@
       :key="type"
     >
       <div class="flex-component">
-        <h3>{{ type | capitalize }}</h3>
+        <h4>{{ type | capitalize }}</h4>
         <div class="maz-flex maz-flex-wrap">
           <ComponentContainer class="maz-flex-1 maz-mr-2">
             <MazInput
@@ -141,9 +141,9 @@
       class="maz-border-top maz-border-solid maz-border-color maz-my-5"
     >
 
-    <h3>
+    <h4>
       How to use it ?
-    </h3>
+    </h4>
 
     <CodeContainer
       language="html"

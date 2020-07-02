@@ -1,8 +1,8 @@
 <template>
   <div class="maz-input-doc">
-    <h3>
+    <h4>
       Informations
-    </h3>
+    </h4>
 
     <p>
       This component uses <router-link :to="{name: 'documentation-maz-input'}">
@@ -74,9 +74,9 @@
   </MazSelect>
 </template>"
     >
-      <h4>
+      <h5>
         Search - custom options list - position="top right"
-      </h4>
+      </h5>
       <p class="maz-mb-3 maz-text-muted">
         Select input with search textfield
       </p>
@@ -128,9 +128,9 @@
   </MazSelect>
 </template>"
     >
-      <h4>
+      <h5>
         Multiple - custom left icon
-      </h4>
+      </h5>
       <p class="maz-mb-3 maz-text-muted">
         You can choose multiple values
       </p>
@@ -157,9 +157,9 @@
     </ComponentContainer>
 
     <ComponentContainer>
-      <h4 class="maz-mb-3">
+      <h5 class="maz-mb-3">
         Basic
-      </h4>
+      </h5>
       <MazSelect
         v-model="selectValue"
         :options="options"
@@ -167,9 +167,9 @@
     </ComponentContainer>
 
     <ComponentContainer>
-      <h4 class="maz-mb-3">
+      <h5 class="maz-mb-3">
         Colors
-      </h4>
+      </h5>
 
       <div class="maz-flex maz-flex-wrap">
         <MazSelect
@@ -190,9 +190,9 @@
       </p>
     </ComponentContainer>
     <ComponentContainer>
-      <h4 class="maz-mb-3">
+      <h5 class="maz-mb-3">
         Error
-      </h4>
+      </h5>
       <MazSelect
         v-model="selectValue"
         :options="options"
@@ -200,9 +200,9 @@
       />
     </ComponentContainer>
     <ComponentContainer>
-      <h4 class="maz-mb-3">
+      <h5 class="maz-mb-3">
         Success
-      </h4>
+      </h5>
       <MazSelect
         v-model="selectValue"
         :options="options"
@@ -210,9 +210,9 @@
       />
     </ComponentContainer>
     <ComponentContainer>
-      <h4 class="maz-mb-3">
+      <h5 class="maz-mb-3">
         Warning
-      </h4>
+      </h5>
       <MazSelect
         v-model="selectValue"
         :options="options"
@@ -225,9 +225,9 @@
       class="maz-border-top maz-border-solid maz-border-color maz-my-5"
     >
 
-    <h3>
+    <h4>
       How to use it ?
-    </h3>
+    </h4>
 
     <CodeContainer
       language="html"

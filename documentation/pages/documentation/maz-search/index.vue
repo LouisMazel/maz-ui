@@ -1,8 +1,8 @@
 <template>
   <div class="maz-search-doc">
-    <h3>
+    <h4>
       Informations
-    </h3>
+    </h4>
 
     <p>
       This component uses <router-link :to="{name: 'documentation-maz-input'}">
@@ -13,9 +13,9 @@
     <ComponentContainer
       :code="codeExample"
     >
-      <h4 class="maz-mb-3">
+      <h5 class="maz-mb-3">
         Basic use
-      </h4>
+      </h5>
       <p class="maz-mb-3">
         v-model="{{ selectedItem || 'null' }}"
       </p>
@@ -30,9 +30,9 @@
     <ComponentContainer
       :code="codeExample2"
     >
-      <h4 class="maz-mb-3">
+      <h5 class="maz-mb-3">
         Custom
-      </h4>
+      </h5>
       <p class="maz-mb-3">
         v-model="{{ selectedItem2 || 'null' }}"
       </p>
@@ -73,9 +73,9 @@
       class="maz-border-top maz-border-solid maz-border-color maz-my-5"
     >
 
-    <h3>
+    <h4>
       How to use it ?
-    </h3>
+    </h4>
 
     <CodeContainer
       language="html"

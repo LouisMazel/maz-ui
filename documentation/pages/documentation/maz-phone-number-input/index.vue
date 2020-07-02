@@ -1,8 +1,8 @@
 <template>
   <div class="maz-phone-number-doc">
-    <h3>
+    <h4>
       Informations
-    </h3>
+    </h4>
 
     <p>
       This component uses <router-link :to="{name: 'documentation-maz-input'}">
@@ -12,9 +12,9 @@
 
     <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
 
-    <h3>
+    <h4>
       Features list
-    </h3>
+    </h4>
 
     <ul>
       <li>
@@ -55,9 +55,9 @@
 
     <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
 
-    <h3>
+    <h4>
       Translations
-    </h3>
+    </h4>
 
     <p>
       You can translate the component with the <strong>translations</strong> attribute option like this:
@@ -75,9 +75,9 @@
 
     <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
 
-    <h3>
+    <h4>
       Keyboard accessibility
-    </h3>
+    </h4>
     <table class="maz-md">
       <tbody>
         <tr>
@@ -125,15 +125,15 @@
 
     <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
 
-    <h3>
+    <h4>
       Examples
-    </h3>
+    </h4>
 
     <div class="examples">
       <ComponentContainer :code="codeExample">
-        <h3>
+        <h5>
           Basic
-        </h3>
+        </h5>
 
         <hr class="maz-border-top maz-border-solid maz-border-color maz-my-3">
 
@@ -159,12 +159,12 @@
       <ComponentContainer
         :code="example2"
       >
-        <h3 class="maz-mb-2">
+        <h5 class="maz-mb-2">
           Advanced settings
-        </h3>
-        <h4>
+        </h5>
+        <h6>
           With default value & preferred countries & default country code & no flags & show code on list
-        </h4>
+        </h6>
 
         <hr class="maz-border-top maz-border-solid maz-border-color maz-my-3">
 
@@ -199,9 +199,9 @@
       class="maz-border-top maz-border-solid maz-border-color maz-my-5"
     >
 
-    <h3>
+    <h4>
       How to use it ?
-    </h3>
+    </h4>
 
     <CodeContainer
       language="html"

@@ -113,7 +113,9 @@ export default {
       title: `${pageTitle}`,
       titleTemplate: '%s | Documentation | Maz UI',
       meta: meta({
-        description: descriptions[componentName] || `${pageTitle} is a stand-alone component for Vue.JS and Nuxt.JS - Dark mode support`,
+        description: descriptions[componentName]
+          ? `${descriptions[componentName]} - Dark mode support - For Vue.JS and Nuxt.JS`
+          : `${pageTitle} is a stand-alone component for Vue.JS and Nuxt.JS - Dark mode support`,
         title: `${pageTitle} | Documentation | Maz UI`,
         ...(!NOT_COMPONENT_ROUTES.includes(componentName) ? { img: componentName } : {})
       })

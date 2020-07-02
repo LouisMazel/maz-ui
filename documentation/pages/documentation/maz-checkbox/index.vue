@@ -1,8 +1,8 @@
 <template>
   <div class="maz-checkbox-doc">
-    <h3>
+    <h4>
       Examples
-    </h3>
+    </h4>
 
     <ComponentContainer>
       <MazCheckbox
@@ -22,9 +22,9 @@
       class="maz-border-top maz-border-solid maz-border-color maz-my-5"
     >
 
-    <h3>
+    <h4>
       How to use it ?
-    </h3>
+    </h4>
     <CodeContainer
       language="html"
       class="maz-mb-0"

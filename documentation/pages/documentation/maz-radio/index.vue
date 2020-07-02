@@ -1,8 +1,8 @@
 <template>
   <div class="maz-radio-doc">
-    <h3>
+    <h4>
       Examples
-    </h3>
+    </h4>
 
     <ComponentContainer>
       <MazRadio
@@ -24,9 +24,9 @@
       class="maz-border-top maz-border-solid maz-border-color maz-my-5"
     >
 
-    <h3>
+    <h4>
       How to use it ?
-    </h3>
+    </h4>
     <CodeContainer
       language="html"
       class="maz-mb-0"

@@ -1,18 +1,14 @@
 <template>
   <div class="maz-btn-doc">
-    <h3>
+    <h4>
       Examples
-    </h3>
+    </h4>
     <ComponentContainer
       :code="codeExample"
       language="html"
       class="btn-container"
     >
       <div class="flex flex-start direction-column">
-        <h3 class="maz-mb-3">
-          Examples
-        </h3>
-
         <h5 class="maz-mb-3">
           LG primary
         </h5>
@@ -81,9 +77,9 @@
       class="maz-border-top maz-border-solid maz-border-color maz-my-5"
     >
 
-    <h3>
+    <h4>
       How to use it ?
-    </h3>
+    </h4>
     <CodeContainer
       language="html"
       class="maz-mb-0"
