@@ -11,6 +11,16 @@
 
 <!-- @vuese:MazListItem:props:end -->
 
+## Events
+
+<!-- @vuese:MazListItem:events:start -->
+
+| Event Name | Description | Parameters |
+| ---------- | ----------- | ---------- |
+| click      | -           | -          |
+
+<!-- @vuese:MazListItem:events:end -->
+
 ## Slots
 
 <!-- @vuese:MazListItem:slots:start -->
