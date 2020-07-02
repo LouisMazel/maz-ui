@@ -109,7 +109,6 @@ export default {
   head () {
     const componentName = this.$route.name.substring(14)
     const pageTitle = capitalizeAll(replaceAll(componentName, '-', ' '))
-    console.log('componentName', componentName, descriptions[componentName])
     return {
       title: `${pageTitle}`,
       titleTemplate: '%s | Documentation | Maz UI',
