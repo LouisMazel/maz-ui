@@ -27,5 +27,7 @@ export default {
   'maz-plotly': 'MazPloty is a stand-alone component to display Plotly.JS graphics. It\'s a wrapper not SSR compatible with Nuxt.JS',
   'maz-progress-bar': 'MazProgressBar is a stand-alone component to display a simple animated progress bar. Size and colors options available',
   'maz-read-more': 'MazReadMore is a stand-alone component to display a simple a part of text with a link to show all the content. Translation, truncate length and text class options available.',
+  'maz-sidebar': 'MazSidebar is a stand-alone component to display a right or left panel with animation. Propose content or navigation menu to the user. Loading ption show a loader on all the panel. Can open over the content with absolute option and some other options',
+  'maz-spinner': 'MazSpinner is a stand-alone component to a SVG loader with animation. Color and size options',
 }
 /* eslint-enable max-len */
