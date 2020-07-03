@@ -25,5 +25,7 @@ export default {
   'maz-loader': 'MazLoader is a stand-alone component to display a simple loader. Color option available soon.',
   'maz-pagination': 'MazPagination is a stand-alone component to handle the pagination of items API or pages.',
   'maz-plotly': 'MazPloty is a stand-alone component to display Plotly.JS graphics. It\'s a wrapper not SSR compatible with Nuxt.JS',
+  'maz-progress-bar': 'MazProgressBar is a stand-alone component to display a simple animated progress bar. Size and colors options available',
+  'maz-read-more': 'MazReadMore is a stand-alone component to display a simple a part of text with a link to show all the content. Translation, truncate length and text class options available.',
 }
 /* eslint-enable max-len */

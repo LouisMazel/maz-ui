@@ -5,9 +5,9 @@
   <MazProgressBar :percent=&quot;percent&quot; />
 </template>"
     >
-      <h3 class="maz-mb-3">
+      <h4 class="maz-mb-3">
         Basic
-      </h3>
+      </h4>
       <MazProgressBar :percent="percent" />
 
       <p class="maz-mt-3">
@@ -36,9 +36,9 @@
   />
 </template>"
     >
-      <h3 class="maz-mb-3">
+      <h4 class="maz-mb-3">
         Color (:height="10")
-      </h3>
+      </h4>
       <MazProgressBar
         v-for="color in colors"
         :key="`color-${color}`"
@@ -47,9 +47,9 @@
         :height="10"
         class="maz-mb-3"
       />
-      <h3 class="maz-my-5">
+      <h4 class="maz-my-5">
         Bg-Color
-      </h3>
+      </h4>
       <MazProgressBar
         v-for="color in colors"
         :key="`bg-color-${color}`"
@@ -70,9 +70,9 @@
   />
 </template>"
     >
-      <h3 class="maz-mb-3">
+      <h4 class="maz-mb-3">
         Animated
-      </h3>
+      </h4>
       <MazProgressBar
         animated
         :height="10"
@@ -90,9 +90,9 @@
   />
 </template>"
     >
-      <h3 class="maz-mb-3">
+      <h4 class="maz-mb-3">
         No-radius
-      </h3>
+      </h4>
       <MazProgressBar
         no-radius
         :height="10"
@@ -106,9 +106,9 @@
       class="maz-border-top maz-border-solid maz-border-color maz-my-5"
     >
 
-    <h3>
+    <h4>
       How to use it ?
-    </h3>
+    </h4>
 
     <CodeContainer
       language="html"
