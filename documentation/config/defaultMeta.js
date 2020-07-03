@@ -17,6 +17,7 @@ export default [
   // twitter
   { name: 'twitter:card', content: 'summary_large_image' },
   { name: 'twitter:creator', content: '@mazeel' },
+  { name: 'twitter:site', content: '@maz__ui' },
   {
     hid: 'description',
     name: 'description',

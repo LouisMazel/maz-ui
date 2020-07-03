@@ -1,7 +1,5 @@
 import LINK_BASE from './linkBase'
 
-
-
 export default ({ description, title, img = 'maz-ui-preview' }) => [
   { hid: 'msapplication-TileImage', name: 'msapplication-TileImage', content: `${LINK_BASE}img/${img}.jpg` },
   (description ? { hid: 'itemprop', itemprop: 'image', content: `${LINK_BASE}img/${img}.jpg` } : {}),
