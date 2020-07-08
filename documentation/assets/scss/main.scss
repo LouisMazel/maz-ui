@@ -111,19 +111,16 @@ html {
     &.home {
       min-height: 100%;
     }
-  }
 
-  #__layout {
+    code.code {
+      background-color: darken($bg-color-light, 5%);
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+
     &.maz-is-dark {
-      h3,
-      h4,
-      h5,
-      h6,
-      p,
-      ul,
-      li,
-      ol {
-        color: $text-color-dark;
+      code.code {
+        background-color: lighten($bg-color-dark-light, 5%);
       }
     }
   }

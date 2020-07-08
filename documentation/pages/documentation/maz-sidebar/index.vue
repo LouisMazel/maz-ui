@@ -1,75 +1,94 @@
 <template>
   <div class="maz-sidebar-doc">
-    <div
-      class="maz-sidebar-doc__container maz-position-relative maz-overflow-hidden maz-my-4 maz-elevation maz-flex"
+    <p>
+      <strong>
+        Tips:
+      </strong>
+      Add this classes <code class="code">class="maz-flex maz-position-relative"</code> to the parent element (MazSidebar component works fine with flexbox)
+    </p>
+    <ComponentContainer
+      code=""
+      class="maz-flex maz-position-relative"
     >
-      <MazSidebar
-        v-model="hasLeftSidebarOpen"
-        :loading="loading"
-        :width="width"
-        :no-shadow="!hasShadow"
-        :no-close-btn="!hasCloseBtn"
-        :absolute="absolute"
-        :layer="layer"
-      >
-        <div class="maz-flex maz-flex-1 maz-align-center maz-justify-center maz-text-color">
-          SideBar Content Example
-        </div>
-      </MazSidebar>
       <div
-        class="maz-sidebar-doc__content maz-p-4 maz-flex maz-direction-column maz-align-center maz-justify-center maz-flex-1"
+        class="maz-sidebar-doc__container maz-position-relative maz-overflow-hidden maz-elevation maz-flex"
       >
-        <MazBtn
-          color="third"
-          @click="loading = !loading"
+        <MazSidebar
+          v-model="hasLeftSidebarOpen"
+          :loading="loading"
+          :width="width"
+          :no-shadow="!hasShadow"
+          :no-close-btn="!hasCloseBtn"
+          :absolute="absolute"
+          :layer="layer"
+          :mini="mini"
         >
-          Toggle loading
-        </MazBtn>
-        <MazInput
-          v-model="width"
-          type="number"
-          placeholder="Sidebar width"
-        />
-        <div class="switch-container maz-flex">
-          <p>Has left sidebar is open</p>
-          <MazSwitch v-model="hasLeftSidebarOpen" />
+          <div class="maz-flex maz-flex-1 maz-align-center maz-justify-center maz-text-color">
+            SideBar Content Example
+          </div>
+        </MazSidebar>
+        <div
+          class="maz-sidebar-doc__content maz-p-4 maz-flex maz-direction-column maz-align-center maz-justify-center maz-flex-1"
+        >
+          <MazBtn
+            color="third"
+            @click="loading = !loading"
+          >
+            Toggle loading
+          </MazBtn>
+          <MazInput
+            v-model="width"
+            type="number"
+            placeholder="Sidebar width"
+          />
+          <div class="switch-container maz-flex">
+            <p>Has left sidebar is open</p>
+            <MazSwitch v-model="hasLeftSidebarOpen" />
+          </div>
+          <div class="switch-container maz-flex">
+            <p>Has right sidebar is open</p>
+            <MazSwitch v-model="hasRightSidebarOpen" />
+          </div>
+          <p>
+            <strong>Options:</strong>
+          </p>
+          <div class="switch-container maz-flex">
+            <p>shadow</p>
+            <MazSwitch v-model="hasShadow" />
+          </div>
+          <div class="switch-container close-btn maz-flex">
+            <p>close-btn</p>
+            <MazSwitch v-model="hasCloseBtn" />
+          </div>
+          <div class="switch-container maz-flex">
+            <p>absolute</p>
+            <MazSwitch v-model="absolute" />
+          </div>
+          <div class="switch-container maz-flex">
+            <p>Layer</p>
+            <MazSwitch v-model="layer" />
+          </div>
+          <div class="switch-container maz-flex">
+            <p>mini</p>
+            <MazSwitch v-model="mini" />
+          </div>
         </div>
-        <div class="switch-container maz-flex">
-          <p>Has right sidebar is open</p>
-          <MazSwitch v-model="hasRightSidebarOpen" />
-        </div>
-        <div class="switch-container maz-flex">
-          <p>Has shadow</p>
-          <MazSwitch v-model="hasShadow" />
-        </div>
-        <div class="switch-container close-btn maz-flex">
-          <p>Has close btn</p>
-          <MazSwitch v-model="hasCloseBtn" />
-        </div>
-        <div class="switch-container maz-flex">
-          <p>Is absolute</p>
-          <MazSwitch v-model="absolute" />
-        </div>
-        <div class="switch-container maz-flex">
-          <p>has Layer</p>
-          <MazSwitch v-model="layer" />
-        </div>
+        <MazSidebar
+          v-model="hasRightSidebarOpen"
+          :loading="loading"
+          :width="width"
+          :no-shadow="!hasShadow"
+          :no-close-btn="!hasCloseBtn"
+          :absolute="absolute"
+          right
+          :layer="layer"
+        >
+          <div class="maz-flex maz-flex-1 maz-flex-center maz-text-color">
+            SideBar Content Example
+          </div>
+        </MazSidebar>
       </div>
-      <MazSidebar
-        v-model="hasRightSidebarOpen"
-        :loading="loading"
-        :width="width"
-        :no-shadow="!hasShadow"
-        :no-close-btn="!hasCloseBtn"
-        :absolute="absolute"
-        right
-        :layer="layer"
-      >
-        <div class="maz-flex maz-flex-1 maz-flex-center maz-text-color">
-          SideBar Content Example
-        </div>
-      </MazSidebar>
-    </div>
+    </ComponentContainer>
 
     <hr
       id="howToUseIt"
@@ -115,7 +134,8 @@ export default {
       hasShadow: true,
       hasCloseBtn: true,
       absolute: false,
-      layer: false
+      layer: false,
+      mini: false
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="component-container maz-position-relative maz-bg-white maz-my-4 maz-elevation maz-border-radius">
-    <div class="maz-p-4 maz-bg-color maz-border-radius">
+    <div class="maz-p-4 maz-bg-color maz-border-radius maz-w-100">
       <slot />
     </div>
     <div
