@@ -131,16 +131,6 @@ export default {
     // title of the dialog
     title: { type: String, default: 'Header title' }
   },
-  data () {
-    return {
-      vcoConfig: {
-        handler: this.closeDialog,
-        middleware: this.preventClickOutside,
-        events: ['click'],
-        isActive: true
-      }
-    }
-  },
   computed: {
     widthStyle () {
       const { fullsize, maxWidth } = this
@@ -154,6 +144,14 @@ export default {
         : this.success
           ? 'success'
           : 'primary'
+    },
+    vcoConfig () {
+      return {
+        handler: this.closeDialog,
+        middleware: this.preventClickOutside,
+        events: ['click'],
+        isActive: !this.fullsize
+      }
     }
   },
   watch: {

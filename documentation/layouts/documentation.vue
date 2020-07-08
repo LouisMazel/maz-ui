@@ -22,7 +22,7 @@
       >
         <div
           v-if="isComponentRoute"
-          class="maz-flex maz-space-between maz-px-5 maz-py-5 maz-align-center maz-flex-wrap"
+          class="maz-flex maz-space-between maz-px-5 maz-py-5 maz-align-center maz-flex-wrap maz-flex-fixed"
         >
           <h2>
             {{ currentComponent | capitalize }}
