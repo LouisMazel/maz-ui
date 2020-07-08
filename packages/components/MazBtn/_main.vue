@@ -8,8 +8,9 @@
       classes,
       {
         hidden: loading,
-        'maz-flex-inline maz-flex maz-flex-center': hasIcon()
-      }
+        'maz-flex-inline maz-flex': hasIcon(),
+      },
+      (hasIcon() ? justifyStart ? 'maz-justify-start maz-align-center' : 'maz-flex-center' : null)
     ]"
     :type="isLink ? null : type"
     :disabled="isLink ? null : isDisabled"
@@ -105,7 +106,9 @@ export default {
     // should be a [material icon](https://material.io/resources/icons/) name
     leftIconName: { type: String, default: null },
     // should be a [material icon](https://material.io/resources/icons/) name
-    rightIconName: { type: String, default: null }
+    rightIconName: { type: String, default: null },
+    // add space between text and icons
+    justifyStart: { type: Boolean, default: false },
   },
   computed: {
     componentType () {
