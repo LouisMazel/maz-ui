@@ -22,6 +22,7 @@
 | noShadow      | remove shadow/elevation                                                                                                                                   | `Boolean` | `false`  | false   |
 | leftIconName  | should be a [material icon](https://material.io/resources/icons/) name                                                                                    | `String`  | `false`  | null    |
 | rightIconName | should be a [material icon](https://material.io/resources/icons/) name                                                                                    | `String`  | `false`  | null    |
+| justifyStart  | add space between text and icons                                                                                                                          | `Boolean` | `false`  | false   |
 
 <!-- @vuese:MazBtn:props:end -->
 

@@ -50,11 +50,11 @@ Vue.use(MazPhoneNumberInput)
 ### Quick Start - Fully install (not recommanded)
 
 ```javascript
-import Vue from 'vue'
-import 'maz-ui/lib/css/index.css'
-import MazUi from 'maz-ui'
+import Vue from "vue";
+import "maz-ui/lib/css/index.css";
+import MazUi from "maz-ui";
 
-Vue.use(MazUi)
+Vue.use(MazUi);
 ```
 
 ## Contribute
