@@ -4,6 +4,8 @@
     :class="{
       'maz-is-dark': dark
     }"
+    @mouseover="isHover = true"
+    @mouseleave="isHover = false"
   >
     <div
       :id="uniqueId"
@@ -14,7 +16,8 @@
         'is-close': !isOpen,
         'is-absolute': absolute,
         'has-shadow': !noShadow,
-        'is-right': right
+        'is-right': right,
+        'is-mini': mini
       }"
     >
       <transition
@@ -22,14 +25,13 @@
         mode="in-out"
       >
         <div
-          v-show="isOpen"
           class="maz-sidebar__wrapper__content maz-flex maz-flex-1 maz-w-100 maz-direction-column"
         >
-          <slot />
+          <slot :is-open="isOpen" />
         </div>
       </transition>
       <div
-        v-if="!noCloseBtn"
+        v-if="hasCloseBtn"
         class="maz-sidebar__wrapper__close-btn"
       >
         <button
@@ -42,7 +44,7 @@
         </button>
       </div>
       <div
-        v-show="loading && isOpen"
+        v-if="loading && isOpen"
         class="maz-sidebar__wrapper__load-layer maz-flex maz-flex-center"
       >
         <slot name="content-loader">
@@ -74,7 +76,10 @@ import ArrowIcon from '../_subs/ArrowIcon'
  * @param {boolean} [isOpen=false] - Is the sidebar open or not
  * @param {boolean} [right=false] - Specify the sidebar direction, by default the sidebar is positionned in the left side.
  * @param {boolean} [dark=false] - Specify the dark mode
- * @param {boolean} [layer=false] - Specify
+ * @param {boolean} [layer=false] - Add layer under content, click on it to close sidebar
+ * @param {boolean} [mini=false] - Add layer under content, click on it to close sidebar
+ * @param {number} [miniSize=60] - Mini width
+ * @param {boolean} [expandOnHover=false] - With mini, open expand sidebar on hover
  * @emits toggle-menu
  */
 export default {
@@ -86,7 +91,8 @@ export default {
   mixins: [uniqueId],
   props: {
     // Boolean to open or not the sidebar
-    value: { type: Boolean, required: true },
+    value: { type: Boolean, required: false },
+    // set id of sidebar
     id: { type: String, default: null },
     // Size bar width
     width: { type: Number, default: 300 },
@@ -103,23 +109,55 @@ export default {
     // Dark mode
     dark: { type: Boolean, default: false },
     // Gray layer above the content, if you click on it, the side bar closes
-    layer: { type: Boolean, default: false }
+    layer: { type: Boolean, default: false },
+    // reduces the size of the sidebar width
+    mini: { type: Boolean, default: false },
+    // width size of sidebar with mini mode
+    miniWidth: { type: Number, default: 60 },
+    // expand sidebar on hover (only with mini option)
+    expandOnHover: { type: Boolean, default: false }
+  },
+  data () {
+    return {
+      isHover: false,
+      open: this.value
+    }
   },
   computed: {
     isOpen: {
       get () {
-        return this.value
+        const { open, isHover, hasExpandOnHover } = this
+        const showOnExpend = hasExpandOnHover ? isHover : false
+        return open || showOnExpend
       },
       set (value) {
+        // return a `true` or `false` if the sidebar is open or not
+        // @arg Boolean
         this.$emit('input', value)
+        this.open = value
       }
     },
+    hasExpandOnHover () {
+      const { expandOnHover, mini } = this
+      return expandOnHover && mini
+    },
+    hasCloseBtn () {
+      const { noCloseBtn, hasExpandOnHover } = this
+      return !noCloseBtn && !hasExpandOnHover
+    },
     wrapperStyle () {
+      const { mini, width, isOpen, layer, miniWidth } = this
+      const widthSize = mini ? miniWidth : 0
       return {
-        width: `${this.isOpen ? this.width : 0}px`,
-        flex: `0 0 ${this.isOpen ? this.width : 0}px`,
-        zIndex: this.isOpen && this.layer ? 10 : 9
+        width: `${isOpen ? width : widthSize}px`,
+        flex: `0 0 ${isOpen ? width : widthSize}px`,
+        zIndex: isOpen && layer ? 1040 : 1030
       }
+    }
+  },
+  watch: {
+    value (val) {
+      this.open = val
     }
   }
 }
