@@ -21,13 +21,13 @@
           class="maz-elevation maz-p-5 maz-border-radius maz-flex maz-flex-center"
           :class="`maz-bg-${name}`"
         >
-          <h4
-            :class="{
-              'text-white': name === 'black' || name === 'dark'
-            }"
+          <h5
+            :class="[{
+              'text-white': name === 'black' || name === 'dark' || name === 'primary'
+            }, name]"
           >
             {{ value }}
-          </h4>
+          </h5>
         </div>
       </div>
     </div>
@@ -52,7 +52,8 @@ export default {
         { name: 'dark', value: '#24292E' },
         { name: 'default', value: '#CCC' },
         { name: 'white', value: 'white' },
-        { name: 'black', value: 'black' }
+        { name: 'black', value: 'black' },
+        { name: 'transparent', value: 'transparent' }
       ]
     }
   }
@@ -66,7 +67,7 @@ export default {
       grid-template-columns: repeat(4, 1fr);
       grid-gap: 20px;
 
-      h4 {
+      h5 {
         color: $text-color !important;
 
         &.text-white {
@@ -81,6 +82,12 @@ export default {
       @media screen and (max-width: $breakpoint-laptop-s) {
         grid-template-columns: repeat(2, 1fr);
       }
+    }
+  }
+
+  .maz-is-dark {
+    .transparent {
+      color: $text-color-dark !important;
     }
   }
 </style>

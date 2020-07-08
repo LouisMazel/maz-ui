@@ -5,6 +5,19 @@
     color: transparent;
   }
 
+  &--transparent {
+    color: $text-color;
+
+    &:hover,
+    &:focus {
+      background-color: $bg-color-light;
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 .143rem rgba(darken($bg-color-light, 5%), .6);
+    }
+  }
+
   &__spinner {
     position: absolute;
     margin-left: auto;
@@ -13,5 +26,18 @@
     top: 0;
     right: 0;
     bottom: 0;
+  }
+}
+
+.maz-is-dark .maz-btn,
+.maz-is-dark.maz-btn {
+  &--transparent {
+    color: $text-color-dark;
+
+    &:hover,
+    &:focus {
+      background-color: $bg-color-dark-light;
+      box-shadow: 0 0 0 .143rem rgba(darken($bg-color-dark-light, 5%), .6);
+    }
   }
 }

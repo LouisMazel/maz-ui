@@ -111,10 +111,19 @@ html {
     &.home {
       min-height: 100%;
     }
-  }
 
-  #__layout {
+    code.code {
+      background-color: $bg-color-dark;
+      color: $text-color-dark;
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+
     &.maz-is-dark {
+      code.code {
+        background-color: $bg-color-dark-light;
+      }
+
       h3,
       h4,
       h5,

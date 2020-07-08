@@ -123,7 +123,7 @@ export default {
   }
 
   .maz-is-dark {
-    .header__menu__item:not(.NuxtLink-active) {
+    .header__menu__item:not(.nuxt-link-active) {
       color: white;
     }
   }

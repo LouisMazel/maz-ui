@@ -5,8 +5,7 @@
     background-color: white;
     position: relative;
     transition-duration: .2s;
-    transform: translateX(0);
-    z-index: 9;
+    z-index: 1030;
 
     &__content {
       overflow: hidden;
@@ -36,7 +35,7 @@
       right: 0;
       left: 0;
       bottom: 0;
-      z-index: 10;
+      z-index: 1040;
     }
 
     &__opacity-layer {
@@ -66,13 +65,8 @@
       }
     }
 
-    &.is-close {
+    &.is-close:not(.is-mini) {
       box-shadow: none !important;
-      transform: translateX(-100%);
-
-      &.is-right {
-        transform: translateX(100%);
-      }
     }
 
     &.is-right {

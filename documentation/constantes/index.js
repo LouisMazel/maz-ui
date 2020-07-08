@@ -11,5 +11,6 @@ export const COLORS = [
   'dark',
   'default',
   'white',
-  'black'
+  'black',
+  'transparent'
 ]
