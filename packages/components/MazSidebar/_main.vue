@@ -113,7 +113,7 @@ export default {
     // reduces the size of the sidebar width
     mini: { type: Boolean, default: false },
     // width size of sidebar with mini mode
-    miniSize: { type: Number, default: 60 },
+    miniWidth: { type: Number, default: 60 },
     // expand sidebar on hover (only with mini option)
     expandHover: { type: Boolean, default: false }
   },
@@ -146,8 +146,8 @@ export default {
       return !noCloseBtn && !hasExpandHover
     },
     wrapperStyle () {
-      const { mini, width, isOpen, layer, miniSize } = this
-      const widthSize = mini ? miniSize : 0
+      const { mini, width, isOpen, layer, miniWidth } = this
+      const widthSize = mini ? miniWidth : 0
       return {
         width: `${isOpen ? width : widthSize}px`,
         flex: `0 0 ${isOpen ? width : widthSize}px`,

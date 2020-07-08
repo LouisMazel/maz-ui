@@ -202,104 +202,71 @@ export default {
     class=&quot;maz-position-relative maz-overflow-hidden maz-flex maz-border-color maz-border-solid maz-border&quot;
   >
     <MazSidebar
-      v-model=&quot;hasLeftSidebarOpen&quot;
-      :width=&quot;width&quot;
-      :loading=&quot;loading&quot;
-      :no-shadow=&quot;noShadow&quot;
-      :no-close-btn=&quot;noCloseBtn&quot;
-      :absolute=&quot;absolute&quot;
-      :layer=&quot;layer&quot;
-      :mini=&quot;mini&quot;
-      :expand-hover=&quot;expandHover&quot;
+      v-slot=&quot;{ isOpen }&quot;
+      :width=&quot;200&quot;
+      expand-hover
+      mini
     >
-      <div class=&quot;maz-flex maz-flex-1 maz-align-center maz-justify-center maz-text-color&quot;>
-        SideBar Content Example
+      <div class=&quot;maz-p-2 maz-flex maz-direction-column&quot;>
+        <div class=&quot;maz-flex maz-align-center maz-pb-2 maz-mb-2 maz-border-color maz-border-bottom maz-border-bottom-solid&quot;>
+          <MazAvatar
+            :size=&quot;46&quot;
+            src=&quot;http://www.placecage.com/100/100&quot;
+          />
+          <p
+            v-if=&quot;isOpen&quot;
+            class=&quot;maz-ml-4 maz-dots-text&quot;
+          >
+            <strong>
+              Nicolas Cage
+            </strong>
+            <br>
+            <span>
+              Actor
+            </span>
+          </p>
+        </div>
+        <MazBtn
+          left-icon-name=&quot;person&quot;
+          color=&quot;transparent&quot;
+          class=&quot;maz-mb-2&quot;
+          no-shadow
+          justify-start
+        >
+          <span
+            v-if=&quot;isOpen&quot;
+            class=&quot;maz-ml-4&quot;
+          >Profile</span>
+        </MazBtn>
+        <MazBtn
+          left-icon-name=&quot;settings&quot;
+          color=&quot;transparent&quot;
+          class=&quot;maz-mb-2&quot;
+          no-shadow
+          justify-start
+        >
+          <span
+            v-if=&quot;isOpen&quot;
+            class=&quot;maz-ml-4&quot;
+          >Settings</span>
+        </MazBtn>
       </div>
     </MazSidebar>
     <div
       class=&quot;maz-p-4 maz-flex maz-direction-column maz-align-center maz-justify-center maz-flex-1&quot;
     >
-      <MazInput
-        v-model=&quot;width&quot;
-        type=&quot;number&quot;
-        placeholder=&quot;Sidebar width&quot;
-      />
-      <div class=&quot;switch-container maz-flex&quot;>
-        <p>Has left sidebar is open</p>
-        <MazSwitch v-model=&quot;hasLeftSidebarOpen&quot; />
-      </div>
-      <div class=&quot;switch-container maz-flex&quot;>
-        <p>Has right sidebar is open</p>
-        <MazSwitch v-model=&quot;hasRightSidebarOpen&quot; />
-      </div>
-      <p>
-        <strong>Options:</strong>
-      </p>
-      <div class=&quot;switch-container maz-flex&quot;>
-        <p>shadow</p>
-        <MazSwitch v-model=&quot;noShadow&quot; />
-      </div>
-      <div class=&quot;switch-container close-btn maz-flex&quot;>
-        <p>close-btn</p>
-        <MazSwitch v-model=&quot;noCloseBtn&quot; />
-      </div>
-      <div class=&quot;switch-container maz-flex&quot;>
-        <p>absolute</p>
-        <MazSwitch v-model=&quot;absolute&quot; />
-      </div>
-      <div class=&quot;switch-container maz-flex&quot;>
-        <p>layer</p>
-        <MazSwitch v-model=&quot;layer&quot; />
-      </div>
-      <div class=&quot;switch-container maz-flex&quot;>
-        <p>mini</p>
-        <MazSwitch v-model=&quot;mini&quot; />
-      </div>
-      <div class=&quot;switch-container maz-flex&quot;>
-        <p>loading</p>
-        <MazSwitch v-model=&quot;loading&quot; />
-      </div>
-      <div class=&quot;switch-container maz-flex&quot;>
-        <p>expand-hover (only with mini)</p>
-        <MazSwitch v-model=&quot;expandHover&quot; />
-      </div>
+      <h6>Content</h6>
+      <h6>Content</h6>
+      <h6>Content</h6>
+      <h6>Content</h6>
+      <h6>Content</h6>
+      <h6>Content</h6>
+      <h6>Content</h6>
+      <h6>Content</h6>
+      <h6>Content</h6>
     </div>
-    <MazSidebar
-      v-model=&quot;hasRightSidebarOpen&quot;
-      :width=&quot;width&quot;
-      :loading=&quot;loading&quot;
-      :no-shadow=&quot;noShadow&quot;
-      :no-close-btn=&quot;noCloseBtn&quot;
-      :absolute=&quot;absolute&quot;
-      :layer=&quot;layer&quot;
-      :mini=&quot;mini&quot;
-      :expand-hover=&quot;expandHover&quot;
-      right
-    >
-      <div class=&quot;maz-flex maz-flex-1 maz-flex-center maz-text-color&quot;>
-        SideBar Content Example
-      </div>
-    </MazSidebar>
   </div>
-</template>
-
-<script>
-export default {
-  data () {
-    return {
-      hasLeftSidebarOpen: true,
-      hasRightSidebarOpen: false,
-      width: 300,
-      loading: false,
-      noShadow: false,
-      noCloseBtn: false,
-      absolute: false,
-      layer: false,
-      mini: false
-    }
-  }
-}
-</script>"
+</template>"
     >
       <h4 class="maz-mb-4">
         Mini & expand-hover
@@ -311,6 +278,7 @@ export default {
           v-slot="{ isOpen }"
           expand-hover
           mini
+          :width="200"
         >
           <div class="maz-p-2 maz-flex maz-direction-column">
             <div class="maz-sidebar-doc__container_nav-header maz-flex maz-align-center maz-pb-2 maz-mb-2 maz-border-color maz-border-bottom maz-border-bottom-solid">
@@ -320,7 +288,7 @@ export default {
               />
               <p
                 v-if="isOpen"
-                class="maz-ml-4"
+                class="maz-ml-4 maz-dots-text"
               >
                 <strong>
                   Nicolas Cage
