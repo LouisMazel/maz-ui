@@ -20,7 +20,7 @@
       :absolute=&quot;absolute&quot;
       :layer=&quot;layer&quot;
       :mini=&quot;mini&quot;
-      :expand-hover=&quot;expandHover&quot;
+      :expand-on-hover=&quot;expandOnHover&quot;
     >
       <div class=&quot;maz-flex maz-flex-1 maz-align-center maz-justify-center maz-text-color&quot;>
         SideBar Content Example
@@ -70,8 +70,8 @@
         <MazSwitch v-model=&quot;loading&quot; />
       </div>
       <div class=&quot;switch-container maz-flex&quot;>
-        <p>expand-hover (only with mini)</p>
-        <MazSwitch v-model=&quot;expandHover&quot; />
+        <p>expand-on-hover (only with mini)</p>
+        <MazSwitch v-model=&quot;expandOnHover&quot; />
       </div>
     </div>
     <MazSidebar
@@ -83,7 +83,7 @@
       :absolute=&quot;absolute&quot;
       :layer=&quot;layer&quot;
       :mini=&quot;mini&quot;
-      :expand-hover=&quot;expandHover&quot;
+      :expand-on-hover=&quot;expandOnHover&quot;
       right
     >
       <div class=&quot;maz-flex maz-flex-1 maz-flex-center maz-text-color&quot;>
@@ -123,7 +123,7 @@ export default {
           :absolute="absolute"
           :layer="layer"
           :mini="mini"
-          :expand-hover="expandHover"
+          :expand-on-hover="expandOnHover"
         >
           <div class="maz-flex maz-flex-1 maz-align-center maz-justify-center maz-text-color">
             SideBar Content Example
@@ -173,8 +173,8 @@ export default {
             <MazSwitch v-model="mini" />
           </div>
           <div class="switch-container maz-flex">
-            <p>expand-hover (only with mini)</p>
-            <MazSwitch v-model="expandHover" />
+            <p>expand-on-hover (only with mini)</p>
+            <MazSwitch v-model="expandOnHover" />
           </div>
         </div>
         <MazSidebar
@@ -186,7 +186,7 @@ export default {
           :absolute="absolute"
           :layer="layer"
           :mini="mini"
-          :expand-hover="expandHover"
+          :expand-on-hover="expandOnHover"
           right
         >
           <div class="maz-flex maz-flex-1 maz-flex-center maz-text-color">
@@ -204,7 +204,7 @@ export default {
     <MazSidebar
       v-slot=&quot;{ isOpen }&quot;
       :width=&quot;200&quot;
-      expand-hover
+      expand-on-hover
       mini
     >
       <div class=&quot;maz-p-2 maz-flex maz-direction-column&quot;>
@@ -269,14 +269,14 @@ export default {
 </template>"
     >
       <h4 class="maz-mb-4">
-        Mini & expand-hover
+        Mini & expand-on-hover
       </h4>
       <div
         class="maz-sidebar-doc__container maz-position-relative maz-overflow-hidden maz-flex maz-border-color maz-border-solid maz-border"
       >
         <MazSidebar
           v-slot="{ isOpen }"
-          expand-hover
+          expand-on-hover
           mini
           :width="200"
         >
@@ -380,7 +380,7 @@ export default {
       absolute: false,
       layer: false,
       mini: false,
-      expandHover: false
+      expandOnHover: false
     }
   }
 }

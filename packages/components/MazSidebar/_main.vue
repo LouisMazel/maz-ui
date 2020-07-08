@@ -79,7 +79,7 @@ import ArrowIcon from '../_subs/ArrowIcon'
  * @param {boolean} [layer=false] - Add layer under content, click on it to close sidebar
  * @param {boolean} [mini=false] - Add layer under content, click on it to close sidebar
  * @param {number} [miniSize=60] - Mini width
- * @param {boolean} [expandHover=false] - With mini, open expand sidebar on hover
+ * @param {boolean} [expandOnHover=false] - With mini, open expand sidebar on hover
  * @emits toggle-menu
  */
 export default {
@@ -115,7 +115,7 @@ export default {
     // width size of sidebar with mini mode
     miniWidth: { type: Number, default: 60 },
     // expand sidebar on hover (only with mini option)
-    expandHover: { type: Boolean, default: false }
+    expandOnHover: { type: Boolean, default: false }
   },
   data () {
     return {
@@ -126,8 +126,8 @@ export default {
   computed: {
     isOpen: {
       get () {
-        const { open, isHover, hasExpandHover } = this
-        const showOnExpend = hasExpandHover ? isHover : false
+        const { open, isHover, hasExpandOnHover } = this
+        const showOnExpend = hasExpandOnHover ? isHover : false
         return open || showOnExpend
       },
       set (value) {
@@ -137,13 +137,13 @@ export default {
         this.open = value
       }
     },
-    hasExpandHover () {
-      const { expandHover, mini } = this
-      return expandHover && mini
+    hasExpandOnHover () {
+      const { expandOnHover, mini } = this
+      return expandOnHover && mini
     },
     hasCloseBtn () {
-      const { noCloseBtn, hasExpandHover } = this
-      return !noCloseBtn && !hasExpandHover
+      const { noCloseBtn, hasExpandOnHover } = this
+      return !noCloseBtn && !hasExpandOnHover
     },
     wrapperStyle () {
       const { mini, width, isOpen, layer, miniWidth } = this
