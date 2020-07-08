@@ -113,14 +113,26 @@ html {
     }
 
     code.code {
-      background-color: darken($bg-color-light, 5%);
+      background-color: $bg-color-dark;
+      color: $text-color-dark;
       padding: 2px 4px;
       border-radius: 4px;
     }
 
     &.maz-is-dark {
       code.code {
-        background-color: lighten($bg-color-dark-light, 5%);
+        background-color: $bg-color-dark-light;
+      }
+
+      h3,
+      h4,
+      h5,
+      h6,
+      p,
+      ul,
+      li,
+      ol {
+        color: $text-color-dark;
       }
     }
   }
