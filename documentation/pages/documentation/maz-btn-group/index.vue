@@ -8,7 +8,7 @@
       language="html"
       class="btn-container"
     >
-      <div class="flex flex-start direction-column">
+      <div class="maz-flex maz-flex-start maz-direction-column">
         <h5 class="maz-mb-3">
           LG primary
         </h5>
