@@ -25,6 +25,7 @@
 | showCodeOnList     | Show the country phone code in the list                                                                                                                                            | `Boolean` | `false`  | false   |
 | dark               | Enable the dark mode                                                                                                                                                               | `Boolean` | `false`  | false   |
 | color              | Use color                                                                                                                                                                          | `String`  | `false`  | primary |
+| placeholder        | Set placholder of phone number input                                                                                                                                               | `String`  | `false`  | null    |
 
 <!-- @vuese:MazPhoneNumberInput:props:end -->
 
