@@ -4,82 +4,82 @@
   &-inline {
     display: inline-flex;
   }
+}
 
-  &.#{$prefix}fluid {
-    width: 100%;
-  }
+.#{$prefix}fluid {
+  width: 100%;
+}
 
-  &.#{$prefix}direction-column {
-    flex-direction: column;
-  }
+.#{$prefix}direction-column {
+  flex-direction: column;
+}
 
-  &.#{$prefix}direction-column-reverse {
-    flex-direction: column-reverse;
-  }
+.#{$prefix}direction-column-reverse {
+  flex-direction: column-reverse;
+}
 
-  &.#{$prefix}direction-row {
-    flex-direction: row;
-  }
+.#{$prefix}direction-row {
+  flex-direction: row;
+}
 
-  &.#{$prefix}direction-row-reverse {
-    flex-direction: row-reverse;
-  }
+.#{$prefix}direction-row-reverse {
+  flex-direction: row-reverse;
+}
 
-  &.#{$prefix}align-center {
-    align-items: center;
-  }
+.#{$prefix}align-center {
+  align-items: center;
+}
 
-  &.#{$prefix}align-start {
-    align-items: flex-start;
-  }
+.#{$prefix}align-start {
+  align-items: flex-start;
+}
 
-  &.#{$prefix}align-end {
-    align-items: flex-end;
-  }
+.#{$prefix}align-end {
+  align-items: flex-end;
+}
 
-  &.#{$prefix}justify-start {
-    justify-content: flex-start;
-  }
+.#{$prefix}justify-start {
+  justify-content: flex-start;
+}
 
-  &.#{$prefix}justify-end {
-    justify-content: flex-end;
-  }
+.#{$prefix}justify-end {
+  justify-content: flex-end;
+}
 
-  &.#{$prefix}justify-center {
-    justify-content: center;
-  }
+.#{$prefix}justify-center {
+  justify-content: center;
+}
 
-  &.#{$prefix}space-between {
-    justify-content: space-between;
-  }
+.#{$prefix}space-between {
+  justify-content: space-between;
+}
 
-  &.#{$prefix}space-around {
-    justify-content: space-around;
-  }
+.#{$prefix}space-around {
+  justify-content: space-around;
+}
 
-  &.#{$prefix}flex-center {
-    justify-content: center;
-    align-items: center;
-  }
+.#{$prefix}flex-center {
+  justify-content: center;
+  align-items: center;
+}
 
-  &.#{$prefix}flex-start {
-    justify-content: flex-start;
-    align-items: flex-start;
-  }
+.#{$prefix}flex-start {
+  justify-content: flex-start;
+  align-items: flex-start;
+}
 
-  &.#{$prefix}flex-end {
-    justify-content: flex-end;
-    align-items: flex-end;
-  }
+.#{$prefix}flex-end {
+  justify-content: flex-end;
+  align-items: flex-end;
+}
 
-  &.#{$prefix}flex-wrap {
-    flex-wrap: wrap;
-  }
+.#{$prefix}flex-wrap {
+  flex-wrap: wrap;
+}
 
-  &.#{$prefix}flex-grow {
-    // spacer
-    flex-grow: 1;
-  }
+.#{$prefix}flex-grow {
+  // spacer
+  flex-grow: 1;
 }
 
 .#{$prefix}flex-fill {

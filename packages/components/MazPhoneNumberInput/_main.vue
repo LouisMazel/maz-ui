@@ -75,7 +75,7 @@
         :id="uniqueId ? `${uniqueId}_phone_number` : null"
         ref="PhoneNumberInput"
         v-model="inputValue"
-        :placeholder="t.phoneNumberLabel"
+        :placeholder="placeholder || t.phoneNumberLabel"
         :hint="hintValue"
         :disabled="disabled"
         :size="size"
@@ -174,7 +174,9 @@ export default {
     // Enable the dark mode
     dark: { type: Boolean, default: false },
     // Use color
-    color: { type: String, default: 'primary' }
+    color: { type: String, default: 'primary' },
+    // Set placholder of phone number input
+    placeholder: { type: String, default: null }
   },
   data () {
     return {
