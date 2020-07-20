@@ -52,19 +52,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-  .project-preview-footer {
-    .btn--npm svg {
-      width: 35px;
-
-      path {
-        fill: $danger-color;
-      }
-    }
-
-    .btn--white:hover {
-      color: $bg-color-dark;
-    }
-  }
-</style>

@@ -1,8 +1,14 @@
-$xl-padding: 1.429rem 1.786rem !default;
-$lg-padding: 1.143rem 1.571rem !default;
-$md-padding: .8571rem 1.429rem !default;
-$sm-padding: .6429rem 1.071rem !default;
-$mini-padding: .5rem .8571rem !default;
+$xl-side-padding: 1.786rem !default;
+$lg-side-padding: 1.571rem !default;
+$md-side-padding: 1.429rem !default;
+$sm-side-padding:  1.071rem !default;
+$mini-side-padding: .8571rem !default;
+
+$xl-padding: 1.429rem $xl-side-padding !default;
+$lg-padding: 1.143rem $lg-side-padding !default;
+$md-padding: .8571rem $md-side-padding !default;
+$sm-padding: .6429rem $sm-side-padding !default;
+$mini-padding: .5rem $mini-side-padding !default;
 
 $xl-size: 4.286rem !default;
 $lg-size: 3.571rem !default;
@@ -20,7 +26,7 @@ $mini-size: 2rem !default;
   box-shadow: 0 2px 5px 0 rgba(3, 6, 26, .15);
   background-color: $primary-color;
   color: white;
-  display: inline-block;
+  display: inline-flex;
   border-radius: $border-radius;
   line-height: 1;
   box-sizing: border-box;
@@ -32,7 +38,13 @@ $mini-size: 2rem !default;
   text-decoration: none;
   text-align: center;
   -moz-osx-font-smoothing: inherit;
-  padding: $md-padding;
+  white-space: nowrap;
+  padding-right: $md-side-padding;
+  padding-left: $md-side-padding;
+  height: $md-size;
+  vertical-align: middle;
+  justify-content: center;
+  align-items: center;
   font-size: 1rem;
 
   &:hover,
@@ -56,92 +68,83 @@ $mini-size: 2rem !default;
   }
 
   &--xl {
-    padding: $xl-padding;
+    padding-right: $xl-side-padding;
+    padding-left: $xl-side-padding;
+    height: $xl-size;
     font-size: 1.286rem;
   }
 
   &--lg {
-    padding: $lg-padding;
+    padding-right: $lg-side-padding;
+    padding-left: $lg-side-padding;
+    height: $lg-size;
     font-size: 1.143rem;
   }
 
   &--sm {
-    padding: $sm-padding;
+    padding-right: $sm-side-padding;
+    padding-left: $sm-side-padding;
+    height: $sm-size;
     font-size: .857rem;
   }
 
   &--mini {
-    padding: $mini-padding;
+    padding-right: $mini-side-padding;
+    padding-left: $mini-side-padding;
+    height: $mini-size;
     font-size: .857rem;
   }
 
   &--fab {
     border-radius: 50%;
     padding: 0;
-    height: $md-size;
     width: $md-size;
 
     &.#{$prefix}btn--xl {
-      height: $xl-size;
       width: $xl-size;
     }
 
     &.#{$prefix}btn--lg {
-      height: $lg-size;
       width: $lg-size;
     }
 
     &.#{$prefix}btn--md {
-      height: $md-size;
       width: $md-size;
     }
 
     &.#{$prefix}btn--sm {
-      height: $sm-size;
       width: $sm-size;
     }
 
     &.#{$prefix}btn--mini {
-      height: $mini-size;
       width: $mini-size;
     }
   }
 
   &--icon {
-    padding: 0 10px;
-    height: $md-size;
-
     i {
       font-size: 1.714rem;
     }
 
     &.#{$prefix}btn--xl {
-      height: $xl-size;
-
       i {
         font-size: 2rem;
       }
     }
 
     &.#{$prefix}btn--lg {
-      height: $lg-size;
-
       i {
         font-size: 1.857rem;
       }
     }
 
     &.#{$prefix}btn--sm {
-      height: $sm-size;
-
       i {
         font-size: 1.429rem;
       }
     }
 
     &.#{$prefix}btn--mini {
-      height: $mini-size;
-
       i {
         font-size: 1.286rem;
       }

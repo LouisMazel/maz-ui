@@ -6,14 +6,18 @@
     <h4 class="maz-my-3">
       General
     </h4>
-    <NuxtLink
-      class="menu-item maz-btn maz-btn--white maz-mb-2 maz-w-100 maz-no-shadow maz-text-color maz-bg-color maz-no-border maz-hover-bg-color"
+    <MazBtn
+      class="menu-item maz-mb-2"
+      color="transparent"
+      block
+      justify-start
+      no-shadow
       :to="{
         name: 'documentation-get-started'
       }"
     >
       Get started
-    </NuxtLink>
+    </MazBtn>
     <!-- <h4 class="maz-my-3">
       Maz-CLI
     </h4>
@@ -28,30 +32,42 @@
     <h4 class="maz-my-3">
       Theme
     </h4>
-    <NuxtLink
-      class="menu-item maz-btn maz-btn--white maz-mb-2 maz-w-100 maz-no-shadow maz-text-color maz-bg-color maz-no-border maz-hover-bg-color"
+    <MazBtn
+      class="menu-item maz-mb-2"
+      color="transparent"
+      block
+      justify-start
+      no-shadow
       :to="{
         name: 'documentation-colors'
       }"
     >
       Basic colors
-    </NuxtLink>
-    <NuxtLink
-      class="menu-item maz-btn maz-btn--white maz-mb-2 maz-w-100 maz-no-shadow maz-text-color maz-bg-color maz-no-border maz-hover-bg-color"
+    </MazBtn>
+    <MazBtn
+      class="menu-item maz-mb-2"
+      color="transparent"
+      block
+      justify-start
+      no-shadow
       :to="{
         name: 'documentation-theme'
       }"
     >
       Use your own colors & style
-    </NuxtLink>
-    <NuxtLink
-      class="menu-item maz-btn maz-btn--white maz-mb-2 maz-w-100 maz-no-shadow maz-text-color maz-bg-color maz-no-border maz-hover-bg-color"
+    </MazBtn>
+    <MazBtn
+      class="menu-item maz-mb-2"
+      color="transparent"
+      block
+      justify-start
+      no-shadow
       :to="{
         name: 'documentation-dark-mode'
       }"
     >
       Use dark mode
-    </NuxtLink>
+    </MazBtn>
     <h3 class="maz-my-3">
       Components
     </h3>
@@ -59,29 +75,37 @@
       <h4 class="maz-my-3">
         Form
       </h4>
-      <NuxtLink
+      <MazBtn
         v-for="route in routesFormComponents"
         :key="route.name"
-        class="menu-item maz-btn maz-btn--white maz-w-100 maz-no-shadow maz-text-color maz-bg-color maz-no-border maz-hover-bg-color"
+        class="menu-item maz-mb-2"
+        color="transparent"
+        block
+        justify-start
+        no-shadow
         :to="{
           name: route.name
         }"
       >
         {{ getComponentName(route.name) }}
-      </NuxtLink>
+      </MazBtn>
       <h4 class="maz-my-3">
         User Interface
       </h4>
-      <NuxtLink
+      <MazBtn
         v-for="route in routesUiComponents"
         :key="route.name"
-        class="menu-item maz-btn maz-btn--white maz-w-100 maz-no-shadow maz-text-color maz-bg-color maz-no-border maz-hover-bg-color"
+        class="menu-item maz-mb-2"
+        color="transparent"
+        block
+        justify-start
+        no-shadow
         :to="{
           name: route.name
         }"
       >
         {{ getComponentName(route.name) }}
-      </NuxtLink>
+      </MazBtn>
     </div>
   </div>
 </template>

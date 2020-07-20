@@ -160,7 +160,6 @@
     </i>
   </MazBtn>
   <MazBtn
-    left-icon-name=&quot;person&quot;
     right-icon-name=&quot;delete&quot;
     outline
     color=&quot;secondary&quot;
@@ -174,7 +173,6 @@
   />
   <MazBtn
     left-icon-name=&quot;person&quot;
-    right-icon-name=&quot;delete&quot;
     rounded
     color=&quot;danger&quot;
   >
@@ -211,7 +209,7 @@
           left-icon-name="person"
           right-icon-name="delete"
         >
-          Icon
+          Btn icon {{ size }}
         </MazBtn>
       </div>
       <div class="maz-mb-3">
@@ -219,6 +217,7 @@
           v-for="size in btnSizes"
           :key="`loading-${size}`"
           :size="size"
+          color="success"
           class="maz-mr-2 maz-mb-2"
         >
           <i
@@ -227,7 +226,7 @@
           >
             lock
           </i>
-          Slot icon
+          Slot icons {{ size }}
           <i
             slot="icon-right"
             class="material-icons"
@@ -242,12 +241,11 @@
           :key="`loading-${size}`"
           :size="size"
           class="maz-mr-2 maz-mb-2"
-          left-icon-name="person"
           right-icon-name="delete"
           outline
           color="secondary"
         >
-          outline
+          outline {{ size }}
         </MazBtn>
       </div>
       <div class="maz-mb-3">
@@ -268,7 +266,6 @@
           :size="size"
           class="maz-mr-2 maz-mb-2"
           left-icon-name="person"
-          right-icon-name="delete"
           rounded
           color="danger"
         >

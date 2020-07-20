@@ -7,10 +7,9 @@
     :class="[
       classes,
       {
-        hidden: loading,
-        'maz-flex-inline maz-flex': hasIcon(),
+        hidden: loading
       },
-      (hasIcon() ? justifyStart ? 'maz-justify-start maz-align-center' : 'maz-flex-center' : null)
+      (justifyStart ? 'maz-justify-start' : null)
     ]"
     :type="isLink ? null : type"
     :disabled="isLink ? null : isDisabled"
@@ -20,7 +19,7 @@
   >
     <div
       v-if="hasLeftIcon()"
-      class="maz-flex maz-flex-center"
+      class="maz-flex maz-flex-center maz-btn__icon-left"
       :class="{
         'maz-mr-2': !fab && hasSlotDefault()
       }"
@@ -36,7 +35,7 @@
 
     <div
       v-if="hasRightIcon()"
-      class="maz-flex maz-flex-center"
+      class="maz-flex maz-flex-center maz-btn__icon-right"
       :class="{
         'maz-ml-2': !fab && hasSlotDefault()
       }"
@@ -125,7 +124,7 @@ export default {
       return loading || disabled
     },
     classes () {
-      const { color, size, outline, rounded, isDisabled, fab, active, block, noShadow, hasIcon } = this
+      const { color, size, outline, rounded, isDisabled, fab, active, block, noShadow, hasRightIcon, hasLeftIcon, hasIcon } = this
       return [
         ...(color ? [`maz-btn--${color}`] : [null]),
         ...(size ? [`maz-btn--${size}`] : [null]),
@@ -136,7 +135,9 @@ export default {
         ...(isDisabled ? ['maz-btn--disabled'] : [null]),
         ...(active ? ['maz-active'] : [null]),
         ...(noShadow ? ['maz-no-shadow'] : [null]),
-        ...(hasIcon() ? ['maz-btn--icon'] : [null])
+        ...(hasLeftIcon() ? ['maz-btn--icon--left'] : [null]),
+        ...(hasRightIcon()  ? ['maz-btn--icon--right'] : [null]),
+        ...(hasIcon()  ? ['maz-btn--icon'] : [null])
       ]
     }
   },

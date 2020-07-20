@@ -6,9 +6,10 @@
       :title="social.name"
       :href="social.url"
       target="_blank"
-      color="white"
+      color="transparent"
       rounded
-      size="mini"
+      fab
+      size="md"
       no-shadow
     >
       <i :class="`icon-${social.name}`" />
