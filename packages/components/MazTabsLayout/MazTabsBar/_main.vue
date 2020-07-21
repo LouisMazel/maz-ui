@@ -7,17 +7,19 @@
       'align-left': alignLeft
     }"
   >
-    <router-link
+    <MazBtn
       v-for="({ label, disabled }, index) in items"
       :key="index"
       ref="MazTabsBarItem"
+      no-shadow
+      color="transparent"
       :class="{active : valueComputed === index, disabled: disabled }"
-      class="maz-tabs-bar__item maz-flex maz-flex-center maz-dots-text"
+      class="maz-tabs-bar__item"
       :to="noUseAnchor ? null : `#${labelNormalize(label)}`"
-      @click.native.prevent="disabled ? null : valueComputed = index"
+      @click.prevent="disabled ? null : valueComputed = index"
     >
       {{ label }}
-    </router-link>
+    </MazBtn>
     <div
       :style="tabsIndicatorState"
       class="maz-tabs-bar__indicator"

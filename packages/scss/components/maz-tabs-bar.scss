@@ -1,7 +1,7 @@
 @import './../style-helpers/variables/index.scss';
 
 .maz-tabs-bar {
-  height: 45px;
+  height: 43px;
   background-color: $bg-color;
   position: relative;
 
@@ -16,19 +16,8 @@
   }
 
   &__item {
-    cursor: pointer;
-    transition: all .5s;
-    background: transparent;
-    appearance: none;
-    border: none;
-    outline: none;
-    color: $text-color;
-    padding: 0;
-    border-radius: $border-radius;
-    user-select: none;
     padding-left: 10px;
     padding-right: 10px;
-    padding-bottom: 2px;
 
     &.active {
       color: $primary-color;
@@ -52,7 +41,7 @@
     height: 2px;
     text-align: center;
     position: absolute;
-    bottom: 0;
+    bottom: 2px;
     left: 0;
 
     .maz-sub-bar {
