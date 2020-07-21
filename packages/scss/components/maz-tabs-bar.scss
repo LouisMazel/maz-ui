@@ -16,8 +16,9 @@
   }
 
   &__item {
-    padding-left: 10px;
-    padding-right: 10px;
+    &:not(:last-of-type) {
+      margin-right: $border-width;
+    }
 
     &.active {
       color: $primary-color;
@@ -25,7 +26,7 @@
     }
 
     &.disabled {
-      color: #CCC;
+      color: darken($disabled-color, 5%);
       cursor: not-allowed;
     }
 
