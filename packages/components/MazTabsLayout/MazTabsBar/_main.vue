@@ -14,7 +14,7 @@
       :class="{active : valueComputed === index, disabled: disabled }"
       class="maz-tabs-bar__item maz-flex maz-flex-center maz-dots-text"
       :to="noUseAnchor ? null : `#${labelNormalize(label)}`"
-      @click.native="disabled ? null : valueComputed = index"
+      @click.native.prevent="disabled ? null : valueComputed = index"
     >
       {{ label }}
     </router-link>
