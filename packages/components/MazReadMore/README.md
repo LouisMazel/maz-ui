@@ -9,6 +9,6 @@
 | text           | -           | `String` | `false`  | null    |
 | textClass      | -           | `String` | `false`  | null    |
 | truncateLength | -           | `Number` | `false`  | 200     |
-| translations   | -           | `Object` | `false`  | null    |
+| translations   | -           | `Object` | `false`  | Object  |
 
 <!-- @vuese:MazReadMore:props:end -->
