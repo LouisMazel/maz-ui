@@ -16,7 +16,7 @@
       :class="{active : valueComputed === index, disabled: disabled }"
       class="maz-tabs-bar__item"
       :to="noUseAnchor ? null : `#${labelNormalize(label)}`"
-      @click.prevent="disabled ? null : valueComputed = index"
+      @click.native.prevent="disabled ? null : valueComputed = index"
     >
       {{ label }}
     </MazBtn>
