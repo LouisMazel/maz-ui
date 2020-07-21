@@ -16,7 +16,6 @@
       :class="{active : valueComputed === i, disabled: disabled }"
       class="maz-tabs-bar__item"
       :to="noUseAnchor ? null : `#${labelNormalize(label)}`"
-      style="padding: 0 10px;"
       @click.native.prevent="disabled ? null : setValue($event, i)"
     >
       {{ label }}
