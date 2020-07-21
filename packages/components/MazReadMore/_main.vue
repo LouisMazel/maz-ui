@@ -23,7 +23,7 @@ export default {
     text: { type: String, default: null },
     textClass: { type: String, default: null },
     truncateLength: { type: Number, default: 200 },
-    translations: { type: Object, default: null }
+    translations: { type: Object, default: Object }
   },
   data () {
     return {
