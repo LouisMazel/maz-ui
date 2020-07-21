@@ -35,6 +35,8 @@
 | click      | return click event      | -          |
 | mouseenter | return mouseenter event | -          |
 | mouseleave | return mouseleave event | -          |
+| focus      | return focus event      | -          |
+| blur       | return blur event       | -          |
 
 <!-- @vuese:MazBtn:events:end -->
 
