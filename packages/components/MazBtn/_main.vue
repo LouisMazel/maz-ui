@@ -13,7 +13,7 @@
     ]"
     :type="isLink ? null : type"
     :disabled="isLink ? null : isDisabled"
-    @click="isLink ? null : handleClick($event)"
+    @click.native="handleClick($event)"
     @mouseenter="emitMouseEnter($event)"
     @mouseleave="emitMouseLeave($event)"
     @focus="emitFocus($event)"
