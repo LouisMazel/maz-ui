@@ -76,7 +76,7 @@
         ref="PhoneNumberInput"
         v-model="inputValue"
         :placeholder="placeholder || t.phoneNumberLabel"
-        :hint="hintValue"
+        :hint="hint || hintValue"
         :disabled="disabled"
         :size="size"
         :success="isValid && !noValidation"
@@ -176,7 +176,9 @@ export default {
     // Use color
     color: { type: String, default: 'primary' },
     // Set placholder of phone number input
-    placeholder: { type: String, default: null }
+    placeholder: { type: String, default: null },
+    // hint message shown on phone number text field
+    hint: { type: String, default: null }
   },
   data () {
     return {
