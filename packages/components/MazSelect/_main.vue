@@ -19,7 +19,7 @@
         ref="SelectedTagsContainer"
         tag="div"
         name="maz-tags"
-        class="maz-flex maz-align-center maz-flex-1"
+        class="maz-flex maz-align-center maz-h-100"
       >
         <MazBtn
           v-for="(option, i) in selectedOptions"
@@ -126,7 +126,7 @@
               {'selected': values.length && values.includes(option[config.valueKey]) },
               {'keyboard-selected': tmpValue === option[config.valueKey]}
             ]"
-            class="maz-select__options-list__item flex align-center maz-text-left"
+            class="maz-select__options-list__item flex maz-align-center maz-text-left"
             :style="[optionHeight]"
             @click.prevent.stop="updateValue(option[config.valueKey])"
           >
