@@ -26,6 +26,7 @@
 | dark               | Enable the dark mode                                                                                                                                                               | `Boolean` | `false`  | false   |
 | color              | Use color                                                                                                                                                                          | `String`  | `false`  | primary |
 | placeholder        | Set placholder of phone number input                                                                                                                                               | `String`  | `false`  | null    |
+| hint               | hint message shown on phone number text field                                                                                                                                      | `String`  | `false`  | null    |
 
 <!-- @vuese:MazPhoneNumberInput:props:end -->
 
