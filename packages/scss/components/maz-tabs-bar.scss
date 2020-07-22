@@ -17,6 +17,8 @@
   }
 
   &__item {
+    box-shadow: none !important;
+
     &:not(:last-of-type) {
       margin-right: $border-width;
     }
