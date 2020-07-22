@@ -4,14 +4,6 @@
     :class="[{ 'maz-is-dark': dark }, size]"
     class="maz-base-component maz-phone-number-input maz-flex"
   >
-    <button
-      v-if="countryCode && !noFlags"
-      class="maz-phone-number-input__country-flag"
-      tabindex="-1"
-      @click="focusCountrySelector"
-    >
-      <div :class="`maz-flag maz-flag-${countryCode.toLowerCase()}`" />
-    </button>
     <MazSelect
       v-if="!noCountrySelector"
       ref="CountrySelector"
@@ -69,6 +61,15 @@
         </div>
       </template>
     </MazSelect>
+
+    <button
+      v-if="countryCode && !noFlags"
+      class="maz-phone-number-input__country-flag"
+      tabindex="-1"
+      @click="focusCountrySelector"
+    >
+      <div :class="`maz-flag maz-flag-${countryCode.toLowerCase()}`" />
+    </button>
 
     <div class="maz-flex-1">
       <MazInput

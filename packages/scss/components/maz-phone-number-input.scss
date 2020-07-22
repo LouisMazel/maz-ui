@@ -26,9 +26,14 @@ $LG_SIZE: 10.357rem;
     min-width: $MD_SIZE;
     max-width: $MD_SIZE;
 
+    &:hover,
     &:focus,
     &.has-list-open {
-      z-index: 1;
+      z-index: 3;
+
+      ~ .maz-phone-number-input__country-flag {
+        z-index: 4;
+      }
     }
 
     .maz-input {
