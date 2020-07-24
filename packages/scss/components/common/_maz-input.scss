@@ -457,7 +457,7 @@ $SM_SIZE: 2.286rem !default;
   select:-webkit-autofill:hover,
   select:-webkit-autofill:focus {
     -webkit-text-fill-color: $text-color;
-    box-shadow: 0 0 0 1000px $bg-color-light inset;
+    box-shadow: 0 0 0 1000px $bg-color inset;
   }
 }
 
