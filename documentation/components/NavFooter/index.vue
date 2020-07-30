@@ -4,7 +4,7 @@
     role="contentinfo"
   >
     <nav
-      class="nav-footer-content maz-container maz-px-4 maz-flex maz-align-center maz-space-between maz-py-4"
+      class="nav-footer-content maz-container maz-flex maz-align-center maz-space-between maz-py-4"
     >
       <div class="maz-flex maz-direction-column maz-hidden-tablet">
         <NuxtLink
@@ -34,7 +34,7 @@
         <VersionNumber />
       </div>
     </nav>
-    <div class="nav-footer-subs maz-py-2">
+    <div class="nav-footer-subs maz-container maz-py-2">
       <div class="maz-px-4 maz-flex maz-justify-end">
         <a
           href="https://www.loicmazuel.com/"

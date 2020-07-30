@@ -17,7 +17,7 @@
           v-for="(project, i) in projects"
           :key="`project-${i}`"
           :project="project"
-          class="made-with-maz-ui__projects-list__item"
+          class="made-with-maz-ui__projects-list__item maz-flex-1"
         />
       </div>
     </MazFlex>

@@ -105,13 +105,13 @@ export default {
     setSizeImage () {
       try {
         const img = new Image()
-        img.src = this.src
         img.onload = () => {
           this.loading = false
           this.width = img.width
           this.heightImage = img.height
           this.height = this.getHeightRatio(img.height)
         }
+        img.src = this.src
       } catch (e) {
         throw new Error(`[MazImg] Error while getting image dimensions: ${e}`)
       }

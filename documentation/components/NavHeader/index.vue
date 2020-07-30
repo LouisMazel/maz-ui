@@ -4,8 +4,8 @@
     role="banner"
   >
     <nav
-      class="maz-px-4 maz-flex maz-space-between"
-      :class="{ 'maz-container': !isDocPage }"
+      :class="[isDocPage ? 'maz-px-4' : 'maz-container' ]"
+      class="maz-flex maz-space-between"
     >
       <NuxtLink
         :to="{

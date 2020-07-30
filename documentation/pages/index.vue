@@ -1,6 +1,6 @@
 <template>
   <div class="home maz-flex-1 maz-flex maz-direction-column">
-    <div class="home__main maz-flex maz-flex-1 maz-container maz-flex-center">
+    <div class="home__main maz-flex maz-flex-1 maz-flex-center maz-container">
       <div class="home__content maz-flex maz-direction-column maz-justify-center maz-p-4">
         <h2 class="maz-mb-2 maz-text-center">
           Stand-alone components library to build your interfaces with
