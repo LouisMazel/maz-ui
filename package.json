@@ -1,6 +1,6 @@
 {
   "name": "maz-ui",
-  "version": "1.2.16",
+  "version": "1.3.0",
   "main": "lib/maz-ui.common.js",
   "description": "A stand-alone components library for Vue.Js & Nuxt.Js",
   "author": "Louis Mazel <me@loicmazuel.com>",
