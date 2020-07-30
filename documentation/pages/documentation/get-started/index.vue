@@ -136,6 +136,7 @@ import {
   MazCollapse,
   MazDialog,
   MazDraggableList,
+  MazDropdown
   MazDropzone,
   MazFlex,
   MazInput,
@@ -172,6 +173,7 @@ Vue.use(MazCheckbox)
 Vue.use(MazCollapse)
 Vue.use(MazDialog)
 Vue.use(MazDraggableList)
+Vue.use(MazDropdown)
 Vue.use(MazDropzone)
 Vue.use(MazFlex)
 Vue.use(MazInput)

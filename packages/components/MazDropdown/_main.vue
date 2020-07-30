@@ -7,9 +7,9 @@
     @mouseleave="hover ? closeMenu() : null"
   >
     <MazBtn
-      color="transparent"
       no-shadow
       class="maz-dropdown__btn"
+      :color="color"
       v-bind="$attrs"
       @focus.native="openMenu()"
       @blur.native="closeMenu()"
@@ -24,12 +24,15 @@
     </MazBtn>
     <transition
       tag="div"
-      name="maz-slide"
+      :name="hasPositionTop ? 'maz-slideinvert' : 'maz-slide' "
       class="maz-bg-color"
     >
       <div
         v-show="dropdownOpen"
         class="maz-dropdown__dropdown maz-flex maz-direction-column maz-border-radius maz-bg-color maz-border maz-border-solid maz-border-color"
+        :class="[{
+          'maz-dropdown__dropdown--top': hasPositionTop
+        }, hasPositionLeft ? 'maz-dropdown__dropdown--left': 'maz-dropdown__dropdown--right']"
       >
         <slot name="dropdown" />
       </div>
@@ -40,13 +43,18 @@
 <script>
 export default {
   name: 'MazDropdown',
+  inheritAttrs: false,
   props: {
     // dropdown is open on hover
     hover: { type: Boolean, default: false },
     // set dropdown open
     open: { type: Boolean, default: false },
     // set dark mode
-    dark: { type: Boolean, default: false }
+    dark: { type: Boolean, default: false },
+    // set dropdown position
+    position: { type: String, default: 'right bottom' },
+    // set color of button
+    color: { type: String, default: 'transparent' },
   },
   data () {
     return {
@@ -56,6 +64,12 @@ export default {
   computed: {
     dropdownOpen () {
       return this.open || this.isOpen
+    },
+    hasPositionTop () {
+      return this.position.includes('top')
+    },
+    hasPositionLeft () {
+      return this.position.includes('left')
     }
   },
   methods: {
@@ -68,30 +82,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-  .maz-dropdown {
-    position: relative;
-
-    &__btn {
-      padding-right: .625rem;
-      padding-left: .625rem;
-
-      &__icon {
-        transition: all 300ms ease-in-out;
-
-        &.rotate {
-          transform: rotate(-180deg);
-        }
-      }
-    }
-
-    &__dropdown {
-      position: absolute;
-      top: 100%;
-      right: 0;
-      overflow: hidden;
-      z-index: 1040;
-    }
-  }
-</style>
