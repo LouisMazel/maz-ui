@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import closable from './../../directives/VClosable'
+import closable from './../../directives/v-closable'
 
 export default {
   name: 'MazResponsiveMenu',
