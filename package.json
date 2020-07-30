@@ -83,7 +83,8 @@
     "npm": ">= 3.0.0"
   },
   "files": [
-    "lib/"
+    "lib/",
+    "index.d.ts"
   ],
   "bugs": {
     "url": "https://github.com/LouisMazel/maz-ui/issues"
@@ -101,5 +102,6 @@
     "type": "git",
     "url": "git+https://github.com/LouisMazel/maz-ui.git"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "types": "index.d.ts"
 }
