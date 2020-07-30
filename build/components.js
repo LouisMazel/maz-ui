@@ -9,6 +9,7 @@ module.exports = {
   'maz-draggable-list': './components/MazDraggableList/index.js',
   'maz-dropzone': './components/MazDropzone/index.js',
   'maz-flex': './components/MazFlex/index.js',
+  'maz-img': './components/MazImg/index.js',
   'maz-input': './components/MazInput/index.js',
   'maz-input-tags': './components/MazInputTags/index.js',
   'maz-list': './components/MazList/index.js',
