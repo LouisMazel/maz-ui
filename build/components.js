@@ -7,6 +7,7 @@ module.exports = {
   'maz-collapse': './components/MazCollapse/index.js',
   'maz-dialog': './components/MazDialog/index.js',
   'maz-draggable-list': './components/MazDraggableList/index.js',
+  'maz-dropdown': './components/MazDropdown/index.js',
   'maz-dropzone': './components/MazDropzone/index.js',
   'maz-flex': './components/MazFlex/index.js',
   'maz-img': './components/MazImg/index.js',

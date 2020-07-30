@@ -10,6 +10,7 @@ import MazCheckbox from './components/MazCheckbox/index.js'
 import MazCollapse from './components/MazCollapse/index.js'
 import MazDialog from './components/MazDialog/index.js'
 import MazDraggableList from './components/MazDraggableList/index.js'
+import MazDropdown from './components/MazDropdown/index.js'
 import MazFlex from './components/MazFlex/index.js'
 import MazImg from './components/MazImg/index.js'
 import MazInput from './components/MazInput/index.js'
@@ -46,6 +47,7 @@ const components = [
   MazCollapse,
   MazDialog,
   MazDraggableList,
+  MazDropdown,
   MazFlex,
   MazImg,
   MazInput,
@@ -94,6 +96,7 @@ export default {
   MazCollapse,
   MazDialog,
   MazDraggableList,
+  MazDropdown,
   MazFlex,
   MazImg,
   MazInput,
