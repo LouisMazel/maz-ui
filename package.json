@@ -102,5 +102,6 @@
     "type": "git",
     "url": "git+https://github.com/LouisMazel/maz-ui.git"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "types": "index.d.ts"
 }
