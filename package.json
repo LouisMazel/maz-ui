@@ -83,7 +83,8 @@
     "npm": ">= 3.0.0"
   },
   "files": [
-    "lib/"
+    "lib/",
+    "index.d.ts"
   ],
   "bugs": {
     "url": "https://github.com/LouisMazel/maz-ui/issues"
