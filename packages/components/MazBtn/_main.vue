@@ -13,9 +13,11 @@
     ]"
     :type="isLink ? null : type"
     :disabled="isLink ? null : isDisabled"
-    @click="isLink ? null : handleClick($event)"
+    @click="handleClick($event)"
     @mouseenter="emitMouseEnter($event)"
     @mouseleave="emitMouseLeave($event)"
+    @focus="emitFocus($event)"
+    @blur="emitBlur($event)"
   >
     <div
       v-if="hasLeftIcon()"
@@ -165,6 +167,14 @@ export default {
     emitMouseLeave (e) {
       // return mouseleave event
       this.$emit('mouseleave', e)
+    },
+    emitFocus (e) {
+      // return focus event
+      this.$emit('focus', e)
+    },
+    emitBlur (e) {
+      // return blur event
+      this.$emit('blur', e)
     }
   }
 }

@@ -4,14 +4,6 @@
     :class="[{ 'maz-is-dark': dark }, size]"
     class="maz-base-component maz-phone-number-input maz-flex"
   >
-    <button
-      v-if="countryCode && !noFlags"
-      class="maz-phone-number-input__country-flag"
-      tabindex="-1"
-      @click="focusCountrySelector"
-    >
-      <div :class="`maz-flag maz-flag-${countryCode.toLowerCase()}`" />
-    </button>
     <MazSelect
       v-if="!noCountrySelector"
       ref="CountrySelector"
@@ -70,13 +62,22 @@
       </template>
     </MazSelect>
 
+    <button
+      v-if="countryCode && !noFlags"
+      class="maz-phone-number-input__country-flag"
+      tabindex="-1"
+      @click="focusCountrySelector"
+    >
+      <div :class="`maz-flag maz-flag-${countryCode.toLowerCase()}`" />
+    </button>
+
     <div class="maz-flex-1">
       <MazInput
         :id="uniqueId ? `${uniqueId}_phone_number` : null"
         ref="PhoneNumberInput"
         v-model="inputValue"
         :placeholder="placeholder || t.phoneNumberLabel"
-        :hint="hintValue"
+        :hint="hint || hintValue"
         :disabled="disabled"
         :size="size"
         :success="isValid && !noValidation"
@@ -176,7 +177,9 @@ export default {
     // Use color
     color: { type: String, default: 'primary' },
     // Set placholder of phone number input
-    placeholder: { type: String, default: null }
+    placeholder: { type: String, default: null },
+    // hint message shown on phone number text field
+    hint: { type: String, default: null }
   },
   data () {
     return {

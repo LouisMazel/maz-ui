@@ -43,9 +43,12 @@
 
   &__tag {
     margin-right: 4px;
-    border-radius: 4px;
-    padding: 5px 4px 5px 7px;
+    border-radius: calc(#{$border-radius} / 2);
     color: white;
+    height: 100%;
+    padding-right: .2857rem;
+    padding-left: .5rem;
+    box-shadow: none !important;
 
     &__text {
       font-size: .875rem;
@@ -54,15 +57,17 @@
     }
 
     &__clear {
-      font-size: 1rem;
+      font-size: 1.2rem;
     }
 
     &.maz-btn--sm {
-      padding: 3px 2px 3px 5px;
+      font-size: 1.143rem;
+      min-height: 3.286rem;
     }
 
     &.maz-btn--lg {
-      padding: 8px 5px 8px 10px;
+      padding-left: .7143rem;
+      padding-right: .3571rem;
     }
   }
 

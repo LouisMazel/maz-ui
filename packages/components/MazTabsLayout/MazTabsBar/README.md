@@ -18,8 +18,8 @@
 
 <!-- @vuese:MazTabsBar:events:start -->
 
-| Event Name | Description | Parameters |
-| ---------- | ----------- | ---------- |
-| input      | -           | -          |
+| Event Name | Description                             | Parameters |
+| ---------- | --------------------------------------- | ---------- |
+| input      | return the number of current active tab | Number     |
 
 <!-- @vuese:MazTabsBar:events:end -->

@@ -7,17 +7,19 @@
       'align-left': alignLeft
     }"
   >
-    <router-link
-      v-for="({ label, disabled }, index) in items"
-      :key="index"
+    <MazBtn
+      v-for="({ label, disabled }, i) in items"
+      :key="i"
       ref="MazTabsBarItem"
-      :class="{active : valueComputed === index, disabled: disabled }"
-      class="maz-tabs-bar__item maz-flex maz-flex-center maz-dots-text"
+      no-shadow
+      color="transparent"
+      :class="{active : valueComputed === i, disabled: disabled }"
+      class="maz-tabs-bar__item"
       :to="noUseAnchor ? null : `#${labelNormalize(label)}`"
-      @click.native="disabled ? null : valueComputed = index"
+      @click.native.prevent="disabled ? null : setValue($event, i)"
     >
       {{ label }}
-    </router-link>
+    </MazBtn>
     <div
       :style="tabsIndicatorState"
       class="maz-tabs-bar__indicator"
@@ -70,10 +72,10 @@ export default {
         return value ? value - 1 : this.currentTab
       },
       set (value) {
-        // return the number of current active tab
-        // @arg Number
         this.getTabsIndicatorState()
         this.currentTab = value
+        // return the number of current active tab
+        // @arg Number
         this.$emit('input', value + 1)
       }
     }
@@ -91,6 +93,10 @@ export default {
     this.getTabsIndicatorState()
   },
   methods: {
+    setValue (e, i) {
+      e.preventDefault()
+      this.valueComputed = i
+    },
     labelNormalize (label) {
       return toSnakeCase(label)
     },

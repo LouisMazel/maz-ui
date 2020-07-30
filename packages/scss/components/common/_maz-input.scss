@@ -35,14 +35,6 @@ $SM_SIZE: 2.286rem !default;
     font-size: 1rem;
     z-index: 0;
 
-    &::-webkit-autofill,
-    &::-webkit-autofill:hover,
-    &::-webkit-autofill:focus,
-    &::-webkit-autofill:active {
-      box-shadow: 0 0 0 30px $bg-color inset !important;
-      -webkit-text-fill-color: $text-color !important;
-    }
-
     &:not(.maz-textarea) {
       height: $MD_SIZE;
       min-height: $MD_SIZE;
@@ -454,6 +446,19 @@ $SM_SIZE: 2.286rem !default;
       }
     }
   }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  textarea:-webkit-autofill,
+  textarea:-webkit-autofill:hover,
+  textarea:-webkit-autofill:focus,
+  select:-webkit-autofill,
+  select:-webkit-autofill:hover,
+  select:-webkit-autofill:focus {
+    -webkit-text-fill-color: $text-color;
+    box-shadow: 0 0 0 1000px $bg-color inset;
+  }
 }
 
 .maz-is-dark .maz-input,
@@ -465,14 +470,6 @@ $SM_SIZE: 2.286rem !default;
   &__input {
     background-color: $bg-color-dark-light;
     color: $text-color-dark;
-
-    &::-webkit-autofill,
-    &::-webkit-autofill:hover,
-    &::-webkit-autofill:focus,
-    &::-webkit-autofill:active {
-      box-shadow: 0 0 0 30px $bg-color-dark inset !important;
-      -webkit-text-fill-color: $text-color-dark !important;
-    }
 
     &::-webkit-input-placeholder {
       color: $placeholder-color-dark;
@@ -510,5 +507,18 @@ $SM_SIZE: 2.286rem !default;
       color: $text-color-dark;
       background-color: lighten($hover-bg-color-dark-l, 10%);
     }
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  textarea:-webkit-autofill,
+  textarea:-webkit-autofill:hover,
+  textarea:-webkit-autofill:focus,
+  select:-webkit-autofill,
+  select:-webkit-autofill:hover,
+  select:-webkit-autofill:focus {
+    -webkit-text-fill-color: $text-color-dark;
+    box-shadow: 0 0 0 1000px $bg-color-dark-light inset;
   }
 }

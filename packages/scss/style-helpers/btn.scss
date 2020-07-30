@@ -190,6 +190,11 @@ $mini-size: 2rem !default;
         &.#{$prefix}active {
           background-color: $color;
           color: white;
+
+          &.#{$prefix}btn--white--outline,
+          &.#{$prefix}btn--light--outline {
+            color: $text-color;
+          }
         }
 
         &:focus {
