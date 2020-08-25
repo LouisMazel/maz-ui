@@ -34,7 +34,7 @@
     }
   },
   "dependencies": {
-    "libphonenumber-js": "^1.7.54",
+    "libphonenumber-js": "^1.7.57",
     "moment": "2.24.0",
     "moment-range": "^4.0.2",
     "plotly.js-dist": "^1.54.5",
