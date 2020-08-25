@@ -226,7 +226,11 @@ export default {
     },
     callingCode () {
       const { countryCode } = this
-      return countryCode ? `+${getCountryCallingCode(countryCode)}` : null
+      const getDialCode = (code) => {
+        const result = this.countriesSorted.find(m => m.iso2 === code)
+        return result ? result.dialCode : null
+      }
+      return countryCode ? `+${getDialCode(countryCode) || getCountryCallingCode(countryCode)}` : null
     },
     shouldChooseCountry () {
       return !this.countryCode && !!this.inputValue
