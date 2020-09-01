@@ -71,41 +71,39 @@
       <div :class="`maz-flag maz-flag-${countryCode.toLowerCase()}`" />
     </button>
 
-    <div class="maz-flex-1">
-      <MazInput
-        :id="uniqueId ? `${uniqueId}_phone_number` : null"
-        ref="PhoneNumberInput"
-        v-model="inputValue"
-        :placeholder="placeholder || t.phoneNumberLabel"
-        :hint="hint || hintValue"
-        :disabled="disabled"
-        :size="size"
-        :success="isValid && !noValidation"
-        v-bind="$attrs"
-        clearable
-        :color="color"
-        class="input-phone-number"
-        :class="{
-          'has-border-radius': noCountrySelector
-        }"
-        @keydown="(e) => { lastKeyPressed = e.keyCode }"
-        @focus="$emit('focus', $event)"
-        @blur="$emit('blur', $event)"
-        @change="$emit('change', $event)"
-        @clear="$emit('clear', $event)"
-      >
-        <!-- Custom left icon -->
-        <slot
-          slot="icon-left"
-          name="icon-left"
-        />
-        <!-- Custom right icon -->
-        <slot
-          slot="icon-right"
-          name="icon-right"
-        />
-      </MazInput>
-    </div>
+    <MazInput
+      :id="uniqueId ? `${uniqueId}_phone_number` : null"
+      ref="PhoneNumberInput"
+      v-model="inputValue"
+      :placeholder="placeholder || t.phoneNumberLabel"
+      :hint="hint || hintValue"
+      :disabled="disabled"
+      :size="size"
+      :success="isValid && !noValidation"
+      v-bind="$attrs"
+      clearable
+      :color="color"
+      class="input-phone-number maz-flex-1"
+      :class="{
+        'has-border-radius': noCountrySelector
+      }"
+      @keydown="(e) => { lastKeyPressed = e.keyCode }"
+      @focus="$emit('focus', $event)"
+      @blur="$emit('blur', $event)"
+      @change="$emit('change', $event)"
+      @clear="$emit('clear', $event)"
+    >
+      <!-- Custom left icon -->
+      <slot
+        slot="icon-left"
+        name="icon-left"
+      />
+      <!-- Custom right icon -->
+      <slot
+        slot="icon-right"
+        name="icon-right"
+      />
+    </MazInput>
   </div>
 </template>
 <script>
@@ -126,8 +124,13 @@ const browserLocale = () => {
   return locale
 }
 
-const isCountryAvailable = (locale) => {
-  return countriesIso.includes(locale)
+const isCountryAvailable = async (locale) => {
+  try {
+    if (countriesIso.includes(locale)) return true
+    throw `MazPhoneNumberInput: The locale ${locale} is not available`
+  } catch (e) {
+    throw new Error(e)
+  }
 }
 
 export default {
@@ -186,31 +189,26 @@ export default {
       results: {},
       userLocale: this.defaultCountryCode,
       lastKeyPressed: null,
-      inputValueFormatted: null
+      asYouTypeNumber: null
     }
   },
   computed: {
+    codesCountries () {
+      return countries
+    },
     t () {
       return {
         ...locales,
         ...this.translations
       }
     },
-    codesCountries () {
-      return countries
-    },
     inputValue: {
       get () {
-        const { results, inputValueFormatted, isValid } = this
-        return results && results.formatNational && isValid ? results.formatNational : inputValueFormatted
+        return this.asYouTypeNumber
       },
       set (phoneNumber) {
-        const { countryCode, getAsYouTypeFormat, emitValues } = this
-        this.inputValueFormatted = getAsYouTypeFormat({
-          phoneNumber,
-          countryCode
-        })
-        emitValues({ countryCode, phoneNumber })
+        const { countryCode } = this
+        this.buildResults({ countryCode, phoneNumber })
       }
     },
     countryCode: {
@@ -219,8 +217,8 @@ export default {
       },
       set (countryCode) {
         if (!countryCode) return
-        const { emitValues, $refs, inputValue } = this
-        emitValues({countryCode, phoneNumber: inputValue})
+        const { buildResults, $refs, asYouTypeNumber } = this
+        buildResults({ phoneNumber: asYouTypeNumber, countryCode })
         $refs.PhoneNumberInput.$el.querySelector('input').focus()
       }
     },
@@ -233,7 +231,7 @@ export default {
       return countryCode ? `+${getDialCode(countryCode) || getCountryCallingCode(countryCode)}` : null
     },
     shouldChooseCountry () {
-      return !this.countryCode && !!this.inputValue
+      return !this.countryCode && !!this.asYouTypeNumber
     },
     isValid () {
       return this.results.isValid
@@ -243,14 +241,15 @@ export default {
       return phoneNumber ? phoneNumber.formatNational() : null
     },
     hasEmptyPhone () {
-      return this.inputValue === '' || this.inputValue === null
+      return this.asYouTypeNumber === '' || this.asYouTypeNumber === null
     },
     hintValue () {
-      const { noExample, phoneNumberExample, hasEmptyPhone, isValid, t, } = this
+      const { noExample, phoneNumberExample, hasEmptyPhone, isValid, t } = this
       return  noExample || !phoneNumberExample
         ? null
         : hasEmptyPhone || isValid ? null : `${t.example} ${phoneNumberExample}`
     },
+    // Countries list management
     countriesList () {
       return this.codesCountries.filter(item => !this.ignoredCountries.includes(item.iso2))
     },
@@ -273,15 +272,13 @@ export default {
     }
   },
   watch: {
-    value (phoneNumber, oldPhoneNumber) {
-      if (phoneNumber === oldPhoneNumber) return
-      if (phoneNumber) {
-        // const { countryCode, emitValues } = this
-        // emitValues({ countryCode, phoneNumber })
-        this.inputValue = phoneNumber
-      }
-      else this.inputValue = null
-    },
+    // value: {
+    //   handler (phoneNumber, oldPhoneNumber) {
+    //     if (phoneNumber === oldPhoneNumber) return
+    //     this.buildResults({ phoneNumber, countryCode: this.countryCode })
+    //   },
+    //   immediate: true
+    // },
     defaultCountryCode (newValue, oldValue) {
       if (newValue === oldValue) return
       this.setLocale(newValue)
@@ -289,8 +286,8 @@ export default {
   },
   async mounted () {
     try {
-      const { defaultCountryCode, fetchCountry, noUseBrowserLocale, fetchCountryCode, setLocale, value } = this
-      if (value) this.inputValue = value
+      const { defaultCountryCode, fetchCountry, noUseBrowserLocale, fetchCountryCode, setLocale } = this
+      this.buildResults({ phoneNumber: this.value, countryCode: this.countryCode })
 
       if (defaultCountryCode && fetchCountry)
         throw new Error('MazPhoneNumberInput: Do not use \'fetch-country\' and \'default-country-code\' options in the same time')
@@ -308,55 +305,60 @@ export default {
     }
   },
   methods: {
-    async focusCountrySelector () {
-      await this.$nextTick()
-      this.$refs.CountrySelector.$el.querySelector('input').focus()
+    getAsYouTypeFormat ({ countryCode, phoneNumber }) {
+      if (!phoneNumber) return this.asYouTypeNumber = null
+
+      const formatted = new AsYouType(countryCode).input(phoneNumber)
+      this.asYouTypeNumber = formatted
     },
-    getAsYouTypeFormat (payload) {
-      const { countryCode, phoneNumber } = payload
-      if (!phoneNumber) return null
-      const asYouType = new AsYouType(countryCode)
-      const formatted = asYouType.input(phoneNumber)
-      return formatted
-    },
-    getParsePhoneNumberFromString ({ phoneNumber, countryCode }) {
-      const parsing = phoneNumber ? parsePhoneNumberFromString(phoneNumber, countryCode) : null
-      return {
-        countryCode,
-        isValid: false,
-        ...(phoneNumber && (phoneNumber !== '')
-          ? { phoneNumber : phoneNumber }
-          : null
-        ),
-        ...(parsing
-          ? {
-            countryCode: parsing.country || countryCode,
-            countryCallingCode: parsing.countryCallingCode,
-            formattedNumber: parsing.number,
-            nationalNumber: parsing.nationalNumber,
-            isValid: parsing.isValid(),
-            type: parsing.getType(),
-            formatInternational: parsing.formatInternational(),
-            formatNational: parsing.formatNational(),
-            uri: parsing.getURI(),
-            e164: parsing.format('E.164')
-          }
-          : null
-        )
+    async getParsePhoneNumberFromString ({ phoneNumber, countryCode }) {
+      try {
+        const parsing = phoneNumber ? parsePhoneNumberFromString(phoneNumber, countryCode) : null
+        this.results = {
+          countryCode,
+          isValid: false,
+          ...(phoneNumber && (phoneNumber !== '')
+            ? { phoneNumber : phoneNumber }
+            : null
+          ),
+          ...(parsing
+            ? {
+              countryCode: parsing.country || countryCode,
+              countryCallingCode: parsing.countryCallingCode,
+              asYouTypeNumber: parsing.number,
+              nationalNumber: parsing.nationalNumber,
+              isValid: parsing.isValid(),
+              type: parsing.getType(),
+              formatInternational: parsing.formatInternational(),
+              formatNational: parsing.formatNational(),
+              uri: parsing.getURI(),
+              e164: parsing.format('E.164')
+            }
+            : null
+          )
+        }
+      } catch (e) {
+        return new Error('MazPhoneNumberInput: Impossible to parse phone number')
       }
     },
-    async emitValues (payload) {
-      const { inputValue, lastKeyPressed, getParsePhoneNumberFromString } = this
-
+    async buildResults (payload) {
+      const { asYouTypeNumber, lastKeyPressed, getParsePhoneNumberFromString, getAsYouTypeFormat } = this
       const backSpacePressed = lastKeyPressed === 8
 
       await this.$nextTick()
-      const lastCharacOfPhoneNumber = inputValue ? inputValue.trim().slice(-1) : false
+
+      const lastCharacOfPhoneNumber = asYouTypeNumber ? asYouTypeNumber.slice(asYouTypeNumber.length - 1) : false
       if (backSpacePressed && lastCharacOfPhoneNumber && (lastCharacOfPhoneNumber === ')')) {
-        return this.inputValue = inputValue.slice(0, -2)
+        this.asYouTypeNumber = asYouTypeNumber.slice(0, -1)
       }
 
-      this.results = getParsePhoneNumberFromString(payload)
+      await getParsePhoneNumberFromString(payload)
+
+      await getAsYouTypeFormat({
+        ...payload,
+        phoneNumber: this.results.formatNational || payload.phoneNumber
+      })
+
       // sent when the user tape
       // @arg Object with all paser values
       this.$emit('update', this.results)
@@ -366,14 +368,11 @@ export default {
       this.$emit('input', isValid ? e164 : phoneNumber)
     },
     setLocale (locale) {
-      const { emitValues, inputValue } = this
+      const { buildResults, asYouTypeNumber } = this
       const countryAvailable = isCountryAvailable(locale)
       if (countryAvailable && locale) {
-        this.userLocale = countryAvailable ? locale : null
-        if (inputValue) emitValues({countryCode: this.userLocale, phoneNumber: inputValue})
-      } else if (!countryAvailable && locale) {
-        // If default country code is not available
-        console.warn(`The locale ${locale} is not available`)
+        this.userLocale = locale
+        if (!this.hasEmptyPhone) buildResults({countryCode: locale, phoneNumber: asYouTypeNumber})
       }
     },
     async fetchCountryCode () {
@@ -385,6 +384,10 @@ export default {
       } catch (err) {
         return new Error('[MazPhoneNumberInput] Error while fetching country code')
       }
+    },
+    async focusCountrySelector () {
+      await this.$nextTick()
+      this.$refs.CountrySelector.$el.querySelector('input').focus()
     }
   }
 }
