@@ -316,6 +316,9 @@ export default {
       return formatted
     },
     getParsePhoneNumberFromString ({ phoneNumber, countryCode }) {
+      if (countryCode === 'RU' && phoneNumber && phoneNumber[0] === '8') {
+        phoneNumber = phoneNumber.substring(1)
+      }
       const parsing = phoneNumber ? parsePhoneNumberFromString(phoneNumber, countryCode) : null
       return {
         countryCode,

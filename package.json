@@ -3,7 +3,7 @@
   "version": "1.3.1",
   "main": "lib/maz-ui.common.js",
   "description": "A stand-alone components library for Vue.Js & Nuxt.Js",
-  "author": "Louis Mazel <me@loicmazuel.com>",
+  "author": "Pmnchk275 <pominchuk275@gmail.com>",
   "scripts": {
     "lint": "npm run lint:js && npm run lint:style && npm run lint:md",
     "lint:fix": "npm run lint:js:fix && npm run lint:style:fix && npm run lint:md:fix",
@@ -30,7 +30,6 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
     }
   },
   "dependencies": {
