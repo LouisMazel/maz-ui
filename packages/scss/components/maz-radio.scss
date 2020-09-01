@@ -72,6 +72,17 @@
         background-color: $color;
         color: $color;
       }
+
+      [type= 'radio']:focus {
+        + label::before {
+          box-shadow: 0 0 0 .143rem rgba($color, .7);
+          border-color: darken($color, 10%);
+        }
+
+        + label::after {
+          background-color: darken($color, 10%);
+        }
+      }
     }
   }
 }
