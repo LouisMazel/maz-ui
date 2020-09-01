@@ -2,7 +2,8 @@
 
 .maz-switch {
   &__input {
-    display: none;
+    position: absolute;
+    left: -9999px;
   }
 
   &__toggle {
@@ -22,19 +23,19 @@
       height: 14px;
       display: block;
       border-radius: 8px;
-      transition: all .2s ease;
+      transition: all 200ms ease-in-out;
     }
 
     span {
       position: absolute;
-      top: -1px;
+      top: 0;
       left: 0;
       width: 20px;
       height: 20px;
       display: block;
-      border-radius: 10px;
+      border-radius: 50%;
       box-shadow: 0 3px 8px rgba(black, .2);
-      transition: all .2s ease;
+      transition: all 200ms ease-in-out;
 
       &::before {
         content: '';
@@ -58,12 +59,22 @@
       &::before {
         transform: scale(1);
         opacity: 0;
-        transition: all .4s ease;
+        transition: all 400ms ease-in-out;
       }
     }
   }
 
   &__input:disabled + &__toggle {
     cursor: not-allowed;
+  }
+
+  @each $name, $color in $color_types {
+    &--#{$name} {
+      .maz-switch__input:focus + .maz-switch__toggle span {
+        background-color: darken($color, 10%);
+        box-shadow: 0 0 0 .143rem rgba($color, .7);
+        border-radius: $border-radius;
+      }
+    }
   }
 }
