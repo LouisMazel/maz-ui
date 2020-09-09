@@ -9,15 +9,15 @@
       flex1
       direction-column
     >
-      <h2 class="maz-text-center maz-my-4">
+      <h2 class="maz-text-center maz-mt-6">
         Projects Made With Mazel UI
       </h2>
-      <div class="maz-container made-with-maz-ui__projects-list maz-flex maz-pt-2 maz-pb-5">
+      <div class="maz-container made-with-maz-ui__projects-list maz-py-6">
         <ProjectPreview
           v-for="(project, i) in projects"
           :key="`project-${i}`"
           :project="project"
-          class="made-with-maz-ui__projects-list__item maz-flex-1"
+          class="made-with-maz-ui__projects-list__item"
         />
       </div>
     </MazFlex>
@@ -68,6 +68,13 @@ export default {
             'French startup: Help you to learn music easier',
           imgUrl: require('@/assets/img/projects/jellynote.jpg'),
           demoUrl: 'https://www.jellynote.com/'
+        },
+        {
+          name: 'Whitebird.immo',
+          description:
+            'French startup: Property manager and trustee',
+          imgUrl: require('@/assets/img/projects/whitebird.jpg'),
+          demoUrl: 'https://www.whitebird.immo/'
         }
       ]
     }
@@ -86,25 +93,12 @@ export default {
     }
 
     &__projects-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-gap: 40px;
+
       @media only screen and (max-width: $breakpoint-laptop-s) {
-        flex-direction: column;
-      }
-
-      &__item {
-        margin-right: 40px;
-
-        @media only screen and (max-width: $breakpoint-laptop-s) {
-          margin-right: 0;
-          margin-bottom: 40px;
-
-          &:last-child {
-            margin-bottom: 0;
-          }
-        }
-
-        &:last-child {
-          margin-right: 0;
-        }
+        grid-template-columns: repeat(1, 1fr);
       }
     }
   }

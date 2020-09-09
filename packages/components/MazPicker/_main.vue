@@ -149,7 +149,7 @@ export default {
     maxDate: { type: String, default: null },
     // set dark mode
     dark: { type: Boolean, default: false },
-    // set dark mode
+    // Date picker is always open
     persistent: { type: Boolean, default: false },
     // to remove the picker's header
     noHeader: { type: Boolean, default: false },
@@ -200,7 +200,7 @@ export default {
     },
     // pre selected shortcut: provide a shortcut key
     shortcut: { type: String, default: null },
-    // Disabled time picker
+    // Disabled shortcuts in range mode
     noShortcuts: { type: Boolean, default: false },
     // shortcuts for range mode
     shortcuts: {

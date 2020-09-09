@@ -1,5 +1,5 @@
 <template>
-  <div class="maz-base-component maz-switch">
+  <div :class="`maz-base-component maz-switch maz-switch--${color}`">
     <input
       :id="uniqueId"
       v-bind="$attrs"
