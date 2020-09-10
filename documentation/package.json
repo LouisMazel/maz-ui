@@ -4,9 +4,9 @@
   "scripts": {
     "serve": "nuxt",
     "serve:build": "nuxt serve",
-    "build": "nuxt build && nuxt export",
+    "build": "nuxt build && nuxt generate",
     "build:gh-pages": "DEPLOY_ENV=GH_PAGES nuxt build",
-    "export:gh-pages": "DEPLOY_ENV=GH_PAGES nuxt export",
+    "export:gh-pages": "DEPLOY_ENV=GH_PAGES nuxt generate",
     "deploy": "push-dir --dir=dist --branch=gh-pages --cleanup"
   },
   "dependencies": {
