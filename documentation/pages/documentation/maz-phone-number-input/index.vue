@@ -15,6 +15,7 @@
         Important:
       </strong>
       Since 1.4.x, for a better compatibility with all differents countries, use <code>default-phone-number</code> prop to set and update the phone number.
+      Updating the phone number is no longer available when you change the value (v-model)
     </p>
 
     <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
