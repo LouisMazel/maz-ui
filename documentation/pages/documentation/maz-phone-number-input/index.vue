@@ -175,15 +175,11 @@
 
         <hr class="maz-border-top maz-border-solid maz-border-color maz-my-3">
 
-        <MazBtn @click="phoneNumberExample = '0634343434'">
-          phoneNumberExample: {{ phoneNumberExample }}
-        </MazBtn>
-
         <MazPhoneNumberInput
-          v-model="phoneNumber2"
-          :default-phone-number="phoneNumberExample"
+          v-model="phoneNumberExample"
           show-code-on-list
-          no-use-browser-locale
+          default-country-code="FR"
+          no-flags
           :preferred-countries="['FR', 'BE', 'DE']"
           size="lg"
           @update="resultsExample = getJson($event)"
@@ -193,7 +189,7 @@
         <hr class="maz-border-top maz-border-solid maz-border-color maz-my-3">
 
         <p>
-          <strong>Value:</strong> {{ phoneNumber2 || 'null' }}
+          <strong>Value:</strong> {{ phoneNumberExample || 'null' }}
         </p>
 
         <br>
@@ -245,8 +241,7 @@ export default {
     return {
       phoneNumber: null,
       results: null,
-      phoneNumber2: null,
-      phoneNumberExample: '+33656565656',
+      phoneNumberExample: '0656565656',
       resultsExample: null,
       codeExample: `<template>
   <p>
@@ -278,7 +273,7 @@ export default {
   </p>
   <MazPhoneNumberInput
     v-model="phoneNumberExample"
-    no-flags
+    default-country-code="FR"
     show-code-on-list
     size="lg"
     :preferred-countries="['FR', 'BE', 'DE']"
@@ -289,7 +284,7 @@ export default {
 export default {
   data () {
     return {
-      phoneNumberExample: '+3365656565',
+      phoneNumberExample: '065656565',
       resultsExample: null
     }
   }
