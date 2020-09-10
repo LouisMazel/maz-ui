@@ -2,6 +2,7 @@
   <VueDropzone
     :id="id"
     ref="mazDropzone"
+    tabindex="0"
     :options="dropzoneOptions"
     class="maz-base-component maz-dropzone maz-w-100 maz-h-100 maz-flex maz-flex-center"
     :class="{ 'maz-is-dark': dark }"
@@ -11,6 +12,7 @@
     @vdropzone-error="fileError"
     @vdropzone-removed-file="removeFile"
     @vdropzone-sending="sending"
+    @keydown.native="keyDown"
   />
 </template>
 
@@ -114,6 +116,13 @@ export default {
     this.$refs.mazDropzone.setOption('url', this.url)
   },
   methods: {
+    async keyDown (e) {
+      await this.$nextTick()
+      if (e.keyCode === 13 || e.keyCode === 32) {
+        e.preventDefault()
+        this.$refs.mazDropzone.$el.click()
+      }
+    },
     thumbnail (file, dataUrl) {
       let j
       let len

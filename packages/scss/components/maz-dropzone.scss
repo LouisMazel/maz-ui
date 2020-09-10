@@ -89,7 +89,9 @@
     border-radius: $border-radius;
   }
 
-  &:hover {
+  &:hover,
+  &:focus {
+    outline: none;
     background-color: $hover-bg-color;
 
     .dz-message .material-icons {
