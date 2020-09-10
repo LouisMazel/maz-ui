@@ -106,7 +106,8 @@
   border-color: $border-color-dark;
   color: darken($hover-bg-color, 20%);
 
-  &:hover {
+  &:hover,
+  &:focus {
     background-color: $hover-bg-color-dark;
   }
 
