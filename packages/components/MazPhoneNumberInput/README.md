@@ -9,6 +9,7 @@
 | value              | -                                                                                                                                                                                  | —         | `false`  | null    |
 | id                 | -                                                                                                                                                                                  | `String`  | `false`  | null    |
 | disabled           | -                                                                                                                                                                                  | `Boolean` | `false`  | false   |
+| defaultPhoneNumber | set default phone number (Ex: `default-phone-number="0658585858"`)                                                                                                                 | `String`  | `false`  | null    |
 | defaultCountryCode | set default country code (Ex: `default-country-code="FR"`)                                                                                                                         | `String`  | `false`  | null    |
 | size               | Same as MazInput (options: `sm|md|lg`)                                                                                                                                             | `String`  | `false`  | null    |
 | preferredCountries | Countries selected will be at the top of the list - Ex : `preferred-countries="['FR', 'BE', 'DE']`                                                                                 | `Array`   | `false`  | null    |
@@ -36,7 +37,7 @@
 
 | Event Name | Description             | Parameters                                                         |
 | ---------- | ----------------------- | ------------------------------------------------------------------ |
-| update     | sent when the user tape | Object with all paser values                                       |
+| update     | sent when the user tape | Object with all parsed values                                      |
 | input      | sent when the user tape | Phone number value formatted in e164 format (international format) |
 | focus      | -                       | -                                                                  |
 | blur       | -                       | -                                                                  |

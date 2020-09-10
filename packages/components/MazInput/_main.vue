@@ -156,8 +156,8 @@ export default {
   props: {
     // value of the input
     value: {
-      required: true,
-      validator: prop => ['number', 'string'].includes(typeof prop) || prop === null
+      validator: prop => ['string', 'number'].includes(typeof prop) || prop === null,
+      default: null
     },
     // input id
     id: { type: String, default: null },

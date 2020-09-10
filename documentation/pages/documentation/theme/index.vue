@@ -200,7 +200,7 @@ $overlay-color-dark:      rgba(86, 87, 117, .7);
 */
 
 $border-radius: 8px !default;
-$border-width: 1.5px !default;"
+$border-width: 2px !default;"
       language="scss"
     />
   </div>
