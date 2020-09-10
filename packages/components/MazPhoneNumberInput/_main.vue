@@ -177,8 +177,7 @@ export default {
       results: {},
       countryCode: this.defaultCountryCode,
       lastKeyPressed: null,
-      asYouTypeNumber: this.defaultPhoneNumber,
-      countries
+      asYouTypeNumber: this.defaultPhoneNumber
     }
   },
   computed: {
@@ -221,7 +220,7 @@ export default {
     },
     // Countries list management
     countriesList () {
-      return this.countries.filter(item => !this.ignoredCountries.includes(item.iso2))
+      return countries.filter(item => !this.ignoredCountries.includes(item.iso2))
     },
     countriesFiltered () {
       const countries = this.onlyCountries || this.preferredCountries
