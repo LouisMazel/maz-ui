@@ -10,6 +10,13 @@
       </router-link> and therefore inherits all these options
     </p>
 
+    <p>
+      <strong>
+        Important:
+      </strong>
+      Since 1.4.x, for a better compatibility with all differents countries, use <code>default-phone-number</code> prop to set and update the phone number.
+    </p>
+
     <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
 
     <h4>
@@ -173,7 +180,8 @@
         </MazBtn>
 
         <MazPhoneNumberInput
-          v-model="phoneNumberExample"
+          v-model="phoneNumber2"
+          :default-phone-number="phoneNumberExample"
           show-code-on-list
           no-use-browser-locale
           :preferred-countries="['FR', 'BE', 'DE']"
@@ -185,7 +193,7 @@
         <hr class="maz-border-top maz-border-solid maz-border-color maz-my-3">
 
         <p>
-          <strong>Value:</strong> {{ phoneNumberExample || 'null' }}
+          <strong>Value:</strong> {{ phoneNumber2 || 'null' }}
         </p>
 
         <br>
@@ -237,6 +245,7 @@ export default {
     return {
       phoneNumber: null,
       results: null,
+      phoneNumber2: null,
       phoneNumberExample: '+33656565656',
       resultsExample: null,
       codeExample: `<template>
@@ -310,6 +319,13 @@ export default {
 
     ul li {
       margin-bottom: 8px;
+    }
+
+    code {
+      background-color: $bg-color-dark;
+      border-radius: $border-radius;
+      color: white;
+      padding: 2px 5px;
     }
   }
 </style>
