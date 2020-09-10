@@ -157,16 +157,15 @@ export default {
       immediate: true
     }
   },
-  created () {
+  mounted () {
     this.buildComponent()
+
+    window.addEventListener('resize', this.buildComponent)
 
     // watch multiples values
     this.$watch(vm => [vm.computedValue, vm.min, vm.max, vm.sizeValue, vm.log].join(), () => {
       this.buildComponent()
     })
-  },
-  mounted () {
-    window.addEventListener('resize', this.buildComponent)
   },
   beforeDestroy () {
     window.removeEventListener('resize', this.buildComponent)
@@ -221,6 +220,7 @@ export default {
       if (!this.noDivider) this.setDividers()
     },
     async setBtnStyle (i) {
+      await this.$nextTick()
       const { height } = this.buttonSize
       const { buttonPositions } = this
       const { Cursor } = this.$refs
@@ -270,7 +270,8 @@ export default {
         : ((barWidth / range) * (v - min))
       )
     },
-    getCursorsValues () {
+    async getCursorsValues () {
+      await this.$nextTick()
       const { range, scale, buttonPositions, max, min, minLog, log } = this
       const barWidth = this.$refs.MazSlider.clientWidth
       return log ? buttonPositions.map(pos => {
@@ -297,7 +298,8 @@ export default {
       this.activeCursor = null
       this.setBtnDividers(activeCursor)
     },
-    handleMousemove (e) {
+    async handleMousemove (e) {
+      await this.$nextTick()
       const { activeCursor, buttonPositions } = this
       if (activeCursor === null) return
 
