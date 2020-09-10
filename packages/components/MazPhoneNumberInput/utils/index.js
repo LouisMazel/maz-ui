@@ -1,5 +1,5 @@
 import { parsePhoneNumberFromString, AsYouType } from 'libphonenumber-js'
-import { countriesIso } from './constantes/js/phoneCodeCountries.js'
+import { countriesIso } from './../constantes/js/phoneCodeCountries.js'
 
 export const browserLocale = () => {
   if (typeof window === 'undefined') return null
