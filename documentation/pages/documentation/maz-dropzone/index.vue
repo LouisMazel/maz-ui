@@ -5,7 +5,7 @@
       language="js"
       class="maz-flex maz-direction-column"
     >
-      <no-ssr>
+      <client-only>
         <MazDropzone
           ref="mazDropzone"
           :url="url"
@@ -15,7 +15,7 @@
           @file-upload-success="success"
           @file-removed="successMessage = null"
         />
-      </no-ssr>
+      </client-only>
       <div
         v-if="errorMessage"
         class="dropzone-error maz-flex maz-justify-center maz-text-danger maz-mt-2"

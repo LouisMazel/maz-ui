@@ -1,13 +1,13 @@
 <template>
   <div class="maz-plotly-doc">
     <ComponentContainer>
-      <no-ssr>
+      <client-only>
         <MazPlotly
           :data="data"
           :layout="layout"
           :display-mode-bar="false"
         />
-      </no-ssr>
+      </client-only>
     </ComponentContainer>
 
     <hr
