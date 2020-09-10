@@ -23,7 +23,6 @@
         v-for="(btn, i) in computedValue"
         :key="`cursor-${i}`"
         ref="Cursor"
-        tabindex="-1"
         type="button"
         :data-label="getLabel(i)"
         class="maz-slider__btn maz-flex maz-flex-center maz-bg-color-light"
@@ -32,6 +31,9 @@
         }"
         :style="[buttonStyles[i]]"
         @mousedown="handleMousedown($event, i)"
+        @focus="handleMousedown($event, i)"
+        @blur="blurCursor(i)"
+        @keydown="cursorKeyDown($event, i)"
       >
         <ArrowIcon
           v-if="i === activeCursor"
@@ -59,6 +61,12 @@ const getOpacityCoeff = (index, middle, length) => {
   const isBiggerThanMiddle = middle < currentIndex
   const deviation = isBiggerThanMiddle ? currentIndex - middle : middle - currentIndex
   return ((100 / length * deviation) / 100)
+}
+
+const isBetween = (value, prev, next, direction) => {
+  return direction === 'minus'
+    ? prev ? value >= prev : true
+    : next ? value <= next : true
 }
 
 export default {
@@ -136,6 +144,9 @@ export default {
         padding: `${sizeValue * 1.5}px ${sizeValue * 5.5}px`,
         paddingTop: labels ? `${sizeValue * 4}px` : `${sizeValue * 1.5}px`
       }
+    },
+    hasMultipleValues () {
+      return Array.isArray(this.value)
     }
   },
   watch: {
@@ -148,6 +159,7 @@ export default {
   },
   mounted () {
     this.buildComponent()
+
     window.addEventListener('resize', this.buildComponent)
 
     // watch multiples values
@@ -159,6 +171,28 @@ export default {
     window.removeEventListener('resize', this.buildComponent)
   },
   methods: {
+    cursorKeyDown (e, i) {
+      // ArrowLeft
+      if (e.keyCode === 37) {
+        e.preventDefault()
+        if (isBetween(this.tmpValues[i] - 1, this.tmpValues[i - 1], this.tmpValues[i + 1], 'minus')) {
+          this.tmpValues[i]--
+          this.emitValue(this.tmpValues)
+        }
+      }
+      // ArrowRight
+      if (e.keyCode === 39) {
+        e.preventDefault()
+        if (isBetween(this.tmpValues[i] + 1, this.tmpValues[i - 1], this.tmpValues[i + 1], 'plus')) {
+          this.tmpValues[i]++
+          this.emitValue(this.tmpValues)
+        }
+      }
+    },
+    blurCursor (i) {
+      this.activeCursor = null
+      this.setBtnStyle(i)
+    },
     async buildComponent () {
       await this.checkValues()
       await this.calcPos()
@@ -173,8 +207,8 @@ export default {
       this.tmpValues = valuesChecked
     },
     emitValue (values) {
-      const { value } = this
-      let valueToEmit = typeof value === 'number' ? values[0] : values
+      const { hasMultipleValues } = this
+      let valueToEmit = hasMultipleValues ? values.slice() : values[0]
       this.$emit('input', valueToEmit)
     },
     getLabel (i) {
@@ -186,6 +220,7 @@ export default {
       if (!this.noDivider) this.setDividers()
     },
     async setBtnStyle (i) {
+      await this.$nextTick()
       const { height } = this.buttonSize
       const { buttonPositions } = this
       const { Cursor } = this.$refs
@@ -235,7 +270,8 @@ export default {
         : ((barWidth / range) * (v - min))
       )
     },
-    getCursorsValues () {
+    async getCursorsValues () {
+      await this.$nextTick()
       const { range, scale, buttonPositions, max, min, minLog, log } = this
       const barWidth = this.$refs.MazSlider.clientWidth
       return log ? buttonPositions.map(pos => {
@@ -262,7 +298,8 @@ export default {
       this.activeCursor = null
       this.setBtnDividers(activeCursor)
     },
-    handleMousemove (e) {
+    async handleMousemove (e) {
+      await this.$nextTick()
       const { activeCursor, buttonPositions } = this
       if (activeCursor === null) return
 

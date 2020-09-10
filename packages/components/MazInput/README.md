@@ -8,7 +8,7 @@
 
 | Name             | Description                                                                      | Type      | Required | Default    |
 | ---------------- | -------------------------------------------------------------------------------- | --------- | -------- | ---------- |
-| value            | value of the input                                                               | —         | `true`   | -          |
+| value            | value of the input                                                               | —         | `false`  | null       |
 | id               | input id                                                                         | `String`  | `false`  | null       |
 | placeholder      | value of the input                                                               | `String`  | `false`  | Enter text |
 | hint             | replace the label if is present                                                  | `String`  | `false`  | null       |
