@@ -69,7 +69,7 @@
         @change-month-year="changeMonthYear"
       />
     </div>
-    <TimePicker2
+    <TimePicker
       v-if="hasTime"
       v-model="dateMoment"
       :format="format"
@@ -90,7 +90,7 @@ import MonthPicker from './MonthPicker'
 import MonthYearSwitcher from './MonthYearSwitcher'
 import YearMonthSelector from './YearMonthSelector'
 import RangeShortcuts from './RangeShortcuts'
-import TimePicker2 from './TimePicker2'
+import TimePicker from './TimePicker'
 import Month from './../../modules/month'
 
 import moment from 'moment'
@@ -105,7 +105,7 @@ export default {
     MonthYearSwitcher,
     YearMonthSelector,
     RangeShortcuts,
-    TimePicker2
+    TimePicker
   },
   props: {
     value: { type: Object, default: null },
