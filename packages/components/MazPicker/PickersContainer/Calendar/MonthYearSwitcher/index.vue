@@ -26,8 +26,9 @@
           :key="i"
         >
           {{ m.getFormatted() }}
-
-          <span v-if="months.length > 1 && i === 0">-</span>
+          <span v-if="months.length > 1 && i === 0">
+            -&nbsp;
+          </span>
         </span>
       </MazBtn>
       <MazBtn

@@ -33,7 +33,6 @@
       :has-date="hasDate"
       :has-shortcuts="hasShortcuts"
       :disabled-hours="disabledHours"
-      :behaviour="behaviour"
     />
     <FooterPicker
       v-if="hasFooter"
@@ -70,8 +69,8 @@ export default {
     hasValidate: { type: Boolean, required: true },
     hasNow: { type: Boolean, required: true },
     nowTranslation: { type: String, required: true },
-    minDate: { type: Object, default: null },
-    maxDate: { type: Object, default: null },
+    minDate: { type: String, default: null },
+    maxDate: { type: String, default: null },
     noWeekendsDays: { type: Boolean, default: false },
     autoClose: { type: Boolean, default: false },
     inline: { type: Boolean, default: false },
@@ -85,8 +84,7 @@ export default {
     shortcuts: { type: Array, default: null },
     hasShortcuts: { type: Boolean, required: true },
     minuteInterval: { type: Number, required: true },
-    disabledHours: { type: Array, required: true },
-    behaviour: { type: Object, required: true }
+    disabledHours: { type: Array, required: true }
   },
   computed: {
     dateMoment: {

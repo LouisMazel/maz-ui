@@ -65,8 +65,8 @@
         :is-visible="hasPickerOpen"
         :minute-interval="minuteInterval"
         :now-translation="nowTranslation"
-        :min-date="minDateMoment"
-        :max-date="maxDateMoment"
+        :min-date="minDate"
+        :max-date="maxDate"
         :no-weekends-days="noWeekendsDays"
         :disabled-dates="disabledDatesMoment"
         :disabled-weekly="disabledWeekly"
@@ -75,7 +75,6 @@
         :shortcut="shortcut"
         :has-shortcuts="hasShortcuts"
         :disabled-hours="disabledHours"
-        :behaviour="behaviour"
         :inline="inline"
         :color="color"
       />
@@ -140,7 +139,7 @@ export default {
     // override the date picker postion (top / bottom / left / right)
     position: { type: String, default: null },
     // the value in `v-model` will be returned in this format
-    format: { type: String, default: 'YYYY-MM-DD hh:mm a' },
+    format: { type: String, default: 'YYYY-MM-DD h:mm a' },
     // the value in `@formatted` event & shown in input will be formatted with this (formats availables on [MomentJS](https://momentjs.com/))
     formatted: { type: String, default: 'llll' },
     // minimum date the user can set (same format as the model)
@@ -183,21 +182,10 @@ export default {
     noDate: { type: Boolean, default: false },
     // Change minute interval in time picker
     minuteInterval: { type: Number, default: 1 },
-    // Must be an Array of hours in 24h format ('00' to '23') : `['00','01','02','03','04','05','06','07','19','20','21','22','23']`
+    // Must be an Array of integer: `0` to `24` (0 = 12am, 24 = 12pm) => `[0,1,2,3,4,5,6,7,19,20,21,22,23]`
     disabledHours: { type: Array, default: Array },
     // Disable the overlay on mobile
     noOverlay: { type: Boolean, default: false },
-    // If true, it will select the nearest available hour in the timepicker, if the current selected hour is disabled.
-    behaviour: {
-      type: Object,
-      default: () => {
-        return {
-          time: {
-            nearestIfDisabled: true
-          }
-        }
-      }
-    },
     // pre selected shortcut: provide a shortcut key
     shortcut: { type: String, default: null },
     // Disabled shortcuts in range mode
@@ -248,11 +236,11 @@ export default {
         if (this.autoClose && this.range && value.start && value.end) this.closePicker()
       }
     },
-    minDateMoment () {
-      return this.minDate ? moment(this.minDate, this.format) : null
+    minDateDay () {
+      return this.minDate ? moment(this.minDate, this.format).startOf('day') : null
     },
-    maxDateMoment () {
-      return this.maxDate ? moment(this.maxDate, this.format) : null
+    maxDateDay () {
+      return this.maxDate ? moment(this.maxDate, this.format).endOf('day') : null
     },
     hasPickerOpen () {
       return this.isOpen || this.open || this.inline
@@ -297,18 +285,18 @@ export default {
   watch: {
     dateMoment: {
       handler (value) {
-        const { minDateMoment, maxDateMoment, range } = this
-        if (value && (minDateMoment || maxDateMoment)) {
+        const { minDateDay, maxDateDay, range } = this
+        if (value && (minDateDay || maxDateDay)) {
           if (range) return
 
           const { isBefore, isAfter } = hasDateBetweenMinMaxDate(
             value,
-            minDateMoment,
-            maxDateMoment,
+            minDateDay,
+            maxDateDay,
             range
           )
-          if (isAfter) this.emitValue(this.maxDateMoment)
-          if (isBefore) this.emitValue(this.minDateMoment)
+          if (isAfter) this.emitValue(this.maxDateDay)
+          if (isBefore) this.emitValue(this.minDateDay)
         }
         this.emitFormatted(value)
       },
