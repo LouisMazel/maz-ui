@@ -51,7 +51,7 @@
       :disabled="disabled"
       :focus="hasOpenList"
       @clear="emitValues(null)"
-      @keydown.prevent="search ? null : keyboardNav($event)"
+      @keydown="search ? null : keyboardNav($event)"
       @keyup="$emit('keyup', $event)"
       @focus="openList"
       @change="$emit('change', $event)"
