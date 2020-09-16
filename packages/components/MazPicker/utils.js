@@ -68,11 +68,10 @@ export const ArrayHourRange = (start, end, twoDigit, isAfternoon, disabledHours)
   return Array(end - start + 1).fill().map((_, idx) => {
     const n = start + idx
     const number = !isAfternoon ? n : n + 12
-    const numberToTest = (number < 10 ? '0' : '') + number
     return {
       value: number,
       item: (twoDigit && (n < 10) ? '0' : '') + n,
-      disabled: disabledHours.includes(numberToTest)
+      disabled: disabledHours.includes(number)
     }
   })
 }
@@ -86,7 +85,7 @@ export const ArrayMinuteRange = (start, end, twoDigit, step = 1, disabledMinutes
     return {
       value: number,
       item: txtMinute,
-      disabled: disabledMinutes.includes(txtMinute)
+      disabled: disabledMinutes.includes(number)
     }
   })
 }
@@ -104,4 +103,33 @@ export const debounce = (fn, time) => {
 export const getTimeFormat = (format) => {
   const hasTime = format.includes('T')
   return hasTime ? format.split('T')[1] : format.split(' ').slice(1).join(' ')
+}
+
+export const scrollSmoothElement = (elem, parentHeight, hasSmoothEffect, itemHeight = 28) => {
+  if (!elem) return
+  const selected = elem.querySelector('.time-picker__column__item.maz-active')
+  if (selected) {
+    const boundsSelected = selected.getBoundingClientRect()
+    const boundsElem = elem.getBoundingClientRect()
+    if (boundsSelected && boundsElem) {
+      const scrollValue = (itemHeight / 2) + boundsSelected.top - boundsElem.top - parentHeight / 2
+      elem.scrollBy({
+        top: scrollValue,
+        behavior: hasSmoothEffect ? 'smooth' : 'auto'
+      })
+    }
+  }
+}
+
+export const findNearestNumberInList = (list, number) => {
+  const closest = list.reduce((prev, curr) => {
+    return (Math.abs(curr - number) < Math.abs(prev - number) ? curr : prev)
+  })
+
+  return closest
+}
+
+export const getValue = (scroll, itemHeight = 28) =>{
+  const scrollTop = scroll?.target?.scrollTop ?? 0
+  return Math.round(scrollTop / itemHeight)
 }

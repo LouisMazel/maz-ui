@@ -146,6 +146,7 @@
         <hr class="maz-border-top maz-border-solid maz-border-color maz-my-3">
 
         <MazPhoneNumberInput
+          ref="Phone"
           v-model="phoneNumber"
           @update="results = getJson($event)"
         />

@@ -76,6 +76,7 @@
         <MazPicker
           v-model="pickerValue"
           :locale="locale"
+          color="third"
           @formatted="pickerFormatted = $event"
         />
       </ComponentContainer>
@@ -139,6 +140,7 @@
           v-model="pickerValue3"
           placeholder="Select date in big calendar"
           format="DD-MM-YYYY"
+          formatted="LL"
           no-time
           size="lg"
           double
@@ -196,7 +198,7 @@
 
         <p class="maz-mb-3">
           <strong>Options:</strong>
-          inline - min-date="2020-05-05" - max-date="2020-05-27" - no-time
+          inline - min-date="2020-05-05" - max-date="2020-06-22" - no-time
         </p>
 
         <p>
@@ -361,8 +363,8 @@ const CUSTOM_SHORTCUTS = [
       start: moment().subtract(5, 'years'),
       end: moment()
     }),
-    callback: ({ start, end, shortcuts }) => {
-      console.log('payload', start, end, shortcuts)
+    callback: ({ start, end, shortcut }) => {
+      console.log('payload', start, end, shortcut)
     }
   }
 ]
@@ -424,6 +426,7 @@ export default {
     v-model="pickerValue3"
     placeholder="Select date in big calendar"
     format="DD-MM-YYYY"
+    formatted="LL"
     clearable
     size="lg"
     double
@@ -444,8 +447,11 @@ export default {
       inlineExample: `<template>
   <MazPicker
     v-model="pickerValue4"
-    placeholder="Select time"
-    no-date
+    inline
+    no-time
+    double
+    min-date="2020-05-05"
+    max-date="2020-06-22"
     @formatted="pickerFormatted4 = $event"
   />
 </template>

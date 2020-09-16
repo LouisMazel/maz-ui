@@ -46,6 +46,7 @@
 import KeyboardAccessibility from './../../../mixins/keyboard-accessibility'
 import MazBtn from '../../../../MazBtn'
 import { EventBus } from './../../../utils'
+import moment from 'moment'
 
 export default {
   name: 'MonthPicker',
@@ -55,8 +56,9 @@ export default {
     value: { type: Object, default: null },
     month: { type: Object, required: true },
     color: { type: String, required: true },
-    minDate: { type: Object, default: null },
-    maxDate: { type: Object, default: null },
+    format: { type: String, default: null },
+    minDate: { type: String, default: null },
+    maxDate: { type: String, default: null },
     noWeekendsDays: { type: Boolean, default: false },
     disabledDates: { type: Array, required: true },
     disabledWeekly: { type: Array, required: true },
@@ -96,6 +98,12 @@ export default {
     },
     isRangeMode () {
       return !!this.dateMoment && Object.keys(this.dateMoment).includes('start')
+    },
+    minDateDay () {
+      return this.minDate ? moment(this.minDate, this.format).startOf('day') : null
+    },
+    maxDateDay () {
+      return this.maxDate ? moment(this.maxDate, this.format).endOf('day') : null
     }
   },
   watch: {
@@ -139,8 +147,8 @@ export default {
         : this.dateMoment ? this.dateMoment.isSame(day, 'day') : false
     },
     isDisabled (day) {
-      return day.isBefore(this.minDate) ||
-        day.isAfter(this.maxDate) ||
+      return day.startOf('day').isBefore(this.minDateDay) ||
+        day.startOf('day').isAfter(this.maxDateDay) ||
         (this.noWeekendsDays && this.isWeekEndDay(day)) ||
         this.isDateDisabled(day) ||
         this.isDayDisabledWeekly(day)

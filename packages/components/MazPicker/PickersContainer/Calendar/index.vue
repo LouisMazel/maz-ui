@@ -43,6 +43,7 @@
             ref="MonthPicker"
             v-model="dateMoment"
             :month="month"
+            :format="format"
             :min-date="minDate"
             :max-date="maxDate"
             :has-keyboard="hasKeyboard"
@@ -76,9 +77,9 @@
       :min-date="minDate"
       :max-date="maxDate"
       :has-date="hasDate"
+      :color="color"
       :minute-interval="minuteInterval"
       :disabled-hours="disabledHours"
-      :behaviour="behaviour"
     />
   </div>
 </template>
@@ -112,8 +113,8 @@ export default {
     shortcut: { type: String, default: null },
     locale: { type: String, default: null },
     color: { type: String, default: null },
-    minDate: { type: Object, default: null },
-    maxDate: { type: Object, default: null },
+    minDate: { type: String, default: null },
+    maxDate: { type: String, default: null },
     noWeekendsDays: { type: Boolean, default: false },
     disabledDates: { type: Array, required: true },
     disabledWeekly: { type: Array, required: true },
@@ -125,8 +126,7 @@ export default {
     hasTime: { type: Boolean, required: true },
     hasDate: { type: Boolean, required: true },
     minuteInterval: { type: Number, required: true },
-    disabledHours: { type: Array, required: true },
-    behaviour: { type: Object, required: true }
+    disabledHours: { type: Array, required: true }
   },
   data () {
     return {
@@ -170,14 +170,7 @@ export default {
           !this.months.length || this.isDifferentYear(newCurrentValue, oldCurrentValue) ||
           (this.monthsAreDifferent(newCurrentValue, oldCurrentValue) && !this.valueIsInMonths(newCurrentValue.month()))
         ) {
-          const { value } = this
-          const currentYear = this.currentValue.year()
-          const currentMonth = this.currentValue.month()
-          const hasRangeValuesOnDifferentsMonths = value && value.start && value.end && value.start.month() !== value.end.month()
-          this.months = this.getMonths({
-            year: currentYear,
-            month: hasRangeValuesOnDifferentsMonths ? currentMonth - 1 : currentMonth
-          })
+          this.updateMonth()
         }
       },
       immediate: true
@@ -190,9 +183,25 @@ export default {
         this.contentHeight = MonthsContainer && MonthsContainer.clientHeight ? MonthsContainer.clientHeight : CONTENT_HEIGHT
       },
       immediate: true
+    },
+    locale: {
+      handler () {
+        this.updateMonth()
+      },
+      immediate: true
     }
   },
   methods: {
+    updateMonth () {
+      const { value } = this
+      const currentYear = this.currentValue.year()
+      const currentMonth = this.currentValue.month()
+      const hasRangeValuesOnDifferentsMonths = value && value.start && value.end && value.start.month() !== value.end.month()
+      this.months = this.getMonths({
+        year: currentYear,
+        month: hasRangeValuesOnDifferentsMonths ? currentMonth - 1 : currentMonth
+      })
+    },
     monthsAreDifferent (newValue, oldValue) {
       if (!newValue || !oldValue) return false
       return newValue.month() !== oldValue.month()
