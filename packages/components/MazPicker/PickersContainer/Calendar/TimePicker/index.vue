@@ -83,16 +83,13 @@ export default {
     height: { type: Number, required: true },
     hasDate: { type: Boolean, required: true },
     disabledHours: { type: Array, required: true },
-    behaviour: { type: Object, default: Object }
   },
   data () {
     return {
       hour: null,
       minute: null,
-      oldvalue: false,
       columnPadding: {},
-      noScrollEvent: false,
-      delay: 0
+      noScrollEvent: false
     }
   },
   computed: {
@@ -114,7 +111,7 @@ export default {
       }
     },
     isTwelveFormat () {
-      return this.timeFormat.includes('A') || this.timeFormat.includes('a')
+      return this.timeFormat.includes('h')
     },
     minTime () {
       return this.minDate?.format(this.timeFormat) ?? null
