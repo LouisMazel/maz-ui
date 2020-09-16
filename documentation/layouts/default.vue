@@ -28,8 +28,8 @@ export default {
   mounted () {
     const date = new Date().toTimeString()
     const darkCookieValue = this.$cookies.get('use-dark-theme')
-    if (((date < '06:15' || date > '21:20') && darkCookieValue === null) || darkCookieValue) {
-      this.setDarkTheme(darkCookieValue)
+    if ((!(date < '9:00' && date > '23:00') && typeof darkCookieValue !== 'boolean') || darkCookieValue) {
+      this.setDarkTheme(false)
     }
   },
   methods: {

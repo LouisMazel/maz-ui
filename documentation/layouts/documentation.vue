@@ -155,13 +155,12 @@ export default {
   mounted () {
     this.hasLeftSidebarOpen= !(window.innerWidth < 767),
     this.isAbsolute = window.innerWidth < 767
+
     const date = new Date().toTimeString()
     const darkCookieValue = this.$cookies.get('use-dark-theme')
-    if (((date < '06:15' || date > '21:20') && darkCookieValue === null) || darkCookieValue) {
-      this.setDarkTheme(true)
+    if ((!(date < '9:00' && date > '23:00') && typeof darkCookieValue !== 'boolean') || darkCookieValue) {
+      this.setDarkTheme(false)
     }
-    this.hasLeftSidebarOpen = !(window.innerWidth < 767)
-    this.isAbsolute = window.innerWidth < 767
   },
   methods: {
     ...mapActions(['setDarkTheme']),
