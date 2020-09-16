@@ -4,8 +4,11 @@
       <div class="home__content maz-flex maz-direction-column maz-justify-center maz-p-4">
         <h2 class="maz-mb-2 maz-text-center">
           Stand-alone components library to build your interfaces with
-          <span class="maz-text-primary">Vue.JS & Nuxt.JS</span>
+          <br><span class="maz-text-primary">Vue.JS & Nuxt.JS</span>
         </h2>
+        <h3 class="maz-mb-2 maz-text-center maz-text-third">
+          Full dark mode support
+        </h3>
         <div class="maz-flex maz-flex-center maz-direction-column">
           <CodeContainer
             language="bash"
@@ -105,8 +108,8 @@ export default {
       line-height: 1.5;
     }
 
-    h3.subtitle {
-      color: $primary-color;
+    h3 {
+      color: $third-color;
     }
   }
 
@@ -116,8 +119,8 @@ export default {
         color: $text-color-dark;
       }
 
-      h3.subtitle {
-        color: $primary-color !important;
+      h3 {
+        color: $third-color !important;
       }
 
       .maz-btn--dark--outline {
