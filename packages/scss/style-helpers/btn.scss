@@ -277,6 +277,7 @@ $mini-size: 2rem !default;
   background-color: $disabled-color;
   color: $grey-color;
   cursor: not-allowed;
+  box-shadow: none;
 
   &::after {
     border-color: $disabled-color;
