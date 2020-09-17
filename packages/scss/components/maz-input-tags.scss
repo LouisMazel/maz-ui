@@ -97,6 +97,10 @@ $SM_SIZE: 2.286rem !default;
     &__clear {
       font-size: 1.2rem;
     }
+
+    &.maz-btn::before {
+      border: none;
+    }
   }
 
   &__toggle-btn {

@@ -64,10 +64,49 @@ $mini-size: 2rem !default;
       width: 100%;
       border: 2px solid $primary-color;
       border-radius: calc(#{$border-radius} + 3px);
-      padding: 2px;
+      padding: 1px;
       position: absolute;
-      left: -4px;
-      top: -4px;
+      left: -3px;
+      top: -3px;
+    }
+  }
+
+  &--outline {
+    background-color: rgba($primary-color, .05);
+    color: $primary-color;
+
+    &::after {
+      box-sizing: content-box;
+      content: '';
+      display: block;
+      height: calc(100% - 4px);
+      width: calc(100% - 4px);
+      border: 2px solid;
+      border-color: $primary-color;
+      border-radius: $border-radius;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    &.#{$prefix}btn--rounded {
+      border-radius: 50px;
+
+      &::after {
+        border-radius: 50px;
+      }
+    }
+
+    &:hover,
+    &:focus,
+    &.#{$prefix}active {
+      background-color: $primary-color;
+      color: white;
+
+      &.#{$prefix}btn--white,
+      &.#{$prefix}btn--light {
+        color: $text-color;
+      }
     }
   }
 
@@ -181,10 +220,6 @@ $mini-size: 2rem !default;
   &--light {
     color: $text-color;
   }
-
-  &--no-shadow {
-    box-shadow: none;
-  }
 }
 
 @import './variables/color_types';
@@ -207,23 +242,18 @@ $mini-size: 2rem !default;
         }
       }
 
-      &--outline {
+      &.#{$prefix}btn--outline {
         background-color: rgba($color, .05);
         color: $color;
-        box-shadow: none;
 
         &::after {
-          box-sizing: content-box;
-          content: '';
-          display: block;
-          height: calc(100% - 4px);
-          width: calc(100% - 4px);
-          border: 2px solid;
           border-color: $color;
-          border-radius: $border-radius;
-          position: absolute;
-          left: 0;
-          top: 0;
+        }
+
+        &.#{$prefix}btn--rounded {
+          &::after {
+            border-radius: 50px;
+          }
         }
 
         &:hover,
@@ -247,12 +277,15 @@ $mini-size: 2rem !default;
 }
 
 .#{$prefix}btn--disabled:disabled {
-  box-shadow: none;
   background-color: $disabled-color;
   color: $grey-color;
   cursor: not-allowed;
 
   &::after {
+    border-color: $disabled-color;
+  }
+
+  &::before {
     border-color: $disabled-color;
   }
 }

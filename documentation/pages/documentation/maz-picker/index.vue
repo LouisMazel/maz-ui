@@ -77,6 +77,7 @@
           v-model="pickerValue"
           :locale="locale"
           color="third"
+          open
           @formatted="pickerFormatted = $event"
         />
       </ComponentContainer>

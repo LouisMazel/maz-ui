@@ -134,7 +134,7 @@ export default {
       return [
         ...(color ? [`maz-btn--${color}`] : [null]),
         ...(size ? [`maz-btn--${size}`] : [null]),
-        ...(outline ? [`maz-btn--${color}--outline`] : [null]),
+        ...(outline ? ['maz-btn--outline'] : [null]),
         ...(rounded ? ['maz-btn--rounded'] : [null]),
         ...(block ? ['maz-btn--block'] : [null]),
         ...(fab ? ['maz-btn--fab'] : [null]),
