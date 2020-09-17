@@ -74,6 +74,7 @@ $mini-size: 2rem !default;
   &--outline {
     background-color: rgba($primary-color, .05);
     color: $primary-color;
+    box-shadow: none;
 
     &::after {
       box-sizing: content-box;
@@ -102,11 +103,6 @@ $mini-size: 2rem !default;
     &.#{$prefix}active {
       background-color: $primary-color;
       color: white;
-
-      &.#{$prefix}btn--white,
-      &.#{$prefix}btn--light {
-        color: $text-color;
-      }
     }
   }
 
@@ -262,8 +258,9 @@ $mini-size: 2rem !default;
           background-color: $color;
           color: white;
 
-          &.#{$prefix}btn--white--outline,
-          &.#{$prefix}btn--light--outline {
+          &.#{$prefix}btn--white,
+          &.#{$prefix}btn--transparent,
+          &.#{$prefix}btn--light {
             color: $text-color;
           }
         }
