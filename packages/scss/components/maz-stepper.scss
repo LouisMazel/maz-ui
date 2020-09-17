@@ -19,6 +19,11 @@
     &:not(.is-active) {
       background-color: $bg-color-light;
       color: darken($bg-color-light, 40%);
+
+      &:hover,
+      &:focus {
+        background-color: darken($bg-color-light, 10%);
+      }
     }
 
     &.is-active {
