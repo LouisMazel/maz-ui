@@ -19,7 +19,7 @@ $mini-size: 2rem !default;
 .#{$prefix}btn {
   @include font_family();
 
-  border: $border-width solid transparent;
+  border: none;
   outline: none;
   cursor: pointer;
   transition: all 200ms ease-in-out;
@@ -56,11 +56,30 @@ $mini-size: 2rem !default;
 
   &:focus,
   &.#{$prefix}active {
-    box-shadow: 0 0 0 .143rem rgba($primary-color, .5);
+    &::before {
+      box-sizing: content-box;
+      content: '';
+      display: block;
+      height: 100%;
+      width: 100%;
+      border: 2px solid $primary-color;
+      border-radius: calc(#{$border-radius} + 3px);
+      padding: 2px;
+      position: absolute;
+      left: -4px;
+      top: -4px;
+    }
   }
 
   &--rounded {
     border-radius: 50px;
+
+    &:focus,
+    &.#{$prefix}active {
+      &::before {
+        border-radius: 50px;
+      }
+    }
   }
 
   &--block {
@@ -119,6 +138,13 @@ $mini-size: 2rem !default;
     &.#{$prefix}btn--mini {
       width: $mini-size;
     }
+
+    &:focus,
+    &.#{$prefix}active {
+      &::before {
+        border-radius: 50%;
+      }
+    }
   }
 
   &--icon {
@@ -176,14 +202,29 @@ $mini-size: 2rem !default;
 
       &:focus,
       &.#{$prefix}active {
-        box-shadow: 0 0 0 .143rem rgba($color, .6);
+        &::before {
+          border-color: $color;
+        }
       }
 
       &--outline {
         background-color: rgba($color, .05);
-        box-shadow: none;
-        border-color: $color;
         color: $color;
+        box-shadow: none;
+
+        &::after {
+          box-sizing: content-box;
+          content: '';
+          display: block;
+          height: calc(100% - 4px);
+          width: calc(100% - 4px);
+          border: 2px solid;
+          border-color: $color;
+          border-radius: $border-radius;
+          position: absolute;
+          left: 0;
+          top: 0;
+        }
 
         &:hover,
         &:focus,
@@ -195,10 +236,6 @@ $mini-size: 2rem !default;
           &.#{$prefix}btn--light--outline {
             color: $text-color;
           }
-        }
-
-        &:focus {
-          box-shadow: 0 2px 5px 0 rgba(3, 6, 26, .15);
         }
       }
     }
@@ -212,7 +249,10 @@ $mini-size: 2rem !default;
 .#{$prefix}btn--disabled:disabled {
   box-shadow: none;
   background-color: $disabled-color;
-  border-color: $disabled-color;
   color: $grey-color;
   cursor: not-allowed;
+
+  &::after {
+    border-color: $disabled-color;
+  }
 }
