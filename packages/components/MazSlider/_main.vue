@@ -287,23 +287,25 @@ export default {
       this.activeCursor = i
       this.setBtnDividers(i)
     },
-    handleMouseup () {
-      const { activeCursor } = this
+    async handleMouseup () {
+      const { activeCursor, getCursorsValues } = this
       if (activeCursor === null) return
+
+      const values = await getCursorsValues()
 
       // emit values of cursors
       // @arg array of numbers
-      this.emitValue(this.getCursorsValues())
+      this.emitValue(values)
 
       this.activeCursor = null
       this.setBtnDividers(activeCursor)
     },
     async handleMousemove (e) {
       await this.$nextTick()
-      const { activeCursor, buttonPositions } = this
+      const { activeCursor, buttonPositions, getCursorsValues } = this
       if (activeCursor === null) return
 
-      this.tmpValues = this.getCursorsValues()
+      this.tmpValues = await getCursorsValues()
 
       const barWidth = this.$refs.MazSlider.clientWidth
       const position = buttonPositions[activeCursor]
