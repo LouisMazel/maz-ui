@@ -154,6 +154,10 @@ $mini-size: 2rem !default;
     padding: 0;
     width: $md-size;
 
+    &::after {
+      border-radius: 50%;
+    }
+
     &.#{$prefix}btn--xl {
       width: $xl-size;
     }
