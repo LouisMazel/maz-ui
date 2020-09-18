@@ -272,9 +272,9 @@ export default {
 
       const locale = fetchCountry
         ? await fetchCountryCode()
-        : !noUseBrowserLocale ? null : await browserLocale()
+        : noUseBrowserLocale ? null : await browserLocale()
 
-      setCountryCode(locale)
+      if (locale) setCountryCode(locale)
     } catch (err) {
       throw new Error(err)
     }
