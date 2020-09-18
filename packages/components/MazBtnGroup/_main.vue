@@ -4,7 +4,6 @@
       v-for="({ label, value: val }, i) in items"
       :key="`maz-btn-group-item-${i}`"
       class="maz-btn-group__item"
-      :class="{ 'rounded': rounded }"
       :active="val === value"
       :rounded="rounded"
       v-bind="$attrs"

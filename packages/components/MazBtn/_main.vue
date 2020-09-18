@@ -33,7 +33,11 @@
       </slot>
     </div>
 
-    <slot />
+    <span
+      class="maz-dots-text maz-flex maz-flex-center maz-h-100"
+    >
+      <slot />
+    </span>
 
     <div
       v-if="hasRightIcon()"
@@ -130,10 +134,10 @@ export default {
       return [
         ...(color ? [`maz-btn--${color}`] : [null]),
         ...(size ? [`maz-btn--${size}`] : [null]),
-        ...(outline ? [`maz-btn--${color}--outline`] : [null]),
+        ...(outline ? ['maz-btn--outline'] : [null]),
         ...(rounded ? ['maz-btn--rounded'] : [null]),
         ...(block ? ['maz-btn--block'] : [null]),
-        ...(fab ? ['maz-btn--fab maz-dots-text'] : [null]),
+        ...(fab ? ['maz-btn--fab'] : [null]),
         ...(isDisabled ? ['maz-btn--disabled'] : [null]),
         ...(active ? ['maz-active'] : [null]),
         ...(noShadow ? ['maz-no-shadow'] : [null]),

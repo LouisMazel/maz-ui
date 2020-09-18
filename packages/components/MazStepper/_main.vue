@@ -10,12 +10,12 @@
       :key="i"
       class="maz-stepper__step maz-flex maz-flex-center"
       :class="[{
-        'is-active': step === value,
-        'is-disabled': disabled,
+        'is-active': step === value
       }, `maz-stepper__step--${variant}`]"
       :style="[stepStyle]"
       :no-shadow="!shadow"
       :color="color"
+      :disabled="disabled && step !== value"
       @click="disabled ? null : emitStep(step)"
     >
       <span

@@ -1,10 +1,7 @@
 .pagination-number-btn {
-  height: 35px;
-  width: 35px;
   background-color: transparent;
   margin-right: 10px;
   color: $text-color;
-  box-shadow: none;
 
   &:last-child {
     margin-right: 0;
@@ -17,21 +14,22 @@
   &:hover,
   &:focus {
     background-color: darken(white, 20%);
-    box-shadow: 0 0 0 .143rem rgba(darken(white, 20%), .5);
+  }
+
+  &.maz-btn::before {
+    border-color: darken(white, 20%);
   }
 
   &.active {
     background-color: black;
-    box-shadow: none;
-
-    &:focus {
-      box-shadow: 0 0 0 .143rem rgba(black, .5);
-    }
-
     color: white;
 
     &:hover {
       background-color: lighten(black, 20%);
+    }
+
+    &.maz-btn::before {
+      border-color: black;
     }
   }
 }
@@ -44,16 +42,15 @@
     &:hover,
     &:focus {
       background-color: lighten($hover-bg-color-dark, 5%);
-      box-shadow: 0 0 0 .143rem darken($hover-bg-color-dark, 5%);
+    }
+
+    &.maz-btn::before {
+      border-color: darken($hover-bg-color-dark, 5%);
     }
 
     &.active {
       background-color: $bg-color;
       color: $text-color;
-
-      &:focus {
-        box-shadow: 0 0 0 .143rem rgba(white, .5);
-      }
     }
   }
 }

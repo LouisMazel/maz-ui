@@ -12,6 +12,7 @@
         <h5 class="maz-mb-3">
           LG primary
         </h5>
+
         <MazBtnGroup
           v-model="btnGroupValue"
           :items="items"
@@ -69,6 +70,7 @@
         <p>Number value : {{ btnGroupValue }}</p>
         <p>Boolean value : {{ btnGroupValueBoolean }}</p>
         <p>String value : {{ btnGroupValueString || 'null' }}</p>
+        <p>String value mini : {{ btnGroupValueMini || 'null' }}</p>
       </div>
     </ComponentContainer>
 

@@ -10,16 +10,20 @@
 
     &--square {
       border-radius: calc(1em / 3);
+
+      &.maz-btn::before {
+        border-radius: calc((1em / 3) + 2px);
+      }
     }
 
     &:not(.is-active) {
       background-color: $bg-color-light;
       color: darken($bg-color-light, 40%);
-    }
 
-    &.is-disabled {
-      cursor: not-allowed;
-      box-shadow: none;
+      &:hover,
+      &:focus {
+        background-color: darken($bg-color-light, 10%);
+      }
     }
 
     &.is-active {

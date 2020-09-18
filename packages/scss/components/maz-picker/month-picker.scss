@@ -26,6 +26,10 @@
     z-index: 1;
     position: relative;
 
+    &::before {
+      border: none !important;
+    }
+
     &.highlight:not(.maz-active):not(.btn--disabled)::before,
     &.is-keyboard-selected:not(.maz-active)::before {
       $circle-size: 26px;
@@ -101,7 +105,6 @@
 
         &.maz-active:not(:disabled) {
           background-color: $color;
-          box-shadow: 0 0 0 .143rem rgba($color, .6);
         }
 
         &:hover {
