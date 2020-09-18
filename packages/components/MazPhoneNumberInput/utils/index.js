@@ -57,7 +57,7 @@ export const fetchCountryCode = async () => {
     const response  = await fetch('https://ip2c.org/s')
     const responseText = await response.text()
     const result = (responseText || '').toString()
-    if (result && result[0] === '1') this.setCountryCode(result.substr(2, 2))
+    if (result && result[0] === '1') return result.substr(2, 2)
   } catch (err) {
     return new Error('[MazPhoneNumberInput] Error while fetching country code')
   }
