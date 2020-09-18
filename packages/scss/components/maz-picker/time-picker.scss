@@ -41,6 +41,10 @@
       height: $item-height;
       width: 45px;
 
+      &::before {
+        border: none !important;
+      }
+
       &:hover {
         color: white;
       }
@@ -69,7 +73,6 @@
 
       &.maz-active {
         background-color: $color;
-        box-shadow: 0 0 0 .143rem rgba($color, .6);
       }
     }
   }

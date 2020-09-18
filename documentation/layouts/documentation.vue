@@ -158,7 +158,7 @@ export default {
 
     const date = new Date().toTimeString()
     const darkCookieValue = this.$cookies.get('use-dark-theme')
-    if ((!(date < '9:00' && date > '23:00') && typeof darkCookieValue !== 'boolean') || darkCookieValue) {
+    if ((!(date < '9:00' && date > '23:00') && typeof darkCookieValue !== 'boolean') || !darkCookieValue) {
       this.setDarkTheme(false)
     }
   },

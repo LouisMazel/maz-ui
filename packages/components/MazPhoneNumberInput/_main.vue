@@ -270,11 +270,11 @@ export default {
         throw new Error('MazPhoneNumberInput: If you use a \'default-country-code\', do not use \'no-use-browser-locale\' options')
       if (defaultCountryCode) return
 
-      fetchCountry
-        ? fetchCountryCode()
-        : !noUseBrowserLocale
-          ? setCountryCode(browserLocale())
-          : null
+      const locale = fetchCountry
+        ? await fetchCountryCode()
+        : noUseBrowserLocale ? null : await browserLocale()
+
+      if (locale) setCountryCode(locale)
     } catch (err) {
       throw new Error(err)
     }

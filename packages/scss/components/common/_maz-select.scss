@@ -69,6 +69,10 @@
       padding-left: .7143rem;
       padding-right: .3571rem;
     }
+
+    &.maz-btn::before {
+      border: none;
+    }
   }
 
   &__options-list {

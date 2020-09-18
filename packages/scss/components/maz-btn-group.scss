@@ -6,29 +6,69 @@
     z-index: 0;
     border-radius: 0;
 
-    &.maz-active,
+    &.#{$prefix}active,
     &:focus {
       z-index: 1;
+
+      &::before {
+        border: none;
+      }
     }
 
-    &:first-child:not(.rounded) {
+    &:first-child {
       border-top-left-radius: $border-radius;
       border-bottom-left-radius: $border-radius;
     }
 
-    &:last-child:not(.rounded) {
+    &:last-child {
       border-top-right-radius: $border-radius;
       border-bottom-right-radius: $border-radius;
     }
 
-    &:first-child.rounded {
-      border-top-left-radius: 20px;
-      border-bottom-left-radius: 20px;
+    &.#{$prefix}btn--outline {
+      &::after {
+        border-radius: 0;
+      }
+
+      &:first-child::after {
+        border-top-left-radius: $border-radius;
+        border-bottom-left-radius: $border-radius;
+      }
+
+      &:last-child::after {
+        border-top-right-radius: $border-radius;
+        border-bottom-right-radius: $border-radius;
+      }
+
+      &.#{$prefix}btn--rounded {
+        &::after {
+          border-radius: 0;
+        }
+
+        &:first-child::after {
+          border-top-left-radius: 50px;
+          border-bottom-left-radius: 50px;
+        }
+
+        &:last-child::after {
+          border-top-right-radius: 50px;
+          border-bottom-right-radius: 50px;
+        }
+      }
     }
 
-    &:last-child.rounded {
-      border-top-right-radius: 20px;
-      border-bottom-right-radius: 20px;
+    &.#{$prefix}btn--rounded {
+      border-radius: 0;
+
+      &:first-child {
+        border-top-left-radius: 50px;
+        border-bottom-left-radius: 50px;
+      }
+
+      &:last-child {
+        border-top-right-radius: 50px;
+        border-bottom-right-radius: 50px;
+      }
     }
   }
 }
