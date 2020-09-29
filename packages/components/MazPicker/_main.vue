@@ -231,9 +231,6 @@ export default {
       },
       set (value) {
         this.emitValue(value)
-
-        if (this.autoClose && !this.range) this.closePicker()
-        if (this.autoClose && this.range && value.start && value.end) this.closePicker()
       }
     },
     minDateDay () {
@@ -340,19 +337,28 @@ export default {
   methods: {
     emitValue (value) {
       let valueToSend
+      const { range, autoClose, closePicker, format } = this
+
       if (this.range) {
         if (value) {
           const { start, end } = value
           valueToSend = {
-            start: start instanceof moment ? start.format(this.format) : null,
-            end: end instanceof moment ? end.format(this.format) : null
+            start: start instanceof moment ? start.format(format) : null,
+            end: end instanceof moment ? end.format(format) : null
           }
         } else {
           valueToSend = null
         }
       } else {
-        valueToSend = value instanceof moment ? value.format(this.format) : null
+        valueToSend = value instanceof moment ? value.format(format) : null
       }
+
+      const sameHaseCurrentValue = valueToSend === this.value
+      if (sameHaseCurrentValue) return
+
+      if (autoClose && !range) closePicker()
+      if (autoClose && range && value.start && value.end) closePicker()
+
       // return the date value (in `@input` or `v-model`)
       // @arg date formatted with "format" option
       this.$emit('input', valueToSend)
