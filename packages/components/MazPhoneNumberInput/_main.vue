@@ -243,7 +243,7 @@ export default {
   watch: {
     defaultPhoneNumber: {
       handler (phoneNumber, oldPhoneNumber) {
-        if (phoneNumber === oldPhoneNumber) return
+        if (!phoneNumber || phoneNumber === oldPhoneNumber) return
         this.buildResults(phoneNumber)
       },
       immediate: true
@@ -307,6 +307,8 @@ export default {
       this.$emit('update', this.results)
 
       const { isValid, e164 } = this.results
+
+      // if (!e164 && !this.asYouTypeNumber) return
       // sent when the user tape
       // @arg Phone number value formatted in e164 format (international format)
       this.$emit('input', isValid ? e164 : this.asYouTypeNumber)
