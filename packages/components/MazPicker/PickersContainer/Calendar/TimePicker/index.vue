@@ -88,7 +88,6 @@ export default {
         return this.value || moment()
       },
       set (value) {
-        console.log('value', value.format())
         this.$emit('input', value)
       }
     },
