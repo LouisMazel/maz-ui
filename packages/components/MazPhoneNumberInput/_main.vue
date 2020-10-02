@@ -281,7 +281,7 @@ export default {
   },
   methods: {
     async buildResults (phoneNumber, noAutoUpdateCountryCode) {
-      const { asYouTypeNumber, lastKeyPressed, countryCode } = this
+      const { asYouTypeNumber, lastKeyPressed, countryCode, value } = this
       const backSpacePressed = lastKeyPressed === 8
 
       await this.$nextTick()
@@ -308,10 +308,12 @@ export default {
 
       const { isValid, e164 } = this.results
 
-      // if (!e164 && !this.asYouTypeNumber) return
+      const valueToEmit = isValid ? e164 : this.asYouTypeNumber
+      if (!valueToEmit && valueToEmit === value) return
+
       // sent when the user tape
       // @arg Phone number value formatted in e164 format (international format)
-      this.$emit('input', isValid ? e164 : this.asYouTypeNumber)
+      this.$emit('input', valueToEmit)
     },
 
     async setCountryCode (locale, focusPhoneNumberInput) {
