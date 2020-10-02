@@ -88,6 +88,7 @@ export default {
         return this.value || moment()
       },
       set (value) {
+        console.log('value', value.format())
         this.$emit('input', value)
       }
     },
@@ -313,8 +314,9 @@ export default {
       await initPositionView(type)
     },
     emitValue () {
-      const { hour: h, minute, format, isTwelveFormat } = this
+      const { hour: h, minute: m, format, isTwelveFormat } = this
       const hour = isTwelveFormat && [12, 24].includes(h) ? h === 24 ? 12 : 0 : h
+      const minute = m ? m : 0
       this.dateMoment = moment((this.dateMoment).set({
         hour,
         minute
