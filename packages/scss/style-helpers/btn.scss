@@ -44,12 +44,12 @@ $mini-size: 2rem !default;
   justify-content: center;
   align-items: center;
   font-size: 1rem;
+  text-decoration: none;
 
   &:hover,
   &:focus,
   &.#{$prefix}active {
     background-color: darken($primary-color, 10%);
-    text-decoration: none;
   }
 
   &:focus,
