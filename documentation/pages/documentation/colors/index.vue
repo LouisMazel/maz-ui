@@ -49,7 +49,7 @@ export default {
         { name: 'grey', value: '#999' },
         { name: 'info', value: '#17A2B8' },
         { name: 'light', value: 'whitesmoke' },
-        { name: 'dark', value: '#24292E' },
+        { name: 'dark', value: '#21222E' },
         { name: 'default', value: '#CCC' },
         { name: 'white', value: 'white' },
         { name: 'black', value: 'black' },

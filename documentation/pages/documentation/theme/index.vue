@@ -161,7 +161,7 @@ $default-color:           #CCC !default;
 $text-color:              #212121 !default;
 $bg-color:                white !default;
 $bg-color-light:          #F2F2F2 !default;
-$dark-color:              #24292E !default;
+$dark-color:              #21222E !default;
 $grey-color:              #999 !default;
 $placeholder-color:       #A7A7A7 !default;
 $input-icon-color:        #DEDEDE !default;

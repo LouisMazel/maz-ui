@@ -91,7 +91,7 @@ html {
     font-size: 1.1rem;
   }
 
-  a {
+  a:not(.maz-btn) {
     color: $primary-color;
     text-decoration: none;
 
