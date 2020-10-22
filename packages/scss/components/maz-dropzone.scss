@@ -14,6 +14,11 @@
     margin: 0;
     min-height: auto;
     background: transparent;
+    max-width: 200px;
+
+    &:not(:last-child) {
+      margin-right: 10px;
+    }
 
     &.dz-image-preview {
       background-color: transparent;
@@ -45,7 +50,7 @@
 
   .dz-success-mark {
     .material-icons {
-      background-color: rgba($primary-color, .8);
+      background-color: rgba($success-color, .8);
       border-radius: 50%;
       color: white;
       font-size: 70px;
@@ -53,6 +58,8 @@
   }
 
   .dz-error-mark {
+    text-align: center;
+
     .material-icons {
       background-color: rgba($danger-color, .8);
       border-radius: 50%;
@@ -62,7 +69,7 @@
   }
 
   .dz-preview .dz-image {
-    width: 200px;
+    width: 100%;
     height: 200px;
     margin: 0 auto;
     border-radius: $border-radius;
@@ -71,7 +78,9 @@
     > div {
       width: inherit;
       height: inherit;
-      background-size: contain;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
     }
 
     > img {
@@ -80,7 +89,7 @@
   }
 
   .dz-preview .dz-details {
-    width: 200px;
+    width: 100%;
     height: 200px;
     color: white;
     background-color: rgba($primary-color, .8);

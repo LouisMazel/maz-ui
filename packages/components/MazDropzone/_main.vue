@@ -45,7 +45,8 @@ export default {
     maxFiles: { type: Number, default: 1 },
     maxFilesize: { type: Number, default: 2 },
     addRemoveLinks: { type: Boolean, default: true },
-    dark: { type: Boolean, default: false }
+    dark: { type: Boolean, default: false },
+    removeFilesOnError: { type: Boolean, default: false }
   },
   computed: {
     t () {
@@ -53,10 +54,11 @@ export default {
         chooseOrDropAFile: 'Choose or drop a file',
         filesDescriptions: `(PNG or JPG under ${this.maxFilesize}MB)`,
         browserIsNotSupported: 'Your browser is not supported',
-        fileIsTooBig: `The file is too big (maximum: ${this.maxFilesize} MB)`,
-        invalidFileType: `Invalid file (PNG or JPG under ${this.maxFilesize}MB)`,
+        fileIsTooBig: `File(s) too big (max: ${this.maxFilesize} MB)`,
+        invalidFileType: `Invalid file(s) (PNG or JPG under ${this.maxFilesize}MB)`,
         dictRemoveFile: 'Remove',
-        dictCancelUpload: 'Cancel upload'
+        dictCancelUpload: 'Cancel upload',
+        dictMaxFilesExceeded: `You can not upload any more files. (max: ${this.maxFiles} files)`
       }
       return {
         ...defaultTranslation,
@@ -81,9 +83,10 @@ export default {
         dictInvalidFileType: this.t.invalidFileType,
         dictRemoveFile: this.t.dictRemoveFile,
         dictCancelUpload: this.t.dictCancelUpload,
+        dictMaxFilesExceeded: this.t.dictMaxFilesExceeded,
         addRemoveLinks: this.addRemoveLinks,
         previewTemplate: `
-            <div class="dz-preview dz-file-preview">
+            <div class="dz-preview dz-file-preview maz-flex-1">
               <div class="dz-image">
                   <div data-dz-thumbnail-bg></div>
               </div>
@@ -91,13 +94,13 @@ export default {
                   <div class="dz-filename"><span data-dz-name></span></div>
                   <div class="dz-size"><span data-dz-size></span></div>
               </div>
-              <div class="dz-progress m-0">
+              <div class="dz-progress">
                 <span class="dz-upload" data-dz-uploadprogress></span>
               </div>
               <div class="dz-success-mark maz-text-center">
                 <i class="material-icons" aria-hidden="true">done</i>
               </div>
-              <div class="dz-error-mark">
+              <div class="dz-error-mark maz-text-center">
                 <i class="material-icons" aria-hidden="true">error_outline</i>
               </div>
             </div>
@@ -174,7 +177,7 @@ export default {
      */
     fileError (file, error) {
       this.$emit('file-upload-error', error)
-      this.removeAllFiles()
+      if (this.removeFilesOnError) this.removeAllFiles()
     },
     removeAllFiles () {
       this.$refs.mazDropzone.removeAllFiles()
