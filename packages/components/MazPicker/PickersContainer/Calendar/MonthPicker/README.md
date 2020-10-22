@@ -9,8 +9,9 @@
 | value          | -           | `Object`  | `false`  | null    |
 | month          | -           | `Object`  | `true`   | -       |
 | color          | -           | `String`  | `true`   | -       |
-| minDate        | -           | `Object`  | `false`  | null    |
-| maxDate        | -           | `Object`  | `false`  | null    |
+| format         | -           | `String`  | `false`  | null    |
+| minDate        | -           | `String`  | `false`  | null    |
+| maxDate        | -           | `String`  | `false`  | null    |
 | noWeekendsDays | -           | `Boolean` | `false`  | false   |
 | disabledDates  | -           | `Array`   | `true`   | -       |
 | disabledWeekly | -           | `Array`   | `true`   | -       |

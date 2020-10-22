@@ -11,8 +11,8 @@
 | shortcut       | -           | `String`  | `false`  | null    |
 | locale         | -           | `String`  | `false`  | null    |
 | color          | -           | `String`  | `false`  | null    |
-| minDate        | -           | `Object`  | `false`  | null    |
-| maxDate        | -           | `Object`  | `false`  | null    |
+| minDate        | -           | `String`  | `false`  | null    |
+| maxDate        | -           | `String`  | `false`  | null    |
 | noWeekendsDays | -           | `Boolean` | `false`  | false   |
 | disabledDates  | -           | `Array`   | `true`   | -       |
 | disabledWeekly | -           | `Array`   | `true`   | -       |
@@ -25,7 +25,6 @@
 | hasDate        | -           | `Boolean` | `true`   | -       |
 | minuteInterval | -           | `Number`  | `true`   | -       |
 | disabledHours  | -           | `Array`   | `true`   | -       |
-| behaviour      | -           | `Object`  | `true`   | -       |
 
 <!-- @vuese:Calendar:props:end -->
 

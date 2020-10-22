@@ -17,8 +17,8 @@
 | hasValidate    | -           | `Boolean` | `true`   | -       |
 | hasNow         | -           | `Boolean` | `true`   | -       |
 | nowTranslation | -           | `String`  | `true`   | -       |
-| minDate        | -           | `Object`  | `false`  | null    |
-| maxDate        | -           | `Object`  | `false`  | null    |
+| minDate        | -           | `String`  | `false`  | null    |
+| maxDate        | -           | `String`  | `false`  | null    |
 | noWeekendsDays | -           | `Boolean` | `false`  | false   |
 | autoClose      | -           | `Boolean` | `false`  | false   |
 | inline         | -           | `Boolean` | `false`  | false   |
@@ -33,7 +33,6 @@
 | hasShortcuts   | -           | `Boolean` | `true`   | -       |
 | minuteInterval | -           | `Number`  | `true`   | -       |
 | disabledHours  | -           | `Array`   | `true`   | -       |
-| behaviour      | -           | `Object`  | `true`   | -       |
 
 <!-- @vuese:PickersContainer:props:end -->
 
