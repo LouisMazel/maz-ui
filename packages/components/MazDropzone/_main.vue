@@ -10,7 +10,7 @@
     @vdropzone-success="fileSended"
     @vdropzone-thumbnail="thumbnail"
     @vdropzone-error="fileError"
-    @vdropzone-removed-file="removeFile"
+    @vdropzone-removed-file="fileRemoved"
     @vdropzone-sending="sending"
     @keydown.native="keyDown"
   />
@@ -36,17 +36,30 @@ export default {
   name: 'MazDropzone',
   components: { VueDropzone },
   props: {
+    // URL to upload files
     url: { type: String, required: true },
+    // Id of component
     id: { type: String, default: 'MazDropzone' },
+    // File type accepted
     acceptedFiles: { type: String, default: 'image/*' },
+    // File name uploaded
     paramName: { type: String, default: 'file-name' },
+    // Set request headers with your own (token, jwt)
     headers: { type: Object, required: true },
+    // Messages translations (error, success)
     translations: { type: Object, default: null },
+    // Max files number
     maxFiles: { type: Number, default: 1 },
+    // Max files size
     maxFilesize: { type: Number, default: 2 },
+    // User can remove files with a button
     addRemoveLinks: { type: Boolean, default: true },
+    // Set dark theme
     dark: { type: Boolean, default: false },
-    removeFilesOnError: { type: Boolean, default: false }
+    // If error remove all files in area
+    removeFilesOnError: { type: Boolean, default: false },
+    // Not upload immediatly the files
+    autoProcessQueue: { type: Boolean, default: true }
   },
   computed: {
     t () {
@@ -71,6 +84,7 @@ export default {
         acceptedFiles: this.acceptedFiles,
         maxFilesize: this.maxFilesize,
         maxFiles: this.maxFiles,
+        autoProcessQueue: this.autoProcessQueue,
         dictDefaultMessage: `
             <i class="material-icons" aria-hidden="true">cloud_upload</i>
             <br />
@@ -152,15 +166,6 @@ export default {
      */
     fileAdded (file) {
       this.$emit('file-added', file)
-      this.reset()
-    },
-    /**
-     * Called whenever a new file is dropped in the zone. Should reset
-     * the error messages.
-     * @function reset
-     */
-    reset () {
-      this.$emit('file-upload-error', null)
     },
     /**
      * Called when the file is successfully sent.
@@ -182,7 +187,13 @@ export default {
     removeAllFiles () {
       this.$refs.mazDropzone.removeAllFiles()
     },
-    removeFile (e) {
+    processQueue () {
+      this.$refs.mazDropzone.processQueue()
+    },
+    removeFile (file) {
+      this.$refs.mazDropzone.removeFile(file)
+    },
+    fileRemoved (e) {
       this.$emit('file-removed', e)
     },
     sending (file, xhr, formData) {

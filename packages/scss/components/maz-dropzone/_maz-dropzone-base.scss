@@ -567,6 +567,12 @@
     color: $primary-color;
   }
 }
+
+.vue-dropzone > .dz-preview.dz-error .dz-remove:hover {
+  background-color: rgba(white, 1);
+  color: $danger-color;
+}
+
 .vue-dropzone > .dz-preview:hover .dz-remove { opacity: 1; }
 
 .vue-dropzone > .dz-preview .dz-error-mark,

@@ -98,6 +98,10 @@
     border-radius: $border-radius;
   }
 
+  .dz-error.dz-preview .dz-details {
+    background-color: rgba($danger-color, .8);
+  }
+
   &:hover,
   &:focus {
     outline: none;

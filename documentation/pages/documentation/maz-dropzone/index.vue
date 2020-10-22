@@ -142,6 +142,9 @@ export default {
     },
     success () {
       this.successMessage = 'Files uploaded !'
+    },
+    processQueue () {
+      this.$refs.mazDropzone.processQueue()
     }
   }
 }
