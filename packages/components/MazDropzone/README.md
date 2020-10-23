@@ -39,5 +39,6 @@
 | s3-upload-success            | When file is uploaded to AWS S3 successfully.                              | s3ObjectLocation     |
 | file-removed                 | A file was removed from the dropzone.                                      | File                 |
 | file-sending                 | Modify the request and add addtional parameters to request before sending. | file, xhr, formData  |
+| duplicate-file               | Fired when duplicateCheck is enabled and duplicate file is found.          | file                 |
 
 <!-- @vuese:MazDropzone:events:end -->
