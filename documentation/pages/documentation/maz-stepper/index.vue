@@ -97,6 +97,117 @@
             space="between"
           />
         </ComponentContainer>
+        <ComponentContainer
+          code="<template>
+  <MazStepper
+    v-model=&quot;activeStep&quot;
+    :steps=&quot;5&quot;
+    :size=&quot;20&quot;
+    color=&quot;secondary&quot;
+    show-step-number
+    disabled-next-steps
+    space=&quot;between&quot;
+  />
+</template>
+
+<script>
+  export default {
+    data () {
+      return {
+        activeStep: 3
+      }
+    }
+  }
+</script>"
+        >
+          <h4>
+            Disabled next steps from active step
+          </h4>
+          <hr class="maz-border-top maz-border-solid maz-border-color maz-mt-3 maz-mb-5">
+          <MazStepper
+            v-model="activeStep"
+            :steps="5"
+            :size="20"
+            color="secondary"
+            show-step-number
+            disabled-next-steps
+            space="between"
+          />
+        </ComponentContainer>
+        <ComponentContainer
+          code="<template>
+  <MazStepper
+    v-model=&quot;activeStep&quot;
+    :steps=&quot;5&quot;
+    :size=&quot;20&quot;
+    color=&quot;secondary&quot;
+    show-step-number
+    disabled-previous-steps
+    space=&quot;between&quot;
+  />
+</template>
+
+<script>
+  export default {
+    data () {
+      return {
+        activeStep: 3
+      }
+    }
+  }
+</script>"
+        >
+          <h4>
+            Disabled previous steps from active step
+          </h4>
+          <hr class="maz-border-top maz-border-solid maz-border-color maz-mt-3 maz-mb-5">
+          <MazStepper
+            v-model="activeStep"
+            :steps="5"
+            :size="20"
+            color="secondary"
+            show-step-number
+            disabled-previous-steps
+            space="between"
+          />
+        </ComponentContainer>
+        <ComponentContainer
+          code="<template>
+  <MazStepper
+    v-model=&quot;activeStep&quot;
+    :steps=&quot;5&quot;
+    :size=&quot;20&quot;
+    color=&quot;secondary&quot;
+    show-step-number
+    :disabled-steps=&quot;[2, 4]&quot;
+    space=&quot;between&quot;
+  />
+</template>
+
+<script>
+  export default {
+    data () {
+      return {
+        activeStep: 3
+      }
+    }
+  }
+</script>"
+        >
+          <h4>
+            Disabled specifique steps ([2, 4])
+          </h4>
+          <hr class="maz-border-top maz-border-solid maz-border-color maz-mt-3 maz-mb-5">
+          <MazStepper
+            v-model="activeStep"
+            :steps="5"
+            :size="20"
+            color="secondary"
+            show-step-number
+            :disabled-steps="[2, 4]"
+            space="between"
+          />
+        </ComponentContainer>
       </div>
       <div class="maz-flex-1">
         <ComponentContainer>

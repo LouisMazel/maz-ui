@@ -6,6 +6,10 @@
 
     &--dot {
       border-radius: 50%;
+
+      &::before {
+        border-radius: 50% !important;
+      }
     }
 
     &--square {

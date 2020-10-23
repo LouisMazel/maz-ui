@@ -15,7 +15,7 @@
       :style="[stepStyle]"
       :no-shadow="!shadow"
       :color="color"
-      :disabled="disabled && step !== value"
+      :disabled="isDisabled(step, value) && step !== value"
       @click="disabled ? null : emitStep(step)"
     >
       <span
@@ -51,6 +51,12 @@ export default {
     shadow: { type: Boolean, default: false },
     // disallow step click
     disabled: { type: Boolean, default: false },
+    // disallow multiple steps click
+    disabledSteps: { type: Array, default: Array },
+    // disallow next steps from current step
+    disabledNextSteps: { type: Boolean, default: false },
+    // disallow previous steps from current step
+    disabledPreviousSteps: { type: Boolean, default: false },
     // set dark mode
     dark: { type: Boolean, default: false }
   },
@@ -73,6 +79,10 @@ export default {
       // return the step number clicked
       // @arg `Number`
       this.$emit('input', step)
+    },
+    isDisabled (step) {
+      const { disabled, disabledSteps, disabledNextSteps, disabledPreviousSteps, value } = this
+      return disabled || disabledSteps.includes(step) || (disabledNextSteps && value < step) || (disabledPreviousSteps && value > step)
     }
   }
 }
