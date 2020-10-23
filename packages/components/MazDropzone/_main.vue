@@ -261,6 +261,11 @@ export default {
       // Modify the request and add addtional parameters to request before sending.
       // @arg file, xhr, formData
       this.$emit('file-sending', file, xhr, formData)
+    },
+    duplicateFile (file) {
+      // Fired when duplicateCheck is enabled and duplicate file is found.
+      // @arg file
+      this.$emit('duplicate-file', file)
     }
   }
 }
