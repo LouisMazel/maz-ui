@@ -17,7 +17,9 @@
 | addRemoveLinks     | User can remove files with a button            | `Boolean` | `false`  | true        |
 | dark               | Set dark theme                                 | `Boolean` | `false`  | false       |
 | removeFilesOnError | If error remove all files in area              | `Boolean` | `false`  | false       |
+| removeFileOnError  | If error remove file in area                   | `Boolean` | `false`  | false       |
 | autoProcessQueue   | Not upload immediatly the files                | `Boolean` | `false`  | true        |
+| duplicateCheck     | Not upload immediatly the files                | `Boolean` | `false`  | true        |
 
 <!-- @vuese:MazDropzone:props:end -->
 
@@ -25,12 +27,17 @@
 
 <!-- @vuese:MazDropzone:events:start -->
 
-| Event Name          | Description | Parameters |
-| ------------------- | ----------- | ---------- |
-| file-added          | -           | -          |
-| file-upload-success | -           | -          |
-| file-upload-error   | -           | -          |
-| file-removed        | -           | -          |
-| file-sending        | -           | -          |
+| Event Name                   | Description                                                                | Parameters           |
+| ---------------------------- | -------------------------------------------------------------------------- | -------------------- |
+| file-added                   | Called whenever a new file is dropped in the zone.                         | File                 |
+| file-upload-success          | Called when the file is successfully sent.                                 | Response, File       |
+| file-upload-multiple-success | Called when the file is successfully sent.                                 | Response, Files, XHR |
+| file-upload-error            | Called when an error occured while uploading the file.                     | Error, File, XHR     |
+| file-upload-multiple-error   | Called when an error occured while uploading the file.                     | Error                |
+| max-files-reached            | Called when the number of files accepted reaches the maxFiles limit.       | File                 |
+| s3-upload-error              | If error occures in AWS S3 upload.                                         | errorMessage         |
+| s3-upload-success            | When file is uploaded to AWS S3 successfully.                              | s3ObjectLocation     |
+| file-removed                 | A file was removed from the dropzone.                                      | File                 |
+| file-sending                 | Modify the request and add addtional parameters to request before sending. | file, xhr, formData  |
 
 <!-- @vuese:MazDropzone:events:end -->

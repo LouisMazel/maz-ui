@@ -7,11 +7,17 @@
     class="maz-base-component maz-dropzone maz-w-100 maz-h-100 maz-flex maz-flex-center"
     :class="{ 'maz-is-dark': dark }"
     @vdropzone-file-added="fileAdded"
-    @vdropzone-success="fileSended"
     @vdropzone-thumbnail="thumbnail"
     @vdropzone-error="fileError"
+    @vdropzone-error-multiple="fileMultipleError"
     @vdropzone-removed-file="fileRemoved"
     @vdropzone-sending="sending"
+    @vdropzone-max-files-reached="maxFilesReached"
+    @vdropzone-success="fileUploadSuccess"
+    @vdropzone-success-multiple="fileUploadMultipleSuccess"
+    @vdropzone-duplicate-file="duplicateFile"
+    @vdropzone-s3-upload-success="s3UploadSuccess"
+    @vdropzone-s3-upload-error="s3UploadError"
     @keydown.native="keyDown"
   />
 </template>
@@ -58,8 +64,12 @@ export default {
     dark: { type: Boolean, default: false },
     // If error remove all files in area
     removeFilesOnError: { type: Boolean, default: false },
+    // If error remove file in area
+    removeFileOnError: { type: Boolean, default: false },
     // Not upload immediatly the files
-    autoProcessQueue: { type: Boolean, default: true }
+    autoProcessQueue: { type: Boolean, default: true },
+    // Not upload immediatly the files
+    duplicateCheck: { type: Boolean, default: true }
   },
   computed: {
     t () {
@@ -85,6 +95,7 @@ export default {
         maxFilesize: this.maxFilesize,
         maxFiles: this.maxFiles,
         autoProcessQueue: this.autoProcessQueue,
+        duplicateCheck: this.duplicateCheck,
         dictDefaultMessage: `
             <i class="material-icons" aria-hidden="true">cloud_upload</i>
             <br />
@@ -160,43 +171,95 @@ export default {
         })(this)), 1)
       }
     },
-    /**
-     * Called whenever a new file is dropped in the zone.
-     * @function fileAdded
-     */
-    fileAdded (file) {
-      this.$emit('file-added', file)
-    },
-    /**
-     * Called when the file is successfully sent.
-     * @function fileSended
-     */
-    fileSended (file, response) {
-      setTimeout(() => {
-        this.$emit('file-upload-success', response)
-      }, 2000)
-    },
-    /**
-     * Called when an error occured while uploading the file.
-     * @function fileError
-     */
-    fileError (file, error) {
-      this.$emit('file-upload-error', error)
-      if (this.removeFilesOnError) this.removeAllFiles()
-    },
     removeAllFiles () {
       this.$refs.mazDropzone.removeAllFiles()
-    },
-    processQueue () {
-      this.$refs.mazDropzone.processQueue()
     },
     removeFile (file) {
       this.$refs.mazDropzone.removeFile(file)
     },
+    processQueue () {
+      this.$refs.mazDropzone.processQueue()
+    },
+    getAcceptedFiles () {
+      this.$refs.mazDropzone.getAcceptedFiles()
+    },
+    getRejectedFiles () {
+      this.$refs.mazDropzone.getRejectedFiles()
+    },
+    getQueuedFiles () {
+      this.$refs.mazDropzone.getQueuedFiles()
+    },
+    getUploadingFiles () {
+      this.$refs.mazDropzone.getUploadingFiles()
+    },
+    disable () {
+      this.$refs.mazDropzone.disable()
+    },
+    enable () {
+      this.$refs.mazDropzone.enable()
+    },
+    setOption (optionName, value) {
+      this.$refs.mazDropzone.setOption(optionName, value)
+    },
+    manuallyAddFile (file, fileUrl) {
+      this.$refs.mazDropzone.manuallyAddFile(file, fileUrl)
+    },
+    setAWSSigningURL (url) {
+      this.$refs.mazDropzone.setAWSSigningURL(url)
+    },
+    fileAdded (file) {
+      // Called whenever a new file is dropped in the zone.
+      // @arg File
+      this.$emit('file-added', file)
+    },
+    fileUploadSuccess (file, response) {
+      // Called when the file is successfully sent.
+      // @arg Response, File
+      this.$emit('file-upload-success', response, file)
+    },
+    fileUploadMultipleSuccess (files, response, xhr) {
+      // Called when the file is successfully sent.
+      // @arg Response, Files, XHR
+      this.$emit('file-upload-multiple-success', response, files, xhr)
+    },
+    fileError (file, error, xhr) {
+      // Called when an error occured while uploading the file.
+      // @arg Error, File, XHR
+      this.$emit('file-upload-error', error, file, xhr)
+      if (this.removeFilesOnError) this.removeAllFiles()
+      if (this.removeFileOnError) this.removeFile(file)
+    },
+    fileMultipleError (files, error) {
+      // Called when an error occured while uploading the file.
+      // @arg Error
+      this.$emit('file-upload-multiple-error', error)
+      if (this.removeFileOnError) {
+        files.forEach((f) => { this.removeFile(f) })
+      }
+    },
+    maxFilesReached (file) {
+      // Called when the number of files accepted reaches the maxFiles limit.
+      // @arg File
+      this.$emit('max-files-reached', file)
+    },
+    s3UploadError (e) {
+      // If error occures in AWS S3 upload.
+      // @arg errorMessage
+      this.$emit('s3-upload-error', e)
+    },
+    s3UploadSuccess (e) {
+      // When file is uploaded to AWS S3 successfully.
+      // @arg s3ObjectLocation
+      this.$emit('s3-upload-success', e)
+    },
     fileRemoved (e) {
+      // A file was removed from the dropzone.
+      // @arg File
       this.$emit('file-removed', e)
     },
     sending (file, xhr, formData) {
+      // Modify the request and add addtional parameters to request before sending.
+      // @arg file, xhr, formData
       this.$emit('file-sending', file, xhr, formData)
     }
   }
