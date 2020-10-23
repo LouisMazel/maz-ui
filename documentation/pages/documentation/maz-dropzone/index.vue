@@ -145,6 +145,9 @@ export default {
     },
     processQueue () {
       this.$refs.mazDropzone.processQueue()
+    },
+    getAcceptedFiles () {
+      this.$refs.mazDropzone.getAcceptedFiles()
     }
   }
 }

@@ -172,40 +172,40 @@ export default {
       }
     },
     removeAllFiles () {
-      this.$refs.mazDropzone.removeAllFiles()
+      return this.$refs.mazDropzone.removeAllFiles()
     },
     removeFile (file) {
-      this.$refs.mazDropzone.removeFile(file)
+      return this.$refs.mazDropzone.removeFile(file)
     },
     processQueue () {
-      this.$refs.mazDropzone.processQueue()
+      return this.$refs.mazDropzone.processQueue()
     },
     getAcceptedFiles () {
-      this.$refs.mazDropzone.getAcceptedFiles()
+      return this.$refs.mazDropzone.getAcceptedFiles()
     },
     getRejectedFiles () {
-      this.$refs.mazDropzone.getRejectedFiles()
+      return this.$refs.mazDropzone.getRejectedFiles()
     },
     getQueuedFiles () {
-      this.$refs.mazDropzone.getQueuedFiles()
+      return this.$refs.mazDropzone.getQueuedFiles()
     },
     getUploadingFiles () {
-      this.$refs.mazDropzone.getUploadingFiles()
+      return this.$refs.mazDropzone.getUploadingFiles()
     },
     disable () {
-      this.$refs.mazDropzone.disable()
+      return this.$refs.mazDropzone.disable()
     },
     enable () {
-      this.$refs.mazDropzone.enable()
+      return this.$refs.mazDropzone.enable()
     },
     setOption (optionName, value) {
-      this.$refs.mazDropzone.setOption(optionName, value)
+      return this.$refs.mazDropzone.setOption(optionName, value)
     },
     manuallyAddFile (file, fileUrl) {
-      this.$refs.mazDropzone.manuallyAddFile(file, fileUrl)
+      return this.$refs.mazDropzone.manuallyAddFile(file, fileUrl)
     },
     setAWSSigningURL (url) {
-      this.$refs.mazDropzone.setAWSSigningURL(url)
+      return this.$refs.mazDropzone.setAWSSigningURL(url)
     },
     fileAdded (file) {
       // Called whenever a new file is dropped in the zone.
