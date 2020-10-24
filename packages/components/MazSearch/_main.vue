@@ -9,11 +9,16 @@
       v-model="query"
       v-bind="$attrs"
       :color="color"
-      @input="debouncedSearch"
+      :loading="loading"
+      @input="inputEvent"
       @keydown="keyboardNav"
       @focus="openList"
       @keyup="$emit('keyup', $event)"
       @change="$emit('change', $event)"
+      @clear="$emit('clear', $event)"
+      @blur="$emit('blur', $event)"
+      @paste="$emit('paste', $event)"
+      @click="$emit('click', $event)"
     >
       <!-- Custom left icon -->
       <slot
@@ -43,7 +48,7 @@
             {'keyboard-selected': tmpValue === (itemValue ? item[itemValue] : item)}
           ]"
           class="maz-search__items__item"
-          @click.stop="updateValue((itemValue ? item[itemValue] : item))"
+          @click.stop="updateValue(item)"
         >
           <!-- Item template -->
           <slot
@@ -104,13 +109,20 @@ export default {
     // to show `no-data` slot (when you request has no results)
     noData: { type: Boolean, default: false },
     // Choose your color
-    color: { type: String, default: 'primary' }
+    color: { type: String, default: 'primary' },
+    // To open the list
+    open: { type: Boolean, default: false },
+    // Add loading effect to input
+    loading: { type: Boolean, default: false },
+    // Replace the query typed by the "item text" selected in list
+    replaceOnSelect: { type: Boolean, default: false }
   },
   data () {
     return {
       query: null,
-      hasListOpen: false,
-      tmpValue: null
+      listOpen: false,
+      tmpValue: null,
+      inDebounce: false
     }
   },
   computed: {
@@ -126,7 +138,10 @@ export default {
       return this.query === null || this.query === ''
     },
     hasNoDataSlot () {
-      return (!this.items || !this.items.length) && !this.hasEmptyQuery && this.noData
+      return (!this.items || !this.items.length) && !this.hasEmptyQuery && this.noData && !this.inDebounce && !this.loading
+    },
+    hasListOpen () {
+      return this.open || this.listOpen
     }
   },
   watch: {
@@ -135,28 +150,31 @@ export default {
     }
   },
   methods: {
-    openList () {
-      this.hasListOpen = true
+    openList (e) {
+      this.$emit('focus', e)
+      this.listOpen = true
       if (this.value) this.scrollToSelectedOnFocus(this.selectedValueIndex)
     },
     closeList () {
-      this.hasListOpen = false
+      setTimeout(() => { this.listOpen = false }, 200)
     },
-    async reset () {
-      this.closeList()
-      // this.query = null
-    },
-    async updateValue (item) {
+    updateValue (item) {
+      const { itemValue, itemText, replaceOnSelect } = this
+      const valueReturned = itemValue ? item[itemValue] : item
       // event sent when user select an item in the items list
       // @arg The argument is a the item or an item[key] if you use `item-value`
-      this.$emit('input', item)
-      await this.$nextTick()
-      this.reset()
+      this.$emit('input', valueReturned)
+      if (replaceOnSelect) this.query = itemText ? item[itemText] : JSON.stringify(item)
+    },
+    inputEvent (q) {
+      this.inDebounce = true
+      this.debouncedSearch(q)
     },
     debouncedSearch: debounce(function (q) {
       // event sent after debounce --> you must start the request with this event
       // @arg The argument is a string value representing the query the user entered
       this.$emit('request', q)
+      this.inDebounce = false
     }, 500),
     scrollToSelectedOnFocus (arrayIndex) {
       this.$nextTick(() => {
@@ -165,6 +183,7 @@ export default {
       })
     },
     keyboardNav (e) {
+      this.$emit('keydown', e)
       if (!Array.isArray(this.items) || !this.items.length) return
       const code = e.keyCode
       if (code === 40 || code === 38) {

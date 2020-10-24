@@ -24,6 +24,8 @@
         :items="results"
         :loading="loading"
         item-text="label"
+        clearable
+        no-data
         @request="searchResults"
       />
     </ComponentContainer>

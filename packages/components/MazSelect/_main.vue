@@ -53,8 +53,11 @@
       @clear="emitValues(null)"
       @keydown="search ? null : keyboardNav($event)"
       @keyup="$emit('keyup', $event)"
-      @focus="openList"
+      @blur="$emit('blur', $event)"
       @change="$emit('change', $event)"
+      @paste="$emit('paste', $event)"
+      @click="$emit('click', $event)"
+      @focus="openList"
     >
       <!-- custom left icon -->
       <slot
@@ -334,7 +337,8 @@ export default {
       this.listIsOpen = false
       this.isFocus = false
     },
-    openList () {
+    openList (e) {
+      this.$emit('focus', e)
       const { disabled, search, values } = this
       if (!disabled) {
         if (disabled) return
