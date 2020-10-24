@@ -49,6 +49,11 @@
     &--#{$name} {
       .maz-search__items__item.selected {
         background-color: $color;
+
+        &.keyboard-selected,
+        &:hover {
+          background-color: darken($color, 10%);
+        }
       }
     }
   }

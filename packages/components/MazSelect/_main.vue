@@ -359,7 +359,6 @@ export default {
       this.clearSearch()
       if (this.multiple) return
       this.closeList()
-      await this.$nextTick()
     },
     selectFirstValue () {
       const { multiple, value, options, config } = this

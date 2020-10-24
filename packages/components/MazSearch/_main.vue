@@ -45,7 +45,7 @@
           tabindex="-1"
           :class="[
             {'selected': value === (itemValue ? item[itemValue] : item)},
-            {'keyboard-selected': tmpValue === (itemValue ? item[itemValue] : item)}
+            {'keyboard-selected': tmpValue === item}
           ]"
           class="maz-search__items__item"
           @click.stop="updateValue(item)"
@@ -115,7 +115,9 @@ export default {
     // Add loading effect to input
     loading: { type: Boolean, default: false },
     // Replace the query typed by the "item text" selected in list
-    replaceOnSelect: { type: Boolean, default: false }
+    replaceOnSelect: { type: Boolean, default: false },
+    // Clear query typed on select
+    clearOnSelect: { type: Boolean, default: false }
   },
   data () {
     return {
@@ -127,11 +129,12 @@ export default {
   },
   computed: {
     tmpValueIndex () {
-      return this.items.findIndex(c => (this.itemValue ? c[this.itemValue] : c) === this.tmpValue)
+      return this.items.findIndex(c => c === this.tmpValue)
     },
     selectedValueIndex () {
+      const { itemValue } = this
       return this.value
-        ? this.items.findIndex(c => (this.itemValue ? c[this.itemValue] : c) === this.value)
+        ? this.items.findIndex(c => (itemValue ? c[itemValue] : c) === this.value)
         : null
     },
     hasEmptyQuery () {
@@ -156,15 +159,20 @@ export default {
       if (this.value) this.scrollToSelectedOnFocus(this.selectedValueIndex)
     },
     closeList () {
-      setTimeout(() => { this.listOpen = false }, 200)
+      setTimeout(() => { this.listOpen = false }, 300)
     },
     updateValue (item) {
-      const { itemValue, itemText, replaceOnSelect } = this
+      const { itemValue, itemText, replaceOnSelect, clearOnSelect } = this
       const valueReturned = itemValue ? item[itemValue] : item
       // event sent when user select an item in the items list
       // @arg The argument is a the item or an item[key] if you use `item-value`
       this.$emit('input', valueReturned)
-      if (replaceOnSelect) this.query = itemText ? item[itemText] : JSON.stringify(item)
+      if (replaceOnSelect) {
+        this.query = itemText ? item[itemText] : JSON.stringify(item)
+      } else if (clearOnSelect) {
+        this.query = null
+      }
+      this.closeList()
     },
     inputEvent (q) {
       this.inDebounce = true
@@ -194,7 +202,7 @@ export default {
             ? this.items.length - 1
             : 0
         }
-        this.tmpValue = (this.itemValue ? this.items[index][this.itemValue] : this.items[index])
+        this.tmpValue = this.items[index]
         this.scrollToSelectedOnFocus(index)
       } else if (code === 13) {
         // enter key
