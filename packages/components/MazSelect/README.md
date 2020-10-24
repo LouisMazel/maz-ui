@@ -36,10 +36,14 @@
 | Event Name | Description                | Parameters                |
 | ---------- | -------------------------- | ------------------------- |
 | close      | -                          | -                         |
+| focus      | -                          | -                         |
 | open       | sent when the list is open | -                         |
 | input      | return the select input    | the option value selected |
 | keyup      | -                          | -                         |
+| blur       | -                          | -                         |
 | change     | -                          | -                         |
+| paste      | -                          | -                         |
+| click      | -                          | -                         |
 
 <!-- @vuese:MazSelect:events:end -->
 
