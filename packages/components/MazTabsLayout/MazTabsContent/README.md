@@ -6,7 +6,7 @@
 
 | Name      | Description                                                  | Type     | Required | Default |
 | --------- | ------------------------------------------------------------ | -------- | -------- | ------- |
-| activeTab | set the current active tab (use it you don't use MazTabsBar) | `Number` | `false`  | null    |
+| activeTab | Set the current active tab (use it you don't use MazTabsBar) | `Number` | `false`  | null    |
 
 <!-- @vuese:MazTabsContent:props:end -->
 

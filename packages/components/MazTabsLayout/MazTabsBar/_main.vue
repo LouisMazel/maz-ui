@@ -13,10 +13,10 @@
       ref="MazTabsBarItem"
       no-shadow
       color="transparent"
-      :class="{active : valueComputed === i, disabled: disabled }"
+      :class="{active : currentTab === i, disabled: disabled }"
       class="maz-tabs-bar__item"
-      :to="noUseAnchor ? null : `#${labelNormalize(label)}`"
-      @click.native.prevent="disabled ? null : setValue($event, i)"
+      :to="useAnchor ? `#${labelNormalize(label)}` : null"
+      @click.native="disabled ? null : setValue(i)"
     >
       {{ label }}
     </MazBtn>
@@ -38,10 +38,12 @@ const toSnakeCase = string => {
     .join('_')
 }
 
-const getIndexOfCurrentAnchor = (tabs) => {
-  if (typeof window === 'undefined') return 0
+const getIndexOfCurrentAnchor = (tabs, value) => {
+  console.log('getIndexOfCurrentAnchor')
+  if (typeof window === 'undefined') return value
   const anchor = window.location.hash.replace('#', '')
   const index = tabs.findIndex(({ label }) => toSnakeCase(label) === anchor)
+  console.log('STOP getIndexOfCurrentAnchor', index === -1 ? 0 : index)
   return index === -1 ? 0 : index
 }
 
@@ -51,64 +53,57 @@ export default {
     // tabs objects - ex: `[ { label: 'First Tab' }, { label: 'Second Tab', disabled: true }]`
     items: { type: Array, required: true },
     // current tab active
-    value: { type: Number, default: null },
+    value: { type: Number, default: 1 },
     // set the dark theme
     dark: { type: Boolean, default: false },
     // the tabs bar will be align on left
     alignLeft: { type: Boolean, default: false },
     // you should use the history mode with VueRouter && do not use `v-model` value
-    noUseAnchor: { type: Boolean, default: false }
+    useAnchor: { type: Boolean, default: false }
   },
   data () {
     return {
-      currentTab: this.noUseAnchor ? 0 : getIndexOfCurrentAnchor(this.items),
-      tabsIndicatorState: {}
+      currentTab: null,
+      isMounted: false
     }
   },
   computed: {
-    valueComputed: {
-      get () {
-        const { value } = this
-        return value ? value - 1 : this.currentTab
-      },
-      set (value) {
-        this.getTabsIndicatorState()
-        this.currentTab = value
-        // return the number of current active tab
-        // @arg Number
-        this.$emit('input', value + 1)
+    tabsIndicatorState () {
+      const { currentTab, isMounted } = this
+
+      if (!Number.isInteger(currentTab) || !isMounted) return
+
+      const tabsItem = this.$refs.MazTabsBarItem ? this.$refs.MazTabsBarItem[currentTab] : null
+      const indicatorWidth = tabsItem ? tabsItem.$el.clientWidth : 0
+      const translateXValue = tabsItem ? tabsItem.$el.offsetLeft : 0
+      return {
+        transform: `translateX(${translateXValue}px)`,
+        width: `${indicatorWidth}px`
       }
     }
   },
   watch: {
     value: {
       handler (value) {
-        this.tabActive = value - 1
-        this.getTabsIndicatorState()
+        const { useAnchor, currentTab } = this
+        const valueIndex = value - 1
+        const tabActive = useAnchor && !Number.isInteger(currentTab) ? getIndexOfCurrentAnchor(this.items, valueIndex) : valueIndex
+        this.setValue(tabActive)
       },
       immediate: true
     }
   },
   mounted () {
-    this.getTabsIndicatorState()
+    this.isMounted = true
   },
   methods: {
-    setValue (e, i) {
-      e.preventDefault()
-      this.valueComputed = i
+    setValue (i) {
+      this.currentTab = i
+      this.$root.mazTabsLayoutActive = i
+      this.$emit('input', i + 1)
     },
     labelNormalize (label) {
       return toSnakeCase(label)
-    },
-    async getTabsIndicatorState () {
-      await this.$nextTick()
-      const tabsItem = this.$refs.MazTabsBarItem ? this.$refs.MazTabsBarItem[this.valueComputed] : null
-      const indicatorWidth = tabsItem ? tabsItem.$el.clientWidth : 0
-      const translateXValue = tabsItem ? tabsItem.$el.offsetLeft : 0
-      this.tabsIndicatorState = {
-        transform: `translateX(${translateXValue}px)`,
-        width: `${indicatorWidth}px`
-      }
     }
   }
 }

@@ -1,4 +1,4 @@
 .maz-tabs-content {
   position: relative;
-  transition: transform 500ms;
+  transition: height .5s cubic-bezier(.25, .8, .5, 1);
 }
