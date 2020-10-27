@@ -47,7 +47,7 @@
       font-weight: 700;
 
       &:not(.maz-active)::before {
-        border-radius: $border-radius;
+        border-radius: var(--border-radius);
         background-color: rgba(black, .15);
       }
     }

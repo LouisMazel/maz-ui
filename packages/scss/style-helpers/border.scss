@@ -72,11 +72,11 @@
 }
 
 .#{$prefix}border {
-  border-width: $border-width;
+  border-width: var(--border-width);
 }
 
 @each $position in $orientations {
   .#{$prefix}border-#{$position} {
-    border-#{$position}-width: #{$border-width};
+    border-#{$position}-width: #{var(--border-width)};
   }
 }

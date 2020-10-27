@@ -2,7 +2,7 @@ table.#{$prefix}md {
   @include font_family();
 
   border-spacing: 0;
-  border-radius: $border-radius;
+  border-radius: var(--border-radius);
   border-collapse: collapse;
   table-layout: fixed;
   overflow-wrap: break-word;

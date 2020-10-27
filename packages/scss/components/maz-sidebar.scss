@@ -75,7 +75,7 @@
         left: inherit;
 
         button {
-          border-radius: $border-radius 0 0 $border-radius;
+          border-radius: var(--border-radius) 0 0 var(--border-radius);
         }
       }
     }

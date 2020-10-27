@@ -53,7 +53,7 @@
   }
 
   &.bordered {
-    border: $border-width * 2 solid $border-color;
+    border: calc(#{var(--border-width)} * 2) solid $border-color;
   }
 
   &.has-link {
@@ -66,6 +66,6 @@
   }
 
   &.square {
-    border-radius: $border-radius;
+    border-radius: var(--border-radius);
   }
 }

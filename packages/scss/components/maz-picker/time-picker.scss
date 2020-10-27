@@ -19,8 +19,8 @@
     z-index: -1;
     left: 0;
     right: 0;
-    border-top: $border-width solid $border-color;
-    border-bottom: $border-width solid $border-color;
+    border-top: var(--border-width) solid $border-color;
+    border-bottom: var(--border-width) solid $border-color;
   }
 
   &__column {

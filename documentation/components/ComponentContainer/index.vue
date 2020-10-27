@@ -36,7 +36,7 @@ export default {
   .component-container {
     color: $text-color;
     min-width: 200px;
-    border: $border-width solid transparent;
+    border: var(--border-width) solid transparent;
 
     &__footer {
       overflow: hidden;
@@ -57,7 +57,7 @@ export default {
   .maz-is-dark.component-container {
     color: $text-color-dark;
     background-color: $bg-color-dark;
-    border: $border-width solid $hover-bg-color-dark;
+    border: var(--border-width) solid $hover-bg-color-dark;
 
     .component-container__footer {
       border-color: $hover-bg-color-dark;

@@ -195,7 +195,7 @@ export default {
     blockquote {
       background: $hover-bg-color;
       border-left: 4px solid $primary-color;
-      // border-radius: $border-radius;
+      // border-radius: var(--border-radius);
       padding: .5em 10px;
     }
 

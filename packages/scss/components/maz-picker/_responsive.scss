@@ -57,7 +57,7 @@
         width: 100%;
         max-width: 100%;
         border-left-width: 0;
-        border-top-width: $border-width;
+        border-top-width: var(--border-width);
         border-top-style: solid;
         border-color: $border-color;
         flex: none;

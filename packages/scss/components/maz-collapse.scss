@@ -2,9 +2,9 @@
 
 .maz-collapse {
   color: $text-color;
-  border-radius: $border-radius;
+  border-radius: var(--border-radius);
   overflow: hidden;
-  border: $border-width solid $hover-bg-color;
+  border: var(--border-width) solid $hover-bg-color;
 
   &__header-btn {
     background-color: transparent;
@@ -21,7 +21,7 @@
   }
 
   &__content {
-    border-top: $border-width solid $text-color-dark;
+    border-top: var(--border-width) solid $text-color-dark;
   }
 }
 

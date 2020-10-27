@@ -31,7 +31,7 @@ $SM_SIZE: 2.286rem !default;
     font-weight: 400;
     appearance: none;
     outline: none;
-    border-radius: $border-radius;
+    border-radius: var(--border-radius);
     font-size: 1rem;
     z-index: 0;
 
@@ -351,12 +351,12 @@ $SM_SIZE: 2.286rem !default;
 
   &__loader {
     bottom: 1px;
-    height: $border-width;
-    left: $border-radius / 2;
+    height: var(--border-width);
+    left: var(--border-radius) / 2;
     width: calc(100% - .5714rem);
     position: absolute;
     overflow: hidden;
-    border-radius: $border-radius;
+    border-radius: var(--border-radius);
 
     &.maz-textarea {
       bottom: .4286rem;

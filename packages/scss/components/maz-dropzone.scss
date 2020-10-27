@@ -2,12 +2,12 @@
 @import './maz-dropzone/_maz-dropzone-base.scss';
 
 .maz-dropzone {
-  border: $border-width dashed $border-color;
+  border: var(--border-width) dashed $border-color;
   min-height: 245px;
   background-color: $bg-color;
   color: $muted-color;
   cursor: pointer;
-  border-radius: $border-radius;
+  border-radius: var(--border-radius);
   transition: all 300ms ease-in-out;
 
   .dz-preview {
@@ -72,7 +72,7 @@
     width: 100%;
     height: 200px;
     margin: 0 auto;
-    border-radius: $border-radius;
+    border-radius: var(--border-radius);
     border-color: $hover-bg-color;
 
     > div {
@@ -95,7 +95,7 @@
     background-color: rgba($primary-color, .8);
     transition: opacity .2s linear;
     text-align: center;
-    border-radius: $border-radius;
+    border-radius: var(--border-radius);
   }
 
   .dz-error.dz-preview .dz-details {

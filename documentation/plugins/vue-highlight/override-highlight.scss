@@ -2,8 +2,8 @@
   .hljs {
     background-color: transparent;
     background-color: $bg-color-dark;
-    // border: $border-width solid #EAEEFB;
-    border-radius: $border-radius;
+    // border: var(--border-width) solid #EAEEFB;
+    border-radius: var(--border-radius);
     padding: 20px;
     color: $text-color-dark;
 

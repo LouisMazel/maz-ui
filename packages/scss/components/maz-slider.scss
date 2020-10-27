@@ -3,7 +3,7 @@
 .maz-slider {
   &__bar {
     position: relative;
-    border-radius: calc(#{$border-radius} * 2);
+    border-radius: calc(#{var(--border-radius)} * 2);
   }
 
   &__divider {

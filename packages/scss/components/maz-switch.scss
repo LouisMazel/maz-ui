@@ -73,7 +73,7 @@
       .maz-switch__input:focus + .maz-switch__toggle span {
         background-color: darken($color, 10%);
         box-shadow: 0 0 0 .143rem rgba($color, .7);
-        border-radius: $border-radius;
+        border-radius: var(--border-radius);
       }
     }
   }

@@ -9,7 +9,7 @@
     padding: .75rem 1.25rem;
     margin-bottom: -2px;
     background-color: $bg-color;
-    border: $border-width solid $hover-bg-color;
+    border: var(--border-width) solid $hover-bg-color;
     cursor: move;
     width: 100%;
     font-size: .875em;
@@ -24,14 +24,14 @@
     }
 
     &:first-child {
-      border-top-left-radius: $border-radius;
-      border-top-right-radius: $border-radius;
+      border-top-left-radius: var(--border-radius);
+      border-top-right-radius: var(--border-radius);
     }
 
     &:last-child {
       margin-bottom: 0;
-      border-bottom-right-radius: $border-radius;
-      border-bottom-left-radius: $border-radius;
+      border-bottom-right-radius: var(--border-radius);
+      border-bottom-left-radius: var(--border-radius);
     }
   }
 

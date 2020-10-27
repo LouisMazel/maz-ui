@@ -20,7 +20,7 @@
     box-shadow: none !important;
 
     &:not(:last-of-type) {
-      margin-right: $border-width;
+      margin-right: var(--border-width);
     }
 
     &.active {

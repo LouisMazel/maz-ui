@@ -8,8 +8,8 @@ $SM_SIZE: 2.286rem !default;
   $this: &;
 
   position: relative;
-  border: $border-width solid $border-color;
-  border-radius: $border-radius;
+  border: var(--border-width) solid $border-color;
+  border-radius: var(--border-radius);
   padding: 0 .5714rem;
   width: 100%;
   min-height: $MD_SIZE;
@@ -85,7 +85,7 @@ $SM_SIZE: 2.286rem !default;
     margin-right: .2857rem;
     margin-bottom: .2857rem;
     margin-top: .2857rem;
-    border-radius: calc(#{$border-radius} / 2);
+    border-radius: calc(#{var(--border-radius)} / 2);
     padding-right: .2857rem;
     padding-left: .5rem;
     color: white;
@@ -192,12 +192,12 @@ $SM_SIZE: 2.286rem !default;
 
   &__loader {
     bottom: 0;
-    height: $border-width;
-    left: $border-radius / 2;
+    height: var(--border-width);
+    left: var(--border-radius) / 2;
     width: calc(100% - .5714rem);
     position: absolute;
     overflow: hidden;
-    border-radius: $border-radius;
+    border-radius: var(--border-radius);
 
     &__progress-bar {
       background-color: $primary-color;
