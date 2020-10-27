@@ -1,0 +1,70 @@
+
+:root {
+  --border-width: 2px;
+  --border-radius: 8px;
+
+  /*
+  * MAJORS COLORS
+  */
+
+  --primary-color: dodgerblue;
+  --secondary-color: #1CD1A1;
+  --third-color: #C41AF9;
+  --danger-color: orangered;
+  --success-color: yellowgreen;
+  --info-color: #17A2B8;
+  --warning-color: #FFA300;
+  --light-color: whitesmoke;
+  --default-color: #CCC;
+  --text-color: #212121;
+  --bg-color: white;
+  --bg-color-light: #F2F2F2;
+  --dark-color: #21222E;
+  --grey-color: #999;
+  --placeholder-color: #A7A7A7;
+  --input-icon-color: #DEDEDE;
+  --text-muted: rgba(black, .54);
+  --text-muted-dark: rgba(white, .54);
+
+  /*
+  * OTHERS COLORS
+  */
+
+  --black-color: black;
+  --white-color: white;
+  --hover-bg-color: #F2F2F2;
+  --hover-bg-color-l: white;
+  --muted-color: #747474;
+  --border-color: #EEE;
+  --disabled-color: #F2F2F2;
+  --overlay-color: rgba(#303144, .7);
+
+  /*
+  * DARK THEME SPECIFIC
+  */
+
+  --text-color-dark: #EEE;
+  --bg-color-dark: #21222E;
+  --bg-color-dark-light: #303144;
+  --hover-bg-color-dark: #2E2F40;
+  --hover-bg-color-dark-l: #2E2F40;
+  --muted-color-dark: rgba(255, 255, 255, .3);
+  --disabled-color-dark: #CCC;
+  --border-color-dark: #3B3C53;
+  --placeholder-color-dark: rgba(255, 255, 255, .6);
+  --input-icon-color-dark: #65678F;
+  --overlay-color-dark: rgba(86, 87, 117, .7);
+
+  /*
+  * BREAKPOINTS
+  */
+
+  --breakpoint-mobile-s: 320px;
+  --breakpoint-mobile-m: 375px;
+  --breakpoint-mobile-l: 425px;
+  --breakpoint-tablet: 768px;
+  --breakpoint-laptop-s: 1024px;
+  --breakpoint-laptop-m: 1280px;
+  --breakpoint-laptop-l: 1440px;
+  --breakpoint-4k: 1920px;
+}

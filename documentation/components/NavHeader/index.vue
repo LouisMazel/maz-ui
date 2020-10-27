@@ -25,6 +25,7 @@
           </h2>
         </div>
       </NuxtLink>
+      <div class="maz-flex-1" />
       <div
         role="navigation"
         class="header__menu maz-flex maz-align-center maz-hidden-mobile"
@@ -38,7 +39,7 @@
           Documentation
         </NuxtLink>
         <NuxtLink
-          class="header__menu__item maz-btn maz-btn--white maz-no-shadow maz-bg-color maz-no-border maz-hover-bg-color"
+          class="header__menu__item maz-btn maz-btn--white maz-no-shadow maz-bg-color maz-no-border maz-hover-bg-color maz-mr-1"
           :to="{ name: 'made-with-maz-ui' }"
         >
           Made with Maz UI
