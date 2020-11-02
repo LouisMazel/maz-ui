@@ -71,8 +71,8 @@ export default {
     removeFileOnError: { type: Boolean, default: false },
     // Not upload immediatly the files
     autoProcessQueue: { type: Boolean, default: true },
-    // Not upload immediatly the files
-    duplicateCheck: { type: Boolean, default: true },
+    // Check files to avoid duplicates
+    duplicateCheck: { type: Boolean, default: false },
     // Upload multiple files in only one request
     uploadMultiple: { type: Boolean, default: false }
   },
