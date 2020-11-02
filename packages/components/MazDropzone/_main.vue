@@ -49,7 +49,7 @@ export default {
     // File type accepted
     acceptedFiles: { type: String, default: 'image/*' },
     // File name uploaded
-    paramName: { type: String, default: 'file-name' },
+    paramName: { type: String, default: null },
     // Set request headers with your own (token, jwt)
     headers: { type: Object, required: true },
     // Messages translations (error, success)
@@ -99,6 +99,7 @@ export default {
         autoProcessQueue: this.autoProcessQueue,
         duplicateCheck: this.duplicateCheck,
         uploadMultiple: this.uploadMultiple,
+        paramName: this.paramName,
         dictDefaultMessage: `
             <i class="material-icons" aria-hidden="true">cloud_upload</i>
             <br />
@@ -133,8 +134,7 @@ export default {
               </div>
             </div>
           `,
-        headers: this.headers,
-        paramName: this.paramName
+        headers: this.headers
       }
     }
   },
