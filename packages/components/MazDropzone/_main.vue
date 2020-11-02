@@ -99,7 +99,7 @@ export default {
         autoProcessQueue: this.autoProcessQueue,
         duplicateCheck: this.duplicateCheck,
         uploadMultiple: this.uploadMultiple,
-        paramName: this.paramName,
+        ...(this.paramName ? { paramName: this.paramName }: {}),
         dictDefaultMessage: `
             <i class="material-icons" aria-hidden="true">cloud_upload</i>
             <br />
