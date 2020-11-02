@@ -3,9 +3,11 @@
     :id="id"
     ref="mazDropzone"
     tabindex="0"
-    :options="dropzoneOptions"
     class="maz-base-component maz-dropzone maz-w-100 maz-h-100 maz-flex maz-flex-center"
     :class="{ 'maz-is-dark': dark }"
+    v-bind="$attrs"
+    :options="dropzoneOptions"
+    :duplicate-check="duplicateCheck"
     @vdropzone-file-added="fileAdded"
     @vdropzone-thumbnail="thumbnail"
     @vdropzone-error="fileError"
@@ -98,7 +100,6 @@ export default {
         maxFilesize: this.maxFilesize,
         maxFiles: this.maxFiles,
         autoProcessQueue: this.autoProcessQueue,
-        duplicateCheck: this.duplicateCheck,
         uploadMultiple: this.uploadMultiple,
         ...(this.paramName ? { paramName: this.paramName }: {}),
         dictDefaultMessage: `
