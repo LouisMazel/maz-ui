@@ -69,7 +69,9 @@ export default {
     // Not upload immediatly the files
     autoProcessQueue: { type: Boolean, default: true },
     // Not upload immediatly the files
-    duplicateCheck: { type: Boolean, default: true }
+    duplicateCheck: { type: Boolean, default: true },
+    // Upload multiple files in only one request
+    uploadMultiple: { type: Boolean, default: false }
   },
   computed: {
     t () {
@@ -96,6 +98,7 @@ export default {
         maxFiles: this.maxFiles,
         autoProcessQueue: this.autoProcessQueue,
         duplicateCheck: this.duplicateCheck,
+        uploadMultiple: this.uploadMultiple,
         dictDefaultMessage: `
             <i class="material-icons" aria-hidden="true">cloud_upload</i>
             <br />
