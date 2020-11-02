@@ -18,6 +18,7 @@
     @vdropzone-duplicate-file="duplicateFile"
     @vdropzone-s3-upload-success="s3UploadSuccess"
     @vdropzone-s3-upload-error="s3UploadError"
+    @vdropzone-queue-complete="queueComplete"
     @keydown.native="keyDown"
   />
 </template>
@@ -269,6 +270,10 @@ export default {
       // Fired when duplicateCheck is enabled and duplicate file is found.
       // @arg file
       this.$emit('duplicate-file', file)
+    },
+    queueComplete (e) {
+      // Fired when queue has been completely processed/ uploaded.
+      this.$emit('queue-complete', e)
     }
   }
 }
