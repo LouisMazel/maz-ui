@@ -55,7 +55,7 @@
 </script>"
       class="maz-flex maz-direction-column"
     >
-      <client-only>
+      <client-only placeholder="Loading...">
         <MazDropzone
           ref="mazDropzone"
           :url="url"
