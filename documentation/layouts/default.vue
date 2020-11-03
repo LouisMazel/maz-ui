@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 
 import NavHeader from '@/components/NavHeader'
 
@@ -24,16 +24,6 @@ export default {
   },
   computed: {
     ...mapGetters(['hasDarkTheme']),
-  },
-  mounted () {
-    const date = new Date().toTimeString()
-    const darkCookieValue = this.$cookies.get('use-dark-theme')
-    if ((!(date < '9:00' && date > '23:00') && typeof darkCookieValue !== 'boolean') || !darkCookieValue) {
-      this.setDarkTheme(false)
-    }
-  },
-  methods: {
-    ...mapActions(['setDarkTheme'])
   }
 }
 </script>

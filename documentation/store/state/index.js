@@ -1,3 +1,3 @@
 export default () => ({
-  darkTheme: true
+  darkTheme: false
 })
