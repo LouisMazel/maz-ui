@@ -87,7 +87,7 @@ const isGeneralDoc = name => ['documentation-get-started'].includes(name)
 const isCliDoc = name => ['documentation-cli-install'].includes(name)
 const isThemeDoc = name => ['documentation-theme', 'documentation-colors', 'documentation-dark-mode'].includes(name)
 
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 const regex = /-(\w)/g
 const camelize = str => str.replace(regex, (_, c) => (c ? c.toUpperCase() : ''))
@@ -155,8 +155,16 @@ export default {
   mounted () {
     this.hasLeftSidebarOpen= !(window.innerWidth < 767),
     this.isAbsolute = window.innerWidth < 767
+
+    const date = new Date().toTimeString()
+    const darkMode = this.$cookies.get('use-dark-theme')
+    const shouldSetDarkMode = (date < '9:00' && date > '23:00') && typeof darkMode === 'undefined'
+    if (shouldSetDarkMode || darkMode) {
+      this.setDarkTheme(shouldSetDarkMode ? true : Boolean(darkMode))
+    }
   },
   methods: {
+    ...mapActions(['setDarkTheme']),
     showOptions () {
       this.hasRightSidebarOpen = !this.hasRightSidebarOpen
     }

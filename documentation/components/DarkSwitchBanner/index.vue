@@ -24,6 +24,7 @@ export default {
         return this.hasDarkTheme
       },
       set (val) {
+        this.$cookies.set('use-dark-theme', val)
         return this.setDarkTheme(val)
       }
     }
