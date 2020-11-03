@@ -2,14 +2,10 @@
 @import './variables/color_types';
 
 .#{$prefix}badge {
-  background: $grey-color;
-  height: 22px;
-  line-height: 22px;
-  border-radius: 22px;
-  padding: 0 5px;
-  font-size: .857rem;
-  color: #888;
-  font-weight: 500;
+  background: $primary-color;
+  border-radius: 100px;
+  padding: 2px 8px;
+  color: white;
 }
 
 @each $name, $color in $color_types {
@@ -17,6 +13,12 @@
     .#{$prefix}badge-#{$name} {
       background-color: $color;
       color: white;
+
+      &-outline {
+        background-color: transparent;
+        border: $border-width solid $color;
+        color: $color;
+      }
     }
   }
 }

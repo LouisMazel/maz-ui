@@ -2,10 +2,9 @@
 @import './variables/color_types';
 
 .#{$prefix}label {
-  border-radius: 4px;
+  border-radius: $border-radius;
   padding: 2px 4px;
   color: white;
-  font-size: .857rem;
   background-color: $primary-color;
 }
 
@@ -16,7 +15,7 @@
 
       &-outline {
         background-color: transparent;
-        border: 1px solid $color;
+        border: $border-width solid $color;
         color: $color;
       }
     }
