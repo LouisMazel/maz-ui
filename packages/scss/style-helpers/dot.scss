@@ -1,23 +1,33 @@
 @import './variables/_colors';
 @import './variables/color_types';
 
-$dot-size: 6px;
+$base-dot-size: 1rem !default;
+$dot-size: .4286em !default;
 
 .#{$prefix}dot {
+  font-size: $base-dot-size;
   width: $dot-size;
   height: $dot-size;
   border-radius: $dot-size;
+  border: $border-width solid $primary-color;
   background-color: $primary-color;
+  display: inline-block;
+
+  &--outline {
+    background-color: transparent;
+    color: $primary-color;
+  }
 }
 
 @each $name, $color in $color_types {
   @if (type-of($color) == 'color') {
-    .#{$prefix}dot-#{$name} {
+    .#{$prefix}dot--#{$name} {
       background-color: $color;
+      border-color: $color;
 
-      &-outline {
+      &--outline {
         background-color: transparent;
-        border: 1px solid $color;
+        border: $border-width solid $color;
         color: $color;
       }
     }

@@ -1,20 +1,5 @@
-$xl-side-padding: 1.786rem !default;
-$lg-side-padding: 1.571rem !default;
-$md-side-padding: 1.429rem !default;
-$sm-side-padding:  1.071rem !default;
-$mini-side-padding: .8571rem !default;
-
-$xl-padding: 1.429rem $xl-side-padding !default;
-$lg-padding: 1.143rem $lg-side-padding !default;
-$md-padding: .8571rem $md-side-padding !default;
-$sm-padding: .6429rem $sm-side-padding !default;
-$mini-padding: .5rem $mini-side-padding !default;
-
-$xl-size: 4.286rem !default;
-$lg-size: 3.571rem !default;
-$md-size: 2.857rem !default;
-$sm-size: 2.286rem !default;
-$mini-size: 2rem !default;
+$btn-side-padding: 1.429em !default;
+$btn-height: 2.857em !default;
 
 .#{$prefix}btn {
   @include font_family();
@@ -37,13 +22,13 @@ $mini-size: 2rem !default;
   -webkit-font-smoothing: inherit;
   -moz-osx-font-smoothing: inherit;
   text-align: center;
-  padding-right: $md-side-padding;
-  padding-left: $md-side-padding;
-  height: $md-size;
+  font-size: 1rem;
+  padding-right: $btn-side-padding;
+  padding-left: $btn-side-padding;
+  height: $btn-height;
   vertical-align: middle;
   justify-content: center;
   align-items: center;
-  font-size: 1rem;
   text-decoration: none;
 
   &:hover,
@@ -58,14 +43,13 @@ $mini-size: 2rem !default;
       box-sizing: content-box;
       content: '';
       display: block;
-      height: 100%;
-      width: 100%;
       border: 2px solid $primary-color;
       border-radius: calc(#{$border-radius} + 3px);
-      padding: 1px;
       position: absolute;
       left: -3px;
       top: -3px;
+      right: -3px;
+      bottom: -3px;
     }
   }
 
@@ -120,60 +104,28 @@ $mini-size: 2rem !default;
   }
 
   &--xl {
-    padding-right: $xl-side-padding;
-    padding-left: $xl-side-padding;
-    height: $xl-size;
-    font-size: 1.286rem;
+    font-size: 1.375rem;
   }
 
   &--lg {
-    padding-right: $lg-side-padding;
-    padding-left: $lg-side-padding;
-    height: $lg-size;
-    font-size: 1.143rem;
+    font-size: 1.125rem;
   }
 
   &--sm {
-    padding-right: $sm-side-padding;
-    padding-left: $sm-side-padding;
-    height: $sm-size;
-    font-size: .857rem;
+    font-size: .875rem;
   }
 
   &--mini {
-    padding-right: $mini-side-padding;
-    padding-left: $mini-side-padding;
-    height: $mini-size;
-    font-size: .857rem;
+    font-size: .75rem;
   }
 
   &--fab {
     border-radius: 50%;
     padding: 0;
-    width: $md-size;
+    width: $btn-height;
 
     &::after {
       border-radius: 50%;
-    }
-
-    &.#{$prefix}btn--xl {
-      width: $xl-size;
-    }
-
-    &.#{$prefix}btn--lg {
-      width: $lg-size;
-    }
-
-    &.#{$prefix}btn--md {
-      width: $md-size;
-    }
-
-    &.#{$prefix}btn--sm {
-      width: $sm-size;
-    }
-
-    &.#{$prefix}btn--mini {
-      width: $mini-size;
     }
 
     &:focus,
@@ -185,6 +137,14 @@ $mini-size: 2rem !default;
   }
 
   &--icon {
+    &--right {
+      padding-right: calc(#{$btn-side-padding} / 2);
+    }
+
+    &--left {
+      padding-left: calc(#{$btn-side-padding} / 2);
+    }
+
     i {
       font-size: 1.714rem;
     }
