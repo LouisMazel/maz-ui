@@ -44,7 +44,7 @@
       </MazTabsContent>
     </ComponentContainer>
 
-    <ComponentContainer
+    <!-- <ComponentContainer
       code="<template>
   <MazTabsBar
     :items=&quot;tabs&quot;
@@ -182,7 +182,7 @@
           style="width: 100px;"
         />
       </div>
-    </ComponentContainer>
+    </ComponentContainer> -->
 
     <hr
       id="howToUseIt"

@@ -39,11 +39,9 @@ const toSnakeCase = string => {
 }
 
 const getIndexOfCurrentAnchor = (tabs, value) => {
-  console.log('getIndexOfCurrentAnchor')
   if (typeof window === 'undefined') return value
   const anchor = window.location.hash.replace('#', '')
   const index = tabs.findIndex(({ label }) => toSnakeCase(label) === anchor)
-  console.log('STOP getIndexOfCurrentAnchor', index === -1 ? 0 : index)
   return index === -1 ? 0 : index
 }
 
@@ -82,19 +80,20 @@ export default {
       }
     }
   },
-  watch: {
-    value: {
-      handler (value) {
-        const { useAnchor, currentTab } = this
-        const valueIndex = value - 1
-        const tabActive = useAnchor && !Number.isInteger(currentTab) ? getIndexOfCurrentAnchor(this.items, valueIndex) : valueIndex
-        this.setValue(tabActive)
-      },
-      immediate: true
-    }
+  created () {
+    const { value, useAnchor, items } = this
+    if (value < 1 || value > items.length) throw new Error(`[Maz-ui](maz-tabs-bar) The init value should be between 1 and ${items.length}`)
+
+    if (!useAnchor) this.setValue(value - 1)
   },
   mounted () {
     this.isMounted = true
+    const { useAnchor, currentTab } = this
+    if (useAnchor) {
+      const valueIndex = this.value - 1
+      const tabActive = useAnchor && !Number.isInteger(currentTab) ? getIndexOfCurrentAnchor(this.items, valueIndex) : valueIndex
+      this.setValue(tabActive)
+    }
   },
   methods: {
     setValue (i) {

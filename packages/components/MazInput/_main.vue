@@ -189,7 +189,7 @@ export default {
     required: { type: Boolean, default: false },
     // When is `true` the input is a textarea
     textarea: { type: Boolean, default: false },
-    // When is `true` the input is a textarea
+    // When is `true` the input has a progress bar animated
     loading: { type: Boolean, default: false },
     // When is `true` the input can be clear with a button on the right
     clearable: { type: Boolean, default: false },
