@@ -10,7 +10,6 @@
         </MazBtn>
         <MazDialog
           v-model="hasDialogOpen"
-          :max-width="800"
           title="Basic Dialog"
         >
           Dialog Content basic

@@ -106,8 +106,10 @@ export default {
   props: {
     // `true` if dialog is open / `false` if is close
     value: { type: Boolean, required: true },
-    // is the `max-width` of the dialog in pixels
-    maxWidth: { type: Number, default: 500 },
+    // is the `max-width` of the dialog (number in pixels)
+    maxWidth: { type: [Number || String], default: null },
+    // is the `width` of the dialog (number in pixels)
+    width: { type: [Number || String], default: null },
     // if is `true`, is not possible to close he dialog with a click outside
     persistent: { type: Boolean, default: false },
     // remove the header
@@ -133,9 +135,10 @@ export default {
   },
   computed: {
     widthStyle () {
-      const { fullsize, maxWidth } = this
+      const { fullsize, maxWidth, width } = this
       return {
-        maxWidth: fullsize ? null : `${maxWidth}px`
+        maxWidth: fullsize & !maxWidth ? null : Number.isInteger(maxWidth) ? `${maxWidth}px` : maxWidth,
+        width: fullsize && !width ? null : Number.isInteger(width) ? `${width}px` : width
       }
     },
     buttonConfirmColor () {

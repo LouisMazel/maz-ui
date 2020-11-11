@@ -34,7 +34,7 @@
     </div>
 
     <span
-      class="maz-flex maz-flex-center maz-h-100"
+      class="maz-flex maz-flex-center maz-h-100 maz-overflow-hidden"
     >
       <slot />
     </span>
