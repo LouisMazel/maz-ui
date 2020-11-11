@@ -180,7 +180,13 @@ export default {
       }
     },
     preventClickOutside () {
-      return !this.excludedClasses.includes(event.target.className)
+      const { excludedClasses } = this
+      console.log('event', event)
+      if (!event && !event.target || !event.target.classList) return true
+
+      const eventClasses = Array.from(event.target.classList)
+      console.log('eventClasses', eventClasses, excludedClasses, eventClasses.some((c) => excludedClasses.includes(c)))
+      return !eventClasses.some((c) => excludedClasses.includes(c))
     },
     closeDialog () {
       if (!this.persistent) {

@@ -54,7 +54,7 @@ export default {
     // File name uploaded
     paramName: { type: String, default: null },
     // Set request headers with your own (token, jwt)
-    headers: { type: Object, required: true },
+    headers: { type: Object, default: null },
     // Messages translations (error, success)
     translations: { type: Object, default: null },
     // Max files number

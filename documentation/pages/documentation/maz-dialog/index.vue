@@ -12,7 +12,7 @@
           v-model="hasDialogOpen"
           title="Basic Dialog"
         >
-          Dialog Content basic
+          Dialog Basic Dialog
         </MazDialog>
         <MazBtn
           color="success"
@@ -40,8 +40,22 @@
           color="dark"
           @click="hasDialogOpenDark = true"
         >
-          Open Dark Dialog
+          Open Dark Dialog with excluded classes
         </MazBtn>
+        <MazDialog
+          v-model="hasDialogOpenDark"
+          dark
+          title="Dark Dialog"
+          :excluded-classes="['dz-hidden-input']"
+        >
+          <p class="maz-mb-3">
+            Dark dialog content
+          </p>
+          <MazDropzone
+            ref="mazDropzone"
+            url="/test"
+          />
+        </MazDialog>
         <MazBtn
           @click="hasDialogOpenFullSize = true"
         >
@@ -53,13 +67,6 @@
           title="Danger Dialog"
         >
           Dialog Content Danger
-        </MazDialog>
-        <MazDialog
-          v-model="hasDialogOpenDark"
-          dark
-          title="Dark Dialog"
-        >
-          Dark dialog content
         </MazDialog>
         <MazDialog
           v-model="hasDialogOpenFullSize"
@@ -257,18 +264,6 @@ export default {
   >
     Open Danger Dialog
   </MazBtn>
-  <MazBtn
-    class="maz-mr-2 maz-mb-2"
-    color="dark"
-    @click="hasDialogOpenDark = true"
-  >
-    Open Dark Dialog
-  </MazBtn>
-  <MazBtn
-    @click="hasDialogOpenFullSize = true"
-  >
-    Open Fullsize Dialog
-  </MazBtn>
   <MazDialog
     v-model="hasDialogOpenDanger"
     danger
@@ -276,13 +271,32 @@ export default {
   >
     Dialog Content Danger
   </MazDialog>
+  <MazBtn
+    class="maz-mr-2 maz-mb-2"
+    color="dark"
+    @click="hasDialogOpenDark = true"
+  >
+    Open Dark Dialog with excluded classes
+  </MazBtn>
   <MazDialog
     v-model="hasDialogOpenDark"
     dark
     title="Dark Dialog"
+    :excluded-classes="['dz-hidden-input']"
   >
-    Dialog Content Dark
+    <p class="maz-mb-3">
+      Dark dialog content
+    </p>
+    <MazDropzone
+      ref="mazDropzone"
+      url="/test"
+    />
   </MazDialog>
+  <MazBtn
+    @click="hasDialogOpenFullSize = true"
+  >
+    Open Fullsize Dialog
+  </MazBtn>
   <MazDialog
     v-model="hasDialogOpenFullSize"
     fullsize
