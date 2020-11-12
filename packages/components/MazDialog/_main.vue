@@ -181,7 +181,6 @@ export default {
     },
     preventClickOutside () {
       const { excludedClasses } = this
-      console.log('event', event)
       if (!event && !event.target || !event.target.classList) return true
 
       const eventClasses = Array.from(event.target.classList)
