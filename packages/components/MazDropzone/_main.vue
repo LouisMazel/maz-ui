@@ -220,7 +220,7 @@ export default {
     fileUploadSuccess (file, response) {
       // Called when the file is successfully sent.
       // @arg Response, File
-      this.$emit('file-upload-success', response, file)
+      this.$emit('file-upload-success', file, response)
     },
     fileUploadMultipleSuccess (files, response, xhr) {
       // Called when the file is successfully sent.

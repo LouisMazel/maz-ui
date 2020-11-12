@@ -9,6 +9,7 @@ $TEXTEAREA_SIZE: 9.375rem !default;
 .maz-input {
   position: relative;
   background-color: $bg-color;
+  transition: all 300ms ease-in-out;
 
   &.is-textarea {
     min-height: $TEXTEAREA_SIZE !important;
@@ -48,6 +49,8 @@ $TEXTEAREA_SIZE: 9.375rem !default;
     }
 
     &.maz-textarea {
+      @include font_family();
+
       padding: .5714rem .8571rem 0 .8571rem;
       resize: vertical;
       min-height: calc(#{$TEXTEAREA_SIZE} + calc(#{$border-width} * 2) - .5714rem);
