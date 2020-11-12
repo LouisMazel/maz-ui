@@ -33,9 +33,8 @@
     </div>
 
     <span
-      v-if="hasSlotDefault()"
-      :class="[textClasses]"
-      class="maz-flex maz-align-center maz-h-100 maz-overflow-hidden maz-flex-1"
+      :class="[textClasses, {'maz-flex-1': hasSlotDefault()}]"
+      class="maz-flex maz-align-center maz-h-100 maz-overflow-hidden"
     >
       <slot />
     </span>
