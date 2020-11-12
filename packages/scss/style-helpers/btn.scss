@@ -214,9 +214,9 @@ $btn-height: 2.857em !default;
           }
         }
 
-        &:hover,
-        &:focus,
-        &.#{$prefix}active {
+        &:hover:not(.#{$prefix}btn--disabled),
+        &:focus:not(.#{$prefix}btn--disabled),
+        &.#{$prefix}active:not(.#{$prefix}btn--disabled) {
           background-color: $color;
           color: white;
 

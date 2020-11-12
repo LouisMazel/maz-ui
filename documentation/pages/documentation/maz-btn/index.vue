@@ -167,7 +167,7 @@
     outline
   </MazBtn>
   <MazBtn
-    left-icon-name=&quot;person&quot;
+    icon-name=&quot;person&quot;
     fab
     color=&quot;third&quot;
   />
@@ -254,7 +254,7 @@
           :key="`loading-${size}`"
           :size="size"
           class="maz-mr-2 maz-mb-2"
-          left-icon-name="person"
+          icon-name="person"
           fab
           color="third"
         />

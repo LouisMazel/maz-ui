@@ -31,7 +31,7 @@
 
 .maz-is-dark .maz-btn,
 .maz-is-dark.maz-btn {
-  &--transparent {
+  &--transparent:not(.maz-btn--disabled) {
     color: $text-color-dark;
 
     &:hover,

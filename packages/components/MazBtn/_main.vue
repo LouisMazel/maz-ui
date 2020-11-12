@@ -20,16 +20,16 @@
     @blur="emitBlur($event)"
   >
     <div
-      v-if="hasLeftIcon()"
+      v-if="hasLeftIcon() || hasMainIcon()"
       class="maz-flex maz-flex-center maz-btn__icon-left"
       :class="{
         'maz-mr-2': !fab && hasSlotDefault()
       }"
     >
       <!-- Icon slot (`icon-left`) -->
-      <slot :name="`icon-left`">
+      <slot :name="`icon-left` || `icon`">
         <!-- none -->
-        <i class="material-icons">{{ leftIconName }}</i>
+        <i class="material-icons">{{ leftIconName || iconName }}</i>
       </slot>
     </div>
 
@@ -108,6 +108,8 @@ export default {
     block: { type: Boolean, default: false },
     // remove shadow/elevation
     noShadow: { type: Boolean, default: false },
+    // should be a [material icon](https://material.io/resources/icons/) name (usefull with fab buttons)
+    iconName: { type: String, default: null },
     // should be a [material icon](https://material.io/resources/icons/) name
     leftIconName: { type: String, default: null },
     // should be a [material icon](https://material.io/resources/icons/) name
@@ -152,7 +154,10 @@ export default {
       return this.$slots['default']
     },
     hasIcon () {
-      return this.hasLeftIcon() || this.hasRightIcon()
+      return this.hasLeftIcon() || this.hasRightIcon() || this.hasMainIcon()
+    },
+    hasMainIcon () {
+      return this.iconName || this.$slots['icon']
     },
     hasLeftIcon () {
       return this.leftIconName || this.$slots['icon-left']
