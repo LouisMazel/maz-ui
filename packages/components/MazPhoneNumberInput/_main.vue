@@ -172,7 +172,7 @@ export default {
     placeholder: { type: String, default: null },
     // hint message shown on phone number text field
     hint: { type: String, default: null },
-    // set the position of country list (ex: `top`, `top right`, `bottom right`)
+    // set the position of countries list (ex: `top`, `top right`, `bottom right`)
     position: { type: String, default: 'left bottom' },
   },
   data () {
