@@ -91,7 +91,7 @@ export default {
   mixins: [uniqueId],
   props: {
     // Boolean to open or not the sidebar
-    value: { type: Boolean, required: false },
+    value: { type: Boolean, default: true },
     // set id of sidebar
     id: { type: String, default: null },
     // Size bar width
