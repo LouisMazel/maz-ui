@@ -3,13 +3,12 @@
     :is="componentType"
     :id="uniqueId"
     v-bind="$attrs"
-    class="maz-base-component maz-btn"
+    class="maz-base-component maz-btn maz-inline-flex"
     :class="[
       classes,
       {
         hidden: loading
-      },
-      (justifyStart ? 'maz-justify-start' : null)
+      }
     ]"
     :type="isLink ? null : type"
     :disabled="isLink ? null : isDisabled"
@@ -34,7 +33,8 @@
     </div>
 
     <span
-      class="maz-flex maz-flex-center maz-h-100 maz-overflow-hidden"
+      :class="[textClasses]"
+      class="maz-flex maz-align-center maz-h-100 maz-overflow-hidden maz-flex-1"
     >
       <slot />
     </span>
@@ -114,8 +114,10 @@ export default {
     leftIconName: { type: String, default: null },
     // should be a [material icon](https://material.io/resources/icons/) name
     rightIconName: { type: String, default: null },
-    // add space between text and icons
+    // align text to left (for block button)
     justifyStart: { type: Boolean, default: false },
+    // align text to right (for block button)
+    justifyEnd: { type: Boolean, default: false }
   },
   computed: {
     componentType () {
@@ -146,6 +148,14 @@ export default {
         ...(hasLeftIcon() ? ['maz-btn--icon--left'] : [null]),
         ...(hasRightIcon()  ? ['maz-btn--icon--right'] : [null]),
         ...(hasIcon()  ? ['maz-btn--icon'] : [null])
+      ]
+    },
+    textClasses () {
+      const { justifyStart, justifyEnd } = this
+      return [
+        ...(justifyStart ? ['maz-justify-start'] : [null]),
+        ...(justifyEnd ? ['maz-justify-end'] : [null]),
+        ...(!justifyStart && !justifyEnd ? ['maz-justify-center'] : [null]),
       ]
     }
   },
