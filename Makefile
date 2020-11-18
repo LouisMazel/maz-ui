@@ -53,13 +53,13 @@ deploy-doc:
 	cd documentation && npm run deploy
 
 publish:
-	npm version $(version)
+	npm version $(version) --allow-same-version
 	npm run pre-publish
 	npm publish
 	git push origin HEAD
 
 publish-beta:
-	npm version $(version)
+	npm version $(version) --allow-same-version
 	npm run pre-publish
 	npm publish --tag beta
 	git push origin HEAD
