@@ -11,6 +11,7 @@
       :options="countriesSorted"
       :placeholder="t.countrySelectorLabel"
       search
+      :position="position"
       :search-placeholder="t.countrySelectorSearchPlaceholder"
       :items-height="countriesHeight"
       :error="shouldChooseCountry"
@@ -170,7 +171,9 @@ export default {
     // Set placholder of phone number input
     placeholder: { type: String, default: null },
     // hint message shown on phone number text field
-    hint: { type: String, default: null }
+    hint: { type: String, default: null },
+    // set the position of countries list (ex: `top`, `top right`, `bottom right`)
+    position: { type: String, default: 'left bottom' },
   },
   data () {
     return {

@@ -24,7 +24,7 @@
 | success          | When is `true` the input has the valid style (\$success-color)                   | `Boolean` | `false`  | false      |
 | required         | When is `true` the input become required & has the `*` symbol                    | `Boolean` | `false`  | false      |
 | textarea         | When is `true` the input is a textarea                                           | `Boolean` | `false`  | false      |
-| loading          | When is `true` the input is a textarea                                           | `Boolean` | `false`  | false      |
+| loading          | When is `true` the input has a progress bar animated                             | `Boolean` | `false`  | false      |
 | clearable        | When is `true` the input can be clear with a button on the right                 | `Boolean` | `false`  | false      |
 | noLabel          | When is `true` the input has not label (top placeholder when value is not empty) | `Boolean` | `false`  | false      |
 | noRequiredSymbol | When is `true` and is `required`, the `*` symbol is not showing                  | `Boolean` | `false`  | false      |

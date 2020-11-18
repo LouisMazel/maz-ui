@@ -1,8 +1,7 @@
 <template>
   <div class="maz-base-component maz-read-more maz-flex maz-direction-column">
-    <p :class="[textClass]">
-      {{ textToShow }}
-    </p>
+    <!-- eslint-disable-next-line vue/singleline-html-element-content-newline -->
+    <p :class="[textClass]">{{ textToShow }}</p>
     <a
       v-if="isTextLong"
       href="#"

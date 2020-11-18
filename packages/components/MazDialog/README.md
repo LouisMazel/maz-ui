@@ -7,7 +7,8 @@
 | Name            | Description                                                           | Type      | Required | Default      |
 | --------------- | --------------------------------------------------------------------- | --------- | -------- | ------------ |
 | value           | `true` if dialog is open / `false` if is close                        | `Boolean` | `true`   | -            |
-| maxWidth        | is the `max-width` of the dialog in pixels                            | `Number`  | `false`  | 500          |
+| maxWidth        | is the `max-width` of the dialog (number in pixels)                   |           | `false`  | null         |
+| width           | is the `width` of the dialog (number in pixels)                       |           | `false`  | null         |
 | persistent      | if is `true`, is not possible to close he dialog with a click outside | `Boolean` | `false`  | false        |
 | noHeader        | remove the header                                                     | `Boolean` | `false`  | false        |
 | noFooter        | remove the footer                                                     | `Boolean` | `false`  | false        |

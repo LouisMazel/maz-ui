@@ -345,6 +345,7 @@
 
 .dropzone .dz-preview .dz-details .dz-filename {
   white-space: nowrap;
+  max-width: 100%;
 }
 
 .dropzone .dz-preview .dz-details .dz-filename:hover span {

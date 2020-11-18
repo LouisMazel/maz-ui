@@ -8,7 +8,7 @@ Generic component used to show a togglable sidebar (left or right) in the layout
 
 | Name          | Description                                                           | Type      | Required | Default |
 | ------------- | --------------------------------------------------------------------- | --------- | -------- | ------- |
-| value         | Boolean to open or not the sidebar                                    | `Boolean` | `false`  | -       |
+| value         | Boolean to open or not the sidebar                                    | `Boolean` | `false`  | false   |
 | id            | set id of sidebar                                                     | `String`  | `false`  | null    |
 | width         | Size bar width                                                        | `Number`  | `false`  | 300     |
 | loading       | Show loading layer                                                    | `Boolean` | `false`  | false   |
@@ -18,7 +18,7 @@ Generic component used to show a togglable sidebar (left or right) in the layout
 | right         | Must be activated if you want to integrate it on the right side       | `Boolean` | `false`  | false   |
 | dark          | Dark mode                                                             | `Boolean` | `false`  | false   |
 | layer         | Gray layer above the content, if you click on it, the side bar closes | `Boolean` | `false`  | false   |
-| mini          | reduces the size of the sidebar width                                 | `Boolean` | `false`  | false   |
+| mini          | reduces the size of the sidebar width when she is closed              | `Boolean` | `false`  | false   |
 | miniWidth     | width size of sidebar with mini mode                                  | `Number`  | `false`  | 60      |
 | expandOnHover | expand sidebar on hover (only with mini option)                       | `Boolean` | `false`  | false   |
 

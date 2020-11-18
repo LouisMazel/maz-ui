@@ -5,6 +5,7 @@
       'is-focused': isFocus || focus,
       'is-valid': success,
       'has-value': value,
+      'is-textarea': textarea,
       'has-error': error,
       'has-warning': warning,
       'is-disabled': disabled,
@@ -13,7 +14,7 @@
       'has-no-label': !hasLabel && !hint,
       'has-left-icon': hasLeftIcon(),
     }, size, `has-${leftNumberIcon}-right-icon`, `maz-input--${color}`]"
-    class="maz-base-component maz-input"
+    class="maz-base-component maz-input maz-border maz-border-color maz-border-color-hover maz-border-solid maz-border-radius"
     @click="focusInput"
   >
     <div
@@ -48,7 +49,7 @@
       v-bind="$attrs"
       :placeholder="placeholderValue"
       :type="getType"
-      class="maz-input__input maz-border maz-border-color maz-border-color-hover maz-border-solid"
+      class="maz-input__input"
       :aria-label="placeholder"
       :class="{
         'has-right-icon': hasClearBtn || hasPasswordBtn || hasRightIcon()
@@ -74,7 +75,7 @@
       :type="type"
       :required="required"
       :readonly="readonly"
-      class="maz-input__input maz-textarea maz-border maz-border-color maz-border-color-hover maz-border-solid"
+      class="maz-input__input maz-textarea"
       @keydown="keyDown"
       @keyup="keyUp"
       @focus="onFocus"
@@ -189,7 +190,7 @@ export default {
     required: { type: Boolean, default: false },
     // When is `true` the input is a textarea
     textarea: { type: Boolean, default: false },
-    // When is `true` the input is a textarea
+    // When is `true` the input has a progress bar animated
     loading: { type: Boolean, default: false },
     // When is `true` the input can be clear with a button on the right
     clearable: { type: Boolean, default: false },

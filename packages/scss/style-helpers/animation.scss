@@ -219,3 +219,36 @@
 .#{$prefix}flip-list-move {
   transition: transform 600ms;
 }
+
+/**
+* Tabs Transisiton
+*/
+.#{$prefix}tab-transition {
+  &-enter {
+    transform: translate(100%, 0);
+  }
+
+  &-leave,
+  &-leave-active {
+    position: absolute !important;
+    top: 0;
+  }
+
+  &-leave-to {
+    position: absolute !important;
+    transform: translate(-100%, 0);
+  }
+}
+
+.#{$prefix}tab-reverse-transition {
+  &-enter {
+    transform: translate(-100%, 0);
+  }
+
+  &-leave,
+  &-leave-to {
+    top: 0;
+    position: absolute !important;
+    transform: translate(100%, 0);
+  }
+}

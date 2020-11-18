@@ -18,6 +18,7 @@
 | open            | To open the list                                                  | `Boolean` | `false`  | false   |
 | loading         | Add loading effect to input                                       | `Boolean` | `false`  | false   |
 | replaceOnSelect | Replace the query typed by the "item text" selected in list       | `Boolean` | `false`  | false   |
+| clearOnSelect   | Clear query typed on select                                       | `Boolean` | `false`  | false   |
 
 <!-- @vuese:MazSearch:props:end -->
 
