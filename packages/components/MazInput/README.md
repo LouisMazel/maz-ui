@@ -30,6 +30,7 @@
 | noRequiredSymbol | When is `true` and is `required`, the `*` symbol is not showing                  | `Boolean` | `false`  | false      |
 | focus            | force focus style input                                                          | `Boolean` | `false`  | false      |
 | color            | color name in basic colors                                                       | `String`  | `false`  | primary    |
+| debounce         | Add a debounce of 500ms to emit the value                                        | `Boolean` | `false`  | false      |
 
 <!-- @vuese:MazInput:props:end -->
 

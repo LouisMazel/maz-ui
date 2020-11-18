@@ -146,7 +146,9 @@
 
 <script>
 import uniqueId from './../../mixins/uniqueId'
+import { debounce } from '../../utils'
 
+let DEBOUNCE = 500
 /**
  * > Beautiful input UI with loading & error manager
  */
@@ -201,7 +203,9 @@ export default {
     // force focus style input
     focus: { type: Boolean, default: false },
     // color name in basic colors
-    color: { type: String, default: 'primary' }
+    color: { type: String, default: 'primary' },
+    // Add a debounce of 500ms to emit the value
+    debounce: { type: Boolean, default: false }
   },
   data () {
     return {
@@ -215,14 +219,10 @@ export default {
         return this.value
       },
       set (value) {
-        // return the input value (in `@input` or `v-model`)
-        // @arg input
-        this.$emit(
-          'input',
-          this.hasNumberType
-            ? !value ? 0 : parseInt(value)
-            : value
-        )
+        const valueToEmit = this.hasNumberType
+          ? !value ? 0 : parseInt(value)
+          : value
+        this.emitValue(valueToEmit)
       }
     },
     placeholderValue () {
@@ -260,6 +260,16 @@ export default {
     }
   },
   methods: {
+    debounceValue: debounce(function (value) {
+      // return the input value (in `@input` or `v-model`)
+      // @arg input
+      this.$emit('input', value)
+    }, DEBOUNCE),
+    emitValue (value) {
+      if (this.debounce) return this.debounceValue(value)
+
+      this.$emit('input', value)
+    },
     hasLeftIcon () {
       return this.leftIconName || this.$slots['icon-left']
     },
