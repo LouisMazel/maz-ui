@@ -1,13 +1,15 @@
 <template>
   <div
     ref="MazTabsContent"
-    class="maz-base-component maz-tabs-content maz-overflow-hidden"
+    class="maz-base-component maz-tabs-content"
+    :class="{ 'maz-overflow-hidden': hideOverflow }"
   >
     <slot />
   </div>
 </template>
 
 <script>
+import { debounce } from '../../../utils'
 
 export default {
   name: 'MazTabsContent',
@@ -17,7 +19,8 @@ export default {
   },
   data () {
     return {
-      currentTab: null
+      currentTab: null,
+      hideOverflow: false
     }
   },
   computed: {
@@ -30,6 +33,7 @@ export default {
   watch: {
     activeTab: {
       handler (value) {
+        this.setOverflowHiddenTemp()
         this.currentTab = value ? value - 1 : null
       },
       immediate: true
@@ -37,10 +41,20 @@ export default {
     tabsBarActiveTab: {
       handler (value) {
         if (Number.isInteger(this.activeTab)) return
+        this.setOverflowHiddenTemp()
         this.currentTab = value
       },
       immediate: true
     }
+  },
+  methods: {
+    setOverflowHiddenTemp () {
+      this.hideOverflow = true
+      this.allowOverFlow()
+    },
+    allowOverFlow: debounce(function () {
+      this.hideOverflow = false
+    }, 700)
   }
 }
 </script>
