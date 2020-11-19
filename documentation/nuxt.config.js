@@ -11,7 +11,8 @@ const routerBase = process.env.DEPLOY_ENV === 'GH_PAGES' ? {
 
 export default {
   server: {
-    port: 2000
+    port: 2000,
+    host: '0.0.0.0'
   },
   /*
    ** Nuxt rendering mode

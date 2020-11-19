@@ -69,5 +69,9 @@
     &:hover {
       background-color: lighten($hover-bg-color-dark, 7%);
     }
+
+    &::before {
+      color: $text-color-dark;
+    }
   }
 }
