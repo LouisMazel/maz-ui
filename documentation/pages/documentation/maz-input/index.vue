@@ -298,11 +298,6 @@ export default {
   }
 }`
     }
-  },
-  methods: {
-    test () {
-      console.log('DEBOUNCE')
-    }
   }
 }
 </script>

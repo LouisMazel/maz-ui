@@ -206,7 +206,6 @@ export default {
     async checkValues () {
       // check if values are not below the min or above the max
       const { min, max, computedValue } = this
-      console.log('computedValue', computedValue)
       const valuesChecked = computedValue.map(v => v < min ? min : v > max ? max : v)
       this.emitValue(valuesChecked)
       this.tmpValues = valuesChecked
