@@ -33,7 +33,6 @@
         @mousedown="handleMousedown($event, i)"
         @focus="handleMousedown($event, i)"
         @blur="blurCursor(i)"
-        @click="focusCursor(i)"
         @keydown="cursorKeyDown($event, i)"
       >
         <ArrowIcon
@@ -191,13 +190,6 @@ export default {
           this.emitValue(this.tmpValues)
         }
       }
-    },
-    focusCursor (i) {
-      this.activeCursor = i
-      const { Cursor } = this.$refs
-      // get width of text in cursor + padding/space
-      console.log('Cursor', Cursor)
-      Cursor[i].focus()
     },
     blurCursor (i) {
       this.activeCursor = null
