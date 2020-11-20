@@ -7,7 +7,7 @@ $btn-height: 2.857em !default;
   border: none;
   outline: none;
   cursor: pointer;
-  transition: all 200ms ease-in-out;
+  transition: background-color 300ms ease-in-out, color 300ms ease-in-out;
   box-shadow: 0 2px 5px 0 rgba(3, 6, 26, .15);
   background-color: $primary-color;
   color: white;
@@ -138,11 +138,16 @@ $btn-height: 2.857em !default;
 
   &--icon {
     &--right {
-      padding-right: calc(#{$btn-side-padding} / 2);
+      padding-right: calc(#{$btn-side-padding} / 1.5);
     }
 
     &--left {
-      padding-left: calc(#{$btn-side-padding} / 2);
+      padding-left: calc(#{$btn-side-padding} / 1.5);
+    }
+
+    &.#{$prefix}btn--no-text {
+      padding-left: calc(#{$btn-side-padding} / 1.5);
+      padding-right: calc(#{$btn-side-padding} / 1.5);
     }
 
     i {
@@ -171,12 +176,11 @@ $btn-height: 2.857em !default;
       i {
         font-size: 1.286rem;
       }
-    }
-  }
 
-  &--white,
-  &--light {
-    color: $text-color;
+      span {
+        font-size: .875rem;
+      }
+    }
   }
 }
 
@@ -220,11 +224,11 @@ $btn-height: 2.857em !default;
           background-color: $color;
           color: white;
 
-          &.#{$prefix}btn--white,
-          &.#{$prefix}btn--transparent,
-          &.#{$prefix}btn--light {
-            color: $text-color;
-          }
+          // &.#{$prefix}btn--white,
+          // &.#{$prefix}btn--transparent,
+          // &.#{$prefix}btn--light {
+          //   color: $text-color;
+          // }
         }
       }
     }

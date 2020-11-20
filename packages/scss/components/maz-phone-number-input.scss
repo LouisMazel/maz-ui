@@ -66,7 +66,7 @@ $LG_SIZE: 10.357rem;
     }
   }
 
-  &.sm {
+  &--sm {
     .maz-phone-number-input__country-flag {
       bottom: .357rem;
 
@@ -83,7 +83,7 @@ $LG_SIZE: 10.357rem;
     }
   }
 
-  &.lg {
+  &--lg {
     .maz-phone-number-input__country-flag {
       bottom: .643rem;
     }

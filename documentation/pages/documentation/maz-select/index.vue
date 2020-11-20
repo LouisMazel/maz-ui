@@ -156,13 +156,42 @@
       </MazSelect>
     </ComponentContainer>
 
-    <ComponentContainer>
+    <ComponentContainer
+      code="<template>
+  <MazSelect
+    v-model=&quot;selectValue&quot;
+    :options=&quot;options&quot;
+    size=&quot;sm&quot;
+  />
+  <MazSelect
+    v-model=&quot;selectValue&quot;
+    :options=&quot;options&quot;
+  />
+  <MazSelect
+    v-model=&quot;selectValue&quot;
+    :options=&quot;options&quot;
+    size=&quot;lg&quot;
+  />
+</template>"
+    >
       <h5 class="maz-mb-3">
         Basic
       </h5>
       <MazSelect
         v-model="selectValue"
         :options="options"
+        size="sm"
+        class="maz-mb-3"
+      />
+      <MazSelect
+        v-model="selectValue"
+        :options="options"
+        class="maz-mb-3"
+      />
+      <MazSelect
+        v-model="selectValue"
+        :options="options"
+        size="lg"
       />
     </ComponentContainer>
 

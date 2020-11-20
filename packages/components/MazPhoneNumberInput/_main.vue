@@ -1,7 +1,7 @@
 <template>
   <div
     :id="id"
-    :class="[{ 'maz-is-dark': dark }, size]"
+    :class="[{ 'maz-is-dark': dark }, `maz-phone-number-input--${size}`]"
     class="maz-base-component maz-phone-number-input maz-flex"
   >
     <MazSelect

@@ -1,6 +1,18 @@
 <template>
   <div class="maz-btn-doc">
     <h4>
+      Informations
+    </h4>
+
+    <p>
+      This component uses <router-link :to="{name: 'documentation-maz-btn'}">
+        MazBtn
+      </router-link> and therefore inherits all these options
+    </p>
+
+    <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
+
+    <h4>
       Examples
     </h4>
     <ComponentContainer
@@ -56,6 +68,16 @@
           outline
           size="mini"
           color="success"
+        />
+
+        <h5 class="maz-mb-3">
+          With icons
+        </h5>
+        <MazBtnGroup
+          v-model="btnGroupValueIcon"
+          :items="itemsIcons"
+          color="light"
+          outline
         />
 
         <h5 class="maz-mb-3">
@@ -121,6 +143,7 @@ export default {
       btnGroupValueBoolean: false,
       btnGroupValueString: null,
       btnGroupValueMini: null,
+      btnGroupValueIcon: null,
       items: [
         { label: 'Number 1', value: 1 },
         { label: 'Number 2', value: 2 },
@@ -141,6 +164,14 @@ export default {
         { label: 'Mini bar', value: 'bar' },
         { label: 'Mini toto', value: 'toto' },
         { label: 'Mini tata', value: 'tata' }
+      ],
+      itemsIcons: [
+        { label: 'Card', value: 'label_card', leftIcon: 'view_module' },
+        { label: 'List', value: 'label_list', leftIcon: 'view_list' },
+        { value: 'card', icon: 'view_module' },
+        { value: 'list', icon: 'view_list' },
+        { label: 'Card', value: 'label_card_icon', rightIcon: 'view_module' },
+        { label: 'List', value: 'label_list_icon', rightIcon: 'view_list' }
       ],
       codeExample: `<template>
   <h5 class="maz-mb-3">
@@ -191,6 +222,14 @@ export default {
     color="success"
   />
 
+   <h5 class="maz-mb-3">
+      With icons
+    </h5>
+    <MazBtnGroup
+      v-model="btnGroupValueIcon"
+      :items="itemsIcons"
+    />
+
   <h5 class="maz-mb-3">
     Disabled
   </h5>
@@ -228,6 +267,14 @@ export default {
         { label: 'Mini bar', value: 'bar' },
         { label: 'Mini toto', value: 'toto' },
         { label: 'Mini tata', value: 'tata' }
+      ],
+      itemsIcons: [
+        { label: 'Card', value: 'label_card', leftIcon: 'view_module' },
+        { label: 'List', value: 'label_list', leftIcon: 'view_list' },
+        { value: 'card', icon: 'view_module' },
+        { value: 'list', icon: 'view_list' },
+        { label: 'Card', value: 'label_card_icon', rightIcon: 'view_module' },
+        { label: 'List', value: 'label_list_icon', rightIcon: 'view_list' }
       ]
     }
   }

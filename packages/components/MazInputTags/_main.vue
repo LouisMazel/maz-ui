@@ -8,7 +8,7 @@
       'has-error': error,
       'is-disabled': disabled,
       'maz-is-dark': dark
-    }, size, `maz-input-tags--${color}`]"
+    }, `maz-input-tags--${size}`, `maz-input-tags--${color}`]"
     @focus.capture="isFocus = true"
     @blur.capture="isFocus = false"
   >

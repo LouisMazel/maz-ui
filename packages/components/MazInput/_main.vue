@@ -13,7 +13,7 @@
       'has-hint': hint,
       'has-no-label': !hasLabel && !hint,
       'has-left-icon': hasLeftIcon(),
-    }, size, `has-${leftNumberIcon}-right-icon`, `maz-input--${color}`]"
+    }, `maz-input--${size}`, `has-${leftNumberIcon}-right-icon`, `maz-input--${color}`]"
     class="maz-base-component maz-input maz-border maz-border-color maz-border-color-hover maz-border-solid maz-border-radius"
     @click="focusInput"
   >
