@@ -17,7 +17,7 @@ $TEXTEAREA_SIZE: 9.375rem !default;
 
   &__label {
     position: absolute;
-    top: .2857rem;
+    top: .125rem;
     cursor: pointer;
     outline: none;
     left: .8571rem;
@@ -178,7 +178,6 @@ $TEXTEAREA_SIZE: 9.375rem !default;
     .maz-input__label {
       opacity: 1;
       transform: translateY(0);
-      font-size: .786rem;
     }
 
     &:not(.has-no-label) {
@@ -249,7 +248,7 @@ $TEXTEAREA_SIZE: 9.375rem !default;
     }
   }
 
-  &.sm {
+  &--sm {
     .maz-input__input {
       font-size: .857rem;
 
@@ -261,6 +260,7 @@ $TEXTEAREA_SIZE: 9.375rem !default;
 
     .maz-input__label {
       font-size: .714rem;
+      top: .0625rem;
     }
 
     &.has-value:not(.has-no-label) {
@@ -274,7 +274,7 @@ $TEXTEAREA_SIZE: 9.375rem !default;
     }
   }
 
-  &.lg {
+  &--lg {
     .maz-input__input {
       font-size: 1.143rem;
 
@@ -286,6 +286,7 @@ $TEXTEAREA_SIZE: 9.375rem !default;
 
     .maz-input__label {
       font-size: 1rem;
+      top: .1875rem;
     }
 
     &.has-value:not(.has-no-label) {
