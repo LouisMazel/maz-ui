@@ -134,7 +134,7 @@ export default {
       return loading || disabled
     },
     classes () {
-      const { color, size, outline, rounded, isDisabled, fab, active, block, noShadow, hasRightIcon, hasLeftIcon, hasIcon } = this
+      const { color, size, outline, rounded, isDisabled, fab, active, block, noShadow, hasRightIcon, hasLeftIcon, hasIcon, hasSlotDefault } = this
       return [
         ...(color ? [`maz-btn--${color}`] : [null]),
         ...(size ? [`maz-btn--${size}`] : [null]),
@@ -147,7 +147,8 @@ export default {
         ...(noShadow ? ['maz-no-shadow'] : [null]),
         ...(hasLeftIcon() ? ['maz-btn--icon--left'] : [null]),
         ...(hasRightIcon()  ? ['maz-btn--icon--right'] : [null]),
-        ...(hasIcon()  ? ['maz-btn--icon'] : [null])
+        ...(hasIcon()  ? ['maz-btn--icon'] : [null]),
+        ...(!hasSlotDefault()  ? ['maz-btn--no-text'] : [null])
       ]
     },
     textClasses () {
