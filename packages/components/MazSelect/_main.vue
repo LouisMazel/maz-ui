@@ -4,7 +4,7 @@
     :class="[{
       'has-list-open': hasOpenList,
       'maz-is-dark': dark
-    }, `maz-select--${color}`]"
+    }, `maz-select--${color}`, `maz-select--${size}`]"
     @blur.capture="closeList($event)"
   >
     <div
@@ -118,7 +118,7 @@
         />
         <div
           ref="optionsList"
-          class="maz-select__options-list__items-container maz-flex maz-direction-column"
+          class="maz-select__options-list__items maz-flex maz-direction-column"
         >
           <button
             v-for="(option, i) in optionsShown"
