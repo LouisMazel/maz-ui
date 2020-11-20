@@ -214,7 +214,7 @@ $SPACING: .2857rem !default;
     }
   }
 
-  &.sm {
+  &--sm {
     min-height: $SM_SIZE;
 
     #{$this}__input {
@@ -230,7 +230,7 @@ $SPACING: .2857rem !default;
     }
   }
 
-  &.lg {
+  &--lg {
     min-height: $LG_SIZE;
 
     #{$this}__input {
