@@ -164,7 +164,7 @@ export default {
   mounted () {
     this.buildComponent()
 
-    window.addEventListener('resize', this.buildComponent)
+    window.addEventListener('resize', () => this.buildComponent(true))
 
     // watch multiples values
     this.$watch(vm => [vm.computedValue, vm.min, vm.max, vm.sizeValue, vm.log].join(), () => {
@@ -172,7 +172,7 @@ export default {
     })
   },
   beforeDestroy () {
-    window.removeEventListener('resize', this.buildComponent)
+    window.removeEventListener('resize', () => this.buildComponent(true))
   },
   methods: {
     cursorKeyDown (e, i) {
@@ -197,17 +197,17 @@ export default {
       this.activeCursor = null
       this.setBtnStyle(i)
     },
-    async buildComponent () {
-      await this.checkValues()
+    async buildComponent (noEmitValues) {
+      await this.checkValues(noEmitValues)
       await this.calcPos()
       await this.$nextTick()
       this.computedValue.forEach((b, i) => this.setBtnDividers(i))
     },
-    async checkValues () {
+    async checkValues (noEmitValues) {
       // check if values are not below the min or above the max
       const { min, max, computedValue } = this
       const valuesChecked = computedValue.map(v => v < min ? min : v > max ? max : v)
-      this.emitValue(valuesChecked)
+      if (!noEmitValues) this.emitValue(valuesChecked)
       this.tmpValues = valuesChecked
     },
     emitValue (values) {
