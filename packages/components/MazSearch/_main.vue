@@ -97,7 +97,12 @@ export default {
   },
   props: {
     // Is the value return when you select an item
-    value: { type: String, default: null },
+    value: {
+      validator: prop => ['string', 'number', 'boolean', 'object', 'array'].includes(typeof prop) || prop === null,
+      required: true
+    },
+    // set the initial query input value (will emit "request" event on created)
+    initialQuery: { type: String, default: null },
     // Array of your results request
     items: { type: Array, default: null },
     // It's a key name of your result object to be returned in the model
@@ -125,7 +130,7 @@ export default {
   },
   data () {
     return {
-      query: this.value,
+      query: this.initialQuery,
       listOpen: false,
       tmpValue: null,
       inDebounce: false
@@ -155,6 +160,9 @@ export default {
     query (oldValue, newValue) {
       if (oldValue !== newValue && !this.hasListOpen && !this.hasEmptyQuery) this.openList()
     }
+  },
+  created () {
+    if (this.initialQuery) this.inputEvent(this.initialQuery)
   },
   methods: {
     getItemQuery (query, item) {
