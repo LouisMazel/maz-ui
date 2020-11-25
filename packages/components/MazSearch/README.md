@@ -8,7 +8,7 @@
 
 | Name            | Description                                                       | Type      | Required | Default |
 | --------------- | ----------------------------------------------------------------- | --------- | -------- | ------- |
-| value           | Is the value return when you select an item                       | —         | `true`   | -       |
+| value           | Is the value return when you select an item                       | `String`  | `false`  | null    |
 | items           | Array of your results request                                     | `Array`   | `false`  | null    |
 | itemValue       | It's a key name of your result object to be returned in the model | `String`  | `false`  | null    |
 | itemText        | It's a key name of your result object to be shown in the list     | `String`  | `false`  | null    |
@@ -19,6 +19,8 @@
 | loading         | Add loading effect to input                                       | `Boolean` | `false`  | false   |
 | replaceOnSelect | Replace the query typed by the "item text" selected in list       | `Boolean` | `false`  | false   |
 | clearOnSelect   | Clear query typed on select                                       | `Boolean` | `false`  | false   |
+| debounce        | remove debounce before send request                               | `Boolean` | `false`  | true    |
+| size            | input size                                                        | `String`  | `false`  | md      |
 
 <!-- @vuese:MazSearch:props:end -->
 
@@ -26,18 +28,18 @@
 
 <!-- @vuese:MazSearch:events:start -->
 
-| Event Name | Description                                                              | Parameters                                                             |
-| ---------- | ------------------------------------------------------------------------ | ---------------------------------------------------------------------- |
-| focus      | -                                                                        | -                                                                      |
-| input      | event sent when user select an item in the items list                    | The argument is a the item or an item[key] if you use `item-value`     |
-| request    | event sent after debounce --> you must start the request with this event | The argument is a string value representing the query the user entered |
-| keydown    | -                                                                        | -                                                                      |
-| keyup      | -                                                                        | -                                                                      |
-| change     | -                                                                        | -                                                                      |
-| clear      | -                                                                        | -                                                                      |
-| blur       | -                                                                        | -                                                                      |
-| paste      | -                                                                        | -                                                                      |
-| click      | -                                                                        | -                                                                      |
+| Event Name | Description                                           | Parameters                                                         |
+| ---------- | ----------------------------------------------------- | ------------------------------------------------------------------ |
+| focus      | -                                                     | -                                                                  |
+| input      | event sent when user select an item in the items list | The argument is a the item or an item[key] if you use `item-value` |
+| request    | -                                                     | -                                                                  |
+| keydown    | -                                                     | -                                                                  |
+| keyup      | -                                                     | -                                                                  |
+| change     | -                                                     | -                                                                  |
+| clear      | -                                                     | -                                                                  |
+| blur       | -                                                     | -                                                                  |
+| paste      | -                                                     | -                                                                  |
+| click      | -                                                     | -                                                                  |
 
 <!-- @vuese:MazSearch:events:end -->
 

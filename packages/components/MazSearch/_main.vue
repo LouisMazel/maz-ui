@@ -1,7 +1,7 @@
 <template>
   <div
     class="maz-base-component maz-search"
-    :class="[{ 'maz-is-dark': dark }, `maz-search--${color}`]"
+    :class="[{ 'maz-is-dark': dark }, `maz-search--${color}`, `maz-search--${size}`]"
     @blur.capture="closeList"
   >
     <MazInput
@@ -10,6 +10,8 @@
       v-bind="$attrs"
       :color="color"
       :loading="loading"
+      :debounce="debounce"
+      :size="size"
       @input="inputEvent"
       @keydown="keyboardNav"
       @focus="openList"
@@ -44,7 +46,7 @@
           type="button"
           tabindex="-1"
           :class="[
-            {'selected': value === (itemValue ? item[itemValue] : item)},
+            {'selected': value === (itemValue ? getItemQuery(itemValue, item) : item)},
             {'keyboard-selected': tmpValue === item}
           ]"
           class="maz-search__items__item"
@@ -56,7 +58,7 @@
             tag="div"
           >
             <!-- `<p>{{ item value }}</p>` -->
-            <p>{{ itemText ? item[itemText] : item }}</p>
+            <p>{{ itemText ? getItemQuery(itemText, item) : item }}</p>
           </slot>
         </button>
         <!-- No data template -->
@@ -66,7 +68,7 @@
           tag="div"
         >
           <!-- `<i class="material-icons maz-text-danger">search_off</i>` -->
-          <div class="maz-p-1 maz-flex maz-flex-center">
+          <div class="maz-search__no-data maz-p-2 maz-flex maz-flex-center">
             <i class="material-icons maz-text-danger">
               search_off
             </i>
@@ -79,7 +81,11 @@
 
 <script>
 import MazInput from '../MazInput'
-import { debounce } from '../../utils'
+
+const resolve = (path, obj, separator='.') => {
+  var properties = Array.isArray(path) ? path : path.split(separator)
+  return properties.reduce((prev, curr) => prev && prev[curr], obj)
+}
 
 /**
  * > UI search input component. The search component extends MazInput, so all props/options of [MazInput](/documentation/maz-input) are available here.
@@ -91,15 +97,9 @@ export default {
   },
   props: {
     // Is the value return when you select an item
-    value: {
-      validator: prop => ['string', 'number', 'boolean', 'object', 'array'].includes(typeof prop) || prop === null,
-      required: true
-    },
+    value: { type: String, default: null },
     // Array of your results request
-    items: {
-      type: Array,
-      default: null
-    },
+    items: { type: Array, default: null },
     // It's a key name of your result object to be returned in the model
     itemValue: { type: String, default: null },
     // It's a key name of your result object to be shown in the list
@@ -117,11 +117,15 @@ export default {
     // Replace the query typed by the "item text" selected in list
     replaceOnSelect: { type: Boolean, default: false },
     // Clear query typed on select
-    clearOnSelect: { type: Boolean, default: false }
+    clearOnSelect: { type: Boolean, default: false },
+    // remove debounce before send request
+    debounce: { type: Boolean, default: true },
+    // input size
+    size: { type: String, default: 'md' }
   },
   data () {
     return {
-      query: null,
+      query: this.value,
       listOpen: false,
       tmpValue: null,
       inDebounce: false
@@ -132,9 +136,9 @@ export default {
       return this.items.findIndex(c => c === this.tmpValue)
     },
     selectedValueIndex () {
-      const { itemValue } = this
-      return this.value
-        ? this.items.findIndex(c => (itemValue ? c[itemValue] : c) === this.value)
+      const { itemValue, items, value, getItemQuery } = this
+      return value && items && items.length
+        ? items.findIndex(c => (itemValue ? getItemQuery(itemValue, c) : c) === this.value)
         : null
     },
     hasEmptyQuery () {
@@ -153,6 +157,9 @@ export default {
     }
   },
   methods: {
+    getItemQuery (query, item) {
+      return resolve(query, item)
+    },
     openList (e) {
       this.$emit('focus', e)
       this.listOpen = true
@@ -162,28 +169,21 @@ export default {
       setTimeout(() => { this.listOpen = false }, 300)
     },
     updateValue (item) {
-      const { itemValue, itemText, replaceOnSelect, clearOnSelect } = this
-      const valueReturned = itemValue ? item[itemValue] : item
+      const { itemValue, itemText, replaceOnSelect, clearOnSelect, getItemQuery } = this
+      const valueReturned = itemValue ? getItemQuery(itemValue, item) : item
       // event sent when user select an item in the items list
       // @arg The argument is a the item or an item[key] if you use `item-value`
       this.$emit('input', valueReturned)
       if (replaceOnSelect) {
-        this.query = itemText ? item[itemText] : JSON.stringify(item)
+        this.query = itemText ? getItemQuery(itemText, item) : JSON.stringify(item)
       } else if (clearOnSelect) {
         this.query = null
       }
       this.closeList()
     },
     inputEvent (q) {
-      this.inDebounce = true
-      this.debouncedSearch(q)
-    },
-    debouncedSearch: debounce(function (q) {
-      // event sent after debounce --> you must start the request with this event
-      // @arg The argument is a string value representing the query the user entered
       this.$emit('request', q)
-      this.inDebounce = false
-    }, 500),
+    },
     scrollToSelectedOnFocus (arrayIndex) {
       this.$nextTick(() => {
         const itemHeight = this.$refs.item && this.$refs.item[0] && this.$refs.item[0].clientHeight

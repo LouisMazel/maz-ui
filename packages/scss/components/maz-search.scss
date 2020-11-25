@@ -3,6 +3,14 @@
 .maz-search {
   position: relative;
 
+  &--sm {
+    font-size: .857rem;
+  }
+
+  &--lg {
+    font-size: 1.143rem;
+  }
+
   &__items {
     z-index: 9;
     padding: 0;
@@ -12,7 +20,7 @@
     margin: 0;
     max-width: 100%;
     position: absolute;
-    top: calc(100% + .143em);
+    top: 100%;
     border-radius: $border-radius;
     width: 100%;
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
@@ -24,7 +32,7 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden;
-      font-size: 1rem;
+      font-size: 1em;
       cursor: pointer;
       background-color: transparent;
       border: none;
@@ -43,6 +51,10 @@
         font-weight: 600;
       }
     }
+  }
+
+  &__no-data {
+    i { font-size: 2rem; }
   }
 
   @each $name, $color in $color_types {
