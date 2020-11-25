@@ -200,16 +200,16 @@ export default {
       this.setBtnStyle(i)
     },
     async buildComponent (emitValue) {
-      await this.checkValues(emitValue)
+      if (emitValue === true) await this.checkValues()
       await this.calcPos()
       await this.$nextTick()
       this.computedValue.forEach((b, i) => this.setBtnDividers(i))
     },
-    async checkValues (emitValue) {
+    async checkValues () {
       // check if values are not below the min or above the max
       const { min, max, computedValue } = this
       const valuesChecked = computedValue.map(v => v < min ? min : v > max ? max : v)
-      if (emitValue) this.emitValue(valuesChecked)
+      this.emitValue(valuesChecked)
       this.tmpValues = valuesChecked
     },
     emitValue (values) {
