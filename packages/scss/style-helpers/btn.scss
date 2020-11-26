@@ -1,9 +1,7 @@
 $btn-side-padding: 1.429em !default;
-$btn-height: 2.857em !default;
+$btn-height: 3em !default;
 
 .#{$prefix}btn {
-  @include font_family();
-
   border: none;
   outline: none;
   cursor: pointer;
@@ -108,11 +106,11 @@ $btn-height: 2.857em !default;
   }
 
   &--lg {
-    font-size: 1.125rem;
+    font-size: 1.19rem;
   }
 
   &--sm {
-    font-size: .875rem;
+    font-size: .857rem;
   }
 
   &--mini {
