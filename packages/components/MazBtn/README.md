@@ -20,9 +20,11 @@
 | active        | apply the focus style                                                                                                                                     | `Boolean` | `false`  | false   |
 | block         | take 100% of the width                                                                                                                                    | `Boolean` | `false`  | false   |
 | noShadow      | remove shadow/elevation                                                                                                                                   | `Boolean` | `false`  | false   |
+| iconName      | should be a [material icon](https://material.io/resources/icons/) name (usefull with fab buttons)                                                         | `String`  | `false`  | null    |
 | leftIconName  | should be a [material icon](https://material.io/resources/icons/) name                                                                                    | `String`  | `false`  | null    |
 | rightIconName | should be a [material icon](https://material.io/resources/icons/) name                                                                                    | `String`  | `false`  | null    |
-| justifyStart  | add space between text and icons                                                                                                                          | `Boolean` | `false`  | false   |
+| justifyStart  | align text to left (for block button)                                                                                                                     | `Boolean` | `false`  | false   |
+| justifyEnd    | align text to right (for block button)                                                                                                                    | `Boolean` | `false`  | false   |
 
 <!-- @vuese:MazBtn:props:end -->
 
@@ -46,7 +48,7 @@
 
 | Name         | Description              | Default Slot Content |
 | ------------ | ------------------------ | -------------------- |
-| `icon-left`  | Icon slot (`icon-left`)  | none                 |
+| `icon-left`  |                          | `icon`               | Icon slot (`icon-left`) | none |
 | default      | -                        | -                    |
 | `icon-right` | Icon slot (`icon-right`) | none                 |
 

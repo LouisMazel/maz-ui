@@ -2,50 +2,55 @@
 @import './../../style-helpers/mixins/index.scss';
 
 $LG_SIZE: 3.571rem !default;
-$MD_SIZE: 2.857rem !default;
-$SM_SIZE: 2.286rem !default;
+$MD_SIZE: 3rem !default;
+$SM_SIZE: 2.571rem !default;
+$TEXTEAREA_SIZE: 9.375rem !default;
 
 .maz-input {
   position: relative;
+  background-color: $bg-color;
+  transition: all 300ms ease-in-out;
+  height: $MD_SIZE;
+  min-height: $MD_SIZE;
+
+  &.is-textarea {
+    min-height: $TEXTEAREA_SIZE !important;
+  }
 
   &__label {
     position: absolute;
-    top: .2857rem;
+    top: .125rem;
     cursor: pointer;
     outline: none;
     left: .8571rem;
     transform: translateY(25%);
     opacity: 0;
-    transition: all .25s cubic-bezier(.645, .045, .355, 1);
+    transition: all 300ms ease-in-out;
     font-size: .786rem;
     color: $placeholder-color;
   }
 
   &__input {
     cursor: pointer;
-    background-color: $bg-color;
     transition-duration: .3s;
     position: relative;
     width: 100%;
     padding: 0 .8571rem;
     font-weight: 400;
     appearance: none;
+    border: none;
     outline: none;
-    border-radius: var(--border-radius);
     font-size: 1rem;
     z-index: 0;
-
-    &:not(.maz-textarea) {
-      height: $MD_SIZE;
-      min-height: $MD_SIZE;
-    }
+    background-color: transparent;
+    display: block;
+    height: 100%;
 
     &.maz-textarea {
-      padding: .5714rem .8571rem 0 .8571rem;
-      min-height: 6.429rem !important;
-      resize: vertical;
-
       @include font_family();
+
+      padding: .5714rem .8571rem 0 .8571rem;
+      resize: vertical;
     }
 
     &::-webkit-input-placeholder {
@@ -165,92 +170,25 @@ $SM_SIZE: 2.286rem !default;
     }
   }
 
-  &.is-focused {
-    @each $name, $color in $color_types {
-      &.maz-input--#{$name} {
-        .maz-input {
-          &__input {
-            border-color: $color;
-          }
-
-          &__label {
-            color: $color;
-          }
-
-          &__icon {
-            color: $color;
-
-            path.arrow {
-              fill: $color;
-            }
-          }
-        }
-      }
-    }
-
-    &.has-error {
-      .maz-input {
-        &__input {
-          border-color: $danger-color;
-        }
-
-        &__icon {
-          color: $danger-color;
-
-          path.arrow {
-            fill: $danger-color;
-          }
-        }
-      }
-    }
-
-    &.has-warning {
-      .maz-input {
-        &__input {
-          border-color: $warning-color;
-        }
-
-        &__icon {
-          color: $warning-color;
-
-          path.arrow {
-            fill: $warning-color;
-          }
-        }
-      }
-    }
-
-    &.is-valid {
-      &__input {
-        border-color: $success-color;
-      }
-
-      .maz-input {
-        &__icon {
-          color: $success-color;
-
-          path.arrow {
-            fill: $success-color;
-          }
-        }
-      }
-    }
-  }
-
   &.has-value,
   &.has-hint {
     .maz-input__label {
       opacity: 1;
       transform: translateY(0);
-      font-size: .786rem;
     }
 
     &:not(.has-no-label) {
+      &.is-textarea {
+        padding-top: 1.429rem;
+      }
+
       .maz-input__input {
         padding-top: 1rem;
 
         &.maz-textarea {
-          padding-top: 1.429rem;
+          transition: all 0ms;
+          padding-top: 0;
+          min-height: calc(#{$TEXTEAREA_SIZE} - calc(#{$border-width} * 2) - 1.429rem);
         }
       }
     }
@@ -261,33 +199,41 @@ $SM_SIZE: 2.286rem !default;
 
     $disabled-color-text: darken($disabled-color, 20%);
 
-    .maz-input__input {
+    background-color: $disabled-color;
+    border-color: $border-color;
+
+    &:hover,
+    &:focus {
       border-color: $border-color;
-      background-color: $disabled-color;
-      color: $disabled-color-text;
+    }
 
-      &::-webkit-input-placeholder {
+    .maz-input {
+      &__input {
         color: $disabled-color-text;
-      }
 
-      &::-moz-placeholder {
-        color: $disabled-color-text;
-      }
+        &::-webkit-input-placeholder {
+          color: $disabled-color-text;
+        }
 
-      &:-ms-input-placeholder {
-        color: $disabled-color-text;
-      }
+        &::-moz-placeholder {
+          color: $disabled-color-text;
+        }
 
-      &::-ms-input-placeholder {
-        color: $disabled-color-text;
-      }
+        &:-ms-input-placeholder {
+          color: $disabled-color-text;
+        }
 
-      &:-moz-placeholder {
-        color: $disabled-color-text;
-      }
+        &::-ms-input-placeholder {
+          color: $disabled-color-text;
+        }
 
-      &::placeholder {
-        color: $disabled-color-text;
+        &:-moz-placeholder {
+          color: $disabled-color-text;
+        }
+
+        &::placeholder {
+          color: $disabled-color-text;
+        }
       }
     }
 
@@ -299,18 +245,17 @@ $SM_SIZE: 2.286rem !default;
     }
   }
 
-  &.sm {
+  &--sm {
+    height: $SM_SIZE;
+    min-height: $SM_SIZE;
+
     .maz-input__input {
       font-size: .857rem;
-
-      &:not(.maz-textarea) {
-        height: $SM_SIZE;
-        min-height: $SM_SIZE;
-      }
     }
 
     .maz-input__label {
       font-size: .714rem;
+      top: .0625rem;
     }
 
     &.has-value:not(.has-no-label) {
@@ -324,18 +269,17 @@ $SM_SIZE: 2.286rem !default;
     }
   }
 
-  &.lg {
+  &--lg {
+    height: $LG_SIZE;
+    min-height: $LG_SIZE;
+
     .maz-input__input {
       font-size: 1.143rem;
-
-      &:not(.maz-textarea) {
-        height: $LG_SIZE;
-        min-height: $LG_SIZE;
-      }
     }
 
     .maz-input__label {
       font-size: 1rem;
+      top: .1875rem;
     }
 
     &.has-value:not(.has-no-label) {
@@ -350,9 +294,9 @@ $SM_SIZE: 2.286rem !default;
   }
 
   &__loader {
-    bottom: 1px;
-    height: var(--border-width);
-    left: var(--border-radius) / 2;
+    bottom: -($border-width / 2);
+    height: $border-width;
+    left: $border-radius / 2;
     width: calc(100% - .5714rem);
     position: absolute;
     overflow: hidden;
@@ -373,6 +317,27 @@ $SM_SIZE: 2.286rem !default;
     }
   }
 
+  @mixin color_state($color) {
+    border-color: $color;
+
+    &:hover,
+    &:focus {
+      border-color: $color;
+    }
+
+    .maz-input__label {
+      color: $color;
+    }
+
+    .maz-input__icon {
+      color: $color;
+
+      path.arrow {
+        fill: $color;
+      }
+    }
+  }
+
   @each $name, $color in $color_types {
     &--#{$name} {
       .maz-input {
@@ -384,67 +349,47 @@ $SM_SIZE: 2.286rem !default;
           caret-color: $primary-color;
         }
       }
-    }
-  }
 
-  &.is-valid {
-    .maz-input__input,
-    .maz-input__input:hover,
-    .maz-input__input:focus {
-      border-color: $success-color !important;
-    }
+      &.is-focused {
+        &.maz-input--#{$name} {
+          border-color: $color;
 
-    .maz-input__label {
-      color: $success-color !important;
-    }
+          &:hover,
+          &:focus {
+            border-color: $color;
+          }
 
-    .maz-input__icon {
-      color: $success-color;
+          .maz-input {
+            &__label {
+              color: $color;
+            }
 
-      path.arrow {
-        fill: $success-color;
+            &__icon {
+              color: $color;
+
+              path.arrow {
+                fill: $color;
+              }
+            }
+          }
+        }
       }
     }
   }
 
-  &.has-warning {
-    .maz-input__input,
-    .maz-input__input:hover,
-    .maz-input__input:focus {
-      border-color: $warning-color;
-    }
-
-    .maz-input__label {
-      color: $warning-color !important;
-    }
-
-    .maz-input__icon {
-      color: $warning-color;
-
-      path.arrow {
-        fill: $warning-color;
-      }
-    }
+  &.is-valid,
+  &.is-focused.is-valid {
+    @include color_state($success-color);
   }
 
-  &.has-error {
-    .maz-input__input,
-    .maz-input__input:hover,
-    .maz-input__input:focus {
-      border-color: $danger-color;
-    }
+  &.has-warning,
+  &.is-focused.has-warning {
+    @include color_state($warning-color);
+  }
 
-    .maz-input__label {
-      color: $danger-color !important;
-    }
-
-    .maz-input__icon {
-      color: $danger-color;
-
-      path.arrow {
-        fill: $danger-color;
-      }
-    }
+  &.has-error,
+  &.is-focused.has-error {
+    @include color_state($danger-color);
   }
 
   input:-webkit-autofill,
@@ -463,12 +408,54 @@ $SM_SIZE: 2.286rem !default;
 
 .maz-is-dark .maz-input,
 .maz-is-dark.maz-input {
+  background-color: $bg-color-dark-light;
+
+  &.is-disabled {
+    background-color: darken($bg-color-dark-light, 10%);
+    border-color: $bg-color-dark-light;
+
+    .maz-input {
+      $disabled-color-text-dark: lighten($bg-color-dark-light, 10%);
+
+      &__label {
+        color: $disabled-color-text-dark;
+      }
+
+      &__input {
+        color: $disabled-color-text-dark;
+
+        &::-webkit-input-placeholder {
+          color: $disabled-color-text-dark;
+        }
+
+        &::-moz-placeholder {
+          color: $disabled-color-text-dark;
+        }
+
+        &:-ms-input-placeholder {
+          color: $disabled-color-text-dark;
+        }
+
+        &::-ms-input-placeholder {
+          color: $disabled-color-text-dark;
+        }
+
+        &:-moz-placeholder {
+          color: $disabled-color-text-dark;
+        }
+
+        &::placeholder {
+          color: $disabled-color-text-dark;
+        }
+      }
+    }
+  }
+
   &__label {
     color: $placeholder-color-dark;
   }
 
   &__input {
-    background-color: $bg-color-dark-light;
     color: $text-color-dark;
 
     &::-webkit-input-placeholder {

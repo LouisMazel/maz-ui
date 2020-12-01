@@ -4,6 +4,8 @@ $LG_SIZE: 3.571rem !default;
 $MD_SIZE: 2.857rem !default;
 $SM_SIZE: 2.286rem !default;
 
+$SPACING: .2857rem !default;
+
 .maz-input-tags {
   $this: &;
 
@@ -82,13 +84,14 @@ $SM_SIZE: 2.286rem !default;
   }
 
   &__tag {
-    margin-right: .2857rem;
-    margin-bottom: .2857rem;
-    margin-top: .2857rem;
-    border-radius: calc(#{var(--border-radius)} / 2);
+    margin-right: $SPACING;
+    margin-bottom: $SPACING;
+    margin-top: $SPACING;
+    border-radius: calc(#{$border-radius} / 2);
     padding-right: .2857rem;
     padding-left: .5rem;
     color: white;
+    height: calc(#{$MD_SIZE} - #{$SPACING * 2} - #{$border-width * 2});
 
     &__text {
       margin-right: .3571rem;
@@ -211,7 +214,7 @@ $SM_SIZE: 2.286rem !default;
     }
   }
 
-  &.sm {
+  &--sm {
     min-height: $SM_SIZE;
 
     #{$this}__input {
@@ -220,13 +223,14 @@ $SM_SIZE: 2.286rem !default;
     }
 
     #{$this}__tag {
-      font-size: .857em;
+      // font-size: .857em;
       padding-right: .1429rem;
       padding-left: .3571rem;
+      height: calc(#{$SM_SIZE} - #{$SPACING * 2} - #{$border-width * 2});
     }
   }
 
-  &.lg {
+  &--lg {
     min-height: $LG_SIZE;
 
     #{$this}__input {
@@ -235,9 +239,9 @@ $SM_SIZE: 2.286rem !default;
     }
 
     #{$this}__tag {
-      font-size: 1.143rem;
       padding-left: .7143rem;
       padding-right: .3571rem;
+      height: calc(#{$LG_SIZE} - #{$SPACING * 2} - #{$border-width * 2});
     }
   }
 }

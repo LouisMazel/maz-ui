@@ -157,9 +157,10 @@ export default {
     this.isAbsolute = window.innerWidth < 767
 
     const date = new Date().toTimeString()
-    const darkCookieValue = this.$cookies.get('use-dark-theme')
-    if ((!(date < '9:00' && date > '23:00') && typeof darkCookieValue !== 'boolean') || !darkCookieValue) {
-      this.setDarkTheme(false)
+    const darkMode = this.$cookies.get('use-dark-theme')
+    const shouldSetDarkMode = (date < '9:00' && date > '23:00') && typeof darkMode === 'undefined'
+    if (shouldSetDarkMode || darkMode) {
+      this.setDarkTheme(shouldSetDarkMode ? true : Boolean(darkMode))
     }
   },
   methods: {

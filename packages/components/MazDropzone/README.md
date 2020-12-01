@@ -9,8 +9,8 @@
 | url                | URL to upload files                            | `String`  | `true`   | -           |
 | id                 | Id of component                                | `String`  | `false`  | MazDropzone |
 | acceptedFiles      | File type accepted                             | `String`  | `false`  | image/\*    |
-| paramName          | File name uploaded                             | `String`  | `false`  | file-name   |
-| headers            | Set request headers with your own (token, jwt) | `Object`  | `true`   | -           |
+| paramName          | File name uploaded                             | `String`  | `false`  | null        |
+| headers            | Set request headers with your own (token, jwt) | `Object`  | `false`  | null        |
 | translations       | Messages translations (error, success)         | `Object`  | `false`  | null        |
 | maxFiles           | Max files number                               | `Number`  | `false`  | 1           |
 | maxFilesize        | Max files size                                 | `Number`  | `false`  | 2           |
@@ -19,7 +19,8 @@
 | removeFilesOnError | If error remove all files in area              | `Boolean` | `false`  | false       |
 | removeFileOnError  | If error remove file in area                   | `Boolean` | `false`  | false       |
 | autoProcessQueue   | Not upload immediatly the files                | `Boolean` | `false`  | true        |
-| duplicateCheck     | Not upload immediatly the files                | `Boolean` | `false`  | true        |
+| duplicateCheck     | Check files to avoid duplicates                | `Boolean` | `false`  | false       |
+| uploadMultiple     | Upload multiple files in only one request      | `Boolean` | `false`  | false       |
 
 <!-- @vuese:MazDropzone:props:end -->
 
@@ -40,5 +41,6 @@
 | file-removed                 | A file was removed from the dropzone.                                      | File                 |
 | file-sending                 | Modify the request and add addtional parameters to request before sending. | file, xhr, formData  |
 | duplicate-file               | Fired when duplicateCheck is enabled and duplicate file is found.          | file                 |
+| queue-complete               | Fired when queue has been completely processed/ uploaded.                  | -                    |
 
 <!-- @vuese:MazDropzone:events:end -->

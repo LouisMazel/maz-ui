@@ -1,7 +1,7 @@
 <template>
   <div class="maz-plotly-doc">
     <ComponentContainer>
-      <client-only>
+      <client-only placeholder="Loading...">
         <MazPlotly
           :data="data"
           :layout="layout"

@@ -3,9 +3,11 @@
     :id="id"
     ref="mazDropzone"
     tabindex="0"
-    :options="dropzoneOptions"
     class="maz-base-component maz-dropzone maz-w-100 maz-h-100 maz-flex maz-flex-center"
     :class="{ 'maz-is-dark': dark }"
+    v-bind="$attrs"
+    :options="dropzoneOptions"
+    :duplicate-check="duplicateCheck"
     @vdropzone-file-added="fileAdded"
     @vdropzone-thumbnail="thumbnail"
     @vdropzone-error="fileError"
@@ -18,6 +20,7 @@
     @vdropzone-duplicate-file="duplicateFile"
     @vdropzone-s3-upload-success="s3UploadSuccess"
     @vdropzone-s3-upload-error="s3UploadError"
+    @vdropzone-queue-complete="queueComplete"
     @keydown.native="keyDown"
   />
 </template>
@@ -49,9 +52,9 @@ export default {
     // File type accepted
     acceptedFiles: { type: String, default: 'image/*' },
     // File name uploaded
-    paramName: { type: String, default: 'file-name' },
+    paramName: { type: String, default: null },
     // Set request headers with your own (token, jwt)
-    headers: { type: Object, required: true },
+    headers: { type: Object, default: null },
     // Messages translations (error, success)
     translations: { type: Object, default: null },
     // Max files number
@@ -68,8 +71,10 @@ export default {
     removeFileOnError: { type: Boolean, default: false },
     // Not upload immediatly the files
     autoProcessQueue: { type: Boolean, default: true },
-    // Not upload immediatly the files
-    duplicateCheck: { type: Boolean, default: true }
+    // Check files to avoid duplicates
+    duplicateCheck: { type: Boolean, default: false },
+    // Upload multiple files in only one request
+    uploadMultiple: { type: Boolean, default: false }
   },
   computed: {
     t () {
@@ -95,7 +100,8 @@ export default {
         maxFilesize: this.maxFilesize,
         maxFiles: this.maxFiles,
         autoProcessQueue: this.autoProcessQueue,
-        duplicateCheck: this.duplicateCheck,
+        uploadMultiple: this.uploadMultiple,
+        ...(this.paramName ? { paramName: this.paramName }: {}),
         dictDefaultMessage: `
             <i class="material-icons" aria-hidden="true">cloud_upload</i>
             <br />
@@ -130,8 +136,7 @@ export default {
               </div>
             </div>
           `,
-        headers: this.headers,
-        paramName: this.paramName
+        headers: this.headers
       }
     }
   },
@@ -215,7 +220,7 @@ export default {
     fileUploadSuccess (file, response) {
       // Called when the file is successfully sent.
       // @arg Response, File
-      this.$emit('file-upload-success', response, file)
+      this.$emit('file-upload-success', file, response)
     },
     fileUploadMultipleSuccess (files, response, xhr) {
       // Called when the file is successfully sent.
@@ -266,6 +271,10 @@ export default {
       // Fired when duplicateCheck is enabled and duplicate file is found.
       // @arg file
       this.$emit('duplicate-file', file)
+    },
+    queueComplete (e) {
+      // Fired when queue has been completely processed/ uploaded.
+      this.$emit('queue-complete', e)
     }
   }
 }

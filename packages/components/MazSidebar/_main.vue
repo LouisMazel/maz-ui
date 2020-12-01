@@ -91,7 +91,7 @@ export default {
   mixins: [uniqueId],
   props: {
     // Boolean to open or not the sidebar
-    value: { type: Boolean, required: false },
+    value: { type: Boolean, default: false },
     // set id of sidebar
     id: { type: String, default: null },
     // Size bar width
@@ -110,7 +110,7 @@ export default {
     dark: { type: Boolean, default: false },
     // Gray layer above the content, if you click on it, the side bar closes
     layer: { type: Boolean, default: false },
-    // reduces the size of the sidebar width
+    // reduces the size of the sidebar width when she is closed
     mini: { type: Boolean, default: false },
     // width size of sidebar with mini mode
     miniWidth: { type: Number, default: 60 },

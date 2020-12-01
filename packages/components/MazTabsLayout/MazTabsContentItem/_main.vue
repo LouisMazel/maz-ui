@@ -1,7 +1,7 @@
 <template>
   <transition
-    tag="div"
     :name="transitionName"
+    tag="div"
   >
     <div
       v-show="isCurrentTab"
@@ -21,29 +21,27 @@ export default {
   },
   data () {
     return {
-      itemStepNumber: this.step ? this.step - 1 : null,
-      tmpCurrentTab: null,
-      currentTab: null,
-      newTabIsBigger: false
+      transitionName: null,
+      currentTab: null
     }
   },
   computed: {
-    parentCurrentTab () {
-      return this.$parent.currentTab
+    itemStepNumber () {
+      if (Number.isInteger(this.step)) return this.step - 1
+      const currentUid = this._uid
+      const index = this.$parent.$children.findIndex((c) => c._uid === currentUid)
+      return index
     },
     isCurrentTab () {
       return this.currentTab === this.itemStepNumber
-    },
-    transitionName () {
-      const { newTabIsBigger } = this
-      const condition = newTabIsBigger
-      return condition ? 'maz-tab-transition' : 'maz-tab-reverse-transition'
     }
   },
   watch: {
-    parentCurrentTab: {
-      handler (value) {
-        this.newTabIsBigger = this.currentTab < value
+    '$parent.currentTab': {
+      async handler (value, oldValue) {
+        const newTabIsBigger = oldValue < value
+        this.transitionName = newTabIsBigger ? 'maz-tab-transition' : 'maz-tab-reverse-transition'
+        await this.$nextTick()
         this.currentTab = value
       },
       immediate: true
@@ -51,11 +49,6 @@ export default {
   },
   created () {
     this.currentTab = this.$parent.currentTab
-
-    if (Number.isInteger(this.step)) return
-    const currentUid = this._uid
-    const index = this.$parent.$children.findIndex((c) => c._uid === currentUid)
-    this.itemStepNumber = index
   }
 }
 </script>

@@ -66,6 +66,27 @@
     </ComponentContainer>
 
 
+    <h4>Debounce</h4>
+    <h5>Add a debounce (500ms) before emit value, usefull for a search input</h5>
+
+    <ComponentContainer
+      code="<template>
+  <MazInput
+    v-model=&quot;value&quot;
+    debounce
+  />
+</template>"
+    >
+      <MazInput
+        v-model="exampleValue"
+        debounce
+      />
+
+      <p class="maz-mt-3">
+        <strong>v-model</strong> : {{ exampleValue }}
+      </p>
+    </ComponentContainer>
+
     <h4>Colors</h4>
 
     <ComponentContainer

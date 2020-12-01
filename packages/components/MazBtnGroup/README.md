@@ -4,11 +4,10 @@
 
 <!-- @vuese:MazBtnGroup:props:start -->
 
-| Name    | Description | Type      | Required | Default |
-| ------- | ----------- | --------- | -------- | ------- |
-| value   | -           | —         | `true`   | -       |
-| items   | -           | `Array`   | `true`   | -       |
-| rounded | -           | `Boolean` | `false`  | false   |
+| Name  | Description | Type    | Required | Default |
+| ----- | ----------- | ------- | -------- | ------- |
+| value | -           | —       | `true`   | -       |
+| items | -           | `Array` | `true`   | -       |
 
 <!-- @vuese:MazBtnGroup:props:end -->
 

@@ -1,22 +1,61 @@
 @import './variables/_colors';
 @import './variables/color_types';
 
-.#{$prefix}badge {
-  background: $grey-color;
-  height: 22px;
-  line-height: 22px;
-  border-radius: 22px;
-  padding: 0 5px;
-  font-size: .857rem;
-  color: #888;
-  font-weight: 500;
-}
+.#{$prefix}badge,
+.#{$prefix}label {
+  background: $primary-color;
+  border: $border-width solid $primary-color;
+  border-radius: $border-radius;
+  font-size: 1rem;
+  padding: .3em .75em;
+  color: white;
+  box-shadow: 0 2px 5px 0 rgba(3, 6, 26, .15);
 
-@each $name, $color in $color_types {
-  @if (type-of($color) == 'color') {
-    .#{$prefix}badge-#{$name} {
-      background-color: $color;
-      color: white;
+  &--xl {
+    font-size: 1.375rem;
+  }
+
+  &--lg {
+    font-size: 1.125rem;
+  }
+
+  &--md {
+    font-size: 1rem;
+  }
+
+  &--sm {
+    font-size: .875rem;
+  }
+
+  &--mini {
+    font-size: .75rem;
+  }
+
+  &--rounded {
+    border-radius: 100px;
+  }
+
+  &--outline {
+    background-color: transparent;
+    border: $border-width solid $primary-color;
+    color: $primary-color;
+    box-shadow: none;
+  }
+
+  @each $name, $color in $color_types {
+    @if (type-of($color) == 'color') {
+      &--#{$name} {
+        background-color: $color;
+        border-color: $color;
+        color: white;
+
+        &--outline {
+          background-color: transparent;
+          border-color: $color;
+          color: $color;
+          box-shadow: none;
+        }
+      }
     }
   }
 }

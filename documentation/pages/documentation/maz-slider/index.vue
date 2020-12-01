@@ -244,6 +244,41 @@
       {{ multipleSilders }}
     </ComponentContainer>
 
+    <ComponentContainer
+      code="<template>
+  <MazSlider
+    v-model=&quot;multipleSilders&quot;
+    no-divider
+  />
+  </div>
+</template>
+
+<script>
+  export default {
+    data () {
+      return {
+        multipleSilders: [25, 50, 75]
+      }
+    }
+  }
+</script>"
+    >
+      <h4 class="maz-mb-3">
+        No-zoom-animation: Disables cursor animation when active
+      </h4>
+      <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
+      <MazSlider
+        v-model="multipleSilders"
+        :labels="multipleSildersLabels"
+        no-cursor-anim
+      />
+      <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
+      <strong>
+        v-model:
+      </strong>
+      {{ multipleSilders }}
+    </ComponentContainer>
+
     <hr
       id="howToUseIt"
       class="maz-border-top maz-border-solid maz-border-color maz-my-5"

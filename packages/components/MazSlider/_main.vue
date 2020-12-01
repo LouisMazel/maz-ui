@@ -27,7 +27,7 @@
         :data-label="getLabel(i)"
         class="maz-slider__btn maz-flex maz-flex-center maz-bg-color-light"
         :class="{
-          'active-cursor': i === activeCursor
+          'active-cursor': i === activeCursor && !noCursorAnim
         }"
         :style="[buttonStyles[i]]"
         @mousedown="handleMousedown($event, i)"
@@ -36,7 +36,7 @@
         @keydown="cursorKeyDown($event, i)"
       >
         <ArrowIcon
-          v-if="i === activeCursor"
+          v-if="i === activeCursor && !noCursorAnim"
           orientation="left"
           :size="sizeValue * 2"
         />
@@ -44,7 +44,7 @@
           {{ tmpValues[i] }}
         </span>
         <ArrowIcon
-          v-if="i === activeCursor"
+          v-if="i === activeCursor && !noCursorAnim"
           orientation="right"
           :size="sizeValue * 2"
         />
@@ -91,7 +91,9 @@ export default {
     // become a logarithmic slider (exponential)
     log: { type: Boolean, default: false },
     // main slider color
-    color: { type: String, default: 'primary' }
+    color: { type: String, default: 'primary' },
+    // disables cursor animation when active
+    noCursorAnim: { type: Boolean, default: false }
   },
   data () {
     return {
@@ -105,7 +107,9 @@ export default {
   computed: {
     computedValue () {
       const { value } = this
-      return typeof value === 'number' ? [value] : this.value
+      return typeof value === 'number'
+        ? [value]
+        : value ? value : [0]
     },
     minLog () {
       return Math.log(this.min || 1)
@@ -139,9 +143,9 @@ export default {
       }
     },
     wrapperStyle () {
-      const { labels, sizeValue } = this
+      const { labels, sizeValue, noCursorAnim } = this
       return {
-        padding: `${sizeValue * 1.5}px ${sizeValue * 5.5}px`,
+        padding: `${sizeValue * 1.5}px ${sizeValue * (noCursorAnim ? 2 : 5.5) }px`,
         paddingTop: labels ? `${sizeValue * 4}px` : `${sizeValue * 1.5}px`
       }
     },
@@ -158,17 +162,19 @@ export default {
     }
   },
   mounted () {
-    this.buildComponent()
+    const { buildComponent } = this
+    buildComponent(true)
 
-    window.addEventListener('resize', this.buildComponent)
+    window.addEventListener('resize', buildComponent)
 
     // watch multiples values
     this.$watch(vm => [vm.computedValue, vm.min, vm.max, vm.sizeValue, vm.log].join(), () => {
-      this.buildComponent()
+      buildComponent(true)
     })
   },
-  beforeDestroy () {
-    window.removeEventListener('resize', this.buildComponent)
+  destroyed () {
+    const { buildComponent } = this
+    window.removeEventListener('resize', buildComponent)
   },
   methods: {
     cursorKeyDown (e, i) {
@@ -193,8 +199,8 @@ export default {
       this.activeCursor = null
       this.setBtnStyle(i)
     },
-    async buildComponent () {
-      await this.checkValues()
+    async buildComponent (emitValue) {
+      if (emitValue === true) await this.checkValues()
       await this.calcPos()
       await this.$nextTick()
       this.computedValue.forEach((b, i) => this.setBtnDividers(i))
@@ -222,14 +228,14 @@ export default {
     async setBtnStyle (i) {
       await this.$nextTick()
       const { height } = this.buttonSize
-      const { buttonPositions } = this
+      const { buttonPositions, noCursorAnim } = this
       const { Cursor } = this.$refs
       // get width of text in cursor + padding/space
       const width = Cursor[i].querySelector('span').clientWidth + 16
       const isActive = i === this.activeCursor
       const btnStyle = {
         // 16 = space for arrows
-        width: `${isActive ? width + 16 : width}px`,
+        width: `${isActive && !noCursorAnim ? width + 16 : width}px`,
         height: `${height}px`,
         left: `${buttonPositions[i] - width / 2}px`
       }

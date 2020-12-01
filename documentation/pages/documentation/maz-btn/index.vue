@@ -139,6 +139,9 @@
     <ComponentContainer
       code="<template>
   <MazBtn
+    icon-name=&quot;view_list&quot;
+  />
+  <MazBtn
     left-icon-name=&quot;person&quot;
     right-icon-name=&quot;delete&quot;
   >
@@ -167,7 +170,7 @@
     outline
   </MazBtn>
   <MazBtn
-    left-icon-name=&quot;person&quot;
+    icon-name=&quot;person&quot;
     fab
     color=&quot;third&quot;
   />
@@ -200,6 +203,15 @@
       >
         Icon
       </h4>
+      <div class="maz-mb-3">
+        <MazBtn
+          v-for="size in btnSizes"
+          :key="`loading-${size}`"
+          :size="size"
+          class="maz-mr-2 maz-mb-2"
+          icon-name="view_list"
+        />
+      </div>
       <div class="maz-mb-3">
         <MazBtn
           v-for="size in btnSizes"
@@ -254,7 +266,7 @@
           :key="`loading-${size}`"
           :size="size"
           class="maz-mr-2 maz-mb-2"
-          left-icon-name="person"
+          icon-name="person"
           fab
           color="third"
         />

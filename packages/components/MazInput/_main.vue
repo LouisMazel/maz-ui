@@ -5,6 +5,7 @@
       'is-focused': isFocus || focus,
       'is-valid': success,
       'has-value': value,
+      'is-textarea': textarea,
       'has-error': error,
       'has-warning': warning,
       'is-disabled': disabled,
@@ -12,8 +13,8 @@
       'has-hint': hint,
       'has-no-label': !hasLabel && !hint,
       'has-left-icon': hasLeftIcon(),
-    }, size, `has-${leftNumberIcon}-right-icon`, `maz-input--${color}`]"
-    class="maz-base-component maz-input"
+    }, `maz-input--${size}`, `has-${leftNumberIcon}-right-icon`, `maz-input--${color}`]"
+    class="maz-base-component maz-overflow-hidden maz-input maz-border maz-border-color maz-border-color-hover maz-border-solid maz-border-radius"
     @click="focusInput"
   >
     <div
@@ -48,7 +49,7 @@
       v-bind="$attrs"
       :placeholder="placeholderValue"
       :type="getType"
-      class="maz-input__input maz-border maz-border-color maz-border-color-hover maz-border-solid"
+      class="maz-input__input"
       :aria-label="placeholder"
       :class="{
         'has-right-icon': hasClearBtn || hasPasswordBtn || hasRightIcon()
@@ -74,7 +75,7 @@
       :type="type"
       :required="required"
       :readonly="readonly"
-      class="maz-input__input maz-textarea maz-border maz-border-color maz-border-color-hover maz-border-solid"
+      class="maz-input__input maz-textarea"
       @keydown="keyDown"
       @keyup="keyUp"
       @focus="onFocus"
@@ -145,7 +146,9 @@
 
 <script>
 import uniqueId from './../../mixins/uniqueId'
+import { debounce } from '../../utils'
 
+let DEBOUNCE = 500
 /**
  * > Beautiful input UI with loading & error manager
  */
@@ -189,7 +192,7 @@ export default {
     required: { type: Boolean, default: false },
     // When is `true` the input is a textarea
     textarea: { type: Boolean, default: false },
-    // When is `true` the input is a textarea
+    // When is `true` the input has a progress bar animated
     loading: { type: Boolean, default: false },
     // When is `true` the input can be clear with a button on the right
     clearable: { type: Boolean, default: false },
@@ -200,7 +203,9 @@ export default {
     // force focus style input
     focus: { type: Boolean, default: false },
     // color name in basic colors
-    color: { type: String, default: 'primary' }
+    color: { type: String, default: 'primary' },
+    // Add a debounce of 500ms to emit the value
+    debounce: { type: Boolean, default: false }
   },
   data () {
     return {
@@ -214,14 +219,10 @@ export default {
         return this.value
       },
       set (value) {
-        // return the input value (in `@input` or `v-model`)
-        // @arg input
-        this.$emit(
-          'input',
-          this.hasNumberType
-            ? !value ? 0 : parseInt(value)
-            : value
-        )
+        const valueToEmit = this.hasNumberType
+          ? !value ? 0 : parseInt(value)
+          : value
+        this.emitValue(valueToEmit)
       }
     },
     placeholderValue () {
@@ -259,6 +260,16 @@ export default {
     }
   },
   methods: {
+    debounceValue: debounce(function (value) {
+      // return the input value (in `@input` or `v-model`)
+      // @arg input
+      this.$emit('input', value)
+    }, DEBOUNCE),
+    emitValue (value) {
+      if (this.debounce) return this.debounceValue(value)
+
+      this.$emit('input', value)
+    },
     hasLeftIcon () {
       return this.leftIconName || this.$slots['icon-left']
     },
