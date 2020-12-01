@@ -6,13 +6,15 @@ export const browserLocale = () => {
   const browserLocale = window.navigator.userLanguage || window.navigator.language
   let locale = browserLocale ? browserLocale.substr(3, 4).toUpperCase() : null
   if (locale === '') locale = browserLocale.substr(0, 2).toUpperCase()
+  // fallback to US country
+  if (locale === 'EN') locale = 'US'
   return locale
 }
 
 export const isCountryAvailable = async (locale) => {
   try {
     if (countriesIso.includes(locale)) return true
-    throw `MazPhoneNumberInput: The locale ${locale} is not available`
+    throw `MazPhoneNumberInput: The country ${locale} is not available`
   } catch (e) {
     throw new Error(e)
   }
