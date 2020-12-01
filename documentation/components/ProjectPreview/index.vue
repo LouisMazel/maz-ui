@@ -62,12 +62,12 @@ export default {
 
   .maz-is-dark {
     .project-preview {
-      background-color: $bg-color-dark-light;
+      background-color: var(--bg-color-dark-light);
 
       &:hover,
       &:focus {
-        background-color: lighten($bg-color-dark, 5%);
-        box-shadow: 0 3px 12px $bg-color-dark;
+        background-color: var(--bg-color-dark);
+        box-shadow: 0 3px 12px var(--bg-color-dark);
       }
     }
   }

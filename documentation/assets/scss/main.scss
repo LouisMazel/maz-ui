@@ -113,15 +113,15 @@ html {
     }
 
     code.code {
-      background-color: $bg-color-dark;
-      color: $text-color-dark;
+      background-color: var(--bg-color-dark);
+      color: var(--text-color-dark);
       padding: 2px 4px;
       border-radius: 4px;
     }
 
     &.maz-is-dark {
       code.code {
-        background-color: $bg-color-dark-light;
+        background-color: var(--bg-color-dark-light);
       }
 
       h3,
@@ -132,7 +132,7 @@ html {
       ul,
       li,
       ol {
-        color: $text-color-dark;
+        color: var(--text-color-dark);
       }
     }
   }

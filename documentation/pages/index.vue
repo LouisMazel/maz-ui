@@ -116,7 +116,7 @@ export default {
   .maz-is-dark {
     .home {
       h2 {
-        color: $text-color-dark;
+        color: var(--text-color-dark);
       }
 
       h3 {
@@ -124,14 +124,14 @@ export default {
       }
 
       .maz-btn--dark--outline {
-        background-color: $bg-color-dark;
-        color: $text-color-dark;
-        border-color: $text-color-dark;
+        background-color: var(--bg-color-dark);
+        color: var(--text-color-dark);
+        border-color: var(--text-color-dark);
 
         &:hover,
         &:focus {
-          background-color: $text-color-dark;
-          color: $bg-color-dark;
+          background-color: var(--text-color-dark);
+          color: var(--bg-color-dark);
         }
       }
     }

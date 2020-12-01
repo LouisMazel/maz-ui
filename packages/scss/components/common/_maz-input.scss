@@ -27,7 +27,7 @@ $TEXTEAREA_SIZE: 9.375rem !default;
     opacity: 0;
     transition: all 300ms ease-in-out;
     font-size: .786rem;
-    color: $placeholder-color;
+    color: var(--placeholder-color);
   }
 
   &__input {
@@ -54,34 +54,34 @@ $TEXTEAREA_SIZE: 9.375rem !default;
     }
 
     &::-webkit-input-placeholder {
-      color: $placeholder-color;
+      color: var(--placeholder-color);
     }
 
     &::-moz-placeholder {
-      color: $placeholder-color;
+      color: var(--placeholder-color);
     }
 
     &:-ms-input-placeholder {
-      color: $placeholder-color;
+      color: var(--placeholder-color);
     }
 
     &::-ms-input-placeholder {
-      color: $placeholder-color;
+      color: var(--placeholder-color);
     }
 
     &:-moz-placeholder {
-      color: $placeholder-color;
+      color: var(--placeholder-color);
     }
 
     &::placeholder {
-      color: $placeholder-color;
+      color: var(--placeholder-color);
     }
   }
 
   &__icon {
     position: absolute;
     z-index: 1;
-    color: $input-icon-color;
+    color: var(--input-icon-color);
     font-size: 1.286rem;
     top: 0;
     bottom: 0;
@@ -109,7 +109,7 @@ $TEXTEAREA_SIZE: 9.375rem !default;
     appearance: none;
     border: none;
     background: transparent;
-    color: $input-icon-color;
+    color: var(--input-icon-color);
     border-radius: $clear-size;
     cursor: pointer;
     font-size: 1rem;
@@ -138,7 +138,7 @@ $TEXTEAREA_SIZE: 9.375rem !default;
 
     &:hover {
       color: white;
-      background-color: $input-icon-color;
+      background-color: var(--input-icon-color);
     }
   }
 
@@ -188,7 +188,7 @@ $TEXTEAREA_SIZE: 9.375rem !default;
         &.maz-textarea {
           transition: all 0ms;
           padding-top: 0;
-          min-height: calc(#{$TEXTEAREA_SIZE} - calc(#{$border-width} * 2) - 1.429rem);
+          min-height: calc(#{$TEXTEAREA_SIZE} - calc(var(--border-width) * 2) - 1.429rem);
         }
       }
     }
@@ -294,9 +294,9 @@ $TEXTEAREA_SIZE: 9.375rem !default;
   }
 
   &__loader {
-    bottom: -($border-width / 2);
-    height: $border-width;
-    left: $border-radius / 2;
+    bottom: -(var(--border-width) / 2);
+    height: var(--border-width);
+    left: var(--border-radius) / 2;
     width: calc(100% - .5714rem);
     position: absolute;
     overflow: hidden;
@@ -408,14 +408,14 @@ $TEXTEAREA_SIZE: 9.375rem !default;
 
 .maz-is-dark .maz-input,
 .maz-is-dark.maz-input {
-  background-color: $bg-color-dark-light;
+  background-color: var(--bg-color-dark-light);
 
   &.is-disabled {
-    background-color: darken($bg-color-dark-light, 10%);
-    border-color: $bg-color-dark-light;
+    background-color: var(--bg-color-dark);
+    border-color: var(--bg-color-dark-light);
 
     .maz-input {
-      $disabled-color-text-dark: lighten($bg-color-dark-light, 10%);
+      $disabled-color-text-dark: var(--bg-color-dark-light);
 
       &__label {
         color: $disabled-color-text-dark;
@@ -452,47 +452,47 @@ $TEXTEAREA_SIZE: 9.375rem !default;
   }
 
   &__label {
-    color: $placeholder-color-dark;
+    color: var(--placeholder-color-dark);
   }
 
   &__input {
-    color: $text-color-dark;
+    color: var(--text-color-dark);
 
     &::-webkit-input-placeholder {
-      color: $placeholder-color-dark;
+      color: var(--placeholder-color-dark);
     }
 
     &::-moz-placeholder {
-      color: $placeholder-color-dark;
+      color: var(--placeholder-color-dark);
     }
 
     &:-ms-input-placeholder {
-      color: $placeholder-color-dark;
+      color: var(--placeholder-color-dark);
     }
 
     &::-ms-input-placeholder {
-      color: $placeholder-color-dark;
+      color: var(--placeholder-color-dark);
     }
 
     &:-moz-placeholder {
-      color: $placeholder-color-dark;
+      color: var(--placeholder-color-dark);
     }
 
     &::placeholder {
-      color: $placeholder-color-dark;
+      color: var(--placeholder-color-dark);
     }
   }
 
   &__icon {
-    color: $input-icon-color-dark;
+    color: var(--input-icon-color-dark);
   }
 
   &__toggle-btn {
-    color: $input-icon-color-dark;
+    color: var(--input-icon-color-dark);
 
     &:hover {
-      color: $text-color-dark;
-      background-color: lighten($hover-bg-color-dark-l, 10%);
+      color: var(--text-color-dark);
+      background-color: var(--hover-bg-color-dark-l);
     }
   }
 
@@ -505,7 +505,7 @@ $TEXTEAREA_SIZE: 9.375rem !default;
   select:-webkit-autofill,
   select:-webkit-autofill:hover,
   select:-webkit-autofill:focus {
-    -webkit-text-fill-color: $text-color-dark;
-    box-shadow: 0 0 0 1000px $bg-color-dark-light inset;
+    -webkit-text-fill-color: var(--text-color-dark);
+    box-shadow: 0 0 0 1000px var(--bg-color-dark-light) inset;
   }
 }

@@ -95,10 +95,10 @@
 
 .maz-is-dark .maz-sidebar,
 .maz-is-dark.maz-sidebar {
-  background-color: $bg-color-dark;
+  background-color: var(--bg-color-dark);
 
   .maz-sidebar__wrapper {
-    background-color: $bg-color-dark;
+    background-color: var(--bg-color-dark);
 
     &__load-layer {
       background-color: $overlay-color-dark;
@@ -106,7 +106,7 @@
 
     &__close-btn {
       button {
-        background-color: $hover-bg-color-dark;
+        background-color: var(--hover-bg-color-dark);
         color: white;
 
         svg .arrow {

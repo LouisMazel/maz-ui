@@ -4,8 +4,8 @@
 .#{$prefix}badge,
 .#{$prefix}label {
   background: $primary-color;
-  border: $border-width solid $primary-color;
-  border-radius: $border-radius;
+  border: var(--border-width) solid $primary-color;
+  border-radius: var(--border-radius);
   font-size: 1rem;
   padding: .3em .75em;
   color: white;
@@ -37,7 +37,7 @@
 
   &--outline {
     background-color: transparent;
-    border: $border-width solid $primary-color;
+    border: var(--border-width) solid $primary-color;
     color: $primary-color;
     box-shadow: none;
   }

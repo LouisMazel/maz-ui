@@ -70,5 +70,5 @@
 
 .maz-is-dark.maz-img figcaption,
 .maz-is-dark .maz-img figcaption {
-  background-color: rgba($bg-color-dark-light, .8);
+  background-color: rgba(var(--bg-color-dark-light), .8);
 }

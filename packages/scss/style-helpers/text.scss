@@ -4,14 +4,14 @@
 }
 
 .#{$prefix}text-color-dark {
-  color: $text-color-dark;
-  fill: $text-color-dark;
+  color: var(--text-color-dark);
+  fill: var(--text-color-dark);
 }
 
 .#{$prefix}is-dark.#{$prefix}text-color,
 .#{$prefix}is-dark .#{$prefix}text-color {
-  color: $text-color-dark;
-  fill: $text-color-dark;
+  color: var(--text-color-dark);
+  fill: var(--text-color-dark);
 }
 
 .#{$prefix}text-white {
@@ -20,14 +20,14 @@
 }
 
 .#{$prefix}text-muted {
-  color: $text-muted;
-  fill: $text-muted;
+  color: var(--text-muted);
+  fill: var(--text-muted);
 }
 
 .#{$prefix}is-dark .#{$prefix}text-muted,
 .#{$prefix}text-muted-dark {
-  color: $text-muted-dark;
-  fill: $text-muted-dark;
+  color: var(--text-muted-dark);
+  fill: var(--text-muted-dark);
 }
 
 @import './variables/color_types';

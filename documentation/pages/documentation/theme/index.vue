@@ -183,7 +183,7 @@ $overlay-color:           rgba(#303144, .7);
 * DARK THEME SPECIFIC
 */
 
-$text-color-dark:         #EEE !default;
+var(--text-color-dark):         #EEE !default;
 $bg-color-dark:           #21222E !default;
 $bg-color-dark-light:         #303144 !default;
 $hover-bg-color-dark:     #2E2F40 !default;

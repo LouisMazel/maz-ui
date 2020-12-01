@@ -205,16 +205,16 @@ export default {
   }
 
   .maz-is-dark .frontmatter-markdown {
-    background-color: $bg-color-dark;
-    color: $text-color-dark;
+    background-color: var(--bg-color-dark);
+    color: var(--text-color-dark);
 
     h1 {
-      color: $text-color-dark;
+      color: var(--text-color-dark);
     }
 
     h2 {
-      border-bottom: 1px solid $hover-bg-color-dark;
-      color: $text-color-dark;
+      border-bottom: 1px solid var(--hover-bg-color-dark);
+      color: var(--text-color-dark);
     }
 
     h6 {
@@ -224,21 +224,21 @@ export default {
     table,
     th,
     td {
-      border: 1px solid $hover-bg-color-dark;
+      border: 1px solid var(--hover-bg-color-dark);
     }
 
     tr:nth-child(even) {
-      background-color: $hover-bg-color-dark;
+      background-color: var(--hover-bg-color-dark);
     }
 
     code,
     pre {
-      background-color: $hover-bg-color-dark-l;
-      border: 1px solid $hover-bg-color-dark-l;
+      background-color: var(--hover-bg-color-dark-l);
+      border: 1px solid var(--hover-bg-color-dark-l);
     }
 
     blockquote {
-      background: $hover-bg-color-dark;
+      background: var(--hover-bg-color-dark);
     }
   }
 </style>

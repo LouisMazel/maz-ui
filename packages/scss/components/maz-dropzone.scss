@@ -115,16 +115,16 @@
 
 .maz-is-dark .maz-dropzone,
 .maz-dropzone.maz-is-dark {
-  background-color: $bg-color-dark;
+  background-color: var(--bg-color-dark);
   border-color: $border-color-dark;
   color: darken($hover-bg-color, 20%);
 
   &:hover,
   &:focus {
-    background-color: $hover-bg-color-dark;
+    background-color: var(--hover-bg-color-dark);
   }
 
   .dz-preview .dz-image {
-    border-color: darken($text-color-dark, 20%);
+    border-color: var(--text-color-dark);
   }
 }

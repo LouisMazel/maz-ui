@@ -21,26 +21,26 @@
   }
 
   &__content {
-    border-top: var(--border-width) solid $text-color-dark;
+    border-top: var(--border-width) solid var(--text-color-dark);
   }
 }
 
 .maz-is-dark .maz-collapse,
 .maz-is-dark.maz-collapse {
-  color: $text-color-dark;
-  background-color: $bg-color-dark;
-  border-color: lighten($hover-bg-color-dark, 10%);
+  color: var(--text-color-dark);
+  background-color: var(--bg-color-dark);
+  border-color: var(--hover-bg-color-dark);
 
   &__header-btn {
-    color: $text-color-dark;
+    color: var(--text-color-dark);
 
     &:hover,
     &:focus {
-      background-color: $hover-bg-color-dark;
+      background-color: var(--hover-bg-color-dark);
     }
   }
 
   &__content {
-    border-color: lighten($hover-bg-color-dark, 10%);
+    border-color: var(--hover-bg-color-dark);
   }
 }

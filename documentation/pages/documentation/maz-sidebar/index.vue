@@ -411,7 +411,7 @@ export default {
 
   .maz-is-dark {
     .maz-sidebar-doc__content {
-      background-color: lighten($bg-color-dark-light, 5%);
+      background-color: var(--bg-color-dark-light);
     }
   }
 </style>

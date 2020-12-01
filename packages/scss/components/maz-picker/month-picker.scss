@@ -118,9 +118,3 @@
     }
   }
 }
-
-.maz-is-dark {
-  .maz-picker .month-picker__day:disabled {
-    color: darken($text-muted-dark, 50%);
-  }
-}

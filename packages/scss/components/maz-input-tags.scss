@@ -37,27 +37,27 @@ $SPACING: .2857rem !default;
     color: $text-color;
 
     &::-webkit-input-placeholder {
-      color: $placeholder-color;
+      color: var(--placeholder-color);
     }
 
     &::-moz-placeholder {
-      color: $placeholder-color;
+      color: var(--placeholder-color);
     }
 
     &:-ms-input-placeholder {
-      color: $placeholder-color;
+      color: var(--placeholder-color);
     }
 
     &::-ms-input-placeholder {
-      color: $placeholder-color;
+      color: var(--placeholder-color);
     }
 
     &:-moz-placeholder {
-      color: $placeholder-color;
+      color: var(--placeholder-color);
     }
 
     &::placeholder {
-      color: $placeholder-color;
+      color: var(--placeholder-color);
     }
   }
 
@@ -87,11 +87,11 @@ $SPACING: .2857rem !default;
     margin-right: $SPACING;
     margin-bottom: $SPACING;
     margin-top: $SPACING;
-    border-radius: calc(#{$border-radius} / 2);
+    border-radius: calc(var(--border-radius) / 2);
     padding-right: .2857rem;
     padding-left: .5rem;
     color: white;
-    height: calc(#{$MD_SIZE} - #{$SPACING * 2} - #{$border-width * 2});
+    height: calc(#{$MD_SIZE} - #{$SPACING * 2} - var(--border-width) * 2);
 
     &__text {
       margin-right: .3571rem;
@@ -119,7 +119,7 @@ $SPACING: .2857rem !default;
     appearance: none;
     border: none;
     background-color: transparent;
-    color: $input-icon-color;
+    color: var(--input-icon-color);
     border-radius: $clear-size;
     cursor: pointer;
     font-size: .857rem;
@@ -161,34 +161,34 @@ $SPACING: .2857rem !default;
     cursor: not-allowed;
     border-color: #CCC;
     background-color: #F2F2F2;
-    color: $grey-color;
+    color: var(--grey-color);
 
     #{$this}__input {
       cursor: not-allowed;
-      color: $grey-color;
+      color: var(--grey-color);
 
       &::-webkit-input-placeholder {
-        color: $grey-color;
+        color: var(--grey-color);
       }
 
       &::-moz-placeholder {
-        color: $grey-color;
+        color: var(--grey-color);
       }
 
       &:-ms-input-placeholder {
-        color: $grey-color;
+        color: var(--grey-color);
       }
 
       &::-ms-input-placeholder {
-        color: $grey-color;
+        color: var(--grey-color);
       }
 
       &:-moz-placeholder {
-        color: $grey-color;
+        color: var(--grey-color);
       }
 
       &::placeholder {
-        color: $grey-color;
+        color: var(--grey-color);
       }
     }
   }
@@ -226,7 +226,7 @@ $SPACING: .2857rem !default;
       // font-size: .857em;
       padding-right: .1429rem;
       padding-left: .3571rem;
-      height: calc(#{$SM_SIZE} - #{$SPACING * 2} - #{$border-width * 2});
+      height: calc(#{$SM_SIZE} - #{$SPACING * 2} - var(--border-width) * 2);
     }
   }
 
@@ -241,49 +241,49 @@ $SPACING: .2857rem !default;
     #{$this}__tag {
       padding-left: .7143rem;
       padding-right: .3571rem;
-      height: calc(#{$LG_SIZE} - #{$SPACING * 2} - #{$border-width * 2});
+      height: calc(#{$LG_SIZE} - #{$SPACING * 2} - var(--border-width) * 2);
     }
   }
 }
 
 .maz-is-dark .maz-input-tags,
 .maz-is-dark.maz-input-tags {
-  background-color: $bg-color-dark-light;
+  background-color: var(--bg-color-dark-light);
   border-color: $border-color-dark;
 
   &__input {
-    color: $text-color-dark;
+    color: var(--text-color-dark);
 
     &::-webkit-input-placeholder {
-      color: $placeholder-color-dark;
+      color: var(--placeholder-color-dark);
     }
 
     &::-moz-placeholder {
-      color: $placeholder-color-dark;
+      color: var(--placeholder-color-dark);
     }
 
     &:-ms-input-placeholder {
-      color: $placeholder-color-dark;
+      color: var(--placeholder-color-dark);
     }
 
     &::-ms-input-placeholder {
-      color: $placeholder-color-dark;
+      color: var(--placeholder-color-dark);
     }
 
     &:-moz-placeholder {
-      color: $placeholder-color-dark;
+      color: var(--placeholder-color-dark);
     }
 
     &::placeholder {
-      color: $placeholder-color-dark;
+      color: var(--placeholder-color-dark);
     }
   }
 
   &__toggle-btn {
-    color: $input-icon-color-dark;
+    color: var(--input-icon-color-dark);
 
     &__effect {
-      background-color: darken($input-icon-color-dark, 10%);
+      background-color: var(--input-icon-color-dark);
     }
   }
 }

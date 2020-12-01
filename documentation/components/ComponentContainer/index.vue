@@ -55,12 +55,12 @@ export default {
 
   .maz-is-dark .component-container,
   .maz-is-dark.component-container {
-    color: $text-color-dark;
-    background-color: $bg-color-dark;
-    border: var(--border-width) solid $hover-bg-color-dark;
+    color: var(--text-color-dark);
+    background-color: var(--bg-color-dark);
+    border: var(--border-width) solid var(--hover-bg-color-dark);
 
     .component-container__footer {
-      border-color: $hover-bg-color-dark;
+      border-color: var(--hover-bg-color-dark);
 
       &__collapse {
         border: none;

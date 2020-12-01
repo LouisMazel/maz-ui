@@ -51,11 +51,11 @@ export default {
 
   .maz-is-dark .social-buttons {
     a {
-      background-color: $bg-color-dark;
+      background-color: var(--bg-color-dark);
 
       &:hover,
       &:focus {
-        background-color: $hover-bg-color-dark;
+        background-color: var(--hover-bg-color-dark);
       }
     }
   }

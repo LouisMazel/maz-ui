@@ -52,8 +52,8 @@ $LG_SIZE: 10.357rem;
 
     .maz-select__options-list {
       .maz-input {
-        border-top-right-radius: $border-radius;
-        border-bottom-right-radius: $border-radius;
+        border-top-right-radius: var(--border-radius);
+        border-bottom-right-radius: var(--border-radius);
 
         &__input {
           padding-left: 12px;
@@ -104,7 +104,7 @@ $LG_SIZE: 10.357rem;
     &:not(.has-border-radius) {
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
-      margin-left: - ($border-width);
+      margin-left: - (var(--border-width));
     }
   }
 }

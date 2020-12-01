@@ -19,10 +19,10 @@
     height: 24px;
 
     &__arrow {
-      color: $input-icon-color;
+      color: var(--input-icon-color);
 
       .arrow {
-        fill: $input-icon-color;
+        fill: var(--input-icon-color);
       }
     }
   }
@@ -159,23 +159,23 @@
 .maz-is-dark.maz-select {
   &__toggle {
     &__arrow {
-      color: $input-icon-color-dark;
+      color: var(--input-icon-color-dark);
 
       .arrow {
-        fill: $input-icon-color-dark;
+        fill: var(--input-icon-color-dark);
       }
     }
   }
 
   &__options-list {
-    background-color: $bg-color-dark;
+    background-color: var(--bg-color-dark);
 
     &__item {
       color: $border-color-dark;
 
       &:hover,
       &.keyboard-selected:not(.selected) {
-        background-color: lighten($hover-bg-color-dark-l, 5%);
+        background-color: var(--hover-bg-color-dark-l);
       }
     }
   }

@@ -21,7 +21,7 @@
     max-width: 100%;
     position: absolute;
     top: 100%;
-    border-radius: $border-radius;
+    border-radius: var(--border-radius);
     width: 100%;
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
     background-color: $bg-color;
@@ -75,14 +75,14 @@
 .maz-search.maz-is-dark {
   .maz-search {
     &__items {
-      background-color: $bg-color-dark-light;
+      background-color: var(--bg-color-dark-light);
 
       &__item {
         color: $border-color;
 
         &:hover,
         &.keyboard-selected:not(.selected) {
-          background-color: lighten($hover-bg-color-dark-l, 5%);
+          background-color: var(--hover-bg-color-dark-l);
         }
       }
     }

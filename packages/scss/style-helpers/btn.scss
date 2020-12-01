@@ -42,7 +42,7 @@ $btn-height: 3em !default;
       content: '';
       display: block;
       border: 2px solid $primary-color;
-      border-radius: calc(#{$border-radius} + 3px);
+      border-radius: calc(var(--border-radius) + 3px);
       position: absolute;
       left: -3px;
       top: -3px;
@@ -239,7 +239,7 @@ $btn-height: 3em !default;
 
 .#{$prefix}btn--disabled:disabled {
   background-color: $disabled-color;
-  color: $grey-color;
+  color: var(--grey-color);
   cursor: not-allowed;
   box-shadow: none;
 

@@ -22,14 +22,14 @@
 }
 
 .maz-is-dark .pagination-arrow-btn {
-  color: $text-color-dark;
+  color: var(--text-color-dark);
 
   &:hover,
   &:focus {
-    background-color: lighten($hover-bg-color-dark, 10%);
+    background-color: var(--hover-bg-color-dark);
   }
 
   &.maz-btn::before {
-    border-color: lighten($hover-bg-color-dark, 10%);
+    border-color: var(--hover-bg-color-dark);
   }
 }

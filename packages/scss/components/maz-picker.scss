@@ -5,12 +5,12 @@
   font-weight: 300;
 
   .maz-picker__arrow {
-    color: $input-icon-color;
+    color: var(--input-icon-color);
     outline: none;
     transition: all .25s cubic-bezier(.645, .045, .355, 1);
 
     svg path.arrow {
-      fill: $input-icon-color;
+      fill: var(--input-icon-color);
     }
   }
 
@@ -22,10 +22,10 @@
 .maz-is-dark.maz-picker,
 .maz-is-dark .maz-picker {
   .maz-picker__arrow {
-    color: $input-icon-color-dark;
+    color: var(--input-icon-color-dark);
 
     svg path.arrow {
-      fill: $input-icon-color-dark;
+      fill: var(--input-icon-color-dark);
     }
   }
 }

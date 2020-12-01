@@ -38,7 +38,7 @@
     border-top-left-radius: var(--border-radius);
     border-top-right-radius: var(--border-radius);
     border: none;
-    color: $text-color-dark;
+    color: var(--text-color-dark);
 
     &__title {
       color: white;

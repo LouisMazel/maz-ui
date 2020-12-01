@@ -9,7 +9,7 @@ $dot-size: .4286em !default;
   width: $dot-size;
   height: $dot-size;
   border-radius: $dot-size;
-  border: $border-width solid $primary-color;
+  border: var(--border-width) solid $primary-color;
   background-color: $primary-color;
   display: inline-block;
 
@@ -27,7 +27,7 @@ $dot-size: .4286em !default;
 
       &--outline {
         background-color: transparent;
-        border: $border-width solid $color;
+        border: var(--border-width) solid $color;
         color: $color;
       }
     }

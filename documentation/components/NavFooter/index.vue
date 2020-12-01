@@ -107,11 +107,11 @@ export default {
   }
 
   .maz-is-dark .nav-footer {
-    background-color: $bg-color-dark;
-    border-color: $hover-bg-color-dark;
+    background-color: var(--bg-color-dark);
+    border-color: var(--hover-bg-color-dark);
 
     &-subs {
-      background-color: $hover-bg-color-dark;
+      background-color: var(--hover-bg-color-dark);
     }
   }
 </style>

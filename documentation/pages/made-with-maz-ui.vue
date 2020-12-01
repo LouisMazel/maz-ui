@@ -105,7 +105,7 @@ export default {
 
   .maz-is-dark {
     .made-with-maz-ui {
-      color: $text-color-dark;
+      color: var(--text-color-dark);
     }
   }
 </style>

@@ -34,10 +34,10 @@
 }
 
 .maz-is-dark .maz-list-item {
-  color: $text-color-dark;
-  border-color: $hover-bg-color-dark;
+  color: var(--text-color-dark);
+  border-color: var(--hover-bg-color-dark);
 
   &.has-hover:hover {
-    background-color: $hover-bg-color-dark;
+    background-color: var(--hover-bg-color-dark);
   }
 }

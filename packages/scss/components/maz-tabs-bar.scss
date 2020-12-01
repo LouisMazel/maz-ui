@@ -60,7 +60,7 @@
 .maz-is-dark .maz-tabs-bar,
 .maz-tabs-bar.maz-is-dark {
   .maz-tabs-bar__item {
-    color: $text-color-dark;
+    color: var(--text-color-dark);
 
     &.active {
       color: $primary-color;
@@ -68,7 +68,7 @@
 
     &:hover,
     &:focus {
-      background-color: $hover-bg-color-dark;
+      background-color: var(--hover-bg-color-dark);
     }
 
     &.disabled {

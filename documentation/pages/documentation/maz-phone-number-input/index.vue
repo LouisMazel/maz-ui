@@ -319,7 +319,7 @@ export default {
     }
 
     code {
-      background-color: $bg-color-dark;
+      background-color: var(--bg-color-dark);
       border-radius: var(--border-radius);
       color: white;
       padding: 2px 5px;

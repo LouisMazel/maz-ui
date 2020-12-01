@@ -25,5 +25,5 @@
 }
 
 .maz-is-dark .maz-arrow-icon path.arrow {
-  fill: $text-color-dark;
+  fill: var(--text-color-dark);
 }

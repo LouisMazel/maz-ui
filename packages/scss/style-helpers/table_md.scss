@@ -30,13 +30,13 @@ table.#{$prefix}md {
 }
 
 .#{$prefix}is-dark table.#{$prefix}md {
-  color: $text-color-dark;
+  color: var(--text-color-dark);
 
   tr {
-    background-color: $bg-color-dark;
+    background-color: var(--bg-color-dark);
 
     &:nth-child(2n) {
-      background-color: $hover-bg-color-dark;
+      background-color: var(--hover-bg-color-dark);
     }
   }
 }

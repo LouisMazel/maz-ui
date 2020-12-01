@@ -13,16 +13,16 @@
 }
 
 .#{$prefix}hover-bg-color-dark:hover {
-  background-color: $hover-bg-color-dark;
+  background-color: var(--hover-bg-color-dark);
 }
 
 .#{$prefix}hover-bg-color-dark-light:hover {
-  background-color: $hover-bg-color-dark-l;
+  background-color: var(--hover-bg-color-dark-l);
 }
 
 .#{$prefix}is-dark.#{$prefix}hover-bg-color:hover,
 .#{$prefix}is-dark .#{$prefix}hover-bg-color:hover {
-  background-color: $hover-bg-color-dark;
+  background-color: var(--hover-bg-color-dark);
 }
 
 @each $name, $color in $color_types {

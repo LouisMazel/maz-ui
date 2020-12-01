@@ -67,11 +67,11 @@
 .maz-slider.maz-is-dark {
   .maz-slider__btn {
     &:hover {
-      background-color: lighten($hover-bg-color-dark, 7%);
+      background-color: var(--hover-bg-color-dark);
     }
 
     &::before {
-      color: $text-color-dark;
+      color: var(--text-color-dark);
     }
   }
 }

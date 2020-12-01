@@ -40,11 +40,11 @@ export default {
 
   .maz-is-dark .project-preview-content {
     h4 {
-      color: $text-color-dark;
+      color: var(--text-color-dark);
     }
 
     p {
-      color: rgba($text-color-dark, .54);
+      color: rgba(var(--text-color-dark), .54);
     }
   }
 </style>

@@ -37,15 +37,15 @@
 .maz-pagination.maz-is-dark,
 .maz-is-dark {
   .pagination-number-btn {
-    color: $text-color-dark;
+    color: var(--text-color-dark);
 
     &:hover,
     &:focus {
-      background-color: lighten($hover-bg-color-dark, 5%);
+      background-color: var(--hover-bg-color-dark);
     }
 
     &.maz-btn::before {
-      border-color: darken($hover-bg-color-dark, 5%);
+      border-color: var(--hover-bg-color-dark);
     }
 
     &.active {
