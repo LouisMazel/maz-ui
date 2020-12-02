@@ -87,7 +87,7 @@
   },
   "files": [
     "lib/",
-    "theme-generator/",
+    "theme-generator/**/*",
     "index.d.ts"
   ],
   "bugs": {
