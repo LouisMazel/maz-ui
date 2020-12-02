@@ -118,7 +118,7 @@
       cursor: pointer;
       background-color: transparent;
       border: none;
-      color: $text-color;
+      color: var(--text-color);
       outline: none;
       transition: all 300ms ease-in-out;
 
