@@ -20,17 +20,18 @@
           <h1 class="maz-fs-20">
             Maz UI
           </h1>
-          <h2 class="maz-fs-14 header__title__sub maz-text-color">
+          <h2 class="maz-fs-14 header__title__sub maz-text-muted">
             UI Components Library
           </h2>
         </div>
       </NuxtLink>
+      <div class="maz-flex-1" />
       <div
         role="navigation"
         class="header__menu maz-flex maz-align-center maz-hidden-mobile"
       >
         <NuxtLink
-          class="header__menu__item maz-btn maz-btn--white maz-no-shadow maz-bg-color maz-no-border maz-hover-bg-color maz-mr-1"
+          class="header__menu__item maz-btn maz-btn--transparent maz-no-shadow maz-bg-color maz-no-border maz-hover-bg-color maz-mr-1"
           :to="{
             name: 'documentation'
           }"
@@ -38,7 +39,7 @@
           Documentation
         </NuxtLink>
         <NuxtLink
-          class="header__menu__item maz-btn maz-btn--white maz-no-shadow maz-bg-color maz-no-border maz-hover-bg-color"
+          class="header__menu__item maz-btn maz-btn--transparent maz-no-shadow maz-bg-color maz-no-border maz-hover-bg-color"
           :to="{ name: 'made-with-maz-ui' }"
         >
           Made with Maz UI
@@ -112,12 +113,6 @@ export default {
         &.nuxt-link-active {
           color: $primary-color;
         }
-      }
-    }
-
-    &__title {
-      &__sub {
-        color: $muted-color;
       }
     }
   }

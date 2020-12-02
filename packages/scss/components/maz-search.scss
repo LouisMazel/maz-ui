@@ -21,10 +21,10 @@
     max-width: 100%;
     position: absolute;
     top: 100%;
-    border-radius: $border-radius;
+    border-radius: var(--border-radius);
     width: 100%;
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
-    background-color: $bg-color;
+    background-color: var(--bg-color);
     max-height: 250px;
 
     &__item {
@@ -36,14 +36,14 @@
       cursor: pointer;
       background-color: transparent;
       border: none;
-      color: $text-color;
+      color: var(--text-color);
       width: 100%;
       outline: none;
       text-align: left;
 
       &:hover,
       &.keyboard-selected {
-        background-color: darken($hover-bg-color, 5%);
+        background-color: var(--hover-color-darken);
       }
 
       &.selected {
@@ -57,32 +57,14 @@
     i { font-size: 2rem; }
   }
 
-  @each $name, $color in $color_types {
+  @each $name in $color_types_new {
     &--#{$name} {
       .maz-search__items__item.selected {
-        background-color: $color;
+        background-color: var(--#{#{$name}});
 
         &.keyboard-selected,
         &:hover {
-          background-color: darken($color, 10%);
-        }
-      }
-    }
-  }
-}
-
-.maz-is-dark .maz-search,
-.maz-search.maz-is-dark {
-  .maz-search {
-    &__items {
-      background-color: $bg-color-dark-light;
-
-      &__item {
-        color: $border-color;
-
-        &:hover,
-        &.keyboard-selected:not(.selected) {
-          background-color: lighten($hover-bg-color-dark-l, 5%);
+          background-color: var(--#{#{$name}}-darken);
         }
       }
     }

@@ -60,6 +60,7 @@ export default {
   },
   styleResources: {
     scss: [
+      '~/assets/scss/_colors.scss',
       '~/assets/scss/_variables.scss',
       '~/../packages/scss/variables.scss'
     ]

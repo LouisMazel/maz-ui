@@ -19,10 +19,10 @@
     height: 24px;
 
     &__arrow {
-      color: $input-icon-color;
+      color: var(--icon-color);
 
       .arrow {
-        fill: $input-icon-color;
+        fill: var(--icon-color);
       }
     }
   }
@@ -51,7 +51,7 @@
 
   &__tag {
     margin-right: 4px;
-    border-radius: calc(#{$border-radius} / 2);
+    border-radius: calc(var(--border-radius) / 2);
     color: white;
     height: 100%;
     padding-right: .2857rem;
@@ -88,9 +88,9 @@
     margin: 0;
     position: absolute;
     overflow: hidden;
-    border-radius: $border-radius;
+    border-radius: var(--border-radius);
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
-    background-color: $bg-color;
+    background-color: var(--bg-color);
 
     &:not(.maz-select__options-list--top) {
       top: 100%;
@@ -124,7 +124,7 @@
 
       &:hover,
       &.keyboard-selected {
-        background-color: darken($hover-bg-color, 5%);
+        background-color: var(--hover-color);
       }
     }
 
@@ -141,41 +141,15 @@
     }
   }
 
-  @each $name, $color in $color_types {
+  @each $name in $color_types_new {
     &--#{$name} {
       .maz-select__options-list__item.selected {
-        background-color: $color;
+        background-color: var(--#{$name});
 
         &:hover,
         &.keyboard-selected {
-          background-color: darken($color, 10%);
+          background-color: var(--hover-color);
         }
-      }
-    }
-  }
-}
-
-.maz-is-dark .maz-select,
-.maz-is-dark.maz-select {
-  &__toggle {
-    &__arrow {
-      color: $input-icon-color-dark;
-
-      .arrow {
-        fill: $input-icon-color-dark;
-      }
-    }
-  }
-
-  &__options-list {
-    background-color: $bg-color-dark;
-
-    &__item {
-      color: $border-color-dark;
-
-      &:hover,
-      &.keyboard-selected:not(.selected) {
-        background-color: lighten($hover-bg-color-dark-l, 5%);
       }
     }
   }

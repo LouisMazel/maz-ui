@@ -1,11 +1,10 @@
-@import './variables/_colors';
-@import './variables/color_types';
+@import './variables/color_types_new';
 
 .#{$prefix}badge,
 .#{$prefix}label {
-  background: $primary-color;
-  border: $border-width solid $primary-color;
-  border-radius: $border-radius;
+  background: var(--primary);
+  border: var(--border-width) solid var(--primary);
+  border-radius: var(--border-radius);
   font-size: 1rem;
   padding: .3em .75em;
   color: white;
@@ -37,24 +36,22 @@
 
   &--outline {
     background-color: transparent;
-    border: $border-width solid $primary-color;
-    color: $primary-color;
+    border: var(--border-width) solid var(--primary);
+    color: var(--primary);
     box-shadow: none;
   }
 
-  @each $name, $color in $color_types {
-    @if (type-of($color) == 'color') {
-      &--#{$name} {
-        background-color: $color;
-        border-color: $color;
-        color: white;
+  @each $name in $color_types_new {
+    &--#{$name} {
+      background-color: var(--#{$name});
+      border-color: var(--#{$name});
+      color: white;
 
-        &--outline {
-          background-color: transparent;
-          border-color: $color;
-          color: $color;
-          box-shadow: none;
-        }
+      &--outline {
+        background-color: transparent;
+        border-color: var(--#{$name});
+        color: var(--#{$name});
+        box-shadow: none;
       }
     }
   }

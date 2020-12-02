@@ -23,7 +23,8 @@
     "build:css:compile": "gulp compile --gulpfile build/gulpfile.js",
     "build:scss:compile": "gulp buildScssLibrary --gulpfile build/gulpfile.js",
     "gen:docs": "vuese gen && npm run lint:md:fix",
-    "pre-publish": "npm run lint:fix && npm i && npm run build"
+    "pre-publish": "npm run lint:fix && npm i && npm run build",
+    "generate-root-css": "node packages/theme-builder/index.js"
   },
   "lint-staged": {
     "*.{js,vue}": "npm run lint:js",
@@ -50,11 +51,12 @@
     "@vue/cli-service": "^4.5.9",
     "@vuese/cli": "^2.14.0",
     "babel-eslint": "^10.1.0",
-    "color-transformer-ui": "^1.0.0",
+    "color-transformer-ui": "^1.0.3",
     "core-js": "^3.8.0",
     "del": "^5.1.0",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+    "fs": "0.0.1-security",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^7.0.1",
     "gulp-notify": "^3.2.0",

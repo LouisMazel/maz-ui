@@ -22,7 +22,7 @@
   }
 
   [type= 'radio'] + label::before {
-    border: $border-width solid transparent;
+    border: var(--border-width) solid transparent;
     content: '';
     position: absolute;
     left: 0;
@@ -35,7 +35,7 @@
   }
 
   [type= 'radio']:not(:checked) + label::before {
-    border-color: darken($border-color, 10%);
+    border-color: var(--bg-color-light);
   }
 
   [type= 'radio']:not(:checked) + label::after,
@@ -61,26 +61,26 @@
     transform: scale(1);
   }
 
-  @each $name, $color in $color_types {
+  @each $name in $color_types_new {
     &--#{$name} {
       [type= 'radio']:checked + label::before {
-        border-color: $color;
+        border-color: var(--#{$name});
       }
 
       [type= 'radio']:not(:checked) + label::after,
       [type= 'radio']:checked + label::after {
-        background-color: $color;
-        color: $color;
+        background-color: var(--#{$name});
+        color: var(--#{$name});
       }
 
       [type= 'radio']:focus {
         + label::before {
-          box-shadow: 0 0 0 .143rem rgba($color, .7);
-          border-color: darken($color, 10%);
+          box-shadow: 0 0 0 .143rem var(--#{$name}-alpha-6);
+          border-color: var(--#{$name}-darken);
         }
 
         + label::after {
-          background-color: darken($color, 10%);
+          background-color: var(--#{$name}-darken);
         }
       }
     }

@@ -8,7 +8,7 @@ $TEXTEAREA_SIZE: 9.375rem !default;
 
 .maz-input {
   position: relative;
-  background-color: $bg-color;
+  background-color: var(--bg-color);
   transition: all 300ms ease-in-out;
   height: $MD_SIZE;
   min-height: $MD_SIZE;
@@ -27,7 +27,7 @@ $TEXTEAREA_SIZE: 9.375rem !default;
     opacity: 0;
     transition: all 300ms ease-in-out;
     font-size: .786rem;
-    color: $placeholder-color;
+    color: var(--placeholder-color);
   }
 
   &__input {
@@ -36,6 +36,7 @@ $TEXTEAREA_SIZE: 9.375rem !default;
     position: relative;
     width: 100%;
     padding: 0 .8571rem;
+    color: var(--text-color);
     font-weight: 400;
     appearance: none;
     border: none;
@@ -54,34 +55,34 @@ $TEXTEAREA_SIZE: 9.375rem !default;
     }
 
     &::-webkit-input-placeholder {
-      color: $placeholder-color;
+      color: var(--placeholder-color);
     }
 
     &::-moz-placeholder {
-      color: $placeholder-color;
+      color: var(--placeholder-color);
     }
 
     &:-ms-input-placeholder {
-      color: $placeholder-color;
+      color: var(--placeholder-color);
     }
 
     &::-ms-input-placeholder {
-      color: $placeholder-color;
+      color: var(--placeholder-color);
     }
 
     &:-moz-placeholder {
-      color: $placeholder-color;
+      color: var(--placeholder-color);
     }
 
     &::placeholder {
-      color: $placeholder-color;
+      color: var(--placeholder-color);
     }
   }
 
   &__icon {
     position: absolute;
     z-index: 1;
-    color: $input-icon-color;
+    color: var(--icon-color);
     font-size: 1.286rem;
     top: 0;
     bottom: 0;
@@ -109,7 +110,7 @@ $TEXTEAREA_SIZE: 9.375rem !default;
     appearance: none;
     border: none;
     background: transparent;
-    color: $input-icon-color;
+    color: var(--icon-color);
     border-radius: $clear-size;
     cursor: pointer;
     font-size: 1rem;
@@ -138,7 +139,7 @@ $TEXTEAREA_SIZE: 9.375rem !default;
 
     &:hover {
       color: white;
-      background-color: $input-icon-color;
+      background-color: var(--icon-color);
     }
   }
 
@@ -197,14 +198,14 @@ $TEXTEAREA_SIZE: 9.375rem !default;
   &.is-disabled {
     cursor: not-allowed;
 
-    $disabled-color-text: darken($disabled-color, 20%);
+    $disabled-color-text: var(--disabled-color-darken);
 
-    background-color: $disabled-color;
-    border-color: $border-color;
+    background-color: var(--disabled-color);
+    border-color: var(--border-color);
 
     &:hover,
     &:focus {
-      border-color: $border-color;
+      border-color: var(--border-color);
     }
 
     .maz-input {
@@ -294,13 +295,13 @@ $TEXTEAREA_SIZE: 9.375rem !default;
   }
 
   &__loader {
-    bottom: -($border-width / 2);
-    height: $border-width;
-    left: $border-radius / 2;
+    bottom: -(var(--border-width) / 2);
+    height: var(--border-width);
+    left: var(--border-radius) / 2;
     width: calc(100% - .5714rem);
     position: absolute;
     overflow: hidden;
-    border-radius: $border-radius;
+    border-radius: var(--border-radius);
 
     &.maz-textarea {
       bottom: .4286rem;
@@ -314,6 +315,41 @@ $TEXTEAREA_SIZE: 9.375rem !default;
       width: 200px;
       height: .1429rem;
       animation: loading 2s linear infinite;
+    }
+  }
+
+  @each $name in $color_types_new {
+    &--#{$name} {
+      .maz-input {
+        &__loader__progress-bar {
+          background-color: var(--#{$name});
+        }
+      }
+
+      &.is-focused {
+        &.maz-input--#{$name} {
+          border-color: var(--#{$name});
+
+          &:hover,
+          &:focus {
+            border-color: var(--#{$name});
+          }
+
+          .maz-input {
+            &__label {
+              color: var(--#{$name});
+            }
+
+            &__icon {
+              color: var(--#{$name});
+
+              path.arrow {
+                fill: var(--#{$name});
+              }
+            }
+          }
+        }
+      }
     }
   }
 
@@ -338,58 +374,19 @@ $TEXTEAREA_SIZE: 9.375rem !default;
     }
   }
 
-  @each $name, $color in $color_types {
-    &--#{$name} {
-      .maz-input {
-        &__loader__progress-bar {
-          background-color: $color;
-        }
-
-        &__input {
-          caret-color: $primary-color;
-        }
-      }
-
-      &.is-focused {
-        &.maz-input--#{$name} {
-          border-color: $color;
-
-          &:hover,
-          &:focus {
-            border-color: $color;
-          }
-
-          .maz-input {
-            &__label {
-              color: $color;
-            }
-
-            &__icon {
-              color: $color;
-
-              path.arrow {
-                fill: $color;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-
   &.is-valid,
   &.is-focused.is-valid {
-    @include color_state($success-color);
+    @include color_state(var(--success));
   }
 
   &.has-warning,
   &.is-focused.has-warning {
-    @include color_state($warning-color);
+    @include color_state(var(--warning));
   }
 
   &.has-error,
   &.is-focused.has-error {
-    @include color_state($danger-color);
+    @include color_state(var(--danger));
   }
 
   input:-webkit-autofill,
@@ -401,111 +398,12 @@ $TEXTEAREA_SIZE: 9.375rem !default;
   select:-webkit-autofill,
   select:-webkit-autofill:hover,
   select:-webkit-autofill:focus {
-    -webkit-text-fill-color: $text-color;
-    box-shadow: 0 0 0 1000px $bg-color inset;
+    -webkit-text-fill-color: var(--text-color);
+    box-shadow: 0 0 0 1000px var(--bg-color) inset;
   }
 }
 
 .maz-is-dark .maz-input,
 .maz-is-dark.maz-input {
-  background-color: $bg-color-dark-light;
-
-  &.is-disabled {
-    background-color: darken($bg-color-dark-light, 10%);
-    border-color: $bg-color-dark-light;
-
-    .maz-input {
-      $disabled-color-text-dark: lighten($bg-color-dark-light, 10%);
-
-      &__label {
-        color: $disabled-color-text-dark;
-      }
-
-      &__input {
-        color: $disabled-color-text-dark;
-
-        &::-webkit-input-placeholder {
-          color: $disabled-color-text-dark;
-        }
-
-        &::-moz-placeholder {
-          color: $disabled-color-text-dark;
-        }
-
-        &:-ms-input-placeholder {
-          color: $disabled-color-text-dark;
-        }
-
-        &::-ms-input-placeholder {
-          color: $disabled-color-text-dark;
-        }
-
-        &:-moz-placeholder {
-          color: $disabled-color-text-dark;
-        }
-
-        &::placeholder {
-          color: $disabled-color-text-dark;
-        }
-      }
-    }
-  }
-
-  &__label {
-    color: $placeholder-color-dark;
-  }
-
-  &__input {
-    color: $text-color-dark;
-
-    &::-webkit-input-placeholder {
-      color: $placeholder-color-dark;
-    }
-
-    &::-moz-placeholder {
-      color: $placeholder-color-dark;
-    }
-
-    &:-ms-input-placeholder {
-      color: $placeholder-color-dark;
-    }
-
-    &::-ms-input-placeholder {
-      color: $placeholder-color-dark;
-    }
-
-    &:-moz-placeholder {
-      color: $placeholder-color-dark;
-    }
-
-    &::placeholder {
-      color: $placeholder-color-dark;
-    }
-  }
-
-  &__icon {
-    color: $input-icon-color-dark;
-  }
-
-  &__toggle-btn {
-    color: $input-icon-color-dark;
-
-    &:hover {
-      color: $text-color-dark;
-      background-color: lighten($hover-bg-color-dark-l, 10%);
-    }
-  }
-
-  input:-webkit-autofill,
-  input:-webkit-autofill:hover,
-  input:-webkit-autofill:focus,
-  textarea:-webkit-autofill,
-  textarea:-webkit-autofill:hover,
-  textarea:-webkit-autofill:focus,
-  select:-webkit-autofill,
-  select:-webkit-autofill:hover,
-  select:-webkit-autofill:focus {
-    -webkit-text-fill-color: $text-color-dark;
-    box-shadow: 0 0 0 1000px $bg-color-dark-light inset;
-  }
+  background-color: var(--bg-color-light);
 }

@@ -4,7 +4,7 @@
   position: relative;
 
   &-collapse {
-    background-color: $bg-color;
+    background-color: var(--bg-color);
     position: absolute;
     top: calc(100% + .143em);
     right: 0;
@@ -14,38 +14,17 @@
 
     &__items {
       padding: 8px 16px;
-      color: $text-color;
+      color: var(--text-color) !important;
       text-decoration: none !important;
 
       &.router-link-exact-active,
       &.nuxt-link-exact-active {
-        color: $primary-color;
+        color: var(--primary) !important;
       }
 
       &:hover:not(.router-link-exact-active):not(.nuxt-link-exact-active),
       &:focus:not(.router-link-exact-active):not(.nuxt-link-exact-active) {
-        background-color: #EAEAEA;
-      }
-    }
-  }
-}
-
-.maz-is-dark.maz-responsive-menu,
-.maz-is-dark .maz-responsive-menu {
-  &-collapse {
-    background-color: $bg-color-dark;
-    border: 1px solid $hover-bg-color-dark;
-
-    &__items {
-      color: $text-color-dark;
-
-      &.router-link-exact-active {
-        color: $primary-color;
-      }
-
-      &:hover:not(.router-link-exact-active),
-      &:focus:not(.router-link-exact-active) {
-        background-color: $hover-bg-color-dark;
+        background-color: var(--hover-color);
       }
     }
   }

@@ -72,7 +72,7 @@ export default {
       background-color: $hover-bg-color;
 
       a {
-        color: $muted-color;
+        color: $text-muted;
       }
     }
 

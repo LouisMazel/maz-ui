@@ -78,7 +78,7 @@ export default {
     }
 
     h6 {
-      color: $muted-color;
+      color: $text-muted;
       background-color: inherit;
       font-size: 1rem;
     }
@@ -218,7 +218,7 @@ export default {
     }
 
     h6 {
-      color: $muted-color-dark;
+      color: $text-muted-dark;
     }
 
     table,

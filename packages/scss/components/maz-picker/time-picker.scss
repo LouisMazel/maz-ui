@@ -19,8 +19,8 @@
     z-index: -1;
     left: 0;
     right: 0;
-    border-top: $border-width solid $border-color;
-    border-bottom: $border-width solid $border-color;
+    border-top: $border-width solid var(--border-color);
+    border-bottom: $border-width solid var(--border-color);
   }
 
   &__column {
@@ -63,25 +63,17 @@
   }
 }
 
-@each $name, $color in $color_types {
+@each $name in $color_types_new {
   .maz-picker--#{$name} {
     .time-picker__column__item {
       &:hover,
       &:focus {
-        background-color: rgba($color, .4);
+        background-color: var(--#{$name}-alpha-40);
       }
 
       &.maz-active {
-        background-color: $color;
+        background-color: var(--#{$name});
       }
     }
-  }
-}
-
-.maz-is-dark .time-picker,
-.maz-is-dark.time-picker {
-  &::after,
-  &::before {
-    border-color: $border-color-dark;
   }
 }

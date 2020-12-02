@@ -3,7 +3,7 @@
 .maz-list {
   display: flex;
   flex-direction: column;
-  border-radius: $border-radius;
+  border-radius: var(--border-radius);
   margin-left: -1px;
   margin-right: -1px;
   max-width: 100%;
@@ -18,12 +18,6 @@
   }
 
   &.maz-no-shadow {
-    border: $border-width solid $hover-bg-color;
+    border: var(--border-width) solid var(--hover-color);
   }
-}
-
-.maz-is-dark .maz-list,
-.maz-is-dark.maz-list {
-  background-color: $bg-color-dark;
-  border-color: $hover-bg-color-dark;
 }

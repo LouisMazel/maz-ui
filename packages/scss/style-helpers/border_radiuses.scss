@@ -3,13 +3,13 @@
 @import './variables/sizes';
 
 .#{$prefix}border-radius {
-  border-radius: $border-radius;
+  border-radius: var(--border-radius);
 }
 
 @each $position in $orientations {
   .#{$prefix}border-#{$position}-radius {
-    border-#{$position}-left-radius: $border-radius;
-    border-#{$position}-right-radius: $border-radius;
+    border-#{$position}-left-radius: var(--border-radius);
+    border-#{$position}-right-radius: var(--border-radius);
   }
 }
 
@@ -20,8 +20,8 @@
 
   @each $position in $orientations {
     .#{$prefix}border-#{$position}-radius {
-      border-#{$position}-left-radius: #{$size};
-      border-#{$position}-right-radius: #{$size};
+      border-#{$position}-left-radius: #{$size}px;
+      border-#{$position}-right-radius: #{$size}px;
     }
   }
 }

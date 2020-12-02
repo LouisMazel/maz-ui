@@ -13,13 +13,6 @@ html { font-size: $base-font-size; }
   @include font_family();
 
   &:not(.maz-btn) {
-    color: $text-color;
-  }
-}
-
-.maz-is-dark.maz-base-component,
-.maz-is-dark .maz-base-component {
-  &:not(.maz-btn) {
-    color: $text-color-dark;
+    color: var(--text-color);
   }
 }

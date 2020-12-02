@@ -21,12 +21,12 @@
     }
 
     &:not(.is-active) {
-      background-color: $bg-color-light;
-      color: darken($bg-color-light, 40%);
+      background-color: var(--hover-color);
+      color: var(--grey);
 
       &:hover,
       &:focus {
-        background-color: darken($bg-color-light, 10%);
+        background-color: var(--hover-color-darken);
       }
     }
 
@@ -34,16 +34,6 @@
       .maz-stepper__step__number {
         color: white;
       }
-    }
-  }
-}
-
-.maz-is-dark.maz-stepper,
-.maz-is-dark .maz-stepper {
-  &__step {
-    &:not(.is-active) {
-      background-color: $bg-color-dark-light;
-      color: lighten($bg-color-dark-light, 40%);
     }
   }
 }

@@ -55,7 +55,6 @@
 import { mapGetters } from 'vuex'
 import NavFooter from '@/components/NavFooter'
 import meta from '~/config/meta'
-import themeBuilder from './../../packages/theme-builder'
 
 export default {
   name: 'Home',
@@ -77,9 +76,6 @@ export default {
         ? require('@/assets/img/maz-ui-illu-dark.png')
         : require('@/assets/img/maz-ui-illu.png')
     }
-  },
-  mounted () {
-    themeBuilder()
   }
 }
 </script>

@@ -32,7 +32,7 @@
         You can set <strong>preferred-countries</strong>, <strong>ignored-countries</strong> or have <strong>only-countries</strong>
       </li>
       <li>
-        Validation UI state: input becomes green ($success-color) when the phone number is valid (can be disabled by <strong>no-validation</strong> attr)
+        Validation UI state: input becomes green when the phone number is valid (can be disabled by <strong>no-validation</strong> attr)
       </li>
       <li>
         <strong>Multi options to getting country code</strong> : By default the component get the country code via the browser (disable it with no-use-browser-locale)

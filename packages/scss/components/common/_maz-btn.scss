@@ -1,42 +1,24 @@
 .maz-btn {
-  position: relative;
-
-  &.hidden {
-    color: transparent;
-  }
-
-  &--white,
-  &--light,
-  &--transparent {
-    color: $text-color;
-  }
-
   &--outline {
-    &.maz-btn--white,
-    &.maz-btn--light,
     &.maz-btn--transparent {
-      color: $text-color;
+      color: var(--text-color);
     }
 
-    &:hover:not(.maz-btn--disabled),
-    &:focus:not(.maz-btn--disabled),
-    &.maz-active:not(.maz-btn--disabled) {
-      &.maz-btn--white,
-      &.maz-btn--transparent,
-      &.maz-btn--light {
-        color: $text-color;
+    &:hover:not(:disabled),
+    &:focus:not(:disabled),
+    &.maz-active:not(:disabled) {
+      &.maz-btn--transparent {
+        color: var(--text-color);
       }
     }
   }
 
   &--transparent {
+    color: var(--text-color);
+
     &:hover,
     &:focus {
-      background-color: $bg-color-light;
-    }
-
-    &:focus {
-      box-shadow: 0 0 0 .143rem rgba(darken($bg-color-light, 5%), .6);
+      background-color: var(--hover-color);
     }
   }
 
@@ -48,34 +30,5 @@
     top: 0;
     right: 0;
     bottom: 0;
-  }
-}
-
-.maz-is-dark .maz-btn,
-.maz-is-dark.maz-btn {
-  &--transparent:not(.maz-btn--disabled) {
-    color: $text-color-dark;
-
-    &:hover,
-    &:focus {
-      background-color: $bg-color-dark-light;
-      box-shadow: 0 0 0 .143rem rgba(darken($bg-color-dark-light, 5%), .6);
-    }
-  }
-
-  &--outline {
-    &.maz-btn--white,
-    &.maz-btn--light,
-    &.maz-btn--transparent {
-      color: $text-color-dark;
-    }
-
-    &:hover:not(.maz-btn--disabled),
-    &:focus:not(.maz-btn--disabled),
-    &.maz-active:not(.maz-btn--disabled) {
-      &.maz-btn--transparent {
-        color: $text-color-dark;
-      }
-    }
   }
 }
