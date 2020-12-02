@@ -24,7 +24,7 @@
     "build:scss:compile": "gulp buildScssLibrary --gulpfile build/gulpfile.js",
     "gen:docs": "vuese gen && npm run lint:md:fix",
     "pre-publish": "npm run lint:fix && npm i && npm run build",
-    "generate-root-css": "node packages/theme-builder/index.js"
+    "generate-root-css": "node theme-builder/index.js"
   },
   "lint-staged": {
     "*.{js,vue}": "npm run lint:js",
@@ -87,6 +87,7 @@
   },
   "files": [
     "lib/",
+    "theme-generator/",
     "index.d.ts"
   ],
   "bugs": {

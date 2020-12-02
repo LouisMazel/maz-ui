@@ -37,22 +37,6 @@ const getStateVariants = (color) => {
   return [color, darken]
 }
 
-// const getLighDarkShades = (color) => {
-//   if (isColorName(color)) color = colorNameToHex(color)
-//   const darken = shadeColor(color, -15)
-//   const lighten = shadeColor(color, 15)
-
-//   return [lighten, color, darken]
-// }
-
-// const setCssVariables = (vars) => {
-//   const rootStyle = document.documentElement.style
-
-//   Object.entries(vars).forEach((values) => {
-//     rootStyle.setProperty(values[0], values[1])
-//   })
-// }
-
 const defaultOptions = {
   mainColors: {
     primary: 'dodgerblue',
@@ -180,7 +164,7 @@ const getOptions = (opts) => {
   }
 }
 
-const builder = (opts = {}) => {
+module.exports = (opts = {}, output) => {
   const options = getOptions(opts)
 
   const results = {
@@ -260,12 +244,8 @@ const builder = (opts = {}) => {
     results.light[`--breakpoint-${values[0]}`] = values[1]
   })
 
-  console.log(results)
-  // setCssVariables(results)
-  generateRootCss(results)
+  generateRootCss(results, output)
   return results
 }
-
-builder()
 
 exports = defaultOptions
