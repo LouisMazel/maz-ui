@@ -52,7 +52,6 @@ const buildScssLibrary = () => {
 
 const replaceScssPaths = () => {
   return src(['./../lib/scss/*.scss'])
-    .pipe(replace('./../style-helpers/variables/index.scss', './style-helpers/variables/index.scss'))
     .pipe(replace('./../_variables/color_names', './_variables/color_names'))
     .pipe(dest('./../lib/scss'))
 }
