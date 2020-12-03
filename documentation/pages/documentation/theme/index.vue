@@ -50,7 +50,7 @@
     />
 
     <p>
-      - Then, add the <code class="code">maz-ui.config.js</code> config file in root project folder (See the complete maz-ui.config.js example file <strong><a href="#configexample">below</a></strong>)
+      - Then, add the <code class="code">maz-ui.config.js</code> config file in root project folder (See the complete maz-ui.config.js example file <strong><a href="#configexample">below</a></strong>. All declarations are not required)
     </p>
 
     <p class="no-mb">
@@ -62,7 +62,7 @@
         <strong>output</strong>: is the path where the css file will saved - <i class="maz-text-muted">Ex: "./assets/root-vars.css"</i>
       </li>
       <li>
-        <strong>colors</strong>: declaration of colors variables
+        <strong>theme</strong>: declaration of colors and others variables
       </li>
     </ul>
 
@@ -76,7 +76,7 @@
 
 module.exports = {
   output: './assets/root.scss',
-  colors: {
+  theme: {
     main: {
       primary: '#FF0000',
       secondary: 'blue'
@@ -123,71 +123,74 @@ module.exports = {
     <CodeContainer
       language="javascript"
       code="module.exports = {
-  mainColors: {
-    primary: 'dodgerblue',
-    secondary: '#1CD1A1',
-    third: '#C41AF9',
-    danger: 'orangered',
-    success: 'yellowgreen',
-    info: '#17A2B8',
-    warning: '#FFA300',
-    light: '#EEEEEE',
-    dark: '#21222E',
-    grey: '#999999',
-    default: '#CCCCCC',
-    black: 'black',
-    white: 'white',
-    transparent: '#FFFFFF00',
-    disabled: '#F2F2F2'
-  },
-  typo: {
-    'base-font-size': '16px',
-    'base-font-family': 'system-ui, -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, Helvetica, Arial, sans-serif, \'Apple Color Emoji\', \'Segoe UI Emoji\', \'Segoe UI Symbol\'',
-    'base-font-weight': '400',
-    'base-line-height': '1.5'
-  },
-  border: {
-    'border-width': '2px',
-    'border-radius': '8px'
-  },
-  light: {
+  output: './assets/root.scss',
+  theme: {
+    main: {
+      primary: 'dodgerblue',
+      secondary: '#1CD1A1',
+      third: '#C41AF9',
+      danger: 'orangered',
+      success: 'yellowgreen',
+      info: '#17A2B8',
+      warning: '#FFA300',
+      light: '#EEEEEE',
+      dark: '#21222E',
+      grey: '#999999',
+      default: '#CCCCCC',
+      black: 'black',
+      white: 'white',
+      transparent: '#FFFFFF00',
+      disabled: '#F2F2F2'
+    },
     typo: {
-      'text-color': '#212121',
-      'muted-color': 'rgba(0, 0, 0, .54)',
-      'placeholder-color': '#A7A7A7',
-      'icon-color': '#DEDEDE'
+      'base-font-size': '16px',
+      'base-font-family': 'system-ui, -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, Helvetica, Arial, sans-serif, \'Apple Color Emoji\', \'Segoe UI Emoji\', \'Segoe UI Symbol\'',
+      'base-font-weight': '400',
+      'base-line-height': '1.5'
     },
-    layout: {
-      'bg-color': 'white',
-      'bg-color-light': '#F2F2F2',
-      'overlay-color': 'rgba(86, 87, 117, .7)'
+    border: {
+      'border-width': '2px',
+      'border-radius': '8px'
     },
-    borderColor: {
-      'border-color': '#EEEEEE'
+    light: {
+      typo: {
+        'text-color': '#212121',
+        'muted-color': 'rgba(0, 0, 0, .54)',
+        'placeholder-color': '#A7A7A7',
+        'icon-color': '#DEDEDE'
+      },
+      layout: {
+        'bg-color': 'white',
+        'bg-color-light': '#F2F2F2',
+        'overlay-color': 'rgba(86, 87, 117, .7)'
+      },
+      borderColor: {
+        'border-color': '#EEEEEE'
+      },
+      state: {
+        'hover-color': '#F2F2F2',
+        'disabled-color': '#F2F2F2'
+      }
     },
-    state: {
-      'hover-color': '#F2F2F2',
-      'disabled-color': '#F2F2F2'
-    }
-  },
-  dark: {
-    typo: {
-      'text-color': '#EEEEEE',
-      'muted-color': 'rgba(255, 255, 255, .54)',
-      'placeholder-color': 'rgba(255, 255, 255, .6)',
-      'icon-color': '#65678F'
-    },
-    layout: {
-      'bg-color': '#21222E',
-      'bg-color-light': '#303144',
-      'overlay-color': 'rgba(86, 87, 117, .7)'
-    },
-    borderColor: {
-      'border-color': '#3B3C53'
-    },
-    state: {
-      'hover-color': '#2E2F40',
-      'disabled-color': '#CCCCCC'
+    dark: {
+      typo: {
+        'text-color': '#EEEEEE',
+        'muted-color': 'rgba(255, 255, 255, .54)',
+        'placeholder-color': 'rgba(255, 255, 255, .6)',
+        'icon-color': '#65678F'
+      },
+      layout: {
+        'bg-color': '#21222E',
+        'bg-color-light': '#303144',
+        'overlay-color': 'rgba(86, 87, 117, .7)'
+      },
+      borderColor: {
+        'border-color': '#3B3C53'
+      },
+      state: {
+        'hover-color': '#2E2F40',
+        'disabled-color': '#CCCCCC'
+      }
     }
   }
 }

@@ -52,7 +52,7 @@ program
     const configPath = path.resolve(process.env.PWD, './maz-ui.config.js')
     const config = require(configPath)
     const output = config.output
-    const colors = config.colors
+    const colors = config.theme
     delete config.output
     generateRootCss(colors, output)
     process.exit(0)
