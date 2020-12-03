@@ -42,7 +42,6 @@
         placeholder="Custom label & placeholder text"
         :options="options"
         clearable
-        open
       />
     </ComponentContainer>
 
