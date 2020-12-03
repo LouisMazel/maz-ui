@@ -251,10 +251,6 @@ $btn-height: 3em !default;
   }
 }
 
-.maz-btn.maz-text-hidden {
-  color: transparent;
-}
-
 .maz-btn.maz-btn--white,
 .maz-btn.maz-btn--light {
   color: #212121;
@@ -288,4 +284,8 @@ $btn-height: 3em !default;
     color: var(--text-color);
     background-color: var(--hover-color);
   }
+}
+
+.maz-btn.maz-text-hidden {
+  color: transparent;
 }

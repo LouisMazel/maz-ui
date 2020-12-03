@@ -103,7 +103,7 @@ export default {
     }
 
     h2 {
-      color: #444352;
+      color: var(--text-color);
       font-size: 2.143rem;
       line-height: 1.5;
     }
