@@ -156,11 +156,9 @@ export default {
     this.hasLeftSidebarOpen= !(window.innerWidth < 767),
     this.isAbsolute = window.innerWidth < 767
 
-    const date = new Date().toTimeString()
     const darkMode = this.$cookies.get('use-dark-theme')
-    const shouldSetDarkMode = (date < '9:00' && date > '23:00') && typeof darkMode === 'undefined'
-    if (shouldSetDarkMode || darkMode) {
-      this.setDarkTheme(shouldSetDarkMode ? true : Boolean(darkMode))
+    if (typeof darkMode === 'boolean') {
+      this.setDarkTheme(darkMode)
     }
   },
   methods: {

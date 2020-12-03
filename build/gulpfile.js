@@ -7,9 +7,6 @@ const prefix = require('gulp-autoprefixer')
 const plumber = require('gulp-plumber')
 const notify = require('gulp-notify')
 const sourcemaps = require('gulp-sourcemaps')
-const merge = require('merge-stream')
-const replace = require('gulp-replace')
-const del = require('del')
 
 const onError = err => {
   notify.onError({
@@ -30,34 +27,6 @@ const compileComponentsSingleFileCss = () => {
     .pipe(prefix())
     .pipe(sass.sync({ outputStyle: 'compressed' }).on('error', sass.logError))
     .pipe(dest('./../lib/css'))
-}
-
-const buildScssLibrary = () => {
-  const components = src('./../packages/scss/components/**/*')
-    .pipe(dest('./../lib/scss'))
-  const base = src('./../packages/scss/base.scss')
-    .pipe(dest('./../lib/scss'))
-  const common = src('./../packages/scss/components/common/**/*')
-    .pipe(dest('./../lib/scss/components/common'))
-  const styleHelpers = src('./../packages/scss/style-helpers/**/*')
-    .pipe(dest('./../lib/scss/style-helpers'))
-  const scssVariables = src('./../packages/scss/variables.scss')
-    .pipe(dest('./../lib/scss'))
-  const rootVariables = src('./../packages/scss/_variables/**/*')
-    .pipe(dest('./../lib/scss/_variables'))
-  const mixins = src('./../packages/scss/mixins/**/*')
-    .pipe(dest('./../lib/scss/mixins'))
-  return merge(components, base, scssVariables, rootVariables, mixins, common, styleHelpers)
-}
-
-const replaceScssPaths = () => {
-  return src(['./../lib/scss/*.scss'])
-    .pipe(replace('./../_variables/color_names', './_variables/color_names'))
-    .pipe(dest('./../lib/scss'))
-}
-
-const cleanScss = () => {
-  return del(['./../lib/scss/common'], { force:true })
 }
 
 const compileCss = () => {
@@ -91,4 +60,3 @@ const watcher = () => {
 
 exports.default = series(compileComponentsSingleFileCss, compileBase, compileCss, watcher)
 exports.compile = series(compileComponentsSingleFileCss, compileBase, compileCss)
-exports.buildScssLibrary = series(buildScssLibrary, replaceScssPaths, cleanScss)

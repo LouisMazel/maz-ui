@@ -1,0 +1,1 @@
+.maz-list{display:flex;flex-direction:column;border-radius:var(--border-radius);margin-left:-1px;margin-right:-1px;max-width:100%}.maz-list:not(.no-scroll){overflow-y:auto;overflow-x:hidden}.maz-list:not(.maz-no-shadow){box-shadow:0 0 8px 0 rgba(0,0,0,0.1)}.maz-list.maz-no-shadow{border:var(--border-width) solid var(--hover-color)}

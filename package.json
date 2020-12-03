@@ -5,7 +5,7 @@
   "description": "A stand-alone components library for Vue.Js & Nuxt.Js",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "bin": {
-    "maz": "bin/maz.js"
+    "maz": "bin/index.js"
   },
   "scripts": {
     "lint": "npm run lint:js && npm run lint:style && npm run lint:md",
@@ -20,14 +20,13 @@
     "build": "npm run clean && npm run build:entries && npm run build:lib && npm run build:css && npm run gen:types",
     "build:entries": "node build/build-entries.js",
     "build:lib": "webpack --config build/webpack.conf.js && webpack --config build/webpack.common.js && webpack --config build/webpack.component.js",
-    "build:css": "npm run gen:css && npm run build:css:compile && npm run build:scss:compile",
+    "build:css": "npm run gen:css && npm run build:css:compile",
     "gen:types": "node build/generate-types-declarations.js",
     "gen:css": "node build/gen-scss-index",
     "build:css:compile": "gulp compile --gulpfile build/gulpfile.js",
-    "build:scss:compile": "gulp buildScssLibrary --gulpfile build/gulpfile.js",
     "gen:docs": "vuese gen && npm run lint:md:fix",
     "pre-publish": "npm run lint:fix && npm i && npm run build",
-    "cli": "node ./bin/maz.js"
+    "cli": "node ./bin/index.js"
   },
   "lint-staged": {
     "*.{js,vue}": "npm run lint:js",
@@ -63,7 +62,6 @@
     "@vuese/cli": "^2.14.0",
     "babel-eslint": "^10.1.0",
     "core-js": "^3.8.0",
-    "del": "^5.1.0",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
     "gulp": "^4.0.2",
@@ -71,12 +69,10 @@
     "gulp-notify": "^3.2.0",
     "gulp-plumber": "^1.2.1",
     "gulp-rename": "^2.0.0",
-    "gulp-replace": "^1.0.0",
     "gulp-sass": "^4.1.0",
     "gulp-sourcemaps": "^2.6.5",
     "husky": "^4.3.0",
     "lint-staged": "^10.5.2",
-    "merge-stream": "^2.0.0",
     "progress-bar-webpack-plugin": "^2.1.0",
     "rimraf": "^3.0.2",
     "stylelint": "^13.8.0",
