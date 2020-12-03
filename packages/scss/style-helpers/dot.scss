@@ -1,4 +1,4 @@
-@import './variables/color_types_new';
+@import './../_variables/color_names';
 
 $base-dot-size: 1rem !default;
 $dot-size: .4286em !default;
@@ -18,14 +18,14 @@ $dot-size: .4286em !default;
   }
 }
 
-@each $name in $color_types_new {
+@each $name in $color_names {
   .#{$prefix}dot--#{$name} {
     background-color: var(--#{$name});
     border-color: var(--#{$name});
 
     &--outline {
       background-color: transparent;
-      border: $border-width solid var(--#{$name});
+      border: var(--border-width) solid var(--#{$name});
       color: var(--#{$name});
     }
   }

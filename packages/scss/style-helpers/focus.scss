@@ -1,10 +1,10 @@
-@import './variables/color_types_new';
+@import './../_variables/color_names';
 
 .#{$prefix}no-focus-bg:focus {
   background-color: transparent;
 }
 
-@each $name in $color_types_new {
+@each $name in $color_names {
   .#{$prefix}focus-bg-#{$name}:focus {
     background-color: var(--#{$name});
   }

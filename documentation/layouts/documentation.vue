@@ -187,7 +187,7 @@ export default {
   .documentation {
     &__component-desc {
       &__container {
-        border-left: $border-width solid $primary-color;
+        border-left: var(--border-width) solid var(--primary);
 
         h3 {
           font-size: 1.2rem;

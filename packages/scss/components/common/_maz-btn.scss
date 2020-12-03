@@ -1,24 +1,184 @@
+$btn-side-padding: 1.429em !default;
+$btn-height: 3em !default;
+
 .maz-btn {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  transition: background-color 300ms ease-in-out, color 300ms ease-in-out;
+  box-shadow: 0 2px 5px 0 rgba(3, 6, 26, .15);
+  background-color: var(--primary);
+  color: white;
+  display: inline-flex;
+  border-radius: var(--border-radius);
+  line-height: 1;
+  box-sizing: border-box;
+  margin: 0;
+  user-select: none;
+  width: auto;
+  overflow: visible;
+  -webkit-font-smoothing: inherit;
+  -moz-osx-font-smoothing: inherit;
+  text-align: center;
+  font-size: 1rem;
+  padding-right: $btn-side-padding;
+  padding-left: $btn-side-padding;
+  height: $btn-height;
+  vertical-align: middle;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+
+  &:hover,
+  &:focus,
+  &.maz-active {
+    background-color: var(--primary-darken);
+  }
+
+  &:focus,
+  &.maz-active {
+    &::before {
+      box-sizing: content-box;
+      content: '';
+      display: block;
+      border: 2px solid var(--primary);
+      border-radius: calc(var(--border-radius) + 3px);
+      position: absolute;
+      left: -3px;
+      top: -3px;
+      right: -3px;
+      bottom: -3px;
+    }
+  }
+
   &--outline {
-    &.maz-btn--transparent {
-      color: var(--text-color);
+    background-color: rgba(var(--primary), .05);
+    color: var(--primary);
+    box-shadow: none;
+
+    &::after {
+      box-sizing: content-box;
+      content: '';
+      display: block;
+      height: calc(100% - 4px);
+      width: calc(100% - 4px);
+      border: 2px solid;
+      border-color: var(--primary);
+      border-radius: var(--border-radius);
+      position: absolute;
+      left: 0;
+      top: 0;
     }
 
-    &:hover:not(:disabled),
-    &:focus:not(:disabled),
-    &.maz-active:not(:disabled) {
-      &.maz-btn--transparent {
-        color: var(--text-color);
+    &.maz-btn--rounded {
+      border-radius: 100px;
+
+      &::after {
+        border-radius: 100px;
+      }
+    }
+
+    &:hover,
+    &:focus,
+    &.maz-active {
+      background-color: var(--primary);
+      color: white;
+    }
+  }
+
+  &--rounded {
+    border-radius: 100px;
+
+    &:focus,
+    &.maz-active {
+      &::before {
+        border-radius: 100px;
       }
     }
   }
 
-  &--transparent {
-    color: var(--text-color);
+  &--block {
+    width: 100%;
+  }
 
-    &:hover,
-    &:focus {
-      background-color: var(--hover-color);
+  &--xl {
+    font-size: 1.375rem;
+  }
+
+  &--lg {
+    font-size: 1.19rem;
+  }
+
+  &--sm {
+    font-size: .857rem;
+  }
+
+  &--mini {
+    font-size: .75rem;
+  }
+
+  &--fab {
+    border-radius: 50%;
+    padding: 0;
+    width: $btn-height;
+
+    &::after {
+      border-radius: 50%;
+    }
+
+    &:focus,
+    &.maz-active {
+      &::before {
+        border-radius: 50%;
+      }
+    }
+  }
+
+  &--icon {
+    &--right {
+      padding-right: calc(#{$btn-side-padding} / 1.5);
+    }
+
+    &--left {
+      padding-left: calc(#{$btn-side-padding} / 1.5);
+    }
+
+    &.maz-btn--no-text {
+      padding-left: calc(#{$btn-side-padding} / 1.5);
+      padding-right: calc(#{$btn-side-padding} / 1.5);
+    }
+
+    i {
+      font-size: 1.714rem;
+    }
+
+    &.maz-btn--xl {
+      i {
+        font-size: 2rem;
+      }
+    }
+
+    &.maz-btn--lg {
+      i {
+        font-size: 1.857rem;
+      }
+    }
+
+    &.maz-btn--sm {
+      i {
+        font-size: 1.429rem;
+      }
+    }
+
+    &.maz-btn--mini {
+      i {
+        font-size: 1.286rem;
+      }
+
+      span {
+        font-size: .875rem;
+      }
     }
   }
 
@@ -30,5 +190,102 @@
     top: 0;
     right: 0;
     bottom: 0;
+  }
+}
+
+@import './../../_variables/color_names';
+
+@each $name in $color_names {
+  .maz-btn--#{$name} {
+    background-color: var(--#{$name});
+
+    &:hover,
+    &:focus,
+    &.maz-active {
+      background-color: var(--#{$name}-darken);
+    }
+
+    &:focus,
+    &.maz-active {
+      &::before {
+        border-color: var(--#{$name});
+      }
+    }
+
+    &.maz-btn--outline {
+      background-color: var(--#{$name}-alpha-05);
+      color: var(--#{$name});
+
+      &::after {
+        border-color: var(--#{$name});
+      }
+
+      &.maz-btn--rounded {
+        &::after {
+          border-radius: 100px;
+        }
+      }
+
+      &:hover:not(:disabled),
+      &:focus:not(:disabled),
+      &.maz-active:not(:disabled) {
+        background-color: var(--#{$name});
+        color: white;
+      }
+    }
+  }
+}
+
+.maz-btn:disabled {
+  background-color: var(--disabled);
+  color: var(--grey);
+  cursor: not-allowed;
+  box-shadow: none;
+
+  &::after {
+    border-color: var(--disabled);
+  }
+
+  &::before {
+    border-color: var(--disabled);
+  }
+}
+
+.maz-btn.maz-text-hidden {
+  color: transparent;
+}
+
+.maz-btn.maz-btn--white,
+.maz-btn.maz-btn--light {
+  color: #212121;
+
+  &.maz-btn--outline {
+    color: var(--text-color);
+
+    &:hover:not(:disabled),
+    &:focus:not(:disabled),
+    &.maz-active {
+      color: #212121;
+    }
+  }
+}
+
+.maz-btn.maz-btn--transparent {
+  color: var(--text-color);
+
+  &.maz-btn--outline {
+    color: var(--text-color);
+
+    &:hover,
+    &:focus {
+      color: var(--text-color);
+      background-color: var(--hover-color);
+    }
+  }
+
+  &:hover,
+  &:focus {
+    color: var(--text-color);
+    background-color: var(--hover-color);
   }
 }

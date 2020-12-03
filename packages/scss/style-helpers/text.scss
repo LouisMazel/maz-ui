@@ -13,9 +13,9 @@
   fill: var(--muted-color);
 }
 
-@import './variables/color_types_new';
+@import './../_variables/color_names';
 
-@each $name in $color_types_new {
+@each $name in $color_names {
   .#{$prefix}text-#{$name} {
     color: var(--#{$name});
     fill: var(--#{$name});
@@ -38,7 +38,7 @@
   text-align: right;
 }
 
-@import './mixins/index';
+@import './../mixins/multiple_line_ellipsis';
 
 .#{$prefix}dots-text {
   text-overflow: ellipsis;

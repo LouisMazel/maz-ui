@@ -1,5 +1,3 @@
-@import './../style-helpers/variables/index.scss';
-
 .maz-progress-bar {
   color: var(--text-color);
   font-size: 1rem;
@@ -22,7 +20,9 @@
     background-color: var(--bg-color-light);
     transition: all 500ms ease-in-out;
 
-    @each $name in $color_types_new {
+    @import './../_variables/color_names';
+
+    @each $name in $color_names {
       &--#{$name} {
         background-color: var(--#{$name});
       }

@@ -1,5 +1,3 @@
-@import './../style-helpers/variables/index.scss';
-
 .maz-draggable-list {
   display: flex;
   flex-direction: column;
@@ -9,7 +7,7 @@
     padding: .75rem 1.25rem;
     margin-bottom: -2px;
     background-color: var(--bg-color);
-    border: $border-width solid var(--hover-color);
+    border: var(--border-width) solid var(--hover-color);
     cursor: move;
     width: 100%;
     font-size: .875em;

@@ -13,7 +13,9 @@
   }
 }
 
-@each $name in $color_types_new {
+@import './../../_variables/color_names';
+
+@each $name in $color_names {
   .maz-picker--#{$name} {
     .footer-picker__now {
       color: var(--#{$name});

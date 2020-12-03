@@ -91,7 +91,7 @@
   }
 }
 
-@each $name in $color_types_new {
+@each $name in $color_names {
   .maz-picker--#{$name} {
     .month-picker {
       &__day {

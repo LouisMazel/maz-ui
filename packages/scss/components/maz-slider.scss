@@ -1,5 +1,3 @@
-@import './../style-helpers/variables/index.scss';
-
 .maz-slider {
   &__bar {
     position: relative;
@@ -48,7 +46,9 @@
     }
   }
 
-  @each $name in $color_types_new {
+  @import './../_variables/color_names';
+
+  @each $name in $color_names {
     &.maz-slider--#{$name} {
       .maz-slider {
         &__bar {

@@ -1,8 +1,8 @@
-@import './variables/sizes';
-@import './variables/positions';
-@import './variables/borders';
-@import './variables/color_types_new';
-@import './variables/states';
+@import './../_variables/sizes';
+@import './../_variables/positions';
+@import './../_variables/borders';
+@import './../_variables/color_names';
+@import './../_variables/states';
 
 .#{$prefix}border-color {
   border-color: var(--border-color);
@@ -18,7 +18,7 @@
   border: none;
 }
 
-@each $name in $color_types_new {
+@each $name in $color_names {
   .#{$prefix}border-#{$name} {
     border-color: var(--#{$name});
   }

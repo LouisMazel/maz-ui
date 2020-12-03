@@ -1,5 +1,3 @@
-@import './../../style-helpers/variables/index.scss';
-
 .maz-select {
   position: relative;
   user-select: none;
@@ -141,7 +139,7 @@
     }
   }
 
-  @each $name in $color_types_new {
+  @each $name in $color_names {
     &--#{$name} {
       .maz-select__options-list__item.selected {
         background-color: var(--#{$name});

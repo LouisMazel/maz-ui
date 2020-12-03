@@ -19,8 +19,8 @@
     z-index: -1;
     left: 0;
     right: 0;
-    border-top: $border-width solid var(--border-color);
-    border-bottom: $border-width solid var(--border-color);
+    border-top: var(--border-width) solid var(--border-color);
+    border-bottom: var(--border-width) solid var(--border-color);
   }
 
   &__column {
@@ -63,7 +63,7 @@
   }
 }
 
-@each $name in $color_types_new {
+@each $name in $color_names {
   .maz-picker--#{$name} {
     .time-picker__column__item {
       &:hover,

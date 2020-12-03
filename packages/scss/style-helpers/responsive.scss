@@ -1,4 +1,4 @@
-@import './variables/_responsive';
+@import './../_variables/_responsive';
 
 .#{$prefix}hidden-4k {
   @media only screen and (max-width: $breakpoint-4k) {

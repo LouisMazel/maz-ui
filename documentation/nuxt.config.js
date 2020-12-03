@@ -35,7 +35,6 @@ export default {
   /*
    ** Global CSS
    */
-  css: ['~/assets/scss/main.scss'],
   loading: { color: 'dodgerblue' },
   plugins: [
     '~/filters',
@@ -43,8 +42,8 @@ export default {
     { src: '~/plugins/maz-ui/client.js', mode: 'client' }
   ],
   /*
-   ** Nuxt.js dev-modules
-   */
+  ** Nuxt.js dev-modules
+  */
   buildModules: [
     '@nuxtjs/sitemap',
     '@nuxtjs/style-resources',
@@ -58,11 +57,11 @@ export default {
   sitemap: {
     hostname: 'https://louismazel.github.io/'
   },
+  css: ['~/assets/scss/main.scss'],
   styleResources: {
     scss: [
       '~/assets/scss/_colors.scss',
-      '~/assets/scss/_variables.scss',
-      '~/../packages/scss/variables.scss'
+      '~/assets/scss/_responsive.scss'
     ]
   },
   ...routerBase,

@@ -1,4 +1,4 @@
-@import './variables/color_types_new';
+@import './../_variables/color_names';
 
 .#{$prefix}hover-bg-color:hover {
   background-color: var(--hover-color);
@@ -8,7 +8,7 @@
   background: transparent;
 }
 
-@each $name in $color_types_new {
+@each $name in $color_names {
   .#{$prefix}hover-bg-#{$name}:hover {
     background-color: var(--#{$name});
   }

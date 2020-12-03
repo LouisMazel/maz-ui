@@ -172,7 +172,7 @@ export default {
       }
 
       &.nuxt-link-exact-active {
-        color: $primary-color;
+        color: var(--primary);
       }
     }
   }

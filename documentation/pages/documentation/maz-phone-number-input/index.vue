@@ -320,7 +320,7 @@ export default {
 
     code {
       background-color: $bg-color-dark;
-      border-radius: $border-radius;
+      border-radius: var(--border-radius);
       color: white;
       padding: 2px 5px;
     }

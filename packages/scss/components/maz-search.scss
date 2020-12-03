@@ -1,5 +1,3 @@
-@import './../style-helpers/variables/index.scss';
-
 .maz-search {
   position: relative;
 
@@ -57,7 +55,9 @@
     i { font-size: 2rem; }
   }
 
-  @each $name in $color_types_new {
+  @import './../_variables/color_names';
+
+  @each $name in $color_names {
     &--#{$name} {
       .maz-search__items__item.selected {
         background-color: var(--#{#{$name}});

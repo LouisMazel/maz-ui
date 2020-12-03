@@ -1,0 +1,5 @@
+@mixin font_family() {
+  font: var(--base-font-weight) var(--base-font-size) var(--base-font-family);
+  line-height: var(--base-line-height);
+  font-kerning: normal;
+}

@@ -1,3 +1,5 @@
+@import './../../_variables/responsive';
+
 @media only screen and (max-width: $breakpoint-tablet) {
   .maz-picker__overlay {
     display: block;

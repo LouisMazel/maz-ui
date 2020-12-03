@@ -109,14 +109,10 @@
   --hover-color-darken: #c1c1c1;
   --disabled-color: #F2F2F2;
   --disabled-color-darken: #c1c1c1;
-  --breakpoint-mobile-s: 320px;
-  --breakpoint-mobile-m: 375px;
-  --breakpoint-mobile-l: 425px;
-  --breakpoint-tablet: 768px;
-  --breakpoint-laptop-s: 1024px;
-  --breakpoint-laptop-m: 1280px;
-  --breakpoint-laptop-l: 1440px;
-  --breakpoint-4k: 1920px;
+  --base-font-size: 14px;
+  --base-font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  --base-font-weight: 400;
+  --base-line-height: 1.5;
 }
 
 .maz-is-dark {

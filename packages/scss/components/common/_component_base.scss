@@ -1,4 +1,4 @@
-html { font-size: $base-font-size; }
+html { font-size: var(--base-font-size); }
 
 .maz-base-component {
   &,
@@ -8,7 +8,7 @@ html { font-size: $base-font-size; }
     box-sizing: border-box;
   }
 
-  @import './mixins/font_family';
+  @import './../../mixins/font_family';
 
   @include font_family();
 

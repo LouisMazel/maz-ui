@@ -1,4 +1,4 @@
-@import './variables/color_types_new';
+@import './../_variables/color_names';
 
 .#{$prefix}badge,
 .#{$prefix}label {
@@ -41,7 +41,7 @@
     box-shadow: none;
   }
 
-  @each $name in $color_types_new {
+  @each $name in $color_names {
     &--#{$name} {
       background-color: var(--#{$name});
       border-color: var(--#{$name});

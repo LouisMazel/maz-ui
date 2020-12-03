@@ -1,6 +1,8 @@
 @import '@/assets/icons/index.css';
 @import './load-fonts';
-@import '@/../packages/scss/index.scss';
+@import './../../../packages/scss/mixins/index.scss';
+@import './../../../packages/scss/index.scss';
+// @import './../../../packages/scss/_variables/responsive';
 
 html {
   @include font_family();
@@ -55,7 +57,7 @@ html {
 
   h1,
   h2 {
-    color: $primary-color;
+    color: var(--primary);
     font-family: GeomanistMedium, sans-serif;
   }
 
@@ -92,7 +94,7 @@ html {
   }
 
   a:not(.maz-btn) {
-    color: $primary-color;
+    color: var(--primary);
     text-decoration: none;
 
     &:hover,
@@ -113,7 +115,7 @@ html {
     }
 
     code.code {
-      background-color: $bg-color-dark;
+      background-color: var(--bg-color);
       color: $text-color-dark;
       padding: 2px 4px;
       border-radius: 4px;
@@ -121,18 +123,7 @@ html {
 
     &.maz-is-dark {
       code.code {
-        background-color: $bg-color-dark-light;
-      }
-
-      h3,
-      h4,
-      h5,
-      h6,
-      p,
-      ul,
-      li,
-      ol {
-        color: $text-color-dark;
+        background-color: var(--bg-color-light);
       }
     }
   }

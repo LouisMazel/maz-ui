@@ -65,14 +65,14 @@ export default {
 
 <style lang="scss" scoped>
   .nav-footer {
-    color: $border-color;
-    background-color: $bg-color;
+    color: var(--border-color);
+    background-color: var(--bg-color);
 
     &-subs {
-      background-color: $hover-bg-color;
+      background-color: var(--hover-bg-color);
 
       a {
-        color: $text-muted;
+        color: var(--muted-color);
       }
     }
 
@@ -103,15 +103,6 @@ export default {
           margin-bottom: 20px;
         }
       }
-    }
-  }
-
-  .maz-is-dark .nav-footer {
-    background-color: $bg-color-dark;
-    border-color: $hover-bg-color-dark;
-
-    &-subs {
-      background-color: $hover-bg-color-dark;
     }
   }
 </style>

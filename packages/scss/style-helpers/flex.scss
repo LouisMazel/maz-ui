@@ -94,7 +94,7 @@
   flex: 1;
 }
 
-@import './variables/percents';
+@import './../_variables/percents';
 
 @each $percent, $value in $percents {
   .#{$prefix}flex-#{$percent} {

@@ -112,29 +112,5 @@ export default {
       color: $third-color;
     }
   }
-
-  .maz-is-dark {
-    .home {
-      h2 {
-        color: $text-color-dark;
-      }
-
-      h3 {
-        color: $third-color !important;
-      }
-
-      .maz-btn--dark--outline {
-        background-color: $bg-color-dark;
-        color: $text-color-dark;
-        border-color: $text-color-dark;
-
-        &:hover,
-        &:focus {
-          background-color: $text-color-dark;
-          color: $bg-color-dark;
-        }
-      }
-    }
-  }
 </style>
 

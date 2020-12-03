@@ -1,10 +1,9 @@
-@import './../style-helpers/variables/index.scss';
-
 .maz-collapse {
   color: var(--text-color);
   border-radius: var(--border-radius);
   overflow: hidden;
-  border: $border-width solid var(--hover-color);
+  background-color: var(--bg-color);
+  border: var(--border-width) solid var(--border-color);
 
   &__header-btn {
     background-color: transparent;

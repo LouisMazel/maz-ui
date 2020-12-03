@@ -1,5 +1,5 @@
-@import './variables/_sizes';
-@import './variables/_positions';
+@import './../_variables/_sizes';
+@import './../_variables/_positions';
 
 @each $size in $sizes {
   @each $position in $orientations {

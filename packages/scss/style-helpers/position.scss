@@ -6,7 +6,7 @@
   position: absolute;
 }
 
-@import './variables/positions';
+@import './../_variables/positions';
 
 @each $position in $positions {
   .#{$prefix}position-#{$position} {
