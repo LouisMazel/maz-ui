@@ -396,6 +396,7 @@ export default {
       const code = e.keyCode
       const { hasOpenList, tmpValueIndex, optionsShown, openList, tmpValue, search, config } = this
       if (code === 40 || code === 38) {
+        e.preventDefault()
         if (!hasOpenList) openList()
         let index = code === 40 ? tmpValueIndex + 1 : tmpValueIndex - 1
         if (index === -1 || index >= optionsShown.length) {

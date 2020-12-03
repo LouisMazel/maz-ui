@@ -144,10 +144,10 @@
       .maz-select__options-list__item.selected {
         background-color: var(--#{$name});
 
-        &:hover,
-        &.keyboard-selected {
-          background-color: var(--hover-color);
-        }
+        // &:hover,
+        // &.keyboard-selected {
+        //   background-color: var(--#{$name}-darken);
+        // }
       }
     }
   }

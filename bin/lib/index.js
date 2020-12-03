@@ -49,8 +49,8 @@ module.exports = (theme, output) => {
   /**
    * Main Colors
    */
-  if (output.main) {
-    Object.entries(output.main).forEach((values) => {
+  if (theme.main) {
+    Object.entries(theme.main).forEach((values) => {
       const variants = getMainVariants(values[1])
       results.light[`--${values[0]}`] = variants[0]
       results.light[`--${values[0]}-darken`] = variants[1]
@@ -63,8 +63,8 @@ module.exports = (theme, output) => {
   /**
    * Typo base
    */
-  if (output.typo) {
-    Object.entries(output.typo).forEach((values) => {
+  if (theme.typo) {
+    Object.entries(theme.typo).forEach((values) => {
       results.light[`--${values[0]}`] = values[1]
     })
   }
@@ -72,8 +72,8 @@ module.exports = (theme, output) => {
   /**
    * Border
    */
-  if (output.border) {
-    Object.entries(output.border).forEach((values) => {
+  if (theme.border) {
+    Object.entries(theme.border).forEach((values) => {
       results.light[`--${values[0]}`] = values[1]
     })
   }
@@ -81,27 +81,27 @@ module.exports = (theme, output) => {
   /**
    * Light
    */
-  if (output.light) {
-    if (output.light.typo) {
-      Object.entries(output.light.typo).forEach((values) => {
+  if (theme.light) {
+    if (theme.light.typo) {
+      Object.entries(theme.light.typo).forEach((values) => {
         results.light[`--${values[0]}`] = values[1]
       })
     }
-    if (output.light.layout) {
-      Object.entries(output.light.layout).forEach((values) => {
+    if (theme.light.layout) {
+      Object.entries(theme.light.layout).forEach((values) => {
         results.light[`--${values[0]}`] = values[1]
       })
     }
 
-    if (output.light.borderColor) {
-      Object.entries(output.light.borderColor).forEach((values) => {
+    if (theme.light.borderColor) {
+      Object.entries(theme.light.borderColor).forEach((values) => {
         const variants = getLayoutVariants(values[1])
         results.light[`--${values[0]}`] = variants[0]
         results.light[`--${values[0]}-darken`] = variants[1]
       })
     }
-    if (output.light.state) {
-      Object.entries(output.light.state).forEach((values) => {
+    if (theme.light.state) {
+      Object.entries(theme.light.state).forEach((values) => {
         const variants = getStateVariants(values[1])
         results.light[`--${values[0]}`] = variants[0]
         results.light[`--${values[0]}-darken`] = variants[1]
@@ -112,26 +112,26 @@ module.exports = (theme, output) => {
   /**
    * Dark
    */
-  if (output.dark) {
-    if (output.dark.typo) {
-      Object.entries(output.dark.typo).forEach((values) => {
+  if (theme.dark) {
+    if (theme.dark.typo) {
+      Object.entries(theme.dark.typo).forEach((values) => {
         results.dark[`--${values[0]}`] = values[1]
       })
     }
-    if (output.dark.layout) {
-      Object.entries(output.dark.layout).forEach((values) => {
+    if (theme.dark.layout) {
+      Object.entries(theme.dark.layout).forEach((values) => {
         results.dark[`--${values[0]}`] = values[1]
       })
     }
-    if (output.dark.borderColor) {
-      Object.entries(output.dark.borderColor).forEach((values) => {
+    if (theme.dark.borderColor) {
+      Object.entries(theme.dark.borderColor).forEach((values) => {
         const variants = getLayoutVariants(values[1])
         results.dark[`--${values[0]}`] = variants[0]
         results.dark[`--${values[0]}-darken`] = variants[1]
       })
     }
-    if (output.dark.state) {
-      Object.entries(output.dark.state).forEach((values) => {
+    if (theme.dark.state) {
+      Object.entries(theme.dark.state).forEach((values) => {
         const variants = getStateVariants(values[1])
         results.dark[`--${values[0]}`] = variants[0]
         results.dark[`--${values[0]}-darken`] = variants[1]

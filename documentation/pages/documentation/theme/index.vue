@@ -123,7 +123,7 @@ module.exports = {
     <CodeContainer
       language="javascript"
       code="module.exports = {
-  output: './assets/root.scss',
+  output: './packages/scss/_variables/_root-variables.scss',
   theme: {
     main: {
       primary: 'dodgerblue',
@@ -168,7 +168,7 @@ module.exports = {
         'border-color': '#EEEEEE'
       },
       state: {
-        'hover-color': '#F2F2F2',
+        'hover-color': '#EEEEEE',
         'disabled-color': '#F2F2F2'
       }
     },
@@ -193,8 +193,7 @@ module.exports = {
       }
     }
   }
-}
-"
+}"
     />
 
     <hr
@@ -251,12 +250,12 @@ module.exports = {
   --warning-alpha-40: rgba(255, 163, 0, 0.4);
   --warning-alpha-50: rgba(255, 163, 0, 0.5);
   --warning-alpha-60: rgba(255, 163, 0, 0.6);
-  --light: #f5f5f5;
-  --light-darken: #c4c4c4;
-  --light-alpha-05: rgba(245, 245, 245, 0.05);
-  --light-alpha-40: rgba(245, 245, 245, 0.4);
-  --light-alpha-50: rgba(245, 245, 245, 0.5);
-  --light-alpha-60: rgba(245, 245, 245, 0.6);
+  --light: #EEEEEE;
+  --light-darken: #bebebe;
+  --light-alpha-05: rgba(238, 238, 238, 0.05);
+  --light-alpha-40: rgba(238, 238, 238, 0.4);
+  --light-alpha-50: rgba(238, 238, 238, 0.5);
+  --light-alpha-60: rgba(238, 238, 238, 0.6);
   --dark: #21222E;
   --dark-darken: #1a1b24;
   --dark-alpha-05: rgba(33, 34, 46, 0.05);
@@ -299,6 +298,10 @@ module.exports = {
   --disabled-alpha-40: rgba(242, 242, 242, 0.4);
   --disabled-alpha-50: rgba(242, 242, 242, 0.5);
   --disabled-alpha-60: rgba(242, 242, 242, 0.6);
+  --base-font-size: 16px;
+  --base-font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  --base-font-weight: 400;
+  --base-line-height: 1.5;
   --border-width: 2px;
   --border-radius: 8px;
   --text-color: #212121;
@@ -310,17 +313,12 @@ module.exports = {
   --overlay-color: rgba(86, 87, 117, .7);
   --border-color: #EEEEEE;
   --border-color-darken: #d6d6d6;
-  --hover-color: #F2F2F2;
-  --hover-color-darken: #c1c1c1;
+  --hover-color: #EEEEEE;
+  --hover-color-darken: #bebebe;
   --disabled-color: #F2F2F2;
   --disabled-color-darken: #c1c1c1;
-  --base-font-size: 16px;
-  --base-font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
-  --base-font-weight: 400;
-  --base-line-height: 1.5;
 }
-
-.maz-is-dark {
+  .maz-is-dark {
   --text-color: #EEEEEE;
   --muted-color: rgba(255, 255, 255, .54);
   --placeholder-color: rgba(255, 255, 255, .6);
