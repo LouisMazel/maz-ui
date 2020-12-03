@@ -37,13 +37,17 @@ const buildScssLibrary = () => {
     .pipe(dest('./../lib/scss'))
   const base = src('./../packages/scss/base.scss')
     .pipe(dest('./../lib/scss'))
-  const variables = src('./../packages/scss/variables.scss')
-    .pipe(dest('./../lib/scss'))
   const common = src('./../packages/scss/components/common/**/*')
     .pipe(dest('./../lib/scss/components/common'))
   const styleHelpers = src('./../packages/scss/style-helpers/**/*')
     .pipe(dest('./../lib/scss/style-helpers'))
-  return merge(components, base, variables, common, styleHelpers)
+  const scssVariables = src('./../packages/scss/variables.scss')
+    .pipe(dest('./../lib/scss'))
+  const rootVariables = src('./../packages/scss/_variables/**/*')
+    .pipe(dest('./../lib/scss/_variables'))
+  const mixins = src('./../packages/scss/mixins/**/*')
+    .pipe(dest('./../lib/scss/mixins'))
+  return merge(components, base, scssVariables, rootVariables, mixins, common, styleHelpers)
 }
 
 const replaceScssPaths = () => {
