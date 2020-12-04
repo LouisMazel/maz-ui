@@ -149,7 +149,7 @@
         }
 
         &.keyboard-selected {
-          background-color: var(--#{$name}-darken);
+          background-color: var(--#{$name});
         }
       }
     }
