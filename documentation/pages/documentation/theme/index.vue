@@ -31,26 +31,8 @@
       Use "maz-ui" binary command
     </h4>
 
-    <p class="no-mb">
-      - First, in your <code class="code">package.json</code> set this script:
-    </p>
-
-    <CodeContainer
-      language="json"
-      code="// package.json
-
-{
-  &quot;name&quot;: &quot;YOUR_APP&quot;,
-  &quot;scripts&quot;: {
-    ...
-    &quot;get-theme&quot;: &quot;maz-ui get-theme&quot;
-    ...
-  },
-}"
-    />
-
     <p>
-      - Then, add the <code class="code">maz-ui.config.js</code> config file in root project folder (See the complete maz-ui.config.js example file <strong><a href="#configexample">below</a></strong>. All declarations are not required)
+      - First, add the <code class="code">maz-ui.config.js</code> config file in root project folder (See the complete maz-ui.config.js example file <strong><a href="#configexample">below</a></strong>. All declarations are not required)
     </p>
 
     <p class="no-mb">
@@ -86,12 +68,30 @@ module.exports = {
     />
 
     <p class="no-mb">
+      - Then, in your <code class="code">package.json</code> set this script:
+    </p>
+
+    <CodeContainer
+      language="json"
+      code="// package.json
+
+{
+  &quot;name&quot;: &quot;YOUR_APP&quot;,
+  &quot;scripts&quot;: {
+    ...
+    &quot;get-theme&quot;: &quot;maz-ui get-theme&quot;
+    ...
+  },
+}"
+    />
+
+    <p class="no-mb">
       - Execute the script
     </p>
 
     <CodeContainer
       language="bash"
-      code="npm run get-theme"
+      code="npm run get-theme # option: --config (-c) ./path_to_your/custom.config.js"
     />
 
     <p>

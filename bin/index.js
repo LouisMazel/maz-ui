@@ -47,9 +47,11 @@ program.on('--help', () => {
 
 program
   .command('get-theme')
+  .option('-c, --config <path-to-config-file>', 'Optionnal: Provide path to config file - Ex: "./maz-ui.config.js"')
   .description('Generate css variables')
-  .action(async () => {
-    const configPath = path.resolve(process.env.PWD, './maz-ui.config.js')
+  .action(async (options) => {
+    console.log('c', options.config)
+    const configPath = path.resolve(process.env.PWD, options.config ? options.config : './maz-ui.config.js')
     const config = require(configPath)
     const output = config.output
     const colors = config.theme
