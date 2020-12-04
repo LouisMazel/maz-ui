@@ -319,7 +319,8 @@ module.exports = {
   --disabled-color: #F2F2F2;
   --disabled-color-darken: #c1c1c1;
 }
-  .maz-is-dark {
+
+.maz-is-dark {
   --text-color: #EEEEEE;
   --muted-color: rgba(255, 255, 255, .54);
   --placeholder-color: rgba(255, 255, 255, .6);
