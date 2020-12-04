@@ -80,6 +80,7 @@ module.exports = {
   &quot;scripts&quot;: {
     ...
     &quot;get-theme&quot;: &quot;maz-ui get-theme&quot;
+    // option: --config (-c) ./path_to_your/custom.config.js
     ...
   },
 }"
@@ -91,7 +92,7 @@ module.exports = {
 
     <CodeContainer
       language="bash"
-      code="npm run get-theme # option: --config (-c) ./path_to_your/custom.config.js"
+      code="npm run get-theme"
     />
 
     <p>
