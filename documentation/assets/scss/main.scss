@@ -2,6 +2,7 @@
 @import './load-fonts';
 @import './../../../packages/scss/mixins/index.scss';
 @import './../../../packages/scss/index.scss';
+@import './root-variables';
 
 html {
   @include font_family();

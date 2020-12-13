@@ -60,7 +60,6 @@ export default {
   css: ['~/assets/scss/main.scss'],
   styleResources: {
     scss: [
-      '~/assets/scss/_root-variables.scss',
       '~/assets/scss/_responsive.scss'
     ]
   },
