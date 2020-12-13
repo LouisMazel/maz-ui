@@ -33,7 +33,9 @@
       }"
       @input="setCountryCode($event, true)"
     >
-      <template v-slot="{ option }">
+      <template
+        v-slot="{ option }"
+      >
         <div
           class="maz-flex maz-align-center"
         >
@@ -65,8 +67,9 @@
     </MazSelect>
 
     <button
-      v-if="countryCode && !noFlags"
-      class="maz-phone-number-input__country-flag"
+      v-if="countryCode && !noFlags && !noCountrySelector"
+      class="
+      maz-phone-number-input__country-flag"
       tabindex="-1"
       @click="focusCountrySelector"
     >
@@ -246,7 +249,7 @@ export default {
   watch: {
     defaultPhoneNumber: {
       handler (phoneNumber, oldPhoneNumber) {
-        if (!phoneNumber || phoneNumber === oldPhoneNumber) return
+        if (phoneNumber === oldPhoneNumber) return
         this.buildResults(phoneNumber)
       },
       immediate: true
