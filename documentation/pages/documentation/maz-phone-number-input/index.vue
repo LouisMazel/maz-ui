@@ -10,13 +10,31 @@
       </router-link> and therefore inherits all these options
     </p>
 
-    <p>
-      <strong>
-        Important:
-      </strong>
-      Since 1.4.x, for a better compatibility with all differents countries, use <code>default-phone-number</code> prop to set and update the phone number.
-      Updating the phone number is no longer available when you change the value (v-model)
-    </p>
+    <div class="maz-bg-color-light maz-border-radius maz-p-3">
+      <p>
+        <strong>
+          Important:
+        </strong>
+        Since 1.4.x, for a better compatibility with all differents countries, use <code>default-phone-number</code> prop to set and update the phone number.
+        Updating the phone number is no longer available when you change the value (v-model)
+      </p>
+      <ul>
+        <li>
+          <code class="code">default-phoner-number</code>: Use to set the init phone number (Ex: "2015550123")
+        </li>
+        <li>
+          <code class="code">default-country-code</code>: Use to set the init country code (Ex: "US")
+        </li>
+        <li>
+          <code class="code">value</code> (v-model) is the result of both (Ex: "+12015550123")
+        </li>
+      </ul>
+
+      <p>
+        For more informations: See the second example (Advanced settings)
+      </p>
+    </div>
+
 
     <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
 
@@ -138,7 +156,24 @@
     </h4>
 
     <div class="examples">
-      <ComponentContainer :code="codeExample">
+      <ComponentContainer
+        code="<template>
+  <MazPhoneNumberInput
+    v-model=&quot;phoneNumber&quot;
+    @update=&quot;results = $event&quot;
+  />
+</template>
+<script>
+  export default {
+    data () {
+      return {
+        phoneNumber: null,
+        results: null
+      }
+    }
+  }
+</script>"
+      >
         <h5>
           Basic
         </h5>
@@ -166,13 +201,36 @@
         />
       </ComponentContainer>
       <ComponentContainer
-        :code="example2"
+        code="<template>
+  <MazPhoneNumberInput
+    v-model=&quot;phoneNumberExample&quot;
+    show-code-on-list
+    default-country-code=&quot;FR&quot;
+    :default-phone-number=&quot;initPhoneNumberExample&quot;
+    no-flags
+    :preferred-countries=&quot;['FR', 'BE', 'DE']&quot;
+    size=&quot;lg&quot;
+    @update=&quot;resultsExample = $event&quot;
+  />
+</template>
+
+<script>
+export default {
+  data () {
+    return {
+      phoneNumberExample: null,
+      initPhoneNumberExample: '0656565656',
+      resultsExample: null
+    }
+  }
+}
+</script>"
       >
         <h5 class="maz-mb-2">
           Advanced settings
         </h5>
         <h6>
-          With default value & preferred countries & default country code & no flags & show code on list
+          With default-phone-number & default-country-code & preferred-countries & no-flags & show-code-on-list
         </h6>
 
         <hr class="maz-border-top maz-border-solid maz-border-color maz-my-3">
@@ -181,12 +239,17 @@
           v-model="phoneNumberExample"
           show-code-on-list
           default-country-code="FR"
+          :default-phone-number="initPhoneNumberExample"
           no-flags
           :preferred-countries="['FR', 'BE', 'DE']"
           size="lg"
           @update="resultsExample = getJson($event)"
         />
         <!-- no-use-browser-locale -->
+
+        <MazBtn @click="initPhoneNumberExample = null">
+          Init Value
+        </MazBtn>
 
         <hr class="maz-border-top maz-border-solid maz-border-color maz-my-3">
 
@@ -221,7 +284,7 @@
   />
 </template>
 
-<script>
+<>
   import { MazPhoneNumberInput } from 'maz-ui'
   export default {
     components: { MazPhoneNumberInput }
@@ -231,7 +294,7 @@
       }
     }
   }
-</script>"
+</>"
     />
   </div>
 </template>
@@ -243,54 +306,9 @@ export default {
     return {
       phoneNumber: null,
       results: null,
-      phoneNumberExample: '0656565656',
-      resultsExample: null,
-      codeExample: `<template>
-  <p>
-    <strong>Value:</strong> {{ phoneNumber || 'null' }}
-  </p>
-  <p>
-    <strong>Results:</strong> {{ results || 'null' }}
-  </p>
-  <MazPhoneNumberInput
-    v-model="phoneNumber"
-    @update="results = JSON.stringify($event)"
-  />
-</template>
-
-export default {
-  data () {
-    return {
-      phoneNumber: '',
-      results: null
-    }
-  }
-}`,
-      example2: `<template>
-  <p>
-    <strong>Value:</strong> {{ phoneNumberExample || 'null' }}
-  </p>
-  <p>
-    <strong>Results:</strong> {{ resultsExample || 'null' }}
-  </p>
-  <MazPhoneNumberInput
-    v-model="phoneNumberExample"
-    default-country-code="FR"
-    show-code-on-list
-    size="lg"
-    :preferred-countries="['FR', 'BE', 'DE']"
-    @update="resultsExample = getJson($event)"
-  />
-</template>
-
-export default {
-  data () {
-    return {
-      phoneNumberExample: '065656565',
+      phoneNumberExample: null,
+      initPhoneNumberExample: '0656565656',
       resultsExample: null
-    }
-  }
-}`
     }
   },
   methods: {
