@@ -18,24 +18,26 @@
           <div
             class="maz-flex maz-align-start maz-flex-wrap maz-my-3 maz-align-center maz-justify-center"
           >
-            <NuxtLink
-              class="maz-btn maz-btn--secondary maz-mr-2 maz-mb-2"
+            <MazBtn
+              color="secondary"
+              class="maz-mr-2"
               :to="{ name: 'documentation-get-started' }"
             >
               GET STARTED
-            </NuxtLink>
-            <NuxtLink
-              class="maz-btn maz-btn--primary maz-mr-2"
+            </MazBtn>
+            <MazBtn
+              color="primary"
+              class="maz-mr-2"
               :to="{ name: 'documentation-maz-btn' }"
             >
               COMPONENTS
-            </NuxtLink>
-            <NuxtLink
-              class="maz-btn maz-btn--third maz-mr-2"
+            </MazBtn>
+            <MazBtn
+              color="third"
               :to="{ name: 'documentation-theme' }"
             >
               THEME
-            </NuxtLink>
+            </MazBtn>
           </div>
         </div>
       </div>
