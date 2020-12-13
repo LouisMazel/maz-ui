@@ -1,13 +1,11 @@
-@import './../style-helpers/variables/index.scss';
-
 .maz-progress-bar {
-  color: $text-color;
+  color: var(--text-color);
   font-size: 1rem;
   position: relative;
   width: 100%;
 
   &:not(.maz-border-radius-0) {
-    border-radius: $border-radius;
+    border-radius: var(--border-radius);
   }
 
   &__bg {
@@ -19,19 +17,21 @@
     position: absolute;
     top: 0;
     left: 0;
-    background-color: $default-color;
+    background-color: var(--bg-color-light);
     transition: all 500ms ease-in-out;
 
-    @each $name, $color in $color_types {
+    @import './../_variables/color_names';
+
+    @each $name in $color_names {
       &--#{$name} {
-        background-color: $color;
+        background-color: var(--#{$name});
       }
     }
 
     &__anim {
       background-color: white;
       height: inherit;
-      border-radius: $border-radius;
+      border-radius: var(--border-radius);
       opacity: 0;
       animation: n-anim 2s cubic-bezier(0, 0, .2, 1) infinite;
     }

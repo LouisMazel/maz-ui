@@ -1,0 +1,18 @@
+html { font-size: var(--base-font-size); }
+
+.maz-base-component {
+  &,
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  @import './../../mixins/font_family';
+
+  @include font_family();
+
+  &:not(.maz-btn) {
+    color: var(--text-color);
+  }
+}

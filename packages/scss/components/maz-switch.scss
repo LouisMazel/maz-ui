@@ -1,5 +1,3 @@
-@import './../style-helpers/variables/index.scss';
-
 .maz-switch {
   &__input {
     position: absolute;
@@ -68,12 +66,14 @@
     cursor: not-allowed;
   }
 
-  @each $name, $color in $color_types {
+  @import './../_variables/color_names';
+
+  @each $name in $color_names {
     &--#{$name} {
       .maz-switch__input:focus + .maz-switch__toggle span {
-        background-color: darken($color, 10%);
-        box-shadow: 0 0 0 .143rem rgba($color, .7);
-        border-radius: $border-radius;
+        background-color: var(--#{$name}-darken);
+        box-shadow: 0 0 0 .143rem var(--#{$name}-alpha-60);
+        border-radius: var(--border-radius);
       }
     }
   }

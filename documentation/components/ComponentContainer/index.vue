@@ -1,5 +1,5 @@
 <template>
-  <div class="component-container maz-position-relative maz-bg-white maz-my-4 maz-elevation maz-border-radius">
+  <div class="component-container maz-position-relative maz-bg-white maz-my-4 maz-border-radius">
     <div class="maz-p-4 maz-bg-color maz-border-radius maz-w-100">
       <slot />
     </div>
@@ -34,9 +34,10 @@ export default {
 
 <style lang="scss" scoped>
   .component-container {
-    color: $text-color;
+    color: var(--text-color);
     min-width: 200px;
-    border: $border-width solid transparent;
+    background-color: var(--bg-color);
+    border: var(--border-width) solid var(--border-color);
 
     &__footer {
       overflow: hidden;
@@ -49,21 +50,6 @@ export default {
         &.open {
           border-radius: 0;
         }
-      }
-    }
-  }
-
-  .maz-is-dark .component-container,
-  .maz-is-dark.component-container {
-    color: $text-color-dark;
-    background-color: $bg-color-dark;
-    border: $border-width solid $hover-bg-color-dark;
-
-    .component-container__footer {
-      border-color: $hover-bg-color-dark;
-
-      &__collapse {
-        border: none;
       }
     }
   }

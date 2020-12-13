@@ -37,7 +37,13 @@ export default {
   .social-buttons {
     a {
       margin-right: 15px;
-      color: $primary-color;
+      color: var(--primary);
+      background-color: var(--bg-color);
+
+      &:hover,
+      &:focus {
+        background-color: var(--hover-color);
+      }
 
       &:last-child {
         margin-right: 0;
@@ -45,17 +51,6 @@ export default {
 
       i {
         font-size: 1.571rem;
-      }
-    }
-  }
-
-  .maz-is-dark .social-buttons {
-    a {
-      background-color: $bg-color-dark;
-
-      &:hover,
-      &:focus {
-        background-color: $hover-bg-color-dark;
       }
     }
   }

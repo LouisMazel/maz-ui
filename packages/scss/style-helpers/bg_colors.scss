@@ -1,55 +1,35 @@
-@import './variables/color_types';
+@import './../_variables/color_names';
 
-@each $name, $color in $color_types {
-  @if (type-of($color) == 'color') {
-    .#{$prefix}bg-#{$name} {
-      background-color: $color;
-    }
+@each $name in $color_names {
+  .#{$prefix}bg-#{$name} {
+    background-color: var(--#{$name});
+  }
 
-    .#{$prefix}bg-#{$name}-after::after {
-      background-color: $color;
-    }
+  .#{$prefix}bg-#{$name}-after::after {
+    background-color: var(--#{$name});
+  }
 
-    .#{$prefix}bg-#{$name}-before::before {
-      background-color: $color;
-    }
+  .#{$prefix}bg-#{$name}-before::before {
+    background-color: var(--#{$name});
+  }
 
-    .#{$prefix}bg-#{$name}-transparency {
-      background-color: rgba($color, .5);
-    }
+  .#{$prefix}bg-#{$name}-transparency {
+    background-color: var(--#{$name}-alpha-50);
+  }
 
-    .#{$prefix}bg-#{$name}-after-transparency::after {
-      background-color: rgba($color, .5);
-    }
+  .#{$prefix}bg-#{$name}-after-transparency::after {
+    background-color: var(--#{$name}-alpha-50);
+  }
 
-    .#{$prefix}bg-#{$name}-before-transparency::before {
-      background-color: rgba($color, .5);
-    }
+  .#{$prefix}bg-#{$name}-before-transparency::before {
+    background-color: var(--#{$name}-alpha-50);
   }
 }
 
 .#{$prefix}bg-color {
-  background-color: $bg-color;
+  background-color: var(--bg-color);
 }
 
 .#{$prefix}bg-color-light {
-  background-color: $bg-color-light;
-}
-
-.#{$prefix}is-dark.#{$prefix}bg-color,
-.#{$prefix}is-dark .#{$prefix}bg-color {
-  background-color: $bg-color-dark;
-}
-
-.#{$prefix}bg-color-dark {
-  background-color: $bg-color-dark;
-}
-
-.#{$prefix}bg-color-light-dark {
-  background-color: $bg-color-dark-light;
-}
-
-.#{$prefix}is-dark.#{$prefix}bg-color-light,
-.#{$prefix}is-dark .#{$prefix}bg-color-light {
-  background-color: $bg-color-dark-light;
+  background-color: var(--bg-color-light);
 }

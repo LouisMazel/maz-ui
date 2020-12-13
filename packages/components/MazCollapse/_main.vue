@@ -8,8 +8,9 @@
   >
     <MazBtn
       class="maz-collapse__header-btn maz-flex maz-flex-center maz-border-radius-0"
-      :color="dark ? 'dark' : 'white'"
+      color="transparent"
       size="md"
+      no-shadow
       @click="openContent"
     >
       <!-- Header slot: replace the text in collapse button -->

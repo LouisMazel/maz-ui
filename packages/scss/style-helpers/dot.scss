@@ -1,5 +1,4 @@
-@import './variables/_colors';
-@import './variables/color_types';
+@import './../_variables/color_names';
 
 $base-dot-size: 1rem !default;
 $dot-size: .4286em !default;
@@ -9,27 +8,25 @@ $dot-size: .4286em !default;
   width: $dot-size;
   height: $dot-size;
   border-radius: $dot-size;
-  border: $border-width solid $primary-color;
-  background-color: $primary-color;
+  border: var(--border-width) solid var(--primary);
+  background-color: var(--primary);
   display: inline-block;
 
   &--outline {
     background-color: transparent;
-    color: $primary-color;
+    color: var(--primary);
   }
 }
 
-@each $name, $color in $color_types {
-  @if (type-of($color) == 'color') {
-    .#{$prefix}dot--#{$name} {
-      background-color: $color;
-      border-color: $color;
+@each $name in $color_names {
+  .#{$prefix}dot--#{$name} {
+    background-color: var(--#{$name});
+    border-color: var(--#{$name});
 
-      &--outline {
-        background-color: transparent;
-        border: $border-width solid $color;
-        color: $color;
-      }
+    &--outline {
+      background-color: transparent;
+      border: var(--border-width) solid var(--#{$name});
+      color: var(--#{$name});
     }
   }
 }

@@ -390,7 +390,7 @@ export default {
   .maz-sidebar-doc {
     &__container {
       padding: 0;
-      border-radius: $border-radius;
+      border-radius: var(--border-radius);
     }
 
     &__content {

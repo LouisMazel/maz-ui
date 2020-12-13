@@ -14,7 +14,7 @@
       'has-no-label': !hasLabel && !hint,
       'has-left-icon': hasLeftIcon(),
     }, `maz-input--${size}`, `has-${leftNumberIcon}-right-icon`, `maz-input--${color}`]"
-    class="maz-base-component maz-overflow-hidden maz-input maz-border maz-border-color maz-border-color-hover maz-border-solid maz-border-radius"
+    class="maz-base-component maz-input maz-border maz-border-color maz-border-color-hover maz-border-solid maz-border-radius"
     @click="focusInput"
   >
     <div
@@ -176,9 +176,9 @@ export default {
     leftIconName: { type: String, default: null },
     // should be a [material icon](https://material.io/resources/icons/) name
     rightIconName: { type: String, default: null },
-    // When is `true` the input has the error style ($danger-color)
+    // When is `true` the input has the error style
     error: { type: Boolean, default: false },
-    // When is `true` the input has the warning style ($warning-color)
+    // When is `true` the input has the warning style
     warning: { type: Boolean, default: false },
     // When is `true` the input is disable
     disabled: { type: Boolean, default: false },
@@ -186,7 +186,7 @@ export default {
     dark: { type: Boolean, default: false },
     // When is `true` the input is on readonly mode
     readonly: { type: Boolean, default: false },
-    // When is `true` the input has the valid style ($success-color)
+    // When is `true` the input has the valid style
     success: { type: Boolean, default: false },
     // When is `true` the input become required & has the `*` symbol
     required: { type: Boolean, default: false },

@@ -1,5 +1,3 @@
-@import './../style-helpers/variables/index.scss';
-
 .maz-tabs-bar {
   height: 3.071rem;
   background-color: transparent;
@@ -20,22 +18,22 @@
     box-shadow: none !important;
 
     &:not(:last-of-type) {
-      margin-right: $border-width;
+      margin-right: var(--border-width);
     }
 
     &.active {
-      color: $primary-color;
+      color: var(--primary);
       position: relative;
     }
 
     &.disabled {
-      color: darken($disabled-color, 5%);
+      color: var(--disabled-color);
       cursor: not-allowed;
     }
 
     &:hover,
     &:focus {
-      background-color: $hover-bg-color;
+      background-color: var(--hover-color);
       text-decoration: none;
     }
   }
@@ -50,29 +48,9 @@
 
     .maz-sub-bar {
       margin: 0 auto;
-      background: $primary-color;
+      background: var(--primary);
       height: 2px;
       width: 60%;
-    }
-  }
-}
-
-.maz-is-dark .maz-tabs-bar,
-.maz-tabs-bar.maz-is-dark {
-  .maz-tabs-bar__item {
-    color: $text-color-dark;
-
-    &.active {
-      color: $primary-color;
-    }
-
-    &:hover,
-    &:focus {
-      background-color: $hover-bg-color-dark;
-    }
-
-    &.disabled {
-      color: $muted-color-dark;
     }
   }
 }

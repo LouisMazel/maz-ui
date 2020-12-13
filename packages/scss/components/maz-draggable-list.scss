@@ -1,5 +1,3 @@
-@import './../style-helpers/variables/index.scss';
-
 .maz-draggable-list {
   display: flex;
   flex-direction: column;
@@ -8,30 +6,30 @@
     position: relative;
     padding: .75rem 1.25rem;
     margin-bottom: -2px;
-    background-color: $bg-color;
-    border: $border-width solid $hover-bg-color;
+    background-color: var(--bg-color);
+    border: var(--border-width) solid var(--hover-color);
     cursor: move;
     width: 100%;
     font-size: .875em;
-    color: $text-color;
+    color: var(--text-color);
 
     & > * {
-      color: $text-color;
+      color: var(--text-color);
     }
 
     &:hover {
-      background-color: $hover-bg-color;
+      background-color: var(--hover-color);
     }
 
     &:first-child {
-      border-top-left-radius: $border-radius;
-      border-top-right-radius: $border-radius;
+      border-top-left-radius: var(--border-radius);
+      border-top-right-radius: var(--border-radius);
     }
 
     &:last-child {
       margin-bottom: 0;
-      border-bottom-right-radius: $border-radius;
-      border-bottom-left-radius: $border-radius;
+      border-bottom-right-radius: var(--border-radius);
+      border-bottom-left-radius: var(--border-radius);
     }
   }
 
@@ -41,22 +39,5 @@
 
   .ghost {
     opacity: .5;
-  }
-}
-
-.maz-draggable-list.maz-is-dark,
-.maz-is-dark .maz-draggable-list {
-  .maz-draggable-list__item {
-    background-color: $bg-color-dark;
-    color: $text-color-dark;
-    border-color: $hover-bg-color-dark;
-
-    & > * {
-      color: $text-color-dark;
-    }
-
-    &:hover {
-      background-color: $hover-bg-color-dark;
-    }
   }
 }

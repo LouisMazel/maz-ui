@@ -1,3 +1,5 @@
+@import './../../_variables/responsive';
+
 @media only screen and (max-width: $breakpoint-tablet) {
   .maz-picker__overlay {
     display: block;
@@ -7,7 +9,7 @@
     bottom: 0;
     right: 0;
     left: 0;
-    background-color: $overlay-color;
+    background-color: var(--overlay-color);
     width: 100%;
     margin: 0;
     border: none;
@@ -57,18 +59,12 @@
         width: 100%;
         max-width: 100%;
         border-left-width: 0;
-        border-top-width: $border-width;
+        border-top-width: var(--border-width);
         border-top-style: solid;
-        border-color: $border-color;
+        border-color: var(--border-color);
         flex: none;
         height: 150px !important;
       }
-    }
-  }
-
-  .maz-is-dark {
-    .time-picker {
-      border-color: $border-color-dark !important;
     }
   }
 }

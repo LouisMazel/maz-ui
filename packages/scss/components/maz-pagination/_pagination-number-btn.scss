@@ -1,7 +1,7 @@
 .pagination-number-btn {
-  background-color: transparent;
+  background-color: var(--bg-color);
   margin-right: 10px;
-  color: $text-color;
+  color: var(--text-color);
 
   &:last-child {
     margin-right: 0;
@@ -13,44 +13,19 @@
 
   &:hover,
   &:focus {
-    background-color: darken(white, 20%);
+    background-color: var(--hover-color-darken);
   }
 
   &.maz-btn::before {
-    border-color: darken(white, 20%);
+    border-color: var(--hover-color-darken);
   }
 
   &.active {
-    background-color: black;
+    background-color: var(--primary);
     color: white;
 
-    &:hover {
-      background-color: lighten(black, 20%);
-    }
-
     &.maz-btn::before {
-      border-color: black;
-    }
-  }
-}
-
-.maz-pagination.maz-is-dark,
-.maz-is-dark {
-  .pagination-number-btn {
-    color: $text-color-dark;
-
-    &:hover,
-    &:focus {
-      background-color: lighten($hover-bg-color-dark, 5%);
-    }
-
-    &.maz-btn::before {
-      border-color: darken($hover-bg-color-dark, 5%);
-    }
-
-    &.active {
-      background-color: $bg-color;
-      color: $text-color;
+      border-color: var(--primary);
     }
   }
 }

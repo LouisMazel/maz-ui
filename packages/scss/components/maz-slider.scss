@@ -1,9 +1,7 @@
-@import './../style-helpers/variables/index.scss';
-
 .maz-slider {
   &__bar {
     position: relative;
-    border-radius: calc(#{$border-radius} * 2);
+    border-radius: calc(var(--border-radius) * 2);
   }
 
   &__divider {
@@ -16,12 +14,12 @@
     position: absolute;
     outline: none;
     cursor: pointer;
-    color: $text-color;
+    color: var(--text-color);
     border-radius: 1em;
     box-shadow: 0 0 6px 0 rgba(48, 48, 48, .3);
     border: none;
     font-size: 1.2em;
-    background-color: $bg-color;
+    background-color: var(--bg-color);
     padding: 0 4px;
     font-weight: bold;
     line-height: 1;
@@ -36,7 +34,7 @@
 
     &::before {
       content: attr(data-label);
-      color: $text-color;
+      color: var(--text-color);
       font-size: 1em;
       font-weight: normal;
       position: absolute;
@@ -44,34 +42,23 @@
     }
 
     &:hover {
-      background-color: $hover-bg-color;
+      background-color: var(--hover-color);
     }
   }
 
-  @each $name, $color in $color_types {
+  @import './../_variables/color_names';
+
+  @each $name in $color_names {
     &.maz-slider--#{$name} {
       .maz-slider {
         &__bar {
-          background-color: $color;
+          background-color: var(--#{$name});
         }
 
         &__btn.active-cursor {
-          box-shadow: 0 0 0 .143rem rgba($color, .6);
+          box-shadow: 0 0 0 .143rem var(--#{$name}-alpha-60);
         }
       }
-    }
-  }
-}
-
-.maz-is-dark .maz-slider,
-.maz-slider.maz-is-dark {
-  .maz-slider__btn {
-    &:hover {
-      background-color: lighten($hover-bg-color-dark, 7%);
-    }
-
-    &::before {
-      color: $text-color-dark;
     }
   }
 }

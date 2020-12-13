@@ -24,6 +24,7 @@
     "@nuxtjs/style-resources": "^1.0.0",
     "babel-core": "7.0.0-bridge.0",
     "cross-env": "^7.0.2",
+    "fs": "0.0.1-security",
     "node-sass": "^4.14.1",
     "path": "^0.12.7",
     "push-dir": "^0.4.1",

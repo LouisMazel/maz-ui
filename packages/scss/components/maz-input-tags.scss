@@ -1,5 +1,3 @@
-@import './../style-helpers/variables/index.scss';
-
 $LG_SIZE: 3.571rem !default;
 $MD_SIZE: 2.857rem !default;
 $SM_SIZE: 2.286rem !default;
@@ -10,12 +8,12 @@ $SPACING: .2857rem !default;
   $this: &;
 
   position: relative;
-  border: $border-width solid $border-color;
-  border-radius: $border-radius;
+  border: var(--border-width) solid var(--border-color);
+  border-radius: var(--border-radius);
   padding: 0 .5714rem;
   width: 100%;
   min-height: $MD_SIZE;
-  background-color: $bg-color;
+  background-color: var(--bg-color);
   overflow: hidden;
   transition-duration: .3s;
 
@@ -34,52 +32,50 @@ $SPACING: .2857rem !default;
     padding-right: .2857rem;
     padding-bottom: .2857rem;
     padding-top: .2857rem;
-    color: $text-color;
+    color: var(--text-color);
 
     &::-webkit-input-placeholder {
-      color: $placeholder-color;
+      color: var(--placeholder-color);
     }
 
     &::-moz-placeholder {
-      color: $placeholder-color;
+      color: var(--placeholder-color);
     }
 
     &:-ms-input-placeholder {
-      color: $placeholder-color;
+      color: var(--placeholder-color);
     }
 
     &::-ms-input-placeholder {
-      color: $placeholder-color;
+      color: var(--placeholder-color);
     }
 
     &:-moz-placeholder {
-      color: $placeholder-color;
+      color: var(--placeholder-color);
     }
 
     &::placeholder {
-      color: $placeholder-color;
+      color: var(--placeholder-color);
     }
   }
 
-  @each $name, $color in $color_types {
+  @import './../_variables/color_names';
+
+  @each $name in $color_names {
     &.maz-input-tags--#{$name} {
       &.is-focused:not(.is-disabled) {
-        border-color: $color;
-      }
-
-      .maz-input-tags__input {
-        caret-color: $color;
+        border-color: var(--#{$name});
       }
     }
   }
 
   &.is-focused:not(.is-disabled) {
     &.has-error {
-      border-color: $danger-color;
+      border-color: var(--danger);
     }
 
     &.is-valid {
-      border-color: $success-color;
+      border-color: var(--success);
     }
   }
 
@@ -87,11 +83,11 @@ $SPACING: .2857rem !default;
     margin-right: $SPACING;
     margin-bottom: $SPACING;
     margin-top: $SPACING;
-    border-radius: calc(#{$border-radius} / 2);
+    border-radius: calc(var(--border-radius) / 2);
     padding-right: .2857rem;
     padding-left: .5rem;
     color: white;
-    height: calc(#{$MD_SIZE} - #{$SPACING * 2} - #{$border-width * 2});
+    height: calc(#{$MD_SIZE} - #{$SPACING * 2} - calc(var(--border-width) * 2));
 
     &__text {
       margin-right: .3571rem;
@@ -119,7 +115,7 @@ $SPACING: .2857rem !default;
     appearance: none;
     border: none;
     background-color: transparent;
-    color: $input-icon-color;
+    color: var(--icon-color);
     border-radius: $clear-size;
     cursor: pointer;
     font-size: .857rem;
@@ -141,7 +137,7 @@ $SPACING: .2857rem !default;
       bottom: 0;
       width: $clear-size;
       height: $clear-size;
-      background-color: darken($border-color, 10%);
+      background-color: var(--border-color-darken);
       border-radius: $clear-size;
       transform: scale(0);
       transition: transform 200ms;
@@ -158,52 +154,54 @@ $SPACING: .2857rem !default;
   }
 
   &.is-disabled {
+    $disabled-color-text: var(--disabled-color-darken);
+
     cursor: not-allowed;
     border-color: #CCC;
-    background-color: #F2F2F2;
-    color: $grey-color;
+    background-color: var(--disabled-color);
+    color: $disabled-color-text;
 
     #{$this}__input {
       cursor: not-allowed;
-      color: $grey-color;
+      color: $disabled-color-text;
 
       &::-webkit-input-placeholder {
-        color: $grey-color;
+        color: $disabled-color-text;
       }
 
       &::-moz-placeholder {
-        color: $grey-color;
+        color: $disabled-color-text;
       }
 
       &:-ms-input-placeholder {
-        color: $grey-color;
+        color: $disabled-color-text;
       }
 
       &::-ms-input-placeholder {
-        color: $grey-color;
+        color: $disabled-color-text;
       }
 
       &:-moz-placeholder {
-        color: $grey-color;
+        color: $disabled-color-text;
       }
 
       &::placeholder {
-        color: $grey-color;
+        color: $disabled-color-text;
       }
     }
   }
 
   &__loader {
     bottom: 0;
-    height: $border-width;
-    left: $border-radius / 2;
+    height: var(--border-width);
+    left: calc(var(--border-radius) / 2);
     width: calc(100% - .5714rem);
     position: absolute;
     overflow: hidden;
-    border-radius: $border-radius;
+    border-radius: var(--border-radius);
 
     &__progress-bar {
-      background-color: $primary-color;
+      background-color: var(--primary);
       display: block;
       position: absolute;
       content: '';
@@ -226,7 +224,7 @@ $SPACING: .2857rem !default;
       // font-size: .857em;
       padding-right: .1429rem;
       padding-left: .3571rem;
-      height: calc(#{$SM_SIZE} - #{$SPACING * 2} - #{$border-width * 2});
+      height: calc(#{$SM_SIZE} - #{$SPACING * 2} - calc(var(--border-width) * 2));
     }
   }
 
@@ -241,49 +239,12 @@ $SPACING: .2857rem !default;
     #{$this}__tag {
       padding-left: .7143rem;
       padding-right: .3571rem;
-      height: calc(#{$LG_SIZE} - #{$SPACING * 2} - #{$border-width * 2});
+      height: calc(#{$LG_SIZE} - #{$SPACING * 2} - calc(var(--border-width) * 2));
     }
   }
 }
 
 .maz-is-dark .maz-input-tags,
 .maz-is-dark.maz-input-tags {
-  background-color: $bg-color-dark-light;
-  border-color: $border-color-dark;
-
-  &__input {
-    color: $text-color-dark;
-
-    &::-webkit-input-placeholder {
-      color: $placeholder-color-dark;
-    }
-
-    &::-moz-placeholder {
-      color: $placeholder-color-dark;
-    }
-
-    &:-ms-input-placeholder {
-      color: $placeholder-color-dark;
-    }
-
-    &::-ms-input-placeholder {
-      color: $placeholder-color-dark;
-    }
-
-    &:-moz-placeholder {
-      color: $placeholder-color-dark;
-    }
-
-    &::placeholder {
-      color: $placeholder-color-dark;
-    }
-  }
-
-  &__toggle-btn {
-    color: $input-icon-color-dark;
-
-    &__effect {
-      background-color: darken($input-icon-color-dark, 10%);
-    }
-  }
+  background-color: var(--bg-color-light);
 }

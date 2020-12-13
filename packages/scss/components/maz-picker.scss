@@ -1,32 +1,19 @@
-@import './../style-helpers/variables/index.scss';
-
 .maz-picker {
   position: relative;
   font-weight: 300;
 
   .maz-picker__arrow {
-    color: $input-icon-color;
+    color: var(--icon-color);
     outline: none;
     transition: all .25s cubic-bezier(.645, .045, .355, 1);
 
     svg path.arrow {
-      fill: $input-icon-color;
+      fill: var(--icon-color);
     }
   }
 
   &__overlay {
     display: none;
-  }
-}
-
-.maz-is-dark.maz-picker,
-.maz-is-dark .maz-picker {
-  .maz-picker__arrow {
-    color: $input-icon-color-dark;
-
-    svg path.arrow {
-      fill: $input-icon-color-dark;
-    }
   }
 }
 

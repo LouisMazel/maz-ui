@@ -7,7 +7,7 @@
     :class="[
       classes,
       {
-        hidden: loading
+        'maz-text-hidden': loading
       }
     ]"
     :type="isLink ? null : type"
@@ -134,7 +134,7 @@ export default {
       return loading || disabled
     },
     classes () {
-      const { color, size, outline, rounded, isDisabled, fab, active, block, noShadow, hasRightIcon, hasLeftIcon, hasIcon, hasSlotDefault } = this
+      const { color, size, outline, rounded, fab, active, block, noShadow, hasRightIcon, hasLeftIcon, hasIcon, hasSlotDefault } = this
       return [
         ...(color ? [`maz-btn--${color}`] : [null]),
         ...(size ? [`maz-btn--${size}`] : [null]),
@@ -142,7 +142,6 @@ export default {
         ...(rounded ? ['maz-btn--rounded'] : [null]),
         ...(block ? ['maz-btn--block'] : [null]),
         ...(fab ? ['maz-btn--fab'] : [null]),
-        ...(isDisabled ? ['maz-btn--disabled'] : [null]),
         ...(active ? ['maz-active'] : [null]),
         ...(noShadow ? ['maz-no-shadow'] : [null]),
         ...(hasLeftIcon() ? ['maz-btn--icon--left'] : [null]),

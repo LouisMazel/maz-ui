@@ -1,17 +1,6 @@
 .#{$prefix}text-color {
-  color: $text-color;
-  fill: $text-color;
-}
-
-.#{$prefix}text-color-dark {
-  color: $text-color-dark;
-  fill: $text-color-dark;
-}
-
-.#{$prefix}is-dark.#{$prefix}text-color,
-.#{$prefix}is-dark .#{$prefix}text-color {
-  color: $text-color-dark;
-  fill: $text-color-dark;
+  color: var(--text-color);
+  fill: var(--text-color);
 }
 
 .#{$prefix}text-white {
@@ -20,24 +9,16 @@
 }
 
 .#{$prefix}text-muted {
-  color: $text-muted;
-  fill: $text-muted;
+  color: var(--muted-color);
+  fill: var(--muted-color);
 }
 
-.#{$prefix}is-dark .#{$prefix}text-muted,
-.#{$prefix}text-muted-dark {
-  color: $text-muted-dark;
-  fill: $text-muted-dark;
-}
+@import './../_variables/color_names';
 
-@import './variables/color_types';
-
-@each $name, $color in $color_types {
-  @if (type-of($color) == 'color') {
-    .#{$prefix}text-#{$name} {
-      color: $color;
-      fill: $color;
-    }
+@each $name in $color_names {
+  .#{$prefix}text-#{$name} {
+    color: var(--#{$name});
+    fill: var(--#{$name});
   }
 }
 
@@ -57,7 +38,7 @@
   text-align: right;
 }
 
-@import './mixins/index';
+@import './../mixins/multiple_line_ellipsis';
 
 .#{$prefix}dots-text {
   text-overflow: ellipsis;

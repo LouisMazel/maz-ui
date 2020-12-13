@@ -36,7 +36,7 @@ export default {
 
 <style lang="scss" scoped>
   .project-preview {
-    background-color: $bg-color;
+    background-color: var(--bg-color);
     text-decoration: none;
     transition: all 300ms;
     position: relative;
@@ -49,7 +49,7 @@ export default {
     &:hover,
     &:focus {
       transform: translateY(-3px);
-      box-shadow: 0 3px 12px darken($bg-color, 10%);
+      box-shadow: 0 3px 12px var(--hover-color);
       outline: none;
     }
 
@@ -57,18 +57,6 @@ export default {
       max-width: 100%;
       min-width: 288px;
       width: 100%;
-    }
-  }
-
-  .maz-is-dark {
-    .project-preview {
-      background-color: $bg-color-dark-light;
-
-      &:hover,
-      &:focus {
-        background-color: lighten($bg-color-dark, 5%);
-        box-shadow: 0 3px 12px $bg-color-dark;
-      }
     }
   }
 </style>

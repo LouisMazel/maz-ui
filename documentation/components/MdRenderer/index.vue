@@ -49,7 +49,7 @@ export default {
   .frontmatter-markdown {
     margin: auto;
     padding: 20px;
-    background-color: $bg-color;
+    background-color: var(--bg-color);
     font-size: 13px;
 
     h1 {
@@ -59,7 +59,7 @@ export default {
     }
 
     h2 {
-      border-bottom: 1px solid $hover-bg-color;
+      border-bottom: 1px solid var(--hover-color);
       font-family: GeomanistLight, sans-serif;
       color: #333;
       font-size: 1.5rem;
@@ -78,7 +78,7 @@ export default {
     }
 
     h6 {
-      color: $muted-color;
+      color: $text-muted;
       background-color: inherit;
       font-size: 1rem;
     }
@@ -86,8 +86,8 @@ export default {
     hr {
       height: .2rem;
       border: 0;
-      color: $hover-bg-color;
-      background-color: $hover-bg-color;
+      color: var(--hover-color);
+      background-color: var(--hover-color);
     }
 
     p,
@@ -113,13 +113,13 @@ export default {
     table,
     th,
     td {
-      border: 1px solid $hover-bg-color;
+      border: 1px solid var(--hover-color);
       border-radius: 3px;
       padding: 5px;
     }
 
     tr:nth-child(even) {
-      background-color: $hover-bg-color;
+      background-color: var(--hover-color);
     }
 
     a,
@@ -131,7 +131,7 @@ export default {
 
     #message {
       border-radius: 6px;
-      border: 1px solid $hover-bg-color;
+      border: 1px solid var(--hover-color);
       display: block;
       width: 100%;
       height: 60px;
@@ -143,8 +143,8 @@ export default {
       font-size: 10pt;
       padding: 4px 6px;
       border-radius: 5px;
-      border: 1px solid $hover-bg-color;
-      background-color: $hover-bg-color;
+      border: 1px solid var(--hover-color);
+      background-color: var(--hover-color);
     }
 
     code,
@@ -159,13 +159,13 @@ export default {
     }
 
     code {
-      border: 1px solid $hover-bg-color;
+      border: 1px solid var(--hover-color);
       margin: 0 2px;
       padding: 0 5px;
     }
 
     pre {
-      border: 1px solid $hover-bg-color;
+      border: 1px solid var(--hover-color);
       overflow: auto;
       padding: 4px 8px;
     }
@@ -177,11 +177,11 @@ export default {
     }
 
     #ws {
-      background-color: $hover-bg-color;
+      background-color: var(--hover-color);
     }
 
     .send {
-      color: $success-color;
+      color: var(--success);
     }
 
     .server {
@@ -189,56 +189,18 @@ export default {
     }
 
     .error {
-      color: $danger-color;
+      color: var(--danger);
     }
 
     blockquote {
-      background: $hover-bg-color;
-      border-left: 4px solid $primary-color;
+      background: var(--hover-color);
+      border-left: 4px solid var(--primary);
       // border-radius: $border-radius;
       padding: .5em 10px;
     }
 
     blockquote p {
       display: inline;
-    }
-  }
-
-  .maz-is-dark .frontmatter-markdown {
-    background-color: $bg-color-dark;
-    color: $text-color-dark;
-
-    h1 {
-      color: $text-color-dark;
-    }
-
-    h2 {
-      border-bottom: 1px solid $hover-bg-color-dark;
-      color: $text-color-dark;
-    }
-
-    h6 {
-      color: $muted-color-dark;
-    }
-
-    table,
-    th,
-    td {
-      border: 1px solid $hover-bg-color-dark;
-    }
-
-    tr:nth-child(even) {
-      background-color: $hover-bg-color-dark;
-    }
-
-    code,
-    pre {
-      background-color: $hover-bg-color-dark-l;
-      border: 1px solid $hover-bg-color-dark-l;
-    }
-
-    blockquote {
-      background: $hover-bg-color-dark;
     }
   }
 </style>

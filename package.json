@@ -1,9 +1,12 @@
 {
   "name": "maz-ui",
-  "version": "1.5.14",
+  "version": "2.0.0-beta.12",
   "main": "lib/maz-ui.common.js",
   "description": "A stand-alone components library for Vue.Js & Nuxt.Js",
   "author": "Louis Mazel <me@loicmazuel.com>",
+  "bin": {
+    "maz": "bin/index.js"
+  },
   "scripts": {
     "lint": "npm run lint:js && npm run lint:style && npm run lint:md",
     "lint:fix": "npm run lint:js:fix && npm run lint:style:fix && npm run lint:md:fix",
@@ -17,13 +20,13 @@
     "build": "npm run clean && npm run build:entries && npm run build:lib && npm run build:css && npm run gen:types",
     "build:entries": "node build/build-entries.js",
     "build:lib": "webpack --config build/webpack.conf.js && webpack --config build/webpack.common.js && webpack --config build/webpack.component.js",
-    "build:css": "npm run gen:css && npm run build:css:compile && npm run build:scss:compile",
+    "build:css": "npm run gen:css && npm run build:css:compile",
     "gen:types": "node build/generate-types-declarations.js",
     "gen:css": "node build/gen-scss-index",
     "build:css:compile": "gulp compile --gulpfile build/gulpfile.js",
-    "build:scss:compile": "gulp buildScssLibrary --gulpfile build/gulpfile.js",
     "gen:docs": "vuese gen && npm run lint:md:fix",
-    "pre-publish": "npm run lint:fix && npm i && npm run build"
+    "pre-publish": "npm run lint:fix && npm i && npm run build",
+    "cli": "node ./bin/index.js"
   },
   "lint-staged": {
     "*.{js,vue}": "npm run lint:js",
@@ -35,9 +38,17 @@
     }
   },
   "dependencies": {
-    "libphonenumber-js": "^1.9.2",
+    "chalk": "^4.1.0",
+    "clear": "^0.1.0",
+    "color-transformer-ui": "^1.0.3",
+    "commander": "^6.2.0",
+    "figlet": "^1.5.0",
+    "fs": "0.0.1-security",
+    "json-templater": "^1.2.0",
+    "libphonenumber-js": "^1.9.5",
     "moment": "2.24.0",
     "moment-range": "^4.0.2",
+    "os": "^0.1.1",
     "plotly.js-dist": "^1.57.1",
     "v-click-outside": "^3.1.2",
     "vue-virtual-scroller": "^1.0.10",
@@ -45,13 +56,12 @@
     "vuedraggable": "^2.24.3"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.5.8",
-    "@vue/cli-plugin-eslint": "^4.5.8",
-    "@vue/cli-service": "^4.5.8",
+    "@vue/cli-plugin-babel": "^4.5.9",
+    "@vue/cli-plugin-eslint": "^4.5.9",
+    "@vue/cli-service": "^4.5.9",
     "@vuese/cli": "^2.14.0",
     "babel-eslint": "^10.1.0",
-    "core-js": "^3.7.0",
-    "del": "^5.1.0",
+    "core-js": "^3.8.0",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
     "gulp": "^4.0.2",
@@ -59,16 +69,13 @@
     "gulp-notify": "^3.2.0",
     "gulp-plumber": "^1.2.1",
     "gulp-rename": "^2.0.0",
-    "gulp-replace": "^1.0.0",
     "gulp-sass": "^4.1.0",
     "gulp-sourcemaps": "^2.6.5",
     "husky": "^4.3.0",
-    "json-templater": "^1.2.0",
-    "lint-staged": "^10.5.1",
-    "merge-stream": "^2.0.0",
+    "lint-staged": "^10.5.2",
     "progress-bar-webpack-plugin": "^2.1.0",
     "rimraf": "^3.0.2",
-    "stylelint": "^13.7.2",
+    "stylelint": "^13.8.0",
     "stylelint-config-standard": "^19.0.0",
     "stylelint-order": "^3.1.1",
     "stylelint-scss": "^3.18.0",
@@ -84,6 +91,7 @@
   },
   "files": [
     "lib/",
+    "bin/**/*",
     "index.d.ts"
   ],
   "bugs": {

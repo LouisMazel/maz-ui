@@ -1,5 +1,3 @@
-@import './../style-helpers/variables/index.scss';
-
 .maz-dialog {
   &--mask {
     position: fixed;
@@ -10,7 +8,7 @@
     z-index: 1050;
     width: 100%;
     height: 100%;
-    background-color: $overlay-color;
+    background-color: var(--overlay-color);
     transition: all 300ms ease;
     overflow-y: auto;
     overflow-x: hidden;
@@ -23,7 +21,7 @@
   }
 
   &__body {
-    color: $text-color;
+    color: var(--text-color);
   }
 
   &__container {
@@ -34,11 +32,10 @@
   }
 
   &__header {
-    background-color: $primary-color;
-    border-top-left-radius: $border-radius;
-    border-top-right-radius: $border-radius;
+    background-color: var(--primary);
+    border-top-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
     border: none;
-    color: $text-color-dark;
 
     &__title {
       color: white;
@@ -59,19 +56,19 @@
   }
 
   &__footer {
-    border-bottom-left-radius: $border-radius;
-    border-bottom-right-radius: $border-radius;
+    border-bottom-left-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
   }
 
   &--success {
     .maz-dialog__header {
-      background-color: $success-color;
+      background-color: var(--success);
     }
   }
 
   &--danger {
     .maz-dialog__header {
-      background-color: $danger-color;
+      background-color: var(--danger);
     }
   }
 
@@ -91,6 +88,7 @@
         flex: 1;
         height: 100%;
         width: 100%;
+        max-width: 100%;
       }
 
       &__body {

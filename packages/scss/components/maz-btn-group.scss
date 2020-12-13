@@ -1,12 +1,10 @@
-@import './../style-helpers/variables/index.scss';
-
 .maz-btn-group {
   &__item {
     margin-right: -2px;
     z-index: 0;
     border-radius: 0;
 
-    &.#{$prefix}active,
+    &.maz-active,
     &:focus {
       z-index: 1;
 
@@ -16,31 +14,31 @@
     }
 
     &:first-child {
-      border-top-left-radius: $border-radius;
-      border-bottom-left-radius: $border-radius;
+      border-top-left-radius: var(--border-radius);
+      border-bottom-left-radius: var(--border-radius);
     }
 
     &:last-child {
-      border-top-right-radius: $border-radius;
-      border-bottom-right-radius: $border-radius;
+      border-top-right-radius: var(--border-radius);
+      border-bottom-right-radius: var(--border-radius);
     }
 
-    &.#{$prefix}btn--outline {
+    &.maz-btn--outline {
       &::after {
         border-radius: 0;
       }
 
       &:first-child::after {
-        border-top-left-radius: $border-radius;
-        border-bottom-left-radius: $border-radius;
+        border-top-left-radius: var(--border-radius);
+        border-bottom-left-radius: var(--border-radius);
       }
 
       &:last-child::after {
-        border-top-right-radius: $border-radius;
-        border-bottom-right-radius: $border-radius;
+        border-top-right-radius: var(--border-radius);
+        border-bottom-right-radius: var(--border-radius);
       }
 
-      &.#{$prefix}btn--rounded {
+      &.maz-btn--rounded {
         &::after {
           border-radius: 0;
         }
@@ -57,7 +55,7 @@
       }
     }
 
-    &.#{$prefix}btn--rounded {
+    &.maz-btn--rounded {
       border-radius: 0;
 
       &:first-child {

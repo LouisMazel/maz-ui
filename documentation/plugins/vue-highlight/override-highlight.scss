@@ -2,8 +2,7 @@
   .hljs {
     background-color: transparent;
     background-color: $bg-color-dark;
-    // border: $border-width solid #EAEEFB;
-    border-radius: $border-radius;
+    border-radius: var(--border-radius);
     padding: 20px;
     color: $text-color-dark;
 
@@ -20,7 +19,7 @@
     .hljs-variable,
     .hljs-keyword,
     .hljs-attr {
-      color: $primary-color;
+      color: var(--primary);
     }
 
     .hljs-number,

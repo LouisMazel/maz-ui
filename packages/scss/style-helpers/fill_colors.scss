@@ -1,9 +1,7 @@
-@import './variables/color_types';
+@import './../_variables/color_names';
 
-@each $name, $color in $color_types {
-  @if (type-of($color) == 'color') {
-    .#{$prefix}fill-#{$name} path {
-      fill: $color;
-    }
+@each $name in $color_names {
+  .#{$prefix}fill-#{$name} path {
+    fill: var(--#{$name});
   }
 }

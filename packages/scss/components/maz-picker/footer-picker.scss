@@ -13,10 +13,12 @@
   }
 }
 
-@each $name, $color in $color_types {
+@import './../../_variables/color_names';
+
+@each $name in $color_names {
   .maz-picker--#{$name} {
     .footer-picker__now {
-      color: $color;
+      color: var(--#{$name});
     }
   }
 }

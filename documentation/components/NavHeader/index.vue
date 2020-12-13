@@ -20,32 +20,37 @@
           <h1 class="maz-fs-20">
             Maz UI
           </h1>
-          <h2 class="maz-fs-14 header__title__sub maz-text-color">
+          <h2 class="maz-fs-14 header__title__sub maz-text-muted">
             UI Components Library
           </h2>
         </div>
       </NuxtLink>
+      <div class="maz-flex-1" />
       <div
         role="navigation"
         class="header__menu maz-flex maz-align-center maz-hidden-mobile"
       >
-        <NuxtLink
-          class="header__menu__item maz-btn maz-btn--white maz-no-shadow maz-bg-color maz-no-border maz-hover-bg-color maz-mr-1"
+        <MazBtn
+          color="transparent"
+          no-shadow
+          class="header__menu__item maz-mr-1"
           :to="{
             name: 'documentation'
           }"
         >
           Documentation
-        </NuxtLink>
-        <NuxtLink
-          class="header__menu__item maz-btn maz-btn--white maz-no-shadow maz-bg-color maz-no-border maz-hover-bg-color"
+        </MazBtn>
+        <MazBtn
+          color="transparent"
+          no-shadow
+          class="header__menu__item maz-mr-1"
           :to="{ name: 'made-with-maz-ui' }"
         >
           Made with Maz UI
-        </NuxtLink>
+        </MazBtn>
       </div>
       <div class="maz-flex maz-align-center maz-hidden-mobile">
-        <SocialButtons class="maz-hidden-laptop-s" />
+        <SocialButtons class="maz-ml-1 maz-hidden-laptop-s" />
       </div>
       <MazResponsiveMenu
         :routes="routes"
@@ -110,14 +115,8 @@ export default {
         outline: none;
 
         &.nuxt-link-active {
-          color: $primary-color;
+          color: var(--primary) !important;
         }
-      }
-    }
-
-    &__title {
-      &__sub {
-        color: $muted-color;
       }
     }
   }

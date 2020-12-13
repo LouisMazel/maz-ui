@@ -1,49 +1,26 @@
-@import './variables/sizes';
-@import './variables/positions';
-@import './variables/borders';
-@import './variables/color_types';
-@import './variables/states';
+@import './../_variables/sizes';
+@import './../_variables/positions';
+@import './../_variables/borders';
+@import './../_variables/color_names';
+@import './../_variables/states';
 
 .#{$prefix}border-color {
-  border-color: $border-color;
+  border-color: var(--border-color);
 }
 
-@each $state, $color in $states {
+@each $state in $states {
   .#{$prefix}border-color-#{$state}:#{$state} {
-    border-color: darken($border-color, 10%);
+    border-color: var(--border-color-darken);
   }
-}
-
-.#{$prefix}is-dark.#{$prefix}border-color,
-.#{$prefix}is-dark .#{$prefix}border-color {
-  border-color: $border-color-dark;
-}
-
-.#{$prefix}is-dark.#{$prefix}border-color-hover:hover,
-.#{$prefix}is-dark .#{$prefix}border-color-hover:hover {
-  border-color: lighten($border-color-dark, 10%);
 }
 
 .#{$prefix}no-border {
   border: none;
 }
 
-.#{$prefix}border-color-dark {
-  border-color: $border-color-dark;
-}
-
-@each $state, $color in $states {
-  .#{$prefix}border-color-dark-#{$state}:#{$state} {
-    border-color: darken($border-color, 10%);
-    border-color: darken($border-color-dark, 10%);
-  }
-}
-
-@each $name, $color in $color_types {
-  @if (type-of($color) == 'color') {
-    .#{$prefix}border-#{$name} {
-      border-color: $color;
-    }
+@each $name in $color_names {
+  .#{$prefix}border-#{$name} {
+    border-color: var(--#{$name});
   }
 }
 
@@ -72,11 +49,11 @@
 }
 
 .#{$prefix}border {
-  border-width: $border-width;
+  border-width: var(--border-width);
 }
 
 @each $position in $orientations {
   .#{$prefix}border-#{$position} {
-    border-#{$position}-width: #{$border-width};
+    border-#{$position}-width: var(--border-width);
   }
 }

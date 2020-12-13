@@ -54,7 +54,7 @@
         name: 'documentation-theme'
       }"
     >
-      Use your own colors & style
+      Theme (colors & style)
     </MazBtn>
     <MazBtn
       class="menu-item maz-mb-2"
@@ -172,7 +172,7 @@ export default {
       }
 
       &.nuxt-link-exact-active {
-        color: $primary-color;
+        color: var(--primary);
       }
     }
   }

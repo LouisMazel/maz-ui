@@ -342,22 +342,22 @@ export default {
       padding: 10px;
       background-color: $secondary-color;
       color: white;
-      border-radius: $border-radius;
+      border-radius: var(--border-radius);
     }
 
     .maz-flex-1 {
       padding: 10px;
       background-color: dodgerblue;
       color: white;
-      border: $border-width solid white;
-      border-radius: $border-radius;
+      border: var(--border-width) solid white;
+      border-radius: var(--border-radius);
     }
 
     & div {
       background-color: dodgerblue;
       padding: 10px;
-      border: $border-width solid white;
-      border-radius: $border-radius;
+      border: var(--border-width) solid white;
+      border-radius: var(--border-radius);
     }
   }
 </style>
