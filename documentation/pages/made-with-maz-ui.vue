@@ -84,7 +84,7 @@ export default {
 
 <style lang="scss" scoped>
   .made-with-maz-ui {
-    color: $text-color;
+    color: var(--text-color);
 
     @media only screen and (max-width: $breakpoint-laptop-s) {
       &__main {
@@ -100,12 +100,6 @@ export default {
       @media only screen and (max-width: $breakpoint-laptop-s) {
         grid-template-columns: repeat(1, 1fr);
       }
-    }
-  }
-
-  .maz-is-dark {
-    .made-with-maz-ui {
-      color: $text-color-dark;
     }
   }
 </style>

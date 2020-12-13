@@ -111,7 +111,7 @@ export default {
     }
 
     h3 {
-      color: $third-color;
+      color: var(--third);
     }
   }
 </style>

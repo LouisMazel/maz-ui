@@ -340,7 +340,7 @@ export default {
   .maz-flex-doc .demo {
     .maz-flex {
       padding: 10px;
-      background-color: $secondary-color;
+      background-color: var(--secondary);
       color: white;
       border-radius: var(--border-radius);
     }

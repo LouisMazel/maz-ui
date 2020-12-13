@@ -78,7 +78,7 @@ export default {
     }
 
     h6 {
-      color: $text-muted;
+      color: var(--text-muted);
       background-color: inherit;
       font-size: 1rem;
     }

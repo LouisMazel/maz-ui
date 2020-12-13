@@ -68,7 +68,7 @@ export default {
       grid-gap: 20px;
 
       h5 {
-        color: $text-color !important;
+        color: #212121 !important;
 
         &.text-white {
           color: white !important;
@@ -87,7 +87,7 @@ export default {
 
   .maz-is-dark {
     .transparent {
-      color: $text-color-dark !important;
+      color: var(--text-color-dark) !important;
     }
   }
 </style>

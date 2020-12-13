@@ -60,7 +60,7 @@ export default {
   css: ['~/assets/scss/main.scss'],
   styleResources: {
     scss: [
-      '~/assets/scss/_colors.scss',
+      '~/assets/scss/_root-variables.scss',
       '~/assets/scss/_responsive.scss'
     ]
   },
@@ -70,15 +70,6 @@ export default {
    ** See https://nuxtjs.org/api/configuration-build/
    */
   build: {
-    babel: {
-      presets () {
-        return [
-          ['@vue/cli-plugin-babel/preset', {
-            useBuiltIns: 'entry'
-          }]
-        ]
-      }
-    },
     loaders: {
       scss: { sourceMap: process.env.NODE_ENV === 'production' }
     },
