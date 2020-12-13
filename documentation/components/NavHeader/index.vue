@@ -111,19 +111,13 @@ export default {
     &__menu {
       &__item {
         font-weight: 500;
-        transition: all .5s;
         outline: none;
+        color: var(--text-color);
 
         &.nuxt-link-active {
           color: var(--primary) !important;
         }
       }
-    }
-  }
-
-  .maz-is-dark {
-    .header__menu__item:not(.nuxt-link-active) {
-      color: white;
     }
   }
 </style>

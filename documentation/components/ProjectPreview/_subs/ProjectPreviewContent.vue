@@ -29,22 +29,12 @@ export default {
   .project-preview-content {
     &__text {
       h4 {
-        color: $text-color;
+        color: var(--text-color);
       }
 
       p {
-        color: rgba($text-color, .54);
+        color: var(--text-muted);
       }
-    }
-  }
-
-  .maz-is-dark .project-preview-content {
-    h4 {
-      color: $text-color-dark;
-    }
-
-    p {
-      color: rgba($text-color-dark, .54);
     }
   }
 </style>

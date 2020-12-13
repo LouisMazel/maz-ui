@@ -394,7 +394,7 @@ export default {
     }
 
     &__content {
-      background-color: $bg-color-light;
+      background-color: var(--bg-color-light);
 
       & * {
         margin-bottom: .5rem;
@@ -406,12 +406,6 @@ export default {
           font-size: 1rem;
         }
       }
-    }
-  }
-
-  .maz-is-dark {
-    .maz-sidebar-doc__content {
-      background-color: lighten($bg-color-dark-light, 5%);
     }
   }
 </style>

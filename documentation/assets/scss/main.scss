@@ -2,7 +2,6 @@
 @import './load-fonts';
 @import './../../../packages/scss/mixins/index.scss';
 @import './../../../packages/scss/index.scss';
-@import './root-variables';
 
 html {
   @include font_family();
@@ -15,7 +14,7 @@ html {
 
   height: 100%;
   width: 100%;
-  background-color: whitesmoke;
+  background-color: var(--bg-color-light);
 
   body {
     height: 100%;
@@ -115,8 +114,8 @@ html {
     }
 
     code.code {
-      background-color: $bg-color-dark;
-      color: $text-color-dark;
+      background-color: var(--bg-color-dark);
+      color: var(--text-color-dark);
       padding: 2px 6px;
       border-radius: 4px;
     }
