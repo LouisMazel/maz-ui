@@ -315,12 +315,11 @@ module.exports = {
   --border-color: #EEEEEE;
   --border-color-darken: #d6d6d6;
   --hover-color: #EEEEEE;
-  --hover-color-darken: #bebebe;
+  --hover-color-darken: #d6d6d6;
   --disabled-color: #F2F2F2;
-  --disabled-color-darken: #c1c1c1;
+  --disabled-color-darken: #d9d9d9;
 }
-
-.maz-is-dark {
+  .maz-is-dark {
   --text-color: #EEEEEE;
   --muted-color: rgba(255, 255, 255, .54);
   --placeholder-color: rgba(255, 255, 255, .6);
@@ -331,9 +330,9 @@ module.exports = {
   --border-color: #3B3C53;
   --border-color-darken: #35364a;
   --hover-color: #2E2F40;
-  --hover-color-darken: #242533;
+  --hover-color-darken: #343649;
   --disabled-color: #CCCCCC;
-  --disabled-color-darken: #a3a3a3;
+  --disabled-color-darken: #eaeaea;
 }"
     />
   </div>

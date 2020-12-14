@@ -30,9 +30,9 @@ const getLayoutVariants = (color) => {
   return [color, darken]
 }
 
-const getStateVariants = (color) => {
+const getStateVariants = (color, dark) => {
   if (isColorName(color)) color = colorNameToHex(color)
-  const darken = shadeColor(color, -20)
+  const darken = dark ? shadeColor(color, 15) : shadeColor(color, -10)
 
   return [color, darken]
 }
@@ -132,7 +132,7 @@ module.exports = (theme, output) => {
     }
     if (theme.dark.state) {
       Object.entries(theme.dark.state).forEach((values) => {
-        const variants = getStateVariants(values[1])
+        const variants = getStateVariants(values[1], true)
         results.dark[`--${values[0]}`] = variants[0]
         results.dark[`--${values[0]}-darken`] = variants[1]
       })
