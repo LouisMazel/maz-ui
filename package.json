@@ -1,12 +1,13 @@
 {
   "name": "maz-ui",
-  "version": "2.0.3",
+  "version": "2.0.4-beta.1",
   "main": "lib/maz-ui.common.js",
   "description": "A stand-alone components library for Vue.Js & Nuxt.Js",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "bin": {
     "maz": "bin/index.js"
   },
+  "types": "lib/index.d.ts",
   "scripts": {
     "lint": "npm run lint:js && npm run lint:style && npm run lint:md",
     "lint:fix": "npm run lint:js:fix && npm run lint:style:fix && npm run lint:md:fix",
@@ -16,16 +17,17 @@
     "lint:md:fix": "prettier '**/*.md' --write",
     "lint:style": "stylelint './**/*.{css,scss,vue}'",
     "lint:style:fix": "npm run lint:style -- --fix",
-    "clean": "rimraf lib",
-    "build": "npm run clean && npm run build:entries && npm run build:lib && npm run build:css && npm run gen:types",
+    "clean": "rimraf lib && rimraf types",
+    "build": "npm run clean && npm run build:entries && npm run build:lib && npm run build:css && npm run gen:types && npm run copy:types",
     "build:entries": "node build/build-entries.js",
     "build:lib": "webpack --config build/webpack.conf.js && webpack --config build/webpack.common.js && webpack --config build/webpack.component.js",
     "build:css": "npm run gen:css && npm run build:css:compile",
-    "gen:types": "node build/generate-types-declarations.js",
+    "gen:types": "tsc --declaration",
     "gen:css": "node build/gen-scss-index",
     "build:css:compile": "gulp compile --gulpfile build/gulpfile.js",
     "gen:docs": "vuese gen && npm run lint:md:fix",
     "pre-publish": "npm run lint:fix && npm i && npm run build",
+    "copy:types": "cp ./types/*.d.ts ./lib",
     "cli": "node ./bin/index.js"
   },
   "lint-staged": {
@@ -79,6 +81,7 @@
     "stylelint-config-standard": "^19.0.0",
     "stylelint-order": "^3.1.1",
     "stylelint-scss": "^3.18.0",
+    "typescript": "^4.1.3",
     "uppercamelcase": "^3.0.0",
     "vue": "^2.6.12",
     "vue-template-compiler": "^2.6.12",
@@ -91,8 +94,7 @@
   },
   "files": [
     "lib/",
-    "bin/**/*",
-    "index.d.ts"
+    "bin/"
   ],
   "bugs": {
     "url": "https://github.com/LouisMazel/maz-ui/issues"
@@ -110,6 +112,5 @@
     "type": "git",
     "url": "git+https://github.com/LouisMazel/maz-ui.git"
   },
-  "license": "MIT",
-  "types": "index.d.ts"
+  "license": "MIT"
 }
