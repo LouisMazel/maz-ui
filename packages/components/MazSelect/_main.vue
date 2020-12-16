@@ -50,6 +50,7 @@
       :placeholder="placeholderShown"
       :disabled="disabled"
       :focus="hasOpenList"
+      @blur.stop
       @clear="emitValues(null)"
       @keydown="search ? null : keyboardNav($event)"
       @keyup="$emit('keyup', $event)"
@@ -66,7 +67,7 @@
       />
       <div
         slot="icon-right"
-        class="maz-select__toggle"
+        class="maz-select__toggle maz-flex maz-flex-center"
         tabindex="-1"
       >
         <!-- The arrow icon -->
@@ -332,7 +333,7 @@ export default {
       this.emitValues(valueToReturn)
     },
     closeList (e = {}) {
-      if (this.$el.contains(e.relatedTarget)) return
+      if (this.$el.contains(e.relatedTarget)) return e.preventDefault()
       this.$emit('close')
       this.listIsOpen = false
       this.isFocus = false
