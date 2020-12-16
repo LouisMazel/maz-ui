@@ -2,6 +2,7 @@
 node_modules
 dist
 /lib
+/types
 
 # local env files
 .env.local
