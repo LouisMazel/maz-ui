@@ -50,7 +50,6 @@
       :placeholder="placeholderShown"
       :disabled="disabled"
       :focus="hasOpenList"
-      @blur.stop
       @clear="emitValues(null)"
       @keydown="search ? null : keyboardNav($event)"
       @keyup="$emit('keyup', $event)"
