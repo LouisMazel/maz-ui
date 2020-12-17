@@ -1,6 +1,6 @@
 define pre-publish
-	npm run gen:docs && \
-	npm run lint:fix && \
+	npm run gen:docs
+	npm run lint:fix
 	VERSION=`node -pe "require('./package.json').version"` && \
 	NEXT_VERSION=`node -pe "require('semver').inc(\"$$VERSION\", '$(1)')"` && \
 	node -e "\
