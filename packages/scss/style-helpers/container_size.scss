@@ -20,12 +20,12 @@ $container-width-breakpoint: calc(#{$container-max-width} + #{$container-laptop-
 
 @media only screen and (min-width: $container-width-breakpoint) {
   :root {
-    --container-width: var(--#{$prefix}container-max-width);
+    --#{$prefix}container-width: var(--#{$prefix}container-max-width);
   }
 }
 
 @media only screen and (max-width: $mobile-breakpoint) {
   :root {
-    --container-padding: var(--#{$prefix}container-mobile-padding);
+    --#{$prefix}container-padding: var(--#{$prefix}container-mobile-padding);
   }
 }
