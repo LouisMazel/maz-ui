@@ -23,10 +23,9 @@ make pre-publish
 ```
 
 Will:
-- Generate doc (all README.md) files
+- Generate docs (all README.md) files
 - Lint all files
-- Bump version
-- Push a version commit
+- Push modifications if it's necessary
 
 ## Lint
 
