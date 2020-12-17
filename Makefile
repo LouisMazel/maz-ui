@@ -2,7 +2,7 @@ VERSION=`node -pe "require('./package.json').version"`
 
 define bump-version
 	VERSION=`node -pe "require('./package.json').version"` && \
-	NEXT_VERSION=`node -pe "require('semver').inc(\"$$VERSION\", '$(type)')"` && \
+	NEXT_VERSION=`node -pe "require('semver').inc(\"$$VERSION\", '$(1)')"` && \
 	node -e "\
 		var j = require('./package.json');\
 		j.version = \"$$NEXT_VERSION\";\
@@ -13,7 +13,7 @@ endef
 define pre-publish
 	npm run gen:docs
 	npm run lint:fix
-	make bump-version type=$(1)
+	@$(call bump-version,$(1))
 	git add --all
 	git commit -m "chore(v$(VERSION)): pre-build"
 	git push origin HEAD
@@ -22,7 +22,7 @@ endef
 define publish
 	npm run gen:docs
 	npm run pre-publish
-	make bump-version type=$(1)
+	@$(call bump-version,$(1))
 	git add --all
 	git commit -m "release(v$(VERSION)): $(1)"
 	git tag "v$(VERSION)" -m "v$(VERSION)"
@@ -59,12 +59,6 @@ install-doc: ## Install node modules of documentation
 
 serve: ## Run dev server
 	cd documentation && npm run serve
-
-gen-vuese:
-	npm run gen:docs
-
-bump-version:
-	@$(call bump-version,patch)
 
 deploy-doc:
 	cd documentation && npm run build:gh-pages && npm run export:gh-pages
