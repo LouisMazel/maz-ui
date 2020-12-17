@@ -1,11 +1,11 @@
 .maz-progress-bar {
-  color: var(--#{$prefix}text-color);
+  color: var(--maz-text-color);
   font-size: 1rem;
   position: relative;
   width: 100%;
 
   &:not(.maz-border-radius-0) {
-    border-radius: var(--#{$prefix}border-radius);
+    border-radius: var(--maz-border-radius);
   }
 
   &__bg {
@@ -17,21 +17,21 @@
     position: absolute;
     top: 0;
     left: 0;
-    background-color: var(--#{$prefix}bg-color-light);
+    background-color: var(--maz-bg-color-light);
     transition: all 500ms ease-in-out;
 
     @import './../_variables/color_names';
 
     @each $name in $color_names {
       &--#{$name} {
-        background-color: var(--#{$prefix}#{$name});
+        background-color: var(--maz-#{$name});
       }
     }
 
     &__anim {
       background-color: white;
       height: inherit;
-      border-radius: var(--#{$prefix}border-radius);
+      border-radius: var(--maz-border-radius);
       opacity: 0;
       animation: n-anim 2s cubic-bezier(0, 0, .2, 1) infinite;
     }

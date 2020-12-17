@@ -6,30 +6,30 @@
     position: relative;
     padding: .75rem 1.25rem;
     margin-bottom: -2px;
-    background-color: var(--#{$prefix}bg-color);
-    border: var(--#{$prefix}border-width) solid var(--#{$prefix}hover-color);
+    background-color: var(--maz-bg-color);
+    border: var(--maz-border-width) solid var(--maz-hover-color);
     cursor: move;
     width: 100%;
     font-size: .875em;
-    color: var(--#{$prefix}text-color);
+    color: var(--maz-text-color);
 
     & > * {
-      color: var(--#{$prefix}text-color);
+      color: var(--maz-text-color);
     }
 
     &:hover {
-      background-color: var(--#{$prefix}hover-color);
+      background-color: var(--maz-hover-color);
     }
 
     &:first-child {
-      border-top-left-radius: var(--#{$prefix}border-radius);
-      border-top-right-radius: var(--#{$prefix}border-radius);
+      border-top-left-radius: var(--maz-border-radius);
+      border-top-right-radius: var(--maz-border-radius);
     }
 
     &:last-child {
       margin-bottom: 0;
-      border-bottom-right-radius: var(--#{$prefix}border-radius);
-      border-bottom-left-radius: var(--#{$prefix}border-radius);
+      border-bottom-right-radius: var(--maz-border-radius);
+      border-bottom-left-radius: var(--maz-border-radius);
     }
   }
 

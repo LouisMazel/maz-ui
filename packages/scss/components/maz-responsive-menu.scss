@@ -2,7 +2,7 @@
   position: relative;
 
   &-collapse {
-    background-color: var(--#{$prefix}bg-color);
+    background-color: var(--maz-bg-color);
     position: absolute;
     top: calc(100% + .143em);
     right: 0;
@@ -12,17 +12,17 @@
 
     &__items {
       padding: 8px 16px;
-      color: var(--#{$prefix}text-color) !important;
+      color: var(--maz-text-color) !important;
       text-decoration: none !important;
 
       &.router-link-exact-active,
       &.nuxt-link-exact-active {
-        color: var(--#{$prefix}primary) !important;
+        color: var(--maz-primary) !important;
       }
 
       &:hover:not(.router-link-exact-active):not(.nuxt-link-exact-active),
       &:focus:not(.router-link-exact-active):not(.nuxt-link-exact-active) {
-        background-color: var(--#{$prefix}hover-color);
+        background-color: var(--maz-hover-color);
       }
     }
   }

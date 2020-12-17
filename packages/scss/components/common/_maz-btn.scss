@@ -14,10 +14,10 @@ $btn-font-size-xl: 1.375rem !default;
   position: relative;
   transition: background-color 300ms ease-in-out, color 300ms ease-in-out;
   box-shadow: 0 2px 5px 0 rgba(3, 6, 26, .15);
-  background-color: var(--#{$prefix}primary);
+  background-color: var(--maz-primary);
   color: white;
   display: inline-flex;
-  border-radius: var(--#{$prefix}border-radius);
+  border-radius: var(--maz-border-radius);
   line-height: 1;
   box-sizing: border-box;
   margin: 0;
@@ -39,7 +39,7 @@ $btn-font-size-xl: 1.375rem !default;
   &:hover,
   &:focus,
   &.maz-active {
-    background-color: var(--#{$prefix}primary-darken);
+    background-color: var(--maz-primary-darken);
   }
 
   &:focus,
@@ -48,8 +48,8 @@ $btn-font-size-xl: 1.375rem !default;
       box-sizing: content-box;
       content: '';
       display: block;
-      border: 2px solid var(--#{$prefix}primary);
-      border-radius: calc(var(--#{$prefix}border-radius) + 3px);
+      border: 2px solid var(--maz-primary);
+      border-radius: calc(var(--maz-border-radius) + 3px);
       position: absolute;
       left: -3px;
       top: -3px;
@@ -59,8 +59,8 @@ $btn-font-size-xl: 1.375rem !default;
   }
 
   &--outline {
-    background-color: rgba(var(--#{$prefix}primary), .05);
-    color: var(--#{$prefix}primary);
+    background-color: rgba(var(--maz-primary), .05);
+    color: var(--maz-primary);
     box-shadow: none;
 
     &::after {
@@ -70,8 +70,8 @@ $btn-font-size-xl: 1.375rem !default;
       height: calc(100% - 4px);
       width: calc(100% - 4px);
       border: 2px solid;
-      border-color: var(--#{$prefix}primary);
-      border-radius: var(--#{$prefix}border-radius);
+      border-color: var(--maz-primary);
+      border-radius: var(--maz-border-radius);
       position: absolute;
       left: 0;
       top: 0;
@@ -88,7 +88,7 @@ $btn-font-size-xl: 1.375rem !default;
     &:hover,
     &:focus,
     &.maz-active {
-      background-color: var(--#{$prefix}primary);
+      background-color: var(--maz-primary);
       color: white;
     }
   }
@@ -203,27 +203,27 @@ $btn-font-size-xl: 1.375rem !default;
 
 @each $name in $color_names {
   .maz-btn--#{$name} {
-    background-color: var(--#{$prefix}#{$name});
+    background-color: var(--maz-#{$name});
 
     &:hover,
     &:focus,
     &.maz-active {
-      background-color: var(--#{$prefix}#{$name}-darken);
+      background-color: var(--maz-#{$name}-darken);
     }
 
     &:focus,
     &.maz-active {
       &::before {
-        border-color: var(--#{$prefix}#{$name});
+        border-color: var(--maz-#{$name});
       }
     }
 
     &.maz-btn--outline {
-      background-color: var(--#{$prefix}#{$name}-alpha-05);
-      color: var(--#{$prefix}#{$name});
+      background-color: var(--maz-#{$name}-alpha-05);
+      color: var(--maz-#{$name});
 
       &::after {
-        border-color: var(--#{$prefix}#{$name});
+        border-color: var(--maz-#{$name});
       }
 
       &.maz-btn--rounded {
@@ -235,7 +235,7 @@ $btn-font-size-xl: 1.375rem !default;
       &:hover:not(:disabled),
       &:focus:not(:disabled),
       &.maz-active:not(:disabled) {
-        background-color: var(--#{$prefix}#{$name});
+        background-color: var(--maz-#{$name});
         color: white;
       }
     }
@@ -243,17 +243,17 @@ $btn-font-size-xl: 1.375rem !default;
 }
 
 .maz-btn:disabled {
-  background-color: var(--#{$prefix}disabled);
-  color: var(--#{$prefix}grey);
+  background-color: var(--maz-disabled);
+  color: var(--maz-grey);
   cursor: not-allowed;
   box-shadow: none;
 
   &::after {
-    border-color: var(--#{$prefix}disabled);
+    border-color: var(--maz-disabled);
   }
 
   &::before {
-    border-color: var(--#{$prefix}disabled);
+    border-color: var(--maz-disabled);
   }
 }
 
@@ -262,7 +262,7 @@ $btn-font-size-xl: 1.375rem !default;
   color: #212121;
 
   &.maz-btn--outline {
-    color: var(--#{$prefix}text-color);
+    color: var(--maz-text-color);
 
     &:hover:not(:disabled),
     &:focus:not(:disabled),
@@ -273,22 +273,22 @@ $btn-font-size-xl: 1.375rem !default;
 }
 
 .maz-btn.maz-btn--transparent {
-  color: var(--#{$prefix}text-color);
+  color: var(--maz-text-color);
 
   &.maz-btn--outline {
-    color: var(--#{$prefix}text-color);
+    color: var(--maz-text-color);
 
     &:hover,
     &:focus {
-      color: var(--#{$prefix}text-color);
-      background-color: var(--#{$prefix}hover-color);
+      color: var(--maz-text-color);
+      background-color: var(--maz-hover-color);
     }
   }
 
   &:hover,
   &:focus {
-    color: var(--#{$prefix}text-color);
-    background-color: var(--#{$prefix}hover-color);
+    color: var(--maz-text-color);
+    background-color: var(--maz-hover-color);
   }
 }
 

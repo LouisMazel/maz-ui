@@ -8,7 +8,7 @@
     z-index: 1050;
     width: 100%;
     height: 100%;
-    background-color: var(--#{$prefix}overlay-color);
+    background-color: var(--maz-overlay-color);
     transition: all 300ms ease;
     overflow-y: auto;
     overflow-x: hidden;
@@ -21,7 +21,7 @@
   }
 
   &__body {
-    color: var(--#{$prefix}text-color);
+    color: var(--maz-text-color);
   }
 
   &__container {
@@ -33,9 +33,9 @@
   }
 
   &__header {
-    background-color: var(--#{$prefix}primary);
-    border-top-left-radius: var(--#{$prefix}border-radius);
-    border-top-right-radius: var(--#{$prefix}border-radius);
+    background-color: var(--maz-primary);
+    border-top-left-radius: var(--maz-border-radius);
+    border-top-right-radius: var(--maz-border-radius);
     border: none;
 
     &__title {
@@ -57,19 +57,19 @@
   }
 
   &__footer {
-    border-bottom-left-radius: var(--#{$prefix}border-radius);
-    border-bottom-right-radius: var(--#{$prefix}border-radius);
+    border-bottom-left-radius: var(--maz-border-radius);
+    border-bottom-right-radius: var(--maz-border-radius);
   }
 
   &--success {
     .maz-dialog__header {
-      background-color: var(--#{$prefix}success);
+      background-color: var(--maz-success);
     }
   }
 
   &--danger {
     .maz-dialog__header {
-      background-color: var(--#{$prefix}danger);
+      background-color: var(--maz-danger);
     }
   }
 

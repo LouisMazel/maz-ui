@@ -14,13 +14,13 @@
     }
 
     &:first-child {
-      border-top-left-radius: var(--#{$prefix}border-radius);
-      border-bottom-left-radius: var(--#{$prefix}border-radius);
+      border-top-left-radius: var(--maz-border-radius);
+      border-bottom-left-radius: var(--maz-border-radius);
     }
 
     &:last-child {
-      border-top-right-radius: var(--#{$prefix}border-radius);
-      border-bottom-right-radius: var(--#{$prefix}border-radius);
+      border-top-right-radius: var(--maz-border-radius);
+      border-bottom-right-radius: var(--maz-border-radius);
     }
 
     &.maz-btn--outline {
@@ -29,13 +29,13 @@
       }
 
       &:first-child::after {
-        border-top-left-radius: var(--#{$prefix}border-radius);
-        border-bottom-left-radius: var(--#{$prefix}border-radius);
+        border-top-left-radius: var(--maz-border-radius);
+        border-bottom-left-radius: var(--maz-border-radius);
       }
 
       &:last-child::after {
-        border-top-right-radius: var(--#{$prefix}border-radius);
-        border-bottom-right-radius: var(--#{$prefix}border-radius);
+        border-top-right-radius: var(--maz-border-radius);
+        border-bottom-right-radius: var(--maz-border-radius);
       }
 
       &.maz-btn--rounded {

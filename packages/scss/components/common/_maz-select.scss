@@ -17,10 +17,10 @@
     height: 24px;
 
     &__arrow {
-      color: var(--#{$prefix}icon-color);
+      color: var(--maz-icon-color);
 
       .arrow {
-        fill: var(--#{$prefix}icon-color);
+        fill: var(--maz-icon-color);
       }
     }
   }
@@ -49,7 +49,7 @@
 
   &__tag {
     margin-right: 4px;
-    border-radius: calc(var(--#{$prefix}border-radius) / 2);
+    border-radius: calc(var(--maz-border-radius) / 2);
     color: white;
     height: 100%;
     padding-right: .2857rem;
@@ -86,9 +86,9 @@
     margin: 0;
     position: absolute;
     overflow: hidden;
-    border-radius: var(--#{$prefix}border-radius);
+    border-radius: var(--maz-border-radius);
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
-    background-color: var(--#{$prefix}bg-color);
+    background-color: var(--maz-bg-color);
 
     &:not(.maz-select__options-list--top) {
       top: 100%;
@@ -116,13 +116,13 @@
       cursor: pointer;
       background-color: transparent;
       border: none;
-      color: var(--#{$prefix}text-color);
+      color: var(--maz-text-color);
       outline: none;
       transition: all 300ms ease-in-out;
 
       &:hover,
       &.keyboard-selected {
-        background-color: var(--#{$prefix}hover-color);
+        background-color: var(--maz-hover-color);
       }
     }
 
@@ -142,14 +142,14 @@
   @each $name in $color_names {
     &--#{$name} {
       .maz-select__options-list__item.selected {
-        background-color: var(--#{$prefix}#{$name});
+        background-color: var(--maz-#{$name});
 
         &:hover {
-          background-color: var(--#{$prefix}#{$name});
+          background-color: var(--maz-#{$name});
         }
 
         &.keyboard-selected {
-          background-color: var(--#{$prefix}#{$name});
+          background-color: var(--maz-#{$name});
         }
       }
     }

@@ -3,12 +3,12 @@
   font-weight: 300;
 
   .maz-picker__arrow {
-    color: var(--#{$prefix}icon-color);
+    color: var(--maz-icon-color);
     outline: none;
     transition: all .25s cubic-bezier(.645, .045, .355, 1);
 
     svg path.arrow {
-      fill: var(--#{$prefix}icon-color);
+      fill: var(--maz-icon-color);
     }
   }
 

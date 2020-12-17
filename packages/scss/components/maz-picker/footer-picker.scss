@@ -18,7 +18,7 @@
 @each $name in $color_names {
   .maz-picker--#{$name} {
     .footer-picker__now {
-      color: var(--#{$prefix}#{$name});
+      color: var(--maz-#{$name});
     }
   }
 }

@@ -19,8 +19,8 @@
     z-index: -1;
     left: 0;
     right: 0;
-    border-top: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color);
-    border-bottom: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color);
+    border-top: var(--maz-border-width) solid var(--maz-border-color);
+    border-bottom: var(--maz-border-width) solid var(--maz-border-color);
   }
 
   &__column {
@@ -68,11 +68,11 @@
     .time-picker__column__item {
       &:hover,
       &:focus {
-        background-color: var(--#{$prefix}#{$name}-alpha-40);
+        background-color: var(--maz-#{$name}-alpha-40);
       }
 
       &.maz-active {
-        background-color: var(--#{$prefix}#{$name});
+        background-color: var(--maz-#{$name});
       }
     }
   }

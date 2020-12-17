@@ -18,22 +18,22 @@
     box-shadow: none !important;
 
     &:not(:last-of-type) {
-      margin-right: var(--#{$prefix}border-width);
+      margin-right: var(--maz-border-width);
     }
 
     &.active {
-      color: var(--#{$prefix}primary);
+      color: var(--maz-primary);
       position: relative;
     }
 
     &.disabled {
-      color: var(--#{$prefix}disabled-color);
+      color: var(--maz-disabled-color);
       cursor: not-allowed;
     }
 
     &:hover,
     &:focus {
-      background-color: var(--#{$prefix}hover-color);
+      background-color: var(--maz-hover-color);
       text-decoration: none;
     }
   }
@@ -48,7 +48,7 @@
 
     .maz-sub-bar {
       margin: 0 auto;
-      background: var(--#{$prefix}primary);
+      background: var(--maz-primary);
       height: 2px;
       width: 60%;
     }

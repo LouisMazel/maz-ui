@@ -2,7 +2,7 @@
   transition: all .25s cubic-bezier(.645, .045, .355, 1);
 
   path.arrow {
-    fill: var(--#{$prefix}text-color);
+    fill: var(--maz-text-color);
   }
 
   &.is-white path.arrow {

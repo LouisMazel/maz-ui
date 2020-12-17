@@ -1,7 +1,7 @@
 .maz-slider {
   &__bar {
     position: relative;
-    border-radius: calc(var(--#{$prefix}border-radius) * 2);
+    border-radius: calc(var(--maz-border-radius) * 2);
   }
 
   &__divider {
@@ -14,12 +14,12 @@
     position: absolute;
     outline: none;
     cursor: pointer;
-    color: var(--#{$prefix}text-color);
+    color: var(--maz-text-color);
     border-radius: 1em;
     box-shadow: 0 0 6px 0 rgba(48, 48, 48, .3);
     border: none;
     font-size: 1.2em;
-    background-color: var(--#{$prefix}bg-color-light);
+    background-color: var(--maz-bg-color-light);
     padding: 0 4px;
     font-weight: bold;
     line-height: 1;
@@ -34,7 +34,7 @@
 
     &::before {
       content: attr(data-label);
-      color: var(--#{$prefix}text-color);
+      color: var(--maz-text-color);
       font-size: 1em;
       font-weight: normal;
       position: absolute;
@@ -42,7 +42,7 @@
     }
 
     &:hover {
-      background-color: var(--#{$prefix}hover-color);
+      background-color: var(--maz-hover-color);
     }
   }
 
@@ -52,11 +52,11 @@
     &.maz-slider--#{$name} {
       .maz-slider {
         &__bar {
-          background-color: var(--#{$prefix}#{$name});
+          background-color: var(--maz-#{$name});
         }
 
         &__btn.active-cursor {
-          box-shadow: 0 0 0 .143rem var(--#{$prefix}#{$name}-alpha-60);
+          box-shadow: 0 0 0 .143rem var(--maz-#{$name}-alpha-60);
         }
       }
     }
