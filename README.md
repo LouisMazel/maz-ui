@@ -59,25 +59,7 @@ Vue.use(MazUi);
 
 ## Contribute
 
-### Setting up development server
-
-Install the development dependencies by running:
-
-```shell
-make install
-```
-
-Once your dependencies are installed, start the development server with:
-
-```shell
-make serve
-```
-
-This will start the development server available at [http://localhost:3000](http://localhost:3000).
-
-### Lint
-
-Manage by Husky
+Read documentation of [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 ## LICENSE
 
