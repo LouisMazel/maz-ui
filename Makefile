@@ -16,15 +16,15 @@ endef
 
 define publish
 	@$(call bump-version,$(1))
-	npm run gen:docs
-	npm run build
-	npm run lint:fix
-	git commit -m "release(v$(VERSION)): $(1)"
-	git add --all
-	git tag "v$(VERSION)" -m "v$(VERSION)"
-	git push origin HEAD
-	npm publish
-	make deploy-doc
+	# npm run gen:docs
+	# npm run build
+	# npm run lint:fix
+	# git commit -m "release(v$(VERSION)): $(1)"
+	# git add --all
+	# git tag "v$(VERSION)" -m "v$(VERSION)"
+	# git push origin HEAD
+	# npm publish
+	# make deploy-doc
 endef
 
 clean: ## Clean node modules
