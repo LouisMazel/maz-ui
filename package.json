@@ -26,7 +26,6 @@
     "gen:types": "tsc --declaration",
     "gen:css": "node build/gen-scss-index",
     "gen:docs": "vuese gen",
-    "pre-publish": "npm run lint:fix && npm i && npm run build",
     "copy:types": "cp ./types/*.d.ts ./lib",
     "cli": "node ./bin/index.js"
   },
