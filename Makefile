@@ -15,12 +15,12 @@ define pre-publish
 endef
 
 define publish
-	@$(call bump-version,$(1))
+	# @$(call bump-version,$(1))
 	npm run gen:docs
-	npm run build
 	npm run lint:fix
-	git commit -m "release(v$(VERSION)): $(1)"
+	# npm run build
 	git add --all
+	git commit -m "release(v$(VERSION)): $(1)"
 	git push origin HEAD
 	# npm publish
 	# make deploy-doc
