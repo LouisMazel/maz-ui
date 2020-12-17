@@ -59,7 +59,7 @@ Vue.use(MazUi);
 
 ## Contribute
 
-Read documentation of [CONTRIBUTING.md](./CONTRIBUTING.md)
+Read documentation of [CONTRIBUTING.md](./.github/CONTRIBUTING.md)
 
 ## LICENSE
 
