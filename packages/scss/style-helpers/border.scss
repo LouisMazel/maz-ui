@@ -5,12 +5,12 @@
 @import './../_variables/states';
 
 .#{$prefix}border-color {
-  border-color: var(--border-color);
+  border-color: var(--#{$prefix}border-color);
 }
 
 @each $state in $states {
   .#{$prefix}border-color-#{$state}:#{$state} {
-    border-color: var(--border-color-darken);
+    border-color: var(--#{$prefix}border-color-darken);
   }
 }
 
@@ -20,7 +20,7 @@
 
 @each $name in $color_names {
   .#{$prefix}border-#{$name} {
-    border-color: var(--#{$name});
+    border-color: var(--#{$prefix}#{$name});
   }
 }
 
@@ -49,11 +49,11 @@
 }
 
 .#{$prefix}border {
-  border-width: var(--border-width);
+  border-width: var(--#{$prefix}border-width);
 }
 
 @each $position in $orientations {
   .#{$prefix}border-#{$position} {
-    border-#{$position}-width: var(--border-width);
+    border-#{$position}-width: var(--#{$prefix}border-width);
   }
 }

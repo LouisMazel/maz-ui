@@ -49,7 +49,7 @@ export default {
   .frontmatter-markdown {
     margin: auto;
     padding: 20px;
-    background-color: var(--bg-color);
+    background-color: var(--maz-bg-color);
     font-size: 13px;
 
     h1 {
@@ -59,7 +59,7 @@ export default {
     }
 
     h2 {
-      border-bottom: 1px solid var(--hover-color);
+      border-bottom: 1px solid var(--maz-hover-color);
       font-family: GeomanistLight, sans-serif;
       color: #333;
       font-size: 1.5rem;
@@ -78,7 +78,7 @@ export default {
     }
 
     h6 {
-      color: var(--text-muted);
+      color: var(--maz-text-muted);
       background-color: inherit;
       font-size: 1rem;
     }
@@ -86,8 +86,8 @@ export default {
     hr {
       height: .2rem;
       border: 0;
-      color: var(--hover-color);
-      background-color: var(--hover-color);
+      color: var(--maz-hover-color);
+      background-color: var(--maz-hover-color);
     }
 
     p,
@@ -113,13 +113,13 @@ export default {
     table,
     th,
     td {
-      border: 1px solid var(--hover-color);
+      border: 1px solid var(--maz-hover-color);
       border-radius: 3px;
       padding: 5px;
     }
 
     tr:nth-child(even) {
-      background-color: var(--hover-color);
+      background-color: var(--maz-hover-color);
     }
 
     a,
@@ -131,7 +131,7 @@ export default {
 
     #message {
       border-radius: 6px;
-      border: 1px solid var(--hover-color);
+      border: 1px solid var(--maz-hover-color);
       display: block;
       width: 100%;
       height: 60px;
@@ -143,8 +143,8 @@ export default {
       font-size: 10pt;
       padding: 4px 6px;
       border-radius: 5px;
-      border: 1px solid var(--hover-color);
-      background-color: var(--hover-color);
+      border: 1px solid var(--maz-hover-color);
+      background-color: var(--maz-hover-color);
     }
 
     code,
@@ -159,13 +159,13 @@ export default {
     }
 
     code {
-      border: 1px solid var(--hover-color);
+      border: 1px solid var(--maz-hover-color);
       margin: 0 2px;
       padding: 0 5px;
     }
 
     pre {
-      border: 1px solid var(--hover-color);
+      border: 1px solid var(--maz-hover-color);
       overflow: auto;
       padding: 4px 8px;
     }
@@ -177,11 +177,11 @@ export default {
     }
 
     #ws {
-      background-color: var(--hover-color);
+      background-color: var(--maz-hover-color);
     }
 
     .send {
-      color: var(--success);
+      color: var(--maz-success);
     }
 
     .server {
@@ -189,12 +189,12 @@ export default {
     }
 
     .error {
-      color: var(--danger);
+      color: var(--maz-danger);
     }
 
     blockquote {
-      background: var(--hover-color);
-      border-left: 4px solid var(--primary);
+      background: var(--maz-hover-color);
+      border-left: 4px solid var(--maz-primary);
       // border-radius: $border-radius;
       padding: .5em 10px;
     }

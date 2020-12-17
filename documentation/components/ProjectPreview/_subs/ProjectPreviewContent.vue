@@ -29,11 +29,11 @@ export default {
   .project-preview-content {
     &__text {
       h4 {
-        color: var(--text-color);
+        color: var(--maz-text-color);
       }
 
       p {
-        color: var(--text-muted);
+        color: var(--maz-text-muted);
       }
     }
   }

@@ -6,6 +6,6 @@
 
 @each $name in $color_names {
   .#{$prefix}focus-bg-#{$name}:focus {
-    background-color: var(--#{$name});
+    background-color: var(--#{$prefix}#{$name});
   }
 }

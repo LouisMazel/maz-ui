@@ -71,9 +71,9 @@
   @each $name in $color_names {
     &--#{$name} {
       .maz-switch__input:focus + .maz-switch__toggle span {
-        background-color: var(--#{$name}-darken);
-        box-shadow: 0 0 0 .143rem var(--#{$name}-alpha-60);
-        border-radius: var(--border-radius);
+        background-color: var(--maz-#{$name}-darken);
+        box-shadow: 0 0 0 .143rem var(--maz-#{$name}-alpha-60);
+        border-radius: var(--maz-border-radius);
       }
     }
   }

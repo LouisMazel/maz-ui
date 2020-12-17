@@ -1,15 +1,15 @@
 .maz-collapse {
-  color: var(--text-color);
-  border-radius: var(--border-radius);
+  color: var(--maz-text-color);
+  border-radius: var(--maz-border-radius);
   overflow: hidden;
-  background-color: var(--bg-color);
-  border: var(--border-width) solid var(--border-color);
+  background-color: var(--maz-bg-color);
+  border: var(--maz-border-width) solid var(--maz-border-color);
 
   &__header-btn {
     background-color: transparent;
     border: none;
     border-radius: 0;
-    color: var(--text-color);
+    color: var(--maz-text-color);
     width: 100%;
     outline: none;
     font-size: 1rem;
@@ -20,6 +20,6 @@
   }
 
   &__content {
-    border-top: var(--border-width) solid var(--border-color);
+    border-top: var(--maz-border-width) solid var(--maz-border-color);
   }
 }

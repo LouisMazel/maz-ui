@@ -87,7 +87,7 @@ export default {
 
   .maz-is-dark {
     .transparent {
-      color: var(--text-color-dark) !important;
+      color: var(--maz-text-color-dark) !important;
     }
   }
 </style>

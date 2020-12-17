@@ -69,7 +69,7 @@ export default {
       grid-gap: 20px;
 
       h4 {
-        color: var(--text-color) !important;
+        color: var(--maz-text-color) !important;
 
         &.text-white {
           color: white !important;

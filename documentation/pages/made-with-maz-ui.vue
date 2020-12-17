@@ -84,7 +84,7 @@ export default {
 
 <style lang="scss" scoped>
   .made-with-maz-ui {
-    color: var(--text-color);
+    color: var(--maz-text-color);
 
     @media only screen and (max-width: $breakpoint-laptop-s) {
       &__main {

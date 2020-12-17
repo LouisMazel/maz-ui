@@ -185,7 +185,7 @@ export default {
   .documentation {
     &__component-desc {
       &__container {
-        border-left: var(--border-width) solid var(--primary);
+        border-left: var(--maz-border-width) solid var(--maz-primary);
 
         h3 {
           font-size: 1.2rem;

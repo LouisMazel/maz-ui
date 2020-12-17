@@ -2,34 +2,34 @@
 
 @each $name in $color_names {
   .#{$prefix}bg-#{$name} {
-    background-color: var(--#{$name});
+    background-color: var(--#{$prefix}#{$name});
   }
 
   .#{$prefix}bg-#{$name}-after::after {
-    background-color: var(--#{$name});
+    background-color: var(--#{$prefix}#{$name});
   }
 
   .#{$prefix}bg-#{$name}-before::before {
-    background-color: var(--#{$name});
+    background-color: var(--#{$prefix}#{$name});
   }
 
   .#{$prefix}bg-#{$name}-transparency {
-    background-color: var(--#{$name}-alpha-50);
+    background-color: var(--#{$prefix}#{$name}-alpha-50);
   }
 
   .#{$prefix}bg-#{$name}-after-transparency::after {
-    background-color: var(--#{$name}-alpha-50);
+    background-color: var(--#{$prefix}#{$name}-alpha-50);
   }
 
   .#{$prefix}bg-#{$name}-before-transparency::before {
-    background-color: var(--#{$name}-alpha-50);
+    background-color: var(--#{$prefix}#{$name}-alpha-50);
   }
 }
 
 .#{$prefix}bg-color {
-  background-color: var(--bg-color);
+  background-color: var(--#{$prefix}bg-color);
 }
 
 .#{$prefix}bg-color-light {
-  background-color: var(--bg-color-light);
+  background-color: var(--#{$prefix}bg-color-light);
 }
