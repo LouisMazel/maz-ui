@@ -1,5 +1,35 @@
+define pre-publish
+	npm run gen:docs && \
+	npm run pre-publish && \
+	VERSION=`node -pe "require('./package.json').version"` && \
+	NEXT_VERSION=`node -pe "require('semver').inc(\"$$VERSION\", '$(1)')"` && \
+	node -e "\
+		var j = require('./package.json');\
+		j.version = \"$$NEXT_VERSION\";\
+		var s = JSON.stringify(j, null, 2);\
+		require('fs').writeFileSync('./package.json', s);" && \
+	git add --all && \
+	git commit -m "chore(v$$NEXT_VERSION): pre-build" && \
+	# git push origin HEAD
+endef
 
-.PHONY: clean resintall install-lib install-doc install serve start publish publish-beta build-doc serve-build deploy-doc gen-vuese
+define publish
+	npm run gen:docs && \
+	npm run pre-publish && \
+	VERSION=`node -pe "require('./package.json').version"` && \
+	NEXT_VERSION=`node -pe "require('semver').inc(\"$$VERSION\", '$(1)')"` && \
+	node -e "\
+		var j = require('./package.json');\
+		j.version = \"$$NEXT_VERSION\";\
+		var s = JSON.stringify(j, null, 2);\
+		require('fs').writeFileSync('./package.json', s);" && \
+	git add --all && \
+	git commit -m "release(v$$NEXT_VERSION): $(1)" && \
+	git tag "v$$NEXT_VERSION" -m "v$$NEXT_VERSION" && \
+	git push origin HEAD && \
+	npm publish && \
+	make deploy-doc
+endef
 
 clean: ## Clean node modules
 	rm -rf ./node_modules
@@ -27,39 +57,30 @@ install-lib: ## Install node modules of library
 install-doc: ## Install node modules of documentation
 	cd documentation && npm ci
 
-install-dep: ## Install node modules
-	cd documentation && npm i $(dep) -S
-
 serve: ## Run dev server
 	cd documentation && npm run serve
-
-start: ## Install node modules, build app and run dev server
-	make clean install serve
-
-build-entries:
-	npm run build:entries
-
-build-doc:
-	cd documentation && npm run build:gh-pages && npm run export:gh-pages
 
 gen-vuese:
 	npm run gen:docs
 
-serve-build:
-	cd documentation && npm run serve:build
-
 deploy-doc:
-	make build-doc
+	cd documentation && npm run build:gh-pages && npm run export:gh-pages
 	cd documentation && npm run deploy
-
-publish:
-	npm version $(version) --allow-same-version
-	npm run pre-publish
-	npm publish
-	git push origin HEAD
 
 publish-beta:
 	npm version $(version) --allow-same-version
 	npm run pre-publish
 	npm publish --tag beta
 	git push origin HEAD
+
+pre-publish:
+	@$(call pre-publish,patch)
+
+publish:
+	@$(call release,patch)
+
+publish-minor:
+	@$(call release,minor)
+
+publish-major:
+	@$(call release,major)
