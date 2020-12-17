@@ -105,13 +105,13 @@ export default {
     }
 
     h2 {
-      color: var(--text-color);
+      color: var(--maz-text-color);
       font-size: 2.143rem;
       line-height: 1.5;
     }
 
     h3 {
-      color: var(--third);
+      color: var(--maz-third);
     }
   }
 </style>

@@ -390,11 +390,11 @@ export default {
   .maz-sidebar-doc {
     &__container {
       padding: 0;
-      border-radius: var(--border-radius);
+      border-radius: var(--maz-border-radius);
     }
 
     &__content {
-      background-color: var(--bg-color-light);
+      background-color: var(--maz-bg-color-light);
 
       & * {
         margin-bottom: .5rem;

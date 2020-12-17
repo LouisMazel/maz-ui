@@ -8,6 +8,7 @@ const { Command } = require('commander')
 
 const VERSION = require('../package').version
 const NAME = require('../package').name
+const PREFIX = 'maz-'
 const generateRootCss = require('./lib/index.js')
 
 const program = new Command()
@@ -56,7 +57,7 @@ program
     const output = config.output
     const colors = config.theme
     delete config.output
-    generateRootCss(colors, output)
+    generateRootCss(PREFIX, colors, output)
     process.exit(0)
   })
 

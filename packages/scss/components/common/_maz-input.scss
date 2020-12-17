@@ -7,7 +7,7 @@ $TEXTEAREA_SIZE: 9.375rem !default;
 
 .maz-input {
   position: relative;
-  background-color: var(--bg-color);
+  background-color: var(--#{$prefix}bg-color);
   transition: all 300ms ease-in-out;
   height: $MD_SIZE;
   min-height: $MD_SIZE;
@@ -26,7 +26,7 @@ $TEXTEAREA_SIZE: 9.375rem !default;
     opacity: 0;
     transition: all 300ms ease-in-out;
     font-size: .786rem;
-    color: var(--placeholder-color);
+    color: var(--#{$prefix}placeholder-color);
   }
 
   &__input {
@@ -35,7 +35,7 @@ $TEXTEAREA_SIZE: 9.375rem !default;
     position: relative;
     width: 100%;
     padding: 0 .8571rem;
-    color: var(--text-color);
+    color: var(--#{$prefix}text-color);
     font-weight: 400;
     appearance: none;
     border: none;
@@ -54,34 +54,34 @@ $TEXTEAREA_SIZE: 9.375rem !default;
     }
 
     &::-webkit-input-placeholder {
-      color: var(--placeholder-color);
+      color: var(--#{$prefix}placeholder-color);
     }
 
     &::-moz-placeholder {
-      color: var(--placeholder-color);
+      color: var(--#{$prefix}placeholder-color);
     }
 
     &:-ms-input-placeholder {
-      color: var(--placeholder-color);
+      color: var(--#{$prefix}placeholder-color);
     }
 
     &::-ms-input-placeholder {
-      color: var(--placeholder-color);
+      color: var(--#{$prefix}placeholder-color);
     }
 
     &:-moz-placeholder {
-      color: var(--placeholder-color);
+      color: var(--#{$prefix}placeholder-color);
     }
 
     &::placeholder {
-      color: var(--placeholder-color);
+      color: var(--#{$prefix}placeholder-color);
     }
   }
 
   &__icon {
     position: absolute;
     z-index: 1;
-    color: var(--icon-color);
+    color: var(--#{$prefix}icon-color);
     font-size: 1.286rem;
     top: 0;
     bottom: 0;
@@ -109,7 +109,7 @@ $TEXTEAREA_SIZE: 9.375rem !default;
     appearance: none;
     border: none;
     background: transparent;
-    color: var(--icon-color);
+    color: var(--#{$prefix}icon-color);
     border-radius: $clear-size;
     cursor: pointer;
     font-size: 1rem;
@@ -138,7 +138,7 @@ $TEXTEAREA_SIZE: 9.375rem !default;
 
     &:hover {
       color: white;
-      background-color: var(--icon-color);
+      background-color: var(--#{$prefix}icon-color);
     }
   }
 
@@ -188,7 +188,7 @@ $TEXTEAREA_SIZE: 9.375rem !default;
         &.maz-textarea {
           transition: all 0ms;
           padding-top: 0;
-          min-height: calc(#{$TEXTEAREA_SIZE} - calc(var(--border-width) * 2) - 1.429rem);
+          min-height: calc(#{$TEXTEAREA_SIZE} - calc(var(--#{$prefix}border-width) * 2) - 1.429rem);
         }
       }
     }
@@ -197,14 +197,14 @@ $TEXTEAREA_SIZE: 9.375rem !default;
   &.is-disabled {
     cursor: not-allowed;
 
-    $disabled-color-text: var(--disabled-color-darken);
+    $disabled-color-text: var(--#{$prefix}disabled-color-darken);
 
-    background-color: var(--disabled-color);
-    border-color: var(--border-color);
+    background-color: var(--#{$prefix}disabled-color);
+    border-color: var(--#{$prefix}border-color);
 
     &:hover,
     &:focus {
-      border-color: var(--border-color);
+      border-color: var(--#{$prefix}border-color);
     }
 
     .maz-input {
@@ -294,13 +294,13 @@ $TEXTEAREA_SIZE: 9.375rem !default;
   }
 
   &__loader {
-    bottom: -(var(--border-width) / 2);
-    height: var(--border-width);
-    left: var(--border-radius) / 2;
+    bottom: -(var(--#{$prefix}border-width) / 2);
+    height: var(--#{$prefix}border-width);
+    left: var(--#{$prefix}border-radius) / 2;
     width: calc(100% - .5714rem);
     position: absolute;
     overflow: hidden;
-    border-radius: var(--border-radius);
+    border-radius: var(--#{$prefix}border-radius);
 
     &.maz-textarea {
       bottom: .4286rem;
@@ -321,29 +321,29 @@ $TEXTEAREA_SIZE: 9.375rem !default;
     &--#{$name} {
       .maz-input {
         &__loader__progress-bar {
-          background-color: var(--#{$name});
+          background-color: var(--#{$prefix}#{$name});
         }
       }
 
       &.is-focused {
         &.maz-input--#{$name} {
-          border-color: var(--#{$name});
+          border-color: var(--#{$prefix}#{$name});
 
           &:hover,
           &:focus {
-            border-color: var(--#{$name});
+            border-color: var(--#{$prefix}#{$name});
           }
 
           .maz-input {
             &__label {
-              color: var(--#{$name});
+              color: var(--#{$prefix}#{$name});
             }
 
             &__icon {
-              color: var(--#{$name});
+              color: var(--#{$prefix}#{$name});
 
               path.arrow {
-                fill: var(--#{$name});
+                fill: var(--#{$prefix}#{$name});
               }
             }
           }
@@ -375,17 +375,17 @@ $TEXTEAREA_SIZE: 9.375rem !default;
 
   &.is-valid,
   &.is-focused.is-valid {
-    @include color_state(var(--success));
+    @include color_state(var(--#{$prefix}success));
   }
 
   &.has-warning,
   &.is-focused.has-warning {
-    @include color_state(var(--warning));
+    @include color_state(var(--#{$prefix}warning));
   }
 
   &.has-error,
   &.is-focused.has-error {
-    @include color_state(var(--danger));
+    @include color_state(var(--#{$prefix}danger));
   }
 
   input:-webkit-autofill,
@@ -397,12 +397,12 @@ $TEXTEAREA_SIZE: 9.375rem !default;
   select:-webkit-autofill,
   select:-webkit-autofill:hover,
   select:-webkit-autofill:focus {
-    -webkit-text-fill-color: var(--text-color);
-    box-shadow: 0 0 0 1000px var(--bg-color) inset;
+    -webkit-text-fill-color: var(--#{$prefix}text-color);
+    box-shadow: 0 0 0 1000px var(--#{$prefix}bg-color) inset;
   }
 }
 
 .maz-is-dark .maz-input,
 .maz-is-dark.maz-input {
-  background-color: var(--bg-color-light);
+  background-color: var(--#{$prefix}bg-color-light);
 }

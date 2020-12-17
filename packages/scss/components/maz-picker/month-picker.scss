@@ -47,7 +47,7 @@
       font-weight: 700;
 
       &:not(.maz-active)::before {
-        border-radius: var(--border-radius);
+        border-radius: var(--#{$prefix}border-radius);
         background-color: rgba(black, .15);
       }
     }
@@ -96,19 +96,19 @@
     .month-picker {
       &__day {
         &.is-between-hoverred {
-          background-color: var(--#{$name}-alpha-40);
+          background-color: var(--#{$prefix}#{$name}-alpha-40);
         }
 
         &.is-in-range {
-          background-color: var(--#{$name}-alpha-60);
+          background-color: var(--#{$prefix}#{$name}-alpha-60);
         }
 
         &.maz-active:not(:disabled) {
-          background-color: var(--#{$name});
+          background-color: var(--#{$prefix}#{$name});
         }
 
         &:hover {
-          background-color: var(--#{$name}-alpha-40);
+          background-color: var(--#{$prefix}#{$name}-alpha-40);
         }
 
         &:disabled {

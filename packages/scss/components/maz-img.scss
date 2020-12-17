@@ -62,6 +62,6 @@
     position: absolute;
     bottom: 0;
     left: 0;
-    background-color: var(--overlay-color);
+    background-color: var(--#{$prefix}overlay-color);
   }
 }

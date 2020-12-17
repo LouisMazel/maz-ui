@@ -1,6 +1,6 @@
 .pickers-container {
-  background-color: var(--bg-color);
-  border-radius: var(--border-radius);
+  background-color: var(--#{$prefix}bg-color);
+  border-radius: var(--#{$prefix}border-radius);
   overflow: hidden;
   z-index: 9;
   outline: none;

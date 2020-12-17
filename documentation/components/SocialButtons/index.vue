@@ -37,12 +37,12 @@ export default {
   .social-buttons {
     a {
       margin-right: 15px;
-      color: var(--primary);
-      background-color: var(--bg-color);
+      color: var(--maz-primary);
+      background-color: var(--maz-bg-color);
 
       &:hover,
       &:focus {
-        background-color: var(--hover-color);
+        background-color: var(--maz-hover-color);
       }
 
       &:last-child {

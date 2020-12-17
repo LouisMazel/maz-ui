@@ -18,22 +18,22 @@
     box-shadow: none !important;
 
     &:not(:last-of-type) {
-      margin-right: var(--border-width);
+      margin-right: var(--#{$prefix}border-width);
     }
 
     &.active {
-      color: var(--primary);
+      color: var(--#{$prefix}primary);
       position: relative;
     }
 
     &.disabled {
-      color: var(--disabled-color);
+      color: var(--#{$prefix}disabled-color);
       cursor: not-allowed;
     }
 
     &:hover,
     &:focus {
-      background-color: var(--hover-color);
+      background-color: var(--#{$prefix}hover-color);
       text-decoration: none;
     }
   }
@@ -48,7 +48,7 @@
 
     .maz-sub-bar {
       margin: 0 auto;
-      background: var(--primary);
+      background: var(--#{$prefix}primary);
       height: 2px;
       width: 60%;
     }

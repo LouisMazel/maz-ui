@@ -8,12 +8,12 @@ $SPACING: .2857rem !default;
   $this: &;
 
   position: relative;
-  border: var(--border-width) solid var(--border-color);
-  border-radius: var(--border-radius);
+  border: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color);
+  border-radius: var(--#{$prefix}border-radius);
   padding: 0 .5714rem;
   width: 100%;
   min-height: $MD_SIZE;
-  background-color: var(--bg-color);
+  background-color: var(--#{$prefix}bg-color);
   overflow: hidden;
   transition-duration: .3s;
 
@@ -32,30 +32,30 @@ $SPACING: .2857rem !default;
     padding-right: .2857rem;
     padding-bottom: .2857rem;
     padding-top: .2857rem;
-    color: var(--text-color);
+    color: var(--#{$prefix}text-color);
 
     &::-webkit-input-placeholder {
-      color: var(--placeholder-color);
+      color: var(--#{$prefix}placeholder-color);
     }
 
     &::-moz-placeholder {
-      color: var(--placeholder-color);
+      color: var(--#{$prefix}placeholder-color);
     }
 
     &:-ms-input-placeholder {
-      color: var(--placeholder-color);
+      color: var(--#{$prefix}placeholder-color);
     }
 
     &::-ms-input-placeholder {
-      color: var(--placeholder-color);
+      color: var(--#{$prefix}placeholder-color);
     }
 
     &:-moz-placeholder {
-      color: var(--placeholder-color);
+      color: var(--#{$prefix}placeholder-color);
     }
 
     &::placeholder {
-      color: var(--placeholder-color);
+      color: var(--#{$prefix}placeholder-color);
     }
   }
 
@@ -64,18 +64,18 @@ $SPACING: .2857rem !default;
   @each $name in $color_names {
     &.maz-input-tags--#{$name} {
       &.is-focused:not(.is-disabled) {
-        border-color: var(--#{$name});
+        border-color: var(--#{$prefix}#{$name});
       }
     }
   }
 
   &.is-focused:not(.is-disabled) {
     &.has-error {
-      border-color: var(--danger);
+      border-color: var(--#{$prefix}danger);
     }
 
     &.is-valid {
-      border-color: var(--success);
+      border-color: var(--#{$prefix}success);
     }
   }
 
@@ -83,11 +83,11 @@ $SPACING: .2857rem !default;
     margin-right: $SPACING;
     margin-bottom: $SPACING;
     margin-top: $SPACING;
-    border-radius: calc(var(--border-radius) / 2);
+    border-radius: calc(var(--#{$prefix}border-radius) / 2);
     padding-right: .2857rem;
     padding-left: .5rem;
     color: white;
-    height: calc(#{$MD_SIZE} - #{$SPACING * 2} - calc(var(--border-width) * 2));
+    height: calc(#{$MD_SIZE} - #{$SPACING * 2} - calc(var(--#{$prefix}border-width) * 2));
 
     &__text {
       margin-right: .3571rem;
@@ -115,7 +115,7 @@ $SPACING: .2857rem !default;
     appearance: none;
     border: none;
     background-color: transparent;
-    color: var(--icon-color);
+    color: var(--#{$prefix}icon-color);
     border-radius: $clear-size;
     cursor: pointer;
     font-size: .857rem;
@@ -137,7 +137,7 @@ $SPACING: .2857rem !default;
       bottom: 0;
       width: $clear-size;
       height: $clear-size;
-      background-color: var(--border-color-darken);
+      background-color: var(--#{$prefix}border-color-darken);
       border-radius: $clear-size;
       transform: scale(0);
       transition: transform 200ms;
@@ -154,11 +154,11 @@ $SPACING: .2857rem !default;
   }
 
   &.is-disabled {
-    $disabled-color-text: var(--disabled-color-darken);
+    $disabled-color-text: var(--#{$prefix}disabled-color-darken);
 
     cursor: not-allowed;
     border-color: #CCC;
-    background-color: var(--disabled-color);
+    background-color: var(--#{$prefix}disabled-color);
     color: $disabled-color-text;
 
     #{$this}__input {
@@ -193,15 +193,15 @@ $SPACING: .2857rem !default;
 
   &__loader {
     bottom: 0;
-    height: var(--border-width);
-    left: calc(var(--border-radius) / 2);
+    height: var(--#{$prefix}border-width);
+    left: calc(var(--#{$prefix}border-radius) / 2);
     width: calc(100% - .5714rem);
     position: absolute;
     overflow: hidden;
-    border-radius: var(--border-radius);
+    border-radius: var(--#{$prefix}border-radius);
 
     &__progress-bar {
-      background-color: var(--primary);
+      background-color: var(--#{$prefix}primary);
       display: block;
       position: absolute;
       content: '';
@@ -224,7 +224,7 @@ $SPACING: .2857rem !default;
       // font-size: .857em;
       padding-right: .1429rem;
       padding-left: .3571rem;
-      height: calc(#{$SM_SIZE} - #{$SPACING * 2} - calc(var(--border-width) * 2));
+      height: calc(#{$SM_SIZE} - #{$SPACING * 2} - calc(var(--#{$prefix}border-width) * 2));
     }
   }
 
@@ -239,12 +239,12 @@ $SPACING: .2857rem !default;
     #{$this}__tag {
       padding-left: .7143rem;
       padding-right: .3571rem;
-      height: calc(#{$LG_SIZE} - #{$SPACING * 2} - calc(var(--border-width) * 2));
+      height: calc(#{$LG_SIZE} - #{$SPACING * 2} - calc(var(--#{$prefix}border-width) * 2));
     }
   }
 }
 
 .maz-is-dark .maz-input-tags,
 .maz-is-dark.maz-input-tags {
-  background-color: var(--bg-color-light);
+  background-color: var(--#{$prefix}bg-color-light);
 }

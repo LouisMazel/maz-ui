@@ -45,13 +45,13 @@
       #{$this}__editable-layer {
         opacity: 1;
         transform: scale(1);
-        background-color: var(--primary-alpha-40);
+        background-color: var(--#{$prefix}primary-alpha-40);
       }
     }
   }
 
   &.bordered {
-    border: calc(var(--border-width) * 2) solid var(--border-color);
+    border: calc(var(--#{$prefix}border-width) * 2) solid var(--#{$prefix}border-color);
   }
 
   &.has-link {
@@ -64,6 +64,6 @@
   }
 
   &.square {
-    border-radius: var(--border-radius);
+    border-radius: var(--#{$prefix}border-radius);
   }
 }

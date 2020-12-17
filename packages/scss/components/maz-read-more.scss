@@ -6,7 +6,7 @@
   }
 
   a {
-    color: var(--primary);
+    color: var(--#{$prefix}primary);
     font-size: .857rem;
     font-weight: 500;
   }

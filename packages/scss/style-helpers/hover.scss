@@ -1,7 +1,7 @@
 @import './../_variables/color_names';
 
 .#{$prefix}hover-bg-color:hover {
-  background-color: var(--hover-color);
+  background-color: var(--#{$prefix}hover-color);
 }
 
 .#{$prefix}no-hover-bg:hover {
@@ -10,6 +10,6 @@
 
 @each $name in $color_names {
   .#{$prefix}hover-bg-#{$name}:hover {
-    background-color: var(--#{$name});
+    background-color: var(--#{$prefix}#{$name});
   }
 }

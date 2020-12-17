@@ -1,7 +1,7 @@
 .pagination-arrow-btn {
-  background-color: var(--bg-color);
+  background-color: var(--#{$prefix}bg-color);
   margin-right: 10px;
-  color: var(--text-color);
+  color: var(--#{$prefix}text-color);
 
   &:last-child {
     margin-right: 0;
@@ -13,10 +13,10 @@
 
   &:hover,
   &:focus {
-    background-color: var(--hover-color);
+    background-color: var(--#{$prefix}hover-color);
   }
 
   &.maz-btn::before {
-    border-color: var(--hover-color);
+    border-color: var(--#{$prefix}hover-color);
   }
 }

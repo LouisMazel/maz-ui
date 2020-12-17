@@ -19,12 +19,12 @@
     }
 
     &:not(.is-active) {
-      background-color: var(--hover-color);
-      color: var(--grey);
+      background-color: var(--#{$prefix}hover-color);
+      color: var(--#{$prefix}grey);
 
       &:hover,
       &:focus {
-        background-color: var(--hover-color-darken);
+        background-color: var(--#{$prefix}hover-color-darken);
       }
     }
 

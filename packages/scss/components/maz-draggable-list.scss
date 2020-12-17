@@ -6,30 +6,30 @@
     position: relative;
     padding: .75rem 1.25rem;
     margin-bottom: -2px;
-    background-color: var(--bg-color);
-    border: var(--border-width) solid var(--hover-color);
+    background-color: var(--#{$prefix}bg-color);
+    border: var(--#{$prefix}border-width) solid var(--#{$prefix}hover-color);
     cursor: move;
     width: 100%;
     font-size: .875em;
-    color: var(--text-color);
+    color: var(--#{$prefix}text-color);
 
     & > * {
-      color: var(--text-color);
+      color: var(--#{$prefix}text-color);
     }
 
     &:hover {
-      background-color: var(--hover-color);
+      background-color: var(--#{$prefix}hover-color);
     }
 
     &:first-child {
-      border-top-left-radius: var(--border-radius);
-      border-top-right-radius: var(--border-radius);
+      border-top-left-radius: var(--#{$prefix}border-radius);
+      border-top-right-radius: var(--#{$prefix}border-radius);
     }
 
     &:last-child {
       margin-bottom: 0;
-      border-bottom-right-radius: var(--border-radius);
-      border-bottom-left-radius: var(--border-radius);
+      border-bottom-right-radius: var(--#{$prefix}border-radius);
+      border-bottom-left-radius: var(--#{$prefix}border-radius);
     }
   }
 

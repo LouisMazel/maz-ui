@@ -20,7 +20,7 @@
   }
 
   [type= 'checkbox'] + label::before {
-    border: var(--border-width) solid transparent;
+    border: var(--#{$prefix}border-width) solid transparent;
     content: '';
     position: absolute;
     left: 0;
@@ -33,7 +33,7 @@
   }
 
   [type= 'checkbox']:focus + label::before {
-    border: var(--border-width) solid var(--primary);
+    border: var(--#{$prefix}border-width) solid var(--#{$prefix}primary);
     content: '';
     position: absolute;
     left: 0;
@@ -47,7 +47,7 @@
 
   [type= 'checkbox']:not(:checked) {
     + label::before {
-      border-color: var(--border-color-darken);
+      border-color: var(--#{$prefix}border-color-darken);
     }
   }
 
@@ -79,23 +79,23 @@
   @each $name in $color_names {
     &--#{$name} {
       [type= 'checkbox']:checked + label::before {
-        border-color: var(--#{$name});
+        border-color: var(--#{$prefix}#{$name});
       }
 
       [type= 'checkbox']:not(:checked) + label::after,
       [type= 'checkbox']:checked + label::after {
-        background-color: var(--#{$name});
-        color: var(--#{$name});
+        background-color: var(--#{$prefix}#{$name});
+        color: var(--#{$prefix}#{$name});
       }
 
       [type= 'checkbox']:focus {
         + label::before {
-          box-shadow: 0 0 0 .143rem var(--#{$name}-alpha-60);
-          border-color: var(--#{$name}-darken);
+          box-shadow: 0 0 0 .143rem var(--#{$prefix}#{$name}-alpha-60);
+          border-color: var(--#{$prefix}#{$name}-darken);
         }
 
         + label::after {
-          background-color: var(--#{$name}-darken);
+          background-color: var(--#{$prefix}#{$name}-darken);
         }
       }
     }

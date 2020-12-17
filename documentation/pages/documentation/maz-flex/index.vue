@@ -340,24 +340,24 @@ export default {
   .maz-flex-doc .demo {
     .maz-flex {
       padding: 10px;
-      background-color: var(--secondary);
+      background-color: var(--maz-secondary);
       color: white;
-      border-radius: var(--border-radius);
+      border-radius: var(--maz-border-radius);
     }
 
     .maz-flex-1 {
       padding: 10px;
       background-color: dodgerblue;
       color: white;
-      border: var(--border-width) solid white;
-      border-radius: var(--border-radius);
+      border: var(--maz-border-width) solid white;
+      border-radius: var(--maz-border-radius);
     }
 
     & div {
       background-color: dodgerblue;
       padding: 10px;
-      border: var(--border-width) solid white;
-      border-radius: var(--border-radius);
+      border: var(--maz-border-width) solid white;
+      border-radius: var(--maz-border-radius);
     }
   }
 </style>

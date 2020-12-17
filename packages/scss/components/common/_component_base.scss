@@ -1,4 +1,4 @@
-html { font-size: var(--base-font-size); }
+html { font-size: var(--#{$prefix}base-font-size); }
 
 .maz-base-component {
   &,
@@ -13,6 +13,6 @@ html { font-size: var(--base-font-size); }
   @include font_family();
 
   &:not(.maz-btn) {
-    color: var(--text-color);
+    color: var(--#{$prefix}text-color);
   }
 }
