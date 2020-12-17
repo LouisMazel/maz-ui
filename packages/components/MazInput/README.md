@@ -16,12 +16,12 @@
 | type             | is the input size (`text` or `number`)                                           | `String`  | `false`  | text       |
 | leftIconName     | should be a [material icon](https://material.io/resources/icons/) name           | `String`  | `false`  | null       |
 | rightIconName    | should be a [material icon](https://material.io/resources/icons/) name           | `String`  | `false`  | null       |
-| error            | When is `true` the input has the error style (\$danger-color)                    | `Boolean` | `false`  | false      |
-| warning          | When is `true` the input has the warning style (\$warning-color)                 | `Boolean` | `false`  | false      |
+| error            | When is `true` the input has the error style                                     | `Boolean` | `false`  | false      |
+| warning          | When is `true` the input has the warning style                                   | `Boolean` | `false`  | false      |
 | disabled         | When is `true` the input is disable                                              | `Boolean` | `false`  | false      |
 | dark             | When is `true` the input has the dark theme                                      | `Boolean` | `false`  | false      |
 | readonly         | When is `true` the input is on readonly mode                                     | `Boolean` | `false`  | false      |
-| success          | When is `true` the input has the valid style (\$success-color)                   | `Boolean` | `false`  | false      |
+| success          | When is `true` the input has the valid style                                     | `Boolean` | `false`  | false      |
 | required         | When is `true` the input become required & has the `*` symbol                    | `Boolean` | `false`  | false      |
 | textarea         | When is `true` the input is a textarea                                           | `Boolean` | `false`  | false      |
 | loading          | When is `true` the input has a progress bar animated                             | `Boolean` | `false`  | false      |

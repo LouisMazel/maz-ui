@@ -1,6 +1,6 @@
 define pre-publish
 	npm run gen:docs && \
-	npm run pre-publish && \
+	npm run lint:fix && \
 	VERSION=`node -pe "require('./package.json').version"` && \
 	NEXT_VERSION=`node -pe "require('semver').inc(\"$$VERSION\", '$(1)')"` && \
 	node -e "\
@@ -9,7 +9,7 @@ define pre-publish
 		var s = JSON.stringify(j, null, 2);\
 		require('fs').writeFileSync('./package.json', s);" && \
 	git add --all && \
-	git commit -m "chore(v$$NEXT_VERSION): pre-build" && \
+	git commit -m "chore(v$$NEXT_VERSION): pre-build"
 	# git push origin HEAD
 endef
 

@@ -1,6 +1,6 @@
 {
   "name": "maz-ui",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "main": "lib/maz-ui.common.js",
   "description": "A stand-alone components library for Vue.Js & Nuxt.Js",
   "author": "Louis Mazel <me@loicmazuel.com>",
@@ -22,9 +22,9 @@
     "build:entries": "node build/build-entries.js",
     "build:lib": "webpack --config build/webpack.conf.js && webpack --config build/webpack.common.js && webpack --config build/webpack.component.js",
     "build:css": "npm run gen:css && npm run build:css:compile",
+    "build:css:compile": "gulp compile --gulpfile build/gulpfile.js",
     "gen:types": "tsc --declaration",
     "gen:css": "node build/gen-scss-index",
-    "build:css:compile": "gulp compile --gulpfile build/gulpfile.js",
     "gen:docs": "vuese gen && npm run lint:md:fix",
     "pre-publish": "npm run lint:fix && npm i && npm run build",
     "copy:types": "cp ./types/*.d.ts ./lib",
