@@ -19,10 +19,10 @@ define publish
 	npm run gen:docs
 	npm run lint:fix
 	npm run build
+	npm publish
 	git add --all
 	git commit -m "release(v$(VERSION)): $(1)"
 	git push origin HEAD
-	npm publish
 	make deploy-doc
 endef
 
