@@ -23,6 +23,7 @@ make pre-publish
 ```
 
 Will:
+
 - Generate docs (all README.md) files
 - Lint all files
 - Push modifications if it's necessary
