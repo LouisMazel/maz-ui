@@ -36,7 +36,7 @@ export default {
 
 <style lang="scss" scoped>
   .project-preview {
-    background-color: var(--bg-color);
+    background-color: var(--maz-bg-color);
     text-decoration: none;
     transition: all 300ms;
     position: relative;
@@ -49,7 +49,7 @@ export default {
     &:hover,
     &:focus {
       transform: translateY(-3px);
-      box-shadow: 0 3px 12px var(--hover-color);
+      box-shadow: 0 3px 12px var(--maz-hover-color);
       outline: none;
     }
 

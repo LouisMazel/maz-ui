@@ -1,11 +1,11 @@
 @import './maz-dropzone/_maz-dropzone-base.scss';
 
 .maz-dropzone {
-  border: var(--border-width) dashed var(--border-color);
+  border: var(--maz-border-width) dashed var(--maz-border-color);
   min-height: 245px;
-  background-color: var(--bg-color);
+  background-color: var(--maz-bg-color);
   cursor: pointer;
-  border-radius: var(--border-radius);
+  border-radius: var(--maz-border-radius);
   transition: all 300ms ease-in-out;
 
   .dz-preview {
@@ -25,12 +25,12 @@
 
   .dz-progress {
     overflow: visible;
-    background-color: var(--hover-color);
+    background-color: var(--maz-hover-color);
     width: 150px;
     left: calc(50% - 35px);
 
     .dz-upload {
-      background-color: var(--primary);
+      background-color: var(--maz-primary);
       border-radius: 16px;
     }
 
@@ -48,7 +48,7 @@
 
   .dz-success-mark {
     .material-icons {
-      background-color: var(--success-alpha-60);
+      background-color: var(--maz-success-alpha-60);
       border-radius: 50%;
       color: white;
       font-size: 70px;
@@ -59,7 +59,7 @@
     text-align: center;
 
     .material-icons {
-      background-color: var(--danger-alpha-60);
+      background-color: var(--maz-danger-alpha-60);
       border-radius: 50%;
       color: white;
       font-size: 70px;
@@ -70,8 +70,8 @@
     width: 100%;
     height: 200px;
     margin: 0 auto;
-    border-radius: var(--border-radius);
-    border-color: var(--hover-color);
+    border-radius: var(--maz-border-radius);
+    border-color: var(--maz-hover-color);
 
     > div {
       width: inherit;
@@ -90,23 +90,23 @@
     width: 100%;
     height: 200px;
     color: white;
-    background-color: var(--primary-alpha-60);
+    background-color: var(--maz-primary-alpha-60);
     transition: opacity .2s linear;
     text-align: center;
-    border-radius: var(--border-radius);
+    border-radius: var(--maz-border-radius);
   }
 
   .dz-error.dz-preview .dz-details {
-    background-color: var(--danger-alpha-60);
+    background-color: var(--maz-danger-alpha-60);
   }
 
   &:hover,
   &:focus {
     outline: none;
-    background-color: var(--hover-color);
+    background-color: var(--maz-hover-color);
 
     .dz-message .material-icons {
-      color: var(--primary) !important;
+      color: var(--maz-primary) !important;
     }
   }
 }

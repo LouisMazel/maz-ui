@@ -65,14 +65,14 @@ export default {
 
 <style lang="scss" scoped>
   .nav-footer {
-    color: var(--border-color);
-    background-color: var(--bg-color);
+    color: var(--maz-border-color);
+    background-color: var(--maz-bg-color);
 
     &-subs {
-      background-color: var(--hover-bg-color);
+      background-color: var(--maz-hover-bg-color);
 
       a {
-        color: var(--muted-color);
+        color: var(--maz-muted-color);
       }
     }
 

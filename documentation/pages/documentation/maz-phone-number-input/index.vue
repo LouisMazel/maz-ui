@@ -337,8 +337,8 @@ export default {
     }
 
     code {
-      background-color: var(--bg-color-dark);
-      border-radius: var(--border-radius);
+      background-color: var(--maz-bg-color-dark);
+      border-radius: var(--maz-border-radius);
       color: white;
       padding: 2px 5px;
     }

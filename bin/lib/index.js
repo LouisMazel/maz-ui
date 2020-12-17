@@ -37,7 +37,8 @@ const getStateVariants = (color, dark) => {
   return [color, darken]
 }
 
-module.exports = (theme, output) => {
+module.exports = (prefix, theme, output) => {
+  if (!prefix) throw new Error('The "prefix" should be defined')
   if (!output) throw new Error('No "output" found in maz-ui.config.js - Ex: "output: ./assets/root-vars.css"')
   if (!theme || !Object.keys(theme).length) throw new Error('No colors provided in maz-ui-config.js - Ex: "{ theme: { mainColors: { primary: "red" } } }"')
 
@@ -52,10 +53,10 @@ module.exports = (theme, output) => {
   if (theme.main) {
     Object.entries(theme.main).forEach((values) => {
       const variants = getMainVariants(values[1])
-      results.light[`--${values[0]}`] = variants[0]
-      results.light[`--${values[0]}-darken`] = variants[1]
+      results.light[`--${prefix}${values[0]}`] = variants[0]
+      results.light[`--${prefix}${values[0]}-darken`] = variants[1]
       variants[2].forEach((v) => {
-        results.light[`--${values[0]}-alpha-${v.coef}`] = v.alpha
+        results.light[`--${prefix}${values[0]}-alpha-${v.coef}`] = v.alpha
       })
     })
   }
@@ -65,7 +66,7 @@ module.exports = (theme, output) => {
    */
   if (theme.typo) {
     Object.entries(theme.typo).forEach((values) => {
-      results.light[`--${values[0]}`] = values[1]
+      results.light[`--${prefix}${values[0]}`] = values[1]
     })
   }
 
@@ -74,7 +75,7 @@ module.exports = (theme, output) => {
    */
   if (theme.border) {
     Object.entries(theme.border).forEach((values) => {
-      results.light[`--${values[0]}`] = values[1]
+      results.light[`--${prefix}${values[0]}`] = values[1]
     })
   }
 
@@ -84,27 +85,27 @@ module.exports = (theme, output) => {
   if (theme.light) {
     if (theme.light.typo) {
       Object.entries(theme.light.typo).forEach((values) => {
-        results.light[`--${values[0]}`] = values[1]
+        results.light[`--${prefix}${values[0]}`] = values[1]
       })
     }
     if (theme.light.layout) {
       Object.entries(theme.light.layout).forEach((values) => {
-        results.light[`--${values[0]}`] = values[1]
+        results.light[`--${prefix}${values[0]}`] = values[1]
       })
     }
 
     if (theme.light.borderColor) {
       Object.entries(theme.light.borderColor).forEach((values) => {
         const variants = getLayoutVariants(values[1])
-        results.light[`--${values[0]}`] = variants[0]
-        results.light[`--${values[0]}-darken`] = variants[1]
+        results.light[`--${prefix}${values[0]}`] = variants[0]
+        results.light[`--${prefix}${values[0]}-darken`] = variants[1]
       })
     }
     if (theme.light.state) {
       Object.entries(theme.light.state).forEach((values) => {
         const variants = getStateVariants(values[1])
-        results.light[`--${values[0]}`] = variants[0]
-        results.light[`--${values[0]}-darken`] = variants[1]
+        results.light[`--${prefix}${values[0]}`] = variants[0]
+        results.light[`--${prefix}${values[0]}-darken`] = variants[1]
       })
     }
   }
@@ -115,26 +116,26 @@ module.exports = (theme, output) => {
   if (theme.dark) {
     if (theme.dark.typo) {
       Object.entries(theme.dark.typo).forEach((values) => {
-        results.dark[`--${values[0]}`] = values[1]
+        results.dark[`--${prefix}${values[0]}`] = values[1]
       })
     }
     if (theme.dark.layout) {
       Object.entries(theme.dark.layout).forEach((values) => {
-        results.dark[`--${values[0]}`] = values[1]
+        results.dark[`--${prefix}${values[0]}`] = values[1]
       })
     }
     if (theme.dark.borderColor) {
       Object.entries(theme.dark.borderColor).forEach((values) => {
         const variants = getLayoutVariants(values[1])
-        results.dark[`--${values[0]}`] = variants[0]
-        results.dark[`--${values[0]}-darken`] = variants[1]
+        results.dark[`--${prefix}${values[0]}`] = variants[0]
+        results.dark[`--${prefix}${values[0]}-darken`] = variants[1]
       })
     }
     if (theme.dark.state) {
       Object.entries(theme.dark.state).forEach((values) => {
         const variants = getStateVariants(values[1], true)
-        results.dark[`--${values[0]}`] = variants[0]
-        results.dark[`--${values[0]}-darken`] = variants[1]
+        results.dark[`--${prefix}${values[0]}`] = variants[0]
+        results.dark[`--${prefix}${values[0]}-darken`] = variants[1]
       })
     }
   }

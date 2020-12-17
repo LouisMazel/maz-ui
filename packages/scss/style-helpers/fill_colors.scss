@@ -2,6 +2,6 @@
 
 @each $name in $color_names {
   .#{$prefix}fill-#{$name} path {
-    fill: var(--#{$name});
+    fill: var(--#{$prefix}#{$name});
   }
 }

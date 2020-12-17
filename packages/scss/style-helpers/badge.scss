@@ -2,9 +2,9 @@
 
 .#{$prefix}badge,
 .#{$prefix}label {
-  background: var(--primary);
-  border: var(--border-width) solid var(--primary);
-  border-radius: var(--border-radius);
+  background: var(--#{$prefix}primary);
+  border: var(--#{$prefix}border-width) solid var(--#{$prefix}primary);
+  border-radius: var(--#{$prefix}border-radius);
   font-size: 1rem;
   padding: .3em .75em;
   color: white;
@@ -36,21 +36,21 @@
 
   &--outline {
     background-color: transparent;
-    border: var(--border-width) solid var(--primary);
-    color: var(--primary);
+    border: var(--#{$prefix}border-width) solid var(--#{$prefix}primary);
+    color: var(--#{$prefix}primary);
     box-shadow: none;
   }
 
   @each $name in $color_names {
     &--#{$name} {
-      background-color: var(--#{$name});
-      border-color: var(--#{$name});
+      background-color: var(--#{$prefix}#{$name});
+      border-color: var(--#{$prefix}#{$name});
       color: white;
 
       &--outline {
         background-color: transparent;
-        border-color: var(--#{$name});
-        color: var(--#{$name});
+        border-color: var(--#{$prefix}#{$name});
+        color: var(--#{$prefix}#{$name});
         box-shadow: none;
       }
     }

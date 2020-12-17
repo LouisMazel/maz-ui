@@ -19,10 +19,10 @@
     max-width: 100%;
     position: absolute;
     top: 100%;
-    border-radius: var(--border-radius);
+    border-radius: var(--maz-border-radius);
     width: 100%;
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
-    background-color: var(--bg-color);
+    background-color: var(--maz-bg-color);
     max-height: 250px;
 
     &__item {
@@ -34,14 +34,14 @@
       cursor: pointer;
       background-color: transparent;
       border: none;
-      color: var(--text-color);
+      color: var(--maz-text-color);
       width: 100%;
       outline: none;
       text-align: left;
 
       &:hover,
       &.keyboard-selected {
-        background-color: var(--hover-color-darken);
+        background-color: var(--maz-hover-color-darken);
       }
 
       &.selected {
@@ -60,11 +60,11 @@
   @each $name in $color_names {
     &--#{$name} {
       .maz-search__items__item.selected {
-        background-color: var(--#{#{$name}});
+        background-color: var(--maz-#{#{$name}});
 
         &.keyboard-selected,
         &:hover {
-          background-color: var(--#{#{$name}}-darken);
+          background-color: var(--maz-#{#{$name}}-darken);
         }
       }
     }

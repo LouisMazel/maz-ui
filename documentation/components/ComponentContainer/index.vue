@@ -34,10 +34,10 @@ export default {
 
 <style lang="scss" scoped>
   .component-container {
-    color: var(--text-color);
+    color: var(--maz-text-color);
     min-width: 200px;
-    background-color: var(--bg-color);
-    border: var(--border-width) solid var(--border-color);
+    background-color: var(--maz-bg-color);
+    border: var(--maz-border-width) solid var(--maz-border-color);
 
     &__footer {
       overflow: hidden;

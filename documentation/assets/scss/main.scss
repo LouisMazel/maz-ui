@@ -15,7 +15,7 @@ html {
 
   height: 100%;
   width: 100%;
-  background-color: var(--bg-color-light);
+  background-color: var(--maz-bg-color-light);
 
   body {
     height: 100%;
@@ -57,7 +57,7 @@ html {
 
   h1,
   h2 {
-    color: var(--primary);
+    color: var(--maz-primary);
     font-family: GeomanistMedium, sans-serif;
   }
 
@@ -94,7 +94,7 @@ html {
   }
 
   a:not(.maz-btn) {
-    color: var(--primary);
+    color: var(--maz-primary);
     text-decoration: none;
 
     &:hover,
@@ -115,15 +115,15 @@ html {
     }
 
     code.code {
-      background-color: var(--bg-color-dark);
-      color: var(--text-color-dark);
+      background-color: var(--maz-bg-color-dark);
+      color: var(--maz-text-color-dark);
       padding: 2px 6px;
       border-radius: 4px;
     }
 
     &.maz-is-dark {
       code.code {
-        background-color: var(--bg-color-light);
+        background-color: var(--maz-bg-color-light);
       }
     }
   }

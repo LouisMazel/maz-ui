@@ -8,25 +8,25 @@ $dot-size: .4286em !default;
   width: $dot-size;
   height: $dot-size;
   border-radius: $dot-size;
-  border: var(--border-width) solid var(--primary);
-  background-color: var(--primary);
+  border: var(--#{$prefix}border-width) solid var(--#{$prefix}primary);
+  background-color: var(--#{$prefix}primary);
   display: inline-block;
 
   &--outline {
     background-color: transparent;
-    color: var(--primary);
+    color: var(--#{$prefix}primary);
   }
 }
 
 @each $name in $color_names {
   .#{$prefix}dot--#{$name} {
-    background-color: var(--#{$name});
-    border-color: var(--#{$name});
+    background-color: var(--#{$prefix}#{$name});
+    border-color: var(--#{$prefix}#{$name});
 
     &--outline {
       background-color: transparent;
-      border: var(--border-width) solid var(--#{$name});
-      color: var(--#{$name});
+      border: var(--#{$prefix}border-width) solid var(--#{$prefix}#{$name});
+      color: var(--#{$prefix}#{$name});
     }
   }
 }

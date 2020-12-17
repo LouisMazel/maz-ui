@@ -1,6 +1,6 @@
 .maz-sidebar {
   &__wrapper {
-    background-color: var(--bg-color);
+    background-color: var(--maz-bg-color);
     position: relative;
     transition-duration: .2s;
     z-index: 1030;
@@ -15,7 +15,7 @@
       left: 100%;
 
       button {
-        background-color: var(--bg-color-light);
+        background-color: var(--maz-bg-color-light);
         border-radius: 0 8px 8px 0;
         width: 23px;
         height: 48px;
@@ -27,7 +27,7 @@
     }
 
     &__load-layer {
-      background-color: var(--overlay-color);
+      background-color: var(--maz-overlay-color);
       position: absolute;
       top: 0;
       right: 0;
@@ -43,7 +43,7 @@
       right: 0;
       left: 0;
       bottom: 0;
-      background-color: var(--overlay-color);
+      background-color: var(--maz-overlay-color);
       cursor: pointer;
     }
 
@@ -73,7 +73,7 @@
         left: inherit;
 
         button {
-          border-radius: var(--border-radius) 0 0 var(--border-radius);
+          border-radius: var(--maz-border-radius) 0 0 var(--maz-border-radius);
         }
       }
     }

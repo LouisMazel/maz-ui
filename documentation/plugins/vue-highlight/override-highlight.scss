@@ -1,10 +1,10 @@
 .code-container {
   .hljs {
     background-color: transparent;
-    background-color: var(--bg-color-dark);
-    border-radius: var(--border-radius);
+    background-color: var(--maz-bg-color-dark);
+    border-radius: var(--maz-border-radius);
     padding: 20px;
-    color: var(--text-color-dark);
+    color: var(--maz-text-color-dark);
 
     .hljs-name {
       color: #F92672;
@@ -13,27 +13,27 @@
     .hljs-built_in,
     .hljs-regexp,
     .hljs-template-variable {
-      color: var(--text-color-dark);
+      color: var(--maz-text-color-dark);
     }
 
     .hljs-variable,
     .hljs-keyword,
     .hljs-attr {
-      color: var(--primary);
+      color: var(--maz-primary);
     }
 
     .hljs-number,
     .hljs-literal,
     .hljs-string {
-      color: var(--secondary);
+      color: var(--maz-secondary);
     }
 
     .hljs-params {
-      color: var(--third);
+      color: var(--maz-third);
     }
 
     .hljs-comment {
-      color: var(--text-muted);
+      color: var(--maz-text-muted);
     }
   }
 }
@@ -41,7 +41,7 @@
 .maz-is-dark .code-container {
   .hljs {
     border-color: #535673;
-    background-color: var(--bg-color-light);
-    color: var(--text-color-dark);
+    background-color: var(--maz-bg-color-light);
+    color: var(--maz-text-color-dark);
   }
 }

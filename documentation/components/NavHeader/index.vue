@@ -112,10 +112,10 @@ export default {
       &__item {
         font-weight: 500;
         outline: none;
-        color: var(--text-color);
+        color: var(--maz-text-color);
 
         &.nuxt-link-active {
-          color: var(--primary) !important;
+          color: var(--maz-primary) !important;
         }
       }
     }
