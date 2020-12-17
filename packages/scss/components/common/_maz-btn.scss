@@ -1,6 +1,12 @@
 $btn-side-padding: 1.429em !default;
 $btn-height: 3em !default;
 
+$btn-font-size-mini: .75rem !default;
+$btn-font-size-sm: .857rem !default;
+$btn-font-size-md: 1rem !default;
+$btn-font-size-lg: 1.19rem !default;
+$btn-font-size-xl: 1.375rem !default;
+
 .maz-btn {
   border: none;
   outline: none;
@@ -21,7 +27,7 @@ $btn-height: 3em !default;
   -webkit-font-smoothing: inherit;
   -moz-osx-font-smoothing: inherit;
   text-align: center;
-  font-size: 1rem;
+  font-size: $btn-font-size-md;
   padding-right: $btn-side-padding;
   padding-left: $btn-side-padding;
   height: $btn-height;
@@ -103,19 +109,23 @@ $btn-height: 3em !default;
   }
 
   &--xl {
-    font-size: 1.375rem;
+    font-size: $btn-font-size-xl;
   }
 
   &--lg {
-    font-size: 1.19rem;
+    font-size: $btn-font-size-lg;
   }
 
   &--sm {
-    font-size: .857rem;
+    font-size: $btn-font-size-sm;
   }
 
   &--mini {
-    font-size: .75rem;
+    font-size: $btn-font-size-mini;
+
+    span {
+      font-size: $btn-font-size-sm;
+    }
   }
 
   &--fab {
@@ -174,10 +184,6 @@ $btn-height: 3em !default;
     &.maz-btn--mini {
       i {
         font-size: 1.286rem;
-      }
-
-      span {
-        font-size: .875rem;
       }
     }
   }
