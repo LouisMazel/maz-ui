@@ -1,33 +1,33 @@
+VERSION=`node -pe "require('./package.json').version"`
+
+define bump-version
+	VERSION=`node -pe "require('./package.json').version"` && \
+	NEXT_VERSION=`node -pe "require('semver').inc(\"$$VERSION\", '$(type)')"` && \
+	node -e "\
+		var j = require('./package.json');\
+		j.version = \"$$NEXT_VERSION\";\
+		var s = JSON.stringify(j, null, 2);\
+		require('fs').writeFileSync('./package.json', s);"
+endef
+
 define pre-publish
 	npm run gen:docs
 	npm run lint:fix
-	VERSION=`node -pe "require('./package.json').version"` && \
-	NEXT_VERSION=`node -pe "require('semver').inc(\"$$VERSION\", '$(1)')"` && \
-	node -e "\
-		var j = require('./package.json');\
-		j.version = \"$$NEXT_VERSION\";\
-		var s = JSON.stringify(j, null, 2);\
-		require('fs').writeFileSync('./package.json', s);" && \
-	git add --all && \
-	git commit -m "chore(v$$NEXT_VERSION): pre-build"
-	# git push origin HEAD
+	make bump-version type=$(1)
+	git add --all
+	git commit -m "chore(v$(VERSION)): pre-build"
+	git push origin HEAD
 endef
 
 define publish
-	npm run gen:docs && \
-	npm run pre-publish && \
-	VERSION=`node -pe "require('./package.json').version"` && \
-	NEXT_VERSION=`node -pe "require('semver').inc(\"$$VERSION\", '$(1)')"` && \
-	node -e "\
-		var j = require('./package.json');\
-		j.version = \"$$NEXT_VERSION\";\
-		var s = JSON.stringify(j, null, 2);\
-		require('fs').writeFileSync('./package.json', s);" && \
-	git add --all && \
-	git commit -m "release(v$$NEXT_VERSION): $(1)" && \
-	git tag "v$$NEXT_VERSION" -m "v$$NEXT_VERSION" && \
-	git push origin HEAD && \
-	npm publish && \
+	npm run gen:docs
+	npm run pre-publish
+	make bump-version type=$(1)
+	git add --all
+	git commit -m "release(v$(VERSION)): $(1)"
+	git tag "v$(VERSION)" -m "v$(VERSION)"
+	git push origin HEAD
+	npm publish
 	make deploy-doc
 endef
 
@@ -63,6 +63,9 @@ serve: ## Run dev server
 gen-vuese:
 	npm run gen:docs
 
+bump-version:
+	@$(call bump-version,patch)
+
 deploy-doc:
 	cd documentation && npm run build:gh-pages && npm run export:gh-pages
 	cd documentation && npm run deploy
@@ -77,10 +80,10 @@ pre-publish:
 	@$(call pre-publish,patch)
 
 publish:
-	@$(call release,patch)
+	@$(call publish,patch)
 
 publish-minor:
-	@$(call release,minor)
+	@$(call publish,minor)
 
 publish-major:
-	@$(call release,major)
+	@$(call publish,major)
