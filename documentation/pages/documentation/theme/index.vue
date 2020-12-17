@@ -48,9 +48,11 @@
       </li>
     </ul>
 
-    <p class="no-mb">
-      <strong>Important:</strong> Declared colors must be in HEX format <i>(Ex: #FFFFFF - <strong>not #FFF</strong>)</i> or a CSS color name (Ex: red, blue, dodgerblue, etc)
-    </p>
+    <div class="maz-bg-color-light maz-border-radius maz-p-3">
+      <p class="no-mb">
+        <strong>Important:</strong> Declared colors must be in HEX format <i>(Ex: #FFFFFF - <strong>not #FFF</strong>)</i> or a CSS color name (Ex: red, blue, dodgerblue, etc)
+      </p>
+    </div>
 
     <CodeContainer
       language="javascript"
