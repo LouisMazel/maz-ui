@@ -13,7 +13,7 @@
         :class="[`maz-gallery__item--${i + 1}`]"
       >
         <img
-          v-zoom-img="{ src: image.slug, disabled: !zoom }"
+          v-zoom-img="{ src: image.slug, alt: image.alt, disabled: !zoom }"
           :style="`background-image: url('${image.slug}');`"
           class="maz-gallery__item__image maz-flex-1"
           src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
@@ -72,7 +72,7 @@ export default {
     radius: { type: Boolean, default: true },
     // Add feature to show the carousel images on click
     zoom: { type: Boolean, default: true },
-    //
+    // Layer with photography icon when no images is provided
     hasEmptyLayer: { type: Boolean, default: true }
   },
   setup (props) {

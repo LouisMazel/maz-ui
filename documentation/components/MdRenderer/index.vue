@@ -203,4 +203,11 @@ export default {
       display: inline;
     }
   }
+
+  .maz-is-dark {
+    .frontmatter-markdown code {
+      color: #212121;
+      // background-color: black;
+    }
+  }
 </style>

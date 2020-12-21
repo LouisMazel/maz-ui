@@ -1,13 +1,25 @@
 <template>
   <div class="maz-dropzone-doc">
     <ComponentContainer
-      code="<template>"
-      class="maz-flex maz-direction-column"
+      code="<template>
+  <MazGallery
+    :images=&quot;[
+      'https://via.placeholder.com/500',
+      { slug: 'https://via.placeholder.com/600', alt: 'image description' },
+      { slug: 'https://via.placeholder.com/700', alt: 'image description' },
+      'https://via.placeholder.com/800',
+      'https://via.placeholder.com/900',
+      'https://via.placeholder.com/1000'
+    ]&quot;
+    :height=&quot;400&quot;
+  />
+<template>"
     >
       <MazGallery
         :images="[
           'https://via.placeholder.com/500',
-          'https://via.placeholder.com/600',
+          { slug: 'https://via.placeholder.com/600', alt: 'image description' },
+          { slug: 'https://via.placeholder.com/700', alt: 'image description' },
           'https://via.placeholder.com/700',
           'https://via.placeholder.com/800',
           'https://via.placeholder.com/900',
