@@ -22,6 +22,7 @@ export default {
   'maz-draggable-list': 'MazDraggableList is a stand-alone component to display a list and allow reorder items by dragg and drop. Works with vuedraggable. Custom item template available, see examples',
   'maz-dropdown': 'MazDropdown is a stand-alone component to show a list on click or on hover.',
   'maz-flex': 'MazFlex is a stand-alone component. It\'s a container to manage flexbox CSS properties',
+  'maz-gallery': 'MazGallery is a stand-alone component. It\'s a container to show images',
   'maz-img': 'MazImg is a stand-alone component to display image with some options with a full size preview on click. Fully responsive !',
   'maz-list': 'MazList is a stand-alone component to display a simple list. No-scroll, no-shadow and transition options available.',
   'maz-loader': 'MazLoader is a stand-alone component to display a simple loader. Color option available soon.',

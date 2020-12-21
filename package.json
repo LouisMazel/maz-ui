@@ -39,6 +39,7 @@
     }
   },
   "dependencies": {
+    "@vue/composition-api": "^1.0.0-beta.22",
     "chalk": "^4.1.0",
     "clear": "^0.1.0",
     "color-transformer-ui": "^1.0.3",
@@ -53,6 +54,7 @@
     "plotly.js-dist": "^1.57.1",
     "v-click-outside": "^3.1.2",
     "vue-virtual-scroller": "^1.0.10",
+    "vue-zoom-img": "^0.1.1",
     "vue2-dropzone": "3.5.2",
     "vuedraggable": "^2.24.3"
   },

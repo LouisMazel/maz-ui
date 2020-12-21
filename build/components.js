@@ -10,6 +10,7 @@ module.exports = {
   'maz-dropdown': './components/MazDropdown/index.js',
   'maz-dropzone': './components/MazDropzone/index.js',
   'maz-flex': './components/MazFlex/index.js',
+  'maz-gallery': './components/MazGallery/index.js',
   'maz-img': './components/MazImg/index.js',
   'maz-input': './components/MazInput/index.js',
   'maz-input-tags': './components/MazInputTags/index.js',

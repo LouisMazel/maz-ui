@@ -139,6 +139,7 @@ import {
   MazDropdown
   MazDropzone,
   MazFlex,
+  MazGallery,
   MazImg,
   MazInput,
   MazInputTags,
@@ -177,6 +178,7 @@ Vue.use(MazDraggableList)
 Vue.use(MazDropdown)
 Vue.use(MazDropzone)
 Vue.use(MazFlex)
+Vue.use(MazGallery)
 Vue.use(MazImg)
 Vue.use(MazInput)
 Vue.use(MazInputTags)
