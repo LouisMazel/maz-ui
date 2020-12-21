@@ -37,11 +37,14 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from '@vue/composition-api'
+import { computed } from '@vue/composition-api'
 import imgDirective from 'vue-zoom-img'
 
-export default defineComponent({
+export default {
   name: 'MazGallery',
+  directives: {
+    'zoom-img': imgDirective
+  },
   props: {
     images: { type: Array, required: true },
     imagesShownNumber: { type: Number, default: 5 },
@@ -54,10 +57,8 @@ export default defineComponent({
     hasZoom: { type: Boolean, default: false },
     hasEmptyLayer: { type: Boolean, default: false }
   },
-  directives: {
-    'zoom-img': imgDirective
-  },
   setup (props) {
+    console.log('PROPS', props)
     const numberImagesRemaining = computed(() => {
       const { images, imagesShownNumber } = props
       return images.length - (images.length < imagesShownNumber ? images.length : imagesShownNumber)
@@ -80,112 +81,6 @@ export default defineComponent({
       sizeStyle
     }
   }
-})
+}
 </script>
 
-<style lang="scss" scoped>
-  .maz-gallery {
-    position: relative;
-    overflow: hidden;
-
-    &__item {
-      position: absolute;
-      top: 0;
-      height: 50%;
-      padding: 0;
-      width: 100%;
-      border-left: var(--maz-border-width) solid transparent;
-
-      &--1 {
-        left: 0;
-        height: 100%;
-
-        &:not(:last-child) {
-          width: 50%;
-        }
-      }
-
-      &--2 {
-        left: 50%;
-        width: 50%;
-        height: 50%;
-
-        &:last-child {
-          height: 100%;
-        }
-
-        &:nth-last-child(4) {
-          width: 25%;
-        }
-      }
-
-      &--3 {
-        top: 50%;
-        left: 50%;
-        width: 25%;
-
-        &:last-child {
-          width: 50%;
-        }
-
-        &:nth-last-child(3) {
-          top: 0;
-          left: 75%;
-        }
-      }
-
-      &--4 {
-        top: 50%;
-        left: 50%;
-        width: 25%;
-        border-top: var(--maz-border-width) solid transparent;
-
-        &:last-child {
-          left: 75%;
-          width: 25%;
-        }
-      }
-
-      &--5 {
-        top: 50%;
-        left: 75%;
-        width: 25%;
-        border-top: var(--maz-border-width) solid transparent;
-      }
-
-      &:first-child {
-        border-left: 0;
-      }
-
-      &--3:last-child,
-      &--3:nth-last-child(2),
-      &--4:last-child,
-      &--5 {
-        border-top: var(--maz-border-width) solid transparent;
-      }
-
-      &__image {
-        // display: block;
-        height: 100%;
-        max-width: 100%;
-        width: 100%;
-        background-position: center center;
-        background-size: cover;
-        background-color: rgba(0, 0, 0, .05);
-      }
-    }
-
-    &__remaining-layer {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      right: 0;
-      left: 0;
-
-      span {
-        color: white;
-        font-size: 2rem;
-      }
-    }
-  }
-</style>
