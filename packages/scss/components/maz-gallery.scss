@@ -2,6 +2,10 @@
   position: relative;
   overflow: hidden;
 
+  &__hidden {
+    display: none;
+  }
+
   &__item {
     position: absolute;
     top: 0;

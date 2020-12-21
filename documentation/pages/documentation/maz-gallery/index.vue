@@ -5,12 +5,15 @@
       class="maz-flex maz-direction-column"
     >
       <MazGallery
-        :images="[{
-          slug: 'http://placekitten.com/200/300',
-        }, {
-          slug: 'http://placekitten.com/200/400'
-        }]"
-        :images-shown-number="2"
+        :images="[
+          'https://via.placeholder.com/500',
+          'https://via.placeholder.com/600',
+          'https://via.placeholder.com/700',
+          'https://via.placeholder.com/800',
+          'https://via.placeholder.com/900',
+          'https://via.placeholder.com/1000'
+        ]"
+        :height="400"
       />
     </ComponentContainer>
 
@@ -27,18 +30,24 @@
       language="html"
       code="<template>
   <MazGallery
-    :images=&quot;[]&quot;
+    :images=&quot;images&quot;
   />
 </template>
 
 <script>
-  import { MazDropzone } from 'maz-ui'
+  import { MazGallery } from 'maz-ui'
   export default {
-    components: { MazDropzone }
+    components: { MazGallery }
     data () {
       return {
-        url: 'https://httpbin.org/post',
-        headers: { 'My-Awesome-Header': 'header value' },
+        images: [
+          'https://via.placeholder.com/500',
+          'https://via.placeholder.com/600',
+          'https://via.placeholder.com/700',
+          'https://via.placeholder.com/800',
+          'https://via.placeholder.com/900',
+          'https://via.placeholder.com/1000'
+        ]
       }
     }
   }
