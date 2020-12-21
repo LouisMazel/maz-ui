@@ -81,8 +81,7 @@ module.exports = {
   &quot;name&quot;: &quot;YOUR_APP&quot;,
   &quot;scripts&quot;: {
     ...
-    &quot;get-theme&quot;: &quot;maz get-theme&quot;
-    // option: --config (-c) ./path_to_your/custom.config.js
+    &quot;get-theme&quot;: &quot;maz get-theme&quot; // option: --config (-c) ./path_to_your/custom.config.js
     ...
   },
 }"
