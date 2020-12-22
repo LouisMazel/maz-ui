@@ -59,6 +59,7 @@ deploy-doc:
 
 publish-beta:
 	npm version $(version) --allow-same-version
+	npm run gen:docs
 	npm run lint
 	npm run build
 	npm publish --tag beta
