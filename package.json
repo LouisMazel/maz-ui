@@ -39,7 +39,6 @@
     }
   },
   "dependencies": {
-    "@vue/composition-api": "^1.0.0-beta.22",
     "chalk": "^4.1.0",
     "clear": "^0.1.0",
     "color-transformer-ui": "^1.0.3",

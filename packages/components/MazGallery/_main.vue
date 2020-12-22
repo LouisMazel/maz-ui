@@ -45,7 +45,6 @@
 </template>
 
 <script>
-import { computed } from '@vue/composition-api'
 import imgDirective from 'vue-zoom-img'
 
 export default {
@@ -75,37 +74,43 @@ export default {
     // Layer with photography icon when no images is provided
     hasEmptyLayer: { type: Boolean, default: true }
   },
-  setup (props) {
-    const { images, imagesShownCount, height, width, noWidth, noHeight } = props
-    if (imagesShownCount > 5) console.warn('[MazUI](maz-gallery) The maximum of "images-shown-count" is 5')
-
-    const imagesCount = computed(() => imagesShownCount <= 5 ? imagesShownCount : 5)
-
-    const numberImagesRemaining = computed(() => {
-      return images.length - (images.length < imagesCount.value ? images.length : imagesCount.value)
-    })
-
-    const imagesNormalized = computed(() => images.map((i) => typeof i === 'object' ? i : { slug: i, alt: null }))
-
-    const imagesShown = computed(() => imagesNormalized.value.slice(0, imagesCount.value))
-    const imagesHidden = computed(() => imagesNormalized.value.slice(imagesCount.value, images.length))
-
-    const sizeStyle = computed(() => ({
-      ...(!noWidth ? { flex: `0 0 ${Number.isInteger(width) ? `${width}px` : width}` } : {}),
-      ...(!noHeight
-        ? {
-          height: Number.isInteger(height) ? `${height}px` : `${height}`,
-          minHeight: Number.isInteger(height) ? `${height}px` : `${height}`
-        }
-        : {})
-    }))
-
-    return {
-      numberImagesRemaining,
-      imagesShown,
-      imagesHidden,
-      sizeStyle
+  computed: {
+    sizeStyle () {
+      const { height, width, noWidth, noHeight } = this
+      return {
+        ...(!noWidth ? { flex: `0 0 ${Number.isInteger(width) ? `${width}px` : width}` } : {}),
+        ...(!noHeight
+          ? {
+            height: Number.isInteger(height) ? `${height}px` : `${height}`,
+            minHeight: Number.isInteger(height) ? `${height}px` : `${height}`
+          }
+          : {})
+      }
+    },
+    imagesCount () {
+      const { imagesShownCount } = this
+      return imagesShownCount <= 5 ? imagesShownCount : 5
+    },
+    numberImagesRemaining () {
+      const { images, imagesCount } = this
+      return images.length - (images.length < imagesCount ? images.length : imagesCount)
+    },
+    imagesNormalized () {
+      const { images } = this
+      return images.map((i) => typeof i === 'object' ? i : { slug: i, alt: null })
+    },
+    imagesShown () {
+      const { imagesNormalized, imagesCount } = this
+      return imagesNormalized.slice(0, imagesCount)
+    },
+    imagesHidden () {
+      const { imagesNormalized, imagesCount, images } = this
+      return imagesNormalized.slice(imagesCount, images.length)
     }
+  },
+  created () {
+    const { imagesShownCount } = this
+    if (imagesShownCount > 5) console.warn('[MazUI](maz-gallery) The maximum of "images-shown-count" is 5')
   }
 }
 </script>
