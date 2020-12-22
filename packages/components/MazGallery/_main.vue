@@ -85,7 +85,7 @@ export default {
       return images.length - (images.length < imagesCount.value ? images.length : imagesCount.value)
     })
 
-    const imagesNormalized = computed(() => images.map((i) => typeof i === 'object' ? i : { slug: i }))
+    const imagesNormalized = computed(() => images.map((i) => typeof i === 'object' ? i : { slug: i, alt: null }))
 
     const imagesShown = computed(() => imagesNormalized.value.slice(0, imagesCount.value))
     const imagesHidden = computed(() => imagesNormalized.value.slice(imagesCount.value, images.length))

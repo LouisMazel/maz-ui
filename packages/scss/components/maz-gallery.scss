@@ -13,6 +13,7 @@
     padding: 0;
     width: 100%;
     border-left: var(--maz-border-width) solid transparent;
+    overflow: hidden;
 
     &--1 {
       left: 0;

@@ -4,12 +4,12 @@
       code="<template>
   <MazGallery
     :images=&quot;[
-      'https://via.placeholder.com/500',
-      { slug: 'https://via.placeholder.com/600', alt: 'image description' },
-      { slug: 'https://via.placeholder.com/700', alt: 'image description' },
-      'https://via.placeholder.com/800',
-      'https://via.placeholder.com/900',
-      'https://via.placeholder.com/1000'
+      'https://www.fillmurray.com/640/500',
+      { slug: 'https://www.fillmurray.com/640/600', alt: 'image description' },
+      { slug: 'https://www.fillmurray.com/640/700', alt: 'image description' },
+      'https://www.fillmurray.com/640/800',
+      'https://www.fillmurray.com/640/1000',
+      'https://www.fillmurray.com/800/800'
     ]&quot;
     :height=&quot;400&quot;
   />
@@ -17,12 +17,12 @@
     >
       <MazGallery
         :images="[
-          'https://via.placeholder.com/500',
-          { slug: 'https://via.placeholder.com/600', alt: 'image description' },
-          { slug: 'https://via.placeholder.com/700', alt: 'image description' },
-          'https://via.placeholder.com/800',
-          'https://via.placeholder.com/900',
-          'https://via.placeholder.com/1000'
+          'https://www.fillmurray.com/640/500',
+          { slug: 'https://www.fillmurray.com/640/600', alt: 'image description' },
+          { slug: 'https://www.fillmurray.com/640/700', alt: 'image description' },
+          'https://www.fillmurray.com/640/800',
+          'https://www.fillmurray.com/640/1000',
+          'https://www.fillmurray.com/800/800'
         ]"
         :height="400"
       />
@@ -48,16 +48,16 @@
 <script>
   import { MazGallery } from 'maz-ui'
   export default {
-    components: { MazGallery }
+    components: { MazGallery },
     data () {
       return {
         images: [
-          'https://via.placeholder.com/500',
-          'https://via.placeholder.com/600',
-          'https://via.placeholder.com/700',
-          'https://via.placeholder.com/800',
-          'https://via.placeholder.com/900',
-          'https://via.placeholder.com/1000'
+          'https://www.fillmurray.com/640/500',
+          { slug: 'https://www.fillmurray.com/640/600', alt: 'image description' },
+          { slug: 'https://www.fillmurray.com/640/700', alt: 'image description' },
+          'https://www.fillmurray.com/640/800',
+          'https://www.fillmurray.com/640/1000',
+          'https://www.fillmurray.com/800/800'
         ]
       }
     }
