@@ -16,5 +16,6 @@
 | radius           | Add the default border radius to gallery                                                                                                                                                                                                              | `Boolean`           | `false`  | true    |
 | zoom             | Add feature to show the carousel images on click                                                                                                                                                                                                      | `Boolean`           | `false`  | true    |
 | hasEmptyLayer    | Layer with photography icon when no images is provided                                                                                                                                                                                                | `Boolean`           | `false`  | true    |
+| lazy             | Lazy load image - if false, images are directly loaded                                                                                                                                                                                                | `Boolean`           | `false`  | true    |
 
 <!-- @vuese:MazGallery:props:end -->
