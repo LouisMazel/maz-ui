@@ -1,7 +1,7 @@
 <template>
   <figure
     ref="MazImg"
-    v-preview="{ src, alt, disabled: noZoom }"
+    v-zoom-img="{ src, alt, disabled: noZoom }"
     class="maz-base-component maz-img maz-flex maz-flex-center maz-direction-column maz-bg-color-light maz-space-between"
     :style="[containerSize]"
     :class="{
@@ -22,11 +22,6 @@
       }"
     />
     <MazSpinner v-else />
-    <MazBtn
-      fab
-      left-icon-name="visibility"
-      class="maz-img__show-btn"
-    />
     <figcaption
       v-if="legend"
       class="maz-img__legend maz-p-2"
@@ -37,16 +32,14 @@
 </template>
 
 <script>
-import preview from './../../directives/img-preview'
-
-import MazBtn from './../MazBtn'
+import imgDirective from 'vue-zoom-img'
 import MazSpinner from './../MazSpinner'
 
 export default {
   name: 'MazImg',
-  components: { MazSpinner, MazBtn },
+  components: { MazSpinner },
   directives: {
-    preview
+    'zoom-img': imgDirective
   },
   props: {
     // path or url of image

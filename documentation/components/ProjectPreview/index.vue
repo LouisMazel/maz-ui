@@ -3,12 +3,10 @@
     class="project-preview maz-border-radius maz-flex maz-direction-column maz-space-between maz-overflow-hidden maz-border maz-border-solid maz-border-color"
   >
     <div class="project-preview-header maz-border-top-radius">
-      <MazImg
-        class="project-preview__img maz-border-top-radius"
-        :src="project.imgUrl"
-        :alt="`image illustration ${project.name}`"
-        no-border-radius
-        no-shadow
+      <MazGallery
+        :images="[{ slug: project.imgUrl, alt: `image illustration ${project.name}` }]"
+        :radius="false"
+        :height="350"
       />
     </div>
     <ProjectPreviewContent :project="project" />

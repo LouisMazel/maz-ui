@@ -50,14 +50,6 @@ export default {
     return {
       projects: [
         {
-          name: 'Vue Smart List UI',
-          description:
-            'An intelligent interface for displaying a list of data and performing filters, sorting and searching on it. Also to display the details of the data.',
-          githubUrl: 'https://github.com/LouisMazel/vue-smart-list-ui',
-          imgUrl: require('@/assets/img/projects/vue-smart-list-ui.png'),
-          demoUrl: 'https://louismazel.github.io/vue-smart-list-ui/'
-        },
-        {
           name: 'Freelance Personnal Website',
           imgUrl: require('@/assets/img/projects/loicmazuel.png'),
           demoUrl: 'https://www.loicmazuel.com/'
@@ -75,6 +67,14 @@ export default {
             'French startup: Property manager and trustee',
           imgUrl: require('@/assets/img/projects/whitebird.jpg'),
           demoUrl: 'https://www.whitebird.immo/'
+        },
+        {
+          name: 'Vue Smart List UI',
+          description:
+            'An intelligent interface for displaying a list of data and performing filters, sorting and searching on it. Also to display the details of the data.',
+          githubUrl: 'https://github.com/LouisMazel/vue-smart-list-ui',
+          imgUrl: require('@/assets/img/projects/vue-smart-list-ui.png'),
+          demoUrl: 'https://louismazel.github.io/vue-smart-list-ui/'
         }
       ]
     }
