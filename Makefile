@@ -6,6 +6,12 @@ define bump-version
 	npm version $$NEXT_VERSION
 endef
 
+define bump-version-beta
+	VERSION=`node -pe "require('./package.json').version"` && \
+	NEXT_VERSION=`node -pe "require('semver').inc(\"$$VERSION\", 'prerelease', '$(1)')"` && \
+	npm version $$NEXT_VERSION
+endef
+
 define pre-publish
 	npm run gen:docs
 	npm run lint:fix
@@ -25,7 +31,7 @@ define publish
 endef
 
 define publish-beta
-	@$(call bump-version, beta)
+	@$(call bump-version-beta,$(1))
 	npm run gen:docs
 	npm run lint:fix
 	npm run build
@@ -71,7 +77,7 @@ pre-publish:
 	@$(call pre-publish,patch)
 
 publish-beta:
-	@$(call publish-beta)
+	@$(call publish-beta,beta)
 
 publish:
 	@$(call publish,patch)
