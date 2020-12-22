@@ -24,6 +24,15 @@ define publish
 	make deploy-doc
 endef
 
+define publish-beta
+	@$(call bump-version, beta)
+	npm run gen:docs
+	npm run lint:fix
+	npm run build
+	npm publish --tag beta
+	git push origin HEAD
+endef
+
 clean: ## Clean node modules
 	rm -rf ./node_modules
 	rm -rf ./documentation/node_modules
@@ -57,16 +66,12 @@ deploy-doc:
 	cd documentation && npm run build:gh-pages && npm run export:gh-pages
 	cd documentation && npm run deploy
 
-publish-beta:
-	npm version $(version) --allow-same-version
-	npm run gen:docs
-	npm run lint:fix
-	npm run build
-	npm publish --tag beta
-	git push origin HEAD
 
 pre-publish:
 	@$(call pre-publish,patch)
+
+publish-beta:
+	@$(call publish-beta)
 
 publish:
 	@$(call publish,patch)
