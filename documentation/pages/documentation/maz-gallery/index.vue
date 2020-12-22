@@ -20,7 +20,6 @@
           'https://via.placeholder.com/500',
           { slug: 'https://via.placeholder.com/600', alt: 'image description' },
           { slug: 'https://via.placeholder.com/700', alt: 'image description' },
-          'https://via.placeholder.com/700',
           'https://via.placeholder.com/800',
           'https://via.placeholder.com/900',
           'https://via.placeholder.com/1000'
