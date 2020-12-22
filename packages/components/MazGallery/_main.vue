@@ -16,7 +16,7 @@
       >
         <img
           v-zoom-img="{ src: image.slug, alt: image.alt, disabled: !zoom }"
-          :style="`background-image: url('${image.slug}');`"
+          v-lazy-img:background-image="{ slug: image.slug, disabled: !lazy }"
           class="maz-gallery__item__image maz-flex-1"
           src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
           :alt="image.alt"
@@ -48,11 +48,13 @@
 
 <script>
 import imgDirective from 'vue-zoom-img'
+import Lazy from './../../directives/v-lazy-img'
 
 export default {
   name: 'MazGallery',
   directives: {
-    'zoom-img': imgDirective
+    'zoom-img': imgDirective,
+    'lazy-img': Lazy
   },
   props: {
     // Array of string or object: `['https://via.placeholder.com/500', 'https://via.placeholder.com/600']` or `[{ slug: 'https://via.placeholder.com/500', alt: 'image descripton' }, { slug: 'https://via.placeholder.com/600', alt: 'image descripton' }]`
@@ -74,7 +76,9 @@ export default {
     // Add feature to show the carousel images on click
     zoom: { type: Boolean, default: true },
     // Layer with photography icon when no images is provided
-    hasEmptyLayer: { type: Boolean, default: true }
+    hasEmptyLayer: { type: Boolean, default: true },
+    // Lazy load image - if false, images are directly loaded
+    lazy: { type: Boolean, default: true }
   },
   computed: {
     sizeStyle () {
