@@ -1,10 +1,12 @@
 <template>
-  <div>
+  <div
+    v-if="images.length || hasEmptyLayer"
+    class="maz-gallery maz-base-component maz-flex"
+    :style="[sizeStyle]"
+    :class="{ 'maz-border-radius': radius }"
+  >
     <section
-      v-if="images.length || hasEmptyLayer"
-      class="maz-base-component maz-gallery maz-flex"
-      :style="[sizeStyle]"
-      :class="{ 'maz-border-radius': radius }"
+      class="maz-gallery__wrapper maz-flex maz-flex-1"
     >
       <figure
         v-for="(image, i) in imagesShown"
@@ -54,7 +56,7 @@ export default {
   },
   props: {
     // Array of string or object: `['https://via.placeholder.com/500', 'https://via.placeholder.com/600']` or `[{ slug: 'https://via.placeholder.com/500', alt: 'image descripton' }, { slug: 'https://via.placeholder.com/600', alt: 'image descripton' }]`
-    images: { type: Array, required: true },
+    images: { type: Array, default: Array },
     // Images count shown (max: 5)
     imagesShownCount: { type: Number, default: 5 },
     // Remove transparent layer with the remain count (ex: +2)
