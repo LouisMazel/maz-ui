@@ -3,24 +3,23 @@
 ## Props
 
 <!-- @vuese:YearMonthSelector:props:start -->
-|Name|Description|Type|Required|Default|
-|---|---|---|---|---|
-|value|-|`String`|`false`|null|
-|color|-|`String`|`false`|null|
-|month|-|`Object`|`true`|-|
-|hasDouble|-|`Boolean`|`true`|-|
+
+| Name      | Description | Type      | Required | Default |
+| --------- | ----------- | --------- | -------- | ------- |
+| value     | -           | `String`  | `false`  | null    |
+| color     | -           | `String`  | `false`  | null    |
+| month     | -           | `Object`  | `true`   | -       |
+| hasDouble | -           | `Boolean` | `true`   | -       |
 
 <!-- @vuese:YearMonthSelector:props:end -->
-
 
 ## Events
 
 <!-- @vuese:YearMonthSelector:events:start -->
-|Event Name|Description|Parameters|
-|---|---|---|
-|input|-|-|
-|change-month-year|-|-|
+
+| Event Name        | Description | Parameters |
+| ----------------- | ----------- | ---------- |
+| input             | -           | -          |
+| change-month-year | -           | -          |
 
 <!-- @vuese:YearMonthSelector:events:end -->
-
-
