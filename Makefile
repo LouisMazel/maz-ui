@@ -6,6 +6,12 @@ define bump-version
 	npm version $$NEXT_VERSION
 endef
 
+define bump-version-beta
+	VERSION=`node -pe "require('./package.json').version"` && \
+	NEXT_VERSION=`node -pe "require('semver').inc(\"$$VERSION\", 'prerelease', '$(1)')"` && \
+	npm version $$NEXT_VERSION
+endef
+
 define pre-publish
 	npm run gen:docs
 	npm run lint:fix
@@ -22,6 +28,15 @@ define publish
 	npm publish
 	git push origin HEAD
 	make deploy-doc
+endef
+
+define publish-beta
+	@$(call bump-version-beta,$(1))
+	npm run gen:docs
+	npm run lint:fix
+	npm run build
+	npm publish --tag beta
+	git push origin HEAD
 endef
 
 clean: ## Clean node modules
@@ -57,14 +72,12 @@ deploy-doc:
 	cd documentation && npm run build:gh-pages && npm run export:gh-pages
 	cd documentation && npm run deploy
 
-publish-beta:
-	npm version $(version) --allow-same-version
-	npm run pre-publish
-	npm publish --tag beta
-	git push origin HEAD
 
 pre-publish:
 	@$(call pre-publish,patch)
+
+publish-beta:
+	@$(call publish-beta,beta)
 
 publish:
 	@$(call publish,patch)
