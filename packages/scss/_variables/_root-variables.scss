@@ -98,7 +98,7 @@
   --maz-base-font-weight: 400;
   --maz-base-line-height: 1.5;
   --maz-border-width: 2px;
-  --maz-border-radius: 8px;
+  --maz-border-radius: 12px;
   --maz-text-color: #212121;
   --maz-muted-color: rgba(0, 0, 0, .54);
   --maz-placeholder-color: #A7A7A7;
@@ -106,6 +106,7 @@
   --maz-bg-color: white;
   --maz-bg-color-light: #F2F2F2;
   --maz-overlay-color: rgba(86, 87, 117, .7);
+  --maz-elevation: 0 5px 20px 0 rgba(0, 0, 0, .1);
   --maz-border-color: #EEEEEE;
   --maz-border-color-darken: #d6d6d6;
   --maz-hover-color: #EEEEEE;
@@ -113,8 +114,7 @@
   --maz-disabled-color: #F2F2F2;
   --maz-disabled-color-darken: #d9d9d9;
 }
-
-.maz-is-dark {
+  .maz-is-dark {
   --maz-text-color: #EEEEEE;
   --maz-muted-color: rgba(255, 255, 255, .54);
   --maz-placeholder-color: rgba(255, 255, 255, .6);
@@ -122,6 +122,7 @@
   --maz-bg-color: #21222E;
   --maz-bg-color-light: #303144;
   --maz-overlay-color: rgba(86, 87, 117, .7);
+  --maz-elevation: 0 5px 20px 0 rgba(0, 0, 0, .3);
   --maz-border-color: #3B3C53;
   --maz-border-color-darken: #35364a;
   --maz-hover-color: #2E2F40;
@@ -129,5 +130,5 @@
   --maz-disabled-color: #CCCCCC;
   --maz-disabled-color-darken: #eaeaea;
 }
-
+  
 /* stylelint-enable */

@@ -4,7 +4,7 @@
   >
     <button
       ref="button-open"
-      class="maz-btn maz-btn--primary--outline maz-btn--icon"
+      class="maz-btn maz-btn--outline"
       @click="open = !open"
     >
       <i class="material-icons">

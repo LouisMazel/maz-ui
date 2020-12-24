@@ -15,7 +15,7 @@
         :class="[`maz-gallery__item--${i + 1}`]"
       >
         <img
-          v-zoom-img="{ src: image.slug, alt: image.alt, disabled: !zoom }"
+          v-zoom-img="{ src: image.slug, alt: image.alt, disabled: !zoom, blur: blur, scale: scale }"
           v-lazy-img:background-image="{ slug: image.slug, disabled: !lazy }"
           class="maz-gallery__item__image maz-flex-1"
           src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
@@ -78,7 +78,11 @@ export default {
     // Layer with photography icon when no images is provided
     hasEmptyLayer: { type: Boolean, default: true },
     // Lazy load image - if false, images are directly loaded
-    lazy: { type: Boolean, default: true }
+    lazy: { type: Boolean, default: true },
+    // Blur animation effect on image hover
+    blur: { type: Boolean, default: true },
+    // Scale animation effect on image hover
+    scale: { type: Boolean, default: true }
   },
   computed: {
     sizeStyle () {

@@ -245,11 +245,6 @@ export default {
           size="lg"
           @update="resultsExample = getJson($event)"
         />
-        <!-- no-use-browser-locale -->
-
-        <MazBtn @click="initPhoneNumberExample = null">
-          Init Value
-        </MazBtn>
 
         <hr class="maz-border-top maz-border-solid maz-border-color maz-my-3">
 

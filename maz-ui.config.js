@@ -26,7 +26,7 @@ module.exports = {
     },
     border: {
       'border-width': '2px',
-      'border-radius': '8px'
+      'border-radius': '12px'
     },
     light: {
       typo: {
@@ -38,7 +38,8 @@ module.exports = {
       layout: {
         'bg-color': 'white',
         'bg-color-light': '#F2F2F2',
-        'overlay-color': 'rgba(86, 87, 117, .7)'
+        'overlay-color': 'rgba(86, 87, 117, .7)',
+        'elevation': '0 5px 20px 0 rgba(0, 0, 0, .1)'
       },
       borderColor: {
         'border-color': '#EEEEEE'
@@ -58,7 +59,8 @@ module.exports = {
       layout: {
         'bg-color': '#21222E',
         'bg-color-light': '#303144',
-        'overlay-color': 'rgba(86, 87, 117, .7)'
+        'overlay-color': 'rgba(86, 87, 117, .7)',
+        'elevation': '0 5px 20px 0 rgba(0, 0, 0, .3)'
       },
       borderColor: {
         'border-color': '#3B3C53'
