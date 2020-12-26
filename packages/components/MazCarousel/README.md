@@ -1,5 +1,15 @@
 # MazCarousel
 
+## Props
+
+<!-- @vuese:MazCarousel:props:start -->
+
+| Name      | Description | Type      | Required | Default |
+| --------- | ----------- | --------- | -------- | ------- |
+| scrollBtn | -           | `Boolean` | `false`  | true    |
+
+<!-- @vuese:MazCarousel:props:end -->
+
 ## Slots
 
 <!-- @vuese:MazCarousel:slots:start -->
