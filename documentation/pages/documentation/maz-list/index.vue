@@ -49,13 +49,14 @@
         </div>
         <div class="list-3">
           <h4 class="maz-mb-2">
-            Scrollable list & no-shadow
+            Scrollable list & no-shadow & bordered
           </h4>
           <p class="maz-text-muted maz-mb-3">
             Just set `max-height` CSS property to the list
           </p>
           <MazList
             no-shadow
+            bordered
             class="scrollable-list"
           >
             <MazListItem

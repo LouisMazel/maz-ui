@@ -11,11 +11,7 @@
     overflow-x: hidden;
   }
 
-  &:not(.maz-no-shadow) {
-    box-shadow: 0 0 8px 0 rgba(0, 0, 0, .1);
-  }
-
-  &.maz-no-shadow {
+  &--bordered {
     border: var(--maz-border-width) solid var(--maz-hover-color);
   }
 }

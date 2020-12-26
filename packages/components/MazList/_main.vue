@@ -2,6 +2,8 @@
   <div
     class="maz-base-component maz-list"
     :class="{
+      'maz-list--bordered': bordered,
+      'maz-elevation': !noShadow,
       'maz-no-shadow': noShadow,
       'maz-is-dark': dark,
       'no-scroll': noScroll
@@ -28,7 +30,9 @@ export default {
     // set dark mode
     dark: { type: Boolean, default: false },
     // remove overflow css property & scroll
-    noScroll: { type: Boolean, default: false }
+    noScroll: { type: Boolean, default: false },
+    // Add border to list
+    bordered: { type: Boolean, default: false }
   }
 }
 </script>

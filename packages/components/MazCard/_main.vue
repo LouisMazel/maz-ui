@@ -1,12 +1,17 @@
 <template>
   <div
-    class="maz-card maz-base-component maz-elevation maz-border-radius maz-flex maz-direction-column"
-    :class="{ 'maz-card--linked': href }"
+    class="maz-card maz-base-component maz-flex maz-direction-column"
+    :class="{
+      'maz-card--linked': href,
+      'maz-elevation': elevation,
+      'maz-border-radius': radius,
+      'maz-border maz-border-solid maz-border-color': bordered
+    }"
     :style="[cardStyle]"
   >
     <component
       :is="href ? 'a' : 'div'"
-      class="maz-card__wrapper maz-flex"
+      class="maz-card__wrapper maz-flex maz-flex-1"
       :class="[`maz-direction-${variant}`, { 'maz-card__link': href }]"
       :href="href"
       :target="href ? hrefTarget : null"
@@ -14,6 +19,7 @@
       <div class="maz-card__gallery__wrapper maz-flex">
         <MazGallery
           v-if="images"
+          :radius="radius"
           :width="_galleryWidth"
           :height="galleryHeight"
           :images="images"
@@ -77,11 +83,11 @@ export default {
   props: {
     // Images displayed
     images: { type: Array, default: null },
-    // Card variant: Must be `column`, `row`, `row-reverse` or `column-reverse`
+    // Card variant: Must be `column | row | row-reverse | column-reverse`
     variant: { type: String, default: 'column' },
     // Make card a link (footer area excluded)
     href: { type: String, default: null },
-    // Target option of link: Muse be one of `_blank|_self|_parent|_top|framename`
+    // Target option of link: Muse be one of `_blank | _self | _parent | _top | framename`
     hrefTarget: { type: String, default: '_self' },
     // Card width
     width: { type: [String, Number], default: null },
@@ -94,7 +100,13 @@ export default {
     // Gallery image height
     galleryHeight: { type: [String, Number], default: 150 },
     // Enable "zoom" image on click (can't be used when the card has a link)
-    zoom: { type: Boolean, default: false }
+    zoom: { type: Boolean, default: false },
+    // Set elevation to card (box-shadow)
+    elevation: { type: Boolean, default: true },
+    // Set radius to card (box-shadow)
+    radius: { type: Boolean, default: true },
+    // Set border to card
+    bordered: { type: Boolean, default: false }
   },
   computed: {
     isColumnVariant () {

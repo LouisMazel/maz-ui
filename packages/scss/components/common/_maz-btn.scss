@@ -13,7 +13,7 @@ $btn-font-size-xl: 1.375rem !default;
   cursor: pointer;
   position: relative;
   transition: background-color 300ms ease-in-out, color 300ms ease-in-out;
-  box-shadow: 0 2px 5px 0 rgba(3, 6, 26, .15);
+  box-shadow: 0 0 .5rem 0 rgba(0, 0, 0, .1);
   background-color: var(--maz-primary);
   color: white;
   display: inline-flex;
@@ -294,4 +294,11 @@ $btn-font-size-xl: 1.375rem !default;
 
 .maz-btn.maz-text-hidden {
   color: transparent;
+}
+
+.maz-is-dark.maz-btn,
+.maz-is-dark .maz-btn {
+  &:not(.maz-no-shadow) {
+    box-shadow: 0 0 .5rem 0 rgba(0, 0, 0, .3);
+  }
 }

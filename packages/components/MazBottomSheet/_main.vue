@@ -17,7 +17,7 @@
         class="maz-bottom-sheet__wrapper"
       >
         <div
-          class="maz-bottom-sheet__container maz-bottom-sheet-animation maz-bg-color maz-position-relative"
+          class="maz-bottom-sheet__container maz-bottom-sheet-animation maz-bg-color maz-position-relative maz-elevation"
           :class="{
             'maz-py-6': !noPadding
           }"
@@ -59,11 +59,11 @@ export default {
   props: {
     value: { type: Boolean, required: false },
     excludedClasses: { type: Array, default: Array },
-    persistent: { type: Boolean, required: false },
-    noClose: { type: Boolean, required: false },
-    noPadding: { type: Boolean, required: false },
-    noOverlay: { type: Boolean, required: false },
-    dark: { type: Boolean, required: false }
+    persistent: { type: Boolean, default: false },
+    noClose: { type: Boolean, default: false },
+    noPadding: { type: Boolean, default: false },
+    noOverlay: { type: Boolean, default: false },
+    dark: { type: Boolean, default: false }
   },
   data () {
     return {

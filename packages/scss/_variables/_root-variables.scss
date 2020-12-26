@@ -106,7 +106,7 @@
   --maz-bg-color: white;
   --maz-bg-color-light: #F2F2F2;
   --maz-overlay-color: rgba(86, 87, 117, .7);
-  --maz-elevation: 0 5px 1.25rem 0 rgba(0, 0, 0, .1);
+  --maz-elevation: 0 5px 20px 0 rgba(0, 0, 0, .1);
   --maz-border-color: #EEEEEE;
   --maz-border-color-darken: #d6d6d6;
   --maz-hover-color: #EEEEEE;
@@ -122,7 +122,7 @@
   --maz-bg-color: #21222E;
   --maz-bg-color-light: #303144;
   --maz-overlay-color: rgba(86, 87, 117, .7);
-  --maz-elevation: 0 5px 1.25rem 0 rgba(0, 0, 0, .3);
+  --maz-elevation: 0 5px 20px 0 rgba(0, 0, 0, .3);
   --maz-border-color: #3B3C53;
   --maz-border-color-darken: #35364a;
   --maz-hover-color: #2E2F40;
@@ -130,5 +130,5 @@
   --maz-disabled-color: #CCCCCC;
   --maz-disabled-color-darken: #eaeaea;
 }
-
+  
 /* stylelint-enable */

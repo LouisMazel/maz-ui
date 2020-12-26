@@ -37,7 +37,7 @@
       <div
         v-if="hasListOpen"
         ref="itemsList"
-        class="maz-search__items"
+        class="maz-search__items maz-elevation"
       >
         <button
           v-for="(item, i) in items"
