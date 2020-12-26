@@ -24,7 +24,7 @@
     </MazBtn>
     <transition
       tag="div"
-      :name="hasPositionTop ? 'maz-slideinvert' : 'maz-slide' "
+      name="maz-fade"
       class="maz-bg-color"
     >
       <div

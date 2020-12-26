@@ -1,4 +1,17 @@
 /** Slide animation **/
+.#{$prefix}fade-enter-active,
+.#{$prefix}fade-leave-active {
+  opacity: 1;
+  z-index: 998;
+  transition: all 300ms;
+}
+
+.#{$prefix}fade-enter,
+.#{$prefix}fade-leave-to {
+  opacity: 0;
+  z-index: 998;
+}
+
 .#{$prefix}slide-enter-active,
 .#{$prefix}slide-leave-active {
   opacity: 1;
@@ -8,7 +21,7 @@
 }
 
 .#{$prefix}slide-enter,
-.#{$prefix}slide-leave-to /* .fade-leave-active below version 2.1.8 */ {
+.#{$prefix}slide-leave-to {
   opacity: 0;
   z-index: 998;
   transform: translateY(-20px);
@@ -24,7 +37,7 @@
 }
 
 .#{$prefix}tags-enter,
-.#{$prefix}tags-leave-to /* .fade-leave-active below version 2.1.8 */ {
+.#{$prefix}tags-leave-to {
   opacity: 0;
   // position: absolute;
   transform: translateX(-100%);
@@ -40,7 +53,7 @@
 }
 
 .#{$prefix}slideinvert-enter,
-.#{$prefix}slideinvert-leave-to /* .fade-leave-active below version 2.1.8 */ {
+.#{$prefix}slideinvert-leave-to {
   opacity: 0;
   z-index: 998;
   transform: translateY(40px);
@@ -131,7 +144,7 @@
 }
 
 .#{$prefix}bottom-sheet-enter .#{$prefix}bottom-sheet-animation,
-.#{$prefix}bottom-sheet-leave-to .#{$prefix}bottom-sheet-animation/* .fade-leave-active below version 2.1.8 */ {
+.#{$prefix}bottom-sheet-leave-to .#{$prefix}bottom-sheet-animatio {
   opacity: 1;
   transform: translateY(100%);
 }

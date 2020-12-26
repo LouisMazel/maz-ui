@@ -6,6 +6,8 @@ import MazAvatar from './components/MazAvatar/index.js'
 import MazBottomSheet from './components/MazBottomSheet/index.js'
 import MazBtn from './components/MazBtn/index.js'
 import MazBtnGroup from './components/MazBtnGroup/index.js'
+import MazCard from './components/MazCard/index.js'
+import MazCarousel from './components/MazCarousel/index.js'
 import MazCheckbox from './components/MazCheckbox/index.js'
 import MazCollapse from './components/MazCollapse/index.js'
 import MazDialog from './components/MazDialog/index.js'
@@ -46,6 +48,8 @@ const components = [
   MazBottomSheet,
   MazBtn,
   MazBtnGroup,
+  MazCard,
+  MazCarousel,
   MazCheckbox,
   MazCollapse,
   MazDialog,
@@ -98,6 +102,8 @@ export default {
   MazBottomSheet,
   MazBtn,
   MazBtnGroup,
+  MazCard,
+  MazCarousel,
   MazCheckbox,
   MazCollapse,
   MazDialog,

@@ -1,5 +1,5 @@
 <template>
-  <div class="maz-dropzone-doc">
+  <div class="maz-gallery-doc">
     <ComponentContainer
       code="<template>
   <MazGallery

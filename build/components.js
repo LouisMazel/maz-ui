@@ -3,6 +3,8 @@ module.exports = {
   'maz-bottom-sheet': './components/MazBottomSheet/index.js',
   'maz-btn': './components/MazBtn/index.js',
   'maz-btn-group': './components/MazBtnGroup/index.js',
+  'maz-card': './components/MazCard/index.js',
+  'maz-carousel': './components/MazCarousel/index.js',
   'maz-checkbox': './components/MazCheckbox/index.js',
   'maz-collapse': './components/MazCollapse/index.js',
   'maz-dialog': './components/MazDialog/index.js',

@@ -88,7 +88,10 @@ export default {
     sizeStyle () {
       const { height, width, noWidth, noHeight } = this
       return {
-        ...(!noWidth ? { flex: `0 0 ${Number.isInteger(width) ? `${width}px` : width}` } : {}),
+        ...(!noWidth ? {
+          flex: `0 0 ${Number.isInteger(width) ? `${width}px` : width}`,
+          width: Number.isInteger(width) ? `${width}px` : width
+        } : {}),
         ...(!noHeight
           ? {
             height: Number.isInteger(height) ? `${height}px` : `${height}`,
