@@ -94,7 +94,7 @@
     <transition :name="listTransition">
       <div
         v-show="hasOpenList"
-        class="maz-select__options-list maz-flex"
+        class="maz-select__options-list maz-flex maz-elevation"
         :class="[
           hasPositionTop ? 'maz-select__options-list--top maz-direction-column-reverse' : 'maz-direction-column',
           { 'maz-select__options-list--right': hasPositionRight }

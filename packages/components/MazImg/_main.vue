@@ -1,7 +1,7 @@
 <template>
   <figure
     ref="MazImg"
-    v-zoom-img="{ src, alt, disabled: noZoom }"
+    v-zoom-img="{ src, alt, disabled: noZoom, scale: false }"
     class="maz-base-component maz-img maz-flex maz-flex-center maz-direction-column maz-bg-color-light maz-space-between"
     :style="[containerSize]"
     :class="{

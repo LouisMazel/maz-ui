@@ -4,7 +4,7 @@
   >
     <button
       ref="button-open"
-      class="maz-btn maz-btn--primary--outline maz-btn--icon"
+      class="maz-btn maz-btn--outline"
       @click="open = !open"
     >
       <i class="material-icons">
@@ -18,7 +18,7 @@
           exclude: ['button-open'],
           handler: 'close'
         }"
-        class="maz-responsive-menu-collapse maz-flex maz-direction-column maz-border-radius"
+        class="maz-responsive-menu-collapse maz-flex maz-direction-column maz-border-radius maz-elevation"
       >
         <router-link
           v-for="({ name, label }, i) in routes"

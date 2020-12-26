@@ -152,7 +152,7 @@ module.exports = {
     },
     border: {
       'border-width': '2px',
-      'border-radius': '8px'
+      'border-radius': '12px'
     },
     light: {
       typo: {
@@ -305,7 +305,7 @@ module.exports = {
   --maz-base-font-weight: 400;
   --maz-base-line-height: 1.5;
   --maz-border-width: 2px;
-  --maz-border-radius: 8px;
+  --maz-border-radius: 12px;
   --maz-text-color: #212121;
   --maz-muted-color: rgba(0, 0, 0, .54);
   --maz-placeholder-color: #A7A7A7;

@@ -296,8 +296,8 @@ $TEXTEAREA_SIZE: 9.375rem !default;
   &__loader {
     bottom: -(var(--maz-border-width) / 2);
     height: var(--maz-border-width);
-    left: var(--maz-border-radius) / 2;
-    width: calc(100% - .5714rem);
+    left: var(--maz-border-radius);
+    width: calc(100% - calc(var(--maz-border-radius) * 2));
     position: absolute;
     overflow: hidden;
     border-radius: var(--maz-border-radius);

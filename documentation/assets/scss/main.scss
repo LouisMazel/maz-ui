@@ -93,7 +93,7 @@ html {
     font-size: 1.1rem;
   }
 
-  a:not(.maz-btn) {
+  a:not(.maz-btn):not(.maz-card__link) {
     color: var(--maz-primary);
     text-decoration: none;
 

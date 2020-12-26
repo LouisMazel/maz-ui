@@ -3,6 +3,8 @@ export default {
   // Form components
   'maz-btn': 'MazBtn is a stand-alone component replaces the standard html button with a beautiful design system. Many options like colors, sizes, disabled state, loading state, includes icons. Support of router-link and nuxt-link',
   'maz-btn-group': 'MazBtn is a stand-alone component. It\'s a group of buttons with a beautiful design system. It helps the user to choose an option.',
+  'maz-card': 'MazCard is a stand-alone component to display some texts, images and you can add buttons actions',
+  'maz-carousel': 'MazCarousel is a stand-alone component to display and manage items in a row',
   'maz-checkbox': 'MazCheckbox is a stand-alone component replaces the standard html input checkbox. Color option available',
   'maz-dropzone': 'MazDropzone is a stand-alone component to help user upload different type of files with a beautiful design system. It works with dropzone.js and is not SSR compatible with Nuxt.JS',
   'maz-input': 'MazInput is a stand-alone component replaces the standard html input text or textarea with a beautiful design system. Many options like colors, sizes, disabled, loading, error, warning, valid states, error messages, includes icons.',

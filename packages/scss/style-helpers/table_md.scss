@@ -11,10 +11,9 @@ table.#{$prefix}md {
   margin-top: 0;
   margin-bottom: 16px;
   font-size: 1rem;
-  box-shadow: 0 0 8px 0 rgba(0, 0, 0, .1);
+  box-shadow: var(--#{$prefix}elevation);
 
   tr {
-    // background-color: var(--#{$prefix}border-color);
     width: 100%;
 
     th,

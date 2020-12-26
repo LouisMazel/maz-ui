@@ -18,7 +18,7 @@
         <div
           v-click-outside="vcoConfig"
           :style="widthStyle"
-          class="maz-dialog__container maz-dialog-animation maz-flex maz-direction-column maz-bg-color maz-border-radius"
+          class="maz-dialog__container maz-dialog-animation maz-elevation maz-flex maz-direction-column maz-bg-color maz-border-radius"
         >
           <div
             v-if="!noHeader"

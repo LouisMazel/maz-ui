@@ -132,6 +132,8 @@ import {
   MazBottomSheet,
   MazBtn,
   MazBtnGroup,
+  MazCard,
+  MazCarousel,
   MazCheckbox,
   MazCollapse,
   MazDialog,
@@ -171,6 +173,8 @@ Vue.use(MazAvatar)
 Vue.use(MazBottomSheet)
 Vue.use(MazBtn)
 Vue.use(MazBtnGroup)
+Vue.use(MazCard)
+Vue.use(MazCarousel)
 Vue.use(MazCheckbox)
 Vue.use(MazCollapse)
 Vue.use(MazDialog)

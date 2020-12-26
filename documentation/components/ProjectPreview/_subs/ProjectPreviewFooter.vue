@@ -1,6 +1,6 @@
 <template>
   <div
-    class="project-preview-footer maz-p-3 maz-flex maz-justify-end maz-border-top maz-border-top-solid maz-border-color"
+    class="project-preview-footer maz-flex maz-justify-end"
   >
     <MazBtn
       v-if="project.githubUrl"

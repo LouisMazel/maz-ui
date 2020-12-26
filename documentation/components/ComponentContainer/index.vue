@@ -1,5 +1,5 @@
 <template>
-  <div class="component-container maz-position-relative maz-bg-white maz-my-4 maz-border-radius">
+  <div class="component-container maz-position-relative maz-bg-white maz-my-4 maz-border-radius maz-elevation">
     <div class="maz-p-4 maz-bg-color maz-border-radius maz-w-100">
       <slot />
     </div>
@@ -37,7 +37,7 @@ export default {
     color: var(--maz-text-color);
     min-width: 200px;
     background-color: var(--maz-bg-color);
-    border: var(--maz-border-width) solid var(--maz-border-color);
+    // border: var(--maz-border-width) solid var(--maz-border-color);
 
     &__footer {
       overflow: hidden;
