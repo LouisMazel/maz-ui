@@ -8,11 +8,11 @@
 | --------------- | ----------- | --------- | -------- | ------- |
 | value           | -           | `Boolean` | `false`  | -       |
 | excludedClasses | -           | `Array`   | `false`  | Array   |
-| persistent      | -           | `Boolean` | `false`  | -       |
-| noClose         | -           | `Boolean` | `false`  | -       |
-| noPadding       | -           | `Boolean` | `false`  | -       |
-| noOverlay       | -           | `Boolean` | `false`  | -       |
-| dark            | -           | `Boolean` | `false`  | -       |
+| persistent      | -           | `Boolean` | `false`  | false   |
+| noClose         | -           | `Boolean` | `false`  | false   |
+| noPadding       | -           | `Boolean` | `false`  | false   |
+| noOverlay       | -           | `Boolean` | `false`  | false   |
+| dark            | -           | `Boolean` | `false`  | false   |
 
 <!-- @vuese:MazBottomSheet:props:end -->
 
