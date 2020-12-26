@@ -1,9 +1,15 @@
 <template>
   <div class="maz-carousel maz-flex maz-direction-column">
-    <div class="maz-carousel__header maz-flex maz-align-center">
+    <div
+      v-if="hasHeader"
+      class="maz-carousel__header maz-flex maz-align-center"
+    >
       <!-- Title of the carousel -->
       <slot name="title" />
-      <div class="maz-carousel__header__actions maz-flex-1 maz-text-right">
+      <div
+        v-if="scrollBtn"
+        class="maz-carousel__header__actions maz-flex-1 maz-text-right"
+      >
         <MazBtn
           color="transparent"
           outline
@@ -17,7 +23,6 @@
           <slot name="previous-icon">
             <!-- `<svg />` -->
             <svg
-              data-v-08533ec6=""
               width="20px"
               height="20px"
               viewBox="0 0 20 20"
@@ -56,7 +61,6 @@
           <slot name="next-icon">
             <!-- `<svg />` -->
             <svg
-              data-v-08533ec6=""
               width="20px"
               height="20px"
               viewBox="0 0 20 20"
@@ -99,6 +103,9 @@
 <script>
 export default {
   name: 'MazCarousel',
+  props: {
+    scrollBtn: { type: Boolean, default: true }
+  },
   data () {
     return {
       isScrolled: false,
@@ -106,6 +113,9 @@ export default {
     }
   },
   methods: {
+    hasHeader () {
+      return this.scrollBtn || this.$slots['title']
+    },
     next () {
       const { $refs } = this
       const items = $refs.MazCarouselItems
