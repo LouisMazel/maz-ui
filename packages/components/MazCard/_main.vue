@@ -22,24 +22,26 @@
           :radius="radius"
           :width="_galleryWidth"
           :height="galleryHeight"
+          :images-shown-count="imagesShowCount"
           :images="images"
           :zoom="zoom"
           :no-width="isColumnVariant"
           :no-height="!isColumnVariant && haveSomeContent"
+          :no-remaining="noRemaining"
           class="maz-card__gallery maz-flex-fixed maz-flex-1"
         />
         <div
           v-if="$slots['actions']"
-          class="maz-card__gallery__actions maz-p-2 maz-text-left"
+          class="maz-card__gallery__actions maz-p-2"
         >
           <!-- Can't be used when the card is linked -->
           <slot name="actions" />
         </div>
       </div>
-      <!-- {{ $slots['title'] }} -->
+
       <div
         v-if="haveSomeContent"
-        class="maz-flex-1"
+        class="maz-flex-1 maz-m-w-0"
       >
         <div class="maz-card__content__wrapper maz-p-3">
           <slot>
@@ -67,7 +69,7 @@
     </component>
     <div
       v-if="$slots['footer']"
-      class="maz-card__footer maz-p-3"
+      class="maz-card__footer maz-p-3 maz-overflow-x-auto"
       :class="[{ 'maz-border-top maz-border-color maz-border-top-solid': isColumnVariant && haveSomeContent }, `maz-text-${footerAlign}`]"
     >
       <slot name="footer" />
@@ -106,7 +108,11 @@ export default {
     // Set radius to card (box-shadow)
     radius: { type: Boolean, default: true },
     // Set border to card
-    bordered: { type: Boolean, default: false }
+    bordered: { type: Boolean, default: false },
+    // Number of images shown in the gallery
+    imagesShowCount: { type: Number, default: 3 },
+    // Remove transparent layer with the remain count (ex: +2)
+    noRemaining: { type: Boolean, default: true }
   },
   computed: {
     isColumnVariant () {
