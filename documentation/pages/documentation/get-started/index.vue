@@ -19,11 +19,10 @@
 
     <h3>Install maz-ui</h3>
     <CodeContainer
+      language="bash"
       code="npm i maz-ui -S
 
-/*
- * or yarn add maz-ui
- */"
+# or yarn add maz-ui"
       class="maz-my-4"
     />
 
@@ -44,11 +43,10 @@
     <p>First, install babel-plugin-component:</p>
 
     <CodeContainer
+      language="bash"
       code="npm install babel-plugin-component -D
 
-/*
- * or yarn add babel-plugin-component -D
- */"
+# or yarn add babel-plugin-component -D"
     />
 
     <h4>

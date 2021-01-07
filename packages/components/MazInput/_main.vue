@@ -49,7 +49,7 @@
       v-bind="$attrs"
       :placeholder="placeholderValue"
       :type="getType"
-      class="maz-input__input"
+      class="maz-input__input maz-border-radius"
       :aria-label="placeholder"
       :class="{
         'has-right-icon': hasClearBtn || hasPasswordBtn || hasRightIcon()

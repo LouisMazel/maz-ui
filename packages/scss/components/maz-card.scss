@@ -2,6 +2,7 @@
   min-width: 250px;
   max-width: 100%;
   color: var(--maz-text-color);
+  background-color: var(--maz-bg-color);
   position: relative;
 
   $this: &;
@@ -10,7 +11,7 @@
     transition: all 300ms ease-in-out;
     transform: scale(1);
 
-    &:hover {
+    &:hover:not(#{$this}--no-scale) {
       z-index: 1;
       transform: scale(1.02);
     }

@@ -3,6 +3,7 @@
     class="maz-card maz-base-component maz-flex maz-direction-column"
     :class="{
       'maz-card--linked': href,
+      'maz-card--no-scale': !scale,
       'maz-elevation': elevation,
       'maz-border-radius': radius,
       'maz-border maz-border-solid maz-border-color': bordered
@@ -112,7 +113,9 @@ export default {
     // Number of images shown in the gallery
     imagesShowCount: { type: Number, default: 3 },
     // Remove transparent layer with the remain count (ex: +2)
-    noRemaining: { type: Boolean, default: true }
+    noRemaining: { type: Boolean, default: true },
+    // scale animation on hover (only linked cards)
+    scale: { type: Boolean, default: true }
   },
   computed: {
     isColumnVariant () {

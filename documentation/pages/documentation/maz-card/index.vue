@@ -3,8 +3,40 @@
     <ComponentContainer
       code="<template>
   <MazCard
-    href=&quot;https://www.fillmurray.com/640/500&quot;
+    :images=&quot;[
+      'https://www.fillmurray.com/640/500'
+    ]&quot;
   >
+    <template #title>
+      <h4>
+        Bill Murray
+      </h4>
+    </template>
+    <template #subtitle>
+      <h5>
+        Actor
+      </h5>
+    </template>
+    <template #content>
+      <p class=&quot;maz-text-muted&quot;>
+        You're awesome! You're awesome! You're awesome! You're awesome! You're awesome!
+      </p>
+    </template>
+    <template #actions>
+      <MazBtn
+        size=&quot;sm&quot;
+        icon-name=&quot;delete&quot;
+        fab
+        color=&quot;danger&quot;
+      />
+      <MazBtn
+        size=&quot;sm&quot;
+        left-icon-name=&quot;star&quot;
+        color=&quot;white&quot;
+      >
+        <strong>5</strong>
+      </MazBtn>
+    </template>
   </MazCard>
 <template>"
       class="maz-card-doc__demo"
@@ -13,7 +45,6 @@
         Basic
       </h3>
       <MazCard
-        variant="column"
         :images="[
           'https://www.fillmurray.com/640/500'
         ]"

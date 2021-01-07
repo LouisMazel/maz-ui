@@ -106,7 +106,7 @@
 <script>
   import { MazDropzone } from 'maz-ui'
   export default {
-    components: { MazDropzone }
+    components: { MazDropzone },
     data () {
       return {
         url: 'https://httpbin.org/post',

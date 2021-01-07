@@ -21,6 +21,7 @@
 | bordered        | Set border to card                                                                  | `Boolean`           | `false`  | false   |
 | imagesShowCount | Number of images shown in the gallery                                               | `Number`            | `false`  | 3       |
 | noRemaining     | Remove transparent layer with the remain count (ex: +2)                             | `Boolean`           | `false`  | true    |
+| scale           | scale animation on hover (only linked cards)                                        | `Boolean`           | `false`  | true    |
 
 <!-- @vuese:MazCard:props:end -->
 
