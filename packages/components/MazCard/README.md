@@ -28,13 +28,13 @@
 
 <!-- @vuese:MazCard:slots:start -->
 
-| Name     | Description                           | Default Slot Content |
-| -------- | ------------------------------------- | -------------------- |
-| actions  | Can't be used when the card is linked | -                    |
-| default  | -                                     | -                    |
-| title    | -                                     | -                    |
-| subtitle | -                                     | -                    |
-| content  | -                                     | -                    |
-| footer   | -                                     | -                    |
+| Name     | Description            | Default Slot Content |
+| -------- | ---------------------- | -------------------- |
+| default  | -                      | -                    |
+| title    | -                      | -                    |
+| subtitle | -                      | -                    |
+| content  | -                      | -                    |
+| footer   | -                      | -                    |
+| actions  | Slot above the gallery | -                    |
 
 <!-- @vuese:MazCard:slots:end -->

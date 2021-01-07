@@ -30,13 +30,6 @@
           :no-remaining="noRemaining"
           class="maz-card__gallery maz-flex-fixed maz-flex-1"
         />
-        <div
-          v-if="$slots['actions']"
-          class="maz-card__gallery__actions maz-p-2"
-        >
-          <!-- Can't be used when the card is linked -->
-          <slot name="actions" />
-        </div>
       </div>
 
       <div
@@ -73,6 +66,13 @@
       :class="[{ 'maz-border-top maz-border-color maz-border-top-solid': isColumnVariant && haveSomeContent }, `maz-text-${footerAlign}`]"
     >
       <slot name="footer" />
+    </div>
+    <div
+      v-if="$slots['actions']"
+      class="maz-card__actions maz-p-2"
+    >
+      <!-- Slot above the gallery -->
+      <slot name="actions" />
     </div>
   </div>
 </template>

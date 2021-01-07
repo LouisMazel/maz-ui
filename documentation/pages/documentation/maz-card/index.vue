@@ -33,6 +33,21 @@
             You're awesome! You're awesome! You're awesome! You're awesome! You're awesome!
           </p>
         </template>
+        <template #actions>
+          <MazBtn
+            size="sm"
+            icon-name="delete"
+            fab
+            color="danger"
+          />
+          <MazBtn
+            size="sm"
+            left-icon-name="star"
+            color="white"
+          >
+            <strong>5</strong>
+          </MazBtn>
+        </template>
       </MazCard>
     </ComponentContainer>
 
