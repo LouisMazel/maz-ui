@@ -70,7 +70,7 @@
     </div>
     <div
       v-if="$slots['actions']"
-      class="maz-card__actions maz-p-2"
+      class="maz-card__actions maz-p-2 maz-flex"
     >
       <!-- Slot above the gallery -->
       <slot name="actions" />
