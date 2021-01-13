@@ -4,12 +4,12 @@
       code="<template>
   <MazCard
     :images=&quot;[
-      'https://www.fillmurray.com/640/500'
+      'https://www.stevensegallery.com/600/800'
     ]&quot;
   >
     <template #title>
       <h4>
-        Bill Murray
+        Steven Seagal
       </h4>
     </template>
     <template #subtitle>
@@ -46,12 +46,12 @@
       </h3>
       <MazCard
         :images="[
-          'https://www.fillmurray.com/640/500'
+          'https://www.stevensegallery.com/600/800'
         ]"
       >
         <template #title>
           <h4>
-            Bill Murray
+            Steven Seagal
           </h4>
         </template>
         <template #subtitle>
@@ -85,18 +85,18 @@
     <ComponentContainer
       code="<template>
   <MazCard
-    href=&quot;https://www.fillmurray.com/640/500&quot;
+    href=&quot;https://www.stevensegallery.com/640/500&quot;
     href-target=&quot;_blank&quot;
     :max-width=&quot;500&quot;
     variant=&quot;row&quot;
     :images=&quot;[
-      'https://www.fillmurray.com/640/500',
-      'https://www.fillmurray.com/740/600'
+      'https://www.stevensegallery.com/640/500',
+      'https://www.stevensegallery.com/740/600'
     ]&quot;
   >
     <template #title>
       <h4>
-        Bill Murray
+        Steven Seagal
       </h4>
     </template>
     <template #content>
@@ -124,18 +124,18 @@
         Linked - row variant - footer
       </h3>
       <MazCard
-        href="https://www.fillmurray.com/640/500"
+        href="https://www.stevensegallery.com/640/500"
         href-target="_blank"
         :max-width="500"
         variant="row"
         :images="[
-          'https://www.fillmurray.com/640/500',
-          'https://www.fillmurray.com/740/600'
+          'https://www.stevensegallery.com/640/500',
+          'https://www.stevensegallery.com/740/600'
         ]"
       >
         <template #title>
           <h4>
-            Bill Murray
+            Steven Seagal
           </h4>
         </template>
         <template #content>
@@ -163,8 +163,8 @@
       code="<template>
   <MazCard
     :images=&quot;[
-      'https://www.fillmurray.com/640/500',
-      'https://www.fillmurray.com/740/600'
+      'https://www.stevensegallery.com/640/500',
+      'https://www.stevensegallery.com/740/600'
     ]&quot;
     zoom
   >
@@ -191,8 +191,8 @@
       </h3>
       <MazCard
         :images="[
-          'https://www.fillmurray.com/640/500',
-          'https://www.fillmurray.com/740/600'
+          'https://www.stevensegallery.com/640/500',
+          'https://www.stevensegallery.com/740/600'
         ]"
         zoom
       >
@@ -223,12 +223,12 @@
       variant=&quot;row&quot;
       :width=&quot;400&quot;
       :images=&quot;[
-        'https://www.fillmurray.com/640/500'
+        'https://www.stevensegallery.com/800/800'
       ]&quot;
     >
       <template #title>
         <h4>
-          Bill Murray
+          Steven Seagal
         </h4>
       </template>
       <template #content>
@@ -253,7 +253,7 @@
       <MazCarousel>
         <template #title>
           <h4>
-            Bill Murray Carousel
+            Steven Seagal Carousel
           </h4>
         </template>
         <MazCard
@@ -262,12 +262,12 @@
           variant="row"
           :width="400"
           :images="[
-            'https://www.fillmurray.com/640/500'
+            'https://www.stevensegallery.com/800/800'
           ]"
         >
           <template #title>
             <h5>
-              Bill Murray
+              Steven Seagal
             </h5>
           </template>
           <template #content>
@@ -303,7 +303,7 @@
     data () {
       return {
         images: [
-          'https://www.fillmurray.com/640/500'
+          'https://www.stevensegallery.com/640/500'
         ]
       }
     }

@@ -4,12 +4,12 @@
       code="<template>
   <MazGallery
     :images=&quot;[
-      'https://www.fillmurray.com/640/500',
-      { slug: 'https://www.fillmurray.com/640/600', alt: 'image description' },
-      { slug: 'https://www.fillmurray.com/640/700', alt: 'image description' },
-      'https://www.fillmurray.com/640/800',
-      'https://www.fillmurray.com/640/1000',
-      'https://www.fillmurray.com/800/800'
+      'https://www.stevensegallery.com/640/500',
+      { slug: 'https://www.stevensegallery.com/640/600', alt: 'image description' },
+      { slug: 'https://www.stevensegallery.com/640/700', alt: 'image description' },
+      'https://www.stevensegallery.com/640/800',
+      'https://www.stevensegallery.com/640/1000',
+      'https://www.stevensegallery.com/800/800'
     ]&quot;
     :height=&quot;400&quot;
   />
@@ -17,12 +17,12 @@
     >
       <MazGallery
         :images="[
-          'https://www.fillmurray.com/640/500',
-          { slug: 'https://www.fillmurray.com/640/600', alt: 'image description' },
-          { slug: 'https://www.fillmurray.com/640/700', alt: 'image description' },
-          'https://www.fillmurray.com/640/800',
-          'https://www.fillmurray.com/640/1000',
-          'https://www.fillmurray.com/800/800'
+          'https://www.stevensegallery.com/640/500',
+          { slug: 'https://www.stevensegallery.com/640/600', alt: 'image description' },
+          { slug: 'https://www.stevensegallery.com/640/700', alt: 'image description' },
+          'https://www.stevensegallery.com/640/800',
+          'https://www.stevensegallery.com/640/1000',
+          'https://www.stevensegallery.com/800/800'
         ]"
         :height="400"
       />
@@ -52,12 +52,12 @@
     data () {
       return {
         images: [
-          'https://www.fillmurray.com/640/500',
-          { slug: 'https://www.fillmurray.com/640/600', alt: 'image description' },
-          { slug: 'https://www.fillmurray.com/640/700', alt: 'image description' },
-          'https://www.fillmurray.com/640/800',
-          'https://www.fillmurray.com/640/1000',
-          'https://www.fillmurray.com/800/800'
+          'https://www.stevensegallery.com/640/500',
+          { slug: 'https://www.stevensegallery.com/640/600', alt: 'image description' },
+          { slug: 'https://www.stevensegallery.com/640/700', alt: 'image description' },
+          'https://www.stevensegallery.com/640/800',
+          'https://www.stevensegallery.com/640/1000',
+          'https://www.stevensegallery.com/800/800'
         ]
       }
     }

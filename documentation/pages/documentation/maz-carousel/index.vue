@@ -7,12 +7,12 @@
       v-for=&quot;(item, i) in Array(8)&quot;
       :key=&quot;i&quot;
       :images=&quot;[
-        'https://www.fillmurray.com/640/500'
+        'https://www.stevensegallery.com/650/750'
       ]&quot;
     >
       <template #title>
         <h4>
-          Bill Murray
+          Steven Seagal
         </h4>
       </template>
       <template #content>
@@ -27,19 +27,19 @@
       <MazCarousel>
         <template #title>
           <h4>
-            Bill Murray Carousel
+            Steven Seagal Carousel
           </h4>
         </template>
         <MazCard
           v-for="(item, i) in Array(8)"
           :key="i"
           :images="[
-            'https://www.fillmurray.com/640/500'
+            'https://www.stevensegallery.com/650/750'
           ]"
         >
           <template #title>
             <h5>
-              Bill Murray
+              Steven Seagal
             </h5>
           </template>
           <template #content>
