@@ -57,7 +57,7 @@ export default {
   sitemap: {
     hostname: 'https://louismazel.github.io/'
   },
-  css: ['~/assets/scss/main.scss'],
+  css: ['~/assets/scss/main.scss', '~/assets/scss/_override-highlight.scss'],
   styleResources: {
     scss: [
       '~/assets/scss/_responsive.scss'

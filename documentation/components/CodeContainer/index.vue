@@ -1,14 +1,13 @@
 <template>
   <pre
-    v-highlightjs="code"
+    v-highlightjs
     class="code-container"
   >
     <code
       class="code-container__content maz-elevation"
       :class="[language]"
-    >
-      <slot />
-    </code>
+      v-text="code"
+    />
   </pre>
 </template>
 
