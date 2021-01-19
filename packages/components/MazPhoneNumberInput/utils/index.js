@@ -8,6 +8,7 @@ export const browserLocale = () => {
   if (locale === '') locale = browserLocale.substr(0, 2).toUpperCase()
   // fallback to US country
   if (locale === 'EN') locale = 'US'
+  if (locale === 'JA') locale = 'JP'
   return locale
 }
 
