@@ -9,7 +9,7 @@
       { slug: 'https://www.stevensegallery.com/640/700', alt: 'image description' },
       'https://www.stevensegallery.com/640/800',
       'https://www.stevensegallery.com/640/1000',
-      'https://www.stevensegallery.com/800/800'
+      'https://www.stevensegallery.com/1200/1200'
     ]&quot;
     :height=&quot;400&quot;
   />
@@ -18,11 +18,11 @@
       <MazGallery
         :images="[
           'https://www.stevensegallery.com/640/500',
-          { slug: 'https://www.stevensegallery.com/640/600', alt: 'image description' },
-          { slug: 'https://www.stevensegallery.com/640/700', alt: 'image description' },
+          { slug: 'https://www.stevensegallery.com/1400/800', alt: 'image description' },
+          { slug: 'https://www.stevensegallery.com/800/1400', alt: 'image description' },
           'https://www.stevensegallery.com/640/800',
-          'https://www.stevensegallery.com/640/1000',
-          'https://www.stevensegallery.com/800/800'
+          'https://www.stevensegallery.com/800/1000',
+          'https://www.stevensegallery.com/1200/1200'
         ]"
         :height="400"
       />

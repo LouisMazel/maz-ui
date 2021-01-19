@@ -15,14 +15,15 @@
         :class="[`maz-gallery__item--${i + 1}`]"
       >
         <img
-          v-zoom-img="{ src: image.slug, alt: image.alt, disabled: !zoom, blur: blur, scale: scale }"
+          v-zoom-img="{ src: image.slug, alt: image.alt, disabled: !zoom || shouldHaveRemainingLayer(i), blur: blur, scale: scale }"
           v-lazy-img:background-image="{ slug: image.slug, disabled: !lazy }"
           class="maz-gallery__item__image maz-flex-1"
           src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
           :alt="image.alt"
         />
         <div
-          v-if="numberImagesRemaining && i + 1 === imagesShown.length && !noRemaining"
+          v-if="shouldHaveRemainingLayer(i)"
+          v-zoom-img="{ src: image.slug, alt: image.alt, disabled: !zoom, blur: blur, scale: scale }"
           class="maz-gallery__remaining-layer maz-flex maz-flex-center maz-bg-overlay"
         >
           <span>+{{ numberImagesRemaining }}</span>
@@ -124,6 +125,11 @@ export default {
   created () {
     const { imagesShownCount } = this
     if (imagesShownCount > 5) console.warn('[MazUI](maz-gallery) The maximum of "images-shown-count" is 5')
+  },
+  methods: {
+    shouldHaveRemainingLayer (i) {
+      return this.numberImagesRemaining && (i + 1 === this.imagesShown.length) && !this.noRemaining
+    }
   }
 }
 </script>

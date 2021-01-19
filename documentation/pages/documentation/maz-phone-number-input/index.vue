@@ -279,17 +279,17 @@ export default {
   />
 </template>
 
-<>
+<script>
   import { MazPhoneNumberInput } from 'maz-ui'
   export default {
-    components: { MazPhoneNumberInput }
+    components: { MazPhoneNumberInput },
     data () {
       return {
         phoneNumber: null
       }
     }
   }
-</>"
+</script>"
     />
   </div>
 </template>
