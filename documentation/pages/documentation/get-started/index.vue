@@ -54,18 +54,19 @@
     </h4>
 
     <CodeContainer
-      code="// .babelrc
+      code="// babel.config.js
 
-{
+module.exports = {
   plugins: [
     [
-      'component', {
+      'component',
+      {
         libraryName: 'maz-ui',
         styleLibraryName: 'css'
       }
     ]
   ]
-}"
+};"
     />
     <h4>
       Nuxt.JS babel config

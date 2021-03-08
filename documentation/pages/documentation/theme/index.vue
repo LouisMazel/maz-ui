@@ -108,7 +108,7 @@ module.exports = {
       language="scss"
       code="// main.scss
 ...
-@import './root.css';
+@import './assets/root.css';
 ...
 "
     />
