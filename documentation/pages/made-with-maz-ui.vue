@@ -10,7 +10,7 @@
       direction-column
     >
       <h2 class="maz-text-center maz-mt-6">
-        Projects Made With Mazel UI
+        Projects Made With Maz UI
       </h2>
       <div class="maz-container made-with-maz-ui__projects-list maz-py-6">
         <ProjectPreview
