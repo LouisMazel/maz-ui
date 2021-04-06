@@ -1,7 +1,7 @@
 {
   // Change this to match your project
   "include": [
-    "lib/**/*"
+    "packages/components/**/index.js"
   ],
 
   "compilerOptions": {
