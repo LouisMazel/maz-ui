@@ -445,7 +445,7 @@ export default {
       this.searchQuery = query === '' ? null : query
       if (!this.searchQuery) return this.filteredOptions = options
       const searchQuery = query.toLowerCase()
-      const filteredOptions = options.filter(o => o[config.valueKey] && o[config.searchKey].toLowerCase().includes(searchQuery))
+      const filteredOptions = options.filter(o => (o[config.valueKey] && o[config.searchKey].toLowerCase().includes(searchQuery))|| (o[config.labelKey] && o[config.labelKey].includes(searchQuery)))
       this.tmpValue = filteredOptions.length ? filteredOptions[0][config.valueKey] : null
       this.filteredOptions = filteredOptions
     }
