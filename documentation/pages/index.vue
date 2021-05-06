@@ -60,6 +60,9 @@ import meta from '~/config/meta'
 
 export default {
   name: 'Home',
+  components: {
+    NavFooter
+  },
   head () {
     return {
       meta: meta({
@@ -67,9 +70,6 @@ export default {
         title: 'Maz UI - Stand-alone components library for Vue.JS & Nuxt.JS'
       })
     }
-  },
-  components: {
-    NavFooter
   },
   computed: {
     ...mapGetters(['hasDarkTheme']),

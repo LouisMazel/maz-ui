@@ -1,3 +1,6 @@
+
+@import './../_variables/color_names';
+
 .maz-search {
   position: relative;
 
@@ -53,8 +56,6 @@
   &__no-data {
     i { font-size: 2rem; }
   }
-
-  @import './../_variables/color_names';
 
   @each $name in $color_names {
     &--#{$name} {

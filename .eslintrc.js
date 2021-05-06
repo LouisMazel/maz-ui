@@ -5,42 +5,42 @@ module.exports = {
     node: true
   },
   extends: [
-    "plugin:vue/strongly-recommended",
-    "eslint:recommended"
+    'plugin:vue/strongly-recommended',
+    'eslint:recommended'
   ],
-  plugins: ["vue"],
+  plugins: ['vue'],
   parserOptions: {
-    parser: "babel-eslint"
+    parser: 'babel-eslint'
   },
   rules: {
     // ESLINT RULES
-    "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
-    "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
-    "arrow-parens": 0,
-    semi: ["error", "never"],
-    quotes: ["error", "single"],
-    "func-style": "error",
-    "max-len": [
-      "warn",
+    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'arrow-parens': 0,
+    semi: ['error', 'never'],
+    quotes: ['error', 'single'],
+    'func-style': 'error',
+    'max-len': [
+      'warn',
       {
         code: 200
       }
     ],
-    "no-unused-vars": ["error"],
-    "no-undef": ["error", { typeof: true }],
-    "no-loop-func": "warn",
+    'no-unused-vars': ['error'],
+    'no-undef': ['error', { typeof: true }],
+    'no-loop-func': 'warn',
     indent: [
-      "error",
+      'error',
       2,
       {
-        ignoredNodes: ["TemplateLiteral"]
+        ignoredNodes: ['TemplateLiteral']
       }
     ],
-    "space-before-function-paren": ["error", "always"],
-    "template-curly-spacing": "off",
+    'space-before-function-paren': ['error', 'always'],
+    'template-curly-spacing': 'off',
     // VUE RULES
-    "vue/max-attributes-per-line": [
-      "error",
+    'vue/max-attributes-per-line': [
+      'error',
       {
         singleline: 1,
         multiline: {
@@ -49,31 +49,31 @@ module.exports = {
         }
       }
     ],
-    "vue/html-self-closing": [
-      "error",
+    'vue/html-self-closing': [
+      'error',
       {
         html: {
-          void: "any"
+          void: 'any'
         }
       }
     ],
-    "vue/html-indent": [
-      "error",
+    'vue/html-indent': [
+      'error',
       2,
       {
         baseIndent: 1
       }
     ],
-    "vue/script-indent": ["error", 2, { baseIndent: 1 }],
-    "vue/component-name-in-template-casing": ["error", "PascalCase"],
-    "vue/attributes-order": "error",
-    "vue/no-confusing-v-for-v-if": "error",
-    "vue/no-v-html": "error",
-    "vue/order-in-components": "error",
-    "vue/this-in-template": "error",
-    "vue/script-indent": "error"
+    // 'vue/script-indent': ['error', 2, { baseIndent: 1 }],
+    'vue/component-name-in-template-casing': ['error', 'PascalCase'],
+    'vue/attributes-order': 'error',
+    'vue/no-confusing-v-for-v-if': 'error',
+    'vue/no-v-html': 'error',
+    'vue/order-in-components': 'error',
+    'vue/this-in-template': 'error',
+    'vue/script-indent': 'error'
   }
-};
+}
 
 // 'generator-star-spacing': 0,
 // 'arrow-parens': 0,

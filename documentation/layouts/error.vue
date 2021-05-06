@@ -45,10 +45,10 @@
 
 <script>
 export default {
+  layout: 'default',
   props: {
     error: { type: [Number, Object, String], default: null }
-  },
-  layout: 'default', // If you prefers you can set a custom layout for the error page
+  }, // If you prefers you can set a custom layout for the error page
   methods: {
     reload () {
       window.location.reload(true)

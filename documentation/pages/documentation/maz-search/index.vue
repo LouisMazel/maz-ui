@@ -49,7 +49,7 @@
         item-value="email"
         @request="searchResults"
       >
-        <template v-slot="{ item }">
+        <template #default="{ item }">
           <div class="item maz-flex maz-align-center">
             <img
               :src="item.image"
@@ -62,7 +62,7 @@
             </div>
           </div>
         </template>
-        <template v-slot:no-data>
+        <template #no-data>
           <div class="item maz-flex maz-flex-center">
             <p>No data custom template</p>
           </div>

@@ -1,3 +1,5 @@
+@import './../_variables/color_names';
+
 .maz-switch {
   &__input {
     position: absolute;
@@ -65,8 +67,6 @@
   &__input:disabled + &__toggle {
     cursor: not-allowed;
   }
-
-  @import './../_variables/color_names';
 
   @each $name in $color_names {
     &--#{$name} {

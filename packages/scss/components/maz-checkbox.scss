@@ -1,3 +1,5 @@
+@import './../_variables/color_names';
+
 .maz-checkbox {
   transition: all 300ms ease-in-out;
   cursor: pointer;
@@ -73,8 +75,6 @@
     opacity: 1;
     transform: scale(1);
   }
-
-  @import './../_variables/color_names';
 
   @each $name in $color_names {
     &--#{$name} {

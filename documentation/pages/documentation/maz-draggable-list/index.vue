@@ -7,8 +7,8 @@
           class="maz-flex-1 maz-mr-3"
         />
         <MazDraggableList
-          v-model="list"
           v-slot="{ item, index }"
+          v-model="list"
           class="maz-flex-1"
         >
           <div class="maz-flex maz-space-between maz-w-100 maz-align-center">

@@ -34,7 +34,7 @@
       @input="setCountryCode($event, true)"
     >
       <template
-        v-slot="{ option }"
+        #default="{ option }"
       >
         <div
           class="maz-flex maz-align-center"

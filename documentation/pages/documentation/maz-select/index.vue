@@ -88,7 +88,7 @@
         search-placeholder="Search in options"
       >
         <template
-          v-slot="{ option }"
+          #default="{ option }"
         >
           <div
             v-if="option.value"
