@@ -1,3 +1,5 @@
+@import './../../mixins/font_family';
+
 html { font-size: var(--maz-base-font-size); }
 
 .maz-base-component {
@@ -7,8 +9,6 @@ html { font-size: var(--maz-base-font-size); }
   *::after {
     box-sizing: border-box;
   }
-
-  @import './../../mixins/font_family';
 
   @include font_family();
 

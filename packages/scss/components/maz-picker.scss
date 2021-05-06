@@ -1,3 +1,13 @@
+
+@import './maz-picker/footer-picker.scss';
+@import './maz-picker/header-picker.scss';
+@import './maz-picker/month-picker.scss';
+@import './maz-picker/pickers-container.scss';
+@import './maz-picker/time-picker.scss';
+@import './maz-picker/week-days-labels.scss';
+@import './maz-picker/year-month-selector.scss';
+@import './maz-picker/_responsive.scss';
+
 .maz-picker {
   position: relative;
   font-weight: 300;
@@ -16,12 +26,3 @@
     display: none;
   }
 }
-
-@import './maz-picker/footer-picker.scss';
-@import './maz-picker/header-picker.scss';
-@import './maz-picker/month-picker.scss';
-@import './maz-picker/pickers-container.scss';
-@import './maz-picker/time-picker.scss';
-@import './maz-picker/week-days-labels.scss';
-@import './maz-picker/year-month-selector.scss';
-@import './maz-picker/_responsive.scss';

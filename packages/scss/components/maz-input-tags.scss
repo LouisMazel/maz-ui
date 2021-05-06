@@ -1,3 +1,5 @@
+@import './../_variables/color_names';
+
 $LG_SIZE: 3.571rem !default;
 $MD_SIZE: 2.857rem !default;
 $SM_SIZE: 2.286rem !default;
@@ -58,8 +60,6 @@ $SPACING: .2857rem !default;
       color: var(--maz-placeholder-color);
     }
   }
-
-  @import './../_variables/color_names';
 
   @each $name in $color_names {
     &.maz-input-tags--#{$name} {

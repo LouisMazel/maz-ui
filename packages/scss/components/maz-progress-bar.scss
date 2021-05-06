@@ -1,3 +1,6 @@
+
+@import './../_variables/color_names';
+
 .maz-progress-bar {
   color: var(--maz-text-color);
   font-size: 1rem;
@@ -19,8 +22,6 @@
     left: 0;
     background-color: var(--maz-bg-color-light);
     transition: all 500ms ease-in-out;
-
-    @import './../_variables/color_names';
 
     @each $name in $color_names {
       &--#{$name} {

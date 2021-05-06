@@ -106,6 +106,13 @@ export default {
     RightSidebarContent, // eslint-disable-line
     NavFooter
   },
+  data () {
+    return {
+      hasLeftSidebarOpen: true,
+      isAbsolute: false,
+      hasRightSidebarOpen: false
+    }
+  },
   head () {
     const componentName = this.$route.name.substring(14)
     const pageTitle = capitalizeAll(replaceAll(componentName, '-', ' '))
@@ -119,13 +126,6 @@ export default {
         title: `${pageTitle} | Documentation | Maz UI`,
         ...(!NOT_COMPONENT_ROUTES.includes(componentName) ? { img: componentName } : {})
       })
-    }
-  },
-  data () {
-    return {
-      hasLeftSidebarOpen: true,
-      isAbsolute: false,
-      hasRightSidebarOpen: false
     }
   },
   computed: {

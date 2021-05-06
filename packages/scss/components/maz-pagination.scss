@@ -1,3 +1,7 @@
+@import './maz-pagination/pagination-arrow-btn';
+@import './maz-pagination/pagination-dots-divider';
+@import './maz-pagination/pagination-number-btn';
+
 .maz-pagination {
   &__container {
     height: 50px;
@@ -6,7 +10,3 @@
     background-color: var(--maz-hover-color);
   }
 }
-
-@import './maz-pagination/pagination-arrow-btn';
-@import './maz-pagination/pagination-dots-divider';
-@import './maz-pagination/pagination-number-btn';

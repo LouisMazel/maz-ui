@@ -1,3 +1,6 @@
+
+@import './../../_variables/color_names';
+
 $btn-side-padding: 1.429em !default;
 $btn-height: 3em !default;
 
@@ -198,8 +201,6 @@ $btn-font-size-xl: 1.375rem !default;
     bottom: 0;
   }
 }
-
-@import './../../_variables/color_names';
 
 @each $name in $color_names {
   .maz-btn--#{$name} {
