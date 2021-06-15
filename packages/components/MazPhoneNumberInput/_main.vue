@@ -10,7 +10,7 @@
       :value="countryCode"
       :options="countriesSorted"
       :placeholder="t.countrySelectorLabel"
-      search
+      :search="!noSearch"
       :position="position"
       :search-placeholder="t.countrySelectorSearchPlaceholder"
       :items-height="countriesHeight"
@@ -157,6 +157,8 @@ export default {
     noFlags: { type: Boolean, default: false },
     // Remove the number example from the label input
     noExample: { type: Boolean, default: false },
+    // Remove the search countries functionality
+    noSearch: { type: Boolean, default: false },
     // Change the height of country item in list
     countriesHeight: { type: Number, default: 30 },
     // Disable use of browser locale to init the country selector (usefull for Nuxt.JS)
