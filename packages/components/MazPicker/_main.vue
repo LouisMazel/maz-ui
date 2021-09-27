@@ -19,7 +19,8 @@
       :focus="hasPickerOpen"
       v-on="{
         ...$listeners,
-        focus: () => openPicker(true)
+        focus: () => openPicker(true),
+        clear: (e) => emitClear(e)
       }"
     >
       <!-- Custom left icon -->
@@ -375,10 +376,14 @@ export default {
     },
     openPicker () {
       this.isOpen = true
-      // emit when the input is focused
+      // emitted when the input is focused
       this.$emit('focus')
-      // emit when picker is shown
+      // emitted when picker is shown
       this.$emit('is-shown')
+    },
+    emitClear () {
+      // emitted when the input is cleared
+      this.$emit('clear')
     },
     closePicker (e = {}) {
       if (
