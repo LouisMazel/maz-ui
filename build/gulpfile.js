@@ -1,7 +1,7 @@
 'use strict'
 
 const { src, series, dest, watch } = require('gulp')
-const sass = require('gulp-sass')
+const sass = require('gulp-sass')(require('sass'))
 const rename = require('gulp-rename')
 const prefix = require('gulp-autoprefixer')
 const plumber = require('gulp-plumber')
