@@ -17,7 +17,10 @@
       readonly
       :color="color"
       :focus="hasPickerOpen"
-      @focus="openPicker(true)"
+      v-on="{
+        ...$listeners,
+        focus: () => openPicker(true)
+      }"
     >
       <!-- Custom left icon -->
       <slot
@@ -372,7 +375,9 @@ export default {
     },
     openPicker () {
       this.isOpen = true
-      // emit when picker is show
+      // emit when the input is focused
+      this.$emit('focus')
+      // emit when picker is shown
       this.$emit('is-shown')
     },
     closePicker (e = {}) {
