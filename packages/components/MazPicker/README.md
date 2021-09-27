@@ -54,7 +54,9 @@
 | destroy    | emit on before destroy                           | -                                      |
 | input      | return the date value (in `@input` or `v-model`) | date formatted with "format" option    |
 | formatted  | return the date value (in `@formatted` event)    | date formatted with "formatted" option |
-| is-shown   | emit when picker is show                         | -                                      |
+| focus      | emitted when the input is focused                | -                                      |
+| is-shown   | emitted when picker is shown                     | -                                      |
+| clear      | emitted when the input is cleared                | -                                      |
 | is-hidden  | emit when picker is hide                         | -                                      |
 
 <!-- @vuese:MazPicker:events:end -->
