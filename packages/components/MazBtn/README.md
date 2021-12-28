@@ -47,7 +47,7 @@
 <!-- @vuese:MazBtn:slots:start -->
 
 | Name         | Description              | Default Slot Content |
-| ------------ | ------------------------ | -------------------- |
+| ------------ | ------------------------ | -------------------- | ----------------------- | ---- |
 | `icon-left`  |                          | `icon`               | Icon slot (`icon-left`) | none |
 | default      | -                        | -                    |
 | `icon-right` | Icon slot (`icon-right`) | none                 |
