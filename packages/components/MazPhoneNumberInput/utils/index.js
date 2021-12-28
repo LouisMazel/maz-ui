@@ -26,7 +26,8 @@ export const getResultsFromPhoneNumber = (phoneNumber, countryCode) => {
 
   let results = {
     countryCode,
-    isValid: false
+    isValid: false,
+    phoneNumber, // useful for identifying non-numeric characters being entered.
   }
 
   if (parsing) {
