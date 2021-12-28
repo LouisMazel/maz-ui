@@ -299,7 +299,7 @@ export default {
         this.asYouTypeNumber = asYouTypeNumber.slice(0, -1)
       }
 
-      this.results = await getResultsFromPhoneNumber(phoneNumber, countryCode)
+      this.results = getResultsFromPhoneNumber(phoneNumber, countryCode)
 
       this.asYouTypeNumber = await getAsYouTypeFormat(
         phoneNumber,
