@@ -48,6 +48,14 @@
         >
           Made with Maz UI
         </MazBtn>
+        <MazBtn
+          color="third"
+          class="header__menu__item maz-mr-1 --no-color"
+          href="https://louismazel.github.io/maz-ui-3/"
+          target="_blank"
+        >
+          v3.x
+        </MazBtn>
       </div>
       <div class="maz-flex maz-align-center maz-hidden-mobile">
         <SocialButtons class="maz-ml-1 maz-hidden-laptop-s" />
@@ -112,7 +120,10 @@ export default {
       &__item {
         font-weight: 500;
         outline: none;
-        color: var(--maz-text-color);
+
+        &:not(.--no-color) {
+          color: var(--maz-text-color);
+        }
 
         &.nuxt-link-active {
           color: var(--maz-primary) !important;

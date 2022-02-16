@@ -2,6 +2,21 @@
   <div class="home maz-flex-1 maz-flex maz-direction-column">
     <div class="home__main maz-flex maz-flex-1 maz-flex-center maz-container">
       <div class="home__content maz-flex maz-direction-column maz-justify-center maz-p-4">
+        <h2 class="maz-text-center">
+          New version for Vue.JS & Nuxt.JS v3.x available (@next version)
+        </h2>
+        <div
+          class="maz-flex maz-align-start maz-flex-wrap maz-my-3 maz-align-center maz-justify-center"
+        >
+          <MazBtn
+            color="third"
+            class="maz-mr-2"
+            href="https://louismazel.github.io/maz-ui-3/"
+            target="_blank"
+          >
+            Go to v.3
+          </MazBtn>
+        </div>
         <h2 class="maz-mb-2 maz-text-center">
           Stand-alone components library to build your interfaces with
           <br><span class="maz-text-primary">Vue.JS & Nuxt.JS</span>

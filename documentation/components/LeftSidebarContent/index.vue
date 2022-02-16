@@ -3,6 +3,16 @@
     <h3 class="maz-mb-3">
       Development
     </h3>
+    <MazBtn
+      class="menu-item maz-mb-2"
+      color="third"
+      block
+      href="https://louismazel.github.io/maz-ui-3/"
+      target="_blank"
+    >
+      New v3 version
+    </MazBtn>
+
     <h4 class="maz-my-3">
       General
     </h4>
