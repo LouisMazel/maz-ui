@@ -2,8 +2,8 @@ name: Build Lib Tests
 on:
   pull_request:
     branches: [master]
-    paths:
-      - "packages/lib/**"
+    # paths:
+    #   - "packages/lib/**"
 
 jobs:
   build-lib-test:

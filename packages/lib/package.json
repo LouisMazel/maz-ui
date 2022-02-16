@@ -15,7 +15,7 @@
   "scripts": {
     "test": "jest",
     "lint": "npm run lint:js && npm run lint:style",
-    "lint:js": "eslint --fix --ext .ts,.js,.vue .",
+    "lint:js": "eslint --ignore-path .gitignore --fix --ext .ts,.js,.vue .",
     "format": "prettier . --write",
     "lint:style": "stylelint --ignore-path .gitignore --fix \"**/*.{vue,css,scss}\"",
     "clean": "rimraf components modules css types maz-ui.d.ts",

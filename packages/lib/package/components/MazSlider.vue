@@ -181,7 +181,7 @@
     if (emitValue === true) checkValues()
     await calcPos()
     await nextTick()
-    computedValue.value.forEach((_: any, i: number) => setBtnDividers(i))
+    computedValue.value.forEach((_: unknown, i: number) => setBtnDividers(i))
   }
   const cursorKeyDown = (event: KeyboardEvent, i: number) => {
     if (event.code === 'ArrowLeft') {

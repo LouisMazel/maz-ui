@@ -41,7 +41,7 @@
     props: {
       value: {
         required: true,
-        validator: (prop: Number | String) =>
+        validator: (prop: number | string) =>
           ['number', 'string'].includes(typeof prop) || prop === null,
       },
       options: {

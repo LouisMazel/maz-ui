@@ -66,7 +66,7 @@
 
   export interface MazDropzoneInstance extends ComponentPublicInstance {
     manuallyAddFile: (file: DropzoneFile, fileUrl: string) => void
-    setOption: (option: string, value: any) => IMazDropzone['options']
+    setOption: (option: string, value: unknown) => IMazDropzone['options']
     processQueue: IMazDropzone['processQueue']
     removeFile: IMazDropzone['removeFile']
     removeAllFiles: IMazDropzone['removeAllFiles']
@@ -319,7 +319,10 @@
         }
       })
 
-      const setOption = (option: string, value: any): MazDropzoneOptions => {
+      const setOption = (
+        option: string,
+        value: unknown,
+      ): MazDropzoneOptions => {
         dropzone.options = {
           ...dropzone.options,
           [option]: value,

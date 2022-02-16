@@ -44,7 +44,7 @@ export function generateEventObject(
 }
 
 export function generateChartJsEventListener(
-  emit: (event: string, ...args: any[]) => void,
+  emit: (event: string, ...args: unknown[]) => void,
   event: ReturnType<typeof generateEventObject>,
 ) {
   return {

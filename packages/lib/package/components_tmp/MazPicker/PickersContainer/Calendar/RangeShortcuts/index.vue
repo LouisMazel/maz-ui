@@ -100,7 +100,7 @@
         this.selectedShortcut = null
       })
     },
-    beforeDestroy() {
+    beforeUnmount() {
       EventBus.$off('day-selected')
     },
     methods: {

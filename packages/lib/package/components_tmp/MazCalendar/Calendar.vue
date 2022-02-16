@@ -228,8 +228,8 @@
     @Prop({ type: Boolean, default: false })
     showEndDateSlot?: boolean
 
-    currentPage: number = 0
-    currentWeek: number = 0
+    currentPage = 0
+    currentWeek = 0
     tmpSelectedSlots: DaySlot[] = []
 
     get calendarMinWidth() {

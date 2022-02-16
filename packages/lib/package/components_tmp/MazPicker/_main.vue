@@ -42,7 +42,7 @@
       @click="closePicker"
     />
 
-    <transition :name="pickerTransition">
+    <Transition :name="pickerTransition">
       <PickersContainer
         v-if="hasPickerOpen"
         ref="PickersContainer"
@@ -74,7 +74,7 @@
         :inline="inline"
         :color="color"
       />
-    </transition>
+    </Transition>
   </div>
 </template>
 
@@ -337,7 +337,7 @@
         this.closePicker()
       })
     },
-    beforeDestroy() {
+    beforeUnmount() {
       EventBus.$off('validate')
       EventBus.$off('now')
       EventBus.$off('close')

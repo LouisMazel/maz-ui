@@ -2,8 +2,8 @@ name: Build Doc Tests
 on:
   pull_request:
     branches: [master]
-    paths:
-      - "packages/docs/**"
+    # paths:
+    #   - "packages/docs/**"
 
 jobs:
   build-test:

@@ -1,5 +1,5 @@
 <template>
-  <transition name="maz-slide">
+  <Transition name="maz-slide">
     <div
       v-if="isOpen"
       class="year-month-selector maz-direction-column maz-flex maz-p-2"
@@ -82,7 +82,7 @@
         </MazBtn>
       </div>
     </div>
-  </transition>
+  </Transition>
 </template>
 
 <script>
