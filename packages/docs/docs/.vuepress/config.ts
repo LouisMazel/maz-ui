@@ -44,7 +44,7 @@ export default defineUserConfig<DefaultThemeOptions>({
     ],
     [
       'meta',
-      { name: 'title', content: 'Maz UI - Stand-alone components library for Vue.JS & Nuxt.JS' },
+      { name: 'title', content: 'Maz UI - Standalone components and tools library for Vue.JS & Nuxt.JS' },
     ],
     [
       'meta',
