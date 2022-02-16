@@ -13,19 +13,19 @@ This section will help you to install the library.
 
 <br />
 
-<NpmBadge package="maz-ui" dist-tag="beta" />
+<NpmBadge package="maz-ui" dist-tag="next" />
 
 <CodeGroup>
   <CodeGroupItem title="NPM" active>
 
 ```bash
-npm i maz-ui@beta
+npm i maz-ui@next
 ```
   </CodeGroupItem>
   <CodeGroupItem title="YARN">
 
 ```bash
-yarn add maz-ui@beta
+yarn add maz-ui@next
 ```
   </CodeGroupItem>
 

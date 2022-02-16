@@ -24,7 +24,7 @@ footer: Made by LouisMazel with ❤️
 
 <!-- markdownlint-disable -->
 
-<NpmBadge package="maz-ui" dist-tag="beta" />
+<NpmBadge package="maz-ui" dist-tag="next" />
 
 <CodeGroup>
 
@@ -32,7 +32,7 @@ footer: Made by LouisMazel with ❤️
 
 ```bash
 # install in your project
-npm install maz-ui@beta
+npm install maz-ui@next
 ```
   </CodeGroupItem>
 
@@ -40,7 +40,7 @@ npm install maz-ui@beta
 
 ```bash
 # install in your project
-yarn add maz-ui@beta
+yarn add maz-ui@next
 ```
   </CodeGroupItem>
 </CodeGroup>
