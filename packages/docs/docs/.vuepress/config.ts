@@ -91,7 +91,7 @@ export default defineUserConfig<DefaultThemeOptions>({
     logo: '/img/logo.svg',
     repo: 'LouisMazel/maz-ui',
     docsDir: 'packages/docs/docs',
-    docsBranch: 'master',
+    docsBranch: 'next',
     navbar,
     sidebar,
   },
