@@ -1,117 +1,44 @@
 {
-  "name": "maz-ui",
-  "version": "2.3.12",
-  "main": "lib/maz-ui.common.js",
-  "description": "A stand-alone components library for Vue.Js & Nuxt.Js",
-  "author": "Louis Mazel <me@loicmazuel.com>",
-  "bin": {
-    "maz": "bin/index.js"
+  "name": "root",
+  "version": "0.0.1",
+  "directories": {
+    "lib": "lib",
+    "docs": "docs"
   },
-  "files": [
-    "lib/",
-    "bin/"
-  ],
-  "types": "lib/index.d.ts",
   "scripts": {
-    "lint": "npm run lint:js && npm run lint:style && npm run lint:md",
-    "lint:fix": "npm run lint:js:fix && npm run lint:style:fix && npm run lint:md:fix",
-    "lint:js": "eslint './**/*.{js,vue}'",
-    "lint:js:fix": "npm run lint:js -- --fix",
-    "lint:md": "prettier '**/*.md' --check",
-    "lint:md:fix": "prettier '**/*.md' --write",
-    "lint:style": "stylelint './**/*.{css,scss,vue}'",
-    "lint:style:fix": "npm run lint:style -- --fix",
-    "clean": "rimraf lib",
-    "build": "npm run clean && npm run build:entries && npm run build:lib && npm run build:css && npm run gen:types",
-    "build:entries": "node build/build-entries.js",
-    "build:lib": "webpack --config build/webpack.conf.js && webpack --config build/webpack.common.js && webpack --config build/webpack.component.js",
-    "build:css": "npm run gen:css && npm run build:css:compile",
-    "build:css:compile": "gulp compile --gulpfile build/gulpfile.js",
-    "gen:css": "node build/gen-scss-index",
-    "gen:types": "node build/generate-types-declarations.js",
-    "gen:docs": "vuese gen && npm run lint:md:fix",
-    "copy:types": "cp ./types/*.d.ts ./lib",
-    "cli": "node ./bin/index.js",
-    "pre-publish": "npm run lint:fix && npm i && npm run build"
+    "prepare": "husky install",
+    "pre-commit": "lint-staged",
+    "format": "prettier . --write",
+    "lint": "lerna run lint --parallel",
+    "release": "npx lerna version"
   },
   "lint-staged": {
-    "*.{js,vue}": "npm run lint:js",
-    "*.{css,scss,vue}": "npm run lint:style"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "dependencies": {
-    "chalk": "^4.1.2",
-    "clear": "^0.1.0",
-    "color-transformer-ui": "^1.0.3",
-    "commander": "^7.2.0",
-    "figlet": "^1.5.2",
-    "fs": "0.0.2",
-    "json-templater": "^1.2.0",
-    "libphonenumber-js": "^1.9.34",
-    "moment": "^2.29.1",
-    "moment-range": "^4.0.2",
-    "os": "^0.1.2",
-    "plotly.js-dist": "^1.57.1",
-    "v-click-outside": "^3.1.2",
-    "vue-virtual-scroller": "^1.0.10",
-    "vue-zoom-img": "^1.0.2",
-    "vue2-dropzone": "^3.6.0",
-    "vuedraggable": "^2.24.3"
+    "!(node_modules/**/*|packages/**/*|.prettierignore|.gitignore|.editorconfig).*": [
+      "prettier . --write"
+    ]
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.5.13",
-    "@vue/cli-plugin-eslint": "^4.5.13",
-    "@vue/cli-service": "^4.5.13",
-    "@vuese/cli": "^2.14.0",
-    "babel-eslint": "^10.1.0",
-    "core-js": "^3.18.1",
-    "eslint": "^7.32.0",
-    "eslint-plugin-vue": "^7.18.0",
-    "gulp": "^4.0.2",
-    "gulp-autoprefixer": "^8.0.0",
-    "gulp-notify": "^4.0.0",
-    "gulp-plumber": "^1.2.1",
-    "gulp-rename": "^2.0.0",
-    "gulp-sass": "^5.0.0",
-    "gulp-sourcemaps": "^3.0.0",
-    "husky": "^7.0.2",
-    "lint-staged": "^11.1.2",
-    "progress-bar-webpack-plugin": "^2.1.0",
-    "rimraf": "^3.0.2",
-    "sass": "^1.42.1",
-    "stylelint": "^13.13.1",
-    "stylelint-config-standard": "^22.0.0",
-    "stylelint-order": "^4.1.0",
-    "stylelint-scss": "^3.21.0",
-    "uppercamelcase": "^3.0.0",
-    "vue": "^2.6.14",
-    "vue-template-compiler": "^2.6.14",
-    "webpack-cli": "^4.8.0",
-    "webpack-node-externals": "^3.0.0"
+    "@commitlint/cli": "^15.0.0",
+    "@commitlint/config-conventional": "^15.0.0",
+    "@types/command-exists": "^1.2.0",
+    "@types/node": "^17.0.13",
+    "commitlint-config-cz": "^0.13.2",
+    "cz-customizable": "^5.5.0",
+    "gulp-conventional-changelog": "^2.0.35",
+    "husky": "^7.0.0",
+    "lerna": "^4.0.0",
+    "lint-staged": "^12.1.2",
+    "prettier": "^2.5.0",
+    "typescript": "^4.5.5"
   },
-  "engines": {
-    "node": ">= 6.0.0",
-    "npm": ">= 3.0.0"
-  },
-  "bugs": {
-    "url": "https://github.com/LouisMazel/maz-ui/issues"
-  },
-  "homepage": "https://louismazel.github.io/maz-ui",
-  "keywords": [
-    "vue",
-    "components",
-    "vue-component",
-    "framework",
-    "library",
-    "ui"
-  ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/LouisMazel/maz-ui.git"
+    "url": "git+https://github.com/LouisMazel/maz-ui-3.git"
   },
-  "license": "MIT"
+  "author": "LouisMazel <me@loicmazuel.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LouisMazel/maz-ui-3/issues"
+  },
+  "homepage": "https://github.com/LouisMazel/maz-ui-3#readme"
 }

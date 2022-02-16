@@ -1,0 +1,44 @@
+:root {
+  --maz-container-padding-mobile: 1rem;
+  --maz-container-padding-tablet: 2rem;
+  --maz-container-padding-desktop: 2.5rem;
+  --maz-container-padding-value: var(--maz-container-padding-mobile);
+  --maz-container-width: calc(100% - var(--maz-container-padding-value) * 2);
+  --maz-container-padding: calc(50% - var(--maz-container-width) / 2);
+  --maz-container-max-width: var(--maz-screen-lap-xl);
+}
+
+/* .maz-padded-container {
+  width: 100%;
+  padding-left: var(--maz-container-padding);
+  padding-right: var(--maz-container-padding);
+
+  &.-no-p {
+    padding-left: calc(50% - var(--maz-container-max-width) / 2);
+    padding-right: calc(50% - var(--maz-container-max-width) / 2);
+  }
+} */
+
+/*
+  Info: 2.5rem = 40px
+  ---
+  1520px = max-width + (padding-desktop * 2)
+  1520px = 1440px + (2.5rem * 2)
+*/
+@media only screen and (min-width: 1520px) {
+  :root {
+    --maz-container-width: var(--maz-container-max-width);
+  }
+}
+
+@screen mob-l {
+  :root {
+    --maz-container-padding-value: var(--maz-container-padding-tablet);
+  }
+}
+
+@screen lap-s {
+  :root {
+    --maz-container-padding-value: var(--maz-container-padding-desktop);
+  }
+}

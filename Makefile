@@ -1,89 +1,62 @@
-VERSION=`node -pe "require('./package.json').version"`
+serve:
+	make --directory=packages/docs serve
 
-define bump-version
-	VERSION=`node -pe "require('./package.json').version"` && \
-	NEXT_VERSION=`node -pe "require('semver').inc(\"$$VERSION\", '$(1)')"` && \
-	npm version $$NEXT_VERSION
-endef
+serve-testing:
+	make --directory=packages/testing serve
 
-define bump-version-beta
-	VERSION=`node -pe "require('./package.json').version"` && \
-	NEXT_VERSION=`node -pe "require('semver').inc(\"$$VERSION\", 'prerelease', '$(1)')"` && \
-	npm version $$NEXT_VERSION
-endef
+lint-lib:
+	make --directory=packages/lib lint
 
-define pre-publish
-	npm run gen:docs
-	npm run lint:fix
-	git add --all
-	git commit -m "chore: pre-build"
-	git push origin HEAD
-endef
+build-docs:
+	make --directory=packages/docs build
 
-define publish
-	@$(call bump-version,$(1))
-	npm run gen:docs
-	npm run lint:fix
-	npm run build
-	npm publish
-	git push origin HEAD
-	make deploy-doc
-endef
+build-lib:
+	make --directory=packages/lib build
 
-define publish-beta
-	@$(call bump-version-beta,$(1))
-	npm run gen:docs
-	npm run lint:fix
-	npm run build
-	npm publish --tag beta
-	git push origin HEAD
-endef
+build-watch-lib:
+	make --directory=packages/lib build-watch
 
-clean: ## Clean node modules
-	rm -rf ./node_modules
-	rm -rf ./documentation/node_modules
+install:
+	make install-root install-lib install-docs
 
-reinstall: ## Reinstall dependencies without package-lock.json
-	make reinstall-lib reinstall-doc
-
-reinstall-lib: ## Install node modules of library
-	rm package-lock.json
-	rm -rf node_modules
+install-root:
 	npm i
 
-reinstall-doc: ## Install node modules of documentation
-	cd documentation && rm package-lock.json
-	cd documentation && rm -rf node_modules
-	cd documentation && npm i
+install-lib:
+	make --directory=packages/lib install
 
-install: ## Install node modules
-	make install-lib install-doc
+install-docs:
+	make --directory=packages/docs install
 
-install-lib: ## Install node modules of library
-	npm ci
+reinstall:
+	make reinstall-lib reinstall-docs
 
-install-doc: ## Install node modules of documentation
-	cd documentation && npm ci
+reinstall-lib:
+	make --directory=packages/lib reinstall
 
-serve: ## Run dev server
-	cd documentation && npm run serve
+reinstall-docs:
+	make --directory=packages/docs reinstall
 
-deploy-doc:
-	cd documentation && npm run build:gh-pages && npm run export:gh-pages
-	cd documentation && npm run deploy
+lint-staged: ## lint-staged
+	npm run pre-commit
 
+lint-staged-lib: ## install lint api packages
+	make --directory=packages/lib lint-staged
 
-pre-publish:
-	@$(call pre-publish,patch)
+lint-staged-docs: ## install lint app packages
+	make --directory=packages/docs lint-staged
 
-publish-beta:
-	@$(call publish-beta,beta)
+publish-version-tag:
+	make --directory=packages/lib publish-version-tag tag="$(tag)"
 
-publish:
-	@$(call publish,patch)
+publish-version:
+	make --directory=packages/lib publish-version
 
-publish-minor:
-	@$(call publish,minor)
+publish-version-minor:
+	make --directory=packages/lib publish-version-minor
 
-publish-major:
-	@$(call publish,major)
+publish-version-major:
+	make --directory=packages/lib publish-version-major
+
+commit:
+	make --directory=packages/lib commit

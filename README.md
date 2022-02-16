@@ -1,8 +1,8 @@
-# maz-ui
+# maz-ui-3
 
-[![license](https://img.shields.io/github/license/LouisMazel/maz-ui.svg?style=flat-square)](https://github.com/LouisMazel/maz-ui/blob/master/LICENSE)
-[![vue 2](https://img.shields.io/badge/vue-2-42b983.svg?style=flat-square)](https://vuejs.org)
-[![npm](https://img.shields.io/npm/v/maz-ui.svg?style=flat-square)](https://www.npmjs.com/package/maz-ui)
+[![license](https://img.shields.io/github/license/LouisMazel/maz-ui-3.svg?style=flat-square)](https://github.com/LouisMazel/maz-ui/blob/master/LICENSE)
+[![vue 3](https://img.shields.io/badge/vue-3-42b983.svg?style=flat-square)](https://vuejs.org)
+[![npm](https://img.shields.io/npm/v/maz-ui/next.svg?style=flat-square)](https://www.npmjs.com/package/maz-ui)
 [![npm](https://img.shields.io/npm/dt/maz-ui.svg?style=flat-square)](https://www.npmjs.com/package/maz-ui)
 [![Codacy grade](https://img.shields.io/codacy/grade/3d15a7c11bfe47c69a2aed93cc67cc29.svg?style=flat-square)](https://www.codacy.com/app/LouisMazel/maz-ui)
 
@@ -12,54 +12,80 @@
 
 ## Documentation & Components
 
-[Documentation & Components](https://louismazel.github.io/maz-ui/)
+[Documentation & Components](https://louismazel.github.io/maz-ui-3/)
 
 ## Install
 
-[Get Started](https://louismazel.github.io/maz-ui/documentation/get-started)
+[Getting Started](https://louismazel.github.io/maz-ui-3/guide/getting-started)
 
 ```shell
-npm install maz-ui
+npm install maz-ui@beta
 
-# Or yarn add maz-ui
+# Or yarn add maz-ui@beta
 ```
 
-### On demande install
+### Import necessary CSS file
 
-To optimize your bundle size, it's recommanded to use the [on demand install](https://louismazel.github.io/maz-ui/documentation/get-started)
+In the `main.js` or `main.ts`, import these files.
 
-```javascript
-import Vue from 'vue'
-import {
-  ...
-  MazBtn
-  MazInput
-  MazPicker
-  MazPhoneNumberInput
-  ...
-} from 'maz-ui'
+```ts
+import "maz-ui/css/main.css";
+```
+
+### Recommanded
+
+To optimize your bundle size, it's recommanded to use the [partial import](https://louismazel.github.io/maz-ui-3/guide/getting-started)
+
+#### Global component installation (recommanded)
+
+> Example with some components
+
+```typescript
+import { createApp } from 'vue'
+...
+import MazBtn from 'maz-ui/components/MazBtn'
+import MazInput from 'maz-ui/components/MazInput'
+import MazPhoneNumberInput from 'maz-ui/components/MazPhoneNumberInput'
+...
+
+const app = createApp(App)
 
 ...
-Vue.use(MazBtn)
-Vue.use(MazInput)
-Vue.use(MazPicker)
-Vue.use(MazPhoneNumberInput)
+app.component('MazBtn', MazBtn)
+app.component('MazInput', MazInput)
+app.component('MazPhoneNumberInput', MazPhoneNumberInput)
 ...
 ```
 
-### Quick Start - Fully install (not recommanded)
+#### Component import
 
-```javascript
-import Vue from "vue";
-import "maz-ui/lib/css/index.css";
-import MazUi from "maz-ui";
+> Import the module chosen directly in your component
 
-Vue.use(MazUi);
+```html
+<template>
+  <MazBtn>Button</MazBtn>
+</template>
+
+<script lang="ts" setup>
+  import MazBtn from "maz-ui/components/MazBtn";
+</script>
 ```
 
-## Contribute
+### Not recommanded
 
-Read documentation of [CONTRIBUTING.md](./.github/CONTRIBUTING.md)
+#### Fully library installation
+
+```typescript
+import { createApp } from "vue";
+import components from "maz-ui/components";
+import "maz-ui/css/main.css";
+
+const app = createApp(App);
+
+Object.entries(components).forEach(([componentName, component]) => {
+  app.component(componentName, component);
+});
+```
 
 ## LICENSE
 

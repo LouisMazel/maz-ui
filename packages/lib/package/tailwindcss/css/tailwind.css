@@ -1,0 +1,8 @@
+@import './_subs/reset.css';
+@import './_subs/colors-vars.css';
+@import './_subs/padded-container-vars.css';
+@import './_subs/animation.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

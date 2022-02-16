@@ -1,0 +1,18 @@
+{
+  "packages": ["packages/*"],
+  "loglevel": "verbose",
+  "version": "0.29.11",
+  "npmClientArgs": ["--production=false", "--no-progress"],
+  "yes": true,
+  "granularPathspec": false,
+  "command": {
+    "version": {
+      "allowBranch": ["release/*"],
+      "message": "chore(release): publish version %v",
+      "conventionalCommits": true,
+      "forceGitTag": true,
+      "push": false,
+      "tagVersionPrefix": ""
+    }
+  }
+}

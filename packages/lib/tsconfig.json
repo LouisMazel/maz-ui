@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "ES2015",
+    "module": "esnext",
+    "strict": true,
+    "importHelpers": true,
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "skipLibCheck": true,
+    "declaration": true,
+    "declarationDir": "types",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "lib": ["esnext", "DOM", "DOM.iterable", "scripthost"],
+    "baseUrl": ".",
+    "strictPropertyInitialization": false,
+    "noImplicitAny": false,
+    "noImplicitThis": false,
+    "paths": {
+      "~directives/*": ["directives/*"],
+      "~/*": ["components/*"],
+      "@/*": ["components/*"],
+      "~utils/*": ["utils/*"]
+    },
+    "types": ["@types/node", "jest", "google.maps"]
+  },
+  "include": ["build/**/*", "package/**/*"],
+  "exclude": ["node_modules", "lib", "css"]
+}

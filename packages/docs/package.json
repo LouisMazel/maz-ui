@@ -1,0 +1,30 @@
+{
+  "name": "docs",
+  "version": "1.0.0",
+  "description": "documentation of maz-ui",
+  "main": "index.js",
+  "browser": {
+    "fs": false
+  },
+  "scripts": {
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
+  },
+  "author": "LouisMazel <me@loicmazuel.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^17.0.10",
+    "@vuepress/plugin-google-analytics": "^2.0.0-beta.33",
+    "@vuepress/plugin-register-components": "^2.0.0-beta.33",
+    "vue": "^3.2.27",
+    "vuepress": "^2.0.0-beta.33"
+  },
+  "dependencies": {
+    "chart.js": "^3.7.1",
+    "chartjs-plugin-datalabels": "^2.0.0",
+    "dropzone": "^5.9.3",
+    "libphonenumber-js": "^1.9.46",
+    "maz-ui": "file:../lib",
+    "vite-fs": "^0.0.2"
+  }
+}

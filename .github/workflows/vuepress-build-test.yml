@@ -1,0 +1,19 @@
+name: Build Doc Tests
+on:
+  pull_request:
+    branches: [master]
+    paths:
+      - "packages/docs/**"
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Install all dependencies
+        run: make install
+      - name: Build lib
+        run: make build-lib
+      - name: Build docs
+        run: make build-docs
