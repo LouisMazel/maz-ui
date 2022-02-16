@@ -1,7 +1,7 @@
 name: Build and Deploy
 on:
   push:
-    branches: [master]
+    branches: [next]
     # paths:
     #   - "packages/docs/**"
 

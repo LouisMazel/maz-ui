@@ -33,12 +33,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/LouisMazel/maz-ui-3.git"
+    "url": "git+https://github.com/LouisMazel/maz-ui.git"
   },
   "author": "LouisMazel <me@loicmazuel.com>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/LouisMazel/maz-ui-3/issues"
+    "url": "https://github.com/LouisMazel/maz-ui/issues"
   },
-  "homepage": "https://github.com/LouisMazel/maz-ui-3#readme"
+  "homepage": "https://louismazel.github.io/maz-ui-3/"
 }

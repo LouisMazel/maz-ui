@@ -89,7 +89,7 @@ export default defineUserConfig<DefaultThemeOptions>({
   theme: '@vuepress/theme-default',
   themeConfig: {
     logo: '/img/logo.svg',
-    repo: 'LouisMazel/maz-ui-3',
+    repo: 'LouisMazel/maz-ui',
     docsDir: 'packages/docs/docs',
     docsBranch: 'master',
     navbar,

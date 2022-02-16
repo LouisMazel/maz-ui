@@ -1,6 +1,6 @@
-# maz-ui-3
+# maz-ui
 
-[![license](https://img.shields.io/github/license/LouisMazel/maz-ui-3.svg?style=flat-square)](https://github.com/LouisMazel/maz-ui/blob/master/LICENSE)
+[![license](https://img.shields.io/github/license/LouisMazel/maz-ui.svg?style=flat-square)](https://github.com/LouisMazel/maz-ui/blob/master/LICENSE)
 [![vue 3](https://img.shields.io/badge/vue-3-42b983.svg?style=flat-square)](https://vuejs.org)
 [![npm](https://img.shields.io/npm/v/maz-ui/next.svg?style=flat-square)](https://www.npmjs.com/package/maz-ui)
 [![npm](https://img.shields.io/npm/dt/maz-ui.svg?style=flat-square)](https://www.npmjs.com/package/maz-ui)
