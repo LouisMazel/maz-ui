@@ -6,6 +6,9 @@ lint:
 build:
 	make clean-build && npm run build
 
+build-js:
+	npm run build:js
+
 clean-build:
 	npm run clean
 

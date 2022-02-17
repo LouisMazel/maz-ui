@@ -8,6 +8,7 @@ export const components = {
         '/components/maz-checkbox.md',
         '/components/maz-dropzone.md',
         '/components/maz-input.md',
+        '/components/maz-input-number.md',
         '/components/maz-input-price.md',
         '/components/maz-phone-number-input.md',
         '/components/maz-select.md',
