@@ -16,6 +16,9 @@ build-lib:
 build-watch-lib:
 	make --directory=packages/lib build-watch
 
+build-js-lib:
+	make --directory=packages/lib build-js
+
 install:
 	make install-root install-lib install-docs
 

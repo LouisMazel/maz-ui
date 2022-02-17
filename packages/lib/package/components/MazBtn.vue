@@ -18,6 +18,7 @@
         '--disabled': isDisabled,
         '--icon': hasIcon,
         '--rounded': rounded,
+        '--no-padding': noPadding,
       },
     ]"
     :type="btnType"
@@ -27,7 +28,7 @@
         <MazIcon v-if="leftIcon" :name="leftIcon" />
       </slot>
     </div>
-    <span>
+    <span class="maz-flex maz-flex-center">
       <slot></slot>
     </span>
     <div v-if="hasRightIcon" class="m-btn__icon-right">
@@ -109,6 +110,7 @@
     fab: { type: Boolean, default: false },
     leftIcon: { type: String, default: undefined },
     rightIcon: { type: String, default: undefined },
+    noPadding: { type: Boolean, default: false },
   })
 
   const component = computed(() => {
@@ -516,6 +518,10 @@
       /* Disabled */
       &.--disabled {
         @apply maz-cursor-not-allowed maz-bg-color-light maz-text-gray-400;
+      }
+
+      &.--no-padding {
+        @apply maz-p-0;
       }
 
       /* Loader */
