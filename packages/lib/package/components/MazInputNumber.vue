@@ -11,7 +11,7 @@
       :disabled="decrementDisabled || disabled"
       @click="decrement"
     >
-      <MazIcon :src="MinusCircleIcon" />
+      <MazIcon :src="MinusIcon" class="m-input-number__button__icon" />
     </MazBtn>
     <MazInput
       v-model.number="currentValue"
@@ -34,7 +34,7 @@
       :disabled="incrementDisabled || disabled"
       @click="increment"
     >
-      <MazIcon :src="PlusCircleIcon" />
+      <MazIcon :src="PlusIcon" class="m-input-number__button__icon" />
     </MazBtn>
   </div>
 </template>
@@ -49,8 +49,9 @@
   import MazBtn from './MazBtn.vue'
   import MazInput from './MazInput.vue'
   import MazIcon from './MazIcon.vue'
-  import PlusCircleIcon from './../icons/plus-circle.svg'
-  import MinusCircleIcon from './../icons/minus-circle.svg'
+  import PlusIcon from './../icons/plus.svg'
+  import MinusIcon from './../icons/minus.svg'
+
   const props = defineProps({
     modelValue: { type: Number, required: true },
     disabled: { type: Boolean, default: false },
@@ -116,6 +117,10 @@
 
           margin-left: calc(-1 * 2px);
         }
+      }
+
+      &__icon {
+        @apply maz-h-4 maz-w-4;
       }
     }
 

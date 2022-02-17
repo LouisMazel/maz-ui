@@ -78,8 +78,8 @@
       content: '';
       position: absolute;
       left: 0;
-      width: 18px;
-      height: 18px;
+      width: 22px;
+      height: 22px;
       background: transparent;
       border-radius: 4px;
       transition: all 300ms ease-in-out;
@@ -91,8 +91,8 @@
       content: '';
       position: absolute;
       left: 0;
-      width: 18px;
-      height: 18px;
+      width: 22px;
+      height: 22px;
       background: transparent;
       transition: all 300ms ease-in-out;
     }
