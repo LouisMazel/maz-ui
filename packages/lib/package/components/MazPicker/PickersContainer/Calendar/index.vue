@@ -98,7 +98,7 @@
   const CONTENT_HEIGHT = 275
 
   export default {
-    name: 'Calendar',
+    name: 'CalendarTest',
     components: {
       WeekDaysLabels,
       MonthPicker,

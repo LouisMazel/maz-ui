@@ -32,14 +32,7 @@
 </script>
 
 <script lang="ts" setup>
-  import {
-    ref,
-    PropType,
-    computed,
-    onBeforeMount,
-    onMounted,
-    getCurrentInstance,
-  } from 'vue'
+  import { ref, PropType, computed, onBeforeMount, onMounted } from 'vue'
   import MazBtn from './MazBtn.vue'
 
   // const toKebabCase = (string: string) => {
@@ -49,9 +42,6 @@
   //     .map((word) => word.toLowerCase())
   //     .join('-')
   // }
-
-  const instance = getCurrentInstance()
-  console.log('instance MazTabsBar', instance)
 
   const getIndexOfCurrentAnchor = (tabs: MazTabsItem[], value: number) => {
     if (typeof window === 'undefined') return value

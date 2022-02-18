@@ -6,7 +6,20 @@
       Dark Switch
     </MazBtn>
 
-    <div style="position: relative; width: 500px">
+    <MazPicker
+      v-model="dateValue"
+      style="width: 400px"
+      label="Select date time"
+      input-date-format="full"
+      locale="en-US"
+      color="transparent"
+      auto-close
+      :first-day-of-week="1"
+    />
+
+    {{ dateValue }}
+
+    <!-- <div style="position: relative; width: 500px">
       <MazTabsBar :items="tabs" color="secondary" />
 
       <MazTabsContent>
@@ -17,25 +30,28 @@
           <p>evzionfez</p>
         </MazTabsContentItem>
       </MazTabsContent>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { onMounted } from 'vue'
-  import { MazTabsItem } from 'maz-ui/package/components/MazTabsBar.vue'
+  import { onMounted, ref } from 'vue'
+  // import { MazTabsItem } from 'maz-ui/package/components/MazTabsBar.vue'
   import {
     MazBtn,
-    MazTabsBar,
-    MazTabsContent,
-    MazTabsContentItem,
+    // MazTabsBar,
+    // MazTabsContent,
+    // MazTabsContentItem,
+    MazPicker,
   } from 'maz-ui/package/components'
 
-  const tabs: MazTabsItem[] = [
-    { label: 'First Tab', disabled: false },
-    { label: 'Second Tab', disabled: false },
-    { label: 'Third Tab', disabled: true },
-  ]
+  const dateValue = ref()
+
+  // const tabs: MazTabsItem[] = [
+  //   { label: 'First Tab', disabled: false },
+  //   { label: 'Second Tab', disabled: false },
+  //   { label: 'Third Tab', disabled: true },
+  // ]
 
   onMounted(() => {
     autoSetDarkMode()

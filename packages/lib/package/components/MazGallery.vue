@@ -148,7 +148,6 @@
         )
       })
       const imagesShown = computed(() => {
-        console.log('imagesNormalized', imagesNormalized.value)
         return imagesNormalized.value.slice(0, imagesCount.value)
       })
       const imagesHidden = computed(() => {

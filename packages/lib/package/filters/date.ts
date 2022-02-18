@@ -5,7 +5,7 @@ const DEFAULT_OPTIONS: Intl.DateTimeFormatOptions = {
 }
 
 export const date = (
-  date: string | number,
+  date: string | number | Date,
   locale: string,
   options?: Intl.DateTimeFormatOptions,
 ): string => {
@@ -14,15 +14,12 @@ export const date = (
   if (typeof locale !== 'string')
     throw new TypeError('[FilterDate] The `locale` attribute must be a string.')
 
-  const options_ = {
-    ...DEFAULT_OPTIONS,
-    ...options,
-  }
+  options = options || DEFAULT_OPTIONS
 
   try {
-    return new Intl.DateTimeFormat(locale, options_).format(new Date(date))
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
+    const usedDate = date instanceof Date ? date : new Date(date)
+    return new Intl.DateTimeFormat(locale, options).format(usedDate)
+  } catch (error: unknown) {
     throw new Error(`[FilterDate] ${error}`)
   }
 }
