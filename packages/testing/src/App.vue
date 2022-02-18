@@ -13,7 +13,6 @@
       input-date-format="full"
       locale="en-US"
       color="transparent"
-      auto-close
       :first-day-of-week="1"
     />
 

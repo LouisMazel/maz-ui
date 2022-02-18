@@ -33,6 +33,7 @@ export function getFirstAndLastDayOfMonth(value?: string | Date): {
   lastDay: number
 } {
   const date = getCurrentDate(value)
+
   return {
     firstDay: new Date(date.getFullYear(), date.getMonth(), 1).getDay(),
     lastDay: new Date(date.getFullYear(), date.getMonth() + 1, 0).getDay(),
@@ -64,4 +65,17 @@ export const isToday = (date: Date | string | number): boolean => {
     usedDate.getMonth() == today.getMonth() &&
     usedDate.getFullYear() == today.getFullYear()
   return isToday
+}
+
+export const isSameDate = (
+  date: Date | string | number,
+  date2: Date | string | number,
+): boolean => {
+  date = date instanceof Date ? date : new Date(date)
+  date2 = date2 instanceof Date ? date2 : new Date(date2)
+  const isSameDate =
+    date.getDate() == date2.getDate() &&
+    date.getMonth() == date2.getMonth() &&
+    date.getFullYear() == date2.getFullYear()
+  return isSameDate
 }

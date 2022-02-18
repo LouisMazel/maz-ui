@@ -1,14 +1,15 @@
 <template>
   <div class="maz-picker-calendar-days">
-    <div v-for="first in firstLastDay.firstDay" :key="first" />
+    <div v-for="first in firstDay" :key="first" />
     <MazBtn
       v-for="(day, i) in dayCount"
       :key="i"
       size="mini"
-      color="transparent"
+      :color="checkIsSameDate(day) ? 'primary' : 'transparent'"
       type="button"
       :class="{
         '--is-today': checkIsToday(day),
+        '--is-selected': checkIsSameDate(day),
       }"
       @click="selectDay(day)"
     >
@@ -21,7 +22,12 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import { getDaysInMonth, getFirstAndLastDayOfMonth, isToday } from './utils'
+  import {
+    getDaysInMonth,
+    getFirstAndLastDayOfMonth,
+    isSameDate,
+    isToday,
+  } from './utils'
   import MazBtn from '../MazBtn.vue'
 
   const props = defineProps({
@@ -43,17 +49,29 @@
 
   const dayCount = computed(() => getDaysInMonth(year.value, month.value))
 
-  const firstLastDay = computed(() =>
-    getFirstAndLastDayOfMonth(props.currentDate),
-  )
+  const firstDay = computed(() => {
+    const { firstDay } = getFirstAndLastDayOfMonth(props.currentDate)
+    const firstDayOffset = firstDay >= 0 ? firstDay : 0
+    return firstDayOffset
+  })
 
   const selectDay = (value: number) => {
     date.value = new Date(props.currentDate.setDate(value)).toDateString()
   }
 
   const checkIsToday = (day: number): boolean => {
-    var clonedDate = new Date(props.currentDate.getTime())
+    const clonedDate = new Date(props.currentDate.getTime())
     return isToday(new Date(clonedDate).setDate(day))
+  }
+  const checkIsSameDate = (day: number): boolean => {
+    if (!props.modelValue) {
+      return false
+    }
+    const clonedDate = new Date(props.currentDate.getTime())
+    const itemDay = new Date(clonedDate).setDate(day)
+    const selectedDay = new Date(props.modelValue)
+
+    return isSameDate(new Date(itemDay), new Date(selectedDay))
   }
 </script>
 
@@ -64,7 +82,7 @@
     & button {
       @apply maz-h-8 maz-cursor-pointer maz-p-0;
 
-      &.--is-today {
+      &.--is-today:not('.--is-selected  ') {
         @apply maz-bg-color-light !important;
       }
 
