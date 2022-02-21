@@ -6,13 +6,18 @@
         :key="`${dateArray[dateIndex]}`"
         class="maz-picker-calendar-grid__container"
       >
-        <div v-for="first in firstDay" :key="first" />
+        <div v-for="first in emptyDaysCount" :key="first" />
         <MazBtn
           v-for="(day, i) in dayCount"
           :key="i"
           size="mini"
           :color="checkIsSameDate(day) ? color : 'transparent'"
           type="button"
+          :disabled="
+            checkIsSmallerMinDate(day) ||
+            checkIsBiggerMaxDate(day) ||
+            checkIsSameDay(day)
+          "
           :class="{
             '--is-today': checkIsToday(day),
             '--is-selected': checkIsSameDate(day),
@@ -37,6 +42,9 @@
     isSameDate,
     isToday,
     isBigger,
+    isSmaller,
+    isSameDay,
+    getWeekDays,
   } from '../utils'
   import MazBtn from '../../MazBtn.vue'
   import { Color } from '../../types'
@@ -48,6 +56,9 @@
     locale: { type: String, required: true },
     firstDayOfWeek: { type: Number, required: true },
     color: { type: String as PropType<Color>, required: true },
+    minDate: { type: String, default: undefined },
+    maxDate: { type: String, default: undefined },
+    disabledWeekly: { type: Array as PropType<number[]>, default: undefined },
   })
 
   const emits = defineEmits(['update:model-value'])
@@ -68,10 +79,15 @@
 
   const dayCount = computed(() => getDaysInMonth(year.value, month.value))
 
-  const firstDay = computed(() => {
+  const emptyDaysCount = computed(() => {
     const { firstDay } = getFirstAndLastDayOfMonth(props.currentDate)
-    const firstDayOffset = firstDay >= 0 ? firstDay : 0
-    return firstDayOffset
+
+    const weekDays = getWeekDays(props.locale, props.firstDayOfWeek)
+    const indexCurrentWeekDay = weekDays.findIndex(
+      ({ dayNumber }) => dayNumber === firstDay,
+    )
+
+    return indexCurrentWeekDay
   })
 
   const selectDay = (value: number) => {
@@ -80,7 +96,7 @@
 
   const checkIsToday = (day: number): boolean => {
     const clonedDate = cloneDate(props.currentDate)
-    return isToday(new Date(clonedDate).setDate(day))
+    return isToday(clonedDate.setDate(day))
   }
 
   const checkIsSameDate = (day: number): boolean => {
@@ -88,21 +104,49 @@
       return false
     }
     const clonedDate = cloneDate(props.currentDate)
-    const itemDay = new Date(clonedDate).setDate(day)
+    const itemDay = clonedDate.setDate(day)
     const selectedDay = new Date(props.modelValue)
 
     return isSameDate(new Date(itemDay), new Date(selectedDay))
   }
 
+  const checkIsSmallerMinDate = (day: number): boolean => {
+    if (!props.minDate) {
+      return false
+    }
+    const clonedDate = cloneDate(props.currentDate)
+    return isSmaller(clonedDate.setDate(day), new Date(props.minDate))
+  }
+
+  const checkIsSameDay = (day: number): boolean => {
+    if (!props.disabledWeekly?.length) {
+      return false
+    }
+    const clonedDate = cloneDate(props.currentDate)
+
+    return props.disabledWeekly.some((disabledDay) =>
+      isSameDay(clonedDate.setDate(day), disabledDay),
+    )
+  }
+
+  const checkIsBiggerMaxDate = (day: number): boolean => {
+    if (!props.maxDate) {
+      return false
+    }
+    const clonedDate = cloneDate(props.currentDate)
+
+    return isBigger(clonedDate.setDate(day), new Date(props.maxDate))
+  }
+
   const removeContainerHeight = debounce(() => {
     if (MazPickerGrid.value) {
-      MazPickerGrid.value.style.height = ''
+      MazPickerGrid.value.style.minHeight = ''
     }
-  }, 500)
+  }, 400)
 
   const setContainerHeight = () => {
     if (MazPickerGrid.value) {
-      MazPickerGrid.value.style.height = `${
+      MazPickerGrid.value.style.minHeight = `${
         MazPickerGrid.value?.clientHeight || 176
       }px`
 
@@ -126,10 +170,10 @@
   .maz-picker-calendar-grid {
     @apply maz-relative maz-overflow-hidden;
 
-    transition: all 300ms;
+    transition: all 300ms ease-in-out;
 
     &__container {
-      @apply maz-relative maz-grid maz-h-full maz-grid-cols-7 maz-gap-1 maz-flex-center;
+      @apply maz-relative maz-grid maz-grid-cols-7 maz-items-start maz-gap-1;
 
       & button {
         @apply maz-h-8 maz-cursor-pointer;
@@ -163,7 +207,7 @@
   .maz-slideprev-enter-active {
     position: absolute;
     transition: all 300ms ease-in-out;
-    @apply maz-inset-0;
+    @apply maz-top-0 maz-left-0 maz-right-0;
   }
 
   /* .maz-slidenext-enter-to, */

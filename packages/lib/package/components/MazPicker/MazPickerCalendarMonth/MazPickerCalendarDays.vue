@@ -1,14 +1,15 @@
 <template>
   <div class="maz-picker-calendar-days">
-    <div v-for="day in days" :key="day">
+    <div v-for="{ label } in days" :key="label">
       <span>
-        {{ day }}
+        {{ label }}
       </span>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+  import { computed } from 'vue'
   import { getWeekDays } from '../utils'
 
   const props = defineProps({
@@ -16,7 +17,7 @@
     firstDayOfWeek: { type: Number, required: true },
   })
 
-  const days = getWeekDays(props.locale, props.firstDayOfWeek)
+  const days = computed(() => getWeekDays(props.locale, props.firstDayOfWeek))
 </script>
 
 <style lang="postcss" scoped>

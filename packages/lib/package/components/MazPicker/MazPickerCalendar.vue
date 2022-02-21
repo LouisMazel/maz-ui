@@ -31,20 +31,17 @@
       :class="{ '--has-double': double }"
     >
       <MazPickerCalendarMonth
+        v-for="month in months"
+        :key="month"
         v-model="modelValue"
         :locale="locale"
         :color="color"
+        :offset-month="month"
         :current-date="currentDate"
         :first-day-of-week="firstDayOfWeek"
-      />
-      <MazPickerCalendarMonth
-        v-if="double"
-        v-model="modelValue"
-        :locale="locale"
-        :color="color"
-        :offset-month="1"
-        :current-date="currentDate"
-        :first-day-of-week="firstDayOfWeek"
+        :min-date="minDate"
+        :max-date="maxDate"
+        :disabled-weekly="disabledWeekly"
       />
     </div>
   </div>
@@ -65,6 +62,9 @@
     firstDayOfWeek: { type: Number, required: true },
     currentDate: { type: Date, required: true },
     double: { type: Boolean, required: true },
+    minDate: { type: String, default: undefined },
+    maxDate: { type: String, default: undefined },
+    disabledWeekly: { type: Array as PropType<number[]>, default: undefined },
   })
 
   const emits = defineEmits(['update:model-value', 'update:current-date'])
@@ -81,9 +81,14 @@
     get: () => props.currentDate,
     set: (currentDate) => emits('update:current-date', currentDate),
   })
+
+  const months = computed(() =>
+    Array.from({ length: props.double ? 2 : 1 }, (_v, i) => i),
+  )
 </script>
 
 <style lang="postcss" scoped>
+  /* stylelint-disable no-descending-specificity */
   .maz-picker-calendar {
     @apply maz-relative maz-bg-color;
 
@@ -96,14 +101,22 @@
         }
       }
     }
+
+    & :deep(button):is(:disabled) {
+      @apply maz-bg-transparent maz-text-gray-300 !important;
+    }
   }
 
   html.dark {
     & .maz-picker-calendar {
       @apply maz-bg-color-light;
 
-      & :deep(button):not(.--is-selected) {
+      & :deep(button):not(.--is-selected):not(:disabled) {
         @apply hover:maz-bg-color-lighter !important;
+      }
+
+      & :deep(button):is(:disabled) {
+        @apply maz-text-gray-700 !important;
       }
     }
   }

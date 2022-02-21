@@ -88,11 +88,11 @@
     @apply maz-z-1 maz-flex maz-flex-col maz-space-y-1 maz-p-2;
 
     &__year-transition {
-      @apply maz-flex maz-h-5 maz-items-center maz-overflow-hidden;
+      @apply maz-flex maz-h-5 maz-items-center maz-overflow-hidden maz-leading-3;
     }
 
     &__date-transition {
-      @apply maz-flex maz-h-6 maz-items-center maz-overflow-hidden;
+      @apply maz-flex maz-h-6 maz-items-center maz-overflow-hidden maz-leading-4;
     }
 
     &__year {

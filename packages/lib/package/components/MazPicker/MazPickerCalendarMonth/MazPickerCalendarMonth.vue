@@ -11,13 +11,16 @@
       :color="color"
       :current-date="currentDate"
       :first-day-of-week="firstDayOfWeek"
+      :min-date="minDate"
+      :max-date="maxDate"
+      :disabled-weekly="disabledWeekly"
     />
   </div>
 </template>
 
 <script lang="ts" setup>
   import { computed, PropType } from 'vue'
-  import { Color } from '~/types'
+  import { Color } from './../../types'
   import { cloneDate } from '../utils'
   import MazPickerCalendarDays from './MazPickerCalendarDays.vue'
   import MazPickerCalendarGrid from './MazPickerCalendarGrid.vue'
@@ -29,6 +32,9 @@
     firstDayOfWeek: { type: Number, required: true },
     currentDate: { type: Date, required: true },
     offsetMonth: { type: Number, default: 0 },
+    minDate: { type: String, default: undefined },
+    maxDate: { type: String, default: undefined },
+    disabledWeekly: { type: Array as PropType<number[]>, default: undefined },
   })
 
   const emits = defineEmits(['update:model-value', 'update:current-date'])

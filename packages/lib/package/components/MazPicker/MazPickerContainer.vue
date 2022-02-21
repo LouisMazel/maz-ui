@@ -1,5 +1,8 @@
 <template>
-  <div class="m-picker-container" :class="{ '--has-double': double }">
+  <div
+    class="m-picker-container"
+    :class="{ '--has-double': double, '--inline': inline }"
+  >
     <MazPickerHeader
       v-if="!noHeader"
       :color="color"
@@ -14,11 +17,14 @@
       :color="color"
       :locale="locale"
       :double="double"
+      :min-date="minDate"
+      :max-date="maxDate"
       :first-day-of-week="firstDayOfWeek"
+      :disabled-weekly="disabledWeekly"
       class="m-picker-container__calendar"
     />
 
-    <MazPickerFooter v-if="!autoClose" :color="color" @close="$emit('close')" />
+    <MazPickerFooter v-if="hasFooter" :color="color" @close="$emit('close')" />
   </div>
 </template>
 
@@ -37,7 +43,11 @@
     firstDayOfWeek: { type: Number, required: true },
     currentDate: { type: Date, required: true },
     double: { type: Boolean, required: true },
-    autoClose: { type: Boolean, required: true },
+    hasFooter: { type: Boolean, required: true },
+    minDate: { type: String, default: undefined },
+    maxDate: { type: String, default: undefined },
+    inline: { type: Boolean, default: false },
+    disabledWeekly: { type: Array as PropType<number[]>, default: undefined },
   })
 
   const emits = defineEmits([
@@ -61,7 +71,11 @@
 
 <style lang="postcss" scoped>
   .m-picker-container {
-    @apply maz-absolute maz-z-default-backdrop maz-overflow-hidden maz-rounded-lg maz-bg-color maz-elevation;
+    @apply maz-overflow-hidden maz-rounded-lg maz-bg-color;
+
+    &:not(.--inline) {
+      @apply maz-absolute maz-z-default-backdrop maz-elevation;
+    }
 
     min-width: 16.875rem;
 

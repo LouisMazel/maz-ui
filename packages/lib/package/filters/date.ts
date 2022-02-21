@@ -22,6 +22,7 @@ export const date = (
 
   try {
     const usedDate = date instanceof Date ? date : new Date(date)
+
     return new Intl.DateTimeFormat(locale, options).format(usedDate)
   } catch (error: unknown) {
     throw new Error(`[maz-ui](FilterDate) ${error}`)

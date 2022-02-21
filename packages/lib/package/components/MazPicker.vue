@@ -15,7 +15,7 @@
     @keydown.esc="closeCalendar"
   >
     <MazInput
-      v-if="!customElementSelector"
+      v-if="!customElementSelector && !inline"
       :model-value="inputValue"
       readonly
       v-bind="$attrs"
@@ -43,9 +43,13 @@
         v-model:current-date="currentDate"
         :color="color"
         :locale="locale"
-        :auto-close="autoClose"
+        :has-footer="hasFooter"
         :double="double"
         :no-header="noHeader"
+        :min-date="minDate"
+        :max-date="maxDate"
+        :disabled-weekly="disabledWeekly"
+        :inline="inline"
         :first-day-of-week="firstDayOfWeek"
         @close="closeCalendar"
       />
@@ -62,6 +66,7 @@
     PropType,
     ref,
     StyleValue,
+    watch,
   } from 'vue'
   import MazInput from './MazInput.vue'
   import MazPickerContainer from './MazPicker/MazPickerContainer.vue'
@@ -69,7 +74,13 @@
   import ChevronDownIcon from './../icons/chevron-down.svg'
   import MazIcon from './MazIcon.vue'
   import { Color, Position } from './types'
-  import { getCurrentDate, getFormattedDate } from './MazPicker/utils'
+  import {
+    getCurrentDate,
+    getFormattedDate,
+    isBigger,
+    isSameDay,
+    isSmaller,
+  } from './MazPicker/utils'
 
   const props = defineProps({
     modelValue: {
@@ -77,6 +88,8 @@
         ['string'].includes(typeof prop) || prop === undefined,
       required: true,
     } as Prop<undefined | string>,
+    minDate: { type: String, default: undefined },
+    maxDate: { type: String, default: undefined },
     open: { type: Boolean, default: false },
     inputDateStyle: {
       type: String as PropType<Intl.DateTimeFormatOptions['dateStyle']>,
@@ -93,10 +106,25 @@
     locale: { type: String, default: 'en-US' },
     style: { type: Object as PropType<StyleValue>, default: undefined },
     noHeader: { type: Boolean, default: false },
-    firstDayOfWeek: { type: Number, default: 0 },
+    firstDayOfWeek: {
+      type: Number,
+      default: 0,
+      validator: (value: number) => {
+        const isValid = value >= 0 && value <= 6
+        if (!isValid) {
+          // eslint-disable-next-line no-console
+          console.error(
+            '[maz-ui](MazPicker) "first-day-of-week" should be between 0 and 6',
+          )
+        }
+        return isValid ? true : false
+      },
+    },
     autoClose: { type: Boolean, default: false },
+    noFooter: { type: Boolean, default: false },
     customElementSelector: { type: String, default: undefined },
     double: { type: Boolean, default: false },
+    inline: { type: Boolean, default: false },
     color: {
       type: String as PropType<Color>,
       default: 'primary',
@@ -128,26 +156,17 @@
         ].includes(value)
       },
     },
+    disabledWeekly: { type: Array as PropType<number[]>, default: undefined },
     // unused
     // format: { type: String, default: 'YYYY-MM-DD h:mm a' },
     // formatted: { type: String, default: 'llll' },
-    // minDate: { type: String, default: undefined },
-    // maxDate: { type: String, default: undefined },
-    // persistent: { type: Boolean, default: false },
-    // noFooter: { type: Boolean, default: false },
-    // noNow: { type: Boolean, default: false },
-    // nowTranslation: { type: String, default: 'Now' },
-    // noWeekendsDays: { type: Boolean, default: false },
-    // inline: { type: Boolean, default: false },
     // disabledDates: { type: Array, default: () => [] },
-    // disabledWeekly: { type: Array, default: () => [] },
     // range: { type: Boolean, default: false },
     // noKeyboard: { type: Boolean, default: false },
     // noTime: { type: Boolean, default: false },
     // noDate: { type: Boolean, default: false },
     // minuteInterval: { type: Number, default: 1 },
     // disabledHours: { type: Array, default: () => [] },
-    // noOverlay: { type: Boolean, default: false },
     // shortcut: { type: String, default: undefined },
     // noShortcuts: { type: Boolean, default: false },
     // shortcuts: {
@@ -180,20 +199,30 @@
 
   const currentDate = ref(getCurrentDate(props.modelValue))
 
-  const inputValue = computed(() =>
-    getFormattedDate({
+  const inputValue = computed(() => {
+    const { inputDateStyle, locale, timeZone } = props
+    return getFormattedDate({
       value: modelValue.value,
-      inputDateStyle: props.inputDateStyle,
-      // inputTimeStyle: props.inputTimeStyle,
-      locale: props.locale,
-      timeZone: props.timeZone,
-    }),
-  )
+      inputDateStyle,
+      // inputTimeStyle: inputTimeStyle,
+      locale,
+      timeZone,
+    })
+  })
 
   const isFocused = ref(false)
   const programaticallyOpened = ref(false)
+
   const isOpen = computed(
-    () => isFocused.value || props.open || programaticallyOpened.value,
+    () =>
+      isFocused.value ||
+      props.open ||
+      programaticallyOpened.value ||
+      props.inline,
+  )
+
+  const hasFooter = computed(
+    () => !props.autoClose && !props.noFooter && !props.inline,
   )
 
   onMounted(() => {
@@ -243,6 +272,30 @@
     const target = document.querySelector(selector)
     target?.removeEventListener('click', toggleProgramatically)
   }
+
+  const checkValueWithMinMaxDates = (value: string) => {
+    if (props.minDate && isSmaller(value, props.minDate)) {
+      modelValue.value = props.minDate
+      currentDate.value = getCurrentDate(props.minDate)
+    } else if (props.maxDate && isBigger(value, props.maxDate)) {
+      modelValue.value = props.maxDate
+      currentDate.value = getCurrentDate(props.maxDate)
+    }
+    if (props.disabledWeekly) {
+      const isDisabled = props.disabledWeekly.some((dayNumber) =>
+        isSameDay(new Date(value), dayNumber),
+      )
+      if (isDisabled) {
+        modelValue.value = undefined
+      }
+    }
+  }
+
+  watch(
+    () => props.modelValue,
+    (value) => (value ? checkValueWithMinMaxDates(value) : undefined),
+    { immediate: true },
+  )
 </script>
 
 <style lang="postcss" scoped>
