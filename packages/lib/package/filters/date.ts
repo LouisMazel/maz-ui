@@ -10,9 +10,13 @@ export const date = (
   options?: Intl.DateTimeFormatOptions,
 ): string => {
   if (typeof locale === 'undefined')
-    throw new TypeError('[FilterDate] The `locale` attribute is required.')
+    throw new TypeError(
+      '[maz-ui](FilterDate) The `locale` attribute is required.',
+    )
   if (typeof locale !== 'string')
-    throw new TypeError('[FilterDate] The `locale` attribute must be a string.')
+    throw new TypeError(
+      '[maz-ui](FilterDate) The `locale` attribute must be a string.',
+    )
 
   options = options || DEFAULT_OPTIONS
 
@@ -20,6 +24,6 @@ export const date = (
     const usedDate = date instanceof Date ? date : new Date(date)
     return new Intl.DateTimeFormat(locale, options).format(usedDate)
   } catch (error: unknown) {
-    throw new Error(`[FilterDate] ${error}`)
+    throw new Error(`[maz-ui](FilterDate) ${error}`)
   }
 }

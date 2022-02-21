@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { getWeekDays } from './utils'
+  import { getWeekDays } from '../utils'
 
   const props = defineProps({
     locale: { type: String, required: true },

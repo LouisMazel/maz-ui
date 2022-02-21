@@ -6,6 +6,8 @@
     :style="style"
     :class="[
       `m-picker--${color}`,
+      `m-picker--${listPositionClass.vertical}`,
+      `m-picker--${listPositionClass.horizontal}`,
       {
         '--is-open': isOpen,
       },
@@ -13,6 +15,7 @@
     @keydown.esc="closeCalendar"
   >
     <MazInput
+      v-if="!customElementSelector"
       :model-value="inputValue"
       readonly
       v-bind="$attrs"
@@ -48,13 +51,21 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, Prop, PropType, ref, StyleValue } from 'vue'
+  import {
+    computed,
+    onMounted,
+    onUnmounted,
+    Prop,
+    PropType,
+    ref,
+    StyleValue,
+  } from 'vue'
   import MazInput from './MazInput.vue'
   import MazPickerContainer from './MazPicker/MazPickerContainer.vue'
   import { vClickOutside } from './../directives/click-outside.directive'
   import ChevronDownIcon from './../icons/chevron-down.svg'
   import MazIcon from './MazIcon.vue'
-  import { Color } from './types'
+  import { Color, Position } from './types'
   import { getCurrentDate, getFormattedDate } from './MazPicker/utils'
 
   const props = defineProps({
@@ -81,6 +92,7 @@
     noHeader: { type: Boolean, default: false },
     firstDayOfWeek: { type: Number, default: 0 },
     autoClose: { type: Boolean, default: false },
+    customElementSelector: { type: String, default: undefined },
     // not completed
     color: {
       type: String as PropType<Color>,
@@ -99,8 +111,21 @@
         ].includes(value)
       },
     },
+    listPosition: {
+      type: String as PropType<Position>,
+      default: 'bottom left',
+      validator: (value: Position) => {
+        return [
+          'top',
+          'top right',
+          'top left',
+          'bottom',
+          'bottom right',
+          'bottom left',
+        ].includes(value)
+      },
+    },
     // unused
-    // listPosition: { type: String, default: undefined },
     // format: { type: String, default: 'YYYY-MM-DD h:mm a' },
     // formatted: { type: String, default: 'llll' },
     // minDate: { type: String, default: undefined },
@@ -164,17 +189,78 @@
   )
 
   const isFocused = ref(false)
-  const isOpen = computed(() => isFocused.value || props.open)
+  const programaticallyOpened = ref(false)
+  const isOpen = computed(
+    () => isFocused.value || props.open || programaticallyOpened.value,
+  )
+
+  onMounted(() => {
+    if (props.customElementSelector) {
+      addEventToTriggerCustomElement(props.customElementSelector)
+    }
+  })
+
+  onUnmounted(() => {
+    if (props.customElementSelector) {
+      removeEventToTriggerCustomElement(props.customElementSelector)
+    }
+  })
+
+  const listPositionClass = computed(() => {
+    const vertical = props.listPosition.includes('top') ? 'top' : 'bottom'
+    const horizontal = props.listPosition.includes('right') ? 'right' : 'left'
+
+    return {
+      vertical,
+      horizontal,
+    }
+  })
 
   const closeCalendar = () => {
     isFocused.value = false
     emits('close')
+  }
+
+  const toggleProgramatically = () => {
+    programaticallyOpened.value = !programaticallyOpened.value
+  }
+
+  const addEventToTriggerCustomElement = (selector: string) => {
+    const target = document.querySelector(selector)
+    if (target) {
+      target.addEventListener('click', toggleProgramatically)
+    } else {
+      throw new Error(
+        `[maz-ui](MazPicker) impossible to find custom element with selector "${selector}"`,
+      )
+    }
+  }
+
+  const removeEventToTriggerCustomElement = (selector: string) => {
+    const target = document.querySelector(selector)
+    target?.removeEventListener('click', toggleProgramatically)
   }
 </script>
 
 <style lang="postcss" scoped>
   .m-picker {
     @apply maz-relative;
+
+    &--left .m-picker-container {
+      @apply maz-left-0;
+    }
+
+    &--bottom .m-picker-container {
+      @apply maz-top-full;
+    }
+
+    &--top .m-picker-container {
+      @apply maz-bottom-full;
+    }
+
+    &--right .m-picker-container {
+      @apply maz-right-0;
+    }
 
     & .m-picker__button__chevron {
       @apply maz-transition-transform maz-duration-200;

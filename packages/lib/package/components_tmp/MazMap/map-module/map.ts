@@ -75,7 +75,9 @@ export class Map {
     infoWindowOptions: MarkerInfoWindowOptions,
   ) {
     if (!infoWindowOptions.content)
-      throw new Error('[Map] InfoWindow should have a content')
+      throw new Error(
+        '[maz-ui](MazMap/addInfoWindowContentToMarker) InfoWindow should have a content',
+      )
     const infoWindow = this.getInfoWindow(infoWindowOptions)
     marker.addListener('click', () => {
       infoWindow.open(this.map, marker)

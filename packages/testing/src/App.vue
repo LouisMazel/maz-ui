@@ -1,10 +1,16 @@
 <template>
   <div
-    class="maz-flex maz-flex-col maz-w-full maz-flex-center maz-text-normal-text"
+    class="maz-flex maz-flex-col maz-w-full maz-items-center maz-text-normal-text"
   >
     <MazBtn style="margin-bottom: 16px" @click="toggleDarkMode">
       Dark Switch
     </MazBtn>
+
+    <code class="maz-mb-2">
+      {{ dateValue }}
+    </code>
+
+    <!-- <MazBtn id="customElement"> {{ dateValue || 'Select Date' }} </MazBtn> -->
 
     <MazPicker
       v-model="dateValue"
@@ -12,11 +18,10 @@
       label="Select date time"
       input-date-format="full"
       locale="en-US"
-      color="transparent"
+      color="secondary"
+      list-position="bottom left"
       :first-day-of-week="1"
     />
-
-    {{ dateValue }}
 
     <!-- <div style="position: relative; width: 500px">
       <MazTabsBar :items="tabs" color="secondary" />
@@ -88,8 +93,7 @@
 
   #app {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    padding: 40px;
     height: 100vh;
   }
 </style>

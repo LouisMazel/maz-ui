@@ -22,10 +22,11 @@
 <script lang="ts" setup>
   import MazPickerHeader from './MazPickerHeader.vue'
   import MazPickerCalendar from './MazPickerCalendar.vue'
-  import { computed } from 'vue'
+  import { computed, PropType } from 'vue'
+  import { Color } from '../types'
 
   const props = defineProps({
-    color: { type: String, required: true },
+    color: { type: String as PropType<Color>, required: true },
     modelValue: { type: String, default: undefined },
     locale: { type: String, required: true },
     noHeader: { type: Boolean, default: false },
@@ -50,6 +51,6 @@
 
 <style lang="postcss" scoped>
   .m-picker-container {
-    @apply maz-absolute maz-top-full maz-left-0 maz-overflow-hidden maz-rounded-lg maz-bg-color maz-elevation;
+    @apply maz-absolute maz-z-default-backdrop maz-overflow-hidden maz-rounded-lg maz-bg-color maz-elevation;
   }
 </style>

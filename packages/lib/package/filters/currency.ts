@@ -29,16 +29,20 @@ const validRequiredAttributes = (
   options: FilterCurrencyOptions,
 ) => {
   if (typeof number === 'undefined')
-    throw new TypeError('[FilterCurrency] The `number` attribute is required.')
+    throw new TypeError(
+      '[maz-ui](FilterCurrency) The `number` attribute is required.',
+    )
   if (typeof locale === 'undefined')
-    throw new TypeError('[FilterCurrency] The `locale` attribute is required.')
+    throw new TypeError(
+      '[maz-ui](FilterCurrency) The `locale` attribute is required.',
+    )
   if (typeof locale !== 'string')
     throw new TypeError(
-      '[FilterCurrency] The `locale` attribute must be a string.',
+      '[maz-ui](FilterCurrency) The `locale` attribute must be a string.',
     )
   if (typeof options.currency === 'undefined')
     throw new TypeError(
-      '[FilterCurrency] The `options.currency` attribute is required.',
+      '[maz-ui](FilterCurrency) The `options.currency` attribute is required.',
     )
 }
 
@@ -58,6 +62,6 @@ export const currency = (
     return getFormattedCurrency(number, locale, options_)
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    throw new Error(`[FilterCurrency] ${error}`)
+    throw new Error(`[maz-ui](FilterCurrency) ${error}`)
   }
 }

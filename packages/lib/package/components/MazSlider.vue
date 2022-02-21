@@ -349,7 +349,9 @@
         buttonPositions.value[activeCursor.value + 1] || barWidth
 
       if (!MazSlider.value)
-        return console.error('[MazSlider] MazSlider not available')
+        return console.error(
+          '[maz-ui](MazSlider/handleMousemove) MazSlider not available',
+        )
 
       buttonPositions.value[activeCursor.value] = (() => {
         const movement = getPos(event, MazSlider.value).x

@@ -1,5 +1,9 @@
 import { date, capitalize } from './../../filters'
 
+export function cloneDate(date: Date): Date {
+  return new Date(date.getTime())
+}
+
 export function getFormattedDate({
   value,
   locale,
@@ -60,11 +64,12 @@ export function getDaysInMonth(year: number, month: number) {
 export const isToday = (date: Date | string | number): boolean => {
   const today = new Date()
   const usedDate = date instanceof Date ? date : new Date(date)
-  const isToday =
+
+  return (
     usedDate.getDate() == today.getDate() &&
     usedDate.getMonth() == today.getMonth() &&
     usedDate.getFullYear() == today.getFullYear()
-  return isToday
+  )
 }
 
 export const isSameDate = (
@@ -73,9 +78,30 @@ export const isSameDate = (
 ): boolean => {
   date = date instanceof Date ? date : new Date(date)
   date2 = date2 instanceof Date ? date2 : new Date(date2)
-  const isSameDate =
+
+  return (
     date.getDate() == date2.getDate() &&
     date.getMonth() == date2.getMonth() &&
     date.getFullYear() == date2.getFullYear()
-  return isSameDate
+  )
+}
+
+export const isSameMonth = (
+  date: Date | string | number,
+  date2: Date | string | number,
+): boolean => {
+  date = date instanceof Date ? date : new Date(date)
+  date2 = date2 instanceof Date ? date2 : new Date(date2)
+
+  return date.getMonth() == date2.getMonth()
+}
+
+export const isSameYear = (
+  date: Date | string | number,
+  date2: Date | string | number,
+): boolean => {
+  date = date instanceof Date ? date : new Date(date)
+  date2 = date2 instanceof Date ? date2 : new Date(date2)
+
+  return date.getFullYear() == date2.getFullYear()
 }

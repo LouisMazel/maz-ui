@@ -52,7 +52,9 @@
 
   onMounted(() => {
     if (!props.name && !props.src) {
-      throw new Error('[MazIcon] you should provide "name" or "src" as prop')
+      throw new Error(
+        '[maz-ui](MazIcon) you should provide "name" or "src" as prop',
+      )
     }
     getSource(fullSrc.value)
   })

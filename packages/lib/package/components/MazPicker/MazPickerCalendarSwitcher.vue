@@ -12,6 +12,7 @@
       size="sm"
       color="transparent"
       class="m-picker-calendar-switcher__date"
+      @click="$emit('open-month-switcher', $event)"
     >
       {{ month }}
     </MazBtn>
@@ -19,6 +20,7 @@
       size="sm"
       color="transparent"
       class="m-picker-calendar-switcher__date"
+      @click="$emit('open-year-switcher', $event)"
     >
       {{ year }}
     </MazBtn>
@@ -35,18 +37,36 @@
   import MazBtn from '../MazBtn.vue'
   import { computed } from 'vue'
   import { date, capitalize } from '../../filters'
+  import { cloneDate } from './utils'
 
   const props = defineProps({
     modelValue: { type: String, default: undefined },
     locale: { type: String, required: true },
     currentDate: { type: Date, required: true },
+    double: { type: Boolean, required: true },
   })
 
-  const emits = defineEmits(['previous', 'next', 'update:current-date'])
+  const emits = defineEmits([
+    'previous',
+    'next',
+    'update:current-date',
+    'open-month-switcher',
+    'open-year-switcher',
+  ])
 
   const month = computed(() => {
-    return capitalize(date(props.currentDate, props.locale, { month: 'long' }))
+    const clonedDate = cloneDate(props.currentDate)
+    return props.double
+      ? `${capitalize(
+          date(clonedDate, props.locale, { month: 'short' }),
+        )} - ${capitalize(
+          date(clonedDate.setMonth(clonedDate.getMonth() + 1), props.locale, {
+            month: 'short',
+          }),
+        )}`
+      : capitalize(date(clonedDate, props.locale, { month: 'long' }))
   })
+
   const year = computed(() =>
     date(props.currentDate, props.locale, { year: 'numeric' }),
   )
@@ -68,7 +88,7 @@
 
 <style lang="postcss" scoped>
   .m-picker-calendar-switcher {
-    @apply maz-flex maz-space-x-2;
+    @apply maz-flex maz-space-x-2 maz-border-b maz-border-color-lighter maz-py-1 maz-px-2;
 
     &__date {
       @apply maz-flex-1 maz-text-center;
