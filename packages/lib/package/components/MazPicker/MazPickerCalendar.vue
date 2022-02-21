@@ -7,21 +7,25 @@
       @open-month-switcher="monthSwitcherOpen = true"
       @open-year-switcher="yearSwitcherOpen = true"
     />
-    <MazPickerMonthSwitcher
-      v-if="monthSwitcherOpen"
-      v-model:current-date="currentDate"
-      :color="color"
-      :double="double"
-      :locale="locale"
-      @close="monthSwitcherOpen = false"
-    />
-    <MazPickerYearSwitcher
-      v-if="yearSwitcherOpen"
-      v-model:current-date="currentDate"
-      :color="color"
-      :locale="locale"
-      @close="yearSwitcherOpen = false"
-    />
+    <Transition name="maz-picker-slide">
+      <MazPickerMonthSwitcher
+        v-if="monthSwitcherOpen"
+        v-model:current-date="currentDate"
+        :color="color"
+        :double="double"
+        :locale="locale"
+        @close="monthSwitcherOpen = false"
+      />
+    </Transition>
+    <Transition name="maz-picker-slide">
+      <MazPickerYearSwitcher
+        v-if="yearSwitcherOpen"
+        v-model:current-date="currentDate"
+        :color="color"
+        :locale="locale"
+        @close="yearSwitcherOpen = false"
+      />
+    </Transition>
     <div
       class="maz-picker-calendar__months"
       :class="{ '--has-double': double }"
@@ -102,5 +106,16 @@
         @apply hover:maz-bg-color-lighter !important;
       }
     }
+  }
+
+  .maz-picker-slide-enter-active,
+  .maz-picker-slide-leave-active {
+    transition: all 300ms ease-in-out;
+    transform: translateY(0);
+  }
+
+  .maz-picker-slide-enter-from,
+  .maz-picker-slide-leave-to {
+    transform: translateY(100%);
   }
 </style>

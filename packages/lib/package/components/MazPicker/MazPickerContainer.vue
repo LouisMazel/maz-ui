@@ -3,7 +3,7 @@
     <MazPickerHeader
       v-if="!noHeader"
       :color="color"
-      :date="modelValue"
+      :model-value="modelValue"
       :locale="locale"
       class="m-picker-container__header"
     />
@@ -17,6 +17,8 @@
       :first-day-of-week="firstDayOfWeek"
       class="m-picker-container__calendar"
     />
+
+    <MazPickerFooter v-if="!autoClose" :color="color" @close="$emit('close')" />
   </div>
 </template>
 
@@ -25,6 +27,7 @@
   import MazPickerCalendar from './MazPickerCalendar.vue'
   import { computed, PropType } from 'vue'
   import { Color } from '../types'
+  import MazPickerFooter from './MazPickerFooter.vue'
 
   const props = defineProps({
     color: { type: String as PropType<Color>, required: true },
@@ -34,9 +37,14 @@
     firstDayOfWeek: { type: Number, required: true },
     currentDate: { type: Date, required: true },
     double: { type: Boolean, required: true },
+    autoClose: { type: Boolean, required: true },
   })
 
-  const emits = defineEmits(['update:model-value', 'update:current-date'])
+  const emits = defineEmits([
+    'update:model-value',
+    'update:current-date',
+    'close',
+  ])
 
   const modelValue = computed({
     get: () => props.modelValue,
@@ -55,10 +63,10 @@
   .m-picker-container {
     @apply maz-absolute maz-z-default-backdrop maz-overflow-hidden maz-rounded-lg maz-bg-color maz-elevation;
 
-    min-width: 250px;
+    min-width: 16.875rem;
 
     &.--has-double {
-      min-width: 450px;
+      min-width: 28.125rem;
     }
   }
 </style>

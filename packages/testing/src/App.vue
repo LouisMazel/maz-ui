@@ -14,7 +14,7 @@
 
     <MazPicker
       v-model="dateValue"
-      style="width: 200px"
+      style="width: 400px"
       label="Select date time"
       input-date-format="full"
       locale="en-US"

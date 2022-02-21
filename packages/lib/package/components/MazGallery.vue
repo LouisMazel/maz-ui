@@ -108,6 +108,7 @@
     setup(props) {
       onBeforeMount(() => {
         if (props.imagesShownCount > 5)
+          // eslint-disable-next-line no-console
           console.warn(
             '[MazUI](m-gallery) The maximum of "images-shown-count" is 5',
           )

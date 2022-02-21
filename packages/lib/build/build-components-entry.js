@@ -44,6 +44,7 @@ const buildEntry = (template, importTemplate, outputPath) => {
   })
 
   writeFileSync(outputPath, file)
+  // eslint-disable-next-line no-console
   console.log('[build entry] DONE:', outputPath)
 }
 
@@ -54,6 +55,7 @@ buildEntry(
 )
 
 const replaceTypesExtensions = async () => {
+  // eslint-disable-next-line no-console
   console.log('COMPONENTS_TYPE_PATH', COMPONENTS_TYPE_PATH)
   const options = {
     files: COMPONENTS_TYPE_PATH,
@@ -63,8 +65,10 @@ const replaceTypesExtensions = async () => {
 
   try {
     const results = await replace(options)
+    // eslint-disable-next-line no-console
     console.log('Files extensions replaced', results)
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Error occurred while replacing file extensions:', error)
   }
 }

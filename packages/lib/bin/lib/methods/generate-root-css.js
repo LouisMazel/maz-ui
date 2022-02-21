@@ -45,5 +45,7 @@ module.exports = (variables, output) => {
   `.trim()
 
   fs.writeFileSync(output, result)
+
+  // eslint-disable-next-line no-console
   console.log('\x1B[32m', '[build root css file] DONE:', output)
 }

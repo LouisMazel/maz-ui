@@ -66,9 +66,9 @@ export const isToday = (date: Date | string | number): boolean => {
   const usedDate = date instanceof Date ? date : new Date(date)
 
   return (
-    usedDate.getDate() == today.getDate() &&
-    usedDate.getMonth() == today.getMonth() &&
-    usedDate.getFullYear() == today.getFullYear()
+    usedDate.getDate() === today.getDate() &&
+    usedDate.getMonth() === today.getMonth() &&
+    usedDate.getFullYear() === today.getFullYear()
   )
 }
 
@@ -80,9 +80,9 @@ export const isSameDate = (
   date2 = date2 instanceof Date ? date2 : new Date(date2)
 
   return (
-    date.getDate() == date2.getDate() &&
-    date.getMonth() == date2.getMonth() &&
-    date.getFullYear() == date2.getFullYear()
+    date.getDate() === date2.getDate() &&
+    date.getMonth() === date2.getMonth() &&
+    date.getFullYear() === date2.getFullYear()
   )
 }
 
@@ -93,7 +93,7 @@ export const isSameMonth = (
   date = date instanceof Date ? date : new Date(date)
   date2 = date2 instanceof Date ? date2 : new Date(date2)
 
-  return date.getMonth() == date2.getMonth()
+  return date.getMonth() === date2.getMonth()
 }
 
 export const isSameYear = (
@@ -103,5 +103,15 @@ export const isSameYear = (
   date = date instanceof Date ? date : new Date(date)
   date2 = date2 instanceof Date ? date2 : new Date(date2)
 
-  return date.getFullYear() == date2.getFullYear()
+  return date.getFullYear() === date2.getFullYear()
+}
+
+export const isBigger = (
+  date: Date | string | number,
+  date2: Date | string | number,
+): boolean => {
+  date = date instanceof Date ? date : new Date(date)
+  date2 = date2 instanceof Date ? date2 : new Date(date2)
+
+  return date.getTime() > date2.getTime()
 }

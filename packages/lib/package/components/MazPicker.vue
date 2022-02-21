@@ -43,9 +43,11 @@
         v-model:current-date="currentDate"
         :color="color"
         :locale="locale"
+        :auto-close="autoClose"
         :double="double"
         :no-header="noHeader"
         :first-day-of-week="firstDayOfWeek"
+        @close="closeCalendar"
       />
     </Transition>
   </div>
@@ -95,7 +97,6 @@
     autoClose: { type: Boolean, default: false },
     customElementSelector: { type: String, default: undefined },
     double: { type: Boolean, default: false },
-    // not completed
     color: {
       type: String as PropType<Color>,
       default: 'primary',
@@ -140,7 +141,6 @@
     // inline: { type: Boolean, default: false },
     // disabledDates: { type: Array, default: () => [] },
     // disabledWeekly: { type: Array, default: () => [] },
-    // double: { type: Boolean, default: false },
     // range: { type: Boolean, default: false },
     // noKeyboard: { type: Boolean, default: false },
     // noTime: { type: Boolean, default: false },
@@ -220,6 +220,7 @@
 
   const closeCalendar = () => {
     isFocused.value = false
+    programaticallyOpened.value = false
     emits('close')
   }
 
