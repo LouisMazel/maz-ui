@@ -43,6 +43,7 @@
         v-model:current-date="currentDate"
         :color="color"
         :locale="locale"
+        :double="double"
         :no-header="noHeader"
         :first-day-of-week="firstDayOfWeek"
       />
@@ -93,6 +94,7 @@
     firstDayOfWeek: { type: Number, default: 0 },
     autoClose: { type: Boolean, default: false },
     customElementSelector: { type: String, default: undefined },
+    double: { type: Boolean, default: false },
     // not completed
     color: {
       type: String as PropType<Color>,

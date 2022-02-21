@@ -14,12 +14,13 @@
 
     <MazPicker
       v-model="dateValue"
-      style="width: 400px"
+      style="width: 200px"
       label="Select date time"
       input-date-format="full"
       locale="en-US"
       color="secondary"
       list-position="bottom left"
+      double
       :first-day-of-week="1"
     />
 

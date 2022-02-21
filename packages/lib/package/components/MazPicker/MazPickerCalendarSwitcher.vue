@@ -14,7 +14,7 @@
       class="m-picker-calendar-switcher__date"
       @click="$emit('open-month-switcher', $event)"
     >
-      {{ month }}
+      {{ monthLabel }}
     </MazBtn>
     <MazBtn
       size="sm"
@@ -54,14 +54,14 @@
     'open-year-switcher',
   ])
 
-  const month = computed(() => {
+  const monthLabel = computed(() => {
     const clonedDate = cloneDate(props.currentDate)
     return props.double
       ? `${capitalize(
-          date(clonedDate, props.locale, { month: 'short' }),
+          date(clonedDate, props.locale, { month: 'long' }),
         )} - ${capitalize(
           date(clonedDate.setMonth(clonedDate.getMonth() + 1), props.locale, {
-            month: 'short',
+            month: 'long',
           }),
         )}`
       : capitalize(date(clonedDate, props.locale, { month: 'long' }))
@@ -91,7 +91,7 @@
     @apply maz-flex maz-space-x-2 maz-border-b maz-border-color-lighter maz-py-1 maz-px-2;
 
     &__date {
-      @apply maz-flex-1 maz-text-center;
+      @apply maz-flex-1 maz-truncate maz-text-center;
     }
   }
 </style>

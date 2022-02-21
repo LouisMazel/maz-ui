@@ -60,7 +60,7 @@
     locale: { type: String, required: true },
     firstDayOfWeek: { type: Number, required: true },
     currentDate: { type: Date, required: true },
-    double: { type: Boolean, default: true },
+    double: { type: Boolean, required: true },
   })
 
   const emits = defineEmits(['update:model-value', 'update:current-date'])

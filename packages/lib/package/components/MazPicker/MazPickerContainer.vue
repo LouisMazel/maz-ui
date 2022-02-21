@@ -1,5 +1,5 @@
 <template>
-  <div class="m-picker-container">
+  <div class="m-picker-container" :class="{ '--has-double': double }">
     <MazPickerHeader
       v-if="!noHeader"
       :color="color"
@@ -13,6 +13,7 @@
       v-model:current-date="currentDate"
       :color="color"
       :locale="locale"
+      :double="double"
       :first-day-of-week="firstDayOfWeek"
       class="m-picker-container__calendar"
     />
@@ -32,6 +33,7 @@
     noHeader: { type: Boolean, default: false },
     firstDayOfWeek: { type: Number, required: true },
     currentDate: { type: Date, required: true },
+    double: { type: Boolean, required: true },
   })
 
   const emits = defineEmits(['update:model-value', 'update:current-date'])
@@ -52,5 +54,11 @@
 <style lang="postcss" scoped>
   .m-picker-container {
     @apply maz-absolute maz-z-default-backdrop maz-overflow-hidden maz-rounded-lg maz-bg-color maz-elevation;
+
+    min-width: 250px;
+
+    &.--has-double {
+      min-width: 440px;
+    }
   }
 </style>

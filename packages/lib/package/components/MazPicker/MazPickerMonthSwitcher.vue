@@ -10,11 +10,14 @@
         <MazIcon :src="XIcon" size="1.2rem" />
       </MazBtn>
     </div>
-    <div class="maz-picker-month-switcher__main">
+    <div
+      class="maz-picker-month-switcher__main"
+      :class="{ '--has-double': double }"
+    >
       <MazBtn
         v-for="month in months"
         :key="month.label"
-        size="sm"
+        :size="props.double ? 'sm' : 'xs'"
         :color="isSameMonth(month.date, currentDate) ? color : 'transparent'"
         type="button"
         @click.stop="selectMonth(month.date)"
@@ -67,7 +70,7 @@
         }
       } else {
         return {
-          label: date(clonedDate, props.locale, {
+          label: date(clonedDate.setMonth(monthNumber), props.locale, {
             month: 'long',
           }),
           date: new Date(clonedDate.setMonth(monthNumber)),
@@ -91,7 +94,11 @@
     }
 
     &__main {
-      @apply maz-grid maz-flex-1 maz-grid-cols-3 maz-gap-2 maz-overflow-y-auto maz-p-2 maz-flex-center;
+      @apply maz-grid maz-flex-1 maz-grid-cols-2 maz-gap-2 maz-overflow-y-auto maz-p-2 maz-flex-center;
+
+      &.--has-double {
+        @apply maz-grid-cols-3;
+      }
     }
   }
 
