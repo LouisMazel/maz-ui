@@ -22,7 +22,7 @@
       class="m-picker-calendar-switcher__date"
       @click="$emit('open-year-switcher', $event)"
     >
-      {{ year }}
+      {{ yearLabel }}
     </MazBtn>
     <MazBtn size="mini" color="transparent" type="button" @click="nextMonth">
       <MazIcon :src="ChevronRightIcon" size="1.2rem" />
@@ -67,7 +67,7 @@
       : capitalize(date(clonedDate, props.locale, { month: 'long' }))
   })
 
-  const year = computed(() =>
+  const yearLabel = computed(() =>
     date(props.currentDate, props.locale, { year: 'numeric' }),
   )
 

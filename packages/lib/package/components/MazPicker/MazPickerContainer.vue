@@ -58,7 +58,7 @@
     min-width: 250px;
 
     &.--has-double {
-      min-width: 440px;
+      min-width: 450px;
     }
   }
 </style>
