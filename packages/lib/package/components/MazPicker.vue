@@ -39,6 +39,8 @@
     <Transition name="maz-slide">
       <MazPickerContainer
         v-if="isOpen"
+        id="mazPickerContainer"
+        ref="PickerContainer"
         v-model="modelValue"
         v-model:current-date="currentDate"
         :color="color"
@@ -145,7 +147,7 @@
     },
     listPosition: {
       type: String as PropType<Position>,
-      default: 'bottom left',
+      default: undefined,
       validator: (value: Position) => {
         return [
           'top',
@@ -186,6 +188,9 @@
   })
 
   const emits = defineEmits(['update:model-value', 'close'])
+
+  const MazPicker = ref<HTMLDivElement>()
+  const PickerContainer = ref<typeof MazPickerContainer>()
 
   const modelValue = computed({
     get: () => props.modelValue,
@@ -240,15 +245,46 @@
     }
   })
 
-  const listPositionClass = computed(() => {
-    const vertical = props.listPosition.includes('top') ? 'top' : 'bottom'
-    const horizontal = props.listPosition.includes('right') ? 'right' : 'left'
+  const listPositionClass = computed<{
+    vertical: 'top' | 'bottom'
+    horizontal: 'left' | 'right'
+  }>(() => {
+    if (props.listPosition) {
+      const horizontal = props.listPosition.includes('right') ? 'right' : 'left'
+      const vertical = props.listPosition.includes('top') ? 'top' : 'bottom'
 
-    return {
-      vertical,
-      horizontal,
+      return {
+        horizontal,
+        vertical,
+      }
+    } else {
+      return {
+        horizontal: 'left',
+        vertical: calcVerticalPosition(MazPicker.value, PickerContainer.value),
+      }
     }
   })
+
+  const calcVerticalPosition = (
+    parent?: HTMLDivElement,
+    _pickerContainer?: typeof MazPickerContainer,
+  ): 'top' | 'bottom' => {
+    const parentRect = parent?.getBoundingClientRect()
+
+    const windowHeight = window.innerHeight
+    const pickerHeight =
+      (document.querySelector('#mazPickerContainer')?.clientHeight ?? 0) + 20
+
+    if (
+      parentRect &&
+      (parentRect.top < pickerHeight ||
+        windowHeight - (parentRect.height + pickerHeight + parentRect.top) >= 0)
+    ) {
+      return 'bottom'
+    } else {
+      return 'top'
+    }
+  }
 
   const closeCalendar = () => {
     isFocused.value = false

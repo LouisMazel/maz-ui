@@ -20,7 +20,6 @@
       locale="fr-FR"
       double
       color="secondary"
-      list-position="bottom left"
       :first-day-of-week="1"
     />
 
@@ -96,5 +95,6 @@
     display: flex;
     padding: 40px;
     height: 100vh;
+    align-items: center;
   }
 </style>
