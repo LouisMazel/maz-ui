@@ -36,7 +36,11 @@
         </button>
       </template>
     </MazInput>
-    <Transition name="maz-slide">
+    <Transition
+      :name="
+        listPositionClass.vertical === 'top' ? 'maz-slideinvert' : 'maz-slide'
+      "
+    >
       <MazPickerContainer
         v-if="isOpen"
         id="mazPickerContainer"
@@ -190,7 +194,7 @@
   const emits = defineEmits(['update:model-value', 'close'])
 
   const MazPicker = ref<HTMLDivElement>()
-  const PickerContainer = ref<typeof MazPickerContainer>()
+  const PickerContainer = ref<typeof MazPickerContainer | undefined>(undefined)
 
   const modelValue = computed({
     get: () => props.modelValue,
@@ -269,6 +273,10 @@
     parent?: HTMLDivElement,
     _pickerContainer?: typeof MazPickerContainer,
   ): 'top' | 'bottom' => {
+    if (typeof window === 'undefined') {
+      return 'bottom'
+    }
+
     const parentRect = parent?.getBoundingClientRect()
 
     const windowHeight = window.innerHeight
