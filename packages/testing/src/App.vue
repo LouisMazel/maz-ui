@@ -16,11 +16,9 @@
       v-model="dateValue"
       label="Select date time"
       input-date-format="full"
-      min-date="2022-02-04"
-      max-date="2022-03-20"
+      style="width: 600px"
       locale="fr-FR"
       double
-      inline
       color="secondary"
       list-position="bottom left"
       :first-day-of-week="1"
@@ -52,7 +50,7 @@
     MazPicker,
   } from 'maz-ui/package/components'
 
-  const dateValue = ref('2022-02-18')
+  const dateValue = ref('2022-02-18T12:00')
 
   // const tabs: MazTabsItem[] = [
   //   { label: 'First Tab', disabled: false },

@@ -29,7 +29,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { date } from './../../filters'
+  import { capitalize, date } from './../../filters'
   import { computed, PropType } from 'vue'
   import { Color } from '../types'
   import { cloneDate, isSameMonth } from '../MazPicker/utils'
@@ -57,22 +57,25 @@
 
       if (props.double) {
         return {
-          label: `${date(clonedDate.setMonth(monthNumber), props.locale, {
-            month: 'short',
-          })} - ${date(
-            clonedDate.setMonth(clonedDate.getMonth() + 1),
-            props.locale,
-            {
+          label: `${capitalize(
+            date(clonedDate.setMonth(monthNumber), props.locale, {
               month: 'short',
-            },
+            }),
+          )} - ${capitalize(
+            date(clonedDate.setMonth(clonedDate.getMonth() + 1), props.locale, {
+              month: 'short',
+            }),
           )}`,
+
           date: new Date(clonedDate.setMonth(monthNumber)),
         }
       } else {
         return {
-          label: date(clonedDate.setMonth(monthNumber), props.locale, {
-            month: 'long',
-          }),
+          label: capitalize(
+            date(clonedDate.setMonth(monthNumber), props.locale, {
+              month: 'long',
+            }),
+          ),
           date: new Date(clonedDate.setMonth(monthNumber)),
         }
       }

@@ -80,6 +80,7 @@
     isBigger,
     isSameDay,
     isSmaller,
+    getISODate,
   } from './MazPicker/utils'
 
   const props = defineProps({
@@ -190,7 +191,9 @@
     get: () => props.modelValue,
     set: (value) => {
       // TODO: format output
-      emits('update:model-value', value)
+
+      emitValue(value)
+
       if (props.autoClose) {
         closeCalendar()
       }
@@ -204,7 +207,7 @@
     return getFormattedDate({
       value: modelValue.value,
       inputDateStyle,
-      // inputTimeStyle: inputTimeStyle,
+      // inputTimeStyle,
       locale,
       timeZone,
     })
@@ -291,9 +294,18 @@
     }
   }
 
+  const emitValue = (value?: string) => {
+    emits('update:model-value', getISODate(value))
+  }
+
   watch(
     () => props.modelValue,
-    (value) => (value ? checkValueWithMinMaxDates(value) : undefined),
+    (value) => {
+      if (value) {
+        checkValueWithMinMaxDates(value)
+        emitValue(value)
+      }
+    },
     { immediate: true },
   )
 </script>

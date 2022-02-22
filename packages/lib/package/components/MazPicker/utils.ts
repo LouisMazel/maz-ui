@@ -144,3 +144,12 @@ export const isSameDay = (
 
   return date.getDay() === dayNumber
 }
+
+export const getISODate = (value?: string): string | undefined => {
+  if (!value) {
+    return undefined
+  }
+  const userTimezoneOffset = new Date(value).getTimezoneOffset() * 60000
+  const dateWithoutTz = new Date(new Date(value).getTime() - userTimezoneOffset)
+  return dateWithoutTz.toISOString().split('T')[0]
+}
