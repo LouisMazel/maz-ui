@@ -33,51 +33,116 @@
   import { computed, PropType, ref, watch } from 'vue'
   import { Color } from '../types'
   import { date, capitalize } from './../../filters'
+  import { PickerValue } from './types'
   import { cloneDate, isBigger } from './utils'
 
   const props = defineProps({
-    modelValue: { type: String, default: undefined },
+    modelValue: {
+      type: [String, Object] as PropType<PickerValue>,
+      default: undefined,
+    },
     color: { type: String as PropType<Color>, required: true },
     locale: { type: String, required: true },
   })
 
   const currentDateTmp = ref<Date>(
-    cloneDate(props.modelValue ? new Date(props.modelValue) : new Date()),
+    typeof props.modelValue === 'object'
+      ? cloneDate(
+          props.modelValue.start
+            ? new Date(props.modelValue.start)
+            : new Date(),
+        )
+      : cloneDate(props.modelValue ? new Date(props.modelValue) : new Date()),
   )
+
+  const selectedDate = computed<string | undefined>(() => {
+    if (typeof props.modelValue === 'object') {
+      return props.modelValue.start
+    }
+    return props.modelValue
+  })
+
   const transitionName = ref<'maz-slidevnext' | 'maz-slidevprev'>(
     'maz-slidevnext',
   )
 
-  const year = computed(() =>
-    props.modelValue
-      ? date(props.modelValue, props.locale, { year: 'numeric' })
-      : '-',
-  )
+  const year = computed(() => {
+    if (
+      typeof props.modelValue === 'object' &&
+      (props.modelValue.start || props.modelValue.end)
+    ) {
+      return `${
+        props.modelValue.start
+          ? date(props.modelValue.start, props.locale, {
+              year: 'numeric',
+            })
+          : '...'
+      } - ${
+        props.modelValue.end
+          ? date(props.modelValue.end, props.locale, { year: 'numeric' })
+          : '...'
+      }`
+    } else if (typeof props.modelValue === 'string') {
+      return date(props.modelValue, props.locale, { year: 'numeric' })
+    }
+
+    return '-'
+  })
 
   const yearArray = computed(() => [year.value])
 
-  const dateString = computed(() =>
-    props.modelValue
-      ? capitalize(
-          date(props.modelValue, props.locale, {
-            weekday: 'long',
-            month: 'long',
-            day: 'numeric',
-          }),
-        )
-      : '-',
-  )
+  const dateString = computed(() => {
+    if (
+      typeof props.modelValue === 'object' &&
+      (props.modelValue.start || props.modelValue.end)
+    ) {
+      return `${
+        props.modelValue.start
+          ? capitalize(
+              date(props.modelValue.start, props.locale, {
+                weekday: 'long',
+                month: 'long',
+                day: 'numeric',
+              }),
+            )
+          : '...'
+      } - ${
+        props.modelValue.end
+          ? capitalize(
+              date(props.modelValue.end, props.locale, {
+                weekday: 'long',
+                month: 'long',
+                day: 'numeric',
+              }),
+            )
+          : '...'
+      }`
+    } else if (typeof props.modelValue === 'string') {
+      return capitalize(
+        date(props.modelValue, props.locale, {
+          weekday: 'long',
+          month: 'long',
+          day: 'numeric',
+        }),
+      )
+    }
+
+    return '-'
+  })
 
   const dateStringArray = computed(() => [dateString.value])
 
   watch(
     () => props.modelValue,
-    (date) => {
-      if (date) {
-        transitionName.value = isBigger(currentDateTmp.value, new Date(date))
+    () => {
+      if (selectedDate.value) {
+        transitionName.value = isBigger(
+          currentDateTmp.value,
+          new Date(selectedDate.value),
+        )
           ? 'maz-slidevprev'
           : 'maz-slidevnext'
-        currentDateTmp.value = cloneDate(new Date(date))
+        currentDateTmp.value = cloneDate(new Date(selectedDate.value))
       }
     },
   )

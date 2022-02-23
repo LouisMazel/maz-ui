@@ -24,9 +24,13 @@
   import { cloneDate } from '../utils'
   import MazPickerCalendarDays from './MazPickerCalendarDays.vue'
   import MazPickerCalendarGrid from './MazPickerCalendarGrid.vue'
+  import { PickerValue } from '../types'
 
   const props = defineProps({
-    modelValue: { type: String, default: undefined },
+    modelValue: {
+      type: [String, Object] as PropType<PickerValue>,
+      default: undefined,
+    },
     color: { type: String as PropType<Color>, required: true },
     locale: { type: String, required: true },
     firstDayOfWeek: { type: Number, required: true },

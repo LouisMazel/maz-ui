@@ -14,12 +14,29 @@
 
     <MazPicker
       v-model="dateValue"
-      label="Select date time"
+      label="Select date"
       input-date-format="full"
+      min-date="2022-02-03"
+      max-date="2022-03-17"
       style="width: 600px"
       locale="fr-FR"
       double
       color="secondary"
+      :first-day-of-week="1"
+    />
+
+    <h1>Range</h1>
+
+    <MazPicker
+      v-model="rangeValue"
+      label="Select date"
+      input-date-format="full"
+      style="width: 600px"
+      min-date="2022-02-03"
+      max-date="2022-03-19"
+      locale="fr-FR"
+      color="secondary"
+      double
       :first-day-of-week="1"
     />
 
@@ -49,7 +66,11 @@
     MazPicker,
   } from 'maz-ui/package/components'
 
-  const dateValue = ref('2022-02-18T12:00')
+  const dateValue = ref('2022-02-12')
+  const rangeValue = ref({
+    start: '2022-02-12',
+    end: undefined,
+  })
 
   // const tabs: MazTabsItem[] = [
   //   { label: 'First Tab', disabled: false },
@@ -95,6 +116,5 @@
     display: flex;
     padding: 40px;
     height: 100vh;
-    align-items: center;
   }
 </style>

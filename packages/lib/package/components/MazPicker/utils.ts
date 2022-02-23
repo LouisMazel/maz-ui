@@ -1,4 +1,5 @@
 import { date, capitalize } from './../../filters'
+import { PartialRangeValue } from './types'
 
 export function cloneDate(date: Date): Date {
   return new Date(date.getTime())
@@ -11,7 +12,7 @@ export function getFormattedDate({
   inputTimeStyle,
   timeZone,
 }: {
-  value?: string | Date
+  value?: string
   locale: string
   inputDateStyle: Intl.DateTimeFormatOptions['dateStyle']
   inputTimeStyle?: Intl.DateTimeFormatOptions['timeStyle']
@@ -25,6 +26,40 @@ export function getFormattedDate({
           timeZone: timeZone,
         }),
       )
+    : undefined
+}
+
+export function getRangeFormattedDate({
+  value,
+  locale,
+  inputDateStyle,
+  inputTimeStyle,
+  timeZone,
+}: {
+  value: PartialRangeValue
+  locale: string
+  inputDateStyle: Intl.DateTimeFormatOptions['dateStyle']
+  inputTimeStyle?: Intl.DateTimeFormatOptions['timeStyle']
+  timeZone: Intl.DateTimeFormatOptions['timeZone']
+}): string | undefined {
+  const startValue = getFormattedDate({
+    value: value.start,
+    locale,
+    inputDateStyle,
+    inputTimeStyle,
+    timeZone,
+  })
+
+  const endValue = getFormattedDate({
+    value: value.end,
+    locale,
+    inputDateStyle,
+    inputTimeStyle,
+    timeZone,
+  })
+
+  return startValue || endValue
+    ? `${startValue || '...'} - ${endValue || '...'}`
     : undefined
 }
 
@@ -71,7 +106,7 @@ export function getDaysInMonth(year: number, month: number) {
   return new Date(year, month, 0).getDate()
 }
 
-export const isToday = (date: Date | string | number): boolean => {
+export function isToday(date: Date | string | number): boolean {
   const today = new Date()
   const usedDate = getDateInstance(date)
 
@@ -82,10 +117,10 @@ export const isToday = (date: Date | string | number): boolean => {
   )
 }
 
-export const isSameDate = (
+export function isSameDate(
   date: Date | string | number,
   date2: Date | string | number,
-): boolean => {
+): boolean {
   date = getDateInstance(date)
   date2 = getDateInstance(date2)
 
@@ -96,60 +131,120 @@ export const isSameDate = (
   )
 }
 
-export const isSameMonth = (
+export function isSameMonth(
   date: Date | string | number,
   date2: Date | string | number,
-): boolean => {
+): boolean {
   date = getDateInstance(date)
   date2 = getDateInstance(date2)
 
   return date.getMonth() === date2.getMonth()
 }
 
-export const isSameYear = (
+export function isSameYear(
   date: Date | string | number,
   date2: Date | string | number,
-): boolean => {
+): boolean {
   date = getDateInstance(date)
   date2 = getDateInstance(date2)
 
   return date.getFullYear() === date2.getFullYear()
 }
 
-export const isBigger = (
+export function isBigger(
   date: Date | string | number,
   date2: Date | string | number,
-): boolean => {
+): boolean {
   date = getDateInstance(date)
   date2 = getDateInstance(date2)
 
   return date.getTime() >= date2.getTime() && !isSameDate(date, date2)
 }
 
-export const isSmaller = (
+export function isSmaller(
   date: Date | string | number,
   date2: Date | string | number,
-): boolean => {
+): boolean {
   date = getDateInstance(date)
   date2 = getDateInstance(date2)
 
   return date.getTime() <= date2.getTime() && !isSameDate(date, date2)
 }
 
-export const isSameDay = (
+export function isSameDay(
   date: Date | string | number,
   dayNumber: number,
-): boolean => {
+): boolean {
   date = getDateInstance(date)
 
   return date.getDay() === dayNumber
 }
 
-export const getISODate = (value?: string): string | undefined => {
+export function getISODate(value?: string): string | undefined {
   if (!value) {
     return undefined
   }
-  const userTimezoneOffset = new Date(value).getTimezoneOffset() * 60000
-  const dateWithoutTz = new Date(new Date(value).getTime() - userTimezoneOffset)
-  return dateWithoutTz.toISOString().split('T')[0]
+
+  function isoDate(value: string): string {
+    const userTimezoneOffset = new Date(value).getTimezoneOffset() * 60000
+    const dateWithoutTz = new Date(
+      new Date(value).getTime() - userTimezoneOffset,
+    )
+    return dateWithoutTz.toISOString().split('T')[0]
+  }
+
+  return isoDate(value)
+}
+
+export function getRangeISODate(value: PartialRangeValue) {
+  return {
+    start: getISODate(value.start),
+    end: getISODate(value.end),
+  }
+}
+
+type CheckValueResponse = {
+  newValue?: string
+  newCurrentDate?: Date
+}
+
+export function checkValueWithMinMaxDates({
+  value,
+  minDate,
+  maxDate,
+}: {
+  value: string
+  minDate?: string
+  maxDate?: string
+}): CheckValueResponse {
+  if (minDate && isSmaller(value, minDate)) {
+    return {
+      newValue: minDate,
+      newCurrentDate: getCurrentDate(minDate),
+    }
+  } else if (maxDate && isBigger(value, maxDate)) {
+    return {
+      newValue: maxDate,
+      newCurrentDate: getCurrentDate(maxDate),
+    }
+  }
+
+  return {
+    newValue: undefined,
+    newCurrentDate: undefined,
+  }
+}
+
+export function isValueDisabledWeekly({
+  value,
+  disabledWeekly,
+}: {
+  value: string
+  disabledWeekly: number[]
+}): boolean {
+  const isDisabled = disabledWeekly.some((dayNumber) =>
+    isSameDay(new Date(value), dayNumber),
+  )
+
+  return isDisabled
 }

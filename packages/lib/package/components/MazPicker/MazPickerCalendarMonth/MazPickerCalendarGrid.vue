@@ -5,22 +5,26 @@
         v-for="(dateArray, dateIndex) in [currentDateArray]"
         :key="`${dateArray[dateIndex]}`"
         class="maz-picker-calendar-grid__container"
+        :class="{ '--is-range': isRangeMode }"
       >
         <div v-for="first in emptyDaysCount" :key="first" />
         <MazBtn
           v-for="(day, i) in dayCount"
           :key="i"
           size="mini"
-          :color="checkIsSameDate(day) ? color : 'transparent'"
+          :color="getDayButtonColor(day)"
           type="button"
           :disabled="
-            checkIsSmallerMinDate(day) ||
-            checkIsBiggerMaxDate(day) ||
-            checkIsSameDay(day)
+            isSmallerMinDate(day) ||
+            isBiggerMaxDate(day) ||
+            isDisabledWeekly(day)
           "
           :class="{
             '--is-today': checkIsToday(day),
-            '--is-selected': checkIsSameDate(day),
+            '--is-first': isFirstDay(day),
+            '--is-last': isLastDay(day),
+            '--is-selected': isSelectedOrBetween(day) === DaySelected.SELECTED,
+            '--is-between': isSelectedOrBetween(day) === DaySelected.BETWEEN,
           }"
           @click="selectDay(day)"
         >
@@ -49,9 +53,19 @@
   import MazBtn from '../../MazBtn.vue'
   import { Color } from '../../types'
   import { debounce } from './../../../utils'
+  import { PartialRangeValue, PickerValue } from '../types'
+
+  enum DaySelected {
+    UNSELECTED,
+    SELECTED,
+    BETWEEN,
+  }
 
   const props = defineProps({
-    modelValue: { type: String, default: undefined },
+    modelValue: {
+      type: [String, Object] as PropType<PickerValue>,
+      default: undefined,
+    },
     currentDate: { type: Date, required: true },
     locale: { type: String, required: true },
     firstDayOfWeek: { type: Number, required: true },
@@ -67,7 +81,9 @@
   const transitionName = ref<'maz-slidenext' | 'maz-slideprev'>('maz-slidenext')
   const currentDateTmp = ref<Date>(cloneDate(props.currentDate))
 
-  const date = computed({
+  const isRangeMode = computed(() => typeof props.modelValue === 'object')
+
+  const modelValue = computed({
     get: () => props.modelValue,
     set: (value) => emits('update:model-value', value),
   })
@@ -90,8 +106,107 @@
     return indexCurrentWeekDay
   })
 
+  const isFirstDay = (day: number): boolean => {
+    if (!props.modelValue) {
+      return false
+    }
+
+    if (typeof props.modelValue === 'object' && props.modelValue?.start) {
+      const clonedDate = cloneDate(props.currentDate)
+      const itemDay = clonedDate.setDate(day)
+      return isSameDate(itemDay, props.modelValue.start)
+    }
+    return false
+  }
+
+  const isLastDay = (day: number): boolean => {
+    if (!props.modelValue) {
+      return false
+    }
+
+    if (typeof props.modelValue === 'object' && props.modelValue?.end) {
+      const clonedDate = cloneDate(props.currentDate)
+      const itemDay = clonedDate.setDate(day)
+      return isSameDate(itemDay, props.modelValue.end)
+    }
+    return false
+  }
+
+  const getDayButtonColor = (day: number): Color => {
+    const clonedDate = cloneDate(props.currentDate)
+    const itemDay = clonedDate.setDate(day)
+    const value = props.modelValue
+
+    if (typeof value === 'object') {
+      return (value.start ? isSameDate(itemDay, value.start) : false) ||
+        (value.end ? isSameDate(itemDay, value.end) : false)
+        ? props.color
+        : checkIsBetween(day)
+        ? props.color
+        : 'transparent'
+    } else {
+      return checkIsSameDate(day) ? props.color : 'transparent'
+    }
+  }
+
+  const isSelectedOrBetween = (day: number): DaySelected => {
+    if (typeof props.modelValue === 'object') {
+      if (props.modelValue.start) {
+        const clonedDate = cloneDate(props.currentDate)
+        const itemDay = clonedDate.setDate(day)
+
+        if (isSameDate(itemDay, props.modelValue.start)) {
+          return DaySelected.SELECTED
+        }
+      }
+      if (props.modelValue.end) {
+        const clonedDate = cloneDate(props.currentDate)
+        const itemDay = clonedDate.setDate(day)
+
+        if (isSameDate(itemDay, props.modelValue.end)) {
+          return DaySelected.SELECTED
+        }
+
+        if (checkIsBetween(day)) {
+          return DaySelected.BETWEEN
+        }
+      }
+    } else if (checkIsSameDate(day)) {
+      return DaySelected.SELECTED
+    }
+
+    return DaySelected.UNSELECTED
+  }
+
   const selectDay = (value: number) => {
-    date.value = new Date(props.currentDate.setDate(value)).toDateString()
+    if (typeof modelValue.value === 'object') {
+      let values = modelValue.value
+
+      if (values.start && values.end) {
+        values = {
+          start: undefined,
+          end: undefined,
+        }
+      }
+
+      const newValue = new Date(props.currentDate.setDate(value)).toDateString()
+
+      if (!values.start || isBigger(values.start, newValue)) {
+        modelValue.value = {
+          start: newValue,
+          end: undefined,
+        }
+      } else {
+        modelValue.value = {
+          start: values.start,
+          end: newValue,
+        }
+      }
+    } else {
+      modelValue.value = new Date(
+        props.currentDate.setDate(value),
+      ).toDateString()
+    }
   }
 
   const checkIsToday = (day: number): boolean => {
@@ -103,25 +218,41 @@
     if (!props.modelValue) {
       return false
     }
+
+    const value = props.modelValue as string
+
     const clonedDate = cloneDate(props.currentDate)
     const itemDay = clonedDate.setDate(day)
-    const selectedDay = new Date(props.modelValue)
 
-    return isSameDate(new Date(itemDay), new Date(selectedDay))
+    return isSameDate(itemDay, value)
   }
 
-  const checkIsSmallerMinDate = (day: number): boolean => {
+  const checkIsBetween = (day: number): boolean => {
+    const value = props.modelValue as PartialRangeValue
+
+    if (!value.start || !value.end) {
+      return false
+    }
+
+    const clonedDate = cloneDate(props.currentDate)
+    const itemDay = clonedDate.setDate(day)
+
+    return !isSmaller(itemDay, value.start) && !isBigger(itemDay, value.end)
+  }
+
+  const isSmallerMinDate = (day: number): boolean => {
     if (!props.minDate) {
       return false
     }
     const clonedDate = cloneDate(props.currentDate)
-    return isSmaller(clonedDate.setDate(day), new Date(props.minDate))
+    return isSmaller(clonedDate.setDate(day), props.minDate)
   }
 
-  const checkIsSameDay = (day: number): boolean => {
+  const isDisabledWeekly = (day: number): boolean => {
     if (!props.disabledWeekly?.length) {
       return false
     }
+
     const clonedDate = cloneDate(props.currentDate)
 
     return props.disabledWeekly.some((disabledDay) =>
@@ -129,13 +260,13 @@
     )
   }
 
-  const checkIsBiggerMaxDate = (day: number): boolean => {
+  const isBiggerMaxDate = (day: number): boolean => {
     if (!props.maxDate) {
       return false
     }
     const clonedDate = cloneDate(props.currentDate)
 
-    return isBigger(clonedDate.setDate(day), new Date(props.maxDate))
+    return isBigger(clonedDate.setDate(day), props.maxDate)
   }
 
   const removeContainerHeight = debounce(() => {
@@ -175,12 +306,64 @@
     &__container {
       @apply maz-relative maz-grid maz-grid-cols-7 maz-items-start maz-gap-1;
 
+      &.--is-range {
+        @apply maz-gap-0 maz-gap-y-1;
+      }
+
       & button {
         @apply maz-h-8 maz-cursor-pointer;
         @apply maz-p-1 !important;
 
-        &.--is-today:not(.--is-selected) {
+        &.--is-today:not(.--is-selected):not(.--is-between) {
           @apply maz-bg-color-light !important;
+        }
+
+        &.--is-selected.--is-first {
+          @apply maz-rounded-r-none !important;
+        }
+
+        &.--is-selected.--is-last {
+          @apply maz-rounded-l-none !important;
+        }
+
+        &.--is-between {
+          @apply maz-rounded-none !important;
+
+          &.--primary {
+            @apply maz-bg-primary-alpha !important;
+          }
+
+          &.--secondary {
+            @apply maz-bg-secondary-alpha !important;
+          }
+
+          &.--info {
+            @apply maz-bg-info-alpha !important;
+          }
+
+          &.--danger {
+            @apply maz-bg-danger-alpha !important;
+          }
+
+          &.--warning {
+            @apply maz-bg-warning-alpha !important;
+          }
+
+          &.--success {
+            @apply maz-bg-success-alpha !important;
+          }
+
+          &.--white {
+            @apply maz-bg-gray-400 !important;
+          }
+
+          &.--black {
+            @apply maz-bg-gray-800 !important;
+          }
+
+          &.--transparent {
+            @apply maz-bg-gray-400 !important;
+          }
         }
 
         & span {
@@ -195,7 +378,8 @@
   }
 
   html.dark {
-    .maz-picker-calendar-grid button.--is-today:not(.--is-selected) {
+    .maz-picker-calendar-grid
+      button.--is-today:not(.--is-selected):not(.--is-between) {
       @apply maz-bg-color-lighter !important;
     }
   }

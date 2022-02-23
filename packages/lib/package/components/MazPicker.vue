@@ -63,12 +63,16 @@
   </div>
 </template>
 
+<script lang="ts">
+  export type { PickerValue } from './MazPicker/types'
+  export type { Color, Position } from './types'
+</script>
+
 <script lang="ts" setup>
   import {
     computed,
     onMounted,
     onUnmounted,
-    Prop,
     PropType,
     ref,
     StyleValue,
@@ -83,18 +87,20 @@
   import {
     getCurrentDate,
     getFormattedDate,
-    isBigger,
-    isSameDay,
-    isSmaller,
+    getRangeFormattedDate,
     getISODate,
+    getRangeISODate,
+    checkValueWithMinMaxDates,
+    isValueDisabledWeekly,
   } from './MazPicker/utils'
+
+  import { PickerValue } from './MazPicker/types'
 
   const props = defineProps({
     modelValue: {
-      validator: (prop) =>
-        ['string'].includes(typeof prop) || prop === undefined,
-      required: true,
-    } as Prop<undefined | string>,
+      type: [String, Object] as PropType<PickerValue>,
+      default: undefined,
+    },
     minDate: { type: String, default: undefined },
     maxDate: { type: String, default: undefined },
     open: { type: Boolean, default: false },
@@ -209,10 +215,24 @@
     },
   })
 
-  const currentDate = ref(getCurrentDate(props.modelValue))
+  const currentDate = ref(
+    typeof props.modelValue === 'object'
+      ? getCurrentDate(props.modelValue.start)
+      : getCurrentDate(props.modelValue),
+  )
 
   const inputValue = computed(() => {
     const { inputDateStyle, locale, timeZone } = props
+    if (typeof modelValue.value === 'object') {
+      return getRangeFormattedDate({
+        value: modelValue.value,
+        inputDateStyle,
+        // inputTimeStyle,
+        locale,
+        timeZone,
+      })
+    }
+
     return getFormattedDate({
       value: modelValue.value,
       inputDateStyle,
@@ -277,11 +297,14 @@
       return 'bottom'
     }
 
+    const OFFSET = 30
+
     const parentRect = parent?.getBoundingClientRect()
 
     const windowHeight = window.innerHeight
     const pickerHeight =
-      (document.querySelector('#mazPickerContainer')?.clientHeight ?? 0) + 20
+      (document.querySelector('#mazPickerContainer')?.clientHeight ?? 0) +
+      OFFSET
 
     if (
       parentRect &&
@@ -320,35 +343,98 @@
     target?.removeEventListener('click', toggleProgramatically)
   }
 
-  const checkValueWithMinMaxDates = (value: string) => {
-    if (props.minDate && isSmaller(value, props.minDate)) {
-      modelValue.value = props.minDate
-      currentDate.value = getCurrentDate(props.minDate)
-    } else if (props.maxDate && isBigger(value, props.maxDate)) {
-      modelValue.value = props.maxDate
-      currentDate.value = getCurrentDate(props.maxDate)
-    }
-    if (props.disabledWeekly) {
-      const isDisabled = props.disabledWeekly.some((dayNumber) =>
-        isSameDay(new Date(value), dayNumber),
-      )
-      if (isDisabled) {
-        modelValue.value = undefined
+  const checkMinMaxValues = (value: PickerValue) => {
+    if (props.minDate || props.maxDate) {
+      if (typeof value === 'string') {
+        const { newValue, newCurrentDate } = checkValueWithMinMaxDates({
+          value,
+          minDate: props.minDate,
+          maxDate: props.maxDate,
+        })
+        if (newValue) modelValue.value = newValue
+        if (newCurrentDate) currentDate.value = newCurrentDate
+      } else if (typeof value === 'object' && (value.start || value.end)) {
+        if (value.start) {
+          const { newValue, newCurrentDate } = checkValueWithMinMaxDates({
+            value: value.start,
+            minDate: props.minDate,
+            maxDate: props.maxDate,
+          })
+          if (newValue) {
+            modelValue.value = { start: newValue, end: value.end }
+          }
+          if (newCurrentDate) currentDate.value = newCurrentDate
+        }
+        if (value.end) {
+          const { newValue } = checkValueWithMinMaxDates({
+            value: value.end,
+            minDate: props.minDate,
+            maxDate: props.maxDate,
+          })
+          if (newValue) {
+            modelValue.value = { start: value.start, end: newValue }
+          }
+        }
       }
     }
   }
 
-  const emitValue = (value?: string) => {
-    emits('update:model-value', getISODate(value))
+  const emitValue = (value: PickerValue) => {
+    value =
+      typeof value === 'object' ? getRangeISODate(value) : getISODate(value)
+    emits('update:model-value', value)
   }
 
   watch(
-    () => props.modelValue,
-    (value) => {
-      if (value) {
-        checkValueWithMinMaxDates(value)
+    () => [props.modelValue, props.minDate, props.maxDate],
+    (values, oldValues) => {
+      const value = values[0] as PickerValue | undefined
+      const oldValue = oldValues?.[0] as PickerValue | undefined
+
+      if (typeof value === 'object' && (value.start || value.end)) {
+        if (
+          typeof oldValue === 'object' &&
+          (oldValue.start !== value.start || oldValue.end !== value.end)
+        ) {
+          emitValue(value)
+        }
+        checkMinMaxValues(value)
+      } else if (typeof value === 'string' && value !== oldValue) {
         emitValue(value)
+        checkMinMaxValues(value)
       }
+    },
+    { immediate: true },
+  )
+
+  watch(
+    () => [props.modelValue, props.disabledWeekly],
+    (values, oldValues) => {
+      const value = values[0] as PickerValue | undefined
+      const disabledWeekly = values[1] as number[] | undefined
+
+      if (disabledWeekly) {
+        if (typeof value === 'object' && (value.start || value.end)) {
+          if (
+            value.start &&
+            isValueDisabledWeekly({ value: value.start, disabledWeekly })
+          ) {
+            modelValue.value = { start: undefined, end: value.end }
+          }
+          if (
+            value.end &&
+            isValueDisabledWeekly({ value: value.end, disabledWeekly })
+          ) {
+            modelValue.value = { start: value.start, end: undefined }
+          }
+        } else if (typeof value === 'string') {
+          if (isValueDisabledWeekly({ value: value, disabledWeekly })) {
+            modelValue.value = undefined
+          }
+        }
+      }
+
+      // if ()
     },
     { immediate: true },
   )

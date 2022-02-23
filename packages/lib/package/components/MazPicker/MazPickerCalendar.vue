@@ -54,9 +54,13 @@
   import MazPickerMonthSwitcher from './MazPickerMonthSwitcher.vue'
   import MazPickerYearSwitcher from './MazPickerYearSwitcher.vue'
   import MazPickerCalendarMonth from './MazPickerCalendarMonth/MazPickerCalendarMonth.vue'
+  import { PickerValue } from './types'
 
   const props = defineProps({
-    modelValue: { type: String, default: undefined },
+    modelValue: {
+      type: [String, Object] as PropType<PickerValue>,
+      default: undefined,
+    },
     color: { type: String as PropType<Color>, required: true },
     locale: { type: String, required: true },
     firstDayOfWeek: { type: Number, required: true },
@@ -111,7 +115,7 @@
     & .maz-picker-calendar {
       @apply maz-bg-color-light;
 
-      & :deep(button):not(.--is-selected):not(:disabled) {
+      & :deep(button):not(.--is-selected):not(.--is-between):not(:disabled) {
         @apply hover:maz-bg-color-lighter !important;
       }
 

@@ -34,10 +34,14 @@
   import { computed, PropType } from 'vue'
   import { Color } from '../types'
   import MazPickerFooter from './MazPickerFooter.vue'
+  import { PickerValue } from './types'
 
   const props = defineProps({
     color: { type: String as PropType<Color>, required: true },
-    modelValue: { type: String, default: undefined },
+    modelValue: {
+      type: [String, Object] as PropType<PickerValue>,
+      default: undefined,
+    },
     locale: { type: String, required: true },
     noHeader: { type: Boolean, default: false },
     firstDayOfWeek: { type: Number, required: true },
