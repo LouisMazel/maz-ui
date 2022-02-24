@@ -214,7 +214,9 @@
     }
 
     &__time-transition {
-      min-width: 2.8rem;
+      @apply maz-flex maz-justify-end;
+
+      min-width: 5rem;
     }
 
     &__year-text {
@@ -226,6 +228,10 @@
 
       &:not(.--has-date) {
         @apply maz-w-full;
+
+        & .m-picker-header__time-transition {
+          @apply maz-w-full maz-flex-center;
+        }
       }
     }
 

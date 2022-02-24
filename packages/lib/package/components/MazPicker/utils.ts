@@ -250,29 +250,25 @@ export function getFirstDateOfWeek(date: Date | string | number): Date {
   return new Date(date.setDate(diff))
 }
 
-export const scrollSmoothElement = (
-  parent: HTMLElement,
-  element: HTMLElement,
+export const scrollToTarget = function (
+  scrollContainer: HTMLElement,
+  target: HTMLElement,
+  offset = 0,
   hasSmoothEffect = true,
-) => {
-  const { top: parentTop } = parent.getBoundingClientRect()
-  const { top: elementTop } = element.getBoundingClientRect()
-  const parentHeight = parent.offsetHeight
-  const elementHeight = element.offsetHeight
-
-  const offsetElement = elementHeight / 2
-  const offsetTop =
-    elementTop - (parentTop + parentHeight / 2) - elementHeight / 2
-  const target = parentHeight / 2
-
-  console.log('offsetTop', offsetTop)
-
-  const scrollValue = offsetElement + offsetTop - target
-
-  console.log('scrollValue', scrollValue)
-
-  parent.scrollTo({
-    top: offsetTop,
+) {
+  scrollContainer.scrollTo({
+    top: target.offsetTop - offset,
     behavior: hasSmoothEffect ? 'smooth' : 'auto',
   })
+}
+
+export const findNearestNumberInList = (
+  list: number[],
+  number: number,
+): number => {
+  const closest = list.reduce((prev, curr) => {
+    return Math.abs(curr - number) < Math.abs(prev - number) ? curr : prev
+  })
+
+  return closest
 }

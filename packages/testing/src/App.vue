@@ -20,7 +20,7 @@
       min-date="2022-02-03"
       max-date="2022-03-17"
       locale="fr-FR"
-      time
+      only-time
       hour12
       color="secondary"
       :first-day-of-week="1"

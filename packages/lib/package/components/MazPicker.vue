@@ -63,6 +63,7 @@
         :first-day-of-week="firstDayOfWeek"
         :shortcuts="shortcuts"
         :shortcut="shortcut"
+        :minute-interval="minuteInterval"
         :no-shortcuts="noShortcuts"
         @close="closeCalendar"
       />
@@ -243,14 +244,12 @@
     shortcut: { type: String, default: undefined },
     time: { type: Boolean, default: false },
     onlyTime: { type: Boolean, default: false },
+    minuteInterval: { type: Number, default: 5 },
     // unused
     // format: { type: String, default: 'YYYY-MM-DD h:mm a' },
     // formatted: { type: String, default: 'llll' },
     // disabledDates: { type: Array, default: () => [] },
     // noKeyboard: { type: Boolean, default: false },
-    // noTime: { type: Boolean, default: false },
-    // noDate: { type: Boolean, default: false },
-    // minuteInterval: { type: Number, default: 1 },
     // disabledHours: { type: Array, default: () => [] },
   })
 
@@ -487,7 +486,7 @@
 
   watch(
     () => [props.modelValue, props.disabledWeekly],
-    (values, oldValues) => {
+    (values) => {
       const value = values[0] as PickerValue | undefined
       const disabledWeekly = values[1] as number[] | undefined
 

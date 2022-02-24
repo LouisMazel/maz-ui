@@ -46,7 +46,9 @@
         :color="color"
         :locale="locale"
         :min-date="minDate"
+        :has-date="hasDate"
         :max-date="maxDate"
+        :minute-interval="minuteInterval"
         :formatter-options="formatterOptions"
         class="m-picker-container__time"
       />
@@ -95,6 +97,7 @@
       type: Object as PropType<DateTimeFormatOptions>,
       required: true,
     },
+    minuteInterval: { type: Number, required: true },
   })
 
   const emits = defineEmits([
