@@ -16,5 +16,4 @@ export type PickerShortcut = {
     start: string | Date | number
     end: string | Date | number
   }
-  callback?: (args: unknown[]) => unknown
 }

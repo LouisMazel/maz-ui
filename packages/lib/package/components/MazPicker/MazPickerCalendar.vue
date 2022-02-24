@@ -1,14 +1,15 @@
 <template>
   <div class="maz-picker-calendar flex">
     <MazPickerShortcuts
-      v-if="!noShortcuts"
+      v-if="!noShortcuts && isRangeMode"
       v-model:current-date="currentDate"
       v-model="modelValue"
       :color="color"
       :shortcuts="shortcuts"
+      :shortcut="shortcut"
       :double="double"
     />
-    <div class="maz-picker-calendar__main">
+    <div class="maz-picker-calendar__main" :class="{ '--has-double': double }">
       <MazPickerCalendarSwitcher
         v-model:current-date="currentDate"
         :locale="locale"
@@ -35,10 +36,7 @@
           @close="yearSwitcherOpen = false"
         />
       </Transition>
-      <div
-        class="maz-picker-calendar__months"
-        :class="{ '--has-double': double }"
-      >
+      <div class="maz-picker-calendar__months">
         <MazPickerCalendarMonth
           v-for="month in months"
           :key="month"
@@ -85,9 +83,12 @@
       required: true,
     },
     noShortcuts: { type: Boolean, required: true },
+    shortcut: { type: String, default: undefined },
   })
 
   const emits = defineEmits(['update:model-value', 'update:current-date'])
+
+  const isRangeMode = computed(() => typeof props.modelValue === 'object')
 
   const monthSwitcherOpen = ref(false)
   const yearSwitcherOpen = ref(false)
@@ -110,38 +111,24 @@
 <style lang="postcss" scoped>
   /* stylelint-disable no-descending-specificity */
   .maz-picker-calendar {
-    @apply maz-relative maz-flex maz-bg-color;
+    @apply maz-relative maz-flex maz-w-full;
 
     &__main {
       @apply maz-flex-1;
-    }
 
-    &__months {
-      @apply maz-flex;
+      width: 16rem;
 
       &.--has-double {
-        & *:first-child {
+        width: 32rem;
+
+        & .maz-picker-calendar__months > *:first-child {
           @apply maz-border-r maz-border-color-lighter;
         }
       }
     }
 
-    & :deep(button):is(:disabled) {
-      @apply maz-bg-transparent maz-text-gray-300 !important;
-    }
-  }
-
-  html.dark {
-    & .maz-picker-calendar {
-      @apply maz-bg-color-light;
-
-      & :deep(button):not(.--is-selected):not(.--is-between):not(:disabled) {
-        @apply hover:maz-bg-color-lighter !important;
-      }
-
-      & :deep(button):is(:disabled) {
-        @apply maz-text-gray-700 !important;
-      }
+    &__months {
+      @apply maz-flex maz-w-full;
     }
   }
 

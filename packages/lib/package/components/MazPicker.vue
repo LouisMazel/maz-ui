@@ -42,15 +42,19 @@
       "
     >
       <MazPickerContainer
-        v-if="isOpen"
+        v-show="isOpen"
         id="mazPickerContainer"
         ref="PickerContainer"
         v-model="modelValue"
         v-model:current-date="currentDate"
+        :is-open="isOpen"
         :color="color"
         :locale="locale"
         :has-footer="hasFooter"
-        :double="double"
+        :has-date="hasDate"
+        :double="hasDouble"
+        :time="hasTime"
+        :formatter-options="formatterOptions"
         :no-header="noHeader"
         :min-date="minDate"
         :max-date="maxDate"
@@ -58,6 +62,7 @@
         :inline="inline"
         :first-day-of-week="firstDayOfWeek"
         :shortcuts="shortcuts"
+        :shortcut="shortcut"
         :no-shortcuts="noShortcuts"
         @close="closeCalendar"
       />
@@ -73,6 +78,7 @@
 <script lang="ts" setup>
   import {
     computed,
+    onBeforeMount,
     onMounted,
     onUnmounted,
     PropType,
@@ -95,6 +101,8 @@
     checkValueWithMinMaxDates,
     isValueDisabledWeekly,
     getDaysInMonth,
+    getFirstDateOfWeek,
+    DateTimeFormatOptions,
   } from './MazPicker/utils'
 
   import { PickerValue, PickerShortcut } from './MazPicker/types'
@@ -118,6 +126,10 @@
     timeZone: {
       type: String as PropType<Intl.DateTimeFormatOptions['timeZone']>,
       default: undefined,
+    },
+    hour12: {
+      type: Boolean as PropType<Intl.DateTimeFormatOptions['hour12']>,
+      default: false,
     },
     locale: { type: String, default: 'en-US' },
     style: { type: Object as PropType<StyleValue>, default: undefined },
@@ -169,6 +181,8 @@
           'bottom',
           'bottom right',
           'bottom left',
+          'left',
+          'right',
         ].includes(value)
       },
     },
@@ -182,7 +196,7 @@
             identifier: 'last7Days',
             label: 'Last 7 days',
             value: {
-              start: new Date().setDate(new Date().getDate() - 7),
+              start: new Date().setDate(new Date().getDate() - 6),
               end: new Date(),
             },
           },
@@ -190,8 +204,18 @@
             identifier: 'last30Days',
             label: 'Last 30 days',
             value: {
-              start: new Date().setDate(new Date().getDate() - 30),
+              start: new Date().setDate(new Date().getDate() - 29),
               end: new Date(),
+            },
+          },
+          {
+            identifier: 'thisWeek',
+            label: 'This week',
+            value: {
+              start: getFirstDateOfWeek(new Date()),
+              end: getFirstDateOfWeek(new Date()).setDate(
+                getFirstDateOfWeek(new Date()).getDate() + 6,
+              ),
             },
           },
           {
@@ -205,23 +229,6 @@
             },
           },
           {
-            identifier: 'lastMonth',
-            label: 'Last month',
-            value: {
-              start: new Date(
-                new Date().setMonth(new Date().getMonth() - 1),
-              ).setDate(1),
-              end: new Date(
-                new Date().setMonth(new Date().getMonth() - 1),
-              ).setDate(
-                getDaysInMonth(
-                  new Date().getFullYear(),
-                  new Date().getMonth() - 1,
-                ),
-              ),
-            },
-          },
-          {
             identifier: 'thisYear',
             label: 'This year',
             value: {
@@ -229,36 +236,41 @@
               end: new Date(`${new Date().getFullYear()}-12-31`),
             },
           },
-          {
-            identifier: 'lastYear',
-            label: 'Last year',
-            value: {
-              start: new Date(`${new Date().getFullYear() - 1}-01-01`),
-              end: new Date(`${new Date().getFullYear() - 1}-12-31`),
-            },
-          },
         ]
         return defaultShorts
       },
     },
+    shortcut: { type: String, default: undefined },
+    time: { type: Boolean, default: false },
+    onlyTime: { type: Boolean, default: false },
     // unused
     // format: { type: String, default: 'YYYY-MM-DD h:mm a' },
     // formatted: { type: String, default: 'llll' },
     // disabledDates: { type: Array, default: () => [] },
-    // range: { type: Boolean, default: false },
     // noKeyboard: { type: Boolean, default: false },
     // noTime: { type: Boolean, default: false },
     // noDate: { type: Boolean, default: false },
     // minuteInterval: { type: Number, default: 1 },
     // disabledHours: { type: Array, default: () => [] },
-    // shortcut: { type: String, default: undefined },
-    // noShortcuts: { type: Boolean, default: false },
   })
 
   const emits = defineEmits(['update:model-value', 'close'])
 
   const MazPicker = ref<HTMLDivElement>()
   const PickerContainer = ref<typeof MazPickerContainer | undefined>(undefined)
+
+  const hasDouble = computed(() => props.double && !props.time)
+  const hasDate = computed(() => !props.onlyTime)
+  const hasTime = computed(() => props.time || props.onlyTime)
+  const isRangeMode = computed(() => typeof props.modelValue === 'object')
+
+  onBeforeMount(() => {
+    if (isRangeMode.value && hasTime.value) {
+      throw new Error(
+        `[maz-ui](MazPicker) you can't use time picker with range picker`,
+      )
+    }
+  })
 
   const modelValue = computed({
     get: () => props.modelValue,
@@ -279,24 +291,30 @@
       : getCurrentDate(props.modelValue),
   )
 
+  const formatterOptions = computed<DateTimeFormatOptions>(() => {
+    const { inputDateStyle, timeZone, inputTimeStyle, hour12 } = props
+
+    return {
+      dateStyle: inputDateStyle,
+      timeStyle: hasTime.value ? inputTimeStyle : undefined,
+      timeZone,
+      hour12,
+    }
+  })
+
   const inputValue = computed(() => {
-    const { inputDateStyle, locale, timeZone } = props
     if (typeof modelValue.value === 'object') {
       return getRangeFormattedDate({
         value: modelValue.value,
-        inputDateStyle,
-        // inputTimeStyle,
-        locale,
-        timeZone,
+        locale: props.locale,
+        options: formatterOptions.value,
       })
     }
 
     return getFormattedDate({
       value: modelValue.value,
-      inputDateStyle,
-      // inputTimeStyle,
-      locale,
-      timeZone,
+      locale: props.locale,
+      options: formatterOptions.value,
     })
   })
 
@@ -439,7 +457,9 @@
 
   const emitValue = (value: PickerValue) => {
     value =
-      typeof value === 'object' ? getRangeISODate(value) : getISODate(value)
+      typeof value === 'object'
+        ? getRangeISODate(value, hasTime.value)
+        : getISODate(value, hasTime.value)
     emits('update:model-value', value)
   }
 

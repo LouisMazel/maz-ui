@@ -3,7 +3,7 @@
     <div
       v-show="isCurrentTab"
       ref="MazTabsContentItem"
-      class="maz-tabs-content-item"
+      class="m-tabs-content-item"
     >
       <slot />
     </div>
@@ -45,7 +45,7 @@
 </script>
 
 <style lang="postcss" scoped>
-  .maz-tabs-content-item {
+  .m-tabs-content-item {
     @apply maz-relative maz-top-0 maz-w-full;
 
     flex: 1 0 auto;

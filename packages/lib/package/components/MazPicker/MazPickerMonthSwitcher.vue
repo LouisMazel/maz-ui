@@ -23,7 +23,7 @@
         type="button"
         @click.stop="selectMonth(month.date)"
       >
-        {{ month }}
+        {{ month.label }}
       </MazBtn>
     </div>
   </div>

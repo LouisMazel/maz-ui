@@ -19,6 +19,7 @@
   import MazBtn from '../MazBtn.vue'
   import { Color } from '../types'
   import { PickerShortcut, PickerValue, RangeValue } from './types'
+  import { isSameMonth } from './utils'
 
   const props = defineProps({
     color: { type: String as PropType<Color>, required: true },
@@ -32,11 +33,23 @@
     },
     currentDate: { type: Date, required: true },
     double: { type: Boolean, required: true },
+    shortcut: { type: String, default: undefined },
   })
 
   const emits = defineEmits(['update:model-value', 'update:current-date'])
 
-  const selectedShortcut = ref<string>()
+  const selectedShortcut = ref(props.shortcut)
+
+  const selectShortcut = (
+    value: PickerShortcut['value'],
+    identifier: PickerShortcut['identifier'],
+  ) => {
+    selectedShortcut.value = identifier
+    emits('update:model-value', value)
+    if (!isSameMonth(value.end, props.currentDate)) {
+      emits('update:current-date', new Date(value.end))
+    }
+  }
 
   watch(
     () => props.modelValue,
@@ -48,14 +61,19 @@
     },
   )
 
-  const selectShortcut = (
-    value: PickerShortcut['value'],
-    identifier: PickerShortcut['identifier'],
-  ) => {
-    selectedShortcut.value = identifier
-    emits('update:model-value', value)
-    emits('update:current-date', new Date(value.end))
-  }
+  watch(
+    () => props.shortcut,
+    (shortcut) => {
+      const newShortcut = props.shortcuts.find(
+        ({ identifier }) => shortcut === identifier,
+      )
+      if (newShortcut) {
+        const { value, identifier } = newShortcut
+        selectShortcut(value, identifier)
+      }
+    },
+    { immediate: true },
+  )
 </script>
 
 <style lang="postcss" scoped>
@@ -65,11 +83,12 @@
     max-height: 18.75rem;
 
     & > button {
+      @apply maz-w-full maz-flex-none maz-truncate;
+      @apply maz-text-xs !important;
+
       &:not(.--is-selected) {
         @apply maz-border maz-border-color-lighter !important;
       }
-
-      @apply maz-w-full maz-flex-none;
     }
   }
 </style>

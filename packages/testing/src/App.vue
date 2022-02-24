@@ -15,12 +15,13 @@
     <MazPicker
       v-model="dateValue"
       label="Select date"
+      style="width: 400px"
       input-date-format="full"
       min-date="2022-02-03"
       max-date="2022-03-17"
-      style="width: 600px"
       locale="fr-FR"
-      double
+      time
+      hour12
       color="secondary"
       :first-day-of-week="1"
     />
@@ -33,12 +34,13 @@
 
     <MazPicker
       v-model="rangeValue"
+      style="width: 600px"
       label="Select date"
       input-date-format="full"
-      style="width: 600px"
-      locale="fr-FR"
-      color="info"
+      locale="en-US"
       double
+      color="info"
+      shortcut="thisWeek"
       :first-day-of-week="1"
     />
 
@@ -68,7 +70,7 @@
     MazPicker,
   } from 'maz-ui/package/components'
 
-  const dateValue = ref('2022-02-12')
+  const dateValue = ref('2022-02-12T07:06')
   const rangeValue = ref({
     start: '2022-02-01',
     end: '2022-03-23',
@@ -118,5 +120,6 @@
     display: flex;
     padding: 40px;
     height: 100vh;
+    /* align-items: flex-end; */
   }
 </style>

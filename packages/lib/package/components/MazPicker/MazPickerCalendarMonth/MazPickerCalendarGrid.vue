@@ -247,7 +247,11 @@
       return false
     }
     const clonedDate = cloneDate(props.currentDate)
-    return isSmaller(clonedDate.setDate(day), props.minDate)
+    const dateWithDay = clonedDate.setDate(day)
+    return (
+      isSmaller(dateWithDay, props.minDate) &&
+      !isSameDate(dateWithDay, props.minDate)
+    )
   }
 
   const isDisabledWeekly = (day: number): boolean => {
@@ -267,8 +271,12 @@
       return false
     }
     const clonedDate = cloneDate(props.currentDate)
+    const dateWithDay = clonedDate.setDate(day)
 
-    return isBigger(clonedDate.setDate(day), props.maxDate)
+    return (
+      isBigger(dateWithDay, props.maxDate) &&
+      !isSameDate(dateWithDay, props.maxDate)
+    )
   }
 
   const removeContainerHeight = debounce(() => {

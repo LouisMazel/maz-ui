@@ -65,7 +65,7 @@
 
 <style lang="postcss" scoped>
   .maz-picker-calendar-month {
-    @apply maz-w-full maz-px-2 maz-py-1;
+    @apply maz-w-full maz-p-2;
 
     &__days {
       @apply maz-pb-2;

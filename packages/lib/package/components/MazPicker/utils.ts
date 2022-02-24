@@ -1,6 +1,11 @@
 import { date, capitalize } from './../../filters'
 import { PartialRangeValue } from './types'
 
+export type DateTimeFormatOptions = Pick<
+  Intl.DateTimeFormatOptions,
+  'hour12' | 'dateStyle' | 'timeStyle' | 'timeZone'
+>
+
 export function cloneDate(date: Date | number): Date {
   return new Date(getDateInstance(date).getTime())
 }
@@ -8,54 +13,34 @@ export function cloneDate(date: Date | number): Date {
 export function getFormattedDate({
   value,
   locale,
-  inputDateStyle,
-  inputTimeStyle,
-  timeZone,
+  options,
 }: {
   value?: string
   locale: string
-  inputDateStyle: Intl.DateTimeFormatOptions['dateStyle']
-  inputTimeStyle?: Intl.DateTimeFormatOptions['timeStyle']
-  timeZone: Intl.DateTimeFormatOptions['timeZone']
+  options?: Intl.DateTimeFormatOptions
 }): string | undefined {
-  return value
-    ? capitalize(
-        date(value, locale, {
-          dateStyle: inputDateStyle,
-          timeStyle: inputTimeStyle,
-          timeZone: timeZone,
-        }),
-      )
-    : undefined
+  return value ? capitalize(date(value, locale, options)) : undefined
 }
 
 export function getRangeFormattedDate({
   value,
   locale,
-  inputDateStyle,
-  inputTimeStyle,
-  timeZone,
+  options,
 }: {
   value: PartialRangeValue
   locale: string
-  inputDateStyle: Intl.DateTimeFormatOptions['dateStyle']
-  inputTimeStyle?: Intl.DateTimeFormatOptions['timeStyle']
-  timeZone: Intl.DateTimeFormatOptions['timeZone']
+  options: Intl.DateTimeFormatOptions
 }): string | undefined {
   const startValue = getFormattedDate({
     value: value.start,
     locale,
-    inputDateStyle,
-    inputTimeStyle,
-    timeZone,
+    options,
   })
 
   const endValue = getFormattedDate({
     value: value.end,
     locale,
-    inputDateStyle,
-    inputTimeStyle,
-    timeZone,
+    options,
   })
 
   return startValue || endValue
@@ -158,7 +143,7 @@ export function isBigger(
   date = getDateInstance(date)
   date2 = getDateInstance(date2)
 
-  return date.getTime() >= date2.getTime() && !isSameDate(date, date2)
+  return date.getTime() >= date2.getTime() // && !isSameDate(date, date2)
 }
 
 export function isSmaller(
@@ -180,26 +165,34 @@ export function isSameDay(
   return date.getDay() === dayNumber
 }
 
-export function getISODate(value?: string): string | undefined {
+export function getISODate(
+  value?: string,
+  hasTime = false,
+): string | undefined {
   if (!value) {
     return undefined
   }
 
-  function isoDate(value: string): string {
-    const userTimezoneOffset = new Date(value).getTimezoneOffset() * 60000
-    const dateWithoutTz = new Date(
-      new Date(value).getTime() - userTimezoneOffset,
-    )
-    return dateWithoutTz.toISOString().split('T')[0]
-  }
+  // function isoDate(value: string): string {
+  //   const userTimezoneOffset = new Date(value).getTimezoneOffset() * 60000
+  //   const dateWithoutTz = new Date(
+  //     new Date(value).getTime() - userTimezoneOffset,
+  //   )
+  //   return dateWithoutTz.toISOString()
+  // }
 
-  return isoDate(value)
+  const dateTest = new Date(value)
+
+  const tzoffset = dateTest.getTimezoneOffset() * 60000 //offset in milliseconds
+  const date = new Date(dateTest.getTime() - tzoffset).toISOString()
+
+  return hasTime ? date.split('.')[0] : date.split('T')[0]
 }
 
-export function getRangeISODate(value: PartialRangeValue) {
+export function getRangeISODate(value: PartialRangeValue, hasTime = false) {
   return {
-    start: getISODate(value.start),
-    end: getISODate(value.end),
+    start: getISODate(value.start, hasTime),
+    end: getISODate(value.end, hasTime),
   }
 }
 
@@ -247,4 +240,39 @@ export function isValueDisabledWeekly({
   )
 
   return isDisabled
+}
+
+export function getFirstDateOfWeek(date: Date | string | number): Date {
+  date = getDateInstance(date)
+  const day = date.getDay()
+  const diff = date.getDate() - day + (day == 0 ? -6 : 1) // adjust when day is sunday
+
+  return new Date(date.setDate(diff))
+}
+
+export const scrollSmoothElement = (
+  parent: HTMLElement,
+  element: HTMLElement,
+  hasSmoothEffect = true,
+) => {
+  const { top: parentTop } = parent.getBoundingClientRect()
+  const { top: elementTop } = element.getBoundingClientRect()
+  const parentHeight = parent.offsetHeight
+  const elementHeight = element.offsetHeight
+
+  const offsetElement = elementHeight / 2
+  const offsetTop =
+    elementTop - (parentTop + parentHeight / 2) - elementHeight / 2
+  const target = parentHeight / 2
+
+  console.log('offsetTop', offsetTop)
+
+  const scrollValue = offsetElement + offsetTop - target
+
+  console.log('scrollValue', scrollValue)
+
+  parent.scrollTo({
+    top: offsetTop,
+    behavior: hasSmoothEffect ? 'smooth' : 'auto',
+  })
 }

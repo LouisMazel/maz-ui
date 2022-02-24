@@ -39,6 +39,8 @@ export type Position =
   | 'bottom'
   | 'bottom right'
   | 'bottom left'
+  | 'left'
+  | 'right'
 
 export interface Source {
   srcset?: string

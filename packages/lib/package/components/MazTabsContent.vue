@@ -1,7 +1,7 @@
 <template>
   <div
     ref="MazTabsContent"
-    class="maz-tabs-content maz-relative"
+    class="m-tabs-content maz-relative"
     :class="{ 'maz-overflow-hidden': hideOverflow }"
   >
     <slot />

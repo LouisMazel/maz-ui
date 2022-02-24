@@ -6,7 +6,7 @@
       type="button"
       @click.stop="$emit('close')"
     >
-      <MazIcon :src="CheckIcon" size="1.6rem" class="icon" />
+      <MazIcon :src="CheckIcon" size="1.4rem" class="icon" />
     </MazBtn>
   </div>
 </template>

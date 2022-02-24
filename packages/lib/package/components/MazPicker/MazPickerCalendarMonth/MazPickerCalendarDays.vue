@@ -1,10 +1,8 @@
 <template>
   <div class="maz-picker-calendar-days">
-    <div v-for="{ label } in days" :key="label">
-      <span>
-        {{ label }}
-      </span>
-    </div>
+    <span v-for="{ label } in days" :key="label">
+      {{ label }}
+    </span>
   </div>
 </template>
 
@@ -22,7 +20,7 @@
 
 <style lang="postcss" scoped>
   .maz-picker-calendar-days {
-    @apply maz-grid maz-grid-cols-7 maz-gap-2 maz-text-center;
+    @apply maz-flex maz-w-full maz-justify-between maz-space-x-2 maz-px-1 maz-text-center;
 
     & span {
       @apply maz-text-xs maz-text-muted;
