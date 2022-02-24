@@ -90,10 +90,12 @@
 
   const currentDateArray = computed(() => [cloneDate(props.currentDate)])
 
-  const year = computed(() => props.currentDate.getFullYear())
-  const month = computed(() => props.currentDate.getMonth() + 1)
-
-  const dayCount = computed(() => getDaysInMonth(year.value, month.value))
+  const dayCount = computed(() =>
+    getDaysInMonth(
+      props.currentDate.getFullYear(),
+      props.currentDate.getMonth(),
+    ),
+  )
 
   const emptyDaysCount = computed(() => {
     const { firstDay } = getFirstAndLastDayOfMonth(props.currentDate)

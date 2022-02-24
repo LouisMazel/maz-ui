@@ -18,11 +18,12 @@
         v-for="month in months"
         :key="month.label"
         :size="props.double ? 'sm' : 'xs'"
+        :class="{ '--is-selected': isSameMonth(month.date, currentDate) }"
         :color="isSameMonth(month.date, currentDate) ? color : 'transparent'"
         type="button"
         @click.stop="selectMonth(month.date)"
       >
-        {{ month.label }}
+        {{ month }}
       </MazBtn>
     </div>
   </div>
@@ -38,9 +39,9 @@
   import MazIcon from '../MazIcon.vue'
 
   const props = defineProps({
+    currentDate: { type: Date, required: true },
     color: { type: String as PropType<Color>, required: true },
     locale: { type: String, required: true },
-    currentDate: { type: Date, required: true },
     double: { type: Boolean, required: true },
   })
 
@@ -51,36 +52,34 @@
       label: string
       date: Date
     }[]
-  >(() =>
-    Array.from({ length: 12 }, (_v, i) => i).map((monthNumber) => {
-      const clonedDate = cloneDate(props.currentDate)
-
+  >(() => {
+    const clonedCurrentDate = cloneDate(props.currentDate)
+    return Array.from({ length: 12 }, (_v, i) => i).map((monthNumber) => {
       if (props.double) {
         return {
           label: `${capitalize(
-            date(clonedDate.setMonth(monthNumber), props.locale, {
+            date(new Date().setMonth(monthNumber), props.locale, {
               month: 'short',
             }),
           )} - ${capitalize(
-            date(clonedDate.setMonth(clonedDate.getMonth() + 1), props.locale, {
+            date(new Date().setMonth(monthNumber + 1), props.locale, {
               month: 'short',
             }),
           )}`,
-
-          date: new Date(clonedDate.setMonth(monthNumber)),
+          date: cloneDate(clonedCurrentDate.setMonth(monthNumber)),
         }
       } else {
         return {
           label: capitalize(
-            date(clonedDate.setMonth(monthNumber), props.locale, {
+            date(new Date().setMonth(monthNumber), props.locale, {
               month: 'long',
             }),
           ),
-          date: new Date(clonedDate.setMonth(monthNumber)),
+          date: cloneDate(clonedCurrentDate.setMonth(monthNumber)),
         }
       }
-    }),
-  )
+    })
+  })
 
   const selectMonth = (date: Date) => {
     emits('update:current-date', date)

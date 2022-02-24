@@ -30,14 +30,15 @@
     </div>
     <div class="maz-picker-year-switcher__main">
       <MazBtn
-        v-for="month in months"
-        :key="month.label"
+        v-for="year in years"
+        :key="year.label"
         size="sm"
         type="button"
-        :color="isSameYear(month.date, currentDate) ? color : 'transparent'"
-        @click.stop="selectMonth(month.date)"
+        :class="{ '--is-selected': isSameYear(year.date, currentDate) }"
+        :color="isSameYear(year.date, currentDate) ? color : 'transparent'"
+        @click.stop="selectMonth(year.date)"
       >
-        {{ month.label }}
+        {{ year.label }}
       </MazBtn>
     </div>
   </div>
@@ -64,7 +65,7 @@
 
   const clonedCurrentDate = ref(cloneDate(props.currentDate))
 
-  const months = computed<
+  const years = computed<
     {
       label: string
       date: Date

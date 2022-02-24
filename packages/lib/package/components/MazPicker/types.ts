@@ -8,3 +8,13 @@ export type RangeValue = {
 export type PartialRangeValue = Partial<RangeValue>
 
 export type PickerValue = SimpleValue | PartialRangeValue
+
+export type PickerShortcut = {
+  identifier: string
+  label: string
+  value: {
+    start: string | Date | number
+    end: string | Date | number
+  }
+  callback?: (args: unknown[]) => unknown
+}

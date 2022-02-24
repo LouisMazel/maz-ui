@@ -1,8 +1,8 @@
 import { date, capitalize } from './../../filters'
 import { PartialRangeValue } from './types'
 
-export function cloneDate(date: Date): Date {
-  return new Date(date.getTime())
+export function cloneDate(date: Date | number): Date {
+  return new Date(getDateInstance(date).getTime())
 }
 
 export function getFormattedDate({
@@ -103,7 +103,7 @@ export function getWeekDays(
 }
 
 export function getDaysInMonth(year: number, month: number) {
-  return new Date(year, month, 0).getDate()
+  return new Date(year, month + 1, 0).getDate()
 }
 
 export function isToday(date: Date | string | number): boolean {

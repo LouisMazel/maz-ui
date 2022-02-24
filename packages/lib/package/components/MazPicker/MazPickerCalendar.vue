@@ -1,48 +1,58 @@
 <template>
-  <div class="maz-picker-calendar">
-    <MazPickerCalendarSwitcher
+  <div class="maz-picker-calendar flex">
+    <MazPickerShortcuts
+      v-if="!noShortcuts"
       v-model:current-date="currentDate"
-      :locale="locale"
+      v-model="modelValue"
+      :color="color"
+      :shortcuts="shortcuts"
       :double="double"
-      @open-month-switcher="monthSwitcherOpen = true"
-      @open-year-switcher="yearSwitcherOpen = true"
     />
-    <Transition name="maz-picker-slide">
-      <MazPickerMonthSwitcher
-        v-if="monthSwitcherOpen"
+    <div class="maz-picker-calendar__main">
+      <MazPickerCalendarSwitcher
         v-model:current-date="currentDate"
-        :color="color"
+        :locale="locale"
         :double="double"
-        :locale="locale"
-        @close="monthSwitcherOpen = false"
+        @open-month-switcher="monthSwitcherOpen = true"
+        @open-year-switcher="yearSwitcherOpen = true"
       />
-    </Transition>
-    <Transition name="maz-picker-slide">
-      <MazPickerYearSwitcher
-        v-if="yearSwitcherOpen"
-        v-model:current-date="currentDate"
-        :color="color"
-        :locale="locale"
-        @close="yearSwitcherOpen = false"
-      />
-    </Transition>
-    <div
-      class="maz-picker-calendar__months"
-      :class="{ '--has-double': double }"
-    >
-      <MazPickerCalendarMonth
-        v-for="month in months"
-        :key="month"
-        v-model="modelValue"
-        :locale="locale"
-        :color="color"
-        :offset-month="month"
-        :current-date="currentDate"
-        :first-day-of-week="firstDayOfWeek"
-        :min-date="minDate"
-        :max-date="maxDate"
-        :disabled-weekly="disabledWeekly"
-      />
+      <Transition name="maz-picker-slide">
+        <MazPickerMonthSwitcher
+          v-if="monthSwitcherOpen"
+          v-model:current-date="currentDate"
+          :color="color"
+          :double="double"
+          :locale="locale"
+          @close="monthSwitcherOpen = false"
+        />
+      </Transition>
+      <Transition name="maz-picker-slide">
+        <MazPickerYearSwitcher
+          v-if="yearSwitcherOpen"
+          v-model:current-date="currentDate"
+          :color="color"
+          :locale="locale"
+          @close="yearSwitcherOpen = false"
+        />
+      </Transition>
+      <div
+        class="maz-picker-calendar__months"
+        :class="{ '--has-double': double }"
+      >
+        <MazPickerCalendarMonth
+          v-for="month in months"
+          :key="month"
+          v-model="modelValue"
+          :locale="locale"
+          :color="color"
+          :offset-month="month"
+          :current-date="currentDate"
+          :first-day-of-week="firstDayOfWeek"
+          :min-date="minDate"
+          :max-date="maxDate"
+          :disabled-weekly="disabledWeekly"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -54,7 +64,8 @@
   import MazPickerMonthSwitcher from './MazPickerMonthSwitcher.vue'
   import MazPickerYearSwitcher from './MazPickerYearSwitcher.vue'
   import MazPickerCalendarMonth from './MazPickerCalendarMonth/MazPickerCalendarMonth.vue'
-  import { PickerValue } from './types'
+  import { PickerShortcut, PickerValue } from './types'
+  import MazPickerShortcuts from './MazPickerShortcuts.vue'
 
   const props = defineProps({
     modelValue: {
@@ -69,6 +80,11 @@
     minDate: { type: String, default: undefined },
     maxDate: { type: String, default: undefined },
     disabledWeekly: { type: Array as PropType<number[]>, default: undefined },
+    shortcuts: {
+      type: Array as PropType<PickerShortcut[]>,
+      required: true,
+    },
+    noShortcuts: { type: Boolean, required: true },
   })
 
   const emits = defineEmits(['update:model-value', 'update:current-date'])
@@ -94,7 +110,11 @@
 <style lang="postcss" scoped>
   /* stylelint-disable no-descending-specificity */
   .maz-picker-calendar {
-    @apply maz-relative maz-bg-color;
+    @apply maz-relative maz-flex maz-bg-color;
+
+    &__main {
+      @apply maz-flex-1;
+    }
 
     &__months {
       @apply maz-flex;

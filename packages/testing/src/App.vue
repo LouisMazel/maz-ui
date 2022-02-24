@@ -27,15 +27,17 @@
 
     <h1>Range</h1>
 
+    <code class="maz-mb-2">
+      {{ rangeValue }}
+    </code>
+
     <MazPicker
       v-model="rangeValue"
       label="Select date"
       input-date-format="full"
       style="width: 600px"
-      min-date="2022-02-03"
-      max-date="2022-03-19"
       locale="fr-FR"
-      color="secondary"
+      color="info"
       double
       :first-day-of-week="1"
     />
@@ -68,8 +70,8 @@
 
   const dateValue = ref('2022-02-12')
   const rangeValue = ref({
-    start: '2022-02-12',
-    end: undefined,
+    start: '2022-02-01',
+    end: '2022-03-23',
   })
 
   // const tabs: MazTabsItem[] = [

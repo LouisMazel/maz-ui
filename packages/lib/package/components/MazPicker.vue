@@ -57,6 +57,8 @@
         :disabled-weekly="disabledWeekly"
         :inline="inline"
         :first-day-of-week="firstDayOfWeek"
+        :shortcuts="shortcuts"
+        :no-shortcuts="noShortcuts"
         @close="closeCalendar"
       />
     </Transition>
@@ -92,9 +94,10 @@
     getRangeISODate,
     checkValueWithMinMaxDates,
     isValueDisabledWeekly,
+    getDaysInMonth,
   } from './MazPicker/utils'
 
-  import { PickerValue } from './MazPicker/types'
+  import { PickerValue, PickerShortcut } from './MazPicker/types'
 
   const props = defineProps({
     modelValue: {
@@ -170,6 +173,74 @@
       },
     },
     disabledWeekly: { type: Array as PropType<number[]>, default: undefined },
+    noShortcuts: { type: Boolean, default: false },
+    shortcuts: {
+      type: Array as PropType<PickerShortcut[]>,
+      default: () => {
+        const defaultShorts: PickerShortcut[] = [
+          {
+            identifier: 'last7Days',
+            label: 'Last 7 days',
+            value: {
+              start: new Date().setDate(new Date().getDate() - 7),
+              end: new Date(),
+            },
+          },
+          {
+            identifier: 'last30Days',
+            label: 'Last 30 days',
+            value: {
+              start: new Date().setDate(new Date().getDate() - 30),
+              end: new Date(),
+            },
+          },
+          {
+            identifier: 'thisMonth',
+            label: 'This month',
+            value: {
+              start: new Date().setDate(1),
+              end: new Date().setDate(
+                getDaysInMonth(new Date().getFullYear(), new Date().getMonth()),
+              ),
+            },
+          },
+          {
+            identifier: 'lastMonth',
+            label: 'Last month',
+            value: {
+              start: new Date(
+                new Date().setMonth(new Date().getMonth() - 1),
+              ).setDate(1),
+              end: new Date(
+                new Date().setMonth(new Date().getMonth() - 1),
+              ).setDate(
+                getDaysInMonth(
+                  new Date().getFullYear(),
+                  new Date().getMonth() - 1,
+                ),
+              ),
+            },
+          },
+          {
+            identifier: 'thisYear',
+            label: 'This year',
+            value: {
+              start: new Date(`${new Date().getFullYear()}-01-01`),
+              end: new Date(`${new Date().getFullYear()}-12-31`),
+            },
+          },
+          {
+            identifier: 'lastYear',
+            label: 'Last year',
+            value: {
+              start: new Date(`${new Date().getFullYear() - 1}-01-01`),
+              end: new Date(`${new Date().getFullYear() - 1}-12-31`),
+            },
+          },
+        ]
+        return defaultShorts
+      },
+    },
     // unused
     // format: { type: String, default: 'YYYY-MM-DD h:mm a' },
     // formatted: { type: String, default: 'llll' },
@@ -182,19 +253,6 @@
     // disabledHours: { type: Array, default: () => [] },
     // shortcut: { type: String, default: undefined },
     // noShortcuts: { type: Boolean, default: false },
-    // shortcuts: {
-    //   type: Array,
-    //   default: () => [
-    //     { key: 'thisWeek', label: 'This week', value: 'isoWeek' },
-    //     { key: 'lastWeek', label: 'Last week', value: '-isoWeek' },
-    //     { key: 'last7Days', label: 'Last 7 days', value: 7 },
-    //     { key: 'last30Days', label: 'Last 30 days', value: 30 },
-    //     { key: 'thisMonth', label: 'This month', value: 'month' },
-    //     { key: 'lastMonth', label: 'Last month', value: '-month' },
-    //     { key: 'thisYear', label: 'This year', value: 'year' },
-    //     { key: 'lastYear', label: 'Last year', value: '-year' },
-    //   ],
-    // },
   })
 
   const emits = defineEmits(['update:model-value', 'close'])

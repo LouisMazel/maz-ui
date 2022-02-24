@@ -21,6 +21,8 @@
       :max-date="maxDate"
       :first-day-of-week="firstDayOfWeek"
       :disabled-weekly="disabledWeekly"
+      :shortcuts="shortcuts"
+      :no-shortcuts="noShortcuts"
       class="m-picker-container__calendar"
     />
 
@@ -34,7 +36,7 @@
   import { computed, PropType } from 'vue'
   import { Color } from '../types'
   import MazPickerFooter from './MazPickerFooter.vue'
-  import { PickerValue } from './types'
+  import { PickerShortcut, PickerValue } from './types'
 
   const props = defineProps({
     color: { type: String as PropType<Color>, required: true },
@@ -50,8 +52,13 @@
     hasFooter: { type: Boolean, required: true },
     minDate: { type: String, default: undefined },
     maxDate: { type: String, default: undefined },
-    inline: { type: Boolean, default: false },
+    inline: { type: Boolean, required: true },
     disabledWeekly: { type: Array as PropType<number[]>, default: undefined },
+    noShortcuts: { type: Boolean, required: true },
+    shortcuts: {
+      type: Array as PropType<PickerShortcut[]>,
+      required: true,
+    },
   })
 
   const emits = defineEmits([
