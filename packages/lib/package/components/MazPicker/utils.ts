@@ -52,6 +52,20 @@ export function getCurrentDate(value?: string | Date): Date {
   return value ? new Date(value) : new Date()
 }
 
+export function getCurrentDateForTimeValue(value?: string) {
+  const base = value?.split('.')[0]
+
+  const hour = base ? Number(base.split(':')[0] ?? 0) : 0
+  const minute = base ? Number(base.split(':')[1] ?? 0) : 0
+  const seconde = base ? Number(base.split(':')[2] ?? 0) : 0
+
+  return new Date(
+    new Date(new Date(new Date().setHours(hour)).setMinutes(minute)).setSeconds(
+      seconde,
+    ),
+  )
+}
+
 export function getDateInstance(date: string | Date | number): Date {
   return date instanceof Date ? date : new Date(date)
 }
@@ -173,18 +187,10 @@ export function getISODate(
     return undefined
   }
 
-  // function isoDate(value: string): string {
-  //   const userTimezoneOffset = new Date(value).getTimezoneOffset() * 60000
-  //   const dateWithoutTz = new Date(
-  //     new Date(value).getTime() - userTimezoneOffset,
-  //   )
-  //   return dateWithoutTz.toISOString()
-  // }
+  const newDate = new Date(value)
 
-  const dateTest = new Date(value)
-
-  const tzoffset = dateTest.getTimezoneOffset() * 60000 //offset in milliseconds
-  const date = new Date(dateTest.getTime() - tzoffset).toISOString()
+  const tzoffset = newDate.getTimezoneOffset() * 60000 //offset in milliseconds
+  const date = new Date(newDate.getTime() - tzoffset).toISOString()
 
   return hasTime ? date.split('.')[0] : date.split('T')[0]
 }
@@ -271,4 +277,25 @@ export const findNearestNumberInList = (
   })
 
   return closest
+}
+
+export function getTimeString(value?: string | Date) {
+  if (!value) {
+    return undefined
+  }
+
+  const stringDate = value instanceof Date ? value.toLocaleTimeString() : value
+
+  const date = getCurrentDateForTimeValue(stringDate)
+  const localeTimeSplited = date.toLocaleTimeString().split(':')
+
+  return `${localeTimeSplited[0]}:${localeTimeSplited[1]}:${localeTimeSplited[2]}`
+}
+
+export function convertHour24to12Format(baseHour: number): number {
+  return baseHour % 12 || 12
+}
+
+export function convertHour12to24Format(baseHour: number): number {
+  return baseHour % 24 || 24
 }

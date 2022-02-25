@@ -67,6 +67,7 @@
       default: undefined,
     },
     currentDate: { type: Date, required: true },
+    time: { type: Boolean, required: true },
     locale: { type: String, required: true },
     firstDayOfWeek: { type: Number, required: true },
     color: { type: String as PropType<Color>, required: true },
@@ -205,9 +206,10 @@
         }
       }
     } else {
-      modelValue.value = new Date(
-        props.currentDate.setDate(value),
-      ).toDateString()
+      const baseDate = new Date(props.currentDate.setDate(value))
+      modelValue.value = props.time
+        ? baseDate.toISOString()
+        : baseDate.toDateString()
     }
   }
 

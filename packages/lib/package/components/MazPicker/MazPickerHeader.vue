@@ -29,7 +29,7 @@
       </TransitionGroup>
     </div>
     <div
-      v-if="time"
+      v-if="timeArray"
       class="m-picker-header__time"
       :class="{ '--has-date': hasDate }"
     >
@@ -55,7 +55,12 @@
   import { Color } from '../types'
   import { date, capitalize } from './../../filters'
   import { PickerValue } from './types'
-  import { cloneDate, DateTimeFormatOptions, isBigger } from './utils'
+  import {
+    cloneDate,
+    DateTimeFormatOptions,
+    getCurrentDateForTimeValue,
+    isBigger,
+  } from './utils'
 
   const props = defineProps({
     modelValue: {
@@ -72,17 +77,28 @@
       type: Object as PropType<DateTimeFormatOptions>,
       required: true,
     },
+    currentDate: { type: Date, required: true },
   })
 
-  const currentDateTmp = ref<Date>(
-    typeof props.modelValue === 'object'
+  // const currentDateTmp = ref<Date>(props.currentDate)
+
+  const getCurrentDateTmp = () => {
+    return typeof props.modelValue === 'object'
       ? cloneDate(
           props.modelValue.start
             ? new Date(props.modelValue.start)
             : new Date(),
         )
-      : cloneDate(props.modelValue ? new Date(props.modelValue) : new Date()),
-  )
+      : cloneDate(
+          props.modelValue
+            ? props.hasDate
+              ? new Date(props.modelValue)
+              : getCurrentDateForTimeValue(props.modelValue)
+            : new Date(),
+        )
+  }
+
+  const currentDateTmp = ref<Date>(getCurrentDateTmp())
 
   const selectedDate = computed<string | undefined>(() => {
     if (typeof props.modelValue === 'object') {
@@ -125,7 +141,7 @@
     return '-'
   })
 
-  const yearArray = computed(() => [year.value])
+  const yearArray = computed(() => (props.hasDate ? [year.value] : undefined))
 
   const dateString = computed(() => {
     if (
@@ -170,19 +186,19 @@
     return '-'
   })
 
-  const dateStringArray = computed(() => [dateString.value])
-
-  const timeValue = computed(() =>
-    typeof props.modelValue === 'string'
-      ? date(props.modelValue, props.locale, {
-          timeStyle: 'short',
-          timeZone: props.formatterOptions.timeZone,
-          hour12: props.formatterOptions.hour12,
-        })
-      : undefined,
+  const dateStringArray = computed(() =>
+    props.hasDate ? [dateString.value] : undefined,
   )
 
-  const timeArray = computed(() => [timeValue.value])
+  const timeValue = computed(() => {
+    return date(currentDateTmp.value, props.locale, {
+      timeStyle: 'short',
+      timeZone: props.formatterOptions.timeZone,
+      hour12: props.formatterOptions.hour12,
+    })
+  })
+
+  const timeArray = computed(() => (props.time ? [timeValue.value] : undefined))
 
   watch(
     () => props.modelValue,
@@ -194,7 +210,9 @@
         )
           ? 'maz-slidevprev'
           : 'maz-slidevnext'
-        currentDateTmp.value = cloneDate(new Date(selectedDate.value))
+        currentDateTmp.value = props.hasDate
+          ? cloneDate(new Date(selectedDate.value))
+          : getCurrentDateForTimeValue(selectedDate.value)
       }
     },
   )

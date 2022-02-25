@@ -9,6 +9,7 @@
       v-model="modelValue"
       :locale="locale"
       :color="color"
+      :time="time"
       :current-date="currentDate"
       :first-day-of-week="firstDayOfWeek"
       :min-date="minDate"
@@ -33,6 +34,7 @@
     },
     color: { type: String as PropType<Color>, required: true },
     locale: { type: String, required: true },
+    time: { type: Boolean, required: true },
     firstDayOfWeek: { type: Number, required: true },
     currentDate: { type: Date, required: true },
     offsetMonth: { type: Number, default: 0 },

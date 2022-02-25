@@ -41,9 +41,12 @@
     DateTimeFormatOptions,
     scrollToTarget,
     findNearestNumberInList,
+    getCurrentDateForTimeValue,
+    getTimeString,
+    // convertHour24to12Format,
   } from './utils'
   import MazBtn from '../MazBtn.vue'
-  import { PickerValue, SimpleValue } from './types'
+  import { PickerValue } from './types'
   import { Color } from '../types'
 
   type ColumnIdentifier = 'hour' | 'minute' | 'ampm'
@@ -64,6 +67,12 @@
     minuteInterval: { type: Number, required: true },
   })
 
+  // const findHour = (hour: number) =>
+  //   findNearestNumberInList(
+  //     hours.value.map(({ value }) => value),
+  //     isHour12.value ? convertHour24to12Format(hour) : hour,
+  //   )
+
   const emits = defineEmits(['update:model-value'])
 
   const MazPickerTime = ref<HTMLDivElement>()
@@ -71,30 +80,49 @@
 
   const isHour12 = computed(() => props.formatterOptions.hour12)
 
-  const currentHour = computed(() =>
-    typeof modelValue.value === 'string'
-      ? findNearestNumberInList(
-          hours.value.map(({ value }) => value),
-          new Date(modelValue.value).getHours(),
-        )
-      : undefined,
-  )
+  const currentHour = computed(() => {
+    if (typeof modelValue.value === 'string') {
+      let baseHour = new Date(
+        props.hasDate
+          ? modelValue.value
+          : getCurrentDateForTimeValue(modelValue.value),
+      ).getHours()
+
+      return baseHour
+    } else {
+      return undefined
+    }
+  })
   const currentMinute = computed(() =>
     typeof modelValue.value === 'string'
       ? findNearestNumberInList(
           minutes.value.map(({ value }) => value),
-          new Date(modelValue.value).getMinutes(),
+          new Date(
+            props.hasDate
+              ? modelValue.value
+              : getCurrentDateForTimeValue(modelValue.value),
+          ).getMinutes(),
         )
       : undefined,
   )
 
+  const getHourValue = (hourValue: number) => {
+    if (isHour12.value) {
+      const isPm = currentAmpm.value === 'pm'
+      const newValue = isPm ? hourValue + 12 : hourValue
+      return newValue === 12 ? 0 : newValue === 24 ? 12 : newValue
+    } else {
+      return hourValue
+    }
+  }
+
   const hours = computed(() => {
     return Array.from({ length: isHour12.value ? 12 : 24 }, (_v, i) => i).map(
       (hour) => {
-        const hourLabelValue = hour + (isHour12.value ? 1 : 0)
+        const hourValue = hour + (isHour12.value ? 1 : 0)
         return {
-          label: `${hourLabelValue < 10 ? '0' : ''}${hourLabelValue}`,
-          value: isHour12.value ? hour - 1 : hour,
+          label: `${hourValue < 10 ? '0' : ''}${hourValue}`,
+          value: getHourValue(hourValue),
         }
       },
     )
@@ -104,14 +132,22 @@
     const length = Math.floor(60 / props.minuteInterval) - 0
 
     return Array.from({ length }, (_v, i) => i * props.minuteInterval).map(
-      (hour) => ({
-        label: `${hour < 10 ? '0' : ''}${hour}`,
-        value: hour,
+      (minute) => ({
+        label: `${minute < 10 ? '0' : ''}${minute}`,
+        value: minute,
       }),
     )
   })
 
-  const ampm = computed(() =>
+  const currentAmpm = computed(() => {
+    return currentHour.value
+      ? currentHour.value >= 12
+        ? 'pm'
+        : 'am'
+      : undefined
+  })
+
+  const ampm = computed<{ label: string; value: 'am' | 'pm' }[]>(() =>
     isHour12.value
       ? [
           { label: 'AM', value: 'am' },
@@ -120,57 +156,65 @@
       : [],
   )
 
-  const columns = computed<
-    {
+  const columns = computed(() => {
+    const columns: {
       identifier: ColumnIdentifier
-      currentValue?: number | string
       values: {
         label: string
-        value: number | string
+        value: number | 'am' | 'pm'
       }[]
-    }[]
-  >(() => [
-    {
-      identifier: 'hour',
-      values: hours.value,
-      currentValue: currentHour.value,
-    },
-    {
-      identifier: 'minute',
-      values: minutes.value,
-      currentValue: currentMinute.value,
-    },
-    {
-      identifier: 'ampm',
-      values: ampm.value,
-      currentValue: 'am',
-    },
-  ])
+      currentValue: number | string | undefined
+    }[] = [
+      {
+        identifier: 'hour',
+        values: hours.value,
+        currentValue: currentHour.value,
+      },
+      {
+        identifier: 'minute',
+        values: minutes.value,
+        currentValue: currentMinute.value,
+      },
+    ]
+
+    if (isHour12.value) {
+      columns.push({
+        identifier: 'ampm',
+        values: ampm.value,
+        currentValue: currentAmpm.value,
+      })
+    }
+
+    return columns
+  })
 
   const modelValue = computed({
     get: () => props.modelValue,
-    set: (value) => emits('update:model-value', value),
+    set: (value) => {
+      emits('update:model-value', value)
+    },
   })
 
   watch(
     () => props.isOpen,
-    async () => {
-      await nextTick()
+    async (value) => {
+      if (value) {
+        await nextTick()
 
-      if (MazPickerTime.value) {
-        const item = document.querySelector(
-          `.m-picker-time__column .m-btn`,
-        ) as HTMLButtonElement
-        const itemHeight = item?.offsetHeight
-        const timePickerHeight = MazPickerTime.value?.offsetHeight
+        if (MazPickerTime.value) {
+          const item = document.querySelector(
+            `.m-picker-time__column .m-btn`,
+          ) as HTMLButtonElement
+          const itemHeight = item?.offsetHeight
+          const timePickerHeight = MazPickerTime.value?.offsetHeight
 
-        const divHeight = timePickerHeight / 2 - itemHeight / 2
+          const divHeight = timePickerHeight / 2 - itemHeight / 2
 
-        dividerHeight.value = divHeight / 16
+          dividerHeight.value = divHeight / 16
+        }
+
+        scrollColumns()
       }
-
-      scrollColumn('hour')
-      scrollColumn('minute')
     },
     { immediate: true },
   )
@@ -180,11 +224,26 @@
     async (value) => {
       if (value) {
         await nextTick()
-        scrollColumn('hour')
-        scrollColumn('minute')
+        scrollColumns()
+        // TODO
+        modelValue.value = props.hasDate
+          ? (modelValue.value
+              ? new Date(modelValue.value as string)
+              : new Date()
+            ).toISOString()
+          : getTimeString(`${currentHour.value}:${currentMinute.value}:00`)
       }
     },
+    { immediate: true },
   )
+
+  const scrollColumns = () => {
+    scrollColumn('hour')
+    scrollColumn('minute')
+    if (isHour12.value) {
+      scrollColumn('ampm')
+    }
+  }
 
   const scrollColumn = async (identifier: ColumnIdentifier) => {
     const column = document.querySelector(
@@ -208,19 +267,49 @@
 
   const selectTime = async (
     identifier: ColumnIdentifier,
-    value: number | string,
+    value: number | 'am' | 'pm',
   ) => {
-    const currentValue = modelValue.value as SimpleValue
+    const newDate = modelValue.value
+      ? props.hasDate
+        ? new Date(modelValue.value as string)
+        : getCurrentDateForTimeValue(modelValue.value as string)
+      : new Date()
+
+    const getDateTimeValue = (date: Date) => {
+      return props.hasDate ? date.toISOString() : getTimeString(date)
+    }
+
     if (identifier === 'hour' && typeof value === 'number') {
-      const newValue = isHour12.value ? value + 1 : value
-      const newDate = currentValue ? new Date(currentValue) : new Date()
-      modelValue.value = new Date(newDate.setHours(newValue)).toISOString()
+      const dateWithNewHour = new Date(newDate.setHours(value))
+      modelValue.value = getDateTimeValue(dateWithNewHour)
     }
     if (identifier === 'minute' && typeof value === 'number') {
-      const newDate = currentValue ? new Date(currentValue) : new Date()
-      modelValue.value = new Date(newDate.setMinutes(value)).toISOString()
+      const dateWithNewHour = new Date(newDate.setMinutes(value))
+
+      modelValue.value = getDateTimeValue(dateWithNewHour)
     }
     if (identifier === 'ampm' && typeof value === 'string') {
+      if (currentAmpm.value !== value || !currentHour.value) {
+        if (value === 'am') {
+          const dateWithNewHour = new Date(
+            newDate.setHours(newDate.getHours() - 12),
+          )
+          modelValue.value = getDateTimeValue(dateWithNewHour)
+        }
+        if (value === 'pm') {
+          const baseHour = newDate.getHours()
+          const newHour =
+            baseHour + 12 > 12 && baseHour + 12 < 24
+              ? baseHour + 12
+              : baseHour === 0
+              ? 12
+              : baseHour
+
+          const dateWithNewHour = new Date(newDate.setHours(newHour))
+          modelValue.value = getDateTimeValue(dateWithNewHour)
+        }
+      }
+      // currentAmpm.value =
       // const newDate = currentValue ? new Date(currentValue) : new Date()
       // modelValue.value = new Date(newDate.setMinutes(value)).toISOString()
     }
@@ -256,7 +345,7 @@
       @apply maz-flex maz-flex-col maz-overflow-y-scroll maz-px-1;
 
       &__items {
-        @apply maz-flex maz-flex-col;
+        @apply maz-flex maz-flex-col maz-space-y-1;
 
         > button {
           @apply maz-z-2 maz-flex-none;

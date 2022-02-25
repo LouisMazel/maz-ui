@@ -93,6 +93,7 @@
   import ChevronDownIcon from './../icons/chevron-down.svg'
   import MazIcon from './MazIcon.vue'
   import { Color, Position } from './types'
+  import { date } from '../filters'
   import {
     getCurrentDate,
     getFormattedDate,
@@ -104,9 +105,11 @@
     getDaysInMonth,
     getFirstDateOfWeek,
     DateTimeFormatOptions,
+    getTimeString,
+    getCurrentDateForTimeValue,
   } from './MazPicker/utils'
 
-  import { PickerValue, PickerShortcut } from './MazPicker/types'
+  import { PickerValue, PickerShortcut, SimpleValue } from './MazPicker/types'
 
   const props = defineProps({
     modelValue: {
@@ -275,10 +278,9 @@
     get: () => props.modelValue,
     set: (value) => {
       // TODO: format output
-
       emitValue(value)
 
-      if (props.autoClose) {
+      if (props.autoClose && typeof props.modelValue !== 'object') {
         closeCalendar()
       }
     },
@@ -287,6 +289,8 @@
   const currentDate = ref(
     typeof props.modelValue === 'object'
       ? getCurrentDate(props.modelValue.start)
+      : props.onlyTime
+      ? getCurrentDateForTimeValue(props.modelValue)
       : getCurrentDate(props.modelValue),
   )
 
@@ -302,19 +306,26 @@
   })
 
   const inputValue = computed(() => {
-    if (typeof modelValue.value === 'object') {
+    if (props.onlyTime) {
+      const baseDate = new Date().toISOString().split('T')[0]
+      return modelValue.value
+        ? date(new Date(`${baseDate}T${modelValue.value}`), props.locale, {
+            timeStyle: props.inputTimeStyle,
+          })
+        : undefined
+    } else if (typeof modelValue.value === 'object') {
       return getRangeFormattedDate({
         value: modelValue.value,
         locale: props.locale,
         options: formatterOptions.value,
       })
+    } else {
+      return getFormattedDate({
+        value: modelValue.value,
+        locale: props.locale,
+        options: formatterOptions.value,
+      })
     }
-
-    return getFormattedDate({
-      value: modelValue.value,
-      locale: props.locale,
-      options: formatterOptions.value,
-    })
   })
 
   const isFocused = ref(false)
@@ -455,18 +466,21 @@
   }
 
   const emitValue = (value: PickerValue) => {
-    value =
-      typeof value === 'object'
-        ? getRangeISODate(value, hasTime.value)
-        : getISODate(value, hasTime.value)
+    value = props.onlyTime
+      ? getTimeString(value as SimpleValue)
+      : typeof value === 'object'
+      ? getRangeISODate(value, hasTime.value)
+      : getISODate(value, hasTime.value)
+
     emits('update:model-value', value)
   }
 
+  // model value watcher
   watch(
     () => [props.modelValue, props.minDate, props.maxDate],
     (values, oldValues) => {
-      const value = values[0] as PickerValue | undefined
-      const oldValue = oldValues?.[0] as PickerValue | undefined
+      const value = values[0] as PickerValue
+      const oldValue = oldValues?.[0] as PickerValue
 
       if (typeof value === 'object' && (value.start || value.end)) {
         if (
@@ -484,10 +498,11 @@
     { immediate: true },
   )
 
+  // Disable weekly watcher
   watch(
     () => [props.modelValue, props.disabledWeekly],
     (values) => {
-      const value = values[0] as PickerValue | undefined
+      const value = values[0] as PickerValue
       const disabledWeekly = values[1] as number[] | undefined
 
       if (disabledWeekly) {
@@ -510,8 +525,6 @@
           }
         }
       }
-
-      // if ()
     },
     { immediate: true },
   )

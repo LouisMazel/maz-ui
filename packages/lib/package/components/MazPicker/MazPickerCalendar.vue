@@ -42,6 +42,7 @@
           :key="month"
           v-model="modelValue"
           :locale="locale"
+          :time="time"
           :color="color"
           :offset-month="month"
           :current-date="currentDate"
@@ -83,6 +84,7 @@
       required: true,
     },
     noShortcuts: { type: Boolean, required: true },
+    time: { type: Boolean, required: true },
     shortcut: { type: String, default: undefined },
   })
 

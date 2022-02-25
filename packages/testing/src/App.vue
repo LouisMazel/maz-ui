@@ -16,14 +16,9 @@
       v-model="dateValue"
       label="Select date"
       style="width: 400px"
-      input-date-format="full"
-      min-date="2022-02-03"
-      max-date="2022-03-17"
       locale="fr-FR"
-      only-time
-      hour12
+      time
       color="secondary"
-      :first-day-of-week="1"
     />
 
     <h1>Range</h1>
@@ -32,7 +27,7 @@
       {{ rangeValue }}
     </code>
 
-    <MazPicker
+    <!-- <MazPicker
       v-model="rangeValue"
       style="width: 600px"
       label="Select date"
@@ -42,7 +37,7 @@
       color="info"
       shortcut="thisWeek"
       :first-day-of-week="1"
-    />
+    /> -->
 
     <!-- <div style="position: relative; width: 500px">
       <MazTabsBar :items="tabs" color="secondary" />
@@ -70,7 +65,7 @@
     MazPicker,
   } from 'maz-ui/package/components'
 
-  const dateValue = ref('2022-02-12T07:06')
+  const dateValue = ref('2022-02-03T14:40')
   const rangeValue = ref({
     start: '2022-02-01',
     end: '2022-03-23',

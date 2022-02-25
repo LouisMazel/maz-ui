@@ -12,6 +12,7 @@
       :color="color"
       :time="time"
       :model-value="modelValue"
+      :current-date="currentDate"
       :locale="locale"
       :has-date="hasDate"
       :formatter-options="formatterOptions"
@@ -27,6 +28,7 @@
         v-model:current-date="currentDate"
         :color="color"
         :locale="locale"
+        :time="time"
         :double="double"
         :min-date="minDate"
         :max-date="maxDate"
@@ -54,7 +56,7 @@
       />
     </div>
 
-    <MazPickerFooter v-if="hasFooter" :color="color" @close="$emit('close')" />
+    <!-- <MazPickerFooter v-if="hasFooter" :color="color" @close="$emit('close')" /> -->
   </div>
 </template>
 
@@ -63,7 +65,7 @@
   import MazPickerCalendar from './MazPickerCalendar.vue'
   import { computed, PropType } from 'vue'
   import { Color } from '../types'
-  import MazPickerFooter from './MazPickerFooter.vue'
+  // import MazPickerFooter from './MazPickerFooter.vue'
   import { PickerShortcut, PickerValue } from './types'
   import MazPickerTime from './MazPickerTime.vue'
   import { DateTimeFormatOptions } from './utils'
@@ -108,7 +110,9 @@
 
   const modelValue = computed({
     get: () => props.modelValue,
-    set: (value) => emits('update:model-value', value),
+    set: (value) => {
+      emits('update:model-value', value)
+    },
   })
 
   const currentDate = computed({
