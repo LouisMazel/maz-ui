@@ -89,7 +89,7 @@
       @focus="inputFocused = true"
       @blur="inputFocused = true"
       @update:model-value="buildResults($event)"
-      @keydown="lastKeyPressed = $event.key"
+      @keydown="onKeydown($event)"
     />
   </div>
 </template>
@@ -225,6 +225,7 @@
   const results = ref<Partial<Result>>({})
   const countryCode = ref<CountryCode>()
   const formattedNumber = ref<string>()
+  const cursorPosition = ref<number | null>()
   const examplesFileLoaded = ref(false)
   const inputFocused = ref(false)
   const lastKeyPressed = ref<KeyboardEvent['key']>()
@@ -391,6 +392,14 @@
     },
   )
 
+  const onKeydown = (event: KeyboardEvent) => {
+    lastKeyPressed.value = event.key
+
+    const target = event.target as HTMLInputElement | undefined
+
+    cursorPosition.value = target?.selectionStart
+  }
+
   const getPhoneNumberExample = () => {
     try {
       const phoneNumber = countryCode.value
@@ -418,7 +427,7 @@
     const backSpacePressed = lastKeyPressed.value === 'Backspace'
 
     const lastCharacOfPhoneNumber = phoneNumber
-      ? phoneNumber.trim().substr(-1)
+      ? phoneNumber.trim().substring(-1)
       : false
     const lastCharIsParanthese = lastCharacOfPhoneNumber === ')'
 
@@ -434,6 +443,18 @@
     noAutoUpdateCountryCode?: boolean,
   ) => {
     try {
+      const hasDeletedCharac =
+        formattedNumber.value &&
+        phoneNumber &&
+        formattedNumber.value?.length > phoneNumber?.length
+
+      const cursorIsAtEnd =
+        phoneNumber && cursorPosition.value
+          ? cursorPosition.value + 1 >= phoneNumber.length
+          : true
+
+      const shouldUseAsYoutType = !hasDeletedCharac && cursorIsAtEnd
+
       formattedNumber.value = sanitizeNumber(phoneNumber)
 
       results.value = getResultsFromPhoneNumber(
@@ -446,7 +467,9 @@
         formattedNumber.value =
           results.value.formatNational && isFullNumber
             ? results.value.formatNational
-            : getAsYouTypeFormat(countryCode.value, formattedNumber.value)
+            : shouldUseAsYoutType
+            ? getAsYouTypeFormat(countryCode.value, formattedNumber.value)
+            : formattedNumber.value
       }
 
       if (!noAutoUpdateCountryCode) {
