@@ -42,8 +42,6 @@
           class="m-input-input"
           v-on="{
             input: (event) => emitValue(event.target.value),
-            // keyup: (event) => emitValue(event.target.value),
-            // input: (event) => emitValue(event.target.value),
             blur,
             focus,
           }"
