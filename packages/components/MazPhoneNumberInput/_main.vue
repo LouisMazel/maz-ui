@@ -92,9 +92,9 @@
       :class="{
         'has-border-radius': noCountrySelector
       }"
-      @keydown="(e) => { lastKeyPressed = e.keyCode }"
+      @keydown="onKeydown"
       @focus="$emit('focus', $event)"
-      @blur="$emit('blur', $event)"
+      @blur="onBlur"
       @change="$emit('change', $event)"
       @clear="$emit('clear', $event)"
       @input="buildResults"
@@ -184,7 +184,7 @@ export default {
     return {
       results: {},
       countryCode: this.defaultCountryCode,
-      lastKeyPressed: null,
+      cursorPosition: null,
       asYouTypeNumber: this.defaultPhoneNumber
     }
   },
@@ -289,22 +289,31 @@ export default {
   },
   methods: {
     async buildResults (phoneNumber, noAutoUpdateCountryCode) {
-      const { asYouTypeNumber, lastKeyPressed, countryCode, value } = this
-      const backSpacePressed = lastKeyPressed === 8
+      const { countryCode, value } = this
 
       await this.$nextTick()
 
-      const lastCharacOfPhoneNumber = asYouTypeNumber ? asYouTypeNumber.slice(asYouTypeNumber.length - 1) : false
-      if (backSpacePressed && lastCharacOfPhoneNumber && (lastCharacOfPhoneNumber === ')')) {
-        this.asYouTypeNumber = asYouTypeNumber.slice(0, -1)
-      }
+      const hasDeletedCharac =
+        this.asYouTypeNumber &&
+        phoneNumber &&
+        this.asYouTypeNumber.length > phoneNumber.length
 
       this.results = getResultsFromPhoneNumber(phoneNumber, countryCode)
+      const { isValid, e164 } = this.results
 
-      this.asYouTypeNumber = await getAsYouTypeFormat(
-        phoneNumber,
-        countryCode
-      )
+      const cursorIsAtEnd =
+        this.asYouTypeNumber && this.cursorPosition
+          ? this.cursorPosition + 1 >= this.asYouTypeNumber.length
+          : true
+
+      const shouldUseAsYouType = !hasDeletedCharac && cursorIsAtEnd || isValid
+
+      this.asYouTypeNumber = shouldUseAsYouType
+        ? getAsYouTypeFormat(
+          phoneNumber,
+          countryCode
+        )
+        : phoneNumber
 
       if (!noAutoUpdateCountryCode && this.results && this.results.countryCode && (countryCode !== this.results.countryCode)) {
         this.setCountryCode(this.results.countryCode)
@@ -314,14 +323,28 @@ export default {
       // @arg Object with all parsed values
       this.$emit('update', this.results)
 
-      const { isValid, e164 } = this.results
-
       const valueToEmit = isValid ? e164 : this.asYouTypeNumber
       if (!valueToEmit && valueToEmit === value) return
 
       // sent when the user tape
       // @arg Phone number value formatted in e164 format (international format)
       this.$emit('input', valueToEmit)
+    },
+
+    onBlur (event) {
+      this.$emit('blur', event)
+
+      if (this.countryCode) {
+        this.asYouTypeNumber = getAsYouTypeFormat(
+          this.asYouTypeNumber,
+          this.countryCode
+        )
+      }
+    },
+
+    onKeydown(event) {
+      const target = event.target
+      this.cursorPosition = target?.selectionStart
     },
 
     async setCountryCode (locale, focusPhoneNumberInput) {
