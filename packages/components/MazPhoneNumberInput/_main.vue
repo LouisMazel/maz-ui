@@ -342,7 +342,7 @@ export default {
       }
     },
 
-    onKeydown(event) {
+    onKeydown (event) {
       const target = event.target
       this.cursorPosition = target?.selectionStart
     },

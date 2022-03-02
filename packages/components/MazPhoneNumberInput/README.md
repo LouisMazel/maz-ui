@@ -41,8 +41,8 @@
 | ---------- | ----------------------- | ------------------------------------------------------------------ |
 | update     | sent when the user tape | Object with all parsed values                                      |
 | input      | sent when the user tape | Phone number value formatted in e164 format (international format) |
-| focus      | -                       | -                                                                  |
 | blur       | -                       | -                                                                  |
+| focus      | -                       | -                                                                  |
 | change     | -                       | -                                                                  |
 | clear      | -                       | -                                                                  |
 
