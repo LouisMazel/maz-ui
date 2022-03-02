@@ -54,33 +54,42 @@
     'open-year-switcher',
   ])
 
+  const clonedCurrentDate = computed(() => cloneDate(props.currentDate))
+
   const monthLabel = computed(() => {
-    const clonedDate = cloneDate(props.currentDate)
     return props.double
       ? `${capitalize(
-          date(clonedDate, props.locale, { month: 'long' }),
+          date(clonedCurrentDate.value, props.locale, { month: 'long' }),
         )} - ${capitalize(
-          date(clonedDate.setMonth(clonedDate.getMonth() + 1), props.locale, {
-            month: 'long',
-          }),
+          date(
+            clonedCurrentDate.value.setMonth(
+              clonedCurrentDate.value.getMonth() + 1,
+            ),
+            props.locale,
+            {
+              month: 'long',
+            },
+          ),
         )}`
-      : capitalize(date(clonedDate, props.locale, { month: 'long' }))
+      : capitalize(
+          date(clonedCurrentDate.value, props.locale, { month: 'long' }),
+        )
   })
 
   const yearLabel = computed(() =>
-    date(props.currentDate, props.locale, { year: 'numeric' }),
+    date(clonedCurrentDate.value, props.locale, { year: 'numeric' }),
   )
 
   const previousMonth = () => {
     const value = new Date(
-      props.currentDate.setMonth(props.currentDate.getMonth() - 1),
+      clonedCurrentDate.value.setMonth(clonedCurrentDate.value.getMonth() - 1),
     )
     emits('update:current-date', value)
   }
 
   const nextMonth = () => {
     const value = new Date(
-      props.currentDate.setMonth(props.currentDate.getMonth() + 1),
+      clonedCurrentDate.value.setMonth(clonedCurrentDate.value.getMonth() + 1),
     )
     emits('update:current-date', value)
   }

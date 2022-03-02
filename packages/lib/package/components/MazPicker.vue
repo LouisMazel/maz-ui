@@ -252,7 +252,6 @@
     // format: { type: String, default: 'YYYY-MM-DD h:mm a' },
     // formatted: { type: String, default: 'llll' },
     // disabledDates: { type: Array, default: () => [] },
-    // noKeyboard: { type: Boolean, default: false },
     // disabledHours: { type: Array, default: () => [] },
   })
 
@@ -286,13 +285,15 @@
     },
   })
 
-  const currentDate = ref(
-    typeof props.modelValue === 'object'
+  const getCurrentDateValue = () => {
+    return typeof props.modelValue === 'object'
       ? getCurrentDate(props.modelValue.start)
       : props.onlyTime
       ? getCurrentDateForTimeValue(props.modelValue)
-      : getCurrentDate(props.modelValue),
-  )
+      : getCurrentDate(props.modelValue)
+  }
+
+  const currentDate = ref(getCurrentDateValue())
 
   const formatterOptions = computed<DateTimeFormatOptions>(() => {
     const { inputDateStyle, timeZone, inputTimeStyle, hour12 } = props
@@ -481,6 +482,8 @@
     (values, oldValues) => {
       const value = values[0] as PickerValue
       const oldValue = oldValues?.[0] as PickerValue
+
+      currentDate.value = getCurrentDateValue()
 
       if (typeof value === 'object' && (value.start || value.end)) {
         if (

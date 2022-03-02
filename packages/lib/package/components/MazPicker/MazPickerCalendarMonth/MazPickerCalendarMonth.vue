@@ -45,13 +45,12 @@
 
   const emits = defineEmits(['update:model-value', 'update:current-date'])
 
-  const clonedCurrentDate = computed(
-    () =>
-      new Date(
-        cloneDate(props.currentDate).setMonth(
-          props.currentDate.getMonth() + props.offsetMonth,
-        ),
+  const clonedCurrentDate = computed(() =>
+    cloneDate(
+      cloneDate(props.currentDate).setMonth(
+        props.currentDate.getMonth() + props.offsetMonth,
       ),
+    ),
   )
 
   const modelValue = computed({

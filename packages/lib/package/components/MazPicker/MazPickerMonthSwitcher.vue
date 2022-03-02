@@ -101,6 +101,10 @@
       &.--has-double {
         @apply maz-grid-cols-3;
       }
+
+      & > button {
+        @apply maz-h-full !important;
+      }
     }
   }
 

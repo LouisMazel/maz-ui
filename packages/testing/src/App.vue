@@ -27,7 +27,7 @@
       {{ rangeValue }}
     </code>
 
-    <!-- <MazPicker
+    <MazPicker
       v-model="rangeValue"
       style="width: 600px"
       label="Select date"
@@ -37,7 +37,7 @@
       color="info"
       shortcut="thisWeek"
       :first-day-of-week="1"
-    /> -->
+    />
 
     <!-- <div style="position: relative; width: 500px">
       <MazTabsBar :items="tabs" color="secondary" />

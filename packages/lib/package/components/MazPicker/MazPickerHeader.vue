@@ -80,8 +80,6 @@
     currentDate: { type: Date, required: true },
   })
 
-  // const currentDateTmp = ref<Date>(props.currentDate)
-
   const getCurrentDateTmp = () => {
     return typeof props.modelValue === 'object'
       ? cloneDate(

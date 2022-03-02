@@ -2,8 +2,8 @@
   <div class="maz-picker-calendar flex">
     <MazPickerShortcuts
       v-if="!noShortcuts && isRangeMode"
-      v-model:current-date="currentDate"
       v-model="modelValue"
+      :current-date="currentDate"
       :color="color"
       :shortcuts="shortcuts"
       :shortcut="shortcut"
