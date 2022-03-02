@@ -443,6 +443,15 @@
     noAutoUpdateCountryCode?: boolean,
   ) => {
     try {
+      formattedNumber.value = sanitizeNumber(phoneNumber)
+
+      results.value = getResultsFromPhoneNumber(
+        countryCode.value,
+        formattedNumber.value,
+      )
+
+      const { isValid, e164 } = results.value
+
       const hasDeletedCharac =
         formattedNumber.value &&
         phoneNumber &&
@@ -453,14 +462,9 @@
           ? cursorPosition.value + 1 >= phoneNumber.length
           : true
 
-      const shouldUseAsYoutType = !hasDeletedCharac && cursorIsAtEnd
+      const shouldUseAsYoutType =
+        (!hasDeletedCharac && cursorIsAtEnd) || isValid
 
-      formattedNumber.value = sanitizeNumber(phoneNumber)
-
-      results.value = getResultsFromPhoneNumber(
-        countryCode.value,
-        formattedNumber.value,
-      )
       if (countryCode.value) {
         const isFullNumber = formattedNumber.value?.includes('+')
 
@@ -479,8 +483,6 @@
       // sent when the user tape
       // @arg Object with all parsed values
       emits('update', results.value)
-
-      const { isValid, e164 } = results.value
 
       const valueToEmit = isValid ? e164 : formattedNumber.value
       if (!valueToEmit && valueToEmit === props.modelValue) {
