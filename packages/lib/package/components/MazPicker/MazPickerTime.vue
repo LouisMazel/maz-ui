@@ -141,7 +141,7 @@
   })
 
   const currentAmpm = computed(() => {
-    return currentHour.value
+    return typeof currentHour.value === 'number'
       ? currentHour.value >= 12
         ? 'pm'
         : 'am'
