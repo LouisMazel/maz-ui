@@ -87,7 +87,7 @@
         '--focused': inputFocused,
       }"
       @focus="inputFocused = true"
-      @blur="inputFocused = true"
+      @blur="onBlur"
       @update:model-value="buildResults($event)"
       @keydown="onKeydown($event)"
     />
@@ -492,6 +492,17 @@
       emits('update:model-value', valueToEmit)
     } catch (err) {
       throw new Error(`[MazPhoneNumberInput] (buildResults) ${err}`)
+    }
+  }
+
+  const onBlur = () => {
+    inputFocused.value = true
+
+    if (countryCode.value) {
+      formattedNumber.value = getAsYouTypeFormat(
+        countryCode.value,
+        formattedNumber.value,
+      )
     }
   }
 

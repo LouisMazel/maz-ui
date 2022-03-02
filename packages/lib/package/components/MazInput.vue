@@ -266,6 +266,7 @@
       }
 
       const blur = (event: Event) => {
+        console.log('blur')
         emit('blur', event)
         isFocused.value = false
       }
