@@ -87,9 +87,9 @@
         '--focused': inputFocused,
       }"
       @focus="inputFocused = true"
-      @blur="inputFocused = true"
+      @blur="onBlur"
       @update:model-value="buildResults($event)"
-      @keydown="lastKeyPressed = $event.key"
+      @keydown="onKeydown($event)"
     />
   </div>
 </template>
@@ -225,6 +225,7 @@
   const results = ref<Partial<Result>>({})
   const countryCode = ref<CountryCode>()
   const formattedNumber = ref<string>()
+  const cursorPosition = ref<number | null>()
   const examplesFileLoaded = ref(false)
   const inputFocused = ref(false)
   const lastKeyPressed = ref<KeyboardEvent['key']>()
@@ -391,6 +392,14 @@
     },
   )
 
+  const onKeydown = (event: KeyboardEvent) => {
+    lastKeyPressed.value = event.key
+
+    const target = event.target as HTMLInputElement | undefined
+
+    cursorPosition.value = target?.selectionStart
+  }
+
   const getPhoneNumberExample = () => {
     try {
       const phoneNumber = countryCode.value
@@ -418,7 +427,7 @@
     const backSpacePressed = lastKeyPressed.value === 'Backspace'
 
     const lastCharacOfPhoneNumber = phoneNumber
-      ? phoneNumber.trim().substr(-1)
+      ? phoneNumber.trim().substring(-1)
       : false
     const lastCharIsParanthese = lastCharacOfPhoneNumber === ')'
 
@@ -440,13 +449,31 @@
         countryCode.value,
         formattedNumber.value,
       )
+
+      const { isValid, e164 } = results.value
+
+      const hasDeletedCharac =
+        formattedNumber.value &&
+        phoneNumber &&
+        formattedNumber.value?.length > phoneNumber?.length
+
+      const cursorIsAtEnd =
+        phoneNumber && cursorPosition.value
+          ? cursorPosition.value + 1 >= phoneNumber.length
+          : true
+
+      const shouldUseAsYoutType =
+        (!hasDeletedCharac && cursorIsAtEnd) || isValid
+
       if (countryCode.value) {
         const isFullNumber = formattedNumber.value?.includes('+')
 
         formattedNumber.value =
           results.value.formatNational && isFullNumber
             ? results.value.formatNational
-            : getAsYouTypeFormat(countryCode.value, formattedNumber.value)
+            : shouldUseAsYoutType
+            ? getAsYouTypeFormat(countryCode.value, formattedNumber.value)
+            : formattedNumber.value
       }
 
       if (!noAutoUpdateCountryCode) {
@@ -456,8 +483,6 @@
       // sent when the user tape
       // @arg Object with all parsed values
       emits('update', results.value)
-
-      const { isValid, e164 } = results.value
 
       const valueToEmit = isValid ? e164 : formattedNumber.value
       if (!valueToEmit && valueToEmit === props.modelValue) {
@@ -469,6 +494,17 @@
       emits('update:model-value', valueToEmit)
     } catch (err) {
       throw new Error(`[MazPhoneNumberInput] (buildResults) ${err}`)
+    }
+  }
+
+  const onBlur = () => {
+    inputFocused.value = true
+
+    if (countryCode.value) {
+      formattedNumber.value = getAsYouTypeFormat(
+        countryCode.value,
+        formattedNumber.value,
+      )
     }
   }
 
