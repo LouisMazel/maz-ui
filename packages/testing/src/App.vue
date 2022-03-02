@@ -6,6 +6,8 @@
       Dark Switch
     </MazBtn>
 
+    <MazPhoneNumberInput v-model="phoneNumber" />
+
     <div style="position: relative; width: 500px">
       <MazTabsBar :items="tabs" color="secondary" />
 
@@ -22,13 +24,14 @@
 </template>
 
 <script lang="ts" setup>
-  import { onMounted } from 'vue'
+  import { onMounted, ref } from 'vue'
   import { MazTabsItem } from 'maz-ui/package/components/MazTabsBar.vue'
   import {
     MazBtn,
     MazTabsBar,
     MazTabsContent,
     MazTabsContentItem,
+    MazPhoneNumberInput,
   } from 'maz-ui/package/components'
 
   const tabs: MazTabsItem[] = [
@@ -36,6 +39,8 @@
     { label: 'Second Tab', disabled: false },
     { label: 'Third Tab', disabled: true },
   ]
+
+  const phoneNumber = ref('0657574372')
 
   onMounted(() => {
     autoSetDarkMode()
