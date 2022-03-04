@@ -3,7 +3,12 @@ import type { DefaultThemeOptions } from 'vuepress'
 import { path } from '@vuepress/utils'
 import { navbar, sidebar } from './configs'
 
-const getBaseUrl = (path: string) => {
+const getBaseUrl = (path: string): string => {
+  const base = process.env.NODE_ENV === 'production' ? '/maz-ui-3' : ''
+  return `${base}${path}`
+}
+
+const getAssetBaseUrl = (path: string): string => {
   const base = process.env.NODE_ENV === 'production' ? 'https://louismazel.github.io/maz-ui-3' : ''
   return `${base}${path}`
 }
@@ -23,7 +28,7 @@ export default defineUserConfig<DefaultThemeOptions>({
         rel: 'icon',
         type: 'image/png',
         sizes: '16x16',
-        href: getBaseUrl('/img/icons/favicon-16x16.png'),
+        href: getAssetBaseUrl('/img/icons/favicon-16x16.png'),
       },
     ],
     [
@@ -32,10 +37,10 @@ export default defineUserConfig<DefaultThemeOptions>({
         rel: 'icon',
         type: 'image/png',
         sizes: '32x32',
-        href: getBaseUrl('/img/icons/favicon-32x32.png'),
+        href: getAssetBaseUrl('/img/icons/favicon-32x32.png'),
       },
     ],
-    ['link', { rel: 'manifest', href: getBaseUrl('/manifest.webmanifest') }],
+    ['link', { rel: 'manifest', href: getAssetBaseUrl('/manifest.webmanifest') }],
     ['meta', { name: 'application-name', content: 'Maz UI' }],
     ['meta', { name: 'apple-mobile-web-app-title', content: 'Maz UI' }],
     [
@@ -72,7 +77,7 @@ export default defineUserConfig<DefaultThemeOptions>({
     ],
     [
       'link',
-      { rel: 'apple-touch-icon', href: getBaseUrl('/img/icons/apple-touch-icon.png') },
+      { rel: 'apple-touch-icon', href: getAssetBaseUrl('/img/icons/apple-touch-icon.png') },
     ],
     [
       'link',
@@ -86,15 +91,15 @@ export default defineUserConfig<DefaultThemeOptions>({
       'link',
       {
         rel: 'mask-icon',
-        href: getBaseUrl('/img/icons/safari-pinned-tab.svg'),
+        href: getAssetBaseUrl('/img/icons/safari-pinned-tab.svg'),
         color: '#3eaf7c',
       },
     ],
     ['meta', { name: 'msapplication-TileColor', content: '#2d89ef' }],
     ['meta', { name: 'theme-color', content: '#ffffff' }],
-    ['meta', { name: 'msapplication-TileImage', content: getBaseUrl('/img/maz-ui-preview.jpg') }],
-    ['meta', { property: 'og:image', content: getBaseUrl('/img/maz-ui-preview.jpg') }],
-    ['meta', { name: 'twitter:image', content: getBaseUrl('/img/maz-ui-preview.jpg') }]
+    ['meta', { name: 'msapplication-TileImage', content: getAssetBaseUrl('/img/maz-ui-preview.jpg') }],
+    ['meta', { property: 'og:image', content: getAssetBaseUrl('/img/maz-ui-preview.jpg') }],
+    ['meta', { name: 'twitter:image', content: getAssetBaseUrl('/img/maz-ui-preview.jpg') }]
   ],
 
   // theme and its config
