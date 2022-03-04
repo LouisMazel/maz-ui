@@ -2,7 +2,7 @@
     "name": "Maz-UI",
     "short_name": "Maz-UI",
     "description": "Documentation of Maz-UI",
-    "start_url": "/maz-ui-3/index.html",
+    "start_url": "/index.html",
     "icons": [
         {
             "src": "https://louismazel.github.io/maz-ui-3/img/icons/android-chrome-192x192.png",
