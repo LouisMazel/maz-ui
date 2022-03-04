@@ -296,7 +296,8 @@
           : (barWidth / range.value) * (v - min),
       )
     } else {
-      console.warn('MazSlider ref not found')
+      // eslint-disable-next-line no-console
+      console.warn('[maz-ui][MazSlider] ref component not found')
     }
   }
   const getCursorsValues = async () => {
@@ -316,7 +317,8 @@
             (pos: number) => Math.round(pos / (barWidth / range.value)) + min,
           )
     } else {
-      console.log('MazSlider ref not found')
+      // eslint-disable-next-line no-console
+      console.log('[maz-ui][MazSlider] ref component not found')
     }
   }
   const handleMousedown = (
@@ -349,7 +351,10 @@
         buttonPositions.value[activeCursor.value + 1] || barWidth
 
       if (!MazSlider.value)
-        return console.error('[MazSlider] MazSlider not available')
+        // eslint-disable-next-line no-console
+        return console.error(
+          '[maz-ui](MazSlider/handleMousemove) MazSlider not available',
+        )
 
       buttonPositions.value[activeCursor.value] = (() => {
         const movement = getPos(event, MazSlider.value).x

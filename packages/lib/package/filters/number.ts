@@ -12,18 +12,22 @@ export const number = (
     ...options,
   }
   if (typeof number === 'undefined')
-    throw new TypeError('[FilterNumber] The `number` attribute is required.')
+    throw new TypeError(
+      '[maz-ui](FilterNumber) The `number` attribute is required.',
+    )
   if (typeof locale === 'undefined')
-    throw new TypeError('[FilterNumber] The `locale` attribute is required.')
+    throw new TypeError(
+      '[maz-ui](FilterNumber) The `locale` attribute is required.',
+    )
   if (typeof locale !== 'string')
     throw new TypeError(
-      '[FilterNumber] The `locale` attribute must be a string.',
+      '[maz-ui](FilterNumber) The `locale` attribute must be a string.',
     )
 
   try {
     return new Intl.NumberFormat(locale, options).format(Number(number))
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    throw new Error(`[FilterNumber] ${error}`)
+    throw new Error(`[maz-ui](FilterNumber) ${error}`)
   }
 }

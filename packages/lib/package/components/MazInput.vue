@@ -15,6 +15,7 @@
       `--${color}`,
       `--${size}`,
     ]"
+    @click="$emit('click', $event)"
   >
     <div
       class="m-input-wrapper maz-border"
@@ -44,6 +45,7 @@
             input: (event) => emitValue(event.target.value),
             blur,
             focus,
+            change,
           }"
         />
 
@@ -138,6 +140,7 @@
             'success',
             'white',
             'black',
+            'transparent',
           ].includes(value)
         },
       },
@@ -188,7 +191,7 @@
       leftIcon: { type: String, default: undefined },
       rightIcon: { type: String, default: undefined },
     },
-    emits: ['focus', 'blur', 'update:model-value'],
+    emits: ['focus', 'blur', 'update:model-value', 'click', 'change', 'update'],
     setup(props, { emit, slots }) {
       const hasPasswordVisible = ref(false)
       const isFocused = ref(false)
@@ -270,6 +273,8 @@
         isFocused.value = false
       }
 
+      const change = (event: Event) => emit('change', event)
+
       const debounceEmitValue = debounce((value: string | number) => {
         emit('update:model-value', value[0])
       }, props.debounceDelay)
@@ -292,6 +297,7 @@
         borderStyle,
         focus,
         blur,
+        change,
         emitValue,
         hasRightPart,
         hasLeftPart,
@@ -410,6 +416,12 @@
     &.--should-up {
       & .m-input-label {
         transform: scale(0.8) translateY(-0.65rem);
+      }
+    }
+
+    &.--is-readonly {
+      & .m-input-input {
+        @apply maz-cursor-default;
       }
     }
 

@@ -1,17 +1,9 @@
 import { vClickOutside, vClickOutsideInstall } from './click-outside.directive'
 import { vClosable, vClosableInstall } from './closable.directive'
-import {
-  vZoomImg,
-  vZoomImgInstall,
-  vZoomImgOptions,
-  vZoomImgBinding,
-} from './zoom-img.directive'
-import {
-  vLazyImg,
-  vLazyImgInstall,
-  vLazyImgOptions,
-  vLazyImgBinding,
-} from './v-lazy-img'
+import { vZoomImg, vZoomImgInstall } from './zoom-img.directive'
+import type { vZoomImgOptions, vZoomImgBinding } from './zoom-img.directive'
+import { vLazyImg, vLazyImgInstall } from './v-lazy-img'
+import type { vLazyImgOptions, vLazyImgBinding } from './v-lazy-img'
 
 const directives = [
   {

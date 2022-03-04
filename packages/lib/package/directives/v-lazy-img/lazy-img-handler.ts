@@ -87,7 +87,8 @@ export class LazyImg {
   }
 
   private imageHasError(el: HTMLElement, event?: ErrorEvent): void {
-    console.warn(`[MazLazyImg] Error while loading image`, event)
+    // eslint-disable-next-line no-console
+    console.warn(`[maz-ui][MazLazyImg] Error while loading image`, event)
     this.removeClass(el, this.options.loadingClass)
     this.addClass(el, this.options.errorClass)
 
@@ -106,7 +107,8 @@ export class LazyImg {
     const bindingSrc =
       typeof binding.value === 'object' ? binding.value.src : binding.value
 
-    if (!bindingSrc) console.warn(`[MazLazyImg] src url is not defined`)
+    // eslint-disable-next-line no-console
+    if (!bindingSrc) console.warn(`[maz-ui][MazLazyImg] src url is not defined`)
 
     return bindingSrc
   }
@@ -118,14 +120,16 @@ export class LazyImg {
       for await (const source of sourceElements) {
         const srcSet = source.getAttribute('data-srcset')
         if (!srcSet)
+          // eslint-disable-next-line no-console
           console.warn(
-            '[MazLazyImg] the "[data-srcset]" attribute is not provided on "<source />"',
+            '[maz-ui][MazLazyImg] the "[data-srcset]" attribute is not provided on "<source />"',
           )
         else source.srcset = srcSet
       }
     } else {
+      // eslint-disable-next-line no-console
       console.warn(
-        '[MazLazyImg] No "<source />" elements provided into the "<picture />" element',
+        '[maz-ui][MazLazyImg] No "<source />" elements provided into the "<picture />" element',
       )
       this.imageHasError(el)
     }

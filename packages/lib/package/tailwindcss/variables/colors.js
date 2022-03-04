@@ -23,11 +23,11 @@ module.exports = {
     800,
     900,
     'contrast',
+    'alpha',
   ],
   'variating-colors': {
     primary: true,
     secondary: true,
-    'accent-hover': ['DEFAULT'],
     info: true,
     success: true,
     warning: true,

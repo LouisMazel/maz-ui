@@ -1,4 +1,4 @@
-import { Directive, DirectiveBinding, Plugin } from 'vue'
+import { Directive, DirectiveBinding, Plugin, nextTick } from 'vue'
 
 const UNIQUE_ID = '__vue_click_away__'
 
@@ -7,24 +7,22 @@ const getEventType = () => {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const onMounted = (el: any, binding: DirectiveBinding) => {
+const onMounted = async (el: any, binding: DirectiveBinding) => {
   onUnmounted(el)
 
   const vm = binding.instance
   const callback = binding.value
 
-  let nextTick = false
-  setTimeout(() => {
-    nextTick = true
-  }, 0)
+  const isCallbackFunction = typeof callback === 'function'
+
+  if (!isCallbackFunction) {
+    throw new Error('[maz-ui](vClickOutside) the callback should be a function')
+  }
+
+  await nextTick()
 
   el[UNIQUE_ID] = (event: Event) => {
-    if (
-      (!el || !el.contains(event.target)) &&
-      callback &&
-      nextTick &&
-      typeof callback === 'function'
-    ) {
+    if ((!el || !el.contains(event.target)) && callback && isCallbackFunction) {
       return callback.call(vm, event)
     }
   }

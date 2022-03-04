@@ -1,14 +1,63 @@
 <template>
   <div
-    class="maz-flex maz-flex-col maz-w-full maz-flex-center maz-text-normal-text"
+    class="maz-flex maz-flex-col maz-w-full maz-items-center maz-text-normal-text"
   >
     <MazBtn style="margin-bottom: 16px" @click="toggleDarkMode">
       Dark Switch
     </MazBtn>
 
-    <MazPhoneNumberInput v-model="phoneNumber" />
+    <code class="maz-mb-2">
+      {{ dateValue }}
+    </code>
 
-    <div style="position: relative; width: 500px">
+    <!-- <MazBtn id="customElement"> {{ dateValue || 'Select Date' }} </MazBtn> -->
+
+    <!-- <MazPicker
+      v-model="dateValue"
+      label="Select date"
+      style="width: 400px"
+      time
+      hour12
+      color="secondary"
+    /> -->
+
+    <MazPicker
+      v-model="dateValue"
+      style="width: 400px"
+      label="Select date"
+      color="secondary"
+      :disabled-dates="['1990-02-04', '1990-02-20']"
+      :disabled-hours="[0, 1, 2, 3, 4, 5, 6, 20, 21, 22, 23]"
+      hour12
+      time
+    />
+
+    <h1>Range</h1>
+
+    <code class="maz-mb-2">
+      {{ rangeValue }}
+    </code>
+
+    <MazPicker
+      v-model="rangeValue"
+      style="width: 600px"
+      label="Select date"
+      input-date-format="full"
+      double
+      min-date="1990-02-05"
+      max-date="1990-03-20"
+      color="info"
+      :first-day-of-week="1"
+    />
+
+    <MazPicker
+      v-model="rangeValues"
+      label="Select periode"
+      color="secondary"
+      double
+    />
+
+    <!-- <div style="position: relative; width: 500px">
       <MazTabsBar :items="tabs" color="secondary" />
 
       <MazTabsContent>
@@ -19,28 +68,36 @@
           <p>evzionfez</p>
         </MazTabsContentItem>
       </MazTabsContent>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script lang="ts" setup>
   import { onMounted, ref } from 'vue'
-  import { MazTabsItem } from 'maz-ui/package/components/MazTabsBar.vue'
+  // import { MazTabsItem } from 'maz-ui/package/components/MazTabsBar.vue'
   import {
     MazBtn,
-    MazTabsBar,
-    MazTabsContent,
-    MazTabsContentItem,
-    MazPhoneNumberInput,
+    // MazTabsBar,
+    // MazTabsContent,
+    // MazTabsContentItem,
+    MazPicker,
   } from 'maz-ui/package/components'
 
-  const tabs: MazTabsItem[] = [
-    { label: 'First Tab', disabled: false },
-    { label: 'Second Tab', disabled: false },
-    { label: 'Third Tab', disabled: true },
-  ]
+  const dateValue = ref('1990-02-03')
+  const rangeValue = ref({
+    start: '1990-02-03',
+    end: '1990-03-28',
+  })
+  const rangeValues = ref({
+    start: '2022-02-03',
+    end: '2022-02-28',
+  })
 
-  const phoneNumber = ref('0657574372')
+  // const tabs: MazTabsItem[] = [
+  //   { label: 'First Tab', disabled: false },
+  //   { label: 'Second Tab', disabled: false },
+  //   { label: 'Third Tab', disabled: true },
+  // ]
 
   onMounted(() => {
     autoSetDarkMode()
@@ -78,8 +135,8 @@
 
   #app {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    padding: 40px;
     height: 100vh;
+    /* align-items: flex-end; */
   }
 </style>

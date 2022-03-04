@@ -1,7 +1,7 @@
 <template>
   <div
     ref="MazTabsBar"
-    class="maz-tabs-bar"
+    class="m-tabs-bar"
     :class="{
       '--align-left': alignLeft,
     }"
@@ -11,15 +11,15 @@
       :key="index"
       color="transparent"
       :class="{ '--active': currentTab === index, '--disabled': disabled }"
-      class="maz-tabs-bar__item --no-styling"
+      class="m-tabs-bar__item --no-styling"
       :disabled="disabled"
       :to="useAnchor ? `#${labelNormalize(label)}` : undefined"
       @click="setValue(index)"
     >
       {{ label }}
     </MazBtn>
-    <div :style="tabsIndicatorState" class="maz-tabs-bar__indicator">
-      <div class="maz-sub-bar" />
+    <div :style="tabsIndicatorState" class="m-tabs-bar__indicator">
+      <div class="m-sub-bar" />
     </div>
   </div>
 </template>
@@ -32,14 +32,7 @@
 </script>
 
 <script lang="ts" setup>
-  import {
-    ref,
-    PropType,
-    computed,
-    onBeforeMount,
-    onMounted,
-    getCurrentInstance,
-  } from 'vue'
+  import { ref, PropType, computed, onBeforeMount, onMounted } from 'vue'
   import MazBtn from './MazBtn.vue'
 
   // const toKebabCase = (string: string) => {
@@ -49,9 +42,6 @@
   //     .map((word) => word.toLowerCase())
   //     .join('-')
   // }
-
-  const instance = getCurrentInstance()
-  console.log('instance MazTabsBar', instance)
 
   const getIndexOfCurrentAnchor = (tabs: MazTabsItem[], value: number) => {
     if (typeof window === 'undefined') return value
@@ -78,7 +68,7 @@
       return
     }
 
-    const tabItems = document.querySelectorAll('.maz-tabs-bar__item')
+    const tabItems = document.querySelectorAll('.m-tabs-bar__item')
     const tabItemActive = tabItems?.[currentTab.value] as HTMLElement
 
     const indicatorWidth = tabItemActive ? tabItemActive.clientWidth : 0
@@ -93,7 +83,7 @@
     const { modelValue, useAnchor, items } = props
     if (modelValue < 1 || modelValue > items.length)
       throw new Error(
-        `[Maz-ui](maz-tabs-bar) The init value should be between 1 and ${items.length}`,
+        `[Maz-ui](MazTabsBar) The init value should be between 1 and ${items.length}`,
       )
 
     if (!useAnchor) setValue(modelValue - 1)
@@ -127,11 +117,11 @@
 
 <style lang="postcss" scoped>
   /* stylelint-disable no-descending-specificity */
-  .maz-tabs-bar {
+  .m-tabs-bar {
     @apply maz-relative maz-flex maz-space-x-1 maz-overflow-x-auto;
 
     &:not(.--align-left) {
-      & .maz-tabs-bar__item {
+      & .m-tabs-bar__item {
         @apply maz-flex-1;
       }
     }
@@ -147,7 +137,7 @@
 
       height: 2px;
 
-      & .maz-sub-bar {
+      & .m-sub-bar {
         @apply maz-mx-auto maz-w-3/5 maz-bg-primary;
 
         height: 2px;

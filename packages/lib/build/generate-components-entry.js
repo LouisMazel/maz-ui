@@ -45,6 +45,7 @@ const buildEntry = (template, importTemplate, outputPath) => {
   })
 
   writeFileSync(outputPath, file)
+  // eslint-disable-next-line no-console
   console.log('[build entry] DONE:', outputPath)
 }
 

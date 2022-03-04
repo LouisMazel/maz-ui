@@ -62,9 +62,9 @@
         </th>
       </thead>
       <tbody>
-        <tr v-for="(events, i) in events" :key="i">
+        <tr v-for="(event, i) in events" :key="i">
           <td style="white-space: nowrap;">
-            {{ events }}
+            {{ event }}
           </td>
         </tr>
       </tbody>
@@ -87,6 +87,7 @@
 </template>
 
 <script lang="ts" setup>
+import { log } from 'console'
 import { computed, ref, onBeforeMount, onMounted, watch } from 'vue'
 
 const props = defineProps({
@@ -100,7 +101,7 @@ const options = ref()
 const events = ref()
 const methods = ref()
 
-const getValidatorValues = (validator) => {
+const getValidatorValues = (validator: string) => {
   const firstPart = String(validator)?.split('[')[1]
   const secondePart = firstPart?.split(']')[0]
 
@@ -122,16 +123,17 @@ const getEvents = async () => {
 const getOptions = async () => {
   const component = await getComponent()
 
+  const componentProps = component?.props as Record<string, Record<string, any>> | undefined
 
-  if (component?.props) {
-    options.value = Object.entries(component.props).map((prop) => {
+  if (componentProps) {
+    options.value = Object.entries(componentProps).map((prop) => {
       return {
         name: camelToSnakeCase(prop[0]),
         type: Array.isArray(prop[1].type) ? prop[1].type.map((type) => type.name).join('|') : prop[1].type?.name ?? '-',
         defaultValue: (typeof prop[1].default === 'boolean'
           ? prop[1].default
           : typeof prop[1].default === 'function'
-          ? prop[1].default
+          ? prop[1].default()
           : prop[1].default?.name ?? prop[1].default) ?? '-',
         required: prop[1].required ? 'true' : 'false',
         values: getValidatorValues(prop[1].validator),

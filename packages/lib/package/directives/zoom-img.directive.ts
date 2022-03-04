@@ -174,7 +174,7 @@ class VueZoomImg {
     }
 
     if (typeof binding.value === 'object' && !binding.value.src) {
-      throw new Error('[MazUI](zoom-img) src of image must be provided')
+      throw new Error('[maz-ui](zoom-img) src of image must be provided')
     }
 
     this.buttonsAdded = false
