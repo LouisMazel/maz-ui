@@ -75,8 +75,8 @@
     color: { type: String as PropType<Color>, required: true },
     minDate: { type: String, default: undefined },
     maxDate: { type: String, default: undefined },
-    disabledWeekly: { type: Array as PropType<number[]>, default: undefined },
-    disabledDates: { type: Array as PropType<string[]>, default: undefined },
+    disabledWeekly: { type: Array as PropType<number[]>, required: true },
+    disabledDates: { type: Array as PropType<string[]>, required: true },
   })
 
   const emits = defineEmits(['update:model-value'])

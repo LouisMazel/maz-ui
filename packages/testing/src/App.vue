@@ -38,7 +38,7 @@
       {{ rangeValue }}
     </code>
 
-    <!-- <MazPicker
+    <MazPicker
       v-model="rangeValue"
       style="width: 600px"
       label="Select date"
@@ -48,7 +48,14 @@
       max-date="1990-03-20"
       color="info"
       :first-day-of-week="1"
-    /> -->
+    />
+
+    <MazPicker
+      v-model="rangeValues"
+      label="Select periode"
+      color="secondary"
+      double
+    />
 
     <!-- <div style="position: relative; width: 500px">
       <MazTabsBar :items="tabs" color="secondary" />
@@ -80,6 +87,10 @@
   const rangeValue = ref({
     start: '1990-02-03',
     end: '1990-03-28',
+  })
+  const rangeValues = ref({
+    start: '2022-02-03',
+    end: '2022-02-28',
   })
 
   // const tabs: MazTabsItem[] = [

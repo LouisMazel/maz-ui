@@ -26,7 +26,7 @@ This component is based on native browser native API [Date Constructor](https://
 
 - `first-day-of-week` (default: `0`): should be a `number` - Example: For France, you should set `:first-day-of-week="1"` to have monday at the first day of week in calendar.
 
-- `inputDateStyle`: Must be a value of [Intl.DateTimeFormatOptions['dateStyle']](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat) - Availables options : `full | long | medium | short`
+- `inputDateStyle`: To customize the date format into the input - Must be a value of [Intl.DateTimeFormatOptions['dateStyle']](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat) - Availables options : `full | long | medium | short`
 
 - `inputTimeStyle`: Like `inputDateStyle` - Must be a value of [Intl.DateTimeFormatOptions['TimeStyle']](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat) - Available options : `full | long | medium | short`
 
@@ -132,7 +132,7 @@ To enable the range mode, you should provide an object like this `{ start: undef
 
 <MazPicker
   v-model="rangeValues"
-  label="Select date"
+  label="Select periode"
   color="secondary"
   double
 />

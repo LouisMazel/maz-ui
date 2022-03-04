@@ -200,12 +200,12 @@
         ].includes(value)
       },
     },
-    disabledWeekly: { type: Array as PropType<number[]>, default: undefined },
+    disabledWeekly: { type: Array as PropType<number[]>, default: () => [] },
     disabledHours: {
       type: Array as PropType<number[]>,
-      default: undefined,
+      default: () => [],
     },
-    disabledDates: { type: Array as PropType<string[]>, default: undefined },
+    disabledDates: { type: Array as PropType<string[]>, default: () => [] },
     noShortcuts: { type: Boolean, default: false },
     shortcuts: {
       type: Array as PropType<PickerShortcut[]>,
@@ -577,39 +577,32 @@
     () => [modelValue.value, props.disabledWeekly, props.disabledDates],
     (values) => {
       const value = values[0] as PickerValue
-      const disabledWeekly = values[1] as number[] | undefined
-      const disabledDates = values[2] as string[] | undefined
+      const disabledWeekly = values[1] as number[]
+      const disabledDates = values[2] as string[]
 
-      if (disabledWeekly || disabledDates) {
-        if (typeof value === 'object' && (value.start || value.end)) {
-          if (
-            (value.start &&
-              disabledWeekly &&
-              isValueDisabledWeekly({ value: value.start, disabledWeekly })) ||
-            (value.start &&
-              disabledDates &&
-              isValueDisabledDate({ value: value.start, disabledDates }))
-          ) {
-            modelValue.value = { start: undefined, end: value.end }
-          }
-          if (
-            (value.end &&
-              disabledWeekly &&
-              isValueDisabledWeekly({ value: value.end, disabledWeekly })) ||
-            (value.end &&
-              disabledDates &&
-              isValueDisabledDate({ value: value.end, disabledDates }))
-          ) {
-            modelValue.value = { start: value.start, end: undefined }
-          }
-        } else if (typeof value === 'string') {
-          if (
-            (disabledWeekly &&
-              isValueDisabledWeekly({ value, disabledWeekly })) ||
-            (disabledDates && isValueDisabledDate({ value, disabledDates }))
-          ) {
-            modelValue.value = undefined
-          }
+      if (typeof value === 'object' && (value.start || value.end)) {
+        if (
+          (value.start &&
+            isValueDisabledWeekly({ value: value.start, disabledWeekly })) ||
+          (value.start &&
+            isValueDisabledDate({ value: value.start, disabledDates }))
+        ) {
+          modelValue.value = { start: undefined, end: value.end }
+        }
+        if (
+          (value.end &&
+            isValueDisabledWeekly({ value: value.end, disabledWeekly })) ||
+          (value.end &&
+            isValueDisabledDate({ value: value.end, disabledDates }))
+        ) {
+          modelValue.value = { start: value.start, end: undefined }
+        }
+      } else if (typeof value === 'string') {
+        if (
+          isValueDisabledWeekly({ value, disabledWeekly }) ||
+          isValueDisabledDate({ value, disabledDates })
+        ) {
+          modelValue.value = undefined
         }
       }
     },
