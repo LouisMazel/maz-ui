@@ -4,14 +4,14 @@ import { path } from '@vuepress/utils'
 import { navbar, sidebar } from './configs'
 
 const getBaseUrl = (path: string) => {
-  const base = process.env.NODE_ENV === 'production' ? '/maz-ui-3' : ''
+  const base = process.env.NODE_ENV === 'production' ? 'https://louismazel.github.io/maz-ui-3' : ''
   return `${base}${path}`
 }
 
 export default defineUserConfig<DefaultThemeOptions>({
   // site config
   lang: 'en-US',
-  title: 'Maz-UI',
+  title: 'Maz-UI - Vue.JS & Nuxt.JS library',
   description: 'Library of standalone components and tools for Vue & Nuxt',
   clientAppEnhanceFiles: path.resolve(__dirname, 'clientAppEnhance.ts'),
   base: getBaseUrl('/') as SiteData['base'],
@@ -44,10 +44,6 @@ export default defineUserConfig<DefaultThemeOptions>({
     ],
     [
       'meta',
-      { name: 'title', content: 'Maz UI - Standalone components and tools library for Vue.JS & Nuxt.JS' },
-    ],
-    [
-      'meta',
       { name: 'twitter:creator', content: '@mazeel' },
     ],
     [
@@ -57,6 +53,22 @@ export default defineUserConfig<DefaultThemeOptions>({
     [
       'meta',
       { name: 'twitter:site', content: '@maz__ui' },
+    ],
+    [
+      'meta',
+      { name: 'og:title', content: 'Maz-UI - Vue.JS & Nuxt.JS library' },
+    ],
+    [
+      'meta',
+      { name: 'og:description', content: 'Library of standalone components and tools for Vue & Nuxt' },
+    ],
+    [
+      'meta',
+      { name: 'twitter:title', content: 'Maz-UI - Vue.JS & Nuxt.JS library' },
+    ],
+    [
+      'meta',
+      { name: 'twitter:description', content: 'Library of standalone components and tools for Vue & Nuxt' },
     ],
     [
       'link',

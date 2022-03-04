@@ -2,15 +2,15 @@
     "name": "Maz-UI",
     "short_name": "Maz-UI",
     "description": "Documentation of Maz-UI",
-    "start_url": "/index.html",
+    "start_url": "/maz-ui-3/index.html",
     "icons": [
         {
-            "src": "/maz-ui-3/img/icons/android-chrome-192x192.png",
+            "src": "https://louismazel.github.io/maz-ui-3/img/icons/android-chrome-192x192.png",
             "sizes": "192x192",
             "type": "image/png"
         },
         {
-            "src": "/maz-ui-3/img/icons/android-chrome-512x512.png",
+            "src": "https://louismazel.github.io/maz-ui-3/img/icons/android-chrome-512x512.png",
             "sizes": "512x512",
             "type": "image/png"
         }
