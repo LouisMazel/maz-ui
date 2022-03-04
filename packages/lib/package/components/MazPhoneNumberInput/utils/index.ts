@@ -166,7 +166,7 @@ export function getAsYouTypeFormat(
 
 export async function fetchCountryCode() {
   try {
-    const response = await fetch('https://ip2c.gorg/s')
+    const response = await fetch('https://ip2c.org/s')
     const responseText = await response.text()
     const result = (responseText || '').toString()
 
@@ -178,9 +178,4 @@ export async function fetchCountryCode() {
   } catch (err) {
     throw new Error(`[MazPhoneNumberInput] (fetchCountryCode) ${err}`)
   }
-}
-
-type Truthy<T> = T extends false | '' | 0 | null | undefined ? never : T
-export function truthyFilter<T>(value: T): value is Truthy<T> {
-  return !!value
 }

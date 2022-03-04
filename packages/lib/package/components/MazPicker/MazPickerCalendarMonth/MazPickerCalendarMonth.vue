@@ -15,6 +15,7 @@
       :min-date="minDate"
       :max-date="maxDate"
       :disabled-weekly="disabledWeekly"
+      :disabled-dates="disabledDates"
     />
   </div>
 </template>
@@ -41,6 +42,7 @@
     minDate: { type: String, default: undefined },
     maxDate: { type: String, default: undefined },
     disabledWeekly: { type: Array as PropType<number[]>, default: undefined },
+    disabledDates: { type: Array as PropType<string[]>, default: undefined },
   })
 
   const emits = defineEmits(['update:model-value', 'update:current-date'])

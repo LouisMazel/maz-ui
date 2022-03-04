@@ -50,6 +50,7 @@
           :min-date="minDate"
           :max-date="maxDate"
           :disabled-weekly="disabledWeekly"
+          :disabled-dates="disabledDates"
         />
       </div>
     </div>
@@ -79,6 +80,7 @@
     minDate: { type: String, default: undefined },
     maxDate: { type: String, default: undefined },
     disabledWeekly: { type: Array as PropType<number[]>, default: undefined },
+    disabledDates: { type: Array as PropType<string[]>, default: undefined },
     shortcuts: {
       type: Array as PropType<PickerShortcut[]>,
       required: true,

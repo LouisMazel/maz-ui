@@ -34,6 +34,7 @@
         :max-date="maxDate"
         :first-day-of-week="firstDayOfWeek"
         :disabled-weekly="disabledWeekly"
+        :disabled-dates="disabledDates"
         :shortcuts="shortcuts"
         :shortcut="shortcut"
         :no-shortcuts="noShortcuts"
@@ -50,6 +51,7 @@
         :min-date="minDate"
         :has-date="hasDate"
         :max-date="maxDate"
+        :disabled-hours="disabledHours"
         :minute-interval="minuteInterval"
         :formatter-options="formatterOptions"
         class="m-picker-container__time"
@@ -100,6 +102,8 @@
       required: true,
     },
     minuteInterval: { type: Number, required: true },
+    disabledHours: { type: Array as PropType<number[]>, default: undefined },
+    disabledDates: { type: Array as PropType<string[]>, default: undefined },
   })
 
   const emits = defineEmits([
@@ -145,7 +149,7 @@
     }
 
     &__wrapper {
-      @apply maz-bg-color;
+      @apply maz-flex maz-bg-color;
     }
 
     & :deep(button):is(:disabled) {
@@ -155,7 +159,7 @@
 
   html.dark {
     & .m-picker-container__wrapper {
-      @apply maz-flex maz-bg-color-light;
+      @apply maz-bg-color-light;
     }
 
     & .m-picker-container {

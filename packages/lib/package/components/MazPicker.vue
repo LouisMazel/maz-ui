@@ -6,8 +6,8 @@
     :style="style"
     :class="[
       `m-picker--${color}`,
-      `m-picker--${listPositionClass.vertical}`,
-      `m-picker--${listPositionClass.horizontal}`,
+      `m-picker--${pickerContainerPosition.vertical}`,
+      `m-picker--${pickerContainerPosition.horizontal}`,
       {
         '--is-open': isOpen,
       },
@@ -38,18 +38,20 @@
     </MazInput>
     <Transition
       :name="
-        listPositionClass.vertical === 'top' ? 'maz-slideinvert' : 'maz-slide'
+        pickerContainerPosition.vertical === 'top'
+          ? 'maz-slideinvert'
+          : 'maz-slide'
       "
     >
       <MazPickerContainer
         v-show="isOpen"
-        id="mazPickerContainer"
+        :id="containerUniqueId"
         ref="PickerContainer"
         v-model="modelValue"
         v-model:current-date="currentDate"
         :is-open="isOpen"
         :color="color"
-        :locale="locale"
+        :locale="currentLocale"
         :has-footer="hasFooter"
         :has-date="hasDate"
         :double="hasDouble"
@@ -63,6 +65,8 @@
         :first-day-of-week="firstDayOfWeek"
         :shortcuts="shortcuts"
         :shortcut="shortcut"
+        :disabled-hours="disabledHours"
+        :disabled-dates="disabledDates"
         :minute-interval="minuteInterval"
         :no-shortcuts="noShortcuts"
         @close="closeCalendar"
@@ -86,6 +90,8 @@
     ref,
     StyleValue,
     watch,
+    getCurrentInstance,
+    nextTick,
   } from 'vue'
   import MazInput from './MazInput.vue'
   import MazPickerContainer from './MazPicker/MazPickerContainer.vue'
@@ -107,6 +113,9 @@
     DateTimeFormatOptions,
     getTimeString,
     getCurrentDateForTimeValue,
+    getBrowserLocale,
+    fetchLocale,
+    isValueDisabledDate,
   } from './MazPicker/utils'
 
   import { PickerValue, PickerShortcut, SimpleValue } from './MazPicker/types'
@@ -135,21 +144,22 @@
       type: Boolean as PropType<Intl.DateTimeFormatOptions['hour12']>,
       default: false,
     },
-    locale: { type: String, default: 'en-US' },
+    locale: { type: String, default: undefined },
     style: { type: Object as PropType<StyleValue>, default: undefined },
     noHeader: { type: Boolean, default: false },
     firstDayOfWeek: {
       type: Number,
       default: 0,
       validator: (value: number) => {
-        const isValid = value >= 0 && value <= 6
+        const isValid = [0, 1, 2, 3, 4, 5, 6].includes(value)
+
         if (!isValid) {
           // eslint-disable-next-line no-console
           console.error(
             '[maz-ui](MazPicker) "first-day-of-week" should be between 0 and 6',
           )
         }
-        return isValid ? true : false
+        return isValid
       },
     },
     autoClose: { type: Boolean, default: false },
@@ -174,7 +184,7 @@
         ].includes(value)
       },
     },
-    listPosition: {
+    pickerPosition: {
       type: String as PropType<Position>,
       default: undefined,
       validator: (value: Position) => {
@@ -191,6 +201,11 @@
       },
     },
     disabledWeekly: { type: Array as PropType<number[]>, default: undefined },
+    disabledHours: {
+      type: Array as PropType<number[]>,
+      default: undefined,
+    },
+    disabledDates: { type: Array as PropType<string[]>, default: undefined },
     noShortcuts: { type: Boolean, default: false },
     shortcuts: {
       type: Array as PropType<PickerShortcut[]>,
@@ -248,17 +263,22 @@
     time: { type: Boolean, default: false },
     onlyTime: { type: Boolean, default: false },
     minuteInterval: { type: Number, default: 5 },
-    // unused
-    // format: { type: String, default: 'YYYY-MM-DD h:mm a' },
-    // formatted: { type: String, default: 'llll' },
-    // disabledDates: { type: Array, default: () => [] },
-    // disabledHours: { type: Array, default: () => [] },
+    noUseBrowserLocale: { type: Boolean, default: false },
+    noFetchLocal: { type: Boolean, default: false },
   })
+
+  const instance = getCurrentInstance()
+
+  const currentLocale = ref<string>(props.locale || 'en-US')
+
+  const containerUniqueId = computed(
+    () => `mazPickerContainer-${instance?.uid}`,
+  )
 
   const emits = defineEmits(['update:model-value', 'close'])
 
   const MazPicker = ref<HTMLDivElement>()
-  const PickerContainer = ref<typeof MazPickerContainer | undefined>(undefined)
+  const PickerContainer = ref<typeof MazPickerContainer>()
 
   const hasDouble = computed(() => props.double && !props.time)
   const hasDate = computed(() => !props.onlyTime)
@@ -309,21 +329,26 @@
   const inputValue = computed(() => {
     if (props.onlyTime) {
       const baseDate = new Date().toISOString().split('T')[0]
+
       return modelValue.value
-        ? date(new Date(`${baseDate}T${modelValue.value}`), props.locale, {
-            timeStyle: props.inputTimeStyle,
-          })
+        ? date(
+            new Date(`${baseDate} ${modelValue.value}`),
+            currentLocale.value,
+            {
+              timeStyle: props.inputTimeStyle,
+            },
+          )
         : undefined
     } else if (typeof modelValue.value === 'object') {
       return getRangeFormattedDate({
         value: modelValue.value,
-        locale: props.locale,
+        locale: currentLocale.value,
         options: formatterOptions.value,
       })
     } else {
       return getFormattedDate({
         value: modelValue.value,
-        locale: props.locale,
+        locale: currentLocale.value,
         options: formatterOptions.value,
       })
     }
@@ -331,6 +356,13 @@
 
   const isFocused = ref(false)
   const programaticallyOpened = ref(false)
+  const pickerContainerPosition = ref<{
+    vertical: 'top' | 'bottom'
+    horizontal: 'left' | 'right'
+  }>({
+    vertical: 'bottom',
+    horizontal: 'left',
+  })
 
   const isOpen = computed(
     () =>
@@ -344,9 +376,22 @@
     () => !props.autoClose && !props.noFooter && !props.inline,
   )
 
-  onMounted(() => {
+  onMounted(async () => {
     if (props.customElementSelector) {
       addEventToTriggerCustomElement(props.customElementSelector)
+    }
+
+    if (!props.locale) {
+      const browserLocale = getBrowserLocale()
+      if (!props.noUseBrowserLocale && browserLocale) {
+        if (browserLocale) {
+          currentLocale.value = browserLocale
+        }
+      } else if (!props.noFetchLocal) {
+        const locale = await fetchLocale()
+
+        if (locale) currentLocale.value = locale
+      }
     }
   })
 
@@ -356,13 +401,15 @@
     }
   })
 
-  const listPositionClass = computed<{
+  const getPickerContainerPosition = async (): Promise<{
     vertical: 'top' | 'bottom'
     horizontal: 'left' | 'right'
-  }>(() => {
-    if (props.listPosition) {
-      const horizontal = props.listPosition.includes('right') ? 'right' : 'left'
-      const vertical = props.listPosition.includes('top') ? 'top' : 'bottom'
+  }> => {
+    if (props.pickerPosition) {
+      const horizontal = props.pickerPosition.includes('right')
+        ? 'right'
+        : 'left'
+      const vertical = props.pickerPosition.includes('top') ? 'top' : 'bottom'
 
       return {
         horizontal,
@@ -371,37 +418,43 @@
     } else {
       return {
         horizontal: 'left',
-        vertical: calcVerticalPosition(MazPicker.value, PickerContainer.value),
+        vertical: await calcVerticalPosition(MazPicker.value),
       }
     }
-  })
+  }
 
-  const calcVerticalPosition = (
+  const calcVerticalPosition = async (
     parent?: HTMLDivElement,
-    _pickerContainer?: typeof MazPickerContainer,
-  ): 'top' | 'bottom' => {
+  ): Promise<'top' | 'bottom'> => {
     if (typeof window === 'undefined') {
       return 'bottom'
     }
 
     const OFFSET = 30
 
+    await nextTick()
+
+    const pickerContainer = document.querySelector(
+      `#${containerUniqueId.value}`,
+    )
+
     const parentRect = parent?.getBoundingClientRect()
-
     const windowHeight = window.innerHeight
-    const pickerHeight =
-      (document.querySelector('#mazPickerContainer')?.clientHeight ?? 0) +
-      OFFSET
 
-    if (
-      parentRect &&
-      (parentRect.top < pickerHeight ||
-        windowHeight - (parentRect.height + pickerHeight + parentRect.top) >= 0)
-    ) {
-      return 'bottom'
-    } else {
+    const pickerHeight = (pickerContainer?.clientHeight ?? 0) - OFFSET
+
+    const spaceOnBottom = (parentRect && windowHeight - parentRect.bottom) ?? 0
+    const spaceOnTop = (parentRect && parentRect.top) ?? 0
+
+    const hasSpaceOnBottom = spaceOnBottom && spaceOnBottom >= pickerHeight
+
+    const hasSpaceOnTop = spaceOnTop && spaceOnTop >= pickerHeight
+
+    if (!hasSpaceOnBottom && (hasSpaceOnTop || spaceOnTop >= spaceOnBottom)) {
       return 'top'
     }
+
+    return 'bottom'
   }
 
   const closeCalendar = () => {
@@ -441,15 +494,18 @@
         if (newValue) modelValue.value = newValue
         if (newCurrentDate) currentDate.value = newCurrentDate
       } else if (typeof value === 'object' && (value.start || value.end)) {
+        let newStartValue = value.start
+        let newEndValue = value.end
+
         if (value.start) {
           const { newValue, newCurrentDate } = checkValueWithMinMaxDates({
             value: value.start,
             minDate: props.minDate,
             maxDate: props.maxDate,
           })
-          if (newValue) {
-            modelValue.value = { start: newValue, end: value.end }
-          }
+
+          if (newValue) newStartValue = newValue
+
           if (newCurrentDate) currentDate.value = newCurrentDate
         }
         if (value.end) {
@@ -458,27 +514,31 @@
             minDate: props.minDate,
             maxDate: props.maxDate,
           })
-          if (newValue) {
-            modelValue.value = { start: value.start, end: newValue }
-          }
+
+          if (newValue) newEndValue = newValue
+        }
+
+        modelValue.value = {
+          start: newStartValue,
+          end: newEndValue,
         }
       }
     }
   }
 
   const emitValue = (value: PickerValue) => {
-    value = props.onlyTime
+    const newValue = props.onlyTime
       ? getTimeString(value as SimpleValue)
       : typeof value === 'object'
       ? getRangeISODate(value, hasTime.value)
       : getISODate(value, hasTime.value)
 
-    emits('update:model-value', value)
+    emits('update:model-value', newValue)
   }
 
   // model value watcher
   watch(
-    () => [props.modelValue, props.minDate, props.maxDate],
+    () => [modelValue.value, props.minDate, props.maxDate],
     (values, oldValues) => {
       const value = values[0] as PickerValue
       const oldValue = oldValues?.[0] as PickerValue
@@ -487,12 +547,13 @@
 
       if (typeof value === 'object' && (value.start || value.end)) {
         if (
-          typeof oldValue === 'object' &&
-          (oldValue.start !== value.start || oldValue.end !== value.end)
+          !oldValue ||
+          (typeof oldValue === 'object' &&
+            (oldValue.start !== value.start || oldValue.end !== value.end))
         ) {
           emitValue(value)
+          checkMinMaxValues(value)
         }
-        checkMinMaxValues(value)
       } else if (typeof value === 'string' && value !== oldValue) {
         emitValue(value)
         checkMinMaxValues(value)
@@ -501,29 +562,52 @@
     { immediate: true },
   )
 
+  watch(
+    () => isOpen.value,
+    async (value) => {
+      if (value) {
+        pickerContainerPosition.value = await getPickerContainerPosition()
+      }
+    },
+    { immediate: true },
+  )
+
   // Disable weekly watcher
   watch(
-    () => [props.modelValue, props.disabledWeekly],
+    () => [modelValue.value, props.disabledWeekly, props.disabledDates],
     (values) => {
       const value = values[0] as PickerValue
       const disabledWeekly = values[1] as number[] | undefined
+      const disabledDates = values[2] as string[] | undefined
 
-      if (disabledWeekly) {
+      if (disabledWeekly || disabledDates) {
         if (typeof value === 'object' && (value.start || value.end)) {
           if (
-            value.start &&
-            isValueDisabledWeekly({ value: value.start, disabledWeekly })
+            (value.start &&
+              disabledWeekly &&
+              isValueDisabledWeekly({ value: value.start, disabledWeekly })) ||
+            (value.start &&
+              disabledDates &&
+              isValueDisabledDate({ value: value.start, disabledDates }))
           ) {
             modelValue.value = { start: undefined, end: value.end }
           }
           if (
-            value.end &&
-            isValueDisabledWeekly({ value: value.end, disabledWeekly })
+            (value.end &&
+              disabledWeekly &&
+              isValueDisabledWeekly({ value: value.end, disabledWeekly })) ||
+            (value.end &&
+              disabledDates &&
+              isValueDisabledDate({ value: value.end, disabledDates }))
           ) {
             modelValue.value = { start: value.start, end: undefined }
           }
         } else if (typeof value === 'string') {
-          if (isValueDisabledWeekly({ value: value, disabledWeekly })) {
+          if (
+            (disabledWeekly &&
+              isValueDisabledWeekly({ value, disabledWeekly })) ||
+            (disabledDates && isValueDisabledDate({ value, disabledDates }))
+          ) {
             modelValue.value = undefined
           }
         }

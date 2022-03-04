@@ -17,7 +17,8 @@
           :disabled="
             isSmallerMinDate(day) ||
             isBiggerMaxDate(day) ||
-            isDisabledWeekly(day)
+            isDisabledWeekly(day) ||
+            isDisabledDate(day)
           "
           :class="{
             '--is-today': checkIsToday(day),
@@ -75,6 +76,7 @@
     minDate: { type: String, default: undefined },
     maxDate: { type: String, default: undefined },
     disabledWeekly: { type: Array as PropType<number[]>, default: undefined },
+    disabledDates: { type: Array as PropType<string[]>, default: undefined },
   })
 
   const emits = defineEmits(['update:model-value'])
@@ -258,6 +260,16 @@
 
     return props.disabledWeekly.some((disabledDay) =>
       isSameDay(clonedCurrentDate.value.setDate(day), disabledDay),
+    )
+  }
+
+  const isDisabledDate = (day: number): boolean => {
+    if (!props.disabledDates?.length) {
+      return false
+    }
+
+    return props.disabledDates.some((disabledDay) =>
+      isSameDate(clonedCurrentDate.value.setDate(day), disabledDay),
     )
   }
 

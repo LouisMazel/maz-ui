@@ -53,7 +53,15 @@ export function getCurrentDate(value?: string | Date): Date {
 }
 
 export function getCurrentDateForTimeValue(value?: string) {
-  const base = value?.split('.')[0]
+  let base: string | undefined
+  if (
+    value?.toLowerCase().includes('am') ||
+    value?.toLowerCase().includes('pm')
+  ) {
+    base = convert12To24TimeFormat(value)
+  } else {
+    base = value?.split('.')[0]
+  }
 
   const hour = base ? Number(base.split(':')[0] ?? 0) : 0
   const minute = base ? Number(base.split(':')[1] ?? 0) : 0
@@ -241,11 +249,21 @@ export function isValueDisabledWeekly({
   value: string
   disabledWeekly: number[]
 }): boolean {
-  const isDisabled = disabledWeekly.some((dayNumber) =>
+  return disabledWeekly.some((dayNumber) =>
     isSameDay(new Date(value), dayNumber),
   )
+}
 
-  return isDisabled
+export function isValueDisabledDate({
+  value,
+  disabledDates,
+}: {
+  value: string
+  disabledDates: string[]
+}): boolean {
+  return disabledDates.some((disabledDate) =>
+    isSameDate(new Date(value), disabledDate),
+  )
 }
 
 export function getFirstDateOfWeek(date: Date | string | number): Date {
@@ -287,9 +305,8 @@ export function getTimeString(value?: string | Date) {
   const stringDate = value instanceof Date ? value.toLocaleTimeString() : value
 
   const date = getCurrentDateForTimeValue(stringDate)
-  const localeTimeSplited = date.toLocaleTimeString().split(':')
 
-  return `${localeTimeSplited[0]}:${localeTimeSplited[1]}:${localeTimeSplited[2]}`
+  return date.toLocaleTimeString()
 }
 
 export function convertHour24to12Format(baseHour: number): number {
@@ -298,4 +315,47 @@ export function convertHour24to12Format(baseHour: number): number {
 
 export function convertHour12to24Format(baseHour: number): number {
   return baseHour % 24 || 24
+}
+
+export const convert12To24TimeFormat = (timeStr: string) => {
+  const [time, modifier] = timeStr.split(' ')
+
+  let hours: string | number = time.split(':')[0]
+  const minutes = time.split(':')[1]
+  if (hours === '12') {
+    hours = '00'
+  }
+  if (modifier.toLowerCase().trim().includes('pm')) {
+    hours = parseInt(hours, 10) + 12
+  }
+  return `${hours}:${minutes}`
+}
+
+export function getBrowserLocale(): string | undefined {
+  try {
+    if (typeof window === 'undefined') {
+      return undefined
+    }
+
+    return window.navigator.language
+  } catch (err) {
+    throw new Error(`[MazPhoneNumberInput] (browserLocale) ${err}`)
+  }
+}
+
+export async function fetchLocale(): Promise<string | undefined> {
+  try {
+    const response = await fetch('https://ip2c.org/s')
+    const responseText = await response.text()
+    const result = (responseText || '').toString()
+
+    if (!result || result[0] !== '1') {
+      return undefined
+    }
+
+    return result.split(';')[1]
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error(`[maz-ui](MazPicker)(fetchCountryCode) ${err}`)
+  }
 }

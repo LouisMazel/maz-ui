@@ -16,11 +16,12 @@
       ></div>
       <div class="m-picker-time__column__items">
         <MazBtn
-          v-for="({ value, label }, unitIndex) in values"
+          v-for="({ value, label, disabled }, unitIndex) in values"
           :key="unitIndex"
           size="xs"
           :color="currentValue === value ? color : 'transparent'"
           :class="{ '--is-selected': currentValue === value }"
+          :disabled="disabled"
           type="button"
           @click.stop="selectTime(identifier, value)"
         >
@@ -43,7 +44,6 @@
     findNearestNumberInList,
     getCurrentDateForTimeValue,
     getTimeString,
-    // convertHour24to12Format,
   } from './utils'
   import MazBtn from '../MazBtn.vue'
   import { PickerValue } from './types'
@@ -66,13 +66,24 @@
     isOpen: { type: Boolean, required: true },
     hasDate: { type: Boolean, required: true },
     minuteInterval: { type: Number, required: true },
+    disabledHours: { type: Array as PropType<number[]>, default: undefined },
   })
 
-  // const findHour = (hour: number) =>
-  //   findNearestNumberInList(
-  //     hours.value.map(({ value }) => value),
-  //     isHour12.value ? convertHour24to12Format(hour) : hour,
-  //   )
+  const findNearestHour = (hour: number) => {
+    if (!props.disabledHours) {
+      return hour
+    }
+
+    const hourList = Array.from({ length: 24 }, (_v, i) => i).filter(
+      (hour) => !props.disabledHours?.includes(hour) ?? true,
+    )
+
+    const nearHour = findNearestNumberInList(hourList, hour)
+
+    selectTime('hour', nearHour)
+
+    return nearHour
+  }
 
   const emits = defineEmits(['update:model-value'])
 
@@ -89,7 +100,7 @@
           : getCurrentDateForTimeValue(modelValue.value),
       ).getHours()
 
-      return baseHour
+      return findNearestHour(baseHour)
     } else {
       return undefined
     }
@@ -120,10 +131,13 @@
   const hours = computed(() => {
     return Array.from({ length: isHour12.value ? 12 : 24 }, (_v, i) => i).map(
       (hour) => {
-        const hourValue = hour + (isHour12.value ? 1 : 0)
+        const hourBase = hour + (isHour12.value ? 1 : 0)
+        const hourValue = getHourValue(hourBase)
         return {
-          label: `${hourValue < 10 ? '0' : ''}${hourValue}`,
-          value: getHourValue(hourValue),
+          label: `${hourBase < 10 ? '0' : ''}${hourBase}`,
+          value: hourValue,
+          base: hour,
+          disabled: isDisableHour(hourValue),
         }
       },
     )
@@ -136,6 +150,7 @@
       (minute) => ({
         label: `${minute < 10 ? '0' : ''}${minute}`,
         value: minute,
+        disabled: false,
       }),
     )
   })
@@ -163,6 +178,7 @@
       values: {
         label: string
         value: number | 'am' | 'pm'
+        disabled?: boolean
       }[]
       currentValue: number | string | undefined
     }[] = [
@@ -203,7 +219,7 @@
         await nextTick()
 
         if (MazPickerTime.value) {
-          const item = document.querySelector(
+          const item = MazPickerTime.value.querySelector(
             `.m-picker-time__column .m-btn`,
           ) as HTMLButtonElement
           const itemHeight = item?.offsetHeight
@@ -226,13 +242,13 @@
       if (value) {
         await nextTick()
         scrollColumns()
-        // TODO
+
         modelValue.value = props.hasDate
           ? (modelValue.value
               ? new Date(modelValue.value as string)
               : new Date()
             ).toISOString()
-          : getTimeString(`${currentHour.value}:${currentMinute.value}:00`)
+          : getTimeString(`${currentHour.value}:${currentMinute.value}`)
       }
     },
     { immediate: true },
@@ -246,23 +262,29 @@
     }
   }
 
+  const isDisableHour = (value: number): boolean => {
+    return (props.disabledHours && props.disabledHours.includes(value)) ?? false
+  }
+
   const scrollColumn = async (identifier: ColumnIdentifier) => {
-    const column = document.querySelector(
-      `.m-picker-time__column__${identifier}`,
-    ) as HTMLDivElement | undefined
+    if (MazPickerTime.value) {
+      const column = MazPickerTime.value.querySelector(
+        `.m-picker-time__column__${identifier}`,
+      ) as HTMLDivElement | undefined
 
-    const selectedButton = document.querySelector(
-      `.m-picker-time__column__${identifier} .--is-selected`,
-    ) as HTMLButtonElement | undefined
+      const selectedButton = MazPickerTime.value.querySelector(
+        `.m-picker-time__column__${identifier} .--is-selected`,
+      ) as HTMLButtonElement | undefined
 
-    if (
-      dividerHeight.value &&
-      column &&
-      selectedButton &&
-      MazPickerTime.value
-    ) {
-      await nextTick()
-      scrollToTarget(column, selectedButton, dividerHeight.value * 16)
+      if (
+        dividerHeight.value &&
+        column &&
+        selectedButton &&
+        MazPickerTime.value
+      ) {
+        await nextTick()
+        scrollToTarget(column, selectedButton, dividerHeight.value * 16)
+      }
     }
   }
 
@@ -285,9 +307,9 @@
       modelValue.value = getDateTimeValue(dateWithNewHour)
     }
     if (identifier === 'minute' && typeof value === 'number') {
-      const dateWithNewHour = new Date(newDate.setMinutes(value))
+      const dateWithNewMinute = new Date(newDate.setMinutes(value))
 
-      modelValue.value = getDateTimeValue(dateWithNewHour)
+      modelValue.value = getDateTimeValue(dateWithNewMinute)
     }
     if (identifier === 'ampm' && typeof value === 'string') {
       if (currentAmpm.value !== value || !currentHour.value) {
@@ -310,9 +332,6 @@
           modelValue.value = getDateTimeValue(dateWithNewHour)
         }
       }
-      // currentAmpm.value =
-      // const newDate = currentValue ? new Date(currentValue) : new Date()
-      // modelValue.value = new Date(newDate.setMinutes(value)).toISOString()
     }
 
     await nextTick()

@@ -12,13 +12,24 @@
 
     <!-- <MazBtn id="customElement"> {{ dateValue || 'Select Date' }} </MazBtn> -->
 
-    <MazPicker
+    <!-- <MazPicker
       v-model="dateValue"
       label="Select date"
       style="width: 400px"
-      locale="fr-FR"
       time
+      hour12
       color="secondary"
+    /> -->
+
+    <MazPicker
+      v-model="dateValue"
+      style="width: 400px"
+      label="Select date"
+      color="secondary"
+      :disabled-dates="['1990-02-04', '1990-02-20']"
+      :disabled-hours="[0, 1, 2, 3, 4, 5, 6, 20, 21, 22, 23]"
+      hour12
+      time
     />
 
     <h1>Range</h1>
@@ -27,17 +38,17 @@
       {{ rangeValue }}
     </code>
 
-    <MazPicker
+    <!-- <MazPicker
       v-model="rangeValue"
       style="width: 600px"
       label="Select date"
       input-date-format="full"
-      locale="en-US"
       double
+      min-date="1990-02-05"
+      max-date="1990-03-20"
       color="info"
-      shortcut="thisWeek"
       :first-day-of-week="1"
-    />
+    /> -->
 
     <!-- <div style="position: relative; width: 500px">
       <MazTabsBar :items="tabs" color="secondary" />
@@ -65,10 +76,10 @@
     MazPicker,
   } from 'maz-ui/package/components'
 
-  const dateValue = ref('2022-02-03T14:40')
+  const dateValue = ref('1990-02-03')
   const rangeValue = ref({
-    start: '2022-02-01',
-    end: '2022-03-23',
+    start: '1990-02-03',
+    end: '1990-03-28',
   })
 
   // const tabs: MazTabsItem[] = [

@@ -1,5 +1,4 @@
 ---
-title: MazPhoneNumberInput
 description: MazPhoneNumberInput is a standalone input component to help the user enter a phone number and validate it according to the country
 ---
 

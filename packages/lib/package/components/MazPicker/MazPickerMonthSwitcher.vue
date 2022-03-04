@@ -96,7 +96,7 @@
     }
 
     &__main {
-      @apply maz-grid maz-flex-1 maz-grid-cols-2 maz-gap-2 maz-overflow-y-auto maz-p-2 maz-flex-center;
+      @apply maz-grid maz-flex-1 maz-grid-cols-2 maz-gap-1 maz-overflow-y-auto maz-p-2 maz-flex-center;
 
       &.--has-double {
         @apply maz-grid-cols-3;
