@@ -1,4 +1,3 @@
-m
 <template>
   <div
     v-if="images.length || hasEmptyLayer"
