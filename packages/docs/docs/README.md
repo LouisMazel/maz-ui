@@ -20,6 +20,13 @@ features:
   - title: Dark and Light Theme
     details: All components supports the Dark and Light themes.
 footer: Made by LouisMazel with ❤️
+
+head:
+  - - meta
+    - name: description
+      content: Build your amazing interfaces with Maz UI and its stand-alone components - Stand-alone components library for Vue.JS & Nuxt.JS
+    - name: twitter:description
+      content: Build your amazing interfaces with Maz UI and its stand-alone components - Stand-alone components library for Vue.JS & Nuxt.JS
 ---
 
 <!-- markdownlint-disable -->

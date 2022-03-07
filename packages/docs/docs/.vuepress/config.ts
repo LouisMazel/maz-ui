@@ -16,7 +16,7 @@ const getAssetBaseUrl = (path: string): string => {
 export default defineUserConfig<DefaultThemeOptions>({
   // site config
   lang: 'en-US',
-  title: 'Maz-UI - Vue.JS & Nuxt.JS library',
+  title: 'Maz-UI',
   description: 'Library of standalone components and tools for Vue & Nuxt',
   clientAppEnhanceFiles: path.resolve(__dirname, 'clientAppEnhance.ts'),
   base: getBaseUrl('/') as SiteData['base'],
@@ -41,6 +41,7 @@ export default defineUserConfig<DefaultThemeOptions>({
       },
     ],
     ['link', { rel: 'manifest', href: getAssetBaseUrl('/manifest.webmanifest') }],
+    ['meta', { name: 'robots', content: 'index, follow' }],
     ['meta', { name: 'application-name', content: 'Maz UI' }],
     ['meta', { name: 'apple-mobile-web-app-title', content: 'Maz UI' }],
     [
