@@ -25,7 +25,6 @@
       v-model="dateValue"
       style="width: 400px"
       label="Select date"
-      color="secondary"
       :disabled-dates="['1990-02-04', '1990-02-20']"
       :disabled-hours="[0, 1, 2, 3, 4, 5, 6, 20, 21, 22, 23]"
       hour12

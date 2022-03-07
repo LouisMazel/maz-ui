@@ -3,11 +3,14 @@
 const path = require('path')
 
 module.exports = {
+  mode: 'jit',
+  prefix: 'maz-',
   presets: [
-    require(path.join(
-      __dirname,
-      './../lib/package/tailwindcss/tailwind.config',
-    )),
+    require(path.join(__dirname, './../lib/tailwindcss/tailwind.config')),
   ],
   purge: ['./src/**/*'],
+  corePlugins: {
+    preflight: false,
+    container: false,
+  },
 }

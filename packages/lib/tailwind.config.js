@@ -3,8 +3,12 @@
 const path = require('path')
 
 module.exports = {
-  presets: [
-    require(path.join(__dirname, './package/tailwindcss/tailwind.config')),
-  ],
+  mode: 'build',
+  presets: [require(path.join(__dirname, './tailwindcss/tailwind.config'))],
   purge: ['./package/**/*'],
+  prefix: 'maz-',
+  corePlugins: {
+    preflight: false,
+    container: false,
+  },
 }
