@@ -10,7 +10,6 @@ module.exports = {
   ],
   purge: ['./src/**/*'],
   corePlugins: {
-    preflight: false,
     container: false,
   },
 }
