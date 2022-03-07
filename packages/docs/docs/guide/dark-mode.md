@@ -36,7 +36,7 @@ To enable the dark you have just to add `dark` class to the `<html />` of your p
 </template>
 
 <script lang="ts" setup>
-  const { onMounted } from 'vue'
+  import { onMounted } from 'vue'
 
   onMounted(() => {
     autoSetDarkMode()

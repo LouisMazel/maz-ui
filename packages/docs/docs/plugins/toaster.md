@@ -151,7 +151,7 @@ import { installToaster, ToasterOptions } from 'maz-ui'
 const app = createApp(App)
 
 // DEFAULT OPTIONS
-const defaultOptions: ToasterOptions = {
+const toasterOptions: ToasterOptions = {
   position: 'bottom-right',
   timeout: 10_000,
   persistent: false,

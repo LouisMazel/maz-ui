@@ -9,9 +9,7 @@ const Z_INDEXES = require('./variables/z-indexes')
 const { colors } = require('./utils/colors')
 
 module.exports = {
-  mode: 'build',
   darkMode: 'class',
-  prefix: 'maz-',
   theme: {
     extend: {
       fontSize: {
@@ -66,10 +64,6 @@ module.exports = {
       addUtilities(UTILITIES)
     }),
   ],
-  corePlugins: {
-    preflight: false,
-    container: false,
-  },
 }
 
 /* eslint-enable @typescript-eslint/no-var-requires */
