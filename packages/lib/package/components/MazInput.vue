@@ -23,7 +23,7 @@
     >
       <div v-if="hasLeftPart()" class="m-input-wrapper-left">
         <slot v-if="$slots['left-icon'] || leftIcon" name="left-icon">
-          <MazIcon :name="leftIcon" class="maz-text-gray-400" />
+          <MazIcon :name="leftIcon" class="maz-text-muted" />
         </slot>
       </div>
 
@@ -69,7 +69,7 @@
 
       <div v-if="hasRightPart()" class="m-input-wrapper-right">
         <slot v-if="$slots['right-icon'] || rightIcon" name="right-icon">
-          <MazIcon :name="rightIcon" class="maz-text-gray-400" />
+          <MazIcon :name="rightIcon" class="maz-text-muted" />
         </slot>
 
         <MazBtn
@@ -82,9 +82,9 @@
           <MazIcon
             v-if="hasPasswordVisible"
             :src="EyeOffIcon"
-            class="maz-text-gray-400"
+            class="maz-text-muted"
           />
-          <MazIcon v-else :src="EyeIcon" class="maz-text-gray-400" />
+          <MazIcon v-else :src="EyeIcon" class="maz-text-muted" />
         </MazBtn>
 
         <slot v-if="$slots['valid-button'] || validButton" name="valid-button">
@@ -97,7 +97,7 @@
             size="mini"
             type="submit"
           >
-            <MazIcon class="maz-text-normal-text" :src="CheckIcon" />
+            <MazIcon :src="CheckIcon" class="maz-text-normal" />
           </MazBtn>
         </slot>
       </div>
@@ -114,7 +114,7 @@
   export type { Color, Size } from './types'
   import EyeOffIcon from './../icons/eye-off.svg'
   import EyeIcon from './../icons/eye.svg'
-  import CheckIcon from './../icons/eye.svg'
+  import CheckIcon from './../icons/check.svg'
 
   export default defineComponent({
     components: { MazBtn, MazIcon },
@@ -392,7 +392,7 @@
     &-input {
       @apply maz-outline-none maz-m-0 maz-block maz-w-full maz-appearance-none maz-border-none maz-bg-transparent maz-shadow-none;
 
-      @apply maz-h-auto maz-py-0 maz-px-4 maz-text-normal-text;
+      @apply maz-h-auto maz-py-0 maz-px-4 maz-text-normal;
     }
 
     &-label {
@@ -404,7 +404,7 @@
     }
 
     &:not(.--has-state) {
-      @apply maz-text-gray-500;
+      @apply maz-text-muted;
     }
 
     &.--has-z-2 {
@@ -427,15 +427,15 @@
 
     &.--is-disabled {
       & .m-input-wrapper {
-        @apply maz-bg-color maz-text-muted;
+        /* @apply maz-bg-color maz-text-muted; */
       }
 
       & .m-input-input {
-        @apply maz-cursor-not-allowed maz-text-muted;
+        /* @apply maz-cursor-not-allowed maz-text-muted; */
       }
 
       & .m-input-label {
-        @apply maz-text-muted;
+        /* @apply maz-text-muted; */
       }
     }
 

@@ -31,7 +31,7 @@
         >
           <MazIcon
             :src="ChevronDownIcon"
-            class="m-picker__button__chevron maz-h-5 maz-w-5 maz-text-normal-text"
+            class="m-picker__button__chevron maz-h-5 maz-w-5 maz-text-normal"
           />
         </button>
       </template>
