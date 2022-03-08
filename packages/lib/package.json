@@ -148,8 +148,5 @@
     "type": "git",
     "url": "git+https://github.com/LouisMazel/maz-ui-3.git"
   },
-  "license": "MIT",
-  "dependencies": {
-    "maz-ui": "^3.0.0-next.4"
-  }
+  "license": "MIT"
 }
