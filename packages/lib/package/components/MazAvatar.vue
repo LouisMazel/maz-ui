@@ -34,7 +34,7 @@
         :no-loader="noLoader"
         @click="clickable ? $emit('click', $event) : null"
       />
-      <slot v-if="caption" name="round-text">
+      <slot v-if="caption && !src" name="round-text">
         <span class="m-avatar__initial"> {{ caption?.charAt(0) }} </span>
       </slot>
 
@@ -111,7 +111,7 @@
     @apply maz-no-underline !important;
 
     &__caption {
-      @apply maz-mt-2 maz-w-full maz-truncate maz-text-center maz-text-base maz-font-medium maz-capitalize maz-text-black;
+      @apply maz-mt-2 maz-w-full maz-truncate maz-text-center maz-text-base maz-font-medium maz-capitalize;
     }
 
     &__initial {
