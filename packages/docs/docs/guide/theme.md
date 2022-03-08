@@ -100,24 +100,30 @@ You must override `--maz-***` CSS variables
   --maz-color-black: black;
   --maz-color-black-contrast: white;
 
+  /** TEXT COLOR LIGHT **/
+  --maz-color-text-light: #d9d9d9;
+  --maz-color-muted-light: rgb(0 0 0 / 54%);
+
+  /** TEXT COLOR DARK **/
+  --maz-color-text-dark: #212427;
+  --maz-color-muted-dark: rgb(228 228 228 / 54%);
+
+  /** BG OVERLAY **/
+  --maz-bg-overlay: rgb(0 0 0 / 50%);
+
+  /** BG LIGHT COLOR **/
+  --maz-bg-color-light: white;
+  --maz-bg-color-light-light: #efefef;
+  --maz-bg-color-light-lighter: #f2f2f2;
+
+  /** BG DARK COLOR **/
+  --maz-bg-color-dark: #21222e;
+  --maz-bg-color-dark-light: #303144;
+  --maz-bg-color-dark-lighter: #3b3c53;
+
   /* FONT FAMILY */
-  --maz-font-family: system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, oxygen,
-    ubuntu, cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-
-  /* USAGE */
-  --maz-color-normal-text: #2c3e50;
-  --maz-color-bg: white;
-  --maz-color-bg-light: #e5e5e5;
-  --maz-color-bg-lighter: #f2f2f2;
-  --maz-color-muted: rgb(0 0 0 / 54%);
-}
-
-html.dark {
-  /* USAGE */
-  --maz-color-normal-text: #adbac7;
-  --maz-color-bg: #21222e;
-  --maz-color-bg-light: #303144;
-  --maz-color-bg-lighter: #3B3C53;
-  --maz-color-muted: rgb(255 255 255 / 54%);
+  --maz-font-family: system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI',
+    roboto, oxygen, ubuntu, cantarell, 'Fira Sans', 'Droid Sans',
+    'Helvetica Neue', sans-serif;
 }
 ```

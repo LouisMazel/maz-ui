@@ -43,7 +43,7 @@
       </figure>
       <div
         v-if="hasEmptyLayer && !images.length"
-        class="maz-flex maz-w-full maz-bg-color-light maz-text-normal-text maz-flex-center"
+        class="flex-center maz-flex maz-w-full maz-bg-color-light maz-text-normal"
         :class="{ 'maz-rounded-xl': !noRadius }"
         :style="[sizeStyle]"
       >

@@ -12,7 +12,7 @@
   --c-bg-arrow: #cccccc;
 
   // text colors
-  --c-text: var(--maz-color-normal-text);
+  --c-text: var(--maz-color-text);
   --c-text-accent: var(--c-brand);
   --c-text-light: #3a5169;
   --c-text-lighter: #4e6e8e;
@@ -79,7 +79,7 @@ html.dark {
   --c-bg-lighter: #262c34;
 
   // text colors
-  --c-text: var(--maz-color-normal-text);
+  --c-text: var(--maz-color-text);
   --c-text-light: #96a7b7;
   --c-text-lighter: #8b9eb0;
   --c-text-lightest: #8094a8;

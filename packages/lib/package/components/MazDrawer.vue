@@ -64,11 +64,11 @@
     @apply maz-items-stretch maz-justify-end;
 
     & .m-drawer-content-wrap {
-      @apply maz-overflow-y-auto maz-bg-color-light maz-text-normal-text;
+      @apply maz-overflow-y-auto maz-bg-color-light maz-text-normal;
     }
 
     .m-drawer-content-wrap > .m-drawer-header {
-      @apply maz-z-1 maz-flex maz-h-16 maz-flex-shrink-0 maz-items-center maz-bg-color maz-bg-clip-padding maz-px-4 maz-py-3 maz-drop-shadow;
+      @apply maz-z-1 maz-flex maz-h-16 maz-flex-shrink-0 maz-items-center maz-bg-color maz-bg-clip-padding maz-px-4 maz-py-3 maz-elevation;
     }
 
     .m-drawer-content-wrap > .m-drawer-body {

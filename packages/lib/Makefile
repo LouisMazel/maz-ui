@@ -30,26 +30,13 @@ define GetFromPkg
 	$(shell node -p "require('./package.json').$(1)")
 endef
 
-define bump-version
-	VERSION=`node -pe "require('./package.json').version"` && \
-	NEXT_VERSION=`node -pe "require('semver').inc(\"$$VERSION\", '$(1)')"` && \
-	npm version $$NEXT_VERSION
-endef
-
-define bump-version-tag
-	VERSION=`node -pe "require('./package.json').version"` && \
-	NEXT_VERSION=`node -pe "require('semver').inc(\"$$VERSION\", 'prerelease', '$(1)')"` && \
-	npm version $$NEXT_VERSION
-endef
-
 define push-version
 	make install
 	make clean-build
 	make build
-	# @$(call bump-version,$(1))
 	# npm publish
 	git add .
-	git commit -m "chore(lib): bump-version to $(shell node -p "require('./package.json').version")"
+	git commit -m "chore(lib): bump-version to $(call GetFromPkg,version)"
 	# git push origin HEAD
 endef
 
@@ -57,10 +44,9 @@ define push-version-tag
 	make install
 	make clean-build
 	make build
-	@$(call bump-version-tag,$(1))
 	npm publish --tag $(1)
 	git add .
-	git commit -m "chore(lib): bump-version to $(shell node -p "require('./package.json').version")"
+	git commit -m "chore(lib): bump-version to $(call GetFromPkg,version)"
 	git push origin HEAD
 endef
 

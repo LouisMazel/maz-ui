@@ -1,10 +1,21 @@
 <template>
   <div
-    class="maz-flex maz-flex-col maz-w-full maz-items-center maz-text-normal-text"
+    class="maz-flex maz-flex-col maz-w-full maz-items-center maz-text-normal"
   >
     <MazBtn style="margin-bottom: 16px" @click="toggleDarkMode">
       Dark Switch
     </MazBtn>
+
+    <div style="padding: 12px; margin-bottom: 20px">
+      <MazBtn
+        color="transparent"
+        fab
+        class="maz-text-primary"
+        @click="toggleDarkMode"
+      >
+        Dark Switch
+      </MazBtn>
+    </div>
 
     <code class="maz-mb-2">
       {{ dateValue }}
@@ -20,6 +31,13 @@
       hour12
       color="secondary"
     /> -->
+
+    <MazInput
+      v-model="dateValue"
+      label="Select date"
+      type="password"
+      valid-button
+    />
 
     <MazPicker
       v-model="dateValue"
@@ -56,6 +74,10 @@
       double
     />
 
+    <MazDialog :model-value="true" />
+
+    <MazSlider :model-value="1" :min="0" :max="100" style="width: 300px" />
+
     <!-- <div style="position: relative; width: 500px">
       <MazTabsBar :items="tabs" color="secondary" />
 
@@ -76,10 +98,13 @@
   // import { MazTabsItem } from 'maz-ui/package/components/MazTabsBar.vue'
   import {
     MazBtn,
+    MazInput,
     // MazTabsBar,
     // MazTabsContent,
     // MazTabsContentItem,
+    MazDialog,
     MazPicker,
+    MazSlider,
   } from 'maz-ui/package/components'
 
   const dateValue = ref('1990-02-03')

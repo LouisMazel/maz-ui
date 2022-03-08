@@ -1,6 +1,6 @@
 {
   "name": "maz-ui",
-  "version": "3.0.0-next.3",
+  "version": "3.0.0-next.4",
   "description": "A stand-alone components library for Vue.Js 3 & Nuxt.Js 3",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "main": "modules/index.js",
@@ -39,10 +39,10 @@
     "*.{vue,css,scss,postcss,pcss}": "stylelint --custom-syntax postcss-html --fix"
   },
   "peerDependencies": {
+    "chart.js": "^3.0.0",
     "dropzone": "^5.9.3",
     "libphonenumber-js": "^1.9.44",
-    "vue": "^3.0.0",
-    "chart.js": "^3.0.0"
+    "vue": "^3.0.0"
   },
   "peerDependenciesMeta": {
     "dropzone": {
@@ -148,8 +148,5 @@
     "type": "git",
     "url": "git+https://github.com/LouisMazel/maz-ui-3.git"
   },
-  "license": "MIT",
-  "dependencies": {
-    "maz-ui": "^3.0.0-beta.17"
-  }
+  "license": "MIT"
 }

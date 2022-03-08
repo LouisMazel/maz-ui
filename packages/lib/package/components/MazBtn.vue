@@ -171,7 +171,7 @@
     }
 
     &.--is-link {
-      @apply maz-outline-none maz-inline-flex maz-items-center maz-bg-transparent maz-text-normal-text maz-transition maz-duration-200 maz-ease-in-out;
+      @apply maz-outline-none maz-inline-flex maz-items-center maz-bg-transparent maz-text-normal maz-transition maz-duration-200 maz-ease-in-out;
 
       &:not(.--no-leading) {
         @apply maz-leading-9;
@@ -282,8 +282,7 @@
       /* Fab */
 
       &.--fab {
-        @apply maz-flex maz-h-12 maz-w-12 maz-items-center maz-justify-center maz-rounded-full
-        maz-px-0 maz-py-0 maz-drop-shadow-md;
+        @apply maz-flex maz-h-12 maz-w-12 maz-items-center maz-justify-center maz-rounded-full maz-px-0 maz-py-0;
       }
 
       &.--block {
@@ -363,11 +362,11 @@
       }
 
       &.--transparent {
-        @apply maz-bg-transparent maz-text-normal-text;
+        @apply maz-bg-transparent;
 
         &:not(:disabled):hover,
         &:not(:disabled):focus {
-          @apply maz-bg-color-light;
+          background-color: rgb(0 0 0 / 20%);
         }
       }
 
