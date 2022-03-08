@@ -35,8 +35,8 @@ define push-version
 	make clean-build
 	make build
 	# npm publish
-	git add .
-	git commit -m "chore(lib): bump-version to $(call GetFromPkg,version)"
+	# git add .
+	# git commit -m "chore(lib): bump-version to $(call GetFromPkg,version)"
 	# git push origin HEAD
 endef
 
@@ -45,9 +45,9 @@ define push-version-tag
 	make clean-build
 	make build
 	npm publish --tag $(1)
-	git add .
-	git commit -m "chore(lib): bump-version to $(call GetFromPkg,version)"
-	git push origin HEAD
+	# git add .
+	# git commit -m "chore(lib): bump-version to $(call GetFromPkg,version)"
+	# git push origin HEAD
 endef
 
 publish-version-tag:
