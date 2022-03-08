@@ -21,9 +21,7 @@ module.exports = {
       },
       zIndex: Z_INDEXES,
       screens: BREAKPOINTS,
-      colors: {
-        ...colors(),
-      },
+      colors: colors(),
       borderWidth: {
         0: '0',
         1: '1px',

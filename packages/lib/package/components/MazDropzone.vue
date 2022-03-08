@@ -16,7 +16,7 @@
               width="2em"
               viewBox="0 0 24 24"
               fill="currentColor"
-              class="maz-dropzone__main-icon maz-text-normal-text"
+              class="maz-dropzone__main-icon maz-text-normal"
               aria-hidden="true"
             >
               <path d="M0 0h24v24H0V0z" fill="none" />
@@ -25,7 +25,7 @@
               />
             </svg>
           </slot>
-          <p class="maz-my-2 maz-text-normal-text">
+          <p class="maz-my-2 maz-text-normal">
             {{ dropzoneOptions?.dictDefaultMessage }}
           </p>
           <p class="maz-my-0 maz-text-muted">

@@ -27,7 +27,7 @@
         >
           <MazIcon
             :src="ChevronDownIcon"
-            class="m-select-chevron maz-h-5 maz-w-5 maz-text-normal-text"
+            class="m-select-chevron maz-h-5 maz-w-5 maz-text-normal"
           />
         </button>
       </template>
@@ -310,12 +310,12 @@
     }
 
     &-list {
-      @apply maz-absolute maz-z-100 maz-overflow-auto maz-rounded-lg maz-bg-color maz-text-normal-text maz-drop-shadow maz-elevation;
+      @apply maz-absolute maz-z-100 maz-overflow-auto maz-rounded-lg maz-bg-color maz-text-normal maz-elevation;
 
       min-width: 3.5rem;
 
       &-item {
-        @apply maz-flex maz-w-full maz-items-center maz-bg-transparent maz-px-4 maz-text-left maz-text-normal-text hover:maz-bg-color-light;
+        @apply maz-flex maz-w-full maz-items-center maz-bg-transparent maz-px-4 maz-text-left maz-text-normal hover:maz-bg-color-light;
 
         &.--is-keyboard-selected {
           @apply maz-bg-color-light maz-font-medium;

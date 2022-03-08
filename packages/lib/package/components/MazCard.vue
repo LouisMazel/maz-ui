@@ -261,7 +261,7 @@
     &__title > * {
       font-size: 1.2em;
 
-      @apply maz-text-normal-text;
+      @apply maz-text-normal;
     }
 
     &__subtitle,

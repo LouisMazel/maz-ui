@@ -198,7 +198,7 @@
     &-overlay {
       touch-action: none;
 
-      @apply maz-absolute maz-inset-0 maz-bg-black maz-opacity-40;
+      @apply maz-absolute maz-inset-0 maz-bg-overlay;
 
       &:not(.--disabled) {
         @apply maz-cursor-pointer;

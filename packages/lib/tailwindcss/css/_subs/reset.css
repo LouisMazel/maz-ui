@@ -14,7 +14,7 @@ html {
 
 button {
   background-color: transparent;
-  color: var(--maz-color-normal-text);
+  color: var(--maz-color-text);
 }
 
 button,

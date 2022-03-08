@@ -27,7 +27,7 @@
         :key="`cursor-${i}`"
         type="button"
         :data-label="getLabel(i)"
-        class="m-slider__btn maz-flex maz-items-center maz-justify-center maz-bg-gray-50"
+        class="m-slider__btn maz-flex maz-items-center maz-justify-center"
         :class="{
           'active-cursor': i === activeCursor && !noCursorAnim,
         }"
@@ -39,7 +39,7 @@
         @touchend.passive="blurCursor(i)"
         @keydown.passive="cursorKeyDown($event, i)"
       >
-        <span class="maz-flex maz-items-center maz-text-gray-900">
+        <span>
           {{ tmpValues?.[i] }}
         </span>
       </button>
@@ -403,11 +403,13 @@
       z-index: 1;
       user-select: none;
 
-      @apply maz-rounded-full maz-bg-color-lighter maz-text-normal-text maz-drop-shadow;
+      @apply maz-rounded-full maz-border maz-bg-bg-light maz-elevation;
 
       padding: 0.25em 0.5em;
 
       & span {
+        @apply maz-flex maz-items-center maz-text-dark;
+
         margin-left: 0.25em;
         margin-right: 0.25em;
       }
@@ -423,11 +425,11 @@
         font-size: 0.8em;
         top: -1.5em;
 
-        @apply maz-absolute maz-font-medium maz-text-normal-text;
+        @apply maz-absolute maz-font-medium maz-text-normal;
       }
 
       &:hover {
-        @apply maz-bg-color-light;
+        @apply maz-bg-gray-200;
       }
     }
 

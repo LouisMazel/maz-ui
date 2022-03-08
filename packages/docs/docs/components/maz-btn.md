@@ -73,6 +73,7 @@ description: MazBtn is a stand-alone component replaces the standard html button
   <MazBtn color="danger">danger</MazBtn>
   <MazBtn color="white">white</MazBtn>
   <MazBtn color="black">black</MazBtn>
+  <MazBtn color="transparent">transparent</MazBtn>
 </template>
 ```
 
@@ -94,6 +95,7 @@ description: MazBtn is a stand-alone component replaces the standard html button
   <MazBtn color="danger" outline>danger</MazBtn>
   <MazBtn color="white" outline>white</MazBtn>
   <MazBtn color="black" outline>black</MazBtn>
+  <MazBtn color="transparent" outline>transparent</MazBtn>
 </template>
 ```
 
@@ -103,7 +105,7 @@ description: MazBtn is a stand-alone component replaces the standard html button
 
 <br />
 
-<div class="flex items-start gap-05 rounded maz-bg-white maz-p-3 flex-wrap">
+<div class="flex items-start gap-05 rounded maz-p-3 flex-wrap">
   <MazBtn v-for="{ name } in colorsArray" :color="name" pastel>{{ name }}</MazBtn>
 </div>
 
@@ -117,6 +119,7 @@ description: MazBtn is a stand-alone component replaces the standard html button
   <MazBtn color="danger" pastel>danger</MazBtn>
   <MazBtn color="white" pastel>white</MazBtn>
   <MazBtn color="black" pastel>black</MazBtn>
+  <MazBtn color="transparent" pastel>transparent</MazBtn>
 </template>
 ```
 
@@ -312,6 +315,7 @@ description: MazBtn is a stand-alone component replaces the standard html button
     danger: { name: 'danger', hex: '#ff6d6a' },
     white: { name: 'white', hex: '#fff' },
     black: { name: 'black', hex: '#000' },
+    transparent: { name: 'transparent', hex: 'transparent' },
   }
 
   const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']

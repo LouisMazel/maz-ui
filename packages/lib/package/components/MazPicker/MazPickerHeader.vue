@@ -316,7 +316,7 @@
     }
 
     &.--transparent {
-      @apply maz-border-b maz-border-color-light maz-text-normal-text;
+      @apply maz-border-b maz-border-color-light maz-text-normal;
     }
   }
 </style>
