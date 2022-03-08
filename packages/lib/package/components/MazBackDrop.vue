@@ -134,7 +134,7 @@
   })
 </script>
 
-<style lang="postcss">
+<style lang="postcss" scoped>
   /* stylelint-disable no-descending-specificity */
   html.--backdrop-present {
     overflow-y: hidden;

@@ -58,7 +58,7 @@
   defineEmits(['open', 'close', 'update:model-value'])
 </script>
 
-<style lang="postcss">
+<style lang="postcss" scoped>
   /* stylelint-disable no-descending-specificity */
   .m-drawer {
     @apply maz-items-stretch maz-justify-end;
