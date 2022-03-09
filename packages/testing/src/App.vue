@@ -6,6 +6,10 @@
       Dark Switch
     </MazBtn>
 
+    <MazCard>
+      <MazBtn disabled @click="toggleDarkMode"> Dark Switch </MazBtn>
+    </MazCard>
+
     <div style="padding: 12px; margin-bottom: 20px">
       <MazBtn
         color="transparent"
@@ -31,13 +35,6 @@
       hour12
       color="secondary"
     /> -->
-
-    <MazInput
-      v-model="dateValue"
-      label="Select date"
-      type="password"
-      valid-button
-    />
 
     <MazPicker
       v-model="dateValue"
@@ -90,6 +87,8 @@
         </MazTabsContentItem>
       </MazTabsContent>
     </div> -->
+    <MazDrawer :model-value="true"> Coucou </MazDrawer>
+    <MazDrawer :model-value="true" variant="top"> Coucou </MazDrawer>
   </div>
 </template>
 
@@ -98,13 +97,14 @@
   // import { MazTabsItem } from 'maz-ui/package/components/MazTabsBar.vue'
   import {
     MazBtn,
-    MazInput,
     // MazTabsBar,
     // MazTabsContent,
     // MazTabsContentItem,
     MazDialog,
     MazPicker,
     MazSlider,
+    MazDrawer,
+    MazCard,
   } from 'maz-ui/package/components'
 
   const dateValue = ref('1990-02-03')

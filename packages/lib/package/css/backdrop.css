@@ -1,0 +1,92 @@
+/* stylelint-disable no-descending-specificity */
+html.--backdrop-present {
+  overflow-y: hidden;
+  height: 100vh;
+}
+
+.m-backdrop.bottom-sheet-anim-enter-active,
+.m-backdrop.bottom-sheet-anim-leave-active {
+  transition: opacity ease-in-out 250ms;
+
+  & .m-backdrop-content {
+    transition: transform ease-in-out 250ms;
+    transform: translateY(0);
+  }
+}
+
+.m-backdrop.bottom-sheet-anim-enter-from,
+.m-backdrop.bottom-sheet-anim-leave-to {
+  opacity: 0;
+
+  & .m-backdrop-content {
+    transform: translateY(100%);
+  }
+}
+
+.m-backdrop.modal-anim-enter-active,
+.m-backdrop.modal-anim-leave-active {
+  transition: opacity ease-in-out 250ms;
+
+  & .m-backdrop-content {
+    transition: transform ease-in-out 250ms;
+    transform: translateY(0);
+  }
+}
+
+.m-backdrop.modal-anim-enter-from,
+.m-backdrop.modal-anim-leave-to {
+  opacity: 0;
+
+  & .m-backdrop-content {
+    transform: translateY(-25px);
+  }
+}
+
+.m-backdrop.backdrop-anim-enter-active,
+.m-backdrop.backdrop-anim-leave-active {
+  transition: opacity ease-in-out 250ms;
+}
+
+.m-backdrop.backdrop-anim-enter-from,
+.m-backdrop.backdrop-anim-leave-to {
+  opacity: 0;
+}
+
+.m-backdrop {
+  @apply maz-fixed maz-inset-0 maz-flex maz-opacity-100 maz-flex-center;
+
+  backdrop-filter: blur(3px);
+  z-index: 1050;
+
+  &-overlay {
+    touch-action: none;
+
+    @apply maz-absolute maz-inset-0 maz-bg-overlay;
+
+    &:not(.--disabled) {
+      @apply maz-cursor-pointer;
+    }
+  }
+
+  &-content {
+    @apply focus:maz-outline-none maz-relative maz-z-1;
+  }
+
+  &.--bottom-sheet {
+    & .m-backdrop-content {
+      @apply maz-absolute maz-bottom-0 maz-left-0 maz-right-0;
+    }
+  }
+
+  &.--fullscreen {
+    @apply maz-items-start mob-l:maz-items-center;
+
+    &.--center-top {
+      @apply maz-items-start mob-l:maz-pt-28;
+    }
+
+    & .m-backdrop-content {
+      @apply maz-relative maz-w-full mob-l:maz-w-auto;
+    }
+  }
+}
