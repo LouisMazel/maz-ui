@@ -100,28 +100,31 @@ You must override `--maz-***` CSS variables
   --maz-color-black: black;
   --maz-color-black-contrast: white;
 
-  /** TEXT COLOR LIGHT **/
+  /* TEXT COLOR LIGHT */
   --maz-color-text-light: #d9d9d9;
   --maz-color-muted-light: rgb(0 0 0 / 54%);
 
-  /** TEXT COLOR DARK **/
+  /* TEXT COLOR DARK */
   --maz-color-text-dark: #212427;
   --maz-color-muted-dark: rgb(228 228 228 / 54%);
 
-  /** BG OVERLAY **/
+  /* BG OVERLAY */
   --maz-bg-overlay: rgb(0 0 0 / 50%);
 
-  /** BG LIGHT COLOR **/
+  /* BG LIGHT COLOR */
   --maz-bg-color-light: white;
   --maz-bg-color-light-light: #efefef;
   --maz-bg-color-light-lighter: #f2f2f2;
 
-  /** BG DARK COLOR **/
+  /* BG DARK COLOR */
   --maz-bg-color-dark: #21222e;
   --maz-bg-color-dark-light: #303144;
   --maz-bg-color-dark-lighter: #3b3c53;
 
-  /* FONT FAMILY */
+  /**
+  * FONT FAMILY
+  * Not used in the library --> Use this variable on your <html> element (optional)
+  **/
   --maz-font-family: system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI',
     roboto, oxygen, ubuntu, cantarell, 'Fira Sans', 'Droid Sans',
     'Helvetica Neue', sans-serif;

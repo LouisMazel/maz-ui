@@ -192,13 +192,18 @@ So, you must only provide a time value or undefined
 
 ### Inline
 
+#### Inputs
+
+rangeValues (v-model): `{{ rangeValues }}`
+minMaxDates: `{{ minMaxDates }}`
+
 <MazPicker
   v-model="rangeValues"
   color="secondary"
   inline
   double
-  min-date="2022-02-05"
-  max-date="2022-03-20"
+  :min-date="minMaxDates.min"
+  :max-date="minMaxDates.max"
 />
 
 ```vue
@@ -208,9 +213,23 @@ So, you must only provide a time value or undefined
     color="secondary"
     inline
     double
-    min-date="2022-02-05"
-    max-date="2022-03-20"
+    :min-date="minMaxDates.min"
+    :max-date="minMaxDates.max"
   />
+
+  <script setup lang="ts">
+    import { ref } from 'vue'
+
+    const rangeValues = ref({
+      start: new Date(new Date().setDate(3)).toISOString().split('T')[0],
+      end: new Date(new Date().setDate(28)).toISOString().split('T')[0],
+    })
+
+    const minMaxDates = ref({
+      min: new Date(new Date().setDate(5)).toISOString().split('T')[0],
+      max: new Date(new Date(new Date().setDate(20)).setMonth(new Date().getMonth() + 1)).toISOString().split('T')[0],
+    })
+  </script>
 </template>
 ```
 
@@ -219,9 +238,15 @@ So, you must only provide a time value or undefined
   const timeValue = ref('16:30')
   const dateValue = ref('2022-02-03')
   const dateTimeValue = ref('2022-02-03 16:30')
+
   const rangeValues = ref({
-    start: '2022-02-03',
-    end: '2022-02-28',
+    start: new Date(new Date().setDate(3)).toISOString().split('T')[0],
+    end: new Date(new Date(new Date().setDate(28)).setMonth(new Date().getMonth() + 1)).toISOString().split('T')[0],
+  })
+
+  const minMaxDates = ref({
+    min: new Date(new Date().setDate(5)).toISOString().split('T')[0],
+    max: new Date(new Date(new Date().setDate(20)).setMonth(new Date().getMonth() + 1)).toISOString().split('T')[0],
   })
 </script>
 
