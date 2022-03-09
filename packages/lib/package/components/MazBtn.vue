@@ -516,7 +516,7 @@
 
       /* Disabled */
       &.--disabled {
-        @apply maz-cursor-not-allowed maz-bg-color-light maz-text-gray-400;
+        @apply maz-cursor-not-allowed maz-bg-color-lighter maz-text-gray-400;
       }
 
       &.--no-padding {
