@@ -10,6 +10,33 @@
       Dark Switch
     </MazBtn>
 
+    <form action="">
+      <MazInput
+        v-model="data.username"
+        autocomplete="username"
+        label="username"
+      />
+      <MazInput
+        v-model="data.password"
+        autocomplete="password"
+        label="password"
+        type="password"
+      />
+      <MazInput
+        v-model="data.age"
+        autocomplete="age"
+        label="age"
+        type="number"
+      />
+      <MazInput
+        v-model="data.telephone"
+        autocomplete="telephone"
+        label="telephone"
+        type="tel"
+      />
+      <MazInput v-model="data.name" autocomplete="name" label="name" />
+    </form>
+
     <code class="maz-mb-2">
       {{ dateValue }}
     </code>
@@ -71,8 +98,16 @@
 <script lang="ts" setup>
   import { onMounted, ref } from 'vue'
   // import { MazTabsItem } from 'maz-ui/package/components/MazTabsBar.vue'
+  const data = ref({
+    username: undefined,
+    password: undefined,
+    name: undefined,
+    telephone: undefined,
+    age: undefined,
+  })
   import {
     MazBtn,
+    MazInput,
     // MazTabsBar,
     // MazTabsContent,
     // MazTabsContentItem,
