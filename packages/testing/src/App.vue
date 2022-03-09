@@ -2,7 +2,11 @@
   <div
     class="maz-flex maz-flex-col maz-w-full maz-items-center maz-text-normal"
   >
-    <MazBtn style="margin-bottom: 16px" @click="toggleDarkMode">
+    <MazBtn
+      style="margin-bottom: 16px"
+      color="transparent"
+      @click="toggleDarkMode"
+    >
       Dark Switch
     </MazBtn>
 
