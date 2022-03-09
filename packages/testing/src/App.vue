@@ -17,6 +17,12 @@
         label="username"
       />
       <MazInput
+        v-model="data.username"
+        autocomplete="username"
+        label="username"
+        disabled
+      />
+      <MazInput
         v-model="data.password"
         autocomplete="password"
         label="password"
@@ -98,13 +104,6 @@
 <script lang="ts" setup>
   import { onMounted, ref } from 'vue'
   // import { MazTabsItem } from 'maz-ui/package/components/MazTabsBar.vue'
-  const data = ref({
-    username: undefined,
-    password: undefined,
-    name: undefined,
-    telephone: undefined,
-    age: undefined,
-  })
   import {
     MazBtn,
     MazInput,
@@ -113,6 +112,14 @@
     // MazTabsContentItem,
     MazPicker,
   } from 'maz-ui/package/components'
+
+  const data = ref({
+    username: undefined,
+    password: undefined,
+    name: undefined,
+    telephone: undefined,
+    age: undefined,
+  })
 
   const dateValue = ref('1990-02-03')
 
