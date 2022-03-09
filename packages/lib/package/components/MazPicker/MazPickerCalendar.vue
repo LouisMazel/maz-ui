@@ -123,7 +123,7 @@
       width: 16rem;
 
       &.--has-double {
-        width: 32rem;
+        width: 30rem;
 
         & .maz-picker-calendar__months > *:first-child {
           @apply maz-border-r maz-border-color-lighter;

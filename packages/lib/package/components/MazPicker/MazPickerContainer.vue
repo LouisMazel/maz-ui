@@ -88,7 +88,6 @@
     minDate: { type: String, default: undefined },
     maxDate: { type: String, default: undefined },
     inline: { type: Boolean, required: true },
-    disabledWeekly: { type: Array as PropType<number[]>, default: undefined },
     noShortcuts: { type: Boolean, required: true },
     shortcuts: {
       type: Array as PropType<PickerShortcut[]>,
@@ -102,8 +101,9 @@
       required: true,
     },
     minuteInterval: { type: Number, required: true },
-    disabledHours: { type: Array as PropType<number[]>, default: undefined },
-    disabledDates: { type: Array as PropType<string[]>, default: undefined },
+    disabledWeekly: { type: Array as PropType<number[]>, required: true },
+    disabledHours: { type: Array as PropType<number[]>, required: true },
+    disabledDates: { type: Array as PropType<string[]>, required: true },
   })
 
   const emits = defineEmits([

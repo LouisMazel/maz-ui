@@ -2,24 +2,13 @@
   <div
     class="maz-flex maz-flex-col maz-w-full maz-items-center maz-text-normal"
   >
-    <MazBtn style="margin-bottom: 16px" @click="toggleDarkMode">
+    <MazBtn
+      style="margin-bottom: 16px"
+      color="transparent"
+      @click="toggleDarkMode"
+    >
       Dark Switch
     </MazBtn>
-
-    <MazCard>
-      <MazBtn disabled @click="toggleDarkMode"> Dark Switch </MazBtn>
-    </MazCard>
-
-    <div style="padding: 12px; margin-bottom: 20px">
-      <MazBtn
-        color="transparent"
-        fab
-        class="maz-text-primary"
-        @click="toggleDarkMode"
-      >
-        Dark Switch
-      </MazBtn>
-    </div>
 
     <code class="maz-mb-2">
       {{ dateValue }}
@@ -54,7 +43,7 @@
 
     <MazPicker
       v-model="rangeValue"
-      style="width: 600px"
+      style="width: 400px"
       label="Select date"
       input-date-format="full"
       double
@@ -63,17 +52,6 @@
       color="info"
       :first-day-of-week="1"
     />
-
-    <MazPicker
-      v-model="rangeValues"
-      label="Select periode"
-      color="secondary"
-      double
-    />
-
-    <MazDialog :model-value="true" />
-
-    <MazSlider :model-value="1" :min="0" :max="100" style="width: 300px" />
 
     <!-- <div style="position: relative; width: 500px">
       <MazTabsBar :items="tabs" color="secondary" />
@@ -87,8 +65,6 @@
         </MazTabsContentItem>
       </MazTabsContent>
     </div> -->
-    <MazDrawer :model-value="true"> Coucou </MazDrawer>
-    <MazDrawer :model-value="true" variant="top"> Coucou </MazDrawer>
   </div>
 </template>
 
@@ -100,21 +76,14 @@
     // MazTabsBar,
     // MazTabsContent,
     // MazTabsContentItem,
-    MazDialog,
     MazPicker,
-    MazSlider,
-    MazDrawer,
-    MazCard,
   } from 'maz-ui/package/components'
 
   const dateValue = ref('1990-02-03')
+
   const rangeValue = ref({
     start: '1990-02-03',
     end: '1990-03-28',
-  })
-  const rangeValues = ref({
-    start: '2022-02-03',
-    end: '2022-02-28',
   })
 
   // const tabs: MazTabsItem[] = [

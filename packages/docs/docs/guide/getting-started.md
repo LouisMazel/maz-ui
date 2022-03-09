@@ -33,10 +33,38 @@ yarn add maz-ui@next
 
 ### Import necessary CSS file
 
-In the `main.js` or `main.ts`, import these files.
+#### Vue JS <NpmBadge package="vue" />
+
+In the `main.js` or `main.ts`, import main maz-ui css file before your own css
 
 ```ts
 import 'maz-ui/css/main.css'
+import '@/css/path_to_your_main_file.css'
+```
+
+#### Nuxt JS <NpmBadge package="nuxt3" />
+
+```ts
+export default {
+  css: [
+    'maz-ui/css/main.css',
+    '@/css/path_to_your_main_file.css',
+  ],
+  build: {
+    transpile: ['maz-ui'], // ⚠️ important ⚠️
+  },
+}
+```
+
+#### Optional
+
+You can add these css rules in your main css file to use maz-ui font family
+
+```css
+html {
+  font-family: var(--maz-font-family);
+  line-height: 1.5;
+}
 ```
 
 ### Recommanded

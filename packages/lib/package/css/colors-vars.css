@@ -114,7 +114,10 @@
   --maz-bg-color-dark-light: #303144;
   --maz-bg-color-dark-lighter: #3b3c53;
 
-  /* FONT FAMILY */
+  /**
+  * FONT FAMILY
+  * Not used in the library --> Use this variable on your <html> element (optional)
+  **/
   --maz-font-family: system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI',
     roboto, oxygen, ubuntu, cantarell, 'Fira Sans', 'Droid Sans',
     'Helvetica Neue', sans-serif;

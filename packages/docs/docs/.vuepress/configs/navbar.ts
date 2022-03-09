@@ -26,7 +26,7 @@ export const navbar: NavbarConfig = [
     children: [
       {
         text: 'Changelog',
-        link: 'https://github.com/LouisMazel/maz-ui/blob/next/CHANGELOG.md',
+        link: 'https://github.com/LouisMazel/maz-ui/blob/next/packages/lib/CHANGELOG.md',
       },
       {
         text: 'v2.x',

@@ -12,10 +12,6 @@ description: MazGallery is a stand-alone component. It\'s a container to show im
   :images="images"
   :height="400"
 />
-<MazGallery
-  :images="[{ src: 'ok' }]"
-  :height="400"
-/>
 
 ```vue
 <template>
