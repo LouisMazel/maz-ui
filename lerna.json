@@ -8,7 +8,7 @@
   "command": {
     "version": {
       "allowBranch": ["release/*"],
-      "message": "chore(release): publish version %v",
+      "message": "chore(release): bump version to %v",
       "conventionalCommits": true,
       "forceGitTag": true,
       "push": false,
