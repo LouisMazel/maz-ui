@@ -311,6 +311,7 @@
 
 <style lang="postcss" scoped>
   /* stylelint-disable no-descending-specificity */
+
   .m-input {
     @apply maz-flex maz-flex-col;
 
@@ -390,9 +391,16 @@
     }
 
     &-input {
-      @apply maz-outline-none maz-m-0 maz-block maz-w-full maz-appearance-none maz-border-none maz-bg-transparent maz-shadow-none;
+      @apply maz-outline-none maz-m-0 maz-block maz-h-full maz-w-full maz-appearance-none
+      maz-border-none maz-bg-transparent maz-py-0 maz-px-4 maz-text-normal maz-shadow-none;
 
-      @apply maz-h-auto maz-py-0 maz-px-4 maz-text-normal;
+      &:-webkit-autofill,
+      &:-webkit-autofill:hover,
+      &:-webkit-autofill:focus {
+        -webkit-text-fill-color: var(--maz-color-text);
+        box-shadow: 0 0 0 1000px var(--maz-color-primary-50) inset;
+        transition: background-color 5000s ease-in-out 0s;
+      }
     }
 
     &-label {
@@ -462,6 +470,16 @@
     & .m-input:not(.--is-focused):not(.--has-state) {
       & .m-input-wrapper {
         @apply maz-border-color-lighter;
+      }
+    }
+
+    & .m-input-input {
+      &:-webkit-autofill,
+      &:-webkit-autofill:hover,
+      &:-webkit-autofill:focus {
+        -webkit-text-fill-color: var(--maz-color-text);
+        box-shadow: 0 0 0 1000px var(--maz-color-bg-lighter) inset;
+        transition: background-color 5000s ease-in-out 0s;
       }
     }
   }
