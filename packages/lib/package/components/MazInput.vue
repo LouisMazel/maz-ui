@@ -435,15 +435,11 @@
 
     &.--is-disabled {
       & .m-input-wrapper {
-        /* @apply maz-bg-color maz-text-muted; */
+        @apply maz-bg-color-lighter maz-text-muted;
       }
 
       & .m-input-input {
-        /* @apply maz-cursor-not-allowed maz-text-muted; */
-      }
-
-      & .m-input-label {
-        /* @apply maz-text-muted; */
+        @apply maz-cursor-not-allowed maz-text-muted;
       }
     }
 

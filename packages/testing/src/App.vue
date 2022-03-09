@@ -114,6 +114,14 @@
     MazPicker,
   } from 'maz-ui/package/components'
 
+  const data = ref({
+    username: undefined,
+    password: undefined,
+    name: undefined,
+    telephone: undefined,
+    age: undefined,
+  })
+
   const dateValue = ref('1990-02-03')
 
   const rangeValue = ref({
