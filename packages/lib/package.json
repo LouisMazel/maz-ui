@@ -11,7 +11,9 @@
     "modules",
     "css",
     "maz-ui.d.ts",
-    "tailwindcss"
+    "tailwindcss/tailwind.config.js",
+    "tailwindcss/utils",
+    "tailwindcss/variables"
   ],
   "scripts": {
     "test": "jest",

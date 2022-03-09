@@ -148,7 +148,7 @@
 
 <style lang="postcss" scoped>
   .m-btn {
-    @apply maz-border maz-border-solid maz-border-transparent maz-text-center maz-text-base;
+    @apply maz-border maz-border-solid maz-border-transparent maz-text-center maz-text-base maz-text-normal;
 
     & span {
       @apply maz-leading-none;
@@ -171,7 +171,7 @@
     }
 
     &.--is-link {
-      @apply maz-outline-none maz-inline-flex maz-items-center maz-bg-transparent maz-text-normal maz-transition maz-duration-200 maz-ease-in-out;
+      @apply maz-outline-none maz-inline-flex maz-items-center maz-bg-transparent maz-transition maz-duration-200 maz-ease-in-out;
 
       &:not(.--no-leading) {
         @apply maz-leading-9;
@@ -215,7 +215,7 @@
 
     &.--is-button {
       @apply maz-relative maz-inline-flex maz-items-center maz-justify-center maz-overflow-hidden
-      maz-rounded-lg maz-border-transparent maz-bg-transparent maz-font-base maz-font-medium maz-no-underline
+      maz-rounded-lg maz-border-transparent maz-bg-transparent maz-font-medium maz-no-underline
       maz-transition maz-duration-300 maz-ease-in-out;
 
       &.--rounded {
@@ -366,7 +366,7 @@
 
         &:not(:disabled):hover,
         &:not(:disabled):focus {
-          background-color: rgb(0 0 0 / 20%);
+          background-color: rgb(0 0 0 / 12%);
         }
       }
 
