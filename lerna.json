@@ -11,7 +11,7 @@
       "message": "chore(release): bump version to %v",
       "conventionalCommits": true,
       "forceGitTag": true,
-      "push": false,
+      "push": true,
       "tagVersionPrefix": ""
     }
   }
