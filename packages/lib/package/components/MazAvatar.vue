@@ -42,7 +42,8 @@
         v-if="clickable"
         type="button"
         tabindex="-1"
-        class="m-avatar__button maz-flex maz-flex-center"
+        class="m-avatar__button"
+        :style="{ backgroundColor: `var(--maz-color-${buttonColor}-alpha)` }"
         @click="$emit('click', $event)"
       >
         <slot name="icon">
@@ -58,11 +59,16 @@
   </Component>
 </template>
 
+<script lang="ts">
+  export type { Color } from './types'
+</script>
+
 <script lang="ts" setup>
   import { PropType, computed } from 'vue'
   import MazLazyImg from './MazLazyImg.vue'
   import MazIcon from './MazIcon.vue'
   import PencilIcon from './../icons/pencil.svg'
+  import type { Color } from './types'
 
   const props = defineProps({
     // url or path of the image
@@ -83,7 +89,7 @@
     // target attribute of link (if url is provide)
     target: { type: String, default: '_self' },
     // size of avatar
-    size: { type: String, default: '1rem' },
+    size: { type: String, default: undefined },
     // add border around the avatar
     bordered: { type: Boolean, default: false },
     // add an edit layer & emit `edit` event on click
@@ -95,6 +101,23 @@
     showCaption: { type: Boolean, default: false },
     imageHeightFull: { type: Boolean, default: false },
     noLoader: { type: Boolean, default: false },
+    buttonColor: {
+      type: String as PropType<Color>,
+      default: 'primary',
+      validator: (value: Color) => {
+        return [
+          'primary',
+          'secondary',
+          'info',
+          'success',
+          'warning',
+          'danger',
+          'white',
+          'black',
+          'transparent',
+        ].includes(value)
+      },
+    },
   })
 
   const componentType = computed(() =>
@@ -129,8 +152,8 @@
 
       &.--clickable {
         & .m-avatar__button {
-          @apply maz-outline-none maz-absolute maz-inset-0 maz-w-full maz-cursor-pointer maz-rounded-lg maz-border-none
-           maz-bg-transparent maz-opacity-0 maz-transition-all maz-duration-200;
+          @apply maz-outline-none maz-absolute maz-inset-0 maz-flex maz-w-full maz-cursor-pointer maz-rounded-lg maz-border-none
+           maz-bg-transparent maz-opacity-0 maz-transition-all maz-duration-200 maz-flex-center;
 
           transform: scale(0);
 
@@ -156,7 +179,6 @@
             @apply maz-opacity-100;
 
             transform: scale(1.05);
-            background-color: var(--maz-color-info-alpha);
           }
         }
       }
