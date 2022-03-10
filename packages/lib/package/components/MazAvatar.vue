@@ -27,7 +27,7 @@
     >
       <MazLazyImg
         v-if="src"
-        class="m-avatar__picture"
+        class="m-avatar__picture maz-max-w-full"
         :image="src"
         :alt="alt"
         image-height-full
