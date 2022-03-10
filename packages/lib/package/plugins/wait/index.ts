@@ -1,4 +1,4 @@
-import { computed, ref, Plugin } from 'vue'
+import { computed, ref } from 'vue'
 import {
   contains,
   DEFAULT_LOADER,
@@ -8,7 +8,7 @@ import {
   push,
 } from './utils'
 
-export class WaitingState {
+export class WaitHandler {
   private _loaders = ref<LoaderId[]>([])
 
   get loaders() {
@@ -34,14 +34,10 @@ export class WaitingState {
   }
 }
 
-const instance = new WaitingState()
+export const instance = new WaitHandler()
 
-const plugin: Plugin = {
+export const plugin = {
   install: (app) => {
     app.provide('wait', instance)
   },
 }
-
-export { instance }
-
-export default plugin

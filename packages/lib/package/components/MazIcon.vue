@@ -18,7 +18,7 @@
 <!-- // inheritAttrs: false -->
 <script lang="ts" setup>
   import { nextTick, onMounted, PropType, ref, watch, computed } from 'vue'
-  import { injectStrict } from '../utils/injectStrict'
+  import { injectStrict } from '../helpers/inject-strict'
 
   const cache: Record<string, Promise<SVGElement>> = {}
   const svgElSource = ref<SVGElement>()

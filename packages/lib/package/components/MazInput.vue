@@ -107,7 +107,7 @@
 
 <script lang="ts">
   import { computed, defineComponent, onMounted, ref, PropType } from 'vue'
-  import { debounce } from './../utils/debounce'
+  import { debounce } from '../helpers/debounce'
   import MazBtn from './MazBtn.vue'
   import MazIcon from './MazIcon.vue'
   import { Color, Size } from './types'
@@ -224,7 +224,7 @@
           if (props.color === 'warning') return 'maz-border-warning'
           if (props.color === 'white') return 'maz-border-white'
         }
-        return 'maz-border-color-lighter'
+        return '--default-border'
       })
 
       const computedPlaceholder = computed(() => {
@@ -370,6 +370,10 @@
     &-wrapper {
       @apply maz-relative maz-z-1 maz-flex maz-flex-1 maz-overflow-hidden maz-border-solid maz-bg-color maz-transition-colors maz-duration-300;
 
+      &.--default-border {
+        @apply maz-border-gray-200;
+      }
+
       &-input {
         @apply maz-relative maz-flex maz-flex-1 maz-items-center;
       }
@@ -462,7 +466,7 @@
     }
 
     & .m-input:not(.--is-focused):not(.--has-state) {
-      & .m-input-wrapper {
+      & .m-input-wrapper.--default-border {
         @apply maz-border-color-lighter;
       }
     }

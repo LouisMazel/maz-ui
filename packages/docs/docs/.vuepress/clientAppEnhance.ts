@@ -5,7 +5,7 @@ const mazIconPath = process.env.NODE_ENV === 'production'
     ? '/maz-ui-3/icons'
     : '/icons'
 
-import { ToasterOptions, installToaster } from 'maz-ui'
+import { ToasterOptions, installToaster, installWait } from 'maz-ui'
 import components from 'maz-ui/components'
 
 export default defineClientAppEnhance(async ({ app }) => {
@@ -22,4 +22,5 @@ export default defineClientAppEnhance(async ({ app }) => {
   }
 
   app.use(installToaster, toasterOptions)
+  app.use(installWait)
 })

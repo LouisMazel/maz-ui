@@ -62,11 +62,15 @@ export default defineUserConfig<DefaultThemeOptions>({
     ],
     [
       'meta',
-      { name: 'og:title', content: 'Maz-UI - Vue.JS & Nuxt.JS library' },
+      { property: 'og:title', content: 'Maz-UI - Vue.JS & Nuxt.JS library' },
     ],
     [
       'meta',
-      { name: 'og:description', content: 'Library of standalone components and tools for Vue & Nuxt' },
+      { property: 'og:description', content: 'Library of standalone components and tools for Vue & Nuxt' },
+    ],
+    [
+      'meta',
+      { property: 'og:type', content: 'website' },
     ],
     [
       'meta',
@@ -76,6 +80,8 @@ export default defineUserConfig<DefaultThemeOptions>({
       'meta',
       { name: 'twitter:description', content: 'Library of standalone components and tools for Vue & Nuxt' },
     ],
+    ['meta', { property: 'og:image', content: getAssetBaseUrl('/img/maz-ui-preview.jpg') }],
+    ['meta', { name: 'twitter:image', content: getAssetBaseUrl('/img/maz-ui-preview.jpg') }],
     [
       'link',
       { rel: 'apple-touch-icon', href: getAssetBaseUrl('/img/icons/apple-touch-icon.png') },
@@ -83,10 +89,6 @@ export default defineUserConfig<DefaultThemeOptions>({
     [
       'link',
       { property: 'og:site_name', content: 'Maz UI' },
-    ],
-    [
-      'link',
-      { property: 'og:type', content: 'website' },
     ],
     [
       'link',
@@ -99,8 +101,6 @@ export default defineUserConfig<DefaultThemeOptions>({
     ['meta', { name: 'msapplication-TileColor', content: '#2d89ef' }],
     ['meta', { name: 'theme-color', content: '#ffffff' }],
     ['meta', { name: 'msapplication-TileImage', content: getAssetBaseUrl('/img/maz-ui-preview.jpg') }],
-    ['meta', { property: 'og:image', content: getAssetBaseUrl('/img/maz-ui-preview.jpg') }],
-    ['meta', { name: 'twitter:image', content: getAssetBaseUrl('/img/maz-ui-preview.jpg') }]
   ],
 
   // theme and its config
@@ -130,7 +130,7 @@ export default defineUserConfig<DefaultThemeOptions>({
       '@vuepress/plugin-google-analytics',
       {
         // we have multiple deployments, which would use different id
-        id: 'G-EM35TM23Z',
+        id: 'G-EM35TM23ZC',
       },
     ],
   ],

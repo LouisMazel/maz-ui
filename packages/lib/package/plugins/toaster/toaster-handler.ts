@@ -1,4 +1,4 @@
-import { mount } from 'package/utils/mount-component'
+import { mount } from 'package/helpers/mount-component'
 import { App } from 'vue'
 import MazToast from './MazToast.vue'
 import { ToasterOptions } from './types'
