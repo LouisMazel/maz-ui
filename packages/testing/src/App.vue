@@ -2,6 +2,9 @@
   <div
     class="maz-flex maz-flex-col maz-w-full maz-items-center maz-text-normal"
   >
+    <MazAvatar
+      src="https://pbs.twimg.com/profile_images/598181608198381570/-cFG43y2_400x400.jpg"
+    ></MazAvatar>
     <MazBtn
       style="margin-bottom: 16px"
       color="transparent"
@@ -101,6 +104,7 @@
   import {
     MazBtn,
     MazInput,
+    MazAvatar,
     // MazTabsBar,
     // MazTabsContent,
     // MazTabsContentItem,
