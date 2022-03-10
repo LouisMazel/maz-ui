@@ -36,7 +36,6 @@
       type: Function as PropType<(param: SVGElement) => typeof param>,
       default: (svg: SVGElement) => svg,
     },
-    keepDuringLoading: { type: Boolean, default: true },
   })
 
   const emits = defineEmits(['loaded', 'unloaded', 'error'])
@@ -152,9 +151,9 @@
               request.responseText,
               'text/xml',
             )
-            const svgEl = result.getElementsByTagName('svg')[0]
+            let svgEl = result.getElementsByTagName('svg')[0] as SVGElement
             if (svgEl) {
-              // svgEl = this.transformSource(svgEl);
+              svgEl = props.transformSource(svgEl)
               resolve(svgEl)
             } else {
               reject(new Error('Loaded file is not valid SVG"'))
