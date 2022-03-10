@@ -98,13 +98,6 @@
 <script lang="ts" setup>
   import { onMounted, ref } from 'vue'
   // import { MazTabsItem } from 'maz-ui/package/components/MazTabsBar.vue'
-  const data = ref({
-    username: undefined,
-    password: undefined,
-    name: undefined,
-    telephone: undefined,
-    age: undefined,
-  })
   import {
     MazBtn,
     MazInput,
