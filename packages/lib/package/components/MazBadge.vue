@@ -13,16 +13,16 @@
 </template>
 
 <script lang="ts">
-  export type { Color } from './types'
+  import { Color } from './types'
+  export type BadgeColor = Color | 'gray'
 </script>
 
 <script lang="ts" setup>
   import { PropType } from 'vue'
-  import { Color } from './types'
 
   defineProps({
     color: {
-      type: String as PropType<Color>,
+      type: String as PropType<BadgeColor>,
       default: 'primary',
       validator: (value: string) => {
         return [
