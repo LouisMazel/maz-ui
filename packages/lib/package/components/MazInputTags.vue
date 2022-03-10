@@ -48,7 +48,7 @@
   import MazBtn from './MazBtn.vue'
   import MazInput from './MazInput.vue'
   import MazIcon from './MazIcon.vue'
-  import { Color, Size } from '~/types'
+  import { Color, Size } from './types'
 
   const props = defineProps({
     // Input value, can be a `Array` of `String` or `null`
