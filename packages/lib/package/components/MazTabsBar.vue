@@ -116,7 +116,6 @@
 </script>
 
 <style lang="postcss" scoped>
-  /* stylelint-disable no-descending-specificity */
   .m-tabs-bar {
     @apply maz-relative maz-flex maz-space-x-1 maz-overflow-x-auto;
 

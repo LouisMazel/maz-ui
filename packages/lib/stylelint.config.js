@@ -12,5 +12,6 @@ module.exports = {
       { ignoreAtRules: ['screen', 'layer', 'tailwind', 'each'] },
     ],
     'selector-class-pattern': null,
+    'no-descending-specificity': null,
   },
 }
