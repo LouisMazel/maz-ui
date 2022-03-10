@@ -10,7 +10,7 @@
 
 <script lang="ts" setup>
   import { onBeforeMount, ref, watch } from 'vue'
-  import { debounce } from './../utils/debounce'
+  import { debounce } from '../helpers/debounce'
 
   const props = defineProps({
     activeTab: { type: Number, default: undefined },

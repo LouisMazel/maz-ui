@@ -54,7 +54,7 @@
   } from '../utils'
   import MazBtn from '../../MazBtn.vue'
   import { Color } from '../../types'
-  import { debounce } from './../../../utils'
+  import { debounce } from './../../../helpers'
   import { PartialRangeValue, PickerValue } from '../types'
 
   enum DaySelected {

@@ -1,6 +1,16 @@
 ---
 title: MazAvatar
 description: MazAvatar is a stand-alone component replaces the standard html button with a beautiful design system. Many options like colors, sizes, disabled state, loading state, includes icons. Support of router-link and nuxt-link
+head:
+  - - meta
+    - name: twitter:title
+      content: MazAvatar | Maz-UI
+    - name: twitter:description
+      content: MazAvatar is a stand-alone component replaces the standard html button with a beautiful design system. Many options like colors, sizes, disabled state, loading state, includes icons. Support of router-link and nuxt-link
+    - property: og:title
+      content: MazAvatar | Maz-UI
+    - property: og:description
+      content: MazAvatar is a stand-alone component replaces the standard html button with a beautiful design system. Many options like colors, sizes, disabled state, loading state, includes icons. Support of router-link and nuxt-link
 ---
 
 # MazAvatar

@@ -1,11 +1,10 @@
 ---
-title: Toaster
 description: Display messages to your users in flexible toasts
 ---
 
-# Toaster
+# toaster
 
-> Display messages to your users in flexible toasts
+> Display messages to your users in flexibles toasts
 
 ## Basic usage
 
@@ -51,6 +50,7 @@ description: Display messages to your users in flexible toasts
 
 <script lang="ts" setup>
   import { inject } from 'vue'
+  import { ToasterHandler } from 'maz-ui'
 
   const toast = inject<ToasterHandler>('toast')
 
@@ -85,6 +85,8 @@ description: Display messages to your users in flexible toasts
 <script lang="ts" setup>
   import { inject } from 'vue'
 
+  import { ToasterHandler } from 'maz-ui'
+
   const toast = inject<ToasterHandler>('toast')
 
   function showInfo () {
@@ -114,6 +116,28 @@ description: Display messages to your users in flexible toasts
   }
 </script>
 
+## Install
+
+`main.ts` or `main.js`
+
+```ts
+import { createApp } from 'vue'
+import { installToaster, ToasterOptions } from 'maz-ui'
+
+const app = createApp(App)
+
+// DEFAULT OPTIONS
+const toasterOptions: ToasterOptions = {
+  position: 'bottom-right',
+  timeout: 10_000,
+  persistent: false,
+}
+
+app.use(installToaster, toasterOptions)
+
+app.mount('#app')
+```
+
 ## Options
 
 ### Positions
@@ -138,26 +162,4 @@ const persistent: boolean = false
 
 ```ts
 const timeout: number = 10000 // in ms
-```
-
-## Install
-
-`main.ts` or `main.js`
-
-```ts
-import { createApp } from 'vue'
-import { installToaster, ToasterOptions } from 'maz-ui'
-
-const app = createApp(App)
-
-// DEFAULT OPTIONS
-const toasterOptions: ToasterOptions = {
-  position: 'bottom-right',
-  timeout: 10_000,
-  persistent: false,
-}
-
-app.use(installToaster, toasterOptions)
-
-app.mount('#app')
 ```
