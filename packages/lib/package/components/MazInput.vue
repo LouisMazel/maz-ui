@@ -224,7 +224,7 @@
           if (props.color === 'warning') return 'maz-border-warning'
           if (props.color === 'white') return 'maz-border-white'
         }
-        return 'maz-border-gray-200'
+        return 'maz-border-color-lighter'
       })
 
       const computedPlaceholder = computed(() => {
@@ -310,8 +310,6 @@
 </script>
 
 <style lang="postcss" scoped>
-  /* stylelint-disable no-descending-specificity */
-
   .m-input {
     @apply maz-flex maz-flex-col;
 

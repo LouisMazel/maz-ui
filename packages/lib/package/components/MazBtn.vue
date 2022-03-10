@@ -23,7 +23,7 @@
     ]"
     :type="btnType"
   >
-    <div v-if="hasLeftIcon" class="m-btn__icon-left">
+    <div v-if="hasLeftIcon" class="m-btn__icon-left maz-flex maz-flex-center">
       <slot name="left-icon">
         <MazIcon v-if="leftIcon" :name="leftIcon" />
       </slot>
@@ -31,7 +31,7 @@
     <span class="maz-flex maz-flex-center">
       <slot></slot>
     </span>
-    <div v-if="hasRightIcon" class="m-btn__icon-right">
+    <div v-if="hasRightIcon" class="m-btn__icon-right maz-flex maz-flex-center">
       <slot name="right-icon">
         <MazIcon v-if="rightIcon" :name="rightIcon" />
       </slot>
