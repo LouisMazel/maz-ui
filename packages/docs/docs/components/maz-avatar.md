@@ -41,11 +41,16 @@ description: MazAvatar is a stand-alone component replaces the standard html but
     target="_blank"
     square
     clickable
-  />
+  >
+    <template #icon>
+      <MazIcon name="eye" style="color: white;" size="2rem" />
+    </template>
+  </MazAvatar>
   <MazAvatar
     src="https://placekitten.com/200/200"
     size="2.5rem"
     clickable
+    button-color="danger"
     @click="clicked"
   />
   <MazAvatar
@@ -68,7 +73,12 @@ description: MazAvatar is a stand-alone component replaces the standard html but
     target="_blank"
     square
     clickable
-  />
+    no-size
+  >
+    <template #icon>
+      <MazIcon name="eye" />
+    </template>
+  </MazAvatar>
   <MazAvatar
     src="https://placekitten.com/200/200"
     size="2.5rem"
