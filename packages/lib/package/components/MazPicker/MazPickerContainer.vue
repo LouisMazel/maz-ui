@@ -128,7 +128,6 @@
 </script>
 
 <style lang="postcss" scoped>
-  /* stylelint-disable no-descending-specificity */
   .m-picker-container {
     @apply maz-overflow-hidden maz-rounded-lg maz-bg-color;
 

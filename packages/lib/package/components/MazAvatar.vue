@@ -43,7 +43,11 @@
         type="button"
         tabindex="-1"
         class="m-avatar__button"
-        :style="{ backgroundColor: `var(--maz-color-${buttonColor}-alpha)` }"
+        :style="{
+          backgroundColor: src
+            ? `var(--maz-color-${buttonColor}-alpha)`
+            : `var(--maz-color-${buttonColor})`,
+        }"
         @click="$emit('click', $event)"
       >
         <slot name="icon">
@@ -103,7 +107,7 @@
     noLoader: { type: Boolean, default: false },
     buttonColor: {
       type: String as PropType<Color>,
-      default: 'primary',
+      default: 'info',
       validator: (value: Color) => {
         return [
           'primary',
@@ -197,12 +201,6 @@
 
       &.--has-initial {
         @apply maz-items-center maz-bg-primary;
-
-        &.--clickable {
-          & .m-avatar__button {
-            @apply maz-bg-danger;
-          }
-        }
       }
     }
 

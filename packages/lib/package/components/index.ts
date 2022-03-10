@@ -18,6 +18,7 @@ import { default as MazIcon } from './MazIcon.vue'
 import { default as MazInput } from './MazInput.vue'
 import { default as MazInputNumber } from './MazInputNumber.vue'
 import { default as MazInputPrice } from './MazInputPrice.vue'
+import { default as MazInputTags } from './MazInputTags.vue'
 import { default as MazLazyImg } from './MazLazyImg.vue'
 import { default as MazPhoneNumberInput } from './MazPhoneNumberInput.vue'
 import { default as MazPicker } from './MazPicker.vue'
@@ -48,6 +49,7 @@ export {
   MazInput,
   MazInputNumber,
   MazInputPrice,
+  MazInputTags,
   MazLazyImg,
   MazPhoneNumberInput,
   MazPicker,
@@ -79,6 +81,7 @@ export default {
   MazInput,
   MazInputNumber,
   MazInputPrice,
+  MazInputTags,
   MazLazyImg,
   MazPhoneNumberInput,
   MazPicker,

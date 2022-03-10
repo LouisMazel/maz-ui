@@ -113,7 +113,6 @@
 </script>
 
 <style lang="postcss" scoped>
-  /* stylelint-disable no-descending-specificity */
   .maz-picker-calendar {
     @apply maz-relative maz-flex maz-w-full;
 

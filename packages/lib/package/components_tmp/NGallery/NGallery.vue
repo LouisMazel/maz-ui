@@ -246,11 +246,9 @@
               @apply tw-transform tw-scale-110;
             }
 
-            /* stylelint-disable no-descending-specificity */
             img {
               @apply tw-transition tw-ease-in-out tw-duration-300;
             }
-            /* stylelint-enable no-descending-specificity */
           }
         }
       }

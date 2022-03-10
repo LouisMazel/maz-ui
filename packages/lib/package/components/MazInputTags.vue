@@ -1,16 +1,9 @@
 <template>
   <div
     class="m-input-tags"
-    :class="[
-      {
-        'maz-border-primary': isFocus && !error,
-        'maz-border-danger': error,
-        'maz-border-gray-200': !error && !isFocus,
-      },
-    ]"
-    :style="{ fontSize: size }"
-    @focus.capture="isFocus = true"
-    @blur.capture="isFocus = false"
+    :class="[borderStyle, `--${color}`]"
+    @focus.capture="isFocused = true"
+    @blur.capture="isFocused = false"
   >
     <TransitionGroup name="maz-tags">
       <div v-for="(tag, i) in modelValue" :key="`tag-${i}`">
@@ -25,7 +18,7 @@
             {{ tag }}
           </template>
           <template #right-icon>
-            <MazIcon :src="XIcon" class="m-input-tags__tag__icon" />
+            <MazIcon name="x" size="1em" class="m-input-tags__tag__icon" />
           </template>
         </MazBtn>
       </div>
@@ -35,7 +28,8 @@
       v-model="inputValue"
       v-bind="$attrs"
       :placeholder="placeholder"
-      :aria-label="placeholder"
+      :label="label"
+      :aria-label="label || placeholder"
       :error="error"
       :disabled="disabled"
       :color="color"
@@ -49,11 +43,12 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, PropType } from 'vue'
-  import MazBtn from '../ui/MazBtn.vue'
+  import { ref, PropType, computed } from 'vue'
+
+  import MazBtn from './MazBtn.vue'
   import MazInput from './MazInput.vue'
-  import MazIcon from '../ui/MazIcon.vue'
-  import XIcon from '../icons/x.svg'
+  import MazIcon from './MazIcon.vue'
+  import { Color, Size } from './types'
 
   const props = defineProps({
     // Input value, can be a `Array` of `String` or `null`
@@ -63,19 +58,40 @@
     },
     // input placeholder
     placeholder: { type: String, default: undefined },
+    label: { type: String, default: undefined },
     // When is `true` the input is disable
     disabled: { type: Boolean, default: false },
-    // When is `true` the input has the dark theme
-    dark: { type: Boolean, default: false },
     // When is `true` the input has the error style (red)
     error: { type: Boolean, default: false },
-    // input size (`'em'` / `'rem'`)
-    size: { type: String, default: undefined },
-    // color option
-    color: { type: String, default: 'primary' },
+    success: { type: Boolean, default: false },
+    warning: { type: Boolean, default: false },
+    size: {
+      type: String as PropType<Size>,
+      default: 'md',
+      validator: (value: string) => {
+        return ['mini', 'xs', 'sm', 'md', 'lg', 'xl'].includes(value)
+      },
+    },
+    color: {
+      type: String as PropType<Color>,
+      default: 'primary',
+      validator: (value: Color) => {
+        return [
+          'primary',
+          'secondary',
+          'info',
+          'success',
+          'warning',
+          'danger',
+          'white',
+          'black',
+          'transparent',
+        ].includes(value)
+      },
+    },
   })
 
-  const isFocus = ref(false)
+  const isFocused = ref(false)
   const inputValue = ref<string>()
 
   const emits = defineEmits(['update:model-value'])
@@ -96,6 +112,25 @@
     }
   }
 
+  const borderStyle = computed(() => {
+    if (props.error) return 'maz-border-danger'
+    if (props.success) return 'maz-border-success'
+    if (props.warning) return 'maz-border-warning'
+
+    if (isFocused.value) {
+      if (props.color === 'primary') return 'maz-border-primary'
+      if (props.color === 'secondary') return 'maz-border-secondary'
+      if (props.color === 'info') return 'maz-border-info'
+      if (props.color === 'danger') return 'maz-border-danger'
+      if (props.color === 'success') return 'maz-border-success'
+      if (props.color === 'warning') return 'maz-border-warning'
+      if (props.color === 'black') return 'maz-border-black'
+      if (props.color === 'white') return 'maz-border-white'
+    }
+
+    return 'maz-border-color-lighter'
+  })
+
   const removeLastTag = () => {
     if (!inputValue.value || inputValue.value === '') {
       const tagsArray = JSON.parse(JSON.stringify(props.modelValue))
@@ -114,24 +149,32 @@
 <style lang="postcss" scoped>
   .m-input-tags {
     @apply maz-relative maz-flex maz-flex-wrap maz-items-center
-    maz-overflow-hidden maz-rounded-lg maz-border-2 maz-px-[0.25em];
+    maz-overflow-hidden maz-rounded-lg maz-border-2 maz-bg-color;
+
+    padding-left: 0.25em;
+    padding-right: 0.25em;
 
     &__tag {
-      @apply maz-my-[0.25em] maz-mr-[0.25em];
-
-      &__icon {
-        @apply maz-h-[1.25em] maz-w-[1.25em];
-
-        margin-left: -0.25em;
-      }
+      margin-top: 0.25em;
+      margin-bottom: 0.25em;
+      margin-right: 0.25em;
     }
 
     &__input {
-      @apply maz-min-w-[7.5em];
+      &:deep(.m-input-wrapper) {
+        @apply maz-border-none;
+
+        min-width: 7.5em;
+      }
 
       &:deep(input) {
-        @apply maz-px-[0.4em];
+        padding-left: 0.4em;
+        padding-right: 0.4em;
       }
     }
+  }
+
+  html.dark .m-input-tags {
+    @apply maz-bg-color-light;
   }
 </style>

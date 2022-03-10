@@ -10,6 +10,7 @@ export const components = {
         '/components/maz-input.md',
         '/components/maz-input-number.md',
         '/components/maz-input-price.md',
+        '/components/maz-input-tags.md',
         '/components/maz-picker.md',
         '/components/maz-phone-number-input.md',
         '/components/maz-select.md',

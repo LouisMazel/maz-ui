@@ -63,7 +63,6 @@
 </script>
 
 <style lang="postcss" scoped>
-  /* stylelint-disable no-descending-specificity */
   .m-lazy-img-component {
     @apply maz-relative maz-inline-flex maz-bg-color-lighter maz-flex-center;
 
