@@ -18,4 +18,8 @@ const installFilters = {
   },
 }
 
-export { capitalize, currency, date, number, installFilters }
+export { installFilters }
+export * from './capitalize'
+export * from './currency'
+export * from './date'
+export * from './number'
