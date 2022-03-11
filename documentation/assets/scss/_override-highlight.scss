@@ -5,9 +5,23 @@
     border-radius: var(--maz-border-radius);
     padding: 20px;
     color: var(--maz-text-color-dark);
+    font-weight: normal;
 
-    .hljs-name {
-      color: var(--maz-danger);
+    .hljs-title {
+      color: var(--maz-text-color-dark);
+      font-weight: normal;
+    }
+
+    .hljs-selector-class {
+      color: var(--maz-success);
+    }
+
+    .hljs-tag {
+      color: var(--maz-color);
+
+      .hljs-name {
+        color: var(--maz-danger);
+      }
     }
 
     .hljs-built_in,
@@ -17,9 +31,12 @@
     }
 
     .hljs-variable,
-    .hljs-keyword,
-    .hljs-attr {
+    .hljs-keyword {
       color: var(--maz-primary);
+    }
+
+    .hljs-attr {
+      color: var(--maz-third);
     }
 
     .hljs-number,

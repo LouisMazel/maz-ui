@@ -20,7 +20,7 @@
     <h3>Install maz-ui</h3>
     <CodeContainer
       language="bash"
-      code="npm i maz-ui -S
+      code="npm i maz-ui@2 -S
 
 # or yarn add maz-ui"
       class="maz-my-4"

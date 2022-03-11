@@ -2,24 +2,9 @@
   <div class="home maz-flex-1 maz-flex maz-direction-column">
     <div class="home__main maz-flex maz-flex-1 maz-flex-center maz-container">
       <div class="home__content maz-flex maz-direction-column maz-justify-center maz-p-4">
-        <h2 class="maz-text-center">
-          New version for Vue.JS & Nuxt.JS v3.x available (@next version)
-        </h2>
-        <div
-          class="maz-flex maz-align-start maz-flex-wrap maz-my-3 maz-align-center maz-justify-center"
-        >
-          <MazBtn
-            color="third"
-            class="maz-mr-2"
-            href="https://louismazel.github.io/maz-ui-3/"
-            target="_blank"
-          >
-            Go to v.3
-          </MazBtn>
-        </div>
         <h2 class="maz-mb-2 maz-text-center">
           Stand-alone components library to build your interfaces with
-          <br><span class="maz-text-primary">Vue.JS & Nuxt.JS</span>
+          <br><span class="maz-text-primary">Vue.JS & Nuxt.JS</span> (v2.x)
         </h2>
         <h3 class="maz-mb-2 maz-text-center maz-text-third">
           Full dark mode support
@@ -27,7 +12,7 @@
         <div class="maz-flex maz-flex-center maz-direction-column">
           <CodeContainer
             language="bash"
-            code="npm i maz-ui -S"
+            code="npm i maz-ui@2 -S"
             class="mb-4"
           />
           <div
@@ -52,6 +37,21 @@
               :to="{ name: 'documentation-theme' }"
             >
               THEME
+            </MazBtn>
+          </div>
+          <h2 class="maz-text-center maz-mt-4">
+            New version for Vue.JS & Nuxt.JS v3.x available (@next version)
+          </h2>
+          <div
+            class="maz-flex maz-align-start maz-flex-wrap maz-my-3 maz-align-center maz-justify-center"
+          >
+            <MazBtn
+              color="third"
+              size="lg"
+              href="https://louismazel.github.io/maz-ui-3/"
+              target="_blank"
+            >
+              GO TO V3
             </MazBtn>
           </div>
         </div>
@@ -81,7 +81,7 @@ export default {
   head () {
     return {
       meta: meta({
-        description: 'Build your amazing interfaces with Maz UI and its stand-alone components - Stand-alone components library for Vue.JS & Nuxt.JS',
+        description: 'Build your amazing interfaces with Maz UI and its stand-alone components - Stand-alone components library for Vue.JS & Nuxt.JS (v2.x)',
         title: 'Maz UI - Stand-alone components library for Vue.JS & Nuxt.JS'
       })
     }
