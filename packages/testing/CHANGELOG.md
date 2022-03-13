@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-next.13](https://github.com/LouisMazel/maz-ui/compare/v2.3.13...3.0.0-next.13) (2022-03-13)
+
+
+### Features
+
+* **lib:** add aos plugin to manage animations ([c247395](https://github.com/LouisMazel/maz-ui/commit/c247395be897b1d0c494ae9c9ec659df44b5c6b7))
+* **lib:** add maz-picker component ([#197](https://github.com/LouisMazel/maz-ui/issues/197)) ([877515e](https://github.com/LouisMazel/maz-ui/commit/877515e585d1aa9a3febd83e222c12346e7401b5))
+* **lib:** add wait plugin to manage loading state ([#214](https://github.com/LouisMazel/maz-ui/issues/214)) ([a6a1931](https://github.com/LouisMazel/maz-ui/commit/a6a1931ba7000c5e545cfc4808fe7205809629c4))
+* **lib:** export tailwind config ([#201](https://github.com/LouisMazel/maz-ui/issues/201)) ([94fddb9](https://github.com/LouisMazel/maz-ui/commit/94fddb9d35e91a6f649bcb18ae7105048d048584))
+* **lib:** MazInput - adding style color for autofill ([#208](https://github.com/LouisMazel/maz-ui/issues/208)) ([b3ae969](https://github.com/LouisMazel/maz-ui/commit/b3ae969584bda0e690179c1b6c9defdc1bbf0425))
+
+
+
+
+
 # [3.0.0-next.12](https://github.com/LouisMazel/maz-ui/compare/v2.3.13...3.0.0-next.12) (2022-03-10)
 
 

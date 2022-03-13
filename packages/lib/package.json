@@ -1,6 +1,6 @@
 {
   "name": "maz-ui",
-  "version": "3.0.0-next.12",
+  "version": "3.0.0-next.13",
   "description": "A stand-alone components library for Vue.Js 3 & Nuxt.Js 3",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "main": "modules/index.js",
@@ -30,9 +30,11 @@
     "build:copy-comp-types": "node build/copy-components-types.js",
     "build:gen-components-entry": "cross-env NODE_ENV=production node build/generate-components-entry",
     "build:components-entry": "cross-env NODE_ENV=production node build/build-components-entry.js",
-    "build:css": "NODE_ENV=production tailwindcss -i ./tailwindcss/css/tailwind.css -o css/main.css --config ./tailwind.config.js --postcss",
-    "build:cjs": "npm run build:lib -- --format cjs",
-    "build:esm": "npm run build:lib -- --format esm",
+    "build:modules": "npm run build:lib -- --package modules",
+    "build:components": "npm run build:lib -- --package components",
+    "build:css": "npm run build:tailwind && npm run build:scss",
+    "build:tailwind": "NODE_ENV=production tailwindcss -i ./tailwindcss/css/tailwind.css -o css/main.css --config ./tailwind.config.js --postcss",
+    "build:scss": "node build/compile-scss.js",
     "pre-commit": "lint-staged"
   },
   "lint-staged": {
@@ -44,7 +46,8 @@
     "chart.js": "^3.0.0",
     "dropzone": "^5.9.3",
     "libphonenumber-js": "^1.9.44",
-    "vue": "^3.0.0"
+    "vue": "^3.0.0",
+    "vue-router": "^4.0.0"
   },
   "peerDependenciesMeta": {
     "dropzone": {
@@ -54,6 +57,9 @@
       "optional": true
     },
     "chart.js": {
+      "optional": true
+    },
+    "vue-router": {
       "optional": true
     }
   },
@@ -93,6 +99,7 @@
     "json-templater": "^1.2.0",
     "libphonenumber-js": "^1.9.46",
     "lint-staged": "^12.1.7",
+    "node-sass": "^7.0.1",
     "onchange": "^7.1.0",
     "path": "^0.12.7",
     "postcss": "^8.4.5",
@@ -127,6 +134,7 @@
     "vue": "^3.2.26",
     "vue-jest": "^5.0.0-0",
     "vue-loader": "^17.0.0",
+    "vue-router": "^4.0.14",
     "vue-zoom-img": "^1.0.1",
     "vuedraggable": "^2.24.3"
   },

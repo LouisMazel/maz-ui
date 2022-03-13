@@ -10,3 +10,10 @@ export {
   WaitHandler,
   instance as waitInstance,
 } from './wait'
+
+export {
+  plugin as installAos,
+  instance as aosInstance,
+  AosHandler,
+  AosOptions,
+} from './aos'

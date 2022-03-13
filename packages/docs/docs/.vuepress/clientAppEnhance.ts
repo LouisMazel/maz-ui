@@ -1,14 +1,15 @@
 import { defineClientAppEnhance } from '@vuepress/client'
 import 'maz-ui/css/main.css'
+import 'maz-ui/css/aos.css'
 
 const mazIconPath = process.env.NODE_ENV === 'production'
     ? '/maz-ui-3/icons'
     : '/icons'
 
-import { ToasterOptions, installToaster, installWait } from 'maz-ui'
+import { ToasterOptions, installToaster, installWait, installAos, AosOptions } from 'maz-ui'
 import components from 'maz-ui/components'
 
-export default defineClientAppEnhance(async ({ app }) => {
+export default defineClientAppEnhance(async ({ app, router }) => {
   app.provide('mazIconPath', mazIconPath)
 
   Object.entries(components).forEach(([componentName, component]) => {
@@ -21,6 +22,16 @@ export default defineClientAppEnhance(async ({ app }) => {
     timeout: 10000,
   }
 
+  const aosOptions: AosOptions = {
+    router,
+    delay: 500,
+    animation: {
+      duration: 400,
+      once: false
+    }
+  }
+
   app.use(installToaster, toasterOptions)
   app.use(installWait)
+  app.use(installAos, aosOptions)
 })
