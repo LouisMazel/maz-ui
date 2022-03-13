@@ -19,6 +19,18 @@ build-watch-lib:
 build-js-lib:
 	make --directory=packages/lib build-js
 
+build-modules-lib:
+	make --directory=packages/lib build-modules
+
+build-components-lib:
+	make --directory=packages/lib build-components
+
+build-css-lib:
+	make --directory=packages/lib build-css
+
+build-types-lib:
+	make --directory=packages/lib build-types
+
 install:
 	make install-root install-lib install-docs
 
@@ -32,13 +44,16 @@ install-docs:
 	make --directory=packages/docs install
 
 reinstall:
-	make reinstall-lib reinstall-docs
+	make reinstall-lib reinstall-docs reinstall-testing
 
 reinstall-lib:
 	make --directory=packages/lib reinstall
 
 reinstall-docs:
 	make --directory=packages/docs reinstall
+
+reinstall-testing:
+	make --directory=packages/testing reinstall
 
 lint-staged: ## lint-staged
 	npm run pre-commit

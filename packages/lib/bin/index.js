@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+/* eslint-disable no-console */
+
 const chalk = require('chalk')
 const clear = require('clear')
 const figlet = require('figlet')
@@ -69,3 +71,5 @@ program
   })
 
 program.parse(process.argv)
+
+/* eslint-enable no-console */

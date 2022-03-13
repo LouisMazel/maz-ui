@@ -3,9 +3,13 @@
     class="maz-flex maz-flex-col maz-w-full maz-items-center maz-text-normal"
   >
     <MazAvatar
+      data-maz-aos="fade-right"
+      data-maz-aos-duration="3000"
       src="https://pbs.twimg.com/profile_images/598181608198381570/-cFG43y2_400x400.jpg"
-    ></MazAvatar>
+    />
     <MazBtn
+      data-maz-aos="fade-left"
+      data-maz-aos-delay="300"
       style="margin-bottom: 16px"
       color="transparent"
       @click="toggleDarkMode"
@@ -110,6 +114,7 @@
     // MazTabsContentItem,
     MazPicker,
   } from 'maz-ui/package/components'
+  import { aosInstance } from 'maz-ui'
 
   const data = ref({
     username: undefined,
@@ -134,6 +139,7 @@
 
   onMounted(() => {
     autoSetDarkMode()
+    aosInstance.handleObserver()
   })
 
   const autoSetDarkMode = () => {

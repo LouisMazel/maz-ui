@@ -9,6 +9,18 @@ build:
 build-js:
 	npm run build:js
 
+build-modules:
+	npm run build:modules
+
+build-components:
+	npm run build:gen-components-entry && npm run build:components
+
+build-types:
+	npm run build:types
+
+build-css:
+	npm run build:css
+
 clean-build:
 	npm run clean
 
@@ -20,7 +32,6 @@ install:
 
 reinstall:
 	rm -rf ./node_modules
-	rm package-lock.json
 	npm i
 
 lint-staged: ## lint-staged

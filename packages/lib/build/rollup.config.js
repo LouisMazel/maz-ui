@@ -120,7 +120,7 @@ const baseConfig = {
 /** @type {import('rollup').RollupOptions[]} */
 const buildFormats = []
 
-if (!argv.format || argv.format === 'esm') {
+if (!argv.package || argv.package === 'modules') {
   /** @type {import('rollup').RollupOptions} */
   const esConfig = {
     ...baseConfig,
@@ -162,7 +162,7 @@ if (!argv.format || argv.format === 'esm') {
   buildFormats.push(esConfig)
 }
 
-// if (!argv.format || argv.format === 'cjs') {
+// if (!argv.package || argv.package === 'cjs') {
 //   /** @type {import('rollup').RollupOptions} */
 //   const cjsConfig = {
 //     ...baseConfig,
@@ -187,41 +187,39 @@ if (!argv.format || argv.format === 'esm') {
 //   buildFormats.push(cjsConfig)
 // }
 
-if (!argv.format || argv.format === 'components') {
-  if (!argv.format || argv.format === 'esm') {
-    /** @type {import('rollup').RollupOptions[]} */
-    const componentsEsmConfig = []
-    for (const component of componentsList) {
-      componentsEsmConfig.push({
-        ...baseConfig,
-        input: component.path,
-        output: {
-          // compact: true,
-          dir: 'components',
-          exports: 'named',
-          format: 'esm',
-          compact: true,
-          sourcemap: true,
-        },
-        plugins: [
-          peerDepsExternal(),
-          replace(baseConfig.plugins.replace),
-          ...baseConfig.plugins.preVue,
-          vue(baseConfig.plugins.vue),
-          typescript({
-            typescript: ttypescript,
-            useTsconfigDeclarationDir: true,
-            emitDeclarationOnly: true,
-          }),
-          ...baseConfig.plugins.postVue,
-          babel(baseConfig.plugins.babel),
-          terser({ output: { ecma: 5 } }),
-        ],
-      })
-    }
-    buildFormats.push(...componentsEsmConfig)
+if (!argv.package || argv.package === 'components') {
+  /** @type {import('rollup').RollupOptions[]} */
+  const componentsEsmConfig = []
+  for (const component of componentsList) {
+    componentsEsmConfig.push({
+      ...baseConfig,
+      input: component.path,
+      output: {
+        // compact: true,
+        dir: 'components',
+        exports: 'named',
+        format: 'esm',
+        compact: true,
+        sourcemap: true,
+      },
+      plugins: [
+        peerDepsExternal(),
+        replace(baseConfig.plugins.replace),
+        ...baseConfig.plugins.preVue,
+        vue(baseConfig.plugins.vue),
+        typescript({
+          typescript: ttypescript,
+          useTsconfigDeclarationDir: true,
+          emitDeclarationOnly: true,
+        }),
+        ...baseConfig.plugins.postVue,
+        babel(baseConfig.plugins.babel),
+        terser({ output: { ecma: 5 } }),
+      ],
+    })
   }
-  // if (!argv.format || argv.format === 'cjs') {
+  buildFormats.push(...componentsEsmConfig)
+  // if (!package.package || package.package === 'cjs') {
   //   const componentsCjsConfig = componentsList.map((component) => {
   //     /** @type {import('rollup').RollupOptions} */
   //     return {
