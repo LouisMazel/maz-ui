@@ -12,7 +12,7 @@ This plugin use the browser native [Intersection Observer API](https://developer
 
 <br />
 
-<MazCard overflow-hidden data-maz-aos="slide-right" >
+<MazCard overflow-hidden data-maz-aos="scale-out" >
   <MazAvatar
     size="2rem"
     data-maz-aos-delay="300"
@@ -20,7 +20,7 @@ This plugin use the browser native [Intersection Observer API](https://developer
     src="https://pbs.twimg.com/profile_images/598181608198381570/-cFG43y2_400x400.jpg"
   />
   <h1
-    data-maz-aos="scale-out"
+    data-maz-aos="slide-right"
     data-maz-aos-delay="600"
     style="margin-top: 12px; margin-bottom: 12px;"
   >
@@ -46,34 +46,37 @@ This plugin use the browser native [Intersection Observer API](https://developer
 
 ```vue
 <template>
-  <MazAvatar
-    data-maz-aos="scale-in"
-    src="https://pbs.twimg.com/profile_images/598181608198381570/-cFG43y2_400x400.jpg"
-  />
-  <h1
-    data-maz-aos="scale-out"
-    data-maz-aos-duration="2000"
-    data-maz-aos-delay="300"
-    style="margin-top: 1rem; margin-bottom: 1rem;"
-  >
-    Gérard Depardieu
-  </h1>
-  <p
-    data-maz-aos="fade-right"
-    data-maz-aos-delay="600"
-    data-maz-aos-duration="2000"
-  >
-    Actor
-  </p>
-
-  <p
-    data-maz-aos="flip-left"
-    data-maz-aos-delay="900"
-    data-maz-aos-easing="ease-in-quart"
-    style="margin-top: 0"
-  >
-    Gérard Depardieu, né le 27 décembre 1948 à Châteauroux, est un acteur, chanteur, réalisateur, producteur de cinéma, de télévision et de théâtre franco-russe. Il est aussi homme d'affaires, notamment dans le domaine de la viticulture.
-  </p>
+  <MazCard overflow-hidden data-maz-aos="scale-out" >
+    <MazAvatar
+      size="2rem"
+      data-maz-aos-delay="300"
+      data-maz-aos="scale-in"
+      src="https://pbs.twimg.com/profile_images/598181608198381570/-cFG43y2_400x400.jpg"
+    />
+    <h1
+      data-maz-aos="slide-right"
+      data-maz-aos-delay="600"
+      style="margin-top: 12px; margin-bottom: 12px;"
+    >
+      Gérard Depardieu
+    </h1>
+    <p
+      data-maz-aos="fade-right"
+      data-maz-aos-delay="900"
+      style="margin-top: 0"
+      class="maz-text-muted"
+    >
+      Actor
+    </p>
+    <p
+      data-maz-aos="flip-left"
+      data-maz-aos-delay="1200"
+      data-maz-aos-duration="2000"
+      style="margin-top: 0"
+    >
+      Gérard Depardieu, né le 27 décembre 1948 à Châteauroux, est un acteur, chanteur, réalisateur, producteur de cinéma, de télévision et de théâtre franco-russe. Il est aussi homme d'affaires, notamment dans le domaine de la viticulture.
+    </p>
+  </MazCard>
 </template>
 ```
 
