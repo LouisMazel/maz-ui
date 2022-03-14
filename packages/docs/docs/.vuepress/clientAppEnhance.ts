@@ -33,5 +33,8 @@ export default defineClientAppEnhance(async ({ app, router }) => {
 
   app.use(installToaster, toasterOptions)
   app.use(installWait)
-  app.use(installAos, aosOptions)
+  // @ts-ignore
+  if (!__VUEPRESS_SSR__) {
+    app.use(installAos, aosOptions)
+  }
 })
