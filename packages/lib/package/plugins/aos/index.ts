@@ -61,36 +61,79 @@ class AosHandler {
       ...this.options.observer,
     })
 
-    document.querySelectorAll('[data-maz-aos]').forEach((elem) => {
-      observer.observe(elem)
+    document.querySelectorAll('[data-maz-aos]').forEach((element) => {
+      const anchorAttr = element.getAttribute('data-maz-aos-anchor')
+      if (anchorAttr) {
+        const anchorElement = document.querySelector(anchorAttr)
+        if (anchorElement) {
+          anchorElement.setAttribute('data-maz-aos-children', 'true')
+          observer.observe(anchorElement)
+        } else {
+          // eslint-disable-next-line no-console
+          console.warn(
+            `[maz-ui](aos) no element found with selector "${anchorAttr}"`,
+          )
+        }
+      } else {
+        observer.observe(element)
+      }
     })
   }
 
   handleIntersect: IntersectionObserverCallback = (entries, observer) => {
     entries.forEach((entry) => {
       const target = entry.target as HTMLElement
-      const once = target.getAttribute('data-maz-aos-once')
-      const useOnce: boolean =
-        typeof once === 'string' ? once === 'true' : this.options.animation.once
+      const hasChildren =
+        target.getAttribute('data-maz-aos-children') === 'true'
+      const animateElements: HTMLElement[] = entry.target.getAttribute(
+        'data-maz-aos',
+      )
+        ? [entry.target as HTMLElement]
+        : []
 
-      if (entry.intersectionRatio > this.options.observer.threshold) {
-        const duration = target.getAttribute('data-maz-aos-duration')
+      if (hasChildren) {
+        const children = Array.from(
+          document.querySelectorAll('[data-maz-aos-anchor]'),
+        ).map((child) =>
+          child.getAttribute('data-maz-aos-anchor') === `#${entry.target.id}`
+            ? child
+            : undefined,
+        )
 
-        if (!duration) {
-          target.style.transitionDuration = `${this.options.animation.duration}ms`
-          setTimeout(() => {
-            target.style.transitionDuration = '0'
-          }, 1000)
-        }
-
-        target.classList.add('maz-aos-animate')
-
-        if (useOnce) {
-          observer.unobserve(target)
-        }
-      } else {
-        target.classList.remove('maz-aos-animate')
+        children.forEach((child) => {
+          if (child) {
+            animateElements.push(child as HTMLElement)
+          }
+        })
       }
+
+      animateElements.forEach((element) => {
+        const once = element.getAttribute('data-maz-aos-once')
+
+        const useOnce: boolean =
+          typeof once === 'string'
+            ? once === 'true'
+            : this.options.animation.once
+
+        if (entry.intersectionRatio > this.options.observer.threshold) {
+          const duration = element.getAttribute('data-maz-aos-duration')
+
+          if (!duration) {
+            element.style.transitionDuration = `${this.options.animation.duration}ms`
+            setTimeout(() => {
+              element.style.transitionDuration = '0'
+            }, 1000)
+          }
+
+          element.classList.add('maz-aos-animate')
+
+          if (useOnce) {
+            observer.unobserve(element)
+          }
+        } else {
+          element.classList.remove('maz-aos-animate')
+        }
+      })
     })
   }
 }

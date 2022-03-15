@@ -12,22 +12,23 @@ This plugin use the browser native [Intersection Observer API](https://developer
 
 <br />
 
-<MazCard overflow-hidden data-maz-aos="scale-out" >
+<MazCard overflow-hidden data-maz-aos="scale-out" id="parentCard">
   <MazAvatar
-    size="2rem"
     data-maz-aos-delay="300"
     data-maz-aos="scale-in"
+    size="2rem"
     src="https://pbs.twimg.com/profile_images/598181608198381570/-cFG43y2_400x400.jpg"
   />
   <h1
     data-maz-aos="slide-right"
     data-maz-aos-delay="600"
+    data-maz-aos-anchor="#parentCard"
     style="margin-top: 12px; margin-bottom: 12px;"
   >
     Gérard Depardieu
   </h1>
   <p
-    data-maz-aos="fade-right"
+    data-maz-aos="zoom-in-left"
     data-maz-aos-delay="900"
     style="margin-top: 0"
     class="maz-text-muted"
@@ -46,22 +47,23 @@ This plugin use the browser native [Intersection Observer API](https://developer
 
 ```vue
 <template>
-  <MazCard overflow-hidden data-maz-aos="scale-out" >
+  <MazCard overflow-hidden data-maz-aos="scale-out" id="parentCard">
     <MazAvatar
-      size="2rem"
       data-maz-aos-delay="300"
       data-maz-aos="scale-in"
+      size="2rem"
       src="https://pbs.twimg.com/profile_images/598181608198381570/-cFG43y2_400x400.jpg"
     />
     <h1
       data-maz-aos="slide-right"
       data-maz-aos-delay="600"
+      data-maz-aos-anchor="#parentCard"
       style="margin-top: 12px; margin-bottom: 12px;"
     >
       Gérard Depardieu
     </h1>
     <p
-      data-maz-aos="fade-right"
+      data-maz-aos="zoom-in-left"
       data-maz-aos-delay="900"
       style="margin-top: 0"
       class="maz-text-muted"
@@ -85,10 +87,11 @@ This plugin use the browser native [Intersection Observer API](https://developer
 | Attribute | Description | Example value | Default value |
 |---------------------------|-------------|---------------|---------|
 | data-maz-aos | animation name | fade-up | - |
-| data-aos-duration | *Duration of animation (ms) | 50 to 3000 | 400 |
-| data-aos-easing | Choose timing function to ease elements in different ways | ease-in-sine | linear |
-| data-aos-delay | Delay animation (ms) | 50 to 3000 | 0 |
-| data-aos-once | Choose wheter animation should fire once, or every time you scroll up/down to element | true | false |
+| data-maz-aos-duration | *Duration of animation (ms) | 50 to 3000 | 400 |
+| data-maz-aos-easing | Choose timing function to ease elements in different ways | ease-in-sine | linear |
+| data-maz-aos-delay | Delay animation (ms) | 50 to 3000 | 0 |
+| data-maz-aos-anchor | Anchor element, whose offset will be counted to trigger animation instead of actual elements offset. ONLY with ID attribute | #selector | undefined |
+| data-maz-aos-once | Choose wheter animation should fire once, or every time you scroll up/down to element | true | false |
 
 ## Animations
 
