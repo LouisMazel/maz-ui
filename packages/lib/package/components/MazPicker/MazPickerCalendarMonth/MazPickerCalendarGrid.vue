@@ -9,7 +9,7 @@
       >
         <div v-for="first in emptyDaysCount" :key="first" />
         <MazBtn
-          v-for="(day, i) in dayCount"
+          v-for="(day, i) in monthDays"
           :key="i"
           size="mini"
           :color="getDayButtonColor(day)"
@@ -93,12 +93,14 @@
     set: (value) => emits('update:model-value', value),
   })
 
-  const dayCount = computed(() =>
-    getDaysInMonth(
+  const monthDays = computed(() => {
+    const dayCount = getDaysInMonth(
       props.currentDate.getFullYear(),
       props.currentDate.getMonth(),
-    ),
-  )
+    )
+
+    return dayCount
+  })
 
   const clonedCurrentDate = computed(() => cloneDate(props.currentDate))
 

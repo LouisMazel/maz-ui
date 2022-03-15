@@ -3,46 +3,16 @@
     class="maz-flex maz-flex-col maz-w-full maz-items-center maz-text-normal"
   >
     <MazAvatar
-      data-maz-aos="fade-right"
-      data-maz-aos-duration="3000"
+      data-maz-aos="scale-in"
       src="https://pbs.twimg.com/profile_images/598181608198381570/-cFG43y2_400x400.jpg"
     />
     <MazBtn
-      data-maz-aos="fade-left"
-      data-maz-aos-delay="300"
       style="margin-bottom: 16px"
       color="transparent"
       @click="toggleDarkMode"
     >
       Dark Switch
     </MazBtn>
-
-    <form action="">
-      <MazInput
-        v-model="data.username"
-        autocomplete="username"
-        label="username"
-      />
-      <MazInput
-        v-model="data.password"
-        autocomplete="password"
-        label="password"
-        type="password"
-      />
-      <MazInput
-        v-model="data.age"
-        autocomplete="age"
-        label="age"
-        type="number"
-      />
-      <MazInput
-        v-model="data.telephone"
-        autocomplete="telephone"
-        label="telephone"
-        type="tel"
-      />
-      <MazInput v-model="data.name" autocomplete="name" label="name" />
-    </form>
 
     <code class="maz-mb-2">
       {{ dateValue }}
@@ -59,7 +29,7 @@
       color="secondary"
     /> -->
 
-    <MazPicker
+    <!-- <MazPicker
       v-model="dateValue"
       style="width: 400px"
       label="Select date"
@@ -67,7 +37,7 @@
       :disabled-hours="[0, 1, 2, 3, 4, 5, 6, 20, 21, 22, 23]"
       hour12
       time
-    />
+    /> -->
 
     <h1>Range</h1>
 
@@ -80,9 +50,9 @@
       style="width: 400px"
       label="Select date"
       input-date-format="full"
-      double
       min-date="1990-02-05"
       max-date="1990-03-20"
+      double
       color="info"
       :first-day-of-week="1"
     />
@@ -107,7 +77,6 @@
   // import { MazTabsItem } from 'maz-ui/package/components/MazTabsBar.vue'
   import {
     MazBtn,
-    MazInput,
     MazAvatar,
     // MazTabsBar,
     // MazTabsContent,
@@ -115,14 +84,6 @@
     MazPicker,
   } from 'maz-ui/package/components'
   import { aosInstance } from 'maz-ui'
-
-  const data = ref({
-    username: undefined,
-    password: undefined,
-    name: undefined,
-    telephone: undefined,
-    age: undefined,
-  })
 
   const dateValue = ref('1990-02-03')
 

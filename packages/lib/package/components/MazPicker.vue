@@ -491,9 +491,12 @@
           minDate: props.minDate,
           maxDate: props.maxDate,
         })
-        if (newValue) modelValue.value = newValue
+        if (newValue) {
+          emitValue(newValue)
+        }
         if (newCurrentDate) currentDate.value = newCurrentDate
       } else if (typeof value === 'object' && (value.start || value.end)) {
+        // RANGE
         let newStartValue = value.start
         let newEndValue = value.end
 
@@ -518,10 +521,10 @@
           if (newValue) newEndValue = newValue
         }
 
-        modelValue.value = {
+        emitValue({
           start: newStartValue,
           end: newEndValue,
-        }
+        })
       }
     }
   }

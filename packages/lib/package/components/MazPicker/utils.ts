@@ -197,8 +197,10 @@ export function getISODate(
 
   const newDate = new Date(value)
 
-  const tzoffset = newDate.getTimezoneOffset() * 60000 //offset in milliseconds
-  const date = new Date(newDate.getTime() - tzoffset).toISOString()
+  // TODO: mange timezone
+  // const tzoffset = newDate.getTimezoneOffset() * 60000 //offset in milliseconds
+  // const date = new Date(newDate.getTime() - tzoffset).toISOString()
+  const date = new Date(newDate.getTime()).toISOString()
 
   return hasTime ? date.split('.')[0] : date.split('T')[0]
 }

@@ -32,9 +32,6 @@ const toasterOptions: ToasterOptions = {
 
 const options: AosOptions = {
   animation: {
-    duration: 2000,
-  },
-  observer: {
     once: false,
   },
 }
