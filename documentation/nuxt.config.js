@@ -27,7 +27,7 @@ export default {
     htmlAttrs: {
       lang: 'en',
     },
-    title: 'Maz UI - Stand-alone components library for Vue.JS & Nuxt.JS',
+    title: 'Maz UI - Stand-alone components library for Vue.JS & Nuxt.JS (v2.x)',
     titleTemplate: '%s | Maz UI',
     link,
     meta
