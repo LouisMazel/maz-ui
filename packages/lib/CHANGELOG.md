@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-next.15](https://github.com/LouisMazel/maz-ui-3/compare/v2.3.13...3.0.0-next.15) (2022-03-17)
+
+### Features
+
+- **lib:** add maz-picker component ([#197](https://github.com/LouisMazel/maz-ui-3/issues/197)) ([877515e](https://github.com/LouisMazel/maz-ui-3/commit/877515e585d1aa9a3febd83e222c12346e7401b5))
+- **lib:** add wait plugin to manage loading state ([#214](https://github.com/LouisMazel/maz-ui-3/issues/214)) ([a6a1931](https://github.com/LouisMazel/maz-ui-3/commit/a6a1931ba7000c5e545cfc4808fe7205809629c4))
+- **lib:** adding maz-input-number ([#195](https://github.com/LouisMazel/maz-ui-3/issues/195)) ([dfb835d](https://github.com/LouisMazel/maz-ui-3/commit/dfb835d796682955b53dfb82455aefc763895c86))
+- **lib:** aos - adding anchor option ([#219](https://github.com/LouisMazel/maz-ui-3/issues/219)) ([b1c8b02](https://github.com/LouisMazel/maz-ui-3/commit/b1c8b028286d2154b86c5bb52fa7208d0c347d3e))
+- **lib:** export tailwind config ([#201](https://github.com/LouisMazel/maz-ui-3/issues/201)) ([94fddb9](https://github.com/LouisMazel/maz-ui-3/commit/94fddb9d35e91a6f649bcb18ae7105048d048584))
+- **lib:** MazInput - adding style color for autofill ([#208](https://github.com/LouisMazel/maz-ui-3/issues/208)) ([b3ae969](https://github.com/LouisMazel/maz-ui-3/commit/b3ae969584bda0e690179c1b6c9defdc1bbf0425))
+- **lib:** theme handler - add composable to handle theme ([689b596](https://github.com/LouisMazel/maz-ui-3/commit/689b596972ef1c34f83264447ab089a6c518d72c))
+- **lib:** theme handler - add composable to handle theme ([f97f9a5](https://github.com/LouisMazel/maz-ui-3/commit/f97f9a55d68586057813ffd127a18afd6d559408))
+- **lib:** theme handler - add composable to handle theme ([b5824ee](https://github.com/LouisMazel/maz-ui-3/commit/b5824eedbc08c318cd963f6eaedb95ee2ed0ff32))
+
 # [3.0.0-next.14](https://github.com/LouisMazel/maz-ui-3/compare/v2.3.13...3.0.0-next.14) (2022-03-15)
 
 ### Features
