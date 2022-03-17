@@ -56,7 +56,7 @@ reinstall-doc: ## Install node modules of documentation
 	cd documentation && rm -rf node_modules
 	cd documentation && npm i
 
-install: ## Install node modules
+install: ## Install node modules for all packages
 	make install-lib install-doc
 
 install-lib: ## Install node modules of library
