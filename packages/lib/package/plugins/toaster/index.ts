@@ -1,4 +1,4 @@
-import { ToasterOptions, ToasterPositions } from './types'
+import type { ToasterOptions, ToasterPositions } from './types'
 import { ToasterHandler } from './toaster-handler'
 
 const defaultOptions: ToasterOptions = {
