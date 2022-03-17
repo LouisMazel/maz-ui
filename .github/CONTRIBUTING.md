@@ -1,6 +1,12 @@
 # Contribute
 
-## Setting up development server
+## Informations
+
+You always should use `npm` not `yarn`
+
+## Developing
+
+### Setting up development server
 
 Install the development dependencies by running:
 
@@ -8,26 +14,42 @@ Install the development dependencies by running:
 make install
 ```
 
-Once your dependencies are installed, start the development server with:
+Before start the developing app, you should build the library:
 
 ```shell
-make serve
+make build-lib
+```
+
+Once your dependencies are installed and the library builded, to run the server of the developing vue 3 app, use this command:
+
+```shell
+make serve-testing
 ```
 
 This will start the development server available at [http://localhost:2000](http://localhost:2000).
 
-## Before submitting your pull request
+### More
+
+Import all modules & components in the Vue App from `maz-ui` do you need and then, clean all your changes and not commit anything in `package/testing`
+
+## Documentation
+
+The documentation app (Vuepress) works only with the library builded
+
+So, when you change anything in the library, you must re-build it to have these changes in the documentation app
 
 ```shell
-make pre-publish
+make build-lib
 ```
 
-Will:
+To run the documentation app, use this command
 
-- Generate docs (all README.md) files
-- Lint all files
-- Push modifications if it's necessary
+```shell
+make serve-doc
+```
 
-## Lint
+This will start the development server available at [http://localhost:8080](http://localhost:8080).
 
-Manage by Husky
+## Pull request
+
+When you submit your PR, you should provide all informations asked in the description

@@ -282,7 +282,7 @@
       /* Fab */
 
       &.--fab {
-        @apply maz-flex maz-h-12 maz-w-12 maz-items-center maz-justify-center maz-rounded-full maz-px-0 maz-py-0;
+        @apply maz-flex maz-h-12 maz-w-12 maz-items-center maz-justify-center maz-rounded-full maz-px-0 maz-py-0 maz-elevation;
       }
 
       &.--block {
