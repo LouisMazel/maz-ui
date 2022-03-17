@@ -203,13 +203,13 @@ input value: {{ inputValue ?? 'null' }}
 
 <MazInput v-model="inputValue" label="Label" error id="error-state" />
 
-#### Success
+#### Warning
 
 <br />
 
 <MazInput v-model="inputValue" label="Label" warning id="warning-state" />
 
-#### Warning
+#### Success
 
 <br />
 
