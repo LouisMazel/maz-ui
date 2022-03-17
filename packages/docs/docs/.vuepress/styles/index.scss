@@ -117,6 +117,18 @@ code {
   font-size: .85em;
 }
 
+.token.tag {
+  color: var(--maz-color-danger);
+}
+
+.token.attr-name {
+  color:#4EC9B0;
+}
+
+.token.attr-value {
+  color: var(--maz-bg-color-light-light);
+}
+
 .flex {
   display: flex;
 }

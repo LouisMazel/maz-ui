@@ -35,9 +35,9 @@ description: MazCheckbox is a stand-alone component replaces the standard html i
 </template>
 
 <script lang="ts" setup>
-  import { MazCheckbox } from 'vue'
-
   import { ref } from 'vue'
+  import MazCheckbox from 'maz-ui/components/MazCheckbox'
+
   const inputValue = ref(false)
 
   const colors = [
