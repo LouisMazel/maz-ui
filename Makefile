@@ -32,7 +32,7 @@ build-types-lib:
 	make --directory=packages/lib build-types
 
 install:
-	make install-root install-lib install-docs
+	make install-root install-lib install-docs install-testing
 
 install-root:
 	npm i
@@ -42,6 +42,9 @@ install-lib:
 
 install-docs:
 	make --directory=packages/docs install
+
+install-testing:
+	make --directory=packages/testing install
 
 reinstall:
 	make reinstall-lib reinstall-docs reinstall-testing

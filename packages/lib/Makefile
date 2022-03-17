@@ -28,7 +28,7 @@ build-watch:
 	npm run build:watch
 
 install:
-	npm i
+	npm ci
 
 reinstall:
 	rm -rf ./node_modules
