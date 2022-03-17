@@ -51,6 +51,6 @@ export const useThemeHandler = (opts = DEFAULT_OPTIONS) => {
   return {
     autoSetTheme,
     toggleTheme,
-    hasDarkMode: hasDarkMode.value,
+    hasDarkMode,
   }
 }
