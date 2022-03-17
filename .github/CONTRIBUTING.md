@@ -30,7 +30,7 @@ This will start the development server available at [http://localhost:2000](http
 
 ### More
 
-Import all modules & components in the Vue App from `maz-ui` do you need and then, clean all your changes and not commit anything in `package/testing`
+Import all modules & components in the Vue App from `maz-ui` do you need and then, clean all your changes and don't commit anything in `package/testing`
 
 ## Documentation
 
