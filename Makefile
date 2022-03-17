@@ -81,3 +81,9 @@ publish-version-major:
 
 commit:
 	make --directory=packages/lib commit
+
+release:
+	npm run release
+	make install
+	git commit --amend --no-edit
+	git push origin HEAD
