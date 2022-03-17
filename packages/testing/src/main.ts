@@ -1,7 +1,7 @@
 import App from './App.vue'
 
-import 'maz-ui/css/main.css'
-import 'maz-ui/css/aos.css'
+import 'maz-ui/tailwindcss/css/tailwind.css'
+import 'maz-ui/package/plugins/aos/scss/index.scss'
 import '@/css/main.css'
 
 import { createApp } from 'vue'
@@ -32,9 +32,6 @@ const toasterOptions: ToasterOptions = {
 
 const options: AosOptions = {
   animation: {
-    duration: 2000,
-  },
-  observer: {
     once: false,
   },
 }
