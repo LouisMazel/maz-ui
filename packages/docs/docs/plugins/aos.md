@@ -224,7 +224,7 @@ export default {
 ```ts
 import { installAos, AosOptions } from 'maz-ui'
 
-export default ({ $router }) => {
+export default ({ app, $router }) => {
   const options: AosOptions = {
     router: $router,
     animation: {
