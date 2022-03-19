@@ -8,7 +8,7 @@
       <div v-if="hasTitle()">
         <slot name="title" />
       </div>
-      <div v-if="scrollBtn" class="m-carousel__header__actions">
+      <div v-if="!noScrollBtn" class="m-carousel__header__actions">
         <MazBtn
           color="transparent"
           class="m-carousel__btn"
@@ -55,7 +55,7 @@
   import ChevronRightIcon from './../icons/chevron-right.svg'
 
   const props = defineProps({
-    scrollBtn: { type: Boolean, default: true },
+    noScrollBtn: { type: Boolean, default: false },
   })
 
   const slots = useSlots()
@@ -65,11 +65,11 @@
   const MazCarouselItems = ref<HTMLDivElement>()
 
   const hasHeader = () => {
-    return props.scrollBtn || slots['title']
+    return !props.noScrollBtn || slots['title']
   }
 
   const hasTitle = () => {
-    return slots['title']
+    return !!slots['title']
   }
 
   const next = () => {
