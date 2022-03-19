@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-next.17](https://github.com/LouisMazel/maz-ui/compare/v2.3.13...3.0.0-next.17) (2022-03-19)
+
+### Bug Fixes
+
+- **docs:** aos implementation ([#218](https://github.com/LouisMazel/maz-ui/issues/218)) ([3849e05](https://github.com/LouisMazel/maz-ui/commit/3849e0566973906ae1a557d6dfa230429b550618))
+- **docs:** aos installation on client side ([#217](https://github.com/LouisMazel/maz-ui/issues/217)) ([6790515](https://github.com/LouisMazel/maz-ui/commit/67905153973581418b4f807e531b1ee4f01b1331))
+- **lib:** inject-strict - returns error if module is not found ([c9ea56e](https://github.com/LouisMazel/maz-ui/commit/c9ea56eb5a74d9ca7f8b98c352e4599a0e0010bf))
+
+### Features
+
+- **docs:** maz-carousel documentation ([d80678a](https://github.com/LouisMazel/maz-ui/commit/d80678a6f052d099f6011594c594decdb89fbd4f))
+- **lib:** add maz-picker component ([#197](https://github.com/LouisMazel/maz-ui/issues/197)) ([877515e](https://github.com/LouisMazel/maz-ui/commit/877515e585d1aa9a3febd83e222c12346e7401b5))
+- **lib:** add wait plugin to manage loading state ([#214](https://github.com/LouisMazel/maz-ui/issues/214)) ([a6a1931](https://github.com/LouisMazel/maz-ui/commit/a6a1931ba7000c5e545cfc4808fe7205809629c4))
+- **lib:** adding maz-input-number ([#195](https://github.com/LouisMazel/maz-ui/issues/195)) ([dfb835d](https://github.com/LouisMazel/maz-ui/commit/dfb835d796682955b53dfb82455aefc763895c86))
+- **lib:** aos - adding anchor option ([#219](https://github.com/LouisMazel/maz-ui/issues/219)) ([b1c8b02](https://github.com/LouisMazel/maz-ui/commit/b1c8b028286d2154b86c5bb52fa7208d0c347d3e))
+- **lib:** export tailwind config ([#201](https://github.com/LouisMazel/maz-ui/issues/201)) ([94fddb9](https://github.com/LouisMazel/maz-ui/commit/94fddb9d35e91a6f649bcb18ae7105048d048584))
+- **lib:** maz-carousel - new component ([e8ab164](https://github.com/LouisMazel/maz-ui/commit/e8ab164547639b25d46b15090372cf84f6820b1f))
+- **lib:** MazInput - adding style color for autofill ([#208](https://github.com/LouisMazel/maz-ui/issues/208)) ([b3ae969](https://github.com/LouisMazel/maz-ui/commit/b3ae969584bda0e690179c1b6c9defdc1bbf0425))
+
 # [3.0.0-next.16](https://github.com/LouisMazel/maz-ui/compare/v2.3.13...3.0.0-next.16) (2022-03-17)
 
 ### Bug Fixes
