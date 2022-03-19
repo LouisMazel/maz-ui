@@ -4,7 +4,7 @@ export function injectStrict<T>(key: string, fallback?: T) {
   const resolved = inject(key, fallback)
 
   if (!resolved) {
-    return undefined
+    throw new Error(`[maz-ui](injectStrict) Could not resolve ${key}`)
   }
 
   return resolved

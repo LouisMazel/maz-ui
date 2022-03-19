@@ -24,7 +24,13 @@
   const svgElSource = ref<SVGElement>()
   const svgElem = ref<SVGElement>()
 
-  const mazIconPath = injectStrict<string>('mazIconPath')
+  const getMazIconPath = () => {
+    try {
+      return injectStrict<string>('mazIconPath')
+    } catch {
+      return undefined
+    }
+  }
 
   const props = defineProps({
     src: { type: String, default: undefined },
@@ -40,7 +46,7 @@
 
   const emits = defineEmits(['loaded', 'unloaded', 'error'])
 
-  const iconPath = computed(() => props.path ?? mazIconPath)
+  const iconPath = computed(() => props.path ?? getMazIconPath())
   const fullSrc = computed(() =>
     props.src
       ? props.src
