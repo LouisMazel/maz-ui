@@ -1,7 +1,6 @@
 import App from './App.vue'
 
 import 'maz-ui/css/main.css'
-import 'maz-ui/tailwindcss/css/tailwind.css'
 import 'maz-ui/package/plugins/aos/scss/index.scss'
 import '@/css/main.css'
 
