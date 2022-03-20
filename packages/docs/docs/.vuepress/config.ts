@@ -133,6 +133,7 @@ export default defineUserConfig<DefaultThemeOptions>({
         id: 'G-EM35TM23ZC',
       },
     ],
+    ['vuepress-plugin-sitemap2']
   ],
 
   alias: {
