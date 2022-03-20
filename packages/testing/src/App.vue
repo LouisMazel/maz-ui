@@ -7,7 +7,7 @@
       @click="toggleTheme"
     >
       <MazIcon
-        :src="hasDarkMode ? '/maz-icons/moon.svg' : '/maz-icons/sun.svg'"
+        :src="hasDarkTheme ? '/maz-icons/moon.svg' : '/maz-icons/sun.svg'"
       />
     </MazBtn>
 
@@ -23,9 +23,12 @@
   import { onMounted } from 'vue'
   import { MazBtn, MazIcon } from 'maz-ui/package/components'
   import { aosInstance } from 'maz-ui/package/plugins'
-  import { useThemeHandler } from 'maz-ui/package/helpers'
+  import { useThemeHandler, ThemeHandlerOptions } from 'maz-ui/package/helpers'
 
-  const { autoSetTheme, toggleTheme, hasDarkMode } = useThemeHandler()
+  const options: ThemeHandlerOptions = {
+    storageThemeKey: 'mode',
+  }
+  const { autoSetTheme, toggleTheme, hasDarkTheme } = useThemeHandler(options)
 
   onMounted(() => {
     autoSetTheme()
