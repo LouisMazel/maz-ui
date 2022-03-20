@@ -1,6 +1,6 @@
 {
   "name": "docs",
-  "version": "3.0.0-next.17",
+  "version": "3.0.0-next.18",
   "description": "documentation of maz-ui",
   "main": "index.js",
   "browser": {
@@ -17,14 +17,14 @@
     "@vuepress/plugin-google-analytics": "^2.0.0-beta.36",
     "@vuepress/plugin-register-components": "^2.0.0-beta.36",
     "vue": "^3.2.27",
-    "vuepress": "^2.0.0-beta.33"
+    "vuepress": "^2.0.0-beta.33",
+    "vuepress-plugin-sitemap2": "^2.0.0-alpha.33"
   },
   "dependencies": {
     "chart.js": "^3.7.1",
     "chartjs-plugin-datalabels": "^2.0.0",
     "dropzone": "^5.9.3",
-    "libphonenumber-js": "^1.9.49",
-    "maz-ui": "file:../lib",
-    "vite-fs": "^0.0.2"
+    "libphonenumber-js": "^1.9.50",
+    "maz-ui": "file:../lib"
   }
 }

@@ -31,7 +31,7 @@
         <input
           :id="id"
           ref="input"
-          :value="modelValue"
+          v-model="inputValue"
           :type="inputType"
           :name="name"
           v-bind="$attrs"
@@ -42,7 +42,6 @@
           :required="required"
           class="m-input-input"
           v-on="{
-            input: (event) => emitValue(event.target.value),
             blur,
             focus,
             change,
@@ -237,6 +236,11 @@
         () => props.modelValue !== undefined && props.modelValue !== '',
       )
 
+      const inputValue = computed({
+        get: () => props.modelValue,
+        set: (value: unknown) => emitValue(value),
+      })
+
       const shouldUp = computed(() => {
         return (
           (!!props.label || !!props.hint) &&
@@ -275,17 +279,18 @@
 
       const change = (event: Event) => emit('change', event)
 
-      const debounceEmitValue = debounce((value: string | number) => {
-        emit('update:model-value', value[0])
+      const debounceEmitValue = debounce((value: unknown) => {
+        emit('update:model-value', value)
       }, props.debounceDelay)
 
-      const emitValue = (value: string | number) => {
+      const emitValue = (value: unknown) => {
         if (props.debounce) return debounceEmitValue(value)
 
         emit('update:model-value', value)
       }
 
       return {
+        inputValue,
         shouldUp,
         hasLabel,
         computedPlaceholder,

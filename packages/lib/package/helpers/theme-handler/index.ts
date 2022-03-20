@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 const DEFAULT_OPTIONS = {
   darkClass: 'dark',
@@ -7,9 +7,13 @@ const DEFAULT_OPTIONS = {
   storageThemeValueLight: 'light',
 }
 
-export const hasDarkMode = ref(false)
+export const theme = ref<string>()
 
-export const useThemeHandler = (opts = DEFAULT_OPTIONS) => {
+export type ThemeHandlerOptions = Partial<typeof DEFAULT_OPTIONS>
+
+export const useThemeHandler = (
+  opts: ThemeHandlerOptions = DEFAULT_OPTIONS,
+) => {
   const {
     darkClass,
     storageThemeKey,
@@ -23,16 +27,16 @@ export const useThemeHandler = (opts = DEFAULT_OPTIONS) => {
   const autoSetTheme = () => {
     if (
       localStorage[storageThemeKey] === storageThemeValueDark ||
-      (!('theme' in localStorage) &&
+      (!(storageThemeKey in localStorage) &&
         window.matchMedia('(prefers-color-scheme: dark)').matches)
     ) {
       document.documentElement.classList.add(storageThemeValueDark)
       localStorage[storageThemeKey] = storageThemeValueDark
-      hasDarkMode.value = true
+      theme.value = storageThemeValueDark
     } else {
       document.documentElement.classList.remove(darkClass)
       localStorage[storageThemeKey] = storageThemeValueLight
-      hasDarkMode.value = false
+      theme.value = storageThemeValueLight
     }
   }
 
@@ -40,17 +44,21 @@ export const useThemeHandler = (opts = DEFAULT_OPTIONS) => {
     if (localStorage[storageThemeKey] === storageThemeValueDark) {
       document.documentElement.classList.remove(darkClass)
       localStorage[storageThemeKey] = storageThemeValueLight
-      hasDarkMode.value = false
+      theme.value = storageThemeValueLight
     } else {
       document.documentElement.classList.add(darkClass)
       localStorage[storageThemeKey] = storageThemeValueDark
-      hasDarkMode.value = true
+      theme.value = storageThemeValueDark
     }
   }
+
+  const hasDarkTheme = computed(() => theme.value === storageThemeValueDark)
+  const hasLightTheme = computed(() => theme.value === storageThemeValueLight)
 
   return {
     autoSetTheme,
     toggleTheme,
-    hasDarkMode,
+    hasDarkTheme,
+    hasLightTheme,
   }
 }

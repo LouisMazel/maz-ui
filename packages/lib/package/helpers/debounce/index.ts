@@ -39,7 +39,7 @@ export function debounce<T extends (...args: any[]) => void>(
 
   const debounceWrapper = function (...args: any) {
     if (!wait) {
-      return fn.apply(this, [args])
+      return fn.apply(this, args)
     }
 
     /* eslint-disable @typescript-eslint/no-this-alias  */
@@ -48,7 +48,7 @@ export function debounce<T extends (...args: any[]) => void>(
     clear()
 
     debouncedFn = function () {
-      fn.apply(context, [args])
+      fn.apply(context, args)
     }
 
     timeout = setTimeout(function () {
