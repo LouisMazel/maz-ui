@@ -280,13 +280,13 @@
       const change = (event: Event) => emit('change', event)
 
       const debounceEmitValue = debounce((value: unknown) => {
-        emit('update:model-value', value || undefined)
+        emit('update:model-value', value)
       }, props.debounceDelay)
 
       const emitValue = (value: unknown) => {
         if (props.debounce) return debounceEmitValue(value)
 
-        emit('update:model-value', value || undefined)
+        emit('update:model-value', value)
       }
 
       return {
