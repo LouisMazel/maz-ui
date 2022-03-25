@@ -49,7 +49,13 @@ export function getRangeFormattedDate({
 }
 
 export function getCurrentDate(value?: string | Date): Date {
-  return value ? new Date(value) : new Date()
+  console.log('value', value)
+  const date = value ? new Date(value) : new Date()
+  const userTimezoneOffset = date.getTimezoneOffset() * 60000
+
+  console.log('value', new Date(date.getTime() - userTimezoneOffset))
+
+  return new Date(date.getTime() - userTimezoneOffset)
 }
 
 export function getCurrentDateForTimeValue(value?: string) {

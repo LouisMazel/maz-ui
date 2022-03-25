@@ -36,6 +36,7 @@
         </button>
       </template>
     </MazInput>
+
     <Transition
       :name="
         pickerContainerPosition.vertical === 'top'
@@ -548,7 +549,7 @@
       const value = values[0] as PickerValue
       const oldValue = oldValues?.[0] as PickerValue
 
-      currentDate.value = getCurrentDateValue()
+      // currentDate.value = getCurrentDateValue()
 
       if (typeof value === 'object' && (value.start || value.end)) {
         if (

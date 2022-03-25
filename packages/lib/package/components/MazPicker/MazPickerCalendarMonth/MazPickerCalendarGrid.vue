@@ -1,6 +1,5 @@
 <template>
   <div ref="MazPickerGrid" class="maz-picker-calendar-grid">
-    {{ currentDate }}
     <TransitionGroup :name="transitionName">
       <div
         v-for="(dateArray, dateIndex) in [currentDateArray]"

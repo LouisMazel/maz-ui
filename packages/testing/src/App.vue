@@ -15,13 +15,17 @@
 
     <!-- Start Developing Area -->
 
+    {{ dateValue }}
+
+    <MazPicker v-model="dateValue" :first-day-of-week="1" time-zone="UTC" />
+
     <!-- End Developing Area -->
   </main>
 </template>
 
 <script lang="ts" setup>
-  import { onMounted } from 'vue'
-  import { MazBtn, MazIcon } from 'maz-ui/package/components'
+  import { onMounted, ref } from 'vue'
+  import { MazBtn, MazIcon, MazPicker } from 'maz-ui/package/components'
   import { aosInstance } from 'maz-ui/package/plugins'
   import { useThemeHandler, ThemeHandlerOptions } from 'maz-ui/package/helpers'
 
@@ -34,6 +38,8 @@
     autoSetTheme()
     aosInstance.handleObserver()
   })
+
+  const dateValue = ref('2022-03-25')
 </script>
 
 <style lang="postcss">
