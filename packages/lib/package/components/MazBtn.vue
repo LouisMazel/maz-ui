@@ -19,6 +19,7 @@
         '--icon': hasIcon,
         '--rounded': rounded,
         '--no-padding': noPadding,
+        '--no-elevation': noElevation,
       },
     ]"
     :type="btnType"
@@ -111,6 +112,7 @@
     leftIcon: { type: String, default: undefined },
     rightIcon: { type: String, default: undefined },
     noPadding: { type: Boolean, default: false },
+    noElevation: { type: Boolean, default: false },
   })
 
   const component = computed(() => {
@@ -283,6 +285,10 @@
 
       &.--fab {
         @apply maz-flex maz-h-12 maz-w-12 maz-items-center maz-justify-center maz-rounded-full maz-px-0 maz-py-0;
+
+        &:not(.--no-elevation) {
+          @apply maz-elevation;
+        }
       }
 
       &.--block {

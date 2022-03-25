@@ -224,16 +224,16 @@ export default {
 ```ts
 import { installAos, AosOptions } from 'maz-ui'
 
-export default ({ $router }) => {
+export default ({ vueApp, $router: router }) => {
   const options: AosOptions = {
-    router: $router,
+    router,
     animation: {
       duration: 1000,
       once: false,
     },
   }
 
-  app.use(installAos, options)
+  vueApp.use(installAos, options)
 }
 ```
 

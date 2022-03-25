@@ -1,4 +1,4 @@
-serve:
+serve-doc:
 	make --directory=packages/docs serve
 
 serve-testing:
@@ -32,9 +32,13 @@ build-types-lib:
 	make --directory=packages/lib build-types
 
 install:
-	make install-root install-lib install-docs
+	make install-root install-lib install-docs install-testing
 
 install-root:
+	npm ci
+
+reinstall-root:
+	rm -rf node_modules
 	npm i
 
 install-lib:
@@ -43,8 +47,11 @@ install-lib:
 install-docs:
 	make --directory=packages/docs install
 
+install-testing:
+	make --directory=packages/testing install
+
 reinstall:
-	make reinstall-lib reinstall-docs reinstall-testing
+	make reinstall-root reinstall-lib reinstall-docs reinstall-testing
 
 reinstall-lib:
 	make --directory=packages/lib reinstall
@@ -78,3 +85,10 @@ publish-version-major:
 
 commit:
 	make --directory=packages/lib commit
+
+release:
+	npm run release
+	make install
+	git add --all
+	git commit --amend --no-edit
+	git push origin HEAD --force

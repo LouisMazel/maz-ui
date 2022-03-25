@@ -28,7 +28,7 @@ build-watch:
 	npm run build:watch
 
 install:
-	npm i
+	npm ci
 
 reinstall:
 	rm -rf ./node_modules
@@ -42,7 +42,6 @@ define GetFromPkg
 endef
 
 define push-version
-	make install
 	make clean-build
 	make build
 	# npm publish
@@ -52,7 +51,6 @@ define push-version
 endef
 
 define push-version-tag
-	make install
 	make clean-build
 	make build
 	npm publish --tag $(1)

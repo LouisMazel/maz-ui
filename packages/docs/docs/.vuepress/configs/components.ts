@@ -15,6 +15,7 @@ export const components = {
         '/components/maz-phone-number-input.md',
         '/components/maz-select.md',
         '/components/maz-slider.md',
+        '/components/maz-switch.md',
       ]
     },
     {
@@ -23,6 +24,7 @@ export const components = {
         '/components/maz-avatar.md',
         '/components/maz-badge.md',
         '/components/maz-bottom-sheet.md',
+        '/components/maz-carousel.md',
         '/components/maz-dialog.md',
         '/components/maz-dialog-promise.md',
         '/components/maz-drawer.md',

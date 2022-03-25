@@ -130,7 +130,7 @@ if (!argv.package || argv.package === 'modules') {
       format: 'esm',
       exports: 'named',
       compact: true,
-      sourcemap: true,
+      // sourcemap: true,
     },
     plugins: [
       peerDepsExternal(),
@@ -200,7 +200,7 @@ if (!argv.package || argv.package === 'components') {
         exports: 'named',
         format: 'esm',
         compact: true,
-        sourcemap: true,
+        // sourcemap: true,
       },
       plugins: [
         peerDepsExternal(),

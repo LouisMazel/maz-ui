@@ -1,61 +1,47 @@
 <template>
   <main>
     <MazBtn
-      style="margin-bottom: 16px"
-      color="transparent"
+      data-maz-aos="scale-in"
+      data-maz-aos-delay="300"
+      fab
+      @click="toggleTheme"
     >
-      Dark Switch
+      <MazIcon
+        :src="hasDarkTheme ? '/maz-icons/moon.svg' : '/maz-icons/sun.svg'"
+      />
     </MazBtn>
 
-    <h1>Range</h1>
+    <br />
 
-    <code class="maz-mb-2">
-      {{ rangeValue }}
-    </code>
-
-    <MazPicker
-      v-model="rangeValue"
-      style="width: 400px"
-      label="Select date"
-      input-date-format="full"
-      min-date="1990-02-05"
-      max-date="1990-03-20"
-      double
-      color="info"
-      :first-day-of-week="1"
-    />
-
-
+    <!-- Start Developing Area -->
 
     <!-- End Developing Area -->
   </main>
 </template>
 
 <script lang="ts" setup>
-  import { onMounted, ref } from 'vue'
-  import { MazBtn, MazPicker } from 'maz-ui/package/components'
+  import { onMounted } from 'vue'
+  import { MazBtn, MazIcon } from 'maz-ui/package/components'
   import { aosInstance } from 'maz-ui/package/plugins'
+  import { useThemeHandler, ThemeHandlerOptions } from 'maz-ui/package/helpers'
 
-  const rangeValue = ref({
-    start: '1990-02-03',
-    end: '1990-03-28',
-  })
+  const options: ThemeHandlerOptions = {
+    storageThemeKey: 'mode',
+  }
+  const { autoSetTheme, toggleTheme, hasDarkTheme } = useThemeHandler(options)
 
   onMounted(() => {
+    autoSetTheme()
     aosInstance.handleObserver()
   })
-
-  const dateValue = ref<string>('2022-03-25')
 </script>
 
-<style>
+<style lang="postcss">
   body {
     margin: 0;
   }
 
   #app {
-    display: flex;
-    padding: 40px;
     height: 100vh;
   }
 </style>

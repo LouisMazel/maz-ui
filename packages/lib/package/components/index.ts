@@ -7,6 +7,7 @@ import { default as MazBadge } from './MazBadge.vue'
 import { default as MazBottomSheet } from './MazBottomSheet.vue'
 import { default as MazBtn } from './MazBtn.vue'
 import { default as MazCard } from './MazCard.vue'
+import { default as MazCarousel } from './MazCarousel.vue'
 import { default as MazChart } from './MazChart.vue'
 import { default as MazCheckbox } from './MazCheckbox.vue'
 import { default as MazDialog } from './MazDialog.vue'
@@ -25,6 +26,7 @@ import { default as MazPicker } from './MazPicker.vue'
 import { default as MazSelect } from './MazSelect.vue'
 import { default as MazSlider } from './MazSlider.vue'
 import { default as MazSpinner } from './MazSpinner.vue'
+import { default as MazSwitch } from './MazSwitch.vue'
 import { default as MazTabsBar } from './MazTabsBar.vue'
 import { default as MazTabsContent } from './MazTabsContent.vue'
 import { default as MazTabsContentItem } from './MazTabsContentItem.vue'
@@ -38,6 +40,7 @@ export {
   MazBottomSheet,
   MazBtn,
   MazCard,
+  MazCarousel,
   MazChart,
   MazCheckbox,
   MazDialog,
@@ -56,6 +59,7 @@ export {
   MazSelect,
   MazSlider,
   MazSpinner,
+  MazSwitch,
   MazTabsBar,
   MazTabsContent,
   MazTabsContentItem,
@@ -70,6 +74,7 @@ export default {
   MazBottomSheet,
   MazBtn,
   MazCard,
+  MazCarousel,
   MazChart,
   MazCheckbox,
   MazDialog,
@@ -88,6 +93,7 @@ export default {
   MazSelect,
   MazSlider,
   MazSpinner,
+  MazSwitch,
   MazTabsBar,
   MazTabsContent,
   MazTabsContentItem,

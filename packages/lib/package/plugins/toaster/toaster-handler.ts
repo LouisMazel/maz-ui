@@ -1,7 +1,7 @@
-import { mount } from 'package/helpers/mount-component'
+import { mount } from './../../helpers/mount-component'
 import { App } from 'vue'
 import MazToast from './MazToast.vue'
-import { ToasterOptions } from './types'
+import type { ToasterOptions } from './types'
 
 export interface LocalToasterOptions extends ToasterOptions {
   type?: 'success' | 'info' | 'warning' | 'danger'

@@ -1,24 +1,19 @@
 import type { NavbarConfig } from '@vuepress/theme-default'
-import { version } from './../../../../lib/package.json'
+import { version } from 'maz-ui/package.json'
+
+import { guide } from './guide'
 import { components } from './components'
 import { directives } from './directives'
 import { filters } from './filters'
+import { helpers } from './helpers'
 import { plugins } from './plugins'
 
 export const navbar: NavbarConfig = [
-  {
-    text: 'Guide',
-    children: [
-      '/guide/getting-started.md',
-      '/guide/colors.md',
-      '/guide/theme.md',
-      '/guide/dark-mode.md'
-    ]
-  },
+  guide,
   components,
   {
     text: 'Modules',
-    children: [plugins, filters, directives],
+    children: [plugins, directives, filters, helpers],
   },
   '/made-with-maz-ui',
   {
