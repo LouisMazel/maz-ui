@@ -1,5 +1,6 @@
 <template>
   <div ref="MazPickerGrid" class="maz-picker-calendar-grid">
+    {{ currentDate }}
     <TransitionGroup :name="transitionName">
       <div
         v-for="(dateArray, dateIndex) in [currentDateArray]"
@@ -102,8 +103,6 @@
     return dayCount
   })
 
-  const clonedCurrentDate = computed(() => cloneDate(props.currentDate))
-
   const emptyDaysCount = computed(() => {
     const { firstDay } = getFirstAndLastDayOfMonth(props.currentDate)
 
@@ -121,7 +120,7 @@
     }
 
     if (typeof props.modelValue === 'object' && props.modelValue?.start) {
-      const itemDay = clonedCurrentDate.value.setDate(day)
+      const itemDay = cloneDate(props.currentDate).setDate(day)
       return isSameDate(itemDay, props.modelValue.start)
     }
     return false
@@ -133,14 +132,14 @@
     }
 
     if (typeof props.modelValue === 'object' && props.modelValue?.end) {
-      const itemDay = clonedCurrentDate.value.setDate(day)
+      const itemDay = cloneDate(props.currentDate).setDate(day)
       return isSameDate(itemDay, props.modelValue.end)
     }
     return false
   }
 
   const getDayButtonColor = (day: number): Color => {
-    const itemDay = clonedCurrentDate.value.setDate(day)
+    const itemDay = cloneDate(props.currentDate).setDate(day)
     const value = props.modelValue
 
     if (typeof value === 'object') {
@@ -158,14 +157,14 @@
   const isSelectedOrBetween = (day: number): DaySelected => {
     if (typeof props.modelValue === 'object') {
       if (props.modelValue.start) {
-        const itemDay = clonedCurrentDate.value.setDate(day)
+        const itemDay = cloneDate(props.currentDate).setDate(day)
 
         if (isSameDate(itemDay, props.modelValue.start)) {
           return DaySelected.SELECTED
         }
       }
       if (props.modelValue.end) {
-        const itemDay = clonedCurrentDate.value.setDate(day)
+        const itemDay = cloneDate(props.currentDate).setDate(day)
 
         if (isSameDate(itemDay, props.modelValue.end)) {
           return DaySelected.SELECTED
@@ -194,8 +193,8 @@
       }
 
       const newValue = new Date(
-        clonedCurrentDate.value.setDate(value),
-      ).toDateString()
+        cloneDate(props.currentDate).setDate(value),
+      ).toISOString()
 
       if (!values.start || isBigger(values.start, newValue)) {
         modelValue.value = {
@@ -209,15 +208,14 @@
         }
       }
     } else {
-      const baseDate = new Date(clonedCurrentDate.value.setDate(value))
-      modelValue.value = props.time
-        ? baseDate.toISOString()
-        : baseDate.toDateString()
+      const baseDate = new Date(cloneDate(props.currentDate).setDate(value))
+
+      modelValue.value = baseDate.toISOString()
     }
   }
 
   const checkIsToday = (day: number): boolean => {
-    return isToday(clonedCurrentDate.value.setDate(day))
+    return isToday(cloneDate(props.currentDate).setDate(day))
   }
 
   const checkIsSameDate = (day: number): boolean => {
@@ -227,7 +225,7 @@
 
     const value = props.modelValue as string
 
-    const itemDay = clonedCurrentDate.value.setDate(day)
+    const itemDay = new Date(new Date(value).setDate(day))
 
     return isSameDate(itemDay, value)
   }
@@ -239,7 +237,7 @@
       return false
     }
 
-    const itemDay = clonedCurrentDate.value.setDate(day)
+    const itemDay = cloneDate(props.currentDate).setDate(day)
 
     return !isSmaller(itemDay, value.start) && !isBigger(itemDay, value.end)
   }
@@ -248,7 +246,7 @@
     if (!props.minDate) {
       return false
     }
-    const dateWithDay = clonedCurrentDate.value.setDate(day)
+    const dateWithDay = cloneDate(props.currentDate).setDate(day)
     return (
       isSmaller(dateWithDay, props.minDate) &&
       !isSameDate(dateWithDay, props.minDate)
@@ -261,7 +259,7 @@
     }
 
     return props.disabledWeekly.some((disabledDay) =>
-      isSameDay(clonedCurrentDate.value.setDate(day), disabledDay),
+      isSameDay(cloneDate(props.currentDate).setDate(day), disabledDay),
     )
   }
 
@@ -271,7 +269,7 @@
     }
 
     return props.disabledDates.some((disabledDay) =>
-      isSameDate(clonedCurrentDate.value.setDate(day), disabledDay),
+      isSameDate(cloneDate(props.currentDate).setDate(day), disabledDay),
     )
   }
 
@@ -279,7 +277,7 @@
     if (!props.maxDate) {
       return false
     }
-    const dateWithDay = clonedCurrentDate.value.setDate(day)
+    const dateWithDay = cloneDate(props.currentDate).setDate(day)
 
     return (
       isBigger(dateWithDay, props.maxDate) &&

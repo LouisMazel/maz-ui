@@ -99,7 +99,9 @@
   import ChevronDownIcon from './../icons/chevron-down.svg'
   import MazIcon from './MazIcon.vue'
   import { Color, Position } from './types'
+
   import { date } from '../filters'
+
   import {
     getCurrentDate,
     getFormattedDate,
@@ -138,7 +140,7 @@
     },
     timeZone: {
       type: String as PropType<Intl.DateTimeFormatOptions['timeZone']>,
-      default: undefined,
+      default: 'UTC',
     },
     hour12: {
       type: Boolean as PropType<Intl.DateTimeFormatOptions['hour12']>,

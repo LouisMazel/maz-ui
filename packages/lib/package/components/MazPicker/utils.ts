@@ -195,14 +195,9 @@ export function getISODate(
     return undefined
   }
 
-  const newDate = new Date(value)
+  const newDate = new Date(value).toISOString()
 
-  // TODO: mange timezone
-  // const tzoffset = newDate.getTimezoneOffset() * 60000 //offset in milliseconds
-  // const date = new Date(newDate.getTime() - tzoffset).toISOString()
-  const date = new Date(newDate.getTime()).toISOString()
-
-  return hasTime ? date.split('.')[0] : date.split('T')[0]
+  return hasTime ? newDate.split('.')[0] : newDate.split('T')[0]
 }
 
 export function getRangeISODate(value: PartialRangeValue, hasTime = false) {

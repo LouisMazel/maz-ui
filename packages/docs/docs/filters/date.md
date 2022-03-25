@@ -25,7 +25,7 @@ description: The module date is a function to format date
   const dateValue = ref('2022-02-01')
 
   const priceFormatted = computed(() =>
-    date(dateValue.value, 'en-US'),
+    dateValue.value ? date(dateValue.value, 'en-US') : undefined,
   )
 </script>
 
@@ -47,7 +47,7 @@ description: The module date is a function to format date
   const dateValue = ref('2022-02-01')
 
   const priceFormatted = computed(() =>
-    date(dateValue.value, 'en-US'),
+    dateValue.value ? date(dateValue.value, 'en-US') : undefined,
   )
 </script>
 ```
@@ -63,5 +63,6 @@ const DEFAULT_OPTIONS: Intl.DateTimeFormatOptions = {
   month: 'short',
   day: 'numeric',
   year: 'numeric',
+  timeZone: 'UTC'
 }
 ```
