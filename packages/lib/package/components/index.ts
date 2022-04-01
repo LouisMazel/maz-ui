@@ -23,6 +23,7 @@ import { default as MazInputTags } from './MazInputTags.vue'
 import { default as MazLazyImg } from './MazLazyImg.vue'
 import { default as MazPhoneNumberInput } from './MazPhoneNumberInput.vue'
 import { default as MazPicker } from './MazPicker.vue'
+import { default as MazRadioButtons } from './MazRadioButtons.vue'
 import { default as MazSelect } from './MazSelect.vue'
 import { default as MazSlider } from './MazSlider.vue'
 import { default as MazSpinner } from './MazSpinner.vue'
@@ -56,6 +57,7 @@ export {
   MazLazyImg,
   MazPhoneNumberInput,
   MazPicker,
+  MazRadioButtons,
   MazSelect,
   MazSlider,
   MazSpinner,
@@ -90,6 +92,7 @@ export default {
   MazLazyImg,
   MazPhoneNumberInput,
   MazPicker,
+  MazRadioButtons,
   MazSelect,
   MazSlider,
   MazSpinner,
