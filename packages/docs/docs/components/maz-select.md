@@ -82,8 +82,6 @@ description: MazSelect is a stand-alone component replaces the standard html inp
 </script>
 ```
 
-## Options
-
 ## Props & Events emitted
 
 <ComponentPropDoc component="MazSelect" />
