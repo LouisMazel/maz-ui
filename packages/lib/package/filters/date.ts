@@ -21,10 +21,15 @@ export const date = (
     )
   }
 
+  const { timeZone: defaultTimeZone, ...rest } = DEFAULT_OPTIONS
+  const hasOnlyTimeZone = !!(
+    (options && Object.keys(options).length === 1 && options.timeZone) ||
+    !options
+  )
+
   const opts = {
-    timeZone: DEFAULT_OPTIONS.timeZone,
-    ...(options ? {} : DEFAULT_OPTIONS),
-    ...options,
+    timeZone: options?.timeZone ?? defaultTimeZone,
+    ...(!hasOnlyTimeZone ? options : rest),
   }
 
   try {
