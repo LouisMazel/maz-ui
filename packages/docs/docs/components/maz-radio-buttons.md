@@ -109,7 +109,7 @@ Select a competition
         <MazAvatar
           v-if="option.areaEnsignUrl"
           :src="option.areaEnsignUrl"
-          style="margin-right: 8px;"
+          style="margin-right: 16px;"
           size="0.8rem"
         />
         <div style="display: flex; flex-direction: column;">
@@ -140,7 +140,7 @@ Select a competition
         <MazAvatar
           v-if="option.areaEnsignUrl"
           :src="option.areaEnsignUrl"
-          style="margin-right: 8px;"
+          style="margin-right: 16px;"
           size="0.8rem"
         />
         <div style="display: flex; flex-direction: column;">
@@ -164,13 +164,14 @@ Select a competition
     orientation="col | row"
   >
     <template #default="{ option, selected }">
-      <div class="maz-flex maz-w-full maz-items-center maz-space-x-4">
+      <div style="display: flex;">
         <MazAvatar
           v-if="option.areaEnsignUrl"
           :src="option.areaEnsignUrl"
-          class="maz-text-xs"
+          style="margin-right: 16px;"
+          size="0.8rem"
         />
-        <div class="maz-flex maz-flex-col maz-items-start">
+        <div style="display: flex; flex-direction: column;">
           <span>
             {{ option.label }}
           </span>
