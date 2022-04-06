@@ -34,8 +34,8 @@
         :key="year.label"
         size="sm"
         type="button"
-        :class="{ '--is-selected': isSameYear(year.date, currentDate) }"
-        :color="isSameYear(year.date, currentDate) ? color : 'transparent'"
+        :class="{ '--is-selected': isSameYear(year.date, calendarDate) }"
+        :color="isSameYear(year.date, calendarDate) ? color : 'transparent'"
         @click.stop="selectMonth(year.date)"
       >
         {{ year.label }}
@@ -62,7 +62,7 @@
     calendarDate: { type: String, required: true },
   })
 
-  const emits = defineEmits(['update:current-date', 'close'])
+  const emits = defineEmits(['update:calendar-date', 'close'])
 
   const years = computed<
     {
@@ -81,16 +81,16 @@
     })
   })
 
-  const selectMonth = (date: Date) => {
-    emits('update:current-date', date)
+  const selectMonth = (date: Dayjs) => {
+    emits('update:calendar-date', dayjs(date).format())
     emits('close')
   }
 
   const previousYears = () => {
-    emits('update:current-date', dayjs(props.calendarDate).subtract(1, 'year'))
+    emits('update:calendar-date', dayjs(props.calendarDate).subtract(1, 'year'))
   }
   const nextYears = () => {
-    emits('update:current-date', dayjs(props.calendarDate).add(1, 'year'))
+    emits('update:calendar-date', dayjs(props.calendarDate).add(1, 'year'))
   }
 </script>
 
