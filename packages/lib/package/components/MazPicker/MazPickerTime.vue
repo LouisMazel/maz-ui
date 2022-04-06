@@ -56,7 +56,7 @@
       type: [String, Object] as PropType<PickerValue>,
       default: undefined,
     },
-    currentDate: { type: Date, required: true },
+    currentDate: { type: String, required: true },
     formatterOptions: {
       type: Object as PropType<DateTimeFormatOptions>,
       required: true,

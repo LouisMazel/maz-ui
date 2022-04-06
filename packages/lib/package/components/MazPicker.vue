@@ -21,18 +21,14 @@
       v-bind="$attrs"
       autocomplete="off"
       class="m-picker__input"
+      :label="label"
+      :placeholder="placeholder"
       :color="color"
       @click="isFocused = !isFocused"
     >
       <template #right-icon>
-        <button
-          tabindex="-1"
-          class="maz-custom maz-flex maz-h-full maz-bg-transparent maz-flex-center"
-        >
-          <MazIcon
-            :src="ChevronDownIcon"
-            class="m-picker__button__chevron maz-h-5 maz-w-5 maz-text-normal"
-          />
+        <button tabindex="-1" class="m-picker__button">
+          <MazIcon :src="ChevronDownIcon" class="m-picker__button__chevron" />
         </button>
       </template>
     </MazInput>
@@ -49,7 +45,7 @@
         :id="containerUniqueId"
         ref="PickerContainer"
         v-model="modelValue"
-        v-model:current-date="currentDate"
+        :calendar-date="calendarDate"
         :is-open="isOpen"
         :color="color"
         :locale="currentLocale"
@@ -90,9 +86,9 @@
     PropType,
     ref,
     StyleValue,
-    watch,
     getCurrentInstance,
-    nextTick,
+    // watch,
+    // nextTick,
   } from 'vue'
   import MazInput from './MazInput.vue'
   import MazPickerContainer from './MazPicker/MazPickerContainer.vue'
@@ -100,48 +96,54 @@
   import ChevronDownIcon from './../icons/chevron-down.svg'
   import MazIcon from './MazIcon.vue'
   import { Color, Position } from './types'
+  import dayJs from 'dayjs'
 
   import { date } from '../filters'
 
   import {
-    getCurrentDate,
+    // getCurrentDate,
     getFormattedDate,
     getRangeFormattedDate,
     getISODate,
     getRangeISODate,
-    checkValueWithMinMaxDates,
-    isValueDisabledWeekly,
-    getDaysInMonth,
-    getFirstDateOfWeek,
+    // checkValueWithMinMaxDates,
+    // isValueDisabledWeekly,
+    // getDaysInMonth,
     DateTimeFormatOptions,
     getTimeString,
-    getCurrentDateForTimeValue,
+    // getCurrentDateForTimeValue,
     getBrowserLocale,
     fetchLocale,
-    isValueDisabledDate,
+    // isValueDisabledDate,
   } from './MazPicker/utils'
 
   import { PickerValue, PickerShortcut, SimpleValue } from './MazPicker/types'
+  import dayjs from 'dayjs'
+  // import dayjs from 'dayjs'
 
   const props = defineProps({
     modelValue: {
       type: [String, Object] as PropType<PickerValue>,
       default: undefined,
     },
+    format: { type: String, default: 'YYYY-MM-DD h:mm a' },
+    outputFormat: { type: String, default: 'YYYY-MM-DD h:mm a' },
     minDate: { type: String, default: undefined },
     maxDate: { type: String, default: undefined },
     open: { type: Boolean, default: false },
+    label: { type: String, default: 'Select date' },
+    placeholder: { type: String, default: undefined },
     inputDateStyle: {
       type: String as PropType<Intl.DateTimeFormatOptions['dateStyle']>,
       default: 'full',
     },
     inputTimeStyle: {
       type: String as PropType<Intl.DateTimeFormatOptions['timeStyle']>,
-      default: 'short',
+      default: undefined,
     },
     timeZone: {
       type: String as PropType<Intl.DateTimeFormatOptions['timeZone']>,
-      default: 'UTC',
+      default: undefined,
     },
     hour12: {
       type: Boolean as PropType<Intl.DateTimeFormatOptions['hour12']>,
@@ -162,6 +164,7 @@
             '[maz-ui](MazPicker) "first-day-of-week" should be between 0 and 6',
           )
         }
+
         return isValid
       },
     },
@@ -212,55 +215,7 @@
     noShortcuts: { type: Boolean, default: false },
     shortcuts: {
       type: Array as PropType<PickerShortcut[]>,
-      default: () => {
-        const defaultShorts: PickerShortcut[] = [
-          {
-            identifier: 'last7Days',
-            label: 'Last 7 days',
-            value: {
-              start: new Date().setDate(new Date().getDate() - 6),
-              end: new Date(),
-            },
-          },
-          {
-            identifier: 'last30Days',
-            label: 'Last 30 days',
-            value: {
-              start: new Date().setDate(new Date().getDate() - 29),
-              end: new Date(),
-            },
-          },
-          {
-            identifier: 'thisWeek',
-            label: 'This week',
-            value: {
-              start: getFirstDateOfWeek(new Date()),
-              end: getFirstDateOfWeek(new Date()).setDate(
-                getFirstDateOfWeek(new Date()).getDate() + 6,
-              ),
-            },
-          },
-          {
-            identifier: 'thisMonth',
-            label: 'This month',
-            value: {
-              start: new Date().setDate(1),
-              end: new Date().setDate(
-                getDaysInMonth(new Date().getFullYear(), new Date().getMonth()),
-              ),
-            },
-          },
-          {
-            identifier: 'thisYear',
-            label: 'This year',
-            value: {
-              start: new Date(`${new Date().getFullYear()}-01-01`),
-              end: new Date(`${new Date().getFullYear()}-12-31`),
-            },
-          },
-        ]
-        return defaultShorts
-      },
+      default: () => [],
     },
     shortcut: { type: String, default: undefined },
     time: { type: Boolean, default: false },
@@ -281,7 +236,7 @@
   const emits = defineEmits(['update:model-value', 'close'])
 
   const MazPicker = ref<HTMLDivElement>()
-  const PickerContainer = ref<typeof MazPickerContainer>()
+  // const PickerContainer = ref<typeof MazPickerContainer>()
 
   const hasDouble = computed(() => props.double && !props.time)
   const hasDate = computed(() => !props.onlyTime)
@@ -308,28 +263,32 @@
     },
   })
 
-  const getCurrentDateValue = () => {
-    return typeof props.modelValue === 'object'
-      ? getCurrentDate(props.modelValue.start)
-      : props.onlyTime
-      ? getCurrentDateForTimeValue(props.modelValue)
-      : getCurrentDate(props.modelValue)
+  const getCurrentDateValue = (): string => {
+    return (
+      typeof props.modelValue === 'object'
+        ? dayjs(props.modelValue.start)
+        : props.onlyTime
+        ? dayjs(props.modelValue, 'HH:mm')
+        : dayjs(props.modelValue)
+    ).format()
   }
 
-  const currentDate = ref(getCurrentDateValue())
+  const calendarDate = ref(getCurrentDateValue())
 
   const formatterOptions = computed<DateTimeFormatOptions>(() => {
-    const { inputDateStyle, timeZone, inputTimeStyle, hour12 } = props
+    const { inputDateStyle, inputTimeStyle, timeZone, hour12 } = props
 
     return {
       dateStyle: inputDateStyle,
-      timeStyle: hasTime.value ? inputTimeStyle : undefined,
+      timeStyle: inputTimeStyle,
       timeZone,
       hour12,
     }
   })
 
   const inputValue = computed(() => {
+    if (!modelValue.value) return undefined
+
     if (props.onlyTime) {
       const baseDate = new Date().toISOString().split('T')[0]
 
@@ -350,7 +309,7 @@
       })
     } else {
       return getFormattedDate({
-        value: modelValue.value,
+        value: dayJs(modelValue.value, props.format).format(),
         locale: currentLocale.value,
         options: formatterOptions.value,
       })
@@ -404,61 +363,61 @@
     }
   })
 
-  const getPickerContainerPosition = async (): Promise<{
-    vertical: 'top' | 'bottom'
-    horizontal: 'left' | 'right'
-  }> => {
-    if (props.pickerPosition) {
-      const horizontal = props.pickerPosition.includes('right')
-        ? 'right'
-        : 'left'
-      const vertical = props.pickerPosition.includes('top') ? 'top' : 'bottom'
+  // const getPickerContainerPosition = async (): Promise<{
+  //   vertical: 'top' | 'bottom'
+  //   horizontal: 'left' | 'right'
+  // }> => {
+  //   if (props.pickerPosition) {
+  //     const horizontal = props.pickerPosition.includes('right')
+  //       ? 'right'
+  //       : 'left'
+  //     const vertical = props.pickerPosition.includes('top') ? 'top' : 'bottom'
 
-      return {
-        horizontal,
-        vertical,
-      }
-    } else {
-      return {
-        horizontal: 'left',
-        vertical: await calcVerticalPosition(MazPicker.value),
-      }
-    }
-  }
+  //     return {
+  //       horizontal,
+  //       vertical,
+  //     }
+  //   } else {
+  //     return {
+  //       horizontal: 'left',
+  //       vertical: await calcVerticalPosition(MazPicker.value),
+  //     }
+  //   }
+  // }
 
-  const calcVerticalPosition = async (
-    parent?: HTMLDivElement,
-  ): Promise<'top' | 'bottom'> => {
-    if (typeof window === 'undefined') {
-      return 'bottom'
-    }
+  // const calcVerticalPosition = async (
+  //   parent?: HTMLDivElement,
+  // ): Promise<'top' | 'bottom'> => {
+  //   if (typeof window === 'undefined') {
+  //     return 'bottom'
+  //   }
 
-    const OFFSET = 30
+  //   const OFFSET = 30
 
-    await nextTick()
+  //   await nextTick()
 
-    const pickerContainer = document.querySelector(
-      `#${containerUniqueId.value}`,
-    )
+  //   const pickerContainer = document.querySelector(
+  //     `#${containerUniqueId.value}`,
+  //   )
 
-    const parentRect = parent?.getBoundingClientRect()
-    const windowHeight = window.innerHeight
+  //   const parentRect = parent?.getBoundingClientRect()
+  //   const windowHeight = window.innerHeight
 
-    const pickerHeight = (pickerContainer?.clientHeight ?? 0) - OFFSET
+  //   const pickerHeight = (pickerContainer?.clientHeight ?? 0) - OFFSET
 
-    const spaceOnBottom = (parentRect && windowHeight - parentRect.bottom) ?? 0
-    const spaceOnTop = (parentRect && parentRect.top) ?? 0
+  //   const spaceOnBottom = (parentRect && windowHeight - parentRect.bottom) ?? 0
+  //   const spaceOnTop = (parentRect && parentRect.top) ?? 0
 
-    const hasSpaceOnBottom = spaceOnBottom && spaceOnBottom >= pickerHeight
+  //   const hasSpaceOnBottom = spaceOnBottom && spaceOnBottom >= pickerHeight
 
-    const hasSpaceOnTop = spaceOnTop && spaceOnTop >= pickerHeight
+  //   const hasSpaceOnTop = spaceOnTop && spaceOnTop >= pickerHeight
 
-    if (!hasSpaceOnBottom && (hasSpaceOnTop || spaceOnTop >= spaceOnBottom)) {
-      return 'top'
-    }
+  //   if (!hasSpaceOnBottom && (hasSpaceOnTop || spaceOnTop >= spaceOnBottom)) {
+  //     return 'top'
+  //   }
 
-    return 'bottom'
-  }
+  //   return 'bottom'
+  // }
 
   const closeCalendar = () => {
     isFocused.value = false
@@ -486,134 +445,134 @@
     target?.removeEventListener('click', toggleProgramatically)
   }
 
-  const checkMinMaxValues = (value: PickerValue) => {
-    if (props.minDate || props.maxDate) {
-      if (typeof value === 'string') {
-        const { newValue, newCurrentDate } = checkValueWithMinMaxDates({
-          value,
-          minDate: props.minDate,
-          maxDate: props.maxDate,
-        })
-        if (newValue) {
-          emitValue(newValue)
-        }
-        if (newCurrentDate) currentDate.value = newCurrentDate
-      } else if (typeof value === 'object' && (value.start || value.end)) {
-        // RANGE
-        let newStartValue = value.start
-        let newEndValue = value.end
+  // const checkMinMaxValues = (value: PickerValue) => {
+  //   if (props.minDate || props.maxDate) {
+  //     if (typeof value === 'string') {
+  //       const { newValue, newCurrentDate } = checkValueWithMinMaxDates({
+  //         value,
+  //         minDate: props.minDate,
+  //         maxDate: props.maxDate,
+  //       })
+  //       if (newValue) {
+  //         emitValue(newValue)
+  //       }
+  //       if (newCurrentDate) currentDate.value = newCurrentDate
+  //     } else if (typeof value === 'object' && (value.start || value.end)) {
+  //       // RANGE
+  //       let newStartValue = value.start
+  //       let newEndValue = value.end
 
-        if (value.start) {
-          const { newValue, newCurrentDate } = checkValueWithMinMaxDates({
-            value: value.start,
-            minDate: props.minDate,
-            maxDate: props.maxDate,
-          })
+  //       if (value.start) {
+  //         const { newValue, newCurrentDate } = checkValueWithMinMaxDates({
+  //           value: value.start,
+  //           minDate: props.minDate,
+  //           maxDate: props.maxDate,
+  //         })
 
-          if (newValue) newStartValue = newValue
+  //         if (newValue) newStartValue = newValue
 
-          if (newCurrentDate) currentDate.value = newCurrentDate
-        }
-        if (value.end) {
-          const { newValue } = checkValueWithMinMaxDates({
-            value: value.end,
-            minDate: props.minDate,
-            maxDate: props.maxDate,
-          })
+  //         if (newCurrentDate) currentDate.value = newCurrentDate
+  //       }
+  //       if (value.end) {
+  //         const { newValue } = checkValueWithMinMaxDates({
+  //           value: value.end,
+  //           minDate: props.minDate,
+  //           maxDate: props.maxDate,
+  //         })
 
-          if (newValue) newEndValue = newValue
-        }
+  //         if (newValue) newEndValue = newValue
+  //       }
 
-        emitValue({
-          start: newStartValue,
-          end: newEndValue,
-        })
-      }
-    }
-  }
+  //       emitValue({
+  //         start: newStartValue,
+  //         end: newEndValue,
+  //       })
+  //     }
+  //   }
+  // }
 
   const emitValue = (value: PickerValue) => {
     const newValue = props.onlyTime
-      ? getTimeString(value as SimpleValue)
+      ? getTimeString(value as SimpleValue, 'HH:mm')
       : typeof value === 'object'
-      ? getRangeISODate(value, hasTime.value)
-      : getISODate(value, hasTime.value)
+      ? getRangeISODate(value, props.outputFormat)
+      : getISODate(value, props.outputFormat)
 
     emits('update:model-value', newValue)
   }
 
   // model value watcher
-  watch(
-    () => [modelValue.value, props.minDate, props.maxDate],
-    (values, oldValues) => {
-      const value = values[0] as PickerValue
-      const oldValue = oldValues?.[0] as PickerValue
+  // watch(
+  //   () => [modelValue.value, props.minDate, props.maxDate],
+  //   (values, oldValues) => {
+  //     const value = values[0] as PickerValue
+  //     const oldValue = oldValues?.[0] as PickerValue
 
-      // currentDate.value = getCurrentDateValue()
+  //     // currentDate.value = getCurrentDateValue()
 
-      if (typeof value === 'object' && (value.start || value.end)) {
-        if (
-          !oldValue ||
-          (typeof oldValue === 'object' &&
-            (oldValue.start !== value.start || oldValue.end !== value.end))
-        ) {
-          emitValue(value)
-          checkMinMaxValues(value)
-        }
-      } else if (typeof value === 'string' && value !== oldValue) {
-        emitValue(value)
-        checkMinMaxValues(value)
-      }
-    },
-    { immediate: true },
-  )
+  //     if (typeof value === 'object' && (value.start || value.end)) {
+  //       if (
+  //         !oldValue ||
+  //         (typeof oldValue === 'object' &&
+  //           (oldValue.start !== value.start || oldValue.end !== value.end))
+  //       ) {
+  //         emitValue(value)
+  //         checkMinMaxValues(value)
+  //       }
+  //     } else if (typeof value === 'string' && value !== oldValue) {
+  //       emitValue(value)
+  //       checkMinMaxValues(value)
+  //     }
+  //   },
+  //   { immediate: true },
+  // )
 
-  watch(
-    () => isOpen.value,
-    async (value) => {
-      if (value) {
-        pickerContainerPosition.value = await getPickerContainerPosition()
-      }
-    },
-    { immediate: true },
-  )
+  // watch(
+  //   () => isOpen.value,
+  //   async (value) => {
+  //     if (value) {
+  //       pickerContainerPosition.value = await getPickerContainerPosition()
+  //     }
+  //   },
+  //   { immediate: true },
+  // )
 
-  // Disable weekly watcher
-  watch(
-    () => [modelValue.value, props.disabledWeekly, props.disabledDates],
-    (values) => {
-      const value = values[0] as PickerValue
-      const disabledWeekly = values[1] as number[]
-      const disabledDates = values[2] as string[]
+  // // Disable weekly watcher
+  // watch(
+  //   () => [modelValue.value, props.disabledWeekly, props.disabledDates],
+  //   (values) => {
+  //     const value = values[0] as PickerValue
+  //     const disabledWeekly = values[1] as number[]
+  //     const disabledDates = values[2] as string[]
 
-      if (typeof value === 'object' && (value.start || value.end)) {
-        if (
-          (value.start &&
-            isValueDisabledWeekly({ value: value.start, disabledWeekly })) ||
-          (value.start &&
-            isValueDisabledDate({ value: value.start, disabledDates }))
-        ) {
-          modelValue.value = { start: undefined, end: value.end }
-        }
-        if (
-          (value.end &&
-            isValueDisabledWeekly({ value: value.end, disabledWeekly })) ||
-          (value.end &&
-            isValueDisabledDate({ value: value.end, disabledDates }))
-        ) {
-          modelValue.value = { start: value.start, end: undefined }
-        }
-      } else if (typeof value === 'string') {
-        if (
-          isValueDisabledWeekly({ value, disabledWeekly }) ||
-          isValueDisabledDate({ value, disabledDates })
-        ) {
-          modelValue.value = undefined
-        }
-      }
-    },
-    { immediate: true },
-  )
+  //     if (typeof value === 'object' && (value.start || value.end)) {
+  //       if (
+  //         (value.start &&
+  //           isValueDisabledWeekly({ value: value.start, disabledWeekly })) ||
+  //         (value.start &&
+  //           isValueDisabledDate({ value: value.start, disabledDates }))
+  //       ) {
+  //         modelValue.value = { start: undefined, end: value.end }
+  //       }
+  //       if (
+  //         (value.end &&
+  //           isValueDisabledWeekly({ value: value.end, disabledWeekly })) ||
+  //         (value.end &&
+  //           isValueDisabledDate({ value: value.end, disabledDates }))
+  //       ) {
+  //         modelValue.value = { start: value.start, end: undefined }
+  //       }
+  //     } else if (typeof value === 'string') {
+  //       if (
+  //         isValueDisabledWeekly({ value, disabledWeekly }) ||
+  //         isValueDisabledDate({ value, disabledDates })
+  //       ) {
+  //         modelValue.value = undefined
+  //       }
+  //     }
+  //   },
+  //   { immediate: true },
+  // )
 </script>
 
 <style lang="postcss" scoped>
@@ -636,8 +595,12 @@
       @apply maz-right-0;
     }
 
-    & .m-picker__button__chevron {
-      @apply maz-transition-transform maz-duration-200;
+    & .m-picker__button {
+      @apply maz-flex maz-h-full maz-bg-transparent maz-pr-1 maz-flex-center;
+
+      &__chevron {
+        @apply maz-h-5 maz-w-5 maz-text-normal maz-transition-transform maz-duration-200;
+      }
     }
 
     &.--is-open {

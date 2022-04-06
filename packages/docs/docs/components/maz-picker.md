@@ -6,7 +6,28 @@ description: MazPicker is a stand-alone component for select dates and time. Pro
 
 > Before you have to import the global css files in your project, follow instructions in [Getting Started](/maz-ui-3/guide/getting-started.html)
 
-This component is based on native browser native API [Date Constructor](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Date), so no dependency needed
+To use this component, you have to install the dependency `dayjs`
+
+<NpmBadge package="dayjs" />
+
+<CodeGroup>
+
+  <CodeGroupItem title="NPM" active>
+
+```bash
+# install in your project
+npm install dayjs
+```
+  </CodeGroupItem>
+
+  <CodeGroupItem title="YARN">
+
+```bash
+# install in your project
+yarn add dayjs
+```
+  </CodeGroupItem>
+</CodeGroup>
 
 ## Documentation
 

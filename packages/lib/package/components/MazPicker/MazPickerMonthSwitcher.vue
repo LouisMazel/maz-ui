@@ -33,13 +33,14 @@
   import { capitalize, date } from './../../filters'
   import { computed, PropType } from 'vue'
   import { Color } from '../types'
-  import { cloneDate, isSameMonth } from '../MazPicker/utils'
+  import { isSameMonth } from '../MazPicker/utils'
   import MazBtn from '../MazBtn.vue'
   import XIcon from './../../icons/x.svg'
   import MazIcon from '../MazIcon.vue'
+  import dayjs, { Dayjs } from 'dayjs'
 
   const props = defineProps({
-    currentDate: { type: Date, required: true },
+    currentDate: { type: String, required: true },
     color: { type: String as PropType<Color>, required: true },
     locale: { type: String, required: true },
     double: { type: Boolean, required: true },
@@ -50,10 +51,9 @@
   const months = computed<
     {
       label: string
-      date: Date
+      date: Dayjs
     }[]
   >(() => {
-    const clonedCurrentDate = cloneDate(props.currentDate)
     return Array.from({ length: 12 }, (_v, i) => i).map((monthNumber) => {
       if (props.double) {
         return {
@@ -66,7 +66,7 @@
               month: 'short',
             }),
           )}`,
-          date: cloneDate(clonedCurrentDate.setMonth(monthNumber)),
+          date: dayjs(props.currentDate).set('month', monthNumber),
         }
       } else {
         return {
@@ -75,14 +75,14 @@
               month: 'long',
             }),
           ),
-          date: cloneDate(clonedCurrentDate.setMonth(monthNumber)),
+          date: dayjs(props.currentDate).set('month', monthNumber),
         }
       }
     })
   })
 
-  const selectMonth = (date: Date) => {
-    emits('update:current-date', date)
+  const selectMonth = (date: Dayjs) => {
+    emits('update:current-date', date.format())
     emits('close')
   }
 </script>

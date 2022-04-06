@@ -19,7 +19,6 @@
   import MazBtn from '../MazBtn.vue'
   import { Color } from '../types'
   import { PickerShortcut, PickerValue, RangeValue } from './types'
-  import { isSameMonth } from './utils'
 
   const props = defineProps({
     color: { type: String as PropType<Color>, required: true },
@@ -31,12 +30,11 @@
       type: Array as PropType<PickerShortcut[]>,
       required: true,
     },
-    currentDate: { type: Date, required: true },
     double: { type: Boolean, required: true },
     shortcut: { type: String, default: undefined },
   })
 
-  const emits = defineEmits(['update:model-value', 'update:current-date'])
+  const emits = defineEmits(['update:model-value'])
 
   const selectedShortcut = ref(props.shortcut)
 
@@ -46,9 +44,6 @@
   ) => {
     selectedShortcut.value = identifier
     emits('update:model-value', value)
-    if (!isSameMonth(value.end, props.currentDate)) {
-      emits('update:current-date', new Date(value.end))
-    }
   }
 
   watch(

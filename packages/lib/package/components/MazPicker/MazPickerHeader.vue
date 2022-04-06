@@ -51,16 +51,11 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, PropType, ref, watch } from 'vue'
+  import { computed, PropType, ref } from 'vue'
   import { Color } from '../types'
   import { date, capitalize } from './../../filters'
   import { PickerValue } from './types'
-  import {
-    cloneDate,
-    DateTimeFormatOptions,
-    getCurrentDateForTimeValue,
-    isBigger,
-  } from './utils'
+  import { DateTimeFormatOptions } from './utils'
 
   const props = defineProps({
     modelValue: {
@@ -77,43 +72,21 @@
       type: Object as PropType<DateTimeFormatOptions>,
       required: true,
     },
-    currentDate: { type: Date, required: true },
+    // currentDate: { type: String, required: true },
   })
 
-  const getCurrentDateTmp = () => {
-    return typeof props.modelValue === 'object'
-      ? cloneDate(
-          props.modelValue.start
-            ? new Date(props.modelValue.start)
-            : new Date(),
-        )
-      : cloneDate(
-          props.modelValue
-            ? props.hasDate
-              ? new Date(props.modelValue)
-              : getCurrentDateForTimeValue(props.modelValue)
-            : new Date(),
-        )
-  }
-
-  const currentDateTmp = ref<Date>(getCurrentDateTmp())
-
-  const selectedDate = computed<string | undefined>(() => {
-    if (typeof props.modelValue === 'object') {
-      return props.modelValue.start
-    }
-    return props.modelValue
-  })
+  const refDate = computed(() =>
+    typeof props.modelValue === 'string'
+      ? props.modelValue
+      : props.modelValue?.start,
+  )
 
   const transitionName = ref<'maz-slidevnext' | 'maz-slidevprev'>(
     'maz-slidevnext',
   )
 
   const year = computed(() => {
-    if (
-      typeof props.modelValue === 'object' &&
-      (props.modelValue.start || props.modelValue.end)
-    ) {
+    if (typeof props.modelValue === 'object') {
       return `${
         props.modelValue.start
           ? date(props.modelValue.start, props.locale, {
@@ -189,31 +162,33 @@
   )
 
   const timeValue = computed(() => {
-    return date(currentDateTmp.value, props.locale, {
-      timeStyle: 'short',
-      timeZone: props.formatterOptions.timeZone,
-      hour12: props.formatterOptions.hour12,
-    })
+    return refDate.value
+      ? date(refDate.value, props.locale, {
+          timeStyle: 'short',
+          timeZone: props.formatterOptions.timeZone,
+          hour12: props.formatterOptions.hour12,
+        })
+      : undefined
   })
 
   const timeArray = computed(() => (props.time ? [timeValue.value] : undefined))
 
-  watch(
-    () => props.modelValue,
-    () => {
-      if (selectedDate.value) {
-        transitionName.value = isBigger(
-          currentDateTmp.value,
-          new Date(selectedDate.value),
-        )
-          ? 'maz-slidevprev'
-          : 'maz-slidevnext'
-        currentDateTmp.value = props.hasDate
-          ? cloneDate(new Date(selectedDate.value))
-          : getCurrentDateForTimeValue(selectedDate.value)
-      }
-    },
-  )
+  // watch(
+  //   () => props.modelValue,
+  //   () => {
+  //     if (selectedDate.value) {
+  //       transitionName.value = isBigger(
+  //         currentDateTmp.value,
+  //         new Date(selectedDate.value),
+  //       )
+  //         ? 'maz-slidevprev'
+  //         : 'maz-slidevnext'
+  //       currentDateTmp.value = props.hasDate
+  //         ? cloneDate(new Date(selectedDate.value))
+  //         : getCurrentDateForTimeValue(selectedDate.value)
+  //     }
+  //   },
+  // )
 </script>
 
 <style lang="postcss" scoped>

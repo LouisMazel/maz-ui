@@ -44,6 +44,7 @@
   },
   "peerDependencies": {
     "chart.js": "^3.0.0",
+    "dayjs": "^1.1.0",
     "dropzone": "^5.9.3",
     "libphonenumber-js": "^1.9.44",
     "vue": "^3.0.0",
@@ -60,6 +61,9 @@
       "optional": true
     },
     "vue-router": {
+      "optional": true
+    },
+    "dayjs": {
       "optional": true
     }
   },
@@ -90,6 +94,7 @@
     "babel-loader": "^8.2.2",
     "chart.js": "^3.7.1",
     "cross-env": "^7.0.3",
+    "dayjs": "^1.11.0",
     "dropzone": "^6.0.0-beta.2",
     "eslint": "^8.11.0",
     "eslint-plugin-prettier": "^4.0.0",

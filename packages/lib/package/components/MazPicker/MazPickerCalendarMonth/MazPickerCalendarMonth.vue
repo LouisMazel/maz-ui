@@ -10,7 +10,7 @@
       :locale="locale"
       :color="color"
       :time="time"
-      :current-date="currentDate"
+      :calendar-date="calendarDate"
       :first-day-of-week="firstDayOfWeek"
       :min-date="minDate"
       :max-date="maxDate"
@@ -23,7 +23,6 @@
 <script lang="ts" setup>
   import { computed, PropType } from 'vue'
   import { Color } from './../../types'
-  import { cloneDate } from '../utils'
   import MazPickerCalendarDays from './MazPickerCalendarDays.vue'
   import MazPickerCalendarGrid from './MazPickerCalendarGrid.vue'
   import { PickerValue } from '../types'
@@ -37,7 +36,7 @@
     locale: { type: String, required: true },
     time: { type: Boolean, required: true },
     firstDayOfWeek: { type: Number, required: true },
-    currentDate: { type: Date, required: true },
+    calendarDate: { type: String, required: true },
     offsetMonth: { type: Number, default: 0 },
     minDate: { type: String, default: undefined },
     maxDate: { type: String, default: undefined },
@@ -47,22 +46,14 @@
 
   const emits = defineEmits(['update:model-value', 'update:current-date'])
 
-  const clonedCurrentDate = computed(() =>
-    cloneDate(
-      cloneDate(props.currentDate).setMonth(
-        props.currentDate.getMonth() + props.offsetMonth,
-      ),
-    ),
-  )
-
   const modelValue = computed({
     get: () => props.modelValue,
     set: (value) => emits('update:model-value', value),
   })
 
-  const currentDate = computed({
-    get: () => clonedCurrentDate.value,
-    set: (currentDate) => emits('update:current-date', currentDate),
+  const calendarDate = computed({
+    get: () => props.calendarDate,
+    set: (calendarDate) => emits('update:current-date', calendarDate),
   })
 </script>
 

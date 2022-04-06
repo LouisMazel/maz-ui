@@ -2,7 +2,6 @@ const DEFAULT_OPTIONS: Intl.DateTimeFormatOptions = {
   month: 'short',
   day: 'numeric',
   year: 'numeric',
-  timeZone: 'UTC',
 }
 
 export const date = (
@@ -21,16 +20,7 @@ export const date = (
     )
   }
 
-  const { timeZone: defaultTimeZone, ...rest } = DEFAULT_OPTIONS
-  const hasOnlyTimeZone = !!(
-    (options && Object.keys(options).length === 1 && options.timeZone) ||
-    !options
-  )
-
-  const opts = {
-    timeZone: options?.timeZone ?? defaultTimeZone,
-    ...(!hasOnlyTimeZone ? options : rest),
-  }
+  const opts = options ?? DEFAULT_OPTIONS
 
   try {
     const usedDate = date instanceof Date ? date : new Date(date)

@@ -46,43 +46,37 @@
 
 <script lang="ts" setup>
   import { date } from '../../filters'
-  import { computed, PropType, ref } from 'vue'
+  import { computed, PropType } from 'vue'
   import { Color } from '../types'
   import MazBtn from '../MazBtn.vue'
   import XIcon from './../../icons/x.svg'
   import MazIcon from '../MazIcon.vue'
-  import { isSameYear, cloneDate } from './utils'
+  import { isSameYear } from './utils'
   import ChevronLeftIcon from './../../icons/chevron-left.svg'
   import ChevronRightIcon from './../../icons/chevron-right.svg'
+  import dayjs, { Dayjs } from 'dayjs'
 
   const props = defineProps({
     color: { type: String as PropType<Color>, required: true },
     locale: { type: String, required: true },
-    currentDate: { type: Date, required: true },
+    calendarDate: { type: String, required: true },
   })
 
   const emits = defineEmits(['update:current-date', 'close'])
 
-  const clonedCurrentDate = ref(cloneDate(props.currentDate))
-
   const years = computed<
     {
       label: string
-      date: Date
+      date: Dayjs
     }[]
   >(() => {
     return Array.from({ length: 15 }, (_v, i) => i - 7).map((yearNumber) => {
-      const monthClonedDate = cloneDate(clonedCurrentDate.value)
-
-      const dateMonth = new Date(
-        monthClonedDate.setFullYear(monthClonedDate.getFullYear() + yearNumber),
-      )
-
+      const dateYear = dayjs(props.calendarDate).set('year', yearNumber)
       return {
-        label: date(dateMonth, props.locale, {
+        label: date(dateYear.format(), props.locale, {
           year: 'numeric',
         }),
-        date: dateMonth,
+        date: dayjs(props.calendarDate).set('year', yearNumber),
       }
     })
   })
@@ -93,18 +87,10 @@
   }
 
   const previousYears = () => {
-    clonedCurrentDate.value = new Date(
-      clonedCurrentDate.value.setFullYear(
-        clonedCurrentDate.value.getFullYear() - 7,
-      ),
-    )
+    emits('update:current-date', dayjs(props.calendarDate).subtract(1, 'year'))
   }
   const nextYears = () => {
-    clonedCurrentDate.value = new Date(
-      clonedCurrentDate.value.setFullYear(
-        clonedCurrentDate.value.getFullYear() + 7,
-      ),
-    )
+    emits('update:current-date', dayjs(props.calendarDate).add(1, 'year'))
   }
 </script>
 

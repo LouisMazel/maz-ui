@@ -37,54 +37,55 @@
   import MazBtn from '../MazBtn.vue'
   import { computed } from 'vue'
   import { date, capitalize } from '../../filters'
-  import { cloneDate } from './utils'
+  import dayjs from 'dayjs'
 
   const props = defineProps({
     modelValue: { type: String, default: undefined },
+    calendarDate: { type: String, default: undefined },
     locale: { type: String, required: true },
-    currentDate: { type: Date, required: true },
     double: { type: Boolean, required: true },
   })
 
   const emits = defineEmits([
     'previous',
     'next',
-    'update:current-date',
     'open-month-switcher',
     'open-year-switcher',
+    'update:current-date',
   ])
 
-  const clonedCurrentDate = computed(() => cloneDate(props.currentDate))
+  const currentDate = computed(() => dayjs(props.modelValue))
 
   const monthLabel = computed(() => {
-    const clonedDate = cloneDate(props.currentDate)
     return props.double
       ? `${capitalize(
-          date(clonedDate, props.locale, { month: 'long' }),
+          date(currentDate.value.format(), props.locale, { month: 'long' }),
         )} - ${capitalize(
-          date(clonedDate.setMonth(clonedDate.getMonth() + 1), props.locale, {
+          date(currentDate.value.add(1, 'month').format(), props.locale, {
             month: 'long',
           }),
         )}`
-      : capitalize(date(clonedDate, props.locale, { month: 'long' }))
+      : capitalize(
+          date(currentDate.value.format(), props.locale, { month: 'long' }),
+        )
   })
 
   const yearLabel = computed(() =>
-    date(clonedCurrentDate.value, props.locale, { year: 'numeric' }),
+    date(currentDate.value.format(), props.locale, { year: 'numeric' }),
   )
 
   const previousMonth = () => {
-    const value = cloneDate(
-      clonedCurrentDate.value.setMonth(clonedCurrentDate.value.getMonth() - 1),
+    emits(
+      'update:current-date',
+      dayjs(props.calendarDate).subtract(1, 'month').format(),
     )
-    emits('update:current-date', value)
   }
 
   const nextMonth = () => {
-    const value = cloneDate(
-      clonedCurrentDate.value.setMonth(clonedCurrentDate.value.getMonth() + 1),
+    emits(
+      'update:current-date',
+      dayjs(props.calendarDate).add(1, 'month').format(),
     )
-    emits('update:current-date', value)
   }
 </script>
 

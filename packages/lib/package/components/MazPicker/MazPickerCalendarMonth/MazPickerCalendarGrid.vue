@@ -2,7 +2,7 @@
   <div ref="MazPickerGrid" class="maz-picker-calendar-grid">
     <TransitionGroup :name="transitionName">
       <div
-        v-for="(dateArray, dateIndex) in [currentDateArray]"
+        v-for="(dateArray, dateIndex) in [calendarDateArray]"
         :key="`${dateArray[dateIndex]}`"
         class="maz-picker-calendar-grid__container"
         :class="{ '--is-range': isRangeMode }"
@@ -41,21 +41,20 @@
 <script lang="ts" setup>
   import { computed, PropType, ref, watch } from 'vue'
   import {
-    cloneDate,
     getDaysInMonth,
-    getFirstAndLastDayOfMonth,
+    getFirstDayOfMonth,
     isSameDate,
     isToday,
     isBigger,
     isSmaller,
     isSameDay,
-    getWeekDays,
     isSameMonth,
   } from '../utils'
   import MazBtn from '../../MazBtn.vue'
   import { Color } from '../../types'
   import { debounce } from './../../../helpers'
   import { PartialRangeValue, PickerValue } from '../types'
+  import dayjs from 'dayjs'
 
   enum DaySelected {
     UNSELECTED,
@@ -68,7 +67,7 @@
       type: [String, Object] as PropType<PickerValue>,
       default: undefined,
     },
-    currentDate: { type: Date, required: true },
+    calendarDate: { type: String, required: true },
     time: { type: Boolean, required: true },
     locale: { type: String, required: true },
     firstDayOfWeek: { type: Number, required: true },
@@ -83,8 +82,8 @@
 
   const MazPickerGrid = ref<HTMLDivElement>()
   const transitionName = ref<'maz-slidenext' | 'maz-slideprev'>('maz-slidenext')
-  const currentDateTmp = ref<Date>(cloneDate(props.currentDate))
-  const currentDateArray = ref<Date[]>([cloneDate(props.currentDate)])
+  const calendarDateTmp = ref<string>(props.calendarDate)
+  const calendarDateArray = ref<string[]>([props.calendarDate])
 
   const isRangeMode = computed(() => typeof props.modelValue === 'object')
 
@@ -93,25 +92,11 @@
     set: (value) => emits('update:model-value', value),
   })
 
-  const monthDays = computed(() => {
-    const dayCount = getDaysInMonth(
-      props.currentDate.getFullYear(),
-      props.currentDate.getMonth(),
-    )
+  const monthDays = computed(() => getDaysInMonth(props.calendarDate))
 
-    return dayCount
-  })
-
-  const emptyDaysCount = computed(() => {
-    const { firstDay } = getFirstAndLastDayOfMonth(props.currentDate)
-
-    const weekDays = getWeekDays(props.locale, props.firstDayOfWeek)
-    const indexCurrentWeekDay = weekDays.findIndex(
-      ({ dayNumber }) => dayNumber === firstDay,
-    )
-
-    return indexCurrentWeekDay
-  })
+  const emptyDaysCount = computed(
+    () => getFirstDayOfMonth(props.calendarDate) - props.firstDayOfWeek,
+  )
 
   const isFirstDay = (day: number): boolean => {
     if (!props.modelValue) {
@@ -119,9 +104,10 @@
     }
 
     if (typeof props.modelValue === 'object' && props.modelValue?.start) {
-      const itemDay = cloneDate(props.currentDate).setDate(day)
+      const itemDay = dayjs(props.calendarDate).set('date', day)
       return isSameDate(itemDay, props.modelValue.start)
     }
+
     return false
   }
 
@@ -131,14 +117,14 @@
     }
 
     if (typeof props.modelValue === 'object' && props.modelValue?.end) {
-      const itemDay = cloneDate(props.currentDate).setDate(day)
+      const itemDay = dayjs(props.calendarDate).set('date', day)
       return isSameDate(itemDay, props.modelValue.end)
     }
     return false
   }
 
   const getDayButtonColor = (day: number): Color => {
-    const itemDay = cloneDate(props.currentDate).setDate(day)
+    const itemDay = dayjs(props.calendarDate).set('date', day)
     const value = props.modelValue
 
     if (typeof value === 'object') {
@@ -156,14 +142,14 @@
   const isSelectedOrBetween = (day: number): DaySelected => {
     if (typeof props.modelValue === 'object') {
       if (props.modelValue.start) {
-        const itemDay = cloneDate(props.currentDate).setDate(day)
+        const itemDay = dayjs(props.calendarDate).set('date', day)
 
         if (isSameDate(itemDay, props.modelValue.start)) {
           return DaySelected.SELECTED
         }
       }
       if (props.modelValue.end) {
-        const itemDay = cloneDate(props.currentDate).setDate(day)
+        const itemDay = dayjs(props.calendarDate).set('date', day)
 
         if (isSameDate(itemDay, props.modelValue.end)) {
           return DaySelected.SELECTED
@@ -191,9 +177,7 @@
         }
       }
 
-      const newValue = new Date(
-        cloneDate(props.currentDate).setDate(value),
-      ).toISOString()
+      const newValue = dayjs(props.calendarDate).set('date', value).format()
 
       if (!values.start || isBigger(values.start, newValue)) {
         modelValue.value = {
@@ -207,14 +191,12 @@
         }
       }
     } else {
-      const baseDate = new Date(cloneDate(props.currentDate).setDate(value))
-
-      modelValue.value = baseDate.toISOString()
+      modelValue.value = dayjs(props.calendarDate).set('date', value).format()
     }
   }
 
   const checkIsToday = (day: number): boolean => {
-    return isToday(cloneDate(props.currentDate).setDate(day))
+    return isToday(dayjs(props.calendarDate).set('date', day))
   }
 
   const checkIsSameDate = (day: number): boolean => {
@@ -236,7 +218,7 @@
       return false
     }
 
-    const itemDay = cloneDate(props.currentDate).setDate(day)
+    const itemDay = dayjs(props.calendarDate).set('date', day)
 
     return !isSmaller(itemDay, value.start) && !isBigger(itemDay, value.end)
   }
@@ -245,7 +227,7 @@
     if (!props.minDate) {
       return false
     }
-    const dateWithDay = cloneDate(props.currentDate).setDate(day)
+    const dateWithDay = dayjs(props.calendarDate).set('date', day)
     return (
       isSmaller(dateWithDay, props.minDate) &&
       !isSameDate(dateWithDay, props.minDate)
@@ -258,7 +240,7 @@
     }
 
     return props.disabledWeekly.some((disabledDay) =>
-      isSameDay(cloneDate(props.currentDate).setDate(day), disabledDay),
+      isSameDay(dayjs(props.calendarDate).set('date', day), disabledDay),
     )
   }
 
@@ -268,7 +250,7 @@
     }
 
     return props.disabledDates.some((disabledDay) =>
-      isSameDate(cloneDate(props.currentDate).setDate(day), disabledDay),
+      isSameDate(dayjs(props.calendarDate).set('date', day), disabledDay),
     )
   }
 
@@ -276,7 +258,7 @@
     if (!props.maxDate) {
       return false
     }
-    const dateWithDay = cloneDate(props.currentDate).setDate(day)
+    const dateWithDay = dayjs(props.calendarDate).set('date', day)
 
     return (
       isBigger(dateWithDay, props.maxDate) &&
@@ -301,16 +283,16 @@
   }
 
   watch(
-    () => props.currentDate,
-    (currentDate) => {
-      transitionName.value = isBigger(currentDateTmp.value, currentDate)
+    () => props.calendarDate,
+    (calendarDate) => {
+      transitionName.value = isBigger(calendarDateTmp.value, calendarDate)
         ? 'maz-slideprev'
         : 'maz-slidenext'
 
-      if (!isSameMonth(currentDateTmp.value, currentDate)) {
-        currentDateArray.value = [currentDate]
+      if (!isSameMonth(calendarDateTmp.value, calendarDate)) {
+        calendarDateArray.value = [calendarDate]
       }
-      currentDateTmp.value = currentDate
+      calendarDateTmp.value = calendarDate
       setContainerHeight()
     },
   )
@@ -318,7 +300,7 @@
 
 <style lang="postcss" scoped>
   .maz-picker-calendar-grid {
-    @apply maz-relative maz-overflow-hidden;
+    @apply maz-relative;
 
     transition: all 300ms ease-in-out;
 

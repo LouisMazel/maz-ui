@@ -1,3 +1,8 @@
+import dayjs, { ConfigType } from 'dayjs'
+import weekday from 'dayjs/plugin/weekday'
+
+dayjs.extend(weekday)
+
 import { date, capitalize } from './../../filters'
 import { PartialRangeValue } from './types'
 
@@ -6,9 +11,9 @@ export type DateTimeFormatOptions = Pick<
   'hour12' | 'dateStyle' | 'timeStyle' | 'timeZone'
 >
 
-export function cloneDate(date: Date | number): Date {
-  return new Date(getDateInstance(date).getTime())
-}
+// export function cloneDate(date: Date | number): Date {
+//   return new Date(getDateInstance(date).getTime())
+// }
 
 export function getFormattedDate({
   value,
@@ -48,52 +53,22 @@ export function getRangeFormattedDate({
     : undefined
 }
 
-export function getCurrentDate(value?: string | Date): Date {
-  console.log('value', value)
-  const date = value ? new Date(value) : new Date()
-  const userTimezoneOffset = date.getTimezoneOffset() * 60000
-
-  console.log('value', new Date(date.getTime() - userTimezoneOffset))
-
-  return new Date(date.getTime() - userTimezoneOffset)
+export function getCurrentDate(value?: string | Date): string {
+  return dayjs(value).format()
 }
 
-export function getCurrentDateForTimeValue(value?: string) {
-  let base: string | undefined
-  if (
-    value?.toLowerCase().includes('am') ||
-    value?.toLowerCase().includes('pm')
-  ) {
-    base = convert12To24TimeFormat(value)
-  } else {
-    base = value?.split('.')[0]
-  }
-
-  const hour = base ? Number(base.split(':')[0] ?? 0) : 0
-  const minute = base ? Number(base.split(':')[1] ?? 0) : 0
-  const seconde = base ? Number(base.split(':')[2] ?? 0) : 0
-
-  return new Date(
-    new Date(new Date(new Date().setHours(hour)).setMinutes(minute)).setSeconds(
-      seconde,
-    ),
-  )
+export function getCurrentDateForTimeValue({
+  value,
+  timeFormat,
+}: {
+  value?: string
+  timeFormat: string
+}): string {
+  return dayjs(value, timeFormat).format()
 }
 
-export function getDateInstance(date: string | Date | number): Date {
-  return date instanceof Date ? date : new Date(date)
-}
-
-export function getFirstAndLastDayOfMonth(value: string | Date | number): {
-  firstDay: number
-  lastDay: number
-} {
-  const date = getDateInstance(value)
-
-  return {
-    firstDay: new Date(date.getFullYear(), date.getMonth(), 1).getDay(),
-    lastDay: new Date(date.getFullYear(), date.getMonth() + 1, 0).getDay(),
-  }
+export function getFirstDayOfMonth(value: ConfigType): number {
+  return dayjs(value).startOf('month').day()
 }
 
 function addDays(date: Date, days: number) {
@@ -115,107 +90,62 @@ export function getWeekDays(
   )
 }
 
-export function getDaysInMonth(year: number, month: number) {
-  return new Date(year, month + 1, 0).getDate()
+export function getDaysInMonth(date: ConfigType): number {
+  return dayjs(date).daysInMonth()
 }
 
-export function isToday(date: Date | string | number): boolean {
-  const today = new Date()
-  const usedDate = getDateInstance(date)
-
-  return (
-    usedDate.getDate() === today.getDate() &&
-    usedDate.getMonth() === today.getMonth() &&
-    usedDate.getFullYear() === today.getFullYear()
-  )
+export function isToday(date: ConfigType): boolean {
+  return dayjs(date).isSame(dayjs(), 'date')
 }
 
-export function isSameDate(
-  date: Date | string | number,
-  date2: Date | string | number,
-): boolean {
-  date = getDateInstance(date)
-  date2 = getDateInstance(date2)
-
-  return (
-    date.getDate() === date2.getDate() &&
-    date.getMonth() === date2.getMonth() &&
-    date.getFullYear() === date2.getFullYear()
-  )
+export function isSameDate(date: ConfigType, date2: ConfigType): boolean {
+  return dayjs(date).isSame(date2, 'date')
 }
 
-export function isSameMonth(
-  date: Date | string | number,
-  date2: Date | string | number,
-): boolean {
-  date = getDateInstance(date)
-  date2 = getDateInstance(date2)
-
-  return date.getMonth() === date2.getMonth()
+export function isSameMonth(date: ConfigType, date2: ConfigType): boolean {
+  return dayjs(date).isSame(date2, 'month')
 }
 
-export function isSameYear(
-  date: Date | string | number,
-  date2: Date | string | number,
-): boolean {
-  date = getDateInstance(date)
-  date2 = getDateInstance(date2)
-
-  return date.getFullYear() === date2.getFullYear()
+export function isSameYear(date: ConfigType, date2: ConfigType): boolean {
+  return dayjs(date).isSame(date2, 'year')
 }
 
-export function isBigger(
-  date: Date | string | number,
-  date2: Date | string | number,
-): boolean {
-  date = getDateInstance(date)
-  date2 = getDateInstance(date2)
-
-  return date.getTime() >= date2.getTime() // && !isSameDate(date, date2)
+export function isBigger(date: ConfigType, date2: ConfigType): boolean {
+  return dayjs(date).isBefore(date2)
 }
 
-export function isSmaller(
-  date: Date | string | number,
-  date2: Date | string | number,
-): boolean {
-  date = getDateInstance(date)
-  date2 = getDateInstance(date2)
-
-  return date.getTime() <= date2.getTime() && !isSameDate(date, date2)
+export function isSmaller(date: ConfigType, date2: ConfigType): boolean {
+  return dayjs(date).isAfter(date2)
 }
 
-export function isSameDay(
-  date: Date | string | number,
-  dayNumber: number,
-): boolean {
-  date = getDateInstance(date)
-
-  return date.getDay() === dayNumber
+export function isSameDay(date: ConfigType, dayNumber: number): boolean {
+  return dayjs(date).day() === dayNumber
 }
 
 export function getISODate(
-  value?: string,
-  hasTime = false,
+  value?: ConfigType,
+  format = 'YYYY-MM-DD',
 ): string | undefined {
   if (!value) {
     return undefined
   }
 
-  const newDate = new Date(value).toISOString()
-
-  return hasTime ? newDate.split('.')[0] : newDate.split('T')[0]
+  return dayjs(value).format(format)
 }
 
-export function getRangeISODate(value: PartialRangeValue, hasTime = false) {
+export function getRangeISODate(
+  value: PartialRangeValue,
+  format = 'YYYY-MM-DD',
+) {
   return {
-    start: getISODate(value.start, hasTime),
-    end: getISODate(value.end, hasTime),
+    start: getISODate(value.start, format),
+    end: getISODate(value.end, format),
   }
 }
 
 type CheckValueResponse = {
   newValue?: string
-  newCurrentDate?: Date
+  newCurrentDate?: string
 }
 
 export function checkValueWithMinMaxDates({
@@ -252,9 +182,7 @@ export function isValueDisabledWeekly({
   value: string
   disabledWeekly: number[]
 }): boolean {
-  return disabledWeekly.some((dayNumber) =>
-    isSameDay(new Date(value), dayNumber),
-  )
+  return disabledWeekly.some((dayNumber) => isSameDay(value, dayNumber))
 }
 
 export function isValueDisabledDate({
@@ -265,16 +193,8 @@ export function isValueDisabledDate({
   disabledDates: string[]
 }): boolean {
   return disabledDates.some((disabledDate) =>
-    isSameDate(new Date(value), disabledDate),
+    dayjs(value).isSame(dayjs(disabledDate), 'day'),
   )
-}
-
-export function getFirstDateOfWeek(date: Date | string | number): Date {
-  date = getDateInstance(date)
-  const day = date.getDay()
-  const diff = date.getDate() - day + (day == 0 ? -6 : 1) // adjust when day is sunday
-
-  return new Date(date.setDate(diff))
 }
 
 export const scrollToTarget = function (
@@ -300,16 +220,12 @@ export const findNearestNumberInList = (
   return closest
 }
 
-export function getTimeString(value?: string | Date) {
+export function getTimeString(value?: ConfigType, format = 'HH:mm') {
   if (!value) {
     return undefined
   }
 
-  const stringDate = value instanceof Date ? value.toLocaleTimeString() : value
-
-  const date = getCurrentDateForTimeValue(stringDate)
-
-  return date.toLocaleTimeString()
+  return dayjs(value).format(format)
 }
 
 export function convertHour24to12Format(baseHour: number): number {

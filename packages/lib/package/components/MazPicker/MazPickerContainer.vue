@@ -12,7 +12,6 @@
       :color="color"
       :time="time"
       :model-value="modelValue"
-      :current-date="currentDate"
       :locale="locale"
       :has-date="hasDate"
       :formatter-options="formatterOptions"
@@ -25,7 +24,7 @@
       <MazPickerCalendar
         v-if="hasDate"
         v-model="modelValue"
-        v-model:current-date="currentDate"
+        :calendar-date="calendarDate"
         :color="color"
         :locale="locale"
         :time="time"
@@ -41,7 +40,7 @@
         class="m-picker-container__calendar"
       />
 
-      <MazPickerTime
+      <!--<MazPickerTime
         v-if="time"
         v-model="modelValue"
         v-model:current-date="currentDate"
@@ -55,7 +54,7 @@
         :minute-interval="minuteInterval"
         :formatter-options="formatterOptions"
         class="m-picker-container__time"
-      />
+      />-->
     </div>
 
     <!-- <MazPickerFooter v-if="hasFooter" :color="color" @close="$emit('close')" /> -->
@@ -69,7 +68,7 @@
   import { Color } from '../types'
   // import MazPickerFooter from './MazPickerFooter.vue'
   import { PickerShortcut, PickerValue } from './types'
-  import MazPickerTime from './MazPickerTime.vue'
+  // import MazPickerTime from './MazPickerTime.vue'
   import { DateTimeFormatOptions } from './utils'
 
   const props = defineProps({
@@ -77,11 +76,11 @@
       type: [String, Object] as PropType<PickerValue>,
       default: undefined,
     },
+    calendarDate: { type: String, required: true },
     color: { type: String as PropType<Color>, required: true },
     locale: { type: String, required: true },
     noHeader: { type: Boolean, default: false },
     firstDayOfWeek: { type: Number, required: true },
-    currentDate: { type: Date, required: true },
     double: { type: Boolean, required: true },
     hasFooter: { type: Boolean, required: true },
     hasDate: { type: Boolean, required: true },
@@ -119,12 +118,12 @@
     },
   })
 
-  const currentDate = computed({
-    get: () => props.currentDate,
-    set: (currentDate) => {
-      emits('update:current-date', currentDate)
-    },
-  })
+  // const currentDate = computed({
+  //   get: () => props.currentDate,
+  //   set: (currentDate) => {
+  //     emits('update:current-date', currentDate)
+  //   },
+  // })
 </script>
 
 <style lang="postcss" scoped>
