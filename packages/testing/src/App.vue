@@ -17,7 +17,7 @@
 
     {{ dateValue }}
 
-    <MazPicker v-model="dateValue" format="DD-MM-YYYY" :first-day-of-week="1" style="min-width: 300px;" />
+    <MazPicker v-model="dateValue" format="DD-MM-YYYY" :first-day-of-week="1" style="min-width: 300px;" locale="en-US" color="secondary" />
 
     <!-- End Developing Area -->
   </main>
@@ -39,7 +39,7 @@
     aosInstance.handleObserver()
   })
 
-  const dateValue = ref()
+  const dateValue = ref('02-03-2022')
 </script>
 
 <style lang="postcss">

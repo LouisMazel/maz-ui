@@ -51,11 +51,12 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, PropType, ref } from 'vue'
+  import { computed, PropType, ref, watch } from 'vue'
+
   import { Color } from '../types'
   import { date, capitalize } from './../../filters'
   import { PickerValue } from './types'
-  import { DateTimeFormatOptions } from './utils'
+  import { DateTimeFormatOptions, isBigger } from './utils'
 
   const props = defineProps({
     modelValue: {
@@ -72,8 +73,10 @@
       type: Object as PropType<DateTimeFormatOptions>,
       required: true,
     },
-    // currentDate: { type: String, required: true },
+    calendarDate: { type: String, required: true },
   })
+
+  const calendarDateTmp = ref(props.calendarDate)
 
   const refDate = computed(() =>
     typeof props.modelValue === 'string'
@@ -173,22 +176,16 @@
 
   const timeArray = computed(() => (props.time ? [timeValue.value] : undefined))
 
-  // watch(
-  //   () => props.modelValue,
-  //   () => {
-  //     if (selectedDate.value) {
-  //       transitionName.value = isBigger(
-  //         currentDateTmp.value,
-  //         new Date(selectedDate.value),
-  //       )
-  //         ? 'maz-slidevprev'
-  //         : 'maz-slidevnext'
-  //       currentDateTmp.value = props.hasDate
-  //         ? cloneDate(new Date(selectedDate.value))
-  //         : getCurrentDateForTimeValue(selectedDate.value)
-  //     }
-  //   },
-  // )
+  watch(
+    () => props.calendarDate,
+    (calendarDate) => {
+      transitionName.value = isBigger(calendarDateTmp.value, calendarDate)
+        ? 'maz-slidevprev'
+        : 'maz-slidevnext'
+
+      calendarDateTmp.value = calendarDate
+    },
+  )
 </script>
 
 <style lang="postcss" scoped>

@@ -13,6 +13,7 @@
       :time="time"
       :model-value="modelValue"
       :locale="locale"
+      :calendar-date="calendarDate"
       :has-date="hasDate"
       :formatter-options="formatterOptions"
       :double="double"
@@ -24,7 +25,7 @@
       <MazPickerCalendar
         v-if="hasDate"
         v-model="modelValue"
-        :calendar-date="calendarDate"
+        v-model:calendar-date="calendarDate"
         :color="color"
         :locale="locale"
         :time="time"
@@ -43,7 +44,7 @@
       <!--<MazPickerTime
         v-if="time"
         v-model="modelValue"
-        v-model:current-date="currentDate"
+        v-model:calendar-date="calendarDate"
         :is-open="isOpen"
         :color="color"
         :locale="locale"
@@ -107,7 +108,7 @@
 
   const emits = defineEmits([
     'update:model-value',
-    'update:current-date',
+    'update:calendar-date',
     'close',
   ])
 
@@ -118,12 +119,10 @@
     },
   })
 
-  // const currentDate = computed({
-  //   get: () => props.currentDate,
-  //   set: (currentDate) => {
-  //     emits('update:current-date', currentDate)
-  //   },
-  // })
+  const calendarDate = computed({
+    get: () => props.calendarDate,
+    set: (calendarDate) => emits('update:calendar-date', calendarDate),
+  })
 </script>
 
 <style lang="postcss" scoped>
@@ -161,10 +160,6 @@
     }
 
     & .m-picker-container {
-      & :deep(button):not(.--is-selected):not(.--is-between):not(:disabled) {
-        @apply hover:maz-bg-color-lighter !important;
-      }
-
       & :deep(button):is(:disabled) {
         @apply maz-text-gray-700 !important;
       }

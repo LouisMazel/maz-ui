@@ -9,28 +9,28 @@
       >
         <div v-for="first in emptyDaysCount" :key="first" />
         <MazBtn
-          v-for="(day, i) in monthDays"
+          v-for="({ label, date }, i) in monthDays"
           :key="i"
           size="mini"
-          :color="getDayButtonColor(day)"
+          :color="getDayButtonColor(date)"
           type="button"
           :disabled="
-            isSmallerMinDate(day) ||
-            isBiggerMaxDate(day) ||
-            isDisabledWeekly(day) ||
-            isDisabledDate(day)
+            isSmallerMinDate(date) ||
+            isBiggerMaxDate(date) ||
+            isDisabledWeekly(date) ||
+            isDisabledDate(date)
           "
           :class="{
-            '--is-today': checkIsToday(day),
-            '--is-first': isFirstDay(day),
-            '--is-last': isLastDay(day),
-            '--is-selected': isSelectedOrBetween(day) === DaySelected.SELECTED,
-            '--is-between': isSelectedOrBetween(day) === DaySelected.BETWEEN,
+            '--is-today': checkIsToday(date),
+            '--is-first': isFirstDay(date),
+            '--is-last': isLastDay(date),
+            '--is-selected': isSelectedOrBetween(date) === DaySelect.SELECTED,
+            '--is-between': isSelectedOrBetween(date) === DaySelect.BETWEEN,
           }"
-          @click="selectDay(day)"
+          @click="selectDay(date)"
         >
           <span>
-            {{ day }}
+            {{ label }}
           </span>
         </MazBtn>
       </div>
@@ -54,9 +54,9 @@
   import { Color } from '../../types'
   import { debounce } from './../../../helpers'
   import { PartialRangeValue, PickerValue } from '../types'
-  import dayjs from 'dayjs'
+  import dayjs, { Dayjs } from 'dayjs'
 
-  enum DaySelected {
+  enum DaySelect {
     UNSELECTED,
     SELECTED,
     BETWEEN,
@@ -87,86 +87,95 @@
 
   const isRangeMode = computed(() => typeof props.modelValue === 'object')
 
+  /* eslint-disable @typescript-eslint/no-unused-vars */
+  const hoverColor = computed(() => `var(--maz-color-${props.color}-alpha-20)`)
+  const betweenColor = computed(() => `var(--maz-color-${props.color}-alpha)`)
+  /* eslint-enable @typescript-eslint/no-unused-vars */
+
   const modelValue = computed({
     get: () => props.modelValue,
     set: (value) => emits('update:model-value', value),
   })
 
-  const monthDays = computed(() => getDaysInMonth(props.calendarDate))
-
-  const emptyDaysCount = computed(
-    () => getFirstDayOfMonth(props.calendarDate) - props.firstDayOfWeek,
+  const monthDays = computed<{ label: string | number; date: Dayjs }[]>(() =>
+    Array.from(
+      { length: getDaysInMonth(props.calendarDate) },
+      (_v, i) => i + 1,
+    ).map((day) => ({
+      label: day,
+      date: dayjs(props.calendarDate).set('date', day),
+    })),
   )
 
-  const isFirstDay = (day: number): boolean => {
+  const emptyDaysCount = computed(() => {
+    return Math.abs(
+      getFirstDayOfMonth(props.calendarDate) - props.firstDayOfWeek,
+    )
+  })
+
+  const isFirstDay = (day: Dayjs): boolean => {
     if (!props.modelValue) {
       return false
     }
 
     if (typeof props.modelValue === 'object' && props.modelValue?.start) {
-      const itemDay = dayjs(props.calendarDate).set('date', day)
-      return isSameDate(itemDay, props.modelValue.start)
+      return isSameDate(day, props.modelValue.start)
     }
 
     return false
   }
 
-  const isLastDay = (day: number): boolean => {
+  const isLastDay = (day: Dayjs): boolean => {
     if (!props.modelValue) {
       return false
     }
 
     if (typeof props.modelValue === 'object' && props.modelValue?.end) {
-      const itemDay = dayjs(props.calendarDate).set('date', day)
-      return isSameDate(itemDay, props.modelValue.end)
+      return isSameDate(day, props.modelValue.end)
     }
     return false
   }
 
-  const getDayButtonColor = (day: number): Color => {
-    const itemDay = dayjs(props.calendarDate).set('date', day)
+  const getDayButtonColor = (date: Dayjs): Color => {
     const value = props.modelValue
 
     if (typeof value === 'object') {
-      return (value.start ? isSameDate(itemDay, value.start) : false) ||
-        (value.end ? isSameDate(itemDay, value.end) : false)
+      return (value.start ? isSameDate(date, value.start) : false) ||
+        (value.end ? isSameDate(date, value.end) : false)
         ? props.color
-        : checkIsBetween(day)
+        : checkIsBetween(date)
         ? props.color
         : 'transparent'
     } else {
-      return checkIsSameDate(day) ? props.color : 'transparent'
+      return checkIsSameDate(date) ? props.color : 'transparent'
     }
   }
 
-  const isSelectedOrBetween = (day: number): DaySelected => {
+  const isSelectedOrBetween = (day: Dayjs): DaySelect => {
     if (typeof props.modelValue === 'object') {
       if (props.modelValue.start) {
-        const itemDay = dayjs(props.calendarDate).set('date', day)
-
-        if (isSameDate(itemDay, props.modelValue.start)) {
-          return DaySelected.SELECTED
+        if (isSameDate(day, props.modelValue.start)) {
+          return DaySelect.SELECTED
         }
       }
       if (props.modelValue.end) {
-        const itemDay = dayjs(props.calendarDate).set('date', day)
-
-        if (isSameDate(itemDay, props.modelValue.end)) {
-          return DaySelected.SELECTED
+        if (isSameDate(day, props.modelValue.end)) {
+          return DaySelect.SELECTED
         }
 
         if (checkIsBetween(day)) {
-          return DaySelected.BETWEEN
+          return DaySelect.BETWEEN
         }
       }
     } else if (checkIsSameDate(day)) {
-      return DaySelected.SELECTED
+      return DaySelect.SELECTED
     }
 
-    return DaySelected.UNSELECTED
+    return DaySelect.UNSELECTED
   }
 
-  const selectDay = (value: number) => {
+  const selectDay = (value: Dayjs) => {
+    const valueFormatted = value.format()
     if (typeof modelValue.value === 'object') {
       let values = modelValue.value
 
@@ -177,93 +186,80 @@
         }
       }
 
-      const newValue = dayjs(props.calendarDate).set('date', value).format()
-
-      if (!values.start || isBigger(values.start, newValue)) {
+      if (!values.start || isBigger(values.start, valueFormatted)) {
         modelValue.value = {
-          start: newValue,
+          start: valueFormatted,
           end: undefined,
         }
       } else {
         modelValue.value = {
           start: values.start,
-          end: newValue,
+          end: valueFormatted,
         }
       }
     } else {
-      modelValue.value = dayjs(props.calendarDate).set('date', value).format()
+      modelValue.value = valueFormatted
     }
   }
 
-  const checkIsToday = (day: number): boolean => {
-    return isToday(dayjs(props.calendarDate).set('date', day))
+  const checkIsToday = (day: Dayjs): boolean => {
+    return isToday(day)
   }
 
-  const checkIsSameDate = (day: number): boolean => {
+  const checkIsSameDate = (day: Dayjs): boolean => {
     if (!props.modelValue) {
       return false
     }
 
     const value = props.modelValue as string
 
-    const itemDay = new Date(new Date(value).setDate(day))
-
-    return isSameDate(itemDay, value)
+    return isSameDate(day, value)
   }
 
-  const checkIsBetween = (day: number): boolean => {
+  const checkIsBetween = (day: Dayjs): boolean => {
     const value = props.modelValue as PartialRangeValue
 
     if (!value.start || !value.end) {
       return false
     }
 
-    const itemDay = dayjs(props.calendarDate).set('date', day)
-
-    return !isSmaller(itemDay, value.start) && !isBigger(itemDay, value.end)
+    return !isSmaller(day, value.start) && !isBigger(day, value.end)
   }
 
-  const isSmallerMinDate = (day: number): boolean => {
+  const isSmallerMinDate = (day: Dayjs): boolean => {
     if (!props.minDate) {
       return false
     }
-    const dateWithDay = dayjs(props.calendarDate).set('date', day)
-    return (
-      isSmaller(dateWithDay, props.minDate) &&
-      !isSameDate(dateWithDay, props.minDate)
-    )
+
+    return isSmaller(day, props.minDate) && !isSameDate(day, props.minDate)
   }
 
-  const isDisabledWeekly = (day: number): boolean => {
+  const isDisabledWeekly = (day: Dayjs): boolean => {
     if (!props.disabledWeekly?.length) {
       return false
     }
 
     return props.disabledWeekly.some((disabledDay) =>
-      isSameDay(dayjs(props.calendarDate).set('date', day), disabledDay),
+      isSameDay(day, disabledDay),
     )
   }
 
-  const isDisabledDate = (day: number): boolean => {
+  const isDisabledDate = (day: Dayjs): boolean => {
     if (!props.disabledDates?.length) {
       return false
     }
 
     return props.disabledDates.some((disabledDay) =>
-      isSameDate(dayjs(props.calendarDate).set('date', day), disabledDay),
+      isSameDate(day, disabledDay),
     )
   }
 
-  const isBiggerMaxDate = (day: number): boolean => {
+  const isBiggerMaxDate = (day: Dayjs): boolean => {
     if (!props.maxDate) {
       return false
     }
-    const dateWithDay = dayjs(props.calendarDate).set('date', day)
 
-    return (
-      isBigger(dateWithDay, props.maxDate) &&
-      !isSameDate(dateWithDay, props.maxDate)
-    )
+    return isBigger(day, props.maxDate) && !isSameDate(day, props.maxDate)
   }
 
   const removeContainerHeight = debounce(() => {
@@ -285,10 +281,9 @@
   watch(
     () => props.calendarDate,
     (calendarDate) => {
-      transitionName.value = isBigger(calendarDateTmp.value, calendarDate)
+      transitionName.value = isBigger(calendarDate, calendarDateTmp.value)
         ? 'maz-slideprev'
         : 'maz-slidenext'
-
       if (!isSameMonth(calendarDateTmp.value, calendarDate)) {
         calendarDateArray.value = [calendarDate]
       }
@@ -319,6 +314,10 @@
           @apply maz-bg-color-light !important;
         }
 
+        &:hover:not(.--is-selected):not(.--is-between) {
+          background-color: v-bind(hovercolor) !important;
+        }
+
         &.--is-selected.--is-first {
           @apply maz-rounded-r-none !important;
         }
@@ -330,40 +329,15 @@
         &.--is-between {
           @apply maz-rounded-none !important;
 
-          &.--primary {
-            @apply maz-bg-primary-alpha !important;
-          }
+          background-color: v-bind(betweencolor) !important;
 
-          &.--secondary {
-            @apply maz-bg-secondary-alpha !important;
-          }
-
-          &.--info {
-            @apply maz-bg-info-alpha !important;
-          }
-
-          &.--danger {
-            @apply maz-bg-danger-alpha !important;
-          }
-
-          &.--warning {
-            @apply maz-bg-warning-alpha !important;
-          }
-
-          &.--success {
-            @apply maz-bg-success-alpha !important;
-          }
-
-          &.--white {
+          &.--white,
+          &.--transparent {
             @apply maz-bg-gray-400 !important;
           }
 
           &.--black {
             @apply maz-bg-gray-800 !important;
-          }
-
-          &.--transparent {
-            @apply maz-bg-gray-400 !important;
           }
         }
 
@@ -390,9 +364,9 @@
   .maz-slidenext-enter-active,
   .maz-slideprev-leave-active,
   .maz-slideprev-enter-active {
-    position: absolute;
-    transition: all 300ms ease-in-out;
-    @apply maz-top-0 maz-left-0 maz-right-0;
+    @apply maz-absolute maz-top-0 maz-left-0 maz-right-0;
+
+    transition: transform 300ms ease-in-out;
   }
 
   /* .maz-slidenext-enter-to, */

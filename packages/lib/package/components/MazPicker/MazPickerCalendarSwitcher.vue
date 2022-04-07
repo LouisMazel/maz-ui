@@ -40,7 +40,6 @@
   import dayjs from 'dayjs'
 
   const props = defineProps({
-    modelValue: { type: String, default: undefined },
     calendarDate: { type: String, default: undefined },
     locale: { type: String, required: true },
     double: { type: Boolean, required: true },
@@ -51,39 +50,39 @@
     'next',
     'open-month-switcher',
     'open-year-switcher',
-    'update:current-date',
+    'update:calendar-date',
   ])
 
-  const currentDate = computed(() => dayjs(props.modelValue))
+  const calendarDate2 = computed(() => dayjs(props.calendarDate))
 
   const monthLabel = computed(() => {
     return props.double
       ? `${capitalize(
-          date(currentDate.value.format(), props.locale, { month: 'long' }),
+          date(calendarDate2.value.format(), props.locale, { month: 'long' }),
         )} - ${capitalize(
-          date(currentDate.value.add(1, 'month').format(), props.locale, {
+          date(calendarDate2.value.add(1, 'month').format(), props.locale, {
             month: 'long',
           }),
         )}`
       : capitalize(
-          date(currentDate.value.format(), props.locale, { month: 'long' }),
+          date(calendarDate2.value.format(), props.locale, { month: 'long' }),
         )
   })
 
   const yearLabel = computed(() =>
-    date(currentDate.value.format(), props.locale, { year: 'numeric' }),
+    date(calendarDate2.value.format(), props.locale, { year: 'numeric' }),
   )
 
   const previousMonth = () => {
     emits(
-      'update:current-date',
+      'update:calendar-date',
       dayjs(props.calendarDate).subtract(1, 'month').format(),
     )
   }
 
   const nextMonth = () => {
     emits(
-      'update:current-date',
+      'update:calendar-date',
       dayjs(props.calendarDate).add(1, 'month').format(),
     )
   }

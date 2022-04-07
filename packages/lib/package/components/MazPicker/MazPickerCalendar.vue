@@ -9,29 +9,32 @@
       :double="double"
     /> -->
     <div class="maz-picker-calendar__main" :class="{ '--has-double': double }">
-      <!-- <MazPickerCalendarSwitcher
+      <MazPickerCalendarSwitcher
+        v-model:calendar-date="calendarDate"
         :locale="locale"
         :double="double"
         @open-month-switcher="monthSwitcherOpen = true"
         @open-year-switcher="yearSwitcherOpen = true"
-      /> -->
-      <!-- <Transition name="maz-picker-slide">
+      />
+      <Transition name="maz-picker-slide">
         <MazPickerMonthSwitcher
           v-if="monthSwitcherOpen"
           :color="color"
+          :calendar-date="calendarDate"
           :double="double"
           :locale="locale"
           @close="monthSwitcherOpen = false"
         />
-      </Transition> -->
-      <!-- <Transition name="maz-picker-slide">
+      </Transition>
+      <Transition name="maz-picker-slide">
         <MazPickerYearSwitcher
           v-if="yearSwitcherOpen"
+          :calendar-date="calendarDate"
           :color="color"
           :locale="locale"
           @close="yearSwitcherOpen = false"
         />
-      </Transition> -->
+      </Transition>
       <div class="maz-picker-calendar__months">
         <MazPickerCalendarMonth
           v-for="month in months"
@@ -54,11 +57,11 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, PropType } from 'vue'
-  // import MazPickerCalendarSwitcher from './MazPickerCalendarSwitcher.vue'
+  import { computed, PropType, ref } from 'vue'
+  import MazPickerCalendarSwitcher from './MazPickerCalendarSwitcher.vue'
   import { Color } from '../types'
-  // import MazPickerMonthSwitcher from './MazPickerMonthSwitcher.vue'
-  // import MazPickerYearSwitcher from './MazPickerYearSwitcher.vue'
+  import MazPickerMonthSwitcher from './MazPickerMonthSwitcher.vue'
+  import MazPickerYearSwitcher from './MazPickerYearSwitcher.vue'
   import MazPickerCalendarMonth from './MazPickerCalendarMonth/MazPickerCalendarMonth.vue'
   import { PickerShortcut, PickerValue } from './types'
   // import MazPickerShortcuts from './MazPickerShortcuts.vue'
@@ -86,12 +89,12 @@
     shortcut: { type: String, default: undefined },
   })
 
-  const emits = defineEmits(['update:model-value', 'update:current-date'])
+  const emits = defineEmits(['update:model-value', 'update:calendar-date'])
 
   // const isRangeMode = computed(() => typeof props.modelValue === 'object')
 
-  // const monthSwitcherOpen = ref(false)
-  // const yearSwitcherOpen = ref(false)
+  const monthSwitcherOpen = ref(false)
+  const yearSwitcherOpen = ref(false)
 
   const modelValue = computed({
     get: () => props.modelValue,
@@ -101,6 +104,11 @@
   const months = computed(() =>
     Array.from({ length: props.double ? 2 : 1 }, (_v, i) => i),
   )
+
+  const calendarDate = computed({
+    get: () => props.calendarDate,
+    set: (calendarDate) => emits('update:calendar-date', calendarDate),
+  })
 </script>
 
 <style lang="postcss" scoped>

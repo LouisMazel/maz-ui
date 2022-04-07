@@ -18,8 +18,8 @@
         v-for="month in months"
         :key="month.label"
         :size="props.double ? 'sm' : 'xs'"
-        :class="{ '--is-selected': isSameMonth(month.date, currentDate) }"
-        :color="isSameMonth(month.date, currentDate) ? color : 'transparent'"
+        :class="{ '--is-selected': isSameMonth(month.date, calendarDate) }"
+        :color="isSameMonth(month.date, calendarDate) ? color : 'transparent'"
         type="button"
         @click.stop="selectMonth(month.date)"
       >
@@ -40,13 +40,13 @@
   import dayjs, { Dayjs } from 'dayjs'
 
   const props = defineProps({
-    currentDate: { type: String, required: true },
+    calendarDate: { type: String, required: true },
     color: { type: String as PropType<Color>, required: true },
     locale: { type: String, required: true },
     double: { type: Boolean, required: true },
   })
 
-  const emits = defineEmits(['update:current-date', 'close'])
+  const emits = defineEmits(['update:calendar-date', 'close'])
 
   const months = computed<
     {
@@ -55,34 +55,35 @@
     }[]
   >(() => {
     return Array.from({ length: 12 }, (_v, i) => i).map((monthNumber) => {
+      const monthDate = dayjs(props.calendarDate).set('month', monthNumber)
       if (props.double) {
         return {
           label: `${capitalize(
-            date(new Date().setMonth(monthNumber), props.locale, {
+            date(monthDate.format(), props.locale, {
               month: 'short',
             }),
           )} - ${capitalize(
-            date(new Date().setMonth(monthNumber + 1), props.locale, {
+            date(monthDate.add(1, 'month').format(), props.locale, {
               month: 'short',
             }),
           )}`,
-          date: dayjs(props.currentDate).set('month', monthNumber),
+          date: monthDate,
         }
       } else {
         return {
           label: capitalize(
-            date(new Date().setMonth(monthNumber), props.locale, {
+            date(monthDate.format(), props.locale, {
               month: 'long',
             }),
           ),
-          date: dayjs(props.currentDate).set('month', monthNumber),
+          date: monthDate,
         }
       }
     })
   })
 
   const selectMonth = (date: Dayjs) => {
-    emits('update:current-date', date.format())
+    emits('update:calendar-date', date.format())
     emits('close')
   }
 </script>

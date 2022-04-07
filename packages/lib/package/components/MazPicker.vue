@@ -41,11 +41,11 @@
       "
     >
       <MazPickerContainer
-        v-show="isOpen"
+        v-if="isOpen"
         :id="containerUniqueId"
         ref="PickerContainer"
         v-model="modelValue"
-        :calendar-date="calendarDate"
+        v-model:calendar-date="calendarDate"
         :is-open="isOpen"
         :color="color"
         :locale="currentLocale"
@@ -90,13 +90,15 @@
     // watch,
     // nextTick,
   } from 'vue'
+  import dayjs from 'dayjs'
+  import customParseFormat from 'dayjs/plugin/customParseFormat'
+
   import MazInput from './MazInput.vue'
   import MazPickerContainer from './MazPicker/MazPickerContainer.vue'
   import { vClickOutside } from './../directives/click-outside.directive'
   import ChevronDownIcon from './../icons/chevron-down.svg'
   import MazIcon from './MazIcon.vue'
   import { Color, Position } from './types'
-  import dayJs from 'dayjs'
 
   import { date } from '../filters'
 
@@ -110,34 +112,32 @@
     // isValueDisabledWeekly,
     // getDaysInMonth,
     DateTimeFormatOptions,
-    getTimeString,
     // getCurrentDateForTimeValue,
     getBrowserLocale,
     fetchLocale,
     // isValueDisabledDate,
   } from './MazPicker/utils'
 
-  import { PickerValue, PickerShortcut, SimpleValue } from './MazPicker/types'
-  import dayjs from 'dayjs'
-  // import dayjs from 'dayjs'
+  import { PickerValue, PickerShortcut } from './MazPicker/types'
+
+  dayjs.extend(customParseFormat)
 
   const props = defineProps({
     modelValue: {
       type: [String, Object] as PropType<PickerValue>,
       default: undefined,
     },
-    format: { type: String, default: 'YYYY-MM-DD h:mm a' },
-    outputFormat: { type: String, default: 'YYYY-MM-DD h:mm a' },
+    format: { type: String, default: 'YYYY-MM-DD' },
     minDate: { type: String, default: undefined },
     maxDate: { type: String, default: undefined },
     open: { type: Boolean, default: false },
     label: { type: String, default: 'Select date' },
     placeholder: { type: String, default: undefined },
-    inputDateStyle: {
+    dateStyle: {
       type: String as PropType<Intl.DateTimeFormatOptions['dateStyle']>,
       default: 'full',
     },
-    inputTimeStyle: {
+    timeStyle: {
       type: String as PropType<Intl.DateTimeFormatOptions['timeStyle']>,
       default: undefined,
     },
@@ -219,7 +219,6 @@
     },
     shortcut: { type: String, default: undefined },
     time: { type: Boolean, default: false },
-    onlyTime: { type: Boolean, default: false },
     minuteInterval: { type: Number, default: 5 },
     noUseBrowserLocale: { type: Boolean, default: false },
     noFetchLocal: { type: Boolean, default: false },
@@ -227,7 +226,10 @@
 
   const instance = getCurrentInstance()
 
-  const currentLocale = ref<string>(props.locale || 'en-US')
+  const internalLocale = ref<string>(props.locale || 'en-US')
+  const currentLocale = computed<string>(
+    () => props.locale ?? internalLocale.value,
+  )
 
   const containerUniqueId = computed(
     () => `mazPickerContainer-${instance?.uid}`,
@@ -238,10 +240,13 @@
   const MazPicker = ref<HTMLDivElement>()
   // const PickerContainer = ref<typeof MazPickerContainer>()
 
-  const hasDouble = computed(() => props.double && !props.time)
-  const hasDate = computed(() => !props.onlyTime)
-  const hasTime = computed(() => props.time || props.onlyTime)
-  const isRangeMode = computed(() => typeof props.modelValue === 'object')
+  const hasTime = computed(
+    () =>
+      props.format.includes('h') || props.format.includes('H') || props.time,
+  )
+  const hasDouble = computed(() => props.double)
+  const hasDate = computed(() => !props.time)
+  const isRangeMode = computed(() => typeof modelValue.value === 'object')
 
   onBeforeMount(() => {
     if (isRangeMode.value && hasTime.value) {
@@ -252,35 +257,37 @@
   })
 
   const modelValue = computed({
-    get: () => props.modelValue,
+    get: () =>
+      typeof props.modelValue === 'object'
+        ? {
+            start: dayjs(props.modelValue.start, props.format).format(),
+            end: dayjs(props.modelValue.end, props.format).format(),
+          }
+        : dayjs(props.modelValue, props.format).format(),
     set: (value) => {
       // TODO: format output
       emitValue(value)
 
-      if (props.autoClose && typeof props.modelValue !== 'object') {
+      if (props.autoClose && value !== 'object') {
         closeCalendar()
       }
     },
   })
 
-  const getCurrentDateValue = (): string => {
+  const getCalendarDate = (value: PickerValue): string => {
     return (
-      typeof props.modelValue === 'object'
-        ? dayjs(props.modelValue.start)
-        : props.onlyTime
-        ? dayjs(props.modelValue, 'HH:mm')
-        : dayjs(props.modelValue)
-    ).format()
+      typeof value === 'object' ? dayjs(value.start) : dayjs(value)
+    ).format('YYYY-MM-DD')
   }
 
-  const calendarDate = ref(getCurrentDateValue())
+  const calendarDate = ref(getCalendarDate(modelValue.value))
 
   const formatterOptions = computed<DateTimeFormatOptions>(() => {
-    const { inputDateStyle, inputTimeStyle, timeZone, hour12 } = props
+    const { dateStyle, timeStyle, timeZone, hour12 } = props
 
     return {
-      dateStyle: inputDateStyle,
-      timeStyle: inputTimeStyle,
+      dateStyle,
+      timeStyle,
       timeZone,
       hour12,
     }
@@ -289,7 +296,7 @@
   const inputValue = computed(() => {
     if (!modelValue.value) return undefined
 
-    if (props.onlyTime) {
+    if (props.time) {
       const baseDate = new Date().toISOString().split('T')[0]
 
       return modelValue.value
@@ -297,7 +304,7 @@
             new Date(`${baseDate} ${modelValue.value}`),
             currentLocale.value,
             {
-              timeStyle: props.inputTimeStyle,
+              timeStyle: props.timeStyle,
             },
           )
         : undefined
@@ -309,7 +316,7 @@
       })
     } else {
       return getFormattedDate({
-        value: dayJs(modelValue.value, props.format).format(),
+        value: dayjs(modelValue.value).format(),
         locale: currentLocale.value,
         options: formatterOptions.value,
       })
@@ -347,12 +354,12 @@
       const browserLocale = getBrowserLocale()
       if (!props.noUseBrowserLocale && browserLocale) {
         if (browserLocale) {
-          currentLocale.value = browserLocale
+          internalLocale.value = browserLocale
         }
       } else if (!props.noFetchLocal) {
         const locale = await fetchLocale()
 
-        if (locale) currentLocale.value = locale
+        if (locale) internalLocale.value = locale
       }
     }
   })
@@ -492,13 +499,17 @@
   // }
 
   const emitValue = (value: PickerValue) => {
-    const newValue = props.onlyTime
-      ? getTimeString(value as SimpleValue, 'HH:mm')
-      : typeof value === 'object'
-      ? getRangeISODate(value, props.outputFormat)
-      : getISODate(value, props.outputFormat)
+    console.log('value', value)
+    const newValue =
+      typeof value === 'object'
+        ? getRangeISODate(value, props.format)
+        : getISODate(value, props.format)
+
+    console.log('newValue', newValue)
 
     emits('update:model-value', newValue)
+
+    calendarDate.value = getCalendarDate(newValue)
   }
 
   // model value watcher

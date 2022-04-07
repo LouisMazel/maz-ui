@@ -53,18 +53,8 @@ export function getRangeFormattedDate({
     : undefined
 }
 
-export function getCurrentDate(value?: string | Date): string {
-  return dayjs(value).format()
-}
-
-export function getCurrentDateForTimeValue({
-  value,
-  timeFormat,
-}: {
-  value?: string
-  timeFormat: string
-}): string {
-  return dayjs(value, timeFormat).format()
+export function getCurrentDate(value?: string | Date, format?: string): string {
+  return dayjs(value, format).format()
 }
 
 export function getFirstDayOfMonth(value: ConfigType): number {
@@ -152,20 +142,22 @@ export function checkValueWithMinMaxDates({
   value,
   minDate,
   maxDate,
+  format,
 }: {
   value: string
   minDate?: string
   maxDate?: string
+  format?: string
 }): CheckValueResponse {
   if (minDate && isSmaller(value, minDate)) {
     return {
       newValue: minDate,
-      newCurrentDate: getCurrentDate(minDate),
+      newCurrentDate: getCurrentDate(minDate, format),
     }
   } else if (maxDate && isBigger(value, maxDate)) {
     return {
       newValue: maxDate,
-      newCurrentDate: getCurrentDate(maxDate),
+      newCurrentDate: getCurrentDate(maxDate, format),
     }
   }
 
