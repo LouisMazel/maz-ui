@@ -76,7 +76,7 @@
       const currentYear = dayjs(currentDateTmp.value).get('year')
       const dateYear = dayjs(currentDateTmp.value).set(
         'year',
-        currentYear - yearNumber,
+        currentYear + yearNumber,
       )
 
       return {
