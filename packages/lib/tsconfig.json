@@ -23,7 +23,8 @@
       "@/*": ["components/*"],
       "~utils/*": ["utils/*"]
     },
-    "types": ["@types/node", "jest", "google.maps"]
+    "types": ["@types/node", "jest", "google.maps"],
+    "jsx": "preserve"
   },
   "include": ["build/**/*", "package/**/*"],
   "exclude": ["node_modules", "lib", "css"]

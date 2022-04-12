@@ -36,7 +36,7 @@
         type="button"
         :class="{ '--is-selected': isSameYear(year.date, calendarDate) }"
         :color="isSameYear(year.date, calendarDate) ? color : 'transparent'"
-        @click.stop="selectMonth(year.date)"
+        @click.stop="selectYear(year.date)"
       >
         {{ year.label }}
       </MazBtn>
@@ -46,7 +46,7 @@
 
 <script lang="ts" setup>
   import { date } from '../../filters'
-  import { computed, PropType } from 'vue'
+  import { computed, PropType, ref } from 'vue'
   import { Color } from '../types'
   import MazBtn from '../MazBtn.vue'
   import XIcon from './../../icons/x.svg'
@@ -64,6 +64,8 @@
 
   const emits = defineEmits(['update:calendar-date', 'close'])
 
+  const currentDateTmp = ref(props.calendarDate)
+
   const years = computed<
     {
       label: string
@@ -71,26 +73,33 @@
     }[]
   >(() => {
     return Array.from({ length: 15 }, (_v, i) => i - 7).map((yearNumber) => {
-      const dateYear = dayjs(props.calendarDate).set('year', yearNumber)
+      const currentYear = dayjs(currentDateTmp.value).get('year')
+      const dateYear = dayjs(currentDateTmp.value).set(
+        'year',
+        currentYear - yearNumber,
+      )
+
       return {
         label: date(dateYear.format(), props.locale, {
           year: 'numeric',
         }),
-        date: dayjs(props.calendarDate).set('year', yearNumber),
+        date: dateYear,
       }
     })
   })
 
-  const selectMonth = (date: Dayjs) => {
+  const selectYear = (date: Dayjs) => {
     emits('update:calendar-date', dayjs(date).format())
     emits('close')
   }
 
   const previousYears = () => {
-    emits('update:calendar-date', dayjs(props.calendarDate).subtract(1, 'year'))
+    currentDateTmp.value = dayjs(currentDateTmp.value)
+      .subtract(7, 'year')
+      .format()
   }
   const nextYears = () => {
-    emits('update:calendar-date', dayjs(props.calendarDate).add(1, 'year'))
+    currentDateTmp.value = dayjs(currentDateTmp.value).add(7, 'year').format()
   }
 </script>
 

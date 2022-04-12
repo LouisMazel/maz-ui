@@ -76,8 +76,6 @@
     calendarDate: { type: String, required: true },
   })
 
-  const calendarDateTmp = ref(props.calendarDate)
-
   const refDate = computed(() =>
     typeof props.modelValue === 'string'
       ? props.modelValue
@@ -177,13 +175,15 @@
   const timeArray = computed(() => (props.time ? [timeValue.value] : undefined))
 
   watch(
-    () => props.calendarDate,
-    (calendarDate) => {
-      transitionName.value = isBigger(calendarDateTmp.value, calendarDate)
-        ? 'maz-slidevprev'
-        : 'maz-slidevnext'
-
-      calendarDateTmp.value = calendarDate
+    () => props.modelValue,
+    (modelValue, oldModelValue) => {
+      const currentValue =
+        typeof modelValue === 'object' ? modelValue.start : modelValue
+      const oldValue =
+        typeof oldModelValue === 'object' ? oldModelValue.start : oldModelValue
+      transitionName.value = isBigger(oldValue, currentValue)
+        ? 'maz-slidevnext'
+        : 'maz-slidevprev'
     },
   )
 </script>

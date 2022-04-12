@@ -44,7 +44,7 @@
         v-if="isOpen"
         :id="containerUniqueId"
         ref="PickerContainer"
-        v-model="modelValue"
+        v-model="currentValue"
         v-model:calendar-date="calendarDate"
         :is-open="isOpen"
         :color="color"
@@ -246,7 +246,7 @@
   )
   const hasDouble = computed(() => props.double)
   const hasDate = computed(() => !props.time)
-  const isRangeMode = computed(() => typeof modelValue.value === 'object')
+  const isRangeMode = computed(() => typeof currentValue.value === 'object')
 
   onBeforeMount(() => {
     if (isRangeMode.value && hasTime.value) {
@@ -256,14 +256,20 @@
     }
   })
 
-  const modelValue = computed({
+  const currentValue = computed<PickerValue>({
     get: () =>
       typeof props.modelValue === 'object'
         ? {
-            start: dayjs(props.modelValue.start, props.format).format(),
-            end: dayjs(props.modelValue.end, props.format).format(),
+            start: props.modelValue.start
+              ? dayjs(props.modelValue.start, props.format).format()
+              : undefined,
+            end: props.modelValue.end
+              ? dayjs(props.modelValue.end, props.format).format()
+              : undefined,
           }
-        : dayjs(props.modelValue, props.format).format(),
+        : props.modelValue
+        ? dayjs(props.modelValue, props.format).format()
+        : undefined,
     set: (value) => {
       // TODO: format output
       emitValue(value)
@@ -275,12 +281,10 @@
   })
 
   const getCalendarDate = (value: PickerValue): string => {
-    return (
-      typeof value === 'object' ? dayjs(value.start) : dayjs(value)
-    ).format('YYYY-MM-DD')
+    return (typeof value === 'object' ? value.start : value) ?? dayjs().format()
   }
 
-  const calendarDate = ref(getCalendarDate(modelValue.value))
+  const calendarDate = ref(getCalendarDate(currentValue.value))
 
   const formatterOptions = computed<DateTimeFormatOptions>(() => {
     const { dateStyle, timeStyle, timeZone, hour12 } = props
@@ -294,29 +298,29 @@
   })
 
   const inputValue = computed(() => {
-    if (!modelValue.value) return undefined
+    if (!currentValue.value) return undefined
 
     if (props.time) {
       const baseDate = new Date().toISOString().split('T')[0]
 
-      return modelValue.value
+      return currentValue.value
         ? date(
-            new Date(`${baseDate} ${modelValue.value}`),
+            new Date(`${baseDate} ${currentValue.value}`),
             currentLocale.value,
             {
               timeStyle: props.timeStyle,
             },
           )
         : undefined
-    } else if (typeof modelValue.value === 'object') {
+    } else if (typeof currentValue.value === 'object') {
       return getRangeFormattedDate({
-        value: modelValue.value,
+        value: currentValue.value,
         locale: currentLocale.value,
         options: formatterOptions.value,
       })
     } else {
       return getFormattedDate({
-        value: dayjs(modelValue.value).format(),
+        value: dayjs(currentValue.value).format(),
         locale: currentLocale.value,
         options: formatterOptions.value,
       })
@@ -499,22 +503,17 @@
   // }
 
   const emitValue = (value: PickerValue) => {
-    console.log('value', value)
     const newValue =
       typeof value === 'object'
         ? getRangeISODate(value, props.format)
         : getISODate(value, props.format)
 
-    console.log('newValue', newValue)
-
     emits('update:model-value', newValue)
-
-    calendarDate.value = getCalendarDate(newValue)
   }
 
   // model value watcher
   // watch(
-  //   () => [modelValue.value, props.minDate, props.maxDate],
+  //   () => [currentValue.value, props.minDate, props.maxDate],
   //   (values, oldValues) => {
   //     const value = values[0] as PickerValue
   //     const oldValue = oldValues?.[0] as PickerValue
@@ -550,7 +549,7 @@
 
   // // Disable weekly watcher
   // watch(
-  //   () => [modelValue.value, props.disabledWeekly, props.disabledDates],
+  //   () => [currentValue.value, props.disabledWeekly, props.disabledDates],
   //   (values) => {
   //     const value = values[0] as PickerValue
   //     const disabledWeekly = values[1] as number[]
@@ -563,7 +562,7 @@
   //         (value.start &&
   //           isValueDisabledDate({ value: value.start, disabledDates }))
   //       ) {
-  //         modelValue.value = { start: undefined, end: value.end }
+  //         currentValue.value = { start: undefined, end: value.end }
   //       }
   //       if (
   //         (value.end &&
@@ -571,14 +570,14 @@
   //         (value.end &&
   //           isValueDisabledDate({ value: value.end, disabledDates }))
   //       ) {
-  //         modelValue.value = { start: value.start, end: undefined }
+  //         currentValue.value = { start: value.start, end: undefined }
   //       }
   //     } else if (typeof value === 'string') {
   //       if (
   //         isValueDisabledWeekly({ value, disabledWeekly }) ||
   //         isValueDisabledDate({ value, disabledDates })
   //       ) {
-  //         modelValue.value = undefined
+  //         currentValue.value = undefined
   //       }
   //     }
   //   },

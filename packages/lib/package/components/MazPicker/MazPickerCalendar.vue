@@ -19,8 +19,8 @@
       <Transition name="maz-picker-slide">
         <MazPickerMonthSwitcher
           v-if="monthSwitcherOpen"
+          v-model:calendar-date="calendarDate"
           :color="color"
-          :calendar-date="calendarDate"
           :double="double"
           :locale="locale"
           @close="monthSwitcherOpen = false"
@@ -29,7 +29,7 @@
       <Transition name="maz-picker-slide">
         <MazPickerYearSwitcher
           v-if="yearSwitcherOpen"
-          :calendar-date="calendarDate"
+          v-model:calendar-date="calendarDate"
           :color="color"
           :locale="locale"
           @close="yearSwitcherOpen = false"

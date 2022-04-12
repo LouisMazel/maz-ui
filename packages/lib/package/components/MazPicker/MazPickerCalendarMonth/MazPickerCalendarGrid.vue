@@ -48,7 +48,6 @@
     isBigger,
     isSmaller,
     isSameDay,
-    isSameMonth,
   } from '../utils'
   import MazBtn from '../../MazBtn.vue'
   import { Color } from '../../types'
@@ -82,8 +81,7 @@
 
   const MazPickerGrid = ref<HTMLDivElement>()
   const transitionName = ref<'maz-slidenext' | 'maz-slideprev'>('maz-slidenext')
-  const calendarDateTmp = ref<string>(props.calendarDate)
-  const calendarDateArray = ref<string[]>([props.calendarDate])
+  const calendarDateArray = computed<string[]>(() => [props.calendarDate])
 
   const isRangeMode = computed(() => typeof props.modelValue === 'object')
 
@@ -280,14 +278,11 @@
 
   watch(
     () => props.calendarDate,
-    (calendarDate) => {
-      transitionName.value = isBigger(calendarDate, calendarDateTmp.value)
+    (calendarDate, oldCalendarValue) => {
+      transitionName.value = isBigger(calendarDate, oldCalendarValue)
         ? 'maz-slideprev'
         : 'maz-slidenext'
-      if (!isSameMonth(calendarDateTmp.value, calendarDate)) {
-        calendarDateArray.value = [calendarDate]
-      }
-      calendarDateTmp.value = calendarDate
+
       setContainerHeight()
     },
   )
@@ -314,8 +309,11 @@
           @apply maz-bg-color-light !important;
         }
 
-        &:hover:not(.--is-selected):not(.--is-between) {
-          background-color: v-bind(hovercolor) !important;
+        &:hover,
+        &:focus {
+          &:not(.--is-selected):not(.--is-between) {
+            background-color: v-bind(hovercolor) !important;
+          }
         }
 
         &.--is-selected.--is-first {
