@@ -76,13 +76,17 @@
     @apply maz-flex maz-flex-wrap maz-gap-2;
 
     &__items {
-      @apply maz-rounded-lg maz-px-4 maz-py-2 maz-font-medium maz-transition-colors maz-duration-300 maz-elevation;
+      @apply maz-cursor-pointer maz-rounded-lg maz-px-4 maz-py-2 maz-font-medium maz-transition-colors maz-duration-300 maz-elevation;
+
+      &:not(.--is-selected) {
+        @apply hover:maz-bg-color-light;
+      }
     }
   }
 
   html.dark {
     .m-radio-buttons__items:not(.--is-selected) {
-      @apply maz-bg-color-light;
+      @apply maz-bg-color-light hover:maz-bg-color-lighter;
     }
   }
 </style>
