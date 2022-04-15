@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-next.20](https://github.com/LouisMazel/maz-ui-3/compare/v2.3.13...3.0.0-next.20) (2022-04-15)
+
+### Bug Fixes
+
+- **lib:** maz-radio-buttons - hover color ([ecb97ee](https://github.com/LouisMazel/maz-ui-3/commit/ecb97ee301157fa90c659ceb0d9be5cc13c21774))
+
+### Features
+
+- **lib:** add maz-picker component ([#197](https://github.com/LouisMazel/maz-ui-3/issues/197)) ([877515e](https://github.com/LouisMazel/maz-ui-3/commit/877515e585d1aa9a3febd83e222c12346e7401b5))
+- **lib:** add wait plugin to manage loading state ([#214](https://github.com/LouisMazel/maz-ui-3/issues/214)) ([a6a1931](https://github.com/LouisMazel/maz-ui-3/commit/a6a1931ba7000c5e545cfc4808fe7205809629c4))
+- **lib:** adding maz-input-number ([#195](https://github.com/LouisMazel/maz-ui-3/issues/195)) ([dfb835d](https://github.com/LouisMazel/maz-ui-3/commit/dfb835d796682955b53dfb82455aefc763895c86))
+- **lib:** aos - adding anchor option ([#219](https://github.com/LouisMazel/maz-ui-3/issues/219)) ([b1c8b02](https://github.com/LouisMazel/maz-ui-3/commit/b1c8b028286d2154b86c5bb52fa7208d0c347d3e))
+- **lib:** export tailwind config ([#201](https://github.com/LouisMazel/maz-ui-3/issues/201)) ([94fddb9](https://github.com/LouisMazel/maz-ui-3/commit/94fddb9d35e91a6f649bcb18ae7105048d048584))
+- **lib:** MazInput - adding style color for autofill ([#208](https://github.com/LouisMazel/maz-ui-3/issues/208)) ([b3ae969](https://github.com/LouisMazel/maz-ui-3/commit/b3ae969584bda0e690179c1b6c9defdc1bbf0425))
+- **lib:** new component - maz-radio-buttons ([#232](https://github.com/LouisMazel/maz-ui-3/issues/232)) ([#233](https://github.com/LouisMazel/maz-ui-3/issues/233)) ([ece3d19](https://github.com/LouisMazel/maz-ui-3/commit/ece3d19bdf393cffc8e883c3b6362f21204bbfc8)), closes [#231](https://github.com/LouisMazel/maz-ui-3/issues/231)
+
 # [3.0.0-next.19](https://github.com/LouisMazel/maz-ui-3/compare/v2.3.13...3.0.0-next.19) (2022-04-01)
 
 ### Features
