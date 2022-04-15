@@ -23,16 +23,29 @@
   import { onMounted } from 'vue'
   import { MazBtn, MazIcon } from 'maz-ui/package/components'
   import { aosInstance } from 'maz-ui/package/plugins'
-  import { useThemeHandler, ThemeHandlerOptions } from 'maz-ui/package/helpers'
+  import { useThemeHandler, ThemeHandlerOptions, UserVisibility, UserVisibilyCallback, UserVisibilyOptions } from 'maz-ui/package/helpers'
 
   const options: ThemeHandlerOptions = {
     storageThemeKey: 'mode',
   }
   const { autoSetTheme, toggleTheme, hasDarkTheme } = useThemeHandler(options)
 
+  const userVisibilyCallback: UserVisibilyCallback = ({ isVisible }) => {
+    console.log('isVisible', isVisible)
+  }
+
+  const userVisibilyOptions: UserVisibilyOptions = {
+    immediate: false,
+    once: false,
+    timeout: 5000,
+  }
+
+  const userVisibilityInstance = new UserVisibility(userVisibilyCallback, userVisibilyOptions)
+
   onMounted(() => {
     autoSetTheme()
     aosInstance.handleObserver()
+    userVisibilityInstance.destroy()
   })
 </script>
 
