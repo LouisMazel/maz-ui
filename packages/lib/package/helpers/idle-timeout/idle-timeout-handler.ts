@@ -6,7 +6,7 @@ import {
 
 export class IdleTimeout {
   private readonly defaultOptions: IdleTimeoutStrictOption = {
-    element: document,
+    element: document.body,
     timeout: 60 * 1000 * 5, // 5 minutes
     once: false,
     immediate: false,
@@ -75,12 +75,11 @@ export class IdleTimeout {
 
   public resume(): void {
     if (this.remainingTime <= 0) {
+      console.log('no remaining')
       return
     }
 
-    this.resetTimeout()
-    this.callback({ isIdle: this.isIdle })
-    this.remainingTime = 0
+    this.reset()
   }
 
   public reset(): void {
@@ -136,7 +135,7 @@ export class IdleTimeout {
     }
 
     this.resetTimeout()
-    this.callback({ isIdle: this.isIdle })
+    this.callback({ isIdle: this.isIdle, eventType: event.type })
   }
 
   private handleTimeout(): void {

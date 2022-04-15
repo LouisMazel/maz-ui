@@ -1,4 +1,10 @@
-export type IdleTimeoutCallback = ({ isIdle }: { isIdle: boolean }) => void
+export type IdleTimeoutCallback = ({
+  isIdle,
+  eventType,
+}: {
+  isIdle: boolean
+  eventType?: string
+}) => void
 
 export interface IdleTimeoutStrictOption {
   element: HTMLElement | Document // element to watch

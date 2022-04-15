@@ -23,7 +23,7 @@ export class UserVisibility {
 
   private isVisible = false
 
-  constructor(callback: UserVisibilyCallback, options: UserVisibilyOptions) {
+  constructor(callback: UserVisibilyCallback, options?: UserVisibilyOptions) {
     this.callback = callback
     this.element = document
 
@@ -41,7 +41,7 @@ export class UserVisibility {
     this.start()
   }
 
-  emitCallback() {
+  private emitCallback() {
     this.isVisible = this.element.visibilityState === 'visible'
     this.callback({ isVisible: this.isVisible })
 
@@ -75,7 +75,7 @@ export class UserVisibility {
     )
   }
 
-  start() {
+  private start() {
     this.element.addEventListener(this.event, this.eventHandlerFunction)
   }
 

@@ -2,6 +2,7 @@ import { defineUserConfig, SiteData } from 'vuepress'
 import type { DefaultThemeOptions } from 'vuepress'
 import { path } from '@vuepress/utils'
 import { navbar, sidebar } from './configs'
+import { sitemap } from "vuepress-plugin-sitemap2"
 
 const getBaseUrl = (path: string): string => {
   const base = process.env.NODE_ENV === 'production' ? '/maz-ui-3' : ''
@@ -133,7 +134,10 @@ export default defineUserConfig<DefaultThemeOptions>({
         id: 'G-EM35TM23ZC',
       },
     ],
-    ['vuepress-plugin-sitemap2']
+    sitemap({
+      hostname: 'https://louismazel.github.io/maz-ui-3/',
+      changefreq: 'daily'
+    })
   ],
 
   alias: {
