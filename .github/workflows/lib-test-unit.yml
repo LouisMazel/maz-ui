@@ -36,10 +36,10 @@ jobs:
         run: cat ./coverage/clover.xml
 
       - name: Find and Replace Files Paths
-        uses: jacobtomlinson/gha-find-replace@v2
+        uses: jacobtomlinson/gha-find-replace@2.0.0
         with:
-          find: "/Users/mazel/workspace/maz-ui/packages"
-          replace: "packages"
+          find: "/home/runner/work/maz-ui/maz-ui/packages"
+          replace: "/packages"
           include: ${{github.workspace}}/packages/lib/coverage/clover.xml
 
       - name: Cat 2
