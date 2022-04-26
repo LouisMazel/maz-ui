@@ -52,9 +52,9 @@
     getWeekDays,
     isSameMonth,
   } from '../utils'
-  import MazBtn from '../../MazBtn.vue'
-  import { Color } from '../../types'
-  import { debounce } from './../../../helpers'
+  import MazBtn from 'package/components/MazBtn.vue'
+  import { Color } from 'package/components/types'
+  import { debounce } from 'package/helpers'
   import { PartialRangeValue, PickerValue } from '../types'
 
   enum DaySelected {

@@ -16,7 +16,7 @@
   import MazBtn from '../MazBtn.vue'
   import { Color } from '../types'
   import MazIcon from '../MazIcon.vue'
-  import CheckIcon from './../../icons/check.svg'
+  import CheckIcon from 'package/icons/check.svg'
 
   defineProps({
     color: { type: String as PropType<Color>, required: true },

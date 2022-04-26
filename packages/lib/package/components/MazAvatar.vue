@@ -71,7 +71,8 @@
   import { PropType, computed } from 'vue'
   import MazLazyImg from './MazLazyImg.vue'
   import MazIcon from './MazIcon.vue'
-  import PencilIcon from './../icons/pencil.svg'
+  import PencilIcon from 'package/icons/pencil.svg'
+
   import type { Color } from './types'
 
   const props = defineProps({

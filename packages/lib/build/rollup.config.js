@@ -45,11 +45,6 @@ const projectRoot = resolve(__dirname, '..')
 const postcssConfigList = [
   postcssImport({
     resolve(id, basedir) {
-      // resolve alias @css, @import '@css/style.css'
-      // because @css/ has 5 chars
-      if (id.startsWith('@css')) {
-        return resolve('./tailwindcss/css', id.slice(5))
-      }
       // resolve node_modules, @import '~normalize.css/normalize.css'
       // similar to how css-loader's handling of node_modules
       if (id.startsWith('~')) {
@@ -74,7 +69,11 @@ const baseConfig = {
         entries: [
           {
             find: '@',
-            replacement: `${resolve(projectRoot, 'src')}`,
+            replacement: `${resolve(projectRoot, 'package')}`,
+          },
+          {
+            find: 'package',
+            replacement: `${resolve(projectRoot, 'package')}`,
           },
         ],
       }),

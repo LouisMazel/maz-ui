@@ -33,6 +33,15 @@ module.exports = {
       },
     ],
     'prettier/prettier': ['error', {}, { usePrettierrc: true }],
-    '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      {
+        args: 'all',
+        argsIgnorePattern: '^_',
+        vars: 'all',
+        varsIgnorePattern: '^_',
+        ignoreRestSiblings: true,
+      },
+    ],
   },
 }

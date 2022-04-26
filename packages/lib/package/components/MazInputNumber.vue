@@ -49,8 +49,8 @@
   import MazBtn from './MazBtn.vue'
   import MazInput from './MazInput.vue'
   import MazIcon from './MazIcon.vue'
-  import PlusIcon from './../icons/plus.svg'
-  import MinusIcon from './../icons/minus.svg'
+  import PlusIcon from 'package/icons/plus.svg'
+  import MinusIcon from 'package/icons/minus.svg'
 
   const props = defineProps({
     modelValue: { type: Number, required: true },

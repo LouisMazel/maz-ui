@@ -27,8 +27,8 @@
   import { computed, onMounted, PropType, ref } from 'vue'
   import { ToasterTimer } from './timer'
   import { LocalToasterOptions } from './toaster-handler'
-  import MazIcon from './../../components/MazIcon.vue'
-  import XIcon from './../../icons/x.svg'
+  import MazIcon from 'package/components/MazIcon.vue'
+  import XIcon from 'package/icons/x.svg'
   import { ToasterPositions } from './types'
 
   const Toaster = ref<HTMLDivElement>()

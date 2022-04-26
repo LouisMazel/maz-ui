@@ -18,12 +18,10 @@
     "noImplicitAny": false,
     "noImplicitThis": false,
     "paths": {
-      "~directives/*": ["directives/*"],
-      "~/*": ["components/*"],
-      "@/*": ["components/*"],
-      "~utils/*": ["utils/*"]
+      "package/*": ["package/*"],
+      "unit/*": ["tests/unit/*"]
     },
-    "types": ["@types/node", "jest", "google.maps"]
+    "types": ["@types/node", "google.maps", "vitest/globals"]
   },
   "include": ["build/**/*", "package/**/*"],
   "exclude": ["node_modules", "lib", "css"]

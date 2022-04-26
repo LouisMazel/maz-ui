@@ -86,6 +86,15 @@ publish-version-major:
 commit:
 	make --directory=packages/lib commit
 
+test-unit:
+	make --directory=packages/lib test-unit
+
+test-unit-watch:
+	make --directory=packages/lib test-unit-watch
+
+test-unit-coverage:
+	make --directory=packages/lib test-unit-coverage
+
 release:
 	npm run release
 	make install

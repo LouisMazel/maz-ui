@@ -17,10 +17,11 @@ export class IdleTimeout {
   private options: IdleTimeoutStrictOption
   private timeoutHandler?: ReturnType<typeof setTimeout>
   private isIdle = false
+  private isDestoy = false
   private startTime = 0
   private remainingTime = 0
-  private lastPageX = -1
-  private lastPageY = -1
+  private lastClientX = -1
+  private lastClientY = -1
 
   private eventNames = [
     'DOMMouseScroll',
@@ -34,7 +35,6 @@ export class IdleTimeout {
     'touchstart',
     'wheel',
     'click',
-    'visibilitychange',
   ]
 
   public constructor(
@@ -48,11 +48,13 @@ export class IdleTimeout {
     }
 
     const element = this.options.element
-    this.eventNames.forEach((eventName): void => {
+
+    for (const eventName of this.eventNames) {
       element.addEventListener(eventName, this.handleEvent)
-    })
+    }
 
     this.resetTimeout()
+
     if (this.options.immediate) {
       this.callback({ isIdle: false })
     }
@@ -75,14 +77,16 @@ export class IdleTimeout {
 
   public resume(): void {
     if (this.remainingTime <= 0) {
-      console.log('no remaining')
       return
     }
 
-    this.reset()
+    this.resetTimeout()
+    this.callback({ isIdle: this.isIdle })
+    this.remainingTime = 0
   }
 
   public reset(): void {
+    this.isDestoy = false
     this.isIdle = false
     this.remainingTime = 0
     this.resetTimeout()
@@ -90,10 +94,12 @@ export class IdleTimeout {
   }
 
   public destroy(): void {
+    this.isDestoy = true
     const element = this.options.element
-    this.eventNames.forEach((eventName): void => {
+
+    for (const eventName of this.eventNames) {
       element.removeEventListener(eventName, this.handleEvent)
-    })
+    }
 
     if (this.timeoutHandler) {
       clearTimeout(this.timeoutHandler)
@@ -117,25 +123,30 @@ export class IdleTimeout {
   }
 
   private handleEvent = (event: Event): void => {
-    if (this.remainingTime > 0) {
-      return
-    }
-
-    if (event.type === 'mousemove') {
-      const { pageX, pageY } = event as MouseEvent
-      if (
-        (pageX === undefined && pageY === undefined) ||
-        (pageX === this.lastPageX && pageY === this.lastPageY)
-      ) {
+    try {
+      if (this.remainingTime > 0) {
         return
       }
 
-      this.lastPageX = pageX
-      this.lastPageY = pageY
-    }
+      if (event.type === 'mousemove') {
+        const { clientX, clientY } = event as MouseEvent
+        if (
+          (clientX === undefined && clientY === undefined) ||
+          (clientX === this.lastClientX && clientY === this.lastClientY)
+        ) {
+          return
+        }
 
-    this.resetTimeout()
-    this.callback({ isIdle: this.isIdle, eventType: event.type })
+        this.lastClientX = clientX
+        this.lastClientY = clientY
+      }
+
+      this.resetTimeout()
+
+      this.callback({ isIdle: this.isIdle })
+    } catch (error) {
+      throw new Error(`[IdleTimeout](handleEvent) ${error}`)
+    }
   }
 
   private handleTimeout(): void {
@@ -145,6 +156,10 @@ export class IdleTimeout {
     if (this.options.once) {
       this.destroy()
     }
+  }
+
+  public get destroyed() {
+    return this.isDestoy
   }
 
   public get timeout() {
@@ -162,9 +177,10 @@ export class IdleTimeout {
   public set idle(value: boolean) {
     if (value) {
       this.handleTimeout()
-      this.callback({ isIdle: this.isIdle })
     } else {
       this.reset()
     }
+
+    this.callback({ isIdle: this.isIdle })
   }
 }

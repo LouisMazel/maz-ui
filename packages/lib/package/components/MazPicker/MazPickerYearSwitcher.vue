@@ -45,15 +45,15 @@
 </template>
 
 <script lang="ts" setup>
-  import { date } from '../../filters'
+  import { date } from 'package/filters'
   import { computed, PropType, ref } from 'vue'
-  import { Color } from '../types'
-  import MazBtn from '../MazBtn.vue'
-  import XIcon from './../../icons/x.svg'
-  import MazIcon from '../MazIcon.vue'
+  import { Color } from 'package/components/types'
+  import MazBtn from 'package/components/MazBtn.vue'
+  import XIcon from 'package/icons/x.svg'
+  import MazIcon from 'package/components/MazIcon.vue'
   import { isSameYear, cloneDate } from './utils'
-  import ChevronLeftIcon from './../../icons/chevron-left.svg'
-  import ChevronRightIcon from './../../icons/chevron-right.svg'
+  import ChevronLeftIcon from 'package/icons/chevron-left.svg'
+  import ChevronRightIcon from 'package/icons/chevron-right.svg'
 
   const props = defineProps({
     color: { type: String as PropType<Color>, required: true },
