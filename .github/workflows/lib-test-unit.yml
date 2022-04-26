@@ -29,11 +29,21 @@ jobs:
       - name: Install modules
         run: make install
 
+      - name: Run tests unit coverage
+        run: make test-unit-coverage
+
+      - name: Find and Replace
+        uses: jacobtomlinson/gha-find-replace@v2
+        with:
+          find: "package/"
+          replace: "packages/lib/package/"
+          include: coverage/lcov.info
+          regex: true
+
       - name: Test & publish code coverage
         uses: paambaati/codeclimate-action@v3.0.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
-          coverageCommand: make test-unit-coverage
           coverageLocations: |
             ${{github.workspace}}/packages/lib/coverage/lcov.info:lcov
