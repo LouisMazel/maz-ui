@@ -296,7 +296,7 @@
   const modelValue = computed({
     get: () => props.modelValue,
     set: (value) => {
-      // TODO: format output
+      // NEXT: format output
       emitValue(value)
 
       if (props.autoClose && typeof props.modelValue !== 'object') {

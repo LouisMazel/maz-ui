@@ -79,7 +79,7 @@
 </script>
 
 <script lang="ts" setup>
-  // TODO: listPosition & multiselect & search in list
+  // NEXT: listPosition & multiselect & search in list
   import { ref, PropType, computed, onBeforeMount, nextTick } from 'vue'
   import MazInput from './MazInput.vue'
   import MazIcon from './MazIcon.vue'
