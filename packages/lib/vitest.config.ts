@@ -9,6 +9,7 @@ export default defineConfig({
     coverage: {
       enabled: true,
       // all: true,
+      reporter: ['lcov'],
       exclude: [],
       excludeNodeModules: true,
     },
