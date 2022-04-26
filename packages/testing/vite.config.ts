@@ -14,6 +14,7 @@ export default ({ mode }) => {
     resolve: {
       alias: {
         '@': join(__dirname, 'src'),
+        '@package': join(__dirname, './../lib/package'),
         '~': join(__dirname, 'src'),
       },
     },
