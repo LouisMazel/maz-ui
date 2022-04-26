@@ -10,13 +10,13 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     coverage: {
-      // include: ['package/**/*.{ts,vue}'],
       enabled: true,
-      // all: true,
-      reporter: ['json'],
-      // reportsDirectory: './../../coverage',
-      // exclude: [],
+      reporter: 'clover',
+      reportsDirectory: './../../coverage',
       excludeNodeModules: true,
+      // include: ['package/**/*.{ts,vue}'],
+      // all: true,
+      // exclude: [],
     },
   },
   resolve: {
