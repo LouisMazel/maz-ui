@@ -1,14 +1,6 @@
-export const documentEmitVisibilityStateHidden = () => {
+export const documentEmitVisibilityState = (value: 'hidden' | 'visible') => {
   Object.defineProperty(document, 'visibilityState', {
-    value: 'hidden',
-    writable: true,
-  })
-  documentEmitEvent('visibilitychange')
-}
-
-export const documentEmitVisibilityStateVisible = () => {
-  Object.defineProperty(document, 'visibilityState', {
-    value: 'visible',
+    value: value,
     writable: true,
   })
   documentEmitEvent('visibilitychange')

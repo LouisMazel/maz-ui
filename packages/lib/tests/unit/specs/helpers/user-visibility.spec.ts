@@ -6,10 +6,7 @@ import {
 
 import { sleep } from '@package/helpers'
 
-import {
-  documentEmitVisibilityStateHidden,
-  documentEmitVisibilityStateVisible,
-} from '@unit/helpers/document-event'
+import { documentEmitVisibilityState } from '@unit/helpers/document-event'
 
 const DEFAULT_TIMEOUT = 300
 
@@ -23,7 +20,7 @@ let instance: UserVisibility | undefined
 
 beforeEach(() => {
   callback = vitest.fn()
-  documentEmitVisibilityStateVisible()
+  documentEmitVisibilityState('visible')
   instance = new UserVisibility(callback, options)
 })
 
@@ -50,7 +47,7 @@ describe('@/plugins/idle-timeout/idle-timeout-handler.ts', () => {
       })
 
       it('Then instance emit callback after timeout', async () => {
-        documentEmitVisibilityStateHidden()
+        documentEmitVisibilityState('hidden')
         expect(callback).not.toHaveBeenCalled()
         await sleep(DEFAULT_TIMEOUT)
         expect(callback).toHaveBeenCalled()
@@ -74,7 +71,7 @@ describe('@/plugins/idle-timeout/idle-timeout-handler.ts', () => {
 
     describe('When instance has once option to "true"', () => {
       it('Then instance have called callback and is destroy', async () => {
-        documentEmitVisibilityStateHidden()
+        documentEmitVisibilityState('hidden')
         const _newInstance = new UserVisibility(callback, {
           ...options,
           once: true,
