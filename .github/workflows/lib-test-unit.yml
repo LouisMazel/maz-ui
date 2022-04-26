@@ -32,14 +32,20 @@ jobs:
       - name: Run tests unit coverage
         run: make test-unit-coverage
 
-      - name: Find and Replace
+      - name: Cat 1
+        run: cat ./coverage/clover.xml
+
+      - name: Find and Replace Files Paths
         uses: jacobtomlinson/gha-find-replace@v2
         with:
           find: "/Users/mazel/workspace/maz-ui/packages"
           replace: "packages"
           include: ${{github.workspace}}/packages/lib/coverage/clover.xml
 
-      - name: Test & publish code coverage
+      - name: Cat 2
+        run: cat ./coverage/clover.xml
+
+      - name: Test & Publish Code Coverage
         uses: paambaati/codeclimate-action@v3.0.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
