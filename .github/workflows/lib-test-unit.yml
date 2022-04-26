@@ -35,10 +35,9 @@ jobs:
       - name: Find and Replace
         uses: jacobtomlinson/gha-find-replace@v2
         with:
-          find: "package/"
-          replace: "packages/lib/package/"
-          include: "packages/lib/coverage/**"
-          regex: true
+          find: "/Users/mazel/workspace/maz-ui/packages"
+          replace: "packages"
+          include: ${{github.workspace}}/packages/lib/coverage/clover.xml
 
       - name: Test & publish code coverage
         uses: paambaati/codeclimate-action@v3.0.0
@@ -46,4 +45,4 @@ jobs:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
           coverageLocations: |
-            ${{github.workspace}}/packages/lib/coverage/lcov.info:lcov
+            ${{github.workspace}}/packages/lib/coverage/clover.xml
