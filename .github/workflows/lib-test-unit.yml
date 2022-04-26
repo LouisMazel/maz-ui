@@ -37,7 +37,7 @@ jobs:
         with:
           find: "package/"
           replace: "packages/lib/package/"
-          include: coverage/lcov.info
+          include: ${{github.workspace}}/packages/lib/coverage/lcov.info:lcov
           regex: true
 
       - name: Test & publish code coverage
