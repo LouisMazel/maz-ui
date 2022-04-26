@@ -11,9 +11,9 @@ export default defineConfig({
     environment: 'jsdom',
     coverage: {
       enabled: true,
-      reporter: 'clover',
-      reportsDirectory: './../../coverage',
       excludeNodeModules: true,
+      reporter: 'lcov',
+      // reportsDirectory: './../../coverage',
       // include: ['package/**/*.{ts,vue}'],
       // all: true,
       // exclude: [],
