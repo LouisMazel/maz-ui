@@ -36,4 +36,4 @@ jobs:
         with:
           coverageCommand: make test-unit-coverage
           coverageLocations: |
-            ${{github.workspace}}/coverage/lcov.info:lcov
+            ./packages/lib/coverage/lcov.info:lcov
