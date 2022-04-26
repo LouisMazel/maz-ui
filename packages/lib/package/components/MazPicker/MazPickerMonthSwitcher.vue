@@ -30,13 +30,13 @@
 </template>
 
 <script lang="ts" setup>
-  import { capitalize, date } from 'package/filters'
+  import { capitalize, date } from '@package/filters'
   import { computed, PropType } from 'vue'
   import { Color } from '../types'
-  import { cloneDate, isSameMonth } from 'package/components/MazPicker/utils'
-  import MazBtn from 'package/components/MazBtn.vue'
-  import XIcon from 'package/icons/x.svg'
-  import MazIcon from 'package/components/MazIcon.vue'
+  import { cloneDate, isSameMonth } from '@package/components/MazPicker/utils'
+  import MazBtn from '@package/components/MazBtn.vue'
+  import XIcon from '@package/icons/x.svg'
+  import MazIcon from '@package/components/MazIcon.vue'
 
   const props = defineProps({
     currentDate: { type: Date, required: true },

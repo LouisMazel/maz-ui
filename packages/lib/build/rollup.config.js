@@ -69,11 +69,11 @@ const baseConfig = {
         entries: [
           {
             find: '@',
-            replacement: `${resolve(projectRoot, 'package')}`,
+            replacement: resolve(projectRoot, 'package'),
           },
           {
-            find: 'package',
-            replacement: `${resolve(projectRoot, 'package')}`,
+            find: '@package',
+            replacement: resolve(projectRoot, 'package'),
           },
         ],
       }),

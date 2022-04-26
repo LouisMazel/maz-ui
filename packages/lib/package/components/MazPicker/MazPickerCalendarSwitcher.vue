@@ -31,8 +31,8 @@
 </template>
 
 <script lang="ts" setup>
-  import ChevronLeftIcon from 'package/icons/chevron-left.svg'
-  import ChevronRightIcon from 'package/icons/chevron-right.svg'
+  import ChevronLeftIcon from '@package/icons/chevron-left.svg'
+  import ChevronRightIcon from '@package/icons/chevron-right.svg'
   import MazIcon from '../MazIcon.vue'
   import MazBtn from '../MazBtn.vue'
   import { computed } from 'vue'

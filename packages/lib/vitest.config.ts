@@ -1,5 +1,8 @@
 import { defineConfig } from 'vitest/config'
 import Vue from '@vitejs/plugin-vue'
+import { resolve } from 'path'
+
+const projectRoot = resolve(__dirname)
 
 export default defineConfig({
   plugins: [Vue()],
@@ -7,17 +10,19 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     coverage: {
+      // include: ['package/**/*.{ts,vue}'],
       enabled: true,
       // all: true,
-      reporter: ['lcov'],
-      exclude: [],
+      reporter: ['json'],
+      // reportsDirectory: './../../coverage',
+      // exclude: [],
       excludeNodeModules: true,
     },
   },
   resolve: {
     alias: {
-      package: './package',
-      unit: './tests/unit',
+      '@package': resolve(projectRoot, 'package'),
+      '@unit': resolve(projectRoot, 'tests/unit'),
     },
   },
 })

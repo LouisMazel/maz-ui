@@ -52,7 +52,7 @@
 </script>
 
 <script lang="ts" setup>
-  import { debounce } from 'package/helpers/debounce'
+  import { debounce } from '@package/helpers/debounce'
   import {
     ref,
     CSSProperties,

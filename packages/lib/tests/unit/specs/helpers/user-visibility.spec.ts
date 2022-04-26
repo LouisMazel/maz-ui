@@ -1,15 +1,15 @@
 import {
   UserVisibilyCallback,
   UserVisibilyOptions,
-} from 'package/helpers/user-visibility'
-import { UserVisibility } from 'package/helpers/user-visibility/user-visibility-handler'
+  UserVisibility,
+} from '@package/helpers/user-visibility'
+
+import { sleep } from '@package/helpers'
 
 import {
   documentEmitVisibilityStateHidden,
   documentEmitVisibilityStateVisible,
-} from './../../helpers/document-event'
-
-import { sleep } from 'package/helpers'
+} from '@unit/helpers/document-event'
 
 const DEFAULT_TIMEOUT = 300
 

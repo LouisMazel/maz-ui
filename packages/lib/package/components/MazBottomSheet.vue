@@ -38,7 +38,7 @@
   import MazBtn from './MazBtn.vue'
   import MazBackDrop from './MazBackDrop.vue'
   import MazIcon from './MazIcon.vue'
-  import XIcon from 'package/icons/x.svg'
+  import XIcon from '@package/icons/x.svg'
 
   defineProps({
     persistent: { type: Boolean, default: false },

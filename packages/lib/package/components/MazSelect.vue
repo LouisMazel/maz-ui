@@ -84,7 +84,7 @@
   import MazInput from './MazInput.vue'
   import MazIcon from './MazIcon.vue'
   import { Color, ModelValueSimple, Position, Size } from './types'
-  import ChevronDownIcon from 'package/icons/chevron-down.svg'
+  import ChevronDownIcon from '@package/icons/chevron-down.svg'
 
   const props = defineProps({
     modelValue: {

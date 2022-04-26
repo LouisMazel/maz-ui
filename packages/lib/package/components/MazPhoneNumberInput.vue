@@ -114,7 +114,7 @@
     sanitizePhoneNumber,
     loadPhoneNumberExamplesFile,
   } from './MazPhoneNumberInput/utils'
-  import { truthyFilter } from 'package/helpers'
+  import { truthyFilter } from '@package/helpers'
 
   import locales from './MazPhoneNumberInput/constantes/locales'
 

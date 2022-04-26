@@ -1,9 +1,10 @@
-import { sleep } from 'package/helpers'
 import {
   IdleTimeoutOptions,
   IdleTimeoutCallback,
-} from 'package/helpers/idle-timeout'
-import { IdleTimeout } from 'package/helpers/idle-timeout/idle-timeout-handler'
+  IdleTimeout,
+} from '@package/helpers/idle-timeout'
+
+import { sleep } from '@package/helpers'
 
 const DEFAULT_TIMEOUT = 300
 
