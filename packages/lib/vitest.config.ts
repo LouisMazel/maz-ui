@@ -12,7 +12,7 @@ export default defineConfig({
     coverage: {
       enabled: true,
       excludeNodeModules: true,
-      reporter: 'clover',
+      reporter: 'lcov',
       // reportsDirectory: './../../coverage',
       // include: ['package/**/*.{ts,vue}'],
       // all: true,

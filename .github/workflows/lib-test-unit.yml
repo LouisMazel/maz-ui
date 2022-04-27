@@ -33,22 +33,23 @@ jobs:
         run: make test-unit-coverage
 
       - name: Cat 1
-        run: cat ./coverage/clover.xml
+        run: cat ./coverage/lcov.info
 
       - name: Find and Replace Files Paths
         uses: jacobtomlinson/gha-find-replace@2.0.0
         with:
           find: /home/runner/work/maz-ui/maz-ui/packages
           replace: /packages
-          include: /packages/lib/coverage/clover.xml
+          include: /packages/lib/coverage/lcov.info
 
       - name: Cat 2
-        run: cat ./coverage/clover.xml
+        run: cat ./coverage/lcov.info
 
       - name: Test & Publish Code Coverage
         uses: paambaati/codeclimate-action@v3.0.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
+          coverageCommand: make test-unit-coverage
           coverageLocations: |
-            ${{github.workspace}}/packages/lib/coverage/clover.xml
+            ${{github.workspace}}/packages/lib/coverage/lcov.info:lcov
