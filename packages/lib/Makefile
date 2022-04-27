@@ -30,6 +30,15 @@ build-watch:
 install:
 	npm ci
 
+test-unit:
+	npm run test:unit
+
+test-unit-watch:
+	npm run test:unit:watch
+
+test-unit-coverage:
+	npm run test:unit:coverage
+
 reinstall:
 	rm -rf ./node_modules
 	npm i

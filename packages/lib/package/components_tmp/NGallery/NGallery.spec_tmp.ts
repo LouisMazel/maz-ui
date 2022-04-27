@@ -1,6 +1,5 @@
 import { shallowMount } from '@vue/test-utils'
-import { nextTick } from '@nuxtjs/composition-api'
-import NGallery from '~/components/ui/NGallery/NGallery.vue'
+import NGallery from './NGallery.vue'
 import NGalleryScrollButtons from '~/components/ui/NGallery/NGalleryScrollButtons.vue'
 import NGalleryResponsive from '~/components/ui/NGallery/NGalleryResponsive.vue'
 
