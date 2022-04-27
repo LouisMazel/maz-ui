@@ -38,8 +38,8 @@ jobs:
       - name: Find and Replace Files Paths
         uses: jacobtomlinson/gha-find-replace@2.0.0
         with:
-          find: /home/runner/work/maz-ui/maz-ui/packages
-          replace: /packages
+          find: "package/"
+          replace: "/packages/lib/package/"
           include: /packages/lib/coverage/lcov.info
 
       - name: Cat 2
