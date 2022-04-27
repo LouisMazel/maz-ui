@@ -1,7 +1,7 @@
 import { vClickOutside, vClickOutsideInstall } from './click-outside.directive'
 import { vClosable, vClosableInstall } from './closable.directive'
-import { vZoomImg, vZoomImgInstall } from './zoom-img.directive'
-import type { vZoomImgOptions, vZoomImgBinding } from './zoom-img.directive'
+import { vZoomImg, vZoomImgInstall } from './v-zoom-img'
+import type { vZoomImgOptions, vZoomImgBinding } from './v-zoom-img'
 import { vLazyImg, vLazyImgInstall } from './v-lazy-img'
 import type { vLazyImgOptions, vLazyImgBinding } from './v-lazy-img'
 
