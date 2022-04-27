@@ -1,6 +1,7 @@
 {
   "name": "root",
   "version": "0.0.1",
+  "description": "A stand-alone components library for Vue.Js & Nuxt.Js (v3.x)",
   "directories": {
     "lib": "lib",
     "docs": "docs"
