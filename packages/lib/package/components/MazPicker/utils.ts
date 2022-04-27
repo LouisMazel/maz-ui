@@ -1,10 +1,11 @@
-import dayjs, { ConfigType, OpUnitType } from 'dayjs'
+import dayjs from 'dayjs'
+import type { ConfigType, OpUnitType } from 'dayjs'
 import weekday from 'dayjs/plugin/weekday'
 
 dayjs.extend(weekday)
 
 import { date, capitalize } from './../../filters'
-import { PartialRangeValue } from './types'
+import type { PartialRangeValue } from './types'
 
 export type DateTimeFormatOptions = Pick<
   Intl.DateTimeFormatOptions,

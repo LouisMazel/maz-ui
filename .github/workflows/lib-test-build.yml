@@ -21,7 +21,7 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install dependencies
-        run: make install
+        run: npm ci
 
       - name: Build lib
-        run: make build
+        run: npm run build

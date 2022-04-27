@@ -46,8 +46,8 @@
     getTimeString,
   } from './utils'
   import MazBtn from '../MazBtn.vue'
-  import { PickerValue } from './types'
-  import { Color } from '../types'
+  import type { PickerValue } from './types'
+  import type { Color } from '../types'
 
   type ColumnIdentifier = 'hour' | 'minute' | 'ampm'
 

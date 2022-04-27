@@ -1,11 +1,7 @@
 {
   "extends": "@vue/tsconfig/tsconfig.json",
   "compilerOptions": {
-    "target": "ES2015",
-    "module": "esnext",
-    "strict": true,
     "importHelpers": true,
-    "moduleResolution": "node",
     "experimentalDecorators": true,
     "skipLibCheck": true,
     "declaration": true,
