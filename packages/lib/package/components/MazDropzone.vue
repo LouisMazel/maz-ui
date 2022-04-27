@@ -423,6 +423,7 @@
       transform: translateY(-40px);
     }
   }
+
   @keyframes slide-in {
     0% {
       opacity: 0;
@@ -434,6 +435,7 @@
       transform: translateY(0);
     }
   }
+
   @keyframes pulse {
     0% {
       transform: scale(1);
@@ -449,9 +451,10 @@
   }
 
   .maz-dropzone {
-    @apply maz-outline-none maz-m-0 maz-inline-flex maz-items-center maz-justify-center maz-overflow-auto maz-rounded-lg maz-border maz-border-dashed maz-border-color-light
-    maz-bg-color maz-p-4 maz-text-center
-    maz-transition-all maz-duration-200 maz-ease-out;
+    @apply maz-outline-none maz-m-0 maz-inline-flex maz-items-center maz-justify-center
+      maz-overflow-auto maz-rounded-lg maz-border maz-border-dashed maz-border-color-light
+      maz-bg-color maz-p-4 maz-text-center
+      maz-transition-all maz-duration-200 maz-ease-out;
 
     min-height: 245px;
 
@@ -498,7 +501,7 @@
 
     & .dz-details {
       @apply maz-absolute maz-inset-0 maz-z-20 maz-flex maz-flex-col maz-items-center
-      maz-justify-center maz-rounded-lg maz-py-8 maz-px-4 maz-text-center maz-leading-10 maz-text-white maz-opacity-0;
+        maz-justify-center maz-rounded-lg maz-py-8 maz-px-4 maz-text-center maz-leading-10 maz-text-white maz-opacity-0;
 
       background-color: var(--maz-color-primary-alpha);
       transition: opacity 0.2s linear;

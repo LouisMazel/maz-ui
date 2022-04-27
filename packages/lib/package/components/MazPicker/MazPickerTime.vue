@@ -358,7 +358,8 @@
       content: '';
       transform: translateY(-50%);
 
-      @apply maz-absolute maz-left-0 maz-right-0 maz-top-1/2 maz-mx-auto maz-h-9 maz-border-t maz-border-b maz-border-color-lighter;
+      @apply maz-absolute maz-left-0 maz-right-0 maz-top-1/2
+        maz-mx-auto maz-h-9 maz-border-t maz-border-b maz-border-color-lighter;
     }
 
     &__column {

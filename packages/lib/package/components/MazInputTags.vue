@@ -149,7 +149,7 @@
 <style lang="postcss" scoped>
   .m-input-tags {
     @apply maz-relative maz-flex maz-flex-wrap maz-items-center
-    maz-overflow-hidden maz-rounded-lg maz-border-2 maz-bg-color;
+      maz-overflow-hidden maz-rounded-lg maz-border-2 maz-bg-color;
 
     padding-left: 0.25em;
     padding-right: 0.25em;

@@ -310,12 +310,14 @@
     }
 
     &-list {
-      @apply maz-absolute maz-z-100 maz-overflow-auto maz-rounded-lg maz-bg-color maz-text-normal maz-elevation;
+      @apply maz-absolute maz-z-100 maz-overflow-auto
+        maz-rounded-lg maz-bg-color maz-text-normal maz-elevation;
 
       min-width: 3.5rem;
 
       &-item {
-        @apply maz-flex maz-w-full maz-items-center maz-bg-transparent maz-px-4 maz-text-left maz-text-normal hover:maz-bg-color-light;
+        @apply maz-flex maz-w-full maz-items-center maz-bg-transparent
+          maz-px-4 maz-text-left maz-text-normal hover:maz-bg-color-light;
 
         &.--is-keyboard-selected {
           @apply maz-bg-color-light maz-font-medium;
