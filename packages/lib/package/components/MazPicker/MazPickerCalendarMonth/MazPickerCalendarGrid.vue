@@ -117,7 +117,7 @@
     }
 
     if (typeof props.modelValue === 'object' && props.modelValue?.start) {
-      return isSameDate(day, props.modelValue.start)
+      return isSameDate(day, props.modelValue.start, 'date')
     }
 
     return false
@@ -129,7 +129,7 @@
     }
 
     if (typeof props.modelValue === 'object' && props.modelValue?.end) {
-      return isSameDate(day, props.modelValue.end)
+      return isSameDate(day, props.modelValue.end, 'date')
     }
     return false
   }
@@ -138,8 +138,8 @@
     const value = props.modelValue
 
     if (typeof value === 'object') {
-      return (value.start ? isSameDate(date, value.start) : false) ||
-        (value.end ? isSameDate(date, value.end) : false)
+      return (value.start ? isSameDate(date, value.start, 'date') : false) ||
+        (value.end ? isSameDate(date, value.end, 'date') : false)
         ? props.color
         : checkIsBetween(date)
         ? props.color
@@ -152,12 +152,12 @@
   const isSelectedOrBetween = (day: Dayjs): DaySelect => {
     if (typeof props.modelValue === 'object') {
       if (props.modelValue.start) {
-        if (isSameDate(day, props.modelValue.start)) {
+        if (isSameDate(day, props.modelValue.start, 'date')) {
           return DaySelect.SELECTED
         }
       }
       if (props.modelValue.end) {
-        if (isSameDate(day, props.modelValue.end)) {
+        if (isSameDate(day, props.modelValue.end, 'date')) {
           return DaySelect.SELECTED
         }
 
@@ -211,7 +211,7 @@
 
     const value = props.modelValue as string
 
-    return isSameDate(day, value)
+    return isSameDate(day, value, 'date')
   }
 
   const checkIsBetween = (day: Dayjs): boolean => {
@@ -229,7 +229,9 @@
       return false
     }
 
-    return isSmaller(day, props.minDate) && !isSameDate(day, props.minDate)
+    return (
+      isSmaller(day, props.minDate) && !isSameDate(day, props.minDate, 'date')
+    )
   }
 
   const isDisabledWeekly = (day: Dayjs): boolean => {
@@ -248,7 +250,7 @@
     }
 
     return props.disabledDates.some((disabledDay) =>
-      isSameDate(day, disabledDay),
+      isSameDate(day, disabledDay, 'date'),
     )
   }
 
@@ -257,7 +259,9 @@
       return false
     }
 
-    return isBigger(day, props.maxDate) && !isSameDate(day, props.maxDate)
+    return (
+      isBigger(day, props.maxDate) && !isSameDate(day, props.maxDate, 'date')
+    )
   }
 
   const removeContainerHeight = debounce(() => {

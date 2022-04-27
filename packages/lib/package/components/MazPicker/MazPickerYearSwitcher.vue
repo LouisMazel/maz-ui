@@ -34,8 +34,12 @@
         :key="year.label"
         size="sm"
         type="button"
-        :class="{ '--is-selected': isSameYear(year.date, calendarDate) }"
-        :color="isSameYear(year.date, calendarDate) ? color : 'transparent'"
+        :class="{
+          '--is-selected': isSameDate(year.date, calendarDate, 'year'),
+        }"
+        :color="
+          isSameDate(year.date, calendarDate, 'year') ? color : 'transparent'
+        "
         @click.stop="selectYear(year.date)"
       >
         {{ year.label }}
@@ -52,7 +56,7 @@
   import MazBtn from '@package/components/MazBtn.vue'
   import XIcon from '@package/icons/x.svg'
   import MazIcon from '@package/components/MazIcon.vue'
-  import { isSameYear } from './utils'
+  import { isSameDate } from './utils'
   import ChevronLeftIcon from '@package/icons/chevron-left.svg'
   import ChevronRightIcon from '@package/icons/chevron-right.svg'
 

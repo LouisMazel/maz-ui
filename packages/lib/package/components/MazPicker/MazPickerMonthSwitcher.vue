@@ -18,8 +18,12 @@
         v-for="month in months"
         :key="month.label"
         :size="props.double ? 'sm' : 'xs'"
-        :class="{ '--is-selected': isSameMonth(month.date, calendarDate) }"
-        :color="isSameMonth(month.date, calendarDate) ? color : 'transparent'"
+        :class="{
+          '--is-selected': isSameDate(month.date, calendarDate, 'month'),
+        }"
+        :color="
+          isSameDate(month.date, calendarDate, 'month') ? color : 'transparent'
+        "
         type="button"
         @click.stop="selectMonth(month.date)"
       >
@@ -34,7 +38,7 @@
   import { computed, PropType } from 'vue'
   import { Color } from '../types'
   import dayjs, { Dayjs } from 'dayjs'
-  import { isSameMonth } from '@package/components/MazPicker/utils'
+  import { isSameDate } from '@package/components/MazPicker/utils'
   import MazBtn from '@package/components/MazBtn.vue'
   import XIcon from '@package/icons/x.svg'
   import MazIcon from '@package/components/MazIcon.vue'

@@ -1,4 +1,4 @@
-import dayjs, { ConfigType } from 'dayjs'
+import dayjs, { ConfigType, OpUnitType } from 'dayjs'
 import weekday from 'dayjs/plugin/weekday'
 
 dayjs.extend(weekday)
@@ -88,16 +88,12 @@ export function isToday(date: ConfigType): boolean {
   return dayjs(date).isSame(dayjs(), 'date')
 }
 
-export function isSameDate(date: ConfigType, date2: ConfigType): boolean {
-  return dayjs(date).isSame(date2, 'date')
-}
-
-export function isSameMonth(date: ConfigType, date2: ConfigType): boolean {
-  return dayjs(date).isSame(date2, 'month')
-}
-
-export function isSameYear(date: ConfigType, date2: ConfigType): boolean {
-  return dayjs(date).isSame(date2, 'year')
+export function isSameDate(
+  date: ConfigType,
+  date2: ConfigType,
+  unit: OpUnitType,
+): boolean {
+  return dayjs(date).isSame(date2, unit)
 }
 
 export function isBigger(date: ConfigType, date2: ConfigType): boolean {
