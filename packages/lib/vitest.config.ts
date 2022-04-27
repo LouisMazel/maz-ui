@@ -13,7 +13,7 @@ export default defineConfig({
       enabled: true,
       excludeNodeModules: true,
       reporter: 'lcov',
-      // reportsDirectory: './../../coverage',
+      reportsDirectory: './../../coverage',
       // include: ['package/**/*.{ts,vue}'],
       // all: true,
       // exclude: [],

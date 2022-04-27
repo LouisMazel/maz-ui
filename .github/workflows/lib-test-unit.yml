@@ -9,9 +9,9 @@ on:
 jobs:
   coverage:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./packages/lib
+    # defaults:
+    #   run:
+    #     working-directory: ./packages/lib
 
     steps:
       - name: Checkout Actions
@@ -27,23 +27,23 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install modules
-        run: make install
+        run: make install-lib
 
       - name: Run tests unit coverage
         run: make test-unit-coverage
 
       - name: Cat 1
-        run: cat ./coverage/lcov.info
+        run: cat ${{github.workspace}}/coverage/lcov.info
 
       - name: Find and Replace Files Paths
         uses: jacobtomlinson/gha-find-replace@2.0.0
         with:
           find: "package/"
           replace: "/packages/lib/package/"
-          include: "/coverage/**"
+          include: ${{github.workspace}}/coverage/**
 
       - name: Cat 2
-        run: cat ./coverage/lcov.info
+        run: cat ${{github.workspace}}/coverage/lcov.info
 
       - name: Test & Publish Code Coverage
         uses: paambaati/codeclimate-action@v3.0.0
@@ -52,4 +52,4 @@ jobs:
         with:
           coverageCommand: make test-unit-coverage
           coverageLocations: |
-            ${{github.workspace}}/packages/lib/coverage/lcov.info:lcov
+            ${{github.workspace}}/coverage/lcov.info:lcov
