@@ -12,10 +12,10 @@ export default defineConfig({
     coverage: {
       enabled: true,
       excludeNodeModules: true,
-      reporter: 'clover',
-      include: ['package/**/*.{ts,js,vue}'],
-      exclude: ['package/components_tmp'],
-      // all: true,
+      reporter: ['clover', 'html'],
+      include: ['package/**/*'],
+      exclude: ['package/components_tmp/**'],
+      all: true,
     },
   },
   resolve: {
