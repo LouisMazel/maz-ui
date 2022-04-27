@@ -83,10 +83,14 @@
     onBeforeMount,
     onMounted,
     onUnmounted,
-    PropType,
     ref,
-    StyleValue,
     getCurrentInstance,
+    // watch,
+    // nextTick,
+  } from 'vue'
+  import type {
+    PropType,
+    StyleValue,
     // watch,
     // nextTick,
   } from 'vue'
@@ -98,7 +102,7 @@
   import { vClickOutside } from '@package/directives/click-outside.directive'
   import ChevronDownIcon from '@package/icons/chevron-down.svg'
   import MazIcon from './MazIcon.vue'
-  import { Color, Position } from './types'
+  import type { Color, Position } from './types'
 
   import { date } from '../filters'
 
@@ -156,7 +160,7 @@
       type: Number,
       default: 0,
       validator: (value: number) => {
-        const isValid = [0, 1, 2, 3, 4, 5, 6].includes(value)
+        const isValid = Array.from({ length: 7 }, (_v, i) => i).includes(value)
 
         if (!isValid) {
           // eslint-disable-next-line no-console

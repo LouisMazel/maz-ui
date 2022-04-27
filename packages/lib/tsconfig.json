@@ -1,4 +1,5 @@
 {
+  "extends": "@vue/tsconfig/tsconfig.json",
   "compilerOptions": {
     "target": "ES2015",
     "module": "esnext",
@@ -18,7 +19,8 @@
     "noImplicitThis": false,
     "baseUrl": ".",
     "paths": {
-      "@package/*": ["package/*"]
+      "@package/*": ["package/*"],
+      "@components/*": ["package/components/*"]
     },
     "types": ["@types/node", "google.maps"],
     "jsx": "preserve"

@@ -1,0 +1,25 @@
+// Vitest Snapshot v1
+
+exports[`components/MazPicker.vue 1`] = `
+"<div class=\\"m-picker m-picker--primary m-picker--bottom m-picker--left\\" data-v-43f83472=\\"\\">
+  <div class=\\"m-input --has-label --is-readonly m-picker__input --primary --md\\" data-v-62586b96=\\"\\" data-v-43f83472=\\"\\">
+    <div class=\\"m-input-wrapper maz-border --default-border maz-rounded-lg\\" data-v-62586b96=\\"\\">
+      <!--v-if-->
+      <div class=\\"m-input-wrapper-input\\" data-v-62586b96=\\"\\"><input id=\\"MazInput\\" type=\\"text\\" name=\\"input\\" autocomplete=\\"off\\" class=\\"m-picker__input m-input-input\\" aria-label=\\"Select date\\" readonly=\\"\\" data-v-62586b96=\\"\\"><label for=\\"MazInput\\" class=\\"m-input-label\\" data-v-62586b96=\\"\\">Select date
+          <!--v-if-->
+        </label></div>
+      <div class=\\"m-input-wrapper-right\\" data-v-62586b96=\\"\\"><button tabindex=\\"-1\\" class=\\"m-picker__button\\" data-v-43f83472=\\"\\">
+          <!-- eslint-disable vue/no-v-html -->
+          <!--v-if-->
+          <!-- eslint-enable vue/no-v-html -->
+        </button>
+        <!--v-if-->
+        <!--v-if-->
+      </div>
+    </div>
+  </div>
+  <transition-stub data-v-43f83472=\\"\\">
+    <!--v-if-->
+  </transition-stub>
+</div>"
+`;

@@ -1,5 +1,8 @@
+/// <reference types="vitest" />
+
 import { defineConfig } from 'vitest/config'
 import Vue from '@vitejs/plugin-vue'
+
 import { resolve } from 'path'
 
 const projectRoot = resolve(__dirname)
@@ -21,7 +24,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '@package': resolve(projectRoot, 'package'),
-      '@unit': resolve(projectRoot, 'tests/unit'),
+      '@components': resolve(projectRoot, 'package/components'),
+      '@tests': resolve(projectRoot, 'tests'),
     },
   },
 })

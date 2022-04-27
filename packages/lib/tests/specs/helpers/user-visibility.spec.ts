@@ -6,7 +6,7 @@ import {
 
 import { sleep } from '@package/helpers'
 
-import { documentEmitVisibilityState } from '@unit/helpers/document-event'
+import { documentEmitVisibilityState } from '@tests/helpers/document-event'
 
 const DEFAULT_TIMEOUT = 300
 

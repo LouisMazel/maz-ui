@@ -1,0 +1,27 @@
+name: Lib Build Test
+on:
+  pull_request:
+    branches: [next]
+    paths:
+      - "packages/lib/**"
+
+jobs:
+  lib-test-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./packages/lib
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - uses: actions/cache@v2
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install dependencies
+        run: make install
+
+      - name: Build lib
+        run: make build

@@ -17,7 +17,7 @@
 
     {{ dateValue }}
 
-    <MazPicker v-model="dateValue" format="YYYY-MM-DD" :first-day-of-week="1" style="min-width: 300px;" locale="en-US" color="secondary" />
+    <MazPicker v-model="dateValue" format="YYYY-MM-DD" :first-day-of-week="1" style="min-width: 300px;" locale="fr-FR" color="secondary" />
 
     <!-- End Developing Area -->
   </main>

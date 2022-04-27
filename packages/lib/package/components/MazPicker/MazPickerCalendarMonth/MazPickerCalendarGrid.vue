@@ -49,8 +49,8 @@
     isSmaller,
     isSameDay,
   } from '../utils'
-  import MazBtn from '@package/components/MazBtn.vue'
-  import { Color } from '@package/components/types'
+  import MazBtn from '@components/MazBtn.vue'
+  import { Color } from '@components/types'
   import { debounce } from '@package/helpers'
   import { PartialRangeValue, PickerValue } from '../types'
   import dayjs, { Dayjs } from 'dayjs'
