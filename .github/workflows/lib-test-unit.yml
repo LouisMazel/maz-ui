@@ -51,4 +51,4 @@ jobs:
         with:
           coverageCommand: make test-unit-coverage
           coverageLocations: |
-            ${{github.workspace}}/coverage/clover.xml:xml
+            ${{github.workspace}}/coverage/clover.xml:clover
