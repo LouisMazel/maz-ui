@@ -33,7 +33,7 @@ jobs:
         run: make test-unit-coverage
 
       - name: Cat 1
-        run: cat ${{github.workspace}}/coverage/lcov.info
+        run: cat ${{github.workspace}}/coverage/clover.xml
 
       - name: Find and Replace Files Paths
         uses: jacobtomlinson/gha-find-replace@2.0.0
@@ -43,7 +43,7 @@ jobs:
           include: ${{github.workspace}}/coverage/**
 
       - name: Cat 2
-        run: cat ${{github.workspace}}/coverage/lcov.info
+        run: cat ${{github.workspace}}/coverage/clover.xml
 
       - name: Test & Publish Code Coverage
         uses: paambaati/codeclimate-action@v3.0.0
@@ -52,4 +52,4 @@ jobs:
         with:
           coverageCommand: make test-unit-coverage
           coverageLocations: |
-            ${{github.workspace}}/coverage/lcov.info:lcov
+            ${{github.workspace}}/coverage/clover.xml:xml
