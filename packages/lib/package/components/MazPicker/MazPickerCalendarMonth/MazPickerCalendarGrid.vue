@@ -86,8 +86,10 @@
   const isRangeMode = computed(() => typeof props.modelValue === 'object')
 
   /* eslint-disable @typescript-eslint/no-unused-vars */
+
   const hoverColor = computed(() => `var(--maz-color-${props.color}-alpha-20)`)
   const betweenColor = computed(() => `var(--maz-color-${props.color}-alpha)`)
+
   /* eslint-enable @typescript-eslint/no-unused-vars */
 
   const modelValue = computed({
