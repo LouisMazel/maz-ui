@@ -288,6 +288,7 @@ export class VueZoomImg {
       if (alt) this.img.setAttribute('alt', alt)
     }
   }
+
   private addStyle(styleString: string): void {
     const style = document.createElement('style')
     style.id = 'MazPreviewStyle'
