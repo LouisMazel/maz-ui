@@ -99,7 +99,7 @@
 </script>
 
 <script lang="ts" setup>
-  // TODO: listPosition
+  // NEXT: listPosition
   // import { getCountryCallingCode } from 'libphonenumber-js'
   import type { CountryCode } from 'libphonenumber-js'
 
@@ -114,7 +114,7 @@
     sanitizePhoneNumber,
     loadPhoneNumberExamplesFile,
   } from './MazPhoneNumberInput/utils'
-  import { truthyFilter } from './../helpers'
+  import { truthyFilter } from '@package/helpers'
 
   import locales from './MazPhoneNumberInput/constantes/locales'
 

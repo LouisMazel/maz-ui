@@ -111,9 +111,9 @@
   import MazIcon from './MazIcon.vue'
   import { Color, Size } from './types'
   export type { Color, Size } from './types'
-  import EyeOffIcon from './../icons/eye-off.svg'
-  import EyeIcon from './../icons/eye.svg'
-  import CheckIcon from './../icons/check.svg'
+  import EyeOffIcon from '@package/icons/eye-off.svg'
+  import EyeIcon from '@package/icons/eye.svg'
+  import CheckIcon from '@package/icons/check.svg'
 
   export default defineComponent({
     components: { MazBtn, MazIcon },

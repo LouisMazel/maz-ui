@@ -95,8 +95,8 @@
   } from 'vue'
   import MazInput from './MazInput.vue'
   import MazPickerContainer from './MazPicker/MazPickerContainer.vue'
-  import { vClickOutside } from './../directives/click-outside.directive'
-  import ChevronDownIcon from './../icons/chevron-down.svg'
+  import { vClickOutside } from '@package/directives/click-outside.directive'
+  import ChevronDownIcon from '@package/icons/chevron-down.svg'
   import MazIcon from './MazIcon.vue'
   import { Color, Position } from './types'
   import { date } from '../filters'
@@ -296,7 +296,7 @@
   const modelValue = computed({
     get: () => props.modelValue,
     set: (value) => {
-      // TODO: format output
+      // NEXT: format output
       emitValue(value)
 
       if (props.autoClose && typeof props.modelValue !== 'object') {

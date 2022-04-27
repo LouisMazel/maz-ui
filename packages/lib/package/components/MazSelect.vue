@@ -79,12 +79,12 @@
 </script>
 
 <script lang="ts" setup>
-  // TODO: listPosition & multiselect & search in list
+  // NEXT: listPosition & multiselect & search in list
   import { ref, PropType, computed, onBeforeMount, nextTick } from 'vue'
   import MazInput from './MazInput.vue'
   import MazIcon from './MazIcon.vue'
   import { Color, ModelValueSimple, Position, Size } from './types'
-  import ChevronDownIcon from './../icons/chevron-down.svg'
+  import ChevronDownIcon from '@package/icons/chevron-down.svg'
 
   const props = defineProps({
     modelValue: {

@@ -3,7 +3,6 @@ export type LoaderId = unknown
 export const DEFAULT_LOADER: LoaderId = ''
 
 const uniq = (array: LoaderId[]) => {
-  // TODO: don't allow values like NaN that may produce bugs
   return array.filter((el, index, arr) => index === arr.indexOf(el))
 }
 

@@ -1,129 +1,6 @@
-import { Directive, DirectiveBinding } from 'vue'
-
-const style = `
-.maz-zoom-img {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 2.5rem;
-  z-index: 1050;
-  background-color: rgba(86, 87, 117, .7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-}
-
-.maz-zoom-img,
-.maz-zoom-img * {
-  box-sizing: border-box;
-}
-
-.maz-zoom-img .maz-zoom-img__wrapper {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-width: 0;
-  min-height: 0;
-  max-width: 100%;
-  max-height: 100%;
-  transition: all 300ms ease-in-out;
-  opacity: 0;
-  transform: scale(0.5);
-}
-
-.maz-zoom-img.maz-animate .maz-zoom-img__wrapper {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.maz-zoom-img.maz-animate .maz-zoom-img__loader {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(86, 87, 117, .7);
-  border-radius: 1rem;
-  z-index: 2;
-  min-width: 60px;
-  min-height: 60px;
-}
-.maz-zoom-img.maz-animate .maz-zoom-img__loader[hidden] {
-  display: none;
-}
-
-@-webkit-keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-.maz-zoom-img.maz-animate .maz-zoom-img__loader__svg {
-  animation: spin .6s linear infinite;
-}
-
-.maz-zoom-img img {
-  max-width: 100%;
-  max-height: 100%;
-  min-width: 0;
-  border-radius: 1rem;
-}
-
-.maz-zoom-img .maz-zoom-btn {
-  margin: 0 auto;
-  border: none;
-  background-color: rgba(17, 17, 17, 0.5);
-  box-shadow: 0 0 0.5rem 0 rgba(0, 0, 0, 0.2);
-  height: 2.2rem;
-  min-height: 2.2rem;
-  width: 2.2rem;
-  min-width: 2.2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 2.2rem;
-  cursor: pointer;
-  flex: 0 0 auto;
-  outline: none;
-}
-
-.maz-zoom-img .maz-zoom-btn svg {
-  fill: white;
-}
-
-.maz-zoom-img .maz-zoom-btn.maz-zoom-btn--close {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  z-index: 1;
-}
-
-.maz-zoom-img .maz-zoom-btn.maz-zoom-btn--previous {
-  position: absolute;
-  left: 0.5rem;
-  z-index: 1;
-}
-
-.maz-zoom-img .maz-zoom-btn.maz-zoom-btn--next {
-  position: absolute;
-  right: 0.5rem;
-  z-index: 1;
-}
-
-.maz-zoom-img .maz-zoom-btn:hover {
-  background-color: black;
-}`
+import { DirectiveBinding } from 'vue'
+import { style } from './style'
+import { svgs } from './svgs'
 
 export interface vZoomImgOptions {
   disabled?: boolean
@@ -142,17 +19,7 @@ export interface BindingData extends DirectiveBinding {
   value: vZoomImgBinding
 }
 
-const svgs = {
-  close:
-    '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>',
-  next: '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>',
-  previous:
-    '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>',
-  spinner:
-    '<svg width="40px" height="40px" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="currentColor" x="0px" y="0px" viewBox="0 0 50 50" xml:space="preserve" class="maz-zoom-img__loader__svg" data-v-6d1cb50c=""><path d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z"></path></svg>',
-} as { [key: string]: string }
-
-class VueZoomImg {
+export class VueZoomImg {
   private options: vZoomImgBindingOptions
   private loader: HTMLDivElement
   private wrapper: HTMLDivElement
@@ -375,6 +242,14 @@ class VueZoomImg {
     }, 300)
   }
 
+  private getNewInstanceIndex(newInstanceIndex: number): number {
+    return newInstanceIndex < 0
+      ? this.allInstances.length - 1
+      : newInstanceIndex >= this.allInstances.length
+      ? 0
+      : newInstanceIndex
+  }
+
   private nextPreviousImage(isNext: boolean): void {
     const selectNextInstance = isNext
     const currentInstance: HTMLElement | null = document.querySelector(
@@ -388,16 +263,17 @@ class VueZoomImg {
       ? currentInstanceIndex + 1
       : currentInstanceIndex - 1
 
-    const getNewInstanceIndex = (): number => {
-      return newInstanceIndex < 0
-        ? this.allInstances.length - 1
-        : newInstanceIndex >= this.allInstances.length
-        ? 0
-        : newInstanceIndex
+    const nextInstance =
+      this.allInstances[this.getNewInstanceIndex(newInstanceIndex)]
+
+    if (nextInstance && currentInstance) {
+      this.useNextInstance(currentInstance, nextInstance)
     }
-
-    const nextInstance = this.allInstances[getNewInstanceIndex()]
-
+  }
+  private useNextInstance(
+    currentInstance: HTMLElement,
+    nextInstance: HTMLElement,
+  ) {
     if (nextInstance && currentInstance) {
       currentInstance.classList.remove('maz-is-open')
       nextInstance.classList.add('maz-is-open')
@@ -412,6 +288,7 @@ class VueZoomImg {
       if (alt) this.img.setAttribute('alt', alt)
     }
   }
+
   private addStyle(styleString: string): void {
     const style = document.createElement('style')
     style.id = 'MazPreviewStyle'
@@ -429,26 +306,3 @@ class VueZoomImg {
     this.img.removeEventListener('load', this.onImgLoadedCallback)
   }
 }
-
-let instance: VueZoomImg
-
-const directive: Directive = {
-  created(el: HTMLElement, binding: BindingData): void {
-    instance = new VueZoomImg(binding)
-    instance.create(el)
-  },
-  updated(_el: HTMLElement, binding: BindingData): void {
-    instance.update(binding)
-  },
-  unmounted(el: HTMLElement): void {
-    instance.remove(el)
-  },
-}
-
-const plugin = {
-  install(app) {
-    app.directive('zoom-img', directive)
-  },
-}
-
-export { directive as vZoomImg, plugin as vZoomImgInstall }

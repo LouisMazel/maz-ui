@@ -31,6 +31,7 @@ module.exports = {
     { name: "root" },
     { name: "docs" },
     { name: "testing" },
+    { name: "unit" },
     { name: "ci" },
     { name: "lib" },
     { name: "chore" },
