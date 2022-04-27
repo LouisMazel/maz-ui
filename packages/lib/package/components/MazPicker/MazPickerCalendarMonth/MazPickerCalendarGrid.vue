@@ -85,12 +85,8 @@
 
   const isRangeMode = computed(() => typeof props.modelValue === 'object')
 
-  /* eslint-disable @typescript-eslint/no-unused-vars */
-
   const hoverColor = computed(() => `var(--maz-color-${props.color}-alpha-20)`)
   const betweenColor = computed(() => `var(--maz-color-${props.color}-alpha)`)
-
-  /* eslint-enable @typescript-eslint/no-unused-vars */
 
   const modelValue = computed({
     get: () => props.modelValue,
@@ -318,7 +314,9 @@
         &:hover,
         &:focus {
           &:not(.--is-selected):not(.--is-between) {
-            background-color: v-bind(hovercolor) !important;
+            /* stylelint-disable */
+            background-color: v-bind(hoverColor) !important;
+            /* stylelint-enable */
           }
         }
 
@@ -333,7 +331,9 @@
         &.--is-between {
           @apply maz-rounded-none !important;
 
-          background-color: v-bind(betweencolor) !important;
+          /* stylelint-disable */
+          background-color: v-bind(betweenColor) !important;
+          /* stylelint-enabale */
 
           &.--white,
           &.--transparent {
