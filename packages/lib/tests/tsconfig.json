@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "types": ["vitest/globals"],
+    "baseUrl": ".",
+    "paths": {
+      "@package/*": ["./../package/*"],
+      "@unit/*": ["unit/*"]
+    }
+  }
+}

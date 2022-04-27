@@ -13,17 +13,14 @@
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "lib": ["esnext", "DOM", "DOM.iterable", "scripthost"],
-    "baseUrl": ".",
     "strictPropertyInitialization": false,
     "noImplicitAny": false,
     "noImplicitThis": false,
+    "baseUrl": ".",
     "paths": {
-      "~directives/*": ["directives/*"],
-      "~/*": ["components/*"],
-      "@/*": ["components/*"],
-      "~utils/*": ["utils/*"]
+      "@package/*": ["package/*"]
     },
-    "types": ["@types/node", "jest", "google.maps"],
+    "types": ["@types/node", "google.maps"],
     "jsx": "preserve"
   },
   "include": ["build/**/*", "package/**/*"],

@@ -13,6 +13,7 @@ export const components = {
         '/components/maz-input-tags.md',
         '/components/maz-picker.md',
         '/components/maz-phone-number-input.md',
+        '/components/maz-radio-buttons.md',
         '/components/maz-select.md',
         '/components/maz-slider.md',
         '/components/maz-switch.md',

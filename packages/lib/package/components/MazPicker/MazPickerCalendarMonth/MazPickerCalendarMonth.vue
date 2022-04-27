@@ -22,8 +22,7 @@
 
 <script lang="ts" setup>
   import { computed, PropType } from 'vue'
-  import { Color } from './../../types'
-  import MazPickerCalendarDays from './MazPickerCalendarDays.vue'
+  import { Color } from '@package/components/types'
   import MazPickerCalendarGrid from './MazPickerCalendarGrid.vue'
   import { PickerValue } from '../types'
 

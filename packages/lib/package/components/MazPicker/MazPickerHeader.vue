@@ -54,7 +54,7 @@
   import { computed, PropType, ref, watch } from 'vue'
 
   import { Color } from '../types'
-  import { date, capitalize } from './../../filters'
+  import { date, capitalize } from '@package/filters'
   import { PickerValue } from './types'
   import { DateTimeFormatOptions, isBigger } from './utils'
 

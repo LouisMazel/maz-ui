@@ -40,7 +40,7 @@
   import MazBackDrop from './MazBackDrop.vue'
   import MazBtn from './MazBtn.vue'
   import MazIcon from './MazIcon.vue'
-  import XIcon from './../icons/x.svg'
+  import XIcon from '@package/icons/x.svg'
 
   defineProps({
     modelValue: { type: Boolean, default: false },
