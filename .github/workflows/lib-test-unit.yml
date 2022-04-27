@@ -40,7 +40,7 @@ jobs:
         with:
           find: "package/"
           replace: "/packages/lib/package/"
-          include: /packages/lib/coverage/lcov.info
+          include: "/packages/lib/coverage/**"
 
       - name: Cat 2
         run: cat ./coverage/lcov.info
