@@ -9,9 +9,9 @@ on:
 jobs:
   coverage:
     runs-on: ubuntu-latest
-    # defaults:
-    #   run:
-    #     working-directory: ./packages/lib
+    defaults:
+      run:
+        working-directory: ./packages/lib
 
     steps:
       - name: Checkout Actions
@@ -27,22 +27,7 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install modules
-        run: make install-lib
-
-      - name: Run tests unit coverage
-        run: make test-unit-coverage
-
-      - name: Cat 1
-        run: cat ${{github.workspace}}/coverage/clover.xml
-
-      - name: Find and Replace Files Paths
-        uses: jacobtomlinson/gha-find-replace@2.0.0
-        with:
-          find: "/home/runner/work/maz-ui/maz-ui/packages"
-          replace: "/packages/lib/package/"
-
-      - name: Cat 2
-        run: cat ${{github.workspace}}/coverage/clover.xml
+        run: make install
 
       - name: Test & Publish Code Coverage
         uses: paambaati/codeclimate-action@v3.0.0
@@ -51,4 +36,4 @@ jobs:
         with:
           coverageCommand: make test-unit-coverage
           coverageLocations: |
-            ${{github.workspace}}/coverage/clover.xml:clover
+            ${{github.workspace}}/packages/lib/coverage/clover.xml:clover
