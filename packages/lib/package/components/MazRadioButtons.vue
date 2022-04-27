@@ -37,8 +37,8 @@
 </template>
 
 <script lang="ts" setup>
-  import { PropType } from 'vue'
-  import { Color } from './types'
+  import type { PropType } from 'vue'
+  import type { Color } from './types'
 
   export interface ButtonsRadioOption {
     label: string

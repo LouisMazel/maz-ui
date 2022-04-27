@@ -51,12 +51,12 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, PropType, ref, watch } from 'vue'
+  import { computed, type PropType, ref, watch } from 'vue'
 
-  import { Color } from '../types'
+  import type { Color } from '../types'
   import { date, capitalize } from '@package/filters'
-  import { PickerValue } from './types'
-  import { DateTimeFormatOptions, isBigger } from './utils'
+  import type { PickerValue } from './types'
+  import { type DateTimeFormatOptions, isBigger } from './utils'
 
   const props = defineProps({
     modelValue: {

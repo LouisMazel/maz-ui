@@ -25,9 +25,13 @@
 </script>
 
 <script lang="ts" setup>
-  import { computed, getCurrentInstance, PropType } from 'vue'
-  import type { StyleValue } from 'vue'
-  import { Color } from './types'
+  import {
+    computed,
+    getCurrentInstance,
+    type PropType,
+    type StyleValue,
+  } from 'vue'
+  import type { Color } from './types'
 
   const props = defineProps({
     modelValue: { type: Boolean, required: true },

@@ -105,11 +105,11 @@
 </template>
 
 <script lang="ts">
-  import { computed, defineComponent, onMounted, ref, PropType } from 'vue'
+  import { computed, defineComponent, onMounted, ref, type PropType } from 'vue'
   import { debounce } from '../helpers/debounce'
   import MazBtn from './MazBtn.vue'
   import MazIcon from './MazIcon.vue'
-  import { Color, Size } from './types'
+  import type { Color, Size } from './types'
   export type { Color, Size } from './types'
   import EyeOffIcon from '@package/icons/eye-off.svg'
   import EyeIcon from '@package/icons/eye.svg'

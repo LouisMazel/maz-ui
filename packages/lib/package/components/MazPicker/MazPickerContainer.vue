@@ -65,12 +65,12 @@
 <script lang="ts" setup>
   import MazPickerHeader from './MazPickerHeader.vue'
   import MazPickerCalendar from './MazPickerCalendar.vue'
-  import { computed, PropType } from 'vue'
-  import { Color } from '../types'
+  import { computed, type PropType } from 'vue'
+  import type { Color } from '../types'
   // import MazPickerFooter from './MazPickerFooter.vue'
-  import { PickerShortcut, PickerValue } from './types'
+  import type { PickerShortcut, PickerValue } from './types'
   // import MazPickerTime from './MazPickerTime.vue'
-  import { DateTimeFormatOptions } from './utils'
+  import type { DateTimeFormatOptions } from './utils'
 
   const props = defineProps({
     modelValue: {

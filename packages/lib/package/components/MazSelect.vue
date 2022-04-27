@@ -80,10 +80,10 @@
 
 <script lang="ts" setup>
   // NEXT: listPosition & multiselect & search in list
-  import { ref, PropType, computed, onBeforeMount, nextTick } from 'vue'
+  import { ref, computed, onBeforeMount, nextTick, type PropType } from 'vue'
   import MazInput from './MazInput.vue'
   import MazIcon from './MazIcon.vue'
-  import { Color, ModelValueSimple, Position, Size } from './types'
+  import type { Color, ModelValueSimple, Position, Size } from './types'
   import ChevronDownIcon from '@package/icons/chevron-down.svg'
 
   const props = defineProps({

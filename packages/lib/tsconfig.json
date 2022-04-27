@@ -1,8 +1,6 @@
 {
   "extends": "@vue/tsconfig/tsconfig.json",
   "compilerOptions": {
-    "importHelpers": true,
-    "experimentalDecorators": true,
     "skipLibCheck": true,
     "declaration": true,
     "declarationDir": "types",
@@ -18,8 +16,7 @@
       "@package/*": ["package/*"],
       "@components/*": ["package/components/*"]
     },
-    "types": ["@types/node", "google.maps"],
-    "jsx": "preserve"
+    "types": ["@types/node", "google.maps"]
   },
   "include": ["build/**/*", "package/**/*"],
   "exclude": ["node_modules", "lib", "css"]

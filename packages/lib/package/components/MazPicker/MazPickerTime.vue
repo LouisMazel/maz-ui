@@ -37,12 +37,12 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, nextTick, PropType, ref, watch } from 'vue'
+  import { computed, nextTick, type PropType, ref, watch } from 'vue'
   import {
-    DateTimeFormatOptions,
+    type DateTimeFormatOptions,
     scrollToTarget,
     findNearestNumberInList,
-    getCurrentDateForTimeValue,
+    // getCurrentDateForTimeValue,
     getTimeString,
   } from './utils'
   import MazBtn from '../MazBtn.vue'
@@ -95,9 +95,7 @@
   const currentHour = computed(() => {
     if (typeof modelValue.value === 'string') {
       let baseHour = new Date(
-        props.hasDate
-          ? modelValue.value
-          : getCurrentDateForTimeValue(modelValue.value),
+        props.hasDate ? modelValue.value : '', // getCurrentDateForTimeValue(modelValue.value),
       ).getHours()
 
       return findNearestHour(baseHour)
@@ -110,9 +108,7 @@
       ? findNearestNumberInList(
           minutes.value.map(({ value }) => value),
           new Date(
-            props.hasDate
-              ? modelValue.value
-              : getCurrentDateForTimeValue(modelValue.value),
+            props.hasDate ? modelValue.value : '', // getCurrentDateForTimeValue(modelValue.value),
           ).getMinutes(),
         )
       : undefined,
@@ -295,7 +291,7 @@
     const newDate = modelValue.value
       ? props.hasDate
         ? new Date(modelValue.value as string)
-        : getCurrentDateForTimeValue(modelValue.value as string)
+        : new Date(modelValue.value as string) // getCurrentDateForTimeValue(modelValue.value as string)
       : new Date()
 
     const getDateTimeValue = (date: Date) => {

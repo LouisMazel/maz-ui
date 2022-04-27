@@ -60,10 +60,10 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, computed, PropType, onBeforeMount } from 'vue'
+  import { defineComponent, computed, type PropType, onBeforeMount } from 'vue'
   import { vZoomImg } from '@package/directives/v-zoom-img'
   import { vLazyImg } from '@package/directives/v-lazy-img'
-  import { MazGalleryImage } from './types'
+  import type { MazGalleryImage } from './types'
   import MazIcon from './MazIcon.vue'
   export type { MazGalleryImage } from './types'
   import NoPhotographyIcon from '@package/icons/no-photography.svg'

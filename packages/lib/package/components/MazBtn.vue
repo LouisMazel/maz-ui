@@ -52,11 +52,11 @@
 </script>
 
 <script lang="ts" setup>
-  import { computed, PropType, useAttrs, useSlots } from 'vue'
+  import { computed, type PropType, useAttrs, useSlots } from 'vue'
   import MazSpinner from './MazSpinner.vue'
   import MazIcon from './MazIcon.vue'
 
-  import { Color, Size } from './types'
+  import type { Color, Size } from './types'
 
   const { href, to } = useAttrs()
   const slots = useSlots()

@@ -85,12 +85,8 @@
     onUnmounted,
     ref,
     getCurrentInstance,
-    // watch,
-    // nextTick,
-  } from 'vue'
-  import type {
-    PropType,
-    StyleValue,
+    type PropType,
+    type StyleValue,
     // watch,
     // nextTick,
   } from 'vue'
@@ -115,14 +111,14 @@
     // checkValueWithMinMaxDates,
     // isValueDisabledWeekly,
     // getDaysInMonth,
-    DateTimeFormatOptions,
+    type DateTimeFormatOptions,
     // getCurrentDateForTimeValue,
     getBrowserLocale,
     fetchLocale,
     // isValueDisabledDate,
   } from './MazPicker/utils'
 
-  import { PickerValue, PickerShortcut } from './MazPicker/types'
+  import type { PickerValue, PickerShortcut } from './MazPicker/types'
 
   dayjs.extend(customParseFormat)
 

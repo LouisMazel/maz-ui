@@ -57,13 +57,13 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, PropType, ref } from 'vue'
+  import { computed, type PropType, ref } from 'vue'
   import MazPickerCalendarSwitcher from './MazPickerCalendarSwitcher.vue'
-  import { Color } from '../types'
+  import type { Color } from '../types'
   import MazPickerMonthSwitcher from './MazPickerMonthSwitcher.vue'
   import MazPickerYearSwitcher from './MazPickerYearSwitcher.vue'
   import MazPickerCalendarMonth from './MazPickerCalendarMonth/MazPickerCalendarMonth.vue'
-  import { PickerShortcut, PickerValue } from './types'
+  import type { PickerShortcut, PickerValue } from './types'
   // import MazPickerShortcuts from './MazPickerShortcuts.vue'
 
   const props = defineProps({

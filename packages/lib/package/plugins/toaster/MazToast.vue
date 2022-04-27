@@ -24,12 +24,13 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, onMounted, PropType, ref } from 'vue'
+  import { computed, onMounted, ref } from 'vue'
+  import type { PropType } from 'vue'
   import { ToasterTimer } from './timer'
-  import { LocalToasterOptions } from './toaster-handler'
+  import type { LocalToasterOptions } from './toaster-handler'
   import MazIcon from '@components/MazIcon.vue'
   import XIcon from '@package/icons/x.svg'
-  import { ToasterPositions } from './types'
+  import type { ToasterPositions } from './types'
 
   const Toaster = ref<HTMLDivElement>()
 

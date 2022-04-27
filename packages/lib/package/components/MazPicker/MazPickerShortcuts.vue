@@ -15,10 +15,10 @@
 </template>
 
 <script lang="ts" setup>
-  import { PropType, ref, watch } from 'vue'
+  import { type PropType, ref, watch } from 'vue'
   import MazBtn from '../MazBtn.vue'
-  import { Color } from '../types'
-  import { PickerShortcut, PickerValue, RangeValue } from './types'
+  import type { Color } from '../types'
+  import type { PickerShortcut, PickerValue, RangeValue } from './types'
 
   const props = defineProps({
     color: { type: String as PropType<Color>, required: true },

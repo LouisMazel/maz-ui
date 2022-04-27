@@ -21,9 +21,9 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, PropType } from 'vue'
-  import { Color } from '@components/types'
-  import { PickerValue } from '../types'
+  import { computed, type PropType } from 'vue'
+  import type { Color } from '@components/types'
+  import type { PickerValue } from '../types'
 
   import MazPickerCalendarGrid from './MazPickerCalendarGrid.vue'
   import MazPickerCalendarDays from './MazPickerCalendarDays.vue'

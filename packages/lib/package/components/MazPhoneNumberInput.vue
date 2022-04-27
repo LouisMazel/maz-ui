@@ -118,22 +118,22 @@
 
   import locales from './MazPhoneNumberInput/constantes/locales'
 
-  import { Result, Translations } from './MazPhoneNumberInput/types'
+  import type { Result, Translations } from './MazPhoneNumberInput/types'
 
   import {
-    ComponentPublicInstance,
+    type ComponentPublicInstance,
     computed,
     nextTick,
     onBeforeMount,
     onMounted,
-    PropType,
+    type PropType,
     ref,
     watch,
   } from 'vue'
 
   import MazInput from './MazInput.vue'
   import MazSelect from './MazSelect.vue'
-  import { Color, Position, Size } from './types'
+  import type { Color, Position, Size } from './types'
 
   const emits = defineEmits(['update', 'update:model-value', 'country-code'])
 

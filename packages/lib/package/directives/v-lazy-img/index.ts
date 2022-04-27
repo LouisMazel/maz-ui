@@ -1,6 +1,6 @@
 import { LazyImg, DEFAULT_OPTIONS } from './lazy-img-handler'
 import { vLazyImg } from './lazy-img.directive'
-import { vLazyImgOptions } from './types'
+import type { vLazyImgOptions } from './types'
 export * from './types'
 
 const DIRECTIVE_NAME = 'lazy-img'

@@ -40,15 +40,16 @@
 
 <script lang="ts">
   import {
-    ComponentPublicInstance,
+    type ComponentPublicInstance,
     computed,
     defineComponent,
     onBeforeUnmount,
     onMounted,
-    PropType,
+    type PropType,
     ref,
   } from 'vue'
-  import Dropzone, { DropzoneOptions, DropzoneFile } from 'dropzone'
+  import type Dropzone from 'dropzone'
+  import type { DropzoneOptions, DropzoneFile } from 'dropzone'
   import MazSpinner from './MazSpinner.vue'
 
   export interface MazDropzoneOptions extends DropzoneOptions {

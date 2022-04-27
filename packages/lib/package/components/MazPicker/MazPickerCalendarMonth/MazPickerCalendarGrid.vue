@@ -39,7 +39,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, PropType, ref, watch } from 'vue'
+  import { computed, type PropType, ref, watch } from 'vue'
   import {
     getDaysInMonth,
     getFirstDayOfMonth,
@@ -50,9 +50,9 @@
     isSameDay,
   } from '../utils'
   import MazBtn from '@components/MazBtn.vue'
-  import { Color } from '@components/types'
+  import type { Color } from '@components/types'
   import { debounce } from '@package/helpers'
-  import { PartialRangeValue, PickerValue } from '../types'
+  import type { PartialRangeValue, PickerValue } from '../types'
   import dayjs, { Dayjs } from 'dayjs'
 
   enum DaySelect {
