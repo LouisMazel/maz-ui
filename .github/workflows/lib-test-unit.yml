@@ -38,9 +38,8 @@ jobs:
       - name: Find and Replace Files Paths
         uses: jacobtomlinson/gha-find-replace@2.0.0
         with:
-          find: "package/"
+          find: "/home/runner/work/maz-ui/maz-ui/packages"
           replace: "/packages/lib/package/"
-          include: ${{github.workspace}}/coverage/**
 
       - name: Cat 2
         run: cat ${{github.workspace}}/coverage/clover.xml
