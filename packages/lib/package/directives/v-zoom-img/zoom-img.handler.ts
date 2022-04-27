@@ -242,6 +242,14 @@ export class VueZoomImg {
     }, 300)
   }
 
+  private getNewInstanceIndex(newInstanceIndex: number): number {
+    return newInstanceIndex < 0
+      ? this.allInstances.length - 1
+      : newInstanceIndex >= this.allInstances.length
+      ? 0
+      : newInstanceIndex
+  }
+
   private nextPreviousImage(isNext: boolean): void {
     const selectNextInstance = isNext
     const currentInstance: HTMLElement | null = document.querySelector(
@@ -255,16 +263,17 @@ export class VueZoomImg {
       ? currentInstanceIndex + 1
       : currentInstanceIndex - 1
 
-    const getNewInstanceIndex = (): number => {
-      return newInstanceIndex < 0
-        ? this.allInstances.length - 1
-        : newInstanceIndex >= this.allInstances.length
-        ? 0
-        : newInstanceIndex
+    const nextInstance =
+      this.allInstances[this.getNewInstanceIndex(newInstanceIndex)]
+
+    if (nextInstance && currentInstance) {
+      this.useNextInstance(currentInstance, nextInstance)
     }
-
-    const nextInstance = this.allInstances[getNewInstanceIndex()]
-
+  }
+  private useNextInstance(
+    currentInstance: HTMLElement,
+    nextInstance: HTMLElement,
+  ) {
     if (nextInstance && currentInstance) {
       currentInstance.classList.remove('maz-is-open')
       nextInstance.classList.add('maz-is-open')
