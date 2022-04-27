@@ -13,9 +13,9 @@ export default defineConfig({
       enabled: true,
       excludeNodeModules: true,
       reporter: 'clover',
-      // include: ['package/**/*.{ts,vue}'],
+      include: ['package/**/*.{ts,js,vue}'],
+      exclude: ['package/components_tmp'],
       // all: true,
-      // exclude: [],
     },
   },
   resolve: {
