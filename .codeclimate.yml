@@ -12,7 +12,7 @@ plugins:
         - javascript
         - typescript
   eslint:
-    enabled: true
+    enabled: false
     channel: "eslint-7"
     config:
       config: ./packages/lib/eslintrc.js
