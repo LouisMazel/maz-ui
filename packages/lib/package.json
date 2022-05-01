@@ -76,7 +76,7 @@
     "@rollup/plugin-node-resolve": "^13.2.1",
     "@rollup/plugin-replace": "^4.0.0",
     "@rollup/plugin-typescript": "^8.3.2",
-    "@rollup/plugin-url": "^6.0.0",
+    "@rollup/plugin-url": "^7.0.0",
     "@types/dropzone": "^5.7.4",
     "@types/google.maps": "^3.48.6",
     "@types/node": "^17.0.29",

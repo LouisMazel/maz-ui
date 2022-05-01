@@ -20,6 +20,7 @@
     AFTER_ENTERING = 'entering',
     LEAVING = 'entering',
   }
+
   const state = ref<States>(States.NONE)
 
   const enter = (element: HTMLElement) => {
@@ -57,6 +58,7 @@
       element.style.height = height
     })
   }
+
   const afterEnter = (element: HTMLElement) => {
     if (state.value !== States.NONE) {
       return
@@ -64,6 +66,7 @@
 
     element.style.height = 'auto'
   }
+
   const leave = (element: HTMLElement) => {
     if (state.value !== States.NONE) {
       return
