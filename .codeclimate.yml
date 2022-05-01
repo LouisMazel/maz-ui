@@ -19,6 +19,8 @@ plugins:
     #   ignore_warnings: true
   fixme:
     enabled: true
+  stylelint:
+    enable: true
 
 exclude_patterns:
   - .husky/
