@@ -56,6 +56,7 @@
         :no-header="noHeader"
         :min-date="minDate"
         :format="format"
+        :is-hour12="isHour12"
         :max-date="maxDate"
         :disabled-weekly="disabledWeekly"
         :inline="inline"
@@ -312,7 +313,7 @@
   const MazPicker = ref<HTMLDivElement>()
 
   const hasTime = computed(() => props.time || props.onlyTime)
-  const hasDouble = computed(() => props.double)
+  const hasDouble = computed(() => props.double && !props.onlyTime)
   const hasDate = computed(() => !props.onlyTime)
   const isRangeMode = computed(() => typeof currentValue.value === 'object')
 
@@ -355,28 +356,31 @@
 
   const calendarDate = ref(getCalendarDate(currentValue.value))
 
+  const isHour12 = computed(
+    () =>
+      props.format.includes('a') ||
+      props.format.includes('A') ||
+      props.format.includes('h'),
+  )
+
   const formatterOptions = computed<DateTimeFormatOptions>(() => ({
     ...defaultInputDateStyle,
     ...props.inputDateStyle,
     timeStyle:
       props.inputDateStyle.timeStyle ?? hasTime.value ? 'short' : undefined,
-    hour12:
-      props.inputDateStyle.hour12 ??
-      (props.format.includes('a') || props.format.includes('A')),
+    hour12: props.inputDateStyle.hour12 ?? isHour12.value,
   }))
 
   const inputValue = computed(() => {
     if (!currentValue.value) return undefined
 
     if (props.onlyTime) {
-      const baseDate = dayjs().format('YYYY-MM-DD')
-
       return currentValue.value
         ? date(
-            dayjs(`${baseDate} ${currentValue.value}`).format(),
+            dayjs(currentValue.value as string).format(),
             currentLocale.value,
             {
-              timeStyle: props.inputDateStyle.timeStyle,
+              timeStyle: formatterOptions.value.timeStyle,
             },
           )
         : undefined
@@ -412,6 +416,18 @@
       programaticallyOpened.value ||
       props.inline,
   )
+
+  onBeforeMount(() => {
+    if (
+      props.format.includes('h') &&
+      !(props.format.includes('a') || props.format.includes('A'))
+    ) {
+      /* eslint-disable no-console */
+      console.error(
+        '[maz-ui](MazPicker) if you use the 12 format "h" or "hh", you must add "a" or "A" at the end of the format - Ex: "YYYY-MM-DD hh:mm a"',
+      )
+    }
+  })
 
   onMounted(async () => {
     if (props.customElementSelector) {

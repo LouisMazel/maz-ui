@@ -42,13 +42,11 @@
     type DateTimeFormatOptions,
     scrollToTarget,
     findNearestNumberInList,
-    // getCurrentDateForTimeValue,
-    getTimeString,
   } from './utils'
   import MazBtn from '../MazBtn.vue'
   import type { PickerValue } from './types'
   import type { Color } from '../types'
-  import dayjs, { Dayjs } from 'dayjs'
+  import dayjs from 'dayjs'
 
   type ColumnIdentifier = 'hour' | 'minute' | 'ampm'
 
@@ -69,6 +67,7 @@
     minuteInterval: { type: Number, required: true },
     disabledHours: { type: Array as PropType<number[]>, default: undefined },
     format: { type: String, required: true },
+    isHour12: { type: Boolean, required: true },
   })
 
   const findNearestHour = (hour: number) => {
@@ -82,8 +81,6 @@
 
     const nearHour = findNearestNumberInList(hourList, hour)
 
-    selectTime('hour', nearHour)
-
     return nearHour
   }
 
@@ -91,10 +88,6 @@
 
   const MazPickerTime = ref<HTMLDivElement>()
   const dividerHeight = ref<number>()
-
-  const isHour12 = computed(
-    () => props.format.includes('a') || props.format.includes('A'),
-  )
 
   const currentHour = computed(() => {
     if (typeof currentDate.value === 'string') {
@@ -114,7 +107,7 @@
   )
 
   const getHourValue = (hourValue: number) => {
-    if (isHour12.value) {
+    if (props.isHour12) {
       const isPm = currentAmpm.value === 'pm'
       const newValue = isPm ? hourValue + 12 : hourValue
       return newValue === 12 ? 0 : newValue === 24 ? 12 : newValue
@@ -124,9 +117,9 @@
   }
 
   const hours = computed(() => {
-    return Array.from({ length: isHour12.value ? 12 : 24 }, (_v, i) => i).map(
+    return Array.from({ length: props.isHour12 ? 12 : 24 }, (_v, i) => i).map(
       (hour) => {
-        const hourBase = hour + (isHour12.value ? 1 : 0)
+        const hourBase = hour + (props.isHour12 ? 1 : 0)
         const hourValue = getHourValue(hourBase)
         return {
           label: `${hourBase < 10 ? '0' : ''}${hourBase}`,
@@ -159,7 +152,7 @@
   })
 
   const ampm = computed<{ label: string; value: 'am' | 'pm' }[]>(() =>
-    isHour12.value
+    props.isHour12
       ? [
           { label: 'AM', value: 'am' },
           { label: 'PM', value: 'pm' },
@@ -189,7 +182,7 @@
       },
     ]
 
-    if (isHour12.value) {
+    if (props.isHour12) {
       columns.push({
         identifier: 'ampm',
         values: ampm.value,
@@ -233,14 +226,10 @@
 
   watch(
     () => props.modelValue,
-    async (value) => {
-      if (value) {
+    async (value, oldValue) => {
+      if (value !== oldValue) {
         await nextTick()
         scrollColumns()
-
-        currentDate.value = props.hasDate
-          ? dayjs(currentDate.value).format()
-          : getTimeString(`${currentHour.value}:${currentMinute.value}`)
       }
     },
     { immediate: true },
@@ -249,7 +238,7 @@
   const scrollColumns = () => {
     scrollColumn('hour')
     scrollColumn('minute')
-    if (isHour12.value) {
+    if (props.isHour12) {
       scrollColumn('ampm')
     }
   }
@@ -286,29 +275,23 @@
   ) => {
     const newDate = dayjs(currentDate.value)
 
-    const getDateTimeValue = (date: Dayjs) => {
-      return props.hasDate ? date.format() : getTimeString(date)
-    }
-
     if (identifier === 'hour' && typeof value === 'number') {
-      const dateWithNewHour = newDate.set('hour', value)
-      currentDate.value = getDateTimeValue(dateWithNewHour)
+      currentDate.value = newDate.set('hour', value).format()
     }
 
     if (identifier === 'minute' && typeof value === 'number') {
       const dateWithNewMinute = newDate.set('minute', value)
 
-      currentDate.value = getDateTimeValue(dateWithNewMinute)
+      currentDate.value = dateWithNewMinute.format()
     }
 
     if (identifier === 'ampm' && typeof value === 'string') {
       if (currentAmpm.value !== value || !currentHour.value) {
         if (value === 'am') {
-          const dateWithNewHour = newDate
+          currentDate.value = newDate
             .set('hour', newDate.get('hour'))
             .subtract(12, 'hour')
-
-          currentDate.value = getDateTimeValue(dateWithNewHour)
+            .format()
         }
         if (value === 'pm') {
           const baseHour = newDate.get('hour')
@@ -319,8 +302,7 @@
               ? 12
               : baseHour
 
-          const dateWithNewHour = newDate.set('hour', newHour)
-          currentDate.value = getDateTimeValue(dateWithNewHour)
+          currentDate.value = newDate.set('hour', newHour).format()
         }
       }
     }

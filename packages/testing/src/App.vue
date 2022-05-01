@@ -15,18 +15,20 @@
 
     <!-- Start Developing Area - Do not commit anything here -->
 
-    {{ dateValue }}
+    <p>
+      {{ dateValue }}
+    </p>
+
 
     <MazPicker
       v-model="dateValue"
       label="Select date"
       format="YYYY-MM-DDThh:mm a"
-      time
       :first-day-of-week="1"
       locale="fr-FR"
+      time
       color="secondary"
       style="min-width: 400px;"
-      double
     />
 
     <!-- End Developing Area -->
@@ -50,7 +52,7 @@
     aosInstance.handleObserver()
   })
 
-  const dateValue = ref('2022-02-03 10:00 am')
+  const dateValue = ref('2022-02-03T08:40 am')
 </script>
 
 <style lang="postcss">

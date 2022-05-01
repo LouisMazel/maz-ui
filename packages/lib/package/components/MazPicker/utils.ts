@@ -205,10 +205,6 @@ export const findNearestNumberInList = (
   return closest
 }
 
-export function getTimeString(value?: ConfigType, format = 'HH:mm') {
-  return dayjs(value).format(format)
-}
-
 export function convertHour24to12Format(baseHour: number): number {
   return baseHour % 12 || 12
 }

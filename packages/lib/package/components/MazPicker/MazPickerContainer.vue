@@ -55,6 +55,7 @@
         :disabled-hours="disabledHours"
         :minute-interval="minuteInterval"
         :formatter-options="formatterOptions"
+        :is-hour12="isHour12"
         class="m-picker-container__time"
       />
     </div>
@@ -94,6 +95,7 @@
     hasTime: { type: Boolean, required: true },
     isOpen: { type: Boolean, required: true },
     format: { type: String, required: true },
+    isHour12: { type: Boolean, required: true },
     formatterOptions: {
       type: Object as PropType<DateTimeFormatOptions>,
       required: true,
