@@ -273,10 +273,6 @@
 
     &.--black {
       @apply maz-bg-black maz-text-black-contrast;
-
-      & .m-picker-header__year-text {
-        @apply maz-text-muted;
-      }
     }
 
     &.--white {

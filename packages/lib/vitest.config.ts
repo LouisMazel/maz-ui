@@ -9,6 +9,9 @@ const projectRoot = resolve(__dirname)
 
 export default defineConfig({
   plugins: [Vue()],
+  server: {
+    port: 1000,
+  },
   test: {
     globals: true,
     environment: 'jsdom',

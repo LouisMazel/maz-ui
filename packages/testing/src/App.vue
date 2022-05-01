@@ -17,7 +17,15 @@
 
     {{ dateValue }}
 
-    <MazPicker v-model="dateValue" format="YYYY-MM-DD" :first-day-of-week="1" style="min-width: 300px;" locale="fr-FR" color="secondary" />
+    <MazPicker
+      v-model="dateValue"
+      label="Select date"
+      format="YYYY-MM-DD"
+      :first-day-of-week="1"
+      locale="fr-FR"
+      color="secondary"
+      double
+    />
 
     <!-- End Developing Area -->
   </main>
@@ -27,32 +35,24 @@
   import { onMounted, ref } from 'vue'
   import { MazBtn, MazIcon, MazPicker } from 'maz-ui/package/components'
   import { aosInstance } from 'maz-ui/package/plugins'
-  import { useThemeHandler, ThemeHandlerOptions, UserVisibility, UserVisibilyCallback, UserVisibilyOptions } from 'maz-ui/package/helpers'
+  import { useThemeHandler, ThemeHandlerOptions } from 'maz-ui/package/helpers'
 
   const options: ThemeHandlerOptions = {
     storageThemeKey: 'mode',
   }
   const { autoSetTheme, toggleTheme, hasDarkTheme } = useThemeHandler(options)
 
-  const userVisibilyCallback: UserVisibilyCallback = ({ isVisible }) => {
-    console.log('isVisible', isVisible)
-  }
 
-  const userVisibilyOptions: UserVisibilyOptions = {
-    immediate: false,
-    once: false,
-    timeout: 5000,
-  }
-
-  const userVisibilityInstance = new UserVisibility(userVisibilyCallback, userVisibilyOptions)
 
   onMounted(() => {
     autoSetTheme()
     aosInstance.handleObserver()
-    userVisibilityInstance.destroy()
   })
 
-  const dateValue = ref()
+  const dateValue = ref({
+    start: undefined,
+    end: undefined
+  })
 </script>
 
 <style lang="postcss">
@@ -64,6 +64,7 @@
     height: 100vh;
   }
 </style>
+
 <style lang="postcss" scoped>
   main {
     @apply maz-overflow-auto maz-p-5 maz-flex maz-flex-col maz-w-full maz-items-center maz-text-normal maz-h-full;

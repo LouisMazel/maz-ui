@@ -1,7 +1,7 @@
 <template>
   <div
     ref="MazPicker"
-    v-click-outside="closeCalendar"
+    v-click-outside="closeCalendarOnClickOutside"
     class="m-picker"
     :style="style"
     :class="[
@@ -49,7 +49,6 @@
         :is-open="isOpen"
         :color="color"
         :locale="currentLocale"
-        :has-footer="hasFooter"
         :has-date="hasDate"
         :double="hasDouble"
         :time="hasTime"
@@ -87,11 +86,12 @@
     getCurrentInstance,
     type PropType,
     type StyleValue,
-    // watch,
-    // nextTick,
+    watch,
+    nextTick,
   } from 'vue'
   import dayjs from 'dayjs'
   import customParseFormat from 'dayjs/plugin/customParseFormat'
+  import isBetween from 'dayjs/plugin/isBetween'
 
   import MazInput from './MazInput.vue'
   import MazPickerContainer from './MazPicker/MazPickerContainer.vue'
@@ -121,6 +121,7 @@
   import type { PickerValue, PickerShortcut } from './MazPicker/types'
 
   dayjs.extend(customParseFormat)
+  dayjs.extend(isBetween)
 
   const props = defineProps({
     modelValue: {
@@ -128,10 +129,8 @@
       default: undefined,
     },
     format: { type: String, default: 'YYYY-MM-DD' },
-    minDate: { type: String, default: undefined },
-    maxDate: { type: String, default: undefined },
     open: { type: Boolean, default: false },
-    label: { type: String, default: 'Select date' },
+    label: { type: String, default: undefined },
     placeholder: { type: String, default: undefined },
     dateStyle: {
       type: String as PropType<Intl.DateTimeFormatOptions['dateStyle']>,
@@ -144,10 +143,6 @@
     timeZone: {
       type: String as PropType<Intl.DateTimeFormatOptions['timeZone']>,
       default: undefined,
-    },
-    hour12: {
-      type: Boolean as PropType<Intl.DateTimeFormatOptions['hour12']>,
-      default: false,
     },
     locale: { type: String, default: undefined },
     style: { type: Object as PropType<StyleValue>, default: undefined },
@@ -169,7 +164,6 @@
       },
     },
     autoClose: { type: Boolean, default: false },
-    noFooter: { type: Boolean, default: false },
     customElementSelector: { type: String, default: undefined },
     double: { type: Boolean, default: false },
     inline: { type: Boolean, default: false },
@@ -206,6 +200,11 @@
         ].includes(value)
       },
     },
+    noUseBrowserLocale: { type: Boolean, default: false },
+    noFetchLocal: { type: Boolean, default: false },
+    // TODO
+    minDate: { type: String, default: undefined },
+    maxDate: { type: String, default: undefined },
     disabledWeekly: { type: Array as PropType<number[]>, default: () => [] },
     disabledHours: {
       type: Array as PropType<number[]>,
@@ -220,8 +219,10 @@
     shortcut: { type: String, default: undefined },
     time: { type: Boolean, default: false },
     minuteInterval: { type: Number, default: 5 },
-    noUseBrowserLocale: { type: Boolean, default: false },
-    noFetchLocal: { type: Boolean, default: false },
+    hour12: {
+      type: Boolean as PropType<Intl.DateTimeFormatOptions['hour12']>,
+      default: false,
+    },
   })
 
   const instance = getCurrentInstance()
@@ -301,11 +302,11 @@
     if (!currentValue.value) return undefined
 
     if (props.time) {
-      const baseDate = new Date().toISOString().split('T')[0]
+      const baseDate = dayjs().format('YYYY-MM-DD')
 
       return currentValue.value
         ? date(
-            new Date(`${baseDate} ${currentValue.value}`),
+            dayjs(`${baseDate} ${currentValue.value}`).format(),
             currentLocale.value,
             {
               timeStyle: props.timeStyle,
@@ -345,10 +346,6 @@
       props.inline,
   )
 
-  const hasFooter = computed(
-    () => !props.autoClose && !props.noFooter && !props.inline,
-  )
-
   onMounted(async () => {
     if (props.customElementSelector) {
       addEventToTriggerCustomElement(props.customElementSelector)
@@ -374,66 +371,72 @@
     }
   })
 
-  // const getPickerContainerPosition = async (): Promise<{
-  //   vertical: 'top' | 'bottom'
-  //   horizontal: 'left' | 'right'
-  // }> => {
-  //   if (props.pickerPosition) {
-  //     const horizontal = props.pickerPosition.includes('right')
-  //       ? 'right'
-  //       : 'left'
-  //     const vertical = props.pickerPosition.includes('top') ? 'top' : 'bottom'
+  const getPickerContainerPosition = async (): Promise<{
+    vertical: 'top' | 'bottom'
+    horizontal: 'left' | 'right'
+  }> => {
+    if (props.pickerPosition) {
+      const horizontal = props.pickerPosition.includes('right')
+        ? 'right'
+        : 'left'
+      const vertical = props.pickerPosition.includes('top') ? 'top' : 'bottom'
 
-  //     return {
-  //       horizontal,
-  //       vertical,
-  //     }
-  //   } else {
-  //     return {
-  //       horizontal: 'left',
-  //       vertical: await calcVerticalPosition(MazPicker.value),
-  //     }
-  //   }
-  // }
+      return {
+        horizontal,
+        vertical,
+      }
+    } else {
+      return {
+        horizontal: 'left',
+        vertical: await calcVerticalPosition(MazPicker.value),
+      }
+    }
+  }
 
-  // const calcVerticalPosition = async (
-  //   parent?: HTMLDivElement,
-  // ): Promise<'top' | 'bottom'> => {
-  //   if (typeof window === 'undefined') {
-  //     return 'bottom'
-  //   }
+  const calcVerticalPosition = async (
+    parent?: HTMLDivElement,
+  ): Promise<'top' | 'bottom'> => {
+    if (typeof window === 'undefined') {
+      return 'bottom'
+    }
 
-  //   const OFFSET = 30
+    const OFFSET = 30
 
-  //   await nextTick()
+    await nextTick()
 
-  //   const pickerContainer = document.querySelector(
-  //     `#${containerUniqueId.value}`,
-  //   )
+    const pickerContainer = document.querySelector(
+      `#${containerUniqueId.value}`,
+    )
 
-  //   const parentRect = parent?.getBoundingClientRect()
-  //   const windowHeight = window.innerHeight
+    const parentRect = parent?.getBoundingClientRect()
+    const windowHeight = window.innerHeight
 
-  //   const pickerHeight = (pickerContainer?.clientHeight ?? 0) - OFFSET
+    const pickerHeight = (pickerContainer?.clientHeight ?? 0) - OFFSET
 
-  //   const spaceOnBottom = (parentRect && windowHeight - parentRect.bottom) ?? 0
-  //   const spaceOnTop = (parentRect && parentRect.top) ?? 0
+    const spaceOnBottom = (parentRect && windowHeight - parentRect.bottom) ?? 0
+    const spaceOnTop = (parentRect && parentRect.top) ?? 0
 
-  //   const hasSpaceOnBottom = spaceOnBottom && spaceOnBottom >= pickerHeight
+    const hasSpaceOnBottom = spaceOnBottom && spaceOnBottom >= pickerHeight
 
-  //   const hasSpaceOnTop = spaceOnTop && spaceOnTop >= pickerHeight
+    const hasSpaceOnTop = spaceOnTop && spaceOnTop >= pickerHeight
 
-  //   if (!hasSpaceOnBottom && (hasSpaceOnTop || spaceOnTop >= spaceOnBottom)) {
-  //     return 'top'
-  //   }
+    if (!hasSpaceOnBottom && (hasSpaceOnTop || spaceOnTop >= spaceOnBottom)) {
+      return 'top'
+    }
 
-  //   return 'bottom'
-  // }
+    return 'bottom'
+  }
 
   const closeCalendar = () => {
     isFocused.value = false
     programaticallyOpened.value = false
     emits('close')
+  }
+
+  function closeCalendarOnClickOutside() {
+    if (!props.customElementSelector) {
+      closeCalendar()
+    }
   }
 
   const toggleProgramatically = () => {
@@ -537,15 +540,15 @@
   //   { immediate: true },
   // )
 
-  // watch(
-  //   () => isOpen.value,
-  //   async (value) => {
-  //     if (value) {
-  //       pickerContainerPosition.value = await getPickerContainerPosition()
-  //     }
-  //   },
-  //   { immediate: true },
-  // )
+  watch(
+    () => isOpen.value,
+    async (value) => {
+      if (value) {
+        pickerContainerPosition.value = await getPickerContainerPosition()
+      }
+    },
+    { immediate: true },
+  )
 
   // // Disable weekly watcher
   // watch(

@@ -7,10 +7,11 @@
     />
     <MazPickerCalendarGrid
       v-model="modelValue"
+      v-model:hoverred-day="hoverredDay"
       :locale="locale"
       :color="color"
       :time="time"
-      :calendar-date="calendarDate"
+      :calendar-date="calendarDateWithOffset"
       :first-day-of-week="firstDayOfWeek"
       :min-date="minDate"
       :max-date="maxDate"
@@ -27,6 +28,7 @@
 
   import MazPickerCalendarGrid from './MazPickerCalendarGrid.vue'
   import MazPickerCalendarDays from './MazPickerCalendarDays.vue'
+  import dayjs, { Dayjs } from 'dayjs'
 
   const props = defineProps({
     modelValue: {
@@ -43,17 +45,31 @@
     maxDate: { type: String, default: undefined },
     disabledWeekly: { type: Array as PropType<number[]>, required: true },
     disabledDates: { type: Array as PropType<string[]>, required: true },
+    hoverredDay: { type: Object as PropType<Dayjs>, default: undefined },
   })
 
-  const emits = defineEmits(['update:model-value', 'update:calendar-date'])
+  const emits = defineEmits([
+    'update:model-value',
+    'update:calendar-date',
+    'update:hoverred-day',
+  ])
 
   const modelValue = computed({
     get: () => props.modelValue,
     set: (value) => emits('update:model-value', value),
   })
 
-  const calendarDate = computed({
-    get: () => props.calendarDate,
+  const hoverredDay = computed({
+    get: () => props.hoverredDay,
+    set: (value) => emits('update:hoverred-day', value),
+  })
+
+  function getCalendarDateWithOffset(offset: number) {
+    return dayjs(props.calendarDate).add(offset, 'month').format()
+  }
+
+  const calendarDateWithOffset = computed({
+    get: () => getCalendarDateWithOffset(props.offsetMonth),
     set: (calendarDate) => emits('update:calendar-date', calendarDate),
   })
 </script>

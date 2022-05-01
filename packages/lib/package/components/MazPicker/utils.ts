@@ -12,10 +12,6 @@ export type DateTimeFormatOptions = Pick<
   'hour12' | 'dateStyle' | 'timeStyle' | 'timeZone'
 >
 
-// export function cloneDate(date: Date | number): Date {
-//   return new Date(getDateInstance(date).getTime())
-// }
-
 export function getFormattedDate({
   value,
   locale,

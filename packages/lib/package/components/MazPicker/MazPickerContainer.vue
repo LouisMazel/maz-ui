@@ -57,8 +57,6 @@
         class="m-picker-container__time"
       />-->
     </div>
-
-    <!-- <MazPickerFooter v-if="hasFooter" :color="color" @close="$emit('close')" /> -->
   </div>
 </template>
 
@@ -67,7 +65,6 @@
   import MazPickerCalendar from './MazPickerCalendar.vue'
   import { computed, type PropType } from 'vue'
   import type { Color } from '../types'
-  // import MazPickerFooter from './MazPickerFooter.vue'
   import type { PickerShortcut, PickerValue } from './types'
   // import MazPickerTime from './MazPickerTime.vue'
   import type { DateTimeFormatOptions } from './utils'
@@ -83,7 +80,6 @@
     noHeader: { type: Boolean, default: false },
     firstDayOfWeek: { type: Number, required: true },
     double: { type: Boolean, required: true },
-    hasFooter: { type: Boolean, required: true },
     hasDate: { type: Boolean, required: true },
     minDate: { type: String, default: undefined },
     maxDate: { type: String, default: undefined },

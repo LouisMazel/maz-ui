@@ -40,6 +40,7 @@
           v-for="month in months"
           :key="month"
           v-model="modelValue"
+          v-model:hoverred-day="hoverredDay"
           :calendar-date="calendarDate"
           :locale="locale"
           :time="time"
@@ -64,6 +65,7 @@
   import MazPickerYearSwitcher from './MazPickerYearSwitcher.vue'
   import MazPickerCalendarMonth from './MazPickerCalendarMonth/MazPickerCalendarMonth.vue'
   import type { PickerShortcut, PickerValue } from './types'
+  import type { Dayjs } from 'dayjs'
   // import MazPickerShortcuts from './MazPickerShortcuts.vue'
 
   const props = defineProps({
@@ -90,6 +92,8 @@
   })
 
   const emits = defineEmits(['update:model-value', 'update:calendar-date'])
+
+  const hoverredDay = ref<Dayjs>()
 
   // const isRangeMode = computed(() => typeof props.modelValue === 'object')
 

@@ -23,11 +23,17 @@
           :class="{
             '--is-today': checkIsToday(date),
             '--is-first': isFirstDay(date),
-            '--is-last': isLastDay(date),
+            '--is-last':
+              isLastDay(date) || (isRangeMode && isLastDayHoverred(date)),
             '--is-selected': isSelectedOrBetween(date) === DaySelect.SELECTED,
             '--is-between': isSelectedOrBetween(date) === DaySelect.BETWEEN,
+            '--is-between-hoverred': isRangeMode
+              ? isBetweenHoverred(date) === DaySelect.BETWEEN_HOVERRED
+              : undefined,
           }"
           @click="selectDay(date)"
+          @mouseover="isRangeMode ? setHoverredDay(date) : undefined"
+          @mouseleave="isRangeMode ? setHoverredDay() : undefined"
         >
           <span>
             {{ label }}
@@ -59,6 +65,7 @@
     UNSELECTED,
     SELECTED,
     BETWEEN,
+    BETWEEN_HOVERRED,
   }
 
   const props = defineProps({
@@ -75,18 +82,23 @@
     maxDate: { type: String, default: undefined },
     disabledWeekly: { type: Array as PropType<number[]>, required: true },
     disabledDates: { type: Array as PropType<string[]>, required: true },
+    hoverredDay: { type: Object as PropType<Dayjs>, default: undefined },
   })
 
-  const emits = defineEmits(['update:model-value'])
+  const emits = defineEmits(['update:model-value', 'update:hoverred-day'])
 
   const MazPickerGrid = ref<HTMLDivElement>()
   const transitionName = ref<'maz-slidenext' | 'maz-slideprev'>('maz-slidenext')
+
   const calendarDateArray = computed<string[]>(() => [props.calendarDate])
 
   const isRangeMode = computed(() => typeof props.modelValue === 'object')
 
   const hoverColor = computed(() => `var(--maz-color-${props.color}-alpha-20)`)
   const betweenColor = computed(() => `var(--maz-color-${props.color}-alpha)`)
+  const betweenColorAlpha = computed(
+    () => `var(--maz-color-${props.color}-alpha-20)`,
+  )
 
   const modelValue = computed({
     get: () => props.modelValue,
@@ -108,6 +120,41 @@
       getFirstDayOfMonth(props.calendarDate) - props.firstDayOfWeek,
     )
   })
+
+  const setHoverredDay = (day?: Dayjs) => {
+    const value = props.modelValue as PartialRangeValue
+
+    if (value.start && !value.end && day && day.isAfter(value.start)) {
+      emits('update:hoverred-day', day)
+    } else {
+      emits('update:hoverred-day', undefined)
+    }
+  }
+
+  const isBetweenHoverred = (day: Dayjs): DaySelect | undefined => {
+    const value = props.modelValue as PartialRangeValue
+
+    if (!value.start || !props.hoverredDay) {
+      return undefined
+    }
+
+    const isBetween = dayjs(day).isBetween(
+      value.start,
+      props.hoverredDay,
+      'day',
+      '(]',
+    )
+
+    return isBetween ? DaySelect.BETWEEN_HOVERRED : undefined
+  }
+
+  const isLastDayHoverred = (day: Dayjs) => {
+    if (!props.hoverredDay) {
+      return undefined
+    }
+
+    return dayjs(day).isSame(props.hoverredDay)
+  }
 
   const isFirstDay = (day: Dayjs): boolean => {
     if (!props.modelValue) {
@@ -171,6 +218,7 @@
   }
 
   const selectDay = (value: Dayjs) => {
+    setHoverredDay()
     const valueFormatted = value.format()
     if (typeof modelValue.value === 'object') {
       let values = modelValue.value
@@ -182,7 +230,7 @@
         }
       }
 
-      if (!values.start || isBigger(values.start, valueFormatted)) {
+      if (!values.start || isSmaller(values.start, valueFormatted)) {
         modelValue.value = {
           start: valueFormatted,
           end: undefined,
@@ -219,7 +267,7 @@
       return false
     }
 
-    return !isSmaller(day, value.start) && !isBigger(day, value.end)
+    return dayjs(day).isBetween(value.start, value.end, 'day', '()')
   }
 
   const isSmallerMinDate = (day: Dayjs): boolean => {
@@ -313,19 +361,29 @@
 
         &:hover,
         &:focus {
-          &:not(.--is-selected):not(.--is-between) {
+          &:not(.--is-selected):not(.--is-between):not(.--is-between-hoverred) {
             /* stylelint-disable */
             background-color: v-bind(hoverColor) !important;
             /* stylelint-enable */
           }
         }
 
-        &.--is-selected.--is-first {
+        &.--is-first {
           @apply maz-rounded-r-none !important;
         }
 
-        &.--is-selected.--is-last {
+        &.--is-last {
           @apply maz-rounded-l-none !important;
+        }
+
+        &.--is-between-hoverred {
+          &:not(.--is-last) {
+            @apply maz-rounded-none !important;
+          }
+
+          /* stylelint-disable */
+          background-color: v-bind(betweenColorAlpha) !important;
+          /* stylelint-enable */
         }
 
         &.--is-between {
@@ -333,7 +391,7 @@
 
           /* stylelint-disable */
           background-color: v-bind(betweenColor) !important;
-          /* stylelint-enabale */
+          /* stylelint-enable */
 
           &.--white,
           &.--transparent {
@@ -357,9 +415,10 @@
   }
 
   html.dark {
-    .maz-picker-calendar-grid
+    & .maz-picker-calendar-grid {
       button.--is-today:not(.--is-selected):not(.--is-between) {
-      @apply maz-bg-color-lighter !important;
+        @apply maz-bg-color-lighter !important;
+      }
     }
   }
 
