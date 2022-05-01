@@ -2,7 +2,7 @@
 version: "2"
 plugins:
   csslint:
-    enabled: false
+    enabled: true
   coffeelint:
     enabled: false
   duplication:
@@ -19,6 +19,8 @@ plugins:
     #   ignore_warnings: true
   fixme:
     enabled: true
+  stylelint:
+    enable: true
 
 exclude_patterns:
   - .husky/
