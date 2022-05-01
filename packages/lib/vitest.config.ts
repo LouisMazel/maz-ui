@@ -13,12 +13,12 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     coverage: {
-      enabled: true,
+      all: true,
       excludeNodeModules: true,
       reporter: ['clover', 'html'],
-      include: ['package/**/*'],
+      include: ['package'],
       exclude: ['package/components_tmp/**'],
-      all: true,
+      extension: ['.js', '.ts', '.vue'],
     },
   },
   resolve: {
