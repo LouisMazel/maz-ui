@@ -68,7 +68,7 @@
     noShortcuts: { type: Boolean, required: true },
     double: { type: Boolean, required: true },
     hasDate: { type: Boolean, required: true },
-    time: { type: Boolean, required: true },
+    hasTime: { type: Boolean, required: true },
     formatterOptions: {
       type: Object as PropType<DateTimeFormatOptions>,
       required: true,
@@ -172,7 +172,9 @@
       : undefined
   })
 
-  const timeArray = computed(() => (props.time ? [timeValue.value] : undefined))
+  const timeArray = computed(() =>
+    props.hasTime ? [timeValue.value] : undefined,
+  )
 
   watch(
     () => props.modelValue,
@@ -190,7 +192,7 @@
 
 <style lang="postcss" scoped>
   .m-picker-header {
-    @apply maz-z-1 maz-flex maz-justify-between maz-space-y-1 maz-p-2;
+    @apply maz-z-1 maz-flex maz-justify-between maz-space-y-1 maz-p-2 maz-font-normal;
 
     &__year-transition {
       @apply maz-flex maz-h-5 maz-items-center maz-overflow-hidden maz-leading-3;

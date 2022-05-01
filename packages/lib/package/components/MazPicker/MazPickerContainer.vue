@@ -10,7 +10,7 @@
     <MazPickerHeader
       v-if="!noHeader"
       :color="color"
-      :time="time"
+      :has-time="hasTime"
       :model-value="modelValue"
       :locale="locale"
       :calendar-date="calendarDate"
@@ -24,11 +24,11 @@
     <div class="m-picker-container__wrapper">
       <MazPickerCalendar
         v-if="hasDate"
-        v-model="modelValue"
+        v-model="currentDate"
         v-model:calendar-date="calendarDate"
         :color="color"
         :locale="locale"
-        :time="time"
+        :has-time="hasTime"
         :double="double"
         :min-date="minDate"
         :max-date="maxDate"
@@ -41,9 +41,9 @@
         class="m-picker-container__calendar"
       />
 
-      <!--<MazPickerTime
-        v-if="time"
-        v-model="modelValue"
+      <MazPickerTime
+        v-if="hasTime"
+        v-model="currentDate"
         v-model:calendar-date="calendarDate"
         :is-open="isOpen"
         :color="color"
@@ -51,11 +51,12 @@
         :min-date="minDate"
         :has-date="hasDate"
         :max-date="maxDate"
+        :format="format"
         :disabled-hours="disabledHours"
         :minute-interval="minuteInterval"
         :formatter-options="formatterOptions"
         class="m-picker-container__time"
-      />-->
+      />
     </div>
   </div>
 </template>
@@ -66,7 +67,7 @@
   import { computed, type PropType } from 'vue'
   import type { Color } from '../types'
   import type { PickerShortcut, PickerValue } from './types'
-  // import MazPickerTime from './MazPickerTime.vue'
+  import MazPickerTime from './MazPickerTime.vue'
   import type { DateTimeFormatOptions } from './utils'
 
   const props = defineProps({
@@ -90,8 +91,9 @@
       required: true,
     },
     shortcut: { type: String, default: undefined },
-    time: { type: Boolean, required: true },
+    hasTime: { type: Boolean, required: true },
     isOpen: { type: Boolean, required: true },
+    format: { type: String, required: true },
     formatterOptions: {
       type: Object as PropType<DateTimeFormatOptions>,
       required: true,
@@ -108,7 +110,7 @@
     'close',
   ])
 
-  const modelValue = computed({
+  const currentDate = computed({
     get: () => props.modelValue,
     set: (value) => {
       emits('update:model-value', value)

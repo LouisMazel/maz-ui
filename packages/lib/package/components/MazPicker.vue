@@ -51,10 +51,11 @@
         :locale="currentLocale"
         :has-date="hasDate"
         :double="hasDouble"
-        :time="hasTime"
+        :has-time="hasTime"
         :formatter-options="formatterOptions"
         :no-header="noHeader"
         :min-date="minDate"
+        :format="format"
         :max-date="maxDate"
         :disabled-weekly="disabledWeekly"
         :inline="inline"
@@ -89,6 +90,7 @@
     watch,
     nextTick,
   } from 'vue'
+
   import dayjs from 'dayjs'
   import customParseFormat from 'dayjs/plugin/customParseFormat'
   import isBetween from 'dayjs/plugin/isBetween'
@@ -123,6 +125,13 @@
   dayjs.extend(customParseFormat)
   dayjs.extend(isBetween)
 
+  const defaultInputDateStyle: Intl.DateTimeFormatOptions = {
+    dateStyle: 'full',
+    hour12: undefined,
+    timeStyle: undefined,
+    timeZone: undefined,
+  }
+
   const props = defineProps({
     modelValue: {
       type: [String, Object] as PropType<PickerValue>,
@@ -132,17 +141,14 @@
     open: { type: Boolean, default: false },
     label: { type: String, default: undefined },
     placeholder: { type: String, default: undefined },
-    dateStyle: {
-      type: String as PropType<Intl.DateTimeFormatOptions['dateStyle']>,
-      default: 'full',
-    },
-    timeStyle: {
-      type: String as PropType<Intl.DateTimeFormatOptions['timeStyle']>,
-      default: undefined,
-    },
-    timeZone: {
-      type: String as PropType<Intl.DateTimeFormatOptions['timeZone']>,
-      default: undefined,
+    inputDateStyle: {
+      type: Object as PropType<Intl.DateTimeFormatOptions>,
+      default: () => ({
+        dateStyle: 'full',
+        hour12: undefined,
+        timeStyle: undefined,
+        timeZone: undefined,
+      }),
     },
     locale: { type: String, default: undefined },
     style: { type: Object as PropType<StyleValue>, default: undefined },
@@ -202,7 +208,84 @@
     },
     noUseBrowserLocale: { type: Boolean, default: false },
     noFetchLocal: { type: Boolean, default: false },
+    noShortcuts: { type: Boolean, default: false },
+    shortcuts: {
+      type: Array as PropType<PickerShortcut[]>,
+      default: () => [
+        {
+          label: 'Last 7 days',
+          identifier: 'last7Days',
+          value: {
+            start: dayjs().subtract(6, 'day').format(),
+            end: dayjs().format(),
+          },
+        },
+        {
+          label: 'Last 30 days',
+          identifier: 'last30Days',
+          value: {
+            start: dayjs().subtract(29, 'day').format(),
+            end: dayjs().format(),
+          },
+        },
+        {
+          label: 'This week',
+          identifier: 'thisWeek',
+          value: {
+            start: dayjs().startOf('week').format(),
+            end: dayjs().endOf('week').format(),
+          },
+        },
+        {
+          label: 'Last week',
+          identifier: 'lastWeek',
+          value: {
+            start: dayjs().subtract(1, 'week').startOf('week').format(),
+            end: dayjs().subtract(1, 'week').endOf('week').format(),
+          },
+        },
+        {
+          label: 'This month',
+          identifier: 'thisMonth',
+          value: {
+            start: dayjs().set('date', 1).format(),
+            end: dayjs().set('date', dayjs().daysInMonth()).format(),
+          },
+        },
+        {
+          label: 'Last month',
+          identifier: 'lastMonth',
+          value: {
+            start: dayjs().subtract(1, 'month').set('date', 1).format(),
+            end: dayjs()
+              .subtract(1, 'month')
+              .set('date', dayjs().subtract(1, 'month').daysInMonth())
+              .format(),
+          },
+        },
+        {
+          label: 'This year',
+          identifier: 'thisYear',
+          value: {
+            start: dayjs().startOf('year').format(),
+            end: dayjs().endOf('year').format(),
+          },
+        },
+        {
+          label: 'Last year',
+          identifier: 'lastYear',
+          value: {
+            start: dayjs().subtract(1, 'year').startOf('year').format(),
+            end: dayjs().subtract(1, 'year').endOf('year').format(),
+          },
+        },
+      ],
+    },
+    shortcut: { type: String, default: undefined },
+    minuteInterval: { type: Number, default: 5 },
     // TODO
+    time: { type: Boolean, default: false },
+    onlyTime: { type: Boolean, default: false },
     minDate: { type: String, default: undefined },
     maxDate: { type: String, default: undefined },
     disabledWeekly: { type: Array as PropType<number[]>, default: () => [] },
@@ -211,18 +294,6 @@
       default: () => [],
     },
     disabledDates: { type: Array as PropType<string[]>, default: () => [] },
-    noShortcuts: { type: Boolean, default: false },
-    shortcuts: {
-      type: Array as PropType<PickerShortcut[]>,
-      default: () => [],
-    },
-    shortcut: { type: String, default: undefined },
-    time: { type: Boolean, default: false },
-    minuteInterval: { type: Number, default: 5 },
-    hour12: {
-      type: Boolean as PropType<Intl.DateTimeFormatOptions['hour12']>,
-      default: false,
-    },
   })
 
   const instance = getCurrentInstance()
@@ -239,14 +310,10 @@
   const emits = defineEmits(['update:model-value', 'close'])
 
   const MazPicker = ref<HTMLDivElement>()
-  // const PickerContainer = ref<typeof MazPickerContainer>()
 
-  const hasTime = computed(
-    () =>
-      props.format.includes('h') || props.format.includes('H') || props.time,
-  )
+  const hasTime = computed(() => props.time || props.onlyTime)
   const hasDouble = computed(() => props.double)
-  const hasDate = computed(() => !props.time)
+  const hasDate = computed(() => !props.onlyTime)
   const isRangeMode = computed(() => typeof currentValue.value === 'object')
 
   onBeforeMount(() => {
@@ -258,8 +325,8 @@
   })
 
   const currentValue = computed<PickerValue>({
-    get: () =>
-      typeof props.modelValue === 'object'
+    get: () => {
+      return typeof props.modelValue === 'object'
         ? {
             start: props.modelValue.start
               ? dayjs(props.modelValue.start, props.format).format()
@@ -270,7 +337,8 @@
           }
         : props.modelValue
         ? dayjs(props.modelValue, props.format).format()
-        : undefined,
+        : undefined
+    },
     set: (value) => {
       // NEXT: format output
       emitValue(value)
@@ -287,21 +355,20 @@
 
   const calendarDate = ref(getCalendarDate(currentValue.value))
 
-  const formatterOptions = computed<DateTimeFormatOptions>(() => {
-    const { dateStyle, timeStyle, timeZone, hour12 } = props
-
-    return {
-      dateStyle,
-      timeStyle,
-      timeZone,
-      hour12,
-    }
-  })
+  const formatterOptions = computed<DateTimeFormatOptions>(() => ({
+    ...defaultInputDateStyle,
+    ...props.inputDateStyle,
+    timeStyle:
+      props.inputDateStyle.timeStyle ?? hasTime.value ? 'short' : undefined,
+    hour12:
+      props.inputDateStyle.hour12 ??
+      (props.format.includes('a') || props.format.includes('A')),
+  }))
 
   const inputValue = computed(() => {
     if (!currentValue.value) return undefined
 
-    if (props.time) {
+    if (props.onlyTime) {
       const baseDate = dayjs().format('YYYY-MM-DD')
 
       return currentValue.value
@@ -309,7 +376,7 @@
             dayjs(`${baseDate} ${currentValue.value}`).format(),
             currentLocale.value,
             {
-              timeStyle: props.timeStyle,
+              timeStyle: props.inputDateStyle.timeStyle,
             },
           )
         : undefined
@@ -506,12 +573,19 @@
   // }
 
   const emitValue = (value: PickerValue) => {
-    const newValue =
-      typeof value === 'object'
-        ? getRangeISODate(value, props.format)
-        : getISODate(value, props.format)
+    if (typeof value === 'object') {
+      const newValue = getRangeISODate(value, props.format)
+      emits('update:model-value', newValue)
 
-    emits('update:model-value', newValue)
+      if (
+        newValue.start &&
+        !dayjs(calendarDate.value).isSame(newValue.start, 'month')
+      ) {
+        calendarDate.value = newValue.start
+      }
+    } else {
+      emits('update:model-value', getISODate(value, props.format))
+    }
   }
 
   // model value watcher

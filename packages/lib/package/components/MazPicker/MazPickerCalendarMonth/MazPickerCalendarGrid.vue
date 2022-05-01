@@ -74,7 +74,7 @@
       default: undefined,
     },
     calendarDate: { type: String, required: true },
-    time: { type: Boolean, required: true },
+    hasTime: { type: Boolean, required: true },
     locale: { type: String, required: true },
     firstDayOfWeek: { type: Number, required: true },
     color: { type: String as PropType<Color>, required: true },
@@ -141,7 +141,7 @@
     const isBetween = dayjs(day).isBetween(
       value.start,
       props.hoverredDay,
-      'day',
+      'date',
       '(]',
     )
 
@@ -267,7 +267,7 @@
       return false
     }
 
-    return dayjs(day).isBetween(value.start, value.end, 'day', '()')
+    return dayjs(day).isBetween(value.start, value.end, 'date', '()')
   }
 
   const isSmallerMinDate = (day: Dayjs): boolean => {
@@ -368,11 +368,11 @@
           }
         }
 
-        &.--is-first {
+        &.--is-first:not(.--is-last) {
           @apply maz-rounded-r-none !important;
         }
 
-        &.--is-last {
+        &.--is-last:not(.--is-first) {
           @apply maz-rounded-l-none !important;
         }
 

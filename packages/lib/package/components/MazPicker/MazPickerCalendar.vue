@@ -1,13 +1,13 @@
 <template>
   <div class="maz-picker-calendar flex">
-    <!-- <MazPickerShortcuts
-      v-if="!noShortcuts && isRangeMode"
-      v-model="modelValue"
+    <MazPickerShortcuts
+      v-if="hasShortcuts"
+      v-model="currentValue"
       :color="color"
       :shortcuts="shortcuts"
       :shortcut="shortcut"
       :double="double"
-    /> -->
+    />
     <div class="maz-picker-calendar__main" :class="{ '--has-double': double }">
       <MazPickerCalendarSwitcher
         v-model:calendar-date="calendarDate"
@@ -39,11 +39,11 @@
         <MazPickerCalendarMonth
           v-for="month in months"
           :key="month"
-          v-model="modelValue"
+          v-model="currentValue"
           v-model:hoverred-day="hoverredDay"
           :calendar-date="calendarDate"
           :locale="locale"
-          :time="time"
+          :has-time="hasTime"
           :color="color"
           :offset-month="month"
           :first-day-of-week="firstDayOfWeek"
@@ -66,7 +66,7 @@
   import MazPickerCalendarMonth from './MazPickerCalendarMonth/MazPickerCalendarMonth.vue'
   import type { PickerShortcut, PickerValue } from './types'
   import type { Dayjs } from 'dayjs'
-  // import MazPickerShortcuts from './MazPickerShortcuts.vue'
+  import MazPickerShortcuts from './MazPickerShortcuts.vue'
 
   const props = defineProps({
     modelValue: {
@@ -87,7 +87,7 @@
       required: true,
     },
     noShortcuts: { type: Boolean, required: true },
-    time: { type: Boolean, required: true },
+    hasTime: { type: Boolean, required: true },
     shortcut: { type: String, default: undefined },
   })
 
@@ -95,12 +95,16 @@
 
   const hoverredDay = ref<Dayjs>()
 
-  // const isRangeMode = computed(() => typeof props.modelValue === 'object')
+  const isRangeMode = computed(() => typeof props.modelValue === 'object')
+
+  const hasShortcuts = computed(
+    () => !props.noShortcuts && props.shortcuts.length && isRangeMode.value,
+  )
 
   const monthSwitcherOpen = ref(false)
   const yearSwitcherOpen = ref(false)
 
-  const modelValue = computed({
+  const currentValue = computed({
     get: () => props.modelValue,
     set: (value) => emits('update:model-value', value),
   })
@@ -120,7 +124,7 @@
     @apply maz-relative maz-flex maz-w-full;
 
     &__main {
-      @apply maz-flex-1;
+      @apply maz-flex maz-flex-1 maz-flex-col;
 
       width: 16rem;
 
@@ -134,7 +138,7 @@
     }
 
     &__months {
-      @apply maz-flex maz-w-full;
+      @apply maz-flex maz-w-full maz-flex-1;
     }
   }
 

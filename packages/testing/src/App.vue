@@ -13,17 +13,19 @@
 
     <br />
 
-    <!-- Start Developing Area -->
+    <!-- Start Developing Area - Do not commit anything here -->
 
     {{ dateValue }}
 
     <MazPicker
       v-model="dateValue"
       label="Select date"
-      format="YYYY-MM-DD"
+      format="YYYY-MM-DDThh:mm a"
+      time
       :first-day-of-week="1"
       locale="fr-FR"
       color="secondary"
+      style="min-width: 400px;"
       double
     />
 
@@ -40,19 +42,15 @@
   const options: ThemeHandlerOptions = {
     storageThemeKey: 'mode',
   }
+
   const { autoSetTheme, toggleTheme, hasDarkTheme } = useThemeHandler(options)
-
-
 
   onMounted(() => {
     autoSetTheme()
     aosInstance.handleObserver()
   })
 
-  const dateValue = ref({
-    start: undefined,
-    end: undefined
-  })
+  const dateValue = ref('2022-02-03 10:00 am')
 </script>
 
 <style lang="postcss">

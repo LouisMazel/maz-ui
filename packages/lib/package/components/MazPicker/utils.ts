@@ -178,7 +178,7 @@ export function isValueDisabledDate({
   disabledDates: string[]
 }): boolean {
   return disabledDates.some((disabledDate) =>
-    dayjs(value).isSame(dayjs(disabledDate), 'day'),
+    dayjs(value).isSame(dayjs(disabledDate), 'date'),
   )
 }
 
@@ -206,10 +206,6 @@ export const findNearestNumberInList = (
 }
 
 export function getTimeString(value?: ConfigType, format = 'HH:mm') {
-  if (!value) {
-    return undefined
-  }
-
   return dayjs(value).format(format)
 }
 

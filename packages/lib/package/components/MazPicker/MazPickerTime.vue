@@ -48,6 +48,7 @@
   import MazBtn from '../MazBtn.vue'
   import type { PickerValue } from './types'
   import type { Color } from '../types'
+  import dayjs, { Dayjs } from 'dayjs'
 
   type ColumnIdentifier = 'hour' | 'minute' | 'ampm'
 
@@ -56,7 +57,7 @@
       type: [String, Object] as PropType<PickerValue>,
       default: undefined,
     },
-    currentDate: { type: String, required: true },
+    calendarDate: { type: String, required: true },
     formatterOptions: {
       type: Object as PropType<DateTimeFormatOptions>,
       required: true,
@@ -67,6 +68,7 @@
     hasDate: { type: Boolean, required: true },
     minuteInterval: { type: Number, required: true },
     disabledHours: { type: Array as PropType<number[]>, default: undefined },
+    format: { type: String, required: true },
   })
 
   const findNearestHour = (hour: number) => {
@@ -90,26 +92,23 @@
   const MazPickerTime = ref<HTMLDivElement>()
   const dividerHeight = ref<number>()
 
-  const isHour12 = computed(() => props.formatterOptions.hour12)
+  const isHour12 = computed(
+    () => props.format.includes('a') || props.format.includes('A'),
+  )
 
   const currentHour = computed(() => {
-    if (typeof modelValue.value === 'string') {
-      let baseHour = new Date(
-        props.hasDate ? modelValue.value : '', // getCurrentDateForTimeValue(modelValue.value),
-      ).getHours()
-
-      return findNearestHour(baseHour)
+    if (typeof currentDate.value === 'string') {
+      return findNearestHour(dayjs(currentDate.value).get('hour'))
     } else {
       return undefined
     }
   })
+
   const currentMinute = computed(() =>
-    typeof modelValue.value === 'string'
+    typeof currentDate.value === 'string'
       ? findNearestNumberInList(
           minutes.value.map(({ value }) => value),
-          new Date(
-            props.hasDate ? modelValue.value : '', // getCurrentDateForTimeValue(modelValue.value),
-          ).getMinutes(),
+          dayjs(currentDate.value).get('minute'),
         )
       : undefined,
   )
@@ -201,8 +200,8 @@
     return columns
   })
 
-  const modelValue = computed({
-    get: () => props.modelValue,
+  const currentDate = computed({
+    get: () => props.modelValue as string,
     set: (value) => {
       emits('update:model-value', value)
     },
@@ -239,11 +238,8 @@
         await nextTick()
         scrollColumns()
 
-        modelValue.value = props.hasDate
-          ? (modelValue.value
-              ? new Date(modelValue.value as string)
-              : new Date()
-            ).toISOString()
+        currentDate.value = props.hasDate
+          ? dayjs(currentDate.value).format()
           : getTimeString(`${currentHour.value}:${currentMinute.value}`)
       }
     },
@@ -288,35 +284,34 @@
     identifier: ColumnIdentifier,
     value: number | 'am' | 'pm',
   ) => {
-    const newDate = modelValue.value
-      ? props.hasDate
-        ? new Date(modelValue.value as string)
-        : new Date(modelValue.value as string) // getCurrentDateForTimeValue(modelValue.value as string)
-      : new Date()
+    const newDate = dayjs(currentDate.value)
 
-    const getDateTimeValue = (date: Date) => {
-      return props.hasDate ? date.toISOString() : getTimeString(date)
+    const getDateTimeValue = (date: Dayjs) => {
+      return props.hasDate ? date.format() : getTimeString(date)
     }
 
     if (identifier === 'hour' && typeof value === 'number') {
-      const dateWithNewHour = new Date(newDate.setHours(value))
-      modelValue.value = getDateTimeValue(dateWithNewHour)
+      const dateWithNewHour = newDate.set('hour', value)
+      currentDate.value = getDateTimeValue(dateWithNewHour)
     }
-    if (identifier === 'minute' && typeof value === 'number') {
-      const dateWithNewMinute = new Date(newDate.setMinutes(value))
 
-      modelValue.value = getDateTimeValue(dateWithNewMinute)
+    if (identifier === 'minute' && typeof value === 'number') {
+      const dateWithNewMinute = newDate.set('minute', value)
+
+      currentDate.value = getDateTimeValue(dateWithNewMinute)
     }
+
     if (identifier === 'ampm' && typeof value === 'string') {
       if (currentAmpm.value !== value || !currentHour.value) {
         if (value === 'am') {
-          const dateWithNewHour = new Date(
-            newDate.setHours(newDate.getHours() - 12),
-          )
-          modelValue.value = getDateTimeValue(dateWithNewHour)
+          const dateWithNewHour = newDate
+            .set('hour', newDate.get('hour'))
+            .subtract(12, 'hour')
+
+          currentDate.value = getDateTimeValue(dateWithNewHour)
         }
         if (value === 'pm') {
-          const baseHour = newDate.getHours()
+          const baseHour = newDate.get('hour')
           const newHour =
             baseHour + 12 > 12 && baseHour + 12 < 24
               ? baseHour + 12
@@ -324,8 +319,8 @@
               ? 12
               : baseHour
 
-          const dateWithNewHour = new Date(newDate.setHours(newHour))
-          modelValue.value = getDateTimeValue(dateWithNewHour)
+          const dateWithNewHour = newDate.set('hour', newHour)
+          currentDate.value = getDateTimeValue(dateWithNewHour)
         }
       }
     }
