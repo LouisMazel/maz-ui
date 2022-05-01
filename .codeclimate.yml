@@ -11,8 +11,8 @@ plugins:
       languages:
         - javascript
         - typescript
-  # eslint:
-  #   enabled: true
+  eslint:
+    enabled: false
   #   channel: "eslint-7"
   #   config:
   #     config: ./packages/lib/eslintrc.js
