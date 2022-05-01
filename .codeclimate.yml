@@ -2,7 +2,7 @@
 version: "2"
 plugins:
   csslint:
-    enabled: false
+    enabled: true
   coffeelint:
     enabled: false
   duplication:
@@ -18,6 +18,8 @@ plugins:
   #     config: ./packages/lib/eslintrc.js
   #     ignore_warnings: true
   fixme:
+    enabled: true
+  stylelint:
     enabled: true
 
 exclude_patterns:
