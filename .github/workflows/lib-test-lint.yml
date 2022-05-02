@@ -5,6 +5,8 @@ on:
     branches: [master, next]
   pull_request:
     branches: [master, next]
+  paths:
+    - "packages/lib/**"
 
 jobs:
   lib-test-lint:
