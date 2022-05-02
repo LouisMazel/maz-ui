@@ -1,7 +1,10 @@
 name: Build and Deploy
 on:
   push:
-    branches: [next]
+    branches:
+      - master
+      - next
+      - "release/**"
     # paths:
     #   - "packages/docs/**"
 

@@ -1,7 +1,10 @@
 name: Build Doc Tests
 on:
   pull_request:
-    branches: [next]
+    branches:
+      - master
+      - next
+      - "release/**"
     paths:
       - "packages/docs/**"
 
