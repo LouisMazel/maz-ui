@@ -33,13 +33,13 @@
 </script>
 
 <script lang="ts" setup>
-  import { PropType, computed } from 'vue'
+  import { type PropType, computed } from 'vue'
   import MazDialog from './MazDialog.vue'
   import MazBtn from './MazBtn.vue'
   import {
     useMazDialogPromise,
-    DialogData,
-    DialogState,
+    type DialogData,
+    type DialogState,
   } from './MazDialogPromise/use-maz-dialog-promise'
 
   const props = defineProps({

@@ -37,16 +37,16 @@ const idleTimeoutCallback: IdleTimeoutCallback = ({ isIdle, eventType }) => {
 <br />
 
 <div class="flex items-start gap-05 items-center flex-wrap">
-  <MazBtn @click="idleTimeoutInstance.pause()" color="warning">
+  <MazBtn @click="idleTimeoutInstance?.pause" color="warning">
     Pause
   </MazBtn>
-  <MazBtn @click="idleTimeoutInstance.resume()">
+  <MazBtn @click="idleTimeoutInstance?.resume">
     Resume
   </MazBtn>
-  <MazBtn @click="idleTimeoutInstance.reset()" color="secondary">
+  <MazBtn @click="idleTimeoutInstance?.reset" color="secondary">
     Reset
   </MazBtn>
-  <MazBtn @click="idleTimeoutInstance.destroy()" color="danger">
+  <MazBtn @click="idleTimeoutInstance?.destroy" color="danger">
     Destroy
   </MazBtn>
 </div>
@@ -55,8 +55,8 @@ const idleTimeoutCallback: IdleTimeoutCallback = ({ isIdle, eventType }) => {
 
 <MazCard overflow-hidden style="width: 100%;">
   <div style="display: flex;">
-    <div style="flex: 1;">isIdle: {{event.isIdle}}</div>
-    <div v-if="event.eventType" style="flex: 1; padding-left: 10px;">eventType: {{event.eventType}}</div>
+    <div style="flex: 1;">isIdle: {{event.isIdle ?? false}}</div>
+    <div v-if="event.eventType" style="flex: 1; padding-left: 10px;">eventType: {{event.eventType ?? '-' }}</div>
   </div>
 </MazCard>
 
@@ -66,16 +66,16 @@ const idleTimeoutCallback: IdleTimeoutCallback = ({ isIdle, eventType }) => {
 
 ```vue
 <template>
-  <MazBtn @click="idleTimeoutInstance.pause()" color="warning">
+  <MazBtn @click="idleTimeoutInstance?.pause" color="warning">
     Pause
   </MazBtn>
-  <MazBtn @click="idleTimeoutInstance.resume()">
+  <MazBtn @click="idleTimeoutInstance?.resume">
     Resume
   </MazBtn>
-  <MazBtn @click="idleTimeoutInstance.reset()" color="secondary">
+  <MazBtn @click="idleTimeoutInstance?.reset" color="secondary">
     Reset
   </MazBtn>
-  <MazBtn @click="idleTimeoutInstance.destroy()" color="danger">
+  <MazBtn @click="idleTimeoutInstance?.destroy" color="danger">
     Destroy
   </MazBtn>
 
@@ -101,16 +101,9 @@ const idleTimeoutCallback: IdleTimeoutCallback = ({ isIdle, eventType }) => {
   // for typescript users
   import type { IdleTimeoutOptions, IdleTimeoutCallback } from 'maz-ui'
 
-  const event = ref<{ isIdle: boolean, eventType?: string }>()
+  const event = ref<{ isIdle: boolean, eventType?: string }>({})
 
-  const idleTimeoutOptions: IdleTimeoutOptions = {
-    immediate: false,
-    element: document.body,
-    once: false,
-    timeout: 3000,
-  }
-
-  const idleTimeoutCallback: IdleTimeoutCallback = ({ isIdle, eventType }) => {
+  const idleTimeoutCallback: IdleTimeoutCallback = (payload) => {
     console.log({ isIdle, eventType })
 
     event.value = {
@@ -119,7 +112,18 @@ const idleTimeoutCallback: IdleTimeoutCallback = ({ isIdle, eventType }) => {
     }
   }
 
-  const idleTimeoutInstance = new IdleTimeout(idleTimeoutCallback, idleTimeoutOptions)
+  const idleTimeoutInstance = ref<IdleTimeout>()
+
+  onMounted(() => {
+    const idleTimeoutOptions: IdleTimeoutOptions = {
+      element: document.body,
+      timeout: 3000,
+      immediate: true,
+      once: false,
+    }
+
+    idleTimeoutInstance.value = new IdleTimeout(idleTimeoutCallback, idleTimeoutOptions)
+  })
 </script>
 ```
 
@@ -133,14 +137,7 @@ const idleTimeoutCallback: IdleTimeoutCallback = ({ isIdle, eventType }) => {
   // for typescript users
   import type { IdleTimeoutOptions, IdleTimeoutCallback } from 'maz-ui'
 
-  const event = ref<{ isIdle: boolean, eventType?: string }>()
-
-  const idleTimeoutOptions: IdleTimeoutOptions = {
-    element: document.body,
-    timeout: 3000,
-    immediate: true,
-    once: false,
-  }
+  const event = ref<{ isIdle: boolean, eventType?: string }>({})
 
   const idleTimeoutCallback: IdleTimeoutCallback = ({ isIdle, eventType }) => {
     console.log({ isIdle, eventType })
@@ -151,7 +148,18 @@ const idleTimeoutCallback: IdleTimeoutCallback = ({ isIdle, eventType }) => {
     }
   }
 
-  const idleTimeoutInstance = new IdleTimeout(idleTimeoutCallback, idleTimeoutOptions)
+  const idleTimeoutInstance = ref<IdleTimeout>()
+
+  onMounted(() => {
+    const idleTimeoutOptions: IdleTimeoutOptions = {
+      element: document.body,
+      timeout: 3000,
+      immediate: true,
+      once: false,
+    }
+
+    idleTimeoutInstance.value = new IdleTimeout(idleTimeoutCallback, idleTimeoutOptions)
+  })
 </script>
 
 ## Options

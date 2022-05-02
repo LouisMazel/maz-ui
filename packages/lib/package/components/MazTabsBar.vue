@@ -32,7 +32,7 @@
 </script>
 
 <script lang="ts" setup>
-  import { ref, PropType, computed, onBeforeMount, onMounted } from 'vue'
+  import { ref, type PropType, computed, onBeforeMount, onMounted } from 'vue'
   import MazBtn from './MazBtn.vue'
 
   // const toKebabCase = (string: string) => {

@@ -14,6 +14,7 @@
   --maz-color-primary-900: #092b4d;
   --maz-color-primary-contrast: white;
   --maz-color-primary-alpha: rgb(30 144 255 / 60%);
+  --maz-color-primary-alpha-20: rgb(30 144 255 / 20%);
 
   /* SECONDARY */
   --maz-color-secondary-50: #e3f9f3;
@@ -28,6 +29,7 @@
   --maz-color-secondary-900: #083f30;
   --maz-color-secondary-contrast: white;
   --maz-color-secondary-alpha: rgb(28 209 161 / 60%);
+  --maz-color-secondary-alpha-20: rgb(28 209 161 / 20%);
 
   /* INFO */
   --maz-color-info-50: #e2f3f6;
@@ -42,6 +44,7 @@
   --maz-color-info-900: #073137;
   --maz-color-info-contrast: white;
   --maz-color-info-alpha: rgb(23 162 184 / 60%);
+  --maz-color-info-alpha-20: rgb(23 162 184 / 20%);
 
   /* SUCCESS */
   --maz-color-success-50: #f2f9e5;
@@ -56,6 +59,7 @@
   --maz-color-success-900: #2e3e0f;
   --maz-color-success-contrast: white;
   --maz-color-success-alpha: rgb(154 205 50 / 60%);
+  --maz-color-success-alpha-20: rgb(154 205 50 / 20%);
 
   /* WARNING */
   --maz-color-warning-50: #fff6e5;
@@ -70,6 +74,7 @@
   --maz-color-warning-900: #4c370f;
   --maz-color-warning-contrast: #374151;
   --maz-color-warning-alpha: rgb(252 183 49 / 60%);
+  --maz-color-warning-alpha-20: rgb(252 183 49 / 20%);
 
   /* DANGER */
   --maz-color-danger-50: #ffedec;
@@ -84,6 +89,7 @@
   --maz-color-danger-900: #4d2120;
   --maz-color-danger-contrast: white;
   --maz-color-danger-alpha: rgb(255 109 106 / 60%);
+  --maz-color-danger-alpha-20: rgb(255 109 106 / 20%);
 
   /* WHITE */
   --maz-color-white: white;

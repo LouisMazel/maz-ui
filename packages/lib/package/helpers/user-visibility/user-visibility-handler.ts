@@ -1,4 +1,4 @@
-import {
+import type {
   UserVisibilyCallback,
   UserVisibilyOptions,
   UserVisibilyStrictOptions,
@@ -38,10 +38,10 @@ export class UserVisibility {
       this.emitCallback()
     }
 
-    this.start()
+    this.addEventListener()
   }
 
-  emitCallback() {
+  private emitCallback() {
     this.isVisible = this.element.visibilityState === 'visible'
     this.callback({ isVisible: this.isVisible })
 
@@ -75,12 +75,16 @@ export class UserVisibility {
     )
   }
 
-  start() {
+  private addEventListener() {
     this.element.addEventListener(this.event, this.eventHandlerFunction)
   }
 
-  destroy() {
+  private removeEventListener() {
     this.element.removeEventListener(this.event, this.eventHandlerFunction)
+  }
+
+  destroy() {
+    this.removeEventListener()
 
     if (this.timeoutHandler) {
       clearTimeout(this.timeoutHandler)

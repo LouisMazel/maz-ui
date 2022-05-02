@@ -1,12 +1,6 @@
 import { computed, ref } from 'vue'
-import {
-  contains,
-  DEFAULT_LOADER,
-  hasItems,
-  LoaderId,
-  pop,
-  push,
-} from './utils'
+import { contains, DEFAULT_LOADER, hasItems, pop, push } from './utils'
+import type { LoaderId } from './utils'
 
 export class WaitHandler {
   private _loaders = ref<LoaderId[]>([])

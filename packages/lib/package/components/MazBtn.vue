@@ -52,11 +52,11 @@
 </script>
 
 <script lang="ts" setup>
-  import { computed, PropType, useAttrs, useSlots } from 'vue'
+  import { computed, type PropType, useAttrs, useSlots } from 'vue'
   import MazSpinner from './MazSpinner.vue'
   import MazIcon from './MazIcon.vue'
 
-  import { Color, Size } from './types'
+  import type { Color, Size } from './types'
 
   const { href, to } = useAttrs()
   const slots = useSlots()
@@ -173,7 +173,8 @@
     }
 
     &.--is-link {
-      @apply maz-outline-none maz-inline-flex maz-items-center maz-bg-transparent maz-transition maz-duration-200 maz-ease-in-out;
+      @apply maz-outline-none maz-inline-flex maz-items-center
+        maz-bg-transparent maz-transition maz-duration-200 maz-ease-in-out;
 
       &:not(.--no-leading) {
         @apply maz-leading-9;
@@ -217,8 +218,8 @@
 
     &.--is-button {
       @apply maz-relative maz-inline-flex maz-items-center maz-justify-center maz-overflow-hidden
-      maz-rounded-lg maz-border-transparent maz-bg-transparent maz-font-medium maz-no-underline
-      maz-transition maz-duration-300 maz-ease-in-out;
+        maz-rounded-lg maz-border-transparent maz-bg-transparent maz-font-medium maz-no-underline
+        maz-transition maz-duration-300 maz-ease-in-out;
 
       &.--rounded {
         @apply maz-rounded-full;
@@ -284,7 +285,8 @@
       /* Fab */
 
       &.--fab {
-        @apply maz-flex maz-h-12 maz-w-12 maz-items-center maz-justify-center maz-rounded-full maz-px-0 maz-py-0;
+        @apply maz-flex maz-h-12 maz-w-12 maz-items-center
+          maz-justify-center maz-rounded-full maz-px-0 maz-py-0;
 
         &:not(.--no-elevation) {
           @apply maz-elevation;

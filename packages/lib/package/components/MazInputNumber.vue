@@ -44,8 +44,8 @@
 </script>
 
 <script lang="ts" setup>
-  import { computed, PropType } from 'vue'
-  import { Size } from './types'
+  import { computed, type PropType } from 'vue'
+  import type { Size } from './types'
   import MazBtn from './MazBtn.vue'
   import MazInput from './MazInput.vue'
   import MazIcon from './MazIcon.vue'

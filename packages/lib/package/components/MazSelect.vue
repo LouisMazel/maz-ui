@@ -80,10 +80,10 @@
 
 <script lang="ts" setup>
   // NEXT: listPosition & multiselect & search in list
-  import { ref, PropType, computed, onBeforeMount, nextTick } from 'vue'
+  import { ref, computed, onBeforeMount, nextTick, type PropType } from 'vue'
   import MazInput from './MazInput.vue'
   import MazIcon from './MazIcon.vue'
-  import { Color, ModelValueSimple, Position, Size } from './types'
+  import type { Color, ModelValueSimple, Position, Size } from './types'
   import ChevronDownIcon from '@package/icons/chevron-down.svg'
 
   const props = defineProps({
@@ -310,12 +310,14 @@
     }
 
     &-list {
-      @apply maz-absolute maz-z-100 maz-overflow-auto maz-rounded-lg maz-bg-color maz-text-normal maz-elevation;
+      @apply maz-absolute maz-z-100 maz-overflow-auto
+        maz-rounded-lg maz-bg-color maz-text-normal maz-elevation;
 
       min-width: 3.5rem;
 
       &-item {
-        @apply maz-flex maz-w-full maz-items-center maz-bg-transparent maz-px-4 maz-text-left maz-text-normal hover:maz-bg-color-light;
+        @apply maz-flex maz-w-full maz-items-center maz-bg-transparent
+          maz-px-4 maz-text-left maz-text-normal hover:maz-bg-color-light;
 
         &.--is-keyboard-selected {
           @apply maz-bg-color-light maz-font-medium;

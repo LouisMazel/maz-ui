@@ -1,12 +1,15 @@
-name: Build Doc Tests
+name: Doc Build Test
 on:
   pull_request:
-    branches: [next]
+    branches:
+      - master
+      - next
+      - "release/**"
     paths:
       - "packages/docs/**"
 
 jobs:
-  build-test:
+  doc-build-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

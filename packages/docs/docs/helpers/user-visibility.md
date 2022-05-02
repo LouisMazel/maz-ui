@@ -31,7 +31,7 @@ const userVisibilyCallback: UserVisibilyCallback = ({ isVisible }) => {
 
 <br />
 
-<MazBtn @click="userVisibilityInstance.destroy()" color="danger">
+<MazBtn @click="userVisibilityInstance?.destroy" color="danger">
   Destroy
 </MazBtn>
 
@@ -50,7 +50,7 @@ const userVisibilyCallback: UserVisibilyCallback = ({ isVisible }) => {
 
 ```vue
 <template>
-  <MazBtn @click="userVisibilityInstance.destroy()" color="danger">
+  <MazBtn @click="userVisibilityInstance?.destroy" color="danger">
     Destroy
   </MazBtn>
 
@@ -84,7 +84,11 @@ const userVisibilyCallback: UserVisibilyCallback = ({ isVisible }) => {
     timeout: 1000,
   }
 
-  const userVisibilityInstance = new UserVisibility(userVisibilyCallback, userVisibilyOptions)
+  const userVisibilityInstance = ref<UserVisibility>()
+
+  onMounted(() => {
+    userVisibilityInstance.value = new UserVisibility(userVisibilyCallback, userVisibilyOptions)
+  })
 </script>
 ```
 
@@ -111,7 +115,11 @@ const userVisibilyCallback: UserVisibilyCallback = ({ isVisible }) => {
     timeout: 1000,
   }
 
-  const userVisibilityInstance = new UserVisibility(userVisibilyCallback, userVisibilyOptions)
+  const userVisibilityInstance = ref<UserVisibility>()
+
+  onMounted(() => {
+    userVisibilityInstance.value = new UserVisibility(userVisibilyCallback, userVisibilyOptions)
+  })
 </script>
 
 ## Options

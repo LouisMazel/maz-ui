@@ -1,5 +1,5 @@
 import { vZoomImg } from './zoom-img.directive'
-import { vZoomImgBinding, vZoomImgOptions } from './zoom-img.handler'
+import type { vZoomImgBinding, vZoomImgOptions } from './zoom-img.handler'
 
 const plugin = {
   install(app) {
