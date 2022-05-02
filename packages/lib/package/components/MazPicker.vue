@@ -41,7 +41,7 @@
       "
     >
       <MazPickerContainer
-        v-if="isOpen"
+        v-show="isOpen"
         :id="containerUniqueId"
         ref="PickerContainer"
         v-model="currentValue"
@@ -106,19 +106,16 @@
   import { date } from '../filters'
 
   import {
-    // getCurrentDate,
     getFormattedDate,
     getRangeFormattedDate,
     getISODate,
     getRangeISODate,
-    // checkValueWithMinMaxDates,
-    // isValueDisabledWeekly,
-    // getDaysInMonth,
+    checkValueWithMinMaxDates,
+    isValueDisabledWeekly,
     type DateTimeFormatOptions,
-    // getCurrentDateForTimeValue,
     getBrowserLocale,
     fetchLocale,
-    // isValueDisabledDate,
+    isValueDisabledDate,
   } from './MazPicker/utils'
 
   import type { PickerValue, PickerShortcut } from './MazPicker/types'
@@ -207,6 +204,9 @@
         ].includes(value)
       },
     },
+    time: { type: Boolean, default: false },
+    onlyTime: { type: Boolean, default: false },
+    minuteInterval: { type: Number, default: 5 },
     noUseBrowserLocale: { type: Boolean, default: false },
     noFetchLocal: { type: Boolean, default: false },
     noShortcuts: { type: Boolean, default: false },
@@ -283,18 +283,14 @@
       ],
     },
     shortcut: { type: String, default: undefined },
-    minuteInterval: { type: Number, default: 5 },
-    // TODO
-    time: { type: Boolean, default: false },
-    onlyTime: { type: Boolean, default: false },
     minDate: { type: String, default: undefined },
     maxDate: { type: String, default: undefined },
     disabledWeekly: { type: Array as PropType<number[]>, default: () => [] },
+    disabledDates: { type: Array as PropType<string[]>, default: () => [] },
     disabledHours: {
       type: Array as PropType<number[]>,
       default: () => [],
     },
-    disabledDates: { type: Array as PropType<string[]>, default: () => [] },
   })
 
   const instance = getCurrentInstance()
@@ -319,8 +315,18 @@
 
   onBeforeMount(() => {
     if (isRangeMode.value && hasTime.value) {
-      throw new Error(
-        `[maz-ui](MazPicker) you can't use time picker with range picker`,
+      // eslint-disable-next-line no-console
+      console.error(
+        `[maz-ui](MazPicker) You can't use time picker with range picker`,
+      )
+    }
+    if (
+      hasTime.value &&
+      !(props.format.includes('h') || props.format.includes('H'))
+    ) {
+      // eslint-disable-next-line no-console
+      console.error(
+        `[maz-ui](MazPicker) When you use the time picker, you must provided a format with time - Ex: "YYYY-MM-DD HH:mm"`,
       )
     }
   })
@@ -542,51 +548,54 @@
     target?.removeEventListener('click', toggleProgramatically)
   }
 
-  // const checkMinMaxValues = (value: PickerValue) => {
-  //   if (props.minDate || props.maxDate) {
-  //     if (typeof value === 'string') {
-  //       const { newValue, newCurrentDate } = checkValueWithMinMaxDates({
-  //         value,
-  //         minDate: props.minDate,
-  //         maxDate: props.maxDate,
-  //       })
-  //       if (newValue) {
-  //         emitValue(newValue)
-  //       }
-  //       if (newCurrentDate) currentDate.value = newCurrentDate
-  //     } else if (typeof value === 'object' && (value.start || value.end)) {
-  //       // RANGE
-  //       let newStartValue = value.start
-  //       let newEndValue = value.end
+  const checkMinMaxValues = (value: PickerValue) => {
+    if (props.minDate || props.maxDate) {
+      if (typeof value === 'string') {
+        const { newValue, newCurrentDate } = checkValueWithMinMaxDates({
+          value,
+          minDate: props.minDate,
+          maxDate: props.maxDate,
+          format: props.format,
+        })
 
-  //       if (value.start) {
-  //         const { newValue, newCurrentDate } = checkValueWithMinMaxDates({
-  //           value: value.start,
-  //           minDate: props.minDate,
-  //           maxDate: props.maxDate,
-  //         })
+        if (newValue) {
+          emitValue(newValue)
+        }
+        if (newCurrentDate) calendarDate.value = newCurrentDate
+      } else if (typeof value === 'object' && (value.start || value.end)) {
+        let newStartValue = value.start
+        let newEndValue = value.end
 
-  //         if (newValue) newStartValue = newValue
+        if (value.start) {
+          const { newValue, newCurrentDate } = checkValueWithMinMaxDates({
+            value: value.start,
+            minDate: props.minDate,
+            maxDate: props.maxDate,
+            format: props.format,
+          })
 
-  //         if (newCurrentDate) currentDate.value = newCurrentDate
-  //       }
-  //       if (value.end) {
-  //         const { newValue } = checkValueWithMinMaxDates({
-  //           value: value.end,
-  //           minDate: props.minDate,
-  //           maxDate: props.maxDate,
-  //         })
+          if (newValue) newStartValue = newValue
 
-  //         if (newValue) newEndValue = newValue
-  //       }
+          if (newCurrentDate) calendarDate.value = newCurrentDate
+        }
+        if (value.end) {
+          const { newValue } = checkValueWithMinMaxDates({
+            value: value.end,
+            minDate: props.minDate,
+            maxDate: props.maxDate,
+            format: props.format,
+          })
 
-  //       emitValue({
-  //         start: newStartValue,
-  //         end: newEndValue,
-  //       })
-  //     }
-  //   }
-  // }
+          if (newValue) newEndValue = newValue
+        }
+
+        emitValue({
+          start: newStartValue,
+          end: newEndValue,
+        })
+      }
+    }
+  }
 
   const emitValue = (value: PickerValue) => {
     if (typeof value === 'object') {
@@ -605,30 +614,28 @@
   }
 
   // model value watcher
-  // watch(
-  //   () => [currentValue.value, props.minDate, props.maxDate],
-  //   (values, oldValues) => {
-  //     const value = values[0] as PickerValue
-  //     const oldValue = oldValues?.[0] as PickerValue
+  watch(
+    () => [currentValue.value, props.minDate, props.maxDate],
+    (values, oldValues) => {
+      const value = values[0] as PickerValue
+      const oldValue = oldValues?.[0] as PickerValue
 
-  //     // currentDate.value = getCurrentDateValue()
-
-  //     if (typeof value === 'object' && (value.start || value.end)) {
-  //       if (
-  //         !oldValue ||
-  //         (typeof oldValue === 'object' &&
-  //           (oldValue.start !== value.start || oldValue.end !== value.end))
-  //       ) {
-  //         emitValue(value)
-  //         checkMinMaxValues(value)
-  //       }
-  //     } else if (typeof value === 'string' && value !== oldValue) {
-  //       emitValue(value)
-  //       checkMinMaxValues(value)
-  //     }
-  //   },
-  //   { immediate: true },
-  // )
+      if (typeof value === 'object' && (value.start || value.end)) {
+        if (
+          !oldValue ||
+          (typeof oldValue === 'object' &&
+            (oldValue.start !== value.start || oldValue.end !== value.end))
+        ) {
+          emitValue(value)
+          checkMinMaxValues(value)
+        }
+      } else if (typeof value === 'string' && value !== oldValue) {
+        emitValue(value)
+        checkMinMaxValues(value)
+      }
+    },
+    { immediate: true },
+  )
 
   watch(
     () => isOpen.value,
@@ -641,41 +648,45 @@
   )
 
   // // Disable weekly watcher
-  // watch(
-  //   () => [currentValue.value, props.disabledWeekly, props.disabledDates],
-  //   (values) => {
-  //     const value = values[0] as PickerValue
-  //     const disabledWeekly = values[1] as number[]
-  //     const disabledDates = values[2] as string[]
+  watch(
+    () => [currentValue.value, props.disabledWeekly, props.disabledDates],
+    (values) => {
+      const value = values[0] as PickerValue
+      const disabledWeekly = values[1] as number[]
+      const disabledDates = values[2] as string[]
 
-  //     if (typeof value === 'object' && (value.start || value.end)) {
-  //       if (
-  //         (value.start &&
-  //           isValueDisabledWeekly({ value: value.start, disabledWeekly })) ||
-  //         (value.start &&
-  //           isValueDisabledDate({ value: value.start, disabledDates }))
-  //       ) {
-  //         currentValue.value = { start: undefined, end: value.end }
-  //       }
-  //       if (
-  //         (value.end &&
-  //           isValueDisabledWeekly({ value: value.end, disabledWeekly })) ||
-  //         (value.end &&
-  //           isValueDisabledDate({ value: value.end, disabledDates }))
-  //       ) {
-  //         currentValue.value = { start: value.start, end: undefined }
-  //       }
-  //     } else if (typeof value === 'string') {
-  //       if (
-  //         isValueDisabledWeekly({ value, disabledWeekly }) ||
-  //         isValueDisabledDate({ value, disabledDates })
-  //       ) {
-  //         currentValue.value = undefined
-  //       }
-  //     }
-  //   },
-  //   { immediate: true },
-  // )
+      if (typeof value === 'object' && (value.start || value.end)) {
+        if (
+          (value.start &&
+            isValueDisabledWeekly({ value: value.start, disabledWeekly })) ||
+          (value.start &&
+            isValueDisabledDate({ value: value.start, disabledDates })) ||
+          (value.end &&
+            isValueDisabledWeekly({ value: value.end, disabledWeekly })) ||
+          (value.end &&
+            isValueDisabledDate({ value: value.end, disabledDates }))
+        ) {
+          currentValue.value = { start: undefined, end: undefined }
+        }
+        if (
+          (value.end &&
+            isValueDisabledWeekly({ value: value.end, disabledWeekly })) ||
+          (value.end &&
+            isValueDisabledDate({ value: value.end, disabledDates }))
+        ) {
+          currentValue.value = { start: value.start, end: undefined }
+        }
+      } else if (typeof value === 'string') {
+        if (
+          isValueDisabledWeekly({ value, disabledWeekly }) ||
+          isValueDisabledDate({ value, disabledDates })
+        ) {
+          currentValue.value = undefined
+        }
+      }
+    },
+    { immediate: true },
+  )
 </script>
 
 <style lang="postcss" scoped>

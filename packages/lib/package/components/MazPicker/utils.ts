@@ -50,10 +50,6 @@ export function getRangeFormattedDate({
     : undefined
 }
 
-export function getCurrentDate(value?: string | Date, format?: string): string {
-  return dayjs(value, format).format()
-}
-
 export function getFirstDayOfMonth(value: ConfigType): number {
   return dayjs(value).startOf('month').day()
 }
@@ -91,10 +87,6 @@ export function isSameDate(
   unit: OpUnitType,
 ): boolean {
   return dayjs(date).isSame(date2, unit)
-}
-
-export function isBigger(date: ConfigType, date2: ConfigType): boolean {
-  return dayjs(date).isBefore(date2)
 }
 
 export function isSmaller(date: ConfigType, date2: ConfigType): boolean {
@@ -140,17 +132,17 @@ export function checkValueWithMinMaxDates({
   value: string
   minDate?: string
   maxDate?: string
-  format?: string
+  format: string
 }): CheckValueResponse {
-  if (minDate && isSmaller(value, minDate)) {
+  if (minDate && dayjs(value).isBefore(minDate)) {
     return {
       newValue: minDate,
-      newCurrentDate: getCurrentDate(minDate, format),
+      newCurrentDate: dayjs(minDate, format).format(),
     }
-  } else if (maxDate && isBigger(value, maxDate)) {
+  } else if (maxDate && dayjs(value).isAfter(maxDate)) {
     return {
       newValue: maxDate,
-      newCurrentDate: getCurrentDate(maxDate, format),
+      newCurrentDate: dayjs(maxDate, format).format(),
     }
   }
 

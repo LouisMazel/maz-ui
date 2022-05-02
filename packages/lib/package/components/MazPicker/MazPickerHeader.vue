@@ -56,7 +56,8 @@
   import type { Color } from '../types'
   import { date, capitalize } from '@package/filters'
   import type { PickerValue } from './types'
-  import { type DateTimeFormatOptions, isBigger } from './utils'
+  import type { DateTimeFormatOptions } from './utils'
+  import dayjs from 'dayjs'
 
   const props = defineProps({
     modelValue: {
@@ -183,9 +184,12 @@
         typeof modelValue === 'object' ? modelValue.start : modelValue
       const oldValue =
         typeof oldModelValue === 'object' ? oldModelValue.start : oldModelValue
-      transitionName.value = isBigger(oldValue, currentValue)
-        ? 'maz-slidevnext'
-        : 'maz-slidevprev'
+
+      transitionName.value =
+        dayjs(currentValue).isAfter(oldValue, 'date') ||
+        dayjs(currentValue).isSame(oldValue, 'date')
+          ? 'maz-slidevnext'
+          : 'maz-slidevprev'
     },
   )
 </script>

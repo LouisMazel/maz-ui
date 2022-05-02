@@ -5,7 +5,7 @@
     :class="{ '--has-date': hasDate }"
   >
     <div
-      v-for="({ values, currentValue, identifier }, i) in columns"
+      v-for="({ values, identifier }, i) in columns"
       :key="i"
       class="m-picker-time__column"
       :class="[`m-picker-time__column__${identifier}`]"
@@ -19,8 +19,8 @@
           v-for="({ value, label, disabled }, unitIndex) in values"
           :key="unitIndex"
           size="xs"
-          :color="currentValue === value ? color : 'transparent'"
-          :class="{ '--is-selected': currentValue === value }"
+          :color="isSelected(identifier, value) ? color : 'transparent'"
+          :class="{ '--is-selected': isSelected(identifier, value) }"
           :disabled="disabled"
           type="button"
           @click.stop="selectTime(identifier, value)"
@@ -46,7 +46,7 @@
   import MazBtn from '../MazBtn.vue'
   import type { PickerValue } from './types'
   import type { Color } from '../types'
-  import dayjs from 'dayjs'
+  import dayjs, { Dayjs } from 'dayjs'
 
   type ColumnIdentifier = 'hour' | 'minute' | 'ampm'
 
@@ -68,6 +68,8 @@
     disabledHours: { type: Array as PropType<number[]>, default: undefined },
     format: { type: String, required: true },
     isHour12: { type: Boolean, required: true },
+    minDate: { type: String, default: undefined },
+    maxDate: { type: String, default: undefined },
   })
 
   const findNearestHour = (hour: number) => {
@@ -80,6 +82,10 @@
     )
 
     const nearHour = findNearestNumberInList(hourList, hour)
+
+    if (nearHour !== hour) {
+      selectTime('hour', dayjs(currentDate.value).set('hour', nearHour))
+    }
 
     return nearHour
   }
@@ -100,13 +106,13 @@
   const currentMinute = computed(() =>
     typeof currentDate.value === 'string'
       ? findNearestNumberInList(
-          minutes.value.map(({ value }) => value),
+          minutes.value.map(({ value }) => value.get('minute')),
           dayjs(currentDate.value).get('minute'),
         )
       : undefined,
   )
 
-  const getHourValue = (hourValue: number) => {
+  const getHour12or24 = (hourValue: number) => {
     if (props.isHour12) {
       const isPm = currentAmpm.value === 'pm'
       const newValue = isPm ? hourValue + 12 : hourValue
@@ -120,12 +126,18 @@
     return Array.from({ length: props.isHour12 ? 12 : 24 }, (_v, i) => i).map(
       (hour) => {
         const hourBase = hour + (props.isHour12 ? 1 : 0)
-        const hourValue = getHourValue(hourBase)
+        const hour12or24 = getHour12or24(hourBase)
+
+        const hourValue = dayjs(currentDate.value).set('hour', hour12or24)
+        const disabled =
+          isDisableHour(hour12or24) ||
+          dayjs(props.minDate).isAfter(hourValue, 'hour') ||
+          dayjs(props.maxDate).isBefore(hourValue, 'hour')
+
         return {
           label: `${hourBase < 10 ? '0' : ''}${hourBase}`,
-          value: hourValue,
-          base: hour,
-          disabled: isDisableHour(hourValue),
+          value: dayjs(currentDate.value).set('hour', hour12or24),
+          disabled,
         }
       },
     )
@@ -135,11 +147,19 @@
     const length = Math.floor(60 / props.minuteInterval) - 0
 
     return Array.from({ length }, (_v, i) => i * props.minuteInterval).map(
-      (minute) => ({
-        label: `${minute < 10 ? '0' : ''}${minute}`,
-        value: minute,
-        disabled: false,
-      }),
+      (minute) => {
+        const minuteValue = dayjs(currentDate.value).set('minute', minute)
+
+        const disabled =
+          dayjs(props.minDate).isAfter(minuteValue, 'minute') ||
+          dayjs(props.maxDate).isBefore(minuteValue, 'minute')
+
+        return {
+          label: `${minute < 10 ? '0' : ''}${minute}`,
+          value: minuteValue,
+          disabled,
+        }
+      },
     )
   })
 
@@ -165,20 +185,17 @@
       identifier: ColumnIdentifier
       values: {
         label: string
-        value: number | 'am' | 'pm'
+        value: Dayjs | 'am' | 'pm'
         disabled?: boolean
       }[]
-      currentValue: number | string | undefined
     }[] = [
       {
         identifier: 'hour',
         values: hours.value,
-        currentValue: currentHour.value,
       },
       {
         identifier: 'minute',
         values: minutes.value,
-        currentValue: currentMinute.value,
       },
     ]
 
@@ -186,7 +203,6 @@
       columns.push({
         identifier: 'ampm',
         values: ampm.value,
-        currentValue: currentAmpm.value,
       })
     }
 
@@ -247,6 +263,20 @@
     return (props.disabledHours && props.disabledHours.includes(value)) ?? false
   }
 
+  const isSelected = (
+    identifier: ColumnIdentifier,
+    value: Dayjs | 'am' | 'pm',
+  ): boolean => {
+    if (value === 'am' || value === 'pm') {
+      return currentAmpm.value === value
+    } else if (identifier === 'hour') {
+      return currentHour.value === value.get(identifier)
+    } else if (identifier === 'minute') {
+      return currentMinute.value === value.get(identifier)
+    }
+    return false
+  }
+
   const scrollColumn = async (identifier: ColumnIdentifier) => {
     if (MazPickerTime.value) {
       const column = MazPickerTime.value.querySelector(
@@ -271,21 +301,21 @@
 
   const selectTime = async (
     identifier: ColumnIdentifier,
-    value: number | 'am' | 'pm',
+    value: Dayjs | 'am' | 'pm',
   ) => {
     const newDate = dayjs(currentDate.value)
 
-    if (identifier === 'hour' && typeof value === 'number') {
-      currentDate.value = newDate.set('hour', value).format()
+    if (identifier === 'hour' && typeof value === 'object') {
+      currentDate.value = newDate.set('hour', value.get('hour')).format()
     }
 
-    if (identifier === 'minute' && typeof value === 'number') {
-      const dateWithNewMinute = newDate.set('minute', value)
+    if (identifier === 'minute' && typeof value === 'object') {
+      const dateWithNewMinute = newDate.set('minute', value.get('minute'))
 
       currentDate.value = dateWithNewMinute.format()
     }
 
-    if (identifier === 'ampm' && typeof value === 'string') {
+    if (identifier === 'ampm') {
       if (currentAmpm.value !== value || !currentHour.value) {
         if (value === 'am') {
           currentDate.value = newDate

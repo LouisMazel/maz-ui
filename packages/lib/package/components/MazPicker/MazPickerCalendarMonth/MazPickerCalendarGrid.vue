@@ -51,8 +51,6 @@
     getFirstDayOfMonth,
     isSameDate,
     isToday,
-    isBigger,
-    isSmaller,
     isSameDay,
   } from '../utils'
   import MazBtn from '@components/MazBtn.vue'
@@ -218,7 +216,10 @@
   }
 
   const selectDay = (value: Dayjs) => {
-    setHoverredDay()
+    if (isRangeMode.value) {
+      setHoverredDay()
+    }
+
     const valueFormatted = value.format()
     if (typeof modelValue.value === 'object') {
       let values = modelValue.value
@@ -230,7 +231,12 @@
         }
       }
 
-      if (!values.start || isSmaller(values.start, valueFormatted)) {
+      const isBeforeStartDate = dayjs(valueFormatted).isBefore(
+        values.start,
+        'date',
+      )
+
+      if (!values.start || isBeforeStartDate) {
         modelValue.value = {
           start: valueFormatted,
           end: undefined,
@@ -275,9 +281,7 @@
       return false
     }
 
-    return (
-      isSmaller(day, props.minDate) && !isSameDate(day, props.minDate, 'date')
-    )
+    return dayjs(day).isBefore(props.minDate, 'date')
   }
 
   const isDisabledWeekly = (day: Dayjs): boolean => {
@@ -305,9 +309,7 @@
       return false
     }
 
-    return (
-      isBigger(day, props.maxDate) && !isSameDate(day, props.maxDate, 'date')
-    )
+    return dayjs(day).isAfter(props.maxDate, 'date')
   }
 
   const removeContainerHeight = debounce(() => {
@@ -329,9 +331,12 @@
   watch(
     () => props.calendarDate,
     (calendarDate, oldCalendarValue) => {
-      transitionName.value = isBigger(calendarDate, oldCalendarValue)
-        ? 'maz-slideprev'
-        : 'maz-slidenext'
+      transitionName.value = dayjs(calendarDate).isAfter(
+        oldCalendarValue,
+        'date',
+      )
+        ? 'maz-slidenext'
+        : 'maz-slideprev'
 
       setContainerHeight()
     },
