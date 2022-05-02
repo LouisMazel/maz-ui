@@ -1,0 +1,28 @@
+name: Lib Publish To Npm
+
+# on:
+#   release:
+#     types: [created]
+on:
+  push:
+    tags:
+      - v*.*.*
+
+jobs:
+  lib-publish:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./packages/lib
+    steps:
+      - uses: actions/checkout@master
+      - name: Build
+        run: |
+          yarn install
+          yarn build
+      - uses: actions/setup-node@master
+        with:
+          registry-url: "https://registry.npmjs.org"
+      - run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
