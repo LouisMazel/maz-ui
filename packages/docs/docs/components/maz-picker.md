@@ -31,15 +31,15 @@ yarn add dayjs
 
 ## Documentation
 
-- As input value, you must provide a valid format of [Dayjs](https://day.js.org/docs/en/display/format)
+- As input value, min-date, max-date or disabled-dates you must provide the same and a valid format of [Dayjs](https://day.js.org/docs/en/display/format)
   - **Simply date**: The better format is `YYYY-MM-DD` - *Example: "2022-03-02" (for range picker "{ start: '2022-03-02', end: '2022-03-28' }")*
   - **Date Time**: The better format is `YYYY-MM-DD HH:mm` or `YYYY-MM-DD h:mm a`  - *Example: "2022-03-02 16:30" or "2022-03-02 04:30 pm"*
   - **Only Time**: `HH:mm`, `h:mm a`, etc  - *Example: "16:30" or "4:30 pm"*
 
+- The returned value is formatted by [days.format()](https://day.js.org/docs/en/display/format) function with the format provided
+
 - This component use [MazInput](/maz-ui-3/components/maz-input.html), so it inherits his props:
   - Use `label` & `placeholder` props
-
-- The model value is formatted by [days.format()](https://day.js.org/docs/en/display/format) function
 
 ## Options
 
@@ -53,21 +53,19 @@ yarn add dayjs
 
 - `first-day-of-week` (default: `0`): should be a `number` - Example: For France, you should set `:first-day-of-week="1"` to have monday at the first day of week in calendar.
 
-- `inputDateStyle`: To customize the date format into the input - Must be a value of [Intl.DateTimeFormatOptions['dateStyle']](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat) - Availables options : `full | long | medium | short`
-
-- `inputTimeStyle`: Like `inputDateStyle` - Must be a value of [Intl.DateTimeFormatOptions['TimeStyle']](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat) - Available options : `full | long | medium | short`
+- `inputDateStyle`: To customize the date time format into the input - Must be a value of [Intl.DateTimeFormatOptions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#parameters) - Default option: `{ dateStyle: 'full' }`
 
 - `shortcut`: With the shortcut property, you can specify a shortcut that's selected by default by passing it's identifier.
 
-- `min-date` & `max-date`: Must have the same format as model-value - the component validate automatically the dates - Exemple: [see example](#inline)
+- `min-date` & `max-date`: Must have the same format as model-value - the component will validate automatically the dates - Exemple: [see example](#inline)
 
-- `disabled-weekly` : Days of the week which are disabled every week, in Array format with day index, Sunday as 0 and Saturday as 6: [0,4,6]
+- `disabled-weekly` : Days of the week which are disabled every week, in Array format with day index, Sunday as 0 and Saturday as 6: `[0,4,6]`
 
-- `disabled-dates` : Provide an array of date string, the days in date picker will be disabled. Ex: `['2022-02-02', '2022-02-22']`
+- `disabled-dates` : Provide an array of date string, the days in date picker will be disabled. Time will be taken for the time picker Ex: `['2022-02-02', '2022-02-22']`
 
 - `disabled-hours` : For time picker or date time picker, to globally disable hours, provide an Array format with hours value: `[0, 1,..., 22, 23]` (0 to 23)
 
-- 12h format: to enable the Date Time Picker or Time Picker with the 12h format selection mode, you must add the property `hour12`
+- 12h format: to enable the Date Time Picker or Time Picker with the 12h format selection mode, you must add the property `format` with `hh:mm a` or `hh:mm a`, etc.
 
 - `minute-interval` (default: `5`): Is the interval between minutes in the Time picker
 
@@ -75,7 +73,7 @@ yarn add dayjs
 
 - `inline`: [see example](#inline)
 
-- `auto-close`: the picker will be automatically closed after the user select
+- `auto-close`: the picker will be automatically closed after the user has selected a value
 
 ## Multiple Pickers
 
@@ -102,6 +100,130 @@ yarn add dayjs
   import MazPicker from 'maz-ui/components/MazPicker'
   import { ref } from 'vue'
   const dateValue = ref('2022-02-03')
+</script>
+```
+
+### Date Time Picker
+
+#### 24 format
+
+<div class="language-html ext-html"><pre class="language-json"><code>v-model="{{ dateTimeValue }}"</code></pre></div>
+
+<MazPicker
+  v-model="dateTimeValue"
+  format="YYYY-MM-DD HH:mm"
+  label="Select date and time"
+  color="secondary"
+  time
+/>
+
+```vue
+<template>
+  <MazPicker
+    v-model="dateTimeValue"
+    format="YYYY-MM-DD HH:mm"
+    label="Select date and time"
+    color="secondary"
+    time
+  />
+</template>
+
+<script setup lang="ts">
+  import MazPicker from 'maz-ui/components/MazPicker'
+  import { ref } from 'vue'
+  const dateTimeValue = ref('2022-02-03 16:30')
+</script>
+```
+
+#### 12 format
+
+<div class="language-html ext-html"><pre class="language-json"><code>v-model="{{ dateTime12Value }}"</code></pre></div>
+
+<MazPicker
+  v-model="dateTime12Value"
+  format="YYYY-MM-DD hh:mm a"
+  label="Select date and time"
+  color="secondary"
+  time
+/>
+
+```vue
+<template>
+  <MazPicker
+    v-model="dateTime12Value"
+    format="YYYY-MM-DD hh:mm a"
+    label="Select date and time"
+    color="secondary"
+    time
+  />
+</template>
+
+<script setup lang="ts">
+  import MazPicker from 'maz-ui/components/MazPicker'
+  import { ref } from 'vue'
+  const dateTime12Value = ref('2022-02-03 04:30 pm')
+</script>
+```
+
+### Time Picker
+
+#### 24h format
+
+<div class="language-html ext-html"><pre class="language-json"><code>v-model="{{ dateTimeValue }}"</code></pre></div>
+
+<MazPicker
+  v-model="dateTimeValue"
+  format="YYYY-MM-DD HH:mm"
+  label="Select time"
+  color="secondary"
+  only-time
+/>
+
+```vue
+<template>
+  <MazPicker
+    v-model="dateTimeValue"
+    format="YYYY-MM-DD HH:mm"
+    label="Select time"
+    color="secondary"
+    only-time
+  />
+</template>
+
+<script setup lang="ts">
+  import MazPicker from 'maz-ui/components/MazPicker'
+  import { ref } from 'vue'
+  const dateTimeValue = ref('2022-02-03 16:30')
+</script>
+```
+
+#### 12h format
+
+<div class="language-html ext-html"><pre class="language-json"><code>v-model="{{ dateTime12Value }}"</code></pre></div>
+
+<MazPicker
+  v-model="dateTime12Value"
+  format="YYYY-MM-DD HH:mm a"
+  label="Select time"
+  color="secondary"
+  only-time
+/>
+
+```vue
+<template>
+  <MazPicker
+    v-model="dateTime12Value"
+    format="YYYY-MM-DD HH:mm a"
+    label="Select time"
+    color="secondary"
+    only-time
+  />
+</template>
+
+<script setup lang="ts">
+  import MazPicker from 'maz-ui/components/MazPicker'
+  import { ref } from 'vue'
+  const dateTime12Value = ref('2022-02-03 04:30 pm')
 </script>
 ```
 
@@ -190,6 +312,7 @@ max-date: `{{ minMaxDates.max }}`
   const timeValue = ref('16:30')
   const dateValue = ref('2022-02-03')
   const dateTimeValue = ref('2022-02-03 16:30')
+  const dateTime12Value = ref('2022-02-03 04:30 pm')
 
   const rangeValues = ref({
     start: dayjs().set(3, 'date').format('YYYY-MM-DD'),

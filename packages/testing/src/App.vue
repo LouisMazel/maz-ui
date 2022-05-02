@@ -23,13 +23,13 @@
     <MazPicker
       v-model="dateValue"
       label="Select date"
-      format="YYYY-MM-DD hh:mm a"
+      format="YYYY-MM-DD HH:mm a"
       :first-day-of-week="1"
       locale="fr-FR"
-      time
       color="secondary"
       min-date="2022-01-02 10:35 am"
       max-date="2022-02-03 06:30 pm"
+      time
       style="min-width: 400px;"
     />
 
@@ -54,7 +54,7 @@
     aosInstance.handleObserver()
   })
 
-  const dateValue = ref('2022-01-10 08:40 am')
+  const dateValue = ref('2022-01-03 10:10 am')
 </script>
 
 <style lang="postcss">

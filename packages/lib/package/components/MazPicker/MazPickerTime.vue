@@ -127,12 +127,16 @@
       (hour) => {
         const hourBase = hour + (props.isHour12 ? 1 : 0)
         const hour12or24 = getHour12or24(hourBase)
-
         const hourValue = dayjs(currentDate.value).set('hour', hour12or24)
+
         const disabled =
           isDisableHour(hour12or24) ||
-          dayjs(props.minDate).isAfter(hourValue, 'hour') ||
-          dayjs(props.maxDate).isBefore(hourValue, 'hour')
+          (props.minDate && currentDate.value
+            ? dayjs(props.minDate).isAfter(hourValue, 'hour')
+            : false) ||
+          (props.maxDate && currentDate.value
+            ? dayjs(props.maxDate).isBefore(hourValue, 'hour')
+            : false)
 
         return {
           label: `${hourBase < 10 ? '0' : ''}${hourBase}`,
@@ -151,8 +155,12 @@
         const minuteValue = dayjs(currentDate.value).set('minute', minute)
 
         const disabled =
-          dayjs(props.minDate).isAfter(minuteValue, 'minute') ||
-          dayjs(props.maxDate).isBefore(minuteValue, 'minute')
+          (props.minDate && currentDate.value
+            ? dayjs(props.minDate).isAfter(minuteValue, 'minute')
+            : false) ||
+          (props.maxDate && currentDate.value
+            ? dayjs(props.maxDate).isBefore(minuteValue, 'minute')
+            : false)
 
         return {
           label: `${minute < 10 ? '0' : ''}${minute}`,
@@ -234,7 +242,7 @@
           dividerHeight.value = divHeight / 16
         }
 
-        scrollColumns()
+        scrollColumns(false)
       }
     },
     { immediate: true },
@@ -245,17 +253,17 @@
     async (value, oldValue) => {
       if (value !== oldValue) {
         await nextTick()
-        scrollColumns()
+        scrollColumns(true)
       }
     },
     { immediate: true },
   )
 
-  const scrollColumns = () => {
-    scrollColumn('hour')
-    scrollColumn('minute')
+  const scrollColumns = (hasSmoothEffect: boolean) => {
+    scrollColumn('hour', hasSmoothEffect)
+    scrollColumn('minute', hasSmoothEffect)
     if (props.isHour12) {
-      scrollColumn('ampm')
+      scrollColumn('ampm', hasSmoothEffect)
     }
   }
 
@@ -277,7 +285,10 @@
     return false
   }
 
-  const scrollColumn = async (identifier: ColumnIdentifier) => {
+  const scrollColumn = async (
+    identifier: ColumnIdentifier,
+    hasSmoothEffect = true,
+  ) => {
     if (MazPickerTime.value) {
       const column = MazPickerTime.value.querySelector(
         `.m-picker-time__column__${identifier}`,
@@ -294,7 +305,12 @@
         MazPickerTime.value
       ) {
         await nextTick()
-        scrollToTarget(column, selectedButton, dividerHeight.value * 16)
+        scrollToTarget(
+          column,
+          selectedButton,
+          dividerHeight.value * 16,
+          hasSmoothEffect,
+        )
       }
     }
   }
@@ -325,6 +341,7 @@
         }
         if (value === 'pm') {
           const baseHour = newDate.get('hour')
+
           const newHour =
             baseHour + 12 > 12 && baseHour + 12 < 24
               ? baseHour + 12

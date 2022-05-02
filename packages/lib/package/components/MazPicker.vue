@@ -125,9 +125,6 @@
 
   const defaultInputDateStyle: Intl.DateTimeFormatOptions = {
     dateStyle: 'full',
-    hour12: undefined,
-    timeStyle: undefined,
-    timeZone: undefined,
   }
 
   const props = defineProps({
@@ -143,9 +140,6 @@
       type: Object as PropType<Intl.DateTimeFormatOptions>,
       default: () => ({
         dateStyle: 'full',
-        hour12: undefined,
-        timeStyle: undefined,
-        timeZone: undefined,
       }),
     },
     locale: { type: String, default: undefined },
@@ -285,11 +279,20 @@
     shortcut: { type: String, default: undefined },
     minDate: { type: String, default: undefined },
     maxDate: { type: String, default: undefined },
-    disabledWeekly: { type: Array as PropType<number[]>, default: () => [] },
+    disabledWeekly: {
+      type: Array as PropType<number[]>,
+      default: () => [],
+      validator: (value: number) => {
+        return 7 >= value && value >= 0
+      },
+    },
     disabledDates: { type: Array as PropType<string[]>, default: () => [] },
     disabledHours: {
       type: Array as PropType<number[]>,
       default: () => [],
+      validator: (value: number) => {
+        return 23 >= value && value >= 0
+      },
     },
   })
 
@@ -329,6 +332,15 @@
         `[maz-ui](MazPicker) When you use the time picker, you must provided a format with time - Ex: "YYYY-MM-DD HH:mm"`,
       )
     }
+    if (
+      props.format.includes('h') &&
+      !(props.format.includes('a') || props.format.includes('A'))
+    ) {
+      /* eslint-disable no-console */
+      console.error(
+        '[maz-ui](MazPicker) if you use the 12 format "h" or "hh", you must add "a" or "A" at the end of the format - Ex: "YYYY-MM-DD hh:mm a"',
+      )
+    }
   })
 
   const currentValue = computed<PickerValue>({
@@ -347,7 +359,6 @@
         : undefined
     },
     set: (value) => {
-      // NEXT: format output
       emitValue(value)
 
       if (props.autoClose && value !== 'object') {
@@ -357,7 +368,16 @@
   })
 
   const getCalendarDate = (value: PickerValue): string => {
-    return (typeof value === 'object' ? value.start : value) ?? dayjs().format()
+    const baseDate =
+      (typeof value === 'object' ? value.start : value) ?? dayjs().format()
+
+    if (props.minDate && dayjs(baseDate).isBefore(props.minDate)) {
+      return props.minDate
+    } else if (props.maxDate && dayjs(baseDate).isAfter(props.maxDate)) {
+      return props.minDate ?? props.maxDate
+    } else {
+      return baseDate
+    }
   }
 
   const calendarDate = ref(getCalendarDate(currentValue.value))
@@ -422,18 +442,6 @@
       programaticallyOpened.value ||
       props.inline,
   )
-
-  onBeforeMount(() => {
-    if (
-      props.format.includes('h') &&
-      !(props.format.includes('a') || props.format.includes('A'))
-    ) {
-      /* eslint-disable no-console */
-      console.error(
-        '[maz-ui](MazPicker) if you use the 12 format "h" or "hh", you must add "a" or "A" at the end of the format - Ex: "YYYY-MM-DD hh:mm a"',
-      )
-    }
-  })
 
   onMounted(async () => {
     if (props.customElementSelector) {
@@ -561,7 +569,9 @@
         if (newValue) {
           emitValue(newValue)
         }
-        if (newCurrentDate) calendarDate.value = newCurrentDate
+        if (newCurrentDate) {
+          setCalendarDate(newCurrentDate)
+        }
       } else if (typeof value === 'object' && (value.start || value.end)) {
         let newStartValue = value.start
         let newEndValue = value.end
@@ -576,7 +586,9 @@
 
           if (newValue) newStartValue = newValue
 
-          if (newCurrentDate) calendarDate.value = newCurrentDate
+          if (newCurrentDate) {
+            setCalendarDate(newCurrentDate)
+          }
         }
         if (value.end) {
           const { newValue } = checkValueWithMinMaxDates({
@@ -597,16 +609,19 @@
     }
   }
 
+  const setCalendarDate = (value: string) => {
+    if (value && !dayjs(calendarDate.value).isSame(value, 'month')) {
+      calendarDate.value = value
+    }
+  }
+
   const emitValue = (value: PickerValue) => {
     if (typeof value === 'object') {
       const newValue = getRangeISODate(value, props.format)
       emits('update:model-value', newValue)
 
-      if (
-        newValue.start &&
-        !dayjs(calendarDate.value).isSame(newValue.start, 'month')
-      ) {
-        calendarDate.value = newValue.start
+      if (newValue.start) {
+        setCalendarDate(newValue.start)
       }
     } else {
       emits('update:model-value', getISODate(value, props.format))
