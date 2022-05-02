@@ -12,7 +12,7 @@
       "conventionalCommits": true,
       "forceGitTag": true,
       "push": true,
-      "tagVersionPrefix": ""
+      "tagVersionPrefix": "v"
     }
   }
 }
