@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-next.23](https://github.com/LouisMazel/maz-ui/compare/v2.3.13...3.0.0-next.23) (2022-05-02)
+
+
+### Bug Fixes
+
+* **lib:** maz-radio-buttons - hover color ([#239](https://github.com/LouisMazel/maz-ui/issues/239)) ([8a945ab](https://github.com/LouisMazel/maz-ui/commit/8a945abe271d13a929a0def2966f566f3be20b73))
+* **lib:** MazPicker - timezone handling ([#221](https://github.com/LouisMazel/maz-ui/issues/221)) ([2981a75](https://github.com/LouisMazel/maz-ui/commit/2981a750d7263bb81af4575115c3f4d2dc038a2f))
+
+
+### Features
+
+* **lib:** add helpers about user activity ([#238](https://github.com/LouisMazel/maz-ui/issues/238)) ([#240](https://github.com/LouisMazel/maz-ui/issues/240)) ([fcdbccb](https://github.com/LouisMazel/maz-ui/commit/fcdbccbed451aa38e771fb118c2834e55015d14b))
+* **lib:** add maz-picker component ([#197](https://github.com/LouisMazel/maz-ui/issues/197)) ([877515e](https://github.com/LouisMazel/maz-ui/commit/877515e585d1aa9a3febd83e222c12346e7401b5))
+* **lib:** add wait plugin to manage loading state ([#214](https://github.com/LouisMazel/maz-ui/issues/214)) ([a6a1931](https://github.com/LouisMazel/maz-ui/commit/a6a1931ba7000c5e545cfc4808fe7205809629c4))
+* **lib:** export tailwind config ([#201](https://github.com/LouisMazel/maz-ui/issues/201)) ([94fddb9](https://github.com/LouisMazel/maz-ui/commit/94fddb9d35e91a6f649bcb18ae7105048d048584))
+* **lib:** MazInput - adding style color for autofill ([#208](https://github.com/LouisMazel/maz-ui/issues/208)) ([b3ae969](https://github.com/LouisMazel/maz-ui/commit/b3ae969584bda0e690179c1b6c9defdc1bbf0425))
+* **lib:** new component - maz-radio-buttons ([#232](https://github.com/LouisMazel/maz-ui/issues/232)) ([#233](https://github.com/LouisMazel/maz-ui/issues/233)) ([ece3d19](https://github.com/LouisMazel/maz-ui/commit/ece3d19bdf393cffc8e883c3b6362f21204bbfc8)), closes [#231](https://github.com/LouisMazel/maz-ui/issues/231)
+
+
+
+
+
 # [3.0.0-next.22](https://github.com/LouisMazel/maz-ui/compare/v2.3.13...3.0.0-next.22) (2022-04-27)
 
 

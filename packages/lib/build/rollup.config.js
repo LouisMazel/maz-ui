@@ -68,12 +68,12 @@ const baseConfig = {
       alias({
         entries: [
           {
-            find: '@',
+            find: '@package',
             replacement: resolve(projectRoot, 'package'),
           },
           {
-            find: '@package',
-            replacement: resolve(projectRoot, 'package'),
+            find: '@components',
+            replacement: resolve(projectRoot, 'package/components'),
           },
         ],
       }),

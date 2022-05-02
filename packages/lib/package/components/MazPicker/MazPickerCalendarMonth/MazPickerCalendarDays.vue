@@ -20,7 +20,7 @@
 
 <style lang="postcss" scoped>
   .maz-picker-calendar-days {
-    @apply maz-flex maz-w-full maz-justify-between maz-space-x-2 maz-px-1 maz-text-center;
+    @apply maz-grid maz-grid-cols-7 maz-justify-between maz-gap-1 maz-text-center;
 
     & span {
       @apply maz-text-xs maz-text-muted;

@@ -1,5 +1,6 @@
-import { Directive } from 'vue'
-import { BindingData, VueZoomImg } from './zoom-img.handler'
+import type { Directive } from 'vue'
+import type { BindingData } from './zoom-img.handler'
+import { VueZoomImg } from './zoom-img.handler'
 
 let instance: VueZoomImg
 

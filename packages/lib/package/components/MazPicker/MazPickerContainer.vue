@@ -10,10 +10,10 @@
     <MazPickerHeader
       v-if="!noHeader"
       :color="color"
-      :time="time"
+      :has-time="hasTime"
       :model-value="modelValue"
-      :current-date="currentDate"
       :locale="locale"
+      :calendar-date="calendarDate"
       :has-date="hasDate"
       :formatter-options="formatterOptions"
       :double="double"
@@ -24,11 +24,11 @@
     <div class="m-picker-container__wrapper">
       <MazPickerCalendar
         v-if="hasDate"
-        v-model="modelValue"
-        v-model:current-date="currentDate"
+        v-model="currentDate"
+        v-model:calendar-date="calendarDate"
         :color="color"
         :locale="locale"
-        :time="time"
+        :has-time="hasTime"
         :double="double"
         :min-date="minDate"
         :max-date="maxDate"
@@ -42,48 +42,46 @@
       />
 
       <MazPickerTime
-        v-if="time"
-        v-model="modelValue"
-        v-model:current-date="currentDate"
+        v-if="hasTime"
+        v-model="currentDate"
+        v-model:calendar-date="calendarDate"
         :is-open="isOpen"
         :color="color"
         :locale="locale"
         :min-date="minDate"
-        :has-date="hasDate"
         :max-date="maxDate"
+        :has-date="hasDate"
+        :format="format"
         :disabled-hours="disabledHours"
         :minute-interval="minuteInterval"
         :formatter-options="formatterOptions"
+        :is-hour12="isHour12"
         class="m-picker-container__time"
       />
     </div>
-
-    <!-- <MazPickerFooter v-if="hasFooter" :color="color" @close="$emit('close')" /> -->
   </div>
 </template>
 
 <script lang="ts" setup>
   import MazPickerHeader from './MazPickerHeader.vue'
   import MazPickerCalendar from './MazPickerCalendar.vue'
-  import { computed, PropType } from 'vue'
-  import { Color } from '../types'
-  // import MazPickerFooter from './MazPickerFooter.vue'
-  import { PickerShortcut, PickerValue } from './types'
+  import { computed, type PropType } from 'vue'
+  import type { Color } from '../types'
+  import type { PickerShortcut, PickerValue } from './types'
   import MazPickerTime from './MazPickerTime.vue'
-  import { DateTimeFormatOptions } from './utils'
+  import type { DateTimeFormatOptions } from './utils'
 
   const props = defineProps({
     modelValue: {
       type: [String, Object] as PropType<PickerValue>,
       default: undefined,
     },
+    calendarDate: { type: String, required: true },
     color: { type: String as PropType<Color>, required: true },
     locale: { type: String, required: true },
     noHeader: { type: Boolean, default: false },
     firstDayOfWeek: { type: Number, required: true },
-    currentDate: { type: Date, required: true },
     double: { type: Boolean, required: true },
-    hasFooter: { type: Boolean, required: true },
     hasDate: { type: Boolean, required: true },
     minDate: { type: String, default: undefined },
     maxDate: { type: String, default: undefined },
@@ -94,8 +92,10 @@
       required: true,
     },
     shortcut: { type: String, default: undefined },
-    time: { type: Boolean, required: true },
+    hasTime: { type: Boolean, required: true },
     isOpen: { type: Boolean, required: true },
+    format: { type: String, required: true },
+    isHour12: { type: Boolean, required: true },
     formatterOptions: {
       type: Object as PropType<DateTimeFormatOptions>,
       required: true,
@@ -108,22 +108,20 @@
 
   const emits = defineEmits([
     'update:model-value',
-    'update:current-date',
+    'update:calendar-date',
     'close',
   ])
 
-  const modelValue = computed({
+  const currentDate = computed({
     get: () => props.modelValue,
     set: (value) => {
       emits('update:model-value', value)
     },
   })
 
-  const currentDate = computed({
-    get: () => props.currentDate,
-    set: (currentDate) => {
-      emits('update:current-date', currentDate)
-    },
+  const calendarDate = computed({
+    get: () => props.calendarDate,
+    set: (calendarDate) => emits('update:calendar-date', calendarDate),
   })
 </script>
 
@@ -162,10 +160,6 @@
     }
 
     & .m-picker-container {
-      & :deep(button):not(.--is-selected):not(.--is-between):not(:disabled) {
-        @apply hover:maz-bg-color-lighter !important;
-      }
-
       & :deep(button):is(:disabled) {
         @apply maz-text-gray-700 !important;
       }

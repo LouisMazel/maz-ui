@@ -13,9 +13,9 @@ plugins:
         - typescript
   eslint:
     enabled: false
-    # channel: "eslint-8"
+    # channel: "eslint-7"
     # config:
-    #   config: .package/lib/eslintrc.js
+    #   config: ./packages/lib/eslintrc.js
     #   ignore_warnings: true
   fixme:
     enabled: true

@@ -1,11 +1,11 @@
-import {
+import type {
   CountryCallingCode,
   CountryCode,
   NationalNumber,
   NumberType,
 } from 'libphonenumber-js'
 
-import locales from './constantes/locales'
+import type locales from './constantes/locales'
 
 export type Result = {
   isValid: boolean

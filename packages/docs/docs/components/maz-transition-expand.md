@@ -1,13 +1,10 @@
 ---
-title: MazTransitionExpand
 description: MazTransitionExpand is a stand-alone component replaces the standard html button with a beautiful design system. Many options like colors, sizes, disabled state, loading state, includes icons. Support of router-link and nuxt-link
 ---
 
 # MazTransitionExpand
 
-
 > Before you have to import the global css files in your project, follow instructions in [Getting Started](/maz-ui-3/guide/getting-started.html)
-
 
 ## Basic usage
 
@@ -18,6 +15,7 @@ description: MazTransitionExpand is a stand-alone component replaces the standar
 <br />
 <br />
 
+<ClientOnly>
 <div class="flex items-start gap-05">
   <MazCard class="flex-1">
     <MazTransitionExpand>
@@ -56,6 +54,7 @@ description: MazTransitionExpand is a stand-alone component replaces the standar
     </MazTransitionExpand>
   </MazCard>
 </div>
+</ClientOnly>
 
 ```vue
 <template>

@@ -34,7 +34,8 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, PropType } from 'vue'
+  import { defineComponent } from 'vue'
+  import type { PropType } from 'vue'
 
   export default defineComponent({
     name: 'MazButtonRadio',
@@ -45,7 +46,9 @@
           ['number', 'string'].includes(typeof prop) || prop === null,
       },
       options: {
-        type: Array as PropType<{ value: any; label: string; icon: string }[]>,
+        type: Array as PropType<
+          { value: unknown; label: string; icon: string }[]
+        >,
         required: true,
       },
       column: { type: Boolean, default: false },
@@ -55,7 +58,7 @@
       allowUnselect: { type: Boolean, default: false },
     },
     setup(props, { emit }) {
-      const emitValue = (v: any) => {
+      const emitValue = (v: unknown) => {
         emit('input', v === props.value && props.allowUnselect ? null : v)
       }
 

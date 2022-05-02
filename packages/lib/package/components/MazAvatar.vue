@@ -68,7 +68,9 @@
 </script>
 
 <script lang="ts" setup>
-  import { PropType, computed } from 'vue'
+  import type { PropType } from 'vue'
+  import { computed } from 'vue'
+
   import MazLazyImg from './MazLazyImg.vue'
   import MazIcon from './MazIcon.vue'
   import PencilIcon from '@package/icons/pencil.svg'
@@ -150,15 +152,16 @@
 
     &__wrapper {
       @apply maz-relative maz-flex maz-flex-none maz-justify-center maz-overflow-hidden
-      maz-rounded-full maz-bg-color-lighter;
+        maz-rounded-full maz-bg-color-lighter;
 
       height: 3em;
       width: 3em;
 
       &.--clickable {
         & .m-avatar__button {
-          @apply maz-outline-none maz-absolute maz-inset-0 maz-flex maz-w-full maz-cursor-pointer maz-rounded-lg maz-border-none
-           maz-bg-transparent maz-opacity-0 maz-transition-all maz-duration-200 maz-flex-center;
+          @apply maz-outline-none maz-absolute maz-inset-0 maz-flex
+            maz-w-full maz-cursor-pointer maz-rounded-lg maz-border-none
+            maz-bg-transparent maz-opacity-0 maz-transition-all maz-duration-200 maz-flex-center;
 
           transform: scale(0);
 

@@ -107,12 +107,12 @@
 </script>
 
 <script lang="ts" setup>
-  import { computed, useSlots, PropType, ref, watch } from 'vue'
+  import { computed, useSlots, type PropType, ref, watch } from 'vue'
   import MazGallery from './MazGallery.vue'
   import MazBtn from './MazBtn.vue'
   import MazTransitionExpand from './MazTransitionExpand.vue'
   import MazIcon from './MazIcon.vue'
-  import { MazGalleryImage } from './types'
+  import type { MazGalleryImage } from './types'
   import ChevronDownIcon from '@package/icons/chevron-down.svg'
 
   const props = defineProps({

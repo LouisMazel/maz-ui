@@ -1,4 +1,4 @@
-import {
+import type {
   IdleTimeoutOptions,
   IdleTimeoutCallback,
   IdleTimeoutStrictOption,
@@ -143,7 +143,7 @@ export class IdleTimeout {
 
       this.resetTimeout()
 
-      this.callback({ isIdle: this.isIdle })
+      this.callback({ isIdle: this.isIdle, eventType: event.type })
     } catch (error) {
       throw new Error(`[IdleTimeout](handleEvent) ${error}`)
     }

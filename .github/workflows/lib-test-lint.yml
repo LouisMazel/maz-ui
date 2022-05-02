@@ -1,30 +1,33 @@
-name: Build Lib Tests
+name: Lib Test Lint
+
 on:
+  push:
+    branches: [master, next]
   pull_request:
-    branches:
-      - master
-      - next
-      - "release/**"
-    paths:
-      - "packages/lib/**"
+    branches: [master, next]
 
 jobs:
-  lib-build-test:
+  lib-test-lint:
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./packages/lib
+
     steps:
-      - name: Checkout
+      - name: Checkout Actions
         uses: actions/checkout@master
+
+      - uses: actions/setup-node@master
+        with:
+          node-version: "16"
 
       - uses: actions/cache@v2
         with:
           path: "**/node_modules"
           key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
 
-      - name: Install dependencies
-        run: make install
+      - name: Install modules
+        run: npm ci
 
-      - name: Build lib
-        run: make build
+      - name: Run linters
+        run: npm run lint
