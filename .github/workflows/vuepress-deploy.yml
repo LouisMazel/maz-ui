@@ -1,15 +1,12 @@
 name: Build and Deploy
 on:
   push:
-    branches:
-      - master
-      - next
-      - "release/**"
+    branches: [next]
     # paths:
     #   - "packages/docs/**"
 
 jobs:
-  build-and-deploy:
+  vuepress-build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
