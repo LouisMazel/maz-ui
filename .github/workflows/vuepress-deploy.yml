@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: Doc Build and Deploy
 on:
   push:
     branches: [next]
@@ -6,7 +6,7 @@ on:
     #   - "packages/docs/**"
 
 jobs:
-  vuepress-build-and-deploy:
+  doc-build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

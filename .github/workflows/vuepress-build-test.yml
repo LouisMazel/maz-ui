@@ -1,4 +1,4 @@
-name: Build Doc Tests
+name: Doc Build Test
 on:
   pull_request:
     branches:
@@ -9,7 +9,7 @@ on:
       - "packages/docs/**"
 
 jobs:
-  vuepress-build-test:
+  doc-build-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
