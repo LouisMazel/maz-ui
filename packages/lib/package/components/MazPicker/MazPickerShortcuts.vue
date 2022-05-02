@@ -15,11 +15,10 @@
 </template>
 
 <script lang="ts" setup>
-  import { PropType, ref, watch } from 'vue'
+  import { type PropType, ref, watch } from 'vue'
   import MazBtn from '../MazBtn.vue'
-  import { Color } from '../types'
-  import { PickerShortcut, PickerValue, RangeValue } from './types'
-  import { isSameMonth } from './utils'
+  import type { Color } from '../types'
+  import type { PickerShortcut, PickerValue, RangeValue } from './types'
 
   const props = defineProps({
     color: { type: String as PropType<Color>, required: true },
@@ -31,12 +30,11 @@
       type: Array as PropType<PickerShortcut[]>,
       required: true,
     },
-    currentDate: { type: Date, required: true },
     double: { type: Boolean, required: true },
     shortcut: { type: String, default: undefined },
   })
 
-  const emits = defineEmits(['update:model-value', 'update:current-date'])
+  const emits = defineEmits(['update:model-value'])
 
   const selectedShortcut = ref(props.shortcut)
 
@@ -46,9 +44,6 @@
   ) => {
     selectedShortcut.value = identifier
     emits('update:model-value', value)
-    if (!isSameMonth(value.end, props.currentDate)) {
-      emits('update:current-date', new Date(value.end))
-    }
   }
 
   watch(
@@ -78,7 +73,8 @@
 
 <style lang="postcss" scoped>
   .maz-picker-shortcuts {
-    @apply maz-flex maz-flex-col maz-items-start maz-gap-1 maz-overflow-y-auto maz-border-r maz-border-color-lighter maz-p-2;
+    @apply maz-flex maz-flex-col maz-items-start maz-gap-1
+      maz-overflow-y-auto maz-border-r maz-border-color-lighter maz-p-2;
 
     max-height: 18.75rem;
 

@@ -5,7 +5,7 @@
     :class="{ '--has-date': hasDate }"
   >
     <div
-      v-for="({ values, currentValue, identifier }, i) in columns"
+      v-for="({ values, identifier }, i) in columns"
       :key="i"
       class="m-picker-time__column"
       :class="[`m-picker-time__column__${identifier}`]"
@@ -19,8 +19,8 @@
           v-for="({ value, label, disabled }, unitIndex) in values"
           :key="unitIndex"
           size="xs"
-          :color="currentValue === value ? color : 'transparent'"
-          :class="{ '--is-selected': currentValue === value }"
+          :color="isSelected(identifier, value) ? color : 'transparent'"
+          :class="{ '--is-selected': isSelected(identifier, value) }"
           :disabled="disabled"
           type="button"
           @click.stop="selectTime(identifier, value)"
@@ -37,17 +37,16 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, nextTick, PropType, ref, watch } from 'vue'
+  import { computed, nextTick, type PropType, ref, watch } from 'vue'
   import {
-    DateTimeFormatOptions,
+    type DateTimeFormatOptions,
     scrollToTarget,
     findNearestNumberInList,
-    getCurrentDateForTimeValue,
-    getTimeString,
   } from './utils'
   import MazBtn from '../MazBtn.vue'
-  import { PickerValue } from './types'
-  import { Color } from '../types'
+  import type { PickerValue } from './types'
+  import type { Color } from '../types'
+  import dayjs, { Dayjs } from 'dayjs'
 
   type ColumnIdentifier = 'hour' | 'minute' | 'ampm'
 
@@ -56,7 +55,7 @@
       type: [String, Object] as PropType<PickerValue>,
       default: undefined,
     },
-    currentDate: { type: Date, required: true },
+    calendarDate: { type: String, required: true },
     formatterOptions: {
       type: Object as PropType<DateTimeFormatOptions>,
       required: true,
@@ -67,6 +66,10 @@
     hasDate: { type: Boolean, required: true },
     minuteInterval: { type: Number, required: true },
     disabledHours: { type: Array as PropType<number[]>, default: undefined },
+    format: { type: String, required: true },
+    isHour12: { type: Boolean, required: true },
+    minDate: { type: String, default: undefined },
+    maxDate: { type: String, default: undefined },
   })
 
   const findNearestHour = (hour: number) => {
@@ -80,7 +83,9 @@
 
     const nearHour = findNearestNumberInList(hourList, hour)
 
-    selectTime('hour', nearHour)
+    if (nearHour !== hour) {
+      selectTime('hour', dayjs(currentDate.value).set('hour', nearHour))
+    }
 
     return nearHour
   }
@@ -90,36 +95,25 @@
   const MazPickerTime = ref<HTMLDivElement>()
   const dividerHeight = ref<number>()
 
-  const isHour12 = computed(() => props.formatterOptions.hour12)
-
   const currentHour = computed(() => {
-    if (typeof modelValue.value === 'string') {
-      let baseHour = new Date(
-        props.hasDate
-          ? modelValue.value
-          : getCurrentDateForTimeValue(modelValue.value),
-      ).getHours()
-
-      return findNearestHour(baseHour)
+    if (typeof currentDate.value === 'string') {
+      return findNearestHour(dayjs(currentDate.value).get('hour'))
     } else {
       return undefined
     }
   })
+
   const currentMinute = computed(() =>
-    typeof modelValue.value === 'string'
+    typeof currentDate.value === 'string'
       ? findNearestNumberInList(
-          minutes.value.map(({ value }) => value),
-          new Date(
-            props.hasDate
-              ? modelValue.value
-              : getCurrentDateForTimeValue(modelValue.value),
-          ).getMinutes(),
+          minutes.value.map(({ value }) => value.get('minute')),
+          dayjs(currentDate.value).get('minute'),
         )
       : undefined,
   )
 
-  const getHourValue = (hourValue: number) => {
-    if (isHour12.value) {
+  const getHour12or24 = (hourValue: number) => {
+    if (props.isHour12) {
       const isPm = currentAmpm.value === 'pm'
       const newValue = isPm ? hourValue + 12 : hourValue
       return newValue === 12 ? 0 : newValue === 24 ? 12 : newValue
@@ -129,15 +123,25 @@
   }
 
   const hours = computed(() => {
-    return Array.from({ length: isHour12.value ? 12 : 24 }, (_v, i) => i).map(
+    return Array.from({ length: props.isHour12 ? 12 : 24 }, (_v, i) => i).map(
       (hour) => {
-        const hourBase = hour + (isHour12.value ? 1 : 0)
-        const hourValue = getHourValue(hourBase)
+        const hourBase = hour + (props.isHour12 ? 1 : 0)
+        const hour12or24 = getHour12or24(hourBase)
+        const hourValue = dayjs(currentDate.value).set('hour', hour12or24)
+
+        const disabled =
+          isDisableHour(hour12or24) ||
+          (props.minDate && currentDate.value
+            ? dayjs(props.minDate).isAfter(hourValue, 'hour')
+            : false) ||
+          (props.maxDate && currentDate.value
+            ? dayjs(props.maxDate).isBefore(hourValue, 'hour')
+            : false)
+
         return {
           label: `${hourBase < 10 ? '0' : ''}${hourBase}`,
-          value: hourValue,
-          base: hour,
-          disabled: isDisableHour(hourValue),
+          value: dayjs(currentDate.value).set('hour', hour12or24),
+          disabled,
         }
       },
     )
@@ -147,11 +151,23 @@
     const length = Math.floor(60 / props.minuteInterval) - 0
 
     return Array.from({ length }, (_v, i) => i * props.minuteInterval).map(
-      (minute) => ({
-        label: `${minute < 10 ? '0' : ''}${minute}`,
-        value: minute,
-        disabled: false,
-      }),
+      (minute) => {
+        const minuteValue = dayjs(currentDate.value).set('minute', minute)
+
+        const disabled =
+          (props.minDate && currentDate.value
+            ? dayjs(props.minDate).isAfter(minuteValue, 'minute')
+            : false) ||
+          (props.maxDate && currentDate.value
+            ? dayjs(props.maxDate).isBefore(minuteValue, 'minute')
+            : false)
+
+        return {
+          label: `${minute < 10 ? '0' : ''}${minute}`,
+          value: minuteValue,
+          disabled,
+        }
+      },
     )
   })
 
@@ -164,7 +180,7 @@
   })
 
   const ampm = computed<{ label: string; value: 'am' | 'pm' }[]>(() =>
-    isHour12.value
+    props.isHour12
       ? [
           { label: 'AM', value: 'am' },
           { label: 'PM', value: 'pm' },
@@ -177,36 +193,32 @@
       identifier: ColumnIdentifier
       values: {
         label: string
-        value: number | 'am' | 'pm'
+        value: Dayjs | 'am' | 'pm'
         disabled?: boolean
       }[]
-      currentValue: number | string | undefined
     }[] = [
       {
         identifier: 'hour',
         values: hours.value,
-        currentValue: currentHour.value,
       },
       {
         identifier: 'minute',
         values: minutes.value,
-        currentValue: currentMinute.value,
       },
     ]
 
-    if (isHour12.value) {
+    if (props.isHour12) {
       columns.push({
         identifier: 'ampm',
         values: ampm.value,
-        currentValue: currentAmpm.value,
       })
     }
 
     return columns
   })
 
-  const modelValue = computed({
-    get: () => props.modelValue,
+  const currentDate = computed({
+    get: () => props.modelValue as string,
     set: (value) => {
       emits('update:model-value', value)
     },
@@ -230,7 +242,7 @@
           dividerHeight.value = divHeight / 16
         }
 
-        scrollColumns()
+        scrollColumns(false)
       }
     },
     { immediate: true },
@@ -238,27 +250,20 @@
 
   watch(
     () => props.modelValue,
-    async (value) => {
-      if (value) {
+    async (value, oldValue) => {
+      if (value !== oldValue) {
         await nextTick()
-        scrollColumns()
-
-        modelValue.value = props.hasDate
-          ? (modelValue.value
-              ? new Date(modelValue.value as string)
-              : new Date()
-            ).toISOString()
-          : getTimeString(`${currentHour.value}:${currentMinute.value}`)
+        scrollColumns(true)
       }
     },
     { immediate: true },
   )
 
-  const scrollColumns = () => {
-    scrollColumn('hour')
-    scrollColumn('minute')
-    if (isHour12.value) {
-      scrollColumn('ampm')
+  const scrollColumns = (hasSmoothEffect: boolean) => {
+    scrollColumn('hour', hasSmoothEffect)
+    scrollColumn('minute', hasSmoothEffect)
+    if (props.isHour12) {
+      scrollColumn('ampm', hasSmoothEffect)
     }
   }
 
@@ -266,7 +271,24 @@
     return (props.disabledHours && props.disabledHours.includes(value)) ?? false
   }
 
-  const scrollColumn = async (identifier: ColumnIdentifier) => {
+  const isSelected = (
+    identifier: ColumnIdentifier,
+    value: Dayjs | 'am' | 'pm',
+  ): boolean => {
+    if (value === 'am' || value === 'pm') {
+      return currentAmpm.value === value
+    } else if (identifier === 'hour') {
+      return currentHour.value === value.get(identifier)
+    } else if (identifier === 'minute') {
+      return currentMinute.value === value.get(identifier)
+    }
+    return false
+  }
+
+  const scrollColumn = async (
+    identifier: ColumnIdentifier,
+    hasSmoothEffect = true,
+  ) => {
     if (MazPickerTime.value) {
       const column = MazPickerTime.value.querySelector(
         `.m-picker-time__column__${identifier}`,
@@ -283,44 +305,43 @@
         MazPickerTime.value
       ) {
         await nextTick()
-        scrollToTarget(column, selectedButton, dividerHeight.value * 16)
+        scrollToTarget(
+          column,
+          selectedButton,
+          dividerHeight.value * 16,
+          hasSmoothEffect,
+        )
       }
     }
   }
 
   const selectTime = async (
     identifier: ColumnIdentifier,
-    value: number | 'am' | 'pm',
+    value: Dayjs | 'am' | 'pm',
   ) => {
-    const newDate = modelValue.value
-      ? props.hasDate
-        ? new Date(modelValue.value as string)
-        : getCurrentDateForTimeValue(modelValue.value as string)
-      : new Date()
+    const newDate = dayjs(currentDate.value)
 
-    const getDateTimeValue = (date: Date) => {
-      return props.hasDate ? date.toISOString() : getTimeString(date)
+    if (identifier === 'hour' && typeof value === 'object') {
+      currentDate.value = newDate.set('hour', value.get('hour')).format()
     }
 
-    if (identifier === 'hour' && typeof value === 'number') {
-      const dateWithNewHour = new Date(newDate.setHours(value))
-      modelValue.value = getDateTimeValue(dateWithNewHour)
-    }
-    if (identifier === 'minute' && typeof value === 'number') {
-      const dateWithNewMinute = new Date(newDate.setMinutes(value))
+    if (identifier === 'minute' && typeof value === 'object') {
+      const dateWithNewMinute = newDate.set('minute', value.get('minute'))
 
-      modelValue.value = getDateTimeValue(dateWithNewMinute)
+      currentDate.value = dateWithNewMinute.format()
     }
-    if (identifier === 'ampm' && typeof value === 'string') {
+
+    if (identifier === 'ampm') {
       if (currentAmpm.value !== value || !currentHour.value) {
         if (value === 'am') {
-          const dateWithNewHour = new Date(
-            newDate.setHours(newDate.getHours() - 12),
-          )
-          modelValue.value = getDateTimeValue(dateWithNewHour)
+          currentDate.value = newDate
+            .set('hour', newDate.get('hour'))
+            .subtract(12, 'hour')
+            .format()
         }
         if (value === 'pm') {
-          const baseHour = newDate.getHours()
+          const baseHour = newDate.get('hour')
+
           const newHour =
             baseHour + 12 > 12 && baseHour + 12 < 24
               ? baseHour + 12
@@ -328,8 +349,7 @@
               ? 12
               : baseHour
 
-          const dateWithNewHour = new Date(newDate.setHours(newHour))
-          modelValue.value = getDateTimeValue(dateWithNewHour)
+          currentDate.value = newDate.set('hour', newHour).format()
         }
       }
     }
@@ -358,7 +378,8 @@
       content: '';
       transform: translateY(-50%);
 
-      @apply maz-absolute maz-left-0 maz-right-0 maz-top-1/2 maz-mx-auto maz-h-9 maz-border-t maz-border-b maz-border-color-lighter;
+      @apply maz-absolute maz-left-0 maz-right-0 maz-top-1/2
+        maz-mx-auto maz-h-9 maz-border-t maz-border-b maz-border-color-lighter;
     }
 
     &__column {

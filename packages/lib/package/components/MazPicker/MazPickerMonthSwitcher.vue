@@ -18,8 +18,12 @@
         v-for="month in months"
         :key="month.label"
         :size="props.double ? 'sm' : 'xs'"
-        :class="{ '--is-selected': isSameMonth(month.date, currentDate) }"
-        :color="isSameMonth(month.date, currentDate) ? color : 'transparent'"
+        :class="{
+          '--is-selected': isSameDate(month.date, calendarDate, 'month'),
+        }"
+        :color="
+          isSameDate(month.date, calendarDate, 'month') ? color : 'transparent'
+        "
         type="button"
         @click.stop="selectMonth(month.date)"
       >
@@ -31,58 +35,60 @@
 
 <script lang="ts" setup>
   import { capitalize, date } from '@package/filters'
-  import { computed, PropType } from 'vue'
-  import { Color } from '../types'
-  import { cloneDate, isSameMonth } from '@package/components/MazPicker/utils'
-  import MazBtn from '@package/components/MazBtn.vue'
+  import type { PropType } from 'vue'
+  import type { Color } from '../types'
+  import { computed } from 'vue'
+  import dayjs, { Dayjs } from 'dayjs'
+  import { isSameDate } from '@components/MazPicker/utils'
+  import MazBtn from '@components/MazBtn.vue'
   import XIcon from '@package/icons/x.svg'
-  import MazIcon from '@package/components/MazIcon.vue'
+  import MazIcon from '@components/MazIcon.vue'
 
   const props = defineProps({
-    currentDate: { type: Date, required: true },
+    calendarDate: { type: String, required: true },
     color: { type: String as PropType<Color>, required: true },
     locale: { type: String, required: true },
     double: { type: Boolean, required: true },
   })
 
-  const emits = defineEmits(['update:current-date', 'close'])
+  const emits = defineEmits(['update:calendar-date', 'close'])
 
   const months = computed<
     {
       label: string
-      date: Date
+      date: Dayjs
     }[]
   >(() => {
-    const clonedCurrentDate = cloneDate(props.currentDate)
     return Array.from({ length: 12 }, (_v, i) => i).map((monthNumber) => {
+      const monthDate = dayjs(props.calendarDate).set('month', monthNumber)
       if (props.double) {
         return {
           label: `${capitalize(
-            date(new Date().setMonth(monthNumber), props.locale, {
+            date(monthDate.format(), props.locale, {
               month: 'short',
             }),
           )} - ${capitalize(
-            date(new Date().setMonth(monthNumber + 1), props.locale, {
+            date(monthDate.add(1, 'month').format(), props.locale, {
               month: 'short',
             }),
           )}`,
-          date: cloneDate(clonedCurrentDate.setMonth(monthNumber)),
+          date: monthDate,
         }
       } else {
         return {
           label: capitalize(
-            date(new Date().setMonth(monthNumber), props.locale, {
+            date(monthDate.format(), props.locale, {
               month: 'long',
             }),
           ),
-          date: cloneDate(clonedCurrentDate.setMonth(monthNumber)),
+          date: monthDate,
         }
       }
     })
   })
 
-  const selectMonth = (date: Date) => {
-    emits('update:current-date', date)
+  const selectMonth = (date: Dayjs) => {
+    emits('update:calendar-date', date.format())
     emits('close')
   }
 </script>

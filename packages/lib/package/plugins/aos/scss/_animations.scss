@@ -147,6 +147,7 @@ $maz-aos-distance: 100px !default;
 
     [data-maz-aos='flip-left'] {
       transform: perspective(2500px) rotateY(-100deg);
+
       &.maz-aos-animate {
         transform: perspective(2500px) rotateY(0);
       }
@@ -154,6 +155,7 @@ $maz-aos-distance: 100px !default;
 
     [data-maz-aos='flip-right'] {
       transform: perspective(2500px) rotateY(100deg);
+
       &.maz-aos-animate {
         transform: perspective(2500px) rotateY(0);
       }
@@ -161,6 +163,7 @@ $maz-aos-distance: 100px !default;
 
     [data-maz-aos='flip-up'] {
       transform: perspective(2500px) rotateX(-100deg);
+
       &.maz-aos-animate {
         transform: perspective(2500px) rotateX(0);
       }
@@ -168,6 +171,7 @@ $maz-aos-distance: 100px !default;
 
     [data-maz-aos='flip-down'] {
       transform: perspective(2500px) rotateX(100deg);
+
       &.maz-aos-animate {
         transform: perspective(2500px) rotateX(0);
       }

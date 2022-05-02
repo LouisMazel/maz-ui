@@ -1,9 +1,8 @@
 <template>
   <div class="maz-picker-calendar flex">
     <MazPickerShortcuts
-      v-if="!noShortcuts && isRangeMode"
-      v-model="modelValue"
-      :current-date="currentDate"
+      v-if="hasShortcuts"
+      v-model="currentValue"
       :color="color"
       :shortcuts="shortcuts"
       :shortcut="shortcut"
@@ -11,7 +10,7 @@
     />
     <div class="maz-picker-calendar__main" :class="{ '--has-double': double }">
       <MazPickerCalendarSwitcher
-        v-model:current-date="currentDate"
+        v-model:calendar-date="calendarDate"
         :locale="locale"
         :double="double"
         @open-month-switcher="monthSwitcherOpen = true"
@@ -20,7 +19,7 @@
       <Transition name="maz-picker-slide">
         <MazPickerMonthSwitcher
           v-if="monthSwitcherOpen"
-          v-model:current-date="currentDate"
+          v-model:calendar-date="calendarDate"
           :color="color"
           :double="double"
           :locale="locale"
@@ -30,7 +29,7 @@
       <Transition name="maz-picker-slide">
         <MazPickerYearSwitcher
           v-if="yearSwitcherOpen"
-          v-model:current-date="currentDate"
+          v-model:calendar-date="calendarDate"
           :color="color"
           :locale="locale"
           @close="yearSwitcherOpen = false"
@@ -40,12 +39,13 @@
         <MazPickerCalendarMonth
           v-for="month in months"
           :key="month"
-          v-model="modelValue"
+          v-model="currentValue"
+          v-model:hoverred-day="hoverredDay"
+          :calendar-date="calendarDate"
           :locale="locale"
-          :time="time"
+          :has-time="hasTime"
           :color="color"
           :offset-month="month"
-          :current-date="currentDate"
           :first-day-of-week="firstDayOfWeek"
           :min-date="minDate"
           :max-date="maxDate"
@@ -58,13 +58,14 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, PropType, ref } from 'vue'
+  import { computed, type PropType, ref } from 'vue'
   import MazPickerCalendarSwitcher from './MazPickerCalendarSwitcher.vue'
-  import { Color } from '../types'
+  import type { Color } from '../types'
   import MazPickerMonthSwitcher from './MazPickerMonthSwitcher.vue'
   import MazPickerYearSwitcher from './MazPickerYearSwitcher.vue'
   import MazPickerCalendarMonth from './MazPickerCalendarMonth/MazPickerCalendarMonth.vue'
-  import { PickerShortcut, PickerValue } from './types'
+  import type { PickerShortcut, PickerValue } from './types'
+  import type { Dayjs } from 'dayjs'
   import MazPickerShortcuts from './MazPickerShortcuts.vue'
 
   const props = defineProps({
@@ -72,10 +73,10 @@
       type: [String, Object] as PropType<PickerValue>,
       default: undefined,
     },
+    calendarDate: { type: String, required: true },
     color: { type: String as PropType<Color>, required: true },
     locale: { type: String, required: true },
     firstDayOfWeek: { type: Number, required: true },
-    currentDate: { type: Date, required: true },
     double: { type: Boolean, required: true },
     minDate: { type: String, default: undefined },
     maxDate: { type: String, default: undefined },
@@ -86,30 +87,36 @@
       required: true,
     },
     noShortcuts: { type: Boolean, required: true },
-    time: { type: Boolean, required: true },
+    hasTime: { type: Boolean, required: true },
     shortcut: { type: String, default: undefined },
   })
 
-  const emits = defineEmits(['update:model-value', 'update:current-date'])
+  const emits = defineEmits(['update:model-value', 'update:calendar-date'])
+
+  const hoverredDay = ref<Dayjs>()
 
   const isRangeMode = computed(() => typeof props.modelValue === 'object')
+
+  const hasShortcuts = computed(
+    () => !props.noShortcuts && props.shortcuts.length && isRangeMode.value,
+  )
 
   const monthSwitcherOpen = ref(false)
   const yearSwitcherOpen = ref(false)
 
-  const modelValue = computed({
+  const currentValue = computed({
     get: () => props.modelValue,
     set: (value) => emits('update:model-value', value),
-  })
-
-  const currentDate = computed({
-    get: () => props.currentDate,
-    set: (currentDate) => emits('update:current-date', currentDate),
   })
 
   const months = computed(() =>
     Array.from({ length: props.double ? 2 : 1 }, (_v, i) => i),
   )
+
+  const calendarDate = computed({
+    get: () => props.calendarDate,
+    set: (calendarDate) => emits('update:calendar-date', calendarDate),
+  })
 </script>
 
 <style lang="postcss" scoped>
@@ -117,7 +124,7 @@
     @apply maz-relative maz-flex maz-w-full;
 
     &__main {
-      @apply maz-flex-1;
+      @apply maz-flex maz-flex-1 maz-flex-col;
 
       width: 16rem;
 
@@ -131,7 +138,7 @@
     }
 
     &__months {
-      @apply maz-flex maz-w-full;
+      @apply maz-flex maz-w-full maz-flex-1;
     }
   }
 

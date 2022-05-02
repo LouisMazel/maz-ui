@@ -43,12 +43,12 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, PropType, computed } from 'vue'
+  import { ref, type PropType, computed } from 'vue'
 
   import MazBtn from './MazBtn.vue'
   import MazInput from './MazInput.vue'
   import MazIcon from './MazIcon.vue'
-  import { Color, Size } from './types'
+  import type { Color, Size } from './types'
 
   const props = defineProps({
     // Input value, can be a `Array` of `String` or `null`
@@ -149,7 +149,7 @@
 <style lang="postcss" scoped>
   .m-input-tags {
     @apply maz-relative maz-flex maz-flex-wrap maz-items-center
-    maz-overflow-hidden maz-rounded-lg maz-border-2 maz-bg-color;
+      maz-overflow-hidden maz-rounded-lg maz-border-2 maz-bg-color;
 
     padding-left: 0.25em;
     padding-right: 0.25em;

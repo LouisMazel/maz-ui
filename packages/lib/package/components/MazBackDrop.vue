@@ -37,7 +37,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref, PropType, watch } from 'vue'
+  import { defineComponent, ref, type PropType, watch } from 'vue'
 
   const MODAL_OPENED_CLASS = '--backdrop-present'
 

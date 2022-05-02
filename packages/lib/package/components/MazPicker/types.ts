@@ -13,7 +13,7 @@ export type PickerShortcut = {
   identifier: string
   label: string
   value: {
-    start: string | Date | number
-    end: string | Date | number
+    start: string
+    end: string
   }
 }

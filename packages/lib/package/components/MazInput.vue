@@ -105,11 +105,11 @@
 </template>
 
 <script lang="ts">
-  import { computed, defineComponent, onMounted, ref, PropType } from 'vue'
+  import { computed, defineComponent, onMounted, ref, type PropType } from 'vue'
   import { debounce } from '../helpers/debounce'
   import MazBtn from './MazBtn.vue'
   import MazIcon from './MazIcon.vue'
-  import { Color, Size } from './types'
+  import type { Color, Size } from './types'
   export type { Color, Size } from './types'
   import EyeOffIcon from '@package/icons/eye-off.svg'
   import EyeIcon from '@package/icons/eye.svg'
@@ -373,7 +373,8 @@
     }
 
     &-wrapper {
-      @apply maz-relative maz-z-1 maz-flex maz-flex-1 maz-overflow-hidden maz-border-solid maz-bg-color maz-transition-colors maz-duration-300;
+      @apply maz-relative maz-z-1 maz-flex maz-flex-1 maz-overflow-hidden
+        maz-border-solid maz-bg-color maz-transition-colors maz-duration-300;
 
       &.--default-border {
         @apply maz-border-gray-200;
@@ -399,7 +400,7 @@
 
     &-input {
       @apply maz-outline-none maz-m-0 maz-block maz-h-full maz-w-full maz-appearance-none
-      maz-border-none maz-bg-transparent maz-py-0 maz-px-4 maz-text-normal maz-shadow-none;
+        maz-border-none maz-bg-transparent maz-py-0 maz-px-4 maz-text-normal maz-shadow-none;
 
       &:-webkit-autofill,
       &:-webkit-autofill:hover,
@@ -412,7 +413,6 @@
 
     &-label {
       @apply maz-pointer-events-none maz-absolute maz-block maz-w-max maz-origin-top-left maz-truncate;
-
       @apply maz-left-4 maz-leading-6;
 
       transition: transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;

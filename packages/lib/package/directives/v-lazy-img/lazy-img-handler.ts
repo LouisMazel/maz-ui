@@ -1,4 +1,4 @@
-import { ClassOptions, BindingData, vLazyImgOptions } from './types'
+import type { ClassOptions, BindingData, vLazyImgOptions } from './types'
 export * from './types'
 
 const EMPTY_PHOTO =

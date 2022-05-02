@@ -6,7 +6,7 @@ import {
 
 import { sleep } from '@package/helpers'
 
-import { documentEmitVisibilityState } from '@unit/helpers/document-event'
+import { documentEmitVisibilityState } from '@tests/helpers/document-event'
 
 const DEFAULT_TIMEOUT = 300
 
@@ -35,13 +35,19 @@ describe('@/plugins/idle-timeout/idle-timeout-handler.ts', () => {
         expect(instance).toBeInstanceOf(UserVisibility)
         await sleep(DEFAULT_TIMEOUT)
         if (instance) {
-          const startSpy = vitest.spyOn(instance, 'start')
-          instance.start()
+          /* eslint-disable @typescript-eslint/ban-ts-comment */
+          // @ts-ignore
+          const startSpy = vitest.spyOn(instance, 'addEventListener')
+          // @ts-ignore
+          instance.addEventListener()
+          /* eslint-enable @typescript-eslint/ban-ts-comment */
           expect(startSpy).toHaveBeenCalled()
         }
       })
 
       it('Then instance emit callback on demand', () => {
+        /* eslint-disable @typescript-eslint/ban-ts-comment */
+        // @ts-ignore
         instance?.emitCallback()
         expect(callback).toHaveBeenCalled()
       })
@@ -55,7 +61,6 @@ describe('@/plugins/idle-timeout/idle-timeout-handler.ts', () => {
 
       it('Then instance emit callback on demand', () => {
         instance?.destroy()
-        // expect(callback).toHaveBeenCalled()
       })
     })
 

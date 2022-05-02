@@ -1,4 +1,5 @@
-import { App, Component, createVNode, render } from 'vue'
+import { createVNode, render } from 'vue'
+import type { App, Component } from 'vue'
 
 export function mount(
   component: Component,

@@ -55,17 +55,17 @@
   import { debounce } from '@package/helpers/debounce'
   import {
     ref,
-    CSSProperties,
+    type CSSProperties,
     watch,
     computed,
     onMounted,
-    PropType,
+    type PropType,
     onBeforeUnmount,
     nextTick,
   } from 'vue'
 
   import { getPos, isBetween, getOpacityCoeff } from './MazSlider/utils'
-  import { Color } from './types'
+  import type { Color } from './types'
 
   const props = defineProps({
     // Array of cursors values
