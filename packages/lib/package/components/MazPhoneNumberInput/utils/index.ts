@@ -1,15 +1,15 @@
 import {
   parsePhoneNumberFromString,
   AsYouType,
-  CountryCode,
+  type CountryCode,
   getCountries,
   getCountryCallingCode,
   getExampleNumber,
   isSupportedCountry,
-  Examples,
+  type Examples,
 } from 'libphonenumber-js'
 import { countriesNameListByIsoCode } from './countries-name-list-by-iso-code'
-import { Country, Result } from '../types'
+import type { Country, Result } from '../types'
 
 export function getCountryName(
   code: CountryCode | string,

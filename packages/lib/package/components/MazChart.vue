@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { h, ref, onMounted, defineComponent, PropType } from 'vue'
+  import { h, ref, onMounted, defineComponent, type PropType } from 'vue'
 
   import {
     chartJsEventNames,
@@ -32,11 +32,11 @@
     Legend,
     Title,
     Tooltip,
-    ChartItem,
-    ChartType,
-    Plugin,
-    ChartData,
-    ChartOptions,
+    type ChartItem,
+    type ChartType,
+    type Plugin,
+    type ChartData,
+    type ChartOptions,
   } from 'chart.js'
 
   Chart.register(

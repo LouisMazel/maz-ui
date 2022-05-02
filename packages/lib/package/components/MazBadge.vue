@@ -13,12 +13,12 @@
 </template>
 
 <script lang="ts">
-  import { Color } from './types'
+  import type { Color } from './types'
   export type BadgeColor = Color | 'gray'
 </script>
 
 <script lang="ts" setup>
-  import { PropType } from 'vue'
+  import type { PropType } from 'vue'
 
   defineProps({
     color: {

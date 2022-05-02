@@ -26,7 +26,7 @@ afterAll(() => {
   instance = undefined
 })
 
-describe('@/plugins/idle-timeout/idle-timeout-handler.ts', () => {
+describe('package/helpers/idle-timeout', () => {
   describe('Given app want trigger user idle', () => {
     describe('When instance is launch', () => {
       it('Then instance is IdleTimeout', () => {

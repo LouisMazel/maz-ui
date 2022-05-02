@@ -13,10 +13,10 @@ plugins:
         - typescript
   eslint:
     enabled: false
-  #   channel: "eslint-7"
-  #   config:
-  #     config: ./packages/lib/eslintrc.js
-  #     ignore_warnings: true
+    # channel: "eslint-7"
+    # config:
+    #   config: ./packages/lib/eslintrc.js
+    #   ignore_warnings: true
   fixme:
     enabled: true
   stylelint:

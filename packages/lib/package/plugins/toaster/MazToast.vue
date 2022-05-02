@@ -24,12 +24,13 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, onMounted, PropType, ref } from 'vue'
+  import { computed, onMounted, ref } from 'vue'
+  import type { PropType } from 'vue'
   import { ToasterTimer } from './timer'
-  import { LocalToasterOptions } from './toaster-handler'
-  import MazIcon from '@package/components/MazIcon.vue'
+  import type { LocalToasterOptions } from './toaster-handler'
+  import MazIcon from '@components/MazIcon.vue'
   import XIcon from '@package/icons/x.svg'
-  import { ToasterPositions } from './types'
+  import type { ToasterPositions } from './types'
 
   const Toaster = ref<HTMLDivElement>()
 
@@ -234,8 +235,8 @@
 
     & .--close {
       @apply maz-ml-1 maz-flex maz-h-7 maz-w-7 maz-rounded-full maz-bg-transparent maz-p-0
-      maz-flex-center
-      hover:maz-bg-gray-900 hover:maz-bg-opacity-10;
+        maz-flex-center
+        hover:maz-bg-gray-900 hover:maz-bg-opacity-10;
     }
 
     &.--info {

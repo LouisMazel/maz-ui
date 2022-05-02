@@ -1,4 +1,9 @@
-import { Directive, DirectiveBinding, FunctionDirective, Plugin } from 'vue'
+import type {
+  Directive,
+  DirectiveBinding,
+  FunctionDirective,
+  Plugin,
+} from 'vue'
 
 const handleOutsideClick = (
   event: TouchEvent | MouseEvent,

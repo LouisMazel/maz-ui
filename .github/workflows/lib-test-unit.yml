@@ -1,10 +1,15 @@
-name: Tests Units
+name: Lib Tests Units
 
 on:
   push:
-    branches: [master, next]
+    branches:
+      - master
+      - next
   pull_request:
-    branches: [master, next]
+    branches:
+      - master
+      - next
+      - "release/**"
 
 jobs:
   coverage:
@@ -27,7 +32,7 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install modules
-        run: make install
+        run: npm ci
 
       - name: Test & Publish Code Coverage
         uses: paambaati/codeclimate-action@v3.0.0

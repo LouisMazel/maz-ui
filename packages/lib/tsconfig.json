@@ -1,16 +1,8 @@
 {
+  "extends": "@vue/tsconfig/tsconfig.json",
   "compilerOptions": {
-    "target": "ES2015",
-    "module": "esnext",
-    "strict": true,
-    "importHelpers": true,
-    "moduleResolution": "node",
-    "experimentalDecorators": true,
-    "skipLibCheck": true,
     "declaration": true,
     "declarationDir": "types",
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "lib": ["esnext", "DOM", "DOM.iterable", "scripthost"],
     "strictPropertyInitialization": false,
@@ -18,7 +10,8 @@
     "noImplicitThis": false,
     "baseUrl": ".",
     "paths": {
-      "@package/*": ["package/*"]
+      "@package/*": ["package/*"],
+      "@components/*": ["package/components/*"]
     },
     "types": ["@types/node", "google.maps"]
   },

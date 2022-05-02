@@ -4,7 +4,9 @@
     "baseUrl": ".",
     "paths": {
       "@package/*": ["./../package/*"],
-      "@unit/*": ["unit/*"]
+      "@components/*": ["./../package/components/*"],
+      "@tests/*": ["./../tests/*"]
     }
-  }
+  },
+  "include": ["./../package/types/*", "./**/*"]
 }

@@ -63,7 +63,6 @@
 
     &__close {
       @apply maz-absolute !important;
-
       @apply maz-top-4 maz-right-4;
     }
   }

@@ -17,7 +17,9 @@
 
 <!-- // inheritAttrs: false -->
 <script lang="ts" setup>
-  import { nextTick, onMounted, PropType, ref, watch, computed } from 'vue'
+  import { nextTick, onMounted, ref, watch, computed } from 'vue'
+  import type { PropType } from 'vue'
+
   import { injectStrict } from '../helpers/inject-strict'
 
   const cache: Record<string, Promise<SVGElement>> = {}

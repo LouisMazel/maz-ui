@@ -1,4 +1,5 @@
 module.exports = {
+  syntax: 'postcss-scss',
   plugins: [
     require('postcss-simple-vars'),
     require('postcss-url'),
