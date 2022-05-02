@@ -7,10 +7,11 @@
     />
     <MazPickerCalendarGrid
       v-model="modelValue"
+      v-model:hoverred-day="hoverredDay"
       :locale="locale"
       :color="color"
-      :time="time"
-      :current-date="currentDate"
+      :has-time="hasTime"
+      :calendar-date="calendarDateWithOffset"
       :first-day-of-week="firstDayOfWeek"
       :min-date="minDate"
       :max-date="maxDate"
@@ -21,12 +22,13 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, PropType } from 'vue'
-  import { Color } from '@package/components/types'
-  import { cloneDate } from '../utils'
-  import MazPickerCalendarDays from './MazPickerCalendarDays.vue'
+  import { computed, type PropType } from 'vue'
+  import type { Color } from '@components/types'
+  import type { PickerValue } from '../types'
+
   import MazPickerCalendarGrid from './MazPickerCalendarGrid.vue'
-  import { PickerValue } from '../types'
+  import MazPickerCalendarDays from './MazPickerCalendarDays.vue'
+  import dayjs, { Dayjs } from 'dayjs'
 
   const props = defineProps({
     modelValue: {
@@ -35,40 +37,46 @@
     },
     color: { type: String as PropType<Color>, required: true },
     locale: { type: String, required: true },
-    time: { type: Boolean, required: true },
+    hasTime: { type: Boolean, required: true },
     firstDayOfWeek: { type: Number, required: true },
-    currentDate: { type: Date, required: true },
+    calendarDate: { type: String, required: true },
     offsetMonth: { type: Number, default: 0 },
     minDate: { type: String, default: undefined },
     maxDate: { type: String, default: undefined },
     disabledWeekly: { type: Array as PropType<number[]>, required: true },
     disabledDates: { type: Array as PropType<string[]>, required: true },
+    hoverredDay: { type: Object as PropType<Dayjs>, default: undefined },
   })
 
-  const emits = defineEmits(['update:model-value', 'update:current-date'])
-
-  const clonedCurrentDate = computed(() =>
-    cloneDate(
-      cloneDate(props.currentDate).setMonth(
-        props.currentDate.getMonth() + props.offsetMonth,
-      ),
-    ),
-  )
+  const emits = defineEmits([
+    'update:model-value',
+    'update:calendar-date',
+    'update:hoverred-day',
+  ])
 
   const modelValue = computed({
     get: () => props.modelValue,
     set: (value) => emits('update:model-value', value),
   })
 
-  const currentDate = computed({
-    get: () => clonedCurrentDate.value,
-    set: (currentDate) => emits('update:current-date', currentDate),
+  const hoverredDay = computed({
+    get: () => props.hoverredDay,
+    set: (value) => emits('update:hoverred-day', value),
+  })
+
+  function getCalendarDateWithOffset(offset: number) {
+    return dayjs(props.calendarDate).add(offset, 'month').format()
+  }
+
+  const calendarDateWithOffset = computed({
+    get: () => getCalendarDateWithOffset(props.offsetMonth),
+    set: (calendarDate) => emits('update:calendar-date', calendarDate),
   })
 </script>
 
 <style lang="postcss" scoped>
   .maz-picker-calendar-month {
-    @apply maz-w-full maz-p-2;
+    @apply maz-w-full maz-overflow-hidden maz-p-2;
 
     &__days {
       @apply maz-pb-2;

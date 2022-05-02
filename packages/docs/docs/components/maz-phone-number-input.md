@@ -46,8 +46,6 @@ yarn add libphonenumber-js
 > Emit on `@update` event
 
 <div class="language-json ext-json"><pre class="language-json"><code>{{ results }}</code></pre></div>
-<!-- <MazCard class="maz-w-full">
-</MazCard> -->
 
 <script setup lang="ts">
   import { ref } from 'vue'

@@ -20,7 +20,7 @@
 
 <script lang="ts">
   import { defineComponent, PropType } from 'vue'
-  import MazBtn from '@package/components/MazBtn.vue'
+  import MazBtn from '@components/MazBtn.vue'
 
   interface Item {
     label: string

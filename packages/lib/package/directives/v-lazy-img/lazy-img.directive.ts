@@ -1,5 +1,6 @@
-import { Directive } from 'vue'
-import { LazyImg, BindingData } from './lazy-img-handler'
+import type { Directive } from 'vue'
+import { LazyImg } from './lazy-img-handler'
+import type { BindingData } from './lazy-img-handler'
 
 let instance: LazyImg
 

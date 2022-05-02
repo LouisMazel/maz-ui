@@ -35,11 +35,12 @@
 </script>
 
 <script lang="ts" setup>
-  import { Prop, computed } from 'vue'
-  import { vLazyImgOptions, vLazyImg } from '../directives/v-lazy-img'
+  import { computed } from 'vue'
+  import type { Prop } from 'vue'
+  import type { vLazyImgOptions, vLazyImg } from '../directives/v-lazy-img'
 
   import MazSpinner from './MazSpinner.vue'
-  import { Image } from './types'
+  import type { Image } from './types'
 
   const props = defineProps({
     image: { type: [String, Object], default: undefined } as Prop<Image>,
