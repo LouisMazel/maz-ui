@@ -273,10 +273,10 @@ max-date: `{{ minMaxDates.max }}`
 <MazPicker
   v-model="rangeValues"
   color="secondary"
-  inline
-  double
   :min-date="minMaxDates.min"
   :max-date="minMaxDates.max"
+  inline
+  double
 />
 
 ```vue
@@ -284,23 +284,20 @@ max-date: `{{ minMaxDates.max }}`
   <MazPicker
     v-model="rangeValues"
     color="secondary"
-    inline
-    double
     :min-date="minMaxDates.min"
     :max-date="minMaxDates.max"
+    inline
+    double
   />
 -
   <script setup lang="ts">
     import { ref } from 'vue'
 
-    const rangeValues = ref({
-      start: dayjs().set(3, 'date').format('YYYY-MM-DD'),
-      end: dayjs().set(28, 'date').add(1, 'month').format('YYYY-MM-DD'),
-    })
+    const rangeValues = ref({ start: "2022-05-02", end: "2022-06-28" })
 
     const minMaxDates = ref({
-      min: dayjs().set(5, 'date').format('YYYY-MM-DD'),
-      max: dayjs().set(20, 'date').add(1, 'month').format('YYYY-MM-DD'),
+      min: '2022-05-05',
+      max: '2022-06-20',
     })
   </script>
 </template>
@@ -314,14 +311,11 @@ max-date: `{{ minMaxDates.max }}`
   const dateTimeValue = ref('2022-02-03 16:30')
   const dateTime12Value = ref('2022-02-03 04:30 pm')
 
-  const rangeValues = ref({
-    start: dayjs().set(3, 'date').format('YYYY-MM-DD'),
-    end: dayjs().set(28, 'date').add(1, 'month').format('YYYY-MM-DD'),
-  })
+  const rangeValues = ref({ start: "2022-05-02", end: "2022-06-28" })
 
   const minMaxDates = ref({
-    min: dayjs().set(5, 'date').format('YYYY-MM-DD'),
-    max: dayjs().set(20, 'date').add(1, 'month').format('YYYY-MM-DD'),
+    min: '2022-05-05',
+    max: '2022-06-20',
   })
 </script>
 

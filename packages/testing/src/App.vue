@@ -21,16 +21,16 @@
 
 
     <MazPicker
-      v-model="dateValue"
+      v-model="rangeValues"
       label="Select date"
-      format="YYYY-MM-DD HH:mm a"
+      format="YYYY-MM-DD"
       :first-day-of-week="1"
       locale="fr-FR"
       color="secondary"
-      min-date="2022-01-02 10:35 am"
-      max-date="2022-02-03 06:30 pm"
-      time
+      :min-date="minMaxDates.min"
+      :max-date="minMaxDates.max"
       style="min-width: 400px;"
+      double
     />
 
     <!-- End Developing Area -->
@@ -55,6 +55,12 @@
   })
 
   const dateValue = ref('2022-01-03 10:10 am')
+  const rangeValues = ref({ start: "2022-05-02", end: "2022-06-28" })
+
+  const minMaxDates = ref({
+    min: '2022-05-05',
+    max: '2022-06-20',
+  })
 </script>
 
 <style lang="postcss">
