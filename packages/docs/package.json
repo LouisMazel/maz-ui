@@ -13,7 +13,7 @@
   "author": "LouisMazel <me@loicmazuel.com>",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "^17.0.29",
+    "@types/node": "^17.0.31",
     "@vuepress/plugin-google-analytics": "^2.0.0-beta.36",
     "@vuepress/plugin-register-components": "^2.0.0-beta.36",
     "vue": "^3.2.33",
