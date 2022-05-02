@@ -1,7 +1,7 @@
 <template>
   <div
     ref="MazPicker"
-    v-click-outside="closeCalendar"
+    v-click-outside="closeCalendarOnClickOutside"
     class="m-picker"
     :style="style"
     :class="[
@@ -21,21 +21,18 @@
       v-bind="$attrs"
       autocomplete="off"
       class="m-picker__input"
+      :label="label"
+      :placeholder="placeholder"
       :color="color"
       @click="isFocused = !isFocused"
     >
       <template #right-icon>
-        <button
-          tabindex="-1"
-          class="maz-custom maz-flex maz-h-full maz-bg-transparent maz-flex-center"
-        >
-          <MazIcon
-            :src="ChevronDownIcon"
-            class="m-picker__button__chevron maz-h-5 maz-w-5 maz-text-normal"
-          />
+        <button tabindex="-1" class="m-picker__button">
+          <MazIcon :src="ChevronDownIcon" class="m-picker__button__chevron" />
         </button>
       </template>
     </MazInput>
+
     <Transition
       :name="
         pickerContainerPosition.vertical === 'top'
@@ -47,18 +44,19 @@
         v-show="isOpen"
         :id="containerUniqueId"
         ref="PickerContainer"
-        v-model="modelValue"
-        v-model:current-date="currentDate"
+        v-model="currentValue"
+        v-model:calendar-date="calendarDate"
         :is-open="isOpen"
         :color="color"
         :locale="currentLocale"
-        :has-footer="hasFooter"
         :has-date="hasDate"
         :double="hasDouble"
-        :time="hasTime"
+        :has-time="hasTime"
         :formatter-options="formatterOptions"
         :no-header="noHeader"
         :min-date="minDate"
+        :format="format"
+        :is-hour12="isHour12"
         :max-date="maxDate"
         :disabled-weekly="disabledWeekly"
         :inline="inline"
@@ -86,63 +84,63 @@
     onBeforeMount,
     onMounted,
     onUnmounted,
-    PropType,
     ref,
-    StyleValue,
-    watch,
     getCurrentInstance,
+    type PropType,
+    type StyleValue,
+    watch,
     nextTick,
   } from 'vue'
+
+  import dayjs from 'dayjs'
+  import customParseFormat from 'dayjs/plugin/customParseFormat'
+  import isBetween from 'dayjs/plugin/isBetween'
+
   import MazInput from './MazInput.vue'
   import MazPickerContainer from './MazPicker/MazPickerContainer.vue'
   import { vClickOutside } from '@package/directives/click-outside.directive'
   import ChevronDownIcon from '@package/icons/chevron-down.svg'
   import MazIcon from './MazIcon.vue'
-  import { Color, Position } from './types'
+  import type { Color, Position } from './types'
+
   import { date } from '../filters'
+
   import {
-    getCurrentDate,
     getFormattedDate,
     getRangeFormattedDate,
     getISODate,
     getRangeISODate,
     checkValueWithMinMaxDates,
     isValueDisabledWeekly,
-    getDaysInMonth,
-    getFirstDateOfWeek,
-    DateTimeFormatOptions,
-    getTimeString,
-    getCurrentDateForTimeValue,
+    type DateTimeFormatOptions,
     getBrowserLocale,
     fetchLocale,
     isValueDisabledDate,
   } from './MazPicker/utils'
 
-  import { PickerValue, PickerShortcut, SimpleValue } from './MazPicker/types'
+  import type { PickerValue, PickerShortcut } from './MazPicker/types'
+
+  dayjs.extend(customParseFormat)
+  dayjs.extend(isBetween)
+
+  const defaultInputDateStyle: Intl.DateTimeFormatOptions = {
+    dateStyle: 'full',
+  }
 
   const props = defineProps({
     modelValue: {
       type: [String, Object] as PropType<PickerValue>,
       default: undefined,
     },
-    minDate: { type: String, default: undefined },
-    maxDate: { type: String, default: undefined },
+    format: { type: String, default: 'YYYY-MM-DD' },
     open: { type: Boolean, default: false },
+    label: { type: String, default: undefined },
+    placeholder: { type: String, default: undefined },
     inputDateStyle: {
-      type: String as PropType<Intl.DateTimeFormatOptions['dateStyle']>,
-      default: 'full',
-    },
-    inputTimeStyle: {
-      type: String as PropType<Intl.DateTimeFormatOptions['timeStyle']>,
-      default: 'short',
-    },
-    timeZone: {
-      type: String as PropType<Intl.DateTimeFormatOptions['timeZone']>,
-      default: undefined,
-    },
-    hour12: {
-      type: Boolean as PropType<Intl.DateTimeFormatOptions['hour12']>,
-      default: false,
+      type: Object as PropType<Intl.DateTimeFormatOptions>,
+      default: () => ({
+        dateStyle: 'full',
+      }),
     },
     locale: { type: String, default: undefined },
     style: { type: Object as PropType<StyleValue>, default: undefined },
@@ -151,7 +149,7 @@
       type: Number,
       default: 0,
       validator: (value: number) => {
-        const isValid = [0, 1, 2, 3, 4, 5, 6].includes(value)
+        const isValid = Array.from({ length: 7 }, (_v, i) => i).includes(value)
 
         if (!isValid) {
           // eslint-disable-next-line no-console
@@ -159,11 +157,11 @@
             '[maz-ui](MazPicker) "first-day-of-week" should be between 0 and 6',
           )
         }
+
         return isValid
       },
     },
     autoClose: { type: Boolean, default: false },
-    noFooter: { type: Boolean, default: false },
     customElementSelector: { type: String, default: undefined },
     double: { type: Boolean, default: false },
     inline: { type: Boolean, default: false },
@@ -200,76 +198,110 @@
         ].includes(value)
       },
     },
-    disabledWeekly: { type: Array as PropType<number[]>, default: () => [] },
-    disabledHours: {
-      type: Array as PropType<number[]>,
-      default: () => [],
-    },
-    disabledDates: { type: Array as PropType<string[]>, default: () => [] },
-    noShortcuts: { type: Boolean, default: false },
-    shortcuts: {
-      type: Array as PropType<PickerShortcut[]>,
-      default: () => {
-        const defaultShorts: PickerShortcut[] = [
-          {
-            identifier: 'last7Days',
-            label: 'Last 7 days',
-            value: {
-              start: new Date().setDate(new Date().getDate() - 6),
-              end: new Date(),
-            },
-          },
-          {
-            identifier: 'last30Days',
-            label: 'Last 30 days',
-            value: {
-              start: new Date().setDate(new Date().getDate() - 29),
-              end: new Date(),
-            },
-          },
-          {
-            identifier: 'thisWeek',
-            label: 'This week',
-            value: {
-              start: getFirstDateOfWeek(new Date()),
-              end: getFirstDateOfWeek(new Date()).setDate(
-                getFirstDateOfWeek(new Date()).getDate() + 6,
-              ),
-            },
-          },
-          {
-            identifier: 'thisMonth',
-            label: 'This month',
-            value: {
-              start: new Date().setDate(1),
-              end: new Date().setDate(
-                getDaysInMonth(new Date().getFullYear(), new Date().getMonth()),
-              ),
-            },
-          },
-          {
-            identifier: 'thisYear',
-            label: 'This year',
-            value: {
-              start: new Date(`${new Date().getFullYear()}-01-01`),
-              end: new Date(`${new Date().getFullYear()}-12-31`),
-            },
-          },
-        ]
-        return defaultShorts
-      },
-    },
-    shortcut: { type: String, default: undefined },
     time: { type: Boolean, default: false },
     onlyTime: { type: Boolean, default: false },
     minuteInterval: { type: Number, default: 5 },
     noUseBrowserLocale: { type: Boolean, default: false },
     noFetchLocal: { type: Boolean, default: false },
+    noShortcuts: { type: Boolean, default: false },
+    shortcuts: {
+      type: Array as PropType<PickerShortcut[]>,
+      default: () => [
+        {
+          label: 'Last 7 days',
+          identifier: 'last7Days',
+          value: {
+            start: dayjs().subtract(6, 'day').format(),
+            end: dayjs().format(),
+          },
+        },
+        {
+          label: 'Last 30 days',
+          identifier: 'last30Days',
+          value: {
+            start: dayjs().subtract(29, 'day').format(),
+            end: dayjs().format(),
+          },
+        },
+        {
+          label: 'This week',
+          identifier: 'thisWeek',
+          value: {
+            start: dayjs().startOf('week').format(),
+            end: dayjs().endOf('week').format(),
+          },
+        },
+        {
+          label: 'Last week',
+          identifier: 'lastWeek',
+          value: {
+            start: dayjs().subtract(1, 'week').startOf('week').format(),
+            end: dayjs().subtract(1, 'week').endOf('week').format(),
+          },
+        },
+        {
+          label: 'This month',
+          identifier: 'thisMonth',
+          value: {
+            start: dayjs().set('date', 1).format(),
+            end: dayjs().set('date', dayjs().daysInMonth()).format(),
+          },
+        },
+        {
+          label: 'Last month',
+          identifier: 'lastMonth',
+          value: {
+            start: dayjs().subtract(1, 'month').set('date', 1).format(),
+            end: dayjs()
+              .subtract(1, 'month')
+              .set('date', dayjs().subtract(1, 'month').daysInMonth())
+              .format(),
+          },
+        },
+        {
+          label: 'This year',
+          identifier: 'thisYear',
+          value: {
+            start: dayjs().startOf('year').format(),
+            end: dayjs().endOf('year').format(),
+          },
+        },
+        {
+          label: 'Last year',
+          identifier: 'lastYear',
+          value: {
+            start: dayjs().subtract(1, 'year').startOf('year').format(),
+            end: dayjs().subtract(1, 'year').endOf('year').format(),
+          },
+        },
+      ],
+    },
+    shortcut: { type: String, default: undefined },
+    minDate: { type: String, default: undefined },
+    maxDate: { type: String, default: undefined },
+    disabledWeekly: {
+      type: Array as PropType<number[]>,
+      default: () => [],
+      validator: (value: number) => {
+        return 7 >= value && value >= 0
+      },
+    },
+    disabledDates: { type: Array as PropType<string[]>, default: () => [] },
+    disabledHours: {
+      type: Array as PropType<number[]>,
+      default: () => [],
+      validator: (value: number) => {
+        return 23 >= value && value >= 0
+      },
+    },
   })
 
   const instance = getCurrentInstance()
 
-  const currentLocale = ref<string>(props.locale || 'en-US')
+  const internalLocale = ref<string>(props.locale || 'en-US')
+  const currentLocale = computed<string>(
+    () => props.locale ?? internalLocale.value,
+  )
 
   const containerUniqueId = computed(
     () => `mazPickerContainer-${instance?.uid}`,
@@ -278,76 +310,115 @@
   const emits = defineEmits(['update:model-value', 'close'])
 
   const MazPicker = ref<HTMLDivElement>()
-  const PickerContainer = ref<typeof MazPickerContainer>()
 
-  const hasDouble = computed(() => props.double && !props.time)
-  const hasDate = computed(() => !props.onlyTime)
   const hasTime = computed(() => props.time || props.onlyTime)
-  const isRangeMode = computed(() => typeof props.modelValue === 'object')
+  const hasDouble = computed(() => props.double && !props.onlyTime)
+  const hasDate = computed(() => !props.onlyTime)
+  const isRangeMode = computed(() => typeof currentValue.value === 'object')
 
   onBeforeMount(() => {
     if (isRangeMode.value && hasTime.value) {
-      throw new Error(
-        `[maz-ui](MazPicker) you can't use time picker with range picker`,
+      // eslint-disable-next-line no-console
+      console.error(
+        `[maz-ui](MazPicker) You can't use time picker with range picker`,
+      )
+    }
+    if (
+      hasTime.value &&
+      !(props.format.includes('h') || props.format.includes('H'))
+    ) {
+      // eslint-disable-next-line no-console
+      console.error(
+        `[maz-ui](MazPicker) When you use the time picker, you must provided a format with time - Ex: "YYYY-MM-DD HH:mm"`,
+      )
+    }
+    if (
+      props.format.includes('h') &&
+      !(props.format.includes('a') || props.format.includes('A'))
+    ) {
+      /* eslint-disable no-console */
+      console.error(
+        '[maz-ui](MazPicker) if you use the 12 format "h" or "hh", you must add "a" or "A" at the end of the format - Ex: "YYYY-MM-DD hh:mm a"',
       )
     }
   })
 
-  const modelValue = computed({
-    get: () => props.modelValue,
+  const currentValue = computed<PickerValue>({
+    get: () => {
+      return typeof props.modelValue === 'object'
+        ? {
+            start: props.modelValue.start
+              ? dayjs(props.modelValue.start, props.format).format()
+              : undefined,
+            end: props.modelValue.end
+              ? dayjs(props.modelValue.end, props.format).format()
+              : undefined,
+          }
+        : props.modelValue
+        ? dayjs(props.modelValue, props.format).format()
+        : undefined
+    },
     set: (value) => {
-      // NEXT: format output
       emitValue(value)
 
-      if (props.autoClose && typeof props.modelValue !== 'object') {
+      if (props.autoClose && value !== 'object') {
         closeCalendar()
       }
     },
   })
 
-  const getCurrentDateValue = () => {
-    return typeof props.modelValue === 'object'
-      ? getCurrentDate(props.modelValue.start)
-      : props.onlyTime
-      ? getCurrentDateForTimeValue(props.modelValue)
-      : getCurrentDate(props.modelValue)
+  const getCalendarDate = (value: PickerValue): string => {
+    const baseDate =
+      (typeof value === 'object' ? value.start : value) ?? dayjs().format()
+
+    if (props.minDate && dayjs(baseDate).isBefore(props.minDate)) {
+      return props.minDate
+    } else if (props.maxDate && dayjs(baseDate).isAfter(props.maxDate)) {
+      return props.minDate ?? props.maxDate
+    } else {
+      return baseDate
+    }
   }
 
-  const currentDate = ref(getCurrentDateValue())
+  const calendarDate = ref(getCalendarDate(currentValue.value))
 
-  const formatterOptions = computed<DateTimeFormatOptions>(() => {
-    const { inputDateStyle, timeZone, inputTimeStyle, hour12 } = props
+  const isHour12 = computed(
+    () =>
+      props.format.includes('a') ||
+      props.format.includes('A') ||
+      props.format.includes('h'),
+  )
 
-    return {
-      dateStyle: inputDateStyle,
-      timeStyle: hasTime.value ? inputTimeStyle : undefined,
-      timeZone,
-      hour12,
-    }
-  })
+  const formatterOptions = computed<DateTimeFormatOptions>(() => ({
+    ...defaultInputDateStyle,
+    ...props.inputDateStyle,
+    timeStyle:
+      props.inputDateStyle.timeStyle ?? hasTime.value ? 'short' : undefined,
+    hour12: props.inputDateStyle.hour12 ?? isHour12.value,
+  }))
 
   const inputValue = computed(() => {
-    if (props.onlyTime) {
-      const baseDate = new Date().toISOString().split('T')[0]
+    if (!currentValue.value) return undefined
 
-      return modelValue.value
+    if (props.onlyTime) {
+      return currentValue.value
         ? date(
-            new Date(`${baseDate} ${modelValue.value}`),
+            dayjs(currentValue.value as string).format(),
             currentLocale.value,
             {
-              timeStyle: props.inputTimeStyle,
+              timeStyle: formatterOptions.value.timeStyle,
             },
           )
         : undefined
-    } else if (typeof modelValue.value === 'object') {
+    } else if (typeof currentValue.value === 'object') {
       return getRangeFormattedDate({
-        value: modelValue.value,
+        value: currentValue.value,
         locale: currentLocale.value,
         options: formatterOptions.value,
       })
     } else {
       return getFormattedDate({
-        value: modelValue.value,
+        value: dayjs(currentValue.value).format(),
         locale: currentLocale.value,
         options: formatterOptions.value,
       })
@@ -372,10 +443,6 @@
       props.inline,
   )
 
-  const hasFooter = computed(
-    () => !props.autoClose && !props.noFooter && !props.inline,
-  )
-
   onMounted(async () => {
     if (props.customElementSelector) {
       addEventToTriggerCustomElement(props.customElementSelector)
@@ -385,12 +452,12 @@
       const browserLocale = getBrowserLocale()
       if (!props.noUseBrowserLocale && browserLocale) {
         if (browserLocale) {
-          currentLocale.value = browserLocale
+          internalLocale.value = browserLocale
         }
       } else if (!props.noFetchLocal) {
         const locale = await fetchLocale()
 
-        if (locale) currentLocale.value = locale
+        if (locale) internalLocale.value = locale
       }
     }
   })
@@ -463,6 +530,12 @@
     emits('close')
   }
 
+  function closeCalendarOnClickOutside() {
+    if (!props.customElementSelector) {
+      closeCalendar()
+    }
+  }
+
   const toggleProgramatically = () => {
     programaticallyOpened.value = !programaticallyOpened.value
   }
@@ -490,9 +563,15 @@
           value,
           minDate: props.minDate,
           maxDate: props.maxDate,
+          format: props.format,
         })
-        if (newValue) modelValue.value = newValue
-        if (newCurrentDate) currentDate.value = newCurrentDate
+
+        if (newValue) {
+          emitValue(newValue)
+        }
+        if (newCurrentDate) {
+          setCalendarDate(newCurrentDate)
+        }
       } else if (typeof value === 'object' && (value.start || value.end)) {
         let newStartValue = value.start
         let newEndValue = value.end
@@ -502,48 +581,59 @@
             value: value.start,
             minDate: props.minDate,
             maxDate: props.maxDate,
+            format: props.format,
           })
 
           if (newValue) newStartValue = newValue
 
-          if (newCurrentDate) currentDate.value = newCurrentDate
+          if (newCurrentDate) {
+            setCalendarDate(newCurrentDate)
+          }
         }
         if (value.end) {
           const { newValue } = checkValueWithMinMaxDates({
             value: value.end,
             minDate: props.minDate,
             maxDate: props.maxDate,
+            format: props.format,
           })
 
           if (newValue) newEndValue = newValue
         }
 
-        modelValue.value = {
+        emitValue({
           start: newStartValue,
           end: newEndValue,
-        }
+        })
       }
     }
   }
 
-  const emitValue = (value: PickerValue) => {
-    const newValue = props.onlyTime
-      ? getTimeString(value as SimpleValue)
-      : typeof value === 'object'
-      ? getRangeISODate(value, hasTime.value)
-      : getISODate(value, hasTime.value)
+  const setCalendarDate = (value: string) => {
+    if (value && !dayjs(calendarDate.value).isSame(value, 'month')) {
+      calendarDate.value = value
+    }
+  }
 
-    emits('update:model-value', newValue)
+  const emitValue = (value: PickerValue) => {
+    if (typeof value === 'object') {
+      const newValue = getRangeISODate(value, props.format)
+      emits('update:model-value', newValue)
+
+      if (newValue.start) {
+        setCalendarDate(newValue.start)
+      }
+    } else {
+      emits('update:model-value', getISODate(value, props.format))
+    }
   }
 
   // model value watcher
   watch(
-    () => [modelValue.value, props.minDate, props.maxDate],
+    () => [currentValue.value, props.minDate, props.maxDate],
     (values, oldValues) => {
       const value = values[0] as PickerValue
       const oldValue = oldValues?.[0] as PickerValue
-
-      currentDate.value = getCurrentDateValue()
 
       if (typeof value === 'object' && (value.start || value.end)) {
         if (
@@ -572,9 +662,9 @@
     { immediate: true },
   )
 
-  // Disable weekly watcher
+  // // Disable weekly watcher
   watch(
-    () => [modelValue.value, props.disabledWeekly, props.disabledDates],
+    () => [currentValue.value, props.disabledWeekly, props.disabledDates],
     (values) => {
       const value = values[0] as PickerValue
       const disabledWeekly = values[1] as number[]
@@ -585,9 +675,13 @@
           (value.start &&
             isValueDisabledWeekly({ value: value.start, disabledWeekly })) ||
           (value.start &&
-            isValueDisabledDate({ value: value.start, disabledDates }))
+            isValueDisabledDate({ value: value.start, disabledDates })) ||
+          (value.end &&
+            isValueDisabledWeekly({ value: value.end, disabledWeekly })) ||
+          (value.end &&
+            isValueDisabledDate({ value: value.end, disabledDates }))
         ) {
-          modelValue.value = { start: undefined, end: value.end }
+          currentValue.value = { start: undefined, end: undefined }
         }
         if (
           (value.end &&
@@ -595,14 +689,14 @@
           (value.end &&
             isValueDisabledDate({ value: value.end, disabledDates }))
         ) {
-          modelValue.value = { start: value.start, end: undefined }
+          currentValue.value = { start: value.start, end: undefined }
         }
       } else if (typeof value === 'string') {
         if (
           isValueDisabledWeekly({ value, disabledWeekly }) ||
           isValueDisabledDate({ value, disabledDates })
         ) {
-          modelValue.value = undefined
+          currentValue.value = undefined
         }
       }
     },
@@ -630,8 +724,12 @@
       @apply maz-right-0;
     }
 
-    & .m-picker__button__chevron {
-      @apply maz-transition-transform maz-duration-200;
+    & .m-picker__button {
+      @apply maz-flex maz-h-full maz-bg-transparent maz-pr-1 maz-flex-center;
+
+      &__chevron {
+        @apply maz-h-5 maz-w-5 maz-text-normal maz-transition-transform maz-duration-200;
+      }
     }
 
     &.--is-open {

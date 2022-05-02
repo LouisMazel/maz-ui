@@ -12,9 +12,9 @@
 </template>
 
 <script lang="ts" setup>
-  import { PropType } from 'vue'
+  import type { PropType } from 'vue'
   import MazBtn from '../MazBtn.vue'
-  import { Color } from '../types'
+  import type { Color } from '../types'
   import MazIcon from '../MazIcon.vue'
   import CheckIcon from '@package/icons/check.svg'
 

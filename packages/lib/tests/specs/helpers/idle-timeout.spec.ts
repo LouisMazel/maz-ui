@@ -26,7 +26,7 @@ afterAll(() => {
   instance = undefined
 })
 
-describe('@/plugins/idle-timeout/idle-timeout-handler.ts', () => {
+describe('package/helpers/idle-timeout', () => {
   describe('Given app want trigger user idle', () => {
     describe('When instance is launch', () => {
       it('Then instance is IdleTimeout', () => {
@@ -44,7 +44,9 @@ describe('@/plugins/idle-timeout/idle-timeout-handler.ts', () => {
       it('Then user is new not idle callback called and idle equal "false"', async () => {
         await sleep(DEFAULT_TIMEOUT)
         expect(instance?.idle).toBeTruthy()
-        expect(callback).toHaveBeenCalledWith({ isIdle: true })
+        expect(callback).toHaveBeenCalledWith({
+          isIdle: true,
+        })
 
         /* eslint-disable */
         // @ts-ignore
@@ -57,7 +59,10 @@ describe('@/plugins/idle-timeout/idle-timeout-handler.ts', () => {
         /* eslint-enable */
 
         // expect(instance?.idle).toBeFalsy()
-        expect(callback).toHaveBeenCalledWith({ isIdle: false })
+        expect(callback).toHaveBeenCalledWith({
+          isIdle: false,
+          eventType: 'mousemove',
+        })
       })
 
       it('Then idle is "true" and callback called after time', async () => {

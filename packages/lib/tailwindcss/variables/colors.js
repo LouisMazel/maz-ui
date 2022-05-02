@@ -30,6 +30,7 @@ module.exports = {
     900,
     'contrast',
     'alpha',
+    'alpha-20',
   ],
   'variating-colors': {
     primary: true,
