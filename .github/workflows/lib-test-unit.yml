@@ -2,9 +2,14 @@ name: Tests Units
 
 on:
   push:
-    branches: [master, next]
+    branches:
+      - master
+      - next
   pull_request:
-    branches: [master, next]
+    branches:
+      - master
+      - next
+      - "release/**"
 
 jobs:
   coverage:
