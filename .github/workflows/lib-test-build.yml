@@ -1,5 +1,11 @@
 name: Lib Build Test
 on:
+  push:
+    branches:
+      - master
+      - next
+    paths:
+      - "packages/lib/**"
   pull_request:
     branches:
       - master

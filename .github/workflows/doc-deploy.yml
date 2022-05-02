@@ -2,8 +2,9 @@ name: Doc Build and Deploy
 on:
   push:
     branches: [next]
-    # paths:
-    #   - "packages/docs/**"
+    paths:
+      - "packages/docs/**"
+      - "packages/lib/**"
 
 jobs:
   doc-build-and-deploy:

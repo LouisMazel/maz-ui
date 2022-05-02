@@ -2,11 +2,15 @@ name: Lib Test Lint
 
 on:
   push:
-    branches: [master, next]
+    branches:
+      - master
+      - next
+    paths:
+      - "packages/lib/**"
   pull_request:
     branches: [master, next]
-  paths:
-    - "packages/lib/**"
+    paths:
+      - "packages/lib/**"
 
 jobs:
   lib-test-lint:
