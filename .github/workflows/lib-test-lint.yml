@@ -8,7 +8,10 @@ on:
     paths:
       - "packages/lib/**"
   pull_request:
-    branches: [master, next]
+    branches:
+      - master
+      - next
+      - "release/**"
     paths:
       - "packages/lib/**"
 

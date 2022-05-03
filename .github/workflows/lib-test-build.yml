@@ -1,4 +1,4 @@
-name: Lib Build Test
+name: Lib Test Build
 on:
   push:
     branches:

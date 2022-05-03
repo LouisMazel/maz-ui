@@ -1,4 +1,4 @@
-name: Lib Tests Units
+name: Lib Tests Unit
 
 on:
   push:
