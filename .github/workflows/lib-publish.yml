@@ -1,0 +1,42 @@
+name: Lib Publish To Npm
+
+on:
+  release:
+    types: [created]
+
+# on:
+#   push:
+#     tags:
+#       - v*.*.*
+
+jobs:
+  lib-publish:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./packages/lib
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - uses: actions/cache@v2
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
+
+      - uses: actions/setup-node@master
+        with:
+          node-version: "16"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Clean And Build Lib
+        run: |
+          make clean-build
+          make build
+
+      - run: npm publish --tag next --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
