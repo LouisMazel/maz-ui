@@ -1,12 +1,13 @@
 name: Lib Publish To Npm
 
-# on:
-#   release:
-#     types: [created]
 on:
-  push:
-    tags:
-      - v*.*.*
+  release:
+    types: [created]
+
+# on:
+#   push:
+#     tags:
+#       - v*.*.*
 
 jobs:
   lib-publish:
@@ -15,14 +16,27 @@ jobs:
       run:
         working-directory: ./packages/lib
     steps:
-      - uses: actions/checkout@master
-      - name: Build
-        run: |
-          yarn install
-          yarn build
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - uses: actions/cache@v2
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
+
       - uses: actions/setup-node@master
         with:
+          node-version: "16"
           registry-url: "https://registry.npmjs.org"
-      - run: npm publish --access public
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Clean And Build Lib
+        run: |
+          make clean-build
+          make build
+
+      - run: npm publish --tag next --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
