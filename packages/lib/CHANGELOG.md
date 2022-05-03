@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-next.24](https://github.com/LouisMazel/maz-ui-3/compare/v2.3.13...v3.0.0-next.24) (2022-05-03)
+
+### Bug Fixes
+
+- **lib:** maz-radio-buttons - hover color ([#239](https://github.com/LouisMazel/maz-ui-3/issues/239)) ([8a945ab](https://github.com/LouisMazel/maz-ui-3/commit/8a945abe271d13a929a0def2966f566f3be20b73))
+- **lib:** MazLazyImg - lazy-img directive implementation ([ecbceb2](https://github.com/LouisMazel/maz-ui-3/commit/ecbceb28a956995bb00fc1a71c53b5002e02f234))
+
+### Features
+
+- **lib:** add helpers about user activity ([#238](https://github.com/LouisMazel/maz-ui-3/issues/238)) ([#240](https://github.com/LouisMazel/maz-ui-3/issues/240)) ([fcdbccb](https://github.com/LouisMazel/maz-ui-3/commit/fcdbccbed451aa38e771fb118c2834e55015d14b))
+- **lib:** add maz-picker component ([#197](https://github.com/LouisMazel/maz-ui-3/issues/197)) ([877515e](https://github.com/LouisMazel/maz-ui-3/commit/877515e585d1aa9a3febd83e222c12346e7401b5))
+- **lib:** add wait plugin to manage loading state ([#214](https://github.com/LouisMazel/maz-ui-3/issues/214)) ([a6a1931](https://github.com/LouisMazel/maz-ui-3/commit/a6a1931ba7000c5e545cfc4808fe7205809629c4))
+- **lib:** adding maz-input-number ([#195](https://github.com/LouisMazel/maz-ui-3/issues/195)) ([dfb835d](https://github.com/LouisMazel/maz-ui-3/commit/dfb835d796682955b53dfb82455aefc763895c86))
+- **lib:** aos - adding anchor option ([#219](https://github.com/LouisMazel/maz-ui-3/issues/219)) ([b1c8b02](https://github.com/LouisMazel/maz-ui-3/commit/b1c8b028286d2154b86c5bb52fa7208d0c347d3e))
+- **lib:** export tailwind config ([#201](https://github.com/LouisMazel/maz-ui-3/issues/201)) ([94fddb9](https://github.com/LouisMazel/maz-ui-3/commit/94fddb9d35e91a6f649bcb18ae7105048d048584))
+- **lib:** MazInput - adding style color for autofill ([#208](https://github.com/LouisMazel/maz-ui-3/issues/208)) ([b3ae969](https://github.com/LouisMazel/maz-ui-3/commit/b3ae969584bda0e690179c1b6c9defdc1bbf0425))
+- **lib:** new component - maz-radio-buttons ([#232](https://github.com/LouisMazel/maz-ui-3/issues/232)) ([#233](https://github.com/LouisMazel/maz-ui-3/issues/233)) ([ece3d19](https://github.com/LouisMazel/maz-ui-3/commit/ece3d19bdf393cffc8e883c3b6362f21204bbfc8)), closes [#231](https://github.com/LouisMazel/maz-ui-3/issues/231)
+
 # [3.0.0-next.23](https://github.com/LouisMazel/maz-ui-3/compare/v2.3.13...3.0.0-next.23) (2022-05-02)
 
 ### Bug Fixes
