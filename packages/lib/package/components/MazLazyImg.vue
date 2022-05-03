@@ -36,7 +36,10 @@
 
 <script lang="ts" setup>
   import { computed, type Prop } from 'vue'
-  import { type vLazyImgOptions, vLazyImg } from '../directives/v-lazy-img'
+  import {
+    type vLazyImgOptions,
+    vLazyImg,
+  } from '@package/directives/v-lazy-img'
 
   import MazSpinner from './MazSpinner.vue'
   import type { Image } from './types'
