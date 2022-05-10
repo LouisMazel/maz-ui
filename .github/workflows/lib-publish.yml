@@ -35,7 +35,9 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install dependencies
-        run: npm ci
+        run: npm i
+        env:
+          NODE_ENV: production
 
       - name: Build Lib
         run: make build
