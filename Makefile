@@ -32,7 +32,7 @@ build-types-lib:
 	make --directory=packages/lib build-types
 
 install:
-	npm ci
+	npm i
 
 reinstall:
 	rm -rf node_modules
