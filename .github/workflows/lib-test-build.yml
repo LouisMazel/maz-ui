@@ -26,10 +26,7 @@ jobs:
         uses: actions/checkout@master
 
       - name: Install dependencies
-        run: make install
-
-      - name: List rollup
-        run: ls node_modules
+        run: make install-lib
 
       - name: Build lib
-        run: make build
+        run: make build-lib
