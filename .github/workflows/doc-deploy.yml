@@ -20,8 +20,6 @@ jobs:
 
       - name: Install all dependencies
         run: make install
-        env:
-          NODE_ENV: production
 
       - name: Build lib
         run: make build-lib

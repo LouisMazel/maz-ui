@@ -31,8 +31,6 @@ jobs:
 
       - name: Install dependencies
         run: npm i
-        env:
-          NODE_ENV: production
 
       - name: Build lib
         run: npm run build

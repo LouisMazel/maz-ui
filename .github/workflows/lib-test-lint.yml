@@ -37,8 +37,6 @@ jobs:
 
       - name: Install modules
         run: npm i
-        env:
-          NODE_ENV: production
 
       - name: Run linters
         run: npm run lint
