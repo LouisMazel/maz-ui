@@ -25,11 +25,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
 
-      - name: List rollup
-        run: ls node_modules/rollup/dist
-
       - name: Install dependencies
         run: make install
+
+      - name: List rollup
+        run: ls node_modules/rollup/dist
 
       - name: Build lib
         run: make build
