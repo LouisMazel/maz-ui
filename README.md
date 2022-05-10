@@ -89,6 +89,10 @@ Object.entries(components).forEach(([componentName, component]) => {
 });
 ```
 
+## Contributing
+
+Please follow this [documentation](./CONTRIBUTING.md)
+
 ## LICENSE
 
 [MIT](LICENSE)
