@@ -35,7 +35,7 @@ install:
 	make install-root install-lib install-docs install-testing
 
 install-root:
-	npm i
+	npm ci
 
 install-lib:
 	make --directory=packages/lib install

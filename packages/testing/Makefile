@@ -2,7 +2,7 @@ serve:
 	npm run dev
 
 install:
-	npm i
+	npm ci
 
 reinstall:
 	rm -rf ./node_modules

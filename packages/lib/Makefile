@@ -28,7 +28,7 @@ build-watch:
 	npm run build:watch
 
 install:
-	npm i
+	npm ci
 
 test-unit:
 	npm run test:unit
