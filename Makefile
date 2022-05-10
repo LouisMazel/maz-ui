@@ -32,43 +32,22 @@ build-types-lib:
 	make --directory=packages/lib build-types
 
 install:
-	make install-root install-lib install-docs install-testing
-
-install-root:
 	npm ci
 
-reinstall-root:
-	rm -rf node_modules
-	npm i
-
-install-lib:
-	make --directory=packages/lib install
-
-install-docs:
-	make --directory=packages/docs install
-
-install-testing:
-	make --directory=packages/testing install
-
 reinstall:
-	make reinstall-root reinstall-lib reinstall-docs reinstall-testing
-
-reinstall-lib:
-	make --directory=packages/lib reinstall
-
-reinstall-docs:
-	make --directory=packages/docs reinstall
-
-reinstall-testing:
-	make --directory=packages/testing reinstall
+	rm -rf node_modules
+	make --directory=packages/lib clean-dep
+	make --directory=packages/docs clean-dep
+	make --directory=packages/testing clean-dep
+	npm i
 
 lint-staged: ## lint-staged
 	npm run pre-commit
 
-lint-staged-lib: ## install lint api packages
+lint-staged-lib: ## lint-staged lib
 	make --directory=packages/lib lint-staged
 
-lint-staged-docs: ## install lint app packages
+lint-staged-docs: ## lint-staged docs
 	make --directory=packages/docs lint-staged
 
 publish-version-tag:

@@ -27,9 +27,6 @@ clean-build:
 build-watch:
 	npm run build:watch
 
-install:
-	npm ci
-
 test-unit:
 	npm run test:unit
 
@@ -39,9 +36,8 @@ test-unit-watch:
 test-unit-coverage:
 	npm run test:unit:coverage
 
-reinstall:
+clean-dep:
 	rm -rf ./node_modules
-	npm i
 
 lint-staged: ## lint-staged
 	npm run pre-commit

@@ -4,10 +4,6 @@ build:
 serve:
 	npm run docs:dev
 
-install:
-	npm ci
-
-reinstall:
+clean-dep:
 	rm -rf ./node_modules
-	npm i
 
