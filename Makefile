@@ -48,9 +48,9 @@ install-testing:
 
 reinstall:
 	rm -rf node_modules
-	make --directory=packages/lib clean-dep
-	make --directory=packages/docs clean-dep
-	make --directory=packages/testing clean-dep
+	rm -rf packages/lib/node_modules
+	rm -rf packages/docs/node_modules
+	rm -rf packages/testing/node_modules
 	make install
 
 reinstall-lib:
