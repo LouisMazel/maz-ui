@@ -8,7 +8,7 @@ export interface DaySlot {
     blocked?: boolean
     disabled?: boolean
   }
-  extra?: Record<string, unknown>
+  extra?: Record<string, any>
 }
 
 export interface Day {
