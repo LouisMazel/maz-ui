@@ -17,9 +17,7 @@ on:
 jobs:
   lib-test-build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./packages/lib
+
     steps:
       - name: Checkout
         uses: actions/checkout@master
@@ -33,4 +31,4 @@ jobs:
         run: npm i
 
       - name: Build lib
-        run: npm run build
+        run: make build-lib
