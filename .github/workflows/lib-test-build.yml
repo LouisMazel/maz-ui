@@ -25,13 +25,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
 
-      - uses: actions/cache@v2
-        with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
-
       - name: Install dependencies
-        run: npm i
+        run: make install
 
       - name: Build lib
         run: make build
