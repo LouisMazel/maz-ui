@@ -14,11 +14,11 @@
 
 ## Documentation & Components
 
-[Documentation & Components](https://louismazel.github.io/maz-ui-3/)
+[Documentation & Components](https://louismazel.github.io/maz-ui/)
 
 ## Install
 
-[Getting Started](https://louismazel.github.io/maz-ui-3/guide/getting-started)
+[Getting Started](https://louismazel.github.io/maz-ui/guide/getting-started)
 
 ```shell
 npm install maz-ui@next
@@ -36,7 +36,7 @@ import "maz-ui/css/main.css";
 
 ### Recommanded
 
-To optimize your bundle size, it's recommanded to use the [partial import](https://louismazel.github.io/maz-ui-3/guide/getting-started)
+To optimize your bundle size, it's recommanded to use the [partial import](https://louismazel.github.io/maz-ui/guide/getting-started)
 
 #### Global component installation (recommanded)
 

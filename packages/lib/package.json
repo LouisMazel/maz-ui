@@ -154,9 +154,9 @@
     "npm": ">= 3.0.0"
   },
   "bugs": {
-    "url": "https://github.com/LouisMazel/maz-ui-3/issues"
+    "url": "https://github.com/LouisMazel/maz-ui/issues"
   },
-  "homepage": "https://louismazel.github.io/maz-ui-3",
+  "homepage": "https://louismazel.github.io/maz-ui",
   "keywords": [
     "vue",
     "components",
@@ -167,7 +167,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/LouisMazel/maz-ui-3.git"
+    "url": "git+https://github.com/LouisMazel/maz-ui.git"
   },
   "license": "MIT"
 }
