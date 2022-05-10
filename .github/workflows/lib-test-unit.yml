@@ -18,6 +18,9 @@ on:
 jobs:
   coverage:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./packages/lib
 
     steps:
       - name: Checkout Actions

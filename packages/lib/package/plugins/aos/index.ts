@@ -3,7 +3,7 @@ const sleep = (ms: number) => {
 }
 
 export interface AosOptions {
-  router?: Record<string, any>
+  router?: Record<string, unknown>
   delay?: number
   observer?: IntersectionObserverInit
   animation?: {

@@ -12,6 +12,9 @@ on:
 jobs:
   lib-publish:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./packages/lib
 
     steps:
       - name: Checkout
@@ -31,7 +34,7 @@ jobs:
         run: npm i
 
       - name: Build Lib
-        run: make build-lib
+        run: make build
 
       - run: npm publish --tag next --access public
         env:

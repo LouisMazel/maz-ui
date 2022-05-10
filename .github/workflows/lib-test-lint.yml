@@ -18,6 +18,9 @@ on:
 jobs:
   lib-test-lint:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./packages/lib
 
     steps:
       - name: Checkout Actions
@@ -36,4 +39,4 @@ jobs:
         run: npm i
 
       - name: Run linters
-        run: make lint-lib
+        run: make lint

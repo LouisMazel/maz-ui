@@ -32,14 +32,35 @@ build-types-lib:
 	make --directory=packages/lib build-types
 
 install:
+	make install-root install-lib install-docs install-testing
+
+install-root:
 	npm i
+
+install-lib:
+	make --directory=packages/lib install
+
+install-docs:
+	make --directory=packages/docs install
+
+install-testing:
+	make --directory=packages/testing install
 
 reinstall:
 	rm -rf node_modules
 	make --directory=packages/lib clean-dep
 	make --directory=packages/docs clean-dep
 	make --directory=packages/testing clean-dep
-	npm i
+	make install
+
+reinstall-lib:
+	make --directory=packages/lib reinstall
+
+reinstall-docs:
+	make --directory=packages/docs reinstall
+
+reinstall-testing:
+	make --directory=packages/testing reinstall
 
 lint-staged: ## lint-staged
 	npm run pre-commit

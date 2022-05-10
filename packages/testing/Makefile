@@ -1,5 +1,9 @@
 serve:
 	npm run dev
 
-clean-dep:
+install:
+	npm i
+
+reinstall:
 	rm -rf ./node_modules
+	npm i
