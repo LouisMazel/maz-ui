@@ -23,11 +23,6 @@ jobs:
         working-directory: ./packages/lib
 
     steps:
-      - uses: szenius/set-timezone@v1.0
-        with:
-          timezoneLinux: "Europe/Paris"
-          timezoneMacos: "Europe/Paris"
-
       - name: Checkout Actions
         uses: actions/checkout@master
 
@@ -41,7 +36,7 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install modules
-        run: make install
+        run: npm ci
 
       - name: Test & Publish Code Coverage
         uses: paambaati/codeclimate-action@v3.0.0

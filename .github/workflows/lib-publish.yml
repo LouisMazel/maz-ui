@@ -15,10 +15,14 @@ jobs:
     defaults:
       run:
         working-directory: ./packages/lib
-
     steps:
       - name: Checkout
         uses: actions/checkout@master
+
+      - uses: actions/cache@v2
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
 
       - uses: actions/setup-node@master
         with:
@@ -26,7 +30,7 @@ jobs:
           registry-url: "https://registry.npmjs.org"
 
       - name: Install dependencies
-        run: make install
+        run: npm ci
 
       - name: Build Lib
         run: make build

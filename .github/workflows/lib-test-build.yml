@@ -20,16 +20,17 @@ jobs:
     defaults:
       run:
         working-directory: ./packages/lib
-
     steps:
       - name: Checkout
         uses: actions/checkout@master
 
-      - name: Install dependencies
-        run: make install
+      - uses: actions/cache@v2
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
 
-      - name: List rollup
-        run: ls node_modules
+      - name: Install dependencies
+        run: npm ci
 
       - name: Build lib
-        run: make build
+        run: npm run build

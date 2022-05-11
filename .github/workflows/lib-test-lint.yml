@@ -36,7 +36,7 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install modules
-        run: make install
+        run: npm ci
 
       - name: Run linters
-        run: make lint
+        run: npm run lint
