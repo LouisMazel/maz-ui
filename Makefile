@@ -1,4 +1,4 @@
-serve-doc:
+serve-docs:
 	make --directory=packages/docs serve
 
 serve-testing:
@@ -37,10 +37,6 @@ install:
 install-root:
 	npm ci
 
-reinstall-root:
-	rm -rf node_modules
-	npm i
-
 install-lib:
 	make --directory=packages/lib install
 
@@ -51,7 +47,10 @@ install-testing:
 	make --directory=packages/testing install
 
 reinstall:
-	make reinstall-root reinstall-lib reinstall-docs reinstall-testing
+	rm -rf node_modules
+	npm i
+	make reinstall-lib reinstall-docs reinstall-testing
+
 
 reinstall-lib:
 	make --directory=packages/lib reinstall
@@ -65,10 +64,10 @@ reinstall-testing:
 lint-staged: ## lint-staged
 	npm run pre-commit
 
-lint-staged-lib: ## install lint api packages
+lint-staged-lib: ## lint-staged lib
 	make --directory=packages/lib lint-staged
 
-lint-staged-docs: ## install lint app packages
+lint-staged-docs: ## lint-staged docs
 	make --directory=packages/docs lint-staged
 
 publish-version-tag:

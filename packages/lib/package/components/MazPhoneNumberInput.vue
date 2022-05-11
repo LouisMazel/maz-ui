@@ -575,7 +575,7 @@
     }
 
     &__select {
-      @apply maz-w-44;
+      @apply maz-w-36;
 
       &__item {
         @apply maz-px-1 maz-py-1 maz-text-sm;

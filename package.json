@@ -1,13 +1,9 @@
 {
-  "name": "root",
+  "name": "maz-ui",
   "version": "0.0.1",
   "description": "A stand-alone components library for Vue.Js & Nuxt.Js (v3.x)",
-  "directories": {
-    "lib": "lib",
-    "docs": "docs"
-  },
   "scripts": {
-    "prepare": "husky install",
+    "prepare": "npx husky install",
     "pre-commit": "lint-staged",
     "format": "prettier . --write",
     "lint": "lerna run lint --parallel",
@@ -26,7 +22,7 @@
     "commitlint-config-cz": "^0.13.3",
     "cz-customizable": "^6.3.0",
     "gulp-conventional-changelog": "^2.0.35",
-    "husky": "^7.0.0",
+    "husky": "^8.0.1",
     "lerna": "^4.0.0",
     "lint-staged": "^12.4.1",
     "prettier": "^2.6.2",
@@ -36,10 +32,18 @@
     "type": "git",
     "url": "git+https://github.com/LouisMazel/maz-ui.git"
   },
+  "keywords": [
+    "vue",
+    "components",
+    "vue-component",
+    "framework",
+    "library",
+    "ui"
+  ],
   "author": "LouisMazel <me@loicmazuel.com>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/LouisMazel/maz-ui/issues"
   },
-  "homepage": "https://louismazel.github.io/maz-ui-3/"
+  "homepage": "https://louismazel.github.io/maz-ui/"
 }
