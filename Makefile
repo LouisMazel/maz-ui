@@ -48,10 +48,9 @@ install-testing:
 
 reinstall:
 	rm -rf node_modules
-	rm -rf packages/lib/node_modules
-	rm -rf packages/docs/node_modules
-	rm -rf packages/testing/node_modules
-	make install
+	npm i
+	make reinstall-lib reinstall-docs reinstall-testing
+
 
 reinstall-lib:
 	make --directory=packages/lib reinstall
