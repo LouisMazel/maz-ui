@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-next.25](https://github.com/LouisMazel/maz-ui/compare/v2.3.13...v3.0.0-next.25) (2022-05-11)
+
+### Bug Fixes
+
+- **docs:** aos implementation ([#218](https://github.com/LouisMazel/maz-ui/issues/218)) ([3849e05](https://github.com/LouisMazel/maz-ui/commit/3849e0566973906ae1a557d6dfa230429b550618))
+- **docs:** aos installation on client side ([#217](https://github.com/LouisMazel/maz-ui/issues/217)) ([6790515](https://github.com/LouisMazel/maz-ui/commit/67905153973581418b4f807e531b1ee4f01b1331))
+- **lib:** maz-radio-buttons - hover color ([#239](https://github.com/LouisMazel/maz-ui/issues/239)) ([8a945ab](https://github.com/LouisMazel/maz-ui/commit/8a945abe271d13a929a0def2966f566f3be20b73))
+- **lib:** MazCard - fix overflow effect on closed and hoverred card ([a58d4a5](https://github.com/LouisMazel/maz-ui/commit/a58d4a5726e28adef9a087dafb4b9cd1f038ddb1))
+- **root:** codeclimate build ([283ab56](https://github.com/LouisMazel/maz-ui/commit/283ab566520921abfb7351409db1af9ea2c09a7d))
+
+### Features
+
+- **lib:** add helpers about user activity ([#238](https://github.com/LouisMazel/maz-ui/issues/238)) ([#240](https://github.com/LouisMazel/maz-ui/issues/240)) ([fcdbccb](https://github.com/LouisMazel/maz-ui/commit/fcdbccbed451aa38e771fb118c2834e55015d14b))
+- **lib:** add maz-picker component ([#197](https://github.com/LouisMazel/maz-ui/issues/197)) ([877515e](https://github.com/LouisMazel/maz-ui/commit/877515e585d1aa9a3febd83e222c12346e7401b5))
+- **lib:** add wait plugin to manage loading state ([#214](https://github.com/LouisMazel/maz-ui/issues/214)) ([a6a1931](https://github.com/LouisMazel/maz-ui/commit/a6a1931ba7000c5e545cfc4808fe7205809629c4))
+- **lib:** adding maz-input-number ([#195](https://github.com/LouisMazel/maz-ui/issues/195)) ([dfb835d](https://github.com/LouisMazel/maz-ui/commit/dfb835d796682955b53dfb82455aefc763895c86))
+- **lib:** aos - adding anchor option ([#219](https://github.com/LouisMazel/maz-ui/issues/219)) ([b1c8b02](https://github.com/LouisMazel/maz-ui/commit/b1c8b028286d2154b86c5bb52fa7208d0c347d3e))
+- **lib:** export tailwind config ([#201](https://github.com/LouisMazel/maz-ui/issues/201)) ([94fddb9](https://github.com/LouisMazel/maz-ui/commit/94fddb9d35e91a6f649bcb18ae7105048d048584))
+- **lib:** MazInput - adding style color for autofill ([#208](https://github.com/LouisMazel/maz-ui/issues/208)) ([b3ae969](https://github.com/LouisMazel/maz-ui/commit/b3ae969584bda0e690179c1b6c9defdc1bbf0425))
+- **lib:** new component - maz-radio-buttons ([#232](https://github.com/LouisMazel/maz-ui/issues/232)) ([#233](https://github.com/LouisMazel/maz-ui/issues/233)) ([ece3d19](https://github.com/LouisMazel/maz-ui/commit/ece3d19bdf393cffc8e883c3b6362f21204bbfc8)), closes [#231](https://github.com/LouisMazel/maz-ui/issues/231)
+
+### Reverts
+
+- Revert "ci(root): fix workflows (#261)" ([a0bee86](https://github.com/LouisMazel/maz-ui/commit/a0bee86f1b65d24b433c267bdb10900242e01323)), closes [#261](https://github.com/LouisMazel/maz-ui/issues/261)
+
 # [3.0.0-next.24](https://github.com/LouisMazel/maz-ui/compare/v2.3.13...v3.0.0-next.24) (2022-05-03)
 
 ### Bug Fixes
