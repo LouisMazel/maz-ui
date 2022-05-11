@@ -1,4 +1,4 @@
-serve-doc:
+serve-docs:
 	make --directory=packages/docs serve
 
 serve-testing:

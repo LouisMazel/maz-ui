@@ -299,6 +299,14 @@
       }
     }
 
+    &-input:deep(.m-input-input) {
+      @apply maz-pr-0;
+    }
+
+    &-input.--has-label:deep(.m-input-input) {
+      @apply maz-pr-0;
+    }
+
     &-chevron {
       @apply maz-transition-all maz-duration-300 maz-ease-out;
     }
@@ -366,7 +374,7 @@
     }
 
     & button.maz-custom {
-      @apply maz-cursor-pointer maz-appearance-none maz-border-none;
+      @apply maz-cursor-pointer maz-appearance-none maz-border-none maz-pl-0;
     }
   }
 </style>
