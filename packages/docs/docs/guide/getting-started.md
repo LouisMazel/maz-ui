@@ -3,7 +3,7 @@
 ## Prerequisites
 
 - [Node.js v12+](https://nodejs.org/)
-- [Vue 3](https://v3.vuejs.org/)
+- [Vue 3](https://v3.vuejs.org/) or [Nuxt 3](https://v3.nuxtjs.org/)
 
 ## Installation
 
@@ -13,19 +13,19 @@ This section will help you to install the library.
 
 <br />
 
-<NpmBadge package="maz-ui" dist-tag="next" />
+<NpmBadge package="maz-ui" dist-tag="latest" />
 
 <CodeGroup>
   <CodeGroupItem title="NPM" active>
 
 ```bash
-npm i maz-ui@next
+npm i maz-ui
 ```
   </CodeGroupItem>
   <CodeGroupItem title="YARN">
 
 ```bash
-yarn add maz-ui@next
+yarn add maz-ui
 ```
   </CodeGroupItem>
 
@@ -42,7 +42,7 @@ import 'maz-ui/css/main.css'
 import '@/css/path_to_your_main_file.css'
 ```
 
-#### Nuxt JS <NpmBadge package="nuxt3" />
+#### Nuxt JS <NpmBadge package="nuxt" dist-tag="rc" />
 
 ```ts
 export default {

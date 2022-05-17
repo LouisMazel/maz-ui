@@ -18,11 +18,9 @@ description: MazInputPrice is a stand-alone component replaces the standard html
   @formatted="formattedPrice = $event"
 />
 
-`priceValue: {{ priceValue }}`
+priceValue: {{ priceValue }}
 
-<br />
-
-`formattedPrice: {{ formattedPrice }}`
+formattedPrice: {{ formattedPrice }}
 <script lang="ts" setup>
   import { ref } from 'vue'
 

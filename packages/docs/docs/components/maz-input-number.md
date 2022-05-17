@@ -13,12 +13,12 @@ MazInputNumber is a stand-alone component replaces the standard html input text 
   v-model="numberValue"
   label="Enter number"
   :min="5"
-  :max="1000"
+  :max="10000"
   :step="1"
   color="secondary"
 />
 
-`numberValue: {{ numberValue }}`
+numberValue: {{ numberValue }}
 
 <script lang="ts" setup>
   import { ref } from 'vue'
@@ -32,7 +32,7 @@ MazInputNumber is a stand-alone component replaces the standard html input text 
     v-model="numberValue"
     label="Enter number"
     :min="5"
-    :max="1000"
+    :max="10000"
     :step="1"
     size="md"
     color="secondary"
