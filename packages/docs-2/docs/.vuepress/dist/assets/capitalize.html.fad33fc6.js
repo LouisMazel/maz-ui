@@ -1,1 +1,0 @@
-const t={key:"v-6e750440",path:"/filters/capitalize.html",title:"capitalize",lang:"en-US",frontmatter:{title:"capitalize",description:"The module capitalize is a function to add a capital letter to a string"},excerpt:"",headers:[],git:{updatedTime:null,contributors:[]},filePathRelative:"filters/capitalize.md"};export{t as data};

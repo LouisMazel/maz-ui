@@ -1,1 +1,0 @@
-const t={key:"v-bebe7a08",path:"/plugins/wait.html",title:"wait",lang:"en-US",frontmatter:{description:"Plugins to manage your loading states"},excerpt:"",headers:[{level:2,title:"Basic usage",slug:"basic-usage",children:[]},{level:2,title:"Install",slug:"install",children:[]}],git:{updatedTime:null,contributors:[]},filePathRelative:"plugins/wait.md"};export{t as data};

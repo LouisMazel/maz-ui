@@ -1,1 +1,0 @@
-const e={key:"v-7d4fa8fb",path:"/guide/dark-theme.html",title:"Dark Theme",lang:"en-US",frontmatter:{},excerpt:"",headers:[{level:2,title:"How it's works ?",slug:"how-it-s-works",children:[]},{level:2,title:"How to manage theme ?",slug:"how-to-manage-theme",children:[]}],git:{updatedTime:null,contributors:[]},filePathRelative:"guide/dark-theme.md"};export{e as data};
