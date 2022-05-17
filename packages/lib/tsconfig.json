@@ -1,0 +1,20 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.json",
+  "compilerOptions": {
+    "declaration": true,
+    "declarationDir": "types",
+    "sourceMap": true,
+    "lib": ["esnext", "DOM", "DOM.iterable", "scripthost"],
+    "strictPropertyInitialization": false,
+    "noImplicitAny": false,
+    "noImplicitThis": false,
+    "baseUrl": ".",
+    "paths": {
+      "@package/*": ["package/*"],
+      "@components/*": ["package/components/*"]
+    },
+    "types": ["@types/node", "google.maps"]
+  },
+  "include": ["build/**/*", "package/**/*"],
+  "exclude": ["node_modules", "lib", "css"]
+}

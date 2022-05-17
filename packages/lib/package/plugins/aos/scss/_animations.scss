@@ -1,0 +1,219 @@
+// Animations variables
+$maz-aos-distance: 100px !default;
+
+@media screen {
+  html:not(.no-js) {
+    /**
+     * Fade animations:
+     * fade
+     * fade-up, fade-down, fade-left, fade-right
+     * fade-up-right, fade-up-left, fade-down-right, fade-down-left
+     */
+    [data-maz-aos^='fade'][data-maz-aos^='fade'] {
+      opacity: 0;
+      transition-property: opacity, transform;
+
+      &.maz-aos-animate {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+      }
+    }
+
+    [data-maz-aos='fade-up'] {
+      transform: translate3d(0, $maz-aos-distance, 0);
+    }
+
+    [data-maz-aos='fade-down'] {
+      transform: translate3d(0, -$maz-aos-distance, 0);
+    }
+
+    [data-maz-aos='fade-right'] {
+      transform: translate3d(-$maz-aos-distance, 0, 0);
+    }
+
+    [data-maz-aos='fade-left'] {
+      transform: translate3d($maz-aos-distance, 0, 0);
+    }
+
+    [data-maz-aos='fade-up-right'] {
+      transform: translate3d(-$maz-aos-distance, $maz-aos-distance, 0);
+    }
+
+    [data-maz-aos='fade-up-left'] {
+      transform: translate3d($maz-aos-distance, $maz-aos-distance, 0);
+    }
+
+    [data-maz-aos='fade-down-right'] {
+      transform: translate3d(-$maz-aos-distance, -$maz-aos-distance, 0);
+    }
+
+    [data-maz-aos='fade-down-left'] {
+      transform: translate3d($maz-aos-distance, -$maz-aos-distance, 0);
+    }
+
+    /**
+     * Zoom animations:
+     * zoom-in, zoom-in-up, zoom-in-down, zoom-in-left, zoom-in-right
+     * zoom-out, zoom-out-up, zoom-out-down, zoom-out-left, zoom-out-right
+     */
+
+    [data-maz-aos^='zoom'][data-maz-aos^='zoom'] {
+      opacity: 0;
+      transition-property: opacity, transform;
+
+      &.maz-aos-animate {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+      }
+    }
+
+    [data-maz-aos='zoom-in'] {
+      transform: scale(0.6);
+    }
+
+    [data-maz-aos='zoom-in-up'] {
+      transform: translate3d(0, $maz-aos-distance, 0) scale(0.6);
+    }
+
+    [data-maz-aos='zoom-in-down'] {
+      transform: translate3d(0, -$maz-aos-distance, 0) scale(0.6);
+    }
+
+    [data-maz-aos='zoom-in-right'] {
+      transform: translate3d(-$maz-aos-distance, 0, 0) scale(0.6);
+    }
+
+    [data-maz-aos='zoom-in-left'] {
+      transform: translate3d($maz-aos-distance, 0, 0) scale(0.6);
+    }
+
+    [data-maz-aos='zoom-out'] {
+      transform: scale(1.2);
+    }
+
+    [data-maz-aos='zoom-out-up'] {
+      transform: translate3d(0, $maz-aos-distance, 0) scale(1.2);
+    }
+
+    [data-maz-aos='zoom-out-down'] {
+      transform: translate3d(0, -$maz-aos-distance, 0) scale(1.2);
+    }
+
+    [data-maz-aos='zoom-out-right'] {
+      transform: translate3d(-$maz-aos-distance, 0, 0) scale(1.2);
+    }
+
+    [data-maz-aos='zoom-out-left'] {
+      transform: translate3d($maz-aos-distance, 0, 0) scale(1.2);
+    }
+
+    /**
+     * Slide animations
+     */
+
+    [data-maz-aos^='slide'][data-maz-aos^='slide'] {
+      transition-property: transform;
+
+      &.maz-aos-animate {
+        transform: translate3d(0, 0, 0);
+      }
+    }
+
+    [data-maz-aos='slide-up'] {
+      transform: translate3d(0, 100%, 0);
+    }
+
+    [data-maz-aos='slide-down'] {
+      transform: translate3d(0, -100%, 0);
+    }
+
+    [data-maz-aos='slide-right'] {
+      transform: translate3d(-100%, 0, 0);
+    }
+
+    [data-maz-aos='slide-left'] {
+      transform: translate3d(100%, 0, 0);
+    }
+
+    /**
+     * Flip animations:
+     * flip-left, flip-right, flip-up, flip-down
+     */
+
+    [data-maz-aos^='flip'][data-maz-aos^='flip'] {
+      backface-visibility: hidden;
+      transition-property: transform;
+    }
+
+    [data-maz-aos='flip-left'] {
+      transform: perspective(2500px) rotateY(-100deg);
+
+      &.maz-aos-animate {
+        transform: perspective(2500px) rotateY(0);
+      }
+    }
+
+    [data-maz-aos='flip-right'] {
+      transform: perspective(2500px) rotateY(100deg);
+
+      &.maz-aos-animate {
+        transform: perspective(2500px) rotateY(0);
+      }
+    }
+
+    [data-maz-aos='flip-up'] {
+      transform: perspective(2500px) rotateX(-100deg);
+
+      &.maz-aos-animate {
+        transform: perspective(2500px) rotateX(0);
+      }
+    }
+
+    [data-maz-aos='flip-down'] {
+      transform: perspective(2500px) rotateX(100deg);
+
+      &.maz-aos-animate {
+        transform: perspective(2500px) rotateX(0);
+      }
+    }
+
+    /**
+     * Rotate animations:
+     * rotate-right
+     */
+
+    [data-maz-aos^='rotate'][data-maz-aos^='rotate'] {
+      transition-property: transform;
+
+      &.maz-aos-animate {
+        transform: rotate(0);
+      }
+    }
+
+    [data-maz-aos='rotate-left'] {
+      transform: rotate(150deg);
+    }
+
+    [data-maz-aos='rotate-right'] {
+      transform: rotate(-150deg);
+    }
+
+    [data-maz-aos^='scale'][data-maz-aos^='scale'] {
+      opacity: 0;
+      transition-property: opacity, transform;
+
+      &.maz-aos-animate {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+      }
+    }
+
+    [data-maz-aos='scale-in'] {
+      transform: scale(0.1);
+    }
+
+    [data-maz-aos='scale-out'] {
+      transform: scale(1.6);
+    }
+  }
+}

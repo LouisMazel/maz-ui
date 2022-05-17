@@ -1,0 +1,42 @@
+name: Lib Test Lint
+
+on:
+  push:
+    branches:
+      - master
+      - next
+    paths:
+      - "packages/lib/**"
+  pull_request:
+    branches:
+      - master
+      - next
+      - "release/**"
+    paths:
+      - "packages/lib/**"
+
+jobs:
+  lib-test-lint:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./packages/lib
+
+    steps:
+      - name: Checkout Actions
+        uses: actions/checkout@master
+
+      - uses: actions/setup-node@master
+        with:
+          node-version: "16"
+
+      - uses: actions/cache@v2
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install modules
+        run: make install
+
+      - name: Run linters
+        run: make lint

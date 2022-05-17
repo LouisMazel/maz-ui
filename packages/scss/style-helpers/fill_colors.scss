@@ -1,7 +1,0 @@
-@import './../_variables/color_names';
-
-@each $name in $color_names {
-  .#{$prefix}fill-#{$name} path {
-    fill: var(--#{$prefix}#{$name});
-  }
-}

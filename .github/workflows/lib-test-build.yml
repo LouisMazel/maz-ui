@@ -1,0 +1,35 @@
+name: Lib Test Build
+on:
+  push:
+    branches:
+      - master
+      - next
+    paths:
+      - "packages/lib/**"
+  pull_request:
+    branches:
+      - master
+      - next
+      - "release/**"
+    paths:
+      - "packages/lib/**"
+
+jobs:
+  lib-test-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./packages/lib
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Install dependencies
+        run: make install
+
+      - name: List rollup
+        run: ls node_modules
+
+      - name: Build lib
+        run: make build

@@ -1,0 +1,30 @@
+---
+version: "2"
+plugins:
+  csslint:
+    enabled: false
+  coffeelint:
+    enabled: false
+  duplication:
+    enabled: true
+    config:
+      languages:
+        - javascript
+        - typescript
+  eslint:
+    enabled: false
+    # channel: "eslint-7"
+    # config:
+    #   config: ./packages/lib/eslintrc.js
+    #   ignore_warnings: true
+  fixme:
+    enabled: true
+  stylelint:
+    enabled: true
+
+exclude_patterns:
+  - .husky/
+  - .vscode/
+  - node_modules/*
+  - packages/lib/bin/
+  - packages/lib/build/

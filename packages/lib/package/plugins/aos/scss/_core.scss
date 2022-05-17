@@ -1,0 +1,16 @@
+// Generate Duration && Delay
+[data-maz-aos] {
+  @for $i from 1 through 60 {
+    &[data-maz-aos-duration='#{$i * 50}'] {
+      transition-duration: #{$i * 50}ms;
+    }
+
+    &[data-maz-aos-delay='#{$i * 50}'] {
+      transition-delay: 0ms;
+
+      &.maz-aos-animate {
+        transition-delay: #{$i * 50}ms;
+      }
+    }
+  }
+}

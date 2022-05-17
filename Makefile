@@ -1,87 +1,102 @@
-VERSION=`node -pe "require('./package.json').version"`
+serve-docs:
+	make --directory=packages/docs serve
 
-define bump-version
-	VERSION=`node -pe "require('./package.json').version"` && \
-	NEXT_VERSION=`node -pe "require('semver').inc(\"$$VERSION\", '$(1)')"` && \
-	npm version $$NEXT_VERSION
-endef
+serve-testing:
+	make --directory=packages/testing serve
 
-define bump-version-beta
-	VERSION=`node -pe "require('./package.json').version"` && \
-	NEXT_VERSION=`node -pe "require('semver').inc(\"$$VERSION\", 'prerelease', '$(1)')"` && \
-	npm version $$NEXT_VERSION
-endef
+lint-lib:
+	make --directory=packages/lib lint
 
-define pre-publish
-	npm run gen:docs
-	npm run lint:fix
-	git add --all
-	git commit -m "chore: pre-build"
-	git push origin HEAD
-endef
+build-docs:
+	make --directory=packages/docs build
 
-define publish
-	@$(call bump-version,$(1))
-	npm run gen:docs
-	npm run lint:fix
-	npm run build
-	npm publish
-	git push origin HEAD
-	make deploy-doc
-endef
+build-lib:
+	make --directory=packages/lib build
 
-define publish-beta
-	@$(call bump-version-beta,$(1))
-	npm run gen:docs
-	npm run lint:fix
-	npm run build
-	npm publish --tag beta
-	git push origin HEAD
-endef
+build-watch-lib:
+	make --directory=packages/lib build-watch
 
-clean: ## Clean node modules
-	rm -rf ./node_modules
-	rm -rf ./documentation/node_modules
+build-js-lib:
+	make --directory=packages/lib build-js
 
-reinstall: ## Reinstall dependencies without package-lock.json
-	make reinstall-lib reinstall-doc
+build-modules-lib:
+	make --directory=packages/lib build-modules
 
-reinstall-lib: ## Install node modules of library
-	rm package-lock.json
-	rm -rf node_modules
-	npm i
+build-components-lib:
+	make --directory=packages/lib build-components
 
-reinstall-doc: ## Install node modules of documentation
-	cd documentation && rm package-lock.json
-	cd documentation && rm -rf node_modules
-	cd documentation && npm i
+build-css-lib:
+	make --directory=packages/lib build-css
 
-install: ## Install node modules for all packages
-	make install-lib install-doc
+build-types-lib:
+	make --directory=packages/lib build-types
 
-install-lib: ## Install node modules of library
+install:
+	make install-root install-lib install-docs install-testing
+
+install-root:
 	npm ci
 
-install-doc: ## Install node modules of documentation
-	cd documentation && npm ci
+install-lib:
+	make --directory=packages/lib install
 
-serve: ## Run dev server
-	cd documentation && npm run serve
+install-docs:
+	make --directory=packages/docs install
 
-build-doc:
-	cd documentation && npm run build:gh-pages && npm run export:gh-pages
+install-testing:
+	make --directory=packages/testing install
 
-pre-publish:
-	@$(call pre-publish,patch)
+reinstall:
+	rm -rf node_modules
+	npm i
+	make reinstall-lib reinstall-docs reinstall-testing
 
-publish-beta:
-	@$(call publish-beta,beta)
 
-publish:
-	@$(call publish,patch)
+reinstall-lib:
+	make --directory=packages/lib reinstall
 
-publish-minor:
-	@$(call publish,minor)
+reinstall-docs:
+	make --directory=packages/docs reinstall
 
-publish-major:
-	@$(call publish,major)
+reinstall-testing:
+	make --directory=packages/testing reinstall
+
+lint-staged: ## lint-staged
+	npm run pre-commit
+
+lint-staged-lib: ## lint-staged lib
+	make --directory=packages/lib lint-staged
+
+lint-staged-docs: ## lint-staged docs
+	make --directory=packages/docs lint-staged
+
+publish-version-tag:
+	make --directory=packages/lib publish-version-tag tag="$(tag)"
+
+publish-version:
+	make --directory=packages/lib publish-version
+
+publish-version-minor:
+	make --directory=packages/lib publish-version-minor
+
+publish-version-major:
+	make --directory=packages/lib publish-version-major
+
+commit:
+	make --directory=packages/lib commit
+
+test-unit:
+	make --directory=packages/lib test-unit
+
+test-unit-watch:
+	make --directory=packages/lib test-unit-watch
+
+test-unit-coverage:
+	make --directory=packages/lib test-unit-coverage
+
+release:
+	npm run release -- $(type)
+	make install
+	git add --all
+	git commit --amend --no-edit
+	git push origin HEAD --force

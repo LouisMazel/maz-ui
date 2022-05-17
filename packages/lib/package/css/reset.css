@@ -1,0 +1,23 @@
+*,
+::before,
+::after {
+  border-width: 0;
+  border-style: solid;
+  border-color: currentcolor;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: transparent;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1.15;
+  margin: 0;
+}
