@@ -70,8 +70,6 @@ serve: ## Run dev server
 
 deploy-doc:
 	cd documentation && npm run build:gh-pages && npm run export:gh-pages
-	cd documentation && npm run deploy
-
 
 pre-publish:
 	@$(call pre-publish,patch)
