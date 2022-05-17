@@ -52,7 +52,7 @@
     "fs": "0.0.2",
     "json-templater": "^1.2.0",
     "libphonenumber-js": "^1.9.49",
-    "moment": "^2.29.1",
+    "moment": "^2.29.2",
     "moment-range": "^4.0.2",
     "os": "^0.1.2",
     "plotly.js-dist": "^1.57.1",
