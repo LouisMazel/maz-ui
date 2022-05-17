@@ -3,6 +3,9 @@ name: Lib Publish To Npm
 on:
   release:
     types: [created]
+  push:
+    branches:
+      - master
 
 # on:
 #   push:
@@ -31,6 +34,6 @@ jobs:
       - name: Build Lib
         run: make build
 
-      - run: npm publish --tag next --access public
+      - run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
