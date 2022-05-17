@@ -15,15 +15,16 @@
       readonly
       :size="size"
       :disabled="disabled"
-      @focus="openList"
-      @click="openList"
+      @focus.stop="openList"
+      @click.stop="openList"
       @keydown="keyboardHandler($event)"
     >
       <template #right-icon>
         <button
           tabindex="-1"
-          class="maz-custom maz-flex maz-h-full maz-bg-transparent maz-flex-center"
-          @click="openList"
+          type="button"
+          class="m-select-input__toggle-button maz-custom maz-flex maz-h-full maz-bg-transparent maz-flex-center"
+          @click.stop="openList"
         >
           <MazIcon
             :src="ChevronDownIcon"
@@ -191,7 +192,7 @@
     if (props.disabled) return
     hasListOpen.value = true
     scrollToSelected()
-    emits('open', event)
+    emits('open', hasListOpen.value)
   }
 
   const keyboardHandler = (event: KeyboardEvent) => {
@@ -294,8 +295,22 @@
     &:not(.--disabled) {
       @apply maz-cursor-pointer;
 
-      &:deep(input) {
+      &:deep(.m-input-input) {
         @apply maz-cursor-pointer;
+      }
+    }
+
+    &-input:deep(.m-input-input) {
+      @apply maz-pr-0;
+    }
+
+    &-input.--has-label:deep(.m-input-input) {
+      @apply maz-pr-0;
+    }
+
+    &-input {
+      &__toggle-button {
+        @apply maz-pl-0;
       }
     }
 

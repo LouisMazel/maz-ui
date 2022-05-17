@@ -2,8 +2,9 @@ name: Doc Build and Deploy
 on:
   push:
     branches: [next]
-    # paths:
-    #   - "packages/docs/**"
+    paths:
+      - "packages/docs/**"
+      - "packages/lib/**"
 
 jobs:
   doc-build-and-deploy:
@@ -13,7 +14,7 @@ jobs:
         uses: actions/checkout@master
 
       - name: Install all dependencies
-        run: make install
+        run: make install-lib install-docs
 
       - name: Build lib
         run: make build-lib

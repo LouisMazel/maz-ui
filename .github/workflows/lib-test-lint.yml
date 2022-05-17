@@ -2,9 +2,18 @@ name: Lib Test Lint
 
 on:
   push:
-    branches: [master, next]
+    branches:
+      - master
+      - next
+    paths:
+      - "packages/lib/**"
   pull_request:
-    branches: [master, next]
+    branches:
+      - master
+      - next
+      - "release/**"
+    paths:
+      - "packages/lib/**"
 
 jobs:
   lib-test-lint:
@@ -27,7 +36,7 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install modules
-        run: npm ci
+        run: make install
 
       - name: Run linters
-        run: npm run lint
+        run: make lint

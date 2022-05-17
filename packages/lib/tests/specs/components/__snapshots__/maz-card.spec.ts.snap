@@ -1,0 +1,21 @@
+// Vitest Snapshot v1
+
+exports[`components/MazCard.vue 1`] = `
+"<div class=\\"m-card maz-elevation maz-rounded-xl\\" data-v-49a838f4=\\"\\">
+  <!--v-if-->
+  <div class=\\"m-card__wrapper m-card__wrapper--column\\" data-v-49a838f4=\\"\\">
+    <!--v-if-->
+    <div class=\\"maz-min-w-0 maz-flex-1\\" data-v-49a838f4=\\"\\">
+      <div data-v-49a838f4=\\"\\">
+        <div class=\\"maz-p-4 m-card__content__wrapper\\" data-v-49a838f4=\\"\\">
+          <!--v-if-->
+          <!--v-if-->
+          <!--v-if-->
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--v-if-->
+  <!--v-if-->
+</div>"
+`;

@@ -1,0 +1,36 @@
+name: Lib Publish To Npm
+
+on:
+  release:
+    types: [created]
+
+# on:
+#   push:
+#     tags:
+#       - v*.*.*
+
+jobs:
+  lib-publish:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./packages/lib
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - uses: actions/setup-node@master
+        with:
+          node-version: "16"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install dependencies
+        run: make install
+
+      - name: Build Lib
+        run: make build
+
+      - run: npm publish --tag next --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

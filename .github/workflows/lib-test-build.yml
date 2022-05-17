@@ -1,5 +1,11 @@
-name: Lib Build Test
+name: Lib Test Build
 on:
+  push:
+    branches:
+      - master
+      - next
+    paths:
+      - "packages/lib/**"
   pull_request:
     branches:
       - master
@@ -14,17 +20,16 @@ jobs:
     defaults:
       run:
         working-directory: ./packages/lib
+
     steps:
       - name: Checkout
         uses: actions/checkout@master
 
-      - uses: actions/cache@v2
-        with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
-
       - name: Install dependencies
-        run: npm ci
+        run: make install
+
+      - name: List rollup
+        run: ls node_modules
 
       - name: Build lib
-        run: npm run build
+        run: make build
