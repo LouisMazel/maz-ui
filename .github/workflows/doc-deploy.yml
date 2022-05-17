@@ -4,10 +4,10 @@ on:
     branches:
       - master
       - "fix/documentation"
-    paths:
-      - "packages/docs/**"
-      - "packages/docs-2/**"
-      - "packages/lib/**"
+    # paths:
+    #  - "packages/docs/**"
+    #  - "packages/docs-2/**"
+    #  - "packages/lib/**"
 
 jobs:
   doc-build-and-deploy:
