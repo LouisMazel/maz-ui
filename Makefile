@@ -68,7 +68,7 @@ install-doc: ## Install node modules of documentation
 serve: ## Run dev server
 	cd documentation && npm run serve
 
-deploy-doc:
+build-doc:
 	cd documentation && npm run build:gh-pages && npm run export:gh-pages
 
 pre-publish:
