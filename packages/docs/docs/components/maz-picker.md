@@ -262,6 +262,7 @@ To enable the range mode, you should provide an object like this `{ start: undef
     start: '2022-02-03',
     end: '2022-02-28',
   })
+
   const minMaxDates = ref({
     min: '2022-05-05',
     max: '2022-06-20',
@@ -298,18 +299,18 @@ max-date: `{{ minMaxDates.max }}`
     inline
     double
   />
--
-  <script setup lang="ts">
-    import { ref } from 'vue'
-
-    const rangeValues = ref({ start: "2022-05-02", end: "2022-06-28" })
-
-    const minMaxDates = ref({
-      min: '2022-05-05',
-      max: '2022-06-20',
-    })
-  </script>
 </template>
+
+<script setup lang="ts">
+  import { ref } from 'vue'
+
+  const rangeValues = ref({ start: "2022-05-02", end: "2022-06-28" })
+
+  const minMaxDates = ref({
+    min: '2022-05-05',
+    max: '2022-06-20',
+  })
+</script>
 ```
 
 <script setup lang="ts">
