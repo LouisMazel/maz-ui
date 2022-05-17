@@ -360,7 +360,7 @@
         @apply maz-h-8 maz-cursor-pointer;
         @apply maz-p-1 !important;
 
-        &.--is-today:not(.--is-selected):not(.--is-between) {
+        &.--is-today:not(.--is-selected):not(.--is-between):not(.--is-between-hoverred) {
           @apply maz-bg-color-light !important;
         }
 
@@ -421,7 +421,7 @@
 
   html.dark {
     & .maz-picker-calendar-grid {
-      button.--is-today:not(.--is-selected):not(.--is-between) {
+      button.--is-today:not(.--is-selected):not(.--is-between):not(.--is-between-hoverred) {
         @apply maz-bg-color-lighter !important;
       }
     }

@@ -1,4 +1,4 @@
-import { defineClientAppEnhance } from '@vuepress/client'
+import { defineClientConfig } from '@vuepress/client'
 import 'maz-ui/css/main.css'
 import 'maz-ui/css/aos.css'
 
@@ -9,32 +9,34 @@ const mazIconPath = process.env.NODE_ENV === 'production'
 import { ToasterOptions, installToaster, installWait, installAos, AosOptions } from 'maz-ui'
 import components from 'maz-ui/components'
 
-export default defineClientAppEnhance(async ({ app, router }) => {
-  app.provide('mazIconPath', mazIconPath)
+export default defineClientConfig({
+  enhance: ({ app, router }) => {
+    app.provide('mazIconPath', mazIconPath)
 
-  Object.entries(components).forEach(([componentName, component]) => {
-    app.component(componentName, component)
-  })
+    Object.entries(components).forEach(([componentName, component]) => {
+      app.component(componentName, component)
+    })
 
-  const toasterOptions: ToasterOptions = {
-    persistent: false,
-    position: 'bottom-right',
-    timeout: 10000,
-  }
-
-  const aosOptions: AosOptions = {
-    router,
-    delay: 500,
-    animation: {
-      duration: 400,
-      once: false
+    const toasterOptions: ToasterOptions = {
+      persistent: false,
+      position: 'bottom-right',
+      timeout: 10000,
     }
-  }
 
-  app.use(installToaster, toasterOptions)
-  app.use(installWait)
-  // @ts-ignore
-  if (!__VUEPRESS_SSR__) {
-    app.use(installAos, aosOptions)
+    const aosOptions: AosOptions = {
+      router,
+      delay: 500,
+      animation: {
+        duration: 400,
+        once: false
+      }
+    }
+
+    app.use(installToaster, toasterOptions)
+    app.use(installWait)
+    // @ts-ignore
+    if (!__VUEPRESS_SSR__) {
+      app.use(installAos, aosOptions)
+    }
   }
 })

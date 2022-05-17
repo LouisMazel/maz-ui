@@ -237,8 +237,8 @@ To enable the range mode, you should provide an object like this `{ start: undef
   v-model="rangeValues"
   label="Select periode"
   color="secondary"
-  :min-date="undefined"
-  :max-date="undefined"
+  :min-date="minMaxDates.min"
+  :max-date="minMaxDates.max"
   double
 />
 
@@ -248,6 +248,8 @@ To enable the range mode, you should provide an object like this `{ start: undef
     v-model="rangeValues"
     label="Select periode"
     color="secondary"
+    :min-date="minMaxDates.min"
+    :max-date="minMaxDates.max"
     double
   />
 </template>
@@ -255,9 +257,15 @@ To enable the range mode, you should provide an object like this `{ start: undef
 <script setup lang="ts">
   import MazPicker from 'maz-ui/components/MazPicker'
   import { ref } from 'vue'
+
   const rangeValues = ref({
     start: '2022-02-03',
     end: '2022-02-28',
+  })
+
+  const minMaxDates = ref({
+    min: '2022-05-05',
+    max: '2022-06-20',
   })
 </script>
 ```

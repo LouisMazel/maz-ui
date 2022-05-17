@@ -13,16 +13,18 @@
   "author": "LouisMazel <me@loicmazuel.com>",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "^17.0.32",
-    "@vuepress/plugin-google-analytics": "2.0.0-beta.36",
-    "@vuepress/plugin-register-components": "2.0.0-beta.36",
+    "@types/node": "^17.0.34",
+    "@vuepress/plugin-google-analytics": "^2.0.0-beta.42",
+    "@vuepress/plugin-medium-zoom": "^2.0.0-beta.42",
+    "@vuepress/plugin-register-components": "^2.0.0-beta.42",
     "vue": "^3.2.33",
-    "vuepress": "2.0.0-beta.33",
-    "vuepress-plugin-sitemap2": "2.0.0-alpha.33"
+    "vuepress": "^2.0.0-beta.42",
+    "vuepress-plugin-sitemap2": "^2.0.0-beta.47"
   },
   "dependencies": {
     "chart.js": "^3.7.1",
     "chartjs-plugin-datalabels": "^2.0.0",
+    "dayjs": "^1.11.2",
     "dropzone": "^5.9.3",
     "libphonenumber-js": "^1.9.53",
     "maz-ui": "file:../lib"
