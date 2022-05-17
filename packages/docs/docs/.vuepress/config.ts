@@ -21,7 +21,6 @@ export default defineUserConfig({
   lang: 'en-US',
   title: 'Maz-UI',
   description: 'Library of standalone components and tools for Vue & Nuxt',
-  clientConfigFile: path.resolve(__dirname, 'clientAppEnhance.ts'),
   base: getBaseUrl('/') as SiteData['base'],
 
   head: [

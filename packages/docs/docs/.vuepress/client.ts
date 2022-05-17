@@ -10,7 +10,7 @@ import { ToasterOptions, installToaster, installWait, installAos, AosOptions } f
 import components from 'maz-ui/components'
 
 export default defineClientConfig({
-  enhance: ({ app, router }) => {
+  async enhance({ app, router }) {
     app.provide('mazIconPath', mazIconPath)
 
     Object.entries(components).forEach(([componentName, component]) => {
@@ -34,6 +34,7 @@ export default defineClientConfig({
 
     app.use(installToaster, toasterOptions)
     app.use(installWait)
+
     // @ts-ignore
     if (!__VUEPRESS_SSR__) {
       app.use(installAos, aosOptions)
