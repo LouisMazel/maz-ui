@@ -156,7 +156,7 @@ input value: {{ inputValue ?? 'null' }}
 
 ### Sizes
 
-> Use the attribute `size` with a value in `{{ sizes }}`
+> Use the attribute `size` with a value in {{ sizes.join(', ') }}
 
 <div class="flex flex-col gap-05">
   <MazInput

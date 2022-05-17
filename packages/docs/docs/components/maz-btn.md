@@ -39,7 +39,7 @@ description: MazBtn is a stand-alone component replaces the standard html button
 
 ### Sizes
 
-> Use the attribute `size` with a value `{{ sizes }}`
+> Use the attribute `size` with a value in **{{ sizes.join(', ') }}**
 
 <div class="flex items-start gap-05 items-center flex-wrap">
   <MazBtn v-for="size in sizes" :size="size">{{ size }}</MazBtn>
