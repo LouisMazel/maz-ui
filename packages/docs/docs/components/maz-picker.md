@@ -274,11 +274,11 @@ To enable the range mode, you should provide an object like this `{ start: undef
 
 #### Inputs
 
-rangeValues (v-model): `{{ rangeValues }}`
+rangeValues (v-model): {{ rangeValues }}
 
-min-date: `{{ minMaxDates.min }}`
+min-date: {{ minMaxDates.min }}
 
-max-date: `{{ minMaxDates.max }}`
+max-date: {{ minMaxDates.max }}
 
 <MazPicker
   v-model="rangeValues"
