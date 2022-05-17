@@ -20,7 +20,7 @@ plugins:
   fixme:
     enabled: true
   stylelint:
-    enable: true
+    enabled: true
 
 exclude_patterns:
   - .husky/

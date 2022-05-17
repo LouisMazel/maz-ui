@@ -1,8 +1,10 @@
-import { defineUserConfig, SiteData } from 'vuepress'
-import type { DefaultThemeOptions } from 'vuepress'
+import { defineUserConfig, SiteData, defaultTheme, viteBundler } from 'vuepress'
 import { path } from '@vuepress/utils'
 import { navbar, sidebar } from './configs'
-import { sitemap } from "vuepress-plugin-sitemap2"
+import { sitemapPlugin } from "vuepress-plugin-sitemap2"
+import { googleAnalyticsPlugin } from '@vuepress/plugin-google-analytics'
+import { registerComponentsPlugin } from '@vuepress/plugin-register-components'
+import { mediumZoomPlugin } from '@vuepress/plugin-medium-zoom'
 
 const getBaseUrl = (path: string): string => {
   const base = process.env.NODE_ENV === 'production' ? '/maz-ui-3' : ''
@@ -14,12 +16,12 @@ const getAssetBaseUrl = (path: string): string => {
   return `${base}${path}`
 }
 
-export default defineUserConfig<DefaultThemeOptions>({
+export default defineUserConfig({
   // site config
   lang: 'en-US',
   title: 'Maz-UI',
   description: 'Library of standalone components and tools for Vue & Nuxt',
-  clientAppEnhanceFiles: path.resolve(__dirname, 'clientAppEnhance.ts'),
+  clientConfigFile: path.resolve(__dirname, 'clientAppEnhance.ts'),
   base: getBaseUrl('/') as SiteData['base'],
 
   head: [
@@ -105,39 +107,32 @@ export default defineUserConfig<DefaultThemeOptions>({
   ],
 
   // theme and its config
-  theme: '@vuepress/theme-default',
-  themeConfig: {
-    logo: '/img/logo.svg',
-    repo: 'LouisMazel/maz-ui',
-    docsDir: 'packages/docs/docs',
-    docsBranch: 'next',
-    navbar,
-    sidebar,
-  },
+  theme: defaultTheme(
+    {
+      logo: '/img/logo.svg',
+      repo: 'LouisMazel/maz-ui',
+      docsDir: 'packages/docs/docs',
+      docsBranch: 'master',
+      navbar,
+      sidebar,
+    },
+  ),
+
+  bundler: viteBundler(),
   plugins: [
-    [
-      '@vuepress/medium-zoom',
-      {
-        selector: 'img.zoom-custom-imgs'
-      }
-    ],
-    [
-      '@vuepress/plugin-register-components',
-      {
-        componentsDir: path.resolve(__dirname, './components'),
-      },
-    ],
-    [
-      '@vuepress/plugin-google-analytics',
-      {
-        // we have multiple deployments, which would use different id
-        id: 'G-EM35TM23ZC',
-      },
-    ],
-    sitemap({
+    googleAnalyticsPlugin({
+      id: 'G-EM35TM23ZC',
+    }),
+    registerComponentsPlugin({
+      componentsDir: path.resolve(__dirname, './components'),
+    }),
+    sitemapPlugin({
       hostname: 'https://louismazel.github.io/maz-ui-3/',
       changefreq: 'daily'
-    })
+    }),
+    mediumZoomPlugin({
+      selector: 'img.zoom-custom-imgs'
+    }),
   ],
 
   alias: {

@@ -1,7 +1,8 @@
 name: Doc Build and Deploy
 on:
   push:
-    branches: [next]
+    branches:
+      - master
     paths:
       - "packages/docs/**"
       - "packages/lib/**"
