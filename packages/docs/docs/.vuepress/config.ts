@@ -112,7 +112,7 @@ export default defineUserConfig({
       logo: '/img/logo.svg',
       repo: 'LouisMazel/maz-ui',
       docsDir: 'packages/docs/docs',
-      docsBranch: 'next',
+      docsBranch: 'master',
       navbar,
       sidebar,
     },
