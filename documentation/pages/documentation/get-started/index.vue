@@ -17,7 +17,13 @@
 
     <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
 
-    <h3>Install maz-ui</h3>
+    <h3>
+      ⚠️ Unmaintained version, use latest <a href="https://louismazel.github.io/maz-ui-3/">v3.x</a> ⚠️
+    </h3>
+
+    <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
+
+    <h3>Install maz-ui (for Vue@2)</h3>
     <CodeContainer
       language="bash"
       code="npm i maz-ui@2 -S

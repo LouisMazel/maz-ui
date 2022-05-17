@@ -54,7 +54,7 @@
           href="https://louismazel.github.io/maz-ui-3/"
           target="_blank"
         >
-          v3.x
+          🎉 v3.x
         </MazBtn>
       </div>
       <div class="maz-flex maz-align-center maz-hidden-mobile">

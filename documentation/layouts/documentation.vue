@@ -22,28 +22,39 @@
       >
         <div
           v-if="isComponentRoute"
-          class="maz-flex maz-space-between maz-px-5 maz-py-5 maz-align-center maz-flex-wrap maz-flex-fixed"
         >
-          <h2>
-            {{ currentComponent | capitalize }}
-          </h2>
-          <div class="maz-flex-fixed">
-            <MazBtn
-              v-scroll-to="{
-                el: '#howToUseIt',
-                container: '.documentation__container'
-              }"
-              color="secondary"
-              href="#howToUseIt"
-              class="maz-mr-2"
-            >
-              How to use it ?
-            </MazBtn>
-            <MazBtn @click="showOptions">
-              Options - Events - Slots
-            </MazBtn>
+          <div class="maz-flex maz-space-between maz-px-5 maz-py-5 maz-align-center maz-flex-wrap maz-flex-fixed">
+            <h2>
+              {{ currentComponent | capitalize }}
+            </h2>
+            <div class="maz-flex-fixed">
+              <MazBtn
+                v-scroll-to="{
+                  el: '#howToUseIt',
+                  container: '.documentation__container'
+                }"
+                color="secondary"
+                href="#howToUseIt"
+                class="maz-mr-2"
+              >
+                How to use it ?
+              </MazBtn>
+              <MazBtn @click="showOptions">
+                Options - Events - Slots
+              </MazBtn>
+            </div>
+          </div>
+          <div class="maz-px-5 maz-flex-fixed">
+            <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
+
+            <h3>
+              ⚠️ Unmaintained version, use latest <a href="https://louismazel.github.io/maz-ui-3/">v3.x</a> ⚠️
+            </h3>
+
+            <hr class="maz-border-top maz-border-solid maz-border-color maz-my-5">
           </div>
         </div>
+
         <div
           v-if="description"
           class="documentation__component-desc maz-px-5 maz-py-2"

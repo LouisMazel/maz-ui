@@ -10,7 +10,7 @@
       href="https://louismazel.github.io/maz-ui-3/"
       target="_blank"
     >
-      New v3 version
+      🎉 v3.x available
     </MazBtn>
 
     <h4 class="maz-my-3">
