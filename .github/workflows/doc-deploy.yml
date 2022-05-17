@@ -5,6 +5,7 @@ on:
       - master
     paths:
       - "packages/docs/**"
+      - "packages/docs-2/**"
       - "packages/lib/**"
 
 jobs:
