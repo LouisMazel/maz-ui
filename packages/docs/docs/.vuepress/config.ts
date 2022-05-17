@@ -1,7 +1,7 @@
 import { defineUserConfig, SiteData, defaultTheme, viteBundler } from 'vuepress'
 import { path } from '@vuepress/utils'
 import { navbar, sidebar } from './configs'
-import { sitemap } from "vuepress-plugin-sitemap2"
+import { sitemapPlugin } from "vuepress-plugin-sitemap2"
 import { googleAnalyticsPlugin } from '@vuepress/plugin-google-analytics'
 import { registerComponentsPlugin } from '@vuepress/plugin-register-components'
 import { mediumZoomPlugin } from '@vuepress/plugin-medium-zoom'
@@ -21,7 +21,7 @@ export default defineUserConfig({
   lang: 'en-US',
   title: 'Maz-UI',
   description: 'Library of standalone components and tools for Vue & Nuxt',
-  clientAppEnhanceFiles: path.resolve(__dirname, 'clientAppEnhance.ts'),
+  clientConfigFile: path.resolve(__dirname, 'clientAppEnhance.ts'),
   base: getBaseUrl('/') as SiteData['base'],
 
   head: [
@@ -126,7 +126,7 @@ export default defineUserConfig({
     registerComponentsPlugin({
       componentsDir: path.resolve(__dirname, './components'),
     }),
-    sitemap({
+    sitemapPlugin({
       hostname: 'https://louismazel.github.io/maz-ui-3/',
       changefreq: 'daily'
     }),
