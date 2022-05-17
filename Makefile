@@ -1,5 +1,5 @@
 serve-docs:
-	make --directory=packages/docs-2 serve
+	make --directory=packages/docs serve
 
 serve-testing:
 	make --directory=packages/testing serve
@@ -8,7 +8,7 @@ lint-lib:
 	make --directory=packages/lib lint
 
 build-docs:
-	make --directory=packages/docs-2 build
+	make --directory=packages/docs build
 
 build-lib:
 	make --directory=packages/lib build
@@ -41,7 +41,7 @@ install-lib:
 	make --directory=packages/lib install
 
 install-docs:
-	make --directory=packages/docs-2 install
+	make --directory=packages/docs install
 
 install-testing:
 	make --directory=packages/testing install
@@ -56,7 +56,7 @@ reinstall-lib:
 	make --directory=packages/lib reinstall
 
 reinstall-docs:
-	make --directory=packages/docs-2 reinstall
+	make --directory=packages/docs reinstall
 
 reinstall-testing:
 	make --directory=packages/testing reinstall
@@ -68,7 +68,7 @@ lint-staged-lib: ## lint-staged lib
 	make --directory=packages/lib lint-staged
 
 lint-staged-docs: ## lint-staged docs
-	make --directory=packages/docs-2 lint-staged
+	make --directory=packages/docs lint-staged
 
 publish-version-tag:
 	make --directory=packages/lib publish-version-tag tag="$(tag)"
