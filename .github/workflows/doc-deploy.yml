@@ -31,4 +31,4 @@ jobs:
           ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
           TARGET_REPO: LouisMazel/maz-ui-3
           TARGET_BRANCH: gh-pages
-          BUILD_DIR: packages/docs/docs/.vuepress/dist
+          BUILD_DIR: packages/docs-2/docs/.vuepress/dist
