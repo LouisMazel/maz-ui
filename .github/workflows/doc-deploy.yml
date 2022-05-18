@@ -1,11 +1,11 @@
 name: Doc Build and Deploy
 on:
   push:
-    # branches:
-    #   - master
-    # paths:
-    #   - "packages/docs/**"
-    #   - "packages/lib/**"
+    branches:
+      - master
+    paths:
+      - "packages/docs/**"
+      - "packages/lib/**"
 
 jobs:
   doc-build-and-deploy:
