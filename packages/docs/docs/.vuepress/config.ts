@@ -20,8 +20,8 @@ export default defineUserConfig({
   // site config
   lang: 'en-US',
   title: 'Maz-UI',
-  description: 'Library of standalone components and tools for Vue & Nuxt',
-  clientAppEnhanceFiles: path.resolve(__dirname, 'client.ts'),
+  description: 'Library of standalone components and tools for Vue & Nuxt (v3.x)',
+  clientConfigFile: path.resolve(__dirname, 'client.ts'),
   base: getBaseUrl('/') as SiteData['base'],
 
   head: [
@@ -69,7 +69,7 @@ export default defineUserConfig({
     ],
     [
       'meta',
-      { property: 'og:description', content: 'Library of standalone components and tools for Vue & Nuxt' },
+      { property: 'og:description', content: 'Library of standalone components and tools for Vue & Nuxt (v3.x)' },
     ],
     [
       'meta',
@@ -81,7 +81,7 @@ export default defineUserConfig({
     ],
     [
       'meta',
-      { name: 'twitter:description', content: 'Library of standalone components and tools for Vue & Nuxt' },
+      { name: 'twitter:description', content: 'Library of standalone components and tools for Vue & Nuxt (v3.x)' },
     ],
     ['meta', { property: 'og:image', content: getAssetBaseUrl('/img/maz-ui-preview.jpg') }],
     ['meta', { name: 'twitter:image', content: getAssetBaseUrl('/img/maz-ui-preview.jpg') }],
