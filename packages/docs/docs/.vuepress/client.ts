@@ -23,20 +23,20 @@ export default defineClientConfig({
       timeout: 10000,
     }
 
-    const aosOptions: AosOptions = {
-      router,
-      delay: 500,
-      animation: {
-        duration: 400,
-        once: false
-      }
-    }
 
     app.use(installToaster, toasterOptions)
     app.use(installWait)
 
     // @ts-ignore
     if (!__VUEPRESS_SSR__) {
+      const aosOptions: AosOptions = {
+        router,
+        delay: 500,
+        animation: {
+          duration: 400,
+          once: false
+        }
+      }
       app.use(installAos, aosOptions)
     }
   }

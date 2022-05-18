@@ -118,7 +118,13 @@ export default defineUserConfig({
     },
   ),
 
-  bundler: viteBundler(),
+  bundler: viteBundler({
+    viteOptions: {
+      optimizeDeps: {
+        include: ['maz-ui']
+      },
+    },
+  }),
   plugins: [
     googleAnalyticsPlugin({
       id: 'G-EM35TM23ZC',
