@@ -30,12 +30,12 @@ export default defineUserConfig({
   }),
 
   bundler: viteBundler({
-    // viteOptions: {
-    //   // @ts-ignore
-    //   ssr: {
-    //     noExternal: ['maz-ui'],
-    //   },
-    // },
+    viteOptions: {
+      // @ts-ignore
+      ssr: {
+        noExternal: ['maz-ui'],
+      },
+    },
   }),
   plugins: [
     googleAnalyticsPlugin({
