@@ -5,7 +5,7 @@ description: MazDialogPromise is a standalone component to dialog with user, com
 
 # MazDialogPromise
 
-> Before you have to import the global css files in your project, follow instructions in [Getting Started](/maz-ui-3/guide/getting-started.html)
+> Before you have to import the global css files in your project, follow instructions in [Getting Started](./../guide/getting-started.md)
 
 > This component use [MazDialog](/maz-ui-3/components/maz-dialog.html), so it inherits all his props
 

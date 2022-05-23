@@ -67,7 +67,7 @@ const userVisibilyCallback: UserVisibilyCallback = ({ isVisible }) => {
   import MazBtn from 'maz-ui/components/MazBtn'
   import MazCard from 'maz-ui/components/MazCard'
 
-  import { UserVisibility } from 'maz-ui/package/helpers'
+  import { UserVisibility } from 'maz-ui'
   // for typescript users
   import type { UserVisibilyOptions, UserVisibilyCallback } from 'maz-ui'
 
@@ -98,7 +98,7 @@ const userVisibilyCallback: UserVisibilyCallback = ({ isVisible }) => {
   import MazBtn from 'maz-ui/components/MazBtn'
   import MazCard from 'maz-ui/components/MazCard'
 
-  import { UserVisibility } from 'maz-ui/package/helpers'
+  import { UserVisibility } from 'maz-ui'
   // for typescript users
   import type { UserVisibilyOptions, UserVisibilyCallback } from 'maz-ui'
 

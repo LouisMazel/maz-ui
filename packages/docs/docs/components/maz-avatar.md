@@ -15,7 +15,7 @@ head:
 
 # MazAvatar
 
-> Before you have to import the global css files in your project, follow instructions in [Getting Started](/maz-ui-3/guide/getting-started.html)
+> Before you have to import the global css files in your project, follow instructions in [Getting Started](./../guide/getting-started.md)
 
 > This component uses [vLazyImg](/maz-ui-3/directives/lazy-img.html) directive
 

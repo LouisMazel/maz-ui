@@ -2,16 +2,6 @@
 title: Made with Maz-UI
 description: Library of standalone components and tools for Vue & Nuxt
 sidebar: false
-head:
-  - - meta
-    - name: title
-      content: nike ta mère
-  - - link
-    - rel: canonical
-      href: foobar
-  - - script
-    - {}
-    - console.log('hello from frontmatter');
 ---
 
 # Made with Maz-UI

@@ -17,7 +17,7 @@ export class IdleTimeout {
   private options: IdleTimeoutStrictOption
   private timeoutHandler?: ReturnType<typeof setTimeout>
   private isIdle = false
-  private isDestoy = false
+  private isDestroy = false
   private startTime = 0
   private remainingTime = 0
   private lastClientX = -1
@@ -86,7 +86,7 @@ export class IdleTimeout {
   }
 
   public reset(): void {
-    this.isDestoy = false
+    this.isDestroy = false
     this.isIdle = false
     this.remainingTime = 0
     this.resetTimeout()
@@ -94,7 +94,7 @@ export class IdleTimeout {
   }
 
   public destroy(): void {
-    this.isDestoy = true
+    this.isDestroy = true
     const element = this.options.element
 
     for (const eventName of this.eventNames) {
@@ -159,7 +159,7 @@ export class IdleTimeout {
   }
 
   public get destroyed() {
-    return this.isDestoy
+    return this.isDestroy
   }
 
   public get timeout() {
