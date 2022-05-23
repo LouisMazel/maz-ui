@@ -9,7 +9,7 @@
   "author": "LouisMazel <me@loicmazuel.com>",
   "license": "ISC",
   "dependencies": {
-    "maz-ui": "file:../lib",
+    "@vuepress/plugin-google-analytics": "^2.0.0-beta.45",
     "@vuepress/plugin-register-components": "^2.0.0-beta.45",
     "@vuepress/plugin-search": "^2.0.0-beta.45",
     "chart.js": "^3.7.1",
@@ -17,8 +17,8 @@
     "dayjs": "^1.11.2",
     "dropzone": "^5.9.3",
     "libphonenumber-js": "^1.10.4",
+    "maz-ui": "^3.0.0",
     "vuepress": "^2.0.0-beta.45",
-    "vuepress-plugin-sitemap2": "^2.0.0-beta.71",
-    "@vuepress/plugin-google-analytics": "^2.0.0-beta.45"
+    "vuepress-plugin-sitemap2": "^2.0.0-beta.71"
   }
 }
