@@ -97,7 +97,7 @@ const idleTimeoutCallback: IdleTimeoutCallback = ({ isIdle, eventType }) => {
   import MazBtn from 'maz-ui/components/MazBtn'
   import MazCard from 'maz-ui/components/MazCard'
 
-  import { IdleTimeout } from 'maz-ui/package/helpers'
+  import { IdleTimeout } from 'maz-ui'
   // for typescript users
   import type { IdleTimeoutOptions, IdleTimeoutCallback } from 'maz-ui'
 
@@ -133,7 +133,7 @@ const idleTimeoutCallback: IdleTimeoutCallback = ({ isIdle, eventType }) => {
   import MazBtn from 'maz-ui/components/MazBtn'
   import MazCard from 'maz-ui/components/MazCard'
 
-  import { IdleTimeout } from 'maz-ui/package/helpers'
+  import { IdleTimeout } from 'maz-ui'
   // for typescript users
   import type { IdleTimeoutOptions, IdleTimeoutCallback } from 'maz-ui'
 

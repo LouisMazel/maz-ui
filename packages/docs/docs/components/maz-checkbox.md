@@ -5,7 +5,7 @@ description: MazCheckbox is a stand-alone component replaces the standard html i
 
 # MazCheckbox
 
-> Before you have to import the global css files in your project, follow instructions in [Getting Started](/maz-ui-3/guide/getting-started.html)
+> Before you have to import the global css files in your project, follow instructions in [Getting Started](./../guide/getting-started.md)
 
 <MazCheckbox v-for="color in colors" :color="color" :id="color" :name="color" :key="color" v-model="inputValue" style="margin-bottom: 12px;">
   {{ color }}

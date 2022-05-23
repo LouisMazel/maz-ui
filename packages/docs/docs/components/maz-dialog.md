@@ -5,7 +5,7 @@ description: MazDialog is a stand-alone dialog component to show important infor
 
 # MazDialog
 
-> Before you have to import the global css files in your project, follow instructions in [Getting Started](/maz-ui-3/guide/getting-started.html)
+> Before you have to import the global css files in your project, follow instructions in [Getting Started](./../guide/getting-started.md)
 
 > This component use `<Teleport to="body">`, so you can implement this component everywhere
 
