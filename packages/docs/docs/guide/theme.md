@@ -1,3 +1,8 @@
+---
+title: Theme
+description: Maz-ui is fully customizable - Documentation to know how editing colors
+---
+
 # Theme
 
 You must override `--maz-***` CSS variables

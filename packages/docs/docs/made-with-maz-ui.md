@@ -1,6 +1,6 @@
 ---
 title: Made with Maz-UI
-description: Library of standalone components and tools for Vue & Nuxt
+description: List of website using maz-ui library
 sidebar: false
 ---
 

@@ -66,7 +66,8 @@ export default defineUserConfig({
         '/': {
           placeholder: 'Search',
         }
-      }
+      },
+      maxSuggestions: 10,
     }),
     // @ts-ignore
     seoPlugin(seoOptions),
