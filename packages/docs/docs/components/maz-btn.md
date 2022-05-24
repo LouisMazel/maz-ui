@@ -57,7 +57,7 @@ description: MazBtn is a stand-alone component replaces the standard html button
 
 ### Colors
 
-> Use the attribute `color` with a value in this [list](/maz-ui-3/guide/colors.html), the component will use this color
+> Use the attribute `color` with a value in this [list](./../guide/colors.md), the component will use this color
 
 <div class="flex items-start gap-05 flex-wrap">
   <MazBtn v-for="{ name } in colorsArray" :color="name">{{ name }}</MazBtn>
@@ -173,7 +173,7 @@ description: MazBtn is a stand-alone component replaces the standard html button
 
 ### Icons
 
-> When you use `right-icon` or `left-icon`, the component use [MazIcon](/maz-ui-3/components/maz-icon.html)
+> When you use `right-icon` or `left-icon`, the component use [MazIcon](./maz-icon.md)
 
 <div class="flex items-start gap-05 rounded flex-wrap">
   <MazBtn left-icon="check">

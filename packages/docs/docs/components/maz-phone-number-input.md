@@ -31,7 +31,7 @@ yarn add libphonenumber-js
 
 ## Basic usage
 
-> This component use [MazInput](/maz-ui-3/components/maz-input.html), so it inherits all his props
+> This component use [MazInput](./maz-input.md), so it inherits all his props
 
 <MazPhoneNumberInput
   v-model="phoneNumber"

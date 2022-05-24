@@ -17,8 +17,11 @@
     "dayjs": "^1.11.2",
     "dropzone": "^5.9.3",
     "libphonenumber-js": "^1.10.4",
-    "maz-ui": "^3.0.0",
+    "maz-ui": "file:./../lib",
     "vuepress": "^2.0.0-beta.45",
     "vuepress-plugin-sitemap2": "^2.0.0-beta.71"
+  },
+  "devDependencies": {
+    "vuepress-plugin-seo2": "^2.0.0-beta.71"
   }
 }

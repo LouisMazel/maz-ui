@@ -5,7 +5,7 @@ description: MazInput is a stand-alone component replaces the standard html inpu
 
 # MazInput
 
-> Before you have to import the global css file in your project, follow instructions in [Getting Started](/maz-ui-3/guide/getting-started.html)
+> Before you have to import the global css file in your project, follow instructions in [Getting Started](./../guide/getting-started.md)
 
 ## Basic usage
 
@@ -90,7 +90,7 @@ description: MazInput is a stand-alone component replaces the standard html inpu
 
 ### Icons
 
-> When you use `right-icon` or `left-icon`, the component use [MazIcon](/maz-ui-3/components/maz-icon.html)
+> When you use `right-icon` or `left-icon`, the component use [MazIcon](./maz-icon.md)
 
 <MazInput v-model="inputValue"  id="icons" label="label icons" left-icon="cash" right-icon="user" />
 
@@ -182,8 +182,10 @@ input value: {{ inputValue ?? 'null' }}
 ### Colors
 
 > Click on each input to show colors
+
 <br />
-> Use the attribute `color` with a value in this [list](/maz-ui-3/guide/colors.html), the component will use this color
+
+> Use the attribute `color` with a value in this [list](./../guide/colors.md), the component will use this color
 
 <div class="flex flex-col gap-05">
   <MazInput v-for="{ name } in colorsArray" :key="name" v-model="inputValue" :label="name" :color="name" :id="name" />

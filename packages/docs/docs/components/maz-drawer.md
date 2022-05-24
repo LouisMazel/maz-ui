@@ -1,4 +1,5 @@
 ---
+title: MazDrawer
 description: MazDrawer is a stand-alone component to add a collapsible sidebar
 ---
 

@@ -1,6 +1,6 @@
 import { UserConfig } from 'vuepress'
 
-const getAssetBaseUrl = (path: string): string => {
+export const getAssetBaseUrl = (path: string): string => {
   const base = process.env.NODE_ENV === 'production' ? 'https://louismazel.github.io/maz-ui-3' : ''
   return `${base}${path}`
 }
@@ -34,10 +34,6 @@ export const head: UserConfig['head'] = [
   ],
   [
     'meta',
-    { name: 'twitter:creator', content: '@mazeel' },
-  ],
-  [
-    'meta',
     { name: 'twitter:card', content: 'summary_large_image' },
   ],
   [
@@ -45,34 +41,8 @@ export const head: UserConfig['head'] = [
     { name: 'twitter:site', content: '@maz__ui' },
   ],
   [
-    'meta',
-    { property: 'og:title', content: 'Maz-UI - Vue.JS & Nuxt.JS library' },
-  ],
-  [
-    'meta',
-    { property: 'og:description', content: 'Library of standalone components and tools for Vue & Nuxt (v3.x)' },
-  ],
-  [
-    'meta',
-    { property: 'og:type', content: 'website' },
-  ],
-  [
-    'meta',
-    { name: 'twitter:title', content: 'Maz-UI - Vue.JS & Nuxt.JS library' },
-  ],
-  [
-    'meta',
-    { name: 'twitter:description', content: 'Library of standalone components and tools for Vue & Nuxt (v3.x)' },
-  ],
-  ['meta', { property: 'og:image', content: getAssetBaseUrl('/img/maz-ui-preview.jpg') }],
-  ['meta', { name: 'twitter:image', content: getAssetBaseUrl('/img/maz-ui-preview.jpg') }],
-  [
     'link',
     { rel: 'apple-touch-icon', href: getAssetBaseUrl('/img/icons/apple-touch-icon.png') },
-  ],
-  [
-    'link',
-    { property: 'og:site_name', content: 'Maz UI' },
   ],
   [
     'link',

@@ -28,4 +28,4 @@ To enable the dark you have just to add `dark` class to the `<html />` of your p
 
 ## How to manage theme ?
 
-Use the `theme-handler` composable: [theme-handler](/maz-ui-3/helpers/theme-handler.html)
+Use the `theme-handler` composable: [theme-handler](./../helpers/theme-handler.md)

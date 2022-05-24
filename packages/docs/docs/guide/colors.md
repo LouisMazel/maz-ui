@@ -5,7 +5,7 @@ description: List of basic colors of maz-ui
 
 # Basic Colors
 
-> If you want to change colors, follow instructions on [theme guide](/maz-ui-3/guide/theme.html)
+> If you want to change colors, follow instructions on [theme guide](./theme.md)
 
 ## Primary
 
