@@ -1,23 +1,14 @@
 ---
 title: MazAvatar
 description: MazAvatar is a stand-alone component replaces the standard html button with a beautiful design system. Many options like colors, sizes, disabled state, loading state, includes icons. Support of router-link and nuxt-link
-head:
-  - - meta
-    - name: twitter:title
-      content: MazAvatar | Maz-UI
-    - name: twitter:description
-      content: MazAvatar is a stand-alone component replaces the standard html button with a beautiful design system. Many options like colors, sizes, disabled state, loading state, includes icons. Support of router-link and nuxt-link
-    - property: og:title
-      content: MazAvatar | Maz-UI
-    - property: og:description
-      content: MazAvatar is a stand-alone component replaces the standard html button with a beautiful design system. Many options like colors, sizes, disabled state, loading state, includes icons. Support of router-link and nuxt-link
+image: /img/maz-ui-illu.png
 ---
 
 # MazAvatar
 
 > Before you have to import the global css files in your project, follow instructions in [Getting Started](./../guide/getting-started.md)
 
-> This component uses [vLazyImg](/maz-ui-3/directives/lazy-img.html) directive
+> This component uses [vLazyImg](./../directives/lazy-img.md) directive
 
 ## Basic usage
 

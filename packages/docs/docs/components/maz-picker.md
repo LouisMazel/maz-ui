@@ -38,7 +38,7 @@ yarn add dayjs
 
 - The returned value is formatted by [days.format()](https://day.js.org/docs/en/display/format) function with the format provided
 
-- This component use [MazInput](/maz-ui-3/components/maz-input.html), so it inherits his props:
+- This component use [MazInput](./maz-input.md), so it inherits his props:
   - Use `label` & `placeholder` props
 
 ## Options

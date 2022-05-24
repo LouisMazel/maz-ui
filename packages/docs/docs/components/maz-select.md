@@ -11,7 +11,7 @@ description: MazSelect is a stand-alone component replaces the standard html inp
 
 > `options` should be an array of `{ value: any, label: string }`
 
-> This component use [MazInput](/maz-ui-3/components/maz-input.html), so it inherits all his props
+> This component use [MazInput](./maz-input.md), so it inherits all his props
 
 <div class="flex flex-col gap-05">
   <MazSelect

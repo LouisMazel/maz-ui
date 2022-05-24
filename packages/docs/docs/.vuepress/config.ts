@@ -1,4 +1,4 @@
-import { defineUserConfig, SiteData, defaultTheme, viteBundler } from 'vuepress'
+import { defineUserConfig, defaultTheme, viteBundler, PluginFunction } from 'vuepress'
 import { path } from '@vuepress/utils'
 
 import { registerComponentsPlugin } from '@vuepress/plugin-register-components'
@@ -6,8 +6,18 @@ import { searchPlugin } from '@vuepress/plugin-search'
 import { sitemapPlugin } from "vuepress-plugin-sitemap2"
 import { googleAnalyticsPlugin } from '@vuepress/plugin-google-analytics'
 import { mediumZoomPlugin } from '@vuepress/plugin-medium-zoom'
+import { SeoOptions, seoPlugin } from 'vuepress-plugin-seo2'
 
 import { sidebar, navbar, head } from './configs'
+import { getAssetBaseUrl } from './configs/head'
+
+const seoOptions: SeoOptions = {
+  hostname: 'https://louismazel.github.io/maz-ui-3/',
+  autoDescription: true,
+  author: 'Loïc Mazuel',
+  fallBackImage: getAssetBaseUrl('/img/maz-ui-preview.jpg'),
+  twitterID: '@mazeel',
+}
 
 export default defineUserConfig({
   // site config
@@ -57,7 +67,9 @@ export default defineUserConfig({
           placeholder: 'Search',
         }
       }
-    })
+    }),
+    // @ts-ignore
+    seoPlugin(seoOptions),
   ],
 
   alias: {

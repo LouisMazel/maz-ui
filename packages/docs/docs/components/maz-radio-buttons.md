@@ -1,15 +1,6 @@
 ---
+title: MazRadioButtons
 description: MazRadioButtons is a stand-alone component to select a value in a list
-head:
-  - - meta
-    - name: twitter:title
-      content: MazRadioButtons | Maz-UI
-    - name: twitter:description
-      content: MazRadioButtons is a stand-alone component to select a value in a list
-    - property: og:title
-      content: MazRadioButtons | Maz-UI
-    - property: og:description
-      content: MazRadioButtons is a stand-alone component to select a value in a list
 ---
 
 # MazRadioButtons

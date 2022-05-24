@@ -1,5 +1,5 @@
 ---
-description: MazInputNumber is a stand-alone component replaces the standard html input text and format the text enter according with the currency provided
+description: MazInputNumber is a stand-alone component replaces the standard html input text and format the number according with the locale provided
 ---
 
 # MazInputNumber
