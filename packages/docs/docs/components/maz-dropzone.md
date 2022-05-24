@@ -45,7 +45,7 @@ yarn add dropzone@5
 </p>
 
 <div class="flex flex-center">
-  <MazBtn left-icon="Upload" :loading="loading" @click="sendFiles">
+  <MazBtn left-icon="upload" :loading="loading" @click="sendFiles">
     Send Files
   </MazBtn>
 </div>

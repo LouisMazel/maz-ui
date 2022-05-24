@@ -12,7 +12,7 @@ import { sidebar, navbar, head } from './configs'
 import { getAssetBaseUrl } from './configs/head'
 
 const seoOptions: SeoOptions = {
-  hostname: 'https://louismazel.github.io/maz-ui-3/',
+  hostname: 'https://louismazel.github.io',
   autoDescription: true,
   author: 'Loïc Mazuel',
   fallBackImage: getAssetBaseUrl('/img/maz-ui-preview.jpg'),
@@ -66,7 +66,8 @@ export default defineUserConfig({
         '/': {
           placeholder: 'Search',
         }
-      }
+      },
+      maxSuggestions: 10,
     }),
     // @ts-ignore
     seoPlugin(seoOptions),
