@@ -4,13 +4,11 @@ on:
   push:
     branches:
       - master
-      - next
     paths:
       - "packages/lib/**"
   pull_request:
     branches:
       - master
-      - next
       - "release/**"
     paths:
       - "packages/lib/**"
