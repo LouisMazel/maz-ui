@@ -1,6 +1,6 @@
 ---
 home: true
-title: Standalone Component Library for Vue & Nuxt
+title: Maz UI - Standalone Component Library for Vue & Nuxt
 heroImage: /img/maz-ui-illu.png
 description: Build your amazing interfaces with Maz UI and its stand-alone components - Stand-alone components library for Vue.JS & Nuxt.JS
 actions:
