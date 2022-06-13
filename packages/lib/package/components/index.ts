@@ -29,8 +29,8 @@ import { default as MazSlider } from './MazSlider.vue'
 import { default as MazSpinner } from './MazSpinner.vue'
 import { default as MazSwitch } from './MazSwitch.vue'
 import { default as MazTabsBar } from './MazTabsBar.vue'
+import { default as MazTabsWrapper } from './MazTabsWrapper.vue'
 import { default as MazTabsContent } from './MazTabsContent.vue'
-import { default as MazTabsContentItem } from './MazTabsContentItem.vue'
 import { default as MazTransitionExpand } from './MazTransitionExpand.vue'
 
 export {
@@ -63,8 +63,8 @@ export {
   MazSpinner,
   MazSwitch,
   MazTabsBar,
+  MazTabsWrapper,
   MazTabsContent,
-  MazTabsContentItem,
   MazTransitionExpand,
 }
 
@@ -98,7 +98,7 @@ export default {
   MazSpinner,
   MazSwitch,
   MazTabsBar,
+  MazTabsWrapper,
   MazTabsContent,
-  MazTabsContentItem,
   MazTransitionExpand,
 }
