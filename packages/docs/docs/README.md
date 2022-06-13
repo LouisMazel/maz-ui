@@ -34,16 +34,23 @@ footer: Made by LouisMazel with ❤️
   <MazBtn
     to="/helpers/theme-handler.md"
     size="lg"
-    color="warning"
+    color="success"
   >
     Helpers
   </MazBtn>
   <MazBtn
     to="/filters/currency.md"
     size="lg"
-    color="success"
+    color="warning"
   >
     Filters
+  </MazBtn>
+  <MazBtn
+    to="/filters/currency.md"
+    size="lg"
+    color="danger"
+  >
+    Directives
   </MazBtn>
 </div>
 
@@ -77,15 +84,23 @@ yarn add maz-ui
   </div>
   <div class="feature">
     <h2>SSR Friendly</h2>
-    <p>All components works with <strong>Nuxt</strong>, no need to install components on client side</p>
+    <p>
+      All components works with <strong>Nuxt</strong>, no need to install components on client side
+    </p>
   </div>
   <div class="feature">
     <h2>Typescript</h2>
-    <p>This library is writing with <strong>Typescript</strong>, all types and declarations are directly availables</p>
+    <p>
+      This library is writing with <strong>Typescript</strong>, all types and declarations are directly availables
+    </p>
   </div>
   <div class="feature">
     <h2>Made with TailwindCSS</h2>
-    <p><strong>Optimized</strong> CSS file sizes | All CSS <strong>good practices</strong> are respected with TailwindCSS | Use your theme <strong>easily</strong></p>
+    <p>
+      <strong>Optimized</strong> CSS file sizes |
+      All CSS <strong>good practices</strong> are respected with TailwindCSS |
+      Use your theme <strong>easily</strong>
+    </p>
   </div>
   <div class="feature">
     <h2>Dark and Light Theme</h2>
@@ -93,6 +108,9 @@ yarn add maz-ui
   </div>
   <div class="feature">
     <h2>Tools</h2>
-    <p>Maz-ui provide many modules: <strong>plugins, directives, filters and helpers</strong></p>
+    <p>
+      Maz-ui provide many modules:
+      <strong>plugins, directives, filters and helpers</strong>
+    </p>
   </div>
 </div>
