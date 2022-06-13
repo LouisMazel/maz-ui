@@ -31,7 +31,7 @@ const userVisibilyCallback: UserVisibilyCallback = ({ isVisible }) => {
 
 <br />
 
-<MazBtn @click="userVisibilityInstance?.destroy" color="danger">
+<MazBtn @click="userVisibilityInstance?.destroy()" color="danger">
   Destroy
 </MazBtn>
 
@@ -50,7 +50,7 @@ const userVisibilyCallback: UserVisibilyCallback = ({ isVisible }) => {
 
 ```vue
 <template>
-  <MazBtn @click="userVisibilityInstance?.destroy" color="danger">
+  <MazBtn @click="userVisibilityInstance?.destroy()" color="danger">
     Destroy
   </MazBtn>
 
