@@ -91,7 +91,7 @@ yarn add maz-ui
     <h2>Dark and Light Theme</h2>
     <p>All components supports the Dark and Light themes.</p>
   </div>
-    <div class="feature">
+  <div class="feature">
     <h2>Tools</h2>
     <p>Maz-ui provide many modules: <strong>plugins, directives, filters and helpers</strong></p>
   </div>
