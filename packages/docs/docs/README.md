@@ -31,6 +31,20 @@ footer: Made by LouisMazel with ❤️
   >
     Plugins
   </MazBtn>
+  <MazBtn
+    to="/helpers/theme-handler.md"
+    size="lg"
+    color="warning"
+  >
+    Helpers
+  </MazBtn>
+  <MazBtn
+    to="/filters/currency.md"
+    size="lg"
+    color="success"
+  >
+    Filters
+  </MazBtn>
 </div>
 
 
@@ -67,7 +81,7 @@ yarn add maz-ui
   </div>
   <div class="feature">
     <h2>Typescript</h2>
-    <p>This library is writing with <strong>Typescript</strong>, so all types and declarations are directly availables</p>
+    <p>This library is writing with <strong>Typescript</strong>, all types and declarations are directly availables</p>
   </div>
   <div class="feature">
     <h2>Made with TailwindCSS</h2>
