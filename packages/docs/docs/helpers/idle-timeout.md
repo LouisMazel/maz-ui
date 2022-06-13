@@ -37,16 +37,16 @@ const idleTimeoutCallback: IdleTimeoutCallback = ({ isIdle, eventType }) => {
 <br />
 
 <div class="flex items-start gap-05 items-center flex-wrap">
-  <MazBtn @click="idleTimeoutInstance?.pause" color="warning">
+  <MazBtn @click="idleTimeoutInstance?.pause()" color="warning">
     Pause
   </MazBtn>
-  <MazBtn @click="idleTimeoutInstance?.resume">
+  <MazBtn @click="idleTimeoutInstance?.resume()">
     Resume
   </MazBtn>
-  <MazBtn @click="idleTimeoutInstance?.reset" color="secondary">
+  <MazBtn @click="idleTimeoutInstance?.reset()" color="secondary">
     Reset
   </MazBtn>
-  <MazBtn @click="idleTimeoutInstance?.destroy" color="danger">
+  <MazBtn @click="idleTimeoutInstance?.destroy()" color="danger">
     Destroy
   </MazBtn>
 </div>
@@ -66,16 +66,16 @@ const idleTimeoutCallback: IdleTimeoutCallback = ({ isIdle, eventType }) => {
 
 ```vue
 <template>
-  <MazBtn @click="idleTimeoutInstance?.pause" color="warning">
+  <MazBtn @click="idleTimeoutInstance?.pause()" color="warning">
     Pause
   </MazBtn>
-  <MazBtn @click="idleTimeoutInstance?.resume">
+  <MazBtn @click="idleTimeoutInstance?.resume()">
     Resume
   </MazBtn>
-  <MazBtn @click="idleTimeoutInstance?.reset" color="secondary">
+  <MazBtn @click="idleTimeoutInstance?.reset()" color="secondary">
     Reset
   </MazBtn>
-  <MazBtn @click="idleTimeoutInstance?.destroy" color="danger">
+  <MazBtn @click="idleTimeoutInstance?.destroy()" color="danger">
     Destroy
   </MazBtn>
 
