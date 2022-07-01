@@ -5,7 +5,7 @@ serve:
 	npm run docs:dev
 
 install:
-	npm ci
+	npm i
 
 reinstall:
 	rm -rf ./node_modules
