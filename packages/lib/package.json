@@ -20,7 +20,7 @@
     "test:unit:watch": "vitest watch",
     "test:unit:coverage": "vitest run --coverage",
     "lint": "npm run lint:js && npm run lint:style",
-    "lint:js": "eslint --fix --ext .ts,.js,.vue,.json .",
+    "lint:js": "eslint --fix --ext .ts,.js,.vue .",
     "format": "prettier . --write",
     "lint:style": "stylelint --custom-syntax postcss-html --fix \"**/*.{vue,css,scss,postcss,pcss}\"",
     "clean": "rimraf components modules css types maz-ui.d.ts",
