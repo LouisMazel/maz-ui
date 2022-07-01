@@ -470,7 +470,7 @@
       }
     }
 
-    & .m-input:not(.--is-focused):not(.--has-state) {
+    & .m-input:not(.--is-focused, .--has-state) {
       & .m-input-wrapper.--default-border {
         @apply maz-border-color-lighter;
       }

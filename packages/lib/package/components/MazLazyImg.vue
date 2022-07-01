@@ -73,7 +73,7 @@
       @apply maz-absolute maz-inset-0 maz-hidden maz-flex-center;
     }
 
-    &:not(.m-lazy-error):not(.m-lazy-no-photo) img {
+    &:not(.m-lazy-error, .m-lazy-no-photo) img {
       @apply maz-h-full maz-w-full;
     }
 
@@ -81,7 +81,7 @@
       @apply maz-max-h-full maz-w-min maz-max-w-min !important;
     }
 
-    &:not(.m-lazy-loaded):not(.m-lazy-no-photo) {
+    &:not(.m-lazy-loaded, .m-lazy-no-photo) {
       & .m-lazy-img-component-loader {
         @apply maz-flex;
       }
