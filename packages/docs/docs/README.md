@@ -10,6 +10,17 @@ footer: Made by LouisMazel with ❤️
 
 <!-- markdownlint-disable -->
 
+<div class="flex flex-center" style="margin-bottom: 2rem;">
+  <iframe
+    src="https://ghbtns.com/github-btn.html?user=LouisMazel&repo=maz-ui&type=star&count=true&size=large"
+    frameborder="0"
+    scrolling="0"
+    width="170"
+    height="30"
+    title="Maz-UI"
+  />
+</div>
+
 <div class="flex flex-center flex-wrap" style="margin-bottom: 2rem; gap: 1rem;">
   <MazBtn
     to="/guide/getting-started.md"

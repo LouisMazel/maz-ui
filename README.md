@@ -1,6 +1,7 @@
 # maz-ui
 
 [![vue 3](https://img.shields.io/badge/vue-3-42b983.svg)](https://vuejs.org)
+[![nuxt 3](https://img.shields.io/badge/nuxt-3-42b983.svg)](https://v3.nuxtjs.org/)
 
 [![npm](https://img.shields.io/npm/v/maz-ui/latest.svg)](https://www.npmjs.com/package/maz-ui)
 [![license](https://img.shields.io/github/license/LouisMazel/maz-ui.svg)](https://github.com/LouisMazel/maz-ui/blob/master/LICENSE)
