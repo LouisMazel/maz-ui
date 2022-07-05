@@ -39,6 +39,9 @@ test-unit-watch:
 test-unit-coverage:
 	npm run test:unit:coverage
 
+test-unit-coverage-master:
+	npm run test:unit:coverage:master
+
 reinstall:
 	rm -rf ./node_modules
 	npm i
