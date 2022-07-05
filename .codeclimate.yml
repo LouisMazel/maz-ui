@@ -25,6 +25,9 @@ plugins:
 exclude_patterns:
   - .husky/
   - .vscode/
+  - "**/tests/"
+  - "**/spec/"
+  - "**/*.d.ts"
   - node_modules/*
   - packages/lib/tests/*
   - packages/lib/build/*
