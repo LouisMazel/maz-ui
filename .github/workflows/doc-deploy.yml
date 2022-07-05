@@ -5,7 +5,7 @@ on:
       - master
     paths:
       - "packages/docs/**"
-      - "packages/lib/**"
+      # - "packages/lib/**"
 
 jobs:
   doc-build-and-deploy:
@@ -15,10 +15,10 @@ jobs:
         uses: actions/checkout@master
 
       - name: Install all dependencies
-        run: make install-docs install-lib
+        run: make install-docs # install-lib
 
-      - name: Build lib
-        run: make build-lib
+      # - name: Build lib
+      #   run: make build-lib
 
       - name: Build docs
         run: make build-docs
