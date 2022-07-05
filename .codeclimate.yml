@@ -26,5 +26,5 @@ exclude_patterns:
   - .husky/
   - .vscode/
   - node_modules/*
-  - packages/lib/bin/
-  - packages/lib/build/
+  - packages/lib/tests/*
+  - packages/lib/build/*
