@@ -1,10 +1,6 @@
 name: Lib Test Build
+
 on:
-  push:
-    branches:
-      - master
-    paths:
-      - "packages/lib/**"
   pull_request:
     branches:
       - master

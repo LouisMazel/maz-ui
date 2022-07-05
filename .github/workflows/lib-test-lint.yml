@@ -1,11 +1,6 @@
 name: Lib Test Lint
 
 on:
-  push:
-    branches:
-      - master
-    paths:
-      - "packages/lib/**"
   pull_request:
     branches:
       - master
