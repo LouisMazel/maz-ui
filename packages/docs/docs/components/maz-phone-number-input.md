@@ -43,7 +43,7 @@ yarn add libphonenumber-js
   :success="results?.isValid"
 />
 
-> Emit on `@update` event
+> Emitted on `@update` event
 
 <div class="language-json ext-json"><pre class="language-json"><code>{{ results }}</code></pre></div>
 
