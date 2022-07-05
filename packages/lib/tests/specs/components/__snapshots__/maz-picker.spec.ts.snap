@@ -64,7 +64,7 @@ exports[`components/MazPicker.vue 1`] = `
                       <div data-v-4e1f3e64=\\"\\"></div>
                       <div data-v-4e1f3e64=\\"\\"></div>
                       <div data-v-4e1f3e64=\\"\\"></div>
-                      <div data-v-4e1f3e64=\\"\\"></div><button class=\\"--is-today m-btn --mini --transparent --cursor-pointer --is-button --is-today\\" type=\\"button\\" data-v-486cf628=\\"\\" data-v-4e1f3e64=\\"\\">
+                      <div data-v-4e1f3e64=\\"\\"></div><button class=\\"m-btn --mini --transparent --cursor-pointer --is-button\\" type=\\"button\\" data-v-486cf628=\\"\\" data-v-4e1f3e64=\\"\\">
                         <!--v-if--><span class=\\"maz-flex maz-flex-center\\" data-v-486cf628=\\"\\"><span data-v-4e1f3e64=\\"\\">1</span></span>
                         <!--v-if-->
                         <!--v-if-->
@@ -80,7 +80,7 @@ exports[`components/MazPicker.vue 1`] = `
                         <!--v-if--><span class=\\"maz-flex maz-flex-center\\" data-v-486cf628=\\"\\"><span data-v-4e1f3e64=\\"\\">4</span></span>
                         <!--v-if-->
                         <!--v-if-->
-                      </button><button class=\\"m-btn --mini --transparent --cursor-pointer --is-button\\" type=\\"button\\" data-v-486cf628=\\"\\" data-v-4e1f3e64=\\"\\">
+                      </button><button class=\\"--is-today m-btn --mini --transparent --cursor-pointer --is-button --is-today\\" type=\\"button\\" data-v-486cf628=\\"\\" data-v-4e1f3e64=\\"\\">
                         <!--v-if--><span class=\\"maz-flex maz-flex-center\\" data-v-486cf628=\\"\\"><span data-v-4e1f3e64=\\"\\">5</span></span>
                         <!--v-if-->
                         <!--v-if-->
