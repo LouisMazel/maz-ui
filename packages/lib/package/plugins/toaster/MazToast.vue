@@ -38,10 +38,9 @@
     position: {
       type: String as PropType<ToasterPositions>,
       default: 'bottom-right',
-      required: true,
     },
     maxToasts: { type: [Number, Boolean], default: false },
-    timeout: { type: Number, required: true },
+    timeout: { type: Number, default: 10000 },
     queue: { type: Boolean, default: false },
     noPauseOnHover: { type: Boolean, default: false },
     type: {
@@ -236,7 +235,7 @@
     & .--close {
       @apply maz-ml-1 maz-flex maz-h-7 maz-w-7 maz-rounded-full maz-bg-transparent maz-p-0
         maz-flex-center
-        hover:maz-bg-gray-900 hover:maz-bg-opacity-10;
+        hover:maz-bg-gray-900/20;
     }
 
     &.--info {

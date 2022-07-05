@@ -33,7 +33,6 @@ module.exports = {
       spacing: {},
     },
   },
-  variants: {},
   plugins: [
     require('tailwind-css-variables')({
       colors: false,
