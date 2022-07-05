@@ -38,10 +38,9 @@
     position: {
       type: String as PropType<ToasterPositions>,
       default: 'bottom-right',
-      required: true,
     },
     maxToasts: { type: [Number, Boolean], default: false },
-    timeout: { type: Number, required: true },
+    timeout: { type: Number, default: 10000 },
     queue: { type: Boolean, default: false },
     noPauseOnHover: { type: Boolean, default: false },
     type: {
