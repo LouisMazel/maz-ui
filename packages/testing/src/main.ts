@@ -1,8 +1,8 @@
 import App from './App.vue'
 
-// import 'maz-ui/css/main.css'
-// import 'maz-ui/package/plugins/aos/scss/index.scss'
-// import '@/css/main.css'
+import 'maz-ui/css/main.css'
+import 'maz-ui/package/plugins/aos/scss/index.scss'
+import '@/css/main.css'
 
 import { createApp } from 'vue'
 import { vZoomImgInstall, vZoomImgOptions } from 'maz-ui/package/directives'
