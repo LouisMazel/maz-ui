@@ -78,7 +78,7 @@ export function getDaysInMonth(date: ConfigType): number {
 }
 
 export function isToday(date: ConfigType): boolean {
-  return dayjs(date).isSame(dayjs(), 'date')
+  return dayjs().isSame(date, 'date')
 }
 
 export function isSameDate(

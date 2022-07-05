@@ -36,7 +36,7 @@ exports[`components/MazPicker.vue 1`] = `
                 <!--v-if-->
                 <!--v-if-->
               </button><button class=\\"m-picker-calendar-switcher__date m-btn --sm --transparent --cursor-pointer --is-button m-picker-calendar-switcher__date\\" type=\\"button\\" data-v-486cf628=\\"\\" data-v-f593db14=\\"\\">
-                <!--v-if--><span class=\\"maz-flex maz-flex-center\\" data-v-486cf628=\\"\\">May</span>
+                <!--v-if--><span class=\\"maz-flex maz-flex-center\\" data-v-486cf628=\\"\\">July</span>
                 <!--v-if-->
                 <!--v-if-->
               </button><button class=\\"m-picker-calendar-switcher__date m-btn --sm --transparent --cursor-pointer --is-button m-picker-calendar-switcher__date\\" type=\\"button\\" data-v-486cf628=\\"\\" data-v-f593db14=\\"\\">
@@ -59,7 +59,12 @@ exports[`components/MazPicker.vue 1`] = `
                 <div class=\\"maz-picker-calendar-days maz-picker-calendar-month__days\\" data-v-a15a9a16=\\"\\" data-v-42c61b5c=\\"\\"><span data-v-a15a9a16=\\"\\">Sun</span><span data-v-a15a9a16=\\"\\">Mon</span><span data-v-a15a9a16=\\"\\">Tue</span><span data-v-a15a9a16=\\"\\">Wed</span><span data-v-a15a9a16=\\"\\">Thu</span><span data-v-a15a9a16=\\"\\">Fri</span><span data-v-a15a9a16=\\"\\">Sat</span></div>
                 <div class=\\"maz-picker-calendar-grid\\" data-v-4e1f3e64=\\"\\" data-v-42c61b5c=\\"\\">
                   <transition-group-stub data-v-4e1f3e64=\\"\\">
-                    <div class=\\"maz-picker-calendar-grid__container\\" data-v-4e1f3e64=\\"\\"><button class=\\"m-btn --mini --transparent --cursor-pointer --is-button\\" type=\\"button\\" data-v-486cf628=\\"\\" data-v-4e1f3e64=\\"\\">
+                    <div class=\\"maz-picker-calendar-grid__container\\" data-v-4e1f3e64=\\"\\">
+                      <div data-v-4e1f3e64=\\"\\"></div>
+                      <div data-v-4e1f3e64=\\"\\"></div>
+                      <div data-v-4e1f3e64=\\"\\"></div>
+                      <div data-v-4e1f3e64=\\"\\"></div>
+                      <div data-v-4e1f3e64=\\"\\"></div><button class=\\"m-btn --mini --transparent --cursor-pointer --is-button\\" type=\\"button\\" data-v-486cf628=\\"\\" data-v-4e1f3e64=\\"\\">
                         <!--v-if--><span class=\\"maz-flex maz-flex-center\\" data-v-486cf628=\\"\\"><span data-v-4e1f3e64=\\"\\">1</span></span>
                         <!--v-if-->
                         <!--v-if-->
@@ -75,7 +80,7 @@ exports[`components/MazPicker.vue 1`] = `
                         <!--v-if--><span class=\\"maz-flex maz-flex-center\\" data-v-486cf628=\\"\\"><span data-v-4e1f3e64=\\"\\">4</span></span>
                         <!--v-if-->
                         <!--v-if-->
-                      </button><button class=\\"m-btn --mini --transparent --cursor-pointer --is-button\\" type=\\"button\\" data-v-486cf628=\\"\\" data-v-4e1f3e64=\\"\\">
+                      </button><button class=\\"--is-today m-btn --mini --transparent --cursor-pointer --is-button --is-today\\" type=\\"button\\" data-v-486cf628=\\"\\" data-v-4e1f3e64=\\"\\">
                         <!--v-if--><span class=\\"maz-flex maz-flex-center\\" data-v-486cf628=\\"\\"><span data-v-4e1f3e64=\\"\\">5</span></span>
                         <!--v-if-->
                         <!--v-if-->
@@ -151,7 +156,7 @@ exports[`components/MazPicker.vue 1`] = `
                         <!--v-if--><span class=\\"maz-flex maz-flex-center\\" data-v-486cf628=\\"\\"><span data-v-4e1f3e64=\\"\\">23</span></span>
                         <!--v-if-->
                         <!--v-if-->
-                      </button><button class=\\"--is-today m-btn --mini --transparent --cursor-pointer --is-button --is-today\\" type=\\"button\\" data-v-486cf628=\\"\\" data-v-4e1f3e64=\\"\\">
+                      </button><button class=\\"m-btn --mini --transparent --cursor-pointer --is-button\\" type=\\"button\\" data-v-486cf628=\\"\\" data-v-4e1f3e64=\\"\\">
                         <!--v-if--><span class=\\"maz-flex maz-flex-center\\" data-v-486cf628=\\"\\"><span data-v-4e1f3e64=\\"\\">24</span></span>
                         <!--v-if-->
                         <!--v-if-->
@@ -183,7 +188,8 @@ exports[`components/MazPicker.vue 1`] = `
                         <!--v-if--><span class=\\"maz-flex maz-flex-center\\" data-v-486cf628=\\"\\"><span data-v-4e1f3e64=\\"\\">31</span></span>
                         <!--v-if-->
                         <!--v-if-->
-                      </button></div>
+                      </button>
+                    </div>
                   </transition-group-stub>
                 </div>
               </div>

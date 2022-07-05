@@ -228,7 +228,7 @@
     tmpValues.value = valuesChecked
   }
   const emitValue = (values: number[]) => {
-    let valueToEmit = hasMultipleValues.value ? values.slice() : values[0]
+    const valueToEmit = hasMultipleValues.value ? values.slice() : values[0]
     emits('update:model-value', valueToEmit)
   }
   const getLabel = (i: number) => {

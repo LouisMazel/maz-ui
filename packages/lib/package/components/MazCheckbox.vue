@@ -7,7 +7,12 @@
       :name="name"
       type="checkbox"
       class="maz-mr-2"
-      @change="$emit('update:model-value', ($event?.target as HTMLInputElement)?.checked)"
+      @change="
+        $emit(
+          'update:model-value',
+          ($event?.target as HTMLInputElement)?.checked,
+        )
+      "
     />
     <label :for="id" class="maz-m-0 maz-flex maz-items-center">
       <slot />
