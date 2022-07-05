@@ -119,7 +119,7 @@
       @apply bg-success-l text-success-default;
 
       &:not(:disabled) {
-        @apply hover:bg-secondary-default hover:bg-opacity-20;
+        @apply hover:bg-secondary-default/20;
       }
     }
 

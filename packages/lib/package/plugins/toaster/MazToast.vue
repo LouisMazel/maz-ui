@@ -236,7 +236,7 @@
     & .--close {
       @apply maz-ml-1 maz-flex maz-h-7 maz-w-7 maz-rounded-full maz-bg-transparent maz-p-0
         maz-flex-center
-        hover:maz-bg-gray-900 hover:maz-bg-opacity-10;
+        hover:maz-bg-gray-900/20;
     }
 
     &.--info {
