@@ -27,7 +27,7 @@
       @click="isFocused = !isFocused"
     >
       <template #right-icon>
-        <button tabindex="-1" class="m-picker__button">
+        <button type="button" tabindex="-1" class="m-picker__button">
           <MazIcon :src="ChevronDownIcon" class="m-picker__button__chevron" />
         </button>
       </template>
