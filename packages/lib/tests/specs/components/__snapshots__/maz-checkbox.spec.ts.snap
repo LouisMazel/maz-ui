@@ -1,0 +1,3 @@
+// Vitest Snapshot v1
+
+exports[`components/MazCheckbox.vue 1`] = `"<div class=\\"m-checkbox m-checkbox--primary\\" data-v-040cc227=\\"\\"><input id=\\"MazCheckbox-1\\" name=\\"m-checkbox\\" type=\\"checkbox\\" class=\\"maz-mr-2\\" data-v-040cc227=\\"\\"><label for=\\"MazCheckbox-1\\" class=\\"maz-m-0 maz-flex maz-items-center\\" data-v-040cc227=\\"\\"></label></div>"`;
