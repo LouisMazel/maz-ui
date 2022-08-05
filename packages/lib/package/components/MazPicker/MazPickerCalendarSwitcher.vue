@@ -11,6 +11,7 @@
     <MazBtn
       size="sm"
       color="transparent"
+      type="button"
       class="m-picker-calendar-switcher__date"
       @click="$emit('open-month-switcher', $event)"
     >
@@ -19,6 +20,7 @@
     <MazBtn
       size="sm"
       color="transparent"
+      type="button"
       class="m-picker-calendar-switcher__date"
       @click="$emit('open-year-switcher', $event)"
     >
