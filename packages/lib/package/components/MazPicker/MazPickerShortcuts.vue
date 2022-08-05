@@ -5,6 +5,7 @@
       :key="identifier"
       type="button"
       size="sm"
+      :disabled="disabled"
       :color="identifier === selectedShortcut ? props.color : 'transparent'"
       :class="{ '--is-selected': identifier === selectedShortcut }"
       @click.stop="selectShortcut(value, identifier)"
@@ -32,6 +33,7 @@
     },
     double: { type: Boolean, required: true },
     shortcut: { type: String, default: undefined },
+    disabled: { type: Boolean, required: true },
   })
 
   const emits = defineEmits(['update:model-value'])
