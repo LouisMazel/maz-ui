@@ -159,9 +159,9 @@
 
       &.--clickable {
         & .m-avatar__button {
-          @apply maz-outline-none maz-absolute maz-inset-0 maz-flex
-            maz-w-full maz-cursor-pointer maz-rounded-lg maz-border-none
-            maz-bg-transparent maz-opacity-0 maz-transition-all maz-duration-200 maz-flex-center;
+          @apply maz-absolute maz-inset-0 maz-flex maz-w-full
+            maz-cursor-pointer maz-rounded-lg maz-border-none maz-bg-transparent
+            maz-opacity-0 maz-outline-none maz-transition-all maz-duration-200 maz-flex-center;
 
           transform: scale(0);
 

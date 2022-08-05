@@ -173,8 +173,8 @@
     }
 
     &.--is-link {
-      @apply maz-outline-none maz-inline-flex maz-items-center
-        maz-bg-transparent maz-transition maz-duration-200 maz-ease-in-out;
+      @apply maz-inline-flex maz-items-center maz-bg-transparent
+        maz-outline-none maz-transition maz-duration-200 maz-ease-in-out;
 
       &:not(.--no-leading) {
         @apply maz-leading-9;
