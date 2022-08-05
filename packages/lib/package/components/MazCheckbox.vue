@@ -1,7 +1,7 @@
 <template>
   <div class="m-checkbox" :class="[`m-checkbox--${color}`]">
     <input
-      :id="id"
+      :id="instanceId"
       :checked="modelValue"
       v-bind="$attrs"
       :name="name"
@@ -14,7 +14,7 @@
         )
       "
     />
-    <label :for="id" class="maz-m-0 maz-flex maz-items-center">
+    <label :for="instanceId" class="maz-m-0 maz-flex maz-items-center">
       <slot />
     </label>
   </div>
@@ -25,12 +25,14 @@
 </script>
 
 <script lang="ts" setup>
-  import type { PropType } from 'vue'
+  import { type PropType, getCurrentInstance, computed } from 'vue'
   import type { Color } from './types'
 
-  defineProps({
+  const instance = getCurrentInstance()
+
+  const props = defineProps({
     modelValue: { type: Boolean, required: true },
-    id: { type: String, default: 'MazCheckbox' },
+    id: { type: String, default: undefined },
     color: {
       type: String as PropType<Color>,
       default: 'primary',
@@ -50,6 +52,10 @@
     },
     name: { type: String, default: 'm-checkbox' },
   })
+
+  const instanceId = computed(() =>
+    props.id ? props.id : `MazCheckbox-${instance?.uid}`,
+  )
 
   defineEmits(['update:model-value'])
 </script>

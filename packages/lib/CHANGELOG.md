@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.2](https://github.com/LouisMazel/maz-ui/compare/v2.3.13...v3.0.2) (2022-08-05)
+
+### Bug Fixes
+
+- **docs:** deployment ([#283](https://github.com/LouisMazel/maz-ui/issues/283)) ([d389c51](https://github.com/LouisMazel/maz-ui/commit/d389c51bc856540256c3e3c3aa662b0d3e8ea5c8))
+- **docs:** documentation components rendering on server side ([#276](https://github.com/LouisMazel/maz-ui/issues/276)) ([0ee8a5f](https://github.com/LouisMazel/maz-ui/commit/0ee8a5f9bb4c8c209de6be4ad29b631d532349db))
+- **lib:** maz-picker - add type to button to avoid form submitting ([#323](https://github.com/LouisMazel/maz-ui/issues/323)) ([c391080](https://github.com/LouisMazel/maz-ui/commit/c391080a395c7471c705d851b5938ced54760c73))
+
+### Features
+
+- **lib:** maz-checkbox - use id or create id by instance ([#325](https://github.com/LouisMazel/maz-ui/issues/325)) ([57c85f0](https://github.com/LouisMazel/maz-ui/commit/57c85f0326189593869aa6e2b701a5fa85fcaa67))
+- **lib:** maz-picker - add disabled prop option ([#324](https://github.com/LouisMazel/maz-ui/issues/324)) ([1e5a7a2](https://github.com/LouisMazel/maz-ui/commit/1e5a7a2d218f233a9883084f6978ebfadb7478b9))
+
 ## [3.0.1](https://github.com/LouisMazel/maz-ui/compare/v2.3.13...v3.0.1) (2022-07-01)
 
 ### Bug Fixes
