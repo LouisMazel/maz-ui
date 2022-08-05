@@ -452,9 +452,9 @@
   }
 
   .maz-dropzone {
-    @apply maz-outline-none maz-m-0 maz-inline-flex maz-items-center maz-justify-center
-      maz-overflow-auto maz-rounded-lg maz-border maz-border-dashed maz-border-color-light
-      maz-bg-color maz-p-4 maz-text-center
+    @apply maz-m-0 maz-inline-flex maz-items-center maz-justify-center maz-overflow-auto
+      maz-rounded-lg maz-border maz-border-dashed maz-border-color-light maz-bg-color
+      maz-p-4 maz-text-center maz-outline-none
       maz-transition-all maz-duration-200 maz-ease-out;
 
     min-height: 245px;
