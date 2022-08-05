@@ -16,12 +16,12 @@
       ></div>
       <div class="m-picker-time__column__items">
         <MazBtn
-          v-for="({ value, label, disabled }, unitIndex) in values"
+          v-for="({ value, label, isDisabled }, unitIndex) in values"
           :key="unitIndex"
           size="xs"
           :color="isSelected(identifier, value) ? color : 'transparent'"
           :class="{ '--is-selected': isSelected(identifier, value) }"
-          :disabled="disabled"
+          :disabled="isDisabled || disabled"
           type="button"
           @click.stop="selectTime(identifier, value)"
         >
@@ -70,6 +70,7 @@
     isHour12: { type: Boolean, required: true },
     minDate: { type: String, default: undefined },
     maxDate: { type: String, default: undefined },
+    disabled: { type: Boolean, required: true },
   })
 
   const findNearestHour = (hour: number) => {
@@ -129,7 +130,7 @@
         const hour12or24 = getHour12or24(hourBase)
         const hourValue = dayjs(currentDate.value).set('hour', hour12or24)
 
-        const disabled =
+        const isDisabled =
           isDisableHour(hour12or24) ||
           (props.minDate && currentDate.value
             ? dayjs(props.minDate).isAfter(hourValue, 'hour')
@@ -141,7 +142,7 @@
         return {
           label: `${hourBase < 10 ? '0' : ''}${hourBase}`,
           value: dayjs(currentDate.value).set('hour', hour12or24),
-          disabled,
+          isDisabled,
         }
       },
     )
@@ -154,7 +155,7 @@
       (minute) => {
         const minuteValue = dayjs(currentDate.value).set('minute', minute)
 
-        const disabled =
+        const isDisabled =
           (props.minDate && currentDate.value
             ? dayjs(props.minDate).isAfter(minuteValue, 'minute')
             : false) ||
@@ -165,7 +166,7 @@
         return {
           label: `${minute < 10 ? '0' : ''}${minute}`,
           value: minuteValue,
-          disabled,
+          isDisabled,
         }
       },
     )
@@ -194,7 +195,7 @@
       values: {
         label: string
         value: Dayjs | 'am' | 'pm'
-        disabled?: boolean
+        isDisabled?: boolean
       }[]
     }[] = [
       {

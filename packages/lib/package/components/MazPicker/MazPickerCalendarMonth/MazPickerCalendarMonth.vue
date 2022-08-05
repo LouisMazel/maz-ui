@@ -17,6 +17,7 @@
       :max-date="maxDate"
       :disabled-weekly="disabledWeekly"
       :disabled-dates="disabledDates"
+      :disabled="disabled"
     />
   </div>
 </template>
@@ -46,6 +47,7 @@
     disabledWeekly: { type: Array as PropType<number[]>, required: true },
     disabledDates: { type: Array as PropType<string[]>, required: true },
     hoverredDay: { type: Object as PropType<Dayjs>, default: undefined },
+    disabled: { type: Boolean, required: true },
   })
 
   const emits = defineEmits([

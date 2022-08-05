@@ -33,6 +33,7 @@
         :min-date="minDate"
         :max-date="maxDate"
         :first-day-of-week="firstDayOfWeek"
+        :disabled="disabled"
         :disabled-weekly="disabledWeekly"
         :disabled-dates="disabledDates"
         :shortcuts="shortcuts"
@@ -52,6 +53,7 @@
         :max-date="maxDate"
         :has-date="hasDate"
         :format="format"
+        :disabled="disabled"
         :disabled-hours="disabledHours"
         :minute-interval="minuteInterval"
         :formatter-options="formatterOptions"
@@ -101,6 +103,7 @@
       required: true,
     },
     minuteInterval: { type: Number, required: true },
+    disabled: { type: Boolean, required: true },
     disabledWeekly: { type: Array as PropType<number[]>, required: true },
     disabledHours: { type: Array as PropType<number[]>, required: true },
     disabledDates: { type: Array as PropType<string[]>, required: true },
