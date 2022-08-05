@@ -8,7 +8,7 @@ exports[`components/MazPicker.vue 1`] = `
       <div class=\\"m-input-wrapper-input\\" data-v-62586b96=\\"\\"><input id=\\"MazInput\\" type=\\"text\\" name=\\"input\\" autocomplete=\\"off\\" class=\\"m-picker__input m-input-input\\" readonly=\\"\\" data-v-62586b96=\\"\\">
         <!--v-if-->
       </div>
-      <div class=\\"m-input-wrapper-right\\" data-v-62586b96=\\"\\"><button tabindex=\\"-1\\" class=\\"m-picker__button\\" data-v-43f83472=\\"\\">
+      <div class=\\"m-input-wrapper-right\\" data-v-62586b96=\\"\\"><button type=\\"button\\" tabindex=\\"-1\\" class=\\"m-picker__button\\" data-v-43f83472=\\"\\">
           <!-- eslint-disable vue/no-v-html -->
           <!--v-if-->
           <!-- eslint-enable vue/no-v-html -->
