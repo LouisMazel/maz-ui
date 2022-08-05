@@ -3,6 +3,7 @@ const sleep = (ms: number) => {
 }
 
 export interface AosOptions {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   router?: Record<string, any>
   delay?: number
   observer?: IntersectionObserverInit

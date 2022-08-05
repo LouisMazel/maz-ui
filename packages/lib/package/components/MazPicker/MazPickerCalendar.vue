@@ -7,6 +7,7 @@
       :shortcuts="shortcuts"
       :shortcut="shortcut"
       :double="double"
+      :disabled="disabled"
     />
     <div class="maz-picker-calendar__main" :class="{ '--has-double': double }">
       <MazPickerCalendarSwitcher
@@ -49,6 +50,7 @@
           :first-day-of-week="firstDayOfWeek"
           :min-date="minDate"
           :max-date="maxDate"
+          :disabled="disabled"
           :disabled-weekly="disabledWeekly"
           :disabled-dates="disabledDates"
         />
@@ -89,6 +91,7 @@
     noShortcuts: { type: Boolean, required: true },
     hasTime: { type: Boolean, required: true },
     shortcut: { type: String, default: undefined },
+    disabled: { type: Boolean, required: true },
   })
 
   const emits = defineEmits(['update:model-value', 'update:calendar-date'])

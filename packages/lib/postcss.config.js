@@ -5,7 +5,7 @@ module.exports = {
     require('postcss-url'),
     require('postcss-nested'),
     require('postcss-import'),
-    require('tailwindcss'),
     require('autoprefixer'),
+    require('tailwindcss'),
   ],
 }

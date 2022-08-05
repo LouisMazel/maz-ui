@@ -6,7 +6,7 @@ module.exports = {
   mode: 'jit',
   prefix: 'maz-',
   presets: [tailwindConfig],
-  purge: ['./src/**/*'],
+  content: ['./src/**/*'],
   corePlugins: {
     container: false,
   },

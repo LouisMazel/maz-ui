@@ -15,6 +15,7 @@
           :color="getDayButtonColor(date)"
           type="button"
           :disabled="
+            disabled ||
             isSmallerMinDate(date) ||
             isBiggerMaxDate(date) ||
             isDisabledWeekly(date) ||
@@ -81,6 +82,7 @@
     disabledWeekly: { type: Array as PropType<number[]>, required: true },
     disabledDates: { type: Array as PropType<string[]>, required: true },
     hoverredDay: { type: Object as PropType<Dayjs>, default: undefined },
+    disabled: { type: Boolean, required: true },
   })
 
   const emits = defineEmits(['update:model-value', 'update:hoverred-day'])

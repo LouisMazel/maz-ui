@@ -10,6 +10,7 @@
       `m-picker--${pickerContainerPosition.horizontal}`,
       {
         '--is-open': isOpen,
+        '--is-disabled': disabled,
       },
     ]"
     @keydown.esc="closeCalendar"
@@ -22,6 +23,7 @@
       autocomplete="off"
       class="m-picker__input"
       :label="label"
+      :disabled="disabled"
       :placeholder="placeholder"
       :color="color"
       @click="isFocused = !isFocused"
@@ -63,6 +65,7 @@
         :first-day-of-week="firstDayOfWeek"
         :shortcuts="shortcuts"
         :shortcut="shortcut"
+        :disabled="disabled"
         :disabled-hours="disabledHours"
         :disabled-dates="disabledDates"
         :minute-interval="minuteInterval"
@@ -145,6 +148,7 @@
     locale: { type: String, default: undefined },
     style: { type: Object as PropType<StyleValue>, default: undefined },
     noHeader: { type: Boolean, default: false },
+    disabled: { type: Boolean, default: false },
     firstDayOfWeek: {
       type: Number,
       default: 0,
@@ -359,6 +363,10 @@
         : undefined
     },
     set: (value) => {
+      if (props.disabled) {
+        return
+      }
+
       emitValue(value)
 
       if (props.autoClose && value !== 'object') {
@@ -435,13 +443,13 @@
     horizontal: 'left',
   })
 
-  const isOpen = computed(
-    () =>
-      isFocused.value ||
-      props.open ||
-      programaticallyOpened.value ||
-      props.inline,
-  )
+  const isOpen = computed(() => {
+    return (
+      ((isFocused.value || props.open || programaticallyOpened.value) &&
+        !props.disabled) ||
+      props.inline
+    )
+  })
 
   onMounted(async () => {
     if (props.customElementSelector) {
@@ -725,7 +733,7 @@
     }
 
     & .m-picker__button {
-      @apply maz-flex maz-h-full maz-bg-transparent maz-pr-1 maz-flex-center;
+      @apply maz-flex maz-h-full maz-cursor-not-allowed maz-bg-transparent maz-pr-1 maz-flex-center;
 
       &__chevron {
         @apply maz-h-5 maz-w-5 maz-text-normal maz-transition-transform maz-duration-200;
@@ -738,8 +746,14 @@
       }
     }
 
-    &__input:deep(input) {
-      @apply maz-cursor-pointer !important;
+    &:not(.--is-disabled) {
+      & .m-picker__button {
+        @apply maz-cursor-pointer;
+      }
+
+      & .m-picker__input:deep(input) {
+        @apply maz-cursor-pointer !important;
+      }
     }
   }
 </style>
