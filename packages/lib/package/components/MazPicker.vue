@@ -65,6 +65,7 @@
         :first-day-of-week="firstDayOfWeek"
         :shortcuts="shortcuts"
         :shortcut="shortcut"
+        :disabled="disabled"
         :disabled-hours="disabledHours"
         :disabled-dates="disabledDates"
         :minute-interval="minuteInterval"

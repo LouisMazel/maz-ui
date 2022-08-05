@@ -16,12 +16,12 @@
       ></div>
       <div class="m-picker-time__column__items">
         <MazBtn
-          v-for="({ value, label, disabled }, unitIndex) in values"
+          v-for="({ value, label, disabled: isDisabled }, unitIndex) in values"
           :key="unitIndex"
           size="xs"
           :color="isSelected(identifier, value) ? color : 'transparent'"
           :class="{ '--is-selected': isSelected(identifier, value) }"
-          :disabled="disabled"
+          :disabled="isDisabled || disabled"
           type="button"
           @click.stop="selectTime(identifier, value)"
         >
@@ -70,6 +70,7 @@
     isHour12: { type: Boolean, required: true },
     minDate: { type: String, default: undefined },
     maxDate: { type: String, default: undefined },
+    disabled: { type: Boolean, required: true },
   })
 
   const findNearestHour = (hour: number) => {
