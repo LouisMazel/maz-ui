@@ -15,13 +15,23 @@
 
     <!-- Start Developing Area - Do not commit anything here -->
 
+    <MazTabsBar
+      direction="column"
+      useAnchor
+      :items="[
+        { label: 'One One', disabled: false },
+        { label: 'Two Two', disabled: false },
+        { label: 'Three Three', disabled: false }
+      ]"
+    />
+
     <!-- End Developing Area -->
   </main>
 </template>
 
 <script lang="ts" setup>
-  import { onMounted } from 'vue'
-  import { MazBtn, MazIcon } from 'maz-ui/package/components'
+  import { onMounted, ref } from 'vue'
+  import { MazBtn, MazIcon, MazTabsBar } from 'maz-ui/package/components'
   import { aosInstance } from 'maz-ui/package/plugins'
   import { useThemeHandler, ThemeHandlerOptions } from 'maz-ui/package/helpers'
 
@@ -30,6 +40,8 @@
   }
 
   const { autoSetTheme, toggleTheme, hasDarkTheme } = useThemeHandler(options)
+
+  const currentTab = ref(2)
 
   onMounted(() => {
     autoSetTheme()
