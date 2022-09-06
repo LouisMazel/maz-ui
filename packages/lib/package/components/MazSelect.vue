@@ -57,7 +57,7 @@
             },
             `--${color}`,
           ]"
-          :style="{ height: `${itemHeight}px` width: `${itemWidth}px` }"
+          :style="{ height: `${itemHeight}px`, width: `${itemWidth}px` }"
           @click.prevent.stop="updateValue(option)"
         >
           <slot
