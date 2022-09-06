@@ -57,7 +57,7 @@
             },
             `--${color}`,
           ]"
-          :style="{ height: `${itemHeight}px` }"
+          :style="{ height: `${itemHeight}px` width: `${itemWidth}px` }"
           @click.prevent.stop="updateValue(option)"
         >
           <slot
@@ -130,6 +130,7 @@
       },
     },
     itemHeight: { type: Number, default: 40 },
+    itemWidth: { type: Number, default: 140 },
     maxListHeight: { type: Number, default: 240 },
     maxListWidth: { type: Number, default: undefined },
     size: {
