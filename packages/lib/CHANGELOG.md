@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.3](https://github.com/LouisMazel/maz-ui/compare/v2.3.13...v3.0.3) (2022-09-19)
+
+### Bug Fixes
+
+- **docs:** deployment ([#283](https://github.com/LouisMazel/maz-ui/issues/283)) ([d389c51](https://github.com/LouisMazel/maz-ui/commit/d389c51bc856540256c3e3c3aa662b0d3e8ea5c8))
+- **docs:** documentation components rendering on server side ([#276](https://github.com/LouisMazel/maz-ui/issues/276)) ([0ee8a5f](https://github.com/LouisMazel/maz-ui/commit/0ee8a5f9bb4c8c209de6be4ad29b631d532349db))
+- **lib:** maz-picker - 12 hour format on time picker mode ([#349](https://github.com/LouisMazel/maz-ui/issues/349)) ([e32168b](https://github.com/LouisMazel/maz-ui/commit/e32168b5fd36e6a2086b52259494a31fee11dc23))
+
 ## [3.0.2](https://github.com/LouisMazel/maz-ui/compare/v2.3.13...v3.0.2) (2022-08-05)
 
 ### Bug Fixes
