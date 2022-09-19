@@ -415,6 +415,7 @@
             currentLocale.value,
             {
               timeStyle: formatterOptions.value.timeStyle,
+              hour12: formatterOptions.value.hour12,
             },
           )
         : undefined
