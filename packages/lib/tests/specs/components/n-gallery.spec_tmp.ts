@@ -1,5 +1,5 @@
 import { shallowMount } from '@vue/test-utils'
-import NGallery from './NGallery.vue'
+import NGallery from '../../../package/components_tmp/NGallery/NGallery.vue'
 import NGalleryScrollButtons from '~/components/ui/NGallery/NGalleryScrollButtons.vue'
 import NGalleryResponsive from '~/components/ui/NGallery/NGalleryResponsive.vue'
 
@@ -15,32 +15,32 @@ const getMedia = () => ({
   ],
 })
 
+beforeEach(() => {
+  wrapper = shallowMount(NGallery, {
+    components: {
+      NGalleryResponsive,
+    },
+    stubs: {
+      NGalleryScrollButtons: true,
+      NGalleryResponsiveItemsBar: true,
+      NLazyImg: true,
+    },
+    mocks: {
+      $mq: {
+        'tab-m': true,
+      },
+    },
+    propsData: {
+      medias: [getMedia(), getMedia(), getMedia()],
+    },
+  })
+})
+
 describe('~/components/ui/NGallery/NGallery', () => {
   let wrapper: any
 
-  beforeEach(() => {
-    wrapper = shallowMount(NGallery, {
-      components: {
-        NGalleryResponsive,
-      },
-      stubs: {
-        NGalleryScrollButtons: true,
-        NGalleryResponsiveItemsBar: true,
-        NLazyImg: true,
-      },
-      mocks: {
-        $mq: {
-          'tab-m': true,
-        },
-      },
-      propsData: {
-        medias: [getMedia(), getMedia(), getMedia()],
-      },
-    })
-  })
-
   test('should have children components', async () => {
-    await nextTick()
+    await wrapper.vm.$nextTick()
     expect(wrapper.findComponent(NGalleryScrollButtons)).toBeDefined()
     expect(wrapper.findComponent(NGalleryResponsive)).toBeDefined()
   })

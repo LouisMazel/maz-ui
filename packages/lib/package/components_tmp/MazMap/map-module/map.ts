@@ -1,5 +1,5 @@
-import { createHTMLMarker, HTMLMarker } from './create-html-marker'
-import { ScriptLoader, ScriptOptions } from './script-loader'
+import { createHTMLMarker, type HTMLMarker } from './create-html-marker'
+import { ScriptLoader, type ScriptOptions } from './script-loader'
 
 export type MapOptions = google.maps.MapOptions
 
