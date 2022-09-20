@@ -1,6 +1,6 @@
 {
   "name": "docs",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "description": "documentation of maz-ui",
   "scripts": {
     "docs:dev": "vuepress dev docs",
