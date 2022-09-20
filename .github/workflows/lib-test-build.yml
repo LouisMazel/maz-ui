@@ -22,8 +22,5 @@ jobs:
       - name: Install dependencies
         run: make install
 
-      - name: List rollup
-        run: ls node_modules
-
       - name: Build lib
         run: make build
