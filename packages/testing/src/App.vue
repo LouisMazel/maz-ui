@@ -15,19 +15,25 @@
 
     <!-- Start Developing Area - Do not commit anything here -->
 
+    <MazPhoneNumberInput v-model="phone" />
+    <MazSelect v-model="phone" />
+
     <!-- End Developing Area -->
   </main>
 </template>
 
 <script lang="ts" setup>
-  import { onMounted } from 'vue'
-  import { MazBtn, MazIcon } from 'maz-ui/package/components'
+  import { onMounted, ref } from 'vue'
+  import { MazBtn, MazIcon, MazPhoneNumberInput } from 'maz-ui/package/components'
   import { aosInstance } from 'maz-ui/package/plugins'
   import { useThemeHandler, ThemeHandlerOptions } from 'maz-ui/package/helpers'
+  import MazSelect from 'maz-ui/package/components/MazSelect.vue';
 
   const options: ThemeHandlerOptions = {
     storageThemeKey: 'mode',
   }
+
+  const phone = ref()
 
   const { autoSetTheme, toggleTheme, hasDarkTheme } = useThemeHandler(options)
 
