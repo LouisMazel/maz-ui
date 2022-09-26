@@ -7,7 +7,11 @@ describe('components/MazPicker.vue', () => {
     expect(MazPicker).toBeTruthy()
   })
 
-  const wrapper = mount(MazPicker, {})
+  const wrapper = mount(MazPicker, {
+    props: {
+      modelValue: '2022-03-02',
+    },
+  })
 
   test('Should match with the snapshot', () => {
     expect(wrapper.html()).toMatchSnapshot()

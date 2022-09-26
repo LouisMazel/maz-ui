@@ -7,6 +7,7 @@
     @keydown.esc="closeList"
   >
     <MazInput
+      :id="instanceId"
       ref="mazInput"
       class="m-select-input"
       v-bind="$attrs"
@@ -81,17 +82,28 @@
 
 <script lang="ts" setup>
   // NEXT: listPosition & multiselect & search in list
-  import { ref, computed, onBeforeMount, nextTick, type PropType } from 'vue'
+  import {
+    ref,
+    computed,
+    onBeforeMount,
+    nextTick,
+    type PropType,
+    getCurrentInstance,
+  } from 'vue'
   import MazInput from './MazInput.vue'
   import MazIcon from './MazIcon.vue'
   import type { Color, ModelValueSimple, Position, Size } from './types'
   import ChevronDownIcon from '@package/icons/chevron-down.svg'
+  import { useInstanceUniqId } from '@package/helpers/instance-uniq-id'
+
+  const instance = getCurrentInstance()
 
   const props = defineProps({
     modelValue: {
       type: [Number, String, Boolean] as PropType<ModelValueSimple>,
       default: undefined,
     },
+    id: { type: String, default: undefined },
     options: { type: Array as PropType<MazSelectOptions[]>, required: true },
     optionValueKey: { type: String, default: 'value' },
     optionLabelKey: { type: String, default: 'label' },
@@ -140,14 +152,30 @@
       },
     },
   })
-  const emits = defineEmits(['close', 'open', 'update:model-value', 'blur'])
+  const emits = defineEmits([
+    'close',
+    'open',
+    'update:model-value',
+    'blur',
+    'focus',
+  ])
 
   const hasListOpen = ref(false)
   const tmpModelValueIndex = ref<number>()
 
+  const { instanceId } = useInstanceUniqId({
+    componentName: 'MazSelect',
+    instance,
+    providedId: props.id,
+  })
+
   onBeforeMount(() => {
+    if (!props.options?.length) {
+      console.error('[maz-ui](MazSelect) you must provide options')
+    }
+
     if (selectedOption.value)
-      tmpModelValueIndex.value = props.options.findIndex(
+      tmpModelValueIndex.value = props.options?.findIndex(
         (option) =>
           option[props.optionValueKey] ===
           selectedOption.value?.[props.optionLabelKey],
@@ -159,7 +187,7 @@
   const optionsList = ref<HTMLDivElement>()
 
   const selectedOption = computed(() =>
-    props.options.find(
+    props.options?.find(
       (option) => props.modelValue === option[props.optionValueKey],
     ),
   )
@@ -192,7 +220,18 @@
     if (props.disabled) return
     hasListOpen.value = true
     scrollToSelected()
+    emits('focus', event)
     emits('open', hasListOpen.value)
+    focusInput()
+  }
+
+  const focusInput = () => {
+    const inputComponent = mazInput.value?.$el as HTMLDivElement | undefined
+    const inputHTMLElement = inputComponent?.querySelector(
+      `input#${instanceId.value}`,
+    ) as HTMLInputElement | undefined
+
+    inputHTMLElement?.focus()
   }
 
   const keyboardHandler = (event: KeyboardEvent) => {

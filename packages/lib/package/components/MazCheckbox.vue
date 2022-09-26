@@ -25,7 +25,8 @@
 </script>
 
 <script lang="ts" setup>
-  import { type PropType, getCurrentInstance, computed } from 'vue'
+  import { useInstanceUniqId } from '@package/helpers/instance-uniq-id'
+  import { type PropType, getCurrentInstance } from 'vue'
   import type { Color } from './types'
 
   const instance = getCurrentInstance()
@@ -52,12 +53,13 @@
     },
     name: { type: String, default: 'm-checkbox' },
   })
-
-  const instanceId = computed(() =>
-    props.id ? props.id : `MazCheckbox-${instance?.uid}`,
-  )
-
   defineEmits(['update:model-value'])
+
+  const { instanceId } = useInstanceUniqId({
+    componentName: 'MazCheckbox',
+    instance,
+    providedId: props.id,
+  })
 </script>
 
 <style lang="postcss" scoped>
