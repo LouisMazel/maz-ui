@@ -113,7 +113,9 @@
     type PropType,
     getCurrentInstance,
   } from 'vue'
-  import { debounce } from '../helpers/debounce'
+
+  import { debounce, useInstanceUniqId } from '../helpers'
+
   import MazBtn from './MazBtn.vue'
   import MazIcon from './MazIcon.vue'
   import type { Color, Size } from './types'
@@ -121,8 +123,6 @@
   import EyeOffIcon from '@package/icons/eye-off.svg'
   import EyeIcon from '@package/icons/eye.svg'
   import CheckIcon from '@package/icons/check.svg'
-
-  import { useInstanceUniqId } from '@package/helpers/instance-uniq-id'
 
   export default defineComponent({
     components: { MazBtn, MazIcon },
