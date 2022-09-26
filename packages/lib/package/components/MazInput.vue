@@ -29,7 +29,7 @@
 
       <div class="m-input-wrapper-input">
         <input
-          :id="id"
+          :id="instanceId"
           ref="input"
           v-model="inputValue"
           :type="inputType"
@@ -51,7 +51,7 @@
         <label
           v-if="label || hint"
           ref="label"
-          :for="id"
+          :for="instanceId"
           class="m-input-label"
           :class="[
             {
@@ -105,8 +105,17 @@
 </template>
 
 <script lang="ts">
-  import { computed, defineComponent, onMounted, ref, type PropType } from 'vue'
-  import { debounce } from '../helpers/debounce'
+  import {
+    computed,
+    defineComponent,
+    onMounted,
+    ref,
+    type PropType,
+    getCurrentInstance,
+  } from 'vue'
+
+  import { debounce, useInstanceUniqId } from '../helpers'
+
   import MazBtn from './MazBtn.vue'
   import MazIcon from './MazIcon.vue'
   import type { Color, Size } from './types'
@@ -167,7 +176,7 @@
       required: { type: Boolean, default: false },
       disabled: { type: Boolean, default: false },
       readonly: { type: Boolean, default: false },
-      id: { type: String, default: 'MazInput' },
+      id: { type: String, default: undefined },
       error: { type: Boolean, default: false },
       success: { type: Boolean, default: false },
       warning: { type: Boolean, default: false },
@@ -195,6 +204,14 @@
       const hasPasswordVisible = ref(false)
       const isFocused = ref(false)
       const input = ref<HTMLElement | undefined>()
+
+      const instance = getCurrentInstance()
+
+      const { instanceId } = useInstanceUniqId({
+        componentName: 'MazInput',
+        instance,
+        providedId: props.id,
+      })
 
       onMounted(() => {
         if (props.autoFocus) {
@@ -309,6 +326,7 @@
         EyeOffIcon,
         EyeIcon,
         CheckIcon,
+        instanceId,
       }
     },
   })

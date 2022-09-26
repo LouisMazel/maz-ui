@@ -1,0 +1,13 @@
+// Vitest Snapshot v1
+
+exports[`components/MazInput.vue > Should match with the snapshot 1`] = `
+"<div class=\\"m-input --primary --md\\" data-v-62586b96=\\"\\">
+  <div class=\\"m-input-wrapper maz-border --default-border maz-rounded-lg\\" data-v-62586b96=\\"\\">
+    <!--v-if-->
+    <div class=\\"m-input-wrapper-input\\" data-v-62586b96=\\"\\"><input id=\\"MazInput-1\\" type=\\"text\\" name=\\"input\\" class=\\"m-input-input\\" data-v-62586b96=\\"\\">
+      <!--v-if-->
+    </div>
+    <!--v-if-->
+  </div>
+</div>"
+`;

@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.5](https://github.com/LouisMazel/maz-ui/compare/v2.3.13...v3.0.5) (2022-09-26)
+
+### Bug Fixes
+
+- **docs:** deployment ([#283](https://github.com/LouisMazel/maz-ui/issues/283)) ([d389c51](https://github.com/LouisMazel/maz-ui/commit/d389c51bc856540256c3e3c3aa662b0d3e8ea5c8))
+- **docs:** documentation components rendering on server side ([#276](https://github.com/LouisMazel/maz-ui/issues/276)) ([0ee8a5f](https://github.com/LouisMazel/maz-ui/commit/0ee8a5f9bb4c8c209de6be4ad29b631d532349db))
+- **maz-select:** focus UI on click ([#356](https://github.com/LouisMazel/maz-ui/issues/356)) ([4e5bc1c](https://github.com/LouisMazel/maz-ui/commit/4e5bc1cc735bf763777268424b2fa7adf3d14216))
+
 ## [3.0.4](https://github.com/LouisMazel/maz-ui/compare/v2.3.13...v3.0.4) (2022-09-20)
 
 ### Bug Fixes
