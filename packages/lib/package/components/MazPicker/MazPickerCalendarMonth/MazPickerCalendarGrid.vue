@@ -92,7 +92,9 @@
 
   const calendarDateArray = computed<string[]>(() => [props.calendarDate])
 
-  const isRangeMode = computed(() => typeof props.modelValue === 'object')
+  const isRangeMode = computed(
+    () => props.modelValue && typeof props.modelValue === 'object',
+  )
 
   const hoverColor = computed(() => `var(--maz-color-${props.color}-alpha-20)`)
   const betweenColor = computed(() => `var(--maz-color-${props.color}-alpha)`)
@@ -161,7 +163,11 @@
       return false
     }
 
-    if (typeof props.modelValue === 'object' && props.modelValue?.start) {
+    if (
+      props.modelValue &&
+      typeof props.modelValue === 'object' &&
+      props.modelValue?.start
+    ) {
       return isSameDate(day, props.modelValue.start, 'date')
     }
 
@@ -173,7 +179,11 @@
       return false
     }
 
-    if (typeof props.modelValue === 'object' && props.modelValue?.end) {
+    if (
+      props.modelValue &&
+      typeof props.modelValue === 'object' &&
+      props.modelValue?.end
+    ) {
       return isSameDate(day, props.modelValue.end, 'date')
     }
     return false
@@ -195,7 +205,7 @@
   }
 
   const isSelectedOrBetween = (day: Dayjs): DaySelect => {
-    if (typeof props.modelValue === 'object') {
+    if (props.modelValue && typeof props.modelValue === 'object') {
       if (props.modelValue.start) {
         if (isSameDate(day, props.modelValue.start, 'date')) {
           return DaySelect.SELECTED
