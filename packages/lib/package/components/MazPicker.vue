@@ -349,7 +349,7 @@
 
   const currentValue = computed<PickerValue>({
     get: () => {
-      return typeof props.modelValue === 'object'
+      return props.modelValue && typeof props.modelValue === 'object'
         ? {
             start: props.modelValue.start
               ? dayjs(props.modelValue.start, props.format).format()

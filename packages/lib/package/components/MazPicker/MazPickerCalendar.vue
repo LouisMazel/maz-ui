@@ -98,7 +98,9 @@
 
   const hoverredDay = ref<Dayjs>()
 
-  const isRangeMode = computed(() => typeof props.modelValue === 'object')
+  const isRangeMode = computed(
+    () => props.modelValue && typeof props.modelValue === 'object',
+  )
 
   const hasShortcuts = computed(
     () => !props.noShortcuts && props.shortcuts.length && isRangeMode.value,

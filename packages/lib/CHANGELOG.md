@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.6](https://github.com/LouisMazel/maz-ui/compare/v2.3.13...v3.0.6) (2022-09-29)
+
+### Bug Fixes
+
+- **docs:** deployment ([#283](https://github.com/LouisMazel/maz-ui/issues/283)) ([d389c51](https://github.com/LouisMazel/maz-ui/commit/d389c51bc856540256c3e3c3aa662b0d3e8ea5c8))
+- **docs:** documentation components rendering on server side ([#276](https://github.com/LouisMazel/maz-ui/issues/276)) ([0ee8a5f](https://github.com/LouisMazel/maz-ui/commit/0ee8a5f9bb4c8c209de6be4ad29b631d532349db))
+- **lib:** maz-picker - JS error when the model value is null ([bf0eb9a](https://github.com/LouisMazel/maz-ui/commit/bf0eb9a855aef7d3e60edd4fc0068661f41f0a11))
+
 ## [3.0.5](https://github.com/LouisMazel/maz-ui/compare/v2.3.13...v3.0.5) (2022-09-26)
 
 ### Bug Fixes

@@ -88,7 +88,7 @@
   )
 
   const year = computed(() => {
-    if (typeof props.modelValue === 'object') {
+    if (props.modelValue && typeof props.modelValue === 'object') {
       return `${
         props.modelValue.start
           ? date(props.modelValue.start, props.locale, {
@@ -118,6 +118,7 @@
 
   const dateString = computed(() => {
     if (
+      props.modelValue &&
       typeof props.modelValue === 'object' &&
       (props.modelValue.start || props.modelValue.end)
     ) {
