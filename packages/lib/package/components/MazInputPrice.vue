@@ -61,11 +61,11 @@
   const displayPrice = computed({
     get: () => {
       if (isActive.value) return valueString.value
-      if (props.modelValue) return priceFormatted.value
+      if (typeof props.modelValue === 'number') return priceFormatted.value
       return undefined
     },
     set: (value) => {
-      if (!value) {
+      if (Number.isNaN(value)) {
         emitValues(undefined)
       } else {
         const adjustedPrice = getAdjustedPrice(value)
@@ -75,7 +75,8 @@
   })
 
   const emitValues = async (newValue?: number) => {
-    const adjustedPrice = newValue ? getAdjustedPrice(newValue) : undefined
+    const adjustedPrice =
+      typeof newValue === 'number' ? getAdjustedPrice(newValue) : undefined
     emits('update:model-value', adjustedPrice)
 
     await nextTick()
