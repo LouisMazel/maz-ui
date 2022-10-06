@@ -6,8 +6,8 @@
     @focus="isActive = true"
     @blur="isActive = false"
   >
-    <template v-if="!noIcon" #left-icon>
-      <slot name="left-icon">
+    <template #left-icon>
+      <slot v-if="!noIcon" name="left-icon">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
