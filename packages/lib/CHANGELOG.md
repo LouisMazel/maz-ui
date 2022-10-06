@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.7](https://github.com/LouisMazel/maz-ui/compare/v2.3.13...v3.0.7) (2022-10-06)
+
+### Bug Fixes
+
+- **docs:** deployment ([#283](https://github.com/LouisMazel/maz-ui/issues/283)) ([d389c51](https://github.com/LouisMazel/maz-ui/commit/d389c51bc856540256c3e3c3aa662b0d3e8ea5c8))
+- **docs:** documentation components rendering on server side ([#276](https://github.com/LouisMazel/maz-ui/issues/276)) ([0ee8a5f](https://github.com/LouisMazel/maz-ui/commit/0ee8a5f9bb4c8c209de6be4ad29b631d532349db))
+- **lib:** maz-input-price - build error ([f614d48](https://github.com/LouisMazel/maz-ui/commit/f614d48c83bc1d7ee3a5b26a6207fa6ed9817a30))
+- **lib:** maz-input-price - fix bug with zero value ([d9b0ab8](https://github.com/LouisMazel/maz-ui/commit/d9b0ab89978740ce506123d46f5db706dea3041c))
+
+### Features
+
+- **lib:** maz-input-price - use svg icon and add slot & prop option ([aeab4dc](https://github.com/LouisMazel/maz-ui/commit/aeab4dca80a951c317b60d8e4841490494e212eb))
+
 ## [3.0.6](https://github.com/LouisMazel/maz-ui/compare/v2.3.13...v3.0.6) (2022-09-29)
 
 ### Bug Fixes
