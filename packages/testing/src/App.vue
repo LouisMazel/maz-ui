@@ -15,19 +15,23 @@
 
     <!-- Start Developing Area - Do not commit anything here -->
 
+    <MazTextarea v-model="textarea" name="kikoo" id="fuck" />
+
     <!-- End Developing Area -->
   </main>
 </template>
 
 <script lang="ts" setup>
   import { onMounted, ref } from 'vue'
-  import { MazBtn, MazIcon } from 'maz-ui/package/components'
+  import { MazBtn, MazIcon, MazTextarea } from 'maz-ui/package/components'
   import { aosInstance } from 'maz-ui/package/plugins'
   import { useThemeHandler, ThemeHandlerOptions } from 'maz-ui/package/helpers'
 
   const options: ThemeHandlerOptions = {
     storageThemeKey: 'mode',
   }
+
+  const textarea = ref('kikoo')
 
   const { autoSetTheme, toggleTheme, hasDarkTheme } = useThemeHandler(options)
 
