@@ -27,6 +27,7 @@ import { default as MazRadioButtons } from './MazRadioButtons.vue'
 import { default as MazSelect } from './MazSelect.vue'
 import { default as MazSlider } from './MazSlider.vue'
 import { default as MazSpinner } from './MazSpinner.vue'
+import { default as MazStepper } from './MazStepper.vue'
 import { default as MazSwitch } from './MazSwitch.vue'
 import { default as MazTabsBar } from './MazTabsBar.vue'
 import { default as MazTabsContent } from './MazTabsContent.vue'
@@ -62,6 +63,7 @@ export {
   MazSelect,
   MazSlider,
   MazSpinner,
+  MazStepper,
   MazSwitch,
   MazTabsBar,
   MazTabsContent,
@@ -98,6 +100,7 @@ export default {
   MazSelect,
   MazSlider,
   MazSpinner,
+  MazStepper,
   MazSwitch,
   MazTabsBar,
   MazTabsContent,

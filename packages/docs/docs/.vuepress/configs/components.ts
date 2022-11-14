@@ -34,6 +34,7 @@ export const components = {
         '/components/maz-gallery.md',
         '/components/maz-icon.md',
         '/components/maz-lazy-img.md',
+        '/components/maz-stepper.md',
         '/components/maz-spinner.md',
         // '/components/maz-tabs.md',
         '/components/maz-transition-expand.md',
