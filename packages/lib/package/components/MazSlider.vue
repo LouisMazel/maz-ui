@@ -8,12 +8,7 @@
     @mouseleave.passive="handleMouseup"
     @touchmove.passive="handleMousemove"
   >
-    <!-- @touchmove="handleToucheMove" -->
-    <div
-      ref="MazSlider"
-      class="m-slider__bar maz-flex maz-items-center maz-justify-center"
-      role="slider"
-    >
+    <div ref="MazSlider" class="m-slider__bar" role="slider">
       <div
         v-for="(div, i) in dividers"
         :key="`divider-${i}`"
@@ -21,13 +16,12 @@
         class="m-slider__divider"
       />
 
-      <!-- eslint-disable -->
       <button
-        v-for="(btn, i) in computedValue"
+        v-for="(_btn, i) in computedValue"
         :key="`cursor-${i}`"
         type="button"
         :data-label="getLabel(i)"
-        class="m-slider__btn maz-flex maz-items-center maz-justify-center"
+        class="m-slider__btn"
         :class="{
           'active-cursor': i === activeCursor && !noCursorAnim,
         }"
@@ -380,7 +374,7 @@
     padding: 1em 1.5rem;
 
     &__bar {
-      @apply maz-relative maz-rounded-full;
+      @apply maz-relative maz-flex maz-items-center maz-justify-center maz-rounded-full;
 
       height: 0.5em;
     }
@@ -403,7 +397,8 @@
       z-index: 1;
       user-select: none;
 
-      @apply maz-rounded-full maz-border maz-bg-bg-light maz-elevation;
+      @apply maz-flex maz-items-center maz-justify-center maz-rounded-full maz-border
+        maz-border-gray-200 maz-bg-bg-light maz-shadow-md;
 
       padding: 0.25em 0.5em;
 
