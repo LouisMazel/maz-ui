@@ -25,6 +25,9 @@ build-modules-lib:
 build-components-lib:
 	make --directory=packages/lib build-components
 
+build-component-lib:
+	make --directory=packages/lib build-component component="$(component)"
+
 build-css-lib:
 	make --directory=packages/lib build-css
 

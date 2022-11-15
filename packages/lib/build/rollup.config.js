@@ -119,7 +119,7 @@ const baseConfig = {
 /** @type {import('rollup').RollupOptions[]} */
 const buildFormats = []
 
-if (!argv.package || argv.package === 'modules') {
+if ((!argv.package || argv.package === 'modules') && !argv.component) {
   /** @type {import('rollup').RollupOptions} */
   const esConfig = {
     ...baseConfig,
@@ -186,10 +186,15 @@ if (!argv.package || argv.package === 'modules') {
 //   buildFormats.push(cjsConfig)
 // }
 
-if (!argv.package || argv.package === 'components') {
+if (!argv.package || argv.package === 'components' || argv.component) {
   /** @type {import('rollup').RollupOptions[]} */
   const componentsEsmConfig = []
-  for (const component of componentsList) {
+
+  const componentToBuild = componentsList.filter(({ name }) =>
+    argv.component ? name === argv.component : true,
+  )
+
+  for (const component of componentToBuild) {
     componentsEsmConfig.push({
       ...baseConfig,
       input: component.path,
