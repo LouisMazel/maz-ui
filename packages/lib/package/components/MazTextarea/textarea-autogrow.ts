@@ -1,7 +1,7 @@
 import { debounce } from '@package/helpers'
 
 export class TextareaAutogrow {
-  element: HTMLTextAreaElement
+  private element: HTMLTextAreaElement
 
   constructor(element: HTMLTextAreaElement) {
     this.element = element
@@ -11,7 +11,7 @@ export class TextareaAutogrow {
     this.connect()
   }
 
-  public connect() {
+  private connect() {
     this.element.addEventListener('focus', this.onFocus)
     this.element.style.resize = 'none'
     this.element.style.boxSizing = 'border-box'

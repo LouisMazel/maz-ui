@@ -109,7 +109,6 @@
   onMounted(() => {
     if (TextareaElement.value) {
       textareaAutogrow = new TextareaAutogrow(TextareaElement.value)
-      textareaAutogrow.connect()
     }
   })
 
