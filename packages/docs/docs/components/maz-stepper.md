@@ -6,6 +6,11 @@ description: MazStepper is a stand-alone UI component to
 
 > Before you have to import the global css files in your project, follow instructions in [Getting Started](./../guide/getting-started.md)
 
+
+## Usage
+
+<br />
+
 <MazStepper auto-validated-steps>
   <template #title-1>
       Sign-In
@@ -102,7 +107,9 @@ description: MazStepper is a stand-alone UI component to
 </template>
 ```
 
-## Disable and validate steps programmatically
+## Documentation
+
+### Disable and validate steps programmatically
 
 You can validate or disable each step with the property `step`
 
@@ -118,15 +125,27 @@ You should respect order of steps in the array:
 <template>
   <MazStepper
     :steps="[
-      { disabled: true, validated: true },
+      { disabled: false, validated: true },
       { disabled: true, validated: false }
     ]"
   >
-    <template #content-1>
+    <template #title-1>
       Step 1
     </template>
-    <template #content-2>
+    <template #content-1>
+      Content 1
+    </template>
+    <template #title-2>
       Step 2
+    </template>
+    <template #content-2>
+      Content 2
+    </template>
+    <template #title-3>
+      Step 3
+    </template>
+    <template #content-3>
+      Content 3
     </template>
   </MazStepper>
 </template>
@@ -154,6 +173,136 @@ Will be:
     Content 3
   </template>
 </MazStepper>
+
+### Auto validate steps
+
+You can use the prop option:
+
+- `auto-validated-steps`
+
+Then, all previous steps has the check icon:
+
+```vue
+<template>
+  <MazStepper v-model="currentStep" auto-validated-steps>
+    <template #title-1>
+      Step 1
+    </template>
+    <template #content-1>
+      Content 1
+    </template>
+    <template #title-2>
+      Step 2
+    </template>
+    <template #content-2>
+      Content 2
+    </template>
+    <template #title-3>
+      Step 3
+    </template>
+    <template #content-3>
+      Content 3
+    </template>
+  </MazStepper>
+</template>
+
+<script setup lang="ts">
+  import { ref } from 'vue'
+  const currentStep = ref(2)
+</script>
+```
+
+Will be:
+
+<MazStepper v-model="currentStep" auto-validated-steps>
+  <template #title-1>
+    Step 1
+  </template>
+  <template #content-1>
+    Content 1
+  </template>
+  <template #title-2>
+    Step 2
+  </template>
+  <template #content-2>
+    Content 2
+  </template>
+  <template #title-3>
+    Step 3
+  </template>
+  <template #content-3>
+    Content 3
+  </template>
+</MazStepper>
+
+### Auto disabled next or/and previous steps
+
+To not allow your users to show other steps, you can use the prop options:
+
+- `disabled-previous-steps`
+- `disabled-next-steps`
+
+```vue
+<template>
+  <MazStepper
+    v-model="currentStep"
+    disabled-previous-steps
+    disabled-next-steps
+  >
+    <template #title-1>
+      Step 1
+    </template>
+    <template #content-1>
+      Content 1
+    </template>
+    <template #title-2>
+      Step 2
+    </template>
+    <template #content-2>
+      Content 2
+    </template>
+    <template #title-3>
+      Step 3
+    </template>
+    <template #content-3>
+      Content 3
+    </template>
+  </MazStepper>
+</template>
+
+<script setup lang="ts">
+  import { ref } from 'vue'
+  const currentStep = ref(2)
+</script>
+```
+
+Will be:
+
+<MazStepper v-model="currentStep" disabled-previous-steps disabled-next-steps>
+  <template #title-1>
+    Step 1
+  </template>
+  <template #content-1>
+    Content 1
+  </template>
+  <template #title-2>
+    Step 2
+  </template>
+  <template #content-2>
+    Content 2
+  </template>
+  <template #title-3>
+    Step 3
+  </template>
+  <template #content-3>
+    Content 3
+  </template>
+</MazStepper>
+
+<script setup lang="ts">
+  import { ref } from 'vue'
+  const currentStep = ref(2)
+</script>
 
 ## Props & Events emitted
 
