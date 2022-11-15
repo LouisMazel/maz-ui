@@ -7,7 +7,6 @@
   >
     <label
       v-if="label || hint"
-      ref="label"
       :for="instanceId"
       class="m-textarea__label"
       :class="[
@@ -62,7 +61,6 @@
     },
     id: { type: String, default: undefined },
     name: { type: String, default: 'MazTextarea' },
-    // placeholder: { type: String, default: undefined },
     label: { type: String, default: undefined },
     required: { type: Boolean, default: false },
     disabled: { type: Boolean, default: false },

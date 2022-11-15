@@ -35,6 +35,7 @@
     "build:components-entry": "cross-env NODE_ENV=production node build/build-components-entry.js",
     "build:modules": "npm run build:lib -- --package modules",
     "build:components": "npm run build:lib -- --package components",
+    "build:component": "npm run build:lib -- --component",
     "build:css": "npm run build:tailwind && npm run build:scss",
     "build:tailwind": "NODE_ENV=production tailwindcss -i ./tailwindcss/css/tailwind.css -o css/main.css --config ./tailwind.config.js --postcss",
     "build:scss": "node build/compile-scss.js",
