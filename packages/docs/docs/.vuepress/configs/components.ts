@@ -17,6 +17,7 @@ export const components = {
         '/components/maz-select.md',
         '/components/maz-slider.md',
         '/components/maz-switch.md',
+        '/components/maz-textarea.md',
       ]
     },
     {
