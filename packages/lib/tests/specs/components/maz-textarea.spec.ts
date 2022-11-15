@@ -70,7 +70,7 @@ describe('components/MazTextarea.vue', () => {
 
   test('Should emit focus event', () => {
     wrapper.vm.focus()
-    expect(wr ^ apper.emitted().focus).toBeTruthy()
+    expect(wrapper.emitted().focus).toBeTruthy()
   })
 
   test('Should emit blur event', () => {
