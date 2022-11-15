@@ -1,4 +1,4 @@
-import { defineUserConfig, defaultTheme, viteBundler, PluginFunction } from 'vuepress'
+import { defineUserConfig, defaultTheme, viteBundler } from 'vuepress'
 import { path } from '@vuepress/utils'
 
 import { registerComponentsPlugin } from '@vuepress/plugin-register-components'
@@ -43,14 +43,7 @@ export default defineUserConfig({
     }
   }),
 
-  bundler: viteBundler({
-    viteOptions: {
-      // @ts-ignore
-      ssr: {
-        noExternal: ['maz-ui'],
-      },
-    },
-  }),
+  bundler: viteBundler(),
   plugins: [
     googleAnalyticsPlugin({
       id: 'G-EM35TM23ZC',
