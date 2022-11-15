@@ -1,4 +1,5 @@
 import type { NavbarConfig } from '@vuepress/theme-default'
+// @ts-ignore
 import { version } from 'maz-ui/package.json'
 
 import { guide } from './guide'

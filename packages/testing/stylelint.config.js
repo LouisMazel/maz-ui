@@ -14,5 +14,6 @@ module.exports = {
       { ignoreAtRules: ['screen', 'layer', 'tailwind'] },
     ],
     'selector-class-pattern': null,
+    'string-quotes': 'single',
   },
 }

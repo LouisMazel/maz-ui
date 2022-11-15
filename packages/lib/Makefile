@@ -15,6 +15,9 @@ build-modules:
 build-components:
 	npm run build:gen-components-entry && npm run build:components
 
+build-component:
+	npm run build:gen-components-entry && npm run build:component -- $(component)
+
 build-types:
 	npm run build:types
 

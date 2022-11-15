@@ -1,33 +1,20 @@
 <template>
-  <Transition
+  <TransitionGroup
     class="m-transition-expand"
     name="maz-expand"
     tag="div"
-    @enter="(el) => enter(el as HTMLElement)"
-    @after-enter="(el) => afterEnter(el as HTMLElement)"
-    @leave="(el) => leave(el as HTMLElement)"
+    @enter="(el: HTMLElement) => enter(el)"
+    @after-enter="(el: HTMLElement) => afterEnter(el)"
+    @leave="(el: HTMLElement) => leave(el)"
   >
     <slot />
-  </Transition>
+  </TransitionGroup>
 </template>
 
 <script lang="ts" setup>
-  import { nextTick, ref } from 'vue'
-
-  enum States {
-    NONE = 'none',
-    ENTERING = 'entering',
-    AFTER_ENTERING = 'entering',
-    LEAVING = 'entering',
-  }
-
-  const state = ref<States>(States.NONE)
+  import { nextTick } from 'vue'
 
   const enter = (element: HTMLElement) => {
-    if (state.value !== States.NONE) {
-      return
-    }
-
     const width = getComputedStyle(element).width
 
     element.style.width = width
@@ -60,18 +47,10 @@
   }
 
   const afterEnter = (element: HTMLElement) => {
-    if (state.value !== States.NONE) {
-      return
-    }
-
     element.style.height = 'auto'
   }
 
   const leave = (element: HTMLElement) => {
-    if (state.value !== States.NONE) {
-      return
-    }
-
     const height = getComputedStyle(element).height
     element.style.height = height
 

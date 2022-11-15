@@ -24,28 +24,6 @@ description: MazSelect is a stand-alone component replaces the standard html inp
   />
 </div>
 
-<script setup lang="ts">
-  import { ref } from 'vue'
-
-  const selectValue = ref()
-
-  const colors = [
-    'primary',
-    'secondary',
-    'info',
-    'success',
-    'warning',
-    'danger',
-    'white',
-    'black',
-  ]
-
-  const colorsObject = colors.map((color) => ({
-    value: color,
-    label: color,
-  }))
-</script>
-
 ```vue
 <template>
   <MazSelect
@@ -82,6 +60,54 @@ description: MazSelect is a stand-alone component replaces the standard html inp
 </script>
 ```
 
+## Custom options UI
+
+<br />
+
+<MazSelect label="Select color" required v-model="selectValue" :options="colorsObject">
+  <template #default="{option, isSelected}">
+    <p>{{ option }}</p>
+    <br/>
+    <p>{{ isSelected }}</p>
+  </template>
+</MazSelect>
+
+```vue
+<MazSelect
+  v-model="selectValue"
+  :options="colorsObject"
+  label="Select color"
+>
+  <template #default="{ option, isSelected }">
+    <p>{{ option }}</p>
+    <p>{{ isSelected }}</p>
+  </template>
+</MazSelect>
+```
+
 ## Props & Events emitted
 
 <ComponentPropDoc component="MazSelect" />
+
+
+<script setup lang="ts">
+  import { ref } from 'vue'
+
+  const selectValue = ref()
+
+  const colors = [
+    'primary',
+    'secondary',
+    'info',
+    'success',
+    'warning',
+    'danger',
+    'white',
+    'black',
+  ]
+
+  const colorsObject = colors.map((color) => ({
+    value: color,
+    label: color,
+  }))
+</script>

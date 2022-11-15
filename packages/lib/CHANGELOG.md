@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.8](https://github.com/LouisMazel/maz-ui/compare/v2.3.13...v3.0.8) (2022-11-15)
+
+### Bug Fixes
+
+- **docs:** deployment ([#283](https://github.com/LouisMazel/maz-ui/issues/283)) ([d389c51](https://github.com/LouisMazel/maz-ui/commit/d389c51bc856540256c3e3c3aa662b0d3e8ea5c8))
+- **docs:** documentation components rendering on server side ([#276](https://github.com/LouisMazel/maz-ui/issues/276)) ([0ee8a5f](https://github.com/LouisMazel/maz-ui/commit/0ee8a5f9bb4c8c209de6be4ad29b631d532349db))
+
+### Features
+
+- **lib:** new component - maz-stepper ([#374](https://github.com/LouisMazel/maz-ui/issues/374)) ([2f87fef](https://github.com/LouisMazel/maz-ui/commit/2f87fef6ef7bea507f2ae4b33411a78a38bbbb7c))
+- **lib:** new component - maz-textarea ([#375](https://github.com/LouisMazel/maz-ui/issues/375)) ([9b8aa0e](https://github.com/LouisMazel/maz-ui/commit/9b8aa0e6ad70bb0818665abb08e3f1d27fd0ad1d))
+
 ## [3.0.7](https://github.com/LouisMazel/maz-ui/compare/v2.3.13...v3.0.7) (2022-10-06)
 
 ### Bug Fixes

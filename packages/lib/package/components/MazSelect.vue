@@ -11,10 +11,11 @@
       ref="mazInput"
       class="m-select-input"
       v-bind="$attrs"
+      :required="required"
       :color="color"
       :model-value="mazInputValue"
-      readonly
       :size="size"
+      readonly
       :disabled="disabled"
       @focus.stop="openList"
       @click.stop="openList"
@@ -122,6 +123,7 @@
         ].includes(value)
       },
     },
+    required: { type: Boolean, default: false },
     disabled: { type: Boolean, default: false },
     open: { type: Boolean, default: false },
     color: {

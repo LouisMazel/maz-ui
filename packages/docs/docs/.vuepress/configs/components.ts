@@ -17,6 +17,7 @@ export const components = {
         '/components/maz-select.md',
         '/components/maz-slider.md',
         '/components/maz-switch.md',
+        '/components/maz-textarea.md',
       ]
     },
     {
@@ -34,6 +35,7 @@ export const components = {
         '/components/maz-gallery.md',
         '/components/maz-icon.md',
         '/components/maz-lazy-img.md',
+        '/components/maz-stepper.md',
         '/components/maz-spinner.md',
         // '/components/maz-tabs.md',
         '/components/maz-transition-expand.md',

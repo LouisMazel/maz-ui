@@ -432,6 +432,7 @@
     &-label {
       @apply maz-pointer-events-none maz-absolute maz-block maz-w-max maz-origin-top-left maz-truncate;
       @apply maz-left-4 maz-leading-6;
+      @apply maz-flex maz-flex-center;
 
       transition: transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
     }
