@@ -8,7 +8,6 @@
     @mouseleave.passive="handleMouseup"
     @touchmove.passive="handleMousemove"
   >
-    <!-- @touchmove="handleToucheMove" -->
     <div ref="MazSlider" class="m-slider__bar" role="slider">
       <div
         v-for="(div, i) in dividers"
@@ -17,7 +16,6 @@
         class="m-slider__divider"
       />
 
-      <!-- eslint-disable -->
       <button
         v-for="(_btn, i) in computedValue"
         :key="`cursor-${i}`"
