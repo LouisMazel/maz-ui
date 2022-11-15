@@ -6,37 +6,26 @@ description: MazTextarea is a stand-alone component replaces the standard html t
 
 > Before you have to import the global css files in your project, follow instructions in [Getting Started](./../guide/getting-started.md)
 
-<!-- <MazTextarea
-  v-for="color in colors"
-  v-model="switchValue"
-  :color="color"
-  :name="color"
-  :key="color"
-  style="margin-bottom: 12px;"
+## Informations
+
+This component has the "autogrow" feature, so when the user writes, the textarea grows automatically
+
+## Basic usage
+
+<MazTextarea
+  v-model="value"
+  name="comment"
+  id="comment"
+  label="Enter your comment"
 />
-
-<script lang="ts" setup>
-  import { ref } from 'vue'
-  const switchValue = ref(false)
-
-  const colors = [
-    'primary',
-    'secondary',
-    'info',
-    'success',
-    'warning',
-    'danger',
-  ]
-</script> -->
 
 ```vue
 <template>
   <MazTextarea
-    v-for="color in colors"
-    v-model="switchValue"
-    :color="color"
-    :name="color"
-    :key="color"
+    v-model="value"
+    name="comment"
+    id="comment"
+    label="Enter your comment"
   />
 </template>
 
@@ -44,19 +33,16 @@ description: MazTextarea is a stand-alone component replaces the standard html t
   import { ref } from 'vue'
   import MazTextarea from 'maz-ui/components/MazTextarea'
 
-  const switchValue = ref(false)
-
-  const colors = [
-    'primary',
-    'secondary',
-    'info',
-    'success',
-    'warning',
-    'danger',
-  ]
+  const value = ref()
 </script>
 ```
 
-<!-- ## Props & Events emitted
+<script lang="ts" setup>
+  import { ref } from 'vue'
 
-<ComponentPropDoc component="MazTextarea" /> -->
+  const value = ref()
+</script>
+
+## Props & Events emitted
+
+<ComponentPropDoc component="MazTextarea" />

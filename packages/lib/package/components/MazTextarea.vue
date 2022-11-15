@@ -3,10 +3,11 @@
     class="m-textarea"
     :class="{
       '--is-disabled': disabled,
+      '--has-label': hasLabelOrHint,
     }"
   >
     <label
-      v-if="label || hint"
+      v-if="hasLabelOrHint"
       :for="instanceId"
       class="m-textarea__label"
       :class="[
@@ -133,7 +134,11 @@
 
   const change = (event: Event) => emits('change', event)
 
-  const shouldUp = computed(() => isFocused.value || hasValue.value)
+  const hasLabelOrHint = computed(() => props.label || props.hint)
+
+  const shouldUp = computed(
+    () => hasLabelOrHint.value && (isFocused.value || hasValue.value),
+  )
 
   const borderStyle = computed(() => {
     if (props.error) return 'maz-border-danger'
@@ -159,10 +164,16 @@
 
     textarea {
       @apply maz-min-h-[6.25rem] maz-w-full maz-resize-y maz-rounded-lg maz-border
-        maz-bg-color maz-p-4 maz-pt-6 maz-text-normal maz-outline-none;
+        maz-bg-color maz-p-4 maz-text-normal maz-outline-none;
 
       &.--default-border {
         @apply maz-border-gray-200;
+      }
+    }
+
+    &.--has-label {
+      textarea {
+        @apply maz-pt-6;
       }
     }
 
