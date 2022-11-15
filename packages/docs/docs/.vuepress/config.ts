@@ -70,7 +70,6 @@ export default defineUserConfig({
       },
       maxSuggestions: 10,
     }),
-    // @ts-ignore
     seoPlugin(seoOptions),
   ],
 
