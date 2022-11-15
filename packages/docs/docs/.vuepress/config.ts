@@ -53,8 +53,12 @@ export default defineUserConfig({
         alias: {
           '~maz-ui': path.resolve(__dirname, './../../../lib'),
         },
-        preserveSymlinks: false
-      }
+      },
+      server: {
+        fs: {
+          allow: ['./../../lib'],
+        },
+      },
     }
   }),
   plugins: [
