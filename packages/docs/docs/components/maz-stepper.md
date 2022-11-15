@@ -6,8 +6,7 @@ description: MazStepper is a stand-alone UI component to
 
 > Before you have to import the global css files in your project, follow instructions in [Getting Started](./../guide/getting-started.md)
 
-
-## Usage
+## Basic usage
 
 <br />
 
@@ -212,7 +211,7 @@ Then, all previous steps has the check icon:
 </script>
 ```
 
-Will be:
+Click on "step 3" to show the step 2 validated:
 
 <MazStepper v-model="currentStep" auto-validated-steps>
   <template #title-1>

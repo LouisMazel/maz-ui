@@ -15,6 +15,7 @@
       :color="color"
       :model-value="mazInputValue"
       :size="size"
+      readonly
       :disabled="disabled"
       @focus.stop="openList"
       @click.stop="openList"
