@@ -44,11 +44,16 @@ export default defineUserConfig({
   }),
 
   bundler: viteBundler({
+    // @ts-ignore
+    ssr: {
+      noExternal: ['maz-ui'],
+    },
     viteOptions: {
       resolve: {
         alias: {
           '~maz-ui': path.resolve(__dirname, './../../../lib'),
-        }
+        },
+        preserveSymlinks: false
       }
     }
   }),

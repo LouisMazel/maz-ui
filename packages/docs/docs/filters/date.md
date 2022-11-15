@@ -1,5 +1,4 @@
 ---
-title: date
 description: The module date is a function to format date
 ---
 

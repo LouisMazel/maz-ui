@@ -40,7 +40,9 @@ In your main Vue component (often App.vue - default layout for nuxt)
   import { onMounted } from 'vue'
 
   import { useThemeHandler } from 'maz-ui'
+  // for typescript users
   import type { ThemeHandlerOptions } from 'maz-ui'
+
   import MazBtn from 'maz-ui/components/MazBtn'
 
   // optional
@@ -76,7 +78,6 @@ In your main Vue component (often App.vue - default layout for nuxt)
 
   import { useThemeHandler } from 'maz-ui'
   import type { ThemeHandlerOptions } from 'maz-ui'
-  import MazBtn from 'maz-ui/components/MazBtn'
 
   // optional
   const options: ThemeHandlerOptions = {
