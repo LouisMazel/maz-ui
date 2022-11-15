@@ -36,7 +36,7 @@
     type ChartType,
     type Plugin,
     type ChartData,
-    type ChartOptions,
+    // type ChartOptions,
   } from 'chart.js'
 
   Chart.register(
@@ -90,7 +90,7 @@
 
       type ChartJssState = {
         chart?: Chart
-        options?: ChartOptions
+        options?: any // ChartOptions
         plugins: Plugin[]
         props: typeof props
       }
