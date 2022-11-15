@@ -14,9 +14,9 @@
     "@vuepress/plugin-search": "^2.0.0-beta.45",
     "chart.js": "^3.9.1",
     "chartjs-plugin-datalabels": "^2.1.0",
-    "dayjs": "^1.11.5",
+    "dayjs": "^1.11.6",
     "dropzone": "^5.9.3",
-    "libphonenumber-js": "^1.10.13",
+    "libphonenumber-js": "^1.10.14",
     "maz-ui": "file:../lib",
     "vuepress": "^2.0.0-beta.45",
     "vuepress-plugin-sitemap2": "^2.0.0-beta.71"
