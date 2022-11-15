@@ -62,6 +62,7 @@ describe('components/MazTextarea.vue', () => {
   test('Should up the label if the component is focused', async () => {
     await wrapper.setProps({
       modelValue: undefined,
+      label: 'Label',
     })
     wrapper.vm.focus()
     expect(wrapper.vm.shouldUp).toBeTruthy()

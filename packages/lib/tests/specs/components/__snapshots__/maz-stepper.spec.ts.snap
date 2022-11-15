@@ -7,7 +7,7 @@ exports[`components/MazStepper.vue > Should match with the snapshot 1`] = `
     </div>
   </button>
   <div class=\\"m-stepper__content\\" data-v-47b3bbc6=\\"\\">
-    <transition-group-stub data-v-2a8b98b3=\\"\\" data-v-47b3bbc6=\\"\\">
+    <transition-group-stub name=\\"maz-expand\\" tag=\\"div\\" appear=\\"false\\" persisted=\\"false\\" css=\\"true\\" class=\\"m-transition-expand\\" data-v-2a8b98b3=\\"\\" data-v-47b3bbc6=\\"\\">
       <div data-v-47b3bbc6=\\"\\">
         <div class=\\"m-stepper__content__wrapper\\" data-v-47b3bbc6=\\"\\">Content 1</div>
       </div>
@@ -15,14 +15,14 @@ exports[`components/MazStepper.vue > Should match with the snapshot 1`] = `
   </div>
   <!--v-if-->
   <div class=\\"m-stepper__content\\" data-v-47b3bbc6=\\"\\">
-    <transition-group-stub data-v-2a8b98b3=\\"\\" data-v-47b3bbc6=\\"\\"></transition-group-stub>
+    <transition-group-stub name=\\"maz-expand\\" tag=\\"div\\" appear=\\"false\\" persisted=\\"false\\" css=\\"true\\" class=\\"m-transition-expand\\" data-v-2a8b98b3=\\"\\" data-v-47b3bbc6=\\"\\"></transition-group-stub>
   </div><button type=\\"button\\" class=\\"m-stepper__header\\" data-v-47b3bbc6=\\"\\"><span class=\\"m-stepper__count --primary\\" data-v-47b3bbc6=\\"\\">3</span>
     <div class=\\"m-stepper__header__content\\" data-v-47b3bbc6=\\"\\"><span class=\\"m-stepper__title\\" data-v-47b3bbc6=\\"\\">Step 3</span>
       <!--v-if-->
     </div>
   </button>
   <div class=\\"m-stepper__content --no-border\\" data-v-47b3bbc6=\\"\\">
-    <transition-group-stub data-v-2a8b98b3=\\"\\" data-v-47b3bbc6=\\"\\"></transition-group-stub>
+    <transition-group-stub name=\\"maz-expand\\" tag=\\"div\\" appear=\\"false\\" persisted=\\"false\\" css=\\"true\\" class=\\"m-transition-expand\\" data-v-2a8b98b3=\\"\\" data-v-47b3bbc6=\\"\\"></transition-group-stub>
   </div>
 </div>"
 `;

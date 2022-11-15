@@ -23,5 +23,6 @@ module.exports = {
     ],
     'selector-class-pattern': null,
     'no-descending-specificity': null,
+    'string-quotes': 'single',
   },
 }

@@ -24,7 +24,6 @@
       <sup v-if="required">*</sup>
     </label>
 
-    <!-- eslint-disable vue/no-deprecated-html-element-is -->
     <textarea
       :id="instanceId"
       ref="TextareaElement"
@@ -40,7 +39,6 @@
         change,
       }"
     />
-    <!-- eslint-enable vue/no-deprecated-html-element-is -->
   </div>
 </template>
 
