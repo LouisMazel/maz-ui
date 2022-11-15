@@ -31,6 +31,7 @@ import { default as MazSwitch } from './MazSwitch.vue'
 import { default as MazTabsBar } from './MazTabsBar.vue'
 import { default as MazTabsContent } from './MazTabsContent.vue'
 import { default as MazTabsContentItem } from './MazTabsContentItem.vue'
+import { default as MazTextarea } from './MazTextarea.vue'
 import { default as MazTransitionExpand } from './MazTransitionExpand.vue'
 
 export {
@@ -65,6 +66,7 @@ export {
   MazTabsBar,
   MazTabsContent,
   MazTabsContentItem,
+  MazTextarea,
   MazTransitionExpand,
 }
 
@@ -100,5 +102,6 @@ export default {
   MazTabsBar,
   MazTabsContent,
   MazTabsContentItem,
+  MazTextarea,
   MazTransitionExpand,
 }

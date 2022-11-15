@@ -1,6 +1,6 @@
 ---
 title: MazInput
-description: MazInput is a stand-alone component replaces the standard html input text or textarea with a beautiful design system. Many options like colors, sizes, disabled, loading, error, warning, valid states, error messages, includes icons.
+description: MazInput is a stand-alone component replaces the standard html input text with a beautiful design system. Many options like colors, sizes, disabled, loading, error, warning, valid states, error messages, includes icons.
 ---
 
 # MazInput

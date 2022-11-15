@@ -35,6 +35,7 @@
     "build:components-entry": "cross-env NODE_ENV=production node build/build-components-entry.js",
     "build:modules": "npm run build:lib -- --package modules",
     "build:components": "npm run build:lib -- --package components",
+    "build:component": "npm run build:lib -- --component",
     "build:css": "npm run build:tailwind && npm run build:scss",
     "build:tailwind": "NODE_ENV=production tailwindcss -i ./tailwindcss/css/tailwind.css -o css/main.css --config ./tailwind.config.js --postcss",
     "build:scss": "node build/compile-scss.js",
@@ -88,6 +89,7 @@
     "@types/rollup-plugin-peer-deps-external": "^2.2.1",
     "@typescript-eslint/eslint-plugin": "^5.38.0",
     "@typescript-eslint/parser": "^5.38.0",
+    "@vitejs/plugin-vue": "^2.3.4",
     "@vitest/coverage-c8": "^0.23.4",
     "@vue/compiler-sfc": "^3.2.39",
     "@vue/eslint-config-prettier": "^7.0.0",
@@ -170,8 +172,5 @@
     "type": "git",
     "url": "git+https://github.com/LouisMazel/maz-ui.git"
   },
-  "license": "MIT",
-  "dependencies": {
-    "@vitejs/plugin-vue": "^2.3.4"
-  }
+  "license": "MIT"
 }

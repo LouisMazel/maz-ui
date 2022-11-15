@@ -13,7 +13,6 @@
       v-bind="$attrs"
       :color="color"
       :model-value="mazInputValue"
-      readonly
       :size="size"
       :disabled="disabled"
       @focus.stop="openList"
