@@ -5,7 +5,6 @@ import { registerComponentsPlugin } from '@vuepress/plugin-register-components'
 import { searchPlugin } from '@vuepress/plugin-search'
 import { sitemapPlugin } from "vuepress-plugin-sitemap2"
 import { googleAnalyticsPlugin } from '@vuepress/plugin-google-analytics'
-import { mediumZoomPlugin } from '@vuepress/plugin-medium-zoom'
 import { SeoOptions, seoPlugin } from 'vuepress-plugin-seo2'
 
 import { sidebar, navbar, head } from './configs'
@@ -37,6 +36,11 @@ export default defineUserConfig({
     docsBranch: 'master',
     navbar,
     sidebar,
+    themePlugins: {
+      mediumZoom: false,
+      backToTop: true,
+      nprogress: true,
+    }
   }),
 
   bundler: viteBundler({
@@ -57,9 +61,6 @@ export default defineUserConfig({
     sitemapPlugin({
       hostname: 'https://louismazel.github.io/maz-ui-3/',
       changefreq: 'daily'
-    }),
-    mediumZoomPlugin({
-      selector: 'img.zoom-custom-imgs'
     }),
     searchPlugin({
       locales: {
