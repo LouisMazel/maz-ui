@@ -1,22 +1,19 @@
 import { defineClientConfig } from '@vuepress/client'
-import '~maz-ui/css/main.css'
-import '~maz-ui/css/aos.css'
+import 'maz-ui/css/main.css'
+import 'maz-ui/css/aos.css'
 
 const mazIconPath = process.env.NODE_ENV === 'production'
     ? '/maz-ui-3/icons'
     : '/icons'
 
-// @ts-ignore
-import { ToasterOptions, installToaster, installWait, installAos, AosOptions } from '~maz-ui/modules'
-// @ts-ignore
-import components from '~maz-ui/components'
+import { ToasterOptions, installToaster, installWait, installAos, AosOptions } from 'maz-ui'
+import components from 'maz-ui/components'
 
 export default defineClientConfig({
   enhance: async ({ app, router }) => {
     app.provide('mazIconPath', mazIconPath)
 
     Object.entries(components).forEach(([componentName, component]) => {
-      // @ts-ignore
       app.component(componentName, component)
     })
 
