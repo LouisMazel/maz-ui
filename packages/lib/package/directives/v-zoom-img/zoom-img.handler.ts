@@ -284,23 +284,22 @@ export class VueZoomImg {
       }
     }
   }
+
   private useNextInstance(
     currentInstance: HTMLElement,
     nextInstance: HTMLElement,
   ) {
-    if (nextInstance && currentInstance) {
-      currentInstance.classList.remove(StateClass.OPEN)
-      nextInstance.classList.add(StateClass.OPEN)
+    currentInstance.classList.remove(StateClass.OPEN)
+    nextInstance.classList.add(StateClass.OPEN)
 
-      const src: string | null = nextInstance.getAttribute('data-src')
-      const alt: string | null = nextInstance.getAttribute('data-alt')
+    const src: string | null = nextInstance.getAttribute('data-src')
+    const alt: string | null = nextInstance.getAttribute('data-alt')
 
-      this.wrapper.style.width = ''
-      this.loader.hidden = false
+    this.wrapper.style.width = ''
+    this.loader.hidden = false
 
-      if (src) this.img.setAttribute('src', src)
-      if (alt) this.img.setAttribute('alt', alt)
-    }
+    if (src) this.img.setAttribute('src', src)
+    if (alt) this.img.setAttribute('alt', alt)
   }
 
   private addStyle(styleString: string): void {
