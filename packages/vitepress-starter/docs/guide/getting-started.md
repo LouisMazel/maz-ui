@@ -20,23 +20,10 @@ This section will help you to install the library.
 
 <NpmBadge package="maz-ui" dist-tag="latest" />
 
-<CodeGroup>
-  <CodeGroupItem title="NPM" active>
-
 ```bash
 npm i maz-ui
-
-or
+# or yarn add maz-ui
 ```
-  </CodeGroupItem>
-  <CodeGroupItem title="YARN">
-
-```bash
-yarn add maz-ui
-```
-  </CodeGroupItem>
-
-</CodeGroup>
 
 ### Import necessary CSS file
 

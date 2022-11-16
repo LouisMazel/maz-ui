@@ -1,6 +1,7 @@
 ---
 title: Made with Maz-UI
 description: List of website using maz-ui library
+layout: doc
 sidebar: false
 ---
 
@@ -8,7 +9,7 @@ sidebar: false
 
 <br />
 
-<div class="flex flex-col" style="gap: 2rem">
+<div class="flex flex-col" style="display: flex; flex-direction: column; gap: 2rem">
 <MazCard zoom v-for="({images, description, link, title, github }, i) in projects" :key="i" class="maz-w-full" :gallery-height="350" :images="images">
   <h1 class="maz-m-0" style="margin-bottom: 16px;">
     {{ title }}
@@ -29,7 +30,7 @@ sidebar: false
 </div>
 
 <script lang="ts" setup>
-  import image from '@assets/harderbetter.png'
+  import image from './assets/harderbetter.png'
 
   const projects = [
     {

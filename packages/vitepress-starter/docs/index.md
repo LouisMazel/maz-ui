@@ -3,11 +3,11 @@ layout: home
 title: Maz UI - Standalone Components and Tools Library for Vue & Nuxt
 hero:
   name: Maz-UI
-  text: Library of standalone components and tools for Vue & Nuxt (v3.x)
+  text: Lightweight and efficient library
   tagline: Library of standalone components and tools for Vue & Nuxt (v3.x)
-  image:
-    src: /img/maz-ui-illu.png
-    alt: Logo of Maz-UI
+  # image:
+  #   src: /img/maz-ui-illu.png
+  #   alt: Logo of Maz-UI
   actions:
     - theme: brand
       text: Get Started
