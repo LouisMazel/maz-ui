@@ -62,14 +62,14 @@ const userVisibilyCallback: UserVisibilyCallback = ({ isVisible }) => {
 </template>
 
 <script lang="ts" setup>
-  import { onMounted, ref } from 'vue'
-
-  import MazBtn from 'maz-ui/components/MazBtn'
-  import MazCard from 'maz-ui/components/MazCard'
+  import { onMounted, ref, onBeforeUnmount } from 'vue'
 
   import { UserVisibility } from 'maz-ui'
   // for typescript users
   import type { UserVisibilyOptions, UserVisibilyCallback } from 'maz-ui'
+
+  import MazBtn from 'maz-ui/components/MazBtn'
+  import MazCard from 'maz-ui/components/MazCard'
 
   const events = ref<{ isVisible: boolean }[]>([])
 
@@ -89,14 +89,15 @@ const userVisibilyCallback: UserVisibilyCallback = ({ isVisible }) => {
   onMounted(() => {
     userVisibilityInstance.value = new UserVisibility(userVisibilyCallback, userVisibilyOptions)
   })
+
+  onBeforeUnmount(() => {
+    userVisibilityInstance.value?.destroy()
+  })
 </script>
 ```
 
 <script lang="ts" setup>
-  import { onMounted, ref } from 'vue'
-
-  import MazBtn from 'maz-ui/components/MazBtn'
-  import MazCard from 'maz-ui/components/MazCard'
+  import { onMounted, ref, onBeforeUnmount } from 'vue'
 
   import { UserVisibility } from 'maz-ui'
   // for typescript users
@@ -119,6 +120,10 @@ const userVisibilyCallback: UserVisibilyCallback = ({ isVisible }) => {
 
   onMounted(() => {
     userVisibilityInstance.value = new UserVisibility(userVisibilyCallback, userVisibilyOptions)
+  })
+
+  onBeforeUnmount(() => {
+    userVisibilityInstance.value?.destroy()
   })
 </script>
 

@@ -92,7 +92,7 @@ const idleTimeoutCallback: IdleTimeoutCallback = ({ isIdle, eventType }) => {
 </template>
 
 <script lang="ts" setup>
-  import { onMounted, ref } from 'vue'
+  import { onMounted, ref, onBeforeUnmount } from 'vue'
 
   import MazBtn from 'maz-ui/components/MazBtn'
   import MazCard from 'maz-ui/components/MazCard'
@@ -124,14 +124,15 @@ const idleTimeoutCallback: IdleTimeoutCallback = ({ isIdle, eventType }) => {
 
     idleTimeoutInstance.value = new IdleTimeout(idleTimeoutCallback, idleTimeoutOptions)
   })
+
+  onBeforeUnmount(() => {
+    idleTimeoutInstance.value?.destroy()
+  })
 </script>
 ```
 
 <script lang="ts" setup>
-  import { onMounted, ref } from 'vue'
-
-  import MazBtn from 'maz-ui/components/MazBtn'
-  import MazCard from 'maz-ui/components/MazCard'
+  import { onMounted, ref, onBeforeUnmount } from 'vue'
 
   import { IdleTimeout } from 'maz-ui'
   // for typescript users
@@ -159,6 +160,10 @@ const idleTimeoutCallback: IdleTimeoutCallback = ({ isIdle, eventType }) => {
     }
 
     idleTimeoutInstance.value = new IdleTimeout(idleTimeoutCallback, idleTimeoutOptions)
+  })
+
+  onBeforeUnmount(() => {
+    idleTimeoutInstance.value?.destroy()
   })
 </script>
 

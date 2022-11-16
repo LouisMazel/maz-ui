@@ -45,12 +45,21 @@ export default defineUserConfig({
 
   bundler: viteBundler({
     viteOptions: {
+      // @ts-ignore
+      ssr: {
+        noExternal: ['maz-ui'],
+      },
       resolve: {
         alias: {
           '~maz-ui': path.resolve(__dirname, './../../../lib'),
         }
-      }
-    }
+      },
+      server: {
+        fs: {
+          allow: ['./../../../lib'],
+        },
+      },
+    },
   }),
   plugins: [
     googleAnalyticsPlugin({
