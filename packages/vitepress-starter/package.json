@@ -1,0 +1,20 @@
+{
+  "name": "vitepress-starter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:serve": "vitepress serve docs"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "vitepress": "^1.0.0-alpha.29",
+    "vue": "^3.2.45"
+  },
+  "dependencies": {
+    "maz-ui": "file:../lib"
+  }
+}
