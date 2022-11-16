@@ -1,9 +1,9 @@
 export const filters = {
   text: 'Filters',
-  children: [
-    '/filters/capitalize.md',
-    '/filters/currency.md',
-    '/filters/date.md',
-    '/filters/number.md',
+  items: [
+    {text: 'capitalize', link: '/filters/capitalize'},
+    {text: 'currency', link: '/filters/currency'},
+    {text: 'date', link: '/filters/date'},
+    {text: 'number', link: '/filters/number'},
   ]
 }

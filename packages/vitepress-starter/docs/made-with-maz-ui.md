@@ -3,6 +3,7 @@ title: Made with Maz-UI
 description: List of website using maz-ui library
 layout: doc
 sidebar: false
+aside: false
 ---
 
 # Made with Maz-UI

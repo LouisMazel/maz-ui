@@ -1,7 +1,6 @@
-import { DefaultTheme } from 'vitepress';
-
-export const guide: DefaultTheme.SidebarGroup = {
+export const guide = {
   text: 'Guide',
+  activeMatch: '/guide',
   items: [
     { text: 'Getting Started', link: '/guide/getting-started' },
     { text: 'Basic colors', link: '/guide/colors' },
@@ -9,12 +8,3 @@ export const guide: DefaultTheme.SidebarGroup = {
     { text: 'Dark mode', link: '/guide/dark-theme' },
   ],
 }
-
-  // [
-  // { text: 'Getting Started' },
-
-    // '/guide/getting-started.md',
-    // '/guide/colors.md',
-    // '/guide/theme.md',
-    // '/guide/dark-theme.md'
-// ]

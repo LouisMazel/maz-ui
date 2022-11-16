@@ -1,0 +1,70 @@
+:root {
+  --vp-c-brand: var(--maz-color-primary);
+  --vp-c-brand-light: var(--maz-color-primary-400);
+  --vp-c-brand-lighter: var(--maz-color-primary-300);
+  --vp-c-brand-dark: var(--maz-color-primary-600);
+  --vp-c-brand-darker: var(--maz-color-primary-700);
+  --vp-home-hero-name-color: var(--maz-color-primary);
+  --vp-button-brand-bg: var(--maz-color-primary);
+  --vp-button-brand-border: var(--maz-color-primary-600);
+  --vp-button-brand-text: var(--maz-color-primary-contrast);
+  --vp-button-brand-hover-border: var(--maz-color-primary-700);
+  --vp-button-brand-hover-text: var(--maz-color-primary-contrast);
+  --vp-button-brand-hover-bg: var(--maz-color-primary-600);
+  --vp-button-brand-active-border: var(--maz-color-primary-700);
+  --vp-button-brand-active-text: var(--maz-color-primary-contrast);
+  --vp-button-brand-active-bg: var(--maz-color-primary-600);
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.justify-start {
+  justify-content: start;
+}
+
+.items-start {
+  align-items: flex-start;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.space-between {
+  justify-content: space-between;
+}
+
+.items-start {
+  align-items: flex-start;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.flex-center {
+  align-items: center;
+  justify-content: center;
+}
+
+.gap-05 {
+  gap: 0.5rem;
+}
+
+.rounded {
+  border-radius: 0.5rem;
+}

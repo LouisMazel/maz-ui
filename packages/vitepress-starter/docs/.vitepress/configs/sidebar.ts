@@ -8,9 +8,9 @@ import { plugins } from './plugins'
 
 export const sidebar: DefaultTheme.SidebarGroup[] = [
   guide,
-  // components,
-  // plugins,
-  // directives,
-  // filters,
-  // helpers,
+  components,
+  plugins,
+  directives,
+  filters,
+  helpers,
 ]

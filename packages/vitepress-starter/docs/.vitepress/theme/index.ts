@@ -2,6 +2,7 @@ import DefaultTheme from 'vitepress/theme'
 
 import 'maz-ui/css/main.css'
 import 'maz-ui/css/aos.css'
+import './main.css'
 
 import { ToasterOptions, installToaster, installWait, installAos, AosOptions } from 'maz-ui'
 import components from 'maz-ui/components'
@@ -31,8 +32,10 @@ const theme: typeof DefaultTheme = {
       timeout: 10000,
     }
 
+    // console.log('ctx.router', process.env)
+
     const aosOptions: AosOptions = {
-      router: ctx.router,
+      // router: ctx.router,
       delay: 500,
       animation: {
         duration: 400,
@@ -43,11 +46,11 @@ const theme: typeof DefaultTheme = {
     ctx.app.use(installToaster, toasterOptions)
     ctx.app.use(installWait)
 
+    ctx.app.use(installAos, aosOptions)
     // @ts-ignore
     // if (!__VITEPRESS_SSR__) {
-    //   ctx.app.use(installAos, aosOptions)
     // }
-  }
+  },
 }
 
 export default theme

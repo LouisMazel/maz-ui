@@ -1,4 +1,4 @@
-// @ts-ignore
+import { DefaultTheme } from 'vitepress'
 import { version } from 'maz-ui/package.json'
 
 import { guide } from './guide'
@@ -8,17 +8,18 @@ import { filters } from './filters'
 import { helpers } from './helpers'
 import { plugins } from './plugins'
 
-export const navbar = [
+export const nav: DefaultTheme.NavItem[] = [
   guide,
   components,
   {
     text: 'Modules',
-    children: [plugins, directives, filters, helpers],
+    activeMatch: '/plugins',
+    items: [plugins, directives, filters, helpers],
   },
-  '/made-with-maz-ui',
+  { text: 'Made with Maz-ui', link: '/made-with-maz-ui', },
   {
     text: `v${version}`,
-    children: [
+    items: [
       {
         text: 'Changelog',
         link: 'https://github.com/LouisMazel/maz-ui/blob/master/packages/lib/CHANGELOG.md',

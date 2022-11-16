@@ -1,8 +1,10 @@
-export const plugins = {
+import { DefaultTheme } from 'vitepress';
+
+export const plugins: DefaultTheme.NavItemChildren = {
   text: 'Plugins',
-  children: [
-    '/plugins/aos.md',
-    '/plugins/toaster.md',
-    '/plugins/wait.md',
+  items: [
+    { text: 'aos (animation on scroll)', link: '/plugins/aos'},
+    { text: 'toaster', link: '/plugins/toaster'},
+    { text: 'wait', link: '/plugins/wait'},
   ]
 }

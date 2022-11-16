@@ -1,9 +1,8 @@
 ---
-title: Dark theme
-description: Dark theme is fully supported - How it's works ?
+description: Dark mode is fully supported - How it's works ?
 ---
 
-# Dark Theme
+# Dark Mode
 
 ## How it's works ?
 

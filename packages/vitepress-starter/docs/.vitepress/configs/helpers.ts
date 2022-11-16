@@ -1,8 +1,8 @@
 export const helpers = {
   text: 'Helpers',
-  children: [
-    '/helpers/theme-handler.md',
-    '/helpers/idle-timeout.md',
-    '/helpers/user-visibility.md',
+  items: [
+    {text: 'theme-handler', link: '/helpers/theme-handler' },
+    {text: 'idle-timeout', link: '/helpers/idle-timeout' },
+    {text: 'user-visibility', link: '/helpers/user-visibility' },
   ]
 }

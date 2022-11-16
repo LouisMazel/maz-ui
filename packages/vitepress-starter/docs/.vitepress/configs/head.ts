@@ -1,4 +1,4 @@
-import { UserConfig } from 'vuepress'
+import { UserConfig } from 'vitepress'
 
 export const getAssetBaseUrl = (path: string): string => {
   const base = process.env.NODE_ENV === 'production' ? 'https://louismazel.github.io/maz-ui-3' : '/maz-ui-3'
@@ -6,6 +6,7 @@ export const getAssetBaseUrl = (path: string): string => {
 }
 
 export const head: UserConfig['head'] = [
+  ['meta', { name: 'theme-color', content: '#1d90ff' }],
   [
     'link',
     {

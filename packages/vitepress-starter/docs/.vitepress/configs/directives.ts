@@ -1,8 +1,8 @@
 export const directives = {
   text: 'Directives',
-  children: [
-    '/directives/click-outside.md',
-    '/directives/lazy-img.md',
-    '/directives/zoom-img.md',
+  items: [
+    {text: 'v-click-outside', link: '/directives/click-outside'},
+    {text: 'v-lazy-img', link: '/directives/lazy-img'},
+    {text: 'v-zoom-img', link: '/directives/zoom-img'},
   ]
 }
