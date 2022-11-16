@@ -87,14 +87,10 @@
 
     if (!target) return
 
-    if (target.scrollLeft >= 20) {
-      isScrolled.value = true
-    } else isScrolled.value = false
+    isScrolled.value = target.scrollLeft >= 20
 
     const itemsScrollWidth = target.scrollWidth - target.clientWidth
-    if (target.scrollLeft >= itemsScrollWidth - 20) {
-      isScrolledMax.value = true
-    } else isScrolledMax.value = false
+    isScrolledMax.value = target.scrollLeft >= itemsScrollWidth - 20
   }
 </script>
 

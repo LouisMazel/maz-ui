@@ -3,9 +3,11 @@
 import { defineConfig } from 'vitest/config'
 import Vue from '@vitejs/plugin-vue'
 
-import { resolve } from 'path'
+import { resolve } from 'node:path'
 
+/* eslint-disable unicorn/prefer-module */
 const projectRoot = resolve(__dirname)
+/* eslint-enable unicorn/prefer-module */
 
 export default defineConfig({
   plugins: [Vue()],

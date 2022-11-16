@@ -1,8 +1,8 @@
-const { writeFileSync } = require('fs')
+const { writeFileSync } = require('node:fs')
 const { componentsList } = require('./get-component-list')
 const render = require('json-templater/string')
-const { resolve } = require('path')
-const { EOL } = require('os')
+const { resolve } = require('node:path')
+const { EOL } = require('node:os')
 
 const COMPONENTS_OUTPUT_PATH = resolve(
   __dirname,
@@ -28,7 +28,7 @@ const buildEntry = (template, importTemplate, outputPath) => {
   const includeComponentTemplate = []
   const listTemplate = []
 
-  componentsList.forEach((component) => {
+  for (const component of componentsList) {
     includeComponentTemplate.push(
       render(importTemplate, {
         name: component.name,
@@ -37,7 +37,7 @@ const buildEntry = (template, importTemplate, outputPath) => {
     )
 
     listTemplate.push(`  ${component.name}`)
-  })
+  }
 
   const file = render(template, {
     include: includeComponentTemplate.join(EOL),

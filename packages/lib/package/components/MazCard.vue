@@ -178,11 +178,8 @@
   )
 
   const haveSomeContent = computed(() => {
-    const supportedSlots = ['default', 'title', 'subtitle', 'content']
-    const response = Object.keys(slots).some((val) =>
-      supportedSlots.includes(val),
-    )
-    return response
+    const supportedSlots = new Set(['default', 'title', 'subtitle', 'content'])
+    return Object.keys(slots).some((val) => supportedSlots.has(val))
   })
 
   const galleryWidthComputed = computed(() =>

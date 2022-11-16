@@ -40,7 +40,7 @@
       default: 'bottom-right',
     },
     maxToasts: { type: [Number, Boolean], default: false },
-    timeout: { type: Number, default: 10000 },
+    timeout: { type: Number, default: 10_000 },
     queue: { type: Boolean, default: false },
     noPauseOnHover: { type: Boolean, default: false },
     type: {

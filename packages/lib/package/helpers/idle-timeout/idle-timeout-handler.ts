@@ -62,7 +62,7 @@ export class IdleTimeout {
 
   public pause(): void {
     const remainingTime: number =
-      this.startTime + this.options.timeout - new Date().getTime()
+      this.startTime + this.options.timeout - Date.now()
     if (remainingTime <= 0) {
       return
     }
@@ -119,7 +119,7 @@ export class IdleTimeout {
       this.remainingTime || this.options.timeout,
     )
 
-    this.startTime = new Date().getTime()
+    this.startTime = Date.now()
   }
 
   private handleEvent = (event: Event): void => {

@@ -95,10 +95,9 @@
 
       if (useAnchor) {
         const valueIndex = modelValue - 1
-        const tabActive =
-          useAnchor && !Number.isInteger(currentTab.value)
-            ? getIndexOfCurrentAnchor(items, valueIndex)
-            : valueIndex
+        const tabActive = !Number.isInteger(currentTab.value)
+          ? getIndexOfCurrentAnchor(items, valueIndex)
+          : valueIndex
         setValue(tabActive)
       }
       isMounted.value = true

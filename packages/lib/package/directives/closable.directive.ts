@@ -40,9 +40,12 @@ const getEventType = () => {
 
 const unbind: FunctionDirective = (element, binding, vnode) => {
   const eventType = getEventType()
+
+  /* eslint-disable unicorn/no-invalid-remove-event-listener */
   document.removeEventListener(eventType, (event) =>
     handleOutsideClick(event, element, binding, vnode),
   )
+  /* eslint-enable unicorn/no-invalid-remove-event-listener */
 }
 
 const bind: FunctionDirective = (element, binding, vnode) => {

@@ -1,3 +1,5 @@
+/* eslint-disable unicorn/filename-case */
+
 import { shallowMount } from '@vue/test-utils'
 import NGallery from '../../../package/components_tmp/NGallery/NGallery.vue'
 import NGalleryScrollButtons from '~/components/ui/NGallery/NGalleryScrollButtons.vue'
@@ -15,29 +17,29 @@ const getMedia = () => ({
   ],
 })
 
-beforeEach(() => {
-  wrapper = shallowMount(NGallery, {
-    components: {
-      NGalleryResponsive,
-    },
-    stubs: {
-      NGalleryScrollButtons: true,
-      NGalleryResponsiveItemsBar: true,
-      NLazyImg: true,
-    },
-    mocks: {
-      $mq: {
-        'tab-m': true,
-      },
-    },
-    propsData: {
-      medias: [getMedia(), getMedia(), getMedia()],
-    },
-  })
-})
-
 describe('~/components/ui/NGallery/NGallery', () => {
   let wrapper: any
+
+  beforeEach(() => {
+    wrapper = shallowMount(NGallery, {
+      components: {
+        NGalleryResponsive,
+      },
+      stubs: {
+        NGalleryScrollButtons: true,
+        NGalleryResponsiveItemsBar: true,
+        NLazyImg: true,
+      },
+      mocks: {
+        $mq: {
+          'tab-m': true,
+        },
+      },
+      propsData: {
+        medias: [getMedia(), getMedia(), getMedia()],
+      },
+    })
+  })
 
   test('should have children components', async () => {
     await wrapper.vm.$nextTick()
@@ -50,8 +52,8 @@ describe('~/components/ui/NGallery/NGallery', () => {
   })
 
   test('should have images mapped with id & image property', () => {
-    for (const [i, imageWithId] of wrapper.vm.mediasWithId.entries()) {
-      expect(imageWithId.id).toEqual(i)
+    for (const [index, imageWithId] of wrapper.vm.mediasWithId.entries()) {
+      expect(imageWithId.id).toEqual(index)
       expect(imageWithId).toHaveProperty('srcs')
     }
   })

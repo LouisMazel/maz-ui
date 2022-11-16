@@ -19,6 +19,10 @@ export interface BindingData extends DirectiveBinding {
   value: vZoomImgBinding
 }
 
+enum StateClass {
+  OPEN = 'maz-is-open',
+}
+
 export class VueZoomImg {
   private options: vZoomImgBindingOptions
   private loader: HTMLDivElement
@@ -32,6 +36,9 @@ export class VueZoomImg {
     blur: true,
     disabled: false,
   }
+  private mouseEnterListener: () => void
+  private mouseLeaveListener: () => void
+  private renderPreviewListener: () => void
 
   constructor(binding: BindingData) {
     if (!binding.value) {
@@ -70,7 +77,9 @@ export class VueZoomImg {
   }
 
   get allInstances(): HTMLElement[] {
-    return Array.from(document.querySelectorAll('.maz-zoom-img-instance'))
+    return [
+      ...document.querySelectorAll('.maz-zoom-img-instance'),
+    ] as HTMLElement[]
   }
 
   public create(el: HTMLElement): void {
@@ -93,9 +102,14 @@ export class VueZoomImg {
      * Add event listeners
      */
     el.style.transition = 'all 300ms ease-in-out'
-    el.addEventListener('mouseenter', () => this.mouseEnter(el))
-    el.addEventListener('mouseleave', () => this.mouseLeave(el))
-    el.addEventListener('click', () => this.renderPreview(el, this.options))
+
+    this.mouseEnterListener = () => this.mouseEnter(el)
+    this.mouseLeaveListener = () => this.mouseLeave(el)
+    this.renderPreviewListener = () => this.renderPreview(el, this.options)
+
+    el.addEventListener('mouseenter', this.mouseEnterListener)
+    el.addEventListener('mouseleave', () => this.mouseLeaveListener)
+    el.addEventListener('click', () => this.renderPreviewListener)
   }
 
   public update(binding: BindingData): void {
@@ -107,9 +121,9 @@ export class VueZoomImg {
      * Remove all
      */
     this.imgEventHandler(false)
-    el.removeEventListener('click', () => this.renderPreview(el))
-    el.removeEventListener('mouseenter', () => this.mouseEnter(el))
-    el.removeEventListener('mouseleave', () => this.mouseLeave(el))
+    el.removeEventListener('mouseenter', this.mouseEnterListener)
+    el.removeEventListener('mouseleave', this.mouseLeaveListener)
+    el.removeEventListener('click', this.renderPreviewListener)
     el.classList.remove('maz-zoom-img-instance')
     el.removeAttribute('data-src')
     el.removeAttribute('data-alt')
@@ -120,7 +134,7 @@ export class VueZoomImg {
     el: HTMLElement,
     options?: vZoomImgBindingOptions,
   ): void {
-    el.classList.add('maz-is-open')
+    el.classList.add(StateClass.OPEN)
     this.addStyle(style)
 
     const container: HTMLDivElement = document.createElement('div')
@@ -142,7 +156,7 @@ export class VueZoomImg {
 
     container.append(this.wrapper)
 
-    document.body.appendChild(container)
+    document.body.append(container)
     this.keyboardEventHandler(true)
 
     setTimeout(() => {
@@ -209,13 +223,13 @@ export class VueZoomImg {
   private getButton(iconName = 'close'): HTMLButtonElement {
     const button = document.createElement('button')
     button.innerHTML = svgs[iconName]
-    button.onclick = (): void => {
+    button.addEventListener('click', (): void => {
       iconName === 'close'
         ? this.closePreview()
         : this.allInstances
         ? this.nextPreviousImage(iconName === 'next')
         : null
-    }
+    })
     button.classList.add('maz-zoom-btn')
     button.classList.add(`maz-zoom-btn--${iconName}`)
     return button
@@ -230,7 +244,7 @@ export class VueZoomImg {
       '.maz-zoom-img-instance.maz-is-open',
     )
 
-    if (instance) instance.classList.remove('maz-is-open')
+    if (instance) instance.classList.remove(StateClass.OPEN)
 
     if (container) container.classList.remove('maz-animate')
 
@@ -256,18 +270,18 @@ export class VueZoomImg {
       '.maz-zoom-img-instance.maz-is-open',
     )
 
-    const currentInstanceIndex = this.allInstances.findIndex(
-      (i) => i === currentInstance,
-    )
-    const newInstanceIndex = selectNextInstance
-      ? currentInstanceIndex + 1
-      : currentInstanceIndex - 1
+    if (currentInstance) {
+      const currentInstanceIndex = this.allInstances.indexOf(currentInstance)
+      const newInstanceIndex = selectNextInstance
+        ? currentInstanceIndex + 1
+        : currentInstanceIndex - 1
 
-    const nextInstance =
-      this.allInstances[this.getNewInstanceIndex(newInstanceIndex)]
+      const nextInstance =
+        this.allInstances[this.getNewInstanceIndex(newInstanceIndex)]
 
-    if (nextInstance && currentInstance) {
-      this.useNextInstance(currentInstance, nextInstance)
+      if (nextInstance) {
+        this.useNextInstance(currentInstance, nextInstance)
+      }
     }
   }
   private useNextInstance(
@@ -275,8 +289,8 @@ export class VueZoomImg {
     nextInstance: HTMLElement,
   ) {
     if (nextInstance && currentInstance) {
-      currentInstance.classList.remove('maz-is-open')
-      nextInstance.classList.add('maz-is-open')
+      currentInstance.classList.remove(StateClass.OPEN)
+      nextInstance.classList.add(StateClass.OPEN)
 
       const src: string | null = nextInstance.getAttribute('data-src')
       const alt: string | null = nextInstance.getAttribute('data-alt')

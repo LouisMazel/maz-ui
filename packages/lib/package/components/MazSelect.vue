@@ -279,19 +279,22 @@
   const searchQuery = ref<string>('')
 
   const searching = ({ key, code }: KeyboardEvent) => {
-    let queryTimer: ReturnType<typeof setTimeout> | undefined = undefined
+    /* eslint-disable prefer-const */
+    let queryTimer: ReturnType<typeof setTimeout> | undefined
+    /* eslint-enable prefer-const */
 
     clearTimeout(queryTimer)
+
     queryTimer = setTimeout(() => {
       searchQuery.value = ''
     }, 2000)
 
     if (code === 'Backspace') {
-      searchQuery.value = searchQuery.value.substring(
+      searchQuery.value = searchQuery.value.slice(
         0,
-        searchQuery.value.length - 1,
+        Math.max(0, searchQuery.value.length - 1),
       )
-    } else if (key.match(/^[a-z0-9]+$/i) && key.length === 1) {
+    } else if (/^[\da-z]+$/i.test(key) && key.length === 1) {
       searchQuery.value += key.toLowerCase()
 
       const resultIndex = props.options.findIndex((option) => {

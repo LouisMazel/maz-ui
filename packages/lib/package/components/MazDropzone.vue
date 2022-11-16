@@ -197,7 +197,7 @@
         emit('error', { files, message, xhr })
         if (dropzone.options.autoRemoveOnError)
           setTimeout(() => {
-            files.forEach((file) => dropzone.removeFile(file))
+            for (const file of files) dropzone.removeFile(file)
           }, 3000)
       }
 
@@ -209,7 +209,7 @@
         }
 
         if (ButtonElement.value) {
-          const DropzoneJs = (await import('dropzone')).default
+          const { default: DropzoneJs } = await import('dropzone')
 
           dropzone = new DropzoneJs(ButtonElement.value, {
             ...defaultOptions,

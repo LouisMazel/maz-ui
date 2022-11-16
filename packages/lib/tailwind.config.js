@@ -1,6 +1,6 @@
 // Tailwind CSS configuration (https://tailwindcss.com/docs/configuration)
-/* eslint-disable @typescript-eslint/no-var-requires */
-const path = require('path')
+/* eslint-disable unicorn/prefer-module */
+const path = require('node:path')
 
 module.exports = {
   mode: 'build',

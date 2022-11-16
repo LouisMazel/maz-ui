@@ -406,7 +406,7 @@
   }))
 
   const inputValue = computed(() => {
-    if (!currentValue.value) return undefined
+    if (!currentValue.value) return
 
     if (props.onlyTime) {
       return currentValue.value
@@ -460,9 +460,7 @@
     if (!props.locale) {
       const browserLocale = getBrowserLocale()
       if (!props.noUseBrowserLocale && browserLocale) {
-        if (browserLocale) {
-          internalLocale.value = browserLocale
-        }
+        internalLocale.value = browserLocale
       } else if (!props.noFetchLocal) {
         const locale = await fetchLocale()
 
@@ -700,13 +698,12 @@
         ) {
           currentValue.value = { start: value.start, end: undefined }
         }
-      } else if (typeof value === 'string') {
-        if (
-          isValueDisabledWeekly({ value, disabledWeekly }) ||
-          isValueDisabledDate({ value, disabledDates })
-        ) {
-          currentValue.value = undefined
-        }
+      } else if (
+        typeof value === 'string' &&
+        (isValueDisabledWeekly({ value, disabledWeekly }) ||
+          isValueDisabledDate({ value, disabledDates }))
+      ) {
+        currentValue.value = undefined
       }
     },
     { immediate: true },
