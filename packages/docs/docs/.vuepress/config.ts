@@ -56,7 +56,11 @@ export default defineUserConfig({
       },
       server: {
         fs: {
-          allow: ['./../../../lib'],
+          allow: [
+            // path.resolve(__dirname, './../../../lib'),
+            // path.resolve(__dirname, './../../../docs'),
+            path.resolve(__dirname, './../../../'),
+          ],
         },
       },
     },
