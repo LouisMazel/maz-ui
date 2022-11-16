@@ -18,7 +18,7 @@ Place your SVG files in public a folder (default `/icons`, use `path` prop to ch
 <br />
 
 <div class="flex items-start flex-wrap gap-05">
-  <div v-for="icon in icons2" :key="icon" class="flex flex-col flex-center maz-p-2 maz-rounded" style="border: 1px solid var(--maz-color-bg-light); background-color: var(--maz-color-bg-lighter);">
+  <div v-for="icon in iconNames" :key="icon" class="flex flex-col flex-center maz-p-2 maz-rounded" style="border: 1px solid var(--maz-color-bg-light); background-color: var(--maz-color-bg-lighter);">
     <MazIcon :name="icon" size="2rem" />
     <span style="font-size: 11px;">
       {{ icon }}
@@ -27,7 +27,7 @@ Place your SVG files in public a folder (default `/icons`, use `path` prop to ch
 </div>
 
 <script setup lang="ts">
-  const icons2 = [
+  const iconNames = [
     'academic-cap',
     'adjustments',
     'annotation',
@@ -266,7 +266,7 @@ Place your SVG files in public a folder (default `/icons`, use `path` prop to ch
 ```vue
 <template>
   <div
-    v-for="icon in icons2"
+    v-for="icon in iconNames"
     :key="icon"
   >
     <MazIcon :name="icon" size="2rem" />
@@ -279,7 +279,7 @@ Place your SVG files in public a folder (default `/icons`, use `path` prop to ch
 <script setup lang="ts">
   import MazIcon from 'maz-ui/components/MazIcon'
 
-  const icons2 = [
+  const iconNames = [
     'academic-cap',
     'adjustments',
     'annotation',
