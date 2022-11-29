@@ -363,7 +363,11 @@
 
       optionsListElement.value
         ?.querySelectorAll('.m-select-list-item')
-        [itemIndex]?.scrollIntoView({ behavior: 'auto', block: 'center' })
+        [itemIndex]?.scrollIntoView({
+          behavior: 'auto',
+          block: 'nearest',
+          inline: 'start',
+        })
     }
   }
 
