@@ -120,7 +120,6 @@ export function isCountryAvailable(locale: string) {
       console.error(
         `[MazPhoneNumberInput] (isCountryAvailable) The code country "${locale}" is not available`,
       )
-      // throw String(`The country "${locale}" is not available`)
     }
 
     return response
