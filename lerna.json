@@ -3,13 +3,6 @@
   "loglevel": "verbose",
   "version": "3.0.11",
   "yes": false,
-  "command": {
-    "version": {
-      "message": "chore(release): bump version to %v",
-      "forceGitTag": true,
-      "conventionalCommits": true
-    }
-  },
   "$schema": "node_modules/lerna/schemas/lerna-schema.json",
   "useWorkspaces": false
 }
