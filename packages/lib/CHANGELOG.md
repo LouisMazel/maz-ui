@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.12](https://github.com/LouisMazel/maz-ui/compare/v2.3.13...v3.0.12) (2022-11-29)
+
+### Bug Fixes
+
+- **docs:** deployment ([#283](https://github.com/LouisMazel/maz-ui/issues/283)) ([d389c51](https://github.com/LouisMazel/maz-ui/commit/d389c51bc856540256c3e3c3aa662b0d3e8ea5c8))
+- **docs:** documentation components rendering on server side ([#276](https://github.com/LouisMazel/maz-ui/issues/276)) ([0ee8a5f](https://github.com/LouisMazel/maz-ui/commit/0ee8a5f9bb4c8c209de6be4ad29b631d532349db))
+- **lib:** maz-select - scroll in to view behaviour ([d935adf](https://github.com/LouisMazel/maz-ui/commit/d935adf8c314c4815a027548e79c2abd6f35468f))
+
+### Reverts
+
+- Revert "chore(release): bump version to 3.0.12" ([2e7cb97](https://github.com/LouisMazel/maz-ui/commit/2e7cb971bbb7067525cf5d18e089f68aa28bc38a))
+- Revert "chore(release): bump version to 3.0.13" ([334b776](https://github.com/LouisMazel/maz-ui/commit/334b776066bee3807e2eb6c12aa83ec35cd92970))
+- Revert "chore(release): bump version to 3.0.12" ([a0c1aac](https://github.com/LouisMazel/maz-ui/commit/a0c1aac70928da4f928ab251473afab5de418454))
+- Revert "chore(release): bump version to 3.0.12" ([bbd646f](https://github.com/LouisMazel/maz-ui/commit/bbd646fe700aa2e967ed5f75729253921a4f11aa))
+- Revert "chore(release): bump version to 3.0.12" ([eca1175](https://github.com/LouisMazel/maz-ui/commit/eca1175e860031d49b3c514b52db562ca34983f8))
+
 ## [3.0.11](https://github.com/LouisMazel/maz-ui/compare/v3.0.10...v3.0.11) (2022-11-29)
 
 **Note:** Version bump only for package maz-ui
