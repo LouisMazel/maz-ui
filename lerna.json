@@ -9,8 +9,7 @@
     "version": {
       "message": "chore(release): bump version to %v",
       "forceGitTag": true,
-      "push": true,
-      "tagVersionPrefix": "v",
+      "push": false,
       "conventionalCommits": true
     }
   }
