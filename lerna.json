@@ -8,10 +8,12 @@
   "command": {
     "version": {
       "message": "chore(release): bump version to %v",
-      "conventionalCommits": true,
       "forceGitTag": true,
       "push": true,
       "tagVersionPrefix": "v"
+    },
+    "publish": {
+      "conventionalCommits": true
     }
   }
 }
