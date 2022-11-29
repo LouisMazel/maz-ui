@@ -72,7 +72,8 @@
                 '--is-keyboard-selected': tmpModelValueIndex === i,
                 '--is-selected':
                   selectedOption?.[optionValueKey] === option[optionValueKey] &&
-                  option[optionValueKey],
+                  (option[optionValueKey] ||
+                    typeof option[optionValueKey] === 'boolean'),
                 '--is-none-value':
                   !option[optionValueKey] &&
                   typeof option[optionValueKey] !== 'boolean',
@@ -87,6 +88,7 @@
               :is-selected="
                 selectedOption?.[optionValueKey] === option[optionValueKey]
               "
+              :selected-option="selectedOption?.[optionValueKey]"
             >
               {{ option[optionLabelKey] }}
             </slot>
@@ -219,11 +221,13 @@
     ),
   )
 
-  const mazInputValue = computed(
-    () =>
-      selectedOption.value?.[props.optionInputValueKey] ??
-      selectedOption.value?.[props.optionLabelKey],
-  )
+  const mazInputValue = computed(() => {
+    return selectedOption.value?.[props.optionValueKey] ||
+      typeof selectedOption.value?.[props.optionValueKey] === 'boolean'
+      ? selectedOption.value?.[props.optionInputValueKey] ??
+          selectedOption.value?.[props.optionLabelKey]
+      : undefined
+  })
 
   const listTransition = computed(() =>
     props.listPosition.includes('bottom') ? 'maz-slide' : 'maz-slideinvert',
@@ -270,7 +274,9 @@
 
   const openList = (event?: Event) => {
     event?.preventDefault()
+
     if (props.disabled) return
+
     hasListOpen.value = true
     scrollToSelected()
     emits('focus', event)
@@ -291,6 +297,7 @@
 
   const mainInputKeyboardHandler = (event: KeyboardEvent) => {
     if (/[\dA-Za-z]/.test(event.key) && event.key.length === 1) {
+      openList(event)
       searchInputComponent.value?.input.focus()
     } else {
       keyboardHandler(event)
@@ -345,7 +352,7 @@
       ? optionsList.value[currentIndex] ?? optionsList.value[0]
       : optionsList.value[0]
 
-    if (newValue && newValue?.value !== props.modelValue) {
+    if (newValue || Boolean(newValue)) {
       updateValue(newValue)
     }
   }

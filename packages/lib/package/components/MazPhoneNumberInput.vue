@@ -1,7 +1,7 @@
 <template>
   <div
     :id="id"
-    class="m-phone-number-input maz-relative maz-flex"
+    class="m-phone-number-input"
     :class="{
       '--no-flags': noFlags,
     }"
@@ -554,6 +554,8 @@
   @import './MazPhoneNumberInput/css/flags.css';
 
   .m-phone-number-input {
+    @apply maz-relative maz-flex;
+
     &__country-flag {
       position: absolute;
       bottom: 10px;
@@ -580,8 +582,8 @@
       }
 
       &:not(.--no-country-code) {
-        >>> .m-input:not(.m-select-list__search-input) .m-input-wrapper {
-          @apply maz-rounded-r-none;
+        &:deep(.m-select-input .m-input-wrapper) {
+          @apply maz-rounded-r-none !important;
         }
       }
     }
