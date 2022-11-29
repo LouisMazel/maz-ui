@@ -20,9 +20,6 @@
       v-if="!noCountrySelector && countryOptions"
       ref="CountrySelector"
       class="m-phone-number-input__select"
-      :class="{
-        '--no-country-code': !countryCode,
-      }"
       :model-value="countryCode"
       option-value-key="iso2"
       option-label-key="name"
@@ -122,7 +119,6 @@
   import type { Result, Translations } from './MazPhoneNumberInput/types'
 
   import {
-    type ComponentPublicInstance,
     computed,
     nextTick,
     onBeforeMount,
@@ -152,9 +148,7 @@
     defaultCountryCode: {
       type: String as PropType<CountryCode>,
       default: undefined,
-      validator: (code: CountryCode) => {
-        return isCountryAvailable(code)
-      },
+      validator: (code: string) => isCountryAvailable(code),
     },
     preferredCountries: {
       type: Array as PropType<CountryCode[]>,
@@ -231,8 +225,8 @@
   const examplesFileLoaded = ref(false)
   const inputFocused = ref(false)
   const lastKeyPressed = ref<KeyboardEvent['key']>()
-  const CountrySelector = ref<ComponentPublicInstance>()
-  const PhoneNumberInput = ref<ComponentPublicInstance>()
+  const CountrySelector = ref<typeof MazSelect>()
+  const PhoneNumberInput = ref<typeof MazInput>()
 
   onBeforeMount(async () => {
     countryCode.value = props.defaultCountryCode
@@ -277,6 +271,7 @@
         if (locale) {
           setCountryCode(locale as CountryCode)
         }
+        autoUpdateCountryCodeFromPhoneNumber()
       }
     } catch (error) {
       throw new Error(`[MazPhoneNumberInput] (mounted) ${error}`)
@@ -578,13 +573,11 @@
       @apply maz-w-36;
 
       &__item {
-        @apply maz-px-1 maz-py-1 maz-text-sm;
+        @apply maz-w-full maz-text-sm;
       }
 
-      &:not(.--no-country-code) {
-        &:deep(.m-select-input .m-input-wrapper) {
-          @apply maz-rounded-r-none !important;
-        }
+      &:deep(.m-select-input .m-input-wrapper) {
+        @apply maz-rounded-r-none !important;
       }
     }
 
