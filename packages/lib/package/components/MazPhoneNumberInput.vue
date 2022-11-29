@@ -1,6 +1,6 @@
 <template>
   <div
-    :id="id"
+    :id="instanceId"
     class="m-phone-number-input"
     :class="{
       '--no-flags': noFlags,
@@ -98,7 +98,6 @@
 </script>
 
 <script lang="ts" setup>
-  // import { getCountryCallingCode } from 'libphonenumber-js'
   import type { CountryCode } from 'libphonenumber-js'
 
   import {
@@ -112,7 +111,7 @@
     sanitizePhoneNumber,
     loadPhoneNumberExamplesFile,
   } from './MazPhoneNumberInput/utils'
-  import { truthyFilter } from '@package/helpers'
+  import { truthyFilter, useInstanceUniqId } from '@package/helpers'
 
   import locales from './MazPhoneNumberInput/constantes/locales'
 
@@ -126,6 +125,7 @@
     type PropType,
     ref,
     watch,
+    getCurrentInstance,
   } from 'vue'
 
   import MazInput from './MazInput.vue'
@@ -218,6 +218,13 @@
     },
   })
 
+  const instance = getCurrentInstance()
+  const { instanceId } = useInstanceUniqId({
+    componentName: 'MazPhoneNumberInput',
+    instance,
+    providedId: props.id,
+  })
+
   const results = ref<Partial<Result>>({})
   const countryCode = ref<CountryCode>()
   const formattedNumber = ref<string>()
@@ -261,7 +268,9 @@
         )
       }
 
-      if (!props.defaultCountryCode) {
+      autoUpdateCountryCodeFromPhoneNumber()
+
+      if (!props.defaultCountryCode && !countryCode.value) {
         const locale = props.fetchCountry
           ? await fetchCountryCode()
           : props.noUseBrowserLocale
@@ -271,7 +280,6 @@
         if (locale) {
           setCountryCode(locale as CountryCode)
         }
-        autoUpdateCountryCodeFromPhoneNumber()
       }
     } catch (error) {
       throw new Error(`[MazPhoneNumberInput] (mounted) ${error}`)
@@ -284,26 +292,6 @@
     ...locales,
     ...props.translations,
   }))
-
-  // const callingCode = computed(() => {
-  //   try {
-  //     const getDialCode = (code: CountryCode) => {
-  //       const result = countriesSorted.value?.find(
-  //         (country) => country?.iso2 === code,
-  //       )
-  //       return result ? result.dialCode : undefined
-  //     }
-
-  //     return countryCode.value
-  //       ? `+${
-  //           getDialCode(countryCode.value) ||
-  //           getCountryCallingCode(countryCode.value)
-  //         }`
-  //       : undefined
-  //   } catch (err) {
-  //     throw new Error(`[MazPhoneNumberInput] (callingCode) ${err}`)
-  //   }
-  // })
 
   const isValid = computed(() => {
     return results.value?.isValid
@@ -365,6 +353,16 @@
         : `${t.value.phoneInput.example} ${example}`
     }
   })
+
+  watch(
+    () => props.modelValue,
+    (phoneNumber, oldPhoneNumber) => {
+      if (phoneNumber === oldPhoneNumber) {
+        return
+      }
+      buildResults(phoneNumber)
+    },
+  )
 
   watch(
     () => props.defaultPhoneNumber,

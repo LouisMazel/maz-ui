@@ -1,16 +1,14 @@
-import { mount, VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import MazInputPrice from '@components/MazInputPrice.vue'
-import { ComponentPublicInstance } from 'vue'
 
 describe('components/MazInput.vue', () => {
   expect(MazInputPrice).toBeTruthy()
 
-  const wrapper: VueWrapper<ComponentPublicInstance & { [key: string]: any }> =
-    mount(MazInputPrice, {
-      props: {
-        modelValue: 12,
-      },
-    })
+  const wrapper = mount(MazInputPrice, {
+    props: {
+      modelValue: 12,
+    },
+  })
 
   test('Should match with the snapshot', () => {
     expect(wrapper.html()).toMatchSnapshot()
