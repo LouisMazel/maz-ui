@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.9](https://github.com/LouisMazel/maz-ui/compare/v2.3.13...v3.0.9) (2022-11-29)
+
+### Bug Fixes
+
+- **docs:** deployment ([#283](https://github.com/LouisMazel/maz-ui/issues/283)) ([d389c51](https://github.com/LouisMazel/maz-ui/commit/d389c51bc856540256c3e3c3aa662b0d3e8ea5c8))
+- **docs:** documentation components rendering on server side ([#276](https://github.com/LouisMazel/maz-ui/issues/276)) ([0ee8a5f](https://github.com/LouisMazel/maz-ui/commit/0ee8a5f9bb4c8c209de6be4ad29b631d532349db))
+- **lib:** maz-phone-number-input - auto detect country code on mount ([#387](https://github.com/LouisMazel/maz-ui/issues/387)) ([480984a](https://github.com/LouisMazel/maz-ui/commit/480984ad2c390e95702386ded2545934f1faa794))
+
+### Features
+
+- **lib:** maz-select - add searching option ([#385](https://github.com/LouisMazel/maz-ui/issues/385)) ([bcb77c4](https://github.com/LouisMazel/maz-ui/commit/bcb77c49544934487fd0c0ba722fb11355aa832a))
+
 ## [3.0.8](https://github.com/LouisMazel/maz-ui/compare/v2.3.13...v3.0.8) (2022-11-15)
 
 ### Bug Fixes
