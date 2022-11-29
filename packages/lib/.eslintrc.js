@@ -25,7 +25,10 @@ module.exports = {
     ecmaVersion: 2021,
   },
   rules: {
-    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
+    'no-console': [
+      process.env.NODE_ENV === 'production' ? 'error' : 'warn',
+      { allow: ['error'] },
+    ],
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
     'vue/component-name-in-template-casing': [
       'error',

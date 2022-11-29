@@ -98,7 +98,7 @@ test-unit-coverage:
 	make --directory=packages/lib test-unit-coverage
 
 release:
-	npm run release -- $(type)
+	npm run lerna:version
 	make install
 	git add --all
 	git commit --amend --no-edit

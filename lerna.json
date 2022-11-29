@@ -1,17 +1,17 @@
 {
-  "packages": ["packages/*"],
+  "packages": ["packages/lib"],
   "loglevel": "verbose",
-  "version": "3.0.8",
+  "version": "3.0.11",
   "npmClientArgs": ["--production=false", "--no-progress"],
   "yes": true,
   "granularPathspec": false,
   "command": {
     "version": {
       "message": "chore(release): bump version to %v",
-      "conventionalCommits": true,
       "forceGitTag": true,
       "push": true,
-      "tagVersionPrefix": "v"
+      "tagVersionPrefix": "v",
+      "conventionalCommits": true
     }
   }
 }

@@ -114,11 +114,17 @@ export function browserLocale() {
 
 export function isCountryAvailable(locale: string) {
   try {
-    return isSupportedCountry(locale)
+    const response = isSupportedCountry(locale)
+
+    if (!response) {
+      console.error(
+        `[MazPhoneNumberInput] (isCountryAvailable) The code country "${locale}" is not available`,
+      )
+    }
+
+    return response
   } catch (error) {
-    throw new Error(
-      `[MazPhoneNumberInput] (isCountryAvailable) The country ${locale} is not available -  ${error}`,
-    )
+    throw new Error(`[MazPhoneNumberInput] (isCountryAvailable) ${error}`)
   }
 }
 

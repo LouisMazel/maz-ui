@@ -118,8 +118,8 @@
 
   import MazBtn from './MazBtn.vue'
   import MazIcon from './MazIcon.vue'
-  import type { Color, Size } from './types'
-  export type { Color, Size } from './types'
+  import type { Color, ModelValueSimple, Size } from './types'
+  export type { Color, Size, ModelValueSimple } from './types'
   import EyeOffIcon from '@package/icons/eye-off.svg'
   import EyeIcon from '@package/icons/eye.svg'
   import CheckIcon from '@package/icons/check.svg'
@@ -129,9 +129,7 @@
     inheritAttrs: false,
     props: {
       modelValue: {
-        type: [String, Number] as PropType<
-          string | number | null | undefined | boolean
-        >,
+        type: [String, Number, Boolean] as PropType<ModelValueSimple>,
         default: undefined,
       },
       placeholder: { type: String, default: undefined },

@@ -1,7 +1,7 @@
 <template>
   <div
-    :id="id"
-    class="m-phone-number-input maz-relative maz-flex"
+    :id="instanceId"
+    class="m-phone-number-input"
     :class="{
       '--no-flags': noFlags,
     }"
@@ -20,9 +20,6 @@
       v-if="!noCountrySelector && countryOptions"
       ref="CountrySelector"
       class="m-phone-number-input__select"
-      :class="{
-        '--no-country-code': !countryCode,
-      }"
       :model-value="countryCode"
       option-value-key="iso2"
       option-label-key="name"
@@ -32,6 +29,8 @@
       :color="color"
       :size="size"
       :list-position="listPosition"
+      :search="!noSearch"
+      :search-placeholder="t.countrySelector.searchPlaceholder"
       :options="countryOptions"
       :error="error || (!!formattedNumber && !countryCode)"
       :hint="
@@ -99,8 +98,6 @@
 </script>
 
 <script lang="ts" setup>
-  // NEXT: listPosition
-  // import { getCountryCallingCode } from 'libphonenumber-js'
   import type { CountryCode } from 'libphonenumber-js'
 
   import {
@@ -114,14 +111,13 @@
     sanitizePhoneNumber,
     loadPhoneNumberExamplesFile,
   } from './MazPhoneNumberInput/utils'
-  import { truthyFilter } from '@package/helpers'
+  import { truthyFilter, useInstanceUniqId } from '@package/helpers'
 
   import locales from './MazPhoneNumberInput/constantes/locales'
 
   import type { Result, Translations } from './MazPhoneNumberInput/types'
 
   import {
-    type ComponentPublicInstance,
     computed,
     nextTick,
     onBeforeMount,
@@ -129,6 +125,7 @@
     type PropType,
     ref,
     watch,
+    getCurrentInstance,
   } from 'vue'
 
   import MazInput from './MazInput.vue'
@@ -151,9 +148,7 @@
     defaultCountryCode: {
       type: String as PropType<CountryCode>,
       default: undefined,
-      validator: (code: CountryCode) => {
-        return isCountryAvailable(code)
-      },
+      validator: (code: string) => isCountryAvailable(code),
     },
     preferredCountries: {
       type: Array as PropType<CountryCode[]>,
@@ -223,6 +218,13 @@
     },
   })
 
+  const instance = getCurrentInstance()
+  const { instanceId } = useInstanceUniqId({
+    componentName: 'MazPhoneNumberInput',
+    instance,
+    providedId: props.id,
+  })
+
   const results = ref<Partial<Result>>({})
   const countryCode = ref<CountryCode>()
   const formattedNumber = ref<string>()
@@ -230,8 +232,8 @@
   const examplesFileLoaded = ref(false)
   const inputFocused = ref(false)
   const lastKeyPressed = ref<KeyboardEvent['key']>()
-  const CountrySelector = ref<ComponentPublicInstance>()
-  const PhoneNumberInput = ref<ComponentPublicInstance>()
+  const CountrySelector = ref<typeof MazSelect>()
+  const PhoneNumberInput = ref<typeof MazInput>()
 
   onBeforeMount(async () => {
     countryCode.value = props.defaultCountryCode
@@ -266,7 +268,9 @@
         )
       }
 
-      if (!props.defaultCountryCode) {
+      autoUpdateCountryCodeFromPhoneNumber()
+
+      if (!props.defaultCountryCode && !countryCode.value) {
         const locale = props.fetchCountry
           ? await fetchCountryCode()
           : props.noUseBrowserLocale
@@ -288,26 +292,6 @@
     ...locales,
     ...props.translations,
   }))
-
-  // const callingCode = computed(() => {
-  //   try {
-  //     const getDialCode = (code: CountryCode) => {
-  //       const result = countriesSorted.value?.find(
-  //         (country) => country?.iso2 === code,
-  //       )
-  //       return result ? result.dialCode : undefined
-  //     }
-
-  //     return countryCode.value
-  //       ? `+${
-  //           getDialCode(countryCode.value) ||
-  //           getCountryCallingCode(countryCode.value)
-  //         }`
-  //       : undefined
-  //   } catch (err) {
-  //     throw new Error(`[MazPhoneNumberInput] (callingCode) ${err}`)
-  //   }
-  // })
 
   const isValid = computed(() => {
     return results.value?.isValid
@@ -369,6 +353,16 @@
         : `${t.value.phoneInput.example} ${example}`
     }
   })
+
+  watch(
+    () => props.modelValue,
+    (phoneNumber, oldPhoneNumber) => {
+      if (phoneNumber === oldPhoneNumber) {
+        return
+      }
+      buildResults(phoneNumber)
+    },
+  )
 
   watch(
     () => props.defaultPhoneNumber,
@@ -553,6 +547,8 @@
   @import './MazPhoneNumberInput/css/flags.css';
 
   .m-phone-number-input {
+    @apply maz-relative maz-flex;
+
     &__country-flag {
       position: absolute;
       bottom: 10px;
@@ -575,18 +571,16 @@
       @apply maz-w-36;
 
       &__item {
-        @apply maz-px-1 maz-py-1 maz-text-sm;
+        @apply maz-w-full maz-text-sm;
       }
 
-      &:not(.--no-country-code) {
-        &:deep(.m-input-wrapper) {
-          @apply maz-rounded-r-none;
-        }
+      &:deep(.m-select-input .m-input-wrapper) {
+        @apply maz-rounded-r-none !important;
       }
     }
 
     &:not(.--no-flags) {
-      & .m-phone-number-input__select:deep(.m-input-wrapper) input {
+      .m-phone-number-input__select:deep(.m-input-wrapper) .m-select-input {
         @apply maz-pl-11 !important;
       }
     }

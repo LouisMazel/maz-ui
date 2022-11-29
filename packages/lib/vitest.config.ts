@@ -22,7 +22,11 @@ export default defineConfig({
       excludeNodeModules: true,
       reporter: ['clover', 'html'],
       include: ['package'],
-      exclude: ['package/components_tmp/**', 'package/components/index.ts'],
+      exclude: [
+        'package/components_tmp/**',
+        'package/components/index.ts',
+        'package/components/MazPhoneNumberInput/constantes/locales.ts',
+      ],
       extension: ['.js', '.ts', '.vue'],
     },
   },
