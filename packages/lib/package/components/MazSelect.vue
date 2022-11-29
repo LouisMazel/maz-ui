@@ -297,7 +297,7 @@
 
   const mainInputKeyboardHandler = (event: KeyboardEvent) => {
     if (/[\dA-Za-z]/.test(event.key) && event.key.length === 1) {
-      openList(event)
+      openList()
       searchInputComponent.value?.input.focus()
     } else {
       keyboardHandler(event)
