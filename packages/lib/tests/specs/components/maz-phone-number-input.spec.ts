@@ -1,5 +1,6 @@
 import { mount } from '@vue/test-utils'
 import MazPhoneNumberInput from '@components/MazPhoneNumberInput.vue'
+import { isCountryAvailable } from '@components/MazPhoneNumberInput/utils/index'
 
 describe('components/MazPhoneNumberInput.vue', () => {
   expect(MazPhoneNumberInput).toBeTruthy()
@@ -38,5 +39,13 @@ describe('components/MazPhoneNumberInput.vue', () => {
 
     expect(wrapper.vm.modelValue).toBe('+326453')
     expect(wrapper.vm.countryCode).toBe('BE')
+  })
+
+  test('Should validate country code', async () => {
+    const french = isCountryAvailable('FR')
+    const falsy = isCountryAvailable('FRFALS')
+
+    expect(french).toBeTruthy()
+    expect(falsy).toBeFalsy()
   })
 })
