@@ -1,7 +1,7 @@
 <template>
   <div
     :id="id"
-    class="m-phone-number-input maz-relative maz-flex"
+    class="m-phone-number-input"
     :class="{
       '--no-flags': noFlags,
     }"
@@ -32,6 +32,8 @@
       :color="color"
       :size="size"
       :list-position="listPosition"
+      :search="!noSearch"
+      :search-placeholder="t.countrySelector.searchPlaceholder"
       :options="countryOptions"
       :error="error || (!!formattedNumber && !countryCode)"
       :hint="
@@ -99,7 +101,6 @@
 </script>
 
 <script lang="ts" setup>
-  // NEXT: listPosition
   // import { getCountryCallingCode } from 'libphonenumber-js'
   import type { CountryCode } from 'libphonenumber-js'
 
@@ -553,6 +554,8 @@
   @import './MazPhoneNumberInput/css/flags.css';
 
   .m-phone-number-input {
+    @apply maz-relative maz-flex;
+
     &__country-flag {
       position: absolute;
       bottom: 10px;
@@ -579,14 +582,14 @@
       }
 
       &:not(.--no-country-code) {
-        &:deep(.m-input-wrapper) {
-          @apply maz-rounded-r-none;
+        &:deep(.m-select-input .m-input-wrapper) {
+          @apply maz-rounded-r-none !important;
         }
       }
     }
 
     &:not(.--no-flags) {
-      & .m-phone-number-input__select:deep(.m-input-wrapper) input {
+      .m-phone-number-input__select:deep(.m-input-wrapper) .m-select-input {
         @apply maz-pl-11 !important;
       }
     }
