@@ -11,11 +11,5 @@
     "comments": false,
     "strings": true
   },
-  "css.validate": false,
-  "emmet.includeLanguages": {
-    "javascript": "javascriptreact",
-    "vue-html": "html",
-    "razor": "html",
-    "plaintext": "jade"
-  }
+  "css.validate": false
 }
