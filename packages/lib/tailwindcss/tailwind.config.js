@@ -1,6 +1,5 @@
 // Tailwind CSS configuration (https://tailwindcss.com/docs/configuration)
-/* eslint-disable @typescript-eslint/no-var-requires */
-
+/* eslint-disable unicorn/prefer-module */
 const plugin = require('tailwindcss/plugin')
 
 const UTILITIES = require('./variables/utilities')
@@ -62,5 +61,3 @@ module.exports = {
     }),
   ],
 }
-
-/* eslint-enable @typescript-eslint/no-var-requires */

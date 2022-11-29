@@ -32,9 +32,7 @@
 
     // Force repaint to make sure the
     // animation is triggered correctly.
-    /* eslint-disable */
     getComputedStyle(element).height
-    /* eslint-enable */
 
     // Trigger the animation.
     // We use `setTimeout` because we need
@@ -56,9 +54,8 @@
 
     // Force repaint to make sure the
     // animation is triggered correctly.
-    /* eslint-disable */
     getComputedStyle(element).height
-    /* eslint-enable */
+
     nextTick(() => {
       element.style.height = '0px'
     })

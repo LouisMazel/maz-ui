@@ -1,12 +1,11 @@
 /* eslint-disable no-console */
-
 const { renderSync } = require('node-sass')
-const { resolve } = require('path')
+const { resolve } = require('node:path')
 
 const postcss = require('postcss')
 const autoprefixer = require('autoprefixer')
 
-const { writeFileSync, existsSync, mkdirSync } = require('fs')
+const { writeFileSync, existsSync, mkdirSync } = require('node:fs')
 
 const AOS_SCSS_ENTRY = resolve(
   __dirname,
@@ -39,11 +38,11 @@ const buildCompilteScss = async () => {
     writeFileSync(AOS_SCSS_OUTPUT, cssPrefixed.css)
 
     console.log('[Build](scss) ✅ css compiled')
-  } catch (err) {
-    throw new Error(`[build](scss) 🔴 ${err}`)
+  } catch (error) {
+    throw new Error(`[build](scss) 🔴 ${error}`)
   }
 }
 
-buildCompilteScss()
+/* eslint-disable unicorn/prefer-top-level-await */
 
-/* eslint-enable no-console */
+buildCompilteScss()

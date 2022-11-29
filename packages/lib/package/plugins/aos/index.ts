@@ -62,7 +62,7 @@ class AosHandler {
       ...this.options.observer,
     })
 
-    document.querySelectorAll('[data-maz-aos]').forEach((element) => {
+    for (const element of document.querySelectorAll('[data-maz-aos]')) {
       const anchorAttr = element.getAttribute('data-maz-aos-anchor')
       if (anchorAttr) {
         const anchorElement = document.querySelector(anchorAttr)
@@ -78,11 +78,11 @@ class AosHandler {
       } else {
         observer.observe(element)
       }
-    })
+    }
   }
 
   handleIntersect: IntersectionObserverCallback = (entries, observer) => {
-    entries.forEach((entry) => {
+    for (const entry of entries) {
       const target = entry.target as HTMLElement
       const hasChildren =
         target.getAttribute('data-maz-aos-children') === 'true'
@@ -93,22 +93,22 @@ class AosHandler {
         : []
 
       if (hasChildren) {
-        const children = Array.from(
-          document.querySelectorAll('[data-maz-aos-anchor]'),
-        ).map((child) =>
+        const children = [
+          ...document.querySelectorAll('[data-maz-aos-anchor]'),
+        ].map((child) =>
           child.getAttribute('data-maz-aos-anchor') === `#${entry.target.id}`
             ? child
             : undefined,
         )
 
-        children.forEach((child) => {
+        for (const child of children) {
           if (child) {
             animateElements.push(child as HTMLElement)
           }
-        })
+        }
       }
 
-      animateElements.forEach((element) => {
+      for (const element of animateElements) {
         const once = element.getAttribute('data-maz-aos-once')
 
         const useOnce: boolean =
@@ -134,8 +134,8 @@ class AosHandler {
         } else {
           element.classList.remove('maz-aos-animate')
         }
-      })
-    })
+      }
+    }
   }
 }
 

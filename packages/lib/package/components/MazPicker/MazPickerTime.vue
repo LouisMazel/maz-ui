@@ -97,11 +97,9 @@
   const dividerHeight = ref<number>()
 
   const currentHour = computed(() => {
-    if (typeof currentDate.value === 'string') {
-      return findNearestHour(dayjs(currentDate.value).get('hour'))
-    } else {
-      return undefined
-    }
+    return typeof currentDate.value === 'string'
+      ? findNearestHour(dayjs(currentDate.value).get('hour'))
+      : undefined
   })
 
   const currentMinute = computed(() =>
@@ -332,26 +330,27 @@
       currentDate.value = dateWithNewMinute.format()
     }
 
-    if (identifier === 'ampm') {
-      if (currentAmpm.value !== value || !currentHour.value) {
-        if (value === 'am') {
-          currentDate.value = newDate
-            .set('hour', newDate.get('hour'))
-            .subtract(12, 'hour')
-            .format()
-        }
-        if (value === 'pm') {
-          const baseHour = newDate.get('hour')
+    if (
+      identifier === 'ampm' &&
+      (currentAmpm.value !== value || !currentHour.value)
+    ) {
+      if (value === 'am') {
+        currentDate.value = newDate
+          .set('hour', newDate.get('hour'))
+          .subtract(12, 'hour')
+          .format()
+      }
+      if (value === 'pm') {
+        const baseHour = newDate.get('hour')
 
-          const newHour =
-            baseHour + 12 > 12 && baseHour + 12 < 24
-              ? baseHour + 12
-              : baseHour === 0
-              ? 12
-              : baseHour
+        const newHour =
+          baseHour + 12 > 12 && baseHour + 12 < 24
+            ? baseHour + 12
+            : baseHour === 0
+            ? 12
+            : baseHour
 
-          currentDate.value = newDate.set('hour', newHour).format()
-        }
+        currentDate.value = newDate.set('hour', newHour).format()
       }
     }
 

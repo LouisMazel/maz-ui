@@ -1,5 +1,5 @@
-const { readdirSync } = require('fs')
-const { resolve } = require('path')
+const { readdirSync } = require('node:fs')
+const { resolve } = require('node:path')
 
 const INPUT_COMPONENT_DIR = resolve(__dirname, './../package/components')
 

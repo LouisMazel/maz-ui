@@ -61,29 +61,28 @@
   >(() => {
     return Array.from({ length: 12 }, (_v, i) => i).map((monthNumber) => {
       const monthDate = dayjs(props.calendarDate).set('month', monthNumber)
-      if (props.double) {
-        return {
-          label: `${capitalize(
-            date(monthDate.format(), props.locale, {
-              month: 'short',
-            }),
-          )} - ${capitalize(
-            date(monthDate.add(1, 'month').format(), props.locale, {
-              month: 'short',
-            }),
-          )}`,
-          date: monthDate,
-        }
-      } else {
-        return {
-          label: capitalize(
-            date(monthDate.format(), props.locale, {
-              month: 'long',
-            }),
-          ),
-          date: monthDate,
-        }
-      }
+
+      return props.double
+        ? {
+            label: `${capitalize(
+              date(monthDate.format(), props.locale, {
+                month: 'short',
+              }),
+            )} - ${capitalize(
+              date(monthDate.add(1, 'month').format(), props.locale, {
+                month: 'short',
+              }),
+            )}`,
+            date: monthDate,
+          }
+        : {
+            label: capitalize(
+              date(monthDate.format(), props.locale, {
+                month: 'long',
+              }),
+            ),
+            date: monthDate,
+          }
     })
   })
 

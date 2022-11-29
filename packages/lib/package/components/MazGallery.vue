@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="images.length || hasEmptyLayer"
+    v-if="images.length > 0 || hasEmptyLayer"
     class="m-gallery maz-flex"
     :style="[sizeStyle]"
     :class="{ 'maz-rounded-xl': !noRadius }"
@@ -42,7 +42,7 @@
         </div>
       </figure>
       <div
-        v-if="hasEmptyLayer && !images.length"
+        v-if="hasEmptyLayer && images.length === 0"
         class="flex-center maz-flex maz-w-full maz-bg-color-light maz-text-normal"
         :class="{ 'maz-rounded-xl': !noRadius }"
         :style="[sizeStyle]"
@@ -118,7 +118,7 @@
         return {
           ...(!noWidth
             ? {
-                flex: `0 0 ${typeof width === 'number' ? `${width}px` : width}`,
+                flex: '0 0 ' + typeof width === 'number' ? `${width}px` : width,
                 width: typeof width === 'number' ? `${width}px` : width,
               }
             : {}),
@@ -157,10 +157,10 @@
           props.images.length,
         )
       })
-      const shouldHaveRemainingLayer = (i: number) => {
+      const shouldHaveRemainingLayer = (index: number) => {
         return (
           numberImagesRemaining.value &&
-          i + 1 === imagesShown.value.length &&
+          index + 1 === imagesShown.value.length &&
           !props.noRemaining
         )
       }

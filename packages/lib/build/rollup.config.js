@@ -1,6 +1,6 @@
 // rollup.config.js
-import { readFileSync } from 'fs'
-import { resolve } from 'path'
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 
 import vue from 'rollup-plugin-vue'
 import alias from '@rollup/plugin-alias'
@@ -31,12 +31,12 @@ const INPUT_ENTRY = resolve(__dirname, './../package/index.ts')
 const esbrowserslist = readFileSync('./.browserslistrc')
   .toString()
   .split('\n')
-  .filter((entry) => entry && entry.substring(0, 2) !== 'ie')
+  .filter((entry) => entry && entry.slice(0, 2) !== 'ie')
 
 // Extract babel preset-env config, to combine with esbrowserslist
-const babelPresetEnvConfig = require('../babel.config').presets.filter(
+const babelPresetEnvConfig = require('../babel.config').presets.find(
   (entry) => entry[0] === '@babel/preset-env',
-)[0][1]
+)[1]
 
 const argv = minimist(process.argv.slice(2))
 

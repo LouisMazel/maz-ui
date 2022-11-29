@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/prefer-module */
 module.exports = {
   root: true,
   env: {
@@ -11,10 +12,12 @@ module.exports = {
     defineExpose: 'readonly',
     withDefaults: 'readonly',
   },
-  plugins: ['vue', 'prettier', 'unicorn'],
+  plugins: ['vue', 'prettier', 'unicorn', 'sonarjs'],
   extends: [
-    'plugin:vue/vue3-recommended',
     'eslint:recommended',
+    'plugin:sonarjs/recommended',
+    'plugin:unicorn/recommended',
+    'plugin:vue/vue3-recommended',
     '@vue/eslint-config-prettier',
     '@vue/eslint-config-typescript/recommended',
   ],
@@ -43,5 +46,25 @@ module.exports = {
         ignoreRestSiblings: true,
       },
     ],
+    // unicorn
+    'unicorn/filename-case': [
+      'error',
+      {
+        case: 'kebabCase',
+        ignore: ['\\.vue$'],
+      },
+    ],
+    'unicorn/prevent-abbreviations': 'off',
+    'unicorn/no-array-for-each': 'warn',
+    'unicorn/no-array-reduce': 'warn',
+    'unicorn/prefer-dom-node-dataset': 'off',
+    'unicorn/no-null': 'off',
+    'unicorn/prefer-export-from': 'off',
+    'unicorn/prefer-module': 'off',
+    'unicorn/no-array-callback-reference': 'off',
+    'unicorn/no-useless-undefined': 'off',
+    // sonar
+    'sonarjs/no-duplicate-string': 'off',
+    'sonarjs/cognitive-complexity': 'warn',
   },
 }

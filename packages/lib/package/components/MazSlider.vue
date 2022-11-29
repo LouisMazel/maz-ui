@@ -121,12 +121,13 @@
   // COMPUTED
 
   const computedValue = computed<number[]>(() => {
-    const { modelValue } = props
-    return typeof modelValue === 'number'
-      ? [modelValue]
-      : modelValue
-      ? modelValue
-      : [0]
+    if (typeof props.modelValue === 'number') {
+      return [props.modelValue]
+    } else if (props.modelValue) {
+      return props.modelValue
+    } else {
+      return [0]
+    }
   })
   const minLog = computed(() => {
     return Math.log(props.min || 1)
@@ -155,7 +156,7 @@
     { immediate: true },
   )
   watch(
-    () => [computedValue.value, props.min, props.max, props.log].join(),
+    () => [computedValue.value, props.min, props.max, props.log].join(','),
     () => buildComponent(true),
   )
 
@@ -193,19 +194,18 @@
       }
     }
     // ArrowRight
-    else if (event.code === 'ArrowRight') {
-      if (
-        tmpValues.value &&
-        isBetween(
-          tmpValues.value[i] + 1,
-          tmpValues.value[i - 1],
-          tmpValues.value[i + 1],
-          'plus',
-        )
-      ) {
-        tmpValues.value[i]++
-        emitValue(tmpValues.value)
-      }
+    else if (
+      event.code === 'ArrowRight' &&
+      tmpValues.value &&
+      isBetween(
+        tmpValues.value[i] + 1,
+        tmpValues.value[i - 1],
+        tmpValues.value[i + 1],
+        'plus',
+      )
+    ) {
+      tmpValues.value[i]++
+      emitValue(tmpValues.value)
     }
   }
   const blurCursor = (i: number) => {
@@ -222,7 +222,7 @@
     tmpValues.value = valuesChecked
   }
   const emitValue = (values: number[]) => {
-    const valueToEmit = hasMultipleValues.value ? values.slice() : values[0]
+    const valueToEmit = hasMultipleValues.value ? [...values] : values[0]
     emits('update:model-value', valueToEmit)
   }
   const getLabel = (i: number) => {
@@ -257,7 +257,7 @@
   const setDividers = () => {
     if (buttonPositions.value) {
       // remove getters/setters of vue
-      const base = buttonPositions.value.slice()
+      const base = [...buttonPositions.value]
       // add an item to generate one more divider
       base.push(0)
       const baseLength = base.length

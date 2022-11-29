@@ -1,5 +1,4 @@
 import { vZoomImg } from './zoom-img.directive'
-import type { vZoomImgBinding, vZoomImgOptions } from './zoom-img.handler'
 
 const plugin = {
   install(app) {
@@ -7,4 +6,7 @@ const plugin = {
   },
 }
 
-export { plugin as vZoomImgInstall, vZoomImg, vZoomImgBinding, vZoomImgOptions }
+export { plugin as vZoomImgInstall }
+
+export { vZoomImg } from './zoom-img.directive'
+export type { vZoomImgBinding, vZoomImgOptions } from './zoom-img.handler'

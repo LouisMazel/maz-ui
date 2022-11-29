@@ -242,7 +242,7 @@
         await loadPhoneNumberExamplesFile()
         examplesFileLoaded.value = true
       }
-    } catch (err) {
+    } catch {
       throw new Error(
         '[MazPhoneNumberInput] while loading phone number examples file',
       )
@@ -277,8 +277,8 @@
           setCountryCode(locale as CountryCode)
         }
       }
-    } catch (err) {
-      throw new Error(`[MazPhoneNumberInput] (mounted) ${err}`)
+    } catch (error) {
+      throw new Error(`[MazPhoneNumberInput] (mounted) ${error}`)
     }
   })
 
@@ -334,10 +334,7 @@
 
   const countriesSorted = computed(() => {
     return props.preferredCountries
-      ? [
-          ...(countriesFiltered.value ? countriesFiltered.value : []),
-          ...(otherCountries.value ? otherCountries.value : []),
-        ]
+      ? [...(countriesFiltered.value ?? []), ...(otherCountries.value ?? [])]
       : props.onlyCountries
       ? countriesFiltered.value
       : countriesList.value
@@ -407,8 +404,8 @@
         ? getExamplePhoneNumber(countryCode.value)
         : undefined
       return phoneNumber ? phoneNumber.formatNational() : undefined
-    } catch (err) {
-      throw new Error(`[MazPhoneNumberInput] (getPhoneNumberExample) ${err}`)
+    } catch (error) {
+      throw new Error(`[MazPhoneNumberInput] (getPhoneNumberExample) ${error}`)
     }
   }
 
@@ -428,8 +425,8 @@
     const backSpacePressed = lastKeyPressed.value === 'Backspace'
 
     const lastCharacOfPhoneNumber = phoneNumber
-      ? phoneNumber.trim().substring(-1)
-      : false
+      ? phoneNumber.charAt(phoneNumber.length - 1)
+      : ''
     const lastCharIsParanthese = lastCharacOfPhoneNumber === ')'
 
     if (backSpacePressed && lastCharIsParanthese) {
@@ -451,7 +448,7 @@
         formattedNumber.value,
       )
 
-      const { isValid, e164 } = results.value
+      const { isValid, e164, formatNational } = results.value
 
       const hasDeletedCharac =
         formattedNumber.value &&
@@ -470,8 +467,8 @@
         const isFullNumber = formattedNumber.value?.includes('+')
 
         formattedNumber.value =
-          results.value.formatNational && isFullNumber
-            ? results.value.formatNational
+          formatNational && isFullNumber
+            ? formatNational
             : shouldUseAsYoutType
             ? getAsYouTypeFormat(countryCode.value, formattedNumber.value)
             : formattedNumber.value
@@ -493,8 +490,8 @@
       // sent when the user tape
       // @arg Phone number value formatted in e164 format (international format)
       emits('update:model-value', valueToEmit)
-    } catch (err) {
-      throw new Error(`[MazPhoneNumberInput] (buildResults) ${err}`)
+    } catch (error) {
+      throw new Error(`[MazPhoneNumberInput] (buildResults) ${error}`)
     }
   }
 
@@ -528,8 +525,8 @@
         emits('country-code', selectedCountryCode)
         buildResults(formattedNumber.value, true)
       }
-    } catch (err) {
-      throw new Error(`[MazPhoneNumberInput] (setCountryCode) ${err}`)
+    } catch (error) {
+      throw new Error(`[MazPhoneNumberInput] (setCountryCode) ${error}`)
     }
   }
 
@@ -537,8 +534,8 @@
     try {
       await nextTick()
       CountrySelector.value?.$el.querySelector('input')?.focus()
-    } catch (err) {
-      throw new Error(`[MazPhoneNumberInput] (focusCountrySelector) ${err}`)
+    } catch (error) {
+      throw new Error(`[MazPhoneNumberInput] (focusCountrySelector) ${error}`)
     }
   }
 
@@ -546,8 +543,8 @@
     try {
       await nextTick()
       PhoneNumberInput.value?.$el.querySelector('input')?.focus()
-    } catch (err) {
-      throw new Error(`[MazPhoneNumberInput] (focusPhoneNumberInput) ${err}`)
+    } catch (error) {
+      throw new Error(`[MazPhoneNumberInput] (focusPhoneNumberInput) ${error}`)
     }
   }
 </script>

@@ -190,11 +190,9 @@ export const findNearestNumberInList = (
   list: number[],
   number: number,
 ): number => {
-  const closest = list.reduce((prev, curr) => {
+  return list.reduce((prev, curr) => {
     return Math.abs(curr - number) < Math.abs(prev - number) ? curr : prev
   })
-
-  return closest
 }
 
 export function convertHour24to12Format(baseHour: number): number {
@@ -214,7 +212,7 @@ export const convert12To24TimeFormat = (timeStr: string) => {
     hours = '00'
   }
   if (modifier.toLowerCase().trim().includes('pm')) {
-    hours = parseInt(hours, 10) + 12
+    hours = Number.parseInt(hours, 10) + 12
   }
   return `${hours}:${minutes}`
 }
@@ -226,8 +224,8 @@ export function getBrowserLocale(): string | undefined {
     }
 
     return window.navigator.language
-  } catch (err) {
-    throw new Error(`[MazPhoneNumberInput] (browserLocale) ${err}`)
+  } catch (error) {
+    throw new Error(`[MazPhoneNumberInput] (browserLocale) ${error}`)
   }
 }
 
@@ -242,8 +240,8 @@ export async function fetchLocale(): Promise<string | undefined> {
     }
 
     return result.split(';')[1]
-  } catch (err) {
+  } catch (error) {
     // eslint-disable-next-line no-console
-    console.error(`[maz-ui](MazPicker)(fetchCountryCode) ${err}`)
+    console.error(`[maz-ui](MazPicker)(fetchCountryCode) ${error}`)
   }
 }

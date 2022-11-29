@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/prefer-module */
 module.exports = {
   extends: [
     'stylelint-config-standard',
@@ -21,8 +22,8 @@ module.exports = {
       true,
       { ignorePseudoClasses: ['deep'] },
     ],
-    'selector-class-pattern': null,
-    'no-descending-specificity': null,
+    'selector-class-pattern': undefined,
+    'no-descending-specificity': undefined,
     'string-quotes': 'single',
   },
 }

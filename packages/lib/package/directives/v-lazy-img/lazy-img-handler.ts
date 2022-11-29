@@ -34,7 +34,8 @@ export class LazyImg {
   }
 
   private async loadErrorPhoto() {
-    return (await import('./assets/no_photo.svg')).default
+    const { default: photo } = await import('./assets/no_photo.svg')
+    return photo
   }
 
   private buildOptions(opts: vLazyImgOptions): ClassOptions {
@@ -150,9 +151,7 @@ export class LazyImg {
 
   private async setDefaultPhoto(el: HTMLElement) {
     if (this.options.noUseErrorPhoto) return
-    const errorPhoto = this.options.errorPhoto
-      ? this.options.errorPhoto
-      : await this.loadErrorPhoto()
+    const errorPhoto = this.options.errorPhoto ?? (await this.loadErrorPhoto())
     const sourceElements = el.querySelectorAll('source')
     if (sourceElements.length > 0) {
       for await (const source of sourceElements) {
