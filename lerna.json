@@ -5,12 +5,11 @@
   "yes": false,
   "command": {
     "version": {
-      "message": "chore(release): bump version to %v",
+      "message": "chore(release): bump version to %s",
       "forceGitTag": true,
       "conventionalCommits": true,
       "includeMergedTags": true
     }
   },
-  "$schema": "node_modules/lerna/schemas/lerna-schema.json",
-  "useWorkspaces": false
+  "$schema": "node_modules/lerna/schemas/lerna-schema.json"
 }
