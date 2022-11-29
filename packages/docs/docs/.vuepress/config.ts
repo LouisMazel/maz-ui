@@ -54,11 +54,6 @@ export default defineUserConfig({
           '~maz-ui': path.resolve(__dirname, './../../../lib'),
         }
       },
-      server: {
-        fs: {
-          allow: ['./../../../lib'],
-        },
-      },
     },
   }),
   plugins: [
