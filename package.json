@@ -7,7 +7,7 @@
     "pre-commit": "lint-staged",
     "format": "prettier . --write",
     "lint": "lerna run lint --parallel",
-    "lerna:release": "npx lerna version",
+    "lerna:version": "npx lerna version",
     "lerna:publish": "npx lerna publish"
   },
   "lint-staged": {

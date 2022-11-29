@@ -1,5 +1,5 @@
 {
-  "packages": ["packages/*"],
+  "packages": ["packages/lib"],
   "loglevel": "verbose",
   "version": "3.0.10",
   "npmClientArgs": ["--production=false", "--no-progress"],
@@ -10,9 +10,7 @@
       "message": "chore(release): bump version to %v",
       "forceGitTag": true,
       "push": true,
-      "tagVersionPrefix": "v"
-    },
-    "publish": {
+      "tagVersionPrefix": "v",
       "conventionalCommits": true
     }
   }
