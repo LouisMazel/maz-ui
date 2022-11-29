@@ -32,6 +32,8 @@
       :color="color"
       :size="size"
       :list-position="listPosition"
+      :search="!noSearch"
+      :search-placeholder="t.countrySelector.searchPlaceholder"
       :options="countryOptions"
       :error="error || (!!formattedNumber && !countryCode)"
       :hint="
@@ -99,7 +101,6 @@
 </script>
 
 <script lang="ts" setup>
-  // NEXT: listPosition
   // import { getCountryCallingCode } from 'libphonenumber-js'
   import type { CountryCode } from 'libphonenumber-js'
 
@@ -579,14 +580,14 @@
       }
 
       &:not(.--no-country-code) {
-        &:deep(.m-input-wrapper) {
+        >>> .m-input:not(.m-select-list__search-input) .m-input-wrapper {
           @apply maz-rounded-r-none;
         }
       }
     }
 
     &:not(.--no-flags) {
-      & .m-phone-number-input__select:deep(.m-input-wrapper) input {
+      .m-phone-number-input__select:deep(.m-input-wrapper) .m-select-input {
         @apply maz-pl-11 !important;
       }
     }
