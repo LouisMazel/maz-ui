@@ -27,7 +27,7 @@
     "cz-customizable": "^7.0.0",
     "gulp-conventional-changelog": "^2.0.35",
     "husky": "^8.0.2",
-    "lerna": "^6.1.0",
+    "lerna": "^6.0.3",
     "lint-staged": "^13.0.4",
     "prettier": "^2.8.0"
   },
