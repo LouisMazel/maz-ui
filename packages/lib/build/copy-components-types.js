@@ -1,3 +1,5 @@
+// @ts-check
+
 const {
   renameSync,
   existsSync,
@@ -20,8 +22,9 @@ const OUTPUT_TYPES_FILES = resolve(__dirname, './../components')
  */
 function copyRecursiveSync(src, dest) {
   const exists = existsSync(src)
-  const stats = exists && statSync(src)
+  const stats = statSync(src)
   const isDirectory = exists && stats.isDirectory()
+
   if (isDirectory) {
     const destDirExists = existsSync(dest)
     if (!destDirExists) {
