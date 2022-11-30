@@ -1,3 +1,6 @@
+audit:
+	npm audit
+
 build:
 	npm run docs:build
 
@@ -7,7 +10,9 @@ serve:
 install:
 	npm i
 
+clean:
+	rm -rf node_modules
+
 reinstall:
-	rm -rf ./node_modules
-	npm i
+	make clean install
 
