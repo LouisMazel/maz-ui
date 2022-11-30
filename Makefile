@@ -11,6 +11,8 @@ audit-docs:
 	make --directory=packages/docs audit
 audit-testing:
 	make --directory=packages/testing audit
+audit-all:
+	make audit audit-lib audit-docs audit-testing
 
 lint-lib:
 	make --directory=packages/lib lint
