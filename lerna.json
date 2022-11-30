@@ -1,11 +1,11 @@
 {
-  "packages": ["packages/lib"],
+  "packages": ["packages/*"],
   "loglevel": "verbose",
   "version": "3.1.1",
   "yes": false,
   "command": {
     "version": {
-      "allowBranch": ["master", "release/*"],
+      "allowBranch": ["master"],
       "message": "chore(release): bump version to %s",
       "forceGitTag": true,
       "conventionalCommits": true
