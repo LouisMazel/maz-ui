@@ -128,7 +128,6 @@
     "replace-in-file": "^6.3.5",
     "rimraf": "^3.0.2",
     "rollup": "^2.79.0",
-    "rollup-plugin-css-only": "^3.1.0",
     "rollup-plugin-dts": "^4.2.2",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.2",
