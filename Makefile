@@ -97,6 +97,9 @@ test-unit-watch:
 test-unit-coverage:
 	make --directory=packages/lib test-unit-coverage
 
+test-unit-coverage-watch:
+	make --directory=packages/lib test-unit-coverage-watch
+
 release:
 	npm run lerna:version
 	make install
