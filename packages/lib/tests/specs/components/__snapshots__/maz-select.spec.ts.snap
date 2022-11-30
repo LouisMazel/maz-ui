@@ -18,7 +18,7 @@ exports[`components/MazSelect.vue > Should match with the snapshot 1`] = `
       </div>
     </div>
   </div>
-  <transition-stub data-v-35fa79e0=\\"\\">
+  <transition-stub name=\\"maz-slide\\" appear=\\"false\\" persisted=\\"false\\" css=\\"true\\" data-v-35fa79e0=\\"\\">
     <!--v-if-->
   </transition-stub>
 </div>"

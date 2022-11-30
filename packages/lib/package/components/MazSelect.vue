@@ -47,7 +47,7 @@
           maxWidth: `${maxListWidth}px`,
         }"
       >
-        <div v-if="search" class="m-select-list__search-wrapper">
+        <div v-if="search" tabindex="-1" class="m-select-list__search-wrapper">
           <MazInput
             ref="searchInputComponent"
             v-model="searchQuery"
@@ -202,12 +202,13 @@
       console.error('[maz-ui](MazSelect) you must provide options')
     }
 
-    if (selectedOption.value)
+    if (selectedOption.value) {
       tmpModelValueIndex.value = props.options?.findIndex(
         (option) =>
           option[props.optionValueKey] ===
-          selectedOption.value?.[props.optionLabelKey],
+          selectedOption.value?.[props.optionValueKey],
       )
+    }
   })
 
   const mazSelectElement = ref<HTMLDivElement>()
@@ -234,21 +235,6 @@
   )
 
   const searchQuery = ref<string>()
-  const optionsList = computed(() => {
-    return searchQuery.value
-      ? props.options.filter((option) => {
-          const searchValue = option[props.optionLabelKey]
-          const searchValue2 = option[props.optionInputValueKey]
-          const searchValue3 = option[props.optionValueKey]
-
-          return (
-            searchInValue(searchValue, searchQuery.value) ||
-            searchInValue(searchValue2, searchQuery.value) ||
-            searchInValue(searchValue3, searchQuery.value)
-          )
-        })
-      : props.options
-  })
 
   const searchInValue = (value?: ModelValueSimple, query?: string) => {
     return (
@@ -256,6 +242,22 @@
       value?.toString().toLocaleLowerCase().includes(query.toLocaleLowerCase())
     )
   }
+
+  const optionsList = computed(() => {
+    return searchQuery.value
+      ? props.options.filter((option) => {
+          const searchValue = option[props.optionLabelKey]
+          const searchValue3 = option[props.optionValueKey]
+          const searchValue2 = option[props.optionInputValueKey]
+
+          return (
+            searchInValue(searchValue, searchQuery.value) ||
+            searchInValue(searchValue3, searchQuery.value) ||
+            searchInValue(searchValue2, searchQuery.value)
+          )
+        })
+      : props.options
+  })
 
   const closeList = async (event?: FocusEvent | KeyboardEvent) => {
     if (
@@ -281,23 +283,16 @@
     scrollToSelected()
     emits('focus', event)
     emits('open', hasListOpen.value)
-    focusInput()
   }
 
-  const focusInput = () => {
-    const inputComponent = mazInputComponent.value?.$el as
-      | HTMLDivElement
-      | undefined
-    const inputHTMLElement = inputComponent?.querySelector(
-      `input#${instanceId.value}`,
-    ) as HTMLInputElement | undefined
-
-    inputHTMLElement?.focus()
-  }
+  // const unFocusInput = () => {
+  //   mazSelectElement.value?.blur()
+  //   mazInputComponent.value?.input?.blur()
+  // }
 
   const mainInputKeyboardHandler = (event: KeyboardEvent) => {
     if (/[\dA-Za-z]/.test(event.key) && event.key.length === 1) {
-      openList()
+      openList(event)
       searchInputComponent.value?.input.focus()
     } else {
       keyboardHandler(event)
@@ -312,12 +307,10 @@
 
     if (isArrow) {
       arrowHandler(event, tmpModelValueIndex.value)
-    } else if (isEnter && hasListOpen.value) {
+    } else if (isEnter) {
       enterHandler(event, tmpModelValueIndex.value)
     } else if ('Escape' === code && hasListOpen.value) {
       closeList()
-      mazSelectElement.value?.blur()
-      mazInputComponent.value?.input?.blur()
     }
   }
 
@@ -347,6 +340,10 @@
 
   const enterHandler = (event: KeyboardEvent, currentIndex?: number) => {
     event.preventDefault()
+
+    if (!hasListOpen.value) {
+      return openList(event)
+    }
 
     const newValue = currentIndex
       ? optionsList.value[currentIndex] ?? optionsList.value[0]

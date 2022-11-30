@@ -42,6 +42,9 @@ test-unit-watch:
 test-unit-coverage:
 	npm run test:unit:coverage
 
+test-unit-coverage-watch:
+	npm run test:unit:coverage:watch
+
 test-unit-coverage-master:
 	npm run test:unit:coverage:master
 
