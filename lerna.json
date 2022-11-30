@@ -5,10 +5,10 @@
   "yes": false,
   "command": {
     "version": {
-      "allowBranch": "release/*",
+      "allowBranch": ["master", "release/*"],
       "message": "chore(release): bump version to %s",
-      "conventionalCommits": true,
-      "includeMergedTags": true
+      "forceGitTag": false,
+      "conventionalCommits": true
     }
   },
   "$schema": "node_modules/lerna/schemas/lerna-schema.json"

@@ -102,7 +102,3 @@ test-unit-coverage-watch:
 
 release:
 	npm run lerna:version
-	make install
-	git add --all
-	git commit --amend --no-edit
-	git push origin HEAD --force
