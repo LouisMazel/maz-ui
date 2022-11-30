@@ -1,3 +1,6 @@
+audit:
+	npm audit
+
 build:
 	npm run docs:build
 

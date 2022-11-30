@@ -1,3 +1,6 @@
+audit:
+	npm audit
+
 serve:
 	npm run dev
 

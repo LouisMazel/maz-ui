@@ -1,6 +1,9 @@
 lint:
 	npm run lint
 
+audit:
+	npm audit
+
 build:
 	make clean-build && npm run build
 build-js:

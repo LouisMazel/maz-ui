@@ -3,6 +3,15 @@ serve-docs:
 serve-testing:
 	make --directory=packages/testing serve
 
+audit:
+	npm audit
+audit-lib:
+	make --directory=packages/lib audit
+audit-docs:
+	make --directory=packages/docs audit
+audit-testing:
+	make --directory=packages/testing audit
+
 lint-lib:
 	make --directory=packages/lib lint
 
