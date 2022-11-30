@@ -1,3 +1,5 @@
+// @ts-check
+
 const { writeFileSync } = require('node:fs')
 const { componentsList } = require('./get-component-list')
 const render = require('json-templater/string')
@@ -67,9 +69,14 @@ const replaceTypesExtensions = async () => {
     const results = await replace(options)
     // eslint-disable-next-line no-console
     console.log('Files extensions replaced', results)
+    // eslint-disable-next-line no-console
+    console.log('[BuildComponentEntry](replaceTypesExtensions) ✅', results)
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.error('Error occurred while replacing file extensions:', error)
+    console.log(
+      '[BuildComponentEntry](replaceTypesExtensions) 🔴 Error occurred while replacing file extensions',
+      error,
+    )
   }
 }
 /* eslint-disable unicorn/prefer-top-level-await */

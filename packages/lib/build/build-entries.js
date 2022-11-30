@@ -1,3 +1,5 @@
+// @ts-check
+
 const { writeFileSync } = require('node:fs')
 const { componentsList } = require('./get-component-list')
 const render = require('json-templater/string')

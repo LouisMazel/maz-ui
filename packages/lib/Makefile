@@ -1,8 +1,13 @@
+.PHONY: lint build install reinstall lint-staged
+
 lint:
 	npm run lint
 
 audit:
 	npm audit
+
+clean-build:
+	npm run clean
 
 build:
 	make clean-build && npm run build
@@ -21,9 +26,6 @@ build-css:
 build-watch:
 	npm run build:watch
 
-clean-build:
-	npm run clean
-
 clean:
 	rm -rf node_modules
 
@@ -31,7 +33,7 @@ install:
 	npm i
 
 reinstall:
-	make clean isntall
+	make clean install
 
 test-unit:
 	npm run test:unit

@@ -1,3 +1,5 @@
+// @ts-check
+
 import { resolve } from 'node:path'
 import dts from 'rollup-plugin-dts'
 
