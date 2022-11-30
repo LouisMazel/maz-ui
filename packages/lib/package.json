@@ -175,6 +175,5 @@
     "type": "git",
     "url": "git+https://github.com/LouisMazel/maz-ui.git"
   },
-  "license": "MIT",
-  "gitHead": "d872612909025bfa5e5bdfca0631fc22a0979500"
+  "license": "MIT"
 }
