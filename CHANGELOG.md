@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.2](https://github.com/LouisMazel/maz-ui/compare/v3.1.1...v3.1.2) (2022-11-30)
+
+### Bug Fixes
+
+- **lib:** maz-select - await scroll before emit ([d98cf2a](https://github.com/LouisMazel/maz-ui/commit/d98cf2adc8e7939011145702c2a1e6ad7135b44f))
+
 ## [3.1.1](https://github.com/LouisMazel/maz-ui/compare/v2.3.13...v3.1.1) (2022-11-30)
 
 ### Bug Fixes
