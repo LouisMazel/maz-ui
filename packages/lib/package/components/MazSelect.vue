@@ -274,13 +274,13 @@
     emits('close', event)
   }
 
-  const openList = (event?: Event) => {
+  const openList = async (event?: Event) => {
     event?.preventDefault()
 
     if (props.disabled) return
 
     hasListOpen.value = true
-    scrollToSelected()
+    await scrollToSelected()
     emits('focus', event)
     emits('open', hasListOpen.value)
   }

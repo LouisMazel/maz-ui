@@ -1,13 +1,13 @@
 {
   "packages": ["packages/lib"],
   "loglevel": "verbose",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "yes": false,
   "command": {
     "version": {
       "allowBranch": ["master", "release/*"],
       "message": "chore(release): bump version to %s",
-      "forceGitTag": false,
+      "forceGitTag": true,
       "conventionalCommits": true
     }
   },
