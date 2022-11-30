@@ -7,7 +7,7 @@
     "version": {
       "allowBranch": ["master", "release/*"],
       "message": "chore(release): bump version to %s",
-      "forceGitTag": false,
+      "forceGitTag": true,
       "conventionalCommits": true
     }
   },
