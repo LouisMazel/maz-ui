@@ -7,7 +7,6 @@
     "version": {
       "allowBranch": "release/*",
       "message": "chore(release): bump version to %s",
-      "forceGitTag": true,
       "conventionalCommits": true,
       "includeMergedTags": true
     }
