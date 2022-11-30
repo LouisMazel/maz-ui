@@ -115,7 +115,7 @@
     "json-templater": "^1.2.0",
     "libphonenumber-js": "^1.10.13",
     "lint-staged": "^13.0.3",
-    "node-sass": "^7.0.3",
+    "node-sass": "^8.0.0",
     "onchange": "^7.1.0",
     "path": "^0.12.7",
     "postcss": "^8.4.16",
