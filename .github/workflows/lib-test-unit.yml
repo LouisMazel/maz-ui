@@ -29,7 +29,7 @@ jobs:
       - name: Checkout Actions
         uses: actions/checkout@v3
 
-      - uses: actions/setup-node@master
+      - uses: actions/setup-node@v3
         with:
           node-version: "16"
 
@@ -42,7 +42,7 @@ jobs:
         run: make install
 
       - name: Test & Publish Code Coverage
-        uses: paambaati/codeclimate-action@v3
+        uses: paambaati/codeclimate-action@v3.2.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
