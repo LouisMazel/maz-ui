@@ -68,8 +68,6 @@ const replaceTypesExtensions = async () => {
   try {
     const results = await replace(options)
     // eslint-disable-next-line no-console
-    console.log('Files extensions replaced', results)
-    // eslint-disable-next-line no-console
     console.log('[BuildComponentEntry](replaceTypesExtensions) ✅', results)
   } catch (error) {
     // eslint-disable-next-line no-console

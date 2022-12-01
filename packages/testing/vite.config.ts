@@ -1,5 +1,5 @@
 import { defineConfig, loadEnv } from 'vite'
-import { join } from 'path'
+import { join } from 'node:path'
 import Vue from '@vitejs/plugin-vue'
 
 export default ({ mode }) => {
@@ -10,6 +10,9 @@ export default ({ mode }) => {
     server: {
       port: (process.env.PORT ?? 2000) as number,
       host: process.env.HOST ?? '0.0.0.0',
+      fs: {
+        allow: [join(__dirname, './../../')],
+      },
     },
     resolve: {
       alias: {

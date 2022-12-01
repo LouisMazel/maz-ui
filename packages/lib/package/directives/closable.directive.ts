@@ -35,7 +35,7 @@ const handleOutsideClick = (
 }
 
 const getEventType = () => {
-  return document.ontouchstart !== null ? 'click' : 'touchstart'
+  return document.ontouchstart === null ? 'touchstart' : 'click'
 }
 
 const unbind: FunctionDirective = (element, binding, vnode) => {

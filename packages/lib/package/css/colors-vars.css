@@ -2,123 +2,123 @@
 
 :root {
   /* PRIMARY */
-  --maz-color-primary-50: #e3f1ff;
-  --maz-color-primary-100: #bcdeff;
-  --maz-color-primary-200: #94caff;
-  --maz-color-primary-300: #6db7ff;
-  --maz-color-primary-400: #45a3ff;
-  --maz-color-primary: #1e90ff;
-  --maz-color-primary-600: #1977d2;
-  --maz-color-primary-700: #145ea6;
-  --maz-color-primary-800: #0e4479;
-  --maz-color-primary-900: #092b4d;
-  --maz-color-primary-contrast: white;
-  --maz-color-primary-alpha: rgb(30 144 255 / 60%);
-  --maz-color-primary-alpha-20: rgb(30 144 255 / 20%);
+  --maz-color-primary-50: hsl(210deg 100% 95%);
+  --maz-color-primary-100: hsl(210deg 100% 87%);
+  --maz-color-primary-200: hsl(210deg 100% 79%);
+  --maz-color-primary-300: hsl(210deg 100% 71%);
+  --maz-color-primary-400: hsl(210deg 100% 64%);
+  --maz-color-primary: hsl(210deg 100% 56%);
+  --maz-color-primary-600: hsl(210deg 79% 46%);
+  --maz-color-primary-700: hsl(210deg 78% 36%);
+  --maz-color-primary-800: hsl(210deg 79% 26%);
+  --maz-color-primary-900: hsl(210deg 79% 17%);
+  --maz-color-primary-contrast: hsl(0deg 0% 100%);
+  --maz-color-primary-alpha: hsl(210deg 100% 56% / 60%);
+  --maz-color-primary-alpha-20: hsl(210deg 100% 56% / 20%);
 
   /* SECONDARY */
-  --maz-color-secondary-50: #e3f9f3;
-  --maz-color-secondary-100: #bbf1e3;
-  --maz-color-secondary-200: #93e9d2;
-  --maz-color-secondary-300: #6be1c2;
-  --maz-color-secondary-400: #44d9b1;
-  --maz-color-secondary: #1cd1a1;
-  --maz-color-secondary-600: #17ac85;
-  --maz-color-secondary-700: #128869;
-  --maz-color-secondary-800: #0d634c;
-  --maz-color-secondary-900: #083f30;
-  --maz-color-secondary-contrast: white;
-  --maz-color-secondary-alpha: rgb(28 209 161 / 60%);
-  --maz-color-secondary-alpha-20: rgb(28 209 161 / 20%);
+  --maz-color-secondary-50: hsl(164deg 65% 93%);
+  --maz-color-secondary-100: hsl(164deg 66% 84%);
+  --maz-color-secondary-200: hsl(164deg 66% 75%);
+  --maz-color-secondary-300: hsl(164deg 66% 65%);
+  --maz-color-secondary-400: hsl(164deg 66% 56%);
+  --maz-color-secondary: hsl(164deg 76% 46%);
+  --maz-color-secondary-600: hsl(164deg 76% 38%);
+  --maz-color-secondary-700: hsl(164deg 77% 30%);
+  --maz-color-secondary-800: hsl(164deg 77% 22%);
+  --maz-color-secondary-900: hsl(164deg 77% 14%);
+  --maz-color-secondary-contrast: hsl(0deg 0% 100%);
+  --maz-color-secondary-alpha: hsl(164deg 76% 46% / 60%);
+  --maz-color-secondary-alpha-20: hsl(164deg 76% 46% / 20%);
 
   /* INFO */
-  --maz-color-info-50: #e2f3f6;
-  --maz-color-info-100: #b9e3ea;
-  --maz-color-info-200: #91d3dd;
-  --maz-color-info-300: #68c3d1;
-  --maz-color-info-400: #40b2c4;
-  --maz-color-info: #17a2b8;
-  --maz-color-info-600: #138698;
-  --maz-color-info-700: #0f6978;
-  --maz-color-info-800: #0b4d57;
-  --maz-color-info-900: #073137;
-  --maz-color-info-contrast: white;
-  --maz-color-info-alpha: rgb(23 162 184 / 60%);
-  --maz-color-info-alpha-20: rgb(23 162 184 / 20%);
+  --maz-color-info-50: hsl(188deg 53% 93%);
+  --maz-color-info-100: hsl(188deg 54% 82%);
+  --maz-color-info-200: hsl(188deg 53% 72%);
+  --maz-color-info-300: hsl(188deg 53% 61%);
+  --maz-color-info-400: hsl(188deg 53% 51%);
+  --maz-color-info: hsl(188deg 78% 41%);
+  --maz-color-info-600: hsl(188deg 78% 34%);
+  --maz-color-info-700: hsl(188deg 78% 26%);
+  --maz-color-info-800: hsl(188deg 78% 19%);
+  --maz-color-info-900: hsl(188deg 77% 12%);
+  --maz-color-info-contrast: hsl(0deg 0% 100%);
+  --maz-color-info-alpha: hsl(188deg 78% 41% / 60%);
+  --maz-color-info-alpha-20: hsl(188deg 78% 41% / 20%);
 
   /* SUCCESS */
-  --maz-color-success-50: #f2f9e5;
-  --maz-color-success-100: #e1f0c2;
-  --maz-color-success-200: #cfe79e;
-  --maz-color-success-300: #bddf7a;
-  --maz-color-success-400: #acd656;
-  --maz-color-success: #9acd32;
-  --maz-color-success-600: #7fa929;
-  --maz-color-success-700: #648521;
-  --maz-color-success-800: #496118;
-  --maz-color-success-900: #2e3e0f;
-  --maz-color-success-contrast: white;
-  --maz-color-success-alpha: rgb(154 205 50 / 60%);
-  --maz-color-success-alpha-20: rgb(154 205 50 / 20%);
+  --maz-color-success-50: hsl(80deg 63% 94%);
+  --maz-color-success-100: hsl(80deg 61% 85%);
+  --maz-color-success-200: hsl(80deg 60% 76%);
+  --maz-color-success-300: hsl(80deg 61% 68%);
+  --maz-color-success-400: hsl(80deg 61% 59%);
+  --maz-color-success: hsl(80deg 61% 50%);
+  --maz-color-success-600: hsl(80deg 61% 41%);
+  --maz-color-success-700: hsl(80deg 60% 33%);
+  --maz-color-success-800: hsl(80deg 60% 24%);
+  --maz-color-success-900: hsl(80deg 61% 15%);
+  --maz-color-success-contrast: hsl(0deg 0% 100%);
+  --maz-color-success-alpha: hsl(80deg 61% 50% / 60%);
+  --maz-color-success-alpha-20: hsl(80deg 61% 50% / 20%);
 
   /* WARNING */
-  --maz-color-warning-50: #fff6e5;
-  --maz-color-warning-100: #fee9c1;
-  --maz-color-warning-200: #fedd9d;
-  --maz-color-warning-300: #fdd079;
-  --maz-color-warning-400: #fdc455;
-  --maz-color-warning: #fcb731;
-  --maz-color-warning-600: #d09728;
-  --maz-color-warning-700: #a47720;
-  --maz-color-warning-800: #785717;
-  --maz-color-warning-900: #4c370f;
-  --maz-color-warning-contrast: #374151;
-  --maz-color-warning-alpha: rgb(252 183 49 / 60%);
-  --maz-color-warning-alpha-20: rgb(252 183 49 / 20%);
+  --maz-color-warning-50: hsl(40deg 100% 95%);
+  --maz-color-warning-100: hsl(40deg 97% 88%);
+  --maz-color-warning-200: hsl(40deg 98% 81%);
+  --maz-color-warning-300: hsl(40deg 97% 73%);
+  --maz-color-warning-400: hsl(40deg 98% 66%);
+  --maz-color-warning: hsl(40deg 97% 59%);
+  --maz-color-warning-600: hsl(40deg 68% 49%);
+  --maz-color-warning-700: hsl(40deg 67% 38%);
+  --maz-color-warning-800: hsl(40deg 68% 28%);
+  --maz-color-warning-900: hsl(40deg 67% 18%);
+  --maz-color-warning-contrast: hsl(217deg 19% 27%);
+  --maz-color-warning-alpha: hsl(40deg 97% 59% / 60%);
+  --maz-color-warning-alpha-20: hsl(40deg 97% 59% / 20%);
 
   /* DANGER */
-  --maz-color-danger-50: #ffedec;
-  --maz-color-danger-100: #ffd3d2;
-  --maz-color-danger-200: #ffbab8;
-  --maz-color-danger-300: #ffa09e;
-  --maz-color-danger-400: #ff8784;
-  --maz-color-danger: #ff6d6a;
-  --maz-color-danger-600: #d25a57;
-  --maz-color-danger-700: #a64745;
-  --maz-color-danger-800: #793432;
-  --maz-color-danger-900: #4d2120;
-  --maz-color-danger-contrast: white;
-  --maz-color-danger-alpha: rgb(255 109 106 / 60%);
-  --maz-color-danger-alpha-20: rgb(255 109 106 / 20%);
+  --maz-color-danger-50: hsl(1deg 100% 96%);
+  --maz-color-danger-100: hsl(1deg 100% 91%);
+  --maz-color-danger-200: hsl(2deg 100% 86%);
+  --maz-color-danger-300: hsl(1deg 100% 81%);
+  --maz-color-danger-400: hsl(1deg 100% 76%);
+  --maz-color-danger: hsl(1deg 100% 71%);
+  --maz-color-danger-600: hsl(1deg 58% 58%);
+  --maz-color-danger-700: hsl(1deg 41% 46%);
+  --maz-color-danger-800: hsl(g 42% 34%);
+  --maz-color-danger-900: hsl(1deg 41% 21%);
+  --maz-color-danger-contrast: hsl(0deg 0% 100%);
+  --maz-color-danger-alpha: hsl(1deg 100% 71% / 60%);
+  --maz-color-danger-alpha-20: hsl(1deg 100% 71% / 20%);
 
   /* WHITE */
-  --maz-color-white: white;
-  --maz-color-white-contrast: black;
+  --maz-color-white: hsl(0deg 0% 100%);
+  --maz-color-white-contrast: hsl(0deg 0% 0%);
 
   /* BLACK */
-  --maz-color-black: black;
-  --maz-color-black-contrast: white;
+  --maz-color-black: hsl(0deg 0% 0%);
+  --maz-color-black-contrast: hsl(0deg 0% 100%);
 
   /** TEXT COLOR LIGHT **/
-  --maz-color-text-light: #d9d9d9;
-  --maz-color-muted-light: rgb(0 0 0 / 54%);
+  --maz-color-text-light: hsl(0deg 0% 85%);
+  --maz-color-muted-light: hsl(0deg 0% 0% / 54%);
 
   /** TEXT COLOR DARK **/
-  --maz-color-text-dark: #212427;
-  --maz-color-muted-dark: rgb(228 228 228 / 54%);
+  --maz-color-text-dark: hsl(210deg 8% 14%);
+  --maz-color-muted-dark: hsl(0deg 0% 89% / 54%);
 
   /** BG OVERLAY **/
-  --maz-bg-overlay: rgb(0 0 0 / 50%);
+  --maz-bg-overlay: hsl(0deg 0% 0% / 50%);
 
   /** BG LIGHT COLOR **/
-  --maz-bg-color-light: white;
-  --maz-bg-color-light-light: #efefef;
-  --maz-bg-color-light-lighter: #f2f2f2;
+  --maz-bg-color-light: hsl(0deg 0% 100%);
+  --maz-bg-color-light-light: hsl(0deg 0% 94%);
+  --maz-bg-color-light-lighter: hsl(0deg 0% 95%);
 
   /** BG DARK COLOR **/
-  --maz-bg-color-dark: #21222e;
-  --maz-bg-color-dark-light: #303144;
-  --maz-bg-color-dark-lighter: #3b3c53;
+  --maz-bg-color-dark: hsl(235deg 16% 15%);
+  --maz-bg-color-dark-light: hsl(237deg 17% 23%);
+  --maz-bg-color-dark-lighter: hsl(238deg 17% 28%);
 
   /**
   * FONT FAMILY
