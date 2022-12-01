@@ -21,13 +21,13 @@ jobs:
         working-directory: ./packages/lib
 
     steps:
-      - uses: szenius/set-timezone@v1
+      - uses: szenius/set-timezone@v1.1
         with:
           timezoneLinux: "Europe/Paris"
           timezoneMacos: "Europe/Paris"
 
       - name: Checkout Actions
-        uses: actions/checkout@master
+        uses: actions/checkout@v3
 
       - uses: actions/setup-node@master
         with:
