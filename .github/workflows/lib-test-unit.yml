@@ -21,7 +21,7 @@ jobs:
         working-directory: ./packages/lib
 
     steps:
-      - uses: szenius/set-timezone@v1.0
+      - uses: szenius/set-timezone@v1
         with:
           timezoneLinux: "Europe/Paris"
           timezoneMacos: "Europe/Paris"
@@ -33,7 +33,7 @@ jobs:
         with:
           node-version: "16"
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: "**/node_modules"
           key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
@@ -42,7 +42,7 @@ jobs:
         run: make install
 
       - name: Test & Publish Code Coverage
-        uses: paambaati/codeclimate-action@v3.0.0
+        uses: paambaati/codeclimate-action@v3
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
