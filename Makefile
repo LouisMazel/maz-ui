@@ -1,7 +1,7 @@
 serve-docs:
-	make --directory=packages/docs serve
+	pnpm --filter maz-ui dev
 serve-testing:
-	make --directory=packages/testing serve
+	pnpm --filter docs dev
 
 audit:
 	npm audit
@@ -15,26 +15,33 @@ audit-all:
 	make audit audit-lib audit-docs audit-testing
 
 lint-lib:
-	make --directory=packages/lib lint
+	pnpm --filter maz-ui lint
 
 build-docs:
-	make --directory=packages/docs build
+	pnpm --filter docs build
+
 build-lib:
-	make --directory=packages/lib build
+	pnpm --filter maz-ui clean
+	pnpm --filter maz-ui build
 build-watch-lib:
-	make --directory=packages/lib build-watch
+	pnpm --filter maz-ui clean
+	pnpm --filter maz-ui build:watch
 build-js-lib:
-	make --directory=packages/lib build-js
+	pnpm --filter maz-ui build:js
 build-modules-lib:
-	make --directory=packages/lib build-modules
+	pnpm --filter maz-ui build:modules
 build-components-lib:
-	make --directory=packages/lib build-components
+	pnpm --filter maz-ui build:gen-components-entry
+	pnpm --filter maz-ui build:components
 build-component-lib:
-	make --directory=packages/lib build-component component="$(component)"
+	pnpm --filter maz-ui build:gen-components-entry
+	pnpm --filter maz-ui build:component $(component)"
 build-css-lib:
-	make --directory=packages/lib build-css
+	pnpm --filter maz-ui build:css
 build-types-lib:
-	make --directory=packages/lib build-types
+	pnpm --filter maz-ui build:types
+build-watch-lib:
+	pnpm --filter maz-ui build:watch
 
 clean:
 	rm -rf node_modules
@@ -47,39 +54,21 @@ clean-testing:
 clean-all:
 	make clean clean-lib clean-docs clean-testing
 
-install:
-	npm i
-install-lib:
-	make --directory=packages/lib install
-install-docs:
-	make --directory=packages/docs install
-install-testing:
-	make --directory=packages/testing install
-install-all:
-	make install install-lib install-docs install-testing
-
-reinstall-lib:
-	make --directory=packages/lib reinstall
-reinstall-docs:
-	make --directory=packages/docs reinstall
-reinstall-testing:
-	make --directory=packages/testing reinstall
-reinstall-all:
-	make clean-all clean-install-all
-
 lint-staged: ## lint-staged
-	npm run pre-commit
+	pnpm pre-commit
 lint-staged-lib: ## lint-staged lib
-	make --directory=packages/lib lint-staged
+	pnpm --filter maz-ui pre-commit
 
 test-unit:
-	make --directory=packages/lib test-unit
+	pnpm --filter maz-ui test:unit
 test-unit-watch:
-	make --directory=packages/lib test-unit-watch
+	pnpm --filter maz-ui test:unit:watch
 test-unit-coverage:
-	make --directory=packages/lib test-unit-coverage
+	pnpm --filter maz-ui test:unit:coverage
 test-unit-coverage-watch:
-	make --directory=packages/lib test-unit-coverage-watch
+	pnpm --filter maz-ui test:unit:coverage:watch
+test-unit-coverage-master:
+	pnpm --filter maz-ui test:unit:coverage:master
 
 release:
-	npm run lerna:version
+	pnpm lerna:version
