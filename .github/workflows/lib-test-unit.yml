@@ -27,7 +27,7 @@ jobs:
           timezoneMacos: "Europe/Paris"
 
       - name: Checkout Actions
-        uses: actions/checkout@master
+        uses: actions/checkout@v3
 
       - uses: actions/setup-node@master
         with:
