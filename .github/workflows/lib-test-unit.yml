@@ -21,7 +21,7 @@ jobs:
         working-directory: ./packages/lib
 
     steps:
-      - uses: szenius/set-timezone@v1
+      - uses: szenius/set-timezone@v1.1
         with:
           timezoneLinux: "Europe/Paris"
           timezoneMacos: "Europe/Paris"
