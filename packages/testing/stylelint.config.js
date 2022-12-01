@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/prefer-module */
 module.exports = {
   extends: [
     'stylelint-config-standard',
@@ -11,9 +12,18 @@ module.exports = {
   rules: {
     'at-rule-no-unknown': [
       true,
-      { ignoreAtRules: ['screen', 'layer', 'tailwind'] },
+      { ignoreAtRules: ['screen', 'layer', 'tailwind', 'each', 'for'] },
     ],
-    'selector-class-pattern': null,
+    'scss/at-rule-no-unknown': [
+      true,
+      { ignoreAtRules: ['screen', 'layer', 'tailwind', 'each'] },
+    ],
+    'selector-pseudo-class-no-unknown': [
+      true,
+      { ignorePseudoClasses: ['deep'] },
+    ],
+    'selector-class-pattern': undefined,
+    'no-descending-specificity': undefined,
     'string-quotes': 'single',
   },
 }
