@@ -1,5 +1,5 @@
 import { defineConfig, loadEnv } from 'vite'
-import { join } from 'path'
+import { join } from 'node:path'
 import Vue from '@vitejs/plugin-vue'
 
 export default ({ mode }) => {
