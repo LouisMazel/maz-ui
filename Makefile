@@ -40,8 +40,6 @@ build-css-lib:
 	pnpm --filter maz-ui build:css
 build-types-lib:
 	pnpm --filter maz-ui build:types
-build-watch-lib:
-	pnpm --filter maz-ui build:watch
 
 clean:
 	rm -rf node_modules
