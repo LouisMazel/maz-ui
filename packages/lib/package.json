@@ -83,7 +83,6 @@
     "@rollup/plugin-commonjs": "^22.0.2",
     "@rollup/plugin-node-resolve": "^14.1.0",
     "@rollup/plugin-replace": "^4.0.0",
-    "@rollup/plugin-typescript": "^8.5.0",
     "@rollup/plugin-url": "^7.0.0",
     "@types/dropzone": "^5.7.4",
     "@types/google.maps": "^3.50.5",
