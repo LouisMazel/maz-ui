@@ -58,8 +58,8 @@
   --maz-color-success-800: hsl(80deg 60% 24%);
   --maz-color-success-900: hsl(80deg 61% 15%);
   --maz-color-success-contrast: hsl(0deg 0% 100%);
-  --maz-color-success-alpha: rgb(154 205 50 / 60%);
-  --maz-color-success-alpha-20: rgb(154 205 50 / 20%);
+  --maz-color-success-alpha: hsl(80deg 61% 50% / 60%);
+  --maz-color-success-alpha-20: hsl(80deg 61% 50% / 20%);
 
   /* WARNING */
   --maz-color-warning-50: hsl(39deg 100% 95%);
