@@ -64,7 +64,7 @@
   .swiper-pagination {
     @apply tw-left-auto tw-right-4 tw-bottom-6 tw-w-auto tw-text-white tw-inline-block tw-rounded tw-px-2 tw-py-1 tw-text-xs;
 
-    background: hsla(0, 0%, 0%, 0.64);
+    background: rgb(0 0 0 / 64%);
   }
 
   .swiper-slide {

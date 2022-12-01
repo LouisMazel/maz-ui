@@ -1,7 +1,7 @@
 import { parsePhoneNumberFromString } from 'libphonenumber-js'
 
 export const telephone = (telephone: string): string => {
-  if (telephone === undefined) {
+  if (typeof telephone === 'undefined') {
     throw new TypeError('The `telephone` attribute is required.')
   }
 

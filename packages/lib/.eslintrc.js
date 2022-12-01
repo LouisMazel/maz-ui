@@ -30,6 +30,14 @@ module.exports = {
       { allow: ['error'] },
     ],
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
+    'vue/component-name-in-template-casing': [
+      'error',
+      'PascalCase',
+      {
+        registeredComponentsOnly: false,
+        ignores: [],
+      },
+    ],
     'prettier/prettier': ['error', {}, { usePrettierrc: true }],
     '@typescript-eslint/no-unused-vars': [
       'error',
@@ -39,25 +47,6 @@ module.exports = {
         vars: 'all',
         varsIgnorePattern: '^_',
         ignoreRestSiblings: true,
-      },
-    ],
-    // vue
-    'vue/component-name-in-template-casing': [
-      'error',
-      'PascalCase',
-      {
-        registeredComponentsOnly: false,
-        ignores: [],
-      },
-    ],
-    'vue/html-self-closing': [
-      'error',
-      {
-        html: {
-          void: 'any',
-          normal: 'any',
-          component: 'always',
-        },
       },
     ],
     // unicorn

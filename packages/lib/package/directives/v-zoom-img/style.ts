@@ -7,7 +7,7 @@ export const style = `
   right: 0;
   padding: 2.5rem;
   z-index: 1050;
-  background-color: hsla(238, 15%, 40%, 0.7);
+  background-color: rgba(86, 87, 117, .7);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -47,7 +47,7 @@ export const style = `
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: hsla(238, 15%, 40%, 0.7);
+  background-color: rgba(86, 87, 117, .7);
   border-radius: 1rem;
   z-index: 2;
   min-width: 60px;
@@ -81,8 +81,8 @@ export const style = `
 .maz-zoom-img .maz-zoom-btn {
   margin: 0 auto;
   border: none;
-  background-color: hsla(0, 0%, 7%, 0.5);
-  box-shadow: 0 0 0.5rem 0 hsla(0, 0%, 0%, 0.2);
+  background-color: rgba(17, 17, 17, 0.5);
+  box-shadow: 0 0 0.5rem 0 rgba(0, 0, 0, 0.2);
   height: 2.2rem;
   min-height: 2.2rem;
   width: 2.2rem;
@@ -120,5 +120,5 @@ export const style = `
 }
 
 .maz-zoom-img .maz-zoom-btn:hover {
-  background-color: hsl(0, 0%, 0%);
+  background-color: black;
 }`

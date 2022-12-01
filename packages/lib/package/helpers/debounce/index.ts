@@ -61,7 +61,7 @@ export function debounce<T extends (...args: any[]) => void>(
         const call = debouncedFn
         debouncedFn = undefined
 
-        if (call !== undefined) return call()
+        if (typeof call !== 'undefined') return call()
       }
     }, wait)
 

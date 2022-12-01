@@ -88,7 +88,7 @@
       & span {
         @apply maz-absolute maz-top-0 maz-left-0 maz-block maz-h-6 maz-w-6 maz-rounded-full;
 
-        box-shadow: 0 2px 8px 0 hsl(0deg 0% 0% / 20%);
+        box-shadow: 0 2px 8px 0 rgb(0 0 0 / 20%);
         transition: all 200ms ease-in-out;
       }
     }

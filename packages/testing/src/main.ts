@@ -26,7 +26,7 @@ app.use(vZoomImgInstall, vLazyImgOptions)
 const toasterOptions: ToasterOptions = {
   persistent: false,
   position: 'bottom-right',
-  timeout: 50_000,
+  timeout: 50000,
 }
 
 const options: AosOptions = {

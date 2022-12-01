@@ -116,20 +116,20 @@
       const sizeStyle = computed(() => {
         const { height, width, noWidth, noHeight } = props
         return {
-          ...(noWidth
-            ? {}
-            : {
+          ...(!noWidth
+            ? {
                 flex: '0 0 ' + typeof width === 'number' ? `${width}px` : width,
                 width: typeof width === 'number' ? `${width}px` : width,
-              }),
-          ...(noHeight
-            ? {}
-            : {
+              }
+            : {}),
+          ...(!noHeight
+            ? {
                 height:
                   typeof height === 'number' ? `${height}px` : `${height}`,
                 minHeight:
                   typeof height === 'number' ? `${height}px` : `${height}`,
-              }),
+              }
+            : {}),
         }
       })
       const imagesCount = computed(() => {
@@ -267,7 +267,7 @@
         background-position: center center;
         background-size: cover;
         background-repeat: no-repeat;
-        background-color: hsl(0deg 0% 0% / 50%);
+        background-color: rgb(0 0 0 / 5%);
       }
     }
 
@@ -279,7 +279,7 @@
       left: 0;
 
       a span {
-        color: hsl(0deg 0% 100%);
+        color: white;
         font-size: 2rem;
       }
     }

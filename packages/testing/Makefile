@@ -4,9 +4,6 @@ audit:
 serve:
 	npm run dev
 
-lint-staged: ## lint-staged
-	npm run pre-commit
-
 install:
 	npm i
 

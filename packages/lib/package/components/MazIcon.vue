@@ -11,7 +11,7 @@
     }"
     :style="`font-size: ${size}`"
     v-html="getSvgContent(svgElSource)"
-  />
+  ></svg>
   <!-- eslint-enable vue/no-v-html -->
 </template>
 

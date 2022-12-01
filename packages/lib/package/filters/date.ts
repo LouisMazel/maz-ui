@@ -9,7 +9,7 @@ export const date = (
   locale: string,
   options?: Intl.DateTimeFormatOptions,
 ): string => {
-  if (locale === undefined) {
+  if (typeof locale === 'undefined') {
     throw new TypeError(
       '[maz-ui](FilterDate) The `locale` attribute is required.',
     )

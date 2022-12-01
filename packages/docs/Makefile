@@ -2,10 +2,10 @@ audit:
 	npm audit
 
 build:
-	npm run build
+	npm run docs:build
 
 serve:
-	npm run dev
+	npm run docs:dev
 
 install:
 	npm i

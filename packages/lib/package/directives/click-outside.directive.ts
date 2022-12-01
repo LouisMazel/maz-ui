@@ -4,7 +4,7 @@ import type { Directive, DirectiveBinding, Plugin } from 'vue'
 const UNIQUE_ID = '__vue_click_away__'
 
 const getEventType = () => {
-  return document.ontouchstart === null ? 'touchstart' : 'click'
+  return document.ontouchstart !== null ? 'click' : 'touchstart'
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

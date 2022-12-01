@@ -11,11 +11,11 @@ export const number = (
     ...DEFAULT_OPTIONS,
     ...options,
   }
-  if (number === undefined)
+  if (typeof number === 'undefined')
     throw new TypeError(
       '[maz-ui](FilterNumber) The `number` attribute is required.',
     )
-  if (locale === undefined)
+  if (typeof locale === 'undefined')
     throw new TypeError(
       '[maz-ui](FilterNumber) The `locale` attribute is required.',
     )

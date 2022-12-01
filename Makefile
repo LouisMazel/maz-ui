@@ -71,8 +71,6 @@ lint-staged: ## lint-staged
 	npm run pre-commit
 lint-staged-lib: ## lint-staged lib
 	make --directory=packages/lib lint-staged
-lint-staged-testing: ## lint-staged testing
-	make --directory=packages/testing lint-staged
 
 test-unit:
 	make --directory=packages/lib test-unit

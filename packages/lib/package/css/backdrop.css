@@ -68,7 +68,7 @@ html.--backdrop-present {
   }
 
   &-content {
-    @apply maz-relative maz-z-1 focus:maz-outline-none;
+    @apply focus:maz-outline-none maz-relative maz-z-1;
   }
 
   &.--bottom-sheet {
