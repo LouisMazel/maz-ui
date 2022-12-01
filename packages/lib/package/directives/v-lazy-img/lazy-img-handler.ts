@@ -120,12 +120,14 @@ export class LazyImg {
     if (sourceElements.length > 0) {
       for await (const source of sourceElements) {
         const srcSet = source.getAttribute('data-srcset')
-        if (!srcSet)
+        if (srcSet) {
           // eslint-disable-next-line no-console
+          source.srcset = srcSet
+        } else {
           console.warn(
             '[maz-ui][MazLazyImg] the "[data-srcset]" attribute is not provided on "<source />"',
           )
-        else source.srcset = srcSet
+        }
       }
     } else {
       // eslint-disable-next-line no-console

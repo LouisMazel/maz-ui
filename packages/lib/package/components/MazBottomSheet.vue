@@ -58,7 +58,7 @@
     &__container {
       padding-left: 3rem;
       padding-right: 3rem;
-      box-shadow: 0 -5px 20px rgb(0 0 0 / 20%);
+      box-shadow: 0 -5px 20px hsl(0deg 0% 0% / 20%);
     }
 
     &__close {

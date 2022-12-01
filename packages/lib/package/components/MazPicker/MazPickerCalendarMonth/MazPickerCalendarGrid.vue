@@ -372,8 +372,10 @@
         @apply maz-h-8 maz-cursor-pointer;
         @apply maz-p-1 !important;
 
-        &.--is-today:not(.--is-selected, .--is-between, .--is-between-hoverred) {
-          @apply maz-bg-color-light !important;
+        &.--is-today {
+          &:not(.--is-selected, .--is-between, .--is-between-hoverred) {
+            @apply maz-bg-color-light !important;
+          }
         }
 
         &:hover,
@@ -433,8 +435,10 @@
 
   html.dark {
     & .maz-picker-calendar-grid {
-      button.--is-today:not(.--is-selected, .--is-between, .--is-between-hoverred) {
-        @apply maz-bg-color-lighter !important;
+      button.--is-today {
+        &:not(.--is-selected, .--is-between, .--is-between-hoverred) {
+          @apply maz-bg-color-lighter !important;
+        }
       }
     }
   }
