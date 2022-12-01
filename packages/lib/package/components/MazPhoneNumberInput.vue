@@ -37,7 +37,7 @@
         !!formattedNumber && !countryCode ? t.countrySelector.error : undefined
       "
       :label="t.countrySelector.placeholder"
-      @update:model-value="setCountryCode($event as CountryCode, true)"
+      @update:model-value="setCountryCode($event, true)"
       @focus="inputFocused = false"
     >
       <template #default="{ option, isSelected }">
@@ -121,7 +121,6 @@
 
   import {
     computed,
-    nextTick,
     onBeforeMount,
     onMounted,
     type PropType,
@@ -237,16 +236,22 @@
   const PhoneNumberInput = ref<typeof MazInput>()
 
   onBeforeMount(async () => {
-    if (props.defaultCountryCode) {
-      setCountryCode(props.defaultCountryCode)
-    }
+    try {
+      if (props.defaultCountryCode) {
+        setCountryCode(props.defaultCountryCode)
+      }
 
-    if (props.fetchCountry) {
-      const locale = await fetchCountryCode()
-      if (locale) setCountryCode(locale)
-    }
+      if (props.fetchCountry) {
+        const locale = await fetchCountryCode()
+        if (locale) setCountryCode(locale)
+      }
 
-    formattedNumber.value = props.defaultPhoneNumber
+      formattedNumber.value = props.modelValue ?? props.defaultPhoneNumber
+
+      getAndEmitResults(formattedNumber.value)
+    } catch (error) {
+      throw new Error(`[MazPhoneNumberInput](onBeforeMount) ${error}`)
+    }
 
     try {
       if (!props.noExample && !examplesFileLoaded.value) {
@@ -272,11 +277,6 @@
           setCountryCode(locale)
         }
       }
-
-      if (!props.defaultPhoneNumber && props.modelValue) {
-        emitsValueAndResults(props.modelValue)
-      }
-      autoUpdateCountryCodeFromPhoneNumber()
 
       if (props.defaultCountryCode && props.fetchCountry) {
         throw String(
@@ -435,14 +435,15 @@
     return phoneNumber
   }
 
-  const getAndEmitResults = ({
-    countryCode,
-    formattedNumber,
-  }: {
-    countryCode?: CountryCode
-    formattedNumber?: string
-  }) => {
-    results.value = getResultsFromPhoneNumber(countryCode, formattedNumber)
+  const getAndEmitResults = (
+    phoneNumber?: string,
+    noAutoUpdateCountryCode?: boolean,
+  ) => {
+    results.value = getResultsFromPhoneNumber(countryCode.value, phoneNumber)
+
+    if (!noAutoUpdateCountryCode) {
+      autoUpdateCountryCodeFromPhoneNumber()
+    }
 
     emits('update', results.value)
   }
@@ -452,16 +453,9 @@
     noAutoUpdateCountryCode?: boolean,
   ) => {
     try {
+      getAndEmitResults(phoneNumber, noAutoUpdateCountryCode)
+
       emitValue(phoneNumber)
-
-      getAndEmitResults({
-        countryCode: countryCode.value,
-        formattedNumber: formattedNumber.value,
-      })
-
-      if (!noAutoUpdateCountryCode) {
-        autoUpdateCountryCodeFromPhoneNumber()
-      }
     } catch (error) {
       throw new Error(`[MazPhoneNumberInput](emitsValueAndResults) ${error}`)
     }
@@ -523,7 +517,7 @@
       if (countryAvailable) {
         countryCode.value = selectedCountryCode as CountryCode
         emits('country-code', selectedCountryCode)
-        emitsValueAndResults(formattedNumber.value, true)
+        emitsValueAndResults(props.modelValue, true)
       }
 
       if (autoFocusInput) {
@@ -537,18 +531,16 @@
     }
   }
 
-  const focusCountrySelector = async () => {
+  const focusCountrySelector = () => {
     try {
-      await nextTick()
       CountrySelector.value?.$el.querySelector('input')?.focus()
     } catch (error) {
       throw new Error(`[MazPhoneNumberInput](focusCountrySelector) ${error}`)
     }
   }
 
-  const focusPhoneNumberInput = async () => {
+  const focusPhoneNumberInput = () => {
     try {
-      await nextTick()
       PhoneNumberInput.value?.$el.querySelector('input')?.focus()
     } catch (error) {
       throw new Error(`[MazPhoneNumberInput](focusPhoneNumberInput) ${error}`)
