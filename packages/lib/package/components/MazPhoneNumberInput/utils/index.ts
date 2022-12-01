@@ -73,7 +73,7 @@ export function getCountriesList(
         })
       } catch (error) {
         // eslint-disable-next-line no-console
-        console.error(`[MazPhoneNumberInput] (getCountryCallingCode) ${error}`)
+        console.error(`[MazPhoneNumberInput](getCountryCallingCode) ${error}`)
       }
     }
   }
@@ -108,7 +108,7 @@ export function browserLocale() {
 
     return locale
   } catch (error) {
-    throw new Error(`[MazPhoneNumberInput] (browserLocale) ${error}`)
+    throw new Error(`[MazPhoneNumberInput](browserLocale) ${error}`)
   }
 }
 
@@ -118,13 +118,13 @@ export function isCountryAvailable(locale: string) {
 
     if (!response) {
       console.error(
-        `[MazPhoneNumberInput] (isCountryAvailable) The code country "${locale}" is not available`,
+        `[MazPhoneNumberInput](isCountryAvailable) The code country "${locale}" is not available`,
       )
     }
 
     return response
   } catch (error) {
-    throw new Error(`[MazPhoneNumberInput] (isCountryAvailable) ${error}`)
+    throw new Error(`[MazPhoneNumberInput](isCountryAvailable) ${error}`)
   }
 }
 
@@ -153,9 +153,7 @@ export const getResultsFromPhoneNumber = (
       e164: parsing?.format('E.164'),
     }
   } catch (error) {
-    throw new Error(
-      `[MazPhoneNumberInput] (getResultsFromPhoneNumber) ${error}`,
-    )
+    throw new Error(`[MazPhoneNumberInput](getResultsFromPhoneNumber) ${error}`)
   }
 }
 
@@ -172,22 +170,56 @@ export function getAsYouTypeFormat(
       ? new AsYouType(countryCode).input(phoneNumber)
       : phoneNumber
   } catch (error) {
-    throw new Error(`[MazPhoneNumberInput] (getAsYouTypeFormat) ${error}`)
+    throw new Error(`[MazPhoneNumberInput](getAsYouTypeFormat) ${error}`)
+  }
+}
+
+interface IpWhoResponse {
+  ip: string
+  success: true
+  type?: string
+  continent?: string
+  continent_code?: string
+  country?: string
+  country_code?: string
+  region?: string
+  region_code?: string
+  city?: string
+  latitude?: number
+  longitude?: number
+  is_eu: true
+  postal?: string
+  calling_code?: string
+  capital?: string
+  borders?: string
+  flag: {
+    img?: string
+    emoji?: string
+    emoji_unicode?: string
+  }
+  connection: {
+    asn?: number
+    org?: string
+    isp?: string
+    domain?: string
+  }
+  timezone: {
+    id?: string
+    abbr?: string
+    is_dst: false
+    offset?: number
+    utc?: string
+    current_time?: string
   }
 }
 
 export async function fetchCountryCode() {
   try {
-    const response = await fetch('https://ip2c.org/s')
-    const responseText = await response.text()
-    const result = (responseText || '').toString()
+    const reponse = await fetch('http://ipwho.is')
+    const { country_code } = (await reponse.json()) as IpWhoResponse
 
-    if (!result || result[0] !== '1') {
-      return
-    }
-
-    return result.slice(2, 4)
+    return country_code
   } catch (error) {
-    throw new Error(`[MazPhoneNumberInput] (fetchCountryCode) ${error}`)
+    throw new Error(`[MazPhoneNumberInput](fetchCountryCode) ${error}`)
   }
 }
