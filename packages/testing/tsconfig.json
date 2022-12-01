@@ -14,7 +14,7 @@
       "@/*": ["src/*"],
       "~/*": ["src/*"],
       "@packages/*": ["src./../lib/package/*"],
-      "@components/*": ["src./../lib/package/components/*"],
+      "@components/*": ["src./../lib/package/components/*"]
     },
     "types": ["@types/node", "vite/client"],
     "noImplicitThis": false
