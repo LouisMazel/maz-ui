@@ -47,7 +47,7 @@
   --maz-color-info-alpha-20: hsl(188deg 78% 41% / 20%);
 
   /* SUCCESS */
-  --maz-color-success-50: hsl(81deg 63% 94%);
+  --maz-color-success-50: hsl(80deg 63% 94%);
   --maz-color-success-100: hsl(80deg 61% 85%);
   --maz-color-success-200: hsl(80deg 60% 76%);
   --maz-color-success-300: hsl(80deg 61% 68%);
@@ -62,8 +62,8 @@
   --maz-color-success-alpha-20: hsl(80deg 61% 50% / 20%);
 
   /* WARNING */
-  --maz-color-warning-50: hsl(39deg 100% 95%);
-  --maz-color-warning-100: hsl(39deg 97% 88%);
+  --maz-color-warning-50: hsl(40deg 100% 95%);
+  --maz-color-warning-100: hsl(40deg 97% 88%);
   --maz-color-warning-200: hsl(40deg 98% 81%);
   --maz-color-warning-300: hsl(40deg 97% 73%);
   --maz-color-warning-400: hsl(40deg 98% 66%);
@@ -71,13 +71,13 @@
   --maz-color-warning-600: hsl(40deg 68% 49%);
   --maz-color-warning-700: hsl(40deg 67% 38%);
   --maz-color-warning-800: hsl(40deg 68% 28%);
-  --maz-color-warning-900: hsl(39deg 67% 18%);
+  --maz-color-warning-900: hsl(40deg 67% 18%);
   --maz-color-warning-contrast: hsl(217deg 19% 27%);
   --maz-color-warning-alpha: hsl(40deg 97% 59% / 60%);
   --maz-color-warning-alpha-20: hsl(40deg 97% 59% / 20%);
 
   /* DANGER */
-  --maz-color-danger-50: hsl(3deg 100% 96%);
+  --maz-color-danger-50: hsl(1deg 100% 96%);
   --maz-color-danger-100: hsl(1deg 100% 91%);
   --maz-color-danger-200: hsl(2deg 100% 86%);
   --maz-color-danger-300: hsl(1deg 100% 81%);
@@ -85,7 +85,7 @@
   --maz-color-danger: hsl(1deg 100% 71%);
   --maz-color-danger-600: hsl(1deg 58% 58%);
   --maz-color-danger-700: hsl(1deg 41% 46%);
-  --maz-color-danger-800: hsl(2deg 42% 34%);
+  --maz-color-danger-800: hsl(g 42% 34%);
   --maz-color-danger-900: hsl(1deg 41% 21%);
   --maz-color-danger-contrast: hsl(0deg 0% 100%);
   --maz-color-danger-alpha: hsl(1deg 100% 71% / 60%);
