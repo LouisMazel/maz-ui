@@ -1,5 +1,4 @@
 ---
-title: Dark theme
 description: Dark theme is fully supported - How it's works ?
 ---
 
