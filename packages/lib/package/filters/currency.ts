@@ -28,11 +28,11 @@ const validRequiredAttributes = (
   locale: string,
   options: FilterCurrencyOptions,
 ) => {
-  if (typeof number === 'undefined')
+  if (number === undefined)
     throw new TypeError(
       '[maz-ui](FilterCurrency) The `number` attribute is required.',
     )
-  if (typeof locale === 'undefined')
+  if (locale === undefined)
     throw new TypeError(
       '[maz-ui](FilterCurrency) The `locale` attribute is required.',
     )
@@ -40,7 +40,7 @@ const validRequiredAttributes = (
     throw new TypeError(
       '[maz-ui](FilterCurrency) The `locale` attribute must be a string.',
     )
-  if (typeof options.currency === 'undefined')
+  if (options.currency === undefined)
     throw new TypeError(
       '[maz-ui](FilterCurrency) The `options.currency` attribute is required.',
     )
