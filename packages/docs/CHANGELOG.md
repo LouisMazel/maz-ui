@@ -9,7 +9,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 - **docs:** build error ([#353](https://github.com/LouisMazel/maz-ui/issues/353)) ([f3fc68d](https://github.com/LouisMazel/maz-ui/commit/f3fc68d7976c44990f19bb55bf2d285a959ee297))
 - **docs:** components rendering ([#272](https://github.com/LouisMazel/maz-ui/issues/272)) ([af3d72e](https://github.com/LouisMazel/maz-ui/commit/af3d72effcbd2994d779eddb53234e7ca840644c))
-- **docs:** deployment ([#283](https://github.com/LouisMazel/maz-ui/issues/283)) ([d389c51](https://github.com/LouisMazel/maz-ui/commit/d389c51bc856540256c3e3c3aa662b0d3e8ea5c8))
 - **docs:** doc build error - use maz-ui from npm ([#383](https://github.com/LouisMazel/maz-ui/issues/383)) ([758a763](https://github.com/LouisMazel/maz-ui/commit/758a7633e4ce0f384051349f4ea9c37d571aafaf))
 - **docs:** documentation components rendering on server side ([#276](https://github.com/LouisMazel/maz-ui/issues/276)) ([0ee8a5f](https://github.com/LouisMazel/maz-ui/commit/0ee8a5f9bb4c8c209de6be4ad29b631d532349db))
 - **docs:** documentation components rendering on server side ([#277](https://github.com/LouisMazel/maz-ui/issues/277)) ([dd8aed7](https://github.com/LouisMazel/maz-ui/commit/dd8aed76ad63c91b494bfec8877948fd52185ce3))
@@ -29,5 +28,3 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ### Reverts
 
 - Revert "release: v3.1.2 (#415)" ([4895427](https://github.com/LouisMazel/maz-ui/commit/48954272d5f53fd381e764880880e85af88f2082)), closes [#415](https://github.com/LouisMazel/maz-ui/issues/415)
-
-## [3.1.1](https://github.com/LouisMazel/maz-ui/compare/v3.1.0...v3.1.1) (2022-11-30)
