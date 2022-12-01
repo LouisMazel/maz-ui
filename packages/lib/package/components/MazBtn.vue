@@ -374,7 +374,7 @@
 
         &:not(:disabled):hover,
         &:not(:disabled):focus {
-          background-color: rgb(0 0 0 / 12%);
+          background-color: hsl(0deg 0% 0% / 12%);
         }
       }
 

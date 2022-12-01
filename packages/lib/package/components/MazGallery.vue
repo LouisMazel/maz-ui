@@ -267,7 +267,7 @@
         background-position: center center;
         background-size: cover;
         background-repeat: no-repeat;
-        background-color: rgb(0 0 0 / 5%);
+        background-color: hsl(0deg 0% 0% / 50%);
       }
     }
 
@@ -279,7 +279,7 @@
       left: 0;
 
       a span {
-        color: white;
+        color: hsl(0deg 0% 100%);
         font-size: 2rem;
       }
     }
