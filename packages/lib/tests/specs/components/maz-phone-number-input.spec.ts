@@ -1,14 +1,19 @@
-import { mount } from '@vue/test-utils'
+import { mount, type VueWrapper } from '@vue/test-utils'
 import MazPhoneNumberInput from '@components/MazPhoneNumberInput.vue'
 import { isCountryAvailable } from '@components/MazPhoneNumberInput/utils/index'
+import type { ComponentPublicInstance } from 'vue'
 
 describe('components/MazPhoneNumberInput.vue', () => {
   expect(MazPhoneNumberInput).toBeTruthy()
 
-  const wrapper = mount(MazPhoneNumberInput, {
-    props: {
-      modelValue: '+33658584729',
-    },
+  let wrapper: VueWrapper<ComponentPublicInstance & { [key: string]: any }>
+
+  beforeEach(() => {
+    wrapper = mount(MazPhoneNumberInput, {
+      props: {
+        modelValue: '+33658584729',
+      },
+    })
   })
 
   test('Should match with the snapshot', () => {
@@ -16,7 +21,7 @@ describe('components/MazPhoneNumberInput.vue', () => {
   })
 
   test('Should have an uniq id', async () => {
-    expect(wrapper.vm.instanceId).toBe('MazPhoneNumberInput-1')
+    expect(wrapper.vm.instanceId).toBe('MazPhoneNumberInput-8')
 
     const wrapperTest = mount(MazPhoneNumberInput, {
       props: {

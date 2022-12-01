@@ -27,7 +27,7 @@ module.exports = {
   rules: {
     'no-console': [
       process.env.NODE_ENV === 'production' ? 'error' : 'warn',
-      { allow: ['error'] },
+      { allow: ['error', 'warn'] },
     ],
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
     'prettier/prettier': ['error', {}, { usePrettierrc: true }],
