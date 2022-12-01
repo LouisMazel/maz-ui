@@ -116,20 +116,20 @@
       const sizeStyle = computed(() => {
         const { height, width, noWidth, noHeight } = props
         return {
-          ...(!noWidth
-            ? {
+          ...(noWidth
+            ? {}
+            : {
                 flex: '0 0 ' + typeof width === 'number' ? `${width}px` : width,
                 width: typeof width === 'number' ? `${width}px` : width,
-              }
-            : {}),
-          ...(!noHeight
-            ? {
+              }),
+          ...(noHeight
+            ? {}
+            : {
                 height:
                   typeof height === 'number' ? `${height}px` : `${height}`,
                 minHeight:
                   typeof height === 'number' ? `${height}px` : `${height}`,
-              }
-            : {}),
+              }),
         }
       })
       const imagesCount = computed(() => {
