@@ -322,9 +322,7 @@
 
     const optionsLength = optionsList.value.length
 
-    if (typeof currentIndex !== 'number') {
-      tmpModelValueIndex.value = code === 'ArrowDown' ? 0 : optionsLength - 1
-    } else {
+    if (typeof currentIndex === 'number') {
       if (currentIndex === optionsLength - 1 && code === 'ArrowDown') {
         tmpModelValueIndex.value = 0
       } else if (currentIndex === 0 && code === 'ArrowUp') {
@@ -333,6 +331,8 @@
         tmpModelValueIndex.value =
           code === 'ArrowDown' ? currentIndex + 1 : currentIndex - 1
       }
+    } else {
+      tmpModelValueIndex.value = code === 'ArrowDown' ? 0 : optionsLength - 1
     }
 
     scrollToSelected()
