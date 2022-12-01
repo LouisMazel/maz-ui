@@ -1,4 +1,27 @@
 /* eslint-disable unicorn/prefer-module */
 module.exports = {
-  extends: ['../lib/stylelint.config.js'],
+  extends: [
+    'stylelint-config-standard',
+    'stylelint-config-prettier',
+    'stylelint-config-recommended-vue',
+    'stylelint-config-standard-scss',
+    'stylelint-config-tailwindcss',
+  ],
+  rules: {
+    'at-rule-no-unknown': [
+      true,
+      { ignoreAtRules: ['screen', 'layer', 'tailwind', 'each', 'for'] },
+    ],
+    'scss/at-rule-no-unknown': [
+      true,
+      { ignoreAtRules: ['screen', 'layer', 'tailwind', 'each'] },
+    ],
+    'selector-pseudo-class-no-unknown': [
+      true,
+      { ignorePseudoClasses: ['deep'] },
+    ],
+    'selector-class-pattern': undefined,
+    'no-descending-specificity': undefined,
+    'string-quotes': 'single',
+  },
 }
