@@ -1,5 +1,5 @@
 {
-  "packages": ["packages/*"],
+  "packages": ["packages/lib"],
   "loglevel": "verbose",
   "version": "3.3.1",
   "yes": false,

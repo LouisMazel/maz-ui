@@ -178,8 +178,9 @@
     await nextTick()
     computedValue.value.forEach((_: unknown, i: number) => setBtnDividers(i))
   }
+
   const cursorKeyDown = (event: KeyboardEvent, i: number) => {
-    if (event.code === 'ArrowLeft') {
+    if (event.key === 'ArrowLeft') {
       if (
         tmpValues.value &&
         isBetween(
@@ -195,7 +196,7 @@
     }
     // ArrowRight
     else if (
-      event.code === 'ArrowRight' &&
+      event.key === 'ArrowRight' &&
       tmpValues.value &&
       isBetween(
         tmpValues.value[i] + 1,
