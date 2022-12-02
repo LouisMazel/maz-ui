@@ -121,6 +121,11 @@
   --maz-bg-color-dark-lighter: hsl(238deg 17% 28%);
 
   /**
+  * DEFAULT BORDER WIDTH (0.125rem = 2px with a font-size base of 16px)
+  **/
+  --maz-border-width: 0.125rem;
+
+  /**
   * FONT FAMILY
   * Not used in the library --> Use this variable on your <html> element (optional)
   **/
