@@ -103,7 +103,7 @@
       }
 
       const onKeyPress = (event: KeyboardEvent) => {
-        if (props.escKey && event.code === 'Escape' && !props.persistent)
+        if (props.escKey && event.key === 'Escape' && !props.persistent)
           toggleModal(false)
       }
 

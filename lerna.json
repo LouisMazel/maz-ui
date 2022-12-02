@@ -1,7 +1,7 @@
 {
-  "packages": ["packages/*"],
+  "packages": ["packages/lib"],
   "loglevel": "verbose",
-  "version": "3.3.1",
+  "version": "3.3.2",
   "yes": false,
   "command": {
     "version": {

@@ -2,10 +2,10 @@
 
 exports[`components/MazSelect.vue > Should match with the snapshot 1`] = `
 "<div class=\\"m-select\\" data-v-948d9dc9=\\"\\">
-  <div class=\\"m-input --is-readonly m-select-input --primary --md\\" data-v-562a2cff=\\"\\" data-v-948d9dc9=\\"\\">
-    <div class=\\"m-input-wrapper maz-border --default-border maz-rounded-lg\\" data-v-562a2cff=\\"\\">
+  <div class=\\"m-input m-select-input --primary --md\\" data-v-562a2cff=\\"\\" data-v-948d9dc9=\\"\\">
+    <div class=\\"m-input-wrapper --default-border maz-rounded\\" data-v-562a2cff=\\"\\">
       <!--v-if-->
-      <div class=\\"m-input-wrapper-input\\" data-v-562a2cff=\\"\\"><input id=\\"MazSelect-1\\" type=\\"text\\" name=\\"input\\" class=\\"m-select-input m-input-input\\" readonly=\\"\\" data-v-562a2cff=\\"\\">
+      <div class=\\"m-input-wrapper-input\\" data-v-562a2cff=\\"\\"><input id=\\"MazSelect-1\\" type=\\"text\\" name=\\"input\\" class=\\"m-select-input m-input-input\\" autocomplete=\\"off\\" data-v-562a2cff=\\"\\">
         <!--v-if-->
       </div>
       <div class=\\"m-input-wrapper-right\\" data-v-562a2cff=\\"\\"><button tabindex=\\"-1\\" type=\\"button\\" class=\\"m-select-input__toggle-button maz-custom\\" data-v-948d9dc9=\\"\\">

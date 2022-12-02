@@ -1,3 +1,5 @@
+// @ts-check
+
 // Tailwind CSS configuration (https://tailwindcss.com/docs/configuration)
 /* eslint-disable unicorn/prefer-module */
 const plugin = require('tailwindcss/plugin')
@@ -24,10 +26,13 @@ module.exports = {
       borderWidth: {
         0: '0',
         1: '1px',
-        DEFAULT: '2px',
+        DEFAULT: 'var(--maz-border-width)',
         2: '2px',
         3: '3px',
         4: '4px',
+      },
+      borderRadius: {
+        DEFAULT: 'var(--maz-border-radius)',
       },
       spacing: {},
     },

@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.3.2](https://github.com/LouisMazel/maz-ui/compare/v3.3.1...v3.3.2) (2022-12-02)
+
+- **lib:** maz select required prop ([#429](https://github.com/LouisMazel/maz-ui/issues/429)) ([985c07d](https://github.com/LouisMazel/maz-ui/commit/985c07d0f3528c049876b367f26915d304c2b23d))
+
 ## [3.3.1](https://github.com/LouisMazel/maz-ui/compare/v3.3.0...v3.3.1) (2022-12-01)
 
 ### Bug Fixes
