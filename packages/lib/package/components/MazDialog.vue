@@ -53,7 +53,7 @@
 
 <style lang="postcss" scoped>
   .m-dialog-layout {
-    @apply maz-rounded-lg maz-bg-color maz-text-normal;
+    @apply maz-rounded maz-bg-color maz-text-normal;
 
     width: 500px;
     max-width: 95vw;

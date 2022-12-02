@@ -76,7 +76,7 @@
     @apply maz-flex maz-flex-wrap maz-gap-2;
 
     &__items {
-      @apply maz-cursor-pointer maz-rounded-lg maz-px-4 maz-py-2
+      @apply maz-cursor-pointer maz-rounded maz-px-4 maz-py-2
         maz-font-medium maz-transition-colors maz-duration-300 maz-elevation;
 
       &:not(.--is-selected) {

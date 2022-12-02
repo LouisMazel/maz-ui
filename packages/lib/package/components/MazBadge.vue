@@ -46,7 +46,7 @@
       type: String,
       default: 'lg',
       validator: (value: string) => {
-        return ['sm', 'md', 'lg', 'xl', 'full'].includes(value)
+        return ['none', 'sm', 'md', 'lg', 'xl', 'full'].includes(value)
       },
     },
   })
@@ -64,16 +64,20 @@
     }
 
     &.--rounded {
+      &-none {
+        @apply maz-rounded-none;
+      }
+
       &-sm {
         @apply maz-rounded-sm;
       }
 
       &-md {
-        @apply maz-rounded;
+        @apply maz-rounded-md;
       }
 
       &-lg {
-        @apply maz-rounded-lg;
+        @apply maz-rounded;
       }
 
       &-xl {
