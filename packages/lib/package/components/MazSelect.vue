@@ -13,11 +13,12 @@
       :required="required"
       :color="color"
       :model-value="mazInputValue"
+      autocomplete="off"
       :size="size"
-      readonly
       :disabled="disabled"
       @focus.stop="openList"
       @click.stop="openList"
+      @change="mazInputValue = $event.target.value"
       @keydown="mainInputKeyboardHandler"
     >
       <template #right-icon>
@@ -405,6 +406,10 @@
     &-input {
       &__toggle-button {
         @apply maz-flex maz-h-full maz-bg-transparent maz-pl-0 maz-flex-center;
+      }
+
+      &:deep(input) {
+        caret-color: transparent;
       }
     }
 

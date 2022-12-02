@@ -18,7 +18,7 @@
     @click="$emit('click', $event)"
   >
     <div
-      class="m-input-wrapper maz-border"
+      class="m-input-wrapper"
       :class="[inputClasses, borderStyle, { 'maz-rounded': !noRadius }]"
     >
       <div v-if="hasLeftPart()" class="m-input-wrapper-left">
@@ -390,10 +390,10 @@
 
     &-wrapper {
       @apply maz-relative maz-z-1 maz-flex maz-flex-1 maz-overflow-hidden
-        maz-border-solid maz-bg-color maz-transition-colors maz-duration-300;
+        maz-border maz-border-solid maz-bg-color maz-transition-colors maz-duration-300;
 
       &.--default-border {
-        @apply maz-border-color;
+        @apply maz-border-gray-200;
       }
 
       &-input {
