@@ -19,7 +19,7 @@
   >
     <div
       class="m-input-wrapper maz-border"
-      :class="[inputClasses, borderStyle, { 'maz-rounded-lg': !noRadius }]"
+      :class="[inputClasses, borderStyle, { 'maz-rounded': !noRadius }]"
     >
       <div v-if="hasLeftPart()" class="m-input-wrapper-left">
         <slot v-if="$slots['left-icon'] || leftIcon" name="left-icon">
@@ -393,7 +393,7 @@
         maz-border-solid maz-bg-color maz-transition-colors maz-duration-300;
 
       &.--default-border {
-        @apply maz-border-gray-200;
+        @apply maz-border-color;
       }
 
       &-input {

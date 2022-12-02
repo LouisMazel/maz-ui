@@ -424,7 +424,7 @@
 
     .m-select-list {
       @apply maz-absolute maz-z-100 maz-flex maz-flex-col maz-overflow-hidden
-        maz-rounded-lg maz-bg-color maz-text-normal maz-elevation;
+        maz-rounded maz-bg-color maz-text-normal maz-elevation;
 
       min-width: 3.5rem;
 

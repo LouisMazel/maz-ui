@@ -158,7 +158,7 @@
   .m-stepper {
     &__header {
       @apply maz-flex maz-w-full maz-cursor-pointer maz-items-center maz-space-x-4
-        maz-rounded-lg maz-px-4 maz-py-2 maz-outline-none maz-transition-colors maz-duration-200;
+        maz-rounded maz-px-4 maz-py-2 maz-outline-none maz-transition-colors maz-duration-200;
 
       &__content {
         @apply maz-flex maz-flex-col maz-items-start;

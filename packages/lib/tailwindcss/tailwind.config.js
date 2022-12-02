@@ -31,6 +31,9 @@ module.exports = {
         3: '3px',
         4: '4px',
       },
+      borderRadius: {
+        DEFAULT: 'var(--maz-border-radius)',
+      },
       spacing: {},
     },
   },

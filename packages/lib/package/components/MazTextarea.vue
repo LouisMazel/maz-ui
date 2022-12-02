@@ -163,7 +163,7 @@
     @apply maz-relative maz-flex maz-flex-col;
 
     textarea {
-      @apply maz-min-h-[6.25rem] maz-w-full maz-resize-y maz-rounded-lg maz-border
+      @apply maz-min-h-[6.25rem] maz-w-full maz-resize-y maz-rounded maz-border
         maz-bg-color maz-p-4 maz-text-normal maz-outline-none;
 
       &.--default-border {

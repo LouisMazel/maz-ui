@@ -7,7 +7,7 @@
         'm-card--no-scale': !scale,
         'maz-elevation': elevation,
         'maz-overflow-hidden': overflowHidden || !isOpen,
-        'maz-rounded-xl': radius,
+        'maz-rounded': radius,
         'maz-border-2 maz-border-solid maz-border-color-lighter': bordered,
       },
     ]"

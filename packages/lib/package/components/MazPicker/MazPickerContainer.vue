@@ -130,7 +130,7 @@
 
 <style lang="postcss" scoped>
   .m-picker-container {
-    @apply maz-overflow-hidden maz-rounded-lg maz-bg-color;
+    @apply maz-overflow-hidden maz-rounded maz-bg-color;
 
     &:not(.--is-inline) {
       @apply maz-absolute maz-z-default-backdrop maz-elevation;
