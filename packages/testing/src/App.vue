@@ -23,13 +23,9 @@
   import { onMounted } from 'vue'
   import { MazBtn, MazIcon } from 'maz-ui/package/components'
   import { aosInstance } from 'maz-ui/package/plugins'
-  import { useThemeHandler, ThemeHandlerOptions } from 'maz-ui/package/helpers'
+  import { useThemeHandler } from 'maz-ui/package/helpers'
 
-  const options: ThemeHandlerOptions = {
-    storageThemeKey: 'mode',
-  }
-
-  const { autoSetTheme, toggleTheme, hasDarkTheme } = useThemeHandler(options)
+  const { autoSetTheme, toggleTheme, hasDarkTheme } = useThemeHandler()
 
   onMounted(() => {
     autoSetTheme()
