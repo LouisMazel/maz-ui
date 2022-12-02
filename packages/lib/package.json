@@ -25,7 +25,7 @@
     "lint:js:nofix": "eslint --ext .ts,.js,.vue .",
     "lint:js": "eslint --fix --ext .ts,.js,.vue .",
     "format": "prettier . --write",
-    "lint:style": "stylelint --custom-syntax postcss-html --fix \"**/*.{vue,css,scss,postcss,pcss}\"",
+    "lint:style": "stylelint --custom-syntax postcss-html --fix \"./**/*.{vue,css,scss,postcss,pcss}\"",
     "clean": "rimraf components modules css types maz-ui.d.ts",
     "build": "npm run build:js && npm run build:css",
     "build:watch": "onchange --await-write-finish 2000 'package/**/*' -e 'package/components/index.ts' --exclude-path .gitignore -- npm run build",
