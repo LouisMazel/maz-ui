@@ -1,7 +1,7 @@
 // Vitest Snapshot v1
 
 exports[`components/MazCard.vue 1`] = `
-"<div class=\\"m-card maz-elevation maz-rounded-xl\\" data-v-3efc0638=\\"\\">
+"<div class=\\"m-card maz-elevation maz-rounded\\" data-v-3efc0638=\\"\\">
   <!--v-if-->
   <div class=\\"m-card__wrapper m-card__wrapper--column\\" data-v-3efc0638=\\"\\">
     <!--v-if-->

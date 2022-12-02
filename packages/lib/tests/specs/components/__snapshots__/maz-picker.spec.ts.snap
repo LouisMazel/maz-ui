@@ -3,7 +3,7 @@
 exports[`components/MazPicker.vue > Should match with the snapshot 1`] = `
 "<div class=\\"m-picker m-picker--primary m-picker--bottom m-picker--left\\" data-v-4f2ff7fa=\\"\\">
   <div class=\\"m-input --is-readonly m-picker__input --primary --md\\" data-v-562a2cff=\\"\\" data-v-4f2ff7fa=\\"\\">
-    <div class=\\"m-input-wrapper maz-border --default-border maz-rounded-lg\\" data-v-562a2cff=\\"\\">
+    <div class=\\"m-input-wrapper maz-border --default-border maz-rounded\\" data-v-562a2cff=\\"\\">
       <!--v-if-->
       <div class=\\"m-input-wrapper-input\\" data-v-562a2cff=\\"\\"><input id=\\"MazInput-2\\" type=\\"text\\" name=\\"input\\" autocomplete=\\"off\\" class=\\"m-picker__input m-input-input\\" readonly=\\"\\" data-v-562a2cff=\\"\\">
         <!--v-if-->
