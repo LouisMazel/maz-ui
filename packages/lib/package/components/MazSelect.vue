@@ -2,7 +2,7 @@
   <div
     ref="mazSelectElement"
     class="m-select"
-    :class="{ '--is-open': hasListOpen, '--disabled': disabled }"
+    :class="{ '--is-open': hasListOpened, '--disabled': disabled }"
     @blur.capture="closeList"
   >
     <MazInput
@@ -11,14 +11,15 @@
       class="m-select-input"
       v-bind="$attrs"
       :required="required"
+      :border-active="listOpened"
       :color="color"
       :model-value="mazInputValue"
       autocomplete="off"
       :size="size"
       :disabled="disabled"
       @focus.stop="openList"
+      @change="emits('change', $event)"
       @click.stop="openList"
-      @change="mazInputValue = $event.target.value"
       @keydown="mainInputKeyboardHandler"
     >
       <template #right-icon>
@@ -34,7 +35,7 @@
     </MazInput>
     <Transition :name="listTransition">
       <div
-        v-if="hasListOpen || open"
+        v-if="hasListOpened"
         ref="optionsListElement"
         class="m-select-list"
         :class="{
@@ -187,10 +188,13 @@
     'update:model-value',
     'blur',
     'focus',
+    'change',
   ])
 
-  const hasListOpen = ref(false)
+  const listOpened = ref(false)
   const tmpModelValueIndex = ref<number>()
+
+  const hasListOpened = computed(() => listOpened.value || props.open)
 
   const { instanceId } = useInstanceUniqId({
     componentName: 'MazSelect',
@@ -271,7 +275,7 @@
     }
 
     await nextTick()
-    hasListOpen.value = false
+    listOpened.value = false
     emits('close', event)
   }
 
@@ -280,10 +284,10 @@
 
     if (props.disabled) return
 
-    hasListOpen.value = true
+    listOpened.value = true
     await scrollToSelected()
     emits('focus', event)
-    emits('open', hasListOpen.value)
+    emits('open', listOpened.value)
   }
 
   // const unFocusInput = () => {
@@ -292,9 +296,16 @@
   // }
 
   const mainInputKeyboardHandler = (event: KeyboardEvent) => {
-    if (/[\dA-Za-z]/.test(event.key) && event.key.length === 1) {
+    console.log('event', event)
+    if (event.key.length === 1) {
+      event.preventDefault()
       openList(event)
-      searchInputComponent.value?.input.focus()
+
+      searchQuery.value = event.key
+
+      if (props.search) {
+        searchInputComponent.value?.input.focus()
+      }
     } else {
       keyboardHandler(event)
     }
@@ -305,12 +316,13 @@
 
     const isArrow = ['ArrowUp', 'ArrowDown'].includes(code)
     const isEnter = 'Enter' === code
+    const isEscape = 'Escape' === code && hasListOpened.value
 
     if (isArrow) {
       arrowHandler(event, tmpModelValueIndex.value)
     } else if (isEnter) {
       enterHandler(event, tmpModelValueIndex.value)
-    } else if ('Escape' === code && hasListOpen.value) {
+    } else if (isEscape) {
       closeList()
     }
   }
@@ -319,7 +331,7 @@
     event.preventDefault()
     const code = event.code
 
-    if (!hasListOpen.value) openList(event)
+    if (!hasListOpened.value) openList(event)
 
     const optionsLength = optionsList.value.length
 
@@ -342,7 +354,7 @@
   const enterHandler = (event: KeyboardEvent, currentIndex?: number) => {
     event.preventDefault()
 
-    if (!hasListOpen.value) {
+    if (!hasListOpened.value) {
       return openList(event)
     }
 
@@ -409,7 +421,7 @@
       }
 
       &:deep(input) {
-        caret-color: transparent;
+        @apply maz-caret-transparent;
       }
     }
 

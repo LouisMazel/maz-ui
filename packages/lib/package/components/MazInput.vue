@@ -3,7 +3,7 @@
     class="m-input"
     :class="[
       {
-        '--is-focused': isFocused,
+        '--is-focused': isFocused || borderActive,
         '--should-up': shouldUp,
         '--has-label': hasLabel,
         '--is-disabled': disabled,
@@ -194,6 +194,7 @@
       validButton: { type: Boolean, default: false },
       validButtonLoading: { type: Boolean, default: false },
       autoFocus: { type: Boolean, default: false },
+      borderActive: { type: Boolean, default: false },
       leftIcon: { type: String, default: undefined },
       rightIcon: { type: String, default: undefined },
     },
@@ -228,7 +229,7 @@
         if (props.error) return 'maz-border-danger'
         if (props.success) return 'maz-border-success'
         if (props.warning) return 'maz-border-warning'
-        if (isFocused.value) {
+        if (isFocused.value || props.borderActive) {
           if (props.color === 'black') return 'maz-border-black'
           if (props.color === 'danger') return 'maz-border-danger'
           if (props.color === 'info') return 'maz-border-info'
