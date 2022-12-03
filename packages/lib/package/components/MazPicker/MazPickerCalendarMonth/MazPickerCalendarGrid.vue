@@ -381,9 +381,7 @@
         &:hover,
         &:focus {
           &:not(.--is-selected, .--is-between, .--is-between-hoverred) {
-            /* stylelint-disable */
-            background-color: v-bind(hoverColor) !important;
-            /* stylelint-enable */
+            background-color: v-bind('hoverColor') !important;
           }
         }
 
@@ -400,17 +398,13 @@
             @apply maz-rounded-none !important;
           }
 
-          /* stylelint-disable */
-          background-color: v-bind(betweenColorAlpha) !important;
-          /* stylelint-enable */
+          background-color: v-bind('betweenColorAlpha') !important;
         }
 
         &.--is-between {
           @apply maz-rounded-none !important;
 
-          /* stylelint-disable */
-          background-color: v-bind(betweenColor) !important;
-          /* stylelint-enable */
+          background-color: v-bind('betweenColor') !important;
 
           &.--white,
           &.--transparent {

@@ -25,5 +25,6 @@ module.exports = {
     'selector-class-pattern': undefined,
     'no-descending-specificity': undefined,
     'string-quotes': 'single',
+    'function-no-unknown': [true, { ignoreFunctions: ['v-bind'] }],
   },
 }
