@@ -127,50 +127,37 @@ You should respect order of steps in the array:
       { disabled: false, validated: true },
       { disabled: true, validated: false }
     ]"
+    color="info"
   >
-    <template #title-1>
-      Step 1
-    </template>
-    <template #content-1>
-      Content 1
-    </template>
-    <template #title-2>
-      Step 2
-    </template>
-    <template #content-2>
-      Content 2
-    </template>
-    <template #title-3>
-      Step 3
-    </template>
-    <template #content-3>
-      Content 3
-    </template>
+    <template #title-1> Step 1 </template>
+    <template #content-1> Content 1 </template>
+
+    <template #title-2> Step 2 </template>
+    <template #content-2> Content 2 </template>
+
+    <template #title-3> Step 3 </template>
+    <template #content-3> Content 3 </template>
   </MazStepper>
 </template>
 ```
 
 Will be:
 
-<MazStepper :steps="[{ disabled: false, validated: true }, { disabled: true, validated: false } ]">
-  <template #title-1>
-    Step 1
-  </template>
-  <template #content-1>
-    Content 1
-  </template>
-  <template #title-2>
-    Step 2
-  </template>
-  <template #content-2>
-    Content 2
-  </template>
-  <template #title-3>
-    Step 3
-  </template>
-  <template #content-3>
-    Content 3
-  </template>
+<MazStepper
+  :steps="[
+    { disabled: false, validated: true },
+    { disabled: true, validated: false }
+  ]"
+  color="info"
+>
+  <template #title-1> Step 1 </template>
+  <template #content-1> Content 1 </template>
+
+  <template #title-2> Step 2 </template>
+  <template #content-2> Content 2 </template>
+
+  <template #title-3> Step 3 </template>
+  <template #content-3> Content 3 </template>
 </MazStepper>
 
 ### Auto validate steps
@@ -183,25 +170,19 @@ Then, all previous steps has the check icon:
 
 ```vue
 <template>
-  <MazStepper v-model="currentStep" auto-validated-steps>
-    <template #title-1>
-      Step 1
-    </template>
-    <template #content-1>
-      Content 1
-    </template>
-    <template #title-2>
-      Step 2
-    </template>
-    <template #content-2>
-      Content 2
-    </template>
-    <template #title-3>
-      Step 3
-    </template>
-    <template #content-3>
-      Content 3
-    </template>
+  <MazStepper
+    v-model="currentStep"
+    auto-validated-steps
+    color="secondary"
+  >
+    <template #title-1> Step 1 </template>
+    <template #content-1> Content 1 </template>
+
+    <template #title-2> Step 2 </template>
+    <template #content-2> Content 2 </template>
+
+    <template #title-3> Step 3 </template>
+    <template #content-3> Content 3 </template>
   </MazStepper>
 </template>
 
@@ -213,25 +194,19 @@ Then, all previous steps has the check icon:
 
 Click on "step 3" to show the step 2 validated:
 
-<MazStepper v-model="currentStep" auto-validated-steps>
-  <template #title-1>
-    Step 1
-  </template>
-  <template #content-1>
-    Content 1
-  </template>
-  <template #title-2>
-    Step 2
-  </template>
-  <template #content-2>
-    Content 2
-  </template>
-  <template #title-3>
-    Step 3
-  </template>
-  <template #content-3>
-    Content 3
-  </template>
+<MazStepper
+  v-model="currentStep"
+  auto-validated-steps
+  color="secondary"
+>
+  <template #title-1> Step 1 </template>
+  <template #content-1> Content 1 </template>
+
+  <template #title-2> Step 2 </template>
+  <template #content-2> Content 2 </template>
+
+  <template #title-3> Step 3 </template>
+  <template #content-3> Content 3 </template>
 </MazStepper>
 
 ### Auto disabled next or/and previous steps
@@ -248,24 +223,14 @@ To not allow your users to show other steps, you can use the prop options:
     disabled-previous-steps
     disabled-next-steps
   >
-    <template #title-1>
-      Step 1
-    </template>
-    <template #content-1>
-      Content 1
-    </template>
-    <template #title-2>
-      Step 2
-    </template>
-    <template #content-2>
-      Content 2
-    </template>
-    <template #title-3>
-      Step 3
-    </template>
-    <template #content-3>
-      Content 3
-    </template>
+    <template #title-1> Step 1 </template>
+    <template #content-1> Content 1 </template>
+
+    <template #title-2> Step 2 </template>
+    <template #content-2> Content 2 </template>
+
+    <template #title-3> Step 3 </template>
+    <template #content-3> Content 3 </template>
   </MazStepper>
 </template>
 
@@ -278,24 +243,14 @@ To not allow your users to show other steps, you can use the prop options:
 Will be:
 
 <MazStepper v-model="currentStep" disabled-previous-steps disabled-next-steps>
-  <template #title-1>
-    Step 1
-  </template>
-  <template #content-1>
-    Content 1
-  </template>
-  <template #title-2>
-    Step 2
-  </template>
-  <template #content-2>
-    Content 2
-  </template>
-  <template #title-3>
-    Step 3
-  </template>
-  <template #content-3>
-    Content 3
-  </template>
+  <template #title-1> Step 1 </template>
+  <template #content-1> Content 1 </template>
+
+  <template #title-2> Step 2 </template>
+  <template #content-2> Content 2 </template>
+
+  <template #title-3> Step 3 </template>
+  <template #content-3> Content 3 </template>
 </MazStepper>
 
 <script setup lang="ts">
