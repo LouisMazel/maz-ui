@@ -11,5 +11,7 @@
     "comments": false,
     "strings": true
   },
-  "css.validate": false
+  "css.validate": false,
+  "scss.validate": false,
+  "stylelint.validate": ["css", "scss", "postcss", "pcss"]
 }
