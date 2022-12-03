@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.4.0](https://github.com/LouisMazel/maz-ui/compare/v3.3.2...v3.4.0) (2022-12-03)
+
+### Features
+
+- **lib:** maz-stepper colors & validated steps UI ([#431](https://github.com/LouisMazel/maz-ui/issues/431)) ([36c8db2](https://github.com/LouisMazel/maz-ui/commit/36c8db2b4f57008c505f7b17e286218fe40531fb))
+
 ## [3.3.2](https://github.com/LouisMazel/maz-ui/compare/v3.3.1...v3.3.2) (2022-12-02)
 
 ### Bug Fixes

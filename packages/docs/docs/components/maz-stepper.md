@@ -17,14 +17,16 @@ description: MazStepper is a stand-alone UI component to
   <template #subtitle-1>
     You should be sign-in to continue
   </template>
-  <template #content-1="{ nextStep, previousStep }">
-    <MazInput label="E-mail" type="email" />
-    <br />
-    <MazInput label="password" type="password" />
-    <br />
-    <MazBtn @click="nextStep">
-      Sign-In
-    </MazBtn>
+  <template #content-1="{ nextStep }">
+    <form @submit.prevent="nextStep">
+      <MazInput v-model="email" label="E-mail" type="email" autocomplete="new-email" name="new-email" />
+      <br />
+      <MazInput v-model="password" label="password" type="password" autocomplete="new-password" name="new-password" />
+      <br />
+      <MazBtn type="submit">
+        Sign-In
+      </MazBtn>
+    </form>
   </template>
 
   <template #title-2>
@@ -33,7 +35,7 @@ description: MazStepper is a stand-alone UI component to
   <template #subtitle-2>
     Where should we deliver your package?
   </template>
-  <template #content-2="{ nextStep, previousStep }">
+  <template #content-2="{ nextStep }">
     <MazInput label="Delivery address" />
     <br />
     <MazBtn @click="nextStep">
@@ -65,14 +67,16 @@ description: MazStepper is a stand-alone UI component to
     <template #subtitle-1>
       You should be sign-in to continue
     </template>
-    <template #content-1="{ nextStep, previousStep }">
-      <MazInput label="E-mail" type="email" />
-      <br />
-      <MazInput label="password" type="password" />
-      <br />
-      <MazBtn @click="nextStep">
-        Sign-In
-      </MazBtn>
+    <template #content-1="{ nextStep }">
+      <form @submit.prevent="nextStep">
+        <MazInput label="E-mail" type="email" autocomplete="new-email" name="new-email" />
+        <br />
+        <MazInput label="password" type="password" autocomplete="new-password" name="new-password" />
+        <br />
+        <MazBtn type="submit">
+          Sign-In
+        </MazBtn>
+      </form>
     </template>
 
     <template #title-2>
@@ -81,7 +85,7 @@ description: MazStepper is a stand-alone UI component to
     <template #subtitle-2>
       Where should we deliver your package?
     </template>
-    <template #content-2="{ nextStep, previousStep }">
+    <template #content-2="{ nextStep }">
       <MazInput label="Delivery address" />
       <br />
       <MazBtn @click="nextStep">
@@ -104,6 +108,13 @@ description: MazStepper is a stand-alone UI component to
     </template>
   </MazStepper>
 </template>
+
+<script lang="ts" setup>
+  import { ref } from 'vue'
+
+  const email = ref()
+  const password = ref()
+</script>
 ```
 
 ## Documentation
@@ -127,50 +138,31 @@ You should respect order of steps in the array:
       { disabled: false, validated: true },
       { disabled: true, validated: false }
     ]"
+    color="info"
   >
-    <template #title-1>
-      Step 1
-    </template>
-    <template #content-1>
-      Content 1
-    </template>
-    <template #title-2>
-      Step 2
-    </template>
-    <template #content-2>
-      Content 2
-    </template>
-    <template #title-3>
-      Step 3
-    </template>
-    <template #content-3>
-      Content 3
-    </template>
+    <template #title-1> Step 1 </template>
+    <template #content-1> Content 1 </template>
+
+    <template #title-2> Step 2 </template>
+    <template #content-2> Content 2 </template>
+
+    <template #title-3> Step 3 </template>
+    <template #content-3> Content 3 </template>
   </MazStepper>
 </template>
 ```
 
 Will be:
 
-<MazStepper :steps="[{ disabled: false, validated: true }, { disabled: true, validated: false } ]">
-  <template #title-1>
-    Step 1
-  </template>
-  <template #content-1>
-    Content 1
-  </template>
-  <template #title-2>
-    Step 2
-  </template>
-  <template #content-2>
-    Content 2
-  </template>
-  <template #title-3>
-    Step 3
-  </template>
-  <template #content-3>
-    Content 3
-  </template>
+<MazStepper :steps="[ { disabled: false, validated: true }, { disabled: true, validated: false } ]" color="info">
+  <template #title-1> Step 1 </template>
+  <template #content-1> Content 1 </template>
+
+  <template #title-2> Step 2 </template>
+  <template #content-2> Content 2 </template>
+
+  <template #title-3> Step 3 </template>
+  <template #content-3> Content 3 </template>
 </MazStepper>
 
 ### Auto validate steps
@@ -183,25 +175,19 @@ Then, all previous steps has the check icon:
 
 ```vue
 <template>
-  <MazStepper v-model="currentStep" auto-validated-steps>
-    <template #title-1>
-      Step 1
-    </template>
-    <template #content-1>
-      Content 1
-    </template>
-    <template #title-2>
-      Step 2
-    </template>
-    <template #content-2>
-      Content 2
-    </template>
-    <template #title-3>
-      Step 3
-    </template>
-    <template #content-3>
-      Content 3
-    </template>
+  <MazStepper
+    v-model="currentStep"
+    auto-validated-steps
+    color="secondary"
+  >
+    <template #title-1> Step 1 </template>
+    <template #content-1> Content 1 </template>
+
+    <template #title-2> Step 2 </template>
+    <template #content-2> Content 2 </template>
+
+    <template #title-3> Step 3 </template>
+    <template #content-3> Content 3 </template>
   </MazStepper>
 </template>
 
@@ -213,25 +199,15 @@ Then, all previous steps has the check icon:
 
 Click on "step 3" to show the step 2 validated:
 
-<MazStepper v-model="currentStep" auto-validated-steps>
-  <template #title-1>
-    Step 1
-  </template>
-  <template #content-1>
-    Content 1
-  </template>
-  <template #title-2>
-    Step 2
-  </template>
-  <template #content-2>
-    Content 2
-  </template>
-  <template #title-3>
-    Step 3
-  </template>
-  <template #content-3>
-    Content 3
-  </template>
+<MazStepper v-model="currentStep" auto-validated-steps color="secondary">
+  <template #title-1> Step 1 </template>
+  <template #content-1> Content 1 </template>
+
+  <template #title-2> Step 2 </template>
+  <template #content-2> Content 2 </template>
+
+  <template #title-3> Step 3 </template>
+  <template #content-3> Content 3 </template>
 </MazStepper>
 
 ### Auto disabled next or/and previous steps
@@ -243,29 +219,15 @@ To not allow your users to show other steps, you can use the prop options:
 
 ```vue
 <template>
-  <MazStepper
-    v-model="currentStep"
-    disabled-previous-steps
-    disabled-next-steps
-  >
-    <template #title-1>
-      Step 1
-    </template>
-    <template #content-1>
-      Content 1
-    </template>
-    <template #title-2>
-      Step 2
-    </template>
-    <template #content-2>
-      Content 2
-    </template>
-    <template #title-3>
-      Step 3
-    </template>
-    <template #content-3>
-      Content 3
-    </template>
+  <MazStepper v-model="currentStep" disabled-previous-steps disabled-next-steps >
+    <template #title-1> Step 1 </template>
+    <template #content-1> Content 1 </template>
+
+    <template #title-2> Step 2 </template>
+    <template #content-2> Content 2 </template>
+
+    <template #title-3> Step 3 </template>
+    <template #content-3> Content 3 </template>
   </MazStepper>
 </template>
 
@@ -278,29 +240,22 @@ To not allow your users to show other steps, you can use the prop options:
 Will be:
 
 <MazStepper v-model="currentStep" disabled-previous-steps disabled-next-steps>
-  <template #title-1>
-    Step 1
-  </template>
-  <template #content-1>
-    Content 1
-  </template>
-  <template #title-2>
-    Step 2
-  </template>
-  <template #content-2>
-    Content 2
-  </template>
-  <template #title-3>
-    Step 3
-  </template>
-  <template #content-3>
-    Content 3
-  </template>
+  <template #title-1> Step 1 </template>
+  <template #content-1> Content 1 </template>
+
+  <template #title-2> Step 2 </template>
+  <template #content-2> Content 2 </template>
+
+  <template #title-3> Step 3 </template>
+  <template #content-3> Content 3 </template>
 </MazStepper>
 
 <script setup lang="ts">
   import { ref } from 'vue'
   const currentStep = ref(2)
+
+  const email = ref()
+  const password = ref()
 </script>
 
 ## Props & Events emitted

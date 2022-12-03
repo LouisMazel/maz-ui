@@ -6,6 +6,7 @@
         type="button"
         :disabled="isStepDisabled(step)"
         class="m-stepper__header"
+        :class="{ '--is-current-step': step === currentStep }"
         @click="selectStep(step)"
       >
         <span
@@ -14,27 +15,26 @@
             '--validated': isStepValidated(step),
           }"
         >
-          <svg
-            v-if="isStepValidated(step)"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            width="1.2rem"
-            height="1.2rem"
-            stroke="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M5 13l4 4L19 7"
-            />
-          </svg>
+          <div class="m-stepper__count__circle">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              width="1.2rem"
+              height="1.2rem"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              />
+            </svg>
+          </div>
 
-          <template v-else>
-            {{ step }}
-          </template>
+          {{ step }}
         </span>
 
         <div class="m-stepper__header__content">
@@ -69,22 +69,50 @@
   </div>
 </template>
 
+<script lang="ts">
+  export type { Color } from './types'
+</script>
+
 <script lang="ts" setup>
   import { computed, useSlots, ref, type PropType } from 'vue'
   import MazTransitionExpand from './MazTransitionExpand.vue'
+  import type { Color } from './types'
 
   export interface Step {
     disabled?: boolean
     validated?: boolean
   }
+  export type Steps = Step[]
 
   const props = defineProps({
     modelValue: { type: Number, default: undefined },
-    steps: { type: Array as PropType<Step[]>, default: undefined },
+    steps: { type: Array as PropType<Steps>, default: undefined },
     disabledNextSteps: { type: Boolean, default: false },
     disabledPreviousSteps: { type: Boolean, default: false },
     autoValidatedSteps: { type: Boolean, default: false },
+    color: {
+      type: String as PropType<Color>,
+      default: 'primary',
+      validator: (value: string) => {
+        return [
+          'primary',
+          'secondary',
+          'warning',
+          'danger',
+          'info',
+          'success',
+          'white',
+          'gray',
+          'black',
+        ].includes(value)
+      },
+    },
   })
+
+  const roundStepBgColor = computed(() => `var(--maz-color-${props.color})`)
+  const roundStepTextColor = computed(
+    () => `var(--maz-color-${props.color}-contrast)`,
+  )
 
   const emits = defineEmits(['update:model-value'])
 
@@ -171,6 +199,10 @@
       &:disabled {
         @apply maz-cursor-not-allowed;
       }
+
+      &.--is-current-step {
+        @apply maz-cursor-default;
+      }
     }
 
     &__title {
@@ -182,10 +214,29 @@
     }
 
     &__count {
-      @apply maz-flex maz-h-8 maz-w-8 maz-flex-none maz-items-center maz-justify-center maz-rounded-full maz-text-lg;
+      @apply maz-relative maz-flex maz-h-8 maz-w-8 maz-flex-none
+        maz-overflow-hidden maz-rounded-full maz-text-lg maz-flex-center;
 
-      &.--primary {
-        @apply maz-bg-primary maz-text-primary-contrast;
+      background-color: v-bind('roundStepBgColor');
+      color: v-bind('roundStepTextColor');
+
+      &__circle {
+        @apply maz-absolute maz-inset-0 maz-flex maz-scale-0 maz-rounded-full
+          maz-bg-success maz-transition-all maz-duration-300 maz-ease-in-out maz-flex-center;
+      }
+
+      svg {
+        color: v-bind('roundStepTextColor');
+      }
+
+      &.--validated {
+        & .m-stepper__count__circle {
+          @apply maz-scale-100;
+        }
+
+        svg {
+          @apply maz-text-success-contrast;
+        }
       }
     }
 
