@@ -14,6 +14,7 @@
 [![bundlephobia_tree](https://badgen.net/bundlephobia/tree-shaking/maz-ui@3.0.0)](https://bundlephobia.com/package/maz-ui@3.0.0)
 [![bundlephobia_zip](https://badgen.net/bundlephobia/min/maz-ui@3.0.0)](https://bundlephobia.com/package/maz-ui@3.0.0)
 [![bundlephobia_zip](https://badgen.net/bundlephobia/minzip/maz-ui@3.0.0)](https://bundlephobia.com/package/maz-ui@3.0.0)
+[![bundlephobia_deps](https://badgen.net//bundlephobia/dependency-count/maz-ui@3.0.0)](https://bundlephobia.com/package/maz-ui@3.0.0)
 
 > [Maz-ui](https://louismazel.github.io/maz-ui/) is a standalone components library and tools for [Vue.JS](https://vuejs.org) & [Nuxt.JS](https://nuxtjs.org/) (v3.x)
 
