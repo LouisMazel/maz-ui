@@ -3,18 +3,19 @@
 [![vue 3](https://img.shields.io/badge/vue-3-42b983.svg)](https://vuejs.org)
 [![nuxt 3](https://img.shields.io/badge/nuxt-3-42b983.svg)](https://v3.nuxtjs.org/)
 
+[![types](https://badgen.net/npm/types/maz-ui)](https://www.npmjs.com/package/maz-ui)
 [![npm](https://img.shields.io/npm/v/maz-ui/latest.svg)](https://www.npmjs.com/package/maz-ui)
-[![license](https://img.shields.io/github/license/LouisMazel/maz-ui.svg)](https://github.com/LouisMazel/maz-ui/blob/master/LICENSE)
-[![Downloads](https://img.shields.io/npm/dm/maz-ui.svg)](https://npm-stat.com/charts.html?package=maz-ui)
+[![license](https://badgen.net/npm/license/lodash)](https://www.npmjs.com/package/maz-ui)
+[![Downloads](https://badgen.net/npm/dm/maz-ui)](https://npm-stat.com/charts.html?package=maz-ui)
+
+[![bundlephobia_tree](https://badgen.net/bundlephobia/tree-shaking/maz-ui)](https://bundlephobia.com/package/maz-ui)
+[![bundlephobia_zip](https://badgen.net/bundlephobia/min/maz-ui)](https://bundlephobia.com/package/maz-ui)
+[![bundlephobia_zip](https://badgen.net/bundlephobia/minzip/maz-ui)](https://bundlephobia.com/package/maz-ui)
+[![bundlephobia_deps](https://badgen.net/bundlephobia/dependency-count/maz-ui@3.0.0)](https://bundlephobia.com/package/maz-ui)
 
 [![maintainability](https://api.codeclimate.com/v1/badges/6b27047dcf150ccddfac/maintainability)](https://codeclimate.com/github/LouisMazel/maz-ui/maintainability)
 [![test_coverage](https://api.codeclimate.com/v1/badges/6b27047dcf150ccddfac/test_coverage)](https://codeclimate.com/github/LouisMazel/maz-ui/test_coverage)
 ![github actions test unit](https://github.com/LouisMazel/maz-ui/actions/workflows/lib-test-unit.yml/badge.svg)
-
-[![bundlephobia_tree](https://badgen.net/bundlephobia/tree-shaking/maz-ui@3.0.0)](https://bundlephobia.com/package/maz-ui@3.0.0)
-[![bundlephobia_zip](https://badgen.net/bundlephobia/min/maz-ui@3.0.0)](https://bundlephobia.com/package/maz-ui@3.0.0)
-[![bundlephobia_zip](https://badgen.net/bundlephobia/minzip/maz-ui@3.0.0)](https://bundlephobia.com/package/maz-ui@3.0.0)
-[![bundlephobia_deps](https://badgen.net//bundlephobia/dependency-count/maz-ui@3.0.0)](https://bundlephobia.com/package/maz-ui@3.0.0)
 
 > [Maz-ui](https://louismazel.github.io/maz-ui/) is a standalone components library and tools for [Vue.JS](https://vuejs.org) & [Nuxt.JS](https://nuxtjs.org/) (v3.x)
 
