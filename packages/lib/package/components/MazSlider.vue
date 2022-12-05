@@ -291,7 +291,6 @@
           : (barWidth / range.value) * (v - min),
       )
     } else {
-      // eslint-disable-next-line no-console
       console.warn('[maz-ui][MazSlider] ref component not found')
     }
   }
@@ -312,8 +311,7 @@
             (pos: number) => Math.round(pos / (barWidth / range.value)) + min,
           )
     } else {
-      // eslint-disable-next-line no-console
-      console.log('[maz-ui][MazSlider] ref component not found')
+      console.warn('[maz-ui][MazSlider] ref component not found')
     }
   }
   const handleMousedown = (
