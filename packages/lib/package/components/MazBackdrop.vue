@@ -8,8 +8,8 @@
     >
       <div
         v-if="present"
-        class="m-backdrop"
-        :class="[{ '--backdrop-present': present }, backdropClass]"
+        class="m-backdrop --present"
+        :class="[backdropClass]"
         tabindex="-1"
         role="dialog"
       >
@@ -34,15 +34,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent } from 'vue'
-
-  export default defineComponent({
-    inheritAttrs: false,
-  })
-</script>
-
-<script lang="ts" setup>
-  import { ref, type PropType, watch, onMounted } from 'vue'
+  import { ref, type PropType, watch, onMounted, defineComponent } from 'vue'
 
   const MODAL_OPENED_CLASS = '--backdrop-present'
 
@@ -51,99 +43,110 @@
   }
 
   const removeClassFromDocument = () => {
-    const backdropPresents = document.querySelector(
-      '.m-backdrop.--backdrop-present',
-    )
+    const backdropPresents = document.querySelector('.m-backdrop.--present')
 
     if (!backdropPresents) {
       document.documentElement.classList.remove(MODAL_OPENED_CLASS)
     }
   }
 
-  const props = defineProps({
-    modelValue: { type: Boolean, default: false },
-    teleportSelector: { type: String, default: 'body' },
-    beforeClose: {
-      // eslint-disable-next-line @typescript-eslint/ban-types
-      type: Function as PropType<Function>,
-      default: undefined,
+  export default defineComponent({
+    inheritAttrs: false,
+    props: {
+      modelValue: { type: Boolean, default: false },
+      teleportSelector: { type: String, default: 'body' },
+      beforeClose: {
+        // eslint-disable-next-line @typescript-eslint/ban-types
+        type: Function as PropType<Function>,
+        default: undefined,
+      },
+      persistent: { type: Boolean, default: false },
+      noCloseOnEscKey: { type: Boolean, default: false },
+      transitionName: { type: String, default: 'backdrop-anim' },
+      backdropClass: { type: [Array, String, Object], default: undefined },
+      backdropContentClass: {
+        type: [Array, String, Object],
+        default: undefined,
+      },
     },
-    persistent: { type: Boolean, default: false },
-    noCloseOnEscKey: { type: Boolean, default: false },
-    transitionName: { type: String, default: 'backdrop-anim' },
-    backdropClass: { type: [Array, String, Object], default: undefined },
-    backdropContentClass: { type: [Array, String, Object], default: undefined },
-  })
+    emits: ['open', 'before-close', 'close', 'update:model-value'],
+    setup(props, { emit: emits }) {
+      const present = ref(props.modelValue)
 
-  const emits = defineEmits([
-    'open',
-    'before-close',
-    'close',
-    'update:model-value',
-  ])
+      const close = () => {
+        toggleModal(false)
+      }
 
-  const present = ref(props.modelValue)
+      const toggleModal = async (show: boolean) => {
+        if (!show) {
+          emits('before-close')
+          await props.beforeClose?.()
+        }
 
-  const close = () => {
-    toggleModal(false)
-  }
+        present.value = show
+      }
 
-  const toggleModal = async (show: boolean) => {
-    if (!show) {
-      emits('before-close')
-      await props.beforeClose?.()
-    }
+      const onBackdropAnimationEnter = () => {
+        emits('open')
+      }
 
-    present.value = show
-  }
+      const onBackdropAnimationLeave = () => {
+        emits('update:model-value', false)
+        emits('close')
+      }
 
-  const onBackdropAnimationEnter = () => {
-    emits('open')
-  }
+      const onBackdropClicked = () => {
+        if (!props.persistent) {
+          close()
+        }
+      }
 
-  const onBackdropAnimationLeave = () => {
-    emits('update:model-value', false)
-    emits('close')
-  }
+      const onKeyPress = (event: KeyboardEvent) => {
+        if (
+          !props.noCloseOnEscKey &&
+          event.key === 'Escape' &&
+          !props.persistent
+        ) {
+          close()
+        }
+      }
 
-  const onBackdropClicked = () => {
-    if (!props.persistent) {
-      close()
-    }
-  }
+      const addClassAndEventToDocument = () => {
+        addClassToDocument()
+        document.addEventListener('keyup', onKeyPress, false)
+      }
 
-  const onKeyPress = (event: KeyboardEvent) => {
-    if (!props.noCloseOnEscKey && event.key === 'Escape' && !props.persistent) {
-      close()
-    }
-  }
+      const removeClassAndEventToDocument = () => {
+        document.removeEventListener('keyup', onKeyPress)
+        removeClassFromDocument()
+      }
 
-  const addClassAndEventToDocument = () => {
-    addClassToDocument()
-    document.addEventListener('keyup', onKeyPress, false)
-  }
+      onMounted(() => {
+        if (props.modelValue) addClassAndEventToDocument()
+      })
 
-  const removeClassAndEventToDocument = () => {
-    document.removeEventListener('keyup', onKeyPress)
-    removeClassFromDocument()
-  }
+      watch(
+        () => props.modelValue,
+        (value) => {
+          present.value = value
 
-  onMounted(() => {
-    if (props.modelValue) addClassAndEventToDocument()
-  })
+          if (value) {
+            addClassAndEventToDocument()
+          } else {
+            removeClassAndEventToDocument()
+          }
+        },
+      )
 
-  watch(
-    () => props.modelValue,
-    (value) => {
-      present.value = value
-
-      if (value) {
-        addClassAndEventToDocument()
-      } else {
-        removeClassAndEventToDocument()
+      return {
+        onBackdropAnimationEnter,
+        onBackdropAnimationLeave,
+        onBackdropClicked,
+        close,
+        present,
       }
     },
-  )
+  })
 </script>
 
 <style lang="postcss">
