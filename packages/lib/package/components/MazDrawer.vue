@@ -1,8 +1,6 @@
 <template>
-  <MazBackDrop
-    ref="backdropRef"
+  <MazBackdrop
     v-bind="$attrs"
-    :model-value="modelValue"
     :backdrop-class="['m-drawer', `--${variant}`, backdropClass]"
     :style="{
       '--maz-drawer-size': size,
@@ -12,17 +10,19 @@
     @update:model-value="$emit('update:model-value', $event)"
   >
     <template #default="{ close }">
-      <div :class="['m-drawer-content-wrap', `--${variant}`]">
+      <div class="m-drawer-content-wrap" :class="[`--${variant}`]">
         <header
           class="m-drawer-header"
-          :class="[$slots['title'] ? 'maz-justify-between' : 'maz-justify-end']"
+          :class="[$slots['title'] || title ? '--between' : '--end']"
         >
-          <h4 class="maz-text-2xl maz-font-semibold">
-            <slot name="title" :close="close"></slot>
+          <h4 class="m-drawer-header__title">
+            <slot name="title" :close="close">
+              {{ title }}
+            </slot>
           </h4>
-          <div v-if="!noCloseBtn" class="maz-flex maz-justify-end">
+          <div v-if="!noClose" class="m-drawer-header__close">
             <MazBtn size="sm" color="transparent" @click="close">
-              <MazIcon :src="XIcon" class="maz-h-5 maz-w-5" />
+              <MazIcon :src="XIcon" class="icon" />
             </MazBtn>
           </div>
         </header>
@@ -31,26 +31,25 @@
         </div>
       </div>
     </template>
-  </MazBackDrop>
+  </MazBackdrop>
 </template>
 
 <script lang="ts" setup>
   import type { PropType } from 'vue'
 
-  import MazBackDrop from './MazBackDrop.vue'
+  import MazBackdrop from './MazBackdrop.vue'
   import MazBtn from './MazBtn.vue'
   import MazIcon from './MazIcon.vue'
   import XIcon from '@package/icons/x.svg'
 
   defineProps({
-    modelValue: { type: Boolean, default: false },
-    noCloseBtn: { type: Boolean, default: false },
+    noClose: { type: Boolean, default: false },
     title: { type: String, default: undefined },
     variant: {
-      type: String as PropType<'right' | 'top'>,
+      type: String as PropType<'right' | 'top' | 'left' | 'bottom'>,
       default: 'right',
       validator: (value: string) => {
-        return ['right', 'top'].includes(value)
+        return ['right', 'top', 'left', 'bottom'].includes(value)
       },
     },
     backdropClass: { type: String, default: undefined },
@@ -59,3 +58,109 @@
 
   defineEmits(['open', 'close', 'update:model-value'])
 </script>
+
+<style lang="postcss">
+  .m-drawer {
+    @apply maz-items-stretch;
+
+    & .m-drawer-content-wrap {
+      @apply maz-overflow-y-auto maz-bg-color-light maz-text-normal;
+    }
+
+    .m-drawer-content-wrap > .m-drawer-header {
+      @apply maz-z-1 maz-flex maz-h-16 maz-shrink-0
+        maz-items-center maz-bg-color maz-bg-clip-padding maz-px-4 maz-py-3 maz-elevation;
+
+      .m-drawer-header__title {
+        @apply maz-m-0 maz-text-xl maz-font-semibold;
+      }
+
+      .m-drawer-header__close {
+        @apply maz-flex maz-justify-end;
+
+        .icon {
+          @apply maz-h-5 maz-w-5;
+        }
+      }
+
+      &.--end {
+        @apply maz-justify-end;
+      }
+
+      &.--between {
+        @apply maz-justify-between;
+      }
+    }
+
+    .m-drawer-content-wrap > .m-drawer-body {
+      @apply maz-z-0 maz-min-h-0 maz-flex-1 maz-overflow-x-auto maz-bg-color-light maz-bg-clip-padding;
+    }
+
+    &.--left .m-backdrop-content,
+    &.--right .m-backdrop-content {
+      @apply maz-h-auto maz-min-h-screen;
+
+      transition: all 450ms ease-in-out;
+      width: 100%;
+
+      @screen tab-m {
+        width: var(--maz-drawer-size);
+      }
+    }
+
+    &.--left {
+      @apply maz-justify-start;
+
+      &.backdrop-anim-enter-from > .m-backdrop-content,
+      &.backdrop-anim-leave-to > .m-backdrop-content {
+        opacity: 0;
+        transform: translateX(-100%);
+      }
+    }
+
+    &.--right {
+      @apply maz-justify-end;
+
+      &.backdrop-anim-enter-from > .m-backdrop-content,
+      &.backdrop-anim-leave-to > .m-backdrop-content {
+        opacity: 0;
+        transform: translateX(100%);
+      }
+    }
+
+    &.--top .m-backdrop-content,
+    &.--bottom .m-backdrop-content {
+      transition: all 450ms ease-in-out;
+      width: 100%;
+      height: 100vh;
+
+      @screen tab-m {
+        height: auto;
+      }
+    }
+
+    &.--top {
+      @apply maz-items-start;
+
+      &.backdrop-anim-enter-from > .m-backdrop-content,
+      &.backdrop-anim-leave-to > .m-backdrop-content {
+        opacity: 0;
+        transform: translateY(-100%);
+      }
+    }
+
+    &.--bottom {
+      @apply maz-items-end;
+
+      &.backdrop-anim-enter-from > .m-backdrop-content,
+      &.backdrop-anim-leave-to > .m-backdrop-content {
+        opacity: 0;
+        transform: translateY(100%);
+      }
+    }
+
+    & .m-backdrop-content > .m-drawer-content-wrap {
+      @apply maz-pointer-events-auto maz-flex maz-h-full maz-w-full maz-flex-col maz-elevation;
+    }
+  }
+</style>
