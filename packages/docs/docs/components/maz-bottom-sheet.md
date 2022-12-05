@@ -7,6 +7,10 @@ description: MazBottomSheet is a stand-alone component like a simple dialog but 
 
 > Before you have to import the global css files in your project, follow instructions in [Getting Started](./../guide/getting-started.md)
 
+> This component use `<Teleport to="body">`, so you can implement this component everywhere
+
+> This component use [MazBackdrop](./maz-backdrop.md), so it inherits all his props
+
 ## Basic usage
 
 <br />
