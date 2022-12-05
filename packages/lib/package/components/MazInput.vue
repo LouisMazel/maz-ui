@@ -3,7 +3,7 @@
     class="m-input"
     :class="[
       {
-        '--is-focused': isFocused,
+        '--is-focused': isFocused || borderActive,
         '--should-up': shouldUp,
         '--has-label': hasLabel,
         '--is-disabled': disabled,
@@ -18,8 +18,8 @@
     @click="$emit('click', $event)"
   >
     <div
-      class="m-input-wrapper maz-border"
-      :class="[inputClasses, borderStyle, { 'maz-rounded-lg': !noRadius }]"
+      class="m-input-wrapper"
+      :class="[inputClasses, borderStyle, { 'maz-rounded': !noRadius }]"
     >
       <div v-if="hasLeftPart()" class="m-input-wrapper-left">
         <slot v-if="$slots['left-icon'] || leftIcon" name="left-icon">
@@ -118,8 +118,8 @@
 
   import MazBtn from './MazBtn.vue'
   import MazIcon from './MazIcon.vue'
-  import type { Color, Size } from './types'
-  export type { Color, Size } from './types'
+  import type { Color, ModelValueSimple, Size } from './types'
+  export type { Color, Size, ModelValueSimple } from './types'
   import EyeOffIcon from '@package/icons/eye-off.svg'
   import EyeIcon from '@package/icons/eye.svg'
   import CheckIcon from '@package/icons/check.svg'
@@ -129,9 +129,7 @@
     inheritAttrs: false,
     props: {
       modelValue: {
-        type: [String, Number] as PropType<
-          string | number | null | undefined | boolean
-        >,
+        type: [String, Number, Boolean] as PropType<ModelValueSimple>,
         default: undefined,
       },
       placeholder: { type: String, default: undefined },
@@ -196,6 +194,7 @@
       validButton: { type: Boolean, default: false },
       validButtonLoading: { type: Boolean, default: false },
       autoFocus: { type: Boolean, default: false },
+      borderActive: { type: Boolean, default: false },
       leftIcon: { type: String, default: undefined },
       rightIcon: { type: String, default: undefined },
     },
@@ -230,7 +229,7 @@
         if (props.error) return 'maz-border-danger'
         if (props.success) return 'maz-border-success'
         if (props.warning) return 'maz-border-warning'
-        if (isFocused.value) {
+        if (isFocused.value || props.borderActive) {
           if (props.color === 'black') return 'maz-border-black'
           if (props.color === 'danger') return 'maz-border-danger'
           if (props.color === 'info') return 'maz-border-info'
@@ -392,7 +391,7 @@
 
     &-wrapper {
       @apply maz-relative maz-z-1 maz-flex maz-flex-1 maz-overflow-hidden
-        maz-border-solid maz-bg-color maz-transition-colors maz-duration-300;
+        maz-border maz-border-solid maz-bg-color maz-transition-colors maz-duration-300;
 
       &.--default-border {
         @apply maz-border-gray-200;

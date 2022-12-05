@@ -197,7 +197,7 @@
         emit('error', { files, message, xhr })
         if (dropzone.options.autoRemoveOnError)
           setTimeout(() => {
-            files.forEach((file) => dropzone.removeFile(file))
+            for (const file of files) dropzone.removeFile(file)
           }, 3000)
       }
 
@@ -209,7 +209,7 @@
         }
 
         if (ButtonElement.value) {
-          const DropzoneJs = (await import('dropzone')).default
+          const { default: DropzoneJs } = await import('dropzone')
 
           dropzone = new DropzoneJs(ButtonElement.value, {
             ...defaultOptions,
@@ -453,7 +453,7 @@
 
   .maz-dropzone {
     @apply maz-m-0 maz-inline-flex maz-items-center maz-justify-center maz-overflow-auto
-      maz-rounded-lg maz-border maz-border-dashed maz-border-color-light maz-bg-color
+      maz-rounded maz-border maz-border-dashed maz-border-color-light maz-bg-color
       maz-p-4 maz-text-center maz-outline-none
       maz-transition-all maz-duration-200 maz-ease-out;
 
@@ -502,7 +502,7 @@
 
     & .dz-details {
       @apply maz-absolute maz-inset-0 maz-z-20 maz-flex maz-flex-col maz-items-center
-        maz-justify-center maz-rounded-lg maz-py-8 maz-px-4 maz-text-center maz-leading-10 maz-text-white maz-opacity-0;
+        maz-justify-center maz-rounded maz-py-8 maz-px-4 maz-text-center maz-leading-10 maz-text-white maz-opacity-0;
 
       background-color: var(--maz-color-primary-alpha);
       transition: opacity 0.2s linear;
@@ -537,7 +537,7 @@
       height: 100%;
       margin: 0 auto;
 
-      @apply maz-rounded-lg maz-border-color-lighter;
+      @apply maz-rounded maz-border-color-lighter;
 
       & img {
         display: block;
@@ -609,7 +609,7 @@
         white-space: nowrap;
         overflow: hidden;
 
-        @apply maz-rounded-lg;
+        @apply maz-rounded;
 
         &:hover {
           @apply maz-bg-white maz-text-primary;

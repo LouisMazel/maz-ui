@@ -48,7 +48,7 @@ describe('package/helpers/idle-timeout', () => {
           isIdle: true,
         })
 
-        /* eslint-disable */
+        /* eslint-disable @typescript-eslint/ban-ts-comment */
         // @ts-ignore
         instance?.handleEvent(
           new MouseEvent('mousemove', {
@@ -56,7 +56,7 @@ describe('package/helpers/idle-timeout', () => {
             clientY: 5,
           }),
         )
-        /* eslint-enable */
+        /* eslint-enable @typescript-eslint/ban-ts-comment */
 
         // expect(instance?.idle).toBeFalsy()
         expect(callback).toHaveBeenCalledWith({

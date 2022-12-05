@@ -129,7 +129,7 @@
     if (value.start && !value.end && day && day.isAfter(value.start)) {
       emits('update:hoverred-day', day)
     } else {
-      emits('update:hoverred-day', undefined)
+      emits('update:hoverred-day')
     }
   }
 
@@ -152,7 +152,7 @@
 
   const isLastDayHoverred = (day: Dayjs) => {
     if (!props.hoverredDay) {
-      return undefined
+      return
     }
 
     return dayjs(day).isSame(props.hoverredDay)
@@ -206,10 +206,11 @@
 
   const isSelectedOrBetween = (day: Dayjs): DaySelect => {
     if (props.modelValue && typeof props.modelValue === 'object') {
-      if (props.modelValue.start) {
-        if (isSameDate(day, props.modelValue.start, 'date')) {
-          return DaySelect.SELECTED
-        }
+      if (
+        props.modelValue.start &&
+        isSameDate(day, props.modelValue.start, 'date')
+      ) {
+        return DaySelect.SELECTED
       }
       if (props.modelValue.end) {
         if (isSameDate(day, props.modelValue.end, 'date')) {
@@ -248,17 +249,16 @@
         'date',
       )
 
-      if (!values.start || isBeforeStartDate) {
-        modelValue.value = {
-          start: valueFormatted,
-          end: undefined,
-        }
-      } else {
-        modelValue.value = {
-          start: values.start,
-          end: valueFormatted,
-        }
-      }
+      modelValue.value =
+        !values.start || isBeforeStartDate
+          ? {
+              start: valueFormatted,
+              end: undefined,
+            }
+          : {
+              start: values.start,
+              end: valueFormatted,
+            }
     } else {
       modelValue.value = valueFormatted
     }
@@ -372,16 +372,16 @@
         @apply maz-h-8 maz-cursor-pointer;
         @apply maz-p-1 !important;
 
-        &.--is-today:not(.--is-selected, .--is-between, .--is-between-hoverred) {
-          @apply maz-bg-color-light !important;
+        &.--is-today {
+          &:not(.--is-selected, .--is-between, .--is-between-hoverred) {
+            @apply maz-bg-color-light !important;
+          }
         }
 
         &:hover,
         &:focus {
           &:not(.--is-selected, .--is-between, .--is-between-hoverred) {
-            /* stylelint-disable */
-            background-color: v-bind(hoverColor) !important;
-            /* stylelint-enable */
+            background-color: v-bind('hoverColor') !important;
           }
         }
 
@@ -398,17 +398,13 @@
             @apply maz-rounded-none !important;
           }
 
-          /* stylelint-disable */
-          background-color: v-bind(betweenColorAlpha) !important;
-          /* stylelint-enable */
+          background-color: v-bind('betweenColorAlpha') !important;
         }
 
         &.--is-between {
           @apply maz-rounded-none !important;
 
-          /* stylelint-disable */
-          background-color: v-bind(betweenColor) !important;
-          /* stylelint-enable */
+          background-color: v-bind('betweenColor') !important;
 
           &.--white,
           &.--transparent {
@@ -433,8 +429,10 @@
 
   html.dark {
     & .maz-picker-calendar-grid {
-      button.--is-today:not(.--is-selected, .--is-between, .--is-between-hoverred) {
-        @apply maz-bg-color-lighter !important;
+      button.--is-today {
+        &:not(.--is-selected, .--is-between, .--is-between-hoverred) {
+          @apply maz-bg-color-lighter !important;
+        }
       }
     }
   }

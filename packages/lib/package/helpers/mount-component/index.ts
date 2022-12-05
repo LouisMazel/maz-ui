@@ -13,9 +13,7 @@ export function mount(
     children?: unknown
     app?: App
     element?: HTMLElement
-  } = {
-    props: undefined,
-  },
+  } = {},
 ) {
   let el = element
 

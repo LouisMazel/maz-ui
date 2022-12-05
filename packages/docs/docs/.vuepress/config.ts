@@ -54,17 +54,9 @@ export default defineUserConfig({
           '~maz-ui': path.resolve(__dirname, './../../../lib'),
         }
       },
-      server: {
-        fs: {
-          allow: [
-            // path.resolve(__dirname, './../../../lib'),
-            // path.resolve(__dirname, './../../../docs'),
-            path.resolve(__dirname, './../../../'),
-          ],
-        },
-      },
     },
   }),
+  
   plugins: [
     googleAnalyticsPlugin({
       id: 'G-EM35TM23ZC',

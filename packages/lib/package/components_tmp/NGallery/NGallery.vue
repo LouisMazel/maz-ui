@@ -228,7 +228,7 @@
                 @apply tw-h-12 tw-w-12 tw-rounded-full tw-bg-no-repeat tw-bg-center tw-transition tw-ease-in-out tw-duration-300;
 
                 content: '';
-                background-color: rgb(0 0 0 / 50%);
+                background-color: hsla(0, 0%, 0%, 0.5);
                 background-image: url('~/assets/icons/player-arrow-play-white.svg');
                 background-size: 68%;
               }

@@ -34,7 +34,8 @@ export class LazyImg {
   }
 
   private async loadErrorPhoto() {
-    return (await import('./assets/no_photo.svg')).default
+    const { default: photo } = await import('./assets/no_photo.svg')
+    return photo
   }
 
   private buildOptions(opts: vLazyImgOptions): ClassOptions {
@@ -119,12 +120,14 @@ export class LazyImg {
     if (sourceElements.length > 0) {
       for await (const source of sourceElements) {
         const srcSet = source.getAttribute('data-srcset')
-        if (!srcSet)
+        if (srcSet) {
           // eslint-disable-next-line no-console
+          source.srcset = srcSet
+        } else {
           console.warn(
             '[maz-ui][MazLazyImg] the "[data-srcset]" attribute is not provided on "<source />"',
           )
-        else source.srcset = srcSet
+        }
       }
     } else {
       // eslint-disable-next-line no-console
@@ -150,9 +153,7 @@ export class LazyImg {
 
   private async setDefaultPhoto(el: HTMLElement) {
     if (this.options.noUseErrorPhoto) return
-    const errorPhoto = this.options.errorPhoto
-      ? this.options.errorPhoto
-      : await this.loadErrorPhoto()
+    const errorPhoto = this.options.errorPhoto ?? (await this.loadErrorPhoto())
     const sourceElements = el.querySelectorAll('source')
     if (sourceElements.length > 0) {
       for await (const source of sourceElements) {

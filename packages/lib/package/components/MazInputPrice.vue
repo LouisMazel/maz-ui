@@ -38,7 +38,7 @@
     currency: { type: String, default: 'EUR' },
     locale: { type: String, default: 'fr-FR' },
     min: { type: Number, default: 0 },
-    max: { type: Number, default: Infinity },
+    max: { type: Number, default: Number.POSITIVE_INFINITY },
     noIcon: { type: Boolean, default: false },
   })
 
@@ -46,9 +46,7 @@
 
   const isActive = ref(false)
   const valueString = computed<string>(() => {
-    return typeof props.modelValue === 'number'
-      ? getAdjustedPrice(props.modelValue).toString()
-      : getAdjustedPrice(props.modelValue).toString()
+    return getAdjustedPrice(props.modelValue).toString()
   })
   const valueNumber = computed<number>(() => {
     const value =
@@ -66,12 +64,12 @@
   const getAdjustedPrice = (value?: string | number) => {
     let newValue =
       typeof value === 'string'
-        ? parseFloat(
+        ? Number.parseFloat(
             // eslint-disable-next-line no-useless-escape
-            value.replace(',', '.').replace(/[^\d\.]/g, ''),
+            value.replace(',', '.').replace(/[^\d.]/g, ''),
           )
         : value
-    if (!newValue || isNaN(newValue)) newValue = 0
+    if (!newValue || Number.isNaN(newValue)) newValue = 0
     if (newValue < props.min) newValue = props.min
     if (newValue > props.max) newValue = props.max
 
@@ -86,7 +84,7 @@
     },
     set: (value) => {
       if (Number.isNaN(value)) {
-        emitValues(undefined)
+        emitValues()
       } else {
         const adjustedPrice = getAdjustedPrice(value)
         emitValues(adjustedPrice)

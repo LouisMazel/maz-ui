@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable unicorn/prefer-module */
 const COLORS_CONFIG = require('./../variables/colors')
 
 const makeColors = () => {

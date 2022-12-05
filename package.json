@@ -1,5 +1,5 @@
 {
-  "name": "maz-ui",
+  "name": "root",
   "version": "0.0.1",
   "description": "A stand-alone components library for Vue.Js & Nuxt.Js (v3.x)",
   "scripts": {
@@ -7,7 +7,8 @@
     "pre-commit": "lint-staged",
     "format": "prettier . --write",
     "lint": "lerna run lint --parallel",
-    "release": "npx lerna version"
+    "lerna:version": "npx lerna version",
+    "lerna:publish": "npx lerna publish"
   },
   "lint-staged": {
     "!(node_modules/**/*|packages/**/*|.prettierignore|.gitignore|.editorconfig).*": [
@@ -15,17 +16,17 @@
     ]
   },
   "devDependencies": {
-    "@commitlint/cli": "^17.1.2",
-    "@commitlint/config-conventional": "^17.1.0",
+    "@commitlint/cli": "^17.3.0",
+    "@commitlint/config-conventional": "^17.3.0",
     "@types/command-exists": "^1.2.0",
-    "@types/node": "^18.7.18",
+    "@types/node": "^18.11.10",
     "commitlint-config-cz": "^0.13.3",
-    "cz-customizable": "^6.9.1",
+    "cz-customizable": "^7.0.0",
     "gulp-conventional-changelog": "^2.0.35",
-    "husky": "^8.0.1",
-    "lerna": "^5.5.1",
-    "lint-staged": "^13.0.3",
-    "prettier": "^2.7.1"
+    "husky": "^8.0.2",
+    "lerna": "^6.1.0",
+    "lint-staged": "^13.0.4",
+    "prettier": "^2.8.0"
   },
   "repository": {
     "type": "git",

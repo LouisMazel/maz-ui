@@ -218,7 +218,7 @@
 
     &.--is-button {
       @apply maz-relative maz-inline-flex maz-items-center maz-justify-center maz-overflow-hidden
-        maz-rounded-lg maz-border-transparent maz-bg-transparent maz-font-medium maz-no-underline
+        maz-rounded maz-border-transparent maz-bg-transparent maz-font-medium maz-no-underline
         maz-transition maz-duration-300 maz-ease-in-out;
 
       &.--rounded {
@@ -374,7 +374,7 @@
 
         &:not(:disabled):hover,
         &:not(:disabled):focus {
-          background-color: rgb(0 0 0 / 12%);
+          background-color: hsl(0deg 0% 0% / 12%);
         }
       }
 

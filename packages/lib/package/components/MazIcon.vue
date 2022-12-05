@@ -11,7 +11,7 @@
     }"
     :style="`font-size: ${size}`"
     v-html="getSvgContent(svgElSource)"
-  ></svg>
+  />
   <!-- eslint-enable vue/no-v-html -->
 </template>
 
@@ -49,13 +49,15 @@
   const emits = defineEmits(['loaded', 'unloaded', 'error'])
 
   const iconPath = computed(() => props.path ?? getMazIconPath())
-  const fullSrc = computed(() =>
-    props.src
-      ? props.src
-      : iconPath.value
-      ? `${iconPath.value}/${props.name}.svg`
-      : `/${props.name}.svg`,
-  )
+  const fullSrc = computed(() => {
+    if (props.src) {
+      return props.src
+    } else if (iconPath.value) {
+      return `${iconPath.value}/${props.name}.svg`
+    } else {
+      return `/${props.name}.svg`
+    }
+  })
 
   onMounted(() => {
     if (!props.name && !props.src) {
@@ -67,8 +69,8 @@
   })
 
   const setTitle = (svg: SVGElement, title: string) => {
-    const titleTags = svg.getElementsByTagName('title')
-    if (titleTags.length) {
+    const titleTags = svg.querySelectorAll('title')
+    if (titleTags.length > 0) {
       // overwrite existing title
       titleTags[0].textContent = title
     } else {
@@ -78,7 +80,7 @@
         'title',
       )
       titleEl.textContent = title
-      svg.appendChild(titleEl)
+      svg.append(titleEl)
     }
   }
 
@@ -134,14 +136,14 @@
       // wait to render
       await nextTick()
       emits('loaded', svgElem.value)
-    } catch (err) {
+    } catch (error) {
       if (svgElSource.value) {
         svgElSource.value = undefined
         emits('unloaded')
       }
       // remove cached rejected promise so next image can try load again
       delete cache[src]
-      emits('error', err)
+      emits('error', error)
     }
   }
 
@@ -150,7 +152,7 @@
       const request = new XMLHttpRequest()
       request.open('GET', url, true)
 
-      request.onload = () => {
+      request.addEventListener('load', () => {
         if (request.status >= 200 && request.status < 400) {
           try {
             // Setup a parser to convert the response to text/xml in order for it to be manipulated and changed
@@ -159,22 +161,22 @@
               request.responseText,
               'text/xml',
             )
-            let svgEl = result.getElementsByTagName('svg')[0] as SVGElement
+            let svgEl = result.querySelectorAll('svg')[0] as SVGElement
             if (svgEl) {
               svgEl = props.transformSource(svgEl)
               resolve(svgEl)
             } else {
               reject(new Error('Loaded file is not valid SVG"'))
             }
-          } catch (e) {
-            reject(e)
+          } catch (error) {
+            reject(error)
           }
         } else {
           reject(new Error('Error loading SVG'))
         }
-      }
+      })
 
-      request.onerror = reject
+      request.addEventListener('error', () => reject())
       request.send()
     })
   }

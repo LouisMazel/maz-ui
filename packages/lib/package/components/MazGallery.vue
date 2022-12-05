@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="images.length || hasEmptyLayer"
+    v-if="images.length > 0 || hasEmptyLayer"
     class="m-gallery maz-flex"
     :style="[sizeStyle]"
     :class="{ 'maz-rounded-xl': !noRadius }"
@@ -42,7 +42,7 @@
         </div>
       </figure>
       <div
-        v-if="hasEmptyLayer && !images.length"
+        v-if="hasEmptyLayer && images.length === 0"
         class="flex-center maz-flex maz-w-full maz-bg-color-light maz-text-normal"
         :class="{ 'maz-rounded-xl': !noRadius }"
         :style="[sizeStyle]"
@@ -116,20 +116,20 @@
       const sizeStyle = computed(() => {
         const { height, width, noWidth, noHeight } = props
         return {
-          ...(!noWidth
-            ? {
-                flex: `0 0 ${typeof width === 'number' ? `${width}px` : width}`,
+          ...(noWidth
+            ? {}
+            : {
+                flex: '0 0 ' + typeof width === 'number' ? `${width}px` : width,
                 width: typeof width === 'number' ? `${width}px` : width,
-              }
-            : {}),
-          ...(!noHeight
-            ? {
+              }),
+          ...(noHeight
+            ? {}
+            : {
                 height:
                   typeof height === 'number' ? `${height}px` : `${height}`,
                 minHeight:
                   typeof height === 'number' ? `${height}px` : `${height}`,
-              }
-            : {}),
+              }),
         }
       })
       const imagesCount = computed(() => {
@@ -157,10 +157,10 @@
           props.images.length,
         )
       })
-      const shouldHaveRemainingLayer = (i: number) => {
+      const shouldHaveRemainingLayer = (index: number) => {
         return (
           numberImagesRemaining.value &&
-          i + 1 === imagesShown.value.length &&
+          index + 1 === imagesShown.value.length &&
           !props.noRemaining
         )
       }
@@ -267,7 +267,7 @@
         background-position: center center;
         background-size: cover;
         background-repeat: no-repeat;
-        background-color: rgb(0 0 0 / 5%);
+        background-color: hsl(0deg 0% 0% / 50%);
       }
     }
 
@@ -279,7 +279,7 @@
       left: 0;
 
       a span {
-        color: white;
+        color: hsl(0deg 0% 100%);
         font-size: 2rem;
       }
     }

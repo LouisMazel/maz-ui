@@ -1,5 +1,4 @@
 ---
-title: Getting Started
 description: Documentation to know how install the maz-ui library
 ---
 
@@ -26,12 +25,14 @@ This section will help you to install the library.
 ```bash
 npm i maz-ui
 ```
+
   </CodeGroupItem>
   <CodeGroupItem title="YARN">
 
 ```bash
 yarn add maz-ui
 ```
+
   </CodeGroupItem>
 
 </CodeGroup>
@@ -47,7 +48,7 @@ import 'maz-ui/css/main.css'
 import '@/css/path_to_your_main_file.css'
 ```
 
-#### Nuxt JS <NpmBadge package="nuxt" dist-tag="rc" />
+#### Nuxt JS <NpmBadge package="nuxt" />
 
 ```ts
 export default {

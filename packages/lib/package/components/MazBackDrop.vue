@@ -76,9 +76,11 @@
       const close = () => $toggleBackdrop(false)
 
       const toggleModal = (show: boolean, ...rest: unknown[]) => {
+        /* eslint-disable unicorn/prefer-logical-operator-over-ternary */
         const guard: (...args: unknown[]) => boolean = props.beforeClose
           ? props.beforeClose
           : () => true
+        /* eslint-enable unicorn/prefer-logical-operator-over-ternary */
 
         if (show) {
           openModal()
@@ -101,9 +103,8 @@
       }
 
       const onKeyPress = (event: KeyboardEvent) => {
-        if (props.escKey && event.code === 'Escape') {
-          if (!props.persistent) toggleModal(false)
-        }
+        if (props.escKey && event.key === 'Escape' && !props.persistent)
+          toggleModal(false)
       }
 
       watch(

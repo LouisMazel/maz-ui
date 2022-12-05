@@ -16,8 +16,8 @@ export function debounce<T extends (...args: any[]) => void>(
   wait = 0,
   callFirst = false,
 ): ((...args: ArgumentTypes<T>) => void) & MethodTypes {
-  let timeout: ReturnType<typeof setTimeout> | undefined = undefined
-  let debouncedFn: VoidFunction | undefined = undefined
+  let timeout: ReturnType<typeof setTimeout> | undefined
+  let debouncedFn: VoidFunction | undefined
 
   const clear = function () {
     if (timeout) {
@@ -43,7 +43,10 @@ export function debounce<T extends (...args: any[]) => void>(
     }
 
     /* eslint-disable @typescript-eslint/no-this-alias  */
+    /* eslint-disable unicorn/no-this-assignment  */
     const context = this
+    /* eslint-enable @typescript-eslint/no-this-alias  */
+    /* eslint-enable unicorn/no-this-assignment  */
     const callNow = callFirst && !timeout
     clear()
 
@@ -58,7 +61,7 @@ export function debounce<T extends (...args: any[]) => void>(
         const call = debouncedFn
         debouncedFn = undefined
 
-        if (typeof call !== 'undefined') return call()
+        if (call !== undefined) return call()
       }
     }, wait)
 

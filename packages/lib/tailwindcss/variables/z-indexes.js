@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/prefer-module */
 module.exports = {
   1: '1',
   2: '2',

@@ -1,5 +1,4 @@
 import { LazyImg, DEFAULT_OPTIONS } from './lazy-img-handler'
-import { vLazyImg } from './lazy-img.directive'
 import type { vLazyImgOptions } from './types'
 export * from './types'
 
@@ -26,4 +25,5 @@ const plugin = {
   },
 }
 
-export { vLazyImg, plugin as vLazyImgInstall }
+export { vLazyImg } from './lazy-img.directive'
+export { plugin as vLazyImgInstall }

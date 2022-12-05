@@ -55,8 +55,8 @@
   const props = defineProps({
     modelValue: { type: Number, required: true },
     disabled: { type: Boolean, default: false },
-    max: { type: Number, default: Infinity },
-    min: { type: Number, default: -Infinity },
+    max: { type: Number, default: Number.POSITIVE_INFINITY },
+    min: { type: Number, default: Number.NEGATIVE_INFINITY },
     step: { type: Number, default: 1 },
     size: {
       type: String as PropType<Size>,
@@ -73,8 +73,7 @@
   })
   const checkValue = (value: number) => {
     if (value <= props.min) return props.min
-    if (value >= props.max) return props.max
-    else return value
+    return value >= props.max ? props.max : value
   }
   const emitValue = (newValue: number) => {
     newValue = checkValue(newValue)

@@ -1,28 +1,28 @@
 // Vitest Snapshot v1
 
 exports[`components/MazStepper.vue > Should match with the snapshot 1`] = `
-"<div class=\\"m-stepper\\" data-v-47b3bbc6=\\"\\"><button type=\\"button\\" disabled=\\"\\" class=\\"m-stepper__header\\" data-v-47b3bbc6=\\"\\"><span class=\\"m-stepper__count --primary --validated\\" data-v-47b3bbc6=\\"\\"><svg xmlns=\\"http://www.w3.org/2000/svg\\" fill=\\"none\\" viewBox=\\"0 0 24 24\\" width=\\"1.2rem\\" height=\\"1.2rem\\" stroke=\\"currentColor\\" aria-hidden=\\"true\\" data-v-47b3bbc6=\\"\\"><path stroke-linecap=\\"round\\" stroke-linejoin=\\"round\\" stroke-width=\\"2\\" d=\\"M5 13l4 4L19 7\\" data-v-47b3bbc6=\\"\\"></path></svg></span>
-    <div class=\\"m-stepper__header__content\\" data-v-47b3bbc6=\\"\\"><span class=\\"m-stepper__title\\" data-v-47b3bbc6=\\"\\">Step 1</span>
+"<div class=\\"m-stepper\\" data-v-8231b20c=\\"\\"><button type=\\"button\\" disabled=\\"\\" class=\\"m-stepper__header --is-current-step\\" data-v-8231b20c=\\"\\"><span class=\\"m-stepper__count --primary --validated\\" data-v-8231b20c=\\"\\"><div class=\\"m-stepper__count__circle\\" data-v-8231b20c=\\"\\"><svg xmlns=\\"http://www.w3.org/2000/svg\\" fill=\\"none\\" viewBox=\\"0 0 24 24\\" width=\\"1.2rem\\" height=\\"1.2rem\\" stroke=\\"currentColor\\" aria-hidden=\\"true\\" data-v-8231b20c=\\"\\"><path stroke-linecap=\\"round\\" stroke-linejoin=\\"round\\" stroke-width=\\"2\\" d=\\"M5 13l4 4L19 7\\" data-v-8231b20c=\\"\\"></path></svg></div> 1</span>
+    <div class=\\"m-stepper__header__content\\" data-v-8231b20c=\\"\\"><span class=\\"m-stepper__title\\" data-v-8231b20c=\\"\\">Step 1</span>
       <!--v-if-->
     </div>
   </button>
-  <div class=\\"m-stepper__content\\" data-v-47b3bbc6=\\"\\">
-    <transition-group-stub data-v-2a8b98b3=\\"\\" data-v-47b3bbc6=\\"\\">
-      <div data-v-47b3bbc6=\\"\\">
-        <div class=\\"m-stepper__content__wrapper\\" data-v-47b3bbc6=\\"\\">Content 1</div>
+  <div class=\\"m-stepper__content\\" data-v-8231b20c=\\"\\">
+    <transition-group-stub name=\\"maz-expand\\" tag=\\"div\\" appear=\\"false\\" persisted=\\"false\\" css=\\"true\\" class=\\"m-transition-expand\\" data-v-f61b1628=\\"\\" data-v-8231b20c=\\"\\">
+      <div data-v-8231b20c=\\"\\">
+        <div class=\\"m-stepper__content__wrapper\\" data-v-8231b20c=\\"\\">Content 1</div>
       </div>
     </transition-group-stub>
   </div>
   <!--v-if-->
-  <div class=\\"m-stepper__content\\" data-v-47b3bbc6=\\"\\">
-    <transition-group-stub data-v-2a8b98b3=\\"\\" data-v-47b3bbc6=\\"\\"></transition-group-stub>
-  </div><button type=\\"button\\" class=\\"m-stepper__header\\" data-v-47b3bbc6=\\"\\"><span class=\\"m-stepper__count --primary\\" data-v-47b3bbc6=\\"\\">3</span>
-    <div class=\\"m-stepper__header__content\\" data-v-47b3bbc6=\\"\\"><span class=\\"m-stepper__title\\" data-v-47b3bbc6=\\"\\">Step 3</span>
+  <div class=\\"m-stepper__content\\" data-v-8231b20c=\\"\\">
+    <transition-group-stub name=\\"maz-expand\\" tag=\\"div\\" appear=\\"false\\" persisted=\\"false\\" css=\\"true\\" class=\\"m-transition-expand\\" data-v-f61b1628=\\"\\" data-v-8231b20c=\\"\\"></transition-group-stub>
+  </div><button type=\\"button\\" class=\\"m-stepper__header\\" data-v-8231b20c=\\"\\"><span class=\\"m-stepper__count --primary\\" data-v-8231b20c=\\"\\"><div class=\\"m-stepper__count__circle\\" data-v-8231b20c=\\"\\"><svg xmlns=\\"http://www.w3.org/2000/svg\\" fill=\\"none\\" viewBox=\\"0 0 24 24\\" width=\\"1.2rem\\" height=\\"1.2rem\\" stroke=\\"currentColor\\" aria-hidden=\\"true\\" data-v-8231b20c=\\"\\"><path stroke-linecap=\\"round\\" stroke-linejoin=\\"round\\" stroke-width=\\"2\\" d=\\"M5 13l4 4L19 7\\" data-v-8231b20c=\\"\\"></path></svg></div> 3</span>
+    <div class=\\"m-stepper__header__content\\" data-v-8231b20c=\\"\\"><span class=\\"m-stepper__title\\" data-v-8231b20c=\\"\\">Step 3</span>
       <!--v-if-->
     </div>
   </button>
-  <div class=\\"m-stepper__content --no-border\\" data-v-47b3bbc6=\\"\\">
-    <transition-group-stub data-v-2a8b98b3=\\"\\" data-v-47b3bbc6=\\"\\"></transition-group-stub>
+  <div class=\\"m-stepper__content --no-border\\" data-v-8231b20c=\\"\\">
+    <transition-group-stub name=\\"maz-expand\\" tag=\\"div\\" appear=\\"false\\" persisted=\\"false\\" css=\\"true\\" class=\\"m-transition-expand\\" data-v-f61b1628=\\"\\" data-v-8231b20c=\\"\\"></transition-group-stub>
   </div>
 </div>"
 `;

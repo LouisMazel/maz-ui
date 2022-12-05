@@ -1,4 +1,6 @@
-import { resolve } from 'path'
+// @ts-check
+
+import { resolve } from 'node:path'
 import dts from 'rollup-plugin-dts'
 
 const INPUT_TYPES = resolve(__dirname, './../types/index.d.ts')

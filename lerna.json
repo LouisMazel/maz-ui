@@ -1,17 +1,15 @@
 {
-  "packages": ["packages/*"],
+  "packages": ["packages/lib"],
   "loglevel": "verbose",
-  "version": "3.0.8",
-  "npmClientArgs": ["--production=false", "--no-progress"],
-  "yes": true,
-  "granularPathspec": false,
+  "version": "3.4.0",
+  "yes": false,
   "command": {
     "version": {
-      "message": "chore(release): bump version to %v",
-      "conventionalCommits": true,
+      "allowBranch": ["release/*"],
+      "message": "chore(release): bump version to %s",
       "forceGitTag": true,
-      "push": true,
-      "tagVersionPrefix": "v"
+      "conventionalCommits": true
     }
-  }
+  },
+  "$schema": "node_modules/lerna/schemas/lerna-schema.json"
 }

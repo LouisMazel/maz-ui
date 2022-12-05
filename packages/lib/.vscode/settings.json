@@ -12,10 +12,6 @@
     "strings": true
   },
   "css.validate": false,
-  "emmet.includeLanguages": {
-    "javascript": "javascriptreact",
-    "vue-html": "html",
-    "razor": "html",
-    "plaintext": "jade"
-  }
+  "scss.validate": false,
+  "stylelint.validate": ["css", "scss", "postcss", "pcss"]
 }

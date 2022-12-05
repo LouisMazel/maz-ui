@@ -1,14 +1,14 @@
 // Vitest Snapshot v1
 
 exports[`components/MazSelect.vue > Should match with the snapshot 1`] = `
-"<div class=\\"m-select\\" data-v-35fa79e0=\\"\\">
-  <div class=\\"m-input --is-readonly m-select-input --primary --md\\" data-v-62586b96=\\"\\" data-v-35fa79e0=\\"\\">
-    <div class=\\"m-input-wrapper maz-border --default-border maz-rounded-lg\\" data-v-62586b96=\\"\\">
+"<div class=\\"m-select\\" data-v-948d9dc9=\\"\\">
+  <div class=\\"m-input m-select-input --primary --md\\" data-v-562a2cff=\\"\\" data-v-948d9dc9=\\"\\">
+    <div class=\\"m-input-wrapper --default-border maz-rounded\\" data-v-562a2cff=\\"\\">
       <!--v-if-->
-      <div class=\\"m-input-wrapper-input\\" data-v-62586b96=\\"\\"><input id=\\"MazSelect-1\\" type=\\"text\\" name=\\"input\\" class=\\"m-select-input m-input-input\\" readonly=\\"\\" data-v-62586b96=\\"\\">
+      <div class=\\"m-input-wrapper-input\\" data-v-562a2cff=\\"\\"><input id=\\"MazSelect-1\\" type=\\"text\\" name=\\"input\\" class=\\"m-select-input m-input-input\\" autocomplete=\\"off\\" data-v-562a2cff=\\"\\">
         <!--v-if-->
       </div>
-      <div class=\\"m-input-wrapper-right\\" data-v-62586b96=\\"\\"><button tabindex=\\"-1\\" type=\\"button\\" class=\\"m-select-input__toggle-button maz-custom maz-flex maz-h-full maz-bg-transparent maz-flex-center\\" data-v-35fa79e0=\\"\\">
+      <div class=\\"m-input-wrapper-right\\" data-v-562a2cff=\\"\\"><button tabindex=\\"-1\\" type=\\"button\\" class=\\"m-select-input__toggle-button maz-custom\\" data-v-948d9dc9=\\"\\">
           <!-- eslint-disable vue/no-v-html -->
           <!--v-if-->
           <!-- eslint-enable vue/no-v-html -->
@@ -18,7 +18,7 @@ exports[`components/MazSelect.vue > Should match with the snapshot 1`] = `
       </div>
     </div>
   </div>
-  <transition-stub data-v-35fa79e0=\\"\\">
+  <transition-stub name=\\"maz-slide\\" appear=\\"false\\" persisted=\\"false\\" css=\\"true\\" data-v-948d9dc9=\\"\\">
     <!--v-if-->
   </transition-stub>
 </div>"

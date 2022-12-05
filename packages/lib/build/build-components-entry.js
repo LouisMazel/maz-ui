@@ -1,8 +1,10 @@
-const { writeFileSync } = require('fs')
+// @ts-check
+
+const { writeFileSync } = require('node:fs')
 const { componentsList } = require('./get-component-list')
 const render = require('json-templater/string')
-const { resolve } = require('path')
-const { EOL } = require('os')
+const { resolve } = require('node:path')
+const { EOL } = require('node:os')
 const replace = require('replace-in-file')
 
 const COMPONENTS_OUTPUT_PATH = resolve(__dirname, './../components/index.js')
@@ -27,7 +29,7 @@ const buildEntry = (template, importTemplate, outputPath) => {
   const includeComponentTemplate = []
   const listTemplate = []
 
-  componentsList.forEach((component) => {
+  for (const component of componentsList) {
     includeComponentTemplate.push(
       render(importTemplate, {
         name: component.name,
@@ -36,7 +38,7 @@ const buildEntry = (template, importTemplate, outputPath) => {
     )
 
     listTemplate.push(`  ${component.name}`)
-  })
+  }
 
   const file = render(template, {
     include: includeComponentTemplate.join(EOL),
@@ -66,11 +68,14 @@ const replaceTypesExtensions = async () => {
   try {
     const results = await replace(options)
     // eslint-disable-next-line no-console
-    console.log('Files extensions replaced', results)
+    console.log('[BuildComponentEntry](replaceTypesExtensions) ✅', results)
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.error('Error occurred while replacing file extensions:', error)
+    console.log(
+      '[BuildComponentEntry](replaceTypesExtensions) 🔴 Error occurred while replacing file extensions',
+      error,
+    )
   }
 }
-
+/* eslint-disable unicorn/prefer-top-level-await */
 replaceTypesExtensions()

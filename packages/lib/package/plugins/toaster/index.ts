@@ -1,4 +1,4 @@
-import type { ToasterOptions, ToasterPositions } from './types'
+import type { ToasterOptions } from './types'
 import { ToasterHandler } from './toaster-handler'
 
 const defaultOptions: ToasterOptions = {
@@ -19,4 +19,5 @@ export const plugin = {
   },
 }
 
-export { ToasterHandler, ToasterOptions, ToasterPositions }
+export type { ToasterOptions, ToasterPositions } from './types'
+export { ToasterHandler } from './toaster-handler'

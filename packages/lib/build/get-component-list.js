@@ -1,9 +1,10 @@
-const { readdirSync } = require('fs')
-const { resolve } = require('path')
+// @ts-check
+
+const { readdirSync } = require('node:fs')
+const { resolve } = require('node:path')
 
 const INPUT_COMPONENT_DIR = resolve(__dirname, './../package/components')
 
-/** @type {{ name: string, path: string }[]} */
 const componentsList = readdirSync(INPUT_COMPONENT_DIR)
   .filter((name) => name.endsWith('.vue'))
   .map((name) => ({

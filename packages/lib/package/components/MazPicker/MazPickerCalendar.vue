@@ -103,7 +103,7 @@
   )
 
   const hasShortcuts = computed(
-    () => !props.noShortcuts && props.shortcuts.length && isRangeMode.value,
+    () => !props.noShortcuts && props.shortcuts.length > 0 && isRangeMode.value,
   )
 
   const monthSwitcherOpen = ref(false)

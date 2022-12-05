@@ -23,13 +23,9 @@
   import { onMounted } from 'vue'
   import { MazBtn, MazIcon } from 'maz-ui/package/components'
   import { aosInstance } from 'maz-ui/package/plugins'
-  import { useThemeHandler, ThemeHandlerOptions } from 'maz-ui/package/helpers'
+  import { useThemeHandler } from 'maz-ui/package/helpers'
 
-  const options: ThemeHandlerOptions = {
-    storageThemeKey: 'mode',
-  }
-
-  const { autoSetTheme, toggleTheme, hasDarkTheme } = useThemeHandler(options)
+  const { autoSetTheme, toggleTheme, hasDarkTheme } = useThemeHandler()
 
   onMounted(() => {
     autoSetTheme()
@@ -49,6 +45,6 @@
 
 <style lang="postcss" scoped>
   main {
-    @apply maz-overflow-auto maz-p-5 maz-flex maz-flex-col maz-w-full maz-items-center maz-text-normal maz-h-full;
+    @apply maz-flex maz-h-full maz-w-full maz-flex-col maz-items-center maz-overflow-auto maz-p-5 maz-text-normal;
   }
 </style>

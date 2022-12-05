@@ -285,7 +285,7 @@
 
       [type='checkbox']:focus {
         + label::before {
-          box-shadow: 0 0 0 0.143rem rgb(209 213 219 / 60%);
+          box-shadow: 0 0 0 0.143rem hsl(216deg 12% 84% / 60%);
 
           @apply maz-border-gray-300;
         }
@@ -308,7 +308,7 @@
 
       [type='checkbox']:focus {
         + label::before {
-          box-shadow: 0 0 0 0.143rem rgb(0 0 0 / 60%);
+          box-shadow: 0 0 0 0.143rem hsl(0deg 0% 0% / 60%);
 
           @apply maz-border-gray-700;
         }

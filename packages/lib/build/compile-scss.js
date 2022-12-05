@@ -1,12 +1,11 @@
-/* eslint-disable no-console */
+// @ts-check
+const { resolve } = require('node:path')
+const { writeFileSync, existsSync, mkdirSync } = require('node:fs')
 
-const { renderSync } = require('node-sass')
-const { resolve } = require('path')
+const { compileAsync } = require('sass')
 
 const postcss = require('postcss')
 const autoprefixer = require('autoprefixer')
-
-const { writeFileSync, existsSync, mkdirSync } = require('fs')
 
 const AOS_SCSS_ENTRY = resolve(
   __dirname,
@@ -15,13 +14,13 @@ const AOS_SCSS_ENTRY = resolve(
 const AOS_SCSS_OUTPUT_DIR = resolve(__dirname, './../css')
 const AOS_SCSS_OUTPUT = resolve(__dirname, './../css/aos.css')
 
-const buildCompilteScss = async () => {
+const buildCompileScss = async () => {
   try {
+    // eslint-disable-next-line no-console
     console.log('[Build](scss) 🟢 start compiling css')
-    const result = renderSync({
-      file: AOS_SCSS_ENTRY,
-      // outFile: AOS_SCSS_OUTPUT,
-      outputStyle: 'compressed',
+    const result = await compileAsync(AOS_SCSS_ENTRY, {
+      style: 'compressed',
+      verbose: true,
       sourceMap: true,
     })
 
@@ -38,12 +37,12 @@ const buildCompilteScss = async () => {
 
     writeFileSync(AOS_SCSS_OUTPUT, cssPrefixed.css)
 
+    // eslint-disable-next-line no-console
     console.log('[Build](scss) ✅ css compiled')
-  } catch (err) {
-    throw new Error(`[build](scss) 🔴 ${err}`)
+  } catch (error) {
+    throw new Error(`[build](scss) 🔴 ${error}`)
   }
 }
 
-buildCompilteScss()
-
-/* eslint-enable no-console */
+// eslint-disable-next-line unicorn/prefer-top-level-await
+buildCompileScss()
