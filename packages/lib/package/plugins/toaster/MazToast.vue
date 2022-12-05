@@ -170,7 +170,9 @@
   .m-toast-container {
     box-sizing: border-box;
 
-    @apply maz-fixed maz-z-50 maz-flex maz-flex-col maz-space-y-2 maz-p-4;
+    @apply maz-fixed maz-flex maz-flex-col maz-space-y-2 maz-p-4;
+
+    z-index: 1051;
 
     &.--top {
       @apply maz-top-0 maz-flex;
@@ -233,7 +235,7 @@
     }
 
     & .--close {
-      @apply maz-ml-1 maz-flex maz-h-7 maz-w-7 maz-rounded-full maz-bg-transparent maz-p-0
+      @apply maz-ml-1 maz-flex maz-h-7 maz-w-7 maz-rounded maz-bg-transparent maz-p-0
         maz-flex-center
         hover:maz-bg-gray-900/20;
     }
