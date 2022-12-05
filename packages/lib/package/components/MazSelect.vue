@@ -296,7 +296,6 @@
   // }
 
   const mainInputKeyboardHandler = (event: KeyboardEvent) => {
-    console.log('event', event)
     if (event.key.length === 1) {
       event.preventDefault()
       openList(event)
