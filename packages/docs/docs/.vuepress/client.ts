@@ -3,7 +3,7 @@ import 'maz-ui/css/main.css'
 import 'maz-ui/css/aos.css'
 
 import { ToasterOptions, installToaster, installWait, installAos, AosOptions } from 'maz-ui'
-import components from 'maz-ui/components'
+import * as components from 'maz-ui/components'
 
 export default defineClientConfig({
   enhance: async ({ app, router }) => {

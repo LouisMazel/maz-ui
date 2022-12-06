@@ -86,7 +86,7 @@ app.component('MazPhoneNumberInput', MazPhoneNumberInput)
 
 ```typescript
 import { createApp } from "vue";
-import components from "maz-ui/components";
+import * as components from "maz-ui/components";
 import "maz-ui/css/main.css";
 
 const app = createApp(App);
