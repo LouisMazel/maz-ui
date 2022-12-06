@@ -14,8 +14,6 @@ description: MazInputTags is a stand-alone component like free inputs to help us
   color="info"
 />
 
-<br />
-
 <MazInputTags
   v-model="tags"
   placeholder="Enter tags"
@@ -23,7 +21,14 @@ description: MazInputTags is a stand-alone component like free inputs to help us
   size="sm"
 />
 
-tags: {{ tags }}
+**Value returned**
+
+<code>
+  tags: {{ tags }}
+</code>
+
+<br />
+<br />
 
 <script lang="ts" setup>
   import { ref } from 'vue'
@@ -38,8 +43,6 @@ tags: {{ tags }}
     label="Enter tags"
     color="info"
   />
-
-  <br />
 
   <MazInputTags
     v-model="tags"
