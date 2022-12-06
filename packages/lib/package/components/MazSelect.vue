@@ -290,11 +290,6 @@
     emits('open', listOpened.value)
   }
 
-  // const unFocusInput = () => {
-  //   mazSelectElement.value?.blur()
-  //   mazInputComponent.value?.input?.blur()
-  // }
-
   const mainInputKeyboardHandler = (event: KeyboardEvent) => {
     if (event.key.length === 1) {
       event.preventDefault()
