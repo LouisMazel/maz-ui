@@ -18,6 +18,7 @@ To use this component, you have to install the dependency `dropzone`
 # install in your project
 npm install dropzone@5
 ```
+
   </CodeGroupItem>
 
   <CodeGroupItem title="YARN">
@@ -26,6 +27,7 @@ npm install dropzone@5
 # install in your project
 yarn add dropzone@5
 ```
+
   </CodeGroupItem>
 </CodeGroup>
 
@@ -124,7 +126,30 @@ yarn add dropzone@5
 
 ## Props, Events emitted & Methods
 
-<ComponentPropDoc component="MazDropzone" :component-instance="mazDropzoneInstance" />
+<ComponentPropDoc
+  component="MazDropzone"
+  :component-instance="mazDropzoneInstance"
+  :methods="[
+    { name: 'setOption' },
+    { name: 'manuallyAddFile' },
+    { name: 'removeAllFiles' },
+    { name: 'processQueue' },
+    { name: 'destroy' },
+    { name: 'disable' },
+    { name: 'enable' },
+    { name: 'accept' },
+    { name: 'addFile' },
+    { name: 'resizeImage' },
+    { name: 'cancelUpload' },
+    { name: 'getAcceptedFiles' },
+    { name: 'getRejectedFiles' },
+    { name: 'getFilesWithStatus' },
+    { name: 'getQueuedFiles' },
+    { name: 'getUploadingFiles' },
+    { name: 'getAddedFiles' },
+    { name: 'getActiveFiles' },
+  ]"
+/>
 
 <script lang="ts" setup>
   import { ref, onMounted } from 'vue'
