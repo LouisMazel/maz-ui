@@ -407,11 +407,11 @@
       }
 
       &-right {
-        @apply maz-px-1;
+        @apply maz-pr-2;
       }
 
       &-left {
-        @apply maz-left-1;
+        @apply maz-pl-2;
       }
     }
 
@@ -430,7 +430,7 @@
 
     &-label {
       @apply maz-pointer-events-none maz-absolute maz-block maz-w-max maz-origin-top-left maz-truncate;
-      @apply maz-left-4 maz-leading-6;
+      @apply maz-left-3 maz-leading-6;
       @apply maz-flex maz-flex-center;
 
       transition: transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
@@ -448,7 +448,7 @@
 
     &.--should-up {
       & .m-input-label {
-        transform: scale(0.8) translateY(-0.65rem);
+        transform: scale(0.8) translateY(-0.65em);
       }
     }
 
@@ -476,7 +476,7 @@
 
     &.--has-label {
       .m-input-input {
-        @apply maz-px-4 maz-pt-4;
+        @apply maz-px-3 maz-pt-4;
       }
     }
   }
