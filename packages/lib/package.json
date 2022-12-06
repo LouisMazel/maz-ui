@@ -1,6 +1,6 @@
 {
   "name": "maz-ui",
-  "version": "3.4.0",
+  "version": "3.4.2",
   "description": "A stand-alone components library for Vue.Js 3 & Nuxt.Js 3",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "main": "modules/index.js",
@@ -22,8 +22,8 @@
     "test:unit:coverage:watch": "vitest watch --coverage",
     "test:unit:coverage:master": "vitest run --coverage --changed master",
     "lint": "npm run lint:js && npm run lint:style",
-    "lint:js:nofix": "eslint --ext .ts,.js,.vue .",
-    "lint:js": "eslint --fix --ext .ts,.js,.vue .",
+    " ": "cross-env NODE_ENV=production eslint --ext .ts,.js,.vue .",
+    "lint:js": "cross-env NODE_ENV=production eslint --fix --ext .ts,.js,.vue .",
     "format": "prettier . --write",
     "lint:style": "stylelint --custom-syntax postcss-html --fix \"./**/*.{vue,css,scss,postcss,pcss}\"",
     "clean": "rimraf components modules css types maz-ui.d.ts",
@@ -45,7 +45,7 @@
   },
   "lint-staged": {
     "*": "prettier -w -u",
-    "*.{js,ts,vue}": "eslint --fix",
+    "*.{js,ts,vue}": "cross-env NODE_ENV=production eslint --fix",
     "*.{vue,css,scss,postcss,pcss}": "stylelint --custom-syntax postcss-html --fix"
   },
   "peerDependencies": {

@@ -9,6 +9,8 @@ description: MazDialog is a stand-alone dialog component to show important infor
 
 > This component use `<Teleport to="body">`, so you can implement this component everywhere
 
+> This component use [MazBackdrop](./maz-backdrop.md), so it inherits all his props
+
 ## Basic usage
 
 <br />

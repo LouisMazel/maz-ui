@@ -1,7 +1,9 @@
 <template>
-  <MazBackDrop
+  <MazBackdrop
     v-bind="$attrs"
-    transition="modal-anim"
+    transition-name="modal-anim"
+    @close="$emit('close', $event)"
+    @open="$emit('open', $event)"
     @update:model-value="$emit('update:model-value', $event)"
   >
     <template #default="{ close }">
@@ -16,39 +18,40 @@
           >
             <slot name="title">{{ title }}</slot>
           </h2>
+
           <MazBtn
-            color="transparent"
-            size="mini"
+            v-if="!noClose"
+            size="sm"
             class="m-dialog-layout-closebtn"
+            color="transparent"
             @click="close"
           >
-            <MazIcon :src="XIcon" class="maz-cursor-pointer" />
+            <MazIcon :src="XIcon" class="maz-h-5 maz-w-5" />
           </MazBtn>
         </div>
         <div class="m-dialog-layout-content">
-          <slot />
+          <slot :close="close" />
         </div>
         <div v-if="$slots['footer']" class="m-dialog-layout-footer">
-          <slot name="footer"></slot>
+          <slot name="footer" :close="close"></slot>
         </div>
       </div>
     </template>
-  </MazBackDrop>
+  </MazBackdrop>
 </template>
 
 <script lang="ts" setup>
   import MazBtn from './MazBtn.vue'
-  import MazBackDrop from './MazBackDrop.vue'
+  import MazBackdrop from './MazBackdrop.vue'
   import MazIcon from './MazIcon.vue'
   import XIcon from '@package/icons/x.svg'
 
   defineProps({
     title: { type: String, default: undefined },
+    noClose: { type: Boolean, default: false },
   })
 
-  defineEmits(['update:model-value'])
-
-  // inheritAttrs: false,
+  defineEmits(['update:model-value', 'close', 'open'])
 </script>
 
 <style lang="postcss" scoped>

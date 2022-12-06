@@ -60,6 +60,7 @@ module.exports = {
         },
       },
     ],
+    'vue/attribute-hyphenation': 'error',
     // unicorn
     'unicorn/filename-case': [
       'error',
