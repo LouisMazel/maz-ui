@@ -47,7 +47,7 @@ description: MazCard is a stand-alone component to display some texts, images an
 
 <script setup>
   import { ref } from 'vue'
-  const images = ref(['https://www.stevensegallery.com/600/600'])
+  const images = ref(['https://placekitten.com/600/600'])
 </script>
 
 ```vue
@@ -87,7 +87,7 @@ description: MazCard is a stand-alone component to display some texts, images an
 <script lang="ts" setup>
   import MazCard from 'maz-ui/components/MazCard'
   import { ref } from 'vue'
-  const images = ref(['https://www.stevensegallery.com/600/600'])
+  const images = ref(['https://placekitten.com/600/600'])
 </script>
 ```
 
@@ -95,6 +95,8 @@ description: MazCard is a stand-alone component to display some texts, images an
 
 ### collapsable
 
+Ref props: `collapsable` & `collapse-open`
+packages/docs/docs/components/maz-card.md
 <br />
 
 <MazCard collapsable style="width: 100%; margin-bottom: 16px;">
@@ -160,7 +162,6 @@ description: MazCard is a stand-alone component to display some texts, images an
   </MazCard>
 </template>
 ```
-
 
 ## Props & Events emitted
 

@@ -45,6 +45,6 @@
 
 <style lang="postcss" scoped>
   main {
-    @apply maz-flex maz-h-full maz-w-full maz-flex-col maz-items-center maz-overflow-auto maz-p-5 maz-text-normal;
+    @apply maz-flex maz-min-h-full maz-min-w-full maz-flex-col maz-items-center maz-p-5 maz-text-normal;
   }
 </style>

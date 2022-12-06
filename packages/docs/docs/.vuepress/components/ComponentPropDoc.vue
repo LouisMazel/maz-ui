@@ -69,14 +69,14 @@
         </tr>
       </tbody>
     </table>
-    <table v-if="methods" class="component-prop-doc" style="display: table;">
+    <table v-if="componentMethods" class="component-prop-doc" style="display: table;">
       <thead>
         <th>
           Methods
         </th>
       </thead>
       <tbody>
-        <tr v-for="(method, i) in methods" :key="i">
+        <tr v-for="(method, i) in componentMethods" :key="i">
           <td style="white-space: nowrap;">
             {{ method.name }}
           </td>
@@ -87,19 +87,19 @@
 </template>
 
 <script lang="ts" setup>
-import { log } from 'console'
-import { computed, ref, onBeforeMount, onMounted, watch } from 'vue'
+import { ref, onBeforeMount, watch } from 'vue'
 
 const props = defineProps({
   component: { type: String, required: true },
-  componentInstance: { type: Object, default: undefined }
+  componentInstance: { type: Object, default: undefined },
+  methods: { type: Array, default: undefined },
 })
 
 const camelToSnakeCase = (str: string): string => str.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`)
 
 const options = ref()
 const events = ref()
-const methods = ref()
+const componentMethods = ref()
 
 const getValidatorValues = (validator: string) => {
   const firstPart = String(validator)?.split('[')[1]
@@ -143,7 +143,11 @@ const getOptions = async () => {
 }
 
 const setMethods = () => {
-  methods.value = props.componentInstance ? Object.values(props.componentInstance).filter((value) => typeof value === 'function') : undefined
+  componentMethods.value = props.methods?.length
+  ? props.methods
+  : props.componentInstance
+    ? Object.values(props.componentInstance).filter((value) => typeof value === 'function')
+    : undefined
 }
 
 watch(

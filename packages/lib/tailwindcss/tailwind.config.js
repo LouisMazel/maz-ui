@@ -13,9 +13,6 @@ module.exports = {
   darkMode: 'class',
   theme: {
     extend: {
-      fontSize: {
-        xxs: '.625rem',
-      },
       backgroundColor: ['even', 'odd'],
       fontFamily: {
         base: 'var(--maz-font-family)',

@@ -29,7 +29,7 @@ head:
     v-for="(item, i) in Array(8)"
     :key="i"
     :images="[
-      'https://www.stevensegallery.com/250/300'
+      'https://placekitten.com/250/300'
     ]"
     style="min-width: 250px;"
   >
@@ -56,7 +56,7 @@ head:
       v-for="(item, i) in Array(8)"
       :key="i"
       :images="[
-        'https://www.stevensegallery.com/250/300'
+        'https://placekitten.com/250/300'
       ]"
       style="min-width: 250px;"
     >
