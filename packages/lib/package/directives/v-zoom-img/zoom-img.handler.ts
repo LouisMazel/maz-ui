@@ -108,8 +108,8 @@ export class VueZoomImg {
     this.renderPreviewListener = () => this.renderPreview(el, this.options)
 
     el.addEventListener('mouseenter', this.mouseEnterListener)
-    el.addEventListener('mouseleave', () => this.mouseLeaveListener)
-    el.addEventListener('click', () => this.renderPreviewListener)
+    el.addEventListener('mouseleave', this.mouseLeaveListener)
+    el.addEventListener('click', this.renderPreviewListener)
   }
 
   public update(binding: BindingData): void {
