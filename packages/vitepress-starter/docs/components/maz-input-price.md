@@ -1,12 +1,13 @@
 ---
-description: MazInputPrice is a stand-alone component replaces the standard html input text and format the text enter according with the currency provided
+title: MazInputPrice
+description: MazInputPrice is a standalone component replaces the standard html input text and format the text enter according with the currency provided
 ---
 
-# MazInputPrice
+# {{ $frontmatter.title }}
 
-::: info
-Before you have to import the global css files in your project, follow instructions in [Getting Started](/guide/getting-started)
-:::
+{{ $frontmatter.description }}
+
+<!--@include: ./../mixins/getting-started.md-->
 
 ## Basic usage
 

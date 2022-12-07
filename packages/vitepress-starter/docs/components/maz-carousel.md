@@ -1,23 +1,23 @@
 ---
 title: MazCarousel
-description: MazCarousel is a stand-alone component to display and manage items in a row
+description: MazCarousel is a standalone component to display and manage items in a row
 head:
   - - meta
     - name: twitter:title
       content: MazCarousel | Maz-UI
     - name: twitter:description
-      content: MazCarousel is a stand-alone component to display and manage items in a row
+      content: MazCarousel is a standalone component to display and manage items in a row
     - property: og:title
       content: MazCarousel | Maz-UI
     - property: og:description
-      content: MazCarousel is a stand-alone component to display and manage items in a row
+      content: MazCarousel is a standalone component to display and manage items in a row
 ---
 
-# MazCarousel
+# {{ $frontmatter.title }}
 
-::: info
-Before you have to import the global css files in your project, follow instructions in [Getting Started](/guide/getting-started)
-:::
+{{ $frontmatter.description }}
+
+<!--@include: ./../mixins/getting-started.md-->
 
 ## Basic usage
 
@@ -31,7 +31,7 @@ Before you have to import the global css files in your project, follow instructi
     v-for="(item, i) in Array(8)"
     :key="i"
     :images="[
-      'https://www.stevensegallery.com/250/300'
+      'https://placekitten.com/250/300'
     ]"
     style="min-width: 250px;"
   >
@@ -58,7 +58,7 @@ Before you have to import the global css files in your project, follow instructi
       v-for="(item, i) in Array(8)"
       :key="i"
       :images="[
-        'https://www.stevensegallery.com/250/300'
+        'https://placekitten.com/250/300'
       ]"
       style="min-width: 250px;"
     >

@@ -1,10 +1,13 @@
 ---
-description: Helper to see and manage the user activity
+title: idle-timeout
+description: Plugin to see and manage the user activity
 ---
 
-# idle-timeout
+# {{ $frontmatter.title }}
 
-Helper to see and manage the user activity
+{{ $frontmatter.description }}
+
+## Demo
 
 **options**: `IdleTimeoutOptions`
 
@@ -29,6 +32,8 @@ const idleTimeoutCallback: IdleTimeoutCallback = ({ isIdle, eventType }) => {
   }
 }
 ```
+
+<br />
 
 <div class="flex items-start gap-05 items-center flex-wrap">
   <MazBtn @click="idleTimeoutInstance?.pause()" color="warning">

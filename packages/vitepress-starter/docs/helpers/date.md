@@ -3,9 +3,9 @@ title: date
 description: The module date is a function to format date
 ---
 
-# date
+# {{ $frontmatter.title }}
 
-> The module `date` is a function to format date
+{{ $frontmatter.description }}
 
 > This module use the native api [Intl.DateTimeFormat](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat) from browsers
 

@@ -1,13 +1,17 @@
 ---
 title: MazBottomSheet
-description: MazBottomSheet is a stand-alone component like a simple dialog but at the bottom of screen
+description: MazBottomSheet is a standalone component like a simple dialog but at the bottom of screen
 ---
 
-# MazBottomSheet
+# {{ $frontmatter.title }}
 
-::: info
-Before you have to import the global css files in your project, follow instructions in [Getting Started](/guide/getting-started)
-:::
+{{ $frontmatter.description }}
+
+<!--@include: ./../mixins/getting-started.md-->
+
+> This component use `<Teleport to="body">`, so you can implement this component everywhere
+
+> This component use [MazBackdrop](./maz-backdrop.md), so it inherits all his props
 
 ## Basic usage
 

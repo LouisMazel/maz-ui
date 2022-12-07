@@ -1,9 +1,11 @@
 ---
 title: MazIcon
-description: MazBtn is a stand-alone component to load your svg icons
+description: MazBtn is a standalone component to load your svg icons
 ---
 
-# MazIcon
+# {{ $frontmatter.title }}
+
+{{ $frontmatter.description }}
 
 Basically, this component will load your SVG from your project.
 

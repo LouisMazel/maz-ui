@@ -1,12 +1,13 @@
 ---
-description: MazSlider is a stand-alone component replaces the standard html input range with a beautiful design system. Many options like multiple cursors and values, colors, sizes and logarithmic/exponential values
+title: MazSlider
+description: MazSlider is a standalone component replaces the standard html input range with a beautiful design system. Many options like multiple cursors and values, colors, sizes and logarithmic/exponential values
 ---
 
-# MazSlider
+# {{ $frontmatter.title }}
 
-::: info
-Before you have to import the global css files in your project, follow instructions in [Getting Started](/guide/getting-started)
-:::
+{{ $frontmatter.description }}
+
+<!--@include: ./../mixins/getting-started.md-->
 
 ## Basic usage
 

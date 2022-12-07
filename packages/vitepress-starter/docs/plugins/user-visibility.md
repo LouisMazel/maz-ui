@@ -1,14 +1,13 @@
 ---
-description: Helper to see and mange the user page visibility
+title: user-visibility
+description: Plugin to see and mange the user page visibility
 ---
 
-# user-visibility
+# {{ $frontmatter.title }}
 
-Helper to see and mange the user page visibility
+{{ $frontmatter.description }}
 
 ## Demo
-
-<br />
 
 **options**: `IdleTimeoutOptions`
 
@@ -29,13 +28,10 @@ const userVisibilyCallback: UserVisibilyCallback = ({ isVisible }) => {
 }
 ```
 
-<br />
-
 <MazBtn @click="userVisibilityInstance?.destroy()" color="danger">
   Destroy
 </MazBtn>
 
-<br />
 <br />
 
 <MazCard overflow-hidden style="width: 100%;">

@@ -1,13 +1,11 @@
 ---
 title: MazTabs
-description: MazTabs is a stand-alone component replaces the standard html input checkbox. Color option available
+description: MazTabs is a standalone component to display content in tabs with animations
 ---
 
-# MazTabs
+# {{ $frontmatter.title }}
 
-::: info
-Before you have to import the global css files in your project, follow instructions in [Getting Started](/guide/getting-started)
-:::
+{{ $frontmatter.description }}
 
 ## Basic usage
 

@@ -1,18 +1,23 @@
 ---
+title: theme-handler
 description: Vue composable to handling UI theme - Automatically set dark and light theme and switch between them
 ---
 
-# theme-handler
+# {{ $frontmatter.title }}
 
-It's a Vue composable to handling UI theme: Automatically set dark and light theme and switch between them
+{{ $frontmatter.description }}
 
 ## Demo
-
-<br />
 
 <MazBtn type="button" @click="toggleTheme">
   Toggle theme
 </MazBtn>
+
+### Informations
+
+<code>
+ {{ { theme, hasDarkTheme, hasLightTheme } }}
+</code>
 
 ## How to use it ?
 

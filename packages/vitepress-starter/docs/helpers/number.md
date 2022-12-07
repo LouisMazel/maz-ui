@@ -1,16 +1,13 @@
 ---
-title: currency
-description: The module currency is a function to format numbers to currency
+title: number
+description: The module number is a function to format numbers
 ---
 
-# currency
+# {{ $frontmatter.title }}
 
-> The module `currency` is a function to format numbers to currency
+{{ $frontmatter.description }}
 
 > This module use the native api [Intl.NumberFormat](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat) from browsers
-
-
-Enter only numbers
 
 <MazInput v-model="numberValue" type="number" />
 
@@ -18,17 +15,17 @@ Enter only numbers
   style="padding: 16px; margin-top: 16px; background-color: var(--maz-color-bg-lighter);"
   class="flex flex-center rounded gap-05"
 >
-  formatted value: <strong>{{ priceFormatted }}</strong>
+  formatted value: <strong>{{ numberFormatted }}</strong>
 </div>
 
 <script lang="ts" setup>
-  import { currency } from 'maz-ui'
+  import { number } from 'maz-ui'
   import { ref, computed } from 'vue'
 
   const numberValue = ref(69)
 
-  const priceFormatted = computed(() =>
-    currency(numberValue.value, 'fr-FR', { currency: 'EUR' }),
+  const numberFormatted = computed(() =>
+    number(numberValue.value, 'en-US'),
   )
 </script>
 
@@ -39,18 +36,18 @@ Enter only numbers
   <div
     style="padding: 16px; margin-top: 16px; background-color: var(--maz-color-bg-lighter);"
   >
-    {{ priceFormatted }}
+    {{ numberFormatted }}
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { currency } from 'maz-ui'
+  import { number } from 'maz-ui'
   import { ref, computed } from 'vue'
 
   const numberValue = ref(69)
 
-  const priceFormatted = computed(() =>
-    currency(numberValue.value, 'fr-FR', { currency: 'EUR' }),
+  const numberFormatted = computed(() =>
+    number(numberValue.value, 'en-US'),
   )
 </script>
 ```
@@ -59,8 +56,10 @@ Enter only numbers
 
 > All options from [Intl.NumberFormat](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat) are availables
 
+## Default options
+
 ```ts
-export interface FilterCurrencyOptions extends Intl.NumberFormatOptions {
-  round?: boolean
+const DEFAULT_OPTIONS: Intl.NumberFormatOptions = {
+  minimumFractionDigits: 2,
 }
 ```

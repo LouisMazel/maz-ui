@@ -1,13 +1,13 @@
 ---
 title: MazCard
-description: MazCard is a stand-alone component to display some texts, images and you can add buttons actions
+description: MazCard is a standalone component to display some texts, images and you can add buttons actions
 ---
 
-# MazCard
+# {{ $frontmatter.title }}
 
-::: info
-Before you have to import the global css files in your project, follow instructions in [Getting Started](/guide/getting-started)
-:::
+{{ $frontmatter.description }}
+
+<!--@include: ./../mixins/getting-started.md-->
 
 ## Basic usage
 
@@ -49,7 +49,7 @@ Before you have to import the global css files in your project, follow instructi
 
 <script setup>
   import { ref } from 'vue'
-  const images = ref(['https://www.stevensegallery.com/600/600'])
+  const images = ref(['https://placekitten.com/600/600'])
 </script>
 
 ```vue
@@ -89,7 +89,7 @@ Before you have to import the global css files in your project, follow instructi
 <script lang="ts" setup>
   import MazCard from 'maz-ui/components/MazCard'
   import { ref } from 'vue'
-  const images = ref(['https://www.stevensegallery.com/600/600'])
+  const images = ref(['https://placekitten.com/600/600'])
 </script>
 ```
 
@@ -97,6 +97,8 @@ Before you have to import the global css files in your project, follow instructi
 
 ### collapsable
 
+Ref props: `collapsable` & `collapse-open`
+packages/docs/docs/components/maz-card.md
 <br />
 
 <MazCard collapsable style="width: 100%; margin-bottom: 16px;">
@@ -162,7 +164,6 @@ Before you have to import the global css files in your project, follow instructi
   </MazCard>
 </template>
 ```
-
 
 ## Props & Events emitted
 

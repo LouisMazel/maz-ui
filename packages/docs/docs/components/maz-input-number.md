@@ -1,12 +1,13 @@
 ---
-description: MazInputNumber is a stand-alone component replaces the standard html input text and format the number according with the locale provided
+description: MazInputNumber is a standalone component replaces the standard html input text and format the number according with the locale provided
 ---
 
 # MazInputNumber
 
-MazInputNumber is a stand-alone component replaces the standard html input text and format the text enter according with the currency provided
+MazInputNumber is a standalone component replaces the standard html input text and format the text enter according with the currency provided
 
 > Before you have to import the global css files in your project, follow instructions in [Getting Started](./../guide/getting-started.md)
+
 ## Basic usage
 
 <MazInputNumber

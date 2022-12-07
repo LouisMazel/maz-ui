@@ -2,7 +2,7 @@
 description: Dark mode is fully supported - How it's works ?
 ---
 
-# Dark Mode
+# Dark mode
 
 ## How it's works ?
 
@@ -30,6 +30,6 @@ To enable the dark you have just to add `dark` class to the `<html />` of your p
 </html>
 ```
 
-## How to manage theme ?
+## How to manage mode ?
 
-Use the `theme-handler` composable: [theme-handler](./../helpers/theme-handler.md)
+Use the `theme-handler` composable: [theme-handler](./../composables/theme-handler.md)

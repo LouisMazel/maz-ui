@@ -1,35 +1,22 @@
 ---
-description: MazPicker is a stand-alone component for select dates and time. Provide range, date and time mode
+title: MazPicker
+description: MazPicker is a standalone component for select dates and time. Provide range, date and time mode
 ---
 
-# MazPicker
+# {{ $frontmatter.title }}
 
-::: info
-Before you have to import the global css files in your project, follow instructions in [Getting Started](/guide/getting-started)
-:::
+{{ $frontmatter.description }}
+
+<!--@include: ./../mixins/getting-started.md-->
 
 To use this component, you have to install the dependency `dayjs`
 
 <NpmBadge package="dayjs" />
 
-<CodeGroup>
-
-  <CodeGroupItem title="NPM" active>
-
 ```bash
 # install in your project
 npm install dayjs
 ```
-  </CodeGroupItem>
-
-  <CodeGroupItem title="YARN">
-
-```bash
-# install in your project
-yarn add dayjs
-```
-  </CodeGroupItem>
-</CodeGroup>
 
 ## Documentation
 

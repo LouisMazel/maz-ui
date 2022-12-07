@@ -1,6 +1,6 @@
 ---
 title: MazDialog
-description: MazDialog is a stand-alone dialog component to show important informations to the user or propose specific action. Many options available. You can hide the header or the footer, full-size layout, differents states etc.
+description: MazDialog is a standalone dialog component to show important informations to the user or propose specific action. Many options available. You can hide the header or the footer, full-size layout, differents states etc.
 ---
 
 # MazDialog

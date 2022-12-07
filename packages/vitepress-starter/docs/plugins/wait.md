@@ -1,15 +1,15 @@
 ---
+title: wait
 description: Plugins to manage your loading states
 ---
 
-# wait
+# {{ $frontmatter.title }}
 
-> Loading state handling
+{{ $frontmatter.description }}
 
 ## Basic usage
 
 <br />
-
 
 <MazBtn @click="submitData" :loading="wait.isLoading('DATA_SUBMITTING')">
   Submit Data

@@ -4,8 +4,8 @@ import { version } from 'maz-ui/package.json'
 import { guide } from './guide'
 import { components } from './components'
 import { directives } from './directives'
-import { filters } from './filters'
 import { helpers } from './helpers'
+import { composables } from './composables'
 import { plugins } from './plugins'
 
 export const nav: DefaultTheme.NavItem[] = [
@@ -14,7 +14,7 @@ export const nav: DefaultTheme.NavItem[] = [
   {
     text: 'Modules',
     activeMatch: '/plugins',
-    items: [plugins, directives, filters, helpers],
+    items: [plugins, directives, helpers, composables],
   },
   { text: 'Made with Maz-ui', link: '/made-with-maz-ui', },
   {

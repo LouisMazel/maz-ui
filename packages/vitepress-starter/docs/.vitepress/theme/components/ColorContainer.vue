@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts" setup>
-const props = defineProps({
+defineProps({
   color: { type: String, required: true },
   hex: { type: String, required: true },
 })

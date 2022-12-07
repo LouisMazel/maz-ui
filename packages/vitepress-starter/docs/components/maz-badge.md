@@ -1,13 +1,13 @@
 ---
 title: MazBadge
-description: MazBadge is a stand-alone component to show short text in colored container
+description: MazBadge is a standalone component to show short text in colored container
 ---
 
-# MazBadge
+# {{ $frontmatter.title }}
 
-::: info
-Before you have to import the global css files in your project, follow instructions in [Getting Started](/guide/getting-started)
-:::
+{{ $frontmatter.description }}
+
+<!--@include: ./../mixins/getting-started.md-->
 
 ## Basic usage
 

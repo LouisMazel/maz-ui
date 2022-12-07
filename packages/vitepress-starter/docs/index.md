@@ -1,6 +1,7 @@
 ---
 layout: home
 title: Maz UI - Standalone Components and Tools Library for Vue & Nuxt
+description: Build amazing interfaces with Maz-UI - standalone components & tools library for Vue.JS & Nuxt.JS
 hero:
   name: Maz-UI
   text: Lightweight and efficient library
@@ -19,8 +20,8 @@ hero:
       text: Plugins
       link: /plugins/toaster
     - theme: alt
-      text: Helpers
-      link: /helpers/idle-timeout
+      text: Composables
+      link: /composables/theme-handler
     - theme: alt
       text: Filters
       link: /filters/currency
@@ -51,8 +52,8 @@ features:
     link: /guide/dark-mode
   - icon: 🛠
     title: Tools
-    details: Maz-ui provide many modules - plugins, directives, filters and helpers
-    link: /guide/plugins/aos
+    details: Maz-ui provide many modules - plugins, directives, filters and composables
+    link: /plugins/aos
 ---
 
 <div class="maz-flex maz-flex-center" style="margin: 2rem;">

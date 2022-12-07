@@ -1,15 +1,13 @@
 ---
 title: MazRadioButtons
-description: MazRadioButtons is a stand-alone component to select a value in a list
+description: MazRadioButtons is a standalone component to select a value in a list
 ---
 
-# MazRadioButtons
+# {{ $frontmatter.title }}
 
-MazRadioButtons is a stand-alone component to select a value in a list
+{{ $frontmatter.description }}
 
-::: info
-Before you have to import the global css files in your project, follow instructions in [Getting Started](/guide/getting-started)
-:::
+<!--@include: ./../mixins/getting-started.md-->
 
 ## Basic usage
 
@@ -237,7 +235,6 @@ Select a competition
   ]
 </script>
 ```
-
 
 <script lang="ts" setup>
   import { ref } from 'vue'

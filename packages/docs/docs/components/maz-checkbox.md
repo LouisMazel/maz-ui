@@ -1,6 +1,6 @@
 ---
 title: MazCheckbox
-description: MazCheckbox is a stand-alone component replaces the standard html input checkbox. Color option available
+description: MazCheckbox is a standalone component replaces the standard html input checkbox. Color option available
 ---
 
 # MazCheckbox

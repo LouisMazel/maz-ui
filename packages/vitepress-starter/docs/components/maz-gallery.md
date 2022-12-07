@@ -1,12 +1,13 @@
 ---
-description: MazGallery is a stand-alone component. It\'s a container to show images
+title: MazGallery
+description: MazGallery is a standalone component to display images in a container and has many options and actions
 ---
 
-# MazGallery
+# {{ $frontmatter.title }}
 
-::: info
-Before you have to import the global css files in your project, follow instructions in [Getting Started](/guide/getting-started)
-:::
+{{ $frontmatter.description }}
+
+<!--@include: ./../mixins/getting-started.md-->
 
 ## Basic usage
 

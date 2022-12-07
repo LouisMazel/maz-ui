@@ -69,5 +69,6 @@ export const useThemeHandler = (
     toggleTheme: () => toggleTheme(options),
     hasDarkTheme,
     hasLightTheme,
+    theme,
   }
 }

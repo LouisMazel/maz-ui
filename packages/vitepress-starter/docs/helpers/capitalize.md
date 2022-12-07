@@ -3,9 +3,9 @@ title: capitalize
 description: The module capitalize is a function to add a capital letter to a string
 ---
 
-# capitalize
+# {{ $frontmatter.title }}
 
-> The module `capitalize` is a function to add a capital letter to a string
+{{ $frontmatter.description }}
 
 <MazInput v-model="stringValue" />
 

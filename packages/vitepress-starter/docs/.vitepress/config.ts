@@ -1,8 +1,8 @@
-import { defineConfig } from 'vitepress'
+import { defineConfig, HeadConfig } from 'vitepress'
 import { sidebar, head, nav } from './configs'
 
 import { createWriteStream } from 'node:fs'
-import { resolve } from 'node:path'
+import { join, resolve } from 'node:path'
 import { SitemapStream } from 'sitemap'
 
 const links: { url: string, lastmod?: number }[] = []
@@ -10,7 +10,7 @@ const links: { url: string, lastmod?: number }[] = []
 export default defineConfig({
   lang: 'en-US',
   title: 'Maz-UI',
-  titleTemplate: 'Maz-UI',
+  // titleTemplate: 'Maz-UI',
   description: 'Library of standalone components and tools for Vue & Nuxt (v3.x)',
 
   appearance: true,
@@ -23,26 +23,58 @@ export default defineConfig({
   head,
 
   themeConfig: {
-    siteTitle: false,
-    logo: '/img/logo.svg',
+    siteTitle: 'Maz-UI',
+
+    logo: { src: '/img/logo.svg', alt: 'Maz-UI logo'},
     sidebar,
     nav,
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/vuejs/vitepress' },
+      { icon: 'github', link: 'https://github.com/LouisMazel/maz-ui' },
       { icon: 'twitter', link: 'https://twitter.com/maz__ui' },
     ],
     footer: {
       // message: 'Released under the MIT License.',
       copyright: 'Made by LouisMazel with ❤️'
     },
+
+    editLink: {
+      pattern: 'https://github.com/LouisMazel/maz-ui/edit/master/packages/docs/docs/:path',
+      text: 'Edit this page on GitHub'
+    },
+
+    // algolia: {
+    //   appId: '8J64VVRP8K',
+    //   apiKey: 'a18e2f4cc5665f6602c5631fd868adfd',
+    //   indexName: 'vitepress'
+    // },
   },
 
   vite: {
     server: {
       fs: {
-        allow: ['./../../lib'],
+        allow: [join(__dirname, './../../../lib')],
       },
     },
+    resolve: {
+      alias: {
+        '@': join(__dirname, 'src'),
+        '~': join(__dirname, 'src'),
+        '@package': join(__dirname, './../../../lib/package'),
+        '@components': join(__dirname, './../../../lib/package/components'),
+      }
+    }
+  },
+
+  transformHead: ({siteConfig, siteData, pageData, title, description, head, content}) => {
+
+    console.log(
+      'transformHead',
+      { siteConfig, siteData, pageData, title, description, head, content }
+    )
+
+    const returns: HeadConfig[] = []
+
+    return returns
   },
 
   transformHtml: (_, id, { pageData }) => {

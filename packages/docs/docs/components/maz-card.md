@@ -1,6 +1,6 @@
 ---
 title: MazCard
-description: MazCard is a stand-alone component to display some texts, images and you can add buttons actions
+description: MazCard is a standalone component to display some texts, images and you can add buttons actions
 ---
 
 # MazCard

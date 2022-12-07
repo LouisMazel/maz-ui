@@ -1,35 +1,22 @@
 ---
+title: MazPhoneNumberInput
 description: MazPhoneNumberInput is a standalone input component to help the user enter a phone number and validate it according to the country
 ---
 
-# MazPhoneNumberInput
+# {{ $frontmatter.title }}
 
-::: info
-Before you have to import the global css files in your project, follow instructions in [Getting Started](/guide/getting-started)
-:::
+{{ $frontmatter.description }}
+
+<!--@include: ./../mixins/getting-started.md-->
 
 To use this component, you have to install the dependency `libphonenumber-js`
 
 <NpmBadge package="libphonenumber-js" />
 
-<CodeGroup>
-
-  <CodeGroupItem title="NPM" active>
-
 ```bash
 # install in your project
 npm install libphonenumber-js
 ```
-  </CodeGroupItem>
-
-  <CodeGroupItem title="YARN">
-
-```bash
-# install in your project
-yarn add libphonenumber-js
-```
-  </CodeGroupItem>
-</CodeGroup>
 
 ## Basic usage
 
@@ -84,7 +71,7 @@ yarn add libphonenumber-js
 - **Auto-detect** country calling code with phone number provided
 - You can set your **preferred-countries, ignored-countries** or exclude some countries with **only-countries**
 - Validation UI state: input becomes green when the phone number is valid (can be disabled by no-validation attr)
-- **Multi options to getting country code** : By default the component get the country code via the browser (disable it with no-use-browser-locale) or you can use - fetch-country to get the country code via https://ip2c.org/s (network needed) - you can use default-country-code option instead to set one
+- **Multi options to getting country code** : By default the component get the country code via the browser (disable it with no-use-browser-locale) or you can use - fetch-country to get the country code via <https://ip2c.org/s> (network needed) - you can use default-country-code option instead to set one
 - Phone number is formatted while typing
 - You can **search** your country in list (open countries list & type your country name)
 - Keyboard accessibility (Arrow down, Arrow up: Countries list navigation - Escape: Close countries list)

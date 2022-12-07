@@ -6,7 +6,9 @@ sidebar: false
 aside: false
 ---
 
-# Made with Maz-UI
+# {{ $frontmatter.title }}
+
+{{ $frontmatter.description }}
 
 <br />
 

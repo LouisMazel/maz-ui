@@ -3,30 +3,18 @@ title: MazChart
 description: MazChart is a standalone input component generate graphics & charts with chart.js
 ---
 
-# MazChart
+# {{ $frontmatter.title }}
+
+{{ $frontmatter.description }}
 
 To use this component, you have to install the dependency `chart.js`
 
-<NpmBadge package="chart.js" />
-
-<CodeGroup>
-
-  <CodeGroupItem title="NPM" active>
+<NpmBadge package="chart.js" dist-tag="3" />
 
 ```bash
 # install in your project
-npm install chart.js
+npm install chart.js@^3.9.1
 ```
-  </CodeGroupItem>
-
-  <CodeGroupItem title="YARN">
-
-```bash
-# install in your project
-yarn add chart.js
-```
-  </CodeGroupItem>
-</CodeGroup>
 
 ## Chart.JS Documentation
 
@@ -187,7 +175,7 @@ You can use all plugins of Chart.JS. Follow the example bellow
     delay: (context: Record<string, any>) => {
       let delay = 0
       if (context.type === 'data' && context.mode === 'default' && !delayed) {
-        delay = context.dataIndex * 100 + context.datasetIndex * 50
+        delay = context.dataIndex *100 + context.datasetIndex* 50
       }
       return delay
     },

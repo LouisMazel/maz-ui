@@ -1,5 +1,5 @@
 ---
-description: MazPicker is a stand-alone component for select dates and time. Provide range, date and time mode
+description: MazPicker is a standalone component for select dates and time. Provide range, date and time mode
 ---
 
 # MazPicker
@@ -10,24 +10,10 @@ To use this component, you have to install the dependency `dayjs`
 
 <NpmBadge package="dayjs" />
 
-<CodeGroup>
-
-  <CodeGroupItem title="NPM" active>
-
 ```bash
 # install in your project
 npm install dayjs
 ```
-  </CodeGroupItem>
-
-  <CodeGroupItem title="YARN">
-
-```bash
-# install in your project
-yarn add dayjs
-```
-  </CodeGroupItem>
-</CodeGroup>
 
 ## Documentation
 

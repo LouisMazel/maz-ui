@@ -1,10 +1,12 @@
 <template>
   <div
     class="m-textarea"
-    :class="{
-      '--is-disabled': disabled,
-      '--has-label': hasLabelOrHint,
-    }"
+    :class="[
+      {
+        '--is-disabled': disabled,
+        '--has-label': hasLabelOrHint,
+      },
+    ]"
   >
     <label
       v-if="hasLabelOrHint"
@@ -163,7 +165,7 @@
     @apply maz-relative maz-flex maz-flex-col;
 
     textarea {
-      @apply maz-min-h-[6.25rem] maz-w-full maz-resize-y maz-rounded maz-border
+      @apply maz-min-h-[6.25rem] maz-w-full maz-resize-y maz-rounded maz-border maz-border-solid
         maz-bg-color maz-p-4 maz-text-normal maz-outline-none;
 
       &.--default-border {

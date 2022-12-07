@@ -1,5 +1,5 @@
 ---
-description: MazStepper is a stand-alone UI component to
+description: MazStepper is a standalone UI component to
 ---
 
 # MazStepper

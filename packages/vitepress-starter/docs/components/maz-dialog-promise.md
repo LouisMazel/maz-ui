@@ -1,13 +1,13 @@
 ---
+title: MazDialogPromise
 description: MazDialogPromise is a standalone component to dialog with user, component to show important informations to the user and propose confirmation, you should waiting his response with await.
 ---
 
+# {{ $frontmatter.title }}
 
-# MazDialogPromise
+{{ $frontmatter.description }}
 
-::: info
-Before you have to import the global css files in your project, follow instructions in [Getting Started](/guide/getting-started)
-:::
+<!--@include: ./../mixins/getting-started.md-->
 
 > This component use [MazDialog](./maz-dialog.md), so it inherits all his props
 

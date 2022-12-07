@@ -26,6 +26,7 @@ export const components = {
       items: [
         {text: 'MazAvatar', link: '/components/maz-avatar'},
         {text: 'MazBadge', link: '/components/maz-badge'},
+        {text: 'MazBackdrop', link: '/components/maz-backdrop'},
         {text: 'MazBottomSheet', link: '/components/maz-bottom-sheet'},
         {text: 'MazCard', link: '/components/maz-card'},
         {text: 'MazCarousel', link: '/components/maz-carousel'},

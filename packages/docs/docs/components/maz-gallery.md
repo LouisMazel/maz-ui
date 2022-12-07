@@ -1,5 +1,5 @@
 ---
-description: MazGallery is a stand-alone component. It\'s a container to show images
+description: MazGallery is a standalone component. It\'s a container to show images
 ---
 
 # MazGallery

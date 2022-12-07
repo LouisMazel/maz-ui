@@ -1,29 +1,38 @@
 import DefaultTheme from 'vitepress/theme'
+import googleAnalytics from 'vitepress-plugin-google-analytics'
 
 import 'maz-ui/css/main.css'
 import 'maz-ui/css/aos.css'
 import './main.css'
 
-import { ToasterOptions, installToaster, installWait, installAos, AosOptions } from 'maz-ui'
-import components from 'maz-ui/components'
+import { ToasterOptions, installToaster, installWait, installAos, AosOptions, aosInstance } from 'maz-ui'
+
+import * as components from 'maz-ui/components'
 
 import ColorContainer from './components/ColorContainer.vue'
 import NpmBadge from './components/NpmBadge.vue'
 import ComponentPropDoc from './components/ComponentPropDoc.vue'
+import { watch } from 'vue'
 
 const theme: typeof DefaultTheme = {
   ...DefaultTheme,
   enhanceApp(ctx) {
     DefaultTheme.enhanceApp(ctx)
 
-    ctx.app.provide('mazIconPath', '/maz-ui-3/icons')
+    googleAnalytics({
+      id: 'G-EM35TM23ZC',
+    })
 
-    ctx.app.component('ColorContainer', ColorContainer)
-    ctx.app.component('NpmBadge', NpmBadge)
-    ctx.app.component('ComponentPropDoc', ComponentPropDoc)
+    const { app, router: { route } } = ctx
+
+    app.provide('mazIconPath', '/maz-ui-3/icons')
+
+    app.component('ColorContainer', ColorContainer)
+    app.component('NpmBadge', NpmBadge)
+    app.component('ComponentPropDoc', ComponentPropDoc)
 
     Object.entries(components).forEach(([componentName, component]) => {
-      ctx.app.component(componentName, component)
+      app.component(componentName, component)
     })
 
     const toasterOptions: ToasterOptions = {
@@ -32,10 +41,8 @@ const theme: typeof DefaultTheme = {
       timeout: 10000,
     }
 
-    // console.log('ctx.router', process.env)
-
     const aosOptions: AosOptions = {
-      // router: ctx.router,
+      // router: router,
       delay: 500,
       animation: {
         duration: 400,
@@ -43,12 +50,19 @@ const theme: typeof DefaultTheme = {
       }
     }
 
-    ctx.app.use(installToaster, toasterOptions)
-    ctx.app.use(installWait)
+    watch(
+      () => route.path,
+      () => {
+        aosInstance.handleObserver()
+      },
+    )
 
-    ctx.app.use(installAos, aosOptions)
+    app.use(installToaster, toasterOptions)
+    app.use(installWait)
+
+    app.use(installAos, aosOptions)
     // @ts-ignore
-    // if (!__VITEPRESS_SSR__) {
+    // if (!__VUEPRESS_SSR__) {
     // }
   },
 }

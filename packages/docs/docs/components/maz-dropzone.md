@@ -1,5 +1,5 @@
 ---
-description: MazDropzone is a stand-alone component to help user upload different type of files with a beautiful design system. It works with dropzone.js and is not SSR compatible with Nuxt.JS
+description: MazDropzone is a standalone component to help user upload different type of files with a beautiful design system. It works with dropzone.js and is not SSR compatible with Nuxt.JS
 ---
 
 # MazDropzone
@@ -10,26 +10,10 @@ To use this component, you have to install the dependency `dropzone`
 
 <NpmBadge package="dropzone" dist-tag="5" />
 
-<CodeGroup>
-
-  <CodeGroupItem title="NPM" active>
-
 ```bash
 # install in your project
 npm install dropzone@5
 ```
-
-  </CodeGroupItem>
-
-  <CodeGroupItem title="YARN">
-
-```bash
-# install in your project
-yarn add dropzone@5
-```
-
-  </CodeGroupItem>
-</CodeGroup>
 
 ## Basic usage
 

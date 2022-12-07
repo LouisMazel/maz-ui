@@ -1,21 +1,26 @@
 {
-  "name": "vitepress-starter",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "docs-vite",
+  "version": "3.3.1",
+  "description": "documentation of maz-ui",
+  "author": "LouisMazel <me@loicmazuel.com>",
+  "license": "ISC",
   "scripts": {
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:serve": "vitepress serve docs"
   },
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "sitemap": "^7.1.1",
-    "vitepress": "^1.0.0-alpha.29",
+    "vitepress": "^1.0.0-alpha.30",
     "vue": "^3.2.45"
   },
   "dependencies": {
-    "maz-ui": "file:../lib"
+    "chart.js": "^3.9.1",
+    "chartjs-plugin-datalabels": "^2.1.0",
+    "dayjs": "^1.11.5",
+    "dropzone": "^5.9.3",
+    "libphonenumber-js": "^1.10.13",
+    "maz-ui": "file:../lib",
+    "vitepress-plugin-google-analytics": "^1.0.2"
   }
 }

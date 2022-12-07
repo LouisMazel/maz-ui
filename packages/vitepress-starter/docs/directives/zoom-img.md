@@ -3,9 +3,9 @@ title: vZoomImg
 description: vZoomImg is a Vue 3 directive to enlarge an image like a modal on click, if you have several images, you can pass them like a carousel
 ---
 
-# vZoomImg
+# {{ $frontmatter.title }}
 
-`vZoomImg` is a Vue 3 directive to enlarge an image like a modal, if you have several images, you can pass them like a carousel (the directive search others intances in the page)
+{{ $frontmatter.description }}
 
 > Can be mixed with [vLazyImg](./lazy-img.md) directive
 

@@ -1,5 +1,4 @@
 ---
-title: Getting Started
 description: Documentation to know how install the maz-ui library
 ---
 
@@ -22,7 +21,6 @@ This section will help you to install the library.
 
 ```bash
 npm i maz-ui
-# or yarn add maz-ui
 ```
 
 ### Import necessary CSS file
@@ -36,7 +34,7 @@ import 'maz-ui/css/main.css'
 import '@/css/path_to_your_main_file.css'
 ```
 
-#### Nuxt JS <NpmBadge package="nuxt" dist-tag="rc" />
+#### Nuxt JS <NpmBadge package="nuxt" />
 
 ```ts
 export default {
@@ -106,7 +104,7 @@ app.component('MazPhoneNumberInput', MazPhoneNumberInput)
 
 ```typescript
 import { createApp } from 'vue'
-import components from 'maz-ui/components'
+import * as components from 'maz-ui/components'
 import 'maz-ui/css/main.css'
 
 const app = createApp(App)

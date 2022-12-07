@@ -1,6 +1,6 @@
 ---
 title: MazBadge
-description: MazBadge is a stand-alone component to show short text in colored container
+description: MazBadge is a standalone component to show short text in colored container
 ---
 
 # MazBadge

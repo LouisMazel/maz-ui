@@ -9,24 +9,10 @@ To use this component, you have to install the dependency `chart.js`
 
 <NpmBadge package="chart.js" />
 
-<CodeGroup>
-
-  <CodeGroupItem title="NPM" active>
-
 ```bash
 # install in your project
 npm install chart.js
 ```
-  </CodeGroupItem>
-
-  <CodeGroupItem title="YARN">
-
-```bash
-# install in your project
-yarn add chart.js
-```
-  </CodeGroupItem>
-</CodeGroup>
 
 ## Chart.JS Documentation
 
@@ -187,7 +173,7 @@ You can use all plugins of Chart.JS. Follow the example bellow
     delay: (context: Record<string, any>) => {
       let delay = 0
       if (context.type === 'data' && context.mode === 'default' && !delayed) {
-        delay = context.dataIndex * 100 + context.datasetIndex * 50
+        delay = context.dataIndex *100 + context.datasetIndex* 50
       }
       return delay
     },

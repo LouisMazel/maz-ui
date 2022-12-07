@@ -1,6 +1,6 @@
 ---
 title: MazBottomSheet
-description: MazBottomSheet is a stand-alone component like a simple dialog but at the bottom of screen
+description: MazBottomSheet is a standalone component like a simple dialog but at the bottom of screen
 ---
 
 # MazBottomSheet

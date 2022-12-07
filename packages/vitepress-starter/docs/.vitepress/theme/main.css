@@ -16,6 +16,13 @@
   --vp-button-brand-active-bg: var(--maz-color-primary-600);
 }
 
+html.dark {
+  --vp-c-bg: var(--maz-color-bg);
+  --vp-c-bg-alt: hsl(235deg 16% 12%);
+  --vp-c-bg-soft: var(--maz-color-bg-light);
+  --vp-c-bg-alpha-with-backdrop: hsl(235deg 16% 15% / 60%);
+}
+
 .flex {
   display: flex;
 }

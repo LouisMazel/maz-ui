@@ -1,12 +1,13 @@
 ---
-description: MazTransitionExpand is a stand-alone component replaces the standard html button with a beautiful design system. Many options like colors, sizes, disabled state, loading state, includes icons. Support of router-link and nuxt-link
+title: MazTransitionExpand
+description: MazTransitionExpand is a standalone component to collapse content with animation
 ---
 
-# MazTransitionExpand
+# {{ $frontmatter.title }}
 
-::: info
-Before you have to import the global css files in your project, follow instructions in [Getting Started](/guide/getting-started)
-:::
+{{ $frontmatter.description }}
+
+<!--@include: ./../mixins/getting-started.md-->
 
 ## Basic usage
 

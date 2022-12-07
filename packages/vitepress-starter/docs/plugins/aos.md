@@ -1,12 +1,15 @@
 ---
+title: animation on scroll (aos)
 description: Plugin to animate elements on your page as you scroll.
 ---
 
-# animation on scroll (aos)
+# {{ $frontmatter.title }}
 
-> Plugin to animate elements on your page as you scroll.
+{{ $frontmatter.description }}
 
+::: tip
 This plugin use the browser native [Intersection Observer API](https://developer.mozilla.org/fr/docs/Web/API/Intersection_Observer_API)
+:::
 
 ## Basic usage
 
@@ -45,15 +48,6 @@ This plugin use the browser native [Intersection Observer API](https://developer
   </p>
 </MazCard>
 
-<script lang="ts" setup>
-  import { onMounted } from 'vue'
-  import { aosInstance } from 'maz-ui'
-
-  onMounted(() => {
-    aosInstance.handleObserver()
-  })
-</script>
-
 ```vue
 <template>
   <MazCard overflow-hidden data-maz-aos="scale-out" id="parentCard">
@@ -89,19 +83,6 @@ This plugin use the browser native [Intersection Observer API](https://developer
     </p>
   </MazCard>
 </template>
-```
-
-In case of you must launch manually the animations, use the `aosInstance` from `maz-ui`:
-
-```vue
-<script lang="ts" setup>
-  import { onMounted } from 'vue'
-  import { aosInstance } from 'maz-ui'
-
-  onMounted(() => {
-    aosInstance.handleObserver()
-  })
-</script>
 ```
 
 ## Atributes

@@ -1,6 +1,6 @@
 ---
 title: MazTabs
-description: MazTabs is a stand-alone component replaces the standard html input checkbox. Color option available
+description: MazTabs is a standalone component replaces the standard html input checkbox. Color option available
 ---
 
 # MazTabs

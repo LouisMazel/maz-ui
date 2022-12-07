@@ -1,5 +1,5 @@
 ---
-description: MazTextarea is a stand-alone component replaces the standard html textarea input with a beautiful design system. Many options like colors, disabled, error, warning, success, error messages.
+description: MazTextarea is a standalone component replaces the standard html textarea input with a beautiful design system. Many options like colors, disabled, error, warning, success, error messages.
 ---
 
 # MazTextarea

@@ -1,5 +1,5 @@
 ---
-description: MazBackdrop is a stand-alone component to manage all your
+description: MazBackdrop is a standalone component to manage all your
 ---
 
 # MazBackdrop

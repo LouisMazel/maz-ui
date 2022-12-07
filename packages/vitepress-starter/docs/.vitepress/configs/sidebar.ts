@@ -1,9 +1,9 @@
 import { DefaultTheme } from 'vitepress'
 import { components } from './components'
 import { directives } from './directives'
-import { filters } from './filters'
-import { guide } from './guide'
 import { helpers } from './helpers'
+import { guide } from './guide'
+import { composables } from './composables'
 import { plugins } from './plugins'
 
 export const sidebar: DefaultTheme.SidebarGroup[] = [
@@ -11,6 +11,6 @@ export const sidebar: DefaultTheme.SidebarGroup[] = [
   components,
   plugins,
   directives,
-  filters,
   helpers,
+  composables,
 ]

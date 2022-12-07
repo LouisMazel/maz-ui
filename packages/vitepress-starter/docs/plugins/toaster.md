@@ -1,15 +1,15 @@
 ---
+title: toaster
 description: Display messages to your users in flexible toasts
 ---
 
-# toaster
+# {{ $frontmatter.title }}
 
-> Display messages to your users in flexibles toasts
+{{ $frontmatter.description }}
 
 ## Basic usage
 
 <br />
-
 
 <div class="flex flex-wrap gap-05">
   <MazBtn color="info" @click="showInfo">

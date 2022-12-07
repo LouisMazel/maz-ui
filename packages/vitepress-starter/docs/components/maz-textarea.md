@@ -1,12 +1,13 @@
 ---
-description: MazTextarea is a stand-alone component replaces the standard html textarea input with a beautiful design system. Many options like colors, disabled, error, warning, success, error messages.
+title: MazTextarea
+description: MazTextarea is a standalone component replaces the standard html textarea input with a beautiful design system. Many options like colors, disabled, error, warning, success, error messages.
 ---
 
-# MazTextarea
+# {{ $frontmatter.title }}
 
-::: info
-Before you have to import the global css files in your project, follow instructions in [Getting Started](/guide/getting-started)
-:::
+{{ $frontmatter.description }}
+
+<!--@include: ./../mixins/getting-started.md-->
 
 ## Informations
 

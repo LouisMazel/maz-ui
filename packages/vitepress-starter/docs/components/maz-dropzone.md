@@ -1,35 +1,22 @@
 ---
-description: MazDropzone is a stand-alone component to help user upload different type of files with a beautiful design system. It works with dropzone.js and is not SSR compatible with Nuxt.JS
+title: MazDropzone
+description: MazDropzone is a standalone component to help user upload different type of files with a beautiful design system. It works with dropzone.js and is not SSR compatible with Nuxt.JS
 ---
 
-# MazDropzone
+# {{ $frontmatter.title }}
 
-::: info
-Before you have to import the global css files in your project, follow instructions in [Getting Started](/guide/getting-started)
-:::
+{{ $frontmatter.description }}
+
+<!--@include: ./../mixins/getting-started.md-->
 
 To use this component, you have to install the dependency `dropzone`
 
 <NpmBadge package="dropzone" dist-tag="5" />
 
-<CodeGroup>
-
-  <CodeGroupItem title="NPM" active>
-
 ```bash
 # install in your project
-npm install dropzone@5
+npm install dropzone@^5.9.3
 ```
-  </CodeGroupItem>
-
-  <CodeGroupItem title="YARN">
-
-```bash
-# install in your project
-yarn add dropzone@5
-```
-  </CodeGroupItem>
-</CodeGroup>
 
 ## Basic usage
 
@@ -40,9 +27,10 @@ yarn add dropzone@5
   @success="success"
   @sending="loading = true"
   @complete="loading = false"
+  style="margin-bottom: 20px;"
 />
 
-<p v-if="errorMessage" style="color: red; text-align: center;">
+<p v-if="errorMessage" style="color: red; text-align: center; margin: 20px 0;">
   {{ errorMessage }}
 </p>
 
@@ -126,7 +114,30 @@ yarn add dropzone@5
 
 ## Props, Events emitted & Methods
 
-<ComponentPropDoc component="MazDropzone" :component-instance="mazDropzoneInstance" />
+<ComponentPropDoc
+  component="MazDropzone"
+  :component-instance="mazDropzoneInstance"
+  :methods="[
+    { name: 'setOption' },
+    { name: 'manuallyAddFile' },
+    { name: 'removeAllFiles' },
+    { name: 'processQueue' },
+    { name: 'destroy' },
+    { name: 'disable' },
+    { name: 'enable' },
+    { name: 'accept' },
+    { name: 'addFile' },
+    { name: 'resizeImage' },
+    { name: 'cancelUpload' },
+    { name: 'getAcceptedFiles' },
+    { name: 'getRejectedFiles' },
+    { name: 'getFilesWithStatus' },
+    { name: 'getQueuedFiles' },
+    { name: 'getUploadingFiles' },
+    { name: 'getAddedFiles' },
+    { name: 'getActiveFiles' },
+  ]"
+/>
 
 <script lang="ts" setup>
   import { ref, onMounted } from 'vue'

@@ -1,5 +1,5 @@
 ---
-description: MazInputPrice is a stand-alone component replaces the standard html input text and format the text enter according with the currency provided
+description: MazInputPrice is a standalone component replaces the standard html input text and format the text enter according with the currency provided
 ---
 
 # MazInputPrice

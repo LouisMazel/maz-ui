@@ -1,16 +1,16 @@
 ---
 title: MazCarousel
-description: MazCarousel is a stand-alone component to display and manage items in a row
+description: MazCarousel is a standalone component to display and manage items in a row
 head:
   - - meta
     - name: twitter:title
       content: MazCarousel | Maz-UI
     - name: twitter:description
-      content: MazCarousel is a stand-alone component to display and manage items in a row
+      content: MazCarousel is a standalone component to display and manage items in a row
     - property: og:title
       content: MazCarousel | Maz-UI
     - property: og:description
-      content: MazCarousel is a stand-alone component to display and manage items in a row
+      content: MazCarousel is a standalone component to display and manage items in a row
 ---
 
 # MazCarousel

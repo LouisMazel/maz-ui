@@ -1,7 +1,7 @@
 {
   "name": "root",
   "version": "0.0.1",
-  "description": "A stand-alone components library for Vue.Js & Nuxt.Js (v3.x)",
+  "description": "A standalone components library for Vue.Js & Nuxt.Js (v3.x)",
   "scripts": {
     "prepare": "npx husky install",
     "pre-commit": "lint-staged",
