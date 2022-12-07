@@ -28,6 +28,8 @@ You can use all plugins of Chart.JS. Follow the example bellow
   v-bind="{ ...barChart }"
 />
 
+::: details View code
+
 ```vue
 <template>
   <MazChart
@@ -79,6 +81,8 @@ You can use all plugins of Chart.JS. Follow the example bellow
 </script>
 ```
 
+:::
+
 ## Pie chart
 
 <br/>
@@ -88,6 +92,8 @@ You can use all plugins of Chart.JS. Follow the example bellow
   :data="pieChart.data"
   :options="pieChart.options"
 />
+
+::: details View code
 
 ```vue
 <template>
@@ -125,11 +131,15 @@ You can use all plugins of Chart.JS. Follow the example bellow
 </script>
 ```
 
+:::
+
 ## Line chart
 
 <br/>
 
 <MazChart v-bind="{ ...lineChart }" />
+
+::: details View code
 
 ```vue
 <template>
@@ -198,6 +208,8 @@ You can use all plugins of Chart.JS. Follow the example bellow
   }
 </script>
 ```
+
+:::
 
 <script setup lang="ts">
   import dataLabels from 'chartjs-plugin-datalabels'

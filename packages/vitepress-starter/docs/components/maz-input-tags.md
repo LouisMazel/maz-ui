@@ -17,6 +17,8 @@ description: MazInputTags is a standalone component like free inputs to help use
   color="info"
 />
 
+<br />
+
 <MazInputTags
   v-model="tags"
   placeholder="Enter tags"

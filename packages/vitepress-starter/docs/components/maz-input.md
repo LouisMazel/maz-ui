@@ -115,7 +115,9 @@ description: MazInput is a standalone component replaces the standard html input
 
 ### Icons
 
-> When you use `right-icon` or `left-icon`, the component use [MazIcon](./maz-icon.md)
+::: info
+When you use `right-icon` or `left-icon`, the component use [MazIcon](./maz-icon.md)
+:::
 
 <MazInput v-model="inputValue" label="label icons" left-icon="cash" right-icon="user" />
 

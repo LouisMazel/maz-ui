@@ -9,18 +9,21 @@ description: MazPhoneNumberInput is a standalone input component to help the use
 
 <!--@include: ./../mixins/getting-started.md-->
 
+::: tip
+This component use [MazInput](./maz-input.md), so it inherits all his props
+:::
+
+---
+
 To use this component, you have to install the dependency `libphonenumber-js`
 
 <NpmBadge package="libphonenumber-js" />
 
 ```bash
-# install in your project
 npm install libphonenumber-js
 ```
 
 ## Basic usage
-
-> This component use [MazInput](./maz-input.md), so it inherits all his props
 
 <MazPhoneNumberInput
   v-model="phoneNumber"

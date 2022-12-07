@@ -9,13 +9,11 @@ description: MazDrawer is a standalone component to add a collapsible sidebar or
 
 <!--@include: ./../mixins/getting-started.md-->
 
-> This component use `<Teleport to="body">`, so you can implement this component everywhere
-
-> This component use [MazBackdrop](./maz-backdrop.md), so it inherits all his props
+::: tip
+This component use `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md), so you can implement this component everywhere and it inherits all his props
+:::
 
 ## Basic usage
-
-This component use `<Teleport to="body">`, so you can implement this component everywhere
 
 <MazDrawer variant="top" v-model="isOpenedTop">
   <template #title>

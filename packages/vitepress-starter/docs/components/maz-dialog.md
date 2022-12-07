@@ -9,9 +9,9 @@ description: MazDialog is a standalone dialog component to show important inform
 
 <!--@include: ./../mixins/getting-started.md-->
 
-> This component use `<Teleport to="body">`, so you can implement this component everywhere
-
-> This component use [MazBackdrop](./maz-backdrop.md), so it inherits all his props
+::: tip
+This component use `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md), so you can implement this component everywhere and it inherits all his props
+:::
 
 ## Basic usage
 

@@ -39,7 +39,9 @@ description: MazBtn is a standalone component replaces the standard html button 
 
 ### Sizes
 
-> Use the attribute `size` with a value in **{{ sizes.join(', ') }}**
+::: tip
+Use the attribute `size` with a value in **{{ sizes.join(', ') }}**
+:::
 
 <div class="flex items-start gap-05 items-center flex-wrap">
   <MazBtn v-for="size in sizes" :size="size">{{ size }}</MazBtn>
@@ -57,7 +59,9 @@ description: MazBtn is a standalone component replaces the standard html button 
 
 ### Colors
 
-> Use the attribute `color` with a value in this [list](./../guide/colors.md), the component will use this color
+::: tip
+Use the attribute `color` with a value in this [list](./../guide/colors.md), the component will use this color
+:::
 
 <div class="flex items-start gap-05 flex-wrap">
   <MazBtn v-for="{ name } in colorsArray" :color="name">{{ name }}</MazBtn>
@@ -101,9 +105,9 @@ description: MazBtn is a standalone component replaces the standard html button 
 
 ### Pastel
 
-> It's better in light mode
-
-<br />
+::: tip
+It's better in light mode
+:::
 
 <div class="flex items-start gap-05 rounded maz-p-3 flex-wrap">
   <MazBtn v-for="{ name } in colorsArray" :color="name" pastel>{{ name }}</MazBtn>
@@ -125,7 +129,7 @@ description: MazBtn is a standalone component replaces the standard html button 
 
 ### Rounded
 
-> Rounded button
+<br />
 
 <MazBtn rounded>rounded</MazBtn>
 
@@ -137,7 +141,7 @@ description: MazBtn is a standalone component replaces the standard html button 
 
 ### Fab
 
-> Round button
+<br />
 
 <MazBtn fab>fab</MazBtn>
 
@@ -173,7 +177,9 @@ description: MazBtn is a standalone component replaces the standard html button 
 
 ### Icons
 
-> When you use `right-icon` or `left-icon`, the component use [MazIcon](./maz-icon.md)
+::: info
+When you use `right-icon` or `left-icon`, the component use [MazIcon](./maz-icon.md)
+:::
 
 <div class="flex items-start gap-05 rounded flex-wrap">
   <MazBtn left-icon="check">
@@ -201,7 +207,7 @@ description: MazBtn is a standalone component replaces the standard html button 
 </template>
 ```
 
-> Use your own icons
+Use your own icons
 
 <div class="flex items-start gap-05 rounded flex-wrap">
   <MazBtn>
@@ -255,9 +261,11 @@ description: MazBtn is a standalone component replaces the standard html button 
 
 ### Link
 
-> With the attribute `variant="link"`, the button looks like a link but it's a button, so you can use the event `@click`
-<br />
-> Additional prop available `no-underline` & `no-leading`
+::: tip
+With the attribute `variant="link"`, the button looks like a link but it's a button, so you can use the event `@click`
+
+Additional props available `no-underline` & `no-leading`
+:::
 
 <MazBtn variant="link" @click="$emit('click')">Is Link</MazBtn>
 <MazBtn variant="link" @click="$emit('click')" no-underline>Is Link</MazBtn>
@@ -273,7 +281,9 @@ description: MazBtn is a standalone component replaces the standard html button 
 
 ### [HTMLLinkElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement)
 
-> When `href` attribute is provided, the component automatically becomes a `<a href="..." />`
+::: info
+When `href` attribute is provided, the component automatically becomes a `<a href="..." />`
+:::
 
 <MazBtn href="https://www.google.com" target="_blank">Is Button Link</MazBtn>
 
@@ -287,7 +297,9 @@ description: MazBtn is a standalone component replaces the standard html button 
 
 ### [RouterLink](https://router.vuejs.org/api/#router-link)
 
-> When `to` attribute is provided, the component automatically becomes a `<RouterLink to="..." />`
+::: info
+When `to` attribute is provided, the component automatically becomes a `<RouterLink to="..." />`
+:::
 
 <MazBtn :to="{ path: '/made-with-maz-ui.html' }">Is Router Link</MazBtn>
 
