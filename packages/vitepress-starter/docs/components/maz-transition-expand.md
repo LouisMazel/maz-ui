@@ -11,8 +11,6 @@ description: MazTransitionExpand is a standalone component to collapse content w
 
 ## Basic usage
 
-<br />
-
 <MazBtn @click="isShown = !isShown">Toggle content</MazBtn>
 
 <br />

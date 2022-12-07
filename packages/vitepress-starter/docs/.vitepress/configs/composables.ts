@@ -1,6 +1,6 @@
 export const composables = {
   text: 'Composables',
   items: [
-    { text: 'theme-handler', link: '/composables/theme-handler' },
+    { text: 'useThemeHandler', link: '/composables/use-theme-handler' },
   ]
 }

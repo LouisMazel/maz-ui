@@ -11,7 +11,6 @@ To use this component, you have to install the dependency `dayjs`
 <NpmBadge package="dayjs" />
 
 ```bash
-# install in your project
 npm install dayjs
 ```
 

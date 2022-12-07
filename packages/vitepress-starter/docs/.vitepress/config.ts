@@ -10,7 +10,7 @@ const links: { url: string, lastmod?: number }[] = []
 export default defineConfig({
   lang: 'en-US',
   title: 'Maz-UI',
-  // titleTemplate: 'Maz-UI',
+  titleTemplate: ':title | Maz-UI',
   description: 'Library of standalone components and tools for Vue & Nuxt (v3.x)',
 
   appearance: true,

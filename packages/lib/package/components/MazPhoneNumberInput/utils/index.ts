@@ -143,6 +143,7 @@ export const getResultsFromPhoneNumber = (
 
     return {
       isValid: parsing?.isValid() ?? false,
+      isPossible: parsing?.isPossible(),
       countryCode: parsing?.country,
       countryCallingCode: parsing?.countryCallingCode,
       nationalNumber: parsing?.nationalNumber,
@@ -151,6 +152,7 @@ export const getResultsFromPhoneNumber = (
       formatNational: parsing?.formatNational(),
       uri: parsing?.getURI(),
       e164: parsing?.format('E.164'),
+      rfc3966: parsing?.format('RFC3966'),
     }
   } catch (error) {
     throw new Error(`[MazPhoneNumberInput](getResultsFromPhoneNumber) ${error}`)

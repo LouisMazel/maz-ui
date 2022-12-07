@@ -9,6 +9,7 @@ import type locales from './constantes/locales'
 
 export type Result = {
   isValid: boolean
+  isPossible?: boolean
   countryCode?: CountryCode
   countryCallingCode?: CountryCallingCode
   nationalNumber?: NationalNumber
@@ -17,6 +18,7 @@ export type Result = {
   formatNational?: string
   uri?: string
   e164?: string
+  rfc3966?: string
 }
 
 export type Translations = typeof locales

@@ -11,6 +11,6 @@ export const sidebar: DefaultTheme.SidebarGroup[] = [
   components,
   plugins,
   directives,
-  helpers,
   composables,
+  helpers,
 ]

@@ -10,7 +10,6 @@ To use this component, you have to install the dependency `chart.js`
 <NpmBadge package="chart.js" />
 
 ```bash
-# install in your project
 npm install chart.js
 ```
 

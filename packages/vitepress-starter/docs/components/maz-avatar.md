@@ -1,7 +1,6 @@
 ---
 title: MazAvatar
 description: MazAvatar is a standalone component to display images or svgs in a wrapper
-image: /img/maz-ui-illu.png
 ---
 
 # {{ $frontmatter.title }}
@@ -15,8 +14,6 @@ This component uses [vLazyImg](./../directives/lazy-img.md) directive
 :::
 
 ## Basic usage
-
-<br />
 
 <MazAvatar src="https://pbs.twimg.com/profile_images/598181608198381570/-cFG43y2_400x400.jpg" />
 
@@ -32,7 +29,9 @@ This component uses [vLazyImg](./../directives/lazy-img.md) directive
 
 ## Options
 
-> See all options props [here](#props-events-emitted)
+::: tip
+See all options props [here](#props-events-emitted)
+:::
 
 <div class="flex space-between gap-05 items-center flex-wrap">
   <MazAvatar

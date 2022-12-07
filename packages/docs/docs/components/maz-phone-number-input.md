@@ -11,7 +11,6 @@ To use this component, you have to install the dependency `libphonenumber-js`
 <NpmBadge package="libphonenumber-js" />
 
 ```bash
-# install in your project
 npm install libphonenumber-js
 ```
 

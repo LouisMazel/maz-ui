@@ -21,7 +21,7 @@ hero:
       link: /plugins/toaster
     - theme: alt
       text: Composables
-      link: /composables/theme-handler
+      link: /composables/use-theme-handler
     - theme: alt
       text: Filters
       link: /filters/currency
@@ -43,8 +43,8 @@ features:
     title: Typescript
     details: This library is writing with Typescript, all types and declarations are directly availables
   - icon: 💄
-    title: Made with TailwindCSS
-    details: Optimized CSS file sizes | All CSS good practices are respected with TailwindCSS | Use your theme easily
+    title: Theming
+    details: Made with TailwindCSS | Optimized CSS file sizes | All CSS good practices are respected | Use your theme easily
     link: /guide/theme
   - icon: 🌗
     title: Dark and Light Theme

@@ -40,6 +40,7 @@ numberValue: {{ numberValue }}
     color="secondary"
   />
 </template>
+
 <script lang="ts" setup>
   import { ref } from 'vue'
   import MazInputNumber from 'maz-ui/components/MazInputNumber'

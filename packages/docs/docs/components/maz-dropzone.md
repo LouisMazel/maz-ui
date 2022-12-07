@@ -11,7 +11,6 @@ To use this component, you have to install the dependency `dropzone`
 <NpmBadge package="dropzone" dist-tag="5" />
 
 ```bash
-# install in your project
 npm install dropzone@5
 ```
 

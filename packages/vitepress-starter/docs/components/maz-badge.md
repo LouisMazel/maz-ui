@@ -11,8 +11,6 @@ description: MazBadge is a standalone component to show short text in colored co
 
 ## Basic usage
 
-<br />
-
 <MazBadge>
   Badge
 </MazBadge>

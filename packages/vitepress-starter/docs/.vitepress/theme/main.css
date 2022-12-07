@@ -32,7 +32,18 @@ html.dark {
   --vp-custom-block-details-border: var(--maz-bg-color-dark-lighter);
   --vp-c-bg-alt: hsl(235deg 16% 12%);
   --vp-c-bg-soft: var(--maz-color-bg-light);
+  --vp-c-bg-mute: var(--maz-color-bg-lighter);
   --vp-c-bg-alpha-with-backdrop: hsl(235deg 16% 15% / 60%);
+  --vp-button-alt-bg: var(--maz-color-bg-light);
+  --vp-button-alt-border: var(--maz-color-bg-lighter);
+  --vp-button-alt-hover-bg: var(--maz-color-bg-lighter);
+  --vp-button-alt-hover-border: var(--maz-color-bg-light);
+  --vp-c-divider-light: var(--maz-color-bg-light);
+  --vp-c-text-2: var(--maz-color-text-light);
+}
+
+.vp-doc .custom-block code {
+  color: var(--maz-color-text);
 }
 
 .flex {

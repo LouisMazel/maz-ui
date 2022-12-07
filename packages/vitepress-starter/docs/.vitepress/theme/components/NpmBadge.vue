@@ -40,5 +40,10 @@ const badgeImg = computed(
 <style scoped>
 .npm-badge {
   margin-right: 0.5rem;
+  display: block;
+}
+
+img {
+  display: block;
 }
 </style>

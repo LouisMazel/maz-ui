@@ -1,5 +1,5 @@
 ---
-title: theme-handler
+title: useThemeHandler
 description: Vue composable to handling UI theme - Automatically set dark and light theme and switch between them
 ---
 
@@ -7,13 +7,18 @@ description: Vue composable to handling UI theme - Automatically set dark and li
 
 {{ $frontmatter.description }}
 
-## Demo
+## Usage
 
-<MazBtn type="button" @click="toggleTheme">
-  Toggle theme
+<MazBtn
+  :right-icon="hasDarkTheme ? 'moon' : 'sun'"
+  @click="toggleTheme"
+>
+  Click to toggle mode
 </MazBtn>
 
-### Informations
+### Data
+
+<br />
 
 <code>
  {{ { theme, hasDarkTheme, hasLightTheme } }}
@@ -68,8 +73,8 @@ In your main Vue component (often App.vue - default layout for nuxt)
 
   onMounted(() => {
     /*
-    * will automatically set the theme according
-    * with the user preferences and class to <html /> element
+    * Will automatically set the theme according
+    * with the user preferences and add class to <html /> element
     */
     autoSetTheme()
   })

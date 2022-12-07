@@ -13,8 +13,6 @@ This plugin use the browser native [Intersection Observer API](https://developer
 
 ## Basic usage
 
-<br />
-
 <MazCard overflow-hidden data-maz-aos="scale-out" id="parentCard">
   <MazAvatar
     data-maz-aos-delay="300"

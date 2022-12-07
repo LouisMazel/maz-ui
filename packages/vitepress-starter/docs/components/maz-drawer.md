@@ -1,6 +1,6 @@
 ---
 title: MazDrawer
-description: MazDrawer is a standalone component to add a collapsible sidebar or top, bottom bar
+description: MazDrawer is a standalone component to add a collapsible sidebar or top and bottom bar
 ---
 
 # {{ $frontmatter.title }}

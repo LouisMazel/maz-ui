@@ -9,8 +9,6 @@ description: Display messages to your users in flexible toasts
 
 ## Basic usage
 
-<br />
-
 <div class="flex flex-wrap gap-05">
   <MazBtn color="info" @click="showInfo">
     Show info toast on top

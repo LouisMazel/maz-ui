@@ -23,7 +23,7 @@ To use this component, you have to install the dependency `libphonenumber-js`
 npm install libphonenumber-js
 ```
 
-## Basic usage
+## Usage
 
 <MazPhoneNumberInput
   v-model="phoneNumber"
@@ -35,9 +35,33 @@ npm install libphonenumber-js
   :success="results?.isValid"
 />
 
-> Emitted on `@update` event
+<div class="language-js ext-js"><span class="lang">js</span><pre class="language-js"><code>v-model="{{ phoneNumber ?? 'undefined' }}"</code></pre></div>
 
-<div class="language-json ext-json"><pre class="language-json"><code>{{ results }}</code></pre></div>
+::: details Result object is emitted by @update event - Click to show model
+
+```ts
+export type Result = {
+  isValid: boolean
+  isPossible?: boolean
+  countryCode?: CountryCode
+  countryCallingCode?: CountryCallingCode
+  nationalNumber?: NationalNumber
+  type?: NumberType
+  formatInternational?: string
+  formatNational?: string
+  uri?: string
+  e164?: string
+  rfc3966?: string
+}
+```
+
+:::
+
+<div class="language-js ext-js"><span class="lang">js</span><pre class="language-js"><code>{{ results }}</code></pre></div>
+
+---
+
+### Code
 
 <script setup lang="ts">
   import { ref } from 'vue'
@@ -72,17 +96,16 @@ npm install libphonenumber-js
 ## Feature List
 
 - **Auto-detect** country calling code with phone number provided
-- You can set your **preferred-countries, ignored-countries** or exclude some countries with **only-countries**
-- Validation UI state: input becomes green when the phone number is valid (can be disabled by no-validation attr)
-- **Multi options to getting country code** : By default the component get the country code via the browser (disable it with no-use-browser-locale) or you can use - fetch-country to get the country code via <https://ip2c.org/s> (network needed) - you can use default-country-code option instead to set one
+- You can set your **preferred-countries, ignored-countries** or exclude some countries with **only-countries** - Ex `['FR', 'BE', 'DE']`
+- Validation UI state: input becomes green when the phone number is valid (can be disabled by `no-validation` prop)
+- **Multi options to getting country code** : By default the component get the country code via the browser (disable it with no-use-browser-locale) or you can use - fetch-country to get the country code via <http://ipwho.is> (network needed) - you can use `default-country-code` option instead to set one
 - Phone number is formatted while typing
-- You can **search** your country in list (open countries list & type your country name)
+- You can `search` your country in list
 - Keyboard accessibility (Arrow down, Arrow up: Countries list navigation - Escape: Close countries list)
 - Phone number example for each country in placeholder/label (can be disabled with `no-example` prop)
 - Auto focus phone number input after selecting country
 - You can disable the flags: `no-flags` prop
-- Set your translations
-- Provide your custom countries list (for translation)
+- Translations: [Component translations](#translations) & [countries translations](#countries-list)
 
 ## Translations
 

@@ -11,8 +11,6 @@ description: MazCard is a standalone component to display some texts, images and
 
 ## Basic usage
 
-<br />
-
 <MazCard :images="images" :gallery-height="400" >
   <template #title>
     <h4 class="maz-m-0">

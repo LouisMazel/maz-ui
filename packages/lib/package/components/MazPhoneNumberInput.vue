@@ -491,7 +491,7 @@
 
     const valueToEmit = isValid ? e164 : formattedNumber.value
 
-    if (valueToEmit && valueToEmit !== props.modelValue) {
+    if (valueToEmit !== props.modelValue) {
       emits('update:model-value', valueToEmit)
     }
   }

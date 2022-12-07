@@ -11,8 +11,6 @@ description: MazInput is a standalone component replaces the standard html input
 
 ## Basic usage
 
-<br />
-
 <MazInput v-model="inputValue" label="Label" name="firstname" />
 
 ```vue
@@ -119,7 +117,12 @@ description: MazInput is a standalone component replaces the standard html input
 When you use `right-icon` or `left-icon`, the component use [MazIcon](./maz-icon.md)
 :::
 
-<MazInput v-model="inputValue" label="label icons" left-icon="cash" right-icon="user" />
+<MazInput
+  v-model="inputValue"
+  label="label icons"
+  left-icon="cash"
+  right-icon="user"
+  />
 
 > Use your own icons
 
@@ -133,7 +136,12 @@ When you use `right-icon` or `left-icon`, the component use [MazIcon](./maz-icon
 </MazInput>
 
 ```html
-<MazInput v-model="inputValue" label="label icons" left-icon="cash" right-icon="user" />
+<MazInput
+  v-model="inputValue"
+  label="label icons"
+  left-icon="cash"
+  right-icon="user"
+/>
 
 <!-- or -->
 

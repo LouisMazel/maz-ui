@@ -15,14 +15,12 @@ This component use `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md),
 
 ## Basic usage
 
-<br />
-
 <MazBtn @click="isOpen = true">Open Dialog</MazBtn>
 
-<MazDialog v-model="isOpen">
-  <div class="maz-text-center maz-w-full">
+<MazDialog v-model="isOpen" title="Dialog Title">
+  <p>
     Your content
-  </div>
+  </p>
   <template #footer>
     <MazBtn @click="isOpen = false">
       Confirm
@@ -39,10 +37,10 @@ This component use `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md),
 <template>
   <MazBtn @click="isOpen = true">Open Dialog</MazBtn>
 
-  <MazDialog v-model="isOpen">
-    <div class="maz-text-center maz-w-full">
+  <MazDialog v-model="isOpen" title="Dialog Title">
+    <p>
       Your content
-    </div>
+    </p>
     <template #footer>
       <MazBtn @click="isOpen = false">
         Confirm

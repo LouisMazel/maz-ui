@@ -14,7 +14,6 @@ To use this component, you have to install the dependency `dayjs`
 <NpmBadge package="dayjs" />
 
 ```bash
-# install in your project
 npm install dayjs
 ```
 
@@ -64,9 +63,7 @@ npm install dayjs
 
 - `auto-close`: the picker will be automatically closed after the user has selected a value
 
-## Multiple Pickers
-
-### Date Picker
+## Date Picker
 
 <div class="language-html ext-html"><pre class="language-json"><code>v-model="{{ dateValue }}"</code></pre></div>
 
@@ -92,9 +89,9 @@ npm install dayjs
 </script>
 ```
 
-### Date Time Picker
+## Date Time Picker
 
-#### 24 format
+### 24 format
 
 <div class="language-html ext-html"><pre class="language-json"><code>v-model="{{ dateTimeValue }}"</code></pre></div>
 
@@ -124,7 +121,7 @@ npm install dayjs
 </script>
 ```
 
-#### 12 format
+### 12 format
 
 <div class="language-html ext-html"><pre class="language-json"><code>v-model="{{ dateTime12Value }}"</code></pre></div>
 
@@ -154,9 +151,9 @@ npm install dayjs
 </script>
 ```
 
-### Time Picker
+## Time Picker
 
-#### 24h format
+### 24h format
 
 <div class="language-html ext-html"><pre class="language-json"><code>v-model="{{ dateTimeValue }}"</code></pre></div>
 
@@ -186,9 +183,9 @@ npm install dayjs
 </script>
 ```
 
-#### 12h format
+### 12h format
 
-<div class="language-html ext-html"><pre class="language-json"><code>v-model="{{ dateTime12Value }}"</code></pre></div>
+<code>v-model="{{ dateTime12Value }}"</code>
 
 <MazPicker
   v-model="dateTime12Value"
@@ -216,7 +213,7 @@ npm install dayjs
 </script>
 ```
 
-### Range Picker
+## Range Picker
 
 To enable the range mode, you should provide an object like this `{ start: undefined, end: undefined }` as initiale model-value
 
@@ -259,21 +256,22 @@ To enable the range mode, you should provide an object like this `{ start: undef
 </script>
 ```
 
-### Inline
+## Inline with custom shortcuts
 
-#### Inputs
+**Inputs**
 
-rangeValues (v-model): {{ rangeValues }}
+<code>rangeValues (v-model): {{ rangeValues }}</code>
 
-min-date: {{ minMaxDates.min }}
+<code>min-date: {{ minMaxDates.min }}</code>
 
-max-date: {{ minMaxDates.max }}
+<code>max-date: {{ minMaxDates.max }}</code>
 
 <MazPicker
   v-model="rangeValues"
   color="secondary"
   :min-date="minMaxDates.min"
   :max-date="minMaxDates.max"
+  :shortcuts="shortcuts"
   inline
   double
 />
@@ -285,6 +283,7 @@ max-date: {{ minMaxDates.max }}
     color="secondary"
     :min-date="minMaxDates.min"
     :max-date="minMaxDates.max"
+    :shortcuts="shortcuts"
     inline
     double
   />
@@ -292,32 +291,192 @@ max-date: {{ minMaxDates.max }}
 
 <script setup lang="ts">
   import { ref } from 'vue'
+  import MazPicker, { type  PickerShortcut } from 'maz-ui/components/MazPicker'
 
-  const rangeValues = ref({ start: "2022-05-02", end: "2022-06-28" })
+  const startDate = dayjs().subtract(1, 'month').set('date', 5)
+  const endDate = dayjs().add(1, 'month').set('date', 25)
+
+  const rangeValues = ref({ start: startDate.format('YYYY-MM-DD'), end: endDate.format('YYYY-MM-DD') })
 
   const minMaxDates = ref({
-    min: '2022-05-05',
-    max: '2022-06-20',
+    min: startDate.subtract(2, 'days').format('YYYY-MM-DD'),
+    max: endDate.add(2, 'days').format('YYYY-MM-DD'),
   })
+
+  const shortcuts: PickerShortcut[] = [
+    {
+      label: 'Next month',
+      identifier: 'nextMonth',
+      value: {
+        start: dayjs().add(1, 'month').set('date', 1).format('YYYY-MM-DD'),
+        end: dayjs()
+          .add(1, 'month')
+          .set('date', dayjs().add(1, 'month').daysInMonth())
+          .format('YYYY-MM-DD'),
+      },
+    }, {
+      label: 'Last 3 days',
+      identifier: 'last3Days',
+      value: {
+        start: dayjs().subtract(2, 'days').format('YYYY-MM-DD'),
+        end: dayjs().format('YYYY-MM-DD'),
+      },
+    },
+  ]
 </script>
 ```
 
 <script setup lang="ts">
   import { ref } from 'vue'
   import dayjs from 'dayjs'
+
   const timeValue = ref('16:30')
   const dateValue = ref('2022-02-03')
   const dateTimeValue = ref('2022-02-03 16:30')
   const dateTime12Value = ref('2022-02-03 04:30 pm')
 
-  const rangeValues = ref({ start: "2022-05-02", end: "2022-06-28" })
+  const startDate = dayjs().subtract(1, 'month').set('date', 5)
+  const endDate = dayjs().add(1, 'month').set('date', 25)
+
+  const rangeValues = ref({ start: startDate.format('YYYY-MM-DD'), end: endDate.format('YYYY-MM-DD') })
 
   const minMaxDates = ref({
-    min: '2022-05-05',
-    max: '2022-06-20',
+    min: startDate.subtract(2, 'days').format('YYYY-MM-DD'),
+    max: endDate.add(2, 'days').format('YYYY-MM-DD'),
   })
+
+  const shortcuts: PickerShortcut[] = [
+    {
+      label: 'Next month',
+      identifier: 'nextMonth',
+      value: {
+        start: dayjs().add(1, 'month').set('date', 1).format('YYYY-MM-DD'),
+        end: dayjs()
+          .add(1, 'month')
+          .set('date', dayjs().add(1, 'month').daysInMonth())
+          .format('YYYY-MM-DD'),
+      },
+    }, {
+      label: 'Last 3 days',
+      identifier: 'last3Days',
+      value: {
+        start: dayjs().subtract(2, 'days').format('YYYY-MM-DD'),
+        end: dayjs().format('YYYY-MM-DD'),
+      },
+    },
+  ]
 </script>
 
 ## Props & Events emitted
+
+### Props `shortcuts`
+
+<br />
+
+#### Model
+
+```ts
+interface PickerShortcut {
+  identifier: string // should be uniq
+  label: string
+  value: {
+    start: string
+    end: string
+  }
+}
+
+type PickerShortcuts = PickerShortcut[]
+```
+
+#### Example
+
+```ts
+import { PickerShortcut } from 'maz-ui/components/MazPicker'
+
+const shortcuts: PickerShortcut[] = [{
+  label: 'Next month',
+  identifier: 'nextMonth',
+  value: {
+    start: dayjs().add(1, 'month').set('date', 1).format('YYYY-MM-DD'),
+    end: dayjs()
+      .add(1, 'month')
+      .set('date', dayjs().add(1, 'month').daysInMonth())
+      .format('YYYY-MM-DD'),
+  },
+}]
+```
+
+::: details View default shortcuts
+
+```ts
+const shortcuts = [
+  {
+    label: 'Last 7 days',
+    identifier: 'last7Days',
+    value: {
+      start: dayjs().subtract(6, 'day').format('YYYY-MM-DD'),
+      end: dayjs().format('YYYY-MM-DD'),
+    },
+  },
+  {
+    label: 'Last 30 days',
+    identifier: 'last30Days',
+    value: {
+      start: dayjs().subtract(29, 'day').format('YYYY-MM-DD'),
+      end: dayjs().format('YYYY-MM-DD'),
+    },
+  },
+  {
+    label: 'This week',
+    identifier: 'thisWeek',
+    value: {
+      start: dayjs().startOf('week').format('YYYY-MM-DD'),
+      end: dayjs().endOf('week').format('YYYY-MM-DD'),
+    },
+  },
+  {
+    label: 'Last week',
+    identifier: 'lastWeek',
+    value: {
+      start: dayjs()
+        .subtract(1, 'week')
+        .startOf('week')
+        .format('YYYY-MM-DD'),
+      end: dayjs().subtract(1, 'week').endOf('week').format('YYYY-MM-DD'),
+    },
+  },
+  {
+    label: 'This month',
+    identifier: 'thisMonth',
+    value: {
+      start: dayjs().set('date', 1).format('YYYY-MM-DD'),
+      end: dayjs()
+        .set('date', dayjs().daysInMonth())
+        .format('YYYY-MM-DD'),
+    },
+  },
+  {
+    label: 'This year',
+    identifier: 'thisYear',
+    value: {
+      start: dayjs().startOf('year').format('YYYY-MM-DD'),
+      end: dayjs().endOf('year').format('YYYY-MM-DD'),
+    },
+  },
+  {
+    label: 'Last year',
+    identifier: 'lastYear',
+    value: {
+      start: dayjs()
+        .subtract(1, 'year')
+        .startOf('year')
+        .format('YYYY-MM-DD'),
+      end: dayjs().subtract(1, 'year').endOf('year').format('YYYY-MM-DD'),
+    },
+  },
+]
+```
+
+:::
 
 <ComponentPropDoc component="MazPicker" />

@@ -11,8 +11,6 @@ description: MazStepper is a standalone UI component to
 
 ## Basic usage
 
-<br />
-
 <MazStepper auto-validated-steps>
   <template #title-1>
       Sign-In

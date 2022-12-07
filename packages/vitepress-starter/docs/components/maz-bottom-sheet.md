@@ -15,8 +15,6 @@ This component use `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md),
 
 ## Basic usage
 
-<br />
-
 <MazBtn @click="isOpen = true">Open Bottom Sheet</MazBtn>
 
 <MazBottomSheet v-model="isOpen">

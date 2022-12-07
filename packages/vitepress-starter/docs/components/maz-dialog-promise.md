@@ -21,8 +21,6 @@ MazDialogPromise is a standalone component to dialog with user, component to sho
 
 ## Basic usage
 
-<br />
-
 <MazBtn @click="askToUser">Ask to user</MazBtn>
 
 <MazDialogPromise

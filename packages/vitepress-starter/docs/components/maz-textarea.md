@@ -9,9 +9,9 @@ description: MazTextarea is a standalone component replaces the standard html te
 
 <!--@include: ./../mixins/getting-started.md-->
 
-## Informations
-
+::: info
 This component has the "autogrow" feature, so when the user writes, the textarea grows automatically
+:::
 
 ## Basic usage
 

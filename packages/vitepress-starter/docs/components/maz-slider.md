@@ -11,8 +11,6 @@ description: MazSlider is a standalone component replaces the standard html inpu
 
 ## Basic usage
 
-<br />
-
 <MazSlider v-model="sliderValue" />
 
 ```vue

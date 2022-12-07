@@ -9,14 +9,12 @@ description: Plugins to manage your loading states
 
 ## Basic usage
 
-<br />
-
 <MazBtn @click="submitData" :loading="wait.isLoading('DATA_SUBMITTING')">
   Submit Data
 </MazBtn>
 <br />
-<br />
-<div v-if="submitted" style="padding: 20px; background-color: var(--maz-color-bg-light); border-radius: 10px;">
+
+<div v-if="submitted" style="padding: 20px; background-color: var(--maz-color-bg-light); border-radius: 10px; margin-top: 1rem;">
   Data Submitted
 </div>
 
@@ -26,7 +24,7 @@ description: Plugins to manage your loading states
     Submit Data
   </MazBtn>
 
-  <div v-if="submitted" style="padding: 20px; background-color: var(--maz-color-bg-light); border-radius: 10px;">
+  <div v-if="submitted">
     Data Submitted
   </div>
 </template>

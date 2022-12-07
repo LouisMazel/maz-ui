@@ -9,8 +9,6 @@ description: MazTabs is a standalone component to display content in tabs with a
 
 ## Basic usage
 
-<br />
-
 <div style="position: relative;">
   <MazTabsBar :items="tabs" color="secondary" />
   <MazTabsContent>

@@ -21,8 +21,6 @@ head:
 
 ## Basic usage
 
-<br />
-
 <MazCarousel>
   <template #title>
     <h4 class="maz-m-0">Carousel</h4>
