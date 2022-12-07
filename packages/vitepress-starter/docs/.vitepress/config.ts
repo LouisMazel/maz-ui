@@ -65,17 +65,17 @@ export default defineConfig({
     }
   },
 
-  transformHead: ({siteConfig, siteData, pageData, title, description, head, content}) => {
+  // transformHead: ({siteConfig, siteData, pageData, title, description, head, content}) => {
 
-    console.log(
-      'transformHead',
-      { siteConfig, siteData, pageData, title, description, head, content }
-    )
+  //   console.log(
+  //     'transformHead',
+  //     { siteConfig, siteData, pageData, title, description, head, content }
+  //   )
 
-    const returns: HeadConfig[] = []
+  //   const returns: HeadConfig[] = []
 
-    return returns
-  },
+  //   return returns
+  // },
 
   transformHtml: (_, id, { pageData }) => {
     if (!/[\\/]404\.html$/.test(id)) {
