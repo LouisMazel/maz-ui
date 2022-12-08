@@ -1,3 +1,4 @@
+import { isClient } from '@package/helpers/is-client'
 import type { App } from 'vue'
 import type { Router } from 'vue-router'
 
@@ -40,10 +41,6 @@ const DEFAULT_OPTIONS: ClassOptions = {
     once: true,
     duration: 300,
   },
-}
-
-function isClient() {
-  return typeof document !== 'undefined'
 }
 
 class AosHandler {
@@ -158,9 +155,9 @@ class AosHandler {
   }
 }
 
-let instance: AosHandler
+export let instance: AosHandler
 
-const plugin = {
+export const plugin = {
   install: (app: App, options?: AosOptions) => {
     instance = new AosHandler(options)
 
@@ -176,4 +173,4 @@ const plugin = {
   },
 }
 
-export { instance, plugin, AosHandler }
+export { AosHandler }

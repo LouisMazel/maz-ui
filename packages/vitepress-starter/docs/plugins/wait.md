@@ -30,10 +30,10 @@ description: Plugins to manage your loading states
 </template>
 
 <script lang="ts" setup>
-  import { inject, ref } from 'vue'
-  import { WaitHandler } from 'maz-ui'
+  import { ref } from 'vue'
+  import { useWait } from 'maz-ui'
 
-  const wait = inject<WaitHandler>('wait')
+  const { wait } = useWait()
 
   const submitted = ref(false)
 
@@ -42,23 +42,22 @@ description: Plugins to manage your loading states
   }
 
   const submitData = async () => {
-    try {
-      submitted.value = false
-      wait.start('DATA_SUBMITTING')
-      await sleep(2000)
-      submitted.value = true
-    } finally {
-      wait.stop('DATA_SUBMITTING')
-    }
+    submitted.value = false
+    wait.start('DATA_SUBMITTING')
+
+    await sleep(2000)
+
+    submitted.value = true
+    wait.stop('DATA_SUBMITTING')
   }
 </script>
 ```
 
 <script lang="ts" setup>
-  import { inject, ref } from 'vue'
-  import { WaitHandler } from 'maz-ui'
+  import { ref } from 'vue'
+  import { useWait } from 'maz-ui'
 
-  const wait = inject<WaitHandler>('wait')
+  const { wait } = useWait()
 
   const submitted = ref(false)
 
@@ -67,14 +66,13 @@ description: Plugins to manage your loading states
   }
 
   const submitData = async () => {
-    try {
-      submitted.value = false
-      wait.start('DATA_SUBMITTING')
-      await sleep(2000)
-      submitted.value = true
-    } finally {
-      wait.stop('DATA_SUBMITTING')
-    }
+    submitted.value = false
+    wait.start('DATA_SUBMITTING')
+
+    await sleep(2000)
+
+    submitted.value = true
+    wait.stop('DATA_SUBMITTING')
   }
 </script>
 

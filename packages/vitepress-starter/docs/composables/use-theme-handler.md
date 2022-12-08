@@ -10,7 +10,7 @@ description: Vue composable to handling UI theme - Automatically set dark and li
 ## Usage
 
 <MazBtn
-  :right-icon="hasDarkTheme ? 'moon' : 'sun'"
+  :left-icon="hasDarkTheme ? 'moon' : 'sun'"
   @click="toggleTheme"
 >
   Click to toggle mode
@@ -40,8 +40,11 @@ In your main Vue component (often App.vue - default layout for nuxt)
     }"
   >
     <!-- Theme switching -->
-    <MazBtn type="button" @click="toggleTheme">
-      Toggle theme
+    <MazBtn
+      :left-icon="hasDarkTheme ? 'moon' : 'sun'"
+      @click="toggleTheme"
+    >
+      Click to toggle mode
     </MazBtn>
   </div>
 </template>

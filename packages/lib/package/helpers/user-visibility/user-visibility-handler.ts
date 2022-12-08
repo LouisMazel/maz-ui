@@ -1,3 +1,4 @@
+import { isClient } from '../is-client'
 import type {
   UserVisibilyCallback,
   UserVisibilyOptions,
@@ -16,14 +17,14 @@ export class UserVisibility {
   private options: UserVisibilyStrictOptions
 
   private readonly defaultOptions: UserVisibilyStrictOptions = {
-    immediate: false,
+    immediate: true,
     timeout: 5000,
     once: false,
   }
 
   private isVisible = false
 
-  constructor(callback: UserVisibilyCallback, options: UserVisibilyOptions) {
+  constructor(callback: UserVisibilyCallback, options?: UserVisibilyOptions) {
     this.callback = callback
     this.element = document
 
@@ -34,10 +35,24 @@ export class UserVisibility {
 
     this.eventHandlerFunction = this.eventHandler.bind(this)
 
-    if (this.options.immediate) {
-      this.emitCallback()
+    if (this.options.immediate && isClient()) {
+      this.start()
+    } else if (!isClient()) {
+      console.warn(
+        `[UserVisibility](constructor) exetuted on server side - set immediate option to "false"`,
+      )
+    }
+  }
+
+  public start() {
+    if (!isClient()) {
+      console.warn(
+        `[UserVisibility](start) you should run this method on client side`,
+      )
+      return
     }
 
+    this.emitCallback()
     this.addEventListener()
   }
 

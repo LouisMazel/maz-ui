@@ -1,3 +1,4 @@
+import { isClient } from '../is-client'
 import type {
   IdleTimeoutOptions,
   IdleTimeoutCallback,
@@ -9,7 +10,7 @@ export class IdleTimeout {
     element: document.body,
     timeout: 60 * 1000 * 5, // 5 minutes
     once: false,
-    immediate: false,
+    immediate: true,
   }
 
   private callback: IdleTimeoutCallback
@@ -45,6 +46,23 @@ export class IdleTimeout {
     this.options = {
       ...this.defaultOptions,
       ...options,
+    }
+
+    if (this.options.immediate && isClient()) {
+      this.start()
+    } else if (!isClient()) {
+      console.warn(
+        `[IdleTimeout](constructor) exetuted on server side - set immediate option to "false"`,
+      )
+    }
+  }
+
+  public start(): void {
+    if (!isClient()) {
+      console.warn(
+        `[IdleTimeout](start) you should run this method on client side`,
+      )
+      return
     }
 
     const element = this.options.element
