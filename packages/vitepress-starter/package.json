@@ -5,9 +5,9 @@
   "author": "LouisMazel <me@loicmazuel.com>",
   "license": "ISC",
   "scripts": {
-    "docs:dev": "vitepress dev docs",
-    "docs:build": "vitepress build docs",
-    "docs:serve": "vitepress serve docs"
+    "dev": "vitepress dev docs",
+    "build": "vitepress build docs",
+    "serve": "vitepress serve docs"
   },
   "devDependencies": {
     "sitemap": "^7.1.1",

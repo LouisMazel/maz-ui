@@ -51,7 +51,7 @@
 </script>
 
 <script lang="ts" setup>
-  import { useInstanceUniqId } from '@package/helpers'
+  import { useInstanceUniqId } from '@package/composables/instance-uniq-id.composable'
   import { computed, onBeforeUnmount, onMounted, ref, type PropType } from 'vue'
   import { getCurrentInstance } from 'vue'
   import { TextareaAutogrow } from './MazTextarea/textarea-autogrow'

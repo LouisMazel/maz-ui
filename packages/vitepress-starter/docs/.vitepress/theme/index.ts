@@ -1,11 +1,12 @@
 import DefaultTheme from 'vitepress/theme'
+import { inBrowser } from 'vitepress'
 import googleAnalytics from 'vitepress-plugin-google-analytics'
 
 import 'maz-ui/css/main.css'
 import 'maz-ui/css/aos.css'
 import './main.css'
 
-import { ToasterOptions, installToaster, installWait, installAos, AosOptions, aosInstance } from 'maz-ui'
+import { ToasterOptions, installToaster, installWait, AosOptions, installAos, aosInstance } from 'maz-ui'
 
 import * as components from 'maz-ui/components'
 
@@ -17,8 +18,6 @@ import { watch } from 'vue'
 const theme: typeof DefaultTheme = {
   ...DefaultTheme,
   enhanceApp(ctx) {
-    DefaultTheme.enhanceApp(ctx)
-
     googleAnalytics({
       id: 'G-EM35TM23ZC',
     })
@@ -50,20 +49,20 @@ const theme: typeof DefaultTheme = {
       }
     }
 
-    watch(
-      () => route.path,
-      () => {
-        aosInstance.handleObserver()
-      },
-    )
+
 
     app.use(installToaster, toasterOptions)
     app.use(installWait)
-
     app.use(installAos, aosOptions)
-    // @ts-ignore
-    // if (!__VUEPRESS_SSR__) {
-    // }
+
+    watch(
+      () => route.path,
+      () => {
+        if (inBrowser) {
+          aosInstance.runAnimations()
+        }
+      },
+    )
   },
 }
 

@@ -17,19 +17,32 @@
 
     <!-- End Developing Area -->
   </main>
+  <TheLoader />
 </template>
 
 <script lang="ts" setup>
   import { onMounted } from 'vue'
   import { MazBtn, MazIcon } from 'maz-ui/package/components'
-  import { aosInstance } from 'maz-ui/package/plugins'
-  import { useThemeHandler } from 'maz-ui/package/helpers'
+  import {
+    useAos,
+    useThemeHandler,
+    useToast,
+    useWait,
+  } from 'maz-ui/package/composables'
+  import TheLoader from './components/TheLoader.vue'
+
+  const { aos } = useAos()
+  const { toast } = useToast()
+  const { wait } = useWait()
 
   const { autoSetTheme, toggleTheme, hasDarkTheme } = useThemeHandler()
 
   onMounted(() => {
     autoSetTheme()
-    aosInstance.handleObserver()
+    toast.success('Toaster Works', { position: 'top-right' })
+    aos.runAnimations()
+    wait.start()
+    setTimeout(() => wait.stop(), 500)
   })
 </script>
 

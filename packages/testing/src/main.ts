@@ -11,7 +11,9 @@ import {
   ToasterOptions,
   installAos,
   AosOptions,
+  installWait,
 } from 'maz-ui/package/plugins'
+import { createRouter, createWebHistory } from 'vue-router'
 
 const app = createApp(App)
 
@@ -23,6 +25,14 @@ const vLazyImgOptions: vZoomImgOptions = {
 
 app.use(vZoomImgInstall, vLazyImgOptions)
 
+const router = createRouter({
+  // 4. Provide the history implementation to use. We are using the hash history for simplicity here.
+  history: createWebHistory(),
+  routes: [{ path: '/', component: App }],
+})
+
+app.use(router)
+
 const toasterOptions: ToasterOptions = {
   persistent: false,
   position: 'bottom-right',
@@ -30,6 +40,7 @@ const toasterOptions: ToasterOptions = {
 }
 
 const options: AosOptions = {
+  router: router,
   animation: {
     once: false,
   },
@@ -37,5 +48,6 @@ const options: AosOptions = {
 
 app.use(installToaster, toasterOptions)
 app.use(installAos, options)
+app.use(installWait)
 
 app.mount('#app')
