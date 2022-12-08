@@ -25,6 +25,8 @@ const vLazyImgOptions: vZoomImgOptions = {
 
 app.use(vZoomImgInstall, vLazyImgOptions)
 
+app.provide('mazIconPath', './maz-icons')
+
 const router = createRouter({
   // 4. Provide the history implementation to use. We are using the hash history for simplicity here.
   history: createWebHistory(),
@@ -40,7 +42,7 @@ const toasterOptions: ToasterOptions = {
 }
 
 const options: AosOptions = {
-  router: router,
+  router,
   animation: {
     once: false,
   },

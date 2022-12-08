@@ -1,14 +1,12 @@
 <template>
   <main>
     <MazBtn
-      data-maz-aos="scale-in"
+      data-maz-aos="scale-out"
       data-maz-aos-delay="300"
       fab
       @click="toggleTheme"
     >
-      <MazIcon
-        :src="hasDarkTheme ? '/maz-icons/moon.svg' : '/maz-icons/sun.svg'"
-      />
+      <MazIcon :name="hasDarkTheme ? 'moon' : 'sun'" />
     </MazBtn>
 
     <br />
