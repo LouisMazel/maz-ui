@@ -92,6 +92,7 @@
       transition: all 300ms ease-in-out;
     }
 
+    [type='checkbox']:hover + label::before,
     [type='checkbox']:focus + label::before {
       @apply maz-absolute maz-border maz-border-solid maz-border-primary maz-bg-transparent;
 
@@ -132,7 +133,8 @@
         @apply maz-bg-primary maz-text-primary;
       }
 
-      [type='checkbox']:focus {
+      [type='checkbox']:focus,
+      [type='checkbox']:hover {
         + label::before {
           box-shadow: 0 0 0 0.125rem var(--maz-color-primary-alpha);
 
@@ -155,7 +157,8 @@
         @apply maz-bg-secondary maz-text-secondary;
       }
 
-      [type='checkbox']:focus {
+      [type='checkbox']:focus,
+      [type='checkbox']:hover {
         + label::before {
           box-shadow: 0 0 0 0.125rem var(--maz-color-secondary-alpha);
 
@@ -178,7 +181,8 @@
         @apply maz-bg-info maz-text-info;
       }
 
-      [type='checkbox']:focus {
+      [type='checkbox']:focus,
+      [type='checkbox']:hover {
         + label::before {
           box-shadow: 0 0 0 0.125rem var(--maz-color-info-alpha);
 
@@ -201,7 +205,8 @@
         @apply maz-bg-danger maz-text-danger;
       }
 
-      [type='checkbox']:focus {
+      [type='checkbox']:focus,
+      [type='checkbox']:hover {
         + label::before {
           box-shadow: 0 0 0 0.125rem var(--maz-color-danger-alpha);
 
@@ -224,7 +229,8 @@
         @apply maz-bg-warning maz-text-warning;
       }
 
-      [type='checkbox']:focus {
+      [type='checkbox']:focus,
+      [type='checkbox']:hover {
         + label::before {
           box-shadow: 0 0 0 0.125rem var(--maz-color-warning-alpha);
 
@@ -247,7 +253,8 @@
         @apply maz-bg-success maz-text-success;
       }
 
-      [type='checkbox']:focus {
+      [type='checkbox']:focus,
+      [type='checkbox']:hover {
         + label::before {
           box-shadow: 0 0 0 0.125rem var(--maz-color-success-alpha);
 
@@ -270,7 +277,8 @@
         @apply maz-bg-white maz-text-white;
       }
 
-      [type='checkbox']:focus {
+      [type='checkbox']:focus,
+      [type='checkbox']:hover {
         + label::before {
           box-shadow: 0 0 0 0.125rem hsl(216deg 12% 84% / 60%);
 
@@ -293,7 +301,8 @@
         @apply maz-bg-black maz-text-black;
       }
 
-      [type='checkbox']:focus {
+      [type='checkbox']:focus,
+      [type='checkbox']:hover {
         + label::before {
           box-shadow: 0 0 0 0.125rem hsl(0deg 0% 0% / 60%);
 

@@ -13,7 +13,7 @@ const options: IdleTimeoutOptions = {
   element: document.body,
   timeout: DEFAULT_TIMEOUT, // 5 minutes
   once: false,
-  immediate: false,
+  immediate: true,
 }
 let instance: IdleTimeout | undefined
 

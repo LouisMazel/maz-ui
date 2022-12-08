@@ -14,7 +14,7 @@ let callback: UserVisibilyCallback
 const options: UserVisibilyOptions = {
   timeout: DEFAULT_TIMEOUT, // 5 minutes
   once: false,
-  immediate: false,
+  immediate: true,
 }
 let instance: UserVisibility | undefined
 
