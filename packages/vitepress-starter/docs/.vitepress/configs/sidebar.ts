@@ -10,7 +10,7 @@ export const sidebar: DefaultTheme.SidebarGroup[] = [
   guide,
   components,
   plugins,
-  directives,
   composables,
+  directives,
   helpers,
 ]

@@ -6,7 +6,6 @@
       v-bind="$attrs"
       :name="name"
       type="checkbox"
-      class="maz-mr-2"
       @change="
         $emit(
           'update:model-value',
@@ -14,7 +13,7 @@
         )
       "
     />
-    <label :for="instanceId" class="maz-m-0 maz-flex maz-items-center">
+    <label :for="instanceId">
       <slot />
     </label>
   </div>
@@ -65,49 +64,38 @@
 <style lang="postcss" scoped>
   .m-checkbox {
     transition: all 300ms ease-in-out;
-    cursor: pointer;
-    margin-left: 2px;
-    min-height: 22px;
+    min-height: 1.75rem;
+
+    @apply maz-cursor-pointer;
 
     [type='checkbox']:not(:checked),
     [type='checkbox']:checked {
-      position: absolute;
+      @apply maz-absolute;
+
       left: -9999px;
     }
 
     [type='checkbox']:not(:checked) + label,
     [type='checkbox']:checked + label {
-      position: relative;
-      padding-left: 30px;
-      font-size: 1rem;
-      cursor: pointer;
+      @apply maz-relative maz-m-0 maz-flex maz-cursor-pointer maz-select-none maz-items-center maz-pl-10 maz-leading-7;
+
       transition: all 300ms ease-in-out;
-      user-select: none;
     }
 
     [type='checkbox'] + label::before {
-      @apply maz-border maz-border-solid maz-border-transparent;
+      @apply maz-absolute maz-left-0 maz-rounded maz-border maz-border-solid maz-border-transparent maz-bg-transparent;
 
       content: '';
-      position: absolute;
-      left: 0;
-      width: 22px;
-      height: 22px;
+      width: 1.625rem;
+      height: 1.625rem;
       background: transparent;
-      border-radius: 4px;
       transition: all 300ms ease-in-out;
     }
 
     [type='checkbox']:focus + label::before {
-      @apply maz-rounded maz-border maz-border-solid maz-border-primary;
+      @apply maz-absolute maz-border maz-border-solid maz-border-primary maz-bg-transparent;
 
       content: '';
-      position: absolute;
-      left: 0;
-      width: 22px;
-      height: 22px;
-      background: transparent;
-      transition: all 300ms ease-in-out;
     }
 
     [type='checkbox']:not(:checked) + label::before {
@@ -117,22 +105,21 @@
     [type='checkbox']:not(:checked) + label::after,
     [type='checkbox']:checked + label::after {
       content: '';
-      position: absolute;
-      left: 5px;
-      width: 12px;
-      height: 12px;
-      transition: all 300ms ease-in-out;
-      border-radius: 2px;
+
+      @apply maz-absolute;
+
+      left: 0.438rem;
+      width: 0.75rem;
+      height: 0.75rem;
+      border-radius: 0.125rem;
     }
 
     [type='checkbox']:not(:checked) + label::after {
-      opacity: 0;
-      transform: scale(0);
+      @apply maz-scale-0 maz-opacity-0;
     }
 
     [type='checkbox']:checked + label::after {
-      opacity: 1;
-      transform: scale(1);
+      @apply maz-scale-100 maz-opacity-100;
     }
 
     &--primary {
@@ -147,7 +134,7 @@
 
       [type='checkbox']:focus {
         + label::before {
-          box-shadow: 0 0 0 0.143rem var(--maz-color-primary-alpha);
+          box-shadow: 0 0 0 0.125rem var(--maz-color-primary-alpha);
 
           @apply maz-border-primary-700;
         }
@@ -170,7 +157,7 @@
 
       [type='checkbox']:focus {
         + label::before {
-          box-shadow: 0 0 0 0.143rem var(--maz-color-secondary-alpha);
+          box-shadow: 0 0 0 0.125rem var(--maz-color-secondary-alpha);
 
           @apply maz-border-secondary-700;
         }
@@ -193,7 +180,7 @@
 
       [type='checkbox']:focus {
         + label::before {
-          box-shadow: 0 0 0 0.143rem var(--maz-color-info-alpha);
+          box-shadow: 0 0 0 0.125rem var(--maz-color-info-alpha);
 
           @apply maz-border-info-700;
         }
@@ -216,7 +203,7 @@
 
       [type='checkbox']:focus {
         + label::before {
-          box-shadow: 0 0 0 0.143rem var(--maz-color-danger-alpha);
+          box-shadow: 0 0 0 0.125rem var(--maz-color-danger-alpha);
 
           @apply maz-border-danger-700;
         }
@@ -239,7 +226,7 @@
 
       [type='checkbox']:focus {
         + label::before {
-          box-shadow: 0 0 0 0.143rem var(--maz-color-warning-alpha);
+          box-shadow: 0 0 0 0.125rem var(--maz-color-warning-alpha);
 
           @apply maz-border-warning-700;
         }
@@ -262,7 +249,7 @@
 
       [type='checkbox']:focus {
         + label::before {
-          box-shadow: 0 0 0 0.143rem var(--maz-color-success-alpha);
+          box-shadow: 0 0 0 0.125rem var(--maz-color-success-alpha);
 
           @apply maz-border-success-700;
         }
@@ -285,7 +272,7 @@
 
       [type='checkbox']:focus {
         + label::before {
-          box-shadow: 0 0 0 0.143rem hsl(216deg 12% 84% / 60%);
+          box-shadow: 0 0 0 0.125rem hsl(216deg 12% 84% / 60%);
 
           @apply maz-border-gray-300;
         }
@@ -308,7 +295,7 @@
 
       [type='checkbox']:focus {
         + label::before {
-          box-shadow: 0 0 0 0.143rem hsl(0deg 0% 0% / 60%);
+          box-shadow: 0 0 0 0.125rem hsl(0deg 0% 0% / 60%);
 
           @apply maz-border-gray-700;
         }

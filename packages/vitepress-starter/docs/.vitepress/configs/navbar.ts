@@ -14,7 +14,7 @@ export const nav: DefaultTheme.NavItem[] = [
   {
     text: 'Modules',
     activeMatch: '/plugins',
-    items: [plugins, directives, composables, helpers],
+    items: [plugins, composables, directives, helpers],
   },
   { text: 'Made with Maz-ui', link: '/made-with-maz-ui', },
   {
