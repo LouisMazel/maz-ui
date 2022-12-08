@@ -21,7 +21,6 @@
 </template>
 
 <script lang="ts" setup>
-  import { onMounted } from 'vue'
   import { MazBtn, MazIcon } from 'maz-ui/package/components'
   import {
     useAos,
@@ -37,13 +36,11 @@
 
   const { autoSetTheme, toggleTheme, hasDarkTheme } = useThemeHandler()
 
-  onMounted(() => {
-    autoSetTheme()
-    toast.success('Toaster Works', { position: 'top-right' })
-    aos.runAnimations()
-    wait.start()
-    setTimeout(() => wait.stop(), 500)
-  })
+  autoSetTheme()
+  toast.success('Toaster Works', { position: 'top-right' })
+  aos.runAnimations()
+  wait.start()
+  setTimeout(() => wait.stop(), 500)
 </script>
 
 <style lang="postcss">

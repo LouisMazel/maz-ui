@@ -36,7 +36,7 @@ app.use(router)
 const toasterOptions: ToasterOptions = {
   persistent: false,
   position: 'bottom-right',
-  timeout: 50_000,
+  timeout: 3000,
 }
 
 const options: AosOptions = {
