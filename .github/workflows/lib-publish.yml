@@ -31,6 +31,6 @@ jobs:
       - name: Build Lib
         run: make build
 
-      - run: npm publish dist --access public
+      - run: cd dist && npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
