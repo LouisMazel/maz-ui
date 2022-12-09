@@ -6,7 +6,7 @@
       fab
       @click="toggleTheme"
     >
-      <MazIcon :name="hasDarkTheme ? 'moon' : 'sun'" />
+      <MazIcon :name="hasDarkTheme ? 'sun' : 'moon'" />
     </MazBtn>
 
     <br />

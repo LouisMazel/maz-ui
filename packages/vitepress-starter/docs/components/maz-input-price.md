@@ -9,6 +9,8 @@ description: MazInputPrice is a standalone component replaces the standard html 
 
 <!--@include: ./../mixins/getting-started.md-->
 
+<!--@include: ./../mixins/maz-input-props.md-->
+
 ## Basic usage
 
 <MazInputPrice

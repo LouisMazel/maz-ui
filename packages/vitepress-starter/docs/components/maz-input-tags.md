@@ -9,6 +9,8 @@ description: MazInputTags is a standalone component like free inputs to help use
 
 <!--@include: ./../mixins/getting-started.md-->
 
+<!--@include: ./../mixins/maz-input-props.md-->
+
 ## Basic usage
 
 <MazInputTags

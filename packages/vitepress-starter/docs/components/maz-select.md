@@ -9,9 +9,7 @@ description: MazSelect is a standalone component replaces the standard html inpu
 
 <!--@include: ./../mixins/getting-started.md-->
 
-::: tip
-This component use [MazInput](./maz-input.md), so it inherits all his props
-:::
+<!--@include: ./../mixins/maz-input-props.md-->
 
 ## Usage
 

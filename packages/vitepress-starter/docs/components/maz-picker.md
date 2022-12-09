@@ -9,6 +9,8 @@ description: MazPicker is a standalone component for select dates and time. Prov
 
 <!--@include: ./../mixins/getting-started.md-->
 
+<!--@include: ./../mixins/maz-input-props.md-->
+
 To use this component, you have to install the dependency `dayjs`
 
 <NpmBadge package="dayjs" />
@@ -26,7 +28,7 @@ npm install dayjs
 
 - The returned value is formatted by [days.format()](https://day.js.org/docs/en/display/format) function with the format provided
 
-- This component use [MazInput](./maz-input.md), so it inherits his props:
+- This component use [MazInput](./maz-input.md#props-events-emitted), so it inherits his props:
   - Use `label` & `placeholder` props
 
 ## Options

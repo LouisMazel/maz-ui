@@ -66,23 +66,29 @@
       },
     },
   })
+
   const emits = defineEmits(['update:model-value'])
+
   const currentValue = computed({
     get: () => props.modelValue,
     set: (value: number) => emitValue(value),
   })
+
   const checkValue = (value: number) => {
     if (value <= props.min) return props.min
     return value >= props.max ? props.max : value
   }
+
   const emitValue = (newValue: number) => {
     newValue = checkValue(newValue)
     if (currentValue.value === newValue) return
     emits('update:model-value', newValue)
   }
   emitValue(currentValue.value)
+
   const incrementDisabled = computed(() => props.modelValue >= props.max)
   const decrementDisabled = computed(() => props.modelValue <= props.min)
+
   const increment = () => {
     if (props.disabled || incrementDisabled.value) return
     currentValue.value = currentValue.value + 1 * props.step
@@ -103,16 +109,20 @@
           content: none !important;
         }
 
-        &:first-child {
-          @apply maz-rounded-r-none maz-border maz-border-color-lighter maz-px-2 maz-shadow-none;
+        &:first-child,
+        &:last-child {
+          @apply maz-border maz-border-gray-200 maz-px-2 maz-shadow-none;
           @apply maz-px-3 maz-py-0 !important;
+        }
+
+        &:first-child {
+          @apply maz-rounded-r-none;
 
           margin-right: calc(-1 * 2px);
         }
 
         &:last-child {
-          @apply maz-rounded-l-none maz-border maz-border-color-lighter maz-px-2 maz-shadow-none;
-          @apply maz-px-3 maz-py-0 !important;
+          @apply maz-rounded-l-none;
 
           margin-left: calc(-1 * 2px);
         }
@@ -140,6 +150,15 @@
       /* Firefox */
       & input[type='number'] {
         appearance: textfield;
+      }
+    }
+  }
+
+  html.dark {
+    .m-input-number__button.m-btn.--is-button {
+      &:first-child,
+      &:last-child {
+        @apply maz-border-color-lighter;
       }
     }
   }
