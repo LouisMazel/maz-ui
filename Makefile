@@ -22,12 +22,12 @@ endef
 
 define publish
 	@$(call bump-version,$(1))
-	npm run gen:docs
+	# npm run gen:docs
 	npm run lint:fix
 	npm run build
 	npm publish
-	git push origin HEAD
-	make deploy-doc
+	git push origin maz-ui-v2
+	# make deploy-doc
 endef
 
 define publish-beta
