@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 
 import vue from 'rollup-plugin-vue'
-import { terser } from 'rollup-plugin-terser'
+import terser from '@rollup/plugin-terser'
 import typescript from 'rollup-plugin-typescript2'
 import commonjs from '@rollup/plugin-commonjs'
 import alias from '@rollup/plugin-alias'
