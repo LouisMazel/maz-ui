@@ -1,7 +1,12 @@
-# Change Log
+# Changelog
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+### [0.0.2](https://github.com/LouisMazel/maz-ui/compare/v3.4.4...v0.0.2) (2022-12-09)
+
+### Others
+
+- add standard-version ([d54178f](https://github.com/LouisMazel/maz-ui/commit/d54178fdfa9d49055462f3db34c2f2ad7755461c))
 
 ## [3.4.2](https://github.com/LouisMazel/maz-ui/compare/v3.4.1...v3.4.2) (2022-12-06)
 
