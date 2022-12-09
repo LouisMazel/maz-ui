@@ -1,5 +1,5 @@
 /* eslint-disable unicorn/prefer-module */
-const COLORS_CONFIG = require('./../variables/colors')
+const COLORS_CONFIG = require('../variables/colors')
 
 const makeColors = () => {
   const baseColors = COLORS_CONFIG['base-colors']

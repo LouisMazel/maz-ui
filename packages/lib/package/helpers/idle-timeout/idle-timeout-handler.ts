@@ -7,7 +7,7 @@ import type {
 
 export class IdleTimeout {
   private readonly defaultOptions: IdleTimeoutStrictOption = {
-    element: document.body,
+    element: undefined, // ERROR: should not be here !!
     timeout: 60 * 1000 * 5, // 5 minutes
     once: false,
     immediate: true,
@@ -57,6 +57,10 @@ export class IdleTimeout {
     }
   }
 
+  get element() {
+    return this.options.element || document.body
+  }
+
   public start(): void {
     if (!isClient()) {
       console.warn(
@@ -65,10 +69,8 @@ export class IdleTimeout {
       return
     }
 
-    const element = this.options.element
-
     for (const eventName of this.eventNames) {
-      element.addEventListener(eventName, this.handleEvent)
+      this.element.addEventListener(eventName, this.handleEvent)
     }
 
     this.resetTimeout()
@@ -112,11 +114,17 @@ export class IdleTimeout {
   }
 
   public destroy(): void {
+    if (!isClient()) {
+      console.warn(
+        `[IdleTimeout](destroy) you should run this method on client side`,
+      )
+      return
+    }
+
     this.isDestroy = true
-    const element = this.options.element
 
     for (const eventName of this.eventNames) {
-      element.removeEventListener(eventName, this.handleEvent)
+      this.element.removeEventListener(eventName, this.handleEvent)
     }
 
     if (this.timeoutHandler) {

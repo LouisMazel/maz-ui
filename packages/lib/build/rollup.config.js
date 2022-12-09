@@ -2,6 +2,9 @@ import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 
 import vue from 'rollup-plugin-vue'
+import { terser } from 'rollup-plugin-terser'
+import typescript from 'rollup-plugin-typescript2'
+import commonjs from '@rollup/plugin-commonjs'
 import alias from '@rollup/plugin-alias'
 import nodeResolve from '@rollup/plugin-node-resolve'
 import replace from '@rollup/plugin-replace'
@@ -15,11 +18,8 @@ import postcssImport from 'postcss-import'
 import postcssUrl from 'postcss-url'
 import autoprefixer from 'autoprefixer'
 
-import { terser } from 'rollup-plugin-terser'
 import ttypescript from 'ttypescript'
-import typescript from 'rollup-plugin-typescript2'
 import minimist from 'minimist'
-import commonjs from '@rollup/plugin-commonjs'
 import peerDepsExternal from 'rollup-plugin-peer-deps-external'
 
 const { componentsList } = require('./get-component-list')
@@ -124,7 +124,7 @@ if ((!argv.package || argv.package === 'modules') && !argv.component) {
     ...baseConfig,
     input: INPUT_ENTRY,
     output: {
-      dir: 'modules',
+      dir: 'dist/modules',
       format: 'esm',
       exports: 'named',
       compact: true,
@@ -199,7 +199,7 @@ if (!argv.package || argv.package === 'components' || argv.component) {
       input: component.path,
       output: {
         // compact: true,
-        dir: 'components',
+        dir: 'dist/components',
         exports: 'named',
         format: 'esm',
         compact: true,
@@ -230,7 +230,7 @@ if (!argv.package || argv.package === 'components' || argv.component) {
   //       input: component.path,
   //       output: {
   // compact: true,
-  //         dir: 'lib/cjs/components',
+  //         dir: 'dist/cjs/components',
   //         exports: 'named',
   //         format: 'cjs',
   // sourcemap: true,

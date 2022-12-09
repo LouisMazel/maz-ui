@@ -6,7 +6,6 @@ import type {
 } from './types'
 
 export class UserVisibility {
-  private element: Document
   private callback: UserVisibilyCallback
   private eventHandlerFunction: () => void
 
@@ -26,7 +25,6 @@ export class UserVisibility {
 
   constructor(callback: UserVisibilyCallback, options?: UserVisibilyOptions) {
     this.callback = callback
-    this.element = document
 
     this.options = {
       ...this.defaultOptions,
@@ -42,6 +40,10 @@ export class UserVisibility {
         `[UserVisibility](constructor) exetuted on server side - set immediate option to "false"`,
       )
     }
+  }
+
+  get element() {
+    return document
   }
 
   public start() {
