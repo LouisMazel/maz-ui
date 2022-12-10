@@ -7,7 +7,7 @@ description: MazDialogPromise is a standalone component to dialog with user, com
 
 {{ $frontmatter.description }}
 
-<!--@include: ./../mixins/getting-started.md-->
+<!--@include: ./../.vitepress/mixins/getting-started.md-->
 
 ::: info
 This component use [MazDialog](./maz-dialog.md), so it inherits all his props

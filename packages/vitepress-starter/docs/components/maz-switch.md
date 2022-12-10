@@ -7,7 +7,7 @@ description: MazSwitch is a standalone component replaces the standard html inpu
 
 {{ $frontmatter.description }}
 
-<!--@include: ./../mixins/getting-started.md-->
+<!--@include: ./../.vitepress/mixins/getting-started.md-->
 
 <MazSwitch
   v-for="color in colors"

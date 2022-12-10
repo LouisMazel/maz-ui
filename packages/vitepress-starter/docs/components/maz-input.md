@@ -7,7 +7,7 @@ description: MazInput is a standalone component replaces the standard html input
 
 {{ $frontmatter.description }}
 
-<!--@include: ./../mixins/getting-started.md-->
+<!--@include: ./../.vitepress/mixins/getting-started.md-->
 
 ## Basic usage
 

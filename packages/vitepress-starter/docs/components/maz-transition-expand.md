@@ -7,7 +7,7 @@ description: MazTransitionExpand is a standalone component to collapse content w
 
 {{ $frontmatter.description }}
 
-<!--@include: ./../mixins/getting-started.md-->
+<!--@include: ./../.vitepress/mixins/getting-started.md-->
 
 ## Basic usage
 
