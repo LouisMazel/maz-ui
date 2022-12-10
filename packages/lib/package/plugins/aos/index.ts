@@ -163,6 +163,10 @@ export const plugin = {
 
     app.provide('aos', instance)
 
+    if (!isClient()) {
+      return
+    }
+
     if (options?.router) {
       options.router.afterEach(async () => {
         instance.runAnimations()

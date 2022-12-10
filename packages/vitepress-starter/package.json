@@ -20,7 +20,7 @@
     "dayjs": "^1.11.5",
     "dropzone": "^5.9.3",
     "libphonenumber-js": "^1.10.13",
-    "maz-ui": "file:../lib",
+    "maz-ui": "file:../lib/dist",
     "vitepress-plugin-google-analytics": "^1.0.2"
   }
 }

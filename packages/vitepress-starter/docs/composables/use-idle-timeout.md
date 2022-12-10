@@ -92,7 +92,6 @@ Useful to know exactly time spend by user on your website
   }
 
   const options = {
-    element: document.body,
     timeout: 3000,
     immediate: false,
     once: false,
@@ -130,19 +129,18 @@ Useful to know exactly time spend by user on your website
   }
 
   const options = {
-    element: document.body,
     timeout: 3000,
     immediate: false,
     once: false,
   }
 
-  // should be executed on client
   const { idle } = useIdleTimeout({
     callback,
     options,
   })
 
   onMounted(() => {
+    // should be executed on client
     idle.value.start()
   })
 

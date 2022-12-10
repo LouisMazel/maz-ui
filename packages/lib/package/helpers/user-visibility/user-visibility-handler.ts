@@ -35,15 +35,11 @@ export class UserVisibility {
 
     if (this.options.immediate && isClient()) {
       this.start()
-    } else if (!isClient()) {
+    } else if (this.options.immediate && !isClient()) {
       console.warn(
-        `[UserVisibility](constructor) exetuted on server side - set immediate option to "false"`,
+        `[UserVisibility](constructor) executed on server side - set immediate option to "false"`,
       )
     }
-  }
-
-  get element() {
-    return document
   }
 
   public start() {
@@ -59,7 +55,7 @@ export class UserVisibility {
   }
 
   private emitCallback() {
-    this.isVisible = this.element.visibilityState === 'visible'
+    this.isVisible = document.visibilityState === 'visible'
     this.callback({ isVisible: this.isVisible })
 
     if (this.options.once) {
@@ -68,10 +64,10 @@ export class UserVisibility {
   }
 
   private eventHandler() {
-    if (this.element.visibilityState === 'visible' && !this.isVisible) {
+    if (document.visibilityState === 'visible' && !this.isVisible) {
       this.clearTimeout()
       this.emitCallback()
-    } else if (this.element.visibilityState === 'hidden') {
+    } else if (document.visibilityState === 'hidden') {
       this.initTimeout()
     }
   }
@@ -93,11 +89,11 @@ export class UserVisibility {
   }
 
   private addEventListener() {
-    this.element.addEventListener(this.event, this.eventHandlerFunction)
+    document.addEventListener(this.event, this.eventHandlerFunction)
   }
 
   private removeEventListener() {
-    this.element.removeEventListener(this.event, this.eventHandlerFunction)
+    document.removeEventListener(this.event, this.eventHandlerFunction)
   }
 
   destroy() {

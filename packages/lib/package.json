@@ -23,7 +23,7 @@
     "lint:style": "stylelint --custom-syntax postcss-html --fix \"./**/*.{vue,css,scss,postcss,pcss}\"",
     "clean": "rimraf dist",
     "build": "npm run clean && mkdir -p dist && npm run build:js && npm run build:css && cp package.json dist/package.json && npm run copy:tailwind",
-    "build:watch": "onchange --await-write-finish 2000 'package/**/*' -e 'package/components/index.ts' --exclude-path .gitignore -- npm run build",
+    "build:watch": "onchange --await-write-finish 2000 'package/**/*' -e 'package/components/index.ts' --exclude-path .gitignore -- npm run build:modules",
     "build:lib": "cross-env NODE_ENV=production node --max-old-space-size=8192 node_modules/rollup/dist/bin/rollup -c build/rollup.config.js",
     "build:tailwind": "cross-env NODE_ENV=production tailwindcss -i package/tailwindcss/css/tailwind.css -o dist/css/main.css --config tailwind.config.js --postcss --minify",
     "copy:tailwind": "cp -R package/tailwindcss dist/tailwindcss",

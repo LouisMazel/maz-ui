@@ -7,7 +7,7 @@ import type {
 
 export class IdleTimeout {
   private readonly defaultOptions: IdleTimeoutStrictOption = {
-    element: undefined, // ERROR: should not be here !!
+    element: undefined,
     timeout: 60 * 1000 * 5, // 5 minutes
     once: false,
     immediate: true,
@@ -50,15 +50,15 @@ export class IdleTimeout {
 
     if (this.options.immediate && isClient()) {
       this.start()
-    } else if (!isClient()) {
+    } else if (this.options.immediate && !isClient()) {
       console.warn(
-        `[IdleTimeout](constructor) exetuted on server side - set immediate option to "false"`,
+        `[IdleTimeout](constructor) executed on server side - set immediate option to "false"`,
       )
     }
   }
 
   get element() {
-    return this.options.element || document.body
+    return this.options.element ?? document.body
   }
 
   public start(): void {

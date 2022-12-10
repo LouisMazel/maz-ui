@@ -240,7 +240,7 @@ export default ({ vueApp, $router: router }) => {
 
 ### Without router
 
-You can run animations programatically with the instance
+You can run animations programatically with the composable
 
 ```vue
 <template>
