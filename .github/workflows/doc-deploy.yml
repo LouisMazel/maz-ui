@@ -3,9 +3,9 @@ on:
   push:
     branches:
       - master
-    # paths:
-    #   - "packages/docs/**"
-    #   - "packages/lib/**"
+    paths:
+      - "packages/docs/**"
+      - "packages/lib/**"
 
 jobs:
   doc-build-and-deploy:
