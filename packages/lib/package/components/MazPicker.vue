@@ -77,7 +77,7 @@
 </template>
 
 <script lang="ts">
-  export type { PickerValue } from './MazPicker/types'
+  export type { PickerValue, PickerShortcut } from './MazPicker/types'
   export type { Color, Position } from './types'
 </script>
 
@@ -215,67 +215,64 @@
           label: 'Last 7 days',
           identifier: 'last7Days',
           value: {
-            start: dayjs().subtract(6, 'day').format(),
-            end: dayjs().format(),
+            start: dayjs().subtract(6, 'day').format('YYYY-MM-DD'),
+            end: dayjs().format('YYYY-MM-DD'),
           },
         },
         {
           label: 'Last 30 days',
           identifier: 'last30Days',
           value: {
-            start: dayjs().subtract(29, 'day').format(),
-            end: dayjs().format(),
+            start: dayjs().subtract(29, 'day').format('YYYY-MM-DD'),
+            end: dayjs().format('YYYY-MM-DD'),
           },
         },
         {
           label: 'This week',
           identifier: 'thisWeek',
           value: {
-            start: dayjs().startOf('week').format(),
-            end: dayjs().endOf('week').format(),
+            start: dayjs().startOf('week').format('YYYY-MM-DD'),
+            end: dayjs().endOf('week').format('YYYY-MM-DD'),
           },
         },
         {
           label: 'Last week',
           identifier: 'lastWeek',
           value: {
-            start: dayjs().subtract(1, 'week').startOf('week').format(),
-            end: dayjs().subtract(1, 'week').endOf('week').format(),
+            start: dayjs()
+              .subtract(1, 'week')
+              .startOf('week')
+              .format('YYYY-MM-DD'),
+            end: dayjs().subtract(1, 'week').endOf('week').format('YYYY-MM-DD'),
           },
         },
         {
           label: 'This month',
           identifier: 'thisMonth',
           value: {
-            start: dayjs().set('date', 1).format(),
-            end: dayjs().set('date', dayjs().daysInMonth()).format(),
-          },
-        },
-        {
-          label: 'Last month',
-          identifier: 'lastMonth',
-          value: {
-            start: dayjs().subtract(1, 'month').set('date', 1).format(),
+            start: dayjs().set('date', 1).format('YYYY-MM-DD'),
             end: dayjs()
-              .subtract(1, 'month')
-              .set('date', dayjs().subtract(1, 'month').daysInMonth())
-              .format(),
+              .set('date', dayjs().daysInMonth())
+              .format('YYYY-MM-DD'),
           },
         },
         {
           label: 'This year',
           identifier: 'thisYear',
           value: {
-            start: dayjs().startOf('year').format(),
-            end: dayjs().endOf('year').format(),
+            start: dayjs().startOf('year').format('YYYY-MM-DD'),
+            end: dayjs().endOf('year').format('YYYY-MM-DD'),
           },
         },
         {
           label: 'Last year',
           identifier: 'lastYear',
           value: {
-            start: dayjs().subtract(1, 'year').startOf('year').format(),
-            end: dayjs().subtract(1, 'year').endOf('year').format(),
+            start: dayjs()
+              .subtract(1, 'year')
+              .startOf('year')
+              .format('YYYY-MM-DD'),
+            end: dayjs().subtract(1, 'year').endOf('year').format('YYYY-MM-DD'),
           },
         },
       ],

@@ -1,5 +1,6 @@
 import type { ToasterOptions } from './types'
 import { ToasterHandler } from './toaster-handler'
+import type { App } from 'vue'
 
 const defaultOptions: ToasterOptions = {
   position: 'bottom-right',
@@ -7,15 +8,16 @@ const defaultOptions: ToasterOptions = {
   persistent: true,
 }
 
+export let instance: ToasterHandler
+
 export const plugin = {
-  install(app, options?: ToasterOptions) {
-    const toaster = new ToasterHandler(app, {
+  install(app: App, options?: ToasterOptions) {
+    instance = new ToasterHandler(app, {
       ...defaultOptions,
       ...options,
     })
 
-    app.provide('toast', toaster)
-    app.config.globalProperties.$toaster = toaster
+    app.provide('toast', instance)
   },
 }
 

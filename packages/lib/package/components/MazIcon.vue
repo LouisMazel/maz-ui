@@ -1,5 +1,6 @@
 <template>
   <!-- eslint-disable vue/no-v-html -->
+  <!-- eslint-disable vue/html-self-closing -->
   <svg
     v-if="svgElSource"
     ref="svgElem"
@@ -11,13 +12,13 @@
     }"
     :style="`font-size: ${size}`"
     v-html="getSvgContent(svgElSource)"
-  />
+  ></svg>
   <!-- eslint-enable vue/no-v-html -->
+  <!-- eslint-enable vue/html-self-closing -->
 </template>
 
-<!-- // inheritAttrs: false -->
 <script lang="ts" setup>
-  import { nextTick, onMounted, ref, watch, computed } from 'vue'
+  import { nextTick, onMounted, ref, computed, watchEffect } from 'vue'
   import type { PropType } from 'vue'
 
   import { injectStrict } from '../helpers/inject-strict'
@@ -61,11 +62,10 @@
 
   onMounted(() => {
     if (!props.name && !props.src) {
-      throw new Error(
+      console.error(
         '[maz-ui](MazIcon) you should provide "name" or "src" as prop',
       )
     }
-    getSource(fullSrc.value)
   })
 
   const setTitle = (svg: SVGElement, title: string) => {
@@ -181,8 +181,5 @@
     })
   }
 
-  watch(
-    () => props.src,
-    () => getSource(fullSrc.value),
-  )
+  watchEffect(() => getSource(fullSrc.value))
 </script>

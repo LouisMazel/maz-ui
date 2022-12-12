@@ -1,21 +1,25 @@
 ---
+title: MazDialogPromise
 description: MazDialogPromise is a standalone component to dialog with user, component to show important informations to the user and propose confirmation, you should waiting his response with await.
 ---
 
+# {{ $frontmatter.title }}
 
-# MazDialogPromise
+{{ $frontmatter.description }}
 
-> Before you have to import the global css files in your project, follow instructions in [Getting Started](./../guide/getting-started.md)
+<!--@include: ./../.vitepress/mixins/getting-started.md-->
 
-> This component use [MazDialog](./maz-dialog.md), so it inherits all his props
+::: info
+This component use [MazDialog](./maz-dialog.md), so it inherits all his props
+:::
 
-> This component use `<Teleport to="body">`, so you can implement this component everywhere
+::: tip
+This component use `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md), so you can implement this component everywhere and it inherits all his props
+:::
 
 MazDialogPromise is a standalone component to dialog with user, component to show important informations to the user and propose confirmation, you should waiting his response with await.
 
 ## Basic usage
-
-<br />
 
 <MazBtn @click="askToUser">Ask to user</MazBtn>
 

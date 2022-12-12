@@ -7,10 +7,11 @@ export type IdleTimeoutCallback = ({
 }) => void
 
 export interface IdleTimeoutStrictOption {
-  element: HTMLElement | Document // element to watch
+  element?: HTMLElement | Document // element to watch
   timeout: number // in milliseconds
   once: boolean
   immediate: boolean
+  ssr: boolean
 }
 
 export type IdleTimeoutOptions = Partial<IdleTimeoutStrictOption>

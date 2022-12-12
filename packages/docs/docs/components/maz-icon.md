@@ -1,9 +1,11 @@
 ---
 title: MazIcon
-description: MazBtn is a stand-alone component to load your svg icons
+description: MazBtn is a standalone component to load your svg icons
 ---
 
-# MazIcon
+# {{ $frontmatter.title }}
+
+{{ $frontmatter.description }}
 
 Basically, this component will load your SVG from your project.
 
@@ -14,8 +16,6 @@ Place your SVG files in public a folder (default `/icons`, use `path` prop to ch
 </MazBtn>
 
 ## Basic usage
-
-<br />
 
 <div class="flex items-start flex-wrap gap-05">
   <div v-for="icon in iconNames" :key="icon" class="flex flex-col flex-center maz-p-2 maz-rounded" style="border: 1px solid var(--maz-color-bg-light); background-color: var(--maz-color-bg-lighter);">

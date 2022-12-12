@@ -115,7 +115,8 @@
     sanitizePhoneNumber,
     loadPhoneNumberExamplesFile,
   } from './MazPhoneNumberInput/utils'
-  import { truthyFilter, useInstanceUniqId } from '@package/helpers'
+  import { truthyFilter } from '@package/helpers'
+  import { useInstanceUniqId } from '@package/composables/instance-uniq-id.composable'
 
   import locales from './MazPhoneNumberInput/constantes/locales'
 
@@ -491,7 +492,7 @@
 
     const valueToEmit = isValid ? e164 : formattedNumber.value
 
-    if (valueToEmit && valueToEmit !== props.modelValue) {
+    if (valueToEmit !== props.modelValue) {
       emits('update:model-value', valueToEmit)
     }
   }

@@ -1,3 +1,4 @@
+import { isClient } from '../is-client'
 import type {
   IdleTimeoutOptions,
   IdleTimeoutCallback,
@@ -6,13 +7,12 @@ import type {
 
 export class IdleTimeout {
   private readonly defaultOptions: IdleTimeoutStrictOption = {
-    element: document.body,
+    element: undefined,
     timeout: 60 * 1000 * 5, // 5 minutes
     once: false,
-    immediate: false,
+    immediate: true,
+    ssr: false,
   }
-
-  private callback: IdleTimeoutCallback
 
   private options: IdleTimeoutStrictOption
   private timeoutHandler?: ReturnType<typeof setTimeout>
@@ -38,19 +38,37 @@ export class IdleTimeout {
   ]
 
   public constructor(
-    callback: IdleTimeoutCallback,
+    private readonly callback: IdleTimeoutCallback,
     options?: IdleTimeoutOptions,
   ) {
-    this.callback = callback
     this.options = {
       ...this.defaultOptions,
       ...options,
     }
 
-    const element = this.options.element
+    if (!this.options.ssr && isClient()) {
+      this.start()
+    } else if (!this.options.ssr && !isClient()) {
+      console.warn(
+        `[IdleTimeout](constructor) executed on server side - set immediate option to "false"`,
+      )
+    }
+  }
+
+  get element() {
+    return this.options.element ?? document.body
+  }
+
+  public start(): void {
+    if (!isClient()) {
+      console.warn(
+        `[IdleTimeout](start) you should run this method on client side`,
+      )
+      return
+    }
 
     for (const eventName of this.eventNames) {
-      element.addEventListener(eventName, this.handleEvent)
+      this.element.addEventListener(eventName, this.handleEvent)
     }
 
     this.resetTimeout()
@@ -94,11 +112,17 @@ export class IdleTimeout {
   }
 
   public destroy(): void {
+    if (!isClient()) {
+      console.warn(
+        `[IdleTimeout](destroy) you should run this method on client side`,
+      )
+      return
+    }
+
     this.isDestroy = true
-    const element = this.options.element
 
     for (const eventName of this.eventNames) {
-      element.removeEventListener(eventName, this.handleEvent)
+      this.element.removeEventListener(eventName, this.handleEvent)
     }
 
     if (this.timeoutHandler) {

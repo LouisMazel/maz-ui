@@ -1,15 +1,13 @@
 ---
+title: toaster
 description: Display messages to your users in flexible toasts
 ---
 
-# toaster
+# {{ $frontmatter.title }}
 
-> Display messages to your users in flexibles toasts
+{{ $frontmatter.description }}
 
 ## Basic usage
-
-<br />
-
 
 <div class="flex flex-wrap gap-05">
   <MazBtn color="info" @click="showInfo">
@@ -49,10 +47,9 @@ description: Display messages to your users in flexible toasts
 </template>
 
 <script lang="ts" setup>
-  import { inject } from 'vue'
-  import { ToasterHandler } from 'maz-ui'
+  import { useToast } from 'maz-ui'
 
-  const toast = inject<ToasterHandler>('toast')
+  const { toast } = useToast()
 
   function showInfo () {
     toast.info('Info message', {
@@ -83,11 +80,9 @@ description: Display messages to your users in flexible toasts
 ```
 
 <script lang="ts" setup>
-  import { inject } from 'vue'
+  import { useToast } from 'maz-ui'
 
-  import { ToasterHandler } from 'maz-ui'
-
-  const toast = inject<ToasterHandler>('toast')
+  const { toast } = useToast()
 
   function showInfo () {
     toast.info('Info message', {

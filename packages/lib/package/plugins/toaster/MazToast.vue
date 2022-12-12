@@ -17,7 +17,7 @@
       </div>
 
       <button v-if="!persistent" class="--close">
-        <MazIcon :src="XIcon" class="maz-h-5 maz-w-5 maz-cursor-pointer" />
+        <MazIcon :src="XIcon" class="--icon" />
       </button>
     </div>
   </Transition>
@@ -238,6 +238,10 @@
       @apply maz-ml-1 maz-flex maz-h-7 maz-w-7 maz-rounded maz-bg-transparent maz-p-0
         maz-flex-center
         hover:maz-bg-gray-900/20;
+
+      & .--icon {
+        @apply maz-h-5 maz-w-5 maz-cursor-pointer;
+      }
     }
 
     &.--info {

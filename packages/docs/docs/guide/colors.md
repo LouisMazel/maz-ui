@@ -3,7 +3,7 @@ title: Basic colors
 description: List of basic colors of maz-ui
 ---
 
-# Basic Colors
+# {{ $frontmatter.title }}
 
 > If you want to change colors, follow instructions on [theme guide](./theme.md)
 

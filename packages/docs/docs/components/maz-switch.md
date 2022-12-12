@@ -1,10 +1,13 @@
 ---
-description: MazSwitch is a stand-alone component replaces the standard html input checkbox. Color option available.
+title: MazSwitch
+description: MazSwitch is a standalone component replaces the standard html input checkbox. Color option available.
 ---
 
-# MazSwitch
+# {{ $frontmatter.title }}
 
-> Before you have to import the global css files in your project, follow instructions in [Getting Started](./../guide/getting-started.md)
+{{ $frontmatter.description }}
+
+<!--@include: ./../.vitepress/mixins/getting-started.md-->
 
 <MazSwitch
   v-for="color in colors"

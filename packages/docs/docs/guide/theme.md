@@ -1,8 +1,11 @@
 ---
-description: Maz-ui is fully customizable - Documentation to know how editing colors
+title: Theme
+description: Maz-ui is customizable by CSS variables. Apply your color & border preferences.
 ---
 
-# Theme
+# {{ $frontmatter.title }}
+
+{{ $frontmatter.description }}
 
 You must override `--maz-***` CSS variables
 
