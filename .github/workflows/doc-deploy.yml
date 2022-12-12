@@ -5,7 +5,7 @@ on:
       - master
     paths:
       - "packages/docs/**"
-      # - "packages/lib/**"
+      - "packages/lib/**"
 
 jobs:
   doc-build-and-deploy:
