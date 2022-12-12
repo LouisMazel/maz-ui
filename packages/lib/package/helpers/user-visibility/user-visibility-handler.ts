@@ -6,7 +6,6 @@ import type {
 } from './types'
 
 export class UserVisibility {
-  private callback: UserVisibilyCallback
   private eventHandlerFunction: () => void
 
   private event = 'visibilitychange'
@@ -16,16 +15,18 @@ export class UserVisibility {
   private options: UserVisibilyStrictOptions
 
   private readonly defaultOptions: UserVisibilyStrictOptions = {
-    immediate: true,
     timeout: 5000,
     once: false,
+    immediate: true,
+    ssr: false,
   }
 
   private isVisible = false
 
-  constructor(callback: UserVisibilyCallback, options?: UserVisibilyOptions) {
-    this.callback = callback
-
+  constructor(
+    private readonly callback: UserVisibilyCallback,
+    options?: UserVisibilyOptions,
+  ) {
     this.options = {
       ...this.defaultOptions,
       ...options,
@@ -33,11 +34,11 @@ export class UserVisibility {
 
     this.eventHandlerFunction = this.eventHandler.bind(this)
 
-    if (this.options.immediate && isClient()) {
+    if (!this.options.ssr && isClient()) {
       this.start()
-    } else if (this.options.immediate && !isClient()) {
+    } else if (!this.options.ssr && !isClient()) {
       console.warn(
-        `[UserVisibility](constructor) executed on server side - set immediate option to "false"`,
+        `[UserVisibility](constructor) executed on server side - set "ssr" option to "false"`,
       )
     }
   }
@@ -50,7 +51,10 @@ export class UserVisibility {
       return
     }
 
-    this.emitCallback()
+    if (this.options.immediate) {
+      this.emitCallback()
+    }
+
     this.addEventListener()
   }
 

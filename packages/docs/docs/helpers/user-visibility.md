@@ -17,6 +17,7 @@ const userVisibilyOptions: UserVisibilyOptions = {
   immediate: true,
   once: false,
   timeout: 1000,
+  ssr: false,
 }
 ```
 
@@ -136,6 +137,7 @@ const defaultOptions: UserVisibilyOptions = {
   immediate: false,
   timeout: 5000,
   once: false,
+  ssr: false,
 }
 ```
 

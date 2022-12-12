@@ -13,74 +13,80 @@ This plugin use the browser native [Intersection Observer API](https://developer
 
 ## Basic usage
 
-<MazCard overflow-hidden data-maz-aos="flip-up" id="parentCard">
-  <MazAvatar
-    data-maz-aos-delay="300"
-    data-maz-aos="scale-in"
-    size="2rem"
-    src="https://pbs.twimg.com/profile_images/598181608198381570/-cFG43y2_400x400.jpg"
-  />
-  <h1
-    data-maz-aos="slide-right"
-    data-maz-aos-delay="600"
-    data-maz-aos-anchor="#parentCard"
-    style="margin-top: 12px; margin-bottom: 0px;"
-  >
-    Gérard Depardieu
-  </h1>
-  <p
-    data-maz-aos="zoom-in-left"
-    data-maz-aos-delay="900"
-    style="margin-top: 0"
-    class="maz-text-muted"
-  >
-    Actor
-  </p>
-  <p
-    data-maz-aos="flip-up"
-    data-maz-aos-delay="1200"
-    data-maz-aos-duration="1000"
-    style="margin-top: 0"
-  >
-    Gérard Depardieu, né le 27 décembre 1948 à Châteauroux, est un acteur, chanteur, réalisateur, producteur de cinéma, de télévision et de théâtre franco-russe. Il est aussi homme d'affaires, notamment dans le domaine de la viticulture.
-  </p>
-</MazCard>
-
-```vue{2,12}
-<template>
-  <MazCard overflow-hidden data-maz-aos="scale-out" id="parentCard">
+<MazCard overflow-hidden data-maz-aos="scale-out" id="parentCard">
+  <div class="maz-flex" style="display: flex; align-items: start; gap: 1rem; margin-bottom: 1rem;">
     <MazAvatar
       data-maz-aos-delay="300"
       data-maz-aos="scale-in"
       size="2rem"
       src="https://pbs.twimg.com/profile_images/598181608198381570/-cFG43y2_400x400.jpg"
     />
-    <h1
-      data-maz-aos="slide-right"
-      data-maz-aos-delay="600"
-      data-maz-aos-anchor="#parentCard"
-      style="margin-top: 12px; margin-bottom: 12px;"
-    >
-      Gérard Depardieu
-    </h1>
-    <p
-      data-maz-aos="zoom-in-left"
-      data-maz-aos-delay="900"
-      style="margin-top: 0"
-      class="maz-text-muted"
-    >
-      Actor
-    </p>
-    <p
-      data-maz-aos="flip-up"
-      data-maz-aos-delay="1200"
-      data-maz-aos-duration="1000"
-      style="margin-top: 0"
-    >
-      Gérard Depardieu, né le 27 décembre 1948 à Châteauroux, est un acteur, chanteur, réalisateur, producteur de cinéma, de télévision et de théâtre franco-russe. Il est aussi homme d'affaires, notamment dans le domaine de la viticulture.
-    </p>
-  </MazCard>
-</template>
+    <div>
+      <h1
+        data-maz-aos="fade-down"
+        data-maz-aos-delay="600"
+        data-maz-aos-anchor="#parentCard"
+        style="margin: 0;"
+      >
+        Gérard Depardieu
+      </h1>
+      <p
+        data-maz-aos="zoom-in-left"
+        data-maz-aos-delay="900"
+        style="margin: 0"
+        class="maz-text-muted"
+      >
+        Actor
+      </p>
+    </div>
+  </div>
+  <p
+    data-maz-aos="flip-up"
+    data-maz-aos-delay="1200"
+    data-maz-aos-duration="1000"
+    style="margin: 0"
+  >
+    Gérard Depardieu, né le 27 décembre 1948 à Châteauroux, est un acteur, chanteur, réalisateur, producteur de cinéma, de télévision et de théâtre franco-russe. Il est aussi homme d'affaires, notamment dans le domaine de la viticulture.
+  </p>
+</MazCard>
+
+```html{1,11}
+<MazCard overflow-hidden data-maz-aos="scale-out" id="parentCard">
+  <div class="maz-flex" style="display: flex; align-items: start; gap: 1rem; margin-bottom: 1rem;">
+    <MazAvatar
+      data-maz-aos-delay="300"
+      data-maz-aos="scale-in"
+      size="2rem"
+      src="https://pbs.twimg.com/profile_images/598181608198381570/-cFG43y2_400x400.jpg"
+    />
+    <div>
+      <h1
+        data-maz-aos="fade-down"
+        data-maz-aos-delay="600"
+        data-maz-aos-anchor="#parentCard"
+        style="margin: 0;"
+      >
+        Gérard Depardieu
+      </h1>
+      <p
+        data-maz-aos="zoom-in-left"
+        data-maz-aos-delay="900"
+        style="margin: 0"
+        class="maz-text-muted"
+      >
+        Actor
+      </p>
+    </div>
+  </div>
+  <p
+    data-maz-aos="flip-up"
+    data-maz-aos-delay="1200"
+    data-maz-aos-duration="1000"
+    style="margin: 0"
+  >
+    Gérard Depardieu, né le 27 décembre 1948 à Châteauroux, est un acteur, chanteur, réalisateur, producteur de cinéma, de télévision et de théâtre franco-russe. Il est aussi homme d'affaires, notamment dans le domaine de la viticulture.
+  </p>
+</MazCard>
 ```
 
 ## Atributes

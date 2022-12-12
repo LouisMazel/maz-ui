@@ -69,9 +69,10 @@ Switch tabs for a second to see events
   }
 
   const options = {
-    immediate: false,
+    immediate: true,
     once: false,
     timeout: 1000,
+    ssr: true,
   }
 
   const { visibility } = useUserVisibility({ callback, options })
@@ -99,9 +100,10 @@ Switch tabs for a second to see events
   }
 
   const options = {
-    immediate: false,
+    immediate: true,
     once: false,
     timeout: 1000,
+    ssr: true,
   }
 
   const { visibility } = useUserVisibility({ callback, options })
@@ -132,6 +134,7 @@ type UserVisibilyStrictOptions = {
   immediate: boolean
   timeout: number
   once: boolean
+  ssr: boolean // if `true`
 }
 ```
 
@@ -142,6 +145,7 @@ const defaultOptions: UserVisibilyOptions = {
   immediate: false,
   timeout: 5000,
   once: false,
+  ssr: false,
 }
 ```
 

@@ -11,6 +11,7 @@ export interface IdleTimeoutStrictOption {
   timeout: number // in milliseconds
   once: boolean
   immediate: boolean
+  ssr: boolean
 }
 
 export type IdleTimeoutOptions = Partial<IdleTimeoutStrictOption>
