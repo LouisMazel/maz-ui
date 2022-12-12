@@ -1,5 +1,5 @@
 <template>
-  <!-- eslint-disable vue/no-v-html -->
+  <!-- eslint-disable -->
   <svg
     v-if="svgElSource"
     ref="svgElem"
@@ -11,8 +11,8 @@
     }"
     :style="`font-size: ${size}`"
     v-html="getSvgContent(svgElSource)"
-  />
-  <!-- eslint-enable vue/no-v-html -->
+  ></svg>
+  <!-- eslint-enable -->
 </template>
 
 <!-- // inheritAttrs: false -->
