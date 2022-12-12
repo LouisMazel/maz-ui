@@ -4,7 +4,7 @@ title: Maz UI - Standalone Components and Tools Library for Vue & Nuxt
 heroImage: /img/maz-ui-illu.png
 heroText: Maz-UI
 tagline: Library of standalone components and tools for Vue & Nuxt (v3.x)
-description: Build your amazing interfaces with Maz UI and its standalone components - standalone components library for Vue.JS & Nuxt.JS
+description: Build amazing interfaces with Maz UI and its standalone components, tools et composables for Vue.JS & Nuxt.JS
 footer: Made by LouisMazel with ❤️
 ---
 
