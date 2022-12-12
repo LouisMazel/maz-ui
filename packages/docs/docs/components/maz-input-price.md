@@ -1,10 +1,15 @@
 ---
-description: MazInputPrice is a stand-alone component replaces the standard html input text and format the text enter according with the currency provided
+title: MazInputPrice
+description: MazInputPrice is a standalone component replaces the standard html input text and format the text enter according with the currency provided
 ---
 
-# MazInputPrice
+# {{ $frontmatter.title }}
 
-> Before you have to import the global css files in your project, follow instructions in [Getting Started](./../guide/getting-started.md)
+{{ $frontmatter.description }}
+
+<!--@include: ./../.vitepress/mixins/getting-started.md-->
+
+<!--@include: ./../.vitepress/mixins/maz-input-props.md-->
 
 ## Basic usage
 
@@ -40,7 +45,6 @@ formattedPrice: {{ formattedPrice }}
     @formatted="formattedPrice = $event"
   />
 </template>
-
 
 <script lang="ts" setup>
   import { ref } from 'vue'

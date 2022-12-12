@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 import {
   UserVisibilyCallback,
   UserVisibilyOptions,
@@ -28,25 +30,22 @@ afterAll(() => {
   instance = undefined
 })
 
-describe('@/plugins/idle-timeout/idle-timeout-handler.ts', () => {
+describe('@package/helpers/user-visibility.ts', () => {
   describe('Given app want trigger user idle', () => {
     describe('When instance is launch', () => {
       it('Then instance is IdleTimeout', async () => {
         expect(instance).toBeInstanceOf(UserVisibility)
         await sleep(DEFAULT_TIMEOUT)
         if (instance) {
-          /* eslint-disable @typescript-eslint/ban-ts-comment */
           // @ts-ignore
           const startSpy = vitest.spyOn(instance, 'addEventListener')
           // @ts-ignore
           instance.addEventListener()
-          /* eslint-enable @typescript-eslint/ban-ts-comment */
           expect(startSpy).toHaveBeenCalled()
         }
       })
 
       it('Then instance emit callback on demand', () => {
-        /* eslint-disable @typescript-eslint/ban-ts-comment */
         // @ts-ignore
         instance?.emitCallback()
         expect(callback).toHaveBeenCalled()

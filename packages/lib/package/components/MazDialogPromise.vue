@@ -33,6 +33,7 @@
 </script>
 
 <script lang="ts" setup>
+  // NEXT: multichoice with props buttons { type: resolve | reject; response: string | boolean; color: string }
   import { type PropType, computed } from 'vue'
   import MazDialog from './MazDialog.vue'
   import MazBtn from './MazBtn.vue'

@@ -120,7 +120,7 @@
   import MazIcon from './MazIcon.vue'
   import type { Color, ModelValueSimple, Position, Size } from './types'
   import ChevronDownIcon from '@package/icons/chevron-down.svg'
-  import { useInstanceUniqId } from '@package/helpers/instance-uniq-id'
+  import { useInstanceUniqId } from '@package/composables/instance-uniq-id.composable'
 
   const instance = getCurrentInstance()
 

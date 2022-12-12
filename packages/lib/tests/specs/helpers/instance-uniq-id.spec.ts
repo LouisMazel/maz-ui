@@ -1,4 +1,4 @@
-import { useInstanceUniqId } from '@package/helpers/instance-uniq-id'
+import { useInstanceUniqId } from '@package/composables/instance-uniq-id.composable'
 import { getCurrentInstance } from 'vue'
 
 let instance: ReturnType<typeof useInstanceUniqId>

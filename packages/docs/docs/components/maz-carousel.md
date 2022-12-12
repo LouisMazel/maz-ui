@@ -1,25 +1,25 @@
 ---
 title: MazCarousel
-description: MazCarousel is a stand-alone component to display and manage items in a row
+description: MazCarousel is a standalone component to display and manage items in a row
 head:
   - - meta
     - name: twitter:title
       content: MazCarousel | Maz-UI
     - name: twitter:description
-      content: MazCarousel is a stand-alone component to display and manage items in a row
+      content: MazCarousel is a standalone component to display and manage items in a row
     - property: og:title
       content: MazCarousel | Maz-UI
     - property: og:description
-      content: MazCarousel is a stand-alone component to display and manage items in a row
+      content: MazCarousel is a standalone component to display and manage items in a row
 ---
 
-# MazCarousel
+# {{ $frontmatter.title }}
 
-> Before you have to import the global css files in your project, follow instructions in [Getting Started](./../guide/getting-started.md)
+{{ $frontmatter.description }}
+
+<!--@include: ./../.vitepress/mixins/getting-started.md-->
 
 ## Basic usage
-
-<br />
 
 <MazCarousel>
   <template #title>

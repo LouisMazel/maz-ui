@@ -1,5 +1,8 @@
 <template>
-  <div class="maz-picker-calendar-month">
+  <div
+    class="maz-picker-calendar-month"
+    :class="{ '--has-padding': !isRangeMode }"
+  >
     <MazPickerCalendarDays
       :locale="locale"
       :first-day-of-week="firstDayOfWeek"
@@ -61,6 +64,8 @@
     set: (value) => emits('update:model-value', value),
   })
 
+  const isRangeMode = computed(() => typeof modelValue.value === 'object')
+
   const hoverredDay = computed({
     get: () => props.hoverredDay,
     set: (value) => emits('update:hoverred-day', value),
@@ -78,7 +83,11 @@
 
 <style lang="postcss" scoped>
   .maz-picker-calendar-month {
-    @apply maz-w-full maz-overflow-hidden maz-p-2;
+    @apply maz-w-full maz-overflow-hidden maz-py-2;
+
+    &.--has-padding {
+      @apply maz-px-2;
+    }
 
     &__days {
       @apply maz-pb-2;

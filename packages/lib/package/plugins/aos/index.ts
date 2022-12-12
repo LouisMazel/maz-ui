@@ -1,10 +1,15 @@
+import { isClient } from '@package/helpers/is-client'
+import type { App } from 'vue'
+import type { Router } from 'vue-router'
+
 const sleep = (ms: number) => {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 export interface AosOptions {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  router?: Record<string, any>
+  routerHook?: (args: any) => () => void
+  router?: Router
   delay?: number
   observer?: IntersectionObserverInit
   animation?: {
@@ -34,7 +39,7 @@ const DEFAULT_OPTIONS: ClassOptions = {
   },
   animation: {
     once: true,
-    duration: 400,
+    duration: 300,
   },
 }
 
@@ -55,10 +60,18 @@ class AosHandler {
     }
   }
 
-  handleObserver = async () => {
+  public runAnimations() {
+    if (isClient()) {
+      return this.handleObserver()
+    } else {
+      console.warn('[MazAos](runAnimations) should be executed on client side')
+    }
+  }
+
+  private async handleObserver() {
     await sleep(this.options.delay)
 
-    const observer = new IntersectionObserver(this.handleIntersect, {
+    const observer = new IntersectionObserver(this.handleIntersect.bind(this), {
       ...this.options.observer,
     })
 
@@ -81,7 +94,10 @@ class AosHandler {
     }
   }
 
-  handleIntersect: IntersectionObserverCallback = (entries, observer) => {
+  private handleIntersect(
+    entries: IntersectionObserverEntry[],
+    observer: IntersectionObserver,
+  ) {
     for (const entry of entries) {
       const target = entry.target as HTMLElement
       const hasChildren =
@@ -139,19 +155,26 @@ class AosHandler {
   }
 }
 
-let instance: AosHandler
+export let instance: AosHandler
 
-const plugin = {
-  install: (_app, options?: AosOptions) => {
-    const { ...opts } = options
-    instance = new AosHandler(opts)
+export const plugin = {
+  install: (app: App, options?: AosOptions) => {
+    instance = new AosHandler(options)
+
+    app.provide('aos', instance)
+
+    if (!isClient()) {
+      return
+    }
 
     if (options?.router) {
-      options.router.afterEach(async () => instance.handleObserver())
+      options.router.afterEach(async () => {
+        instance.runAnimations()
+      })
     } else {
-      instance.handleObserver()
+      instance.runAnimations()
     }
   },
 }
 
-export { instance, plugin, AosHandler }
+export { AosHandler }

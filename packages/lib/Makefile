@@ -6,11 +6,20 @@ lint:
 audit:
 	npm audit
 
+clean:
+	rm -rf node_modules
+
+install:
+	npm i
+
+reinstall:
+	make clean install
+
 clean-build:
 	npm run clean
 
 build:
-	make clean-build && npm run build
+	npm run build
 build-js:
 	npm run build:js
 build-modules:
@@ -25,15 +34,6 @@ build-css:
 	npm run build:css
 build-watch:
 	npm run build:watch
-
-clean:
-	rm -rf node_modules
-
-install:
-	npm i
-
-reinstall:
-	make clean install
 
 test-unit:
 	npm run test:unit

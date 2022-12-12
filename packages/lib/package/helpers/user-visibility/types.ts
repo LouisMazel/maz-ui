@@ -5,6 +5,7 @@ export type UserVisibilyCallback = ({
 }) => void
 
 export type UserVisibilyStrictOptions = {
+  ssr: boolean
   immediate: boolean
   timeout: number
   once: boolean

@@ -2,7 +2,7 @@
   "extends": "@vue/tsconfig/tsconfig.json",
   "compilerOptions": {
     "declaration": true,
-    "declarationDir": "types",
+    "declarationDir": "dist/types",
     "sourceMap": true,
     "lib": ["esnext", "DOM", "DOM.iterable", "scripthost"],
     "strictPropertyInitialization": false,
