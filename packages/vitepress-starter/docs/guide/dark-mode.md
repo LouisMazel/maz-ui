@@ -1,11 +1,12 @@
 ---
+title: Dark mode
 description: Dark mode is fully supported - How it's works ?
 ---
 
-# Dark mode
+# {{ $frontmatter.title }}
 
 ::: tip
-To manage the dark mode, use this composable: [useThemeHandler](./../composables/use-theme-handler.md)
+To let users manage the dark mode, use this composable: [useThemeHandler](./../composables/use-theme-handler.md)
 :::
 
 ## How it's works ?

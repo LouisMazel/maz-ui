@@ -11,7 +11,7 @@
   },
   "devDependencies": {
     "sitemap": "^7.1.1",
-    "vitepress": "^1.0.0-alpha.30",
+    "vitepress": "^1.0.0-alpha.31",
     "vue": "^3.2.45"
   },
   "dependencies": {
@@ -19,7 +19,7 @@
     "chartjs-plugin-datalabels": "^2.1.0",
     "dayjs": "^1.11.5",
     "dropzone": "^5.9.3",
-    "libphonenumber-js": "^1.10.13",
+    "libphonenumber-js": "^1.10.15",
     "maz-ui": "file:../lib/dist",
     "vitepress-plugin-google-analytics": "^1.0.2"
   }

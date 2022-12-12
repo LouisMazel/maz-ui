@@ -27,8 +27,8 @@ export const head: UserConfig['head'] = [
   ],
   ['link', { rel: 'manifest', href: getAssetBaseUrl('/manifest.webmanifest') }],
   ['meta', { name: 'robots', content: 'index, follow' }],
-  ['meta', { name: 'application-name', content: 'Maz UI' }],
-  ['meta', { name: 'apple-mobile-web-app-title', content: 'Maz UI' }],
+  ['meta', { name: 'application-name', content: 'Maz-UI' }],
+  ['meta', { name: 'apple-mobile-web-app-title', content: 'Maz-UI' }],
   [
     'meta',
     { name: 'apple-mobile-web-app-status-bar-style', content: 'black' },
@@ -41,6 +41,7 @@ export const head: UserConfig['head'] = [
     'meta',
     { name: 'twitter:site', content: '@maz__ui' },
   ],
+  ['meta', { name: 'twitter:creator', content: '@mazeel' }],
   [
     'link',
     { rel: 'apple-touch-icon', href: getAssetBaseUrl('/img/icons/apple-touch-icon.png') },
@@ -56,4 +57,9 @@ export const head: UserConfig['head'] = [
   ['meta', { name: 'msapplication-TileColor', content: '#2d89ef' }],
   ['meta', { name: 'theme-color', content: '#ffffff' }],
   ['meta', { name: 'msapplication-TileImage', content: getAssetBaseUrl('/img/maz-ui-preview.jpg') }],
+  ['meta', { name: 'og:image', content: getAssetBaseUrl('/img/maz-ui-preview.jpg') }],
+  ['meta', { name: 'og:site_name', content: 'Maz-UI' }],
+  ['meta', { name: 'og:locale', content: 'en-US' }],
+  ['meta', { name: 'article:author', content: 'Loïc Mazuel' }],
+  // ['script', { src: 'https://www.googletagmanager.com/gtag/js?id=G-EM35TM23ZC', async: 'true' }]
 ]

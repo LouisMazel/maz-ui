@@ -65,17 +65,32 @@ export default defineConfig({
     }
   },
 
-  // transformHead: ({siteConfig, siteData, pageData, title, description, head, content}) => {
+  // og:title
+  // og:url
+  // og:description
+  // og:image
 
-  //   console.log(
-  //     'transformHead',
-  //     { siteConfig, siteData, pageData, title, description, head, content }
-  //   )
+  transformHead: ({siteConfig, siteData, pageData, title, description, head }) => {
 
-  //   const returns: HeadConfig[] = []
+    const baseUrl = 'https://louismazel.github.io'
 
-  //   return returns
-  // },
+    const currentTitle = title ?? pageData.title ?? pageData.frontmatter.title ?? siteData.title
+    const currentDescription = description ?? pageData.frontmatter.description ?? pageData.description ?? siteData.description
+    const currentUrl = `${baseUrl}${siteConfig.site.base}${pageData.relativePath.replace('.md', '')}`
+
+    const pageHead: HeadConfig[] = [
+      ['meta', { name: 'og:url', content: currentTitle }],
+      ['meta', { name: 'og:url', content: currentUrl }],
+      ['meta', { name: 'og:type', content: pageData.relativePath === 'index.md' ? 'website' : 'article' }],
+      ['meta', { name: 'twitter:image:alt', content: currentDescription }],
+      ['meta', { name: 'og:image:alt', content: currentDescription }],
+      ['meta', { name: 'og:updated_time', content: pageData.lastUpdated ? new Date(pageData.lastUpdated).toISOString() : new Date().toISOString() }],
+      ['meta', { name: 'article:modified_time', content: pageData.lastUpdated ? new Date(pageData.lastUpdated).toISOString() : new Date().toISOString() }],
+      ['link', { rel: 'canonical', href: currentUrl }],
+    ]
+
+    return [...head, ...pageHead]
+  },
 
   transformHtml: (_, id, { pageData }) => {
     if (!/[\\/]404\.html$/.test(id)) {

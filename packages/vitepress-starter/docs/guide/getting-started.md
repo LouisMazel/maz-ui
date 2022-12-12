@@ -1,8 +1,9 @@
 ---
+title: Getting Started
 description: Documentation to know how install the maz-ui library
 ---
 
-# Getting Started
+# {{ $frontmatter.title }}
 
 ## Prerequisites
 

@@ -56,7 +56,7 @@ export default defineUserConfig({
       },
     },
   }),
-  
+
   plugins: [
     googleAnalyticsPlugin({
       id: 'G-EM35TM23ZC',
