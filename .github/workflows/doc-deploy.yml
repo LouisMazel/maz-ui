@@ -29,3 +29,4 @@ jobs:
           github_token: ${{ secrets.GH_ACCESS_TOKEN }}
           external_repository: LouisMazel/maz-ui-3
           publish_dir: docs/.vitepress/dist
+          publish_branch: gh-pages # default: gh-pages
