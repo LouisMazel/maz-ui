@@ -1,4 +1,3 @@
-f
 <template>
   <Component
     :is="componentType"
@@ -112,7 +111,7 @@ f
     buttonColor: {
       type: String as PropType<Color>,
       default: 'info',
-      validator: (value: string) => {
+      validator: (value: Color) => {
         return [
           'primary',
           'secondary',
