@@ -42,6 +42,7 @@ export const head: UserConfig['head'] = [
     { name: 'twitter:site', content: '@maz__ui' },
   ],
   ['meta', { name: 'twitter:creator', content: '@mazeel' }],
+  ['meta', { name: 'twitter:image', content: getAssetBaseUrl('/img/maz-ui-preview.jpg') }],
   [
     'link',
     { rel: 'apple-touch-icon', href: getAssetBaseUrl('/img/icons/apple-touch-icon.png') },
