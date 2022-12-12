@@ -1,18 +1,19 @@
 ---
-description: MazDrawer is a standalone component to add a collapsible sidebar
+title: MazDrawer
+description: MazDrawer is a standalone component to add a collapsible sidebar or top and bottom bar
 ---
 
-# MazDrawer
+# {{ $frontmatter.title }}
 
-> Before you have to import the global css files in your project, follow instructions in [Getting Started](./../guide/getting-started.md)
+{{ $frontmatter.description }}
 
-> This component use `<Teleport to="body">`, so you can implement this component everywhere
+<!--@include: ./../.vitepress/mixins/getting-started.md-->
 
-> This component use [MazBackdrop](./maz-backdrop.md), so it inherits all his props
+::: tip
+This component use `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md), so you can implement this component everywhere and it inherits all his props
+:::
 
 ## Basic usage
-
-This component use `<Teleport to="body">`, so you can implement this component everywhere
 
 <MazDrawer variant="top" v-model="isOpenedTop">
   <template #title>

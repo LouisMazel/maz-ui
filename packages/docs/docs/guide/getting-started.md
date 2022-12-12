@@ -1,8 +1,9 @@
 ---
+title: Getting Started
 description: Documentation to know how install the maz-ui library
 ---
 
-# Getting Started
+# {{ $frontmatter.title }}
 
 ## Prerequisites
 
@@ -20,7 +21,7 @@ This section will help you to install the library.
 <NpmBadge package="maz-ui" dist-tag="latest" />
 
 ```bash
-npm install maz-ui
+npm i maz-ui
 ```
 
 ### Import necessary CSS file

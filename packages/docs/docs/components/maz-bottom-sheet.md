@@ -3,17 +3,17 @@ title: MazBottomSheet
 description: MazBottomSheet is a standalone component like a simple dialog but at the bottom of screen
 ---
 
-# MazBottomSheet
+# {{ $frontmatter.title }}
 
-> Before you have to import the global css files in your project, follow instructions in [Getting Started](./../guide/getting-started.md)
+{{ $frontmatter.description }}
 
-> This component use `<Teleport to="body">`, so you can implement this component everywhere
+<!--@include: ./../.vitepress/mixins/getting-started.md-->
 
-> This component use [MazBackdrop](./maz-backdrop.md), so it inherits all his props
+::: tip
+This component use `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md), so you can implement this component everywhere and it inherits all his props
+:::
 
 ## Basic usage
-
-<br />
 
 <MazBtn @click="isOpen = true">Open Bottom Sheet</MazBtn>
 

@@ -3,13 +3,13 @@ title: MazBtn
 description: MazBtn is a standalone component replaces the standard html button with a beautiful design system. Many options like colors, sizes, disabled state, loading state, includes icons. Support of router-link and nuxt-link
 ---
 
-# MazBtn
+# {{ $frontmatter.title }}
 
-> Before you have to import the global css files in your project, follow instructions in [Getting Started](./../guide/getting-started.md)
+{{ $frontmatter.description }}
+
+<!--@include: ./../.vitepress/mixins/getting-started.md-->
 
 ## Basic usage
-
-<br />
 
 <MazBtn>Button</MazBtn>
 
@@ -31,15 +31,15 @@ description: MazBtn is a standalone component replaces the standard html button 
 
 <MazBtn loading>Button</MazBtn>
 
-```vue
-<template>
-  <MazBtn loading>Button</MazBtn>
-</template>
+```html
+<MazBtn loading>Button</MazBtn>
 ```
 
 ### Sizes
 
-> Use the attribute `size` with a value in **{{ sizes.join(', ') }}**
+::: tip
+Use the attribute `size` with a value in **{{ sizes.join(', ') }}**
+:::
 
 <div class="flex items-start gap-05 items-center flex-wrap">
   <MazBtn v-for="size in sizes" :size="size">{{ size }}</MazBtn>
@@ -57,24 +57,24 @@ description: MazBtn is a standalone component replaces the standard html button 
 
 ### Colors
 
-> Use the attribute `color` with a value in this [list](./../guide/colors.md), the component will use this color
+::: tip
+Use the attribute `color` with a value in this [list](./../guide/colors.md), the component will use this color
+:::
 
 <div class="flex items-start gap-05 flex-wrap">
   <MazBtn v-for="{ name } in colorsArray" :color="name">{{ name }}</MazBtn>
 </div>
 
-```vue
-<template>
-  <MazBtn>primary</MazBtn>
-  <MazBtn color="secondary">secondary</MazBtn>
-  <MazBtn color="info">info</MazBtn>
-  <MazBtn color="success">success</MazBtn>
-  <MazBtn color="warning">warning</MazBtn>
-  <MazBtn color="danger">danger</MazBtn>
-  <MazBtn color="white">white</MazBtn>
-  <MazBtn color="black">black</MazBtn>
-  <MazBtn color="transparent">transparent</MazBtn>
-</template>
+```html
+<MazBtn>primary</MazBtn>
+<MazBtn color="secondary">secondary</MazBtn>
+<MazBtn color="info">info</MazBtn>
+<MazBtn color="success">success</MazBtn>
+<MazBtn color="warning">warning</MazBtn>
+<MazBtn color="danger">danger</MazBtn>
+<MazBtn color="white">white</MazBtn>
+<MazBtn color="black">black</MazBtn>
+<MazBtn color="transparent">transparent</MazBtn>
 ```
 
 ### Outline
@@ -85,66 +85,58 @@ description: MazBtn is a standalone component replaces the standard html button 
   <MazBtn v-for="{ name } in colorsArray" :color="name" outline>{{ name }}</MazBtn>
 </div>
 
-```vue
-<template>
-  <MazBtn outline>primary</MazBtn>
-  <MazBtn color="secondary" outline>secondary</MazBtn>
-  <MazBtn color="info" outline>info</MazBtn>
-  <MazBtn color="success" outline>success</MazBtn>
-  <MazBtn color="warning" outline>warning</MazBtn>
-  <MazBtn color="danger" outline>danger</MazBtn>
-  <MazBtn color="white" outline>white</MazBtn>
-  <MazBtn color="black" outline>black</MazBtn>
-  <MazBtn color="transparent" outline>transparent</MazBtn>
-</template>
+```html
+<MazBtn outline>primary</MazBtn>
+<MazBtn color="secondary" outline>secondary</MazBtn>
+<MazBtn color="info" outline>info</MazBtn>
+<MazBtn color="success" outline>success</MazBtn>
+<MazBtn color="warning" outline>warning</MazBtn>
+<MazBtn color="danger" outline>danger</MazBtn>
+<MazBtn color="white" outline>white</MazBtn>
+<MazBtn color="black" outline>black</MazBtn>
+<MazBtn color="transparent" outline>transparent</MazBtn>
 ```
 
 ### Pastel
 
-> It's better in light mode
-
-<br />
+::: tip
+It's better in light mode
+:::
 
 <div class="flex items-start gap-05 rounded maz-p-3 flex-wrap">
   <MazBtn v-for="{ name } in colorsArray" :color="name" pastel>{{ name }}</MazBtn>
 </div>
 
-```vue
-<template>
-  <MazBtn pastel>primary</MazBtn>
-  <MazBtn color="secondary" pastel>secondary</MazBtn>
-  <MazBtn color="info" pastel>info</MazBtn>
-  <MazBtn color="success" pastel>success</MazBtn>
-  <MazBtn color="warning" pastel>warning</MazBtn>
-  <MazBtn color="danger" pastel>danger</MazBtn>
-  <MazBtn color="white" pastel>white</MazBtn>
-  <MazBtn color="black" pastel>black</MazBtn>
-  <MazBtn color="transparent" pastel>transparent</MazBtn>
-</template>
+```html
+<MazBtn pastel>primary</MazBtn>
+<MazBtn color="secondary" pastel>secondary</MazBtn>
+<MazBtn color="info" pastel>info</MazBtn>
+<MazBtn color="success" pastel>success</MazBtn>
+<MazBtn color="warning" pastel>warning</MazBtn>
+<MazBtn color="danger" pastel>danger</MazBtn>
+<MazBtn color="white" pastel>white</MazBtn>
+<MazBtn color="black" pastel>black</MazBtn>
+<MazBtn color="transparent" pastel>transparent</MazBtn>
 ```
 
 ### Rounded
 
-> Rounded button
+<br />
 
 <MazBtn rounded>rounded</MazBtn>
 
-```vue
-<template>
-  <MazBtn rounded>rounded</MazBtn>
-</template>
+```html
+<MazBtn rounded>rounded</MazBtn>
 ```
 
 ### Fab
 
-> Round button
+<br />
 
 <MazBtn fab>fab</MazBtn>
 
-```vue
-<template>
-  <MazBtn fab>fab</MazBtn>
-</template>
+```html
+<MazBtn fab>fab</MazBtn>
 ```
 
 ### Block
@@ -153,10 +145,8 @@ description: MazBtn is a standalone component replaces the standard html button 
 
 <MazBtn block>block</MazBtn>
 
-```vue
-<template>
-  <MazBtn block>block</MazBtn>
-</template>
+```html
+<MazBtn block>block</MazBtn>
 ```
 
 ### Disabled
@@ -165,15 +155,15 @@ description: MazBtn is a standalone component replaces the standard html button 
 
 <MazBtn disabled>disabled</MazBtn>
 
-```vue
-<template>
-  <MazBtn disabled>disabled</MazBtn>
-</template>
+```html
+<MazBtn disabled>disabled</MazBtn>
 ```
 
 ### Icons
 
-> When you use `right-icon` or `left-icon`, the component use [MazIcon](./maz-icon.md)
+::: info
+When you use `right-icon` or `left-icon`, the component use [MazIcon](./maz-icon.md)
+:::
 
 <div class="flex items-start gap-05 rounded flex-wrap">
   <MazBtn left-icon="check">
@@ -187,21 +177,19 @@ description: MazBtn is a standalone component replaces the standard html button 
   </MazBtn>
 </div>
 
-```vue
-<template>
-  <MazBtn left-icon="check">
-    left-icon
-  </MazBtn>
-  <MazBtn right-icon="home">
-    right-icon
-  </MazBtn>
-  <MazBtn left-icon="terminal" right-icon="trash">
-    left-right-icon
-  </MazBtn>
-</template>
+```html
+<MazBtn left-icon="check">
+  left-icon
+</MazBtn>
+<MazBtn right-icon="home">
+  right-icon
+</MazBtn>
+<MazBtn left-icon="terminal" right-icon="trash">
+  left-right-icon
+</MazBtn>
 ```
 
-> Use your own icons
+Use your own icons
 
 <div class="flex items-start gap-05 rounded flex-wrap">
   <MazBtn>
@@ -227,76 +215,74 @@ description: MazBtn is a standalone component replaces the standard html button 
   </MazBtn>
 </div>
 
-```vue
-<template>
-  <MazBtn>
-    <template #left-icon>
-      <MazIcon name="check" />
-    </template>
-    left-icon
-  </MazBtn>
-  <MazBtn>
-    <template #right-icon>
-      <MazIcon name="home" />
-    </template>
-    right-icon
-  </MazBtn>
-  <MazBtn>
-    <template #left-icon>
-      <MazIcon name="terminal" />
-    </template>
-    right-icon
-    <template #right-icon>
-      <MazIcon name="information-circle" />
-    </template>
-  </MazBtn>
-</template>
+```html
+<MazBtn>
+  <template #left-icon>
+    <MazIcon name="check" />
+  </template>
+  left-icon
+</MazBtn>
+<MazBtn>
+  <template #right-icon>
+    <MazIcon name="home" />
+  </template>
+  right-icon
+</MazBtn>
+<MazBtn>
+  <template #left-icon>
+    <MazIcon name="terminal" />
+  </template>
+  right-icon
+  <template #right-icon>
+    <MazIcon name="information-circle" />
+  </template>
+</MazBtn>
 ```
 
 ### Link
 
-> With the attribute `variant="link"`, the button looks like a link but it's a button, so you can use the event `@click`
-<br />
-> Additional prop available `no-underline` & `no-leading`
+::: tip
+With the attribute `variant="link"`, the button looks like a link but it's a button, so you can use the event `@click`
+
+Additional props available `no-underline` & `no-leading`
+:::
 
 <MazBtn variant="link" @click="$emit('click')">Is Link</MazBtn>
 <MazBtn variant="link" @click="$emit('click')" no-underline>Is Link</MazBtn>
 <MazBtn variant="link" @click="$emit('click')" no-leading>Is Link</MazBtn>
 
-```vue
-<template>
-  <MazBtn variant="link" @click="$emit('click')">Is Link</MazBtn>
-  <MazBtn variant="link" @click="$emit('click')" no-underline>Is Link</MazBtn>
-  <MazBtn variant="link" @click="$emit('click')" no-leading>Is Link</MazBtn>
-</template>
+```html
+<MazBtn variant="link" @click="$emit('click')">Is Link</MazBtn>
+<MazBtn variant="link" @click="$emit('click')" no-underline>Is Link</MazBtn>
+<MazBtn variant="link" @click="$emit('click')" no-leading>Is Link</MazBtn>
 ```
 
 ### [HTMLLinkElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement)
 
-> When `href` attribute is provided, the component automatically becomes a `<a href="..." />`
+::: info
+When `href` attribute is provided, the component automatically becomes a `<a href="..." />`
+:::
 
 <MazBtn href="https://www.google.com" target="_blank">Is Button Link</MazBtn>
 
-```vue
-<template>
-  <MazBtn href="https://www.google.com" target="_blank">
-    Is Button Link
-  </MazBtn>
-</template>
+```html
+<MazBtn href="https://www.google.com" target="_blank">
+  Is Button Link
+</MazBtn>
 ```
 
 ### [RouterLink](https://router.vuejs.org/api/#router-link)
 
-> When `to` attribute is provided, the component automatically becomes a `<RouterLink to="..." />`
+::: info
+When `to` attribute is provided, the component automatically becomes a `<RouterLink to="..." />`
+:::
 
 <MazBtn :to="{ path: '/made-with-maz-ui.html' }">Is Router Link</MazBtn>
 
-```vue
-<template>
-  <MazBtn :to="{ path: '/made-with-maz-ui.html' }">
-    Is RouterLink
-  </MazBtn>
-</template>
+```html
+<MazBtn :to="{ path: '/made-with-maz-ui.html' }">
+  Is RouterLink
+</MazBtn>
 ```
 
 ## Props & Events emitted

@@ -1,21 +1,16 @@
 {
   "compilerOptions": {
-    "composite": true,
-    "declaration": true,
-    "declarationMap": false,
-    "lib": ["DOM", "ESNEXT"],
-    "moduleResolution": "node",
-    "newLine": "lf",
     "module": "esnext",
-    "noEmitOnError": true,
-    "noImplicitAny": false,
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "sourceMap": false,
+    "target": "esnext",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
     "strict": true,
-    "strictNullChecks": true,
-    "target": "ES2018",
+    "skipLibCheck": true,
+    "noUnusedLocals": true,
+    "resolveJsonModule": true,
+    "jsx": "preserve",
+    "lib": ["ESNext", "DOM"]
   },
-  "include": ["docs/.vuepress/**/*", "types"],
-  "exclude": ["node_modules", ".temp", "dist"]
+  "exclude": ["**/node_modules/**", "**/dist/**"],
+  "include": ["docs/.vitepress/**/*", "types"],
 }

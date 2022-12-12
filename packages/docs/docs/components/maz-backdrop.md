@@ -1,9 +1,15 @@
 ---
-description: MazBackdrop is a standalone component to manage all your
+description: MazBackdrop is a standalone component to manage components that need a backdrop
 ---
 
-# MazBackdrop
+# {{ $frontmatter.title }}
 
-> This component use `<Teleport to="body">`, so you can implement this component everywhere
+{{ $frontmatter.description }}
+
+<!--@include: ./../.vitepress/mixins/getting-started.md-->
+
+::: tip
+This component use `<Teleport to="body">`, so you can implement this component everywhere
+:::
 
 <ComponentPropDoc component="MazBackdrop" />

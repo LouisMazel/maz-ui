@@ -3,24 +3,24 @@ title: MazDialog
 description: MazDialog is a standalone dialog component to show important informations to the user or propose specific action. Many options available. You can hide the header or the footer, full-size layout, differents states etc.
 ---
 
-# MazDialog
+# {{ $frontmatter.title }}
 
-> Before you have to import the global css files in your project, follow instructions in [Getting Started](./../guide/getting-started.md)
+{{ $frontmatter.description }}
 
-> This component use `<Teleport to="body">`, so you can implement this component everywhere
+<!--@include: ./../.vitepress/mixins/getting-started.md-->
 
-> This component use [MazBackdrop](./maz-backdrop.md), so it inherits all his props
+::: tip
+This component use `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md), so you can implement this component everywhere and it inherits all his props
+:::
 
 ## Basic usage
 
-<br />
-
 <MazBtn @click="isOpen = true">Open Dialog</MazBtn>
 
-<MazDialog v-model="isOpen">
-  <div class="maz-text-center maz-w-full">
+<MazDialog v-model="isOpen" title="Dialog Title">
+  <p>
     Your content
-  </div>
+  </p>
   <template #footer>
     <MazBtn @click="isOpen = false">
       Confirm
@@ -37,10 +37,10 @@ description: MazDialog is a standalone dialog component to show important inform
 <template>
   <MazBtn @click="isOpen = true">Open Dialog</MazBtn>
 
-  <MazDialog v-model="isOpen">
-    <div class="maz-text-center maz-w-full">
+  <MazDialog v-model="isOpen" title="Dialog Title">
+    <p>
       Your content
-    </div>
+    </p>
     <template #footer>
       <MazBtn @click="isOpen = false">
         Confirm

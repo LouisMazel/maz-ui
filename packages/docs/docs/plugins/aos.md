@@ -1,85 +1,92 @@
 ---
+title: animation on scroll (aos)
 description: Plugin to animate elements on your page as you scroll.
 ---
 
-# animation on scroll (aos)
+# {{ $frontmatter.title }}
 
-> Plugin to animate elements on your page as you scroll.
+{{ $frontmatter.description }}
 
+::: tip
 This plugin use the browser native [Intersection Observer API](https://developer.mozilla.org/fr/docs/Web/API/Intersection_Observer_API)
+:::
 
 ## Basic usage
 
-<br />
-
 <MazCard overflow-hidden data-maz-aos="scale-out" id="parentCard">
-  <MazAvatar
-    data-maz-aos-delay="300"
-    data-maz-aos="scale-in"
-    size="2rem"
-    src="https://pbs.twimg.com/profile_images/598181608198381570/-cFG43y2_400x400.jpg"
-  />
-  <h1
-    data-maz-aos="slide-right"
-    data-maz-aos-delay="600"
-    data-maz-aos-anchor="#parentCard"
-    style="margin-top: 12px; margin-bottom: 12px;"
-  >
-    Gérard Depardieu
-  </h1>
-  <p
-    data-maz-aos="zoom-in-left"
-    data-maz-aos-delay="900"
-    style="margin-top: 0"
-    class="maz-text-muted"
-  >
-    Actor
-  </p>
-  <p
-    data-maz-aos="flip-left"
-    data-maz-aos-delay="1200"
-    data-maz-aos-duration="2000"
-    style="margin-top: 0"
-  >
-    Gérard Depardieu, né le 27 décembre 1948 à Châteauroux, est un acteur, chanteur, réalisateur, producteur de cinéma, de télévision et de théâtre franco-russe. Il est aussi homme d'affaires, notamment dans le domaine de la viticulture.
-  </p>
-</MazCard>
-
-```vue
-<template>
-  <MazCard overflow-hidden data-maz-aos="scale-out" id="parentCard">
+  <div class="maz-flex" style="display: flex; align-items: start; gap: 1rem; margin-bottom: 1rem;">
     <MazAvatar
       data-maz-aos-delay="300"
       data-maz-aos="scale-in"
       size="2rem"
       src="https://pbs.twimg.com/profile_images/598181608198381570/-cFG43y2_400x400.jpg"
     />
-    <h1
-      data-maz-aos="slide-right"
-      data-maz-aos-delay="600"
-      data-maz-aos-anchor="#parentCard"
-      style="margin-top: 12px; margin-bottom: 12px;"
-    >
-      Gérard Depardieu
-    </h1>
-    <p
-      data-maz-aos="zoom-in-left"
-      data-maz-aos-delay="900"
-      style="margin-top: 0"
-      class="maz-text-muted"
-    >
-      Actor
-    </p>
-    <p
-      data-maz-aos="flip-left"
-      data-maz-aos-delay="1200"
-      data-maz-aos-duration="2000"
-      style="margin-top: 0"
-    >
-      Gérard Depardieu, né le 27 décembre 1948 à Châteauroux, est un acteur, chanteur, réalisateur, producteur de cinéma, de télévision et de théâtre franco-russe. Il est aussi homme d'affaires, notamment dans le domaine de la viticulture.
-    </p>
-  </MazCard>
-</template>
+    <div>
+      <h1
+        data-maz-aos="fade-down"
+        data-maz-aos-delay="600"
+        data-maz-aos-anchor="#parentCard"
+        style="margin: 0;"
+      >
+        Gérard Depardieu
+      </h1>
+      <p
+        data-maz-aos="zoom-in-left"
+        data-maz-aos-delay="900"
+        style="margin: 0"
+        class="maz-text-muted"
+      >
+        Actor
+      </p>
+    </div>
+  </div>
+  <p
+    data-maz-aos="flip-up"
+    data-maz-aos-delay="1200"
+    data-maz-aos-duration="1000"
+    style="margin: 0"
+  >
+    Gérard Depardieu, né le 27 décembre 1948 à Châteauroux, est un acteur, chanteur, réalisateur, producteur de cinéma, de télévision et de théâtre franco-russe. Il est aussi homme d'affaires, notamment dans le domaine de la viticulture.
+  </p>
+</MazCard>
+
+```html{1,11}
+<MazCard overflow-hidden data-maz-aos="scale-out" id="parentCard">
+  <div class="maz-flex" style="display: flex; align-items: start; gap: 1rem; margin-bottom: 1rem;">
+    <MazAvatar
+      data-maz-aos-delay="300"
+      data-maz-aos="scale-in"
+      size="2rem"
+      src="https://pbs.twimg.com/profile_images/598181608198381570/-cFG43y2_400x400.jpg"
+    />
+    <div>
+      <h1
+        data-maz-aos="fade-down"
+        data-maz-aos-delay="600"
+        data-maz-aos-anchor="#parentCard"
+        style="margin: 0;"
+      >
+        Gérard Depardieu
+      </h1>
+      <p
+        data-maz-aos="zoom-in-left"
+        data-maz-aos-delay="900"
+        style="margin: 0"
+        class="maz-text-muted"
+      >
+        Actor
+      </p>
+    </div>
+  </div>
+  <p
+    data-maz-aos="flip-up"
+    data-maz-aos-delay="1200"
+    data-maz-aos-duration="1000"
+    style="margin: 0"
+  >
+    Gérard Depardieu, né le 27 décembre 1948 à Châteauroux, est un acteur, chanteur, réalisateur, producteur de cinéma, de télévision et de théâtre franco-russe. Il est aussi homme d'affaires, notamment dans le domaine de la viticulture.
+  </p>
+</MazCard>
 ```
 
 ## Atributes
@@ -87,9 +94,9 @@ This plugin use the browser native [Intersection Observer API](https://developer
 | Attribute | Description | Example value | Default value |
 |---------------------------|-------------|---------------|---------|
 | data-maz-aos | animation name | fade-up | - |
-| data-maz-aos-duration | *Duration of animation (ms) | 50 to 3000 | 400 |
+| data-maz-aos-duration | *Duration of animation (ms) | 50 to 3000 (with step of 50) | 300 |
 | data-maz-aos-easing | Choose timing function to ease elements in different ways | ease-in-sine | linear |
-| data-maz-aos-delay | Delay animation (ms) | 50 to 3000 | 0 |
+| data-maz-aos-delay | Delay animation (ms) | 50 to 3000 (with step of 50) | 0 |
 | data-maz-aos-anchor | Anchor element, whose offset will be counted to trigger animation instead of actual elements offset. ONLY with ID attribute | #selector | undefined |
 | data-maz-aos-once | Choose wheter animation should fire once, or every time you scroll up/down to element | true | false |
 
@@ -237,6 +244,37 @@ export default ({ vueApp, $router: router }) => {
 }
 ```
 
+### Without router
+
+You can run animations programatically with the composable
+
+```vue
+<template>
+  <div data-maz-aos="scale-out" id="parentCard">
+    <p
+      data-maz-aos-delay="300"
+      data-maz-aos="scale-in"
+      size="2rem"
+      src="https://pbs.twimg.com/profile_images/598181608198381570/-cFG43y2_400x400.jpg"
+    >
+      Gérard Depardieu, né le 27 décembre 1948 à Châteauroux, est un acteur, chanteur, réalisateur, producteur de cinéma, de télévision et de théâtre franco-russe. Il est aussi homme d'affaires, notamment dans le domaine de la viticulture.
+    </p>
+  </div>
+</template>
+
+<script lang="ts" setup>
+  import { onMounted } from 'vue'
+  import { useAos } from 'maz-ui'
+
+  const { aos } = useAos()
+
+  onMounted(() => {
+    // should be run on client side
+    aos.runAnimations()
+  })
+</script>
+```
+
 ## Global Options
 
 ```ts
@@ -249,7 +287,7 @@ export interface AosOptions {
     /* scope animation to specific parent element */
     root?: Element | Document | null; // DEFAULT: undefined
     /* margin around elements to trigger the animations */
-    rootMargin?: string; // DEFAULT: undefined
+    rootMargin?: string; // DEFAULT: undefined - Ex: '100px'
     /* Ratio concerponding to the element size */
     threshold?: number | number[]; // DEFAULT: 0.2
   }

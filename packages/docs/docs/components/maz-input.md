@@ -3,19 +3,22 @@ title: MazInput
 description: MazInput is a standalone component replaces the standard html input text with a beautiful design system. Many options like colors, sizes, disabled, loading, error, warning, valid states, error messages, includes icons.
 ---
 
-# MazInput
+# {{ $frontmatter.title }}
 
-> Before you have to import the global css file in your project, follow instructions in [Getting Started](./../guide/getting-started.md)
+{{ $frontmatter.description }}
+
+<!--@include: ./../.vitepress/mixins/getting-started.md-->
 
 ## Basic usage
 
-<br />
-
-<MazInput v-model="inputValue" label="Label" name="firstname" id="first" />
+<MazInput v-model="inputValue" label="Label" name="firstname" />
 
 ```vue
 <template>
-  <MazInput v-model="inputValue" label="Label" />
+  <MazInput
+    v-model="inputValue"
+    label="Label"
+  />
 </template>
 
 <script setup>
@@ -32,71 +35,98 @@ description: MazInput is a standalone component replaces the standard html input
 
 <br />
 
-<MazInput v-model="inputValue" label="Label" type="password" name="password" id="seconde" />
+<MazInput v-model="inputValue" label="Label" type="password" name="password" />
 
-```vue
-<template>
-  <MazInput v-model="inputValue" label="Label" type="password" />
-</template>
+```html
+<MazInput
+  v-model="inputValue"
+  label="Label"
+  type="password"
+/>
 ```
 
 ### Placeholder
 
 <br />
 
-<MazInput v-model="inputValue" placeholder="placeholder" id="placeholder" />
+<MazInput placeholder="placeholder" />
 
-```vue
-<template>
-  <MazInput placeholder="placeholder" id="placeholder" />
-</template>
+```html
+<MazInput
+  placeholder="placeholder"
+/>
 ```
 
 ### Required
 
 > Will add `*` charac to label and placeholder
 
-<MazInput v-model="inputValue"  id="required" label="label required" required />
+<MazInput
+  label="label required"
+  required
+/>
 
-```vue
-<template>
-  <MazInput v-model="inputValue"  id="required" label="label required" required />
-</template>
+```html
+<MazInput
+  label="label required"
+  required
+/>
 ```
 
 ### Disabled
 
 <br />
 
-<MazInput v-model="inputValue"  id="disabled" label="label disabled" disabled />
+<MazInput
+  v-model="inputValue"
+  label="label disabled"
+  disabled
+/>
 
-```vue
-<template>
-  <MazInput v-model="inputValue"  id="disabled" label="label disabled" disabled />
-</template>
+```html
+<MazInput
+  v-model="inputValue"
+  label="label disabled"
+  disabled
+/>
 ```
 
 ### Hint
 
 > Will replace the label, usefull to show error message
 
-<MazInput v-model="inputValue"  id="hint" label="label hint" hint="An error occured" error />
+<MazInput
+  v-model="inputValue"
+  label="label hint"
+  hint="An error occured"
+  error
+/>
 
-```vue
-<template>
-  <MazInput v-model="inputValue"  id="hint" label="label hint" hint="An error occured" error />
-</template>
+```html
+<MazInput
+  v-model="inputValue"
+  label="label hint"
+  hint="An error occured"
+  error
+/>
 ```
 
 ### Icons
 
-> When you use `right-icon` or `left-icon`, the component use [MazIcon](./maz-icon.md)
+::: info
+When you use `right-icon` or `left-icon`, the component use [MazIcon](./maz-icon.md)
+:::
 
-<MazInput v-model="inputValue"  id="icons" label="label icons" left-icon="cash" right-icon="user" />
+<MazInput
+  v-model="inputValue"
+  label="label icons"
+  left-icon="cash"
+  right-icon="user"
+  />
 
 > Use your own icons
 
-<MazInput v-model="inputValue"  id="icons-own" label="label icons">
+<MazInput v-model="inputValue" label="label icons">
   <template #left-icon>
     <MazIcon name="check" />
   </template>
@@ -105,13 +135,17 @@ description: MazInput is a standalone component replaces the standard html input
   </template>
 </MazInput>
 
-```vue
-<template>
-  <MazInput v-model="inputValue"  id="icons" label="label icons" left-icon="cash" right-icon="user" />
+```html
+<MazInput
+  v-model="inputValue"
+  label="label icons"
+  left-icon="cash"
+  right-icon="user"
+/>
 
-  <!-- or -->
+<!-- or -->
 
-  <MazInput v-model="inputValue"  id="icons" label="label icons">
+<MazInput v-model="inputValue" label="label icons">
   <template #left-icon>
     <MazIcon name="check" />
   </template>
@@ -119,39 +153,59 @@ description: MazInput is a standalone component replaces the standard html input
     <MazIcon name="user-group" />
   </template>
 </MazInput>
-</template>
+```
+
+### Auto focus
+
+> Will focus automatically the component
+
+<MazInput
+  v-model="inputValue"
+  label="label auto-focus"
+/>
+
+```html
+<MazInput
+  v-model="inputValue"
+  label="label auto-focus"
+  auto-focus
+/>
 ```
 
 ### No radius
 
 > Will remove the border radius
 
-<MazInput v-model="inputValue"  id="no-radius" label="label no-radius" no-radius />
+<MazInput
+  v-model="inputValue"
+  label="label no-radius"
+  no-radius
+/>
 
-```vue
-<template>
-  <MazInput v-model="inputValue"  id="no-radius" label="label no-radius" auto-focus />
-</template>
+```html
+<MazInput
+  v-model="inputValue"
+  label="label no-radius"
+  no-radius
+/>
 ```
 
 ### Debounce
 
 > The value emit by the input will be delayed, usefull for searching
 
-<MazInput v-model="inputValue" id="debounce" label="label debounce" debounce :debounce-delay="3000" />
+<MazInput v-model="inputValue" label="label debounce" debounce :debounce-delay="3000" />
 
 input value: {{ inputValue ?? 'null' }}
 
-```vue
-<template>
-  <!-- 3000ms = 3 secondes -->
-  <MazInput v-model="inputValue"
-    id="debounce"
-    label="label debounce"
-    debounce
-    :debounce-delay="3000"
-  />
-</template>
+```html
+<!-- 3000ms = 3 secondes -->
+<MazInput
+  v-model="inputValue"
+  label="label debounce"
+  debounce
+  :debounce-delay="3000"
+/>
 ```
 
 ### Sizes
@@ -166,74 +220,117 @@ input value: {{ inputValue ?? 'null' }}
     :label="['mini', 'xs'].includes(size) ? undefined : size"
     :placeholder="['mini', 'xs'].includes(size) ? size : undefined"
     :size="size"
-    :id="size"
   />
 </div>
 
 ```vue
 <template>
-  <MazInput v-for="size in sizes" :key="size" v-model="inputValue" :label="size" :size="size" :id="size" />
+  <MazInput
+    v-for="size in sizes"
+    :key="size"
+    v-model="inputValue"
+    :label="size"
+    :size="size"
+  />
 </template>
-<script>
+
+<script setup>
   const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 </script>
 ```
 
 ### Colors
 
-> Click on each input to show colors
+::: tip
+Click on each input to show colors
+:::
 
-<br />
-
-> Use the attribute `color` with a value in this [list](./../guide/colors.md), the component will use this color
+::: info
+Use the attribute `color` with a value in this [list](./../guide/colors.md), the component will use this color
+:::
 
 <div class="flex flex-col gap-05">
-  <MazInput v-for="{ name } in colorsArray" :key="name" v-model="inputValue" :label="name" :color="name" :id="name" />
+  <MazInput
+    v-for="{ name } in colorsArray"
+    :key="name"
+    v-model="inputValue"
+    :label="name"
+    :color="name"
+  />
 </div>
 
 ```vue
 <template>
-  <MazInput v-model="inputValue" label="primary" color="primary" id="primary" />
+  <MazInput
+    v-for="{ name } in colorsArray"
+    :key="name"
+    v-model="inputValue"
+    :label="name"
+    :color="name"
+  />
 </template>
+
+<script setup>
+  const colors = {
+    primary: { name: 'primary', hex: '#1e90ff' },
+    secondary: { name: 'secondary', hex: '#1cd1a1' },
+    info: { name: 'info', hex: '#17a2b8' },
+    success: { name: 'success', hex: '#9acd32' },
+    warning: { name: 'warning', hex: '#fcb731' },
+    danger: { name: 'danger', hex: '#ff6d6a' },
+    white: { name: 'white', hex: '#fff' },
+    black: { name: 'black', hex: '#000' },
+  }
+</script>
 ```
 
 ### State
 
-#### Error
-
 <br />
 
-<MazInput v-model="inputValue" label="Label" error id="error-state" />
+#### Error
+
+<MazInput v-model="inputValue" label="Label" error />
 
 #### Warning
 
-<br />
-
-<MazInput v-model="inputValue" label="Label" warning id="warning-state" />
+<MazInput v-model="inputValue" label="Label" warning />
 
 #### Success
 
-<br />
+<MazInput v-model="inputValue" label="Label" success />
 
-<MazInput v-model="inputValue" label="Label" success id="success-state" />
-
-```vue
-<template>
-  <MazInput v-model="inputValue" label="Label" error id="error-state" />
-  <MazInput v-model="inputValue" label="Label" warning id="warning-state" />
-  <MazInput v-model="inputValue" label="Label" success id="success-state" />
-</template>
+```html
+<MazInput
+  v-model="inputValue"
+  label="Label"
+  error
+/>
+<MazInput
+  v-model="inputValue"
+  label="Label"
+  warning
+/>
+<MazInput
+  v-model="inputValue"
+  label="Label"
+  success
+/>
 ```
 
 ### Valid Button
 
 <br />
 
-<MazInput v-model="inputValue" label="Label" valid-button id="valid-button" />
+<MazInput v-model="inputValue" label="Label" valid-button />
 
 ```vue
 <template>
-  <MazInput v-model="inputValue" label="Label" valid-button id="valid-button" />
+  <MazInput
+    v-model="inputValue"
+    label="Label"
+    valid-button
+  />
 </template>
 ```
 

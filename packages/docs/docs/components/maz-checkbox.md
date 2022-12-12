@@ -3,9 +3,11 @@ title: MazCheckbox
 description: MazCheckbox is a standalone component replaces the standard html input checkbox. Color option available
 ---
 
-# MazCheckbox
+# {{ $frontmatter.title }}
 
-> Before you have to import the global css files in your project, follow instructions in [Getting Started](./../guide/getting-started.md)
+{{ $frontmatter.description }}
+
+<!--@include: ./../.vitepress/mixins/getting-started.md-->
 
 <MazCheckbox v-for="color in colors" :color="color" :id="color" :name="color" :key="color" v-model="inputValue" style="margin-bottom: 12px;">
   {{ color }}

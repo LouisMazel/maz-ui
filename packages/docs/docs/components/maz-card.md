@@ -3,13 +3,13 @@ title: MazCard
 description: MazCard is a standalone component to display some texts, images and you can add buttons actions
 ---
 
-# MazCard
+# {{ $frontmatter.title }}
 
-> Before you have to import the global css files in your project, follow instructions in [Getting Started](./../guide/getting-started.md)
+{{ $frontmatter.description }}
+
+<!--@include: ./../.vitepress/mixins/getting-started.md-->
 
 ## Basic usage
-
-<br />
 
 <MazCard :images="images" :gallery-height="400" >
   <template #title>

@@ -1,12 +1,15 @@
 ---
+title: MazInputNumber
 description: MazInputNumber is a standalone component replaces the standard html input text and format the number according with the locale provided
 ---
 
-# MazInputNumber
+# {{ $frontmatter.title }}
 
-MazInputNumber is a standalone component replaces the standard html input text and format the text enter according with the currency provided
+{{ $frontmatter.description }}
 
-> Before you have to import the global css files in your project, follow instructions in [Getting Started](./../guide/getting-started.md)
+<!--@include: ./../.vitepress/mixins/getting-started.md-->
+
+<!--@include: ./../.vitepress/mixins/maz-input-props.md-->
 
 ## Basic usage
 
@@ -39,6 +42,7 @@ numberValue: {{ numberValue }}
     color="secondary"
   />
 </template>
+
 <script lang="ts" setup>
   import { ref } from 'vue'
   import MazInputNumber from 'maz-ui/components/MazInputNumber'

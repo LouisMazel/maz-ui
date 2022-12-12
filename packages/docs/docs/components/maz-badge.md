@@ -3,13 +3,13 @@ title: MazBadge
 description: MazBadge is a standalone component to show short text in colored container
 ---
 
-# MazBadge
+# {{ $frontmatter.title }}
 
-> Before you have to import the global css files in your project, follow instructions in [Getting Started](./../guide/getting-started.md)
+{{ $frontmatter.description }}
+
+<!--@include: ./../.vitepress/mixins/getting-started.md-->
 
 ## Basic usage
-
-<br />
 
 <MazBadge>
   Badge

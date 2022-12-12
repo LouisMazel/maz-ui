@@ -1,14 +1,15 @@
 ---
+title: MazStepper
 description: MazStepper is a standalone UI component to
 ---
 
-# MazStepper
+# {{ $frontmatter.title }}
 
-> Before you have to import the global css files in your project, follow instructions in [Getting Started](./../guide/getting-started.md)
+{{ $frontmatter.description }}
+
+<!--@include: ./../.vitepress/mixins/getting-started.md-->
 
 ## Basic usage
-
-<br />
 
 <MazStepper auto-validated-steps>
   <template #title-1>

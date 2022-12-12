@@ -1,27 +1,27 @@
 ---
 title: MazRadioButtons
-description: MazRadioButtons is a standalone component to select a value in a list
+description: MazRadioButtons is a standalone component to select a value in a list. Made with native HTMLInputElement type radio
 ---
 
-# MazRadioButtons
+# {{ $frontmatter.title }}
 
-MazRadioButtons is a standalone component to select a value in a list
+{{ $frontmatter.description }}
 
-> Before you have to import the global css files in your project, follow instructions in [Getting Started](./../guide/getting-started.md)
+<!--@include: ./../.vitepress/mixins/getting-started.md-->
 
 ## Basic usage
 
 Select a competition
 
 <MazRadioButtons
-  v-model="competitionSelected"
+  v-model="selectedCompetition"
   :options="competitions"
 />
 
 ```vue
 <template>
   <MazRadioButtons
-    v-model="competitionSelected"
+    v-model="selectedCompetition"
     :options="competitions"
   />
 </template>
@@ -31,7 +31,7 @@ Select a competition
 
   import MazRadioButtons from 'maz-ui/components/MazRadioButtons'
 
-  const competitionSelected = ref<string>()
+  const selectedCompetition = ref<string>()
 
    const competitions = [
     {
@@ -92,8 +92,9 @@ Select a competition
 
 <div>
   <MazRadioButtons
-    v-model="competitionSelected"
+    v-model="selectedCompetition"
     :options="competitions"
+    color="secondary"
   >
     <template #default="{ option, selected }">
       <div style="display: flex;">
@@ -116,13 +117,40 @@ Select a competition
   </MazRadioButtons>
 </div>
 
+```html
+<MazRadioButtons
+  v-model="selectedCompetition"
+  :options="competitions"
+  color="secondary"
+>
+  <template #default="{ option, selected }">
+    <div style="display: flex;">
+      <MazAvatar
+        v-if="option.areaEnsignUrl"
+        :src="option.areaEnsignUrl"
+        style="margin-right: 16px;"
+        size="0.8rem"
+      />
+      <div style="display: flex; flex-direction: column;">
+        <span>
+          {{ option.label }}
+        </span>
+        <span :class="{ 'maz-text-muted': !selected }">
+          {{ option.areaName }}
+        </span>
+      </div>
+    </div>
+  </template>
+</MazRadioButtons>
+```
+
 ## Orientation - Column
 
 Select a competition
 
 <div>
   <MazRadioButtons
-    v-model="competitionSelected"
+    v-model="selectedCompetition"
     :options="competitions"
     orientation="col"
   >
@@ -147,10 +175,12 @@ Select a competition
   </MazRadioButtons>
 </div>
 
+::: details View code
+
 ```vue
 <template>
   <MazRadioButtons
-    v-model="competitionSelected"
+    v-model="selectedCompetition"
     :options="competitions"
     orientation="col | row"
   >
@@ -181,7 +211,7 @@ Select a competition
   import MazRadioButtons from 'maz-ui/components/MazRadioButtons'
   import MazAvatar from 'maz-ui/components/MazAvatar'
 
-  const competitionSelected = ref<string>()
+  const selectedCompetition = ref<string>()
 
   const competitions = [
     {
@@ -236,10 +266,12 @@ Select a competition
 </script>
 ```
 
+:::
+
 <script lang="ts" setup>
   import { ref } from 'vue'
 
-  const competitionSelected = ref<string>()
+  const selectedCompetition = ref<string>()
 
   const competitions = [
     {

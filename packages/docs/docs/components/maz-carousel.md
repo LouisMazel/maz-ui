@@ -13,13 +13,13 @@ head:
       content: MazCarousel is a standalone component to display and manage items in a row
 ---
 
-# MazCarousel
+# {{ $frontmatter.title }}
 
-> Before you have to import the global css files in your project, follow instructions in [Getting Started](./../guide/getting-started.md)
+{{ $frontmatter.description }}
+
+<!--@include: ./../.vitepress/mixins/getting-started.md-->
 
 ## Basic usage
-
-<br />
 
 <MazCarousel>
   <template #title>

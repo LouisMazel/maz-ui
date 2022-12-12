@@ -1,17 +1,20 @@
 ---
+title: MazDropzone
 description: MazDropzone is a standalone component to help user upload different type of files with a beautiful design system. It works with dropzone.js and is not SSR compatible with Nuxt.JS
 ---
 
-# MazDropzone
+# {{ $frontmatter.title }}
 
-> Before you have to import the global css files in your project, follow instructions in [Getting Started](./../guide/getting-started.md)
+{{ $frontmatter.description }}
+
+<!--@include: ./../.vitepress/mixins/getting-started.md-->
 
 To use this component, you have to install the dependency `dropzone`
 
 <NpmBadge package="dropzone" dist-tag="5" />
 
 ```bash
-npm install dropzone@5
+npm install dropzone@^5.9.3
 ```
 
 ## Basic usage
@@ -23,9 +26,10 @@ npm install dropzone@5
   @success="success"
   @sending="loading = true"
   @complete="loading = false"
+  style="margin-bottom: 20px;"
 />
 
-<p v-if="errorMessage" style="color: red; text-align: center;">
+<p v-if="errorMessage" style="color: red; text-align: center; margin: 20px 0;">
   {{ errorMessage }}
 </p>
 

@@ -1,14 +1,15 @@
 ---
-description: MazTransitionExpand is a standalone component replaces the standard html button with a beautiful design system. Many options like colors, sizes, disabled state, loading state, includes icons. Support of router-link and nuxt-link
+title: MazTransitionExpand
+description: MazTransitionExpand is a standalone component to collapse content with animation
 ---
 
-# MazTransitionExpand
+# {{ $frontmatter.title }}
 
-> Before you have to import the global css files in your project, follow instructions in [Getting Started](./../guide/getting-started.md)
+{{ $frontmatter.description }}
+
+<!--@include: ./../.vitepress/mixins/getting-started.md-->
 
 ## Basic usage
-
-<br />
 
 <MazBtn @click="isShown = !isShown">Toggle content</MazBtn>
 

@@ -1,18 +1,19 @@
 ---
 title: MazAvatar
-description: MazAvatar is a standalone component replaces the standard html button with a beautiful design system. Many options like colors, sizes, disabled state, loading state, includes icons. Support of router-link and nuxt-link
-image: /img/maz-ui-illu.png
+description: MazAvatar is a standalone component to display images or svgs in a wrapper
 ---
 
-# MazAvatar
+# {{ $frontmatter.title }}
 
-> Before you have to import the global css files in your project, follow instructions in [Getting Started](./../guide/getting-started.md)
+{{ $frontmatter.description }}
 
-> This component uses [vLazyImg](./../directives/lazy-img.md) directive
+<!--@include: ./../.vitepress/mixins/getting-started.md-->
+
+::: tip
+This component uses [vLazyImg](./../directives/lazy-img.md) directive
+:::
 
 ## Basic usage
-
-<br />
 
 <MazAvatar src="https://pbs.twimg.com/profile_images/598181608198381570/-cFG43y2_400x400.jpg" />
 
@@ -28,7 +29,9 @@ image: /img/maz-ui-illu.png
 
 ## Options
 
-> See all options props [here](#props-events-emitted)
+::: tip
+See all options props [here](#props-events-emitted)
+:::
 
 <div class="flex space-between gap-05 items-center flex-wrap">
   <MazAvatar
