@@ -7,7 +7,7 @@ description: MazAvatar is a standalone component to display images or svgs in a 
 
 {{ $frontmatter.description }}
 
-<!--@include: ./../mixins/getting-started.md-->
+<!--@include: ./../.vitepress/mixins/getting-started.md-->
 
 ::: tip
 This component uses [vLazyImg](./../directives/lazy-img.md) directive

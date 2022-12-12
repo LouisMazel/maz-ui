@@ -7,7 +7,7 @@ description: MazDropzone is a standalone component to help user upload different
 
 {{ $frontmatter.description }}
 
-<!--@include: ./../mixins/getting-started.md-->
+<!--@include: ./../.vitepress/mixins/getting-started.md-->
 
 To use this component, you have to install the dependency `dropzone`
 

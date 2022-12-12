@@ -7,7 +7,7 @@ description: MazCard is a standalone component to display some texts, images and
 
 {{ $frontmatter.description }}
 
-<!--@include: ./../mixins/getting-started.md-->
+<!--@include: ./../.vitepress/mixins/getting-started.md-->
 
 ## Basic usage
 

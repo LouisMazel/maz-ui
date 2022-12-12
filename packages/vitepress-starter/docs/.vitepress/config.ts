@@ -5,7 +5,7 @@ import { createWriteStream } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { SitemapStream } from 'sitemap'
 
-const links: { url: string, lastmod?: number }[] = []
+const links: { url: string, lastmod?: number, changefreq: string }[] = []
 
 export default defineConfig({
   lang: 'en-US',
@@ -81,7 +81,8 @@ export default defineConfig({
     if (!/[\\/]404\.html$/.test(id)) {
       links.push({
         url: pageData.relativePath.replace(/((^|\/)index)?\.md$/, '$2'),
-        lastmod: pageData.lastUpdated
+        lastmod: pageData.lastUpdated,
+        changefreq: 'daily'
       })
     }
   },

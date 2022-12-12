@@ -7,9 +7,9 @@ description: MazInputPrice is a standalone component replaces the standard html 
 
 {{ $frontmatter.description }}
 
-<!--@include: ./../mixins/getting-started.md-->
+<!--@include: ./../.vitepress/mixins/getting-started.md-->
 
-<!--@include: ./../mixins/maz-input-props.md-->
+<!--@include: ./../.vitepress/mixins/maz-input-props.md-->
 
 ## Basic usage
 

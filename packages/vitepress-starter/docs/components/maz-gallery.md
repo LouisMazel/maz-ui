@@ -7,7 +7,7 @@ description: MazGallery is a standalone component to display images in a contain
 
 {{ $frontmatter.description }}
 
-<!--@include: ./../mixins/getting-started.md-->
+<!--@include: ./../.vitepress/mixins/getting-started.md-->
 
 ## Basic usage
 
