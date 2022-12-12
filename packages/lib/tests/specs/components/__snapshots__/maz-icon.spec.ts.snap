@@ -1,0 +1,13 @@
+// Vitest Snapshot v1
+
+exports[`MazIcon > renders correctly with custom name prop 1`] = `
+<div
+  data-v-app=""
+>
+  
+  <!-- eslint-disable -->
+  <!--v-if-->
+  <!-- eslint-enable -->
+  
+</div>
+`;

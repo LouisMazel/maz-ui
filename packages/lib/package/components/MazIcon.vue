@@ -131,8 +131,7 @@
 
     // inline svg when cached promise resolves
     try {
-      const svg = await cache[src]
-      svgElSource.value = svg
+      svgElSource.value = await cache[src]
       // wait to render
       await nextTick()
       emits('loaded', svgElem.value)
