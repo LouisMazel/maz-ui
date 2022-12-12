@@ -1,6 +1,6 @@
 // Tailwind CSS configuration (https://tailwindcss.com/docs/configuration)
 
-const tailwindConfig = require('maz-ui/tailwindcss/tailwind.config')
+const tailwindConfig = require('maz-ui/package/tailwindcss/tailwind.config.js')
 
 module.exports = {
   mode: 'jit',

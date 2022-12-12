@@ -3,9 +3,9 @@ title: vClickOutside
 description: vClickOutside is a Vue 3 directive to trigger a function when the user clicks outside from a element
 ---
 
-# vClickOutside
+# {{ $frontmatter.title }}
 
-Vue 3 directive to trigger a function when the user clicks outside from a element
+{{ $frontmatter.description }}
 
 ## Basic usage
 

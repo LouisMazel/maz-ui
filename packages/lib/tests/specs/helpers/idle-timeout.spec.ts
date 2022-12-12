@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import {
   IdleTimeoutOptions,
   IdleTimeoutCallback,
@@ -13,6 +14,7 @@ const options: IdleTimeoutOptions = {
   element: document.body,
   timeout: DEFAULT_TIMEOUT, // 5 minutes
   once: false,
+  ssr: false,
   immediate: false,
 }
 let instance: IdleTimeout | undefined
@@ -26,7 +28,7 @@ afterAll(() => {
   instance = undefined
 })
 
-describe('package/helpers/idle-timeout', () => {
+describe('@package/helpers/idle-timeout', () => {
   describe('Given app want trigger user idle', () => {
     describe('When instance is launch', () => {
       it('Then instance is IdleTimeout', () => {
@@ -48,7 +50,6 @@ describe('package/helpers/idle-timeout', () => {
           isIdle: true,
         })
 
-        /* eslint-disable @typescript-eslint/ban-ts-comment */
         // @ts-ignore
         instance?.handleEvent(
           new MouseEvent('mousemove', {
@@ -56,7 +57,6 @@ describe('package/helpers/idle-timeout', () => {
             clientY: 5,
           }),
         )
-        /* eslint-enable @typescript-eslint/ban-ts-comment */
 
         // expect(instance?.idle).toBeFalsy()
         expect(callback).toHaveBeenCalledWith({
@@ -184,3 +184,5 @@ describe('package/helpers/idle-timeout', () => {
     })
   })
 })
+
+/* eslint-enable @typescript-eslint/ban-ts-comment */

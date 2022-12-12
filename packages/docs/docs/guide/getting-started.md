@@ -1,8 +1,9 @@
 ---
+title: Getting Started
 description: Documentation to know how install the maz-ui library
 ---
 
-# Getting Started
+# {{ $frontmatter.title }}
 
 ## Prerequisites
 
@@ -19,23 +20,9 @@ This section will help you to install the library.
 
 <NpmBadge package="maz-ui" dist-tag="latest" />
 
-<CodeGroup>
-  <CodeGroupItem title="NPM" active>
-
 ```bash
 npm i maz-ui
 ```
-
-  </CodeGroupItem>
-  <CodeGroupItem title="YARN">
-
-```bash
-yarn add maz-ui
-```
-
-  </CodeGroupItem>
-
-</CodeGroup>
 
 ### Import necessary CSS file
 
@@ -118,7 +105,7 @@ app.component('MazPhoneNumberInput', MazPhoneNumberInput)
 
 ```typescript
 import { createApp } from 'vue'
-import components from 'maz-ui/components'
+import * as components from 'maz-ui/components'
 import 'maz-ui/css/main.css'
 
 const app = createApp(App)

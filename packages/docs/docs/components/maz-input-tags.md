@@ -1,10 +1,15 @@
 ---
-description: MazInputTags is a stand-alone component like free inputs to help user select many values and return an Array of strings, color option available.
+title: MazInputTags
+description: MazInputTags is a standalone component like free inputs to help user select many values and return an Array of strings, color option available.
 ---
 
-# MazInputTags
+# {{ $frontmatter.title }}
 
-> Before you have to import the global css files in your project, follow instructions in [Getting Started](./../guide/getting-started.md)
+{{ $frontmatter.description }}
+
+<!--@include: ./../.vitepress/mixins/getting-started.md-->
+
+<!--@include: ./../.vitepress/mixins/maz-input-props.md-->
 
 ## Basic usage
 
@@ -13,6 +18,8 @@ description: MazInputTags is a stand-alone component like free inputs to help us
   label="Enter tags"
   color="info"
 />
+
+<br />
 
 <MazInputTags
   v-model="tags"

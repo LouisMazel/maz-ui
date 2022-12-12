@@ -12,9 +12,11 @@ exports[`components/MazPhoneNumberInput.vue > Should match with the snapshot 1`]
             <!--v-if-->
           </label></div>
         <div class=\\"m-input-wrapper-right\\" data-v-562a2cff=\\"\\"><button tabindex=\\"-1\\" type=\\"button\\" class=\\"m-select-input__toggle-button maz-custom\\" data-v-948d9dc9=\\"\\">
-            <!-- eslint-disable -->
+            <!-- eslint-disable vue/no-v-html -->
+            <!-- eslint-disable vue/html-self-closing -->
             <!--v-if-->
-            <!-- eslint-enable -->
+            <!-- eslint-enable vue/no-v-html -->
+            <!-- eslint-enable vue/html-self-closing -->
           </button>
           <!--v-if-->
           <!--v-if-->

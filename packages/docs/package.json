@@ -3,23 +3,24 @@
   "version": "3.3.1",
   "description": "documentation of maz-ui",
   "author": "LouisMazel <me@loicmazuel.com>",
+  "license": "ISC",
   "scripts": {
-    "dev": "vuepress dev docs",
-    "build": "vuepress build docs"
+    "dev": "vitepress dev docs",
+    "build": "vitepress build docs",
+    "serve": "vitepress serve docs"
   },
   "devDependencies": {
-    "@vuepress/plugin-google-analytics": "2.0.0-beta.45",
-    "@vuepress/plugin-register-components": "2.0.0-beta.45",
-    "@vuepress/plugin-search": "2.0.0-beta.45",
+    "sitemap": "^7.1.1",
+    "vitepress": "^1.0.0-alpha.31",
+    "vue": "^3.2.45"
+  },
+  "dependencies": {
     "chart.js": "^3.9.1",
     "chartjs-plugin-datalabels": "^2.1.0",
     "dayjs": "^1.11.5",
     "dropzone": "^5.9.3",
-    "libphonenumber-js": "^1.10.13",
-    "maz-ui": "^3.4.2",
-    "vuepress": "2.0.0-beta.45",
-    "vuepress-plugin-seo2": "^2.0.0-beta.71",
-    "vuepress-plugin-sitemap2": "2.0.0-beta.71"
-  },
-  "license": "ISC"
+    "libphonenumber-js": "^1.10.15",
+    "maz-ui": "file:../lib/dist",
+    "vitepress-plugin-google-analytics": "^1.0.2"
+  }
 }

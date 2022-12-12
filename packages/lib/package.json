@@ -1,17 +1,11 @@
 {
   "name": "maz-ui",
-  "version": "3.4.2",
-  "description": "A stand-alone components library for Vue.Js 3 & Nuxt.Js 3",
+  "version": "3.5.0",
+  "description": "A standalone components library for Vue.Js 3 & Nuxt.Js 3",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "main": "maz-ui.umd.js",
   "module": "maz-ui.mjs",
   "types": "maz-ui.d.ts",
-  "exports": {
-    ".": {
-      "import": "./maz-ui.mjs",
-      "require": "./maz-ui.umd.js"
-    }
-  },
   "files": [
     "components",
     "modules",
@@ -23,33 +17,33 @@
   ],
   "scripts": {
     "build:vite": "ts-node build/vite.config.ts",
+    "lint": "npm run lint:js && npm run lint:style",
+    "lint:nofix": "cross-env NODE_ENV=production eslint --ext .ts,.js,.vue .",
+    "lint:js": "cross-env NODE_ENV=production eslint --fix --ext .ts,.js,.vue .",
+    "format": "prettier . --write",
+    "lint:style": "stylelint --custom-syntax postcss-html --fix \"./**/*.{vue,css,scss,postcss,pcss}\"",
+    "clean": "rimraf dist",
+    "build": "npm run clean && mkdir -p dist && npm run build:js && npm run build:css && cp package.json dist/package.json && npm run copy:tailwind",
+    "build:watch": "onchange --await-write-finish 2000 'package/**/*' -e 'package/components/index.ts' --exclude-path .gitignore -- npm run build:modules",
+    "build:lib": "cross-env NODE_ENV=production node --max-old-space-size=8192 node_modules/rollup/dist/bin/rollup -c build/rollup.config.js",
+    "build:tailwind": "cross-env NODE_ENV=production tailwindcss -i package/tailwindcss/css/tailwind.css -o dist/css/main.css --config tailwind.config.js --postcss --minify",
+    "copy:tailwind": "cp -R package/tailwindcss dist/tailwindcss",
+    "build:css": "npm run build:tailwind && npm run build:scss",
+    "build:scss": "node build/compile-scss.js",
+    "build:js": "npm run build:gen-components-entry && npm run build:lib && npm run build:types && npm run build:copy-comp-types && npm run build:components-entry",
+    "build:types": "cross-env NODE_ENV=production rollup -c build/rollup.types.config.js",
+    "build:modules": "npm run build:lib -- --package modules",
+    "build:component": "npm run build:lib -- --component",
+    "build:components": "npm run build:lib -- --package components",
+    "build:copy-comp-types": "node build/copy-components-types.js",
+    "build:components-entry": "node build/build-components-entry.js",
+    "build:gen-components-entry": "node build/generate-components-entry",
+    "pre-commit": "lint-staged",
     "test:unit": "vitest",
     "test:unit:watch": "vitest watch",
     "test:unit:coverage": "vitest run --coverage",
     "test:unit:coverage:watch": "vitest watch --coverage",
-    "test:unit:coverage:master": "vitest run --coverage --changed master",
-    "lint": "npm run lint:js && npm run lint:style",
-    " ": "cross-env NODE_ENV=production eslint --ext .ts,.js,.vue .",
-    "lint:js": "cross-env NODE_ENV=production eslint --fix --ext .ts,.js,.vue .",
-    "format": "prettier . --write",
-    "lint:style": "stylelint --custom-syntax postcss-html --fix \"./**/*.{vue,css,scss,postcss,pcss}\"",
-    "clean": "rimraf components modules css types maz-ui.d.ts",
-    "build": "npm run build:js && npm run build:css",
-    "build:watch": "onchange --await-write-finish 2000 'package/**/*' -e 'package/components/index.ts' --exclude-path .gitignore -- npm run build",
-    "build:js": "npm run build:gen-components-entry && npm run build:lib && npm run build:types && npm run build:copy-comp-types && npm run build:components-entry",
-    "build:lib": "cross-env NODE_ENV=production node --max-old-space-size=8192 node_modules/rollup/dist/bin/rollup -c build/rollup.config.js",
-    "build:types": "cross-env NODE_ENV=production rollup -c build/rollup.types.config.js",
-    "build:copy-comp-types": "node build/copy-components-types.js",
-    "build:gen-components-entry": "cross-env NODE_ENV=production node build/generate-components-entry",
-    "build:components-entry": "cross-env NODE_ENV=production node build/build-components-entry.js",
-    "build:modules": "npm run build:lib -- --package modules",
-    "build:components": "npm run build:lib -- --package components",
-    "build:component": "npm run build:lib -- --component",
-    "build:css": "npm run build:tailwind && npm run build:scss",
-    "build:tailwind": "NODE_ENV=production tailwindcss -i ./tailwindcss/css/tailwind.css -o css/main.css --config ./tailwind.config.js --postcss",
-    "build:scss": "node build/compile-scss.js",
-    "pre-commit": "lint-staged",
-    "tsc": "npx -p typescript tsc --declaration --emitDeclarationOnly"
+    "test:unit:coverage:master": "vitest run --coverage --changed master"
   },
   "lint-staged": {
     "*": "prettier -w -u",
@@ -91,6 +85,7 @@
     "@rollup/plugin-commonjs": "^22.0.2",
     "@rollup/plugin-node-resolve": "^14.1.0",
     "@rollup/plugin-replace": "^4.0.0",
+    "@rollup/plugin-terser": "^0.2.0",
     "@rollup/plugin-url": "^7.0.0",
     "@types/dropzone": "^5.7.4",
     "@types/google.maps": "^3.50.5",
@@ -108,6 +103,7 @@
     "autoprefixer": "^10.4.11",
     "babel-loader": "^9.1.0",
     "c8": "^7.12.0",
+    "chalk": "^4.1.2",
     "chart.js": "^3.9.1",
     "cross-env": "^7.0.3",
     "dayjs": "^1.11.6",
@@ -138,9 +134,9 @@
     "rollup-plugin-dts": "^4.2.2",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.2",
-    "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.34.1",
     "rollup-plugin-vue": "^6.0.0",
+    "sass": "^1.56.2",
     "semver": "^7.3.8",
     "stylelint": "^14.15.0",
     "stylelint-config-prettier": "^9.0.4",
@@ -181,8 +177,5 @@
     "type": "git",
     "url": "git+https://github.com/LouisMazel/maz-ui.git"
   },
-  "license": "MIT",
-  "dependencies": {
-    "sass": "^1.56.1"
-  }
+  "license": "MIT"
 }

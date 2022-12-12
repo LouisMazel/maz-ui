@@ -1,11 +1,20 @@
-export { plugin as installToaster, ToasterHandler } from './toaster'
-export type { ToasterOptions, ToasterPositions } from './toaster'
+export {
+  ToasterHandler,
+  plugin as installToaster,
+  instance as toastInstance,
+  type ToasterOptions,
+  type ToasterPositions,
+} from './toaster'
 
 export {
-  plugin as installWait,
   WaitHandler,
+  plugin as installWait,
   instance as waitInstance,
 } from './wait'
 
-export { plugin as installAos, instance as aosInstance } from './aos'
-export type { AosHandler, AosOptions } from './aos'
+export {
+  AosHandler,
+  plugin as installAos,
+  instance as aosInstance,
+  type AosOptions,
+} from './aos'

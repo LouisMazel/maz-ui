@@ -1,16 +1,21 @@
 ---
-description: MazSelect is a stand-alone component replaces the standard html input select with a beautiful design system. Many options like multiple values, search text field, custom templates options, colors, sizes, disabled, loading, error, warning, valid states, error messages, includes icons.
+title: MazSelect
+description: MazSelect is a standalone component replaces the standard html input select with a beautiful design system. Many options like multiple values, search text field, custom templates options, colors, sizes, disabled, loading, error, warning, valid states, error messages, includes icons.
 ---
 
-# MazSelect
+# {{ $frontmatter.title }}
 
-> Before you have to import the global css files in your project, follow instructions in [Getting Started](./../guide/getting-started.md)
+{{ $frontmatter.description }}
+
+<!--@include: ./../.vitepress/mixins/getting-started.md-->
+
+<!--@include: ./../.vitepress/mixins/maz-input-props.md-->
 
 ## Usage
 
 ### Basic
 
-> This component use [MazInput](./maz-input.md), so it inherits all his props
+<br/>
 
 <MazSelect
   label="Select color"
@@ -154,7 +159,6 @@ If you want custom keys of these options, you can use:
 ## Props & Events emitted
 
 <ComponentPropDoc component="MazSelect" />
-
 
 <script setup lang="ts">
   import { ref } from 'vue'

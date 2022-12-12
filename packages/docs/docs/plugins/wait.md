@@ -1,22 +1,20 @@
 ---
+title: wait
 description: Plugins to manage your loading states
 ---
 
-# wait
+# {{ $frontmatter.title }}
 
-> Loading state handling
+{{ $frontmatter.description }}
 
 ## Basic usage
-
-<br />
-
 
 <MazBtn @click="submitData" :loading="wait.isLoading('DATA_SUBMITTING')">
   Submit Data
 </MazBtn>
 <br />
-<br />
-<div v-if="submitted" style="padding: 20px; background-color: var(--maz-color-bg-light); border-radius: 10px;">
+
+<div v-if="submitted" style="padding: 20px; background-color: var(--maz-color-bg-light); border-radius: 10px; margin-top: 1rem;">
   Data Submitted
 </div>
 
@@ -26,16 +24,16 @@ description: Plugins to manage your loading states
     Submit Data
   </MazBtn>
 
-  <div v-if="submitted" style="padding: 20px; background-color: var(--maz-color-bg-light); border-radius: 10px;">
+  <div v-if="submitted">
     Data Submitted
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { inject, ref } from 'vue'
-  import { WaitHandler } from 'maz-ui'
+  import { ref } from 'vue'
+  import { useWait } from 'maz-ui'
 
-  const wait = inject<WaitHandler>('wait')
+  const { wait } = useWait()
 
   const submitted = ref(false)
 
@@ -44,23 +42,22 @@ description: Plugins to manage your loading states
   }
 
   const submitData = async () => {
-    try {
-      submitted.value = false
-      wait.start('DATA_SUBMITTING')
-      await sleep(2000)
-      submitted.value = true
-    } finally {
-      wait.stop('DATA_SUBMITTING')
-    }
+    submitted.value = false
+    wait.start('DATA_SUBMITTING')
+
+    await sleep(2000)
+
+    submitted.value = true
+    wait.stop('DATA_SUBMITTING')
   }
 </script>
 ```
 
 <script lang="ts" setup>
-  import { inject, ref } from 'vue'
-  import { WaitHandler } from 'maz-ui'
+  import { ref } from 'vue'
+  import { useWait } from 'maz-ui'
 
-  const wait = inject<WaitHandler>('wait')
+  const { wait } = useWait()
 
   const submitted = ref(false)
 
@@ -69,14 +66,13 @@ description: Plugins to manage your loading states
   }
 
   const submitData = async () => {
-    try {
-      submitted.value = false
-      wait.start('DATA_SUBMITTING')
-      await sleep(2000)
-      submitted.value = true
-    } finally {
-      wait.stop('DATA_SUBMITTING')
-    }
+    submitted.value = false
+    wait.start('DATA_SUBMITTING')
+
+    await sleep(2000)
+
+    submitted.value = true
+    wait.stop('DATA_SUBMITTING')
   }
 </script>
 

@@ -1,3 +1,4 @@
+import { isClient } from '../is-client'
 import type {
   UserVisibilyCallback,
   UserVisibilyOptions,
@@ -5,8 +6,6 @@ import type {
 } from './types'
 
 export class UserVisibility {
-  private element: Document
-  private callback: UserVisibilyCallback
   private eventHandlerFunction: () => void
 
   private event = 'visibilitychange'
@@ -16,23 +15,41 @@ export class UserVisibility {
   private options: UserVisibilyStrictOptions
 
   private readonly defaultOptions: UserVisibilyStrictOptions = {
-    immediate: false,
     timeout: 5000,
     once: false,
+    immediate: true,
+    ssr: false,
   }
 
   private isVisible = false
 
-  constructor(callback: UserVisibilyCallback, options: UserVisibilyOptions) {
-    this.callback = callback
-    this.element = document
-
+  constructor(
+    private readonly callback: UserVisibilyCallback,
+    options?: UserVisibilyOptions,
+  ) {
     this.options = {
       ...this.defaultOptions,
       ...options,
     }
 
     this.eventHandlerFunction = this.eventHandler.bind(this)
+
+    if (!this.options.ssr && isClient()) {
+      this.start()
+    } else if (!this.options.ssr && !isClient()) {
+      console.warn(
+        `[UserVisibility](constructor) executed on server side - set "ssr" option to "false"`,
+      )
+    }
+  }
+
+  public start() {
+    if (!isClient()) {
+      console.warn(
+        `[UserVisibility](start) you should run this method on client side`,
+      )
+      return
+    }
 
     if (this.options.immediate) {
       this.emitCallback()
@@ -42,7 +59,7 @@ export class UserVisibility {
   }
 
   private emitCallback() {
-    this.isVisible = this.element.visibilityState === 'visible'
+    this.isVisible = document.visibilityState === 'visible'
     this.callback({ isVisible: this.isVisible })
 
     if (this.options.once) {
@@ -51,10 +68,10 @@ export class UserVisibility {
   }
 
   private eventHandler() {
-    if (this.element.visibilityState === 'visible' && !this.isVisible) {
+    if (document.visibilityState === 'visible' && !this.isVisible) {
       this.clearTimeout()
       this.emitCallback()
-    } else if (this.element.visibilityState === 'hidden') {
+    } else if (document.visibilityState === 'hidden') {
       this.initTimeout()
     }
   }
@@ -76,11 +93,11 @@ export class UserVisibility {
   }
 
   private addEventListener() {
-    this.element.addEventListener(this.event, this.eventHandlerFunction)
+    document.addEventListener(this.event, this.eventHandlerFunction)
   }
 
   private removeEventListener() {
-    this.element.removeEventListener(this.event, this.eventHandlerFunction)
+    document.removeEventListener(this.event, this.eventHandlerFunction)
   }
 
   destroy() {

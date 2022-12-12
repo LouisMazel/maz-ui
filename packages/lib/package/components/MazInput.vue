@@ -114,7 +114,8 @@
     getCurrentInstance,
   } from 'vue'
 
-  import { debounce, useInstanceUniqId } from '../helpers'
+  import { debounce } from '@package/helpers/debounce'
+  import { useInstanceUniqId } from '@package/composables/instance-uniq-id.composable'
 
   import MazBtn from './MazBtn.vue'
   import MazIcon from './MazIcon.vue'
