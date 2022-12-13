@@ -29,8 +29,6 @@
 
 ```shell
 npm install maz-ui
-
-# Or yarn add maz-ui
 ```
 
 ### Import necessary CSS file
@@ -51,26 +49,23 @@ To optimize your bundle size, it's recommanded to use the [partial import](https
 
 ```typescript
 import { createApp } from 'vue'
-...
+
 import MazBtn from 'maz-ui/components/MazBtn'
 import MazInput from 'maz-ui/components/MazInput'
 import MazPhoneNumberInput from 'maz-ui/components/MazPhoneNumberInput'
-...
 
 const app = createApp(App)
 
-...
 app.component('MazBtn', MazBtn)
 app.component('MazInput', MazInput)
 app.component('MazPhoneNumberInput', MazPhoneNumberInput)
-...
 ```
 
 #### Component import
 
 > Import the module chosen directly in your component
 
-```html
+```vue
 <template>
   <MazBtn>Button</MazBtn>
 </template>
