@@ -1,9 +1,5 @@
-/node_modules
+node_modules
 .DS_Store
-/dist
-/css
-/types
-/components
-/modules
-/maz-ui.d.ts
-/coverage
+dist
+types
+coverage

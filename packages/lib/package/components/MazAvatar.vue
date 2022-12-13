@@ -78,7 +78,6 @@
   import type { Color } from './types'
 
   const props = defineProps({
-    // url or path of the image
     src: {
       type: String as PropType<undefined | null | string>,
       default: undefined,
@@ -87,23 +86,14 @@
       type: String as PropType<undefined | null | string>,
       default: undefined,
     },
-    // url or path to link another page
     href: { type: String, default: undefined },
-    // route config
     to: { type: Object, default: undefined },
-    // alt text of image
     alt: { type: String, default: 'avatar image' },
-    // target attribute of link (if url is provide)
     target: { type: String, default: '_self' },
-    // size of avatar
     size: { type: String, default: undefined },
-    // add border around the avatar
     bordered: { type: Boolean, default: false },
-    // add an edit layer & emit `edit` event on click
     clickable: { type: Boolean, default: false },
-    // Make the avatar square
     square: { type: Boolean, default: false },
-    // Remove the shadow behind the avatar
     noElevation: { type: Boolean, default: false },
     showCaption: { type: Boolean, default: false },
     imageHeightFull: { type: Boolean, default: false },
