@@ -10,7 +10,7 @@ plugins:
         - javascript
         - typescript
   eslint:
-    enabled: true
+    enabled: false
     channel: "eslint-8"
   fixme:
     enabled: true
