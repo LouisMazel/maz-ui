@@ -2,7 +2,7 @@
 version: "2"
 plugins:
   csslint:
-    enabled: false
+    enabled: true
   coffeelint:
     enabled: false
   duplication:
@@ -12,15 +12,18 @@ plugins:
         - javascript
         - typescript
   eslint:
-    enabled: false
-    # channel: "eslint-7"
-    # config:
-    #   config: ./packages/lib/eslintrc.js
-    #   ignore_warnings: true
+    enabled: true
+    channel: "eslint-8"
   fixme:
     enabled: true
   stylelint:
     enabled: true
+
+checks:
+  method-complexity:
+    enabled: true
+    config:
+      threshold: 15
 
 exclude_patterns:
   - .husky/
