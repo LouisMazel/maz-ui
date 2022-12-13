@@ -1,9 +1,6 @@
 name: Doc Build Test
 on:
   pull_request:
-    branches:
-      - master
-      - "release/**"
     paths:
       - "packages/docs/**"
       - "packages/lib/**"
