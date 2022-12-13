@@ -4,6 +4,9 @@ on:
   push:
     paths:
       - "packages/lib/**"
+  pull_request:
+    paths:
+      - "packages/lib/**"
 
 jobs:
   coverage:

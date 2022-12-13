@@ -1,5 +1,4 @@
-/* eslint-disable unicorn/prefer-module */
-module.exports = {
+exports.utilities = {
   '.padded-container': {
     width: '100%',
     'padding-left': 'var(--maz-container-padding)',

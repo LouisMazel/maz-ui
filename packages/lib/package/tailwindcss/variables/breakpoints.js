@@ -1,5 +1,4 @@
-/* eslint-disable unicorn/prefer-module */
-module.exports = {
+exports.screens = {
   'mob-s': '320px',
   'mob-m': '425px',
   'mob-l': '576px',

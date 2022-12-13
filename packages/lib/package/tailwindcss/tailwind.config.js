@@ -1,12 +1,11 @@
 // @ts-check
 
 // Tailwind CSS configuration (https://tailwindcss.com/docs/configuration)
-/* eslint-disable unicorn/prefer-module */
 const plugin = require('tailwindcss/plugin')
 
-const UTILITIES = require('./variables/utilities')
-const BREAKPOINTS = require('./variables/breakpoints')
-const Z_INDEXES = require('./variables/z-indexes')
+const { utilities } = require('./variables/utilities')
+const { screens } = require('./variables/breakpoints')
+const { zIndex } = require('./variables/z-indexes')
 const { colors } = require('./utils/colors')
 
 module.exports = {
@@ -17,8 +16,8 @@ module.exports = {
       fontFamily: {
         base: 'var(--maz-font-family)',
       },
-      zIndex: Z_INDEXES,
-      screens: BREAKPOINTS,
+      zIndex,
+      screens,
       colors: colors(),
       borderWidth: {
         0: '0',
@@ -59,7 +58,7 @@ module.exports = {
       opacity: false,
     }),
     plugin(({ addUtilities }) => {
-      addUtilities(UTILITIES)
+      addUtilities(utilities)
     }),
   ],
 }
