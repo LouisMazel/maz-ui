@@ -42,11 +42,11 @@ export default defineConfig({
       text: 'Edit this page on GitHub'
     },
 
-    // algolia: {
-    //   appId: '8J64VVRP8K',
-    //   apiKey: 'a18e2f4cc5665f6602c5631fd868adfd',
-    //   indexName: 'vitepress'
-    // },
+    algolia: {
+      appId: '4ML7HKE73Z',
+      apiKey: 'a98bd8a34144a39eb5c59898582e093f',
+      indexName: 'maz-ui-3'
+    },
   },
 
   vite: {
