@@ -85,7 +85,7 @@
     "@rollup/plugin-node-resolve": "^14.1.0",
     "@rollup/plugin-replace": "^4.0.0",
     "@rollup/plugin-terser": "^0.2.0",
-    "@rollup/plugin-url": "^7.0.0",
+    "@rollup/plugin-url": "^8.0.1",
     "@types/dropzone": "^5.7.4",
     "@types/google.maps": "^3.51.0",
     "@types/node": "^18.11.13",
