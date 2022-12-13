@@ -1,13 +1,17 @@
 <template>
   <main>
-    <MazBtn
+    <MazAvatar
       data-maz-aos="scale-out"
       data-maz-aos-delay="300"
-      fab
+      size="1.5rem"
+      clickable
+      src="https://cdn.artphotolimited.com/images/5ff5a529bd40b83c5a537440/1000x1000/gerard-depardieu-1983.jpg"
       @click="toggleTheme"
     >
-      <MazIcon :name="hasDarkTheme ? 'sun' : 'moon'" />
-    </MazBtn>
+      <template #icon>
+        <MazIcon :name="hasDarkTheme ? 'sun' : 'moon'" class="maz-text-white" />
+      </template>
+    </MazAvatar>
 
     <br />
 
@@ -19,8 +23,8 @@
 </template>
 
 <script lang="ts" setup>
-  import MazBtn from 'maz-ui/package/components/MazBtn.vue'
   import MazIcon from 'maz-ui/package/components/MazIcon.vue'
+  import MazAvatar from 'maz-ui/package/components/MazAvatar.vue'
   import {
     useAos,
     useThemeHandler,
