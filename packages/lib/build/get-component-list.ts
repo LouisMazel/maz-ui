@@ -1,5 +1,3 @@
-// @ts-check
-
 import { readdirSync } from 'node:fs'
 import { resolve } from 'node:path'
 
@@ -11,5 +9,5 @@ export const componentsList = readdirSync(INPUT_COMPONENT_DIR)
     name: name.split('.')[0],
     relativePath: `./${name}`,
     path: `${INPUT_COMPONENT_DIR}/${name}`,
-    buildPath: `./${name.split('.')[0]}.js`,
+    buildPath: `./${name.split('.')[0]}`,
   }))

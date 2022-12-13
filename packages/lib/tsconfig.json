@@ -1,14 +1,13 @@
 {
   "extends": "@vue/tsconfig/tsconfig.json",
   "ts-node": {
-    // these options are overrides used only by ts-node
     "compilerOptions": {
       "module": "commonjs"
     }
   },
   "compilerOptions": {
     "declaration": true,
-    "declarationDir": "dist/types",
+    "declarationDir": "types",
     "sourceMap": true,
     "lib": ["esnext", "DOM", "DOM.iterable", "scripthost"],
     "strictPropertyInitialization": false,
@@ -21,6 +20,6 @@
     },
     "types": ["@types/node", "google.maps"]
   },
-  "include": ["build/**/*", "package/**/*"],
-  "exclude": ["node_modules", "lib", "css"]
+  "include": ["package/**/*", "build/rollup.types.config.ts"],
+  "exclude": ["node_modules", "lib", "css", "package/components_tmp/**/*"]
 }
