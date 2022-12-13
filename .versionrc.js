@@ -6,7 +6,10 @@ module.exports = {
     if (type === "feat") return { ...base, section: "Features" };
     if (type === "fix") return { ...base, section: "Bug Fixes" };
     if (type === "docs") return { ...base, section: "Docs" };
-    if (type === "chore") return { ...base, section: "Others" };
+    if (type === "test") return { ...base, section: "Tests" };
+    if (type === "refactor") return { ...base, section: "Refactoring" };
+    if (type === "chore") return { ...base, section: "Chore" };
+    if (type === "perf") return { ...base, section: "Perfermonce" };
     if (type === "improvement") return { ...base, section: "Improvements" };
     return { ...base, hidden: true };
   }),
