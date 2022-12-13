@@ -25,6 +25,10 @@ export default defineConfig({
       exclude: [
         'package/components_tmp/**',
         'package/components/index.ts',
+        'package/tailwindcss/**/*',
+        'package/types/**/*',
+        'package/index.ts',
+        'package/plugins/index.ts',
         'package/components/MazPhoneNumberInput/constantes/locales.ts',
       ],
       extension: ['.js', '.ts', '.vue'],
