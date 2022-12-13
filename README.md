@@ -17,7 +17,7 @@
 [![test_coverage](https://api.codeclimate.com/v1/badges/6b27047dcf150ccddfac/test_coverage)](https://codeclimate.com/github/LouisMazel/maz-ui/test_coverage)
 ![github actions test unit](https://github.com/LouisMazel/maz-ui/actions/workflows/lib-test-unit.yml/badge.svg)
 
-> [Maz-ui](https://louismazel.github.io/maz-ui/) is a standalone components library and tools for [Vue.JS](https://vuejs.org) & [Nuxt.JS](https://nuxtjs.org/) (v3.x)
+> [Maz-ui](https://louismazel.github.io/maz-ui-3/) is a standalone components library and tools for [Vue.JS](https://vuejs.org) & [Nuxt.JS](https://nuxtjs.org/) (v3.x)
 
 ## Documentation & Components
 
@@ -48,17 +48,17 @@ To optimize your bundle size, it's recommanded to use the [partial import](https
 > Example with some components
 
 ```typescript
-import { createApp } from 'vue'
+import { createApp } from "vue";
 
-import MazBtn from 'maz-ui/components/MazBtn'
-import MazInput from 'maz-ui/components/MazInput'
-import MazPhoneNumberInput from 'maz-ui/components/MazPhoneNumberInput'
+import MazBtn from "maz-ui/components/MazBtn";
+import MazInput from "maz-ui/components/MazInput";
+import MazPhoneNumberInput from "maz-ui/components/MazPhoneNumberInput";
 
-const app = createApp(App)
+const app = createApp(App);
 
-app.component('MazBtn', MazBtn)
-app.component('MazInput', MazInput)
-app.component('MazPhoneNumberInput', MazPhoneNumberInput)
+app.component("MazBtn", MazBtn);
+app.component("MazInput", MazInput);
+app.component("MazPhoneNumberInput", MazPhoneNumberInput);
 ```
 
 #### Component import
@@ -71,7 +71,7 @@ app.component('MazPhoneNumberInput', MazPhoneNumberInput)
 </template>
 
 <script lang="ts" setup>
-  import MazBtn from "maz-ui/components/MazBtn";
+import MazBtn from "maz-ui/components/MazBtn";
 </script>
 ```
 
