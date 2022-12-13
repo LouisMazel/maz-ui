@@ -31,66 +31,6 @@
 npm install maz-ui
 ```
 
-### Import necessary CSS file
-
-In the `main.js` or `main.ts`, import these files.
-
-```ts
-import "maz-ui/css/main.css";
-```
-
-### Recommanded
-
-To optimize your bundle size, it's recommanded to use the [partial import](https://louismazel.github.io/maz-ui-3/guide/getting-started)
-
-#### Global component installation (recommanded)
-
-> Example with some components
-
-```typescript
-import { createApp } from "vue";
-
-import MazBtn from "maz-ui/components/MazBtn";
-import MazInput from "maz-ui/components/MazInput";
-import MazPhoneNumberInput from "maz-ui/components/MazPhoneNumberInput";
-
-const app = createApp(App);
-
-app.component("MazBtn", MazBtn);
-app.component("MazInput", MazInput);
-app.component("MazPhoneNumberInput", MazPhoneNumberInput);
-```
-
-#### Component import
-
-> Import the module chosen directly in your component
-
-```vue
-<template>
-  <MazBtn>Button</MazBtn>
-</template>
-
-<script lang="ts" setup>
-import MazBtn from "maz-ui/components/MazBtn";
-</script>
-```
-
-### Not recommanded
-
-#### Fully library installation
-
-```typescript
-import { createApp } from "vue";
-import * as components from "maz-ui/components";
-import "maz-ui/css/main.css";
-
-const app = createApp(App);
-
-Object.entries(components).forEach(([componentName, component]) => {
-  app.component(componentName, component);
-});
-```
-
 ## Contributing
 
 Please follow this [documentation](./CONTRIBUTING.md)
