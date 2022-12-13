@@ -2,14 +2,6 @@ name: Lib Tests Unit
 
 on:
   push:
-    branches:
-      - master
-    paths:
-      - "packages/lib/**"
-  pull_request:
-    branches:
-      - master
-      - "release/**"
     paths:
       - "packages/lib/**"
 
