@@ -1,0 +1,15 @@
+// Vitest Snapshot v1
+
+exports[`MazIcon > renders correctly with custom name prop 1`] = `
+<div
+  data-v-app=""
+>
+  
+  <!-- eslint-disable vue/no-v-html -->
+  <!-- eslint-disable vue/html-self-closing -->
+  <!--v-if-->
+  <!-- eslint-enable vue/no-v-html -->
+  <!-- eslint-enable vue/html-self-closing -->
+  
+</div>
+`;
