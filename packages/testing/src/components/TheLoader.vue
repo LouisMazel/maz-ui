@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { MazSpinner } from 'maz-ui/package/components'
+  import MazSpinner from 'maz-ui/package/components/MazSpinner.vue'
   import { useWait } from 'maz-ui/package/composables'
 
   const { wait } = useWait()

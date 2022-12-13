@@ -1,13 +1,9 @@
-// @ts-check
-const { resolve } = require('node:path')
-const { writeFileSync, existsSync, mkdirSync } = require('node:fs')
-
-const { compileAsync } = require('sass')
-
-const postcss = require('postcss')
-// import postcss from 'postcss'
-const autoprefixer = require('autoprefixer')
-const logger = require('./logger')
+import { resolve } from 'node:path'
+import { writeFileSync, existsSync, mkdirSync } from 'node:fs'
+import postcss from 'postcss'
+import autoprefixer from 'autoprefixer'
+import { compileAsync } from 'sass'
+import { logger } from './logger'
 
 const AOS_SCSS_ENTRY = resolve(
   __dirname,
@@ -18,14 +14,11 @@ const AOS_SCSS_OUTPUT = resolve(__dirname, './../dist/css/aos.css')
 
 const buildCompileScss = async () => {
   try {
-    // eslint-disable-next-line no-console
     const result = await compileAsync(AOS_SCSS_ENTRY, {
       style: 'compressed',
       verbose: true,
-      sourceMap: true,
     })
 
-    /** @type {import('postcss').Result} */
     const cssPrefixed = await postcss([autoprefixer]).process(result.css, {
       from: AOS_SCSS_ENTRY,
       to: AOS_SCSS_OUTPUT,
@@ -41,9 +34,8 @@ const buildCompileScss = async () => {
 
     logger.success('[BuildScss] ✅ css compiled')
   } catch (error) {
-    logger.error(`[build](scss) 🔴`, error)
+    logger.error(`[BuildScss] 🔴 error while compiling scss`, error)
   }
 }
 
-// eslint-disable-next-line unicorn/prefer-top-level-await
 buildCompileScss()

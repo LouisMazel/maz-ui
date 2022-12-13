@@ -1,27 +1,20 @@
-// @ts-check
 /* eslint-disable no-console */
 
-const {
+import {
   renameSync,
   existsSync,
   statSync,
   mkdirSync,
   copyFileSync,
-} = require('node:fs')
+  readdirSync,
+} from 'node:fs'
+import { resolve, join } from 'node:path'
+import { logger } from './logger'
 
-const { readdirSync } = require('node:fs')
-const { resolve } = require('node:path')
-const { join } = require('node:path/posix')
-const logger = require('./logger')
-
-const INPUT_COMPONENT_DIR = resolve(__dirname, './../dist/types/components')
+const INPUT_COMPONENT_DIR = resolve(__dirname, './../types/components')
 const OUTPUT_TYPES_FILES = resolve(__dirname, './../dist/components')
 
-/**
- * @param {string} inputPath The path of the thing to copy.
- * @param {string} outputPah The path of the new copy.
- */
-function copyRecursiveSync(inputPath, outputPah) {
+function copyRecursiveSync(inputPath: string, outputPah: string) {
   const exists = existsSync(inputPath)
   const stats = statSync(inputPath)
   const isDirectory = exists && stats.isDirectory()
