@@ -3,11 +3,11 @@
   "loglevel": "verbose",
   "version": "3.6.1",
   "yes": false,
+  "changelogPreset": "conventionalcommits",
   "command": {
     "version": {
       "allowBranch": ["master"],
       "message": "chore(release): bump version to %s",
-      "forceGitTag": true,
       "conventionalCommits": true
     }
   },
