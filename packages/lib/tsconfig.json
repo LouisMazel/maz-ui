@@ -20,6 +20,6 @@
     },
     "types": ["@types/node", "google.maps"]
   },
-  "include": ["package/**/*", "build/rollup.types.config.ts"],
+  "include": ["package/**/*"],
   "exclude": ["node_modules", "lib", "css", "package/components_tmp/**/*"]
 }
