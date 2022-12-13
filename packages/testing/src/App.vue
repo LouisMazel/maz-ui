@@ -19,7 +19,8 @@
 </template>
 
 <script lang="ts" setup>
-  import { MazBtn, MazIcon } from 'maz-ui/package/components'
+  import MazBtn from 'maz-ui/package/components/MazBtn.vue'
+  import MazIcon from 'maz-ui/package/components/MazIcon.vue'
   import {
     useAos,
     useThemeHandler,
