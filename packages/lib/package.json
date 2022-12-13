@@ -83,7 +83,7 @@
     "@rollup/plugin-babel": "^5.3.1",
     "@rollup/plugin-commonjs": "^22.0.2",
     "@rollup/plugin-node-resolve": "^14.1.0",
-    "@rollup/plugin-replace": "^4.0.0",
+    "@rollup/plugin-replace": "^5.0.1",
     "@rollup/plugin-terser": "^0.2.0",
     "@rollup/plugin-url": "^7.0.0",
     "@types/dropzone": "^5.7.4",
