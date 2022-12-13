@@ -1,7 +1,7 @@
 /* eslint-disable unicorn/prefer-module */
 const COLORS_CONFIG = require('../variables/colors')
 
-const makeColors = () => {
+exports.colors = () => {
   const baseColors = COLORS_CONFIG['base-colors']
   const variations = COLORS_CONFIG.variations
   const variatingColors = COLORS_CONFIG['variating-colors']
@@ -24,5 +24,3 @@ const makeColors = () => {
 
   return colors
 }
-
-exports.colors = makeColors
