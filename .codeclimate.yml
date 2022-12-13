@@ -2,8 +2,6 @@
 version: "2"
 plugins:
   csslint:
-    enabled: true
-  coffeelint:
     enabled: false
   duplication:
     enabled: true
