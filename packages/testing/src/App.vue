@@ -13,11 +13,6 @@
 
     <!-- Start Developing Area - Do not commit anything here -->
 
-    <MazAvatar
-      src="https://images.mubicdn.net/images/cast_member/5415/cache-"
-      size="3rem"
-    />
-
     <!-- End Developing Area -->
   </main>
   <TheLoader />
@@ -26,7 +21,6 @@
 <script lang="ts" setup>
   import MazBtn from 'maz-ui/package/components/MazBtn.vue'
   import MazIcon from 'maz-ui/package/components/MazIcon.vue'
-  import MazAvatar from 'maz-ui/package/components/MazAvatar.vue'
   import {
     useAos,
     useThemeHandler,
