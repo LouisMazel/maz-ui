@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "chart.js": "^3.9.1",
-    "chartjs-plugin-datalabels": "^2.1.0",
+    "chartjs-plugin-datalabels": "^2.2.0",
     "dayjs": "^1.11.5",
     "dropzone": "^5.9.3",
     "libphonenumber-js": "^1.10.15",
