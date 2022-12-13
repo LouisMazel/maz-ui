@@ -54,7 +54,7 @@ const replaceTypesExtensions = () => {
   const options = {
     files: COMPONENTS_TYPE_PATH,
     from: /vue';/g,
-    to: "mjs';",
+    to: "js';",
   }
 
   return replaceInFile(options)
