@@ -23,14 +23,9 @@
 </template>
 
 <script lang="ts" setup>
-  import MazIcon from 'maz-ui/package/components/MazIcon.vue'
-  import MazAvatar from 'maz-ui/package/components/MazAvatar.vue'
-  import {
-    useAos,
-    useThemeHandler,
-    useToast,
-    useWait,
-  } from 'maz-ui/package/composables'
+  import { MazIcon, MazAvatar } from '@package/components'
+  import { useAos, useThemeHandler, useToast, useWait } from '@package/index'
+
   import TheLoader from './components/TheLoader.vue'
 
   const { aos } = useAos()
