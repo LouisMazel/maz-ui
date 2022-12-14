@@ -27,20 +27,15 @@ const getBuildConfig = ({
     outDir,
     minify: 'terser',
     cssCodeSplit: false,
-    // ssrManifest: true,
     lib: {
-      // Could also be a dictionary or array of multiple entry points
+      // Can be an array of multiple entry points
       entry: path,
       name,
       fileName: name,
     },
     rollupOptions: {
-      // make sure to externalize deps that shouldn't be bundled
-      // into your library
       external: ['vue', 'libphonenumber-js', '/^dayjs:.*/', 'chart.js'],
       output: {
-        // Provide global variables to use in the UMD build
-        // for externalized deps
         globals: {
           vue: 'Vue',
           'libphonenumber-js': 'libphonenumber-js',
@@ -99,7 +94,7 @@ const run = async () => {
       }
     }
 
-    logger.success('[vite.config.js](run) 💚 library builded with success')
+    logger.success('[vite.config.js](run) 💚 library builded with success 💚')
   } catch (error) {
     logger.error('[vite.config.js](run) 🔴 Error while building library', error)
   }
