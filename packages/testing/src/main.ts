@@ -1,18 +1,18 @@
 import App from './App.vue'
 
-import 'maz-ui/package/tailwindcss/css/tailwind.css'
-import 'maz-ui/package/plugins/aos/scss/index.scss'
+import '@package/tailwindcss/css/tailwind.css'
+import '@package/plugins/aos/scss/index.scss'
 import '@/css/main.css'
 
 import { createApp } from 'vue'
-import { vZoomImgInstall, vZoomImgOptions } from 'maz-ui/package/directives'
+import { vZoomImgInstall, vZoomImgOptions } from '@package/directives'
 import {
   installToaster,
   ToasterOptions,
   installAos,
   AosOptions,
   installWait,
-} from 'maz-ui/package/plugins'
+} from '@package/plugins'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const app = createApp(App)
