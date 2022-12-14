@@ -9,11 +9,7 @@ module.exports = {
     require(path.join(__dirname, './package/tailwindcss/tailwind.config')),
   ],
   content: {
-    files: [
-      './package/**/*',
-      'tailwindcss/**/*',
-      '!package/components_tmp/**/*',
-    ],
+    files: ['./package/**/*', '!package/components_tmp/**/*'],
     transform: {
       vue: (content) => {
         const regex = /<style[^>]*>([\S\s]*?)<\/style>/g
