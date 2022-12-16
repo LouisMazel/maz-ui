@@ -74,11 +74,8 @@
                 '--is-keyboard-selected': tmpModelValueIndex === i,
                 '--is-selected':
                   selectedOption?.[optionValueKey] === option[optionValueKey] &&
-                  (option[optionValueKey] ||
-                    typeof option[optionValueKey] === 'boolean'),
-                '--is-none-value':
-                  !option[optionValueKey] &&
-                  typeof option[optionValueKey] !== 'boolean',
+                  !isNullOrUndefined(option[optionValueKey]),
+                '--is-none-value': isNullOrUndefined(option[optionValueKey]),
               },
               `--${color}`,
             ]"
@@ -227,12 +224,15 @@
     ),
   )
 
+  const isNullOrUndefined = (value: unknown) => {
+    return value === undefined || value === null
+  }
+
   const mazInputValue = computed(() => {
-    return selectedOption.value?.[props.optionValueKey] ||
-      typeof selectedOption.value?.[props.optionValueKey] === 'boolean'
-      ? selectedOption.value?.[props.optionInputValueKey] ??
+    return isNullOrUndefined(selectedOption.value?.[props.optionValueKey])
+      ? undefined
+      : selectedOption.value?.[props.optionInputValueKey] ??
           selectedOption.value?.[props.optionLabelKey]
-      : undefined
   })
 
   const listTransition = computed(() =>
@@ -356,7 +356,7 @@
       ? optionsList.value[currentIndex] ?? optionsList.value[0]
       : optionsList.value[0]
 
-    if (newValue || Boolean(newValue)) {
+    if (!isNullOrUndefined(newValue)) {
       updateValue(newValue)
     }
   }

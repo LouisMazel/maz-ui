@@ -9,7 +9,7 @@ module.exports = {
     if (type === "test") return { ...base, section: "Tests" };
     if (type === "refactor") return { ...base, section: "Refactoring" };
     if (type === "chore") return { ...base, section: "Chore" };
-    if (type === "perf") return { ...base, section: "Perfermonce" };
+    if (type === "perf") return { ...base, section: "Performance" };
     if (type === "improvement") return { ...base, section: "Improvements" };
     return { ...base, hidden: true };
   }),
