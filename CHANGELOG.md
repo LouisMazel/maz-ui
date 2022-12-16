@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.6.2](https://github.com/LouisMazel/maz-ui/compare/v3.6.1...v3.6.2) (2022-12-16)
+
+### Bug Fixes
+
+- **lib:** danger color & maz-select ([#466](https://github.com/LouisMazel/maz-ui/issues/466)) ([5bcbdca](https://github.com/LouisMazel/maz-ui/commit/5bcbdcae3430f71aedec58cd62481a001aca4846))
+
+### Features
+
+- **testing:** use alias instead of local package ([#464](https://github.com/LouisMazel/maz-ui/issues/464)) ([fcb4138](https://github.com/LouisMazel/maz-ui/commit/fcb41383b9015a93f743dd338d91733490e5ba7a))
+
+### Reverts
+
+- Revert "chore(release): bump version to %s" ([30b0409](https://github.com/LouisMazel/maz-ui/commit/30b040922bd71a4c6b4a0603a45dea43b2ec4a41))
+
 ## [3.6.1](https://github.com/LouisMazel/maz-ui/compare/v3.6.0...v3.6.1) (2022-12-13)
 
 **Note:** Version bump only for package root
