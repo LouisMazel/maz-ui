@@ -85,7 +85,7 @@
   --maz-color-danger: hsl(1deg 100% 71%);
   --maz-color-danger-600: hsl(1deg 58% 58%);
   --maz-color-danger-700: hsl(1deg 41% 46%);
-  --maz-color-danger-800: hsl(g 42% 34%);
+  --maz-color-danger-800: hsl(1deg 42% 34%);
   --maz-color-danger-900: hsl(1deg 41% 21%);
   --maz-color-danger-contrast: hsl(0deg 0% 100%);
   --maz-color-danger-alpha: hsl(1deg 100% 71% / 60%);
