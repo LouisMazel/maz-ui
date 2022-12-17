@@ -100,6 +100,10 @@
     &.--right .m-backdrop-content {
       @apply maz-h-auto maz-min-h-screen;
 
+      &.m-drawer-content-wrap {
+        @apply maz-min-h-screen;
+      }
+
       transition: all 450ms ease-in-out;
       width: 100%;
 
