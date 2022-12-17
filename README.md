@@ -11,7 +11,7 @@
 [![bundlephobia_tree](https://badgen.net/bundlephobia/tree-shaking/maz-ui)](https://bundlephobia.com/package/maz-ui)
 [![bundlephobia_zip](https://badgen.net/bundlephobia/min/maz-ui)](https://bundlephobia.com/package/maz-ui)
 [![bundlephobia_zip](https://badgen.net/bundlephobia/minzip/maz-ui)](https://bundlephobia.com/package/maz-ui)
-[![bundlephobia_deps](https://badgen.net/bundlephobia/dependency-count/maz-ui@3.0.0)](https://bundlephobia.com/package/maz-ui)
+[![bundlephobia_deps](https://badgen.net/bundlephobia/dependency-count/maz-ui)](https://bundlephobia.com/package/maz-ui)
 
 [![maintainability](https://api.codeclimate.com/v1/badges/6b27047dcf150ccddfac/maintainability)](https://codeclimate.com/github/LouisMazel/maz-ui/maintainability)
 [![test_coverage](https://api.codeclimate.com/v1/badges/6b27047dcf150ccddfac/test_coverage)](https://codeclimate.com/github/LouisMazel/maz-ui/test_coverage)
