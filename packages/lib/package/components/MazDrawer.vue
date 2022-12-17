@@ -96,19 +96,21 @@
       @apply maz-z-0 maz-min-h-0 maz-flex-1 maz-overflow-x-auto maz-bg-color-light maz-bg-clip-padding;
     }
 
-    &.--left .m-backdrop-content,
-    &.--right .m-backdrop-content {
-      @apply maz-h-auto maz-min-h-screen;
-
-      &.m-drawer-content-wrap {
+    &.--left,
+    &.--right {
+      & .m-drawer-content-wrap {
         @apply maz-min-h-screen;
       }
 
-      transition: all 450ms ease-in-out;
-      width: 100%;
+      .m-backdrop-content {
+        @apply maz-h-screen maz-min-h-screen;
 
-      @screen tab-m {
-        width: var(--maz-drawer-size);
+        transition: all 450ms ease-in-out;
+        width: 100%;
+
+        @screen tab-m {
+          width: var(--maz-drawer-size);
+        }
       }
     }
 
