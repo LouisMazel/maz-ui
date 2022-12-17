@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.6.3](https://github.com/LouisMazel/maz-ui/compare/v3.6.2...v3.6.3) (2022-12-17)
+
+### Bug Fixes
+
+- **lib:** maz-drawer - sidebar on height full screen ([3606db7](https://github.com/LouisMazel/maz-ui/commit/3606db715197ca07b2cdf403b6b64530f8349629))
+
 ## [3.6.2](https://github.com/LouisMazel/maz-ui/compare/v3.6.1...v3.6.2) (2022-12-16)
 
 ### Bug Fixes
