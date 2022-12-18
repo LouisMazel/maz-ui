@@ -11,6 +11,10 @@ description: Plugin to animate elements on your page as you scroll.
 This plugin use the browser native [Intersection Observer API](https://developer.mozilla.org/fr/docs/Web/API/Intersection_Observer_API)
 :::
 
+::: tip
+This plugin has composable to use it easier, after installing it you can use [useAos](./../composables/use-aos.md)
+:::
+
 ## Basic usage
 
 <MazCard overflow-hidden data-maz-aos="scale-out" id="parentCard">
