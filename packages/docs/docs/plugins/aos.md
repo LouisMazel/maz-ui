@@ -1,5 +1,5 @@
 ---
-title: animation on scroll (aos)
+title: aos (animation on scroll)
 description: Plugin to animate elements on your page as you scroll.
 ---
 
@@ -8,11 +8,11 @@ description: Plugin to animate elements on your page as you scroll.
 {{ $frontmatter.description }}
 
 ::: tip
-This plugin use the browser native [Intersection Observer API](https://developer.mozilla.org/fr/docs/Web/API/Intersection_Observer_API)
+This plugin has composable to use it easier, after installing it you can use [useAos](./../composables/use-aos.md)
 :::
 
-::: tip
-This plugin has composable to use it easier, after installing it you can use [useAos](./../composables/use-aos.md)
+::: info
+This plugin use the browser native [Intersection Observer API](https://developer.mozilla.org/fr/docs/Web/API/Intersection_Observer_API)
 :::
 
 ## Basic usage
