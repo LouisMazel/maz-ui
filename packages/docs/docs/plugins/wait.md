@@ -7,6 +7,10 @@ description: Plugins to manage your loading states
 
 {{ $frontmatter.description }}
 
+::: tip
+This plugin has composable to use it easier, after installing it you can use [useWait](./../composables/use-wait.md)
+:::
+
 ## Basic usage
 
 <MazBtn @click="submitData" :loading="wait.isLoading('DATA_SUBMITTING')">

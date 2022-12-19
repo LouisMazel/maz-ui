@@ -3,9 +3,14 @@ title: toaster
 description: Display messages to your users in flexible toasts
 ---
 
+
 # {{ $frontmatter.title }}
 
 {{ $frontmatter.description }}
+
+::: tip
+This plugin has composable to use it easier, after installing it you can use [useToast](./../composables/use-toast.md)
+:::
 
 ## Basic usage
 
