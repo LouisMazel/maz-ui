@@ -3,6 +3,7 @@
   "loglevel": "verbose",
   "version": "3.6.4",
   "yes": false,
+  "changelogPreset": "conventionalcommits",
   "command": {
     "version": {
       "allowBranch": ["master"],

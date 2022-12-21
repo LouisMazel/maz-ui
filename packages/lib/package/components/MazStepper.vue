@@ -6,45 +6,51 @@
         type="button"
         :disabled="isStepDisabled(step)"
         class="m-stepper__header"
-        :class="{ '--is-current-step': step === currentStep }"
+        :class="{ '--is-current-step': step === currentStep || allStepsOpened }"
         @click="selectStep(step)"
       >
-        <span
-          class="m-stepper__count --primary"
-          :class="{
-            '--validated': isStepValidated(step),
-          }"
-        >
-          <div class="m-stepper__count__circle">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              width="1.2rem"
-              height="1.2rem"
-              stroke="currentColor"
-              aria-hidden="true"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
+        <div class="m-stepper__header__wrapper">
+          <span
+            class="m-stepper__count --primary"
+            :class="{
+              '--validated': isStepValidated(step),
+            }"
+          >
+            <div class="m-stepper__count__circle">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                width="1.2rem"
+                height="1.2rem"
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </div>
+
+            {{ step }}
+          </span>
+
+          <div class="m-stepper__header__content">
+            <span class="m-stepper__title">
+              <slot :name="`title-${step}`" />
+            </span>
+            <span v-if="hasSubtitleForStep(step)" class="m-stepper__subtitle">
+              <slot :name="`subtitle-${step}`" />
+            </span>
           </div>
-
-          {{ step }}
-        </span>
-
-        <div class="m-stepper__header__content">
-          <span class="m-stepper__title">
-            <slot :name="`title-${step}`" />
-          </span>
-          <span v-if="hasSubtitleForStep(step)" class="m-stepper__subtitle">
-            <slot :name="`subtitle-${step}`" />
-          </span>
         </div>
+
+        <span v-if="hasTitleRightForStep(step)" class="m-stepper__right">
+          <slot :name="`title-info-${step}`" />
+        </span>
       </button>
 
       <div
@@ -54,10 +60,11 @@
         }"
       >
         <MazTransitionExpand>
-          <div v-if="currentStep === step">
+          <div v-show="allStepsOpened || currentStep === step">
             <div class="m-stepper__content__wrapper">
               <slot
                 :name="`content-${step}`"
+                :validated="isStepValidated(step)"
                 :next-step="() => selectStep(step + 1)"
                 :previous-step="() => selectStep(step - 1)"
               />
@@ -90,6 +97,8 @@
     disabledNextSteps: { type: Boolean, default: false },
     disabledPreviousSteps: { type: Boolean, default: false },
     autoValidatedSteps: { type: Boolean, default: false },
+    allStepsOpened: { type: Boolean, default: false },
+    allStepsValidated: { type: Boolean, default: false },
     color: {
       type: String as PropType<Color>,
       default: 'primary',
@@ -155,14 +164,20 @@
       .includes(`subtitle-${step}`)
   }
 
+  const hasTitleRightForStep = (step: number): boolean => {
+    return Object.keys(slots)
+      .filter((slot) => slot.startsWith('title-info-'))
+      .includes(`title-info-${step}`)
+  }
+
   const isStepValidated = (step: number): boolean => {
-    const isValidated = !!props.steps?.[step - 1]?.validated
+    const isValidated = props.steps?.[step - 1]?.validated
     const isAutoValidated = props.autoValidatedSteps && step < currentStep.value
-    return isValidated || isAutoValidated
+    return isValidated ?? (isAutoValidated || props.allStepsValidated)
   }
 
   const isStepDisabled = (step: number): boolean => {
-    const isDisabled = !!props.steps?.[step - 1]?.disabled
+    const isDisabled = props.steps?.[step - 1]?.disabled
     const isCurrentStep = currentStep.value === step
     const isAutoDisabledNext =
       props.disabledNextSteps && step > currentStep.value
@@ -170,10 +185,11 @@
       props.disabledPreviousSteps && step < currentStep.value
 
     return (
-      isDisabled ||
-      isCurrentStep ||
-      isAutoDisabledNext ||
-      isAutoDisabledPrevious
+      isDisabled ??
+      (isCurrentStep ||
+        isAutoDisabledNext ||
+        isAutoDisabledPrevious ||
+        props.allStepsOpened)
     )
   }
 
@@ -185,8 +201,9 @@
 <style lang="postcss" scoped>
   .m-stepper {
     &__header {
-      @apply maz-flex maz-w-full maz-cursor-pointer maz-items-center maz-space-x-4
-        maz-rounded maz-px-4 maz-py-2 maz-outline-none maz-transition-colors maz-duration-200;
+      @apply maz-flex maz-w-full maz-cursor-pointer maz-select-text maz-items-center
+        maz-justify-between maz-space-x-4 maz-rounded maz-px-4 maz-py-2 maz-outline-none
+        maz-transition-colors maz-duration-200;
 
       &__content {
         @apply maz-flex maz-flex-col maz-items-start;
@@ -203,6 +220,10 @@
       &.--is-current-step {
         @apply maz-cursor-default;
       }
+
+      &__wrapper {
+        @apply maz-flex maz-items-center maz-space-x-4;
+      }
     }
 
     &__title {
@@ -211,6 +232,10 @@
 
     &__subtitle {
       @apply maz-text-xs maz-text-muted;
+    }
+
+    &__right {
+      @apply maz-text-right maz-text-sm maz-text-primary;
     }
 
     &__count {
