@@ -18,6 +18,9 @@ description: MazStepper is a standalone UI component to
   <template #subtitle-1>
     You should be sign-in to continue
   </template>
+  <template #title-info-1>
+    Required
+  </template>
   <template #content-1="{ nextStep }">
     <form @submit.prevent="nextStep">
       <MazInput v-model="email" label="E-mail" type="email" autocomplete="new-email" name="new-email" />
@@ -36,8 +39,16 @@ description: MazStepper is a standalone UI component to
   <template #subtitle-2>
     Where should we deliver your package?
   </template>
-  <template #content-2="{ nextStep }">
-    <MazInput label="Delivery address" />
+  <template #title-info-2>
+    {{ address }}
+  </template>
+  <template #content-2="{ nextStep, previousStep }">
+    <MazInput v-model="address" label="Delivery address" />
+    <br />
+    <MazBtn @click="previousStep" color="secondary">
+      Previous
+    </MazBtn>
+    <br />
     <br />
     <MazBtn @click="nextStep">
       Validate
@@ -48,12 +59,12 @@ description: MazStepper is a standalone UI component to
     Payment
   </template>
   <template #content-3="{ nextStep, previousStep }">
-    <MazBtn @click="previousStep">
+    <MazBtn @click="previousStep" color="secondary">
       Previous
     </MazBtn>
     <br />
     <br />
-    <MazBtn @click="nextStep" color="secondary">
+    <MazBtn @click="nextStep">
       Payment
     </MazBtn>
   </template>
@@ -68,11 +79,14 @@ description: MazStepper is a standalone UI component to
     <template #subtitle-1>
       You should be sign-in to continue
     </template>
+    <template #title-info-1>
+      Required
+    </template>
     <template #content-1="{ nextStep }">
       <form @submit.prevent="nextStep">
-        <MazInput label="E-mail" type="email" autocomplete="new-email" name="new-email" />
+        <MazInput v-model="email" label="E-mail" type="email" autocomplete="new-email" name="new-email" />
         <br />
-        <MazInput label="password" type="password" autocomplete="new-password" name="new-password" />
+        <MazInput v-model="password" label="password" type="password" autocomplete="new-password" name="new-password" />
         <br />
         <MazBtn type="submit">
           Sign-In
@@ -86,8 +100,16 @@ description: MazStepper is a standalone UI component to
     <template #subtitle-2>
       Where should we deliver your package?
     </template>
-    <template #content-2="{ nextStep }">
-      <MazInput label="Delivery address" />
+    <template #title-info-2>
+      {{ address }}
+    </template>
+    <template #content-2="{ nextStep, previousStep }">
+      <MazInput v-model="address" label="Delivery address" />
+      <br />
+      <MazBtn @click="previousStep" color="secondary">
+        Previous
+      </MazBtn>
+      <br />
       <br />
       <MazBtn @click="nextStep">
         Validate
@@ -98,12 +120,12 @@ description: MazStepper is a standalone UI component to
       Payment
     </template>
     <template #content-3="{ nextStep, previousStep }">
-      <MazBtn @click="previousStep">
+      <MazBtn @click="previousStep" color="secondary">
         Previous
       </MazBtn>
       <br />
       <br />
-      <MazBtn @click="nextStep" color="secondary">
+      <MazBtn @click="nextStep">
         Payment
       </MazBtn>
     </template>
@@ -115,6 +137,7 @@ description: MazStepper is a standalone UI component to
 
   const email = ref()
   const password = ref()
+  const address = ref('20 Cooper Square')
 </script>
 ```
 
@@ -251,9 +274,28 @@ Will be:
   <template #content-3> Content 3 </template>
 </MazStepper>
 
+### All steps opened & validated
+
+To not open and validate all steps, you can use the prop options:
+
+- `all-steps-validated`
+- `all-steps-opened`
+
+<MazStepper all-steps-validated all-steps-opened>
+  <template #title-1> Step 1 </template>
+  <template #content-1> Content 1 </template>
+
+  <template #title-2> Step 2 </template>
+  <template #content-2> Content 2 </template>
+
+  <template #title-3> Step 3 </template>
+  <template #content-3> Content 3 </template>
+</MazStepper>
+
 <script setup lang="ts">
   import { ref } from 'vue'
   const currentStep = ref(2)
+  const address = ref('20 Cooper Square')
 
   const email = ref()
   const password = ref()
