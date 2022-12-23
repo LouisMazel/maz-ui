@@ -1,13 +1,6 @@
 /* eslint-disable no-console */
 
-import {
-  renameSync,
-  existsSync,
-  statSync,
-  mkdirSync,
-  copyFileSync,
-  readdirSync,
-} from 'node:fs'
+import { renameSync, existsSync, statSync, mkdirSync, copyFileSync, readdirSync } from 'node:fs'
 import { resolve, join } from 'node:path'
 import { logger } from './logger'
 
@@ -25,10 +18,7 @@ function copyRecursiveSync(inputPath: string, outputPah: string) {
       mkdirSync(outputPah)
     }
     for (const childItemName of readdirSync(inputPath)) {
-      copyRecursiveSync(
-        join(inputPath, childItemName),
-        join(outputPah, childItemName),
-      )
+      copyRecursiveSync(join(inputPath, childItemName), join(outputPah, childItemName))
     }
   } else {
     copyFileSync(inputPath, outputPah)
@@ -41,10 +31,7 @@ function renameAllFiles() {
   )
   for (const name of componentsTypesList) {
     const componentName = name.split('.')[0]
-    renameSync(
-      `${OUTPUT_TYPES_FILES}/${name}`,
-      `${OUTPUT_TYPES_FILES}/${componentName}.d.ts`,
-    )
+    renameSync(`${OUTPUT_TYPES_FILES}/${name}`, `${OUTPUT_TYPES_FILES}/${componentName}.d.ts`)
   }
 }
 

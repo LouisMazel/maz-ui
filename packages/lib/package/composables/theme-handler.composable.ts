@@ -49,20 +49,14 @@ const toggleTheme = ({
   }
 }
 
-export const useThemeHandler = (
-  opts: ThemeHandlerOptions = DEFAULT_OPTIONS,
-) => {
+export const useThemeHandler = (opts: ThemeHandlerOptions = DEFAULT_OPTIONS) => {
   const options = {
     ...DEFAULT_OPTIONS,
     ...opts,
   }
 
-  const hasDarkTheme = computed(
-    () => theme.value === options.storageThemeValueDark,
-  )
-  const hasLightTheme = computed(
-    () => theme.value === options.storageThemeValueLight,
-  )
+  const hasDarkTheme = computed(() => theme.value === options.storageThemeValueDark)
+  const hasLightTheme = computed(() => theme.value === options.storageThemeValueLight)
 
   return {
     autoSetTheme: () => autoSetTheme(options),

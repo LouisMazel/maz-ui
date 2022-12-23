@@ -56,9 +56,7 @@
 
   const emits = defineEmits(['close', 'click'])
 
-  const positionY = computed(() =>
-    props.position.includes('top') ? 'top' : 'bottom',
-  )
+  const positionY = computed(() => (props.position.includes('top') ? 'top' : 'bottom'))
   const positionX = computed(() => {
     if (props.position.includes('left')) return 'left'
     if (props.position.includes('right')) return 'right'
@@ -118,9 +116,7 @@
     }
 
     isActive.value = true
-    timer.value = props.timeout
-      ? new ToasterTimer(close, props.timeout)
-      : undefined
+    timer.value = props.timeout ? new ToasterTimer(close, props.timeout) : undefined
   }
 
   function click(event: Event) {

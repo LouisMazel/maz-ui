@@ -62,9 +62,7 @@
 
   onMounted(() => {
     if (!props.name && !props.src) {
-      console.error(
-        '[maz-ui](MazIcon) you should provide "name" or "src" as prop',
-      )
+      console.error('[maz-ui](MazIcon) you should provide "name" or "src" as prop')
     }
   })
 
@@ -75,10 +73,7 @@
       titleTags[0].textContent = title
     } else {
       // create a title element if one doesn't already exist
-      const titleEl = document.createElementNS(
-        'http://www.w3.org/2000/svg',
-        'title',
-      )
+      const titleEl = document.createElementNS('http://www.w3.org/2000/svg', 'title')
       titleEl.textContent = title
       svg.append(titleEl)
     }
@@ -86,11 +81,7 @@
 
   const filterAttrs = (attrs: Record<string, unknown>) => {
     return Object.keys(attrs).reduce((result, key) => {
-      if (
-        attrs[key] !== false &&
-        attrs[key] !== null &&
-        attrs[key] !== undefined
-      ) {
+      if (attrs[key] !== false && attrs[key] !== null && attrs[key] !== undefined) {
         result[key] = attrs[key]
       }
       return result
@@ -156,10 +147,7 @@
           try {
             // Setup a parser to convert the response to text/xml in order for it to be manipulated and changed
             const parser = new DOMParser()
-            const result = parser.parseFromString(
-              request.responseText,
-              'text/xml',
-            )
+            const result = parser.parseFromString(request.responseText, 'text/xml')
             let svgEl = result.querySelectorAll('svg')[0] as SVGElement
             if (svgEl) {
               svgEl = props.transformSource(svgEl)

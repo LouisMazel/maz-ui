@@ -9,13 +9,7 @@
 
   import Chart from 'chart.js/auto/auto.mjs'
 
-  import type {
-    ChartItem,
-    ChartType,
-    Plugin,
-    ChartData,
-    ChartOptions,
-  } from 'chart.js'
+  import type { ChartItem, ChartType, Plugin, ChartData, ChartOptions } from 'chart.js'
 
   export default defineComponent({
     name: 'MazChart',
@@ -81,18 +75,15 @@
           return chartJSState.chart.update()
         }
         if (chartRef.value) {
-          return (chartJSState.chart = new Chart(
-            chartRef.value.getContext('2d') as ChartItem,
-            {
-              type: chartJSState.props.type as ChartType,
-              data: chartJSState.props.data as ChartData,
-              options: {
-                locale: props.locale,
-                ...chartJSState.props.options,
-              },
-              plugins: chartJSState.plugins,
+          return (chartJSState.chart = new Chart(chartRef.value.getContext('2d') as ChartItem, {
+            type: chartJSState.props.type as ChartType,
+            data: chartJSState.props.data as ChartData,
+            options: {
+              locale: props.locale,
+              ...chartJSState.props.options,
             },
-          ))
+            plugins: chartJSState.plugins,
+          }))
         }
       }
 

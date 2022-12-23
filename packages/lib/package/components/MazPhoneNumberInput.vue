@@ -33,9 +33,7 @@
       :search-placeholder="t.countrySelector.searchPlaceholder"
       :options="countryOptions"
       :error="error || (!!formattedNumber && !countryCode)"
-      :hint="
-        !!formattedNumber && !countryCode ? t.countrySelector.error : undefined
-      "
+      :hint="!!formattedNumber && !countryCode ? t.countrySelector.error : undefined"
       :label="t.countrySelector.placeholder"
       @update:model-value="setCountryCode($event, true)"
       @focus="inputFocused = false"
@@ -171,14 +169,9 @@
       type: String as PropType<Position>,
       default: 'bottom left',
       validator: (value: Position) => {
-        return [
-          'top',
-          'top right',
-          'top left',
-          'bottom',
-          'bottom right',
-          'bottom left',
-        ].includes(value)
+        return ['top', 'top right', 'top left', 'bottom', 'bottom right', 'bottom left'].includes(
+          value,
+        )
       },
     },
     color: {
@@ -268,11 +261,7 @@
 
   onMounted(() => {
     try {
-      if (
-        !props.defaultCountryCode &&
-        !props.noUseBrowserLocale &&
-        !countryCode.value
-      ) {
+      if (!props.defaultCountryCode && !props.noUseBrowserLocale && !countryCode.value) {
         const locale = browserLocale()
         if (locale) {
           setCountryCode(locale)
@@ -306,9 +295,7 @@
   })
 
   const countriesList = computed(() => {
-    return countries.value?.filter(
-      (item) => !props.ignoredCountries?.includes(item.iso2),
-    )
+    return countries.value?.filter((item) => !props.ignoredCountries?.includes(item.iso2))
   })
 
   const countriesFiltered = computed(() => {
@@ -319,9 +306,7 @@
   })
 
   const otherCountries = computed(() => {
-    return countriesList.value?.filter(
-      (item) => !props.preferredCountries?.includes(item.iso2),
-    )
+    return countriesList.value?.filter((item) => !props.preferredCountries?.includes(item.iso2))
   })
 
   const countriesSorted = computed(() => {
@@ -400,9 +385,7 @@
 
   const getPhoneNumberExample = () => {
     try {
-      const phoneNumber = countryCode.value
-        ? getExamplePhoneNumber(countryCode.value)
-        : undefined
+      const phoneNumber = countryCode.value ? getExamplePhoneNumber(countryCode.value) : undefined
       return phoneNumber ? phoneNumber.formatNational() : undefined
     } catch (error) {
       throw new Error(`[MazPhoneNumberInput](getPhoneNumberExample) ${error}`)
@@ -424,9 +407,7 @@
 
     const backSpacePressed = lastKeyPressed.value === 'Backspace'
 
-    const lastCharacOfPhoneNumber = phoneNumber
-      ? phoneNumber.charAt(phoneNumber.length - 1)
-      : ''
+    const lastCharacOfPhoneNumber = phoneNumber ? phoneNumber.charAt(phoneNumber.length - 1) : ''
     const lastCharIsParanthese = lastCharacOfPhoneNumber === ')'
 
     if (backSpacePressed && lastCharIsParanthese) {
@@ -436,10 +417,7 @@
     return phoneNumber
   }
 
-  const getAndEmitResults = (
-    phoneNumber?: string,
-    noAutoUpdateCountryCode?: boolean,
-  ) => {
+  const getAndEmitResults = (phoneNumber?: string, noAutoUpdateCountryCode?: boolean) => {
     results.value = getResultsFromPhoneNumber(countryCode.value, phoneNumber)
 
     if (!noAutoUpdateCountryCode) {
@@ -468,14 +446,10 @@
     const { isValid, e164, formatNational } = results.value
 
     const hasDeletedCharac =
-      formattedNumber.value &&
-      phoneNumber &&
-      formattedNumber.value?.length > phoneNumber?.length
+      formattedNumber.value && phoneNumber && formattedNumber.value?.length > phoneNumber?.length
 
     const cursorIsAtEnd =
-      phoneNumber && cursorPosition.value
-        ? cursorPosition.value + 1 >= phoneNumber.length
-        : true
+      phoneNumber && cursorPosition.value ? cursorPosition.value + 1 >= phoneNumber.length : true
 
     const shouldUseAsYoutType = (!hasDeletedCharac && cursorIsAtEnd) || isValid
 
@@ -501,17 +475,11 @@
     inputFocused.value = true
 
     if (countryCode.value) {
-      formattedNumber.value = getAsYouTypeFormat(
-        countryCode.value,
-        formattedNumber.value,
-      )
+      formattedNumber.value = getAsYouTypeFormat(countryCode.value, formattedNumber.value)
     }
   }
 
-  const setCountryCode = (
-    selectedCountryCode: string,
-    autoFocusInput = false,
-  ) => {
+  const setCountryCode = (selectedCountryCode: string, autoFocusInput = false) => {
     try {
       const countryAvailable = isCountryAvailable(selectedCountryCode)
 

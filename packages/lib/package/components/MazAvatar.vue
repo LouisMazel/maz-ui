@@ -117,9 +117,7 @@
     },
   })
 
-  const componentType = computed(() =>
-    props.to ? 'RouterLink' : props.href ? 'a' : 'div',
-  )
+  const componentType = computed(() => (props.to ? 'RouterLink' : props.href ? 'a' : 'div'))
   const isLink = computed(() => !!props.to || !!props.href)
 
   defineEmits(['click'])

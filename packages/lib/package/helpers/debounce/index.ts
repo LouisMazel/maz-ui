@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-type ArgumentTypes<F extends (...args: any[]) => void> = F extends (
-  ...args: infer A
-) => any
+type ArgumentTypes<F extends (...args: any[]) => void> = F extends (...args: infer A) => any
   ? A
   : never
 

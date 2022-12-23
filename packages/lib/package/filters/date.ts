@@ -10,14 +10,10 @@ export const date = (
   options?: Intl.DateTimeFormatOptions,
 ): string => {
   if (locale === undefined) {
-    throw new TypeError(
-      '[maz-ui](FilterDate) The `locale` attribute is required.',
-    )
+    throw new TypeError('[maz-ui](FilterDate) The `locale` attribute is required.')
   }
   if (typeof locale !== 'string') {
-    throw new TypeError(
-      '[maz-ui](FilterDate) The `locale` attribute must be a string.',
-    )
+    throw new TypeError('[maz-ui](FilterDate) The `locale` attribute must be a string.')
   }
 
   const opts = options ?? DEFAULT_OPTIONS

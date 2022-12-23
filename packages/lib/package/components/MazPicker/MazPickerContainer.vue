@@ -109,11 +109,7 @@
     disabledDates: { type: Array as PropType<string[]>, required: true },
   })
 
-  const emits = defineEmits([
-    'update:model-value',
-    'update:calendar-date',
-    'close',
-  ])
+  const emits = defineEmits(['update:model-value', 'update:calendar-date', 'close'])
 
   const currentDate = computed({
     get: () => props.modelValue,

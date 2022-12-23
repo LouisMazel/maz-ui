@@ -98,9 +98,7 @@
 
   const hoverredDay = ref<Dayjs>()
 
-  const isRangeMode = computed(
-    () => props.modelValue && typeof props.modelValue === 'object',
-  )
+  const isRangeMode = computed(() => props.modelValue && typeof props.modelValue === 'object')
 
   const hasShortcuts = computed(
     () => !props.noShortcuts && props.shortcuts.length > 0 && isRangeMode.value,
@@ -114,9 +112,7 @@
     set: (value) => emits('update:model-value', value),
   })
 
-  const months = computed(() =>
-    Array.from({ length: props.double ? 2 : 1 }, (_v, i) => i),
-  )
+  const months = computed(() => Array.from({ length: props.double ? 2 : 1 }, (_v, i) => i))
 
   const calendarDate = computed({
     get: () => props.calendarDate,

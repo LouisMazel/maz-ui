@@ -1,24 +1,12 @@
 <template>
   <div class="m-picker-header" :class="[`--${color}`]">
     <div v-if="hasDate" class="m-picker-header__date">
-      <TransitionGroup
-        :name="transitionName"
-        tag="div"
-        class="m-picker-header__year-transition"
-      >
-        <span
-          v-for="(y, yi) in yearArray"
-          :key="`${y}-${yi}`"
-          class="m-picker-header__year-text"
-        >
+      <TransitionGroup :name="transitionName" tag="div" class="m-picker-header__year-transition">
+        <span v-for="(y, yi) in yearArray" :key="`${y}-${yi}`" class="m-picker-header__year-text">
           {{ y }}
         </span>
       </TransitionGroup>
-      <TransitionGroup
-        :name="transitionName"
-        tag="div"
-        class="m-picker-header__date-transition"
-      >
+      <TransitionGroup :name="transitionName" tag="div" class="m-picker-header__date-transition">
         <span
           v-for="(d, di) in dateStringArray"
           :key="`${d}-${di}`"
@@ -28,21 +16,9 @@
         </span>
       </TransitionGroup>
     </div>
-    <div
-      v-if="timeArray"
-      class="m-picker-header__time"
-      :class="{ '--has-date': hasDate }"
-    >
-      <TransitionGroup
-        :name="transitionName"
-        tag="div"
-        class="m-picker-header__time-transition"
-      >
-        <span
-          v-for="(t, ti) in timeArray"
-          :key="`${t}-${ti}`"
-          class="m-picker-header__time-text"
-        >
+    <div v-if="timeArray" class="m-picker-header__time" :class="{ '--has-date': hasDate }">
+      <TransitionGroup :name="transitionName" tag="div" class="m-picker-header__time-transition">
+        <span v-for="(t, ti) in timeArray" :key="`${t}-${ti}`" class="m-picker-header__time-text">
           {{ t }}
         </span>
       </TransitionGroup>
@@ -78,14 +54,10 @@
   })
 
   const refDate = computed(() =>
-    typeof props.modelValue === 'string'
-      ? props.modelValue
-      : props.modelValue?.start,
+    typeof props.modelValue === 'string' ? props.modelValue : props.modelValue?.start,
   )
 
-  const transitionName = ref<'maz-slidevnext' | 'maz-slidevprev'>(
-    'maz-slidevnext',
-  )
+  const transitionName = ref<'maz-slidevnext' | 'maz-slidevprev'>('maz-slidevnext')
 
   const year = computed(() => {
     if (props.modelValue && typeof props.modelValue === 'object') {
@@ -160,9 +132,7 @@
     return '-'
   })
 
-  const dateStringArray = computed(() =>
-    props.hasDate ? [dateString.value] : undefined,
-  )
+  const dateStringArray = computed(() => (props.hasDate ? [dateString.value] : undefined))
 
   const timeValue = computed(() => {
     return refDate.value
@@ -174,17 +144,13 @@
       : undefined
   })
 
-  const timeArray = computed(() =>
-    props.hasTime ? [timeValue.value] : undefined,
-  )
+  const timeArray = computed(() => (props.hasTime ? [timeValue.value] : undefined))
 
   watch(
     () => props.modelValue,
     (modelValue, oldModelValue) => {
-      const currentValue =
-        typeof modelValue === 'object' ? modelValue.start : modelValue
-      const oldValue =
-        typeof oldModelValue === 'object' ? oldModelValue.start : oldModelValue
+      const currentValue = typeof modelValue === 'object' ? modelValue.start : modelValue
+      const oldValue = typeof oldModelValue === 'object' ? oldModelValue.start : oldModelValue
 
       transitionName.value =
         dayjs(currentValue).isAfter(oldValue, 'date') ||

@@ -30,9 +30,10 @@
     size: { type: String, default: '2em' },
     color: {
       type: String as PropType<Color>,
-      default: 'primary',
+      default: 'normal',
       validator: (value: string) => {
         return [
+          'normal',
           'info',
           'white',
           'success',
@@ -50,8 +51,12 @@
 
 <style lang="postcss" scoped>
   .m-spinner {
-    @apply maz-animate-spin maz-fill-current maz-text-white;
+    @apply maz-animate-spin maz-fill-current;
     @apply maz-m-0 !important;
+
+    &--normal {
+      @apply maz-text-normal;
+    }
 
     &--primary {
       @apply maz-text-primary;

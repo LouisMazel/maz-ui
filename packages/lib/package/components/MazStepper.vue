@@ -2,37 +2,27 @@
   <div class="m-stepper">
     <template v-for="step in stepCount" :key="step">
       <button
-        v-if="hasTitleForStep(step)"
+        v-if="hasDataForStep('title', step)"
         type="button"
         :disabled="isStepDisabled(step)"
         class="m-stepper__header"
-        :class="{ '--is-current-step': step === currentStep || allStepsOpened }"
+        :class="[
+          {
+            '--is-current-step': step === currentStep || allStepsOpened,
+          },
+          `${getStepStateData(step).class}`,
+        ]"
         @click="selectStep(step)"
       >
         <div class="m-stepper__header__wrapper">
-          <span
-            class="m-stepper__count --primary"
-            :class="{
-              '--validated': isStepValidated(step),
-            }"
-          >
+          <span class="m-stepper__count --primary">
             <div class="m-stepper__count__circle">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                width="1.2rem"
-                height="1.2rem"
-                stroke="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M5 13l4 4L19 7"
-                />
-              </svg>
+              <MazIcon
+                v-if="getStepStateData(step).icon"
+                class="icon"
+                size="1.5rem"
+                :src="getStepStateData(step).icon"
+              />
             </div>
 
             {{ step }}
@@ -40,16 +30,22 @@
 
           <div class="m-stepper__header__content">
             <span class="m-stepper__title">
-              <slot :name="`title-${step}`" />
+              <slot :name="`title-${step}`">
+                {{ getPropertyInStep('title', step) }}
+              </slot>
             </span>
-            <span v-if="hasSubtitleForStep(step)" class="m-stepper__subtitle">
-              <slot :name="`subtitle-${step}`" />
+            <span v-if="hasDataForStep('subtitle', step)" class="m-stepper__subtitle">
+              <slot :name="`subtitle-${step}`">
+                {{ getPropertyInStep('subtitle', step) }}
+              </slot>
             </span>
           </div>
         </div>
 
-        <span v-if="hasTitleRightForStep(step)" class="m-stepper__right">
-          <slot :name="`title-info-${step}`" />
+        <span v-if="hasDataForStep('titleInfo', step)" class="m-stepper__right">
+          <slot :name="`title-info-${step}`">
+            {{ getPropertyInStep('titleInfo', step) }}
+          </slot>
         </span>
       </button>
 
@@ -64,7 +60,9 @@
             <div class="m-stepper__content__wrapper">
               <slot
                 :name="`content-${step}`"
-                :validated="isStepValidated(step)"
+                :validated="isStepSuccess(step)"
+                :error="isStepError(step)"
+                :warning="isStepWarning(step)"
                 :next-step="() => selectStep(step + 1)"
                 :previous-step="() => selectStep(step - 1)"
               />
@@ -83,11 +81,20 @@
 <script lang="ts" setup>
   import { computed, useSlots, ref, type PropType } from 'vue'
   import MazTransitionExpand from './MazTransitionExpand.vue'
+  import MazIcon from './MazIcon.vue'
   import type { Color } from './types'
+  import CheckCircleIcon from '@package/icons/check-circle.svg'
+  import ExclamationCircleIcon from '@package/icons/exclamation-circle.svg'
+  import ExclamationIcon from '@package/icons/exclamation.svg'
 
   export interface Step {
+    title?: string
+    subtitle?: string
+    titleInfo?: string
     disabled?: boolean
-    validated?: boolean
+    error?: boolean
+    success?: boolean
+    warning?: boolean
   }
   export type Steps = Step[]
 
@@ -96,7 +103,7 @@
     steps: { type: Array as PropType<Steps>, default: undefined },
     disabledNextSteps: { type: Boolean, default: false },
     disabledPreviousSteps: { type: Boolean, default: false },
-    autoValidatedSteps: { type: Boolean, default: false },
+    autoValidateSteps: { type: Boolean, default: false },
     allStepsOpened: { type: Boolean, default: false },
     allStepsValidated: { type: Boolean, default: false },
     color: {
@@ -116,20 +123,18 @@
         ].includes(value)
       },
     },
+    canCloseSteps: { type: Boolean, default: false },
   })
 
   const roundStepBgColor = computed(() => `var(--maz-color-${props.color})`)
-  const roundStepTextColor = computed(
-    () => `var(--maz-color-${props.color}-contrast)`,
-  )
+  const roundStepTextColor = computed(() => `var(--maz-color-${props.color}-contrast)`)
 
   const emits = defineEmits(['update:model-value'])
 
   const slots = useSlots()
 
   const stepCount = computed<number>(
-    () =>
-      Object.keys(slots).filter((slot) => slot.startsWith('content-')).length,
+    () => Object.keys(slots).filter((slot) => slot.startsWith('content-')).length,
   )
 
   const localModelValue = ref(1)
@@ -142,8 +147,26 @@
     },
   })
 
+  const getStepStateData = (step: number): { icon?: string; class: string } => {
+    if (isStepSuccess(step)) {
+      return { icon: CheckCircleIcon, class: '--success' }
+    } else if (isStepWarning(step)) {
+      return { icon: ExclamationIcon, class: '--warning' }
+    } else if (isStepError(step)) {
+      return { icon: ExclamationCircleIcon, class: '--error' }
+    }
+
+    return { class: '--normal' }
+  }
+
+  const getPropertyInStep = (property: 'title' | 'titleInfo' | 'subtitle', step: number) => {
+    return props.steps?.[step - 1]?.[property]
+  }
+
   const selectStep = (step: number) => {
-    if (step < 1) {
+    if (currentStep.value === step && props.canCloseSteps) {
+      currentStep.value = 0
+    } else if (step < 1) {
       currentStep.value = 1
     } else if (step > stepCount.value) {
       currentStep.value = stepCount.value
@@ -152,45 +175,48 @@
     }
   }
 
-  const hasTitleForStep = (step: number): boolean => {
-    return Object.keys(slots)
-      .filter((slot) => slot.startsWith('title-'))
-      .includes(`title-${step}`)
+  const hasDataForStep = (property: 'title' | 'titleInfo' | 'subtitle', step: number): boolean => {
+    const data = property === 'titleInfo' ? 'title-info' : property
+
+    const hasSlot = Object.keys(slots)
+      .filter((slot) => slot.startsWith(`${data}-`))
+      .includes(`${data}-${step}`)
+
+    const hasData = !!props.steps?.[step - 1]?.[property]
+
+    return hasSlot || hasData
   }
 
-  const hasSubtitleForStep = (step: number): boolean => {
-    return Object.keys(slots)
-      .filter((slot) => slot.startsWith('subtitle-'))
-      .includes(`subtitle-${step}`)
-  }
+  const isStepSuccess = (step: number): boolean => {
+    const isValidated = props.steps?.[step - 1]?.success
+    const hasErrorOrWarningState = isStepError(step) || isStepWarning(step)
 
-  const hasTitleRightForStep = (step: number): boolean => {
-    return Object.keys(slots)
-      .filter((slot) => slot.startsWith('title-info-'))
-      .includes(`title-info-${step}`)
-  }
-
-  const isStepValidated = (step: number): boolean => {
-    const isValidated = props.steps?.[step - 1]?.validated
-    const isAutoValidated = props.autoValidatedSteps && step < currentStep.value
+    const isAutoValidated =
+      props.autoValidateSteps && step < currentStep.value && !hasErrorOrWarningState
     return isValidated ?? (isAutoValidated || props.allStepsValidated)
   }
 
   const isStepDisabled = (step: number): boolean => {
     const isDisabled = props.steps?.[step - 1]?.disabled
-    const isCurrentStep = currentStep.value === step
-    const isAutoDisabledNext =
-      props.disabledNextSteps && step > currentStep.value
-    const isAutoDisabledPrevious =
-      props.disabledPreviousSteps && step < currentStep.value
+    const isCurrentStepDisabled = currentStep.value === step && !props.canCloseSteps
+    const isAutoDisabledNext = props.disabledNextSteps && step > currentStep.value
+    const isAutoDisabledPrevious = props.disabledPreviousSteps && step < currentStep.value
 
     return (
       isDisabled ??
-      (isCurrentStep ||
+      (isCurrentStepDisabled ||
         isAutoDisabledNext ||
         isAutoDisabledPrevious ||
         props.allStepsOpened)
     )
+  }
+
+  const isStepError = (step: number) => {
+    return props.steps?.[step - 1]?.error
+  }
+
+  const isStepWarning = (step: number) => {
+    return props.steps?.[step - 1]?.warning
   }
 
   const isLastStep = (step: number): boolean => {
@@ -224,6 +250,48 @@
       &__wrapper {
         @apply maz-flex maz-items-center maz-space-x-4;
       }
+
+      &.--success {
+        .m-stepper__count__circle {
+          @apply maz-scale-100 maz-bg-success;
+        }
+
+        .m-stepper__right {
+          @apply maz-text-success;
+        }
+
+        svg {
+          @apply maz-text-success-contrast;
+        }
+      }
+
+      &.--warning {
+        .m-stepper__count__circle {
+          @apply maz-scale-100 maz-bg-warning;
+        }
+
+        .m-stepper__right {
+          @apply maz-text-warning;
+        }
+
+        svg {
+          @apply maz-text-warning-contrast;
+        }
+      }
+
+      &.--error {
+        .m-stepper__count__circle {
+          @apply maz-scale-100 maz-bg-danger;
+        }
+
+        .m-stepper__right {
+          @apply maz-text-danger;
+        }
+
+        svg {
+          @apply maz-text-danger-contrast;
+        }
+      }
     }
 
     &__title {
@@ -231,7 +299,7 @@
     }
 
     &__subtitle {
-      @apply maz-text-xs maz-text-muted;
+      @apply maz-mt-1 maz-text-xs maz-text-muted;
     }
 
     &__right {
@@ -247,21 +315,11 @@
 
       &__circle {
         @apply maz-absolute maz-inset-0 maz-flex maz-scale-0 maz-rounded-full
-          maz-bg-success maz-transition-all maz-duration-300 maz-ease-in-out maz-flex-center;
+          maz-transition-all maz-duration-300 maz-ease-in-out maz-flex-center;
       }
 
       svg {
-        color: v-bind('roundStepTextColor');
-      }
-
-      &.--validated {
-        & .m-stepper__count__circle {
-          @apply maz-scale-100;
-        }
-
-        svg {
-          @apply maz-text-success-contrast;
-        }
+        @apply maz-text-success-contrast;
       }
     }
 

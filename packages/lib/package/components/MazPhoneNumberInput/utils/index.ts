@@ -27,9 +27,7 @@ const NON_ALPHA_REGEX = /^[^a-z]+$/i
 let examples: Examples
 
 export async function loadPhoneNumberExamplesFile() {
-  const { default: data } = await import(
-    'libphonenumber-js/examples.mobile.json'
-  )
+  const { default: data } = await import('libphonenumber-js/examples.mobile.json')
 
   examples = data
   return examples
@@ -159,18 +157,13 @@ export const getResultsFromPhoneNumber = (
   }
 }
 
-export function getAsYouTypeFormat(
-  countryCode: CountryCode,
-  phoneNumber?: string,
-) {
+export function getAsYouTypeFormat(countryCode: CountryCode, phoneNumber?: string) {
   try {
     if (!phoneNumber) {
       return
     }
 
-    return countryCode
-      ? new AsYouType(countryCode).input(phoneNumber)
-      : phoneNumber
+    return countryCode ? new AsYouType(countryCode).input(phoneNumber) : phoneNumber
   } catch (error) {
     throw new Error(`[MazPhoneNumberInput](getAsYouTypeFormat) ${error}`)
   }

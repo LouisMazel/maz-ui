@@ -70,16 +70,12 @@ export class VueZoomImg {
   private buildOptions(binding: BindingData): vZoomImgBindingOptions {
     return {
       ...this.defaultOptions,
-      ...(typeof binding.value === 'object'
-        ? binding.value
-        : { src: binding.value }),
+      ...(typeof binding.value === 'object' ? binding.value : { src: binding.value }),
     }
   }
 
   get allInstances(): HTMLElement[] {
-    return [
-      ...document.querySelectorAll('.maz-zoom-img-instance'),
-    ] as HTMLElement[]
+    return [...document.querySelectorAll('.maz-zoom-img-instance')] as HTMLElement[]
   }
 
   public create(el: HTMLElement): void {
@@ -130,10 +126,7 @@ export class VueZoomImg {
     el.style.cursor = ''
   }
 
-  private renderPreview(
-    el: HTMLElement,
-    options?: vZoomImgBindingOptions,
-  ): void {
+  private renderPreview(el: HTMLElement, options?: vZoomImgBindingOptions): void {
     el.classList.add(StateClass.OPEN)
     this.addStyle(style)
 
@@ -236,9 +229,7 @@ export class VueZoomImg {
   }
 
   private closePreview(): void {
-    const container: HTMLElement | null = document.querySelector(
-      '#MazImgPreviewFullsize',
-    )
+    const container: HTMLElement | null = document.querySelector('#MazImgPreviewFullsize')
     const style: HTMLElement | null = document.querySelector('#MazPreviewStyle')
     const instance: HTMLElement | null = document.querySelector(
       '.maz-zoom-img-instance.maz-is-open',
@@ -276,8 +267,7 @@ export class VueZoomImg {
         ? currentInstanceIndex + 1
         : currentInstanceIndex - 1
 
-      const nextInstance =
-        this.allInstances[this.getNewInstanceIndex(newInstanceIndex)]
+      const nextInstance = this.allInstances[this.getNewInstanceIndex(newInstanceIndex)]
 
       if (nextInstance) {
         this.useNextInstance(currentInstance, nextInstance)
@@ -285,10 +275,7 @@ export class VueZoomImg {
     }
   }
 
-  private useNextInstance(
-    currentInstance: HTMLElement,
-    nextInstance: HTMLElement,
-  ) {
+  private useNextInstance(currentInstance: HTMLElement, nextInstance: HTMLElement) {
     currentInstance.classList.remove(StateClass.OPEN)
     nextInstance.classList.add(StateClass.OPEN)
 

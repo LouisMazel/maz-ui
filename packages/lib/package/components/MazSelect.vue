@@ -60,9 +60,16 @@
             autocomplete="off"
             class="m-select-list__search-input"
             @keydown="keyboardHandler"
-          />
+          >
+            <template #left-icon>
+              <MazIcon size="1.3rem" :src="SearchIcon" />
+            </template>
+          </MazInput>
         </div>
-        <div class="m-select-list__scroll-wrapper">
+        <span v-if="!optionsList || optionsList.length <= 0" class="m-select-list__no-results">
+          <MazIcon :src="NoSymbolIcon" />
+        </span>
+        <div v-else class="m-select-list__scroll-wrapper">
           <button
             v-for="(option, i) in optionsList"
             :key="i"
@@ -79,17 +86,17 @@
               },
               `--${color}`,
             ]"
-            :style="{ height: `${itemHeight}px` }"
+            :style="{ minHeight: `${itemHeight}px` }"
             @click.prevent.stop="updateValue(option)"
           >
             <slot
               :option="option"
-              :is-selected="
-                selectedOption?.[optionValueKey] === option[optionValueKey]
-              "
+              :is-selected="selectedOption?.[optionValueKey] === option[optionValueKey]"
               :selected-option="selectedOption?.[optionValueKey]"
             >
-              {{ option[optionLabelKey] }}
+              <span>
+                {{ option[optionLabelKey] }}
+              </span>
             </slot>
           </button>
         </div>
@@ -105,19 +112,15 @@
 
 <script lang="ts" setup>
   // NEXT: multiselect
-  import {
-    ref,
-    computed,
-    onBeforeMount,
-    nextTick,
-    type PropType,
-    getCurrentInstance,
-  } from 'vue'
+  import { ref, computed, onBeforeMount, nextTick, type PropType, getCurrentInstance } from 'vue'
   import MazInput from './MazInput.vue'
   import MazIcon from './MazIcon.vue'
   import type { Color, ModelValueSimple, Position, Size } from './types'
-  import ChevronDownIcon from '@package/icons/chevron-down.svg'
   import { useInstanceUniqId } from '@package/composables/instance-uniq-id.composable'
+
+  import SearchIcon from '@package/icons/search.svg'
+  import ChevronDownIcon from '@package/icons/chevron-down.svg'
+  import NoSymbolIcon from '@package/icons/no-symbol.svg'
 
   const instance = getCurrentInstance()
 
@@ -127,7 +130,7 @@
       default: undefined,
     },
     id: { type: String, default: undefined },
-    options: { type: Array as PropType<MazSelectOption[]>, required: true },
+    options: { type: Array as PropType<MazSelectOption[]>, default: undefined },
     optionValueKey: { type: String, default: 'value' },
     optionLabelKey: { type: String, default: 'label' },
     optionInputValueKey: { type: String, default: 'label' },
@@ -135,14 +138,9 @@
       type: String as PropType<Position>,
       default: 'bottom left',
       validator: (value: Position) => {
-        return [
-          'top',
-          'top right',
-          'top left',
-          'bottom',
-          'bottom right',
-          'bottom left',
-        ].includes(value)
+        return ['top', 'top right', 'top left', 'bottom', 'bottom right', 'bottom left'].includes(
+          value,
+        )
       },
     },
     required: { type: Boolean, default: false },
@@ -179,14 +177,7 @@
     searchPlaceholder: { type: String, default: 'Search in options' },
   })
 
-  const emits = defineEmits([
-    'close',
-    'open',
-    'update:model-value',
-    'blur',
-    'focus',
-    'change',
-  ])
+  const emits = defineEmits(['close', 'open', 'update:model-value', 'blur', 'focus', 'change'])
 
   const listOpened = ref(false)
   const tmpModelValueIndex = ref<number>()
@@ -201,14 +192,12 @@
 
   onBeforeMount(() => {
     if (!props.options?.length) {
-      console.error('[maz-ui](MazSelect) you must provide options')
+      console.warn('[maz-ui](MazSelect) you must provide options')
     }
 
     if (selectedOption.value) {
       tmpModelValueIndex.value = props.options?.findIndex(
-        (option) =>
-          option[props.optionValueKey] ===
-          selectedOption.value?.[props.optionValueKey],
+        (option) => option[props.optionValueKey] === selectedOption.value?.[props.optionValueKey],
       )
     }
   })
@@ -219,9 +208,7 @@
   const optionsListElement = ref<HTMLDivElement>()
 
   const selectedOption = computed(() =>
-    props.options.find(
-      (option) => props.modelValue === option[props.optionValueKey],
-    ),
+    props.options?.find((option) => props.modelValue === option[props.optionValueKey]),
   )
 
   const isNullOrUndefined = (value: unknown) => {
@@ -242,15 +229,12 @@
   const searchQuery = ref<string>()
 
   const searchInValue = (value?: ModelValueSimple, query?: string) => {
-    return (
-      query &&
-      value?.toString().toLocaleLowerCase().includes(query.toLocaleLowerCase())
-    )
+    return query && value?.toString().toLocaleLowerCase().includes(query.toLocaleLowerCase())
   }
 
   const optionsList = computed(() => {
     return searchQuery.value
-      ? props.options.filter((option) => {
+      ? props.options?.filter((option) => {
           const searchValue = option[props.optionLabelKey]
           const searchValue3 = option[props.optionValueKey]
           const searchValue2 = option[props.optionInputValueKey]
@@ -291,7 +275,7 @@
   }
 
   const mainInputKeyboardHandler = (event: KeyboardEvent) => {
-    if (event.key.length === 1) {
+    if (event.key?.length === 1) {
       event.preventDefault()
       openList(event)
 
@@ -327,7 +311,11 @@
 
     if (!hasListOpened.value) openList(event)
 
-    const optionsLength = optionsList.value.length
+    const optionsLength = optionsList.value?.length
+
+    if (!optionsLength) {
+      return
+    }
 
     if (typeof currentIndex === 'number') {
       if (currentIndex === optionsLength - 1 && code === 'ArrowDown') {
@@ -335,8 +323,7 @@
       } else if (currentIndex === 0 && code === 'ArrowUp') {
         tmpModelValueIndex.value = optionsLength - 1
       } else {
-        tmpModelValueIndex.value =
-          code === 'ArrowDown' ? currentIndex + 1 : currentIndex - 1
+        tmpModelValueIndex.value = code === 'ArrowDown' ? currentIndex + 1 : currentIndex - 1
       }
     } else {
       tmpModelValueIndex.value = code === 'ArrowDown' ? 0 : optionsLength - 1
@@ -353,11 +340,11 @@
     }
 
     const newValue = currentIndex
-      ? optionsList.value[currentIndex] ?? optionsList.value[0]
-      : optionsList.value[0]
+      ? optionsList.value?.[currentIndex] ?? optionsList.value?.[0]
+      : optionsList.value?.[0]
 
     if (!isNullOrUndefined(newValue)) {
-      updateValue(newValue)
+      updateValue(newValue as MazSelectOption)
     }
   }
 
@@ -365,23 +352,17 @@
     if (typeof itemIndex === 'number') {
       await nextTick()
 
-      optionsListElement.value
-        ?.querySelectorAll('.m-select-list-item')
-        [itemIndex]?.scrollIntoView({
-          behavior: 'auto',
-          block: 'nearest',
-          inline: 'start',
-        })
+      optionsListElement.value?.querySelectorAll('.m-select-list-item')[itemIndex]?.scrollIntoView({
+        behavior: 'auto',
+        block: 'nearest',
+        inline: 'start',
+      })
     }
   }
 
-  const updateValue = (
-    selectedOption: MazSelectOption,
-    mustCloseList = true,
-  ) => {
-    tmpModelValueIndex.value = optionsList.value.findIndex(
-      (option) =>
-        selectedOption[props.optionValueKey] === option[props.optionValueKey],
+  const updateValue = (selectedOption: MazSelectOption, mustCloseList = true) => {
+    tmpModelValueIndex.value = optionsList.value?.findIndex(
+      (option) => selectedOption[props.optionValueKey] === option[props.optionValueKey],
     )
     if (mustCloseList) closeList()
     searchQuery.value = undefined
@@ -393,12 +374,8 @@
   .m-select {
     @apply maz-relative;
 
-    &:not(.--disabled) {
+    &:not(.--disabled):deep(.m-input-input) {
       @apply maz-cursor-pointer;
-
-      &:deep(.m-input-input) {
-        @apply maz-cursor-pointer;
-      }
     }
 
     &-input:deep(.m-input-input) {
@@ -463,12 +440,20 @@
         @apply maz-flex-1 maz-overflow-auto;
       }
 
+      &__no-results {
+        @apply maz-flex maz-p-4 maz-flex-center;
+      }
+
       &-item {
-        @apply maz-flex maz-w-full maz-items-center maz-bg-transparent
-          maz-px-4 maz-text-left maz-text-normal hover:maz-bg-color-light;
+        @apply maz-flex maz-w-full maz-items-center maz-truncate
+          maz-bg-transparent maz-px-4 maz-text-left maz-text-normal hover:maz-bg-color-light;
+
+        span {
+          @apply maz-truncate;
+        }
 
         &.--is-keyboard-selected {
-          @apply maz-bg-color-lighter maz-font-medium;
+          @apply maz-bg-color-lighter;
         }
 
         &.--is-none-value {
@@ -476,8 +461,6 @@
         }
 
         &.--is-selected {
-          @apply maz-font-semibold;
-
           &.--primary {
             @apply maz-bg-primary maz-text-primary-contrast;
           }

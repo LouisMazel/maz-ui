@@ -82,9 +82,7 @@
   onBeforeMount(() => {
     const { modelValue, useAnchor, items } = props
     if (modelValue < 1 || modelValue > items.length)
-      throw new Error(
-        `[Maz-ui](MazTabsBar) The init value should be between 1 and ${items.length}`,
-      )
+      throw new Error(`[Maz-ui](MazTabsBar) The init value should be between 1 and ${items.length}`)
 
     if (!useAnchor) setValue(modelValue - 1)
   })

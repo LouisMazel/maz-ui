@@ -11,7 +11,7 @@ description: MazStepper is a standalone UI component to
 
 ## Basic usage
 
-<MazStepper auto-validated-steps>
+<MazStepper auto-validate-steps>
   <template #title-1>
       Sign-In
   </template>
@@ -56,9 +56,14 @@ description: MazStepper is a standalone UI component to
   </template>
 
   <template #title-3>
-    Payment
+    Checkout
+  </template>
+  <template #subtitle-3>
+    Provide credit card
   </template>
   <template #content-3="{ nextStep, previousStep }">
+    <MazInput label="Credit card number" type="number" />
+    <br />
     <MazBtn @click="previousStep" color="secondary">
       Previous
     </MazBtn>
@@ -70,9 +75,11 @@ description: MazStepper is a standalone UI component to
   </template>
 </MazStepper>
 
+::: details View code
+
 ```vue
 <template>
-  <MazStepper auto-validated-steps>
+  <MazStepper auto-validate-steps>
     <template #title-1>
         Sign-In
     </template>
@@ -117,9 +124,14 @@ description: MazStepper is a standalone UI component to
     </template>
 
     <template #title-3>
-      Payment
+      Checkout
+    </template>
+    <template #subtitle-3>
+      Provide credit card
     </template>
     <template #content-3="{ nextStep, previousStep }">
+      <MazInput label="Credit card number" type="number" />
+      <br />
       <MazBtn @click="previousStep" color="secondary">
         Previous
       </MazBtn>
@@ -141,44 +153,142 @@ description: MazStepper is a standalone UI component to
 </script>
 ```
 
-## Documentation
+:::
 
-### Disable and validate steps programmatically
+## Models
 
-You can validate or disable each step with the property `step`
+::: info
 
-This property has the following model:
+`step` property model
 
 ```ts
-type Steps = Array<{ disabled?: boolean validated?: boolean }>
+type Steps = Array<{
+  title?: string
+  subtitle?: string
+  titleInfo?: string
+  disabled?: boolean
+  error?: boolean
+  success?: boolean
+  warning?: boolean
+}>
 ```
 
-You should respect order of steps in the array:
+::::
 
-```vue
+## Use `step` property instead of slots
+
+Displayed steps are generated with the slots `<template #content-1 />`, but you can provide its title, subtitle and title-info with the `steps` props
+
+<MazStepper
+  :steps="[
+    { title: 'Title 1', subtitle: 'Subtitle 1', titleInfo: 'Info 1' },
+    { title: 'Title 2', subtitle: 'Subtitle 2', titleInfo: 'Info 2' },
+    { title: 'Title 3', subtitle: 'Subtitle 3', titleInfo: 'Info 3' },
+    { title: 'Title 4', subtitle: 'Subtitle 4', titleInfo: 'Info 4' },
+  ]"
+>
+  <template #content-1> Content 1 </template>
+  <template #content-2> Content 2 </template>
+  <template #content-3> Content 3 </template>
+  <template #content-4> Content 4 </template>
+</MazStepper>
+
+```vue{3-8}
 <template>
   <MazStepper
     :steps="[
-      { disabled: false, validated: true },
-      { disabled: true, validated: false }
+      { title: 'Title 1', subtitle: 'Subtitle 1', titleInfo: 'Info 1' },
+      { title: 'Title 2', subtitle: 'Subtitle 2', titleInfo: 'Info 2' },
+      { title: 'Title 3', subtitle: 'Subtitle 3', titleInfo: 'Info 3' },
+      { title: 'Title 4', subtitle: 'Subtitle 4', titleInfo: 'Info 4' },
     ]"
-    color="info"
   >
-    <template #title-1> Step 1 </template>
     <template #content-1> Content 1 </template>
-
-    <template #title-2> Step 2 </template>
     <template #content-2> Content 2 </template>
-
-    <template #title-3> Step 3 </template>
     <template #content-3> Content 3 </template>
+    <template #content-4> Content 4 </template>
   </MazStepper>
 </template>
 ```
 
-Will be:
+## Set step states programmatically
 
-<MazStepper :steps="[ { disabled: false, validated: true }, { disabled: true, validated: false } ]" color="info">
+You can set differents state with its style to each step with the property `step`
+
+States available: `'success' | 'warning' | 'error' | 'disabled'`
+
+You should respect order of steps in the array:
+
+<MazStepper
+  v-model="currentStep"
+  :steps="[
+    { disabled: true },
+    { success: true },
+    { warning: true, disabled: true },
+    { error: true },
+  ]"
+>
+
+  <template #title-1> Title 1 </template>
+  <template #title-info-1> Disabled </template>
+  <template #content-1> Content 1 </template>
+
+  <template #title-2> Title 2 </template>
+  <template #title-info-2> Success </template>
+  <template #content-2> Content 2 </template>
+
+  <template #title-3> Title 3 </template>
+  <template #title-info-3> Warning & Disabled </template>
+  <template #content-3> Content 3 </template>
+
+  <template #title-4> Title 4 </template>
+  <template #title-info-4> Error </template>
+  <template #content-4> Content 4 </template>
+</MazStepper>
+
+```vue{4-9}
+<template>
+  <MazStepper
+    v-model="currentStep"
+    :steps="[
+      { disabled: true },
+      { success: true },
+      { warning: true, disabled: true },
+      { error: true },
+    ]"
+  >
+    <template #title-1> Title 1 </template>
+    <template #title-info-1> Disabled </template>
+    <template #content-1> Content 1 </template>
+
+    <template #title-2> Title 2 </template>
+    <template #title-info-2> Success </template>
+    <template #content-2> Content 2 </template>
+
+    <template #title-3> Title 3 </template>
+    <template #title-info-3> Warning & Disabled </template>
+    <template #content-3> Content 3 </template>
+
+    <template #title-4> Title 4 </template>
+    <template #title-info-4> Error </template>
+    <template #content-4> Content 4 </template>
+  </MazStepper>
+</template>
+```
+
+## Auto validate steps
+
+You can use the prop option:
+
+- `auto-validate-steps`
+
+Then all previous steps than the current the validated state
+
+::: tip
+Click on the first or third step to see the validated steps changes:
+:::
+
+<MazStepper v-model="currentStep" auto-validate-steps color="secondary">
   <template #title-1> Step 1 </template>
   <template #content-1> Content 1 </template>
 
@@ -189,19 +299,11 @@ Will be:
   <template #content-3> Content 3 </template>
 </MazStepper>
 
-### Auto validate steps
-
-You can use the prop option:
-
-- `auto-validated-steps`
-
-Then, all previous steps has the check icon:
-
-```vue
+```vue{4}
 <template>
   <MazStepper
     v-model="currentStep"
-    auto-validated-steps
+    auto-validate-steps
     color="secondary"
   >
     <template #title-1> Step 1 </template>
@@ -221,9 +323,18 @@ Then, all previous steps has the check icon:
 </script>
 ```
 
-Click on "step 3" to show the step 2 validated:
+## Auto disabled next or/and previous steps
 
-<MazStepper v-model="currentStep" auto-validated-steps color="secondary">
+To not allow your users to show other steps, you can use the prop options:
+
+- `disabled-previous-steps`
+- `disabled-next-steps`
+
+::: tip
+Try to click on first and third steps
+:::
+
+<MazStepper :model-value="2" disabled-previous-steps disabled-next-steps>
   <template #title-1> Step 1 </template>
   <template #content-1> Content 1 </template>
 
@@ -234,16 +345,13 @@ Click on "step 3" to show the step 2 validated:
   <template #content-3> Content 3 </template>
 </MazStepper>
 
-### Auto disabled next or/and previous steps
-
-To not allow your users to show other steps, you can use the prop options:
-
-- `disabled-previous-steps`
-- `disabled-next-steps`
-
-```vue
+```vue{4,5}
 <template>
-  <MazStepper v-model="currentStep" disabled-previous-steps disabled-next-steps >
+  <MazStepper
+    :model-value="2"
+    disabled-previous-steps
+    disabled-next-steps
+  >
     <template #title-1> Step 1 </template>
     <template #content-1> Content 1 </template>
 
@@ -261,9 +369,14 @@ To not allow your users to show other steps, you can use the prop options:
 </script>
 ```
 
-Will be:
+## All steps opened & success
 
-<MazStepper v-model="currentStep" disabled-previous-steps disabled-next-steps>
+To open and validate all steps, you can use the prop options:
+
+- `all-steps-validated`
+- `all-steps-opened`
+
+<MazStepper all-steps-validated all-steps-opened>
   <template #title-1> Step 1 </template>
   <template #content-1> Content 1 </template>
 
@@ -274,14 +387,15 @@ Will be:
   <template #content-3> Content 3 </template>
 </MazStepper>
 
-### All steps opened & validated
+## Can close steps
 
-To not open and validate all steps, you can use the prop options:
+Use the property `can-close-steps` to let user be allowed to close each step on click
 
-- `all-steps-validated`
-- `all-steps-opened`
+::: tip
+Click on step titles to toggle content
+:::
 
-<MazStepper all-steps-validated all-steps-opened>
+<MazStepper can-close-steps>
   <template #title-1> Step 1 </template>
   <template #content-1> Content 1 </template>
 

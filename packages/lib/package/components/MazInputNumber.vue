@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="m-input-number maz-align-center"
-    :class="[`m-input-number--${size}`]"
-  >
+  <div class="m-input-number maz-align-center" :class="[`m-input-number--${size}`]">
     <MazBtn
       color="transparent"
       no-shadow

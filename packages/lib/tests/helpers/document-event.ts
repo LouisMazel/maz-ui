@@ -12,9 +12,6 @@ export const documentEmitEvent = (event: DomEventName) => {
   return document.dispatchEvent(new Event(event))
 }
 
-export const elementEmitEvent = (
-  element: HTMLElement | Window,
-  event: DomEventName,
-) => {
+export const elementEmitEvent = (element: HTMLElement | Window, event: DomEventName) => {
   return element.dispatchEvent(new Event(event))
 }

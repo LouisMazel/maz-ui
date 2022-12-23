@@ -24,7 +24,7 @@
       src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
     />
     <div v-if="!noLoader" class="m-lazy-img-component-loader">
-      <MazSpinner color="black" size="2em" />
+      <MazSpinner size="2em" />
     </div>
     <slot />
   </picture>
@@ -36,10 +36,7 @@
 
 <script lang="ts" setup>
   import { computed, type Prop } from 'vue'
-  import {
-    type vLazyImgOptions,
-    vLazyImg,
-  } from '@package/directives/v-lazy-img'
+  import { type vLazyImgOptions, vLazyImg } from '@package/directives/v-lazy-img'
 
   import MazSpinner from './MazSpinner.vue'
   import type { Image } from './types'
@@ -51,17 +48,13 @@
     noObserverOnce: { type: Boolean, default: false },
     loadOnce: { type: Boolean, default: false },
     imageHeightFull: { type: Boolean, default: false },
-    observerOptions: { type: Object, default: null } as Prop<
-      vLazyImgOptions['observerOptions']
-    >,
+    observerOptions: { type: Object, default: null } as Prop<vLazyImgOptions['observerOptions']>,
   })
 
   defineEmits(['intersecting', 'loading', 'loaded', 'error'])
 
   const sources = computed(() => {
-    return typeof props.image === 'string'
-      ? [{ srcset: props.image }]
-      : props.image?.sources
+    return typeof props.image === 'string' ? [{ srcset: props.image }] : props.image?.sources
   })
 </script>
 
@@ -81,7 +74,8 @@
       @apply maz-max-h-full maz-w-min maz-max-w-min !important;
     }
 
-    &:not(.m-lazy-loaded, .m-lazy-no-photo) {
+    /* &:not(.m-lazy-loaded, .m-lazy-no-photo, .m-lazy-error) */
+    &.m-lazy-loading {
       & .m-lazy-img-component-loader {
         @apply maz-flex;
       }

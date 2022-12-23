@@ -82,8 +82,8 @@ describe('~/components/ui/NGallery/NGallery', () => {
   })
 
   test('should have the selected class in column', () => {
-    expect(
-      wrapper.find('.n-gallery-desktop-column-scroll-images').classes(),
-    ).toContain('is-selected')
+    expect(wrapper.find('.n-gallery-desktop-column-scroll-images').classes()).toContain(
+      'is-selected',
+    )
   })
 })

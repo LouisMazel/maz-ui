@@ -158,21 +158,14 @@
 
       const dropzoneStyle = computed(() => ({
         width: Number.isInteger(props.width) ? `${props.width}px` : props.width,
-        height: Number.isInteger(props.height)
-          ? `${props.height}px`
-          : props.height,
+        height: Number.isInteger(props.height) ? `${props.height}px` : props.height,
       }))
 
-      const thumbnail: DropzoneOptions['thumbnail'] = (
-        file: MazDropzoneFile,
-        dataUrl,
-      ) => {
+      const thumbnail: DropzoneOptions['thumbnail'] = (file: MazDropzoneFile, dataUrl) => {
         emit('thumbnail', { file, dataUrl })
         let thumbnailElement: HTMLImageElement
         file.previewElement.classList.remove('dz-file-preview')
-        const ref = file.previewElement.querySelectorAll(
-          '[data-dz-thumbnail-bg]',
-        )
+        const ref = file.previewElement.querySelectorAll('[data-dz-thumbnail-bg]')
         ref.forEach((r: Element) => {
           thumbnailElement = r as HTMLImageElement
           thumbnailElement.alt = file.name
@@ -189,11 +182,7 @@
         }
       }
 
-      const errorMultiple: DropzoneOptions['errormultiple'] = (
-        files,
-        message,
-        xhr,
-      ) => {
+      const errorMultiple: DropzoneOptions['errormultiple'] = (files, message, xhr) => {
         emit('error', { files, message, xhr })
         if (dropzone.options.autoRemoveOnError)
           setTimeout(() => {
@@ -235,30 +224,18 @@
             dropzone.on('dragover', (e: DragEvent) => emit('dragover', e))
             dropzone.on('dragleave', (e: DragEvent) => emit('dragleave', e))
             dropzone.on('paste', (e: DragEvent) => emit('paste', e))
-            dropzone.on('addedfile', (file: DropzoneFile) =>
-              emit('addedfile', file),
-            )
-            dropzone.on('addedfiles', (files: DropzoneFile[]) =>
-              emit('addedfiles', files),
-            )
-            dropzone.on('removedfile', (file: DropzoneFile) =>
-              emit('removedfile', file),
-            )
+            dropzone.on('addedfile', (file: DropzoneFile) => emit('addedfile', file))
+            dropzone.on('addedfiles', (files: DropzoneFile[]) => emit('addedfiles', files))
+            dropzone.on('removedfile', (file: DropzoneFile) => emit('removedfile', file))
             dropzone.on(
               'success',
-              (
-                file: DropzoneFile,
-                response: Record<string, unknown> | string,
-              ) => emit('success', { file, response }),
+              (file: DropzoneFile, response: Record<string, unknown> | string) =>
+                emit('success', { file, response }),
             )
-            dropzone.on(
-              'successmultiple',
-              (files: DropzoneFile[], responseText: string) =>
-                emit('success', { files, responseText }),
+            dropzone.on('successmultiple', (files: DropzoneFile[], responseText: string) =>
+              emit('success', { files, responseText }),
             )
-            dropzone.on('processing', (file: DropzoneFile) =>
-              emit('processing', file),
-            )
+            dropzone.on('processing', (file: DropzoneFile) => emit('processing', file))
             dropzone.on('processingmultiple', (files: DropzoneFile[]) =>
               emit('processingmultiple', files),
             )
@@ -269,45 +246,30 @@
             )
             dropzone.on(
               'totaluploadprogress',
-              (
-                totalProgress: number,
-                totalBytes: number,
-                totalBytesSent: number,
-              ) =>
+              (totalProgress: number, totalBytes: number, totalBytesSent: number) =>
                 emit('totaluploadprogress', {
                   totalProgress,
                   totalBytes,
                   totalBytesSent,
                 }),
             )
-            dropzone.on(
-              'sending',
-              (file: DropzoneFile, xhr: XMLHttpRequest, formData: FormData) =>
-                emit('sending', { file, xhr, formData }),
+            dropzone.on('sending', (file: DropzoneFile, xhr: XMLHttpRequest, formData: FormData) =>
+              emit('sending', { file, xhr, formData }),
             )
             dropzone.on(
               'sendingmultiple',
-              (
-                files: DropzoneFile[],
-                xhr: XMLHttpRequest,
-                formData: FormData,
-              ) => emit('sendingmultiple', { files, xhr, formData }),
+              (files: DropzoneFile[], xhr: XMLHttpRequest, formData: FormData) =>
+                emit('sendingmultiple', { files, xhr, formData }),
             )
-            dropzone.on('canceled', (file: DropzoneFile) =>
-              emit('canceled', file),
-            )
+            dropzone.on('canceled', (file: DropzoneFile) => emit('canceled', file))
             dropzone.on('canceledmultiple', (files: DropzoneFile[]) =>
               emit('canceledmultiple', files),
             )
-            dropzone.on('complete', (file: DropzoneFile) =>
-              emit('complete', file),
-            )
+            dropzone.on('complete', (file: DropzoneFile) => emit('complete', file))
             dropzone.on('completemultiple', (files: DropzoneFile[]) =>
               emit('completemultiple', files),
             )
-            dropzone.on('maxfilesexceeded', (file: DropzoneFile) =>
-              emit('maxfilesexceeded', file),
-            )
+            dropzone.on('maxfilesexceeded', (file: DropzoneFile) => emit('maxfilesexceeded', file))
             dropzone.on('maxfilesreached', (files: DropzoneFile[]) =>
               emit('maxfilesreached', files),
             )
@@ -320,36 +282,26 @@
         }
       })
 
-      const setOption = (
-        option: string,
-        value: unknown,
-      ): MazDropzoneOptions => {
+      const setOption = (option: string, value: unknown): MazDropzoneOptions => {
         dropzone.options = {
           ...dropzone.options,
           [option]: value,
         }
         return dropzone.options
       }
-      const manuallyAddFile: MazDropzoneInstance['manuallyAddFile'] = (
-        file,
-        fileUrl,
-      ) => {
+      const manuallyAddFile: MazDropzoneInstance['manuallyAddFile'] = (file, fileUrl) => {
         dropzone.emit('addedfile', file)
         dropzone.emit('thumbnail', file, fileUrl)
         dropzone.files.push(file)
       }
-      const removeAllFiles: MazDropzoneInstance['removeAllFiles'] = (
-        shouldRemoveAllFiles,
-      ) => dropzone.removeAllFiles(shouldRemoveAllFiles)
-      const processQueue: MazDropzoneInstance['processQueue'] = () =>
-        dropzone.processQueue()
+      const removeAllFiles: MazDropzoneInstance['removeAllFiles'] = (shouldRemoveAllFiles) =>
+        dropzone.removeAllFiles(shouldRemoveAllFiles)
+      const processQueue: MazDropzoneInstance['processQueue'] = () => dropzone.processQueue()
       const destroy: MazDropzoneInstance['destroy'] = () => dropzone.destroy()
       const disable: MazDropzoneInstance['disable'] = () => dropzone.disable()
       const enable: MazDropzoneInstance['enable'] = () => dropzone.enable()
-      const accept: MazDropzoneInstance['accept'] = (file, done) =>
-        dropzone.accept(file, done)
-      const addFile: MazDropzoneInstance['addFile'] = (file) =>
-        dropzone.addFile(file)
+      const accept: MazDropzoneInstance['accept'] = (file, done) => dropzone.accept(file, done)
+      const addFile: MazDropzoneInstance['addFile'] = (file) => dropzone.addFile(file)
       const resizeImage: MazDropzoneInstance['resizeImage'] = (
         file,
         width,
@@ -363,16 +315,13 @@
         dropzone.getAcceptedFiles() as MazDropzoneFile[]
       const getRejectedFiles: MazDropzoneInstance['getRejectedFiles'] = () =>
         dropzone.getRejectedFiles() as MazDropzoneFile[]
-      const getFilesWithStatus: MazDropzoneInstance['getFilesWithStatus'] =
-        () => dropzone.getFilesWithStatus(status)
-      const getQueuedFiles: MazDropzoneInstance['getQueuedFiles'] = () =>
-        dropzone.getQueuedFiles()
+      const getFilesWithStatus: MazDropzoneInstance['getFilesWithStatus'] = () =>
+        dropzone.getFilesWithStatus(status)
+      const getQueuedFiles: MazDropzoneInstance['getQueuedFiles'] = () => dropzone.getQueuedFiles()
       const getUploadingFiles: MazDropzoneInstance['getUploadingFiles'] = () =>
         dropzone.getUploadingFiles()
-      const getAddedFiles: MazDropzoneInstance['getAddedFiles'] = () =>
-        dropzone.getAddedFiles()
-      const getActiveFiles: MazDropzoneInstance['getActiveFiles'] = () =>
-        dropzone.getActiveFiles()
+      const getAddedFiles: MazDropzoneInstance['getAddedFiles'] = () => dropzone.getAddedFiles()
+      const getActiveFiles: MazDropzoneInstance['getActiveFiles'] = () => dropzone.getActiveFiles()
 
       onBeforeUnmount(() => {
         if (!props.noDestroyOnUnmount) dropzone.destroy()

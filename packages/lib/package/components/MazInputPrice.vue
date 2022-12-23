@@ -49,10 +49,7 @@
     return getAdjustedPrice(props.modelValue).toString()
   })
   const valueNumber = computed<number>(() => {
-    const value =
-      typeof props.modelValue === 'string'
-        ? Number(props.modelValue)
-        : props.modelValue
+    const value = typeof props.modelValue === 'string' ? Number(props.modelValue) : props.modelValue
 
     return getAdjustedPrice(value)
   })
@@ -93,8 +90,7 @@
   })
 
   const emitValues = async (newValue?: number) => {
-    const adjustedPrice =
-      typeof newValue === 'number' ? getAdjustedPrice(newValue) : undefined
+    const adjustedPrice = typeof newValue === 'number' ? getAdjustedPrice(newValue) : undefined
     emits('update:model-value', adjustedPrice)
 
     await nextTick()

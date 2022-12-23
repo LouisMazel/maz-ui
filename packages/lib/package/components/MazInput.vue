@@ -17,10 +17,7 @@
     ]"
     @click="$emit('click', $event)"
   >
-    <div
-      class="m-input-wrapper"
-      :class="[inputClasses, borderStyle, { 'maz-rounded': !noRadius }]"
-    >
+    <div class="m-input-wrapper" :class="[inputClasses, borderStyle, { 'maz-rounded': !noRadius }]">
       <div v-if="hasLeftPart()" class="m-input-wrapper-left">
         <slot v-if="$slots['left-icon'] || leftIcon" name="left-icon">
           <MazIcon :name="leftIcon" class="maz-text-muted" />
@@ -78,11 +75,7 @@
           size="mini"
           @click.stop="hasPasswordVisible = !hasPasswordVisible"
         >
-          <MazIcon
-            v-if="hasPasswordVisible"
-            :src="EyeOffIcon"
-            class="maz-text-muted"
-          />
+          <MazIcon v-if="hasPasswordVisible" :src="EyeOffIcon" class="maz-text-muted" />
           <MazIcon v-else :src="EyeIcon" class="maz-text-muted" />
         </MazBtn>
 
@@ -105,14 +98,7 @@
 </template>
 
 <script lang="ts">
-  import {
-    computed,
-    defineComponent,
-    onMounted,
-    ref,
-    type PropType,
-    getCurrentInstance,
-  } from 'vue'
+  import { computed, defineComponent, onMounted, ref, type PropType, getCurrentInstance } from 'vue'
 
   import { debounce } from '@package/helpers/debounce'
   import { useInstanceUniqId } from '@package/composables/instance-uniq-id.composable'
@@ -221,9 +207,7 @@
 
       const isPasswordType = computed(() => props.type === 'password')
 
-      const inputType = computed(() =>
-        hasPasswordVisible.value ? 'text' : props.type,
-      )
+      const inputType = computed(() => (hasPasswordVisible.value ? 'text' : props.type))
 
       const borderStyle = computed(() => {
         if (props.noBorder) return undefined
@@ -249,9 +233,7 @@
         return required ? `${placeholder} *` : placeholder
       })
 
-      const hasValue = computed(
-        () => props.modelValue !== undefined && props.modelValue !== '',
-      )
+      const hasValue = computed(() => props.modelValue !== undefined && props.modelValue !== '')
 
       const inputValue = computed({
         get: () => props.modelValue,

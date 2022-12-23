@@ -40,12 +40,11 @@ describe('components/MazTextarea/textarea-autogrow.ts', () => {
 describe('components/MazTextarea.vue', () => {
   expect(MazTextarea).toBeTruthy()
 
-  const wrapper: VueWrapper<ComponentPublicInstance & { [key: string]: any }> =
-    mount(MazTextarea, {
-      props: {
-        modelValue: 'Un text',
-      },
-    })
+  const wrapper: VueWrapper<ComponentPublicInstance & { [key: string]: any }> = mount(MazTextarea, {
+    props: {
+      modelValue: 'Un text',
+    },
+  })
 
   test('Should match with the snapshot', () => {
     expect(wrapper.html()).toMatchSnapshot()

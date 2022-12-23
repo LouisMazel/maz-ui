@@ -11,7 +11,7 @@ describe('components/MazStepper.vue', () => {
     wrapper = mount(MazStepper, {
       props: {
         modelValue: 1,
-        steps: [{ validated: true, disabled: true }],
+        steps: [{ success: true, disabled: true }],
       },
       slots: {
         'title-1': 'Step 1',
@@ -41,23 +41,23 @@ describe('components/MazStepper.vue', () => {
   })
 
   test('Should returns if title exists', () => {
-    const title1 = wrapper.vm.hasTitleForStep(1)
+    const title1 = wrapper.vm.hasDataForStep('title', 1)
     expect(title1).toBeTruthy()
-    const title2 = wrapper.vm.hasTitleForStep(2)
+    const title2 = wrapper.vm.hasDataForStep('title', 2)
     expect(title2).toBeFalsy()
   })
 
   test('Should returns if subtitle exists', () => {
-    const subtitle1 = wrapper.vm.hasSubtitleForStep(1)
+    const subtitle1 = wrapper.vm.hasDataForStep('subtitle', 1)
     expect(subtitle1).toBeFalsy()
-    const subtitle2 = wrapper.vm.hasSubtitleForStep(2)
+    const subtitle2 = wrapper.vm.hasDataForStep('subtitle', 2)
     expect(subtitle2).toBeTruthy()
   })
 
   test('Should returns if step is validated', () => {
-    const validated1 = wrapper.vm.isStepValidated(1)
+    const validated1 = wrapper.vm.isStepSuccess(1)
     expect(validated1).toBeTruthy()
-    const validated2 = wrapper.vm.isStepValidated(2)
+    const validated2 = wrapper.vm.isStepSuccess(2)
     expect(validated2).toBeFalsy()
   })
 

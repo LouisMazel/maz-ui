@@ -61,9 +61,7 @@
   watch(
     () => props.shortcut,
     (shortcut) => {
-      const newShortcut = props.shortcuts.find(
-        ({ identifier }) => shortcut === identifier,
-      )
+      const newShortcut = props.shortcuts.find(({ identifier }) => shortcut === identifier)
       if (newShortcut) {
         const { value, identifier } = newShortcut
         selectShortcut(value, identifier)

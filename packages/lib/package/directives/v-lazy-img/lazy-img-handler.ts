@@ -1,8 +1,7 @@
 import type { ClassOptions, BindingData, vLazyImgOptions } from './types'
 export * from './types'
 
-const EMPTY_PHOTO =
-  'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
+const EMPTY_PHOTO = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
 
 export const DEFAULT_OPTIONS: ClassOptions = {
   baseClass: 'm-lazy-img',
@@ -88,7 +87,6 @@ export class LazyImg {
   }
 
   private imageHasError(el: HTMLElement, event?: ErrorEvent): void {
-    // eslint-disable-next-line no-console
     console.warn(`[maz-ui][MazLazyImg] Error while loading image`, event)
     this.removeClass(el, this.options.loadingClass)
     this.addClass(el, this.options.errorClass)
@@ -98,17 +96,12 @@ export class LazyImg {
     this.setDefaultPhoto(el)
   }
 
-  private getImageUrl(
-    el: HTMLElement,
-    binding: BindingData,
-  ): string | null | undefined {
+  private getImageUrl(el: HTMLElement, binding: BindingData): string | null | undefined {
     const dataSrc = this.getImgElement(el).getAttribute('data-src')
     if (dataSrc) return dataSrc
 
-    const bindingSrc =
-      typeof binding.value === 'object' ? binding.value.src : binding.value
+    const bindingSrc = typeof binding.value === 'object' ? binding.value.src : binding.value
 
-    // eslint-disable-next-line no-console
     if (!bindingSrc) console.warn(`[maz-ui][MazLazyImg] src url is not defined`)
 
     return bindingSrc
@@ -121,7 +114,6 @@ export class LazyImg {
       for await (const source of sourceElements) {
         const srcSet = source.getAttribute('data-srcset')
         if (srcSet) {
-          // eslint-disable-next-line no-console
           source.srcset = srcSet
         } else {
           console.warn(
@@ -130,7 +122,6 @@ export class LazyImg {
         }
       }
     } else {
-      // eslint-disable-next-line no-console
       console.warn(
         '[maz-ui][MazLazyImg] No "<source />" elements provided into the "<picture />" element',
       )
@@ -169,17 +160,10 @@ export class LazyImg {
     imgElement.addEventListener('load', () => this.onImgLoadedCallback(el), {
       once: true,
     })
-    imgElement.addEventListener(
-      'error',
-      (err) => this.onImgErrorCallback(el, err),
-      { once: true },
-    )
+    imgElement.addEventListener('error', (err) => this.onImgErrorCallback(el, err), { once: true })
   }
 
-  private async loadImage(
-    el: HTMLElement,
-    binding: BindingData,
-  ): Promise<void> {
+  private async loadImage(el: HTMLElement, binding: BindingData): Promise<void> {
     this.imageIsLoading(el)
 
     if (this.isPictureElement(el)) {
@@ -233,15 +217,9 @@ export class LazyImg {
       entries: IntersectionObserverEntry[],
       intersectionObserver: IntersectionObserver,
     ) => {
-      this.handleIntersectionObserver(
-        el,
-        binding,
-        entries,
-        intersectionObserver,
-      )
+      this.handleIntersectionObserver(el, binding, entries, intersectionObserver)
     }
-    const observerOptions: ClassOptions['observerOptions'] =
-      this.options.observerOptions
+    const observerOptions: ClassOptions['observerOptions'] = this.options.observerOptions
 
     const observer = new IntersectionObserver(observerCallback, observerOptions)
 
@@ -277,9 +255,7 @@ export class LazyImg {
 
   public async add(el: HTMLElement, binding: BindingData): Promise<void> {
     if (this.hasBgImgMode(binding) && this.isPictureElement(el)) {
-      throw new Error(
-        `[MazLazyImg] You can't use the "bg-image" mode with "<picture />" element`,
-      )
+      throw new Error(`[MazLazyImg] You can't use the "bg-image" mode with "<picture />" element`)
     }
 
     setTimeout(() => this.setBaseClass(el), 0)

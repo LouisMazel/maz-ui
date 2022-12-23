@@ -6,12 +6,7 @@
       v-bind="$attrs"
       :name="name"
       type="checkbox"
-      @change="
-        $emit(
-          'update:model-value',
-          ($event?.target as HTMLInputElement)?.checked,
-        )
-      "
+      @change="$emit('update:model-value', ($event?.target as HTMLInputElement)?.checked)"
     />
     <label :for="instanceId">
       <slot />
