@@ -10,18 +10,9 @@ module.exports = {
   // add your custom config here
   // https://stylelint.io/user-guide/configurationg
   rules: {
-    'at-rule-no-unknown': [
-      true,
-      { ignoreAtRules: ['screen', 'layer', 'tailwind', 'each', 'for'] },
-    ],
-    'scss/at-rule-no-unknown': [
-      true,
-      { ignoreAtRules: ['screen', 'layer', 'tailwind', 'each'] },
-    ],
-    'selector-pseudo-class-no-unknown': [
-      true,
-      { ignorePseudoClasses: ['deep'] },
-    ],
+    'at-rule-no-unknown': [true, { ignoreAtRules: ['screen', 'layer', 'tailwind', 'each', 'for'] }],
+    'scss/at-rule-no-unknown': [true, { ignoreAtRules: ['screen', 'layer', 'tailwind', 'each'] }],
+    'selector-pseudo-class-no-unknown': [true, { ignorePseudoClasses: ['deep'] }],
     'selector-class-pattern': undefined,
     'no-descending-specificity': undefined,
     'string-quotes': 'single',

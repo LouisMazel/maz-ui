@@ -1,8 +1,5 @@
 <template>
-  <div
-    v-if="wait.isLoading()"
-    class="loader maz-absolute maz-inset-0 maz-flex maz-flex-center"
-  >
+  <div v-if="wait.isLoading()" class="loader maz-absolute maz-inset-0 maz-flex maz-flex-center">
     <MazSpinner size="3rem" color="white" />
   </div>
 </template>
