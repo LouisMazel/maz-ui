@@ -81,4 +81,32 @@ describe('components/MazSelect.vue', () => {
       new KeyboardEvent('keydown', { key: 'Enter', code: 'Enter' }),
     )
   })
+
+  test('opens and closes the options list when the input is focused or blurred', async () => {
+    // The options list should be closed by default
+    expect(wrapper.vm.hasListOpened).toBe(false)
+
+    // Focusing the input should open the options list
+    wrapper.find('input').trigger('focus')
+    expect(wrapper.vm.hasListOpened).toBe(true)
+
+    // Blurring the input should close the options list
+    wrapper.find('.m-select').trigger('blur')
+    await wrapper.vm.$nextTick()
+    expect(wrapper.vm.hasListOpened).toBe(false)
+  })
+
+  test('updates the input value and emits a change event when an option is selected', async () => {
+    wrapper.find('input').trigger('focus')
+
+    expect(wrapper.vm.hasListOpened).toBe(true)
+
+    await wrapper.vm.$nextTick()
+
+    // Selecting the second option should update the input value and emit a change event with the option value
+    wrapper.findAll('.m-select-list-item').at(0).trigger('click')
+    await wrapper.vm.$nextTick()
+    expect(wrapper.vm.mazInputValue).toBe('Test 1')
+    expect(wrapper.emitted()['update:model-value'][0][0]).toBe(1)
+  })
 })
