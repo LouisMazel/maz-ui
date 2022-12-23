@@ -1,9 +1,5 @@
 import { isClient } from '../is-client'
-import type {
-  UserVisibilyCallback,
-  UserVisibilyOptions,
-  UserVisibilyStrictOptions,
-} from './types'
+import type { UserVisibilyCallback, UserVisibilyOptions, UserVisibilyStrictOptions } from './types'
 
 export class UserVisibility {
   private eventHandlerFunction: () => void
@@ -23,10 +19,7 @@ export class UserVisibility {
 
   private isVisible = false
 
-  constructor(
-    private readonly callback: UserVisibilyCallback,
-    options?: UserVisibilyOptions,
-  ) {
+  constructor(private readonly callback: UserVisibilyCallback, options?: UserVisibilyOptions) {
     this.options = {
       ...this.defaultOptions,
       ...options,
@@ -45,9 +38,7 @@ export class UserVisibility {
 
   public start() {
     if (!isClient()) {
-      console.warn(
-        `[UserVisibility](start) you should run this method on client side`,
-      )
+      console.warn(`[UserVisibility](start) you should run this method on client side`)
       return
     }
 
@@ -86,10 +77,7 @@ export class UserVisibility {
   private initTimeout(): void {
     this.clearTimeout()
 
-    this.timeoutHandler = setTimeout(
-      this.emitCallback.bind(this),
-      this.options.timeout,
-    )
+    this.timeoutHandler = setTimeout(this.emitCallback.bind(this), this.options.timeout)
   }
 
   private addEventListener() {

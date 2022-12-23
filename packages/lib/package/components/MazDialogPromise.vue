@@ -26,10 +26,7 @@
 
 <script lang="ts">
   export { useMazDialogPromise } from './MazDialogPromise/use-maz-dialog-promise'
-  export type {
-    DialogState,
-    DialogData,
-  } from './MazDialogPromise/use-maz-dialog-promise'
+  export type { DialogState, DialogData } from './MazDialogPromise/use-maz-dialog-promise'
 </script>
 
 <script lang="ts" setup>
@@ -51,8 +48,6 @@
   const { dialogState, rejectDialog, resolveDialog } = useMazDialogPromise()
 
   const currentModal = computed(() => {
-    return dialogState.value.find(
-      ({ id }) => id === props.identifier,
-    ) as DialogState
+    return dialogState.value.find(({ id }) => id === props.identifier) as DialogState
   })
 </script>

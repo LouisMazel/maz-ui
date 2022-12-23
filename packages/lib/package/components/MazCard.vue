@@ -87,8 +87,7 @@
       class="m-card__footer maz-overflow-x-auto maz-p-3"
       :class="[
         {
-          'maz-border-t-2 maz-border-color-lighter':
-            isColumnVariant && haveSomeContent,
+          'maz-border-t-2 maz-border-color-lighter': isColumnVariant && haveSomeContent,
         },
         footerAlignClass,
       ]"
@@ -126,9 +125,7 @@
       type: String,
       default: 'column',
       validator: (value: string) => {
-        return ['column', 'row', 'row-reverse', 'column-reverse'].includes(
-          value,
-        )
+        return ['column', 'row', 'row-reverse', 'column-reverse'].includes(value)
       },
     },
     // Make card a link (footer area excluded)
@@ -173,18 +170,14 @@
     },
   )
 
-  const isColumnVariant = computed(() =>
-    ['column', 'column-reverse'].includes(props.orientation),
-  )
+  const isColumnVariant = computed(() => ['column', 'column-reverse'].includes(props.orientation))
 
   const haveSomeContent = computed(() => {
     const supportedSlots = new Set(['default', 'title', 'subtitle', 'content'])
     return Object.keys(slots).some((val) => supportedSlots.has(val))
   })
 
-  const galleryWidthComputed = computed(() =>
-    haveSomeContent.value ? props.galleryWidth : '100%',
-  )
+  const galleryWidthComputed = computed(() => (haveSomeContent.value ? props.galleryWidth : '100%'))
 
   const footerAlignClass = computed(() =>
     props.footerAlign === 'right' ? 'maz-text-right' : 'maz-text-left',

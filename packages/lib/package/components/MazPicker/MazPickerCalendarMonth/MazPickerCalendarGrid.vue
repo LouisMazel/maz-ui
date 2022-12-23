@@ -24,8 +24,7 @@
           :class="{
             '--is-today': checkIsToday(date),
             '--is-first': isFirstDay(date),
-            '--is-last':
-              isLastDay(date) || (isRangeMode && isLastDayHoverred(date)),
+            '--is-last': isLastDay(date) || (isRangeMode && isLastDayHoverred(date)),
             '--is-selected': isSelectedOrBetween(date) === DaySelect.SELECTED,
             '--is-between': isSelectedOrBetween(date) === DaySelect.BETWEEN,
             '--is-between-hoverred': isRangeMode
@@ -47,13 +46,7 @@
 
 <script lang="ts" setup>
   import { computed, type PropType, ref, watch } from 'vue'
-  import {
-    getDaysInMonth,
-    getFirstDayOfMonth,
-    isSameDate,
-    isToday,
-    isSameDay,
-  } from '../utils'
+  import { getDaysInMonth, getFirstDayOfMonth, isSameDate, isToday, isSameDay } from '../utils'
   import MazBtn from '@components/MazBtn.vue'
   import type { Color } from '@components/types'
   import { debounce } from '@package/helpers'
@@ -92,15 +85,11 @@
 
   const calendarDateArray = computed<string[]>(() => [props.calendarDate])
 
-  const isRangeMode = computed(
-    () => props.modelValue && typeof props.modelValue === 'object',
-  )
+  const isRangeMode = computed(() => props.modelValue && typeof props.modelValue === 'object')
 
   const hoverColor = computed(() => `var(--maz-color-${props.color}-alpha-20)`)
   const betweenColor = computed(() => `var(--maz-color-${props.color}-alpha)`)
-  const betweenColorAlpha = computed(
-    () => `var(--maz-color-${props.color}-alpha-20)`,
-  )
+  const betweenColorAlpha = computed(() => `var(--maz-color-${props.color}-alpha-20)`)
 
   const modelValue = computed({
     get: () => props.modelValue,
@@ -108,19 +97,14 @@
   })
 
   const monthDays = computed<{ label: string | number; date: Dayjs }[]>(() =>
-    Array.from(
-      { length: getDaysInMonth(props.calendarDate) },
-      (_v, i) => i + 1,
-    ).map((day) => ({
+    Array.from({ length: getDaysInMonth(props.calendarDate) }, (_v, i) => i + 1).map((day) => ({
       label: day,
       date: dayjs(props.calendarDate).set('date', day),
     })),
   )
 
   const emptyDaysCount = computed(() => {
-    return Math.abs(
-      getFirstDayOfMonth(props.calendarDate) - props.firstDayOfWeek,
-    )
+    return Math.abs(getFirstDayOfMonth(props.calendarDate) - props.firstDayOfWeek)
   })
 
   const setHoverredDay = (day?: Dayjs) => {
@@ -140,12 +124,7 @@
       return undefined
     }
 
-    const isBetween = dayjs(day).isBetween(
-      value.start,
-      props.hoverredDay,
-      'date',
-      '(]',
-    )
+    const isBetween = dayjs(day).isBetween(value.start, props.hoverredDay, 'date', '(]')
 
     return isBetween ? DaySelect.BETWEEN_HOVERRED : undefined
   }
@@ -163,11 +142,7 @@
       return false
     }
 
-    if (
-      props.modelValue &&
-      typeof props.modelValue === 'object' &&
-      props.modelValue?.start
-    ) {
+    if (props.modelValue && typeof props.modelValue === 'object' && props.modelValue?.start) {
       return isSameDate(day, props.modelValue.start, 'date')
     }
 
@@ -179,11 +154,7 @@
       return false
     }
 
-    if (
-      props.modelValue &&
-      typeof props.modelValue === 'object' &&
-      props.modelValue?.end
-    ) {
+    if (props.modelValue && typeof props.modelValue === 'object' && props.modelValue?.end) {
       return isSameDate(day, props.modelValue.end, 'date')
     }
     return false
@@ -206,10 +177,7 @@
 
   const isSelectedOrBetween = (day: Dayjs): DaySelect => {
     if (props.modelValue && typeof props.modelValue === 'object') {
-      if (
-        props.modelValue.start &&
-        isSameDate(day, props.modelValue.start, 'date')
-      ) {
+      if (props.modelValue.start && isSameDate(day, props.modelValue.start, 'date')) {
         return DaySelect.SELECTED
       }
       if (props.modelValue.end) {
@@ -244,10 +212,7 @@
         }
       }
 
-      const isBeforeStartDate = dayjs(valueFormatted).isBefore(
-        values.start,
-        'date',
-      )
+      const isBeforeStartDate = dayjs(valueFormatted).isBefore(values.start, 'date')
 
       modelValue.value =
         !values.start || isBeforeStartDate
@@ -301,9 +266,7 @@
       return false
     }
 
-    return props.disabledWeekly.some((disabledDay) =>
-      isSameDay(day, disabledDay),
-    )
+    return props.disabledWeekly.some((disabledDay) => isSameDay(day, disabledDay))
   }
 
   const isDisabledDate = (day: Dayjs): boolean => {
@@ -311,9 +274,7 @@
       return false
     }
 
-    return props.disabledDates.some((disabledDay) =>
-      isSameDate(day, disabledDay, 'date'),
-    )
+    return props.disabledDates.some((disabledDay) => isSameDate(day, disabledDay, 'date'))
   }
 
   const isBiggerMaxDate = (day: Dayjs): boolean => {
@@ -332,9 +293,7 @@
 
   const setContainerHeight = () => {
     if (MazPickerGrid.value) {
-      MazPickerGrid.value.style.minHeight = `${
-        MazPickerGrid.value?.clientHeight || 176
-      }px`
+      MazPickerGrid.value.style.minHeight = `${MazPickerGrid.value?.clientHeight || 176}px`
 
       removeContainerHeight()
     }
@@ -343,10 +302,7 @@
   watch(
     () => props.calendarDate,
     (calendarDate, oldCalendarValue) => {
-      transitionName.value = dayjs(calendarDate).isAfter(
-        oldCalendarValue,
-        'date',
-      )
+      transitionName.value = dayjs(calendarDate).isAfter(oldCalendarValue, 'date')
         ? 'maz-slidenext'
         : 'maz-slideprev'
 

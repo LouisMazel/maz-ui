@@ -45,9 +45,7 @@ export function getRangeFormattedDate({
     options,
   })
 
-  return startValue || endValue
-    ? `${startValue || '...'} - ${endValue || '...'}`
-    : undefined
+  return startValue || endValue ? `${startValue || '...'} - ${endValue || '...'}` : undefined
 }
 
 export function getFirstDayOfMonth(value: ConfigType): number {
@@ -58,19 +56,14 @@ function addDays(date: Date, days: number) {
   return date.setDate(date.getDate() + days)
 }
 
-export function getWeekDays(
-  locale: string,
-  offset = 0,
-): { label: string; dayNumber: number }[] {
-  return Array.from({ length: 7 }, (_v, i) => i + (offset || 0)).map(
-    (index) => {
-      const baseDate = addDays(new Date('1970-01-04'), index)
-      return {
-        label: date(baseDate, locale, { weekday: 'short' }),
-        dayNumber: new Date(baseDate).getDay(),
-      }
-    },
-  )
+export function getWeekDays(locale: string, offset = 0): { label: string; dayNumber: number }[] {
+  return Array.from({ length: 7 }, (_v, i) => i + (offset || 0)).map((index) => {
+    const baseDate = addDays(new Date('1970-01-04'), index)
+    return {
+      label: date(baseDate, locale, { weekday: 'short' }),
+      dayNumber: new Date(baseDate).getDay(),
+    }
+  })
 }
 
 export function getDaysInMonth(date: ConfigType): number {
@@ -81,11 +74,7 @@ export function isToday(date: ConfigType): boolean {
   return dayjs().isSame(date, 'date')
 }
 
-export function isSameDate(
-  date: ConfigType,
-  date2: ConfigType,
-  unit: OpUnitType,
-): boolean {
+export function isSameDate(date: ConfigType, date2: ConfigType, unit: OpUnitType): boolean {
   return dayjs(date).isSame(date2, unit)
 }
 
@@ -97,10 +86,7 @@ export function isSameDay(date: ConfigType, dayNumber: number): boolean {
   return dayjs(date).day() === dayNumber
 }
 
-export function getISODate(
-  value?: ConfigType,
-  format = 'YYYY-MM-DD',
-): string | undefined {
+export function getISODate(value?: ConfigType, format = 'YYYY-MM-DD'): string | undefined {
   if (!value) {
     return undefined
   }
@@ -108,10 +94,7 @@ export function getISODate(
   return dayjs(value).format(format)
 }
 
-export function getRangeISODate(
-  value: PartialRangeValue,
-  format = 'YYYY-MM-DD',
-) {
+export function getRangeISODate(value: PartialRangeValue, format = 'YYYY-MM-DD') {
   return {
     start: getISODate(value.start, format),
     end: getISODate(value.end, format),
@@ -169,9 +152,7 @@ export function isValueDisabledDate({
   value: string
   disabledDates: string[]
 }): boolean {
-  return disabledDates.some((disabledDate) =>
-    dayjs(value).isSame(dayjs(disabledDate), 'date'),
-  )
+  return disabledDates.some((disabledDate) => dayjs(value).isSame(dayjs(disabledDate), 'date'))
 }
 
 export const scrollToTarget = function (
@@ -186,10 +167,7 @@ export const scrollToTarget = function (
   })
 }
 
-export const findNearestNumberInList = (
-  list: number[],
-  number: number,
-): number => {
+export const findNearestNumberInList = (list: number[], number: number): number => {
   return list.reduce((prev, curr) => {
     return Math.abs(curr - number) < Math.abs(prev - number) ? curr : prev
   })

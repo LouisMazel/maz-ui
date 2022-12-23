@@ -1,10 +1,6 @@
 <template>
   <div class="m-carousel">
-    <div
-      v-if="hasHeader()"
-      class="m-carousel__header"
-      :class="{ '--has-title': hasTitle() }"
-    >
+    <div v-if="hasHeader()" class="m-carousel__header" :class="{ '--has-title': hasTitle() }">
       <div v-if="hasTitle()">
         <slot name="title" />
       </div>
@@ -35,11 +31,7 @@
         </MazBtn>
       </div>
     </div>
-    <div
-      ref="MazCarouselItems"
-      class="m-carousel__items"
-      @scroll="setScrollState"
-    >
+    <div ref="MazCarouselItems" class="m-carousel__items" @scroll="setScrollState">
       <!-- Insert your items -->
       <slot />
       <div class="m-carousel__items__spacer" />

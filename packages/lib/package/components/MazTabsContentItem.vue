@@ -1,10 +1,6 @@
 <template>
   <Transition :name="transitionName" tag="div">
-    <div
-      v-show="isCurrentTab"
-      ref="MazTabsContentItem"
-      class="m-tabs-content-item"
-    >
+    <div v-show="isCurrentTab" ref="MazTabsContentItem" class="m-tabs-content-item">
       <slot />
     </div>
   </Transition>
@@ -27,9 +23,7 @@
     async (value, oldValue) => {
       if (typeof value === 'number' && typeof oldValue === 'number') {
         const newTabIsBigger = oldValue < value
-        transitionName.value = newTabIsBigger
-          ? 'maz-tab-transition'
-          : 'maz-tab-reverse-transition'
+        transitionName.value = newTabIsBigger ? 'maz-tab-transition' : 'maz-tab-reverse-transition'
       }
     },
     { immediate: true },

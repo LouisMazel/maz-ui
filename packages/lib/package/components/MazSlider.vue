@@ -67,11 +67,7 @@
       type: [Number, Array] as PropType<number | number[]>,
       required: true,
       validator: (value: string) => {
-        return (
-          ['number'].includes(typeof value) ||
-          Array.isArray(value) ||
-          value === null
-        )
+        return ['number'].includes(typeof value) || Array.isArray(value) || value === null
       },
     },
     // array of cursors label
@@ -183,12 +179,7 @@
     if (event.key === 'ArrowLeft') {
       if (
         tmpValues.value &&
-        isBetween(
-          tmpValues.value[i] - 1,
-          tmpValues.value[i - 1],
-          tmpValues.value[i + 1],
-          'minus',
-        )
+        isBetween(tmpValues.value[i] - 1, tmpValues.value[i - 1], tmpValues.value[i + 1], 'minus')
       ) {
         tmpValues.value[i]--
         emitValue(tmpValues.value)
@@ -198,12 +189,7 @@
     else if (
       event.key === 'ArrowRight' &&
       tmpValues.value &&
-      isBetween(
-        tmpValues.value[i] + 1,
-        tmpValues.value[i - 1],
-        tmpValues.value[i + 1],
-        'plus',
-      )
+      isBetween(tmpValues.value[i] + 1, tmpValues.value[i - 1], tmpValues.value[i + 1], 'plus')
     ) {
       tmpValues.value[i]++
       emitValue(tmpValues.value)
@@ -286,8 +272,7 @@
     if (barWidth) {
       buttonPositions.value = tmpValues.value?.map((v) =>
         log
-          ? (barWidth / max) *
-            (min + (Math.log(v) - minLog.value) / scale.value)
+          ? (barWidth / max) * (min + (Math.log(v) - minLog.value) / scale.value)
           : (barWidth / range.value) * (v - min),
       )
     } else {
@@ -302,9 +287,7 @@
       return log
         ? buttonPositions.value?.map((pos: number) => {
             const position = pos / (barWidth / max)
-            const value = Math.exp(
-              (position - min) * scale.value + minLog.value,
-            )
+            const value = Math.exp((position - min) * scale.value + minLog.value)
             return Math.round(value)
           })
         : buttonPositions.value?.map(
@@ -314,10 +297,7 @@
       console.warn('[maz-ui][MazSlider] ref component not found')
     }
   }
-  const handleMousedown = (
-    event: MouseEvent | TouchEvent | FocusEvent,
-    i: number,
-  ) => {
+  const handleMousedown = (event: MouseEvent | TouchEvent | FocusEvent, i: number) => {
     if (activeCursor.value !== undefined) return
 
     activeCursor.value = i
@@ -340,14 +320,11 @@
 
     if (buttonPositions.value) {
       const prevValue = buttonPositions.value[activeCursor.value - 1] || 0
-      const nextValue =
-        buttonPositions.value[activeCursor.value + 1] || barWidth
+      const nextValue = buttonPositions.value[activeCursor.value + 1] || barWidth
 
       if (!MazSlider.value)
         // eslint-disable-next-line no-console
-        return console.error(
-          '[maz-ui](MazSlider/handleMousemove) MazSlider not available',
-        )
+        return console.error('[maz-ui](MazSlider/handleMousemove) MazSlider not available')
 
       buttonPositions.value[activeCursor.value] = (() => {
         const movement = getPos(event, MazSlider.value).x
@@ -391,8 +368,8 @@
       font-size: 1em;
       font-weight: bold;
       line-height: 1;
-      transition: box-shadow 300ms ease-in-out, width 300ms ease-in-out,
-        transform 300ms ease-in-out, background-color 300ms ease-in-out;
+      transition: box-shadow 300ms ease-in-out, width 300ms ease-in-out, transform 300ms ease-in-out,
+        background-color 300ms ease-in-out;
       z-index: 1;
       user-select: none;
 

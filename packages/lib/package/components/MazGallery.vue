@@ -36,9 +36,7 @@
           }"
           class="m-gallery__remaining-layer maz-flex maz-bg-overlay maz-flex-center"
         >
-          <span class="maz-text-2xl maz-text-white"
-            >+{{ numberImagesRemaining }}</span
-          >
+          <span class="maz-text-2xl maz-text-white">+{{ numberImagesRemaining }}</span>
         </div>
       </figure>
       <div
@@ -109,9 +107,7 @@
       onBeforeMount(() => {
         if (props.imagesShownCount > 5)
           // eslint-disable-next-line no-console
-          console.warn(
-            '[MazUI](m-gallery) The maximum of "images-shown-count" is 5',
-          )
+          console.warn('[MazUI](m-gallery) The maximum of "images-shown-count" is 5')
       })
       const sizeStyle = computed(() => {
         const { height, width, noWidth, noHeight } = props
@@ -125,10 +121,8 @@
           ...(noHeight
             ? {}
             : {
-                height:
-                  typeof height === 'number' ? `${height}px` : `${height}`,
-                minHeight:
-                  typeof height === 'number' ? `${height}px` : `${height}`,
+                height: typeof height === 'number' ? `${height}px` : `${height}`,
+                minHeight: typeof height === 'number' ? `${height}px` : `${height}`,
               }),
         }
       })
@@ -138,9 +132,7 @@
       const numberImagesRemaining = computed(() => {
         return (
           props.images.length -
-          (props.images.length < imagesCount.value
-            ? props.images.length
-            : imagesCount.value)
+          (props.images.length < imagesCount.value ? props.images.length : imagesCount.value)
         )
       })
       const imagesNormalized = computed(() => {
@@ -152,10 +144,7 @@
         return imagesNormalized.value.slice(0, imagesCount.value)
       })
       const imagesHidden = computed(() => {
-        return imagesNormalized.value.slice(
-          imagesCount.value,
-          props.images.length,
-        )
+        return imagesNormalized.value.slice(imagesCount.value, props.images.length)
       })
       const shouldHaveRemainingLayer = (index: number) => {
         return (

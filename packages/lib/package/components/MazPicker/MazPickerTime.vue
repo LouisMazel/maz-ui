@@ -1,19 +1,12 @@
 <template>
-  <div
-    ref="MazPickerTime"
-    class="m-picker-time"
-    :class="{ '--has-date': hasDate }"
-  >
+  <div ref="MazPickerTime" class="m-picker-time" :class="{ '--has-date': hasDate }">
     <div
       v-for="({ values, identifier }, i) in columns"
       :key="i"
       class="m-picker-time__column"
       :class="[`m-picker-time__column__${identifier}`]"
     >
-      <div
-        :style="{ height: `${dividerHeight}rem` }"
-        class="m-picker-time__column__divider"
-      ></div>
+      <div :style="{ height: `${dividerHeight}rem` }" class="m-picker-time__column__divider"></div>
       <div class="m-picker-time__column__items">
         <MazBtn
           v-for="({ value, label, isDisabled }, unitIndex) in values"
@@ -28,21 +21,14 @@
           {{ label }}
         </MazBtn>
       </div>
-      <div
-        :style="{ height: `${dividerHeight}rem` }"
-        class="m-picker-time__column__divider"
-      ></div>
+      <div :style="{ height: `${dividerHeight}rem` }" class="m-picker-time__column__divider"></div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
   import { computed, nextTick, type PropType, ref, watch } from 'vue'
-  import {
-    type DateTimeFormatOptions,
-    scrollToTarget,
-    findNearestNumberInList,
-  } from './utils'
+  import { type DateTimeFormatOptions, scrollToTarget, findNearestNumberInList } from './utils'
   import MazBtn from '../MazBtn.vue'
   import type { PickerValue } from './types'
   import type { Color } from '../types'
@@ -122,52 +108,48 @@
   }
 
   const hours = computed(() => {
-    return Array.from({ length: props.isHour12 ? 12 : 24 }, (_v, i) => i).map(
-      (hour) => {
-        const hourBase = hour + (props.isHour12 ? 1 : 0)
-        const hour12or24 = getHour12or24(hourBase)
-        const hourValue = dayjs(currentDate.value).set('hour', hour12or24)
+    return Array.from({ length: props.isHour12 ? 12 : 24 }, (_v, i) => i).map((hour) => {
+      const hourBase = hour + (props.isHour12 ? 1 : 0)
+      const hour12or24 = getHour12or24(hourBase)
+      const hourValue = dayjs(currentDate.value).set('hour', hour12or24)
 
-        const isDisabled =
-          isDisableHour(hour12or24) ||
-          (props.minDate && currentDate.value
-            ? dayjs(props.minDate).isAfter(hourValue, 'hour')
-            : false) ||
-          (props.maxDate && currentDate.value
-            ? dayjs(props.maxDate).isBefore(hourValue, 'hour')
-            : false)
+      const isDisabled =
+        isDisableHour(hour12or24) ||
+        (props.minDate && currentDate.value
+          ? dayjs(props.minDate).isAfter(hourValue, 'hour')
+          : false) ||
+        (props.maxDate && currentDate.value
+          ? dayjs(props.maxDate).isBefore(hourValue, 'hour')
+          : false)
 
-        return {
-          label: `${hourBase < 10 ? '0' : ''}${hourBase}`,
-          value: dayjs(currentDate.value).set('hour', hour12or24),
-          isDisabled,
-        }
-      },
-    )
+      return {
+        label: `${hourBase < 10 ? '0' : ''}${hourBase}`,
+        value: dayjs(currentDate.value).set('hour', hour12or24),
+        isDisabled,
+      }
+    })
   })
 
   const minutes = computed(() => {
     const length = Math.floor(60 / props.minuteInterval) - 0
 
-    return Array.from({ length }, (_v, i) => i * props.minuteInterval).map(
-      (minute) => {
-        const minuteValue = dayjs(currentDate.value).set('minute', minute)
+    return Array.from({ length }, (_v, i) => i * props.minuteInterval).map((minute) => {
+      const minuteValue = dayjs(currentDate.value).set('minute', minute)
 
-        const isDisabled =
-          (props.minDate && currentDate.value
-            ? dayjs(props.minDate).isAfter(minuteValue, 'minute')
-            : false) ||
-          (props.maxDate && currentDate.value
-            ? dayjs(props.maxDate).isBefore(minuteValue, 'minute')
-            : false)
+      const isDisabled =
+        (props.minDate && currentDate.value
+          ? dayjs(props.minDate).isAfter(minuteValue, 'minute')
+          : false) ||
+        (props.maxDate && currentDate.value
+          ? dayjs(props.maxDate).isBefore(minuteValue, 'minute')
+          : false)
 
-        return {
-          label: `${minute < 10 ? '0' : ''}${minute}`,
-          value: minuteValue,
-          isDisabled,
-        }
-      },
-    )
+      return {
+        label: `${minute < 10 ? '0' : ''}${minute}`,
+        value: minuteValue,
+        isDisabled,
+      }
+    })
   })
 
   const currentAmpm = computed(() => {
@@ -270,10 +252,7 @@
     return (props.disabledHours && props.disabledHours.includes(value)) ?? false
   }
 
-  const isSelected = (
-    identifier: ColumnIdentifier,
-    value: Dayjs | 'am' | 'pm',
-  ): boolean => {
+  const isSelected = (identifier: ColumnIdentifier, value: Dayjs | 'am' | 'pm'): boolean => {
     if (value === 'am' || value === 'pm') {
       return currentAmpm.value === value
     } else if (identifier === 'hour') {
@@ -284,40 +263,24 @@
     return false
   }
 
-  const scrollColumn = async (
-    identifier: ColumnIdentifier,
-    hasSmoothEffect = true,
-  ) => {
+  const scrollColumn = async (identifier: ColumnIdentifier, hasSmoothEffect = true) => {
     if (MazPickerTime.value) {
-      const column = MazPickerTime.value.querySelector(
-        `.m-picker-time__column__${identifier}`,
-      ) as HTMLDivElement | undefined
+      const column = MazPickerTime.value.querySelector(`.m-picker-time__column__${identifier}`) as
+        | HTMLDivElement
+        | undefined
 
       const selectedButton = MazPickerTime.value.querySelector(
         `.m-picker-time__column__${identifier} .--is-selected`,
       ) as HTMLButtonElement | undefined
 
-      if (
-        dividerHeight.value &&
-        column &&
-        selectedButton &&
-        MazPickerTime.value
-      ) {
+      if (dividerHeight.value && column && selectedButton && MazPickerTime.value) {
         await nextTick()
-        scrollToTarget(
-          column,
-          selectedButton,
-          dividerHeight.value * 16,
-          hasSmoothEffect,
-        )
+        scrollToTarget(column, selectedButton, dividerHeight.value * 16, hasSmoothEffect)
       }
     }
   }
 
-  const selectTime = async (
-    identifier: ColumnIdentifier,
-    value: Dayjs | 'am' | 'pm',
-  ) => {
+  const selectTime = async (identifier: ColumnIdentifier, value: Dayjs | 'am' | 'pm') => {
     const newDate = dayjs(currentDate.value)
 
     if (identifier === 'hour' && typeof value === 'object') {
@@ -330,25 +293,15 @@
       currentDate.value = dateWithNewMinute.format()
     }
 
-    if (
-      identifier === 'ampm' &&
-      (currentAmpm.value !== value || !currentHour.value)
-    ) {
+    if (identifier === 'ampm' && (currentAmpm.value !== value || !currentHour.value)) {
       if (value === 'am') {
-        currentDate.value = newDate
-          .set('hour', newDate.get('hour'))
-          .subtract(12, 'hour')
-          .format()
+        currentDate.value = newDate.set('hour', newDate.get('hour')).subtract(12, 'hour').format()
       }
       if (value === 'pm') {
         const baseHour = newDate.get('hour')
 
         const newHour =
-          baseHour + 12 > 12 && baseHour + 12 < 24
-            ? baseHour + 12
-            : baseHour === 0
-            ? 12
-            : baseHour
+          baseHour + 12 > 12 && baseHour + 12 < 24 ? baseHour + 12 : baseHour === 0 ? 12 : baseHour
 
         currentDate.value = newDate.set('hour', newHour).format()
       }

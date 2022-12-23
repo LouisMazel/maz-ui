@@ -2,29 +2,14 @@
   <div class="maz-picker-year-switcher">
     <div class="maz-picker-year-switcher__header">
       <div class="maz-flex maz-space-x-2">
-        <MazBtn
-          size="mini"
-          color="transparent"
-          type="button"
-          @click.stop="previousYears"
-        >
+        <MazBtn size="mini" color="transparent" type="button" @click.stop="previousYears">
           <MazIcon :src="ChevronLeftIcon" size="1.2rem" />
         </MazBtn>
-        <MazBtn
-          size="mini"
-          color="transparent"
-          type="button"
-          @click.stop="nextYears"
-        >
+        <MazBtn size="mini" color="transparent" type="button" @click.stop="nextYears">
           <MazIcon :src="ChevronRightIcon" size="1.2rem" />
         </MazBtn>
       </div>
-      <MazBtn
-        size="mini"
-        color="transparent"
-        type="button"
-        @click.stop="$emit('close', $event)"
-      >
+      <MazBtn size="mini" color="transparent" type="button" @click.stop="$emit('close', $event)">
         <MazIcon :src="XIcon" size="1.2rem" />
       </MazBtn>
     </div>
@@ -37,9 +22,7 @@
         :class="{
           '--is-selected': isSameDate(year.date, calendarDate, 'year'),
         }"
-        :color="
-          isSameDate(year.date, calendarDate, 'year') ? color : 'transparent'
-        "
+        :color="isSameDate(year.date, calendarDate, 'year') ? color : 'transparent'"
         @click.stop="selectYear(year.date)"
       >
         {{ year.label }}
@@ -78,10 +61,7 @@
   >(() => {
     return Array.from({ length: 15 }, (_v, i) => i - 7).map((yearNumber) => {
       const currentYear = dayjs(currentDateTmp.value).get('year')
-      const dateYear = dayjs(currentDateTmp.value).set(
-        'year',
-        currentYear + yearNumber,
-      )
+      const dateYear = dayjs(currentDateTmp.value).set('year', currentYear + yearNumber)
 
       return {
         label: date(dateYear.format(), props.locale, {
@@ -98,9 +78,7 @@
   }
 
   const previousYears = () => {
-    currentDateTmp.value = dayjs(currentDateTmp.value)
-      .subtract(7, 'year')
-      .format()
+    currentDateTmp.value = dayjs(currentDateTmp.value).subtract(7, 'year').format()
   }
   const nextYears = () => {
     currentDateTmp.value = dayjs(currentDateTmp.value).add(7, 'year').format()

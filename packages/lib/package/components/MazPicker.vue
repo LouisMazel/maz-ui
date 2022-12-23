@@ -36,11 +36,7 @@
     </MazInput>
 
     <Transition
-      :name="
-        pickerContainerPosition.vertical === 'top'
-          ? 'maz-slideinvert'
-          : 'maz-slide'
-      "
+      :name="pickerContainerPosition.vertical === 'top' ? 'maz-slideinvert' : 'maz-slide'"
     >
       <MazPickerContainer
         v-show="isOpen"
@@ -157,9 +153,7 @@
 
         if (!isValid) {
           // eslint-disable-next-line no-console
-          console.error(
-            '[maz-ui](MazPicker) "first-day-of-week" should be between 0 and 6',
-          )
+          console.error('[maz-ui](MazPicker) "first-day-of-week" should be between 0 and 6')
         }
 
         return isValid
@@ -239,10 +233,7 @@
           label: 'Last week',
           identifier: 'lastWeek',
           value: {
-            start: dayjs()
-              .subtract(1, 'week')
-              .startOf('week')
-              .format('YYYY-MM-DD'),
+            start: dayjs().subtract(1, 'week').startOf('week').format('YYYY-MM-DD'),
             end: dayjs().subtract(1, 'week').endOf('week').format('YYYY-MM-DD'),
           },
         },
@@ -251,9 +242,7 @@
           identifier: 'thisMonth',
           value: {
             start: dayjs().set('date', 1).format('YYYY-MM-DD'),
-            end: dayjs()
-              .set('date', dayjs().daysInMonth())
-              .format('YYYY-MM-DD'),
+            end: dayjs().set('date', dayjs().daysInMonth()).format('YYYY-MM-DD'),
           },
         },
         {
@@ -268,10 +257,7 @@
           label: 'Last year',
           identifier: 'lastYear',
           value: {
-            start: dayjs()
-              .subtract(1, 'year')
-              .startOf('year')
-              .format('YYYY-MM-DD'),
+            start: dayjs().subtract(1, 'year').startOf('year').format('YYYY-MM-DD'),
             end: dayjs().subtract(1, 'year').endOf('year').format('YYYY-MM-DD'),
           },
         },
@@ -300,13 +286,9 @@
   const instance = getCurrentInstance()
 
   const internalLocale = ref<string>(props.locale || 'en-US')
-  const currentLocale = computed<string>(
-    () => props.locale ?? internalLocale.value,
-  )
+  const currentLocale = computed<string>(() => props.locale ?? internalLocale.value)
 
-  const containerUniqueId = computed(
-    () => `mazPickerContainer-${instance?.uid}`,
-  )
+  const containerUniqueId = computed(() => `mazPickerContainer-${instance?.uid}`)
 
   const emits = defineEmits(['update:model-value', 'close'])
 
@@ -320,23 +302,15 @@
   onBeforeMount(() => {
     if (isRangeMode.value && hasTime.value) {
       // eslint-disable-next-line no-console
-      console.error(
-        `[maz-ui](MazPicker) You can't use time picker with range picker`,
-      )
+      console.error(`[maz-ui](MazPicker) You can't use time picker with range picker`)
     }
-    if (
-      hasTime.value &&
-      !(props.format.includes('h') || props.format.includes('H'))
-    ) {
+    if (hasTime.value && !(props.format.includes('h') || props.format.includes('H'))) {
       // eslint-disable-next-line no-console
       console.error(
         `[maz-ui](MazPicker) When you use the time picker, you must provided a format with time - Ex: "YYYY-MM-DD HH:mm"`,
       )
     }
-    if (
-      props.format.includes('h') &&
-      !(props.format.includes('a') || props.format.includes('A'))
-    ) {
+    if (props.format.includes('h') && !(props.format.includes('a') || props.format.includes('A'))) {
       /* eslint-disable no-console */
       console.error(
         '[maz-ui](MazPicker) if you use the 12 format "h" or "hh", you must add "a" or "A" at the end of the format - Ex: "YYYY-MM-DD hh:mm a"',
@@ -373,8 +347,7 @@
   })
 
   const getCalendarDate = (value: PickerValue): string => {
-    const baseDate =
-      (typeof value === 'object' ? value.start : value) ?? dayjs().format()
+    const baseDate = (typeof value === 'object' ? value.start : value) ?? dayjs().format()
 
     if (props.minDate && dayjs(baseDate).isBefore(props.minDate)) {
       return props.minDate
@@ -388,17 +361,13 @@
   const calendarDate = ref(getCalendarDate(currentValue.value))
 
   const isHour12 = computed(
-    () =>
-      props.format.includes('a') ||
-      props.format.includes('A') ||
-      props.format.includes('h'),
+    () => props.format.includes('a') || props.format.includes('A') || props.format.includes('h'),
   )
 
   const formatterOptions = computed<DateTimeFormatOptions>(() => ({
     ...defaultInputDateStyle,
     ...props.inputDateStyle,
-    timeStyle:
-      props.inputDateStyle.timeStyle ?? hasTime.value ? 'short' : undefined,
+    timeStyle: props.inputDateStyle.timeStyle ?? hasTime.value ? 'short' : undefined,
     hour12: props.inputDateStyle.hour12 ?? isHour12.value,
   }))
 
@@ -407,14 +376,10 @@
 
     if (props.onlyTime) {
       return currentValue.value
-        ? date(
-            dayjs(currentValue.value as string).format(),
-            currentLocale.value,
-            {
-              timeStyle: formatterOptions.value.timeStyle,
-              hour12: formatterOptions.value.hour12,
-            },
-          )
+        ? date(dayjs(currentValue.value as string).format(), currentLocale.value, {
+            timeStyle: formatterOptions.value.timeStyle,
+            hour12: formatterOptions.value.hour12,
+          })
         : undefined
     } else if (typeof currentValue.value === 'object') {
       return getRangeFormattedDate({
@@ -443,8 +408,7 @@
 
   const isOpen = computed(() => {
     return (
-      ((isFocused.value || props.open || programaticallyOpened.value) &&
-        !props.disabled) ||
+      ((isFocused.value || props.open || programaticallyOpened.value) && !props.disabled) ||
       props.inline
     )
   })
@@ -477,9 +441,7 @@
     horizontal: 'left' | 'right'
   }> => {
     if (props.pickerPosition) {
-      const horizontal = props.pickerPosition.includes('right')
-        ? 'right'
-        : 'left'
+      const horizontal = props.pickerPosition.includes('right') ? 'right' : 'left'
       const vertical = props.pickerPosition.includes('top') ? 'top' : 'bottom'
 
       return {
@@ -494,9 +456,7 @@
     }
   }
 
-  const calcVerticalPosition = async (
-    parent?: HTMLDivElement,
-  ): Promise<'top' | 'bottom'> => {
+  const calcVerticalPosition = async (parent?: HTMLDivElement): Promise<'top' | 'bottom'> => {
     if (typeof window === 'undefined') {
       return 'bottom'
     }
@@ -505,9 +465,7 @@
 
     await nextTick()
 
-    const pickerContainer = document.querySelector(
-      `#${containerUniqueId.value}`,
-    )
+    const pickerContainer = document.querySelector(`#${containerUniqueId.value}`)
 
     const parentRect = parent?.getBoundingClientRect()
     const windowHeight = window.innerHeight
@@ -676,22 +634,16 @@
 
       if (typeof value === 'object' && (value.start || value.end)) {
         if (
-          (value.start &&
-            isValueDisabledWeekly({ value: value.start, disabledWeekly })) ||
-          (value.start &&
-            isValueDisabledDate({ value: value.start, disabledDates })) ||
-          (value.end &&
-            isValueDisabledWeekly({ value: value.end, disabledWeekly })) ||
-          (value.end &&
-            isValueDisabledDate({ value: value.end, disabledDates }))
+          (value.start && isValueDisabledWeekly({ value: value.start, disabledWeekly })) ||
+          (value.start && isValueDisabledDate({ value: value.start, disabledDates })) ||
+          (value.end && isValueDisabledWeekly({ value: value.end, disabledWeekly })) ||
+          (value.end && isValueDisabledDate({ value: value.end, disabledDates }))
         ) {
           currentValue.value = { start: undefined, end: undefined }
         }
         if (
-          (value.end &&
-            isValueDisabledWeekly({ value: value.end, disabledWeekly })) ||
-          (value.end &&
-            isValueDisabledDate({ value: value.end, disabledDates }))
+          (value.end && isValueDisabledWeekly({ value: value.end, disabledWeekly })) ||
+          (value.end && isValueDisabledDate({ value: value.end, disabledDates }))
         ) {
           currentValue.value = { start: value.start, end: undefined }
         }

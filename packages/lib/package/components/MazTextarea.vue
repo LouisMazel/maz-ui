@@ -105,9 +105,7 @@
 
   const TextareaElement = ref<HTMLTextAreaElement>()
   const isFocused = ref(false)
-  const hasValue = computed(
-    () => props.modelValue !== undefined && props.modelValue !== '',
-  )
+  const hasValue = computed(() => props.modelValue !== undefined && props.modelValue !== '')
 
   onMounted(() => {
     if (TextareaElement.value) {
@@ -138,9 +136,7 @@
 
   const hasLabelOrHint = computed(() => props.label || props.hint)
 
-  const shouldUp = computed(
-    () => hasLabelOrHint.value && (isFocused.value || hasValue.value),
-  )
+  const shouldUp = computed(() => hasLabelOrHint.value && (isFocused.value || hasValue.value))
 
   const borderStyle = computed(() => {
     if (props.error) return 'maz-border-danger'

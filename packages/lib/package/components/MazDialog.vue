@@ -8,14 +8,8 @@
   >
     <template #default="{ close }">
       <div class="m-dialog-layout">
-        <div
-          class="m-dialog-layout-header"
-          :class="{ '--has-title': $slots['title'] || title }"
-        >
-          <h2
-            v-if="$slots['title'] || title"
-            class="maz-my-0 maz-text-xl maz-font-semibold"
-          >
+        <div class="m-dialog-layout-header" :class="{ '--has-title': $slots['title'] || title }">
+          <h2 v-if="$slots['title'] || title" class="maz-my-0 maz-text-xl maz-font-semibold">
             <slot name="title">{{ title }}</slot>
           </h2>
 

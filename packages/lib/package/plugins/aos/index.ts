@@ -84,9 +84,7 @@ class AosHandler {
           observer.observe(anchorElement)
         } else {
           // eslint-disable-next-line no-console
-          console.warn(
-            `[maz-ui](aos) no element found with selector "${anchorAttr}"`,
-          )
+          console.warn(`[maz-ui](aos) no element found with selector "${anchorAttr}"`)
         }
       } else {
         observer.observe(element)
@@ -94,27 +92,17 @@ class AosHandler {
     }
   }
 
-  private handleIntersect(
-    entries: IntersectionObserverEntry[],
-    observer: IntersectionObserver,
-  ) {
+  private handleIntersect(entries: IntersectionObserverEntry[], observer: IntersectionObserver) {
     for (const entry of entries) {
       const target = entry.target as HTMLElement
-      const hasChildren =
-        target.getAttribute('data-maz-aos-children') === 'true'
-      const animateElements: HTMLElement[] = entry.target.getAttribute(
-        'data-maz-aos',
-      )
+      const hasChildren = target.getAttribute('data-maz-aos-children') === 'true'
+      const animateElements: HTMLElement[] = entry.target.getAttribute('data-maz-aos')
         ? [entry.target as HTMLElement]
         : []
 
       if (hasChildren) {
-        const children = [
-          ...document.querySelectorAll('[data-maz-aos-anchor]'),
-        ].map((child) =>
-          child.getAttribute('data-maz-aos-anchor') === `#${entry.target.id}`
-            ? child
-            : undefined,
+        const children = [...document.querySelectorAll('[data-maz-aos-anchor]')].map((child) =>
+          child.getAttribute('data-maz-aos-anchor') === `#${entry.target.id}` ? child : undefined,
         )
 
         for (const child of children) {
@@ -128,9 +116,7 @@ class AosHandler {
         const once = element.getAttribute('data-maz-aos-once')
 
         const useOnce: boolean =
-          typeof once === 'string'
-            ? once === 'true'
-            : this.options.animation.once
+          typeof once === 'string' ? once === 'true' : this.options.animation.once
 
         if (entry.intersectionRatio > this.options.observer.threshold) {
           const duration = element.getAttribute('data-maz-aos-duration')

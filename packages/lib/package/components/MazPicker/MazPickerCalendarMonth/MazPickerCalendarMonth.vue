@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="maz-picker-calendar-month"
-    :class="{ '--has-padding': !isRangeMode }"
-  >
+  <div class="maz-picker-calendar-month" :class="{ '--has-padding': !isRangeMode }">
     <MazPickerCalendarDays
       :locale="locale"
       :first-day-of-week="firstDayOfWeek"
@@ -53,11 +50,7 @@
     disabled: { type: Boolean, required: true },
   })
 
-  const emits = defineEmits([
-    'update:model-value',
-    'update:calendar-date',
-    'update:hoverred-day',
-  ])
+  const emits = defineEmits(['update:model-value', 'update:calendar-date', 'update:hoverred-day'])
 
   const modelValue = computed({
     get: () => props.modelValue,

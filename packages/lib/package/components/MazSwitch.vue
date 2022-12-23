@@ -25,12 +25,7 @@
 </script>
 
 <script lang="ts" setup>
-  import {
-    computed,
-    getCurrentInstance,
-    type PropType,
-    type StyleValue,
-  } from 'vue'
+  import { computed, getCurrentInstance, type PropType, type StyleValue } from 'vue'
   import type { Color } from './types'
 
   const props = defineProps({
@@ -43,13 +38,9 @@
 
   const emits = defineEmits(['update:model-value'])
 
-  const uniqueId = computed(
-    () => props.id ?? `mazSwitch-${getCurrentInstance()?.uid}`,
-  )
+  const uniqueId = computed(() => props.id ?? `mazSwitch-${getCurrentInstance()?.uid}`)
 
-  const bgColorClassVar = computed(
-    () => `var(--maz-color-${props.color}-alpha)`,
-  )
+  const bgColorClassVar = computed(() => `var(--maz-color-${props.color}-alpha)`)
 
   const bgColorStyle = computed<StyleValue>(() => ({
     backgroundColor: props.modelValue

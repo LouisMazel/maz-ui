@@ -102,11 +102,7 @@
       }
 
       const onKeyPress = (event: KeyboardEvent) => {
-        if (
-          !props.noCloseOnEscKey &&
-          event.key === 'Escape' &&
-          !props.persistent
-        ) {
+        if (!props.noCloseOnEscKey && event.key === 'Escape' && !props.persistent) {
           close()
         }
       }

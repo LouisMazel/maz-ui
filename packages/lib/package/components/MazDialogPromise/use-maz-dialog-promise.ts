@@ -18,10 +18,7 @@ const confirmDialogData = ref<DialogData>()
 
 const dialogState = ref<DialogState[]>([])
 
-const showDialogAndWaitChoice = (
-  identifier: string,
-  callback?: () => unknown,
-) => {
+const showDialogAndWaitChoice = (identifier: string, callback?: () => unknown) => {
   return new Promise((resolve, reject) => {
     dialogState.value = [
       ...dialogState.value,

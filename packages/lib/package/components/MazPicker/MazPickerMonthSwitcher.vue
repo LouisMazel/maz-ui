@@ -1,19 +1,11 @@
 <template>
   <div class="maz-picker-month-switcher">
     <div class="maz-picker-month-switcher__header">
-      <MazBtn
-        size="mini"
-        color="transparent"
-        type="button"
-        @click.stop="$emit('close', $event)"
-      >
+      <MazBtn size="mini" color="transparent" type="button" @click.stop="$emit('close', $event)">
         <MazIcon :src="XIcon" size="1.2rem" />
       </MazBtn>
     </div>
-    <div
-      class="maz-picker-month-switcher__main"
-      :class="{ '--has-double': double }"
-    >
+    <div class="maz-picker-month-switcher__main" :class="{ '--has-double': double }">
       <MazBtn
         v-for="month in months"
         :key="month.label"
@@ -21,9 +13,7 @@
         :class="{
           '--is-selected': isSameDate(month.date, calendarDate, 'month'),
         }"
-        :color="
-          isSameDate(month.date, calendarDate, 'month') ? color : 'transparent'
-        "
+        :color="isSameDate(month.date, calendarDate, 'month') ? color : 'transparent'"
         type="button"
         @click.stop="selectMonth(month.date)"
       >

@@ -1,9 +1,4 @@
-import type {
-  CountryCallingCode,
-  CountryCode,
-  NationalNumber,
-  NumberType,
-} from 'libphonenumber-js'
+import type { CountryCallingCode, CountryCode, NationalNumber, NumberType } from 'libphonenumber-js'
 
 import type locales from './constantes/locales'
 

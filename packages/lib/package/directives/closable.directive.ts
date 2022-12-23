@@ -1,9 +1,4 @@
-import type {
-  Directive,
-  DirectiveBinding,
-  FunctionDirective,
-  Plugin,
-} from 'vue'
+import type { Directive, DirectiveBinding, FunctionDirective, Plugin } from 'vue'
 
 const handleOutsideClick = (
   event: TouchEvent | MouseEvent,
@@ -26,10 +21,7 @@ const handleOutsideClick = (
     }
   }
 
-  if (
-    !element.contains(event.target as HTMLElement) &&
-    !clickedOnExcludedElement
-  ) {
+  if (!element.contains(event.target as HTMLElement) && !clickedOnExcludedElement) {
     vnode.context[handler]()
   }
 }

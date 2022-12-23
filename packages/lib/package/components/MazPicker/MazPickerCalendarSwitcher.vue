@@ -1,11 +1,6 @@
 <template>
   <div class="m-picker-calendar-switcher">
-    <MazBtn
-      size="mini"
-      color="transparent"
-      type="button"
-      @click="previousMonth"
-    >
+    <MazBtn size="mini" color="transparent" type="button" @click="previousMonth">
       <MazIcon :src="ChevronLeftIcon" size="1.2rem" />
     </MazBtn>
     <MazBtn
@@ -66,9 +61,7 @@
             month: 'long',
           }),
         )}`
-      : capitalize(
-          date(calendarDate2.value.format(), props.locale, { month: 'long' }),
-        )
+      : capitalize(date(calendarDate2.value.format(), props.locale, { month: 'long' }))
   })
 
   const yearLabel = computed(() =>
@@ -76,17 +69,11 @@
   )
 
   const previousMonth = () => {
-    emits(
-      'update:calendar-date',
-      dayjs(props.calendarDate).subtract(1, 'month').format(),
-    )
+    emits('update:calendar-date', dayjs(props.calendarDate).subtract(1, 'month').format())
   }
 
   const nextMonth = () => {
-    emits(
-      'update:calendar-date',
-      dayjs(props.calendarDate).add(1, 'month').format(),
-    )
+    emits('update:calendar-date', dayjs(props.calendarDate).add(1, 'month').format())
   }
 </script>
 

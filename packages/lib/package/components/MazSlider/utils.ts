@@ -8,14 +8,9 @@ export const getOffset = (elem: HTMLDivElement): IPosObject => {
   const body = document.body as HTMLElement
   const rect = elem.getBoundingClientRect()
   const offset: IPosObject = {
-    y:
-      rect.top +
-      (window.pageYOffset || doc.scrollTop) -
-      (doc.clientTop || body.clientTop || 0),
+    y: rect.top + (window.pageYOffset || doc.scrollTop) - (doc.clientTop || body.clientTop || 0),
     x:
-      rect.left +
-      (window.pageXOffset || doc.scrollLeft) -
-      (doc.clientLeft || body.clientLeft || 0),
+      rect.left + (window.pageXOffset || doc.scrollLeft) - (doc.clientLeft || body.clientLeft || 0),
   }
   return offset
 }
@@ -43,30 +38,13 @@ export const getPos = (
   }
 }
 
-export const isBetween = (
-  value: number,
-  prev: number,
-  next: number,
-  direction: string,
-) => {
-  return direction === 'minus'
-    ? prev
-      ? value >= prev
-      : true
-    : next
-    ? value <= next
-    : true
+export const isBetween = (value: number, prev: number, next: number, direction: string) => {
+  return direction === 'minus' ? (prev ? value >= prev : true) : next ? value <= next : true
 }
 
-export const getOpacityCoeff = (
-  index: number,
-  middle: number,
-  length: number,
-) => {
+export const getOpacityCoeff = (index: number, middle: number, length: number) => {
   const currentIndex = index + 1
   const isBiggerThanMiddle = middle < currentIndex
-  const deviation = isBiggerThanMiddle
-    ? currentIndex - middle
-    : middle - currentIndex
+  const deviation = isBiggerThanMiddle ? currentIndex - middle : middle - currentIndex
   return ((100 / length) * deviation) / 100
 }

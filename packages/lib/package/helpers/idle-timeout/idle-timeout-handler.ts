@@ -1,9 +1,5 @@
 import { isClient } from '../is-client'
-import type {
-  IdleTimeoutOptions,
-  IdleTimeoutCallback,
-  IdleTimeoutStrictOption,
-} from './types'
+import type { IdleTimeoutOptions, IdleTimeoutCallback, IdleTimeoutStrictOption } from './types'
 
 export class IdleTimeout {
   private readonly defaultOptions: IdleTimeoutStrictOption = {
@@ -37,10 +33,7 @@ export class IdleTimeout {
     'click',
   ]
 
-  public constructor(
-    private readonly callback: IdleTimeoutCallback,
-    options?: IdleTimeoutOptions,
-  ) {
+  public constructor(private readonly callback: IdleTimeoutCallback, options?: IdleTimeoutOptions) {
     this.options = {
       ...this.defaultOptions,
       ...options,
@@ -61,9 +54,7 @@ export class IdleTimeout {
 
   public start(): void {
     if (!isClient()) {
-      console.warn(
-        `[IdleTimeout](start) you should run this method on client side`,
-      )
+      console.warn(`[IdleTimeout](start) you should run this method on client side`)
       return
     }
 
@@ -79,8 +70,7 @@ export class IdleTimeout {
   }
 
   public pause(): void {
-    const remainingTime: number =
-      this.startTime + this.options.timeout - Date.now()
+    const remainingTime: number = this.startTime + this.options.timeout - Date.now()
     if (remainingTime <= 0) {
       return
     }
@@ -113,9 +103,7 @@ export class IdleTimeout {
 
   public destroy(): void {
     if (!isClient()) {
-      console.warn(
-        `[IdleTimeout](destroy) you should run this method on client side`,
-      )
+      console.warn(`[IdleTimeout](destroy) you should run this method on client side`)
       return
     }
 

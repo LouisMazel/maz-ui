@@ -29,7 +29,7 @@ build-components:
 build-component:
 	npm run build:gen-components-entry && npm run build:component -- $(component)
 build-types:
-	npm run build:types
+	npm run build:file-types && npm run build:copy-comp-types
 build-css:
 	npm run build:css
 build-watch:

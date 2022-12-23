@@ -11,10 +11,7 @@
   >
     <template #default="{ close }">
       <div class="m-drawer-content-wrap" :class="[`--${variant}`]">
-        <header
-          class="m-drawer-header"
-          :class="[$slots['title'] || title ? '--between' : '--end']"
-        >
+        <header class="m-drawer-header" :class="[$slots['title'] || title ? '--between' : '--end']">
           <h4 class="m-drawer-header__title">
             <slot name="title" :close="close">
               {{ title }}

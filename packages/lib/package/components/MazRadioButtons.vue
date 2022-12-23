@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="m-radio-buttons"
-    :class="[orientation === 'row' ? 'maz-flex-row' : 'maz-flex-col']"
-  >
+  <div class="m-radio-buttons" :class="[orientation === 'row' ? 'maz-flex-row' : 'maz-flex-col']">
     <label
       v-for="(option, i) in options"
       :id="option.value.toString()"

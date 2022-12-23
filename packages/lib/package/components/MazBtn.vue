@@ -37,11 +37,7 @@
         <MazIcon v-if="rightIcon" :name="rightIcon" />
       </slot>
     </div>
-    <div
-      v-if="hasLoader"
-      class="m-btn__loading-wrapper"
-      :class="loaderBgColorClass"
-    >
+    <div v-if="hasLoader" class="m-btn__loading-wrapper" :class="loaderBgColorClass">
       <MazSpinner size="2em" :color="loaderColor" />
     </div>
   </Component>
@@ -131,21 +127,15 @@
   const isDisabled = computed(
     () => (props.loading || props.disabled) && component.value === 'button',
   )
-  const cursorClass = computed(() =>
-    isDisabled.value ? '--cursor-default' : '--cursor-pointer',
-  )
+  const cursorClass = computed(() => (isDisabled.value ? '--cursor-default' : '--cursor-pointer'))
   const variantClass = computed(() => `--is-${props.variant}`)
   const loaderBgColorClass = computed(() => `--${props.color}`)
-  const loaderColor = computed(() =>
-    ['white'].includes(props.color) ? 'black' : 'white',
-  )
+  const loaderColor = computed(() => (['white'].includes(props.color) ? 'black' : 'white'))
   const hasLoader = computed(() => props.loading && props.variant === 'button')
   const hasLeftIcon = computed(() => !!slots['left-icon'] || props.leftIcon)
   const hasRightIcon = computed(() => !!slots['right-icon'] || props.rightIcon)
   const hasIcon = computed(() => hasLeftIcon.value || hasRightIcon.value)
-  const btnType = computed(() =>
-    component.value === 'button' ? props.type : undefined,
-  )
+  const btnType = computed(() => (component.value === 'button' ? props.type : undefined))
 </script>
 
 <style lang="postcss" scoped>

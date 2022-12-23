@@ -24,9 +24,7 @@ describe('components/MazPicker.vue', () => {
       modelValue: '02:20 pm',
     })
 
-    expect(
-      (wrapper.vm.formatterOptions as Record<string, any>).hour12,
-    ).toBeTruthy()
+    expect((wrapper.vm.formatterOptions as Record<string, any>).hour12).toBeTruthy()
 
     expect(wrapper.vm.modelValue).toBe('02:20 pm')
 

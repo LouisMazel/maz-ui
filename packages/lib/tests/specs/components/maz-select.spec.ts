@@ -41,9 +41,7 @@ describe('components/MazSelect.vue', () => {
   test('Should find the options on search', async () => {
     wrapper.vm.searchQuery = '6'
 
-    expect(wrapper.vm.optionsList).toStrictEqual([
-      { label: 'Test 6', value: 6 },
-    ])
+    expect(wrapper.vm.optionsList).toStrictEqual([{ label: 'Test 6', value: 6 }])
   })
 
   test('Should find the options on search', async () => {

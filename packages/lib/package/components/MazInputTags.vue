@@ -104,10 +104,7 @@
         .split(',')
         .map((value) => (value.trim() === ',' ? undefined : value.trim()))
         .filter(Boolean)
-      emits(
-        'update:model-value',
-        props.modelValue ? [...props.modelValue, ...values] : [...values],
-      )
+      emits('update:model-value', props.modelValue ? [...props.modelValue, ...values] : [...values])
       inputValue.value = undefined
     }
   }

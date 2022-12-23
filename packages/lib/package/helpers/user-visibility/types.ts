@@ -1,8 +1,4 @@
-export type UserVisibilyCallback = ({
-  isVisible,
-}: {
-  isVisible: boolean
-}) => void
+export type UserVisibilyCallback = ({ isVisible }: { isVisible: boolean }) => void
 
 export type UserVisibilyStrictOptions = {
   ssr: boolean
