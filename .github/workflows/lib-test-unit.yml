@@ -3,10 +3,10 @@ name: Lib Tests Unit
 on:
   push:
     paths:
-      - "packages/lib/**"
+      - 'packages/lib/**'
   pull_request:
     paths:
-      - "packages/lib/**"
+      - 'packages/lib/**'
 
 jobs:
   coverage:
@@ -18,19 +18,19 @@ jobs:
     steps:
       - uses: szenius/set-timezone@v1.1
         with:
-          timezoneLinux: "Europe/Paris"
-          timezoneMacos: "Europe/Paris"
+          timezoneLinux: 'Europe/Paris'
+          timezoneMacos: 'Europe/Paris'
 
       - name: Checkout Actions
         uses: actions/checkout@v3
 
       - uses: actions/setup-node@v3
         with:
-          node-version: "16"
+          node-version: '16'
 
       - uses: actions/cache@v3
         with:
-          path: "**/node_modules"
+          path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install modules

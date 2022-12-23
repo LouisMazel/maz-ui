@@ -1,5 +1,5 @@
 ---
-version: "2"
+version: '2'
 plugins:
   csslint:
     enabled: false
@@ -11,7 +11,7 @@ plugins:
         - typescript
   eslint:
     enabled: false
-    channel: "eslint-8"
+    channel: 'eslint-8'
   fixme:
     enabled: true
   stylelint:
@@ -26,9 +26,9 @@ checks:
 exclude_patterns:
   - .husky/
   - .vscode/
-  - "**/tests/"
-  - "**/spec/"
-  - "**/*.d.ts"
+  - '**/tests/'
+  - '**/spec/'
+  - '**/*.d.ts'
   - node_modules/*
   - packages/lib/tests/*
   - packages/lib/build/*

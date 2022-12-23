@@ -4,8 +4,8 @@ on:
     branches:
       - master
     paths:
-      - "packages/docs/**"
-      - "packages/lib/**"
+      - 'packages/docs/**'
+      - 'packages/lib/**'
 
 jobs:
   doc-build-and-deploy:

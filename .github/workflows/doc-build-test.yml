@@ -2,8 +2,8 @@ name: Doc Build Test
 on:
   pull_request:
     paths:
-      - "packages/docs/**"
-      - "packages/lib/**"
+      - 'packages/docs/**'
+      - 'packages/lib/**'
 
 jobs:
   doc-build-test:

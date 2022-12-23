@@ -3,7 +3,7 @@ name: Lib Test Build
 on:
   pull_request:
     paths:
-      - "packages/lib/**"
+      - 'packages/lib/**'
 
 jobs:
   lib-test-build:
