@@ -11,23 +11,21 @@ description: MazSelect is a standalone component replaces the standard html inpu
 
 <!--@include: ./../.vitepress/mixins/maz-input-props.md-->
 
-## Usage
-
-### Basic
+## Basic usage
 
 <br/>
 
 <MazSelect
   label="Select color"
-  v-model="selectValue"
-  :color="selectValue"
+  v-model="selectedValue"
+  :color="selectedValue"
   :options="colors"
 />
 
 ```vue
 <template>
   <MazSelect
-    v-model="selectValue"
+    v-model="selectedValue"
     label="Select color"
     :color="color"
     :options="colors"
@@ -38,7 +36,7 @@ description: MazSelect is a standalone component replaces the standard html inpu
   import MazSelect from 'maz-ui/components/MazInput'
   import { ref } from 'vue'
 
-  const selectValue = ref()
+  const selectedValue = ref()
 
   const colors = [
     { label: 'primary', value: 'primary' },
@@ -53,58 +51,76 @@ description: MazSelect is a standalone component replaces the standard html inpu
 </script>
 ```
 
-### Search option
+## Search option
 
 Use `search` property to add a search input in the options list
 
 <br />
 
-<MazSelect label="Select color" v-model="selectValue" :options="colors" search />
+<MazSelect label="Select color" v-model="selectedValue" :options="colors" search />
 
 ```html
 <MazSelect
-  v-model="selectValue"
+  v-model="selectedValue"
   label="Select color"
-  :options="colorsObject"
+  :options="colors"
   search
 />
 ```
 
-### Custom options UI
+## Custom template options
 
 <br />
 
-<MazSelect label="Select color" v-model="selectValue" :options="colors">
-  <template #default="{ option, isSelected }">
-    <div class="flex flex-center">
-      <strong class="maz-mr-2">
-        {{ option.label }}
-      </strong>
-      <span>is-selected: {{ isSelected }}</span>
-    </div>
-  </template>
+<MazSelect
+  label="Select color"
+  v-model="selectedUser"
+  :options="customTemplateOptions"
+  v-slot="{ option, isSelected }"
+  search
+>
+  <div class="flex items-center" style="padding-top: 0.5rem; padding-bottom: 0.5rem; width: 100%; gap: 1rem">
+    <MazAvatar size="0.8rem" :src="option.picture" />
+    <strong>
+      {{ option.label }}
+    </strong>
+  </div>
 </MazSelect>
 
-```html
-<MazSelect
-  v-model="selectValue"
-  :options="colors"
-  label="Select color"
->
-  <template #default="{ option, isSelected }">
-    <div class="flex flex-center">
-      <strong class="maz-mr-2">
+```vue{6}
+<template>
+  <MazSelect
+    label="Select color"
+    v-model="selectedUser"
+    :options="customTemplateOptions"
+    v-slot="{ option, isSelected }"
+    search
+  >
+    <div class="flex items-center" style="padding-top: 0.5rem; padding-bottom: 0.5rem; width: 100%; gap: 1rem">
+      <MazAvatar size="0.8rem" :src="option.picture" />
+      <strong>
         {{ option.label }}
       </strong>
-      <span>is-selected: {{ isSelected }}</span>
     </div>
-  </template>
-</MazSelect>
+  </MazSelect>
+</template>
+
+<script lang="ts" setup>
+  import { ref } from 'vue'
+  import MazAvatar from 'maz-ui/components/MazAvatar'
+
+  const selectedUser = ref()
+
+  const customTemplateOptions = [
+    { picture: 'https://placekitten.com/100/100', label: 'James Kitten', value: 1 },
+    { picture: 'https://placekitten.com/500/500', label: 'Brad Kitten', value: 2 },
+    { picture: 'https://placekitten.com/300/300', label: 'Cedric Kitten', value: 3 },
+    { picture: 'https://placekitten.com/400/400', label: 'Harry Kitten', value: 4 },
+  ]
+</script>
 ```
 
-## Documentation
-
-### Options
+## Custom options model
 
 By default, the options should be an array of `{ value: any, label: string }`
 
@@ -114,12 +130,14 @@ If you want custom keys of these options, you can use:
 - `option-label-key` to override the key of the label to show in the option list
 - `option-input-value-key` to override the key of the value to show in the input
 
-#### Example
+### Example
+
+<br />
 
 <MazSelect
-  v-model="selectValueCustom"
-  :options="options"
-  :color="selectValueCustom"
+  v-model="selectedValueCustom"
+  :options="customOptions"
+  :color="selectedValueCustom"
   option-value-key="valueOption"
   option-label-key="labelOption"
   option-input-value-key="inputLabel"
@@ -129,9 +147,9 @@ If you want custom keys of these options, you can use:
 ```vue
 <template>
   <MazSelect
-    v-model="selectValueCustom"
+    v-model="selectedValueCustom"
     :options="options"
-    :color="selectValueCustom"
+    :color="selectedValueCustom"
     option-value-key="valueOption"
     option-label-key="labelOption"
     option-input-value-key="inputLabel"
@@ -141,9 +159,9 @@ If you want custom keys of these options, you can use:
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  const selectValueCustom = ref('danger')
+  const selectedValueCustom = ref('danger')
 
-  const options = [
+  const customOptions = [
     { valueOption: 'primary', labelOption: 'primary label', inputLabel: 'primary input', },
     { valueOption: 'secondary', labelOption: 'secondary label', inputLabel: 'secondary input', },
     { valueOption: 'info', labelOption: 'info label', inputLabel: 'info input', },
@@ -163,8 +181,9 @@ If you want custom keys of these options, you can use:
 <script setup lang="ts">
   import { ref } from 'vue'
 
-  const selectValue = ref()
-  const selectValueCustom = ref('danger')
+  const selectedValue = ref()
+  const selectedValueCustom = ref('danger')
+  const selectedUser = ref()
 
   const colors = [
     { label: 'primary', value: 'primary' },
@@ -177,7 +196,14 @@ If you want custom keys of these options, you can use:
     { label: 'black', value: 'black' },
   ]
 
-  const options = [
+  const customTemplateOptions = [
+    { picture: 'https://placekitten.com/100/100', label: 'James Kitten', value: 1 },
+    { picture: 'https://placekitten.com/500/500', label: 'Brad Kitten', value: 2 },
+    { picture: 'https://placekitten.com/300/300', label: 'Cedric Kitten', value: 3 },
+    { picture: 'https://placekitten.com/400/400', label: 'Harry Kitten', value: 4 },
+  ]
+
+  const customOptions = [
     { valueOption: 'primary', labelOption: 'primary label', inputLabel: 'primary input', },
     { valueOption: 'secondary', labelOption: 'secondary label', inputLabel: 'secondary input', },
     { valueOption: 'info', labelOption: 'info label', inputLabel: 'info input', },
