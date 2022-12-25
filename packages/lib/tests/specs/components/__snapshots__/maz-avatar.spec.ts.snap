@@ -1,0 +1,12 @@
+// Vitest Snapshot v1
+
+exports[`MazAvatar > Should match wtesth the snapshot 1`] = `
+"<div class=\\"m-avatar\\" data-v-ac4ded86=\\"\\">
+  <div class=\\"m-avatar__wrapper --has-shadow\\" tabindex=\\"-1\\" data-v-ac4ded86=\\"\\">
+    <!--v-if-->
+    <!--v-if-->
+    <!--v-if-->
+  </div>
+  <!--v-if-->
+</div>"
+`;

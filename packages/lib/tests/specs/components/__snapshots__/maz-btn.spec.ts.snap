@@ -1,0 +1,9 @@
+// Vitest Snapshot v1
+
+exports[`MazBtn > Should match wtesth the snapshot 1`] = `
+"<button class=\\"m-btn --md --primary --cursor-pointer --is-button\\" type=\\"button\\" data-v-038f1c7e=\\"\\">
+  <!--v-if--><span class=\\"maz-flex maz-flex-center\\" data-v-038f1c7e=\\"\\"></span>
+  <!--v-if-->
+  <!--v-if-->
+</button>"
+`;
