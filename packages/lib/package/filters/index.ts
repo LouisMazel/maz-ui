@@ -1,3 +1,5 @@
+import type { App } from 'vue'
+
 import { capitalize } from './capitalize'
 import { currency } from './currency'
 import { date } from './date'
@@ -13,12 +15,13 @@ const filters = {
 export type Filters = typeof filters
 
 const installFilters = {
-  install(app) {
+  install(app: App) {
     app.provide('filters', filters)
   },
 }
 
 export { installFilters }
+
 export * from './capitalize'
 export * from './currency'
 export * from './date'

@@ -1,5 +1,6 @@
 package/components_tmp/**/*
-/node_modules
+node_modules
 .DS_Store
-/dist
-/coverage
+dist
+types
+coverage

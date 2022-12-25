@@ -1,6 +1,6 @@
 export * from './inject-strict'
 export * from './debounce'
-export * from './truhty-filter'
+export * from './truthy-filter'
 export * from './mount-component'
 export * from './idle-timeout'
 export * from './user-visibility'

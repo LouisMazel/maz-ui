@@ -1,39 +1,51 @@
-import { AosHandler, AosOptions } from '@package/plugins/aos'
+import { AosHandler } from '@package/plugins/aos'
 
-const options: AosOptions = {
-  delay: 100,
-  observer: {
-    root: undefined,
-    rootMargin: '0px',
-    threshold: 0.2,
-  },
-  animation: {
-    once: true,
-    duration: 400,
-  },
-}
-let instance: AosHandler | undefined
+describe('AosHandler', () => {
+  let aosHandler: AosHandler
 
-beforeEach(() => {
-  instance = new AosHandler(options)
-})
+  beforeEach(() => {
+    aosHandler = new AosHandler()
 
-afterAll(() => {
-  instance = undefined
-})
+    const observe = vitest.fn()
+    const unobserve = vitest.fn()
+    // @ts-ignore
+    window.IntersectionObserver = vitest.fn(() => ({
+      observe,
+      unobserve,
+    }))
+  })
 
-test('plugins/toaster/MazToast.vue', () => {
-  expect(instance).toBeDefined()
-  expect(instance.options).toStrictEqual({
-    delay: 100,
-    observer: {
-      root: undefined,
-      rootMargin: '0px',
-      threshold: 0.2,
-    },
-    animation: {
-      once: true,
-      duration: 400,
-    },
+  test('should update the options with the provided values', () => {
+    const options = {
+      delay: 500,
+      observer: {
+        rootMargin: '10px',
+        threshold: 0.5,
+      },
+      animation: {
+        once: false,
+        duration: 500,
+      },
+    }
+
+    aosHandler = new AosHandler(options)
+    expect(aosHandler.options).toEqual({
+      ...options,
+      observer: {
+        ...options.observer,
+        root: undefined,
+      },
+    })
+  })
+
+  test('should run the animations after the specified delay', () => {
+    vitest.useFakeTimers()
+
+    aosHandler.runAnimations()
+    vitest.advanceTimersByTime(99)
+    // Assert that the animations have not been run yet
+
+    vitest.advanceTimersByTime(1)
+    // Assert that the animations have been run
   })
 })
