@@ -9,44 +9,52 @@ const DEFAULT_OPTIONS = {
 
 export const theme = ref<string>()
 
-export type ThemeHandlerOptions = Partial<typeof DEFAULT_OPTIONS>
+export type StrictThemeHandlerOptions = typeof DEFAULT_OPTIONS
+export type ThemeHandlerOptions = Partial<StrictThemeHandlerOptions>
 
-const autoSetTheme = ({
+const setDarkTheme = ({
+  darkClass,
   storageThemeKey,
   storageThemeValueDark,
+}: StrictThemeHandlerOptions) => {
+  document.documentElement.classList.add(darkClass)
+  localStorage[storageThemeKey] = storageThemeValueDark
+  theme.value = storageThemeValueDark
+}
+
+const removeDarkTheme = ({
   darkClass,
+  storageThemeKey,
   storageThemeValueLight,
-}: typeof DEFAULT_OPTIONS) => {
+}: StrictThemeHandlerOptions) => {
+  document.documentElement.classList.remove(darkClass)
+  localStorage[storageThemeKey] = storageThemeValueLight
+  theme.value = storageThemeValueLight
+}
+
+const autoSetTheme = (options: StrictThemeHandlerOptions) => {
   if (
-    localStorage[storageThemeKey] === storageThemeValueDark ||
-    (!(storageThemeKey in localStorage) &&
+    localStorage[options.storageThemeKey] === options.storageThemeValueDark ||
+    (!(options.storageThemeKey in localStorage) &&
       window.matchMedia('(prefers-color-scheme: dark)').matches)
   ) {
-    document.documentElement.classList.add(darkClass)
-    localStorage[storageThemeKey] = storageThemeValueDark
-    theme.value = storageThemeValueDark
+    setDarkTheme(options)
   } else {
-    document.documentElement.classList.remove(darkClass)
-    localStorage[storageThemeKey] = storageThemeValueLight
-    theme.value = storageThemeValueLight
+    removeDarkTheme(options)
   }
 }
 
-const toggleTheme = ({
-  storageThemeKey,
-  storageThemeValueDark,
-  darkClass,
-  storageThemeValueLight,
-}: typeof DEFAULT_OPTIONS) => {
-  if (localStorage[storageThemeKey] === storageThemeValueDark) {
-    document.documentElement.classList.remove(darkClass)
-    localStorage[storageThemeKey] = storageThemeValueLight
-    theme.value = storageThemeValueLight
-  } else {
-    document.documentElement.classList.add(darkClass)
-    localStorage[storageThemeKey] = storageThemeValueDark
-    theme.value = storageThemeValueDark
-  }
+const setTheme = ({
+  shouldSetDarkMode,
+  ...rest
+}: StrictThemeHandlerOptions & { shouldSetDarkMode: boolean }) => {
+  return shouldSetDarkMode ? setDarkTheme(rest) : removeDarkTheme(rest)
+}
+
+const toggleTheme = (options: StrictThemeHandlerOptions) => {
+  return localStorage[options.storageThemeKey] === options.storageThemeValueDark
+    ? removeDarkTheme(options)
+    : setDarkTheme(options)
 }
 
 export const useThemeHandler = (opts: ThemeHandlerOptions = DEFAULT_OPTIONS) => {
@@ -61,6 +69,8 @@ export const useThemeHandler = (opts: ThemeHandlerOptions = DEFAULT_OPTIONS) => 
   return {
     autoSetTheme: () => autoSetTheme(options),
     toggleTheme: () => toggleTheme(options),
+    setDarkTheme: () => setTheme({ ...options, shouldSetDarkMode: true }),
+    setLightTheme: () => setTheme({ ...options, shouldSetDarkMode: false }),
     hasDarkTheme,
     hasLightTheme,
     theme,
