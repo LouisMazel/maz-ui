@@ -172,7 +172,10 @@
     if (emitValue === true) checkValues()
     await calcPos()
     await nextTick()
-    computedValue.value.forEach((_: unknown, i: number) => setBtnDividers(i))
+
+    for (const [index, _value] of computedValue.value.entries()) {
+      setBtnDividers(index)
+    }
   }
 
   const cursorKeyDown = (event: KeyboardEvent, i: number) => {

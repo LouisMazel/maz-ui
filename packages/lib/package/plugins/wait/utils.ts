@@ -2,7 +2,7 @@ export type LoaderId = unknown
 
 export const DEFAULT_LOADER: LoaderId = ''
 
-const uniq = (array: LoaderId[]) => {
+export const uniq = (array: LoaderId[]) => {
   return array.filter((el, index, arr) => index === arr.indexOf(el))
 }
 

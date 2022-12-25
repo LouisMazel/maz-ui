@@ -4,15 +4,15 @@
     "source.fixAll.eslint": true,
     "source.fixAll.stylelint": true
   },
-  // "[vue]": {
-  //   "editor.defaultFormatter": "esbenp.prettier-vscode"
-  // },
-  // "[javascript]": {
-  //   "editor.defaultFormatter": "esbenp.prettier-vscode"
-  // },
-  // "[typescript]": {
-  //   "editor.defaultFormatter": "esbenp.prettier-vscode"
-  // },
+  "[vue]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
   "eslint.validate": ["vue", "javascript", "typescript"],
   "eslint.packageManager": "npm",
   "editor.quickSuggestions": {

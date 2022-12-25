@@ -41,6 +41,7 @@ module.exports = {
         ignoreRestSiblings: true,
       },
     ],
+    '@typescript-eslint/ban-ts-comment': 'off',
     // vue
     'vue/component-name-in-template-casing': [
       'error',
