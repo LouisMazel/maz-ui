@@ -37,6 +37,7 @@ export default defineConfig({
         'package/helpers/sleep.ts',
         'package/plugins/index.ts',
         'package/filters/index.ts',
+        'package/composables/aos.composable.ts',
         'package/directives/index.ts',
         'package/directives/v-zoom-img/index.ts',
         'package/directives/v-zoom-img/style.ts',

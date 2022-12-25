@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import { WaitHandler, plugin } from '@package/plugins/wait/index'
+import { WaitHandler, installWait } from '@package/plugins'
 
 describe('WaitHandler', () => {
   let app: ReturnType<typeof createApp>
@@ -7,7 +7,7 @@ describe('WaitHandler', () => {
 
   beforeEach(() => {
     app = createApp({})
-    app.use(plugin)
+    app.use(installWait)
     waitHandler = new WaitHandler()
   })
 
