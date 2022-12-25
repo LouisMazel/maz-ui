@@ -1,4 +1,4 @@
-import { AosHandler } from '@package/plugins/aos'
+import { AosHandler, AosOptions } from '@package/plugins/aos'
 
 describe('AosHandler', () => {
   let aosHandler: AosHandler
@@ -16,7 +16,7 @@ describe('AosHandler', () => {
   })
 
   test('should update the options with the provided values', () => {
-    const options = {
+    const options: AosOptions = {
       delay: 500,
       observer: {
         rootMargin: '10px',
