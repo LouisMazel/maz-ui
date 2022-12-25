@@ -16,6 +16,26 @@ description: Vue composable to handling UI theme - Automatically set dark and li
   Click to toggle mode
 </MazBtn>
 
+<br />
+<br />
+
+<MazBtn
+  left-icon="moon"
+  @click="setDarkTheme"
+>
+  Click to set dark mode
+</MazBtn>
+
+<br />
+<br />
+
+<MazBtn
+  left-icon="sun"
+  @click="setLightTheme"
+>
+  Click to set light mode
+</MazBtn>
+
 ### Data
 
 <br />
@@ -46,6 +66,20 @@ In your main Vue component (often App.vue - default layout for nuxt)
     >
       Click to toggle mode
     </MazBtn>
+
+    <MazBtn
+      left-icon="moon"
+      @click="setDarkTheme"
+    >
+      Click to set dark mode
+    </MazBtn>
+
+    <MazBtn
+      left-icon="sun"
+      @click="setLightTheme"
+    >
+      Click to set light mode
+    </MazBtn>
   </div>
 </template>
 
@@ -69,6 +103,8 @@ In your main Vue component (often App.vue - default layout for nuxt)
   const {
     autoSetTheme,
     toggleTheme,
+    setDarkTheme,
+    setLightTheme,
     theme,
     hasDarkTheme,
     hasLightTheme
@@ -101,6 +137,8 @@ In your main Vue component (often App.vue - default layout for nuxt)
   const {
     autoSetTheme,
     toggleTheme,
+    setDarkTheme,
+    setLightTheme,
     theme,
     hasDarkTheme,
     hasLightTheme
