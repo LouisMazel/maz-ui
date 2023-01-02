@@ -16,20 +16,28 @@ const setDarkTheme = ({
   darkClass,
   storageThemeKey,
   storageThemeValueDark,
-}: StrictThemeHandlerOptions) => {
+  setLocalStorageValue = true,
+}: StrictThemeHandlerOptions & { setLocalStorageValue?: boolean }) => {
   document.documentElement.classList.add(darkClass)
-  localStorage[storageThemeKey] = storageThemeValueDark
   theme.value = storageThemeValueDark
+
+  if (setLocalStorageValue) {
+    localStorage[storageThemeKey] = storageThemeValueDark
+  }
 }
 
-const removeDarkTheme = ({
+const setLightTheme = ({
   darkClass,
   storageThemeKey,
   storageThemeValueLight,
-}: StrictThemeHandlerOptions) => {
+  setLocalStorageValue = true,
+}: StrictThemeHandlerOptions & { setLocalStorageValue?: boolean }) => {
   document.documentElement.classList.remove(darkClass)
-  localStorage[storageThemeKey] = storageThemeValueLight
   theme.value = storageThemeValueLight
+
+  if (setLocalStorageValue) {
+    localStorage[storageThemeKey] = storageThemeValueLight
+  }
 }
 
 const autoSetTheme = (options: StrictThemeHandlerOptions) => {
@@ -38,9 +46,9 @@ const autoSetTheme = (options: StrictThemeHandlerOptions) => {
     (!(options.storageThemeKey in localStorage) &&
       window.matchMedia('(prefers-color-scheme: dark)').matches)
   ) {
-    setDarkTheme(options)
+    setDarkTheme({ ...options, setLocalStorageValue: false })
   } else {
-    removeDarkTheme(options)
+    setLightTheme({ ...options, setLocalStorageValue: false })
   }
 }
 
@@ -48,12 +56,12 @@ const setTheme = ({
   shouldSetDarkMode,
   ...rest
 }: StrictThemeHandlerOptions & { shouldSetDarkMode: boolean }) => {
-  return shouldSetDarkMode ? setDarkTheme(rest) : removeDarkTheme(rest)
+  return shouldSetDarkMode ? setDarkTheme(rest) : setLightTheme(rest)
 }
 
 const toggleTheme = (options: StrictThemeHandlerOptions) => {
   return localStorage[options.storageThemeKey] === options.storageThemeValueDark
-    ? removeDarkTheme(options)
+    ? setLightTheme(options)
     : setDarkTheme(options)
 }
 
