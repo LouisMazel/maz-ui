@@ -46,7 +46,15 @@ description: Vue composable to handling UI theme - Automatically set dark and li
 
 ## How to use it ?
 
-In your main Vue component (often App.vue - default layout for nuxt)
+::: info
+`autoSetTheme` method, does not store theme value in localStorage to always let user preferences apply on every visit (some users automatically have light mode during the day and dark at night)
+:::
+
+:::tip
+Always run `autoSetTheme` method on app initialization and let user change the theme with `toggleTheme` or `setDarkTheme` or `setLightTheme`
+:::
+
+### Example
 
 `App.vue` or `layouts/default.vue`
 
@@ -86,9 +94,10 @@ In your main Vue component (often App.vue - default layout for nuxt)
 <script lang="ts" setup>
   import { onMounted } from 'vue'
 
+  import MazBtn from 'maz-ui/components/MazBtn'
+
   import { useThemeHandler } from 'maz-ui'
   import type { ThemeHandlerOptions } from 'maz-ui'
-  import MazBtn from 'maz-ui/components/MazBtn'
 
   // optional
   const options: ThemeHandlerOptions = {
