@@ -33,7 +33,7 @@ description: MazSelect is a standalone component replaces the standard html inpu
 </template>
 
 <script setup lang="ts">
-  import MazSelect from 'maz-ui/components/MazInput'
+  import MazSelect from 'maz-ui/components/MazSelect'
   import { ref } from 'vue'
 
   const selectedValue = ref()
@@ -107,6 +107,7 @@ Use `search` property to add a search input in the options list
 
 <script lang="ts" setup>
   import { ref } from 'vue'
+  import MazSelect from 'maz-ui/components/MazSelect'
   import MazAvatar from 'maz-ui/components/MazAvatar'
 
   const selectedUser = ref()
