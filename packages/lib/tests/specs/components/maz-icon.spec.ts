@@ -4,7 +4,7 @@ import MazIcon from '@components/MazIcon.vue'
 describe('MazIcon', () => {
   it('renders correctly with custom name prop', async () => {
     const wrapper = shallowMount(MazIcon, {
-      propsData: {
+      props: {
         name: 'test-icon',
       },
     })
