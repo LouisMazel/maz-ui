@@ -28,8 +28,8 @@ export function generateEventObject(type: string, chartRef?: HTMLCanvasElement) 
   //chart js allows some events to be cancelled if they return false
   //this implements familiar logic to allow vue emitted chart events to be canceled
   return {
-    type: type,
-    chartRef: chartRef,
+    type,
+    chartRef,
     preventDefault() {
       this._defaultPrevented = true
     },
