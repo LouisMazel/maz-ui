@@ -44,7 +44,7 @@
       const chartJSState: ChartJssState = {
         chart: undefined,
         plugins: [chartJsEventsPlugin, ...props.plugins],
-        props: { ...props },
+        props,
       }
 
       const destroy = () => {

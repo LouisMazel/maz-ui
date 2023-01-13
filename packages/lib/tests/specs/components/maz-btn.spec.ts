@@ -36,7 +36,7 @@ describe('MazBtn', () => {
 
   test('shows the loading spinner when the "loading" prop is set to "true"', () => {
     const wrapper = shallowMount(MazBtn, {
-      propsData: {
+      props: {
         loading: true,
       },
     })

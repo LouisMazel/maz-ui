@@ -35,7 +35,7 @@ describe('~/components/ui/NGallery/NGallery', () => {
           'tab-m': true,
         },
       },
-      propsData: {
+      props: {
         medias: [getMedia(), getMedia(), getMedia()],
       },
     })

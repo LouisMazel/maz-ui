@@ -15,8 +15,17 @@ export default defineConfig({
     port: 1000,
   },
   test: {
-    globals: true,
+    setupFiles: ['./vitest.setup.ts'],
     environment: 'jsdom',
+    deps: {
+      inline: ['vitest-canvas-mock'],
+    },
+    environmentOptions: {
+      jsdom: {
+        resources: 'usable',
+      },
+    },
+    globals: true,
     coverage: {
       all: true,
       excludeNodeModules: true,
