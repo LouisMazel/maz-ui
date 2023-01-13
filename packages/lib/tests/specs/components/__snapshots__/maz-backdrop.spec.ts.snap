@@ -1,0 +1,6 @@
+// Vitest Snapshot v1
+
+exports[`MazBackdrop > renders correctly 1`] = `
+"<!--teleport start-->
+<!--teleport end-->"
+`;
