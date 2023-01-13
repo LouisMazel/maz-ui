@@ -77,13 +77,13 @@
         toggleModal(false)
       }
 
-      const toggleModal = async (show: boolean) => {
-        if (!show) {
+      const toggleModal = async (value: boolean) => {
+        if (!value) {
           emits('before-close')
           await props.beforeClose?.()
         }
 
-        present.value = show
+        present.value = value
       }
 
       const onBackdropAnimationEnter = () => {
@@ -125,6 +125,8 @@
 
           if (value) {
             addClassAndEventToDocument()
+          } else {
+            removeClassAndEventToDocument()
           }
         },
         { immediate: true },
@@ -136,6 +138,8 @@
         onBackdropClicked,
         close,
         present,
+        toggleModal,
+        onKeyPress,
       }
     },
   })
