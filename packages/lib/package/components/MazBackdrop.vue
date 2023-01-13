@@ -34,7 +34,7 @@
 </template>
 
 <script lang="ts">
-  import { ref, type PropType, watch, onMounted, defineComponent } from 'vue'
+  import { ref, type PropType, watch, defineComponent } from 'vue'
 
   const MODAL_OPENED_CLASS = '--backdrop-present'
 
@@ -42,7 +42,7 @@
     document.documentElement.classList.add(MODAL_OPENED_CLASS)
   }
 
-  const removeClassFromDocument = () => {
+  const removeClassFromDocument = async () => {
     const backdropPresents = document.querySelector('.m-backdrop.--present')
 
     if (!backdropPresents) {
@@ -93,6 +93,7 @@
       const onBackdropAnimationLeave = () => {
         emits('update:model-value', false)
         emits('close')
+        removeClassAndEventToDocument()
       }
 
       const onBackdropClicked = () => {
@@ -117,10 +118,6 @@
         removeClassFromDocument()
       }
 
-      onMounted(() => {
-        if (props.modelValue) addClassAndEventToDocument()
-      })
-
       watch(
         () => props.modelValue,
         (value) => {
@@ -128,10 +125,9 @@
 
           if (value) {
             addClassAndEventToDocument()
-          } else {
-            removeClassAndEventToDocument()
           }
         },
+        { immediate: true },
       )
 
       return {

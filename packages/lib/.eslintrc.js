@@ -31,6 +31,7 @@ module.exports = {
     ],
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
     'prettier/prettier': ['error', {}, { usePrettierrc: true }],
+    'object-shorthand': ['error', 'always'],
     '@typescript-eslint/no-unused-vars': [
       'error',
       {

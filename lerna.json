@@ -7,8 +7,7 @@
   "command": {
     "version": {
       "allowBranch": ["master"],
-      "message": "chore(release): bump version to %s",
-      "conventionalCommits": true
+      "message": "chore(release): bump version to %s"
     }
   },
   "$schema": "node_modules/lerna/schemas/lerna-schema.json"
