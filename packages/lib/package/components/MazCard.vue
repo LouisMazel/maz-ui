@@ -53,7 +53,7 @@
           :height="galleryHeight"
           :images-shown-count="imagesShowCount"
           :images="images"
-          :zoom="zoom"
+          :no-zoom="!zoom"
           :no-width="isColumnVariant"
           :no-height="!isColumnVariant && haveSomeContent"
           :no-remaining="noRemaining"
