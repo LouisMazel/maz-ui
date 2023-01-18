@@ -11,7 +11,7 @@ description: MazCard is a standalone component to display some texts, images and
 
 ## Basic usage
 
-<MazCard :images="images" :gallery-height="400" >
+<MazCard :images="images" :gallery-height="400" zoom>
   <template #title>
     <h4 class="maz-m-0">
       Steven Seagal
