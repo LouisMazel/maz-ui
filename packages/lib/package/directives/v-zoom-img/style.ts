@@ -5,7 +5,7 @@ export const style = `
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 2.5rem;
+  padding: 1rem;
   z-index: 1050;
   background-color: hsla(238, 15%, 40%, 0.7);
   display: flex;
