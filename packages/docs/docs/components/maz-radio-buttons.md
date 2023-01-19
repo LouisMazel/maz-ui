@@ -175,7 +175,7 @@ Select a competition
   </MazRadioButtons>
 </div>
 
-::: details View code
+::: details Show code
 
 ```vue
 <template>

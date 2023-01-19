@@ -27,7 +27,7 @@ You can use all plugins of Chart.JS. Follow the example bellow
   v-bind="{ ...barChart }"
 />
 
-::: details View code
+::: details Show code
 
 ```vue
 <template>
@@ -92,7 +92,7 @@ You can use all plugins of Chart.JS. Follow the example bellow
   :options="pieChart.options"
 />
 
-::: details View code
+::: details Show code
 
 ```vue
 <template>
@@ -138,7 +138,7 @@ You can use all plugins of Chart.JS. Follow the example bellow
 
 <MazChart v-bind="{ ...lineChart }" />
 
-::: details View code
+::: details Show code
 
 ```vue
 <template>

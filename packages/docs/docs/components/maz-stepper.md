@@ -75,7 +75,7 @@ description: MazStepper is a standalone UI component to
   </template>
 </MazStepper>
 
-::: details View code
+::: details Show code
 
 ```vue
 <template>

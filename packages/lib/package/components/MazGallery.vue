@@ -3,7 +3,7 @@
     v-if="images.length > 0 || hasEmptyLayer"
     class="m-gallery maz-flex"
     :style="[sizeStyle]"
-    :class="{ 'maz-rounded-xl': !noRadius }"
+    :class="{ 'maz-rounded': !noRadius }"
   >
     <section class="m-gallery__wrapper maz-flex maz-flex-1">
       <figure
