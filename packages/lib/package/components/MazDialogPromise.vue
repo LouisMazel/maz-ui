@@ -14,10 +14,10 @@
     <template #footer>
       <div class="maz-space-x-2">
         <MazBtn color="danger" outline @click="rejectDialog(currentModal)">
-          <slot name="confirm-text"> {{ data?.confirmText || 'Cancel' }} </slot>
+          <slot name="cancel-text"> {{ data?.cancelText || 'Cancel' }} </slot>
         </MazBtn>
         <MazBtn color="success" @click="resolveDialog(currentModal)">
-          <slot name="cancel-text"> {{ data?.cancelText || 'Confirm' }} </slot>
+          <slot name="confirm-text"> {{ data?.confirmText || 'Confirm' }} </slot>
         </MazBtn>
       </div>
     </template>
