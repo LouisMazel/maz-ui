@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.6.12](https://github.com/LouisMazel/maz-ui/compare/v3.6.11...v3.6.12) (2023-01-26)
+
+### Bug Fixes
+
+- **lib:** MazDialogPromise - use prop data with good button slot ([b5b7c78](https://github.com/LouisMazel/maz-ui/commit/b5b7c784ea25644e24abe602097bba5947640f93))
+
 ## [3.6.11](https://github.com/LouisMazel/maz-ui/compare/v3.6.10...v3.6.11) (2023-01-19)
 
 **Note:** Version bump only for package maz-ui
