@@ -30,6 +30,6 @@ describe('components/MazPicker.vue', () => {
 
     const input = wrapper.findComponent(MazInput)
     expect(input).toBeDefined()
-    expect(input.vm.modelValue).toBe('2:20 PM')
+    expect(input.find('input').element.value.replace(/\s+/g, ' ')).toBe('2:20 PM')
   })
 })
