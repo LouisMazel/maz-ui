@@ -8,7 +8,7 @@ description: Plugin to track user activity and manage it
 {{ $frontmatter.description }}
 
 ::: tip
-Useful to know exactly time spend by user on your website
+A plugin to know the amount of time a user has spent on your website
 :::
 
 ## Demo

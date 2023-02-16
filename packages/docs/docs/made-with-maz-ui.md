@@ -1,6 +1,6 @@
 ---
 title: Made with Maz-UI
-description: List of website using maz-ui library
+description: List of websites using maz-ui library
 layout: doc
 sidebar: false
 aside: false

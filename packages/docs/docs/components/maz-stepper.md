@@ -84,7 +84,7 @@ description: MazStepper is a standalone UI component to
         Sign-In
     </template>
     <template #subtitle-1>
-      You should be sign-in to continue
+      You should be signed in to continue
     </template>
     <template #title-info-1>
       Required
@@ -282,7 +282,7 @@ You can use the prop option:
 
 - `auto-validate-steps`
 
-Then all previous steps than the current the validated state
+Then all previous steps then the current and then the validated state
 
 ::: tip
 Click on the first or third step to see the validated steps changes:
@@ -325,7 +325,7 @@ Click on the first or third step to see the validated steps changes:
 
 ## Auto disabled next or/and previous steps
 
-To not allow your users to show other steps, you can use the prop options:
+To not allow your users to go to the next steps, you can use the following prop options:
 
 - `disabled-previous-steps`
 - `disabled-next-steps`
@@ -371,7 +371,7 @@ Try to click on first and third steps
 
 ## All steps opened & success
 
-To open and validate all steps, you can use the prop options:
+To open and validate all steps, you can use the following prop options:
 
 - `all-steps-validated`
 - `all-steps-opened`
@@ -389,7 +389,7 @@ To open and validate all steps, you can use the prop options:
 
 ## Can close steps
 
-Use the property `can-close-steps` to let user be allowed to close each step on click
+Use the property `can-close-steps` to let the user be able to close each step on click
 
 ::: tip
 Click on step titles to toggle content

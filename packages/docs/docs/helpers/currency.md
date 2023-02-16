@@ -1,6 +1,6 @@
 ---
 title: currency
-description: The module currency is a function to format numbers to currency
+description: The module currency is a function that formats numbers to currency
 ---
 
 # {{ $frontmatter.title }}
@@ -8,7 +8,7 @@ description: The module currency is a function to format numbers to currency
 {{ $frontmatter.description }}
 
 ::: tip
-This module use the native api [Intl.NumberFormat](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat) from browsers
+This module uses the native api [Intl.NumberFormat](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat) from browsers
 :::
 
 Enter only numbers

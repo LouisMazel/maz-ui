@@ -1,6 +1,7 @@
 ---
 title: MazDialogPromise
-description: MazDialogPromise is a standalone component to dialog with user, component to show important informations to the user and propose confirmation, you should waiting his response with await.
+description: MazDialogPromise is a standalone component that dialogs with the user to show important information and propose confirmation. You should wait for this response with await.
+
 ---
 
 # {{ $frontmatter.title }}
@@ -10,18 +11,18 @@ description: MazDialogPromise is a standalone component to dialog with user, com
 <!--@include: ./../.vitepress/mixins/getting-started.md-->
 
 ::: info
-This component use [MazDialog](./maz-dialog.md), so it inherits all his props
+This component uses [MazDialog](./maz-dialog.md), so it inherits all its props
 :::
 
 ::: tip
-This component use `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md), so you can implement this component everywhere and it inherits all his props
+This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md), so you can implement this component anywhere and it inherits all its props
 :::
 
-MazDialogPromise is a standalone component to dialog with user, component to show important informations to the user and propose confirmation, you should waiting his response with await.
+MazDialogPromise is a standalone component that dialogs with the user to show important information and propose confirmation. You should wait for this response with await.
 
 ## Basic usage
 
-<MazBtn @click="askToUser">Ask to user</MazBtn>
+<MazBtn @click="askToUser">Ask user</MazBtn>
 
 <MazDialogPromise
   :data="{
@@ -32,10 +33,10 @@ MazDialogPromise is a standalone component to dialog with user, component to sho
 />
 <MazDialogPromise identifier="two">
   <template #title>
-    Really delete this user ?
+    Do you really want to delete this user ?
   </template>
   <template #default>
-    Are you really really sure to delete this user ?
+    Are you really sure you want to delete this user ?
   </template>
 </MazDialogPromise>
 
@@ -44,7 +45,7 @@ MazDialogPromise is a standalone component to dialog with user, component to sho
     User deleted
   </template>
   <template #default>
-    User is deleted !
+    User has been deleted !
   </template>
 </MazDialog>
 
@@ -66,21 +67,21 @@ MazDialogPromise is a standalone component to dialog with user, component to sho
 
 ```vue
 <template>
-  <MazBtn @click="askToUser">Ask to user</MazBtn>
+  <MazBtn @click="askToUser">Ask user</MazBtn>
 
   <MazDialogPromise
     :data="{
       title: 'Delete user',
-      message: 'Are you sure to delete this user ?',
+      message: 'Are you sure you want to delete this user ?',
     }"
     identifier="one"
   />
   <MazDialogPromise identifier="two">
     <template #title>
-      Really delete this user ?
+      Do you really want to delete this user ?
     </template>
     <template #default>
-      Are you really really sure to delete this user ?
+      Are you really sure you want to delete this user ?
     </template>
   </MazDialogPromise>
 
@@ -89,7 +90,7 @@ MazDialogPromise is a standalone component to dialog with user, component to sho
       User deleted
     </template>
     <template #default>
-      User is deleted !
+      User has been deleted !
     </template>
   </MazDialog>
 </template>

@@ -1,6 +1,6 @@
 ---
 title: MazBtn
-description: MazBtn is a standalone component replaces the standard html button with a beautiful design system. Many options like colors, sizes, disabled state, loading state, includes icons. Support of router-link and nuxt-link
+description: MazBtn is a standalone component that replaces the standard html button with a beautiful design system. Many options like colors, sizes, disabled state, loading state, icons are included. Support of router-link and nuxt-link
 ---
 
 # {{ $frontmatter.title }}
@@ -38,7 +38,7 @@ description: MazBtn is a standalone component replaces the standard html button 
 ### Sizes
 
 ::: tip
-Use the attribute `size` with a value in **{{ sizes.join(', ') }}**
+Use the attribute `size` with value **{{ sizes.join(', ') }}**
 :::
 
 <div class="flex items-start gap-05 items-center flex-wrap">
@@ -162,7 +162,7 @@ It's better in light mode
 ### Icons
 
 ::: info
-When you use `right-icon` or `left-icon`, the component use [MazIcon](./maz-icon.md)
+When you use `right-icon` or `left-icon`, the component uses [MazIcon](./maz-icon.md)
 :::
 
 <div class="flex items-start gap-05 rounded flex-wrap">
@@ -244,7 +244,7 @@ Use your own icons
 ::: tip
 With the attribute `variant="link"`, the button looks like a link but it's a button, so you can use the event `@click`
 
-Additional props available `no-underline` & `no-leading`
+Additional props available include: `no-underline` & `no-leading`
 :::
 
 <MazBtn variant="link" @click="$emit('click')">Is Link</MazBtn>

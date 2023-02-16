@@ -1,6 +1,6 @@
 ---
 title: MazSpinner
-description: MazSpinner is a standalone component replaces the standard html input checkbox. Color option available
+description: MazSpinner is a standalone component that replaces the standard html input checkbox. Color options are available.
 ---
 
 # {{ $frontmatter.title }}
