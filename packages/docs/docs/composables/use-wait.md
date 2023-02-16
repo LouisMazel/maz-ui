@@ -1,6 +1,6 @@
 ---
 title: useWait
-description: Vue composable to handling wait plugins
+description: Vue composable for handling wait plugins
 ---
 
 # {{ $frontmatter.title }}
@@ -8,11 +8,11 @@ description: Vue composable to handling wait plugins
 {{ $frontmatter.description }}
 
 ::: warning
-You must install [wait plugin](./../plugins/wait.md#install) before use it
+You must install the [wait plugin](./../plugins/wait.md#install) before using it
 :::
 
 ::: tip
-More info about [wait plugin](./../plugins/wait.md) in its documentation
+More info about the [wait plugin](./../plugins/wait.md) in its documentation
 :::
 
 ## Usage

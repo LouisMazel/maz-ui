@@ -1,6 +1,6 @@
 ---
 title: useAos
-description: Vue composable to handling aos plugin in your components
+description: Vue composable for handling aos plugin in your components
 ---
 
 # {{ $frontmatter.title }}
@@ -8,11 +8,11 @@ description: Vue composable to handling aos plugin in your components
 {{ $frontmatter.description }}
 
 ::: warning
-You must install [aos plugin](./../plugins/aos.md#install) before use it
+You must install the [aos plugin](./../plugins/aos.md#install) before you start using it
 :::
 
 ::: tip
-More info about [aos plugin](./../plugins/aos.md) in its documentation
+More info about the [aos plugin](./../plugins/aos.md) can be found in its documentation
 :::
 
 ## Usage

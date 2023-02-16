@@ -1,6 +1,6 @@
 ---
 title: user-visibility
-description: Plugin to see and mange the user page visibility
+description: Plugin to see and manage the user page visibility
 ---
 
 # {{ $frontmatter.title }}

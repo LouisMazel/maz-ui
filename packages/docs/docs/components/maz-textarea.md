@@ -1,6 +1,6 @@
 ---
 title: MazTextarea
-description: MazTextarea is a standalone component replaces the standard html textarea input with a beautiful design system. Many options like colors, disabled, error, warning, success, error messages.
+description: MazTextarea is a standalone component that replaces the standard html textarea input with a beautiful design system. Many options like colors, disabled, error, warning, success and error messages are available.
 ---
 
 # {{ $frontmatter.title }}
@@ -10,7 +10,7 @@ description: MazTextarea is a standalone component replaces the standard html te
 <!--@include: ./../.vitepress/mixins/getting-started.md-->
 
 ::: info
-This component has the "autogrow" feature, so when the user writes, the textarea grows automatically
+This component has the "autogrow" feature, so when the user writes, the textarea expands automatically
 :::
 
 ## Basic usage

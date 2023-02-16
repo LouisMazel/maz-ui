@@ -1,6 +1,6 @@
 ---
 title: MazDialog
-description: MazDialog is a standalone dialog component to show important informations to the user or propose specific action. Many options available. You can hide the header or the footer, full-size layout, differents states etc.
+description: MazDialog is a standalone dialog component to show important informations to the user or propose specific action. Many options are available. You can hide the header or the footer, full-size layout, differents states etc.
 ---
 
 # {{ $frontmatter.title }}
@@ -10,7 +10,7 @@ description: MazDialog is a standalone dialog component to show important inform
 <!--@include: ./../.vitepress/mixins/getting-started.md-->
 
 ::: tip
-This component use `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md), so you can implement this component everywhere and it inherits all his props
+This component usex `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md), so you can implement this component anywhere and it inherits all its props
 :::
 
 ## Basic usage
