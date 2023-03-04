@@ -236,7 +236,7 @@ importers:
       stylelint-config-standard-scss: 6.1.0_w5gtdy6oq4ictd5o4eu6befejy
       stylelint-config-tailwindcss: 0.0.7_m3sekjfwfzgjw3ftyv7b7sbrzu
       tailwind-css-variables: 3.0.1
-      tailwindcss: 3.2.7_aesdjsunmf4wiehhujt67my7tu
+      tailwindcss: 3.2.7_ts-node@10.9.1
       terser: 5.16.5
       ts-node: 10.9.1_bdgp3l2zgaopogaavxusmetvge
       typescript: 4.9.5
@@ -279,6 +279,7 @@ importers:
       stylelint: ^14.16.0
       stylelint-config-prettier: ^9.0.4
       stylelint-config-recommended-vue: ^1.4.0
+      stylelint-config-standard: ^29.0.0
       stylelint-config-standard-scss: ^6.1.0
       stylelint-config-tailwindcss: ^0.0.7
       tailwind-css-variables: ^3.0.1
@@ -316,10 +317,11 @@ importers:
       stylelint: 14.16.1
       stylelint-config-prettier: 9.0.5_stylelint@14.16.1
       stylelint-config-recommended-vue: 1.4.0_kbto3rg3njmczth2rrsgfnlsqa
+      stylelint-config-standard: 29.0.0_stylelint@14.16.1
       stylelint-config-standard-scss: 6.1.0_w5gtdy6oq4ictd5o4eu6befejy
       stylelint-config-tailwindcss: 0.0.7_m3sekjfwfzgjw3ftyv7b7sbrzu
       tailwind-css-variables: 3.0.1
-      tailwindcss: 3.2.7_postcss@8.4.21
+      tailwindcss: 3.2.7
       typescript: 4.9.5
       vite: 4.1.4_n6fwdzqikzuvphifjfh4k645ae
       vite-plugin-eslint: 1.8.1_eslint@8.35.0+vite@4.1.4
@@ -4582,7 +4584,7 @@ packages:
       vue:
         optional: true
     dependencies:
-      vite: 4.1.4
+      vite: 4.1.4_iqe67pc54bl74nl7y67obzj7bm
       vue: 3.2.47
     dev: true
 
@@ -13674,7 +13676,7 @@ packages:
       tailwindcss: '>=2.2.16'
     dependencies:
       stylelint: 14.16.1
-      tailwindcss: 3.2.7_postcss@8.4.21
+      tailwindcss: 3.2.7_ts-node@10.9.1
     dev: true
 
   /stylelint-scss/4.4.0_stylelint@14.16.1:
@@ -13868,15 +13870,13 @@ packages:
       - ts-node
     dev: true
 
-  /tailwindcss/3.2.7_aesdjsunmf4wiehhujt67my7tu:
+  /tailwindcss/3.2.7_ts-node@10.9.1:
     resolution:
       {
         integrity: sha512-B6DLqJzc21x7wntlH/GsZwEXTBttVSl1FtCzC8WP4oBc/NKef7kaax5jeihkkCEWc831/5NDJ9gRNDK6NEioQQ==,
       }
     engines: { node: '>=12.13.0' }
     hasBin: true
-    peerDependencies:
-      postcss: ^8.0.9
     dependencies:
       arg: 5.0.2
       chokidar: 3.5.3
@@ -13896,43 +13896,6 @@ packages:
       postcss-import: 14.1.0_postcss@8.4.21
       postcss-js: 4.0.1_postcss@8.4.21
       postcss-load-config: 3.1.4_aesdjsunmf4wiehhujt67my7tu
-      postcss-nested: 6.0.0_postcss@8.4.21
-      postcss-selector-parser: 6.0.11
-      postcss-value-parser: 4.2.0
-      quick-lru: 5.1.1
-      resolve: 1.22.1
-    transitivePeerDependencies:
-      - ts-node
-    dev: true
-
-  /tailwindcss/3.2.7_postcss@8.4.21:
-    resolution:
-      {
-        integrity: sha512-B6DLqJzc21x7wntlH/GsZwEXTBttVSl1FtCzC8WP4oBc/NKef7kaax5jeihkkCEWc831/5NDJ9gRNDK6NEioQQ==,
-      }
-    engines: { node: '>=12.13.0' }
-    hasBin: true
-    peerDependencies:
-      postcss: ^8.0.9
-    dependencies:
-      arg: 5.0.2
-      chokidar: 3.5.3
-      color-name: 1.1.4
-      detective: 5.2.1
-      didyoumean: 1.2.2
-      dlv: 1.1.3
-      fast-glob: 3.2.12
-      glob-parent: 6.0.2
-      is-glob: 4.0.3
-      lilconfig: 2.0.6
-      micromatch: 4.0.5
-      normalize-path: 3.0.0
-      object-hash: 3.0.0
-      picocolors: 1.0.0
-      postcss: 8.4.21
-      postcss-import: 14.1.0_postcss@8.4.21
-      postcss-js: 4.0.1_postcss@8.4.21
-      postcss-load-config: 3.1.4_postcss@8.4.21
       postcss-nested: 6.0.0_postcss@8.4.21
       postcss-selector-parser: 6.0.11
       postcss-value-parser: 4.2.0
