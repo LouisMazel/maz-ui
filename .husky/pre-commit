@@ -11,3 +11,4 @@
 make lint-staged
 make lint-staged-lib
 make lint-staged-testing
+make lint-staged-cli
