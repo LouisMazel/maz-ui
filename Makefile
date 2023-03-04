@@ -38,7 +38,15 @@ clean-all:
 	make clean clean-lib clean-docs clean-app clean-cli
 
 install:
-	pnpm i
+	pnpm install
+install-docs:
+	pnpm --filter docs install
+install-cli:
+	pnpm --filter cli install
+install-lib:
+	pnpm --filter maz-ui install
+install-testing:
+	pnpm --filter testing install
 
 reinstall-all:
 	make clean-all install
