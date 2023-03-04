@@ -18,7 +18,7 @@
       "@package/*": ["package/*"],
       "@components/*": ["package/components/*"]
     },
-    "types": ["@types/node", "google.maps"]
+    "types": ["@types/node", "google.maps", "vite-svg-loader"]
   },
   "include": ["package/**/*"],
   "exclude": ["node_modules", "lib", "css", "package/components_tmp/**/*"]
