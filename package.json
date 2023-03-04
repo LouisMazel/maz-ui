@@ -7,7 +7,7 @@
     "pre-commit": "lint-staged",
     "format": "prettier . --write",
     "lint": "lerna run lint --parallel",
-    "lerna:version": "npx lerna version"
+    "lerna:version": "HUSKY=0 npx lerna version"
   },
   "lint-staged": {
     "!(node_modules/**/*|packages/**/*|.prettierignore|.gitignore|.editorconfig).*": [
