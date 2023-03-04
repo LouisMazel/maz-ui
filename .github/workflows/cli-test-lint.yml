@@ -1,16 +1,16 @@
-name: Lib Test Lint
+name: Cli Test Lint
 
 on:
   pull_request:
     paths:
-      - 'packages/lib/**'
+      - 'packages/cli/**'
 
 jobs:
   lib-test-lint:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./packages/lib
+        working-directory: ./packages/cli
 
     steps:
       - name: Checkout Actions
