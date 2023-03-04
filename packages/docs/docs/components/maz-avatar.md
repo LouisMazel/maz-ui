@@ -30,7 +30,7 @@ This component uses [vLazyImg](./../directives/lazy-img.md) directive
 ## Options
 
 ::: tip
-See all options props [here](#props-events-emitted)
+See all the options props [here](#props-events-emitted)
 :::
 
 <div class="flex space-between gap-05 items-center flex-wrap">

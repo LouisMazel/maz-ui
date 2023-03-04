@@ -10,7 +10,7 @@ description: MazBottomSheet is a standalone component like a simple dialog but a
 <!--@include: ./../.vitepress/mixins/getting-started.md-->
 
 ::: tip
-This component use `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md), so you can implement this component everywhere and it inherits all his props
+This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md), so you can implement this component anywhere and it inherits all its props
 :::
 
 ## Basic usage

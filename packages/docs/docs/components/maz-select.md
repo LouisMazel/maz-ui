@@ -1,6 +1,6 @@
 ---
 title: MazSelect
-description: MazSelect is a standalone component replaces the standard html input select with a beautiful design system. Many options like multiple values, search text field, custom templates options, colors, sizes, disabled, loading, error, warning, valid states, error messages, includes icons.
+description: MazSelect is a standalone component that replaces the standard html input select with a beautiful design system. There are many options like multiple values, search text field, custom templates options, colors, sizes, disabled, loading, error, warning, valid states, error messages, and icons.
 ---
 
 # {{ $frontmatter.title }}

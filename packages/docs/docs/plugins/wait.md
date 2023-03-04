@@ -8,7 +8,7 @@ description: Plugins to manage your loading states
 {{ $frontmatter.description }}
 
 ::: tip
-This plugin has composable to use it easier, after installing it you can use [useWait](./../composables/use-wait.md)
+This plugin has a composable for easier use, after installing it you can use [useWait](./../composables/use-wait.md)
 :::
 
 ## Basic usage

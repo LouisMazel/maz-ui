@@ -1,6 +1,6 @@
 ---
 title: useThemeHandler
-description: Vue composable to handling UI theme - Automatically set dark and light theme and switch between them
+description: Vue composable for handling UI theme - Automatically sets dark and light theme and switches between them
 ---
 
 # {{ $frontmatter.title }}
@@ -13,7 +13,7 @@ description: Vue composable to handling UI theme - Automatically set dark and li
   :left-icon="hasDarkTheme ? 'moon' : 'sun'"
   @click="toggleTheme"
 >
-  Click to toggle mode
+  Click to toggle
 </MazBtn>
 
 <br />
@@ -47,11 +47,11 @@ description: Vue composable to handling UI theme - Automatically set dark and li
 ## How to use it ?
 
 ::: info
-`autoSetTheme` method, does not store theme value in localStorage to always let user preferences apply on every visit (some users automatically have light mode during the day and dark at night)
+`autoSetTheme` method, does not store theme value in localStorage but always lets the user's preferences apply on every visit (some users automatically have light mode during the day and dark at night)
 :::
 
 :::tip
-Always run `autoSetTheme` method on app initialization and let user change the theme with `toggleTheme` or `setDarkTheme` or `setLightTheme`
+Always run `autoSetTheme` method on app initialization and let the user change the theme with `toggleTheme` or `setDarkTheme` or `setLightTheme`
 :::
 
 ### Example
@@ -72,7 +72,7 @@ Always run `autoSetTheme` method on app initialization and let user change the t
       :left-icon="hasDarkTheme ? 'moon' : 'sun'"
       @click="toggleTheme"
     >
-      Click to toggle mode
+      Click to toggle
     </MazBtn>
 
     <MazBtn

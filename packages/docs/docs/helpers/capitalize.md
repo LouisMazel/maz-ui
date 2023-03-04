@@ -1,6 +1,6 @@
 ---
 title: capitalize
-description: The module capitalize is a function to add a capital letter to a string
+description: The module capitalize is a function that adds a capital letter to a string
 ---
 
 # {{ $frontmatter.title }}

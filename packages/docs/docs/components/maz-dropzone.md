@@ -1,6 +1,6 @@
 ---
 title: MazDropzone
-description: MazDropzone is a standalone component to help user upload different type of files with a beautiful design system. It works with dropzone.js and is not SSR compatible with Nuxt.JS
+description: MazDropzone is a standalone component to help a user upload different type of files with a beautiful design system. It works with dropzone.js and is not SSR compatible with Nuxt.JS
 ---
 
 # {{ $frontmatter.title }}
@@ -9,7 +9,7 @@ description: MazDropzone is a standalone component to help user upload different
 
 <!--@include: ./../.vitepress/mixins/getting-started.md-->
 
-To use this component, you have to install the dependency `dropzone`
+To use this component, you have to install the `dropzone` dependency
 
 <NpmBadge package="dropzone" dist-tag="5" />
 

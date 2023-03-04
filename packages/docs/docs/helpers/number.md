@@ -1,13 +1,13 @@
 ---
 title: number
-description: The module number is a function to format numbers
+description: The module number is a function that formats numbers
 ---
 
 # {{ $frontmatter.title }}
 
 {{ $frontmatter.description }}
 
-> This module use the native api [Intl.NumberFormat](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat) from browsers
+> This module uses the native api [Intl.NumberFormat](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat) from browsers
 
 <MazInput v-model="numberValue" type="number" />
 
@@ -54,7 +54,7 @@ description: The module number is a function to format numbers
 
 ## Options
 
-> All options from [Intl.NumberFormat](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat) are availables
+> All options from [Intl.NumberFormat](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat) are available
 
 ## Default options
 

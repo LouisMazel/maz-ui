@@ -35,24 +35,24 @@ hero:
 features:
   - icon: ⚡️
     title: Standalone
-    details: All components or tools are standalone, if you want use only one module from this library you don't need to install the whole library
+    details: All components or tools are standalone; if you want, you can use only one module from this library; you don't need to install the whole library.
   - icon: 👨‍❤️‍👨
     title: SSR Friendly
-    details: All components works with Nuxt, no need to install components on client side
+    details: All components work with Nuxt, no need to install components on the client side.
   - icon: 🔐
     title: Typescript
-    details: This library is writing with Typescript, all types and declarations are directly availables
+    details: This library is written in Typescript, so all types and declarations are directly available.
   - icon: 💄
     title: Theming
-    details: Made with TailwindCSS | Optimized CSS file sizes | All CSS good practices are respected | Use your theme easily
+    details: Created with TailwindCSS | Optimized CSS file sizes | Complies with all CSS best practices | Use your theme easily.
     link: /guide/theme
   - icon: 🌗
     title: Dark and Light Theme
-    details: All components supports the Dark and Light themes.
+    details: All components support the Dark and Light themes.
     link: /guide/dark-mode
   - icon: 🛠
     title: Tools
-    details: Maz-ui provide many modules - plugins, directives, filters and composables
+    details: Maz-ui provides many modules, plugins, directives, filters and composables
     link: /plugins/aos
 ---
 

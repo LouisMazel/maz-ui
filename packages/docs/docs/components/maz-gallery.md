@@ -1,6 +1,6 @@
 ---
 title: MazGallery
-description: MazGallery is a standalone component to display images in a container and has many options and actions
+description: MazGallery is a standalone component used to display images in a container and has many options and actions
 ---
 
 # {{ $frontmatter.title }}

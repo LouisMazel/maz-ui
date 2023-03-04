@@ -1,6 +1,6 @@
 ---
 title: useToast
-description: Vue composable to handling toaster plugin in your components
+description: Vue composable for handling toaster plugin in your components
 ---
 
 # {{ $frontmatter.title }}

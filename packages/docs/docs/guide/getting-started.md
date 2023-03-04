@@ -1,6 +1,6 @@
 ---
 title: Getting Started
-description: Documentation to know how install the maz-ui library
+description: Documentation to help you install the maz-ui library
 ---
 
 # {{ $frontmatter.title }}
@@ -12,7 +12,7 @@ description: Documentation to know how install the maz-ui library
 
 ## Installation
 
-This section will help you to install the library.
+This section will help you install the library.
 
 ### Library installation from NPM
 
