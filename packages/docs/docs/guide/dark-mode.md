@@ -6,12 +6,12 @@ description: Dark mode is fully supported - How it's works ?
 # {{ $frontmatter.title }}
 
 ::: tip
-To let users manage the dark mode, use this composable: [useThemeHandler](./../composables/use-theme-handler.md)
+To let users manage dark mode, use this composable: [useThemeHandler](./../composables/use-theme-handler.md)
 :::
 
 ## How it's works ?
 
-To enable the dark you have just to add `dark` class to the `<html />` of your page
+To enable dark mode, you just have to add the `dark` class to the `<html />` of your page
 
 ### Light
 

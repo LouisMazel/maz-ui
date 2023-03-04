@@ -1,6 +1,6 @@
 ---
 title: MazTransitionExpand
-description: MazTransitionExpand is a standalone component to collapse content with animation
+description: MazTransitionExpand is a standalone component that collapses content with animations
 ---
 
 # {{ $frontmatter.title }}

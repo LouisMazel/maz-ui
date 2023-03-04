@@ -1,6 +1,6 @@
 ---
 title: MazPicker
-description: MazPicker is a standalone component for select dates and time. Provide range, date and time mode
+description: MazPicker is a standalone component for select dates and time. Provides range, date and time mode
 ---
 
 # {{ $frontmatter.title }}
@@ -11,7 +11,7 @@ description: MazPicker is a standalone component for select dates and time. Prov
 
 <!--@include: ./../.vitepress/mixins/maz-input-props.md-->
 
-To use this component, you have to install the dependency `dayjs`
+To use this component, you have to install the `dayjs` dependency
 
 <NpmBadge package="dayjs" />
 
@@ -21,14 +21,14 @@ npm install dayjs
 
 ## Documentation
 
-- As input value, min-date, max-date or disabled-dates you must provide the same and a valid format of [Dayjs](https://day.js.org/docs/en/display/format)
+- As for the input value, min-date, max-date or disabled-dates you must provide the same and a valid format of [Dayjs](https://day.js.org/docs/en/display/format)
   - **Simply date**: The better format is `YYYY-MM-DD` - *Example: "2022-03-02" (for range picker "{ start: '2022-03-02', end: '2022-03-28' }")*
   - **Date Time**: The better format is `YYYY-MM-DD HH:mm` or `YYYY-MM-DD h:mm a`  - *Example: "2022-03-02 16:30" or "2022-03-02 04:30 pm"*
   - **Only Time**: `HH:mm`, `h:mm a`, etc  - *Example: "16:30" or "4:30 pm"*
 
 - The returned value is formatted by [days.format()](https://day.js.org/docs/en/display/format) function with the format provided
 
-- This component use [MazInput](./maz-input.md#props-events-emitted), so it inherits his props:
+- This component uses [MazInput](./maz-input.md#props-events-emitted), so it inherits its props:
   - Use `label` & `placeholder` props
 
 ## Options
@@ -39,31 +39,31 @@ npm install dayjs
 
 - `format`: Will be used to parse the input date (`v-model`) and format the date emitted on output.
 
-- `locale`: You can provide a local (example: `fr-FR`, `en-US`, `de-DE`, etc), otherwise the component will get the user locale from the browser language. If no browser locale is available, the component will fetch the local from `https://ip2c.org/s` (network needed). And the last, if no browser is available from ip2c, the `en-US` locale is used.
+- `locale`: You can provide a local (example: `fr-FR`, `en-US`, `de-DE`, etc), otherwise the component will get the user locale from the browser language. If no browser locale is available, the component will fetch the local from `https://ip2c.org/s` (network needed). And lastly, if no browser is available from ip2c, the `en-US` locale is used.
 
 - `first-day-of-week` (default: `0`): should be a `number` - Example: For France, you should set `:first-day-of-week="1"` to have monday at the first day of week in calendar.
 
 - `inputDateStyle`: To customize the date time format into the input - Must be a value of [Intl.DateTimeFormatOptions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#parameters) - Default option: `{ dateStyle: 'full' }`
 
-- `shortcut`: With the shortcut property, you can specify a shortcut that's selected by default by passing it's identifier.
+- `shortcut`: With the shortcut property, you can specify a shortcut that's selected by default by passing its identifier.
 
-- `min-date` & `max-date`: Must have the same format as model-value - the component will validate automatically the dates - Exemple: [see example](#inline)
+- `min-date` & `max-date`: Must have the same format as model-value - the component will validate the dates automatically - Exemple: [see example](#inline)
 
 - `disabled-weekly` : Days of the week which are disabled every week, in Array format with day index, Sunday as 0 and Saturday as 6: `[0,4,6]`
 
-- `disabled-dates` : Provide an array of date string, the days in date picker will be disabled. Time will be taken for the time picker Ex: `['2022-02-02', '2022-02-22']`
+- `disabled-dates` : Provides an array of date string, the days in date picker will be disabled. Time will be taken for the time picker Ex: `['2022-02-02', '2022-02-22']`
 
 - `disabled-hours` : For time picker or date time picker, to globally disable hours, provide an Array format with hours value: `[0, 1,..., 22, 23]` (0 to 23)
 
-- 12h format: to enable the Date Time Picker or Time Picker with the 12h format selection mode, you must add the property `format` with `hh:mm a` or `hh:mm a`, etc.
+- 12h format: To enable the Date Time Picker or Time Picker with the 12h format selection mode, you must add the property `format` with `hh:mm a` or `hh:mm a`, etc.
 
 - `minute-interval` (default: `5`): Is the interval between minutes in the Time picker
 
-- `double`: Date Picker can have 2 calendar in the same row - usefull in range mode.
+- `double`: Date Picker can have 2 calendar in the same row - useful in range mode.
 
 - `inline`: [see example](#inline)
 
-- `auto-close`: the picker will be automatically closed after the user has selected a value
+- `auto-close`: The picker will be automatically closed after the user has selected a value
 
 ## Date Picker
 

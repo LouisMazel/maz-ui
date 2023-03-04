@@ -1,6 +1,6 @@
 ---
 title: MazInputNumber
-description: MazInputNumber is a standalone component replaces the standard html input text and format the number according with the locale provided
+description: MazInputNumber is a standalone component that replaces the standard html input text and formats the number according to the locale provided
 ---
 
 # {{ $frontmatter.title }}

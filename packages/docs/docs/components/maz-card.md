@@ -1,6 +1,6 @@
 ---
 title: MazCard
-description: MazCard is a standalone component to display some texts, images and you can add buttons actions
+description: MazCard is a standalone component to display some texts, images and also add button actions
 ---
 
 # {{ $frontmatter.title }}
@@ -97,7 +97,7 @@ description: MazCard is a standalone component to display some texts, images and
 
 ## Orientation
 
-When you display images, you can change the orientation of the card, availables options: `column` `row` `row-reverse` `column-reverse`
+When you display images, you can change the orientation of the card, available options include: `column` `row` `row-reverse` `column-reverse`
 
 ### Row
 
@@ -287,7 +287,7 @@ Use props: `collapsable` & `collapse-open`
 
 ## Linked card
 
-The card becomes clickable to follow the link
+To access the link, simply click the card.
 
 - `href` is the link
 - `href-target` is the behaviour of the link on click
@@ -394,7 +394,7 @@ The card becomes clickable to follow the link
 
 ### Footer align on left
 
-Use prop option `footer-align="left"`
+Use the prop option `footer-align="left"`
 
 <MazCard footer-align="left">
   <span>

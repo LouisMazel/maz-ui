@@ -1,6 +1,6 @@
 ---
 title: date
-description: The module date is a function to format date
+description: The module date is a function that formats date
 ---
 
 # {{ $frontmatter.title }}
@@ -54,7 +54,7 @@ description: The module date is a function to format date
 
 ## Options
 
-> All options from [Intl.DateTimeFormat](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat) are availables
+> All options from [Intl.DateTimeFormat](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat) are available
 
 ## Default options
 

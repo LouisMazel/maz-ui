@@ -1,6 +1,6 @@
 ---
 title: MazSlider
-description: MazSlider is a standalone component replaces the standard html input range with a beautiful design system. Many options like multiple cursors and values, colors, sizes and logarithmic/exponential values
+description: MazSlider is a standalone component that replaces the standard html input range with a beautiful design system. Many options like multiple cursors and values, colors, sizes and logarithmic/exponential values are available
 ---
 
 # {{ $frontmatter.title }}

@@ -1,13 +1,13 @@
 ---
 title: MazChart
-description: MazChart is a standalone input component generate graphics & charts with chart.js
+description: MazChart is a standalone input component which generates graphics & charts with chart.js
 ---
 
 # {{ $frontmatter.title }}
 
 {{ $frontmatter.description }}
 
-To use this component, you have to install the dependency `chart.js`
+To use this component, you have to install the `chart.js` dependency
 
 <NpmBadge package="chart.js" dist-tag="3" />
 
@@ -17,9 +17,9 @@ npm install chart.js@^3.9.1
 
 ## Chart.JS Documentation
 
-Show the [Chart.JS](https://www.chartjs.org/docs/latest/) documentation to create your own chart
+See the [Chart.JS](https://www.chartjs.org/docs/latest/) documentation to create your own chart
 
-You can use all plugins of Chart.JS. Follow the example bellow
+You can use all the plugins of Chart.JS. Follow the example below
 
 ## Bar chart
 

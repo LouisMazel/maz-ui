@@ -1,6 +1,6 @@
 ---
 title: MazInputTags
-description: MazInputTags is a standalone component like free inputs to help user select many values and return an Array of strings, color option available.
+description: MazInputTags is a standalone component like free inputs to help user select many values and return an Array of strings. Color options are also available.
 ---
 
 # {{ $frontmatter.title }}

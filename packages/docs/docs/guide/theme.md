@@ -1,6 +1,6 @@
 ---
 title: Theme
-description: Maz-ui is customizable by CSS variables. Apply your color & border preferences.
+description: Maz-ui is customizable using CSS variables. Apply your color & border preferences.
 ---
 
 # {{ $frontmatter.title }}
