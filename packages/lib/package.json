@@ -20,7 +20,7 @@
     "lint:nofix": "cross-env NODE_ENV=production eslint --ext .ts,.js,.vue .",
     "lint:js": "cross-env NODE_ENV=production eslint --fix --ext .ts,.js,.vue .",
     "format": "prettier . --write",
-    "lint:style": "stylelint --custom-syntax postcss-html --fix \"./**/*.{vue,css,scss,postcss,pcss}\"",
+    "lint:style": "stylelint --fix \"./**/*.{vue,css,scss,postcss,pcss}\"",
     "clean": "rimraf dist types",
     "emit-types": "vue-tsc --declaration --emitDeclarationOnly",
     "build": "npm run clean && mkdir -p dist && npm run build:js && npm run build:css && cp package.json dist/package.json && npm run copy:tailwind",
@@ -48,7 +48,7 @@
   "lint-staged": {
     "*": "prettier -w -u",
     "*.{js,ts,vue}": "cross-env NODE_ENV=production eslint --fix",
-    "*.{vue,css,scss,postcss,pcss}": "stylelint --custom-syntax postcss-html --fix"
+    "*.{vue,css,scss,postcss,pcss}": "stylelint --fix"
   },
   "peerDependencies": {
     "chart.js": "^3.0.0",
