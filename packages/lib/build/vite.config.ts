@@ -14,6 +14,7 @@ import { execPromise } from './utils/exec-promise'
 import { copyAndTransformComponentsTypesFiles } from './copy-components-types'
 import { generateComponentsEntryFile } from './generate-components-entry'
 import { generateLibComponentsEntryFile } from './generate-lib-entry'
+import { compileScss } from './compile-scss'
 
 const argv = minimist(process.argv.slice(2))
 
@@ -49,18 +50,20 @@ const getBuildConfig = ({
       entry: path,
       // formats: ['es'],
       name,
-      // fileName: name,
+      fileName: name,
     },
     rollupOptions: {
-      external: ['vue', 'libphonenumber-js', '/^dayjs:.*/', 'chart.js'],
+      external: ['vue', 'libphonenumber-js', '/^dayjs:.*/', 'chart.js/auto/auto.mjs', 'dropzone'],
       output: {
+        exports: 'named',
         chunkFileNames: 'assets/[name]-[hash].mjs',
         // preserveModules: true,
         globals: {
           vue: 'Vue',
           'libphonenumber-js': 'libphonenumber-js',
           dayjs: 'dayjs',
-          'chart.js': 'chart.js',
+          dropzone: 'dropzone',
+          'chart.js/auto/auto.mjs': 'chart.js/auto/auto.mjs',
           'dayjs/plugin/customParseFormat': 'dayjs/plugin/customParseFormat',
           'dayjs/plugin/weekday': 'dayjs/plugin/weekday',
           'dayjs/plugin/isBetween': 'dayjs/plugin/isBetween',
@@ -74,7 +77,8 @@ const getBuildConfig = ({
       packageJsonPath: resolve(__dirname, '../package.json'),
       includeDependencies: false,
     }),
-    svgLoader(),
+    svgLoader({ defaultImport: 'url' }),
+    // @ts-ignore
     Vue(),
     ...(isModuleBuild ? [] : [cssInjectedByJsPlugin()]),
     ...(isModuleBuild ? [viteStaticCopy({ targets: staticAssetsToCopy })] : []),
@@ -140,6 +144,8 @@ const run = async () => {
     await execPromise(
       'tailwindcss -i package/tailwindcss/tailwind.css -o dist/css/main.css --config tailwind.config.js --postcss --minify',
     )
+
+    compileScss()
 
     await execPromise('rimraf generated-types')
 
