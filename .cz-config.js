@@ -32,6 +32,7 @@ module.exports = {
     { name: 'docs' },
     { name: 'testing' },
     { name: 'lib' },
+    { name: 'cli' },
     { name: 'release' },
   ],
 
