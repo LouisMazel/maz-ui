@@ -6,7 +6,7 @@
     "build": "vite build",
     "lint": "npm run lint:js && npm run lint:style",
     "lint:js": "eslint --fix --ext .ts,.js,.vue .",
-    "lint:style": "stylelint --custom-syntax postcss-html --fix \"**/*.{vue,css,scss,postcss,pcss}\"",
+    "lint:style": "stylelint --fix \"**/*.{vue,css,scss,postcss,pcss}\"",
     "format": "prettier . --write",
     "preview": "vite preview",
     "pre-commit": "lint-staged"
@@ -14,7 +14,7 @@
   "lint-staged": {
     "*": "prettier -w -u",
     "*.{js,ts,vue}": "eslint --fix",
-    "*.{vue,css,scss,postcss,pcss}": "stylelint --custom-syntax postcss-html --fix"
+    "*.{vue,css,scss,postcss,pcss}": "stylelint --fix"
   },
   "dependencies": {
     "maz-ui": "file:../lib",
