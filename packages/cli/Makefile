@@ -21,19 +21,17 @@ clean-build:
 build:
 	npm run build
 
-test-unit:
-	npm run test:unit
-test-unit-watch:
-	npm run test:unit:watch
-test-unit-coverage:
-	npm run test:unit:coverage
-test-unit-coverage-watch:
-	npm run test:unit:coverage:watch
-test-unit-coverage-master:
-	npm run test:unit:coverage:master
-
 lint-staged: ## lint-staged
 	npm run pre-commit
+
+create-component-files:
+	npm run maz-cli create-files -f $(name)
+
+generate-components-docs:
+	npm run maz-cli generate-components-docs
+
+generate-components-docs-watch:
+	npm run maz-cli generate-components-docs --watch
 
 check-dependencies-updates:
 	npx npm-check-updates --interactive --format group
