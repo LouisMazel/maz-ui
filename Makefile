@@ -11,8 +11,10 @@ audit-docs:
 	make --directory=packages/docs audit
 audit-testing:
 	make --directory=packages/testing audit
+audit-cli:
+	make --directory=packages/cli audit
 audit-all:
-	make audit audit-lib audit-docs audit-testing
+	make audit audit-lib audit-docs audit-testing audit-cli
 
 lint-lib:
 	make --directory=packages/lib lint
@@ -21,20 +23,8 @@ build-docs:
 	make --directory=packages/docs build
 build-lib:
 	make --directory=packages/lib build
-build-watch-lib:
-	make --directory=packages/lib build-watch
-build-js-lib:
-	make --directory=packages/lib build-js
-build-modules-lib:
-	make --directory=packages/lib build-modules
-build-components-lib:
-	make --directory=packages/lib build-components
-build-component-lib:
-	make --directory=packages/lib build-component component="$(component)"
-build-css-lib:
-	make --directory=packages/lib build-css
-build-types-lib:
-	make --directory=packages/lib build-types
+build-cli:
+	make --directory=packages/cli build
 
 clean:
 	rm -rf node_modules
@@ -44,8 +34,10 @@ clean-docs:
 	make --directory=packages/docs clean
 clean-testing:
 	make --directory=packages/testing clean
+clean-cli:
+	make --directory=packages/cli clean
 clean-all:
-	make clean clean-lib clean-docs clean-testing
+	make clean clean-lib clean-docs clean-testing clean-cli
 
 install:
 	npm i
@@ -55,8 +47,10 @@ install-docs:
 	make --directory=packages/docs install
 install-testing:
 	make --directory=packages/testing install
+install-cli:
+	make --directory=packages/cli install
 install-all:
-	make install install-lib install-docs install-testing
+	make install install-lib install-docs install-testing install-cli
 
 reinstall-lib:
 	make --directory=packages/lib reinstall
@@ -64,8 +58,10 @@ reinstall-docs:
 	make --directory=packages/docs reinstall
 reinstall-testing:
 	make --directory=packages/testing reinstall
+reinstall-cli:
+	make --directory=packages/cli reinstall
 reinstall-all:
-	make clean-all clean-install-all
+	make clean-all clean-install-all reinstall-cli
 
 lint-staged: ## lint-staged
 	npm run pre-commit
@@ -73,6 +69,8 @@ lint-staged-lib: ## lint-staged lib
 	make --directory=packages/lib lint-staged
 lint-staged-testing: ## lint-staged testing
 	make --directory=packages/testing lint-staged
+lint-staged-cli: ## lint-staged cli
+	make --directory=packages/cli lint-staged
 
 test-unit:
 	make --directory=packages/lib test-unit
@@ -85,3 +83,15 @@ test-unit-coverage-watch:
 
 release:
 	npm run lerna:version $(type)
+
+# CLI
+
+create-component-files:
+	make --directory=packages/cli create-files -f name=$(name)
+
+generate-components-docs:
+	make --directory=packages/cli generate-components-docs
+
+generate-components-docs-watch:
+	make --directory=packages/cli generate-components-docs --watch
+

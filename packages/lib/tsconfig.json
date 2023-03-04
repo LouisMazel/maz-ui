@@ -7,7 +7,7 @@
   },
   "compilerOptions": {
     "declaration": true,
-    "declarationDir": "types",
+    "declarationDir": "generated-types",
     "sourceMap": true,
     "lib": ["esnext", "DOM", "DOM.iterable", "scripthost"],
     "strictPropertyInitialization": false,

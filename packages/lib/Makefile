@@ -20,20 +20,6 @@ clean-build:
 
 build:
 	npm run build
-build-js:
-	npm run build:js
-build-modules:
-	npm run build:modules
-build-components:
-	npm run build:gen-components-entry && npm run build:components
-build-component:
-	npm run build:gen-components-entry && npm run build:component -- $(component)
-build-types:
-	npm run build:file-types && npm run build:copy-comp-types
-build-css:
-	npm run build:css
-build-watch:
-	npm run build:watch
 
 test-unit:
 	npm run test:unit
