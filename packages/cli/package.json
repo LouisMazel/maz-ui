@@ -1,0 +1,43 @@
+{
+  "name": "cli",
+  "version": "1.0.1-alpha.17",
+  "main": "./dist/cli.js",
+  "bin": {
+    "maz-cli": "./dist/cli.js"
+  },
+  "scripts": {
+    "lint": "cross-env NODE_ENV=production eslint --ignore-path .gitignore --fix --ext .ts,.js .",
+    "maz-cli": "ts-node lib/cli.ts",
+    "pre-commit": "lint-staged",
+    "build": "tsc -p .",
+    "vue-docgen": "vue-docgen",
+    "format": "prettier --ignore-path .gitignore . --write"
+  },
+  "lint-staged": {
+    "*": "prettier -w -u",
+    "*.{js,ts}": "eslint --fix"
+  },
+  "devDependencies": {
+    "@clack/prompts": "^0.2.2",
+    "@types/clear": "^0.1.2",
+    "@types/figlet": "^1.5.5",
+    "@types/node": "^18.13.0",
+    "@typescript-eslint/eslint-plugin": "^5.52.0",
+    "@typescript-eslint/parser": "^5.52.0",
+    "chalk": "^4.1.2",
+    "clear": "^0.1.0",
+    "commander": "^10.0.0",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.34.0",
+    "eslint-config-standard-with-typescript": "^34.0.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-sonarjs": "^0.18.0",
+    "eslint-plugin-unicorn": "^46.0.0",
+    "figlet": "^1.5.2",
+    "prettier": "^2.8.4",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.5",
+    "vue-docgen-cli": "^4.57.1"
+  }
+}

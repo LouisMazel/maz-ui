@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "module": "CommonJS",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "target": "ESNext",
+    "sourceMap": true,
+    "incremental": true,
+    "outDir": "./dist",
+    "baseUrl": "./lib",
+    "paths": {
+      "@/*": ["./*"]
+    },
+    "strictNullChecks": true
+  },
+  "include": ["lib/**/*.ts"],
+  "exclude": ["node_modules"]
+}
