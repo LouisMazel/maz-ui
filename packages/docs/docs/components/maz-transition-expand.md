@@ -109,11 +109,9 @@ description: MazTransitionExpand is a standalone component that collapses conten
 </script>
 ```
 
-## Props & Events emitted
-
-<ComponentPropDoc component="MazTransitionExpand" />
-
 <script lang="ts" setup>
   import { ref } from 'vue'
   const isShown = ref(false)
 </script>
+
+<!--@include: ./../.vitepress/generated-docs/maz-transition-expand.doc.md-->

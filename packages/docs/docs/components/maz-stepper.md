@@ -415,6 +415,4 @@ Click on step titles to toggle content
   const password = ref()
 </script>
 
-## Props & Events emitted
-
-<ComponentPropDoc component="MazStepper" />
+<!--@include: ./../.vitepress/generated-docs/maz-stepper.doc.md-->

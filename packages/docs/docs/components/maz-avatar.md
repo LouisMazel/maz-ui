@@ -106,6 +106,4 @@ See all the options props [here](#props-events-emitted)
   const clicked = () => { console.log('clicked') }
 </script>
 
-## Props & Events emitted
-
-<ComponentPropDoc component="MazAvatar" />
+<!--@include: ./../.vitepress/generated-docs/maz-avatar.doc.md-->

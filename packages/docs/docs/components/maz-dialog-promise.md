@@ -114,6 +114,4 @@ MazDialogPromise is a standalone component that dialogs with the user to show im
 </script>
 ```
 
-## Props & Events emitted
-
-<ComponentPropDoc component="MazDialogPromise" />
+<!--@include: ./../.vitepress/generated-docs/maz-dialog-promise.doc.md-->

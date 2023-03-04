@@ -233,10 +233,6 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
 </script>
 ```
 
-## Props & Events emitted
-
-<ComponentPropDoc component="MazDrawer" />
-
 <script lang="ts" setup>
   import { ref } from 'vue'
 
@@ -245,3 +241,5 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
   const isOpenedRight = ref(false)
   const isOpenedLeft = ref(false)
 </script>
+
+<!--@include: ./../.vitepress/generated-docs/maz-drawer.doc.md-->

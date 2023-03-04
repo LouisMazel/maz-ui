@@ -285,10 +285,6 @@ When `to` attribute is provided, the component automatically becomes a `<RouterL
 </MazBtn>
 ```
 
-## Props & Events emitted
-
-<ComponentPropDoc component="MazBtn" />
-
 <script setup lang="ts">
   import { computed } from 'vue'
 
@@ -308,3 +304,5 @@ When `to` attribute is provided, the component automatically becomes a `<RouterL
 
   const colorsArray = computed(() => Object.values(colors))
 </script>
+
+<!--@include: ./../.vitepress/generated-docs/maz-btn.doc.md-->
