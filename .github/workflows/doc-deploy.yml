@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Install all dependencies
-        run: make install-docs install-lib
+        run: make install-docs install-lib install-cli
 
       - name: Build lib
         run: make build-lib
