@@ -88,10 +88,10 @@ release:
 
 create-component-files:
 	make --directory=packages/cli create-files -f name=$(name)
-
 generate-components-docs:
 	make --directory=packages/cli generate-components-docs
-
 generate-components-docs-watch:
 	make --directory=packages/cli generate-components-docs --watch
 
+check-dependencies-updates:
+	npx npm-check-updates --interactive --format group
