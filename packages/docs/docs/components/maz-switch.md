@@ -60,6 +60,4 @@ description: MazSwitch is a standalone component replaces the standard html inpu
 </script>
 ```
 
-## Props & Events emitted
-
-<ComponentPropDoc component="MazSwitch" />
+<!--@include: ./../.vitepress/generated-docs/maz-switch.doc.md-->

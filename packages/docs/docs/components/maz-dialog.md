@@ -57,6 +57,4 @@ This component use `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md),
 </script>
 ```
 
-## Props & Events emitted
-
-<ComponentPropDoc component="MazDialog" />
+<!--@include: ./../.vitepress/generated-docs/maz-dialog.doc.md-->

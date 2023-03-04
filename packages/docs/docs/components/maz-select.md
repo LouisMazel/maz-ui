@@ -175,10 +175,6 @@ If you want custom keys of these options, you can use:
 </script>
 ```
 
-## Props & Events emitted
-
-<ComponentPropDoc component="MazSelect" />
-
 <script setup lang="ts">
   import { ref } from 'vue'
 
@@ -215,3 +211,5 @@ If you want custom keys of these options, you can use:
     { valueOption: 'black', labelOption: 'black label', inputLabel: 'black input', },
   ]
 </script>
+
+<!--@include: ./../.vitepress/generated-docs/maz-select.doc.md-->

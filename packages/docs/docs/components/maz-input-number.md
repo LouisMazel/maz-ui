@@ -50,6 +50,4 @@ numberValue: {{ numberValue }}
 </script>
 ```
 
-## Props, Events emitted
-
-<ComponentPropDoc component="MazInputNumber" />
+<!--@include: ./../.vitepress/generated-docs/maz-input-number.doc.md-->

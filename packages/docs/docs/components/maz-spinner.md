@@ -19,6 +19,4 @@ description: MazSpinner is a standalone component replaces the standard html inp
 </script>
 ```
 
-## Props & Events emitted
-
-<ComponentPropDoc component="MazSpinner" />
+<!--@include: ./../.vitepress/generated-docs/maz-spinner.doc.md-->

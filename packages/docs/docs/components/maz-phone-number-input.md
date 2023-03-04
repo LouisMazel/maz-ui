@@ -141,6 +141,4 @@ export type Result = {
 </template>
 ```
 
-## Props & Events emitted
-
-<ComponentPropDoc component="MazPhoneNumberInput" />
+<!--@include: ./../.vitepress/generated-docs/maz-phone-number-input.doc.md-->

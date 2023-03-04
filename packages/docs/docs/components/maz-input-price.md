@@ -55,6 +55,4 @@ formattedPrice: {{ formattedPrice }}
 </script>
 ```
 
-## Props, Events emitted
-
-<ComponentPropDoc component="MazInputPrice" />
+<!--@include: ./../.vitepress/generated-docs/maz-input-price.doc.md-->

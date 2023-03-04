@@ -111,35 +111,9 @@ npm install dropzone@^5.9.3
 </script>
 ```
 
-## Props, Events emitted & Methods
-
-<ComponentPropDoc
-  component="MazDropzone"
-  :component-instance="mazDropzoneInstance"
-  :methods="[
-    { name: 'setOption' },
-    { name: 'manuallyAddFile' },
-    { name: 'removeAllFiles' },
-    { name: 'processQueue' },
-    { name: 'destroy' },
-    { name: 'disable' },
-    { name: 'enable' },
-    { name: 'accept' },
-    { name: 'addFile' },
-    { name: 'resizeImage' },
-    { name: 'cancelUpload' },
-    { name: 'getAcceptedFiles' },
-    { name: 'getRejectedFiles' },
-    { name: 'getFilesWithStatus' },
-    { name: 'getQueuedFiles' },
-    { name: 'getUploadingFiles' },
-    { name: 'getAddedFiles' },
-    { name: 'getActiveFiles' },
-  ]"
-/>
-
 <script lang="ts" setup>
   import { ref, onMounted } from 'vue'
+  import ComponentPropDoc from './../.vitepress/theme/components/ComponentPropDoc.vue'
 
   const loading = ref(false)
   const mazDropzoneInstance = ref<MazDropzoneInstance>()
@@ -183,3 +157,32 @@ npm install dropzone@^5.9.3
     ...translations
   }
 </script>
+
+## Props, Events emitted & Methods
+
+<ComponentPropDoc
+  component="MazDropzone"
+  :component-instance="mazDropzoneInstance"
+  :methods="[
+    { name: 'setOption' },
+    { name: 'manuallyAddFile' },
+    { name: 'removeAllFiles' },
+    { name: 'processQueue' },
+    { name: 'destroy' },
+    { name: 'disable' },
+    { name: 'enable' },
+    { name: 'accept' },
+    { name: 'addFile' },
+    { name: 'resizeImage' },
+    { name: 'cancelUpload' },
+    { name: 'getAcceptedFiles' },
+    { name: 'getRejectedFiles' },
+    { name: 'getFilesWithStatus' },
+    { name: 'getQueuedFiles' },
+    { name: 'getUploadingFiles' },
+    { name: 'getAddedFiles' },
+    { name: 'getActiveFiles' },
+  ]"
+/>
+
+<!--@include: ./../.vitepress/generated-docs/maz-dropzone.doc.md-->

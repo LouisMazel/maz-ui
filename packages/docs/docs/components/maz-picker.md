@@ -481,4 +481,4 @@ const shortcuts = [
 
 :::
 
-<ComponentPropDoc component="MazPicker" />
+<!--@include: ./../.vitepress/generated-docs/maz-picker.doc.md-->

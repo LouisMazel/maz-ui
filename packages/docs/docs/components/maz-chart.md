@@ -334,6 +334,4 @@ You can use all plugins of Chart.JS. Follow the example bellow
   }
 </script>
 
-## Props & Events emitted
-
-<ComponentPropDoc component="MazChart" />
+<!--@include: ./../.vitepress/generated-docs/maz-chart.doc.md-->

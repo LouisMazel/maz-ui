@@ -55,6 +55,4 @@ description: MazCheckbox is a standalone component replaces the standard html in
 </script>
 ```
 
-## Props & Events emitted
-
-<ComponentPropDoc component="MazCheckbox" />
+<!--@include: ./../.vitepress/generated-docs/maz-checkbox.doc.md-->

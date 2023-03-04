@@ -12,4 +12,4 @@ description: MazBackdrop is a standalone component to manage components that nee
 This component use `<Teleport to="body">`, so you can implement this component everywhere
 :::
 
-<ComponentPropDoc component="MazBackdrop" />
+<!--@include: ./../.vitepress/generated-docs/maz-backdrop.doc.md-->
