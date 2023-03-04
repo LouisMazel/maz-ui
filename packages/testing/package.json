@@ -17,7 +17,7 @@
     "*.{vue,css,scss,postcss,pcss}": "stylelint --fix"
   },
   "dependencies": {
-    "maz-ui": "file:../lib/dist",
+    "maz-ui": "workspace:^3.6.12",
     "vue": "^3.2.45"
   },
   "devDependencies": {

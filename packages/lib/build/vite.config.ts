@@ -80,7 +80,7 @@ const getBuildConfig = ({
     svgLoader({ defaultImport: 'url' }),
     // @ts-ignore
     Vue(),
-    ...(isModuleBuild ? [] : [cssInjectedByJsPlugin()]),
+    cssInjectedByJsPlugin(), // ...(isModuleBuild ? [] : [cssInjectedByJsPlugin()]),
     ...(isModuleBuild ? [viteStaticCopy({ targets: staticAssetsToCopy })] : []),
   ],
   resolve: {

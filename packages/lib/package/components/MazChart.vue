@@ -38,7 +38,7 @@
         chart?: Chart
         options?: ChartOptions
         plugins: Plugin[]
-        props: typeof props
+        props: any // typeof props
       }
 
       const chartJSState: ChartJssState = {
