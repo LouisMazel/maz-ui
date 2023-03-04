@@ -1,9 +1,9 @@
 serve-all:
 	pnpm --parallel serve
 serve-docs:
-	pnpm --filter docs serve
+	pnpm --filter docs dev
 serve-testing:
-	pnpm --filter testing serve
+	pnpm --filter testing dev
 
 audit:
 	pnpm audit

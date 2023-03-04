@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../../../node_modules/.pnpm/vitepress-plugin-google-analytics@1.0.2/node_modules/vitepress-plugin-google-analytics/dist/index.mjs"],
+  "sourcesContent": ["const mountGoogleAnalytics = (id) => {\n  if (window.dataLayer && window.gtag) {\n    return;\n  }\n  const gtagScript = document.createElement(\"script\");\n  gtagScript.src = `https://www.googletagmanager.com/gtag/js?id=${id}`;\n  gtagScript.async = true;\n  document.head.appendChild(gtagScript);\n  window.dataLayer = window.dataLayer || [];\n  window.gtag = function() {\n    dataLayer.push(arguments);\n  };\n  gtag(\"js\", new Date());\n  gtag(\"config\", id);\n};\nconst index = ({ id }) => {\n  if (process.env.NODE_ENV === \"production\" && id && typeof window !== \"undefined\") {\n    mountGoogleAnalytics(id);\n  }\n};\n\nexport { index as default };\n"],
+  "mappings": ";;;AAeA,IAAM,QAAQ,CAAC,EAAE,GAAG,MAAM;AACxB,MAAI,OAA8E;AAChF,yBAAqB,EAAE;AAAA,EACzB;AACF;",
+  "names": []
+}
