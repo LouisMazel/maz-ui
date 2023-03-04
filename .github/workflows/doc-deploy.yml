@@ -21,7 +21,7 @@ jobs:
         run: make build-lib
 
       - name: Build docs
-        run: make build-docs
+        run: make generate-components-docs build-docs
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
