@@ -18,7 +18,7 @@
       data: { type: Object, required: true },
       height: { type: String, default: undefined },
       width: { type: String, default: undefined },
-      options: { type: Object, default: Object },
+      options: { type: Object, default: () => ({}) },
       plugins: { type: Array as PropType<Plugin[]>, default: () => [] },
       locale: { type: String, default: 'fr-FR' },
     },
