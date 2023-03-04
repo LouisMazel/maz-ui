@@ -15,3 +15,6 @@ clean:
 
 reinstall:
 	make clean isntall
+
+check-dependencies-updates:
+	npx npm-check-updates --interactive --format group
