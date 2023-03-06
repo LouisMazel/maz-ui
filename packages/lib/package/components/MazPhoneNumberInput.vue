@@ -231,6 +231,8 @@
 
   onBeforeMount(async () => {
     try {
+      formattedNumber.value = props.modelValue ?? props.defaultPhoneNumber
+
       if (props.defaultCountryCode) {
         setCountryCode(props.defaultCountryCode)
       }
@@ -239,8 +241,6 @@
         const locale = await fetchCountryCode()
         if (locale) setCountryCode(locale)
       }
-
-      formattedNumber.value = props.modelValue ?? props.defaultPhoneNumber
 
       getAndEmitResults(formattedNumber.value)
     } catch (error) {
@@ -443,7 +443,10 @@
   const emitValue = (phoneNumber?: string) => {
     formattedNumber.value = sanitizeNumber(phoneNumber)
 
-    const { isValid, e164, formatNational } = results.value
+    const { isValid, e164, formatNational } = getResultsFromPhoneNumber(
+      countryCode.value,
+      phoneNumber,
+    )
 
     const hasDeletedCharac =
       formattedNumber.value && phoneNumber && formattedNumber.value?.length > phoneNumber?.length
