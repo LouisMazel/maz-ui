@@ -16,7 +16,7 @@
     "vue": "^3.2.45"
   },
   "dependencies": {
-    "chart.js": "^3.9.1",
+    "chart.js": "^4.2.1",
     "chartjs-plugin-datalabels": "^2.2.0",
     "dayjs": "^1.11.5",
     "dropzone": "^5.9.3",
