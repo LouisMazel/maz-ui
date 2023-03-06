@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.7.0](https://github.com/LouisMazel/maz-ui/compare/v3.6.12...v3.7.0) (2023-03-06)
+
+
+### Bug Fixes
+
+* **lib:** maz-backdrop - make component SSR compatible ([2d34cb6](https://github.com/LouisMazel/maz-ui/commit/2d34cb68c2271d81904c34089a267c76642e2ed1))
+* **lib:** maz-phone-number-input - phone number formatting on initialization ([383a0cb](https://github.com/LouisMazel/maz-ui/commit/383a0cbba626d0f56ecf08017470af3066d00310))
+* **lib:** use secure ipwho as locale provider (https) ([0360545](https://github.com/LouisMazel/maz-ui/commit/0360545a785349957033942a005cbaddb280a77e))
+
+
+### Features
+
+* **lib:** maz-dialog - add with max-width & wrapper-classes props options ([720619b](https://github.com/LouisMazel/maz-ui/commit/720619bac800cfd21c266eacc4b66fe657f95092))
+
+
+### Reverts
+
+* Revert "release/3.6.13 (#492)" ([de4e067](https://github.com/LouisMazel/maz-ui/commit/de4e067736c5d09478138f19de412b32dc60a715)), closes [#492](https://github.com/LouisMazel/maz-ui/issues/492)
+* Revert "chore(release): bump version to v3.7.0" ([2def308](https://github.com/LouisMazel/maz-ui/commit/2def3083343431257a702d2a19ab8a2d215736e5))
+
+
+
+
+
 ## [3.6.12](https://github.com/LouisMazel/maz-ui/compare/v3.6.11...v3.6.12) (2023-01-26)
 
 ### Bug Fixes

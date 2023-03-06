@@ -1,9 +1,8 @@
 {
   "packages": ["packages/*"],
   "loglevel": "verbose",
-  "version": "3.6.12",
+  "version": "3.7.0",
   "yes": false,
-  "changelogPreset": "conventionalcommits",
   "command": {
     "version": {
       "allowBranch": ["master"],

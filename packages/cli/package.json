@@ -1,6 +1,6 @@
 {
   "name": "cli",
-  "version": "1.0.1-alpha.17",
+  "version": "3.7.0",
   "main": "./dist/cli.js",
   "bin": {
     "maz-cli": "./dist/cli.js"
@@ -40,6 +40,6 @@
     "prettier": "^2.8.4",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.5",
-    "vue-docgen-cli": "^4.57.1"
+    "vue-docgen-cli": "^4.60.1"
   }
 }
