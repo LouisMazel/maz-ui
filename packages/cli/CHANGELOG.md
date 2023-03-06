@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.7.0](https://github.com/LouisMazel/maz-ui/compare/v3.6.12...v3.7.0) (2023-03-06)
+
+
+### Features
+
+* **cli:** add maz-cli ([f48f7c5](https://github.com/LouisMazel/maz-ui/commit/f48f7c5a6eff7f9ef27bae5179fdd3ef3e1731c5))
+
+
+### Reverts
+
+* Revert "release/3.6.13 (#492)" ([de4e067](https://github.com/LouisMazel/maz-ui/commit/de4e067736c5d09478138f19de412b32dc60a715)), closes [#492](https://github.com/LouisMazel/maz-ui/issues/492)
+* Revert "chore(release): bump version to v3.7.0" ([2def308](https://github.com/LouisMazel/maz-ui/commit/2def3083343431257a702d2a19ab8a2d215736e5))
+
+
+
+
+
 ## [1.0.1-alpha.17](https://gitlab.com/zadig-et-voltaire/design-system-next/compare/v1.0.1-alpha.16...v1.0.1-alpha.17) (2023-02-17)
 
 ### Bug Fixes
