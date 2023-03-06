@@ -21,11 +21,11 @@ jobs:
           node-version: '18'
           cache: 'pnpm'
 
-      - name: Install all dependencies
-        run: make install-docs install-lib install-cli
+      - name: Install and build lib
+        run: make install-lib build-lib
 
-      - name: Build lib
-        run: make build-lib
+      - name: Install cli
+        run: make install-cli
 
-      - name: Build docs
-        run: make generate-components-docs build-docs
+      - name: Install and build docs
+        run: make install-docs generate-components-docs build-docs

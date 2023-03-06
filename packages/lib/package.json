@@ -145,6 +145,7 @@
   "homepage": "https://louismazel.github.io/maz-ui-3/",
   "keywords": [
     "vue",
+    "nuxt",
     "components",
     "vue-component",
     "framework",
