@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.7.0](https://github.com/LouisMazel/maz-ui/compare/v3.6.12...v3.7.0) (2023-03-06)
+
+**Note:** Version bump only for package cli
+
+
+
+
+
 ## [1.0.1-alpha.17](https://gitlab.com/zadig-et-voltaire/design-system-next/compare/v1.0.1-alpha.16...v1.0.1-alpha.17) (2023-02-17)
 
 ### Bug Fixes

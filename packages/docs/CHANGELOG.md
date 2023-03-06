@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.7.0](https://github.com/LouisMazel/maz-ui/compare/v3.6.12...v3.7.0) (2023-03-06)
+
+
+### Bug Fixes
+
+* typo ([ff9125b](https://github.com/LouisMazel/maz-ui/commit/ff9125b104277f56d36bcbccef2aa814599d4b0e))
+
+
+
 ## [3.6.11](https://github.com/LouisMazel/maz-ui/compare/v3.6.10...v3.6.11) (2023-01-19)
 
 **Note:** Version bump only for package docs
