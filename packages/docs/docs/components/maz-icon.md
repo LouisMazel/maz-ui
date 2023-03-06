@@ -529,6 +529,4 @@ const app = createApp(App)
 app.provide('mazIconPath', '/your/custom/path')
 ```
 
-## Props & Events emitted
-
-<ComponentPropDoc component="MazIcon" />
+<!--@include: ./../.vitepress/generated-docs/maz-icon.doc.md-->

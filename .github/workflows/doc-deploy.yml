@@ -11,17 +11,26 @@ jobs:
   doc-build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Install all dependencies
-        run: make install-docs install-lib
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
 
-      - name: Build lib
-        run: make build-lib
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'pnpm'
 
-      - name: Build docs
-        run: make build-docs
+      - name: Install and build lib
+        run: make install-lib build-lib
+
+      - name: Install cli
+        run: make install-cli
+
+      - name: Install and build docs
+        run: make install-docs generate-components-docs build-docs
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3

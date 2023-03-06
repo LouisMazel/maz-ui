@@ -85,6 +85,4 @@ head:
 
 This options will display the component without scroll buttons
 
-## Props & Events emitted
-
-<ComponentPropDoc component="MazCarousel" />
+<!--@include: ./../.vitepress/generated-docs/maz-carousel.doc.md-->

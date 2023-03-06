@@ -2,8 +2,8 @@
   "compilerOptions": {
     "types": ["vitest/globals"],
     "baseUrl": ".",
-    "target": "ESNEXT",
-    "moduleResolution": "NodeNext",
+    "target": "ESNext",
+    "moduleResolution": "node",
     "paths": {
       "@package/*": ["./../package/*"],
       "@components/*": ["./../package/components/*"],

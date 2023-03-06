@@ -157,8 +157,8 @@
       const dropzoneOptions = ref<MazDropzoneOptions>()
 
       const dropzoneStyle = computed(() => ({
-        width: Number.isInteger(props.width) ? `${props.width}px` : props.width,
-        height: Number.isInteger(props.height) ? `${props.height}px` : props.height,
+        width: typeof props.width === 'number' ? `${props.width}px` : props.width,
+        height: typeof props.height === 'number' ? `${props.height}px` : props.height,
       }))
 
       const thumbnail: DropzoneOptions['thumbnail'] = (file: MazDropzoneFile, dataUrl) => {

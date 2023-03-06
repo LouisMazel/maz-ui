@@ -7,7 +7,7 @@
     @update:model-value="$emit('update:model-value', $event)"
   >
     <template #default="{ close }">
-      <div class="m-dialog-layout">
+      <div class="m-dialog-layout" :style="[{ width, maxWidth }]" :class="[wrapperClasses]">
         <div class="m-dialog-layout-header" :class="{ '--has-title': $slots['title'] || title }">
           <h2 v-if="$slots['title'] || title" class="maz-my-0 maz-text-xl maz-font-semibold">
             <slot name="title">{{ title }}</slot>
@@ -43,6 +43,9 @@
   defineProps({
     title: { type: String, default: undefined },
     noClose: { type: Boolean, default: false },
+    width: { type: String, default: '500px' },
+    maxWidth: { type: String, default: '95vw' },
+    wrapperClasses: { type: [String, Object, Array], default: undefined },
   })
 
   defineEmits(['update:model-value', 'close', 'open'])
@@ -51,9 +54,6 @@
 <style lang="postcss" scoped>
   .m-dialog-layout {
     @apply maz-rounded maz-bg-color maz-text-normal;
-
-    width: 500px;
-    max-width: 95vw;
 
     &-header {
       @apply maz-flex maz-items-center maz-justify-end maz-pt-2 maz-pl-6 maz-pr-2;

@@ -15,7 +15,7 @@ export default defineConfig({
 
   appearance: true,
   lastUpdated: true,
-  cleanUrls: 'without-subfolders',
+  cleanUrls: true,
   ignoreDeadLinks: true,
 
   base: '/maz-ui-3/',

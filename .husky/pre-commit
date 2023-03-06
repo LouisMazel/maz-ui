@@ -8,6 +8,5 @@
 #   exit 1
 # fi
 
-make lint-staged
-make lint-staged-lib
-make lint-staged-testing
+pnpm pre-commit
+pnpm -r pre-commit

@@ -1,0 +1,29 @@
+name: Cli Test Lint
+
+on:
+  pull_request:
+    paths:
+      - 'packages/cli/**'
+
+jobs:
+  lib-test-lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+
+      - name: Install modules
+        run: pnpm --filter cli install
+
+      - name: Run linters
+        run: pnpm --filter cli lint

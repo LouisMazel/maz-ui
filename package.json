@@ -3,11 +3,12 @@
   "version": "0.0.1",
   "description": "A standalone components library for Vue.Js & Nuxt.Js (v3.x)",
   "scripts": {
+    "preinstall": "npx only-allow pnpm",
     "prepare": "npx husky install",
     "pre-commit": "lint-staged",
     "format": "prettier . --write",
     "lint": "lerna run lint --parallel",
-    "lerna:version": "npx lerna version"
+    "lerna:version": "HUSKY=0 npx lerna version"
   },
   "lint-staged": {
     "!(node_modules/**/*|packages/**/*|.prettierignore|.gitignore|.editorconfig).*": [
@@ -15,15 +16,15 @@
     ]
   },
   "devDependencies": {
-    "@commitlint/cli": "^17.4.2",
-    "@commitlint/config-conventional": "^17.4.2",
-    "@types/node": "^18.11.18",
+    "@commitlint/cli": "^17.4.4",
+    "@commitlint/config-conventional": "^17.4.4",
+    "@types/node": "^18.14.6",
     "commitlint-config-cz": "^0.13.3",
     "conventional-changelog-conventionalcommits": "^5.0.0",
     "husky": "^8.0.3",
-    "lerna": "^6.4.1",
-    "lint-staged": "^13.1.0",
-    "prettier": "^2.8.2"
+    "lerna": "^6.5.1",
+    "lint-staged": "^13.1.2",
+    "prettier": "^2.8.4"
   },
   "repository": {
     "type": "git",
@@ -42,5 +43,15 @@
   "bugs": {
     "url": "https://github.com/LouisMazel/maz-ui/issues"
   },
-  "homepage": "https://louismazel.github.io/maz-ui-3/"
+  "homepage": "https://louismazel.github.io/maz-ui-3/",
+  "pnpm": {
+    "peerDependencyRules": {
+      "ignoreMissing": [
+        "@algolia/client-search",
+        "webpack",
+        "@vue/compiler-dom",
+        "vue"
+      ]
+    }
+  }
 }
