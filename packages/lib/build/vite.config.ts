@@ -88,9 +88,7 @@ const getBuildConfig = ({
       '@package': resolve(__dirname, '../package'),
       '@components': resolve(__dirname, '../package/components'),
       '@tests': resolve(__dirname, '../tests'),
-      '@assets': resolve(__dirname, '../package/components/assets'),
-      '@icons': resolve(__dirname, '../package/components/assets/icons'),
-      '@logos': resolve(__dirname, '../package/components/assets/logos'),
+      '@icons': resolve(__dirname, '../package/icons'),
     },
   },
 })
