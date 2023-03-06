@@ -25,7 +25,7 @@ importers:
 
   packages/cli:
     specifiers:
-      '@clack/prompts': ^0.2.2
+      '@clack/prompts': ^0.6.3
       '@types/clear': ^0.1.2
       '@types/figlet': ^1.5.5
       '@types/node': ^18.13.0
@@ -47,9 +47,9 @@ importers:
       prettier: ^2.8.4
       ts-node: ^10.9.1
       typescript: ^4.9.5
-      vue-docgen-cli: ^4.57.1
+      vue-docgen-cli: ^4.60.1
     devDependencies:
-      '@clack/prompts': 0.2.2
+      '@clack/prompts': 0.6.3
       '@types/clear': 0.1.2
       '@types/figlet': 1.5.5
       '@types/node': 18.14.6
@@ -71,7 +71,7 @@ importers:
       prettier: 2.8.4
       ts-node: 10.9.1_alpjt73dvgv6kni625hu7f2l4m
       typescript: 4.9.5
-      vue-docgen-cli: 4.59.0
+      vue-docgen-cli: 4.60.1
 
   packages/docs:
     specifiers:
@@ -2019,26 +2019,28 @@ packages:
       }
     dev: true
 
-  /@clack/core/0.1.9:
+  /@clack/core/0.3.2:
     resolution:
       {
-        integrity: sha512-2VaGLFQq54lGkpc48ZsPK8LzbQCbu5I+7zAFrvKM9PTCMI3Lzut+Q8LnflyRLeAsjqzvc5o258+nAoAiRWC0jA==,
+        integrity: sha512-FZnsNynwGDIDktx6PEZK1EuCkFpY4ldEX6VYvfl0dqeoLPb9Jpw1xoUXaVcGR8ExmYNm1w2vdGdJkEUYD/2pqg==,
       }
     dependencies:
       picocolors: 1.0.0
       sisteransi: 1.0.5
     dev: true
 
-  /@clack/prompts/0.2.2:
+  /@clack/prompts/0.6.3:
     resolution:
       {
-        integrity: sha512-Jtxq+sLkn3/4swLzGUvhKkgcHYh1XWgwq90RWY3KPWegSI4Aun4WDlHpQakIIeEJSg96Ip+keTJt3g02lUmKWw==,
+        integrity: sha512-AM+kFmAHawpUQv2q9+mcB6jLKxXGjgu/r2EQjEwujgpCdzrST6BJqYw00GRn56/L/Izw5U7ImoLmy00X/r80Pw==,
       }
     dependencies:
-      '@clack/core': 0.1.9
+      '@clack/core': 0.3.2
       picocolors: 1.0.0
       sisteransi: 1.0.5
     dev: true
+    bundledDependencies:
+      - is-unicode-supported
 
   /@commitlint/cli/17.4.4:
     resolution:
@@ -3560,7 +3562,7 @@ packages:
         integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==,
       }
     dependencies:
-      '@types/minimatch': 3.0.5
+      '@types/minimatch': 5.1.2
       '@types/node': 18.14.6
     dev: true
 
@@ -3605,6 +3607,13 @@ packages:
     resolution:
       {
         integrity: sha512-Klz949h02Gz2uZCMGwDUSDS1YBlTdDDgbWHi+81l29tQALUtvz4rAYi5uoVhE5Lagoq6DeqAUlbrHvW/mXDgdQ==,
+      }
+    dev: true
+
+  /@types/minimatch/5.1.2:
+    resolution:
+      {
+        integrity: sha512-K0VQKziLUWkVKiRVrx4a40iPaxTUefQmjtkQofBkYRcoaaL/8rhwDWww9qWbrgicNOgnpIsMxyNIUM4+n6dUIA==,
       }
     dev: true
 
@@ -4667,7 +4676,7 @@ packages:
       }
     engines: { node: '>=4' }
     dependencies:
-      tslib: 2.4.1
+      tslib: 2.5.0
     dev: true
 
   /ast-types/0.15.2:
@@ -4677,7 +4686,7 @@ packages:
       }
     engines: { node: '>=4' }
     dependencies:
-      tslib: 2.4.1
+      tslib: 2.5.0
     dev: true
 
   /astral-regex/2.0.0:
@@ -7789,7 +7798,7 @@ packages:
       array-union: 2.1.0
       dir-glob: 3.0.1
       fast-glob: 3.2.12
-      glob: 7.2.0
+      glob: 7.2.3
       ignore: 5.2.4
       merge2: 1.4.1
       slash: 3.0.0
@@ -9974,7 +9983,7 @@ packages:
       }
     hasBin: true
     dependencies:
-      minimist: 1.2.7
+      minimist: 1.2.8
     dev: true
 
   /mkdirp/1.0.4:
@@ -11886,7 +11895,7 @@ packages:
       ast-types: 0.15.2
       esprima: 4.0.1
       source-map: 0.6.1
-      tslib: 2.4.1
+      tslib: 2.5.0
     dev: true
 
   /redent/3.0.0:
@@ -13489,13 +13498,6 @@ packages:
       }
     dev: true
 
-  /tslib/2.4.1:
-    resolution:
-      {
-        integrity: sha512-tGyy4dAjRIEwI7BzsB0lynWgOpfqjUdq91XXAlIWD2OwKBH7oCl/GZG/HT4BOHrTlPMOASlMQ7veyTqpmRcrNA==,
-      }
-    dev: true
-
   /tslib/2.5.0:
     resolution:
       {
@@ -14200,10 +14202,10 @@ packages:
       vue: 3.2.47
     dev: true
 
-  /vue-docgen-api/4.56.4:
+  /vue-docgen-api/4.60.0:
     resolution:
       {
-        integrity: sha512-Z59qNUYZNHMZL0QITNbqobGKJgmqyOs4OiAdzr1Ug7ys1gkFBGewiuwPURTsoM2zi4GWZWy2eW4B5FevwT7gpA==,
+        integrity: sha512-fXpOS8spkBwUbSa5EKMNkrP++8byG9Wb3nCVhnm/EA1+W3REOtplcRjN7Isg5LME4r2NaJ2z9XnaDy9T+qyqLA==,
       }
     dependencies:
       '@babel/parser': 7.21.2
@@ -14221,20 +14223,20 @@ packages:
       - vue
     dev: true
 
-  /vue-docgen-cli/4.59.0:
+  /vue-docgen-cli/4.60.1:
     resolution:
       {
-        integrity: sha512-afp5PQBtBaSqOSKJk5ouILgRDmUaNJK6f9EHSJhF8USn/mr3SXd0ezniDUAAYlwG+rc1aWxxb4C4x8/7O+b6uw==,
+        integrity: sha512-Uzf+0C8CcsvMfFha615enShmm/DdTSRk8BbHNsSziWqcaZsSLuc0gVggTsWBV/Se3y2LfQW+4aigUIujaEttJQ==,
       }
     hasBin: true
     dependencies:
       chokidar: 3.5.3
       globby: 10.0.2
       lodash.memoize: 4.1.2
-      minimist: 1.2.7
+      minimist: 1.2.8
       mkdirp: 0.5.6
       prettier: 1.19.1
-      vue-docgen-api: 4.56.4
+      vue-docgen-api: 4.60.0
     transitivePeerDependencies:
       - vue
     dev: true
