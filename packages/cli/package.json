@@ -1,6 +1,6 @@
 {
   "name": "cli",
-  "version": "3.7.0",
+  "version": "1.0.1-alpha.17",
   "main": "./dist/cli.js",
   "bin": {
     "maz-cli": "./dist/cli.js"

@@ -1,6 +1,6 @@
 {
   "name": "testing",
-  "version": "3.7.0",
+  "version": "3.6.12",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -17,7 +17,7 @@
     "*.{vue,css,scss,postcss,pcss}": "stylelint --fix"
   },
   "dependencies": {
-    "maz-ui": "workspace:^3.7.0",
+    "maz-ui": "workspace:^3.6.12",
     "vue": "^3.2.45"
   },
   "devDependencies": {
