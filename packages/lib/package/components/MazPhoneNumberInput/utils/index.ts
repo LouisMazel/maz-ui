@@ -210,7 +210,7 @@ interface IpWhoResponse {
 
 export async function fetchCountryCode() {
   try {
-    const reponse = await fetch('http://ipwho.is')
+    const reponse = await fetch('https://ipwho.is')
     const { country_code } = (await reponse.json()) as IpWhoResponse
 
     return country_code
