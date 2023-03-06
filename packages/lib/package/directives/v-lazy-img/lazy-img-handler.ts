@@ -33,7 +33,7 @@ export class LazyImg {
   }
 
   private async loadErrorPhoto() {
-    const { default: photo } = await import('./assets/no_photo.svg')
+    const { default: photo } = await import('./../../icons/no-photography.svg')
     return photo
   }
 
