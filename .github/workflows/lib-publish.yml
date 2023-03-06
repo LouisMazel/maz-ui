@@ -3,6 +3,11 @@ name: Lib Publish To Npm
 on:
   release:
     types: [created]
+  # push:
+  #   branches:
+  #     - master
+  #   paths:
+  #     - '.github/workflows/lib-publish.yml'
 
 # on:
 #   push:
@@ -12,6 +17,9 @@ on:
 jobs:
   lib-publish:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./packages/lib
 
     steps:
       - uses: actions/checkout@v3
@@ -23,15 +31,17 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
           cache: 'pnpm'
+          node-version: '18'
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
-        run: pnpm --filter maz-ui install
+        run: pnpm install
 
       - name: Build Lib
-        run: pnpm --filter maz-ui build
+        run: pnpm build
 
-      - run: cd dist && npm publish --access public
+      - name: Publish package to npm registry
+        run: cd dist && pnpm publish --access public --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
