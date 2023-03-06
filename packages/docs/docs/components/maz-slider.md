@@ -170,6 +170,10 @@ description: MazSlider is a standalone component that replaces the standard html
 </script>
 ```
 
+## Props & Events emitted
+
+<ComponentPropDoc component="MazSlider" />
+
 <script lang="ts" setup>
   import { ref } from 'vue'
   const sliderValue = ref(50)
@@ -179,5 +183,3 @@ description: MazSlider is a standalone component that replaces the standard html
   const logSilders = ref([50, 10000, 30000, 45000])
   const logSildersLabels = ['Micro', 'Small', 'Middle', 'Big']
 </script>
-
-<!--@include: ./../.vitepress/generated-docs/maz-slider.doc.md-->

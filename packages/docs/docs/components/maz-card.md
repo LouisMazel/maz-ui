@@ -424,4 +424,6 @@ Use the prop option `footer-align="left"`
 
 :::
 
-<!--@include: ./../.vitepress/generated-docs/maz-card.doc.md-->
+## Props & Events emitted
+
+<ComponentPropDoc component="MazCard" />

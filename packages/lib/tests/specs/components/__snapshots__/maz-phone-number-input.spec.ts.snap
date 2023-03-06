@@ -1,17 +1,17 @@
 // Vitest Snapshot v1
 
 exports[`components/MazPhoneNumberInput.vue > Should match with the snapshot 1`] = `
-"<div data-v-195b87f9=\\"\\" id=\\"MazPhoneNumberInput-1\\" class=\\"m-phone-number-input\\"><button data-v-195b87f9=\\"\\" class=\\"m-phone-number-input__country-flag\\" tabindex=\\"-1\\" type=\\"button\\">
-    <div data-v-195b87f9=\\"\\" class=\\"maz-flag maz-flag-fr\\"></div>
+"<div id=\\"MazPhoneNumberInput-1\\" class=\\"m-phone-number-input\\" data-v-195b87f9=\\"\\"><button class=\\"m-phone-number-input__country-flag\\" tabindex=\\"-1\\" type=\\"button\\" data-v-195b87f9=\\"\\">
+    <div class=\\"maz-flag maz-flag-fr\\" data-v-195b87f9=\\"\\"></div>
   </button>
-  <div data-v-948d9dc9=\\"\\" data-v-195b87f9=\\"\\" class=\\"m-select m-phone-number-input__select\\" error=\\"false\\" label=\\"Country code\\">
-    <div data-v-562a2cff=\\"\\" data-v-948d9dc9=\\"\\" class=\\"m-input --should-up --has-label m-select-input m-phone-number-input__select --primary --md\\">
-      <div data-v-562a2cff=\\"\\" class=\\"m-input-wrapper --default-border maz-rounded\\">
+  <div class=\\"m-select m-phone-number-input__select\\" error=\\"false\\" label=\\"Country code\\" data-v-948d9dc9=\\"\\" data-v-195b87f9=\\"\\">
+    <div class=\\"m-input --should-up --has-label m-select-input m-phone-number-input__select --primary --md\\" data-v-562a2cff=\\"\\" data-v-948d9dc9=\\"\\">
+      <div class=\\"m-input-wrapper --default-border maz-rounded\\" data-v-562a2cff=\\"\\">
         <!--v-if-->
-        <div data-v-562a2cff=\\"\\" class=\\"m-input-wrapper-input\\"><input data-v-562a2cff=\\"\\" id=\\"MazSelect-2\\" type=\\"text\\" name=\\"input\\" class=\\"m-select-input m-phone-number-input__select m-input-input\\" autocomplete=\\"off\\" aria-label=\\"Country code\\"><label data-v-562a2cff=\\"\\" for=\\"MazSelect-2\\" class=\\"m-input-label\\">Country code
+        <div class=\\"m-input-wrapper-input\\" data-v-562a2cff=\\"\\"><input id=\\"MazSelect-2\\" type=\\"text\\" name=\\"input\\" class=\\"m-select-input m-phone-number-input__select m-input-input\\" autocomplete=\\"off\\" aria-label=\\"Country code\\" data-v-562a2cff=\\"\\"><label for=\\"MazSelect-2\\" class=\\"m-input-label\\" data-v-562a2cff=\\"\\">Country code
             <!--v-if-->
           </label></div>
-        <div data-v-562a2cff=\\"\\" class=\\"m-input-wrapper-right\\"><button data-v-948d9dc9=\\"\\" tabindex=\\"-1\\" type=\\"button\\" class=\\"m-select-input__toggle-button maz-custom\\">
+        <div class=\\"m-input-wrapper-right\\" data-v-562a2cff=\\"\\"><button tabindex=\\"-1\\" type=\\"button\\" class=\\"m-select-input__toggle-button maz-custom\\" data-v-948d9dc9=\\"\\">
             <!-- eslint-disable vue/no-v-html -->
             <!-- eslint-disable vue/html-self-closing -->
             <!--v-if-->
@@ -23,14 +23,14 @@ exports[`components/MazPhoneNumberInput.vue > Should match with the snapshot 1`]
         </div>
       </div>
     </div>
-    <transition-stub data-v-948d9dc9=\\"\\" name=\\"maz-slide\\" appear=\\"false\\" persisted=\\"false\\" css=\\"true\\">
+    <transition-stub name=\\"maz-slide\\" appear=\\"false\\" persisted=\\"false\\" css=\\"true\\" data-v-948d9dc9=\\"\\">
       <!--v-if-->
     </transition-stub>
   </div>
-  <div data-v-562a2cff=\\"\\" data-v-195b87f9=\\"\\" class=\\"m-input --should-up --has-label m-phone-number-input__input maz-flex-1 --border-radius --primary --md\\">
-    <div data-v-562a2cff=\\"\\" class=\\"m-input-wrapper --default-border maz-rounded\\">
+  <div class=\\"m-input --should-up --has-label m-phone-number-input__input maz-flex-1 --border-radius --primary --md\\" data-v-562a2cff=\\"\\" data-v-195b87f9=\\"\\">
+    <div class=\\"m-input-wrapper --default-border maz-rounded\\" data-v-562a2cff=\\"\\">
       <!--v-if-->
-      <div data-v-562a2cff=\\"\\" class=\\"m-input-wrapper-input\\"><input data-v-562a2cff=\\"\\" id=\\"MazInput-6\\" type=\\"tel\\" name=\\"input\\" icon-name=\\"phone\\" clearable=\\"\\" class=\\"m-phone-number-input__input maz-flex-1 --border-radius m-input-input\\" aria-label=\\"Phone number\\"><label data-v-562a2cff=\\"\\" for=\\"MazInput-6\\" class=\\"m-input-label\\">Phone number
+      <div class=\\"m-input-wrapper-input\\" data-v-562a2cff=\\"\\"><input id=\\"MazInput-6\\" type=\\"tel\\" name=\\"input\\" icon-name=\\"phone\\" clearable=\\"\\" class=\\"m-phone-number-input__input maz-flex-1 --border-radius m-input-input\\" aria-label=\\"Phone number\\" data-v-562a2cff=\\"\\"><label for=\\"MazInput-6\\" class=\\"m-input-label\\" data-v-562a2cff=\\"\\">Phone number
           <!--v-if-->
         </label></div>
       <!--v-if-->

@@ -23,8 +23,8 @@
 </template>
 
 <script lang="ts" setup>
-  import { MazIcon, MazAvatar } from 'maz-ui/package/components'
-  import { useAos, useThemeHandler, useToast, useWait } from 'maz-ui/package/index'
+  import { MazIcon, MazAvatar } from '@package/components'
+  import { useAos, useThemeHandler, useToast, useWait } from '@package/index'
 
   import TheLoader from './components/TheLoader.vue'
 

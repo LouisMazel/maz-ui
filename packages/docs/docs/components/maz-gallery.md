@@ -38,6 +38,10 @@ description: MazGallery is a standalone component used to display images in a co
 </script>
 ```
 
+## Props & Events emitted
+
+<ComponentPropDoc component="MazGallery" />
+
 <script lang="ts" setup>
   const images = [
     'https://placekitten.com/640/500',
@@ -48,5 +52,3 @@ description: MazGallery is a standalone component used to display images in a co
     'https://placekitten.com/800/800'
   ]
 </script>
-
-<!--@include: ./../.vitepress/generated-docs/maz-gallery.doc.md-->

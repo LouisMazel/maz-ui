@@ -4,13 +4,12 @@
     "source.fixAll.eslint": true,
     "source.fixAll.stylelint": true
   },
-  "eslint.validate": ["vue", "javascript", "typescript", "html"],
+  "eslint.validate": ["vue", "javascript", "typescript"],
   "eslint.packageManager": "npm",
   "editor.quickSuggestions": {
     "other": true,
     "comments": false,
     "strings": true
-  },
-  "css.validate": false,
-  "stylelint.validate": ["vue", "css", "scss", "postcss", "pcss"]
+  }
+  // "css.validate": false
 }

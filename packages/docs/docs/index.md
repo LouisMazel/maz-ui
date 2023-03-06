@@ -23,8 +23,8 @@ hero:
       text: Composables
       link: /composables/use-theme-handler
     - theme: alt
-      text: Helpers
-      link: /helpers/currency
+      text: Filters
+      link: /filters/currency
     - theme: alt
       text: Directives
       link: /directives/zoom-img

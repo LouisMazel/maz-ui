@@ -53,7 +53,7 @@ MazDialogPromise is a standalone component that dialogs with the user to show im
   import { ref } from 'vue'
   import {
     useMazDialogPromise,
-  } from 'maz-ui/package/components/MazDialogPromise.vue'
+  } from 'maz-ui/components/MazDialogPromise'
 
   const { showDialogAndWaitChoice } = useMazDialogPromise()
   const confirmDialog = ref(false)
@@ -114,4 +114,6 @@ MazDialogPromise is a standalone component that dialogs with the user to show im
 </script>
 ```
 
-<!--@include: ./../.vitepress/generated-docs/maz-dialog-promise.doc.md-->
+## Props & Events emitted
+
+<ComponentPropDoc component="MazDialogPromise" />

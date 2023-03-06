@@ -1,40 +1,40 @@
 // Vitest Snapshot v1
 
 exports[`components/MazStepper.vue > Should match with the snapshot 1`] = `
-"<div data-v-8231b20c=\\"\\" class=\\"m-stepper\\"><button data-v-8231b20c=\\"\\" type=\\"button\\" disabled=\\"\\" class=\\"m-stepper__header --is-current-step --success\\">
-    <div data-v-8231b20c=\\"\\" class=\\"m-stepper__header__wrapper\\"><span data-v-8231b20c=\\"\\" class=\\"m-stepper__count --primary\\"><div data-v-8231b20c=\\"\\" class=\\"m-stepper__count__circle\\"><!-- eslint-disable vue/no-v-html --><!-- eslint-disable vue/html-self-closing --><!--v-if--><!-- eslint-enable vue/no-v-html --><!-- eslint-enable vue/html-self-closing --></div> 1</span>
-      <div data-v-8231b20c=\\"\\" class=\\"m-stepper__header__content\\"><span data-v-8231b20c=\\"\\" class=\\"m-stepper__title\\">Step 1</span>
+"<div class=\\"m-stepper\\" data-v-8231b20c=\\"\\"><button type=\\"button\\" disabled=\\"\\" class=\\"m-stepper__header --is-current-step --success\\" data-v-8231b20c=\\"\\">
+    <div class=\\"m-stepper__header__wrapper\\" data-v-8231b20c=\\"\\"><span class=\\"m-stepper__count --primary\\" data-v-8231b20c=\\"\\"><div class=\\"m-stepper__count__circle\\" data-v-8231b20c=\\"\\"><!-- eslint-disable vue/no-v-html --><!-- eslint-disable vue/html-self-closing --><!--v-if--><!-- eslint-enable vue/no-v-html --><!-- eslint-enable vue/html-self-closing --></div> 1</span>
+      <div class=\\"m-stepper__header__content\\" data-v-8231b20c=\\"\\"><span class=\\"m-stepper__title\\" data-v-8231b20c=\\"\\">Step 1</span>
         <!--v-if-->
       </div>
     </div>
     <!--v-if-->
   </button>
-  <div data-v-8231b20c=\\"\\" class=\\"m-stepper__content\\">
-    <transition-group-stub data-v-f61b1628=\\"\\" data-v-8231b20c=\\"\\" name=\\"maz-expand\\" tag=\\"div\\" appear=\\"false\\" persisted=\\"false\\" css=\\"true\\" class=\\"m-transition-expand\\">
+  <div class=\\"m-stepper__content\\" data-v-8231b20c=\\"\\">
+    <transition-group-stub name=\\"maz-expand\\" tag=\\"div\\" appear=\\"false\\" persisted=\\"false\\" css=\\"true\\" class=\\"m-transition-expand\\" data-v-f61b1628=\\"\\" data-v-8231b20c=\\"\\">
       <div data-v-8231b20c=\\"\\">
-        <div data-v-8231b20c=\\"\\" class=\\"m-stepper__content__wrapper\\">Content 1</div>
+        <div class=\\"m-stepper__content__wrapper\\" data-v-8231b20c=\\"\\">Content 1</div>
       </div>
     </transition-group-stub>
   </div>
   <!--v-if-->
-  <div data-v-8231b20c=\\"\\" class=\\"m-stepper__content\\">
-    <transition-group-stub data-v-f61b1628=\\"\\" data-v-8231b20c=\\"\\" name=\\"maz-expand\\" tag=\\"div\\" appear=\\"false\\" persisted=\\"false\\" css=\\"true\\" class=\\"m-transition-expand\\">
+  <div class=\\"m-stepper__content\\" data-v-8231b20c=\\"\\">
+    <transition-group-stub name=\\"maz-expand\\" tag=\\"div\\" appear=\\"false\\" persisted=\\"false\\" css=\\"true\\" class=\\"m-transition-expand\\" data-v-f61b1628=\\"\\" data-v-8231b20c=\\"\\">
       <div data-v-8231b20c=\\"\\" style=\\"display: none;\\">
-        <div data-v-8231b20c=\\"\\" class=\\"m-stepper__content__wrapper\\">Content 2</div>
+        <div class=\\"m-stepper__content__wrapper\\" data-v-8231b20c=\\"\\">Content 2</div>
       </div>
     </transition-group-stub>
-  </div><button data-v-8231b20c=\\"\\" type=\\"button\\" class=\\"m-stepper__header --normal\\">
-    <div data-v-8231b20c=\\"\\" class=\\"m-stepper__header__wrapper\\"><span data-v-8231b20c=\\"\\" class=\\"m-stepper__count --primary\\"><div data-v-8231b20c=\\"\\" class=\\"m-stepper__count__circle\\"><!--v-if--></div> 3</span>
-      <div data-v-8231b20c=\\"\\" class=\\"m-stepper__header__content\\"><span data-v-8231b20c=\\"\\" class=\\"m-stepper__title\\">Step 3</span>
+  </div><button type=\\"button\\" class=\\"m-stepper__header --normal\\" data-v-8231b20c=\\"\\">
+    <div class=\\"m-stepper__header__wrapper\\" data-v-8231b20c=\\"\\"><span class=\\"m-stepper__count --primary\\" data-v-8231b20c=\\"\\"><div class=\\"m-stepper__count__circle\\" data-v-8231b20c=\\"\\"><!--v-if--></div> 3</span>
+      <div class=\\"m-stepper__header__content\\" data-v-8231b20c=\\"\\"><span class=\\"m-stepper__title\\" data-v-8231b20c=\\"\\">Step 3</span>
         <!--v-if-->
       </div>
     </div>
     <!--v-if-->
   </button>
-  <div data-v-8231b20c=\\"\\" class=\\"m-stepper__content --no-border\\">
-    <transition-group-stub data-v-f61b1628=\\"\\" data-v-8231b20c=\\"\\" name=\\"maz-expand\\" tag=\\"div\\" appear=\\"false\\" persisted=\\"false\\" css=\\"true\\" class=\\"m-transition-expand\\">
+  <div class=\\"m-stepper__content --no-border\\" data-v-8231b20c=\\"\\">
+    <transition-group-stub name=\\"maz-expand\\" tag=\\"div\\" appear=\\"false\\" persisted=\\"false\\" css=\\"true\\" class=\\"m-transition-expand\\" data-v-f61b1628=\\"\\" data-v-8231b20c=\\"\\">
       <div data-v-8231b20c=\\"\\" style=\\"display: none;\\">
-        <div data-v-8231b20c=\\"\\" class=\\"m-stepper__content__wrapper\\">Content 3</div>
+        <div class=\\"m-stepper__content__wrapper\\" data-v-8231b20c=\\"\\">Content 3</div>
       </div>
     </transition-group-stub>
   </div>

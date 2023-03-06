@@ -1,100 +1,87 @@
-serve-all:
-	pnpm --parallel serve
 serve-docs:
-	pnpm --filter docs dev
+	make --directory=packages/docs serve
 serve-testing:
-	pnpm --filter testing dev
+	make --directory=packages/testing serve
 
 audit:
-	pnpm audit
-audit-fix:
-	pnpm audit --fix
+	npm audit
+audit-lib:
+	make --directory=packages/lib audit
+audit-docs:
+	make --directory=packages/docs audit
+audit-testing:
+	make --directory=packages/testing audit
+audit-all:
+	make audit audit-lib audit-docs audit-testing
 
-lint:
-	pnpm --parallel lint
 lint-lib:
-	pnpm --filter maz-ui lint
+	make --directory=packages/lib lint
 
-build-all:
-	pnpm --parallel build
 build-docs:
-	pnpm --filter docs build
+	make --directory=packages/docs build
 build-lib:
-	pnpm --filter maz-ui build
-build-cli:
-	pnpm --filter cli build
+	make --directory=packages/lib build
+build-watch-lib:
+	make --directory=packages/lib build-watch
+build-js-lib:
+	make --directory=packages/lib build-js
+build-modules-lib:
+	make --directory=packages/lib build-modules
+build-components-lib:
+	make --directory=packages/lib build-components
+build-component-lib:
+	make --directory=packages/lib build-component component="$(component)"
+build-css-lib:
+	make --directory=packages/lib build-css
+build-types-lib:
+	make --directory=packages/lib build-types
 
 clean:
 	rm -rf node_modules
 clean-lib:
-	rm -rf packages/lib/node_modules
+	make --directory=packages/lib clean
 clean-docs:
-	rm -rf packages/docs/node_modules
-clean-app:
-	rm -rf packages/app/node_modules
-clean-cli:
-	rm -rf packages/cli/node_modules
+	make --directory=packages/docs clean
+clean-testing:
+	make --directory=packages/testing clean
 clean-all:
-	make clean clean-lib clean-docs clean-app clean-cli
+	make clean clean-lib clean-docs clean-testing
 
 install:
-	pnpm install
-install-docs:
-	pnpm --filter docs install
-install-cli:
-	pnpm --filter cli install
+	npm i
 install-lib:
-	pnpm --filter maz-ui install
+	make --directory=packages/lib install
+install-docs:
+	make --directory=packages/docs install
 install-testing:
-	pnpm --filter testing install
+	make --directory=packages/testing install
+install-all:
+	make install install-lib install-docs install-testing
 
+reinstall-lib:
+	make --directory=packages/lib reinstall
+reinstall-docs:
+	make --directory=packages/docs reinstall
+reinstall-testing:
+	make --directory=packages/testing reinstall
 reinstall-all:
-	make clean-all install
+	make clean-all clean-install-all
 
 lint-staged: ## lint-staged
 	npm run pre-commit
 lint-staged-lib: ## lint-staged lib
-	pnpm --filter maz-ui lint-staged
+	make --directory=packages/lib lint-staged
 lint-staged-testing: ## lint-staged testing
 	make --directory=packages/testing lint-staged
-lint-staged-cli: ## lint-staged cli
-	make --directory=packages/cli lint-staged
-
-check-dependencies-update:
-	pnpm update --interactive
-check-dependencies-update-latest:
-	pnpm update --interactive --latest
-check-docs-dependencies-update-latest:
-	pnpm update --filter docs --interactive --latest
-check-lib-dependencies-update-latest:
-	pnpm update --filter maz-ui --interactive --latest
-check-app-dependencies-update-latest:
-	pnpm update --filter app --interactive --latest
-check-cli-dependencies-update-latest:
-	pnpm update --filter cli --interactive --latest
 
 test-unit:
-	pnpm --filter maz-ui test:unit
-test-unit-silent:
-	pnpm --filter maz-ui test:unit --silent
+	make --directory=packages/lib test-unit
 test-unit-watch:
-	pnpm --filter maz-ui test:unit:watch
+	make --directory=packages/lib test-unit-watch
 test-unit-coverage:
-	pnpm --filter maz-ui test:unit:coverage
+	make --directory=packages/lib test-unit-coverage
 test-unit-coverage-watch:
-	pnpm --filter maz-ui test:unit:coverage:watch
-test-unit-coverage-main:
-	pnpm --filter maz-ui test:unit:coverage:master
+	make --directory=packages/lib test-unit-coverage-watch
 
 release:
-	pnpm lerna:version $(type)
-
-# CLI
-
-create-component-files:
-	pnpm --filter cli zv-cli create-files -f $(name)
-generate-components-docs:
-	pnpm --filter cli zv-cli generate-components-docs
-generate-components-docs-watch:
-	pnpm --filter cli zv-cli generate-components-docs --watch
-
+	npm run lerna:version $(type)

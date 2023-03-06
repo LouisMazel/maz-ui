@@ -325,4 +325,6 @@ Select a competition
   ]
 </script>
 
-<!--@include: ./../.vitepress/generated-docs/maz-radio-buttons.doc.md-->
+## Props & Events emitted
+
+<ComponentPropDoc component="MazRadioButtons" />

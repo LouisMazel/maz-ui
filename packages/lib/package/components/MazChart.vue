@@ -18,7 +18,7 @@
       data: { type: Object, required: true },
       height: { type: String, default: undefined },
       width: { type: String, default: undefined },
-      options: { type: Object, default: () => ({}) },
+      options: { type: Object, default: Object },
       plugins: { type: Array as PropType<Plugin[]>, default: () => [] },
       locale: { type: String, default: 'fr-FR' },
     },
@@ -38,7 +38,7 @@
         chart?: Chart
         options?: ChartOptions
         plugins: Plugin[]
-        props: any // typeof props
+        props: typeof props
       }
 
       const chartJSState: ChartJssState = {

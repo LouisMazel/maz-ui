@@ -21,4 +21,6 @@ description: MazLazyImg is a standalone component to display images and svgs wit
 </script>
 ```
 
-<!--@include: ./../.vitepress/generated-docs/maz-lazy-img.doc.md-->
+## Props & Events emitted
+
+<ComponentPropDoc component="MazLazyImg" />

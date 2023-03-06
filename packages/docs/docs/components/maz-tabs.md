@@ -51,12 +51,12 @@ description: MazTabs is a standalone component to display content in tabs with a
 
 ### MazTabsBar
 
-<!--@include: ./../.vitepress/generated-docs/maz-tabs-bar.doc.md-->
+<ComponentPropDoc component="MazTabsBar" />
 
 ### MazTabsContent
 
-<!--@include: ./../.vitepress/generated-docs/maz-tabs-content.doc.md-->
+<ComponentPropDoc component="MazTabsContent" />
 
 ### MazTabsContentItem
 
-<!--@include: ./../.vitepress/generated-docs/maz-tabs-content-item.doc.md-->
+<ComponentPropDoc component="MazTabsContentItem" />

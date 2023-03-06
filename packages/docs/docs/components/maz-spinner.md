@@ -19,4 +19,6 @@ description: MazSpinner is a standalone component that replaces the standard htm
 </script>
 ```
 
-<!--@include: ./../.vitepress/generated-docs/maz-spinner.doc.md-->
+## Props & Events emitted
+
+<ComponentPropDoc component="MazSpinner" />

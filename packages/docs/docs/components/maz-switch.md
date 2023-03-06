@@ -60,4 +60,6 @@ description: MazSwitch is a standalone component that replaces the standard html
 </script>
 ```
 
-<!--@include: ./../.vitepress/generated-docs/maz-switch.doc.md-->
+## Props & Events emitted
+
+<ComponentPropDoc component="MazSwitch" />

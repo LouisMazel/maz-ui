@@ -7,7 +7,7 @@
   },
   "compilerOptions": {
     "declaration": true,
-    "declarationDir": "generated-types",
+    "declarationDir": "types",
     "sourceMap": true,
     "lib": ["esnext", "DOM", "DOM.iterable", "scripthost"],
     "strictPropertyInitialization": false,
@@ -16,10 +16,9 @@
     "baseUrl": ".",
     "paths": {
       "@package/*": ["package/*"],
-      "@components/*": ["package/components/*"],
-      "@icons/*": ["package/icons/*"]
+      "@components/*": ["package/components/*"]
     },
-    "types": ["@types/node", "google.maps", "vite-svg-loader"]
+    "types": ["@types/node", "google.maps"]
   },
   "include": ["package/**/*"],
   "exclude": ["node_modules", "lib", "css", "package/components_tmp/**/*"]

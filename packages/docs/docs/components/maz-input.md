@@ -334,6 +334,10 @@ Use the attribute `color` with a value in this [list](./../guide/colors.md), the
 </template>
 ```
 
+## Props & Events emitted
+
+<ComponentPropDoc component="MazInput" />
+
 <script setup>
   import { ref, computed } from 'vue'
   const inputValue = ref('value')
@@ -353,5 +357,3 @@ Use the attribute `color` with a value in this [list](./../guide/colors.md), the
 
   const colorsArray = computed(() => Object.values(colors))
 </script>
-
-<!--@include: ./../.vitepress/generated-docs/maz-input.doc.md-->

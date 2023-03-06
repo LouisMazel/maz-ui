@@ -11,6 +11,9 @@ on:
 jobs:
   coverage:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./packages/lib
 
     steps:
       - uses: szenius/set-timezone@v1.1
@@ -18,26 +21,26 @@ jobs:
           timezoneLinux: 'Europe/Paris'
           timezoneMacos: 'Europe/Paris'
 
-      - uses: actions/checkout@v3
+      - name: Checkout Actions
+        uses: actions/checkout@v3
 
-      - uses: pnpm/action-setup@v2
+      - uses: actions/setup-node@v3
         with:
-          version: 7
+          node-version: '16'
 
-      - name: Use Node.js
-        uses: actions/setup-node@v3
+      - uses: actions/cache@v3
         with:
-          node-version: '18'
-          cache: 'pnpm'
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install modules
-        run: pnpm --filter maz-ui install
+        run: make install
 
       - name: Test & Publish Code Coverage
         uses: paambaati/codeclimate-action@v3.2.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
-          coverageCommand: pnpm --filter maz-ui test:unit:coverage --silent
+          coverageCommand: make test-unit-coverage
           coverageLocations: |
             ${{github.workspace}}/packages/lib/coverage/clover.xml:clover

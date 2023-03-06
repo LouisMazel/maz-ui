@@ -1,10 +1,10 @@
 // Vitest Snapshot v1
 
 exports[`components/MazInput.vue > Should match with the snapshot 1`] = `
-"<div data-v-562a2cff=\\"\\" class=\\"m-input --primary --md\\">
-  <div data-v-562a2cff=\\"\\" class=\\"m-input-wrapper --default-border maz-rounded\\">
+"<div class=\\"m-input --primary --md\\" data-v-562a2cff=\\"\\">
+  <div class=\\"m-input-wrapper --default-border maz-rounded\\" data-v-562a2cff=\\"\\">
     <!--v-if-->
-    <div data-v-562a2cff=\\"\\" class=\\"m-input-wrapper-input\\"><input data-v-562a2cff=\\"\\" id=\\"MazInput-1\\" type=\\"text\\" name=\\"input\\" class=\\"m-input-input\\">
+    <div class=\\"m-input-wrapper-input\\" data-v-562a2cff=\\"\\"><input id=\\"MazInput-1\\" type=\\"text\\" name=\\"input\\" class=\\"m-input-input\\" data-v-562a2cff=\\"\\">
       <!--v-if-->
     </div>
     <!--v-if-->

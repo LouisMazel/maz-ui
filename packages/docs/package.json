@@ -11,7 +11,6 @@
   },
   "devDependencies": {
     "sitemap": "^7.1.1",
-    "tailwindcss": "^3.2.4",
     "vitepress": "^1.0.0-alpha.31",
     "vue": "^3.2.45"
   },
@@ -21,7 +20,7 @@
     "dayjs": "^1.11.5",
     "dropzone": "^5.9.3",
     "libphonenumber-js": "^1.10.15",
-    "maz-ui": "workspace:^3.6.12",
+    "maz-ui": "file:../lib/dist",
     "vitepress-plugin-google-analytics": "^1.0.2"
   }
 }

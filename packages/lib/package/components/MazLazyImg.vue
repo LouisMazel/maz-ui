@@ -22,7 +22,6 @@
     <img
       v-bind="$attrs"
       src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-      loading="lazy"
     />
     <div v-if="!noLoader" class="m-lazy-img-component-loader">
       <MazSpinner size="2em" />

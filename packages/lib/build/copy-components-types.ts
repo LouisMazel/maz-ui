@@ -1,31 +1,27 @@
-import { copyFileSync, existsSync, mkdirSync, readdirSync, renameSync, statSync } from 'node:fs'
+/* eslint-disable no-console */
+
+import { renameSync, existsSync, statSync, mkdirSync, copyFileSync, readdirSync } from 'node:fs'
 import { resolve, join } from 'node:path'
-import { logger } from './utils/logger'
-import { replaceInFile } from 'replace-in-file'
+import { logger } from './logger'
 
-const INPUT_COMPONENT_DIR = resolve(__dirname, './../generated-types/components')
+const INPUT_COMPONENT_DIR = resolve(__dirname, './../types/components')
 const OUTPUT_TYPES_FILES = resolve(__dirname, './../dist/components')
-const COMPONENTS_TYPE_PATH = resolve(__dirname, './../dist/components/index.d.ts')
 
-function copyRecursive(inputPath: string, outputPath: string) {
-  try {
-    const exists = existsSync(inputPath)
-    const stats = statSync(inputPath)
-    const isDirectory = exists && stats.isDirectory()
+function copyRecursiveSync(inputPath: string, outputPah: string) {
+  const exists = existsSync(inputPath)
+  const stats = statSync(inputPath)
+  const isDirectory = exists && stats.isDirectory()
 
-    if (isDirectory) {
-      const destDirExists = existsSync(outputPath)
-      if (!destDirExists) {
-        mkdirSync(outputPath)
-      }
-      for (const childItemName of readdirSync(inputPath)) {
-        copyRecursive(join(inputPath, childItemName), join(outputPath, childItemName))
-      }
-    } else {
-      copyFileSync(inputPath, outputPath)
+  if (isDirectory) {
+    const destDirExists = existsSync(outputPah)
+    if (!destDirExists) {
+      mkdirSync(outputPah)
     }
-  } catch (error) {
-    throw new Error(`[copy-components-types](copyRecursive) ${error}`)
+    for (const childItemName of readdirSync(inputPath)) {
+      copyRecursiveSync(join(inputPath, childItemName), join(outputPah, childItemName))
+    }
+  } else {
+    copyFileSync(inputPath, outputPah)
   }
 }
 
@@ -39,27 +35,18 @@ function renameAllFiles() {
   }
 }
 
-const replaceTypesExtensions = () => {
-  const options = {
-    files: COMPONENTS_TYPE_PATH,
-    from: /vue';/g,
-    to: "js';",
-  }
-
-  return replaceInFile(options)
-}
-
-export function copyAndTransformComponentsTypesFiles() {
+const launch = () => {
   try {
-    copyRecursive(INPUT_COMPONENT_DIR, OUTPUT_TYPES_FILES)
+    copyRecursiveSync(INPUT_COMPONENT_DIR, OUTPUT_TYPES_FILES)
     renameAllFiles()
-    replaceTypesExtensions()
 
-    logger.success('[copy-components-types] declaration types files copied ✅')
+    logger.success('[CopyComponentsTypes] ✅')
   } catch (error) {
     logger.error(
-      '[copy-components-types] 🔴 Error occurred while copying component type files',
+      '[CopyComponentsTypes] 🔴 Error occurred while copying component type files',
       error,
     )
   }
 }
+
+launch()

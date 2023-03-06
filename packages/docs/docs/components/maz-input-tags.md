@@ -68,4 +68,6 @@ description: MazInputTags is a standalone component like free inputs to help use
 </script>
 ```
 
-<!--@include: ./../.vitepress/generated-docs/maz-input-tags.doc.md-->
+## Props, Events emitted
+
+<ComponentPropDoc component="MazInputTags" />

@@ -34,7 +34,7 @@
 </template>
 
 <script lang="ts">
-  import { ref, type PropType, watch, defineComponent, onMounted } from 'vue'
+  import { ref, type PropType, watch, defineComponent } from 'vue'
 
   const MODAL_OPENED_CLASS = '--backdrop-present'
 
@@ -118,14 +118,6 @@
         removeClassFromDocument()
       }
 
-      onMounted(() => {
-        if (props.modelValue) {
-          addClassAndEventToDocument()
-        } else {
-          removeClassAndEventToDocument()
-        }
-      })
-
       watch(
         () => props.modelValue,
         (value) => {
@@ -137,6 +129,7 @@
             removeClassAndEventToDocument()
           }
         },
+        { immediate: true },
       )
 
       return {

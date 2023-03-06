@@ -4,4 +4,7 @@ package/components_tmp/**/*
 /dist
 /css
 /types
+/components
+/modules
+/maz-ui.d.ts
 /coverage

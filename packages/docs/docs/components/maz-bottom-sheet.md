@@ -63,4 +63,6 @@ This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop
 </template>
 ```
 
-<!--@include: ./../.vitepress/generated-docs/maz-bottom-sheet.doc.md-->
+## Props & Events emitted
+
+<ComponentPropDoc component="MazBottomSheet" />

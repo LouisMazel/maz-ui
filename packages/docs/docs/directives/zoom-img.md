@@ -56,7 +56,7 @@ description: vZoomImg is a Vue 3 directive to enlarge an image like a modal on c
 </MazCard>
 
 <script lang="ts" setup>
-  import { vZoomImg } from 'maz-ui/package/index'
+  import { vZoomImg } from 'maz-ui'
 
   const lazyBinding: vZoomImgBinding = {
     src: 'https://www.francetvinfo.fr/pictures/5u9TF9KLx9yxCgqfDV4k0Zk6R3E/752x423/2014/07/01/edd_1.jpg',

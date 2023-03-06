@@ -219,4 +219,6 @@ description: MazBadge is a standalone component to show short text in colored co
   const roundedSize = ['sm', 'md', 'lg', 'xl', 'full']
 </script>
 
-<!--@include: ./../.vitepress/generated-docs/maz-badge.doc.md-->
+## Props & Events emitted
+
+<ComponentPropDoc component="MazBadge" />

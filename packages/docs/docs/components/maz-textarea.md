@@ -46,4 +46,6 @@ This component has the "autogrow" feature, so when the user writes, the textarea
   const value = ref()
 </script>
 
-<!--@include: ./../.vitepress/generated-docs/maz-textarea.doc.md-->
+## Props & Events emitted
+
+<ComponentPropDoc component="MazTextarea" />

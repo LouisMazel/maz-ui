@@ -1,6 +1,6 @@
 import App from './App.vue'
 
-import '@package/tailwindcss/tailwind.css'
+import '@package/tailwindcss/css/tailwind.css'
 import '@package/plugins/aos/scss/index.scss'
 import '@/css/main.css'
 

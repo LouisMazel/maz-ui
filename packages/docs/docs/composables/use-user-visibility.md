@@ -90,7 +90,7 @@ Switch tabs for a second to see events
 <script lang="ts" setup>
   import { onMounted, ref, onBeforeUnmount } from 'vue'
 
-  import { useUserVisibility } from 'maz-ui/package/index'
+  import { useUserVisibility } from 'maz-ui'
 
   const events = ref([])
 

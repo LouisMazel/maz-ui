@@ -114,9 +114,12 @@ A plugin to know the amount of time a user has spent on your website
 ```
 
 <script lang="ts" setup>
+  import MazBtn from 'maz-ui/components/MazBtn'
+  import MazCard from 'maz-ui/components/MazCard'
+
   import { onMounted, ref, onBeforeUnmount } from 'vue'
 
-  import { useIdleTimeout } from 'maz-ui/package/index'
+  import { useIdleTimeout } from 'maz-ui'
 
   const event = ref({})
 

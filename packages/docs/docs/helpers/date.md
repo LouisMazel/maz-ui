@@ -18,6 +18,17 @@ description: The module date is a function that formats date
   formatted value: <strong>{{ dateFormatted }}</strong>
 </div>
 
+<script lang="ts" setup>
+  import { date } from 'maz-ui'
+  import { ref, computed } from 'vue'
+
+  const dateValue = ref('2022-02-01')
+
+  const dateFormatted = computed(() =>
+    dateValue.value ? date(dateValue.value, 'en-US') : undefined,
+  )
+</script>
+
 ```vue
 <template>
   <MazInput v-model="dateValue" type="date" />
@@ -54,14 +65,3 @@ const DEFAULT_OPTIONS: Intl.DateTimeFormatOptions = {
   year: 'numeric',
 }
 ```
-
-<script lang="ts" setup>
-  import { date } from 'maz-ui/package/index'
-  import { ref, computed } from 'vue'
-
-  const dateValue = ref('2022-02-01')
-
-  const dateFormatted = computed(() =>
-    dateValue.value ? date(dateValue.value, 'en-US') : undefined,
-  )
-</script>

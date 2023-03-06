@@ -96,7 +96,7 @@ export type Result = {
 - **Auto-detect** country calling code with phone number provided
 - You can set your **preferred-countries, ignored-countries** or exclude some countries with **only-countries** - Ex `['FR', 'BE', 'DE']`
 - Validation UI state: input becomes green when the phone number is valid (can be disabled by `no-validation` prop)
-- **Multi options to getting country code** : By default the component gets the country code via the browser (disable it with no-use-browser-locale) or you can use - fetch-country to get the country code via <https://ipwho.is> (network needed) - you can use `default-country-code` option instead to set one
+- **Multi options to getting country code** : By default the component gets the country code via the browser (disable it with no-use-browser-locale) or you can use - fetch-country to get the country code via <http://ipwho.is> (network needed) - you can use `default-country-code` option instead to set one
 - Phone number is formatted while typing
 - You can `search` your country in list
 - Keyboard accessibility (Arrow down, Arrow up: Countries list navigation - Escape: Close countries list)
@@ -141,4 +141,6 @@ export type Result = {
 </template>
 ```
 
-<!--@include: ./../.vitepress/generated-docs/maz-phone-number-input.doc.md-->
+## Props & Events emitted
+
+<ComponentPropDoc component="MazPhoneNumberInput" />
