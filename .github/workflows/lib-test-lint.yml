@@ -8,25 +8,22 @@ on:
 jobs:
   lib-test-lint:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./packages/lib
 
     steps:
-      - name: Checkout Actions
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - uses: actions/setup-node@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
         with:
           node-version: '18'
-
-      - uses: actions/cache@v3
-        with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
+          cache: 'pnpm'
 
       - name: Install modules
-        run: make install
+        run: pnpm --filter maz-ui install
 
       - name: Run linters
-        run: make lint
+        run: pnpm --filter maz-ui lint

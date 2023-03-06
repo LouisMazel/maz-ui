@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "A standalone components library for Vue.Js & Nuxt.Js (v3.x)",
   "scripts": {
+    "preinstall": "npx only-allow pnpm",
     "prepare": "npx husky install",
     "pre-commit": "lint-staged",
     "format": "prettier . --write",
@@ -42,5 +43,15 @@
   "bugs": {
     "url": "https://github.com/LouisMazel/maz-ui/issues"
   },
-  "homepage": "https://louismazel.github.io/maz-ui-3/"
+  "homepage": "https://louismazel.github.io/maz-ui-3/",
+  "pnpm": {
+    "peerDependencyRules": {
+      "ignoreMissing": [
+        "@algolia/client-search",
+        "webpack",
+        "@vue/compiler-dom",
+        "vue"
+      ]
+    }
+  }
 }

@@ -96,8 +96,7 @@ Always run `autoSetTheme` method on app initialization and let the user change t
 
   import MazBtn from 'maz-ui/components/MazBtn'
 
-  import { useThemeHandler } from 'maz-ui'
-  import type { ThemeHandlerOptions } from 'maz-ui'
+  import { useThemeHandler, type ThemeHandlerOptions } from 'maz-ui'
 
   // optional
   const options: ThemeHandlerOptions = {
@@ -132,8 +131,7 @@ Always run `autoSetTheme` method on app initialization and let the user change t
 <script lang="ts" setup>
   import { onMounted } from 'vue'
 
-  import { useThemeHandler } from 'maz-ui'
-  import type { ThemeHandlerOptions } from 'maz-ui'
+  import { useThemeHandler, type ThemeHandlerOptions } from 'maz-ui/package/index'
 
   // optional
   const options: ThemeHandlerOptions = {

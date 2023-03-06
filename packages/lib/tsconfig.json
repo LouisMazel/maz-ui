@@ -16,7 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@package/*": ["package/*"],
-      "@components/*": ["package/components/*"]
+      "@components/*": ["package/components/*"],
+      "@icons/*": ["package/icons/*"]
     },
     "types": ["@types/node", "google.maps", "vite-svg-loader"]
   },
