@@ -59,7 +59,7 @@ This plugin has a composable for easier use, after installing it you can use [us
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import { useWait } from 'maz-ui'
+  import { useWait } from 'maz-ui/package/index'
 
   const { wait } = useWait()
 

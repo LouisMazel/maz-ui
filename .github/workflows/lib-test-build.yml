@@ -8,16 +8,22 @@ on:
 jobs:
   lib-test-build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./packages/lib
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'pnpm'
 
       - name: Install dependencies
-        run: make install
+        run: pnpm --filter maz-ui install
 
       - name: Build lib
-        run: make build
+        run: pnpm --filter maz-ui build

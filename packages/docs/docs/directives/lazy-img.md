@@ -138,7 +138,7 @@ app.mount('#app')
 ```
 
 <script lang="ts" setup>
-  import { vLazyImg, vLazyImgBinding } from 'maz-ui'
+  import { vLazyImg, vLazyImgBinding } from 'maz-ui/package/index'
   import { ref } from 'vue'
 
   const lazyBinding: vLazyImgBinding = {

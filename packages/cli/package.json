@@ -30,6 +30,8 @@
     "cross-env": "^7.0.3",
     "eslint": "^8.34.0",
     "eslint-config-standard-with-typescript": "^34.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^15.6.1",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-sonarjs": "^0.18.0",
