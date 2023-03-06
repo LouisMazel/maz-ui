@@ -6,6 +6,8 @@ sidebar: false
 aside: false
 ---
 
+<!-- markdownlint-disable MD033 -->
+
 # {{ $frontmatter.title }}
 
 {{ $frontmatter.description }}
