@@ -92,9 +92,9 @@ release:
 # CLI
 
 create-component-files:
-	pnpm --filter cli zv-cli create-files -f $(name)
+	pnpm --filter cli maz-cli create-files -f $(name)
 generate-components-docs:
-	pnpm --filter cli zv-cli generate-components-docs
+	pnpm --filter cli maz-cli generate-components-docs
 generate-components-docs-watch:
-	pnpm --filter cli zv-cli generate-components-docs --watch
+	pnpm --filter cli maz-cli generate-components-docs --watch
 
