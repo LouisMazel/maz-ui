@@ -6,6 +6,7 @@ on:
     paths:
       - 'packages/docs/**'
       - 'packages/lib/**'
+      - '.github/workflows/doc-deploy.yml'
 
 jobs:
   doc-build-and-deploy:
@@ -23,14 +24,11 @@ jobs:
           node-version: '18'
           cache: 'pnpm'
 
-      - name: Install and build lib
-        run: make install-lib build-lib
-
-      - name: Install cli
-        run: make install-cli
+      - name: Install dependencies
+        run: make install
 
       - name: Install and build docs
-        run: make install-docs generate-components-docs build-docs
+        run: make generate-components-docs build-docs
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
