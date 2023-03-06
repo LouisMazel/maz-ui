@@ -18,7 +18,7 @@
     "*.{js,ts}": "eslint --fix"
   },
   "devDependencies": {
-    "@clack/prompts": "^0.2.2",
+    "@clack/prompts": "^0.6.3",
     "@types/clear": "^0.1.2",
     "@types/figlet": "^1.5.5",
     "@types/node": "^18.13.0",
