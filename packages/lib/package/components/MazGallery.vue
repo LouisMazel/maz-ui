@@ -24,6 +24,7 @@
           class="m-gallery__item__image maz-flex-1"
           src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
           :alt="image.alt"
+          loading="lazy"
         />
         <div
           v-if="shouldHaveRemainingLayer(i)"
