@@ -3,6 +3,11 @@ name: Lib Publish To Npm
 on:
   release:
     types: [created]
+  push:
+    branches:
+      - master
+    paths:
+      - '.github/workflows/lib-publish.yml'
 
 # on:
 #   push:
@@ -32,6 +37,6 @@ jobs:
       - name: Build Lib
         run: pnpm --filter maz-ui build
 
-      - run: cd dist && npm publish --access public
+      - run: cd packages/lib/dist && npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
