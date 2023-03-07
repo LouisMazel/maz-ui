@@ -1,6 +1,9 @@
 name: Lib Test Build
 
 on:
+  push:
+    paths:
+      - '.github/workflows/lib-test-build.yml'
   pull_request:
     paths:
       - 'packages/lib/**'
@@ -23,7 +26,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm --filter maz-ui install
+        run: pnpm --filter maz-ui install --no-frozen-lockfile
 
       - name: Build lib
         run: pnpm --filter maz-ui build

@@ -3,11 +3,11 @@ name: Lib Publish To Npm
 on:
   release:
     types: [created]
-  # push:
-  #   branches:
-  #     - master
-  #   paths:
-  #     - '.github/workflows/lib-publish.yml'
+  push:
+    branches:
+      - master
+    paths:
+      - '.github/workflows/lib-publish.yml'
 
 # on:
 #   push:
@@ -36,7 +36,7 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
 
       - name: Build Lib
         run: pnpm build

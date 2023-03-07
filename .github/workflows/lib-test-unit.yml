@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'packages/lib/**'
+      - '.github/workflows/lib-test-unit.yml'
   pull_request:
     paths:
       - 'packages/lib/**'
@@ -31,7 +32,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install modules
-        run: pnpm --filter maz-ui install
+        run: pnpm --filter maz-ui install --no-frozen-lockfile
 
       - name: Test & Publish Code Coverage
         uses: paambaati/codeclimate-action@v3.2.0

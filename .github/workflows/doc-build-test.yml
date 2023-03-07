@@ -1,10 +1,12 @@
 name: Doc Build Test
 on:
+  push:
+    paths:
+      - '.github/workflows/doc-build-test.yml'
   pull_request:
     paths:
       - 'packages/docs/**'
       - 'packages/lib/**'
-      - '.github/workflows/doc-build-test.yml'
 
 jobs:
   doc-build-test:
@@ -23,7 +25,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: make install
+        run: pnpm install --no-frozen-lockfile
 
       - name: Install and build docs
         run: make generate-components-docs build-docs

@@ -1,6 +1,9 @@
 name: Cli Test Lint
 
 on:
+  push:
+    paths:
+      - '.github/workflows/cli-test-lint.yml'
   pull_request:
     paths:
       - 'packages/cli/**'
@@ -23,7 +26,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install modules
-        run: pnpm --filter cli install
+        run: pnpm --filter cli install --no-frozen-lockfile
 
       - name: Run linters
         run: pnpm --filter cli lint
