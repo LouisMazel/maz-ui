@@ -1,10 +1,10 @@
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import MazSlider from '@components/MazSlider.vue'
 
 describe('components/MazSlider.vue', () => {
   expect(MazSlider).toBeTruthy()
 
-  const wrapper = mount(MazSlider, {
+  const wrapper = shallowMount(MazSlider, {
     props: {
       modelValue: [25, 50, 75],
       labels: ['Small', 'Middle', 'Big'],

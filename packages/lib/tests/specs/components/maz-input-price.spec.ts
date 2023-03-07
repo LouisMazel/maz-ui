@@ -1,10 +1,10 @@
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import MazInputPrice from '@components/MazInputPrice.vue'
 
 describe('components/MazInput.vue', () => {
   expect(MazInputPrice).toBeTruthy()
 
-  const wrapper = mount(MazInputPrice, {
+  const wrapper = shallowMount(MazInputPrice, {
     props: {
       modelValue: 12,
     },

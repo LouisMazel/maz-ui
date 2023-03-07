@@ -1,10 +1,10 @@
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import MazToast from '@package/plugins/toaster/MazToast.vue'
 
 test('plugins/toaster/MazToast.vue', () => {
   expect(MazToast).toBeTruthy()
 
-  const wrapper = mount(MazToast, {
+  const wrapper = shallowMount(MazToast, {
     props: {
       message: 'Text message',
     },

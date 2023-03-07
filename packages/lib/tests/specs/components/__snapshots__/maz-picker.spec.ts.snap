@@ -1,4 +1,4 @@
-// Vitest Snapshot v1
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`components/MazPicker.vue > Should match with the snapshot 1`] = `
 "<div data-v-4f2ff7fa=\\"\\" class=\\"m-picker m-picker--primary m-picker--bottom m-picker--left\\">

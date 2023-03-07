@@ -1,3 +1,3 @@
-// Vitest Snapshot v1
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`components/MazCheckbox.vue > Should match with the snapshot 1`] = `"<div data-v-ee2b7ffe=\\"\\" class=\\"m-checkbox m-checkbox--primary\\"><input data-v-ee2b7ffe=\\"\\" id=\\"MazCheckbox-1\\" name=\\"m-checkbox\\" type=\\"checkbox\\"><label data-v-ee2b7ffe=\\"\\" for=\\"MazCheckbox-1\\"></label></div>"`;

@@ -1,4 +1,4 @@
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import { injectStrict } from '@package/helpers'
 
 describe('injectStrict', () => {
@@ -11,7 +11,7 @@ describe('injectStrict', () => {
       template: '<span>{{ value }}</span>',
     }
 
-    const wrapper = mount(TestComponent)
+    const wrapper = shallowMount(TestComponent)
 
     expect(wrapper.text()).toBe('fallback')
   })

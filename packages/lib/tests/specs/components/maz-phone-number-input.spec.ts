@@ -1,4 +1,4 @@
-import { mount, type VueWrapper } from '@vue/test-utils'
+import { shallowMount, type VueWrapper } from '@vue/test-utils'
 import MazPhoneNumberInput from '@components/MazPhoneNumberInput.vue'
 import { isCountryAvailable } from '@components/MazPhoneNumberInput/utils/index'
 import type { ComponentPublicInstance } from 'vue'
@@ -9,7 +9,7 @@ describe('components/MazPhoneNumberInput.vue', () => {
   let wrapper: VueWrapper<ComponentPublicInstance & { [key: string]: any }>
 
   beforeEach(() => {
-    wrapper = mount(MazPhoneNumberInput, {
+    wrapper = shallowMount(MazPhoneNumberInput, {
       props: {
         modelValue: '+33658584729',
       },
@@ -21,9 +21,9 @@ describe('components/MazPhoneNumberInput.vue', () => {
   })
 
   test('Should have an uniq id', async () => {
-    expect(wrapper.vm.instanceId).toBe('MazPhoneNumberInput-8')
+    expect(wrapper.vm.instanceId).toBe('MazPhoneNumberInput-5')
 
-    const wrapperTest = mount(MazPhoneNumberInput, {
+    const wrapperTest = shallowMount(MazPhoneNumberInput, {
       props: {
         id: 'test',
       },

@@ -1,4 +1,4 @@
-// Vitest Snapshot v1
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`components/MazSlider.vue > Should match with the snapshot 1`] = `
 "<div data-v-35a82c27=\\"\\" style=\\"padding-top: 2.5em;\\" class=\\"m-slider m-slider--primary\\">
