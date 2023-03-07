@@ -77,9 +77,11 @@ describe('components/MazSelect.vue', () => {
   test('Should open the list on enter keydown', async () => {
     const input = wrapper.find('input')
     expect(input.exists()).toBeTruthy()
+    // @ts-ignore
     input.wrapperElement.dispatchEvent(
       new KeyboardEvent('keydown', { key: 'Enter', code: 'Enter' }),
     )
+    expect(wrapper.vm.hasListOpened).toBe(true)
   })
 
   test('opens and closes the options list when the input is focused or blurred', async () => {

@@ -1,5 +1,5 @@
 import MazChart from '@package/components/MazChart.vue'
-import { mount, shallowMount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 
 const pieChart = {
   type: 'doughnut',
@@ -43,7 +43,7 @@ describe('MazChart', () => {
       },
     }
 
-    const wrapper = mount(MazChart, {
+    const wrapper = shallowMount(MazChart, {
       props: {
         data: pieChart.data,
         type: pieChart.type,

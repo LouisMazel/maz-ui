@@ -1,4 +1,4 @@
-import { mount, VueWrapper } from '@vue/test-utils'
+import { shallowMount, VueWrapper } from '@vue/test-utils'
 import MazStepper from '@components/MazStepper.vue'
 import { ComponentPublicInstance } from 'vue'
 
@@ -8,7 +8,7 @@ describe('components/MazStepper.vue', () => {
   let wrapper: VueWrapper<ComponentPublicInstance & { [key: string]: any }>
 
   beforeEach(() => {
-    wrapper = mount(MazStepper, {
+    wrapper = shallowMount(MazStepper, {
       props: {
         modelValue: 1,
         steps: [{ success: true, disabled: true }],
