@@ -1,6 +1,6 @@
 {
   "name": "docs",
-  "version": "3.7.0",
+  "version": "3.7.1",
   "description": "documentation of maz-ui",
   "author": "LouisMazel <me@loicmazuel.com>",
   "license": "ISC",
@@ -21,7 +21,7 @@
     "dayjs": "^1.11.5",
     "dropzone": "^5.9.3",
     "libphonenumber-js": "^1.10.15",
-    "maz-ui": "workspace:^3.7.0",
+    "maz-ui": "workspace:^3.7.1",
     "vitepress-plugin-google-analytics": "^1.0.2"
   }
 }

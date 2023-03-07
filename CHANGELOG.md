@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.7.1](https://github.com/LouisMazel/maz-ui/compare/v3.7.0...v3.7.1) (2023-03-07)
+
+### Features
+
+- **lib:** maz-dialog - add max-height & scrollable options ([64e16c8](https://github.com/LouisMazel/maz-ui/commit/64e16c86e8ff1c565538c6ef32c48364d930495c))
+
 # [3.7.0](https://github.com/LouisMazel/maz-ui/compare/v3.6.12...v3.7.0) (2023-03-06)
 
 ### Bug Fixes
