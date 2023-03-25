@@ -127,6 +127,7 @@
   const isDisabled = computed(
     () => (props.loading || props.disabled) && component.value === 'button',
   )
+
   const cursorClass = computed(() => (isDisabled.value ? '--cursor-default' : '--cursor-pointer'))
   const variantClass = computed(() => `--is-${props.variant}`)
   const loaderBgColorClass = computed(() => `--${props.color}`)

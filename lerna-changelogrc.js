@@ -1,7 +1,4 @@
 module.exports = {
-  labels: {
-    custom: 'Custom Changes',
-  },
   types: [
     { type: 'feat', section: '🚀 Enhancements', minor: true },
     { type: 'fix', section: '🩹 Fixes', patch: true },
