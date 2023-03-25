@@ -4,6 +4,7 @@
   "yes": false,
   "npmClient": "pnpm",
   "useWorkspaces": true,
+  "changelogPreset": "./lerna-changelogrc.js",
   "command": {
     "version": {
       "allowBranch": ["master", "chore/use-changelogen"],
