@@ -1,13 +1,18 @@
 {
-  "packages": ["packages/*"],
   "loglevel": "verbose",
   "version": "3.7.1",
   "yes": false,
+  "npmClient": "pnpm",
+  "useWorkspaces": true,
+  "changelogPreset": "./lerna-changelogrc",
   "command": {
     "version": {
       "allowBranch": ["master"],
       "message": "chore(release): bump version to %s",
-      "conventionalCommits": true
+      "conventionalCommits": true,
+      "noCommitHooks": true,
+      "noGitTagVersion": true,
+      "noPush": true
     }
   },
   "$schema": "node_modules/lerna/schemas/lerna-schema.json"
