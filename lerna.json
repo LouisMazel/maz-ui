@@ -4,10 +4,10 @@
   "yes": false,
   "npmClient": "pnpm",
   "useWorkspaces": true,
-  "changelogPreset": "./lerna-changelogrc",
+  "changelogPreset": "./lerna-changelogrc.js",
   "command": {
     "version": {
-      "allowBranch": ["master"],
+      "allowBranch": ["master", "chore/use-changelogen"],
       "message": "chore(release): bump version to %s",
       "conventionalCommits": true,
       "noCommitHooks": true,
