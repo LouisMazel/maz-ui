@@ -118,7 +118,10 @@ class AosHandler {
         const useOnce: boolean =
           typeof once === 'string' ? once === 'true' : this.options.animation.once
 
-        if (entry.intersectionRatio > this.options.observer.threshold) {
+        if (
+          typeof this.options.observer.threshold === 'number' &&
+          entry.intersectionRatio > this.options.observer.threshold
+        ) {
           const duration = element.getAttribute('data-maz-aos-duration')
 
           if (!duration) {
