@@ -11,10 +11,10 @@
       <!--
         @slot Default slot - Place your content
           @binding {Function} resolve resolve function
-          @binding {Function} reject resolve function
+          @binding {Function} reject reject function
       -->
       <slot
-        :resolve="(reason?: string | boolean) => rejectDialog(currentModal, reason)"
+        :resolve="(reason?: string | boolean) => resolveDialog(currentModal, reason)"
         :reject="(reason?: string | boolean) => rejectDialog(currentModal, reason)"
       >
         {{ data?.message }}</slot
@@ -24,10 +24,10 @@
       <!--
         @slot Footer Buttons slot
           @binding {Function} resolve resolve function
-          @binding {Function} reject resolve function
+          @binding {Function} reject reject function
       -->
       <slot
-        :resolve="(reason?: string | boolean) => rejectDialog(currentModal, reason)"
+        :resolve="(reason?: string | boolean) => resolveDialog(currentModal, reason)"
         :reject="(reason?: string | boolean) => rejectDialog(currentModal, reason)"
         name="footer-button"
       >
