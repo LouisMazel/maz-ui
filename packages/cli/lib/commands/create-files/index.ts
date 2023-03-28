@@ -52,7 +52,7 @@ export function createFilesCommand(): Command {
         if (Array.isArray(fileTypes)) {
           await runCreateFiles({
             filename,
-            fileTypes,
+            fileTypes: fileTypes as string[],
           })
         }
       } catch {

@@ -97,9 +97,10 @@
       return false
     }
 
-    if (props.maxToasts !== false && container) {
+    if (typeof props.maxToasts === 'number' && container) {
       return props.maxToasts <= container.childElementCount
     }
+
     return container && container.childElementCount > 0
   }
 
