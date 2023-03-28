@@ -1,25 +1,67 @@
 <template>
   <MazDialog
-    v-if="currentModal"
     v-bind="$attrs"
-    :model-value="currentModal?.isActive"
+    :model-value="currentModal?.isActive ?? false"
     @update:model-value="rejectDialog(currentModal)"
   >
     <template #title>
       <slot name="title">{{ data?.title }}</slot>
     </template>
     <template #default>
-      <slot>{{ data?.message }}</slot>
+      <!--
+        @slot Default slot - Place your content
+          @binding {Function} resolve resolve function
+          @binding {Function} reject resolve function
+      -->
+      <slot
+        :resolve="(reason?: string | boolean) => rejectDialog(currentModal, reason)"
+        :reject="(reason?: string | boolean) => rejectDialog(currentModal, reason)"
+      >
+        {{ data?.message }}</slot
+      >
     </template>
     <template #footer>
-      <div class="maz-space-x-2">
-        <MazBtn color="danger" outline @click="rejectDialog(currentModal)">
-          <slot name="cancel-text"> {{ data?.cancelText || 'Cancel' }} </slot>
-        </MazBtn>
-        <MazBtn color="success" @click="resolveDialog(currentModal)">
-          <slot name="confirm-text"> {{ data?.confirmText || 'Confirm' }} </slot>
-        </MazBtn>
-      </div>
+      <!--
+        @slot Footer Buttons slot
+          @binding {Function} resolve resolve function
+          @binding {Function} reject resolve function
+      -->
+      <slot
+        :resolve="(reason?: string | boolean) => rejectDialog(currentModal, reason)"
+        :reject="(reason?: string | boolean) => rejectDialog(currentModal, reason)"
+        name="footer-button"
+      >
+        <div class="maz-space-x-2">
+          <template v-if="buttons.length > 0">
+            <MazBtn
+              v-for="(button, i) in buttons"
+              :key="i"
+              :color="button.color"
+              :size="button.size"
+              :outline="button.outline"
+              :rounded="button.rounded"
+              :disabled="button.disabled"
+              :block="button.block"
+              :loading="button.loading"
+              @click="
+                button.type === 'resolve'
+                  ? resolveDialog(currentModal, button.response)
+                  : rejectDialog(currentModal, button.response)
+              "
+            >
+              {{ button.text }}
+            </MazBtn>
+          </template>
+          <template v-else>
+            <MazBtn color="danger" outline @click="rejectDialog(currentModal)">
+              <slot name="cancel-text"> {{ data?.cancelText || 'Cancel' }} </slot>
+            </MazBtn>
+            <MazBtn color="success" @click="resolveDialog(currentModal)">
+              <slot name="confirm-text"> {{ data?.confirmText || 'Confirm' }} </slot>
+            </MazBtn>
+          </template>
+        </div>
+      </slot>
     </template>
   </MazDialog>
 </template>
@@ -27,13 +69,26 @@
 <script lang="ts">
   export { useMazDialogPromise } from './MazDialogPromise/use-maz-dialog-promise'
   export type { DialogState, DialogData } from './MazDialogPromise/use-maz-dialog-promise'
+  export type { Color, Size } from './types'
+
+  export type DialogButton = {
+    response?: string | boolean
+    type: 'resolve' | 'reject'
+    color?: Color
+    size?: Size
+    text: string
+    outline?: boolean
+    rounded?: boolean
+    disabled?: boolean
+    loading?: boolean
+    block?: boolean
+  }
 </script>
 
 <script lang="ts" setup>
-  // NEXT: multichoice with props buttons { type: resolve | reject; response: string | boolean; color: string }
   import { type PropType, computed } from 'vue'
   import MazDialog from './MazDialog.vue'
-  import MazBtn from './MazBtn.vue'
+  import MazBtn, { type Color, type Size } from './MazBtn.vue'
   import {
     useMazDialogPromise,
     type DialogData,
@@ -41,13 +96,17 @@
   } from './MazDialogPromise/use-maz-dialog-promise'
 
   const props = defineProps({
+    /** Dialog Data - type DialogData */
     data: { type: Object as PropType<DialogData>, default: undefined },
+    /** Uniq identifier */
     identifier: { type: String, required: true },
+    /** Custom buttons - type DialogButton[] */
+    buttons: { type: Array as PropType<DialogButton[]>, default: () => [] },
   })
 
   const { dialogState, rejectDialog, resolveDialog } = useMazDialogPromise()
 
-  const currentModal = computed(() => {
-    return dialogState.value.find(({ id }) => id === props.identifier) as DialogState
-  })
+  const currentModal = computed(
+    () => dialogState.value.find(({ id }) => id === props.identifier) as DialogState,
+  )
 </script>

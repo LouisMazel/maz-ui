@@ -40,9 +40,9 @@ const removeDialogFromState = (identifier: string) => {
   return dialogState.value
 }
 
-const rejectDialog = (currentDialog: DialogState) => {
+const rejectDialog = (currentDialog: DialogState, response: string | boolean = false) => {
   if (currentDialog) {
-    currentDialog.reject?.(false)
+    currentDialog.reject?.(response)
     currentDialog.isActive = false
 
     setTimeout(() => {
@@ -51,9 +51,9 @@ const rejectDialog = (currentDialog: DialogState) => {
   }
 }
 
-const resolveDialog = (currentDialog: DialogState) => {
+const resolveDialog = (currentDialog: DialogState, response: string | boolean = true) => {
   if (currentDialog) {
-    currentDialog.resolve?.(true)
+    currentDialog.resolve?.(response)
     currentDialog.isActive = false
 
     setTimeout(() => {
