@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.8.0](https://github.com/LouisMazel/maz-ui/compare/v3.7.1...v3.8.0) (2023-03-28)
+
+
+### Features
+
+* **lib:** MazDialogPromise - add more options: custom buttons and responses ([9c29a61](https://github.com/LouisMazel/maz-ui/commit/9c29a61e2230ec02d3d67a054051ffc0a4e3aef1))
+
+
+
+
+
 ## [3.7.1](https://github.com/LouisMazel/maz-ui/compare/v3.7.0...v3.7.1) (2023-03-07)
 
 
