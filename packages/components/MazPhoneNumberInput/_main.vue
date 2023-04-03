@@ -13,7 +13,7 @@
       :search="!noSearch"
       :position="position"
       :search-placeholder="t.countrySelectorSearchPlaceholder"
-      :items-height="countriesHeight"
+      :item-height="countriesHeight"
       :error="shouldChooseCountry"
       :hint="shouldChooseCountry ? t.countrySelectorError : null"
       :size="size"
