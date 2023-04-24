@@ -1,110 +1,88 @@
+<template>
+  <Component :is="component" v-bind="props" />
+</template>
+
 <script lang="ts">
-  import { h, ref, onMounted, defineComponent, type PropType } from 'vue'
+  export { getDatasetAtEvent, getElementAtEvent, getElementsAtEvent } from 'vue-chartjs'
+</script>
 
+<script lang="ts" setup>
+  import { defineAsyncComponent } from 'vue'
+  import { createTypedChart } from 'vue-chartjs'
   import {
-    chartJsEventNames,
-    generateEventObject,
-    generateChartJsEventListener,
-  } from './MazChart/includes'
+    ArcElement,
+    BarElement,
+    CategoryScale,
+    Chart,
+    Legend,
+    LineElement,
+    LinearScale,
+    PointElement,
+    Title,
+    Tooltip,
+    type ChartType,
+    type ChartData,
+    type ChartOptions,
+    type DefaultDataPoint,
+    type Plugin,
+    type UpdateMode,
+  } from 'chart.js'
 
-  import Chart from 'chart.js/auto/auto.mjs'
+  export interface ChartProps<
+    TType extends ChartType = ChartType,
+    TData = DefaultDataPoint<TType>,
+    TLabel = unknown,
+  > {
+    type: ChartType
+    data: ChartData<TType, TData, TLabel>
+    options?: ChartOptions<TType>
+    plugins?: Plugin<TType>[]
+    datasetIdKey?: string
+    updateMode?: UpdateMode
+  }
 
-  import type { ChartItem, ChartType, Plugin, ChartData, ChartOptions } from 'chart.js'
+  const props = defineProps<ChartProps>()
 
-  export default defineComponent({
-    name: 'MazChart',
-    props: {
-      type: { type: String, required: true },
-      data: { type: Object, required: true },
-      height: { type: String, default: undefined },
-      width: { type: String, default: undefined },
-      options: { type: Object, default: () => ({}) },
-      plugins: { type: Array as PropType<Plugin[]>, default: () => [] },
-      locale: { type: String, default: 'fr-FR' },
-    },
-    emits: chartJsEventNames,
-    setup(props, { emit }) {
-      const chartRef = ref<HTMLCanvasElement>()
-      //generate chart.js plugin to emit lib events
-      const chartJsEventsPlugin: Plugin = chartJsEventNames.reduce(
-        (reduced, eventType) => {
-          const event = generateEventObject(eventType, chartRef.value)
-          return { ...reduced, ...generateChartJsEventListener(emit, event) }
-        },
-        { id: 'MazChartEventHookPlugin' },
-      )
+  Chart.register(
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend,
+    ArcElement,
+    PointElement,
+    LineElement,
+  )
 
-      type ChartJssState = {
-        chart?: Chart
-        options?: ChartOptions
-        plugins: Plugin[]
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        props: any // typeof props
+  const component = defineAsyncComponent(async () => {
+    /* eslint-disable unicorn/no-await-expression-member */
+    switch (props.type) {
+      case 'bar': {
+        return createTypedChart('bar', (await import('chart.js')).BarController)
       }
-
-      const chartJSState: ChartJssState = {
-        chart: undefined,
-        plugins: [chartJsEventsPlugin, ...props.plugins],
-        props,
+      case 'line': {
+        return createTypedChart('bar', (await import('chart.js')).LineController)
       }
-
-      const destroy = () => {
-        if (chartJSState.chart) {
-          chartJSState.chart.destroy()
-          chartJSState.chart = undefined
-        }
+      case 'scatter': {
+        return createTypedChart('bar', (await import('chart.js')).ScatterController)
       }
-
-      const update = () => {
-        if (chartJSState.chart) {
-          chartJSState.chart.data = {
-            ...chartJSState.chart.data,
-            ...chartJSState.props.data,
-          }
-          chartJSState.chart.options = {
-            ...chartJSState.chart.options,
-            ...chartJSState.props.options,
-          }
-          chartJSState.chart.update('resize')
-        }
+      case 'bubble': {
+        return createTypedChart('bar', (await import('chart.js')).BubbleController)
       }
-
-      const resize = () => chartJSState.chart && chartJSState.chart.resize()
-
-      const render = () => {
-        if (chartJSState.chart) {
-          return chartJSState.chart.update()
-        }
-        if (chartRef.value) {
-          return (chartJSState.chart = new Chart(chartRef.value.getContext('2d') as ChartItem, {
-            type: chartJSState.props.type as ChartType,
-            data: chartJSState.props.data as ChartData,
-            options: {
-              locale: props.locale,
-              ...chartJSState.props.options,
-            },
-            plugins: chartJSState.plugins,
-          }))
-        }
+      case 'pie': {
+        return createTypedChart('bar', (await import('chart.js')).PieController)
       }
-
-      onMounted(() => render())
-
-      return {
-        chartJSState,
-        chartRef,
-        render,
-        resize,
-        update,
-        destroy,
+      case 'doughnut': {
+        return createTypedChart('bar', (await import('chart.js')).DoughnutController)
       }
-    },
-    render(props) {
-      return h('canvas', {
-        ref: 'chartRef',
-        width: props.width,
-        height: props.height,
-      })
-    },
+      case 'polarArea': {
+        return createTypedChart('bar', (await import('chart.js')).PolarAreaController)
+      }
+      case 'radar': {
+        return createTypedChart('bar', (await import('chart.js')).RadarController)
+      }
+    }
+    /* eslint-enable unicorn/no-await-expression-member */
   })
 </script>

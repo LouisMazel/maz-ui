@@ -106,11 +106,11 @@ importers:
   packages/docs:
     dependencies:
       chart.js:
-        specifier: ^3.9.1
-        version: 3.9.1
+        specifier: ^4.2.1
+        version: 4.2.1
       chartjs-plugin-datalabels:
         specifier: ^2.2.0
-        version: 2.2.0(chart.js@3.9.1)
+        version: 2.2.0(chart.js@4.2.1)
       dayjs:
         specifier: ^1.11.5
         version: 1.11.7
@@ -203,8 +203,8 @@ importers:
         specifier: ^4.1.2
         version: 4.1.2
       chart.js:
-        specifier: ^3.9.1
-        version: 3.9.1
+        specifier: ^4.2.1
+        version: 4.2.1
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
@@ -308,8 +308,8 @@ importers:
         specifier: ^33.0.0
         version: 33.0.0(stylelint@15.6.0)
       stylelint-config-standard-scss:
-        specifier: ^8.0.0
-        version: 8.0.0(postcss@8.4.23)(stylelint@15.6.0)
+        specifier: ^9.0.0
+        version: 9.0.0(postcss@8.4.23)(stylelint@15.6.0)
       stylelint-config-tailwindcss:
         specifier: ^0.0.7
         version: 0.0.7(stylelint@15.6.0)(tailwindcss@3.3.1)
@@ -349,6 +349,9 @@ importers:
       vue:
         specifier: ^3.2.45
         version: 3.2.47
+      vue-chartjs:
+        specifier: ^5.2.0
+        version: 5.2.0(chart.js@4.2.1)(vue@3.2.47)
       vue-loader:
         specifier: ^17.0.1
         version: 17.0.1(@vue/compiler-sfc@3.2.47)(vue@3.2.47)
@@ -392,6 +395,9 @@ importers:
       autoprefixer:
         specifier: ^10.4.14
         version: 10.4.14(postcss@8.4.23)
+      chart.js:
+        specifier: ^4.2.1
+        version: 4.2.1
       eslint:
         specifier: ^8.39.0
         version: 8.39.0
@@ -444,8 +450,8 @@ importers:
         specifier: ^33.0.0
         version: 33.0.0(stylelint@15.6.0)
       stylelint-config-standard-scss:
-        specifier: ^8.0.0
-        version: 8.0.0(postcss@8.4.23)(stylelint@15.6.0)
+        specifier: ^9.0.0
+        version: 9.0.0(postcss@8.4.23)(stylelint@15.6.0)
       stylelint-config-tailwindcss:
         specifier: ^0.0.7
         version: 0.0.7(stylelint@15.6.0)(tailwindcss@3.3.1)
@@ -3008,6 +3014,12 @@ packages:
       '@jridgewell/resolve-uri': 3.1.0
       '@jridgewell/sourcemap-codec': 1.4.14
     dev: true
+
+  /@kurkle/color@0.3.2:
+    resolution:
+      {
+        integrity: sha512-fuscdXJ9G1qb7W8VdHi+IwRqij3lBkosAm4ydQtEmbY58OzHXqQhvlxqEkoz0yssNVn38bcpRWgA9PP+OGoisw==,
+      }
 
   /@lerna/child-process@6.6.1:
     resolution:
@@ -5648,13 +5660,16 @@ packages:
       }
     dev: true
 
-  /chart.js@3.9.1:
+  /chart.js@4.2.1:
     resolution:
       {
-        integrity: sha512-Ro2JbLmvg83gXF5F4sniaQ+lTbSv18E+TIf2cOeiH1Iqd2PGFOtem+DUufMZsCJwFE7ywPOpfXFBwRTGq7dh6w==,
+        integrity: sha512-6YbpQ0nt3NovAgOzbkSSeeAQu/3za1319dPUQTXn9WcOpywM8rGKxJHrhS8V8xEkAlk8YhEfjbuAPfUyp6jIsw==,
       }
+    engines: { pnpm: ^7.0.0 }
+    dependencies:
+      '@kurkle/color': 0.3.2
 
-  /chartjs-plugin-datalabels@2.2.0(chart.js@3.9.1):
+  /chartjs-plugin-datalabels@2.2.0(chart.js@4.2.1):
     resolution:
       {
         integrity: sha512-14ZU30lH7n89oq+A4bWaJPnAG8a7ZTk7dKf48YAzMvJjQtjrgg5Dpk9f+LbjCF6bpx3RAGTeL13IXpKQYyRvlw==,
@@ -5662,7 +5677,7 @@ packages:
     peerDependencies:
       chart.js: '>=3.0.0'
     dependencies:
-      chart.js: 3.9.1
+      chart.js: 4.2.1
     dev: false
 
   /check-error@1.0.2:
@@ -12007,7 +12022,7 @@ packages:
     dependencies:
       lilconfig: 2.0.6
       postcss: 8.4.23
-      ts-node: 10.9.1(@types/node@18.16.0)(typescript@4.9.5)
+      ts-node: 10.9.1(@types/node@18.16.0)(typescript@5.0.4)
       yaml: 1.10.2
     dev: true
 
@@ -13758,14 +13773,14 @@ packages:
       stylelint: 15.6.0
     dev: true
 
-  /stylelint-config-recommended-scss@10.0.0(postcss@8.4.23)(stylelint@15.6.0):
+  /stylelint-config-recommended-scss@11.0.0(postcss@8.4.23)(stylelint@15.6.0):
     resolution:
       {
-        integrity: sha512-+YvPgUHi0W5mCJCKdupBCIsWPYNbWuJcRmFtSYujwNg+41ljFknhO9bpY6C+oahv659zW7W1AT7i6DQvJYYr1A==,
+        integrity: sha512-EDghTDU7aOv2LTsRZvcT1w8mcjUaMhuy+t38iV5I/0Qiu6ixdkRwhLEMul3K/fnB2v9Nwqvb3xpvJfPH+HduDw==,
       }
     peerDependencies:
       postcss: ^8.3.3
-      stylelint: ^15.3.0
+      stylelint: ^15.5.0
     peerDependenciesMeta:
       postcss:
         optional: true
@@ -13773,7 +13788,7 @@ packages:
       postcss: 8.4.23
       postcss-scss: 4.0.6(postcss@8.4.23)
       stylelint: 15.6.0
-      stylelint-config-recommended: 11.0.0(stylelint@15.6.0)
+      stylelint-config-recommended: 12.0.0(stylelint@15.6.0)
       stylelint-scss: 4.6.0(stylelint@15.6.0)
     dev: true
 
@@ -13805,17 +13820,6 @@ packages:
       stylelint: 15.6.0
     dev: true
 
-  /stylelint-config-recommended@11.0.0(stylelint@15.6.0):
-    resolution:
-      {
-        integrity: sha512-SoGIHNI748OCZn6BxFYT83ytWoYETCINVHV3LKScVAWQQauWdvmdDqJC5YXWjpBbxg2E761Tg5aUGKLFOVhEkA==,
-      }
-    peerDependencies:
-      stylelint: ^15.3.0
-    dependencies:
-      stylelint: 15.6.0
-    dev: true
-
   /stylelint-config-recommended@12.0.0(stylelint@15.6.0):
     resolution:
       {
@@ -13827,34 +13831,22 @@ packages:
       stylelint: 15.6.0
     dev: true
 
-  /stylelint-config-standard-scss@8.0.0(postcss@8.4.23)(stylelint@15.6.0):
+  /stylelint-config-standard-scss@9.0.0(postcss@8.4.23)(stylelint@15.6.0):
     resolution:
       {
-        integrity: sha512-TDT/gJD/0LUDoUgkjF1uoI/4DfczXHxg7gJVcWT4/JbE6k5hszVuI14reNX+tEwSyMNhcK2BA7izrK+uVAz7XA==,
+        integrity: sha512-yPKpJsrZn4ybuQZx/DkEHuCjw7pJginErE/47dFhCnrvD48IJ4UYec8tSiCuJWMA3HRjbIa3nh5ZeSauDGuVAg==,
       }
     peerDependencies:
       postcss: ^8.3.3
-      stylelint: ^15.4.0
+      stylelint: ^15.5.0
     peerDependenciesMeta:
       postcss:
         optional: true
     dependencies:
       postcss: 8.4.23
       stylelint: 15.6.0
-      stylelint-config-recommended-scss: 10.0.0(postcss@8.4.23)(stylelint@15.6.0)
-      stylelint-config-standard: 32.0.0(stylelint@15.6.0)
-    dev: true
-
-  /stylelint-config-standard@32.0.0(stylelint@15.6.0):
-    resolution:
-      {
-        integrity: sha512-UnGJxYDyYFrIE9CjDMZRkrNh2o4lOtO+MVZ9qG5b8yARfsWho0GMx4YvhHfsv8zKKgHeWX2wfeyxmuoqcaYZ4w==,
-      }
-    peerDependencies:
-      stylelint: ^15.4.0
-    dependencies:
-      stylelint: 15.6.0
-      stylelint-config-recommended: 11.0.0(stylelint@15.6.0)
+      stylelint-config-recommended-scss: 11.0.0(postcss@8.4.23)(stylelint@15.6.0)
+      stylelint-config-standard: 33.0.0(stylelint@15.6.0)
     dev: true
 
   /stylelint-config-standard@33.0.0(stylelint@15.6.0):
@@ -15175,6 +15167,22 @@ packages:
       {
         integrity: sha512-AFbieoL7a5LMqcnOF04ji+rpXadgOXnZsxQr//r83kLPr7biP7am3g9zbaZIaBGwBRWeSvoMD4mgPdX3e4NWBg==,
       }
+    dev: true
+
+  /vue-chartjs@5.2.0(chart.js@4.2.1)(vue@3.2.47):
+    resolution:
+      {
+        integrity: sha512-d3zpKmGZr2OWHQ1xmxBcAn5ShTG917+/UCLaSpaCDDqT0U7DBsvFzTs69ZnHCgKoXT55GZDW8YEj9Av+dlONLA==,
+      }
+    peerDependencies:
+      chart.js: ^4.1.1
+      vue: ^3.0.0-0 || ^2.7.0
+    peerDependenciesMeta:
+      vue:
+        optional: true
+    dependencies:
+      chart.js: 4.2.1
+      vue: 3.2.47
     dev: true
 
   /vue-demi@0.14.0(vue@3.2.47):

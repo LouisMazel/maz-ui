@@ -53,7 +53,7 @@ const getBuildConfig = ({
       fileName: name,
     },
     rollupOptions: {
-      external: ['vue', 'libphonenumber-js', '/^dayjs:.*/', 'chart.js/auto/auto.mjs', 'dropzone'],
+      external: ['vue', 'libphonenumber-js', '/^dayjs:.*/', 'chart.js', 'dropzone', 'vue-chartjs'],
       output: {
         exports: 'named',
         chunkFileNames: 'assets/[name]-[hash].mjs',
@@ -63,7 +63,8 @@ const getBuildConfig = ({
           'libphonenumber-js': 'libphonenumber-js',
           dayjs: 'dayjs',
           dropzone: 'dropzone',
-          'chart.js/auto/auto.mjs': 'chart.js/auto/auto.mjs',
+          'vue-chartjs': 'vue-chartjs',
+          'chart.js': 'chart.js',
           'dayjs/plugin/customParseFormat': 'dayjs/plugin/customParseFormat',
           'dayjs/plugin/weekday': 'dayjs/plugin/weekday',
           'dayjs/plugin/isBetween': 'dayjs/plugin/isBetween',

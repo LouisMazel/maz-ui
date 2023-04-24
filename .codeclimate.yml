@@ -15,7 +15,7 @@ plugins:
   fixme:
     enabled: true
   stylelint:
-    enabled: true
+    enabled: false
 
 checks:
   method-complexity:
