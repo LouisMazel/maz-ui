@@ -16,15 +16,15 @@
     ]
   },
   "devDependencies": {
-    "@commitlint/cli": "^17.5.1",
-    "@commitlint/config-conventional": "^17.4.4",
-    "@types/node": "^18.15.10",
+    "@commitlint/cli": "^17.6.1",
+    "@commitlint/config-conventional": "^17.6.1",
+    "@types/node": "^18.16.0",
     "commitlint-config-cz": "^0.13.3",
     "conventional-changelog-conventionalcommits": "^5.0.0",
     "husky": "^8.0.3",
     "lerna": "^6.6.1",
-    "lint-staged": "^13.2.0",
-    "prettier": "^2.8.7"
+    "lint-staged": "^13.2.1",
+    "prettier": "^2.8.8"
   },
   "repository": {
     "type": "git",

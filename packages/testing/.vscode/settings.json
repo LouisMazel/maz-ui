@@ -5,7 +5,7 @@
     "source.fixAll.stylelint": true
   },
   "eslint.validate": ["vue", "javascript", "typescript", "html"],
-  "eslint.packageManager": "npm",
+  "eslint.packageManager": "pnpm",
   "editor.quickSuggestions": {
     "other": true,
     "comments": false,
