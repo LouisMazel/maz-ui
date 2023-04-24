@@ -15,7 +15,6 @@ module.exports = {
     'selector-pseudo-class-no-unknown': [true, { ignorePseudoClasses: ['deep'] }],
     'selector-class-pattern': undefined,
     'no-descending-specificity': undefined,
-    'string-quotes': 'single',
     'function-no-unknown': [true, { ignoreFunctions: ['v-bind'] }],
   },
 }

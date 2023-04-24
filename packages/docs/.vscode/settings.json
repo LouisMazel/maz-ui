@@ -1,0 +1,16 @@
+{
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+    "source.fixAll.stylelint": true
+  },
+  "eslint.validate": ["vue", "javascript", "typescript", "html"],
+  "eslint.packageManager": "pnpm",
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": false,
+    "strings": true
+  },
+  "css.validate": false,
+  "stylelint.validate": ["vue", "css", "scss", "postcss", "pcss"]
+}

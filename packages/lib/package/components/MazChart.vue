@@ -38,6 +38,7 @@
         chart?: Chart
         options?: ChartOptions
         plugins: Plugin[]
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         props: any // typeof props
       }
 

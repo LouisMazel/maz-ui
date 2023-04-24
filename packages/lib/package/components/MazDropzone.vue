@@ -451,7 +451,7 @@
 
     & .dz-details {
       @apply maz-absolute maz-inset-0 maz-z-20 maz-flex maz-flex-col maz-items-center
-        maz-justify-center maz-rounded maz-py-8 maz-px-4 maz-text-center maz-leading-10 maz-text-white maz-opacity-0;
+        maz-justify-center maz-rounded maz-px-4 maz-py-8 maz-text-center maz-leading-10 maz-text-white maz-opacity-0;
 
       background-color: var(--maz-color-primary-alpha);
       transition: opacity 0.2s linear;

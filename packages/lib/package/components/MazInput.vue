@@ -400,7 +400,7 @@
 
     &-input {
       @apply maz-m-0 maz-block maz-h-full maz-w-full maz-appearance-none maz-border-none
-        maz-bg-transparent maz-py-0 maz-px-4 maz-text-normal maz-shadow-none maz-outline-none;
+        maz-bg-transparent maz-px-4 maz-py-0 maz-text-normal maz-shadow-none maz-outline-none;
 
       &:-webkit-autofill,
       &:-webkit-autofill:hover,
