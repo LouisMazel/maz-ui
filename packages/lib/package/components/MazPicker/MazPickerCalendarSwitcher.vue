@@ -79,7 +79,7 @@
 
 <style lang="postcss" scoped>
   .m-picker-calendar-switcher {
-    @apply maz-flex maz-space-x-2 maz-border-b maz-border-color-lighter maz-py-1 maz-px-2;
+    @apply maz-flex maz-space-x-2 maz-border-b maz-border-color-lighter maz-px-2 maz-py-1;
 
     &__date {
       @apply maz-flex-1 maz-truncate maz-text-center;

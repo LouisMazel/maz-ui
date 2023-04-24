@@ -1,7 +1,8 @@
+import type { App } from 'vue'
 import { vZoomImg } from './zoom-img.directive'
 
 const plugin = {
-  install(app) {
+  install(app: App) {
     app.directive('zoom-img', vZoomImg)
   },
 }

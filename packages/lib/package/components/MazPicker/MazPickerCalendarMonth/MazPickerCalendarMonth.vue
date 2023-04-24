@@ -29,7 +29,8 @@
 
   import MazPickerCalendarGrid from './MazPickerCalendarGrid.vue'
   import MazPickerCalendarDays from './MazPickerCalendarDays.vue'
-  import dayjs, { Dayjs } from 'dayjs'
+  import type { Dayjs } from 'dayjs'
+  import dayjs from 'dayjs'
 
   const props = defineProps({
     modelValue: {

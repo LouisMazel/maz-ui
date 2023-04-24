@@ -1,4 +1,4 @@
-import { ToasterHandler, WaitHandler } from 'maz-ui'
+import type { ToasterHandler, WaitHandler } from 'maz-ui'
 
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {

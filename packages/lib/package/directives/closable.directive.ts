@@ -1,4 +1,4 @@
-import type { Directive, DirectiveBinding, FunctionDirective, Plugin } from 'vue'
+import type { App, Directive, DirectiveBinding, FunctionDirective, Plugin } from 'vue'
 
 const handleOutsideClick = (
   event: TouchEvent | MouseEvent,
@@ -53,7 +53,7 @@ const directive: Directive = {
 }
 
 const plugin: Plugin = {
-  install: (app) => {
+  install: (app: App) => {
     app.directive('closable', directive)
   },
 }

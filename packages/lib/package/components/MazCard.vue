@@ -189,7 +189,7 @@
     @apply maz-relative maz-inline-flex maz-max-h-full maz-flex-col maz-bg-color;
 
     &__header {
-      @apply maz-flex maz-items-center maz-justify-between maz-py-3 maz-px-4 maz-transition-colors maz-delay-200;
+      @apply maz-flex maz-items-center maz-justify-between maz-px-4 maz-py-3 maz-transition-colors maz-delay-200;
 
       &.--is-collapsable {
         @apply hover:maz-bg-color-lighter;
@@ -266,7 +266,7 @@
     }
 
     &__actions {
-      @apply maz-absolute maz-top-0 maz-left-0 maz-z-2;
+      @apply maz-absolute maz-left-0 maz-top-0 maz-z-2;
 
       & > *:not(:last-child) {
         @apply maz-mr-2;

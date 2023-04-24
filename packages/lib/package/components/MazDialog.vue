@@ -61,6 +61,7 @@
   import MazBackdrop from './MazBackdrop.vue'
   import MazIcon from './MazIcon.vue'
   import XIcon from '@package/icons/x.svg'
+  import type { StyleValue } from 'vue'
   import { computed, useAttrs } from 'vue'
 
   defineProps({
@@ -96,7 +97,7 @@
   }))
   const wrapperAttrs = computed(() => ({
     class: attrs.class,
-    style: attrs.style,
+    style: attrs.style as StyleValue,
   }))
 </script>
 
@@ -105,7 +106,7 @@
     @apply maz-flex maz-flex-col maz-rounded maz-bg-color maz-text-normal;
 
     &-header {
-      @apply maz-flex maz-items-center maz-justify-end maz-pt-2 maz-pl-6 maz-pr-2;
+      @apply maz-flex maz-items-center maz-justify-end maz-pl-6 maz-pr-2 maz-pt-2;
 
       &.--has-title {
         @apply maz-justify-between;

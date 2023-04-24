@@ -43,6 +43,7 @@ module.exports = {
       },
     ],
     '@typescript-eslint/ban-ts-comment': 'off',
+    '@typescript-eslint/consistent-type-imports': 'error',
     // vue
     'vue/component-name-in-template-casing': [
       'error',
@@ -84,4 +85,13 @@ module.exports = {
     'sonarjs/no-duplicate-string': 'off',
     'sonarjs/cognitive-complexity': 'warn',
   },
+
+  overrides: [
+    {
+      files: ['tests/specs/**'],
+      rules: {
+        '@typescript-eslint/no-explicit-any': 'off',
+      },
+    },
+  ],
 }

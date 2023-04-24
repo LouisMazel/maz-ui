@@ -4,14 +4,15 @@
     "source.fixAll.eslint": true,
     "source.fixAll.stylelint": true
   },
-  "eslint.validate": ["vue", "javascript", "typescript", "html"],
-  "eslint.packageManager": "npm",
-  "editor.quickSuggestions": {
-    "other": true,
-    "comments": false,
-    "strings": true
-  },
+  // ESLINT
+  "eslint.packageManager": "pnpm",
+  "eslint.enable": true,
+  "eslint.format.enable": true,
+  "eslint.validate": ["javascript", "typescript", "html", "vue"],
+  // CSS - STYLELINT
   "css.validate": false,
+  "less.validate": false,
   "scss.validate": false,
-  "stylelint.validate": ["vue", "css", "scss", "postcss", "pcss"]
+  "stylelint.enable": true,
+  "stylelint.validate": ["css", "scss", "postcss", "pcss", "vue"]
 }

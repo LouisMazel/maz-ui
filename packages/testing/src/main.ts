@@ -5,25 +5,14 @@ import '@package/plugins/aos/scss/index.scss'
 import '@/css/main.css'
 
 import { createApp } from 'vue'
-import { vZoomImgInstall, vZoomImgOptions } from '@package/directives'
-import {
-  installToaster,
-  ToasterOptions,
-  installAos,
-  AosOptions,
-  installWait,
-} from '@package/plugins'
+import { vZoomImgInstall } from '@package/directives'
+import type { ToasterOptions, AosOptions } from '@package/plugins'
+import { installToaster, installAos, installWait } from '@package/plugins'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const app = createApp(App)
 
-const vLazyImgOptions: vZoomImgOptions = {
-  disabled: false,
-  scale: true,
-  blur: true,
-}
-
-app.use(vZoomImgInstall, vLazyImgOptions)
+app.use(vZoomImgInstall)
 
 app.provide('mazIconPath', './maz-icons')
 

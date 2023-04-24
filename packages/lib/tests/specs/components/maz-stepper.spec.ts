@@ -1,6 +1,7 @@
-import { shallowMount, VueWrapper } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import MazStepper from '@components/MazStepper.vue'
-import { ComponentPublicInstance } from 'vue'
+import type { ComponentPublicInstance } from 'vue'
 
 describe('components/MazStepper.vue', () => {
   expect(MazStepper).toBeTruthy()

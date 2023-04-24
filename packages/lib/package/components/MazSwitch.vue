@@ -71,13 +71,13 @@
         content: '';
         transition: all 200ms ease-in-out;
 
-        @apply maz-relative maz-top-1 maz-left-1 maz-block maz-h-4 maz-w-10 maz-rounded-full;
+        @apply maz-relative maz-left-1 maz-top-1 maz-block maz-h-4 maz-w-10 maz-rounded-full;
 
         background-color: var(--m-switch-bg-bar);
       }
 
       & span {
-        @apply maz-absolute maz-top-0 maz-left-0 maz-block maz-h-6 maz-w-6 maz-rounded-full;
+        @apply maz-absolute maz-left-0 maz-top-0 maz-block maz-h-6 maz-w-6 maz-rounded-full;
 
         box-shadow: 0 2px 8px 0 hsl(0deg 0% 0% / 20%);
         transition: all 200ms ease-in-out;

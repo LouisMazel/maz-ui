@@ -24,6 +24,7 @@ module.exports = {
     '@typescript-eslint/comma-dangle': ['error', 'always-multiline'],
     '@typescript-eslint/space-before-function-paren': 'off',
     '@typescript-eslint/strict-boolean-expressions': 'off',
+    '@typescript-eslint/consistent-type-imports': 'error',
     // SONAR
     'sonarjs/no-duplicate-string': 'off',
     // UNICORN

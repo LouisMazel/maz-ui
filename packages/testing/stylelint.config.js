@@ -3,7 +3,6 @@ module.exports = {
   customSyntax: 'postcss-html',
   extends: [
     'stylelint-config-standard',
-    'stylelint-config-prettier',
     'stylelint-config-recommended-vue',
     'stylelint-config-standard-scss',
     'stylelint-config-tailwindcss',
@@ -16,7 +15,6 @@ module.exports = {
     'selector-pseudo-class-no-unknown': [true, { ignorePseudoClasses: ['deep'] }],
     'selector-class-pattern': undefined,
     'no-descending-specificity': undefined,
-    'string-quotes': 'single',
     'function-no-unknown': [true, { ignoreFunctions: ['v-bind'] }],
   },
 }

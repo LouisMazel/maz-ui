@@ -147,11 +147,11 @@
     }
 
     &__icon-left {
-      @apply maz-mr-2 maz--ml-1 maz-leading-none;
+      @apply maz--ml-1 maz-mr-2 maz-leading-none;
     }
 
     &__icon-right {
-      @apply maz-ml-2 maz--mr-1 maz-leading-none;
+      @apply maz--mr-1 maz-ml-2 maz-leading-none;
     }
 
     &.--cursor-pointer {

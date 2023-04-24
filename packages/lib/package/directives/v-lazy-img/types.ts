@@ -1,4 +1,4 @@
-import type { DirectiveBinding } from 'vue'
+import type { DirectiveBinding, ObjectDirective } from 'vue'
 
 export interface ClassOptions {
   baseClass: string
@@ -26,10 +26,10 @@ export type vLazyImgOptions = Partial<ClassOptions>
 
 interface vLazyImgBindingOptions extends vLazyImgOptions {
   src?: string
+  disabled?: boolean
 }
 
 export type vLazyImgBinding = string | vLazyImgBindingOptions
 
-export interface BindingData extends DirectiveBinding {
-  value: vLazyImgBinding
-}
+export type LazyImgBinding = DirectiveBinding<vLazyImgBinding>
+export type LazyImgDirective = ObjectDirective<HTMLElement, vLazyImgBinding>

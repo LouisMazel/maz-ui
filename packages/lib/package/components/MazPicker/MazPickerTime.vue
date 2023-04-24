@@ -32,7 +32,8 @@
   import MazBtn from '../MazBtn.vue'
   import type { PickerValue } from './types'
   import type { Color } from '../types'
-  import dayjs, { Dayjs } from 'dayjs'
+  import type { Dayjs } from 'dayjs'
+  import dayjs from 'dayjs'
 
   type ColumnIdentifier = 'hour' | 'minute' | 'ampm'
 
@@ -332,7 +333,7 @@
       transform: translateY(-50%);
 
       @apply maz-absolute maz-left-0 maz-right-0 maz-top-1/2
-        maz-mx-auto maz-h-9 maz-border-t maz-border-b maz-border-color-lighter;
+        maz-mx-auto maz-h-9 maz-border-b maz-border-t maz-border-color-lighter;
     }
 
     &__column {

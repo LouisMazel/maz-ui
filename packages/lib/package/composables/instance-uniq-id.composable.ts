@@ -1,4 +1,5 @@
-import { computed, getCurrentInstance } from 'vue'
+import type { getCurrentInstance } from 'vue'
+import { computed } from 'vue'
 
 export const useInstanceUniqId = ({
   componentName,

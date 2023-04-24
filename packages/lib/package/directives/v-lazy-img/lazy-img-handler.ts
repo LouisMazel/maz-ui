@@ -1,4 +1,4 @@
-import type { ClassOptions, BindingData, vLazyImgOptions } from './types'
+import type { ClassOptions, LazyImgBinding, vLazyImgOptions } from './types'
 export * from './types'
 
 const EMPTY_PHOTO = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
@@ -96,9 +96,11 @@ export class LazyImg {
     this.setDefaultPhoto(el)
   }
 
-  private getImageUrl(el: HTMLElement, binding: BindingData): string | null | undefined {
+  private getImageUrl(el: HTMLElement, binding: LazyImgBinding): string | null | undefined {
     const dataSrc = this.getImgElement(el).getAttribute('data-src')
     if (dataSrc) return dataSrc
+
+    binding.value
 
     const bindingSrc = typeof binding.value === 'object' ? binding.value.src : binding.value
 
@@ -129,7 +131,7 @@ export class LazyImg {
     }
   }
 
-  private hasBgImgMode(binding: BindingData): boolean {
+  private hasBgImgMode(binding: LazyImgBinding): boolean {
     return binding.arg === 'bg-image'
   }
 
@@ -163,7 +165,7 @@ export class LazyImg {
     imgElement.addEventListener('error', (err) => this.onImgErrorCallback(el, err), { once: true })
   }
 
-  private async loadImage(el: HTMLElement, binding: BindingData): Promise<void> {
+  private async loadImage(el: HTMLElement, binding: LazyImgBinding): Promise<void> {
     this.imageIsLoading(el)
 
     if (this.isPictureElement(el)) {
@@ -193,7 +195,7 @@ export class LazyImg {
 
   private handleIntersectionObserver(
     el: HTMLElement,
-    binding: BindingData,
+    binding: LazyImgBinding,
     entries: IntersectionObserverEntry[],
     observer: IntersectionObserver,
   ) {
@@ -212,7 +214,7 @@ export class LazyImg {
     }
   }
 
-  private createObserver(el: HTMLElement, binding: BindingData) {
+  private createObserver(el: HTMLElement, binding: LazyImgBinding) {
     const observerCallback = (
       entries: IntersectionObserverEntry[],
       intersectionObserver: IntersectionObserver,
@@ -228,7 +230,7 @@ export class LazyImg {
 
   private async imageHandler(
     el: HTMLElement,
-    binding: BindingData,
+    binding: LazyImgBinding,
     type: 'bind' | 'update',
   ): Promise<void> {
     if (type === 'update') {
@@ -245,7 +247,7 @@ export class LazyImg {
 
   private async bindUpdateHandler(
     el: HTMLElement,
-    binding: BindingData,
+    binding: LazyImgBinding,
     type: 'bind' | 'update',
   ): Promise<void> {
     if (this.options.noPhoto) return this.imageHasNoPhoto(el)
@@ -253,7 +255,7 @@ export class LazyImg {
     await this.imageHandler(el, binding, type)
   }
 
-  public async add(el: HTMLElement, binding: BindingData): Promise<void> {
+  public async add(el: HTMLElement, binding: LazyImgBinding): Promise<void> {
     if (this.hasBgImgMode(binding) && this.isPictureElement(el)) {
       throw new Error(`[MazLazyImg] You can't use the "bg-image" mode with "<picture />" element`)
     }
@@ -265,7 +267,7 @@ export class LazyImg {
     await this.bindUpdateHandler(el, binding, 'bind')
   }
 
-  public async update(el: HTMLElement, binding: BindingData): Promise<void> {
+  public async update(el: HTMLElement, binding: LazyImgBinding): Promise<void> {
     if (binding.value !== binding.oldValue) {
       this.hasImgLoaded = false
       this.removeAllStateClasses(el)
@@ -274,7 +276,7 @@ export class LazyImg {
     }
   }
 
-  public remove(el: HTMLElement, binding: BindingData) {
+  public remove(el: HTMLElement, binding: LazyImgBinding) {
     this.hasImgLoaded = false
     if (this.hasBgImgMode(binding)) el.style.backgroundImage = ''
 
