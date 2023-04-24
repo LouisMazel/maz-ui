@@ -1,25 +1,42 @@
 ---
 title: MazChart
-description: MazChart is a standalone input component which generates graphics & charts with chart.js
+description: MazChart is a standalone component which generates graphics & charts with chart.js
 ---
 
 # {{ $frontmatter.title }}
 
 {{ $frontmatter.description }}
 
-To use this component, you have to install the `chart.js` dependency
+To use this component, you have to install the `chart.js` and `vue-chart` dependency
 
-<NpmBadge package="chart.js" dist-tag="3" />
+<div class="flex gap-4">
+  <NpmBadge package="chart.js" dist-tag="3" />
+  <NpmBadge package="vue-chart" dist-tag="2" />
+</div>
 
 ```bash
-npm install chart.js@^3.9.1
+npm install chart.js@^4 vue-chart@^2
 ```
 
-## Chart.JS Documentation
+::: info
 
-See the [Chart.JS](https://www.chartjs.org/docs/latest/) documentation to create your own chart
+For maz-ui versions below `3.9.x`, you should only install `chart.js@^3`
 
-You can use all the plugins of Chart.JS. Follow the example below
+<NpmBadge package="chart.js" dist-tag="4" />
+
+```bash
+npm install chart.js@^3
+```
+
+:::
+
+## Documentation
+
+Follow the [Chart.JS](https://www.chartjs.org/docs/latest/) documentation to create your own chart.
+
+You can also check the documentation and [examples of vue-chartjs](https://vue-chartjs.org/examples/)
+
+You can use all the plugins of Chart.JS. Follow the examples below.
 
 ## Bar chart
 
@@ -68,13 +85,6 @@ You can use all the plugins of Chart.JS. Follow the example below
         ],
         borderWidth: 1
       }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
     },
   }
 </script>
@@ -136,13 +146,13 @@ You can use all the plugins of Chart.JS. Follow the example below
 
 <br/>
 
-<MazChart v-bind="{ ...lineChart }" />
+<MazChart v-bind="lineChart" />
 
 ::: details Show code
 
 ```vue
 <template>
-  <MazChart v-bind="{ ...lineChart }" />
+  <MazChart v-bind="lineChart" />
 </template>
 
 <script setup lang="ts">
@@ -270,7 +280,7 @@ You can use all the plugins of Chart.JS. Follow the example below
         },
         {
           label: 'Vos bons pronos',
-          data: [10, 15, 20, 25, 30, 35],
+          data: [20, 15, 15, 30, 22, 40],
           fill: false,
           borderColor: '#333',
           tension: 0.5,
@@ -323,13 +333,6 @@ You can use all the plugins of Chart.JS. Follow the example below
         ],
         borderWidth: 1
       }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
     },
   }
 </script>
