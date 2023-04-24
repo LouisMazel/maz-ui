@@ -34,7 +34,8 @@
 <script lang="ts" setup>
   import { date } from '@package/filters'
   import { computed, type PropType, ref } from 'vue'
-  import dayjs, { Dayjs } from 'dayjs'
+  import type { Dayjs } from 'dayjs'
+  import dayjs from 'dayjs'
   import type { Color } from '@components/types'
   import MazBtn from '@components/MazBtn.vue'
   import XIcon from '@package/icons/x.svg'

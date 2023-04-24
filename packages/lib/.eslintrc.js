@@ -43,6 +43,7 @@ module.exports = {
       },
     ],
     '@typescript-eslint/ban-ts-comment': 'off',
+    '@typescript-eslint/consistent-type-imports': 'error',
     // vue
     'vue/component-name-in-template-casing': [
       'error',

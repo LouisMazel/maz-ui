@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { IdleTimeoutOptions, IdleTimeoutCallback, IdleTimeout } from '@package/helpers'
+import type { IdleTimeoutOptions, IdleTimeoutCallback } from '@package/helpers'
+import { IdleTimeout } from '@package/helpers'
 
 import { sleep } from '@package/helpers'
 

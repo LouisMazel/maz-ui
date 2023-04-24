@@ -61,6 +61,7 @@
   import MazBackdrop from './MazBackdrop.vue'
   import MazIcon from './MazIcon.vue'
   import XIcon from '@package/icons/x.svg'
+  import type { StyleValue } from 'vue'
   import { computed, useAttrs } from 'vue'
 
   defineProps({
@@ -96,7 +97,7 @@
   }))
   const wrapperAttrs = computed(() => ({
     class: attrs.class,
-    style: attrs.style,
+    style: attrs.style as StyleValue,
   }))
 </script>
 

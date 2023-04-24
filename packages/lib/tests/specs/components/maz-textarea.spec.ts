@@ -1,7 +1,8 @@
-import { shallowMount, VueWrapper } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import MazTextarea from '@components/MazTextarea.vue'
 import { TextareaAutogrow } from '@components/MazTextarea/textarea-autogrow'
-import { ComponentPublicInstance } from 'vue'
+import type { ComponentPublicInstance } from 'vue'
 import { elementEmitEvent } from '@tests/helpers/document-event'
 
 describe('components/MazTextarea/textarea-autogrow.ts', () => {

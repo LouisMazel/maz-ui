@@ -20,7 +20,7 @@
             blur: blur,
             scale: scale,
           }"
-          v-lazy-img:bg-image="{ src: image.src, disabled: !lazy }"
+          v-lazy-img:[lazyImgArgument]="{ src: image.src, disabled: !lazy }"
           class="m-gallery__item__image maz-flex-1"
           src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
           :alt="image.alt"
@@ -58,8 +58,8 @@
   </div>
 </template>
 
-<script lang="ts">
-  import { defineComponent, computed, type PropType, onBeforeMount } from 'vue'
+<script lang="ts" setup>
+  import { computed, type PropType, onBeforeMount } from 'vue'
   import { vZoomImg } from '@package/directives/v-zoom-img'
   import { vLazyImg } from '@package/directives/v-lazy-img'
   import type { MazGalleryImage } from './types'
@@ -67,104 +67,88 @@
   export type { MazGalleryImage } from './types'
   import NoPhotographyIcon from '@package/icons/no-photography.svg'
 
-  export default defineComponent({
-    components: { MazIcon },
-    directives: {
-      'zoom-img': vZoomImg,
-      'lazy-img': vLazyImg,
+  const lazyImgArgument = 'bg-image'
+
+  const props = defineProps({
+    // Array of string or object: `['https://via.placeholder.com/500', 'https://via.placeholder.com/600']` or `[{ slug: 'https://via.placeholder.com/500', alt: 'image descripton' }, { slug: 'https://via.placeholder.com/600', alt: 'image descripton' }]`
+    images: {
+      type: Array as PropType<MazGalleryImage[]>,
+      default: () => [],
     },
-    props: {
-      // Array of string or object: `['https://via.placeholder.com/500', 'https://via.placeholder.com/600']` or `[{ slug: 'https://via.placeholder.com/500', alt: 'image descripton' }, { slug: 'https://via.placeholder.com/600', alt: 'image descripton' }]`
-      images: {
-        type: Array as PropType<MazGalleryImage[]>,
-        default: () => [],
-      },
-      // Images count shown (max: 5)
-      imagesShownCount: { type: Number, default: 5 },
-      // Remove transparent layer with the remain count (ex: +2)
-      noRemaining: { type: Boolean, default: false },
-      // Height of gallery
-      height: { type: [Number, String], default: 150 },
-      // Remove default height
-      noHeight: { type: Boolean, default: false },
-      // Width of gallery
-      width: { type: [Number, String], default: '100%' },
-      // Remove default width
-      noWidth: { type: Boolean, default: false },
-      // Add the default border radius to gallery
-      noRadius: { type: Boolean, default: false },
-      // Add feature to show the carousel images on click
-      noZoom: { type: Boolean, default: false },
-      // Layer with photography icon when no images is provided
-      hasEmptyLayer: { type: Boolean, default: true },
-      // Lazy load image - if false, images are directly loaded
-      lazy: { type: Boolean, default: true },
-      // Blur animation effect on image hover
-      blur: { type: Boolean, default: true },
-      // Scale animation effect on image hover
-      scale: { type: Boolean, default: true },
-    },
-    setup(props) {
-      onBeforeMount(() => {
-        if (props.imagesShownCount > 5)
-          // eslint-disable-next-line no-console
-          console.warn('[MazUI](m-gallery) The maximum of "images-shown-count" is 5')
-      })
-      const sizeStyle = computed(() => {
-        const { height, width, noWidth, noHeight } = props
-        return {
-          ...(noWidth
-            ? {}
-            : {
-                flex: '0 0 ' + typeof width === 'number' ? `${width}px` : width,
-                width: typeof width === 'number' ? `${width}px` : width,
-              }),
-          ...(noHeight
-            ? {}
-            : {
-                height: typeof height === 'number' ? `${height}px` : `${height}`,
-                minHeight: typeof height === 'number' ? `${height}px` : `${height}`,
-              }),
-        }
-      })
-      const imagesCount = computed(() => {
-        return props.imagesShownCount <= 5 ? props.imagesShownCount : 5
-      })
-      const numberImagesRemaining = computed(() => {
-        return (
-          props.images.length -
-          (props.images.length < imagesCount.value ? props.images.length : imagesCount.value)
-        )
-      })
-      const imagesNormalized = computed(() => {
-        return props.images.map((image) =>
-          typeof image === 'object' ? image : { src: image, alt: undefined },
-        )
-      })
-      const imagesShown = computed(() => {
-        return imagesNormalized.value.slice(0, imagesCount.value)
-      })
-      const imagesHidden = computed(() => {
-        return imagesNormalized.value.slice(imagesCount.value, props.images.length)
-      })
-      const shouldHaveRemainingLayer = (index: number) => {
-        return (
-          numberImagesRemaining.value &&
-          index + 1 === imagesShown.value.length &&
-          !props.noRemaining
-        )
-      }
-      return {
-        sizeStyle,
-        imagesCount,
-        shouldHaveRemainingLayer,
-        imagesShown,
-        numberImagesRemaining,
-        imagesHidden,
-        NoPhotographyIcon,
-      }
-    },
+    // Images count shown (max: 5)
+    imagesShownCount: { type: Number, default: 5 },
+    // Remove transparent layer with the remain count (ex: +2)
+    noRemaining: { type: Boolean, default: false },
+    // Height of gallery
+    height: { type: [Number, String], default: 150 },
+    // Remove default height
+    noHeight: { type: Boolean, default: false },
+    // Width of gallery
+    width: { type: [Number, String], default: '100%' },
+    // Remove default width
+    noWidth: { type: Boolean, default: false },
+    // Add the default border radius to gallery
+    noRadius: { type: Boolean, default: false },
+    // Add feature to show the carousel images on click
+    noZoom: { type: Boolean, default: false },
+    // Layer with photography icon when no images is provided
+    hasEmptyLayer: { type: Boolean, default: true },
+    // Lazy load image - if false, images are directly loaded
+    lazy: { type: Boolean, default: true },
+    // Blur animation effect on image hover
+    blur: { type: Boolean, default: true },
+    // Scale animation effect on image hover
+    scale: { type: Boolean, default: true },
   })
+
+  onBeforeMount(() => {
+    if (props.imagesShownCount > 5)
+      // eslint-disable-next-line no-console
+      console.warn('[MazUI](m-gallery) The maximum of "images-shown-count" is 5')
+  })
+
+  const sizeStyle = computed(() => {
+    const { height, width, noWidth, noHeight } = props
+    return {
+      ...(noWidth
+        ? {}
+        : {
+            flex: '0 0 ' + typeof width === 'number' ? `${width}px` : width,
+            width: typeof width === 'number' ? `${width}px` : width,
+          }),
+      ...(noHeight
+        ? {}
+        : {
+            height: typeof height === 'number' ? `${height}px` : `${height}`,
+            minHeight: typeof height === 'number' ? `${height}px` : `${height}`,
+          }),
+    }
+  })
+  const imagesCount = computed(() => {
+    return props.imagesShownCount <= 5 ? props.imagesShownCount : 5
+  })
+  const numberImagesRemaining = computed(() => {
+    return (
+      props.images.length -
+      (props.images.length < imagesCount.value ? props.images.length : imagesCount.value)
+    )
+  })
+  const imagesNormalized = computed(() => {
+    return props.images.map((image) =>
+      typeof image === 'object' ? image : { src: image, alt: undefined },
+    )
+  })
+  const imagesShown = computed(() => {
+    return imagesNormalized.value.slice(0, imagesCount.value)
+  })
+  const imagesHidden = computed(() => {
+    return imagesNormalized.value.slice(imagesCount.value, props.images.length)
+  })
+  const shouldHaveRemainingLayer = (index: number) => {
+    return (
+      numberImagesRemaining.value && index + 1 === imagesShown.value.length && !props.noRemaining
+    )
+  }
 </script>
 
 <style lang="postcss" scoped>

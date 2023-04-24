@@ -1,5 +1,5 @@
 <template>
-  <Transition :name="transitionName" tag="div">
+  <Transition :name="transitionName">
     <div v-show="isCurrentTab" ref="MazTabsContentItem" class="m-tabs-content-item">
       <slot />
     </div>

@@ -2,6 +2,7 @@ import { vClickOutside } from './click-outside.directive'
 import { vClosable } from './closable.directive'
 import { vZoomImg } from './v-zoom-img'
 import { vLazyImg } from './v-lazy-img'
+import type { App } from 'vue'
 
 const directives = [
   {
@@ -23,7 +24,7 @@ const directives = [
 ]
 
 const installDirectives = {
-  install(app) {
+  install(app: App) {
     for (const { name, directive } of directives) {
       app.directive(name, directive)
     }

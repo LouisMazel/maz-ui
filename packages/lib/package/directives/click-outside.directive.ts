@@ -1,5 +1,5 @@
 import { nextTick } from 'vue'
-import type { Directive, DirectiveBinding, Plugin } from 'vue'
+import type { Directive, DirectiveBinding, Plugin, App } from 'vue'
 
 const UNIQUE_ID = '__vue_click_away__'
 
@@ -59,7 +59,7 @@ const mixin = {
 export { directive, mixin }
 
 const plugin: Plugin = {
-  install: (app) => {
+  install: (app: App) => {
     app.directive('click-outside', directive)
   },
 }

@@ -15,6 +15,7 @@
     "noImplicitThis": false,
     "baseUrl": ".",
     "ignoreDeprecations": "5.0",
+    "verbatimModuleSyntax": false,
     "paths": {
       "@package/*": ["package/*"],
       "@components/*": ["package/components/*"],

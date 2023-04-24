@@ -5,3 +5,4 @@ dist
 types
 coverage
 *.svg
+generated-types

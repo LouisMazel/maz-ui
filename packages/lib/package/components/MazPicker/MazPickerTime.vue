@@ -32,7 +32,8 @@
   import MazBtn from '../MazBtn.vue'
   import type { PickerValue } from './types'
   import type { Color } from '../types'
-  import dayjs, { Dayjs } from 'dayjs'
+  import type { Dayjs } from 'dayjs'
+  import dayjs from 'dayjs'
 
   type ColumnIdentifier = 'hour' | 'minute' | 'ampm'
 

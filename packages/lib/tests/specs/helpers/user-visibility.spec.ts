@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
-import { UserVisibilyCallback, UserVisibilyOptions, UserVisibility } from '@package/helpers'
+import type { UserVisibilyCallback, UserVisibilyOptions } from '@package/helpers'
+import { UserVisibility } from '@package/helpers'
 
 import { sleep } from '@package/helpers'
 

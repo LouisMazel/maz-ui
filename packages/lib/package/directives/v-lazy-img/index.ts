@@ -1,3 +1,4 @@
+import type { App } from 'vue'
 import { LazyImg, DEFAULT_OPTIONS } from './lazy-img-handler'
 import type { vLazyImgOptions } from './types'
 export * from './types'
@@ -5,7 +6,7 @@ export * from './types'
 const DIRECTIVE_NAME = 'lazy-img'
 
 const plugin = {
-  install(app, opts: vLazyImgOptions = {}) {
+  install(app: App, opts: vLazyImgOptions = {}) {
     const options: vLazyImgOptions = {
       ...DEFAULT_OPTIONS,
       ...opts,

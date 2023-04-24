@@ -1,5 +1,5 @@
 import { useInstanceUniqId } from '@package/composables'
-import { getCurrentInstance } from 'vue'
+import type { getCurrentInstance } from 'vue'
 
 let instance: ReturnType<typeof useInstanceUniqId>
 

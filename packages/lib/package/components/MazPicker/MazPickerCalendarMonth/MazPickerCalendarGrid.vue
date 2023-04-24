@@ -51,7 +51,8 @@
   import type { Color } from '@components/types'
   import { debounce } from '@package/helpers'
   import type { PartialRangeValue, PickerValue } from '../types'
-  import dayjs, { Dayjs } from 'dayjs'
+  import type { Dayjs } from 'dayjs'
+  import dayjs from 'dayjs'
 
   enum DaySelect {
     UNSELECTED,

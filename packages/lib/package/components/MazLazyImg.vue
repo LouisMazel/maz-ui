@@ -4,10 +4,10 @@
       noPhoto: noPhoto,
       observerOnce: !noObserverOnce,
       loadOnce: loadOnce,
-      onIntersecting: (el: HTMLElement) => $emit('intersecting', el),
-      onLoading: (el: HTMLElement) => $emit('loading', el),
-      onLoaded: (el: HTMLElement) => $emit('loaded', el),
-      onError: (el: HTMLElement) => $emit('error', el),
+      onIntersecting: (el) => $emit('intersecting', el),
+      onLoading: (el) => $emit('loading', el),
+      onLoaded: (el) => $emit('loaded', el),
+      onError: (el) => $emit('error', el),
       observerOptions: observerOptions,
     }"
     class="m-lazy-img-component"
