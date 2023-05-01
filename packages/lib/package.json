@@ -79,7 +79,7 @@
     "@vue/tsconfig": "^0.3.2",
     "autoprefixer": "^10.4.14",
     "c8": "^7.12.0",
-    "chalk": "^4.1.2",
+    "chalk": "^5.0.1",
     "chart.js": "^4.2.1",
     "cross-env": "^7.0.3",
     "dayjs": "^1.11.7",
