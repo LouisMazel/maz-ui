@@ -90,7 +90,7 @@
     "eslint-plugin-unicorn": "^46.0.0",
     "eslint-plugin-vue": "^9.11.0",
     "fs": "0.0.2",
-    "jsdom": "^21.1.1",
+    "jsdom": "^22.1.0",
     "json-templater": "^1.2.0",
     "libphonenumber-js": "^1.10.28",
     "lint-staged": "^13.2.1",
