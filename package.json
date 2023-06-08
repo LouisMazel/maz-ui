@@ -8,7 +8,8 @@
     "pre-commit": "lint-staged",
     "format": "prettier . --write",
     "lint": "lerna run lint --parallel",
-    "lerna:version": "HUSKY=0 npx lerna version"
+    "lerna:version": "HUSKY=0 npx lerna version",
+    "lerna:repair": "npx lerna repair"
   },
   "lint-staged": {
     "!(node_modules/**/*|packages/**/*|.prettierignore|.gitignore|.editorconfig).*": [
@@ -22,7 +23,7 @@
     "commitlint-config-cz": "^0.13.3",
     "conventional-changelog-conventionalcommits": "^6.0.0",
     "husky": "^8.0.3",
-    "lerna": "^6.6.1",
+    "lerna": "^7.0.0",
     "lint-staged": "^13.2.2",
     "prettier": "^2.8.8"
   },
