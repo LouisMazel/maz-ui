@@ -46,7 +46,7 @@ export function sanitizePhoneNumber(input?: string) {
   const hasPhoneChar = PHONE_CHAR_REGEX.test(input)
 
   if (!hasNonAlpha && !hasPhoneChar) {
-    return input.replace(/[^\d.]/g, '')
+    return input.replaceAll(/[^\d.]/g, '')
   }
 
   return input

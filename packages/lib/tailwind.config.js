@@ -11,7 +11,7 @@ module.exports = {
     transform: {
       vue: (content) => {
         const regex = /<style[^>]*>([\S\s]*?)<\/style>/g
-        return content.replace(regex, '')
+        return content.replaceAll(regex, '')
       },
     },
   },
