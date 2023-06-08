@@ -1,7 +1,7 @@
 export {
   ToasterHandler,
-  plugin as installToaster,
-  instance as toastInstance,
+  installToaster,
+  toastInstance,
   type ToasterOptions,
   type ToasterPositions,
 } from './toaster'
