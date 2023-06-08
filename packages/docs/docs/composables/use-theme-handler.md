@@ -44,14 +44,16 @@ description: Vue composable for handling UI theme - Automatically sets dark and 
  {{ { theme, hasDarkTheme, hasLightTheme } }}
 </code>
 
-## How to use it ?
+## How to use it?
 
 ::: info
 `autoSetTheme` method, does not store theme value in localStorage but always lets the user's preferences apply on every visit (some users automatically have light mode during the day and dark at night)
 :::
 
 :::tip
+
 Always run `autoSetTheme` method on app initialization and let the user change the theme with `toggleTheme` or `setDarkTheme` or `setLightTheme`
+
 :::
 
 ### Example
@@ -131,7 +133,7 @@ Always run `autoSetTheme` method on app initialization and let the user change t
 <script lang="ts" setup>
   import { onMounted } from 'vue'
 
-  import { useThemeHandler, type ThemeHandlerOptions } from 'maz-ui/package/index'
+  import { useThemeHandler, type ThemeHandlerOptions } from 'maz-ui'
 
   // optional
   const options: ThemeHandlerOptions = {

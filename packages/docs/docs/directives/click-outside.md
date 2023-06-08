@@ -77,7 +77,7 @@ app.mount('#app')
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import { vClickOutside } from 'maz-ui/package/index'
+  import { vClickOutside } from 'maz-ui'
 
   const hasClikedOutside = ref(false)
 

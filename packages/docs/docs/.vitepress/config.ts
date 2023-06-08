@@ -55,14 +55,6 @@ export default defineConfig({
         allow: [join(__dirname, './../../../lib')],
       },
     },
-    resolve: {
-      alias: {
-        '@': join(__dirname, 'src'),
-        '~': join(__dirname, 'src'),
-        '@package': join(__dirname, './../../../lib/package'),
-        '@components': join(__dirname, './../../../lib/package/components'),
-      }
-    }
   },
 
   // og:title

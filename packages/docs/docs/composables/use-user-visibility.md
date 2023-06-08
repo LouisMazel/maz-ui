@@ -35,7 +35,7 @@ Useful to know if the user is displaying your website
 Switch tabs for a second to see events
 :::
 
-## How to use it ?
+## How to use it?
 
 ```vue
 <template>
@@ -90,7 +90,7 @@ Switch tabs for a second to see events
 <script lang="ts" setup>
   import { onMounted, ref, onBeforeUnmount } from 'vue'
 
-  import { useUserVisibility } from 'maz-ui/package/index'
+  import { useUserVisibility } from 'maz-ui'
 
   const events = ref([])
 
@@ -153,7 +153,7 @@ const defaultOptions: UserVisibilyOptions = {
 
 ### Start
 
-Will start the user visibilty tracking
+Will start the user visibility tracking
 
 ```ts
 visibility.start()

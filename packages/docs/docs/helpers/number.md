@@ -54,7 +54,7 @@ const DEFAULT_OPTIONS: Intl.NumberFormatOptions = {
 ```
 
 <script lang="ts" setup>
-  import { number } from 'maz-ui/package/index'
+  import { number } from 'maz-ui'
   import { ref, computed } from 'vue'
 
   const numberValue = ref(69)

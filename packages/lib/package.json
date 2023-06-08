@@ -3,17 +3,23 @@
   "version": "3.9.1",
   "description": "A standalone components library for Vue.Js 3 & Nuxt.Js 3",
   "author": "Louis Mazel <me@loicmazuel.com>",
-  "main": "modules/maz-ui.umd.js",
-  "module": "modules/maz-ui.mjs",
-  "types": "maz-ui.d.ts",
+  "main": "./modules/index.ts",
+  "module": "./modules/index.ts",
+  "types": "./modules/index.d.ts",
+  "exports": {
+    ".": {
+      "default": "./modules/index.ts",
+      "types": "./modules/index.d.ts"
+    },
+    "./*": "./*",
+    "./components": "./components/index.ts",
+    "./components/*": "./components/*"
+  },
   "files": [
     "components",
     "modules",
     "css",
-    "maz-ui.d.ts",
-    "tailwindcss/tailwind.config.js",
-    "tailwindcss/utils",
-    "tailwindcss/variables"
+    "tailwindcss"
   ],
   "scripts": {
     "lint": "npm run lint:js && npm run lint:style",
@@ -35,10 +41,13 @@
     "*.{vue,css,scss,postcss,pcss}": "stylelint --fix"
   },
   "peerDependencies": {
+    "@nuxt/kit": "^3.4.0",
     "chart.js": "^4.0.0",
     "dayjs": "^1.1.0",
+    "defu": "^6.0.0",
     "dropzone": "^5.9.3",
     "libphonenumber-js": "^1.9.44",
+    "nuxt": "^3.4.0",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0"
   },
@@ -57,12 +66,23 @@
     },
     "dayjs": {
       "optional": true
+    },
+    "nuxt": {
+      "optional": true
+    },
+    "@nuxt/kit": {
+      "optional": true
+    },
+    "defu": {
+      "optional": true
     }
   },
   "devDependencies": {
     "@babel/core": "^7.22.1",
     "@babel/preset-env": "^7.22.4",
     "@babel/preset-typescript": "^7.21.5",
+    "@nuxt/kit": "^3.5.3",
+    "@nuxt/schema": "^3.5.3",
     "@rollup/plugin-typescript": "^11.1.1",
     "@types/dropzone": "^5.7.4",
     "@types/google.maps": "^3.53.3",
@@ -83,6 +103,7 @@
     "chart.js": "^4.3.0",
     "cross-env": "^7.0.3",
     "dayjs": "^1.11.8",
+    "defu": "^6.1.2",
     "dropzone": "^5.9.3",
     "eslint": "^8.42.0",
     "eslint-plugin-prettier": "^4.2.1",
@@ -95,6 +116,7 @@
     "libphonenumber-js": "^1.10.34",
     "lint-staged": "^13.2.2",
     "minimist": "^1.2.8",
+    "nuxt": "^3.5.3",
     "onchange": "^7.1.0",
     "path": "^0.12.7",
     "postcss": "^8.4.24",
@@ -112,6 +134,7 @@
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "sass": "^1.63.2",
     "semver": "^7.5.1",
+    "sirv": "^2.0.3",
     "stylelint": "^15.7.0",
     "stylelint-config-recommended-vue": "^1.4.0",
     "stylelint-config-standard": "^33.0.0",
@@ -150,7 +173,11 @@
     "vue-component",
     "framework",
     "library",
-    "ui"
+    "ui",
+    "nuxt",
+    "nuxt3",
+    "module",
+    "nuxt-module"
   ],
   "repository": {
     "type": "git",

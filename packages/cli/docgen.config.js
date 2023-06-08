@@ -4,7 +4,7 @@ const { resolve, join } = require('node:path')
 const { defineConfig } = require('vue-docgen-cli')
 
 module.exports = defineConfig({
-  componentsRoot: resolve(__dirname, './../lib/package/components'),
+  componentsRoot: resolve(__dirname, './../lib/components'),
   components: './[A-Z]*.vue', // the glob to define what files should be documented as components (relative to componentRoot)
   outDir: resolve(__dirname, './../docs/docs/.vitepress/generated-docs'),
   getDestFile: (filename, config) => {

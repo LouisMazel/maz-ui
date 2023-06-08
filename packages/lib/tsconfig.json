@@ -6,6 +6,8 @@
     }
   },
   "compilerOptions": {
+    "module": "ESNext",
+    "target": "ESNext",
     "declaration": true,
     "declarationDir": "generated-types",
     "sourceMap": true,
@@ -16,13 +18,8 @@
     "baseUrl": ".",
     "ignoreDeprecations": "5.0",
     "verbatimModuleSyntax": false,
-    "paths": {
-      "@package/*": ["package/*"],
-      "@components/*": ["package/components/*"],
-      "@icons/*": ["package/icons/*"]
-    },
     "types": ["@types/node", "google.maps", "vite-svg-loader"]
   },
-  "include": ["package/**/*"],
-  "exclude": ["node_modules", "lib", "css", "package/components_tmp/**/*"]
+  "include": ["modules", "types", "components", "tailwindcss", "tailwind.config.ts", "nuxt"],
+  "exclude": ["node_modules", "components_tmp/**/*"]
 }

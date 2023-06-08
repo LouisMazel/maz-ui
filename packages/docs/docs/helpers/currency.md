@@ -46,7 +46,7 @@ Enter only numbers
 ```
 
 <script lang="ts" setup>
-  import { currency } from 'maz-ui/package/index'
+  import { currency } from 'maz-ui'
   import { ref, computed } from 'vue'
 
   const numberValue = ref(69)

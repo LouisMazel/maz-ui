@@ -1,16 +1,16 @@
-import 'maz-ui/package/tailwindcss/tailwind.css'
+import 'maz-ui/tailwindcss/tailwind.css'
 
 import DefaultTheme from 'vitepress/theme'
 import { inBrowser } from 'vitepress'
 import googleAnalytics from 'vitepress-plugin-google-analytics'
 
 // import 'maz-ui/css/main.css'
-import 'maz-ui/package/plugins/aos/scss/index.scss'
+import 'maz-ui/modules/plugins/aos/scss/index.scss'
 import './main.css'
 
-import { ToasterOptions, installToaster, installWait, AosOptions, installAos, aosInstance } from 'maz-ui/package/index'
+import { ToasterOptions, installToaster, installWait, AosOptions, installAos, aosInstance } from 'maz-ui'
 
-import * as components from 'maz-ui/package/components/index'
+import * as components from 'maz-ui/components/index'
 
 import ColorContainer from './components/ColorContainer.vue'
 import NpmBadge from './components/NpmBadge.vue'

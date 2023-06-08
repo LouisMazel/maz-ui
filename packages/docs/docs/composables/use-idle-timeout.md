@@ -44,7 +44,7 @@ A plugin to know the amount of time a user has spent on your website
 
 **Wait 3 seconds without any actions to see the idle change to true**
 
-## How to use it ?
+## How to use it?
 
 ```vue
 <template>
@@ -116,7 +116,7 @@ A plugin to know the amount of time a user has spent on your website
 <script lang="ts" setup>
   import { onMounted, ref, onBeforeUnmount } from 'vue'
 
-  import { useIdleTimeout } from 'maz-ui/package/index'
+  import { useIdleTimeout } from 'maz-ui'
 
   const event = ref({})
 

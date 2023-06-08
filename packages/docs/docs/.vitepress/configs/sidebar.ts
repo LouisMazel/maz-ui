@@ -6,7 +6,7 @@ import { guide } from './guide'
 import { composables } from './composables'
 import { plugins } from './plugins'
 
-export const sidebar: DefaultTheme.SidebarGroup[] = [
+export const sidebar: DefaultTheme.SidebarItem[] = [
   guide,
   components,
   plugins,

@@ -110,7 +110,7 @@ const getValidatorValues = (validator: string) => {
   return array ?? '-'
 }
 
-const getComponent = async () => (await import(`maz-ui/package/components`))[props.component]
+const getComponent = async () => (await import(`maz-ui/components`))[props.component]
 
 const getEvents = async () => {
   const component = await getComponent()
