@@ -27,6 +27,7 @@ export default defineConfig({
     },
     globals: true,
     coverage: {
+      provider: 'v8',
       all: true,
       excludeNodeModules: true,
       reporter: ['clover', 'html'],
