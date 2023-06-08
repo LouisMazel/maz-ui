@@ -15,11 +15,12 @@ export default defineConfig({
     port: 1000,
   },
   test: {
-    setupFiles: ['./vitest.setup.ts'],
+    // setupFiles: ['./vitest.setup.ts'],
     environment: 'jsdom',
-    deps: {
-      inline: ['vitest-canvas-mock'],
-    },
+    // deps: {
+    //   inline: ['vitest-canvas-mock'],
+    // },
+    // threads: false,
     environmentOptions: {
       jsdom: {
         resources: 'usable',
