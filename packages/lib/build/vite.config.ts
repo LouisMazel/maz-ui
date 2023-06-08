@@ -144,7 +144,7 @@ const run = async () => {
       'tailwindcss -i package/tailwindcss/tailwind.css -o dist/css/main.css --config tailwind.config.js --postcss --minify',
     )
 
-    compileScss()
+    await compileScss()
 
     await execPromise('rimraf generated-types')
 
