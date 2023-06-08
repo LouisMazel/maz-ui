@@ -409,6 +409,10 @@
         box-shadow: 0 0 0 1000px var(--maz-color-primary-50) inset;
         transition: background-color 5000s ease-in-out 0s;
       }
+
+      &::placeholder {
+        @apply maz-text-muted;
+      }
     }
 
     &-label {

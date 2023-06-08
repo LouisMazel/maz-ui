@@ -30,7 +30,7 @@
 
 <script lang="ts" setup>
   import { computed, nextTick, onBeforeMount, ref } from 'vue'
-  import { currency } from '../filters'
+  import { currency as currencyFilter } from '../filters'
   import MazInput from './MazInput.vue'
 
   const props = defineProps({
@@ -55,7 +55,7 @@
   })
 
   const priceFormatted = computed(() =>
-    currency(valueNumber.value, props.locale, { currency: props.currency }),
+    currencyFilter(valueNumber.value, props.locale, { currency: props.currency }),
   )
 
   const getAdjustedPrice = (value?: string | number) => {
@@ -63,7 +63,7 @@
       typeof value === 'string'
         ? Number.parseFloat(
             // eslint-disable-next-line no-useless-escape
-            value.replace(',', '.').replace(/[^\d.]/g, ''),
+            value.replace(',', '.').replaceAll(/[^\d.]/g, ''),
           )
         : value
     if (!newValue || Number.isNaN(newValue)) newValue = 0

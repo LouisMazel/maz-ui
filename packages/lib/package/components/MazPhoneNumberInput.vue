@@ -407,7 +407,7 @@
 
     const backSpacePressed = lastKeyPressed.value === 'Backspace'
 
-    const lastCharacOfPhoneNumber = phoneNumber ? phoneNumber.charAt(phoneNumber.length - 1) : ''
+    const lastCharacOfPhoneNumber = phoneNumber ? phoneNumber.at(-1) : ''
     const lastCharIsParanthese = lastCharacOfPhoneNumber === ')'
 
     if (backSpacePressed && lastCharIsParanthese) {

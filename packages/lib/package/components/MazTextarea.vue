@@ -48,11 +48,15 @@
 
 <script lang="ts">
   export type { Color } from './types'
+
+  export default defineComponent({
+    inheritAttrs: false,
+  })
 </script>
 
 <script lang="ts" setup>
   import { useInstanceUniqId } from '@package/composables/instance-uniq-id.composable'
-  import { computed, onBeforeUnmount, onMounted, ref, type PropType } from 'vue'
+  import { computed, onBeforeUnmount, onMounted, ref, type PropType, defineComponent } from 'vue'
   import { getCurrentInstance } from 'vue'
   import { TextareaAutogrow } from './MazTextarea/textarea-autogrow'
   import type { Color } from './types'

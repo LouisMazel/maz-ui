@@ -96,17 +96,17 @@ description: vZoomImg is a Vue 3 directive to enlarge an image like a modal on c
 
 ```typescript
 import { createApp } from 'vue'
-import { vZoomImgInstall, vZoomImgOptions } from 'maz-ui'
+import { vZoomImgInstall, type vZoomImgOptions } from 'maz-ui'
 
 const app = createApp(App)
 
-const vLazyImgOptions: vZoomImgOptions = {
+const vZoomImgOpts: vZoomImgOptions = {
   disabled: false,
   scale: true,
   blur: true,
 }
 
-app.use(vZoomImgInstall, vLazyImgOptions)
+app.use(vZoomImgInstall, vZoomImgOpts)
 
 app.mount('#app')
 ```

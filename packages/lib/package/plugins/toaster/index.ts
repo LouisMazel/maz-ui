@@ -8,16 +8,23 @@ const defaultOptions: ToasterOptions = {
   persistent: true,
 }
 
-export let instance: ToasterHandler
+export let toastInstance: ToasterHandler
 
-export const plugin = {
+export function createToaster(app: App, options?: ToasterOptions): ToasterHandler {
+  return new ToasterHandler(app, {
+    ...defaultOptions,
+    ...options,
+  })
+}
+
+export const installToaster = {
   install(app: App, options?: ToasterOptions) {
-    instance = new ToasterHandler(app, {
+    toastInstance = new ToasterHandler(app, {
       ...defaultOptions,
       ...options,
     })
 
-    app.provide('toast', instance)
+    app.provide('toast', toastInstance)
   },
 }
 
