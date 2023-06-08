@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.9.1](https://github.com/LouisMazel/maz-ui/compare/v3.9.0...v3.9.1) (2023-06-08)
+
+**Note:** Version bump only for package docs
+
+
+
+
+
 # [3.9.0](https://github.com/LouisMazel/maz-ui/compare/v3.8.0...v3.9.0) (2023-04-24)
 
 **Note:** Version bump only for package docs

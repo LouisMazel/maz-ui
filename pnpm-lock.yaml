@@ -125,7 +125,7 @@ importers:
         specifier: ^1.10.34
         version: 1.10.34
       maz-ui:
-        specifier: workspace:^3.9.0
+        specifier: workspace:^3.9.1
         version: link:../lib
       vitepress-plugin-google-analytics:
         specifier: ^1.0.2
@@ -372,7 +372,7 @@ importers:
   packages/testing:
     dependencies:
       maz-ui:
-        specifier: workspace:^3.9.0
+        specifier: workspace:^3.9.1
         version: link:../lib
       vue:
         specifier: ^3.3.4
