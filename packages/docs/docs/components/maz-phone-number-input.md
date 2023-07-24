@@ -80,7 +80,7 @@ export type Result = {
   />
   <code>
     {{ results }}
-  <code>
+  </code>
 </template>
 
 <script setup lang="ts">
