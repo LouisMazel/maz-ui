@@ -116,6 +116,7 @@ export type Result = {
       countrySelector: {
         placeholder: 'Country code',
         error: 'Choose country',
+        searchPlaceholder: 'Search a country',
       },
       phoneInput: {
         placeholder: 'Phone number',
