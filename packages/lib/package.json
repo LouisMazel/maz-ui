@@ -68,7 +68,7 @@
     "@types/google.maps": "^3.53.3",
     "@types/node": "^20.2.5",
     "@types/rollup-plugin-peer-deps-external": "^2.2.1",
-    "@typescript-eslint/eslint-plugin": "^5.59.9",
+    "@typescript-eslint/eslint-plugin": "^6.4.1",
     "@typescript-eslint/parser": "^5.59.9",
     "@vitejs/plugin-vue": "^4.2.3",
     "@vitest/coverage-v8": "^0.32.0",
