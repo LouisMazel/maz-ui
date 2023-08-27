@@ -80,7 +80,7 @@ export type Result = {
   />
   <code>
     {{ results }}
-  <code>
+  </code>
 </template>
 
 <script setup lang="ts">
@@ -116,6 +116,7 @@ export type Result = {
       countrySelector: {
         placeholder: 'Country code',
         error: 'Choose country',
+        searchPlaceholder: 'Search a country',
       },
       phoneInput: {
         placeholder: 'Phone number',
