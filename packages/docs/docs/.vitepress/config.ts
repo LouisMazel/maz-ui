@@ -7,6 +7,8 @@ import { SitemapStream } from 'sitemap'
 
 const links: { url: string, lastmod?: number, changefreq: string }[] = []
 
+import svgLoader from 'vite-svg-loader'
+
 export default defineConfig({
   lang: 'en-US',
   title: 'Maz-UI',
@@ -50,19 +52,12 @@ export default defineConfig({
   },
 
   vite: {
+    plugins: [svgLoader()],
     server: {
       fs: {
         allow: [join(__dirname, './../../../lib')],
       },
     },
-    resolve: {
-      alias: {
-        '@': join(__dirname, 'src'),
-        '~': join(__dirname, 'src'),
-        '@package': join(__dirname, './../../../lib/package'),
-        '@components': join(__dirname, './../../../lib/package/components'),
-      }
-    }
   },
 
   // og:title

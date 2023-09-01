@@ -53,7 +53,7 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
   import { ref } from 'vue'
   import {
     useMazDialogPromise, type DialogData, type DialogButton,
-  } from 'maz-ui/package/components/MazDialogPromise.vue'
+  } from 'maz-ui/components/MazDialogPromise.vue'
 
   const { showDialogAndWaitChoice } = useMazDialogPromise()
   const confirmDialog = ref(false)

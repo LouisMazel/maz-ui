@@ -1,5 +1,5 @@
-import type { AosOptions } from '@package/plugins'
-import { AosHandler } from '@package/plugins'
+import type { AosOptions } from '@modules/plugins'
+import { AosHandler } from '@modules/plugins'
 
 describe('AosHandler', () => {
   let aosHandler: AosHandler

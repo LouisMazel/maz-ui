@@ -1,4 +1,4 @@
-import { IdleTimeout, useIdleTimeout } from '@package/index'
+import { IdleTimeout, useIdleTimeout } from '@modules/index'
 
 test('useIdleTimeout should create an instance of IdleTimeout', () => {
   const callback = vitest.fn()

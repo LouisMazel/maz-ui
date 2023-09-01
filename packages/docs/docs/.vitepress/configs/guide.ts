@@ -6,5 +6,6 @@ export const guide = {
     { text: 'Basic colors', link: '/guide/colors' },
     { text: 'Theme', link: '/guide/theme' },
     { text: 'Dark mode', link: '/guide/dark-mode' },
+    { text: 'Nuxt Module', link: '/guide/nuxt' },
   ],
 }

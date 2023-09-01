@@ -1,4 +1,4 @@
-package/components_tmp/**/*
+components_tmp/**/*
 /node_modules
 .DS_Store
 /dist

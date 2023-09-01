@@ -56,7 +56,7 @@ const DEFAULT_OPTIONS: Intl.DateTimeFormatOptions = {
 ```
 
 <script lang="ts" setup>
-  import { date } from 'maz-ui/package/index'
+  import { date } from 'maz-ui'
   import { ref, computed } from 'vue'
 
   const dateValue = ref('2022-02-01')

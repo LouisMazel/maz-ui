@@ -1,6 +1,6 @@
 ---
 title: vLazyImg
-description: vLazyImg is a Vue 3 directive to lazy load images with many options. The image will be loaded on user scroll
+description: vLazyImg is a Vue 3 directive to lazy load images with many options. The image will be loaded on user's scroll
 ---
 
 # {{ $frontmatter.title }}
@@ -138,7 +138,7 @@ app.mount('#app')
 ```
 
 <script lang="ts" setup>
-  import { vLazyImg, vLazyImgBinding } from 'maz-ui/package/index'
+  import { vLazyImg, vLazyImgBinding } from 'maz-ui'
   import { ref } from 'vue'
 
   const lazyBinding: vLazyImgBinding = {

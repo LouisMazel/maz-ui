@@ -1,5 +1,5 @@
 import { shallowMount } from '@vue/test-utils'
-import MazToast from '@package/plugins/toaster/MazToast.vue'
+import MazToast from '@modules/plugins/toaster/MazToast.vue'
 
 test('plugins/toaster/MazToast.vue', () => {
   expect(MazToast).toBeTruthy()

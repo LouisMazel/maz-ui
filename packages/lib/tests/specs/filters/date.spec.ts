@@ -1,4 +1,4 @@
-import { date } from '@package/filters/date'
+import { date } from '@modules/filters/date'
 
 describe('FilterDate', () => {
   it('formats a date string as a short date', () => {

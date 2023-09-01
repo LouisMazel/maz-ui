@@ -5,7 +5,7 @@ import autoprefixer from 'autoprefixer'
 import { compileAsync } from 'sass'
 import { logger } from './utils/logger'
 
-const AOS_SCSS_ENTRY = resolve(__dirname, './../package/plugins/aos/scss/index.scss')
+const AOS_SCSS_ENTRY = resolve(__dirname, './../modules/plugins/aos/scss/index.scss')
 const AOS_SCSS_OUTPUT_DIR = resolve(__dirname, './../dist/css')
 const AOS_SCSS_OUTPUT = resolve(__dirname, './../dist/css/aos.css')
 

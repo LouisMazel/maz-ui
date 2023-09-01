@@ -112,7 +112,7 @@ async function runCreateFiles({
     })
 
     await buildEntry({
-      output: resolve(__dirname, './../../../../lib/package/components/index.ts'),
+      output: resolve(__dirname, './../../../../lib/components/index.ts'),
       componentName: 'fullName',
       scriptName: 'component-entry-generated',
     })

@@ -1,0 +1,12 @@
+node_modules
+.DS_Store
+dist
+node-jiti
+*.log*
+.nuxt
+.nitro
+.cache
+.output
+.env
+dist
+*.svg

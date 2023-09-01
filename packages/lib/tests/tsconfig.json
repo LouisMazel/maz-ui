@@ -5,10 +5,10 @@
     "target": "ESNext",
     "moduleResolution": "node",
     "paths": {
-      "@package/*": ["./../package/*"],
-      "@components/*": ["./../package/components/*"],
+      "@modules/*": ["./../modules/*"],
+      "@components/*": ["./../components/*"],
       "@tests/*": ["./../tests/*"]
     }
   },
-  "include": ["./../package/types/*", "./**/*"]
+  "include": ["./../types/*", "./**/*", "./../components/**/*", "./../modules/**/*"]
 }

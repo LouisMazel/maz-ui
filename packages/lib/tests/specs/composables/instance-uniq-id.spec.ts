@@ -1,4 +1,4 @@
-import { useInstanceUniqId } from '@package/composables/instance-uniq-id.composable'
+import { useInstanceUniqId } from '@modules/composables/instance-uniq-id'
 
 describe('useInstanceUniqId', () => {
   it('should return the provided id if it exists', () => {
@@ -14,9 +14,9 @@ describe('useInstanceUniqId', () => {
       name: 'test-component',
       uid: 1,
     }
-    // @ts-ignore
     const { instanceId } = useInstanceUniqId({
       componentName: 'test-component',
+      // @ts-ignore
       instance: component,
     })
     expect(instanceId.value).toBe('test-component-1')

@@ -17,6 +17,6 @@
     },
     "strictNullChecks": true
   },
-  "include": ["lib/**/*.ts"],
+  "include": ["**/*", ".eslintrc.js"],
   "exclude": ["node_modules"]
 }

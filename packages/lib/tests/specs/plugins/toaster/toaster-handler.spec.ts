@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import { ToasterHandler } from '@package/plugins'
+import { ToasterHandler } from '@modules/plugins'
 
 describe('ToasterHandler', () => {
   let app: ReturnType<typeof createApp>

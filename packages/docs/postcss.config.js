@@ -1,5 +1,5 @@
 /* eslint-disable unicorn/prefer-module */
-const { plugins } = require('maz-ui/postcss.config')
+const { plugins } = require('./../lib/postcss.config')
 
 module.exports = {
   plugins

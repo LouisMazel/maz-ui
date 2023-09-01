@@ -4,6 +4,8 @@ serve-docs:
 	pnpm --filter docs dev
 serve-testing:
 	pnpm --filter testing dev
+serve-playground:
+	pnpm --filter playground dev
 
 audit:
 	pnpm audit
@@ -14,6 +16,8 @@ lint:
 	pnpm --parallel lint
 lint-lib:
 	pnpm --filter maz-ui lint
+lint-cli:
+	pnpm --filter cli lint
 
 build-all:
 	pnpm --parallel build

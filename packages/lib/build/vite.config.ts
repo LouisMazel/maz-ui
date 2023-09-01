@@ -15,12 +15,18 @@ import { copyAndTransformComponentsTypesFiles } from './copy-components-types'
 import { generateComponentsEntryFile } from './generate-components-entry'
 import { generateLibComponentsEntryFile } from './generate-lib-entry'
 import { compileScss } from './compile-scss'
+import { replaceStringInFile } from './replace-string-in-file'
+import { generateComponentListFile } from './generate-component-list-file'
 
 const argv = minimist(process.argv.slice(2))
 
 const staticAssetsToCopy: Target[] = [
   {
-    src: resolve(__dirname, '../package/tailwindcss'),
+    src: resolve(__dirname, '../nuxt'),
+    dest: resolve(__dirname, '../dist'),
+  },
+  {
+    src: resolve(__dirname, '../tailwindcss'),
     dest: resolve(__dirname, '../dist'),
   },
   {
@@ -78,20 +84,12 @@ const getBuildConfig = ({
       packageJsonPath: resolve(__dirname, '../package.json'),
       includeDependencies: false,
     }),
-    svgLoader({ defaultImport: 'url' }),
+    svgLoader({}),
     // @ts-ignore
     Vue(),
     cssInjectedByJsPlugin(), // ...(isModuleBuild ? [] : [cssInjectedByJsPlugin()]),
     ...(isModuleBuild ? [viteStaticCopy({ targets: staticAssetsToCopy })] : []),
   ],
-  resolve: {
-    alias: {
-      '@package': resolve(__dirname, '../package'),
-      '@components': resolve(__dirname, '../package/components'),
-      '@tests': resolve(__dirname, '../tests'),
-      '@icons': resolve(__dirname, '../package/icons'),
-    },
-  },
 })
 
 const run = async () => {
@@ -99,17 +97,29 @@ const run = async () => {
     await execPromise('rimraf dist')
 
     await generateComponentsEntryFile()
+    await generateComponentListFile(resolve(__dirname, './../components/component-list.ts'))
 
     if ((!argv.package || argv.package === 'modules') && !argv.component) {
       await build(
         getBuildConfig({
-          path: resolve(__dirname, './../package/index.ts'),
-          name: 'maz-ui',
+          path: resolve(__dirname, './../modules/index.ts'),
+          name: 'index',
           outDir: resolve(__dirname, '../dist/modules'),
           isModuleBuild: true,
         }),
       )
     }
+
+    await replaceStringInFile({
+      filePath: resolve(__dirname, '../dist/package.json'),
+      search: './modules/index.ts',
+      replaceBy: './modules/index.mjs',
+    })
+    await replaceStringInFile({
+      filePath: resolve(__dirname, '../dist/package.json'),
+      search: './components/index.ts',
+      replaceBy: './components/index.mjs',
+    })
 
     const componentsList = await getComponentList()
 
@@ -132,7 +142,7 @@ const run = async () => {
 
     copyAndTransformComponentsTypesFiles()
 
-    // Build and compile main declaration file (maz-ui.d.ts)
+    // Build and compile main declaration file (index.d.ts)
     await execPromise(
       'rollup --config build/rollup.types.config.ts --configPlugin @rollup/plugin-typescript',
     )
@@ -141,7 +151,7 @@ const run = async () => {
 
     // Build main.css file with tailwind
     await execPromise(
-      'tailwindcss -i package/tailwindcss/tailwind.css -o dist/css/main.css --config tailwind.config.js --postcss --minify',
+      'tailwindcss -i tailwindcss/tailwind.css -o dist/css/main.css --config tailwind.config.ts --postcss --minify',
     )
 
     await compileScss()

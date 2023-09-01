@@ -1,4 +1,4 @@
-import MazBtn from '@package/components/MazBtn.vue'
+import MazBtn from '@components/MazBtn.vue'
 import { shallowMount } from '@vue/test-utils'
 
 describe('MazBtn', () => {

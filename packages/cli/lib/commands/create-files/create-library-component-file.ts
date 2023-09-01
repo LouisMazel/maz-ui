@@ -9,10 +9,7 @@ export async function createLibraryComponentFile({
   filename: string
   filenameKebab: string
 }): Promise<void> {
-  const COMPONENT_FILE_OUTPUT = resolve(
-    __dirname,
-    `../../../../lib/package/components/${filename}.vue`,
-  )
+  const COMPONENT_FILE_OUTPUT = resolve(__dirname, `../../../../lib/components/${filename}.vue`)
 
   const componentTemplate = `<template>
   <div class="${filenameKebab}">${filename}</div>

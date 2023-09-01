@@ -1,30 +1,30 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`components/MazStepper.vue > Should match with the snapshot 1`] = `
-"<div data-v-8231b20c=\\"\\" class=\\"m-stepper\\"><button data-v-8231b20c=\\"\\" type=\\"button\\" disabled=\\"\\" class=\\"m-stepper__header --is-current-step --success\\">
-    <div data-v-8231b20c=\\"\\" class=\\"m-stepper__header__wrapper\\"><span data-v-8231b20c=\\"\\" class=\\"m-stepper__count --primary\\"><div data-v-8231b20c=\\"\\" class=\\"m-stepper__count__circle\\"><maz-icon-stub data-v-8231b20c=\\"\\" src=\\"/package/icons/check-circle.svg\\" size=\\"1.5rem\\" transformsource=\\"[Function]\\" class=\\"icon\\"></maz-icon-stub></div> 1</span>
-      <div data-v-8231b20c=\\"\\" class=\\"m-stepper__header__content\\"><span data-v-8231b20c=\\"\\" class=\\"m-stepper__title\\">Step 1</span>
+"<div data-v-a40fe233=\\"\\" class=\\"m-stepper\\"><button data-v-a40fe233=\\"\\" type=\\"button\\" disabled=\\"\\" class=\\"m-stepper__header --is-current-step --success\\">
+    <div data-v-a40fe233=\\"\\" class=\\"m-stepper__header__wrapper\\"><span data-v-a40fe233=\\"\\" class=\\"m-stepper__count --primary\\"><div data-v-a40fe233=\\"\\" class=\\"m-stepper__count__circle\\"><maz-icon-stub data-v-a40fe233=\\"\\" src=\\"/modules/icons/check-circle.svg\\" size=\\"1.5rem\\" transformsource=\\"[Function]\\" class=\\"icon\\"></maz-icon-stub></div> 1</span>
+      <div data-v-a40fe233=\\"\\" class=\\"m-stepper__header__content\\"><span data-v-a40fe233=\\"\\" class=\\"m-stepper__title\\">Step 1</span>
         <!--v-if-->
       </div>
     </div>
     <!--v-if-->
   </button>
-  <div data-v-8231b20c=\\"\\" class=\\"m-stepper__content\\">
-    <maz-transition-expand-stub data-v-8231b20c=\\"\\"></maz-transition-expand-stub>
+  <div data-v-a40fe233=\\"\\" class=\\"m-stepper__content\\">
+    <maz-transition-expand-stub data-v-a40fe233=\\"\\"></maz-transition-expand-stub>
   </div>
   <!--v-if-->
-  <div data-v-8231b20c=\\"\\" class=\\"m-stepper__content\\">
-    <maz-transition-expand-stub data-v-8231b20c=\\"\\"></maz-transition-expand-stub>
-  </div><button data-v-8231b20c=\\"\\" type=\\"button\\" class=\\"m-stepper__header --normal\\">
-    <div data-v-8231b20c=\\"\\" class=\\"m-stepper__header__wrapper\\"><span data-v-8231b20c=\\"\\" class=\\"m-stepper__count --primary\\"><div data-v-8231b20c=\\"\\" class=\\"m-stepper__count__circle\\"><!--v-if--></div> 3</span>
-      <div data-v-8231b20c=\\"\\" class=\\"m-stepper__header__content\\"><span data-v-8231b20c=\\"\\" class=\\"m-stepper__title\\">Step 3</span>
+  <div data-v-a40fe233=\\"\\" class=\\"m-stepper__content\\">
+    <maz-transition-expand-stub data-v-a40fe233=\\"\\"></maz-transition-expand-stub>
+  </div><button data-v-a40fe233=\\"\\" type=\\"button\\" class=\\"m-stepper__header --normal\\">
+    <div data-v-a40fe233=\\"\\" class=\\"m-stepper__header__wrapper\\"><span data-v-a40fe233=\\"\\" class=\\"m-stepper__count --primary\\"><div data-v-a40fe233=\\"\\" class=\\"m-stepper__count__circle\\"><!--v-if--></div> 3</span>
+      <div data-v-a40fe233=\\"\\" class=\\"m-stepper__header__content\\"><span data-v-a40fe233=\\"\\" class=\\"m-stepper__title\\">Step 3</span>
         <!--v-if-->
       </div>
     </div>
     <!--v-if-->
   </button>
-  <div data-v-8231b20c=\\"\\" class=\\"m-stepper__content --no-border\\">
-    <maz-transition-expand-stub data-v-8231b20c=\\"\\"></maz-transition-expand-stub>
+  <div data-v-a40fe233=\\"\\" class=\\"m-stepper__content --no-border\\">
+    <maz-transition-expand-stub data-v-a40fe233=\\"\\"></maz-transition-expand-stub>
   </div>
 </div>"
 `;
