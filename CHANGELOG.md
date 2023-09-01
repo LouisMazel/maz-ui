@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.10.0](https://github.com/LouisMazel/maz-ui/compare/v3.9.1...v3.10.0) (2023-09-01)
+
+### Features
+
+- **lib:** add nuxt module to install maz-ui ([#589](https://github.com/LouisMazel/maz-ui/issues/589)) ([930cf38](https://github.com/LouisMazel/maz-ui/commit/930cf3860c924f33372f98b5087f81bb65a5ed9a))
+
 ## [3.9.1](https://github.com/LouisMazel/maz-ui/compare/v3.9.0...v3.9.1) (2023-06-08)
 
 **Note:** Version bump only for package root
