@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import { WaitHandler, installWait } from '@package/plugins'
+import { WaitHandler, installWait } from '@modules/plugins'
 
 describe('WaitHandler', () => {
   let app: ReturnType<typeof createApp>

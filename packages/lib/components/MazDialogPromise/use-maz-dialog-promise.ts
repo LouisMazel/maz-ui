@@ -40,20 +40,13 @@ const removeDialogFromState = (identifier: string) => {
   return dialogState.value
 }
 
-const rejectDialog = (currentDialog: DialogState, response: string | boolean = false) => {
+const responseDialog = (
+  type: 'resolve' | 'reject',
+  currentDialog: DialogState,
+  response: string | boolean = false,
+) => {
   if (currentDialog) {
-    currentDialog.reject?.(response)
-    currentDialog.isActive = false
-
-    setTimeout(() => {
-      removeDialogFromState(currentDialog.id)
-    }, 500)
-  }
-}
-
-const resolveDialog = (currentDialog: DialogState, response: string | boolean = true) => {
-  if (currentDialog) {
-    currentDialog.resolve?.(response)
+    currentDialog[type]?.(response)
     currentDialog.isActive = false
 
     setTimeout(() => {
@@ -67,6 +60,8 @@ export const useMazDialogPromise = () => ({
   dialogState,
   showDialogAndWaitChoice,
   removeDialogFromState,
-  rejectDialog,
-  resolveDialog,
+  rejectDialog: (currentDialog: DialogState, response: string | boolean = false) =>
+    responseDialog('reject', currentDialog, response),
+  resolveDialog: (currentDialog: DialogState, response: string | boolean = false) =>
+    responseDialog('resolve', currentDialog, response),
 })

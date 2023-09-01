@@ -1,96 +1,98 @@
 <template>
-  <Component :is="component" v-bind="props" />
+  <Component :is="component" v-bind="propsRef" />
 </template>
-
-<script lang="ts">
-  export { getDatasetAtEvent, getElementAtEvent, getElementsAtEvent } from 'vue-chartjs'
-</script>
 
 <script lang="ts" setup>
   import { defineAsyncComponent } from 'vue'
-  import { createTypedChart } from 'vue-chartjs'
+  import { type ChartProps } from 'vue-chartjs'
   import {
     ArcElement,
     BarElement,
+    LineElement,
+    PointElement,
     CategoryScale,
     Chart,
     Legend,
-    LineElement,
     LinearScale,
-    PointElement,
     Title,
     Tooltip,
-    type ChartType,
-    type ChartData,
-    type ChartOptions,
-    type DefaultDataPoint,
-    type Plugin,
-    type UpdateMode,
   } from 'chart.js'
+  import { ref, type PropType } from 'vue'
 
-  export interface ChartProps<
-    TType extends ChartType = ChartType,
-    TData = DefaultDataPoint<TType>,
-    TLabel = unknown,
-  > {
-    type: ChartType
-    data: ChartData<TType, TData, TLabel>
-    options?: ChartOptions<TType>
-    plugins?: Plugin<TType>[]
-    datasetIdKey?: string
-    updateMode?: UpdateMode
-  }
+  const props = defineProps({
+    /**
+     * Chart.js chart type
+     */
+    type: { type: String as PropType<ChartProps['type']>, required: true },
+    /**
+     * The data object that is passed into the Chart.js chart
+     * @see https://www.chartjs.org/docs/latest/getting-started/
+     */
+    data: { type: Object as PropType<ChartProps['data']>, required: true },
+    /**
+     * The options object that is passed into the Chart.js chart
+     * @see https://www.chartjs.org/docs/latest/general/options.html
+     */
+    options: { type: Object as PropType<ChartProps['options']>, default: Object },
+    /**
+     * The plugins array that is passed into the Chart.js chart
+     * @see https://www.chartjs.org/docs/latest/developers/plugins.html
+     */
+    plugins: { type: Array as PropType<ChartProps['plugins']>, default: Array },
+    /**
+     * Key name to identificate dataset
+     */
+    datasetIdKey: { type: String as PropType<ChartProps['datasetIdKey']>, default: 'label' },
+    /**
+     * A mode string to indicate transition configuration should be used.
+     * @see https://www.chartjs.org/docs/latest/developers/api.html#update-mode
+     */
+    updateMode: { type: String as PropType<ChartProps['updateMode']>, default: undefined },
+  })
 
-  const props = defineProps<ChartProps>()
+  const propsRef = ref<unknown>(props)
 
   Chart.register(
     CategoryScale,
     LinearScale,
-    BarElement,
     Title,
     Tooltip,
     Legend,
+    BarElement,
     ArcElement,
     PointElement,
     LineElement,
   )
 
   const component = defineAsyncComponent(async () => {
-    const {
-      BarController,
-      LineController,
-      ScatterController,
-      BubbleController,
-      PieController,
-      DoughnutController,
-      PolarAreaController,
-      RadarController,
-    } = await import('chart.js')
+    const { Bar, Bubble, Doughnut, Line, Pie, PolarArea, Radar, Scatter } = await import(
+      'vue-chartjs'
+    )
 
     switch (props.type) {
       case 'bar': {
-        return createTypedChart('bar', BarController)
+        return Bar
       }
       case 'line': {
-        return createTypedChart('line', LineController)
+        return Line
       }
       case 'scatter': {
-        return createTypedChart('scatter', ScatterController)
+        return Scatter
       }
       case 'bubble': {
-        return createTypedChart('bubble', BubbleController)
+        return Bubble
       }
       case 'pie': {
-        return createTypedChart('pie', PieController)
+        return Pie
       }
       case 'doughnut': {
-        return createTypedChart('doughnut', DoughnutController)
+        return Doughnut
       }
       case 'polarArea': {
-        return createTypedChart('polarArea', PolarAreaController)
+        return PolarArea
       }
       case 'radar': {
-        return createTypedChart('radar', RadarController)
+        return Radar
       }
     }
   })

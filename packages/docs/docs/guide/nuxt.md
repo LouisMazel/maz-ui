@@ -38,11 +38,13 @@ export default defineNuxtConfig({
 
 ## Basic usage
 
+The components, plugins and tools are auto-imported
+
 ```vue
 <template>
-  <ZvButton>
+  <MazButton>
     Button auto-imported
-  </ZvButton>
+  </MazButton>
 </template>
 
 <script lang="ts" setup>

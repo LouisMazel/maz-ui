@@ -1,4 +1,4 @@
-import { telephone } from '@package/filters/telephone'
+import { telephone } from '@modules/filters/telephone'
 import { test } from 'vitest'
 
 test('should format a telephone number', () => {

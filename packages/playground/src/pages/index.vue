@@ -1,7 +1,10 @@
 <template>
   <div class="home">
     <h1 class="title-1">Home</h1>
+
     <!-- Start Developping Area - You should not commit anything here to keep this place clean for all others -->
+
+    <MazInput valid-button type="password" />
 
     <!-- End Developping Area -->
   </div>

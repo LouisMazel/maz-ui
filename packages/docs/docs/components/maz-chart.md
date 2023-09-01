@@ -10,7 +10,7 @@ description: MazChart is a standalone component which generates graphics & chart
 To use this component, you have to install the `chart.js` and `vue-chart` dependency
 
 <div class="flex gap-4">
-  <NpmBadge package="chart.js" dist-tag="3" />
+  <NpmBadge package="chart.js" dist-tag="4" />
   <NpmBadge package="vue-chart" dist-tag="2" />
 </div>
 
@@ -22,7 +22,7 @@ npm install chart.js@^4 vue-chart@^2
 
 For maz-ui versions below `3.9.x`, you should only install `chart.js@^3`
 
-<NpmBadge package="chart.js" dist-tag="4" />
+<NpmBadge package="chart.js" dist-tag="3" />
 
 ```bash
 npm install chart.js@^3
@@ -338,3 +338,9 @@ You can use all the plugins of Chart.JS. Follow the examples below.
 </script>
 
 <!--@include: ./../.vitepress/generated-docs/maz-chart.doc.md-->
+
+## Types
+
+### ChartProps
+
+Follow this link to see the type definitions: [vue-chartjs/src/types.ts](https://github.com/apertureless/vue-chartjs/blob/main/src/types.ts#L12)

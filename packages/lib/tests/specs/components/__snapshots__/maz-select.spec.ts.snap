@@ -1,26 +1,22 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`components/MazSelect.vue > Should match with the snapshot 1`] = `
-"<div data-v-948d9dc9=\\"\\" class=\\"m-select\\">
-  <div data-v-562a2cff=\\"\\" data-v-948d9dc9=\\"\\" class=\\"m-input m-select-input --primary --md\\">
-    <div data-v-562a2cff=\\"\\" class=\\"m-input-wrapper --default-border maz-rounded\\">
+"<div data-v-bdc1f43b=\\"\\" class=\\"m-select\\">
+  <div data-v-191e6fff=\\"\\" data-v-bdc1f43b=\\"\\" class=\\"m-input m-select-input --primary --md\\">
+    <div data-v-191e6fff=\\"\\" class=\\"m-input-wrapper --default-border maz-rounded\\">
       <!--v-if-->
-      <div data-v-562a2cff=\\"\\" class=\\"m-input-wrapper-input\\"><input data-v-562a2cff=\\"\\" id=\\"MazSelect-1\\" type=\\"text\\" name=\\"input\\" class=\\"m-select-input m-input-input\\" autocomplete=\\"off\\">
+      <div data-v-191e6fff=\\"\\" class=\\"m-input-wrapper-input\\"><input data-v-191e6fff=\\"\\" id=\\"MazSelect-1\\" type=\\"text\\" name=\\"input\\" class=\\"m-select-input m-input-input\\" autocomplete=\\"off\\">
         <!--v-if-->
       </div>
-      <div data-v-562a2cff=\\"\\" class=\\"m-input-wrapper-right\\"><button data-v-948d9dc9=\\"\\" tabindex=\\"-1\\" type=\\"button\\" class=\\"m-select-input__toggle-button maz-custom\\">
-          <!-- eslint-disable vue/no-v-html -->
-          <!-- eslint-disable vue/html-self-closing -->
-          <!--v-if-->
-          <!-- eslint-enable vue/no-v-html -->
-          <!-- eslint-enable vue/html-self-closing -->
-        </button>
+      <div data-v-191e6fff=\\"\\" class=\\"m-input-wrapper-right\\"><button data-v-bdc1f43b=\\"\\" tabindex=\\"-1\\" type=\\"button\\" class=\\"m-select-input__toggle-button maz-custom\\"><svg data-v-bdc1f43b=\\"\\" xmlns=\\"http://www.w3.org/2000/svg\\" fill=\\"none\\" stroke=\\"currentColor\\" aria-hidden=\\"true\\" viewBox=\\"0 0 24 24\\" class=\\"m-select-chevron\\">
+            <path stroke-linecap=\\"round\\" stroke-linejoin=\\"round\\" stroke-width=\\"2\\" d=\\"m19 9-7 7-7-7\\"></path>
+          </svg></button>
         <!--v-if-->
         <!--v-if-->
       </div>
     </div>
   </div>
-  <transition-stub data-v-948d9dc9=\\"\\" name=\\"maz-slide\\" appear=\\"false\\" persisted=\\"false\\" css=\\"true\\">
+  <transition-stub data-v-bdc1f43b=\\"\\" name=\\"maz-slide\\" appear=\\"false\\" persisted=\\"false\\" css=\\"true\\">
     <!--v-if-->
   </transition-stub>
 </div>"

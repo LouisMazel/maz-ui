@@ -19,7 +19,7 @@
           </h4>
           <div v-if="!noClose" class="m-drawer-header__close">
             <MazBtn size="sm" color="transparent" @click="close">
-              <MazIcon :src="XIcon" class="icon" />
+              <XIcon class="icon" />
             </MazBtn>
           </div>
         </header>
@@ -36,7 +36,6 @@
 
   import MazBackdrop from './MazBackdrop.vue'
   import MazBtn from './MazBtn.vue'
-  import MazIcon from './MazIcon.vue'
   import XIcon from './../modules/icons/x.svg'
 
   defineProps({

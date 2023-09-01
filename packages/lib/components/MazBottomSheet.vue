@@ -28,7 +28,7 @@
           color="transparent"
           @click="close"
         >
-          <MazIcon :src="XIcon" class="maz-h-5 maz-w-5" />
+          <XIcon class="maz-h-5 maz-w-5" />
         </MazBtn>
       </div>
     </template>
@@ -38,7 +38,6 @@
 <script lang="ts" setup>
   import MazBtn from './MazBtn.vue'
   import MazBackdrop from './MazBackdrop.vue'
-  import MazIcon from './MazIcon.vue'
   import XIcon from './../modules/icons/x.svg'
 
   defineProps({

@@ -75,8 +75,8 @@
           size="mini"
           @click.stop="hasPasswordVisible = !hasPasswordVisible"
         >
-          <MazIcon v-if="hasPasswordVisible" :src="EyeOffIcon" class="maz-text-muted" />
-          <MazIcon v-else :src="EyeIcon" class="maz-text-muted" />
+          <EyeOffIcon v-if="hasPasswordVisible" class="maz-h-5 maz-w-5 maz-text-muted" />
+          <EyeIcon v-else class="maz-h-5 maz-w-5 maz-text-muted" />
         </MazBtn>
 
         <slot v-if="$slots['valid-button'] || validButton" name="valid-button">
@@ -89,7 +89,7 @@
             size="mini"
             type="submit"
           >
-            <MazIcon :src="CheckIcon" class="maz-text-normal" />
+            <CheckIcon class="maz-h-5 maz-w-5 maz-text-normal" />
           </MazBtn>
         </slot>
       </div>
@@ -98,7 +98,15 @@
 </template>
 
 <script lang="ts">
-  import { computed, defineComponent, onMounted, ref, type PropType, getCurrentInstance } from 'vue'
+  import {
+    computed,
+    defineComponent,
+    onMounted,
+    ref,
+    type PropType,
+    getCurrentInstance,
+    defineAsyncComponent,
+  } from 'vue'
 
   import { debounce } from './../modules/helpers/debounce'
   import { useInstanceUniqId } from '../modules/composables/instance-uniq-id'
@@ -107,12 +115,19 @@
   import MazIcon from './MazIcon.vue'
   import type { Color, ModelValueSimple, Size } from './types'
   export type { Color, Size, ModelValueSimple } from './types'
-  import EyeOffIcon from './../modules/icons/eye-off.svg'
-  import EyeIcon from './../modules/icons/eye.svg'
-  import CheckIcon from './../modules/icons/check.svg'
+
+  const EyeOffIcon = defineAsyncComponent(() => import('./../modules/icons/eye-off.svg'))
+  const EyeIcon = defineAsyncComponent(() => import('./../modules/icons/eye.svg'))
+  const CheckIcon = defineAsyncComponent(() => import('./../modules/icons/check.svg'))
 
   export default defineComponent({
-    components: { MazBtn, MazIcon },
+    components: {
+      MazBtn,
+      MazIcon,
+      CheckIcon,
+      EyeIcon,
+      EyeOffIcon,
+    },
     inheritAttrs: false,
     props: {
       modelValue: {
@@ -305,9 +320,6 @@
         emitValue,
         hasRightPart,
         hasLeftPart,
-        EyeOffIcon,
-        EyeIcon,
-        CheckIcon,
         instanceId,
       }
     },

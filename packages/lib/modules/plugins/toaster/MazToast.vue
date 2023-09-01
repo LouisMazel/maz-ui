@@ -17,7 +17,7 @@
       </div>
 
       <button v-if="!persistent" class="--close">
-        <MazIcon :src="XIcon" class="--icon" />
+        <XIcon class="--icon" />
       </button>
     </div>
   </Transition>
@@ -28,7 +28,6 @@
   import type { PropType } from 'vue'
   import { ToasterTimer } from './timer'
   import type { LocalToasterOptions } from './toaster-handler'
-  import MazIcon from './../../../components/MazIcon.vue'
   import XIcon from './../../../modules/icons/x.svg'
   import type { ToasterPositions } from './types'
 

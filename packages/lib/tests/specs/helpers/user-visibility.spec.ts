@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
-import type { UserVisibilyCallback, UserVisibilyOptions } from '@package/helpers'
-import { UserVisibility } from '@package/helpers'
+import type { UserVisibilyCallback, UserVisibilyOptions } from '@modules/helpers'
+import { UserVisibility } from '@modules/helpers'
 
-import { sleep } from '@package/helpers'
+import { sleep } from '@modules/helpers'
 
 import { documentEmitVisibilityState } from '@tests/helpers/document-event'
 
@@ -27,7 +27,7 @@ afterAll(() => {
   instance = undefined
 })
 
-describe('@package/helpers/user-visibility.ts', () => {
+describe('@modules/helpers/user-visibility.ts', () => {
   describe('Given app want trigger user idle', () => {
     describe('When instance is launch', () => {
       it('Then instance is IdleTimeout', async () => {

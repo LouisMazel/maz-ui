@@ -261,7 +261,9 @@
         @apply maz-py-2;
       }
 
-      transition: background 300ms ease-in-out 0ms, color 300ms ease-in-out 0ms;
+      transition:
+        background 300ms ease-in-out 0ms,
+        color 300ms ease-in-out 0ms;
 
       /* Not disabled */
 

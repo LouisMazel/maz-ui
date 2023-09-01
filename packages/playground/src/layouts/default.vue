@@ -35,7 +35,7 @@
 
 <style lang="postcss" scoped>
   main {
-    @apply maz-mx-auto maz-flex maz-min-h-screen maz-w-full maz-max-w-7xl maz-flex-col;
+    @apply maz-flex maz-min-h-screen maz-flex-col maz-padded-container;
 
     header {
       @apply maz-flex maz-w-full maz-flex-wrap maz-items-center maz-justify-between maz-border-b maz-border-gray-300 maz-px-2 maz-py-4;

@@ -16,6 +16,8 @@ lint:
 	pnpm --parallel lint
 lint-lib:
 	pnpm --filter maz-ui lint
+lint-cli:
+	pnpm --filter cli lint
 
 build-all:
 	pnpm --parallel build

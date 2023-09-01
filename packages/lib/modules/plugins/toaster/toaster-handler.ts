@@ -8,7 +8,10 @@ export interface LocalToasterOptions extends ToasterOptions {
 }
 
 export class ToasterHandler {
-  constructor(private readonly app: App, private readonly globalOptions: ToasterOptions) {}
+  constructor(
+    private readonly app: App,
+    private readonly globalOptions: ToasterOptions,
+  ) {}
 
   private show(message: string, options: LocalToasterOptions) {
     const localOptions = { message, ...options }

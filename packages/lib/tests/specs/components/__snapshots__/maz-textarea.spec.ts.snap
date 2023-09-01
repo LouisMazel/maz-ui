@@ -1,8 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`components/MazTextarea.vue > Should match with the snapshot 1`] = `
-"<div data-v-144c4295=\\"\\" class=\\"m-textarea\\">
+"<div data-v-529ac5c3=\\"\\" class=\\"m-textarea\\">
   <!--v-if-->
-  <!-- eslint-disable vue/no-deprecated-html-element-is --><textarea data-v-144c4295=\\"\\" id=\\"MazTextarea-1\\" name=\\"MazTextarea\\" class=\\"--default-border\\" style=\\"resize: none; box-sizing: border-box;\\"></textarea><!-- eslint-enable vue/no-deprecated-html-element-is -->
+  <!-- eslint-disable vue/no-deprecated-html-element-is --><textarea data-v-529ac5c3=\\"\\" id=\\"MazTextarea-1\\" name=\\"MazTextarea\\" class=\\"--default-border\\" style=\\"resize: none; box-sizing: border-box;\\"></textarea><!-- eslint-enable vue/no-deprecated-html-element-is -->
 </div>"
 `;

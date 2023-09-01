@@ -1,7 +1,7 @@
 <template>
   <div class="maz-picker-footer">
     <MazBtn size="mini" :color="color" type="button" @click.stop="$emit('close')">
-      <MazIcon :src="CheckIcon" size="1.4rem" class="icon" />
+      <CheckIcon class="icon maz-h-[1.4rem] maz-w-[1.4rem]" />
     </MazBtn>
   </div>
 </template>
@@ -10,7 +10,6 @@
   import type { PropType } from 'vue'
   import MazBtn from '../MazBtn.vue'
   import type { Color } from '../types'
-  import MazIcon from '../MazIcon.vue'
   import CheckIcon from './../../modules/icons/check.svg'
 
   defineProps({

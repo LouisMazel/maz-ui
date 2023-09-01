@@ -300,8 +300,8 @@
 
   const countriesFiltered = computed(() => {
     const countries = props.onlyCountries || props.preferredCountries
-    return countries?.map((country) =>
-      countriesList.value?.find((item) => item.iso2.includes(country)),
+    return countries?.map(
+      (country) => countriesList.value?.find((item) => item.iso2.includes(country)),
     )
   })
 

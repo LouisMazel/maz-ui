@@ -33,7 +33,10 @@ export class IdleTimeout {
     'click',
   ]
 
-  public constructor(private readonly callback: IdleTimeoutCallback, options?: IdleTimeoutOptions) {
+  public constructor(
+    private readonly callback: IdleTimeoutCallback,
+    options?: IdleTimeoutOptions,
+  ) {
     this.options = {
       ...this.defaultOptions,
       ...options,

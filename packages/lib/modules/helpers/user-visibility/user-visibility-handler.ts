@@ -19,7 +19,10 @@ export class UserVisibility {
 
   private isVisible = false
 
-  constructor(private readonly callback: UserVisibilyCallback, options?: UserVisibilyOptions) {
+  constructor(
+    private readonly callback: UserVisibilyCallback,
+    options?: UserVisibilyOptions,
+  ) {
     this.options = {
       ...this.defaultOptions,
       ...options,

@@ -371,7 +371,10 @@
       font-size: 1em;
       font-weight: bold;
       line-height: 1;
-      transition: box-shadow 300ms ease-in-out, width 300ms ease-in-out, transform 300ms ease-in-out,
+      transition:
+        box-shadow 300ms ease-in-out,
+        width 300ms ease-in-out,
+        transform 300ms ease-in-out,
         background-color 300ms ease-in-out;
       z-index: 1;
       user-select: none;

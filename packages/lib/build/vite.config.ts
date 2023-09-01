@@ -64,17 +64,17 @@ const getBuildConfig = ({
         exports: 'named',
         chunkFileNames: 'assets/[name]-[hash].mjs',
         // preserveModules: true,
-        // globals: {
-        //   vue: 'Vue',
-        //   'libphonenumber-js': 'libphonenumber-js',
-        //   dayjs: 'dayjs',
-        //   dropzone: 'dropzone',
-        //   'vue-chartjs': 'vue-chartjs',
-        //   'chart.js': 'chart.js',
-        //   'dayjs/plugin/customParseFormat': 'dayjs/plugin/customParseFormat',
-        //   'dayjs/plugin/weekday': 'dayjs/plugin/weekday',
-        //   'dayjs/plugin/isBetween': 'dayjs/plugin/isBetween',
-        // },
+        globals: {
+          vue: 'Vue',
+          'libphonenumber-js': 'libphonenumber-js',
+          dayjs: 'dayjs',
+          dropzone: 'dropzone',
+          'vue-chartjs': 'vue-chartjs',
+          'chart.js': 'chart.js',
+          'dayjs/plugin/customParseFormat': 'dayjs/plugin/customParseFormat',
+          'dayjs/plugin/weekday': 'dayjs/plugin/weekday',
+          'dayjs/plugin/isBetween': 'dayjs/plugin/isBetween',
+        },
       },
     },
   },
@@ -84,7 +84,7 @@ const getBuildConfig = ({
       packageJsonPath: resolve(__dirname, '../package.json'),
       includeDependencies: false,
     }),
-    svgLoader({ defaultImport: 'url' }),
+    svgLoader({}),
     // @ts-ignore
     Vue(),
     cssInjectedByJsPlugin(), // ...(isModuleBuild ? [] : [cssInjectedByJsPlugin()]),
@@ -151,7 +151,7 @@ const run = async () => {
 
     // Build main.css file with tailwind
     await execPromise(
-      'tailwindcss -i tailwindcss/tailwind.css -o dist/css/main.css --config tailwind.config.js --postcss --minify',
+      'tailwindcss -i tailwindcss/tailwind.css -o dist/css/main.css --config tailwind.config.ts --postcss --minify',
     )
 
     await compileScss()

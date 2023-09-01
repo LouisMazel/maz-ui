@@ -29,7 +29,7 @@
           class="m-select-input__toggle-button maz-custom"
           @click.stop="openList"
         >
-          <MazIcon :src="ChevronDownIcon" class="m-select-chevron" />
+          <ChevronDownIcon class="m-select-chevron" />
         </button>
       </template>
     </MazInput>
@@ -62,12 +62,12 @@
             @keydown="keyboardHandler"
           >
             <template #left-icon>
-              <MazIcon size="1.3rem" :src="SearchIcon" />
+              <SearchIcon class="maz-h-[1.3rem] maz-w-[1.3rem]" />
             </template>
           </MazInput>
         </div>
         <span v-if="!optionsList || optionsList.length <= 0" class="m-select-list__no-results">
-          <MazIcon :src="NoSymbolIcon" />
+          <NoSymbolIcon class="maz-h-6 maz-w-6 maz-text-normal" />
         </span>
         <div v-else class="m-select-list__scroll-wrapper">
           <button
@@ -114,7 +114,6 @@
   // NEXT: multiselect
   import { ref, computed, onBeforeMount, nextTick, type PropType, getCurrentInstance } from 'vue'
   import MazInput from './MazInput.vue'
-  import MazIcon from './MazIcon.vue'
   import type { Color, ModelValueSimple, Position, Size } from './types'
   import { useInstanceUniqId } from '../modules/composables/instance-uniq-id'
 
@@ -207,8 +206,8 @@
   const searchInputComponent = ref<typeof MazInput>()
   const optionsListElement = ref<HTMLDivElement>()
 
-  const selectedOption = computed(() =>
-    props.options?.find((option) => props.modelValue === option[props.optionValueKey]),
+  const selectedOption = computed(
+    () => props.options?.find((option) => props.modelValue === option[props.optionValueKey]),
   )
 
   const isNullOrUndefined = (value: unknown) => {

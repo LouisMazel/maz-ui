@@ -1,7 +1,7 @@
 <template>
   <div class="m-picker-calendar-switcher">
     <MazBtn size="mini" color="transparent" type="button" @click="previousMonth">
-      <MazIcon :src="ChevronLeftIcon" size="1.2rem" />
+      <ChevronLeftIcon :src="ChevronLeftIcon" class="maz-h-[1.2rem] maz-w-[1.2rem]" />
     </MazBtn>
     <MazBtn
       size="sm"
@@ -22,7 +22,7 @@
       {{ yearLabel }}
     </MazBtn>
     <MazBtn size="mini" color="transparent" type="button" @click="nextMonth">
-      <MazIcon :src="ChevronRightIcon" size="1.2rem" />
+      <ChevronRightIcon class="maz-h-[1.2rem] maz-w-[1.2rem]" />
     </MazBtn>
   </div>
 </template>
@@ -30,7 +30,6 @@
 <script lang="ts" setup>
   import ChevronLeftIcon from './../../modules/icons/chevron-left.svg'
   import ChevronRightIcon from './../../modules/icons/chevron-right.svg'
-  import MazIcon from '../MazIcon.vue'
   import MazBtn from '../MazBtn.vue'
   import { computed } from 'vue'
   import { date, capitalize } from './../../modules'

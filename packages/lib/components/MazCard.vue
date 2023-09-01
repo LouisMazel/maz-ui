@@ -32,11 +32,7 @@
         size="xs"
         @click.stop="isOpen = !isOpen"
       >
-        <MazIcon
-          :src="ChevronDownIcon"
-          :class="{ '--is-open': isOpen }"
-          class="m-card__collapse-icon maz-h-6"
-        />
+        <ChevronDownIcon :class="{ '--is-open': isOpen }" class="m-card__collapse-icon maz-h-6" />
       </MazBtn>
     </Component>
     <Component
@@ -110,7 +106,6 @@
   import MazGallery from './MazGallery.vue'
   import MazBtn from './MazBtn.vue'
   import MazTransitionExpand from './MazTransitionExpand.vue'
-  import MazIcon from './MazIcon.vue'
   import type { MazGalleryImage } from './types'
   import ChevronDownIcon from './../modules/icons/chevron-down.svg'
 

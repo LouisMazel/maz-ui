@@ -28,7 +28,7 @@ npm i maz-ui
 
 #### Vue JS <NpmBadge package="vue" />
 
-In the `main.js` or `main.ts`, import main maz-ui css file before your own css
+In the `main.js` or `main.ts`, import main maz-ui CSS file before your own CSS
 
 ```ts
 import 'maz-ui/css/main.css'
@@ -51,7 +51,7 @@ export default {
 
 #### Optional
 
-You can add these css rules in your main css file to use maz-ui font family
+You can add these CSS rules in your main CSS file to use maz-ui font family
 
 ```css
 html {
@@ -60,11 +60,11 @@ html {
 }
 ```
 
-### Recommanded
+### Recommended
 
-To optimize your bundle size, it's recommanded to use the partial import
+To optimize your bundle size, it's recommended to use the partial import
 
-#### Global component installation (recommanded)
+#### Global component installation (recommended)
 
 > Example with some components
 
@@ -99,7 +99,7 @@ app.component('MazPhoneNumberInput', MazPhoneNumberInput)
 </script>
 ```
 
-### Not recommanded
+### Not recommended
 
 #### Fully library installation
 

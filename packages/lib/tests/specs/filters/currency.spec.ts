@@ -1,4 +1,4 @@
-import { currency } from '@package/filters/currency'
+import { currency } from '@modules/filters/currency'
 
 describe('currency', () => {
   it('formats a number as a currency', () => {

@@ -5,7 +5,7 @@
     "target": "ESNext",
     "moduleResolution": "node",
     "paths": {
-      "@package/*": ["./../modules/*"],
+      "@modules/*": ["./../modules/*"],
       "@components/*": ["./../components/*"],
       "@tests/*": ["./../tests/*"]
     }

@@ -5,32 +5,39 @@ import Vue from '@vitejs/plugin-vue'
 
 import { resolve } from 'node:path'
 
+import svgLoader from 'vite-svg-loader'
+
 /* eslint-disable unicorn/prefer-module */
 const projectRoot = resolve(__dirname)
 /* eslint-enable unicorn/prefer-module */
 
 export default defineConfig({
-  plugins: [Vue()],
+  plugins: [Vue(), svgLoader()],
   server: {
-    port: 1000,
+    port: 1111,
   },
   test: {
-    // setupFiles: ['./vitest.setup.ts'],
-    environment: 'jsdom',
-    // deps: {
-    //   inline: ['vitest-canvas-mock'],
+    // setupFiles: ['vitest-canvas-mock'],
+    // server: {
+    //   deps: {
+    //     inline: ['vitest-canvas-mock'],
+    //   },
     // },
     // threads: false,
+    globalSetup: './vitest-global.setup.ts',
+    environment: 'jsdom',
     environmentOptions: {
       jsdom: {
         resources: 'usable',
       },
     },
+    env: {
+      TZ: 'UTC',
+    },
     globals: true,
     coverage: {
       provider: 'v8',
       all: true,
-      excludeNodeModules: true,
       reporter: ['clover', 'html'],
       include: ['modules', 'components'],
       exclude: [
@@ -62,8 +69,8 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@package': resolve(projectRoot, 'package'),
-      '@components': resolve(projectRoot, 'package/components'),
+      '@modules': resolve(projectRoot, 'modules'),
+      '@components': resolve(projectRoot, 'components'),
       '@tests': resolve(projectRoot, 'tests'),
     },
   },

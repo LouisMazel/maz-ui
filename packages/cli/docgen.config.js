@@ -1,4 +1,5 @@
 /* eslint-disable unicorn/prefer-module */
+/* eslint-disable @typescript-eslint/no-var-requires */
 
 const { resolve, join } = require('node:path')
 const { defineConfig } = require('vue-docgen-cli')

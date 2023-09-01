@@ -13,9 +13,9 @@ module.exports = {
     'standard-with-typescript',
   ],
   parserOptions: {
-    ecmaVersion: 2020,
+    ecmaVersion: 2022,
     sourceType: 'module',
-    project: ['./tsconfig.json'],
+    project: './tsconfig.json',
   },
   rules: {
     'comma-dangle': ['error', 'always-multiline'],

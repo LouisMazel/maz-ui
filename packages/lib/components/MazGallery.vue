@@ -42,11 +42,11 @@
       </figure>
       <div
         v-if="hasEmptyLayer && images.length === 0"
-        class="flex-center maz-flex maz-w-full maz-bg-color-light maz-text-normal"
+        class="maz-flex maz-w-full maz-bg-color-light maz-text-normal maz-flex-center"
         :class="{ 'maz-rounded-xl': !noRadius }"
         :style="[sizeStyle]"
       >
-        <MazIcon :src="NoPhotographyIcon" size="2rem" />
+        <NoPhotographyIcon class="maz-h-8 maz-w-8" />
       </div>
     </section>
     <div
@@ -59,13 +59,15 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, type PropType, onBeforeMount } from 'vue'
+  import { computed, type PropType, onBeforeMount, defineAsyncComponent } from 'vue'
   import { vZoomImg } from './../modules/directives/v-zoom-img'
   import { vLazyImg } from './../modules/directives/v-lazy-img'
   import type { MazGalleryImage } from './types'
-  import MazIcon from './MazIcon.vue'
   export type { MazGalleryImage } from './types'
-  import NoPhotographyIcon from './../modules/icons/no-photography.svg'
+
+  const NoPhotographyIcon = defineAsyncComponent(
+    () => import('./../modules/icons/no-photography.svg'),
+  )
 
   const lazyImgArgument = 'bg-image'
 

@@ -51,7 +51,7 @@
         @click="$emit('click', $event)"
       >
         <slot name="icon">
-          <MazIcon :src="PencilIcon" class="m-avatar__button__icon" />
+          <PencilIcon class="m-avatar__button__icon maz-h-5 maz-w-5" />
         </slot>
       </button>
     </div>
@@ -69,13 +69,13 @@
 
 <script lang="ts" setup>
   import type { PropType } from 'vue'
-  import { computed } from 'vue'
+  import { computed, defineAsyncComponent } from 'vue'
 
   import MazLazyImg from './MazLazyImg.vue'
-  import MazIcon from './MazIcon.vue'
-  import PencilIcon from './../modules/icons/pencil.svg'
 
   import type { Color } from './types'
+
+  const PencilIcon = defineAsyncComponent(() => import('./../modules/icons/pencil.svg'))
 
   const props = defineProps({
     src: {

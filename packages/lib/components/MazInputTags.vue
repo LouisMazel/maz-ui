@@ -18,7 +18,7 @@
             {{ tag }}
           </template>
           <template #right-icon>
-            <MazIcon name="x" size="1em" class="m-input-tags__tag__icon" />
+            <XIcon class="m-input-tags__tag__icon maz-h-[1em] maz-w-[1em]" />
           </template>
         </MazBtn>
       </div>
@@ -47,7 +47,7 @@
 
   import MazBtn from './MazBtn.vue'
   import MazInput from './MazInput.vue'
-  import MazIcon from './MazIcon.vue'
+  import XIcon from './../modules/icons/x.svg'
   import type { Color, Size } from './types'
 
   const props = defineProps({

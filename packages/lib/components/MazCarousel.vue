@@ -14,7 +14,7 @@
           @click="previous"
         >
           <slot name="previous-icon">
-            <MazIcon :src="ChevronLeftIcon" />
+            <ChevronLeftIcon class="maz-h-5 maz-w-5" />
           </slot>
         </MazBtn>
         <MazBtn
@@ -26,7 +26,7 @@
           @click="next"
         >
           <slot name="next-icon">
-            <MazIcon :src="ChevronRightIcon" />
+            <ChevronRightIcon class="maz-h-5 maz-w-5" />
           </slot>
         </MazBtn>
       </div>
@@ -42,7 +42,6 @@
 <script lang="ts" setup>
   import { ref, useSlots } from 'vue'
   import MazBtn from './MazBtn.vue'
-  import MazIcon from './MazIcon.vue'
   import ChevronLeftIcon from './../modules/icons/chevron-left.svg'
   import ChevronRightIcon from './../modules/icons/chevron-right.svg'
 

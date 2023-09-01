@@ -30,7 +30,7 @@
     >
       <template #right-icon>
         <button type="button" tabindex="-1" class="m-picker__button">
-          <MazIcon :src="ChevronDownIcon" class="m-picker__button__chevron" />
+          <ChevronDownIcon class="m-picker__button__chevron" />
         </button>
       </template>
     </MazInput>
@@ -99,7 +99,6 @@
   import MazPickerContainer from './MazPicker/MazPickerContainer.vue'
   import { vClickOutside } from '../modules/directives/click-outside'
   import ChevronDownIcon from './../modules/icons/chevron-down.svg'
-  import MazIcon from './MazIcon.vue'
   import type { Color, Position } from './types'
 
   import { date } from './../modules'

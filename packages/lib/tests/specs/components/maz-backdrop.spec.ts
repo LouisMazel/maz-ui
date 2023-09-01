@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils'
-import MazBackdrop from '@package/components/MazBackdrop.vue'
-import { sleep } from '@package/index'
+import MazBackdrop from '@components/MazBackdrop.vue'
+import { sleep } from '@modules/index'
 
 describe('MazBackdrop', () => {
   it('renders correctly', () => {

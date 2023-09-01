@@ -1,4 +1,4 @@
-import MazChart from '@package/components/MazChart.vue'
+import MazChart from '@components/MazChart.vue'
 import { mount } from '@vue/test-utils'
 
 const pieChart = {
@@ -15,11 +15,11 @@ const pieChart = {
 }
 
 describe('MazChart', () => {
-  test('Should match with the snapshot', () => {
+  test('Should match with  the snapshot', () => {
     const wrapper = mount(MazChart, {
       props: {
         data: pieChart.data,
-        type: pieChart.type,
+        type: pieChart.type as any,
       },
     })
     expect(wrapper.html()).toMatchSnapshot()

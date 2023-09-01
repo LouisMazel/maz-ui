@@ -8,7 +8,7 @@
       :disabled="decrementDisabled || disabled"
       @click="decrement"
     >
-      <MazIcon :src="MinusIcon" class="m-input-number__button__icon" />
+      <MinusIcon class="m-input-number__button__icon" />
     </MazBtn>
     <MazInput
       v-model.number="currentValue"
@@ -31,7 +31,7 @@
       :disabled="incrementDisabled || disabled"
       @click="increment"
     >
-      <MazIcon :src="PlusIcon" class="m-input-number__button__icon" />
+      <PlusIcon class="m-input-number__button__icon" />
     </MazBtn>
   </div>
 </template>
@@ -45,7 +45,6 @@
   import type { Size } from './types'
   import MazBtn from './MazBtn.vue'
   import MazInput from './MazInput.vue'
-  import MazIcon from './MazIcon.vue'
   import PlusIcon from './../modules/icons/plus.svg'
   import MinusIcon from './../modules/icons/minus.svg'
 

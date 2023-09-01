@@ -2,10 +2,10 @@
 // @ts-expect-error
 import postcss from 'maz-ui/postcss.config.js'
 import svgLoader from 'vite-svg-loader'
-import mazUiNuxt from 'maz-ui/nuxt/index'
+// import mazUiNuxt from 'maz-ui/nuxt/index'
 
 export default defineNuxtConfig({
-  modules: [mazUiNuxt, '@nuxtjs/tailwindcss'],
+  modules: ['maz-ui/nuxt', '@nuxtjs/tailwindcss'],
   css: ['maz-ui/tailwindcss/tailwind.css', '@/css/main.css'],
   devServer: {
     port: 3333,

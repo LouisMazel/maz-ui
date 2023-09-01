@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import type { IdleTimeoutOptions, IdleTimeoutCallback } from '@package/helpers'
-import { IdleTimeout } from '@package/helpers'
+import type { IdleTimeoutOptions, IdleTimeoutCallback } from '@modules/helpers'
+import { IdleTimeout } from '@modules/helpers'
 
-import { sleep } from '@package/helpers'
+import { sleep } from '@modules/helpers'
 
 const DEFAULT_TIMEOUT = 300
 
@@ -25,7 +25,7 @@ afterAll(() => {
   instance = undefined
 })
 
-describe('@package/helpers/idle-timeout', () => {
+describe('@modules/helpers/idle-timeout', () => {
   describe('Given app want trigger user idle', () => {
     describe('When instance is launch', () => {
       it('Then instance is IdleTimeout', () => {
