@@ -156,6 +156,7 @@ const run = async () => {
     )
 
     await generateLibComponentsEntryFile()
+    await generateComponentListFile(resolve(__dirname, './../dist/components/component-list.mjs'))
 
     // Build main.css file with tailwind
     await execPromise(
