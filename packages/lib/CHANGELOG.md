@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.10.1](https://github.com/LouisMazel/maz-ui/compare/v3.10.0...v3.10.1) (2023-09-02)
+
+
+### Bug Fixes
+
+* **lib:** building process ([2f1bbeb](https://github.com/LouisMazel/maz-ui/commit/2f1bbebb4e1552c44e762ee485dbd5c0675ce8c8))
+
+
+
+
+
 # [3.10.0](https://github.com/LouisMazel/maz-ui/compare/v3.9.1...v3.10.0) (2023-09-01)
 
 
