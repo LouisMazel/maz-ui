@@ -42,9 +42,9 @@ The components, plugins and tools are auto-imported
 
 ```vue
 <template>
-  <MazButton>
+  <MazBtn>
     Button auto-imported
-  </MazButton>
+  </MazBtn>
 </template>
 
 <script lang="ts" setup>
