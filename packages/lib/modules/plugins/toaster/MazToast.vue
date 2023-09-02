@@ -28,7 +28,7 @@
   import type { PropType } from 'vue'
   import { ToasterTimer } from './timer'
   import type { LocalToasterOptions } from './toaster-handler'
-  import XIcon from './../../../modules/icons/x.svg'
+  import XIcon from './../../../icons/x.svg'
   import type { ToasterPositions } from './types'
 
   const Toaster = ref<HTMLDivElement>()

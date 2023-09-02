@@ -116,9 +116,9 @@
   import type { Color, ModelValueSimple, Size } from './types'
   export type { Color, Size, ModelValueSimple } from './types'
 
-  const EyeOffIcon = defineAsyncComponent(() => import('./../modules/icons/eye-off.svg'))
-  const EyeIcon = defineAsyncComponent(() => import('./../modules/icons/eye.svg'))
-  const CheckIcon = defineAsyncComponent(() => import('./../modules/icons/check.svg'))
+  const EyeOffIcon = defineAsyncComponent(() => import('./../icons/eye-off.svg'))
+  const EyeIcon = defineAsyncComponent(() => import('./../icons/eye.svg'))
+  const CheckIcon = defineAsyncComponent(() => import('./../icons/check.svg'))
 
   export default defineComponent({
     components: {

@@ -10,7 +10,7 @@
   import type { PropType } from 'vue'
   import MazBtn from '../MazBtn.vue'
   import type { Color } from '../types'
-  import CheckIcon from './../../modules/icons/check.svg'
+  import CheckIcon from './../../icons/check.svg'
 
   defineProps({
     color: { type: String as PropType<Color>, required: true },

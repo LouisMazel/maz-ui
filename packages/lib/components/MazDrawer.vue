@@ -36,7 +36,7 @@
 
   import MazBackdrop from './MazBackdrop.vue'
   import MazBtn from './MazBtn.vue'
-  import XIcon from './../modules/icons/x.svg'
+  import XIcon from './../icons/x.svg'
 
   defineProps({
     noClose: { type: Boolean, default: false },

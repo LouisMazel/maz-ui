@@ -32,7 +32,7 @@
   import dayjs from 'dayjs'
   import { isSameDate } from './utils'
   import MazBtn from './../MazBtn.vue'
-  import XIcon from './../../modules/icons/x.svg'
+  import XIcon from './../../icons/x.svg'
 
   const props = defineProps({
     calendarDate: { type: String, required: true },

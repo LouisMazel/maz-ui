@@ -47,7 +47,7 @@
 
   import MazBtn from './MazBtn.vue'
   import MazInput from './MazInput.vue'
-  import XIcon from './../modules/icons/x.svg'
+  import XIcon from './../icons/x.svg'
   import type { Color, Size } from './types'
 
   const props = defineProps({

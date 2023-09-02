@@ -33,6 +33,14 @@ const staticAssetsToCopy: Target[] = [
     src: resolve(__dirname, '../package.json'),
     dest: resolve(__dirname, '../dist'),
   },
+  {
+    src: resolve(__dirname, '../icons'),
+    dest: resolve(__dirname, '../dist'),
+  },
+  {
+    src: resolve(__dirname, '../../../README.md'),
+    dest: resolve(__dirname, '../dist'),
+  },
 ]
 
 const getBuildConfig = ({

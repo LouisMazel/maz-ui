@@ -42,8 +42,8 @@
 <script lang="ts" setup>
   import { ref, useSlots } from 'vue'
   import MazBtn from './MazBtn.vue'
-  import ChevronLeftIcon from './../modules/icons/chevron-left.svg'
-  import ChevronRightIcon from './../modules/icons/chevron-right.svg'
+  import ChevronLeftIcon from './../icons/chevron-left.svg'
+  import ChevronRightIcon from './../icons/chevron-right.svg'
 
   const props = defineProps({
     noScrollBtn: { type: Boolean, default: false },

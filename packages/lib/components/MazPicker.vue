@@ -98,7 +98,7 @@
   import MazInput from './MazInput.vue'
   import MazPickerContainer from './MazPicker/MazPickerContainer.vue'
   import { vClickOutside } from '../modules/directives/click-outside'
-  import ChevronDownIcon from './../modules/icons/chevron-down.svg'
+  import ChevronDownIcon from './../icons/chevron-down.svg'
   import type { Color, Position } from './types'
 
   import { date } from './../modules'

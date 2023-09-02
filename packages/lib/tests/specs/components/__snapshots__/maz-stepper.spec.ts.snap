@@ -2,7 +2,7 @@
 
 exports[`components/MazStepper.vue > Should match with the snapshot 1`] = `
 "<div data-v-a40fe233=\\"\\" class=\\"m-stepper\\"><button data-v-a40fe233=\\"\\" type=\\"button\\" disabled=\\"\\" class=\\"m-stepper__header --is-current-step --success\\">
-    <div data-v-a40fe233=\\"\\" class=\\"m-stepper__header__wrapper\\"><span data-v-a40fe233=\\"\\" class=\\"m-stepper__count --primary\\"><div data-v-a40fe233=\\"\\" class=\\"m-stepper__count__circle\\"><maz-icon-stub data-v-a40fe233=\\"\\" src=\\"/modules/icons/check-circle.svg\\" size=\\"1.5rem\\" transformsource=\\"[Function]\\" class=\\"icon\\"></maz-icon-stub></div> 1</span>
+    <div data-v-a40fe233=\\"\\" class=\\"m-stepper__header__wrapper\\"><span data-v-a40fe233=\\"\\" class=\\"m-stepper__count --primary\\"><div data-v-a40fe233=\\"\\" class=\\"m-stepper__count__circle\\"><maz-icon-stub data-v-a40fe233=\\"\\" src=\\"/icons/check-circle.svg\\" size=\\"1.5rem\\" transformsource=\\"[Function]\\" class=\\"icon\\"></maz-icon-stub></div> 1</span>
       <div data-v-a40fe233=\\"\\" class=\\"m-stepper__header__content\\"><span data-v-a40fe233=\\"\\" class=\\"m-stepper__title\\">Step 1</span>
         <!--v-if-->
       </div>
