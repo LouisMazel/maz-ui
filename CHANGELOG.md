@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.10.3](https://github.com/LouisMazel/maz-ui/compare/v3.10.2...v3.10.3) (2023-09-02)
+
+### Bug Fixes
+
+- **lib:** nuxt module - add necessary file for component auto import ([0dccce5](https://github.com/LouisMazel/maz-ui/commit/0dccce5b13694ae5759360efad9e02771585612a))
+
 ## [3.10.2](https://github.com/LouisMazel/maz-ui/compare/v3.10.1...v3.10.2) (2023-09-02)
 
 **Note:** Version bump only for package root
