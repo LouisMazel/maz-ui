@@ -65,9 +65,7 @@
   import type { MazGalleryImage } from './types'
   export type { MazGalleryImage } from './types'
 
-  const NoPhotographyIcon = defineAsyncComponent(
-    () => import('./../modules/icons/no-photography.svg'),
-  )
+  const NoPhotographyIcon = defineAsyncComponent(() => import('./../icons/no-photography.svg'))
 
   const lazyImgArgument = 'bg-image'
 

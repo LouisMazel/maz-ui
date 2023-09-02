@@ -83,9 +83,10 @@
   import MazTransitionExpand from './MazTransitionExpand.vue'
   import MazIcon from './MazIcon.vue'
   import type { Color } from './types'
-  import CheckCircleIcon from './../modules/icons/check-circle.svg?url'
-  import ExclamationCircleIcon from './../modules/icons/exclamation-circle.svg?url'
-  import ExclamationIcon from './../modules/icons/exclamation.svg?url'
+
+  import CheckCircleIcon from './../icons/check-circle.svg?url'
+  import ExclamationCircleIcon from './../icons/exclamation-circle.svg?url'
+  import ExclamationIcon from './../icons/exclamation.svg?url'
 
   export interface Step {
     title?: string

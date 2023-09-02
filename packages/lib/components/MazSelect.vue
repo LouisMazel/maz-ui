@@ -117,9 +117,9 @@
   import type { Color, ModelValueSimple, Position, Size } from './types'
   import { useInstanceUniqId } from '../modules/composables/instance-uniq-id'
 
-  import SearchIcon from './../modules/icons/search.svg'
-  import ChevronDownIcon from './../modules/icons/chevron-down.svg'
-  import NoSymbolIcon from './../modules/icons/no-symbol.svg'
+  import SearchIcon from './../icons/search.svg'
+  import ChevronDownIcon from './../icons/chevron-down.svg'
+  import NoSymbolIcon from './../icons/no-symbol.svg'
 
   const instance = getCurrentInstance()
 

@@ -38,10 +38,11 @@
   import dayjs from 'dayjs'
   import type { Color } from './../types'
   import MazBtn from './../MazBtn.vue'
-  import XIcon from './../../modules/icons/x.svg'
   import { isSameDate } from './utils'
-  import ChevronLeftIcon from './../../modules/icons/chevron-left.svg'
-  import ChevronRightIcon from './../../modules/icons/chevron-right.svg'
+
+  import XIcon from './../../icons/x.svg'
+  import ChevronLeftIcon from './../../icons/chevron-left.svg'
+  import ChevronRightIcon from './../../icons/chevron-right.svg'
 
   const props = defineProps({
     color: { type: String as PropType<Color>, required: true },

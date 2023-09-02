@@ -75,7 +75,7 @@
 
   import type { Color } from './types'
 
-  const PencilIcon = defineAsyncComponent(() => import('./../modules/icons/pencil.svg'))
+  const PencilIcon = defineAsyncComponent(() => import('./../icons/pencil.svg'))
 
   const props = defineProps({
     src: {

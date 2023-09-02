@@ -30,7 +30,7 @@ exports[`components/MazPicker.vue > Should match with the snapshot 1`] = `
           <!--v-if-->
           <div data-v-5fc123ce=\\"\\" class=\\"maz-picker-calendar__main\\">
             <div data-v-45f70d25=\\"\\" data-v-5fc123ce=\\"\\" class=\\"m-picker-calendar-switcher\\"><button data-v-fa7305fb=\\"\\" data-v-45f70d25=\\"\\" class=\\"m-btn --mini --transparent --cursor-pointer --is-button\\" type=\\"button\\">
-                <!--v-if--><span data-v-fa7305fb=\\"\\" class=\\"maz-flex maz-flex-center\\"><svg data-v-45f70d25=\\"\\" xmlns=\\"http://www.w3.org/2000/svg\\" fill=\\"none\\" stroke=\\"currentColor\\" aria-hidden=\\"true\\" viewBox=\\"0 0 24 24\\" src=\\"[object Object]\\" class=\\"maz-h-[1.2rem] maz-w-[1.2rem]\\"><path stroke-linecap=\\"round\\" stroke-linejoin=\\"round\\" stroke-width=\\"2\\" d=\\"m15 19-7-7 7-7\\"></path></svg></span>
+                <!--v-if--><span data-v-fa7305fb=\\"\\" class=\\"maz-flex maz-flex-center\\"><svg data-v-45f70d25=\\"\\" xmlns=\\"http://www.w3.org/2000/svg\\" fill=\\"none\\" stroke=\\"currentColor\\" aria-hidden=\\"true\\" viewBox=\\"0 0 24 24\\" class=\\"maz-h-[1.2rem] maz-w-[1.2rem]\\"><path stroke-linecap=\\"round\\" stroke-linejoin=\\"round\\" stroke-width=\\"2\\" d=\\"m15 19-7-7 7-7\\"></path></svg></span>
                 <!--v-if-->
                 <!--v-if-->
               </button><button data-v-fa7305fb=\\"\\" data-v-45f70d25=\\"\\" class=\\"m-picker-calendar-switcher__date m-btn --sm --transparent --cursor-pointer --is-button m-picker-calendar-switcher__date\\" type=\\"button\\">

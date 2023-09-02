@@ -107,7 +107,7 @@
   import MazBtn from './MazBtn.vue'
   import MazTransitionExpand from './MazTransitionExpand.vue'
   import type { MazGalleryImage } from './types'
-  import ChevronDownIcon from './../modules/icons/chevron-down.svg'
+  import ChevronDownIcon from './../icons/chevron-down.svg'
 
   const props = defineProps({
     // Images displayed
