@@ -35,7 +35,8 @@
     "test:unit:coverage": "vitest run --coverage",
     "test:unit:coverage:watch": "vitest watch --coverage",
     "test:unit:coverage:master": "vitest run --coverage --changed master",
-    "pre-commit": "lint-staged"
+    "pre-commit": "lint-staged",
+    "gen-vue-tsc": "vue-tsc --declaration --emitDeclarationOnly"
   },
   "lint-staged": {
     "*": "prettier -w -u",

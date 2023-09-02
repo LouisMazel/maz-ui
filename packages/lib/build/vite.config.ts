@@ -161,6 +161,8 @@ const run = async () => {
     logger.success('[vite.config.js](run) 💚 library builded with success 💚')
   } catch (error) {
     logger.error('[vite.config.js](run) 🔴 Error while building library', error)
+
+    throw new Error(`[vite.config.js](run) 🔴 Error while building library - ${error}`)
   }
 }
 
