@@ -6,7 +6,7 @@ export default <Config>{
   mode: 'build',
   presets: [tailwindConfigBase],
   content: {
-    files: ['./modules/**/*', './components/**/*', 'tailwindcss/**/*', '!components/tmp/**/*'],
+    files: ['./modules/**/*', './components/**/*', 'tailwindcss/**/*', '!components_tmp/**/*'],
     transform: {
       vue: (content) => {
         const regex = /<style[^>]*>([\S\s]*?)<\/style>/g

@@ -67,9 +67,9 @@ export interface ModuleOptions {
    */
   injectUseCurrency?: boolean
   /**
-   * Enable auto import of useTheme composable
+   * Enable auto import of useThemeHandler composable
    */
-  injectUseTheme?: boolean
+  injectUseThemeHandler?: boolean
   /**
    * install global of v-fullscreen-img directive
    */
