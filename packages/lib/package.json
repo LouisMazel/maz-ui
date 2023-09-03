@@ -41,7 +41,7 @@
   "lint-staged": {
     "*": "prettier -w -u",
     "*.{js,ts,vue}": "cross-env NODE_ENV=production eslint --fix",
-    "*.{vue,css,scss,postcss,pcss}": "stylelint --fix"
+    "*.{vue,css,scss,postcss,pcss}": "stylelint --fix --allow-empty-input"
   },
   "peerDependencies": {
     "@nuxt/kit": "^3.4.0",

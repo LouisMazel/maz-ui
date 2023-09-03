@@ -21,5 +21,5 @@
     "types": ["@types/node", "google.maps", "vite-svg-loader"]
   },
   "include": ["modules", "types", "components", "tailwindcss", "tailwind.config.ts", "nuxt"],
-  "exclude": ["node_modules", "components/tmp/**/*"]
+  "exclude": ["node_modules", "components_tmp/**/*"]
 }

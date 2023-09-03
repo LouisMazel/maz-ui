@@ -2,7 +2,6 @@
 // @ts-expect-error
 import postcss from 'maz-ui/postcss.config.js'
 import svgLoader from 'vite-svg-loader'
-// import mazUiNuxt from 'maz-ui/nuxt/index'
 
 export default defineNuxtConfig({
   modules: ['maz-ui/nuxt', '@nuxtjs/tailwindcss'],
@@ -11,10 +10,9 @@ export default defineNuxtConfig({
     port: 3333,
   },
   mazUi: {
-    injectComponents: true,
     injectToaster: true,
+    injectUseThemeHandler: true,
   },
-  components: true,
   srcDir: 'src/',
   app: {
     head: {

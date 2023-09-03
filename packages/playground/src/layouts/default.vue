@@ -17,8 +17,6 @@
 </template>
 
 <script setup lang="ts">
-  import { useThemeHandler } from 'maz-ui'
-
   const { toggleTheme, autoSetTheme } = useThemeHandler()
 
   onMounted(() => {

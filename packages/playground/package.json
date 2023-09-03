@@ -1,5 +1,5 @@
 {
-  "name": "playground",
+  "name": "test",
   "private": true,
   "scripts": {
     "dev": "nuxi dev",
@@ -10,11 +10,16 @@
     "format": "prettier --ignore-path .gitignore . --write",
     "pre-commit": "lint-staged"
   },
+  "lint-staged": {
+    "*": "prettier -w -u",
+    "*.{js,ts,vue}": "cross-env NODE_ENV=production eslint --fix",
+    "*.{vue,css,scss,postcss,pcss}": "stylelint --fix"
+  },
   "devDependencies": {
     "@nuxt/devtools": "^0.8.2",
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
     "@nuxtjs/tailwindcss": "^6.8.0",
-    "@types/node": "^20.5.7",
+    "@types/node": "^20.5.9",
     "autoprefixer": "^10.4.15",
     "cross-env": "^7.0.3",
     "eslint": "^8.48.0",

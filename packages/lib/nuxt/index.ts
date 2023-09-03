@@ -16,7 +16,7 @@ export interface MazUiNuxtOptions {
   /**
    * Enable auto import of useTheme composable
    */
-  injectUseTheme?: boolean
+  injectUseThemeHandler?: boolean
   /**
    * install global of v-fullscreen-img directive
    */
@@ -71,9 +71,9 @@ export default defineNuxtModule<MazUiNuxtOptions>({
         addComponent({
           name: componentName,
           filePath:
-            process.env.NODE_ENV === 'prodution'
-              ? `maz-ui/components/${componentName}`
-              : `maz-ui/components/${componentName}.vue`,
+            process.env.MAZ_UI_DEV === 'true'
+              ? `maz-ui/components/${componentName}.vue`
+              : `maz-ui/components/${componentName}`,
         })
       }
     }
@@ -96,11 +96,11 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       })
     }
 
-    if (moduleOptions.injectUseTheme) {
+    if (moduleOptions.injectUseThemeHandler) {
       addImports({
         from: 'maz-ui',
-        name: 'useTheme',
-        as: 'useTheme',
+        name: 'useThemeHandler',
+        as: 'useThemeHandler',
       })
     }
 
