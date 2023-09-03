@@ -81,7 +81,7 @@ importers:
         version: 16.0.2(eslint@8.48.0)
       eslint-plugin-prettier:
         specifier: ^5.0.0
-        version: 5.0.0(eslint-config-prettier@8.10.0)(eslint@8.48.0)(prettier@3.0.3)
+        version: 5.0.0(eslint-config-prettier@9.0.0)(eslint@8.48.0)(prettier@3.0.3)
       eslint-plugin-promise:
         specifier: ^6.0.0
         version: 6.1.1(eslint@8.48.0)
@@ -232,7 +232,7 @@ importers:
         version: 8.48.0
       eslint-plugin-prettier:
         specifier: ^5.0.0
-        version: 5.0.0(eslint-config-prettier@8.10.0)(eslint@8.48.0)(prettier@3.0.3)
+        version: 5.0.0(eslint-config-prettier@9.0.0)(eslint@8.48.0)(prettier@3.0.3)
       eslint-plugin-sonarjs:
         specifier: ^0.21.0
         version: 0.21.0(eslint@8.48.0)
@@ -385,85 +385,6 @@ importers:
         version: 2.24.3
 
   packages/playground:
-    dependencies:
-      maz-ui:
-        specifier: workspace:*
-        version: link:../lib
-    devDependencies:
-      '@nuxt/devtools':
-        specifier: ^0.8.2
-        version: 0.8.2(nuxt@3.7.0)(vite@4.4.9)
-      '@nuxtjs/eslint-config-typescript':
-        specifier: ^12.1.0
-        version: 12.1.0(eslint@8.48.0)(typescript@5.2.2)
-      '@nuxtjs/tailwindcss':
-        specifier: ^6.8.0
-        version: 6.8.0(ts-node@10.9.1)
-      '@types/node':
-        specifier: ^20.5.9
-        version: 20.5.9
-      autoprefixer:
-        specifier: ^10.4.15
-        version: 10.4.15(postcss@8.4.29)
-      cross-env:
-        specifier: ^7.0.3
-        version: 7.0.3
-      eslint:
-        specifier: ^8.48.0
-        version: 8.48.0
-      eslint-config-prettier:
-        specifier: ^9.0.0
-        version: 9.0.0(eslint@8.48.0)
-      eslint-plugin-prettier:
-        specifier: ^5.0.0
-        version: 5.0.0(eslint-config-prettier@9.0.0)(eslint@8.48.0)(prettier@3.0.3)
-      nuxt:
-        specifier: ^3.7.0
-        version: 3.7.0(@types/node@20.5.9)(eslint@8.48.0)(stylelint@15.10.3)(typescript@5.2.2)
-      postcss:
-        specifier: ^8.4.29
-        version: 8.4.29
-      postcss-html:
-        specifier: ^1.5.0
-        version: 1.5.0
-      postcss-import:
-        specifier: ^15.1.0
-        version: 15.1.0(postcss@8.4.29)
-      postcss-nested:
-        specifier: ^6.0.1
-        version: 6.0.1(postcss@8.4.29)
-      postcss-url:
-        specifier: ^10.1.3
-        version: 10.1.3(postcss@8.4.29)
-      prettier:
-        specifier: ^3.0.3
-        version: 3.0.3
-      prettier-plugin-tailwindcss:
-        specifier: ^0.5.4
-        version: 0.5.4(prettier@3.0.3)
-      stylelint:
-        specifier: ^15.10.3
-        version: 15.10.3
-      stylelint-config-recommended-vue:
-        specifier: ^1.5.0
-        version: 1.5.0(postcss-html@1.5.0)(stylelint@15.10.3)
-      stylelint-config-standard:
-        specifier: ^34.0.0
-        version: 34.0.0(stylelint@15.10.3)
-      stylelint-config-tailwindcss:
-        specifier: ^0.0.7
-        version: 0.0.7(stylelint@15.10.3)(tailwindcss@3.3.3)
-      tailwindcss:
-        specifier: ^3.3.3
-        version: 3.3.3(ts-node@10.9.1)
-      typescript:
-        specifier: ^5.2.2
-        version: 5.2.2
-      vite-svg-loader:
-        specifier: ^4.0.0
-        version: 4.0.0
-
-  packages/test:
     dependencies:
       maz-ui:
         specifier: workspace:*
@@ -5871,7 +5792,7 @@ packages:
       '@babel/core': 7.22.11
       '@babel/plugin-transform-typescript': 7.22.11(@babel/core@7.22.11)
       '@vue/babel-plugin-jsx': 1.1.5(@babel/core@7.22.11)
-      vite: 4.4.9(@types/node@20.5.9)(sass@1.66.1)(terser@5.19.3)
+      vite: 4.4.9(@types/node@20.5.8)(sass@1.66.1)(terser@5.19.3)
       vue: 3.3.4
     transitivePeerDependencies:
       - supports-color
