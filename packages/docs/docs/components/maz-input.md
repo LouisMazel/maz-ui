@@ -120,18 +120,18 @@ When you use `right-icon` or `left-icon`, the component use [MazIcon](./maz-icon
 <MazInput
   v-model="inputValue"
   label="label icons"
-  left-icon="cash"
+  left-icon="banknotes"
   right-icon="user"
-  />
+/>
 
 > Use your own icons
 
 <MazInput v-model="inputValue" label="label icons">
   <template #left-icon>
-    <MazIcon name="check" />
+    <MazIcon name="check" class="maz-text-xl" />
   </template>
   <template #right-icon>
-    <MazIcon name="user-group" />
+    <MazIcon name="user-group" class="maz-text-xl" />
   </template>
 </MazInput>
 
@@ -139,7 +139,7 @@ When you use `right-icon` or `left-icon`, the component use [MazIcon](./maz-icon
 <MazInput
   v-model="inputValue"
   label="label icons"
-  left-icon="cash"
+  left-icon="banknotes"
   right-icon="user"
 />
 
@@ -147,10 +147,10 @@ When you use `right-icon` or `left-icon`, the component use [MazIcon](./maz-icon
 
 <MazInput v-model="inputValue" label="label icons">
   <template #left-icon>
-    <MazIcon name="check" />
+    <MazIcon name="check" class="maz-text-xl" />
   </template>
   <template #right-icon>
-    <MazIcon name="user-group" />
+    <MazIcon name="user-group" class="maz-text-xl" />
   </template>
 </MazInput>
 ```
@@ -292,9 +292,13 @@ Use the attribute `color` with a value in this [list](./../guide/colors.md), the
 
 <MazInput v-model="inputValue" label="Label" error />
 
+<br />
+
 #### Warning
 
 <MazInput v-model="inputValue" label="Label" warning />
+
+<br />
 
 #### Success
 

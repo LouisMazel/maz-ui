@@ -5,7 +5,6 @@
     "source.fixAll.stylelint": true
   },
   // ESLINT
-  "eslint.packageManager": "pnpm",
   "eslint.enable": true,
   "eslint.format.enable": true,
   "eslint.validate": ["javascript", "typescript", "html", "vue"],

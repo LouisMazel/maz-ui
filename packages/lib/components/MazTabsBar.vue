@@ -33,20 +33,20 @@
 
 <script lang="ts" setup>
   import { ref, type PropType, computed, onBeforeMount, onMounted } from 'vue'
+  import type { Color } from './types'
   import MazBtn from './MazBtn.vue'
 
-  // const toKebabCase = (string: string) => {
-  //   return string
-  //     .replace(/\W+/g, ' ')
-  //     .split(/ |\B(?=[A-Z])/)
-  //     .map((word) => word.toLowerCase())
-  //     .join('-')
-  // }
+  function toKebabCase(input: string): string {
+    return input
+      .replaceAll(/([a-z])([A-Z])/g, '$1-$2')
+      .replaceAll(/[\s_]+/g, '-')
+      .toLowerCase()
+  }
 
   const getIndexOfCurrentAnchor = (tabs: MazTabsItem[], value: number) => {
     if (typeof window === 'undefined') return value
     const anchor = window.location.hash.replace('#', '')
-    const index = tabs.findIndex(({ label }) => label === anchor)
+    const index = tabs.findIndex(({ label }) => toKebabCase(label) === anchor)
     return index === -1 ? 0 : index
   }
 
@@ -55,6 +55,7 @@
     modelValue: { type: Number, default: 1 },
     alignLeft: { type: Boolean, default: false },
     useAnchor: { type: Boolean, default: false },
+    color: { type: String as PropType<Color>, default: 'primary' },
   })
 
   const emits = defineEmits(['update:model-value'])
@@ -73,6 +74,7 @@
 
     const indicatorWidth = tabItemActive ? tabItemActive.clientWidth : 0
     const translateXValue = tabItemActive ? tabItemActive.offsetLeft : 0
+
     return {
       transform: `translateX(${translateXValue}px)`,
       width: `${indicatorWidth}px`,
@@ -107,8 +109,8 @@
     emits('update:model-value', index + 1)
   }
 
-  const labelNormalize = (label: string) => {
-    return label
+  function labelNormalize(label: string) {
+    return toKebabCase(label)
   }
 </script>
 

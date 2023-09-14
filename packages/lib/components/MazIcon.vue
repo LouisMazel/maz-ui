@@ -39,7 +39,7 @@
     src: { type: String, default: undefined },
     path: { type: String, default: undefined },
     name: { type: String, default: undefined },
-    size: { type: String, default: '1.5rem' },
+    size: { type: String, default: undefined },
     title: { type: String, default: undefined },
     transformSource: {
       type: Function as PropType<(param: SVGElement) => typeof param>,

@@ -17,6 +17,7 @@ export type Color =
   | 'white'
   | 'black'
   | 'transparent'
+  | 'theme'
 
 export const colors: Color[] = [
   'primary',
@@ -28,6 +29,7 @@ export const colors: Color[] = [
   'white',
   'black',
   'transparent',
+  'theme',
 ]
 
 export type Size = 'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'

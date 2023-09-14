@@ -20,7 +20,7 @@
     <div class="m-input-wrapper" :class="[inputClasses, borderStyle, { 'maz-rounded': !noRadius }]">
       <div v-if="hasLeftPart()" class="m-input-wrapper-left">
         <slot v-if="$slots['left-icon'] || leftIcon" name="left-icon">
-          <MazIcon :name="leftIcon" class="maz-text-muted" />
+          <MazIcon :name="leftIcon" class="maz-text-xl maz-text-muted" />
         </slot>
       </div>
 
@@ -65,7 +65,7 @@
 
       <div v-if="hasRightPart()" class="m-input-wrapper-right">
         <slot v-if="$slots['right-icon'] || rightIcon" name="right-icon">
-          <MazIcon :name="rightIcon" class="maz-text-muted" />
+          <MazIcon :name="rightIcon" class="maz-text-xl maz-text-muted" />
         </slot>
 
         <MazBtn
@@ -75,8 +75,8 @@
           size="mini"
           @click.stop="hasPasswordVisible = !hasPasswordVisible"
         >
-          <EyeOffIcon v-if="hasPasswordVisible" class="maz-h-5 maz-w-5 maz-text-muted" />
-          <EyeIcon v-else class="maz-h-5 maz-w-5 maz-text-muted" />
+          <EyeOffIcon v-if="hasPasswordVisible" class="maz-text-xl maz-text-muted" />
+          <EyeIcon v-else class="maz-text-xl maz-text-muted" />
         </MazBtn>
 
         <slot v-if="$slots['valid-button'] || validButton" name="valid-button">
@@ -89,7 +89,7 @@
             size="mini"
             type="submit"
           >
-            <CheckIcon class="maz-h-5 maz-w-5 maz-text-normal" />
+            <CheckIcon class="maz-text-2xl maz-text-normal" />
           </MazBtn>
         </slot>
       </div>
@@ -116,7 +116,7 @@
   import type { Color, ModelValueSimple, Size } from './types'
   export type { Color, Size, ModelValueSimple } from './types'
 
-  const EyeOffIcon = defineAsyncComponent(() => import('./../icons/eye-off.svg'))
+  const EyeOffIcon = defineAsyncComponent(() => import('./../icons/eye-slash.svg'))
   const EyeIcon = defineAsyncComponent(() => import('./../icons/eye.svg'))
   const CheckIcon = defineAsyncComponent(() => import('./../icons/check.svg'))
 
@@ -138,19 +138,6 @@
       color: {
         type: String as PropType<Color>,
         default: 'primary',
-        validator: (value: string) => {
-          return [
-            'primary',
-            'secondary',
-            'warning',
-            'danger',
-            'info',
-            'success',
-            'white',
-            'black',
-            'transparent',
-          ].includes(value)
-        },
       },
       label: { type: String, default: undefined },
       name: { type: String, default: 'input' },

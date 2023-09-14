@@ -29,10 +29,45 @@ description: MazBtn is a standalone component that replaces the standard html bu
 
 <br />
 
-<MazBtn loading>Button</MazBtn>
+<div class="flex items-start gap-05 flex-wrap">
+  <div v-for="color of colors"
+      :key="color" class="maz-flex maz-flex-col maz-flex-center">
+    <MazBtn
+      loading
+      :color="color"
+    >
+      {{ color }}
+    </MazBtn>
+    <span class="maz-text-muted maz-text-xs"> {{ color }} </span>
+  </div>
+</div>
 
-```html
-<MazBtn loading>Button</MazBtn>
+```vue
+<template>
+  <MazBtn
+    v-for="color of colors"
+    :key="color"
+    loading
+    :color="color"
+  >
+    {{ color }}
+  </MazBtn>
+</template>
+
+<script lang="ts" setup>
+  const colors = [
+    'primary',
+    'secondary',
+    'info',
+    'success',
+    'warning',
+    'danger',
+    'white',
+    'black',
+    'transparent',
+    'theme',
+  ]
+</script>
 ```
 
 ### Sizes
@@ -62,7 +97,7 @@ Use the attribute `color` with a value in this [list](./../guide/colors.md), the
 :::
 
 <div class="flex items-start gap-05 flex-wrap">
-  <MazBtn v-for="{ name } in colorsArray" :color="name">{{ name }}</MazBtn>
+  <MazBtn v-for="color of colors" :key="color" :color="color">{{ color }}</MazBtn>
 </div>
 
 ```html
@@ -82,7 +117,7 @@ Use the attribute `color` with a value in this [list](./../guide/colors.md), the
 <br />
 
 <div class="flex items-start gap-05 flex-wrap">
-  <MazBtn v-for="{ name } in colorsArray" :color="name" outline>{{ name }}</MazBtn>
+  <MazBtn v-for="color of colors" :color="color" outline>{{ color }}</MazBtn>
 </div>
 
 ```html
@@ -104,7 +139,7 @@ It's better in light mode
 :::
 
 <div class="flex items-start gap-05 rounded maz-p-3 flex-wrap">
-  <MazBtn v-for="{ name } in colorsArray" :color="name" pastel>{{ name }}</MazBtn>
+  <MazBtn v-for="color of colors" :color="color" pastel>{{ color }}</MazBtn>
 </div>
 
 ```html
@@ -166,25 +201,25 @@ When you use `right-icon` or `left-icon`, the component uses [MazIcon](./maz-ico
 :::
 
 <div class="flex items-start gap-05 rounded flex-wrap">
-  <MazBtn left-icon="check">
+  <MazBtn left-icon="check" size="sm">
     left-icon
   </MazBtn>
   <MazBtn right-icon="home">
     right-icon
   </MazBtn>
-  <MazBtn left-icon="terminal" right-icon="trash">
+  <MazBtn left-icon="command-line" right-icon="trash" size="lg">
     left-right-icon
   </MazBtn>
 </div>
 
 ```html
-<MazBtn left-icon="check">
+<MazBtn left-icon="check" size="sm">
   left-icon
 </MazBtn>
 <MazBtn right-icon="home">
   right-icon
 </MazBtn>
-<MazBtn left-icon="terminal" right-icon="trash">
+<MazBtn left-icon="command-line" right-icon="trash" size="lg">
   left-right-icon
 </MazBtn>
 ```
@@ -206,7 +241,7 @@ Use your own icons
   </MazBtn>
   <MazBtn>
     <template #left-icon>
-      <MazIcon name="terminal" />
+      <MazIcon name="command-line" />
     </template>
     right-icon
     <template #right-icon>
@@ -230,7 +265,7 @@ Use your own icons
 </MazBtn>
 <MazBtn>
   <template #left-icon>
-    <MazIcon name="terminal" />
+    <MazIcon name="command-line" />
   </template>
   right-icon
   <template #right-icon>
@@ -288,21 +323,20 @@ When `to` attribute is provided, the component automatically becomes a `<RouterL
 <script setup lang="ts">
   import { computed } from 'vue'
 
-  const colors = {
-    primary: { name: 'primary', hex: '#1e90ff' },
-    secondary: { name: 'secondary', hex: '#1cd1a1' },
-    info: { name: 'info', hex: '#17a2b8' },
-    success: { name: 'success', hex: '#9acd32' },
-    warning: { name: 'warning', hex: '#fcb731' },
-    danger: { name: 'danger', hex: '#ff6d6a' },
-    white: { name: 'white', hex: '#fff' },
-    black: { name: 'black', hex: '#000' },
-    transparent: { name: 'transparent', hex: 'transparent' },
-  }
+  const colors = [
+    'primary',
+    'secondary',
+    'info',
+    'success',
+    'warning',
+    'danger',
+    'white',
+    'black',
+    'transparent',
+    'theme',
+  ]
 
   const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
-
-  const colorsArray = computed(() => Object.values(colors))
 </script>
 
 <!--@include: ./../.vitepress/generated-docs/maz-btn.doc.md-->

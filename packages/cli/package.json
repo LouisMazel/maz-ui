@@ -8,8 +8,8 @@
   "scripts": {
     "lint": "cross-env NODE_ENV=production eslint --ignore-path .gitignore --fix --ext .ts,.js .",
     "maz-cli": "ts-node lib/cli.ts",
-    "pre-commit": "lint-staged",
     "build": "tsc -p .",
+    "pre-commit": "lint-staged",
     "vue-docgen": "vue-docgen",
     "format": "prettier --ignore-path .gitignore . --write"
   },

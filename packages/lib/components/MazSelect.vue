@@ -117,7 +117,7 @@
   import type { Color, ModelValueSimple, Position, Size } from './types'
   import { useInstanceUniqId } from '../modules/composables/instance-uniq-id'
 
-  import SearchIcon from './../icons/search.svg'
+  import SearchIcon from './../icons/magnifying-glass.svg'
   import ChevronDownIcon from './../icons/chevron-down.svg'
   import NoSymbolIcon from './../icons/no-symbol.svg'
 
@@ -148,19 +148,6 @@
     color: {
       type: String as PropType<Color>,
       default: 'primary',
-      validator: (value: string) => {
-        return [
-          'primary',
-          'secondary',
-          'warning',
-          'danger',
-          'info',
-          'success',
-          'white',
-          'black',
-          'transparent',
-        ].includes(value)
-      },
     },
     itemHeight: { type: Number, default: 40 },
     maxListHeight: { type: Number, default: 240 },
@@ -400,7 +387,7 @@
     }
 
     .m-select-chevron {
-      @apply maz-h-5 maz-w-5 maz-text-normal;
+      @apply maz-text-normal;
     }
 
     &.--is-open {

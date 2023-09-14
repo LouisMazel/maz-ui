@@ -28,7 +28,7 @@
           color="transparent"
           @click="close"
         >
-          <XIcon class="maz-h-5 maz-w-5" />
+          <XIcon />
         </MazBtn>
       </div>
     </template>
@@ -38,7 +38,7 @@
 <script lang="ts" setup>
   import MazBtn from './MazBtn.vue'
   import MazBackdrop from './MazBackdrop.vue'
-  import XIcon from './../icons/x.svg'
+  import XIcon from './../icons/x-mark.svg'
 
   defineProps({
     noClose: { type: Boolean, default: false },

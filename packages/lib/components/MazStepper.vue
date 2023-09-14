@@ -86,7 +86,7 @@
 
   import CheckCircleIcon from './../icons/check-circle.svg?url'
   import ExclamationCircleIcon from './../icons/exclamation-circle.svg?url'
-  import ExclamationIcon from './../icons/exclamation.svg?url'
+  import ExclamationIcon from './../icons/exclamation-triangle.svg?url'
 
   export interface Step {
     title?: string
@@ -110,19 +110,6 @@
     color: {
       type: String as PropType<Color>,
       default: 'primary',
-      validator: (value: string) => {
-        return [
-          'primary',
-          'secondary',
-          'warning',
-          'danger',
-          'info',
-          'success',
-          'white',
-          'gray',
-          'black',
-        ].includes(value)
-      },
     },
     canCloseSteps: { type: Boolean, default: false },
   })

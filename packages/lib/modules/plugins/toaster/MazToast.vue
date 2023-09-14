@@ -28,7 +28,7 @@
   import type { PropType } from 'vue'
   import { ToasterTimer } from './timer'
   import type { LocalToasterOptions } from './toaster-handler'
-  import XIcon from './../../../icons/x.svg'
+  import XIcon from './../../../icons/x-mark.svg'
   import type { ToasterPositions } from './types'
 
   const Toaster = ref<HTMLDivElement>()
@@ -237,7 +237,7 @@
         hover:maz-bg-gray-900/20;
 
       & .--icon {
-        @apply maz-h-5 maz-w-5 maz-cursor-pointer;
+        @apply maz-cursor-pointer;
       }
     }
 

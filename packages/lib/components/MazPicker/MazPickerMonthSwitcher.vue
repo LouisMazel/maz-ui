@@ -2,7 +2,7 @@
   <div class="maz-picker-month-switcher">
     <div class="maz-picker-month-switcher__header">
       <MazBtn size="mini" color="transparent" type="button" @click.stop="$emit('close', $event)">
-        <XIcon class="maz-h-[1.2rem] maz-w-[1.2rem]" />
+        <XIcon />
       </MazBtn>
     </div>
     <div class="maz-picker-month-switcher__main" :class="{ '--has-double': double }">
@@ -32,7 +32,7 @@
   import dayjs from 'dayjs'
   import { isSameDate } from './utils'
   import MazBtn from './../MazBtn.vue'
-  import XIcon from './../../icons/x.svg'
+  import XIcon from './../../icons/x-mark.svg'
 
   const props = defineProps({
     calendarDate: { type: String, required: true },

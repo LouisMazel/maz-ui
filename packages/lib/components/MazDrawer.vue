@@ -36,7 +36,7 @@
 
   import MazBackdrop from './MazBackdrop.vue'
   import MazBtn from './MazBtn.vue'
-  import XIcon from './../icons/x.svg'
+  import XIcon from './../icons/x-mark.svg'
 
   defineProps({
     noClose: { type: Boolean, default: false },
@@ -73,10 +73,6 @@
 
       .m-drawer-header__close {
         @apply maz-flex maz-justify-end;
-
-        .icon {
-          @apply maz-h-5 maz-w-5;
-        }
       }
 
       &.--end {
