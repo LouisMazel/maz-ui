@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts">
-  export interface MazTabsItem {
+  export interface MazTabsBarItem {
     label: string
     disabled?: boolean
   }
@@ -48,7 +48,7 @@
       .toLowerCase()
   }
 
-  const getIndexOfCurrentAnchor = (tabs: MazTabsItem[], value: number) => {
+  const getIndexOfCurrentAnchor = (tabs: MazTabsBarItem[], value: number) => {
     if (typeof window === 'undefined') return value
     const anchor = window.location.hash.replace('#', '')
     const index = tabs.findIndex(({ label }) => toKebabCase(label) === anchor)
@@ -58,7 +58,7 @@
   const { currentTab, updateCurrentTab } = injectStrict<MazTabsProvide>('maz-tabs')
 
   const props = defineProps({
-    items: { type: Array as PropType<MazTabsItem[]>, required: true },
+    items: { type: Array as PropType<MazTabsBarItem[]>, required: true },
     alignLeft: { type: Boolean, default: false },
     useAnchor: { type: Boolean, default: false },
     color: { type: String as PropType<Color>, default: 'primary' },

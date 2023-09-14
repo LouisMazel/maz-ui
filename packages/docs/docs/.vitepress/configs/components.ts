@@ -39,7 +39,7 @@ export const components = {
         {text: 'MazLazyimg', link: '/components/maz-lazy-img'},
         {text: 'MazStepper', link: '/components/maz-stepper'},
         {text: 'MazSpinner', link: '/components/maz-spinner'},
-        // {texttabs: '', link: // '/components/maz-tabs'},
+        {text: 'MazTabs', link: '/components/maz-tabs' },
         {text: 'MazTransitionExpand', link: '/components/maz-transition-expand'},
       ]
     }
