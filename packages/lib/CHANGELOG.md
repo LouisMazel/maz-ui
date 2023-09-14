@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.11.0](https://github.com/LouisMazel/maz-ui/compare/v3.10.5...v3.11.0) (2023-09-14)
+
+
+### Features
+
+* **lib:** add tabs components ([e3b9a6b](https://github.com/LouisMazel/maz-ui/commit/e3b9a6b87703364063c8cdb4e89cf46061ff32c7))
+
+
+
+
+
 ## [3.10.5](https://github.com/LouisMazel/maz-ui/compare/v3.10.4...v3.10.5) (2023-09-14)
 
 **Note:** Version bump only for package maz-ui
