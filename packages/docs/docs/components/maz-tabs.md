@@ -9,41 +9,126 @@ description: MazTabs is a standalone component to display content in tabs with a
 
 ## Basic usage
 
-<div style="position: relative;">
-  <MazTabsBar :items="tabs" color="secondary" />
+<MazTabs>
+  <MazTabsBar :items="tabs" />
+
   <MazTabsContent>
     <MazTabsContentItem :tab="1">
-      <p> evzionfez </p>
+      Tab 1
     </MazTabsContentItem>
     <MazTabsContentItem :tab="2">
-      <p> evzionfez </p>
+      Tab 2
+    </MazTabsContentItem>
+    <MazTabsContentItem :tab="3">
+      Tab 3
     </MazTabsContentItem>
   </MazTabsContent>
-</div>
+</MazTabs>
 
 ```vue
 <template>
-  <MazTabsBar :items="tabs" color="secondary" />
+  <MazTabs>
+    <MazTabsBar :items="tabs" />
+
+    <MazTabsContent>
+      <MazTabsContentItem :tab="1">
+        Tab 1
+      </MazTabsContentItem>
+      <MazTabsContentItem :tab="2">
+        Tab 2
+      </MazTabsContentItem>
+      <MazTabsContentItem :tab="3">
+        Tab 3
+      </MazTabsContentItem>
+    </MazTabsContent>
+  </MazTabs>
 </template>
 
 <script lang="ts" setup>
-  import MazTabsBar, { MazTabsItem } from 'maz-ui/components/MazTabsBar'
+  import MazTabs from 'maz-ui/components/MazTabs'
+  import MazTabsBar, { MazTabsBarItem } from 'maz-ui/components/MazTabsBar'
   import MazTabsContent from 'maz-ui/components/MazTabsContent'
   import MazTabsContentItem from 'maz-ui/components/MazTabsContentItem'
 
-  const tabs: MazTabsItem[] = [
+  const tabs: MazTabsBarItem[] = [
     { label: 'First Tab', disabled: false },
-    { label: 'Second Tab', disabled: false }
+    { label: 'Second Tab', disabled: false },
+    { label: 'Third Tab', disabled: true },
+  ]
+</script>
+```
+
+## With model-value
+
+<MazTabs v-model="currentTab">
+  <MazTabsBar :items="tabs" color="secondary" />
+
+  <MazTabsContent>
+    <MazTabsContentItem :tab="1">
+      Tab 1
+    </MazTabsContentItem>
+    <MazTabsContentItem :tab="2">
+      Tab 2
+    </MazTabsContentItem>
+    <MazTabsContentItem :tab="3">
+      Tab 3
+    </MazTabsContentItem>
+  </MazTabsContent>
+</MazTabs>
+
+<br />
+
+<MazBtn @click="currentTab = 1">
+  Set model-value to 1
+</MazBtn>
+
+```vue
+<template>
+  <MazTabs v-model="currentTab">
+    <MazTabsBar :items="tabs" color="secondary" />
+
+    <MazTabsContent>
+      <MazTabsContentItem :tab="1">
+        Tab 1
+      </MazTabsContentItem>
+      <MazTabsContentItem :tab="2">
+        Tab 2
+      </MazTabsContentItem>
+      <MazTabsContentItem :tab="3">
+        Tab 3
+      </MazTabsContentItem>
+    </MazTabsContent>
+  </MazTabs>
+
+  <br />
+
+  <MazBtn @click="currentTab = 1">
+    Set model-value to 1
+  </MazBtn>
+</template>
+
+<script lang="ts" setup>
+  import { ref } from 'vue'
+
+  const currentTab = ref(2)
+
+  const tabs: MazTabsBarItem[] = [
+    { label: 'First Tab', disabled: false },
+    { label: 'Second Tab', disabled: false },
+    { label: 'Third Tab', disabled: true },
   ]
 </script>
 ```
 
 <script lang="ts" setup>
-  import { MazTabsItem } from 'maz-ui/components/MazTabsBar'
+  import { ref } from 'vue'
 
-  const tabs: MazTabsItem[] = [
+  const currentTab = ref(2)
+
+  const tabs: MazTabsBarItem[] = [
     { label: 'First Tab', disabled: false },
-    { label: 'Second Tab', disabled: false }
+    { label: 'Second Tab', disabled: false },
+    { label: 'Third Tab', disabled: true },
   ]
 </script>
 

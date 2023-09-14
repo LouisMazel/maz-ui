@@ -6,17 +6,22 @@
 
 <script lang="ts" setup>
   import type { Ref } from 'vue'
-  import { computed, provide } from 'vue'
+  import { computed, provide, ref } from 'vue'
 
   const props = defineProps({
-    modelValue: { type: Number, default: 1 },
+    modelValue: { type: Number, default: undefined },
   })
 
   const emits = defineEmits(['update:model-value'])
 
+  const localValue = ref(1)
+
   const currentTab = computed({
-    get: () => props.modelValue,
-    set: (index: number) => emits('update:model-value', index),
+    get: () => props.modelValue ?? localValue.value,
+    set: (index: number) => {
+      localValue.value = index
+      emits('update:model-value', index)
+    },
   })
 
   function updateCurrentTab(index: number) {
