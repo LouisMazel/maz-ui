@@ -21,6 +21,6 @@ describe('MazTabs.vue', () => {
   test('initialize component with good value', () => {
     const wrapper = mount(MazTabs)
 
-    expect(wrapper.vm.$props.modelValue).toBe(1)
+    expect(wrapper.vm.currentTab).toBe(1)
   })
 })
