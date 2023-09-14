@@ -3,14 +3,14 @@
     <div class="maz-picker-year-switcher__header">
       <div class="maz-flex maz-space-x-2">
         <MazBtn size="mini" color="transparent" type="button" @click.stop="previousYears">
-          <ChevronLeftIcon class="maz-h-[1.2rem] maz-w-[1.2rem]" />
+          <ChevronLeftIcon />
         </MazBtn>
         <MazBtn size="mini" color="transparent" type="button" @click.stop="nextYears">
-          <ChevronRightIcon class="maz-h-[1.2rem] maz-w-[1.2rem]" />
+          <ChevronRightIcon />
         </MazBtn>
       </div>
       <MazBtn size="mini" color="transparent" type="button" @click.stop="$emit('close', $event)">
-        <XIcon class="maz-h-[1.2rem] maz-w-[1.2rem]" />
+        <XIcon />
       </MazBtn>
     </div>
     <div class="maz-picker-year-switcher__main">
@@ -40,7 +40,7 @@
   import MazBtn from './../MazBtn.vue'
   import { isSameDate } from './utils'
 
-  import XIcon from './../../icons/x.svg'
+  import XIcon from './../../icons/x-mark.svg'
   import ChevronLeftIcon from './../../icons/chevron-left.svg'
   import ChevronRightIcon from './../../icons/chevron-right.svg'
 

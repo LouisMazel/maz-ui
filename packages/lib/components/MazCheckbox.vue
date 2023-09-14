@@ -31,19 +31,6 @@
     color: {
       type: String as PropType<Color>,
       default: 'primary',
-      validator: (value: Color) => {
-        return [
-          'primary',
-          'secondary',
-          'info',
-          'success',
-          'warning',
-          'danger',
-          'white',
-          'black',
-          'transparent',
-        ].includes(value)
-      },
     },
     name: { type: String, default: 'm-checkbox' },
   })

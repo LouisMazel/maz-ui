@@ -165,19 +165,6 @@
     color: {
       type: String as PropType<Color>,
       default: 'primary',
-      validator: (value: Color) => {
-        return [
-          'primary',
-          'secondary',
-          'info',
-          'success',
-          'warning',
-          'danger',
-          'white',
-          'black',
-          'transparent',
-        ].includes(value)
-      },
     },
     pickerPosition: {
       type: String as PropType<Position>,
@@ -682,7 +669,7 @@
       @apply maz-flex maz-h-full maz-cursor-not-allowed maz-bg-transparent maz-pr-1 maz-flex-center;
 
       &__chevron {
-        @apply maz-h-5 maz-w-5 maz-text-normal maz-transition-transform maz-duration-200;
+        @apply maz-text-normal maz-transition-transform maz-duration-200;
       }
     }
 

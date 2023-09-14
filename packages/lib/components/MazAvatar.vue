@@ -51,7 +51,7 @@
         @click="$emit('click', $event)"
       >
         <slot name="icon">
-          <PencilIcon class="m-avatar__button__icon maz-h-5 maz-w-5" />
+          <PencilIcon class="m-avatar__button__icon" />
         </slot>
       </button>
     </div>
@@ -101,19 +101,6 @@
     buttonColor: {
       type: String as PropType<Color>,
       default: 'info',
-      validator: (value: Color) => {
-        return [
-          'primary',
-          'secondary',
-          'info',
-          'success',
-          'warning',
-          'danger',
-          'white',
-          'black',
-          'transparent',
-        ].includes(value)
-      },
     },
   })
 
@@ -155,9 +142,6 @@
 
           &__icon {
             @apply maz-text-white;
-
-            height: 1em;
-            width: 1em;
           }
         }
 

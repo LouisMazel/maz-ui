@@ -47,7 +47,7 @@
 
   import MazBtn from './MazBtn.vue'
   import MazInput from './MazInput.vue'
-  import XIcon from './../icons/x.svg'
+  import XIcon from './../icons/x-mark.svg'
   import type { Color, Size } from './types'
 
   const props = defineProps({
@@ -75,19 +75,6 @@
     color: {
       type: String as PropType<Color>,
       default: 'primary',
-      validator: (value: Color) => {
-        return [
-          'primary',
-          'secondary',
-          'info',
-          'success',
-          'warning',
-          'danger',
-          'white',
-          'black',
-          'transparent',
-        ].includes(value)
-      },
     },
   })
 

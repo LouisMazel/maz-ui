@@ -143,6 +143,8 @@
   --maz-color-bg: var(--maz-bg-color-light);
   --maz-color-bg-light: var(--maz-bg-color-light-light);
   --maz-color-bg-lighter: var(--maz-bg-color-light-lighter);
+  --maz-color-bg-theme: var(--maz-bg-color-dark);
+  --maz-color-bg-theme-hover: var(--maz-bg-color-dark-lighter);
 }
 
 html.dark {
@@ -152,4 +154,6 @@ html.dark {
   --maz-color-bg: var(--maz-bg-color-dark);
   --maz-color-bg-light: var(--maz-bg-color-dark-light);
   --maz-color-bg-lighter: var(--maz-bg-color-dark-lighter);
+  --maz-color-bg-theme: var(--maz-bg-color-light);
+  --maz-color-bg-theme-hover: var(--maz-bg-color-light-lighter);
 }

@@ -30,21 +30,7 @@
     size: { type: String, default: '2em' },
     color: {
       type: String as PropType<Color>,
-      default: 'normal',
-      validator: (value: string) => {
-        return [
-          'normal',
-          'info',
-          'white',
-          'success',
-          'warning',
-          'danger',
-          'primary',
-          'black',
-          'secondary',
-          'transparent',
-        ].includes(value)
-      },
+      default: 'primary',
     },
   })
 </script>
@@ -92,6 +78,10 @@
 
     &--transparent {
       @apply maz-text-white;
+    }
+
+    &--theme {
+      @apply maz-text-theme;
     }
   }
 </style>

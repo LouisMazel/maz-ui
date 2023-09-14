@@ -79,19 +79,6 @@
     color: {
       type: String as PropType<Color>,
       default: 'primary',
-      validator: (value: string) => {
-        return [
-          'primary',
-          'secondary',
-          'warning',
-          'danger',
-          'info',
-          'success',
-          'white',
-          'black',
-          'transparent',
-        ].includes(value)
-      },
     },
   })
 

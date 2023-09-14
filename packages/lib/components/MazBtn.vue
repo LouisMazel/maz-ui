@@ -29,7 +29,7 @@
         <MazIcon v-if="leftIcon" :name="leftIcon" />
       </slot>
     </div>
-    <span class="maz-flex maz-flex-center">
+    <span class="maz-flex maz-flex-center" :class="{ 'maz-invisible': hasLoader }">
       <slot></slot>
     </span>
     <div v-if="hasRightIcon" class="m-btn__icon-right maz-flex maz-flex-center">
@@ -37,9 +37,8 @@
         <MazIcon v-if="rightIcon" :name="rightIcon" />
       </slot>
     </div>
-    <div v-if="hasLoader" class="m-btn__loading-wrapper" :class="loaderBgColorClass">
-      <MazSpinner size="2em" :color="loaderColor" />
-    </div>
+
+    <MazSpinner v-if="hasLoader" size="2em" :color="color" class="m-btn__loader maz-absolute" />
   </Component>
 </template>
 
@@ -75,25 +74,12 @@
     color: {
       type: String as PropType<Color>,
       default: 'primary',
-      validator: (value: Color) => {
-        return [
-          'primary',
-          'secondary',
-          'info',
-          'success',
-          'warning',
-          'danger',
-          'white',
-          'black',
-          'transparent',
-        ].includes(value)
-      },
     },
     type: {
-      type: String,
+      type: String as PropType<HTMLButtonElement['type']>,
       default: 'button',
       validator: (value: string) => {
-        return ['button', 'submit'].includes(value)
+        return ['button', 'submit', 'reset'].includes(value)
       },
     },
     rounded: { type: Boolean, default: false },
@@ -120,7 +106,7 @@
   const btnColorClass = computed(() =>
     props.pastel
       ? `--${props.color}-pastel`
-      : props.outline || props.loading
+      : props.outline
       ? `--${props.color}-outline`
       : `--${props.color}`,
   )
@@ -129,8 +115,6 @@
   )
   const cursorClass = computed(() => (isDisabled.value ? '--cursor-default' : '--cursor-pointer'))
   const variantClass = computed(() => `--is-${props.variant}`)
-  const loaderBgColorClass = computed(() => `--${props.color}`)
-  const loaderColor = computed(() => (['white'].includes(props.color) ? 'black' : 'white'))
   const hasLoader = computed(() => props.loading && props.variant === 'button')
   const hasLeftIcon = computed(() => !!slots['left-icon'] || props.leftIcon)
   const hasRightIcon = computed(() => !!slots['right-icon'] || props.rightIcon)
@@ -166,7 +150,7 @@
       @apply maz-inline-flex maz-items-center maz-bg-transparent
         maz-outline-none maz-transition maz-duration-200 maz-ease-in-out;
 
-      &:not(.--no-leading) {
+      &:not(.--no-leading) span {
         @apply maz-leading-9;
       }
 
@@ -203,6 +187,10 @@
 
       &.--black {
         @apply maz-text-black;
+      }
+
+      &.--theme {
+        @apply maz-text-normal;
       }
     }
 
@@ -255,10 +243,6 @@
 
         padding-top: 0.2rem;
         padding-bottom: 0.2rem;
-      }
-
-      &.--icon {
-        @apply maz-py-2;
       }
 
       transition:
@@ -370,6 +354,17 @@
         }
       }
 
+      &.--theme {
+        @apply maz-bg-theme maz-text-color;
+
+        &:not(:disabled):hover,
+        &:not(:disabled):focus {
+          @apply maz-bg-theme-hover;
+        }
+      }
+
+      /* OUTLINE */
+
       &.--primary-outline {
         @apply maz-border-primary maz-text-primary;
 
@@ -429,7 +424,7 @@
 
         &:not(:disabled):hover,
         &:not(:disabled):focus {
-          @apply maz-bg-white maz-text-white;
+          @apply maz-bg-white maz-text-white-contrast;
         }
       }
 
@@ -438,9 +433,20 @@
 
         &:not(:disabled):hover,
         &:not(:disabled):focus {
-          @apply maz-bg-black maz-text-black;
+          @apply maz-bg-black maz-text-black-contrast;
         }
       }
+
+      &.--theme-outline {
+        @apply maz-border-theme maz-text-theme;
+
+        &:not(:disabled):hover,
+        &:not(:disabled):focus {
+          @apply maz-bg-theme maz-text-color;
+        }
+      }
+
+      /* PASTEL */
 
       &.--primary-pastel {
         @apply maz-bg-primary-50 maz-text-primary;
@@ -514,50 +520,23 @@
         }
       }
 
-      /* Disabled */
+      &.--theme-pastel {
+        @apply maz-bg-gray-200 maz-text-black;
+
+        &:not(:disabled):hover,
+        &:not(:disabled):focus {
+          @apply maz-bg-black maz-text-black-contrast;
+        }
+      }
+
+      /* DISABLED */
+
       &.--disabled {
         @apply maz-cursor-not-allowed maz-bg-color-lighter maz-text-gray-400;
       }
 
       &.--no-padding {
         @apply maz-p-0;
-      }
-
-      /* Loader */
-      .m-btn__loading-wrapper {
-        @apply maz-absolute maz-inset-0 maz-flex maz-items-center maz-justify-center;
-
-        &.--primary {
-          @apply maz-bg-primary;
-        }
-
-        &.--secondary {
-          @apply maz-bg-secondary;
-        }
-
-        &.--info {
-          @apply maz-bg-info;
-        }
-
-        &.--warning {
-          @apply maz-bg-warning;
-        }
-
-        &.--success {
-          @apply maz-bg-success;
-        }
-
-        &.--danger {
-          @apply maz-bg-danger;
-        }
-
-        &.--white {
-          @apply maz-bg-white;
-        }
-
-        &.--black {
-          @apply maz-bg-black;
-        }
       }
     }
   }

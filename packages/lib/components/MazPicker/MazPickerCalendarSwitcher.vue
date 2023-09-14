@@ -1,7 +1,7 @@
 <template>
   <div class="m-picker-calendar-switcher">
     <MazBtn size="mini" color="transparent" type="button" @click="previousMonth">
-      <ChevronLeftIcon class="maz-h-[1.2rem] maz-w-[1.2rem]" />
+      <ChevronLeftIcon />
     </MazBtn>
     <MazBtn
       size="sm"
@@ -22,7 +22,7 @@
       {{ yearLabel }}
     </MazBtn>
     <MazBtn size="mini" color="transparent" type="button" @click="nextMonth">
-      <ChevronRightIcon class="maz-h-[1.2rem] maz-w-[1.2rem]" />
+      <ChevronRightIcon />
     </MazBtn>
   </div>
 </template>

@@ -86,18 +86,6 @@
     color: {
       type: String as PropType<Color>,
       default: 'primary',
-      validator: (value: string) => {
-        return [
-          'primary',
-          'secondary',
-          'warning',
-          'danger',
-          'info',
-          'success',
-          'white',
-          'black',
-        ].includes(value)
-      },
     },
     // disables cursor animation when active
     noCursorAnim: { type: Boolean, default: false },
