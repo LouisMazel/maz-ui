@@ -8,8 +8,8 @@
 
 <script lang="ts" setup>
   import { ref, watch, computed } from 'vue'
-
-  const currentTab = ref()
+  import type { MazTabsProvide } from './MazTabs.vue'
+  import { injectStrict } from './../modules'
 
   const transitionName = ref<string>('maz-tab-transition')
   const MazTabsContentItem = ref()
@@ -17,6 +17,8 @@
   const props = defineProps({
     tab: { type: Number, required: true },
   })
+
+  const { currentTab } = injectStrict<MazTabsProvide>('maz-tabs')
 
   watch(
     () => currentTab.value,
@@ -34,7 +36,7 @@
   })
 
   const isCurrentTab = computed(() => {
-    return currentTab.value === itemTabNumber.value
+    return currentTab.value - 1 === itemTabNumber.value
   })
 </script>
 
