@@ -15,7 +15,7 @@ describe('MazBtn', () => {
 
     expect(wrapper.find('span').exists()).toBe(true)
     expect(wrapper.find('.m-btn__icon-right').exists()).toBe(false)
-    expect(wrapper.find('.m-btn__loading-wrapper').exists()).toBe(false)
+    expect(wrapper.find('.m-btn__loader').exists()).toBe(false)
 
     expect(wrapper.find('.m-btn').exists()).toBe(true)
   })
@@ -42,6 +42,6 @@ describe('MazBtn', () => {
     })
 
     // Vérifie que le wrapper de chargement est affiché
-    expect(wrapper.find('.m-btn__loading-wrapper').exists()).toBe(true)
+    expect(wrapper.find('.m-btn__loader').exists()).toBe(true)
   })
 })
