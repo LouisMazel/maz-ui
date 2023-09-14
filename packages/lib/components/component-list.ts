@@ -29,6 +29,7 @@ export const componentList = [
   'MazSpinner',
   'MazStepper',
   'MazSwitch',
+  'MazTabs',
   'MazTabsBar',
   'MazTabsContent',
   'MazTabsContentItem',

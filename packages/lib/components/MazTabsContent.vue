@@ -9,17 +9,15 @@
 </template>
 
 <script lang="ts" setup>
-  import { onBeforeMount, ref, watch } from 'vue'
-  import { debounce } from '../modules'
-
-  const props = defineProps({
-    activeTab: { type: Number, default: undefined },
-  })
+  import { ref, watch } from 'vue'
+  import { debounce, injectStrict } from '../modules'
+  import type { MazTabsProvide } from './MazTabs.vue'
 
   const MazTabsContent = ref()
-  const currentTab = ref<number>()
 
   const hideOverflow = ref(false)
+
+  const { currentTab } = injectStrict<MazTabsProvide>('maz-tabs')
 
   const setOverflowHiddenTemp = () => {
     hideOverflow.value = true
@@ -30,15 +28,11 @@
     hideOverflow.value = false
   }, 700)
 
-  onBeforeMount(() => {
-    currentTab.value = 1
-  })
-
   watch(
-    () => [props.activeTab, currentTab.value],
-    (values) => {
+    () => currentTab.value,
+    (value) => {
       setOverflowHiddenTemp()
-      if (values[0]) currentTab.value = values[0]
+      if (typeof value === 'number') currentTab.value = value
     },
     { immediate: true },
   )
