@@ -1,10 +1,10 @@
 <template>
-  <Component :is="component" v-bind="propsRef" />
+  <!-- @vue-expect-error -->
+  <Component :is="component" v-bind="props" />
 </template>
 
 <script lang="ts" setup>
-  import { defineAsyncComponent } from 'vue'
-  import { type ChartProps } from 'vue-chartjs'
+  import { type PropType, defineAsyncComponent } from 'vue'
   import {
     ArcElement,
     BarElement,
@@ -17,40 +17,56 @@
     Title,
     Tooltip,
   } from 'chart.js'
-  import { ref, type PropType } from 'vue'
+  import type { ChartType, ChartData, UpdateMode } from 'chart.js'
 
   const props = defineProps({
     /**
      * Chart.js chart type
      */
-    type: { type: String as PropType<ChartProps['type']>, required: true },
+    type: {
+      type: String as PropType<ChartType>,
+      required: true,
+    },
     /**
      * The data object that is passed into the Chart.js chart
      * @see https://www.chartjs.org/docs/latest/getting-started/
      */
-    data: { type: Object as PropType<ChartProps['data']>, required: true },
+    data: {
+      type: Object as PropType<ChartData<ChartType>>,
+      required: true,
+    },
     /**
      * The options object that is passed into the Chart.js chart
      * @see https://www.chartjs.org/docs/latest/general/options.html
      */
-    options: { type: Object as PropType<ChartProps['options']>, default: Object },
+    options: {
+      type: Object,
+      default: Object,
+    },
     /**
      * The plugins array that is passed into the Chart.js chart
      * @see https://www.chartjs.org/docs/latest/developers/plugins.html
      */
-    plugins: { type: Array as PropType<ChartProps['plugins']>, default: Array },
+    plugins: {
+      type: Array,
+      default: Array,
+    },
     /**
      * Key name to identificate dataset
      */
-    datasetIdKey: { type: String as PropType<ChartProps['datasetIdKey']>, default: 'label' },
-    /**
-     * A mode string to indicate transition configuration should be used.
-     * @see https://www.chartjs.org/docs/latest/developers/api.html#update-mode
-     */
-    updateMode: { type: String as PropType<ChartProps['updateMode']>, default: undefined },
+    datasetIdKey: {
+      type: String,
+      default: 'label',
+    },
+    // /**
+    //  * A mode string to indicate transition configuration should be used.
+    //  * @see https://www.chartjs.org/docs/latest/developers/api.html#update-mode
+    //  */
+    updateMode: {
+      type: String as PropType<UpdateMode>,
+      default: undefined,
+    },
   })
-
-  const propsRef = ref<unknown>(props)
 
   Chart.register(
     CategoryScale,
