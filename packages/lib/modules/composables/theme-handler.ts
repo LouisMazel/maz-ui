@@ -2,6 +2,7 @@ import { ref, computed } from 'vue'
 
 const DEFAULT_OPTIONS = {
   darkClass: 'dark',
+  lightClass: 'light',
   storageThemeKey: 'theme',
   storageThemeValueDark: 'dark',
   storageThemeValueLight: 'light',
@@ -14,10 +15,12 @@ export type ThemeHandlerOptions = Partial<StrictThemeHandlerOptions>
 
 const setDarkTheme = ({
   darkClass,
+  lightClass,
   storageThemeKey,
   storageThemeValueDark,
   setLocalStorageValue = true,
 }: StrictThemeHandlerOptions & { setLocalStorageValue?: boolean }) => {
+  document.documentElement.classList.remove(lightClass)
   document.documentElement.classList.add(darkClass)
   theme.value = storageThemeValueDark
 
@@ -28,11 +31,13 @@ const setDarkTheme = ({
 
 const setLightTheme = ({
   darkClass,
+  lightClass,
   storageThemeKey,
   storageThemeValueLight,
   setLocalStorageValue = true,
 }: StrictThemeHandlerOptions & { setLocalStorageValue?: boolean }) => {
   document.documentElement.classList.remove(darkClass)
+  document.documentElement.classList.add(lightClass)
   theme.value = storageThemeValueLight
 
   if (setLocalStorageValue) {

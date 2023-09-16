@@ -104,6 +104,7 @@ Always run `autoSetTheme` method on app initialization and let the user change t
   const options: ThemeHandlerOptions = {
     /* should be "dark" to works with maz-ui */
     darkClass: 'dark',
+    lightClass: 'light',
     /* local storage preferences */
     storageThemeKey: 'theme',
     storageThemeValueDark: 'dark',
@@ -138,6 +139,7 @@ Always run `autoSetTheme` method on app initialization and let the user change t
   // optional
   const options: ThemeHandlerOptions = {
     darkClass: 'dark',
+    lightClass: 'light',
     storageThemeKey: 'theme',
     storageThemeValueDark: 'dark',
     storageThemeValueLight: 'light',
