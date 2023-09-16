@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.11.1](https://github.com/LouisMazel/maz-ui/compare/v3.11.0...v3.11.1) (2023-09-16)
+
+
+### Bug Fixes
+
+* **lib:** dark mode with tailwind ([2e4ee54](https://github.com/LouisMazel/maz-ui/commit/2e4ee545ed29f3f66efb6ccdaee2fba7262c0a6d))
+* **lib:** declaration types file of MazChart ([82155a7](https://github.com/LouisMazel/maz-ui/commit/82155a7ffc655a8d859939b53233312550ef8d61))
+
+
+
+
+
 # [3.11.0](https://github.com/LouisMazel/maz-ui/compare/v3.10.5...v3.11.0) (2023-09-14)
 
 
