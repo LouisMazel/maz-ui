@@ -18,6 +18,7 @@
         '--disabled': isDisabled,
         '--icon': hasIcon,
         '--rounded': rounded,
+        '--no-rounded': noRounded,
         '--no-padding': noPadding,
         '--no-elevation': noElevation,
       },
@@ -103,6 +104,7 @@
       },
     },
     rounded: { type: Boolean, default: false },
+    noRounded: { type: Boolean, default: false },
     outline: { type: Boolean, default: false },
     pastel: { type: Boolean, default: false },
     block: { type: Boolean, default: false },
@@ -224,8 +226,12 @@
 
     &.--is-button {
       @apply maz-relative maz-inline-flex maz-items-center maz-justify-center maz-overflow-hidden
-        maz-rounded maz-border-transparent maz-bg-transparent maz-font-medium maz-no-underline
+        maz-border-transparent maz-bg-transparent maz-font-medium maz-no-underline
         maz-transition maz-duration-300 maz-ease-in-out;
+
+      &:not(.--no-rounded) {
+        @apply maz-rounded;
+      }
 
       &.--rounded {
         @apply maz-rounded-full;
