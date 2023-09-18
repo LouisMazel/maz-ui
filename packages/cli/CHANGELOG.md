@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.11.2](https://github.com/LouisMazel/maz-ui/compare/v3.11.1...v3.11.2) (2023-09-18)
+
+
+### Bug Fixes
+
+* component docs generating with cli ([af5088b](https://github.com/LouisMazel/maz-ui/commit/af5088ba0b4a0e8eb4f338001115d8fde1d58549))
+
+
+
+
+
 ## [3.11.1](https://github.com/LouisMazel/maz-ui/compare/v3.11.0...v3.11.1) (2023-09-16)
 
 **Note:** Version bump only for package cli

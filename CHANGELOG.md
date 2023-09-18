@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.11.2](https://github.com/LouisMazel/maz-ui/compare/v3.11.1...v3.11.2) (2023-09-18)
+
+### Bug Fixes
+
+- component docs generating with cli ([af5088b](https://github.com/LouisMazel/maz-ui/commit/af5088ba0b4a0e8eb4f338001115d8fde1d58549))
+- **lib:** type files exportation ([5291e47](https://github.com/LouisMazel/maz-ui/commit/5291e47f607c4ae6a5f263799b0ab8484ca2b447))
+- **lib:** type files exportation ([063ffde](https://github.com/LouisMazel/maz-ui/commit/063ffdedbcef571d8d5ed60c425e9cd3a6369e16))
+- **lib:** use postcss-nested to compile css ([d3b1e94](https://github.com/LouisMazel/maz-ui/commit/d3b1e949e2783c50face4de057d6da217edae304))
+
 ## [3.11.1](https://github.com/LouisMazel/maz-ui/compare/v3.11.0...v3.11.1) (2023-09-16)
 
 ### Bug Fixes
