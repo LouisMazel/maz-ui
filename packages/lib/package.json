@@ -35,7 +35,8 @@
     "css",
     "tailwindcss",
     "nuxt",
-    "types"
+    "types",
+    "icons"
   ],
   "scripts": {
     "lint": "pnpm lint:js && pnpm lint:style",
