@@ -13,13 +13,13 @@ description: MazTabs is a standalone component to display content in tabs with a
   <MazTabsBar :items="tabs" />
 
   <MazTabsContent>
-    <MazTabsContentItem :tab="1">
+    <MazTabsContentItem :tab="1" class="maz-p-4 maz-text-center">
       Tab 1
     </MazTabsContentItem>
-    <MazTabsContentItem :tab="2">
+    <MazTabsContentItem :tab="2" class="maz-p-4 maz-text-center">
       Tab 2
     </MazTabsContentItem>
-    <MazTabsContentItem :tab="3">
+    <MazTabsContentItem :tab="3" class="maz-p-4 maz-text-center">
       Tab 3
     </MazTabsContentItem>
   </MazTabsContent>
@@ -31,13 +31,13 @@ description: MazTabs is a standalone component to display content in tabs with a
     <MazTabsBar :items="tabs" />
 
     <MazTabsContent>
-      <MazTabsContentItem :tab="1">
+      <MazTabsContentItem :tab="1" class="maz-p-4 maz-text-center">
         Tab 1
       </MazTabsContentItem>
-      <MazTabsContentItem :tab="2">
+      <MazTabsContentItem :tab="2" class="maz-p-4 maz-text-center">
         Tab 2
       </MazTabsContentItem>
-      <MazTabsContentItem :tab="3">
+      <MazTabsContentItem :tab="3" class="maz-p-4 maz-text-center">
         Tab 3
       </MazTabsContentItem>
     </MazTabsContent>
@@ -61,16 +61,16 @@ description: MazTabs is a standalone component to display content in tabs with a
 ## With model-value
 
 <MazTabs v-model="currentTab">
-  <MazTabsBar :items="tabs" color="secondary" />
+  <MazTabsBar :items="tabs2" color="secondary" />
 
   <MazTabsContent>
-    <MazTabsContentItem :tab="1">
+    <MazTabsContentItem :tab="1" class="maz-p-4 maz-text-center">
       Tab 1
     </MazTabsContentItem>
-    <MazTabsContentItem :tab="2">
+    <MazTabsContentItem :tab="2" class="maz-p-4 maz-text-center">
       Tab 2
     </MazTabsContentItem>
-    <MazTabsContentItem :tab="3">
+    <MazTabsContentItem :tab="3" class="maz-p-4 maz-text-center">
       Tab 3
     </MazTabsContentItem>
   </MazTabsContent>
@@ -88,13 +88,13 @@ description: MazTabs is a standalone component to display content in tabs with a
     <MazTabsBar :items="tabs" color="secondary" />
 
     <MazTabsContent>
-      <MazTabsContentItem :tab="1">
+      <MazTabsContentItem :tab="1" class="maz-p-4 maz-text-center">
         Tab 1
       </MazTabsContentItem>
-      <MazTabsContentItem :tab="2">
+      <MazTabsContentItem :tab="2" class="maz-p-4 maz-text-center">
         Tab 2
       </MazTabsContentItem>
-      <MazTabsContentItem :tab="3">
+      <MazTabsContentItem :tab="3" class="maz-p-4 maz-text-center">
         Tab 3
       </MazTabsContentItem>
     </MazTabsContent>
@@ -112,11 +112,7 @@ description: MazTabs is a standalone component to display content in tabs with a
 
   const currentTab = ref(2)
 
-  const tabs: MazTabsBarItem[] = [
-    { label: 'First Tab', disabled: false },
-    { label: 'Second Tab', disabled: false },
-    { label: 'Third Tab', disabled: true },
-  ]
+  const tabs: MazTabsBarItem[] = ['First Tab', 'Second Tab', 'Third Tab']
 </script>
 ```
 
@@ -130,7 +126,22 @@ description: MazTabs is a standalone component to display content in tabs with a
     { label: 'Second Tab', disabled: false },
     { label: 'Third Tab', disabled: true },
   ]
+
+  const tabs2: MazTabsBarItem[] = ['First Tab', 'Second Tab', 'Third Tab']
 </script>
+
+## Types
+
+```ts
+type MazTabsBarItem =
+  | {
+      label: string
+      disabled?: boolean
+    }
+  | string
+
+type MazTabsBarItems = MazTabsBarItem[]
+```
 
 ## Props & Events emitted
 
