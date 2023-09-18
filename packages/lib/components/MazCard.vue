@@ -32,7 +32,10 @@
         size="xs"
         @click.stop="isOpen = !isOpen"
       >
-        <ChevronDownIcon :class="{ '--is-open': isOpen }" class="m-card__collapse-icon maz-h-6" />
+        <ChevronDownIcon
+          :class="{ '--is-open': isOpen }"
+          class="m-card__collapse-icon maz-text-xl"
+        />
       </MazBtn>
     </Component>
     <Component

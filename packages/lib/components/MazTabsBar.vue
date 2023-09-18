@@ -102,7 +102,11 @@
 
 <style lang="postcss" scoped>
   .m-tabs-bar {
-    @apply maz-relative maz-flex maz-gap-2 maz-overflow-x-auto;
+    @apply maz-relative maz-flex maz-gap-2 maz-overflow-x-auto maz-rounded dark:maz-bg-color-light;
+
+    &__item {
+      @apply maz-flex-none;
+    }
 
     &:not(.--align-left) {
       & .m-tabs-bar__item {

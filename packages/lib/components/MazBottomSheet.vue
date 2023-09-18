@@ -28,7 +28,7 @@
           color="transparent"
           @click="close"
         >
-          <XIcon />
+          <XIcon class="maz-text-lg" />
         </MazBtn>
       </div>
     </template>

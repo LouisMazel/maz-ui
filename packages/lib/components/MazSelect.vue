@@ -29,7 +29,7 @@
           class="m-select-input__toggle-button maz-custom"
           @click.stop="openList"
         >
-          <ChevronDownIcon class="m-select-chevron" />
+          <ChevronDownIcon class="m-select-chevron maz-text-xl" />
         </button>
       </template>
     </MazInput>

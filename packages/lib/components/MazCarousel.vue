@@ -14,7 +14,7 @@
           @click="previous"
         >
           <slot name="previous-icon">
-            <ChevronLeftIcon />
+            <ChevronLeftIcon class="maz-text-lg" />
           </slot>
         </MazBtn>
         <MazBtn
@@ -26,7 +26,7 @@
           @click="next"
         >
           <slot name="next-icon">
-            <ChevronRightIcon />
+            <ChevronRightIcon class="maz-text-lg" />
           </slot>
         </MazBtn>
       </div>

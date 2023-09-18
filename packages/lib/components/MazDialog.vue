@@ -26,14 +26,8 @@
               <slot name="title">{{ title }}</slot>
             </h2>
 
-            <MazBtn
-              v-if="!noClose"
-              size="sm"
-              class="m-dialog-closebtn"
-              color="transparent"
-              @click="close"
-            >
-              <XIcon />
+            <MazBtn v-if="!noClose" class="m-dialog-closebtn" color="transparent" @click="close">
+              <XIcon class="maz-text-lg" />
             </MazBtn>
           </div>
         </slot>
