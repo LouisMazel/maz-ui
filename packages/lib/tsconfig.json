@@ -9,7 +9,7 @@
     "module": "ESNext",
     "target": "ESNext",
     "declaration": true,
-    "declarationDir": "generated-types",
+    "declarationDir": "dist/types",
     "sourceMap": true,
     "lib": ["esnext", "DOM", "DOM.iterable", "scripthost"],
     "strictPropertyInitialization": false,
@@ -20,6 +20,6 @@
     "verbatimModuleSyntax": false,
     "types": ["@types/node", "google.maps", "vite-svg-loader"]
   },
-  "include": ["modules", "types", "components", "tailwindcss", "tailwind.config.ts", "nuxt"],
+  "include": ["modules", "types", "components", "tailwindcss", "nuxt"],
   "exclude": ["node_modules", "components_tmp/**/*"]
 }
