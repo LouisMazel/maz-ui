@@ -1,9 +1,5 @@
 <template>
-  <div
-    ref="MazTabsContent"
-    class="m-tabs-content maz-relative"
-    :class="{ 'maz-overflow-hidden': hideOverflow }"
-  >
+  <div class="m-tabs-content maz-relative" :class="{ 'maz-overflow-hidden': hideOverflow }">
     <slot></slot>
   </div>
 </template>
@@ -12,8 +8,6 @@
   import { ref, watch } from 'vue'
   import { debounce, injectStrict } from '../modules'
   import type { MazTabsProvide } from './MazTabs.vue'
-
-  const MazTabsContent = ref()
 
   const hideOverflow = ref(false)
 
@@ -30,10 +24,7 @@
 
   watch(
     () => currentTab.value,
-    (value) => {
-      setOverflowHiddenTemp()
-      if (typeof value === 'number') currentTab.value = value
-    },
+    () => setOverflowHiddenTemp(),
     { immediate: true },
   )
 </script>

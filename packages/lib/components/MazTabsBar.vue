@@ -4,21 +4,23 @@
     class="m-tabs-bar"
     :class="{
       '--align-left': alignLeft,
+      '--no-rounded': noRounded,
     }"
   >
     <MazBtn
-      v-for="({ label, disabled }, index) in items"
+      v-for="({ label, disabled }, index) in normalizedItems"
+      :id="toKebabCase(label)"
       :key="index"
       color="transparent"
       :class="{ '--active': currentTab === index, '--disabled': disabled }"
       class="m-tabs-bar__item --no-styling"
       :disabled="disabled"
       :to="useAnchor && !disabled ? `#${toKebabCase(label)}` : undefined"
+      :style="getTabStyle(index + 1)"
+      no-rounded
       @click="updateCurrentTab(index + 1)"
     >
-      <span :style="[currentTab === index + 1 ? { color: `var(--maz-color-${color})` } : {}]">
-        {{ label }}
-      </span>
+      {{ label }}
     </MazBtn>
     <div :style="tabsIndicatorState" class="m-tabs-bar__indicator">
       <div class="m-sub-bar" :style="{ backgroundColor: `var(--maz-color-${color})` }"></div>
@@ -27,10 +29,12 @@
 </template>
 
 <script lang="ts">
-  export interface MazTabsBarItem {
-    label: string
-    disabled?: boolean
-  }
+  export type MazTabsBarItem =
+    | {
+        label: string
+        disabled?: boolean
+      }
+    | string
 </script>
 
 <script lang="ts" setup>
@@ -40,6 +44,7 @@
 
   import MazBtn from './MazBtn.vue'
   import { injectStrict } from './../modules'
+  import type { StyleValue } from 'vue'
 
   function toKebabCase(input: string): string {
     return input
@@ -48,7 +53,7 @@
       .toLowerCase()
   }
 
-  const getIndexOfCurrentAnchor = (tabs: MazTabsBarItem[], value: number) => {
+  const getIndexOfCurrentAnchor = (tabs: (typeof normalizedItems)['value'], value: number) => {
     if (typeof window === 'undefined') return value
     const anchor = window.location.hash.replace('#', '')
     const index = tabs.findIndex(({ label }) => toKebabCase(label) === anchor)
@@ -62,14 +67,22 @@
     alignLeft: { type: Boolean, default: false },
     useAnchor: { type: Boolean, default: false },
     color: { type: String as PropType<Color>, default: 'primary' },
+    noRounded: { type: Boolean, default: false },
   })
 
   const MazTabsBar = ref()
   const isMounted = ref(false)
 
-  const tabsIndicatorState = computed(() => {
+  const normalizedItems = computed(() =>
+    props.items.map((item) => ({
+      label: typeof item === 'string' ? item : item.label,
+      disabled: typeof item === 'string' ? false : item.disabled ?? false,
+    })),
+  )
+
+  const tabsIndicatorState = computed<StyleValue>(() => {
     if (typeof currentTab.value !== 'number' || !isMounted.value) {
-      return
+      return {}
     }
 
     const tabItems = document.querySelectorAll('.m-tabs-bar__item')
@@ -84,25 +97,34 @@
     }
   })
 
+  function getTabStyle(index: number): StyleValue {
+    return currentTab.value === index ? `color: var(--maz-color-${props.color})` : ''
+  }
+
   onBeforeMount(() => {
-    const { items } = props
-    if (currentTab.value < 1 || currentTab.value > items.length)
-      throw new Error(`[maz-ui](MazTabsBar) The init value should be between 1 and ${items.length}`)
+    if (currentTab.value < 1 || currentTab.value > normalizedItems.value.length) {
+      console.error(
+        `[maz-ui](MazTabsBar) The model-value should be between 1 and ${normalizedItems.value.length}`,
+      )
+    }
   })
 
   onMounted(async () => {
-    setTimeout(() => {
-      if (props.useAnchor) {
-        updateCurrentTab(getIndexOfCurrentAnchor(props.items, currentTab.value) ?? 1)
-      }
-      isMounted.value = true
-    }, 300)
+    if (props.useAnchor) {
+      updateCurrentTab(getIndexOfCurrentAnchor(normalizedItems.value, currentTab.value) ?? 1)
+    }
+
+    isMounted.value = true
   })
 </script>
 
 <style lang="postcss" scoped>
   .m-tabs-bar {
-    @apply maz-relative maz-flex maz-gap-2 maz-overflow-x-auto maz-rounded dark:maz-bg-color-light;
+    @apply maz-relative maz-inline-flex maz-overflow-x-auto;
+
+    &:not(.--no-rounded) {
+      @apply maz-rounded;
+    }
 
     &__item {
       @apply maz-flex-none;
@@ -110,7 +132,7 @@
 
     &:not(.--align-left) {
       & .m-tabs-bar__item {
-        @apply maz-flex-1;
+        @apply maz-flex-none;
       }
     }
 
