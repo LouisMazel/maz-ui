@@ -29,19 +29,23 @@ exports[`components/MazPicker.vue > Should match with the snapshot 1`] = `
         <div data-v-5fc123ce=\\"\\" data-v-a44ce0e4=\\"\\" class=\\"maz-picker-calendar flex m-picker-container__calendar\\">
           <!--v-if-->
           <div data-v-5fc123ce=\\"\\" class=\\"maz-picker-calendar__main\\">
-            <div data-v-45f70d25=\\"\\" data-v-5fc123ce=\\"\\" class=\\"m-picker-calendar-switcher\\"><button data-v-fa7305fb=\\"\\" data-v-45f70d25=\\"\\" class=\\"m-btn --mini --transparent --cursor-pointer --is-button\\" type=\\"button\\">
+            <div data-v-45f70d25=\\"\\" data-v-5fc123ce=\\"\\" class=\\"m-picker-calendar-switcher\\"><button data-v-fa7305fb=\\"\\" data-v-45f70d25=\\"\\" class=\\"m-btn --xs --transparent --cursor-pointer --is-button\\" type=\\"button\\">
+                <!--v-if-->
                 <!--v-if--><span data-v-fa7305fb=\\"\\" class=\\"maz-flex maz-flex-center\\"><svg data-v-45f70d25=\\"\\" xmlns=\\"http://www.w3.org/2000/svg\\" width=\\"1em\\" height=\\"1em\\" fill=\\"none\\" viewBox=\\"0 0 24 24\\"><path stroke=\\"currentColor\\" stroke-linecap=\\"round\\" stroke-linejoin=\\"round\\" stroke-width=\\"1.5\\" d=\\"M15.75 19.5 8.25 12l7.5-7.5\\"></path></svg></span>
                 <!--v-if-->
                 <!--v-if-->
               </button><button data-v-fa7305fb=\\"\\" data-v-45f70d25=\\"\\" class=\\"m-picker-calendar-switcher__date m-btn --sm --transparent --cursor-pointer --is-button m-picker-calendar-switcher__date\\" type=\\"button\\">
+                <!--v-if-->
                 <!--v-if--><span data-v-fa7305fb=\\"\\" class=\\"maz-flex maz-flex-center\\">March</span>
                 <!--v-if-->
                 <!--v-if-->
               </button><button data-v-fa7305fb=\\"\\" data-v-45f70d25=\\"\\" class=\\"m-picker-calendar-switcher__date m-btn --sm --transparent --cursor-pointer --is-button m-picker-calendar-switcher__date\\" type=\\"button\\">
+                <!--v-if-->
                 <!--v-if--><span data-v-fa7305fb=\\"\\" class=\\"maz-flex maz-flex-center\\">2022</span>
                 <!--v-if-->
                 <!--v-if-->
-              </button><button data-v-fa7305fb=\\"\\" data-v-45f70d25=\\"\\" class=\\"m-btn --mini --transparent --cursor-pointer --is-button\\" type=\\"button\\">
+              </button><button data-v-fa7305fb=\\"\\" data-v-45f70d25=\\"\\" class=\\"m-btn --xs --transparent --cursor-pointer --is-button\\" type=\\"button\\">
+                <!--v-if-->
                 <!--v-if--><span data-v-fa7305fb=\\"\\" class=\\"maz-flex maz-flex-center\\"><svg data-v-45f70d25=\\"\\" xmlns=\\"http://www.w3.org/2000/svg\\" width=\\"1em\\" height=\\"1em\\" fill=\\"none\\" viewBox=\\"0 0 24 24\\"><path stroke=\\"currentColor\\" stroke-linecap=\\"round\\" stroke-linejoin=\\"round\\" stroke-width=\\"1.5\\" d=\\"m8.25 4.5 7.5 7.5-7.5 7.5\\"></path></svg></span>
                 <!--v-if-->
                 <!--v-if-->
@@ -60,126 +64,157 @@ exports[`components/MazPicker.vue > Should match with the snapshot 1`] = `
                     <div data-v-44682043=\\"\\" class=\\"maz-picker-calendar-grid__container\\">
                       <div data-v-44682043=\\"\\"></div>
                       <div data-v-44682043=\\"\\"></div><button data-v-fa7305fb=\\"\\" data-v-44682043=\\"\\" class=\\"m-btn --mini --transparent --cursor-pointer --is-button\\" type=\\"button\\">
+                        <!--v-if-->
                         <!--v-if--><span data-v-fa7305fb=\\"\\" class=\\"maz-flex maz-flex-center\\"><span data-v-44682043=\\"\\">1</span></span>
                         <!--v-if-->
                         <!--v-if-->
                       </button><button data-v-fa7305fb=\\"\\" data-v-44682043=\\"\\" class=\\"--is-selected m-btn --mini --primary --cursor-pointer --is-button --is-selected\\" type=\\"button\\">
+                        <!--v-if-->
                         <!--v-if--><span data-v-fa7305fb=\\"\\" class=\\"maz-flex maz-flex-center\\"><span data-v-44682043=\\"\\">2</span></span>
                         <!--v-if-->
                         <!--v-if-->
                       </button><button data-v-fa7305fb=\\"\\" data-v-44682043=\\"\\" class=\\"m-btn --mini --transparent --cursor-pointer --is-button\\" type=\\"button\\">
+                        <!--v-if-->
                         <!--v-if--><span data-v-fa7305fb=\\"\\" class=\\"maz-flex maz-flex-center\\"><span data-v-44682043=\\"\\">3</span></span>
                         <!--v-if-->
                         <!--v-if-->
                       </button><button data-v-fa7305fb=\\"\\" data-v-44682043=\\"\\" class=\\"m-btn --mini --transparent --cursor-pointer --is-button\\" type=\\"button\\">
+                        <!--v-if-->
                         <!--v-if--><span data-v-fa7305fb=\\"\\" class=\\"maz-flex maz-flex-center\\"><span data-v-44682043=\\"\\">4</span></span>
                         <!--v-if-->
                         <!--v-if-->
                       </button><button data-v-fa7305fb=\\"\\" data-v-44682043=\\"\\" class=\\"m-btn --mini --transparent --cursor-pointer --is-button\\" type=\\"button\\">
+                        <!--v-if-->
                         <!--v-if--><span data-v-fa7305fb=\\"\\" class=\\"maz-flex maz-flex-center\\"><span data-v-44682043=\\"\\">5</span></span>
                         <!--v-if-->
                         <!--v-if-->
                       </button><button data-v-fa7305fb=\\"\\" data-v-44682043=\\"\\" class=\\"m-btn --mini --transparent --cursor-pointer --is-button\\" type=\\"button\\">
+                        <!--v-if-->
                         <!--v-if--><span data-v-fa7305fb=\\"\\" class=\\"maz-flex maz-flex-center\\"><span data-v-44682043=\\"\\">6</span></span>
                         <!--v-if-->
                         <!--v-if-->
                       </button><button data-v-fa7305fb=\\"\\" data-v-44682043=\\"\\" class=\\"m-btn --mini --transparent --cursor-pointer --is-button\\" type=\\"button\\">
+                        <!--v-if-->
                         <!--v-if--><span data-v-fa7305fb=\\"\\" class=\\"maz-flex maz-flex-center\\"><span data-v-44682043=\\"\\">7</span></span>
                         <!--v-if-->
                         <!--v-if-->
                       </button><button data-v-fa7305fb=\\"\\" data-v-44682043=\\"\\" class=\\"m-btn --mini --transparent --cursor-pointer --is-button\\" type=\\"button\\">
+                        <!--v-if-->
                         <!--v-if--><span data-v-fa7305fb=\\"\\" class=\\"maz-flex maz-flex-center\\"><span data-v-44682043=\\"\\">8</span></span>
                         <!--v-if-->
                         <!--v-if-->
                       </button><button data-v-fa7305fb=\\"\\" data-v-44682043=\\"\\" class=\\"m-btn --mini --transparent --cursor-pointer --is-button\\" type=\\"button\\">
+                        <!--v-if-->
                         <!--v-if--><span data-v-fa7305fb=\\"\\" class=\\"maz-flex maz-flex-center\\"><span data-v-44682043=\\"\\">9</span></span>
                         <!--v-if-->
                         <!--v-if-->
                       </button><button data-v-fa7305fb=\\"\\" data-v-44682043=\\"\\" class=\\"m-btn --mini --transparent --cursor-pointer --is-button\\" type=\\"button\\">
+                        <!--v-if-->
                         <!--v-if--><span data-v-fa7305fb=\\"\\" class=\\"maz-flex maz-flex-center\\"><span data-v-44682043=\\"\\">10</span></span>
                         <!--v-if-->
                         <!--v-if-->
                       </button><button data-v-fa7305fb=\\"\\" data-v-44682043=\\"\\" class=\\"m-btn --mini --transparent --cursor-pointer --is-button\\" type=\\"button\\">
+                        <!--v-if-->
                         <!--v-if--><span data-v-fa7305fb=\\"\\" class=\\"maz-flex maz-flex-center\\"><span data-v-44682043=\\"\\">11</span></span>
                         <!--v-if-->
                         <!--v-if-->
                       </button><button data-v-fa7305fb=\\"\\" data-v-44682043=\\"\\" class=\\"m-btn --mini --transparent --cursor-pointer --is-button\\" type=\\"button\\">
+                        <!--v-if-->
                         <!--v-if--><span data-v-fa7305fb=\\"\\" class=\\"maz-flex maz-flex-center\\"><span data-v-44682043=\\"\\">12</span></span>
                         <!--v-if-->
                         <!--v-if-->
                       </button><button data-v-fa7305fb=\\"\\" data-v-44682043=\\"\\" class=\\"m-btn --mini --transparent --cursor-pointer --is-button\\" type=\\"button\\">
+                        <!--v-if-->
                         <!--v-if--><span data-v-fa7305fb=\\"\\" class=\\"maz-flex maz-flex-center\\"><span data-v-44682043=\\"\\">13</span></span>
                         <!--v-if-->
                         <!--v-if-->
                       </button><button data-v-fa7305fb=\\"\\" data-v-44682043=\\"\\" class=\\"m-btn --mini --transparent --cursor-pointer --is-button\\" type=\\"button\\">
+                        <!--v-if-->
                         <!--v-if--><span data-v-fa7305fb=\\"\\" class=\\"maz-flex maz-flex-center\\"><span data-v-44682043=\\"\\">14</span></span>
                         <!--v-if-->
                         <!--v-if-->
                       </button><button data-v-fa7305fb=\\"\\" data-v-44682043=\\"\\" class=\\"m-btn --mini --transparent --cursor-pointer --is-button\\" type=\\"button\\">
+                        <!--v-if-->
                         <!--v-if--><span data-v-fa7305fb=\\"\\" class=\\"maz-flex maz-flex-center\\"><span data-v-44682043=\\"\\">15</span></span>
                         <!--v-if-->
                         <!--v-if-->
                       </button><button data-v-fa7305fb=\\"\\" data-v-44682043=\\"\\" class=\\"m-btn --mini --transparent --cursor-pointer --is-button\\" type=\\"button\\">
+                        <!--v-if-->
                         <!--v-if--><span data-v-fa7305fb=\\"\\" class=\\"maz-flex maz-flex-center\\"><span data-v-44682043=\\"\\">16</span></span>
                         <!--v-if-->
                         <!--v-if-->
                       </button><button data-v-fa7305fb=\\"\\" data-v-44682043=\\"\\" class=\\"m-btn --mini --transparent --cursor-pointer --is-button\\" type=\\"button\\">
+                        <!--v-if-->
                         <!--v-if--><span data-v-fa7305fb=\\"\\" class=\\"maz-flex maz-flex-center\\"><span data-v-44682043=\\"\\">17</span></span>
                         <!--v-if-->
                         <!--v-if-->
                       </button><button data-v-fa7305fb=\\"\\" data-v-44682043=\\"\\" class=\\"m-btn --mini --transparent --cursor-pointer --is-button\\" type=\\"button\\">
+                        <!--v-if-->
                         <!--v-if--><span data-v-fa7305fb=\\"\\" class=\\"maz-flex maz-flex-center\\"><span data-v-44682043=\\"\\">18</span></span>
                         <!--v-if-->
                         <!--v-if-->
                       </button><button data-v-fa7305fb=\\"\\" data-v-44682043=\\"\\" class=\\"m-btn --mini --transparent --cursor-pointer --is-button\\" type=\\"button\\">
+                        <!--v-if-->
                         <!--v-if--><span data-v-fa7305fb=\\"\\" class=\\"maz-flex maz-flex-center\\"><span data-v-44682043=\\"\\">19</span></span>
                         <!--v-if-->
                         <!--v-if-->
                       </button><button data-v-fa7305fb=\\"\\" data-v-44682043=\\"\\" class=\\"m-btn --mini --transparent --cursor-pointer --is-button\\" type=\\"button\\">
+                        <!--v-if-->
                         <!--v-if--><span data-v-fa7305fb=\\"\\" class=\\"maz-flex maz-flex-center\\"><span data-v-44682043=\\"\\">20</span></span>
                         <!--v-if-->
                         <!--v-if-->
                       </button><button data-v-fa7305fb=\\"\\" data-v-44682043=\\"\\" class=\\"m-btn --mini --transparent --cursor-pointer --is-button\\" type=\\"button\\">
+                        <!--v-if-->
                         <!--v-if--><span data-v-fa7305fb=\\"\\" class=\\"maz-flex maz-flex-center\\"><span data-v-44682043=\\"\\">21</span></span>
                         <!--v-if-->
                         <!--v-if-->
                       </button><button data-v-fa7305fb=\\"\\" data-v-44682043=\\"\\" class=\\"m-btn --mini --transparent --cursor-pointer --is-button\\" type=\\"button\\">
+                        <!--v-if-->
                         <!--v-if--><span data-v-fa7305fb=\\"\\" class=\\"maz-flex maz-flex-center\\"><span data-v-44682043=\\"\\">22</span></span>
                         <!--v-if-->
                         <!--v-if-->
                       </button><button data-v-fa7305fb=\\"\\" data-v-44682043=\\"\\" class=\\"m-btn --mini --transparent --cursor-pointer --is-button\\" type=\\"button\\">
+                        <!--v-if-->
                         <!--v-if--><span data-v-fa7305fb=\\"\\" class=\\"maz-flex maz-flex-center\\"><span data-v-44682043=\\"\\">23</span></span>
                         <!--v-if-->
                         <!--v-if-->
                       </button><button data-v-fa7305fb=\\"\\" data-v-44682043=\\"\\" class=\\"m-btn --mini --transparent --cursor-pointer --is-button\\" type=\\"button\\">
+                        <!--v-if-->
                         <!--v-if--><span data-v-fa7305fb=\\"\\" class=\\"maz-flex maz-flex-center\\"><span data-v-44682043=\\"\\">24</span></span>
                         <!--v-if-->
                         <!--v-if-->
                       </button><button data-v-fa7305fb=\\"\\" data-v-44682043=\\"\\" class=\\"m-btn --mini --transparent --cursor-pointer --is-button\\" type=\\"button\\">
+                        <!--v-if-->
                         <!--v-if--><span data-v-fa7305fb=\\"\\" class=\\"maz-flex maz-flex-center\\"><span data-v-44682043=\\"\\">25</span></span>
                         <!--v-if-->
                         <!--v-if-->
                       </button><button data-v-fa7305fb=\\"\\" data-v-44682043=\\"\\" class=\\"m-btn --mini --transparent --cursor-pointer --is-button\\" type=\\"button\\">
+                        <!--v-if-->
                         <!--v-if--><span data-v-fa7305fb=\\"\\" class=\\"maz-flex maz-flex-center\\"><span data-v-44682043=\\"\\">26</span></span>
                         <!--v-if-->
                         <!--v-if-->
                       </button><button data-v-fa7305fb=\\"\\" data-v-44682043=\\"\\" class=\\"m-btn --mini --transparent --cursor-pointer --is-button\\" type=\\"button\\">
+                        <!--v-if-->
                         <!--v-if--><span data-v-fa7305fb=\\"\\" class=\\"maz-flex maz-flex-center\\"><span data-v-44682043=\\"\\">27</span></span>
                         <!--v-if-->
                         <!--v-if-->
                       </button><button data-v-fa7305fb=\\"\\" data-v-44682043=\\"\\" class=\\"m-btn --mini --transparent --cursor-pointer --is-button\\" type=\\"button\\">
+                        <!--v-if-->
                         <!--v-if--><span data-v-fa7305fb=\\"\\" class=\\"maz-flex maz-flex-center\\"><span data-v-44682043=\\"\\">28</span></span>
                         <!--v-if-->
                         <!--v-if-->
                       </button><button data-v-fa7305fb=\\"\\" data-v-44682043=\\"\\" class=\\"m-btn --mini --transparent --cursor-pointer --is-button\\" type=\\"button\\">
+                        <!--v-if-->
                         <!--v-if--><span data-v-fa7305fb=\\"\\" class=\\"maz-flex maz-flex-center\\"><span data-v-44682043=\\"\\">29</span></span>
                         <!--v-if-->
                         <!--v-if-->
                       </button><button data-v-fa7305fb=\\"\\" data-v-44682043=\\"\\" class=\\"m-btn --mini --transparent --cursor-pointer --is-button\\" type=\\"button\\">
+                        <!--v-if-->
                         <!--v-if--><span data-v-fa7305fb=\\"\\" class=\\"maz-flex maz-flex-center\\"><span data-v-44682043=\\"\\">30</span></span>
                         <!--v-if-->
                         <!--v-if-->
                       </button><button data-v-fa7305fb=\\"\\" data-v-44682043=\\"\\" class=\\"m-btn --mini --transparent --cursor-pointer --is-button\\" type=\\"button\\">
+                        <!--v-if-->
                         <!--v-if--><span data-v-fa7305fb=\\"\\" class=\\"maz-flex maz-flex-center\\"><span data-v-44682043=\\"\\">31</span></span>
                         <!--v-if-->
                         <!--v-if-->
