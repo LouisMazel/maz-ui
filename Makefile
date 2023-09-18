@@ -2,8 +2,8 @@ serve-all:
 	pnpm --parallel serve
 serve-docs:
 	pnpm --filter docs dev
-serve-testing:
-	pnpm --filter testing dev
+serve-playground:
+	pnpm --filter playground dev
 serve-playground:
 	pnpm --filter playground dev
 
@@ -49,8 +49,8 @@ install-cli:
 	pnpm --filter cli install --no-frozen-lockfile
 install-lib:
 	pnpm --filter maz-ui install --no-frozen-lockfile
-install-testing:
-	pnpm --filter testing install --no-frozen-lockfile
+install-playground:
+	pnpm --filter playground install --no-frozen-lockfile
 
 reinstall-all:
 	make clean-all install
@@ -59,8 +59,8 @@ lint-staged: ## lint-staged
 	npm run pre-commit
 lint-staged-lib: ## lint-staged lib
 	pnpm --filter maz-ui lint-staged
-lint-staged-testing: ## lint-staged testing
-	make --directory=packages/testing lint-staged
+lint-staged-playground: ## lint-staged playground
+	make --directory=packages/playground lint-staged
 lint-staged-cli: ## lint-staged cli
 	make --directory=packages/cli lint-staged
 

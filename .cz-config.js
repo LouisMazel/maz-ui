@@ -30,7 +30,7 @@ module.exports = {
   scopes: [
     { name: 'root' },
     { name: 'docs' },
-    { name: 'testing' },
+    { name: 'playground' },
     { name: 'lib' },
     { name: 'cli' },
     { name: 'release' },

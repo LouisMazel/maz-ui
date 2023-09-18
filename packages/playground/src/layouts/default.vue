@@ -27,7 +27,7 @@
 <style lang="postcss">
   html,
   body {
-    @apply dark:maz-bg-black dark:maz-text-white;
+    @apply maz-bg-color maz-text-normal;
   }
 </style>
 
@@ -36,7 +36,7 @@
     @apply maz-flex maz-min-h-screen maz-flex-col maz-padded-container;
 
     header {
-      @apply maz-flex maz-w-full maz-flex-wrap maz-items-center maz-justify-between maz-border-b maz-border-gray-300 maz-px-2 maz-py-4;
+      @apply maz-flex maz-w-full maz-flex-wrap maz-items-center maz-justify-between maz-border-b maz-border-color-lighter maz-px-2 maz-py-4;
 
       nav {
         @apply maz-flex maz-gap-4;
