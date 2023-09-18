@@ -11,7 +11,6 @@ import { viteStaticCopy, type Target } from 'vite-plugin-static-copy'
 import { getComponentList } from './get-component-list'
 import { logger } from './utils/logger'
 import { execPromise } from './utils/exec-promise'
-import { copyAndTransformComponentsTypesFiles } from './copy-components-types'
 import { generateComponentsEntryFile } from './generate-components-entry'
 import { generateLibComponentsEntryFile } from './generate-lib-entry'
 import { compileScss } from './compile-scss'
@@ -62,7 +61,7 @@ const getBuildConfig = ({
     lib: {
       // Can be an array of multiple entry points
       entry: path,
-      // formats: ['es'],
+      formats: ['es'],
       name,
       fileName: name,
     },
@@ -148,13 +147,6 @@ const run = async () => {
     // Emit types from all packages
     await execPromise('vue-tsc --declaration --emitDeclarationOnly')
 
-    copyAndTransformComponentsTypesFiles()
-
-    // Build and compile main declaration file (index.d.ts)
-    await execPromise(
-      'rollup --config build/rollup.types.config.ts --configPlugin @rollup/plugin-typescript',
-    )
-
     await generateLibComponentsEntryFile()
     await generateComponentListFile(resolve(__dirname, './../dist/components/component-list.mjs'))
 
@@ -164,8 +156,6 @@ const run = async () => {
     )
 
     await compileScss()
-
-    await execPromise('rimraf generated-types')
 
     logger.success('[vite.config.js](run) 💚 library builded with success 💚')
   } catch (error) {
