@@ -1,6 +1,6 @@
 <template>
   <div class="maz-picker-footer">
-    <MazBtn size="mini" :color="color" type="button" @click.stop="$emit('close')">
+    <MazBtn size="xs" :color="color" type="button" @click.stop="$emit('close')">
       <CheckIcon class="icon maz-h-[1.4rem] maz-w-[1.4rem]" />
     </MazBtn>
   </div>

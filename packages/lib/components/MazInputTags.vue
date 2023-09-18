@@ -18,7 +18,7 @@
             {{ tag }}
           </template>
           <template #right-icon>
-            <XIcon class="m-input-tags__tag__icon maz-h-[1em] maz-w-[1em]" />
+            <XIcon class="m-input-tags__tag__icon" />
           </template>
         </MazBtn>
       </div>

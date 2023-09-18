@@ -35,6 +35,7 @@ description: MazBtn is a standalone component that replaces the standard html bu
     <MazBtn
       loading
       :color="color"
+      right-icon="user"
     >
       {{ color }}
     </MazBtn>
@@ -168,10 +169,26 @@ It's better in light mode
 
 <br />
 
-<MazBtn fab>fab</MazBtn>
+<div class="maz-flex maz-gap-5 maz-items-center">
+  <MazBtn fab icon="sun" size="mini" />
+  <MazBtn fab icon="sun" size="xs" />
+  <MazBtn fab icon="sun" size="sm" />
+  <MazBtn fab>
+    fab
+  </MazBtn>
+  <MazBtn fab icon="sun" size="lg" />
+  <MazBtn fab icon="sun" size="xl" />
+</div>
 
 ```html
-<MazBtn fab>fab</MazBtn>
+<MazBtn fab icon="sun" size="mini" />
+<MazBtn fab icon="sun" size="xs" />
+<MazBtn fab icon="sun" size="sm" />
+<MazBtn fab>
+  fab
+</MazBtn>
+<MazBtn fab icon="sun" size="lg" />
+<MazBtn fab icon="sun" size="xl" />
 ```
 
 ### Block

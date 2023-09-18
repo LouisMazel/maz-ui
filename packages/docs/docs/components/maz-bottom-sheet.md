@@ -18,7 +18,7 @@ This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop
 <MazBtn @click="isOpen = true">Open Bottom Sheet</MazBtn>
 
 <MazBottomSheet v-model="isOpen">
-  <h3 class="maz-text-center">
+  <h3 class="maz-text-center maz-mb-4">
     Your content
   </h3>
   <div class="maz-flex maz-flex-center">
@@ -41,7 +41,7 @@ This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop
   <MazBtn @click="isOpen = true">Open Bottom Sheet</MazBtn>
 
   <MazBottomSheet v-model="isOpen">
-    <h3 class="maz-text-center">
+    <h3 class="maz-text-center maz-mb-4">
       Your content
     </h3>
     <div class="maz-flex maz-flex-center">

@@ -24,15 +24,34 @@
     ]"
     :type="btnType"
   >
-    <div v-if="hasLeftIcon" class="m-btn__icon-left maz-flex maz-flex-center">
+    <div
+      v-if="hasLeftIcon"
+      class="m-btn__icon-left maz-flex maz-flex-center"
+      :class="{ 'maz-invisible': hasLoader }"
+    >
       <slot name="left-icon">
         <MazIcon v-if="leftIcon" :name="leftIcon" />
       </slot>
     </div>
+
+    <div
+      v-if="hasFabIcon"
+      class="m-btn__icon maz-flex maz-flex-center"
+      :class="{ 'maz-invisible': hasLoader }"
+    >
+      <slot name="icon">
+        <MazIcon v-if="icon" :name="icon" />
+      </slot>
+    </div>
+
     <span class="maz-flex maz-flex-center" :class="{ 'maz-invisible': hasLoader }">
       <slot></slot>
     </span>
-    <div v-if="hasRightIcon" class="m-btn__icon-right maz-flex maz-flex-center">
+    <div
+      v-if="hasRightIcon"
+      class="m-btn__icon-right maz-flex maz-flex-center"
+      :class="{ 'maz-invisible': hasLoader }"
+    >
       <slot name="right-icon">
         <MazIcon v-if="rightIcon" :name="rightIcon" />
       </slot>
@@ -52,6 +71,7 @@
   import MazIcon from './MazIcon.vue'
 
   import type { Color, Size } from './types'
+  import { onBeforeMount } from 'vue'
 
   const { href, to } = useAttrs()
   const slots = useSlots()
@@ -91,10 +111,17 @@
     loading: { type: Boolean, default: false },
     disabled: { type: Boolean, default: false },
     fab: { type: Boolean, default: false },
+    icon: { type: String, default: undefined },
     leftIcon: { type: String, default: undefined },
     rightIcon: { type: String, default: undefined },
     noPadding: { type: Boolean, default: false },
     noElevation: { type: Boolean, default: false },
+  })
+
+  onBeforeMount(() => {
+    if (props.icon && !props.fab) {
+      console.error('[maz-ui](MazBtn) the prop "icon" must be used only with "fab" props')
+    }
   })
 
   const component = computed(() => {
@@ -119,6 +146,7 @@
   const hasLeftIcon = computed(() => !!slots['left-icon'] || props.leftIcon)
   const hasRightIcon = computed(() => !!slots['right-icon'] || props.rightIcon)
   const hasIcon = computed(() => hasLeftIcon.value || hasRightIcon.value)
+  const hasFabIcon = computed(() => props.fab && props.icon)
   const btnType = computed(() => (component.value === 'button' ? props.type : undefined))
 </script>
 
@@ -261,11 +289,35 @@
       /* Fab */
 
       &.--fab {
-        @apply maz-flex maz-h-12 maz-w-12 maz-items-center
+        @apply maz-flex maz-items-center
           maz-justify-center maz-rounded-full maz-px-0 maz-py-0;
 
         &:not(.--no-elevation) {
           @apply maz-elevation;
+        }
+
+        &.--xl {
+          @apply maz-h-[4.125rem] maz-w-[4.125rem] maz-text-xl;
+        }
+
+        &.--lg {
+          @apply maz-h-[3.375rem] maz-w-[3.375rem] maz-text-lg;
+        }
+
+        &.--md {
+          @apply maz-h-12 maz-w-12 maz-text-base;
+        }
+
+        &.--sm {
+          @apply maz-h-[2.375rem] maz-w-[2.375rem] maz-text-sm;
+        }
+
+        &.--xs {
+          @apply maz-h-[1.725rem] maz-w-[1.725rem] maz-text-sm;
+        }
+
+        &.--mini {
+          @apply maz-h-[1.4rem] maz-w-[1.4rem] maz-text-xs;
         }
       }
 

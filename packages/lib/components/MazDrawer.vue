@@ -19,7 +19,7 @@
           </h4>
           <div v-if="!noClose" class="m-drawer-header__close">
             <MazBtn size="sm" color="transparent" @click="close">
-              <XIcon class="icon" />
+              <XIcon class="icon maz-text-lg" />
             </MazBtn>
           </div>
         </header>

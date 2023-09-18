@@ -17,7 +17,7 @@
       </div>
 
       <button v-if="!persistent" class="--close">
-        <XIcon class="--icon" />
+        <XIcon class="--icon maz-text-xl" />
       </button>
     </div>
   </Transition>

@@ -2,14 +2,14 @@
   <div class="maz-picker-year-switcher">
     <div class="maz-picker-year-switcher__header">
       <div class="maz-flex maz-space-x-2">
-        <MazBtn size="mini" color="transparent" type="button" @click.stop="previousYears">
+        <MazBtn size="xs" color="transparent" type="button" @click.stop="previousYears">
           <ChevronLeftIcon />
         </MazBtn>
-        <MazBtn size="mini" color="transparent" type="button" @click.stop="nextYears">
+        <MazBtn size="xs" color="transparent" type="button" @click.stop="nextYears">
           <ChevronRightIcon />
         </MazBtn>
       </div>
-      <MazBtn size="mini" color="transparent" type="button" @click.stop="$emit('close', $event)">
+      <MazBtn size="xs" color="transparent" type="button" @click.stop="$emit('close', $event)">
         <XIcon />
       </MazBtn>
     </div>

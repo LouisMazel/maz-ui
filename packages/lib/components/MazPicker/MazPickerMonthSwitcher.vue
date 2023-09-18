@@ -1,7 +1,7 @@
 <template>
   <div class="maz-picker-month-switcher">
     <div class="maz-picker-month-switcher__header">
-      <MazBtn size="mini" color="transparent" type="button" @click.stop="$emit('close', $event)">
+      <MazBtn size="xs" color="transparent" type="button" @click.stop="$emit('close', $event)">
         <XIcon />
       </MazBtn>
     </div>
