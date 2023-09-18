@@ -8,12 +8,20 @@
   "types": "./modules/index.d.ts",
   "exports": {
     ".": {
-      "default": "./modules/index.ts",
+      "require": "./modules/index.umd.js",
+      "import": "./modules/index.mjs",
       "types": "./modules/index.d.ts"
     },
     "./*": "./*",
-    "./components": "./components/index.ts",
-    "./components/*": "./components/*",
+    "./components": {
+      "default": "./components/index.mjs",
+      "types": "./components/index.d.ts"
+    },
+    "./components/*": {
+      "require": "./components/*.umd.js",
+      "import": "./components/*.mjs",
+      "types": "./components/*.d.ts"
+    },
     "./nuxt": "./nuxt/index.ts"
   },
   "files": [
