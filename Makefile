@@ -4,8 +4,6 @@ serve-docs:
 	pnpm --filter docs dev
 serve-playground:
 	pnpm --filter playground dev
-serve-playground:
-	pnpm --filter playground dev
 
 audit:
 	pnpm audit
