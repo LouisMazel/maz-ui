@@ -41,7 +41,7 @@
      */
     options: {
       type: Object,
-      default: Object,
+      default: () => ({}),
     },
     /**
      * The plugins array that is passed into the Chart.js chart
@@ -49,7 +49,7 @@
      */
     plugins: {
       type: Array,
-      default: Array,
+      default: () => [],
     },
     /**
      * Key name to identificate dataset
