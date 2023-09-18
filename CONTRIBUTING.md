@@ -23,14 +23,14 @@ make build-lib
 Once your dependencies are installed and the library builded, to run the server of the developing vue 3 app, use this command:
 
 ```shell
-make serve-testing
+make serve-playground
 ```
 
 This will start the development server available at [http://localhost:2000](http://localhost:2000).
 
 ### More
 
-Import all modules & components in the Vue App from `maz-ui` do you need and then, clean all your changes and don't commit anything in `package/testing`
+Import all modules & components in the Vue App from `maz-ui` do you need and then, clean all your changes and don't commit anything in `package/playground`
 
 ## Documentation
 
