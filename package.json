@@ -19,7 +19,7 @@
   "devDependencies": {
     "@commitlint/cli": "^17.7.1",
     "@commitlint/config-conventional": "^17.7.0",
-    "@types/node": "^20.6.0",
+    "@types/node": "^20.6.2",
     "commitlint-config-cz": "^0.13.3",
     "conventional-changelog-conventionalcommits": "^7.0.2",
     "husky": "^8.0.3",
