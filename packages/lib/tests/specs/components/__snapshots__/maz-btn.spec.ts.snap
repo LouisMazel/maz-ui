@@ -2,6 +2,7 @@
 
 exports[`MazBtn > Should match with the snapshot 1`] = `
 "<button data-v-fa7305fb=\\"\\" class=\\"m-btn --md --primary --cursor-pointer --is-button\\" type=\\"button\\">
+  <!--v-if-->
   <!--v-if--><span data-v-fa7305fb=\\"\\" class=\\"maz-flex maz-flex-center\\"></span>
   <!--v-if-->
   <!--v-if-->
