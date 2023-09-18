@@ -1,11 +1,11 @@
 <template>
-  <MazTabs class="home">
+  <div class="home">
     <h1>Home</h1>
 
     <!-- Start Developping Area - You should not commit anything here to keep this place clean for all others -->
 
     <!-- End Developping Area -->
-  </MazTabs>
+  </div>
 </template>
 
 <script lang="ts" setup>
