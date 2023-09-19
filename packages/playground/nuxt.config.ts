@@ -5,13 +5,17 @@ import svgLoader from 'vite-svg-loader'
 
 export default defineNuxtConfig({
   modules: ['maz-ui/nuxt', '@nuxtjs/tailwindcss'],
-  css: ['maz-ui/tailwindcss/tailwind.css', '@/css/main.css'],
+  css: ['@/css/main.css'],
   devServer: {
     port: 3333,
   },
   mazUi: {
+    injectComponents: true,
+    injectCss: true,
+    injectAosCss: true,
     injectToaster: true,
     injectUseThemeHandler: true,
+    devtools: true,
   },
   srcDir: 'src/',
   app: {
