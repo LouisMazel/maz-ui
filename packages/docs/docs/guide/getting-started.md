@@ -26,6 +26,8 @@ npm i maz-ui
 
 ### Import necessary CSS file
 
+<br />
+
 #### Vue JS <NpmBadge package="vue" />
 
 In the `main.js` or `main.ts`, import main maz-ui CSS file before your own CSS
@@ -37,15 +39,16 @@ import '@/css/path_to_your_main_file.css'
 
 #### Nuxt JS <NpmBadge package="nuxt" />
 
+::: tip
+For **NuxtJS v3** and higher, use the dedicated Nuxt module to take advantage of auto-imports of components, plugins and composables: [Nuxt Module Documentation](./nuxt.md)
+:::
+
 ```ts
 export default {
   css: [
     'maz-ui/css/main.css',
     '@/css/path_to_your_main_file.css',
   ],
-  build: {
-    transpile: ['maz-ui'], // ⚠️ important ⚠️
-  },
 }
 ```
 
@@ -113,4 +116,18 @@ const app = createApp(App)
 Object.entries(components).forEach(([componentName, component]) => {
   app.component(componentName, component)
 })
+```
+
+## Typescript Users (not required)
+
+Now the module resolution `Node` is deprecated, for a better Typescript compatibility, please use `Node16` ou `NodeNext`. The `Bundler` mode works too.
+
+`tsconfig.json`
+
+```json
+{
+  "compilerOptions": {
+    "moduleResolution": "NodeNext"
+  }
+}
 ```
