@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.12.0](https://github.com/LouisMazel/maz-ui/compare/v3.11.4...v3.12.0) (2023-09-19)
+
+
+### Bug Fixes
+
+* **lib:** type declaration compatibility with moduleResolution 'node' ([e3bfc97](https://github.com/LouisMazel/maz-ui/commit/e3bfc97b2af1ece1efd5973331178650d3904f3a))
+
+
+### Features
+
+* **lib:** nuxt module - add auto-import of css files ([2c17f5f](https://github.com/LouisMazel/maz-ui/commit/2c17f5ff5f8771d40cec0babc730bcdfad39424e))
+
+
+
+
+
 ## [3.11.4](https://github.com/LouisMazel/maz-ui/compare/v3.11.3...v3.11.4) (2023-09-18)
 
 **Note:** Version bump only for package maz-ui
