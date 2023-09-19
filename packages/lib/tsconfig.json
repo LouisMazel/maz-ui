@@ -20,6 +20,6 @@
     "verbatimModuleSyntax": false,
     "types": ["@types/node", "google.maps", "vite-svg-loader"]
   },
-  "include": ["modules", "types", "components", "tailwindcss", "nuxt"],
+  "include": ["modules", "components", "tailwindcss", "nuxt", "icons"],
   "exclude": ["node_modules", "components_tmp/**/*"]
 }

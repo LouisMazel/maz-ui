@@ -16,6 +16,7 @@ import { generateLibComponentsEntryFile } from './generate-lib-entry'
 import { compileScss } from './compile-scss'
 import { replaceStringInFile } from './replace-string-in-file'
 import { generateComponentListFile } from './generate-component-list-file'
+import { copyAndTransformComponentsTypesFiles } from './copy-components-types'
 
 const argv = minimist(process.argv.slice(2))
 
@@ -147,6 +148,8 @@ const run = async () => {
     // Emit types from all packages
     await execPromise('vue-tsc --declaration --emitDeclarationOnly')
 
+    copyAndTransformComponentsTypesFiles()
+
     await generateLibComponentsEntryFile()
     await generateComponentListFile(resolve(__dirname, './../dist/components/component-list.mjs'))
 
@@ -156,6 +159,8 @@ const run = async () => {
     )
 
     await compileScss()
+
+    await execPromise('rimraf generated-types')
 
     logger.success('[vite.config.js](run) 💚 library builded with success 💚')
   } catch (error) {

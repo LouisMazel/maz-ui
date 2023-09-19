@@ -9,7 +9,7 @@ import { screens } from './variables/breakpoints'
 import { zIndex } from './variables/z-indexes'
 import { getColors } from './utils/colors'
 
-export default <Config>{
+export default {
   darkMode: ['class', '[class="dark"]'],
   content: [],
   theme: {
@@ -40,4 +40,4 @@ export default <Config>{
       addUtilities(utilities)
     }),
   ],
-}
+} satisfies Config
