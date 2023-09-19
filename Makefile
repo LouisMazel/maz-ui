@@ -62,8 +62,8 @@ lint-staged-playground: ## lint-staged playground
 lint-staged-cli: ## lint-staged cli
 	make --directory=packages/cli lint-staged
 
-check-dependencies-update:
-	pnpm update --interactive
+check-all-dependencies-update:
+	pnpm update -r --interactive --latest
 check-dependencies-update-latest:
 	pnpm update --interactive --latest
 check-docs-dependencies-update-latest:
