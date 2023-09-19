@@ -25,14 +25,19 @@ npm install maz-ui
 
 Add it to your Nuxt modules:
 
+[Available options](#module-options)
+
 ```ts
 export default defineNuxtConfig({
-  ...
   modules: ['maz-ui/nuxt'],
   mazUi: {
+    injectComponents: true,
+    injectCss: true,
+    injectAosCss: false,
     injectToaster: true,
+    injectUseThemeHandler: true,
+    devtools: true,
   },
-  ...
 })
 ```
 
@@ -42,15 +47,23 @@ The components, plugins and tools are auto-imported
 
 ```vue
 <template>
-  <MazBtn>
+  <MazBtn @click="toggleTheme">
     Button auto-imported
   </MazBtn>
 </template>
 
 <script lang="ts" setup>
   const toast = useToast()
+  const {
+    autoSetTheme,
+    toggleTheme,
+  } = useThemeHandler()
 
   toast.show('Success message')
+
+  onMounted(() =>
+    autoSetTheme()
+  })
 </script>
 ```
 
@@ -59,21 +72,25 @@ The components, plugins and tools are auto-imported
 ```ts
 export interface ModuleOptions {
   /**
+   * Enable auto import of main css file
+   * @default true
+   */
+  injectCss?: boolean
+  /**
+   * Enable auto import of main css file
+   * @default false
+   */
+  injectAosCss?: boolean
+  /**
    * Install the toaster plugin and enable auto import of toaster composable
+   * @default false
    */
   injectToaster?: boolean
   /**
-   * Enable auto import of useCurrency composable
-   */
-  injectUseCurrency?: boolean
-  /**
-   * Enable auto import of useThemeHandler composable
+   * Enable auto import of useTheme composable
+   * @default false
    */
   injectUseThemeHandler?: boolean
-  /**
-   * install global of v-fullscreen-img directive
-   */
-  installFullscreenImgDirective?: boolean
   /**
    * Enable auto import of all components
    * @default true
