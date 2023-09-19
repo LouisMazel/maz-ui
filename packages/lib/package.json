@@ -11,7 +11,6 @@
       "default": "./modules/index.ts",
       "types": "./types/modules/index.d.ts"
     },
-    "./*": "./*",
     "./components": {
       "default": "./components/index.ts",
       "types": "./types/components/index.d.ts"
@@ -27,7 +26,11 @@
     "./nuxt": {
       "default": "./nuxt/index.ts",
       "types": "./types/nuxt/index.d.ts"
-    }
+    },
+    "./styles": "./css/main.css",
+    "./aos-styles": "./css/aos.css",
+    "./package.json": "./package.json",
+    "./*": "./*"
   },
   "files": [
     "components",
