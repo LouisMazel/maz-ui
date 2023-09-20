@@ -9,7 +9,6 @@
   >
     <MazBtn
       v-for="({ label, disabled }, index) in normalizedItems"
-      :id="toKebabCase(label)"
       :key="index"
       color="transparent"
       :class="{ '--active': currentTab === index, '--disabled': disabled }"
