@@ -8,20 +8,20 @@
   "types": "./types/modules/index.d.ts",
   "exports": {
     ".": {
-      "default": "./modules/index.ts",
-      "types": "./types/modules/index.d.ts"
+      "types": "./types/modules/index.d.ts",
+      "default": "./modules/index.ts"
     },
     "./components": {
-      "default": "./components/index.ts",
-      "types": "./types/components/index.d.ts"
+      "types": "./types/components/index.d.ts",
+      "default": "./components/index.ts"
     },
     "./components/*": {
-      "default": "./components/*",
-      "types": "./types/components/*.vue.d.ts"
+      "types": "./types/components/*.vue.d.ts",
+      "default": "./components/*"
     },
     "./nuxt": {
-      "default": "./nuxt/index.ts",
-      "types": "./types/nuxt/index.d.ts"
+      "types": "./types/nuxt/index.d.ts",
+      "default": "./nuxt/index.ts"
     },
     "./styles": "./css/main.css",
     "./aos-styles": "./css/aos.css",
