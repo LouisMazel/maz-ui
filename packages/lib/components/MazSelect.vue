@@ -58,6 +58,7 @@
             :placeholder="searchPlaceholder"
             name="search"
             autocomplete="off"
+            tabindex="-1"
             class="m-select-list__search-input"
             @keydown="keyboardHandler"
           >
@@ -69,7 +70,7 @@
         <span v-if="!optionsList || optionsList.length <= 0" class="m-select-list__no-results">
           <NoSymbolIcon class="maz-h-6 maz-w-6 maz-text-normal" />
         </span>
-        <div v-else class="m-select-list__scroll-wrapper">
+        <div v-else class="m-select-list__scroll-wrapper" tabindex="-1">
           <button
             v-for="(option, i) in optionsList"
             :key="i"
@@ -350,7 +351,9 @@
     tmpModelValueIndex.value = optionsList.value?.findIndex(
       (option) => selectedOption[props.optionValueKey] === option[props.optionValueKey],
     )
-    if (mustCloseList) closeList()
+    if (mustCloseList) {
+      nextTick(() => closeList())
+    }
     searchQuery.value = undefined
     return emits('update:model-value', selectedOption[props.optionValueKey])
   }
