@@ -45,7 +45,8 @@ const theme: typeof DefaultTheme = {
       delay: 500,
       animation: {
         duration: 400,
-        once: false
+        once: false,
+        delay: 0,
       }
     }
 

@@ -201,6 +201,7 @@ const options: AosOptions = {
   animation: {
     duration: 1000,
     once: false,
+    delay: 0,
   },
 }
 
@@ -210,6 +211,10 @@ app.mount('#app')
 ```
 
 ### Nuxt
+
+::: tip
+For **NuxtJS v3** and higher, use the dedicated Nuxt module to take advantage of auto-imports of components, plugins, composables and css files: [Nuxt Module Documentation](./nuxt.md)
+:::
 
 Should be executed on client side
 
@@ -224,9 +229,6 @@ export default {
   css: [
     'maz-ui/css/aos.css'
   ],
-  build: {
-    transpile: ['maz-ui'], // ⚠️ important ⚠️
-  },
 }
 ```
 
@@ -240,6 +242,7 @@ export default ({ vueApp, $router: router }) => {
     router,
     animation: {
       duration: 1000,
+      delay: 0,
       once: false,
     },
   }
@@ -283,23 +286,49 @@ You can run animations programatically with the composable
 
 ```ts
 export interface AosOptions {
-  /* provide your router to launch animation after each navigation */
+  /**
+   * provide your router to launch animation after each navigation
+   * @default undefined
+   */
   router?: Router
-  /* duration in ms before each animation (useful when the HTML rendering is slow) */
-  delay?: number // DEFAULT: 100
+  /**
+   * duration in ms before start animations (useful when the HTML rendering is slow)
+   * @default 100
+   */
+  delay?: number
   observer?: {
-    /* scope animation to specific parent element */
-    root?: Element | Document | null; // DEFAULT: undefined
-    /* margin around elements to trigger the animations */
-    rootMargin?: string; // DEFAULT: undefined - Ex: '100px'
-    /* Ratio concerponding to the element size */
-    threshold?: number | number[]; // DEFAULT: 0.2
+    /**
+     * Scope animation to specific parent HTMLElement
+     * @default undefined
+     */
+    root?: Element | Document | null
+    /**
+     * margin around elements to trigger the animations - Ex: "100px"
+     * @default undefined
+     */
+    rootMargin?: string
+    /**
+     * Ratio concerponding to the element size
+     * @default 0.2
+     */
+    threshold?: number | number[]
   }
   animation?: {
-    /* if false the animation is played each times when the element is visible */
-    once?: boolean // DEFAULT: true
-    /* default animation duration in ms */
-    duration?: number // DEFAULT: 400
+    /**
+     * if `false` the animation is played each times when the element is visible
+     * @default true
+     */
+    once?: boolean
+    /**
+     * Default animation duration in ms
+     * @default 300
+     */
+    duration?: number
+    /**
+     * Default animation delay in ms
+     * @default 0
+     */
+    delay?: number
   }
 }
 ```

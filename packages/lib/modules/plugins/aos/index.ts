@@ -1,20 +1,17 @@
+import { sleep } from './../../helpers/sleep'
 import { isClient } from './../../helpers/is-client'
 import type { App } from 'vue'
 import type { Router } from 'vue-router'
 
-const sleep = (ms: number) => {
-  return new Promise((resolve) => setTimeout(resolve, ms))
-}
-
 export interface AosOptions {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  routerHook?: (args: any) => () => void
+  routerHook?: (args: unknown) => () => void
   router?: Router
   delay?: number
   observer?: IntersectionObserverInit
   animation?: {
     once?: boolean
     duration?: number
+    delay?: number
   }
 }
 
@@ -27,6 +24,7 @@ interface ClassOptions extends Omit<AosOptions, 'router'> {
   animation: {
     once: boolean
     duration: number
+    delay: number
   }
 }
 
@@ -40,6 +38,7 @@ const DEFAULT_OPTIONS: ClassOptions = {
   animation: {
     once: true,
     duration: 300,
+    delay: 0,
   },
 }
 
@@ -123,11 +122,19 @@ class AosHandler {
           entry.intersectionRatio > this.options.observer.threshold
         ) {
           const duration = element.getAttribute('data-maz-aos-duration')
+          const delay = element.getAttribute('data-maz-aos-delay')
 
           if (!duration) {
             element.style.transitionDuration = `${this.options.animation.duration}ms`
             setTimeout(() => {
               element.style.transitionDuration = '0'
+            }, 1000)
+          }
+
+          if (!delay) {
+            element.style.transitionDelay = `${this.options.animation.delay}ms`
+            setTimeout(() => {
+              element.style.transitionDelay = '0'
             }, 1000)
           }
 
