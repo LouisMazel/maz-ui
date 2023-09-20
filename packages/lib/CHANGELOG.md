@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.12.1](https://github.com/LouisMazel/maz-ui/compare/v3.12.0...v3.12.1) (2023-09-20)
+
+
+### Bug Fixes
+
+* **lib:** maz-tabs - better deduction to current tab  when use-anchor option is enable ([b82bf6f](https://github.com/LouisMazel/maz-ui/commit/b82bf6f0803dac2f25a3f689c09b567624a74951))
+
+
+
+
+
 # [3.12.0](https://github.com/LouisMazel/maz-ui/compare/v3.11.4...v3.12.0) (2023-09-19)
 
 
