@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.13.0](https://github.com/LouisMazel/maz-ui/compare/v3.12.2...v3.13.0) (2023-09-20)
+
+### Bug Fixes
+
+- **lib:** package exports declarations - set default has the last one ([c82b1f6](https://github.com/LouisMazel/maz-ui/commit/c82b1f647b441db90b74e1cc7794c9e927a6efa9))
+
+### Features
+
+- **lib:** add default animation delay to aos plugin ([96041a1](https://github.com/LouisMazel/maz-ui/commit/96041a100c665833892cf221b4f96719d56658cd))
+
 ## [3.12.2](https://github.com/LouisMazel/maz-ui/compare/v3.12.1...v3.12.2) (2023-09-20)
 
 ### Bug Fixes
