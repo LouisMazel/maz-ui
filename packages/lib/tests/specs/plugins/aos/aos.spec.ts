@@ -26,6 +26,7 @@ describe('AosHandler', () => {
       animation: {
         once: false,
         duration: 500,
+        delay: 0,
       },
     }
 
