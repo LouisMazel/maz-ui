@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.12.2](https://github.com/LouisMazel/maz-ui/compare/v3.12.1...v3.12.2) (2023-09-20)
+
+
+### Bug Fixes
+
+* **lib:** maz-tabs - remove id to tab bar buttons ([8bbf4a3](https://github.com/LouisMazel/maz-ui/commit/8bbf4a3f0c420df940cf822d309f0ed56db2086e))
+
+
+
+
+
 ## [3.12.1](https://github.com/LouisMazel/maz-ui/compare/v3.12.0...v3.12.1) (2023-09-20)
 
 
