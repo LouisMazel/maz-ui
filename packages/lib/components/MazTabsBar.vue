@@ -57,7 +57,7 @@
     if (typeof window === 'undefined') return value
     const anchor = window.location.hash.replace('#', '')
     const index = tabs.findIndex(({ label }) => toKebabCase(label) === anchor)
-    return index === -1 ? 0 : index + 1
+    return index === -1 ? 1 : index + 1
   }
 
   const { currentTab, updateCurrentTab } = injectStrict<MazTabsProvide>('maz-tabs')

@@ -19,10 +19,6 @@
       "default": "./components/*",
       "types": "./types/components/*.vue.d.ts"
     },
-    "./tailwindcss/*": {
-      "default": "./tailwindcss/*",
-      "types": "./types/tailwindcss/*.d.ts"
-    },
     "./nuxt": {
       "default": "./nuxt/index.ts",
       "types": "./types/nuxt/index.d.ts"
