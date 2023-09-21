@@ -54,7 +54,7 @@ This plugin has a composable for easier use, after installing it you can use [us
 <script lang="ts" setup>
   import { useToast } from 'maz-ui'
 
-  const { toast } = useToast()
+  const toast = useToast()
 
   function showInfo () {
     toast.info('Info message', {
@@ -87,7 +87,7 @@ This plugin has a composable for easier use, after installing it you can use [us
 <script lang="ts" setup>
   import { useToast } from 'maz-ui'
 
-  const { toast } = useToast()
+  const toast = useToast()
 
   function showInfo () {
     toast.info('Info message', {
@@ -143,7 +143,7 @@ app.mount('#app')
 ### Positions
 
 ```ts
-type ToasterPositions =
+type ToasterPosition =
   | 'top'
   | 'top-right'
   | 'top-left'

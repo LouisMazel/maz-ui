@@ -29,13 +29,13 @@
   import { ToasterTimer } from './timer'
   import type { LocalToasterOptions } from './toaster-handler'
   import XIcon from './../../../icons/x-mark.svg'
-  import type { ToasterPositions } from './types'
+  import type { ToasterPosition } from './types'
 
   const Toaster = ref<HTMLDivElement>()
 
   const props = defineProps({
     position: {
-      type: String as PropType<ToasterPositions>,
+      type: String as PropType<ToasterPosition>,
       default: 'bottom-right',
     },
     maxToasts: { type: [Number, Boolean], default: false },
@@ -209,10 +209,7 @@
       box-sizing: border-box;
     }
 
-    @apply maz-relative maz-flex maz-w-full maz-cursor-pointer maz-items-center maz-self-center maz-rounded
-      maz-pl-2 maz-pr-2 maz-text-white maz-shadow-md
-      maz-transition maz-duration-300
-      maz-ease-in-out;
+    @apply maz-relative maz-flex maz-w-full maz-cursor-pointer maz-items-center maz-self-center maz-rounded maz-pl-2 maz-pr-2 maz-text-white maz-shadow-md maz-transition maz-duration-300 maz-ease-in-out;
 
     &.--left,
     &.--right {
@@ -232,9 +229,7 @@
     }
 
     & .--close {
-      @apply maz-ml-1 maz-flex maz-h-7 maz-w-7 maz-rounded maz-bg-transparent maz-p-0
-        maz-flex-center
-        hover:maz-bg-gray-900/20;
+      @apply maz-ml-1 maz-flex maz-h-7 maz-w-7 maz-rounded maz-bg-transparent maz-p-0 maz-flex-center hover:maz-bg-gray-900/20;
 
       & .--icon {
         @apply maz-cursor-pointer;

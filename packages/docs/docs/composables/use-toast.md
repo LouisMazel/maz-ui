@@ -25,7 +25,7 @@ More info about [toaster plugin](./../plugins/toaster.md) in its documentation
 <script lang="ts" setup>
   import { useToast } from 'vue'
 
-  const { toast } = useToast()
+  const toast = useToast()
 
   toast.info('info message')
   toast.success('success message')
