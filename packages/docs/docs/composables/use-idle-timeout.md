@@ -84,6 +84,11 @@ A plugin to know the amount of time a user has spent on your website
 
   import { useIdleTimeout } from 'maz-ui'
 
+  const idleTimeout = useIdleTimeout({
+    callback,
+    options,
+  })
+
   const event = ref({})
 
   const callback = ({ isIdle, eventType }) => {
@@ -104,11 +109,11 @@ A plugin to know the amount of time a user has spent on your website
   }
 
   onMounted(() => {
-    idle.value.start()
+    idleTimeout.start()
   })
 
   onBeforeUnmount(() => {
-    idle.value.destroy()
+    idleTimeout.destroy()
   })
 </script>
 ```
@@ -131,18 +136,18 @@ A plugin to know the amount of time a user has spent on your website
     once: false,
   }
 
-  const { idle } = useIdleTimeout({
+  const idle = useIdleTimeout({
     callback,
     options,
   })
 
   onMounted(() => {
     // should be executed on client
-    idle.value.start()
+    idleTimeout.start()
   })
 
   onBeforeUnmount(() => {
-    idle.value.destroy()
+    idleTimeout.destroy()
   })
 </script>
 
@@ -184,7 +189,7 @@ const defaultOptions: IdleTimeoutStrictOption = {
 Start tracking user - needed for SSR when `immediate` option is set to false (execute it on client side)
 
 ```ts
-idle.value.start()
+idle.start()
 ```
 
 ### Pause
@@ -192,7 +197,7 @@ idle.value.start()
 Will pause the timeout and events
 
 ```ts
-idle.value.pause()
+idle.pause()
 ```
 
 ### Resume
@@ -200,7 +205,7 @@ idle.value.pause()
 Resume the instance will reinit the timeout
 
 ```ts
-idle.value.resume()
+idle.resume()
 ```
 
 ### Reset
@@ -208,7 +213,7 @@ idle.value.resume()
 Reset the timeout of the instance like a restart
 
 ```ts
-idle.value.reset()
+idle.reset()
 ```
 
 ### Destroy
@@ -216,5 +221,5 @@ idle.value.reset()
 Will destroy the instance and stop tracking
 
 ```ts
-idle.value.destroy()
+idle.destroy()
 ```

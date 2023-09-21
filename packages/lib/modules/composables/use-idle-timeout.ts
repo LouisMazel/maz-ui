@@ -1,7 +1,3 @@
-import { ref, type Ref } from 'vue'
-
-const handler = ref<IdleTimeout>()
-
 import {
   IdleTimeout,
   type IdleTimeoutCallback,
@@ -15,13 +11,5 @@ export const useIdleTimeout = ({
   callback: IdleTimeoutCallback
   options?: IdleTimeoutOptions
 }) => {
-  const instance = new IdleTimeout(callback, options)
-
-  handler.value = instance
-
-  const idle = handler as Ref<IdleTimeout>
-
-  return {
-    idle,
-  }
+  return new IdleTimeout(callback, options)
 }
