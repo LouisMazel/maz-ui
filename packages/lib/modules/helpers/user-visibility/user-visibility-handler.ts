@@ -14,7 +14,6 @@ export class UserVisibility {
     timeout: 5000,
     once: false,
     immediate: true,
-    ssr: false,
   }
 
   private isVisible = false
@@ -30,12 +29,8 @@ export class UserVisibility {
 
     this.eventHandlerFunction = this.eventHandler.bind(this)
 
-    if (!this.options.ssr && isClient()) {
+    if (isClient()) {
       this.start()
-    } else if (!this.options.ssr && !isClient()) {
-      console.warn(
-        `[UserVisibility](constructor) executed on server side - set "ssr" option to "false"`,
-      )
     }
   }
 
