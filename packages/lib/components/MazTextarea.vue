@@ -55,7 +55,7 @@
 </script>
 
 <script lang="ts" setup>
-  import { useInstanceUniqId } from '../modules/composables/instance-uniq-id'
+  import { useInstanceUniqId } from '../modules/composables'
   import { computed, onBeforeUnmount, onMounted, ref, type PropType, defineComponent } from 'vue'
   import { getCurrentInstance } from 'vue'
   import { TextareaAutogrow } from './MazTextarea/textarea-autogrow'
@@ -88,7 +88,7 @@
 
   let textareaAutogrow: TextareaAutogrow | undefined
 
-  const { instanceId } = useInstanceUniqId({
+  const instanceId = useInstanceUniqId({
     componentName: 'MazTextarea',
     instance,
     providedId: props.id,
@@ -152,8 +152,7 @@
     @apply maz-relative maz-flex maz-flex-col;
 
     textarea {
-      @apply maz-min-h-[6.25rem] maz-w-full maz-resize-y maz-rounded maz-border maz-border-solid
-        maz-bg-color maz-p-4 maz-text-normal maz-outline-none;
+      @apply maz-min-h-[6.25rem] maz-w-full maz-resize-y maz-rounded maz-border maz-border-solid maz-bg-color maz-p-4 maz-text-normal maz-outline-none;
 
       &.--default-border {
         @apply maz-border-gray-200;

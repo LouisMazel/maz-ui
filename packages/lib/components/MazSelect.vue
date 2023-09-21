@@ -116,7 +116,7 @@
   import { ref, computed, onBeforeMount, nextTick, type PropType, getCurrentInstance } from 'vue'
   import MazInput from './MazInput.vue'
   import type { Color, ModelValueSimple, Position, Size } from './types'
-  import { useInstanceUniqId } from '../modules/composables/instance-uniq-id'
+  import { useInstanceUniqId } from '../modules/composables'
 
   import SearchIcon from './../icons/magnifying-glass.svg'
   import ChevronDownIcon from './../icons/chevron-down.svg'
@@ -171,7 +171,7 @@
 
   const hasListOpened = computed(() => listOpened.value || props.open)
 
-  const { instanceId } = useInstanceUniqId({
+  const instanceId = useInstanceUniqId({
     componentName: 'MazSelect',
     instance,
     providedId: props.id,
@@ -400,8 +400,7 @@
     }
 
     .m-select-list {
-      @apply maz-absolute maz-z-100 maz-flex maz-flex-col maz-overflow-hidden
-        maz-rounded maz-bg-color maz-text-normal maz-elevation;
+      @apply maz-absolute maz-z-100 maz-flex maz-flex-col maz-overflow-hidden maz-rounded maz-bg-color maz-text-normal maz-elevation;
 
       min-width: 3.5rem;
 
@@ -434,8 +433,7 @@
       }
 
       &-item {
-        @apply maz-flex maz-w-full maz-items-center maz-truncate
-          maz-bg-transparent maz-px-4 maz-text-left maz-text-normal hover:maz-bg-color-light;
+        @apply maz-flex maz-w-full maz-items-center maz-truncate maz-bg-transparent maz-px-4 maz-text-left maz-text-normal hover:maz-bg-color-light;
 
         span {
           @apply maz-truncate;

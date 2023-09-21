@@ -10,9 +10,5 @@ export const useInstanceUniqId = ({
   instance?: ReturnType<typeof getCurrentInstance>
   providedId?: string
 }) => {
-  const instanceId = computed(() => providedId ?? `${componentName}-${instance?.uid}`)
-
-  return {
-    instanceId,
-  }
+  return computed(() => providedId ?? `${componentName}-${instance?.uid}`)
 }

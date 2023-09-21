@@ -114,7 +114,7 @@
     loadPhoneNumberExamplesFile,
   } from './MazPhoneNumberInput/utils'
   import { truthyFilter } from './../modules/helpers'
-  import { useInstanceUniqId } from '../modules/composables/instance-uniq-id'
+  import { useInstanceUniqId } from '../modules/composables'
 
   import locales from './MazPhoneNumberInput/constantes/locales'
 
@@ -201,7 +201,7 @@
   })
 
   const instance = getCurrentInstance()
-  const { instanceId } = useInstanceUniqId({
+  const instanceId = useInstanceUniqId({
     componentName: 'MazPhoneNumberInput',
     instance,
     providedId: props.id,

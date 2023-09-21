@@ -1,8 +1,8 @@
-import { useInstanceUniqId } from '@modules/composables/instance-uniq-id'
+import { useInstanceUniqId } from '@modules/composables'
 
 describe('useInstanceUniqId', () => {
   it('should return the provided id if it exists', () => {
-    const { instanceId } = useInstanceUniqId({
+    const instanceId = useInstanceUniqId({
       componentName: 'test-component',
       providedId: 'test-id',
     })
@@ -14,7 +14,7 @@ describe('useInstanceUniqId', () => {
       name: 'test-component',
       uid: 1,
     }
-    const { instanceId } = useInstanceUniqId({
+    const instanceId = useInstanceUniqId({
       componentName: 'test-component',
       // @ts-ignore
       instance: component,
