@@ -1,26 +1,10 @@
-import { ToasterHandler } from './../../../modules'
+import { installToaster } from './../../../modules'
 import { defineNuxtPlugin } from 'nuxt/app'
 
-export default defineNuxtPlugin(({ vueApp }) => {
-  const instance = new ToasterHandler(vueApp, {
-    position: 'top',
-    timeout: 10_000,
-    persistent: false,
-  })
+export default defineNuxtPlugin(({ vueApp, $config }) => {
+  const toasterOptions = $config.public.mazUi?.injectToaster
 
-  /* eslint-disable @typescript-eslint/no-empty-function */
-  const toasterServer = {
-    show: () => {},
-    success: () => {},
-    error: () => {},
-    warning: () => {},
-    info: () => {},
-  } as unknown as ToasterHandler
-  /* eslint-enable @typescript-eslint/no-empty-function */
+  const options = typeof toasterOptions === 'object' ? toasterOptions : undefined
 
-  return {
-    provide: {
-      toast: (process.client ? instance : toasterServer) as ToasterHandler,
-    },
-  }
+  vueApp.use(installToaster, options)
 })
