@@ -26,14 +26,6 @@ description: vLazyImg is a Vue 3 directive to lazy load images with many options
 
 <script lang="ts" setup>
   import { vLazyImg } from 'maz-ui'
-  import { ref } from 'vue'
-
-  const hasClikedOutside = ref(false)
-
-  const clikedOutside = () => {
-    hasClikedOutside.value = true
-    setTimeout(() => hasClikedOutside.value = false, 2000)
-  }
 </script>
 ```
 
