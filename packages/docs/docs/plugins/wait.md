@@ -37,7 +37,7 @@ This plugin has a composable for easier use, after installing it you can use [us
   import { ref } from 'vue'
   import { useWait } from 'maz-ui'
 
-  const { wait } = useWait()
+  const wait = useWait()
 
   const submitted = ref(false)
 
@@ -61,7 +61,7 @@ This plugin has a composable for easier use, after installing it you can use [us
   import { ref } from 'vue'
   import { useWait } from 'maz-ui'
 
-  const { wait } = useWait()
+  const wait = useWait()
 
   const submitted = ref(false)
 
