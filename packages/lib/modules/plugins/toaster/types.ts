@@ -1,4 +1,4 @@
-export type ToasterPositions =
+export type ToasterPosition =
   | 'top'
   | 'top-right'
   | 'top-left'
@@ -6,8 +6,10 @@ export type ToasterPositions =
   | 'bottom-right'
   | 'bottom-left'
 
-export interface ToasterOptions {
-  position?: ToasterPositions
+export type ToasterPositions = ToasterPosition
+
+export type ToasterOptions = {
+  position?: ToasterPosition
   timeout?: number
   persistent?: boolean
 }
