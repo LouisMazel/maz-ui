@@ -12,23 +12,15 @@ description: Documentation to help you install the maz-ui library
 
 ## Installation
 
-This section will help you install the library.
-
-### Library installation from NPM
-
-<br />
-
 <NpmBadge package="maz-ui" dist-tag="latest" />
 
 ```bash
-npm i maz-ui
+npm install maz-ui
+# or pnpm add maz-ui
+# or yarn add maz-ui
 ```
 
-### Import necessary CSS file
-
-<br />
-
-#### Vue JS <NpmBadge package="vue" />
+## Vue JS <NpmBadge package="vue" />
 
 In the `main.js` or `main.ts`, import main maz-ui CSS file before your own CSS
 
@@ -37,37 +29,25 @@ import 'maz-ui/css/main.css'
 import '@/css/path_to_your_main_file.css'
 ```
 
-#### Nuxt JS <NpmBadge package="nuxt" />
+## Nuxt JS <NpmBadge package="nuxt" />
 
-::: tip
-For **NuxtJS v3** and higher, use the dedicated Nuxt module to take advantage of auto-imports of components, plugins,composables and css files: [Nuxt Module Documentation](./nuxt.md)
-:::
+A Nuxt Module is available to install the library. Take advantage of the **automatic import** of CSS files, components, composables and plugins.
+
+**Follow the [Nuxt Module Documentation](./nuxt.md) and see options**
 
 ```ts
-export default {
-  css: [
-    'maz-ui/css/main.css',
-    '@/css/path_to_your_main_file.css',
-  ],
-}
+export default defineNuxtConfig({
+  modules: ['maz-ui/nuxt'],
+})
 ```
 
-#### Optional
+---
 
-You can add these CSS rules in your main CSS file to use maz-ui font family
-
-```css
-html {
-  font-family: var(--maz-font-family);
-  line-height: 1.5;
-}
-```
-
-### Recommended
+## Recommendations
 
 To optimize your bundle size, it's recommended to use the partial import
 
-#### Global component installation (recommended)
+### Global component installation (recommended)
 
 > Example with some components
 
@@ -88,7 +68,7 @@ app.component('MazPhoneNumberInput', MazPhoneNumberInput)
 ...
 ```
 
-#### Component import
+### Component import
 
 > Import the module chosen directly in your component
 
@@ -103,6 +83,8 @@ app.component('MazPhoneNumberInput', MazPhoneNumberInput)
 ```
 
 ### Not recommended
+
+<br />
 
 #### Fully library installation
 
@@ -120,7 +102,11 @@ Object.entries(components).forEach(([componentName, component]) => {
 
 ## Typescript Users (not required)
 
-Now the module resolution `Node` is deprecated, for a better Typescript compatibility, please use `Node16` ou `NodeNext`. The `Bundler` mode works too.
+Now the module resolution `Node` is deprecated, for a better Typescript compatibility, please use `Node16`, `NodeNext` or `Bundler`.
+
+::: info
+The module resolution options `Node` still work
+:::
 
 `tsconfig.json`
 

@@ -1,6 +1,6 @@
 ---
 title: Nuxt Module
-description: This module enables auto imports of components, composables and installs plugins and directives
+description: This module enables auto imports of CSS files, components, composables and installs plugins and directives
 ---
 
 <!-- markdownlint-disable MD033 MD025 -->
@@ -33,7 +33,9 @@ export default defineNuxtConfig({
   mazUi: {
     injectComponents: true,
     injectCss: true,
-    injectAosCss: false,
+    injectAos: {
+      injectCss: true,
+    },
     injectToaster: true,
     injectUseThemeHandler: true,
     devtools: true,
@@ -72,27 +74,70 @@ The components, plugins and tools are auto-imported
 ```ts
 export interface ModuleOptions {
   /**
-   * Enable auto import of main css file
+   * Enable auto-import of main css file
    * @default true
    */
   injectCss?: boolean
   /**
-   * Enable auto import of main css file
+   * Install aos plugin and enable auto-import of useAos composable
    * @default false
    */
-  injectAosCss?: boolean
+  injectAos?:
+    | boolean
+    | (Omit<AosOptions, 'router'> & {
+        /**
+         * Auto inject aos CSS file
+         * @default true
+         */
+        injectCss?: boolean
+        /**
+         * Set `true` to re-run animations on page change
+         * @default false
+         */
+        router?: boolean
+      })
   /**
-   * Install the toaster plugin and enable auto import of toaster composable
+   * Install toaster plugin and enable auto-import of useToast composable
    * @default false
    */
-  injectToaster?: boolean
+  injectToaster?: boolean | ToasterOptions
   /**
-   * Enable auto import of useTheme composable
+   * Install wait plugin and enable auto-import of useWait composable
    * @default false
    */
-  injectUseThemeHandler?: boolean
+  injectUseWait?: boolean
   /**
-   * Enable auto import of all components
+   * Enable auto-import of useThemeHandler composable
+   * @default false
+   */
+  injectUseThemeHandler?: boolean | ThemeHandlerOptions
+  /**
+   * Enable auto-import of useIdleTimeout composable
+   * @default false
+   */
+  injectUseIdleTimeout?: boolean
+  /**
+   * Enable auto-import of useUserVisibility composable
+   * @default false
+   */
+  injectUseUserVisibility?: boolean
+  /**
+   * Enable auto-import of v-zoom-img directive
+   * @default false
+   */
+  injectVZoomImg?: boolean
+  /**
+   * Enable auto-import of v-click-outside directive
+   * @default false
+   */
+  injectVClickOutside?: boolean
+  /**
+   * Enable auto-import of v-lazy-img directive
+   * @default false
+   */
+  injectVLazyImg?: boolean | vLazyImgOptions
+  /**
+   * Enable auto-import of all components
    * @default true
    */
   injectComponents?: boolean

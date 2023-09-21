@@ -122,7 +122,7 @@ You must override `--maz-***` CSS variables
   --maz-color-muted-dark: hsl(0deg 0% 89% / 54%);
 
   /** BG OVERLAY **/
-  --maz-bg-overlay: hsl(0deg 0% 0% / 50%);
+  --maz-bg-overlay: hsl(0deg 0% 0% / 30%);
 
   /** BG LIGHT COLOR **/
   --maz-bg-color-light: hsl(0deg 0% 100%);
