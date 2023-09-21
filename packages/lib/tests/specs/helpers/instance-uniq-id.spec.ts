@@ -18,6 +18,6 @@ afterAll(() => {
 })
 
 test('helpers/useInstanceUniqId', () => {
-  expect(instance.instanceId).toBeDefined()
-  expect(instance.instanceId.value).toBe('MazInput-2')
+  expect(instance.value).toBeDefined()
+  expect(instance.value).toBe('MazInput-2')
 })

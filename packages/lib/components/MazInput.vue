@@ -109,7 +109,7 @@
   } from 'vue'
 
   import { debounce } from './../modules/helpers/debounce'
-  import { useInstanceUniqId } from '../modules/composables/instance-uniq-id'
+  import { useInstanceUniqId } from '../modules/composables'
 
   import MazBtn from './MazBtn.vue'
   import MazIcon from './MazIcon.vue'
@@ -195,7 +195,7 @@
 
       const instance = getCurrentInstance()
 
-      const { instanceId } = useInstanceUniqId({
+      const instanceId = useInstanceUniqId({
         componentName: 'MazInput',
         instance,
         providedId: props.id,
@@ -372,8 +372,7 @@
     }
 
     &-wrapper {
-      @apply maz-relative maz-z-1 maz-flex maz-flex-1 maz-overflow-hidden
-        maz-border maz-border-solid maz-bg-color maz-transition-colors maz-duration-300;
+      @apply maz-relative maz-z-1 maz-flex maz-flex-1 maz-overflow-hidden maz-border maz-border-solid maz-bg-color maz-transition-colors maz-duration-300;
 
       &.--default-border {
         @apply maz-border-gray-200;
@@ -398,8 +397,7 @@
     }
 
     &-input {
-      @apply maz-m-0 maz-block maz-h-full maz-w-full maz-appearance-none maz-border-none
-        maz-bg-transparent maz-px-4 maz-py-0 maz-text-normal maz-shadow-none maz-outline-none;
+      @apply maz-m-0 maz-block maz-h-full maz-w-full maz-appearance-none maz-border-none maz-bg-transparent maz-px-4 maz-py-0 maz-text-normal maz-shadow-none maz-outline-none;
 
       &:-webkit-autofill,
       &:-webkit-autofill:hover,
