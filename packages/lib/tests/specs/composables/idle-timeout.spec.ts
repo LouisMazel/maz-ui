@@ -3,13 +3,13 @@ import { IdleTimeout, useIdleTimeout } from '@modules/index'
 test('useIdleTimeout should create an instance of IdleTimeout', () => {
   const callback = vitest.fn()
   const options = { timeout: 10_000 }
-  const { idle } = useIdleTimeout({ callback, options })
+  const idle = useIdleTimeout({ callback, options })
 
-  expect(idle.value).toBeInstanceOf(IdleTimeout)
+  expect(idle).toBeInstanceOf(IdleTimeout)
   // @ts-ignore
-  expect(idle.value.callback).toBe(callback)
+  expect(idle.callback).toBe(callback)
   // @ts-ignore
-  expect(idle.value.options).toEqual({
+  expect(idle.options).toEqual({
     element: undefined,
     immediate: true,
     once: false,
@@ -20,9 +20,9 @@ test('useIdleTimeout should create an instance of IdleTimeout', () => {
 
 test('useIdleTimeout should default options to an empty object if not provided', () => {
   const callback = vitest.fn()
-  const { idle } = useIdleTimeout({ callback })
+  const idle = useIdleTimeout({ callback })
   // @ts-ignore
-  expect(idle.value.options).toEqual({
+  expect(idle.options).toEqual({
     element: undefined,
     immediate: true,
     once: false,

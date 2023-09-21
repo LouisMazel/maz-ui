@@ -7,7 +7,6 @@ export class IdleTimeout {
     timeout: 60 * 1000 * 5, // 5 minutes
     once: false,
     immediate: true,
-    ssr: false,
   }
 
   private options: IdleTimeoutStrictOption
@@ -42,12 +41,8 @@ export class IdleTimeout {
       ...options,
     }
 
-    if (!this.options.ssr && isClient()) {
+    if (isClient()) {
       this.start()
-    } else if (!this.options.ssr && !isClient()) {
-      console.warn(
-        `[IdleTimeout](constructor) executed on server side - set immediate option to "false"`,
-      )
     }
   }
 
