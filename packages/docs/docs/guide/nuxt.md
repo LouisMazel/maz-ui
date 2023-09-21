@@ -36,7 +36,7 @@ export default defineNuxtConfig({
     injectAos: {
       injectCss: true,
     },
-    injectToaster: true,
+    injectUseToast: true,
     injectUseThemeHandler: true,
     devtools: true,
   },
@@ -100,7 +100,7 @@ export interface ModuleOptions {
    * Install toaster plugin and enable auto-import of useToast composable
    * @default false
    */
-  injectToaster?: boolean | ToasterOptions
+  injectUseToast?: boolean | ToasterOptions
   /**
    * Install wait plugin and enable auto-import of useWait composable
    * @default false
@@ -122,20 +122,25 @@ export interface ModuleOptions {
    */
   injectUseUserVisibility?: boolean
   /**
-   * Enable auto-import of v-zoom-img directive
+   * Globally install of v-zoom-img directive
    * @default false
    */
-  injectVZoomImg?: boolean
+  installVZoomImg?: boolean
   /**
-   * Enable auto-import of v-click-outside directive
+   * Globally install of v-click-outside directive
    * @default false
    */
-  injectVClickOutside?: boolean
+  installVClickOutside?: boolean
   /**
-   * Enable auto-import of v-lazy-img directive
+   * Globally install of v-fullscreen-img directive
    * @default false
    */
-  injectVLazyImg?: boolean | vLazyImgOptions
+  installVFullscreenImg?: boolean
+  /**
+   * Globally install of v-lazy-img directive
+   * @default false
+   */
+  installVLazyImg?: boolean | vLazyImgOptions
   /**
    * Enable auto-import of all components
    * @default true

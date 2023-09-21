@@ -6,6 +6,14 @@
 
     <!-- End Developping Area -->
 
+    <img
+      v-fullscreen-img="{
+        scaleOnHover: true,
+        blurOnHover: true,
+      }"
+      src="https://cdn.artphotolimited.com/images/5ff5a529bd40b83c5a537440/1000x1000/gerard-depardieu-1983.jpg"
+    />
+
     <MazFullscreenLoader v-show="wait.isLoading('APP_LOADING')" color="secondary">
       Loading...
     </MazFullscreenLoader>

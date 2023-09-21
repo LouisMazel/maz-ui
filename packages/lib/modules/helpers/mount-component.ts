@@ -3,30 +3,38 @@ import type { App, Component } from 'vue'
 
 export function mount(
   component: Component,
-  {
-    props,
-    children,
-    element,
-    app,
-  }: {
+  options?: {
     props?: Record<string, unknown>
     children?: unknown
     app?: App
     element?: HTMLElement
-  } = {},
+    addDestroyInProps?: boolean
+  },
 ) {
-  let el = element
+  let el = options?.element
 
-  const vNode = createVNode(component, props, children)
-
-  if (app && app._context) vNode.appContext = app._context
-  if (el) render(vNode, el)
-  else if (typeof document !== 'undefined') {
-    render(vNode, (el = document.createElement('div')))
+  function destroy() {
+    if (el) render(null, el)
   }
 
-  const destroy = () => {
-    if (el) render(null, el)
+  const vNode = createVNode(
+    component,
+    { ...options?.props, ...(options?.addDestroyInProps ? { destroy } : {}) },
+    options?.children,
+  )
+
+  if (options?.app) {
+    vNode.appContext = options.app._context
+
+    if (el) {
+      render(vNode, el)
+    } else if (typeof document !== 'undefined') {
+      el = document.createElement('div')
+      render(vNode, el)
+    }
+  } else {
+    el = el ?? document.body
+    render(vNode, el)
   }
 
   return { vNode, destroy, el }

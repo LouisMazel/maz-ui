@@ -17,7 +17,7 @@ export default defineNuxtConfig({
       injectCss: true,
       delay: 1000,
     },
-    injectToaster: {
+    injectUseToast: {
       position: 'bottom-right',
       timeout: 1000,
       persistent: false,
@@ -32,9 +32,10 @@ export default defineNuxtConfig({
     injectUseIdleTimeout: true,
     injectUseUserVisibility: true,
     injectUseWait: true,
-    injectVZoomImg: true,
-    injectVLazyImg: true,
-    injectVClickOutside: true,
+    installVZoomImg: true,
+    installVLazyImg: true,
+    installVClickOutside: true,
+    installVFullscreenImg: true,
     devtools: true,
   },
   srcDir: 'src/',

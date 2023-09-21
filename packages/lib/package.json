@@ -67,7 +67,8 @@
     "libphonenumber-js": "^1.9.44",
     "nuxt": "^3.4.0",
     "vue": "^3.0.0",
-    "vue-router": "^4.0.0"
+    "vue-router": "^4.0.0",
+    "vue-scrollto": "^2.0.0"
   },
   "peerDependenciesMeta": {
     "dropzone": {
@@ -89,6 +90,9 @@
       "optional": true
     },
     "@nuxt/kit": {
+      "optional": true
+    },
+    "vue-scrollto": {
       "optional": true
     },
     "defu": {
@@ -169,6 +173,7 @@
     "vue-chartjs": "^5.2.0",
     "vue-loader": "^17.2.2",
     "vue-router": "^4.2.4",
+    "vue-scrollto": "^2.20.0",
     "vue-tsc": "^1.8.13",
     "vuedraggable": "^2.24.3"
   },
