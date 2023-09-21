@@ -22,11 +22,11 @@ Useful to know if the user is displaying your website
 </MazCard>
 
 <div class="flex items-start gap-05 items-center flex-wrap">
-  <MazBtn @click="visibility.start()" color="info">
+  <MazBtn @click="userVisibility.start()" color="info">
     Start
   </MazBtn>
 
-  <MazBtn @click="visibility.destroy()" color="danger">
+  <MazBtn @click="userVisibility.destroy()" color="danger">
     Destroy
   </MazBtn>
 </div>
@@ -39,11 +39,11 @@ Switch tabs for a second to see events
 
 ```vue
 <template>
-  <MazBtn @click="visibility.destroy()" color="danger">
+  <MazBtn @click="userVisibility.destroy()" color="danger">
     Destroy
   </MazBtn>
 
-  <MazBtn @click="visibility.destroy()" color="danger">
+  <MazBtn @click="userVisibility.destroy()" color="danger">
     Destroy
   </MazBtn>
 
@@ -75,15 +75,15 @@ Switch tabs for a second to see events
     ssr: true,
   }
 
-  const { visibility } = useUserVisibility({ callback, options })
+  const userVisibility = useUserVisibility({ callback, options })
 
   onMounted(() => {
-    visibility.value.start()
+    userVisibility.start()
   })
 
   onBeforeUnmount(() => {
-    visibility.value.destroy()
-  })d
+    userVisibility.destroy()
+  })
 </script>
 ```
 
@@ -106,14 +106,14 @@ Switch tabs for a second to see events
     ssr: true,
   }
 
-  const { visibility } = useUserVisibility({ callback, options })
+  const userVisibility = useUserVisibility({ callback, options })
 
   onMounted(() => {
-    visibility.value.start()
+    userVisibility.start()
   })
 
   onBeforeUnmount(() => {
-    visibility.value.destroy()
+    userVisibility.destroy()
   })
 </script>
 
@@ -156,7 +156,7 @@ const defaultOptions: UserVisibilyOptions = {
 Will start the user visibility tracking
 
 ```ts
-visibility.start()
+userVisibility.start()
 ```
 
 ### Destroy
@@ -164,5 +164,5 @@ visibility.start()
 Will destroy the instance and stop the tracking
 
 ```ts
-visibility.destroy()
+userVisibility.destroy()
 ```
