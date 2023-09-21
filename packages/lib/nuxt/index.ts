@@ -3,40 +3,74 @@ import { defu } from 'defu'
 import { componentList } from '../components/component-list'
 import { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import type { AosOptions, ToasterOptions, ThemeHandlerOptions, vLazyImgOptions } from 'modules'
 
 export interface MazUiNuxtOptions {
   /**
-   * Enable auto import of main css file
+   * Enable auto-import of main css file
    * @default true
    */
   injectCss?: boolean
   /**
-   * Enable auto import of main css file
+   * Install aos plugin and enable auto-import of useAos composable
    * @default false
    */
-  injectAosCss?: boolean
+  injectAos?:
+    | boolean
+    | (Omit<AosOptions, 'router'> & {
+        /**
+         * Auto inject aos CSS file
+         * @default true
+         */
+        injectCss?: boolean
+        /**
+         * Set `true` to re-run animations on page change
+         * @default false
+         */
+        router?: boolean
+      })
   /**
-   * Install the toaster plugin and enable auto import of toaster composable
+   * Install toaster plugin and enable auto-import of useToast composable
    * @default false
    */
-  injectToaster?: boolean
-  // /**
-  //  * Enable auto import of useCurrency composable
-  //  * @default false
-  //  */
-  // injectUseCurrency?: boolean
+  injectToaster?: boolean | ToasterOptions
   /**
-   * Enable auto import of useTheme composable
+   * Install wait plugin and enable auto-import of useWait composable
    * @default false
    */
-  injectUseThemeHandler?: boolean
-  // /**
-  //  * install global of v-fullscreen-img directive
-  //  * @default false
-  //  */
-  // installFullscreenImgDirective?: boolean
+  injectUseWait?: boolean
   /**
-   * Enable auto import of all components
+   * Enable auto-import of useThemeHandler composable
+   * @default false
+   */
+  injectUseThemeHandler?: boolean | ThemeHandlerOptions
+  /**
+   * Enable auto-import of useIdleTimeout composable
+   * @default false
+   */
+  injectUseIdleTimeout?: boolean
+  /**
+   * Enable auto-import of useUserVisibility composable
+   * @default false
+   */
+  injectUseUserVisibility?: boolean
+  /**
+   * Enable auto-import of v-zoom-img directive
+   * @default false
+   */
+  injectVZoomImg?: boolean
+  /**
+   * Enable auto-import of v-click-outside directive
+   * @default false
+   */
+  injectVClickOutside?: boolean
+  /**
+   * Enable auto-import of v-lazy-img directive
+   * @default false
+   */
+  injectVLazyImg?: boolean | vLazyImgOptions
+  /**
+   * Enable auto-import of all components
    * @default true
    */
   injectComponents?: boolean
@@ -45,6 +79,16 @@ export interface MazUiNuxtOptions {
    * @default true
    */
   devtools?: boolean
+  // /**
+  //  * Enable auto-import of useCurrency composable
+  //  * @default false
+  //  */
+  // injectUseCurrency?: boolean
+  // /**
+  //  * install global of v-fullscreen-img directive
+  //  * @default false
+  //  */
+  // installFullscreenImgDirective?: boolean
 }
 
 declare module '@nuxt/schema' {
@@ -87,13 +131,6 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       nuxt.options.css = [resolve(path), ...nuxt.options.css]
     }
 
-    if (moduleOptions.injectAosCss && process.env.MAZ_UI_DEV === 'true') {
-      // the library should be built
-      nuxt.options.css = [resolve('./../dist/css/aos.css'), ...nuxt.options.css]
-    } else if (moduleOptions.injectAosCss) {
-      nuxt.options.css = [resolve('./../css/aos.css'), ...nuxt.options.css]
-    }
-
     if (moduleOptions.injectComponents) {
       for (const componentName of componentList) {
         addComponent({
@@ -106,14 +143,62 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       }
     }
 
+    if (moduleOptions.injectAos) {
+      addPlugin(resolve(_dirname, './runtime/plugins/aos'))
+
+      addImports({
+        from: 'maz-ui',
+        name: 'useAos',
+        as: 'useAos',
+      })
+
+      const injectAosCSS =
+        typeof moduleOptions.injectAos === 'object' &&
+        typeof moduleOptions.injectAos.injectCss === 'boolean'
+          ? moduleOptions.injectAos.injectCss
+          : true
+
+      if (
+        typeof moduleOptions.injectAos === 'object' &&
+        injectAosCSS &&
+        process.env.MAZ_UI_DEV === 'true'
+      ) {
+        nuxt.options.css = [resolve('./../dist/css/aos.css'), ...nuxt.options.css]
+      } else if (typeof moduleOptions.injectAos === 'object' && injectAosCSS) {
+        nuxt.options.css = [resolve('./../css/aos.css'), ...nuxt.options.css]
+      }
+    }
+
     if (moduleOptions.injectToaster) {
       addPlugin(resolve(_dirname, './runtime/plugins/toaster'))
 
       addImports({
-        from: resolve(_dirname, './runtime/composables/use-toast'),
+        from: 'maz-ui',
         name: 'useToast',
         as: 'useToast',
       })
+    }
+
+    if (moduleOptions.injectUseWait) {
+      addPlugin(resolve(_dirname, './runtime/plugins/wait'))
+
+      addImports({
+        from: 'maz-ui',
+        name: 'useWait',
+        as: 'useWait',
+      })
+    }
+
+    if (moduleOptions.injectVZoomImg) {
+      addPlugin(resolve(_dirname, './runtime/plugins/v-zoom-img.ts'))
+    }
+
+    if (moduleOptions.injectVLazyImg) {
+      addPlugin(resolve(_dirname, './runtime/plugins/v-lazy-img.ts'))
+    }
+
+    if (moduleOptions.injectVClickOutside) {
+      addPlugin(resolve(_dirname, './runtime/plugins/v-click-outside.ts'))
     }
 
     // if (moduleOptions.injectUseCurrency) {
@@ -126,9 +211,25 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     if (moduleOptions.injectUseThemeHandler) {
       addImports({
-        from: 'maz-ui',
+        from: resolve(_dirname, './runtime/composables/use-theme-handler'),
         name: 'useThemeHandler',
         as: 'useThemeHandler',
+      })
+    }
+
+    if (moduleOptions.injectUseIdleTimeout) {
+      addImports({
+        from: 'maz-ui',
+        name: 'useIdleTimeout',
+        as: 'useIdleTimeout',
+      })
+    }
+
+    if (moduleOptions.injectUseUserVisibility) {
+      addImports({
+        from: 'maz-ui',
+        name: 'useUserVisibility',
+        as: 'useUserVisibility',
       })
     }
 
