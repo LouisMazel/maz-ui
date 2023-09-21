@@ -3,6 +3,7 @@ export {
   installToaster,
   toastInstance,
   type ToasterOptions,
+  type ToasterPosition,
   type ToasterPositions,
 } from './toaster'
 
