@@ -28,7 +28,7 @@ describe('FullscreenImgHandler', () => {
 
     expect(el.getAttribute('data-src')).toEqual('https://example.com/image.jpg')
     expect(el.getAttribute('data-alt')).toEqual('Alt Text')
-    expect(el.classList.contains('zv-fullscreen-img-instance')).toBeTruthy()
+    expect(el.classList.contains('m-fullscreen-img-instance')).toBeTruthy()
   })
 
   test('should use value object when provided', () => {
@@ -45,11 +45,11 @@ describe('FullscreenImgHandler', () => {
 
     handler.create(el, binding)
 
-    expect(el.classList.contains('zv-fullscreen-img-instance')).toBeTruthy()
+    expect(el.classList.contains('m-fullscreen-img-instance')).toBeTruthy()
 
     handler.remove(el)
 
-    expect(el.classList.contains('zv-fullscreen-img-instance')).toBeFalsy()
+    expect(el.classList.contains('m-fullscreen-img-instance')).toBeFalsy()
   })
 
   it('should update options', () => {

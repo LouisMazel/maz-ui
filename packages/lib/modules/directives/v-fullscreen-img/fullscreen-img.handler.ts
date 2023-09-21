@@ -23,7 +23,7 @@ export interface BindingData extends DirectiveBinding {
   value: vFullscreenImgBinding
 }
 
-const STATE_OPEN_CLASS = 'maz-fullscreen-is-open'
+const STATE_OPEN_CLASS = 'm-fullscreen-is-open'
 
 export class FullscreenImgHandler {
   private options: vFullscreenImgBindingOptions
@@ -55,7 +55,7 @@ export class FullscreenImgHandler {
   }
 
   get allInstances(): HTMLElement[] {
-    return [...document.querySelectorAll('.maz-fullscreen-img-instance')] as HTMLElement[]
+    return [...document.querySelectorAll('.m-fullscreen-img-instance')] as HTMLElement[]
   }
 
   private getImgSrc(el: HTMLElement) {
@@ -88,7 +88,7 @@ export class FullscreenImgHandler {
     /**
      * Set class & data attribute to use it with previous & next functions
      */
-    el.classList.add('maz-fullscreen-img-instance')
+    el.classList.add('m-fullscreen-img-instance')
 
     el.setAttribute('data-src', this.getImgSrc(el))
 
@@ -115,7 +115,7 @@ export class FullscreenImgHandler {
     el.removeEventListener('mouseleave', this.mouseLeaveListener)
     el.removeEventListener('click', this.renderPreviewListener)
 
-    el.classList.remove('maz-fullscreen-img-instance')
+    el.classList.remove('m-fullscreen-img-instance')
 
     el.style.cursor = ''
   }

@@ -1,0 +1,14 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`MazFullscreenImg > Should renders correctly with default props 1`] = `
+"<div data-v-717706d4=\\"\\" role=\\"button\\" class=\\"m-fullscreen-img\\" tabindex=\\"0\\">
+  <maz-spinner-stub data-v-717706d4=\\"\\" size=\\"2em\\" color=\\"primary\\" class=\\"m-fullscreen-img-loader maz-h-16\\" style=\\"display: none;\\"></maz-spinner-stub>
+  <!--v-if-->
+  <!--v-if--><button data-v-717706d4=\\"\\" type=\\"button\\" class=\\"m-fullscreen-btn --close\\">
+    <anonymous-stub data-v-717706d4=\\"\\" class=\\"maz-text-2xl\\"></anonymous-stub>
+  </button>
+  <div data-v-717706d4=\\"\\" class=\\"m-fullscreen-img-scroller\\">
+    <transition-stub data-v-717706d4=\\"\\" appear=\\"false\\" persisted=\\"true\\" css=\\"true\\"><img data-v-717706d4=\\"\\" id=\\"ZvImgElement\\" src=\\"https://via.placeholder.com/150\\" alt=\\"placeholder image\\" tabindex=\\"0\\" class=\\"zoomable cursor-zoom-out maz-h-screen maz-w-auto\\" style=\\"display: none;\\"></transition-stub>
+  </div>
+</div>"
+`;
