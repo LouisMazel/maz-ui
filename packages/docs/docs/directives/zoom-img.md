@@ -51,14 +51,14 @@ description: vZoomImg is a Vue 3 directive to enlarge an image like a modal on c
 <MazCard overflow-hidden>
   <img
     src="https://www.francetvinfo.fr/pictures/5u9TF9KLx9yxCgqfDV4k0Zk6R3E/752x423/2014/07/01/edd_1.jpg"
-    v-zoom-img="lazyBinding"
+    v-zoom-img="zoomImgBinding"
   />
 </MazCard>
 
 <script lang="ts" setup>
   import { vZoomImg } from 'maz-ui'
 
-  const lazyBinding: vZoomImgBinding = {
+  const zoomImgBinding: vZoomImgBinding = {
     src: 'https://www.francetvinfo.fr/pictures/5u9TF9KLx9yxCgqfDV4k0Zk6R3E/752x423/2014/07/01/edd_1.jpg',
     alt: 'alt image',
     blur: false,
@@ -72,7 +72,7 @@ description: vZoomImg is a Vue 3 directive to enlarge an image like a modal on c
   <MazCard overflow-hidden>
     <img
       src="https://www.francetvinfo.fr/pictures/5u9TF9KLx9yxCgqfDV4k0Zk6R3E/752x423/2014/07/01/edd_1.jpg"
-      v-zoom-img="lazyBinding"
+      v-zoom-img="zoomImgBinding"
     />
   </MazCard>
 </template>
@@ -80,7 +80,7 @@ description: vZoomImg is a Vue 3 directive to enlarge an image like a modal on c
 <script lang="ts" setup>
   import { vZoomImg } from 'maz-ui'
 
-  const lazyBinding: vZoomImgBinding = {
+  const zoomImgBinding: vZoomImgBinding = {
     src: 'https://www.francetvinfo.fr/pictures/5u9TF9KLx9yxCgqfDV4k0Zk6R3E/752x423/2014/07/01/edd_1.jpg',
     alt: 'alt image', // will be set on the zoomed image
     blur: false,
@@ -100,13 +100,7 @@ import { vZoomImgInstall, type vZoomImgOptions } from 'maz-ui'
 
 const app = createApp(App)
 
-const vZoomImgOpts: vZoomImgOptions = {
-  disabled: false,
-  scale: true,
-  blur: true,
-}
-
-app.use(vZoomImgInstall, vZoomImgOpts)
+app.use(vZoomImgInstall)
 
 app.mount('#app')
 ```
