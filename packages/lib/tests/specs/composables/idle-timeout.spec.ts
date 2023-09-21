@@ -13,7 +13,6 @@ test('useIdleTimeout should create an instance of IdleTimeout', () => {
     element: undefined,
     immediate: true,
     once: false,
-    ssr: false,
     timeout: 10_000,
   })
 })
@@ -26,7 +25,6 @@ test('useIdleTimeout should default options to an empty object if not provided',
     element: undefined,
     immediate: true,
     once: false,
-    ssr: false,
     timeout: 300_000,
   })
 })
