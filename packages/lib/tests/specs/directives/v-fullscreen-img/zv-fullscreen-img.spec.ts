@@ -42,8 +42,8 @@ describe('MazFullscreenImg', () => {
     await wrapper.vm.$nextTick()
     await wrapper.vm.$nextTick()
 
-    expect(wrapper.find('.zv-fullscreen-img-loader').isVisible()).toBe(true)
-    expect(wrapper.find('.zv-fullscreen-btn').exists()).toBe(true)
+    expect(wrapper.find('.m-fullscreen-img-loader').isVisible()).toBe(true)
+    expect(wrapper.find('.m-fullscreen-btn').exists()).toBe(true)
   })
 
   test('should render correctly with an alternative text', async () => {
@@ -59,7 +59,7 @@ describe('MazFullscreenImg', () => {
       },
     })
 
-    // expect(wrapper.find('.zv-fullscreen-img-wrapper').isVisible()).toBe(true)
+    // expect(wrapper.find('.m-fullscreen-img-wrapper').isVisible()).toBe(true)
     expect(wrapper.find('img').attributes('alt')).toBe(alt)
   })
 
@@ -76,7 +76,7 @@ describe('MazFullscreenImg', () => {
       },
     })
 
-    await wrapper.find('.zv-fullscreen-btn.--close').trigger('click')
+    await wrapper.find('.m-fullscreen-btn.--close').trigger('click')
 
     expect(wrapper.emitted('before-close')).toBeTruthy()
   })
