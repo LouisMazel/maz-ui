@@ -25,7 +25,7 @@ More info about the [aos plugin](./../plugins/aos.md) can be found in its docume
 <script lang="ts" setup>
   import { useAos } from 'vue'
 
-  const { aos } = useAos()
+  const aos = useAos()
 
   onMounted(() => {
     aos.runAnimations()

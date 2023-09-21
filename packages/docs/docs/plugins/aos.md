@@ -273,7 +273,7 @@ You can run animations programatically with the composable
   import { onMounted } from 'vue'
   import { useAos } from 'maz-ui'
 
-  const { aos } = useAos()
+  const aos = useAos()
 
   onMounted(() => {
     // should be run on client side

@@ -3,8 +3,7 @@ import { isClient } from './../../helpers/is-client'
 import type { App } from 'vue'
 import type { Router } from 'vue-router'
 
-export interface AosOptions {
-  routerHook?: (args: unknown) => () => void
+export type AosOptions = {
   router?: Router
   delay?: number
   observer?: IntersectionObserverInit
@@ -42,7 +41,7 @@ const DEFAULT_OPTIONS: ClassOptions = {
   },
 }
 
-class AosHandler {
+export class AosHandler {
   public options: ClassOptions
 
   constructor(options?: Omit<AosOptions, 'router'>) {
@@ -56,14 +55,6 @@ class AosHandler {
         ...DEFAULT_OPTIONS.animation,
         ...options?.animation,
       },
-    }
-  }
-
-  public runAnimations() {
-    if (isClient()) {
-      return this.handleObserver()
-    } else {
-      console.warn('[MazAos](runAnimations) should be executed on client side')
     }
   }
 
@@ -88,6 +79,14 @@ class AosHandler {
       } else {
         observer.observe(element)
       }
+    }
+  }
+
+  public runAnimations() {
+    if (isClient()) {
+      return this.handleObserver()
+    } else {
+      console.warn('[MazAos](runAnimations) should be executed on client side')
     }
   }
 
@@ -172,5 +171,3 @@ export const plugin = {
     }
   },
 }
-
-export { AosHandler }
