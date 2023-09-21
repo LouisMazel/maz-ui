@@ -37,7 +37,7 @@ export const components = {
         {text: 'MazDrawer', link: '/components/maz-drawer'},
         {text: 'MazGallery', link: '/components/maz-gallery'},
         {text: 'MazIcon', link: '/components/maz-icon'},
-        {text: 'MazLazyimg', link: '/components/maz-lazy-img'},
+        {text: 'MazLazyImg', link: '/components/maz-lazy-img'},
         {text: 'MazStepper', link: '/components/maz-stepper'},
         {text: 'MazSpinner', link: '/components/maz-spinner'},
         {text: 'MazTabs', link: '/components/maz-tabs' },

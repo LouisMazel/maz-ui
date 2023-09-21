@@ -33,7 +33,7 @@ export interface MazUiNuxtOptions {
    * Install toaster plugin and enable auto-import of useToast composable
    * @default false
    */
-  injectToaster?: boolean | ToasterOptions
+  injectUseToast?: boolean | ToasterOptions
   /**
    * Install wait plugin and enable auto-import of useWait composable
    * @default false
@@ -55,20 +55,25 @@ export interface MazUiNuxtOptions {
    */
   injectUseUserVisibility?: boolean
   /**
-   * Enable auto-import of v-zoom-img directive
+   * Globally install of v-zoom-img directive
    * @default false
    */
-  injectVZoomImg?: boolean
+  installVZoomImg?: boolean
   /**
-   * Enable auto-import of v-click-outside directive
+   * Globally install of v-click-outside directive
    * @default false
    */
-  injectVClickOutside?: boolean
+  installVClickOutside?: boolean
   /**
-   * Enable auto-import of v-lazy-img directive
+   * Globally install of v-fullscreen-img directive
    * @default false
    */
-  injectVLazyImg?: boolean | vLazyImgOptions
+  installVFullscreenImg?: boolean
+  /**
+   * Globally install of v-lazy-img directive
+   * @default false
+   */
+  installVLazyImg?: boolean | vLazyImgOptions
   /**
    * Enable auto-import of all components
    * @default true
@@ -169,7 +174,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       }
     }
 
-    if (moduleOptions.injectToaster) {
+    if (moduleOptions.injectUseToast) {
       addPlugin(resolve(_dirname, './runtime/plugins/toaster'))
 
       addImports({
@@ -189,16 +194,20 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       })
     }
 
-    if (moduleOptions.injectVZoomImg) {
-      addPlugin(resolve(_dirname, './runtime/plugins/v-zoom-img.ts'))
+    if (moduleOptions.installVZoomImg) {
+      addPlugin(resolve(_dirname, './runtime/plugins/v-zoom-img'))
     }
 
-    if (moduleOptions.injectVLazyImg) {
-      addPlugin(resolve(_dirname, './runtime/plugins/v-lazy-img.ts'))
+    if (moduleOptions.installVLazyImg) {
+      addPlugin(resolve(_dirname, './runtime/plugins/v-lazy-img'))
     }
 
-    if (moduleOptions.injectVClickOutside) {
-      addPlugin(resolve(_dirname, './runtime/plugins/v-click-outside.ts'))
+    if (moduleOptions.installVClickOutside) {
+      addPlugin(resolve(_dirname, './runtime/plugins/v-click-outside'))
+    }
+
+    if (moduleOptions.installVFullscreenImg) {
+      addPlugin(resolve(_dirname, './runtime/plugins/v-fullscreen-img'))
     }
 
     // if (moduleOptions.injectUseCurrency) {

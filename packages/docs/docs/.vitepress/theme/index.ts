@@ -8,7 +8,7 @@ import googleAnalytics from 'vitepress-plugin-google-analytics'
 import 'maz-ui/modules/plugins/aos/scss/index.scss'
 import './main.css'
 
-import { ToasterOptions, installToaster, installWait, AosOptions, installAos, aosInstance } from 'maz-ui'
+import { ToasterOptions, installToaster, installWait, AosOptions, installAos, aosInstance, vFullscreenImgInstall } from 'maz-ui'
 
 import * as components from 'maz-ui/components/index'
 
@@ -55,6 +55,7 @@ const theme: typeof DefaultTheme = {
     app.use(installToaster, toasterOptions)
     app.use(installWait)
     app.use(installAos, aosOptions)
+    app.use(vFullscreenImgInstall)
 
     watch(
       () => route.path,

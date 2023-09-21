@@ -81,7 +81,7 @@ importers:
         version: 16.1.0(eslint@8.49.0)
       eslint-plugin-prettier:
         specifier: ^5.0.0
-        version: 5.0.0(eslint-config-prettier@9.0.0)(eslint@8.49.0)(prettier@3.0.3)
+        version: 5.0.0(eslint-config-prettier@8.10.0)(eslint@8.49.0)(prettier@3.0.3)
       eslint-plugin-promise:
         specifier: ^6.0.0
         version: 6.1.1(eslint@8.49.0)
@@ -139,7 +139,7 @@ importers:
         version: 3.3.3(ts-node@10.9.1)
       vitepress:
         specifier: 1.0.0-beta.7
-        version: 1.0.0-beta.7(search-insights@2.8.2)
+        version: 1.0.0-beta.7(@types/node@20.6.3)(search-insights@2.8.2)
       vue:
         specifier: ^3.3.4
         version: 3.3.4
@@ -229,7 +229,7 @@ importers:
         version: 8.49.0
       eslint-plugin-prettier:
         specifier: ^5.0.0
-        version: 5.0.0(eslint-config-prettier@9.0.0)(eslint@8.49.0)(prettier@3.0.3)
+        version: 5.0.0(eslint-config-prettier@8.10.0)(eslint@8.49.0)(prettier@3.0.3)
       eslint-plugin-sonarjs:
         specifier: ^0.21.0
         version: 0.21.0(eslint@8.49.0)
@@ -365,6 +365,9 @@ importers:
       vue-router:
         specifier: ^4.2.4
         version: 4.2.4(vue@3.3.4)
+      vue-scrollto:
+        specifier: ^2.20.0
+        version: 2.20.0
       vue-tsc:
         specifier: ^1.8.13
         version: 1.8.13(typescript@5.2.2)
@@ -386,7 +389,7 @@ importers:
         version: 12.1.0(eslint@8.49.0)(typescript@5.2.2)
       '@nuxtjs/tailwindcss':
         specifier: ^6.8.0
-        version: 6.8.0
+        version: 6.8.0(ts-node@10.9.1)
       '@types/node':
         specifier: ^20.6.3
         version: 20.6.3
@@ -450,6 +453,12 @@ importers:
       vite-svg-loader:
         specifier: ^4.0.0
         version: 4.0.0
+      vue:
+        specifier: ^3.3.4
+        version: 3.3.4
+      vue-router:
+        specifier: ^4.2.4
+        version: 4.2.4(vue@3.3.4)
 
 packages:
   /@aashutoshrathi/word-wrap@1.2.6:
@@ -1105,7 +1114,7 @@ packages:
     engines: { node: '>=6.0.0' }
     hasBin: true
     dependencies:
-      '@babel/types': 7.22.19
+      '@babel/types': 7.22.11
     dev: true
 
   /@babel/parser@7.22.4:
@@ -4212,7 +4221,7 @@ packages:
       - supports-color
     dev: true
 
-  /@nuxtjs/tailwindcss@6.8.0:
+  /@nuxtjs/tailwindcss@6.8.0(ts-node@10.9.1):
     resolution:
       {
         integrity: sha512-jzuvD1nfA2BPnSbHtKK0aiI51ndMa7lNGL1iDEFuEPsltzilZ9ED7zOP6niGTrImg0n5Yt4GEJpixi6yWwp9Hw==,
@@ -5284,13 +5293,6 @@ packages:
       }
     dev: true
 
-  /@types/node@20.6.2:
-    resolution:
-      {
-        integrity: sha512-Y+/1vGBHV/cYk6OI1Na/LHzwnlNCAfU3ZNGrc1LdRe/LAIbdDPTTv/HU3M7yXN448aTVDq3eKRm2cg7iKLb8gw==,
-      }
-    dev: true
-
   /@types/node@20.6.3:
     resolution:
       {
@@ -5790,38 +5792,16 @@ packages:
       - supports-color
     dev: true
 
-  /@vue/compiler-core@3.2.47:
-    resolution:
-      {
-        integrity: sha512-p4D7FDnQb7+YJmO2iPEv0SQNeNzcbHdGByJDsT4lynf63AFkOTFN07HsiRSvjGo0QrxR/o3d0hUyNCUnBU2Tig==,
-      }
-    dependencies:
-      '@babel/parser': 7.22.11
-      '@vue/shared': 3.2.47
-      estree-walker: 2.0.2
-      source-map: 0.6.1
-    dev: true
-
   /@vue/compiler-core@3.3.4:
     resolution:
       {
         integrity: sha512-cquyDNvZ6jTbf/+x+AgM2Arrp6G4Dzbb0R64jiG804HRMfRiFXWI6kqUVqZ6ZR0bQhIoQjB4+2bhNtVwndW15g==,
       }
     dependencies:
-      '@babel/parser': 7.22.4
+      '@babel/parser': 7.22.16
       '@vue/shared': 3.3.4
       estree-walker: 2.0.2
       source-map-js: 1.0.2
-    dev: true
-
-  /@vue/compiler-dom@3.2.47:
-    resolution:
-      {
-        integrity: sha512-dBBnEHEPoftUiS03a4ggEig74J2YBZ2UIeyfpcRM2tavgMWo4bsEfgCGsu+uJIL/vax9S+JztH8NmQerUo7shQ==,
-      }
-    dependencies:
-      '@vue/compiler-core': 3.2.47
-      '@vue/shared': 3.2.47
     dev: true
 
   /@vue/compiler-dom@3.3.4:
@@ -5938,7 +5918,7 @@ packages:
         integrity: sha512-MXgwjako4nu5WFLAjpBnCj/ieqcjE2aJBINUNQzkZQfzIZA4xn+0fV1tIYBJvvva3N3OvKGofRLvQIwEQPpaXw==,
       }
     dependencies:
-      '@babel/parser': 7.22.4
+      '@babel/parser': 7.22.16
       '@vue/compiler-core': 3.3.4
       '@vue/shared': 3.3.4
       estree-walker: 2.0.2
@@ -5989,13 +5969,6 @@ packages:
       '@vue/compiler-ssr': 3.3.4
       '@vue/shared': 3.3.4
       vue: 3.3.4
-    dev: true
-
-  /@vue/shared@3.2.47:
-    resolution:
-      {
-        integrity: sha512-BHGyyGN3Q97EZx0taMQ+OLNuZcW3d37ZEVmEAyeoA9ERdGvm9Irc/0Fua8SNyOtV1w6BS4q25wbMzJujO9HIfQ==,
-      }
     dev: true
 
   /@vue/shared@3.3.4:
@@ -6930,6 +6903,13 @@ packages:
     resolution:
       {
         integrity: sha512-NzUnlZexiaH/46WDhANlyR2bXRopNg4F/zuSA3OpZnllCUgRaOF2znDioDWrmbNVsuZk6l9pMquQB38cfBZwkQ==,
+      }
+    dev: true
+
+  /bezier-easing@2.1.0:
+    resolution:
+      {
+        integrity: sha512-gbIqZ/eslnUFC1tjEvtz0sgx+xTK20wDnYMIA27VA04R7w6xxXQPZDbibjA9DTWZRA2CXtwHykkVzlCaAJAZig==,
       }
     dev: true
 
@@ -7899,7 +7879,7 @@ packages:
         integrity: sha512-vCrqcSIq4//Gx74TXXCGnHpulY1dskqLTFGDmhrGxzeXL8lF8kvXv6mpNWlJj1uD4DW23D4ljAqbY4RRaaUZIw==,
       }
     dependencies:
-      '@babel/parser': 7.22.11
+      '@babel/parser': 7.22.16
       '@babel/types': 7.22.11
     dev: true
 
@@ -17313,19 +17293,6 @@ packages:
       }
     dev: true
 
-  /sass@1.67.0:
-    resolution:
-      {
-        integrity: sha512-SVrO9ZeX/QQyEGtuZYCVxoeAL5vGlYjJ9p4i4HFuekWl8y/LtJ7tJc10Z+ck1c8xOuoBm2MYzcLfTAffD0pl/A==,
-      }
-    engines: { node: '>=14.0.0' }
-    hasBin: true
-    dependencies:
-      chokidar: 3.5.3
-      immutable: 4.3.4
-      source-map-js: 1.0.2
-    dev: true
-
   /sass@1.68.0:
     resolution:
       {
@@ -18591,20 +18558,6 @@ packages:
     engines: { node: '>=4' }
     dev: true
 
-  /terser@5.19.4:
-    resolution:
-      {
-        integrity: sha512-6p1DjHeuluwxDXcuT9VR8p64klWJKo1ILiy19s6C9+0Bh2+NWTX6nD9EPppiER4ICkHDVB1RkVpin/YW2nQn/g==,
-      }
-    engines: { node: '>=10' }
-    hasBin: true
-    dependencies:
-      '@jridgewell/source-map': 0.3.5
-      acorn: 8.10.0
-      commander: 2.20.3
-      source-map-support: 0.5.21
-    dev: true
-
   /terser@5.20.0:
     resolution:
       {
@@ -19830,47 +19783,6 @@ packages:
       svgo: 3.0.2
     dev: true
 
-  /vite@4.4.9(@types/node@20.6.2)(sass@1.67.0)(terser@5.19.4):
-    resolution:
-      {
-        integrity: sha512-2mbUn2LlUmNASWwSCNSJ/EG2HuSRTnVNaydp6vMCm5VIqJsjMfbIWtbH2kDuwUVW5mMUKKZvGPX/rqeqVvv1XA==,
-      }
-    engines: { node: ^14.18.0 || >=16.0.0 }
-    hasBin: true
-    peerDependencies:
-      '@types/node': '>= 14'
-      less: '*'
-      lightningcss: ^1.21.0
-      sass: '*'
-      stylus: '*'
-      sugarss: '*'
-      terser: ^5.4.0
-    peerDependenciesMeta:
-      '@types/node':
-        optional: true
-      less:
-        optional: true
-      lightningcss:
-        optional: true
-      sass:
-        optional: true
-      stylus:
-        optional: true
-      sugarss:
-        optional: true
-      terser:
-        optional: true
-    dependencies:
-      '@types/node': 20.6.2
-      esbuild: 0.18.20
-      postcss: 8.4.30
-      rollup: 3.29.2
-      sass: 1.67.0
-      terser: 5.19.4
-    optionalDependencies:
-      fsevents: 2.3.3
-    dev: true
-
   /vite@4.4.9(@types/node@20.6.3)(sass@1.68.0)(terser@5.20.0):
     resolution:
       {
@@ -19919,7 +19831,7 @@ packages:
       }
     dev: false
 
-  /vitepress@1.0.0-beta.7(search-insights@2.8.2):
+  /vitepress@1.0.0-beta.7(@types/node@20.6.3)(search-insights@2.8.2):
     resolution:
       {
         integrity: sha512-P9Rw+FXatKIU4fVdtKxqwHl6fby8E/8zE3FIfep6meNgN4BxbWqoKJ6yfuuQQR9IrpQqwnyaBh4LSabyll6tWg==,
@@ -19937,7 +19849,7 @@ packages:
       mark.js: 8.11.1
       minisearch: 6.1.0
       shiki: 0.14.4
-      vite: 4.4.9(@types/node@20.6.2)(sass@1.67.0)(terser@5.19.4)
+      vite: 4.4.9(@types/node@20.6.3)(sass@1.68.0)(terser@5.20.0)
       vue: 3.3.4
     transitivePeerDependencies:
       - '@algolia/client-search'
@@ -20197,7 +20109,7 @@ packages:
     dependencies:
       '@babel/parser': 7.22.11
       '@babel/types': 7.22.11
-      '@vue/compiler-dom': 3.2.47
+      '@vue/compiler-dom': 3.3.4
       '@vue/compiler-sfc': 3.3.4
       ast-types: 0.16.1
       hash-sum: 2.0.0
@@ -20299,6 +20211,15 @@ packages:
     dependencies:
       '@vue/devtools-api': 6.5.0
       vue: 3.3.4
+    dev: true
+
+  /vue-scrollto@2.20.0:
+    resolution:
+      {
+        integrity: sha512-7i+AGKJTThZnMEkhIPgrZjyAX+fXV7/rGdg+CV283uZZwCxwiMXaBLTmIc5RTA4uwGnT+E6eJle3mXQfM2OD3A==,
+      }
+    dependencies:
+      bezier-easing: 2.1.0
     dev: true
 
   /vue-template-compiler@2.7.14:
@@ -20580,7 +20501,7 @@ packages:
       }
     engines: { node: '>= 10.0.0' }
     dependencies:
-      '@babel/parser': 7.22.11
+      '@babel/parser': 7.22.16
       '@babel/types': 7.22.11
       assert-never: 1.2.1
       babel-walk: 3.0.0-canary-5
