@@ -14,6 +14,7 @@ export const componentList = [
   'MazDialogPromise',
   'MazDrawer',
   'MazDropzone',
+  'MazFullscreenLoader',
   'MazGallery',
   'MazIcon',
   'MazInput',

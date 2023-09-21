@@ -31,6 +31,7 @@ export const components = {
         {text: 'MazCard', link: '/components/maz-card'},
         {text: 'MazCarousel', link: '/components/maz-carousel'},
         {text: 'MazChart', link: '/components/maz-chart'},
+        {text: 'MazFullscreenLoader', link: '/components/maz-fullscreen-loader'},
         {text: 'MazDialog', link: '/components/maz-dialog'},
         {text: 'MazDialogPromise', link: '/components/maz-dialog-promise'},
         {text: 'MazDrawer', link: '/components/maz-drawer'},
