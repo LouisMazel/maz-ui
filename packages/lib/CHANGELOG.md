@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.14.1](https://github.com/LouisMazel/maz-ui/compare/v3.14.0...v3.14.1) (2023-09-22)
+
+
+### Bug Fixes
+
+* **lib:** v-fullscreen-img - add lazy loading of vue-scrollto ([c1343d7](https://github.com/LouisMazel/maz-ui/commit/c1343d70da18453620010bdb4c7f5af8f7c2a4cb))
+
+
+
+
+
 # [3.14.0](https://github.com/LouisMazel/maz-ui/compare/v3.13.0...v3.14.0) (2023-09-22)
 
 
