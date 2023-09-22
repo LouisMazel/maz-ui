@@ -65,11 +65,25 @@
   import { nextTick } from 'vue'
   import { onMounted, onBeforeUnmount } from 'vue'
   import { ref } from 'vue'
-  import vueScrollTo from 'vue-scrollto'
   import XMark from './../../../icons/x-mark.svg'
   import ChevronLeft from './../../../icons/chevron-left.svg'
+  import { onBeforeMount } from 'vue'
 
   const emits = defineEmits(['close', 'previous', 'next', 'before-close'])
+
+  type VueScrollTo = {
+    scrollTo: (
+      _imgElement: HTMLImageElement,
+      _timeout: number,
+      paylaod?: { container?: HTMLElement | null; easing: string; offset: number },
+    ) => void
+  }
+
+  let vueScrollTo: VueScrollTo
+
+  onBeforeMount(async () => {
+    vueScrollTo = (await import('vue-scrollto')) as unknown as VueScrollTo
+  })
 
   const props = withDefaults(
     defineProps<{
