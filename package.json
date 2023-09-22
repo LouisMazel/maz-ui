@@ -6,6 +6,7 @@
     "preinstall": "npx only-allow pnpm",
     "prepare": "npx husky install",
     "pre-commit": "lint-staged",
+    "commit": "cz",
     "format": "prettier . --write",
     "lint": "lerna run lint --parallel",
     "lerna:version": "HUSKY=0 npx lerna version",
@@ -19,9 +20,12 @@
   "devDependencies": {
     "@commitlint/cli": "^17.7.1",
     "@commitlint/config-conventional": "^17.7.0",
+    "@commitlint/cz-commitlint": "^17.7.1",
     "@types/node": "^20.6.3",
+    "commitizen": "^4.3.0",
     "commitlint-config-cz": "^0.13.3",
     "conventional-changelog-conventionalcommits": "^7.0.2",
+    "cz": "^1.8.2",
     "husky": "^8.0.3",
     "lerna": "^7.3.0",
     "lint-staged": "^14.0.1",
@@ -53,6 +57,11 @@
         "@vue/compiler-dom",
         "vue"
       ]
+    }
+  },
+  "config": {
+    "commitizen": {
+      "path": "@commitlint/cz-commitlint"
     }
   }
 }
