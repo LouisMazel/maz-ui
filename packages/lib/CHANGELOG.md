@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.14.0](https://github.com/LouisMazel/maz-ui/compare/v3.13.0...v3.14.0) (2023-09-22)
+
+
+### Features
+
+* add new MazFullscreenLoader component ([32fd370](https://github.com/LouisMazel/maz-ui/commit/32fd3709e1bbcea7cf0c3aa67dea0614b70559ca))
+* add new v-fullscreen-img directive ([373483a](https://github.com/LouisMazel/maz-ui/commit/373483ad0841f6781e51fce06576bc356294643f))
+* **lib:** nuxt module - add auto-import of multiple composables, directives and plugins ([d0020c6](https://github.com/LouisMazel/maz-ui/commit/d0020c65dd9f00ec70cc9487cb2e98b236df4e79))
+
+
+
+
+
 # [3.13.0](https://github.com/LouisMazel/maz-ui/compare/v3.12.2...v3.13.0) (2023-09-20)
 
 

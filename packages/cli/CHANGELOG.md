@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.14.0](https://github.com/LouisMazel/maz-ui/compare/v3.13.0...v3.14.0) (2023-09-22)
+
+
+### Bug Fixes
+
+* **cli:** use correct path to import component in doc template ([dc29e4e](https://github.com/LouisMazel/maz-ui/commit/dc29e4e4dc32eace9f9d375fc0e70207016c476b))
+
+
+
+
+
 # [3.12.0](https://github.com/LouisMazel/maz-ui/compare/v3.11.4...v3.12.0) (2023-09-19)
 
 **Note:** Version bump only for package cli

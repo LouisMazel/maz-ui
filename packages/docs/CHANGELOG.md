@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.14.0](https://github.com/LouisMazel/maz-ui/compare/v3.13.0...v3.14.0) (2023-09-22)
+
+
+### Bug Fixes
+
+* **docs:** lazy-img - remove useless code ([e194f38](https://github.com/LouisMazel/maz-ui/commit/e194f3878964b5a3921767851100c56c51cd2a5c))
+* **docs:** zoom-img - typo ([b4f2091](https://github.com/LouisMazel/maz-ui/commit/b4f20918f68f331b2d0fe10874bb17958ea24054))
+
+
+### Features
+
+* add new MazFullscreenLoader component ([32fd370](https://github.com/LouisMazel/maz-ui/commit/32fd3709e1bbcea7cf0c3aa67dea0614b70559ca))
+* add new v-fullscreen-img directive ([373483a](https://github.com/LouisMazel/maz-ui/commit/373483ad0841f6781e51fce06576bc356294643f))
+
+
+
+
+
 # [3.13.0](https://github.com/LouisMazel/maz-ui/compare/v3.12.2...v3.13.0) (2023-09-20)
 
 
