@@ -89,11 +89,6 @@ export interface MazUiNuxtOptions {
   //  * @default false
   //  */
   // injectUseCurrency?: boolean
-  // /**
-  //  * install global of v-fullscreen-img directive
-  //  * @default false
-  //  */
-  // installFullscreenImgDirective?: boolean
 }
 
 declare module '@nuxt/schema' {
