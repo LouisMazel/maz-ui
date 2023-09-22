@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.14.2](https://github.com/LouisMazel/maz-ui/compare/v3.14.1...v3.14.2) (2023-09-22)
+
+
+### Bug Fixes
+
+* **lib:** nuxt module - correct path to module types for options ([b59bd9b](https://github.com/LouisMazel/maz-ui/commit/b59bd9bca3176211f75d37e2997f51c47699b972))
+
+
+
+
+
 ## [3.14.1](https://github.com/LouisMazel/maz-ui/compare/v3.14.0...v3.14.1) (2023-09-22)
 
 
