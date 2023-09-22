@@ -3,7 +3,7 @@ import { defu } from 'defu'
 import { componentList } from '../components/component-list'
 import { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import type { AosOptions, ToasterOptions, ThemeHandlerOptions, vLazyImgOptions } from 'modules'
+import type { AosOptions, ToasterOptions, ThemeHandlerOptions, vLazyImgOptions } from './../modules'
 
 export interface MazUiNuxtOptions {
   /**
