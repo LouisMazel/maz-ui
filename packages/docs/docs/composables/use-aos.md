@@ -23,7 +23,7 @@ More info about the [aos plugin](./../plugins/aos.md) can be found in its docume
 </template>
 
 <script lang="ts" setup>
-  import { useAos } from 'vue'
+  import { useAos } from 'maz-ui'
 
   const aos = useAos()
 
