@@ -142,7 +142,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
           filePath:
             process.env.MAZ_UI_DEV === 'true'
               ? `maz-ui/components/${name}.vue`
-              : `maz-ui/components/${name}`,
+              : `maz-ui/components/${name}.mjs`,
         })
       }
     }
