@@ -33,6 +33,7 @@ module.exports = {
     { name: 'playground' },
     { name: 'lib' },
     { name: 'cli' },
+    { name: 'nuxt-module' },
     { name: 'release' },
   ],
 

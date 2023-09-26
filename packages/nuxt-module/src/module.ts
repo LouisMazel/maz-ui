@@ -138,6 +138,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       for (const { name } of componentList) {
         addComponent({
           name,
+          priority: 0,
           filePath:
             process.env.MAZ_UI_DEV === 'true'
               ? `maz-ui/components/${name}.vue`
