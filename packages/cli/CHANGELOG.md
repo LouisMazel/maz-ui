@@ -7,10 +7,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package cli
 
-
-
-
-
 # [3.14.0](https://github.com/LouisMazel/maz-ui/compare/v3.13.0...v3.14.0) (2023-09-22)
 
 ### Bug Fixes
