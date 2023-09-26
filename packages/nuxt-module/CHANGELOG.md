@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.15.3](https://github.com/LouisMazel/maz-ui/compare/v3.15.1...v3.15.3) (2023-09-26)
+
+
+### Bug Fixes
+
+* **nuxt-module:** correct file path to components for production ([8ded09a](https://github.com/LouisMazel/maz-ui/commit/8ded09a3d8ba874bd647ee8777f47215be42df7a))
+
+
+
+
+
 ## [3.15.1](https://github.com/LouisMazel/maz-ui/compare/v3.15.0...v3.15.1) (2023-09-26)
 
 **Note:** Version bump only for package nuxt-module
