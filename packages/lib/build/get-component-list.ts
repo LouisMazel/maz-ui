@@ -7,7 +7,10 @@ export const getComponentList = async () => {
   try {
     const fileList = await readdir(INPUT_COMPONENT_DIR, { withFileTypes: true })
     return fileList
-      .filter((dirent) => dirent.isFile() && dirent.name.startsWith('Maz'))
+      .filter(
+        (dirent) =>
+          dirent.isFile() && dirent.name.startsWith('Maz') && !dirent.name.endsWith('.d.ts'),
+      )
       .map(({ name }) => ({
         name: name.split('.')[0],
         fullName: `${name}`,

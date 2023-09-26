@@ -11,7 +11,7 @@ module.exports = {
     defineExpose: 'readonly',
     withDefaults: 'readonly',
   },
-  plugins: ['vue', 'prettier', 'unicorn', 'sonarjs'],
+  plugins: ['vue', 'unicorn', 'sonarjs'],
   extends: [
     'eslint:recommended',
     'plugin:sonarjs/recommended',

@@ -1,16 +1,16 @@
 import { replaceInFile } from 'replace-in-file'
 
 export function replaceStringInFile({
-  filePath,
+  files,
   search,
   replaceBy,
 }: {
-  filePath: string
+  files: Parameters<typeof replaceInFile>[0]['files']
   search: string
   replaceBy: string
 }) {
   return replaceInFile({
-    files: filePath,
+    files,
     from: new RegExp(search, 'g'),
     to: replaceBy,
   })

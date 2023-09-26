@@ -114,12 +114,12 @@ const run = async () => {
     }
 
     await replaceStringInFile({
-      filePath: resolve(__dirname, '../dist/package.json'),
+      files: resolve(__dirname, '../dist/package.json'),
       search: './modules/index.ts',
       replaceBy: './modules/index.mjs',
     })
     await replaceStringInFile({
-      filePath: resolve(__dirname, '../dist/package.json'),
+      files: resolve(__dirname, '../dist/package.json'),
       search: './components/index.ts',
       replaceBy: './components/index.mjs',
     })
@@ -157,7 +157,6 @@ const run = async () => {
 
     await execPromise('rimraf generated-types')
 
-    await execPromise('pnpm -F nuxt-module prepare')
     await execPromise('pnpm -F nuxt-module build')
 
     // Nuxt Module: rename all module.* to index.*
@@ -175,12 +174,11 @@ const run = async () => {
     }
 
     await replaceStringInFile({
-      filePath: resolve(__dirname, '../dist/nuxt/types.d.mts'),
-      search: './module',
-      replaceBy: './index',
-    })
-    await replaceStringInFile({
-      filePath: resolve(__dirname, '../dist/nuxt/types.d.ts'),
+      files: [
+        resolve(__dirname, '../dist/nuxt/types.d.mts'),
+        resolve(__dirname, '../dist/nuxt/types.d.ts'),
+        resolve(__dirname, '../dist/nuxt/index.cjs'),
+      ],
       search: './module',
       replaceBy: './index',
     })

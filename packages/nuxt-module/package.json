@@ -16,7 +16,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "nuxt-module-build --outDir=./../lib/dist/nuxt --failOnWarn=false",
+    "build": "pnpm prepare && nuxt-module-build --outDir=./../lib/dist/nuxt --failOnWarn=false",
     "prepare": "nuxt-module-build --stub && nuxt-module-build prepare",
     "lint": "cross-env NODE_ENV=production eslint .",
     "format": "prettier --ignore-path .gitignore . --write",
