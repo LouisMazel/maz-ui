@@ -26,7 +26,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install modules
-        run: pnpm --filter maz-ui install --no-frozen-lockfile
+        run: pnpm install --no-frozen-lockfile
 
       - name: Run linters
         run: pnpm --filter maz-ui lint

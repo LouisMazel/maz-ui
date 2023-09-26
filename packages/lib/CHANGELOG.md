@@ -5,272 +5,158 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [3.14.2](https://github.com/LouisMazel/maz-ui/compare/v3.14.1...v3.14.2) (2023-09-22)
 
-
 ### Bug Fixes
 
-* **lib:** nuxt module - correct path to module types for options ([b59bd9b](https://github.com/LouisMazel/maz-ui/commit/b59bd9bca3176211f75d37e2997f51c47699b972))
-
-
-
-
+- **lib:** nuxt module - correct path to module types for options ([b59bd9b](https://github.com/LouisMazel/maz-ui/commit/b59bd9bca3176211f75d37e2997f51c47699b972))
 
 ## [3.14.1](https://github.com/LouisMazel/maz-ui/compare/v3.14.0...v3.14.1) (2023-09-22)
 
-
 ### Bug Fixes
 
-* **lib:** v-fullscreen-img - add lazy loading of vue-scrollto ([c1343d7](https://github.com/LouisMazel/maz-ui/commit/c1343d70da18453620010bdb4c7f5af8f7c2a4cb))
-
-
-
-
+- **lib:** v-fullscreen-img - add lazy loading of vue-scrollto ([c1343d7](https://github.com/LouisMazel/maz-ui/commit/c1343d70da18453620010bdb4c7f5af8f7c2a4cb))
 
 # [3.14.0](https://github.com/LouisMazel/maz-ui/compare/v3.13.0...v3.14.0) (2023-09-22)
 
-
 ### Features
 
-* add new MazFullscreenLoader component ([32fd370](https://github.com/LouisMazel/maz-ui/commit/32fd3709e1bbcea7cf0c3aa67dea0614b70559ca))
-* add new v-fullscreen-img directive ([373483a](https://github.com/LouisMazel/maz-ui/commit/373483ad0841f6781e51fce06576bc356294643f))
-* **lib:** nuxt module - add auto-import of multiple composables, directives and plugins ([d0020c6](https://github.com/LouisMazel/maz-ui/commit/d0020c65dd9f00ec70cc9487cb2e98b236df4e79))
-
-
-
-
+- add new MazFullscreenLoader component ([32fd370](https://github.com/LouisMazel/maz-ui/commit/32fd3709e1bbcea7cf0c3aa67dea0614b70559ca))
+- add new v-fullscreen-img directive ([373483a](https://github.com/LouisMazel/maz-ui/commit/373483ad0841f6781e51fce06576bc356294643f))
+- **lib:** nuxt module - add auto-import of multiple composables, directives and plugins ([d0020c6](https://github.com/LouisMazel/maz-ui/commit/d0020c65dd9f00ec70cc9487cb2e98b236df4e79))
 
 # [3.13.0](https://github.com/LouisMazel/maz-ui/compare/v3.12.2...v3.13.0) (2023-09-20)
 
-
 ### Bug Fixes
 
-* **lib:** package  exports declarations - set default has the last one ([c82b1f6](https://github.com/LouisMazel/maz-ui/commit/c82b1f647b441db90b74e1cc7794c9e927a6efa9))
-
+- **lib:** package exports declarations - set default has the last one ([c82b1f6](https://github.com/LouisMazel/maz-ui/commit/c82b1f647b441db90b74e1cc7794c9e927a6efa9))
 
 ### Features
 
-* **lib:** add default animation delay to aos plugin ([96041a1](https://github.com/LouisMazel/maz-ui/commit/96041a100c665833892cf221b4f96719d56658cd))
-
-
-
-
+- **lib:** add default animation delay to aos plugin ([96041a1](https://github.com/LouisMazel/maz-ui/commit/96041a100c665833892cf221b4f96719d56658cd))
 
 ## [3.12.2](https://github.com/LouisMazel/maz-ui/compare/v3.12.1...v3.12.2) (2023-09-20)
 
-
 ### Bug Fixes
 
-* **lib:** maz-tabs - remove id to tab bar buttons ([8bbf4a3](https://github.com/LouisMazel/maz-ui/commit/8bbf4a3f0c420df940cf822d309f0ed56db2086e))
-
-
-
-
+- **lib:** maz-tabs - remove id to tab bar buttons ([8bbf4a3](https://github.com/LouisMazel/maz-ui/commit/8bbf4a3f0c420df940cf822d309f0ed56db2086e))
 
 ## [3.12.1](https://github.com/LouisMazel/maz-ui/compare/v3.12.0...v3.12.1) (2023-09-20)
 
-
 ### Bug Fixes
 
-* **lib:** maz-tabs - better deduction to current tab  when use-anchor option is enable ([b82bf6f](https://github.com/LouisMazel/maz-ui/commit/b82bf6f0803dac2f25a3f689c09b567624a74951))
-
-
-
-
+- **lib:** maz-tabs - better deduction to current tab when use-anchor option is enable ([b82bf6f](https://github.com/LouisMazel/maz-ui/commit/b82bf6f0803dac2f25a3f689c09b567624a74951))
 
 # [3.12.0](https://github.com/LouisMazel/maz-ui/compare/v3.11.4...v3.12.0) (2023-09-19)
 
-
 ### Bug Fixes
 
-* **lib:** type declaration compatibility with moduleResolution 'node' ([e3bfc97](https://github.com/LouisMazel/maz-ui/commit/e3bfc97b2af1ece1efd5973331178650d3904f3a))
-
+- **lib:** type declaration compatibility with moduleResolution 'node' ([e3bfc97](https://github.com/LouisMazel/maz-ui/commit/e3bfc97b2af1ece1efd5973331178650d3904f3a))
 
 ### Features
 
-* **lib:** nuxt module - add auto-import of css files ([2c17f5f](https://github.com/LouisMazel/maz-ui/commit/2c17f5ff5f8771d40cec0babc730bcdfad39424e))
-
-
-
-
+- **lib:** nuxt module - add auto-import of css files ([2c17f5f](https://github.com/LouisMazel/maz-ui/commit/2c17f5ff5f8771d40cec0babc730bcdfad39424e))
 
 ## [3.11.4](https://github.com/LouisMazel/maz-ui/compare/v3.11.3...v3.11.4) (2023-09-18)
 
 **Note:** Version bump only for package maz-ui
 
-
-
-
-
 ## [3.11.3](https://github.com/LouisMazel/maz-ui/compare/v3.11.2...v3.11.3) (2023-09-18)
 
 **Note:** Version bump only for package maz-ui
 
-
-
-
-
 ## [3.11.2](https://github.com/LouisMazel/maz-ui/compare/v3.11.1...v3.11.2) (2023-09-18)
-
 
 ### Bug Fixes
 
-* component docs generating with cli ([af5088b](https://github.com/LouisMazel/maz-ui/commit/af5088ba0b4a0e8eb4f338001115d8fde1d58549))
-* **lib:** type files exportation ([5291e47](https://github.com/LouisMazel/maz-ui/commit/5291e47f607c4ae6a5f263799b0ab8484ca2b447))
-* **lib:** type files exportation ([063ffde](https://github.com/LouisMazel/maz-ui/commit/063ffdedbcef571d8d5ed60c425e9cd3a6369e16))
-* **lib:** use postcss-nested to compile css ([d3b1e94](https://github.com/LouisMazel/maz-ui/commit/d3b1e949e2783c50face4de057d6da217edae304))
-
-
-
-
+- component docs generating with cli ([af5088b](https://github.com/LouisMazel/maz-ui/commit/af5088ba0b4a0e8eb4f338001115d8fde1d58549))
+- **lib:** type files exportation ([5291e47](https://github.com/LouisMazel/maz-ui/commit/5291e47f607c4ae6a5f263799b0ab8484ca2b447))
+- **lib:** type files exportation ([063ffde](https://github.com/LouisMazel/maz-ui/commit/063ffdedbcef571d8d5ed60c425e9cd3a6369e16))
+- **lib:** use postcss-nested to compile css ([d3b1e94](https://github.com/LouisMazel/maz-ui/commit/d3b1e949e2783c50face4de057d6da217edae304))
 
 ## [3.11.1](https://github.com/LouisMazel/maz-ui/compare/v3.11.0...v3.11.1) (2023-09-16)
 
-
 ### Bug Fixes
 
-* **lib:** dark mode with tailwind ([2e4ee54](https://github.com/LouisMazel/maz-ui/commit/2e4ee545ed29f3f66efb6ccdaee2fba7262c0a6d))
-* **lib:** declaration types file of MazChart ([82155a7](https://github.com/LouisMazel/maz-ui/commit/82155a7ffc655a8d859939b53233312550ef8d61))
-
-
-
-
+- **lib:** dark mode with tailwind ([2e4ee54](https://github.com/LouisMazel/maz-ui/commit/2e4ee545ed29f3f66efb6ccdaee2fba7262c0a6d))
+- **lib:** declaration types file of MazChart ([82155a7](https://github.com/LouisMazel/maz-ui/commit/82155a7ffc655a8d859939b53233312550ef8d61))
 
 # [3.11.0](https://github.com/LouisMazel/maz-ui/compare/v3.10.5...v3.11.0) (2023-09-14)
 
-
 ### Features
 
-* **lib:** add tabs components ([e3b9a6b](https://github.com/LouisMazel/maz-ui/commit/e3b9a6b87703364063c8cdb4e89cf46061ff32c7))
-
-
-
-
+- **lib:** add tabs components ([e3b9a6b](https://github.com/LouisMazel/maz-ui/commit/e3b9a6b87703364063c8cdb4e89cf46061ff32c7))
 
 ## [3.10.5](https://github.com/LouisMazel/maz-ui/compare/v3.10.4...v3.10.5) (2023-09-14)
 
 **Note:** Version bump only for package maz-ui
 
-
-
-
-
 ## [3.10.4](https://github.com/LouisMazel/maz-ui/compare/v3.10.3...v3.10.4) (2023-09-03)
-
 
 ### Bug Fixes
 
-* **lib:** nuxt module install ([8b74b6d](https://github.com/LouisMazel/maz-ui/commit/8b74b6d14501cb7015d2a16f79e0e14583f12b6a))
-
-
-
-
+- **lib:** nuxt module install ([8b74b6d](https://github.com/LouisMazel/maz-ui/commit/8b74b6d14501cb7015d2a16f79e0e14583f12b6a))
 
 ## [3.10.3](https://github.com/LouisMazel/maz-ui/compare/v3.10.2...v3.10.3) (2023-09-02)
 
-
 ### Bug Fixes
 
-* **lib:** nuxt module - add necessary file for component auto import ([0dccce5](https://github.com/LouisMazel/maz-ui/commit/0dccce5b13694ae5759360efad9e02771585612a))
-
-
-
-
+- **lib:** nuxt module - add necessary file for component auto import ([0dccce5](https://github.com/LouisMazel/maz-ui/commit/0dccce5b13694ae5759360efad9e02771585612a))
 
 ## [3.10.2](https://github.com/LouisMazel/maz-ui/compare/v3.10.1...v3.10.2) (2023-09-02)
 
 **Note:** Version bump only for package maz-ui
 
-
-
-
-
 ## [3.10.1](https://github.com/LouisMazel/maz-ui/compare/v3.10.0...v3.10.1) (2023-09-02)
-
 
 ### Bug Fixes
 
-* **lib:** building process ([2f1bbeb](https://github.com/LouisMazel/maz-ui/commit/2f1bbebb4e1552c44e762ee485dbd5c0675ce8c8))
-
-
-
-
+- **lib:** building process ([2f1bbeb](https://github.com/LouisMazel/maz-ui/commit/2f1bbebb4e1552c44e762ee485dbd5c0675ce8c8))
 
 # [3.10.0](https://github.com/LouisMazel/maz-ui/compare/v3.9.1...v3.10.0) (2023-09-01)
 
-
 ### Features
 
-* **lib:** add nuxt module to install maz-ui ([#589](https://github.com/LouisMazel/maz-ui/issues/589)) ([930cf38](https://github.com/LouisMazel/maz-ui/commit/930cf3860c924f33372f98b5087f81bb65a5ed9a))
-
-
-
-
+- **lib:** add nuxt module to install maz-ui ([#589](https://github.com/LouisMazel/maz-ui/issues/589)) ([930cf38](https://github.com/LouisMazel/maz-ui/commit/930cf3860c924f33372f98b5087f81bb65a5ed9a))
 
 ## [3.9.1](https://github.com/LouisMazel/maz-ui/compare/v3.9.0...v3.9.1) (2023-06-08)
 
 **Note:** Version bump only for package maz-ui
 
-
-
-
-
 # [3.9.0](https://github.com/LouisMazel/maz-ui/compare/v3.8.0...v3.9.0) (2023-04-24)
 
 **Note:** Version bump only for package maz-ui
 
-
-
-
-
 # [3.8.0](https://github.com/LouisMazel/maz-ui/compare/v3.7.1...v3.8.0) (2023-03-28)
-
 
 ### Bug Fixes
 
-* **lib:** maz-dialog-promise - bind good methods ([a048f0d](https://github.com/LouisMazel/maz-ui/commit/a048f0d6e48145c1e74fcbbbb8b35b50d4752903))
-
+- **lib:** maz-dialog-promise - bind good methods ([a048f0d](https://github.com/LouisMazel/maz-ui/commit/a048f0d6e48145c1e74fcbbbb8b35b50d4752903))
 
 ### Features
 
-* **lib:** MazDialogPromise - add more options: custom buttons and responses ([9c29a61](https://github.com/LouisMazel/maz-ui/commit/9c29a61e2230ec02d3d67a054051ffc0a4e3aef1))
-
-
-
-
+- **lib:** MazDialogPromise - add more options: custom buttons and responses ([9c29a61](https://github.com/LouisMazel/maz-ui/commit/9c29a61e2230ec02d3d67a054051ffc0a4e3aef1))
 
 ## [3.7.1](https://github.com/LouisMazel/maz-ui/compare/v3.7.0...v3.7.1) (2023-03-07)
 
-
 ### Features
 
-* **lib:** maz-dialog - add max-height & scrollable options ([64e16c8](https://github.com/LouisMazel/maz-ui/commit/64e16c86e8ff1c565538c6ef32c48364d930495c))
-
-
-
-
+- **lib:** maz-dialog - add max-height & scrollable options ([64e16c8](https://github.com/LouisMazel/maz-ui/commit/64e16c86e8ff1c565538c6ef32c48364d930495c))
 
 # [3.7.0](https://github.com/LouisMazel/maz-ui/compare/v3.6.12...v3.7.0) (2023-03-06)
 
-
 ### Bug Fixes
 
-* **lib:** maz-backdrop - make component SSR compatible ([2d34cb6](https://github.com/LouisMazel/maz-ui/commit/2d34cb68c2271d81904c34089a267c76642e2ed1))
-* **lib:** maz-phone-number-input - phone number formatting on initialization ([383a0cb](https://github.com/LouisMazel/maz-ui/commit/383a0cbba626d0f56ecf08017470af3066d00310))
-* **lib:** use secure ipwho as locale provider (https) ([0360545](https://github.com/LouisMazel/maz-ui/commit/0360545a785349957033942a005cbaddb280a77e))
-
+- **lib:** maz-backdrop - make component SSR compatible ([2d34cb6](https://github.com/LouisMazel/maz-ui/commit/2d34cb68c2271d81904c34089a267c76642e2ed1))
+- **lib:** maz-phone-number-input - phone number formatting on initialization ([383a0cb](https://github.com/LouisMazel/maz-ui/commit/383a0cbba626d0f56ecf08017470af3066d00310))
+- **lib:** use secure ipwho as locale provider (https) ([0360545](https://github.com/LouisMazel/maz-ui/commit/0360545a785349957033942a005cbaddb280a77e))
 
 ### Features
 
-* **lib:** maz-dialog - add with max-width & wrapper-classes props options ([720619b](https://github.com/LouisMazel/maz-ui/commit/720619bac800cfd21c266eacc4b66fe657f95092))
-
+- **lib:** maz-dialog - add with max-width & wrapper-classes props options ([720619b](https://github.com/LouisMazel/maz-ui/commit/720619bac800cfd21c266eacc4b66fe657f95092))
 
 ### Reverts
 
-* Revert "release/3.6.13 (#492)" ([de4e067](https://github.com/LouisMazel/maz-ui/commit/de4e067736c5d09478138f19de412b32dc60a715)), closes [#492](https://github.com/LouisMazel/maz-ui/issues/492)
-* Revert "chore(release): bump version to v3.7.0" ([2def308](https://github.com/LouisMazel/maz-ui/commit/2def3083343431257a702d2a19ab8a2d215736e5))
-
-
-
-
+- Revert "release/3.6.13 (#492)" ([de4e067](https://github.com/LouisMazel/maz-ui/commit/de4e067736c5d09478138f19de412b32dc60a715)), closes [#492](https://github.com/LouisMazel/maz-ui/issues/492)
+- Revert "chore(release): bump version to v3.7.0" ([2def308](https://github.com/LouisMazel/maz-ui/commit/2def3083343431257a702d2a19ab8a2d215736e5))
 
 ## [3.6.12](https://github.com/LouisMazel/maz-ui/compare/v3.6.11...v3.6.12) (2023-01-26)
 

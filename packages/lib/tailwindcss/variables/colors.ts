@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/prefer-module */
 export const baseColors = {
   transparent: 'transparent',
   black: 'var(--maz-color-black)',

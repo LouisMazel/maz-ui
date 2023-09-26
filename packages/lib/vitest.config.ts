@@ -7,9 +7,7 @@ import { resolve } from 'node:path'
 
 import svgLoader from 'vite-svg-loader'
 
-/* eslint-disable unicorn/prefer-module */
 const projectRoot = resolve(__dirname)
-/* eslint-enable unicorn/prefer-module */
 
 export default defineConfig({
   plugins: [Vue(), svgLoader()],

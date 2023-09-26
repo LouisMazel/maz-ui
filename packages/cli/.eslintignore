@@ -1,3 +1,5 @@
 node_modules
 .DS_Store
-.eslintrc.js
+.eslintrc.cjs
+docgen.config.js
+config/**/*

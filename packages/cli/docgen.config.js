@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/prefer-module */
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 const { resolve, join } = require('node:path')
@@ -17,5 +16,3 @@ module.exports = defineConfig({
     component: require('./config/docgen/template-component'),
   },
 })
-
-/* eslint-enable unicorn/prefer-module */
