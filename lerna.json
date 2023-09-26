@@ -5,7 +5,7 @@
   "yes": false,
   "command": {
     "version": {
-      "allowBranch": ["master"],
+      "allowBranch": ["master", "release/*"],
       "message": "chore(release): bump version to %s",
       "conventionalCommits": true
     }

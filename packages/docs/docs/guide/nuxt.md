@@ -15,12 +15,18 @@ Module compatible with Nuxt v3 or later
 
 ## Installation
 
-<NpmBadge package="maz-ui" />
+<div class="maz-flex maz-gap-0.5">
+  <NpmBadge package="maz-ui" />
+  <NpmBadge package="defu" />
+  <NpmBadge package="@nuxt/kit" />
+</div>
+
+To use this module, you must have `defu` and `@nuxt/kit` already installed (they are often already installed by Nuxt)
 
 ```bash
-npm install maz-ui
-# or yarn add maz-ui
-# or pnpm add maz-ui
+npm install maz-ui defu @nuxt/kit -D
+# or yarn add maz-ui defu @nuxt/kit -D
+# or pnpm add maz-ui defu @nuxt/kit -D
 ```
 
 Add it to your Nuxt modules:

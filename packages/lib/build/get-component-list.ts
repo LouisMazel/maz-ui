@@ -5,10 +5,10 @@ const INPUT_COMPONENT_DIR = resolve(__dirname, './../components')
 
 export const getComponentList = async () => {
   try {
-    const fileList = await readdir(INPUT_COMPONENT_DIR)
+    const fileList = await readdir(INPUT_COMPONENT_DIR, { withFileTypes: true })
     return fileList
-      .filter((name) => name.startsWith('Maz') && name.endsWith('.vue'))
-      .map((name) => ({
+      .filter((dirent) => dirent.isFile() && dirent.name.startsWith('Maz'))
+      .map(({ name }) => ({
         name: name.split('.')[0],
         fullName: `${name}`,
         path: `${INPUT_COMPONENT_DIR}/${name}`,

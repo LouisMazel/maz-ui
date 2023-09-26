@@ -1,0 +1,49 @@
+{
+  "name": "nuxt-module",
+  "version": "1.0.0",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/types.d.ts",
+      "import": "./dist/module.mjs",
+      "require": "./dist/module.cjs"
+    }
+  },
+  "main": "./dist/module.cjs",
+  "types": "./dist/types.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "nuxt-module-build --outDir=./../lib/dist/nuxt --failOnWarn=false",
+    "prepare": "nuxt-module-build --stub && nuxt-module-build prepare",
+    "lint": "cross-env NODE_ENV=production eslint .",
+    "format": "prettier --ignore-path .gitignore . --write",
+    "test": "vitest run",
+    "test:watch": "vitest watch"
+  },
+  "lint-staged": {
+    "*": "prettier -w -u",
+    "*.{js,ts}": "cross-env NODE_ENV=production eslint --fix"
+  },
+  "dependencies": {
+    "@nuxt/kit": "^3.7.3",
+    "maz-ui": "workspace:*"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "latest",
+    "@nuxt/eslint-config": "^0.2.0",
+    "@nuxt/module-builder": "^0.5.1",
+    "@nuxt/schema": "^3.7.3",
+    "@nuxt/test-utils": "^3.7.3",
+    "@types/node": "^18.17.17",
+    "changelogen": "^0.5.5",
+    "eslint": "^8.49.0",
+    "nuxt": "^3.7.3",
+    "vitest": "^0.33.0"
+  },
+  "unbuild": {
+    "failOnWarn": false
+  }
+}

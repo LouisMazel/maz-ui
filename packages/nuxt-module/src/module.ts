@@ -1,9 +1,10 @@
 import { defineNuxtModule, addPlugin, createResolver, addImports, addComponent } from '@nuxt/kit'
 import { defu } from 'defu'
-import { componentList } from '../components/component-list'
 import { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import type { AosOptions, ToasterOptions, ThemeHandlerOptions, vLazyImgOptions } from './../modules'
+
+import type { AosOptions, ToasterOptions, ThemeHandlerOptions, vLazyImgOptions } from 'maz-ui'
+import { getComponentList } from './../../lib/build/get-component-list'
 
 export interface MazUiNuxtOptions {
   /**
@@ -92,14 +93,14 @@ export interface MazUiNuxtOptions {
 }
 
 declare module '@nuxt/schema' {
-  interface PublicRuntimeConfig {
-    mazUi?: MazUiNuxtOptions
-  }
   interface NuxtConfig {
     mazUi?: MazUiNuxtOptions
   }
   interface NuxtOptions {
     mazUi?: MazUiNuxtOptions
+  }
+  interface PublicRuntimeConfig {
+    mazUi: MazUiNuxtOptions
   }
 }
 
@@ -107,7 +108,7 @@ const _dirname = dirname(fileURLToPath(import.meta.url))
 
 export default defineNuxtModule<MazUiNuxtOptions>({
   meta: {
-    name: 'maz-ui/nuxt',
+    name: 'maz-ui',
     configKey: 'mazUi',
     compatibility: {
       nuxt: '^3.0.0',
@@ -118,8 +119,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
     injectCss: true,
     injectComponents: true,
   },
-  // eslint-disable-next-line sonarjs/cognitive-complexity
-  setup(options, nuxt) {
+  async setup(options, nuxt) {
     const { resolve } = createResolver(import.meta.url)
 
     const moduleOptions = defu(nuxt.options.runtimeConfig.public.mazUi, options)
@@ -127,18 +127,21 @@ export default defineNuxtModule<MazUiNuxtOptions>({
     nuxt.options.runtimeConfig.public.mazUi = moduleOptions
 
     if (moduleOptions.injectCss) {
-      const path = process.env.MAZ_UI_DEV === 'true' ? './../css/index.css' : './../css/main.css'
-      nuxt.options.css = [resolve(path), ...nuxt.options.css]
+      const path =
+        process.env.MAZ_UI_DEV === 'true' ? 'maz-ui/css/index.css' : 'maz-ui/css/main.css'
+      nuxt.options.css = [path, ...nuxt.options.css]
     }
 
     if (moduleOptions.injectComponents) {
-      for (const componentName of componentList) {
+      const componentList = await getComponentList()
+
+      for (const { name } of componentList) {
         addComponent({
-          name: componentName,
+          name,
           filePath:
             process.env.MAZ_UI_DEV === 'true'
-              ? `maz-ui/components/${componentName}.vue`
-              : `maz-ui/components/${componentName}`,
+              ? `maz-ui/components/${name}.vue`
+              : `maz-ui/components/${name}`,
         })
       }
     }
@@ -163,9 +166,9 @@ export default defineNuxtModule<MazUiNuxtOptions>({
         injectAosCSS &&
         process.env.MAZ_UI_DEV === 'true'
       ) {
-        nuxt.options.css = [resolve('./../dist/css/aos.css'), ...nuxt.options.css]
+        nuxt.options.css = ['maz-ui/dist/css/aos.css', ...nuxt.options.css]
       } else if (typeof moduleOptions.injectAos === 'object' && injectAosCSS) {
-        nuxt.options.css = [resolve('./../css/aos.css'), ...nuxt.options.css]
+        nuxt.options.css = ['maz-ui/css/aos.css', ...nuxt.options.css]
       }
     }
 
@@ -205,14 +208,6 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       addPlugin(resolve(_dirname, './runtime/plugins/v-fullscreen-img'))
     }
 
-    // if (moduleOptions.injectUseCurrency) {
-    //   addImports({
-    //     from: 'maz-ui',
-    //     name: 'useCurrency',
-    //     as: 'useCurrency',
-    //   })
-    // }
-
     if (moduleOptions.injectUseThemeHandler) {
       addImports({
         from: resolve(_dirname, './runtime/composables/use-theme-handler'),
@@ -237,8 +232,12 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       })
     }
 
-    // if (moduleOptions.installFullscreenImgDirective) {
-    //   addPlugin(resolve(_dirname, './runtime/plugins/v-fullscreen-img'))
+    // if (moduleOptions.injectUseCurrency) {
+    //   addImports({
+    //     from: 'maz-ui',
+    //     name: 'useCurrency',
+    //     as: 'useCurrency',
+    //   })
     // }
 
     if (options.devtools) {

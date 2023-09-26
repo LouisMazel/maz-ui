@@ -20,8 +20,9 @@
       "default": "./components/*"
     },
     "./nuxt": {
-      "types": "./types/nuxt/index.d.ts",
-      "default": "./nuxt/index.ts"
+      "types": "./nuxt/types.d.ts",
+      "import": "./nuxt/index.mjs",
+      "require": "./nuxt/index.cjs"
     },
     "./styles": "./css/main.css",
     "./aos-styles": "./css/aos.css",
