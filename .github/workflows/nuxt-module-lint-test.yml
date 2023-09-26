@@ -1,0 +1,32 @@
+name: Nuxt Module Test Lint
+
+on:
+  push:
+    paths:
+      - '.github/workflows/nuxt-module-lint-test.yml'
+  pull_request:
+    paths:
+      - 'packages/nuxt-module/**'
+
+jobs:
+  lib-test-lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+
+      - name: Install modules
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Run linter
+        run: pnpm --filter nuxt-module lint
