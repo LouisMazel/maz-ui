@@ -42,6 +42,15 @@ export default defineNuxtConfig({
     injectUseThemeHandler: true,
     devtools: true,
   },
+  ...
+  // You can also use the public runtime config
+  runtimeConfig: {
+    public: {
+      mazUi: {
+        ...
+      }
+    }
+  }
 })
 ```
 
