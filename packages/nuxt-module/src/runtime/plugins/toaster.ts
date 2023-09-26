@@ -1,5 +1,5 @@
-import { installToaster } from './../../../modules'
 import { defineNuxtPlugin } from 'nuxt/app'
+import { installToaster } from 'maz-ui'
 
 export default defineNuxtPlugin(({ vueApp, $config }) => {
   const toasterOptions = $config.public.mazUi?.injectUseToast

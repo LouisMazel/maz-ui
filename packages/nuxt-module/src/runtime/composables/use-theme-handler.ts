@@ -1,5 +1,5 @@
-import { useThemeHandler as useThemeHandlerComposable } from '../../../modules'
 import { useNuxtApp } from 'nuxt/app'
+import { useThemeHandler as useThemeHandlerComposable } from 'maz-ui'
 
 export function useThemeHandler() {
   const { $config } = useNuxtApp()

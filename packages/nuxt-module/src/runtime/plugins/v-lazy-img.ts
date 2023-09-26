@@ -1,5 +1,5 @@
-import { vLazyImgInstall } from '../../../modules'
 import { defineNuxtPlugin } from 'nuxt/app'
+import { vLazyImgInstall } from 'maz-ui'
 
 export default defineNuxtPlugin(({ vueApp, $config }) => {
   const vLazyImgOptions = $config.public.mazUi?.installVLazyImg

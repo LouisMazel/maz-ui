@@ -15,16 +15,12 @@ import { generateComponentsEntryFile } from './generate-components-entry'
 import { generateLibComponentsEntryFile } from './generate-lib-entry'
 import { compileScss } from './compile-scss'
 import { replaceStringInFile } from './replace-string-in-file'
-import { generateComponentListFile } from './generate-component-list-file'
 import { copyAndTransformComponentsTypesFiles } from './copy-components-types'
+import { readdir, rename } from 'node:fs/promises'
 
 const argv = minimist(process.argv.slice(2))
 
 const staticAssetsToCopy: Target[] = [
-  {
-    src: resolve(__dirname, '../nuxt'),
-    dest: resolve(__dirname, '../dist'),
-  },
   {
     src: resolve(__dirname, '../tailwindcss'),
     dest: resolve(__dirname, '../dist'),
@@ -105,7 +101,6 @@ const run = async () => {
     await execPromise('rimraf dist')
 
     await generateComponentsEntryFile()
-    await generateComponentListFile(resolve(__dirname, './../components/component-list.ts'))
 
     if ((!argv.package || argv.package === 'modules') && !argv.component) {
       await build(
@@ -131,15 +126,16 @@ const run = async () => {
 
     const componentsList = await getComponentList()
 
+    // to build specific component
     const componentToBuild = componentsList.filter(({ name }) =>
       argv.component ? name === argv.component : true,
     )
 
-    for await (const component of componentToBuild) {
+    for await (const { path, name } of componentToBuild) {
       await build(
         getBuildConfig({
-          path: component.path,
-          name: component.name,
+          path,
+          name,
           outDir: resolve(__dirname, '../dist/components'),
         }),
       )
@@ -151,7 +147,6 @@ const run = async () => {
     copyAndTransformComponentsTypesFiles()
 
     await generateLibComponentsEntryFile()
-    await generateComponentListFile(resolve(__dirname, './../dist/components/component-list.mjs'))
 
     // Build main.css file with tailwind
     await execPromise(
@@ -161,6 +156,34 @@ const run = async () => {
     await compileScss()
 
     await execPromise('rimraf generated-types')
+
+    await execPromise('pnpm -F nuxt-module prepare')
+    await execPromise('pnpm -F nuxt-module build')
+
+    // Nuxt Module: rename all module.* to index.*
+    const fileList = await readdir(resolve(__dirname, './../dist/nuxt'), {
+      withFileTypes: true,
+    })
+
+    const fileListToRename = fileList.filter(
+      (dirent) => dirent.isFile() && dirent.name.startsWith('module'),
+    )
+
+    for await (const { path, name } of fileListToRename) {
+      const extenstion = name.slice(Math.max(0, name.indexOf('.')))
+      await rename(resolve(path, name), resolve(path, `index${extenstion}`))
+    }
+
+    await replaceStringInFile({
+      filePath: resolve(__dirname, '../dist/nuxt/types.d.mts'),
+      search: './module',
+      replaceBy: './index',
+    })
+    await replaceStringInFile({
+      filePath: resolve(__dirname, '../dist/nuxt/types.d.ts'),
+      search: './module',
+      replaceBy: './index',
+    })
 
     logger.success('[vite.config.js](run) 💚 library builded with success 💚')
   } catch (error) {
