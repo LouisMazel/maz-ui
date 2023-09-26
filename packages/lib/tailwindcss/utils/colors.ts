@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/prefer-module */
 import { baseColors, variations, variatingColors } from '../variables/colors'
 
 export function getColors() {

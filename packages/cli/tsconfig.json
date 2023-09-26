@@ -17,6 +17,6 @@
     },
     "strictNullChecks": true
   },
-  "include": ["**/*", ".eslintrc.js"],
+  "include": ["**/*"],
   "exclude": ["node_modules"]
 }

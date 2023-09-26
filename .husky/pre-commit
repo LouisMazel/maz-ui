@@ -9,4 +9,4 @@
 # fi
 
 pnpm pre-commit
-pnpm -r --parallel pre-commit
+pnpm -r --workspace-concurrency=1 pre-commit

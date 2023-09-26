@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/prefer-module */
 export const zIndex = {
   1: '1',
   2: '2',

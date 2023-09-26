@@ -18,7 +18,7 @@ module.exports = function component(
 
   return `
   ${!hasEvents && !hasSlots ? '## Component informations' : '## Props'}${
-    hasEvents && hasSlots ? ', ' : (hasSlots || hasEvents ? ' & ' : '')
+    hasEvents && hasSlots ? ', ' : hasSlots || hasEvents ? ' & ' : ''
   } ${hasEvents ? 'Event' : ''} ${hasEvents && hasSlots ? '& ' : ''}${hasSlots ? 'Slots' : ''}
 
   ${deprecated ? `> **Deprecated** ${deprecated[0].description}\n` : ''}

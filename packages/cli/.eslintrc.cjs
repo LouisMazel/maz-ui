@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/prefer-module */
 module.exports = {
   env: {
     es2021: true,
@@ -9,7 +8,7 @@ module.exports = {
     'plugin:sonarjs/recommended',
     'plugin:unicorn/recommended',
     'plugin:promise/recommended',
-    // 'plugin:prettier/recommended',
+    'plugin:prettier/recommended',
     'standard-with-typescript',
   ],
   parserOptions: {
@@ -31,7 +30,6 @@ module.exports = {
     'unicorn/prefer-top-level-await': 'off',
     'unicorn/prefer-module': 'off',
     // PRETTIER
-    // 'prettier/prettier': ['error', {}, { usePrettierrc: true }],
+    'prettier/prettier': ['error', {}, { usePrettierrc: true }],
   },
 }
-/* eslint-enable unicorn/prefer-module */

@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/prefer-module */
 module.exports = {
   customSyntax: 'postcss-html',
   extends: [

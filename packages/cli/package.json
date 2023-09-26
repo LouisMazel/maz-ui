@@ -37,7 +37,6 @@
     "eslint-plugin-sonarjs": "^0.21.0",
     "eslint-plugin-unicorn": "^48.0.1",
     "figlet": "^1.6.0",
-    "prettier": "^3.0.3",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2",
     "vue-docgen-cli": "^4.67.0"
