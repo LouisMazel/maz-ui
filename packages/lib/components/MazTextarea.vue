@@ -6,7 +6,9 @@
         '--is-disabled': disabled,
         '--has-label': hasLabelOrHint,
       },
+      classes,
     ]"
+    :style="style"
   >
     <label
       v-if="hasLabelOrHint"
@@ -56,7 +58,8 @@
 
 <script lang="ts" setup>
   import { useInstanceUniqId } from '../modules/composables'
-  import { computed, onBeforeUnmount, onMounted, ref, type PropType, defineComponent } from 'vue'
+  import type { PropType, StyleValue } from 'vue'
+  import { computed, onBeforeUnmount, onMounted, ref, defineComponent } from 'vue'
   import { getCurrentInstance } from 'vue'
   import { TextareaAutogrow } from './MazTextarea/textarea-autogrow'
   import type { Color } from './types'
@@ -76,11 +79,15 @@
     success: { type: Boolean, default: false },
     warning: { type: Boolean, default: false },
     hint: { type: String, default: undefined },
+    class: { type: String, default: undefined },
+    style: { type: String as PropType<StyleValue>, default: undefined },
     color: {
       type: String as PropType<Color>,
       default: 'primary',
     },
   })
+
+  const classes = computed(() => props.class)
 
   const emits = defineEmits(['input', 'focus', 'blur', 'change'])
 
