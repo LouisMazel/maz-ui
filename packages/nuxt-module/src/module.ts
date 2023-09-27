@@ -81,6 +81,11 @@ export interface MazUiNuxtOptions {
    */
   injectComponents?: boolean
   /**
+   * Default path to public svg icons folder for `<MazIcon />` component
+   * @default undefined
+   */
+  defaultMazIconPath?: string
+  /**
    * Enable Nuxt Devtools integration
    * @default true
    */
@@ -239,13 +244,9 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       })
     }
 
-    // if (moduleOptions.injectUseCurrency) {
-    //   addImports({
-    //     from: 'maz-ui',
-    //     name: 'useCurrency',
-    //     as: 'useCurrency',
-    //   })
-    // }
+    if (moduleOptions.defaultMazIconPath) {
+      addPlugin(resolve(_dirname, './runtime/plugins/maz-icon-path'))
+    }
 
     if (options.devtools) {
       // @ts-expect-error - private API
@@ -265,5 +266,13 @@ export default defineNuxtModule<MazUiNuxtOptions>({
         })
       })
     }
+
+    // if (moduleOptions.injectUseCurrency) {
+    //   addImports({
+    //     from: 'maz-ui',
+    //     name: 'useCurrency',
+    //     as: 'useCurrency',
+    //   })
+    // }
   },
 })
