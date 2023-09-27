@@ -18,15 +18,11 @@
     ]
   },
   "devDependencies": {
-    "@commitlint/cli": "^17.7.1",
     "@commitlint/config-conventional": "^17.7.0",
     "@commitlint/cz-commitlint": "^17.7.1",
     "@types/node": "^20.7.0",
     "commitizen": "^4.3.0",
-    "commitlint-config-cz": "^0.13.3",
-    "conventional-changelog-conventionalcommits": "^7.0.2",
     "cross-env": "^7.0.3",
-    "cz": "^1.8.2",
     "husky": "^8.0.3",
     "lerna": "^7.3.0",
     "lint-staged": "^14.0.1",
@@ -64,5 +60,8 @@
     "commitizen": {
       "path": "@commitlint/cz-commitlint"
     }
+  },
+  "dependencies": {
+    "@commitlint/cli": "^17.7.1"
   }
 }
