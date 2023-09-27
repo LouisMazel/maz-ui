@@ -4,5 +4,14 @@
     "source.fixAll.eslint": true,
     "source.fixAll.stylelint": true
   },
-  "eslint.validate": ["javascript", "typescript", "html", "vue"]
+  // ESLINT
+  "eslint.enable": true,
+  "eslint.format.enable": true,
+  "eslint.validate": ["javascript", "typescript", "html", "vue"],
+  // CSS - STYLELINT
+  "css.validate": false,
+  "less.validate": false,
+  "scss.validate": false,
+  "stylelint.enable": false,
+  "stylelint.validate": ["css", "scss", "postcss", "pcss", "vue"]
 }

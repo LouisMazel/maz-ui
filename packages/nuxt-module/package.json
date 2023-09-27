@@ -15,7 +15,7 @@
   "scripts": {
     "build": "pnpm prepare && nuxt-module-build --outDir=./../lib/dist/nuxt --failOnWarn=false",
     "prepare": "nuxt-module-build --stub && nuxt-module-build prepare",
-    "dev": "cross-env MAZ_UI_DEV=true nuxi dev playground",
+    "dev": "nuxi dev playground",
     "dev:prepare": "pnpm prepare && nuxi prepare playground",
     "lint": "cross-env NODE_ENV=production eslint .",
     "format": "prettier --ignore-path .gitignore . --write",
