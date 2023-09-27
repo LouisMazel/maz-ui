@@ -1,16 +1,16 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 // @ts-expect-error
-import postcss from 'maz-ui/postcss.config'
+import postcss from 'maz-ui/postcss.config.cjs'
 import svgLoader from 'vite-svg-loader'
-import mazUiModule from 'nuxt-module'
 
 export default defineNuxtConfig({
-  modules: [mazUiModule, '@nuxtjs/tailwindcss'],
+  modules: ['nuxt-module', '@nuxtjs/tailwindcss'],
   css: ['~/css/main.css'],
   devServer: {
     port: 3333,
   },
   mazUi: {
+    defaultMazIconPath: '/icons',
     injectComponents: true,
     injectCss: true,
     injectAos: {
