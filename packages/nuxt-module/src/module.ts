@@ -145,6 +145,12 @@ export default defineNuxtModule<MazUiNuxtOptions>({
               : `maz-ui/components/${name}.mjs`,
         })
       }
+
+      addImports({
+        from: 'maz-ui',
+        name: 'useMazDialogPromise',
+        as: 'useMazDialogPromise',
+      })
     }
 
     if (moduleOptions.injectAos) {

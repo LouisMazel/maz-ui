@@ -53,7 +53,7 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
   import { ref } from 'vue'
   import {
     useMazDialogPromise, type DialogData, type DialogButton,
-  } from 'maz-ui/components/MazDialogPromise.vue'
+  } from 'maz-ui'
 
   const { showDialogAndWaitChoice } = useMazDialogPromise()
   const confirmDialog = ref(false)
@@ -155,8 +155,8 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
       text: 'Delete!',
       type: 'resolve',
       color: 'success',
-      response: true,
-      size: 'sm',
+      response: 'delete',
+      size: 'lg',
     },
   ]
 
