@@ -6,7 +6,7 @@ export function useThemeHandler() {
 
   const themeHandlerOptions = $config.public.mazUi?.injectUseThemeHandler
 
-  const options = typeof themeHandlerOptions === 'object' ? themeHandlerOptions : undefined
+  const options = typeof themeHandlerOptions === 'object' ? themeHandlerOptions : {}
 
   return useThemeHandlerComposable(options)
 }
