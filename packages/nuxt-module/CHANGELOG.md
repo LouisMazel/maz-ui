@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.16.0](https://github.com/LouisMazel/maz-ui/compare/v3.15.3...v3.16.0) (2023-09-27)
+
+
+### Features
+
+* **nuxt-module:** add option to set default path of maz icon path ([b83e565](https://github.com/LouisMazel/maz-ui/commit/b83e565361838ca476ca3b8432451e91cc74bcd1))
+
+
+
+
+
 ## [3.15.3](https://github.com/LouisMazel/maz-ui/compare/v3.15.1...v3.15.3) (2023-09-26)
 
 
