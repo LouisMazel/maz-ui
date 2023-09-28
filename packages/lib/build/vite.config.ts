@@ -15,7 +15,6 @@ import { generateLibComponentsEntryFile } from './generate-lib-entry'
 import { compileScss } from './compile-scss'
 import { copyAndTransformComponentsTypesFiles } from './copy-components-types'
 import { readdir, rename } from 'node:fs/promises'
-import { version } from './../../maz-cli/package.json'
 import { replaceInFile } from 'replace-in-file'
 
 const argv = minimist(process.argv.slice(2))
@@ -190,7 +189,7 @@ const run = async () => {
     await replaceInFile({
       files: resolve(__dirname, '../dist/package.json'),
       from: /"workspace:\*"/g,
-      to: `"^${version}"`,
+      to: `"latest"`,
     })
 
     logger.success('[vite.config.js](run) 💚 library builded with success 💚')
