@@ -1,6 +1,6 @@
 {
   "name": "@mazui/cli",
-  "version": "0.0.1",
+  "version": "3.16.1-alpha.0",
   "description": "CLI of Maz-ui",
   "license": "MIT",
   "type": "module",
@@ -47,9 +47,9 @@
     "clear": "^0.1.0",
     "colorette": "^2.0.20",
     "commander": "^11.0.0",
+    "cosmiconfig": "^8.3.6",
     "figlet": "^1.6.0",
-    "tinycolor2": "^1.6.0",
-    "cosmiconfig": "^8.3.6"
+    "tinycolor2": "^1.6.0"
   },
   "devDependencies": {
     "@types/clear": "^0.1.2",
