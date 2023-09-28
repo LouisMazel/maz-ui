@@ -1,4 +1,4 @@
-name: Lib Publish To Npm
+name: Cli Publish To Npm
 
 on:
   release:
@@ -15,7 +15,7 @@ on:
 #       - v*.*.*
 
 jobs:
-  lib-publish:
+  cli-publish:
     runs-on: ubuntu-latest
 
     steps:
@@ -39,6 +39,6 @@ jobs:
         run: pnpm --filter @mazui/cli build
 
       - name: Publish package to npm registry
-        run: cd packages/maz-cli && pnpm publish --access public
+        run: cd packages/maz-cli && pnpm publish --access public --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
