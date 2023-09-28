@@ -22,7 +22,7 @@ All input colors can be in HEX, RGB, RGBA, HSL, HSLA and named formats.
 No theme variables are required, you can put only one if you wish
 
 ```ts
-import { defineConfig } from 'maz-ui'
+import { defineConfig } from '@mazui/cli'
 
 export default defineConfig({
   outputCssFilePath: './css/maz-ui-variables.css',
