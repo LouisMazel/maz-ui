@@ -40,15 +40,15 @@ clean-all:
 	make clean clean-lib clean-docs clean-app clean-cli
 
 install:
-	pnpm install --no-frozen-lockfile
+	pnpm install
 install-docs:
-	pnpm --filter docs install --no-frozen-lockfile
+	pnpm --filter docs install
 install-cli:
-	pnpm --filter cli install --no-frozen-lockfile
+	pnpm --filter cli install
 install-lib:
-	pnpm --filter maz-ui install --no-frozen-lockfile
+	pnpm --filter maz-ui install
 install-playground:
-	pnpm --filter playground install --no-frozen-lockfile
+	pnpm --filter playground install
 
 reinstall-all:
 	make clean-all install
