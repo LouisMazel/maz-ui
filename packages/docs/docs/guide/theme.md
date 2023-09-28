@@ -7,11 +7,68 @@ description: Maz-ui is customizable using CSS variables. Apply your color & bord
 
 {{ $frontmatter.description }}
 
-You must override `--maz-***` CSS variables
+You must override `--maz-***` [CSS variables](#list-of-css-variables)
 
-> **Tip**: Use color palette generator: [noeldelgado.github.io](https://noeldelgado.github.io/shadowlord/#1e90ff) (and set the percent parameter to 17,5%)
+## Generate your theme with the CLI included
+
+<NpmBadge package="@mazui/cli"></NpmBadge>
+
+### Add maz-ui config file
+
+In root folder of your project, add a file named `maz-ui.config.{ts, js, mjs, cjs}` as bellow ([typescript interface](#maz-ui-configuration-file-typescript-interface))
+
+All input colors can be in HEX, RGB, RGBA, HSL, HSLA and named formats.
+
+No theme variables are required, you can put only one if you wish
+
+```ts
+import { defineConfig } from '@mazui/cli'
+
+export default defineConfig({
+  outputCssFilePath: './css/maz-ui-variables.css',
+  theme: {
+    colors: {
+      primary: 'hsl(210, 100%, 56%)',
+      secondary: 'hsl(164, 76%, 46%)',
+      info: 'hsl(188, 78%, 41%)',
+      success: 'hsl(80, 61%, 50%)',
+      warning: 'hsl(40, 97%, 59%)',
+      danger: 'hsl(1, 100%, 71%)',
+      bgOverlay: 'hsl(0, 0%, 0% / 30%)',
+      lightTheme: {
+        textColor: 'hsl(0, 0%, 85%)',
+        colorMuted: 'hsla(0, 0%, 0%, 0.54)',
+        bgColor: 'hsl(0, 0%, 100%)',
+      },
+      darkTheme: {
+        textColor: 'hsl(210, 8%, 14%)',
+        colorMuted: 'hsla(0, 0%, 100%, 0.54)',
+        bgColor: 'hsl(235, 16%, 15%)',
+      },
+    },
+    borderWidth: '0.125rem',
+    borderRadius: '0.5rem',
+    fontFamily: `system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, oxygen,
+    ubuntu, cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif`,
+  },
+})
+```
+
+### Run CLI command
+
+In your terminal, on your root folder project, run this command:
+
+```bash
+npx maz-ui generate-css-vars
+```
+
+The file is generated!
+
+**Be careful, depending on the chosen colors, some variants may need to be adjusted**
 
 ## List of CSS variables
+
+::: details Show CSS variables
 
 ```css
 :root {
@@ -153,3 +210,52 @@ You must override `--maz-***` CSS variables
     'Helvetica Neue', sans-serif;
 }
 ```
+
+:::
+
+## Maz-UI configuration file Typescript interface
+
+
+::: details Show Typescript interface
+
+```ts
+interface MazUiConfig {
+  /**
+   * Path and name of generate CSS file
+   * @example './css/maz-ui-variables.css'
+   */
+  outputCssFilePath: string
+  theme: {
+    colors: {
+      primary?: string
+      secondary?: string
+      info?: string
+      danger?: string
+      success?: string
+      warning?: string
+      bgOverlay?: string
+      lightTheme?: {
+        textColor?: string
+        colorMuted?: string
+        bgColor?: string
+      }
+      darkTheme?: {
+        textColor?: string
+        colorMuted?: string
+        bgColor?: string
+      }
+    }
+    /**
+     * Border width applied to components like: inputs, card, etc
+     */
+    borderWidth?: string
+    /**
+     * Radius applied to rounded components like: buttons, inputs, card, etc.
+     */
+    borderRadius?: string
+    fontFamily?: string
+  }
+}
+```
+
+:::

@@ -13,11 +13,15 @@
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "eslint.validate": ["vue", "javascript", "typescript"],
+  "eslint.validate": [
+    "vue",
+    "javascript",
+    "typescript"
+  ],
   "editor.quickSuggestions": {
     "other": true,
     "comments": false,
     "strings": true
   },
-  "css.validate": false
+  "css.validate": false,
 }

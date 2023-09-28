@@ -124,6 +124,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
     injectCss: true,
     injectComponents: true,
   },
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   async setup(options, nuxt) {
     const { resolve } = createResolver(import.meta.url)
 

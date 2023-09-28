@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import minimist from 'minimist'
 import { resolve } from 'node:path'
 import { build, type InlineConfig } from 'vite'
@@ -14,9 +13,10 @@ import { execPromise } from './utils/exec-promise'
 import { generateComponentsEntryFile } from './generate-components-entry'
 import { generateLibComponentsEntryFile } from './generate-lib-entry'
 import { compileScss } from './compile-scss'
-import { replaceStringInFile } from './replace-string-in-file'
 import { copyAndTransformComponentsTypesFiles } from './copy-components-types'
 import { readdir, rename } from 'node:fs/promises'
+import { version } from './../../maz-cli/package.json'
+import { replaceInFile } from 'replace-in-file'
 
 const argv = minimist(process.argv.slice(2))
 
@@ -31,6 +31,10 @@ const staticAssetsToCopy: Target[] = [
   },
   {
     src: resolve(__dirname, '../icons'),
+    dest: resolve(__dirname, '../dist'),
+  },
+  {
+    src: resolve(__dirname, '../bin'),
     dest: resolve(__dirname, '../dist'),
   },
   {
@@ -113,17 +117,6 @@ const run = async () => {
       )
     }
 
-    await replaceStringInFile({
-      files: resolve(__dirname, '../dist/package.json'),
-      search: './modules/index.ts',
-      replaceBy: './modules/index.mjs',
-    })
-    await replaceStringInFile({
-      files: resolve(__dirname, '../dist/package.json'),
-      search: './components/index.ts',
-      replaceBy: './components/index.mjs',
-    })
-
     const componentsList = await getComponentList()
 
     // to build specific component
@@ -158,6 +151,7 @@ const run = async () => {
     await execPromise('rimraf generated-types')
 
     await execPromise('pnpm -F nuxt-module build')
+    await execPromise('pnpm -F @mazui/cli build')
 
     // Nuxt Module: rename all module.* to index.*
     const fileList = await readdir(resolve(__dirname, './../dist/nuxt'), {
@@ -173,14 +167,30 @@ const run = async () => {
       await rename(resolve(path, name), resolve(path, `index${extenstion}`))
     }
 
-    await replaceStringInFile({
+    await replaceInFile({
       files: [
         resolve(__dirname, '../dist/nuxt/types.d.mts'),
         resolve(__dirname, '../dist/nuxt/types.d.ts'),
         resolve(__dirname, '../dist/nuxt/index.cjs'),
       ],
-      search: './module',
-      replaceBy: './index',
+      from: new RegExp('./module', 'g'),
+      to: './index',
+    })
+    await replaceInFile({
+      files: resolve(__dirname, '../dist/package.json'),
+      from: new RegExp('./modules/index.ts', 'g'),
+      to: './modules/index.mjs',
+    })
+    await replaceInFile({
+      files: resolve(__dirname, '../dist/package.json'),
+      from: new RegExp('./components/index.ts', 'g'),
+      to: './components/index.mjs',
+    })
+    // eslint-disable ntunicorn/no-abusive-eslint-disable
+    await replaceInFile({
+      files: resolve(__dirname, '../dist/package.json'),
+      from: /"workspace:\*"/g,
+      to: `"^${version}"`,
     })
 
     logger.success('[vite.config.js](run) 💚 library builded with success 💚')

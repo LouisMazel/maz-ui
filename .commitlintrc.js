@@ -4,7 +4,7 @@ module.exports = {
     'scope-enum': [
       2,
       'always',
-      ['root', 'docs', 'playground', 'lib', 'cli', 'release', 'nuxt-module'],
+      ['root', 'docs', 'playground', 'lib', 'cli', 'release', 'nuxt-module', '@mazui/cli'],
     ],
   },
 }

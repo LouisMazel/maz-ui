@@ -40,15 +40,15 @@ clean-all:
 	make clean clean-lib clean-docs clean-app clean-cli
 
 install:
-	pnpm install --no-frozen-lockfile
+	pnpm install
 install-docs:
-	pnpm --filter docs install --no-frozen-lockfile
+	pnpm --filter docs install
 install-cli:
-	pnpm --filter cli install --no-frozen-lockfile
+	pnpm --filter cli install
 install-lib:
-	pnpm --filter maz-ui install --no-frozen-lockfile
+	pnpm --filter maz-ui install
 install-playground:
-	pnpm --filter playground install --no-frozen-lockfile
+	pnpm --filter playground install
 
 reinstall-all:
 	make clean-all install
@@ -94,9 +94,9 @@ release:
 # CLI
 
 create-component-files:
-	pnpm --filter cli maz-cli create-files -f $(name)
+	pnpm --filter cli cli create-files -f $(name)
 generate-components-docs:
-	pnpm --filter cli maz-cli generate-components-docs
+	pnpm --filter cli cli generate-components-docs
 generate-components-docs-watch:
-	pnpm --filter cli maz-cli generate-components-docs --watch
+	pnpm --filter cli cli generate-components-docs --watch
 

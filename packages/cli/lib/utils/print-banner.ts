@@ -6,9 +6,9 @@ import { version } from '../../package.json'
 export const clearAndPrintBanner = (): void => {
   clear()
   console.log(
-    chalk.bold.keyword('dodgerblue')(figlet.textSync('maz-cli', { horizontalLayout: 'full' })),
+    chalk.bold.keyword('dodgerblue')(figlet.textSync('cli', { horizontalLayout: 'full' })),
   )
   console.log()
-  console.log(chalk.bold.keyword('dodgerblue')(`maz-cli v${version}`))
+  console.log(chalk.bold.keyword('dodgerblue')(`cli v${version}`))
   console.log()
 }

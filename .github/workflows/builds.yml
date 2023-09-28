@@ -1,15 +1,15 @@
-name: Lib Test Build
+name: Builds
 
 on:
   push:
     paths:
-      - '.github/workflows/lib-test-build.yml'
+      - '.github/workflows/builds.yml'
   pull_request:
     paths:
-      - 'packages/lib/**'
+      - 'packages/**'
 
 jobs:
-  lib-test-build:
+  builds:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,16 +17,16 @@ jobs:
 
       - uses: pnpm/action-setup@v2
         with:
-          version: 7
+          version: latest
 
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: pnpm install
 
       - name: Build lib
-        run: pnpm --filter maz-ui build
+        run: pnpm -r --parallel build
