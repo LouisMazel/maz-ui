@@ -5,19 +5,14 @@ module.exports = {
     es2021: true,
     node: true,
   },
-  globals: {
-    defineProps: 'readonly',
-    defineEmits: 'readonly',
-    defineExpose: 'readonly',
-    withDefaults: 'readonly',
-  },
-  plugins: ['vue', 'unicorn', 'sonarjs'],
   extends: [
     'eslint:recommended',
     'plugin:sonarjs/recommended',
     'plugin:unicorn/recommended',
+    'plugin:promise/recommended',
     'plugin:vue/vue3-recommended',
     '@vue/eslint-config-prettier',
+    // 'plugin:vuejs-accessibility/recommended',
     '@vue/eslint-config-typescript/recommended',
   ],
   parserOptions: {

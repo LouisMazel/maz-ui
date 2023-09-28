@@ -1,5 +1,9 @@
 module.exports = {
-  extends: ['@nuxtjs/eslint-config-typescript', 'plugin:prettier/recommended'],
+  extends: [
+    'eslint:recommended',
+    '@nuxtjs/eslint-config-typescript',
+    'plugin:prettier/recommended',
+  ],
   rules: {
     'prettier/prettier': ['error', {}, { usePrettierrc: true }],
     'comma-dangle': ['error', 'always-multiline'],

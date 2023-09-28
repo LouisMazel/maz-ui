@@ -1,9 +1,10 @@
 **What kind of change does this PR introduce?** (check at least one)
 
-- [ ] Bugfix
+- [ ] Bug fix
 - [ ] Feature
 - [ ] Code style update
 - [ ] Refactor
+- [ ] Dependencies
 - [ ] Documentation
 - [ ] Tests
 - [ ] Build-related changes

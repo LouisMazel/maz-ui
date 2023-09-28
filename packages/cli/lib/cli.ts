@@ -5,7 +5,7 @@ import { version } from '../package.json'
 import { createFilesCommand } from './commands/create-files'
 import { generateComponentsDocumentationCommand } from './commands/generate-components-docs'
 
-const name = 'maz-cli'
+const name = 'cli'
 const program = new Command()
 
 const options = program.opts()

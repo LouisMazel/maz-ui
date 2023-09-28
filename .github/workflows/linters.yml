@@ -1,15 +1,15 @@
-name: Nuxt Module Test Lint
+name: Linters
 
 on:
   push:
     paths:
-      - '.github/workflows/nuxt-module-lint-test.yml'
+      - '.github/workflows/linters.yml'
   pull_request:
     paths:
-      - 'packages/nuxt-module/**'
+      - 'packages/**'
 
 jobs:
-  lib-test-lint:
+  linters:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,11 +22,11 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'pnpm'
 
       - name: Install modules
         run: pnpm install --no-frozen-lockfile
 
-      - name: Run linter
-        run: pnpm --filter nuxt-module lint
+      - name: Run linters
+        run: pnpm -r lint

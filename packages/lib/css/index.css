@@ -1,4 +1,6 @@
 @import './reset.css';
-@import './maz-ui-vars.css';
+@import './base-variables.css';
+@import './maz-ui-variables.css';
+@import './dark-theme.css';
 @import './padded-container-vars.css';
 @import './animation.css';

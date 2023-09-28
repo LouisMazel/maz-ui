@@ -7,33 +7,17 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package maz-ui
 
-
-
-
-
 ## [3.15.3](https://github.com/LouisMazel/maz-ui/compare/v3.15.1...v3.15.3) (2023-09-26)
 
 **Note:** Version bump only for package maz-ui
-
-
-
-
 
 ## [3.15.1](https://github.com/LouisMazel/maz-ui/compare/v3.15.0...v3.15.1) (2023-09-26)
 
 **Note:** Version bump only for package maz-ui
 
-
-
-
-
 # [3.15.0](https://github.com/LouisMazel/maz-ui/compare/v3.14.3-alpha.3...v3.15.0) (2023-09-26)
 
 **Note:** Version bump only for package maz-ui
-
-
-
-
 
 ## [3.14.3-alpha.3](https://github.com/LouisMazel/maz-ui/compare/v3.14.3-alpha.2...v3.14.3-alpha.3) (2023-09-26)
 

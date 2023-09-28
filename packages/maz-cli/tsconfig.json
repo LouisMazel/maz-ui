@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "lib": ["ESNext"],
+    "moduleResolution": "node",
+    "module": "ESNext",
+    "target": "ESNext",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "declaration": true,
+    "removeComments": true,
+    "outDir": "dist",
+    "strictNullChecks": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": true,
+    "inlineSourceMap": false,
+    "isolatedModules": true
+    // "useUnknownInCatchVariables": false
+  },
+  "include": ["bin/**/*", "src/**/*", "build/**/*", "*.config.ts"],
+  "exclude": ["node_modules", "dist"],
+  "ts-node": {
+    "esm": true,
+    "experimentalSpecifierResolution": "node"
+  }
+}

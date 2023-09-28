@@ -6,6 +6,10 @@
   "main": "./modules/index.ts",
   "module": "./modules/index.ts",
   "types": "./types/modules/index.d.ts",
+  "bin": {
+    "maz": "./bin/maz.mjs",
+    "maz-ui": "./bin/maz.mjs"
+  },
   "exports": {
     ".": {
       "types": "./types/modules/index.d.ts",
@@ -39,6 +43,7 @@
     "icons"
   ],
   "scripts": {
+    "maz": "maz",
     "lint": "pnpm lint:js && pnpm lint:style",
     "lint:nofix": "cross-env NODE_ENV=production eslint --ext .ts,.js,.vue .",
     "lint:js": "cross-env NODE_ENV=production eslint --fix --ext .ts,.js,.vue .",
@@ -100,6 +105,9 @@
       "optional": true
     }
   },
+  "dependencies": {
+    "@mazui/cli": "workspace:*"
+  },
   "devDependencies": {
     "@babel/core": "^7.23.0",
     "@babel/preset-env": "^7.22.20",
@@ -107,11 +115,8 @@
     "@nuxt/kit": "^3.7.4",
     "@nuxt/schema": "^3.7.4",
     "@types/dropzone": "^5.7.5",
-    "@types/google.maps": "^3.54.1",
-    "@types/node": "^20.7.0",
+    "@types/google.maps": "^3.54.2",
     "@types/rollup-plugin-peer-deps-external": "^2.2.2",
-    "@typescript-eslint/eslint-plugin": "^6.7.3",
-    "@typescript-eslint/parser": "^6.7.3",
     "@vitejs/plugin-vue": "^4.3.4",
     "@vitest/coverage-v8": "^0.34.5",
     "@vue/compiler-sfc": "^3.3.4",
@@ -126,16 +131,12 @@
     "dayjs": "^1.11.10",
     "defu": "^6.1.2",
     "dropzone": "^5.9.3",
-    "eslint": "^8.50.0",
-    "eslint-plugin-prettier": "^5.0.0",
-    "eslint-plugin-sonarjs": "^0.21.0",
-    "eslint-plugin-unicorn": "^48.0.1",
     "eslint-plugin-vue": "^9.17.0",
+    "eslint-plugin-vuejs-accessibility": "^2.2.0",
     "fs": "0.0.2",
     "jsdom": "^22.1.0",
     "json-templater": "^1.2.0",
     "libphonenumber-js": "^1.10.45",
-    "lint-staged": "^14.0.1",
     "minimist": "^1.2.8",
     "nuxt": "^3.7.4",
     "onchange": "^7.1.0",
@@ -160,8 +161,6 @@
     "stylelint-config-tailwindcss": "^0.0.7",
     "tailwindcss": "^3.3.3",
     "terser": "^5.20.0",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.2.2",
     "vite": "^4.4.9",
     "vite-plugin-css-injected-by-js": "^3.3.0",
     "vite-plugin-static-copy": "^0.17.0",
@@ -173,8 +172,7 @@
     "vue-loader": "^17.2.2",
     "vue-router": "^4.2.5",
     "vue-scrollto": "^2.20.0",
-    "vue-tsc": "^1.8.15",
-    "vuedraggable": "^2.24.3"
+    "vue-tsc": "^1.8.15"
   },
   "engines": {
     "node": ">= 6.0.0",

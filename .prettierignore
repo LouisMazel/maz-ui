@@ -5,3 +5,5 @@ package-lock.json
 .gitignore
 packages/**
 *.sh
+.npmrc
+.vscode/**

@@ -1,15 +1,15 @@
-name: Cli Test Lint
+name: Builds
 
 on:
   push:
     paths:
-      - '.github/workflows/cli-test-lint.yml'
+      - '.github/workflows/builds.yml'
   pull_request:
     paths:
-      - 'packages/cli/**'
+      - 'packages/**'
 
 jobs:
-  lib-test-lint:
+  builds:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,11 +22,11 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'pnpm'
 
-      - name: Install modules
+      - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
 
-      - name: Run linters
-        run: pnpm --filter cli lint
+      - name: Build lib
+        run: pnpm -r --parallel build

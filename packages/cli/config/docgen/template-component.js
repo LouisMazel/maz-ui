@@ -4,10 +4,10 @@
 module.exports = function component(
   renderedUsage,
   document_,
-  config,
-  fileName,
+  _config,
+  _fileName,
   requiresMd,
-  { isSubComponent, hasSubComponents },
+  // { isSubComponent, hasSubComponents },
 ) {
   const { description, tags, functional } = document_
 

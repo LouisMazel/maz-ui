@@ -1,0 +1,44 @@
+name: Lib Publish To Npm
+
+on:
+  release:
+    types: [created]
+  push:
+    branches:
+      - master
+    paths:
+      - '.github/workflows/cli-publish.yml'
+
+# on:
+#   push:
+#     tags:
+#       - v*.*.*
+
+jobs:
+  lib-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          cache: 'pnpm'
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Build Lib
+        run: pnpm --filter @mazui/cli build
+
+      - name: Publish package to npm registry
+        run: cd packages/maz-cli && pnpm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
