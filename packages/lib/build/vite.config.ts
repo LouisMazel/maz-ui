@@ -34,6 +34,10 @@ const staticAssetsToCopy: Target[] = [
     dest: resolve(__dirname, '../dist'),
   },
   {
+    src: resolve(__dirname, '../bin'),
+    dest: resolve(__dirname, '../dist'),
+  },
+  {
     src: resolve(__dirname, '../../../README.md'),
     dest: resolve(__dirname, '../dist'),
   },

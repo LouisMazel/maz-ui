@@ -40,7 +40,8 @@
     "tailwindcss",
     "nuxt",
     "types",
-    "icons"
+    "icons",
+    "bin"
   ],
   "scripts": {
     "maz": "maz",
