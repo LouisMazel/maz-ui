@@ -1,6 +1,6 @@
 {
   "name": "cli",
-  "version": "3.16.1-alpha.0",
+  "version": "3.17.0",
   "main": "./dist/cli.js",
   "bin": {
     "cli": "./dist/cli.js"
