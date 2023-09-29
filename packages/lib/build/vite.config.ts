@@ -4,7 +4,6 @@ import { build, type InlineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
 import svgLoader from 'vite-svg-loader'
-import peerDepsExternal from 'rollup-plugin-peer-deps-external'
 import { viteStaticCopy, type Target } from 'vite-plugin-static-copy'
 
 import { getComponentList } from './get-component-list'
@@ -66,7 +65,15 @@ const getBuildConfig = ({
       fileName: name,
     },
     rollupOptions: {
-      external: ['vue', 'libphonenumber-js', '/^dayjs:.*/', 'chart.js', 'dropzone', 'vue-chartjs'],
+      external: [
+        'vue',
+        'libphonenumber-js',
+        '/^dayjs:.*/',
+        'chart.js',
+        'dropzone',
+        'vue-chartjs',
+        'vue-scrollto',
+      ],
       output: {
         exports: 'named',
         chunkFileNames: 'assets/[name]-[hash].mjs',
@@ -78,6 +85,7 @@ const getBuildConfig = ({
           dropzone: 'dropzone',
           'vue-chartjs': 'vue-chartjs',
           'chart.js': 'chart.js',
+          'vue-scrollto': 'vue-scrollto',
           'dayjs/plugin/customParseFormat': 'dayjs/plugin/customParseFormat',
           'dayjs/plugin/weekday': 'dayjs/plugin/weekday',
           'dayjs/plugin/isBetween': 'dayjs/plugin/isBetween',
@@ -87,10 +95,6 @@ const getBuildConfig = ({
   },
   plugins: [
     // @ts-ignore
-    peerDepsExternal({
-      packageJsonPath: resolve(__dirname, '../package.json'),
-      includeDependencies: false,
-    }),
     svgLoader({}),
     // @ts-ignore
     Vue(),
