@@ -7,12 +7,6 @@ export default <Config>{
   presets: [tailwindConfigBase],
   content: {
     files: ['./modules/**/*', './components/**/*', 'tailwindcss/**/*', '!components_tmp/**/*'],
-    transform: {
-      vue: (content) => {
-        const regex = /<style[^>]*>([\S\s]*?)<\/style>/g
-        return content.replaceAll(regex, '')
-      },
-    },
   },
   prefix: 'maz-',
   corePlugins: {

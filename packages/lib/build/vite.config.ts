@@ -2,7 +2,6 @@ import minimist from 'minimist'
 import { resolve } from 'node:path'
 import { build, type InlineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
-import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
 import svgLoader from 'vite-svg-loader'
 import peerDepsExternal from 'rollup-plugin-peer-deps-external'
 import { viteStaticCopy, type Target } from 'vite-plugin-static-copy'
@@ -92,9 +91,7 @@ const getBuildConfig = ({
       includeDependencies: false,
     }),
     svgLoader({}),
-    // @ts-ignore
     Vue(),
-    cssInjectedByJsPlugin(), // ...(isModuleBuild ? [] : [cssInjectedByJsPlugin()]),
     ...(isModuleBuild ? [viteStaticCopy({ targets: staticAssetsToCopy })] : []),
   ],
 })
