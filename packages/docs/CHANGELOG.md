@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.17.1-alpha.1](https://github.com/LouisMazel/maz-ui/compare/v3.17.1-alpha.0...v3.17.1-alpha.1) (2023-09-29)
+
+**Note:** Version bump only for package docs
+
+
+
+
+
 ## [3.17.1-alpha.0](https://github.com/LouisMazel/maz-ui/compare/v3.17.0...v3.17.1-alpha.0) (2023-09-29)
 
 **Note:** Version bump only for package docs
