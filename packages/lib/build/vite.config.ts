@@ -14,6 +14,7 @@ import { compileScss } from './compile-scss'
 import { copyAndTransformComponentsTypesFiles } from './copy-components-types'
 import { readdir, rename } from 'node:fs/promises'
 import { replaceInFile } from 'replace-in-file'
+import { libInjectCss } from 'vite-plugin-lib-inject-css'
 
 const argv = minimist(process.argv.slice(2))
 
@@ -77,12 +78,11 @@ const getBuildConfig = ({
           'vue-scrollto',
         ],
         output: {
-          intro: `import './${name}.css';`,
           exports: 'named',
           chunkFileNames: 'assets/[name]-[hash].mjs',
           assetFileNames: '[name].[ext]',
           entryFileNames: '[name].mjs',
-          // preserveModules: true,
+          preserveModules: false,
           compact: true,
           globals: {
             vue: 'Vue',
@@ -100,6 +100,7 @@ const getBuildConfig = ({
       },
     },
     plugins: [
+      libInjectCss(),
       // @ts-ignore
       svgLoader({}),
       Vue(),
