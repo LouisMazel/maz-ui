@@ -128,6 +128,8 @@ export default defineNuxtModule<MazUiNuxtOptions>({
   async setup(options, nuxt) {
     const { resolve } = createResolver(import.meta.url)
 
+    nuxt.options.build.transpile = [...nuxt.options.build.transpile, 'maz-ui']
+
     const moduleOptions = defu(nuxt.options.runtimeConfig.public.mazUi, options)
 
     nuxt.options.runtimeConfig.public.mazUi = moduleOptions
