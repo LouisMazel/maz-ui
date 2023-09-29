@@ -143,7 +143,13 @@ function getNormalCSSVariables(config: MazUiConfig) {
   return normalVariablesCss
 }
 
-export async function generateCssFile({ config }: { config: MazUiConfig }) {
+export async function generateCssFile({
+  config,
+  outputCssFilePath,
+}: {
+  config: MazUiConfig
+  outputCssFilePath: string
+}) {
   if (!config.theme.colors) {
     throw new Error('No colors found in "config.theme.colors"')
   }
@@ -167,7 +173,7 @@ export async function generateCssFile({ config }: { config: MazUiConfig }) {
     getNormalCSSVariables(config),
   ])
 
-  const outputPath = resolve(process.cwd(), config.outputCssFilePath)
+  const outputPath = resolve(process.cwd(), outputCssFilePath)
 
   await writeFile(outputPath, css)
 
