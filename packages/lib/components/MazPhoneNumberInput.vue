@@ -113,8 +113,8 @@
     sanitizePhoneNumber,
     loadPhoneNumberExamplesFile,
   } from './MazPhoneNumberInput/utils'
-  import { truthyFilter } from './../modules/helpers'
-  import { useInstanceUniqId } from '../modules/composables'
+  import { truthyFilter } from './../modules/helpers/truthy-filter'
+  import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
 
   import locales from './MazPhoneNumberInput/constantes/locales'
 

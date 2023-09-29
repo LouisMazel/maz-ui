@@ -67,8 +67,11 @@
 </template>
 
 <script lang="ts">
-  export { useMazDialogPromise } from './../modules'
-  export type { DialogState, DialogData } from './../modules'
+  export {
+    useMazDialogPromise,
+    type DialogState,
+    type DialogData,
+  } from './../modules/composables/use-maz-dialog-promise'
   export type { Color, Size } from './types'
 
   export type DialogButton = {
@@ -89,7 +92,11 @@
   import { type PropType, computed } from 'vue'
   import MazDialog from './MazDialog.vue'
   import MazBtn, { type Color, type Size } from './MazBtn.vue'
-  import { useMazDialogPromise, type DialogData, type DialogState } from './../modules'
+  import {
+    useMazDialogPromise,
+    type DialogData,
+    type DialogState,
+  } from './../modules/composables/use-maz-dialog-promise'
 
   const props = defineProps({
     /** Dialog Data - type DialogData */

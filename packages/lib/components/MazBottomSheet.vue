@@ -1,5 +1,5 @@
 <template>
-  <MazBackdrop
+  <div
     v-bind="$attrs"
     transition-name="bottom-sheet-anim"
     backdrop-class="--bottom-sheet"
@@ -7,37 +7,32 @@
     @open="$emit('open', $event)"
     @update:model-value="emits('update:model-value', $event)"
   >
-    <template #default="{ close }">
-      <div
-        class="m-bottom-sheet__container"
-        :class="{
-          'maz-py-6': !noPadding,
-        }"
-      >
-        <!-- Slot content -->
-        <slot :close="close">
-          <div class="m-bottom-sheet__content-wrapper">
-            <p>Default content</p>
-          </div>
-        </slot>
-
-        <MazBtn
-          v-if="!noClose"
-          size="sm"
-          class="m-bottom-sheet__close"
-          color="transparent"
-          @click="close"
-        >
-          <XIcon class="maz-text-lg" />
-        </MazBtn>
+    <!-- <template #default="{ close }"> -->
+    <div
+      class="m-bottom-sheet__container"
+      :class="{
+        'maz-py-6': !noPadding,
+      }"
+    >
+      <!-- Slot content -->
+      <!-- <slot :close="close"> -->
+      <div class="m-bottom-sheet__content-wrapper">
+        <p>Default content</p>
       </div>
-    </template>
-  </MazBackdrop>
+      <!-- </slot> -->
+
+      <MazBtn v-if="!noClose" size="sm" class="m-bottom-sheet__close" color="transparent">
+        <!-- @click="close" -->
+        <XIcon class="maz-text-lg" />
+      </MazBtn>
+    </div>
+    <!-- </template> -->
+  </div>
 </template>
 
 <script lang="ts" setup>
   import MazBtn from './MazBtn.vue'
-  import MazBackdrop from './MazBackdrop.vue'
+  // import MazBackdrop from './MazBackdrop.vue'
   import XIcon from './../icons/x-mark.svg'
 
   defineProps({

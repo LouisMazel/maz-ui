@@ -42,7 +42,7 @@
   import type { MazTabsProvide } from './MazTabs.vue'
 
   import MazBtn from './MazBtn.vue'
-  import { injectStrict } from './../modules'
+  import { injectStrict } from './../modules/helpers/inject-strict'
   import type { StyleValue } from 'vue'
 
   function toKebabCase(input: string): string {

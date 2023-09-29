@@ -6,7 +6,7 @@ export default <Config>{
   mode: 'build',
   presets: [tailwindConfigBase],
   content: {
-    files: ['./modules/**/*', './components/**/*', 'tailwindcss/**/*', '!components_tmp/**/*'],
+    files: ['modules/**/*', 'components/**/*'],
   },
   prefix: 'maz-',
   corePlugins: {

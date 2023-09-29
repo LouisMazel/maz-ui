@@ -101,7 +101,7 @@
   import ChevronDownIcon from './../icons/chevron-down.svg'
   import type { Color, Position } from './types'
 
-  import { date } from './../modules'
+  import { date } from './../modules/filters/date'
 
   import {
     getFormattedDate,

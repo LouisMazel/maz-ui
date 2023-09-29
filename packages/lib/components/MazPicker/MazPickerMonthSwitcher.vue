@@ -24,7 +24,8 @@
 </template>
 
 <script lang="ts" setup>
-  import { capitalize, date } from './../../modules/filters'
+  import { date } from './../../modules/filters/date'
+  import { capitalize } from './../../modules/filters/capitalize'
   import type { PropType } from 'vue'
   import type { Color } from '../types'
   import { computed } from 'vue'

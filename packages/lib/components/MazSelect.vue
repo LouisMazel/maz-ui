@@ -116,7 +116,7 @@
   import { ref, computed, onBeforeMount, nextTick, type PropType, getCurrentInstance } from 'vue'
   import MazInput from './MazInput.vue'
   import type { Color, ModelValueSimple, Position, Size } from './types'
-  import { useInstanceUniqId } from '../modules/composables'
+  import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
 
   import SearchIcon from './../icons/magnifying-glass.svg'
   import ChevronDownIcon from './../icons/chevron-down.svg'

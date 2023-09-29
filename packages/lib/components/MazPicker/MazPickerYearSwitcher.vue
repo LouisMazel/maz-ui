@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { date } from './../../modules/filters'
+  import { date } from './../../modules/filters/date'
   import { computed, type PropType, ref } from 'vue'
   import type { Dayjs } from 'dayjs'
   import dayjs from 'dayjs'

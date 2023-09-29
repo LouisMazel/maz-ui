@@ -32,7 +32,8 @@
   import ChevronRightIcon from './../../icons/chevron-right.svg'
   import MazBtn from '../MazBtn.vue'
   import { computed } from 'vue'
-  import { date, capitalize } from './../../modules'
+  import { capitalize } from './../../modules/filters/capitalize'
+  import { date } from './../../modules/filters/date'
   import dayjs from 'dayjs'
 
   const props = defineProps({

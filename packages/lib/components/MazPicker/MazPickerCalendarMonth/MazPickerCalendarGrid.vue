@@ -48,7 +48,7 @@
   import { computed, type PropType, ref, watch } from 'vue'
   import { getDaysInMonth, getFirstDayOfMonth, isSameDate, isToday, isSameDay } from '../utils'
   import MazBtn from './../../MazBtn.vue'
-  import { debounce } from './../../../modules'
+  import { debounce } from './../../../modules/helpers/debounce'
   import type { PartialRangeValue, PickerValue } from '../types'
   import type { Dayjs } from 'dayjs'
   import dayjs from 'dayjs'

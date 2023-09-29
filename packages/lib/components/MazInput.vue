@@ -109,7 +109,7 @@
   } from 'vue'
 
   import { debounce } from './../modules/helpers/debounce'
-  import { useInstanceUniqId } from '../modules/composables'
+  import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
 
   import MazBtn from './MazBtn.vue'
   import MazIcon from './MazIcon.vue'

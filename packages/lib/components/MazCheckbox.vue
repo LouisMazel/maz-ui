@@ -19,7 +19,7 @@
 </script>
 
 <script lang="ts" setup>
-  import { useInstanceUniqId } from '../modules/composables'
+  import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
   import { type PropType, getCurrentInstance } from 'vue'
   import type { Color } from './types'
 

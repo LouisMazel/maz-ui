@@ -9,7 +9,7 @@
 <script lang="ts" setup>
   import { ref, watch, computed } from 'vue'
   import type { MazTabsProvide } from './MazTabs.vue'
-  import { injectStrict } from './../modules'
+  import { injectStrict } from '../modules/helpers/inject-strict'
 
   const transitionName = ref<string>('maz-tab-transition')
   const MazTabsContentItem = ref()
