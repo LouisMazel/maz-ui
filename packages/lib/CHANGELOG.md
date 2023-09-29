@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.17.1-alpha.0](https://github.com/LouisMazel/maz-ui/compare/v3.17.0...v3.17.1-alpha.0) (2023-09-29)
+
+
+### Features
+
+* **lib:** add helper to transform locale to unicode flag ([5f89873](https://github.com/LouisMazel/maz-ui/commit/5f89873c71d97956f3a57cdf1b17260b996a3912))
+
+
+
+
+
 # [3.17.0](https://github.com/LouisMazel/maz-ui/compare/v3.16.0...v3.17.0) (2023-09-28)
 
 **Note:** Version bump only for package maz-ui
