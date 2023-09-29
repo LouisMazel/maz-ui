@@ -63,7 +63,7 @@ const getBuildConfig = ({
         // Can be an array of multiple entry points
         entry: path,
         formats: ['es'],
-        fileName: isModuleBuild ? name : `${name}/index`,
+        fileName: name,
         name,
       },
       rollupOptions: {
