@@ -19,6 +19,8 @@
       :class="[
         isOpen ? 'maz-border-color-lighter' : 'maz-border-transparent',
         { '--is-collapsable': collapsable },
+        { 'maz-justify-end': !$slots['header'] && collapsable },
+        { 'maz-justify-between': $slots['header'] },
       ]"
       tabindex="-1"
       @click.stop="collapsable ? (isOpen = !isOpen) : undefined"
@@ -187,7 +189,7 @@
     @apply maz-relative maz-inline-flex maz-max-h-full maz-flex-col maz-bg-color;
 
     &__header {
-      @apply maz-flex maz-items-center maz-justify-between maz-px-4 maz-py-3 maz-transition-colors maz-delay-200;
+      @apply maz-flex maz-items-center maz-px-4 maz-py-3 maz-transition-colors maz-delay-200;
 
       &.--is-collapsable {
         @apply hover:maz-bg-color-lighter;
