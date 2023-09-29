@@ -8,12 +8,12 @@
   >
     <button
       v-if="countryCode && !noFlags && !noCountrySelector"
-      class="m-phone-number-input__country-flag"
+      class="m-phone-number-input__country-flag maz-text-xl"
       tabindex="-1"
       type="button"
       @click="focusCountrySelector"
     >
-      <div class="maz-flag" :class="`maz-flag-${countryCode.toLowerCase()}`"></div>
+      {{ localeToUnicodeFlag(countryCode) }}
     </button>
 
     <MazSelect
@@ -45,11 +45,9 @@
             'm-phone-number-input__select__item--selected': isSelected,
           }"
         >
-          <span
-            v-if="!noFlags && typeof option.iso2 === 'string'"
-            class="maz-flag maz-mr-2"
-            :class="[`maz-flag-${option.iso2.toLowerCase()}`]"
-          ></span>
+          <span v-if="!noFlags && typeof option.iso2 === 'string'" class="maz-mr-2 maz-text-lg">
+            {{ localeToUnicodeFlag(option.iso2) }}
+          </span>
           <span
             v-if="showCodeOnList"
             class="maz-w-10 maz-flex-none"
@@ -57,7 +55,7 @@
           >
             {{ option.dialCode }}
           </span>
-          <span class="maz-flex-1 maz-truncate">
+          <span class="maz-flex-1 maz-truncate" :class="{ 'maz-font-semibold': isSelected }">
             {{ option.name }}
           </span>
         </div>
@@ -130,6 +128,7 @@
 
   import MazInput from './MazInput.vue'
   import MazSelect from './MazSelect.vue'
+  import { localeToUnicodeFlag } from './../modules/helpers/locale-to-unicode-flag'
 
   const emits = defineEmits(['update', 'update:model-value', 'country-code'])
 
@@ -509,15 +508,13 @@
 </script>
 
 <style lang="postcss" scoped>
-  @import './MazPhoneNumberInput/css/flags.css';
-
   .m-phone-number-input {
     @apply maz-relative maz-flex;
 
     &__country-flag {
       position: absolute;
-      bottom: 10px;
-      left: 18px;
+      bottom: 2px;
+      left: 15px;
       z-index: 4;
       outline: none;
       border: none;
