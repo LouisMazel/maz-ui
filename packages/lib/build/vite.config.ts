@@ -6,6 +6,7 @@ import svgLoader from 'vite-svg-loader'
 import { viteStaticCopy, type Target } from 'vite-plugin-static-copy'
 
 import { getComponentList } from './get-component-list'
+import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
 import { logger } from './utils/logger'
 import { execPromise } from './utils/exec-promise'
 import { generateComponentsEntryFile } from './generate-components-entry'
@@ -14,7 +15,6 @@ import { compileScss } from './compile-scss'
 import { copyAndTransformComponentsTypesFiles } from './copy-components-types'
 import { readdir, rename } from 'node:fs/promises'
 import { replaceInFile } from 'replace-in-file'
-import { libInjectCss } from 'vite-plugin-lib-inject-css'
 
 const argv = minimist(process.argv.slice(2))
 
@@ -100,10 +100,10 @@ const getBuildConfig = ({
       },
     },
     plugins: [
-      libInjectCss(),
       // @ts-ignore
       svgLoader({}),
       Vue(),
+      cssInjectedByJsPlugin(),
       ...(isModuleBuild ? [viteStaticCopy({ targets: staticAssetsToCopy })] : []),
     ],
   }

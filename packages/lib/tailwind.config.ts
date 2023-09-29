@@ -8,6 +8,12 @@ export default <Config>{
   content: {
     files: ['modules/**/*', 'components/**/*'],
   },
+  // transform: {
+  // vue: (content) => {
+  // const regex = /<style[^>]*>([\S\s]*?)<\/style>/g
+  // return content.replaceAll(regex, '')
+  // },
+  // },
   prefix: 'maz-',
   corePlugins: {
     preflight: false,
