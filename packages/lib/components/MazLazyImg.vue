@@ -36,12 +36,13 @@
 </script>
 
 <script lang="ts" setup>
-  import { computed, type Prop } from 'vue'
+  import { computed, defineAsyncComponent, type Prop } from 'vue'
   import { vLazyImg } from './../modules/directives/v-lazy-img/lazy-img'
   import type { vLazyImgOptions } from './../modules/directives/v-lazy-img/types'
 
-  import MazSpinner from './MazSpinner.vue'
   import type { Image } from './types'
+
+  const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
 
   const props = defineProps({
     image: { type: [String, Object], default: undefined } as Prop<Image>,

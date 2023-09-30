@@ -107,12 +107,13 @@
 </script>
 
 <script lang="ts" setup>
-  import { computed, useSlots, type PropType, ref, watch } from 'vue'
-  import MazGallery from './MazGallery.vue'
-  import MazBtn from './MazBtn.vue'
-  import MazTransitionExpand from './MazTransitionExpand.vue'
+  import { computed, useSlots, type PropType, ref, watch, defineAsyncComponent } from 'vue'
   import type { MazGalleryImage } from './types'
-  import ChevronDownIcon from './../icons/chevron-down.svg'
+
+  const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
+  const MazGallery = defineAsyncComponent(() => import('./MazGallery.vue'))
+  const MazTransitionExpand = defineAsyncComponent(() => import('./MazTransitionExpand.vue'))
+  const ChevronDownIcon = defineAsyncComponent(() => import('./../icons/chevron-down.svg'))
 
   const props = defineProps({
     // Images displayed

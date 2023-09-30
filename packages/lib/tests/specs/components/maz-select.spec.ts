@@ -1,5 +1,4 @@
-import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
+import { type VueWrapper, mount } from '@vue/test-utils'
 import MazSelect from '@components/MazSelect.vue'
 import MazInput from '@components/MazInput.vue'
 import type { ComponentPublicInstance } from 'vue'

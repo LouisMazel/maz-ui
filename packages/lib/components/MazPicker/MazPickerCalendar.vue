@@ -60,15 +60,20 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, type PropType, ref } from 'vue'
-  import MazPickerCalendarSwitcher from './MazPickerCalendarSwitcher.vue'
+  import { computed, type PropType, ref, defineAsyncComponent } from 'vue'
   import type { Color } from '../types'
-  import MazPickerMonthSwitcher from './MazPickerMonthSwitcher.vue'
-  import MazPickerYearSwitcher from './MazPickerYearSwitcher.vue'
-  import MazPickerCalendarMonth from './MazPickerCalendarMonth/MazPickerCalendarMonth.vue'
   import type { PickerShortcut, PickerValue } from './types'
   import type { Dayjs } from 'dayjs'
-  import MazPickerShortcuts from './MazPickerShortcuts.vue'
+
+  const MazPickerCalendarSwitcher = defineAsyncComponent(
+    () => import('./MazPickerCalendarSwitcher.vue'),
+  )
+  const MazPickerMonthSwitcher = defineAsyncComponent(() => import('./MazPickerMonthSwitcher.vue'))
+  const MazPickerYearSwitcher = defineAsyncComponent(() => import('./MazPickerYearSwitcher.vue'))
+  const MazPickerCalendarMonth = defineAsyncComponent(
+    () => import('./MazPickerCalendarMonth/MazPickerCalendarMonth.vue'),
+  )
+  const MazPickerShortcuts = defineAsyncComponent(() => import('./MazPickerShortcuts.vue'))
 
   const props = defineProps({
     modelValue: {

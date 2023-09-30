@@ -41,12 +41,13 @@
 </script>
 
 <script lang="ts" setup>
-  import { computed, type PropType } from 'vue'
+  import { computed, defineAsyncComponent, type PropType } from 'vue'
   import type { Size } from './types'
-  import MazBtn from './MazBtn.vue'
-  import MazInput from './MazInput.vue'
-  import PlusIcon from './../icons/plus.svg'
-  import MinusIcon from './../icons/minus.svg'
+
+  const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
+  const MazInput = defineAsyncComponent(() => import('./MazInput.vue'))
+  const PlusIcon = defineAsyncComponent(() => import('./../icons/plus.svg'))
+  const MinusIcon = defineAsyncComponent(() => import('./../icons/minus.svg'))
 
   const props = defineProps({
     modelValue: { type: Number, required: true },

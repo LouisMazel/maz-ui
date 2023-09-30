@@ -124,11 +124,13 @@
     ref,
     watch,
     getCurrentInstance,
+    defineAsyncComponent,
   } from 'vue'
 
-  import MazInput from './MazInput.vue'
-  import MazSelect from './MazSelect.vue'
   import { localeToUnicodeFlag } from './../modules/helpers/locale-to-unicode-flag'
+
+  const MazInput = defineAsyncComponent(() => import('./MazInput.vue'))
+  const MazSelect = defineAsyncComponent(() => import('./MazSelect.vue'))
 
   const emits = defineEmits(['update', 'update:model-value', 'country-code'])
 

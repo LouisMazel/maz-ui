@@ -1,6 +1,5 @@
 import type { ObjectDirective } from 'vue'
-import type { BindingData } from './fullscreen-img.handler'
-import { FullscreenImgHandler } from './fullscreen-img.handler'
+import { FullscreenImgHandler, type BindingData } from './fullscreen-img.handler'
 
 let instance: FullscreenImgHandler
 

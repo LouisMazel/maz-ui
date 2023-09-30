@@ -111,10 +111,11 @@
   import { debounce } from './../modules/helpers/debounce'
   import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
 
-  import MazBtn from './MazBtn.vue'
-  import MazIcon from './MazIcon.vue'
   import type { Color, ModelValueSimple, Size } from './types'
   export type { Color, Size, ModelValueSimple } from './types'
+
+  const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
+  const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
 
   const EyeOffIcon = defineAsyncComponent(() => import('./../icons/eye-slash.svg'))
   const EyeIcon = defineAsyncComponent(() => import('./../icons/eye.svg'))

@@ -1,7 +1,7 @@
 <template>
   <div class="m-picker-calendar-switcher">
     <MazBtn size="xs" color="transparent" type="button" @click="previousMonth">
-      <ChevronLeftIcon />
+      <ChevronLeftIcon class="maz-text-lg" />
     </MazBtn>
     <MazBtn
       size="sm"
@@ -22,19 +22,19 @@
       {{ yearLabel }}
     </MazBtn>
     <MazBtn size="xs" color="transparent" type="button" @click="nextMonth">
-      <ChevronRightIcon />
+      <ChevronLeftIcon class="maz-rotate-180 maz-text-lg" />
     </MazBtn>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import ChevronLeftIcon from './../../icons/chevron-left.svg'
-  import ChevronRightIcon from './../../icons/chevron-right.svg'
-  import MazBtn from '../MazBtn.vue'
-  import { computed } from 'vue'
+  import { computed, defineAsyncComponent } from 'vue'
   import { capitalize } from './../../modules/filters/capitalize'
   import { date } from './../../modules/filters/date'
   import dayjs from 'dayjs'
+
+  const MazBtn = defineAsyncComponent(() => import('./../MazBtn.vue'))
+  const ChevronLeftIcon = defineAsyncComponent(() => import('./../../icons/chevron-left.svg'))
 
   const props = defineProps({
     calendarDate: { type: String, default: undefined },

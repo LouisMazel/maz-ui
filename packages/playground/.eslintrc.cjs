@@ -7,6 +7,7 @@ module.exports = {
   rules: {
     'prettier/prettier': ['error', {}, { usePrettierrc: true }],
     'comma-dangle': ['error', 'always-multiline'],
+    'no-duplicate-imports': 'error',
     // VUE
     'vue/component-name-in-template-casing': [
       'error',
@@ -17,6 +18,11 @@ module.exports = {
       },
     ],
     // TYPESCRIPT
-    '@typescript-eslint/consistent-type-imports': 'error',
+    '@typescript-eslint/consistent-type-imports': [
+      'error',
+      {
+        fixStyle: 'inline-type-imports',
+      },
+    ],
   },
 }

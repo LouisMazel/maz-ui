@@ -1,5 +1,4 @@
-import type { VueWrapper } from '@vue/test-utils'
-import { shallowMount } from '@vue/test-utils'
+import { shallowMount, type VueWrapper } from '@vue/test-utils'
 import MazStepper from '@components/MazStepper.vue'
 import type { ComponentPublicInstance } from 'vue'
 

@@ -47,10 +47,11 @@
     onMounted,
     type PropType,
     ref,
+    defineAsyncComponent,
   } from 'vue'
-  import type Dropzone from 'dropzone'
-  import type { DropzoneOptions, DropzoneFile } from 'dropzone'
-  import MazSpinner from './MazSpinner.vue'
+  import { type DropzoneOptions, type DropzoneFile } from 'dropzone'
+
+  const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
 
   export interface MazDropzoneOptions extends DropzoneOptions {
     dictFilesDescriptions?: string

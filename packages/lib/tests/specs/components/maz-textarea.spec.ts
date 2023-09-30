@@ -1,5 +1,4 @@
-import type { VueWrapper } from '@vue/test-utils'
-import { shallowMount } from '@vue/test-utils'
+import { type VueWrapper, shallowMount } from '@vue/test-utils'
 import MazTextarea from '@components/MazTextarea.vue'
 import { TextareaAutogrow } from '@components/MazTextarea/textarea-autogrow'
 import type { ComponentPublicInstance } from 'vue'

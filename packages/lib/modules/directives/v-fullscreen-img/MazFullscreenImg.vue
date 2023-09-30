@@ -59,17 +59,22 @@
 </template>
 
 <script lang="ts" setup>
-  import MazSpinner from './../../../components/MazSpinner.vue'
-  import { sleep as delay } from './../../index'
-  import { computed } from 'vue'
-  import { nextTick } from 'vue'
-  import { onMounted, onBeforeUnmount } from 'vue'
-  import { ref } from 'vue'
-  import XMark from './../../../icons/x-mark.svg'
-  import ChevronLeft from './../../../icons/chevron-left.svg'
-  import { onBeforeMount } from 'vue'
+  import { sleep as delay } from './../../helpers/sleep'
+  import {
+    computed,
+    defineAsyncComponent,
+    nextTick,
+    onMounted,
+    onBeforeUnmount,
+    ref,
+    onBeforeMount,
+  } from 'vue'
 
   const emits = defineEmits(['close', 'previous', 'next', 'before-close'])
+
+  const MazSpinner = defineAsyncComponent(() => import('./../../../components/MazSpinner.vue'))
+  const XMark = defineAsyncComponent(() => import('./../../../icons/x-mark.svg'))
+  const ChevronLeft = defineAsyncComponent(() => import('./../../../icons/chevron-left.svg'))
 
   type VueScrollTo = {
     scrollTo: (

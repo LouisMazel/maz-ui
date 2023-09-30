@@ -41,15 +41,26 @@ const staticAssetsToCopy: Target[] = [
   },
 ]
 
+function generateRandomHash(length = 8) {
+  const characters = '0123456789abcdefghijklmnopqrstuvwxyz'
+  let string = ''
+  for (let i = 0; i <= length; i++) {
+    string += characters[Math.floor(Math.random() * characters.length)]
+  }
+  return string
+}
+
 const getBuildConfig = ({
   path,
   name,
   outDir,
+  hash,
   isModuleBuild,
 }: {
   path: string
   name: string
   outDir: string
+  hash: string
   isModuleBuild?: boolean
 }): InlineConfig => {
   return {
@@ -79,7 +90,7 @@ const getBuildConfig = ({
         ],
         output: {
           exports: 'named',
-          chunkFileNames: 'assets/[name]-[hash].mjs',
+          chunkFileNames: `assets/[name]-${hash}.mjs`,
           assetFileNames: '[name].[ext]',
           entryFileNames: '[name].mjs',
           preserveModules: false,
@@ -111,6 +122,7 @@ const getBuildConfig = ({
 
 const run = async () => {
   try {
+    const hash = generateRandomHash()
     await execPromise('rimraf dist')
 
     await generateComponentsEntryFile()
@@ -122,6 +134,7 @@ const run = async () => {
           name: 'index',
           outDir: resolve(__dirname, '../dist/modules'),
           isModuleBuild: true,
+          hash,
         }),
       )
     }
@@ -138,6 +151,7 @@ const run = async () => {
         getBuildConfig({
           path,
           name,
+          hash,
           outDir: resolve(__dirname, '../dist/components'),
         }),
       )

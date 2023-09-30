@@ -43,12 +43,13 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, type PropType, computed } from 'vue'
+  import { ref, type PropType, computed, defineAsyncComponent } from 'vue'
 
-  import MazBtn from './MazBtn.vue'
   import MazInput from './MazInput.vue'
   import XIcon from './../icons/x-mark.svg'
   import type { Color, Size } from './types'
+
+  const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 
   const props = defineProps({
     // Input value, can be a `Array` of `String` or `null`

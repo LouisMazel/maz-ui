@@ -113,14 +113,23 @@
 
 <script lang="ts" setup>
   // NEXT: multiselect
-  import { ref, computed, onBeforeMount, nextTick, type PropType, getCurrentInstance } from 'vue'
-  import MazInput from './MazInput.vue'
+  import {
+    ref,
+    computed,
+    onBeforeMount,
+    nextTick,
+    type PropType,
+    getCurrentInstance,
+    defineAsyncComponent,
+  } from 'vue'
   import type { Color, ModelValueSimple, Position, Size } from './types'
   import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
 
-  import SearchIcon from './../icons/magnifying-glass.svg'
-  import ChevronDownIcon from './../icons/chevron-down.svg'
-  import NoSymbolIcon from './../icons/no-symbol.svg'
+  import MazInput from './MazInput.vue'
+
+  const SearchIcon = defineAsyncComponent(() => import('./../icons/magnifying-glass.svg'))
+  const ChevronDownIcon = defineAsyncComponent(() => import('./../icons/chevron-down.svg'))
+  const NoSymbolIcon = defineAsyncComponent(() => import('./../icons/no-symbol.svg'))
 
   const instance = getCurrentInstance()
 

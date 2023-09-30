@@ -58,7 +58,7 @@
       </slot>
     </div>
 
-    <MazSpinner v-if="hasLoader" size="2em" :color="color" class="m-btn__loader maz-absolute" />
+    <MazSpinner v-if="hasLoader" size="2em" :color="color" class="maz-absolute" />
   </Component>
 </template>
 
@@ -67,12 +67,19 @@
 </script>
 
 <script lang="ts" setup>
-  import { computed, type PropType, useAttrs, useSlots } from 'vue'
-  import MazSpinner from './MazSpinner.vue'
-  import MazIcon from './MazIcon.vue'
+  import {
+    computed,
+    type PropType,
+    useAttrs,
+    useSlots,
+    defineAsyncComponent,
+    onBeforeMount,
+  } from 'vue'
 
   import type { Color, Size } from './types'
-  import { onBeforeMount } from 'vue'
+
+  const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
+  const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
 
   const { href, to } = useAttrs()
   const slots = useSlots()

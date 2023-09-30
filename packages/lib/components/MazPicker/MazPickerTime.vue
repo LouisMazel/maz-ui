@@ -27,13 +27,13 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, nextTick, type PropType, ref, watch } from 'vue'
+  import { computed, nextTick, type PropType, ref, watch, defineAsyncComponent } from 'vue'
   import { type DateTimeFormatOptions, scrollToTarget, findNearestNumberInList } from './utils'
-  import MazBtn from '../MazBtn.vue'
   import type { PickerValue } from './types'
   import type { Color } from '../types'
-  import type { Dayjs } from 'dayjs'
-  import dayjs from 'dayjs'
+  import dayjs, { type Dayjs } from 'dayjs'
+
+  const MazBtn = defineAsyncComponent(() => import('./../MazBtn.vue'))
 
   type ColumnIdentifier = 'hour' | 'minute' | 'ampm'
 

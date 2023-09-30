@@ -1,6 +1,5 @@
 import { computed, ref, type App } from 'vue'
-import { contains, DEFAULT_LOADER, hasItems, pop, push } from './utils'
-import type { LoaderId } from './utils'
+import { contains, DEFAULT_LOADER, hasItems, type LoaderId, pop, push } from './utils'
 
 export class WaitHandler {
   private _loaders = ref<LoaderId[]>([])

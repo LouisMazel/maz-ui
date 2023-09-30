@@ -32,11 +32,12 @@
 </template>
 
 <script lang="ts" setup>
-  import type { PropType } from 'vue'
+  import { defineAsyncComponent, type PropType } from 'vue'
 
   import MazBackdrop from './MazBackdrop.vue'
-  import MazBtn from './MazBtn.vue'
-  import XIcon from './../icons/x-mark.svg'
+
+  const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
+  const XIcon = defineAsyncComponent(() => import('./../icons/x-mark.svg'))
 
   defineProps({
     noClose: { type: Boolean, default: false },

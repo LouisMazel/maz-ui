@@ -40,10 +40,11 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, useSlots } from 'vue'
-  import MazBtn from './MazBtn.vue'
-  import ChevronLeftIcon from './../icons/chevron-left.svg'
-  import ChevronRightIcon from './../icons/chevron-right.svg'
+  import { defineAsyncComponent, ref, useSlots } from 'vue'
+
+  const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
+  const ChevronLeftIcon = defineAsyncComponent(() => import('./../icons/chevron-left.svg'))
+  const ChevronRightIcon = defineAsyncComponent(() => import('./../icons/chevron-right.svg'))
 
   const props = defineProps({
     noScrollBtn: { type: Boolean, default: false },

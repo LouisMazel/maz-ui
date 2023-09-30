@@ -1,5 +1,4 @@
-import dayjs from 'dayjs'
-import type { ConfigType, OpUnitType } from 'dayjs'
+import dayjs, { type ConfigType, type OpUnitType } from 'dayjs'
 import weekday from 'dayjs/plugin/weekday'
 
 dayjs.extend(weekday)

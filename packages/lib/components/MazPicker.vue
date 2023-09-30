@@ -30,7 +30,7 @@
     >
       <template #right-icon>
         <button type="button" tabindex="-1" class="m-picker__button">
-          <ChevronDownIcon class="m-picker__button__chevron" />
+          <ChevronDownIcon class="m-picker__button__chevron maz-text-lg" />
         </button>
       </template>
     </MazInput>
@@ -89,16 +89,14 @@
     type StyleValue,
     watch,
     nextTick,
+    defineAsyncComponent,
   } from 'vue'
 
   import dayjs from 'dayjs'
   import customParseFormat from 'dayjs/plugin/customParseFormat'
   import isBetween from 'dayjs/plugin/isBetween'
 
-  import MazInput from './MazInput.vue'
-  import MazPickerContainer from './MazPicker/MazPickerContainer.vue'
   import { vClickOutside } from '../modules/directives/click-outside'
-  import ChevronDownIcon from './../icons/chevron-down.svg'
   import type { Color, Position } from './types'
 
   import { date } from './../modules/filters/date'
@@ -117,6 +115,12 @@
   } from './MazPicker/utils'
 
   import type { PickerValue, PickerShortcut } from './MazPicker/types'
+
+  const ChevronDownIcon = defineAsyncComponent(() => import('./../icons/chevron-down.svg'))
+  const MazInput = defineAsyncComponent(() => import('./MazInput.vue'))
+  const MazPickerContainer = defineAsyncComponent(
+    () => import('./MazPicker/MazPickerContainer.vue'),
+  )
 
   dayjs.extend(customParseFormat)
   dayjs.extend(isBetween)

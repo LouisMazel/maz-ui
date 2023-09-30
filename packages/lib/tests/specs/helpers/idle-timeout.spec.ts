@@ -1,8 +1,11 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import type { IdleTimeoutOptions, IdleTimeoutCallback } from '@modules/helpers'
-import { IdleTimeout } from '@modules/helpers'
 
-import { sleep } from '@modules/helpers'
+import {
+  IdleTimeout,
+  sleep,
+  type IdleTimeoutOptions,
+  type IdleTimeoutCallback,
+} from '@modules/helpers'
 
 const DEFAULT_TIMEOUT = 300
 
@@ -11,7 +14,6 @@ const options: IdleTimeoutOptions = {
   element: document.body,
   timeout: DEFAULT_TIMEOUT, // 5 minutes
   once: false,
-  ssr: false,
   immediate: false,
 }
 let instance: IdleTimeout | undefined
