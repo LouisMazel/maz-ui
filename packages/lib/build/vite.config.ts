@@ -102,7 +102,7 @@ const getBuildConfig = ({
             dropzone: 'dropzone',
             'vue-chartjs': 'vue-chartjs',
             'chart.js': 'chart.js',
-            // 'vue-scrollto': 'vue-scrollto',
+            'vue-scrollto': 'vue-scrollto',
             'dayjs/plugin/customParseFormat': 'dayjs/plugin/customParseFormat',
             'dayjs/plugin/weekday': 'dayjs/plugin/weekday',
             'dayjs/plugin/isBetween': 'dayjs/plugin/isBetween',
