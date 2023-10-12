@@ -21,6 +21,7 @@
     >
       {{ label }}
     </MazBtn>
+
     <div :style="tabsIndicatorState" class="m-tabs-bar__indicator">
       <div class="m-sub-bar" :style="{ backgroundColor: `var(--maz-color-${color})` }"></div>
     </div>

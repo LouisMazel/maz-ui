@@ -3,7 +3,7 @@ import MazFullscreenLoader from '@components/MazFullscreenLoader.vue'
 import MazSpinner from '@components/MazSpinner.vue' // Assurez-vous d'importer correctement le composant MazSpinner
 
 describe('MazFullscreenLoader.vue', () => {
-  it('display the spinner with good properties', () => {
+  it('display the spinner with good properties', async () => {
     const color = 'secondary'
     const size = '2em'
 
@@ -13,6 +13,8 @@ describe('MazFullscreenLoader.vue', () => {
         default: 'Contenu personnalisé',
       },
     })
+
+    await vi.dynamicImportSettled()
 
     const spinner = wrapper.findComponent(MazSpinner)
 
@@ -24,8 +26,10 @@ describe('MazFullscreenLoader.vue', () => {
     expect(content.text()).toBe('Contenu personnalisé')
   })
 
-  it('display the spinner wuth default propertiesa', () => {
+  it('display the spinner wuth default propertiesa', async () => {
     const wrapper = mount(MazFullscreenLoader)
+
+    await vi.dynamicImportSettled()
 
     const spinner = wrapper.findComponent(MazSpinner)
 

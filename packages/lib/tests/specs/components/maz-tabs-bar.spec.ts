@@ -3,7 +3,7 @@ import MazTabsBar from '@components/MazTabsBar.vue'
 import { ref } from 'vue'
 
 describe('MazTabsBar.vue', () => {
-  it('correctly displays tabs', () => {
+  it('correctly displays tabs', async () => {
     const items = [{ label: 'Tab 1' }, { label: 'Tab 2', disabled: true }, { label: 'Tab 3' }]
     const wrapper = mount(MazTabsBar, {
       props: { items },
@@ -17,6 +17,8 @@ describe('MazTabsBar.vue', () => {
       },
     })
 
+    await vi.dynamicImportSettled()
+
     const tabLabels = wrapper.findAll('.m-tabs-bar__item')
 
     expect(tabLabels.length).toBe(3)
@@ -26,6 +28,7 @@ describe('MazTabsBar.vue', () => {
     expect(tabLabels[2].text()).toBe('Tab 3')
 
     const disabledTabs = wrapper.findAll('.m-tabs-bar__item.--disabled')
+
     expect(disabledTabs.length).toBe(1)
   })
 
@@ -60,6 +63,8 @@ describe('MazTabsBar.vue', () => {
         },
       },
     })
+
+    await vi.dynamicImportSettled()
 
     await wrapper.find('.m-tabs-bar__item:nth-child(3)').trigger('click')
 
