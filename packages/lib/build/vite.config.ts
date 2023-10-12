@@ -62,63 +62,61 @@ const getBuildConfig = ({
   outDir: string
   hash: string
   isModuleBuild?: boolean
-}): InlineConfig => {
-  return {
-    build: {
-      emptyOutDir: false,
-      outDir,
-      minify: 'terser',
-      cssCodeSplit: true,
-      cssMinify: true,
-      lib: {
-        // Can be an array of multiple entry points
-        entry: path,
-        formats: ['es'],
-        fileName: name,
-        name,
-      },
-      rollupOptions: {
-        treeshake: true,
-        external: [
-          'vue',
-          'libphonenumber-js',
-          '/^dayjs:.*/',
-          'chart.js',
-          'dropzone',
-          'vue-chartjs',
-          'vue-scrollto',
-        ],
-        output: {
-          exports: 'named',
-          chunkFileNames: `assets/[name]-${hash}.mjs`,
-          assetFileNames: '[name].[ext]',
-          entryFileNames: '[name].mjs',
-          preserveModules: false,
-          compact: true,
-          globals: {
-            vue: 'Vue',
-            'libphonenumber-js': 'libphonenumber-js',
-            dayjs: 'dayjs',
-            dropzone: 'dropzone',
-            'vue-chartjs': 'vue-chartjs',
-            'chart.js': 'chart.js',
-            'vue-scrollto': 'vue-scrollto',
-            'dayjs/plugin/customParseFormat': 'dayjs/plugin/customParseFormat',
-            'dayjs/plugin/weekday': 'dayjs/plugin/weekday',
-            'dayjs/plugin/isBetween': 'dayjs/plugin/isBetween',
-          },
+}): InlineConfig => ({
+  build: {
+    emptyOutDir: false,
+    outDir,
+    minify: 'terser',
+    cssCodeSplit: false,
+    // cssMinify: true,
+    lib: {
+      // Can be an array of multiple entry points
+      entry: path,
+      formats: ['es'],
+      fileName: name,
+      name,
+    },
+    rollupOptions: {
+      treeshake: true,
+      external: [
+        'vue',
+        'libphonenumber-js',
+        '/^dayjs:.*/',
+        'chart.js',
+        'dropzone',
+        'vue-chartjs',
+        'vue-scrollto',
+      ],
+      output: {
+        exports: 'named',
+        chunkFileNames: `assets/[name]-${hash}.mjs`,
+        assetFileNames: '[name].[ext]',
+        entryFileNames: '[name].mjs',
+        preserveModules: false,
+        compact: true,
+        globals: {
+          vue: 'Vue',
+          'libphonenumber-js': 'libphonenumber-js',
+          dayjs: 'dayjs',
+          dropzone: 'dropzone',
+          'vue-chartjs': 'vue-chartjs',
+          'chart.js': 'chart.js',
+          'vue-scrollto': 'vue-scrollto',
+          'dayjs/plugin/customParseFormat': 'dayjs/plugin/customParseFormat',
+          'dayjs/plugin/weekday': 'dayjs/plugin/weekday',
+          'dayjs/plugin/isBetween': 'dayjs/plugin/isBetween',
         },
       },
     },
-    plugins: [
-      // @ts-ignore
-      svgLoader({}),
-      Vue(),
-      cssInjectedByJsPlugin(),
-      ...(isModuleBuild ? [viteStaticCopy({ targets: staticAssetsToCopy })] : []),
-    ],
-  }
-}
+  },
+  plugins: [
+    // @ts-ignore
+    svgLoader({}),
+    Vue(),
+    cssInjectedByJsPlugin(),
+    ...(isModuleBuild ? [viteStaticCopy({ targets: staticAssetsToCopy })] : []),
+  ],
+})
 
 const run = async () => {
   try {
