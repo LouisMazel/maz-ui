@@ -22,7 +22,7 @@
     "autoprefixer": "^10.4.16",
     "nuxt": "^3.7.4",
     "nuxt-module": "workspace:*",
-    "postcss": "^8.4.30",
+    "postcss": "^8.4.31",
     "postcss-html": "^1.5.0",
     "postcss-import": "^15.1.0",
     "postcss-nested": "^6.0.1",
