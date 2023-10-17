@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.17.1-alpha.7](https://github.com/LouisMazel/maz-ui/compare/v3.17.1...v3.17.1-alpha.7) (2023-10-17)
+
+
+### Performance Improvements
+
+* **lib:** lazy-loading of components and icons + reduce bundle size ([89e000a](https://github.com/LouisMazel/maz-ui/commit/89e000aeaa54ea12be2932028bd71e1309ee66a7))
+
+
+
+
+
 ## [3.17.1-alpha.6](https://github.com/LouisMazel/maz-ui/compare/v3.17.1-alpha.5...v3.17.1-alpha.6) (2023-10-12)
 
 ### Performance Improvements
