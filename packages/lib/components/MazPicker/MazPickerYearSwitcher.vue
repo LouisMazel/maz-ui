@@ -3,14 +3,14 @@
     <div class="maz-picker-year-switcher__header">
       <div class="maz-flex maz-space-x-2">
         <MazBtn size="xs" color="transparent" type="button" @click.stop="previousYears">
-          <ChevronLeftIcon />
+          <ChevronLeftIcon class="maz-text-lg" />
         </MazBtn>
         <MazBtn size="xs" color="transparent" type="button" @click.stop="nextYears">
-          <ChevronRightIcon />
+          <ChevronLeftIcon class="maz-rotate-180 maz-text-lg" />
         </MazBtn>
       </div>
       <MazBtn size="xs" color="transparent" type="button" @click.stop="$emit('close', $event)">
-        <XIcon />
+        <XIcon class="maz-text-lg" />
       </MazBtn>
     </div>
     <div class="maz-picker-year-switcher__main">
@@ -32,17 +32,15 @@
 </template>
 
 <script lang="ts" setup>
-  import { date } from './../../modules/filters'
-  import { computed, type PropType, ref } from 'vue'
-  import type { Dayjs } from 'dayjs'
-  import dayjs from 'dayjs'
+  import { date } from './../../modules/filters/date'
+  import { computed, type PropType, ref, defineAsyncComponent } from 'vue'
+  import dayjs, { type Dayjs } from 'dayjs'
   import type { Color } from './../types'
-  import MazBtn from './../MazBtn.vue'
   import { isSameDate } from './utils'
 
-  import XIcon from './../../icons/x-mark.svg'
-  import ChevronLeftIcon from './../../icons/chevron-left.svg'
-  import ChevronRightIcon from './../../icons/chevron-right.svg'
+  const MazBtn = defineAsyncComponent(() => import('./../MazBtn.vue'))
+  const XIcon = defineAsyncComponent(() => import('./../../icons/x-mark.svg'))
+  const ChevronLeftIcon = defineAsyncComponent(() => import('./../../icons/chevron-left.svg'))
 
   const props = defineProps({
     color: { type: String as PropType<Color>, required: true },

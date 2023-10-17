@@ -30,7 +30,7 @@
 
 <script lang="ts" setup>
   import { computed, nextTick, onBeforeMount, ref } from 'vue'
-  import { currency as currencyFilter } from '../modules'
+  import { currency as currencyFilter } from '../modules/filters/currency'
   import MazInput from './MazInput.vue'
 
   const props = defineProps({

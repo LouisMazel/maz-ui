@@ -30,7 +30,8 @@
   import { computed, type PropType, ref, watch } from 'vue'
 
   import type { Color } from '../types'
-  import { date, capitalize } from './../../modules/filters'
+  import { date } from './../../modules/filters/date'
+  import { capitalize } from './../../modules/filters/capitalize'
   import type { PickerValue } from './types'
   import type { DateTimeFormatOptions } from './utils'
   import dayjs from 'dayjs'

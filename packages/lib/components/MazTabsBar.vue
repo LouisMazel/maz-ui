@@ -21,6 +21,7 @@
     >
       {{ label }}
     </MazBtn>
+
     <div :style="tabsIndicatorState" class="m-tabs-bar__indicator">
       <div class="m-sub-bar" :style="{ backgroundColor: `var(--maz-color-${color})` }"></div>
     </div>
@@ -37,13 +38,21 @@
 </script>
 
 <script lang="ts" setup>
-  import { ref, type PropType, computed, onBeforeMount, onMounted } from 'vue'
+  import {
+    ref,
+    type PropType,
+    computed,
+    onBeforeMount,
+    onMounted,
+    defineAsyncComponent,
+    type StyleValue,
+  } from 'vue'
   import type { Color } from './types'
   import type { MazTabsProvide } from './MazTabs.vue'
 
-  import MazBtn from './MazBtn.vue'
-  import { injectStrict } from './../modules'
-  import type { StyleValue } from 'vue'
+  import { injectStrict } from './../modules/helpers/inject-strict'
+
+  const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 
   function toKebabCase(input: string): string {
     return input

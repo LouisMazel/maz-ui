@@ -1,5 +1,4 @@
-import type { BindingData } from '@modules/directives/v-fullscreen-img'
-import { FullscreenImgHandler } from '@modules/directives/v-fullscreen-img'
+import { FullscreenImgHandler, type BindingData } from '@modules/directives/v-fullscreen-img'
 
 describe('FullscreenImgHandler', () => {
   let el: HTMLElement

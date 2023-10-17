@@ -26,6 +26,7 @@ export function generateCssVariables(): Command {
 
       const { outputPath } = await generateCssFile({
         config,
+        outputCssFilePath: config.outputCssFilePath,
       })
 
       outro(`CSS file generated in ${green(outputPath)}`)

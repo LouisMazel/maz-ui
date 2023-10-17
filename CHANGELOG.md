@@ -3,9 +3,37 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [3.17.1](https://github.com/LouisMazel/maz-ui/compare/v3.17.0...v3.17.1) (2023-10-17)
+## [3.17.1-alpha.6](https://github.com/LouisMazel/maz-ui/compare/v3.17.1-alpha.5...v3.17.1-alpha.6) (2023-10-12)
+
+### Performance Improvements
+
+- **lib:** lazy-loading of components and icons + reduce bundle size with remove duplicated imports ([c357d9d](https://github.com/LouisMazel/maz-ui/commit/c357d9d9f0f770bea3d34f0690df4da19504a720))
+
+## [3.17.1-alpha.5](https://github.com/LouisMazel/maz-ui/compare/v3.17.1-alpha.4...v3.17.1-alpha.5) (2023-09-29)
 
 **Note:** Version bump only for package root
+
+## [3.17.1-alpha.4](https://github.com/LouisMazel/maz-ui/compare/v3.17.1-alpha.3...v3.17.1-alpha.4) (2023-09-29)
+
+**Note:** Version bump only for package root
+
+## [3.17.1-alpha.3](https://github.com/LouisMazel/maz-ui/compare/v3.17.1-alpha.2...v3.17.1-alpha.3) (2023-09-29)
+
+**Note:** Version bump only for package root
+
+## [3.17.1-alpha.2](https://github.com/LouisMazel/maz-ui/compare/v3.17.1-alpha.1...v3.17.1-alpha.2) (2023-09-29)
+
+**Note:** Version bump only for package root
+
+## [3.17.1-alpha.1](https://github.com/LouisMazel/maz-ui/compare/v3.17.1-alpha.0...v3.17.1-alpha.1) (2023-09-29)
+
+**Note:** Version bump only for package root
+
+## [3.17.1-alpha.0](https://github.com/LouisMazel/maz-ui/compare/v3.17.0...v3.17.1-alpha.0) (2023-09-29)
+
+### Features
+
+- **lib:** add helper to transform locale to unicode flag ([5f89873](https://github.com/LouisMazel/maz-ui/commit/5f89873c71d97956f3a57cdf1b17260b996a3912))
 
 # [3.17.0](https://github.com/LouisMazel/maz-ui/compare/v3.16.0...v3.17.0) (2023-09-28)
 

@@ -20,8 +20,8 @@
 
 <script lang="ts">
   import type { PropType } from 'vue'
-  import { defineComponent } from 'vue'
-  import MazBtn from './../components/MazBtn.vue'
+  import { defineAsyncComponent, defineComponent } from 'vue'
+  const MazBtn = defineAsyncComponent(() => import('./../components/MazBtn.vue'))
 
   interface Item {
     label: string

@@ -60,8 +60,8 @@
 
 <script lang="ts" setup>
   import { computed, type PropType, onBeforeMount, defineAsyncComponent } from 'vue'
-  import { vZoomImg } from './../modules/directives/v-zoom-img'
-  import { vLazyImg } from './../modules/directives/v-lazy-img'
+  import { vZoomImg } from './../modules/directives/v-zoom-img/zoom-img'
+  import { vLazyImg } from './../modules/directives/v-lazy-img/lazy-img'
   import type { MazGalleryImage } from './types'
   export type { MazGalleryImage } from './types'
 

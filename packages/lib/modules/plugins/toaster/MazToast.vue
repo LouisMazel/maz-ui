@@ -17,19 +17,19 @@
       </div>
 
       <button v-if="!persistent" class="--close">
-        <XIcon class="--icon maz-text-xl" />
+        <XIcon class="--icon maz-text-2xl" />
       </button>
     </div>
   </Transition>
 </template>
 
 <script lang="ts" setup>
-  import { computed, onMounted, ref } from 'vue'
-  import type { PropType } from 'vue'
+  import { computed, defineAsyncComponent, onMounted, ref, type PropType } from 'vue'
   import { ToasterTimer } from './timer'
   import type { LocalToasterOptions } from './toaster-handler'
-  import XIcon from './../../../icons/x-mark.svg'
   import type { ToasterPosition } from './types'
+
+  const XIcon = defineAsyncComponent(() => import('./../../../icons/x-mark.svg'))
 
   const Toaster = ref<HTMLDivElement>()
 

@@ -17,8 +17,9 @@
       autocomplete="off"
       :size="size"
       :disabled="disabled"
-      @focus.prevent.stop="openList"
+      @focus.stop="openList"
       @change="emits('change', $event)"
+      @click.stop="openList"
       @keydown="mainInputKeyboardHandler"
     >
       <template #right-icon>
@@ -26,7 +27,7 @@
           tabindex="-1"
           type="button"
           class="m-select-input__toggle-button maz-custom"
-          @click.stop="toggleList"
+          @click.stop="openList"
         >
           <ChevronDownIcon class="m-select-chevron maz-text-xl" />
         </button>
@@ -112,15 +113,23 @@
 
 <script lang="ts" setup>
   // NEXT: multiselect
-  import { ref, computed, onBeforeMount, nextTick, type PropType, getCurrentInstance } from 'vue'
-  import MazInput from './MazInput.vue'
+  import {
+    ref,
+    computed,
+    onBeforeMount,
+    nextTick,
+    type PropType,
+    getCurrentInstance,
+    defineAsyncComponent,
+  } from 'vue'
   import type { Color, ModelValueSimple, Position, Size } from './types'
-  import { useInstanceUniqId } from '../modules/composables'
+  import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
 
-  import SearchIcon from './../icons/magnifying-glass.svg'
-  import ChevronDownIcon from './../icons/chevron-down.svg'
-  import NoSymbolIcon from './../icons/no-symbol.svg'
-  import { debounceCallback } from './../modules/helpers/debounce-callback'
+  import MazInput from './MazInput.vue'
+
+  const SearchIcon = defineAsyncComponent(() => import('./../icons/magnifying-glass.svg'))
+  const ChevronDownIcon = defineAsyncComponent(() => import('./../icons/chevron-down.svg'))
+  const NoSymbolIcon = defineAsyncComponent(() => import('./../icons/no-symbol.svg'))
 
   const instance = getCurrentInstance()
 
@@ -213,35 +222,29 @@
     props.listPosition.includes('bottom') ? 'maz-slide' : 'maz-slideinvert',
   )
 
-  const searchQuery = ref<string>('')
-  const query = ref<string>('')
+  const searchQuery = ref<string>()
 
   const searchInValue = (value?: ModelValueSimple, query?: string) => {
-    return (
-      query &&
-      value?.toString().toLocaleLowerCase().trim().includes(query.toLocaleLowerCase().trim())
-    )
+    return query && value?.toString().toLocaleLowerCase().includes(query.toLocaleLowerCase())
   }
 
-  function getFilteredOptionWithQuery(query: string) {
-    return query
+  const optionsList = computed(() => {
+    return searchQuery.value
       ? props.options?.filter((option) => {
           const searchValue = option[props.optionLabelKey]
           const searchValue3 = option[props.optionValueKey]
           const searchValue2 = option[props.optionInputValueKey]
 
           return (
-            searchInValue(searchValue, query) ||
-            searchInValue(searchValue3, query) ||
-            searchInValue(searchValue2, query)
+            searchInValue(searchValue, searchQuery.value) ||
+            searchInValue(searchValue3, searchQuery.value) ||
+            searchInValue(searchValue2, searchQuery.value)
           )
         })
       : props.options
-  }
+  })
 
-  const optionsList = computed(() => getFilteredOptionWithQuery(searchQuery.value))
-
-  const closeList = async (event?: Event) => {
+  const closeList = async (event?: FocusEvent | KeyboardEvent) => {
     if (
       event &&
       (('relatedTarget' in event &&
@@ -267,45 +270,16 @@
     emits('open', listOpened.value)
   }
 
-  function toggleList(event: Event) {
-    return listOpened.value ? closeList(event) : openList(event)
-  }
-
-  function focusSearchInputAndSetQuery(q: string) {
-    searchQuery.value = q
-    searchInputComponent.value?.input.focus()
-  }
-
-  function searchOptionWithQuery(keyPressed: string) {
-    if (keyPressed === 'Backspace' && query.value.length > 0) {
-      query.value = query.value.slice(0, -1)
-    } else {
-      query.value += keyPressed
-    }
-
-    const filteredOptions = getFilteredOptionWithQuery(query.value)
-
-    if (filteredOptions?.length) {
-      tmpModelValueIndex.value = optionsList.value?.findIndex(
-        (option) => option[props.optionValueKey] === filteredOptions[0][props.optionValueKey],
-      )
-
-      scrollToSelected()
-    }
-
-    debounceCallback(() => {
-      query.value = ''
-    }, 2000)
-  }
-
   const mainInputKeyboardHandler = (event: KeyboardEvent) => {
-    const keyPressed = event.key
-
-    if (/^[\dA-Za-z]$/.test(keyPressed)) {
+    if (event.key?.length === 1) {
       event.preventDefault()
       openList(event)
 
-      props.search ? focusSearchInputAndSetQuery(keyPressed) : searchOptionWithQuery(keyPressed)
+      searchQuery.value = event.key
+
+      if (props.search) {
+        searchInputComponent.value?.input.focus()
+      }
     } else {
       keyboardHandler(event)
     }
@@ -370,23 +344,15 @@
     }
   }
 
-  async function scrollToSelected(itemIndex = tmpModelValueIndex.value) {
-    await nextTick()
+  const scrollToSelected = async (itemIndex = tmpModelValueIndex.value) => {
+    if (typeof itemIndex === 'number') {
+      await nextTick()
 
-    const selectedIndex =
-      itemIndex ??
-      optionsList.value?.findIndex(
-        (option) => selectedOption.value?.[props.optionValueKey] === option[props.optionValueKey],
-      )
-
-    if (typeof selectedIndex === 'number') {
-      optionsListElement.value
-        ?.querySelectorAll('.m-select-list-item')
-        [selectedIndex]?.scrollIntoView({
-          behavior: 'auto',
-          block: 'nearest',
-          inline: 'start',
-        })
+      optionsListElement.value?.querySelectorAll('.m-select-list-item')[itemIndex]?.scrollIntoView({
+        behavior: 'auto',
+        block: 'nearest',
+        inline: 'start',
+      })
     }
   }
 
@@ -397,10 +363,8 @@
     if (mustCloseList) {
       nextTick(() => closeList())
     }
-
-    searchQuery.value = ''
-
-    emits('update:model-value', selectedOption[props.optionValueKey])
+    searchQuery.value = undefined
+    return emits('update:model-value', selectedOption[props.optionValueKey])
   }
 </script>
 

@@ -18,10 +18,9 @@
 </template>
 
 <script lang="ts" setup>
-  import { nextTick, onMounted, ref, computed, watchEffect } from 'vue'
-  import type { PropType } from 'vue'
+  import { nextTick, onMounted, ref, computed, watchEffect, type PropType } from 'vue'
 
-  import { injectStrict } from '../modules'
+  import { injectStrict } from '../modules/helpers/inject-strict'
 
   const cache: Record<string, Promise<SVGElement>> = {}
   const svgElSource = ref<SVGElement>()

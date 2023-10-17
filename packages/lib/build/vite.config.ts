@@ -2,16 +2,15 @@ import minimist from 'minimist'
 import { resolve } from 'node:path'
 import { build, type InlineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
-import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
 import svgLoader from 'vite-svg-loader'
-import peerDepsExternal from 'rollup-plugin-peer-deps-external'
 import { viteStaticCopy, type Target } from 'vite-plugin-static-copy'
 
-import { getComponentList } from './get-component-list'
+// import { getComponentList } from './get-component-list'
+// import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
 import { logger } from './utils/logger'
 import { execPromise } from './utils/exec-promise'
 import { generateComponentsEntryFile } from './generate-components-entry'
-import { generateLibComponentsEntryFile } from './generate-lib-entry'
+// import { generateLibComponentsEntryFile } from './generate-lib-entry'
 import { compileScss } from './compile-scss'
 import { copyAndTransformComponentsTypesFiles } from './copy-components-types'
 import { readdir, rename } from 'node:fs/promises'
@@ -42,15 +41,26 @@ const staticAssetsToCopy: Target[] = [
   },
 ]
 
+function generateRandomHash(length = 8) {
+  const characters = '0123456789abcdefghijklmnopqrstuvwxyz'
+  let string = ''
+  for (let i = 0; i <= length; i++) {
+    string += characters[Math.floor(Math.random() * characters.length)]
+  }
+  return string
+}
+
 const getBuildConfig = ({
   path,
   name,
   outDir,
+  // hash,
   isModuleBuild,
 }: {
   path: string
   name: string
   outDir: string
+  hash?: string
   isModuleBuild?: boolean
 }): InlineConfig => ({
   build: {
@@ -58,19 +68,32 @@ const getBuildConfig = ({
     outDir,
     minify: 'terser',
     cssCodeSplit: false,
+    cssMinify: true,
     lib: {
       // Can be an array of multiple entry points
       entry: path,
       formats: ['es'],
-      name,
       fileName: name,
+      name,
     },
     rollupOptions: {
-      external: ['vue', 'libphonenumber-js', '/^dayjs:.*/', 'chart.js', 'dropzone', 'vue-chartjs'],
+      treeshake: true,
+      external: [
+        'vue',
+        'libphonenumber-js',
+        '/^dayjs:.*/',
+        'chart.js',
+        'dropzone',
+        'vue-chartjs',
+        'vue-scrollto',
+      ],
       output: {
         exports: 'named',
-        chunkFileNames: 'assets/[name]-[hash].mjs',
-        // preserveModules: true,
+        chunkFileNames: `assets/[name]-[hash].mjs`,
+        assetFileNames: '[name].[ext]',
+        entryFileNames: '[name].mjs',
+        preserveModules: false,
+        compact: true,
         globals: {
           vue: 'Vue',
           'libphonenumber-js': 'libphonenumber-js',
@@ -78,6 +101,7 @@ const getBuildConfig = ({
           dropzone: 'dropzone',
           'vue-chartjs': 'vue-chartjs',
           'chart.js': 'chart.js',
+          'vue-scrollto': 'vue-scrollto',
           'dayjs/plugin/customParseFormat': 'dayjs/plugin/customParseFormat',
           'dayjs/plugin/weekday': 'dayjs/plugin/weekday',
           'dayjs/plugin/isBetween': 'dayjs/plugin/isBetween',
@@ -87,20 +111,16 @@ const getBuildConfig = ({
   },
   plugins: [
     // @ts-ignore
-    peerDepsExternal({
-      packageJsonPath: resolve(__dirname, '../package.json'),
-      includeDependencies: false,
-    }),
     svgLoader({}),
-    // @ts-ignore
     Vue(),
-    cssInjectedByJsPlugin(), // ...(isModuleBuild ? [] : [cssInjectedByJsPlugin()]),
+    // cssInjectedByJsPlugin(),
     ...(isModuleBuild ? [viteStaticCopy({ targets: staticAssetsToCopy })] : []),
   ],
 })
 
 const run = async () => {
   try {
+    const hash = generateRandomHash()
     await execPromise('rimraf dist')
 
     await generateComponentsEntryFile()
@@ -112,33 +132,35 @@ const run = async () => {
           name: 'index',
           outDir: resolve(__dirname, '../dist/modules'),
           isModuleBuild: true,
+          hash,
         }),
       )
     }
 
-    const componentsList = await getComponentList()
+    // const componentsList = await getComponentList()
 
-    // to build specific component
-    const componentToBuild = componentsList.filter(({ name }) =>
-      argv.component ? name === argv.component : true,
+    // // to build specific component
+    // const componentToBuild = componentsList.filter(({ name }) =>
+    //   argv.component ? name === argv.component : true,
+    // )
+
+    await build(
+      getBuildConfig({
+        path: resolve(__dirname, './../components/index.ts'),
+        name: 'index',
+        hash,
+        outDir: resolve(__dirname, '../dist/components'),
+      }),
     )
-
-    for await (const { path, name } of componentToBuild) {
-      await build(
-        getBuildConfig({
-          path,
-          name,
-          outDir: resolve(__dirname, '../dist/components'),
-        }),
-      )
-    }
+    // for await (const { path, name } of componentToBuild) {
+    // }
 
     // Emit types from all packages
     await execPromise('vue-tsc --declaration --emitDeclarationOnly')
 
     copyAndTransformComponentsTypesFiles()
 
-    await generateLibComponentsEntryFile()
+    // await generateLibComponentsEntryFile()
 
     // Build main.css file with tailwind
     await execPromise(

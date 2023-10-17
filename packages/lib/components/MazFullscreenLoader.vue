@@ -11,8 +11,10 @@
 </template>
 
 <script lang="ts" setup>
-  import MazSpinner from './MazSpinner.vue'
+  import { defineAsyncComponent } from 'vue'
   import type { Color } from './types'
+
+  const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
 
   withDefaults(
     defineProps<{
