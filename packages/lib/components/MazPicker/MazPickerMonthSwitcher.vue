@@ -26,13 +26,13 @@
 <script lang="ts" setup>
   import { date } from './../../modules/filters/date'
   import { capitalize } from './../../modules/filters/capitalize'
-  import { computed, defineAsyncComponent, type PropType } from 'vue'
+  import { computed, type PropType } from 'vue'
   import type { Color } from '../types'
   import dayjs, { type Dayjs } from 'dayjs'
   import { isSameDate } from './utils'
 
-  const MazBtn = defineAsyncComponent(() => import('./../MazBtn.vue'))
-  const XIcon = defineAsyncComponent(() => import('./../../icons/x-mark.svg'))
+  import MazBtn from './../MazBtn.vue'
+  import XIcon from './../../icons/x-mark.svg'
 
   const props = defineProps({
     calendarDate: { type: String, required: true },

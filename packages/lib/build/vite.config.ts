@@ -4,17 +4,16 @@ import { build, type InlineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import svgLoader from 'vite-svg-loader'
 import { viteStaticCopy, type Target } from 'vite-plugin-static-copy'
-
-// import { getComponentList } from './get-component-list'
-// import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
+import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
 import { logger } from './utils/logger'
 import { execPromise } from './utils/exec-promise'
 import { generateComponentsEntryFile } from './generate-components-entry'
-// import { generateLibComponentsEntryFile } from './generate-lib-entry'
+import { generateLibComponentsEntryFile } from './generate-lib-entry'
 import { compileScss } from './compile-scss'
 import { copyAndTransformComponentsTypesFiles } from './copy-components-types'
 import { readdir, rename } from 'node:fs/promises'
 import { replaceInFile } from 'replace-in-file'
+import { getComponentList } from './get-component-list'
 
 const argv = minimist(process.argv.slice(2))
 
@@ -40,15 +39,6 @@ const staticAssetsToCopy: Target[] = [
     dest: resolve(__dirname, '../dist'),
   },
 ]
-
-function generateRandomHash(length = 8) {
-  const characters = '0123456789abcdefghijklmnopqrstuvwxyz'
-  let string = ''
-  for (let i = 0; i <= length; i++) {
-    string += characters[Math.floor(Math.random() * characters.length)]
-  }
-  return string
-}
 
 const getBuildConfig = ({
   path,
@@ -113,14 +103,14 @@ const getBuildConfig = ({
     // @ts-ignore
     svgLoader({}),
     Vue(),
-    // cssInjectedByJsPlugin(),
+    cssInjectedByJsPlugin(),
     ...(isModuleBuild ? [viteStaticCopy({ targets: staticAssetsToCopy })] : []),
   ],
 })
 
 const run = async () => {
   try {
-    const hash = generateRandomHash()
+    // const hash = generateRandomHash()
     await execPromise('rimraf dist')
 
     await generateComponentsEntryFile()
@@ -132,35 +122,40 @@ const run = async () => {
           name: 'index',
           outDir: resolve(__dirname, '../dist/modules'),
           isModuleBuild: true,
-          hash,
         }),
       )
     }
 
-    // const componentsList = await getComponentList()
+    const componentsList = await getComponentList()
 
-    // // to build specific component
-    // const componentToBuild = componentsList.filter(({ name }) =>
-    //   argv.component ? name === argv.component : true,
-    // )
-
-    await build(
-      getBuildConfig({
-        path: resolve(__dirname, './../components/index.ts'),
-        name: 'index',
-        hash,
-        outDir: resolve(__dirname, '../dist/components'),
-      }),
+    // to build specific component
+    const componentToBuild = componentsList.filter(({ name }) =>
+      argv.component ? name === argv.component : true,
     )
-    // for await (const { path, name } of componentToBuild) {
-    // }
+
+    // await build(
+    //   getBuildConfig({
+    //     path: resolve(__dirname, './../components/index.ts'),
+    //     name: 'index',
+    //     outDir: resolve(__dirname, '../dist/components'),
+    //   }),
+    // )
+    for await (const { path, name } of componentToBuild) {
+      await build(
+        getBuildConfig({
+          path,
+          name,
+          outDir: resolve(__dirname, '../dist/components'),
+        }),
+      )
+    }
 
     // Emit types from all packages
     await execPromise('vue-tsc --declaration --emitDeclarationOnly')
 
     copyAndTransformComponentsTypesFiles()
 
-    // await generateLibComponentsEntryFile()
+    await generateLibComponentsEntryFile()
 
     // Build main.css file with tailwind
     await execPromise(

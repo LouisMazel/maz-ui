@@ -45,14 +45,14 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, type PropType, ref, watch, defineAsyncComponent } from 'vue'
+  import { computed, type PropType, ref, watch } from 'vue'
   import { getDaysInMonth, getFirstDayOfMonth, isSameDate, isToday, isSameDay } from '../utils'
   import { debounce } from './../../../modules/helpers/debounce'
   import type { PartialRangeValue, PickerValue } from '../types'
   import dayjs, { type Dayjs } from 'dayjs'
   import type { Color } from '../../types'
 
-  const MazBtn = defineAsyncComponent(() => import('./../../MazBtn.vue'))
+  import MazBtn from './../../MazBtn.vue'
 
   enum DaySelect {
     UNSELECTED,

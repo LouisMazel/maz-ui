@@ -115,12 +115,10 @@
   } from './MazPicker/utils'
 
   import type { PickerValue, PickerShortcut } from './MazPicker/types'
+  import MazPickerContainer from './MazPicker/MazPickerContainer.vue'
 
   const ChevronDownIcon = defineAsyncComponent(() => import('./../icons/chevron-down.svg'))
   const MazInput = defineAsyncComponent(() => import('./MazInput.vue'))
-  const MazPickerContainer = defineAsyncComponent(
-    () => import('./MazPicker/MazPickerContainer.vue'),
-  )
 
   dayjs.extend(customParseFormat)
   dayjs.extend(isBetween)

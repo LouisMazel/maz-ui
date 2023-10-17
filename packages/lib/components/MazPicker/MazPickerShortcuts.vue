@@ -16,11 +16,11 @@
 </template>
 
 <script lang="ts" setup>
-  import { type PropType, ref, watch, defineAsyncComponent } from 'vue'
+  import { type PropType, ref, watch } from 'vue'
   import type { Color } from '../types'
   import type { PickerShortcut, PickerValue, RangeValue } from './types'
 
-  const MazBtn = defineAsyncComponent(() => import('./../MazBtn.vue'))
+  import MazBtn from './../MazBtn.vue'
 
   const props = defineProps({
     color: { type: String as PropType<Color>, required: true },
