@@ -51,12 +51,17 @@
 </template>
 
 <script lang="ts" setup>
-  import MazBtn from './MazBtn.vue'
+  import {
+    computed,
+    defineAsyncComponent,
+    useAttrs,
+    type StyleValue,
+    type HTMLAttributes,
+  } from 'vue'
   import MazBackdrop from './MazBackdrop.vue'
-  import XIcon from './../icons/x-mark.svg'
-  import type { StyleValue } from 'vue'
-  import { computed, useAttrs } from 'vue'
-  import type { HTMLAttributes } from 'vue'
+
+  const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
+  const XIcon = defineAsyncComponent(() => import('./../icons/x-mark.svg'))
 
   defineProps({
     /** Modal's title in  header */

@@ -8,6 +8,7 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:sonarjs/recommended',
+    'plugin:import/typescript',
     'plugin:unicorn/recommended',
     'plugin:promise/recommended',
     'plugin:vue/vue3-recommended',
@@ -26,6 +27,8 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
     'prettier/prettier': ['error', {}, { usePrettierrc: true }],
     'object-shorthand': ['error', 'always'],
+    'no-duplicate-imports': 'error',
+    // typescript
     '@typescript-eslint/no-unused-vars': [
       'error',
       {
@@ -37,7 +40,12 @@ module.exports = {
       },
     ],
     '@typescript-eslint/ban-ts-comment': 'off',
-    '@typescript-eslint/consistent-type-imports': 'error',
+    '@typescript-eslint/consistent-type-imports': [
+      'error',
+      {
+        fixStyle: 'inline-type-imports',
+      },
+    ],
     // vue
     'vue/component-name-in-template-casing': [
       'error',

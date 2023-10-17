@@ -17,11 +17,10 @@
         <div class="m-stepper__header__wrapper">
           <span class="m-stepper__count --primary">
             <div class="m-stepper__count__circle">
-              <MazIcon
+              <Component
+                :is="getStepStateData(step).icon"
                 v-if="getStepStateData(step).icon"
-                class="icon"
-                size="1.5rem"
-                :src="getStepStateData(step).icon"
+                class="icon maz-text-xl"
               />
             </div>
 
@@ -76,17 +75,6 @@
 
 <script lang="ts">
   export type { Color } from './types'
-</script>
-
-<script lang="ts" setup>
-  import { computed, useSlots, ref, type PropType } from 'vue'
-  import MazTransitionExpand from './MazTransitionExpand.vue'
-  import MazIcon from './MazIcon.vue'
-  import type { Color } from './types'
-
-  import CheckCircleIcon from './../icons/check-circle.svg?url'
-  import ExclamationCircleIcon from './../icons/exclamation-circle.svg?url'
-  import ExclamationIcon from './../icons/exclamation-triangle.svg?url'
 
   export interface Step {
     title?: string
@@ -98,6 +86,18 @@
     warning?: boolean
   }
   export type Steps = Step[]
+</script>
+
+<script lang="ts" setup>
+  import { computed, useSlots, ref, type PropType, defineAsyncComponent, type Component } from 'vue'
+  import type { Color } from './types'
+
+  const MazTransitionExpand = defineAsyncComponent(() => import('./MazTransitionExpand.vue'))
+  const CheckCircleIcon = defineAsyncComponent(() => import('./../icons/check-circle.svg'))
+  const ExclamationCircleIcon = defineAsyncComponent(
+    () => import('./../icons/exclamation-circle.svg'),
+  )
+  const ExclamationIcon = defineAsyncComponent(() => import('./../icons/exclamation-triangle.svg'))
 
   const props = defineProps({
     modelValue: { type: Number, default: undefined },
@@ -135,7 +135,7 @@
     },
   })
 
-  const getStepStateData = (step: number): { icon?: string; class: string } => {
+  const getStepStateData = (step: number): { icon?: Component; class: string } => {
     if (isStepSuccess(step)) {
       return { icon: CheckCircleIcon, class: '--success' }
     } else if (isStepWarning(step)) {

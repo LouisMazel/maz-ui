@@ -11,5 +11,12 @@ module.exports = {
   ],
   rules: {
     'prettier/prettier': ['error', {}, { usePrettierrc: true }],
+    'no-duplicate-imports': 'error',
+    '@typescript-eslint/consistent-type-imports': [
+      'error',
+      {
+        fixStyle: 'inline-type-imports',
+      },
+    ],
   },
 }

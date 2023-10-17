@@ -1,6 +1,6 @@
-import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
+import { type VueWrapper, mount } from '@vue/test-utils'
 import MazSelect from '@components/MazSelect.vue'
+import MazInput from '@components/MazInput.vue'
 import type { ComponentPublicInstance } from 'vue'
 
 describe('components/MazSelect.vue', () => {
@@ -69,8 +69,8 @@ describe('components/MazSelect.vue', () => {
   test('Should open the list', async () => {
     const scrollIntoView = vi.fn()
     window.HTMLElement.prototype.scrollIntoView = scrollIntoView
-    const input = wrapper.find('input')
-    await input.trigger('focus')
+    const input = wrapper.findComponent(MazInput)
+    await input.trigger('click')
     expect(scrollIntoView).toHaveBeenCalled()
   })
 

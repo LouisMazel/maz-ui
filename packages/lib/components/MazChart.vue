@@ -16,8 +16,10 @@
     LinearScale,
     Title,
     Tooltip,
+    type ChartType,
+    type ChartData,
+    type UpdateMode,
   } from 'chart.js'
-  import type { ChartType, ChartData, UpdateMode } from 'chart.js'
 
   const props = defineProps({
     /**

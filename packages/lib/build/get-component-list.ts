@@ -9,7 +9,10 @@ export const getComponentList = async () => {
     return fileList
       .filter(
         (dirent) =>
-          dirent.isFile() && dirent.name.startsWith('Maz') && !dirent.name.endsWith('.d.ts'),
+          dirent.isFile() &&
+          dirent.name.startsWith('Maz') &&
+          !dirent.name.endsWith('.d.ts') &&
+          !dirent.name.endsWith('.css'),
       )
       .map(({ name }) => ({
         name: name.split('.')[0],

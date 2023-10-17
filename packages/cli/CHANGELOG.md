@@ -3,32 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [3.17.1](https://github.com/LouisMazel/maz-ui/compare/v3.17.0...v3.17.1) (2023-10-17)
+## [3.17.1-alpha.6](https://github.com/LouisMazel/maz-ui/compare/v3.17.1-alpha.5...v3.17.1-alpha.6) (2023-10-12)
 
-**Note:** Version bump only for package cli
+### Performance Improvements
 
-
-
-
+- **lib:** lazy-loading of components and icons + reduce bundle size with remove duplicated imports ([c357d9d](https://github.com/LouisMazel/maz-ui/commit/c357d9d9f0f770bea3d34f0690df4da19504a720))
 
 # [3.17.0](https://github.com/LouisMazel/maz-ui/compare/v3.16.0...v3.17.0) (2023-09-28)
 
 **Note:** Version bump only for package cli
 
-
-
-
-
 ## [3.16.1-alpha.0](https://github.com/LouisMazel/maz-ui/compare/v3.16.0...v3.16.1-alpha.0) (2023-09-28)
-
 
 ### Features
 
-* add @mazui/cli to generate theme ([5b64c1c](https://github.com/LouisMazel/maz-ui/commit/5b64c1c51f6e20a8cb3f5c9ca00af5158f3734eb))
-
-
-
-
+- add @mazui/cli to generate theme ([5b64c1c](https://github.com/LouisMazel/maz-ui/commit/5b64c1c51f6e20a8cb3f5c9ca00af5158f3734eb))
 
 # [3.15.0](https://github.com/LouisMazel/maz-ui/compare/v3.14.3-alpha.3...v3.15.0) (2023-09-26)
 

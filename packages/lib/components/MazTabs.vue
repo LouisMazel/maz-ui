@@ -5,8 +5,7 @@
 </template>
 
 <script lang="ts" setup>
-  import type { Ref } from 'vue'
-  import { computed, provide, ref } from 'vue'
+  import { computed, provide, ref, type Ref } from 'vue'
 
   const props = defineProps({
     modelValue: { type: Number, default: undefined },

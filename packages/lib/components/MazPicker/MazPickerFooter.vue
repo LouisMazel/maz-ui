@@ -1,16 +1,17 @@
 <template>
   <div class="maz-picker-footer">
     <MazBtn size="xs" :color="color" type="button" @click.stop="$emit('close')">
-      <CheckIcon class="icon maz-h-[1.4rem] maz-w-[1.4rem]" />
+      <CheckIcon class="icon maz-text-lg" />
     </MazBtn>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import type { PropType } from 'vue'
-  import MazBtn from '../MazBtn.vue'
+  import { defineAsyncComponent, type PropType } from 'vue'
   import type { Color } from '../types'
-  import CheckIcon from './../../icons/check.svg'
+
+  const MazBtn = defineAsyncComponent(() => import('./../MazBtn.vue'))
+  const CheckIcon = defineAsyncComponent(() => import('./../../icons/check.svg'))
 
   defineProps({
     color: { type: String as PropType<Color>, required: true },

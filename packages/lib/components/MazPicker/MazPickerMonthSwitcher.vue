@@ -2,7 +2,7 @@
   <div class="maz-picker-month-switcher">
     <div class="maz-picker-month-switcher__header">
       <MazBtn size="xs" color="transparent" type="button" @click.stop="$emit('close', $event)">
-        <XIcon />
+        <XIcon class="maz-text-lg" />
       </MazBtn>
     </div>
     <div class="maz-picker-month-switcher__main" :class="{ '--has-double': double }">
@@ -24,15 +24,15 @@
 </template>
 
 <script lang="ts" setup>
-  import { capitalize, date } from './../../modules/filters'
-  import type { PropType } from 'vue'
+  import { date } from './../../modules/filters/date'
+  import { capitalize } from './../../modules/filters/capitalize'
+  import { computed, defineAsyncComponent, type PropType } from 'vue'
   import type { Color } from '../types'
-  import { computed } from 'vue'
-  import type { Dayjs } from 'dayjs'
-  import dayjs from 'dayjs'
+  import dayjs, { type Dayjs } from 'dayjs'
   import { isSameDate } from './utils'
-  import MazBtn from './../MazBtn.vue'
-  import XIcon from './../../icons/x-mark.svg'
+
+  const MazBtn = defineAsyncComponent(() => import('./../MazBtn.vue'))
+  const XIcon = defineAsyncComponent(() => import('./../../icons/x-mark.svg'))
 
   const props = defineProps({
     calendarDate: { type: String, required: true },

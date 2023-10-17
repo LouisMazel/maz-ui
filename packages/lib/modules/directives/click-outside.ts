@@ -1,5 +1,4 @@
-import { nextTick } from 'vue'
-import type { Directive, DirectiveBinding, Plugin, App } from 'vue'
+import { type Directive, type DirectiveBinding, type Plugin, type App, nextTick } from 'vue'
 
 const UNIQUE_ID = '__vue_click_away__'
 

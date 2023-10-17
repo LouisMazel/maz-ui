@@ -19,6 +19,8 @@
       :class="[
         isOpen ? 'maz-border-color-lighter' : 'maz-border-transparent',
         { '--is-collapsable': collapsable },
+        { 'maz-justify-end': !$slots['header'] && collapsable },
+        { 'maz-justify-between': $slots['header'] },
       ]"
       tabindex="-1"
       @click.stop="collapsable ? (isOpen = !isOpen) : undefined"
@@ -105,12 +107,13 @@
 </script>
 
 <script lang="ts" setup>
-  import { computed, useSlots, type PropType, ref, watch } from 'vue'
-  import MazGallery from './MazGallery.vue'
-  import MazBtn from './MazBtn.vue'
-  import MazTransitionExpand from './MazTransitionExpand.vue'
+  import { computed, useSlots, type PropType, ref, watch, defineAsyncComponent } from 'vue'
   import type { MazGalleryImage } from './types'
-  import ChevronDownIcon from './../icons/chevron-down.svg'
+
+  const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
+  const MazGallery = defineAsyncComponent(() => import('./MazGallery.vue'))
+  const MazTransitionExpand = defineAsyncComponent(() => import('./MazTransitionExpand.vue'))
+  const ChevronDownIcon = defineAsyncComponent(() => import('./../icons/chevron-down.svg'))
 
   const props = defineProps({
     // Images displayed
@@ -187,7 +190,7 @@
     @apply maz-relative maz-inline-flex maz-max-h-full maz-flex-col maz-bg-color;
 
     &__header {
-      @apply maz-flex maz-items-center maz-justify-between maz-px-4 maz-py-3 maz-transition-colors maz-delay-200;
+      @apply maz-flex maz-items-center maz-px-4 maz-py-3 maz-transition-colors maz-delay-200;
 
       &.--is-collapsable {
         @apply hover:maz-bg-color-lighter;

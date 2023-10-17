@@ -1,5 +1,4 @@
-import { LazyImg } from './lazy-img-handler'
-import type { LazyImgDirective } from './lazy-img-handler'
+import { LazyImg, type LazyImgDirective } from './lazy-img-handler'
 
 let instance: LazyImg
 

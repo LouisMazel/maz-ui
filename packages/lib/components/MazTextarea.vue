@@ -57,10 +57,18 @@
 </script>
 
 <script lang="ts" setup>
-  import { useInstanceUniqId } from '../modules/composables'
-  import type { PropType, StyleValue } from 'vue'
-  import { computed, onBeforeUnmount, onMounted, ref, defineComponent } from 'vue'
-  import { getCurrentInstance } from 'vue'
+  import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
+
+  import {
+    computed,
+    onBeforeUnmount,
+    onMounted,
+    ref,
+    defineComponent,
+    getCurrentInstance,
+    type PropType,
+    type StyleValue,
+  } from 'vue'
   import { TextareaAutogrow } from './MazTextarea/textarea-autogrow'
   import type { Color } from './types'
 

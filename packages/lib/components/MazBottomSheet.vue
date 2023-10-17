@@ -36,9 +36,11 @@
 </template>
 
 <script lang="ts" setup>
-  import MazBtn from './MazBtn.vue'
   import MazBackdrop from './MazBackdrop.vue'
   import XIcon from './../icons/x-mark.svg'
+  import { defineAsyncComponent } from 'vue'
+
+  const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 
   defineProps({
     noClose: { type: Boolean, default: false },

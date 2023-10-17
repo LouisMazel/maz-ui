@@ -34,7 +34,7 @@ describe('MazBtn', () => {
     expect(wrapper.find('.m-btn__icon-right').exists()).toBe(true)
   })
 
-  test('shows the loading spinner when the "loading" prop is set to "true"', () => {
+  test('shows the loading spinner when the "loading" prop is set to "true"', async () => {
     const wrapper = shallowMount(MazBtn, {
       props: {
         loading: true,
@@ -42,6 +42,6 @@ describe('MazBtn', () => {
     })
 
     // Vérifie que le wrapper de chargement est affiché
-    expect(wrapper.find('.m-btn__loader').exists()).toBe(true)
+    expect(wrapper.find('maz-spinner-stub').exists()).toBe(true)
   })
 })
