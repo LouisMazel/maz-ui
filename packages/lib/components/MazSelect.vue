@@ -17,9 +17,8 @@
       autocomplete="off"
       :size="size"
       :disabled="disabled"
-      @focus.stop="openList"
+      @focus.prevent.stop="openList"
       @change="emits('change', $event)"
-      @click.stop="openList"
       @keydown="mainInputKeyboardHandler"
     >
       <template #right-icon>
@@ -27,7 +26,7 @@
           tabindex="-1"
           type="button"
           class="m-select-input__toggle-button maz-custom"
-          @click.stop="openList"
+          @click.stop="toggleList"
         >
           <ChevronDownIcon class="m-select-chevron maz-text-xl" />
         </button>
@@ -121,6 +120,7 @@
   import SearchIcon from './../icons/magnifying-glass.svg'
   import ChevronDownIcon from './../icons/chevron-down.svg'
   import NoSymbolIcon from './../icons/no-symbol.svg'
+  import { debounceCallback } from './../modules/helpers/debounce-callback'
 
   const instance = getCurrentInstance()
 
@@ -213,29 +213,35 @@
     props.listPosition.includes('bottom') ? 'maz-slide' : 'maz-slideinvert',
   )
 
-  const searchQuery = ref<string>()
+  const searchQuery = ref<string>('')
+  const query = ref<string>('')
 
   const searchInValue = (value?: ModelValueSimple, query?: string) => {
-    return query && value?.toString().toLocaleLowerCase().includes(query.toLocaleLowerCase())
+    return (
+      query &&
+      value?.toString().toLocaleLowerCase().trim().includes(query.toLocaleLowerCase().trim())
+    )
   }
 
-  const optionsList = computed(() => {
-    return searchQuery.value
+  function getFilteredOptionWithQuery(query: string) {
+    return query
       ? props.options?.filter((option) => {
           const searchValue = option[props.optionLabelKey]
           const searchValue3 = option[props.optionValueKey]
           const searchValue2 = option[props.optionInputValueKey]
 
           return (
-            searchInValue(searchValue, searchQuery.value) ||
-            searchInValue(searchValue3, searchQuery.value) ||
-            searchInValue(searchValue2, searchQuery.value)
+            searchInValue(searchValue, query) ||
+            searchInValue(searchValue3, query) ||
+            searchInValue(searchValue2, query)
           )
         })
       : props.options
-  })
+  }
 
-  const closeList = async (event?: FocusEvent | KeyboardEvent) => {
+  const optionsList = computed(() => getFilteredOptionWithQuery(searchQuery.value))
+
+  const closeList = async (event?: Event) => {
     if (
       event &&
       (('relatedTarget' in event &&
@@ -261,16 +267,45 @@
     emits('open', listOpened.value)
   }
 
+  function toggleList(event: Event) {
+    return listOpened.value ? closeList(event) : openList(event)
+  }
+
+  function focusSearchInputAndSetQuery(q: string) {
+    searchQuery.value = q
+    searchInputComponent.value?.input.focus()
+  }
+
+  function searchOptionWithQuery(keyPressed: string) {
+    if (keyPressed === 'Backspace' && query.value.length > 0) {
+      query.value = query.value.slice(0, -1)
+    } else {
+      query.value += keyPressed
+    }
+
+    const filteredOptions = getFilteredOptionWithQuery(query.value)
+
+    if (filteredOptions?.length) {
+      tmpModelValueIndex.value = optionsList.value?.findIndex(
+        (option) => option[props.optionValueKey] === filteredOptions[0][props.optionValueKey],
+      )
+
+      scrollToSelected()
+    }
+
+    debounceCallback(() => {
+      query.value = ''
+    }, 2000)
+  }
+
   const mainInputKeyboardHandler = (event: KeyboardEvent) => {
-    if (event.key?.length === 1) {
+    const keyPressed = event.key
+
+    if (/^[\dA-Za-z]$/.test(keyPressed)) {
       event.preventDefault()
       openList(event)
 
-      searchQuery.value = event.key
-
-      if (props.search) {
-        searchInputComponent.value?.input.focus()
-      }
+      props.search ? focusSearchInputAndSetQuery(keyPressed) : searchOptionWithQuery(keyPressed)
     } else {
       keyboardHandler(event)
     }
@@ -335,15 +370,23 @@
     }
   }
 
-  const scrollToSelected = async (itemIndex = tmpModelValueIndex.value) => {
-    if (typeof itemIndex === 'number') {
-      await nextTick()
+  async function scrollToSelected(itemIndex = tmpModelValueIndex.value) {
+    await nextTick()
 
-      optionsListElement.value?.querySelectorAll('.m-select-list-item')[itemIndex]?.scrollIntoView({
-        behavior: 'auto',
-        block: 'nearest',
-        inline: 'start',
-      })
+    const selectedIndex =
+      itemIndex ??
+      optionsList.value?.findIndex(
+        (option) => selectedOption.value?.[props.optionValueKey] === option[props.optionValueKey],
+      )
+
+    if (typeof selectedIndex === 'number') {
+      optionsListElement.value
+        ?.querySelectorAll('.m-select-list-item')
+        [selectedIndex]?.scrollIntoView({
+          behavior: 'auto',
+          block: 'nearest',
+          inline: 'start',
+        })
     }
   }
 
@@ -354,8 +397,10 @@
     if (mustCloseList) {
       nextTick(() => closeList())
     }
-    searchQuery.value = undefined
-    return emits('update:model-value', selectedOption[props.optionValueKey])
+
+    searchQuery.value = ''
+
+    emits('update:model-value', selectedOption[props.optionValueKey])
   }
 </script>
 

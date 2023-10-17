@@ -1,5 +1,5 @@
 export function debounce(func: (...args: unknown[]) => unknown, delay: number) {
-  let timeoutId: NodeJS.Timeout | null
+  let timeoutId: NodeJS.Timeout | null = null
 
   return (...args: unknown[]) => {
     if (timeoutId) {
