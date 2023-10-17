@@ -33,14 +33,14 @@
 
 <script lang="ts" setup>
   import { date } from './../../modules/filters/date'
-  import { computed, type PropType, ref, defineAsyncComponent } from 'vue'
+  import { computed, type PropType, ref } from 'vue'
   import dayjs, { type Dayjs } from 'dayjs'
   import type { Color } from './../types'
   import { isSameDate } from './utils'
 
-  const MazBtn = defineAsyncComponent(() => import('./../MazBtn.vue'))
-  const XIcon = defineAsyncComponent(() => import('./../../icons/x-mark.svg'))
-  const ChevronLeftIcon = defineAsyncComponent(() => import('./../../icons/chevron-left.svg'))
+  import MazBtn from './../MazBtn.vue'
+  import XIcon from './../../icons/x-mark.svg'
+  import ChevronLeftIcon from './../../icons/chevron-left.svg'
 
   const props = defineProps({
     color: { type: String as PropType<Color>, required: true },

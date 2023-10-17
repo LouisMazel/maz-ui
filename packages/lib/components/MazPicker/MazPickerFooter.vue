@@ -7,11 +7,11 @@
 </template>
 
 <script lang="ts" setup>
-  import { defineAsyncComponent, type PropType } from 'vue'
+  import { type PropType } from 'vue'
   import type { Color } from '../types'
 
-  const MazBtn = defineAsyncComponent(() => import('./../MazBtn.vue'))
-  const CheckIcon = defineAsyncComponent(() => import('./../../icons/check.svg'))
+  import MazBtn from './../MazBtn.vue'
+  import CheckIcon from './../../icons/check.svg'
 
   defineProps({
     color: { type: String as PropType<Color>, required: true },

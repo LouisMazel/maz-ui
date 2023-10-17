@@ -68,9 +68,9 @@
   import { computed, defineAsyncComponent, type PropType } from 'vue'
   import type { Color } from '../types'
   import type { PickerShortcut, PickerValue } from './types'
-  import MazPickerTime from './MazPickerTime.vue'
   import type { DateTimeFormatOptions } from './utils'
 
+  const MazPickerTime = defineAsyncComponent(() => import('./MazPickerTime.vue'))
   const MazPickerHeader = defineAsyncComponent(() => import('./MazPickerHeader.vue'))
   const MazPickerCalendar = defineAsyncComponent(() => import('./MazPickerCalendar.vue'))
 

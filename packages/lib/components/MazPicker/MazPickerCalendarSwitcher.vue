@@ -28,13 +28,13 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, defineAsyncComponent } from 'vue'
+  import { computed } from 'vue'
   import { capitalize } from './../../modules/filters/capitalize'
   import { date } from './../../modules/filters/date'
   import dayjs from 'dayjs'
 
-  const MazBtn = defineAsyncComponent(() => import('./../MazBtn.vue'))
-  const ChevronLeftIcon = defineAsyncComponent(() => import('./../../icons/chevron-left.svg'))
+  import MazBtn from './../MazBtn.vue'
+  import ChevronLeftIcon from './../../icons/chevron-left.svg'
 
   const props = defineProps({
     calendarDate: { type: String, default: undefined },

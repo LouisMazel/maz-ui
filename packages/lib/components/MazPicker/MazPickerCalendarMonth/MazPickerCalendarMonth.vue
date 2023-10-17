@@ -23,14 +23,14 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, defineAsyncComponent, type PropType } from 'vue'
+  import { computed, type PropType } from 'vue'
   import type { Color } from './../../types'
   import type { PickerValue } from '../types'
 
   import dayjs, { type Dayjs } from 'dayjs'
 
-  const MazPickerCalendarGrid = defineAsyncComponent(() => import('./MazPickerCalendarGrid.vue'))
-  const MazPickerCalendarDays = defineAsyncComponent(() => import('./MazPickerCalendarDays.vue'))
+  import MazPickerCalendarGrid from './MazPickerCalendarGrid.vue'
+  import MazPickerCalendarDays from './MazPickerCalendarDays.vue'
 
   const props = defineProps({
     modelValue: {

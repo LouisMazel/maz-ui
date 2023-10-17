@@ -65,14 +65,11 @@
   import type { PickerShortcut, PickerValue } from './types'
   import type { Dayjs } from 'dayjs'
 
-  const MazPickerCalendarSwitcher = defineAsyncComponent(
-    () => import('./MazPickerCalendarSwitcher.vue'),
-  )
+  import MazPickerCalendarSwitcher from './MazPickerCalendarSwitcher.vue'
+  import MazPickerCalendarMonth from './MazPickerCalendarMonth/MazPickerCalendarMonth.vue'
+
   const MazPickerMonthSwitcher = defineAsyncComponent(() => import('./MazPickerMonthSwitcher.vue'))
   const MazPickerYearSwitcher = defineAsyncComponent(() => import('./MazPickerYearSwitcher.vue'))
-  const MazPickerCalendarMonth = defineAsyncComponent(
-    () => import('./MazPickerCalendarMonth/MazPickerCalendarMonth.vue'),
-  )
   const MazPickerShortcuts = defineAsyncComponent(() => import('./MazPickerShortcuts.vue'))
 
   const props = defineProps({
