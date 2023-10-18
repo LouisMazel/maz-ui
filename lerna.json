@@ -1,10 +1,10 @@
 {
   "loglevel": "verbose",
-  "version": "3.18.1-alpha.1",
+  "version": "3.18.0",
   "yes": false,
   "command": {
     "version": {
-      "allowBranch": ["master", "release/*", "feat/use-changelogen"],
+      "allowBranch": ["master", "release/*"],
       "message": "chore(release): bump version to %s",
       "conventionalCommits": true,
       "changelog": false
