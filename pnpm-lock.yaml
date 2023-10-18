@@ -68,6 +68,9 @@ importers:
       prettier:
         specifier: ^3.0.3
         version: 3.0.3
+      simple-git:
+        specifier: ^3.20.0
+        version: 3.20.0
       ts-node:
         specifier: ^10.9.1
         version: 10.9.1(@types/node@20.8.7)(typescript@5.2.2)
