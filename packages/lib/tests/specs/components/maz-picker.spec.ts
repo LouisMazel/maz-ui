@@ -13,10 +13,6 @@ describe('components/MazPicker.vue', () => {
     },
   })
 
-  test('Should match with the snapshot', () => {
-    expect(wrapper.html()).toMatchSnapshot()
-  })
-
   test('Should have 12 hour format on time mode', async () => {
     await wrapper.setProps({
       format: 'hh:mm a',

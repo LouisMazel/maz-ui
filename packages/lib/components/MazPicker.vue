@@ -96,9 +96,9 @@
   import customParseFormat from 'dayjs/plugin/customParseFormat'
   import isBetween from 'dayjs/plugin/isBetween'
 
-  import { vClickOutside } from '../modules/directives/click-outside'
   import type { Color, Position } from './types'
 
+  import { vClickOutside } from '../modules/directives/click-outside'
   import { date } from './../modules/filters/date'
 
   import {
