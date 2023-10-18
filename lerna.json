@@ -6,7 +6,8 @@
     "version": {
       "allowBranch": ["master", "release/*"],
       "message": "chore(release): bump version to %s",
-      "conventionalCommits": true
+      "conventionalCommits": true,
+      "changelog": false
     }
   },
   "npmClient": "pnpm",

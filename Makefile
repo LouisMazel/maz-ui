@@ -90,6 +90,7 @@ test-unit-coverage-main:
 
 release:
 	pnpm lerna:version $(type)
+	node generate-changelog.js
 publish-prerelease:
 	make build-lib && cd packages/lib/dist && pnpm publish --access public --tag alpha --no-git-checks
 
