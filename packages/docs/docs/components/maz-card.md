@@ -424,4 +424,17 @@ Use the prop option `footer-align="left"`
 
 :::
 
+## Types
+
+```ts
+type MazGalleryImage =
+  | {
+      thumbnail?: string
+      src: string
+      alt?: string
+    }
+  | string
+```
+
+
 <!--@include: ./../.vitepress/generated-docs/maz-card.doc.md-->

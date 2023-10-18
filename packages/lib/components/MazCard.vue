@@ -102,13 +102,10 @@
   </div>
 </template>
 
-<script lang="ts">
-  export type { MazGalleryImage } from './types'
-</script>
-
 <script lang="ts" setup>
   import { computed, useSlots, type PropType, ref, watch, defineAsyncComponent } from 'vue'
   import type { MazGalleryImage } from './types'
+  export type { MazGalleryImage } from './types'
 
   const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
   const MazGallery = defineAsyncComponent(() => import('./MazGallery.vue'))
