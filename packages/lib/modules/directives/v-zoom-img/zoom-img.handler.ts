@@ -92,8 +92,8 @@ export class VueZoomImg {
      * Set class & data attribute to use it with previous & next functions
      */
     setTimeout(() => el.classList.add('maz-zoom-img-instance'))
-    el.setAttribute('data-src', this.options.src)
-    if (this.options.alt) el.setAttribute('data-alt', this.options.alt)
+    el.setAttribute('data-zoom-src', this.options.src)
+    if (this.options.alt) el.setAttribute('data-zoom-alt', this.options.alt)
     /**
      * Add event listeners
      */
@@ -121,8 +121,8 @@ export class VueZoomImg {
     el.removeEventListener('mouseleave', this.mouseLeaveListener)
     el.removeEventListener('click', this.renderPreviewListener)
     el.classList.remove('maz-zoom-img-instance')
-    el.removeAttribute('data-src')
-    el.removeAttribute('data-alt')
+    el.removeAttribute('data-zoom-src')
+    el.removeAttribute('data-zoom-alt')
     el.style.cursor = ''
   }
 
@@ -279,8 +279,8 @@ export class VueZoomImg {
     currentInstance.classList.remove(StateClass.OPEN)
     nextInstance.classList.add(StateClass.OPEN)
 
-    const src: string | null = nextInstance.getAttribute('data-src')
-    const alt: string | null = nextInstance.getAttribute('data-alt')
+    const src: string | null = nextInstance.getAttribute('data-zoom-src')
+    const alt: string | null = nextInstance.getAttribute('data-zoom-alt')
 
     this.wrapper.style.width = ''
     this.loader.hidden = false

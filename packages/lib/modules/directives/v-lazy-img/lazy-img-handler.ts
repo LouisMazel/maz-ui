@@ -97,7 +97,7 @@ export class LazyImg {
   }
 
   private getImageUrl(el: HTMLElement, binding: LazyImgBinding): string | null | undefined {
-    const dataSrc = this.getImgElement(el).getAttribute('data-src')
+    const dataSrc = this.getImgElement(el).getAttribute('data-lazy-src')
     if (dataSrc) return dataSrc
 
     binding.value
@@ -114,12 +114,12 @@ export class LazyImg {
 
     if (sourceElements.length > 0) {
       for await (const source of sourceElements) {
-        const srcSet = source.getAttribute('data-srcset')
+        const srcSet = source.getAttribute('data-lazy-srcset')
         if (srcSet) {
           source.srcset = srcSet
         } else {
           console.warn(
-            '[maz-ui][MazLazyImg] the "[data-srcset]" attribute is not provided on "<source />"',
+            '[maz-ui][MazLazyImg] the "[data-lazy-srcset]" attribute is not provided on "<source />"',
           )
         }
       }

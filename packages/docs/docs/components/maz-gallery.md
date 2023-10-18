@@ -25,11 +25,11 @@ description: MazGallery is a standalone component used to display images in a co
 </template>
 
 <script lang="ts" setup>
-  import MazGallery from 'maz-ui/components/MazGallery'
+  import MazGallery, { type MazGalleryImage } from 'maz-ui/components/MazGallery'
 
-  const images = [
+  const images: MazGalleryImage[] = [
     'https://placekitten.com/640/500',
-    { src: 'https://placekitten.com/640/600', alt: 'image description' },
+    { src: 'https://placekitten.com/640/600', thumbnail: 'https://placekitten.com/640/600', alt: 'image description' },
     { src: 'https://placekitten.com/640/700', alt: 'image description' },
     'https://placekitten.com/640/800',
     'https://placekitten.com/640/1000',
@@ -39,14 +39,26 @@ description: MazGallery is a standalone component used to display images in a co
 ```
 
 <script lang="ts" setup>
-  const images = [
+  const images: MazGalleryImage[] = [
     'https://placekitten.com/640/500',
-    { src: 'https://placekitten.com/640/600', alt: 'image description' },
+    { src: 'https://placekitten.com/640/600', thumbnail: 'https://placekitten.com/100/100', alt: 'image description' },
     { src: 'https://placekitten.com/640/700', alt: 'image description' },
     'https://placekitten.com/640/800',
     'https://placekitten.com/640/1000',
     'https://placekitten.com/800/800'
   ]
 </script>
+
+## Types
+
+```ts
+type MazGalleryImage =
+  | {
+      thumbnail?: string
+      src: string
+      alt?: string
+    }
+  | string
+```
 
 <!--@include: ./../.vitepress/generated-docs/maz-gallery.doc.md-->

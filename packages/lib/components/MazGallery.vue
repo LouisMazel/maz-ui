@@ -13,6 +13,7 @@
         :class="[`m-gallery__item--${i + 1}`]"
       >
         <img
+          v-lazy-img:[lazyImgArgument]="{ src: image.thumbnail, disabled: !lazy }"
           v-zoom-img="{
             src: image.src,
             alt: image.alt,
@@ -20,7 +21,6 @@
             blur: blur,
             scale: scale,
           }"
-          v-lazy-img:[lazyImgArgument]="{ src: image.src, disabled: !lazy }"
           class="m-gallery__item__image maz-flex-1"
           src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
           :alt="image.alt"
@@ -135,7 +135,9 @@
   })
   const imagesNormalized = computed(() => {
     return props.images.map((image) =>
-      typeof image === 'object' ? image : { src: image, alt: undefined },
+      typeof image === 'object'
+        ? { ...image, thumbnail: image.thumbnail ?? image.src }
+        : { src: image, thumbnail: image, alt: undefined },
     )
   })
   const imagesShown = computed(() => {
@@ -234,7 +236,6 @@
       }
 
       &__image {
-        /* display: block; */
         height: 100%;
         max-width: 100%;
         width: 100%;
