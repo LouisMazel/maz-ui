@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.18.0](https://github.com/LouisMazel/maz-ui/compare/v3.17.1...v3.18.0) (2023-10-18)
+
+
+### Performance Improvements
+
+* **lib:** lazy-loading of components and icons + reduce bundle size ([5407483](https://github.com/LouisMazel/maz-ui/commit/5407483a388d844b052acf0b3dac3e02fe0f770e))
+
+
+
+
+
 ## [3.17.1-alpha.9](https://github.com/LouisMazel/maz-ui/compare/v3.17.1-alpha.8...v3.17.1-alpha.9) (2023-10-18)
 
 **Note:** Version bump only for package nuxt-module
