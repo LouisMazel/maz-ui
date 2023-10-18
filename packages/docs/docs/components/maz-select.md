@@ -55,6 +55,23 @@ description: MazSelect is a standalone component that replaces the standard html
 
 Use `search` property to add a search input in the options list
 
+::: tip
+You can use your own template to replace the empty icon when no results are found
+
+::: details
+
+```html
+<MazSelect>
+  <template #no-results>
+    <div class="p-4 text-center">
+      No result
+    </div>
+  </template>
+</MazSelect>
+```
+
+:::
+
 <br />
 
 <MazSelect label="Select color" v-model="selectedValue" :options="colors" search />
