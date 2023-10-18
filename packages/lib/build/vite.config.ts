@@ -4,7 +4,6 @@ import { build, type InlineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import svgLoader from 'vite-svg-loader'
 import { viteStaticCopy, type Target } from 'vite-plugin-static-copy'
-import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
 import { logger } from './utils/logger'
 import { execPromise } from './utils/exec-promise'
 import { generateComponentsEntryFile } from './generate-components-entry'
@@ -14,6 +13,7 @@ import { copyAndTransformComponentsTypesFiles } from './copy-components-types'
 import { readdir, rename } from 'node:fs/promises'
 import { replaceInFile } from 'replace-in-file'
 import { getComponentList } from './get-component-list'
+import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
 
 const argv = minimist(process.argv.slice(2))
 
@@ -80,9 +80,10 @@ const getBuildConfig = ({
       output: {
         exports: 'named',
         chunkFileNames: `assets/[name]-[hash].mjs`,
-        assetFileNames: '[name].[ext]',
+        assetFileNames: '[name].[ext]', // `${name}.[ext]`,
         entryFileNames: '[name].mjs',
         preserveModules: false,
+        // intro: `import './${name}.css'`,
         compact: true,
         globals: {
           vue: 'Vue',
@@ -103,7 +104,7 @@ const getBuildConfig = ({
     // @ts-ignore
     svgLoader({}),
     Vue(),
-    cssInjectedByJsPlugin(),
+    cssInjectedByJsPlugin({ styleId: `css-${name}` }),
     ...(isModuleBuild ? [viteStaticCopy({ targets: staticAssetsToCopy })] : []),
   ],
 })
