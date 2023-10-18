@@ -41,10 +41,6 @@
   </div>
 </template>
 
-<script lang="ts">
-  export type { Color } from './types'
-</script>
-
 <script lang="ts" setup>
   import { debounce } from './../modules/helpers/debounce'
   import {
@@ -60,6 +56,8 @@
 
   import { getPos, isBetween, getOpacityCoeff } from './MazSlider/utils'
   import type { Color } from './types'
+
+  export type { Color }
 
   const props = defineProps({
     // Array of cursors values
@@ -288,7 +286,7 @@
       console.warn('[maz-ui][MazSlider] ref component not found')
     }
   }
-  const handleMousedown = (event: MouseEvent | TouchEvent | FocusEvent, i: number) => {
+  const handleMousedown = (_event: MouseEvent | TouchEvent | FocusEvent, i: number) => {
     if (activeCursor.value !== undefined) return
 
     activeCursor.value = i

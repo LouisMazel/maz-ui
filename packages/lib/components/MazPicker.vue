@@ -72,11 +72,6 @@
   </div>
 </template>
 
-<script lang="ts">
-  export type { PickerValue, PickerShortcut } from './MazPicker/types'
-  export type { Color, Position } from './types'
-</script>
-
 <script lang="ts" setup>
   import {
     computed,
@@ -116,6 +111,8 @@
 
   import type { PickerValue, PickerShortcut } from './MazPicker/types'
   import MazPickerContainer from './MazPicker/MazPickerContainer.vue'
+
+  export type { PickerValue, PickerShortcut, Color, Position }
 
   const ChevronDownIcon = defineAsyncComponent(() => import('./../icons/chevron-down.svg'))
   const MazInput = defineAsyncComponent(() => import('./MazInput.vue'))

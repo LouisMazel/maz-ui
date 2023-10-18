@@ -36,13 +36,10 @@
   </div>
 </template>
 
-<script lang="ts">
-  export type { Size } from './types'
-</script>
-
 <script lang="ts" setup>
   import { computed, defineAsyncComponent, type PropType } from 'vue'
   import type { Size } from './types'
+  export type { Size }
 
   const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
   const MazInput = defineAsyncComponent(() => import('./MazInput.vue'))

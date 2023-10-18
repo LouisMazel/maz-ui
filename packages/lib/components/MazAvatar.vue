@@ -63,14 +63,11 @@
   </Component>
 </template>
 
-<script lang="ts">
-  export type { Color } from './types'
-</script>
-
 <script lang="ts" setup>
   import { computed, defineAsyncComponent, type PropType } from 'vue'
 
   import type { Color } from './types'
+  export type { Color }
 
   const MazLazyImg = defineAsyncComponent(() => import('./MazLazyImg.vue'))
   const PencilIcon = defineAsyncComponent(() => import('./../icons/pencil.svg'))

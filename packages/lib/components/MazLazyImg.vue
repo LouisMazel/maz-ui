@@ -31,16 +31,14 @@
   </picture>
 </template>
 
-<script lang="ts">
-  export type { Image } from './types'
-</script>
-
 <script lang="ts" setup>
   import { computed, defineAsyncComponent, type Prop } from 'vue'
   import { vLazyImg } from './../modules/directives/v-lazy-img/lazy-img'
   import type { vLazyImgOptions } from './../modules/directives/v-lazy-img/types'
 
   import type { Image } from './types'
+
+  export type { Image }
 
   const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
 

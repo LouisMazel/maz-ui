@@ -14,14 +14,11 @@
   </div>
 </template>
 
-<script lang="ts">
-  export type { Color } from './types'
-</script>
-
 <script lang="ts" setup>
   import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
   import { type PropType, getCurrentInstance } from 'vue'
   import type { Color } from './types'
+  export type { Color }
 
   const instance = getCurrentInstance()
 

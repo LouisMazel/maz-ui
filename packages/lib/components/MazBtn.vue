@@ -62,10 +62,6 @@
   </Component>
 </template>
 
-<script lang="ts">
-  export type { Color, Size } from './types'
-</script>
-
 <script lang="ts" setup>
   import {
     computed,
@@ -77,6 +73,7 @@
   } from 'vue'
 
   import type { Color, Size } from './types'
+  export type { Color, Size }
 
   const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
   const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
