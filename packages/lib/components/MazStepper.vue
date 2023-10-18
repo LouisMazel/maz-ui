@@ -73,8 +73,11 @@
   </div>
 </template>
 
-<script lang="ts">
-  export type { Color } from './types'
+<script lang="ts" setup>
+  import { computed, useSlots, ref, type PropType, defineAsyncComponent, type Component } from 'vue'
+  import type { Color } from './types'
+
+  export type { Color }
 
   export interface Step {
     title?: string
@@ -86,11 +89,6 @@
     warning?: boolean
   }
   export type Steps = Step[]
-</script>
-
-<script lang="ts" setup>
-  import { computed, useSlots, ref, type PropType, defineAsyncComponent, type Component } from 'vue'
-  import type { Color } from './types'
 
   const MazTransitionExpand = defineAsyncComponent(() => import('./MazTransitionExpand.vue'))
   const CheckCircleIcon = defineAsyncComponent(() => import('./../icons/check-circle.svg'))

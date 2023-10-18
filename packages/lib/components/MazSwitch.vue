@@ -20,13 +20,11 @@
   </div>
 </template>
 
-<script lang="ts">
-  export type { Color } from './types'
-</script>
-
 <script lang="ts" setup>
   import { computed, getCurrentInstance, type PropType, type StyleValue } from 'vue'
   import type { Color } from './types'
+
+  export type { Color }
 
   const props = defineProps({
     modelValue: { type: Boolean, required: true },

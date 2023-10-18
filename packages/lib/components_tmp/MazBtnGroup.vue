@@ -23,7 +23,7 @@
   import { defineAsyncComponent, defineComponent } from 'vue'
   const MazBtn = defineAsyncComponent(() => import('./../components/MazBtn.vue'))
 
-  interface Item {
+  export interface Item {
     label: string
     value: string | number | boolean
     icon: string

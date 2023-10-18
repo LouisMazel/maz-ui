@@ -89,16 +89,12 @@
   </div>
 </template>
 
-<script lang="ts">
-  export type { Color, Size, Position } from './types'
-  export type { CountryCode } from 'libphonenumber-js'
-  export type { Result, Translations } from './MazPhoneNumberInput/types'
-</script>
-
 <script lang="ts" setup>
   import type { CountryCode } from 'libphonenumber-js'
   import type { Result, Translations } from './MazPhoneNumberInput/types'
   import type { Color, Position, Size } from './types'
+
+  export type { Color, Size, Position, CountryCode, Result, Translations }
 
   import {
     fetchCountryCode,
@@ -432,10 +428,7 @@
   const emitValue = (phoneNumber?: string) => {
     formattedNumber.value = sanitizeNumber(phoneNumber)
 
-    const { isValid, e164, formatNational } = getResultsFromPhoneNumber(
-      countryCode.value,
-      phoneNumber,
-    )
+    const internalResults = getResultsFromPhoneNumber(countryCode.value, phoneNumber)
 
     const hasDeletedCharac =
       formattedNumber.value && phoneNumber && formattedNumber.value?.length > phoneNumber?.length
@@ -443,20 +436,20 @@
     const cursorIsAtEnd =
       phoneNumber && cursorPosition.value ? cursorPosition.value + 1 >= phoneNumber.length : true
 
-    const shouldUseAsYoutType = (!hasDeletedCharac && cursorIsAtEnd) || isValid
+    const shouldUseAsYoutType = (!hasDeletedCharac && cursorIsAtEnd) || internalResults.isValid
 
     if (countryCode.value) {
       const isFullNumber = formattedNumber.value?.includes('+')
 
       formattedNumber.value =
-        formatNational && isFullNumber
-          ? formatNational
+        internalResults.formatNational && isFullNumber
+          ? internalResults.formatNational
           : shouldUseAsYoutType
           ? getAsYouTypeFormat(countryCode.value, formattedNumber.value)
           : formattedNumber.value
     }
 
-    const valueToEmit = isValid ? e164 : formattedNumber.value
+    const valueToEmit = internalResults.isValid ? internalResults.e164 : formattedNumber.value
 
     if (valueToEmit !== props.modelValue) {
       emits('update:model-value', valueToEmit)
@@ -464,7 +457,7 @@
   }
 
   const onBlur = () => {
-    inputFocused.value = true
+    inputFocused.value = false
 
     if (countryCode.value) {
       formattedNumber.value = getAsYouTypeFormat(countryCode.value, formattedNumber.value)

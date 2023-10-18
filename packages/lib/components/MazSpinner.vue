@@ -18,13 +18,10 @@
   </svg>
 </template>
 
-<script lang="ts">
-  export type { Color } from './types'
-</script>
-
 <script lang="ts" setup>
   import type { PropType } from 'vue'
   import type { Color } from './types'
+  export type { Color }
 
   defineProps({
     size: { type: String, default: '2em' },

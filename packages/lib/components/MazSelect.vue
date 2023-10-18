@@ -66,9 +66,12 @@
             </template>
           </MazInput>
         </div>
-        <span v-if="!optionsList || optionsList.length <= 0" class="m-select-list__no-results">
-          <NoSymbolIcon class="maz-h-6 maz-w-6 maz-text-normal" />
-        </span>
+        <!-- No results slot - Displayed when no results corresponding with seeach query -->
+        <slot v-if="!optionsList || optionsList.length <= 0" name="no-results">
+          <span class="m-select-list__no-results">
+            <NoSymbolIcon class="maz-h-6 maz-w-6 maz-text-normal" />
+          </span>
+        </slot>
         <div v-else class="m-select-list__scroll-wrapper" tabindex="-1">
           <button
             v-for="(option, i) in optionsList"
@@ -105,11 +108,6 @@
   </div>
 </template>
 
-<script lang="ts">
-  export type MazSelectOption = Record<string, ModelValueSimple>
-  export type { Color, Size, ModelValueSimple, Position } from './types'
-</script>
-
 <script lang="ts" setup>
   // NEXT: multiselect
   import {
@@ -125,6 +123,9 @@
   import type { Color, ModelValueSimple, Position, Size } from './types'
   import { useInstanceUniqId } from '../modules/composables'
   import { debounceCallback } from './../modules/helpers/debounce-callback'
+
+  export type MazSelectOption = Record<string, ModelValueSimple>
+  export type { Color, Size, ModelValueSimple, Position }
 
   const SearchIcon = defineAsyncComponent(() => import('./../icons/magnifying-glass.svg'))
   const ChevronDownIcon = defineAsyncComponent(() => import('./../icons/chevron-down.svg'))

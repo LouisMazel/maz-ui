@@ -28,15 +28,6 @@
   </div>
 </template>
 
-<script lang="ts">
-  export type MazTabsBarItem =
-    | {
-        label: string
-        disabled?: boolean
-      }
-    | string
-</script>
-
 <script lang="ts" setup>
   import {
     ref,
@@ -51,6 +42,13 @@
   import type { MazTabsProvide } from './MazTabs.vue'
 
   import { injectStrict } from './../modules/helpers/inject-strict'
+
+  export type MazTabsBarItem =
+    | {
+        label: string
+        disabled?: boolean
+      }
+    | string
 
   const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 

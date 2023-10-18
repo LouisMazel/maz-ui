@@ -12,13 +12,11 @@
   </span>
 </template>
 
-<script lang="ts">
-  import type { Color } from './types'
-  export type BadgeColor = Color | 'gray'
-</script>
-
 <script lang="ts" setup>
   import type { PropType } from 'vue'
+
+  import type { Color } from './types'
+  export type BadgeColor = Color | 'gray'
 
   defineProps({
     color: {

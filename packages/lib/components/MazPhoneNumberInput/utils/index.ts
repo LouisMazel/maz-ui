@@ -137,6 +137,7 @@ export const getResultsFromPhoneNumber = (
         countryCode,
       }
     }
+
     const parsing = parsePhoneNumberFromString(phoneNumber, countryCode)
 
     return {

@@ -73,6 +73,16 @@
     type DialogData,
   } from './../modules/composables/use-maz-dialog-promise'
   export type { Color, Size } from './types'
+</script>
+
+<script lang="ts" setup>
+  import { type PropType, computed, defineAsyncComponent } from 'vue'
+  import { type Color, type Size } from './types'
+  import {
+    useMazDialogPromise,
+    type DialogData,
+    type DialogState,
+  } from './../modules/composables/use-maz-dialog-promise'
 
   export type DialogButton = {
     response?: string | boolean
@@ -86,16 +96,6 @@
     loading?: boolean
     block?: boolean
   }
-</script>
-
-<script lang="ts" setup>
-  import { type PropType, computed, defineAsyncComponent } from 'vue'
-  import { type Color, type Size } from './types'
-  import {
-    useMazDialogPromise,
-    type DialogData,
-    type DialogState,
-  } from './../modules/composables/use-maz-dialog-promise'
 
   import MazDialog from './MazDialog.vue'
   const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
