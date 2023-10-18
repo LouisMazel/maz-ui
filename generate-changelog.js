@@ -14,18 +14,19 @@ simpleGit.tag((err, tags) => {
   })
 
   // // Récupérer l'avant-dernier tag
-  const avantDernierTag = sortedTags[1]
+  const lastTag = sortedTags[0]
+  const penultimateTag = sortedTags[1]
 
   exec(
-    `npx changelogen@latest --from=${avantDernierTag} --output=CHANGELOG.md`,
-    (error, stdout, stderr) => {
+    `npx changelogen@latest --from=${penultimateTag} --to=${lastTag} --output=CHANGELOG.md`,
+    (error, stdout) => {
       if (error) {
         console.error(error)
         return
       } else {
-        console.log('stdout, stderr', stdout, stderr)
+        console.log(stdout)
 
-        exec('git add -u && git commit -m "chore: update CHANGELOG.md" && git push')
+        exec('git add -u && git commit -m "chore: update CHANGELOG.md" && git push origin HEAD')
       }
     },
   )
