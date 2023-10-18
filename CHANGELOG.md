@@ -1,7 +1,20 @@
 # Change Log
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+## v3.18.0...v3.18.1-alpha.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.18.0...v3.18.1-alpha.0)
+
+### 💅 Refactors
+
+- Use changelogen instead of lerna changelog ([11c80e9e](https://github.com/LouisMazel/maz-ui/commit/11c80e9e))
+
+### 🏡 Chore
+
+- **release:** Bump version to v3.18.1-alpha.0 ([cb8959ad](https://github.com/LouisMazel/maz-ui/commit/cb8959ad))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
 
 # [3.18.0](https://github.com/LouisMazel/maz-ui/compare/v3.17.1...v3.18.0) (2023-10-18)
 
