@@ -1,5 +1,22 @@
 # Change Log
 
+## v3.18.1-alpha.0...v3.18.1-alpha.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.18.1-alpha.0...v3.18.1-alpha.1)
+
+### 💅 Refactors
+
+- Update changelog ([c11c67ac](https://github.com/LouisMazel/maz-ui/commit/c11c67ac))
+
+### 🏡 Chore
+
+- Remove old changelog files ([01bd16bb](https://github.com/LouisMazel/maz-ui/commit/01bd16bb))
+- **release:** Bump version to v3.18.1-alpha.1 ([ff769414](https://github.com/LouisMazel/maz-ui/commit/ff769414))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## [3.18.0](https://github.com/LouisMazel/maz-ui/compare/v3.17.1...v3.18.0) (2023-10-18)
 
 ### Features
