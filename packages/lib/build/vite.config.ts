@@ -13,7 +13,8 @@ import { copyAndTransformComponentsTypesFiles } from './copy-components-types'
 import { readdir, rename } from 'node:fs/promises'
 import { replaceInFile } from 'replace-in-file'
 import { getComponentList } from './get-component-list'
-import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
+
+import { libInjectCss } from 'vite-plugin-lib-inject-css'
 
 const argv = minimist(process.argv.slice(2))
 
@@ -57,7 +58,7 @@ const getBuildConfig = ({
     emptyOutDir: false,
     outDir,
     minify: 'terser',
-    cssCodeSplit: false,
+    cssCodeSplit: true,
     cssMinify: true,
     lib: {
       // Can be an array of multiple entry points
@@ -79,8 +80,8 @@ const getBuildConfig = ({
       ],
       output: {
         exports: 'named',
-        chunkFileNames: `assets/[name]-[hash].mjs`,
-        assetFileNames: '[name].[ext]', // `${name}.[ext]`,
+        chunkFileNames: `chunks/[name]-[hash].mjs`,
+        assetFileNames: `assets/[name].[ext]`,
         entryFileNames: '[name].mjs',
         preserveModules: false,
         // intro: `import './${name}.css'`,
@@ -101,10 +102,9 @@ const getBuildConfig = ({
     },
   },
   plugins: [
-    // @ts-ignore
-    svgLoader({}),
     Vue(),
-    cssInjectedByJsPlugin({ styleId: `css-${name}` }),
+    svgLoader(),
+    libInjectCss(),
     ...(isModuleBuild ? [viteStaticCopy({ targets: staticAssetsToCopy })] : []),
   ],
 })
@@ -134,13 +134,6 @@ const run = async () => {
       argv.component ? name === argv.component : true,
     )
 
-    // await build(
-    //   getBuildConfig({
-    //     path: resolve(__dirname, './../components/index.ts'),
-    //     name: 'index',
-    //     outDir: resolve(__dirname, '../dist/components'),
-    //   }),
-    // )
     for await (const { path, name } of componentToBuild) {
       await build(
         getBuildConfig({
