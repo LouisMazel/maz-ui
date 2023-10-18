@@ -16,25 +16,17 @@ simpleGit.tag((err, tags) => {
   // // Récupérer l'avant-dernier tag
   const avantDernierTag = sortedTags[1]
 
-  exec(`npx changelogen@latest --from=${avantDernierTag} --output=CHANGELOG.md`)
-
-  simpleGit.add('.')
-
-  // Créez un commit avec un message
-  simpleGit.commit('refactor: update CHANGELOG.md', (error, result) => {
-    if (error) {
-      console.error(error)
-      return
-    }
-
-    // Poussez le commit vers la branche courante
-    simpleGit.push((error) => {
+  exec(
+    `npx changelogen@latest --from=${avantDernierTag} --output=CHANGELOG.md`,
+    (error, stdout, stderr) => {
       if (error) {
         console.error(error)
         return
-      }
+      } else {
+        console.log('stdout, stderr', stdout, stderr)
 
-      console.log('changelog commit pushed')
-    })
-  })
+        exec('git add -u && git commit -m "chore: update CHANGELOG.md" && git push')
+      }
+    },
+  )
 })
