@@ -1,5 +1,28 @@
 # Change Log
 
+## v3.18.1...v3.18.2
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.18.1...v3.18.2)
+
+### 🩹 Fixes
+
+- **lib:** Toaster - add link and action to toaster options declaration type ([2e3475e7](https://github.com/LouisMazel/maz-ui/commit/2e3475e7))
+
+### 💅 Refactors
+
+- Changelog generator script ([3a983428](https://github.com/LouisMazel/maz-ui/commit/3a983428))
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([2bdbe836](https://github.com/LouisMazel/maz-ui/commit/2bdbe836))
+- Update CHANGELOG.md ([ea06cbc3](https://github.com/LouisMazel/maz-ui/commit/ea06cbc3))
+- Update dependencies ([69a4f546](https://github.com/LouisMazel/maz-ui/commit/69a4f546))
+- **release:** Bump version to v3.18.2 ([b5bfb93a](https://github.com/LouisMazel/maz-ui/commit/b5bfb93a))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.18.0...v3.18.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.18.0...v3.18.1)
