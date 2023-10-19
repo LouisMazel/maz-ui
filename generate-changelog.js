@@ -2,32 +2,36 @@ const { exec } = require('node:child_process')
 
 const simpleGit = require('simple-git')()
 
-simpleGit.tag((err, tags) => {
-  if (err) {
-    console.error(err)
-    return
-  }
-
-  // Trier les tags par ordre décroissant
-  const sortedTags = tags.split('\n').sort((a, b) => {
-    return b.localeCompare(a, undefined, { numeric: true, sensitivity: 'base' })
-  })
-
-  // // Récupérer l'avant-dernier tag
-  const lastTag = sortedTags[0]
-  const penultimateTag = sortedTags[1]
-
-  exec(
-    `npx changelogen@latest --from=${penultimateTag} --to=${lastTag} --output=CHANGELOG.md`,
-    (error, stdout) => {
+async function execPromise(command) {
+  return await new Promise((resolve, reject) => {
+    exec(command, (error, stdout, stderr) => {
       if (error) {
-        console.error(error)
-        return
+        console.error(`🔴 [cli](${command}) Execution failed - ${error.message}.`)
+        reject(error)
       } else {
-        console.log(stdout)
-
-        exec('git add -u && git commit -m "chore: update CHANGELOG.md" && git push origin HEAD')
+        resolve({ stdout, stderr })
       }
-    },
+    })
+  })
+}
+
+async function updateChangelog() {
+  const { stdout: lastTag } = await execPromise('git describe --tags --abbrev=0')
+  const { stdout: penultimateTag } = await execPromise(
+    'git describe --abbrev=0 --tags $(git rev-list --tags --max-count=2 | tail -n 1)',
   )
-})
+
+  const { stdout } = await execPromise(
+    `npx changelogen@latest --from=${penultimateTag} --to=${lastTag} --output=CHANGELOG.md`,
+  )
+
+  console.log('Changelog', `\n\n${stdout}`)
+
+  await execPromise(
+    'git add -u && git commit -m "chore: update CHANGELOG.md" && git push origin HEAD',
+  )
+
+  console.log('changelog update pushed')
+}
+
+updateChangelog()
