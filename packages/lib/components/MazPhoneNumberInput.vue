@@ -30,11 +30,11 @@
       :size="size"
       :list-position="listPosition"
       :search="!noSearch"
-      :search-placeholder="t.countrySelector.searchPlaceholder"
+      :search-placeholder="locales.countrySelector.searchPlaceholder"
       :options="countryOptions"
-      :error="error || (!!formattedNumber && !countryCode)"
-      :hint="!!formattedNumber && !countryCode ? t.countrySelector.error : undefined"
-      :label="t.countrySelector.placeholder"
+      :error="error || (!!asYouTypeNumber && !countryCode)"
+      :hint="!!asYouTypeNumber && !countryCode ? locales.countrySelector.error : undefined"
+      :label="locales.countrySelector.placeholder"
       @update:model-value="setCountryCode($event, true)"
       @focus="inputFocused = false"
     >
@@ -65,11 +65,11 @@
     <MazInput
       :id="id"
       ref="PhoneNumberInput"
-      :model-value="formattedNumber"
+      :model-value="asYouTypeNumber"
       :label="inputPlaceholder"
       :disabled="disabled"
       :color="color"
-      :error="error || (!!formattedNumber && !results.isValid)"
+      :error="error || (!!asYouTypeNumber && !results?.isValid)"
       v-bind="$attrs"
       :size="size"
       icon-name="phone"
@@ -78,13 +78,12 @@
       class="m-phone-number-input__input maz-flex-1"
       :class="{
         '--border-radius': !noCountrySelector,
-        '--error': error || !results.isValid,
+        '--error': error || !results?.isValid,
         '--focused': inputFocused,
       }"
       @focus="inputFocused = true"
-      @blur="onBlur"
+      @blur="inputFocused = false"
       @update:model-value="emitsValueAndResults($event)"
-      @keydown="onKeydown($event)"
     />
   </div>
 </template>
@@ -96,21 +95,10 @@
 
   export type { Color, Size, Position, CountryCode, Result, Translations }
 
-  import {
-    fetchCountryCode,
-    browserLocale,
-    getResultsFromPhoneNumber,
-    getAsYouTypeFormat,
-    isCountryAvailable,
-    getCountriesList,
-    getExamplePhoneNumber,
-    sanitizePhoneNumber,
-    loadPhoneNumberExamplesFile,
-  } from './MazPhoneNumberInput/utils'
   import { truthyFilter } from './../modules/helpers/truthy-filter'
   import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
 
-  import locales from './MazPhoneNumberInput/constantes/locales'
+  import { defaultLocales } from './MazPhoneNumberInput/constantes/default-locales'
 
   import {
     computed,
@@ -124,11 +112,29 @@
   } from 'vue'
 
   import { localeToUnicodeFlag } from './../modules/helpers/locale-to-unicode-flag'
+  import { useLibphonenumber, isCountryAvailable } from './MazPhoneNumberInput/use-libphonenumber'
+
+  const {
+    fetchCountryCode,
+    browserLocale,
+    getResultsFromPhoneNumber,
+    getAsYouTypeFormat,
+    getCountriesList,
+    getPhoneNumberExample,
+    sanitizePhoneNumber,
+    loadPhoneNumberExamplesFile,
+  } = useLibphonenumber()
 
   const MazInput = defineAsyncComponent(() => import('./MazInput.vue'))
   const MazSelect = defineAsyncComponent(() => import('./MazSelect.vue'))
 
-  const emits = defineEmits(['update', 'update:model-value', 'country-code'])
+  const emits = defineEmits([
+    'update',
+    'update:model-value',
+    'country-code',
+    'update:country-code',
+    'update:data',
+  ])
 
   const props = defineProps({
     modelValue: {
@@ -138,30 +144,27 @@
       },
       default: undefined,
     },
-    id: { type: String, default: undefined },
-    placeholder: { type: String, default: undefined },
     defaultPhoneNumber: { type: String, default: undefined },
-    defaultCountryCode: {
-      type: String as PropType<CountryCode | string>,
+    countryCode: {
+      type: String as PropType<CountryCode>,
       default: undefined,
       validator: (code: string) => isCountryAvailable(code),
     },
-    preferredCountries: {
-      type: Array as PropType<CountryCode[]>,
+    defaultCountryCode: {
+      type: String as PropType<CountryCode>,
       default: undefined,
+      validator: (code: string) => isCountryAvailable(code),
     },
-    ignoredCountries: {
-      type: Array as PropType<CountryCode[]>,
-      default: undefined,
+    data: {
+      type: Object as PropType<Partial<Result>>,
+      default: () => ({ isValid: false }),
     },
-    onlyCountries: {
-      type: Array as PropType<CountryCode[]>,
-      default: undefined,
-    },
-    translations: {
-      type: Object as PropType<Translations>,
-      default: undefined,
-    },
+    id: { type: String, default: undefined },
+    placeholder: { type: String, default: undefined },
+    preferredCountries: { type: Array as PropType<CountryCode[]>, default: undefined },
+    ignoredCountries: { type: Array as PropType<CountryCode[]>, default: undefined },
+    onlyCountries: { type: Array as PropType<CountryCode[]>, default: undefined },
+    translations: { type: Object as PropType<Translations>, default: undefined },
     listPosition: {
       type: String as PropType<Position>,
       default: 'bottom left',
@@ -171,10 +174,7 @@
         )
       },
     },
-    color: {
-      type: String as PropType<Color>,
-      default: 'primary',
-    },
+    color: { type: String as PropType<Color>, default: 'primary' },
     size: {
       type: String as PropType<Size>,
       default: 'md',
@@ -204,80 +204,28 @@
     providedId: props.id,
   })
 
-  const results = ref<Partial<Result>>({})
-  const countryCode = ref<CountryCode>()
-  const formattedNumber = ref<string>()
-  const cursorPosition = ref<number | null>()
-  const examplesFileLoaded = ref(false)
-  const inputFocused = ref(false)
-  const lastKeyPressed = ref<KeyboardEvent['key']>()
   const CountrySelector = ref<typeof MazSelect>()
   const PhoneNumberInput = ref<typeof MazInput>()
 
-  onBeforeMount(async () => {
-    try {
-      formattedNumber.value = props.modelValue ?? props.defaultPhoneNumber
+  const asYouTypeNumber = ref<string>()
+  const examplesFileLoaded = ref(false)
+  const inputFocused = ref(false)
 
-      if (props.defaultCountryCode) {
-        setCountryCode(props.defaultCountryCode)
-      }
-
-      if (props.fetchCountry) {
-        const locale = await fetchCountryCode()
-        if (locale) setCountryCode(locale)
-      }
-
-      getAndEmitResults(formattedNumber.value)
-    } catch (error) {
-      throw new Error(`[MazPhoneNumberInput](onBeforeMount) ${error}`)
-    }
-
-    try {
-      if (!props.noExample && !examplesFileLoaded.value) {
-        await loadPhoneNumberExamplesFile()
-        examplesFileLoaded.value = true
-      }
-    } catch {
-      throw new Error(
-        '[MazPhoneNumberInput](onBeforeMount) while loading phone number examples file',
-      )
-    }
+  const countryCode = computed({
+    get: () => props.countryCode,
+    set: (value) => emits('update:country-code', value),
   })
-
-  onMounted(() => {
-    try {
-      if (!props.defaultCountryCode && !props.noUseBrowserLocale && !countryCode.value) {
-        const locale = browserLocale()
-        if (locale) {
-          setCountryCode(locale)
-        }
-      }
-
-      if (props.defaultCountryCode && props.fetchCountry) {
-        throw String(
-          "Do not use 'fetch-country' and 'default-country-code' options in the same time",
-        )
-      }
-      if (props.defaultCountryCode && props.noUseBrowserLocale) {
-        throw String(
-          "If you use a 'default-country-code', do not use 'no-use-browser-locale' options",
-        )
-      }
-    } catch (error) {
-      console.warn(`[MazPhoneNumberInput](mounted) ${error}`)
-    }
+  const results = computed({
+    get: () => props.data,
+    set: (value) => emits('update:data', value),
   })
 
   const countries = computed(() => getCountriesList(props.customCountriesList))
 
-  const t = computed(() => ({
-    ...locales,
+  const locales = computed(() => ({
+    ...defaultLocales,
     ...props.translations,
   }))
-
-  const isValid = computed(() => {
-    return results.value?.isValid
-  })
 
   const countriesList = computed(() => {
     return countries.value?.filter((item) => !props.ignoredCountries?.includes(item.iso2))
@@ -320,26 +268,70 @@
       return props.placeholder
     }
 
-    const defaultPlaceholder = t.value.phoneInput.placeholder
+    const defaultPlaceholder = locales.value.phoneInput.placeholder
 
     if (props.noExample || !examplesFileLoaded.value) {
       return defaultPlaceholder
     } else {
-      const example = getPhoneNumberExample()
-      return isValid.value || !example
+      const example = getPhoneNumberExample(countryCode.value)
+      return results.value.isValid || !example
         ? defaultPlaceholder
-        : `${t.value.phoneInput.example} ${example}`
+        : `${locales.value.phoneInput.example} ${example}`
     }
   })
 
-  watch(
-    () => props.modelValue,
-    (phoneNumber, oldPhoneNumber) => {
-      if (phoneNumber !== oldPhoneNumber) {
-        emitsValueAndResults(phoneNumber)
+  onBeforeMount(async () => {
+    try {
+      if (props.fetchCountry) {
+        const locale = await fetchCountryCode()
+        if (locale) setCountryCode(locale)
       }
-    },
-  )
+    } catch (error) {
+      console.error(`[maz-ui](MazPhoneNumberInput) ${error}`)
+    }
+
+    try {
+      if (!props.noExample && !examplesFileLoaded.value) {
+        await loadPhoneNumberExamplesFile()
+        examplesFileLoaded.value = true
+      }
+    } catch {
+      console.error('[maz-ui](MazPhoneNumberInput) while loading phone number examples file')
+    }
+  })
+
+  onMounted(() => {
+    try {
+      if (!props.defaultCountryCode && !props.noUseBrowserLocale && !countryCode.value) {
+        const locale = browserLocale()
+        if (locale) {
+          setCountryCode(locale)
+        }
+      }
+
+      if (props.defaultCountryCode && props.fetchCountry) {
+        console.warn(
+          `[maz-ui](MazPhoneNumberInput) Do not use 'fetch-country' and 'default-country-code' options in the same time`,
+        )
+      }
+      if (props.defaultCountryCode && props.noUseBrowserLocale) {
+        console.warn(
+          `[maz-ui](MazPhoneNumberInput) If you use a 'default-country-code', do not use 'no-use-browser-locale' options`,
+        )
+      }
+    } catch (error) {
+      console.warn(`[maz-ui](MazPhoneNumberInput) ${error}`)
+    }
+  })
+
+  // watch(
+  //   () => props.modelValue,
+  //   (phoneNumber, oldPhoneNumber) => {
+  //     if (phoneNumber !== oldPhoneNumber) {
+  //       emitsValueAndResults(phoneNumber)
+  //     }
+  //   },
+  // )
 
   watch(
     () => props.defaultPhoneNumber,
@@ -355,26 +347,18 @@
     (countryCode, oldCountryCode) => {
       if (countryCode && countryCode !== oldCountryCode) {
         setCountryCode(countryCode)
-        emitsValueAndResults()
+        // emitsValueAndResults()
       }
     },
+    { immediate: true },
   )
 
-  const onKeydown = (event: KeyboardEvent) => {
-    lastKeyPressed.value = event.key
-
-    const target = event.target as HTMLInputElement | undefined
-
-    cursorPosition.value = target?.selectionStart
+  const focusCountrySelector = () => {
+    CountrySelector.value?.$el.querySelector('input')?.focus()
   }
 
-  const getPhoneNumberExample = () => {
-    try {
-      const phoneNumber = countryCode.value ? getExamplePhoneNumber(countryCode.value) : undefined
-      return phoneNumber ? phoneNumber.formatNational() : undefined
-    } catch (error) {
-      throw new Error(`[MazPhoneNumberInput](getPhoneNumberExample) ${error}`)
-    }
+  const focusPhoneNumberInput = () => {
+    PhoneNumberInput.value?.$el.querySelector('input')?.focus()
   }
 
   const autoUpdateCountryCodeFromPhoneNumber = () => {
@@ -385,21 +369,6 @@
     ) {
       setCountryCode(results.value.countryCode)
     }
-  }
-
-  const sanitizeNumber = (phoneNumber?: string) => {
-    phoneNumber = sanitizePhoneNumber(phoneNumber)
-
-    const backSpacePressed = lastKeyPressed.value === 'Backspace'
-
-    const lastCharacOfPhoneNumber = phoneNumber ? phoneNumber.at(-1) : ''
-    const lastCharIsParanthese = lastCharacOfPhoneNumber === ')'
-
-    if (backSpacePressed && lastCharIsParanthese) {
-      phoneNumber = phoneNumber?.trim().slice(0, -2)
-    }
-
-    return phoneNumber
   }
 
   const getAndEmitResults = (phoneNumber?: string, noAutoUpdateCountryCode?: boolean) => {
@@ -421,46 +390,28 @@
 
       emitValue(phoneNumber)
     } catch (error) {
-      throw new Error(`[MazPhoneNumberInput](emitsValueAndResults) ${error}`)
+      console.error(`[maz-ui](MazPhoneNumberInput) ${error}`)
     }
   }
 
   const emitValue = (phoneNumber?: string) => {
-    formattedNumber.value = sanitizeNumber(phoneNumber)
+    asYouTypeNumber.value = sanitizePhoneNumber(phoneNumber)
 
     const internalResults = getResultsFromPhoneNumber(countryCode.value, phoneNumber)
 
-    const hasDeletedCharac =
-      formattedNumber.value && phoneNumber && formattedNumber.value?.length > phoneNumber?.length
-
-    const cursorIsAtEnd =
-      phoneNumber && cursorPosition.value ? cursorPosition.value + 1 >= phoneNumber.length : true
-
-    const shouldUseAsYoutType = (!hasDeletedCharac && cursorIsAtEnd) || internalResults.isValid
-
     if (countryCode.value) {
-      const isFullNumber = formattedNumber.value?.includes('+')
+      const isFullNumber = asYouTypeNumber.value?.includes('+')
 
-      formattedNumber.value =
+      asYouTypeNumber.value =
         internalResults.formatNational && isFullNumber
           ? internalResults.formatNational
-          : shouldUseAsYoutType
-          ? getAsYouTypeFormat(countryCode.value, formattedNumber.value)
-          : formattedNumber.value
+          : getAsYouTypeFormat(countryCode.value, asYouTypeNumber.value)
     }
 
-    const valueToEmit = internalResults.isValid ? internalResults.e164 : formattedNumber.value
+    const valueToEmit = internalResults.e164
 
     if (valueToEmit !== props.modelValue) {
       emits('update:model-value', valueToEmit)
-    }
-  }
-
-  const onBlur = () => {
-    inputFocused.value = false
-
-    if (countryCode.value) {
-      formattedNumber.value = getAsYouTypeFormat(countryCode.value, formattedNumber.value)
     }
   }
 
@@ -471,33 +422,13 @@
       if (countryAvailable) {
         countryCode.value = selectedCountryCode as CountryCode
         emits('country-code', selectedCountryCode)
-        emitsValueAndResults(props.modelValue, true)
       }
 
       if (autoFocusInput) {
         focusPhoneNumberInput()
-        if (formattedNumber.value && formattedNumber.value.includes('+')) {
-          formattedNumber.value = undefined
-        }
       }
     } catch (error) {
-      throw new Error(`[MazPhoneNumberInput](setCountryCode) ${error}`)
-    }
-  }
-
-  const focusCountrySelector = () => {
-    try {
-      CountrySelector.value?.$el.querySelector('input')?.focus()
-    } catch (error) {
-      throw new Error(`[MazPhoneNumberInput](focusCountrySelector) ${error}`)
-    }
-  }
-
-  const focusPhoneNumberInput = () => {
-    try {
-      PhoneNumberInput.value?.$el.querySelector('input')?.focus()
-    } catch (error) {
-      throw new Error(`[MazPhoneNumberInput](focusPhoneNumberInput) ${error}`)
+      console.error(`[maz-ui](MazPhoneNumberInput) ${error}`)
     }
   }
 </script>
@@ -550,3 +481,4 @@
     }
   }
 </style>
+./MazPhoneNumberInput/constantes/default-locales ./MazPhoneNumberInput/utils/use-libphonenumber-js
