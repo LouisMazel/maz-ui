@@ -1,4 +1,4 @@
-export default {
+export const defaultLocales = {
   countrySelector: {
     placeholder: 'Country code',
     error: 'Choose country',

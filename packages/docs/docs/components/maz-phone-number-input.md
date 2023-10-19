@@ -26,53 +26,31 @@ npm install libphonenumber-js
 <MazPhoneNumberInput
   v-model="phoneNumber"
   show-code-on-list
-  color="info"
   :preferred-countries="['FR', 'BE', 'DE', 'US', 'GB']"
   :ignored-countries="['AC']"
   @update="results = $event"
   :success="results?.isValid"
 />
 
+<MazPhoneNumberInput
+  v-model="phoneNumber2"
+/>
+
+{{ phoneNumber2 }}
+
 <div class="language-js ext-js"><span class="lang">js</span><pre class="language-js"><code>v-model="{{ phoneNumber ?? 'undefined' }}"</code></pre></div>
 
-::: details Result object is emitted by @update event - Click to show model
-
-```ts
-export type Result = {
-  isValid: boolean
-  isPossible?: boolean
-  countryCode?: CountryCode
-  countryCallingCode?: CountryCallingCode
-  nationalNumber?: NationalNumber
-  type?: NumberType
-  formatInternational?: string
-  formatNational?: string
-  uri?: string
-  e164?: string
-  rfc3966?: string
-}
-```
-
-:::
+### Result object is emitted by @update event - [Model](#results-emitted-by-update-event)
 
 <div class="language-js ext-js"><span class="lang">js</span><pre class="language-js"><code>{{ results }}</code></pre></div>
 
----
-
 ### Code
-
-<script setup lang="ts">
-  import { ref } from 'vue'
-  const phoneNumber = ref()
-  const results = ref()
-</script>
 
 ```vue
 <template>
   <MazPhoneNumberInput
     v-model="phoneNumber"
     show-code-on-list
-    color="info"
     :preferred-countries="['FR', 'BE', 'DE', 'US', 'GB']"
     :ignored-countries="['AC']"
     @update="results = $event"
@@ -144,8 +122,38 @@ export type Result = {
 
 ## Types
 
+### Results emitted by @update event
+
+```ts
+export type Result = {
+  isValid: boolean
+  isPossible?: boolean
+  countryCode?: CountryCode
+  countryCallingCode?: CountryCallingCode
+  nationalNumber?: NationalNumber
+  type?: NumberType
+  formatInternational?: string
+  formatNational?: string
+  uri?: string
+  e164?: string
+  rfc3966?: string
+}
+```
+
+### Country Code
+
 ```ts
 type CountryCode = 'AC' | 'AD' | 'AE' | 'AF' | 'AG' | 'AI' | 'AL' | 'AM' | 'AO' | 'AR' | 'AS' | 'AT' | 'AU' | 'AW' | 'AX' | 'AZ' | 'BA' | 'BB' | 'BD' | 'BE' | 'BF' | 'BG' | 'BH' | 'BI' | 'BJ' | 'BL' | 'BM' | 'BN' | 'BO' | 'BQ' | 'BR' | 'BS' | 'BT' | 'BW' | 'BY' | 'BZ' | 'CA' | 'CC' | 'CD' | 'CF' | 'CG' | 'CH' | 'CI' | 'CK' | 'CL' | 'CM' | 'CN' | 'CO' | 'CR' | 'CU' | 'CV' | 'CW' | 'CX' | 'CY' | 'CZ' | 'DE' | 'DJ' | 'DK' | 'DM' | 'DO' | 'DZ' | 'EC' | 'EE' | 'EG' | 'EH' | 'ER' | 'ES' | 'ET' | 'FI' | 'FJ' | 'FK' | 'FM' | 'FO' | 'FR' | 'GA' | 'GB' | 'GD' | 'GE' | 'GF' | 'GG' | 'GH' | 'GI' | 'GL' | 'GM' | 'GN' | 'GP' | 'GQ' | 'GR' | 'GT' | 'GU' | 'GW' | 'GY' | 'HK' | 'HN' | 'HR' | 'HT' | 'HU' | 'ID' | 'IE' | 'IL' | 'IM' | 'IN' | 'IO' | 'IQ' | 'IR' | 'IS' | 'IT' | 'JE' | 'JM' | 'JO' | 'JP' | 'KE' | 'KG' | 'KH' | 'KI' | 'KM' | 'KN' | 'KP' | 'KR' | 'KW' | 'KY' | 'KZ' | 'LA' | 'LB' | 'LC' | 'LI' | 'LK' | 'LR' | 'LS' | 'LT' | 'LU' | 'LV' | 'LY' | 'MA' | 'MC' | 'MD' | 'ME' | 'MF' | 'MG' | 'MH' | 'MK' | 'ML' | 'MM' | 'MN' | 'MO' | 'MP' | 'MQ' | 'MR' | 'MS' | 'MT' | 'MU' | 'MV' | 'MW' | 'MX' | 'MY' | 'MZ' | 'NA' | 'NC' | 'NE' | 'NF' | 'NG' | 'NI' | 'NL' | 'NO' | 'NP' | 'NR' | 'NU' | 'NZ' | 'OM' | 'PA' | 'PE' | 'PF' | 'PG' | 'PH' | 'PK' | 'PL' | 'PM' | 'PR' | 'PS' | 'PT' | 'PW' | 'PY' | 'QA' | 'RE' | 'RO' | 'RS' | 'RU' | 'RW' | 'SA' | 'SB' | 'SC' | 'SD' | 'SE' | 'SG' | 'SH' | 'SI' | 'SJ' | 'SK' | 'SL' | 'SM' | 'SN' | 'SO' | 'SR' | 'SS' | 'ST' | 'SV' | 'SX' | 'SY' | 'SZ' | 'TA' | 'TC' | 'TD' | 'TG' | 'TH' | 'TJ' | 'TK' | 'TL' | 'TM' | 'TN' | 'TO' | 'TR' | 'TT' | 'TV' | 'TW' | 'TZ' | 'UA' | 'UG' | 'US' | 'UY' | 'UZ' | 'VA' | 'VC' | 'VE' | 'VG' | 'VI' | 'VN' | 'VU' | 'WF' | 'WS' | 'XK' | 'YE' | 'YT' | 'ZA' | 'ZM' | 'ZW';
 ```
 
 <!--@include: ./../.vitepress/generated-docs/maz-phone-number-input.doc.md-->
+
+
+
+<script setup lang="ts">
+  import { ref } from 'vue'
+  const phoneNumber = ref()
+
+  const phoneNumber2 = ref('+3263')
+  const results = ref()
+</script>

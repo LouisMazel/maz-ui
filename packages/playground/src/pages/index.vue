@@ -4,15 +4,9 @@
 
     <!-- Start Developping Area - You should not commit anything here to keep this place clean for all others -->
 
-    <!-- End Developping Area -->
+    <MazPhoneNumberInput v-model:country-code="countryCode" />
 
-    <img
-      v-fullscreen-img="{
-        scaleOnHover: true,
-        blurOnHover: true,
-      }"
-      src="https://cdn.artphotolimited.com/images/5ff5a529bd40b83c5a537440/1000x1000/gerard-depardieu-1983.jpg"
-    />
+    <!-- End Developping Area -->
 
     <MazFullscreenLoader v-show="wait.isLoading('APP_LOADING')" color="secondary">
       Loading...
@@ -25,6 +19,8 @@
 
   const toast = useToast()
   const wait = useWait()
+
+  const countryCode = ref()
 
   useIdleTimeout({
     // eslint-disable-next-line no-console
@@ -52,6 +48,10 @@
 
   toast.info('Votre mot de passe a été mis à jour', {
     position: 'top-left',
+    action: {
+      func: () => console.log('OKOKOKOK'),
+      text: 'okokok',
+    },
   })
   toast.success('Votre mot de passe a été mis à jour', {
     position: 'top-right',
