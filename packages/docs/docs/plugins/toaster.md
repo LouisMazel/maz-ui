@@ -14,21 +14,37 @@ This plugin has a composable for easier use, after installing it you can use [us
 
 ## Basic usage
 
-<div class="flex flex-wrap gap-05">
+<div class="maz-flex maz-flex-wrap maz-gap-2">
   <MazBtn color="info" @click="showInfo">
-    Show info toast on top
+    Info toast on top
   </MazBtn>
 
   <MazBtn color="danger" @click="showError">
-    Show error toast on bottom with 1s timeout
+    Error toast on bottom with 1s timeout
   </MazBtn>
 
   <MazBtn color="warning" @click="showWarning">
-    Show warning toast on top right
+    Warning toast on top right
   </MazBtn>
 
   <MazBtn color="success" @click="showSuccess">
-    Show persistent success toast on bottom left
+    Persistent success toast on bottom left
+  </MazBtn>
+</div>
+
+### Action and link
+
+Toast can have a link or an action
+
+<div class="maz-flex maz-flex-wrap maz-gap-2">
+  <MazBtn color="info" @click="showInfoWithLink">
+    Toast with  link
+  </MazBtn>
+  <MazBtn color="warning" @click="showInfoWithExternalLink">
+    Toast with blank link
+  </MazBtn>
+  <MazBtn color="danger" @click="showInfoWithAction">
+    Toast with action
   </MazBtn>
 </div>
 
@@ -49,6 +65,16 @@ This plugin has a composable for easier use, after installing it you can use [us
   <MazBtn color="success" @click="showSuccess">
     Show persistent success toast on bottom left
   </MazBtn>
+
+  <MazBtn color="info" @click="showInfoWithLink">
+    Toast with  link
+  </MazBtn>
+  <MazBtn color="warning" @click="showInfoWithExternalLink">
+    Toast with blank link
+  </MazBtn>
+  <MazBtn color="danger" @click="showInfoWithAction">
+    Toast with action
+  </MazBtn>
 </template>
 
 <script lang="ts" setup>
@@ -59,6 +85,7 @@ This plugin has a composable for easier use, after installing it you can use [us
   function showInfo () {
     toast.info('Info message', {
       position: 'top',
+      link: 'https://www.loicmazuel.com'
     })
   }
 
@@ -81,11 +108,43 @@ This plugin has a composable for easier use, after installing it you can use [us
       persistent: true,
     })
   }
+
+  function showInfoWithLink () {
+    toast.info('Toast with link, click -->', {
+      link: {
+        href: 'https://www.loicmazuel.com',
+      }
+    })
+  }
+
+  function showInfoWithExternalLink () {
+    toast.warning('Toast with link', {
+      link: {
+        href: 'https://www.loicmazuel.com',
+        target: '_blank',
+        closeToast: true,
+        text: 'Follow link'
+      }
+    })
+  }
+
+  function showInfoWithAction () {
+    toast.error('Toast with action', {
+      action: {
+        func: () => new Promise(async (resolve) => {
+          await sleep(3000)
+          resolve()
+        }),
+        text: 'Exec promise',
+        closeToast: true
+      }
+    })
+  }
 </script>
 ```
 
 <script lang="ts" setup>
-  import { useToast } from 'maz-ui'
+  import { useToast, sleep } from 'maz-ui'
 
   const toast = useToast()
 
@@ -112,6 +171,38 @@ This plugin has a composable for easier use, after installing it you can use [us
     toast.success('Success message', {
       position: 'bottom-left',
       persistent: true,
+    })
+  }
+
+  function showInfoWithLink () {
+    toast.info('Toast with link, click -->', {
+      link: {
+        href: 'https://www.loicmazuel.com',
+      }
+    })
+  }
+
+  function showInfoWithExternalLink () {
+    toast.warning('Toast with link', {
+      link: {
+        href: 'https://www.loicmazuel.com',
+        target: '_blank',
+        closeToast: true,
+        text: 'Follow link'
+      }
+    })
+  }
+
+  function showInfoWithAction () {
+    toast.error('Toast with action', {
+      action: {
+        func: () => new Promise(async (resolve) => {
+          await sleep(3000)
+          resolve()
+        }),
+        text: 'Exec promise',
+        closeToast: true
+      }
     })
   }
 </script>
@@ -162,4 +253,25 @@ const persistent: boolean = false
 
 ```ts
 const timeout: number = 10000 // in ms
+```
+
+### Link
+
+```ts
+export type ToasterLink = {
+  href: string
+  text?: string
+  target?: string
+  closeToast?: boolean
+}
+```
+
+### Action
+
+```ts
+export type ToasterAction = {
+  func: (..._arguments: unknown[]) => unknown
+  text: string
+  closeToast?: boolean
+}
 ```

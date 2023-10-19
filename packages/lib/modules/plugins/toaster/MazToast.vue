@@ -1,6 +1,6 @@
 <template>
   <Transition :name="transitionName">
-    <div
+    <button
       v-show="isActive"
       ref="Toaster"
       class="m-toast"
@@ -8,7 +8,7 @@
       role="alert"
       @mouseover="toggleTimer(true)"
       @mouseleave="toggleTimer(false)"
-      @click="click($event)"
+      @click.stop="link && !link?.closeToast ? undefined : click($event)"
     >
       <div class="m-toast__message-wrapper">
         <p class="m-toast__message">
@@ -16,10 +16,39 @@
         </p>
       </div>
 
-      <button v-if="!persistent" class="--close">
-        <XIcon class="--icon maz-text-2xl" />
+      <MazBtn
+        v-if="action"
+        :color="type"
+        pastel
+        :loading="actionLoading"
+        size="sm"
+        @click.stop="clickOnAction(action.func, $event)"
+      >
+        {{ action.text }}
+      </MazBtn>
+
+      <MazBtn
+        v-if="link"
+        :color="type"
+        pastel
+        size="xs"
+        :href="link.href"
+        :target="link.target ?? '_self'"
+      >
+        <div class="maz-flex maz-items-center maz-gap-2">
+          <span v-if="link.text">
+            {{ link.text }}
+          </span>
+
+          <ExternalLink v-if="link?.target == '_blank'" class="maz-text-xl" />
+          <Link v-else class="maz-text-xl" />
+        </div>
+      </MazBtn>
+
+      <button v-if="!persistent" class="--close" @click.stop="click($event)">
+        <XIcon class="--icon maz-text-xl" />
       </button>
-    </div>
+    </button>
   </Transition>
 </template>
 
@@ -27,9 +56,14 @@
   import { computed, defineAsyncComponent, onMounted, ref, type PropType } from 'vue'
   import { ToasterTimer } from './timer'
   import type { LocalToasterOptions } from './toaster-handler'
-  import type { ToasterPosition } from './types'
+  import type { ToasterPosition, ToasterAction, ToasterLink } from './types'
 
   const XIcon = defineAsyncComponent(() => import('./../../../icons/x-mark.svg'))
+  const ExternalLink = defineAsyncComponent(
+    () => import('./../../../icons/arrow-top-right-on-square.svg'),
+  )
+  const Link = defineAsyncComponent(() => import('./../../../icons/link.svg'))
+  const MazBtn = defineAsyncComponent(() => import('./../../../components/MazBtn.vue'))
 
   const Toaster = ref<HTMLDivElement>()
 
@@ -50,6 +84,8 @@
       },
     },
     message: { type: String, required: true },
+    link: { type: Object as PropType<ToasterLink>, default: undefined },
+    action: { type: Object as PropType<ToasterAction>, default: undefined },
     persistent: { type: Boolean, default: false },
   })
 
@@ -69,6 +105,7 @@
     return positionY.value === 'top' ? 'm-slide-top' : 'm-slide-bottom'
   })
 
+  const actionLoading = ref(false)
   const isActive = ref(false)
   const timer = ref<ToasterTimer>()
   const queueTimer = ref<ReturnType<typeof setTimeout>>()
@@ -120,10 +157,19 @@
   }
 
   function click(event: Event) {
-    // eslint-disable-next-line unicorn/prefer-prototype-methods
     emits('click', event)
+
     if (!props.persistent) {
       close()
+    }
+  }
+
+  async function clickOnAction(func: ToasterAction['func'], event: Event) {
+    actionLoading.value = true
+    await func()
+    actionLoading.value = false
+    if (props.action?.closeToast) {
+      click(event)
     }
   }
 
@@ -225,11 +271,11 @@
     }
 
     &__message {
-      @apply maz-m-0 maz-font-medium;
+      @apply maz-m-0 maz-text-left maz-font-medium;
     }
 
     & .--close {
-      @apply maz-ml-1 maz-flex maz-h-7 maz-w-7 maz-rounded maz-bg-transparent maz-p-0 maz-flex-center hover:maz-bg-gray-900/20;
+      @apply maz-ml-1 maz-flex maz-h-9 maz-w-9 maz-rounded maz-bg-transparent maz-p-0 maz-flex-center hover:maz-bg-gray-900/20;
 
       & .--icon {
         @apply maz-cursor-pointer;

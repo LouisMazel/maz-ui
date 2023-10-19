@@ -23,15 +23,48 @@ More info about [toaster plugin](./../plugins/toaster.md) in its documentation
 </template>
 
 <script lang="ts" setup>
-  import { useToast } from 'vue'
+  import { useToast } from 'maz-ui'
 
   const toast = useToast()
 
-  toast.info('info message')
-  toast.success('success message')
+  toast.info('info message', {
+    action: {
+      func: () => toast.success('clicked'),
+      text: 'Click me',
+      closeToast: true
+    }
+  })
+  toast.success('success message', {
+    link: {
+      href: '/maz-ui-3/composables/use-toast',
+      text: 'Follow me',
+      closeToast: true,
+    }
+  })
   toast.warning('warning message')
   toast.error('error message')
 </script>
 ```
 
-## Documentation
+<script lang="ts" setup>
+  import { useToast } from 'maz-ui'
+
+  const toast = useToast()
+
+  toast.info('info message', {
+    action: {
+      func: () => toast.success('clicked'),
+      text: 'Click me',
+      closeToast: true
+    }
+  })
+  toast.success('success message', {
+    link: {
+      href: '/maz-ui-3/composables/use-toast',
+      text: 'Follow me',
+      closeToast: true,
+    }
+  })
+  toast.warning('warning message')
+  toast.error('error message')
+</script>
