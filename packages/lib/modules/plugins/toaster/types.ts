@@ -12,6 +12,8 @@ export type ToasterOptions = {
   position?: ToasterPosition
   timeout?: number
   persistent?: boolean
+  action?: ToasterAction
+  link?: ToasterLink
 }
 
 export type ToasterLink = {
