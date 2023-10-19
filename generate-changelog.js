@@ -1,7 +1,5 @@
 const { exec } = require('node:child_process')
 
-const simpleGit = require('simple-git')()
-
 async function execPromise(command) {
   return await new Promise((resolve, reject) => {
     exec(command, (error, stdout, stderr) => {
@@ -22,10 +20,11 @@ async function updateChangelog() {
   )
 
   const { stdout } = await execPromise(
-    `npx changelogen@latest --from=${penultimateTag} --to=${lastTag} --output=CHANGELOG.md`,
+    `npx changelogen@latest --from=${penultimateTag.trim()} --to=${lastTag.trim()} --output=CHANGELOG.md`,
   )
 
-  console.log('Changelog', `\n\n${stdout}`)
+  console.log()
+  console.log('Changelog', stdout)
 
   await execPromise(
     'git add -u && git commit -m "chore: update CHANGELOG.md" && git push origin HEAD',
