@@ -35,7 +35,7 @@
     "eslint-plugin-unicorn": "^48.0.1",
     "husky": "^8.0.3",
     "lerna": "^7.4.1",
-    "lint-staged": "^15.0.1",
+    "lint-staged": "^15.0.2",
     "prettier": "^3.0.3",
     "simple-git": "^3.20.0",
     "ts-node": "^10.9.1",
