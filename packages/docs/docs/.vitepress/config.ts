@@ -74,10 +74,12 @@ export default defineConfig({
     const currentUrl = `${baseUrl}${siteConfig.site.base}${pageData.relativePath.replace('.md', '')}`
 
     const pageHead: HeadConfig[] = [
-      ['meta', { name: 'og:url', content: currentTitle }],
+      ['meta', { name: 'og:title', content: currentTitle }],
       ['meta', { name: 'og:url', content: currentUrl }],
       ['meta', { name: 'og:type', content: pageData.relativePath === 'index.md' ? 'website' : 'article' }],
       ['meta', { name: 'twitter:title', content: currentTitle }],
+      ['meta', { name: 'description', content: currentDescription }],
+      ['meta', { name: 'og:description', content: currentDescription }],
       ['meta', { name: 'twitter:description', content: currentDescription }],
       ['meta', { name: 'twitter:image:alt', content: currentDescription }],
       ['meta', { name: 'og:image:alt', content: currentDescription }],

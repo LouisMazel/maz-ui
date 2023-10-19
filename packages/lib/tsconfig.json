@@ -15,7 +15,6 @@
     "strictPropertyInitialization": false,
     "noImplicitAny": false,
     "noImplicitThis": false,
-    "baseUrl": ".",
     "ignoreDeprecations": "5.0",
     "verbatimModuleSyntax": false,
     "types": ["@types/node", "google.maps", "vite-svg-loader"]

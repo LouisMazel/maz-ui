@@ -13,3 +13,17 @@ export type ToasterOptions = {
   timeout?: number
   persistent?: boolean
 }
+
+export type ToasterLink = {
+  href: string
+  text?: string
+  /** @default _self */
+  target?: string
+  closeToast?: boolean
+}
+
+export type ToasterAction = {
+  func: (..._arguments: unknown[]) => unknown
+  text: string
+  closeToast?: boolean
+}

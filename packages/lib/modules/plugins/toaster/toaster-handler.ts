@@ -1,10 +1,12 @@
 import { mount } from '../../helpers/mount-component'
 import type { App } from 'vue'
 import MazToast from './MazToast.vue'
-import type { ToasterOptions } from './types'
+import type { ToasterAction, ToasterLink, ToasterOptions } from './types'
 
 export interface LocalToasterOptions extends ToasterOptions {
   type?: 'success' | 'info' | 'warning' | 'danger'
+  action?: ToasterAction
+  link?: ToasterLink
 }
 
 const DEFAULT_OPTIONS: ToasterOptions = {
