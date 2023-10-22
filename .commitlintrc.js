@@ -6,5 +6,6 @@ module.exports = {
       'always',
       ['root', 'docs', 'playground', 'lib', 'cli', 'release', 'nuxt-module', 'mazui-cli'],
     ],
+    'subject-case': [2, 'never', ['upper-case', 'pascal-case', 'start-case']],
   },
 }

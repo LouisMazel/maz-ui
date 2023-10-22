@@ -1,6 +1,6 @@
 import type { CountryCallingCode, CountryCode, NationalNumber, NumberType } from 'libphonenumber-js'
 
-import { type defaultLocales } from './constantes/default-locales'
+import { type defaultLocales } from './default-locales'
 
 export type Result = {
   isValid: boolean
