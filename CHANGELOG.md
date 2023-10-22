@@ -1,5 +1,28 @@
 # Change Log
 
+## v3.19.0...v3.19.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.19.0...v3.19.1)
+
+### 🩹 Fixes
+
+- **lib:** MazPicker - trouble with first-day-of-week according with the timezone ([007032e3](https://github.com/LouisMazel/maz-ui/commit/007032e3))
+
+### 💅 Refactors
+
+- **docs:** MazPicker - add basic example ([f77d8600](https://github.com/LouisMazel/maz-ui/commit/f77d8600))
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([379639fb](https://github.com/LouisMazel/maz-ui/commit/379639fb))
+- Update dependencies ([#683](https://github.com/LouisMazel/maz-ui/pull/683))
+- **release:** Bump version to v3.19.1 ([3ab5b3c5](https://github.com/LouisMazel/maz-ui/commit/3ab5b3c5))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+- Mazel <me@loicmazuel.com>
+
 ## v3.18.2...v3.19.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.18.2...v3.19.0)
