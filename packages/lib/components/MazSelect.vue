@@ -60,6 +60,7 @@
             tabindex="-1"
             class="m-select-list__search-input"
             @keydown="keyboardHandler"
+            @update:model-value="tmpModelValueIndex = 0"
           >
             <template #left-icon>
               <SearchIcon class="maz-h-[1.3rem] maz-w-[1.3rem]" />
@@ -118,6 +119,7 @@
     type PropType,
     getCurrentInstance,
     defineAsyncComponent,
+    watch,
   } from 'vue'
   import MazInput from './MazInput.vue'
   import type { Color, ModelValueSimple, Position, Size } from './types'
@@ -173,7 +175,16 @@
     searchPlaceholder: { type: String, default: 'Search in options' },
   })
 
-  const emits = defineEmits(['close', 'open', 'update:model-value', 'blur', 'focus', 'change'])
+  const emits = defineEmits([
+    'close',
+    'open',
+    'blur',
+    'focus',
+    'change',
+    'update:model-value',
+    /** On selected value, returns the option object */
+    'selected-option',
+  ])
 
   const listOpened = ref(false)
   const tmpModelValueIndex = ref<number>()
@@ -225,12 +236,32 @@
   const searchQuery = ref<string>('')
   const query = ref<string>('')
 
+  function normalizeString(str: string): string {
+    return str
+      .normalize('NFD')
+      .replaceAll(/[\u0300-\u036F]/g, '')
+      .replaceAll(/[^\dA-Za-z]/g, '')
+  }
+
   const searchInValue = (value?: ModelValueSimple, query?: string) => {
     return (
       query &&
-      value?.toString().toLocaleLowerCase().trim().includes(query.toLocaleLowerCase().trim())
+      value &&
+      normalizeString(value.toString().toLocaleLowerCase().trim()).includes(
+        normalizeString(query.toLocaleLowerCase().trim()),
+      )
     )
   }
+
+  watch(
+    () => props.modelValue,
+    (value, oldValue) => {
+      if (value && value !== oldValue) {
+        scrollToSelected()
+        updateTmpModelValueIndex()
+      }
+    },
+  )
 
   function getFilteredOptionWithQuery(query: string) {
     return query
@@ -262,6 +293,7 @@
 
     await nextTick()
     listOpened.value = false
+    tmpModelValueIndex.value = 0
     emits('close', event)
   }
 
@@ -277,7 +309,9 @@
   }
 
   function toggleList(event: Event) {
-    return listOpened.value ? closeList(event) : openList(event)
+    return listOpened.value
+      ? closeList(event)
+      : mazInputComponent.value?.$el.querySelector('input')?.focus() ?? openList()
   }
 
   function focusSearchInputAndSetQuery(q: string) {
@@ -299,12 +333,12 @@
         (option) => option[props.optionValueKey] === filteredOptions[0][props.optionValueKey],
       )
 
-      scrollToSelected()
+      scrollToSelected(tmpModelValueIndex.value)
     }
 
     debounceCallback(() => {
       query.value = ''
-    }, 2000)
+    }, 1000)
   }
 
   const mainInputKeyboardHandler = (event: KeyboardEvent) => {
@@ -360,7 +394,7 @@
       tmpModelValueIndex.value = code === 'ArrowDown' ? 0 : optionsLength - 1
     }
 
-    scrollToSelected()
+    scrollToSelected(tmpModelValueIndex.value)
   }
 
   const enterHandler = (event: KeyboardEvent, currentIndex?: number) => {
@@ -379,16 +413,18 @@
     }
   }
 
-  async function scrollToSelected(itemIndex = tmpModelValueIndex.value) {
+  async function scrollToSelected(index?: number) {
     await nextTick()
 
     const selectedIndex =
-      itemIndex ??
+      index ??
       optionsList.value?.findIndex(
         (option) => selectedOption.value?.[props.optionValueKey] === option[props.optionValueKey],
       )
 
     if (typeof selectedIndex === 'number') {
+      if (!tmpModelValueIndex.value) tmpModelValueIndex.value = selectedIndex
+
       optionsListElement.value
         ?.querySelectorAll('.m-select-list-item')
         [selectedIndex]?.scrollIntoView({
@@ -399,10 +435,14 @@
     }
   }
 
-  const updateValue = (selectedOption: MazSelectOption, mustCloseList = true) => {
-    tmpModelValueIndex.value = optionsList.value?.findIndex(
+  function updateTmpModelValueIndex() {
+    const index = optionsList.value?.findIndex(
       (option) => selectedOption[props.optionValueKey] === option[props.optionValueKey],
     )
+    tmpModelValueIndex.value = index && index >= 0 ? index : undefined
+  }
+
+  const updateValue = (selectedOption: MazSelectOption, mustCloseList = true) => {
     if (mustCloseList) {
       nextTick(() => closeList())
     }
@@ -410,6 +450,8 @@
     searchQuery.value = ''
 
     emits('update:model-value', selectedOption[props.optionValueKey])
+    emits('selected-option', selectedOption)
+    updateTmpModelValueIndex()
   }
 </script>
 
