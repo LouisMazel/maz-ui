@@ -32,12 +32,6 @@ npm install libphonenumber-js
   :success="results?.isValid"
 />
 
-<MazPhoneNumberInput
-  v-model="phoneNumber2"
-/>
-
-{{ phoneNumber2 }}
-
 <div class="language-js ext-js"><span class="lang">js</span><pre class="language-js"><code>v-model="{{ phoneNumber ?? 'undefined' }}"</code></pre></div>
 
 ### Result object is emitted by @update event - [Model](#results-emitted-by-update-event)
@@ -87,37 +81,43 @@ npm install libphonenumber-js
 
 ### Labels & placeholders
 
-```vue
-<template>
-  <MazPhoneNumberInput
-    :translations="{
-      countrySelector: {
-        placeholder: 'Country code',
-        error: 'Choose country',
-        searchPlaceholder: 'Search a country',
-      },
-      phoneInput: {
-        placeholder: 'Phone number',
-        example: 'Example:',
-      },
-    }"
-  />
-</template>
+```html
+<MazPhoneNumberInput
+  :translations="{
+    countrySelector: {
+      placeholder: 'Country code',
+      error: 'Choose country',
+      searchPlaceholder: 'Search a country',
+    },
+    phoneInput: {
+      placeholder: 'Phone number',
+      example: 'Example:',
+    },
+  }"
+/>
 ```
 
 ### Countries list
 
-```vue
-<template>
-  <MazPhoneNumberInput
-    :custom-countries-list="{
-      FR: 'France',
-      BE: 'Belgique',
-      DE: 'Allemagne',
-      US: 'Etats-Unis',
-    }"
-  />
-</template>
+#### First solution - set country locale
+
+```html
+<MazPhoneNumberInput
+  country-locale="fr-FR"
+/>
+```
+
+#### Second solution - custom list
+
+```html
+<MazPhoneNumberInput
+  :custom-countries-list="{
+    FR: 'France',
+    BE: 'Belgique',
+    DE: 'Allemagne',
+    US: 'Etats-Unis',
+  }"
+/>
 ```
 
 ## Types
@@ -147,8 +147,6 @@ type CountryCode = 'AC' | 'AD' | 'AE' | 'AF' | 'AG' | 'AI' | 'AL' | 'AM' | 'AO' 
 ```
 
 <!--@include: ./../.vitepress/generated-docs/maz-phone-number-input.doc.md-->
-
-
 
 <script setup lang="ts">
   import { ref } from 'vue'
