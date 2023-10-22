@@ -251,7 +251,6 @@ export default defineNuxtModule<MazUiNuxtOptions>({
     }
 
     if (options.devtools) {
-      // @ts-expect-error - private API
       nuxt.hook('devtools:customTabs', (iframeTabs) => {
         iframeTabs.push({
           // unique identifier
