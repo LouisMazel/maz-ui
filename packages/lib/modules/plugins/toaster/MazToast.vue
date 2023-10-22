@@ -255,7 +255,7 @@
       box-sizing: border-box;
     }
 
-    @apply maz-relative maz-flex maz-w-full maz-cursor-pointer maz-items-center maz-self-center maz-rounded maz-pl-2 maz-pr-2 maz-text-white maz-shadow-md maz-transition maz-duration-300 maz-ease-in-out;
+    @apply maz-relative maz-flex maz-w-full maz-cursor-pointer maz-items-center maz-gap-1 maz-self-center maz-rounded maz-pl-2 maz-pr-2 maz-text-white maz-shadow-md maz-transition maz-duration-300 maz-ease-in-out;
 
     &.--left,
     &.--right {
@@ -275,7 +275,7 @@
     }
 
     & .--close {
-      @apply maz-ml-1 maz-flex maz-h-9 maz-w-9 maz-rounded maz-bg-transparent maz-p-0 maz-flex-center hover:maz-bg-gray-900/20;
+      @apply maz-flex maz-h-9 maz-w-9 maz-rounded maz-bg-transparent maz-p-0 maz-flex-center hover:maz-bg-gray-900/20;
 
       & .--icon {
         @apply maz-cursor-pointer;
