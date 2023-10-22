@@ -9,6 +9,7 @@
       :double="double"
       :disabled="disabled"
     />
+
     <div class="maz-picker-calendar__main" :class="{ '--has-double': double }">
       <MazPickerCalendarSwitcher
         v-model:calendar-date="calendarDate"

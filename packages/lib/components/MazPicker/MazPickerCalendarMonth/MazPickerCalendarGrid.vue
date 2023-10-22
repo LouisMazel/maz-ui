@@ -105,7 +105,8 @@
   )
 
   const emptyDaysCount = computed(() => {
-    return Math.abs(getFirstDayOfMonth(props.calendarDate) - props.firstDayOfWeek)
+    const firstDayMonth = getFirstDayOfMonth(props.calendarDate)
+    return (firstDayMonth - props.firstDayOfWeek + 7) % 7
   })
 
   const setHoverredDay = (day?: Dayjs) => {
