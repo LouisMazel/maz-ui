@@ -19,6 +19,20 @@ To use this component, you have to install the `dayjs` dependency
 npm install dayjs
 ```
 
+## Basic Usage
+
+<MazPicker
+  v-model="newDateValue"
+  label="Select date"
+/>
+
+```html
+<MazPicker
+  v-model="newDateValue"
+  label="Select date"
+/>
+```
+
 ## Documentation
 
 - As for the input value, min-date, max-date or disabled-dates you must provide the same and a valid format of [Dayjs](https://day.js.org/docs/en/display/format)
@@ -333,6 +347,7 @@ To enable the range mode, you should provide an object like this `{ start: undef
   import dayjs from 'dayjs'
 
   const timeValue = ref('16:30')
+  const newDateValue = ref()
   const dateValue = ref('2022-02-03')
   const dateTimeValue = ref('2022-02-03 16:30')
   const dateTime12Value = ref('2022-02-03 04:30 pm')
