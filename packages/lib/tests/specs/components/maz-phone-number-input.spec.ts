@@ -1,6 +1,6 @@
 import { shallowMount, type VueWrapper } from '@vue/test-utils'
 import MazPhoneNumberInput from '@components/MazPhoneNumberInput.vue'
-import { isCountryAvailable } from '@components/MazPhoneNumberInput/utils/index'
+import { isCountryAvailable } from '@components/MazPhoneNumberInput/use-libphonenumber'
 import type { ComponentPublicInstance } from 'vue'
 
 describe('components/MazPhoneNumberInput.vue', () => {
@@ -41,6 +41,9 @@ describe('components/MazPhoneNumberInput.vue', () => {
     await wrapper.setProps({
       modelValue: '+326453',
     })
+
+    await wrapper.vm.$nextTick()
+    await wrapper.vm.$nextTick()
 
     expect(wrapper.vm.modelValue).toBe('+326453')
     expect(wrapper.vm.countryCode).toBe('BE')
