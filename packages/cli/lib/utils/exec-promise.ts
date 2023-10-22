@@ -8,7 +8,7 @@ export async function execPromise(command: string): Promise<unknown> {
         console.log(chalk.red(`🔴 [cli](${command}) Execution failed - ${error.message}.`))
         reject(error)
       } else {
-        console.log(chalk.green(`🔴 [cli](${command}) Execution success`))
+        console.log(chalk.green(`🟢 [cli](${command}) Execution success`))
         resolve({ stdout, stderr })
       }
     })
