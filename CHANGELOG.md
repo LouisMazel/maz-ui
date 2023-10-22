@@ -1,5 +1,37 @@
 # Change Log
 
+## v3.18.2...v3.19.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.18.2...v3.19.0)
+
+### 🩹 Fixes
+
+- **lib:** MazPhoneNumberInput - updating data and model when changing country ([85fc0fef](https://github.com/LouisMazel/maz-ui/commit/85fc0fef))
+
+### 💅 Refactors
+
+- **lib:** Maz-phone-number-input - formatting and fix bugs ([1d344651](https://github.com/LouisMazel/maz-ui/commit/1d344651))
+- **lib:** MazPhoneNumberInput - add option to disabled formatting as you type ([acde6c4b](https://github.com/LouisMazel/maz-ui/commit/acde6c4b))
+- **lib:** MazPhoneNumberInput - add option to choose locale of countries list ([54a51bbb](https://github.com/LouisMazel/maz-ui/commit/54a51bbb))
+- **docs:** MazPhoneNumberInput - update documentation with changes ([8d3bf588](https://github.com/LouisMazel/maz-ui/commit/8d3bf588))
+- **lib:** MazSelect - improve search feature and better ux ([4b4defaa](https://github.com/LouisMazel/maz-ui/commit/4b4defaa))
+- **lib:** Toaster - improve spacing between elements ([25df7345](https://github.com/LouisMazel/maz-ui/commit/25df7345))
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([a5d98537](https://github.com/LouisMazel/maz-ui/commit/a5d98537))
+- **cli:** According log to state ([0fcec8a3](https://github.com/LouisMazel/maz-ui/commit/0fcec8a3))
+- **playground:** Init view ([2c5d1791](https://github.com/LouisMazel/maz-ui/commit/2c5d1791))
+- **release:** Bump version to v3.19.0 ([ed5c3620](https://github.com/LouisMazel/maz-ui/commit/ed5c3620))
+
+### ✅ Tests
+
+- **lib:** MazPhoneNumberInput - add unit tests ([dadd5045](https://github.com/LouisMazel/maz-ui/commit/dadd5045))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.18.1...v3.18.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.18.1...v3.18.2)
