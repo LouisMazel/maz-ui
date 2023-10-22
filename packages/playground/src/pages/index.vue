@@ -1,12 +1,10 @@
 <template>
   <div class="home">
-    <h1 data-maz-aos="fade-right">Home</h1>
+    <div>
+      <!-- Start Developping Area - You should not commit anything here to keep this place clean for all others -->
 
-    <!-- Start Developping Area - You should not commit anything here to keep this place clean for all others -->
-
-    <MazPhoneNumberInput v-model:country-code="countryCode" />
-
-    <!-- End Developping Area -->
+      <!-- End Developping Area -->
+    </div>
 
     <MazFullscreenLoader v-show="wait.isLoading('APP_LOADING')" color="secondary">
       Loading...
@@ -19,8 +17,6 @@
 
   const toast = useToast()
   const wait = useWait()
-
-  const countryCode = ref()
 
   useIdleTimeout({
     // eslint-disable-next-line no-console
@@ -41,7 +37,7 @@
   wait.start('APP_LOADING')
 
   onMounted(async () => {
-    await sleep(1000)
+    await sleep(500)
 
     wait.stop('APP_LOADING')
   })
@@ -49,7 +45,7 @@
   toast.info('Votre mot de passe a été mis à jour', {
     position: 'top-left',
     action: {
-      func: () => console.log('OKOKOKOK'),
+      func: () => toast.success('CLICKED'),
       text: 'okokok',
     },
   })
