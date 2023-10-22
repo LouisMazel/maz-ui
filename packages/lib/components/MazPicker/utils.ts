@@ -6,6 +6,7 @@ dayjs.extend(weekday)
 import { date } from './../../modules/filters/date'
 import { capitalize } from './../../modules/filters/capitalize'
 import type { PartialRangeValue } from './types'
+import { type IpWhoResponse } from '../MazPhoneNumberInput/types'
 
 export type DateTimeFormatOptions = Pick<
   Intl.DateTimeFormatOptions,
@@ -52,18 +53,17 @@ export function getFirstDayOfMonth(value: ConfigType): number {
   return dayjs(value).startOf('month').day()
 }
 
-function addDays(date: Date, days: number) {
-  return date.setDate(date.getDate() + days)
-}
+export function getDaysOfWeek(locale: string, firstDayOfWeek: number) {
+  const currentDate = dayjs().locale(locale)
+  const days: string[] = []
 
-export function getWeekDays(locale: string, offset = 0): { label: string; dayNumber: number }[] {
-  return Array.from({ length: 7 }, (_v, i) => i + (offset || 0)).map((index) => {
-    const baseDate = addDays(new Date('1970-01-04'), index)
-    return {
-      label: date(baseDate, locale, { weekday: 'short' }),
-      dayNumber: new Date(baseDate).getDay(),
-    }
-  })
+  for (let i = 0; i < 7; i++) {
+    const day = currentDate.day(i + firstDayOfWeek).toDate()
+    const dayName = date(day, locale, { weekday: 'short' })
+    days.push(dayName)
+  }
+
+  return days
 }
 
 export function getDaysInMonth(date: ConfigType): number {
@@ -209,17 +209,11 @@ export function getBrowserLocale(): string | undefined {
 
 export async function fetchLocale(): Promise<string | undefined> {
   try {
-    const response = await fetch('https://ip2c.org/s')
-    const responseText = await response.text()
-    const result = (responseText || '').toString()
+    const reponse = await fetch('https://ipwho.is')
+    const { country_code } = (await reponse.json()) as IpWhoResponse
 
-    if (!result || result[0] !== '1') {
-      return undefined
-    }
-
-    return result.split(';')[1]
+    return country_code
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.error(`[maz-ui](MazPicker)(fetchCountryCode) ${error}`)
   }
 }

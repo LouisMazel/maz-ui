@@ -5,6 +5,7 @@
       :first-day-of-week="firstDayOfWeek"
       class="maz-picker-calendar-month__days"
     />
+
     <MazPickerCalendarGrid
       v-model="modelValue"
       v-model:hoverred-day="hoverredDay"
