@@ -7,5 +7,6 @@ export const guide = {
     { text: 'Theme', link: '/guide/theme' },
     { text: 'Dark mode', link: '/guide/dark-mode' },
     { text: 'Nuxt Module', link: '/guide/nuxt' },
+    { text: '@maz-ui/cli', link: '/guide/cli' },
   ],
 }
