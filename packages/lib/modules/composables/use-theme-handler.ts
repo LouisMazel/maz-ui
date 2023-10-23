@@ -104,9 +104,7 @@ export function useThemeHandler(opts: ThemeHandlerOptions = DEFAULT_OPTIONS) {
 
   const hasDarkTheme = computed(() => theme.value === options.storageThemeValueDark)
   const hasLightTheme = computed(() => theme.value === options.storageThemeValueLight)
-  const hasSystemTheme = computed(
-    () => localStorage[options.storageThemeKey] === options.storageThemeValueSystem,
-  )
+  const hasSystemTheme = computed(() => theme.value === options.storageThemeValueSystem)
 
   onMounted(() => {
     theme.value = localStorage[options.storageThemeKey]
