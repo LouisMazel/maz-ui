@@ -6,7 +6,10 @@
       <nav>
         <MazBtn :to="{ name: 'index' }"> Home </MazBtn>
         <MazBtn :to="{ name: 'test-page' }"> Test page </MazBtn>
-        <MazBtn @click="toggleTheme"> Switch dark mode </MazBtn>
+        <MazBtn @click="autoSetTheme"> Auto </MazBtn>
+        <MazBtn @click="setDarkTheme"> Dark theme </MazBtn>
+        <MazBtn @click="setLightTheme"> Light theme </MazBtn>
+        <MazBtn @click="setSystemTheme"> System theme </MazBtn>
       </nav>
     </header>
 
@@ -17,9 +20,9 @@
 </template>
 
 <script setup lang="ts">
-  const { toggleTheme, autoSetTheme } = useThemeHandler()
+  const { autoSetTheme, setSystemTheme, setLightTheme, setDarkTheme } = useThemeHandler()
 
-  onMounted(() => {
+  onBeforeMount(() => {
     autoSetTheme()
   })
 </script>

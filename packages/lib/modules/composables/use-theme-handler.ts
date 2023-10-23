@@ -6,6 +6,7 @@ const DEFAULT_OPTIONS = {
   storageThemeKey: 'theme',
   storageThemeValueDark: 'dark',
   storageThemeValueLight: 'light',
+  storageThemeValueSystem: 'system',
 }
 
 export const theme = ref<string>()
@@ -38,6 +39,7 @@ const setLightTheme = ({
 }: StrictThemeHandlerOptions & { setLocalStorageValue?: boolean }) => {
   document.documentElement.classList.remove(darkClass)
   document.documentElement.classList.add(lightClass)
+
   theme.value = storageThemeValueLight
 
   if (setLocalStorageValue) {
@@ -45,22 +47,41 @@ const setLightTheme = ({
   }
 }
 
+function setSytemTheme(options: StrictThemeHandlerOptions & { setLocalStorageValue?: boolean }) {
+  document.documentElement.classList.remove(options.darkClass)
+  document.documentElement.classList.remove(options.lightClass)
+  theme.value = options.storageThemeValueSystem
+
+  if (options.setLocalStorageValue) {
+    localStorage[options.storageThemeKey] = options.storageThemeValueSystem
+  }
+  autoSetTheme(options)
+}
+
+function getPrefDark(): boolean {
+  return window.matchMedia('(prefers-color-scheme: dark)').matches
+}
+
 const autoSetTheme = (options: StrictThemeHandlerOptions) => {
   if (
     localStorage[options.storageThemeKey] === options.storageThemeValueDark ||
-    (!(options.storageThemeKey in localStorage) &&
-      window.matchMedia('(prefers-color-scheme: dark)').matches)
+    (!(options.storageThemeKey in localStorage) && getPrefDark()) ||
+    (localStorage[options.storageThemeKey] === options.storageThemeValueSystem && getPrefDark())
   ) {
-    setDarkTheme({ ...options, setLocalStorageValue: false })
-  } else {
-    setLightTheme({ ...options, setLocalStorageValue: false })
+    return setDarkTheme({ ...options, setLocalStorageValue: false })
   }
+
+  return setLightTheme({ ...options, setLocalStorageValue: false })
 }
 
 const setTheme = ({
   shouldSetDarkMode,
   ...rest
-}: StrictThemeHandlerOptions & { shouldSetDarkMode: boolean }) => {
+}: StrictThemeHandlerOptions & { shouldSetDarkMode?: boolean }) => {
+  if (typeof shouldSetDarkMode !== 'boolean') {
+    return setSytemTheme(rest)
+  }
+
   return shouldSetDarkMode ? setDarkTheme(rest) : setLightTheme(rest)
 }
 
@@ -78,14 +99,17 @@ export const useThemeHandler = (opts: ThemeHandlerOptions = DEFAULT_OPTIONS) => 
 
   const hasDarkTheme = computed(() => theme.value === options.storageThemeValueDark)
   const hasLightTheme = computed(() => theme.value === options.storageThemeValueLight)
+  const hasSystemTheme = computed(() => theme.value === options.storageThemeValueSystem)
 
   return {
     autoSetTheme: () => autoSetTheme(options),
     toggleTheme: () => toggleTheme(options),
+    setSystemTheme: () => setSytemTheme({ ...options, setLocalStorageValue: true }),
     setDarkTheme: () => setTheme({ ...options, shouldSetDarkMode: true }),
     setLightTheme: () => setTheme({ ...options, shouldSetDarkMode: false }),
     hasDarkTheme,
     hasLightTheme,
+    hasSystemTheme,
     theme,
   }
 }
