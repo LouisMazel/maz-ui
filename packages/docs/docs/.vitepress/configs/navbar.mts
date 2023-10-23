@@ -1,12 +1,16 @@
 import { DefaultTheme } from 'vitepress'
-import { version } from 'maz-ui/package.json'
 
-import { guide } from './guide'
-import { components } from './components'
-import { directives } from './directives'
-import { helpers } from './helpers'
-import { composables } from './composables'
-import { plugins } from './plugins'
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
+
+const packageJson = require('maz-ui/package.json');
+
+import { guide } from './guide.mjs'
+import { components } from './components.mjs'
+import { directives } from './directives.mjs'
+import { helpers } from './helpers.mjs'
+import { composables } from './composables.mjs'
+import { plugins } from './plugins.mjs'
 
 export const nav: DefaultTheme.NavItem[] = [
   guide,
@@ -18,7 +22,7 @@ export const nav: DefaultTheme.NavItem[] = [
   },
   { text: 'Made with Maz-ui', link: '/made-with-maz-ui', },
   {
-    text: `v${version}`,
+    text: `v${packageJson.version}`,
     items: [
       {
         text: 'Changelog',

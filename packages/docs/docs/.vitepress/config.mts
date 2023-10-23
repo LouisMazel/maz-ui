@@ -1,5 +1,5 @@
 import { defineConfig, HeadConfig } from 'vitepress'
-import { sidebar, head, nav } from './configs'
+import { sidebar, head, nav } from './configs/index.mjs'
 
 import { createWriteStream } from 'node:fs'
 import { join, resolve } from 'node:path'
@@ -31,7 +31,7 @@ export default defineConfig({
     sidebar,
     nav,
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/LouisMazel/maz-ui' },
+      { icon: 'github', link: 'https://github.com/LouisMazel/maz-ui-3' },
       { icon: 'twitter', link: 'https://twitter.com/maz__ui' },
     ],
     footer: {
@@ -103,7 +103,7 @@ export default defineConfig({
 
   buildEnd: async ({ outDir }) => {
     const sitemap = new SitemapStream({
-      hostname: 'https://louismazel.github.io/maz-ui-3/'
+      hostname: 'https://louismazel.github.io/maz-ui/'
     })
     const writeStream = createWriteStream(resolve(outDir, 'sitemap.xml'))
     sitemap.pipe(writeStream)
