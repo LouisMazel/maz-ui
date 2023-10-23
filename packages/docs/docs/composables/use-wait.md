@@ -57,4 +57,3 @@ More info about the [wait plugin](./../plugins/wait.md) in its documentation
   })
 </script>
 
-## Documentation
