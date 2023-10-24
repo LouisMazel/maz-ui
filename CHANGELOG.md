@@ -1,5 +1,32 @@
 # Change Log
 
+## v3.19.1...v3.19.2
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.19.1...v3.19.2)
+
+### 🩹 Fixes
+
+- **lib:** Theme-handler - SSR compatibility - wait client side to access to localstorage ([fc83e827](https://github.com/LouisMazel/maz-ui/commit/fc83e827))
+- **lib:** MazLazyImg - use correct attributes of v-lazy-img directive ([d0d24efc](https://github.com/LouisMazel/maz-ui/commit/d0d24efc))
+
+### 💅 Refactors
+
+- **lib:** Theme-handler - add method to set system theme ([d8de257d](https://github.com/LouisMazel/maz-ui/commit/d8de257d))
+- **lib:** Theme-handler - improvements about current theme selected ([494feb26](https://github.com/LouisMazel/maz-ui/commit/494feb26))
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([c199e013](https://github.com/LouisMazel/maz-ui/commit/c199e013))
+- **docs:** Upgrade vitepress to rc ([e80c5889](https://github.com/LouisMazel/maz-ui/commit/e80c5889))
+- **docs:** Typo ([8abfaa3f](https://github.com/LouisMazel/maz-ui/commit/8abfaa3f))
+- Update dependencies ([edf644a2](https://github.com/LouisMazel/maz-ui/commit/edf644a2))
+- **lib:** Remove old unused components ([66ab3b36](https://github.com/LouisMazel/maz-ui/commit/66ab3b36))
+- **release:** Bump version to v3.19.2 ([9354b570](https://github.com/LouisMazel/maz-ui/commit/9354b570))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.19.0...v3.19.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.19.0...v3.19.1)
