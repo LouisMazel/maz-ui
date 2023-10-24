@@ -132,7 +132,7 @@
     "dayjs": "^1.11.10",
     "defu": "^6.1.2",
     "dropzone": "^5.9.3",
-    "eslint-plugin-vue": "^9.17.0",
+    "eslint-plugin-vue": "^9.18.0",
     "eslint-plugin-vuejs-accessibility": "^2.2.0",
     "fs": "0.0.2",
     "jsdom": "^22.1.0",
