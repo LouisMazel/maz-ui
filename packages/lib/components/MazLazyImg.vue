@@ -16,7 +16,7 @@
     <source
       v-for="({ srcset, media }, sourceIndex) in sources"
       :key="sourceIndex"
-      :data-srcset="srcset"
+      :data-lazy-srcset="srcset"
       :media="media"
     />
     <img
