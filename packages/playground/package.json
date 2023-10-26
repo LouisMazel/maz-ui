@@ -18,7 +18,7 @@
   "devDependencies": {
     "@nuxt/devtools": "^1.0.0",
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
-    "@nuxtjs/tailwindcss": "^6.8.0",
+    "@nuxtjs/tailwindcss": "^6.8.1",
     "autoprefixer": "^10.4.16",
     "nuxt": "^3.8.0",
     "nuxt-module": "workspace:*",
@@ -32,9 +32,9 @@
     "stylelint-config-recommended-vue": "^1.5.0",
     "stylelint-config-standard": "^34.0.0",
     "stylelint-config-tailwindcss": "^0.0.7",
-    "tailwindcss": "^3.3.3",
+    "tailwindcss": "^3.3.5",
     "vite-svg-loader": "^4.0.0",
-    "vue": "^3.3.6",
+    "vue": "^3.3.7",
     "vue-router": "^4.2.5"
   },
   "dependencies": {
