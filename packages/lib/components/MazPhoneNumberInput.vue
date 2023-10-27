@@ -107,7 +107,6 @@
     ref,
     watch,
     getCurrentInstance,
-    defineAsyncComponent,
     nextTick,
     reactive,
   } from 'vue'
@@ -126,8 +125,8 @@
     loadPhoneNumberExamplesFile,
   } = useLibphonenumber()
 
-  const MazInput = defineAsyncComponent(() => import('./MazInput.vue'))
-  const MazSelect = defineAsyncComponent(() => import('./MazSelect.vue'))
+  import MazInput from './MazInput.vue'
+  import MazSelect from './MazSelect.vue'
 
   const emits = defineEmits([
     /** emitted when country or phone number changed
