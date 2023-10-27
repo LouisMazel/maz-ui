@@ -1,5 +1,33 @@
 # Change Log
 
+## v3.19.2...v3.19.3
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.19.2...v3.19.3)
+
+### 💅 Refactors
+
+- **lib:** Maz-phone-number-input - no using lazy-loading of child components ([9bc1a679](https://github.com/LouisMazel/maz-ui/commit/9bc1a679))
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([a3267902](https://github.com/LouisMazel/maz-ui/commit/a3267902))
+- Upgrade deps ([30654572](https://github.com/LouisMazel/maz-ui/commit/30654572))
+- Update dependencies ([525eb95c](https://github.com/LouisMazel/maz-ui/commit/525eb95c))
+- **deps-dev:** Bump eslint-plugin-vue from 9.18.0 to 9.18.1 ([#700](https://github.com/LouisMazel/maz-ui/pull/700))
+- **release:** Bump version to v3.19.3 ([51e258f4](https://github.com/LouisMazel/maz-ui/commit/51e258f4))
+
+### ✅ Tests
+
+- **lib:** MazPhoneNumberInput - update snapshot ([43415ee7](https://github.com/LouisMazel/maz-ui/commit/43415ee7))
+
+### 🤖 CI
+
+- Run test pipelines when pnpm-lock.yaml is updated ([2077b74b](https://github.com/LouisMazel/maz-ui/commit/2077b74b))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.19.1...v3.19.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.19.1...v3.19.2)
