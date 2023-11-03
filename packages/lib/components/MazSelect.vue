@@ -83,19 +83,17 @@
             :class="[
               {
                 '--is-keyboard-selected': tmpModelValueIndex === i,
-                '--is-selected':
-                  selectedOption?.[optionValueKey] === option[optionValueKey] &&
-                  !isNullOrUndefined(option[optionValueKey]),
+                '--is-selected': isSelectedOption(option),
                 '--is-none-value': isNullOrUndefined(option[optionValueKey]),
               },
-              `--${color}`,
             ]"
             :style="{ minHeight: `${itemHeight}px` }"
             @click.prevent.stop="updateValue(option)"
           >
+            <MazCheckbox :model-value="isSelectedOption(option)" size="mini" :color="color" />
             <slot
               :option="option"
-              :is-selected="selectedOption?.[optionValueKey] === option[optionValueKey]"
+              :is-selected="isSelectedOption(option)"
               :selected-option="selectedOption?.[optionValueKey]"
             >
               <span>
@@ -129,6 +127,7 @@
   export type MazSelectOption = Record<string, ModelValueSimple>
   export type { Color, Size, ModelValueSimple, Position }
 
+  const MazCheckbox = defineAsyncComponent(() => import('./MazCheckbox.vue'))
   const SearchIcon = defineAsyncComponent(() => import('./../icons/magnifying-glass.svg'))
   const ChevronDownIcon = defineAsyncComponent(() => import('./../icons/chevron-down.svg'))
   const NoSymbolIcon = defineAsyncComponent(() => import('./../icons/no-symbol.svg'))
@@ -137,7 +136,7 @@
 
   const props = defineProps({
     modelValue: {
-      type: [Number, String, Boolean] as PropType<ModelValueSimple>,
+      type: [Number, String, Boolean, Array] as PropType<ModelValueSimple | ModelValueSimple[]>,
       default: undefined,
     },
     id: { type: String, default: undefined },
@@ -173,6 +172,7 @@
     },
     search: { type: Boolean, default: false },
     searchPlaceholder: { type: String, default: 'Search in options' },
+    multiple: { type: Boolean, default: false },
   })
 
   const emits = defineEmits([
@@ -188,6 +188,15 @@
 
   const listOpened = ref(false)
   const tmpModelValueIndex = ref<number>()
+
+  const selectedTextColor = computed(() =>
+    props.multiple
+      ? `var(--maz-color-${props.color}-800)`
+      : `var(--maz-color-${props.color}-contrast)`,
+  )
+  const selectedBgColor = computed(() =>
+    props.multiple ? `var(--maz-color-${props.color}-100)` : `var(--maz-color-${props.color})`,
+  )
 
   const hasListOpened = computed(() => listOpened.value || props.open)
 
@@ -220,6 +229,13 @@
 
   const isNullOrUndefined = (value: unknown) => {
     return value === undefined || value === null
+  }
+
+  function isSelectedOption(option: MazSelectOption) {
+    return (
+      selectedOption.value?.[props.optionValueKey] === option[props.optionValueKey] &&
+      !isNullOrUndefined(option[props.optionValueKey])
+    )
   }
 
   const mazInputValue = computed(() => {
@@ -544,37 +560,8 @@
         }
 
         &.--is-selected {
-          &.--primary {
-            @apply maz-bg-primary maz-text-primary-contrast;
-          }
-
-          &.--secondary {
-            @apply maz-bg-secondary maz-text-secondary-contrast;
-          }
-
-          &.--info {
-            @apply maz-bg-info maz-text-info-contrast;
-          }
-
-          &.--success {
-            @apply maz-bg-success maz-text-success-contrast;
-          }
-
-          &.--warning {
-            @apply maz-bg-warning maz-text-warning-contrast;
-          }
-
-          &.--danger {
-            @apply maz-bg-danger maz-text-danger-contrast;
-          }
-
-          &.--black {
-            @apply maz-bg-black maz-text-black-contrast;
-          }
-
-          &.--white {
-            @apply maz-bg-white maz-text-white-contrast;
-          }
+          color: v-bind('selectedTextColor');
+          background-color: v-bind('selectedBgColor');
 
           &.--transparent {
             @apply maz-bg-color;
