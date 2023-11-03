@@ -31,7 +31,7 @@ export default defineConfig({
     sidebar,
     nav,
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/LouisMazel/maz-ui-3' },
+      { icon: 'github', link: 'https://github.com/LouisMazel/maz-ui' },
       { icon: 'twitter', link: 'https://twitter.com/maz__ui' },
     ],
     footer: {
