@@ -98,7 +98,7 @@ describe('components/MazSelect.vue', () => {
   })
 
   test('updates the input value and emits a change event when an option is selected', async () => {
-    wrapper.find('input').trigger('focus')
+    await wrapper.find('input').trigger('focus')
 
     expect(wrapper.vm.hasListOpened).toBe(true)
 
@@ -109,5 +109,27 @@ describe('components/MazSelect.vue', () => {
     await wrapper.vm.$nextTick()
     expect(wrapper.vm.mazInputValue).toBe('Test 1')
     expect(wrapper.emitted()['update:model-value'][0][0]).toBe(1)
+  })
+
+  test('I can select multiple values', async () => {
+    await wrapper.setProps({
+      modelValue: undefined,
+      multiple: true,
+    })
+
+    window.HTMLElement.prototype.scrollIntoView = () => {}
+
+    await wrapper.find('input').trigger('focus')
+
+    expect(wrapper.vm.hasListOpened).toBe(true)
+
+    await wrapper.vm.$nextTick()
+
+    await wrapper.findAll('.m-select-list-item').at(3).trigger('click')
+    expect(wrapper.emitted('update:model-value')[0][0]).toEqual([4])
+    await wrapper.findAll('.m-select-list-item').at(4).trigger('click')
+    expect(wrapper.emitted('update:model-value')[1][0]).toEqual([4, 5])
+    await wrapper.findAll('.m-select-list-item').at(3).trigger('click')
+    expect(wrapper.emitted('update:model-value')[2][0]).toEqual([5])
   })
 })
