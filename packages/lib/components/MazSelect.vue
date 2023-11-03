@@ -18,6 +18,7 @@
       :size="size"
       :disabled="disabled"
       @focus.prevent.stop="openList"
+      @click.prevent.stop="openList"
       @change="emits('change', $event)"
       @keydown="mainInputKeyboardHandler"
     >
@@ -67,7 +68,9 @@
             </template>
           </MazInput>
         </div>
-        <!-- No results slot - Displayed when no results corresponding with seeach query -->
+        <!--
+          @slot No results slot - Displayed when no results corresponding with seeach query
+        -->
         <slot v-if="!optionsList || optionsList.length <= 0" name="no-results">
           <span class="m-select-list__no-results">
             <NoSymbolIcon class="maz-h-6 maz-w-6 maz-text-normal" />
@@ -90,12 +93,19 @@
             :style="{ minHeight: `${itemHeight}px` }"
             @click.prevent.stop="updateValue(option)"
           >
-            <MazCheckbox :model-value="isSelectedOption(option)" size="mini" :color="color" />
-            <slot
-              :option="option"
-              :is-selected="isSelectedOption(option)"
-              :selected-option="selectedOption?.[optionValueKey]"
-            >
+            <MazCheckbox
+              v-if="multiple"
+              tabindex="-1"
+              :model-value="isSelectedOption(option)"
+              size="sm"
+              :color="color"
+            />
+            <!--
+              @slot Custom option
+                @binding {Object} option
+                @binding {Boolean} is-selected
+            -->
+            <slot :option="option" :is-selected="isSelectedOption(option)">
               <span>
                 {{ option[optionLabelKey] }}
               </span>
@@ -128,6 +138,7 @@
   export type { Color, Size, ModelValueSimple, Position }
 
   const MazCheckbox = defineAsyncComponent(() => import('./MazCheckbox.vue'))
+
   const SearchIcon = defineAsyncComponent(() => import('./../icons/magnifying-glass.svg'))
   const ChevronDownIcon = defineAsyncComponent(() => import('./../icons/chevron-down.svg'))
   const NoSymbolIcon = defineAsyncComponent(() => import('./../icons/no-symbol.svg'))
@@ -189,13 +200,24 @@
   const listOpened = ref(false)
   const tmpModelValueIndex = ref<number>()
 
+  const isBlackOrTransparentColor = computed(() =>
+    ['black', 'transparent', 'white'].includes(props.color),
+  )
+
   const selectedTextColor = computed(() =>
-    props.multiple
-      ? `var(--maz-color-${props.color}-800)`
-      : `var(--maz-color-${props.color}-contrast)`,
+    isBlackOrTransparentColor.value
+      ? `var(--maz-color-black)`
+      : `var(--maz-color-${props.color}-800)`,
   )
   const selectedBgColor = computed(() =>
-    props.multiple ? `var(--maz-color-${props.color}-100)` : `var(--maz-color-${props.color})`,
+    isBlackOrTransparentColor.value
+      ? 'var(--maz-color-muted)'
+      : `var(--maz-color-${props.color}-100)`,
+  )
+  const keyboardSelectedBgColor = computed(() =>
+    isBlackOrTransparentColor.value
+      ? 'var(--maz-color-muted)'
+      : `var(--maz-color-${props.color}-200)`,
   )
 
   const hasListOpened = computed(() => listOpened.value || props.open)
@@ -206,16 +228,25 @@
     providedId: props.id,
   })
 
+  const selectedOptions = computed(
+    () =>
+      props.options?.filter((option) => {
+        return props.multiple
+          ? Array.isArray(props.modelValue)
+            ? props.modelValue.includes(option[props.optionValueKey]) &&
+              !isNullOrUndefined(option[props.optionValueKey])
+            : false
+          : props.modelValue === option[props.optionValueKey] &&
+              !isNullOrUndefined(option[props.optionValueKey])
+      }) ?? [],
+  )
+
   onBeforeMount(() => {
     if (!props.options?.length) {
       console.warn('[maz-ui](MazSelect) you must provide options')
     }
 
-    if (selectedOption.value) {
-      tmpModelValueIndex.value = props.options?.findIndex(
-        (option) => option[props.optionValueKey] === selectedOption.value?.[props.optionValueKey],
-      )
-    }
+    updateTmpModelValueIndex()
   })
 
   const mazSelectElement = ref<HTMLDivElement>()
@@ -223,26 +254,33 @@
   const searchInputComponent = ref<typeof MazInput>()
   const optionsListElement = ref<HTMLDivElement>()
 
-  const selectedOption = computed(
-    () => props.options?.find((option) => props.modelValue === option[props.optionValueKey]),
-  )
-
   const isNullOrUndefined = (value: unknown) => {
     return value === undefined || value === null
   }
 
   function isSelectedOption(option: MazSelectOption) {
-    return (
-      selectedOption.value?.[props.optionValueKey] === option[props.optionValueKey] &&
-      !isNullOrUndefined(option[props.optionValueKey])
-    )
+    const hasOption =
+      selectedOptions.value?.some(
+        (selectedOption) => selectedOption[props.optionValueKey] === option[props.optionValueKey],
+      ) ?? false
+    return hasOption && !isNullOrUndefined(option[props.optionValueKey])
   }
 
   const mazInputValue = computed(() => {
-    return isNullOrUndefined(selectedOption.value?.[props.optionValueKey])
-      ? undefined
-      : selectedOption.value?.[props.optionInputValueKey] ??
-          selectedOption.value?.[props.optionLabelKey]
+    if (props.multiple && props.modelValue && Array.isArray(props.modelValue)) {
+      return props.modelValue
+        .map(
+          (value) =>
+            optionsList.value?.find((option) => option[props.optionValueKey] === value)?.[
+              props.optionInputValueKey
+            ],
+        )
+        .join(', ')
+    }
+
+    return optionsList.value?.find((option) => option[props.optionValueKey] === props.modelValue)?.[
+      props.optionInputValueKey
+    ]
   })
 
   const listTransition = computed(() =>
@@ -273,8 +311,7 @@
     () => props.modelValue,
     (value, oldValue) => {
       if (value && value !== oldValue) {
-        scrollToSelected()
-        updateTmpModelValueIndex()
+        // scrollToOptionIndex()
       }
     },
   )
@@ -314,20 +351,21 @@
   }
 
   const openList = async (event?: Event) => {
+    if (props.disabled || hasListOpened.value) return
+
     event?.preventDefault()
-
-    if (props.disabled) return
-
     listOpened.value = true
-    await scrollToSelected()
+    await scrollToOptionIndex()
     emits('focus', event)
     emits('open', listOpened.value)
   }
 
+  function focusMainInput() {
+    mazInputComponent.value?.$el.querySelector('input')?.focus()
+  }
+
   function toggleList(event: Event) {
-    return listOpened.value
-      ? closeList(event)
-      : mazInputComponent.value?.$el.querySelector('input')?.focus() ?? openList()
+    listOpened.value ? closeList(event) : focusMainInput()
   }
 
   function focusSearchInputAndSetQuery(q: string) {
@@ -349,7 +387,9 @@
         (option) => option[props.optionValueKey] === filteredOptions[0][props.optionValueKey],
       )
 
-      scrollToSelected(tmpModelValueIndex.value)
+      if (typeof tmpModelValueIndex.value === 'number' && tmpModelValueIndex.value >= 0) {
+        scrollToOptionIndex(tmpModelValueIndex.value)
+      }
     }
 
     debounceCallback(() => {
@@ -374,14 +414,14 @@
     const code = event.code
 
     const isArrow = ['ArrowUp', 'ArrowDown'].includes(code)
-    const isEnter = 'Enter' === code
-    const isEscape = 'Escape' === code && hasListOpened.value
+    const shouldSelect = ['Enter', 'Space'].includes(code)
+    const shouldCloseList = 'Escape' === code && hasListOpened.value
 
     if (isArrow) {
       arrowHandler(event, tmpModelValueIndex.value)
-    } else if (isEnter) {
+    } else if (shouldSelect) {
       enterHandler(event, tmpModelValueIndex.value)
-    } else if (isEscape) {
+    } else if (shouldCloseList) {
       closeList()
     }
   }
@@ -410,7 +450,7 @@
       tmpModelValueIndex.value = code === 'ArrowDown' ? 0 : optionsLength - 1
     }
 
-    scrollToSelected(tmpModelValueIndex.value)
+    scrollToOptionIndex(tmpModelValueIndex.value)
   }
 
   const enterHandler = (event: KeyboardEvent, currentIndex?: number) => {
@@ -429,18 +469,16 @@
     }
   }
 
-  async function scrollToSelected(index?: number) {
+  async function scrollToOptionIndex(index?: number) {
     await nextTick()
 
-    const selectedIndex =
-      index ??
-      optionsList.value?.findIndex(
-        (option) => selectedOption.value?.[props.optionValueKey] === option[props.optionValueKey],
-      )
+    if (typeof index !== 'number') {
+      updateTmpModelValueIndex()
+    }
 
-    if (typeof selectedIndex === 'number') {
-      if (!tmpModelValueIndex.value) tmpModelValueIndex.value = selectedIndex
+    const selectedIndex = index ?? tmpModelValueIndex.value
 
+    if (typeof selectedIndex === 'number' && selectedIndex >= 0) {
       optionsListElement.value
         ?.querySelectorAll('.m-select-list-item')
         [selectedIndex]?.scrollIntoView({
@@ -451,23 +489,51 @@
     }
   }
 
-  function updateTmpModelValueIndex() {
-    const index = optionsList.value?.findIndex(
-      (option) => selectedOption[props.optionValueKey] === option[props.optionValueKey],
-    )
-    tmpModelValueIndex.value = index && index >= 0 ? index : undefined
+  function updateTmpModelValueIndex(inputOption?: MazSelectOption) {
+    const index = optionsList.value?.findIndex((option) => {
+      if (props.multiple && Array.isArray(props.modelValue)) {
+        if (inputOption) {
+          return inputOption[props.optionValueKey] === option[props.optionValueKey]
+        }
+        const values = [...props.modelValue].reverse()
+        return values[0] === option[props.optionValueKey]
+      } else {
+        return selectedOptions.value?.[0]?.[props.optionValueKey] === option[props.optionValueKey]
+      }
+    })
+
+    tmpModelValueIndex.value = index && index >= 0 ? index : 0
   }
 
-  const updateValue = (selectedOption: MazSelectOption, mustCloseList = true) => {
-    if (mustCloseList) {
+  const updateValue = (inputOption: MazSelectOption, mustCloseList = true) => {
+    if (mustCloseList && !props.multiple) {
       nextTick(() => closeList())
     }
 
     searchQuery.value = ''
 
-    emits('update:model-value', selectedOption[props.optionValueKey])
-    emits('selected-option', selectedOption)
-    updateTmpModelValueIndex()
+    const isAlreadySelected = selectedOptions.value?.some(
+      (option) => option[props.optionValueKey] === inputOption[props.optionValueKey],
+    )
+
+    let newValue = selectedOptions.value
+
+    if (isAlreadySelected && props.multiple) {
+      newValue = newValue?.filter(
+        (option) => option[props.optionValueKey] !== inputOption[props.optionValueKey],
+      )
+    } else if (props.multiple) {
+      newValue.push(inputOption)
+    } else {
+      newValue = [inputOption]
+    }
+
+    const selectedValues = newValue.map((option) => option[props.optionValueKey])
+
+    emits('update:model-value', props.multiple ? selectedValues : selectedValues[0])
+    emits('selected-option', inputOption)
+    updateTmpModelValueIndex(inputOption)
+    focusMainInput()
   }
 </script>
 
@@ -512,7 +578,7 @@
     }
 
     .m-select-list {
-      @apply maz-absolute maz-z-100 maz-flex maz-flex-col maz-overflow-hidden maz-rounded maz-bg-color maz-text-normal maz-elevation;
+      @apply maz-absolute maz-z-100 maz-flex maz-flex-col maz-overflow-hidden maz-rounded maz-bg-color maz-text-normal maz-drop-shadow-lg dark:maz-bg-color-light;
 
       min-width: 3.5rem;
 
@@ -545,14 +611,18 @@
       }
 
       &-item {
-        @apply maz-flex maz-w-full maz-items-center maz-truncate maz-bg-transparent maz-px-4 maz-text-left maz-text-normal hover:maz-bg-color-light;
+        @apply maz-flex maz-w-full maz-items-center maz-gap-3 maz-truncate maz-bg-transparent maz-px-4 maz-text-left maz-text-normal hover:maz-bg-color-lighter;
 
         span {
           @apply maz-truncate;
         }
 
         &.--is-keyboard-selected {
-          @apply maz-bg-color-lighter;
+          @apply maz-bg-color-light dark:maz-bg-color-lighter;
+
+          &.--is-selected {
+            background-color: v-bind('keyboardSelectedBgColor');
+          }
         }
 
         &.--is-none-value {
@@ -572,20 +642,6 @@
 
     & button.maz-custom {
       @apply maz-cursor-pointer maz-appearance-none maz-border-none;
-    }
-  }
-
-  html.dark {
-    & .m-select-list {
-      @apply maz-bg-color-light;
-
-      /* &__search-wrapper {
-        @apply maz-bg-color-light;
-      } */
-
-      &-item {
-        @apply hover:maz-bg-color-lighter;
-      }
     }
   }
 </style>

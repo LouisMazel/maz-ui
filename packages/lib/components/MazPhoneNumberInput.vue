@@ -508,7 +508,8 @@
     CountrySelector.value?.$el.querySelector('input')?.focus()
   }
 
-  function focusPhoneNumberInput() {
+  async function focusPhoneNumberInput() {
+    await nextTick()
     getPhoneNumberInput()?.focus()
   }
 </script>

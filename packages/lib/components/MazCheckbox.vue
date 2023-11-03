@@ -103,8 +103,8 @@
     }
   })
 
-  const checkIconColor = computed(() => `var(--maz-color-${props.color})`)
-  const checkboxBorderColor = computed(() => `var(--maz-color-${props.color})`)
+  const checkIconColor = computed(() => `var(--maz-color-${props.color}-contrast)`)
+  const checkboxSelectedColor = computed(() => `var(--maz-color-${props.color})`)
   const checkboxBoxShadow = computed(() =>
     ['black', 'transparent'].includes(props.color)
       ? `var(--maz-color-muted)`
@@ -137,10 +137,27 @@
     }
 
     span {
-      @apply maz-relative maz-flex maz-rounded maz-border maz-border-color-light maz-transition-all maz-duration-300 maz-ease-in-out maz-flex-center dark:maz-border-color-lighter;
+      @apply maz-relative maz-flex maz-rounded maz-border maz-border-gray-200 maz-transition-all maz-duration-300 maz-ease-in-out maz-flex-center dark:maz-border-color-lighter;
 
       width: v-bind('checkboxSize');
       height: v-bind('checkboxSize');
+    }
+
+    input {
+      @apply maz-hidden;
+
+      &:not(:checked) ~ span {
+        @apply maz-bg-color dark:maz-bg-color-light;
+      }
+
+      &:checked ~ span {
+        border-color: v-bind('checkboxSelectedColor');
+        background-color: v-bind('checkboxSelectedColor');
+      }
+
+      &:disabled ~ span {
+        @apply maz-bg-color-light dark:maz-bg-color-lighter;
+      }
     }
 
     &.--disabled {
@@ -155,18 +172,6 @@
         @apply maz-transition-all maz-duration-300 maz-ease-in-out;
 
         box-shadow: 0 0 0 0.125rem v-bind('checkboxBoxShadow');
-      }
-    }
-
-    input {
-      @apply maz-hidden;
-
-      &:disabled ~ span {
-        @apply maz-bg-color-light;
-      }
-
-      &:checked ~ span {
-        border-color: v-bind('checkboxBorderColor');
       }
     }
   }
