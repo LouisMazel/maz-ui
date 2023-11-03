@@ -1,5 +1,5 @@
 ---
-title: MazSelect
+title: MazSelect - with "multiple" options
 description: MazSelect is a standalone component that replaces the standard html input select with a beautiful design system. There are many options like multiple values, search text field, custom templates options, colors, sizes, disabled, loading, error, warning, valid states, error messages, and icons.
 ---
 
@@ -13,14 +13,14 @@ description: MazSelect is a standalone component that replaces the standard html
 
 ## Basic usage
 
-<br/>
-
 <MazSelect
   label="Select color"
   v-model="selectedValue"
   :color="selectedValue"
   :options="colors"
 />
+
+selectedValue: {{ selectedValue }}
 
 ```vue
 <template>
@@ -51,6 +51,26 @@ description: MazSelect is a standalone component that replaces the standard html
 </script>
 ```
 
+## Multiple
+
+<MazSelect
+  v-model="selectedValues"
+  :options="colors"
+  label="Choose options"
+  multiple
+/>
+
+selectedValues: {{ selectedValues }}
+
+```html
+<MazSelect
+  v-model="selectedValues"
+  :options="colors"
+  label="Choose options"
+  multiple
+/>
+```
+
 ## Search option
 
 Use `search` property to add a search input in the options list
@@ -71,8 +91,6 @@ You can use your own template to replace the empty icon when no results are foun
 ```
 
 :::
-
-<br />
 
 <MazSelect label="Select color" v-model="selectedValue" :options="colors" search />
 
@@ -198,6 +216,7 @@ If you want custom keys of these options, you can use:
   const selectedValue = ref()
   const selectedValueCustom = ref('danger')
   const selectedUser = ref()
+  const selectedValues = ref()
 
   const colors = [
     { label: 'primary', value: 'primary' },
