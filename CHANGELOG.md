@@ -1,5 +1,39 @@
 # Change Log
 
+## v3.19.3...v3.20.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.19.3...v3.20.0)
+
+### 🚀 Enhancements
+
+- **lib:** Maz-select - add select multiple options ([bbb677b8](https://github.com/LouisMazel/maz-ui/commit/bbb677b8))
+- **lib:** Maz-select - add select multiple options ([6e3b7c35](https://github.com/LouisMazel/maz-ui/commit/6e3b7c35))
+
+### 💅 Refactors
+
+- **lib:** MazCheckbox - style and animations improvements + size option support ([240fee3c](https://github.com/LouisMazel/maz-ui/commit/240fee3c))
+- **docs:** MazCheckbox - improve and update doc with size option ([179a3361](https://github.com/LouisMazel/maz-ui/commit/179a3361))
+- **docs:** Update doc theme colors ([f91be598](https://github.com/LouisMazel/maz-ui/commit/f91be598))
+- **docs:** MazSelect - add documentation for multi-select input ([0de4717e](https://github.com/LouisMazel/maz-ui/commit/0de4717e))
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([ba7b2c46](https://github.com/LouisMazel/maz-ui/commit/ba7b2c46))
+- **docs:** Url to github ([15f1e1ff](https://github.com/LouisMazel/maz-ui/commit/15f1e1ff))
+- Update dependencies ([#706](https://github.com/LouisMazel/maz-ui/pull/706))
+- **release:** Bump version to v3.20.0 ([0ed699a7](https://github.com/LouisMazel/maz-ui/commit/0ed699a7))
+
+### ✅ Tests
+
+- **lib:** MazCheckbox - add test units ([52ce7aca](https://github.com/LouisMazel/maz-ui/commit/52ce7aca))
+- **lib:** MazPhoneNumberInput - update snapshot ([c4866fdf](https://github.com/LouisMazel/maz-ui/commit/c4866fdf))
+- **lib:** MazSelect - add unit test for multiple feature ([9082d3d1](https://github.com/LouisMazel/maz-ui/commit/9082d3d1))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+- Mazel <me@loicmazuel.com>
+
 ## v3.19.2...v3.19.3
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.19.2...v3.19.3)
