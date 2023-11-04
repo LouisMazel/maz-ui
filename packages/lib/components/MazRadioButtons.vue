@@ -2,8 +2,8 @@
   <div class="m-radio-buttons" :class="[orientation === 'row' ? 'maz-flex-row' : 'maz-flex-col']">
     <label
       v-for="(option, i) in options"
-      :id="option.value.toString()"
       :key="i"
+      :for="option.value.toString()"
       class="m-radio-buttons__items"
       :class="{
         '--is-selected': isSelected(option.value),

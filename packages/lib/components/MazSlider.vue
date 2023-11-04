@@ -1,14 +1,24 @@
 <template>
+  <!-- eslint-disable vuejs-accessibility/mouse-events-have-key-events -->
   <div
     :style="[wrapperStyle, { fontSize: size }]"
     class="m-slider"
+    role="button"
+    tabindex="-1"
     :class="[`m-slider--${color}`]"
     @mousemove.passive="handleMousemove"
     @mouseup.passive="handleMouseup"
     @mouseleave.passive="handleMouseup"
     @touchmove.passive="handleMousemove"
   >
-    <div ref="MazSlider" class="m-slider__bar" role="slider">
+    <div
+      ref="MazSlider"
+      class="m-slider__bar"
+      role="slider"
+      :aria-valuenow="modelValue.toString()"
+      :aria-valuemin="min"
+      :aria-valuemax="max"
+    >
       <div
         v-for="(div, i) in dividers"
         :key="`divider-${i}`"

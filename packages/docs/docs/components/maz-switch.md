@@ -9,18 +9,32 @@ description: MazSwitch is a standalone component that replaces the standard html
 
 <!--@include: ./../.vitepress/mixins/getting-started.md-->
 
-<MazSwitch
-  v-for="color in colors"
-  v-model="switchValue"
-  :color="color"
-  :name="color"
-  :key="color"
-  style="margin-bottom: 12px;"
-/>
+<div class="maz-flex maz-flex-col maz-gap-3">
+  <MazSwitch
+    v-for="color in colors"
+    v-model="switchValue"
+    :color="color"
+    :name="color"
+    :key="color"
+  >
+    {{ color }}
+  </MazSwitch>
+
+  <p>Disabled</p>
+
+  <MazSwitch
+    v-model="switchValueDisabled"
+    name="disabled"
+    disabled
+  >
+    Disabled
+  </MazSwitch>
+</div>
 
 <script lang="ts" setup>
   import { ref } from 'vue'
   const switchValue = ref(false)
+  const switchValueDisabled = ref(false)
 
   const colors = [
     'primary',
@@ -41,6 +55,16 @@ description: MazSwitch is a standalone component that replaces the standard html
     :name="color"
     :key="color"
   />
+
+  <p>Disabled</p>
+
+  <MazSwitch
+    v-model="switchValue"
+    name="disabled"
+    disabled
+  >
+    {{ color }}
+  </MazSwitch>
 </template>
 
 <script lang="ts" setup>
@@ -48,6 +72,7 @@ description: MazSwitch is a standalone component that replaces the standard html
   import MazSwitch from 'maz-ui/components/MazSwitch'
 
   const switchValue = ref(false)
+  const switchValueDisabled = ref(false)
 
   const colors = [
     'primary',

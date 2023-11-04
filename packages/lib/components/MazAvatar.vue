@@ -23,7 +23,6 @@
         '--square': square,
         '--has-initial': !src && caption,
       }"
-      @keydown.enter="clickable ? $emit('click', $event) : undefined"
     >
       <MazLazyImg
         v-if="src"

@@ -10,6 +10,7 @@
     ]"
     :style="style"
   >
+    <!-- eslint-disable vuejs-accessibility/label-has-for -->
     <label
       v-if="hasLabelOrHint"
       :for="instanceId"
@@ -27,8 +28,8 @@
       {{ hint || label }}
       <sup v-if="required">*</sup>
     </label>
+    <!-- eslint-enable vuejs-accessibility/label-has-for -->
 
-    <!-- eslint-disable vue/no-deprecated-html-element-is -->
     <textarea
       :id="instanceId"
       ref="TextareaElement"
@@ -44,7 +45,6 @@
         change,
       }"
     ></textarea>
-    <!-- eslint-enable vue/no-deprecated-html-element-is -->
   </div>
 </template>
 
