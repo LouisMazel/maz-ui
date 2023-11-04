@@ -34,6 +34,8 @@
           @click="selectDay(date)"
           @mouseover="isRangeMode ? setHoverredDay(date) : undefined"
           @mouseleave="isRangeMode ? setHoverredDay() : undefined"
+          @focus="isRangeMode ? setHoverredDay(date) : undefined"
+          @blur="isRangeMode ? setHoverredDay() : undefined"
         >
           <span>
             {{ label }}

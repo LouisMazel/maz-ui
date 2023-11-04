@@ -13,12 +13,12 @@
         tabindex="-1"
         role="dialog"
       >
-        <div
+        <button
           class="m-backdrop-overlay"
           :class="{ '--disabled': persistent }"
           tabindex="-1"
           @click.self="onBackdropClicked"
-        ></div>
+        ></button>
         <div
           class="m-backdrop-content"
           :class="backdropContentClass"

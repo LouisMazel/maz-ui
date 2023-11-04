@@ -13,7 +13,7 @@ module.exports = {
     'plugin:promise/recommended',
     'plugin:vue/vue3-recommended',
     '@vue/eslint-config-prettier',
-    // 'plugin:vuejs-accessibility/recommended',
+    'plugin:vuejs-accessibility/recommended',
     '@vue/eslint-config-typescript/recommended',
   ],
   parserOptions: {

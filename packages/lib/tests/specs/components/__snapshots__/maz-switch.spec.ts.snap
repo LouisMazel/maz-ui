@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`MazSwitch > Should match with the snapshot 1`] = `
+"<label for=\\"MazCheckbox-1\\" class=\\"m-switch\\" role=\\"switch\\" aria-checked=\\"false\\" tabindex=\\"0\\"><input id=\\"MazCheckbox-1\\" type=\\"checkbox\\" class=\\"m-switch__input\\"><span class=\\"m-switch__toggle\\"></span>
+  <!--v-if-->
+</label>"
+`;

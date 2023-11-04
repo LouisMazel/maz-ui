@@ -23,6 +23,7 @@
       v-bind="$attrs"
       src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
       loading="lazy"
+      :alt="alt"
     />
     <div v-if="!noLoader" class="m-lazy-img-component-loader">
       <MazSpinner size="2em" />
@@ -44,6 +45,7 @@
 
   const props = defineProps({
     image: { type: [String, Object], default: undefined } as Prop<Image>,
+    alt: { type: String, default: undefined },
     noPhoto: { type: Boolean, default: false },
     noLoader: { type: Boolean, default: false },
     noObserverOnce: { type: Boolean, default: false },

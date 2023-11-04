@@ -1,7 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`components/MazSlider.vue > Should match with the snapshot 1`] = `
-"<div data-v-5858d3a5=\\"\\" style=\\"padding-top: 2.5em;\\" class=\\"m-slider m-slider--primary\\">
-  <div data-v-5858d3a5=\\"\\" class=\\"m-slider__bar\\" role=\\"slider\\"><button data-v-5858d3a5=\\"\\" type=\\"button\\" data-label=\\"Small\\" class=\\"m-slider__btn\\"><span data-v-5858d3a5=\\"\\">25</span></button><button data-v-5858d3a5=\\"\\" type=\\"button\\" data-label=\\"Middle\\" class=\\"m-slider__btn\\"><span data-v-5858d3a5=\\"\\">50</span></button><button data-v-5858d3a5=\\"\\" type=\\"button\\" data-label=\\"Big\\" class=\\"m-slider__btn\\"><span data-v-5858d3a5=\\"\\">75</span></button></div>
+"<!-- eslint-disable vuejs-accessibility/mouse-events-have-key-events -->
+<div data-v-5858d3a5=\\"\\" style=\\"padding-top: 2.5em;\\" class=\\"m-slider m-slider--primary\\" role=\\"button\\" tabindex=\\"-1\\">
+  <div data-v-5858d3a5=\\"\\" class=\\"m-slider__bar\\" role=\\"slider\\" aria-valuenow=\\"25,50,75\\" aria-valuemin=\\"0\\" aria-valuemax=\\"100\\"><button data-v-5858d3a5=\\"\\" type=\\"button\\" data-label=\\"Small\\" class=\\"m-slider__btn\\"><span data-v-5858d3a5=\\"\\">25</span></button><button data-v-5858d3a5=\\"\\" type=\\"button\\" data-label=\\"Middle\\" class=\\"m-slider__btn\\"><span data-v-5858d3a5=\\"\\">50</span></button><button data-v-5858d3a5=\\"\\" type=\\"button\\" data-label=\\"Big\\" class=\\"m-slider__btn\\"><span data-v-5858d3a5=\\"\\">75</span></button></div>
 </div>"
 `;

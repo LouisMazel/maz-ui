@@ -3,6 +3,7 @@
     ref="MazPicker"
     v-click-outside="closeCalendarOnClickOutside"
     class="m-picker"
+    role="none"
     :style="style"
     :class="[
       `m-picker--${color}`,

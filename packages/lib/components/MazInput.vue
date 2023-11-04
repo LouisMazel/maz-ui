@@ -15,7 +15,6 @@
       `--${color}`,
       `--${size}`,
     ]"
-    @click="$emit('click', $event)"
   >
     <div class="m-input-wrapper" :class="[inputClasses, borderStyle, { 'maz-rounded': !noRadius }]">
       <div v-if="hasLeftPart()" class="m-input-wrapper-left">
@@ -43,12 +42,12 @@
             focus,
             change,
           }"
+          @click="$emit('click', $event)"
         />
 
-        <label
+        <span
           v-if="label || hint"
           ref="label"
-          :for="instanceId"
           class="m-input-label"
           :class="[
             {
@@ -60,7 +59,7 @@
         >
           {{ hint || label }}
           <sup v-if="required">*</sup>
-        </label>
+        </span>
       </div>
 
       <div v-if="hasRightPart()" class="m-input-wrapper-right">
