@@ -61,7 +61,7 @@ npm install dayjs
 
 - `shortcut`: With the shortcut property, you can specify a shortcut that's selected by default by passing its identifier.
 
-- `min-date` & `max-date`: Must have the same format as model-value - the component will validate the dates automatically - Exemple: [see example](#inline)
+- `min-date` & `max-date`: Must have the same format as model-value - the component will validate the dates automatically - Exemple: [see example](#inline-with-custom-shortcuts)
 
 - `disabled-weekly` : Days of the week which are disabled every week, in Array format with day index, Sunday as 0 and Saturday as 6: `[0,4,6]`
 
@@ -75,7 +75,7 @@ npm install dayjs
 
 - `double`: Date Picker can have 2 calendar in the same row - useful in range mode.
 
-- `inline`: [see example](#inline)
+- `inline`: [see example](#inline-with-custom-shortcuts)
 
 - `auto-close`: The picker will be automatically closed after the user has selected a value
 

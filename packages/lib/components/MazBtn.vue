@@ -412,7 +412,9 @@
 
         &:not(:disabled):hover,
         &:not(:disabled):focus {
-          background-color: hsl(0deg 0% 0% / 12%);
+          /* background-color: hsl(0deg 0% 0% / 8%); */
+
+          @apply maz-bg-color-light;
         }
       }
 

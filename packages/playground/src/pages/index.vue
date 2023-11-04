@@ -2,6 +2,7 @@
   <div class="home">
     <div>
       <!-- Start Developping Area - You should not commit anything here to keep this place clean for all others -->
+      <MazDropdown> Open </MazDropdown>
 
       <!-- End Developping Area -->
     </div>
@@ -18,21 +19,21 @@
   const toast = useToast()
   const wait = useWait()
 
-  useIdleTimeout({
-    // eslint-disable-next-line no-console
-    callback: (payload) => console.log('idle', payload),
-    options: {
-      timeout: 1000,
-    },
-  })
+  // useIdleTimeout({
+  //   // eslint-disable-next-line no-console
+  //   callback: (payload) => console.log('idle', payload),
+  //   options: {
+  //     timeout: 1000,
+  //   },
+  // })
 
-  useUserVisibility({
-    // eslint-disable-next-line no-console
-    callback: (payload) => console.log('userVisibility', payload),
-    options: {
-      timeout: 1000,
-    },
-  })
+  // useUserVisibility({
+  //   // eslint-disable-next-line no-console
+  //   callback: (payload) => console.log('userVisibility', payload),
+  //   options: {
+  //     timeout: 1000,
+  //   },
+  // })
 
   wait.start('APP_LOADING')
 

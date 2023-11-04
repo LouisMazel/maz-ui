@@ -96,10 +96,4 @@
       @apply maz-grid maz-flex-1 maz-grid-cols-3 maz-gap-2 maz-overflow-y-auto maz-p-2 maz-flex-center;
     }
   }
-
-  html.dark {
-    & .maz-picker-year-switcher {
-      @apply maz-bg-color-light;
-    }
-  }
 </style>

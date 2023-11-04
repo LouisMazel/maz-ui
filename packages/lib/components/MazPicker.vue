@@ -14,7 +14,6 @@
         '--is-disabled': disabled,
       },
     ]"
-    @keydown.esc="closeCalendar"
   >
     <MazInput
       v-if="!customElementSelector && !inline"
@@ -600,11 +599,23 @@
     { immediate: true },
   )
 
+  function keyboardHandler(event: KeyboardEvent) {
+    console.log('event.code', event.code)
+    if (event.code === 'Escape' && isOpen.value) {
+      event.preventDefault()
+      closeCalendar()
+    }
+  }
+
   watch(
     () => isOpen.value,
     async (value) => {
       if (value) {
         pickerContainerPosition.value = await getPickerContainerPosition()
+
+        if (!props.inline) document.addEventListener('keydown', keyboardHandler)
+      } else {
+        if (!props.inline) document.removeEventListener('keydown', keyboardHandler)
       }
     },
     { immediate: true },
