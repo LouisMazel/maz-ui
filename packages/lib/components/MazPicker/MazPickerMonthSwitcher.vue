@@ -102,10 +102,4 @@
       }
     }
   }
-
-  html.dark {
-    & .maz-picker-month-switcher {
-      @apply maz-bg-color-light;
-    }
-  }
 </style>

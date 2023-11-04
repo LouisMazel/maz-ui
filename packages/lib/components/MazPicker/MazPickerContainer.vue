@@ -127,7 +127,7 @@
 
 <style lang="postcss" scoped>
   .m-picker-container {
-    @apply maz-overflow-hidden maz-rounded maz-bg-color;
+    @apply maz-overflow-hidden maz-rounded maz-bg-color dark:maz-border dark:maz-border-color-light;
 
     &:not(.--is-inline) {
       @apply maz-absolute maz-z-default-backdrop maz-elevation;
@@ -146,7 +146,7 @@
     }
 
     &__wrapper {
-      @apply maz-flex maz-bg-color;
+      @apply maz-flex;
     }
 
     & :deep(button):is(:disabled) {
@@ -155,9 +155,9 @@
   }
 
   html.dark {
-    & .m-picker-container__wrapper {
+    /* & .m-picker-container__wrapper {
       @apply maz-bg-color-light;
-    }
+    } */
 
     & .m-picker-container {
       & :deep(button):is(:disabled) {

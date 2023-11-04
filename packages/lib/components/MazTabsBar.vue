@@ -3,13 +3,13 @@
     ref="MazTabsBar"
     class="m-tabs-bar"
     :class="{
-      '--align-left': alignLeft,
       '--no-rounded': noRounded,
     }"
   >
     <MazBtn
       v-for="({ label, disabled }, index) in normalizedItems"
       :key="index"
+      :ref="(mazBtn) => addElementToItemRefs({ mazBtn, index })"
       color="transparent"
       :class="{ '--active': currentTab === index, '--disabled': disabled }"
       class="m-tabs-bar__item --no-styling"
@@ -21,7 +21,6 @@
     >
       {{ label }}
     </MazBtn>
-
     <div :style="tabsIndicatorState" class="m-tabs-bar__indicator">
       <div class="m-sub-bar" :style="{ backgroundColor: `var(--maz-color-${color})` }"></div>
     </div>
@@ -37,6 +36,7 @@
     onMounted,
     defineAsyncComponent,
     type StyleValue,
+    type ComponentPublicInstance,
   } from 'vue'
   import type { Color } from './types'
   import type { MazTabsProvide } from './MazTabs.vue'
@@ -70,14 +70,26 @@
 
   const props = defineProps({
     items: { type: Array as PropType<MazTabsBarItem[]>, required: true },
-    alignLeft: { type: Boolean, default: false },
     useAnchor: { type: Boolean, default: false },
     color: { type: String as PropType<Color>, default: 'primary' },
     noRounded: { type: Boolean, default: false },
   })
 
   const MazTabsBar = ref()
-  const isMounted = ref(false)
+  const itemRefs = ref<HTMLButtonElement[]>([])
+
+  function addElementToItemRefs({
+    mazBtn,
+    index,
+  }: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    mazBtn?: ComponentPublicInstance<any>
+    index: number
+  }) {
+    if (mazBtn && '$el' in mazBtn) {
+      itemRefs.value[index] = mazBtn.$el
+    }
+  }
 
   const normalizedItems = computed(() =>
     props.items.map((item) => ({
@@ -87,15 +99,14 @@
   )
 
   const tabsIndicatorState = computed<StyleValue>(() => {
-    if (typeof currentTab.value !== 'number' || !isMounted.value) {
+    if (typeof currentTab.value !== 'number') {
       return {}
     }
 
-    const tabItems = document.querySelectorAll('.m-tabs-bar__item')
-    const tabItemActive = tabItems?.[currentTab.value - 1] as HTMLElement
+    const tabItemActive: HTMLButtonElement | undefined = itemRefs.value[currentTab.value - 1]
 
-    const indicatorWidth = tabItemActive ? tabItemActive.clientWidth : 0
-    const translateXValue = tabItemActive ? tabItemActive.offsetLeft : 0
+    const indicatorWidth = tabItemActive?.clientWidth ?? 0
+    const translateXValue = tabItemActive?.offsetLeft ?? 0
 
     return {
       transform: `translateX(${translateXValue}px)`,
@@ -119,8 +130,6 @@
     if (props.useAnchor) {
       updateCurrentTab(getIndexOfCurrentAnchor(normalizedItems.value, currentTab.value) ?? 1)
     }
-
-    isMounted.value = true
   })
 </script>
 
@@ -134,12 +143,6 @@
 
     &__item {
       @apply maz-flex-none;
-    }
-
-    &:not(.--align-left) {
-      & .m-tabs-bar__item {
-        @apply maz-flex-none;
-      }
     }
 
     &__indicator {
