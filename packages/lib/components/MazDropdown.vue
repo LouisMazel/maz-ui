@@ -55,9 +55,12 @@
               tabindex="-1"
               :target="item.href ? item.target ?? '_self' : undefined"
               :type="item.action ? 'button' : undefined"
-              :class="{
-                '--is-keyboard-selected': keyboardSelectedIndex === index,
-              }"
+              :class="[
+                {
+                  '--is-keyboard-selected': keyboardSelectedIndex === index,
+                },
+                item.class,
+              ]"
               :to="item.to"
               class="menuitem"
               @click.stop="item.action ? runAction(item, $event) : closeOnClick()"
@@ -93,6 +96,7 @@
     target?: string
     href?: string
     to?: RouteLocationRaw
+    class?: string
   } & Record<string, unknown>
 
   const props = withDefaults(
@@ -265,18 +269,18 @@
       }
 
       &.--top.--right {
-        @apply maz-bottom-full maz-left-0 maz-mb-1 maz-origin-bottom-left;
-      }
-
-      &.--top.--left {
         @apply maz-bottom-full maz-right-0 maz-mb-1 maz-origin-bottom-right;
       }
 
-      &.--bottom.--right {
-        @apply maz-left-0 maz-top-full maz-mt-1 maz-origin-top-left;
+      &.--top.--left {
+        @apply maz-bottom-full maz-left-0 maz-mb-1 maz-origin-bottom-left;
       }
 
       &.--bottom.--left {
+        @apply maz-left-0 maz-top-full maz-mt-1 maz-origin-top-left;
+      }
+
+      &.--bottom.--right {
         @apply maz-right-0 maz-top-full maz-mt-1 maz-origin-top-right;
       }
 
