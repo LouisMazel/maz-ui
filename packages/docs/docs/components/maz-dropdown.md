@@ -14,7 +14,7 @@ description: MazDropdown is a standalone component
 ## Basic usage
 
 <MazDropdown
-  disabledpackages/docs/docs/components/maz-dropdown.md
+  disabled
   :items="[
     { label: 'Action', action: () => toast.success('CLICKED') },
     { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },

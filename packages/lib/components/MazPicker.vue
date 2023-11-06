@@ -398,7 +398,10 @@
     )
   })
 
+  const isMounted = ref(false)
+
   onMounted(async () => {
+    isMounted.value = true
     if (props.customElementSelector) {
       addEventToTriggerCustomElement(props.customElementSelector)
     }
@@ -600,7 +603,6 @@
   )
 
   function keyboardHandler(event: KeyboardEvent) {
-    console.log('event.code', event.code)
     if (event.code === 'Escape' && isOpen.value) {
       event.preventDefault()
       closeCalendar()
@@ -613,9 +615,11 @@
       if (value) {
         pickerContainerPosition.value = await getPickerContainerPosition()
 
-        if (!props.inline) document.addEventListener('keydown', keyboardHandler)
+        if (!props.inline && isMounted.value) document.addEventListener('keydown', keyboardHandler)
       } else {
-        if (!props.inline) document.removeEventListener('keydown', keyboardHandler)
+        if (!props.inline && isMounted.value) {
+          document.removeEventListener('keydown', keyboardHandler)
+        }
       }
     },
     { immediate: true },

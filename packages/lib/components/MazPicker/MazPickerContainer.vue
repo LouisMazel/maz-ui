@@ -150,15 +150,11 @@
     }
 
     & :deep(button):is(:disabled) {
-      @apply maz-bg-transparent maz-text-gray-300 !important;
+      @apply maz-bg-transparent !maz-text-gray-300 !important;
     }
   }
 
   html.dark {
-    /* & .m-picker-container__wrapper {
-      @apply maz-bg-color-light;
-    } */
-
     & .m-picker-container {
       & :deep(button):is(:disabled) {
         @apply maz-text-gray-700 !important;

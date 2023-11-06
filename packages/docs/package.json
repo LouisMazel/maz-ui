@@ -12,8 +12,8 @@
   "devDependencies": {
     "sitemap": "^7.1.1",
     "tailwindcss": "^3.3.5",
-    "vitepress": "1.0.0-rc.24",
-    "vue": "^3.3.7"
+    "vitepress": "1.0.0-rc.25",
+    "vue": "^3.3.8"
   },
   "dependencies": {
     "chart.js": "^4.4.0",
