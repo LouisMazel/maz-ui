@@ -73,10 +73,10 @@ function autoSetTheme(options: StrictThemeHandlerOptions & { setThemeValue?: boo
     (!(options.storageThemeKey in localStorage) && getPrefDark()) ||
     (localStorage[options.storageThemeKey] === options.storageThemeValueSystem && getPrefDark())
   ) {
-    return setDarkTheme({ ...options, setLocalStorageValue: false })
+    return setDarkTheme({ ...options, setLocalStorageValue: false, setThemeValue: false })
   }
 
-  return setLightTheme({ ...options, setLocalStorageValue: false })
+  return setLightTheme({ ...options, setLocalStorageValue: false, setThemeValue: false })
 }
 
 function setTheme({
@@ -107,7 +107,9 @@ export function useThemeHandler(opts: ThemeHandlerOptions = DEFAULT_OPTIONS) {
   const hasSystemTheme = computed(() => theme.value === options.storageThemeValueSystem)
 
   onMounted(() => {
-    theme.value = localStorage[options.storageThemeKey]
+    if (localStorage[options.storageThemeKey]) {
+      theme.value = localStorage[options.storageThemeKey]
+    }
   })
 
   return {
