@@ -1,5 +1,26 @@
 # Change Log
 
+## v3.21.0...v3.21.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.21.0...v3.21.1)
+
+### 🩹 Fixes
+
+- **docs:** MazDropdown - typo ([4fffb3e6](https://github.com/LouisMazel/maz-ui/commit/4fffb3e6))
+
+### 💅 Refactors
+
+- **maz-ui:** MazBtn - hover color for transparent color ([2fe1870a](https://github.com/LouisMazel/maz-ui/commit/2fe1870a))
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([28e9b01e](https://github.com/LouisMazel/maz-ui/commit/28e9b01e))
+- **release:** Bump version to v3.21.1 ([df0b3052](https://github.com/LouisMazel/maz-ui/commit/df0b3052))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.20.0...v3.21.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.20.0...v3.21.0)
