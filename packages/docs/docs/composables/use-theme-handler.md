@@ -15,7 +15,8 @@ description: Vue composable for handling UI theme - Automatically sets dark and 
     <MazBtn
       icon="moon"
       fab
-      :color="theme === 'dark' ? 'secondary' : 'primary'"
+      :color="hasDarkTheme ? 'secondary' : 'primary'"
+      :class="theme === 'dark' ? '!maz-outline !maz-outline-offset-2 !maz-outline-secondary' : ''"
       size="lg"
       @click="setDarkTheme"
     />
@@ -25,7 +26,8 @@ description: Vue composable for handling UI theme - Automatically sets dark and 
     <MazBtn
       icon="sun"
       fab
-      :color="theme === 'light' ? 'secondary' : 'primary'"
+      :color="hasLightTheme ? 'secondary' : 'primary'"
+      :class="theme === 'light' ? '!maz-outline !maz-outline-offset-2 !maz-outline-secondary' : ''"
       size="lg"
       @click="setLightTheme"
     />
@@ -35,7 +37,7 @@ description: Vue composable for handling UI theme - Automatically sets dark and 
     <MazBtn
       icon="computer-desktop"
       fab
-      :color="theme === 'system' ? 'secondary' : 'primary'"
+      :color="hasSystemTheme ? 'secondary' : 'primary'"
       size="lg"
       @click="setSystemTheme"
     />
@@ -156,7 +158,7 @@ Always run `autoSetTheme` method on app initialization and let the user change t
 ```
 
 <script lang="ts" setup>
-  import { onBeforeMount } from 'vue'
+  import { onMounted } from 'vue'
 
   import { useThemeHandler, type ThemeHandlerOptions } from 'maz-ui'
 
@@ -180,9 +182,10 @@ Always run `autoSetTheme` method on app initialization and let the user change t
     hasDarkTheme,
     hasLightTheme,
     hasSystemTheme,
+    internalTheme,
   } = useThemeHandler(options)
 
-  onBeforeMount(() => {
+  onMounted(() => {
     autoSetTheme()
   })
 </script>
