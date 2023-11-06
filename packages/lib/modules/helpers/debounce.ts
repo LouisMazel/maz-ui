@@ -1,13 +1,14 @@
-export function debounce(func: (...args: unknown[]) => unknown, delay: number) {
-  let timeoutId: NodeJS.Timeout | null
+export function debounce<F extends (...args: Parameters<F>) => ReturnType<F>>(
+  fn: F,
+  delay: number,
+) {
+  let timeout: ReturnType<typeof setTimeout>
 
-  return (...args: unknown[]) => {
-    if (timeoutId) {
-      clearTimeout(timeoutId)
-    }
+  return function (...args: Parameters<F>) {
+    clearTimeout(timeout)
 
-    timeoutId = setTimeout(() => {
-      func(...args)
+    timeout = setTimeout(() => {
+      fn.apply(this, args)
     }, delay)
   }
 }
