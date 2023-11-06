@@ -3,3 +3,4 @@ Maz-UI
 MazPhoneNumberInput
 phoneNumber
 @update
+MazDropdown
