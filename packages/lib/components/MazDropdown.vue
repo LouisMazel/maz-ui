@@ -122,7 +122,7 @@
       id: 'maz-dropdown',
       trigger: 'both',
       color: 'transparent',
-      position: 'bottom right',
+      position: 'bottom left',
     },
   )
 
