@@ -1,5 +1,39 @@
 # Change Log
 
+## v3.20.0...v3.21.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.20.0...v3.21.0)
+
+### 🚀 Enhancements
+
+- **lib:** Maz-dropdown - new component ([2eeb7698](https://github.com/LouisMazel/maz-ui/commit/2eeb7698))
+- **docs:** MazDropdown - add documentation ([11d03218](https://github.com/LouisMazel/maz-ui/commit/11d03218))
+- **maz-ui:** MazDropdown - new component ([d0ff3166](https://github.com/LouisMazel/maz-ui/commit/d0ff3166))
+
+### 💅 Refactors
+
+- **lib:** Improve accessibility ([b43d1e9f](https://github.com/LouisMazel/maz-ui/commit/b43d1e9f))
+- **maz-ui:** Refactor debounce helper to improve TS support ([8026819c](https://github.com/LouisMazel/maz-ui/commit/8026819c))
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([a986c159](https://github.com/LouisMazel/maz-ui/commit/a986c159))
+- Bump eslint-plugin-sonarjs from 0.22.0 to 0.23.0 ([#712](https://github.com/LouisMazel/maz-ui/pull/712))
+- Change commitlint scope lib to maz-ui ([c9e6e506](https://github.com/LouisMazel/maz-ui/commit/c9e6e506))
+- Change commitlint scope mazui-cli to @mazui/cli ([ef804674](https://github.com/LouisMazel/maz-ui/commit/ef804674))
+- **docs:** Add word to dictionnary ([1a55d335](https://github.com/LouisMazel/maz-ui/commit/1a55d335))
+- **playground:** Reinit view ([ea2689c1](https://github.com/LouisMazel/maz-ui/commit/ea2689c1))
+- Update dependencies ([47026acd](https://github.com/LouisMazel/maz-ui/commit/47026acd))
+- **release:** Bump version to v3.21.0 ([fc47bcef](https://github.com/LouisMazel/maz-ui/commit/fc47bcef))
+
+### ✅ Tests
+
+- **maz-ui:** MazDropdown - add unit tests ([fdcdd6d1](https://github.com/LouisMazel/maz-ui/commit/fdcdd6d1))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.19.3...v3.20.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.19.3...v3.20.0)
