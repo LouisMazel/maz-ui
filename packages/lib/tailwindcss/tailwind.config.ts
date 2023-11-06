@@ -10,7 +10,7 @@ import { zIndex } from './variables/z-indexes'
 import { getColors } from './utils/colors'
 
 export default {
-  darkMode: ['class', '[class="dark"]'],
+  darkMode: ['class', '[class~="dark"]'],
   content: [],
   theme: {
     extend: {

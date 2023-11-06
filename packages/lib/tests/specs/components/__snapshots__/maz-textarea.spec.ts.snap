@@ -2,7 +2,8 @@
 
 exports[`components/MazTextarea.vue > Should match with the snapshot 1`] = `
 "<div data-v-529ac5c3=\\"\\" class=\\"m-textarea\\">
+  <!-- eslint-disable vuejs-accessibility/label-has-for -->
   <!--v-if-->
-  <!-- eslint-disable vue/no-deprecated-html-element-is --><textarea data-v-529ac5c3=\\"\\" id=\\"MazTextarea-1\\" name=\\"MazTextarea\\" class=\\"--default-border\\" style=\\"resize: none; box-sizing: border-box;\\"></textarea><!-- eslint-enable vue/no-deprecated-html-element-is -->
+  <!-- eslint-enable vuejs-accessibility/label-has-for --><textarea data-v-529ac5c3=\\"\\" id=\\"MazTextarea-1\\" name=\\"MazTextarea\\" class=\\"--default-border\\" style=\\"resize: none; box-sizing: border-box;\\"></textarea>
 </div>"
 `;

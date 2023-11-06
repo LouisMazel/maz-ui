@@ -1,7 +1,14 @@
 <template>
-  <div class="m-switch" :class="[`--${color}`]">
+  <label
+    :for="instanceId"
+    class="m-switch"
+    :class="{ '--is-disabled': disabled }"
+    role="switch"
+    :aria-checked="modelValue"
+    tabindex="0"
+  >
     <input
-      :id="uniqueId"
+      :id="instanceId"
       v-bind="$attrs"
       type="checkbox"
       :name="name"
@@ -10,19 +17,18 @@
       class="m-switch__input"
       @change="emit"
     />
-    <label
-      :for="uniqueId"
-      class="m-switch__toggle"
-      :style="[{ '--m-switch-bg-bar': bgColorClassVar } as StyleValue]"
-    >
-      <span :style="[bgColorStyle]"></span>
-    </label>
-  </div>
+    <span class="m-switch__toggle"> </span>
+
+    <span v-if="$slots.default" class="m-switch__label">
+      <slot></slot>
+    </span>
+  </label>
 </template>
 
 <script lang="ts" setup>
   import { computed, getCurrentInstance, type PropType, type StyleValue } from 'vue'
   import type { Color } from './types'
+  import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
 
   export type { Color }
 
@@ -34,26 +40,42 @@
     color: { type: String as PropType<Color>, default: 'primary' },
   })
 
-  const emits = defineEmits(['update:model-value'])
+  const emits = defineEmits([
+    /* emitted on value change */
+    'update:model-value',
+    /* emitted on value change */
+    'change',
+  ])
 
-  const uniqueId = computed(() => props.id ?? `mazSwitch-${getCurrentInstance()?.uid}`)
+  const instance = getCurrentInstance()
+
+  const instanceId = useInstanceUniqId({
+    componentName: 'MazCheckbox',
+    instance,
+    providedId: props.id,
+  })
 
   const bgColorClassVar = computed(() => `var(--maz-color-${props.color}-alpha)`)
 
-  const bgColorStyle = computed<StyleValue>(() => ({
-    backgroundColor: props.modelValue
-      ? `var(--maz-color-${props.color})`
-      : 'var(--maz-color-white)',
-  }))
+  const bgColorStyle = computed<StyleValue>(() =>
+    props.modelValue ? `var(--maz-color-${props.color})` : 'var(--maz-color-white)',
+  )
 
   const emit = (e: Event) => {
     const target = e.target as HTMLInputElement | undefined
     emits('update:model-value', target?.checked ?? false)
+    emits('change', target?.checked ?? false)
   }
 </script>
 
 <style lang="postcss">
   .m-switch {
+    @apply maz-relative maz-inline-flex maz-cursor-pointer maz-items-center maz-gap-2;
+
+    &.--is-disabled {
+      @apply maz-cursor-not-allowed;
+    }
+
     &__input {
       @apply maz-absolute;
 
@@ -61,9 +83,7 @@
     }
 
     &__toggle {
-      @apply maz-relative maz-block maz-h-6 maz-w-12 maz-cursor-pointer;
-
-      transform: translate3d(0, 0, 0);
+      @apply maz-h-6 maz-w-12;
 
       &::before {
         content: '';
@@ -71,31 +91,36 @@
 
         @apply maz-relative maz-left-1 maz-top-1 maz-block maz-h-4 maz-w-10 maz-rounded-full;
 
-        background-color: var(--m-switch-bg-bar);
+        background-color: v-bind('bgColorClassVar');
       }
 
-      & span {
+      &::after {
+        content: '';
+
         @apply maz-absolute maz-left-0 maz-top-0 maz-block maz-h-6 maz-w-6 maz-rounded-full;
 
+        background-color: v-bind('bgColorStyle');
         box-shadow: 0 2px 8px 0 hsl(0deg 0% 0% / 20%);
         transition: all 200ms ease-in-out;
       }
     }
 
-    &__input:checked + &__toggle {
-      span {
-        transform: translateX(1.5em);
-
-        &::before {
-          transform: scale(1);
-          opacity: 0;
-          transition: all 400ms ease-in-out;
-        }
+    &__input:checked + .m-switch__toggle {
+      &::after {
+        @apply maz-translate-x-6;
       }
     }
 
-    &__input:disabled + &__toggle {
-      @apply maz-cursor-not-allowed;
+    &__input:disabled {
+      + .m-switch__toggle {
+        &::after {
+          @apply maz-bg-color-light dark:maz-bg-color-lighter;
+        }
+
+        &::before {
+          @apply maz-bg-color-lighter dark:maz-bg-color-light;
+        }
+      }
     }
   }
 </style>

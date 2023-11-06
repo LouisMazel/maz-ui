@@ -1,5 +1,6 @@
 <template>
   <Transition :name="transitionName">
+    <!-- eslint-disable vuejs-accessibility/mouse-events-have-key-events -->
     <button
       v-show="isActive"
       ref="Toaster"
@@ -49,6 +50,7 @@
         <XIcon class="--icon maz-text-xl" />
       </button>
     </button>
+    <!-- eslint-enable vuejs-accessibility/mouse-events-have-key-events -->
   </Transition>
 </template>
 

@@ -361,7 +361,7 @@
   }
 
   function focusMainInput() {
-    mazInputComponent.value?.$el.querySelector('input')?.focus()
+    mazInputComponent.value?.input.focus()
   }
 
   function toggleList(event: Event) {

@@ -3,7 +3,9 @@
     :for="instanceId"
     class="m-checkbox"
     :class="{ '--disabled': disabled }"
-    tabindex="1"
+    tabindex="0"
+    role="checkbox"
+    :aria-checked="modelValue"
     @keydown="keyboardHandler"
   >
     <input
