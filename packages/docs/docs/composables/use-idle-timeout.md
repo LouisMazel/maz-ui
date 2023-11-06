@@ -164,21 +164,14 @@ type IdleTimeoutCallback = (payload: {
 
 ```ts
 interface IdleTimeoutStrictOption {
-  element?: HTMLElement | Document // DEFAULT: document.body
-  timeout?: number // in milliseconds - DEFAULT: 60 * 1000 * 5 = 5 minutes
-  once?: boolean // DEFAULT: false
-  immediate?: boolean // DEFAULT: true
-}
-```
-
-### Default Options
-
-```ts
-const defaultOptions: IdleTimeoutStrictOption = {
-  element: document.body,
-  timeout: 60 * 1000 * 5, // 5 minutes
-  once: false,
-  immediate: false,
+  /** @default document.body */
+  element?: HTMLElement | Document
+  /** @default 60 * 1000 * 5 --> 5 minutes */
+  timeout?: number
+  /** @default false */
+  once?: boolean
+  /** @default true */
+  immediate?: boolean
 }
 ```
 
