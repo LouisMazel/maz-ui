@@ -1,0 +1,14 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`MazDropdown > Should match with the snapshot 1`] = `
+"<div id=\\"maz-dropdown\\" class=\\"m-dropdown\\"><button data-v-fa7305fb=\\"\\" aria-expanded=\\"false\\" aria-haspopup=\\"menu\\" class=\\"m-btn --md --transparent --cursor-pointer --is-button\\" type=\\"button\\">
+    <!--v-if-->
+    <!--v-if--><span data-v-fa7305fb=\\"\\" class=\\"maz-flex maz-flex-center\\"></span>
+    <!--v-if-->
+    <!--v-if-->
+  </button>
+  <transition-stub name=\\"maz-scale-fade\\" appear=\\"false\\" persisted=\\"false\\" css=\\"true\\">
+    <!--v-if-->
+  </transition-stub>
+</div>"
+`;
