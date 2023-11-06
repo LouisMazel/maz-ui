@@ -1,5 +1,23 @@
 # Change Log
 
+## v3.21.1...v3.21.2
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.21.1...v3.21.2)
+
+### 💅 Refactors
+
+- **maz-ui:** UseThemeHandler - not set theme.value with method autoSetTheme ([1e99f1e0](https://github.com/LouisMazel/maz-ui/commit/1e99f1e0))
+- **maz-ui:** MazDropdown - option to add classes to menu item ([027fcc68](https://github.com/LouisMazel/maz-ui/commit/027fcc68))
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([91502a87](https://github.com/LouisMazel/maz-ui/commit/91502a87))
+- **release:** Bump version to v3.21.2 ([700315bd](https://github.com/LouisMazel/maz-ui/commit/700315bd))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.21.0...v3.21.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.21.0...v3.21.1)
