@@ -1,5 +1,22 @@
 # Change Log
 
+## v3.21.2...v3.21.3
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.21.2...v3.21.3)
+
+### 💅 Refactors
+
+- **maz-ui:** MazDropdown - set default position to 'bottom left' ([6562a3f7](https://github.com/LouisMazel/maz-ui/commit/6562a3f7))
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([902a57a9](https://github.com/LouisMazel/maz-ui/commit/902a57a9))
+- **release:** Bump version to v3.21.3 ([708322af](https://github.com/LouisMazel/maz-ui/commit/708322af))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.21.1...v3.21.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.21.1...v3.21.2)
