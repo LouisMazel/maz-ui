@@ -1,5 +1,28 @@
 # Change Log
 
+## v3.21.4...v3.21.5
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.21.4...v3.21.5)
+
+### 🩹 Fixes
+
+- **docs:** MazPhoneNumberInput - typo ([55f3e42f](https://github.com/LouisMazel/maz-ui/commit/55f3e42f))
+- **maz-ui:** MazInput - align text label to the left ([fdab4549](https://github.com/LouisMazel/maz-ui/commit/fdab4549))
+
+### 💅 Refactors
+
+- **maz-ui:** UseThemeHandler - vars naming - internalTheme to selectedTheme ([3f8d2471](https://github.com/LouisMazel/maz-ui/commit/3f8d2471))
+- **docs:** MazDropdown - add MenuItem type ([804ec4be](https://github.com/LouisMazel/maz-ui/commit/804ec4be))
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([d51c92e7](https://github.com/LouisMazel/maz-ui/commit/d51c92e7))
+- **release:** Bump version to v3.21.5 ([cdc18653](https://github.com/LouisMazel/maz-ui/commit/cdc18653))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.21.3...v3.21.4
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.21.3...v3.21.4)
