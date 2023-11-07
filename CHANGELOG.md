@@ -1,5 +1,22 @@
 # Change Log
 
+## v3.21.5...v3.22.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.21.5...v3.22.0)
+
+### 🩹 Fixes
+
+- **cli:** Create-files - fix typo ([b4d767f4](https://github.com/LouisMazel/maz-ui/commit/b4d767f4))
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([f5b0cdf2](https://github.com/LouisMazel/maz-ui/commit/f5b0cdf2))
+- **release:** Bump version to v3.22.0 ([7041c313](https://github.com/LouisMazel/maz-ui/commit/7041c313))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.21.4...v3.21.5
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.21.4...v3.21.5)
