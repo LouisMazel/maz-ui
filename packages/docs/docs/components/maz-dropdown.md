@@ -271,6 +271,21 @@ isOpen: {{ isOpen }}
   </MazDropdown>
 </div>
 
+## Types
+
+### MenuItem
+
+```ts
+type MenuItem = {
+  label: string
+  action?: () => unknown
+  target?: string
+  href?: string
+  to?: RouteLocationRaw
+  class?: string
+} & Record<string, unknown>
+```
+
 <!--@include: ./../.vitepress/generated-docs/maz-dropdown.doc.md-->
 
 <script lang="ts" setup>
