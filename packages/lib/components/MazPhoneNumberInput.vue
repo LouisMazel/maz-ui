@@ -234,7 +234,7 @@
     noValidationSuccess: { type: Boolean, default: false },
     /** Add success UI */
     success: { type: Boolean, default: false },
-    /** Add success UI */
+    /** Add error UI */
     error: { type: Boolean, default: false },
   })
 
