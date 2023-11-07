@@ -1,5 +1,28 @@
 # Change Log
 
+## v3.21.3...v3.21.4
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.21.3...v3.21.4)
+
+### 💅 Refactors
+
+- **maz-ui:** MazPhoneNumberInput - add options to disable validation UI states ([#719](https://github.com/LouisMazel/maz-ui/pull/719))
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([051ef1ce](https://github.com/LouisMazel/maz-ui/commit/051ef1ce))
+- Upgrade dependencies ([#720](https://github.com/LouisMazel/maz-ui/pull/720))
+- **release:** Bump version to v3.21.4 ([7980b43a](https://github.com/LouisMazel/maz-ui/commit/7980b43a))
+
+### ✅ Tests
+
+- **maz-ui:** UseThemeHandler - fix tests ([dd524ace](https://github.com/LouisMazel/maz-ui/commit/dd524ace))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+- Mazel <me@loicmazuel.com>
+
 ## v3.21.2...v3.21.3
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.21.2...v3.21.3)
