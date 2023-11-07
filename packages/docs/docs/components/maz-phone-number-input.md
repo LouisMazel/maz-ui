@@ -29,7 +29,6 @@ npm install libphonenumber-js
   :preferred-countries="['FR', 'BE', 'DE', 'US', 'GB']"
   :ignored-countries="['AC']"
   @update="results = $event"
-  :success="results?.isValid"
 />
 
 <div class="language-js ext-js"><span class="lang">js</span><pre class="language-js"><code>v-model="{{ phoneNumber ?? 'undefined' }}"</code></pre></div>
@@ -48,7 +47,6 @@ npm install libphonenumber-js
     :preferred-countries="['FR', 'BE', 'DE', 'US', 'GB']"
     :ignored-countries="['AC']"
     @update="results = $event"
-    :success="results?.isValid"
   />
   <code>
     {{ results }}
@@ -67,11 +65,11 @@ npm install libphonenumber-js
 
 - **Auto-detect** country calling code with phone number provided
 - You can set your **preferred-countries, ignored-countries** or exclude some countries with **only-countries** - Ex `['FR', 'BE', 'DE']`
-- Validation UI state: input becomes green when the phone number is valid (can be disabled by `no-validation` prop)
+- Validation UI state: input becomes green when the phone number is valid and becomes red when number is incorrect (can be disabled by `no-validation-success` and `no-validation-error` prop)
 - **Multi options to getting country code** : By default the component gets the country code via the browser (disable it with no-use-browser-locale) or you can use - fetch-country to get the country code via <https://ipwho.is> (network needed) - you can use `default-country-code` option instead to set one
-- Phone number is formatted while typing
+- Phone number is formatted while typing (can be disabled by the prop `noFormattingAsYouType`)
 - You can `search` your country in list
-- Keyboard accessibility (Arrow down, Arrow up: Countries list navigation - Escape: Close countries list)
+- Keyboard accessibility (Arrow down, Arrow up: Country list navigation - Escape: Close country list)
 - Phone number example for each country in placeholder/label (can be disabled with `no-example` prop)
 - Auto focus phone number input after selecting country
 - You can disable the flags: `no-flags` prop
