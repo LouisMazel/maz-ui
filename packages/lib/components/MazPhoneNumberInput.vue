@@ -32,9 +32,10 @@
       :search="!noSearch"
       :search-placeholder="locales.countrySelector.searchPlaceholder"
       :options="countryOptions"
-      :error="error || (!!inputValue && !countryCode)"
+      :error="error || (!noValidationError ? !!inputValue && !countryCode : false)"
       :hint="!!inputValue && !countryCode ? locales.countrySelector.error : undefined"
       :label="locales.countrySelector.placeholder"
+      :success="success || (!noValidationSuccess ? results?.isValid : false)"
       @update:model-value="onCountryChanged($event)"
       @focus="inputFocused = false"
     >
@@ -69,12 +70,13 @@
       :label="inputPlaceholder"
       :disabled="disabled"
       :color="color"
-      :error="error || (!!inputValue && !results?.isValid)"
+      :error="error || (!noValidationError ? !!inputValue && !results?.isValid : false)"
       v-bind="$attrs"
       :size="size"
       icon-name="phone"
       type="tel"
       clearable
+      :success="success || (!noValidationSuccess ? results?.isValid : false)"
       class="m-phone-number-input__input maz-flex-1"
       :class="{
         '--border-radius': !noCountrySelector,
@@ -146,6 +148,7 @@
   ])
 
   const props = defineProps({
+    /** Country calling code + telephone number in international format */
     modelValue: {
       type: String,
       validator: (prop: string) => {
@@ -155,6 +158,7 @@
     },
     /** @deprecated */
     defaultPhoneNumber: { type: String, default: undefined },
+    /** Country code selected - Ex: "FR" */
     countryCode: {
       type: String as PropType<CountryCode | string>,
       default: undefined,
@@ -168,10 +172,15 @@
     },
     id: { type: String, default: undefined },
     placeholder: { type: String, default: undefined },
+    /** List of country codes to place first in the select list - Ex: ['FR', 'BE', 'GE'] */
     preferredCountries: { type: Array as PropType<CountryCode[]>, default: undefined },
+    /** List of country codes to be removed from the select list - Ex: ['FR', 'BE', 'GE'] */
     ignoredCountries: { type: Array as PropType<CountryCode[]>, default: undefined },
+    /** List of country codes to only have the countries selected in the select list - Ex: ['FR', 'BE', 'GE'] */
     onlyCountries: { type: Array as PropType<CountryCode[]>, default: undefined },
+    /** Locale strings of the component */
     translations: { type: Object as PropType<Translations>, default: undefined },
+    /** Position where the list of countries will be opened */
     listPosition: {
       type: String as PropType<Position>,
       default: 'bottom left',
@@ -181,7 +190,9 @@
         )
       },
     },
+    /** Component color applied - Ex: "secondary" */
     color: { type: String as PropType<Color>, default: 'primary' },
+    /** Component size applied - Ex: "sm" */
     size: {
       type: String as PropType<Size>,
       default: 'md',
@@ -189,28 +200,42 @@
         return ['mini', 'xs', 'sm', 'md', 'lg', 'xl'].includes(value)
       },
     },
+    /** Remove flags in country list */
     noFlags: { type: Boolean, default: false },
+    /** Disable input */
     disabled: { type: Boolean, default: false },
+    /** No show the phone number example */
     noExample: { type: Boolean, default: false },
+    /** Disable search input in country list */
     noSearch: { type: Boolean, default: false },
+    /** By default the component use the browser locale to set the default country code if not country code is provided */
     noUseBrowserLocale: { type: Boolean, default: false },
+    /** The component will make a request to get the location of the user and use it to set the default country code */
     fetchCountry: { type: Boolean, default: false },
+    /** No show the country selector */
     noCountrySelector: { type: Boolean, default: false },
+    /** Show country calling code in the country list */
     showCodeOnList: { type: Boolean, default: false },
-    error: { type: Boolean, default: false },
+    /** Replace country names */
     customCountriesList: {
       type: Object as PropType<Record<CountryCode, string>>,
       default: undefined,
     },
-    /**
-     * Disabled auto-format as you type
-     */
+    /** Disabled auto-format as you type */
     noFormattingAsYouType: { type: Boolean, default: false },
     /**
      * locale of country list - Ex: "fr-FR"
-     * @default browser locale
+     * @default {string} browser locale
      */
     countryLocale: { type: String, default: undefined },
+    /** Disable validation error UI */
+    noValidationError: { type: Boolean, default: false },
+    /** Disable validation success UI */
+    noValidationSuccess: { type: Boolean, default: false },
+    /** Add success UI */
+    success: { type: Boolean, default: false },
+    /** Add success UI */
+    error: { type: Boolean, default: false },
   })
 
   const instance = getCurrentInstance()
