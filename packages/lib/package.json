@@ -117,7 +117,7 @@
     "@nuxt/kit": "^3.8.1",
     "@nuxt/schema": "^3.8.1",
     "@types/dropzone": "^5.7.6",
-    "@types/google.maps": "^3.54.6",
+    "@types/google.maps": "^3.54.7",
     "@vitejs/plugin-vue": "^4.4.0",
     "@vitest/coverage-v8": "^0.34.6",
     "@vue/compiler-sfc": "^3.3.8",
