@@ -5,22 +5,21 @@
     :class="{ '--disabled': disabled }"
     tabindex="0"
     role="checkbox"
-    :aria-checked="modelValue"
+    :aria-checked="isChecked"
     @keydown="keyboardHandler"
   >
     <input
       :id="instanceId"
-      :checked="modelValue"
+      :checked="isChecked"
       v-bind="$attrs"
+      tabindex="-1"
       :disabled="disabled"
       :name="name"
       type="checkbox"
-      @change="emitValue(($event?.target as HTMLInputElement)?.checked)"
+      @change="emitValue(value ?? ($event?.target as HTMLInputElement)?.checked)"
     />
     <span>
-      <Transition name="maz-scale">
-        <CheckIcon v-show="modelValue" class="check-icon" :class="checkIconSize" />
-      </Transition>
+      <CheckIcon class="check-icon" :class="checkIconSize" />
     </span>
     <slot></slot>
   </label>
@@ -36,16 +35,21 @@
   const instance = getCurrentInstance()
 
   const props = defineProps({
-    modelValue: { type: Boolean, required: true },
+    modelValue: {
+      type: [Boolean, Array] as PropType<boolean | (string | number)[]>,
+      default: undefined,
+    },
     id: { type: String, default: undefined },
     color: {
       type: String as PropType<Color>,
       default: 'primary',
     },
+    value: { type: [String, Number, Boolean], default: undefined },
     name: { type: String, default: 'm-checkbox' },
     size: { type: String as PropType<Size>, default: 'md' },
     disabled: { type: Boolean, default: false },
   })
+
   const emits = defineEmits([
     /* emitted when value change */
     'update:model-value',
@@ -58,6 +62,14 @@
     instance,
     providedId: props.id,
   })
+
+  const isChecked = computed(() =>
+    typeof props.value !== 'boolean' && Array.isArray(props.modelValue)
+      ? props.modelValue.includes(props.value as never)
+      : typeof props.modelValue === 'boolean'
+      ? props.modelValue
+      : false,
+  )
 
   const checkboxSize = computed(() => {
     switch (props.size) {
@@ -114,15 +126,34 @@
   )
 
   function keyboardHandler(event: KeyboardEvent) {
-    if (['Enter', 'Space'].includes(event.code)) {
+    if (['Space'].includes(event.code)) {
       event.preventDefault()
-      emitValue(!props.modelValue)
+      emitValue(props.value ?? !props.modelValue)
     }
   }
 
-  function emitValue(value: boolean) {
-    emits('update:model-value', value)
-    emits('change', value)
+  function getNewValue(value: boolean | string | number) {
+    if (
+      typeof value === 'boolean' &&
+      (typeof props.modelValue === 'boolean' ||
+        props.modelValue === undefined ||
+        props.modelValue === null)
+    ) {
+      return props.modelValue ? false : true
+    } else if (Array.isArray(props.modelValue) && typeof value !== 'boolean') {
+      return props.modelValue.includes(value)
+        ? props.modelValue.filter((v) => v !== value)
+        : [...props.modelValue, value]
+    } else {
+      return [value]
+    }
+  }
+
+  function emitValue(value: boolean | string | number) {
+    const newValue = getNewValue(value)
+
+    emits('update:model-value', newValue)
+    emits('change', newValue)
   }
 </script>
 
@@ -133,12 +164,14 @@
     .check-icon {
       color: v-bind('checkIconColor');
 
+      @apply maz-scale-0 maz-transition-transform maz-duration-300 maz-ease-in-out;
+
       :deep(path) {
         stroke-width: 2.5;
       }
     }
 
-    span {
+    > span {
       @apply maz-relative maz-flex maz-rounded maz-border maz-border-gray-200 maz-transition-all maz-duration-300 maz-ease-in-out maz-flex-center dark:maz-border-color-lighter;
 
       width: v-bind('checkboxSize');
@@ -155,6 +188,10 @@
       &:checked ~ span {
         border-color: v-bind('checkboxSelectedColor');
         background-color: v-bind('checkboxSelectedColor');
+
+        .check-icon {
+          @apply maz-scale-100;
+        }
       }
 
       &:disabled ~ span {
@@ -163,14 +200,22 @@
     }
 
     &.--disabled {
-      @apply maz-cursor-not-allowed;
+      @apply maz-cursor-not-allowed maz-text-muted;
+
+      input:checked ~ span {
+        @apply maz-border-gray-200 dark:maz-border-color-lighter;
+
+        .check-icon {
+          @apply maz-text-muted;
+        }
+      }
     }
 
     &:not(.--disabled) {
       @apply maz-cursor-pointer;
 
-      &:hover span,
-      &:focus span {
+      &:hover > span,
+      &:focus > span {
         @apply maz-transition-all maz-duration-300 maz-ease-in-out;
 
         box-shadow: 0 0 0 0.125rem v-bind('checkboxBoxShadow');

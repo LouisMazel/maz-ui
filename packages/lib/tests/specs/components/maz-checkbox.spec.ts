@@ -40,7 +40,7 @@ describe('components/MazCheckbox.vue', () => {
       },
     })
 
-    expect(wrapper.vm.instanceId).toBe('MazCheckbox-9')
+    expect(wrapper.vm.instanceId).toBe('MazCheckbox-7')
 
     wrapper.unmount()
   })
