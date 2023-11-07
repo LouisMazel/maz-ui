@@ -58,7 +58,7 @@ description: Vue composable for handling UI theme - Automatically sets dark and 
 <br />
 
 <code>
- {{ { theme, hasDarkTheme, hasLightTheme, hasSystemTheme } }}
+ {{ { theme, selectedTheme, hasDarkTheme, hasLightTheme, hasSystemTheme } }}
 </code>
 
 ## How to use it?
@@ -144,7 +144,8 @@ Always run `autoSetTheme` method on app initialization and let the user change t
     theme,
     hasDarkTheme,
     hasLightTheme,
-    hasSystemTheme
+    hasSystemTheme,
+    selectedTheme,
   } = useThemeHandler(options)
 
   onBeforeMount(() => {
@@ -183,6 +184,7 @@ Always run `autoSetTheme` method on app initialization and let the user change t
     hasLightTheme,
     hasSystemTheme,
     internalTheme,
+    selectedTheme,
   } = useThemeHandler(options)
 
   onMounted(() => {

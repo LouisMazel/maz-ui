@@ -16,6 +16,10 @@
   --vp-button-brand-active-text: var(--maz-color-primary-contrast);
   --vp-button-brand-active-bg: var(--maz-color-primary-600);
 
+  --vp-custom-block-warning-bg: var(--maz-color-warning-400);
+  --vp-custom-block-warning-border: var(--maz-color-warning-600);
+  --vp-custom-block-warning-text: var(--maz-color-warning-contrast);
+
   --vp-custom-block-info-bg: var(--maz-color-info-400);
   --vp-custom-block-info-border: var(--maz-color-info-600);
   --vp-custom-block-info-text: var(--maz-color-info-contrast);
@@ -66,6 +70,10 @@ html.dark {
 
 .custom-block a {
   color: var(--maz-color-white) !important;
+}
+
+.custom-block a:hover {
+  @apply maz-text-muted;
 }
 
 .flex {

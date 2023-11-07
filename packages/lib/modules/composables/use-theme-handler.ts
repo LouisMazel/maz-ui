@@ -12,8 +12,8 @@ const DEFAULT_OPTIONS = {
 export type StrictThemeHandlerOptions = typeof DEFAULT_OPTIONS
 export type ThemeHandlerOptions = Partial<StrictThemeHandlerOptions>
 
-export const theme = ref<string>('system')
-export const internalTheme = ref<string>('system')
+const theme = ref<string>('system')
+const selectedTheme = ref<string>('system')
 
 function setDarkTheme({
   darkClass,
@@ -21,16 +21,16 @@ function setDarkTheme({
   storageThemeKey,
   storageThemeValueDark,
   setLocalStorageValue = true,
-  setInternalThemeValue = true,
+  setSelectedTheme = true,
 }: StrictThemeHandlerOptions & {
   setLocalStorageValue?: boolean
-  setInternalThemeValue?: boolean
+  setSelectedTheme?: boolean
 }) {
   document.documentElement.classList.remove(lightClass)
   document.documentElement.classList.add(darkClass)
 
   theme.value = storageThemeValueDark
-  if (setInternalThemeValue) internalTheme.value = storageThemeValueDark
+  if (setSelectedTheme) selectedTheme.value = storageThemeValueDark
 
   if (setLocalStorageValue) {
     localStorage[storageThemeKey] = storageThemeValueDark
@@ -43,16 +43,16 @@ function setLightTheme({
   storageThemeKey,
   storageThemeValueLight,
   setLocalStorageValue = true,
-  setInternalThemeValue = true,
+  setSelectedTheme = true,
 }: StrictThemeHandlerOptions & {
   setLocalStorageValue?: boolean
-  setInternalThemeValue?: boolean
+  setSelectedTheme?: boolean
 }) {
   document.documentElement.classList.remove(darkClass)
   document.documentElement.classList.add(lightClass)
 
   theme.value = storageThemeValueLight
-  if (setInternalThemeValue) internalTheme.value = storageThemeValueLight
+  if (setSelectedTheme) selectedTheme.value = storageThemeValueLight
 
   if (setLocalStorageValue) {
     localStorage[storageThemeKey] = storageThemeValueLight
@@ -64,20 +64,20 @@ function setSytemTheme(options: StrictThemeHandlerOptions & { setLocalStorageVal
   document.documentElement.classList.remove(options.lightClass)
 
   theme.value = options.storageThemeValueSystem
-  internalTheme.value = options.storageThemeValueSystem
+  selectedTheme.value = options.storageThemeValueSystem
 
   if (options.setLocalStorageValue) {
     localStorage[options.storageThemeKey] = options.storageThemeValueSystem
   }
 
-  autoSetTheme({ ...options, setInternalThemeValue: false })
+  autoSetTheme({ ...options, setSelectedTheme: false })
 }
 
 function getPrefDark(): boolean {
   return window.matchMedia('(prefers-color-scheme: dark)').matches
 }
 
-function autoSetTheme(options: StrictThemeHandlerOptions & { setInternalThemeValue?: boolean }) {
+function autoSetTheme(options: StrictThemeHandlerOptions & { setSelectedTheme?: boolean }) {
   if (
     localStorage[options.storageThemeKey] === options.storageThemeValueDark ||
     (!(options.storageThemeKey in localStorage) && getPrefDark()) ||
@@ -86,13 +86,13 @@ function autoSetTheme(options: StrictThemeHandlerOptions & { setInternalThemeVal
     setDarkTheme({
       ...options,
       setLocalStorageValue: false,
-      setInternalThemeValue: false,
+      setSelectedTheme: false,
     })
   } else {
     setLightTheme({
       ...options,
       setLocalStorageValue: false,
-      setInternalThemeValue: false,
+      setSelectedTheme: false,
     })
   }
 }
@@ -120,14 +120,14 @@ export function useThemeHandler(opts: ThemeHandlerOptions = DEFAULT_OPTIONS) {
     ...opts,
   }
 
-  const hasDarkTheme = computed(() => internalTheme.value === options.storageThemeValueDark)
-  const hasLightTheme = computed(() => internalTheme.value === options.storageThemeValueLight)
-  const hasSystemTheme = computed(() => internalTheme.value === options.storageThemeValueSystem)
+  const hasDarkTheme = computed(() => selectedTheme.value === options.storageThemeValueDark)
+  const hasLightTheme = computed(() => selectedTheme.value === options.storageThemeValueLight)
+  const hasSystemTheme = computed(() => selectedTheme.value === options.storageThemeValueSystem)
 
   onMounted(() => {
     if (localStorage[options.storageThemeKey]) {
       theme.value = localStorage[options.storageThemeKey]
-      internalTheme.value = localStorage[options.storageThemeKey]
+      selectedTheme.value = localStorage[options.storageThemeKey]
     }
   })
 
@@ -141,6 +141,6 @@ export function useThemeHandler(opts: ThemeHandlerOptions = DEFAULT_OPTIONS) {
     hasLightTheme,
     hasSystemTheme,
     theme,
-    internalTheme,
+    selectedTheme,
   }
 }
