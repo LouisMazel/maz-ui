@@ -413,7 +413,7 @@
     }
 
     &-label {
-      @apply maz-pointer-events-none maz-absolute maz-left-3 maz-block maz-w-full maz-origin-top-left maz-items-center maz-overflow-hidden maz-truncate maz-whitespace-nowrap maz-leading-6;
+      @apply maz-pointer-events-none maz-absolute maz-left-3 maz-block maz-w-full maz-origin-top-left maz-items-center maz-overflow-hidden maz-truncate maz-whitespace-nowrap maz-text-left maz-leading-6;
 
       width: calc(100% + 1.3rem);
       transition: transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
