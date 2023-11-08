@@ -17,7 +17,13 @@
       type="button"
       @click="focusCountrySelector"
     >
-      {{ countryCodeToUnicodeFlag(countryCode) }}
+      <!--
+        @slot Country selector flag
+          @binding {String} country-code - current selected country code - Ex: `"FR"`
+      -->
+      <slot name="selector-flag" :country-code="countryCode">
+        {{ countryCodeToUnicodeFlag(countryCode) }}
+      </slot>
     </button>
 
     <MazSelect
@@ -54,7 +60,20 @@
           }"
         >
           <span v-if="!noFlags && typeof option.iso2 === 'string'" class="maz-text-lg">
-            {{ countryCodeToUnicodeFlag(option.iso2) }}
+            <!--
+              @slot Country list flag
+                @binding {String} country-code - country code of option - Ex: `"FR"`
+                @binding {{ iso2: string; dialCode: string; name: string; }} option - country data
+                @binding {Boolean} is-selected - `true` if option is selected
+            -->
+            <slot
+              name="country-list-flag"
+              :country-code="option.iso2"
+              :option="option"
+              :is-selected="isSelected"
+            >
+              {{ countryCodeToUnicodeFlag(option.iso2) }}
+            </slot>
           </span>
           <span
             v-if="showCodeOnList"

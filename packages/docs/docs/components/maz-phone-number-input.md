@@ -11,6 +11,10 @@ description: MazPhoneNumberInput is a standalone input component that helps the 
 
 <!--@include: ./../.vitepress/mixins/maz-input-props.md-->
 
+::: warning
+  The flags does not seem to work in Google Chrome with Windows 10 since the latest version
+:::
+
 ## Prerequisites
 
 To use this component, you have to install the `libphonenumber-js` dependency
@@ -130,9 +134,51 @@ npm install libphonenumber-js
 <MazPhoneNumberInput country-selector-display-name />
 ```
 
+## Flags replacement with slots
+
+<MazPhoneNumberInput>
+  <template #selector-flag="{ countryCode }">
+    <span
+      style="font-size: 0.8rem; background-color: var(--maz-color-secondary); color: var(--maz-color-secondary-contrast); border-radius: 100px; padding: 2px;"
+    >
+      {{ countryCode }}
+    </span>
+  </template>
+  <template #country-list-flag="{ countryCode }">
+    <MazBadge size="0.8rem" style="margin-right: 10px; width: 26px;">
+      {{ countryCode }}
+    </MazBadge>
+  </template>
+</MazPhoneNumberInput>
+
+::: details
+
+You can use available country codes with library like [country-flag-icons](https://www.npmjs.com/package/country-flag-icons) to replace unicode flags by SVG flags
+
+<NpmBadge package="country-flag-icons" />
+
+```html
+<MazPhoneNumberInput>
+  <template #selector-flag="{ countryCode }">
+    <span
+      style="font-size: 0.8rem; background-color: var(--maz-color-secondary); color: var(--maz-color-secondary-contrast); border-radius: 100px; padding: 2px;"
+    >
+      {{ countryCode }}
+    </span>
+  </template>
+  <template #country-list-flag="{ countryCode }">
+    <MazBadge size="0.8rem" style="margin-right: 10px; width: 26px;">
+      {{ countryCode }}
+    </MazBadge>
+  </template>
+</MazPhoneNumberInput>
+```
+
+:::
+
 ## Types
 
-### Results emitted by @update event
+**Results emitted by @update event**
 
 ```ts
 export type Result = {
