@@ -11,10 +11,11 @@
         '--has-z-2': error || warning || success,
         '--has-state': error || warning || success,
       },
-      $attrs.class,
+      inheritClasses,
       `--${color}`,
       `--${size}`,
     ]"
+    :style="style"
   >
     <div class="m-input-wrapper" :class="[inputClasses, borderStyle, { 'maz-rounded': !noRadius }]">
       <div v-if="hasLeftPart()" class="m-input-wrapper-left">
@@ -96,18 +97,19 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
   import {
     computed,
-    defineComponent,
     onMounted,
     ref,
     type PropType,
     getCurrentInstance,
     defineAsyncComponent,
+    type StyleValue,
+    useSlots,
   } from 'vue'
 
-  import { debounce } from './../modules/helpers/debounce'
+  import { debounce as debounceFn } from './../modules/helpers/debounce'
   import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
 
   import type { Color, ModelValueSimple, Size } from './types'
@@ -120,197 +122,176 @@
   const EyeIcon = defineAsyncComponent(() => import('./../icons/eye.svg'))
   const CheckIcon = defineAsyncComponent(() => import('./../icons/check.svg'))
 
-  export default defineComponent({
-    components: {
-      MazBtn,
-      MazIcon,
-      CheckIcon,
-      EyeIcon,
-      EyeOffIcon,
-    },
+  defineOptions({
     inheritAttrs: false,
-    props: {
-      modelValue: {
-        type: [String, Number, Boolean] as PropType<ModelValueSimple>,
-        default: undefined,
-      },
-      placeholder: { type: String, default: undefined },
-      color: {
-        type: String as PropType<Color>,
-        default: 'primary',
-      },
-      label: { type: String, default: undefined },
-      name: { type: String, default: 'input' },
-      type: {
-        type: String,
-        default: 'text',
-        validator: (value: string) => {
-          return [
-            'text',
-            'date',
-            'number',
-            'tel',
-            'search',
-            'url',
-            'password',
-            'month',
-            'time',
-            'week',
-            'email',
-          ].includes(value)
-        },
-      },
-      required: { type: Boolean, default: false },
-      disabled: { type: Boolean, default: false },
-      readonly: { type: Boolean, default: false },
-      id: { type: String, default: undefined },
-      error: { type: Boolean, default: false },
-      success: { type: Boolean, default: false },
-      warning: { type: Boolean, default: false },
-      hint: { type: String, default: undefined },
-      inputClasses: { type: String, default: undefined },
-      noBorder: { type: Boolean, default: false },
-      noRadius: { type: Boolean, default: false },
-      size: {
-        type: String as PropType<Size>,
-        default: 'md',
-        validator: (value: string) => {
-          return ['mini', 'xs', 'sm', 'md', 'lg', 'xl'].includes(value)
-        },
-      },
-      debounce: { type: Boolean, default: false },
-      debounceDelay: { type: Number, default: 500 },
-      validButton: { type: Boolean, default: false },
-      validButtonLoading: { type: Boolean, default: false },
-      autoFocus: { type: Boolean, default: false },
-      borderActive: { type: Boolean, default: false },
-      leftIcon: { type: String, default: undefined },
-      rightIcon: { type: String, default: undefined },
-    },
-    emits: ['focus', 'blur', 'update:model-value', 'click', 'change', 'update'],
-    setup(props, { emit, slots }) {
-      const hasPasswordVisible = ref(false)
-      const isFocused = ref(false)
-      const input = ref<HTMLElement | undefined>()
-
-      const instance = getCurrentInstance()
-
-      const instanceId = useInstanceUniqId({
-        componentName: 'MazInput',
-        instance,
-        providedId: props.id,
-      })
-
-      onMounted(() => {
-        if (props.autoFocus) {
-          input.value?.focus()
-        }
-      })
-
-      const isPasswordType = computed(() => props.type === 'password')
-
-      const inputType = computed(() => (hasPasswordVisible.value ? 'text' : props.type))
-
-      const borderStyle = computed(() => {
-        if (props.noBorder) return undefined
-        if (props.error) return 'maz-border-danger'
-        if (props.success) return 'maz-border-success'
-        if (props.warning) return 'maz-border-warning'
-        if (isFocused.value || props.borderActive) {
-          if (props.color === 'black') return 'maz-border-black'
-          if (props.color === 'danger') return 'maz-border-danger'
-          if (props.color === 'info') return 'maz-border-info'
-          if (props.color === 'primary') return 'maz-border-primary'
-          if (props.color === 'secondary') return 'maz-border-secondary'
-          if (props.color === 'success') return 'maz-border-success'
-          if (props.color === 'warning') return 'maz-border-warning'
-          if (props.color === 'white') return 'maz-border-white'
-        }
-        return '--default-border'
-      })
-
-      const computedPlaceholder = computed(() => {
-        const { required, placeholder } = props
-        if (!placeholder) return undefined
-        return required ? `${placeholder} *` : placeholder
-      })
-
-      const hasValue = computed(() => props.modelValue !== undefined && props.modelValue !== '')
-
-      const inputValue = computed({
-        get: () => props.modelValue,
-        set: (value: unknown) => emitValue(value),
-      })
-
-      const shouldUp = computed(() => {
-        return (
-          (!!props.label || !!props.hint) &&
-          (isFocused.value ||
-            !!hasValue.value ||
-            !!props.placeholder ||
-            ['date', 'month', 'week'].includes(props.type))
-        )
-      })
-
-      const hasLabel = computed(() => !!props.label || !!props.hint)
-
-      const hasRightPart = (): boolean => {
-        return (
-          !!slots['right-icon'] ||
-          isPasswordType.value ||
-          !!slots['valid-button'] ||
-          props.validButton ||
-          !!props.rightIcon
-        )
-      }
-
-      const hasLeftPart = (): boolean => {
-        return !!slots['left-icon'] || !!props.leftIcon
-      }
-
-      const focus = (event: Event) => {
-        emit('focus', event)
-        isFocused.value = true
-      }
-
-      const blur = (event: Event) => {
-        emit('blur', event)
-        isFocused.value = false
-      }
-
-      const change = (event: Event) => emit('change', event)
-
-      const debounceEmitValue = debounce((value: unknown) => {
-        emit('update:model-value', value)
-      }, props.debounceDelay)
-
-      const emitValue = (value: unknown) => {
-        if (props.debounce) return debounceEmitValue(value)
-
-        emit('update:model-value', value)
-      }
-
-      return {
-        inputValue,
-        shouldUp,
-        hasLabel,
-        computedPlaceholder,
-        isPasswordType,
-        inputType,
-        input,
-        isFocused,
-        hasPasswordVisible,
-        borderStyle,
-        focus,
-        blur,
-        change,
-        emitValue,
-        hasRightPart,
-        hasLeftPart,
-        instanceId,
-      }
-    },
   })
+
+  const props = defineProps({
+    style: { type: [String, Array, Object] as PropType<StyleValue>, default: undefined },
+    class: { type: String, default: undefined },
+    modelValue: {
+      type: [String, Number, Boolean] as PropType<ModelValueSimple>,
+      default: undefined,
+    },
+    placeholder: { type: String, default: undefined },
+    color: {
+      type: String as PropType<Color>,
+      default: 'primary',
+    },
+    label: { type: String, default: undefined },
+    name: { type: String, default: 'input' },
+    type: {
+      type: String,
+      default: 'text',
+      validator: (value: string) => {
+        return [
+          'text',
+          'date',
+          'number',
+          'tel',
+          'search',
+          'url',
+          'password',
+          'month',
+          'time',
+          'week',
+          'email',
+        ].includes(value)
+      },
+    },
+    required: { type: Boolean, default: false },
+    disabled: { type: Boolean, default: false },
+    readonly: { type: Boolean, default: false },
+    id: { type: String, default: undefined },
+    error: { type: Boolean, default: false },
+    success: { type: Boolean, default: false },
+    warning: { type: Boolean, default: false },
+    hint: { type: String, default: undefined },
+    inputClasses: { type: String, default: undefined },
+    noBorder: { type: Boolean, default: false },
+    noRadius: { type: Boolean, default: false },
+    size: {
+      type: String as PropType<Size>,
+      default: 'md',
+      validator: (value: string) => {
+        return ['mini', 'xs', 'sm', 'md', 'lg', 'xl'].includes(value)
+      },
+    },
+    debounce: { type: Boolean, default: false },
+    debounceDelay: { type: Number, default: 500 },
+    validButton: { type: Boolean, default: false },
+    validButtonLoading: { type: Boolean, default: false },
+    autoFocus: { type: Boolean, default: false },
+    borderActive: { type: Boolean, default: false },
+    leftIcon: { type: String, default: undefined },
+    rightIcon: { type: String, default: undefined },
+  })
+
+  const emits = defineEmits(['focus', 'blur', 'update:model-value', 'click', 'change', 'update'])
+
+  const hasPasswordVisible = ref(false)
+  const isFocused = ref(false)
+  const input = ref<HTMLElement | undefined>()
+
+  const instance = getCurrentInstance()
+
+  const instanceId = useInstanceUniqId({
+    componentName: 'MazInput',
+    instance,
+    providedId: props.id,
+  })
+
+  onMounted(() => {
+    if (props.autoFocus) {
+      input.value?.focus()
+    }
+  })
+
+  const inheritClasses = computed(() => props.class)
+  const isPasswordType = computed(() => props.type === 'password')
+
+  const inputType = computed(() => (hasPasswordVisible.value ? 'text' : props.type))
+
+  const borderStyle = computed(() => {
+    if (props.noBorder) return undefined
+    if (props.error) return 'maz-border-danger'
+    if (props.success) return 'maz-border-success'
+    if (props.warning) return 'maz-border-warning'
+    if (isFocused.value || props.borderActive) {
+      if (props.color === 'black') return 'maz-border-black'
+      if (props.color === 'danger') return 'maz-border-danger'
+      if (props.color === 'info') return 'maz-border-info'
+      if (props.color === 'primary') return 'maz-border-primary'
+      if (props.color === 'secondary') return 'maz-border-secondary'
+      if (props.color === 'success') return 'maz-border-success'
+      if (props.color === 'warning') return 'maz-border-warning'
+      if (props.color === 'white') return 'maz-border-white'
+    }
+    return '--default-border'
+  })
+
+  const slots = useSlots()
+
+  const computedPlaceholder = computed(() => {
+    const { required, placeholder } = props
+    if (!placeholder) return undefined
+    return required ? `${placeholder} *` : placeholder
+  })
+
+  const hasValue = computed(() => props.modelValue !== undefined && props.modelValue !== '')
+
+  const inputValue = computed({
+    get: () => props.modelValue,
+    set: (value: unknown) => emitValue(value),
+  })
+
+  const shouldUp = computed(() => {
+    return (
+      (!!props.label || !!props.hint) &&
+      (isFocused.value ||
+        !!hasValue.value ||
+        !!props.placeholder ||
+        ['date', 'month', 'week'].includes(props.type))
+    )
+  })
+
+  const hasLabel = computed(() => !!props.label || !!props.hint)
+
+  const hasRightPart = (): boolean => {
+    return (
+      !!slots['right-icon'] ||
+      isPasswordType.value ||
+      !!slots['valid-button'] ||
+      props.validButton ||
+      !!props.rightIcon
+    )
+  }
+
+  const hasLeftPart = (): boolean => {
+    return !!slots['left-icon'] || !!props.leftIcon
+  }
+
+  const focus = (event: Event) => {
+    emits('focus', event)
+    isFocused.value = true
+  }
+
+  const blur = (event: Event) => {
+    emits('blur', event)
+    isFocused.value = false
+  }
+
+  const change = (event: Event) => emits('change', event)
+
+  const debounceEmitValue = debounceFn((value: unknown) => {
+    emits('update:model-value', value)
+  }, props.debounceDelay)
+
+  const emitValue = (value: unknown) => {
+    if (props.debounce) return debounceEmitValue(value)
+
+    emits('update:model-value', value)
+  }
 </script>
 
 <style lang="postcss" scoped>
@@ -397,7 +378,7 @@
     }
 
     &-input {
-      @apply maz-m-0 maz-block maz-h-full maz-w-full maz-appearance-none maz-border-none maz-bg-transparent maz-px-4 maz-py-0 maz-text-normal maz-shadow-none maz-outline-none;
+      @apply maz-m-0 maz-block maz-h-full maz-w-full maz-appearance-none maz-truncate maz-border-none maz-bg-transparent maz-px-4 maz-py-0 maz-text-normal maz-shadow-none maz-outline-none;
 
       &:-webkit-autofill,
       &:-webkit-autofill:hover,
