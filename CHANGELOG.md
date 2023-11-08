@@ -1,5 +1,26 @@
 # Change Log
 
+## v3.22.1...v3.22.2
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.22.1...v3.22.2)
+
+### 🩹 Fixes
+
+- **docs:** MazPhoneNumberInput - typo ([01eedf64](https://github.com/LouisMazel/maz-ui/commit/01eedf64))
+- Import nuxt composables from #imports ([#727](https://github.com/LouisMazel/maz-ui/pull/727))
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([3f29a1ee](https://github.com/LouisMazel/maz-ui/commit/3f29a1ee))
+- Upgrade dependencies ([#728](https://github.com/LouisMazel/maz-ui/pull/728))
+- **release:** Bump version to v3.22.2 ([462a5e28](https://github.com/LouisMazel/maz-ui/commit/462a5e28))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+- Mazel <me@loicmazuel.com>
+- Daniel Roe ([@danielroe](http://github.com/danielroe))
+
 ## v3.22.0...v3.22.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.22.0...v3.22.1)
