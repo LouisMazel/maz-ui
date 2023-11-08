@@ -1,4 +1,4 @@
-export function localeToUnicodeFlag(locale: string) {
+export function countryCodeToUnicodeFlag(locale: string) {
   const characters = [...locale]
   return (
     characters
