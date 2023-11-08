@@ -54,7 +54,7 @@
   "devDependencies": {
     "@types/clear": "^0.1.4",
     "@types/figlet": "^1.5.8",
-    "@types/tinycolor2": "^1.4.5",
+    "@types/tinycolor2": "^1.4.6",
     "unbuild": "^2.0.0"
   }
 }
