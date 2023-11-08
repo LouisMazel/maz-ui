@@ -136,7 +136,7 @@ A plugin to know the amount of time a user has spent on your website
     once: false,
   }
 
-  const idle = useIdleTimeout({
+  const idleTimeout = useIdleTimeout({
     callback,
     options,
   })
