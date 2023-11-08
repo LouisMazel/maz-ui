@@ -17,11 +17,11 @@
       type="button"
       @click="focusCountrySelector"
     >
-      {{ localeToUnicodeFlag(countryCode) }}
+      {{ countryCodeToUnicodeFlag(countryCode) }}
     </button>
 
     <MazSelect
-      v-if="!noCountrySelector && countryOptions"
+      v-if="!noCountrySelector"
       ref="CountrySelector"
       class="m-phone-number-input__select"
       :model-value="countryCode"
@@ -54,7 +54,7 @@
           }"
         >
           <span v-if="!noFlags && typeof option.iso2 === 'string'" class="maz-text-lg">
-            {{ localeToUnicodeFlag(option.iso2) }}
+            {{ countryCodeToUnicodeFlag(option.iso2) }}
           </span>
           <span
             v-if="showCodeOnList"
@@ -122,7 +122,7 @@
     type StyleValue,
   } from 'vue'
 
-  import { localeToUnicodeFlag } from './../modules/helpers/locale-to-unicode-flag'
+  import { countryCodeToUnicodeFlag } from './../modules/helpers/country-code-to-unicode-flag'
   import { useLibphonenumber, isCountryAvailable } from './MazPhoneNumberInput/use-libphonenumber'
 
   const {
@@ -612,3 +612,4 @@
     }
   }
 </style>
+../modules/helpers/country-code-to-unicode-flag
