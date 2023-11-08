@@ -1,5 +1,32 @@
 # Change Log
 
+## v3.22.2...v3.22.3
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.22.2...v3.22.3)
+
+### 🩹 Fixes
+
+- **docs:** UseIdleTimeout - definition const ([d36cfa80](https://github.com/LouisMazel/maz-ui/commit/d36cfa80))
+
+### 💅 Refactors
+
+- **docs:** Country-code-to-unicode-flag - add documentation ([#730](https://github.com/LouisMazel/maz-ui/pull/730))
+- **maz-ui:** MazPhoneNumberInput - add slots to replace flags ([f20915e0](https://github.com/LouisMazel/maz-ui/commit/f20915e0))
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([50c7b81a](https://github.com/LouisMazel/maz-ui/commit/50c7b81a))
+- **release:** Bump version to v3.22.3 ([52f850f4](https://github.com/LouisMazel/maz-ui/commit/52f850f4))
+
+### 🎨 Styles
+
+- **docs:** Color of warning block for dark theme ([933a141d](https://github.com/LouisMazel/maz-ui/commit/933a141d))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+- Mazel <me@loicmazuel.com>
+
 ## v3.22.1...v3.22.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.22.1...v3.22.2)
