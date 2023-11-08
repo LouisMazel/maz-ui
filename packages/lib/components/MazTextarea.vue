@@ -48,31 +48,28 @@
   </div>
 </template>
 
-<script lang="ts">
-  export type { Color } from './types'
-
-  export default defineComponent({
-    inheritAttrs: false,
-  })
-</script>
-
 <script lang="ts" setup>
   import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
-
   import {
     computed,
     onBeforeUnmount,
     onMounted,
     ref,
-    defineComponent,
     getCurrentInstance,
     type PropType,
     type StyleValue,
   } from 'vue'
   import { TextareaAutogrow } from './MazTextarea/textarea-autogrow'
   import type { Color } from './types'
+  export type { Color }
+
+  defineOptions({
+    inheritAttrs: false,
+  })
 
   const props = defineProps({
+    style: { type: [String, Array, Object] as PropType<StyleValue>, default: undefined },
+    class: { type: String, default: undefined },
     modelValue: {
       type: String,
       default: undefined,
@@ -87,8 +84,6 @@
     success: { type: Boolean, default: false },
     warning: { type: Boolean, default: false },
     hint: { type: String, default: undefined },
-    class: { type: String, default: undefined },
-    style: { type: String as PropType<StyleValue>, default: undefined },
     color: {
       type: String as PropType<Color>,
       default: 'primary',

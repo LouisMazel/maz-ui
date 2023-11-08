@@ -14,6 +14,7 @@ export const components = {
         { text: 'MazInputTags', link: '/components/maz-input-tags'},
         { text: 'MazPicker', link: '/components/maz-picker'},
         { text: 'MazPhoneNumberInput', link: '/components/maz-phone-number-input'},
+        { text: 'MazRadio', link: '/components/maz-radio'},
         { text: 'MazRadioButtons', link: '/components/maz-radio-buttons'},
         { text: 'MazSelect (multiple)', link: '/components/maz-select'},
         { text: 'MazSlider', link: '/components/maz-slider'},

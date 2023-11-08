@@ -2,9 +2,13 @@
   <div
     :id="instanceId"
     class="m-phone-number-input"
-    :class="{
-      '--no-flags': noFlags,
-    }"
+    :class="[
+      props.class,
+      {
+        '--no-flags': noFlags,
+      },
+    ]"
+    :style="style"
   >
     <button
       v-if="countryCode && !noFlags && !noCountrySelector"
@@ -23,7 +27,7 @@
       :model-value="countryCode"
       option-value-key="iso2"
       option-label-key="name"
-      option-input-value-key="dialCode"
+      :option-input-value-key="countrySelectorDisplayName ? 'name' : 'dialCode'"
       :max-list-width="250"
       :disabled="disabled"
       :color="color"
@@ -36,22 +40,25 @@
       :hint="!!inputValue && !countryCode ? locales.countrySelector.error : undefined"
       :label="locales.countrySelector.placeholder"
       :success="success || (!noValidationSuccess ? results?.isValid : false)"
+      :style="{
+        width: countrySelectorWidth,
+      }"
       @update:model-value="onCountryChanged($event)"
       @focus="inputFocused = false"
     >
       <template #default="{ option, isSelected }">
         <div
-          class="m-phone-number-input__select__item maz-flex maz-items-center maz-truncate"
+          class="m-phone-number-input__select__item maz-flex maz-items-center maz-gap-1 maz-truncate"
           :class="{
             'm-phone-number-input__select__item--selected': isSelected,
           }"
         >
-          <span v-if="!noFlags && typeof option.iso2 === 'string'" class="maz-mr-2 maz-text-lg">
+          <span v-if="!noFlags && typeof option.iso2 === 'string'" class="maz-text-lg">
             {{ localeToUnicodeFlag(option.iso2) }}
           </span>
           <span
             v-if="showCodeOnList"
-            class="maz-w-10 maz-flex-none"
+            class="maz-w-9 maz-flex-none"
             :class="{ 'maz-text-muted': !isSelected }"
           >
             {{ option.dialCode }}
@@ -111,6 +118,8 @@
     getCurrentInstance,
     nextTick,
     reactive,
+    defineOptions,
+    type StyleValue,
   } from 'vue'
 
   import { localeToUnicodeFlag } from './../modules/helpers/locale-to-unicode-flag'
@@ -131,23 +140,35 @@
   import MazSelect from './MazSelect.vue'
 
   const emits = defineEmits([
-    /** emitted when country or phone number changed
-     * @returns data - {Result}
+    /** emitted when country or phone number changes
+     * @property {Result} results - meta info of current phone numnber
      */
     'update',
-    /** emitted when country or phone number changed
-     * @returns data - {Result}
+    /** emitted when country or phone number changes
+     * @property {Result} results - meta info of current phone numnber
      */
     'data',
-    /** emitted when selected country changed */
+    /** emitted when selected country changes
+     * @property {CountryCode} countryCode - Country code
+     */
     'country-code',
-    /** Two way binding (v-model:model-value) - emitted when country changed */
+    /** emitted when country or phone number changes
+     * @property {String} phoneNumber - phoneNumber formatted
+     */
     'update:model-value',
-    /** Two way binding (v-model:country-code) - emitted when country changed */
+    /** emitted when country changes
+     * @property {CountryCode} countryCode - Country code
+     */
     'update:country-code',
   ])
 
+  defineOptions({
+    inheritAttrs: false,
+  })
+
   const props = defineProps({
+    style: { type: [String, Array, Object] as PropType<StyleValue>, default: undefined },
+    class: { type: String, default: undefined },
     /** Country calling code + telephone number in international format */
     modelValue: {
       type: String,
@@ -236,6 +257,10 @@
     success: { type: Boolean, default: false },
     /** Add error UI */
     error: { type: Boolean, default: false },
+    /** Will replace the calling code by the country name in the country selector */
+    countrySelectorDisplayName: { type: Boolean, default: false },
+    /** Choose the width of the country selector */
+    countrySelectorWidth: { type: String, default: '9rem' },
   })
 
   const instance = getCurrentInstance()
@@ -546,7 +571,7 @@
     &__country-flag {
       position: absolute;
       bottom: 2px;
-      left: 15px;
+      left: 13px;
       z-index: 4;
       outline: none;
       border: none;
@@ -562,7 +587,7 @@
     }
 
     &__select {
-      @apply maz-w-36;
+      width: 9rem;
 
       &__item {
         @apply maz-w-full maz-text-sm;
@@ -574,8 +599,8 @@
     }
 
     &:not(.--no-flags) {
-      .m-phone-number-input__select:deep(.m-input-wrapper) .m-select-input {
-        @apply maz-pl-11 !important;
+      .m-phone-number-input__select:deep(.m-select-input input) {
+        @apply maz-pl-9 !important;
       }
     }
 

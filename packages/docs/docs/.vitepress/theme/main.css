@@ -72,6 +72,10 @@ html.dark {
   color: var(--maz-color-white) !important;
 }
 
+.custom-block.details a {
+  color: var(--maz-color-black) !important;
+}
+
 .custom-block a:hover {
   @apply maz-text-muted;
 }

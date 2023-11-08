@@ -2,7 +2,8 @@
   <div
     ref="mazSelectElement"
     class="m-select"
-    :class="{ '--is-open': hasListOpened, '--disabled': disabled }"
+    :class="[{ '--is-open': hasListOpened, '--disabled': disabled }, props.class]"
+    :style="style"
     @blur.capture="closeList"
   >
     <MazInput
@@ -127,7 +128,9 @@
     type PropType,
     getCurrentInstance,
     defineAsyncComponent,
+    defineOptions,
     watch,
+    type StyleValue,
   } from 'vue'
   import MazInput from './MazInput.vue'
   import type { Color, ModelValueSimple, Position, Size } from './types'
@@ -145,7 +148,13 @@
 
   const instance = getCurrentInstance()
 
+  defineOptions({
+    inheritAttrs: false,
+  })
+
   const props = defineProps({
+    style: { type: [String, Array, Object] as PropType<StyleValue>, default: undefined },
+    class: { type: String, default: undefined },
     modelValue: {
       type: [Number, String, Boolean, Array] as PropType<ModelValueSimple | ModelValueSimple[]>,
       default: undefined,
@@ -167,13 +176,17 @@
     required: { type: Boolean, default: false },
     disabled: { type: Boolean, default: false },
     open: { type: Boolean, default: false },
+    /** Choose color of the input */
     color: {
       type: String as PropType<Color>,
       default: 'primary',
     },
+    /** Choose the option list item height */
     itemHeight: { type: Number, default: 40 },
     maxListHeight: { type: Number, default: 240 },
+    /** Add max-width value to option list */
     maxListWidth: { type: Number, default: undefined },
+    /** Choose size of the input */
     size: {
       type: String as PropType<Size>,
       default: 'md',
@@ -181,8 +194,11 @@
         return ['mini', 'xs', 'sm', 'md', 'lg', 'xl'].includes(value)
       },
     },
+    /** Display search input in option list */
     search: { type: Boolean, default: false },
+    /** Search input placeholder */
     searchPlaceholder: { type: String, default: 'Search in options' },
+    /** Enable feature to select multiple values */
     multiple: { type: Boolean, default: false },
   })
 
@@ -271,14 +287,14 @@
       return props.modelValue
         .map(
           (value) =>
-            optionsList.value?.find((option) => option[props.optionValueKey] === value)?.[
+            props.options?.find((option) => option[props.optionValueKey] === value)?.[
               props.optionInputValueKey
             ],
         )
         .join(', ')
     }
 
-    return optionsList.value?.find((option) => option[props.optionValueKey] === props.modelValue)?.[
+    return props.options?.find((option) => option[props.optionValueKey] === props.modelValue)?.[
       props.optionInputValueKey
     ]
   })
@@ -361,7 +377,7 @@
   }
 
   function focusMainInput() {
-    mazInputComponent.value?.input.focus()
+    ;(mazInputComponent.value?.$el as HTMLElement).querySelector('input')?.focus()
   }
 
   function toggleList(event: Event) {
@@ -370,7 +386,7 @@
 
   function focusSearchInputAndSetQuery(q: string) {
     searchQuery.value = q
-    searchInputComponent.value?.input.focus()
+    ;(searchInputComponent.value?.$el as HTMLElement).querySelector('input')?.focus()
   }
 
   function searchOptionWithQuery(keyPressed: string) {

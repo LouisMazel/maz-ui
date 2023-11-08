@@ -1,5 +1,51 @@
 # Change Log
 
+## v3.22.0...v3.22.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.22.0...v3.22.1)
+
+### 💅 Refactors
+
+- **maz-ui:** MazInputTags - use same border color as MazInput ([c3fb08d3](https://github.com/LouisMazel/maz-ui/commit/c3fb08d3))
+- **maz-ui:** MazInput - inherit class and style attributes in root element ([55651ff4](https://github.com/LouisMazel/maz-ui/commit/55651ff4))
+- **maz-ui:** MazTextarea - inherit class and style attributes in root element ([adcb2a32](https://github.com/LouisMazel/maz-ui/commit/adcb2a32))
+- **maz-ui:** MazSelect - inherit class and style attributes in root element ([e048bd06](https://github.com/LouisMazel/maz-ui/commit/e048bd06))
+- **maz-ui:** MazPhoneNumberInput - Add new options to display country name & choose selector size ([7ec7d285](https://github.com/LouisMazel/maz-ui/commit/7ec7d285))
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([15cb195e](https://github.com/LouisMazel/maz-ui/commit/15cb195e))
+- **release:** Bump version to v3.22.1 ([29cbceda](https://github.com/LouisMazel/maz-ui/commit/29cbceda))
+
+### ✅ Tests
+
+- **maz-ui:** Update snapshots ([95bdddde](https://github.com/LouisMazel/maz-ui/commit/95bdddde))
+
+### 🎨 Styles
+
+- **docs:** Color of link in detail blocks ([982d7238](https://github.com/LouisMazel/maz-ui/commit/982d7238))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+## v3.21.5...v3.22.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.21.5...v3.22.0)
+
+### 🩹 Fixes
+
+- **cli:** Create-files - fix typo ([b4d767f4](https://github.com/LouisMazel/maz-ui/commit/b4d767f4))
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([f5b0cdf2](https://github.com/LouisMazel/maz-ui/commit/f5b0cdf2))
+- **release:** Bump version to v3.22.0 ([7041c313](https://github.com/LouisMazel/maz-ui/commit/7041c313))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.21.4...v3.21.5
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.21.4...v3.21.5)

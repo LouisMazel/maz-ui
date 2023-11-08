@@ -5,7 +5,7 @@ exports[`components/MazSelect.vue > Should match with the snapshot 1`] = `
   <div data-v-191e6fff=\\"\\" data-v-bdc1f43b=\\"\\" class=\\"m-input m-select-input --primary --md\\">
     <div data-v-191e6fff=\\"\\" class=\\"m-input-wrapper --default-border maz-rounded\\">
       <!--v-if-->
-      <div data-v-191e6fff=\\"\\" class=\\"m-input-wrapper-input\\"><input data-v-191e6fff=\\"\\" id=\\"MazSelect-1\\" type=\\"text\\" name=\\"input\\" class=\\"m-select-input m-input-input\\" autocomplete=\\"off\\">
+      <div data-v-191e6fff=\\"\\" class=\\"m-input-wrapper-input\\"><input data-v-191e6fff=\\"\\" id=\\"MazSelect-1\\" type=\\"text\\" name=\\"input\\" autocomplete=\\"off\\" class=\\"m-input-input\\">
         <!--v-if-->
       </div>
       <div data-v-191e6fff=\\"\\" class=\\"m-input-wrapper-right\\"><button data-v-bdc1f43b=\\"\\" tabindex=\\"-1\\" type=\\"button\\" class=\\"m-select-input__toggle-button maz-custom\\">

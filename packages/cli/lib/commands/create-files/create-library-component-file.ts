@@ -12,7 +12,7 @@ export async function createLibraryComponentFile({
   const COMPONENT_FILE_OUTPUT = resolve(__dirname, `../../../../lib/components/${filename}.vue`)
 
   const componentTemplate = `<template>
-  <div class="${filenameKebab}">${filename}</div>
+  <div class="m-${filenameKebab.split('-')[1]}">${filename}</div>
 </template>
 `
 

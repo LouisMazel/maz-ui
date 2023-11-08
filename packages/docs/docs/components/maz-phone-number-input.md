@@ -11,7 +11,7 @@ description: MazPhoneNumberInput is a standalone input component that helps the 
 
 <!--@include: ./../.vitepress/mixins/maz-input-props.md-->
 
----
+## Prerequisites
 
 To use this component, you have to install the `libphonenumber-js` dependency
 
@@ -20,6 +20,24 @@ To use this component, you have to install the `libphonenumber-js` dependency
 ```bash
 npm install libphonenumber-js
 ```
+
+---
+
+::: details Show feature list and infos
+
+- **Auto-detect** country calling code with phone number provided
+- You can set your **preferred-countries, ignored-countries** or exclude some countries with **only-countries** - Ex `['FR', 'BE', 'DE']`
+- Validation UI state: input becomes green when the phone number is valid and becomes red when number is incorrect (can be disabled by `no-validation-success` and `no-validation-error` prop)
+- **Multi options to getting country code** : By default the component gets the country code via the browser (disable it with no-use-browser-locale) or you can use - fetch-country to get the country code via <https://ipwho.is> (network needed) - you can use `default-country-code` option instead to set one
+- Phone number is formatted while typing (can be disabled by the prop `noFormattingAsYouType`)
+- You can `search` your country in list
+- Keyboard accessibility (Arrow down, Arrow up: Country list navigation - Escape: Close country list)
+- Phone number example for each country in placeholder/label (can be disabled with `no-example` prop)
+- Auto focus phone number input after selecting country
+- You can disable the flags: `no-flags` prop
+- Translations: [Component translations](#translations) & [countries translations](#countries-list)
+
+:::
 
 ## Usage
 
@@ -37,7 +55,7 @@ npm install libphonenumber-js
 
 <div class="language-js ext-js"><span class="lang">js</span><pre class="language-js"><code>{{ results }}</code></pre></div>
 
-### Code
+::: details Show code
 
 ```vue
 <template>
@@ -61,23 +79,9 @@ npm install libphonenumber-js
 </script>
 ```
 
-## Feature List
+:::
 
-- **Auto-detect** country calling code with phone number provided
-- You can set your **preferred-countries, ignored-countries** or exclude some countries with **only-countries** - Ex `['FR', 'BE', 'DE']`
-- Validation UI state: input becomes green when the phone number is valid and becomes red when number is incorrect (can be disabled by `no-validation-success` and `no-validation-error` prop)
-- **Multi options to getting country code** : By default the component gets the country code via the browser (disable it with no-use-browser-locale) or you can use - fetch-country to get the country code via <https://ipwho.is> (network needed) - you can use `default-country-code` option instead to set one
-- Phone number is formatted while typing (can be disabled by the prop `noFormattingAsYouType`)
-- You can `search` your country in list
-- Keyboard accessibility (Arrow down, Arrow up: Country list navigation - Escape: Close country list)
-- Phone number example for each country in placeholder/label (can be disabled with `no-example` prop)
-- Auto focus phone number input after selecting country
-- You can disable the flags: `no-flags` prop
-- Translations: [Component translations](#translations) & [countries translations](#countries-list)
-
-## Translations
-
-### Labels & placeholders
+## Translations - Labels & placeholders
 
 ```html
 <MazPhoneNumberInput
@@ -95,9 +99,9 @@ npm install libphonenumber-js
 />
 ```
 
-### Countries list
+## Translations - Country list
 
-#### First solution - set country locale
+**First solution - set country locale**
 
 ```html
 <MazPhoneNumberInput
@@ -105,7 +109,7 @@ npm install libphonenumber-js
 />
 ```
 
-#### Second solution - custom list
+**Second solution - custom list**
 
 ```html
 <MazPhoneNumberInput
@@ -116,6 +120,14 @@ npm install libphonenumber-js
     US: 'Etats-Unis',
   }"
 />
+```
+
+## Show country name instead of calling code
+
+<MazPhoneNumberInput country-selector-display-name />
+
+```html
+<MazPhoneNumberInput country-selector-display-name />
 ```
 
 ## Types
