@@ -74,8 +74,9 @@ function getCountriesList(
   const countriesList: Country[] = []
   const isoList = getCountries()
 
+  locale = locale ?? browserLocale().browserLocale ?? 'en-US'
+
   for (const iso2 of isoList) {
-    locale = locale ?? browserLocale().browserLocale ?? 'en-US'
     const name = getCountryName(locale, iso2, customCountriesNameListByIsoCode)
 
     if (name) {
