@@ -124,10 +124,10 @@ npm install libphonenumber-js
 
 ## Show country name instead of calling code
 
-<MazPhoneNumberInput country-selector-shows-name />
+<MazPhoneNumberInput country-selector-display-name />
 
 ```html
-<MazPhoneNumberInput country-selector-shows-name />
+<MazPhoneNumberInput country-selector-display-name />
 ```
 
 ## Types
