@@ -1,4 +1,4 @@
-import { defineNuxtPlugin } from 'nuxt/app'
+import { defineNuxtPlugin } from '#imports'
 import { vClickOutsideInstall } from 'maz-ui'
 
 export default defineNuxtPlugin(({ vueApp }) => {

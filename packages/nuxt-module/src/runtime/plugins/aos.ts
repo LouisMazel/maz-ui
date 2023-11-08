@@ -1,4 +1,4 @@
-import { defineNuxtPlugin, useRouter } from 'nuxt/app'
+import { defineNuxtPlugin, useRouter } from '#imports'
 import { installAos } from 'maz-ui'
 
 export default defineNuxtPlugin(({ vueApp, $config }) => {
