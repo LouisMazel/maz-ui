@@ -113,7 +113,7 @@
       if (props.color === 'white') return 'maz-border-white'
     }
 
-    return 'maz-border-color-lighter'
+    return 'maz-border-gray-200'
   })
 
   const removeLastTag = () => {
