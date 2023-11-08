@@ -65,7 +65,7 @@ html.dark {
 
   --vp-custom-block-warning-bg: var(--maz-color-warning-700);
   --vp-custom-block-warning-border: var(--maz-color-warning-600);
-  --vp-custom-block-warning-text: var(--maz-color-text);
+  --vp-custom-block-warning-text: var(--maz-color-white);
 }
 
 .vp-doc .custom-block code {
@@ -78,6 +78,10 @@ html.dark {
 
 .custom-block.details a {
   color: var(--maz-color-black) !important;
+}
+
+html.dark .custom-block.details a {
+  color: var(--maz-color-white) !important;
 }
 
 .custom-block a:hover {
