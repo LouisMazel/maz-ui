@@ -47,6 +47,7 @@
     "nuxt",
     "types",
     "icons",
+    "resolvers",
     "bin"
   ],
   "scripts": {
