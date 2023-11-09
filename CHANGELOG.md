@@ -1,5 +1,23 @@
 # Change Log
 
+## v3.22.3...v3.22.4
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.22.3...v3.22.4)
+
+### 💅 Refactors
+
+- **maz-ui:** MazGallery - add option to choose color of borders between images ([b20a0ae8](https://github.com/LouisMazel/maz-ui/commit/b20a0ae8))
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([0eba6496](https://github.com/LouisMazel/maz-ui/commit/0eba6496))
+- Upgrade dependencies ([dca172f8](https://github.com/LouisMazel/maz-ui/commit/dca172f8))
+- **release:** Bump version to v3.22.4 ([e1ce0f33](https://github.com/LouisMazel/maz-ui/commit/e1ce0f33))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.22.2...v3.22.3
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.22.2...v3.22.3)
