@@ -1,5 +1,30 @@
 # Change Log
 
+## v3.22.4...v3.23.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.22.4...v3.23.0)
+
+### 🚀 Enhancements
+
+- **maz-ui:** Add resolvers for unplugin-vue-components ([bfcb2e84](https://github.com/LouisMazel/maz-ui/commit/bfcb2e84))
+
+### 💅 Refactors
+
+- **maz-ui:** MazSelect - improve search filter to support cyrilic alphabet ([dce86776](https://github.com/LouisMazel/maz-ui/commit/dce86776))
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([d2a71502](https://github.com/LouisMazel/maz-ui/commit/d2a71502))
+- **release:** Bump version to v3.23.0 ([66187b20](https://github.com/LouisMazel/maz-ui/commit/66187b20))
+
+### 🎨 Styles
+
+- **maz-ui:** MazDialog\* - change open animation from translateY to scale ([1defb9ea](https://github.com/LouisMazel/maz-ui/commit/1defb9ea))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.22.3...v3.22.4
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.22.3...v3.22.4)
