@@ -1,5 +1,22 @@
 # Change Log
 
+## v3.23.0...v3.23.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.23.0...v3.23.1)
+
+### 🩹 Fixes
+
+- **maz-ui:** Resolvers - correct format to be require with vite ([6d35ecb1](https://github.com/LouisMazel/maz-ui/commit/6d35ecb1))
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([a8ea0d04](https://github.com/LouisMazel/maz-ui/commit/a8ea0d04))
+- **release:** Bump version to v3.23.1 ([9c4c9f08](https://github.com/LouisMazel/maz-ui/commit/9c4c9f08))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.22.4...v3.23.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.22.4...v3.23.0)
