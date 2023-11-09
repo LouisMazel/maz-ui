@@ -41,32 +41,46 @@ export default defineNuxtConfig({
 })
 ```
 
----
-
 ## Recommendations
 
-To optimize your bundle size, it's recommended to use the partial import
+::: tip
 
-### Global component installation (recommended)
+<NpmBadge package="unplugin-vue-components"></NpmBadge>
 
-> Example with some components
+Use [unplugin-vue-components](https://github.com/unplugin/unplugin-vue-components) and the dedicated maz-ui resolver to auto-import components
 
-```typescript
-import { createApp } from 'vue'
-...
-import MazBtn from 'maz-ui/components/MazBtn'
-import MazInput from 'maz-ui/components/MazInput'
-import MazPhoneNumberInput from 'maz-ui/components/MazPhoneNumberInput'
-...
 
-const app = createApp(App)
+```ts
+// vite.config.ts
 
-...
-app.component('MazBtn', MazBtn)
-app.component('MazInput', MazInput)
-app.component('MazPhoneNumberInput', MazPhoneNumberInput)
-...
+import Components from 'unplugin-vue-components/vite'
+import { MazUiUnpluginVueComponentsResolver } from 'maz-ui'
+
+export default defineConfig({
+  plugins: [
+    Components({
+      dts: true,
+      resolvers: [MazUiUnpluginVueComponentsResolver()],
+    }),
+  ]
+})
 ```
+
+**Typesript users**: Add this in your `tsconfig.json`
+
+```json
+{
+  ...
+  "include": [
+    "components.d.ts",
+  ],
+  ...
+}
+```
+
+Then, you don't need to import all maz-ui components into your components
+
+:::
 
 ### Component import
 
@@ -82,11 +96,19 @@ app.component('MazPhoneNumberInput', MazPhoneNumberInput)
 </script>
 ```
 
-### Not recommended
+### Install components globally
 
-<br />
 
-#### Fully library installation
+```typescript
+import { createApp } from 'vue'
+import MazBtn from 'maz-ui/components/MazBtn'
+
+const app = createApp(App)
+app.component('MazBtn', MazBtn)
+...
+```
+
+### Not recommended - Fully components installation
 
 ```typescript
 import { createApp } from 'vue'

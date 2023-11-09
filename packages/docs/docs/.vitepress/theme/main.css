@@ -28,9 +28,9 @@
   --vp-custom-block-details-border: var(--maz-bg-color-light-lighter);
   --vp-custom-block-details-text: var(--maz-color-text-dark);
 
-  --vp-custom-block-tip-bg: var(--maz-color-success);
+  --vp-custom-block-tip-bg: var(--maz-color-success-400);
   --vp-custom-block-tip-border: var(--maz-color-success-600);
-  --vp-custom-block-tip-text: var(--maz-color-success-contrast);
+  --vp-custom-block-tip-text: var(--maz-color-black);
 }
 
 html.dark {
@@ -42,9 +42,9 @@ html.dark {
   --vp-custom-block-info-border: var(--maz-color-info-400);
   --vp-custom-block-info-text: var(--maz-color-info-contrast);
 
-  --vp-custom-block-tip-bg: var(--maz-color-success-600);
+  --vp-custom-block-tip-bg: var(--maz-color-success-alpha);
   --vp-custom-block-tip-border: var(--maz-color-success-400);
-  --vp-custom-block-tip-text: var(--maz-color-success-contrast);
+  --vp-custom-block-tip-text: var(--maz-color-white);
 
   --vp-custom-block-details-bg: var(--maz-bg-color-dark-light);
   --vp-custom-block-details-border: var(--maz-bg-color-dark-lighter);
@@ -80,7 +80,14 @@ html.dark {
   color: var(--maz-color-black) !important;
 }
 
+.custom-block.tip a {
+  color: var(--maz-color-black) !important;
+}
+
 html.dark .custom-block.details a {
+  color: var(--maz-color-white) !important;
+}
+html.dark .custom-block.tip a {
   color: var(--maz-color-white) !important;
 }
 

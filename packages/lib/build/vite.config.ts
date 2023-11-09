@@ -57,7 +57,7 @@ const getBuildConfig = ({
   build: {
     emptyOutDir: false,
     outDir,
-    minify: 'terser',
+    minify: true,
     cssCodeSplit: true,
     cssMinify: true,
     lib: {
