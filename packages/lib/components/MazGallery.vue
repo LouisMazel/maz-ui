@@ -13,7 +13,7 @@
         :class="[`m-gallery__item--${i + 1}`]"
       >
         <img
-          v-lazy-img:[lazyImgArgument]="{ src: image.thumbnail, disabled: !lazy }"
+          v-lazy-img:bg-image="{ src: image.thumbnail, disabled: !lazy }"
           v-zoom-img="{
             src: image.src,
             alt: image.alt,
@@ -42,7 +42,7 @@
       </figure>
       <div
         v-if="hasEmptyLayer && images.length === 0"
-        class="maz-flex maz-w-full maz-bg-color-light maz-text-normal maz-flex-center"
+        class="empty-layer maz-flex maz-w-full maz-bg-color-light maz-text-normal maz-flex-center"
         :class="{ 'maz-rounded-xl': !noRadius }"
         :style="[sizeStyle]"
       >
@@ -67,38 +67,40 @@
 
   const NoPhotographyIcon = defineAsyncComponent(() => import('./../icons/no-photography.svg'))
 
-  const lazyImgArgument = 'bg-image'
-
   const props = defineProps({
-    // Array of string or object: `['https://via.placeholder.com/500', 'https://via.placeholder.com/600']` or `[{ slug: 'https://via.placeholder.com/500', alt: 'image descripton' }, { slug: 'https://via.placeholder.com/600', alt: 'image descripton' }]`
+    /**
+     *  Array of string or object: `['https://via.placeholder.com/500', 'https://via.placeholder.com/600']` or `[{ slug: 'https://via.placeholder.com/500', alt: 'image descripton' }, { slug: 'https://via.placeholder.com/600', alt: 'image descripton' }]`
+     * */
     images: {
       type: Array as PropType<MazGalleryImage[]>,
       default: () => [],
     },
-    // Images count shown (max: 5)
+    /** Images count shown (max: 5) */
     imagesShownCount: { type: Number, default: 5 },
-    // Remove transparent layer with the remain count (ex: +2)
+    /** Remove transparent layer with the remain count (ex: +2) */
     noRemaining: { type: Boolean, default: false },
-    // Height of gallery
+    /** Height of gallery */
     height: { type: [Number, String], default: 150 },
-    // Remove default height
+    /** Remove default height */
     noHeight: { type: Boolean, default: false },
-    // Width of gallery
+    /** Width of gallery */
     width: { type: [Number, String], default: '100%' },
-    // Remove default width
+    /** Remove default width */
     noWidth: { type: Boolean, default: false },
-    // Add the default border radius to gallery
+    /** Disable the border radius of the gallery */
     noRadius: { type: Boolean, default: false },
-    // Add feature to show the carousel images on click
+    /** Disable full size display when clicking on image */
     noZoom: { type: Boolean, default: false },
-    // Layer with photography icon when no images is provided
+    /** Layer with photography icon when no images is provided */
     hasEmptyLayer: { type: Boolean, default: true },
-    // Lazy load image - if false, images are directly loaded
+    /** Lazy load image - if false, images are directly loaded */
     lazy: { type: Boolean, default: true },
-    // Blur animation effect on image hover
+    /** Disable blur effect on image hover */
     blur: { type: Boolean, default: true },
-    // Scale animation effect on image hover
+    /** Disable scale animation effect on image hover */
     scale: { type: Boolean, default: true },
+    /** Choose color of borders between images - Should be a CSS color or CSS variable - Ex: `#000` or `var(--maz-color-bg-light)` */
+    separatorColor: { type: String, default: 'transparent' },
   })
 
   onBeforeMount(() => {
@@ -108,7 +110,11 @@
   })
 
   const sizeStyle = computed(() => {
-    const { height, width, noWidth, noHeight } = props
+    const noWidth = props.noWidth
+    const width = props.width
+    const noHeight = props.noHeight
+    const height = props.height
+
     return {
       ...(noWidth
         ? {}
@@ -163,7 +169,9 @@
 
     &__item {
       @apply maz-absolute maz-top-0 maz-m-0 maz-h-1/2 maz-w-full
-        maz-overflow-hidden maz-border-l-2 maz-border-transparent maz-p-0;
+        maz-overflow-hidden maz-border-l-2 maz-p-0;
+
+      border-color: v-bind('separatorColor');
 
       &--1 {
         left: 0;
@@ -204,8 +212,9 @@
       }
 
       &--4 {
-        @apply maz-border-t-2 maz-border-transparent;
+        @apply maz-border-t-2;
 
+        border-color: v-bind('separatorColor');
         top: 50%;
         left: 50%;
         width: 25%;
@@ -217,8 +226,9 @@
       }
 
       &--5 {
-        @apply maz-border-t-2 maz-border-transparent;
+        @apply maz-border-t-2;
 
+        border-color: v-bind('separatorColor');
         top: 50%;
         left: 75%;
         width: 25%;
@@ -232,7 +242,9 @@
       &--3:nth-last-child(2),
       &--4:last-child,
       &--5 {
-        @apply maz-border-t-2 maz-border-transparent;
+        @apply maz-border-t-2;
+
+        border-color: v-bind('separatorColor');
       }
 
       &__image {
