@@ -129,7 +129,6 @@
     getCurrentInstance,
     defineAsyncComponent,
     defineOptions,
-    watch,
     type StyleValue,
   } from 'vue'
   import MazInput from './MazInput.vue'
@@ -310,7 +309,7 @@
     return str
       .normalize('NFD')
       .replaceAll(/[\u0300-\u036F]/g, '')
-      .replaceAll(/[^\dA-Za-z]/g, '')
+      .replaceAll(/[^\dA-Za-z\u0400-\u04FF]/g, '')
   }
 
   const searchInValue = (value?: ModelValueSimple, query?: string) => {
@@ -322,15 +321,6 @@
       )
     )
   }
-
-  watch(
-    () => props.modelValue,
-    (value, oldValue) => {
-      if (value && value !== oldValue) {
-        // scrollToOptionIndex()
-      }
-    },
-  )
 
   function getFilteredOptionWithQuery(query: string) {
     return query
@@ -416,7 +406,7 @@
   const mainInputKeyboardHandler = (event: KeyboardEvent) => {
     const keyPressed = event.key
 
-    if (/^[\dA-Za-z]$/.test(keyPressed)) {
+    if (/^[\dA-Za-z\u0400-\u04FF]$/.test(keyPressed)) {
       event.preventDefault()
       openList(event)
 
