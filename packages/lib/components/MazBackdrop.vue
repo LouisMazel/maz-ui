@@ -184,8 +184,11 @@
     transition: opacity ease-in-out 250ms;
 
     & .m-backdrop-content {
-      transition: transform ease-in-out 250ms;
-      transform: translateY(0);
+      transition-property: transform, opacity;
+      transition-duration: 250ms;
+      transition-timing-function: ease-in-out;
+      opacity: 1;
+      transform: scale(1);
     }
   }
 
@@ -194,7 +197,8 @@
     opacity: 0;
 
     & .m-backdrop-content {
-      transform: translateY(-25px);
+      opacity: 0;
+      transform: scale(0.5);
     }
   }
 
