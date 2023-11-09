@@ -15,6 +15,7 @@ import { replaceInFile } from 'replace-in-file'
 import { getComponentList } from './get-component-list'
 
 import { libInjectCss } from 'vite-plugin-lib-inject-css'
+import { copyFileSync } from 'node:fs'
 
 const argv = minimist(process.argv.slice(2))
 
@@ -45,6 +46,7 @@ const getBuildConfig = ({
   path,
   name,
   outDir,
+  format,
   // hash,
   isModuleBuild,
 }: {
@@ -52,6 +54,7 @@ const getBuildConfig = ({
   name: string
   outDir: string
   hash?: string
+  format: 'es' | 'cjs'
   isModuleBuild?: boolean
 }): InlineConfig => ({
   build: {
@@ -63,7 +66,7 @@ const getBuildConfig = ({
     lib: {
       // Can be an array of multiple entry points
       entry: path,
-      formats: ['es'],
+      formats: [format],
       fileName: name,
       name,
     },
@@ -80,12 +83,10 @@ const getBuildConfig = ({
       ],
       output: {
         exports: 'named',
-        chunkFileNames: `chunks/[name]-[hash].mjs`,
+        chunkFileNames: `chunks/[name]-[hash].${format === 'es' ? 'mjs' : 'cjs'}`,
         assetFileNames: `assets/[name].[ext]`,
-        entryFileNames: '[name].mjs',
+        entryFileNames: `[name].${format === 'es' ? 'mjs' : 'cjs'}`,
         preserveModules: false,
-        // intro: `import './${name}.css'`,
-        compact: true,
         globals: {
           vue: 'Vue',
           'libphonenumber-js': 'libphonenumber-js',
@@ -123,9 +124,38 @@ const run = async () => {
           name: 'index',
           outDir: resolve(__dirname, '../dist/modules'),
           isModuleBuild: true,
+          format: 'es',
+        }),
+      )
+      await build(
+        getBuildConfig({
+          path: resolve(__dirname, './../modules/index.ts'),
+          name: 'index',
+          outDir: resolve(__dirname, '../dist/modules'),
+          isModuleBuild: true,
+          format: 'cjs',
         }),
       )
     }
+
+    await build(
+      getBuildConfig({
+        path: resolve(__dirname, './../resolvers/index.ts'),
+        name: 'index',
+        outDir: resolve(__dirname, '../dist/resolvers'),
+        isModuleBuild: true,
+        format: 'cjs',
+      }),
+    )
+    await build(
+      getBuildConfig({
+        path: resolve(__dirname, './../resolvers/index.ts'),
+        name: 'index',
+        outDir: resolve(__dirname, '../dist/resolvers'),
+        isModuleBuild: true,
+        format: 'es',
+      }),
+    )
 
     const componentsList = await getComponentList()
 
@@ -140,6 +170,7 @@ const run = async () => {
           path,
           name,
           outDir: resolve(__dirname, '../dist/components'),
+          format: 'es',
         }),
       )
     }
@@ -148,6 +179,14 @@ const run = async () => {
     await execPromise('vue-tsc --declaration --emitDeclarationOnly')
 
     copyAndTransformComponentsTypesFiles()
+    copyFileSync(
+      resolve('./dist/types/resolvers/index.d.ts'),
+      resolve('./dist/resolvers/index.d.ts'),
+    )
+    copyFileSync(
+      resolve('./dist/types/resolvers/unplugin-vue-components-resolver.d.ts'),
+      resolve('./dist/resolvers/unplugin-vue-components-resolver.d.ts'),
+    )
 
     await generateLibComponentsEntryFile()
 
@@ -186,21 +225,29 @@ const run = async () => {
       from: new RegExp('./module', 'g'),
       to: './index',
     })
+
     await replaceInFile({
       files: resolve(__dirname, '../dist/package.json'),
-      from: new RegExp('./modules/index.ts', 'g'),
-      to: './modules/index.mjs',
-    })
-    await replaceInFile({
-      files: resolve(__dirname, '../dist/package.json'),
-      from: new RegExp('./components/index.ts', 'g'),
-      to: './components/index.mjs',
-    })
-    // eslint-disable ntunicorn/no-abusive-eslint-disable
-    await replaceInFile({
-      files: resolve(__dirname, '../dist/package.json'),
-      from: /"workspace:\*"/g,
-      to: `"latest"`,
+      from: [
+        new RegExp('"main": "./modules/index.ts"', 'g'),
+        new RegExp('"module": "./modules/index.ts"', 'g'),
+        new RegExp('"import": "./modules/index.ts"', 'g'),
+        new RegExp('"require": "./modules/index.ts"', 'g'),
+        new RegExp('"import": "./resolvers/index.ts"', 'g'),
+        new RegExp('"require": "./resolvers/index.ts"', 'g'),
+        new RegExp('./components/index.ts', 'g'),
+        /"workspace:\*"/g,
+      ],
+      to: [
+        '"main": "./modules/index.cjs"',
+        '"module": "./modules/index.mjs"',
+        '"import": "./modules/index.mjs"',
+        '"require": "./modules/index.cjs"',
+        '"import": "./resolvers/index.mjs"',
+        '"require": "./resolvers/index.cjs"',
+        './components/index.mjs',
+        `"latest"`,
+      ],
     })
 
     logger.success('[vite.config.js](run) 💚 library builded with success 💚')

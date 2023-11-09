@@ -54,13 +54,13 @@ Use [unplugin-vue-components](https://github.com/unplugin/unplugin-vue-component
 // vite.config.ts
 
 import Components from 'unplugin-vue-components/vite'
-import { MazUiUnpluginVueComponentsResolver } from 'maz-ui'
+import { UnpluginVueComponentsResolver } from 'maz-ui/resolvers'
 
 export default defineConfig({
   plugins: [
     Components({
       dts: true,
-      resolvers: [MazUiUnpluginVueComponentsResolver()],
+      resolvers: [UnpluginVueComponentsResolver()],
     }),
   ]
 })
@@ -97,7 +97,6 @@ Then, you don't need to import all maz-ui components into your components
 ```
 
 ### Install components globally
-
 
 ```typescript
 import { createApp } from 'vue'

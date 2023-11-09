@@ -13,11 +13,17 @@
   "exports": {
     ".": {
       "types": "./types/modules/index.d.ts",
-      "default": "./modules/index.ts"
+      "import": "./modules/index.ts",
+      "require": "./modules/index.ts"
     },
     "./components": {
       "types": "./types/components/index.d.ts",
       "default": "./components/index.ts"
+    },
+    "./resolvers": {
+      "types": "./types/resolvers/index.d.ts",
+      "import": "./resolvers/index.ts",
+      "require": "./resolvers/index.ts"
     },
     "./components/*": {
       "types": "./types/components/*.vue.d.ts",
