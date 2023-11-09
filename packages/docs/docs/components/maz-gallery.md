@@ -29,7 +29,7 @@ description: MazGallery is a standalone component used to display images in a co
 
   const images: MazGalleryImage[] = [
     'https://placekitten.com/640/500',
-    { src: 'https://placekitten.com/640/600', thumbnail: 'https://placekitten.com/640/600', alt: 'image description' },
+    { src: 'https://placekitten.com/640/600', thumbnail: 'https://placekitten.com/100/100', alt: 'image description' },
     { src: 'https://placekitten.com/640/700', alt: 'image description' },
     'https://placekitten.com/640/800',
     'https://placekitten.com/640/1000',
