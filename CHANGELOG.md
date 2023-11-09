@@ -1,5 +1,22 @@
 # Change Log
 
+## v3.23.1...v3.23.2
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.23.1...v3.23.2)
+
+### 🩹 Fixes
+
+- **maz-ui:** Resolvers - add folder to npm pack ([9cb45f29](https://github.com/LouisMazel/maz-ui/commit/9cb45f29))
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([f58113a0](https://github.com/LouisMazel/maz-ui/commit/f58113a0))
+- **release:** Bump version to v3.23.2 ([7f4a95a9](https://github.com/LouisMazel/maz-ui/commit/7f4a95a9))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.23.0...v3.23.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.23.0...v3.23.1)
