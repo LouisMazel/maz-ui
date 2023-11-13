@@ -16,7 +16,7 @@
     "*.{vue,css,scss,postcss,pcss}": "stylelint --fix"
   },
   "devDependencies": {
-    "@nuxt/devtools": "^1.0.0",
+    "@nuxt/devtools": "^1.0.2",
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
     "@nuxtjs/tailwindcss": "^6.9.4",
     "autoprefixer": "^10.4.16",
