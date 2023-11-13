@@ -25,7 +25,7 @@ npm install maz-ui
 In the `main.js` or `main.ts`, import main maz-ui CSS file before your own CSS
 
 ```ts
-import 'maz-ui/css/main.css'
+import 'maz-ui/styles' // or import 'maz-ui/css/main.css'
 import '@/css/path_to_your_main_file.css'
 ```
 
@@ -112,7 +112,7 @@ app.component('MazBtn', MazBtn)
 ```typescript
 import { createApp } from 'vue'
 import * as components from 'maz-ui/components'
-import 'maz-ui/css/main.css'
+import 'maz-ui/styles' // or import 'maz-ui/css/main.css'
 
 const app = createApp(App)
 

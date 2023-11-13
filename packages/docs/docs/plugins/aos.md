@@ -190,7 +190,7 @@ import { createApp, useRouter } from 'vue'
 import { installAos, AosOptions } from 'maz-ui'
 
 // ⚠️ import necessary CSS file ⚠️
-import 'maz-ui/css/aos.css'
+import 'maz-ui/aos-styles' // or import 'maz-ui/css/aos.css'
 
 const app = createApp(App)
 
@@ -227,7 +227,7 @@ export default {
     { '@/plugins/maz-aos.client.ts', mode: 'client' } // ⚠️
   ],
   css: [
-    'maz-ui/css/aos.css'
+    'maz-ui/aos-styles' // or 'maz-ui/css/aos.css'
   ],
 }
 ```
