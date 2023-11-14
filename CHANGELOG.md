@@ -1,5 +1,30 @@
 # Change Log
 
+## v3.23.2...v3.23.3
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.23.2...v3.23.3)
+
+### 💅 Refactors
+
+- **docs:** Use css package exports ([5f91cf57](https://github.com/LouisMazel/maz-ui/commit/5f91cf57))
+- **nuxt-module:** Improve composables to support server side ([#752](https://github.com/LouisMazel/maz-ui/pull/752))
+
+### 📖 Documentation
+
+- **docs:** Remove typescript recommandation part in getting started ([d32bbe4e](https://github.com/LouisMazel/maz-ui/commit/d32bbe4e))
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([11d62f30](https://github.com/LouisMazel/maz-ui/commit/11d62f30))
+- Upgrade dependencies ([#749](https://github.com/LouisMazel/maz-ui/pull/749))
+- Upgrade dependencies ([#751](https://github.com/LouisMazel/maz-ui/pull/751))
+- **release:** Bump version to v3.23.3 ([887a7f12](https://github.com/LouisMazel/maz-ui/commit/887a7f12))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+- Mazel <me@loicmazuel.com>
+
 ## v3.23.1...v3.23.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.23.1...v3.23.2)
