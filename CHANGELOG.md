@@ -1,5 +1,22 @@
 # Change Log
 
+## v3.23.3...v3.23.4
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.23.3...v3.23.4)
+
+### 🩹 Fixes
+
+- **nuxt-module:** Aos - install plugin ([50733c6c](https://github.com/LouisMazel/maz-ui/commit/50733c6c))
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([d0b1c904](https://github.com/LouisMazel/maz-ui/commit/d0b1c904))
+- **release:** Bump version to v3.23.4 ([0c6c864e](https://github.com/LouisMazel/maz-ui/commit/0c6c864e))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.23.2...v3.23.3
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.23.2...v3.23.3)
