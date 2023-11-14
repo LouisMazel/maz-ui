@@ -1,5 +1,19 @@
 # Change Log
 
+## v3.23.4...v3.23.5
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.23.4...v3.23.5)
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([0574f4e3](https://github.com/LouisMazel/maz-ui/commit/0574f4e3))
+- **maz-ui:** Bump version to 3.23.4 ([148cabd1](https://github.com/LouisMazel/maz-ui/commit/148cabd1))
+- **release:** Bump version to v3.23.5 ([8dbcae97](https://github.com/LouisMazel/maz-ui/commit/8dbcae97))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.23.3...v3.23.4
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.23.3...v3.23.4)
