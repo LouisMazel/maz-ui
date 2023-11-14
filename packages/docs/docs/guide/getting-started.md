@@ -120,21 +120,3 @@ Object.entries(components).forEach(([componentName, component]) => {
   app.component(componentName, component)
 })
 ```
-
-## Typescript Users (not required)
-
-Now the module resolution `Node` is deprecated, for a better Typescript compatibility, please use `Node16`, `NodeNext` or `Bundler`.
-
-::: info
-The module resolution options `Node` still work
-:::
-
-`tsconfig.json`
-
-```json
-{
-  "compilerOptions": {
-    "moduleResolution": "NodeNext"
-  }
-}
-```
