@@ -164,7 +164,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       addPlugin(resolve(_dirname, './runtime/plugins/aos'))
 
       addImports({
-        from: 'maz-ui',
+        from: resolve(_dirname, './runtime/composables/use-aos'),
         name: 'useAos',
         as: 'useAos',
       })
@@ -190,7 +190,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       addPlugin(resolve(_dirname, './runtime/plugins/toaster'))
 
       addImports({
-        from: 'maz-ui',
+        from: resolve(_dirname, './runtime/composables/use-toast'),
         name: 'useToast',
         as: 'useToast',
       })
@@ -200,7 +200,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       addPlugin(resolve(_dirname, './runtime/plugins/wait'))
 
       addImports({
-        from: 'maz-ui',
+        from: resolve(_dirname, './runtime/composables/use-wait'),
         name: 'useWait',
         as: 'useWait',
       })
