@@ -9,6 +9,7 @@
         '--is-selected': isSelected(option.value),
         'maz-elevation': !noElevation,
       }"
+      tabindex="0"
       :style="
         isSelected(option.value)
           ? {
@@ -17,6 +18,9 @@
             }
           : undefined
       "
+      role="radio"
+      :aria-checked="isSelected(option.value)"
+      @keydown="keyboardHandler($event, option)"
     >
       <input
         :id="option.value.toString()"
@@ -59,12 +63,19 @@
 
   const emits = defineEmits(['update:model-value', 'change'])
 
-  const selectOption = (option: ButtonsRadioOption) => {
+  function selectOption(option: ButtonsRadioOption) {
     emits('update:model-value', option.value)
   }
 
-  const isSelected = (value: ButtonsRadioOption['value']) => {
+  function isSelected(value: ButtonsRadioOption['value']) {
     return props.modelValue === value
+  }
+
+  function keyboardHandler(event: KeyboardEvent, option: ButtonsRadioOption) {
+    if (['Space'].includes(event.code)) {
+      event.preventDefault()
+      selectOption(option)
+    }
   }
 </script>
 
