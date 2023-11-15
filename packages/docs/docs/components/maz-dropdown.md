@@ -41,7 +41,59 @@ description: MazDropdown is a standalone component
 </script>
 ```
 
-## Custom dropdown main button
+## Open dropdown only on click
+
+<MazDropdown
+  :items="[
+    { label: 'Action', action: () => toast.success('CLICKED') },
+    { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
+    { label: 'Router Link', to: { name: 'index' } },
+  ]"
+  trigger="click"
+>
+  Click me
+</MazDropdown>
+
+```html{7}
+<MazDropdown
+  :items="[
+    { label: 'Action', action: () => toast.success('CLICKED') },
+    { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
+    { label: 'Router Link', to: { name: 'index' } },
+  ]"
+  trigger="click"
+>
+  Click me
+</MazDropdown>
+```
+
+## Open dropdown only on hover
+
+<MazDropdown
+  :items="[
+    { label: 'Action', action: () => toast.success('CLICKED') },
+    { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
+    { label: 'Router Link', to: { name: 'index' } },
+  ]"
+  trigger="hover"
+>
+  Hover me
+</MazDropdown>
+
+```html{7}
+<MazDropdown
+  :items="[
+    { label: 'Action', action: () => toast.success('CLICKED') },
+    { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
+    { label: 'Router Link', to: { name: 'index' } },
+  ]"
+  trigger="hover"
+>
+  Hover me
+</MazDropdown>
+```
+
+## Custom dropdown main button without chevron icon
 
 ::: tip
   This component uses [MazBtn](./maz-btn.md) has menu button, so it inherits all its props
@@ -51,6 +103,7 @@ description: MazDropdown is a standalone component
   color="primary"
   fab
   pastel
+  no-chevron
   icon="bars-3"
   size="xl"
   :items="[
@@ -61,11 +114,12 @@ description: MazDropdown is a standalone component
   no-close-on-click
 />
 
-```html
+```html{2-7}
 <MazDropdown
   color="primary"
   fab
   pastel
+  no-chevron
   icon="bars-3"
   size="xl"
   :items="[

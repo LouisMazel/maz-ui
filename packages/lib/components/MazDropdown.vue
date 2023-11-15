@@ -20,8 +20,16 @@
       "
       @mouseleave="['hover', 'both'].includes(trigger) ? setDropdownDebounced(false) : undefined"
     >
+      <span class="maz-flex maz-items-center maz-gap-2">
+        <slot></slot>
+
+        <ChevronDownIcon
+          v-if="!noChevron"
+          :class="{ 'maz-rotate-180': dropdownOpen }"
+          class="maz-text-lg maz-transition-transform maz-duration-200 maz-ease-in-out"
+        />
+      </span>
       <!-- @slot Menu Label -->
-      <slot></slot>
     </MazBtn>
 
     <Transition name="maz-scale-fade">
@@ -81,12 +89,14 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, watch, getCurrentInstance } from 'vue'
+  import { ref, watch, getCurrentInstance, defineAsyncComponent } from 'vue'
   import MazBtn, { type Color } from './MazBtn.vue'
   import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
   import { type RouteLocationRaw } from 'vue-router'
   import { debounce } from '../modules/helpers/debounce'
   import { type Position } from './types'
+
+  const ChevronDownIcon = defineAsyncComponent(() => import('./../icons/chevron-down.svg'))
 
   export type { Color, Position }
 
@@ -117,6 +127,8 @@
       noCloseOnClick?: boolean
       /** Disable menu */
       disabled?: boolean
+      /** Remove chevron icon in main button */
+      noChevron?: boolean
     }>(),
     {
       id: 'maz-dropdown',
@@ -167,7 +179,9 @@
 
     await item.action?.()
 
-    closeOnClick()
+    if (!props.noCloseOnClick) {
+      closeOnClick()
+    }
   }
 
   function closeOnClick() {
