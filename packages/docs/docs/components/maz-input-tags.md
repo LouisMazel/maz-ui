@@ -15,17 +15,8 @@ description: MazInputTags is a standalone component like free inputs to help use
 
 <MazInputTags
   v-model="tags"
-  label="Enter tags"
-  color="info"
-/>
-
-<br />
-
-<MazInputTags
-  v-model="tags"
   placeholder="Enter tags"
-  color="secondary"
-  size="sm"
+  color="info"
 />
 
 **Value returned**
@@ -34,13 +25,69 @@ description: MazInputTags is a standalone component like free inputs to help use
   tags: {{ tags }}
 </code>
 
-<br />
-<br />
+```vue
+<template>
+  <MazInputTags
+    v-model="tags"
+    label="Enter tags"
+    color="info"
+  />
+</template>
+
+
+<script lang="ts" setup>
+  import { ref } from 'vue'
+  import MazInputTags from 'maz-ui/components/MazInputTags'
+
+  const tags = ref(['tags 1', 'tags 2'])
+  const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
+</script>
+```
+
+## Sizing
+
+<div class="maz-flex maz-flex-col maz-gap-2">
+  <MazInputTags
+    v-for="size in sizes"
+    :key="size"
+    :size="size"
+    v-model="tags"
+    placeholder="Enter tags"
+    color="secondary"
+    size="sm"
+  />
+</div>
+
+```vue
+<template>
+  <div class="maz-flex maz-flex-col maz-gap-2">
+    <MazInputTags
+      v-for="size in sizes"
+      :key="size"
+      :size="size"
+      v-model="tags"
+      placeholder="Enter tags"
+      color="secondary"
+      size="sm"
+    />
+  </div>
+</template>
+
+
+<script lang="ts" setup>
+  import { ref } from 'vue'
+  import MazInputTags from 'maz-ui/components/MazInputTags'
+
+  const tags = ref(['tags 1', 'tags 2'])
+  const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
+</script>
+```
 
 <script lang="ts" setup>
   import { ref } from 'vue'
 
   const tags = ref(['tags 1', 'tags 2'])
+  const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 </script>
 
 ```vue
@@ -65,6 +112,7 @@ description: MazInputTags is a standalone component like free inputs to help use
   import MazInputTags from 'maz-ui/components/MazInputTags'
 
   const tags = ref(['tags 1', 'tags 2'])
+  const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 </script>
 ```
 

@@ -43,13 +43,14 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, type PropType, computed, defineAsyncComponent } from 'vue'
+  import { ref, type PropType, computed } from 'vue'
 
   import MazInput from './MazInput.vue'
+  import MazBtn from './MazBtn.vue'
+
   import XIcon from './../icons/x-mark.svg'
   import type { Color, Size } from './types'
-
-  const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
+  export type { Color, Size }
 
   const props = defineProps({
     // Input value, can be a `Array` of `String` or `null`
@@ -133,7 +134,7 @@
 
 <style lang="postcss" scoped>
   .m-input-tags {
-    @apply maz-relative maz-flex maz-flex-wrap maz-items-center
+    @apply maz-relative maz-flex maz-flex-wrap
       maz-overflow-hidden maz-rounded maz-border-2 maz-bg-color;
 
     padding-left: 0.25em;
@@ -143,6 +144,11 @@
       margin-top: 0.25em;
       margin-bottom: 0.25em;
       margin-right: 0.25em;
+      max-height: 80%;
+      min-height: 80%;
+      flex: 0 0 80%;
+
+      @apply !maz-px-2 !maz-py-1;
     }
 
     &__input {
