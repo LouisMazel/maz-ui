@@ -172,8 +172,8 @@
         (value.end ? isSameDate(date, value.end, 'date') : false)
         ? props.color
         : checkIsBetween(date)
-        ? props.color
-        : 'transparent'
+          ? props.color
+          : 'transparent'
     } else {
       return checkIsSameDate(date) ? props.color : 'transparent'
     }

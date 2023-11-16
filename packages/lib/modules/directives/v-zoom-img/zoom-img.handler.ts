@@ -220,8 +220,8 @@ export class VueZoomImg {
       iconName === 'close'
         ? this.closePreview()
         : this.allInstances
-        ? this.nextPreviousImage(iconName === 'next')
-        : null
+          ? this.nextPreviousImage(iconName === 'next')
+          : null
     })
     button.classList.add('maz-zoom-btn')
     button.classList.add(`maz-zoom-btn--${iconName}`)
@@ -251,8 +251,8 @@ export class VueZoomImg {
     return newInstanceIndex < 0
       ? this.allInstances.length - 1
       : newInstanceIndex >= this.allInstances.length
-      ? 0
-      : newInstanceIndex
+        ? 0
+        : newInstanceIndex
   }
 
   private nextPreviousImage(isNext: boolean): void {

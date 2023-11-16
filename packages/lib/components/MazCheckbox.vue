@@ -67,8 +67,8 @@
     typeof props.value !== 'boolean' && Array.isArray(props.modelValue)
       ? props.modelValue.includes(props.value as never)
       : typeof props.modelValue === 'boolean'
-      ? props.modelValue
-      : false,
+        ? props.modelValue
+        : false,
   )
 
   const checkboxSize = computed(() => {

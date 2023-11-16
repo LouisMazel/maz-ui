@@ -194,8 +194,8 @@
     return newInstanceIndex < 0
       ? allInstances.length - 1
       : newInstanceIndex >= allInstances.length
-      ? 0
-      : newInstanceIndex
+        ? 0
+        : newInstanceIndex
   }
 
   async function useNextInstance(currentInstance: HTMLElement, nextInstance: HTMLElement) {

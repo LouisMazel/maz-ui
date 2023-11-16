@@ -85,16 +85,16 @@
   } from './../modules/composables/use-maz-dialog-promise'
 
   export type DialogButton = {
-    response?: string | boolean
-    type: 'resolve' | 'reject'
-    color?: Color
-    size?: Size
     text: string
-    outline?: boolean
-    rounded?: boolean
+    type: 'resolve' | 'reject'
+    block?: boolean
+    color?: Color
     disabled?: boolean
     loading?: boolean
-    block?: boolean
+    outline?: boolean
+    response?: string | boolean
+    rounded?: boolean
+    size?: Size
   }
 
   import MazDialog from './MazDialog.vue'

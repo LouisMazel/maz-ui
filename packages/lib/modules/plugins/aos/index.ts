@@ -4,26 +4,26 @@ import type { App } from 'vue'
 import type { Router } from 'vue-router'
 
 export type AosOptions = {
-  router?: Router
+  animation?: {
+    delay?: number
+    duration?: number
+    once?: boolean
+  }
   delay?: number
   observer?: IntersectionObserverInit
-  animation?: {
-    once?: boolean
-    duration?: number
-    delay?: number
-  }
+  router?: Router
 }
 
 interface ClassOptions extends Omit<AosOptions, 'router'> {
+  animation: {
+    delay: number
+    duration: number
+    once: boolean
+  }
   delay: number
   observer: IntersectionObserverInit & {
-    threshold: number | number[]
     rootMargin: string
-  }
-  animation: {
-    once: boolean
-    duration: number
-    delay: number
+    threshold: number | number[]
   }
 }
 
@@ -55,38 +55,6 @@ export class AosHandler {
         ...DEFAULT_OPTIONS.animation,
         ...options?.animation,
       },
-    }
-  }
-
-  private async handleObserver() {
-    await sleep(this.options.delay)
-
-    const observer = new IntersectionObserver(this.handleIntersect.bind(this), {
-      ...this.options.observer,
-    })
-
-    for (const element of document.querySelectorAll('[data-maz-aos]')) {
-      const anchorAttr = element.getAttribute('data-maz-aos-anchor')
-      if (anchorAttr) {
-        const anchorElement = document.querySelector(anchorAttr)
-        if (anchorElement) {
-          anchorElement.setAttribute('data-maz-aos-children', 'true')
-          observer.observe(anchorElement)
-        } else {
-          // eslint-disable-next-line no-console
-          console.warn(`[maz-ui](aos) no element found with selector "${anchorAttr}"`)
-        }
-      } else {
-        observer.observe(element)
-      }
-    }
-  }
-
-  public runAnimations() {
-    if (isClient()) {
-      return this.handleObserver()
-    } else {
-      console.warn('[MazAos](runAnimations) should be executed on client side')
     }
   }
 
@@ -146,6 +114,38 @@ export class AosHandler {
           element.classList.remove('maz-aos-animate')
         }
       }
+    }
+  }
+
+  private async handleObserver() {
+    await sleep(this.options.delay)
+
+    const observer = new IntersectionObserver(this.handleIntersect.bind(this), {
+      ...this.options.observer,
+    })
+
+    for (const element of document.querySelectorAll('[data-maz-aos]')) {
+      const anchorAttr = element.getAttribute('data-maz-aos-anchor')
+      if (anchorAttr) {
+        const anchorElement = document.querySelector(anchorAttr)
+        if (anchorElement) {
+          anchorElement.setAttribute('data-maz-aos-children', 'true')
+          observer.observe(anchorElement)
+        } else {
+          // eslint-disable-next-line no-console
+          console.warn(`[maz-ui](aos) no element found with selector "${anchorAttr}"`)
+        }
+      } else {
+        observer.observe(element)
+      }
+    }
+  }
+
+  public runAnimations() {
+    if (isClient()) {
+      return this.handleObserver()
+    } else {
+      console.warn('[MazAos](runAnimations) should be executed on client side')
     }
   }
 }

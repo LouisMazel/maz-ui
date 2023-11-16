@@ -140,8 +140,8 @@
     props.pastel
       ? `--${props.color}-pastel`
       : props.outline
-      ? `--${props.color}-outline`
-      : `--${props.color}`,
+        ? `--${props.color}-outline`
+        : `--${props.color}`,
   )
   const isDisabled = computed(
     () => (props.loading || props.disabled) && component.value === 'button',
