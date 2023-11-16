@@ -50,11 +50,11 @@ const getBuildConfig = ({
   // hash,
   isModuleBuild,
 }: {
-  path: string
+  format: 'es' | 'cjs'
   name: string
   outDir: string
+  path: string
   hash?: string
-  format: 'es' | 'cjs'
   isModuleBuild?: boolean
 }): InlineConfig => ({
   build: {

@@ -256,10 +256,10 @@
           middle === i + 1
             ? undefined
             : i < middle
-            ? // ligthen
-              `rgba(255, 255, 255, ${getOpacityCoeff(i, middle, baseLength)})`
-            : // darken
-              `rgba(0, 0, 0, ${getOpacityCoeff(i, middle, baseLength)})`,
+              ? // ligthen
+                `rgba(255, 255, 255, ${getOpacityCoeff(i, middle, baseLength)})`
+              : // darken
+                `rgba(0, 0, 0, ${getOpacityCoeff(i, middle, baseLength)})`,
       }))
     }
   }

@@ -315,8 +315,8 @@
               : undefined,
           }
         : props.modelValue
-        ? dayjs(props.modelValue, props.format).format()
-        : undefined
+          ? dayjs(props.modelValue, props.format).format()
+          : undefined
     },
     set: (value) => {
       if (props.disabled) {

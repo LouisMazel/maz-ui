@@ -325,8 +325,8 @@
     return props.preferredCountries
       ? [...(countriesFiltered.value ?? []), ...(otherCountries.value ?? [])]
       : props.onlyCountries
-      ? countriesFiltered.value
-      : countriesList.value
+        ? countriesFiltered.value
+        : countriesList.value
   })
 
   const countryOptions = computed(() => {

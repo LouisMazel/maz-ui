@@ -26,8 +26,8 @@ export async function buildEntry({
   scriptName,
   extension,
 }: {
-  output: string
   componentName: 'name' | 'fullName'
+  output: string
   scriptName: string
   extension?: string
 }): Promise<void> {
