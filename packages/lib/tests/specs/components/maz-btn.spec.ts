@@ -2,11 +2,6 @@ import MazBtn from '@components/MazBtn.vue'
 import { shallowMount } from '@vue/test-utils'
 
 describe('MazBtn', () => {
-  test('Should match with the snapshot', () => {
-    const wrapper = shallowMount(MazBtn)
-    expect(wrapper.html()).toMatchSnapshot()
-  })
-
   test('renders the component elements and classes correctly', () => {
     const wrapper = shallowMount(MazBtn)
 

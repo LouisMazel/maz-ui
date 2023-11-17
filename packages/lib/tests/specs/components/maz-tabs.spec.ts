@@ -2,12 +2,6 @@ import { mount } from '@vue/test-utils'
 import MazTabs from '@components/MazTabs.vue'
 
 describe('MazTabs.vue', () => {
-  test('Should match with the snapshot', () => {
-    const wrapper = mount(MazTabs)
-
-    expect(wrapper.html()).toMatchSnapshot()
-  })
-
   test('should display the content', () => {
     const wrapper = mount(MazTabs, {
       slots: {

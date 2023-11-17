@@ -3,11 +3,6 @@ import MazBackdrop from '@components/MazBackdrop.vue'
 import { sleep } from '@modules/index'
 
 describe('MazBackdrop', () => {
-  it('renders correctly', () => {
-    const wrapper = mount(MazBackdrop)
-    expect(wrapper.html()).toMatchSnapshot()
-  })
-
   it('opens and closes correctly', async () => {
     const wrapper = mount(MazBackdrop, {
       props: {

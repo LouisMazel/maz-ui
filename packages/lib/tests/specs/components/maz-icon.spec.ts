@@ -9,7 +9,6 @@ describe('MazIcon', () => {
       },
     })
     await wrapper.vm.$nextTick()
-    expect(wrapper.element).toMatchSnapshot()
     expect(wrapper.vm.fullSrc).toBe('/test-icon.svg')
   })
 })

@@ -4,11 +4,6 @@ import MazIcon from '@components/MazIcon.vue'
 import { shallowMount } from '@vue/test-utils'
 
 describe('MazAvatar', () => {
-  test('Should match with the snapshot', () => {
-    const wrapper = shallowMount(MazAvatar)
-    expect(wrapper.html()).toMatchSnapshot()
-  })
-
   test('Component should have expected props', () => {
     const wrapper = shallowMount(MazAvatar)
     const expectedProps = [

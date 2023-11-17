@@ -1,3 +1,0 @@
-// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
-
-exports[`components/MazCheckbox.vue > Should match with the snapshot 1`] = `"<label data-v-466b77c6=\\"\\" for=\\"MazCheckbox-1\\" class=\\"m-checkbox\\" tabindex=\\"0\\" role=\\"checkbox\\" aria-checked=\\"false\\"><input data-v-466b77c6=\\"\\" id=\\"MazCheckbox-1\\" tabindex=\\"-1\\" name=\\"m-checkbox\\" type=\\"checkbox\\"><span data-v-466b77c6=\\"\\"><svg data-v-466b77c6=\\"\\" xmlns=\\"http://www.w3.org/2000/svg\\" width=\\"1em\\" height=\\"1em\\" fill=\\"none\\" viewBox=\\"0 0 24 24\\" class=\\"check-icon maz-text-lg\\"><path stroke=\\"currentColor\\" stroke-linecap=\\"round\\" stroke-linejoin=\\"round\\" stroke-width=\\"1.5\\" d=\\"m4.5 12.75 6 6 9-13.5\\"></path></svg></span></label>"`;

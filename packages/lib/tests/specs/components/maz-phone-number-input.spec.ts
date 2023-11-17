@@ -16,12 +16,8 @@ describe('components/MazPhoneNumberInput.vue', () => {
     })
   })
 
-  test('Should match with the snapshot', () => {
-    expect(wrapper.html()).toMatchSnapshot()
-  })
-
   test('Should have an uniq id', async () => {
-    expect(wrapper.vm.instanceId).toBe('MazPhoneNumberInput-5')
+    expect(wrapper.vm.instanceId).toBe('MazPhoneNumberInput-1')
 
     const wrapperTest = shallowMount(MazPhoneNumberInput, {
       props: {

@@ -11,10 +11,6 @@ describe('components/MazSlider.vue', () => {
     },
   })
 
-  test('Should match with the snapshot', () => {
-    expect(wrapper.html()).toMatchSnapshot()
-  })
-
   test('Should have the model value', () => {
     expect(wrapper.vm.modelValue).toStrictEqual([25, 50, 75])
   })

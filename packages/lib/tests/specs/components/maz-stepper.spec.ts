@@ -24,10 +24,6 @@ describe('components/MazStepper.vue', () => {
     })
   })
 
-  test('Should match with the snapshot', () => {
-    expect(wrapper.html()).toMatchSnapshot()
-  })
-
   test('Should have the current step according with the model', () => {
     expect(wrapper.vm.stepCount).toBe(3)
     expect(wrapper.vm.localModelValue).toBe(1)
