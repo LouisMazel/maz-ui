@@ -2,7 +2,6 @@
   <div class="home">
     <div>
       <!-- Start Developping Area - You should not commit anything here to keep this place clean for all others -->
-      <MazSelect v-model="selectedValue" label="Select color" :options="colors" search />
 
       <!-- End Developping Area -->
     </div>
@@ -18,13 +17,6 @@
 
   const toast = useToast()
   const wait = useWait()
-
-  const selectedValue = ref()
-
-  const colors = [
-    { label: 'білий', value: 'white' }, // ukrainian white
-    { label: 'чорный', value: 'black' }, // russian black
-  ]
 
   wait.start('APP_LOADING')
 

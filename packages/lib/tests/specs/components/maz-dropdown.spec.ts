@@ -4,7 +4,7 @@ import MazBtn from '@components/MazBtn.vue'
 import { sleep } from '@modules/helpers'
 
 describe('MazDropdown', () => {
-  test('renders a dropdown button with the provided label', () => {
+  test('renders a dropdown button with the provided label', async () => {
     const wrapper = mount(MazDropdown, {
       slots: {
         default: 'Dropdown Label',
@@ -13,6 +13,8 @@ describe('MazDropdown', () => {
         items: [{ label: 'Menu 1', action: vi.fn() }],
       },
     })
+
+    await vi.dynamicImportSettled()
 
     const dropdownButton = wrapper.findComponent(MazBtn)
     expect(dropdownButton.exists()).toBe(true)
@@ -30,7 +32,9 @@ describe('MazDropdown', () => {
       },
     })
 
-    const dropdownButton = wrapper.findComponent(MazBtn)
+    await vi.dynamicImportSettled()
+
+    const dropdownButton = wrapper.find('[role="button"]')
 
     await wrapper.vm.$nextTick()
 
@@ -54,7 +58,9 @@ describe('MazDropdown', () => {
       },
     })
 
-    const dropdownButton = wrapper.findComponent(MazBtn)
+    await vi.dynamicImportSettled()
+
+    const dropdownButton = wrapper.find('[role="button"]')
 
     await wrapper.vm.$nextTick()
 
@@ -78,7 +84,9 @@ describe('MazDropdown', () => {
       },
     })
 
-    const dropdownButton = wrapper.findComponent(MazBtn)
+    await vi.dynamicImportSettled()
+
+    const dropdownButton = wrapper.find('[role="button"]')
 
     await dropdownButton.trigger('focus')
 
@@ -104,7 +112,9 @@ describe('MazDropdown', () => {
       },
     })
 
-    const dropdownButton = wrapper.findComponent(MazBtn)
+    await vi.dynamicImportSettled()
+
+    const dropdownButton = wrapper.find('[role="button"]')
 
     await dropdownButton.trigger('focus')
     expect(wrapper.vm.dropdownOpen).toBe(true)
@@ -133,9 +143,12 @@ describe('MazDropdown', () => {
       },
     })
 
-    const dropdownButton = wrapper.findComponent(MazBtn)
+    await vi.dynamicImportSettled()
+
+    const dropdownButton = wrapper.find('[role="button"]')
 
     await dropdownButton.trigger('focus')
+
     expect(wrapper.vm.dropdownOpen).toBe(true)
 
     // Simulate ArrowDown key
