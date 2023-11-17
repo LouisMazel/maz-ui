@@ -134,13 +134,13 @@ importers:
         version: 7.1.1
       tailwindcss:
         specifier: ^3.3.5
-        version: 3.3.5(ts-node@10.9.1)
+        version: 3.3.5
       vitepress:
-        specifier: 1.0.0-rc.26
-        version: 1.0.0-rc.26(@types/node@20.9.1)(postcss@8.4.31)(search-insights@2.11.0)(typescript@5.2.2)
+        specifier: 1.0.0-rc.27
+        version: 1.0.0-rc.27(postcss@8.4.31)(search-insights@2.11.0)
       vue:
         specifier: ^3.3.8
-        version: 3.3.8(typescript@5.2.2)
+        version: 3.3.8
 
   packages/lib:
     dependencies:
@@ -6417,8 +6417,8 @@ packages:
       vue:
         optional: true
     dependencies:
-      vite: 5.0.0(@types/node@20.9.1)
-      vue: 3.3.8(typescript@5.2.2)
+      vite: 5.0.0
+      vue: 3.3.8
     dev: true
 
   /@vitest/coverage-v8@0.34.6(vitest@0.34.6):
@@ -6871,7 +6871,7 @@ packages:
     dependencies:
       '@vue/compiler-ssr': 3.3.8
       '@vue/shared': 3.3.8
-      vue: 3.3.8(typescript@5.2.2)
+      vue: 3.3.8
     dev: true
 
   /@vue/shared@3.3.4:
@@ -17357,6 +17357,26 @@ packages:
       postcss: 8.4.31
     dev: true
 
+  /postcss-load-config@4.0.1(postcss@8.4.31):
+    resolution:
+      {
+        integrity: sha512-vEJIc8RdiBRu3oRAI0ymerOn+7rPuMvRXslTvZUKZonDHFIczxztIyJ1urxM1x9JXEikvpWWTUUqal5j/8QgvA==,
+      }
+    engines: { node: '>= 14' }
+    peerDependencies:
+      postcss: '>=8.0.9'
+      ts-node: '>=9.0.0'
+    peerDependenciesMeta:
+      postcss:
+        optional: true
+      ts-node:
+        optional: true
+    dependencies:
+      lilconfig: 2.1.0
+      postcss: 8.4.31
+      yaml: 2.3.3
+    dev: true
+
   /postcss-load-config@4.0.1(postcss@8.4.31)(ts-node@10.9.1):
     resolution:
       {
@@ -20162,6 +20182,40 @@ packages:
       - supports-color
     dev: true
 
+  /tailwindcss@3.3.5:
+    resolution:
+      {
+        integrity: sha512-5SEZU4J7pxZgSkv7FP1zY8i2TIAOooNZ1e/OGtxIEv6GltpoiXUqWvLy89+a10qYTB1N5Ifkuw9lqQkN9sscvA==,
+      }
+    engines: { node: '>=14.0.0' }
+    hasBin: true
+    dependencies:
+      '@alloc/quick-lru': 5.2.0
+      arg: 5.0.2
+      chokidar: 3.5.3
+      didyoumean: 1.2.2
+      dlv: 1.1.3
+      fast-glob: 3.3.1
+      glob-parent: 6.0.2
+      is-glob: 4.0.3
+      jiti: 1.20.0
+      lilconfig: 2.1.0
+      micromatch: 4.0.5
+      normalize-path: 3.0.0
+      object-hash: 3.0.0
+      picocolors: 1.0.0
+      postcss: 8.4.31
+      postcss-import: 15.1.0(postcss@8.4.31)
+      postcss-js: 4.0.1(postcss@8.4.31)
+      postcss-load-config: 4.0.1(postcss@8.4.31)
+      postcss-nested: 6.0.1(postcss@8.4.31)
+      postcss-selector-parser: 6.0.13
+      resolve: 1.22.8
+      sucrase: 3.34.0
+    transitivePeerDependencies:
+      - ts-node
+    dev: true
+
   /tailwindcss@3.3.5(ts-node@10.9.1):
     resolution:
       {
@@ -22081,7 +22135,7 @@ packages:
       fsevents: 2.3.3
     dev: true
 
-  /vite@5.0.0(@types/node@20.9.1):
+  /vite@5.0.0:
     resolution:
       {
         integrity: sha512-ESJVM59mdyGpsiNAeHQOR/0fqNoOyWPYesFto8FFZugfmhdHx8Fzd8sF3Q/xkVhZsyOxHfdM7ieiVAorI9RjFw==,
@@ -22112,7 +22166,6 @@ packages:
       terser:
         optional: true
     dependencies:
-      '@types/node': 20.9.1
       esbuild: 0.19.5
       postcss: 8.4.31
       rollup: 4.4.1
@@ -22127,10 +22180,10 @@ packages:
       }
     dev: false
 
-  /vitepress@1.0.0-rc.26(@types/node@20.9.1)(postcss@8.4.31)(search-insights@2.11.0)(typescript@5.2.2):
+  /vitepress@1.0.0-rc.27(postcss@8.4.31)(search-insights@2.11.0):
     resolution:
       {
-        integrity: sha512-bAeph87NheD7bM/+E1AsJx8N6bGnP+5k0gZmtXbSgKAzNSFZBgAPcl7CoWzETST5pPpH/ZGRPhWSefcBX9Yfjg==,
+        integrity: sha512-1qs1a5qPQxNOJN451HmNtKewxSIOk52qv1EdWtsO6V6kvrNxF2FFR3Inhj0W56Jcs8AKIdzKDKHNYIJhcyz3AA==,
       }
     hasBin: true
     peerDependencies:
@@ -22154,8 +22207,8 @@ packages:
       minisearch: 6.2.0
       postcss: 8.4.31
       shiki: 0.14.5
-      vite: 5.0.0(@types/node@20.9.1)
-      vue: 3.3.8(typescript@5.2.2)
+      vite: 5.0.0
+      vue: 3.3.8
     transitivePeerDependencies:
       - '@algolia/client-search'
       - '@types/node'
@@ -22468,7 +22521,7 @@ packages:
       vue:
         optional: true
     dependencies:
-      vue: 3.3.8(typescript@5.2.2)
+      vue: 3.3.8
     dev: true
 
   /vue-devtools-stub@0.1.0:
@@ -22643,6 +22696,24 @@ packages:
       '@vue/language-core': 1.8.22(typescript@5.2.2)
       semver: 7.5.4
       typescript: 5.2.2
+    dev: true
+
+  /vue@3.3.8:
+    resolution:
+      {
+        integrity: sha512-5VSX/3DabBikOXMsxzlW8JyfeLKlG9mzqnWgLQLty88vdZL7ZJgrdgBOmrArwxiLtmS+lNNpPcBYqrhE6TQW5w==,
+      }
+    peerDependencies:
+      typescript: '*'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      '@vue/compiler-dom': 3.3.8
+      '@vue/compiler-sfc': 3.3.8
+      '@vue/runtime-dom': 3.3.8
+      '@vue/server-renderer': 3.3.8(vue@3.3.8)
+      '@vue/shared': 3.3.8
     dev: true
 
   /vue@3.3.8(typescript@5.2.2):
