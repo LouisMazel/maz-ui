@@ -37,7 +37,7 @@ const theme: typeof DefaultTheme = {
     const toasterOptions: ToasterOptions = {
       persistent: false,
       position: 'bottom-right',
-      timeout: 10000,
+      timeout: 10_000,
     }
 
     const aosOptions: AosOptions = {
@@ -49,8 +49,6 @@ const theme: typeof DefaultTheme = {
         delay: 0,
       }
     }
-
-
 
     app.use(installToaster, toasterOptions)
     app.use(installWait)

@@ -1,11 +1,12 @@
 export const composables = {
   text: 'Composables',
   items: [
-    { text: 'useThemeHandler', link: '/composables/use-theme-handler' },
-    { text: 'useWait', link: '/composables/use-wait' },
     { text: 'useAos', link: '/composables/use-aos' },
-    { text: 'useToast', link: '/composables/use-toast' },
     { text: 'useIdleTimeout', link: '/composables/use-idle-timeout' },
+    { text: 'useThemeHandler', link: '/composables/use-theme-handler' },
+    { text: 'useTimer', link: '/composables/use-timer' },
+    { text: 'useToast', link: '/composables/use-toast' },
     { text: 'useUserVisibility', link: '/composables/use-user-visibility' },
+    { text: 'useWait', link: '/composables/use-wait' },
   ]
 }
