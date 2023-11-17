@@ -24,4 +24,5 @@
     "strings": true
   },
   "css.validate": false,
+  "prettier.enable": false,
 }
