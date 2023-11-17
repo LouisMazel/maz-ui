@@ -2,9 +2,10 @@
   <label
     :for="instanceId"
     class="m-checkbox"
-    :class="{ '--disabled': disabled, '--selected': isSelected }"
+    :class="[{ '--disabled': disabled, '--selected': isSelected }, props.class]"
     tabindex="0"
     role="radio"
+    :style="style"
     :aria-checked="isSelected"
     @keydown="keyboardHandler($event, value)"
   >
@@ -28,13 +29,21 @@
 
 <script lang="ts" setup>
   import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
-  import { type PropType, getCurrentInstance, computed } from 'vue'
+  import { type PropType, getCurrentInstance, computed, type HTMLAttributes } from 'vue'
   import type { Color, Size } from './types'
   export type { Color, Size }
 
   const instance = getCurrentInstance()
 
   const props = defineProps({
+    style: {
+      type: [String, Array, Object] as PropType<HTMLAttributes['style']>,
+      default: undefined,
+    },
+    class: {
+      type: [String, Array, Object] as PropType<HTMLAttributes['class']>,
+      default: undefined,
+    },
     modelValue: { type: String, default: undefined },
     value: { type: String, required: true },
     name: { type: String, required: true },

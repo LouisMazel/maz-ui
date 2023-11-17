@@ -2,7 +2,6 @@
   <MazInput
     v-model="displayPrice"
     class="maz-input-price"
-    v-bind="$attrs"
     @focus="isActive = true"
     @blur="isActive = false"
   >

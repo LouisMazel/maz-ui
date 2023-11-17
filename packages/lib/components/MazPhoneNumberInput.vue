@@ -138,7 +138,7 @@
     nextTick,
     reactive,
     defineOptions,
-    type StyleValue,
+    type HTMLAttributes,
   } from 'vue'
 
   import { countryCodeToUnicodeFlag } from './../modules/helpers/country-code-to-unicode-flag'
@@ -186,8 +186,14 @@
   })
 
   const props = defineProps({
-    style: { type: [String, Array, Object] as PropType<StyleValue>, default: undefined },
-    class: { type: String, default: undefined },
+    style: {
+      type: [String, Array, Object] as PropType<HTMLAttributes['style']>,
+      default: undefined,
+    },
+    class: {
+      type: [String, Array, Object] as PropType<HTMLAttributes['class']>,
+      default: undefined,
+    },
     /** Country calling code + telephone number in international format */
     modelValue: {
       type: String,
