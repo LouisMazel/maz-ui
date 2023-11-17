@@ -1,5 +1,46 @@
 # Change Log
 
+## v3.23.5...v3.24.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.23.5...v3.24.0)
+
+### 🚀 Enhancements
+
+- UseTimer - add composable to manage timer ([c363f3e4](https://github.com/LouisMazel/maz-ui/commit/c363f3e4))
+- **maz-ui:** Toaster - add message method, icons to other methods and progress bar ([73b9368f](https://github.com/LouisMazel/maz-ui/commit/73b9368f))
+- **nuxt-module:** Add auto-import of useTimer composable ([9e7a62c8](https://github.com/LouisMazel/maz-ui/commit/9e7a62c8))
+
+### 🩹 Fixes
+
+- **nuxt-module:** Maz-icon-path - provide path to vueApp ([eaba4f4e](https://github.com/LouisMazel/maz-ui/commit/eaba4f4e))
+- **docs:** Repo url to edit doc ([885b03ac](https://github.com/LouisMazel/maz-ui/commit/885b03ac))
+
+### 💅 Refactors
+
+- **maz-ui:** MazDropdown - add chevron icon ([83fb6e9f](https://github.com/LouisMazel/maz-ui/commit/83fb6e9f))
+- **maz-ui:** MazInputTags - improve tag sizes to avoid glitch ([e08f395a](https://github.com/LouisMazel/maz-ui/commit/e08f395a))
+- **maz-ui:** MazRadioButtons - accessibility - button focusables and can be selectable with keyboard (space) ([63526781](https://github.com/LouisMazel/maz-ui/commit/63526781))
+- **maz-ui:** MazBtn - add better type for variant prop ([0de90030](https://github.com/LouisMazel/maz-ui/commit/0de90030))
+- **maz-ui:** MazInput - use dark pseudo-class in css ([c30388bb](https://github.com/LouisMazel/maz-ui/commit/c30388bb))
+- **maz-ui:** MazAvatar, MazCard, MazInputTags - use default border size for components ([0fe0d4bc](https://github.com/LouisMazel/maz-ui/commit/0fe0d4bc))
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([108c9784](https://github.com/LouisMazel/maz-ui/commit/108c9784))
+- **maz-ui:** Lint & format code ([438b4cef](https://github.com/LouisMazel/maz-ui/commit/438b4cef))
+- **maz-ui:** Tailwind.config - remove commented code ([ce7e8885](https://github.com/LouisMazel/maz-ui/commit/ce7e8885))
+- Disable prettier in vscode settings ([a474c16a](https://github.com/LouisMazel/maz-ui/commit/a474c16a))
+- Upgradedependencies ([6826c5ee](https://github.com/LouisMazel/maz-ui/commit/6826c5ee))
+- **release:** Bump version to v3.24.0 ([39e35972](https://github.com/LouisMazel/maz-ui/commit/39e35972))
+
+### ✅ Tests
+
+- **maz-ui:** MazInputTags - add test unit ([fecc887c](https://github.com/LouisMazel/maz-ui/commit/fecc887c))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.23.4...v3.23.5
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.23.4...v3.23.5)
