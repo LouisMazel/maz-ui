@@ -356,7 +356,7 @@
       @apply maz-relative maz-z-1 maz-flex maz-flex-1 maz-overflow-hidden maz-border maz-border-solid maz-bg-color maz-transition-colors maz-duration-300;
 
       &.--default-border {
-        @apply maz-border-gray-200;
+        @apply maz-border-gray-200 dark:maz-border-color-lighter;
       }
 
       &-input {
@@ -438,6 +438,12 @@
       }
     }
 
+    &:not(.--is-disabled) {
+      & .m-input-wrapper {
+        @apply dark:maz-bg-color-light;
+      }
+    }
+
     &.--is-focused {
       & .m-input-wrapper {
         @apply maz-z-3;
@@ -452,18 +458,6 @@
   }
 
   html.dark {
-    & .m-input:not(.--is-disabled) {
-      & .m-input-wrapper {
-        @apply maz-bg-color-light;
-      }
-    }
-
-    & .m-input:not(.--is-focused, .--has-state) {
-      & .m-input-wrapper.--default-border {
-        @apply maz-border-color-lighter;
-      }
-    }
-
     & .m-input-input {
       &:-webkit-autofill,
       &:-webkit-autofill:hover,
