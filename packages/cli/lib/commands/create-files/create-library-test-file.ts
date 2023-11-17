@@ -18,11 +18,8 @@ describe('${filename}', () => {
   beforeEach(() => {
     wrapper = shallowMount(${filename})
   })
-
-  test('Should match with the snapshot', () => {
-    expect(wrapper.html()).toMatchSnapshot()
-  })
-})`
+})
+`
 
   try {
     const TEST_FILE_OUTPUT = resolve(
