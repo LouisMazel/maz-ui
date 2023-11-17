@@ -7,5 +7,6 @@
   // ESLINT
   "eslint.enable": true,
   "eslint.format.enable": true,
-  "eslint.validate": ["javascript", "typescript", "html", "vue"]
+  "eslint.validate": ["javascript", "typescript", "html", "vue"],
+  "prettier.enable": false
 }

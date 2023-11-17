@@ -4,5 +4,6 @@
     "source.fixAll.eslint": true,
     "source.fixAll.stylelint": true
   },
-  "eslint.validate": ["javascript", "typescript", "html", "vue"]
+  "eslint.validate": ["javascript", "typescript", "html", "vue"],
+  "prettier.enable": false
 }

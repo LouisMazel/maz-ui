@@ -14,6 +14,5 @@
   "scss.validate": false,
   "stylelint.enable": true,
   "stylelint.validate": ["css", "scss", "postcss", "pcss", "vue"],
-  // PRETTIER
   "prettier.enable": false
 }
