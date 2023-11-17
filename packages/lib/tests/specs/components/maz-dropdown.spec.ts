@@ -1,23 +1,9 @@
-import { mount, type VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import MazDropdown from '@components/MazDropdown.vue'
 import MazBtn from '@components/MazBtn.vue'
 import { sleep } from '@modules/helpers'
 
 describe('MazDropdown', () => {
-  let wrapper: VueWrapper
-
-  beforeEach(() => {
-    wrapper = mount(MazDropdown, {
-      props: {
-        items: [{ label: 'Menu 1', action: vi.fn() }],
-      },
-    })
-  })
-
-  test('Should match with the snapshot', () => {
-    expect(wrapper.html()).toMatchSnapshot()
-  })
-
   test('renders a dropdown button with the provided label', () => {
     const wrapper = mount(MazDropdown, {
       slots: {

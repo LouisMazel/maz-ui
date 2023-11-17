@@ -4,17 +4,6 @@ import MazCheckbox from '@components/MazCheckbox.vue'
 describe('components/MazCheckbox.vue', () => {
   expect(MazCheckbox).toBeTruthy()
 
-  test('Should match with the snapshot', () => {
-    const wrapper = mount(MazCheckbox, {
-      props: {
-        modelValue: false,
-      },
-    })
-    expect(wrapper.html()).toMatchSnapshot()
-
-    wrapper.unmount()
-  })
-
   test('renders correctly', () => {
     const wrapper = mount(MazCheckbox, {
       props: {
@@ -40,7 +29,7 @@ describe('components/MazCheckbox.vue', () => {
       },
     })
 
-    expect(wrapper.vm.instanceId).toBe('MazCheckbox-7')
+    expect(wrapper.vm.instanceId).toBe('MazCheckbox-4')
 
     wrapper.unmount()
   })

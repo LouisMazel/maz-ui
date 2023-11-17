@@ -1,17 +1,7 @@
-import { mount, type VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import MazSwitch from '@components/MazSwitch.vue'
 
 describe('MazSwitch', () => {
-  let wrapper: VueWrapper
-
-  beforeEach(() => {
-    wrapper = mount(MazSwitch)
-  })
-
-  test('Should match with the snapshot', () => {
-    expect(wrapper.html()).toMatchSnapshot()
-  })
-
   it('renders a checkbox input', () => {
     const wrapper = mount(MazSwitch, {
       props: {

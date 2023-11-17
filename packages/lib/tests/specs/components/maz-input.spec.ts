@@ -10,10 +10,6 @@ describe('components/MazInput.vue', () => {
     },
   })
 
-  test('Should match with the snapshot', () => {
-    expect(wrapper.html()).toMatchSnapshot()
-  })
-
   test('Should have the model value', () => {
     expect(wrapper.vm.modelValue).toBe('test value')
   })

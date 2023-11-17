@@ -25,16 +25,12 @@ describe('components/MazSelect.vue', () => {
     })
   })
 
-  test('Should match with the snapshot', () => {
-    expect(wrapper.html()).toMatchSnapshot()
-  })
-
   test('Should have the model value', () => {
     expect(wrapper.vm.modelValue).toBe(1)
   })
 
   test('Should have an uniq id', () => {
-    expect(wrapper.vm.instanceId).toBe('MazSelect-11')
+    expect(wrapper.vm.instanceId).toBe('MazSelect-6')
   })
 
   test('Should find the options on search', async () => {

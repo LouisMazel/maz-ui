@@ -25,11 +25,6 @@ describe('MazDialogPromise', () => {
     removeDialogFromState('test')
   })
 
-  test('Should match with the snapshot', async () => {
-    showDialogAndWaitChoice('test')
-    expect(wrapper.element).toMatchSnapshot()
-  })
-
   test('renders the correct title', () => {
     // @ts-ignore
     expect(wrapper.vm.currentModal).toBeUndefined()

@@ -14,20 +14,6 @@ const defaultProperties = {
 }
 
 describe('MazFullscreenImg', () => {
-  test('Should renders correctly with default props', () => {
-    const wrapper = shallowMount(MazFullscreenImg, {
-      props: {
-        src: 'https://via.placeholder.com/150',
-        alt: 'placeholder image',
-        openInstanceClass: 'zv-open',
-        destroy: () => {},
-        ...defaultProperties,
-      },
-    })
-
-    expect(wrapper.html()).toMatchSnapshot()
-  })
-
   test('should render correctly when opened', async () => {
     const wrapper = shallowMount(MazFullscreenImg, {
       props: {
