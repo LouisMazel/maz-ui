@@ -14,7 +14,6 @@ export default {
   content: [],
   theme: {
     extend: {
-      // backgroundColor: ['even', 'odd'],
       fontFamily: {
         base: 'var(--maz-font-family)',
       },
