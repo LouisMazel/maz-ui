@@ -40,7 +40,7 @@ export default defineConfig({
     },
 
     editLink: {
-      pattern: 'https://github.com/LouisMazel/maz-ui/edit/master/packages/docs/docs/:path',
+      pattern: 'https://github.com/LouisMazel/maz-ui-3/edit/master/packages/docs/docs/:path',
       text: 'Edit this page on GitHub'
     },
 
