@@ -83,8 +83,9 @@
 
   const props = defineProps({
     variant: {
-      type: String,
+      type: String as PropType<'button' | 'link'>,
       default: 'button',
+
       validator: (value: string) => {
         return ['button', 'link'].includes(value)
       },
