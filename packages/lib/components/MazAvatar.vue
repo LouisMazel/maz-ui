@@ -158,7 +158,7 @@
       }
 
       &.--bordered {
-        @apply maz-border-2 maz-border-solid maz-border-white;
+        @apply maz-border maz-border-solid maz-border-white;
       }
 
       &.--square {

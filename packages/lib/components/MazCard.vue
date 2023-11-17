@@ -8,7 +8,7 @@
         'maz-elevation': elevation,
         'maz-overflow-hidden': overflowHidden || !isOpen,
         'maz-rounded': radius,
-        'maz-border-2 maz-border-solid maz-border-color-lighter': bordered,
+        'maz-border maz-border-solid maz-border-color-lighter': bordered,
       },
     ]"
   >
