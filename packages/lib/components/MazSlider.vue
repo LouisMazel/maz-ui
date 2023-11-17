@@ -70,7 +70,7 @@
   export type { Color }
 
   const props = defineProps({
-    // Array of cursors values
+    /** Array of cursors values */
     modelValue: {
       type: [Number, Array] as PropType<number | number[]>,
       required: true,
@@ -78,24 +78,24 @@
         return ['number'].includes(typeof value) || Array.isArray(value) || value === null
       },
     },
-    // array of cursors label
+    /** array of cursors label */
     labels: { type: Array, default: undefined },
-    // min value of sliders
+    /** min value of sliders */
     min: { type: Number, default: 0 },
-    // max value of sliders
+    /** max value of sliders */
     max: { type: Number, default: 100 },
-    // height size of slider bar
+    /** height size of slider bar */
     size: { type: String, default: undefined },
-    // remove div in different colors
+    /** remove div in different colors */
     noDivider: { type: Boolean, default: false },
-    // become a logarithmic slider (exponential)
+    /** become a logarithmic slider (exponential) */
     log: { type: Boolean, default: false },
-    // main slider color
+    /** main slider color */
     color: {
       type: String as PropType<Color>,
       default: 'primary',
     },
-    // disables cursor animation when active
+    /** disables cursor animation when active */
     noCursorAnim: { type: Boolean, default: false },
   })
 

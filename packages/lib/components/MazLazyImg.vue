@@ -11,7 +11,8 @@
       observerOptions: observerOptions,
     }"
     class="m-lazy-img-component"
-    :class="{ '-use-loader': !noLoader, '--height-full': imageHeightFull }"
+    :class="[{ '-use-loader': !noLoader, '--height-full': imageHeightFull }, props.class]"
+    :style="style"
   >
     <source
       v-for="({ srcset, media }, sourceIndex) in sources"
@@ -33,7 +34,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, defineAsyncComponent, type Prop } from 'vue'
+  import { computed, defineAsyncComponent, type PropType, type HTMLAttributes } from 'vue'
   import { vLazyImg } from './../modules/directives/v-lazy-img/lazy-img'
   import type { vLazyImgOptions } from './../modules/directives/v-lazy-img/types'
 
@@ -43,15 +44,30 @@
 
   const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
 
+  defineOptions({
+    inheritAttrs: false,
+  })
+
   const props = defineProps({
-    image: { type: [String, Object], default: undefined } as Prop<Image>,
+    style: {
+      type: [String, Array, Object] as PropType<HTMLAttributes['style']>,
+      default: undefined,
+    },
+    class: {
+      type: [String, Array, Object] as PropType<HTMLAttributes['class']>,
+      default: undefined,
+    },
+    image: { type: [String, Object] as PropType<Image>, default: undefined },
     alt: { type: String, default: undefined },
     noPhoto: { type: Boolean, default: false },
     noLoader: { type: Boolean, default: false },
     noObserverOnce: { type: Boolean, default: false },
     loadOnce: { type: Boolean, default: false },
     imageHeightFull: { type: Boolean, default: false },
-    observerOptions: { type: Object, default: null } as Prop<vLazyImgOptions['observerOptions']>,
+    observerOptions: {
+      type: Object as PropType<vLazyImgOptions['observerOptions']>,
+      default: null,
+    },
   })
 
   defineEmits(['intersecting', 'loading', 'loaded', 'error'])

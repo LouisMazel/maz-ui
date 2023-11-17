@@ -1,36 +1,38 @@
 <template>
-  <div :id="instanceId" class="m-dropdown">
-    <MazBtn
-      :color="color"
-      size="md"
-      :aria-expanded="dropdownOpen"
-      aria-haspopup="menu"
-      :disabled="disabled"
-      v-bind="$attrs"
-      @click.stop="['click'].includes(trigger) ? toggleDropdown() : undefined"
-      @focus="['hover', 'both'].includes(trigger) ? setDropdown(true) : undefined"
-      @blur="setDropdownDebounced(false)"
-      @keydown="keyboardOpenDropdown"
-      @mouseenter="
-        ['hover', 'both'].includes(trigger)
-          ? dropdownOpen === false
-            ? setDropdown(true)
-            : setDropdownDebounced(true)
-          : undefined
-      "
-      @mouseleave="['hover', 'both'].includes(trigger) ? setDropdownDebounced(false) : undefined"
-    >
-      <span class="maz-flex maz-items-center maz-gap-2">
-        <slot></slot>
+  <div :id="instanceId" class="m-dropdown" :style="style" :class="[props.class]">
+    <slot name="button">
+      <MazBtn
+        :color="color"
+        size="md"
+        :aria-expanded="dropdownOpen"
+        aria-haspopup="menu"
+        :disabled="disabled"
+        v-bind="$attrs"
+        @click.stop="['click'].includes(trigger) ? toggleDropdown() : undefined"
+        @focus="['hover', 'both'].includes(trigger) ? setDropdown(true) : undefined"
+        @blur="setDropdownDebounced(false)"
+        @keydown="keyboardOpenDropdown"
+        @mouseenter="
+          ['hover', 'both'].includes(trigger)
+            ? dropdownOpen === false
+              ? setDropdown(true)
+              : setDropdownDebounced(true)
+            : undefined
+        "
+        @mouseleave="['hover', 'both'].includes(trigger) ? setDropdownDebounced(false) : undefined"
+      >
+        <span class="maz-flex maz-items-center maz-gap-2">
+          <slot></slot>
 
-        <ChevronDownIcon
-          v-if="!noChevron"
-          :class="{ 'maz-rotate-180': dropdownOpen }"
-          class="maz-text-lg maz-transition-transform maz-duration-200 maz-ease-in-out"
-        />
-      </span>
-      <!-- @slot Menu Label -->
-    </MazBtn>
+          <ChevronDownIcon
+            v-if="!noChevron"
+            :class="{ 'maz-rotate-180': dropdownOpen }"
+            class="maz-text-lg maz-transition-transform maz-duration-200 maz-ease-in-out"
+          />
+        </span>
+        <!-- @slot Menu Label -->
+      </MazBtn>
+    </slot>
 
     <Transition name="maz-scale-fade">
       <div
@@ -89,7 +91,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, watch, getCurrentInstance, defineAsyncComponent } from 'vue'
+  import { ref, watch, getCurrentInstance, defineAsyncComponent, type HTMLAttributes } from 'vue'
   import MazBtn, { type Color } from './MazBtn.vue'
   import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
   import { type RouteLocationRaw } from 'vue-router'
@@ -99,6 +101,10 @@
   const ChevronDownIcon = defineAsyncComponent(() => import('./../icons/chevron-down.svg'))
 
   export type { Color, Position }
+
+  defineOptions({
+    inheritAttrs: false,
+  })
 
   export type MenuItem = {
     label: string
@@ -111,6 +117,8 @@
 
   const props = withDefaults(
     defineProps<{
+      style?: HTMLAttributes['style']
+      class?: HTMLAttributes['class']
       /** Menu items */
       items: MenuItem[]
       /** Menu should be open? */
@@ -131,6 +139,8 @@
       noChevron?: boolean
     }>(),
     {
+      class: undefined,
+      style: undefined,
       id: 'maz-dropdown',
       trigger: 'both',
       color: 'transparent',

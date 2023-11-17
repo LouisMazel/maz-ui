@@ -6,7 +6,7 @@
         '--is-disabled': disabled,
         '--has-label': hasLabelOrHint,
       },
-      classes,
+      props.class,
     ]"
     :style="style"
   >
@@ -57,7 +57,7 @@
     ref,
     getCurrentInstance,
     type PropType,
-    type StyleValue,
+    type HTMLAttributes,
   } from 'vue'
   import { TextareaAutogrow } from './MazTextarea/textarea-autogrow'
   import type { Color } from './types'
@@ -68,8 +68,14 @@
   })
 
   const props = defineProps({
-    style: { type: [String, Array, Object] as PropType<StyleValue>, default: undefined },
-    class: { type: String, default: undefined },
+    style: {
+      type: [String, Array, Object] as PropType<HTMLAttributes['style']>,
+      default: undefined,
+    },
+    class: {
+      type: [String, Array, Object] as PropType<HTMLAttributes['class']>,
+      default: undefined,
+    },
     modelValue: {
       type: String,
       default: undefined,
@@ -89,8 +95,6 @@
       default: 'primary',
     },
   })
-
-  const classes = computed(() => props.class)
 
   const emits = defineEmits(['input', 'focus', 'blur', 'change'])
 

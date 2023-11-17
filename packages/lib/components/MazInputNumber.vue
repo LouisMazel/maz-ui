@@ -1,5 +1,9 @@
 <template>
-  <div class="m-input-number maz-align-center" :class="[`m-input-number--${size}`]">
+  <div
+    class="m-input-number maz-align-center"
+    :class="[`m-input-number--${size}`, props.class]"
+    :style="style"
+  >
     <MazBtn
       color="transparent"
       no-shadow
@@ -37,7 +41,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, defineAsyncComponent, type PropType } from 'vue'
+  import { computed, defineAsyncComponent, type HTMLAttributes, type PropType } from 'vue'
   import type { Size } from './types'
   export type { Size }
 
@@ -46,7 +50,19 @@
   const PlusIcon = defineAsyncComponent(() => import('./../icons/plus.svg'))
   const MinusIcon = defineAsyncComponent(() => import('./../icons/minus.svg'))
 
+  defineOptions({
+    inheritAttrs: false,
+  })
+
   const props = defineProps({
+    style: {
+      type: [String, Array, Object] as PropType<HTMLAttributes['style']>,
+      default: undefined,
+    },
+    class: {
+      type: [String, Array, Object] as PropType<HTMLAttributes['class']>,
+      default: undefined,
+    },
     modelValue: { type: Number, required: true },
     disabled: { type: Boolean, default: false },
     max: { type: Number, default: Number.POSITIVE_INFINITY },

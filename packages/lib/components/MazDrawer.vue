@@ -1,6 +1,5 @@
 <template>
   <MazBackdrop
-    v-bind="$attrs"
     :backdrop-class="['m-drawer', `--${variant}`, backdropClass]"
     :style="{
       '--maz-drawer-size': size,
@@ -49,7 +48,8 @@
         return ['right', 'top', 'left', 'bottom'].includes(value)
       },
     },
-    backdropClass: { type: String, default: undefined },
+    // eslint-disable-next-line vue/require-prop-types
+    backdropClass: { default: undefined },
     size: { type: String, default: '30rem' },
   })
 

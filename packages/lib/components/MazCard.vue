@@ -25,6 +25,7 @@
       tabindex="-1"
       @click.stop="collapsable ? (isOpen = !isOpen) : undefined"
     >
+      <!-- @slot Header title -->
       <slot name="header"></slot>
 
       <MazBtn
@@ -96,7 +97,7 @@
       <slot name="footer"></slot>
     </div>
     <div v-if="$slots['actions']" class="m-card__actions maz-flex maz-p-2">
-      <!-- Slot above the gallery -->
+      <!-- @slot action of gallery -->
       <slot name="actions"></slot>
     </div>
   </div>
@@ -113,12 +114,12 @@
   const ChevronDownIcon = defineAsyncComponent(() => import('./../icons/chevron-down.svg'))
 
   const props = defineProps({
-    // Images displayed
+    /** Images displayed */
     images: {
       type: Array as PropType<MazGalleryImage[]>,
       default: undefined,
     },
-    // Card variant: Must be `column | row | row-reverse | column-reverse`
+    /** Card variant: Must be `column | row | row-reverse | column-reverse` */
     orientation: {
       type: String,
       default: 'column',
@@ -126,34 +127,40 @@
         return ['column', 'row', 'row-reverse', 'column-reverse'].includes(value)
       },
     },
-    // Make card a link (footer area excluded)
+    /** Make card a link (footer area excluded) */
     href: { type: String, default: undefined },
-    // Target option of link: Muse be one of `_blank | _self | _parent | _top | framename`
+    /** Target option of link: Muse be one of `_blank | _self | _parent | _top | framename` */
     hrefTarget: { type: String, default: '_self' },
-    // Footer text alignment: `right | left`
+    /** Footer text alignment: `right | left` */
     footerAlign: { type: String, default: 'right' },
-    // Gallery image width
+    /** Gallery image width */
     galleryWidth: { type: [String, Number], default: 200 },
-    // Gallery image height
+    /** Gallery image height */
     galleryHeight: { type: [String, Number], default: 150 },
-    // Enable "zoom" image on click (can't be used when the card has a link)
+    /** Enable "zoom" image on click (can't be used when the card has a link) */
     zoom: { type: Boolean, default: false },
-    // Set elevation to card (box-shadow)
+    /** Set elevation to card (box-shadow) */
     elevation: { type: Boolean, default: true },
-    // Set radius to card (box-shadow)
+    /** Set radius to card (box-shadow) */
     radius: { type: Boolean, default: true },
-    // Set border to card
+    /** Set border to card */
     bordered: { type: Boolean, default: false },
-    // Number of images shown in the gallery
+    /** Number of images shown in the gallery */
     imagesShowCount: { type: Number, default: 3 },
-    // Remove transparent layer with the remain count (ex: +2)
+    /** Remove transparent layer with the remain count (ex: +2) */
     noRemaining: { type: Boolean, default: true },
-    // scale animation on hover (only linked cards)
+    /** scale animation on hover (only linked cards) */
     scale: { type: Boolean, default: true },
-    wrapperClass: { type: String, default: undefined },
+    /** add classes to wrapper */
+    // eslint-disable-next-line vue/require-prop-types
+    wrapperClass: { default: undefined },
+    /** Remove padding from content wrapper */
     noPadding: { type: Boolean, default: false },
+    /** Hide overflow */
     overflowHidden: { type: Boolean, default: false },
+    /** Card can be open and close */
     collapsable: { type: Boolean, default: false },
+    /** Card is open by default if `true` */
     collapseOpen: { type: Boolean, default: false },
   })
 
