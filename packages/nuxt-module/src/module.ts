@@ -56,6 +56,11 @@ export interface MazUiNuxtOptions {
    */
   injectUseUserVisibility?: boolean
   /**
+   * Enable auto-import of useTimer composable
+   * @default false
+   */
+  injectUseTimer?: boolean
+  /**
    * Globally install of v-zoom-img directive
    * @default false
    */
@@ -246,6 +251,30 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       })
     }
 
+    if (moduleOptions.injectUseUserVisibility) {
+      addImports({
+        from: 'maz-ui',
+        name: 'useUserVisibility',
+        as: 'useUserVisibility',
+      })
+    }
+
+    if (moduleOptions.injectUseTimer) {
+      addImports({
+        from: 'maz-ui',
+        name: 'useTimer',
+        as: 'useTimer',
+      })
+    }
+
+    // if (moduleOptions.injectUseCurrency) {
+    //   addImports({
+    //     from: 'maz-ui',
+    //     name: 'useCurrency',
+    //     as: 'useCurrency',
+    //   })
+    // }
+
     if (moduleOptions.defaultMazIconPath) {
       addPlugin(resolve(_dirname, './runtime/plugins/maz-icon-path'))
     }
@@ -267,13 +296,5 @@ export default defineNuxtModule<MazUiNuxtOptions>({
         })
       })
     }
-
-    // if (moduleOptions.injectUseCurrency) {
-    //   addImports({
-    //     from: 'maz-ui',
-    //     name: 'useCurrency',
-    //     as: 'useCurrency',
-    //   })
-    // }
   },
 })
