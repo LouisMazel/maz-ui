@@ -1,5 +1,33 @@
 # Change Log
 
+## v3.24.0...v3.25.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.24.0...v3.25.0)
+
+### 🚀 Enhancements
+
+- **maz-ui:** MazDropdown - can be trigger by a custom element or component ([f97a763f](https://github.com/LouisMazel/maz-ui/commit/f97a763f))
+
+### 💅 Refactors
+
+- **maz-ui:** Components inherits class and style on root element ([e357e687](https://github.com/LouisMazel/maz-ui/commit/e357e687))
+- **cli:** Remove snapshot test in template ([ed3a2473](https://github.com/LouisMazel/maz-ui/commit/ed3a2473))
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([62a9bd19](https://github.com/LouisMazel/maz-ui/commit/62a9bd19))
+- **docs:** Upgrade vitepress ([2e8f2763](https://github.com/LouisMazel/maz-ui/commit/2e8f2763))
+- **maz-ui:** Upgrade vite to v5 ([87ca4646](https://github.com/LouisMazel/maz-ui/commit/87ca4646))
+- **release:** Bump version to v3.25.0 ([7e147c11](https://github.com/LouisMazel/maz-ui/commit/7e147c11))
+
+### ✅ Tests
+
+- **maz-ui:** Remove snapshots ([9a40911f](https://github.com/LouisMazel/maz-ui/commit/9a40911f))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.23.5...v3.24.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.23.5...v3.24.0)
