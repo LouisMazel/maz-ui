@@ -133,6 +133,10 @@ description: MazDropdown is a standalone component
 
 ## Custom slots
 
+### Custom menuitem labels
+
+You can provide a template to replace menuitem labels to add more elements in each menuitem
+
 <MazDropdown
   :items="[
     { label: 'Action', action: () => toast.success('CLICKED'), additionnalData: 'https://placekitten.com/240/200' },
@@ -153,6 +157,8 @@ description: MazDropdown is a standalone component
     </div>
   </template>
 </MazDropdown>
+
+::: details Show code
 
 ```html
 <MazDropdown
@@ -176,6 +182,140 @@ description: MazDropdown is a standalone component
   </template>
 </MazDropdown>
 ```
+
+:::
+
+### Custom control element
+
+You can provide a HTML element or a component to replace the default button
+
+::: warning
+Add `tabindex="-1"` attribute to your element to avoid a double focus with Tab key
+:::
+
+<div class="maz-flex maz-gap-4">
+  <MazDropdown
+    :items="[
+      {
+        label: 'Action',
+        action: () => toast.success('CLICKED'),
+        additionnalData: 'https://placekitten.com/240/200',
+      },
+      {
+        label: 'Link (href)',
+        href: 'https://www.google.com',
+        target: '_blank',
+        additionnalData: 'https://placekitten.com/340/300',
+      },
+      {
+        label: 'Router Link',
+        to: { name: 'index' },
+        additionnalData: 'https://placekitten.com/440/400',
+      },
+    ]"
+  >
+    <template #element>
+      <MazAvatar
+        clickable
+        no-clickable-icon
+        src="https://cdn.artphotolimited.com/images/5ff5a529bd40b83c5a537440/1000x1000/gerard-depardieu-1983.jpg"
+        tabindex="-1"
+      />
+    </template>
+  </MazDropdown>
+
+  <MazDropdown
+    position="top"
+    :items="[
+      {
+        label: 'Action',
+        action: () => toast.success('CLICKED'),
+        additionnalData: 'https://placekitten.com/240/200',
+      },
+      {
+        label: 'Link (href)',
+        href: 'https://www.google.com',
+        target: '_blank',
+        additionnalData: 'https://placekitten.com/340/300',
+      },
+      {
+        label: 'Router Link',
+        to: { name: 'index' },
+        additionnalData: 'https://placekitten.com/440/400',
+      },
+    ]"
+  >
+    <template #element="{ isOpen }">
+      <button class="maz-border maz-border-solid maz-border-color-light maz-p-2 hover:maz-bg-color-light" tabindex="-1">
+        HTMLButtonElement: isOpen {{ isOpen }}
+      </button>
+    </template>
+  </MazDropdown>
+</div>
+
+::: details Show code
+
+```html
+<MazDropdown
+  :items="[
+    {
+      label: 'Action',
+      action: () => toast.success('CLICKED'),
+      additionnalData: 'https://placekitten.com/240/200',
+    },
+    {
+      label: 'Link (href)',
+      href: 'https://www.google.com',
+      target: '_blank',
+      additionnalData: 'https://placekitten.com/340/300',
+    },
+    {
+      label: 'Router Link',
+      to: { name: 'index' },
+      additionnalData: 'https://placekitten.com/440/400',
+    },
+  ]"
+>
+  <template #element>
+    <MazAvatar
+      clickable
+      no-clickable-icon
+      src="https://cdn.artphotolimited.com/images/5ff5a529bd40b83c5a537440/1000x1000/gerard-depardieu-1983.jpg"
+      tabindex="-1"
+    />
+  </template>
+</MazDropdown>
+
+<MazDropdown
+  position="top"
+  :items="[
+    {
+      label: 'Action',
+      action: () => toast.success('CLICKED'),
+      additionnalData: 'https://placekitten.com/240/200',
+    },
+    {
+      label: 'Link (href)',
+      href: 'https://www.google.com',
+      target: '_blank',
+      additionnalData: 'https://placekitten.com/340/300',
+    },
+    {
+      label: 'Router Link',
+      to: { name: 'index' },
+      additionnalData: 'https://placekitten.com/440/400',
+    },
+  ]"
+>
+  <template #element="{ isOpen }">
+    <button class="maz-border maz-border-solid maz-border-color-light maz-p-2 hover:maz-bg-color-light" tabindex="-1">
+      HTMLButtonElement: isOpen {{ isOpen }}
+    </button>
+  </template>
+</MazDropdown>
+```
+
+:::
 
 ## Open programmatically
 

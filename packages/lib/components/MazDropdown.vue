@@ -1,36 +1,40 @@
 <template>
   <div :id="instanceId" class="m-dropdown" :style="style" :class="[props.class]">
-    <MazBtn
-      :color="color"
-      size="md"
+    <div
+      role="button"
+      tabindex="0"
+      class="maz-outline-none"
       :aria-expanded="dropdownOpen"
       aria-haspopup="menu"
-      :disabled="disabled"
-      v-bind="$attrs"
-      @click.stop="['click'].includes(trigger) ? toggleDropdown() : undefined"
-      @focus="['hover', 'both'].includes(trigger) ? setDropdown(true) : undefined"
-      @blur="setDropdownDebounced(false)"
+      @click.stop="onElementClick"
+      @focus="onElementFocus"
+      @blur="onElementBlur"
       @keydown="keyboardOpenDropdown"
-      @mouseenter="
-        ['hover', 'both'].includes(trigger)
-          ? dropdownOpen === false
-            ? setDropdown(true)
-            : setDropdownDebounced(true)
-          : undefined
-      "
-      @mouseleave="['hover', 'both'].includes(trigger) ? setDropdownDebounced(false) : undefined"
+      @mouseenter="onElementMouseenter"
+      @mouseleave="onElementMouseleave"
     >
-      <span class="maz-flex maz-items-center maz-gap-2">
-        <slot></slot>
+      <!--
+          @slot Custom Element
+            @binding {Boolen} is-open close function
+            @default `<MazBtn />`
+        -->
+      <span class="maz-sr-only">{{ screenReaderDescription }}</span>
+      <slot name="element" :is-open="dropdownOpen">
+        <MazBtn :color="color" :disabled="disabled" v-bind="$attrs" tabindex="-1">
+          <span class="maz-flex maz-items-center maz-gap-2">
+            <!-- @slot Button text -->
+            <slot></slot>
 
-        <ChevronDownIcon
-          v-if="!noChevron"
-          :class="{ 'maz-rotate-180': dropdownOpen }"
-          class="maz-text-lg maz-transition-transform maz-duration-200 maz-ease-in-out"
-        />
-      </span>
-      <!-- @slot Menu Label -->
-    </MazBtn>
+            <ChevronDownIcon
+              v-if="!noChevron"
+              :class="{ 'maz-rotate-180': dropdownOpen }"
+              class="maz-text-lg maz-transition-transform maz-duration-200 maz-ease-in-out"
+            />
+          </span>
+          <!-- @slot Menu Label -->
+        </MazBtn>
+      </slot>
+    </div>
 
     <Transition name="maz-scale-fade">
       <div
@@ -90,12 +94,13 @@
 
 <script lang="ts" setup>
   import { ref, watch, getCurrentInstance, defineAsyncComponent, type HTMLAttributes } from 'vue'
-  import MazBtn, { type Color } from './MazBtn.vue'
   import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
   import { type RouteLocationRaw } from 'vue-router'
   import { debounce } from '../modules/helpers/debounce'
   import { type Position } from './types'
+  import { type Color } from './MazBtn.vue'
 
+  const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
   const ChevronDownIcon = defineAsyncComponent(() => import('./../icons/chevron-down.svg'))
 
   export type { Color, Position }
@@ -135,6 +140,8 @@
       disabled?: boolean
       /** Remove chevron icon in main button */
       noChevron?: boolean
+      /** Description read by screen reader (accessibility) */
+      screenReaderDescription?: string
     }>(),
     {
       class: undefined,
@@ -143,6 +150,7 @@
       trigger: 'both',
       color: 'transparent',
       position: 'bottom left',
+      screenReaderDescription: 'Menu Dropdown',
     },
   )
 
@@ -170,6 +178,26 @@
 
   function toggleDropdown() {
     setDropdown(!dropdownOpen.value)
+  }
+
+  function onElementClick() {
+    if (['click'].includes(props.trigger)) toggleDropdown()
+  }
+  function onElementFocus() {
+    if (['hover', 'both'].includes(props.trigger)) setDropdown(true)
+  }
+  function onElementMouseenter() {
+    if (['hover', 'both'].includes(props.trigger)) {
+      dropdownOpen.value === false ? setDropdown(true) : setDropdownDebounced(true)
+    }
+  }
+  function onElementMouseleave() {
+    if (['hover', 'both'].includes(props.trigger)) {
+      setDropdownDebounced(false)
+    }
+  }
+  function onElementBlur() {
+    setDropdownDebounced(false)
   }
 
   const setDropdown = (value: boolean) => {

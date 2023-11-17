@@ -48,7 +48,7 @@
         }"
         @click="$emit('click', $event)"
       >
-        <slot name="icon">
+        <slot v-if="!noClickableIcon" name="icon">
           <PencilIcon class="m-avatar__button__icon" />
         </slot>
       </button>
@@ -95,6 +95,8 @@
       type: String as PropType<Color>,
       default: 'info',
     },
+    /** Remove the icon on hover when component is clickable */
+    noClickableIcon: { type: Boolean, default: false },
   })
 
   const componentType = computed(() => (props.to ? 'RouterLink' : props.href ? 'a' : 'div'))
