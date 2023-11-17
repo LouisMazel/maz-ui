@@ -1,6 +1,5 @@
 <template>
   <MazBackdrop
-    v-bind="$attrs"
     transition-name="bottom-sheet-anim"
     backdrop-class="--bottom-sheet"
     @close="$emit('close', $event)"

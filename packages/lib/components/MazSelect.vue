@@ -119,7 +119,6 @@
 </template>
 
 <script lang="ts" setup>
-  // NEXT: multiselect
   import {
     ref,
     computed,
@@ -129,7 +128,7 @@
     getCurrentInstance,
     defineAsyncComponent,
     defineOptions,
-    type StyleValue,
+    type HTMLAttributes,
   } from 'vue'
   import MazInput from './MazInput.vue'
   import type { Color, ModelValueSimple, Position, Size } from './types'
@@ -152,8 +151,14 @@
   })
 
   const props = defineProps({
-    style: { type: [String, Array, Object] as PropType<StyleValue>, default: undefined },
-    class: { type: String, default: undefined },
+    style: {
+      type: [String, Array, Object] as PropType<HTMLAttributes['style']>,
+      default: undefined,
+    },
+    class: {
+      type: [String, Array, Object] as PropType<HTMLAttributes['class']>,
+      default: undefined,
+    },
     modelValue: {
       type: [Number, String, Boolean, Array] as PropType<ModelValueSimple | ModelValueSimple[]>,
       default: undefined,

@@ -13,6 +13,7 @@
         '--is-open': isOpen,
         '--is-disabled': disabled,
       },
+      props.class,
     ]"
   >
     <MazInput
@@ -81,10 +82,10 @@
     ref,
     getCurrentInstance,
     type PropType,
-    type StyleValue,
     watch,
     nextTick,
     defineAsyncComponent,
+    type HTMLAttributes,
   } from 'vue'
 
   import dayjs from 'dayjs'
@@ -124,7 +125,19 @@
     dateStyle: 'full',
   }
 
+  defineOptions({
+    inheritAttrs: false,
+  })
+
   const props = defineProps({
+    style: {
+      type: [String, Array, Object] as PropType<HTMLAttributes['style']>,
+      default: undefined,
+    },
+    class: {
+      type: [String, Array, Object] as PropType<HTMLAttributes['class']>,
+      default: undefined,
+    },
     modelValue: {
       type: [String, Object] as PropType<PickerValue>,
       default: undefined,
@@ -140,7 +153,6 @@
       }),
     },
     locale: { type: String, default: undefined },
-    style: { type: Object as PropType<StyleValue>, default: undefined },
     noHeader: { type: Boolean, default: false },
     disabled: { type: Boolean, default: false },
     firstDayOfWeek: {
@@ -625,7 +637,7 @@
     { immediate: true },
   )
 
-  // // Disable weekly watcher
+  // Disable weekly watcher
   watch(
     () => [currentValue.value, props.disabledWeekly, props.disabledDates],
     (values) => {

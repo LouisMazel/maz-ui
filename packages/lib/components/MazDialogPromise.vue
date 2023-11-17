@@ -1,6 +1,5 @@
 <template>
   <MazDialog
-    v-bind="$attrs"
     :model-value="currentModal?.isActive ?? false"
     @update:model-value="rejectDialog(currentModal)"
   >

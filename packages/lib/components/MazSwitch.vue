@@ -2,8 +2,9 @@
   <label
     :for="instanceId"
     class="m-switch"
-    :class="{ '--is-disabled': disabled }"
+    :class="[{ '--is-disabled': disabled }, props.class]"
     role="switch"
+    :style="style"
     :aria-checked="modelValue"
     tabindex="0"
   >
@@ -26,13 +27,25 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, getCurrentInstance, type PropType, type StyleValue } from 'vue'
+  import { computed, getCurrentInstance, type HTMLAttributes, type PropType } from 'vue'
   import type { Color } from './types'
   import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
 
   export type { Color }
 
+  defineOptions({
+    inheritAttrs: false,
+  })
+
   const props = defineProps({
+    style: {
+      type: [String, Array, Object] as PropType<HTMLAttributes['style']>,
+      default: undefined,
+    },
+    class: {
+      type: [String, Array, Object] as PropType<HTMLAttributes['class']>,
+      default: undefined,
+    },
     modelValue: { type: Boolean, required: true },
     id: { type: String, default: undefined },
     disabled: { type: Boolean, default: false },
@@ -57,7 +70,7 @@
 
   const bgColorClassVar = computed(() => `var(--maz-color-${props.color}-alpha)`)
 
-  const bgColorStyle = computed<StyleValue>(() =>
+  const bgColorStyle = computed<HTMLAttributes['class']>(() =>
     props.modelValue ? `var(--maz-color-${props.color})` : 'var(--maz-color-white)',
   )
 

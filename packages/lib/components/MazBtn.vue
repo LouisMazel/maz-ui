@@ -1,6 +1,5 @@
 <template>
   <Component
-    v-bind="$attrs"
     :is="component"
     :disabled="isDisabled"
     class="m-btn"

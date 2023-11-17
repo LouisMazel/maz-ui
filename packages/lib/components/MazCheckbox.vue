@@ -2,8 +2,9 @@
   <label
     :for="instanceId"
     class="m-checkbox"
-    :class="{ '--disabled': disabled }"
+    :class="[{ '--disabled': disabled }, props.class]"
     tabindex="0"
+    :style="style"
     role="checkbox"
     :aria-checked="isChecked"
     @keydown="keyboardHandler"
@@ -27,14 +28,26 @@
 
 <script lang="ts" setup>
   import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
-  import { type PropType, getCurrentInstance, computed } from 'vue'
+  import { type PropType, getCurrentInstance, computed, type HTMLAttributes } from 'vue'
   import type { Color, Size } from './types'
   export type { Color, Size }
   import CheckIcon from './../icons/check.svg'
 
   const instance = getCurrentInstance()
 
+  defineOptions({
+    inheritAttrs: false,
+  })
+
   const props = defineProps({
+    style: {
+      type: [String, Array, Object] as PropType<HTMLAttributes['style']>,
+      default: undefined,
+    },
+    class: {
+      type: [String, Array, Object] as PropType<HTMLAttributes['class']>,
+      default: undefined,
+    },
     modelValue: {
       type: [Boolean, Array] as PropType<boolean | (string | number)[]>,
       default: undefined,

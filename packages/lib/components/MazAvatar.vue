@@ -8,7 +8,6 @@
         '--has-link': isLink,
       },
     ]"
-    v-bind="$attrs"
     :href="href"
     :to="to"
     :target="isLink ? target : undefined"

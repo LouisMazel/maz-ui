@@ -1,7 +1,8 @@
 <template>
   <div
     class="m-input-tags"
-    :class="[borderStyle, `--${color}`]"
+    :class="[borderStyle, `--${color}`, props.class]"
+    :style="style"
     @focus.capture="isFocused = true"
     @blur.capture="isFocused = false"
   >
@@ -43,7 +44,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, type PropType, computed } from 'vue'
+  import { ref, type PropType, computed, type HTMLAttributes } from 'vue'
 
   import MazInput from './MazInput.vue'
   import MazBtn from './MazBtn.vue'
@@ -52,20 +53,34 @@
   import type { Color, Size } from './types'
   export type { Color, Size }
 
+  defineOptions({
+    inheritAttrs: false,
+  })
+
   const props = defineProps({
-    // Input value, can be a `Array` of `String` or `null`
+    style: {
+      type: [String, Array, Object] as PropType<HTMLAttributes['style']>,
+      default: undefined,
+    },
+    class: {
+      type: [String, Array, Object] as PropType<HTMLAttributes['class']>,
+      default: undefined,
+    },
+    /** Input value, can be a `Array` of `String` or `null` */
     modelValue: {
       type: Array as PropType<string[] | number[]>,
       default: undefined,
     },
-    // input placeholder
+    /** input placeholder */
     placeholder: { type: String, default: undefined },
     label: { type: String, default: undefined },
-    // When is `true` the input is disable
+    /** When is `true` the input is disable */
     disabled: { type: Boolean, default: false },
-    // When is `true` the input has the error style (red)
+    /** When is `true` the input has the error style (danger color) */
     error: { type: Boolean, default: false },
+    /** When is `true` the input has the success style (success color) */
     success: { type: Boolean, default: false },
+    /** When is `true` the input has the warning style (warning color) */
     warning: { type: Boolean, default: false },
     size: {
       type: String as PropType<Size>,
@@ -74,6 +89,7 @@
         return ['mini', 'xs', 'sm', 'md', 'lg', 'xl'].includes(value)
       },
     },
+    /** Color of component */
     color: {
       type: String as PropType<Color>,
       default: 'primary',
