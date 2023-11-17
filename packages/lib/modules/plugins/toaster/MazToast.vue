@@ -1,24 +1,29 @@
 <template>
-  <Transition :name="transitionName">
+  <Transition
+    :name="transitionName"
+    @after-leave="onAnimationLeave"
+    @after-enter="onAnimationEnter"
+  >
     <!-- eslint-disable vuejs-accessibility/mouse-events-have-key-events -->
     <button
       v-show="isActive"
       ref="Toaster"
       class="m-toast"
-      :class="[`--${type}`, `--${positionY}`, `--${positionX}`]"
+      :class="[`--${type}`, `--${positionY}`, `--${positionX}`, { 'maz-pb-1': timeout }]"
       role="alert"
       @mouseover="toggleTimer(true)"
       @mouseleave="toggleTimer(false)"
       @click.stop="link && !link?.closeToast ? undefined : click($event)"
     >
+      <Component :is="iconComponent" v-if="iconComponent" class="maz-text-2xl" />
+
       <div class="m-toast__message-wrapper">
-        <p class="m-toast__message">
-          {{ message }}
-        </p>
+        <p class="m-toast__message">{{ message }}</p>
       </div>
 
       <MazBtn
         v-if="action"
+        data-test="action-btn"
         :color="type"
         pastel
         :loading="actionLoading"
@@ -30,6 +35,7 @@
 
       <MazBtn
         v-if="link"
+        data-test="link-btn"
         :color="type"
         pastel
         size="xs"
@@ -37,9 +43,7 @@
         :target="link.target ?? '_self'"
       >
         <div class="maz-flex maz-items-center maz-gap-2">
-          <span v-if="link.text">
-            {{ link.text }}
-          </span>
+          <span v-if="link.text"> {{ link.text }} </span>
 
           <ExternalLink v-if="link?.target == '_blank'" class="maz-text-xl" />
           <Link v-else class="maz-text-xl" />
@@ -49,23 +53,44 @@
       <button v-if="!persistent" class="--close" @click.stop="click($event)">
         <XIcon class="--icon maz-text-xl" />
       </button>
+
+      <div class="progress-bar maz-absolute maz-inset-x-0 maz-bottom-0 maz-h-1">
+        <div
+          :style="{
+            width: progressBarWidth,
+          }"
+          class="maz-h-full maz-transition-all maz-duration-200 maz-ease-linear"
+          :class="getProgressBarColor()"
+        ></div>
+      </div>
     </button>
     <!-- eslint-enable vuejs-accessibility/mouse-events-have-key-events -->
   </Transition>
 </template>
 
 <script lang="ts" setup>
-  import { computed, defineAsyncComponent, onMounted, ref, type PropType } from 'vue'
-  import { ToasterTimer } from './timer'
+  import { computed, defineAsyncComponent, onMounted, ref, type PropType, watch } from 'vue'
+  import { useTimer } from './../../composables/use-timer'
   import type { LocalToasterOptions } from './toaster-handler'
   import type { ToasterPosition, ToasterAction, ToasterLink } from './types'
+
+  const MazBtn = defineAsyncComponent(() => import('./../../../components/MazBtn.vue'))
 
   const XIcon = defineAsyncComponent(() => import('./../../../icons/x-mark.svg'))
   const ExternalLink = defineAsyncComponent(
     () => import('./../../../icons/arrow-top-right-on-square.svg'),
   )
+  const ExclamationTriangle = defineAsyncComponent(
+    () => import('./../../../icons/exclamation-triangle.svg'),
+  )
+  const ExclamationCircle = defineAsyncComponent(
+    () => import('./../../../icons/exclamation-circle.svg'),
+  )
+  const InformationCircle = defineAsyncComponent(
+    () => import('./../../../icons/information-circle.svg'),
+  )
+  const CheckCircle = defineAsyncComponent(() => import('./../../../icons/check-circle.svg'))
   const Link = defineAsyncComponent(() => import('./../../../icons/link.svg'))
-  const MazBtn = defineAsyncComponent(() => import('./../../../components/MazBtn.vue'))
 
   const Toaster = ref<HTMLDivElement>()
 
@@ -81,9 +106,6 @@
     type: {
       type: String as PropType<LocalToasterOptions['type']>,
       default: 'info',
-      validator: (value: string) => {
-        return ['info', 'success', 'warning', 'danger'].includes(value)
-      },
     },
     message: { type: String, required: true },
     link: { type: Object as PropType<ToasterLink>, default: undefined },
@@ -91,7 +113,27 @@
     persistent: { type: Boolean, default: false },
   })
 
-  const emits = defineEmits(['close', 'click'])
+  const iconComponent = computed(() => {
+    switch (props.type) {
+      case 'danger': {
+        return ExclamationTriangle
+      }
+      case 'info': {
+        return InformationCircle
+      }
+      case 'success': {
+        return CheckCircle
+      }
+      case 'warning': {
+        return ExclamationCircle
+      }
+      default: {
+        return undefined
+      }
+    }
+  })
+
+  const emits = defineEmits(['close', 'click', 'open'])
 
   const positionY = computed(() => (props.position.includes('top') ? 'top' : 'bottom'))
   const positionX = computed(() => {
@@ -109,13 +151,17 @@
 
   const actionLoading = ref(false)
   const isActive = ref(false)
-  const timer = ref<ToasterTimer>()
   const queueTimer = ref<ReturnType<typeof setTimeout>>()
 
   const containerClassName = `m-toast-container --${positionY.value} --${positionX.value}`
   const selectorContainerClass = `.${containerClassName.replaceAll(' ', '.')}`
 
-  const createParents = () => {
+  const { start, stop, pause, resume, remainingTime } = useTimer({
+    callback: close,
+    timeout: props.timeout,
+  })
+
+  function createParents() {
     const container = document.querySelector(selectorContainerClass)
 
     if (container) return
@@ -128,7 +174,7 @@
     }
   }
 
-  const shouldQueue = () => {
+  function shouldQueue() {
     const container = document.querySelector(selectorContainerClass)
 
     if (!props.queue && props.maxToasts === false) {
@@ -142,7 +188,7 @@
     return container && container.childElementCount > 0
   }
 
-  const showNotice = () => {
+  function showNotice() {
     if (shouldQueue()) {
       queueTimer.value = setTimeout(showNotice, 250)
       return
@@ -155,8 +201,44 @@
     }
 
     isActive.value = true
-    timer.value = props.timeout ? new ToasterTimer(close, props.timeout) : undefined
+    start()
   }
+
+  const progressBarWidth = ref<string>('100%')
+
+  function getProgressBarColor() {
+    switch (props.type) {
+      case 'danger': {
+        return 'maz-bg-danger-700'
+      }
+      case 'info': {
+        return 'maz-bg-info-700'
+      }
+      case 'success': {
+        return 'maz-bg-success-700'
+      }
+      case 'warning': {
+        return 'maz-bg-warning-700'
+      }
+      default: {
+        return 'maz-bg-secondary'
+      }
+    }
+  }
+
+  watch(
+    () => remainingTime.value,
+    (remainingTime) => {
+      if (typeof remainingTime === 'number') {
+        const percent = (100 * (remainingTime as unknown as number)) / props.timeout
+        progressBarWidth.value = `${percent}%`
+
+        if (remainingTime <= 0) {
+          close()
+        }
+      }
+    },
+  )
 
   function click(event: Event) {
     emits('click', event)
@@ -175,33 +257,36 @@
     }
   }
 
-  const toggleTimer = (newVal: boolean) => {
-    if (timer.value && !props.noPauseOnHover) {
-      newVal ? timer.value.pause() : timer.value.resume()
+  function toggleTimer(shouldPause: boolean) {
+    if (!props.noPauseOnHover) {
+      shouldPause ? pause() : resume()
     }
   }
 
-  const stopTimer = () => {
-    timer.value && timer.value.stop()
+  function stopTimer() {
+    stop()
     if (queueTimer.value) {
       clearTimeout(queueTimer.value)
     }
   }
 
-  const close = () => {
+  function close() {
     stopTimer()
     isActive.value = false
+  }
 
-    setTimeout(() => {
-      // eslint-disable-next-line unicorn/prefer-prototype-methods
-      emits('close')
-      Toaster.value?.remove()
+  function onAnimationEnter() {
+    emits('open')
+  }
 
-      const container = document.querySelector(selectorContainerClass)
-      if (container && !container?.hasChildNodes()) {
-        container.remove()
-      }
-    }, 300)
+  function onAnimationLeave() {
+    emits('close')
+    Toaster.value?.remove()
+
+    const container = document.querySelector(selectorContainerClass)
+    if (container && !container?.hasChildNodes()) {
+      container.remove()
+    }
   }
 
   onMounted(() => {
@@ -214,7 +299,7 @@
   .m-toast-container {
     box-sizing: border-box;
 
-    @apply maz-fixed maz-flex maz-flex-col maz-space-y-2 maz-p-4;
+    @apply maz-fixed maz-flex maz-flex-col maz-gap-2 maz-p-4;
 
     z-index: 1051;
 
@@ -257,15 +342,15 @@
       box-sizing: border-box;
     }
 
-    @apply maz-relative maz-flex maz-w-full maz-cursor-pointer maz-items-center maz-gap-1 maz-self-center maz-rounded maz-pl-2 maz-pr-2 maz-text-white maz-shadow-md maz-transition maz-duration-300 maz-ease-in-out;
+    @apply maz-relative maz-flex maz-w-full maz-cursor-pointer maz-items-center maz-gap-2 maz-self-center maz-overflow-hidden maz-rounded maz-pl-2 maz-pr-2 maz-shadow-md maz-transition maz-duration-300 maz-ease-in-out;
 
     &.--left,
     &.--right {
-      @apply tab-m:maz-w-80;
+      @apply tab-m:maz-w-[22rem];
     }
 
     &.--center {
-      @apply tab-m:maz-w-80 tab-m:maz-justify-center;
+      @apply tab-m:maz-w-[22rem] tab-m:maz-justify-center;
     }
 
     &__message-wrapper {
@@ -285,35 +370,23 @@
     }
 
     &.--info {
-      @apply maz-bg-info maz-text-info-contrast hover:maz-bg-info-600;
-
-      & .--close {
-        @apply maz-text-info-contrast;
-      }
+      @apply maz-bg-info maz-text-info-contrast hover:maz-bg-info-400;
     }
 
     &.--success {
-      @apply maz-bg-success maz-text-success-contrast hover:maz-bg-success-600;
-
-      & .--close {
-        @apply maz-text-success-contrast;
-      }
+      @apply maz-bg-success maz-text-success-contrast hover:maz-bg-success-400;
     }
 
     &.--warning {
-      @apply maz-bg-warning maz-text-warning-contrast hover:maz-bg-warning-600;
-
-      & .--close {
-        @apply maz-text-warning-contrast;
-      }
+      @apply maz-bg-warning maz-text-warning-contrast hover:maz-bg-warning-400;
     }
 
     &.--danger {
-      @apply maz-bg-danger maz-text-danger-contrast hover:maz-bg-danger-600;
+      @apply maz-bg-danger maz-text-danger-contrast hover:maz-bg-danger-400;
+    }
 
-      & .--close {
-        @apply maz-text-danger-contrast;
-      }
+    &.--theme {
+      @apply maz-bg-color maz-text-normal hover:maz-bg-color-light dark:maz-border dark:maz-border-solid  dark:maz-border-color-lighter;
     }
   }
 
