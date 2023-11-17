@@ -19,6 +19,7 @@ describe('components/MazInput.vue', () => {
   })
 
   test('Should have the formatted price displayed', () => {
+    // @ts-expect-error
     expect(wrapper.vm.displayPrice).toBe('12,00 €')
   })
 
@@ -28,6 +29,7 @@ describe('components/MazInput.vue', () => {
     })
     await wrapper.vm.$nextTick()
     expect(wrapper.vm.modelValue).toBe(0)
+    // @ts-expect-error
     expect(wrapper.vm.displayPrice).toBe('0,00 €')
   })
 })
