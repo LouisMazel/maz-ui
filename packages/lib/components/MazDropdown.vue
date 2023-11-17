@@ -3,7 +3,7 @@
     <div
       role="button"
       tabindex="0"
-      class="maz-outline-none"
+      class="maz-h-full maz-w-full maz-outline-none"
       :aria-expanded="dropdownOpen"
       aria-haspopup="menu"
       @click.stop="onElementClick"
