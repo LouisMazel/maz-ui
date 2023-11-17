@@ -81,6 +81,7 @@
   })
 
   const isFocused = ref(false)
+
   const inputValue = ref<string>()
 
   const emits = defineEmits(['update:model-value'])
