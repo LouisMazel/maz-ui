@@ -114,7 +114,7 @@
       if (props.color === 'white') return 'maz-border-white'
     }
 
-    return 'maz-border-gray-200'
+    return 'maz-border-gray-200 dark:maz-border-color-lighter'
   })
 
   const removeLastTag = () => {
@@ -135,7 +135,7 @@
 <style lang="postcss" scoped>
   .m-input-tags {
     @apply maz-relative maz-flex maz-flex-wrap
-      maz-overflow-hidden maz-rounded maz-border-2 maz-bg-color;
+      maz-overflow-hidden maz-rounded maz-border maz-bg-color;
 
     padding-left: 0.25em;
     padding-right: 0.25em;
