@@ -1,5 +1,22 @@
 # Change Log
 
+## v3.25.0...v3.25.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.25.0...v3.25.1)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazDropdown - button container take full space ([9c92d35f](https://github.com/LouisMazel/maz-ui/commit/9c92d35f))
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([40113d24](https://github.com/LouisMazel/maz-ui/commit/40113d24))
+- **release:** Bump version to v3.25.1 ([cf9ff0e2](https://github.com/LouisMazel/maz-ui/commit/cf9ff0e2))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.24.0...v3.25.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.24.0...v3.25.0)
