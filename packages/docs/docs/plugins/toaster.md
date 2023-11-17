@@ -15,6 +15,10 @@ This plugin has a composable for easier use, after installing it you can use [us
 ## Basic usage
 
 <div class="maz-flex maz-flex-wrap maz-gap-2">
+  <MazBtn color="theme" @click="showMessage">
+    Message
+  </MazBtn>
+
   <MazBtn color="info" @click="showInfo">
     Info toast on top
   </MazBtn>
@@ -82,6 +86,10 @@ Toast can have a link or an action
 
   const toast = useToast()
 
+  function showMessage () {
+    toast.message('Message text')
+  }
+
   function showInfo () {
     toast.info('Info message', {
       position: 'top',
@@ -134,6 +142,7 @@ Toast can have a link or an action
         func: () => new Promise(async (resolve) => {
           await sleep(3000)
           resolve()
+          toast.success('Promise executed')
         }),
         text: 'Exec promise',
         closeToast: true
@@ -147,6 +156,10 @@ Toast can have a link or an action
   import { useToast, sleep } from 'maz-ui'
 
   const toast = useToast()
+
+  function showMessage () {
+    toast.message('Message text')
+  }
 
   function showInfo () {
     toast.info('Info message', {

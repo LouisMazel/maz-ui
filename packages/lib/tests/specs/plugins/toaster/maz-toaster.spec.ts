@@ -1,32 +1,180 @@
-import { mount } from '@vue/test-utils'
+import { mount, config } from '@vue/test-utils'
 import MazToast from '@modules/plugins/toaster/MazToast.vue'
 
-describe('plugins/toaster/MazToast.vue', () => {
-  // expect(MazToast).toBeTruthy()
+config.global.stubs = {
+  transition: false,
+}
 
-  test('should match with the snapshot', () => {
+describe('MazToast', () => {
+  it('renders with default props', async () => {
     const wrapper = mount(MazToast, {
       props: {
-        message: 'Text message',
+        message: 'Test message',
       },
     })
 
-    expect(wrapper.html()).toMatchSnapshot()
-  })
-
-  test('renders the component with default props', () => {
-    const wrapper = mount(MazToast, {
-      props: {
-        position: 'bottom-right',
-        maxToasts: false,
-        timeout: 10_000,
-        queue: false,
-        type: 'info',
-        message: 'This is a test message',
-        persistent: false,
-      },
-    })
+    await wrapper.vm.$nextTick()
 
     expect(wrapper.exists()).toBe(true)
+    expect(wrapper.text()).toContain('Test message')
+    expect(wrapper.classes()).toContain('m-toast')
+  })
+
+  it('emits click event when clicked', async () => {
+    const wrapper = mount(MazToast, {
+      props: {
+        message: 'Test message',
+      },
+    })
+
+    await wrapper.vm.$nextTick()
+
+    const toastButton = wrapper.find('.m-toast')
+
+    await toastButton.trigger('click')
+
+    expect(wrapper.emitted('click')).toBeTruthy()
+  })
+
+  it('emits open event when animation enter is complete', async () => {
+    const wrapper = mount(MazToast, {
+      props: {
+        message: 'Test message',
+      },
+    })
+
+    await wrapper.vm.$nextTick()
+
+    // @ts-expect-error
+    wrapper.vm.onAnimationEnter()
+
+    expect(wrapper.emitted('open')).toBeTruthy()
+  })
+
+  it('emits close event when animation leave is complete', async () => {
+    const wrapper = mount(MazToast, {
+      props: {
+        message: 'Test message',
+      },
+    })
+
+    await wrapper.vm.$nextTick()
+
+    // @ts-expect-error
+    wrapper.vm.onAnimationLeave()
+
+    expect(wrapper.emitted('close')).toBeTruthy()
+  })
+
+  it('closes the toast when close button is clicked', async () => {
+    const wrapper = mount(MazToast, {
+      props: {
+        message: 'Test message',
+      },
+    })
+
+    await vi.dynamicImportSettled()
+
+    await wrapper.vm.$nextTick()
+
+    const closeButton = wrapper.find('.--close')
+
+    await closeButton.trigger('click')
+
+    // @ts-expect-error
+    expect(wrapper.vm.isActive).toBe(false)
+  })
+
+  it('renders with different types', async () => {
+    const wrapper = mount(MazToast, {
+      props: {
+        message: 'Test message',
+        type: 'success',
+      },
+    })
+
+    await wrapper.vm.$nextTick()
+
+    expect(wrapper.classes()).toContain('--success')
+  })
+
+  it('renders with an action button', async () => {
+    const wrapper = mount(MazToast, {
+      props: {
+        message: 'Test message',
+        action: {
+          text: 'Undo',
+          func: vi.fn(),
+        },
+      },
+    })
+
+    await vi.dynamicImportSettled()
+
+    const actionButton = wrapper.find('[data-test="action-btn"]')
+
+    expect(actionButton.exists()).toBe(true)
+    expect(actionButton.text()).toContain('Undo')
+  })
+
+  it('calls action function when action button is clicked', async () => {
+    const actionFunc = vi.fn()
+    const wrapper = mount(MazToast, {
+      props: {
+        message: 'Test message',
+        action: {
+          text: 'Undo',
+          func: actionFunc,
+        },
+      },
+    })
+
+    await vi.dynamicImportSettled()
+
+    const actionButton = wrapper.find('[data-test="action-btn"]')
+
+    await actionButton.trigger('click')
+
+    expect(actionFunc).toHaveBeenCalled()
+  })
+
+  it('emits click event when action button is clicked', async () => {
+    const wrapper = mount(MazToast, {
+      props: {
+        message: 'Test message',
+        action: {
+          text: 'Undo',
+          func: vi.fn(),
+          closeToast: true,
+        },
+      },
+    })
+
+    await vi.dynamicImportSettled()
+
+    const actionButton = wrapper.find('[data-test="action-btn"]')
+
+    await actionButton.trigger('click')
+
+    expect(wrapper.emitted('click')).toBeTruthy()
+  })
+
+  it('renders with a link button', async () => {
+    const wrapper = mount(MazToast, {
+      props: {
+        message: 'Test message',
+        link: {
+          text: 'View Details',
+          href: 'https://example.com',
+        },
+      },
+    })
+
+    await vi.dynamicImportSettled()
+
+    const linkButton = wrapper.find('[data-test="link-btn"]')
+
+    expect(linkButton.exists()).toBe(true)
+    expect(linkButton.text()).toContain('View Details')
   })
 })

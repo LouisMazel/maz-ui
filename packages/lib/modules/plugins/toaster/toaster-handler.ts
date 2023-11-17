@@ -4,7 +4,7 @@ import MazToast from './MazToast.vue'
 import type { ToasterOptions } from './types'
 
 export interface LocalToasterOptions extends ToasterOptions {
-  type?: 'success' | 'info' | 'warning' | 'danger'
+  type: 'success' | 'info' | 'warning' | 'danger' | 'theme'
 }
 
 const DEFAULT_OPTIONS: ToasterOptions = {
@@ -43,6 +43,10 @@ export class ToasterHandler {
       type,
       ...options,
     }
+  }
+
+  message(message: string, options?: ToasterOptions) {
+    return this.show(message, this.getLocalOptions('theme', options))
   }
 
   success(message: string, options?: ToasterOptions) {

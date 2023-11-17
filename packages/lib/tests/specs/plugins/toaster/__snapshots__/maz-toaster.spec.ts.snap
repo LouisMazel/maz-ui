@@ -1,3 +1,0 @@
-// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
-
-exports[`plugins/toaster/MazToast.vue > should match with the snapshot 1`] = `"<transition-stub data-v-f0aa3c92=\\"\\" name=\\"m-slide-right\\" appear=\\"false\\" persisted=\\"true\\" css=\\"true\\"></transition-stub>"`;
