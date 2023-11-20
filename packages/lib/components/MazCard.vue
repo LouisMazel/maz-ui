@@ -50,7 +50,7 @@
     >
       <div v-if="images" class="m-card__gallery__wrapper">
         <MazGallery
-          :radius="radius"
+          :no-radius="!radius"
           :width="galleryWidthComputed"
           :height="galleryHeight"
           :images-shown-count="imagesShowCount"
@@ -104,7 +104,15 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, useSlots, type PropType, ref, watch, defineAsyncComponent } from 'vue'
+  import {
+    computed,
+    useSlots,
+    type PropType,
+    ref,
+    watch,
+    defineAsyncComponent,
+    type HTMLAttributes,
+  } from 'vue'
   import type { MazGalleryImage } from './types'
   export type { MazGalleryImage } from './types'
 
@@ -152,8 +160,10 @@
     /** scale animation on hover (only linked cards) */
     scale: { type: Boolean, default: true },
     /** add classes to wrapper */
-    // eslint-disable-next-line vue/require-prop-types
-    wrapperClass: { default: undefined },
+    wrapperClass: {
+      type: [String, Array, Object] as PropType<HTMLAttributes['class']>,
+      default: undefined,
+    },
     /** Remove padding from content wrapper */
     noPadding: { type: Boolean, default: false },
     /** Hide overflow */
@@ -191,7 +201,7 @@
 
 <style lang="postcss" scoped>
   .m-card {
-    @apply maz-relative maz-inline-flex maz-max-h-full maz-flex-col maz-bg-color;
+    @apply maz-relative maz-inline-flex maz-max-h-full maz-flex-col maz-bg-color dark:maz-border dark:maz-border-color-lighter;
 
     &__header {
       @apply maz-flex maz-items-center maz-px-4 maz-py-3 maz-transition-colors maz-delay-200;
@@ -276,12 +286,6 @@
       & > *:not(:last-child) {
         @apply maz-mr-2;
       }
-    }
-  }
-
-  html.dark {
-    & .m-card {
-      @apply maz-bg-color-light;
     }
   }
 </style>
