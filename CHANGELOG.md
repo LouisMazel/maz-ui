@@ -1,5 +1,26 @@
 # Change Log
 
+## v3.27.0...v3.27.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.27.0...v3.27.1)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazCardSpotlight - animation not showing when used with maz-aos ([7fcbf86d](https://github.com/LouisMazel/maz-ui/commit/7fcbf86d))
+
+### 📖 Documentation
+
+- **docs:** MazAccordion - add example code ([0769299f](https://github.com/LouisMazel/maz-ui/commit/0769299f))
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([e4bac455](https://github.com/LouisMazel/maz-ui/commit/e4bac455))
+- **release:** Bump version to v3.27.1 ([debbd963](https://github.com/LouisMazel/maz-ui/commit/debbd963))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.26.0...v3.27.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.26.0...v3.27.0)
