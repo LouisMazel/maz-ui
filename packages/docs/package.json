@@ -12,7 +12,7 @@
   "devDependencies": {
     "sitemap": "^7.1.1",
     "tailwindcss": "^3.3.5",
-    "vitepress": "1.0.0-rc.27",
+    "vitepress": "1.0.0-rc.29",
     "vue": "^3.3.8"
   },
   "dependencies": {
