@@ -192,12 +192,12 @@ The file is generated!
   --maz-bg-color-dark-lighter: hsl(238deg 17% 28%);
 
   /**
-  * DEFAULT BORDER WIDTH (0.125rem = 2px with a font-size base of 16px)
+  * DEFAULT BORDER WIDTH (0.063rem = 1px with a font-size base of 16px)
   **/
-  --maz-border-width: 0.125rem;
+  --maz-border-width: 0.063rem;
 
   /**
-  * DEFAULT BORDER RADIUS (0.5rem = 8px with a font-size base of 16px)
+  * DEFAULT BORDER RADIUS (0.7rem = 11.2px with a font-size base of 16px)
   **/
   --maz-border-radius: 0.7rem;
 
