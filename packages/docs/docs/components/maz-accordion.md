@@ -42,7 +42,35 @@ description: MazAccordion is a standalone component
 
 ```vue
 <template>
-  <MazAccordion />
+  <MazAccordion>
+    <template #title-1>
+      Title 1
+    </template>
+    <template #content-1>
+      Content 1
+    </template>
+
+    <template #title-2>
+      Title 2
+    </template>
+    <template #content-2>
+      Content 2
+    </template>
+
+    <template #title-3>
+      Title 3
+    </template>
+    <template #content-3>
+      Content 3
+    </template>
+
+    <template #title-4>
+      Title 4
+    </template>
+    <template #content-4>
+      Content 4
+    </template>
+  <MazAccordion>
 </template>
 
 <script lang="ts" setup>
