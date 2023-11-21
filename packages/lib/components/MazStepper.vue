@@ -310,7 +310,7 @@
     }
 
     &__content {
-      @apply maz-ml-[2rem] maz-border-l-2 maz-border-transparent maz-py-2 maz-pl-8;
+      @apply maz-ml-[2rem] maz-border-l maz-border-transparent maz-py-2 maz-pl-8;
 
       &__wrapper {
         @apply maz-py-2;
