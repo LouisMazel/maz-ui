@@ -79,7 +79,7 @@
     &::before {
       content: '';
 
-      @apply maz-absolute maz-left-0 maz-top-0 maz-z-0 maz-h-full maz-w-full maz-bg-color maz-opacity-[0.9];
+      @apply maz-absolute maz-left-0 maz-top-0 maz-z-1 maz-h-full maz-w-full maz-bg-color maz-opacity-[0.9];
     }
   }
 
@@ -88,7 +88,7 @@
   }
 
   .blob {
-    @apply maz-absolute maz-left-0 maz-top-0 maz-z-[-1] maz-h-64 maz-w-64 maz-rounded-full maz-blur-2xl;
+    @apply maz-absolute maz-left-0 maz-top-0 maz-z-[0] maz-h-64 maz-w-64 maz-rounded-full maz-blur-2xl;
 
     background-color: v-bind('alphaColor');
   }
