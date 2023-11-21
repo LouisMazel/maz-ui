@@ -30,6 +30,7 @@ export const components = {
         {text: 'MazBackdrop', link: '/components/maz-backdrop'},
         {text: 'MazBottomSheet', link: '/components/maz-bottom-sheet'},
         {text: 'MazCard', link: '/components/maz-card'},
+        {text: 'MazCardSpotlight', link: '/components/maz-card-spotlight'},
         {text: 'MazCarousel', link: '/components/maz-carousel'},
         {text: 'MazChart', link: '/components/maz-chart'},
         {text: 'MazDropdown', link: '/components/maz-dropdown'},

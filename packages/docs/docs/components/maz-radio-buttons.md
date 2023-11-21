@@ -33,7 +33,7 @@ Select a competition
 
   const selectedCompetition = ref<string>()
 
-   const competitions = [
+  const competitions = [
     {
       value: "1",
       label: "Ligue 1",
