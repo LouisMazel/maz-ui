@@ -1,5 +1,4 @@
 node_modules
 .DS_Store
 .eslintrc.cjs
-docgen.config.js
 config/**/*
