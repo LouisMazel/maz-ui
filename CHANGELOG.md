@@ -1,5 +1,22 @@
 # Change Log
 
+## v3.25.3...v3.25.4
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.25.3...v3.25.4)
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([b12d36cd](https://github.com/LouisMazel/maz-ui/commit/b12d36cd))
+- **release:** Bump version to v3.25.4 ([a35c9144](https://github.com/LouisMazel/maz-ui/commit/a35c9144))
+
+### 🎨 Styles
+
+- **maz-ui:** MazCard - add radius to header for collapsible card ([414eabec](https://github.com/LouisMazel/maz-ui/commit/414eabec))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.25.2...v3.25.3
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.25.2...v3.25.3)
