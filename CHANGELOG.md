@@ -1,5 +1,23 @@
 # Change Log
 
+## v3.25.4...v3.26.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.25.4...v3.26.0)
+
+### 🚀 Enhancements
+
+- **maz-ui:** MazCardSpotlight - new component ([8f293017](https://github.com/LouisMazel/maz-ui/commit/8f293017))
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([40926ecc](https://github.com/LouisMazel/maz-ui/commit/40926ecc))
+- Upgrade dependencies ([e5d0248f](https://github.com/LouisMazel/maz-ui/commit/e5d0248f))
+- **release:** Bump version to v3.26.0 ([9b1420f3](https://github.com/LouisMazel/maz-ui/commit/9b1420f3))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.25.3...v3.25.4
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.25.3...v3.25.4)
