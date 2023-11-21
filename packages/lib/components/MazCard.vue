@@ -15,7 +15,7 @@
     <Component
       :is="collapsable ? 'button' : 'div'"
       v-if="$slots['header'] || collapsable"
-      class="m-card__header maz-rounded-t-xl maz-border-b-2"
+      class="m-card__header maz-border-b maz-border-solid"
       :class="[
         isOpen ? 'maz-border-color-lighter' : 'maz-border-transparent',
         { '--is-collapsable': collapsable },
@@ -204,10 +204,10 @@
     @apply maz-relative maz-inline-flex maz-max-h-full maz-flex-col maz-bg-color dark:maz-border dark:maz-border-color-lighter;
 
     &__header {
-      @apply maz-flex maz-items-center maz-px-4 maz-py-3 maz-transition-colors maz-delay-200;
+      @apply maz-flex maz-items-center maz-px-4 maz-py-3 maz-transition-colors maz-duration-200;
 
       &.--is-collapsable {
-        @apply hover:maz-bg-color-lighter;
+        @apply hover:maz-bg-color-light;
       }
     }
 
