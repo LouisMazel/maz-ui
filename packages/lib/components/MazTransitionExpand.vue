@@ -14,6 +14,16 @@
 <script lang="ts" setup>
   import { nextTick } from 'vue'
 
+  withDefaults(
+    defineProps<{
+      // Expand animation duration in milliseconds
+      animationDuration?: string
+    }>(),
+    {
+      animationDuration: '300ms',
+    },
+  )
+
   const enter = (element: HTMLElement) => {
     const width = getComputedStyle(element).width
 
@@ -69,5 +79,9 @@
     transform: translateZ(0);
     backface-visibility: hidden;
     perspective: 1000px;
+
+    :deep(*) {
+      @apply !maz-duration-[v-bind(animationDuration)];
+    }
   }
 </style>
