@@ -43,6 +43,7 @@ export const useTimer = ({ timeout, callback, remainingTimeUpdate = 200 }: Timer
   }
 
   function stop() {
+    remainingTime.value = timeout
     pause()
   }
 
