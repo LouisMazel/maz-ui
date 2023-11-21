@@ -1,5 +1,26 @@
 # Change Log
 
+## v3.26.0...v3.27.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.26.0...v3.27.0)
+
+### 🚀 Enhancements
+
+- **maz-ui:** New component - MazAccordion ([15459c45](https://github.com/LouisMazel/maz-ui/commit/15459c45))
+
+### 🩹 Fixes
+
+- **cli:** Linter error ([34c0c039](https://github.com/LouisMazel/maz-ui/commit/34c0c039))
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([d519046f](https://github.com/LouisMazel/maz-ui/commit/d519046f))
+- **release:** Bump version to v3.27.0 ([a1707bed](https://github.com/LouisMazel/maz-ui/commit/a1707bed))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.25.4...v3.26.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.25.4...v3.26.0)
