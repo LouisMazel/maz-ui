@@ -15,7 +15,7 @@ You must override `--maz-***` [CSS variables](#list-of-css-variables)
 
 ### Add maz-ui config file
 
-In root folder of your project, add a file named `maz-ui.config.{ts, js, mjs, cjs}` as bellow ([typescript interface](#maz-ui-configuration-file-typescript-interface))
+In the root folder of your project, add a file named `maz-ui.config.{ts, js, mjs, cjs}` as bellow ([typescript interface](#maz-ui-configuration-file-typescript-interface))
 
 All input colors can be in HEX, RGB, RGBA, HSL, HSLA and named formats.
 
@@ -199,7 +199,7 @@ The file is generated!
   /**
   * DEFAULT BORDER RADIUS (0.5rem = 8px with a font-size base of 16px)
   **/
-  --maz-border-radius: 0.5rem;
+  --maz-border-radius: 0.7rem;
 
   /**
   * FONT FAMILY
@@ -214,7 +214,6 @@ The file is generated!
 :::
 
 ## Maz-UI configuration file Typescript interface
-
 
 ::: details Show Typescript interface
 
