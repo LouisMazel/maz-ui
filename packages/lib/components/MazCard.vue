@@ -17,7 +17,7 @@
       v-if="$slots['header'] || collapsable"
       class="m-card__header maz-border-b maz-border-solid"
       :class="[
-        isOpen ? 'maz-border-color-lighter' : 'maz-border-transparent',
+        isOpen ? 'maz-rounded-t maz-border-color-lighter' : 'maz-border-transparent',
         { '--is-collapsable': collapsable },
         { 'maz-justify-end': !$slots['header'] && collapsable },
         { 'maz-justify-between': $slots['header'] },
