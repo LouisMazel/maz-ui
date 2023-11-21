@@ -1,5 +1,29 @@
 # Change Log
 
+## v3.25.1...v3.25.2
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.25.1...v3.25.2)
+
+### 🩹 Fixes
+
+- **maz-ui:** UseTimer - stop method reset the timer ([601dbafd](https://github.com/LouisMazel/maz-ui/commit/601dbafd))
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([d9a78834](https://github.com/LouisMazel/maz-ui/commit/d9a78834))
+- **release:** Bump version to v3.25.2 ([f3b5fe91](https://github.com/LouisMazel/maz-ui/commit/f3b5fe91))
+
+### 🎨 Styles
+
+- **maz-ui:** MazCard - use default background color and add borders in dark mode ([83c3ec5d](https://github.com/LouisMazel/maz-ui/commit/83c3ec5d))
+- **maz-ui:** MazTabs - update indicator style, use default background color and add borders in dark mode ([7e7bd10b](https://github.com/LouisMazel/maz-ui/commit/7e7bd10b))
+- **maz-ui:** Increase default border-radius vars to 0.7rem ([3d09f74c](https://github.com/LouisMazel/maz-ui/commit/3d09f74c))
+- **maz-ui:** MazBadge & MazCheckbox - adjust border-radius ([f257fae0](https://github.com/LouisMazel/maz-ui/commit/f257fae0))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.25.0...v3.25.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.25.0...v3.25.1)
