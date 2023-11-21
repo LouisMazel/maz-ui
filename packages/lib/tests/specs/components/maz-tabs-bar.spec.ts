@@ -17,8 +17,6 @@ describe('MazTabsBar.vue', () => {
       },
     })
 
-    await vi.dynamicImportSettled()
-
     const tabLabels = wrapper.findAll('.m-tabs-bar__item')
 
     expect(tabLabels.length).toBe(3)
@@ -64,9 +62,7 @@ describe('MazTabsBar.vue', () => {
       },
     })
 
-    await vi.dynamicImportSettled()
-
-    await wrapper.find('.m-tabs-bar__item:nth-child(3)').trigger('click')
+    await wrapper.find('.m-tabs-bar__item:nth-child(4)').trigger('click')
 
     expect(wrapper.vm.currentTab).toBe(3)
   })

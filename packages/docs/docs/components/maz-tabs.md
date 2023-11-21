@@ -61,7 +61,7 @@ description: MazTabs is a standalone component to display content in tabs with a
 ## With model-value
 
 <MazTabs v-model="currentTab">
-  <MazTabsBar :items="tabs2" color="secondary" />
+  <MazTabsBar :items="tabs2" color="secondary" block />
 
   <MazTabsContent>
     <MazTabsContentItem :tab="1" class="maz-p-4 maz-text-center">
@@ -85,7 +85,7 @@ description: MazTabs is a standalone component to display content in tabs with a
 ```vue
 <template>
   <MazTabs v-model="currentTab">
-    <MazTabsBar :items="tabs" color="secondary" />
+    <MazTabsBar :items="tabs" color="secondary" block />
 
     <MazTabsContent>
       <MazTabsContentItem :tab="1" class="maz-p-4 maz-text-center">
