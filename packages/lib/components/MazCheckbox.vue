@@ -185,7 +185,7 @@
     }
 
     > span {
-      @apply maz-relative maz-flex maz-rounded maz-border maz-border-gray-200 maz-transition-all maz-duration-300 maz-ease-in-out maz-flex-center dark:maz-border-color-lighter;
+      @apply maz-relative maz-flex maz-rounded-md maz-border maz-border-gray-200 maz-transition-all maz-duration-300 maz-ease-in-out maz-flex-center dark:maz-border-color-lighter;
 
       width: v-bind('checkboxSize');
       height: v-bind('checkboxSize');

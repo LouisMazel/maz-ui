@@ -42,7 +42,7 @@
     pastel: { type: Boolean, default: false },
     roundedSize: {
       type: String,
-      default: 'lg',
+      default: 'md',
       validator: (value: string) => {
         return ['none', 'sm', 'md', 'lg', 'xl', 'full'].includes(value)
       },
