@@ -1,5 +1,28 @@
 # Change Log
 
+## v3.25.2...v3.25.3
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.25.2...v3.25.3)
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([52122663](https://github.com/LouisMazel/maz-ui/commit/52122663))
+- **release:** Bump version to v3.25.3 ([ce064c79](https://github.com/LouisMazel/maz-ui/commit/ce064c79))
+
+### ✅ Tests
+
+- **maz-ui:** MazCard - fix test ([c34e49f0](https://github.com/LouisMazel/maz-ui/commit/c34e49f0))
+
+### 🎨 Styles
+
+- **maz-ui:** MazCard - correct header color border and animation ([f6844e67](https://github.com/LouisMazel/maz-ui/commit/f6844e67))
+- **maz-ui:** Decrease default border width to 1px (0.063rem) ([80b59011](https://github.com/LouisMazel/maz-ui/commit/80b59011))
+- **maz-ui:** MazStepper - use default border ([c5ad8480](https://github.com/LouisMazel/maz-ui/commit/c5ad8480))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.25.1...v3.25.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.25.1...v3.25.2)
