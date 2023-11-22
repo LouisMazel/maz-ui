@@ -23,6 +23,7 @@ describe('MazAvatar', () => {
       'noLoader',
       'buttonColor',
       'noClickableIcon',
+      'letterCount',
     ]
     expect(Object.keys(wrapper.props())).toEqual(expectedProps)
   })
