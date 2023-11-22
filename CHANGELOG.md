@@ -1,5 +1,23 @@
 # Change Log
 
+## v3.27.3...v3.27.4
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.27.3...v3.27.4)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazTabs - fix anchor link ([b39d6551](https://github.com/LouisMazel/maz-ui/commit/b39d6551))
+- **maz-ui:** MazBtn - apply CSS base font-size ([5e5dbc78](https://github.com/LouisMazel/maz-ui/commit/5e5dbc78))
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([78828259](https://github.com/LouisMazel/maz-ui/commit/78828259))
+- **release:** Bump version to v3.27.4 ([b2f21c3c](https://github.com/LouisMazel/maz-ui/commit/b2f21c3c))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.27.2...v3.27.3
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.27.2...v3.27.3)
