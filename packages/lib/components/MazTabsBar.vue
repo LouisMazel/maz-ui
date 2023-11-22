@@ -141,7 +141,7 @@
 
     &__item {
       @apply maz-relative maz-flex-none maz-rounded maz-px-3
-        maz-py-2 maz-text-center maz-text-base
+        maz-py-2 maz-text-center
         maz-font-medium maz-transition maz-duration-200 maz-ease-in-out;
 
       &:not(:disabled) {

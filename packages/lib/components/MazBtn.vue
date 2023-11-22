@@ -158,7 +158,7 @@
 
 <style lang="postcss" scoped>
   .m-btn {
-    @apply maz-border maz-border-solid maz-border-transparent maz-text-center maz-text-base maz-text-normal;
+    @apply maz-border maz-border-solid maz-border-transparent maz-text-center maz-text-normal;
 
     & span {
       @apply maz-leading-none;
@@ -256,7 +256,7 @@
       }
 
       &.--md {
-        @apply maz-px-4 maz-text-base;
+        @apply maz-px-4;
 
         padding-top: 0.88rem;
         padding-bottom: 0.88rem;
@@ -315,7 +315,7 @@
         }
 
         &.--md {
-          @apply maz-h-12 maz-w-12 maz-text-base;
+          @apply maz-h-12 maz-w-12;
         }
 
         &.--sm {
