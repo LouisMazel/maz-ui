@@ -13,14 +13,13 @@ description: MazTransitionExpand is a standalone component that collapses conten
 
 <MazBtn @click="isShown = !isShown">Toggle content</MazBtn>
 
-<br />
-<br />
+You can change the animation duration with the prop `animation-duration`, should be a string - ex: `"400ms"`
 
 <ClientOnly>
-<div class="flex items-start gap-05">
-  <MazCard class="flex-1">
+<div class="maz-flex maz-flex-col maz-gap-3">
+  <MazCardSpotlight class="flex-1" style="padding: 16px;">
     <MazTransitionExpand>
-      <div v-if="isShown">
+      <div v-if="isShown" class="maz-px-4">
         <p>content 1</p>
         <p>content 1</p>
         <p>content 1</p>
@@ -35,10 +34,10 @@ description: MazTransitionExpand is a standalone component that collapses conten
         <p>content 1</p>
       </div>
     </MazTransitionExpand>
-  </MazCard>
-  <MazCard class="flex-1">
+  </MazCardSpotlight>
+  <MazCardSpotlight class="flex-1" style="padding: 16px;">
     <MazTransitionExpand>
-      <div v-if="!isShown">
+      <div v-if="!isShown" class="maz-px-4">
         <p>content 2</p>
         <p>content 2</p>
         <p>content 2</p>
@@ -53,7 +52,7 @@ description: MazTransitionExpand is a standalone component that collapses conten
         <p>content 2</p>
       </div>
     </MazTransitionExpand>
-  </MazCard>
+  </MazCardSpotlight>
 </div>
 </ClientOnly>
 
@@ -62,7 +61,7 @@ description: MazTransitionExpand is a standalone component that collapses conten
   <MazBtn @click="isShown = !isShown">Toggle content</MazBtn>
 
   <div class="flex items-start">
-    <MazCard class="flex-1">
+    <MazCardSpotlight class="flex-1">
       <MazTransitionExpand>
         <div v-if="isShown">
           <p>content 1</p>
@@ -79,8 +78,8 @@ description: MazTransitionExpand is a standalone component that collapses conten
           <p>content 1</p>
         </div>
       </MazTransitionExpand>
-    </MazCard>
-    <MazCard class="flex-1">
+    </MazCardSpotlight>
+    <MazCardSpotlight class="flex-1">
       <MazTransitionExpand>
         <div v-if="!isShown">
           <p>content 2</p>
@@ -97,7 +96,7 @@ description: MazTransitionExpand is a standalone component that collapses conten
           <p>content 2</p>
         </div>
       </MazTransitionExpand>
-    </MazCard>
+    </MazCardSpotlight>
   </div>
 </template>
 
