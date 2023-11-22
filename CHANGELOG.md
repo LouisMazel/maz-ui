@@ -1,5 +1,22 @@
 # Change Log
 
+## v3.27.1...v3.27.2
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.27.1...v3.27.2)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazTransition - do not apply animate duration to all childs ([cea6be8c](https://github.com/LouisMazel/maz-ui/commit/cea6be8c))
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([fc68d65f](https://github.com/LouisMazel/maz-ui/commit/fc68d65f))
+- **release:** Bump version to v3.27.2 ([3d2cc358](https://github.com/LouisMazel/maz-ui/commit/3d2cc358))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.27.0...v3.27.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.27.0...v3.27.1)
