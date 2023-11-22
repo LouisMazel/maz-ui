@@ -7,15 +7,15 @@ description: MazChart is a standalone component which generates graphics & chart
 
 {{ $frontmatter.description }}
 
-To use this component, you have to install the `chart.js` and `vue-chart` dependency
+To use this component, you have to install the `chart.js` and `vue-chartjs` dependency
 
 <div class="flex gap-4">
   <NpmBadge package="chart.js" dist-tag="4" />
-  <NpmBadge package="vue-chart" dist-tag="2" />
+  <NpmBadge package="vue-chartjs" dist-tag="5" />
 </div>
 
 ```bash
-npm install chart.js@^4 vue-chart@^2
+npm install chart.js@^4 vue-chartjs@^5
 ```
 
 ::: info
