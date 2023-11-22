@@ -14,7 +14,7 @@
       :class="{ '--active': currentTab === index, '--disabled': disabled }"
       class="m-tabs-bar__item"
       :disabled="disabled"
-      :to="useAnchor && !disabled ? `#${toKebabCase(label)}` : undefined"
+      :href="useAnchor && !disabled ? `#${toKebabCase(label)}` : undefined"
       :style="getTabStyle(index + 1, disabled)"
       @click="updateCurrentTab(index + 1)"
     >
