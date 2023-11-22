@@ -1,5 +1,27 @@
 # Change Log
 
+## v3.27.2...v3.27.3
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.27.2...v3.27.3)
+
+### 💅 Refactors
+
+- **maz-ui:** MazAvatar: show initials if caption has multiple words ([33336263](https://github.com/LouisMazel/maz-ui/commit/33336263))
+- **maz-ui:** Remove font-size CSS rules to all components to inherits font-size (md size only) ([94790813](https://github.com/LouisMazel/maz-ui/commit/94790813))
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([7a6f0e4d](https://github.com/LouisMazel/maz-ui/commit/7a6f0e4d))
+- **release:** Bump version to v3.27.3 ([53db3452](https://github.com/LouisMazel/maz-ui/commit/53db3452))
+
+### ✅ Tests
+
+- **maz-ui:** MazAvatar - fix ([66a54771](https://github.com/LouisMazel/maz-ui/commit/66a54771))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.27.1...v3.27.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.27.1...v3.27.2)
