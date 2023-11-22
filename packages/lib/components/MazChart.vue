@@ -60,10 +60,10 @@
       type: String,
       default: 'label',
     },
-    // /**
-    //  * A mode string to indicate transition configuration should be used.
-    //  * @see https://www.chartjs.org/docs/latest/developers/api.html#update-mode
-    //  */
+    /**
+     * A mode string to indicate transition configuration should be used.
+     * @see https://www.chartjs.org/docs/latest/developers/api.html#update-mode
+     */
     updateMode: {
       type: String as PropType<UpdateMode>,
       default: undefined,

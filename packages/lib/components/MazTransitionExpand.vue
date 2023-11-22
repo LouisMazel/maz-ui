@@ -80,8 +80,8 @@
     backface-visibility: hidden;
     perspective: 1000px;
 
-    :deep(*) {
-      @apply !maz-duration-[v-bind(animationDuration)];
+    :deep(> *) {
+      @apply maz-duration-[v-bind(animationDuration)];
     }
   }
 </style>
