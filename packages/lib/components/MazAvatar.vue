@@ -33,7 +33,7 @@
         @click="clickable ? $emit('click', $event) : null"
       />
       <slot v-if="caption && !src" name="round-text">
-        <span class="m-avatar__initial"> {{ caption?.charAt(0) }} </span>
+        <span class="m-avatar__initial"> {{ getInitials(caption) }} </span>
       </slot>
 
       <button
@@ -97,10 +97,21 @@
     },
     /** Remove the icon on hover when component is clickable */
     noClickableIcon: { type: Boolean, default: false },
+    letterCount: { type: Number, default: undefined },
   })
 
   const componentType = computed(() => (props.to ? 'RouterLink' : props.href ? 'a' : 'div'))
   const isLink = computed(() => !!props.to || !!props.href)
+
+  function getInitials(name: string, lettersCount = props.letterCount) {
+    const words = name.split(' ')
+
+    const initials = words.map((word) => word[0])
+
+    const letters = initials.join('')
+
+    return letters.slice(0, lettersCount)
+  }
 
   defineEmits(['click'])
 </script>
@@ -111,7 +122,7 @@
     @apply maz-no-underline !important;
 
     &__caption {
-      @apply maz-mt-2 maz-w-full maz-truncate maz-text-center maz-text-base maz-font-medium maz-capitalize;
+      @apply maz-mt-2 maz-w-full maz-truncate maz-text-center maz-font-medium maz-capitalize;
     }
 
     &__initial {
