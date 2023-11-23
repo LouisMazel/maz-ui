@@ -1,5 +1,27 @@
 # Change Log
 
+## v3.27.4...v3.28.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.27.4...v3.28.0)
+
+### 🚀 Enhancements
+
+- **maz-ui:** MazTabsBar - fix anchor ([0dc83f8a](https://github.com/LouisMazel/maz-ui/commit/0dc83f8a))
+
+### 💅 Refactors
+
+- **maz-ui:** MazAvatar - remove background color ([cc4f31fb](https://github.com/LouisMazel/maz-ui/commit/cc4f31fb))
+- **maz-ui:** MazImg - remove background color ([1835c419](https://github.com/LouisMazel/maz-ui/commit/1835c419))
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([be0bbc9e](https://github.com/LouisMazel/maz-ui/commit/be0bbc9e))
+- **release:** Bump version to v3.28.0 ([1940759e](https://github.com/LouisMazel/maz-ui/commit/1940759e))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.27.3...v3.27.4
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.27.3...v3.27.4)
