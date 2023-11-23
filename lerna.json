@@ -1,6 +1,6 @@
 {
   "loglevel": "verbose",
-  "version": "3.28.1",
+  "version": "3.28.2",
   "yes": false,
   "command": {
     "version": {
