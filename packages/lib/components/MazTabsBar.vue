@@ -7,7 +7,7 @@
     }"
   >
     <div class="m-tabs-bar__indicator" :style="[tabsIndicatorState]"></div>
-    <button
+    <a
       v-for="({ label, disabled }, index) in normalizedItems"
       :key="index"
       :ref="(mazBtn) => addElementToItemRefs({ mazBtn, index })"
@@ -16,10 +16,10 @@
       :disabled="disabled"
       :href="useAnchor && !disabled ? `#${toKebabCase(label)}` : undefined"
       :style="getTabStyle(index + 1, disabled)"
-      @click="updateCurrentTab(index + 1)"
+      @click="disabled ? undefined : updateCurrentTab(index + 1)"
     >
       {{ label }}
-    </button>
+    </a>
   </div>
 </template>
 
@@ -140,27 +140,21 @@
     }
 
     &__item {
-      @apply maz-relative maz-flex-none maz-rounded maz-px-3
-        maz-py-2 maz-text-center
-        maz-font-medium maz-transition maz-duration-200 maz-ease-in-out;
+      @apply maz-relative maz-flex-none maz-rounded
+        maz-px-3 maz-py-2 maz-text-center
+        maz-font-medium maz-no-underline maz-transition maz-duration-200 maz-ease-in-out;
 
-      &:not(:disabled) {
-        @apply hover:!maz-text-normal;
+      &:not(.--disabled) {
+        @apply maz-cursor-pointer hover:!maz-text-normal;
       }
 
-      &:disabled {
+      &.--disabled {
         @apply maz-cursor-not-allowed maz-bg-color-lighter maz-text-gray-400 dark:maz-text-gray-500;
       }
     }
 
     &__indicator {
       @apply maz-absolute maz-left-0 maz-rounded maz-bg-color-light maz-text-center maz-transition-all maz-duration-500 maz-ease-in-out;
-
-      /* & .m-sub-bar {
-        @apply maz-mx-auto maz-w-3/5;
-
-        height: 2px;
-      } */
     }
   }
 </style>
