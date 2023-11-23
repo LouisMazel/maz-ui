@@ -6,7 +6,6 @@
   >
     <MazBtn
       color="transparent"
-      no-shadow
       :size="size"
       class="m-input-number__button m-input-number__decrement-button"
       :disabled="decrementDisabled || disabled"
@@ -15,7 +14,7 @@
       <MinusIcon class="m-input-number__button__icon" />
     </MazBtn>
     <MazInput
-      v-model.number="currentValue"
+      :model-value="currentValue"
       type="number"
       class="m-input-number__input maz-flex-1"
       :disabled="disabled"
@@ -26,6 +25,7 @@
       :size="size"
       @keydown.up.prevent="increment"
       @keydown.down.prevent="decrement"
+      @update:model-value="emitDebounced($event)"
     />
     <MazBtn
       color="transparent"
@@ -41,14 +41,15 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, defineAsyncComponent, type HTMLAttributes, type PropType } from 'vue'
+  import { computed, type HTMLAttributes, type PropType } from 'vue'
   import type { Size } from './types'
   export type { Size }
 
-  const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
-  const MazInput = defineAsyncComponent(() => import('./MazInput.vue'))
-  const PlusIcon = defineAsyncComponent(() => import('./../icons/plus.svg'))
-  const MinusIcon = defineAsyncComponent(() => import('./../icons/minus.svg'))
+  import MazBtn from './MazBtn.vue'
+  import MazInput from './MazInput.vue'
+  import PlusIcon from './../icons/plus.svg'
+  import MinusIcon from './../icons/minus.svg'
+  import { debounce } from '../modules/helpers/debounce'
 
   defineOptions({
     inheritAttrs: false,
@@ -63,7 +64,7 @@
       type: [String, Array, Object] as PropType<HTMLAttributes['class']>,
       default: undefined,
     },
-    modelValue: { type: Number, required: true },
+    modelValue: { type: Number, default: undefined },
     disabled: { type: Boolean, default: false },
     max: { type: Number, default: Number.POSITIVE_INFINITY },
     min: { type: Number, default: Number.NEGATIVE_INFINITY },
@@ -81,30 +82,48 @@
 
   const currentValue = computed({
     get: () => props.modelValue,
-    set: (value: number) => emitValue(value),
+    set: (value) => emitValue(value),
   })
 
-  const checkValue = (value: number) => {
-    if (value <= props.min) return props.min
-    return value >= props.max ? props.max : value
+  function findClosestStep(number: number) {
+    return Math.round(number / props.step) * props.step
   }
 
-  const emitValue = (newValue: number) => {
+  const checkValue = (value?: number) => {
+    if (typeof value !== 'number') return
+    if (value <= props.min) return props.min
+    return value >= props.max ? props.max : findClosestStep(value)
+  }
+
+  const emitDebounced = debounce((value: number) => emitValue(value), 300)
+
+  const emitValue = (newValue?: number) => {
     newValue = checkValue(newValue)
     if (currentValue.value === newValue) return
     emits('update:model-value', newValue)
   }
+
   emitValue(currentValue.value)
 
-  const incrementDisabled = computed(() => props.modelValue >= props.max)
-  const decrementDisabled = computed(() => props.modelValue <= props.min)
+  const incrementDisabled = computed(() => props.modelValue && props.modelValue >= props.max)
+  const decrementDisabled = computed(() => props.modelValue && props.modelValue <= props.min)
 
   const increment = () => {
     if (props.disabled || incrementDisabled.value) return
+    if (!currentValue.value) {
+      currentValue.value = 1 * props.step
+      return
+    }
     currentValue.value = currentValue.value + 1 * props.step
   }
   const decrement = () => {
     if (props.disabled || decrementDisabled.value) return
+
+    if (!currentValue.value) {
+      currentValue.value = -(1 * props.step)
+      return
+    }
+
     currentValue.value = currentValue.value - 1 * props.step
   }
 </script>
@@ -121,8 +140,9 @@
 
         &:first-child,
         &:last-child {
-          @apply maz-border maz-border-gray-200 maz-px-2 maz-shadow-none;
-          @apply maz-px-3 maz-py-0 !important;
+          @apply maz-border maz-border-gray-200;
+          @apply maz-px-3 maz-py-0;
+          @apply dark:maz-border-color-lighter;
         }
 
         &:first-child {
@@ -139,15 +159,17 @@
       }
 
       &__icon {
-        @apply maz-h-4 maz-w-4;
+        @apply maz-text-base;
       }
     }
 
     &__input {
-      min-width: 120px;
-
       & .m-input-wrapper {
         @apply maz-z-1 maz-rounded-none;
+      }
+
+      input {
+        @apply !maz-p-0 maz-text-center;
       }
 
       /* Chrome, Safari, Edge, Opera */
@@ -160,15 +182,6 @@
       /* Firefox */
       & input[type='number'] {
         appearance: textfield;
-      }
-    }
-  }
-
-  html.dark {
-    .m-input-number__button.m-btn.--is-button {
-      &:first-child,
-      &:last-child {
-        @apply maz-border-color-lighter;
       }
     }
   }
