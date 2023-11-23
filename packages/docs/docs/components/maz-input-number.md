@@ -1,6 +1,6 @@
 ---
 title: MazInputNumber
-description: MazInputNumber is a standalone component that replaces the standard html input text and formats the number according to the locale provided
+description: MazInputNumber is a number input component with increment and decrement buttons for user-friendly input. Customizable size, disabled state, and limit values.
 ---
 
 # {{ $frontmatter.title }}
@@ -15,31 +15,33 @@ description: MazInputNumber is a standalone component that replaces the standard
 
 <MazInputNumber
   v-model="numberValue"
-  label="Enter number"
+  placeholder="Enter number"
   :min="5"
   :max="10000"
-  :step="1"
+  :step="5"
   color="secondary"
+  style="width: 200px;"
 />
 
-numberValue: {{ numberValue }}
+`numberValue: {{ numberValue }}`
 
 <script lang="ts" setup>
   import { ref } from 'vue'
 
-  const numberValue = ref(2)
+  const numberValue = ref()
 </script>
 
 ```vue
 <template>
   <MazInputNumber
     v-model="numberValue"
-    label="Enter number"
+    placeholder="Enter number"
     :min="5"
     :max="10000"
-    :step="1"
+    :min="5"
     size="md"
     color="secondary"
+    style="width: 200px;"
   />
 </template>
 
