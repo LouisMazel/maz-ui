@@ -133,7 +133,7 @@
 
     &__wrapper {
       @apply maz-relative maz-flex maz-flex-none maz-justify-center maz-overflow-hidden
-        maz-rounded-full maz-bg-color-lighter;
+        maz-rounded-full;
 
       height: 3em;
       width: 3em;
