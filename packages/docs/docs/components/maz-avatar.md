@@ -35,7 +35,7 @@ See all the options props [here](#props-events-emitted)
 
 <div class="flex space-between gap-05 items-center flex-wrap">
   <MazAvatar
-    caption="LM"
+    caption="Louis Mazel"
     size="1.5rem"
   />
   <MazAvatar
@@ -67,7 +67,7 @@ See all the options props [here](#props-events-emitted)
 ```vue
 <template>
   <MazAvatar
-    caption="LM"
+    caption="Louis Mazel"
     size="1.5rem"
   />
   <MazAvatar

@@ -323,11 +323,6 @@
 
     &.--md {
       @apply maz-h-12;
-
-      & .m-input-input,
-      & .m-input-label {
-        @apply maz-text-base;
-      }
     }
 
     &.--sm {
