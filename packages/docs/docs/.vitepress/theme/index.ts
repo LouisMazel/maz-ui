@@ -41,7 +41,6 @@ const theme: typeof DefaultTheme = {
     }
 
     const aosOptions: AosOptions = {
-      // router: router,
       delay: 500,
       animation: {
         duration: 400,

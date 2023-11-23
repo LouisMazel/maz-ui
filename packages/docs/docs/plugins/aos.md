@@ -54,7 +54,7 @@ This plugin uses the browser native [Intersection Observer API](https://develope
   </p>
 </MazCard>
 
-```html{1,11}
+```html{1,13}
 <MazCard overflow-hidden data-maz-aos="scale-out" id="parentCard">
   <div class="maz-flex" style="display: flex; align-items: start; gap: 1rem; margin-bottom: 1rem;">
     <MazAvatar

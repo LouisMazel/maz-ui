@@ -108,6 +108,14 @@ export class AosHandler {
           element.classList.add('maz-aos-animate')
 
           if (useOnce) {
+            const parentAnchor = element.getAttribute('data-maz-aos-anchor')
+            if (parentAnchor) {
+              const anchorElement = document.querySelector<HTMLElement>(parentAnchor)
+              if (anchorElement) {
+                observer.unobserve(anchorElement)
+              }
+            }
+
             observer.unobserve(element)
           }
         } else {
