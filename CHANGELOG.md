@@ -1,5 +1,22 @@
 # Change Log
 
+## v3.28.1...v3.28.2
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.28.1...v3.28.2)
+
+### 🩹 Fixes
+
+- **maz-ui:** UseAos - animation not stop with anchor option ([9a6faa16](https://github.com/LouisMazel/maz-ui/commit/9a6faa16))
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([14d04615](https://github.com/LouisMazel/maz-ui/commit/14d04615))
+- **release:** Bump version to v3.28.2 ([ef4f860b](https://github.com/LouisMazel/maz-ui/commit/ef4f860b))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.28.0...v3.28.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.28.0...v3.28.1)
