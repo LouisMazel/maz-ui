@@ -1,5 +1,28 @@
 # Change Log
 
+## v3.28.4...v3.28.6
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.28.4...v3.28.6)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazInputNumber - decrement and increment blocked when value ([c584b8fd](https://github.com/LouisMazel/maz-ui/commit/c584b8fd))
+
+### 💅 Refactors
+
+- **maz-ui:** MazInputNumber - use min value on first increment and decrement ([dad75a4f](https://github.com/LouisMazel/maz-ui/commit/dad75a4f))
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([cd57e303](https://github.com/LouisMazel/maz-ui/commit/cd57e303))
+- Update commit message for changelog update ([8664b848](https://github.com/LouisMazel/maz-ui/commit/8664b848))
+- **release:** Bump version to v3.28.5 ([ce00fbb1](https://github.com/LouisMazel/maz-ui/commit/ce00fbb1))
+- **release:** Bump version to v3.28.6 ([7d645ec9](https://github.com/LouisMazel/maz-ui/commit/7d645ec9))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.28.4...v3.28.5
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.28.4...v3.28.5)
