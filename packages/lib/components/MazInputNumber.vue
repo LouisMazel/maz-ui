@@ -7,6 +7,7 @@
     <MazBtn
       color="transparent"
       :size="size"
+      tabindex="-1"
       class="m-input-number__button m-input-number__decrement-button"
       :disabled="decrementDisabled || disabled"
       @click="decrement"
@@ -30,6 +31,7 @@
     <MazBtn
       color="transparent"
       no-shadow
+      tabindex="-1"
       :size="size"
       class="m-input-number__button m-input-number__increment-button"
       :disabled="incrementDisabled || disabled"
@@ -111,7 +113,7 @@
   const increment = () => {
     if (props.disabled || incrementDisabled.value) return
     if (!currentValue.value) {
-      currentValue.value = 1 * props.step
+      currentValue.value = props.min
       return
     }
     currentValue.value = currentValue.value + 1 * props.step
@@ -120,7 +122,7 @@
     if (props.disabled || decrementDisabled.value) return
 
     if (!currentValue.value) {
-      currentValue.value = -(1 * props.step)
+      currentValue.value = props.min
       return
     }
 
