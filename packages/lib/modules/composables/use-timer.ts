@@ -1,4 +1,4 @@
-import { ref, onBeforeUnmount } from 'vue'
+import { ref } from 'vue'
 
 export interface TimerOptions {
   timeout: number
@@ -46,10 +46,6 @@ export const useTimer = ({ timeout, callback, remainingTimeUpdate = 200 }: Timer
     remainingTime.value = timeout
     pause()
   }
-
-  onBeforeUnmount(() => {
-    stop()
-  })
 
   return {
     remainingTime,
