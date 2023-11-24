@@ -1,5 +1,23 @@
 # Change Log
 
+## v3.28.2...v3.28.3
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.28.2...v3.28.3)
+
+### 🩹 Fixes
+
+- **maz-ui:** UseTimer - remove onBeforeMount to avoid vue warnings ([a212f600](https://github.com/LouisMazel/maz-ui/commit/a212f600))
+- **maz-ui:** MazDialogPromise - correct declaration types of useMazDialogPromise composable ([40da6ff3](https://github.com/LouisMazel/maz-ui/commit/40da6ff3))
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([c3090b3c](https://github.com/LouisMazel/maz-ui/commit/c3090b3c))
+- **release:** Bump version to v3.28.3 ([6a4c7c46](https://github.com/LouisMazel/maz-ui/commit/6a4c7c46))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.28.1...v3.28.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.28.1...v3.28.2)
