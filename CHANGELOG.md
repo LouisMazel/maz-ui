@@ -1,5 +1,22 @@
 # Change Log
 
+## v3.28.3...v3.28.4
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.28.3...v3.28.4)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazDialog - not using <dialog /> tag ([e08ca22e](https://github.com/LouisMazel/maz-ui/commit/e08ca22e))
+
+### 🏡 Chore
+
+- Update CHANGELOG.md ([7edf9b0a](https://github.com/LouisMazel/maz-ui/commit/7edf9b0a))
+- **release:** Bump version to v3.28.4 ([c46580da](https://github.com/LouisMazel/maz-ui/commit/c46580da))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.28.2...v3.28.3
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.28.2...v3.28.3)
