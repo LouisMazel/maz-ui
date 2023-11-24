@@ -26,9 +26,8 @@ async function updateChangelog() {
   console.log()
   console.log('Changelog', stdout)
 
-  await execPromise(
-    'git add -u && git commit -m "chore: update CHANGELOG.md" && git push origin HEAD',
-  )
+  await execPromise('git add -u && git commit --amend --no-edit && git push origin HEAD --force')
+  // -m "chore(release): update CHANGELOG.md" && git push origin HEAD
 
   console.log('changelog update pushed')
 }
