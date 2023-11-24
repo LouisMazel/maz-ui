@@ -232,7 +232,7 @@
       const btnStyle = {
         left:
           typeof buttonPositions.value?.[i] === 'number'
-            ? `${buttonPositions.value[i] - width / 2 ?? 1}px`
+            ? `${buttonPositions.value[i] - width / 2 || 1}px`
             : '',
       }
 

@@ -70,7 +70,7 @@
     useMazDialogPromise,
     type DialogState,
     type DialogData,
-  } from './../modules/composables/use-maz-dialog-promise'
+  } from './MazDialogPromise/use-maz-dialog-promise'
   export type { Color, Size } from './types'
 </script>
 
@@ -81,7 +81,7 @@
     useMazDialogPromise,
     type DialogData,
     type DialogState,
-  } from './../modules/composables/use-maz-dialog-promise'
+  } from './MazDialogPromise/use-maz-dialog-promise'
 
   export type DialogButton = {
     text: string

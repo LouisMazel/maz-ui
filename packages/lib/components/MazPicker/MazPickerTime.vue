@@ -66,7 +66,7 @@
     }
 
     const hourList = Array.from({ length: 24 }, (_v, i) => i).filter(
-      (hour) => !props.disabledHours?.includes(hour) ?? true,
+      (hour) => !props.disabledHours?.includes(hour) || true,
     )
 
     const nearHour = findNearestNumberInList(hourList, hour)

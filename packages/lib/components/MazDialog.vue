@@ -2,13 +2,16 @@
   <MazBackdrop
     v-bind="backdropAttrs"
     transition-name="modal-anim"
+    aria-labelledby="dialogTitle"
+    aria-describedby="dialogDesc"
     @close="$emit('close', $event)"
     @open="$emit('open', $event)"
     @update:model-value="$emit('update:model-value', $event)"
   >
     <template #default="{ close }">
-      <div
+      <dialog
         class="m-dialog"
+        aria-modal="true"
         :style="[{ width, maxWidth, maxHeight }]"
         :class="{ '--scrollable': scrollable }"
         v-bind="wrapperAttrs"
@@ -19,7 +22,11 @@
         -->
         <slot name="header" :close="close">
           <div class="m-dialog-header" :class="{ '--has-title': $slots['title'] || title }">
-            <h2 v-if="$slots['title'] || title" class="maz-my-0 maz-text-xl maz-font-semibold">
+            <h2
+              v-if="$slots['title'] || title"
+              id="dialogTitle"
+              class="maz-my-0 maz-text-xl maz-font-semibold"
+            >
               <!--
                 @slot Title slot in the header
               -->
@@ -31,7 +38,7 @@
             </MazBtn>
           </div>
         </slot>
-        <div class="m-dialog-content">
+        <div id="dialogDesc" class="m-dialog-content">
           <!--
             @slot Default content
               @binding {Function} close close function
@@ -45,7 +52,7 @@
           -->
           <slot name="footer" :close="close"></slot>
         </div>
-      </div>
+      </dialog>
     </template>
   </MazBackdrop>
 </template>
