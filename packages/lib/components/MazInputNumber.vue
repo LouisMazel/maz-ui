@@ -112,7 +112,7 @@
 
   const increment = () => {
     if (props.disabled || incrementDisabled.value) return
-    if (!currentValue.value) {
+    if (currentValue.value === undefined || currentValue.value === null) {
       currentValue.value = props.min
       return
     }
@@ -121,7 +121,7 @@
   const decrement = () => {
     if (props.disabled || decrementDisabled.value) return
 
-    if (!currentValue.value) {
+    if (currentValue.value === undefined || currentValue.value === null) {
       currentValue.value = props.min
       return
     }
