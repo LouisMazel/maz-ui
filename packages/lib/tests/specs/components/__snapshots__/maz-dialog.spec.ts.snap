@@ -1,3 +1,4 @@
+packages/lib/tests/specs/components/__snapshots__/maz-dialog.spec.ts.snap
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`MazDialog > Should match with the snapshot 1`] = `"<maz-backdrop-stub data-v-ac518804=\\"\\" modelvalue=\\"false\\" teleportselector=\\"body\\" persistent=\\"false\\" nocloseonesckey=\\"false\\" transitionname=\\"modal-anim\\"></maz-backdrop-stub>"`;
+exports[`MazDialog > Should match with the snapshot 1`] = `"<maz-backdrop-stub data-v-ac518804=\\"\\" modelvalue=\\"false\\" teleportselector=\\"body\\" persistent=\\"false\\" nocloseonesckey=\\"false\\" transitionname=\\"modal-anim\\" aria-labelledby=\\"dialogTitle\\" aria-describedby=\\"dialogDesc\\"></maz-backdrop-stub>"`;

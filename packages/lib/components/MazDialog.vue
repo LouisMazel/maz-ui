@@ -9,8 +9,9 @@
     @update:model-value="$emit('update:model-value', $event)"
   >
     <template #default="{ close }">
-      <dialog
+      <div
         class="m-dialog"
+        role="dialog"
         aria-modal="true"
         :style="[{ width, maxWidth, maxHeight }]"
         :class="{ '--scrollable': scrollable }"
@@ -52,7 +53,7 @@
           -->
           <slot name="footer" :close="close"></slot>
         </div>
-      </dialog>
+      </div>
     </template>
   </MazBackdrop>
 </template>
@@ -111,7 +112,7 @@
 
 <style lang="postcss" scoped>
   .m-dialog {
-    @apply maz-flex maz-flex-col maz-rounded maz-bg-color maz-text-normal;
+    @apply maz-flex maz-origin-center maz-flex-col maz-rounded maz-bg-color maz-text-normal;
 
     &-header {
       @apply maz-flex maz-items-center maz-justify-end maz-pl-6 maz-pr-2 maz-pt-2;
