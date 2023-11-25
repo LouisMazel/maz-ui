@@ -13,13 +13,13 @@ description: MazTabs is a standalone component to display content in tabs with a
   <MazTabsBar :items="tabs" />
 
   <MazTabsContent>
-    <MazTabsContentItem :tab="1" class="maz-p-4 maz-text-center">
+    <MazTabsContentItem :tab="1" class="maz-py-4">
       Tab 1
     </MazTabsContentItem>
-    <MazTabsContentItem :tab="2" class="maz-p-4 maz-text-center">
+    <MazTabsContentItem :tab="2" class="maz-py-4">
       Tab 2
     </MazTabsContentItem>
-    <MazTabsContentItem :tab="3" class="maz-p-4 maz-text-center">
+    <MazTabsContentItem :tab="3" class="maz-py-4">
       Tab 3
     </MazTabsContentItem>
   </MazTabsContent>
@@ -31,13 +31,13 @@ description: MazTabs is a standalone component to display content in tabs with a
     <MazTabsBar :items="tabs" />
 
     <MazTabsContent>
-      <MazTabsContentItem :tab="1" class="maz-p-4 maz-text-center">
+      <MazTabsContentItem :tab="1" class="maz-py-4">
         Tab 1
       </MazTabsContentItem>
-      <MazTabsContentItem :tab="2" class="maz-p-4 maz-text-center">
+      <MazTabsContentItem :tab="2" class="maz-py-4">
         Tab 2
       </MazTabsContentItem>
-      <MazTabsContentItem :tab="3" class="maz-p-4 maz-text-center">
+      <MazTabsContentItem :tab="3" class="maz-py-4">
         Tab 3
       </MazTabsContentItem>
     </MazTabsContent>
@@ -61,16 +61,16 @@ description: MazTabs is a standalone component to display content in tabs with a
 ## With model-value
 
 <MazTabs v-model="currentTab">
-  <MazTabsBar :items="tabs2" color="secondary" block />
+  <MazTabsBar :items="tabs2" color="secondary" />
 
   <MazTabsContent>
-    <MazTabsContentItem :tab="1" class="maz-p-4 maz-text-center">
+    <MazTabsContentItem :tab="1" class="maz-py-4">
       Tab 1
     </MazTabsContentItem>
-    <MazTabsContentItem :tab="2" class="maz-p-4 maz-text-center">
+    <MazTabsContentItem :tab="2" class="maz-py-4">
       Tab 2
     </MazTabsContentItem>
-    <MazTabsContentItem :tab="3" class="maz-p-4 maz-text-center">
+    <MazTabsContentItem :tab="3" class="maz-py-4">
       Tab 3
     </MazTabsContentItem>
   </MazTabsContent>
@@ -82,19 +82,22 @@ description: MazTabs is a standalone component to display content in tabs with a
   Set model-value to 1
 </MazBtn>
 
+
+::: details Show code
+
 ```vue
 <template>
   <MazTabs v-model="currentTab">
-    <MazTabsBar :items="tabs" color="secondary" block />
+    <MazTabsBar :items="tabs" color="secondary" />
 
     <MazTabsContent>
-      <MazTabsContentItem :tab="1" class="maz-p-4 maz-text-center">
+      <MazTabsContentItem :tab="1" class="maz-py-4">
         Tab 1
       </MazTabsContentItem>
-      <MazTabsContentItem :tab="2" class="maz-p-4 maz-text-center">
+      <MazTabsContentItem :tab="2" class="maz-py-4">
         Tab 2
       </MazTabsContentItem>
-      <MazTabsContentItem :tab="3" class="maz-p-4 maz-text-center">
+      <MazTabsContentItem :tab="3" class="maz-py-4">
         Tab 3
       </MazTabsContentItem>
     </MazTabsContent>
@@ -115,6 +118,32 @@ description: MazTabs is a standalone component to display content in tabs with a
   const tabs: MazTabsBarItem[] = ['First Tab', 'Second Tab', 'Third Tab']
 </script>
 ```
+
+:::
+
+## Persistent tab
+
+To keep the tab current when the page reloads, you can use the `persistent` props on the component `<MazTabsBar />`.
+
+The component will save the current table index in the URL of the page via a query parameter.
+
+You can choose the name of this query parameter with the props `query-param` `@default 'tab'`
+
+<MazTabs>
+  <MazTabsBar :items="tabs2" color="secondary" persistent />
+
+  <MazTabsContent>
+    <MazTabsContentItem :tab="1" class="maz-py-4">
+      Tab 1
+    </MazTabsContentItem>
+    <MazTabsContentItem :tab="2" class="maz-py-4">
+      Tab 2
+    </MazTabsContentItem>
+    <MazTabsContentItem :tab="3" class="maz-py-4">
+      Tab 3
+    </MazTabsContentItem>
+  </MazTabsContent>
+</MazTabs>
 
 <script lang="ts" setup>
   import { ref } from 'vue'

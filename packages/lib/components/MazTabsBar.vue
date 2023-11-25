@@ -7,7 +7,7 @@
     }"
   >
     <div class="m-tabs-bar__indicator" :style="[tabsIndicatorState]"></div>
-    <a
+    <button
       v-for="({ label, disabled }, index) in normalizedItems"
       :key="index"
       :ref="(mazBtn) => addElementToItemRefs({ mazBtn, index })"
@@ -16,10 +16,10 @@
       :disabled="disabled"
       :href="useAnchor && !disabled ? `#${toKebabCase(label)}` : undefined"
       :style="getTabStyle(index + 1, disabled)"
-      @click="disabled ? undefined : updateCurrentTab(index + 1)"
+      @click="disabled ? undefined : selectTab(index + 1)"
     >
       {{ label }}
-    </a>
+    </button>
   </div>
 </template>
 
@@ -61,9 +61,18 @@
 
   const { currentTab, updateCurrentTab } = injectStrict<MazTabsProvide>('maz-tabs')
 
+  function selectTab(tabIndex: number) {
+    updateCurrentTab(tabIndex)
+    if (props.persistent) {
+      addOrUpdateQueryParamTab(tabIndex)
+    }
+  }
+
   const props = defineProps({
     items: { type: Array as PropType<MazTabsBarItem[]>, required: true },
     useAnchor: { type: Boolean, default: false },
+    persistent: { type: Boolean, default: false },
+    queryParam: { type: String, default: 'tab' },
     color: { type: String as PropType<Color>, default: 'primary' },
     block: { type: Boolean, default: false },
   })
@@ -124,9 +133,24 @@
     }
   })
 
+  function getQueryParamTab() {
+    const urlActuelle = new URL(window.location.href)
+    return Number(urlActuelle.searchParams.get(props.queryParam))
+  }
+
+  function addOrUpdateQueryParamTab(tab: number) {
+    const urlActuelle = new URL(window.location.href)
+    urlActuelle.searchParams.set(props.queryParam, String(tab))
+    window.history.replaceState({}, document.title, urlActuelle.toString())
+  }
+
   onMounted(async () => {
     if (props.useAnchor) {
-      updateCurrentTab(getIndexOfCurrentAnchor(normalizedItems.value, currentTab.value) ?? 1)
+      updateCurrentTab(
+        getIndexOfCurrentAnchor(normalizedItems.value, currentTab.value) ?? currentTab.value ?? 1,
+      )
+    } else if (props.persistent) {
+      updateCurrentTab(getQueryParamTab() ?? currentTab.value ?? 1)
     }
   })
 </script>
