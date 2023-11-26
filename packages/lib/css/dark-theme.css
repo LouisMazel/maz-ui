@@ -8,7 +8,7 @@
   --maz-color-bg-theme-hover: var(--maz-bg-color-dark-lighter);
 }
 
-html.dark {
+[class~='dark'] {
   /* USAGE */
   --maz-color-text: var(--maz-color-text-light);
   --maz-color-muted: var(--maz-color-muted-dark);
