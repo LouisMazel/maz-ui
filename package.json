@@ -9,8 +9,9 @@
     "commit": "cz",
     "format": "prettier . --write",
     "lint": "lerna run lint --parallel",
-    "lerna:version": "HUSKY=0 npx lerna version",
-    "lerna:repair": "npx lerna repair"
+    "release": "pnpm release:bump-version && pnpm release:changelogen",
+    "release:bump-version": "lerna version",
+    "release:changelogen": "ts-node ./changelog-generate.ts"
   },
   "lint-staged": {
     "!(node_modules/**/*|packages/**/*|.prettierignore|.gitignore|.editorconfig).*": [
@@ -37,7 +38,6 @@
     "lerna": "^7.4.2",
     "lint-staged": "^15.1.0",
     "prettier": "^3.1.0",
-    "simple-git": "^3.21.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
   },

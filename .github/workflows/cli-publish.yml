@@ -1,18 +1,9 @@
 name: Cli Publish To Npm
 
 on:
-  release:
-    types: [created]
   push:
-    branches:
-      - master
-    paths:
-      - '.github/workflows/cli-publish.yml'
-
-# on:
-#   push:
-#     tags:
-#       - v*.*.*
+    tags:
+      - v*.*.*
 
 jobs:
   cli-publish:

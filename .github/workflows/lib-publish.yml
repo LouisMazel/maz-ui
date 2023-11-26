@@ -1,18 +1,9 @@
 name: Lib Publish To Npm
 
 on:
-  release:
-    types: [created]
   push:
-    branches:
-      - master
-    paths:
-      - '.github/workflows/lib-publish.yml'
-
-# on:
-#   push:
-#     tags:
-#       - v*.*.*
+    tags:
+      - v*.*.*
 
 jobs:
   lib-publish:

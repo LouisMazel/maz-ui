@@ -89,8 +89,9 @@ test-unit-coverage-main:
 	pnpm --filter maz-ui test:unit:coverage:master
 
 release:
-	pnpm lerna:version $(type)
-	node generate-changelog.js
+	pnpm release:bump-version $(type)
+	pnpm release:changelogen
+
 publish-prerelease:
 	make build-lib && cd packages/lib/dist && pnpm publish --access public --tag alpha --no-git-checks
 

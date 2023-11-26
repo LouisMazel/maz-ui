@@ -1,13 +1,18 @@
 {
   "loglevel": "verbose",
   "version": "3.28.6",
-  "yes": false,
+  "yes": true,
   "command": {
     "version": {
-      "allowBranch": ["master", "release/*"],
-      "message": "chore(release): bump version to %s",
+      "allowBranch": ["master"],
+      "message": "chore(release): bump version %v",
       "conventionalCommits": true,
-      "changelog": false
+      "forceGitTag": false,
+      "changelog": false,
+      "push": true,
+      "gitTagVersion": true,
+      "tagVersionPrefix": "v",
+      "commitHooks": true
     }
   },
   "npmClient": "pnpm",
