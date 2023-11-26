@@ -130,7 +130,7 @@
 
   onMounted(async () => {
     if (props.persistent) {
-      updateCurrentTab(getQueryParamTab() ?? currentTab.value ?? 1)
+      updateCurrentTab(getQueryParamTab() || currentTab.value || 1)
     }
   })
 </script>
