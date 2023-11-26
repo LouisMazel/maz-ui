@@ -2,9 +2,10 @@ name: Lib Tests Unit
 
 on:
   push:
+    branches:
+      - 'master'
     paths:
       - 'packages/lib/**'
-      - '.github/workflows/lib-test-unit.yml'
   pull_request:
     paths:
       - 'packages/lib/**'
