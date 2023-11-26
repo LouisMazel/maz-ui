@@ -1,7 +1,7 @@
 {
   "loglevel": "verbose",
   "version": "3.28.7",
-  "yes": true,
+  "yes": false,
   "command": {
     "version": {
       "allowBranch": ["master"],
