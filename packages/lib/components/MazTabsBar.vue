@@ -14,7 +14,6 @@
       :class="{ '--active': currentTab === index, '--disabled': disabled }"
       class="m-tabs-bar__item"
       :disabled="disabled"
-      :href="useAnchor && !disabled ? `#${toKebabCase(label)}` : undefined"
       :style="getTabStyle(index + 1, disabled)"
       @click="disabled ? undefined : selectTab(index + 1)"
     >
@@ -45,20 +44,6 @@
       }
     | string
 
-  function toKebabCase(input: string): string {
-    return input
-      .replaceAll(/([a-z])([A-Z])/g, '$1-$2')
-      .replaceAll(/[\s_]+/g, '-')
-      .toLowerCase()
-  }
-
-  const getIndexOfCurrentAnchor = (tabs: (typeof normalizedItems)['value'], value: number) => {
-    if (typeof window === 'undefined') return value
-    const anchor = window.location.hash.replace('#', '')
-    const index = tabs.findIndex(({ label }) => toKebabCase(label) === anchor)
-    return index === -1 ? 1 : index + 1
-  }
-
   const { currentTab, updateCurrentTab } = injectStrict<MazTabsProvide>('maz-tabs')
 
   function selectTab(tabIndex: number) {
@@ -70,7 +55,6 @@
 
   const props = defineProps({
     items: { type: Array as PropType<MazTabsBarItem[]>, required: true },
-    useAnchor: { type: Boolean, default: false },
     persistent: { type: Boolean, default: false },
     queryParam: { type: String, default: 'tab' },
     color: { type: String as PropType<Color>, default: 'primary' },
@@ -145,11 +129,7 @@
   }
 
   onMounted(async () => {
-    if (props.useAnchor) {
-      updateCurrentTab(
-        getIndexOfCurrentAnchor(normalizedItems.value, currentTab.value) ?? currentTab.value ?? 1,
-      )
-    } else if (props.persistent) {
+    if (props.persistent) {
       updateCurrentTab(getQueryParamTab() ?? currentTab.value ?? 1)
     }
   })
