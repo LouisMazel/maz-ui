@@ -1,5 +1,17 @@
 # Change Log
 
+## v3.28.8...v3.28.9
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.28.8...v3.28.9)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazTabsBar - current tabs init when persistent option is present ([6b49f089](https://github.com/LouisMazel/maz-ui/commit/6b49f089))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.28.7...v3.28.8
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.28.7...v3.28.8)
