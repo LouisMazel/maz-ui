@@ -1,9 +1,6 @@
 name: Linters
 
 on:
-  push:
-    paths:
-      - '.github/workflows/linters.yml'
   pull_request:
     paths:
       - 'packages/**'
