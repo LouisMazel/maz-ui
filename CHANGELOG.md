@@ -1,5 +1,25 @@
 # Change Log
 
+## v3.28.7...v3.28.8
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.28.7...v3.28.8)
+
+### 💅 Refactors
+
+- **maz-ui:** Dark mode enable if parent element has 'dark' class ([34cc36ed](https://github.com/LouisMazel/maz-ui/commit/34cc36ed))
+
+### 🏡 Chore
+
+- Lerna config - check version ([8914e269](https://github.com/LouisMazel/maz-ui/commit/8914e269))
+
+### 🤖 CI
+
+- Run test pipelines only on push if is master branch ([d72cc1f0](https://github.com/LouisMazel/maz-ui/commit/d72cc1f0))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.28.6...v3.28.7
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.28.6...v3.28.7)
