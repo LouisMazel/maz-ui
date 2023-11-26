@@ -3,8 +3,6 @@ title: MazAccordion
 description: MazAccordion is a standalone component
 ---
 
-<!-- markdownlint-disable MD033 -->
-
 # {{ $frontmatter.title }}
 
 {{ $frontmatter.description }}

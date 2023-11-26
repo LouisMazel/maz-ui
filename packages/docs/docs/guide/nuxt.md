@@ -3,8 +3,6 @@ title: Nuxt Module
 description: This module enables auto imports of CSS files, components, composables and installs plugins and directives
 ---
 
-<!-- markdownlint-disable MD033 MD025 -->
-
 # {{ $frontmatter.title }}
 
 {{ $frontmatter.description }}

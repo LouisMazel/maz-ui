@@ -3,8 +3,6 @@ title: MazCardSpotlight
 description: MazCardSpotlight is a standalone component
 ---
 
-<!-- markdownlint-disable MD033 -->
-
 # {{ $frontmatter.title }}
 
 {{ $frontmatter.description }}

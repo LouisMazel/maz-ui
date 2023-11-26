@@ -3,8 +3,6 @@ title: MazDialog
 description: MazDialog is a standalone dialog component to show important informations to the user or propose specific action. Many options are available. You can hide the header or the footer, full-size layout, differents states etc.
 ---
 
-<!-- markdownlint-disable MD033 -->
-
 # {{ $frontmatter.title }}
 
 {{ $frontmatter.description }}
