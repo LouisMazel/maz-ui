@@ -1,5 +1,21 @@
 # Change Log
 
+## v3.28.9...v3.29.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.28.9...v3.29.0)
+
+### 🚀 Enhancements
+
+- **maz-ui:** MazInputCode - new component to validate code (ex: sms) - https://louismazel.github.io/maz-ui-3/components/maz-input-code ([4a3fd4f7](https://github.com/LouisMazel/maz-ui/commit/4a3fd4f7))
+
+### 🤖 CI
+
+- Not run linters and builds check on push ([b77be598](https://github.com/LouisMazel/maz-ui/commit/b77be598))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.28.8...v3.28.9
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.28.8...v3.28.9)
