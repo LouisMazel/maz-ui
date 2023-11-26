@@ -212,13 +212,17 @@
 
 <style lang="postcss" scoped>
   .m-stepper {
+    &__right {
+      @apply maz-truncate maz-text-right maz-text-sm maz-text-primary;
+    }
+
     &__header {
       @apply maz-flex maz-w-full maz-cursor-pointer maz-select-text maz-items-center
-        maz-justify-between maz-space-x-4 maz-rounded maz-px-4 maz-py-2 maz-outline-none
-        maz-transition-colors maz-duration-200;
+        maz-justify-between maz-space-x-4 maz-rounded maz-px-4 maz-py-2 maz-text-left
+        maz-outline-none maz-transition-colors maz-duration-200;
 
       &__content {
-        @apply maz-flex maz-flex-col maz-items-start;
+        @apply maz-flex maz-flex-none maz-flex-col maz-items-start;
       }
 
       &:not(:disabled) {
@@ -281,15 +285,11 @@
     }
 
     &__title {
-      @apply maz-text-normal;
+      @apply maz-text-lg;
     }
 
     &__subtitle {
-      @apply maz-mt-1 maz-text-xs maz-text-muted;
-    }
-
-    &__right {
-      @apply maz-text-right maz-text-sm maz-text-primary;
+      @apply maz-mt-1 maz-text-sm maz-text-muted;
     }
 
     &__count {
