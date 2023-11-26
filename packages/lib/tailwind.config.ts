@@ -11,6 +11,7 @@ export default <Config>{
     transform: {
       vue: (content) => {
         const regex = /<style[^>]*>([\S\s]*?)<\/style>/g
+        // @ts-expect-error
         return content.replaceAll(regex, '')
       },
     },
@@ -22,8 +23,9 @@ export default <Config>{
   },
   plugins: [
     plugin(({ addVariant }) => {
-      addVariant('em', ({ container }) => {
-        container.walkRules((rule) => {
+      // @ts-expect-error
+      addVariant('em', (payload) => {
+        payload.container.walkRules((rule) => {
           rule.selector = `.em\\:${rule.selector.slice(1)}`
           rule.walkDecls((decl) => {
             decl.value = decl.value.replace('rem', 'em')

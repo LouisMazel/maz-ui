@@ -19,8 +19,6 @@ title: ${filename}
 description: ${filename} is a standalone component
 ---
 
-<!-- markdownlint-disable MD033 -->
-
 # {{ $frontmatter.title }}
 
 {{ $frontmatter.description }}

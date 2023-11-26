@@ -3,7 +3,6 @@ title: MazFullscreenLoader
 description: MazFullscreenLoader is a standalone component
 ---
 
-<!-- markdownlint-disable MD033 -->
 
 # {{ $frontmatter.title }}
 

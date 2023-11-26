@@ -152,7 +152,7 @@
 <style lang="postcss" scoped>
   .m-input-tags {
     @apply maz-relative maz-flex maz-flex-wrap
-      maz-overflow-hidden maz-rounded maz-border maz-bg-color;
+      maz-overflow-hidden maz-rounded maz-border maz-bg-color dark:maz-bg-color-light;
 
     padding-left: 0.25em;
     padding-right: 0.25em;
@@ -180,9 +180,5 @@
         padding-right: 0.4em;
       }
     }
-  }
-
-  html.dark .m-input-tags {
-    @apply maz-bg-color-light;
   }
 </style>

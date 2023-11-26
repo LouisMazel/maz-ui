@@ -3,8 +3,6 @@ title: MazDropdown
 description: MazDropdown is a standalone component
 ---
 
-<!-- markdownlint-disable MD033 -->
-
 # {{ $frontmatter.title }}
 
 {{ $frontmatter.description }}
