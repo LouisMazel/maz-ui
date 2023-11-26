@@ -1,5 +1,26 @@
 # Change Log
 
+## v3.28.6...v3.28.7
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.28.6...v3.28.7)
+
+### 💅 Refactors
+
+- **maz-ui:** MazTabs - add option 'persistent' to use query param and keep current tab on reload. 'useAnchor' is no longer supported ([13e8396a](https://github.com/LouisMazel/maz-ui/commit/13e8396a))
+- **maz-ui:** MazTabsBar - remove support of use-anchor option ([ba96c6ae](https://github.com/LouisMazel/maz-ui/commit/ba96c6ae))
+
+### 🏡 Chore
+
+- Improve release flow ([3cb25379](https://github.com/LouisMazel/maz-ui/commit/3cb25379))
+
+### 🎨 Styles
+
+- **maz-ui:** MazStepper - improve ui ([0c0b532a](https://github.com/LouisMazel/maz-ui/commit/0c0b532a))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.28.4...v3.28.6
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.28.4...v3.28.6)
