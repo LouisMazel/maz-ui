@@ -41,7 +41,7 @@
     outline: { type: Boolean, default: false },
     pastel: { type: Boolean, default: false },
     roundedSize: {
-      type: String,
+      type: String as PropType<'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'>,
       default: 'md',
       validator: (value: string) => {
         return ['none', 'sm', 'md', 'lg', 'xl', 'full'].includes(value)
