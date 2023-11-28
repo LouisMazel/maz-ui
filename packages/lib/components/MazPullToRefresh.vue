@@ -26,15 +26,7 @@
 </template>
 
 <script lang="ts" setup>
-  import {
-    defineProps,
-    defineEmits,
-    ref,
-    computed,
-    onMounted,
-    onUnmounted,
-    withDefaults,
-  } from 'vue'
+  import { ref, computed, onMounted, onUnmounted, withDefaults } from 'vue'
 
   const props = withDefaults(
     defineProps<{

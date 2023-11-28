@@ -1,3 +1,4 @@
+import type { ThemeConfig } from 'tailwindcss/types/config'
 export const zIndex = {
   1: '1',
   2: '2',
@@ -11,4 +12,4 @@ export const zIndex = {
   75: '75',
   100: '100',
   'default-backdrop': '1050',
-}
+} satisfies ThemeConfig['zIndex']

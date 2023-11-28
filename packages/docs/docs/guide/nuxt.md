@@ -25,7 +25,7 @@ npm install maz-ui
 
 Add it to your Nuxt modules:
 
-[Available options](#module-options)
+See all [available options here](#module-options)
 
 ```ts
 export default defineNuxtConfig({
@@ -81,7 +81,7 @@ The components, plugins and tools are auto-imported
 ## Module Options
 
 ```ts
-export interface ModuleOptions {
+export interface MazUiNuxtOptions {
   /**
    * Enable auto-import of main css file
    * @default true
@@ -131,6 +131,21 @@ export interface ModuleOptions {
    */
   injectUseUserVisibility?: boolean
   /**
+   * Enable auto-import of useTimer composable
+   * @default false
+   */
+  injectUseTimer?: boolean
+  /**
+   * Enable auto-import of useWindowSize composable
+   * @default false
+   */
+  injectUseWindowSize?: boolean
+  /**
+   * Enable auto-import of useBreakpoints composable
+   * @default false
+   */
+  injectUseBreakpoints?: boolean
+  /**
    * Globally install of v-zoom-img directive
    * @default false
    */
@@ -155,6 +170,11 @@ export interface ModuleOptions {
    * @default true
    */
   injectComponents?: boolean
+  /**
+   * Default path to public svg icons folder for `<MazIcon />` component
+   * @default undefined
+   */
+  defaultMazIconPath?: string
   /**
    * Enable Nuxt Devtools integration
    * @default true

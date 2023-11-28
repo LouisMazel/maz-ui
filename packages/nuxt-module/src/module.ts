@@ -61,6 +61,16 @@ export interface MazUiNuxtOptions {
    */
   injectUseTimer?: boolean
   /**
+   * Enable auto-import of useWindowSize composable
+   * @default false
+   */
+  injectUseWindowSize?: boolean
+  /**
+   * Enable auto-import of useBreakpoints composable
+   * @default false
+   */
+  injectUseBreakpoints?: boolean
+  /**
    * Globally install of v-zoom-img directive
    * @default false
    */
@@ -240,6 +250,22 @@ export default defineNuxtModule<MazUiNuxtOptions>({
         from: 'maz-ui',
         name: 'useIdleTimeout',
         as: 'useIdleTimeout',
+      })
+    }
+
+    if (moduleOptions.injectUseWindowSize) {
+      addImports({
+        from: 'maz-ui',
+        name: 'useWindowSize',
+        as: 'useWindowSize',
+      })
+    }
+
+    if (moduleOptions.injectUseBreakpoints) {
+      addImports({
+        from: 'maz-ui',
+        name: 'useBreakpoints',
+        as: 'useBreakpoints',
       })
     }
 

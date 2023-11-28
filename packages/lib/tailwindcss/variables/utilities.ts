@@ -1,3 +1,5 @@
+import type { ThemeConfig } from 'tailwindcss/types/config'
+
 export const utilities = {
   '.padded-container': {
     width: '100%',
@@ -19,4 +21,4 @@ export const utilities = {
   '.cap-f': {
     '@apply first-letter:maz-capitalize': '',
   },
-}
+} satisfies ThemeConfig['utilities']
