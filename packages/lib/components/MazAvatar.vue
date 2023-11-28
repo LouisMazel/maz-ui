@@ -15,13 +15,15 @@
     <div
       class="m-avatar__wrapper"
       :tabindex="clickable ? 0 : -1"
-      :class="{
-        '--has-shadow': !noElevation,
-        '--bordered': bordered,
-        '--clickable': clickable,
-        '--square': square,
-        '--has-initial': !src && caption,
-      }"
+      :class="[
+        {
+          '--has-shadow': !noElevation,
+          '--bordered': bordered,
+          '--clickable': clickable,
+          '--has-initial': !src && caption,
+        },
+        `--rounded-${square ? 'none' : roundedSize}`,
+      ]"
     >
       <MazLazyImg
         v-if="src"
@@ -98,6 +100,13 @@
     /** Remove the icon on hover when component is clickable */
     noClickableIcon: { type: Boolean, default: false },
     letterCount: { type: Number, default: undefined },
+    roundedSize: {
+      type: String as PropType<'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'>,
+      default: 'full',
+      validator: (value: string) => {
+        return ['none', 'sm', 'md', 'lg', 'xl', 'full'].includes(value)
+      },
+    },
   })
 
   const componentType = computed(() => (props.to ? 'RouterLink' : props.href ? 'a' : 'div'))
@@ -132,8 +141,7 @@
     }
 
     &__wrapper {
-      @apply maz-relative maz-flex maz-flex-none maz-justify-center maz-overflow-hidden
-        maz-rounded-full;
+      @apply maz-relative maz-flex maz-flex-none maz-justify-center maz-overflow-hidden;
 
       height: 3em;
       width: 3em;
@@ -141,7 +149,7 @@
       &.--clickable {
         & .m-avatar__button {
           @apply maz-absolute maz-inset-0 maz-flex maz-w-full
-            maz-cursor-pointer maz-rounded maz-border-none maz-bg-transparent
+            maz-cursor-pointer maz-border-none maz-bg-transparent
             maz-opacity-0 maz-outline-none maz-transition-all maz-duration-200 maz-flex-center;
 
           transform: scale(0);
@@ -149,10 +157,6 @@
           &__icon {
             @apply maz-text-white;
           }
-        }
-
-        &:not(.--square) .m-avatar__button {
-          @apply maz-rounded-full;
         }
 
         &:hover,
@@ -173,8 +177,54 @@
         @apply maz-border maz-border-solid maz-border-white;
       }
 
-      &.--square {
-        @apply maz-rounded;
+      &.--rounded {
+        &-none {
+          @apply maz-rounded-none;
+
+          .m-avatar__button {
+            @apply maz-rounded-none;
+          }
+        }
+
+        &-sm {
+          @apply maz-rounded-sm;
+
+          .m-avatar__button {
+            @apply maz-rounded-sm;
+          }
+        }
+
+        &-md {
+          @apply maz-rounded-md;
+
+          .m-avatar__button {
+            @apply maz-rounded-md;
+          }
+        }
+
+        &-lg {
+          @apply maz-rounded;
+
+          .m-avatar__button {
+            @apply maz-rounded-lg;
+          }
+        }
+
+        &-xl {
+          @apply maz-rounded-xl;
+
+          .m-avatar__button {
+            @apply maz-rounded-xl;
+          }
+        }
+
+        &-full {
+          @apply maz-rounded-full;
+
+          .m-avatar__button {
+            @apply maz-rounded-full;
+          }
+        }
       }
 
       &.--has-shadow {

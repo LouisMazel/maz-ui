@@ -16,3 +16,4 @@ MD046:
   style: fenced
 # Allow text between list
 MD029: false
+MD034: false

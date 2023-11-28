@@ -43,20 +43,23 @@ See all the options props [here](#props-events-emitted)
     size="2rem"
     href="https://placekitten.com/640/600"
     target="_blank"
-    square
+    rounded-size="none"
     clickable
   >
     <template #icon>
       <MazIcon name="eye" style="color: white;" size="2rem" />
     </template>
   </MazAvatar>
+
   <MazAvatar
     src="https://placekitten.com/200/200"
     size="2.5rem"
     clickable
+    rounded-size="xl"
     button-color="danger"
     @click="clicked"
   />
+
   <MazAvatar
     src="https://pbs.twimg.com/profile_images/598181608198381570/-cFG43y2_400x400.jpg"
     size="3rem"
@@ -75,7 +78,7 @@ See all the options props [here](#props-events-emitted)
     size="2rem"
     href="https://placekitten.com/640/600"
     target="_blank"
-    square
+    rounded-size="none"
     clickable
     no-size
   >
@@ -87,6 +90,7 @@ See all the options props [here](#props-events-emitted)
     src="https://placekitten.com/200/200"
     size="2.5rem"
     clickable
+    rounded-size="xl"
     @click="clicked"
   />
   <MazAvatar
