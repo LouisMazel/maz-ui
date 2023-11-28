@@ -1,6 +1,11 @@
 <template>
   <div class="m-pull-to-refresh" :class="{ '--available': pull.available || pullHeight > 10 }">
-    <div class="loading-header" :style="{ height: pullHeight + 'px' }">
+    <div
+      v-if="!isDisabled"
+      class="loading-header"
+      :style="{ height: pullHeight + 'px' }"
+      :class="headerClass"
+    >
       <div v-if="!pull.available" class="header-text">
         <slot name="pull-before">
           <span>Pull to refresh</span>
@@ -14,8 +19,7 @@
       <div v-if="internalLoading" class="header-text">
         <slot name="pull-loading">
           <div class="maz-flex maz-flex-col maz-flex-center">
-            <MazSpinner color="theme" />
-            <span>Loading</span>
+            <MazSpinner :color="spinnerColor" size="2.5em" />
           </div>
         </slot>
       </div>
@@ -26,7 +30,12 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, computed, onMounted, onUnmounted, withDefaults } from 'vue'
+  import type { Color } from './types'
+  export type { Color } from './types'
+
+  import { ref, computed, onUnmounted, watch } from 'vue'
+  import { isClient } from '../modules/helpers/is-client'
+  import { isInStandaloneMode } from '../modules/helpers/is-standalone-mode'
 
   const props = withDefaults(
     defineProps<{
@@ -34,18 +43,31 @@
       offset?: number
       action?: () => unknown
       containerSelector?: string
+      headerClass?: string
+      spinnerColor?: Color
+      disabled?: boolean
+      standaloneMode?: boolean
     }>(),
     {
       distance: 100,
       offset: 0,
       action: undefined,
       containerSelector: undefined,
+      headerClass: undefined,
+      spinnerColor: 'theme',
+      disabled: false,
+      standaloneMode: false,
     },
   )
 
   const emits = defineEmits(['loaded', 'start', 'error', 'finish', 'response'])
 
-  const touchState = ref<'start' | 'move' | 'end'>('end')
+  const isDisabled = computed(
+    () =>
+      props.disabled ||
+      props.action === undefined ||
+      (props.standaloneMode && isClient() && !isInStandaloneMode()),
+  )
 
   const margin = ref({
     top: 0,
@@ -57,17 +79,19 @@
     to: number
     distance: number
     available: boolean
+    state: 'start' | 'move' | 'end'
   }>({
     from: -1,
     to: -1,
     distance: 0,
     available: false,
+    state: 'end',
   })
 
   const internalLoading = ref(false)
 
   const container = computed<HTMLElement | undefined>(() => {
-    if (typeof document === 'undefined') {
+    if (typeof document === 'undefined' || isDisabled.value) {
       return
     }
 
@@ -83,7 +107,7 @@
   })
 
   const pullHeight = computed(() => {
-    if (touchState.value !== 'move' && touchState.value !== 'end') {
+    if ((pull.value.state !== 'move' && pull.value.state !== 'end') || isDisabled.value) {
       return 0
     }
     return pull.value.distance > props.distance ? props.distance : pull.value.distance
@@ -103,7 +127,11 @@
   }
 
   function handleTouchStart(event: TouchEvent) {
-    if (internalLoading.value || (margin.value.top < 0 && margin.value.bottom < 0)) {
+    if (
+      internalLoading.value ||
+      (margin.value.top < 0 && margin.value.bottom < 0) ||
+      isDisabled.value
+    ) {
       return
     }
 
@@ -113,13 +141,12 @@
       return
     }
 
-    touchState.value = 'start'
-
+    pull.value.state = 'start'
     pull.value.from = item.pageY
   }
 
   function handleTouchMove(event: TouchEvent) {
-    if (internalLoading.value || pull.value.from < 0 || window.scrollY > 0) {
+    if (internalLoading.value || pull.value.from < 0 || window.scrollY > 0 || isDisabled.value) {
       return
     }
 
@@ -134,20 +161,23 @@
 
     pull.value.distance = distance > 0 ? distance : 0
     pull.value.available = pull.value.distance >= props.distance
-    touchState.value = 'move'
+    pull.value.state = 'move'
+
+    // setTimeout(() => {
+    //   resetPull()
+    // }, 10_000)
   }
 
   function handleTouchEnd() {
-    if (
-      (pullHeight.value === props.distance && touchState.value === 'move') ||
-      window.scrollY < 0
-    ) {
+    if (internalLoading.value || isDisabled.value) {
+      return
+    }
+
+    if (pullHeight.value === props.distance && pull.value.state === 'move' && window.scrollY <= 0) {
       runAction()
     } else {
       resetPull()
     }
-
-    touchState.value = 'end'
   }
 
   function resetPull() {
@@ -156,6 +186,7 @@
       to: -1,
       distance: 0,
       available: false,
+      state: 'end',
     }
   }
 
@@ -176,19 +207,41 @@
     }
   }
 
-  onMounted(() => {
-    if (container.value) {
-      container.value.addEventListener('touchstart', handleTouchStart, { passive: true })
-      container.value.addEventListener('touchmove', handleTouchMove, { passive: true })
-      container.value.addEventListener('touchend', handleTouchEnd, { passive: true })
-      updateView(container.value)
+  watch(
+    () => isDisabled.value,
+    (disabled) => {
+      if (disabled === true) {
+        removeEvents()
+      } else {
+        initComponentAndEvents()
+      }
+    },
+    { immediate: true },
+  )
+
+  function initComponentAndEvents() {
+    if (!container.value || isDisabled.value || document === undefined) {
+      return
     }
-  })
+
+    container.value.addEventListener('touchstart', handleTouchStart)
+    container.value.addEventListener('touchmove', handleTouchMove)
+    container.value.addEventListener('touchend', handleTouchEnd)
+    updateView(container.value)
+  }
+
+  function removeEvents() {
+    if (!container.value || document === undefined) {
+      return
+    }
+
+    container.value.removeEventListener('touchstart', handleTouchStart)
+    container.value.removeEventListener('touchmove', handleTouchMove)
+    container.value.removeEventListener('touchend', handleTouchEnd)
+  }
 
   onUnmounted(() => {
-    container.value?.removeEventListener('touchstart', handleTouchStart)
-    container.value?.removeEventListener('touchmove', handleTouchMove)
-    container.value?.removeEventListener('touchend', handleTouchEnd)
+    removeEvents()
   })
 </script>
 
