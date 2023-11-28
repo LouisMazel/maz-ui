@@ -1,25 +1,33 @@
 <template>
-  <main>
-    <header>
-      <NuxtLink :to="{ name: 'index' }"> MazUi </NuxtLink>
+  <MazPullToRefresh :action="action">
+    <main>
+      <header>
+        <NuxtLink :to="{ name: 'index' }"> MazUi </NuxtLink>
 
-      <nav>
-        <MazBtn :to="{ name: 'index' }"> Home </MazBtn>
-        <MazBtn :to="{ name: 'test-page' }"> Test page </MazBtn>
-        <MazBtn @click="autoSetTheme"> Auto </MazBtn>
-        <MazBtn @click="setDarkTheme"> Dark theme </MazBtn>
-        <MazBtn @click="setLightTheme"> Light theme </MazBtn>
-        <MazBtn @click="setSystemTheme"> System theme </MazBtn>
-      </nav>
-    </header>
+        <nav>
+          <MazBtn :to="{ name: 'index' }"> Home </MazBtn>
+          <MazBtn :to="{ name: 'test-page' }"> Test page </MazBtn>
+          <MazBtn @click="autoSetTheme"> Auto </MazBtn>
+          <MazBtn @click="setDarkTheme"> Dark theme </MazBtn>
+          <MazBtn @click="setLightTheme"> Light theme </MazBtn>
+          <MazBtn @click="setSystemTheme"> System theme </MazBtn>
+        </nav>
+      </header>
 
-    <div class="content">
-      <slot />
-    </div>
-  </main>
+      <div class="content">
+        <slot />
+      </div>
+    </main>
+  </MazPullToRefresh>
 </template>
 
 <script setup lang="ts">
+  import { sleep } from 'maz-ui'
+
+  function action() {
+    return sleep(20000)
+  }
+
   const { autoSetTheme, setSystemTheme, setLightTheme, setDarkTheme } = useThemeHandler()
 
   onBeforeMount(() => {
