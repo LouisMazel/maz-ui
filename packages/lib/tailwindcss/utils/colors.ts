@@ -1,3 +1,4 @@
+import type { ThemeConfig } from 'tailwindcss/types/config'
 import { baseColors, variations, variatingColors } from '../variables/colors'
 
 export function getColors() {
@@ -15,5 +16,5 @@ export function getColors() {
     }, {})
   }
 
-  return colors
+  return colors satisfies ThemeConfig['colors']
 }
