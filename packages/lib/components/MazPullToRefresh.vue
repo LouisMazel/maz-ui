@@ -33,9 +33,11 @@
   import type { Color } from './types'
   export type { Color } from './types'
 
-  import { ref, computed, onUnmounted, watch } from 'vue'
+  import { ref, computed, onUnmounted, watch, defineAsyncComponent } from 'vue'
   import { isClient } from '../modules/helpers/is-client'
   import { isInStandaloneMode } from '../modules/helpers/is-standalone-mode'
+
+  const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
 
   const props = withDefaults(
     defineProps<{
