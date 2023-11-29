@@ -38,7 +38,6 @@ description: MazInputNumber is a number input component with increment and decre
     placeholder="Enter number"
     :min="5"
     :max="10000"
-    :min="5"
     size="md"
     color="secondary"
     style="width: 200px;"

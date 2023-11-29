@@ -112,21 +112,29 @@
 
   const increment = () => {
     if (props.disabled || incrementDisabled.value) return
-    if (currentValue.value === undefined || currentValue.value === null) {
+
+    if (
+      (currentValue.value === undefined || currentValue.value === null) &&
+      Number.isFinite(props.min)
+    ) {
       currentValue.value = props.min
       return
     }
-    currentValue.value = currentValue.value + 1 * props.step
+
+    currentValue.value = (currentValue.value ?? 0) + 1 * props.step
   }
   const decrement = () => {
     if (props.disabled || decrementDisabled.value) return
 
-    if (currentValue.value === undefined || currentValue.value === null) {
+    if (
+      (currentValue.value === undefined || currentValue.value === null) &&
+      Number.isFinite(props.min)
+    ) {
       currentValue.value = props.min
       return
     }
 
-    currentValue.value = currentValue.value - 1 * props.step
+    currentValue.value = (currentValue.value ?? 0) - 1 * props.step
   }
 </script>
 
