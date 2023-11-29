@@ -38,7 +38,7 @@
 
     <Transition name="maz-scale-fade">
       <div
-        v-if="dropdownOpen"
+        v-show="dropdownOpen"
         role="menu"
         aria-label="Menu"
         class="menu"
