@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { defineAsyncComponent } from 'vue'
+  import { defineAsyncComponent, onMounted, onUnmounted } from 'vue'
   import type { Color } from './types'
 
   const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
@@ -23,4 +23,27 @@
     }>(),
     { color: 'primary', size: '3em' },
   )
+
+  const addClassToDocument = () => {
+    document.documentElement.classList.add('--maz-fullscreen-loader-present')
+  }
+
+  const removeClassFromDocument = async () => {
+    document.documentElement.classList.remove('--maz-fullscreen-loader-present')
+  }
+
+  onMounted(() => {
+    addClassToDocument()
+  })
+
+  onUnmounted(() => {
+    removeClassFromDocument()
+  })
 </script>
+
+<style lang="postcss">
+  html.--maz-fullscreen-loader-present {
+    overflow-y: hidden;
+    height: 100vh;
+  }
+</style>
