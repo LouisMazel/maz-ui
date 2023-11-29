@@ -1,5 +1,22 @@
 # Change Log
 
+## v3.29.1...v3.29.2
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.29.1...v3.29.2)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazPullToRefresh - add lazy import of MazSpinner ([767ed4bd](https://github.com/LouisMazel/maz-ui/commit/767ed4bd))
+
+### 💅 Refactors
+
+- **maz-ui:** MazDropdown - use v-show instead of v-if to be accessible by robots and not render menu on each open ([b38ef69b](https://github.com/LouisMazel/maz-ui/commit/b38ef69b))
+- **maz-ui:** MazFullscreenLoader - the interface is no longer scrollable when it is present ([12b65110](https://github.com/LouisMazel/maz-ui/commit/12b65110))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.29.0...v3.29.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.29.0...v3.29.1)
