@@ -1,5 +1,17 @@
 # Change Log
 
+## v3.29.2...v3.29.3
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.29.2...v3.29.3)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazInputNumber - don't use Number.NEGATIVE_INFINITY when min and modelValue are not set to increment and decrement ([efe713c5](https://github.com/LouisMazel/maz-ui/commit/efe713c5))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.29.1...v3.29.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.29.1...v3.29.2)
