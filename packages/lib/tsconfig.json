@@ -17,8 +17,9 @@
     "noImplicitThis": false,
     "ignoreDeprecations": "5.0",
     "verbatimModuleSyntax": false,
-    "types": ["@types/node", "google.maps", "vite-svg-loader"]
+    "types": ["@types/node", "google.maps", "vite-svg-loader"],
+    "baseUrl": "."
   },
-  "include": ["modules", "components", "tailwindcss", "icons", "utils", "resolvers"],
+  "include": ["modules", "components", "tailwindcss/**/*", "icons", "utils", "resolvers"],
   "exclude": ["node_modules", "components_tmp/**/*"]
 }
