@@ -51,6 +51,11 @@
   } from 'vue'
   import { type DropzoneOptions, type DropzoneFile } from 'dropzone'
 
+  function dropzoneFix<T>(component: T): T {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return (component as any).default ?? component
+  }
+
   const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
 
   export interface MazDropzoneOptions extends DropzoneOptions {
@@ -167,6 +172,7 @@
         let thumbnailElement: HTMLImageElement
         file.previewElement.classList.remove('dz-file-preview')
         const ref = file.previewElement.querySelectorAll('[data-dz-thumbnail-bg]')
+
         ref.forEach((r: Element) => {
           thumbnailElement = r as HTMLImageElement
           thumbnailElement.alt = file.name
@@ -201,7 +207,9 @@
         if (ButtonElement.value) {
           const { default: DropzoneJs } = await import('dropzone')
 
-          dropzone = new DropzoneJs(ButtonElement.value, {
+          const Constructor = dropzoneFix(DropzoneJs)
+
+          dropzone = new Constructor(ButtonElement.value, {
             ...defaultOptions,
             ...props.options,
           })
