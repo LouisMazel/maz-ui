@@ -27,4 +27,4 @@ jobs:
         run: pnpm install
 
       - name: Build lib
-        run: pnpm -r --parallel build
+        run: pnpm -r build

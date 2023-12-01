@@ -57,7 +57,7 @@
     "lint:js": "cross-env NODE_ENV=production eslint --fix --ext .ts,.js,.vue .",
     "lint:style": "stylelint --fix \"./**/*.{vue,css,scss,postcss,pcss}\"",
     "format": "prettier . --write",
-    "build": "ts-node build/vite.config.ts",
+    "build": "pnpm type-check && ts-node build/vite.config.ts",
     "get-icon-list": "ts-node build/get-icon-list.ts",
     "test:unit": "vitest",
     "test:unit:watch": "vitest watch",
