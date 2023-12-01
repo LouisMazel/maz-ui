@@ -2,7 +2,7 @@ import type { ThemeConfig } from 'tailwindcss/types/config'
 import { baseColors, variations, variatingColors } from '../variables/colors'
 
 export function getColors() {
-  const colors = {
+  const colors: Record<keyof typeof variatingColors & keyof typeof baseColors, string> = {
     ...baseColors,
   }
 
