@@ -1,5 +1,22 @@
 # Change Log
 
+## v3.29.3...v3.29.4
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.29.3...v3.29.4)
+
+### 🩹 Fixes
+
+- **maz-ui:** Tailwing config utils typescript errors ([c3b153a8](https://github.com/LouisMazel/maz-ui/commit/c3b153a8))
+- **maz-ui:** MazDropzone - fix error with dropzone constructor ([5f271166](https://github.com/LouisMazel/maz-ui/commit/5f271166))
+
+### 🏡 Chore
+
+- **nuxt-module:** Specify build cmd ([e643ff9f](https://github.com/LouisMazel/maz-ui/commit/e643ff9f))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.29.2...v3.29.3
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.29.2...v3.29.3)
