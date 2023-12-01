@@ -7,13 +7,16 @@ export function getColors() {
   }
 
   for (const color of Object.keys(variatingColors)) {
-    colors[color] = variations.reduce((colorVariations, variation) => {
-      colorVariations[variation] =
-        variation === 'DEFAULT'
-          ? `var(--maz-color-${color})`
-          : `var(--maz-color-${color}-${variation})`
-      return colorVariations
-    }, {})
+    colors[color] = variations.reduce(
+      (colorVariations, variation) => {
+        colorVariations[variation] =
+          variation === 'DEFAULT'
+            ? `var(--maz-color-${color})`
+            : `var(--maz-color-${color}-${variation})`
+        return colorVariations
+      },
+      {} as Record<string, string>,
+    )
   }
 
   return colors satisfies ThemeConfig['colors']
