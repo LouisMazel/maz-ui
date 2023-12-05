@@ -1,5 +1,23 @@
 # Change Log
 
+## v3.29.7...v3.29.8
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.29.7...v3.29.8)
+
+### 🩹 Fixes
+
+- **maz-ui:** UseToast - make message method SSR friendly ([a02a487d](https://github.com/LouisMazel/maz-ui/commit/a02a487d))
+
+### 💅 Refactors
+
+- **maz-ui:** UseThemeHandler - option 'onlyWithStoredValue' supports system theme ([6ceb601f](https://github.com/LouisMazel/maz-ui/commit/6ceb601f))
+- **maz-ui:** MazLazyImg - add props src and deprecate image to match with the HTMLImageElement ([4a23d5c2](https://github.com/LouisMazel/maz-ui/commit/4a23d5c2))
+- **maz-ui:** VFullscreemImg - improve animation and zoom to works on all devices ([ecfa2deb](https://github.com/LouisMazel/maz-ui/commit/ecfa2deb))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.29.6...v3.29.7
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.29.6...v3.29.7)
