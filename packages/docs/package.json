@@ -13,7 +13,7 @@
     "sitemap": "^7.1.1",
     "tailwindcss": "^3.3.6",
     "vitepress": "1.0.0-rc.31",
-    "vue": "^3.3.9"
+    "vue": "^3.3.10"
   },
   "dependencies": {
     "chart.js": "^4.4.1",
