@@ -72,9 +72,7 @@ The components, plugins and tools are auto-imported
 
   toast.show('Success message')
 
-  onMounted(() =>
-    autoSetTheme()
-  })
+  autoSetTheme()
 </script>
 ```
 

@@ -148,19 +148,11 @@ Always run `autoSetTheme` method on app initialization and let the user change t
     selectedTheme,
   } = useThemeHandler(options)
 
-  onBeforeMount(() => {
-    /*
-    * Will automatically set the theme according
-    * with the user preferences and add class to <html /> element
-    */
-    autoSetTheme()
-  })
+  autoSetTheme()
 </script>
 ```
 
 <script lang="ts" setup>
-  import { onMounted } from 'vue'
-
   import { useThemeHandler, type ThemeHandlerOptions } from 'maz-ui'
 
   // optional
@@ -187,7 +179,5 @@ Always run `autoSetTheme` method on app initialization and let the user change t
     selectedTheme,
   } = useThemeHandler(options)
 
-  onMounted(() => {
-    autoSetTheme()
-  })
+  autoSetTheme()
 </script>

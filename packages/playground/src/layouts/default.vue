@@ -30,9 +30,7 @@
 
   const { autoSetTheme, setSystemTheme, setLightTheme, setDarkTheme } = useThemeHandler()
 
-  onBeforeMount(() => {
-    autoSetTheme()
-  })
+  autoSetTheme()
 </script>
 
 <style lang="postcss">

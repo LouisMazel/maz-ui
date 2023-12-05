@@ -1,3 +1,5 @@
+import { isClient } from './../helpers/is-client'
+
 import { ref, computed, onMounted } from 'vue'
 
 const DEFAULT_OPTIONS = {
@@ -26,6 +28,10 @@ function setDarkTheme({
   setLocalStorageValue?: boolean
   setSelectedTheme?: boolean
 }) {
+  if (!isClient()) {
+    return
+  }
+
   document.documentElement.classList.remove(lightClass)
   document.documentElement.classList.add(darkClass)
 
@@ -48,6 +54,10 @@ function setLightTheme({
   setLocalStorageValue?: boolean
   setSelectedTheme?: boolean
 }) {
+  if (!isClient()) {
+    return
+  }
+
   document.documentElement.classList.remove(darkClass)
   document.documentElement.classList.add(lightClass)
 
@@ -60,6 +70,10 @@ function setLightTheme({
 }
 
 function setSytemTheme(options: StrictThemeHandlerOptions & { setLocalStorageValue?: boolean }) {
+  if (!isClient()) {
+    return
+  }
+
   document.documentElement.classList.remove(options.darkClass)
   document.documentElement.classList.remove(options.lightClass)
 
@@ -77,8 +91,27 @@ function getPrefDark(): boolean {
   return window.matchMedia('(prefers-color-scheme: dark)').matches
 }
 
-function autoSetTheme(options: StrictThemeHandlerOptions & { setSelectedTheme?: boolean }) {
-  if (
+function autoSetTheme(
+  options: StrictThemeHandlerOptions & { setSelectedTheme?: boolean; onlyLocalStorage?: boolean },
+) {
+  if (!isClient()) {
+    return
+  }
+  if (options.onlyLocalStorage) {
+    if (localStorage[options.storageThemeKey] === options.storageThemeValueDark) {
+      setDarkTheme({
+        ...options,
+        setLocalStorageValue: false,
+        setSelectedTheme: false,
+      })
+    } else if (localStorage[options.storageThemeKey] === options.storageThemeValueLight) {
+      setLightTheme({
+        ...options,
+        setLocalStorageValue: false,
+        setSelectedTheme: false,
+      })
+    }
+  } else if (
     localStorage[options.storageThemeKey] === options.storageThemeValueDark ||
     (!(options.storageThemeKey in localStorage) && getPrefDark()) ||
     (localStorage[options.storageThemeKey] === options.storageThemeValueSystem && getPrefDark())
