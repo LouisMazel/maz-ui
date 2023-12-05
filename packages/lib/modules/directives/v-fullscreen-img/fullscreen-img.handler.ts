@@ -8,8 +8,11 @@ export interface vFullscreenImgOptions {
   scaleOnHover?: boolean
   blurOnHover?: boolean
   zoom?: boolean
-  animated?: boolean
-  scaleAnimation?: boolean
+  offset?: number
+  animation?: {
+    duration?: number
+    easing?: string
+  }
 }
 
 interface vFullscreenImgBindingOptions extends vFullscreenImgOptions {
@@ -31,9 +34,12 @@ export class FullscreenImgHandler {
     scaleOnHover: false,
     blurOnHover: false,
     disabled: false,
-    animated: true,
     zoom: true,
-    scaleAnimation: false,
+    offset: 80,
+    animation: {
+      duration: 300,
+      easing: 'ease-in-out',
+    },
   }
   private mouseEnterListener: () => void
   private mouseLeaveListener: () => void
@@ -129,7 +135,7 @@ export class FullscreenImgHandler {
         openInstanceClass: STATE_OPEN_CLASS,
         clickedElement: el,
         clickedElementBounds: el.getBoundingClientRect(),
-      } as unknown as Record<string, unknown>,
+      },
       addDestroyInProps: true,
     })
   }
@@ -142,7 +148,7 @@ export class FullscreenImgHandler {
 
   private mouseEnter(el: HTMLElement): void {
     el.style.zIndex = '1'
-    if (this.options.scaleOnHover) el.style.transform = 'scale(1.05)'
+    if (this.options.scaleOnHover) el.style.transform = 'scale(1.03)'
     if (this.options.blurOnHover) el.style.filter = 'blur(3px)'
   }
 }

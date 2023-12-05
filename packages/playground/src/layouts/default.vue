@@ -30,13 +30,13 @@
 
   const { autoSetTheme, setSystemTheme, setLightTheme, setDarkTheme } = useThemeHandler()
 
-  autoSetTheme()
+  autoSetTheme({ onlyWithStoredValue: true })
 </script>
 
 <style lang="postcss">
   html,
   body {
-    @apply maz-bg-color maz-text-normal;
+    @apply maz-h-screen maz-overflow-y-auto maz-bg-color maz-text-normal;
   }
 </style>
 

@@ -20,7 +20,7 @@ export default defineNuxtConfig({
     },
     injectUseToast: {
       position: 'bottom-right',
-      timeout: 1000,
+      timeout: 3000,
       persistent: false,
     },
     injectUseThemeHandler: {
@@ -46,6 +46,9 @@ export default defineNuxtConfig({
   app: {
     head: {
       title: 'Dev App - Maz-UI',
+      htmlAttrs: {
+        class: 'dark',
+      },
     },
   },
   postcss,

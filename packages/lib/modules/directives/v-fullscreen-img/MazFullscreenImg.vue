@@ -4,8 +4,7 @@
     role="button"
     class="m-fullscreen-img"
     tabindex="0"
-    :class="{ '--animation-active': animationActive }"
-    @click.self="close"
+    @click.stop="close"
     @keypress.esc.prevent="close"
   >
     <MazSpinner v-show="showLoader" class="m-fullscreen-img-loader maz-h-16" />
@@ -14,61 +13,40 @@
       v-if="loadedOnce && hasMultipleInstances"
       type="button"
       class="m-fullscreen-btn --next"
-      @click.stop="nextPreviousImage(true)"
+      @click.stop="nextPreviousImage('next')"
     >
-      <ChevronLeft class="maz-rotate-90 maz-text-2xl" />
+      <ChevronLeft class="maz-rotate-180 maz-text-3xl" />
     </button>
     <button
-      v-if="showFullscreenImg && loadedOnce && hasMultipleInstances"
+      v-if="loadedOnce && hasMultipleInstances"
       type="button"
       class="m-fullscreen-btn --previous"
-      @click.stop="nextPreviousImage(false)"
+      @click.stop="nextPreviousImage('previous')"
     >
-      <ChevronLeft class="maz-text-2xl" />
+      <ChevronLeft class="maz-text-3xl" />
     </button>
 
     <button type="button" class="m-fullscreen-btn --close" @click="close">
-      <XMark class="maz-text-2xl" />
+      <XMark class="maz-text-3xl" />
     </button>
 
     <div class="m-fullscreen-img-scroller">
-      <Transition
-        :name="hasBasicScaleAnimation ? undefined : 'maz-scale-fade'"
-        @before-enter="hasAnimationBasedOnImageClicked && setClikedElementProperties()"
-        @enter="hasAnimationBasedOnImageClicked && onAnimationEnter()"
-        @after-enter="hasAnimationBasedOnImageClicked && onAnimationEnterFinish()"
-        @before-leave="hasAnimationBasedOnImageClicked && onAnimationBeforeLeave()"
-        @leave="hasAnimationBasedOnImageClicked && setClikedElementProperties()"
-        @after-leave="onAnimationLeaveFinish"
-      >
-        <!-- eslint-disable-next-line vuejs-accessibility/no-static-element-interactions, vuejs-accessibility/click-events-have-key-events -->
-        <img
-          v-show="showFullscreenImg"
-          id="ZvImgElement"
-          ref="ImgElement"
-          :src="currentSrc"
-          :alt="currentAlt"
-          tabindex="0"
-          :class="[{ zoomable: zoom }, imageZoomClasses]"
-          @load="onImageLoaded"
-          @click="zoom ? toogleZoom($event) : undefined"
-        />
-      </Transition>
+      <!-- eslint-disable-next-line vuejs-accessibility/no-static-element-interactions, vuejs-accessibility/click-events-have-key-events -->
+      <img
+        ref="ImgElement"
+        :src="currentSrc"
+        :alt="currentAlt ?? undefined"
+        tabindex="0"
+        :class="[imageZoomClasses]"
+        @load="onImageLoaded"
+        @click.stop="zoom ? toggleZoom() : undefined"
+      />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { sleep as delay } from './../../helpers/sleep'
-  import {
-    computed,
-    defineAsyncComponent,
-    nextTick,
-    onMounted,
-    onBeforeUnmount,
-    ref,
-    onBeforeMount,
-  } from 'vue'
+  import { computed, defineAsyncComponent, onBeforeUnmount, ref, onMounted, watch } from 'vue'
 
   const emits = defineEmits(['close', 'previous', 'next', 'before-close'])
 
@@ -76,83 +54,64 @@
   const XMark = defineAsyncComponent(() => import('./../../../icons/x-mark.svg'))
   const ChevronLeft = defineAsyncComponent(() => import('./../../../icons/chevron-left.svg'))
 
-  type VueScrollTo = {
-    scrollTo: (
-      _imgElement: HTMLImageElement,
-      _timeout: number,
-      paylaod?: { container?: HTMLElement | null; easing: string; offset: number },
-    ) => void
-  }
-
-  let vueScrollTo: VueScrollTo
-
-  onBeforeMount(async () => {
-    vueScrollTo = (await import('vue-scrollto')) as unknown as VueScrollTo
-  })
-
   const props = withDefaults(
     defineProps<{
-      destroy?: () => void
       src: string
-      alt?: string
-      openInstanceClass: string
-      zoom?: boolean
-      disabled?: boolean
-      clickedElementBounds: {
+      clickedElementBounds?: {
         top: number
         left: number
         height: number
         width: number
       }
+      offset?: number
+      animation?: {
+        duration?: number
+        easing?: string
+      }
+      openInstanceClass?: string
       clickedElement: HTMLElement
-      animated: boolean
-      scaleAnimation?: boolean
+      destroy?: () => void
+      alt?: string
+      zoom?: boolean
     }>(),
     {
-      destroy: undefined,
       zoom: true,
-      animated: true,
+      offset: undefined,
+      destroy: undefined,
       alt: undefined,
+      animation: () => ({
+        duration: 300,
+        easing: 'ease-in-out',
+      }),
+      clickedElementBounds: undefined,
+      openInstanceClass: 'm-fullscreen-img-instance',
     },
   )
 
-  const showFullscreenImg = ref(false)
   const imageLoaded = ref(false)
   const showLoader = ref(false)
   const loadedOnce = ref(false)
   const hasMultipleInstances = ref(false)
   const isZoomed = ref(false)
-  const animationActive = ref(false)
 
-  const isImageElement = ref(props.clickedElement instanceof HTMLImageElement)
+  const currentElement = ref(props.clickedElement)
+  const currentElementBounds = computed(() => props.clickedElement.getBoundingClientRect())
+  const isLandscapeImage = computed(
+    () => currentElementBounds.value.height < currentElementBounds.value.width,
+  )
 
   const currentSrc = ref(props.src)
-  const currentAlt = ref<string | undefined>(props.alt)
+  const currentAlt = ref<string | null | undefined>(props.alt)
 
   const FullscreenImgElement = ref<HTMLDivElement>()
   const ImgElement = ref<HTMLImageElement>()
 
-  const hasAnimationBasedOnImageClicked = computed(
-    () => isImageElement.value && props.animated && !props.scaleAnimation,
-  )
-  const hasBasicScaleAnimation = computed(
-    () => (isImageElement.value || !props.animated) && !props.scaleAnimation,
-  )
-
-  const isLandscapeImage = ref(false)
-
   const imageZoomClasses = computed(() => {
     if (isZoomed.value) {
-      return `--is-zoomed maz-cursor-zoom-in maz-max-w-[none] ${
-        isLandscapeImage.value ? 'maz-h-screen maz-w-auto' : 'maz-h-auto maz-w-screen'
-      }`
+      return `--is-zoomed maz-cursor-zoom-out`
     }
 
-    return `cursor-zoom-out ${
-      isLandscapeImage.value
-        ? 'maz-w-screen maz-h-screen --is-landscape'
-        : 'maz-h-screen maz-w-auto'
-    }`
+    return `maz-cursor-zoom-in`
   })
 
   function onImageLoaded() {
@@ -161,9 +120,18 @@
     loadedOnce.value = true
   }
 
+  watch(
+    () => loadedOnce.value,
+    (value) => {
+      if (value) {
+        openFullscreen()
+      }
+    },
+  )
+
   function close() {
     emits('before-close')
-    showFullscreenImg.value = false
+    closeFullscreen()
   }
 
   function keydownLister(e: KeyboardEvent) {
@@ -174,7 +142,7 @@
 
     if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
       e.preventDefault()
-      nextPreviousImage(e.key === 'ArrowRight')
+      nextPreviousImage(e.key === 'ArrowRight' ? 'next' : 'previous')
     }
   }
 
@@ -205,21 +173,19 @@
     const src: string | null = nextInstance.getAttribute('data-src')
     const alt: string | null = nextInstance.getAttribute('data-alt')
 
-    currentAlt.value = alt ?? undefined
+    currentAlt.value = alt
     if (src) {
       currentSrc.value = src
     }
 
     imageLoaded.value = false
 
-    await delay(300)
-
     if (!imageLoaded.value) {
       showLoader.value = true
     }
   }
 
-  function nextPreviousImage(isNext: boolean): void {
+  function nextPreviousImage(which: 'next' | 'previous'): void {
     const currentInstance: HTMLElement | null = document.querySelector(
       `.m-fullscreen-img-instance.${props.openInstanceClass}`,
     )
@@ -227,136 +193,191 @@
     if (currentInstance) {
       const allInstances = getAllInstances()
       const currentInstanceIndex = allInstances.indexOf(currentInstance)
-      const newInstanceIndex = isNext ? currentInstanceIndex + 1 : currentInstanceIndex - 1
+      const newInstanceIndex =
+        which === 'next' ? currentInstanceIndex + 1 : currentInstanceIndex - 1
 
       const nextInstance = allInstances[getNewInstanceIndex(allInstances, newInstanceIndex)]
+      currentElement.value = nextInstance
 
       if (nextInstance) {
         useNextInstance(currentInstance, nextInstance)
       }
 
-      emits(isNext ? 'next' : 'previous')
-    }
-  }
+      emits(which)
 
-  async function toogleZoom(event: MouseEvent) {
-    const imgElement = event.target as HTMLImageElement
-
-    // The animation needs image sizes to work, so we delete it just after the animation
-    imgElement.style.width = `${imgElement.clientWidth}px`
-    imgElement.style.height = `${imgElement.clientHeight}px`
-
-    await delay(0)
-    isZoomed.value = !isZoomed.value
-
-    imgElement.style.removeProperty('width')
-    imgElement.style.removeProperty('height')
-
-    await delay(0)
-    const zoomTargetRatio = imgElement.clientWidth / event.clientY
-    const height = window.innerWidth / zoomTargetRatio
-    const offset = height - window.innerHeight / 2
-
-    vueScrollTo.scrollTo(imgElement, 200, {
-      container: imgElement.parentElement,
-      easing: 'linear',
-      offset: isZoomed.value ? offset : 0,
-    })
-  }
-
-  onMounted(async () => {
-    await nextTick()
-
-    document.addEventListener('keydown', keydownLister)
-
-    showFullscreenImg.value = true
-    showLoader.value = true
-
-    addClassToDocument()
-
-    hasMultipleInstances.value = getAllInstances().length > 1
-
-    if (ImgElement.value) {
-      isLandscapeImage.value = props.clickedElementBounds.height < props.clickedElementBounds.width
-    }
-  })
-
-  function setClikedElementProperties() {
-    if (ImgElement.value) {
-      animationActive.value = true
-
-      ImgElement.value.style.removeProperty('margin-left')
-      ImgElement.value.style.removeProperty('margin-right')
-
-      ImgElement.value.style.opacity = '0.5'
-      ImgElement.value.style.width = `${props.clickedElementBounds.width}px`
-      ImgElement.value.style.height = `${props.clickedElementBounds.height}px`
-      ImgElement.value.style.top = `${props.clickedElementBounds.top}px`
-      ImgElement.value.style.left = `${props.clickedElementBounds.left}px`
-    }
-  }
-
-  async function onAnimationEnter() {
-    await delay(0)
-    if (ImgElement.value) {
-      ImgElement.value.style.opacity = '1'
-      ImgElement.value.style.removeProperty('height')
-      ImgElement.value.style.removeProperty('width')
-      ImgElement.value.style.removeProperty('transform')
-
-      const windowWidth = window.innerWidth
-      const windowHeight = window.innerHeight
-      const initalElementHeight = props.clickedElementBounds.height
-      const initalElementWidth = props.clickedElementBounds.width
-
-      if (isLandscapeImage.value) {
-        ImgElement.value.style.left = `0px`
-
-        const imageHeight = (initalElementHeight * windowWidth) / initalElementWidth
-        const top = (windowHeight - imageHeight) / 2
-
-        ImgElement.value.style.top = `${top <= 0 ? 0 : top}px`
+      if (isZoomed.value) {
+        setZoomStyles(ImgElement.value as HTMLElement)
       } else {
-        ImgElement.value.style.top = '0px'
-
-        const imageWidth = (initalElementWidth * windowHeight) / initalElementHeight
-        const left = (windowWidth - imageWidth) / 2
-
-        ImgElement.value.style.left = `${left <= 0 ? 0 : left}px`
+        setEndAnimationStyles()
       }
     }
   }
 
-  function onAnimationEnterFinish() {
-    if (ImgElement.value) {
-      ImgElement.value.style.removeProperty('top')
-      ImgElement.value.style.removeProperty('left')
-      ImgElement.value.style.marginLeft = 'auto'
-      ImgElement.value.style.marginRight = 'auto'
-      ImgElement.value.style.removeProperty('opacity')
+  function setZoomStyles(imgElement: HTMLElement) {
+    if (isLandscapeImage.value) {
+      imgElement.style.width = `${window.innerWidth}px`
+      imgElement.style.removeProperty('height')
+    } else {
+      imgElement.style.height = `${window.innerHeight}px`
+      imgElement.style.removeProperty('width')
     }
-    animationActive.value = false
+
+    imgElement.style.removeProperty('top')
+    imgElement.style.removeProperty('left')
   }
 
-  function onAnimationBeforeLeave() {
-    if (ImgElement.value) {
-      const { left, top } = ImgElement.value.getBoundingClientRect()
-      ImgElement.value.style.left = `${left}px`
-      ImgElement.value.style.top = `${top}px`
-      ImgElement.value.style.width = `${ImgElement.value.width}px`
-      ImgElement.value.style.height = `${ImgElement.value.height}px`
-      animationActive.value = true
+  async function toggleZoom() {
+    const imgElement = ImgElement.value as HTMLImageElement
+
+    if (isZoomed.value) {
+      isZoomed.value = !isZoomed.value
+      setEndAnimationStyles()
+    } else {
+      isZoomed.value = !isZoomed.value
+      setZoomStyles(imgElement)
     }
   }
 
-  function onAnimationLeaveFinish() {
-    emits('close')
-    FullscreenImgElement.value?.remove()
-    props.destroy?.()
+  function runAnimation(frames: Keyframe[] | PropertyIndexedKeyframes) {
+    return ImgElement.value?.animate(frames, {
+      duration: props.animation.duration, // Durée de l'animation en millisecondes
+      easing: props.animation.easing, // Fonction d'interpolation pour l'animation inverse
+    })
   }
+
+  function getPositions(offset = props.offset ?? 0) {
+    const originalWidth =
+      currentElement.value instanceof HTMLImageElement
+        ? currentElement.value.naturalWidth
+        : currentElement.value.clientWidth
+    const originalHeight =
+      currentElement.value instanceof HTMLImageElement
+        ? currentElement.value.naturalHeight
+        : currentElement.value.clientHeight
+
+    // Obtenez les dimensions de la fenêtre
+    const windowWidth = window.innerWidth
+    const windowHeight = window.innerHeight
+
+    // Calculez le facteur d'échelle pour conserver les proportions
+    const scale = Math.min(
+      (windowWidth - 2 * offset) / originalWidth,
+      (windowHeight - 2 * offset) / originalHeight,
+    )
+
+    // Calculez les coordonnées pour centrer l'image
+    const centerX = (windowWidth - originalWidth * scale) / 2
+    const centerY = (windowHeight - originalHeight * scale) / 2
+
+    return {
+      originalWidth,
+      originalHeight,
+      scale,
+      centerX,
+      centerY,
+    }
+  }
+
+  function getAnimationFrames({ trigger }: { trigger: 'open' | 'close' }) {
+    const { originalWidth, originalHeight, scale, centerX, centerY } = getPositions()
+
+    const { top, left, width, height } = currentElementBounds.value
+
+    const frames = [
+      {
+        top: `${top}px`,
+        left: `${left}px`,
+        width: `${width}px`,
+        height: `${height}px`,
+        opacity: 0,
+      },
+      {
+        top: `${centerY}px`,
+        left: `${centerX}px`,
+        width: `${originalWidth * scale}px`,
+        height: `${originalHeight * scale}px`,
+        opacity: 1,
+      },
+    ]
+
+    return {
+      frames: trigger === 'open' ? frames : frames.reverse(),
+    }
+  }
+
+  function setEndAnimationStyles() {
+    const { centerX, centerY, originalHeight, originalWidth, scale } = getPositions()
+
+    const finalStyles = {
+      top: `${centerY}px`,
+      left: `${centerX}px`,
+      width: `${originalWidth * scale}px`,
+      height: `${originalHeight * scale}px`,
+    }
+
+    if (!ImgElement.value) {
+      throw console.error('[maz-ui](vFullscreenImg) ImgElement is not defined')
+    }
+
+    Object.assign(ImgElement.value.style, finalStyles)
+  }
+
+  function openFullscreen() {
+    const { frames } = getAnimationFrames({
+      trigger: 'open',
+    })
+
+    // Utilisez la fonction animate pour gérer l'animation avec les nouvelles coordonnées
+
+    const openAnimation = runAnimation(frames)
+
+    // Ajoutez un gestionnaire d'événements pour détecter la fin de l'animation
+    if (!openAnimation) {
+      throw console.error('[maz-ui](vFullscreenImg) open animation is not defined')
+    }
+
+    openAnimation.onfinish = () => {
+      setEndAnimationStyles()
+    }
+  }
+
+  function closeFullscreen() {
+    const { frames } = getAnimationFrames({
+      trigger: 'close',
+    })
+
+    const closeAnimation = runAnimation(frames)
+
+    if (!closeAnimation) {
+      throw console.error('[maz-ui](vFullscreenImg) close animation is not defined')
+    }
+
+    // Ajoutez un gestionnaire d'événements pour détecter la fin de l'animation inverse
+    closeAnimation.onfinish = () => {
+      // Retirez l'élément du DOM
+      emits('close')
+      FullscreenImgElement.value?.remove()
+      props.destroy?.()
+    }
+  }
+
+  function onResizeWindow() {
+    if (!isZoomed.value) {
+      setEndAnimationStyles()
+    }
+  }
+
+  onMounted(() => {
+    showLoader.value = true
+    document.addEventListener('keydown', keydownLister)
+    window.addEventListener('resize', onResizeWindow)
+    addClassToDocument()
+    hasMultipleInstances.value = getAllInstances().length > 1
+  })
 
   onBeforeUnmount(() => {
     document.removeEventListener('keydown', keydownLister)
+    window.removeEventListener('resize', onResizeWindow)
     removeClassFromDocument()
   })
 </script>
@@ -369,26 +390,14 @@
 
 <style lang="postcss" scoped>
   .m-fullscreen-img {
-    @apply maz-fixed maz-inset-0 maz-z-default-backdrop maz-h-screen maz-w-screen maz-items-center maz-bg-overlay maz-bg-opacity-80 maz-outline-none maz-backdrop-blur;
-
-    backdrop-filter: blur(3px);
+    @apply maz-fixed maz-inset-0 maz-z-default-backdrop maz-h-screen maz-w-screen maz-items-center maz-bg-overlay maz-outline-none maz-backdrop-blur;
 
     .m-fullscreen-img-scroller {
-      @apply maz-max-h-screen maz-overflow-auto;
-    }
-
-    &.--animation-active {
-      .m-fullscreen-img-scroller {
-        @apply maz-h-screen maz-w-screen;
-      }
-    }
-
-    &:not(.--animation-active) {
-      @apply maz-flex maz-flex-center;
+      @apply maz-flex maz-h-screen maz-w-screen maz-overflow-auto maz-flex-center;
     }
 
     img {
-      @apply maz-relative maz-select-none maz-object-contain maz-object-center maz-outline-none maz-transition-all maz-duration-200 maz-ease-linear;
+      @apply maz-fixed maz-z-[1051] maz-select-none maz-object-contain maz-object-center maz-outline-none;
     }
 
     .m-fullscreen-img-loader {
@@ -410,16 +419,5 @@
         @apply maz-right-0 maz-top-1/2 maz-h-screen maz--translate-y-1/2 maz-transform maz-items-center maz-justify-end;
       }
     }
-  }
-
-  .maz-scale-fade-enter-from,
-  .maz-scale-fade-leave-to {
-    @apply maz-scale-50 maz-opacity-0;
-  }
-
-  .maz-scale-fade-enter-active,
-  .maz-scale-fade-leave-active {
-    transition-property: all;
-    transition-duration: 200ms;
   }
 </style>

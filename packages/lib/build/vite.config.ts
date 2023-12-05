@@ -72,15 +72,7 @@ const getBuildConfig = ({
     },
     rollupOptions: {
       treeshake: true,
-      external: [
-        'vue',
-        'libphonenumber-js',
-        '/^dayjs:.*/',
-        'chart.js',
-        'dropzone',
-        'vue-chartjs',
-        'vue-scrollto',
-      ],
+      external: ['vue', 'libphonenumber-js', '/^dayjs:.*/', 'chart.js', 'dropzone', 'vue-chartjs'],
       output: {
         exports: 'named',
         chunkFileNames: `chunks/[name]-[hash].${format === 'es' ? 'mjs' : 'cjs'}`,
@@ -94,7 +86,6 @@ const getBuildConfig = ({
           dropzone: 'dropzone',
           'vue-chartjs': 'vue-chartjs',
           'chart.js': 'chart.js',
-          'vue-scrollto': 'vue-scrollto',
           'dayjs/plugin/customParseFormat': 'dayjs/plugin/customParseFormat',
           'dayjs/plugin/weekday': 'dayjs/plugin/weekday',
           'dayjs/plugin/isBetween': 'dayjs/plugin/isBetween',

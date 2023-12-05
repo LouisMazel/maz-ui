@@ -8,14 +8,6 @@ description: Displays images fullscreen on click
 
 {{ $frontmatter.description }}
 
-To use this directive, you have to install the `vue-scrollto` dependency
-
-<NpmBadge package="vue-scrollto" dist-tag="2" />
-
-```bash
-npm install vue-scrollto@^2
-```
-
 ## Basic usage
 
 <img

@@ -3,10 +3,16 @@
     <div>
       <!-- Start Developping Area - You should not commit anything here to keep this place clean for all others -->
 
+      <MazBtn v-fullscreen-img data-src="https://picsum.photos/300/200">
+        Click me to show image
+      </MazBtn>
+
+      <img v-fullscreen-img src="https://picsum.photos/300/200" />
+
       <!-- End Developping Area -->
     </div>
 
-    <MazFullscreenLoader v-show="wait.isLoading('APP_LOADING')" color="secondary">
+    <MazFullscreenLoader v-if="wait.isLoading('APP_LOADING')" color="secondary">
       Loading...
     </MazFullscreenLoader>
   </div>
@@ -18,34 +24,20 @@
   const toast = useToast()
   const wait = useWait()
 
-  wait.start('APP_LOADING')
-
   onMounted(async () => {
+    wait.start('APP_LOADING')
     await sleep(500)
-
     wait.stop('APP_LOADING')
   })
 
-  toast.info('Votre mot de passe a été mis à jour', {
-    position: 'top-left',
+  toast.message('Votre mot de passe a été mis à jour', {
+    position: 'bottom-left',
     action: {
       func: () => toast.success('CLICKED'),
-      text: 'okokok',
+      text: 'Button',
     },
   })
   toast.success('Votre mot de passe a été mis à jour', {
-    position: 'top-right',
-  })
-  toast.error('Votre mot de passe a été mis à jour', {
     position: 'bottom-right',
-  })
-  toast.warning('Votre mot de passe a été mis à jour', {
-    position: 'bottom-left',
-  })
-  toast.info('Votre mot de passe a été mis à jour', {
-    position: 'top',
-  })
-  toast.error('Votre mot de passe a été mis à jour', {
-    position: 'bottom',
   })
 </script>
