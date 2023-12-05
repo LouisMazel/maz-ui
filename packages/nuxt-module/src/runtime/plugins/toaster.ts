@@ -14,6 +14,7 @@ export default defineNuxtPlugin(({ vueApp, $config }) => {
     error: () => {},
     warning: () => {},
     info: () => {},
+    message: () => {},
   } as unknown as ToasterHandler
 
   return {
