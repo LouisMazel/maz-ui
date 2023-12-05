@@ -1,5 +1,17 @@
 # Change Log
 
+## v3.29.6...v3.29.7
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.29.6...v3.29.7)
+
+### 💅 Refactors
+
+- **maz-ui:** UseThemeHandler - add 'onlyWithStoredValue' option to autoSetTheme method ([a90d27d6](https://github.com/LouisMazel/maz-ui/commit/a90d27d6))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.29.5...v3.29.6
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.29.5...v3.29.6)
