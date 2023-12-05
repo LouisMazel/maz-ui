@@ -57,7 +57,11 @@
       type: [String, Array, Object] as PropType<HTMLAttributes['class']>,
       default: undefined,
     },
+    /**
+     * @deprecated use `src` instead
+     */
     image: { type: [String, Object] as PropType<Image>, default: undefined },
+    src: { type: [String, Object] as PropType<Image>, default: undefined },
     alt: { type: String, default: undefined },
     noPhoto: { type: Boolean, default: false },
     noLoader: { type: Boolean, default: false },
@@ -72,14 +76,16 @@
 
   defineEmits(['intersecting', 'loading', 'loaded', 'error'])
 
+  const src = computed(() => props.image || props.src)
+
   const sources = computed(() => {
-    return typeof props.image === 'string' ? [{ srcset: props.image }] : props.image?.sources
+    return typeof src.value === 'string' ? [{ srcset: src.value }] : src.value?.sources
   })
 </script>
 
 <style lang="postcss" scoped>
   .m-lazy-img-component {
-    @apply maz-relative maz-inline-flex maz-flex-center;
+    @apply maz-relative maz-flex maz-flex-center;
 
     &-loader {
       @apply maz-absolute maz-inset-0 maz-hidden maz-flex-center;
