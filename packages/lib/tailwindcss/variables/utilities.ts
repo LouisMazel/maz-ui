@@ -1,4 +1,4 @@
-import type { ThemeConfig } from 'tailwindcss/types/config'
+import type { CSSRuleObject } from 'tailwindcss/types/config'
 
 export const utilities = {
   '.padded-container': {
@@ -21,4 +21,4 @@ export const utilities = {
   '.cap-f': {
     '@apply first-letter:maz-capitalize': '',
   },
-} satisfies ThemeConfig['utilities']
+} satisfies CSSRuleObject | CSSRuleObject[]
