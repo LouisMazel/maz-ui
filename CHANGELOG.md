@@ -1,5 +1,23 @@
 # Change Log
 
+## v3.29.4...v3.29.5
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.29.4...v3.29.5)
+
+### 🩹 Fixes
+
+- **maz-ui:** Typing in tailwind utils ([3c441b9a](https://github.com/LouisMazel/maz-ui/commit/3c441b9a))
+- **maz-ui:** MazTextarea - label should up when placeholder is provided and has hint ([5b7c0bbd](https://github.com/LouisMazel/maz-ui/commit/5b7c0bbd))
+
+### 💅 Refactors
+
+- **maz-ui:** MazChart - export types ChartType, ChartData and UpdateMode ([2698bef8](https://github.com/LouisMazel/maz-ui/commit/2698bef8))
+- **maz-ui:** UseThemeHandler - make it SSR friendly ([21400df7](https://github.com/LouisMazel/maz-ui/commit/21400df7))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.29.3...v3.29.4
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.29.3...v3.29.4)
