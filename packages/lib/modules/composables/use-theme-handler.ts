@@ -101,13 +101,19 @@ function autoSetTheme(
     return
   }
   if (options.onlyWithStoredValue) {
-    if (localStorage[options.storageThemeKey] === options.storageThemeValueDark) {
+    if (
+      localStorage[options.storageThemeKey] === options.storageThemeValueDark ||
+      (localStorage[options.storageThemeKey] === options.storageThemeValueSystem && getPrefDark())
+    ) {
       setDarkTheme({
         ...options,
         setLocalStorageValue: false,
         setSelectedTheme: false,
       })
-    } else if (localStorage[options.storageThemeKey] === options.storageThemeValueLight) {
+    } else if (
+      localStorage[options.storageThemeKey] === options.storageThemeValueLight ||
+      (localStorage[options.storageThemeKey] === options.storageThemeValueSystem && !getPrefDark())
+    ) {
       setLightTheme({
         ...options,
         setLocalStorageValue: false,
