@@ -35,6 +35,7 @@
       ref="TextareaElement"
       v-bind="$attrs"
       v-model="inputValue"
+      :placeholder="placeholder"
       :name="name"
       :disabled="disabled"
       :required="required"
@@ -83,6 +84,7 @@
     id: { type: String, default: undefined },
     name: { type: String, default: 'MazTextarea' },
     label: { type: String, default: undefined },
+    placeholder: { type: String, default: undefined },
     required: { type: Boolean, default: false },
     disabled: { type: Boolean, default: false },
     readonly: { type: Boolean, default: false },
@@ -141,7 +143,9 @@
 
   const hasLabelOrHint = computed(() => props.label || props.hint)
 
-  const shouldUp = computed(() => hasLabelOrHint.value && (isFocused.value || hasValue.value))
+  const shouldUp = computed(
+    () => hasLabelOrHint.value && (isFocused.value || hasValue.value || !!props.placeholder),
+  )
 
   const borderStyle = computed(() => {
     if (props.error) return 'maz-border-danger'
