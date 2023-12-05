@@ -1,5 +1,5 @@
 {
-  "extends": "@vue/tsconfig/tsconfig.json",
+  "extends": "./node_modules/@vue/tsconfig/tsconfig.json",
   "ts-node": {
     "compilerOptions": {
       "module": "commonjs"
