@@ -29,7 +29,7 @@
   "scripts": {
     "pre-commit": "lint-staged",
     "commit": "cz",
-    "lint": "cross-env NODE_ENV=production eslint --ignore-path .gitignore --fix --ext .ts,.js src",
+    "lint": "cross-env NODE_ENV=production eslint --ignore-path .gitignore --fix --ext .ts,.js,.mjs,.mts,.cjs src",
     "format": "prettier . --write",
     "beautify": "pnpm format && pnpm lint",
     "typecheck": "tsc --noEmit",
@@ -40,7 +40,7 @@
   },
   "lint-staged": {
     "*": "prettier -w -u",
-    "*.{js,ts}": "cross-env NODE_ENV=production eslint --fix"
+    "*.{js,ts,mjs,mts,cjs}": "cross-env NODE_ENV=production eslint --fix"
   },
   "dependencies": {
     "@clack/prompts": "^0.7.0",

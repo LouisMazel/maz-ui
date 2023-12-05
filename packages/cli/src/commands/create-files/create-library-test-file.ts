@@ -1,6 +1,9 @@
 import { writeFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { exit } from 'node:process'
+import { fileURLToPath } from 'node:url'
+
+const _dirname = fileURLToPath(new URL('.', import.meta.url))
 
 export async function createLibraryTestFile({
   filename,
@@ -23,7 +26,7 @@ describe('${filename}', () => {
 
   try {
     const TEST_FILE_OUTPUT = resolve(
-      __dirname,
+      _dirname,
       `../../../../lib/tests/specs/components/${filenameKebab}.spec.ts`,
     )
 

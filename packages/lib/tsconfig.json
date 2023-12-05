@@ -1,10 +1,5 @@
 {
   "extends": "./node_modules/@vue/tsconfig/tsconfig.json",
-  "ts-node": {
-    "compilerOptions": {
-      "module": "commonjs"
-    }
-  },
   "compilerOptions": {
     "module": "ESNext",
     "target": "ESNext",
@@ -21,5 +16,9 @@
     "baseUrl": "."
   },
   "include": ["modules", "components", "tailwindcss/**/*", "icons", "utils", "resolvers"],
-  "exclude": ["node_modules", "components_tmp/**/*"]
+  "exclude": ["node_modules", "components_tmp/**/*"],
+  "ts-node": {
+    "esm": true,
+    "experimentalSpecifierResolution": "node"
+  }
 }

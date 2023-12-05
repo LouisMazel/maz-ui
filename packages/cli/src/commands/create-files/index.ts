@@ -8,6 +8,9 @@ import chalk from 'chalk'
 import { resolve } from 'node:path'
 import { buildEntry } from '../../../../lib/build/entry-builder'
 import { pascalCaseToKebabCase } from './../../utils/pascal-case-to-kebab-case'
+import { fileURLToPath } from 'node:url'
+
+const _dirname = fileURLToPath(new URL('.', import.meta.url))
 
 export function createFilesCommand(): Command {
   const createFiles = new Command('create-files')
@@ -112,7 +115,7 @@ async function runCreateFiles({
     })
 
     await buildEntry({
-      output: resolve(__dirname, './../../../../lib/components/index.ts'),
+      output: resolve(_dirname, './../../../../lib/components/index.ts'),
       componentName: 'fullName',
       scriptName: 'component-entry-generated',
     })
@@ -131,7 +134,7 @@ async function runCreateFiles({
 
   if (shouldCreateDocumentationFile) {
     const componentConfigurationFilePath = resolve(
-      __dirname,
+      _dirname,
       './../../../docs/docs/.vitepress/configs/components.mts',
     )
 

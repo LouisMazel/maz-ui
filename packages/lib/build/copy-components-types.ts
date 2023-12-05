@@ -1,11 +1,13 @@
 import { copyFileSync, existsSync, mkdirSync, readdirSync, renameSync, statSync } from 'node:fs'
 import { resolve, join } from 'node:path'
 import { logger } from './utils/logger'
-import { replaceInFile } from 'replace-in-file'
+import replace from 'replace-in-file'
+import { fileURLToPath } from 'node:url'
 
-const INPUT_COMPONENT_DIR = resolve(__dirname, './../dist/types/components')
-const OUTPUT_TYPES_FILES = resolve(__dirname, './../dist/components')
-const COMPONENTS_TYPE_PATH = resolve(__dirname, './../dist/components/index.d.ts')
+const _dirname = fileURLToPath(new URL('.', import.meta.url))
+const INPUT_COMPONENT_DIR = resolve(_dirname, './../dist/types/components')
+const OUTPUT_TYPES_FILES = resolve(_dirname, './../dist/components')
+const COMPONENTS_TYPE_PATH = resolve(_dirname, './../dist/components/index.d.ts')
 
 function copyRecursive(inputPath: string, outputPath: string) {
   try {
@@ -46,7 +48,7 @@ const replaceTypesExtensions = () => {
     to: "js';",
   }
 
-  return replaceInFile(options)
+  return replace(options)
 }
 
 export function copyAndTransformComponentsTypesFiles() {

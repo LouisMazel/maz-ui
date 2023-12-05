@@ -1,9 +1,13 @@
 import chalk from 'chalk'
 import clear from 'clear'
 import figlet from 'figlet'
-import { version } from '../../package.json'
+import { createRequire } from 'node:module'
 
-export const clearAndPrintBanner = (): void => {
+const nodeRequire = createRequire(import.meta.url)
+
+const { version } = nodeRequire('../../package.json')
+
+export function clearAndPrintBanner() {
   clear()
   console.log(
     chalk.bold.keyword('dodgerblue')(figlet.textSync('cli', { horizontalLayout: 'full' })),

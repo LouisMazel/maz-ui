@@ -1,12 +1,15 @@
 import chalk from 'chalk'
 import { Command } from 'commander'
 import { clearAndPrintBanner } from './utils/print-banner'
-import { version } from '../package.json'
+import { createRequire } from 'node:module'
 import { createFilesCommand } from './commands/create-files'
 import { generateComponentsDocumentationCommand } from './commands/generate-components-docs'
 
 const name = 'cli'
 const program = new Command()
+const nodeRequire = createRequire(import.meta.url)
+
+const { version } = nodeRequire('../package.json')
 
 const options = program.opts()
 

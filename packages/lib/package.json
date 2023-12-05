@@ -6,6 +6,7 @@
   "main": "./modules/index.ts",
   "module": "./modules/index.ts",
   "types": "./types/modules/index.d.ts",
+  "type": "module",
   "bin": {
     "maz": "./bin/maz.mjs",
     "maz-ui": "./bin/maz.mjs"
@@ -53,12 +54,12 @@
   "scripts": {
     "maz": "maz",
     "lint": "pnpm lint:js && pnpm lint:style",
-    "lint:nofix": "cross-env NODE_ENV=production eslint --ext .ts,.js,.vue .",
-    "lint:js": "cross-env NODE_ENV=production eslint --fix --ext .ts,.js,.vue .",
+    "lint:nofix": "cross-env NODE_ENV=production eslint --ext .ts,.js,.mjs,.mts,.cjs,.vue .",
+    "lint:js": "cross-env NODE_ENV=production eslint --fix --ext .ts,.js,.mjs,.mts,.cjs,.vue .",
     "lint:style": "stylelint --fix \"./**/*.{vue,css,scss,postcss,pcss}\"",
     "format": "prettier . --write",
-    "build": "pnpm type-check && ts-node build/vite.config.ts",
-    "get-icon-list": "ts-node build/get-icon-list.ts",
+    "build": "pnpm type-check && node --loader ts-node/esm build/vite.config.ts",
+    "get-icon-list": "node --loader ts-node/esm build/get-icon-list.ts",
     "test:unit": "vitest",
     "test:unit:watch": "vitest watch",
     "test:unit:coverage": "vitest run --coverage",
@@ -70,7 +71,7 @@
   },
   "lint-staged": {
     "*": "prettier -w -u",
-    "*.{js,ts,vue}": "cross-env NODE_ENV=production eslint --fix",
+    "*.{js,ts,vue,mjs,mts,cjs}": "cross-env NODE_ENV=production eslint --fix",
     "*.{vue,css,scss,postcss,pcss}": "stylelint --fix --allow-empty-input"
   },
   "peerDependencies": {
@@ -171,7 +172,7 @@
     "vite": "^5.0.5",
     "vite-plugin-css-injected-by-js": "^3.3.0",
     "vite-plugin-lib-inject-css": "^1.3.0",
-    "vite-plugin-static-copy": "^0.17.1",
+    "vite-plugin-static-copy": "^1.0.0",
     "vite-svg-loader": "^5.1.0",
     "vitest": "^1.0.1",
     "vitest-canvas-mock": "^0.3.3",

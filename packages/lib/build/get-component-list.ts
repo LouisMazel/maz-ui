@@ -1,7 +1,9 @@
 import { readdir } from 'node:fs/promises'
 import { resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
-const INPUT_COMPONENT_DIR = resolve(__dirname, './../components')
+const _dirname = fileURLToPath(new URL('.', import.meta.url))
+const INPUT_COMPONENT_DIR = resolve(_dirname, './../components')
 
 export const getComponentList = async () => {
   try {

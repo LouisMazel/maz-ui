@@ -5,9 +5,12 @@ import { createWriteStream } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { SitemapStream } from 'sitemap'
 
+const _dirname = fileURLToPath(new URL('.', import.meta.url))
+
 const links: { url: string, lastmod?: number, changefreq: string }[] = []
 
 import svgLoader from 'vite-svg-loader'
+import { fileURLToPath } from 'node:url'
 
 export default defineConfig({
   lang: 'en-US',
@@ -27,7 +30,7 @@ export default defineConfig({
   themeConfig: {
     siteTitle: 'Maz-UI',
 
-    logo: { src: '/img/logo.svg', alt: 'Maz-UI logo'},
+    logo: { src: '/img/logo.svg', alt: 'Maz-UI logo' },
     sidebar,
     nav,
     socialLinks: [
@@ -55,7 +58,7 @@ export default defineConfig({
     plugins: [svgLoader()],
     server: {
       fs: {
-        allow: [join(__dirname, './../../../lib')],
+        allow: [join(_dirname, './../../../lib')],
       },
     },
   },
@@ -65,7 +68,7 @@ export default defineConfig({
   // og:description
   // og:image
 
-  transformHead: ({siteConfig, siteData, pageData, title, description, head }) => {
+  transformHead: ({ siteConfig, siteData, pageData, title, description, head }) => {
 
     const baseUrl = 'https://louismazel.github.io'
 
