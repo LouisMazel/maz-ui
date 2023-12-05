@@ -1,5 +1,18 @@
 # Change Log
 
+## v3.29.5...v3.29.6
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.29.5...v3.29.6)
+
+### 🏡 Chore
+
+- Upgrade dependencies ([ba5fdf59](https://github.com/LouisMazel/maz-ui/commit/ba5fdf59))
+- **maz-ui:** Enable type checking before build ([caf5c2aa](https://github.com/LouisMazel/maz-ui/commit/caf5c2aa))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.29.4...v3.29.5
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.29.4...v3.29.5)
