@@ -21,6 +21,8 @@
     type UpdateMode,
   } from 'chart.js'
 
+  export type { ChartType, ChartData, UpdateMode }
+
   const props = defineProps({
     /**
      * Chart.js chart type
