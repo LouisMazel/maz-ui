@@ -11,11 +11,15 @@ import { generateLibComponentsEntryFile } from './generate-lib-entry'
 import { compileScss } from './compile-scss'
 import { copyAndTransformComponentsTypesFiles } from './copy-components-types'
 import { readdir, rename } from 'node:fs/promises'
-import { replaceInFile } from 'replace-in-file'
+import replace from 'replace-in-file'
 import { getComponentList } from './get-component-list'
 
 import { libInjectCss } from 'vite-plugin-lib-inject-css'
 import { copyFileSync } from 'node:fs'
+
+import { fileURLToPath } from 'node:url'
+
+const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
 const argv = minimist(process.argv.slice(2))
 
@@ -207,7 +211,7 @@ const run = async () => {
       await rename(resolve(path, name), resolve(path, `index${extenstion}`))
     }
 
-    await replaceInFile({
+    await replace({
       files: [
         resolve(__dirname, '../dist/nuxt/types.d.mts'),
         resolve(__dirname, '../dist/nuxt/types.d.ts'),
@@ -217,7 +221,7 @@ const run = async () => {
       to: './index',
     })
 
-    await replaceInFile({
+    await replace({
       files: resolve(__dirname, '../dist/package.json'),
       from: [
         new RegExp('"main": "./modules/index.ts"', 'g'),

@@ -6,8 +6,11 @@ import Vue from '@vitejs/plugin-vue'
 import { resolve } from 'node:path'
 
 import svgLoader from 'vite-svg-loader'
+import { fileURLToPath } from 'node:url'
 
-const projectRoot = resolve(__dirname)
+const _dirname = fileURLToPath(new URL('.', import.meta.url))
+
+const projectRoot = resolve(_dirname)
 
 export default defineConfig({
   plugins: [Vue(), svgLoader()],

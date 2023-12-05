@@ -1,6 +1,9 @@
 import { writeFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { exit } from 'node:process'
+import { fileURLToPath } from 'node:url'
+
+const _dirname = fileURLToPath(new URL('.', import.meta.url))
 
 export async function createDocumentFile({
   filename,
@@ -9,10 +12,7 @@ export async function createDocumentFile({
   filename: string
   filenameKebab: string
 }): Promise<void> {
-  const DOCS_FILE_OUTPUT = resolve(
-    __dirname,
-    `../../../../docs/docs/components/${filenameKebab}.md`,
-  )
+  const DOCS_FILE_OUTPUT = resolve(_dirname, `../../../../docs/docs/components/${filenameKebab}.md`)
 
   const documentationFileTemplate = `---
 title: ${filename}

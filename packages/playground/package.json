@@ -5,14 +5,14 @@
     "dev": "nuxi dev",
     "postinstall": "nuxi prepare",
     "lint": "pnpm lint:js && pnpm lint:style",
-    "lint:js": "cross-env NODE_ENV=production eslint --ignore-path .gitignore --fix --ext .ts,.js,.vue .",
-    "lint:style": "stylelint --fix \"**/*.{vue,css,scss,postcss,pcss}\"",
+    "lint:js": "cross-env NODE_ENV=production eslint --ignore-path .gitignore --fix --ext .ts,.js,.mjs,.mts,.cjs,.vue .",
+    "lint:style": "stylelint --fix \"**/*.{vue,css,scss,postcss,pcss,mjs,mts,cjs}\"",
     "format": "prettier --ignore-path .gitignore . --write",
     "pre-commit": "lint-staged"
   },
   "lint-staged": {
     "*": "prettier -w -u",
-    "*.{js,ts,vue}": "cross-env NODE_ENV=production eslint --fix",
+    "*.{js,ts,vue,mjs,mts,cjs}": "cross-env NODE_ENV=production eslint --fix",
     "*.{vue,css,scss,postcss,pcss}": "stylelint --fix"
   },
   "devDependencies": {

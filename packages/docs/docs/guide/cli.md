@@ -9,7 +9,7 @@ description: CLI of maz-ui to generate CSS variables file to theming maz-ui
 
 ## Config file
 
-Then, in your root folder of your project, add a file named `maz-ui.config.{ts, js, mjs, cjs}` as bellow ([model](#maz-ui-configuration-file-typescript-interface))
+Then, in your root folder of your project, add a file named `maz-ui.config.{ts,js,mjs,cjs}` as bellow ([model](#maz-ui-configuration-file-typescript-interface))
 
 All colors can be in HEX, RGB, RGBA, HSL, HSLA and named formats.
 

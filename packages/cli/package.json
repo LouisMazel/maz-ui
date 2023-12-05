@@ -1,21 +1,33 @@
 {
   "name": "cli",
   "version": "3.29.8",
-  "main": "./dist/cli.js",
-  "bin": {
-    "cli": "./dist/cli.js"
+  "main": "./dist/cli.mjs",
+  "types": "./dist/cli.d.ts",
+  "exports": {
+    ".": "./dist/cli.mjs",
+    "./cli": "./bin/cli.mjs",
+    "./types": "./dist/cli.d.ts"
   },
+  "bin": {
+    "cli": "./bin/cli.mjs"
+  },
+  "type": "module",
+  "files": [
+    "bin",
+    "dist"
+  ],
   "scripts": {
-    "lint": "cross-env NODE_ENV=production eslint --ignore-path .gitignore --fix --ext .ts,.js .",
-    "cli": "ts-node lib/cli.ts",
-    "build": "tsc -p .",
+    "lint": "cross-env NODE_ENV=production eslint --ignore-path .gitignore --fix --ext .ts,.js,.mjs,.mts,.cjs .",
+    "cli": "node --loader ts-node/esm src/cli.ts",
+    "build": "unbuild",
+    "build:stub": "unbuild --stub",
     "pre-commit": "lint-staged",
     "vue-docgen": "vue-docgen",
     "format": "prettier --ignore-path .gitignore . --write"
   },
   "lint-staged": {
     "*": "prettier -w -u",
-    "*.{js,ts}": "cross-env NODE_ENV=production eslint --fix"
+    "*.{js,ts,mjs,mts,cjs}": "cross-env NODE_ENV=production eslint --fix"
   },
   "devDependencies": {
     "@clack/prompts": "^0.7.0",

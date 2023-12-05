@@ -49,9 +49,8 @@ export default defineNuxtConfig({
 
 Use [unplugin-vue-components](https://github.com/unplugin/unplugin-vue-components) and the dedicated maz-ui resolver to auto-import components
 
-
 ```ts
-// vite.config.ts
+// vite.config.mts
 
 import Components from 'unplugin-vue-components/vite'
 import { UnpluginVueComponentsResolver } from 'maz-ui/resolvers'

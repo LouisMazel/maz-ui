@@ -1,22 +1,33 @@
 {
   "compilerOptions": {
-    "module": "CommonJS",
-    "declaration": true,
-    "removeComments": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
+    "lib": ["ESNext"],
+    "moduleResolution": "node",
+    "module": "ESNext",
+    "target": "ESNext",
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "target": "ESNext",
-    "sourceMap": true,
-    "incremental": true,
-    "outDir": "./dist",
-    "baseUrl": "./lib",
-    "paths": {
-      "@/*": ["./*"]
-    },
-    "strictNullChecks": true
+    "declaration": true,
+    "removeComments": true,
+    "outDir": "dist",
+    "strictNullChecks": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": true,
+    "inlineSourceMap": false,
+    "isolatedModules": true
+    // "useUnknownInCatchVariables": false
   },
-  "include": ["**/*"],
-  "exclude": ["node_modules", "dist"]
+  "include": [
+    "bin/**/*",
+    "src/**/*",
+    "*.config.mts",
+    "config/**/*",
+    "prettier.config.cjs",
+    ".eslintrc.cjs"
+  ],
+  "exclude": ["node_modules", "dist"],
+  "ts-node": {
+    "esm": true,
+    "experimentalSpecifierResolution": "node"
+  }
 }
