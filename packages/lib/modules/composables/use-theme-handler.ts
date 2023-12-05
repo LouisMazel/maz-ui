@@ -92,12 +92,15 @@ function getPrefDark(): boolean {
 }
 
 function autoSetTheme(
-  options: StrictThemeHandlerOptions & { setSelectedTheme?: boolean; onlyLocalStorage?: boolean },
+  options: StrictThemeHandlerOptions & {
+    setSelectedTheme?: boolean
+    onlyWithStoredValue?: boolean
+  },
 ) {
   if (!isClient()) {
     return
   }
-  if (options.onlyLocalStorage) {
+  if (options.onlyWithStoredValue) {
     if (localStorage[options.storageThemeKey] === options.storageThemeValueDark) {
       setDarkTheme({
         ...options,
@@ -148,28 +151,31 @@ function toggleTheme(options: StrictThemeHandlerOptions) {
 }
 
 export function useThemeHandler(opts: ThemeHandlerOptions = DEFAULT_OPTIONS) {
-  const options = {
+  const globalOptions = {
     ...DEFAULT_OPTIONS,
     ...opts,
   }
 
-  const hasDarkTheme = computed(() => selectedTheme.value === options.storageThemeValueDark)
-  const hasLightTheme = computed(() => selectedTheme.value === options.storageThemeValueLight)
-  const hasSystemTheme = computed(() => selectedTheme.value === options.storageThemeValueSystem)
+  const hasDarkTheme = computed(() => selectedTheme.value === globalOptions.storageThemeValueDark)
+  const hasLightTheme = computed(() => selectedTheme.value === globalOptions.storageThemeValueLight)
+  const hasSystemTheme = computed(
+    () => selectedTheme.value === globalOptions.storageThemeValueSystem,
+  )
 
   onMounted(() => {
-    if (localStorage[options.storageThemeKey]) {
-      theme.value = localStorage[options.storageThemeKey]
-      selectedTheme.value = localStorage[options.storageThemeKey]
+    if (localStorage[globalOptions.storageThemeKey]) {
+      theme.value = localStorage[globalOptions.storageThemeKey]
+      selectedTheme.value = localStorage[globalOptions.storageThemeKey]
     }
   })
 
   return {
-    autoSetTheme: () => autoSetTheme(options),
-    toggleTheme: () => toggleTheme(options),
-    setSystemTheme: () => setSytemTheme({ ...options, setLocalStorageValue: true }),
-    setDarkTheme: () => setTheme({ ...options, shouldSetDarkMode: true }),
-    setLightTheme: () => setTheme({ ...options, shouldSetDarkMode: false }),
+    autoSetTheme: (options?: { onlyWithStoredValue?: boolean }) =>
+      autoSetTheme({ ...globalOptions, ...options }),
+    toggleTheme: () => toggleTheme(globalOptions),
+    setSystemTheme: () => setSytemTheme({ ...globalOptions, setLocalStorageValue: true }),
+    setDarkTheme: () => setTheme({ ...globalOptions, shouldSetDarkMode: true }),
+    setLightTheme: () => setTheme({ ...globalOptions, shouldSetDarkMode: false }),
     hasDarkTheme,
     hasLightTheme,
     hasSystemTheme,
