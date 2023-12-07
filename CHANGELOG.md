@@ -1,5 +1,21 @@
 # Change Log
 
+## v3.29.9...v3.29.10
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.29.9...v3.29.10)
+
+### 💅 Refactors
+
+- **maz-ui:** MazGallery use vFullscreenImg ([f524a2cd](https://github.com/LouisMazel/maz-ui/commit/f524a2cd))
+
+### 🏡 Chore
+
+- New release flow to no break tags ([ce9b6282](https://github.com/LouisMazel/maz-ui/commit/ce9b6282))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.29.8...v3.29.9
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.29.8...v3.29.9)
