@@ -29,9 +29,6 @@ async function updateChangelog() {
 
   const newTag = `v${version.trim()}`
 
-  await execPromise(`git tag ${newTag}`)
-  await execPromise(`git push origin ${newTag}`)
-
   const config = await loadChangelogConfig(process.cwd(), {
     from: previousTagTrimed,
     to: newTag,
@@ -88,6 +85,9 @@ async function updateChangelog() {
       version: newTag.replace('v', ''),
       body: changelogWithoutTitle,
     })
+
+    await execPromise(`git tag ${newTag}`)
+    await execPromise(`git push origin ${newTag}`)
 
     console.log('Release pushed to GitHub.')
   } catch (error: any) {
