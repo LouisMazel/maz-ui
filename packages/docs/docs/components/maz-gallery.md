@@ -13,14 +13,14 @@ description: MazGallery is a standalone component used to display images in a co
 
 <MazGallery
   :images="images"
-  :height="400"
+  :height="320"
 />
 
 ```vue
 <template>
   <MazGallery
     :images="images"
-    :height="400"
+    :height="320"
   />
 </template>
 
@@ -48,6 +48,22 @@ description: MazGallery is a standalone component used to display images in a co
     'https://placekitten.com/800/800'
   ]
 </script>
+
+## Set height by CSS
+
+<MazGallery
+  :images="images"
+  class="maz-h-48 mob-l:maz-h-60 tab-s:maz-h-80"
+  no-height
+/>
+
+```html
+<MazGallery
+  :images="images"
+  class="maz-h-48 mob-l:maz-h-60 tab-s:maz-h-80"
+  no-height
+/>
+```
 
 ## Types
 

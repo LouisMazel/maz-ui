@@ -88,7 +88,7 @@ export class FullscreenImgHandler {
     el.style.cursor = 'move'
 
     if (this.options.scaleOnHover || this.options.blurOnHover) {
-      el.style.transition = 'all 300ms ease-in-out'
+      el.style.transition = 'all 200ms ease-in-out'
     }
 
     /**
@@ -148,7 +148,7 @@ export class FullscreenImgHandler {
 
   private mouseEnter(el: HTMLElement): void {
     el.style.zIndex = '1'
-    if (this.options.scaleOnHover) el.style.transform = 'scale(1.03)'
+    if (this.options.scaleOnHover) el.style.transform = 'scale(1.04)'
     if (this.options.blurOnHover) el.style.filter = 'blur(3px)'
   }
 }

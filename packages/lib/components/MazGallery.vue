@@ -14,12 +14,12 @@
       >
         <img
           v-lazy-img:bg-image="{ src: image.thumbnail, disabled: !lazy }"
-          v-zoom-img="{
+          v-fullscreen-img="{
             src: image.src,
             alt: image.alt,
             disabled: noZoom || shouldHaveRemainingLayer(i),
-            blur: blur,
-            scale: scale,
+            blurOnHover: blur,
+            scaleOnHover: scale,
           }"
           class="m-gallery__item__image maz-flex-1"
           src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
@@ -28,12 +28,12 @@
         />
         <div
           v-if="shouldHaveRemainingLayer(i)"
-          v-zoom-img="{
+          v-fullscreen-img="{
             src: image.src,
             alt: image.alt,
             disabled: noZoom,
-            blur: false,
-            scale: scale,
+            blurOnHover: false,
+            scaleOnHover: scale,
           }"
           class="m-gallery__remaining-layer maz-flex maz-bg-overlay maz-flex-center"
         >
@@ -81,7 +81,7 @@
     noRemaining: { type: Boolean, default: false },
     /** Height of gallery */
     height: { type: [Number, String], default: 150 },
-    /** Remove default height */
+    /** Remove default height - useful to set height with css */
     noHeight: { type: Boolean, default: false },
     /** Width of gallery */
     width: { type: [Number, String], default: '100%' },
