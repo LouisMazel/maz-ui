@@ -1,7 +1,6 @@
 {
   "loglevel": "verbose",
   "version": "3.29.9",
-  "yes": false,
   "command": {
     "version": {
       "allowBranch": ["master"],
@@ -9,8 +8,9 @@
       "conventionalCommits": true,
       "forceGitTag": false,
       "changelog": false,
-      "push": true,
-      "gitTagVersion": true,
+      "yes": false,
+      "push": false,
+      "gitTagVersion": false,
       "tagVersionPrefix": "v",
       "commitHooks": true
     }

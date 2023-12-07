@@ -7,6 +7,7 @@ import {
   loadChangelogConfig,
   syncGithubRelease,
 } from 'changelogen'
+import { version } from './lerna.json'
 
 async function execPromise(command: string): Promise<{ stdout: string; stderr: string }> {
   return await new Promise((resolve, reject) => {
@@ -22,18 +23,21 @@ async function execPromise(command: string): Promise<{ stdout: string; stderr: s
 }
 
 async function updateChangelog() {
-  const { stdout: lastTag } = await execPromise("git tag --sort=-v:refname | sed -n '1p'")
-  const { stdout: penultimateTag } = await execPromise("git tag --sort=-v:refname | sed -n '2p'")
+  // const { stdout: penultimateTag } = await execPromise("git tag --sort=-v:refname | sed -n '2p'")
+  const { stdout: previousTag } = await execPromise("git tag --sort=-v:refname | sed -n '1p'")
+  const previousTagTrimed = previousTag.trim()
 
-  const lastTagTrimed = lastTag.trim()
-  const penultimateTagTrimed = penultimateTag.trim()
+  const newTag = `v${version.trim()}`
+
+  await execPromise(`git tag ${newTag}`)
+  await execPromise(`git push origin ${newTag}`)
 
   const config = await loadChangelogConfig(process.cwd(), {
-    from: penultimateTagTrimed,
-    to: lastTagTrimed,
+    from: previousTagTrimed,
+    to: newTag,
   })
 
-  const rawCommits = await getGitDiff(penultimateTagTrimed, lastTagTrimed)
+  const rawCommits = await getGitDiff(previousTagTrimed, newTag)
   const commits = parseCommits(rawCommits, config).filter((commit) => {
     return (
       config.types[commit.type] &&
@@ -76,12 +80,12 @@ async function updateChangelog() {
   console.log(changelogWithoutTitle)
 
   await execPromise(`git add -u`)
-  await execPromise(`git commit --amend --no-edit`)
-  await execPromise(`git push origin HEAD --force`)
+  await execPromise(`git commit -m "chore(release): bump version to ${newTag}"`)
+  await execPromise(`git push origin HEAD`)
 
   try {
     await syncGithubRelease(config, {
-      version: lastTagTrimed.replace('v', ''),
+      version: newTag.replace('v', ''),
       body: changelogWithoutTitle,
     })
 
