@@ -160,11 +160,11 @@
 
   const emits = defineEmits([
     /** emitted when country or phone number changes
-     * @property {Result} results - meta info of current phone numnber
+     * @property {Result} results - meta info of current phone number
      */
     'update',
     /** emitted when country or phone number changes
-     * @property {Result} results - meta info of current phone numnber
+     * @property {Result} results - meta info of current phone number
      */
     'data',
     /** emitted when selected country changes

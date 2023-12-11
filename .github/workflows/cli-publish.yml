@@ -20,7 +20,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           cache: 'pnpm'
-          node-version: '20'
+          node-version: '21'
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
