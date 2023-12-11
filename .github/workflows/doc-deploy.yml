@@ -22,14 +22,17 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: '21'
           cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install
 
-      - name: Install and build docs
-        run: make generate-components-docs build-docs
+      - name: Generate components docs
+        run: pnpm --filter cli cli generate-components-docs
+
+      - name: Build docs
+        run: pnpm --filter docs build
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3

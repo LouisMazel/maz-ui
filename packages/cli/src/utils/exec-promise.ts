@@ -1,7 +1,7 @@
 import chalk from 'chalk'
 import { exec } from 'node:child_process'
 
-export async function execPromise(command: string): Promise<unknown> {
+export async function execPromise(command: string): Promise<{ stdout: string; stderr: string }> {
   return await new Promise((resolve, reject) => {
     exec(command, (error, stdout, stderr) => {
       if (error) {

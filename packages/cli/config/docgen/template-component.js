@@ -1,7 +1,7 @@
 // @ts-check
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
-module.exports = function component(
+export function component(
   renderedUsage,
   document_,
   _config,

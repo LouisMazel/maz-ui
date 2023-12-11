@@ -18,7 +18,9 @@ export function generateComponentsDocumentationCommand(): Command {
           console.log(chalk.bold.green('Is watching for components documentation generating'))
           console.log('')
         } else {
-          await execPromise('vue-docgen')
+          const { stdout, stderr } = await execPromise('vue-docgen')
+          console.log('stdout', stdout)
+          console.log('stderr', stderr)
 
           console.log('')
           console.log(chalk.bold.green('Components documentation generated'))
