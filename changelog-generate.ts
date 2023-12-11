@@ -44,11 +44,7 @@ async function updateChangelog() {
   const commits = parseCommits(rawCommits, config).filter((commit) => {
     return (
       config.types[commit.type] &&
-      !(
-        commit.type === 'chore' &&
-        (commit.scope === 'deps' || commit.scope === 'release') &&
-        !commit.isBreaking
-      )
+      !(commit.type === 'chore' && ['release'].includes(commit.scope) && !commit.isBreaking)
     )
   })
 
