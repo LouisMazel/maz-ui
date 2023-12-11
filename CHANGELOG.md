@@ -1,5 +1,22 @@
 # Change Log
 
+## v3.29.10...v3.29.11
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.29.10...v3.29.11)
+
+### 🩹 Fixes
+
+- **docs:** Generated docs ([3aacf798](https://github.com/LouisMazel/maz-ui/commit/3aacf798))
+
+### 🏡 Chore
+
+- Release flow - push tag after release commit ([054483ad](https://github.com/LouisMazel/maz-ui/commit/054483ad))
+- **deps:** Upgrade dependencies ([115a31c1](https://github.com/LouisMazel/maz-ui/commit/115a31c1))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.29.9...v3.29.10
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.29.9...v3.29.10)
