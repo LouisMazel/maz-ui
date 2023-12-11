@@ -1,9 +1,8 @@
 name: Lib Publish To Npm
 
 on:
-  push:
-    tags:
-      - v*.*.*
+  release:
+    types: [published]
 
 jobs:
   lib-publish:
