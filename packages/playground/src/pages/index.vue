@@ -3,11 +3,13 @@
     <div>
       <!-- Start Developping Area - You should not commit anything here to keep this place clean for all others -->
 
-      <MazBtn v-fullscreen-img data-src="https://picsum.photos/300/200">
-        Click me to show image
-      </MazBtn>
-
-      <img v-fullscreen-img src="https://picsum.photos/300/200" />
+      <MazPhoneNumberInput
+        v-model="inputVal"
+        default-country-code="CA"
+        placeholder="label"
+        :preferred-countries="['CA', 'US']"
+        show-code-on-list
+      />
 
       <!-- End Developping Area -->
     </div>
@@ -23,6 +25,8 @@
 
   const toast = useToast()
   const wait = useWait()
+
+  const inputVal = ref('')
 
   onMounted(async () => {
     wait.start('APP_LOADING')
