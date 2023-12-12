@@ -55,7 +55,7 @@ This Nuxt application uses the [maz-ui nuxt module](https://louismazel.github.io
 To run the documentation Vitepress app, use this command:
 
 ```shell
-make serve-doc
+pnpm -F docs dev
 ```
 
 This will start the development server available at [http://localhost:5173/maz-ui-3/](http://localhost:5173/maz-ui-3/).
