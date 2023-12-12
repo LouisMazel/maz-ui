@@ -47,6 +47,7 @@ npm install libphonenumber-js
 
 <MazPhoneNumberInput
   v-model="phoneNumber"
+  v-model:country-code="countryCode"
   show-code-on-list
   :preferred-countries="['FR', 'BE', 'DE', 'US', 'GB']"
   :ignored-countries="['AC']"
@@ -65,6 +66,7 @@ npm install libphonenumber-js
 <template>
   <MazPhoneNumberInput
     v-model="phoneNumber"
+    v-model:country-code="countryCode"
     show-code-on-list
     :preferred-countries="['FR', 'BE', 'DE', 'US', 'GB']"
     :ignored-countries="['AC']"
@@ -79,6 +81,7 @@ npm install libphonenumber-js
   import MazPhoneNumberInput from 'maz-ui/components/MazPhoneNumberInput'
   import { ref } from 'vue'
   const phoneNumber = ref()
+  const countryCode = ref('FR')
   const results = ref()
 </script>
 ```
@@ -207,6 +210,7 @@ type CountryCode = 'AC' | 'AD' | 'AE' | 'AF' | 'AG' | 'AI' | 'AL' | 'AM' | 'AO' 
 <script setup lang="ts">
   import { ref } from 'vue'
   const phoneNumber = ref()
+  const countryCode = ref('FR')
 
   const phoneNumber2 = ref('+3263')
   const results = ref()
