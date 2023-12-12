@@ -597,6 +597,10 @@
         @apply maz-cursor-not-allowed maz-bg-color-lighter maz-text-gray-400;
       }
 
+      &.--loading {
+        @apply maz-cursor-wait;
+      }
+
       &.--no-padding {
         @apply maz-p-0;
       }
