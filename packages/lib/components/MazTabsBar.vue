@@ -4,6 +4,7 @@
     class="m-tabs-bar"
     :class="{
       '--block': block,
+      '--elevation': !noElevation,
     }"
   >
     <div class="m-tabs-bar__indicator" :style="[tabsIndicatorState]"></div>
@@ -25,7 +26,6 @@
 <script lang="ts" setup>
   import {
     ref,
-    type PropType,
     computed,
     onBeforeMount,
     onMounted,
@@ -53,13 +53,20 @@
     }
   }
 
-  const props = defineProps({
-    items: { type: Array as PropType<MazTabsBarItem[]>, required: true },
-    persistent: { type: Boolean, default: false },
-    queryParam: { type: String, default: 'tab' },
-    color: { type: String as PropType<Color>, default: 'primary' },
-    block: { type: Boolean, default: false },
-  })
+  const props = withDefaults(
+    defineProps<{
+      items: MazTabsBarItem[]
+      persistent?: boolean
+      queryParam?: string
+      color?: Color
+      block?: boolean
+      noElevation?: boolean
+    }>(),
+    {
+      color: 'primary',
+      queryParam: 'tab',
+    },
+  )
 
   const MazTabsBar = ref()
   const itemRefs = ref<HTMLButtonElement[]>([])
@@ -137,7 +144,11 @@
 
 <style lang="postcss" scoped>
   .m-tabs-bar {
-    @apply maz-relative maz-inline-flex maz-gap-1 maz-overflow-x-auto maz-rounded maz-p-2 maz-elevation dark:maz-border dark:maz-border-color-lighter dark:maz-shadow-none;
+    @apply maz-relative maz-inline-flex maz-gap-1 maz-overflow-x-auto maz-rounded maz-p-2 dark:maz-border dark:maz-border-color-lighter;
+
+    &.--elevation {
+      @apply maz-elevation dark:maz-shadow-none;
+    }
 
     &.--block {
       @apply maz-w-full;
