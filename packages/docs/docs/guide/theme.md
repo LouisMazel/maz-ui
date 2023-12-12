@@ -184,7 +184,7 @@ The file is generated!
   /** BG LIGHT COLOR **/
   --maz-bg-color-light: hsl(0deg 0% 100%);
   --maz-bg-color-light-light: hsl(0deg 0% 94%);
-  --maz-bg-color-light-lighter: hsl(0deg 0% 95%);
+  --maz-bg-color-light-lighter: hsl(0deg 0% 97%);
 
   /** BG DARK COLOR **/
   --maz-bg-color-dark: hsl(235deg 16% 15%);
