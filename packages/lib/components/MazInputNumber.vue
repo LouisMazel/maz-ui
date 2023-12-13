@@ -197,7 +197,7 @@
         @apply maz-z-1 maz-rounded-none;
       }
 
-      &.--text-center {
+      &.--text-center input {
         @apply !maz-p-0 maz-text-center;
       }
 
