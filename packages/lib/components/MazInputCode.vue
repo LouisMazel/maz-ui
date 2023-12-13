@@ -1,7 +1,7 @@
 <template>
   <fieldset
     class="m-input-code"
-    :class="[size ? `--${size}` : undefined]"
+    :class="[size ? `--${size}` : undefined, props.class]"
     :disabled="disabled"
     :style="style"
   >
@@ -31,69 +31,86 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, type PropType, ref, watch, type HTMLAttributes } from 'vue'
+  import { computed, ref, watch, type HTMLAttributes } from 'vue'
   import type { Color } from './types'
-  export type { Color } from './types'
+
+  type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+
+  export type { Color, Size }
 
   defineOptions({
     inheritAttrs: false,
   })
 
-  const props = defineProps({
-    style: {
-      type: [String, Array, Object] as PropType<HTMLAttributes['style']>,
-      default: undefined,
-    },
-    class: {
-      type: [String, Array, Object] as PropType<HTMLAttributes['class']>,
-      default: undefined,
-    },
-    /** Is v-model */
-    modelValue: {
-      type: [String, Number] as PropType<string | number>,
-      default: undefined,
-    },
-    /** Choose the length of the code */
-    codeLength: { type: Number, default: 4 },
-    /** Is the returned type (number works only when accept-alpha is not enable) */
-    type: {
-      type: String as PropType<'text' | 'number'>,
-      default: 'text',
-    },
-    /** Turn it to true to accept alpha charac */
-    acceptAlpha: { type: Boolean, default: false },
-    /** make inputs required */
-    required: { type: Boolean, default: false },
-    /** make inputs required */
-    disabled: { type: Boolean, default: false },
-    /** When is `true` the input has the error style (danger color) */
-    error: { type: Boolean, default: false },
-    /** When is `true` the input has the success style (success color) */
-    success: { type: Boolean, default: false },
-    /** When is `true` the input has the warning style (warning color) */
-    warning: { type: Boolean, default: false },
-    /** Predefined size of component */
-    size: {
-      type: String as PropType<'sm' | 'md' | 'lg'>,
-      default: 'md',
-    },
-    /** Color of component */
-    color: {
-      type: String as PropType<Color>,
-      default: 'primary',
-    },
-  })
+  const props = withDefaults(
+    defineProps<{
+      /** The style of the component. */
+      style?: HTMLAttributes['style']
 
-  const emits = defineEmits([
+      /** The class of the component. */
+      class?: HTMLAttributes['class']
+
+      /** The value of the component (v-model). */
+      modelValue?: string | number
+
+      /** The length of the code. */
+      codeLength?: number
+
+      /** The type of the input field. */
+      type?: 'text' | 'number'
+
+      /** Whether to accept alpha characters. */
+      acceptAlpha?: boolean
+
+      /** Whether the input is required. */
+      required?: boolean
+
+      /** Whether the input is disabled. */
+      disabled?: boolean
+
+      /** Whether there is an error with the input. */
+      error?: boolean
+
+      /** Whether the input is successful. */
+      success?: boolean
+
+      /** Whether there is a warning with the input. */
+      warning?: boolean
+
+      /** The size of the component. */
+      size?: Size
+
+      /** The color of the component. */
+      color?: Color
+    }>(),
+    {
+      style: undefined,
+      class: undefined,
+      modelValue: undefined,
+      codeLength: 4,
+      type: 'text',
+      acceptAlpha: false,
+      required: false,
+      disabled: false,
+      error: false,
+      success: false,
+      warning: false,
+      size: 'md',
+      color: 'primary',
+    },
+  )
+
+  const emits = defineEmits<{
     /**
-     * update the model
+     * Update the model value.
+     * @param value The new value of the model.
      */
-    'update:model-value',
+    (event: 'update:model-value', value?: string | number): void
     /**
      * Emitted when all inputs are set.
      */
-    'completed',
-  ])
+    (event: 'completed'): void
+  }>()
 
   const inputList = ref<HTMLInputElement[]>([])
   const localMap = ref<Map<number, string | undefined>>(new Map())
