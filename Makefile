@@ -93,7 +93,9 @@ release:
 	pnpm release:changelogen
 
 publish-prerelease:
-	make build-lib && cd packages/lib/dist && pnpm publish --access public --tag alpha --no-git-checks
+	make build-lib
+	pnpx lerna version prerelease --preid beta
+	cd packages/lib/dist && pnpm publish --access public --tag beta --no-git-checks
 
 # CLI
 
