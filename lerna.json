@@ -3,7 +3,7 @@
   "version": "3.29.12-beta.1",
   "command": {
     "version": {
-      "allowBranch": ["master"],
+      "allowBranch": ["master", "release/*"],
       "message": "chore(release): bump version %v",
       "conventionalCommits": true,
       "forceGitTag": false,
