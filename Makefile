@@ -95,6 +95,9 @@ release:
 publish-prerelease:
 	make build-lib
 	pnpx lerna version prerelease --preid beta
+	git add -u
+	git commit -m "chore(release): prerelease"
+	ggp
 	cd packages/lib/dist && pnpm publish --access public --tag beta --no-git-checks
 
 # CLI
