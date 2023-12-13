@@ -60,8 +60,8 @@ export const useMazDialogPromise = () => ({
   dialogState,
   showDialogAndWaitChoice,
   removeDialogFromState,
-  rejectDialog: (currentDialog: DialogState, response: string | boolean = false) =>
+  rejectDialog: (currentDialog: DialogState, response: string | boolean = 'cancel') =>
     responseDialog('reject', currentDialog, response),
-  resolveDialog: (currentDialog: DialogState, response: string | boolean = false) =>
+  resolveDialog: (currentDialog: DialogState, response: string | boolean = 'accept') =>
     responseDialog('resolve', currentDialog, response),
 })
