@@ -19,7 +19,7 @@
       :model-value="currentValue"
       type="number"
       class="m-input-number__input maz-flex-1"
-      :class="{ '--no-buttons': noButtons }"
+      :class="{ '--no-buttons': noButtons, '--text-center': textCenter }"
       :disabled="disabled"
       :min="min"
       :max="max"
@@ -80,6 +80,8 @@
       size?: Size
       /** Whether to hide the increment and decrement buttons or not. */
       noButtons?: boolean
+      /** Whether to center the text inside the input or not. */
+      textCenter?: boolean
     }>(),
     {
       style: undefined,
@@ -91,6 +93,7 @@
       step: 1,
       size: 'md',
       noButtons: false,
+      textCenter: true,
     },
   )
 
@@ -192,10 +195,10 @@
     &__input {
       &:not(.--no-buttons) .m-input-wrapper {
         @apply maz-z-1 maz-rounded-none;
+      }
 
-        input {
-          @apply !maz-p-0 maz-text-center;
-        }
+      &.--text-center {
+        @apply !maz-p-0 maz-text-center;
       }
 
       /* Chrome, Safari, Edge, Opera */
