@@ -51,4 +51,16 @@ description: MazInputNumber is a number input component with increment and decre
 </script>
 ```
 
+## No buttons
+
+You can remove the buttons with the props `no-buttons`
+
+<MazInputNumber
+  v-model="numberValue"
+  placeholder="Enter number"
+  :max="20"
+  style="width: 200px;"
+  no-buttons
+/>
+
 <!--@include: ./../.vitepress/generated-docs/maz-input-number.doc.md-->
