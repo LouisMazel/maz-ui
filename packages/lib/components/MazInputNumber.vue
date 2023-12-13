@@ -5,6 +5,7 @@
     :style="style"
   >
     <MazBtn
+      v-if="!noButtons"
       color="transparent"
       :size="size"
       tabindex="-1"
@@ -18,6 +19,7 @@
       :model-value="currentValue"
       type="number"
       class="m-input-number__input maz-flex-1"
+      :class="{ '--no-buttons': noButtons }"
       :disabled="disabled"
       :min="min"
       :max="max"
@@ -29,6 +31,7 @@
       @update:model-value="emitDebounced($event)"
     />
     <MazBtn
+      v-if="!noButtons"
       color="transparent"
       no-shadow
       tabindex="-1"
@@ -43,7 +46,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, type HTMLAttributes, type PropType } from 'vue'
+  import { computed, type HTMLAttributes } from 'vue'
   import type { Size } from './types'
   export type { Size }
 
@@ -57,30 +60,43 @@
     inheritAttrs: false,
   })
 
-  const props = defineProps({
-    style: {
-      type: [String, Array, Object] as PropType<HTMLAttributes['style']>,
-      default: undefined,
+  const props = withDefaults(
+    defineProps<{
+      /** The inline style object for the component. */
+      style?: HTMLAttributes['style']
+      /** The CSS class name for the component. */
+      class?: HTMLAttributes['class']
+      /** The value of the component (v-model). */
+      modelValue?: number
+      /** Whether the input number is disabled or not. */
+      disabled?: boolean
+      /** The maximum value allowed for the input number. */
+      max?: number
+      /** The minimum value allowed for the input number. */
+      min?: number
+      /** The step value for incrementing or decrementing the input number. */
+      step?: number
+      /** The size of the input number component. */
+      size?: Size
+      /** Whether to hide the increment and decrement buttons or not. */
+      noButtons?: boolean
+    }>(),
+    {
+      style: undefined,
+      class: undefined,
+      modelValue: undefined,
+      disabled: false,
+      max: Number.POSITIVE_INFINITY,
+      min: Number.NEGATIVE_INFINITY,
+      step: 1,
+      size: 'md',
+      noButtons: false,
     },
-    class: {
-      type: [String, Array, Object] as PropType<HTMLAttributes['class']>,
-      default: undefined,
-    },
-    modelValue: { type: Number, default: undefined },
-    disabled: { type: Boolean, default: false },
-    max: { type: Number, default: Number.POSITIVE_INFINITY },
-    min: { type: Number, default: Number.NEGATIVE_INFINITY },
-    step: { type: Number, default: 1 },
-    size: {
-      type: String as PropType<Size>,
-      default: 'md',
-      validator: (value: string) => {
-        return ['mini', 'xs', 'sm', 'md', 'lg', 'xl'].includes(value)
-      },
-    },
-  })
+  )
 
-  const emits = defineEmits(['update:model-value'])
+  const emits = defineEmits<{
+    (event: 'update:model-value', value: number | undefined): void
+  }>()
 
   const currentValue = computed({
     get: () => props.modelValue,
@@ -174,12 +190,12 @@
     }
 
     &__input {
-      & .m-input-wrapper {
+      &:not(.--no-buttons) .m-input-wrapper {
         @apply maz-z-1 maz-rounded-none;
-      }
 
-      input {
-        @apply !maz-p-0 maz-text-center;
+        input {
+          @apply !maz-p-0 maz-text-center;
+        }
       }
 
       /* Chrome, Safari, Edge, Opera */
