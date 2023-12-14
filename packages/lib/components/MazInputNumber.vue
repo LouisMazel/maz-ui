@@ -25,6 +25,7 @@
       :max="max"
       :step="step"
       v-bind="$attrs"
+      :inputmode="inputmode"
       :size="size"
       @keydown.up.prevent="increment"
       @keydown.down.prevent="decrement"
@@ -82,6 +83,8 @@
       noButtons?: boolean
       /** Whether to center the text inside the input or not. */
       textCenter?: boolean
+      /** The inputmode attribute for the input. */
+      inputmode?: HTMLAttributes['inputmode']
     }>(),
     {
       style: undefined,
@@ -94,6 +97,7 @@
       size: 'md',
       noButtons: false,
       textCenter: true,
+      inputmode: 'numeric',
     },
   )
 
