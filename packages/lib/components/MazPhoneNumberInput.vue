@@ -102,6 +102,7 @@
       icon-name="phone"
       type="tel"
       clearable
+      inputmode="tel"
       :success="success || (!noValidationSuccess ? results?.isValid : false)"
       class="m-phone-number-input__input maz-flex-1"
       :class="{
