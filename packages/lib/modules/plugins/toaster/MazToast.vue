@@ -59,7 +59,7 @@
           :style="{
             width: progressBarWidth,
           }"
-          class="maz-h-full maz-transition-all !maz-duration-200 maz-ease-linear"
+          class="maz-h-full !maz-transition-all !maz-duration-200 !maz-ease-linear"
           :class="getProgressBarColor()"
         ></div>
       </div>
