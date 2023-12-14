@@ -5,6 +5,7 @@ on:
     paths:
       - 'packages/**'
       - 'pnpm-lock.yaml'
+      - '.github/workflows/linters.yml'
 
 jobs:
   builds:
@@ -22,6 +23,9 @@ jobs:
         with:
           node-version: '21'
           cache: 'pnpm'
+
+      - name: Print app version package.json
+        run: cat ./packages/lib/package.json | grep version
 
       - name: Install dependencies
         run: pnpm install
