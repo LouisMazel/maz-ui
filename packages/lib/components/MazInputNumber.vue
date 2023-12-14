@@ -29,6 +29,11 @@
       :size="size"
       @keydown.up.prevent="increment"
       @keydown.down.prevent="decrement"
+      @focus="$emit('focus', $event)"
+      @change="$emit('change', $event)"
+      @blur="$emit('blur', $event)"
+      @click="$emit('click', $event)"
+      @update="$emit('update', $event)"
       @update:model-value="emitDebounced($event)"
     />
     <MazBtn
@@ -102,7 +107,18 @@
   )
 
   const emits = defineEmits<{
+    /** Emitted when the input value change */
     (event: 'update:model-value', value: number | undefined): void
+    /** Emitted when the input is focused */
+    (event: 'focus', value: unknown): void
+    /** Emitted when the input is blurred */
+    (event: 'blur', value: unknown): void
+    /** Emitted input is clicked */
+    (event: 'click', value: unknown): void
+    /** Emitted when the value change */
+    (event: 'update', value: unknown): void
+    /** Emitted when the value change */
+    (event: 'change', value: unknown): void
   }>()
 
   const currentValue = computed({
