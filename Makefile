@@ -95,6 +95,7 @@ release:
 publish-prerelease:
 	make build-lib
 	pnpx lerna version prerelease --preid beta
+	pnpm i
 	git add -u
 	git commit -m "chore(release): prerelease"
 	git push origin HEAD
