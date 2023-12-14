@@ -32,6 +32,7 @@
           :type="inputType"
           :name="name"
           v-bind="$attrs"
+          :inputmode="inputmode"
           :placeholder="computedPlaceholder"
           :aria-label="label || placeholder"
           :disabled="disabled"
@@ -176,6 +177,7 @@
     inputClasses: { type: String, default: undefined },
     noBorder: { type: Boolean, default: false },
     noRadius: { type: Boolean, default: false },
+    inputmode: { type: String as PropType<HTMLAttributes['inputmode']>, default: 'text' },
     size: {
       type: String as PropType<Size>,
       default: 'md',
