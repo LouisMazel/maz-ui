@@ -93,12 +93,11 @@ release:
 	pnpm release:changelogen
 
 publish-prerelease:
-	make build-lib
 	pnpx lerna version prerelease --preid beta
-	pnpm i
 	git add -u
 	git commit -m "chore(release): prerelease"
 	git push origin HEAD
+	make build-lib
 	cd packages/lib/dist && pnpm publish --access public --tag beta --no-git-checks
 
 # CLI
