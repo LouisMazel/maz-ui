@@ -1,5 +1,11 @@
 <template>
-  <div :id="instanceId" class="m-dropdown" :style="style" :class="[props.class]">
+  <div
+    :id="instanceId"
+    v-click-outside="() => (dropdownOpen = false)"
+    class="m-dropdown"
+    :style="style"
+    :class="[props.class]"
+  >
     <div
       role="button"
       tabindex="0"
@@ -13,12 +19,12 @@
       @mouseenter="onElementMouseenter"
       @mouseleave="onElementMouseleave"
     >
-      <!--
-          @slot Custom Element
-            @binding {Boolen} is-open close function
-            @default `<MazBtn />`
-        -->
       <span class="maz-sr-only">{{ screenReaderDescription }}</span>
+      <!--
+        @slot Custom Element
+          @binding {Boolen} is-open close function
+          @default `<MazBtn />`
+      -->
       <slot name="element" :is-open="dropdownOpen">
         <MazBtn :color="color" :disabled="disabled" v-bind="$attrs" tabindex="-1">
           <span class="maz-flex maz-items-center maz-gap-2">
@@ -97,6 +103,7 @@
   import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
   import { type RouteLocationRaw } from 'vue-router'
   import { debounce } from '../modules/helpers/debounce'
+  import { vClickOutside } from '../modules/directives/click-outside'
   import { type Position } from './types'
   import { type Color } from './MazBtn.vue'
 
