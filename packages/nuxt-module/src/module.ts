@@ -41,6 +41,11 @@ export interface MazUiNuxtOptions {
    */
   injectUseWait?: boolean
   /**
+   * Enable auto-import of useSwipe composable
+   * @default false
+   */
+  injectUseSwiper?: boolean
+  /**
    * Enable auto-import of useThemeHandler composable
    * @default false
    */
