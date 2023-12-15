@@ -1,4 +1,4 @@
-import { useMazDialogPromise } from '@modules/index'
+import { useMazDialogPromise } from '@components/MazDialogPromise.vue'
 
 describe('useMazDialogPromise', () => {
   it('should add a dialog to the state when showDialogAndWaitChoice is called', async () => {
