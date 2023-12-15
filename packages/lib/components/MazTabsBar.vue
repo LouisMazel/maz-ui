@@ -123,7 +123,6 @@
     }
 
     await nextTick()
-    await sleep(200)
 
     if (
       activeTab.offsetLeft < tabsBar.scrollLeft ||
