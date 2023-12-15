@@ -123,7 +123,7 @@
     }
 
     await nextTick()
-    await sleep(100)
+    await sleep(200)
 
     if (
       activeTab.offsetLeft < tabsBar.scrollLeft ||
@@ -135,6 +135,7 @@
         left: activeTab.offsetLeft - tabsBarPaddingOffset,
         behavior: 'smooth', // Ajoutez le défilement fluide
       })
+      await sleep(200)
     }
 
     if (typeof currentTab.value !== 'number') {
