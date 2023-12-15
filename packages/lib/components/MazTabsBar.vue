@@ -29,6 +29,7 @@
     computed,
     watchEffect,
     onBeforeMount,
+    nextTick,
     onMounted,
     type StyleValue,
     type ComponentPublicInstance,
@@ -37,6 +38,7 @@
   import type { MazTabsProvide } from './MazTabs.vue'
 
   import { injectStrict } from './../modules/helpers/inject-strict'
+  import { sleep } from './../modules/helpers/sleep'
 
   export type MazTabsBarItem =
     | {
@@ -105,7 +107,9 @@
     })),
   )
 
-  watchEffect(() => {
+  const tabsIndicatorState = ref<StyleValue>()
+
+  watchEffect(async () => {
     if (!props.autoScroll) {
       return
     }
@@ -118,6 +122,9 @@
       return
     }
 
+    await nextTick()
+    await sleep(100)
+
     if (
       activeTab.offsetLeft < tabsBar.scrollLeft ||
       activeTab.offsetLeft + activeTab.offsetWidth > tabsBar.scrollLeft + tabsBar.clientWidth
@@ -129,9 +136,7 @@
         behavior: 'smooth', // Ajoutez le défilement fluide
       })
     }
-  })
 
-  const tabsIndicatorState = computed<StyleValue>(() => {
     if (typeof currentTab.value !== 'number') {
       return {}
     }
@@ -142,7 +147,7 @@
     const indicatorHeight = tabItemActive?.offsetHeight ?? 0
     const translateXValue = tabItemActive?.offsetLeft ?? 0
 
-    return {
+    tabsIndicatorState.value = {
       transform: `translateX(${translateXValue}px)`,
       width: `${indicatorWidth}px`,
       height: `${indicatorHeight}px`,

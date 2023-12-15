@@ -61,7 +61,7 @@ description: MazTabs is a standalone component to display content in tabs with a
 ## With model-value
 
 <MazTabs v-model="currentTab">
-  <MazTabsBar :items="tabs2" color="secondary" />
+  <MazTabsBar :items="tabs" color="secondary" />
 
   <MazTabsContent>
     <MazTabsContentItem :tab="1" class="maz-py-4">
@@ -78,10 +78,9 @@ description: MazTabs is a standalone component to display content in tabs with a
 
 <br />
 
-<MazBtn @click="currentTab = 1">
+<MazBtn @click="currentTab = 8">
   Set model-value to 1
 </MazBtn>
-
 
 ::: details Show code
 
@@ -148,10 +147,24 @@ You can choose the name of this query parameter with the props `query-param` `@d
 <script lang="ts" setup>
   import { ref } from 'vue'
 
-  const currentTab = ref(2)
+  const currentTab = ref(8)
 
   const tabs: MazTabsBarItem[] = [
     { label: 'First Tab', disabled: false },
+    { label: 'Second Tab', disabled: false },
+    { label: 'Second Tab', disabled: false },
+    { label: 'Second Tab', disabled: false },
+    { label: 'Second Tab', disabled: false },
+    { label: 'Second Tab', disabled: false },
+    { label: 'Second Tab', disabled: false },
+    { label: 'Second Tab', disabled: false },
+    { label: 'Second Tab', disabled: false },
+    { label: 'Second Tab', disabled: false },
+    { label: 'Second Tab', disabled: false },
+    { label: 'Second Tab', disabled: false },
+    { label: 'Second Tab', disabled: false },
+    { label: 'Second Tab', disabled: false },
+    { label: 'Second Tab', disabled: false },
     { label: 'Second Tab', disabled: false },
     { label: 'Third Tab', disabled: true },
   ]
