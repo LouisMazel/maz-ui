@@ -1,6 +1,6 @@
 <template>
   <div
-    ref="MazTabsBar"
+    ref="tabsBarRef"
     class="m-tabs-bar"
     :class="{
       '--block': block,
@@ -12,7 +12,7 @@
       v-for="({ label, disabled }, index) in normalizedItems"
       :key="index"
       :ref="(mazBtn) => addElementToItemRefs({ mazBtn, index })"
-      :class="{ '--active': currentTab === index, '--disabled': disabled }"
+      :class="{ '--active': currentTab === index + 1, '--disabled': disabled }"
       class="m-tabs-bar__item"
       :disabled="disabled"
       :style="getTabStyle(index + 1, disabled)"
@@ -27,6 +27,7 @@
   import {
     ref,
     computed,
+    watchEffect,
     onBeforeMount,
     onMounted,
     type StyleValue,
@@ -55,20 +56,35 @@
 
   const props = withDefaults(
     defineProps<{
+      /** The items to display in the tabs bar */
       items: MazTabsBarItem[]
+      /** Will add a query param to the url to keep the selected tab on page refresh */
       persistent?: boolean
+      /** The name of the query param to add to the url
+       * @default tab
+       */
       queryParam?: string
+      /** The color of the tabs bar
+       * @default primary
+       */
       color?: Color
+      /** Will make the tabs bar full width */
       block?: boolean
+      /** Will remove the elevation */
       noElevation?: boolean
+      /** Will add a scroll on the tabs bar to show selected element
+       * @default true
+       */
+      autoScroll?: boolean
     }>(),
     {
       color: 'primary',
       queryParam: 'tab',
+      autoScroll: true,
     },
   )
 
-  const MazTabsBar = ref()
+  const tabsBarRef = ref<HTMLDivElement>()
   const itemRefs = ref<HTMLButtonElement[]>([])
 
   function addElementToItemRefs({
@@ -88,6 +104,32 @@
       disabled: typeof item === 'string' ? false : item.disabled ?? false,
     })),
   )
+
+  watchEffect(() => {
+    if (!props.autoScroll) {
+      return
+    }
+
+    const tabsBar = tabsBarRef.value
+
+    const activeTab = itemRefs.value[currentTab.value - 1]
+
+    if (!tabsBar || !activeTab) {
+      return
+    }
+
+    if (
+      activeTab.offsetLeft < tabsBar.scrollLeft ||
+      activeTab.offsetLeft + activeTab.offsetWidth > tabsBar.scrollLeft + tabsBar.clientWidth
+    ) {
+      const tabBarPaddingLeft = window.getComputedStyle(tabsBar, 'padding-left').paddingLeft
+      const tabsBarPaddingOffset = Number(tabBarPaddingLeft.slice(0, -2))
+      tabsBar.scrollTo({
+        left: activeTab.offsetLeft - tabsBarPaddingOffset,
+        behavior: 'smooth', // Ajoutez le défilement fluide
+      })
+    }
+  })
 
   const tabsIndicatorState = computed<StyleValue>(() => {
     if (typeof currentTab.value !== 'number') {
@@ -144,7 +186,7 @@
 
 <style lang="postcss" scoped>
   .m-tabs-bar {
-    @apply maz-relative maz-inline-flex maz-gap-1 maz-overflow-x-auto maz-rounded maz-p-2 dark:maz-border dark:maz-border-color-lighter;
+    @apply maz-relative maz-inline-flex maz-max-w-full maz-gap-1 maz-overflow-x-auto maz-rounded maz-p-2 dark:maz-border dark:maz-border-color-lighter;
 
     &.--elevation {
       @apply maz-elevation dark:maz-shadow-none;
