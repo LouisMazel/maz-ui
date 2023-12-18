@@ -7,11 +7,18 @@
 <script lang="ts" setup>
   import { computed, provide, ref, type Ref } from 'vue'
 
-  const props = defineProps({
-    modelValue: { type: Number, default: undefined },
-  })
+  const props = defineProps<{
+    /** The the selected tab number */
+    modelValue?: number
+  }>()
 
-  const emits = defineEmits(['update:model-value'])
+  const emits = defineEmits<{
+    /**
+     * Emitted when the selected tab change
+     * @property {number} newValue new value set
+     */
+    (event: 'update:model-value', index: number): void
+  }>()
 
   const localValue = ref(1)
 
