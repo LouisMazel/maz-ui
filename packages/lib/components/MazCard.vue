@@ -149,7 +149,7 @@
     zoom: { type: Boolean, default: false },
     /** Set elevation to card (box-shadow) */
     elevation: { type: Boolean, default: true },
-    /** Set radius to card (box-shadow) */
+    /** Set radius to card */
     radius: { type: Boolean, default: true },
     /** Set border to card */
     bordered: { type: Boolean, default: false },
