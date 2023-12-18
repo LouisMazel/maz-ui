@@ -1,6 +1,6 @@
 {
   "name": "@mazui/cli",
-  "version": "3.29.12-beta.16",
+  "version": "3.29.12-beta.17",
   "description": "CLI of Maz-ui",
   "license": "MIT",
   "type": "module",
