@@ -19,7 +19,7 @@
       @mouseenter="onElementMouseenter"
       @mouseleave="onElementMouseleave"
     >
-      <span id="labelspan" class="maz-sr-only">
+      <span :id="`${instanceId}-labelspan`" class="maz-sr-only">
         <slot name="screen-reader-description">
           {{ screenReaderDescription }}
         </slot>
@@ -33,7 +33,7 @@
         <MazBtn
           :color="color"
           :disabled="disabled"
-          aria-labelledby="labelspan"
+          :aria-labelledby="`${instanceId}-labelspan`"
           v-bind="$attrs"
           tabindex="-1"
         >
@@ -185,7 +185,7 @@
   ])
 
   const instanceId = useInstanceUniqId({
-    componentName: 'MazCheckbox',
+    componentName: 'MazDropdown',
     instance: getCurrentInstance(),
     providedId: props.id,
   })

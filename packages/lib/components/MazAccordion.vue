@@ -1,15 +1,26 @@
 <template>
-  <div class="m-accordion">
+  <div class="m-accordion" role="presentation">
     <template v-for="step in stepCount" :key="step">
       <MazCardSpotlight class="spotlight">
-        <button class="header" @click="selectStep(step)">
+        <button
+          class="header"
+          :aria-controls="`step-${step}-${instanceId}`"
+          :aria-expanded="isStepOpen(step)"
+          @click="selectStep(step)"
+        >
           <slot :name="`title-${step}`" :is-open="isStepOpen(step)"> </slot>
 
           <Plus class="header-icon" :class="{ '--rotate': isStepOpen(step) }" />
         </button>
 
         <MazTransitionExpand animation-duration="300ms">
-          <div v-show="isStepOpen(step)">
+          <div
+            v-show="isStepOpen(step)"
+            :id="`step-${step}-${instanceId}`"
+            role="region"
+            :aria-labelledby="`step-${step}-${instanceId}`"
+            :aria-hidden="!isStepOpen(step)"
+          >
             <div class="maz-p-4">
               <slot name="content" :is-open="isStepOpen(step)"></slot>
               <slot :name="`content-${step}`" :is-open="isStepOpen(step)"> </slot>
@@ -22,20 +33,28 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, ref, useSlots } from 'vue'
+  import { computed, ref, useSlots, getCurrentInstance } from 'vue'
   import { MazTransitionExpand } from '.'
   import MazCardSpotlight from './MazCardSpotlight.vue'
 
   import Plus from './../icons/plus.svg'
+  import { useInstanceUniqId } from './../modules/composables/use-instance-uniq-id'
 
   const props = withDefaults(
     defineProps<{
+      id?: string
       modelValue?: number
     }>(),
-    { modelValue: 0 },
+    { id: 'mazAccordion', modelValue: 0 },
   )
 
   const emits = defineEmits(['update:model-value'])
+
+  const instanceId = useInstanceUniqId({
+    componentName: 'MazAccordion',
+    instance: getCurrentInstance(),
+    providedId: props.id,
+  })
 
   const slots = useSlots()
 
