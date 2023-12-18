@@ -1,7 +1,7 @@
 <template>
   <div
     :id="instanceId"
-    v-click-outside="() => (dropdownOpen = false)"
+    v-click-outside="onClickOutside"
     class="m-dropdown"
     :style="style"
     :class="[props.class]"
@@ -9,7 +9,7 @@
     <div
       role="button"
       tabindex="0"
-      class="maz-h-full maz-w-full maz-outline-none"
+      class="m-dropdown__wrapper"
       :aria-expanded="dropdownOpen"
       aria-haspopup="menu"
       @click.stop="onElementClick"
@@ -37,14 +37,14 @@
           v-bind="$attrs"
           tabindex="-1"
         >
-          <span class="maz-flex maz-items-center maz-gap-2">
+          <span class="button-span">
             <!-- @slot Button text -->
             <slot></slot>
 
             <ChevronDownIcon
               v-if="!noChevron"
               :class="{ 'maz-rotate-180': dropdownOpen }"
-              class="maz-text-lg maz-transition-transform maz-duration-200 maz-ease-in-out"
+              class="chevron-icon"
             />
           </span>
           <!-- @slot Menu Label -->
@@ -70,37 +70,68 @@
         @mouseenter="['hover', 'both'].includes(trigger) ? setDropdownDebounced(true) : undefined"
         @mouseleave="['hover', 'both'].includes(trigger) ? setDropdownDebounced(false) : undefined"
       >
-        <template v-for="(item, index) in items">
+        <template v-for="(item, index) in items" :key="index">
           <!--
             @slot Custom menu item
               @binding {Object} item - menu item
           -->
           <slot name="menuitem" :item="item">
-            <Component
-              :is="item.to ? 'router-link' : item.action ? 'button' : 'a'"
-              :key="index"
-              :href="item.href"
-              tabindex="-1"
-              :target="item.href ? item.target ?? '_self' : undefined"
-              :type="item.action ? 'button' : undefined"
-              :class="[
-                {
-                  '--is-keyboard-selected': keyboardSelectedIndex === index,
-                },
-                item.class,
-              ]"
-              :to="item.to"
-              class="menuitem"
-              @click.stop="item.action ? runAction(item, $event) : closeOnClick()"
-            >
-              <!--
-                @slot Custom menu item label
-                  @binding {Object} item - menu item
-              -->
-              <slot name="menuitem-label" :item="item">
-                {{ item.label }}
-              </slot>
-            </Component>
+            <template v-if="item.to">
+              <RouterLink
+                :target="item.href ? item.target ?? '_self' : undefined"
+                :to="item.to"
+                class="menuitem"
+                tabindex="-1"
+                :class="[
+                  {
+                    '--is-keyboard-selected': keyboardSelectedIndex === index,
+                  },
+                  item.class,
+                ]"
+                @click.stop="closeOnClick"
+              >
+                <slot name="menuitem-label" :item="item">
+                  {{ item.label }}
+                </slot>
+              </RouterLink>
+            </template>
+            <template v-else-if="item.href">
+              <a
+                :target="item.href ? item.target ?? '_self' : undefined"
+                :href="item.href"
+                tabindex="-1"
+                class="menuitem"
+                :class="[
+                  {
+                    '--is-keyboard-selected': keyboardSelectedIndex === index,
+                  },
+                  item.class,
+                ]"
+                @click.stop="closeOnClick"
+              >
+                <slot name="menuitem-label" :item="item">
+                  {{ item.label }}
+                </slot>
+              </a>
+            </template>
+            <template v-else-if="item.action">
+              <button
+                tabindex="-1"
+                type="button"
+                class="menuitem"
+                :class="[
+                  {
+                    '--is-keyboard-selected': keyboardSelectedIndex === index,
+                  },
+                  item.class,
+                ]"
+                @click.stop="!!item.action ? runAction(item, $event) : closeOnClick()"
+              >
+                <slot name="menuitem-label" :item="item">
+                  {{ item.label }}
+                </slot>
+              </button>
+            </template>
           </slot>
         </template>
       </div>
@@ -192,6 +223,12 @@
 
   const dropdownOpen = ref(props.open)
   const keyboardSelectedIndex = ref<number>()
+
+  function onClickOutside() {
+    if (dropdownOpen.value) {
+      setDropdown(false)
+    }
+  }
 
   function toggleDropdown() {
     setDropdown(!dropdownOpen.value)
@@ -314,6 +351,18 @@
 
     & [aria-expanded='true'].m-btn {
       @apply maz-bg-color-light;
+    }
+
+    &__wrapper {
+      @apply maz-h-full maz-w-full maz-outline-none;
+    }
+
+    .chevron-icon {
+      @apply maz-text-lg maz-transition-transform maz-duration-200 maz-ease-in-out;
+    }
+
+    .button-span {
+      @apply maz-flex maz-items-center maz-gap-2;
     }
 
     .menu {
