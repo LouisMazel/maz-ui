@@ -52,7 +52,7 @@ description: MazTabs is a standalone component to display content in tabs with a
 
   const tabs: MazTabsBarItem[] = [
     { label: 'First Tab', disabled: false },
-    { label: 'Second Tab', disabled: false },
+    { label: 'Second Tab', disabled: false, badge: { color: 'danger', value: 1, roundedSize: 'full' } },
     { label: 'Third Tab', disabled: true },
   ]
 </script>
@@ -61,7 +61,7 @@ description: MazTabs is a standalone component to display content in tabs with a
 ## With model-value
 
 <MazTabs v-model="currentTab">
-  <MazTabsBar :items="tabs" color="secondary" />
+  <MazTabsBar :items="tabs" />
 
   <MazTabsContent>
     <MazTabsContentItem :tab="1" class="maz-py-4">
@@ -78,8 +78,8 @@ description: MazTabs is a standalone component to display content in tabs with a
 
 <br />
 
-<MazBtn @click="currentTab = 8">
-  Set model-value to 1
+<MazBtn @click="currentTab = currentTab === 1 ? 2 : 1">
+  Set model-value to {{currentTab === 1 ? 2 : 1}}
 </MazBtn>
 
 ::: details Show code
@@ -87,7 +87,7 @@ description: MazTabs is a standalone component to display content in tabs with a
 ```vue
 <template>
   <MazTabs v-model="currentTab">
-    <MazTabsBar :items="tabs" color="secondary" />
+    <MazTabsBar :items="tabs" />
 
     <MazTabsContent>
       <MazTabsContentItem :tab="1" class="maz-py-4">
@@ -129,7 +129,7 @@ The component will save the current table index in the URL of the page via a que
 You can choose the name of this query parameter with the props `query-param` `@default 'tab'`
 
 <MazTabs>
-  <MazTabsBar :items="tabs2" color="secondary" persistent />
+  <MazTabsBar :items="tabs2" persistent />
 
   <MazTabsContent>
     <MazTabsContentItem :tab="1" class="maz-py-4">
@@ -147,30 +147,51 @@ You can choose the name of this query parameter with the props `query-param` `@d
 <script lang="ts" setup>
   import { ref } from 'vue'
 
-  const currentTab = ref(8)
+  const currentTab = ref(2)
 
   const tabs: MazTabsBarItem[] = [
     { label: 'First Tab', disabled: false },
-    { label: 'Second Tab', disabled: false },
-    { label: 'Second Tab', disabled: false },
-    { label: 'Second Tab', disabled: false },
-    { label: 'Second Tab', disabled: false },
-    { label: 'Second Tab', disabled: false },
-    { label: 'Second Tab', disabled: false },
-    { label: 'Second Tab', disabled: false },
-    { label: 'Second Tab', disabled: false },
-    { label: 'Second Tab', disabled: false },
-    { label: 'Second Tab', disabled: false },
-    { label: 'Second Tab', disabled: false },
-    { label: 'Second Tab', disabled: false },
-    { label: 'Second Tab', disabled: false },
-    { label: 'Second Tab', disabled: false },
-    { label: 'Second Tab', disabled: false },
+    { label: 'Second Tab', disabled: false, badge: { color: 'danger', value: '1', roundedSize: 'full' } },
     { label: 'Third Tab', disabled: true },
   ]
 
   const tabs2: MazTabsBarItem[] = ['First Tab', 'Second Tab', 'Third Tab']
 </script>
+
+## Custom tabs with slot
+
+<MazTabs>
+  <MazTabsBar :items="tabs2">
+    <template #item="{ item, index, active }">
+      {{ item.label }}
+      <MazBadge
+        size="0.6rem"
+        rounded-size="full"
+        :color="active ? 'primary' : 'gray'"
+      >
+        {{ index}}
+      </MazBadge>
+    </template>
+  </MazTabsBar>
+</MazTabs>
+
+```html
+<MazTabs>
+  <MazTabsBar :items="tabs">
+    <template #item="{ item, index, active }">
+      {{ item.label }}
+
+      <MazBadge
+        size="0.6rem"
+        rounded-size="full"
+        :color="active ? 'primary' : 'gray'"
+      >
+        {{ index }}
+      </MazBadge>
+    </template>
+  </MazTabsBar>
+</MazTabs>
+```
 
 ## Types
 
@@ -179,6 +200,14 @@ type MazTabsBarItem =
   | {
       label: string
       disabled?: boolean
+      badge?: {
+        value: string | number
+        color?: BadgeColor
+        pastel?: boolean
+        outline?: boolean
+        size?: string
+        roundedSize?: BadgeRoundedSize
+      }
     }
   | string
 
@@ -187,14 +216,18 @@ type MazTabsBarItems = MazTabsBarItem[]
 
 ## Props & Events emitted
 
-### MazTabsBar
+## MazTabs
+
+<!--@include: ./../.vitepress/generated-docs/maz-tabs.doc.md-->
+
+## MazTabsBar
 
 <!--@include: ./../.vitepress/generated-docs/maz-tabs-bar.doc.md-->
 
-### MazTabsContent
+## MazTabsContent
 
 <!--@include: ./../.vitepress/generated-docs/maz-tabs-content.doc.md-->
 
-### MazTabsContentItem
+## MazTabsContentItem
 
 <!--@include: ./../.vitepress/generated-docs/maz-tabs-content-item.doc.md-->
