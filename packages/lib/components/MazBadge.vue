@@ -13,41 +13,28 @@
 </template>
 
 <script lang="ts" setup>
-  import type { PropType } from 'vue'
-
   import type { Color } from './types'
   export type BadgeColor = Color | 'gray'
+  export type BadgeRoundedSize = 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
 
-  defineProps({
-    color: {
-      type: String as PropType<BadgeColor>,
-      default: 'primary',
-      validator: (value: string) => {
-        return [
-          'primary',
-          'secondary',
-          'warning',
-          'danger',
-          'info',
-          'success',
-          'white',
-          'gray',
-          'black',
-        ].includes(value)
-      },
+  withDefaults(
+    defineProps<{
+      color?: BadgeColor
+      size?: string
+      nowrap?: boolean
+      outline?: boolean
+      pastel?: boolean
+      roundedSize?: BadgeRoundedSize
+    }>(),
+    {
+      color: 'primary',
+      size: '0.8em',
+      nowrap: false,
+      outline: false,
+      pastel: false,
+      roundedSize: 'md',
     },
-    size: { type: String, default: '0.8em' },
-    nowrap: { type: Boolean, default: false },
-    outline: { type: Boolean, default: false },
-    pastel: { type: Boolean, default: false },
-    roundedSize: {
-      type: String as PropType<'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'>,
-      default: 'md',
-      validator: (value: string) => {
-        return ['none', 'sm', 'md', 'lg', 'xl', 'full'].includes(value)
-      },
-    },
-  })
+  )
 </script>
 
 <style lang="postcss" scoped>
