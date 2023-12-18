@@ -19,14 +19,24 @@
       @mouseenter="onElementMouseenter"
       @mouseleave="onElementMouseleave"
     >
-      <span class="maz-sr-only">{{ screenReaderDescription }}</span>
+      <span id="labelspan" class="maz-sr-only">
+        <slot name="screen-reader-description">
+          {{ screenReaderDescription }}
+        </slot>
+      </span>
       <!--
         @slot Custom Element
           @binding {Boolen} is-open close function
           @default `<MazBtn />`
       -->
       <slot name="element" :is-open="dropdownOpen">
-        <MazBtn :color="color" :disabled="disabled" v-bind="$attrs" tabindex="-1">
+        <MazBtn
+          :color="color"
+          :disabled="disabled"
+          aria-labelledby="labelspan"
+          v-bind="$attrs"
+          tabindex="-1"
+        >
           <span class="maz-flex maz-items-center maz-gap-2">
             <!-- @slot Button text -->
             <slot></slot>
