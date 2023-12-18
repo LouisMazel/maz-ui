@@ -12,7 +12,7 @@
   "devDependencies": {
     "sitemap": "^7.1.1",
     "tailwindcss": "^3.3.6",
-    "vitepress": "1.0.0-rc.31",
+    "vitepress": "1.0.0-rc.32",
     "vue": "^3.3.11"
   },
   "dependencies": {
@@ -20,7 +20,7 @@
     "chartjs-plugin-datalabels": "^2.2.0",
     "dayjs": "^1.11.10",
     "dropzone": "^5.9.3",
-    "libphonenumber-js": "^1.10.51",
+    "libphonenumber-js": "^1.10.52",
     "maz-ui": "workspace:*",
     "vitepress-plugin-google-analytics": "^1.0.2"
   }

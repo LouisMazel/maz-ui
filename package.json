@@ -21,7 +21,7 @@
   "devDependencies": {
     "@commitlint/config-conventional": "^18.4.3",
     "@commitlint/cz-commitlint": "^18.4.3",
-    "@types/node": "^20.10.4",
+    "@types/node": "^20.10.5",
     "@typescript-eslint/eslint-plugin": "^6.14.0",
     "@typescript-eslint/parser": "^6.14.0",
     "changelogen": "^0.5.5",
@@ -35,7 +35,7 @@
     "eslint-plugin-sonarjs": "^0.23.0",
     "eslint-plugin-unicorn": "^49.0.0",
     "husky": "^8.0.3",
-    "lerna": "^8.0.0",
+    "lerna": "^8.0.1",
     "lint-staged": "^15.2.0",
     "prettier": "^3.1.1",
     "ts-node": "^10.9.2",
