@@ -1,6 +1,6 @@
 ---
 title: MazDropdown
-description: MazDropdown is a standalone component
+description: MazDropdown is a standalone dropdown menu component and versatile designed for various use cases.
 ---
 
 # {{ $frontmatter.title }}
@@ -333,7 +333,7 @@ isOpen: {{ isOpen }}
 <br />
 <br />
 
-<MazBtn @click="isOpen = !isOpen">
+<MazBtn @click="openDropdown">
   Open Dropdown
 </MazBtn>
 
@@ -485,6 +485,12 @@ type MenuItem = {
   import { useToast } from 'maz-ui'
 
   const toast = useToast()
+
+  function openDropdown() {
+    setTimeout(() => {
+      isOpen.value = !isOpen.value
+    }, 100);
+  }
 
   const menuItems = [
     { label: 'Menu Item 1', action: () => toast.success('Clicked') },
