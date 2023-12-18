@@ -8,18 +8,38 @@
     }"
   >
     <div class="m-tabs-bar__indicator" :style="[tabsIndicatorState]"></div>
-    <button
-      v-for="({ label, disabled }, index) in normalizedItems"
-      :key="index"
-      :ref="(mazBtn) => addElementToItemRefs({ mazBtn, index })"
-      :class="{ '--active': currentTab === index + 1, '--disabled': disabled }"
-      class="m-tabs-bar__item"
-      :disabled="disabled"
-      :style="getTabStyle(index + 1, disabled)"
-      @click="disabled ? undefined : selectTab(index + 1)"
-    >
-      {{ label }}
-    </button>
+    <template v-for="(item, index) in normalizedItems" :key="index">
+      <button
+        :ref="(mazBtn) => addElementToItemRefs({ mazBtn, index })"
+        :class="{ '--active': isActiveTab(index), '--disabled': item.disabled }"
+        class="m-tabs-bar__item"
+        :disabled="item.disabled"
+        :style="getTabStyle(index, item.disabled)"
+        @click="item.disabled ? undefined : selectTab(index)"
+      >
+        <!--
+          @slot item - Content of item to display in the tabs bar
+            @binding {MazTabsBarItem[]} item - all data of the item
+            @binding {boolean} active - `true` if the tab is active
+            @binding {number} index - index of the item
+        -->
+        <slot name="item" :item="item" :active="isActiveTab(index)" :index="index">
+          {{ item.label }}
+
+          <MazBadge
+            v-if="item.badge"
+            :color="item.badge.color"
+            :pastel="item.badge.pastel"
+            :outline="item.badge.outline"
+            :rounded-size="item.badge.roundedSize"
+            :size="item.badge.size"
+            nowrap
+          >
+            {{ item.badge.value }}
+          </MazBadge>
+        </slot>
+      </button>
+    </template>
   </div>
 </template>
 
@@ -31,28 +51,39 @@
     onBeforeMount,
     nextTick,
     onMounted,
+    defineAsyncComponent,
     type StyleValue,
     type ComponentPublicInstance,
   } from 'vue'
-  import type { Color } from './types'
   import type { MazTabsProvide } from './MazTabs.vue'
 
   import { injectStrict } from './../modules/helpers/inject-strict'
   import { sleep } from './../modules/helpers/sleep'
+  import { type BadgeRoundedSize, type BadgeColor } from './MazBadge.vue'
+
+  const MazBadge = defineAsyncComponent(() => import('./MazBadge.vue'))
 
   export type MazTabsBarItem =
     | {
         label: string
         disabled?: boolean
+        badge?: {
+          value: string | number
+          color?: BadgeColor
+          pastel?: boolean
+          outline?: boolean
+          size?: string
+          roundedSize?: BadgeRoundedSize
+        }
       }
     | string
 
   const { currentTab, updateCurrentTab } = injectStrict<MazTabsProvide>('maz-tabs')
 
   function selectTab(tabIndex: number) {
-    updateCurrentTab(tabIndex)
+    updateCurrentTab(tabIndex + 1)
     if (props.persistent) {
-      addOrUpdateQueryParamTab(tabIndex)
+      addOrUpdateQueryParamTab(tabIndex + 1)
     }
   }
 
@@ -66,10 +97,6 @@
        * @default tab
        */
       queryParam?: string
-      /** The color of the tabs bar
-       * @default primary
-       */
-      color?: Color
       /** Will make the tabs bar full width */
       block?: boolean
       /** Will remove the elevation */
@@ -80,7 +107,6 @@
       autoScroll?: boolean
     }>(),
     {
-      color: 'primary',
       queryParam: 'tab',
       autoScroll: true,
     },
@@ -88,6 +114,10 @@
 
   const tabsBarRef = ref<HTMLDivElement>()
   const itemRefs = ref<HTMLButtonElement[]>([])
+
+  function isActiveTab(index: number) {
+    return currentTab.value === index + 1
+  }
 
   function addElementToItemRefs({
     mazBtn,
@@ -104,6 +134,7 @@
     props.items.map((item) => ({
       label: typeof item === 'string' ? item : item.label,
       disabled: typeof item === 'string' ? false : item.disabled ?? false,
+      badge: typeof item === 'string' ? undefined : item.badge,
     })),
   )
 
@@ -123,7 +154,7 @@
     }
 
     await nextTick()
-    await sleep(50)
+    await sleep(150)
 
     if (
       activeTab.offsetLeft < tabsBar.scrollLeft ||
@@ -135,6 +166,7 @@
         left: activeTab.offsetLeft - tabsBarPaddingOffset,
         behavior: 'smooth', // Ajoutez le défilement fluide
       })
+
       await sleep(150)
     }
 
@@ -159,7 +191,7 @@
     if (disabled) {
       return {}
     }
-    return currentTab.value === index
+    return currentTab.value === index + 1
       ? `color: var(--maz-color-text)`
       : 'color: var(--maz-color-muted)'
   }
@@ -203,9 +235,9 @@
     }
 
     &__item {
-      @apply maz-relative maz-flex-none maz-rounded
-        maz-px-3 maz-py-2 maz-text-center
-        maz-font-medium maz-no-underline maz-transition maz-duration-200 maz-ease-in-out;
+      @apply maz-relative maz-flex maz-flex-none
+        maz-items-center maz-gap-2 maz-rounded maz-px-3
+        maz-py-2 maz-text-center maz-font-medium maz-no-underline maz-transition maz-duration-200 maz-ease-in-out;
 
       &:not(.--disabled) {
         @apply maz-cursor-pointer hover:!maz-text-normal;
