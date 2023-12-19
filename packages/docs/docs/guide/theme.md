@@ -83,11 +83,12 @@ The file is generated!
   --maz-color-primary-700: hsl(210deg 78% 36%);
   --maz-color-primary-800: hsl(210deg 79% 26%);
   --maz-color-primary-900: hsl(210deg 79% 17%);
-  --maz-color-primary-contrast: hsl(0deg 0% 100%);
   --maz-color-primary-alpha: hsl(210deg 100% 56% / 60%);
   --maz-color-primary-alpha-20: hsl(210deg 100% 56% / 20%);
+  --maz-color-primary-alpha-10: hsl(210deg 100% 56% / 10%);
+  --maz-color-primary-alpha-05: hsl(210deg 100% 56% / 05%);
+  --maz-color-primary-contrast: hsl(0deg 0% 100%);
 
-  /* SECONDARY */
   --maz-color-secondary-50: hsl(164deg 65% 93%);
   --maz-color-secondary-100: hsl(164deg 66% 84%);
   --maz-color-secondary-200: hsl(164deg 66% 75%);
@@ -98,11 +99,12 @@ The file is generated!
   --maz-color-secondary-700: hsl(164deg 77% 30%);
   --maz-color-secondary-800: hsl(164deg 77% 22%);
   --maz-color-secondary-900: hsl(164deg 77% 14%);
-  --maz-color-secondary-contrast: hsl(0deg 0% 100%);
   --maz-color-secondary-alpha: hsl(164deg 76% 46% / 60%);
   --maz-color-secondary-alpha-20: hsl(164deg 76% 46% / 20%);
+  --maz-color-secondary-alpha-10: hsl(164deg 76% 46% / 10%);
+  --maz-color-secondary-alpha-05: hsl(164deg 76% 46% / 05%);
+  --maz-color-secondary-contrast: hsl(0deg 0% 100%);
 
-  /* INFO */
   --maz-color-info-50: hsl(188deg 53% 93%);
   --maz-color-info-100: hsl(188deg 54% 82%);
   --maz-color-info-200: hsl(188deg 53% 72%);
@@ -113,11 +115,12 @@ The file is generated!
   --maz-color-info-700: hsl(188deg 78% 26%);
   --maz-color-info-800: hsl(188deg 78% 19%);
   --maz-color-info-900: hsl(188deg 77% 12%);
-  --maz-color-info-contrast: hsl(0deg 0% 100%);
   --maz-color-info-alpha: hsl(188deg 78% 41% / 60%);
   --maz-color-info-alpha-20: hsl(188deg 78% 41% / 20%);
+  --maz-color-info-alpha-10: hsl(188deg 78% 41% / 10%);
+  --maz-color-info-alpha-05: hsl(188deg 78% 41% / 05%);
+  --maz-color-info-contrast: hsl(0deg 0% 100%);
 
-  /* SUCCESS */
   --maz-color-success-50: hsl(80deg 63% 94%);
   --maz-color-success-100: hsl(80deg 61% 85%);
   --maz-color-success-200: hsl(80deg 60% 76%);
@@ -128,11 +131,12 @@ The file is generated!
   --maz-color-success-700: hsl(80deg 60% 33%);
   --maz-color-success-800: hsl(80deg 60% 24%);
   --maz-color-success-900: hsl(80deg 61% 15%);
-  --maz-color-success-contrast: hsl(0deg 0% 100%);
   --maz-color-success-alpha: hsl(80deg 61% 50% / 60%);
   --maz-color-success-alpha-20: hsl(80deg 61% 50% / 20%);
+  --maz-color-success-alpha-10: hsl(80deg 61% 50% / 10%);
+  --maz-color-success-alpha-05: hsl(80deg 61% 50% / 05%);
+  --maz-color-success-contrast: hsl(0deg 0% 100%);
 
-  /* WARNING */
   --maz-color-warning-50: hsl(40deg 100% 95%);
   --maz-color-warning-100: hsl(40deg 97% 88%);
   --maz-color-warning-200: hsl(40deg 98% 81%);
@@ -143,11 +147,12 @@ The file is generated!
   --maz-color-warning-700: hsl(40deg 67% 38%);
   --maz-color-warning-800: hsl(40deg 68% 28%);
   --maz-color-warning-900: hsl(40deg 67% 18%);
-  --maz-color-warning-contrast: hsl(217deg 19% 27%);
   --maz-color-warning-alpha: hsl(40deg 97% 59% / 60%);
   --maz-color-warning-alpha-20: hsl(40deg 97% 59% / 20%);
+  --maz-color-warning-alpha-10: hsl(40deg 97% 59% / 10%);
+  --maz-color-warning-alpha-05: hsl(40deg 97% 59% / 05%);
+  --maz-color-warning-contrast: hsl(217deg 19% 27%);
 
-  /* DANGER */
   --maz-color-danger-50: hsl(1deg 100% 96%);
   --maz-color-danger-100: hsl(1deg 100% 91%);
   --maz-color-danger-200: hsl(2deg 100% 86%);
@@ -158,9 +163,11 @@ The file is generated!
   --maz-color-danger-700: hsl(1deg 41% 46%);
   --maz-color-danger-800: hsl(1deg 42% 34%);
   --maz-color-danger-900: hsl(1deg 41% 21%);
-  --maz-color-danger-contrast: hsl(0deg 0% 100%);
   --maz-color-danger-alpha: hsl(1deg 100% 71% / 60%);
   --maz-color-danger-alpha-20: hsl(1deg 100% 71% / 20%);
+  --maz-color-danger-alpha-10: hsl(1deg 100% 71% / 10%);
+  --maz-color-danger-alpha-05: hsl(1deg 100% 71% / 05%);
+  --maz-color-danger-contrast: hsl(0deg 0% 100%);
 
   /* WHITE */
   --maz-color-white: hsl(0deg 0% 100%);
