@@ -61,6 +61,7 @@
     "build": "pnpm typecheck && pnpm build:lib",
     "build:lib": "node --loader ts-node/esm build/vite.config.ts",
     "get-icon-list": "node --loader ts-node/esm build/get-icon-list.ts",
+    "replace-svg-values": "node --loader ts-node/esm build/replace-values-in-svg.ts",
     "test:unit": "vitest",
     "test:unit:watch": "vitest watch",
     "test:unit:coverage": "vitest run --coverage",
