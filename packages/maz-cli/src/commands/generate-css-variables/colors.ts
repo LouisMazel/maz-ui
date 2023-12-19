@@ -27,6 +27,8 @@ export function generateColorVariants({
     900: color.clone().darken(40).toHslString(),
     alpha: color.clone().setAlpha(0.6).toHslString(),
     'alpha-20': color.clone().setAlpha(0.2).toHslString(),
+    'alpha-10': color.clone().setAlpha(0.1).toHslString(),
+    'alpha-05': color.clone().setAlpha(0.05).toHslString(),
     contrast: getContrastColor(color.clone()),
   }
 }

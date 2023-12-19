@@ -29,47 +29,45 @@
       class="m-btn__icon-left maz-flex maz-flex-center"
       :class="{ 'maz-invisible': hasLoader }"
     >
+      <!--
+        @slot left-icon - The icon to display on the left of the button
+      -->
       <slot name="left-icon">
         <MazIcon v-if="leftIcon" :name="leftIcon" />
       </slot>
     </div>
 
-    <div
-      v-if="hasFabIcon"
-      class="m-btn__icon maz-flex maz-flex-center"
-      :class="{ 'maz-invisible': hasLoader }"
-    >
+    <div v-if="hasFabIcon" class="m-btn__icon" :class="{ 'maz-invisible': hasLoader }">
+      <!--
+        @slot icon - The icon to display on the fab button
+      -->
       <slot name="icon">
         <MazIcon v-if="icon" :name="icon" />
       </slot>
     </div>
 
-    <span class="maz-flex maz-flex-center" :class="{ 'maz-invisible': hasLoader }">
+    <span v-if="$slots.default" :class="[{ 'maz-invisible': hasLoader }, contentClass]">
+      <!--
+        @slot default - The content of the button
+      -->
       <slot></slot>
     </span>
-    <div
-      v-if="hasRightIcon"
-      class="m-btn__icon-right maz-flex maz-flex-center"
-      :class="{ 'maz-invisible': hasLoader }"
-    >
+
+    <div v-if="hasRightIcon" class="m-btn__icon-right" :class="{ 'maz-invisible': hasLoader }">
+      <!--
+        @slot right-icon - The icon to display on the right of the button
+      -->
       <slot name="right-icon">
         <MazIcon v-if="rightIcon" :name="rightIcon" />
       </slot>
     </div>
 
-    <MazSpinner v-if="hasLoader" size="2em" :color="color" class="maz-absolute" />
+    <MazSpinner v-if="hasLoader" class="m-btn-loader" size="2em" :color="color" />
   </Component>
 </template>
 
 <script lang="ts" setup>
-  import {
-    computed,
-    type PropType,
-    useAttrs,
-    useSlots,
-    defineAsyncComponent,
-    onBeforeMount,
-  } from 'vue'
+  import { computed, useAttrs, useSlots, defineAsyncComponent, onBeforeMount } from 'vue'
 
   import type { Color, Size } from './types'
   export type { Color, Size }
@@ -80,49 +78,61 @@
   const { href, to } = useAttrs()
   const slots = useSlots()
 
-  const props = defineProps({
-    variant: {
-      type: String as PropType<'button' | 'link'>,
-      default: 'button',
-
-      validator: (value: string) => {
-        return ['button', 'link'].includes(value)
-      },
+  const props = withDefaults(
+    defineProps<{
+      /** The variant of the button - Change UI of component (link or button style) @values `'button' | 'link'` */
+      variant?: 'button' | 'link'
+      /** The size of the button */
+      size?: Size
+      /** The color of the button */
+      color?: Color
+      /** The type of the button @values `'submit' | 'reset' | 'button'` */
+      type?: 'submit' | 'reset' | 'button'
+      /** If true, the button will have a full border radius @default `false` */
+      rounded?: boolean
+      /** If true, the button will have no border radius @default `false` */
+      noRounded?: boolean
+      /** If true, the button have the "border" style @default `false` */
+      outline?: boolean
+      /** If true, the button will have a pastel color @default `false` */
+      pastel?: boolean
+      /** If true, the button will have a full width @default `false` */
+      block?: boolean
+      /** If true, the button will have no underline on hover (useful with `variant="link"`) @default `false` */
+      noUnderline?: boolean
+      /** If true, the button will have no leading (useful with `variant="link"`) @default `false` */
+      noLeading?: boolean
+      /** Enable the button loader @default `false` */
+      loading?: boolean
+      /** Disable the button @default `false` */
+      disabled?: boolean
+      /** If true, the button will have a fab style @default `false` */
+      fab?: boolean
+      /** The name of the icon to display, only with fab */
+      icon?: string
+      /** The name of the icon to display on the left of the button */
+      leftIcon?: string
+      /** The name of the icon to display on the right of the button */
+      rightIcon?: string
+      /** If true, the button will have no padding @default `false` */
+      noPadding?: boolean
+      /** If true, the button will have no box-shadow @default `false` */
+      noElevation?: boolean
+      /** The class applied to the content wrapper (<span />) of the button */
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      contentClass?: any
+    }>(),
+    {
+      variant: 'button',
+      size: 'md',
+      color: 'primary',
+      type: 'button',
+      icon: undefined,
+      leftIcon: undefined,
+      rightIcon: undefined,
+      contentClass: undefined,
     },
-    size: {
-      type: String as PropType<Size>,
-      default: 'md',
-      validator: (value: string) => {
-        return ['mini', 'xs', 'sm', 'md', 'lg', 'xl'].includes(value)
-      },
-    },
-    color: {
-      type: String as PropType<Color>,
-      default: 'primary',
-    },
-    type: {
-      type: String as PropType<HTMLButtonElement['type']>,
-      default: 'button',
-      validator: (value: string) => {
-        return ['button', 'submit', 'reset'].includes(value)
-      },
-    },
-    rounded: { type: Boolean, default: false },
-    noRounded: { type: Boolean, default: false },
-    outline: { type: Boolean, default: false },
-    pastel: { type: Boolean, default: false },
-    block: { type: Boolean, default: false },
-    noUnderline: { type: Boolean, default: false },
-    noLeading: { type: Boolean, default: false },
-    loading: { type: Boolean, default: false },
-    disabled: { type: Boolean, default: false },
-    fab: { type: Boolean, default: false },
-    icon: { type: String, default: undefined },
-    leftIcon: { type: String, default: undefined },
-    rightIcon: { type: String, default: undefined },
-    noPadding: { type: Boolean, default: false },
-    noElevation: { type: Boolean, default: false },
-  })
+  )
 
   onBeforeMount(() => {
     if (props.icon && !props.fab) {
@@ -158,18 +168,14 @@
 
 <style lang="postcss" scoped>
   .m-btn {
-    @apply maz-border maz-border-solid maz-border-transparent maz-text-center maz-text-base maz-text-normal;
+    @apply maz-flex maz-flex-none maz-items-center maz-gap-2 maz-border maz-border-solid maz-border-transparent maz-text-center maz-text-base maz-text-normal;
 
     & span {
       @apply maz-leading-none;
     }
 
-    &__icon-left {
-      @apply maz--ml-1 maz-mr-2 maz-leading-none;
-    }
-
-    &__icon-right {
-      @apply maz--mr-1 maz-ml-2 maz-leading-none;
+    &-loader {
+      @apply maz-absolute;
     }
 
     &.--cursor-pointer {
@@ -428,7 +434,7 @@
       /* OUTLINE */
 
       &.--primary-outline {
-        @apply maz-border-primary maz-text-primary;
+        @apply maz-border-primary maz-bg-primary-alpha-05 maz-text-primary;
 
         &:not(:disabled):hover,
         &:not(:disabled):focus {
@@ -437,7 +443,7 @@
       }
 
       &.--secondary-outline {
-        @apply maz-border-secondary maz-text-secondary;
+        @apply maz-border-secondary maz-bg-secondary-alpha-05 maz-text-secondary;
 
         &:not(:disabled):hover,
         &:not(:disabled):focus {
@@ -446,7 +452,7 @@
       }
 
       &.--info-outline {
-        @apply maz-border-info maz-text-info;
+        @apply maz-border-info maz-bg-info-alpha-05 maz-text-info;
 
         &:not(:disabled):hover,
         &:not(:disabled):focus {
@@ -455,7 +461,7 @@
       }
 
       &.--success-outline {
-        @apply maz-border-success maz-text-success;
+        @apply maz-border-success maz-bg-success-alpha-05 maz-text-success;
 
         &:not(:disabled):hover,
         &:not(:disabled):focus {
@@ -464,7 +470,7 @@
       }
 
       &.--danger-outline {
-        @apply maz-border-danger maz-text-danger;
+        @apply maz-border-danger maz-bg-danger-alpha-05 maz-text-danger;
 
         &:not(:disabled):hover,
         &:not(:disabled):focus {
@@ -473,7 +479,7 @@
       }
 
       &.--warning-outline {
-        @apply maz-border-warning maz-text-warning;
+        @apply maz-border-warning maz-bg-warning-alpha-05 maz-text-warning;
 
         &:not(:disabled):hover,
         &:not(:disabled):focus {

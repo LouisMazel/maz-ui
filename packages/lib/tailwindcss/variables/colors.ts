@@ -33,6 +33,8 @@ export const variations = [
   'contrast',
   'alpha',
   'alpha-20',
+  'alpha-10',
+  'alpha-05',
 ]
 
 export const variatingColors = {

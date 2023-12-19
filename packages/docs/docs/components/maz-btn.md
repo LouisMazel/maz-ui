@@ -23,9 +23,7 @@ description: MazBtn is a standalone component that replaces the standard html bu
 </script>
 ```
 
-## Options
-
-### Loading
+## Loading
 
 <br />
 
@@ -71,7 +69,7 @@ description: MazBtn is a standalone component that replaces the standard html bu
 </script>
 ```
 
-### Sizes
+## Sizes
 
 ::: tip
 Use the attribute `size` with value **{{ sizes.join(', ') }}**
@@ -91,7 +89,7 @@ Use the attribute `size` with value **{{ sizes.join(', ') }}**
 </script>
 ```
 
-### Colors
+## Colors
 
 ::: tip
 Use the attribute `color` with a value in this [list](./../guide/colors.md), the component will use this color
@@ -113,7 +111,7 @@ Use the attribute `color` with a value in this [list](./../guide/colors.md), the
 <MazBtn color="transparent">transparent</MazBtn>
 ```
 
-### Outline
+## Outline
 
 <br />
 
@@ -133,7 +131,7 @@ Use the attribute `color` with a value in this [list](./../guide/colors.md), the
 <MazBtn color="transparent" outline>transparent</MazBtn>
 ```
 
-### Pastel
+## Pastel
 
 ::: tip
 It's better in light mode
@@ -155,7 +153,7 @@ It's better in light mode
 <MazBtn color="transparent" pastel>transparent</MazBtn>
 ```
 
-### Rounded
+## Rounded
 
 <br />
 
@@ -165,7 +163,7 @@ It's better in light mode
 <MazBtn rounded>rounded</MazBtn>
 ```
 
-### Fab
+## Fab
 
 <br />
 
@@ -191,7 +189,7 @@ It's better in light mode
 <MazBtn fab icon="sun" size="xl" />
 ```
 
-### Block
+## Block
 
 > Will take `width: 100%;`
 
@@ -201,7 +199,7 @@ It's better in light mode
 <MazBtn block>block</MazBtn>
 ```
 
-### Disabled
+## Disabled
 
 <br />
 
@@ -211,7 +209,7 @@ It's better in light mode
 <MazBtn disabled>disabled</MazBtn>
 ```
 
-### Icons
+## Icons
 
 ::: info
 When you use `right-icon` or `left-icon`, the component uses [MazIcon](./maz-icon.md)
@@ -260,7 +258,7 @@ Use your own icons
     <template #left-icon>
       <MazIcon name="command-line" />
     </template>
-    right-icon
+    left and right icons
     <template #right-icon>
       <MazIcon name="information-circle" />
     </template>
@@ -284,14 +282,14 @@ Use your own icons
   <template #left-icon>
     <MazIcon name="command-line" />
   </template>
-  right-icon
+  left and right icons
   <template #right-icon>
     <MazIcon name="information-circle" />
   </template>
 </MazBtn>
 ```
 
-### Link
+## Link
 
 ::: tip
 With the attribute `variant="link"`, the button looks like a link but it's a button, so you can use the event `@click`
@@ -309,7 +307,7 @@ Additional props available include: `no-underline` & `no-leading`
 <MazBtn variant="link" @click="$emit('click')" no-leading>Is Link</MazBtn>
 ```
 
-### [HTMLLinkElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement)
+## [HTMLLinkElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement)
 
 ::: info
 When `href` attribute is provided, the component automatically becomes a `<a href="..." />`
@@ -323,7 +321,7 @@ When `href` attribute is provided, the component automatically becomes a `<a hre
 </MazBtn>
 ```
 
-### [RouterLink](https://router.vuejs.org/api/#router-link)
+## [RouterLink](https://router.vuejs.org/api/#router-link)
 
 ::: info
 When `to` attribute is provided, the component automatically becomes a `<RouterLink to="..." />`

@@ -55,6 +55,8 @@ export interface OutputColorVariant {
   contrast: string
   alpha: string
   'alpha-20': string
+  'alpha-10': string
+  'alpha-05': string
 }
 
 export type VariantColors = Record<VariantColor, OutputColorVariant>
