@@ -134,7 +134,8 @@
   import { useInstanceUniqId } from '../modules/composables'
   import { debounceCallback } from './../modules/helpers/debounce-callback'
 
-  export type MazSelectOption = Record<string, ModelValueSimple> | (string | number | boolean)[]
+  type NormalizedOption = Record<string, ModelValueSimple>
+  export type MazSelectOption = NormalizedOption | (string | number | boolean)[]
   export type { Color, Size, ModelValueSimple, Position }
 
   const MazCheckbox = defineAsyncComponent(() => import('./MazCheckbox.vue'))
@@ -281,7 +282,7 @@
     providedId: props.id,
   })
 
-  const optionsNormalized = computed(
+  const optionsNormalized = computed<NormalizedOption[] | undefined>(
     () =>
       props.options?.map((option) => {
         if (
@@ -295,7 +296,12 @@
             [props.optionInputValueKey]: option,
           }
         }
-        return option
+
+        return {
+          [props.optionValueKey]: option[props.optionValueKey],
+          [props.optionLabelKey]: option[props.optionLabelKey],
+          [props.optionInputValueKey]: option[props.optionInputValueKey],
+        }
       }),
   )
 
@@ -329,7 +335,7 @@
     return value === undefined || value === null
   }
 
-  function isSelectedOption(option: MazSelectOption) {
+  function isSelectedOption(option: NormalizedOption) {
     const hasOption =
       selectedOptions.value?.some(
         (selectedOption) => selectedOption[props.optionValueKey] === option[props.optionValueKey],
@@ -551,7 +557,7 @@
     }
   }
 
-  function updateTmpModelValueIndex(inputOption?: MazSelectOption) {
+  function updateTmpModelValueIndex(inputOption?: NormalizedOption) {
     const index = optionsList.value?.findIndex((option) => {
       if (props.multiple && Array.isArray(props.modelValue)) {
         if (inputOption) {
@@ -567,7 +573,7 @@
     tmpModelValueIndex.value = index && index >= 0 ? index : 0
   }
 
-  const updateValue = (inputOption: MazSelectOption, mustCloseList = true) => {
+  const updateValue = (inputOption: NormalizedOption, mustCloseList = true) => {
     if (mustCloseList && !props.multiple) {
       nextTick(() => closeList())
     }
