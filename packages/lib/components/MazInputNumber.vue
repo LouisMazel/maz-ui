@@ -195,13 +195,13 @@
         }
 
         &:first-child {
-          @apply maz-rounded-r-none;
+          @apply !maz-rounded-r-none;
 
           margin-right: calc(-1 * 2px);
         }
 
         &:last-child {
-          @apply maz-rounded-l-none;
+          @apply !maz-rounded-l-none;
 
           margin-left: calc(-1 * 2px);
         }
@@ -214,7 +214,7 @@
 
     &__input {
       &:not(.--no-buttons) .m-input-wrapper {
-        @apply maz-z-1 maz-rounded-none;
+        @apply maz-z-1 !maz-rounded-none;
       }
 
       &.--text-center input {
