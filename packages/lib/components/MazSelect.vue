@@ -135,7 +135,7 @@
   import { debounceCallback } from './../modules/helpers/debounce-callback'
 
   type NormalizedOption = Record<string, ModelValueSimple>
-  export type MazSelectOption = NormalizedOption | (string | number | boolean)[]
+  export type MazSelectOption = NormalizedOption | string | number | boolean
   export type { Color, Size, ModelValueSimple, Position }
 
   const MazCheckbox = defineAsyncComponent(() => import('./MazCheckbox.vue'))
