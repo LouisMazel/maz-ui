@@ -7,13 +7,11 @@ export const components = {
       items: [
         { text: 'MazBtn', link: '/components/maz-btn' },
         { text: 'MazCheckbox', link: '/components/maz-checkbox' },
-        { text: 'MazDropzone', link: '/components/maz-dropzone' },
         { text: 'MazInput', link: '/components/maz-input' },
         { text: 'MazInputCode', link: '/components/maz-input-code' },
         { text: 'MazInputNumber', link: '/components/maz-input-number' },
         { text: 'MazInputPrice', link: '/components/maz-input-price' },
         { text: 'MazInputTags', link: '/components/maz-input-tags' },
-        { text: 'MazPicker', link: '/components/maz-picker' },
         { text: 'MazPhoneNumberInput', link: '/components/maz-phone-number-input' },
         { text: 'MazRadio', link: '/components/maz-radio' },
         { text: 'MazRadioButtons', link: '/components/maz-radio-buttons' },
@@ -21,6 +19,14 @@ export const components = {
         { text: 'MazSlider', link: '/components/maz-slider' },
         { text: 'MazSwitch', link: '/components/maz-switch' },
         { text: 'MazTextarea', link: '/components/maz-textarea' },
+      ]
+    },
+    {
+      text: 'Data',
+      items: [
+        { text: 'MazDropzone', link: '/components/maz-dropzone' },
+        { text: 'MazPicker', link: '/components/maz-picker' },
+        { text: 'MazTable (data-table)', link: '/components/maz-table' },
       ]
     },
     {
