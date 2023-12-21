@@ -17,7 +17,7 @@ description: MazSelect is a standalone component that replaces the standard html
   label="Select color"
   v-model="selectedValue"
   :color="selectedValue"
-  :options="colors"
+  :options="['primary', 'secondary', 'info', 'success', 'danger', 'warning']"
 />
 
 selectedValue: {{ selectedValue }}
@@ -28,26 +28,15 @@ selectedValue: {{ selectedValue }}
     v-model="selectedValue"
     label="Select color"
     :color="color"
-    :options="colors"
+    :options="['primary', 'secondary', 'info', 'success', 'danger', 'warning']"
   />
 </template>
 
 <script setup lang="ts">
-  import MazSelect from 'maz-ui/components/MazSelect'
   import { ref } from 'vue'
+  import MazSelect from 'maz-ui/components/MazSelect'
 
   const selectedValue = ref()
-
-  const colors = [
-    { label: 'primary', value: 'primary' },
-    { label: 'secondary', value: 'secondary' },
-    { label: 'info', value: 'info' },
-    { label: 'success', value: 'success' },
-    { label: 'warning', value: 'warning' },
-    { label: 'danger', value: 'danger' },
-    { label: 'white', value: 'white' },
-    { label: 'black', value: 'black' },
-  ]
 </script>
 ```
 

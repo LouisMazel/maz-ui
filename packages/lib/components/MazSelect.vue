@@ -134,7 +134,7 @@
   import { useInstanceUniqId } from '../modules/composables'
   import { debounceCallback } from './../modules/helpers/debounce-callback'
 
-  export type MazSelectOption = Record<string, ModelValueSimple>
+  export type MazSelectOption = Record<string, ModelValueSimple> | string | number | boolean
   export type { Color, Size, ModelValueSimple, Position }
 
   const MazCheckbox = defineAsyncComponent(() => import('./MazCheckbox.vue'))
@@ -281,9 +281,27 @@
     providedId: props.id,
   })
 
+  const optionsNormalized = computed(
+    () =>
+      props.options?.map((option) => {
+        if (
+          typeof option === 'string' ||
+          typeof option === 'number' ||
+          typeof option === 'boolean'
+        ) {
+          return {
+            [props.optionValueKey]: option,
+            [props.optionLabelKey]: option,
+            [props.optionInputValueKey]: option,
+          }
+        }
+        return option
+      }),
+  )
+
   const selectedOptions = computed(
     () =>
-      props.options?.filter((option) => {
+      optionsNormalized.value?.filter((option) => {
         return props.multiple
           ? Array.isArray(props.modelValue)
             ? props.modelValue.includes(option[props.optionValueKey]) &&
@@ -311,7 +329,7 @@
     return value === undefined || value === null
   }
 
-  function isSelectedOption(option: MazSelectOption) {
+  function isSelectedOption(option: Record<string, ModelValueSimple>) {
     const hasOption =
       selectedOptions.value?.some(
         (selectedOption) => selectedOption[props.optionValueKey] === option[props.optionValueKey],
@@ -324,16 +342,16 @@
       return props.modelValue
         .map(
           (value) =>
-            props.options?.find((option) => option[props.optionValueKey] === value)?.[
+            optionsNormalized.value?.find((option) => option[props.optionValueKey] === value)?.[
               props.optionInputValueKey
             ],
         )
         .join(', ')
     }
 
-    return props.options?.find((option) => option[props.optionValueKey] === props.modelValue)?.[
-      props.optionInputValueKey
-    ]
+    return optionsNormalized.value?.find(
+      (option) => option[props.optionValueKey] === props.modelValue,
+    )?.[props.optionInputValueKey]
   })
 
   const listTransition = computed(() =>
@@ -362,7 +380,7 @@
 
   function getFilteredOptionWithQuery(query: string) {
     return query
-      ? props.options?.filter((option) => {
+      ? optionsNormalized.value?.filter((option) => {
           const searchValue = option[props.optionLabelKey]
           const searchValue3 = option[props.optionValueKey]
           const searchValue2 = option[props.optionInputValueKey]
@@ -373,7 +391,7 @@
             searchInValue(searchValue2, query)
           )
         })
-      : props.options
+      : optionsNormalized.value
   }
 
   const optionsList = computed(() => getFilteredOptionWithQuery(searchQuery.value))
@@ -509,7 +527,7 @@
       : optionsList.value?.[0]
 
     if (!isNullOrUndefined(newValue)) {
-      updateValue(newValue as MazSelectOption)
+      updateValue(newValue as Record<string, ModelValueSimple>)
     }
   }
 
@@ -533,7 +551,7 @@
     }
   }
 
-  function updateTmpModelValueIndex(inputOption?: MazSelectOption) {
+  function updateTmpModelValueIndex(inputOption?: Record<string, ModelValueSimple>) {
     const index = optionsList.value?.findIndex((option) => {
       if (props.multiple && Array.isArray(props.modelValue)) {
         if (inputOption) {
@@ -549,7 +567,7 @@
     tmpModelValueIndex.value = index && index >= 0 ? index : 0
   }
 
-  const updateValue = (inputOption: MazSelectOption, mustCloseList = true) => {
+  const updateValue = (inputOption: Record<string, ModelValueSimple>, mustCloseList = true) => {
     if (mustCloseList && !props.multiple) {
       nextTick(() => closeList())
     }
@@ -622,7 +640,7 @@
     }
 
     .m-select-list {
-      @apply maz-absolute maz-z-100 maz-flex maz-flex-col maz-overflow-hidden maz-rounded maz-bg-color maz-text-normal maz-drop-shadow-lg dark:maz-bg-color-light;
+      @apply maz-absolute maz-z-100 maz-flex maz-flex-col maz-overflow-hidden maz-rounded maz-bg-color maz-text-normal maz-drop-shadow-lg dark:maz-border dark:maz-border-color-lighter;
 
       min-width: 3.5rem;
 
@@ -655,7 +673,7 @@
       }
 
       &-item {
-        @apply maz-flex maz-w-full maz-items-center maz-gap-3 maz-truncate maz-bg-transparent maz-px-4 maz-text-left maz-text-normal hover:maz-bg-color-lighter;
+        @apply maz-flex maz-w-full maz-items-center maz-gap-3 maz-truncate maz-bg-transparent maz-px-4 maz-text-left maz-text-normal hover:maz-bg-color-lighter dark:hover:maz-bg-color-light;
 
         span {
           @apply maz-truncate;
@@ -666,6 +684,10 @@
 
           &.--is-selected {
             background-color: v-bind('keyboardSelectedBgColor');
+
+            &:hover {
+              background-color: v-bind('keyboardSelectedBgColor');
+            }
           }
         }
 
