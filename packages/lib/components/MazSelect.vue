@@ -134,7 +134,7 @@
   import { useInstanceUniqId } from '../modules/composables'
   import { debounceCallback } from './../modules/helpers/debounce-callback'
 
-  export type MazSelectOption = Record<string, ModelValueSimple> | string | number | boolean
+  export type MazSelectOption = Record<string, ModelValueSimple> | (string | number | boolean)[]
   export type { Color, Size, ModelValueSimple, Position }
 
   const MazCheckbox = defineAsyncComponent(() => import('./MazCheckbox.vue'))
@@ -329,7 +329,7 @@
     return value === undefined || value === null
   }
 
-  function isSelectedOption(option: Record<string, ModelValueSimple>) {
+  function isSelectedOption(option: MazSelectOption) {
     const hasOption =
       selectedOptions.value?.some(
         (selectedOption) => selectedOption[props.optionValueKey] === option[props.optionValueKey],
@@ -551,7 +551,7 @@
     }
   }
 
-  function updateTmpModelValueIndex(inputOption?: Record<string, ModelValueSimple>) {
+  function updateTmpModelValueIndex(inputOption?: MazSelectOption) {
     const index = optionsList.value?.findIndex((option) => {
       if (props.multiple && Array.isArray(props.modelValue)) {
         if (inputOption) {
@@ -567,7 +567,7 @@
     tmpModelValueIndex.value = index && index >= 0 ? index : 0
   }
 
-  const updateValue = (inputOption: Record<string, ModelValueSimple>, mustCloseList = true) => {
+  const updateValue = (inputOption: MazSelectOption, mustCloseList = true) => {
     if (mustCloseList && !props.multiple) {
       nextTick(() => closeList())
     }
