@@ -127,24 +127,19 @@
 
 <style lang="postcss" scoped>
   .m-avatar {
-    @apply maz-inline-flex maz-flex-col maz-flex-center;
-    @apply maz-no-underline !important;
+    @apply maz-inline-flex maz-flex-col maz-gap-[0.5em] maz-flex-center;
+    @apply !maz-no-underline;
 
     &__caption {
-      @apply maz-mt-2 maz-w-full maz-truncate maz-text-center maz-font-medium maz-capitalize;
+      @apply maz-w-full maz-truncate maz-text-center maz-font-medium maz-capitalize;
     }
 
     &__initial {
-      @apply maz-capitalize maz-text-white;
-
-      font-size: 1.5em;
+      @apply maz-text-[1.5em] maz-capitalize maz-text-white;
     }
 
     &__wrapper {
-      @apply maz-relative maz-flex maz-flex-none maz-justify-center maz-overflow-hidden;
-
-      height: 3em;
-      width: 3em;
+      @apply maz-relative maz-flex maz-h-[3em] maz-w-[3em] maz-flex-none maz-justify-center maz-overflow-hidden;
 
       &.--clickable {
         & .m-avatar__button {
