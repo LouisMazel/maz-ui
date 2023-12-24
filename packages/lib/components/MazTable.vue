@@ -18,8 +18,11 @@
           :size="size"
           :color="color"
           :placeholder="searchPlaceholder"
-          left-icon="search"
-        />
+        >
+          <template #left-icon>
+            <SearchIcon class="maz-text-lg" />
+          </template>
+        </MazInput>
       </div>
     </div>
 
@@ -29,7 +32,7 @@
     >
       <caption v-if="caption || $slots.caption">
         <!--
-          @slot caption - replace caption
+          @slot caption - add caption on top or bottom of the table
         -->
         <slot name="caption">
           {{ caption }}
@@ -75,10 +78,10 @@
               -->
                 <slot name="header" :header="header" :label="header.label">
                   <!--
-                  @slot header-label-{key} - replace column header label
-                    @binding {Object} header - header data
-                    @binding {String} label - header label
-                -->
+                    @slot header-label-{key} - replace column header label
+                      @binding {Object} header - header data
+                      @binding {String} label - header label
+                  -->
                   <slot :name="`header-label-${header.key}`" :header="header" :label="header.label">
                     {{ header.label }}
                   </slot>
@@ -97,6 +100,9 @@
               </span>
             </MazTableTitle>
             <MazTableTitle v-if="$slots.actions" align="left" :class="`--${size}`">
+              <!--
+                @slot actions-header - replace text of actions header
+              -->
               <slot name="actions-header"> Actions </slot>
             </MazTableTitle>
           </MazTableRow>
@@ -151,6 +157,9 @@
                 </slot>
               </MazTableCell>
               <MazTableCell v-if="$slots.actions">
+                <!--
+                  @slot actions - will add actions column
+                -->
                 <slot name="actions"></slot>
               </MazTableCell>
             </MazTableRow>
@@ -262,6 +271,7 @@
     watch,
     onBeforeMount,
   } from 'vue'
+  import SearchIcon from './../icons/magnifying-glass.svg'
   import ArrowIcon from './../icons/arrow-up.svg'
   import ChevronIcon from './../icons/chevron-left.svg'
   import ChevronDoubleIcon from './../icons/chevron-double-left.svg'
