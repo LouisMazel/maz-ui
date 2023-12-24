@@ -30,7 +30,7 @@ describe('components/MazPhoneNumberInput.vue', () => {
 
   test('Should have the good values with FR number', async () => {
     expect(wrapper.vm.modelValue).toBe('+33658584729')
-    expect(wrapper.vm.countryCode).toBe('FR')
+    expect(wrapper.vm.countryCodeModel).toBe('FR')
   })
 
   test('Should have the good values with BE number', async () => {
@@ -42,7 +42,7 @@ describe('components/MazPhoneNumberInput.vue', () => {
     await wrapper.vm.$nextTick()
 
     expect(wrapper.vm.modelValue).toBe('+326453')
-    expect(wrapper.vm.countryCode).toBe('BE')
+    expect(wrapper.vm.countryCodeModel).toBe('BE')
   })
 
   test('Should validate country code', async () => {

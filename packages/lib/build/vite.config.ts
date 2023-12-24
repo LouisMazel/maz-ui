@@ -19,30 +19,30 @@ import { copyFileSync } from 'node:fs'
 
 import { fileURLToPath } from 'node:url'
 
-const __dirname = fileURLToPath(new URL('.', import.meta.url))
+const _dirname = fileURLToPath(new URL('.', import.meta.url))
 
 const argv = minimist(process.argv.slice(2))
 
 const staticAssetsToCopy: Target[] = [
   {
-    src: resolve(__dirname, '../tailwindcss'),
-    dest: resolve(__dirname, '../dist'),
+    src: resolve(_dirname, '../tailwindcss'),
+    dest: resolve(_dirname, '../dist'),
   },
   {
-    src: resolve(__dirname, '../package.json'),
-    dest: resolve(__dirname, '../dist'),
+    src: resolve(_dirname, '../package.json'),
+    dest: resolve(_dirname, '../dist'),
   },
   {
-    src: resolve(__dirname, '../icons'),
-    dest: resolve(__dirname, '../dist'),
+    src: resolve(_dirname, '../icons'),
+    dest: resolve(_dirname, '../dist'),
   },
   {
-    src: resolve(__dirname, '../bin'),
-    dest: resolve(__dirname, '../dist'),
+    src: resolve(_dirname, '../bin'),
+    dest: resolve(_dirname, '../dist'),
   },
   {
-    src: resolve(__dirname, '../../../README.md'),
-    dest: resolve(__dirname, '../dist'),
+    src: resolve(_dirname, '../../../README.md'),
+    dest: resolve(_dirname, '../dist'),
   },
 ]
 
@@ -115,18 +115,18 @@ const run = async () => {
     if ((!argv.package || argv.package === 'modules') && !argv.component) {
       await build(
         getBuildConfig({
-          path: resolve(__dirname, './../modules/index.ts'),
+          path: resolve(_dirname, './../modules/index.ts'),
           name: 'index',
-          outDir: resolve(__dirname, '../dist/modules'),
+          outDir: resolve(_dirname, '../dist/modules'),
           isModuleBuild: true,
           format: 'es',
         }),
       )
       await build(
         getBuildConfig({
-          path: resolve(__dirname, './../modules/index.ts'),
+          path: resolve(_dirname, './../modules/index.ts'),
           name: 'index',
-          outDir: resolve(__dirname, '../dist/modules'),
+          outDir: resolve(_dirname, '../dist/modules'),
           isModuleBuild: true,
           format: 'cjs',
         }),
@@ -135,18 +135,18 @@ const run = async () => {
 
     await build(
       getBuildConfig({
-        path: resolve(__dirname, './../resolvers/index.ts'),
+        path: resolve(_dirname, './../resolvers/index.ts'),
         name: 'index',
-        outDir: resolve(__dirname, '../dist/resolvers'),
+        outDir: resolve(_dirname, '../dist/resolvers'),
         isModuleBuild: true,
         format: 'cjs',
       }),
     )
     await build(
       getBuildConfig({
-        path: resolve(__dirname, './../resolvers/index.ts'),
+        path: resolve(_dirname, './../resolvers/index.ts'),
         name: 'index',
-        outDir: resolve(__dirname, '../dist/resolvers'),
+        outDir: resolve(_dirname, '../dist/resolvers'),
         isModuleBuild: true,
         format: 'es',
       }),
@@ -164,14 +164,14 @@ const run = async () => {
         getBuildConfig({
           path,
           name,
-          outDir: resolve(__dirname, '../dist/components'),
+          outDir: resolve(_dirname, '../dist/components'),
           format: 'es',
         }),
       )
     }
 
     // Emit types from all packages
-    await execPromise('vue-tsc --declaration --emitDeclarationOnly')
+    await execPromise('pnpm -F maz-ui gen:declaration-files')
 
     copyAndTransformComponentsTypesFiles()
     copyFileSync(
@@ -192,13 +192,11 @@ const run = async () => {
 
     await compileScss()
 
-    await execPromise('rimraf generated-types')
-
     await execPromise('pnpm -F nuxt-module build')
     await execPromise('pnpm -F @mazui/cli build')
 
     // Nuxt Module: rename all module.* to index.*
-    const fileList = await readdir(resolve(__dirname, './../dist/nuxt'), {
+    const fileList = await readdir(resolve(_dirname, './../dist/nuxt'), {
       withFileTypes: true,
     })
 
@@ -213,16 +211,16 @@ const run = async () => {
 
     await replace({
       files: [
-        resolve(__dirname, '../dist/nuxt/types.d.mts'),
-        resolve(__dirname, '../dist/nuxt/types.d.ts'),
-        resolve(__dirname, '../dist/nuxt/index.cjs'),
+        resolve(_dirname, '../dist/nuxt/types.d.mts'),
+        resolve(_dirname, '../dist/nuxt/types.d.ts'),
+        resolve(_dirname, '../dist/nuxt/index.cjs'),
       ],
       from: new RegExp('./module', 'g'),
       to: './index',
     })
 
     await replace({
-      files: resolve(__dirname, '../dist/package.json'),
+      files: resolve(_dirname, '../dist/package.json'),
       from: [
         new RegExp('"main": "./modules/index.ts"', 'g'),
         new RegExp('"module": "./modules/index.ts"', 'g'),
