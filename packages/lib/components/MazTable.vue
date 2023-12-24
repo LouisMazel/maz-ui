@@ -275,7 +275,14 @@
   import ArrowIcon from './../icons/arrow-up.svg'
   import ChevronIcon from './../icons/chevron-left.svg'
   import ChevronDoubleIcon from './../icons/chevron-double-left.svg'
-  import type { MazSelectOption } from './MazSelect.vue'
+  import MazSelect, { type MazSelectOption } from './MazSelect.vue'
+  import MazBtn from './MazBtn.vue'
+  import MazTableRow from './MazTableRow.vue'
+  import MazTableCell from './MazTableCell.vue'
+  import MazTableTitle from './MazTableTitle.vue'
+  import MazInput from './MazInput.vue'
+  import MazLoadingBar from './MazLoadingBar.vue'
+  import MazCheckbox from './MazCheckbox.vue'
   import type { Color, Size } from './types'
 
   export interface HeadersEnriched {

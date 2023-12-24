@@ -24,7 +24,6 @@ export default defineConfig({
     //     inline: ['vitest-canvas-mock'],
     //   },
     // },
-    // threads: false,
     globalSetup: './vitest-global.setup.ts',
     environment: 'jsdom',
     environmentOptions: {

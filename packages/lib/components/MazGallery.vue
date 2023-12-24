@@ -52,7 +52,7 @@
     <div
       v-for="(image, i) in imagesHidden"
       :key="i"
-      v-zoom-img="{ src: image.src, disabled: noZoom }"
+      v-fullscreen-img="{ src: image.src, disabled: noZoom }"
       class="m-gallery__hidden"
     ></div>
   </div>
@@ -60,7 +60,7 @@
 
 <script lang="ts" setup>
   import { computed, type PropType, onBeforeMount, defineAsyncComponent } from 'vue'
-  import { vZoomImg } from './../modules/directives/v-zoom-img/zoom-img'
+  import { vFullscreenImg } from './../modules/directives/v-fullscreen-img/fullscreen-img.directive'
   import { vLazyImg } from './../modules/directives/v-lazy-img/lazy-img'
   import type { MazGalleryImage } from './types'
   export type { MazGalleryImage } from './types'
