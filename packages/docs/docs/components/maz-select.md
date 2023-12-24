@@ -248,4 +248,10 @@ If you want custom keys of these options, you can use:
   ]
 </script>
 
+### Types
+
+```ts
+type ModelValueSimple = string | number | null | undefined | boolean
+```
+
 <!--@include: ./../.vitepress/generated-docs/maz-select.doc.md-->

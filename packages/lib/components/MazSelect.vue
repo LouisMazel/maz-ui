@@ -70,7 +70,7 @@
           </MazInput>
         </div>
         <!--
-          @slot No results slot - Displayed when no results corresponding with seeach query
+          @slot No results slot - Displayed when no results corresponding with search query
         -->
         <slot v-if="!optionsList || optionsList.length <= 0" name="no-results">
           <span class="m-select-list__no-results">
@@ -124,11 +124,10 @@
     computed,
     onBeforeMount,
     nextTick,
-    type PropType,
     getCurrentInstance,
     defineAsyncComponent,
     defineOptions,
-    type HTMLAttributes,
+    type StyleValue,
   } from 'vue'
   import MazInput from './MazInput.vue'
   import type { Color, ModelValueSimple, Position, Size } from './types'
@@ -150,72 +149,106 @@
     inheritAttrs: false,
   })
 
-  const props = defineProps({
-    style: {
-      type: [String, Array, Object] as PropType<HTMLAttributes['style']>,
-      default: undefined,
+  const props = withDefaults(
+    defineProps<{
+      /** The style of the select */
+      style?: StyleValue
+      /** The class of the select */
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      class?: any
+      /** The id of the select */
+      id?: string
+      /** The value of the select */
+      modelValue?: ModelValueSimple | ModelValueSimple[]
+      /** The options of the select */
+      options?: MazSelectOption[]
+      /** The key of the option value */
+      optionValueKey?: string
+      /** The key of the option label */
+      optionLabelKey?: string
+      /** The key of the option input value */
+      optionInputValueKey?: string
+      /** The position of the list */
+      listPosition?: Position
+      /** The height of the option list item */
+      itemHeight?: number
+      /** The max height of the option list */
+      maxListHeight?: number
+      /** The max width of the option list */
+      maxListWidth?: number
+      /** The size of the select */
+      size?: Size
+      /** The color of the select */
+      color?: Color
+      /** Display search input in option list */
+      search?: boolean
+      /** The placeholder of the search input */
+      searchPlaceholder?: string
+      /** if true, the option list is opened by default */
+      open?: boolean
+      /** Enable the multiple selection */
+      multiple?: boolean
+      /** Make the input required in the form */
+      required?: boolean
+      /** Disable the component */
+      disabled?: boolean
+    }>(),
+    {
+      id: undefined,
+      class: undefined,
+      style: undefined,
+      modelValue: undefined,
+      optionValueKey: 'value',
+      optionLabelKey: 'label',
+      optionInputValueKey: 'label',
+      listPosition: 'bottom left',
+      itemHeight: 42,
+      maxListHeight: 240,
+      maxListWidth: undefined,
+      size: 'md',
+      color: 'primary',
+      searchPlaceholder: 'Search in options',
+      options: undefined,
     },
-    class: {
-      type: [String, Array, Object] as PropType<HTMLAttributes['class']>,
-      default: undefined,
-    },
-    modelValue: {
-      type: [Number, String, Boolean, Array] as PropType<ModelValueSimple | ModelValueSimple[]>,
-      default: undefined,
-    },
-    id: { type: String, default: undefined },
-    options: { type: Array as PropType<MazSelectOption[]>, default: undefined },
-    optionValueKey: { type: String, default: 'value' },
-    optionLabelKey: { type: String, default: 'label' },
-    optionInputValueKey: { type: String, default: 'label' },
-    listPosition: {
-      type: String as PropType<Position>,
-      default: 'bottom left',
-      validator: (value: Position) => {
-        return ['top', 'top right', 'top left', 'bottom', 'bottom right', 'bottom left'].includes(
-          value,
-        )
-      },
-    },
-    required: { type: Boolean, default: false },
-    disabled: { type: Boolean, default: false },
-    open: { type: Boolean, default: false },
-    /** Choose color of the input */
-    color: {
-      type: String as PropType<Color>,
-      default: 'primary',
-    },
-    /** Choose the option list item height */
-    itemHeight: { type: Number, default: 40 },
-    maxListHeight: { type: Number, default: 240 },
-    /** Add max-width value to option list */
-    maxListWidth: { type: Number, default: undefined },
-    /** Choose size of the input */
-    size: {
-      type: String as PropType<Size>,
-      default: 'md',
-      validator: (value: string) => {
-        return ['mini', 'xs', 'sm', 'md', 'lg', 'xl'].includes(value)
-      },
-    },
-    /** Display search input in option list */
-    search: { type: Boolean, default: false },
-    /** Search input placeholder */
-    searchPlaceholder: { type: String, default: 'Search in options' },
-    /** Enable feature to select multiple values */
-    multiple: { type: Boolean, default: false },
-  })
+  )
 
-  const emits = defineEmits([
-    'close',
-    'open',
-    'blur',
-    'focus',
-    'change',
-    'update:model-value',
-    /** On selected value, returns the option object */
-    'selected-option',
-  ])
+  const emits = defineEmits<{
+    /** On list is closed
+     * @event 'close'
+     * @property {Event} value - the event
+     */
+    (event: 'close', value?: Event): void
+    /** On list is opened
+     * @event 'open'
+     * @property {boolean} value - if the list is opened or not
+     */
+    (event: 'open', value?: boolean): void
+    /** On input blur
+     * @event 'blur'
+     * @property {Event} value - the event
+     */
+    (event: 'blur', value?: Event): void
+    /** On input focus
+     * @event 'focus'
+     * @property {Event} value - the event
+     */
+    (event: 'focus', value?: Event): void
+    /** On input change value
+     * @event 'change'
+     * @property {Event} value - the event
+     */
+    (event: 'change', value?: Event): void
+    /** On model value update, returns the new value
+     * @event 'update:model-value'
+     * @property {ModelValueSimple | ModelValueSimple[]} value - the new value
+     */
+    (event: 'update:model-value', value: ModelValueSimple | ModelValueSimple[]): void
+    /** On selected value, returns the option object
+     * @event 'selected-option'
+     * @property {MazSelectOption} value - the option object
+     */
+    (event: 'selected-option', option: MazSelectOption): void
+  }>()
 
   const listOpened = ref(false)
   const tmpModelValueIndex = ref<number>()
