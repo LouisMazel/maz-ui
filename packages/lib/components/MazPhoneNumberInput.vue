@@ -11,26 +11,29 @@
     :style="style"
   >
     <button
-      v-if="countryCode && !noFlags && !noCountrySelector"
+      v-if="countryCodeModel && !noFlags && !noCountrySelector"
       class="m-phone-number-input__country-flag maz-text-xl"
       tabindex="-1"
       type="button"
+      :class="{
+        '--should-have-bottom-flag': locales.countrySelector.placeholder.length > 0,
+      }"
       @click="focusCountrySelector"
     >
       <!--
         @slot Country selector flag
           @binding {String} country-code - current selected country code - Ex: `"FR"`
       -->
-      <slot name="selector-flag" :country-code="countryCode">
-        {{ countryCodeToUnicodeFlag(countryCode) }}
+      <slot name="selector-flag" :country-code="countryCodeModel">
+        {{ countryCodeToUnicodeFlag(countryCodeModel) }}
       </slot>
     </button>
 
     <MazSelect
       v-if="!noCountrySelector"
       ref="CountrySelector"
+      v-model="countryCodeModel"
       class="m-phone-number-input__select"
-      :model-value="countryCode"
       option-value-key="iso2"
       option-label-key="name"
       :option-input-value-key="countrySelectorDisplayName ? 'name' : 'dialCode'"
@@ -42,14 +45,13 @@
       :search="!noSearch"
       :search-placeholder="locales.countrySelector.searchPlaceholder"
       :options="countryOptions"
-      :error="error || (!noValidationError ? !!inputValue && !countryCode : false)"
-      :hint="!!inputValue && !countryCode ? locales.countrySelector.error : undefined"
-      :label="locales.countrySelector.placeholder"
+      :error="error || (!noValidationError ? !!inputValue && !countryCodeModel : false)"
+      :hint="!!inputValue && !countryCodeModel ? locales.countrySelector.error : undefined"
       :success="success || (!noValidationSuccess ? results?.isValid : false)"
+      :label="locales.countrySelector.placeholder"
       :style="{
         width: countrySelectorWidth,
       }"
-      @update:model-value="onCountryChanged($event)"
       @focus="inputFocused = false"
     >
       <template #default="{ option, isSelected }">
@@ -131,14 +133,13 @@
   import {
     computed,
     onMounted,
-    type PropType,
     ref,
     watch,
     getCurrentInstance,
     nextTick,
     reactive,
     defineOptions,
-    type HTMLAttributes,
+    type StyleValue,
   } from 'vue'
 
   import { countryCodeToUnicodeFlag } from './../modules/helpers/country-code-to-unicode-flag'
@@ -158,135 +159,126 @@
   import MazInput from './MazInput.vue'
   import MazSelect from './MazSelect.vue'
 
-  const emits = defineEmits([
+  const emits = defineEmits<{
+    /**
+     * emitted when country or phone number changes
+     * @property {Result} results - meta info of current phone number
+     */
+    (event: 'update', results: Result): void
     /** emitted when country or phone number changes
      * @property {Result} results - meta info of current phone number
      */
-    'update',
-    /** emitted when country or phone number changes
-     * @property {Result} results - meta info of current phone number
-     */
-    'data',
+    (event: 'data', results: Result): void
     /** emitted when selected country changes
      * @property {CountryCode} countryCode - Country code
      */
-    'country-code',
+    (event: 'country-code', countryCode?: CountryCode): void
     /** emitted when country or phone number changes
      * @property {String} phoneNumber - phoneNumber formatted
      */
-    'update:model-value',
+    (event: 'update:model-value', phoneNumber?: string): void
     /** emitted when country changes
      * @property {CountryCode} countryCode - Country code
      */
-    'update:country-code',
-  ])
+    (event: 'update:country-code', countryCode?: CountryCode): void
+  }>()
 
   defineOptions({
     inheritAttrs: false,
   })
 
-  const props = defineProps({
-    style: {
-      type: [String, Array, Object] as PropType<HTMLAttributes['style']>,
-      default: undefined,
+  const props = withDefaults(
+    defineProps<{
+      /** Style attribut of the component root element */
+      style?: StyleValue
+      /** Class attribut of the component root element */
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      class?: any
+      /** @model Country calling code + telephone number in international format */
+      modelValue?: string
+      /** @deprecated */
+      defaultPhoneNumber?: string
+      /** @model Country code selected - Ex: "FR" */
+      countryCode?: CountryCode | string
+      /** @deprecated - use country-code or v-model:country-code */
+      defaultCountryCode?: CountryCode | string
+      /** Id of the component */
+      id?: string
+      /** Placeholder of the input */
+      placeholder?: string
+      /** List of country codes to place first in the select list - Ex: ['FR', 'BE', 'GE'] */
+      preferredCountries?: CountryCode[]
+      /** List of country codes to be removed from the select list - Ex: ['FR', 'BE', 'GE'] */
+      ignoredCountries?: CountryCode[]
+      /** List of country codes to only have the countries selected in the select list - Ex: ['FR', 'BE', 'GE'] */
+      onlyCountries?: CountryCode[]
+      /** Locale strings of the component */
+      translations?: Partial<Translations>
+      /** Position where the list of countries will be opened */
+      listPosition?: Position
+      /** Component color applied - Ex: "secondary" */
+      color?: Color
+      /** Component size applied - Ex: "sm" */
+      size?: Size
+      /** Remove flags in country list */
+      noFlags?: boolean
+      /** Disable input */
+      disabled?: boolean
+      /** No show the phone number example */
+      noExample?: boolean
+      /** Disable search input in country list */
+      noSearch?: boolean
+      /** By default the component use the browser locale to set the default country code if not country code is provided */
+      noUseBrowserLocale?: boolean
+      /** The component will make a request to get the location of the user and use it to set the default country code */
+      fetchCountry?: boolean
+      /** No show the country selector */
+      noCountrySelector?: boolean
+      /** Show country calling code in the country list */
+      showCodeOnList?: boolean
+      /** Replace country names */
+      customCountriesList?: Record<CountryCode, string>
+      /** Disabled auto-format as you type */
+      noFormattingAsYouType?: boolean
+      /**
+       * locale of country list - Ex: "fr-FR"
+       * @default {string} browser locale
+       */
+      countryLocale?: string
+      /** Disable validation error UI */
+      noValidationError?: boolean
+      /** Disable validation success UI */
+      noValidationSuccess?: boolean
+      /** Add success UI */
+      success?: boolean
+      /** Add error UI */
+      error?: boolean
+      /** Will replace the calling code by the country name in the country selector */
+      countrySelectorDisplayName?: boolean
+      /** Choose the width of the country selector */
+      countrySelectorWidth?: string
+    }>(),
+    {
+      class: undefined,
+      style: undefined,
+      listPosition: 'bottom left',
+      color: 'primary',
+      size: 'md',
+      modelValue: undefined,
+      defaultPhoneNumber: undefined,
+      countryCode: undefined,
+      defaultCountryCode: undefined,
+      id: undefined,
+      placeholder: undefined,
+      preferredCountries: undefined,
+      ignoredCountries: undefined,
+      onlyCountries: undefined,
+      translations: undefined,
+      customCountriesList: undefined,
+      countryLocale: undefined,
+      countrySelectorWidth: '9rem',
     },
-    class: {
-      type: [String, Array, Object] as PropType<HTMLAttributes['class']>,
-      default: undefined,
-    },
-    /** Country calling code + telephone number in international format */
-    modelValue: {
-      type: String,
-      validator: (prop: string) => {
-        return typeof prop === 'string' || prop === undefined
-      },
-      default: undefined,
-    },
-    /** @deprecated */
-    defaultPhoneNumber: { type: String, default: undefined },
-    /** Country code selected - Ex: "FR" */
-    countryCode: {
-      type: String as PropType<CountryCode | string>,
-      default: undefined,
-      validator: (code: string) => isCountryAvailable(code),
-    },
-    /** @deprecated - use country-code or v-model:country-code */
-    defaultCountryCode: {
-      type: String as PropType<CountryCode | string>,
-      default: undefined,
-      validator: (code: string) => isCountryAvailable(code),
-    },
-    id: { type: String, default: undefined },
-    placeholder: { type: String, default: undefined },
-    /** List of country codes to place first in the select list - Ex: ['FR', 'BE', 'GE'] */
-    preferredCountries: { type: Array as PropType<CountryCode[]>, default: undefined },
-    /** List of country codes to be removed from the select list - Ex: ['FR', 'BE', 'GE'] */
-    ignoredCountries: { type: Array as PropType<CountryCode[]>, default: undefined },
-    /** List of country codes to only have the countries selected in the select list - Ex: ['FR', 'BE', 'GE'] */
-    onlyCountries: { type: Array as PropType<CountryCode[]>, default: undefined },
-    /** Locale strings of the component */
-    translations: { type: Object as PropType<Translations>, default: undefined },
-    /** Position where the list of countries will be opened */
-    listPosition: {
-      type: String as PropType<Position>,
-      default: 'bottom left',
-      validator: (value: Position) => {
-        return ['top', 'top right', 'top left', 'bottom', 'bottom right', 'bottom left'].includes(
-          value,
-        )
-      },
-    },
-    /** Component color applied - Ex: "secondary" */
-    color: { type: String as PropType<Color>, default: 'primary' },
-    /** Component size applied - Ex: "sm" */
-    size: {
-      type: String as PropType<Size>,
-      default: 'md',
-      validator: (value: string) => {
-        return ['mini', 'xs', 'sm', 'md', 'lg', 'xl'].includes(value)
-      },
-    },
-    /** Remove flags in country list */
-    noFlags: { type: Boolean, default: false },
-    /** Disable input */
-    disabled: { type: Boolean, default: false },
-    /** No show the phone number example */
-    noExample: { type: Boolean, default: false },
-    /** Disable search input in country list */
-    noSearch: { type: Boolean, default: false },
-    /** By default the component use the browser locale to set the default country code if not country code is provided */
-    noUseBrowserLocale: { type: Boolean, default: false },
-    /** The component will make a request to get the location of the user and use it to set the default country code */
-    fetchCountry: { type: Boolean, default: false },
-    /** No show the country selector */
-    noCountrySelector: { type: Boolean, default: false },
-    /** Show country calling code in the country list */
-    showCodeOnList: { type: Boolean, default: false },
-    /** Replace country names */
-    customCountriesList: {
-      type: Object as PropType<Record<CountryCode, string>>,
-      default: undefined,
-    },
-    /** Disabled auto-format as you type */
-    noFormattingAsYouType: { type: Boolean, default: false },
-    /**
-     * locale of country list - Ex: "fr-FR"
-     * @default {string} browser locale
-     */
-    countryLocale: { type: String, default: undefined },
-    /** Disable validation error UI */
-    noValidationError: { type: Boolean, default: false },
-    /** Disable validation success UI */
-    noValidationSuccess: { type: Boolean, default: false },
-    /** Add success UI */
-    success: { type: Boolean, default: false },
-    /** Add error UI */
-    error: { type: Boolean, default: false },
-    /** Will replace the calling code by the country name in the country selector */
-    countrySelectorDisplayName: { type: Boolean, default: false },
-    /** Choose the width of the country selector */
-    countrySelectorWidth: { type: String, default: '9rem' },
-  })
+  )
 
   const instance = getCurrentInstance()
   const instanceId = useInstanceUniqId({
@@ -363,11 +355,33 @@
     if (props.noExample || !examplesFileLoaded.value) {
       return defaultPlaceholder
     } else {
-      const example = getPhoneNumberExample(countryCode.value)
+      const example = getPhoneNumberExample(countryCodeModel.value)
       return results.value.isValid || !example
         ? defaultPlaceholder
         : `${locales.value.phoneInput.example} ${example}`
     }
+  })
+
+  const internalCountryCode = ref<CountryCode>()
+
+  watch(
+    () => props.countryCode || props.defaultCountryCode,
+    (value) => {
+      internalCountryCode.value = value as CountryCode | undefined
+    },
+  )
+
+  const countryCodeModel = computed({
+    get: () => internalCountryCode.value,
+    set: (value) => {
+      emits('country-code', value)
+      emits('update:country-code', value)
+
+      if (value) {
+        onCountryChanged(value)
+        onInputValueChanged(inputValue.value)
+      }
+    },
   })
 
   const model = computed({
@@ -377,28 +391,7 @@
     },
   })
 
-  const internalCountryCode = ref<CountryCode>()
-
-  const countryCode = computed({
-    get: () =>
-      (props.countryCode || props.defaultCountryCode || internalCountryCode.value) as
-        | CountryCode
-        | undefined,
-    set: (value) => {
-      emits('country-code', value)
-      emits('update:country-code', value)
-      internalCountryCode.value = value
-    },
-  })
-
   const internalValue = ref<string | undefined>(model.value)
-
-  const results = ref<Result>(
-    getResultsFromPhoneNumber({
-      phoneNumber: model.value,
-      countryCode: countryCode.value,
-    }),
-  )
 
   const asYouTypeFormatted = ref<string>()
 
@@ -409,6 +402,13 @@
 
     return asYouTypeFormatted.value ?? internalValue.value ?? ''
   })
+
+  const results = ref<Result>(
+    getResultsFromPhoneNumber({
+      phoneNumber: model.value,
+      countryCode: countryCodeModel.value,
+    }),
+  )
 
   async function setCountryFromIpWho() {
     const fetchedLocale = await fetchCountryCode()
@@ -431,11 +431,11 @@
 
     await nextTick()
 
-    if (props.fetchCountry && !countryCode.value) {
+    if (props.fetchCountry && !countryCodeModel.value) {
       await setCountryFromIpWho()
     }
 
-    if (!props.defaultCountryCode && !props.noUseBrowserLocale && !countryCode.value) {
+    if (!props.defaultCountryCode && !props.noUseBrowserLocale && !countryCodeModel.value) {
       setCountryCodeFromBrowserLocale()
     }
 
@@ -449,16 +449,6 @@
       emits('data', newResults)
     },
     { immediate: true, deep: true },
-  )
-
-  watch(
-    () => countryCode.value,
-    (newCountryCode, oldCountryCode) => {
-      if (newCountryCode && newCountryCode !== oldCountryCode) {
-        setCountryCode(newCountryCode)
-        onInputValueChanged(inputValue.value)
-      }
-    },
   )
 
   watch(
@@ -519,16 +509,15 @@
 
     const newResults = getResultsFromPhoneNumber({
       phoneNumber: sanitizedPhoneNumber,
-      countryCode: countryCode.value,
+      countryCode: countryCodeModel.value,
     })
 
     model.value = newResults.e164
   }
 
   function onCountryChanged(codeCountry: string | CountryCode) {
-    updateResults(inputValue.value, codeCountry as CountryCode)
-
     setCountryCode(codeCountry, true)
+    updateResults(inputValue.value, codeCountry as CountryCode)
   }
 
   function setCountryCode(selectedCountryCode: string | CountryCode, autoFocusInput = false) {
@@ -536,7 +525,7 @@
       const countryAvailable = isCountryAvailable(selectedCountryCode)
 
       if (countryAvailable) {
-        countryCode.value = selectedCountryCode as CountryCode
+        internalCountryCode.value = selectedCountryCode as CountryCode
 
         if (autoFocusInput) {
           focusPhoneNumberInput()
@@ -548,20 +537,22 @@
   }
 
   async function parseModel(newModel?: string) {
-    updateResults(newModel, countryCode.value)
+    updateResults(newModel, countryCodeModel.value)
 
     await nextTick()
 
     if (props.noFormattingAsYouType) {
       internalValue.value = inputValue.value
-    } else {
+    } else if (newModel) {
       asYouTypeFormatted.value =
         selectionRange.cursorAtEnd || results.value.isValid
           ? (internalValue.value = getAsYouTypeFormat(
-              results.value.countryCode ?? countryCode.value,
+              results.value.countryCode ?? countryCodeModel.value,
               results.value.formatNational ?? internalValue.value,
             ))
           : internalValue.value
+    } else {
+      asYouTypeFormatted.value = undefined
     }
 
     await nextTick()
@@ -570,7 +561,7 @@
   }
 
   function autoUpdateCountryCodeWithResults(newResults: Result) {
-    if (newResults.countryCode && countryCode.value !== newResults.countryCode) {
+    if (newResults.countryCode && countryCodeModel.value !== newResults.countryCode) {
       setCountryCode(newResults.countryCode)
     }
   }
@@ -591,11 +582,10 @@
 
 <style lang="postcss" scoped>
   .m-phone-number-input {
-    @apply maz-relative maz-flex;
+    @apply maz-relative maz-flex maz-items-center;
 
     &__country-flag {
       position: absolute;
-      bottom: 2px;
       left: 13px;
       z-index: 4;
       outline: none;
@@ -603,6 +593,10 @@
       padding: 0;
       margin: 0;
       cursor: pointer;
+
+      &.--should-have-bottom-flag {
+        bottom: 2px;
+      }
     }
 
     &__input.--border-radius:deep(.m-input-wrapper) {
