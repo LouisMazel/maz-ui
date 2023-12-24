@@ -1,5 +1,51 @@
 # Change Log
 
+## v3.29.11...v3.29.12
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.29.11...v3.29.12)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazPhoneNumberInput - flag position when no placeholder & clear all values in phone number input ([7cdfa328](https://github.com/LouisMazel/maz-ui/commit/7cdfa328))
+
+### 💅 Refactors
+
+- **maz-ui:** MazTabsBar - add option to remove shadow ([fb8bd520](https://github.com/LouisMazel/maz-ui/commit/fb8bd520))
+- **maz-ui:** MazBtn - use cursor wait when is loading=true ([18006d8c](https://github.com/LouisMazel/maz-ui/commit/18006d8c))
+- **maz-ui:** MazDialogPromise - change promise response to 'accept' and 'cancel' ([a171dd91](https://github.com/LouisMazel/maz-ui/commit/a171dd91))
+- **maz-ui:** MazInputNumber - add option to remove buttons ([53e3f0d4](https://github.com/LouisMazel/maz-ui/commit/53e3f0d4))
+- **maz-ui:** MazInputNumber - add option to center text or not ([5a9ab4c5](https://github.com/LouisMazel/maz-ui/commit/5a9ab4c5))
+- **maz-ui:** MazInputCode - add missing class inherits and export missing types ([7ea26cae](https://github.com/LouisMazel/maz-ui/commit/7ea26cae))
+- **docs:** MazInputNumber - add input without buttons in docs ([23a85376](https://github.com/LouisMazel/maz-ui/commit/23a85376))
+
+### 📖 Documentation
+
+- **docs:** MazPhoneNumberInput - add example of v-model:country-input ([c2a0ba96](https://github.com/LouisMazel/maz-ui/commit/c2a0ba96))
+- Update CONTRIBUTING.md ([99222e8e](https://github.com/LouisMazel/maz-ui/commit/99222e8e))
+- Update CONTRIBUTING.md ([63871984](https://github.com/LouisMazel/maz-ui/commit/63871984))
+
+### 🏡 Chore
+
+- **deps:** Upgrade dependencies ([d51d4758](https://github.com/LouisMazel/maz-ui/commit/d51d4758))
+- **deps:** Upgrade dependencies ([89a25242](https://github.com/LouisMazel/maz-ui/commit/89a25242))
+
+### ✅ Tests
+
+- **maz-ui:** MazPhoneNumberInput - fix ([b367cd7a](https://github.com/LouisMazel/maz-ui/commit/b367cd7a))
+
+### 🎨 Styles
+
+- **maz-ui:** CSS variables - modify bg-color-lighter for a lighter gray ([6f290c2f](https://github.com/LouisMazel/maz-ui/commit/6f290c2f))
+
+### 🤖 CI
+
+- Deploy packages on release published ([722bfe85](https://github.com/LouisMazel/maz-ui/commit/722bfe85))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+- Mazel <me@loicmazuel.com>
+
 ## v3.29.10...v3.29.11
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.29.10...v3.29.11)
