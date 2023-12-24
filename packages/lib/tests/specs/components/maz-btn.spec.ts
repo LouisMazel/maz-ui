@@ -3,7 +3,7 @@ import { shallowMount } from '@vue/test-utils'
 
 describe('MazBtn', () => {
   test('renders the component elements and classes correctly', () => {
-    const wrapper = shallowMount(MazBtn)
+    const wrapper = shallowMount(MazBtn, { slots: { default: 'Button Text' } })
 
     expect(wrapper.find('button').exists()).toBe(true)
     expect(wrapper.find('.m-btn__icon-left').exists()).toBe(false)

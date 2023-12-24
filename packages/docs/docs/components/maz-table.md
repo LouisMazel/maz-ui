@@ -100,14 +100,18 @@ You can use MazTable and his child component to build a simple table and enjoy t
 
 <script lang="ts" setup>
   import MazTable from 'maz-ui/components/MazTable'
-  import MazTableRow from 'maz-ui/components/MazTable'
-  import MazTableCell from 'maz-ui/components/MazTable'
+  import MazTableRow from 'maz-ui/components/MazTableRow'
+  import MazTableCell from 'maz-ui/components/MazTableCell'
 </script>
 ```
 
 :::
 
 ## Advanced
+
+You can also provide all your data, the table is auto-generated and you can use the features [listed on top](#key-features)
+
+---
 
 `v-model="{{selectedIds ?? 'undefined'}}"`
 <br />
