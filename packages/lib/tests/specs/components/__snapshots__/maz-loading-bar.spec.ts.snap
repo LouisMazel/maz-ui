@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`MazLoadingBar > renders correct HTML structure 1`] = `
+"<div data-v-744a78bd="" class="m-loading-bar">
+  <div data-v-744a78bd=""></div>
+</div>"
+`;

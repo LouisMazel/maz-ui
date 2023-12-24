@@ -26,8 +26,9 @@
 
 <style lang="postcss" scoped>
   .m-loading-bar {
-    @apply maz-relative maz-block maz-h-0.5 maz-w-full maz-overflow-hidden maz-bg-primary-alpha-20;
+    @apply maz-relative maz-block maz-w-full maz-overflow-hidden;
 
+    height: v-bind('height');
     background-color: v-bind('colorCSVariables.alpha');
     overflow: hidden;
 
