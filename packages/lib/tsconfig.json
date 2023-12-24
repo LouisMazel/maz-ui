@@ -1,5 +1,5 @@
 {
-  "extends": "./node_modules/@vue/tsconfig/tsconfig.json",
+  "extends": ["@vue/tsconfig/tsconfig.dom.json", "@vue/tsconfig/tsconfig.lib.json"],
   "compilerOptions": {
     "module": "ESNext",
     "target": "ESNext",
