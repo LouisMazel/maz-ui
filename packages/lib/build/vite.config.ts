@@ -171,7 +171,7 @@ const run = async () => {
     }
 
     // Emit types from all packages
-    await execPromise('vue-tsc --declaration --emitDeclarationOnly')
+    await execPromise('pnpm -F maz-ui gen:declaration-files')
 
     copyAndTransformComponentsTypesFiles()
     copyFileSync(
@@ -191,8 +191,6 @@ const run = async () => {
     )
 
     await compileScss()
-
-    await execPromise('rimraf generated-types')
 
     await execPromise('pnpm -F nuxt-module build')
     await execPromise('pnpm -F @mazui/cli build')

@@ -1,18 +1,15 @@
 {
-  "extends": ["@vue/tsconfig/tsconfig.dom.json", "@vue/tsconfig/tsconfig.lib.json"],
+  "extends": ["./node_modules/@vue/tsconfig/tsconfig.dom.json"],
   "compilerOptions": {
     "module": "ESNext",
     "target": "ESNext",
-    "declaration": true,
-    "declarationDir": "dist/types",
-    "sourceMap": true,
     "lib": ["esnext", "DOM", "DOM.iterable", "scripthost"],
     "strictPropertyInitialization": false,
     "noImplicitAny": false,
     "noImplicitThis": false,
     "ignoreDeprecations": "5.0",
     "verbatimModuleSyntax": false,
-    "types": ["@types/node", "google.maps", "vite-svg-loader"],
+    "types": ["@types/node", "vite-svg-loader"],
     "baseUrl": "."
   },
   "include": ["modules", "components", "tailwindcss/**/*", "icons", "utils", "resolvers"],

@@ -58,7 +58,8 @@
     "lint:js": "cross-env NODE_ENV=production eslint --fix --ext .ts,.js,.mjs,.mts,.cjs,.vue .",
     "lint:style": "stylelint --fix \"./**/*.{vue,css,scss,postcss,pcss}\"",
     "format": "prettier . --write",
-    "build": "pnpm type-check && node --loader ts-node/esm build/vite.config.ts",
+    "build": "pnpm typecheck && pnpm build:lib",
+    "build:lib": "node --loader ts-node/esm build/vite.config.ts",
     "get-icon-list": "node --loader ts-node/esm build/get-icon-list.ts",
     "test:unit": "vitest",
     "test:unit:watch": "vitest watch",
@@ -66,8 +67,8 @@
     "test:unit:coverage:watch": "vitest watch --coverage",
     "test:unit:coverage:master": "vitest run --coverage --changed master",
     "pre-commit": "lint-staged",
-    "gen-vue-tsc": "vue-tsc --declaration --emitDeclarationOnly",
-    "type-check": "tsc --noEmit -p tsconfig.json"
+    "gen:declaration-files": "vue-tsc --declaration --emitDeclarationOnly -p tsconfig.gen-types.json",
+    "typecheck": "vue-tsc --noEmit"
   },
   "lint-staged": {
     "*": "prettier -w -u",
