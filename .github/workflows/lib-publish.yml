@@ -3,6 +3,9 @@ name: Lib Publish To Npm
 on:
   release:
     types: [published]
+  push:
+    paths:
+      - 'packages/lib/**'
 
 jobs:
   lib-publish:
@@ -21,6 +24,9 @@ jobs:
           cache: 'pnpm'
           node-version: '21'
           registry-url: 'https://registry.npmjs.org'
+
+      - name: Get last repo version
+        run: git pull origin master
 
       - name: Install dependencies
         run: pnpm install

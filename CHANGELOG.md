@@ -1,5 +1,55 @@
 # Change Log
 
+## v3.29.12...v3.30.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.29.12...v3.30.0)
+
+### 🚀 Enhancements
+
+- **maz-ui:** UseSwipe - new composable to handling mobile swipe ([a1a4e949](https://github.com/LouisMazel/maz-ui/commit/a1a4e949))
+- **maz-ui:** MazTabsBar - possibitily to add a badge in items or use a template to have a custom HTML ([c47ab86b](https://github.com/LouisMazel/maz-ui/commit/c47ab86b))
+- **maz-ui:** MazTable - new component ([77aa0844](https://github.com/LouisMazel/maz-ui/commit/77aa0844))
+- **docs:** MazTable and children documentation ([0c265d6d](https://github.com/LouisMazel/maz-ui/commit/0c265d6d))
+
+### 🩹 Fixes
+
+- **docs:** MazCard - typo in prop description ([efd7428f](https://github.com/LouisMazel/maz-ui/commit/efd7428f))
+- **maz-ui:** MazDropdown - apply only necessary props on each item to avoid router-link errors ([e363a7eb](https://github.com/LouisMazel/maz-ui/commit/e363a7eb))
+- **maz-ui:** MazSelect - type of options ([3e1b2d72](https://github.com/LouisMazel/maz-ui/commit/3e1b2d72))
+
+### 💅 Refactors
+
+- **maz-ui:** Toaster - force animation timing function ([3dd72076](https://github.com/LouisMazel/maz-ui/commit/3dd72076))
+- **maz-ui:** Inputs - add support of inputmode attribut ([dfa35b3c](https://github.com/LouisMazel/maz-ui/commit/dfa35b3c))
+- **maz-ui:** MazInputNumber - emit input event (blur, focus, update, change, click) ([0c4b7a6f](https://github.com/LouisMazel/maz-ui/commit/0c4b7a6f))
+- **maz-ui:** MazTabsBar - add autoscroll to active tab if it not visible ([03449295](https://github.com/LouisMazel/maz-ui/commit/03449295))
+- **maz-ui:** MazTabsBar - add delay before run animations ([a4847603](https://github.com/LouisMazel/maz-ui/commit/a4847603))
+- **maz-ui:** MazDropdown - use v-click-outside to close dropdown if trigger=click, useful for mobile ([4fa32fa5](https://github.com/LouisMazel/maz-ui/commit/4fa32fa5))
+- **maz-ui:** MazDropdown - add slot to add a screen reader label ([bf7e1034](https://github.com/LouisMazel/maz-ui/commit/bf7e1034))
+- **maz-ui:** MazAccordion - improve accessibility ([db4d0e07](https://github.com/LouisMazel/maz-ui/commit/db4d0e07))
+- **maz-ui:** Icons - update icons pack ([641ae182](https://github.com/LouisMazel/maz-ui/commit/641ae182))
+- **maz-ui:** MazBtn - use gap instead margin between text and icons - use bg alpha-05 color for outlined style ([dc9abbb8](https://github.com/LouisMazel/maz-ui/commit/dc9abbb8))
+- **maz-ui:** MazSelect - add support of simple array as options ([1b4c2f60](https://github.com/LouisMazel/maz-ui/commit/1b4c2f60))
+- **maz-ui:** MazAvatar - add space between avatar and caption ([22f8ab40](https://github.com/LouisMazel/maz-ui/commit/22f8ab40))
+- **maz-ui:** MazInputNumber - force border radius of elements ([9fb4a7fe](https://github.com/LouisMazel/maz-ui/commit/9fb4a7fe))
+
+### 📖 Documentation
+
+- **docs:** MazTabs - add example of custom item template ([55259088](https://github.com/LouisMazel/maz-ui/commit/55259088))
+
+### 🏡 Chore
+
+- **maz-ui:** MazBadge - rewrite props in typed props ([e2cb7490](https://github.com/LouisMazel/maz-ui/commit/e2cb7490))
+
+### ✅ Tests
+
+- **maz-ui:** Maz-loading-bar tests ([9ccf2bbc](https://github.com/LouisMazel/maz-ui/commit/9ccf2bbc))
+- **maz-ui:** Maz-table tests ([e6ab263e](https://github.com/LouisMazel/maz-ui/commit/e6ab263e))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.29.11...v3.29.12
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.29.11...v3.29.12)
