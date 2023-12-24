@@ -1,14 +1,13 @@
 {
+  "extends": ["./../node_modules/@vue/tsconfig/tsconfig.dom.json"],
   "compilerOptions": {
-    "types": ["vitest/globals"],
+    "types": ["vitest/globals", "vue"],
     "baseUrl": ".",
-    "target": "ESNext",
-    "moduleResolution": "node",
     "paths": {
       "@modules/*": ["./../modules/*"],
       "@components/*": ["./../components/*"],
       "@tests/*": ["./../tests/*"]
     }
   },
-  "include": ["./../types/*", "./**/*", "./../components/**/*", "./../modules/**/*"]
+  "include": ["./../types/*", "**/*", "./../components/**/*", "./../modules/**/*"]
 }
