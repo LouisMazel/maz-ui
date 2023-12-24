@@ -7,14 +7,16 @@
         <MazSelect
           v-if="!noSearchBy"
           v-model="searchByKey"
+          :color="color"
           :style="{ width: '8rem' }"
           :placeholder="searchByPlaceholder"
-          size="sm"
+          :size="size"
           :options="searchByOptions"
         />
         <MazInput
           v-model="searchQueryModel"
-          size="sm"
+          :size="size"
+          :color="color"
           :placeholder="searchPlaceholder"
           left-icon="search"
         />
@@ -59,11 +61,11 @@
               :style="{ width: header.width }"
               class="maz-group"
               :class="[
-                { '--hidden': header.hidden, '--sortable': header.sortable || sortable },
+                { '--hidden': header.hidden, '--sortable': header.sortable ?? sortable },
                 header.classes,
                 `--${size}`,
               ]"
-              @click="(header.sortable || sortable) && sortColumn(columnIndex)"
+              @click="(header.sortable ?? sortable) && sortColumn(columnIndex)"
             >
               <span :class="{ 'maz-sr-only': header.srOnly }">
                 <!--
@@ -81,7 +83,7 @@
                     {{ header.label }}
                   </slot>
 
-                  <div v-if="header.sortable || sortable" class="m-table-sort-icon-wrapper">
+                  <div v-if="header.sortable ?? sortable" class="m-table-sort-icon-wrapper">
                     <ArrowIcon
                       class="m-table-sort-icon maz-hidden group-hover:maz-block"
                       :class="{
@@ -101,7 +103,7 @@
         </slot>
       </thead>
 
-      <MazLoadingBar v-if="loading" :color="loaderColor" class="!maz-absolute" />
+      <MazLoadingBar v-if="loading" :color="color" class="!maz-absolute" />
 
       <tbody :class="{ '--divider': hasDivider }">
         <slot>
@@ -187,7 +189,9 @@
           <MazSelect
             v-model="pageSizeModel"
             :options="pageSizeOptions"
-            size="sm"
+            :size="size"
+            :color="color"
+            list-position="top"
             :style="{ width: '5rem' }"
           />
         </div>
@@ -199,7 +203,7 @@
         <div class="m-table-footer-pagination-buttons">
           <MazBtn
             :disabled="currentPageModel === 1"
-            size="sm"
+            :size="size"
             color="transparent"
             fab
             no-elevation
@@ -210,7 +214,7 @@
 
           <MazBtn
             :disabled="currentPageModel === 1"
-            size="sm"
+            :size="size"
             color="transparent"
             fab
             no-elevation
@@ -220,7 +224,7 @@
           </MazBtn>
           <MazBtn
             :disabled="currentPageModel === totalPagesInternal"
-            size="sm"
+            :size="size"
             color="transparent"
             fab
             no-elevation
@@ -231,7 +235,7 @@
 
           <MazBtn
             :disabled="currentPageModel === totalPagesInternal"
-            size="sm"
+            :size="size"
             color="transparent"
             fab
             no-elevation
@@ -302,7 +306,7 @@
       /** style of the table element */
       tableStyle?: StyleValue
       /** v-model of the table - list of selected rows */
-      modelValue?: string | boolean | number[]
+      modelValue?: (string | boolean | number)[]
       /** size of the table - `'xl' | 'lg' | 'md' | 'sm' | 'xs' | 'mini'` */
       size?: Size
       /** headers of the table */
@@ -364,7 +368,7 @@
       /** table layout - `'auto' | 'fixed'` */
       tableLayout?: 'auto' | 'fixed'
       /** color of the loading bar */
-      loaderColor?: Color
+      color?: Color
     }>(),
     {
       tableClass: undefined,
@@ -386,7 +390,7 @@
       searchByPlaceholder: 'Search by',
       searchByAllLabel: 'All',
       paginationAllLabel: 'All',
-      loaderColor: 'primary',
+      color: 'primary',
       totalPages: undefined,
     },
   )
@@ -498,7 +502,7 @@
   })
 
   watch(
-    () => props.rows,
+    () => [props.rows, props.modelValue],
     () => {
       rowsNormalized.value = getNormalizedRows()
     },
@@ -593,7 +597,7 @@
   function getNormalizedRows(): Row[] {
     return (
       props.rows?.map((row) => ({
-        selected: false,
+        selected: props.modelValue?.includes(props.selectedKey ? row[props.selectedKey] : row),
         ...row,
       })) ?? []
     )
@@ -636,7 +640,9 @@
   function emitValues(selectedRows?: (Row | string | number | boolean)[]) {
     selectedRows = selectedRows ?? getSelectedRows()
 
-    emits('update:model-value', selectedRows?.length ? selectedRows : undefined)
+    const rows = selectedRows?.length ? selectedRows : undefined
+
+    emits('update:model-value', rows)
   }
 
   function getSelectedRows(): (Row | string | number | boolean)[] {
@@ -663,7 +669,7 @@
     @apply maz-relative maz-max-w-full;
 
     &-header {
-      @apply maz-flex maz-max-w-full maz-flex-wrap maz-justify-between maz-gap-2 maz-border-b maz-border-color-light maz-bg-color maz-p-2;
+      @apply maz-flex maz-max-w-full maz-justify-between maz-gap-2 maz-border-b maz-border-color-light maz-bg-color maz-p-2;
 
       &-search {
         @apply maz-flex maz-items-center maz-gap-2;
@@ -671,7 +677,7 @@
     }
 
     &-footer {
-      @apply maz-flex maz-max-w-full maz-flex-wrap maz-justify-between maz-gap-2 maz-border-t maz-border-color-light maz-bg-color maz-p-2;
+      @apply maz-flex maz-max-w-full maz-justify-between maz-gap-2 maz-border-t maz-border-color-light maz-bg-color maz-p-2;
 
       &-pagination {
         @apply maz-flex maz-items-center maz-gap-4;
@@ -697,7 +703,7 @@
     }
 
     table {
-      @apply maz-w-full maz-border-collapse maz-bg-color;
+      @apply maz-table maz-w-full maz-border-collapse maz-bg-color;
 
       table-layout: v-bind('props.tableLayout');
 
