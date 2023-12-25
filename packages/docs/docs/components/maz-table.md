@@ -140,7 +140,7 @@ You can also provide all your data, the table is auto-generated and you can use 
     { label:'Name', key: 'name' },
     { label: 'Code', key: 'code', align: 'center'  },
     { label: 'Type', key: 'type' },
-    { label: 'Area', key: 'areaName', align: 'right', class: 'maz-text-right' },
+    { label: 'Area', key: 'areaName', align: 'right', classes: 'maz-text-right' },
   ]"
   :rows="competitions"
 >
@@ -185,7 +185,7 @@ You can also provide all your data, the table is auto-generated and you can use 
       { label:'Name', key: 'name' },
       { label: 'Code', key: 'code', align: 'center'  },
       { label: 'Type', key: 'type' },
-      { label: 'Area', key: 'areaName', align: 'right', class: 'maz-text-right' },
+      { label: 'Area', key: 'areaName', align: 'right', classes: 'maz-text-right' },
     ]"
     :rows="competitions"
   >
@@ -364,7 +364,98 @@ You can also provide all your data, the table is auto-generated and you can use 
 
 ## Loading
 
+Enable the loading state with the prop `loading`
+
 <MazTable loading :headers="['#', 'Lastname', 'Firstname', 'Age']">
+  <MazTableRow>
+    <MazTableCell>
+      1
+    </MazTableCell>
+    <MazTableCell>
+      John
+    </MazTableCell>
+    <MazTableCell>
+      Doe
+    </MazTableCell>
+    <MazTableCell>
+      99
+    </MazTableCell>
+  </MazTableRow>
+  <MazTableRow>
+    <MazTableCell>
+      2
+    </MazTableCell>
+    <MazTableCell>
+      Doe
+    </MazTableCell>
+    <MazTableCell>
+      John
+    </MazTableCell>
+    <MazTableCell>
+      33
+    </MazTableCell>
+  </MazTableRow>
+  <MazTableRow>
+    <MazTableCell>
+      3
+    </MazTableCell>
+    <MazTableCell>
+      Max
+    </MazTableCell>
+    <MazTableCell>
+      Simth
+    </MazTableCell>
+    <MazTableCell>
+      66
+    </MazTableCell>
+  </MazTableRow>
+</MazTable>
+
+```html
+<MazTable loading="true" :headers="['#', 'Lastname', 'Firstname', 'Age']">
+  ...
+</MazTable>
+```
+
+## Sizing
+
+Available sizes: `'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'`
+
+<MazTable size="xs" :headers="['#', 'Lastname', 'Firstname', 'Age']">
+  <MazTableRow>
+    <MazTableCell>
+      1
+    </MazTableCell>
+    <MazTableCell>
+      John
+    </MazTableCell>
+    <MazTableCell>
+      Doe
+    </MazTableCell>
+    <MazTableCell>
+      99
+    </MazTableCell>
+  </MazTableRow>
+</MazTable>
+<br />
+<MazTable size="md" :headers="['#', 'Lastname', 'Firstname', 'Age']">
+  <MazTableRow>
+    <MazTableCell>
+      1
+    </MazTableCell>
+    <MazTableCell>
+      John
+    </MazTableCell>
+    <MazTableCell>
+      Doe
+    </MazTableCell>
+    <MazTableCell>
+      99
+    </MazTableCell>
+  </MazTableRow>
+</MazTable>
+<br />
+<MazTable size="lg" :headers="['#', 'Lastname', 'Firstname', 'Age']">
   <MazTableRow>
     <MazTableCell>
       1
@@ -381,6 +472,18 @@ You can also provide all your data, the table is auto-generated and you can use 
   </MazTableRow>
 </MazTable>
 
+```html
+<MazTable size="xs" :headers="['#', 'Lastname', 'Firstname', 'Age']">
+  ...
+</MazTable>
+<MazTable size="md" :headers="['#', 'Lastname', 'Firstname', 'Age']">
+  ...
+</MazTable>
+<MazTable size="lg" :headers="['#', 'Lastname', 'Firstname', 'Age']">
+  ...
+</MazTable>
+```
+
 <script lang="ts" setup>
   import { ref } from 'vue'
   import {competitions} from './competitions.ts'
@@ -390,6 +493,42 @@ You can also provide all your data, the table is auto-generated and you can use 
   const pageSize = ref<number>(10)
   const page = ref<number>(1)
 </script>
+
+## Types
+
+### Property `row`
+
+The `rows` property is an array of Row: `type Rows = Row[]`
+
+```ts
+type Row =  Record<string, any> & {
+  selected?: boolean
+  action?: (row: Row) => unknown
+  classes?: HTMLAttributes['class']
+}
+```
+
+### Property `headers`
+
+The `headers` property is an array od Header: `type Headers = Header[]`
+
+```ts
+type HeadersEnriched = {
+  label: string
+  key?: string
+  sortable?: boolean
+  hidden?: boolean
+  srOnly?: boolean
+  width?: string
+  maxWidth?: string
+  classes?: ThHTMLAttributes['class']
+  scope?: ThHTMLAttributes['scope']
+  align?: ThHTMLAttributes['align']
+  rowspan?: ThHTMLAttributes['rowspan']
+  colspan?: ThHTMLAttributes['colspan']
+  headers?: ThHTMLAttributes['headers']
+}
+```
 
 ## Props & Events emitted
 

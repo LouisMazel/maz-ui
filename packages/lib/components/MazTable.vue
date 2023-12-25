@@ -285,10 +285,11 @@
   import MazCheckbox from './MazCheckbox.vue'
   import type { Color, Size } from './types'
 
-  export interface HeadersEnriched {
+  export type { Size, Color }
+
+  export type HeadersEnriched = {
     label: string
     key?: string
-    // type?: 'index' | 'value'
     sortable?: boolean
     hidden?: boolean
     srOnly?: boolean
@@ -302,13 +303,13 @@
     headers?: ThHTMLAttributes['headers']
   }
 
-  interface HeadersNormalized extends HeadersEnriched {
+  type HeadersNormalized = HeadersEnriched & {
     thHeaders?: ThHTMLAttributes['headers']
     sorted?: 'ASC' | 'DESC'
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  export interface Row extends Record<string, any> {
+  export type Row = Record<string, any> & {
     selected?: boolean
     action?: (row: Row) => unknown
     classes?: HTMLAttributes['class']
