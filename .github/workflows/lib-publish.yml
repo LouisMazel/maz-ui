@@ -3,9 +3,9 @@ name: Lib Publish To Npm
 on:
   release:
     types: [published]
-  push:
-    paths:
-      - 'packages/lib/**'
+  # push:
+  #   paths:
+  #     - '.github/workflows/lib-publish.yml'
 
 jobs:
   lib-publish:
