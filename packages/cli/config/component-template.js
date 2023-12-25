@@ -1,16 +1,7 @@
-// @ts-check
-
+/** @type {import('vue-docgen-cli').Templates['component']} */
 // eslint-disable-next-line sonarjs/cognitive-complexity
-export function component(
-  renderedUsage,
-  document_,
-  _config,
-  _fileName,
-  requiresMd,
-  // { isSubComponent, hasSubComponents },
-) {
+export function component(renderedUsage, document_, _config, _fileName, requiresMd, _subs) {
   const { description, tags, functional } = document_
-
   const { deprecated, author, since, version, see, link } = tags || {}
 
   const hasEvents = !!renderedUsage.events
@@ -21,15 +12,15 @@ export function component(
     hasEvents && hasSlots ? ', ' : hasSlots || hasEvents ? ' & ' : ''
   } ${hasEvents ? 'Event' : ''} ${hasEvents && hasSlots ? '& ' : ''}${hasSlots ? 'Slots' : ''}
 
-  ${deprecated ? `> **Deprecated** ${deprecated[0].description}\n` : ''}
+  ${deprecated ? `> **Deprecated** ${deprecated[0].title}\n` : ''}
   ${description ? '> ' + description : ''}
 
   ${functional ? renderedUsage.functionalTag : ''}
-  ${author ? author.map((a) => `Author: ${a.description}\n`) : ''}
-  ${since ? `Since: ${since[0].description}\n` : ''}
-  ${version ? `Version: ${version[0].description}\n` : ''}
-  ${see ? see.map((s) => `[See](${s.description})\n`) : ''}
-  ${link ? link.map((l) => `[See](${l.description})\n`) : ''}
+  ${author ? author.map((a) => `Author: ${a.title}\n`) : ''}
+  ${since ? `Since: ${since[0].title}\n` : ''}
+  ${version ? `Version: ${version[0].title}\n` : ''}
+  ${see ? see.map((s) => `[See](${s.title})\n`) : ''}
+  ${link ? link.map((l) => `[See](${l.title})\n`) : ''}
   ${renderedUsage.props ? `#${renderedUsage.props?.trim()}` : ''}
   ${renderedUsage.methods ? `#${renderedUsage.methods?.trim()}` : ''}
   ${renderedUsage.events ? `#${renderedUsage.events?.trim()}` : ''}

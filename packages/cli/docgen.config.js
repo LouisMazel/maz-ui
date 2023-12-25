@@ -1,11 +1,13 @@
 // @ts-check
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 
 import { fileURLToPath } from 'node:url'
 
 import { resolve, join } from 'node:path'
 import { defineConfig } from 'vue-docgen-cli'
-import { component } from './config/docgen/template-component.js'
+import { component } from './config/component-template.js'
 
+// @ts-expect-error
 const _dirname = fileURLToPath(new URL('.', import.meta.url))
 
 export default defineConfig({
@@ -21,4 +23,5 @@ export default defineConfig({
     component,
   },
   docsRepo: 'LouisMazel/maz-ui',
+  docsBranch: 'master',
 })

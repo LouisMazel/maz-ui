@@ -325,7 +325,9 @@
       tableStyle?: StyleValue
       /** v-model of the table - list of selected rows */
       modelValue?: (string | boolean | number)[]
-      /** size of the table - `'xl' | 'lg' | 'md' | 'sm' | 'xs' | 'mini'` */
+      /** size of the table
+       * @values `'xl' | 'lg' | 'md' | 'sm' | 'xs' | 'mini'`
+       */
       size?: Size
       /** headers of the table */
       headers?: Header[]
@@ -361,7 +363,9 @@
       divider?: boolean
       /** caption of the table */
       caption?: string
-      /** caption side - `'top' | 'bottom'` */
+      /** caption side
+       * @values `'top' | 'bottom'`
+       */
       captionSide?: 'top' | 'bottom'
       /** add pagination into the table footer */
       pagination?: boolean
@@ -383,7 +387,9 @@
       selectable?: boolean
       /** Enable selection of rows - key of the selected row */
       selectedKey?: string
-      /** table layout - `'auto' | 'fixed'` */
+      /** table layout
+       * @values `'auto' | 'fixed'`
+       */
       tableLayout?: 'auto' | 'fixed'
       /** color of the loading bar */
       color?: Color
@@ -418,10 +424,26 @@
   )
 
   const emits = defineEmits<{
+    /**
+     * emitted when a row is selected
+     * @property {(Row | string | number | boolean)[]} value list of selected rows (if selectedKey is defined, it will be the value of the selectedKey of the row)
+     */
     (event: 'update:model-value', value: (Row | string | number | boolean)[] | undefined): void
-    (event: 'update:search-query', value: string | undefined): void
-    (event: 'update:page', value: number): void
-    (event: 'update:page-size', value: number): void
+    /**
+     * emitted when enter a value in the search input
+     * @property {string} searchQuery search query
+     */
+    (event: 'update:search-query', searchQuery: string | undefined): void
+    /**
+     * emitted when the current page of the pagination change
+     * @property {number} page current page
+     */
+    (event: 'update:page', page: number): void
+    /**
+     * emitted when the page size of the pagination change
+     * @property {number} pageSize current page size
+     */
+    (event: 'update:page-size', pageSize: number): void
   }>()
 
   const { size, hoverable, backgroundEven, backgroundOdd } = toRefs(props)
