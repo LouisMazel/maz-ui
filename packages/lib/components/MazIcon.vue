@@ -35,18 +35,39 @@
   }
 
   const props = defineProps({
+    /** The source path of the SVG file - e.g: `/icons/home.svg` */
     src: { type: String, default: undefined },
+    /** The path of the folder where the SVG files are stored - e.g: `/icons` */
     path: { type: String, default: undefined },
+    /** The name of the SVG file - e.g: `home` */
     name: { type: String, default: undefined },
+    /** The size of the SVG file - e.g: `1em` */
     size: { type: String, default: undefined },
+    /** The title of the SVG file - e.g: `Home` */
     title: { type: String, default: undefined },
+    /** The function to transform the source of the SVG file - e.g: `(svg) => svg` */
     transformSource: {
       type: Function as PropType<(param: SVGElement) => typeof param>,
       default: (svg: SVGElement) => svg,
     },
   })
 
-  const emits = defineEmits(['loaded', 'unloaded', 'error'])
+  const emits = defineEmits<{
+    /**
+     * emitted when SVG file is loaded
+     * @property {SVGElement | undefined} svg the svg element loaded
+     */
+    (event: 'loaded', svg: SVGElement | undefined): void
+    /**
+     * emitted when SVG file is not loaded
+     */
+    (event: 'unloaded'): void
+    /**
+     * emitted when SVG file is not loaded
+     * @property {Error} error the error
+     */
+    (event: 'error', error: Error): void
+  }>()
 
   const iconPath = computed(() => props.path ?? getMazIconPath())
   const fullSrc = computed(() => {
@@ -132,7 +153,7 @@
       }
       // remove cached rejected promise so next image can try load again
       delete cache[src]
-      emits('error', error)
+      emits('error', error as Error)
     }
   }
 
