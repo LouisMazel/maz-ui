@@ -1,5 +1,27 @@
 # Change Log
 
+## v3.30.0...v3.30.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.30.0...v3.30.1)
+
+### 💅 Refactors
+
+- **docs:** MazTable - add examples and types ([1040042d](https://github.com/LouisMazel/maz-ui/commit/1040042d))
+- **maz-ui:** MazIcon - add JSDoc of props and events for documentation ([d02f4033](https://github.com/LouisMazel/maz-ui/commit/d02f4033))
+- **maz-ui:** MazTable - improve support of align option to headers and rows ([85de420e](https://github.com/LouisMazel/maz-ui/commit/85de420e))
+
+### 🏡 Chore
+
+- Improve doc generation ([c392e31e](https://github.com/LouisMazel/maz-ui/commit/c392e31e))
+
+### 🤖 CI
+
+- Not running lib publish workflow on push commit ([70cdf990](https://github.com/LouisMazel/maz-ui/commit/70cdf990))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.29.12...v3.30.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.29.12...v3.30.0)
