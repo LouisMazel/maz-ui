@@ -25,6 +25,9 @@ jobs:
           node-version: '21'
           cache: 'pnpm'
 
+      - name: Get last repo version
+        run: git pull origin master
+
       - name: Install dependencies
         run: pnpm install
 
