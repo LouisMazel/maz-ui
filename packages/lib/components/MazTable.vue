@@ -61,7 +61,7 @@
               :rowspan="header.rowspan"
               :colspan="header.colspan"
               :headers="header.thHeaders"
-              :style="{ width: header.width }"
+              :style="{ width: header.width, textAlign: header.align }"
               class="maz-group"
               :class="[
                 { '--hidden': header.hidden, '--sortable': header.sortable ?? sortable },

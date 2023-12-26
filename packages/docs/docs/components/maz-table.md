@@ -136,11 +136,11 @@ You can also provide all your data, the table is auto-generated and you can use 
   background-even
   selected-key="id"
   :headers="[
-    { label:'#', key: 'index', align: 'center', sortable: false },
+    { label:'#', key: 'index', align: 'center', width: '2rem', sortable: false },
     { label:'Name', key: 'name' },
     { label: 'Code', key: 'code', align: 'center'  },
     { label: 'Type', key: 'type' },
-    { label: 'Area', key: 'areaName', align: 'right', classes: 'maz-text-right' },
+    { label: 'Area', key: 'areaName', align: 'center', classes: 'maz-font-bold' },
   ]"
   :rows="competitions"
 >
@@ -181,11 +181,11 @@ You can also provide all your data, the table is auto-generated and you can use 
     background-even
     selected-key="id"
     :headers="[
-      { label:'#', key: 'index', align: 'center', sortable: false },
+      { label:'#', key: 'index', align: 'center', width: '2rem', sortable: false },
       { label:'Name', key: 'name' },
       { label: 'Code', key: 'code', align: 'center'  },
       { label: 'Type', key: 'type' },
-      { label: 'Area', key: 'areaName', align: 'right', classes: 'maz-text-right' },
+      { label: 'Area', key: 'areaName', align: 'center', classes: 'maz-font-bold' },
     ]"
     :rows="competitions"
   >
@@ -510,7 +510,7 @@ type Row =  Record<string, any> & {
 
 ### Property `headers`
 
-The `headers` property is an array od Header: `type Headers = Header[]`
+The `headers` property has type: `type Headers = string | HeadersEnriched[]`
 
 ```ts
 type HeadersEnriched = {
@@ -561,10 +561,7 @@ type HeadersEnriched = {
         transition: inherit;
 
         th, td {
-          text-align: inherit;
-          font-size: inherit;
-          font-weight: inherit;
-          color: inherit;
+          /* text-align: inherit; */
           background-color: inherit;
           border: none;
           padding: inherit;
@@ -575,6 +572,10 @@ type HeadersEnriched = {
         }
       }
     }
+  }
+
+  .vp-doc th {
+    text-align: inherit;
   }
 
 </style>
