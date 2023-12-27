@@ -2,8 +2,8 @@ name: Doc Build and Deploy
 
 on:
   push:
-    # branches:
-    #   - master
+    branches:
+      - master
     paths:
       - 'packages/docs/**'
       - 'packages/lib/**'
@@ -26,7 +26,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Get last repo version
-        run: git pull origin chore/deploy-to-maz-ui
+        run: git pull origin master
 
       - name: Install dependencies
         run: pnpm install
@@ -36,14 +36,6 @@ jobs:
 
       - name: Build docs
         run: pnpm --filter docs build
-
-      # - name: Deploy
-      #   uses: peaceiris/actions-gh-pages@v3
-      #   with:
-      #     personal_token: ${{ secrets.GH_ACCESS_TOKEN }}
-      #     external_repository: LouisMazel/maz-ui-3
-      #     publish_dir: packages/docs/docs/.vitepress/dist
-      #     publish_branch: gh-pages # default: gh-pages
 
       - name: Deploy to maz-ui.com
         uses: peaceiris/actions-gh-pages@v3
