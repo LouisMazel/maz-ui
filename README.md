@@ -17,17 +17,17 @@
 [![test_coverage](https://api.codeclimate.com/v1/badges/6b27047dcf150ccddfac/test_coverage)](https://codeclimate.com/github/LouisMazel/maz-ui/test_coverage)
 ![github-actions-test-unit](https://github.com/LouisMazel/maz-ui/actions/workflows/lib-test-unit.yml/badge.svg)
 
-> [maz-ui](https://louismazel.github.io/maz-ui-3/) is a standalone components library and tools for [Vue.JS](https://vuejs.org) & [Nuxt.JS](https://nuxtjs.org/) (v3.x)
+> [maz-ui](https://maz-ui.com/) is a standalone components library and tools for [Vue.JS](https://vuejs.org) & [Nuxt.JS](https://nuxtjs.org/) (v3.x)
 
 ## Documentation & Components
 
-[Documentation & Components](https://louismazel.github.io/maz-ui-3/)
+[Documentation & Components](https://maz-ui.com/)
 
 ## Install
 
 ### maz-ui
 
-[Getting Started](https://louismazel.github.io/maz-ui-3/guide/getting-started)
+[Getting Started](https://maz-ui.com/guide/getting-started)
 
 ```bash
 npm install maz-ui
@@ -35,7 +35,7 @@ npm install maz-ui
 
 ### @mazui/cli
 
-[Documentation & Commands](https://louismazel.github.io/maz-ui-3/guide/cli)
+[Documentation & Commands](https://maz-ui.com/guide/cli)
 
 ```bash
 npm install @mazui/cli

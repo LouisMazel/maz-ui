@@ -36,7 +36,7 @@ More info about [toaster plugin](./../plugins/toaster.md) in its documentation
   })
   toast.success('success message', {
     link: {
-      href: '/maz-ui-3/composables/use-toast',
+      href: '/composables/use-toast',
       text: 'Follow me',
       closeToast: true,
     }
@@ -60,7 +60,7 @@ More info about [toaster plugin](./../plugins/toaster.md) in its documentation
   })
   toast.success('success message', {
     link: {
-      href: '/maz-ui-3/composables/use-toast',
+      href: '/composables/use-toast',
       text: 'Follow me',
       closeToast: true,
     }

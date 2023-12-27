@@ -49,7 +49,7 @@ pnpm -F playground dev
 
 This will start the development server available at [http://localhost:3333](http://localhost:3333).
 
-This Nuxt application uses the [maz-ui nuxt module](https://louismazel.github.io/maz-ui-3/guide/nuxt), so all components are auto-imported and have `maz-ui` as a dependency, so you can import all modules.
+This Nuxt application uses the [maz-ui nuxt module](https://maz-ui.com/guide/nuxt), so all components are auto-imported and have `maz-ui` as a dependency, so you can import all modules.
 
 ## Documentation
 
@@ -59,7 +59,7 @@ To run the documentation Vitepress app, use this command:
 pnpm -F docs dev
 ```
 
-This will start the development server available at [http://localhost:5173/maz-ui-3/](http://localhost:5173/maz-ui-3/).
+This will start the development server available at [http://localhost:5173/](http://localhost:5173/).
 
 ## Pull request
 

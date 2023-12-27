@@ -15,7 +15,7 @@ Place your SVG files in a public folder (default `/icons`, use `path` prop to ch
 
 This pack is the Heroicons icons set with some others from maz-ui
 
-<MazBtn download href="/maz-ui-3/icons/_icons.zip" right-icon="arrow-down-tray">
+<MazBtn download href="/icons/_icons.zip" right-icon="arrow-down-tray">
   Download pack
 </MazBtn>
 
