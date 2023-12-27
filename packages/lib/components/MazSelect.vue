@@ -2,7 +2,7 @@
   <div
     ref="mazSelectElement"
     class="m-select"
-    :class="[{ '--is-open': hasListOpened, '--disabled': disabled }, props.class]"
+    :class="[{ '--is-open': hasListOpened, '--disabled': disabled }, props.class, `--${size}`]"
     :style="style"
     @blur.capture="closeList"
   >
@@ -50,22 +50,21 @@
           maxWidth: `${maxListWidth}px`,
         }"
       >
-        <div v-if="search" tabindex="-1" class="m-select-list__search-wrapper">
-          <MazInput
-            ref="searchInputComponent"
-            v-model="searchQuery"
-            size="sm"
-            :color="color"
-            :placeholder="searchPlaceholder"
-            name="search"
-            autocomplete="off"
-            tabindex="-1"
-            class="m-select-list__search-input"
-            :left-icon="SearchIcon"
-            @keydown="keyboardHandler"
-            @update:model-value="tmpModelValueIndex = 0"
-          />
-        </div>
+        <MazInput
+          v-if="search"
+          ref="searchInputComponent"
+          v-model="searchQuery"
+          size="sm"
+          :color="color"
+          :placeholder="searchPlaceholder"
+          name="search"
+          autocomplete="off"
+          tabindex="-1"
+          class="m-select-list__search-input maz-flex-none"
+          :left-icon="SearchIcon"
+          @keydown="keyboardHandler"
+          @update:model-value="tmpModelValueIndex = 0"
+        />
         <!--
           @slot No results slot - Displayed when no results corresponding with search query
         -->
@@ -80,7 +79,7 @@
             :key="i"
             tabindex="-1"
             type="button"
-            class="m-select-list-item maz-custom"
+            class="m-select-list-item maz-custom maz-flex-none"
             :class="[
               {
                 '--is-keyboard-selected': tmpModelValueIndex === i,
@@ -88,7 +87,7 @@
                 '--is-none-value': isNullOrUndefined(option[optionValueKey]),
               },
             ]"
-            :style="{ minHeight: `${itemHeight}px` }"
+            :style="itemHeight ? { minHeight: `${itemHeight}px` } : undefined"
             @click.prevent.stop="updateValue(option)"
           >
             <MazCheckbox
@@ -200,7 +199,7 @@
       optionLabelKey: 'label',
       optionInputValueKey: 'label',
       listPosition: 'bottom left',
-      itemHeight: 42,
+      itemHeight: undefined,
       maxListHeight: 240,
       maxListWidth: undefined,
       size: 'md',
@@ -295,6 +294,7 @@
         }
 
         return {
+          ...option,
           [props.optionValueKey]: option[props.optionValueKey],
           [props.optionLabelKey]: option[props.optionLabelKey],
           [props.optionInputValueKey]: option[props.optionInputValueKey],
@@ -606,6 +606,30 @@
   .m-select {
     @apply maz-relative;
 
+    &.--mini {
+      @apply maz-text-xs;
+    }
+
+    &.--xs {
+      @apply maz-text-xs;
+    }
+
+    &.--sm {
+      @apply maz-text-sm;
+    }
+
+    &.--md {
+      @apply maz-text-base;
+    }
+
+    &.--lg {
+      @apply maz-text-lg;
+    }
+
+    &.--xl {
+      @apply maz-text-xl;
+    }
+
     &:not(.--disabled):deep(.m-input-input) {
       @apply maz-cursor-pointer;
     }
@@ -629,11 +653,7 @@
     }
 
     &-chevron {
-      @apply maz-transition-all maz-duration-300 maz-ease-out;
-    }
-
-    .m-select-chevron {
-      @apply maz-text-normal;
+      @apply maz-text-[1.2em] maz-text-normal maz-transition-all maz-duration-300 maz-ease-out;
     }
 
     &.--is-open {
@@ -643,7 +663,7 @@
     }
 
     .m-select-list {
-      @apply maz-absolute maz-z-100 maz-flex maz-flex-col maz-overflow-hidden maz-rounded maz-bg-color maz-text-normal maz-drop-shadow-lg dark:maz-border dark:maz-border-color-lighter;
+      @apply maz-absolute maz-z-default-backdrop maz-flex maz-flex-col maz-gap-1 maz-overflow-hidden maz-rounded maz-bg-color maz-p-2 maz-elevation dark:maz-border dark:maz-border-color-light;
 
       min-width: 3.5rem;
 
@@ -663,12 +683,8 @@
         @apply maz-top-full;
       }
 
-      &__search-wrapper {
-        @apply maz-flex-none maz-bg-color maz-p-1;
-      }
-
       &__scroll-wrapper {
-        @apply maz-flex-1 maz-overflow-auto;
+        @apply maz-flex maz-flex-1 maz-flex-col maz-gap-1 maz-overflow-auto;
       }
 
       &__no-results {
@@ -676,7 +692,7 @@
       }
 
       &-item {
-        @apply maz-flex maz-w-full maz-items-center maz-gap-3 maz-truncate maz-bg-transparent maz-px-4 maz-text-left maz-text-normal hover:maz-bg-color-lighter dark:hover:maz-bg-color-light;
+        @apply maz-flex maz-w-full maz-cursor-pointer maz-items-center maz-gap-3 maz-truncate maz-whitespace-nowrap maz-rounded maz-bg-transparent maz-px-3 maz-py-[0.6em] maz-text-left maz-text-[1em] maz-outline-none maz-transition-colors maz-duration-300 maz-ease-in-out focus-within:maz-bg-color-light hover:maz-bg-color-light dark:hover:maz-bg-color-light;
 
         span {
           @apply maz-truncate;
