@@ -44,3 +44,11 @@ jobs:
           external_repository: LouisMazel/maz-ui-3
           publish_dir: packages/docs/docs/.vitepress/dist
           publish_branch: gh-pages # default: gh-pages
+
+      - name: Deploy to maz-ui.com
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.GH_ACCESS_TOKEN }}
+          external_repository: LouisMazel/maz-ui
+          publish_dir: packages/docs/docs/.vitepress/dist
+          publish_branch: docs # default: gh-pages
