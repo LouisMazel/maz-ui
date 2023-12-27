@@ -302,9 +302,9 @@
 
 ### 🚀 Enhancements
 
-- **maz-ui:** MazPullToRefresh - new component - https://louismazel.github.io/maz-ui-3/components/maz-pull-to-refresh ([45be7d68](https://github.com/LouisMazel/maz-ui/commit/45be7d68))
+- **maz-ui:** MazPullToRefresh - new component - <https://maz-ui.com/components/maz-pull-to-refresh> ([45be7d68](https://github.com/LouisMazel/maz-ui/commit/45be7d68))
 - **maz-ui:** UseWindowSize - new composable to get width and height window size with reactivity ([7f0c7987](https://github.com/LouisMazel/maz-ui/commit/7f0c7987))
-- **maz-ui:** UseBreakpoints - new composable to manage breakpoints - https://louismazel.github.io/maz-ui-3/composables/use-breakpoints ([8a454942](https://github.com/LouisMazel/maz-ui/commit/8a454942))
+- **maz-ui:** UseBreakpoints - new composable to manage breakpoints - <https://maz-ui.com/composables/use-breakpoints> ([8a454942](https://github.com/LouisMazel/maz-ui/commit/8a454942))
 
 ### 💅 Refactors
 
@@ -329,7 +329,7 @@
 
 ### 🚀 Enhancements
 
-- **maz-ui:** MazInputCode - new component to validate code (ex: sms) - https://louismazel.github.io/maz-ui-3/components/maz-input-code ([4a3fd4f7](https://github.com/LouisMazel/maz-ui/commit/4a3fd4f7))
+- **maz-ui:** MazInputCode - new component to validate code (ex: sms) - <https://maz-ui.com/components/maz-input-code> ([4a3fd4f7](https://github.com/LouisMazel/maz-ui/commit/4a3fd4f7))
 
 ### 🤖 CI
 

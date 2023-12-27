@@ -25,7 +25,7 @@ const theme: typeof DefaultTheme = {
 
     const { app, router: { route } } = ctx
 
-    app.provide('mazIconPath', '/maz-ui-3/icons')
+    app.provide('mazIconPath', '/icons')
 
     app.component('ColorContainer', ColorContainer)
     app.component('NpmBadge', NpmBadge)
