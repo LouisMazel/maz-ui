@@ -5,12 +5,12 @@
     "start_url": "/index.html",
     "icons": [
         {
-            "src": "https://louismazel.github.io/maz-ui-3/img/icons/android-chrome-192x192.png",
+            "src": "https://maz-ui.com/img/icons/android-chrome-192x192.png",
             "sizes": "192x192",
             "type": "image/png"
         },
         {
-            "src": "https://louismazel.github.io/maz-ui-3/img/icons/android-chrome-512x512.png",
+            "src": "https://maz-ui.com/img/icons/android-chrome-512x512.png",
             "sizes": "512x512",
             "type": "image/png"
         }

@@ -5,7 +5,7 @@ import { pascalCase } from '../utils'
  * Resolver for Maz-UI
  *
  * @author @louismazel
- * @link https://louismazel.github.io/maz-ui-3
+ * @link https://maz-ui.com
  */
 export function UnpluginVueComponentsResolver(): ComponentResolver {
   return {

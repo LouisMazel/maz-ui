@@ -21,7 +21,7 @@
   "bugs": {
     "url": "https://github.com/LouisMazel/maz-ui/issues"
   },
-  "homepage": "https://louismazel.github.io/maz-ui-3/guide/cli",
+  "homepage": "https://maz-ui.com/guide/cli",
   "files": [
     "bin",
     "dist"

@@ -1,7 +1,7 @@
 import { UserConfig } from 'vitepress'
 
 export const getAssetBaseUrl = (path: string): string => {
-  const base = process.env.NODE_ENV === 'production' ? 'https://louismazel.github.io/maz-ui-3' : '/maz-ui-3'
+  const base = process.env.NODE_ENV === 'production' ? 'https://maz-ui.com' : ''
   return `${base}${path}`
 }
 
