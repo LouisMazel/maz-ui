@@ -18,11 +18,8 @@
           :size="size"
           :color="color"
           :placeholder="searchPlaceholder"
-        >
-          <template #left-icon>
-            <SearchIcon class="maz-text-lg" />
-          </template>
-        </MazInput>
+          :left-icon="SearchIcon"
+        />
       </div>
     </div>
 

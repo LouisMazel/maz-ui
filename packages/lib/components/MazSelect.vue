@@ -61,13 +61,10 @@
             autocomplete="off"
             tabindex="-1"
             class="m-select-list__search-input"
+            :left-icon="SearchIcon"
             @keydown="keyboardHandler"
             @update:model-value="tmpModelValueIndex = 0"
-          >
-            <template #left-icon>
-              <SearchIcon class="maz-h-[1.3rem] maz-w-[1.3rem]" />
-            </template>
-          </MazInput>
+          />
         </div>
         <!--
           @slot No results slot - Displayed when no results corresponding with search query

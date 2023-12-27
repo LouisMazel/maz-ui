@@ -29,59 +29,43 @@ description: MazInput is a standalone component that replaces the standard html 
 </script>
 ```
 
-## Options
-
-### Password
+## Password
 
 <br />
 
 <MazInput v-model="inputValue" label="Label" type="password" name="password" />
 
 ```html
-<MazInput
-  v-model="inputValue"
-  label="Label"
-  type="password"
-/>
+<MazInput v-model="inputValue" label="Label" type="password" />
 ```
 
-### Placeholder
+## Placeholder
 
 <br />
 
 <MazInput placeholder="placeholder" />
 
 ```html
-<MazInput
-  placeholder="placeholder"
-/>
+<MazInput placeholder="placeholder" />
 ```
 
-### Required
+## Required
 
 > Will add `*` charac to label and placeholder
 
-<MazInput
-  label="label required"
-  required
-/>
+<MazInput label="label required" required />
 
 ```html
-<MazInput
-  label="label required"
-  required
-/>
+<MazInput label="label required" required />
 ```
 
-### Disabled
+## Disabled
 
 <br />
 
-<MazInput
-  v-model="inputValue"
-  label="label disabled"
-  disabled
-/>
+<MazInput v-model="inputValue" label="label disabled" disabled />
+
+::: details Show code
 
 ```html
 <MazInput
@@ -91,32 +75,29 @@ description: MazInput is a standalone component that replaces the standard html 
 />
 ```
 
-### Hint
-
-> Will replace the label, usefull to show error message
-
-<MazInput
-  v-model="inputValue"
-  label="label hint"
-  hint="An error occured"
-  error
-/>
-
-```html
-<MazInput
-  v-model="inputValue"
-  label="label hint"
-  hint="An error occured"
-  error
-/>
-```
-
-### Icons
-
-::: info
-When you use `right-icon` or `left-icon`, the component use [MazIcon](./maz-icon.md)
 :::
 
+## Hint
+
+> Will replace the label, useful to display error message
+
+<MazInput v-model="inputValue" label="label hint" hint="An error occured" error />
+
+::: details Show code
+
+```html
+<MazInput
+  v-model="inputValue"
+  label="label hint"
+  hint="An error occured"
+  error
+/>
+```
+
+:::
+
+## Icons
+
 <MazInput
   v-model="inputValue"
   label="label icons"
@@ -124,16 +105,13 @@ When you use `right-icon` or `left-icon`, the component use [MazIcon](./maz-icon
   right-icon="user"
 />
 
-> Use your own icons
+### Use icon name
 
-<MazInput v-model="inputValue" label="label icons">
-  <template #left-icon>
-    <MazIcon name="check" class="maz-text-xl" />
-  </template>
-  <template #right-icon>
-    <MazIcon name="user-group" class="maz-text-xl" />
-  </template>
-</MazInput>
+::: details Show code
+
+When you use the properties `right-icon`, `left-icon` or `icon` with the icon name (string), the component uses `<MazIcon name="..." />` component.
+
+Check out how [MazIcon](./maz-icon.md) works, see all available icons and download them to put them in your public folder.
 
 ```html
 <MazInput
@@ -142,20 +120,62 @@ When you use `right-icon` or `left-icon`, the component use [MazIcon](./maz-icon
   left-icon="banknotes"
   right-icon="user"
 />
+```
 
-<!-- or -->
+:::
 
-<MazInput v-model="inputValue" label="label icons">
+### Use your own SVG icons
+
+::: details Show code
+
+```html
+<MazInput
+  v-model="inputValue"
+  label="label icons"
+>
   <template #left-icon>
-    <MazIcon name="check" class="maz-text-xl" />
+    <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M2.25 18.75C7.71719 18.75 13.0136 19.4812 18.0468 20.8512C18.7738 21.0491 19.5 20.5086 19.5 19.7551V18.75M3.75 4.5V5.25C3.75 5.66421 3.41421 6 3 6H2.25M2.25 6V5.625C2.25 5.00368 2.75368 4.5 3.375 4.5H20.25M2.25 6V15M20.25 4.5V5.25C20.25 5.66421 20.5858 6 21 6H21.75M20.25 4.5H20.625C21.2463 4.5 21.75 5.00368 21.75 5.625V15.375C21.75 15.9963 21.2463 16.5 20.625 16.5H20.25M21.75 15H21C20.5858 15 20.25 15.3358 20.25 15.75V16.5M20.25 16.5H3.75M3.75 16.5H3.375C2.75368 16.5 2.25 15.9963 2.25 15.375V15M3.75 16.5V15.75C3.75 15.3358 3.41421 15 3 15H2.25M15 10.5C15 12.1569 13.6569 13.5 12 13.5C10.3431 13.5 9 12.1569 9 10.5C9 8.84315 10.3431 7.5 12 7.5C13.6569 7.5 15 8.84315 15 10.5ZM18 10.5H18.0075V10.5075H18V10.5ZM6 10.5H6.0075V10.5075H6V10.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
   </template>
   <template #right-icon>
-    <MazIcon name="user-group" class="maz-text-xl" />
+    <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M15.75 6C15.75 8.07107 14.071 9.75 12 9.75C9.9289 9.75 8.24996 8.07107 8.24996 6C8.24996 3.92893 9.9289 2.25 12 2.25C14.071 2.25 15.75 3.92893 15.75 6Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M4.5011 20.1182C4.5714 16.0369 7.90184 12.75 12 12.75C16.0982 12.75 19.4287 16.0371 19.4988 20.1185C17.216 21.166 14.6764 21.75 12.0003 21.75C9.32396 21.75 6.78406 21.1659 4.5011 20.1182Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
   </template>
 </MazInput>
 ```
 
-### Auto focus
+:::
+
+### Use [vite-svg-loader](https://github.com/jpkleemans/vite-svg-loader)
+
+::: details Show code
+
+```vue
+<template>
+  <MazInput
+    v-model="inputValue"
+    label="label icons"
+    :left-icon="BanknotesIcon"
+    :right-icon="UserIcon"
+  />
+</template>
+
+<script lang="ts" setup>
+  import { ref } from 'vue'
+  import MazInput from 'maz-ui/components/MazInput'
+  import BanknotesIcon from 'maz-ui/icons/banknotes.svg'
+  import UserIcon from 'maz-ui/icons/user.svg'
+
+  const inputValue = ref('value')
+</script>
+```
+
+:::
+
+## Auto focus
 
 > Will focus automatically the component
 
@@ -172,7 +192,7 @@ When you use `right-icon` or `left-icon`, the component use [MazIcon](./maz-icon
 />
 ```
 
-### No radius
+## No radius
 
 > Will remove the border radius
 
@@ -190,7 +210,7 @@ When you use `right-icon` or `left-icon`, the component use [MazIcon](./maz-icon
 />
 ```
 
-### Debounce
+## Debounce
 
 > The value emit by the input will be delayed, usefull for searching
 
@@ -208,7 +228,7 @@ input value: {{ inputValue ?? 'null' }}
 />
 ```
 
-### Sizes
+## Sizes
 
 > Use the attribute `size` with a value in {{ sizes.join(', ') }}
 
@@ -239,7 +259,7 @@ input value: {{ inputValue ?? 'null' }}
 </script>
 ```
 
-### Colors
+## Colors
 
 ::: tip
 Click on each input to show colors
@@ -284,23 +304,23 @@ Use the attribute `color` with a value in this [list](./../guide/colors.md), the
 </script>
 ```
 
-### State
+## State
 
 <br />
 
-#### Error
+### Error
 
 <MazInput v-model="inputValue" label="Label" error />
 
 <br />
 
-#### Warning
+### Warning
 
 <MazInput v-model="inputValue" label="Label" warning />
 
 <br />
 
-#### Success
+### Success
 
 <MazInput v-model="inputValue" label="Label" success />
 
@@ -322,7 +342,7 @@ Use the attribute `color` with a value in this [list](./../guide/colors.md), the
 />
 ```
 
-### Valid Button
+## Valid Button
 
 <br />
 
