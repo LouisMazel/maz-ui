@@ -295,7 +295,7 @@ To access the link, simply click the card.
 
 <MazCard
   :images="['https://placekitten.com/500/500']"
-  href="https://louismazel.github.io/maz-ui-3/components/maz-card#linked-card"
+  href="https://maz-ui.com/components/maz-card#linked-card"
   href-target="_blank"
   style="width: 100%"
   scale
@@ -310,7 +310,7 @@ To access the link, simply click the card.
 ```html
 <MazCard
   :images="['https://placekitten.com/1000/1000']"
-  href="https://louismazel.github.io/maz-ui-3/components/maz-card#linked-card"
+  href="https://maz-ui.com/components/maz-card#linked-card"
   href-target="_blank"
   scale
 >
@@ -434,6 +434,5 @@ type MazGalleryImage =
     }
   | string
 ```
-
 
 <!--@include: ./../.vitepress/generated-docs/maz-card.doc.md-->

@@ -18,10 +18,10 @@ export default defineConfig({
   cleanUrls: true,
   ignoreDeadLinks: true,
 
-  base: '/maz-ui-3/',
+  base: '/',
 
   sitemap: {
-    hostname: 'https://louismazel.github.io/maz-ui-3/',
+    hostname: 'https://maz-ui.com/',
     transformItems: (items) => {
       // add new items or modify/filter existing items
       const modifyItems: typeof items = []
@@ -59,7 +59,7 @@ export default defineConfig({
     },
 
     editLink: {
-      pattern: 'https://github.com/LouisMazel/maz-ui-3/edit/master/packages/docs/docs/:path',
+      pattern: 'https://github.com/LouisMazel/maz-ui/edit/master/packages/docs/docs/:path',
       text: 'Edit this page on GitHub'
     },
 

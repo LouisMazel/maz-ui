@@ -318,11 +318,11 @@ export default defineNuxtModule<MazUiNuxtOptions>({
           // title to display in the tab
           title: 'maz-ui',
           // any icon from Iconify, or a URL to an image
-          icon: 'https://louismazel.github.io/maz-ui-3/img/icons/android-chrome-512x512.png',
+          icon: 'https://maz-ui.com/img/icons/android-chrome-512x512.png',
           // iframe view
           view: {
             type: 'iframe',
-            src: 'https://louismazel.github.io/maz-ui-3',
+            src: 'https://maz-ui.com',
           },
         })
       })
