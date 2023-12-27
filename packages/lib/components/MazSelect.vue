@@ -692,7 +692,7 @@
       }
 
       &-item {
-        @apply maz-flex maz-w-full maz-cursor-pointer maz-items-center maz-gap-3 maz-truncate maz-whitespace-nowrap maz-rounded maz-bg-transparent maz-px-3 maz-py-[0.6em] maz-text-left maz-text-[1em] maz-outline-none maz-transition-colors maz-duration-300 maz-ease-in-out focus-within:maz-bg-color-light hover:maz-bg-color-light dark:hover:maz-bg-color-light;
+        @apply maz-flex maz-w-full maz-cursor-pointer maz-items-center maz-gap-3 maz-truncate maz-rounded maz-bg-transparent maz-px-3 maz-py-[0.5em] maz-text-left maz-text-[1em] maz-transition-colors maz-duration-300 maz-ease-in-out focus-within:maz-bg-color-light hover:maz-bg-color-light;
 
         span {
           @apply maz-truncate;
