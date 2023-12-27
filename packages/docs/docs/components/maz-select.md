@@ -67,7 +67,7 @@ Use `search` property to add a search input in the options list
 ::: tip
 You can use your own template to replace the empty icon when no results are found
 
-::: details
+::: details Show code
 
 ```html
 <MazSelect>
@@ -103,7 +103,7 @@ You can use your own template to replace the empty icon when no results are foun
   v-slot="{ option, isSelected }"
   search
 >
-  <div class="flex items-center" style="padding-top: 0.5rem; padding-bottom: 0.5rem; width: 100%; gap: 1rem">
+  <div class="flex items-center" style="width: 100%; gap: 1rem">
     <MazAvatar size="0.8rem" :src="option.picture" />
     <strong>
       {{ option.label }}
@@ -120,7 +120,7 @@ You can use your own template to replace the empty icon when no results are foun
     v-slot="{ option, isSelected }"
     search
   >
-    <div class="flex items-center" style="padding-top: 0.5rem; padding-bottom: 0.5rem; width: 100%; gap: 1rem">
+    <div class="flex items-center" style="width: 100%; gap: 1rem">
       <MazAvatar size="0.8rem" :src="option.picture" />
       <strong>
         {{ option.label }}
