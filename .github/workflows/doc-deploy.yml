@@ -26,7 +26,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Get last repo version
-        run: git pull --rebase origin master
+        run: git pull origin master
 
       - name: Install dependencies
         run: pnpm install
