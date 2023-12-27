@@ -1,7 +1,13 @@
 <template>
   <div class="m-table" :class="{ '--has-header': hasHeader }">
     <div v-if="hasHeader" class="m-table-header">
-      <div class="m-table-spacer"></div>
+      <div class="m-table-spacer">
+        <slot v-if="title || $slots['title']" name="title">
+          <span class="m-table-header-title">
+            {{ title }}
+          </span>
+        </slot>
+      </div>
 
       <div v-if="search" class="m-table-header-search">
         <MazSelect
@@ -267,6 +273,7 @@
     ref,
     watch,
     onBeforeMount,
+    useSlots,
   } from 'vue'
   import SearchIcon from './../icons/magnifying-glass.svg'
   import ArrowIcon from './../icons/arrow-up.svg'
@@ -326,6 +333,8 @@
        * @values `'xl' | 'lg' | 'md' | 'sm' | 'xs' | 'mini'`
        */
       size?: Size
+      /** title of the table */
+      title?: string
       /** headers of the table */
       headers?: Header[]
       /** allow sort feature to all columns */
@@ -395,6 +404,7 @@
       tableClass: undefined,
       tableStyle: undefined,
       modelValue: undefined,
+      title: undefined,
       size: 'md',
       rows: undefined,
       searchQuery: undefined,
@@ -616,7 +626,9 @@
     return getSortedRows(filteredResults)
   })
 
-  const hasHeader = computed<boolean>(() => props.search)
+  const slots = useSlots()
+
+  const hasHeader = computed<boolean>(() => props.search || !!props.title || !!slots.title)
   const hasFooter = computed<boolean>(() => props.pagination)
 
   const headersNormalized = ref<HeadersNormalized[]>(getNormalizedHeaders())
@@ -706,10 +718,14 @@
     @apply maz-relative maz-max-w-full;
 
     &-header {
-      @apply maz-flex maz-max-w-full maz-justify-between maz-gap-2 maz-border-b maz-border-color-light maz-bg-color maz-p-2;
+      @apply maz-flex maz-max-w-full maz-items-center maz-justify-between maz-gap-2 maz-border-b maz-border-color-light maz-bg-color maz-p-2;
 
       &-search {
         @apply maz-flex maz-items-center maz-gap-2;
+      }
+
+      &-title {
+        @apply maz-font-semibold;
       }
     }
 
