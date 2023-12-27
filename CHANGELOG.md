@@ -1,5 +1,18 @@
 # Change Log
 
+## v3.31.0...v3.31.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.31.0...v3.31.1)
+
+### 💅 Refactors
+
+- **docs:** Use sitemap generator of vitepress ([7c551fc6](https://github.com/LouisMazel/maz-ui/commit/7c551fc6))
+- **maz-ui:** MazDropdown & MazAccordion - remove default prop id ([5a57c3f5](https://github.com/LouisMazel/maz-ui/commit/5a57c3f5))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.30.1...v3.31.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.30.1...v3.31.0)
