@@ -132,6 +132,7 @@ You can also provide all your data, the table is auto-generated and you can use 
   color="secondary"
   sortable
   selectable
+  title="Competitions"
   hoverable
   background-even
   selected-key="id"
