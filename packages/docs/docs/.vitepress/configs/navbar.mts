@@ -28,10 +28,6 @@ export const nav: DefaultTheme.NavItem[] = [
         text: 'Changelog',
         link: 'https://github.com/LouisMazel/maz-ui/blob/master/CHANGELOG.md',
       },
-      {
-        text: 'v2.x',
-        link: 'https://louismazel.github.io/maz-ui',
-      },
     ],
   },
 ]

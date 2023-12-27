@@ -81,7 +81,7 @@ export default defineConfig({
 
   transformHead: ({ siteConfig, siteData, pageData, title, description, head }) => {
 
-    const baseUrl = 'https://louismazel.github.io'
+    const baseUrl = 'https://maz-ui.com'
 
     const currentTitle = title ?? pageData.title ?? pageData.frontmatter.title ?? siteData.title
     const currentDescription = description ?? pageData.frontmatter.description ?? pageData.description ?? siteData.description
