@@ -10,7 +10,6 @@
     "serve": "vitepress serve docs"
   },
   "devDependencies": {
-    "sitemap": "^7.1.1",
     "tailwindcss": "^3.4.0",
     "vitepress": "1.0.0-rc.33",
     "vue": "^3.3.13"

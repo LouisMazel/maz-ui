@@ -1,13 +1,8 @@
 import { defineConfig, HeadConfig } from 'vitepress'
 import { sidebar, head, nav } from './configs/index.mjs'
-
-import { createWriteStream } from 'node:fs'
-import { join, resolve } from 'node:path'
-import { SitemapStream } from 'sitemap'
+import { join } from 'node:path'
 
 const _dirname = fileURLToPath(new URL('.', import.meta.url))
-
-const links: { url: string, lastmod?: number, changefreq: string }[] = []
 
 import svgLoader from 'vite-svg-loader'
 import { fileURLToPath } from 'node:url'
@@ -24,6 +19,27 @@ export default defineConfig({
   ignoreDeadLinks: true,
 
   base: '/maz-ui-3/',
+
+  sitemap: {
+    hostname: 'https://louismazel.github.io/maz-ui-3/',
+    transformItems: (items) => {
+      // add new items or modify/filter existing items
+      const modifyItems: typeof items = []
+
+      for (const item of items) {
+        if (item.url.includes('404')) {
+          continue
+        }
+        modifyItems.push({
+          ...item,
+          changefreq: 'daily',
+          priority: 1,
+        })
+      }
+
+      return modifyItems
+    }
+  },
 
   head,
 
@@ -63,11 +79,6 @@ export default defineConfig({
     },
   },
 
-  // og:title
-  // og:url
-  // og:description
-  // og:image
-
   transformHead: ({ siteConfig, siteData, pageData, title, description, head }) => {
 
     const baseUrl = 'https://louismazel.github.io'
@@ -93,25 +104,4 @@ export default defineConfig({
 
     return [...head, ...pageHead]
   },
-
-  transformHtml: (_, id, { pageData }) => {
-    if (!/[\\/]404\.html$/.test(id)) {
-      links.push({
-        url: pageData.relativePath.replace(/((^|\/)index)?\.md$/, '$2'),
-        lastmod: pageData.lastUpdated,
-        changefreq: 'daily'
-      })
-    }
-  },
-
-  buildEnd: async ({ outDir }) => {
-    const sitemap = new SitemapStream({
-      hostname: 'https://louismazel.github.io/maz-ui/'
-    })
-    const writeStream = createWriteStream(resolve(outDir, 'sitemap.xml'))
-    sitemap.pipe(writeStream)
-    links.forEach((link) => sitemap.write(link))
-    sitemap.end()
-    await new Promise((r) => writeStream.on('finish', r))
-  }
 })
