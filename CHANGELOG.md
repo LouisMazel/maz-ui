@@ -1,5 +1,26 @@
 # Change Log
 
+## v3.30.1...v3.31.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.30.1...v3.31.0)
+
+### 🚀 Enhancements
+
+- **maz-ui:** MazBtn - use components into icon props ([a12ee3bd](https://github.com/LouisMazel/maz-ui/commit/a12ee3bd))
+- **maz-ui:** MazInput - use components into icon props ([afcc7648](https://github.com/LouisMazel/maz-ui/commit/afcc7648))
+
+### 🏡 Chore
+
+- **deps:** Upgrade dependencies ([d915762b](https://github.com/LouisMazel/maz-ui/commit/d915762b))
+
+### 🤖 CI
+
+- Add pull repo to get last version of packages ([eaaf19a8](https://github.com/LouisMazel/maz-ui/commit/eaaf19a8))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.30.0...v3.30.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.30.0...v3.30.1)
