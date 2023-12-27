@@ -194,7 +194,7 @@
     {
       class: undefined,
       style: undefined,
-      id: 'maz-dropdown',
+      id: undefined,
       trigger: 'both',
       color: 'transparent',
       position: 'bottom left',

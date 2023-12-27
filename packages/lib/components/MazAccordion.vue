@@ -45,7 +45,10 @@
       id?: string
       modelValue?: number
     }>(),
-    { id: 'mazAccordion', modelValue: 0 },
+    {
+      id: undefined,
+      modelValue: 0,
+    },
   )
 
   const emits = defineEmits(['update:model-value'])
