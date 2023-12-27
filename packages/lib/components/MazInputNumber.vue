@@ -34,7 +34,7 @@
       @blur="$emit('blur', $event)"
       @click="$emit('click', $event)"
       @update="$emit('update', $event)"
-      @update:model-value="emitDebounced($event)"
+      @update:model-value="emitDebounced($event as number | undefined)"
     />
     <MazBtn
       v-if="!noButtons"
@@ -136,7 +136,7 @@
     return value >= props.max ? props.max : findClosestStep(value)
   }
 
-  const emitDebounced = debounce((value: number) => emitValue(value), 300)
+  const emitDebounced = debounce((value?: number) => emitValue(value), 300)
 
   const emitValue = (newValue?: number) => {
     newValue = checkValue(newValue)

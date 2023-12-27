@@ -114,7 +114,7 @@
       }"
       @focus="inputFocused = true"
       @blur="inputFocused = false"
-      @update:model-value="onInputValueChanged($event)"
+      @update:model-value="onInputValueChanged($event as string)"
     />
   </div>
 </template>
