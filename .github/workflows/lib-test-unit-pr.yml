@@ -1,10 +1,9 @@
 name: Lib Tests Unit
 
 on:
-  push:
-    branches:
-      - 'master'
+  pull_request:
     paths:
+      - '.github/workflows/lib-test-unit-dependabot.yml'
       - 'packages/lib/**'
       - 'pnpm-lock.yaml'
 
@@ -33,11 +32,5 @@ jobs:
       - name: Install modules
         run: pnpm install --frozen-lockfile
 
-      - name: Test & Publish Code Coverage
-        uses: paambaati/codeclimate-action@v3.2.0
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-        with:
-          coverageCommand: pnpm --filter maz-ui test:unit:coverage --silent
-          coverageLocations: |
-            ${{github.workspace}}/packages/lib/coverage/clover.xml:clover
+      - name: Test units (and publish if not dependabot)
+        run: pnpm --filter maz-ui test:unit:coverage --silent
