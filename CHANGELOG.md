@@ -1,5 +1,21 @@
 # Change Log
 
+## v3.31.2...v3.31.3
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.31.2...v3.31.3)
+
+### 💅 Refactors
+
+- **docs:** Add link to crontributing doc in header nav bar ([d3406a6d](https://github.com/LouisMazel/maz-ui/commit/d3406a6d))
+
+### 🏡 Chore
+
+- Upgrade dependencies ([2d562fc9](https://github.com/LouisMazel/maz-ui/commit/2d562fc9))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.31.1...v3.31.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.31.1...v3.31.2)
