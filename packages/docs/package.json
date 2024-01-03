@@ -11,8 +11,8 @@
   },
   "devDependencies": {
     "tailwindcss": "^3.4.0",
-    "vitepress": "1.0.0-rc.33",
-    "vue": "^3.3.13"
+    "vitepress": "1.0.0-rc.35",
+    "vue": "^3.4.4"
   },
   "dependencies": {
     "chart.js": "^4.4.1",
