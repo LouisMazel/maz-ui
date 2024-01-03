@@ -266,8 +266,10 @@
       color: 'primary',
       size: 'md',
       modelValue: undefined,
+      /** @deprecated */
       defaultPhoneNumber: undefined,
       countryCode: undefined,
+      /** @deprecated */
       defaultCountryCode: undefined,
       id: undefined,
       placeholder: undefined,
@@ -363,7 +365,9 @@
     }
   })
 
-  const internalCountryCode = ref<CountryCode>()
+  const internalCountryCode = ref<CountryCode | undefined>(
+    (props.countryCode || props.defaultCountryCode) as CountryCode,
+  )
 
   watch(
     () => props.countryCode || props.defaultCountryCode,
@@ -385,14 +389,14 @@
     },
   })
 
-  const model = computed({
+  const phoneNumberModel = computed({
     get: () => props.modelValue || props.defaultPhoneNumber,
     set: (value) => {
       emits('update:model-value', value)
     },
   })
 
-  const internalValue = ref<string | undefined>(model.value)
+  const internalValue = ref<string | undefined>(phoneNumberModel.value)
 
   const asYouTypeFormatted = ref<string>()
 
@@ -406,7 +410,7 @@
 
   const results = ref<Result>(
     getResultsFromPhoneNumber({
-      phoneNumber: model.value,
+      phoneNumber: phoneNumberModel.value,
       countryCode: countryCodeModel.value,
     }),
   )
@@ -428,7 +432,7 @@
   }
 
   onMounted(async () => {
-    await parseModel(model.value)
+    await parseModel(phoneNumberModel.value)
 
     await nextTick()
 
@@ -453,7 +457,7 @@
   )
 
   watch(
-    () => model.value,
+    () => phoneNumberModel.value,
     async (newModel, oldModel) => {
       if (newModel !== oldModel) {
         parseModel(newModel)
@@ -513,7 +517,7 @@
       countryCode: countryCodeModel.value,
     })
 
-    model.value = newResults.e164
+    phoneNumberModel.value = newResults.e164
   }
 
   function onCountryChanged(codeCountry: string | CountryCode) {
