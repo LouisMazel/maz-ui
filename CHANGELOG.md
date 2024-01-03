@@ -1,5 +1,17 @@
 # Change Log
 
+## v3.31.3...v3.31.4
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.31.3...v3.31.4)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazPhoneNumberInput - use the country code provided to initialize the component ([e181093e](https://github.com/LouisMazel/maz-ui/commit/e181093e))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.31.2...v3.31.3
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.31.2...v3.31.3)
