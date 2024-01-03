@@ -1,5 +1,42 @@
 # Change Log
 
+## v3.31.1...v3.31.2
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.31.1...v3.31.2)
+
+### 🩹 Fixes
+
+- Add htaccess to remove .html extension of pages ([c138fd5e](https://github.com/LouisMazel/maz-ui/commit/c138fd5e))
+
+### 💅 Refactors
+
+- **maz-ui:** MazTable - add possibility to add title in header ([f262f3ce](https://github.com/LouisMazel/maz-ui/commit/f262f3ce))
+- Remove bundlephobia badges from README ([c23937d3](https://github.com/LouisMazel/maz-ui/commit/c23937d3))
+- **maz-ui:** MazAccordion - align text to left in button ([b4067bf7](https://github.com/LouisMazel/maz-ui/commit/b4067bf7))
+
+### 🏡 Chore
+
+- **deps:** Upgrade dependencies ([74907ee2](https://github.com/LouisMazel/maz-ui/commit/74907ee2))
+- **docs:** Deploy to custom domain ([55725f97](https://github.com/LouisMazel/maz-ui/commit/55725f97))
+- Rename urls to maz-ui.com ([16ec59c5](https://github.com/LouisMazel/maz-ui/commit/16ec59c5))
+- Rename urls to maz-ui.com ([13094334](https://github.com/LouisMazel/maz-ui/commit/13094334))
+- **docs:** Add robots.txt ([d8631162](https://github.com/LouisMazel/maz-ui/commit/d8631162))
+
+### 🎨 Styles
+
+- **maz-ui:** MazSelect - improve list UI ([92f6a5e7](https://github.com/LouisMazel/maz-ui/commit/92f6a5e7))
+
+### 🤖 CI
+
+- Push docs branch with documentation website ([db1ab075](https://github.com/LouisMazel/maz-ui/commit/db1ab075))
+- Doc deploy - pull origin ([dc760939](https://github.com/LouisMazel/maz-ui/commit/dc760939))
+- Doc deploy - pull origin ([af185766](https://github.com/LouisMazel/maz-ui/commit/af185766))
+- Doc deploy - pull origin ([b29d8192](https://github.com/LouisMazel/maz-ui/commit/b29d8192))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.31.0...v3.31.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.31.0...v3.31.1)
