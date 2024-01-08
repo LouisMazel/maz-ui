@@ -1,5 +1,26 @@
 # Change Log
 
+## v3.31.4...v3.31.5
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.31.4...v3.31.5)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazPhoneNumberInput - make country locale option reactive ([edc2cab7](https://github.com/LouisMazel/maz-ui/commit/edc2cab7))
+
+### 🏡 Chore
+
+- **deps-dev:** Bump @nuxtjs/tailwindcss from 6.10.1 to 6.10.3 ([c9dc6186](https://github.com/LouisMazel/maz-ui/commit/c9dc6186))
+- Upgrade dependencies ([95bcf65f](https://github.com/LouisMazel/maz-ui/commit/95bcf65f))
+
+### 🤖 CI
+
+- Fix test units with dependabot ([d93f7433](https://github.com/LouisMazel/maz-ui/commit/d93f7433))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.31.3...v3.31.4
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.31.3...v3.31.4)
