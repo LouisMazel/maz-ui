@@ -10,9 +10,9 @@
     "serve": "vitepress serve docs"
   },
   "devDependencies": {
-    "tailwindcss": "^3.4.0",
-    "vitepress": "1.0.0-rc.35",
-    "vue": "^3.4.4"
+    "tailwindcss": "^3.4.1",
+    "vitepress": "1.0.0-rc.36",
+    "vue": "^3.4.5"
   },
   "dependencies": {
     "chart.js": "^4.4.1",
