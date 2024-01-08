@@ -231,7 +231,7 @@
       noSearch?: boolean
       /** By default the component use the browser locale to set the default country code if not country code is provided */
       noUseBrowserLocale?: boolean
-      /** The component will make a request to get the location of the user and use it to set the default country code */
+      /** The component will make a request (https://ipwho.is) to get the location of the user and use it to set the default country code */
       fetchCountry?: boolean
       /** No show the country selector */
       noCountrySelector?: boolean

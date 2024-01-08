@@ -11,6 +11,7 @@ import {
 import type { Country, IpWhoResponse, Result } from './types'
 
 let displayNamesInstance: Intl.DisplayNames | undefined = undefined
+let displayNamesLocale: string | undefined = undefined
 
 function getCountryName(
   locale: string,
@@ -21,7 +22,8 @@ function getCountryName(
     return customCountriesNameListByIsoCode[code]
   }
 
-  if (!displayNamesInstance) {
+  if (displayNamesLocale !== locale || !displayNamesInstance) {
+    displayNamesLocale = locale
     displayNamesInstance = new Intl.DisplayNames([locale], { type: 'region' })
   }
 
