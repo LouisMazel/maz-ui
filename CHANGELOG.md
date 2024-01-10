@@ -1,5 +1,26 @@
 # Change Log
 
+## v3.31.5...v3.31.6
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.31.5...v3.31.6)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazPhoneNumberInput - phone number model reactivity ([6486ec32](https://github.com/LouisMazel/maz-ui/commit/6486ec32))
+
+### 🏡 Chore
+
+- Upgrade dependencies ([cdb4ef77](https://github.com/LouisMazel/maz-ui/commit/cdb4ef77))
+
+### 🤖 CI
+
+- Run test unit coverage for PR except dependabot/\*\* ([4b06546c](https://github.com/LouisMazel/maz-ui/commit/4b06546c))
+- Run test unit coverage for PR except dependabot/\*\* ([6d028acd](https://github.com/LouisMazel/maz-ui/commit/6d028acd))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.31.4...v3.31.5
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.31.4...v3.31.5)
