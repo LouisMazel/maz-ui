@@ -398,6 +398,13 @@
 
   const internalValue = ref<string | undefined>(phoneNumberModel.value)
 
+  watch(
+    () => props.modelValue || props.defaultPhoneNumber,
+    (value) => {
+      internalValue.value = value
+    },
+  )
+
   const asYouTypeFormatted = ref<string>()
 
   const inputValue = computed<string>(() => {
