@@ -8,6 +8,15 @@ on:
       - '.github/workflows/lib-test-unit.yml'
       - 'packages/lib/**'
       - 'pnpm-lock.yaml'
+  pull_request:
+    branches-ignore:
+      - dependabot/**
+    branches:
+      - master
+    paths:
+      - '.github/workflows/lib-test-unit.yml'
+      - 'packages/lib/**'
+      - 'pnpm-lock.yaml'
 
 jobs:
   coverage:
