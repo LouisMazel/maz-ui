@@ -39,6 +39,7 @@ features:
   - icon: 👨‍❤️‍👨
     title: SSR Friendly
     details: All components work with Nuxt, no need to install components on the client side.
+    link: /guide/nuxt
   - icon: 🔐
     title: Typescript
     details: This library is written in Typescript, so all types and declarations are directly available.
