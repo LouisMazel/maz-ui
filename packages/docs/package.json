@@ -12,7 +12,7 @@
   "devDependencies": {
     "tailwindcss": "^3.4.1",
     "vitepress": "1.0.0-rc.36",
-    "vue": "^3.4.7"
+    "vue": "^3.4.14"
   },
   "dependencies": {
     "chart.js": "^4.4.1",
