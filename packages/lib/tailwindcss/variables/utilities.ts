@@ -19,6 +19,6 @@ export const utilities = {
     'justify-content': 'center',
   },
   '.cap-f': {
-    '@apply first-letter:maz-capitalize': '',
+    '@apply first-letter:capitalize': '',
   },
 } satisfies CSSRuleObject | CSSRuleObject[]
