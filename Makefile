@@ -1,3 +1,5 @@
+version := $(shell jq -r .version packages/lib/package.json)
+
 serve-all:
 	pnpm --parallel serve
 serve-docs:
@@ -92,10 +94,13 @@ release:
 	pnpm release:bump-version $(type)
 	pnpm release:changelogen
 
+print-version:
+	@echo "Version is: $(version)"
+
 publish-prerelease:
 	pnpx lerna version prerelease --preid beta
 	git add -u
-	git commit -m "chore(release): prerelease"
+	git commit -m "chore(release): bump version to $(version)"
 	git push origin HEAD
 	make build-lib
 	cd packages/lib/dist && pnpm publish --access public --tag beta --no-git-checks
