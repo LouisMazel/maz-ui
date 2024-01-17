@@ -98,7 +98,7 @@
       .m-backdrop-content {
         @apply maz-h-screen maz-min-h-screen;
 
-        transition: all 450ms ease-in-out;
+        transition: all 200ms ease-in-out;
         width: 100%;
 
         @screen tab-m {
@@ -129,7 +129,7 @@
 
     &.--top .m-backdrop-content,
     &.--bottom .m-backdrop-content {
-      transition: all 450ms ease-in-out;
+      transition: all 200ms ease-in-out;
       width: 100%;
       height: 100vh;
 
