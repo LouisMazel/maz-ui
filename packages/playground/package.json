@@ -20,7 +20,7 @@
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
     "@nuxtjs/tailwindcss": "^6.10.4",
     "autoprefixer": "^10.4.16",
-    "nuxt": "^3.9.1",
+    "nuxt": "^3.9.2",
     "nuxt-module": "workspace:*",
     "postcss": "^8.4.33",
     "postcss-html": "^1.6.0",
