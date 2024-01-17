@@ -307,7 +307,7 @@
     &.--is-button {
       @apply maz-relative maz-inline-flex maz-items-center maz-justify-center maz-overflow-hidden
         maz-border-transparent maz-bg-transparent maz-font-medium maz-no-underline
-        maz-transition maz-duration-300 maz-ease-in-out;
+        maz-transition maz-duration-200 maz-ease-in-out;
 
       &:not(.--no-rounded) {
         @apply maz-rounded;
@@ -576,11 +576,11 @@
       }
 
       &.--theme-outline {
-        @apply maz-border-theme maz-text-theme;
+        @apply maz-border-gray-200 maz-text-theme dark:maz-border-color-lighter;
 
         &:not(:disabled):hover,
         &:not(:disabled):focus {
-          @apply maz-bg-theme maz-text-color;
+          @apply maz-border-theme maz-bg-theme maz-text-color;
         }
       }
 
