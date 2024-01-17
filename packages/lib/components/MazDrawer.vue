@@ -61,12 +61,12 @@
     @apply maz-items-stretch;
 
     & .m-drawer-content-wrap {
-      @apply maz-overflow-y-auto maz-bg-color-light maz-text-normal;
+      @apply maz-overflow-y-auto maz-bg-color maz-text-normal;
     }
 
     .m-drawer-content-wrap > .m-drawer-header {
       @apply maz-z-1 maz-flex maz-h-16 maz-shrink-0
-        maz-items-center maz-bg-color maz-bg-clip-padding maz-px-4 maz-py-3 maz-elevation;
+        maz-items-center maz-border-b maz-border-color-light maz-bg-color maz-bg-clip-padding maz-px-4 maz-py-3;
 
       .m-drawer-header__title {
         @apply maz-m-0 maz-text-xl maz-font-semibold;
@@ -86,7 +86,7 @@
     }
 
     .m-drawer-content-wrap > .m-drawer-body {
-      @apply maz-z-0 maz-min-h-0 maz-flex-1 maz-overflow-x-auto maz-bg-color-light maz-bg-clip-padding;
+      @apply maz-z-0 maz-min-h-0 maz-flex-1 maz-overflow-x-auto maz-bg-clip-padding;
     }
 
     &.--left,
