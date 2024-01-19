@@ -8,7 +8,7 @@
         'maz-elevation': elevation,
         'maz-overflow-hidden': overflowHidden || !isOpen,
         'maz-rounded': radius,
-        'maz-border maz-border-solid maz-border-color-lighter': bordered,
+        'maz-border maz-border-solid maz-border-color-light': bordered,
       },
     ]"
   >
@@ -17,7 +17,9 @@
       v-if="$slots['header'] || collapsable"
       class="m-card__header maz-border-b maz-border-solid"
       :class="[
-        isOpen ? 'maz-rounded-t maz-border-color-lighter' : 'maz-border-transparent',
+        isOpen
+          ? 'maz-rounded-t maz-border-color-light dark:maz-bg-color-lighter'
+          : 'maz-border-transparent',
         { '--is-collapsable': collapsable },
         { 'maz-justify-end': !$slots['header'] && collapsable },
         { 'maz-justify-between': $slots['header'] },
@@ -89,7 +91,8 @@
       class="m-card__footer maz-overflow-x-auto maz-p-3"
       :class="[
         {
-          'maz-border-t-2 maz-border-color-lighter': isColumnVariant && haveSomeContent,
+          'maz-border-t-2 maz-border-color-light dark:maz-bg-color-lighter':
+            isColumnVariant && haveSomeContent,
         },
         footerAlignClass,
       ]"

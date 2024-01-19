@@ -34,7 +34,7 @@
 
 <script lang="ts" setup>
   import { computed, ref, useSlots, getCurrentInstance } from 'vue'
-  import { MazTransitionExpand } from '.'
+  import MazTransitionExpand from './MazTransitionExpand.vue'
   import MazCardSpotlight from './MazCardSpotlight.vue'
 
   import Plus from './../icons/plus.svg'
