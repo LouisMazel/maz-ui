@@ -11,6 +11,7 @@
           :class="{ '--muted': !isScrolled }"
           no-elevation
           fab
+          :aria-label="ariaLabelPreviousButton"
           @click="previous"
         >
           <slot name="previous-icon">
@@ -23,6 +24,7 @@
           :class="{ '--muted': isScrolledMax }"
           fab
           no-elevation
+          :aria-label="ariaLabelNextButton"
           @click="next"
         >
           <slot name="next-icon">
@@ -46,9 +48,17 @@
   const ChevronLeftIcon = defineAsyncComponent(() => import('./../icons/chevron-left.svg'))
   const ChevronRightIcon = defineAsyncComponent(() => import('./../icons/chevron-right.svg'))
 
-  const props = defineProps({
-    noScrollBtn: { type: Boolean, default: false },
-  })
+  const props = withDefaults(
+    defineProps<{
+      noScrollBtn?: boolean
+      ariaLabelPreviousButton?: string
+      ariaLabelNextButton?: string
+    }>(),
+    {
+      ariaLabelPreviousButton: 'Scroll to previous items',
+      ariaLabelNextButton: 'Scroll to next items',
+    },
+  )
 
   const slots = useSlots()
 
