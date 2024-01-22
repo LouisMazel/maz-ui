@@ -28,7 +28,7 @@
 
 <script lang="ts" setup>
   import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
-  import { type PropType, getCurrentInstance, computed, type HTMLAttributes } from 'vue'
+  import { getCurrentInstance, computed, type HTMLAttributes } from 'vue'
   import type { Color, Size } from './types'
   export type { Color, Size }
   import CheckIcon from './../icons/check.svg'
@@ -39,28 +39,28 @@
     inheritAttrs: false,
   })
 
-  const props = defineProps({
-    style: {
-      type: [String, Array, Object] as PropType<HTMLAttributes['style']>,
-      default: undefined,
-    },
-    class: {
-      type: [String, Array, Object] as PropType<HTMLAttributes['class']>,
-      default: undefined,
-    },
-    modelValue: {
-      type: [Boolean, Array] as PropType<boolean | (string | number)[]>,
-      default: undefined,
-    },
-    id: { type: String, default: undefined },
-    color: {
-      type: String as PropType<Color>,
-      default: 'primary',
-    },
-    value: { type: [String, Number, Boolean], default: undefined },
-    name: { type: String, default: 'm-checkbox' },
-    size: { type: String as PropType<Size>, default: 'md' },
-    disabled: { type: Boolean, default: false },
+  export type Props = {
+    style?: HTMLAttributes['style']
+    class?: HTMLAttributes['class']
+    modelValue?: boolean | (string | number)[]
+    id?: string
+    color?: Color
+    value?: string | number | boolean
+    name?: string
+    size?: Size
+    disabled?: boolean
+  }
+
+  const props = withDefaults(defineProps<Props>(), {
+    style: undefined,
+    class: undefined,
+    modelValue: undefined,
+    id: undefined,
+    color: 'primary',
+    value: undefined,
+    name: 'm-checkbox',
+    size: 'md',
+    disabled: false,
   })
 
   const emits = defineEmits([

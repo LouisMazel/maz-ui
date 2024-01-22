@@ -48,17 +48,16 @@
   const ChevronLeftIcon = defineAsyncComponent(() => import('./../icons/chevron-left.svg'))
   const ChevronRightIcon = defineAsyncComponent(() => import('./../icons/chevron-right.svg'))
 
-  const props = withDefaults(
-    defineProps<{
-      noScrollBtn?: boolean
-      ariaLabelPreviousButton?: string
-      ariaLabelNextButton?: string
-    }>(),
-    {
-      ariaLabelPreviousButton: 'Scroll to previous items',
-      ariaLabelNextButton: 'Scroll to next items',
-    },
-  )
+  export type Props = {
+    noScrollBtn?: boolean
+    ariaLabelPreviousButton?: string
+    ariaLabelNextButton?: string
+  }
+
+  const props = withDefaults(defineProps<Props>(), {
+    ariaLabelPreviousButton: 'Scroll to previous items',
+    ariaLabelNextButton: 'Scroll to next items',
+  })
 
   const slots = useSlots()
 

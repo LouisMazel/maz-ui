@@ -15,10 +15,12 @@
   import { injectStrict } from './../modules/helpers/inject-strict'
   import type { MazTableProvide } from './MazTable.vue'
 
-  defineProps<{
+  export type Props = {
     /** Override hoverable of table props */
     noHoverable?: boolean
-  }>()
+  }
+
+  defineProps<Props>()
 
   const { hoverable, backgroundEven, backgroundOdd } = injectStrict<MazTableProvide>('maz-table')
 </script>

@@ -17,24 +17,23 @@
   export type BadgeColor = Color | 'gray'
   export type BadgeRoundedSize = 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
 
-  withDefaults(
-    defineProps<{
-      color?: BadgeColor
-      size?: string
-      nowrap?: boolean
-      outline?: boolean
-      pastel?: boolean
-      roundedSize?: BadgeRoundedSize
-    }>(),
-    {
-      color: 'primary',
-      size: '0.8em',
-      nowrap: false,
-      outline: false,
-      pastel: false,
-      roundedSize: 'md',
-    },
-  )
+  export type Props = {
+    color?: BadgeColor
+    size?: string
+    nowrap?: boolean
+    outline?: boolean
+    pastel?: boolean
+    roundedSize?: BadgeRoundedSize
+  }
+
+  withDefaults(defineProps<Props>(), {
+    color: 'primary',
+    size: '0.8em',
+    nowrap: false,
+    outline: false,
+    pastel: false,
+    roundedSize: 'md',
+  })
 </script>
 
 <style lang="postcss" scoped>

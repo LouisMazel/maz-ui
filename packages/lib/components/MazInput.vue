@@ -151,119 +151,118 @@
     inheritAttrs: false,
   })
 
-  const props = withDefaults(
-    defineProps<{
-      /** The style of the component */
-      style?: HTMLAttributes['style']
-      /** The class of the component */
-      class?: HTMLAttributes['class']
-      /**
-       * The value of the input
-       * @model
-       */
-      modelValue?: ModelValueSimple
-      /** The placeholder of the input */
-      placeholder?: string
-      /** The label of the component */
-      label?: string
-      /** The attribut name of the input */
-      name?: string
-      /** The color of the component */
-      color?: Color
-      /** The attribut type of the input */
-      type?:
-        | 'text'
-        | 'date'
-        | 'number'
-        | 'tel'
-        | 'search'
-        | 'url'
-        | 'password'
-        | 'month'
-        | 'time'
-        | 'week'
-        | 'email'
-      /** The attribut required of the input */
-      required?: boolean
-      /** The attribut disabled of the input */
-      disabled?: boolean
-      /** The attribut readonly of the input */
-      readonly?: boolean
-      /** The attribut id of the input */
-      id?: string
-      /** Enable error state UI */
-      error?: boolean
-      /** Enable success state UI */
-      success?: boolean
-      /** Enable warning state UI */
-      warning?: boolean
-      /** The hint will replace the label */
-      hint?: string
-      /** The class of the input wrapper div element */
-      inputClasses?: string
-      /** Remove the border of the input */
-      noBorder?: boolean
-      /** Remove the radius of the input */
-      noRadius?: boolean
-      /** The attribut inputmode of the input */
-      inputmode?: HTMLAttributes['inputmode']
-      /** The size of the component */
-      size?: Size
-      /** Enable debounce on input */
-      debounce?: boolean
-      /** The delay of the debounce */
-      debounceDelay?: number
-      /** Display the valid button - this button has type="submit"  */
-      validButton?: boolean
-      /** Display the loading state on the valid button */
-      validButtonLoading?: boolean
-      /** if true the input will be focus on render */
-      autoFocus?: boolean
-      /** if true the component has the colorized border by default, not only on focus */
-      borderActive?: boolean
-      /**
-       * The left icon of the input
-       * `@type` `{string | FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component}`
-       */
-      leftIcon?: string | Icon
-      /**
-       * The right icon of the input
-       * `@type` `{string | FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component}`
-       */
-      rightIcon?: string | Icon
-    }>(),
-    {
-      style: undefined,
-      class: undefined,
-      modelValue: undefined,
-      placeholder: undefined,
-      label: undefined,
-      name: undefined,
-      id: undefined,
-      color: 'primary',
-      type: 'text',
-      required: false,
-      disabled: false,
-      readonly: false,
-      error: false,
-      success: false,
-      warning: false,
-      hint: undefined,
-      inputClasses: undefined,
-      noBorder: false,
-      noRadius: false,
-      inputmode: 'text',
-      size: 'md',
-      debounce: false,
-      debounceDelay: 500,
-      validButton: false,
-      validButtonLoading: false,
-      autoFocus: false,
-      borderActive: false,
-      leftIcon: undefined,
-      rightIcon: undefined,
-    },
-  )
+  export type Props = {
+    /** The style of the component */
+    style?: HTMLAttributes['style']
+    /** The class of the component */
+    class?: HTMLAttributes['class']
+    /**
+     * The value of the input
+     * @model
+     */
+    modelValue?: ModelValueSimple
+    /** The placeholder of the input */
+    placeholder?: string
+    /** The label of the component */
+    label?: string
+    /** The attribut name of the input */
+    name?: string
+    /** The color of the component */
+    color?: Color
+    /** The attribut type of the input */
+    type?:
+      | 'text'
+      | 'date'
+      | 'number'
+      | 'tel'
+      | 'search'
+      | 'url'
+      | 'password'
+      | 'month'
+      | 'time'
+      | 'week'
+      | 'email'
+    /** The attribut required of the input */
+    required?: boolean
+    /** The attribut disabled of the input */
+    disabled?: boolean
+    /** The attribut readonly of the input */
+    readonly?: boolean
+    /** The attribut id of the input */
+    id?: string
+    /** Enable error state UI */
+    error?: boolean
+    /** Enable success state UI */
+    success?: boolean
+    /** Enable warning state UI */
+    warning?: boolean
+    /** The hint will replace the label */
+    hint?: string
+    /** The class of the input wrapper div element */
+    inputClasses?: string
+    /** Remove the border of the input */
+    noBorder?: boolean
+    /** Remove the radius of the input */
+    noRadius?: boolean
+    /** The attribut inputmode of the input */
+    inputmode?: HTMLAttributes['inputmode']
+    /** The size of the component */
+    size?: Size
+    /** Enable debounce on input */
+    debounce?: boolean
+    /** The delay of the debounce */
+    debounceDelay?: number
+    /** Display the valid button - this button has type="submit"  */
+    validButton?: boolean
+    /** Display the loading state on the valid button */
+    validButtonLoading?: boolean
+    /** if true the input will be focus on render */
+    autoFocus?: boolean
+    /** if true the component has the colorized border by default, not only on focus */
+    borderActive?: boolean
+    /**
+     * The left icon of the input
+     * `@type` `{string | FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component}`
+     */
+    leftIcon?: string | Icon
+    /**
+     * The right icon of the input
+     * `@type` `{string | FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component}`
+     */
+    rightIcon?: string | Icon
+  }
+
+  const props = withDefaults(defineProps<Props>(), {
+    style: undefined,
+    class: undefined,
+    modelValue: undefined,
+    placeholder: undefined,
+    label: undefined,
+    name: undefined,
+    id: undefined,
+    color: 'primary',
+    type: 'text',
+    required: false,
+    disabled: false,
+    readonly: false,
+    error: false,
+    success: false,
+    warning: false,
+    hint: undefined,
+    inputClasses: undefined,
+    noBorder: false,
+    noRadius: false,
+    inputmode: 'text',
+    size: 'md',
+    debounce: false,
+    debounceDelay: 500,
+    validButton: false,
+    validButtonLoading: false,
+    autoFocus: false,
+    borderActive: false,
+    leftIcon: undefined,
+    rightIcon: undefined,
+  })
 
   const emits = defineEmits<{
     /**

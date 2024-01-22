@@ -57,7 +57,6 @@
     onMounted,
     ref,
     getCurrentInstance,
-    type PropType,
     type HTMLAttributes,
   } from 'vue'
   import { TextareaAutogrow } from './MazTextarea/textarea-autogrow'
@@ -68,34 +67,40 @@
     inheritAttrs: false,
   })
 
-  const props = defineProps({
-    style: {
-      type: [String, Array, Object] as PropType<HTMLAttributes['style']>,
-      default: undefined,
-    },
-    class: {
-      type: [String, Array, Object] as PropType<HTMLAttributes['class']>,
-      default: undefined,
-    },
-    modelValue: {
-      type: String,
-      default: undefined,
-    },
-    id: { type: String, default: undefined },
-    name: { type: String, default: 'MazTextarea' },
-    label: { type: String, default: undefined },
-    placeholder: { type: String, default: undefined },
-    required: { type: Boolean, default: false },
-    disabled: { type: Boolean, default: false },
-    readonly: { type: Boolean, default: false },
-    error: { type: Boolean, default: false },
-    success: { type: Boolean, default: false },
-    warning: { type: Boolean, default: false },
-    hint: { type: String, default: undefined },
-    color: {
-      type: String as PropType<Color>,
-      default: 'primary',
-    },
+  export type Props = {
+    style?: HTMLAttributes['style']
+    class?: HTMLAttributes['class']
+    modelValue?: string
+    id?: string
+    name?: string
+    label?: string
+    placeholder?: string
+    required?: boolean
+    disabled?: boolean
+    readonly?: boolean
+    error?: boolean
+    success?: boolean
+    warning?: boolean
+    hint?: string
+    color?: Color
+  }
+
+  const props = withDefaults(defineProps<Props>(), {
+    style: undefined,
+    class: undefined,
+    modelValue: undefined,
+    id: undefined,
+    name: 'MazTextarea',
+    label: undefined,
+    placeholder: undefined,
+    required: false,
+    disabled: false,
+    readonly: false,
+    error: false,
+    success: false,
+    warning: false,
+    hint: undefined,
+    color: 'primary',
   })
 
   const emits = defineEmits(['input', 'focus', 'blur', 'change'])

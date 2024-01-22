@@ -146,68 +146,67 @@
     inheritAttrs: false,
   })
 
-  const props = withDefaults(
-    defineProps<{
-      /** The style of the select */
-      style?: StyleValue
-      /** The class of the select */
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      class?: any
-      /** The id of the select */
-      id?: string
-      /** The value of the select */
-      modelValue?: ModelValueSimple | ModelValueSimple[]
-      /** The options of the select */
-      options?: MazSelectOption[]
-      /** The key of the option value */
-      optionValueKey?: string
-      /** The key of the option label */
-      optionLabelKey?: string
-      /** The key of the option input value */
-      optionInputValueKey?: string
-      /** The position of the list */
-      listPosition?: Position
-      /** The height of the option list item */
-      itemHeight?: number
-      /** The max height of the option list */
-      maxListHeight?: number
-      /** The max width of the option list */
-      maxListWidth?: number
-      /** The size of the select */
-      size?: Size
-      /** The color of the select */
-      color?: Color
-      /** Display search input in option list */
-      search?: boolean
-      /** The placeholder of the search input */
-      searchPlaceholder?: string
-      /** if true, the option list is opened by default */
-      open?: boolean
-      /** Enable the multiple selection */
-      multiple?: boolean
-      /** Make the input required in the form */
-      required?: boolean
-      /** Disable the component */
-      disabled?: boolean
-    }>(),
-    {
-      id: undefined,
-      class: undefined,
-      style: undefined,
-      modelValue: undefined,
-      optionValueKey: 'value',
-      optionLabelKey: 'label',
-      optionInputValueKey: 'label',
-      listPosition: 'bottom left',
-      itemHeight: undefined,
-      maxListHeight: 240,
-      maxListWidth: undefined,
-      size: 'md',
-      color: 'primary',
-      searchPlaceholder: 'Search in options',
-      options: undefined,
-    },
-  )
+  export type Props = {
+    /** The style of the select */
+    style?: StyleValue
+    /** The class of the select */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    class?: any
+    /** The id of the select */
+    id?: string
+    /** The value of the select */
+    modelValue?: ModelValueSimple | ModelValueSimple[]
+    /** The options of the select */
+    options?: MazSelectOption[]
+    /** The key of the option value */
+    optionValueKey?: string
+    /** The key of the option label */
+    optionLabelKey?: string
+    /** The key of the option input value */
+    optionInputValueKey?: string
+    /** The position of the list */
+    listPosition?: Position
+    /** The height of the option list item */
+    itemHeight?: number
+    /** The max height of the option list */
+    maxListHeight?: number
+    /** The max width of the option list */
+    maxListWidth?: number
+    /** The size of the select */
+    size?: Size
+    /** The color of the select */
+    color?: Color
+    /** Display search input in option list */
+    search?: boolean
+    /** The placeholder of the search input */
+    searchPlaceholder?: string
+    /** if true, the option list is opened by default */
+    open?: boolean
+    /** Enable the multiple selection */
+    multiple?: boolean
+    /** Make the input required in the form */
+    required?: boolean
+    /** Disable the component */
+    disabled?: boolean
+  }
+
+  const props = withDefaults(defineProps<Props>(), {
+    id: undefined,
+    class: undefined,
+    style: undefined,
+    modelValue: undefined,
+    optionValueKey: 'value',
+    optionLabelKey: 'label',
+    optionInputValueKey: 'label',
+    listPosition: 'bottom left',
+    itemHeight: undefined,
+    maxListHeight: 240,
+    maxListWidth: undefined,
+    size: 'md',
+    color: 'primary',
+    searchPlaceholder: 'Search in options',
+    options: undefined,
+  })
 
   const emits = defineEmits<{
     /** On list is closed
@@ -278,28 +277,23 @@
     providedId: props.id,
   })
 
-  const optionsNormalized = computed<NormalizedOption[] | undefined>(
-    () =>
-      props.options?.map((option) => {
-        if (
-          typeof option === 'string' ||
-          typeof option === 'number' ||
-          typeof option === 'boolean'
-        ) {
-          return {
-            [props.optionValueKey]: option,
-            [props.optionLabelKey]: option,
-            [props.optionInputValueKey]: option,
-          }
-        }
-
+  const optionsNormalized = computed<NormalizedOption[] | undefined>(() =>
+    props.options?.map((option) => {
+      if (typeof option === 'string' || typeof option === 'number' || typeof option === 'boolean') {
         return {
-          ...option,
-          [props.optionValueKey]: option[props.optionValueKey],
-          [props.optionLabelKey]: option[props.optionLabelKey],
-          [props.optionInputValueKey]: option[props.optionInputValueKey],
+          [props.optionValueKey]: option,
+          [props.optionLabelKey]: option,
+          [props.optionInputValueKey]: option,
         }
-      }),
+      }
+
+      return {
+        ...option,
+        [props.optionValueKey]: option[props.optionValueKey],
+        [props.optionLabelKey]: option[props.optionLabelKey],
+        [props.optionInputValueKey]: option[props.optionInputValueKey],
+      }
+    }),
   )
 
   const selectedOptions = computed(

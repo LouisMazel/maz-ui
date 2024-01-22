@@ -81,7 +81,6 @@
     onUnmounted,
     ref,
     getCurrentInstance,
-    type PropType,
     watch,
     nextTick,
     defineAsyncComponent,
@@ -121,163 +120,170 @@
   dayjs.extend(customParseFormat)
   dayjs.extend(isBetween)
 
-  const defaultInputDateStyle: Intl.DateTimeFormatOptions = {
+  const defaultInputDateStyle = {
     dateStyle: 'full',
-  }
+  } satisfies Intl.DateTimeFormatOptions
 
   defineOptions({
     inheritAttrs: false,
   })
 
-  const props = defineProps({
-    style: {
-      type: [String, Array, Object] as PropType<HTMLAttributes['style']>,
-      default: undefined,
-    },
-    class: {
-      type: [String, Array, Object] as PropType<HTMLAttributes['class']>,
-      default: undefined,
-    },
-    modelValue: {
-      type: [String, Object] as PropType<PickerValue>,
-      default: undefined,
-    },
-    format: { type: String, default: 'YYYY-MM-DD' },
-    open: { type: Boolean, default: false },
-    label: { type: String, default: undefined },
-    placeholder: { type: String, default: undefined },
-    inputDateStyle: {
-      type: Object as PropType<Intl.DateTimeFormatOptions>,
-      default: () => ({
-        dateStyle: 'full',
-      }),
-    },
-    locale: { type: String, default: undefined },
-    noHeader: { type: Boolean, default: false },
-    disabled: { type: Boolean, default: false },
-    firstDayOfWeek: {
-      type: Number,
-      default: 0,
-      validator: (value: number) => {
-        const isValid = Array.from({ length: 7 }, (_v, i) => i).includes(value)
+  export type Props = {
+    /** The style of the component */
+    style?: HTMLAttributes['style']
+    /** The class of the component */
+    class?: HTMLAttributes['class']
+    /** The value of the component */
+    modelValue?: PickerValue
+    /** The format of the date */
+    format?: string
+    /** If true picker window will be open */
+    open?: boolean
+    /** The label of the input */
+    label?: string
+    /** The placeholder of the input */
+    placeholder?: string
+    /** The style of the input date */
+    inputDateStyle?: Intl.DateTimeFormatOptions
+    /** The locale of the component */
+    locale?: string
+    /** If true, the header will be hidden */
+    noHeader?: boolean
+    /** If true, the component will be disabled */
+    disabled?: boolean
+    /** The first day of the week (between 0 and 6) */
+    firstDayOfWeek?: 0 | 1 | 2 | 3 | 4 | 5 | 6
+    /** If true, the picker will close after a date selection */
+    autoClose?: boolean
+    /** The selector of the custom element to trigger the picker */
+    customElementSelector?: string
+    /** If true, the picker will be double */
+    double?: boolean
+    /** If true, the picker will be inline */
+    inline?: boolean
+    /** The color of the component */
+    color?: Color
+    /** The position of the picker */
+    pickerPosition?: Position
+    /** If true, the picker has a time picker */
+    time?: boolean
+    /** If true, the picker will be a time picker */
+    onlyTime?: boolean
+    /** The interval of the minutes */
+    minuteInterval?: number
+    /** If true, the browser locale will be used */
+    noUseBrowserLocale?: boolean
+    /** If true, the browser locale will not be fetched */
+    noFetchLocal?: boolean
+    /** If true, the shortcuts will be hidden */
+    noShortcuts?: boolean
+    /** The shortcuts of the picker */
+    shortcuts?: PickerShortcut[]
+    /** The shortcut of the picker */
+    shortcut?: string
+    /** The min date of the picker */
+    minDate?: string
+    /** The max date of the picker */
+    maxDate?: string
+    /** The disabled  weekly days of the picker */
+    disabledWeekly?: number[]
+    /** The disabled dates of the picker */
+    disabledDates?: string[]
+    /** The disabled hours of the time picker */
+    disabledHours?: number[]
+  }
 
-        if (!isValid) {
-          // eslint-disable-next-line no-console
-          console.error('[maz-ui](MazPicker) "first-day-of-week" should be between 0 and 6')
-        }
-
-        return isValid
+  const props = withDefaults(defineProps<Props>(), {
+    style: undefined,
+    class: undefined,
+    modelValue: undefined,
+    format: 'YYYY-MM-DD',
+    open: false,
+    label: undefined,
+    placeholder: undefined,
+    inputDateStyle: () => ({
+      dateStyle: 'full',
+    }),
+    locale: undefined,
+    noHeader: false,
+    disabled: false,
+    firstDayOfWeek: 0,
+    autoClose: false,
+    customElementSelector: undefined,
+    double: false,
+    inline: false,
+    color: 'primary',
+    pickerPosition: undefined,
+    time: false,
+    onlyTime: false,
+    minuteInterval: 5,
+    noUseBrowserLocale: false,
+    noFetchLocal: false,
+    noShortcuts: false,
+    shortcut: undefined,
+    shortcuts: () => [
+      {
+        label: 'Last 7 days',
+        identifier: 'last7Days',
+        value: {
+          start: dayjs().subtract(6, 'day').format('YYYY-MM-DD'),
+          end: dayjs().format('YYYY-MM-DD'),
+        },
       },
-    },
-    autoClose: { type: Boolean, default: false },
-    customElementSelector: { type: String, default: undefined },
-    double: { type: Boolean, default: false },
-    inline: { type: Boolean, default: false },
-    color: {
-      type: String as PropType<Color>,
-      default: 'primary',
-    },
-    pickerPosition: {
-      type: String as PropType<Position>,
-      default: undefined,
-      validator: (value: Position) => {
-        return [
-          'top',
-          'top right',
-          'top left',
-          'bottom',
-          'bottom right',
-          'bottom left',
-          'left',
-          'right',
-        ].includes(value)
+      {
+        label: 'Last 30 days',
+        identifier: 'last30Days',
+        value: {
+          start: dayjs().subtract(29, 'day').format('YYYY-MM-DD'),
+          end: dayjs().format('YYYY-MM-DD'),
+        },
       },
-    },
-    time: { type: Boolean, default: false },
-    onlyTime: { type: Boolean, default: false },
-    minuteInterval: { type: Number, default: 5 },
-    noUseBrowserLocale: { type: Boolean, default: false },
-    noFetchLocal: { type: Boolean, default: false },
-    noShortcuts: { type: Boolean, default: false },
-    shortcuts: {
-      type: Array as PropType<PickerShortcut[]>,
-      default: () => [
-        {
-          label: 'Last 7 days',
-          identifier: 'last7Days',
-          value: {
-            start: dayjs().subtract(6, 'day').format('YYYY-MM-DD'),
-            end: dayjs().format('YYYY-MM-DD'),
-          },
+      {
+        label: 'This week',
+        identifier: 'thisWeek',
+        value: {
+          start: dayjs().startOf('week').format('YYYY-MM-DD'),
+          end: dayjs().endOf('week').format('YYYY-MM-DD'),
         },
-        {
-          label: 'Last 30 days',
-          identifier: 'last30Days',
-          value: {
-            start: dayjs().subtract(29, 'day').format('YYYY-MM-DD'),
-            end: dayjs().format('YYYY-MM-DD'),
-          },
-        },
-        {
-          label: 'This week',
-          identifier: 'thisWeek',
-          value: {
-            start: dayjs().startOf('week').format('YYYY-MM-DD'),
-            end: dayjs().endOf('week').format('YYYY-MM-DD'),
-          },
-        },
-        {
-          label: 'Last week',
-          identifier: 'lastWeek',
-          value: {
-            start: dayjs().subtract(1, 'week').startOf('week').format('YYYY-MM-DD'),
-            end: dayjs().subtract(1, 'week').endOf('week').format('YYYY-MM-DD'),
-          },
-        },
-        {
-          label: 'This month',
-          identifier: 'thisMonth',
-          value: {
-            start: dayjs().set('date', 1).format('YYYY-MM-DD'),
-            end: dayjs().set('date', dayjs().daysInMonth()).format('YYYY-MM-DD'),
-          },
-        },
-        {
-          label: 'This year',
-          identifier: 'thisYear',
-          value: {
-            start: dayjs().startOf('year').format('YYYY-MM-DD'),
-            end: dayjs().endOf('year').format('YYYY-MM-DD'),
-          },
-        },
-        {
-          label: 'Last year',
-          identifier: 'lastYear',
-          value: {
-            start: dayjs().subtract(1, 'year').startOf('year').format('YYYY-MM-DD'),
-            end: dayjs().subtract(1, 'year').endOf('year').format('YYYY-MM-DD'),
-          },
-        },
-      ],
-    },
-    shortcut: { type: String, default: undefined },
-    minDate: { type: String, default: undefined },
-    maxDate: { type: String, default: undefined },
-    disabledWeekly: {
-      type: Array as PropType<number[]>,
-      default: () => [],
-      validator: (value: number) => {
-        return 7 >= value && value >= 0
       },
-    },
-    disabledDates: { type: Array as PropType<string[]>, default: () => [] },
-    disabledHours: {
-      type: Array as PropType<number[]>,
-      default: () => [],
-      validator: (value: number) => {
-        return 23 >= value && value >= 0
+      {
+        label: 'Last week',
+        identifier: 'lastWeek',
+        value: {
+          start: dayjs().subtract(1, 'week').startOf('week').format('YYYY-MM-DD'),
+          end: dayjs().subtract(1, 'week').endOf('week').format('YYYY-MM-DD'),
+        },
       },
-    },
+      {
+        label: 'This month',
+        identifier: 'thisMonth',
+        value: {
+          start: dayjs().set('date', 1).format('YYYY-MM-DD'),
+          end: dayjs().set('date', dayjs().daysInMonth()).format('YYYY-MM-DD'),
+        },
+      },
+      {
+        label: 'This year',
+        identifier: 'thisYear',
+        value: {
+          start: dayjs().startOf('year').format('YYYY-MM-DD'),
+          end: dayjs().endOf('year').format('YYYY-MM-DD'),
+        },
+      },
+      {
+        label: 'Last year',
+        identifier: 'lastYear',
+        value: {
+          start: dayjs().subtract(1, 'year').startOf('year').format('YYYY-MM-DD'),
+          end: dayjs().subtract(1, 'year').endOf('year').format('YYYY-MM-DD'),
+        },
+      },
+    ],
+    minDate: undefined,
+    maxDate: undefined,
+    disabledWeekly: () => [],
+    disabledDates: () => [],
+    disabledHours: () => [],
   })
 
   const instance = getCurrentInstance()

@@ -33,8 +33,8 @@
   </Teleport>
 </template>
 
-<script lang="ts">
-  import { ref, type PropType, watch, defineComponent, onMounted } from 'vue'
+<script lang="ts" setup>
+  import { ref, watch, onMounted, type HTMLAttributes } from 'vue'
 
   const MODAL_OPENED_CLASS = '--backdrop-present'
 
@@ -50,112 +50,126 @@
     }
   }
 
-  export default defineComponent({
+  defineOptions({
     inheritAttrs: false,
-    props: {
-      modelValue: { type: Boolean, default: false },
-      teleportSelector: { type: String, default: 'body' },
-      beforeClose: {
-        // eslint-disable-next-line @typescript-eslint/ban-types
-        type: Function as PropType<Function>,
-        default: undefined,
-      },
-      persistent: { type: Boolean, default: false },
-      noCloseOnEscKey: { type: Boolean, default: false },
-      transitionName: { type: String, default: 'backdrop-anim' },
-      backdropClass: { type: [Array, String, Object], default: undefined },
-      backdropContentClass: {
-        type: [Array, String, Object],
-        default: undefined,
-      },
-    },
-    emits: ['open', 'before-close', 'close', 'update:model-value'],
-    setup(props, { emit: emits }) {
-      const present = ref(props.modelValue)
+  })
 
-      const close = () => {
-        toggleModal(false)
-      }
+  const emits = defineEmits<{
+    /** emitted when modal is open */
+    (name: 'open'): void
+    /** emitted when modal is close */
+    (name: 'close'): void
+    /** emitted when modal is open or close */
+    (name: 'update:model-value', value: boolean): void
+    /** emitted before modal is close */
+    (name: 'before-close'): void
+  }>()
 
-      const toggleModal = async (value: boolean) => {
-        if (!value) {
-          emits('before-close')
-          await props.beforeClose?.()
-        }
+  export type Props = {
+    modelValue?: boolean
+    teleportSelector?: string
+    beforeClose?: () => Promise<void> | void
+    persistent?: boolean
+    noCloseOnEscKey?: boolean
+    transitionName?: string
+    backdropClass?: HTMLAttributes['class']
+    backdropContentClass?: HTMLAttributes['class']
+  }
 
-        present.value = value
-      }
+  const props = withDefaults(defineProps<Props>(), {
+    modelValue: false,
+    teleportSelector: 'body',
+    beforeClose: undefined,
+    persistent: false,
+    noCloseOnEscKey: false,
+    transitionName: 'backdrop-anim',
+    backdropClass: undefined,
+    backdropContentClass: undefined,
+  })
 
-      const onBackdropAnimationEnter = () => {
-        emits('open')
-      }
+  const present = ref(props.modelValue)
 
-      const onBackdropAnimationLeave = () => {
-        emits('update:model-value', false)
-        emits('close')
+  function close() {
+    toggleModal(false)
+  }
+
+  async function toggleModal(value) {
+    if (!value) {
+      emits('before-close')
+      await props.beforeClose?.()
+    }
+
+    present.value = value
+  }
+
+  function onBackdropAnimationEnter() {
+    emits('open')
+  }
+
+  function onBackdropAnimationLeave() {
+    emits('update:model-value', false)
+    emits('close')
+    removeClassAndEventToDocument()
+  }
+
+  function onBackdropClicked() {
+    if (!props.persistent) {
+      close()
+    }
+  }
+
+  function onKeyPress(event: KeyboardEvent) {
+    if (!props.noCloseOnEscKey && event.key === 'Escape' && !props.persistent) {
+      close()
+    }
+  }
+
+  function addClassAndEventToDocument() {
+    addClassToDocument()
+    document.addEventListener('keyup', onKeyPress, false)
+  }
+
+  function removeClassAndEventToDocument() {
+    document.removeEventListener('keyup', onKeyPress)
+    removeClassFromDocument()
+  }
+
+  onMounted(() => {
+    if (props.modelValue) {
+      addClassAndEventToDocument()
+    } else {
+      removeClassAndEventToDocument()
+    }
+  })
+
+  watch(
+    () => props.modelValue,
+    (value) => {
+      present.value = value
+
+      if (value) {
+        addClassAndEventToDocument()
+      } else {
         removeClassAndEventToDocument()
       }
-
-      const onBackdropClicked = () => {
-        if (!props.persistent) {
-          close()
-        }
-      }
-
-      const onKeyPress = (event: KeyboardEvent) => {
-        if (!props.noCloseOnEscKey && event.key === 'Escape' && !props.persistent) {
-          close()
-        }
-      }
-
-      const addClassAndEventToDocument = () => {
-        addClassToDocument()
-        document.addEventListener('keyup', onKeyPress, false)
-      }
-
-      const removeClassAndEventToDocument = () => {
-        document.removeEventListener('keyup', onKeyPress)
-        removeClassFromDocument()
-      }
-
-      onMounted(() => {
-        if (props.modelValue) {
-          addClassAndEventToDocument()
-        } else {
-          removeClassAndEventToDocument()
-        }
-      })
-
-      watch(
-        () => props.modelValue,
-        (value) => {
-          present.value = value
-
-          if (value) {
-            addClassAndEventToDocument()
-          } else {
-            removeClassAndEventToDocument()
-          }
-        },
-      )
-
-      return {
-        onBackdropAnimationEnter,
-        onBackdropAnimationLeave,
-        onBackdropClicked,
-        close,
-        present,
-        toggleModal,
-        onKeyPress,
-      }
     },
+  )
+
+  defineExpose({
+    onBackdropAnimationEnter,
+    onBackdropAnimationLeave,
+    onBackdropClicked,
+    close,
+    present,
+    toggleModal,
+    onKeyPress,
   })
 </script>
 
 <style lang="postcss">
   html.--backdrop-present {
     overflow-y: hidden;
-    height: 100vh;
+    height: 100vh !important;
   }
 </style>
 

@@ -39,28 +39,27 @@
 
   const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
 
-  const props = withDefaults(
-    defineProps<{
-      distance?: number
-      offset?: number
-      action?: () => unknown
-      containerSelector?: string
-      headerClass?: string
-      spinnerColor?: Color
-      disabled?: boolean
-      standaloneMode?: boolean
-    }>(),
-    {
-      distance: 100,
-      offset: 0,
-      action: undefined,
-      containerSelector: undefined,
-      headerClass: undefined,
-      spinnerColor: 'theme',
-      disabled: false,
-      standaloneMode: false,
-    },
-  )
+  export type Props = {
+    distance?: number
+    offset?: number
+    action?: () => unknown
+    containerSelector?: string
+    headerClass?: string
+    spinnerColor?: Color
+    disabled?: boolean
+    standaloneMode?: boolean
+  }
+
+  const props = withDefaults(defineProps<Props>(), {
+    distance: 100,
+    offset: 0,
+    action: undefined,
+    containerSelector: undefined,
+    headerClass: undefined,
+    spinnerColor: 'theme',
+    disabled: false,
+    standaloneMode: false,
+  })
 
   const emits = defineEmits(['loaded', 'start', 'error', 'finish', 'response'])
 

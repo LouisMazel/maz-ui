@@ -64,7 +64,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, defineAsyncComponent, type PropType } from 'vue'
+  import { computed, defineAsyncComponent } from 'vue'
 
   import type { Color } from './types'
   export type { Color }
@@ -72,41 +72,64 @@
   const MazLazyImg = defineAsyncComponent(() => import('./MazLazyImg.vue'))
   const PencilIcon = defineAsyncComponent(() => import('./../icons/pencil.svg'))
 
-  const props = defineProps({
-    src: {
-      type: String as PropType<undefined | null | string>,
-      default: undefined,
-    },
-    caption: {
-      type: String as PropType<undefined | null | string>,
-      default: undefined,
-    },
-    href: { type: String, default: undefined },
-    to: { type: Object, default: undefined },
-    alt: { type: String, default: 'avatar image' },
-    target: { type: String, default: '_self' },
-    size: { type: String, default: undefined },
-    bordered: { type: Boolean, default: false },
-    clickable: { type: Boolean, default: false },
-    square: { type: Boolean, default: false },
-    noElevation: { type: Boolean, default: false },
-    showCaption: { type: Boolean, default: false },
-    imageHeightFull: { type: Boolean, default: false },
-    noLoader: { type: Boolean, default: false },
-    buttonColor: {
-      type: String as PropType<Color>,
-      default: 'info',
-    },
+  export type Props = {
+    /** The source of the image */
+    src?: string | null
+    /** The caption of the avatar */
+    caption?: string | null
+    /** The link of the avatar */
+    href?: string
+    /** The link (router-link) of the avatar */
+    to?: string | Record<string, unknown>
+    /** The alt of the image */
+    alt?: string
+    /** The target of the link */
+    target?: string
+    /** The size of the avatar */
+    size?: string
+    /** Add a border to the avatar */
+    bordered?: boolean
+    /** Make the avatar clickable */
+    clickable?: boolean
+    /** Make the avatar square */
+    square?: boolean
+    /** Remove the shadow */
+    noElevation?: boolean
+    /** Show the caption */
+    showCaption?: boolean
+    /** Make the image height full */
+    imageHeightFull?: boolean
+    /** Remove the loader */
+    noLoader?: boolean
+    /** The color of the clickable button */
+    buttonColor?: Color
     /** Remove the icon on hover when component is clickable */
-    noClickableIcon: { type: Boolean, default: false },
-    letterCount: { type: Number, default: undefined },
-    roundedSize: {
-      type: String as PropType<'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'>,
-      default: 'full',
-      validator: (value: string) => {
-        return ['none', 'sm', 'md', 'lg', 'xl', 'full'].includes(value)
-      },
-    },
+    noClickableIcon?: boolean
+    /** Number of letters to display in the round text */
+    letterCount?: number
+    /** Size of the rounded */
+    roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
+  }
+
+  const props = withDefaults(defineProps<Props>(), {
+    src: undefined,
+    caption: undefined,
+    href: undefined,
+    to: undefined,
+    alt: 'avatar image',
+    target: '_self',
+    size: undefined,
+    bordered: false,
+    clickable: false,
+    square: false,
+    noElevation: false,
+    showCaption: false,
+    imageHeightFull: false,
+    noLoader: false,
+    buttonColor: 'info',
+    noClickableIcon: false,
+    letterCount: undefined,
+    roundedSize: 'full',
   })
 
   const componentType = computed(() => (props.to ? 'RouterLink' : props.href ? 'a' : 'div'))
@@ -122,7 +145,9 @@
     return letters.slice(0, lettersCount)
   }
 
-  defineEmits(['click'])
+  defineEmits<{
+    (name: 'click', event: MouseEvent): void
+  }>()
 </script>
 
 <style lang="postcss" scoped>
@@ -169,7 +194,7 @@
       }
 
       &.--bordered {
-        @apply maz-border maz-border-solid maz-border-white;
+        @apply maz-border maz-border-solid maz-border-color-light dark:maz-border-color-lighter;
       }
 
       &.--rounded {

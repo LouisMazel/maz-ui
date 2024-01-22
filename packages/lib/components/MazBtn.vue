@@ -93,116 +93,115 @@
 
   type Icon = FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component
 
-  const props = withDefaults(
-    defineProps<{
-      /** The variant of the button - Change UI of component (link or button style)
-       * @values `'button' | 'link'`
-       * */
-      variant?: 'button' | 'link'
-      /**
-       * The size of the button
-       * @values `'xl' | 'lg' | 'md' | 'sm' | 'xs' | 'mini'`
-       */
-      size?: Size
-      /**
-       * The color of the button
-       * @values `'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'danger' | 'white' | 'black' | 'transparent' | 'theme'`
-       */
-      color?: Color
-      /**
-       * The type of the button
-       * @values `'submit' | 'reset' | 'button'`
-       */
-      type?: 'submit' | 'reset' | 'button'
-      /**
-       * If true, the button will have a full border radius
-       * @default false
-       */
-      rounded?: boolean
-      /**
-       * If true, the button will have no border radius
-       * @default false
-       */
-      noRounded?: boolean
-      /**
-       * If true, the button have the "border" style
-       * @default false
-       */
-      outline?: boolean
-      /**
-       * If true, the button will have a pastel color
-       * @default false
-       */
-      pastel?: boolean
-      /**
-       * If true, the button will have a full width
-       * @default false
-       */
-      block?: boolean
-      /** If true, the button will have no underline on hover (useful with `variant="link"`)
-       * @default false
-       */
-      noUnderline?: boolean
-      /**
-       * If true, the button will have no leading (useful with `variant="link"`)
-       * @default false
-       */
-      noLeading?: boolean
-      /**
-       * Enable the button loader
-       * @default false
-       */
-      loading?: boolean
-      /**
-       * Disable the button
-       * @default false
-       */
-      disabled?: boolean
-      /**
-       * If true, the button will have a fab style
-       * @default false
-       */
-      fab?: boolean
-      /**
-       * The name of the icon to display or component, only with fab
-       * `@type` `{string | FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component}`
-       */
-      icon?: string | Icon
-      /**
-       * The name of the icon or component to display on the left of the button
-       * `@type` `{string | FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component}`
-       */
-      leftIcon?: string | Icon
-      /**
-       * The name of the icon or component to display on the right of the button
-       * `@type` `{string | FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component}`
-       */
-      rightIcon?: string | Icon
-      /**
-       * If true, the button will have no padding
-       * @default false
-       */
-      noPadding?: boolean
-      /**
-       * If true, the button will have no box-shadow
-       * @default false
-       */
-      noElevation?: boolean
-      /** The class applied to the content wrapper (<span />) of the button */
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      contentClass?: any
-    }>(),
-    {
-      variant: 'button',
-      size: 'md',
-      color: 'primary',
-      type: 'button',
-      icon: undefined,
-      leftIcon: undefined,
-      rightIcon: undefined,
-      contentClass: undefined,
-    },
-  )
+  export type Props = {
+    /** The variant of the button - Change UI of component (link or button style)
+     * @values `'button' | 'link'`
+     * */
+    variant?: 'button' | 'link'
+    /**
+     * The size of the button
+     * @values `'xl' | 'lg' | 'md' | 'sm' | 'xs' | 'mini'`
+     */
+    size?: Size
+    /**
+     * The color of the button
+     * @values `'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'danger' | 'white' | 'black' | 'transparent' | 'theme'`
+     */
+    color?: Color
+    /**
+     * The type of the button
+     * @values `'submit' | 'reset' | 'button'`
+     */
+    type?: 'submit' | 'reset' | 'button'
+    /**
+     * If true, the button will have a full border radius
+     * @default false
+     */
+    rounded?: boolean
+    /**
+     * If true, the button will have no border radius
+     * @default false
+     */
+    noRounded?: boolean
+    /**
+     * If true, the button have the "border" style
+     * @default false
+     */
+    outline?: boolean
+    /**
+     * If true, the button will have a pastel color
+     * @default false
+     */
+    pastel?: boolean
+    /**
+     * If true, the button will have a full width
+     * @default false
+     */
+    block?: boolean
+    /** If true, the button will have no underline on hover (useful with `variant="link"`)
+     * @default false
+     */
+    noUnderline?: boolean
+    /**
+     * If true, the button will have no leading (useful with `variant="link"`)
+     * @default false
+     */
+    noLeading?: boolean
+    /**
+     * Enable the button loader
+     * @default false
+     */
+    loading?: boolean
+    /**
+     * Disable the button
+     * @default false
+     */
+    disabled?: boolean
+    /**
+     * If true, the button will have a fab style
+     * @default false
+     */
+    fab?: boolean
+    /**
+     * The name of the icon to display or component, only with fab
+     * `@type` `{string | FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component}`
+     */
+    icon?: string | Icon
+    /**
+     * The name of the icon or component to display on the left of the button
+     * `@type` `{string | FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component}`
+     */
+    leftIcon?: string | Icon
+    /**
+     * The name of the icon or component to display on the right of the button
+     * `@type` `{string | FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component}`
+     */
+    rightIcon?: string | Icon
+    /**
+     * If true, the button will have no padding
+     * @default false
+     */
+    noPadding?: boolean
+    /**
+     * If true, the button will have no box-shadow
+     * @default false
+     */
+    noElevation?: boolean
+    /** The class applied to the content wrapper (<span />) of the button */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    contentClass?: any
+  }
+
+  const props = withDefaults(defineProps<Props>(), {
+    variant: 'button',
+    size: 'md',
+    color: 'primary',
+    type: 'button',
+    icon: undefined,
+    leftIcon: undefined,
+    rightIcon: undefined,
+    contentClass: undefined,
+  })
 
   onBeforeMount(() => {
     if (props.icon && !props.fab) {

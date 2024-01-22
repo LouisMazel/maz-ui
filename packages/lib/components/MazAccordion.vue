@@ -40,16 +40,15 @@
   import Plus from './../icons/plus.svg'
   import { useInstanceUniqId } from './../modules/composables/use-instance-uniq-id'
 
-  const props = withDefaults(
-    defineProps<{
-      id?: string
-      modelValue?: number
-    }>(),
-    {
-      id: undefined,
-      modelValue: 0,
-    },
-  )
+  export type Props = {
+    id?: string
+    modelValue?: number
+  }
+
+  const props = withDefaults(defineProps<Props>(), {
+    id: undefined,
+    modelValue: 0,
+  })
 
   const emits = defineEmits(['update:model-value'])
 
