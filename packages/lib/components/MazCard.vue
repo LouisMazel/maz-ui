@@ -118,43 +118,43 @@
 
   export type Props = {
     /** Images displayed */
-    images: MazGalleryImage[]
+    images?: MazGalleryImage[]
     /** Card variant: Must be `column | row | row-reverse | column-reverse` */
-    orientation: 'column' | 'row' | 'row-reverse' | 'column-reverse'
+    orientation?: 'column' | 'row' | 'row-reverse' | 'column-reverse'
     /** Make card a link (footer area excluded) */
-    href: string
+    href?: string
     /** Target option of link: Muse be one of `_blank | _self | _parent | _top | framename` */
-    hrefTarget: '_blank' | '_self' | '_parent' | '_top' | string
+    hrefTarget?: '_blank' | '_self' | '_parent' | '_top' | string
     /** Footer text alignment: `right | left` */
-    footerAlign: 'right' | 'left'
+    footerAlign?: 'right' | 'left'
     /** Gallery image width */
-    galleryWidth: string | number
+    galleryWidth?: string | number
     /** Gallery image height */
-    galleryHeight: string | number
+    galleryHeight?: string | number
     /** Enable "zoom" image on click (can't be used when the card has a link) */
-    zoom: boolean
+    zoom?: boolean
     /** Set elevation to card (box-shadow) */
-    elevation: boolean
+    elevation?: boolean
     /** Set radius to card */
-    radius: boolean
+    radius?: boolean
     /** Set border to card */
-    bordered: boolean
+    bordered?: boolean
     /** Number of images shown in the gallery */
-    imagesShowCount: number
+    imagesShowCount?: number
     /** Remove transparent layer with the remain count (ex: +2) */
-    noRemaining: boolean
+    noRemaining?: boolean
     /** scale animation on hover (only linked cards) */
-    scale: boolean
+    scale?: boolean
     /** add classes to wrapper */
-    wrapperClass: HTMLAttributes['class']
+    wrapperClass?: HTMLAttributes['class']
     /** Remove padding from content wrapper */
-    noPadding: boolean
+    noPadding?: boolean
     /** Hide overflow */
-    overflowHidden: boolean
+    overflowHidden?: boolean
     /** Card can be open and close */
-    collapsable: boolean
+    collapsable?: boolean
     /** Card is open by default if `true` */
-    collapseOpen: boolean
+    collapseOpen?: boolean
   }
 
   const props = withDefaults(defineProps<Props>(), {
@@ -165,18 +165,12 @@
     footerAlign: 'right',
     galleryWidth: 200,
     galleryHeight: 150,
-    zoom: false,
     elevation: true,
     radius: true,
-    bordered: false,
     imagesShowCount: 3,
     noRemaining: true,
     scale: true,
     wrapperClass: undefined,
-    noPadding: false,
-    overflowHidden: false,
-    collapsable: false,
-    collapseOpen: false,
   })
 
   const slots = useSlots()
