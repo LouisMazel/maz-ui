@@ -54,39 +54,38 @@
   const XMark = defineAsyncComponent(() => import('./../../../icons/x-mark.svg'))
   const ChevronLeft = defineAsyncComponent(() => import('./../../../icons/chevron-left.svg'))
 
-  const props = withDefaults(
-    defineProps<{
-      src: string
-      clickedElementBounds?: {
-        top: number
-        left: number
-        height: number
-        width: number
-      }
-      offset?: number
-      animation?: {
-        duration?: number
-        easing?: string
-      }
-      openInstanceClass?: string
-      clickedElement: HTMLElement
-      destroy?: () => void
-      alt?: string
-      zoom?: boolean
-    }>(),
-    {
-      zoom: true,
-      offset: undefined,
-      destroy: undefined,
-      alt: undefined,
-      animation: () => ({
-        duration: 300,
-        easing: 'ease-in-out',
-      }),
-      clickedElementBounds: undefined,
-      openInstanceClass: 'm-fullscreen-img-instance',
-    },
-  )
+  export type Props = {
+    src: string
+    clickedElementBounds?: {
+      top: number
+      left: number
+      height: number
+      width: number
+    }
+    offset?: number
+    animation?: {
+      duration?: number
+      easing?: string
+    }
+    openInstanceClass?: string
+    clickedElement: HTMLElement
+    destroy?: () => void
+    alt?: string
+    zoom?: boolean
+  }
+
+  const props = withDefaults(defineProps<Props>(), {
+    zoom: true,
+    offset: undefined,
+    destroy: undefined,
+    alt: undefined,
+    animation: () => ({
+      duration: 300,
+      easing: 'ease-in-out',
+    }),
+    clickedElementBounds: undefined,
+    openInstanceClass: 'm-fullscreen-img-instance',
+  })
 
   const imageLoaded = ref(false)
   const showLoader = ref(false)

@@ -20,16 +20,17 @@
 
   export type { Color }
 
-  const props = withDefaults(
-    defineProps<{
-      noElevation?: boolean
-      color?: Color
-    }>(),
-    {
-      noElevation: false,
-      color: 'primary',
-    },
-  )
+  export type Props = {
+    /** The color of the component. */
+    color?: Color
+    /** Remove the elevation of the component. */
+    noElevation?: boolean
+  }
+
+  const props = withDefaults(defineProps<Props>(), {
+    noElevation: false,
+    color: 'primary',
+  })
 
   const blobElement = ref<HTMLDivElement>()
   const fakeblobElement = ref<HTMLDivElement>()

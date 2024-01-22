@@ -66,45 +66,44 @@
     inheritAttrs: false,
   })
 
-  const props = withDefaults(
-    defineProps<{
-      /** The inline style object for the component. */
-      style?: HTMLAttributes['style']
-      /** The CSS class name for the component. */
-      class?: HTMLAttributes['class']
-      /** The value of the component (v-model). */
-      modelValue?: number
-      /** Whether the input number is disabled or not. */
-      disabled?: boolean
-      /** The maximum value allowed for the input number. */
-      max?: number
-      /** The minimum value allowed for the input number. */
-      min?: number
-      /** The step value for incrementing or decrementing the input number. */
-      step?: number
-      /** The size of the input number component. */
-      size?: Size
-      /** Whether to hide the increment and decrement buttons or not. */
-      noButtons?: boolean
-      /** Whether to center the text inside the input or not. */
-      textCenter?: boolean
-      /** The inputmode attribute for the input. */
-      inputmode?: HTMLAttributes['inputmode']
-    }>(),
-    {
-      style: undefined,
-      class: undefined,
-      modelValue: undefined,
-      disabled: false,
-      max: Number.POSITIVE_INFINITY,
-      min: Number.NEGATIVE_INFINITY,
-      step: 1,
-      size: 'md',
-      noButtons: false,
-      textCenter: true,
-      inputmode: 'numeric',
-    },
-  )
+  export type Props = {
+    /** The inline style object for the component. */
+    style?: HTMLAttributes['style']
+    /** The CSS class name for the component. */
+    class?: HTMLAttributes['class']
+    /** The value of the component (v-model). */
+    modelValue?: number
+    /** Whether the input number is disabled or not. */
+    disabled?: boolean
+    /** The maximum value allowed for the input number. */
+    max?: number
+    /** The minimum value allowed for the input number. */
+    min?: number
+    /** The step value for incrementing or decrementing the input number. */
+    step?: number
+    /** The size of the input number component. */
+    size?: Size
+    /** Whether to hide the increment and decrement buttons or not. */
+    noButtons?: boolean
+    /** Whether to center the text inside the input or not. */
+    textCenter?: boolean
+    /** The inputmode attribute for the input. */
+    inputmode?: HTMLAttributes['inputmode']
+  }
+
+  const props = withDefaults(defineProps<Props>(), {
+    style: undefined,
+    class: undefined,
+    modelValue: undefined,
+    disabled: false,
+    max: Number.POSITIVE_INFINITY,
+    min: Number.NEGATIVE_INFINITY,
+    step: 1,
+    size: 'md',
+    noButtons: false,
+    textCenter: true,
+    inputmode: 'numeric',
+  })
 
   const emits = defineEmits<{
     /** Emitted when the input value change */

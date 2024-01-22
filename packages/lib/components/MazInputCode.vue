@@ -42,63 +42,50 @@
     inheritAttrs: false,
   })
 
-  const props = withDefaults(
-    defineProps<{
-      /** The style of the component. */
-      style?: HTMLAttributes['style']
+  export type Props = {
+    /** The style of the component. */
+    style?: HTMLAttributes['style']
+    /** The class of the component. */
+    class?: HTMLAttributes['class']
+    /** The value of the component (v-model). */
+    modelValue?: string | number
+    /** The length of the code. */
+    codeLength?: number
+    /** The type of the input field. */
+    type?: 'text' | 'number'
+    /** Whether to accept alpha characters. */
+    acceptAlpha?: boolean
+    /** Whether the input is required. */
+    required?: boolean
+    /** Whether the input is disabled. */
+    disabled?: boolean
+    /** Whether there is an error with the input. */
+    error?: boolean
+    /** Whether the input is successful. */
+    success?: boolean
+    /** Whether there is a warning with the input. */
+    warning?: boolean
+    /** The size of the component. */
+    size?: Size
+    /** The color of the component. */
+    color?: Color
+  }
 
-      /** The class of the component. */
-      class?: HTMLAttributes['class']
-
-      /** The value of the component (v-model). */
-      modelValue?: string | number
-
-      /** The length of the code. */
-      codeLength?: number
-
-      /** The type of the input field. */
-      type?: 'text' | 'number'
-
-      /** Whether to accept alpha characters. */
-      acceptAlpha?: boolean
-
-      /** Whether the input is required. */
-      required?: boolean
-
-      /** Whether the input is disabled. */
-      disabled?: boolean
-
-      /** Whether there is an error with the input. */
-      error?: boolean
-
-      /** Whether the input is successful. */
-      success?: boolean
-
-      /** Whether there is a warning with the input. */
-      warning?: boolean
-
-      /** The size of the component. */
-      size?: Size
-
-      /** The color of the component. */
-      color?: Color
-    }>(),
-    {
-      style: undefined,
-      class: undefined,
-      modelValue: undefined,
-      codeLength: 4,
-      type: 'text',
-      acceptAlpha: false,
-      required: false,
-      disabled: false,
-      error: false,
-      success: false,
-      warning: false,
-      size: 'md',
-      color: 'primary',
-    },
-  )
+  const props = withDefaults(defineProps<Props>(), {
+    style: undefined,
+    class: undefined,
+    modelValue: undefined,
+    codeLength: 4,
+    type: 'text',
+    acceptAlpha: false,
+    required: false,
+    disabled: false,
+    error: false,
+    success: false,
+    warning: false,
+    size: 'md',
+    color: 'primary',
+  })
 
   const emits = defineEmits<{
     /**

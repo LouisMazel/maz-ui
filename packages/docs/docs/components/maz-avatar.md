@@ -15,11 +15,11 @@ This component uses [vLazyImg](./../directives/lazy-img.md) directive
 
 ## Basic usage
 
-<MazAvatar src="https://pbs.twimg.com/profile_images/598181608198381570/-cFG43y2_400x400.jpg" />
+<MazAvatar src="https://placekitten.com/740/600" />
 
 ```vue
 <template>
-  <MazAvatar src="https://pbs.twimg.com/profile_images/598181608198381570/-cFG43y2_400x400.jpg" />
+  <MazAvatar src="https://placekitten.com/740/600" />
 </template>
 
 <script lang="ts" setup>
@@ -61,9 +61,10 @@ See all the options props [here](#props-events-emitted)
   />
 
   <MazAvatar
-    src="https://pbs.twimg.com/profile_images/598181608198381570/-cFG43y2_400x400.jpg"
+    src="https://placekitten.com/740/600"
     size="3rem"
     bordered
+    noElevation
   />
 </div>
 
@@ -94,7 +95,7 @@ See all the options props [here](#props-events-emitted)
     @click="clicked"
   />
   <MazAvatar
-    src="https://pbs.twimg.com/profile_images/598181608198381570/-cFG43y2_400x400.jpg"
+    src="https://placekitten.com/740/600"
     size="3rem"
     bordered
   />

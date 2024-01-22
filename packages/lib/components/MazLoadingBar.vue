@@ -8,15 +8,16 @@
   import type { Color } from './types'
   import { computed } from 'vue'
 
-  const props = withDefaults(
-    defineProps<{
-      /** The color of the loading bar */
-      color?: Color
-      /** Height of the bar */
-      height?: string
-    }>(),
-    { color: 'primary', height: '0.125rem' },
-  )
+  export type { Color }
+
+  export type Props = {
+    /** The color of the component. */
+    color?: Color
+    /** The height of the component. */
+    height?: string
+  }
+
+  const props = withDefaults(defineProps<Props>(), { color: 'primary', height: '0.125rem' })
 
   const colorCSVariables = computed(() => ({
     alpha: `var(--maz-color-${props.color}-alpha-20)`,

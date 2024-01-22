@@ -32,13 +32,22 @@
   import { currency as currencyFilter } from '../modules/filters/currency'
   import MazInput from './MazInput.vue'
 
-  const props = defineProps({
-    modelValue: { type: [Number, String], default: undefined },
-    currency: { type: String, default: 'EUR' },
-    locale: { type: String, default: 'fr-FR' },
-    min: { type: Number, default: 0 },
-    max: { type: Number, default: Number.POSITIVE_INFINITY },
-    noIcon: { type: Boolean, default: false },
+  export type Props = {
+    modelValue?: number | string
+    currency?: string
+    locale?: string
+    min?: number
+    max?: number
+    noIcon?: boolean
+  }
+
+  const props = withDefaults(defineProps<Props>(), {
+    modelValue: undefined,
+    currency: 'EUR',
+    locale: 'fr-FR',
+    min: 0,
+    max: Number.POSITIVE_INFINITY,
+    noIcon: false,
   })
 
   const emits = defineEmits(['update:model-value', 'formatted'])

@@ -107,15 +107,7 @@
 </template>
 
 <script lang="ts" setup>
-  import {
-    computed,
-    useSlots,
-    type PropType,
-    ref,
-    watch,
-    defineAsyncComponent,
-    type HTMLAttributes,
-  } from 'vue'
+  import { computed, useSlots, ref, watch, defineAsyncComponent, type HTMLAttributes } from 'vue'
   import type { MazGalleryImage } from './types'
   export type { MazGalleryImage } from './types'
 
@@ -124,57 +116,67 @@
   const MazTransitionExpand = defineAsyncComponent(() => import('./MazTransitionExpand.vue'))
   const ChevronDownIcon = defineAsyncComponent(() => import('./../icons/chevron-down.svg'))
 
-  const props = defineProps({
+  export type Props = {
     /** Images displayed */
-    images: {
-      type: Array as PropType<MazGalleryImage[]>,
-      default: undefined,
-    },
+    images: MazGalleryImage[]
     /** Card variant: Must be `column | row | row-reverse | column-reverse` */
-    orientation: {
-      type: String,
-      default: 'column',
-      validator: (value: string) => {
-        return ['column', 'row', 'row-reverse', 'column-reverse'].includes(value)
-      },
-    },
+    orientation: 'column' | 'row' | 'row-reverse' | 'column-reverse'
     /** Make card a link (footer area excluded) */
-    href: { type: String, default: undefined },
+    href: string
     /** Target option of link: Muse be one of `_blank | _self | _parent | _top | framename` */
-    hrefTarget: { type: String, default: '_self' },
+    hrefTarget: '_blank' | '_self' | '_parent' | '_top' | string
     /** Footer text alignment: `right | left` */
-    footerAlign: { type: String, default: 'right' },
+    footerAlign: 'right' | 'left'
     /** Gallery image width */
-    galleryWidth: { type: [String, Number], default: 200 },
+    galleryWidth: string | number
     /** Gallery image height */
-    galleryHeight: { type: [String, Number], default: 150 },
+    galleryHeight: string | number
     /** Enable "zoom" image on click (can't be used when the card has a link) */
-    zoom: { type: Boolean, default: false },
+    zoom: boolean
     /** Set elevation to card (box-shadow) */
-    elevation: { type: Boolean, default: true },
+    elevation: boolean
     /** Set radius to card */
-    radius: { type: Boolean, default: true },
+    radius: boolean
     /** Set border to card */
-    bordered: { type: Boolean, default: false },
+    bordered: boolean
     /** Number of images shown in the gallery */
-    imagesShowCount: { type: Number, default: 3 },
+    imagesShowCount: number
     /** Remove transparent layer with the remain count (ex: +2) */
-    noRemaining: { type: Boolean, default: true },
+    noRemaining: boolean
     /** scale animation on hover (only linked cards) */
-    scale: { type: Boolean, default: true },
+    scale: boolean
     /** add classes to wrapper */
-    wrapperClass: {
-      type: [String, Array, Object] as PropType<HTMLAttributes['class']>,
-      default: undefined,
-    },
+    wrapperClass: HTMLAttributes['class']
     /** Remove padding from content wrapper */
-    noPadding: { type: Boolean, default: false },
+    noPadding: boolean
     /** Hide overflow */
-    overflowHidden: { type: Boolean, default: false },
+    overflowHidden: boolean
     /** Card can be open and close */
-    collapsable: { type: Boolean, default: false },
+    collapsable: boolean
     /** Card is open by default if `true` */
-    collapseOpen: { type: Boolean, default: false },
+    collapseOpen: boolean
+  }
+
+  const props = withDefaults(defineProps<Props>(), {
+    images: undefined,
+    orientation: 'column',
+    href: undefined,
+    hrefTarget: '_self',
+    footerAlign: 'right',
+    galleryWidth: 200,
+    galleryHeight: 150,
+    zoom: false,
+    elevation: true,
+    radius: true,
+    bordered: false,
+    imagesShowCount: 3,
+    noRemaining: true,
+    scale: true,
+    wrapperClass: undefined,
+    noPadding: false,
+    overflowHidden: false,
+    collapsable: false,
+    collapseOpen: false,
   })
 
   const slots = useSlots()

@@ -7,10 +7,12 @@
 <script lang="ts" setup>
   import { computed, provide, ref, type Ref } from 'vue'
 
-  const props = defineProps<{
+  export type Props = {
     /** The the selected tab number */
     modelValue?: number
-  }>()
+  }
+
+  const props = defineProps<Props>()
 
   const emits = defineEmits<{
     /**

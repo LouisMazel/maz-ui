@@ -87,30 +87,29 @@
     }
   }
 
-  const props = withDefaults(
-    defineProps<{
-      /** The items to display in the tabs bar */
-      items: MazTabsBarItem[]
-      /** Will add a query param to the url to keep the selected tab on page refresh */
-      persistent?: boolean
-      /** The name of the query param to add to the url
-       * @default tab
-       */
-      queryParam?: string
-      /** Will make the tabs bar full width */
-      block?: boolean
-      /** Will remove the elevation */
-      noElevation?: boolean
-      /** Will add a scroll on the tabs bar to show selected element
-       * @default true
-       */
-      autoScroll?: boolean
-    }>(),
-    {
-      queryParam: 'tab',
-      autoScroll: true,
-    },
-  )
+  export type Props = {
+    /** The items to display in the tabs bar */
+    items: MazTabsBarItem[]
+    /** Will add a query param to the url to keep the selected tab on page refresh */
+    persistent?: boolean
+    /** The name of the query param to add to the url
+     * @default tab
+     */
+    queryParam?: string
+    /** Will make the tabs bar full width */
+    block?: boolean
+    /** Will remove the elevation */
+    noElevation?: boolean
+    /** Will add a scroll on the tabs bar to show selected element
+     * @default true
+     */
+    autoScroll?: boolean
+  }
+
+  const props = withDefaults(defineProps<Props>(), {
+    queryParam: 'tab',
+    autoScroll: true,
+  })
 
   const tabsBarRef = ref<HTMLDivElement>()
   const itemRefs = ref<HTMLButtonElement[]>([])

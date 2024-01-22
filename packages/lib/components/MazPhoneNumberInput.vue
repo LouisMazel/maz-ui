@@ -188,100 +188,99 @@
     inheritAttrs: false,
   })
 
-  const props = withDefaults(
-    defineProps<{
-      /** Style attribut of the component root element */
-      style?: StyleValue
-      /** Class attribut of the component root element */
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      class?: any
-      /** @model Country calling code + telephone number in international format */
-      modelValue?: string
-      /** @deprecated */
-      defaultPhoneNumber?: string
-      /** @model Country code selected - Ex: "FR" */
-      countryCode?: CountryCode | string
-      /** @deprecated - use country-code or v-model:country-code */
-      defaultCountryCode?: CountryCode | string
-      /** Id of the component */
-      id?: string
-      /** Placeholder of the input */
-      placeholder?: string
-      /** List of country codes to place first in the select list - Ex: ['FR', 'BE', 'GE'] */
-      preferredCountries?: CountryCode[]
-      /** List of country codes to be removed from the select list - Ex: ['FR', 'BE', 'GE'] */
-      ignoredCountries?: CountryCode[]
-      /** List of country codes to only have the countries selected in the select list - Ex: ['FR', 'BE', 'GE'] */
-      onlyCountries?: CountryCode[]
-      /** Locale strings of the component */
-      translations?: Partial<Translations>
-      /** Position where the list of countries will be opened */
-      listPosition?: Position
-      /** Component color applied - Ex: "secondary" */
-      color?: Color
-      /** Component size applied - Ex: "sm" */
-      size?: Size
-      /** Remove flags in country list */
-      noFlags?: boolean
-      /** Disable input */
-      disabled?: boolean
-      /** No show the phone number example */
-      noExample?: boolean
-      /** Disable search input in country list */
-      noSearch?: boolean
-      /** By default the component use the browser locale to set the default country code if not country code is provided */
-      noUseBrowserLocale?: boolean
-      /** The component will make a request (https://ipwho.is) to get the location of the user and use it to set the default country code */
-      fetchCountry?: boolean
-      /** No show the country selector */
-      noCountrySelector?: boolean
-      /** Show country calling code in the country list */
-      showCodeOnList?: boolean
-      /** Replace country names */
-      customCountriesList?: Record<CountryCode, string>
-      /** Disabled auto-format as you type */
-      noFormattingAsYouType?: boolean
-      /**
-       * locale of country list - Ex: "fr-FR"
-       * @default {string} browser locale
-       */
-      countryLocale?: string
-      /** Disable validation error UI */
-      noValidationError?: boolean
-      /** Disable validation success UI */
-      noValidationSuccess?: boolean
-      /** Add success UI */
-      success?: boolean
-      /** Add error UI */
-      error?: boolean
-      /** Will replace the calling code by the country name in the country selector */
-      countrySelectorDisplayName?: boolean
-      /** Choose the width of the country selector */
-      countrySelectorWidth?: string
-    }>(),
-    {
-      class: undefined,
-      style: undefined,
-      listPosition: 'bottom left',
-      color: 'primary',
-      size: 'md',
-      modelValue: undefined,
-      /** @deprecated */
-      defaultPhoneNumber: undefined,
-      countryCode: undefined,
-      /** @deprecated */
-      defaultCountryCode: undefined,
-      id: undefined,
-      placeholder: undefined,
-      preferredCountries: undefined,
-      ignoredCountries: undefined,
-      onlyCountries: undefined,
-      translations: undefined,
-      customCountriesList: undefined,
-      countryLocale: undefined,
-      countrySelectorWidth: '9rem',
-    },
-  )
+  export type Props = {
+    /** Style attribut of the component root element */
+    style?: StyleValue
+    /** Class attribut of the component root element */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    class?: any
+    /** @model Country calling code + telephone number in international format */
+    modelValue?: string
+    /** @deprecated */
+    defaultPhoneNumber?: string
+    /** @model Country code selected - Ex: "FR" */
+    countryCode?: CountryCode | string
+    /** @deprecated - use country-code or v-model:country-code */
+    defaultCountryCode?: CountryCode | string
+    /** Id of the component */
+    id?: string
+    /** Placeholder of the input */
+    placeholder?: string
+    /** List of country codes to place first in the select list - Ex: ['FR', 'BE', 'GE'] */
+    preferredCountries?: CountryCode[]
+    /** List of country codes to be removed from the select list - Ex: ['FR', 'BE', 'GE'] */
+    ignoredCountries?: CountryCode[]
+    /** List of country codes to only have the countries selected in the select list - Ex: ['FR', 'BE', 'GE'] */
+    onlyCountries?: CountryCode[]
+    /** Locale strings of the component */
+    translations?: Partial<Translations>
+    /** Position where the list of countries will be opened */
+    listPosition?: Position
+    /** Component color applied - Ex: "secondary" */
+    color?: Color
+    /** Component size applied - Ex: "sm" */
+    size?: Size
+    /** Remove flags in country list */
+    noFlags?: boolean
+    /** Disable input */
+    disabled?: boolean
+    /** No show the phone number example */
+    noExample?: boolean
+    /** Disable search input in country list */
+    noSearch?: boolean
+    /** By default the component use the browser locale to set the default country code if not country code is provided */
+    noUseBrowserLocale?: boolean
+    /** The component will make a request (https://ipwho.is) to get the location of the user and use it to set the default country code */
+    fetchCountry?: boolean
+    /** No show the country selector */
+    noCountrySelector?: boolean
+    /** Show country calling code in the country list */
+    showCodeOnList?: boolean
+    /** Replace country names */
+    customCountriesList?: Record<CountryCode, string>
+    /** Disabled auto-format as you type */
+    noFormattingAsYouType?: boolean
+    /**
+     * locale of country list - Ex: "fr-FR"
+     * @default {string} browser locale
+     */
+    countryLocale?: string
+    /** Disable validation error UI */
+    noValidationError?: boolean
+    /** Disable validation success UI */
+    noValidationSuccess?: boolean
+    /** Add success UI */
+    success?: boolean
+    /** Add error UI */
+    error?: boolean
+    /** Will replace the calling code by the country name in the country selector */
+    countrySelectorDisplayName?: boolean
+    /** Choose the width of the country selector */
+    countrySelectorWidth?: string
+  }
+
+  const props = withDefaults(defineProps<Props>(), {
+    class: undefined,
+    style: undefined,
+    listPosition: 'bottom left',
+    color: 'primary',
+    size: 'md',
+    modelValue: undefined,
+    /** @deprecated */
+    defaultPhoneNumber: undefined,
+    countryCode: undefined,
+    /** @deprecated */
+    defaultCountryCode: undefined,
+    id: undefined,
+    placeholder: undefined,
+    preferredCountries: undefined,
+    ignoredCountries: undefined,
+    onlyCountries: undefined,
+    translations: undefined,
+    customCountriesList: undefined,
+    countryLocale: undefined,
+    countrySelectorWidth: '9rem',
+  })
 
   const instance = getCurrentInstance()
   const instanceId = useInstanceUniqId({
@@ -313,8 +312,8 @@
 
   const countriesFiltered = computed(() => {
     const countries = props.onlyCountries || props.preferredCountries
-    return countries?.map(
-      (country) => countriesList.value?.find((item) => item.iso2.includes(country)),
+    return countries?.map((country) =>
+      countriesList.value?.find((item) => item.iso2.includes(country)),
     )
   })
 

@@ -4,8 +4,9 @@
     :style="{
       '--maz-drawer-size': size,
     }"
-    @close="$emit('close', $event)"
-    @open="$emit('open', $event)"
+    @close="$emit('close')"
+    @open="$emit('open')"
+    @before-close="$emit('before-close')"
     @update:model-value="$emit('update:model-value', $event)"
   >
     <template #default="{ close }">
@@ -31,29 +32,44 @@
 </template>
 
 <script lang="ts" setup>
-  import { defineAsyncComponent, type PropType } from 'vue'
+  import { defineAsyncComponent } from 'vue'
 
   import MazBackdrop from './MazBackdrop.vue'
 
   const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
   const XIcon = defineAsyncComponent(() => import('./../icons/x-mark.svg'))
 
-  defineProps({
-    noClose: { type: Boolean, default: false },
-    title: { type: String, default: undefined },
-    variant: {
-      type: String as PropType<'right' | 'top' | 'left' | 'bottom'>,
-      default: 'right',
-      validator: (value: string) => {
-        return ['right', 'top', 'left', 'bottom'].includes(value)
-      },
-    },
-    // eslint-disable-next-line vue/require-prop-types
-    backdropClass: { default: undefined },
-    size: { type: String, default: '30rem' },
+  export type Props = {
+    /** The title of the drawer */
+    title?: string
+    /** The variant of the drawer */
+    variant?: 'right' | 'top' | 'left' | 'bottom'
+    /** The size of the drawer */
+    size?: string
+    /** The class of the backdrop */
+    backdropClass?: string
+    /** Disable the close button */
+    noClose?: boolean
+  }
+
+  withDefaults(defineProps<Props>(), {
+    title: undefined,
+    variant: 'right',
+    backdropClass: undefined,
+    size: '30rem',
+    noClose: false,
   })
 
-  defineEmits(['open', 'close', 'update:model-value'])
+  defineEmits<{
+    /** emitted before drawer is close */
+    (name: 'before-close'): void
+    /** emitted when drawer is open */
+    (name: 'open'): void
+    /** emitted when drawer is close (after animation) */
+    (name: 'close'): void
+    /** emitted when drawer is open or close */
+    (name: 'update:model-value', value: boolean): void
+  }>()
 </script>
 
 <style lang="postcss">

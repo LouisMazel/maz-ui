@@ -166,41 +166,40 @@
     class?: string
   } & Record<string, unknown>
 
-  const props = withDefaults(
-    defineProps<{
-      style?: HTMLAttributes['style']
-      class?: HTMLAttributes['class']
-      /** Menu items */
-      items: MenuItem[]
-      /** Menu should be open? */
-      open?: boolean
-      /** id of the menu */
-      id?: string
-      /** Should open the dropdown on click, hover or both */
-      trigger?: 'click' | 'hover' | 'both'
-      /** Button color */
-      color?: Color
-      /** Position of the dropdown */
-      position?: Position
-      /** Disable close menu on menuitem clicked */
-      noCloseOnClick?: boolean
-      /** Disable menu */
-      disabled?: boolean
-      /** Remove chevron icon in main button */
-      noChevron?: boolean
-      /** Description read by screen reader (accessibility) */
-      screenReaderDescription?: string
-    }>(),
-    {
-      class: undefined,
-      style: undefined,
-      id: undefined,
-      trigger: 'both',
-      color: 'transparent',
-      position: 'bottom left',
-      screenReaderDescription: 'Menu Dropdown',
-    },
-  )
+  export type Props = {
+    style?: HTMLAttributes['style']
+    class?: HTMLAttributes['class']
+    /** Menu items */
+    items: MenuItem[]
+    /** Menu should be open? */
+    open?: boolean
+    /** id of the menu */
+    id?: string
+    /** Should open the dropdown on click, hover or both */
+    trigger?: 'click' | 'hover' | 'both'
+    /** Button color */
+    color?: Color
+    /** Position of the dropdown */
+    position?: Position
+    /** Disable close menu on menuitem clicked */
+    noCloseOnClick?: boolean
+    /** Disable menu */
+    disabled?: boolean
+    /** Remove chevron icon in main button */
+    noChevron?: boolean
+    /** Description read by screen reader (accessibility) */
+    screenReaderDescription?: string
+  }
+
+  const props = withDefaults(defineProps<Props>(), {
+    class: undefined,
+    style: undefined,
+    id: undefined,
+    trigger: 'both',
+    color: 'transparent',
+    position: 'bottom left',
+    screenReaderDescription: 'Menu Dropdown',
+  })
 
   const emits = defineEmits([
     /**

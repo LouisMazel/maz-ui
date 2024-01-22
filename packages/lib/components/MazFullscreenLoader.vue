@@ -16,13 +16,14 @@
 
   const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
 
-  withDefaults(
-    defineProps<{
-      color?: Color
-      size?: string
-    }>(),
-    { color: 'primary', size: '3em' },
-  )
+  export type Props = {
+    /** The color of the spinner */
+    color?: Color
+    /** The size of the spinner */
+    size?: string
+  }
+
+  withDefaults(defineProps<Props>(), { color: 'primary', size: '3em' })
 
   const addClassToDocument = () => {
     document.documentElement.classList.add('--maz-fullscreen-loader-present')

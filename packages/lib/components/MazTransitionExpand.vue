@@ -14,15 +14,14 @@
 <script lang="ts" setup>
   import { nextTick } from 'vue'
 
-  withDefaults(
-    defineProps<{
-      // Expand animation duration in milliseconds
-      animationDuration?: string
-    }>(),
-    {
-      animationDuration: '300ms',
-    },
-  )
+  export type Props = {
+    /** Duration of the animation in milliseconds */
+    animationDuration?: string
+  }
+
+  withDefaults(defineProps<Props>(), {
+    animationDuration: '300ms',
+  })
 
   const enter = (element: HTMLElement) => {
     const width = getComputedStyle(element).width
