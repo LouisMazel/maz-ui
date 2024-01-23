@@ -26,13 +26,19 @@
       ]"
     >
       <MazLazyImg
-        v-if="src"
+        v-if="src || (!src && !caption)"
         class="m-avatar__picture maz-max-w-full"
         :image="src"
         :alt="alt"
+        :no-photo="noPhoto"
         image-height-full
         :no-loader="noLoader"
+        :fallback-src="fallbackSrc"
         @click="clickable ? $emit('click', $event) : null"
+        @error="$emit('error', $event)"
+        @loaded="$emit('loaded', $event)"
+        @loading="$emit('loading', $event)"
+        @intersecting="$emit('intersecting', $event)"
       />
       <slot v-if="caption && !src" name="round-text">
         <span class="m-avatar__initial"> {{ getInitials(caption) }} </span>
@@ -109,6 +115,10 @@
     letterCount?: number
     /** Size of the rounded */
     roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
+    /** The fallback src to replace the src on loading error */
+    fallbackSrc?: string
+    /** Load the fallback image by default */
+    noPhoto?: boolean
   }
 
   const props = withDefaults(defineProps<Props>(), {
@@ -119,17 +129,10 @@
     alt: 'avatar image',
     target: '_self',
     size: undefined,
-    bordered: false,
-    clickable: false,
-    square: false,
-    noElevation: false,
-    showCaption: false,
-    imageHeightFull: false,
-    noLoader: false,
     buttonColor: 'info',
-    noClickableIcon: false,
     letterCount: undefined,
     roundedSize: 'full',
+    fallbackSrc: undefined,
   })
 
   const componentType = computed(() => (props.to ? 'RouterLink' : props.href ? 'a' : 'div'))
@@ -147,6 +150,14 @@
 
   defineEmits<{
     (name: 'click', event: MouseEvent): void
+    /** Emitted when the image is intersecting */
+    (name: 'intersecting', el: Element): void
+    /** Emitted when the image is loading */
+    (name: 'loading', el: Element): void
+    /** Emitted when the image is loaded */
+    (name: 'loaded', el: Element): void
+    /** Emitted when the image is in error */
+    (name: 'error', el: Element): void
   }>()
 </script>
 

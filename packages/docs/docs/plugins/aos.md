@@ -23,7 +23,7 @@ This plugin uses the browser native [Intersection Observer API](https://develope
       data-maz-aos-delay="300"
       data-maz-aos="scale-in"
       size="2rem"
-      src="https://pbs.twimg.com/profile_images/598181608198381570/-cFG43y2_400x400.jpg"
+      src="https://placekitten.com/500/500"
     />
     <div>
       <h1
@@ -32,7 +32,7 @@ This plugin uses the browser native [Intersection Observer API](https://develope
         data-maz-aos-anchor="#parentCard"
         style="margin: 0;"
       >
-        Gérard Depardieu
+        Cat Actor
       </h1>
       <p
         data-maz-aos="zoom-in-left"
@@ -50,7 +50,7 @@ This plugin uses the browser native [Intersection Observer API](https://develope
     data-maz-aos-duration="1000"
     style="margin: 0"
   >
-    Gérard Depardieu, né le 27 décembre 1948 à Châteauroux, est un acteur, chanteur, réalisateur, producteur de cinéma, de télévision et de théâtre franco-russe. Il est aussi homme d'affaires, notamment dans le domaine de la viticulture.
+    In the heart of Hollywood's narrow alleyways, there existed an actor like no other—a charismatic feline named Whiskers. With his sleek black fur and piercing eyes, he stole the spotlight in every appearance. Whiskers, known for his versatility and natural talent, seamlessly slipped into dramatic, comedic, or action-packed roles.
   </p>
 </MazCard>
 
@@ -61,7 +61,7 @@ This plugin uses the browser native [Intersection Observer API](https://develope
       data-maz-aos-delay="300"
       data-maz-aos="scale-in"
       size="2rem"
-      src="https://pbs.twimg.com/profile_images/598181608198381570/-cFG43y2_400x400.jpg"
+      src="https://placekitten.com/500/500"
     />
     <div>
       <h1
@@ -70,7 +70,7 @@ This plugin uses the browser native [Intersection Observer API](https://develope
         data-maz-aos-anchor="#parentCard"
         style="margin: 0;"
       >
-        Gérard Depardieu
+        Cat Actor
       </h1>
       <p
         data-maz-aos="zoom-in-left"
@@ -88,7 +88,7 @@ This plugin uses the browser native [Intersection Observer API](https://develope
     data-maz-aos-duration="1000"
     style="margin: 0"
   >
-    Gérard Depardieu, né le 27 décembre 1948 à Châteauroux, est un acteur, chanteur, réalisateur, producteur de cinéma, de télévision et de théâtre franco-russe. Il est aussi homme d'affaires, notamment dans le domaine de la viticulture.
+    In the heart of Hollywood's narrow alleyways, there existed an actor like no other—a charismatic feline named Whiskers. With his sleek black fur and piercing eyes, he stole the spotlight in every appearance. Whiskers, known for his versatility and natural talent, seamlessly slipped into dramatic, comedic, or action-packed roles.
   </p>
 </MazCard>
 ```
@@ -262,9 +262,9 @@ You can run animations programatically with the composable
       data-maz-aos-delay="300"
       data-maz-aos="scale-in"
       size="2rem"
-      src="https://pbs.twimg.com/profile_images/598181608198381570/-cFG43y2_400x400.jpg"
+      src="https://placekitten.com/500/500"
     >
-      Gérard Depardieu, né le 27 décembre 1948 à Châteauroux, est un acteur, chanteur, réalisateur, producteur de cinéma, de télévision et de théâtre franco-russe. Il est aussi homme d'affaires, notamment dans le domaine de la viticulture.
+      In the heart of Hollywood's narrow alleyways, there existed an actor like no other—a charismatic feline named Whiskers. With his sleek black fur and piercing eyes, he stole the spotlight in every appearance. Whiskers, known for his versatility and natural talent, seamlessly slipped into dramatic, comedic, or action-packed roles.
     </p>
   </div>
 </template>

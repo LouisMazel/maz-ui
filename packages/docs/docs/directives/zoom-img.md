@@ -21,7 +21,7 @@ description: vZoomImg is a Vue 3 directive to enlarge an image like a modal on c
 </MazCard>
 <br />
 <br />
-<MazBtn v-zoom-img="{ src: 'https://pbs.twimg.com/profile_images/598181608198381570/-cFG43y2_400x400.jpg' }">
+<MazBtn v-zoom-img="{ src: 'https://placekitten.com/1000/500' }">
   Show photo
 </MazBtn>
 
@@ -34,7 +34,7 @@ description: vZoomImg is a Vue 3 directive to enlarge an image like a modal on c
     />
   </MazCard>
 
-  <MazBtn v-zoom-img="{ src: 'https://pbs.twimg.com/profile_images/598181608198381570/-cFG43y2_400x400.jpg' }">
+  <MazBtn v-zoom-img="{ src: 'https://placekitten.com/1000/500' }">
     Show photo
   </MazBtn>
 </template>

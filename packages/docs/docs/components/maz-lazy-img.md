@@ -9,11 +9,11 @@ description: MazLazyImg is a standalone component to display images and svgs wit
 
 <!--@include: ./../.vitepress/mixins/getting-started.md-->
 
-<MazLazyImg image="https://pbs.twimg.com/profile_images/598181608198381570/-cFG43y2_400x400.jpg" />
+<MazLazyImg src="https://placekitten.com/2000/2000" class="w-100"/>
 
 ```vue
 <template>
-  <MazLazyImg image="https://pbs.twimg.com/profile_images/598181608198381570/-cFG43y2_400x400.jpg" />
+  <MazLazyImg src="https://placekitten.com/2000/2000" />
 </template>
 
 <script setup lang="ts">
