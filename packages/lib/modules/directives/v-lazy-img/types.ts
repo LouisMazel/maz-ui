@@ -15,7 +15,11 @@ export interface ClassOptions {
     threshold: number
     rootMargin?: string
   }
+  /**
+   * @deprecated use `fallbackSrc` instead
+   */
   errorPhoto?: string
+  fallbackSrc?: string
   onLoading?: (el: Element) => unknown
   onLoaded?: (el: Element) => unknown
   onError?: (el: Element) => unknown

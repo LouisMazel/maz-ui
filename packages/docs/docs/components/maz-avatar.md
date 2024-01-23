@@ -30,7 +30,7 @@ This component uses [vLazyImg](./../directives/lazy-img.md) directive
 ## Options
 
 ::: tip
-See all the options props [here](#props-events-emitted)
+See all the options props [here](#props-event-slots)
 :::
 
 <div class="flex space-between gap-05 items-center flex-wrap">
@@ -107,8 +107,27 @@ See all the options props [here](#props-events-emitted)
 </script>
 ```
 
+## On Error
+
+<MazAvatar @error="error" />
+
+```html
+<MazAvatar @error="error" />
+```
+
+## Fallback image loaded on error
+
+<MazAvatar
+  fallback-src="https://placekitten.com/200/200"
+/>
+
+```html
+<MazAvatar fallback-src="https://placekitten.com/200/200" />
+```
+
 <script lang="ts" setup>
   const clicked = () => { console.log('clicked') }
+  const error = (el) => { console.error('error', el) }
 </script>
 
 <!--@include: ./../.vitepress/generated-docs/maz-avatar.doc.md-->

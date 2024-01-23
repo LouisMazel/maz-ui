@@ -12,7 +12,7 @@ description: vLazyImg is a Vue 3 directive to lazy load images with many options
 <img
   style="background-color: var(--maz-color-bg-lighter); width: 80%;"
   class="flex flex-center rounded"
-  v-lazy-img="'https://pbs.twimg.com/profile_images/598181608198381570/-cFG43y2_400x400.jpg'"
+  v-lazy-img="'https://placekitten.com/1500/1000'"
 />
 
 ```vue
@@ -20,7 +20,7 @@ description: vLazyImg is a Vue 3 directive to lazy load images with many options
   <img
     style="background-color: var(--maz-color-bg-lighter); width: 80%;"
     class="flex flex-center rounded"
-    v-lazy-img="'https://pbs.twimg.com/profile_images/598181608198381570/-cFG43y2_400x400.jpg'"
+    v-lazy-img="'https://placekitten.com/1500/1000'"
   />
 </template>
 
@@ -36,7 +36,7 @@ description: vLazyImg is a Vue 3 directive to lazy load images with many options
 <div
   style="height: 200px; width: 100%; background-size: contain;"
   class="flex flex-center rounded"
-  v-lazy-img:bg-image="'https://pbs.twimg.com/profile_images/598181608198381570/-cFG43y2_400x400.jpg'"
+  v-lazy-img:bg-image="'https://placekitten.com/1500/1000'"
 />
 
 ```vue
@@ -44,7 +44,7 @@ description: vLazyImg is a Vue 3 directive to lazy load images with many options
   <div
     style="height: 200px; width: 100%; background-size: contain;"
     class="flex flex-center rounded"
-    v-lazy-img:bg-image="'https://pbs.twimg.com/profile_images/598181608198381570/-cFG43y2_400x400.jpg'"
+    v-lazy-img:bg-image="'https://placekitten.com/1500/1000'"
   />
 </template>
 ```

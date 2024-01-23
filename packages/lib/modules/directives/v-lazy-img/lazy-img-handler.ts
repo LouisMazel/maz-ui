@@ -86,8 +86,7 @@ export class LazyImg {
     this.options.onLoaded?.(el)
   }
 
-  private imageHasError(el: HTMLElement, event?: ErrorEvent): void {
-    console.warn(`[maz-ui][MazLazyImg] Error while loading image`, event)
+  private imageHasError(el: HTMLElement): void {
     this.removeClass(el, this.options.loadingClass)
     this.addClass(el, this.options.errorClass)
 
@@ -96,17 +95,17 @@ export class LazyImg {
     this.setDefaultPhoto(el)
   }
 
+  private getSrc(binding: LazyImgBinding) {
+    return typeof binding.value === 'object' ? binding.value.src : binding.value
+  }
+
   private getImageUrl(el: HTMLElement, binding: LazyImgBinding): string | null | undefined {
     const dataSrc = this.getImgElement(el).getAttribute('data-lazy-src')
     if (dataSrc) return dataSrc
 
     binding.value
 
-    const bindingSrc = typeof binding.value === 'object' ? binding.value.src : binding.value
-
-    if (!bindingSrc) console.warn(`[maz-ui][MazLazyImg] src url is not defined`)
-
-    return bindingSrc
+    return this.getSrc(binding)
   }
 
   private async setPictureSourceUrls(el: HTMLElement): Promise<void> {
@@ -118,15 +117,10 @@ export class LazyImg {
         if (srcSet) {
           source.srcset = srcSet
         } else {
-          console.warn(
-            '[maz-ui][MazLazyImg] the "[data-lazy-srcset]" attribute is not provided on "<source />"',
-          )
+          return this.imageHasError(el)
         }
       }
     } else {
-      console.warn(
-        '[maz-ui][MazLazyImg] No "<source />" elements provided into the "<picture />" element',
-      )
       this.imageHasError(el)
     }
   }
@@ -146,7 +140,15 @@ export class LazyImg {
 
   private async setDefaultPhoto(el: HTMLElement) {
     if (this.options.noUseErrorPhoto) return
-    const errorPhoto = this.options.errorPhoto ?? (await this.loadErrorPhoto())
+
+    const fallbackSrc = this.options.fallbackSrc ?? this.options.errorPhoto
+
+    if (typeof fallbackSrc === 'string') {
+      this.addClass(el, this.options.noPhotoClass)
+    }
+
+    const errorPhoto = fallbackSrc ?? (await this.loadErrorPhoto())
+
     const sourceElements = el.querySelectorAll('source')
     if (sourceElements.length > 0) {
       for await (const source of sourceElements) {
@@ -200,6 +202,7 @@ export class LazyImg {
     observer: IntersectionObserver,
   ) {
     this.observers.push(observer)
+
     for (const entry of entries) {
       if (entry.isIntersecting) {
         this.options.onIntersecting?.(entry.target)
@@ -262,7 +265,9 @@ export class LazyImg {
 
     setTimeout(() => this.setBaseClass(el), 0)
 
-    if (!el.getAttribute('src')) this.setImgSrc(el, EMPTY_PHOTO)
+    if (!el.getAttribute('src')) {
+      this.setImgSrc(el, EMPTY_PHOTO)
+    }
 
     await this.bindUpdateHandler(el, binding, 'bind')
   }
@@ -278,11 +283,16 @@ export class LazyImg {
 
   public remove(el: HTMLElement, binding: LazyImgBinding) {
     this.hasImgLoaded = false
-    if (this.hasBgImgMode(binding)) el.style.backgroundImage = ''
+    if (this.hasBgImgMode(binding)) {
+      el.style.backgroundImage = ''
+    }
 
     this.removeAllStateClasses(el)
 
-    for (const observer of this.observers) observer.unobserve(el)
+    for (const observer of this.observers) {
+      observer.unobserve(el)
+    }
+
     this.observers = []
   }
 }

@@ -1,17 +1,18 @@
 <template>
   <picture
     v-lazy-img="{
-      noPhoto: noPhoto,
+      noPhoto,
+      loadOnce,
+      observerOptions,
+      fallbackSrc,
       observerOnce: !noObserverOnce,
-      loadOnce: loadOnce,
       onIntersecting: (el) => $emit('intersecting', el),
       onLoading: (el) => $emit('loading', el),
       onLoaded: (el) => $emit('loaded', el),
       onError: (el) => $emit('error', el),
-      observerOptions: observerOptions,
     }"
     class="m-lazy-img-component"
-    :class="[{ '-use-loader': !noLoader, '--height-full': imageHeightFull }, props.class]"
+    :class="[{ '--use-loader': !noLoader, '--height-full': imageHeightFull }, props.class]"
     :style="style"
   >
     <source
@@ -34,7 +35,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, defineAsyncComponent, type PropType, type HTMLAttributes } from 'vue'
+  import { computed, defineAsyncComponent, type HTMLAttributes } from 'vue'
   import { vLazyImg } from './../modules/directives/v-lazy-img/lazy-img'
   import type { vLazyImgOptions } from './../modules/directives/v-lazy-img/types'
 
@@ -48,33 +49,56 @@
     inheritAttrs: false,
   })
 
-  const props = defineProps({
-    style: {
-      type: [String, Array, Object] as PropType<HTMLAttributes['style']>,
-      default: undefined,
-    },
-    class: {
-      type: [String, Array, Object] as PropType<HTMLAttributes['class']>,
-      default: undefined,
-    },
+  export type Props = {
+    /** The style of the component */
+    style?: HTMLAttributes['style']
+    /** The class of the component */
+    class?: HTMLAttributes['class']
+    /** @deprecated Use `src` instead */
+    image?: Image | null
     /**
-     * @deprecated use `src` instead
+     * The source of the image
+     * @type {string | Image | null}
      */
-    image: { type: [String, Object] as PropType<Image>, default: undefined },
-    src: { type: [String, Object] as PropType<Image>, default: undefined },
-    alt: { type: String, default: undefined },
-    noPhoto: { type: Boolean, default: false },
-    noLoader: { type: Boolean, default: false },
-    noObserverOnce: { type: Boolean, default: false },
-    loadOnce: { type: Boolean, default: false },
-    imageHeightFull: { type: Boolean, default: false },
-    observerOptions: {
-      type: Object as PropType<vLazyImgOptions['observerOptions']>,
-      default: null,
-    },
+    src?: Image | null
+    /** The alt of the image */
+    alt?: string
+    /** Display the fallback image */
+    noPhoto?: boolean
+    /** Remove the loader */
+    noLoader?: boolean
+    /** Remove the observer once the image is loaded */
+    noObserverOnce?: boolean
+    /** Remove the observer once the image is loaded */
+    loadOnce?: boolean
+    /** Make the image height full */
+    imageHeightFull?: boolean
+    /** The options of the observer */
+    observerOptions?: vLazyImgOptions['observerOptions']
+    /** The fallback src to replace the src on loading error */
+    fallbackSrc?: string
+  }
+
+  const props = withDefaults(defineProps<Props>(), {
+    style: undefined,
+    class: undefined,
+    image: undefined,
+    src: undefined,
+    alt: undefined,
+    observerOptions: undefined,
+    fallbackSrc: undefined,
   })
 
-  defineEmits(['intersecting', 'loading', 'loaded', 'error'])
+  defineEmits<{
+    /** Emitted when the image is intersecting */
+    (name: 'intersecting', el: Element): void
+    /** Emitted when the image is loading */
+    (name: 'loading', el: Element): void
+    /** Emitted when the image is loaded */
+    (name: 'loaded', el: Element): void
+    /** Emitted when the image is in error */
+    (name: 'error', el: Element): void
+  }>()
 
   const src = computed(() => props.image || props.src)
 
@@ -99,7 +123,12 @@
       @apply maz-max-h-full maz-w-min maz-max-w-min !important;
     }
 
-    /* &:not(.m-lazy-loaded, .m-lazy-no-photo, .m-lazy-error) */
+    &.m-lazy-error:not(.m-lazy-no-photo) {
+      img {
+        @apply maz-h-1/2 maz-w-1/2;
+      }
+    }
+
     &.m-lazy-loading {
       & .m-lazy-img-component-loader {
         @apply maz-flex;
