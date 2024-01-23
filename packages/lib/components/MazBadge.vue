@@ -38,7 +38,7 @@
 
 <style lang="postcss" scoped>
   .m-badge {
-    @apply maz-inline-flex maz-items-center maz-justify-center maz-font-medium;
+    @apply maz-inline-flex maz-items-center maz-justify-center maz-border maz-font-medium;
 
     padding: 0.25em 0.5em;
     line-height: 1.4em;
@@ -77,7 +77,7 @@
       @apply maz-border-primary maz-bg-primary maz-text-primary-contrast;
 
       &.--outline {
-        @apply maz-border maz-bg-transparent maz-text-primary;
+        @apply maz-bg-transparent maz-text-primary;
       }
 
       &.--pastel {
@@ -89,7 +89,7 @@
       @apply maz-border-info maz-bg-info maz-text-info-contrast;
 
       &.--outline {
-        @apply maz-border maz-bg-transparent maz-text-info;
+        @apply maz-bg-transparent maz-text-info;
       }
 
       &.--pastel {
@@ -101,7 +101,7 @@
       @apply maz-border-gray-400 maz-bg-gray-400 maz-text-white;
 
       &.--outline {
-        @apply maz-border maz-bg-transparent maz-text-gray-400;
+        @apply maz-bg-transparent maz-text-gray-400;
       }
 
       &.--pastel {
@@ -113,7 +113,7 @@
       @apply maz-border-black maz-bg-black maz-text-white;
 
       &.--outline {
-        @apply maz-border maz-bg-transparent maz-text-black;
+        @apply maz-bg-transparent maz-text-black;
       }
 
       &.--pastel {
@@ -125,7 +125,7 @@
       @apply maz-border-white maz-bg-white maz-text-gray-800;
 
       &.--outline {
-        @apply maz-border maz-bg-transparent maz-text-gray-800;
+        @apply maz-bg-transparent maz-text-gray-800;
       }
 
       &.--pastel {
@@ -137,7 +137,7 @@
       @apply maz-border-secondary maz-bg-secondary maz-text-secondary-contrast;
 
       &.--outline {
-        @apply maz-border maz-bg-transparent maz-text-secondary;
+        @apply maz-bg-transparent maz-text-secondary;
       }
 
       &.--pastel {
@@ -149,7 +149,7 @@
       @apply maz-border-danger maz-bg-danger maz-text-danger-contrast;
 
       &.--outline {
-        @apply maz-border maz-bg-transparent maz-text-danger;
+        @apply maz-bg-transparent maz-text-danger;
       }
 
       &.--pastel {
@@ -161,7 +161,7 @@
       @apply maz-border-warning maz-bg-warning maz-text-warning-contrast;
 
       &.--outline {
-        @apply maz-border maz-bg-transparent maz-text-warning;
+        @apply maz-bg-transparent maz-text-warning;
       }
 
       &.--pastel {
@@ -173,11 +173,23 @@
       @apply maz-border-success maz-bg-success maz-text-success-contrast;
 
       &.--outline {
-        @apply maz-border maz-bg-transparent maz-text-success;
+        @apply maz-bg-transparent maz-text-success;
       }
 
       &.--pastel {
         @apply maz-border-success-100 maz-bg-success-100 maz-text-success-800;
+      }
+    }
+
+    &.--theme {
+      @apply maz-border-theme maz-bg-theme maz-text-color;
+
+      &.--outline {
+        @apply maz-border-gray-200 maz-bg-transparent maz-text-theme dark:maz-border-color-lighter;
+      }
+
+      &.--pastel {
+        @apply maz-border-gray-200 maz-bg-gray-200 maz-text-black;
       }
     }
   }

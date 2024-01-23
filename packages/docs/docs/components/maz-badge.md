@@ -214,6 +214,7 @@ description: MazBadge is a standalone component to show short text in colored co
     'white',
     'black',
     'gray',
+    'theme',
   ]
 
   const roundedSize = ['sm', 'md', 'lg', 'xl', 'full']
