@@ -289,13 +289,13 @@ Use props: `collapsable` & `collapse-open`
 
 To access the link, simply click the card.
 
-- `href` is the link
+- `href` is the link or `to` if you use router-link or nuxt-link
 - `href-target` is the behavior of the link on click
 - You can use `:scale="false"` to remove the scale animation on hover
 
 <MazCard
   :images="['https://placekitten.com/500/500']"
-  href="https://maz-ui.com/components/maz-card#linked-card"
+  href="/components/maz-card#linked-card"
   href-target="_blank"
   style="width: 100%"
   scale
@@ -310,7 +310,7 @@ To access the link, simply click the card.
 ```html
 <MazCard
   :images="['https://placekitten.com/1000/1000']"
-  href="https://maz-ui.com/components/maz-card#linked-card"
+  href="/components/maz-card#linked-card"
   href-target="_blank"
   scale
 >
