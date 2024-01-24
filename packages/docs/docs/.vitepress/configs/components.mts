@@ -51,6 +51,7 @@ export const components = {
         { text: 'MazLazyImg', link: '/components/maz-lazy-img' },
         { text: 'MazLoadingBar', link: '/components/maz-loading-bar' },
         { text: 'MazPullToRefresh', link: '/components/maz-pull-to-refresh' },
+        { text: 'MazReadingProgressBar', link: '/components/maz-reading-progress-bar' },
         { text: 'MazStepper', link: '/components/maz-stepper' },
         { text: 'MazSpinner', link: '/components/maz-spinner' },
         { text: 'MazTabs', link: '/components/maz-tabs' },
