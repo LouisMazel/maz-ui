@@ -157,7 +157,7 @@
     /** Card is open by default if `true` */
     collapseOpen?: boolean
     /** Title of the card in header */
-    header: string
+    header?: string
   }
 
   const props = withDefaults(defineProps<Props>(), {
@@ -175,6 +175,7 @@
     noRemaining: true,
     scale: true,
     wrapperClass: undefined,
+    header: undefined,
   })
 
   const slots = useSlots()
