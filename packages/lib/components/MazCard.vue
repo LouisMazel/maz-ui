@@ -14,21 +14,20 @@
   >
     <Component
       :is="collapsable ? 'button' : 'div'"
-      v-if="$slots['header'] || collapsable"
+      v-if="$slots['header'] || header || collapsable"
       class="m-card__header maz-border-b maz-border-solid"
       :class="[
         isOpen
           ? 'maz-rounded-t maz-border-color-light dark:maz-bg-color-lighter'
           : 'maz-border-transparent',
         { '--is-collapsable': collapsable },
-        { 'maz-justify-end': !$slots['header'] && collapsable },
-        { 'maz-justify-between': $slots['header'] },
+        { 'maz-justify-end': (!$slots['header'] || !header) && collapsable },
+        { 'maz-justify-between': $slots['header'] || header },
       ]"
       tabindex="-1"
       @click.stop="collapsable ? (isOpen = !isOpen) : undefined"
     >
-      <!-- @slot Header title -->
-      <slot name="header"></slot>
+      <slot v-if="$slots['header'] || header" name="header">{{ header }}</slot>
 
       <MazBtn
         v-if="collapsable"
@@ -157,6 +156,8 @@
     collapsable?: boolean
     /** Card is open by default if `true` */
     collapseOpen?: boolean
+    /** Title of the card in header */
+    header: string
   }
 
   const props = withDefaults(defineProps<Props>(), {

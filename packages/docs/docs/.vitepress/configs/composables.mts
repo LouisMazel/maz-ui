@@ -4,6 +4,7 @@ export const composables = {
     { text: 'useAos', link: '/composables/use-aos' },
     { text: 'useBreakpoints', link: '/composables/use-breakpoints' },
     { text: 'useIdleTimeout', link: '/composables/use-idle-timeout' },
+    { text: 'useReadingTime', link: '/composables/use-reading-time' },
     { text: 'useThemeHandler', link: '/composables/use-theme-handler' },
     { text: 'useSwipe', link: '/composables/use-swipe' },
     { text: 'useTimer', link: '/composables/use-timer' },
