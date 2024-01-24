@@ -76,6 +76,11 @@ export interface MazUiNuxtOptions {
    */
   injectUseBreakpoints?: boolean
   /**
+   * Enable auto-import of useReadingTime composable
+   * @default false
+   */
+  injectUseReadingTime?: boolean
+  /**
    * Globally install of v-zoom-img directive
    * @default false
    */
@@ -255,6 +260,14 @@ export default defineNuxtModule<MazUiNuxtOptions>({
         from: 'maz-ui',
         name: 'useIdleTimeout',
         as: 'useIdleTimeout',
+      })
+    }
+
+    if (moduleOptions.injectUseReadingTime) {
+      addImports({
+        from: 'maz-ui',
+        name: 'useReadingTime',
+        as: 'useReadingTime',
       })
     }
 
