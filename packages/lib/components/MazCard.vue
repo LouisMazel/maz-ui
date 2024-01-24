@@ -44,11 +44,10 @@
       </MazBtn>
     </Component>
     <Component
-      :is="href ? 'a' : 'div'"
+      :is="wrapperData.is"
+      v-bind="wrapperData"
       class="m-card__wrapper"
       :class="[`m-card__wrapper--${orientation}`, { 'm-card__link': href }]"
-      :href="href"
-      :target="href ? hrefTarget : null"
     >
       <div v-if="images" class="m-card__gallery__wrapper">
         <MazGallery
@@ -109,6 +108,7 @@
 <script lang="ts" setup>
   import { computed, useSlots, ref, watch, defineAsyncComponent, type HTMLAttributes } from 'vue'
   import type { MazGalleryImage } from './types'
+  import { type RouterLinkProps } from 'vue-router'
   export type { MazGalleryImage } from './types'
 
   const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
@@ -123,6 +123,8 @@
     orientation?: 'column' | 'row' | 'row-reverse' | 'column-reverse'
     /** Make card a link (footer area excluded) */
     href?: string
+    /** Make card a link with a router-link (footer area excluded) */
+    to?: RouterLinkProps['to']
     /** Target option of link: Muse be one of `_blank | _self | _parent | _top | framename` */
     hrefTarget?: '_blank' | '_self' | '_parent' | '_top' | string
     /** Footer text alignment: `right | left` */
@@ -161,6 +163,7 @@
     images: undefined,
     orientation: 'column',
     href: undefined,
+    to: undefined,
     hrefTarget: '_self',
     footerAlign: 'right',
     galleryWidth: 200,
@@ -183,6 +186,15 @@
       if (props.collapsable) isOpen.value = value
     },
   )
+
+  const wrapperData = computed(() => {
+    return {
+      is: props.href ? 'a' : props.to ? 'router-link' : 'div',
+      ...(props.href && { href: props.href }),
+      ...(props.to && { to: props.to }),
+      target: props.hrefTarget,
+    }
+  })
 
   const isColumnVariant = computed(() => ['column', 'column-reverse'].includes(props.orientation))
 

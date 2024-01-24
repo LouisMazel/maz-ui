@@ -8,6 +8,7 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:sonarjs/recommended',
+    'plugin:import/recommended',
     'plugin:import/typescript',
     'plugin:unicorn/recommended',
     'plugin:promise/recommended',
@@ -28,6 +29,8 @@ module.exports = {
     'prettier/prettier': ['error', {}, { usePrettierrc: true }],
     'object-shorthand': ['error', 'always'],
     'no-duplicate-imports': 'error',
+    // import
+    'import/namespace': 'off',
     // typescript
     '@typescript-eslint/no-unused-vars': [
       'error',

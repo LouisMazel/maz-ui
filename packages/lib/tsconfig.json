@@ -10,12 +10,11 @@
     "ignoreDeprecations": "5.0",
     "verbatimModuleSyntax": false,
     "types": ["@types/node", "vite-svg-loader"],
-    "baseUrl": "."
   },
   "include": ["modules", "components", "tailwindcss/**/*", "icons", "utils", "resolvers"],
   "exclude": ["node_modules", "components_tmp/**/*"],
   "ts-node": {
     "esm": true,
-    "experimentalSpecifierResolution": "node"
-  }
+    "experimentalSpecifierResolution": "node",
+  },
 }
