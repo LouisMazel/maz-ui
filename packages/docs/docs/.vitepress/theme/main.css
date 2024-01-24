@@ -19,6 +19,7 @@
   --vp-custom-block-warning-bg: var(--maz-color-warning-400);
   --vp-custom-block-warning-border: var(--maz-color-warning-600);
   --vp-custom-block-warning-text: var(--maz-color-warning-contrast);
+  --vp-custom-block-warning-code-bg: var(--maz-color-warning-200);
 
   --vp-custom-block-info-bg: var(--maz-color-info-400);
   --vp-custom-block-info-border: var(--maz-color-info-600);
@@ -66,10 +67,14 @@ html.dark {
   --vp-custom-block-warning-bg: var(--maz-color-warning-700);
   --vp-custom-block-warning-border: var(--maz-color-warning-600);
   --vp-custom-block-warning-text: var(--maz-color-white);
+  --vp-custom-block-warning-code-bg: var(--maz-color-warning-600);
 }
 
 .vp-doc .custom-block code {
   color: var(--maz-color-text);
+}
+.vp-doc .custom-block.warning code {
+  color: var(--maz-color-warning-contrast) !important;
 }
 
 .custom-block a {
