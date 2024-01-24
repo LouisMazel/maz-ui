@@ -1,3 +1,5 @@
+require('@rushstack/eslint-patch/modern-module-resolution')
+
 module.exports = {
   root: true,
   env: {
@@ -8,7 +10,7 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:sonarjs/recommended',
-    'plugin:import/recommended',
+    // 'plugin:import/recommended',
     'plugin:import/typescript',
     'plugin:unicorn/recommended',
     'plugin:promise/recommended',
@@ -18,7 +20,7 @@ module.exports = {
     '@vue/eslint-config-typescript/recommended',
   ],
   parserOptions: {
-    ecmaVersion: 2021,
+    ecmaVersion: 2023,
   },
   rules: {
     'no-console': [
@@ -29,8 +31,6 @@ module.exports = {
     'prettier/prettier': ['error', {}, { usePrettierrc: true }],
     'object-shorthand': ['error', 'always'],
     'no-duplicate-imports': 'error',
-    // import
-    'import/namespace': 'off',
     // typescript
     '@typescript-eslint/no-unused-vars': [
       'error',

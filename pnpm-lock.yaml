@@ -18,6 +18,9 @@ importers:
       '@commitlint/cz-commitlint':
         specifier: ^18.6.0
         version: 18.6.0(@types/node@20.11.10)(commitizen@4.3.0)(inquirer@8.2.6)(typescript@5.3.3)
+      '@rushstack/eslint-patch':
+        specifier: ^1.7.1
+        version: 1.7.2
       '@types/node':
         specifier: ^20.11.6
         version: 20.11.10
@@ -4439,6 +4442,10 @@ packages:
 
   /@rushstack/eslint-patch@1.5.0:
     resolution: {integrity: sha512-EF3948ckf3f5uPgYbQ6GhyA56Dmv8yg0+ir+BroRjwdxyZJsekhZzawOecC2rOTPCz173t7ZcR1HHZu0dZgOCw==}
+    dev: true
+
+  /@rushstack/eslint-patch@1.7.2:
+    resolution: {integrity: sha512-RbhOOTCNoCrbfkRyoXODZp75MlpiHMgbE5MEBZAnnnLyQNgrigEj4p0lzsMDyc1zVsJDLrivB58tgg3emX0eEA==}
     dev: true
 
   /@shuding/opentype.js@1.4.0-beta.0:

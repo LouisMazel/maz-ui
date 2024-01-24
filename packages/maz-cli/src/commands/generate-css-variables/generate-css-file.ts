@@ -67,15 +67,11 @@ function getNormalCSSVariables(config: MazUiConfig) {
           },
           {
             key: 'bg-color-light-light',
-            value: tinycolor(config.theme.colors.lightTheme?.bgColor)
-              .darken(3.75)
-              .toHslString(),
+            value: tinycolor(config.theme.colors.lightTheme?.bgColor).darken(3.75).toHslString(),
           },
           {
             key: 'bg-color-light-lighter',
-            value: tinycolor(config.theme.colors.lightTheme?.bgColor)
-              .darken(7.5)
-              .toHslString(),
+            value: tinycolor(config.theme.colors.lightTheme?.bgColor).darken(7.5).toHslString(),
           },
         ]
       : []),
@@ -99,15 +95,11 @@ function getNormalCSSVariables(config: MazUiConfig) {
           },
           {
             key: 'bg-color-dark-light',
-            value: tinycolor(config.theme.colors.darkTheme?.bgColor)
-              .lighten(3.75)
-              .toHslString(),
+            value: tinycolor(config.theme.colors.darkTheme?.bgColor).lighten(3.75).toHslString(),
           },
           {
             key: 'bg-color-dark-lighter',
-            value: tinycolor(config.theme.colors.darkTheme?.bgColor)
-              .lighten(7.5)
-              .toHslString(),
+            value: tinycolor(config.theme.colors.darkTheme?.bgColor).lighten(7.5).toHslString(),
           },
         ]
       : []),
