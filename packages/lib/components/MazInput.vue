@@ -151,16 +151,19 @@
     inheritAttrs: false,
   })
 
+  /**
+   * The value of the input
+   * @model
+   */
+  const model = defineModel<ModelValueSimple>({
+    default: undefined,
+  })
+
   export type Props = {
     /** The style of the component */
     style?: HTMLAttributes['style']
     /** The class of the component */
     class?: HTMLAttributes['class']
-    /**
-     * The value of the input
-     * @model
-     */
-    modelValue?: ModelValueSimple
     /** The placeholder of the input */
     placeholder?: string
     /** The label of the component */
@@ -276,11 +279,6 @@
      */
     (eventName: 'blur', event: Event): void
     /**
-     * Event emitted when the input value change
-     * @property {string | number | null | undefined | boolean} value - the new value
-     */
-    (eventName: 'update:model-value', value?: ModelValueSimple): void
-    /**
      * Event emitted when the input is clicked
      * @property {Event} event - click event
      */
@@ -386,13 +384,12 @@
   const change = (event: Event) => emits('change', event)
 
   const debounceEmitValue = debounceFn((value?: ModelValueSimple) => {
-    emits('update:model-value', value)
+    model.value = value
   }, props.debounceDelay)
 
   const emitValue = (value) => {
     if (props.debounce) return debounceEmitValue(value)
-
-    emits('update:model-value', value)
+    model.value = value
   }
 </script>
 
