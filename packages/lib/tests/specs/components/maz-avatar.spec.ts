@@ -1,6 +1,6 @@
-import MazAvatar from '@components/MazAvatar.vue'
-import MazLazyImg from '@components/MazLazyImg.vue'
-import MazIcon from '@components/MazIcon.vue'
+import MazAvatar from './../../../components/MazAvatar.vue'
+import MazLazyImg from './../../../components/MazLazyImg.vue'
+import MazIcon from './../../../components/MazIcon.vue'
 import { shallowMount } from '@vue/test-utils'
 
 describe('MazAvatar', () => {
@@ -25,6 +25,8 @@ describe('MazAvatar', () => {
       'noClickableIcon',
       'letterCount',
       'roundedSize',
+      'fallbackSrc',
+      'noPhoto',
     ]
     expect(Object.keys(wrapper.props())).toEqual(expectedProps)
   })
