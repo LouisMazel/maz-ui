@@ -15,13 +15,14 @@ describe('components/MazInput.vue', () => {
   })
 
   test('Should have an uniq id', () => {
+    // @ts-expect-error
     expect(wrapper.vm.instanceId).toBe('MazInput-1')
   })
 
   it('should emit an input event with the new value when the input value changes', () => {
     const input = wrapper.find('input')
     input.setValue('new value')
-    expect(wrapper.emitted()['update:model-value'][0]).toEqual(['new value'])
+    expect(wrapper.emitted()['update:modelValue'][0]).toEqual(['new value'])
   })
 
   it('should apply the --has-label class when the label prop is passed', async () => {
