@@ -308,10 +308,25 @@ Use the attribute `color` with a value in this [list](./../guide/colors.md), the
 
 Use the attribute `rounded-size` with a value in `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'`
 
+<MazInput rounded-size="none" placeholder="Rounded input" />
+<br />
+<MazInput rounded-size="sm" placeholder="Rounded input" />
+<br />
+<MazInput rounded-size="md" placeholder="Rounded input" />
+<br />
+<MazInput rounded-size="lg" placeholder="Rounded input" />
+<br />
+<MazInput rounded-size="xl" placeholder="Rounded input" />
+<br />
 <MazInput rounded-size="full" placeholder="Rounded input" />
 
 ```html
-  <MazInput rounded-size="full" />
+  <MazInput rounded-size="none" placeholder="Rounded input" />
+  <MazInput rounded-size="sm" placeholder="Rounded input" />
+  <MazInput rounded-size="md" placeholder="Rounded input" />
+  <MazInput rounded-size="lg" placeholder="Rounded input" />
+  <MazInput rounded-size="xl" placeholder="Rounded input" />
+  <MazInput rounded-size="full" placeholder="Rounded input" />
 ```
 
 ## State
