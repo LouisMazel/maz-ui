@@ -3,7 +3,7 @@
     class="m-card"
     :class="[
       {
-        'm-card--linked': href,
+        'm-card--linked': isLinked,
         'm-card--no-scale': !scale,
         'maz-elevation': elevation,
         'maz-overflow-hidden': overflowHidden || !isOpen,
@@ -46,7 +46,7 @@
       :is="wrapperData.is"
       v-bind="wrapperData"
       class="m-card__wrapper"
-      :class="[`m-card__wrapper--${orientation}`, { 'm-card__link': href }]"
+      :class="[`m-card__wrapper--${orientation}`, { 'm-card__link': isLinked }]"
     >
       <div v-if="images" class="m-card__gallery__wrapper">
         <MazGallery
@@ -181,6 +181,8 @@
   const slots = useSlots()
 
   const isOpen = ref(props.collapsable ? props.collapseOpen : true)
+
+  const isLinked = computed(() => props.href || props.to)
 
   watch(
     () => props.collapseOpen,
