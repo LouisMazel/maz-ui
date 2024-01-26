@@ -17,7 +17,14 @@
     ]"
     :style="style"
   >
-    <div class="m-input-wrapper" :class="[inputClasses, borderStyle, { 'maz-rounded': !noRadius }]">
+    <div
+      class="m-input-wrapper"
+      :class="[
+        inputClasses,
+        borderStyle,
+        !roundedSize ? { 'maz-rounded': !noRadius } : `--rounded-${roundedSize}`,
+      ]"
+    >
       <div v-if="hasLeftPart()" class="m-input-wrapper-left">
         <!--
           @slot left-icon - The icon to display on the left of the input
@@ -233,6 +240,8 @@
      * `@type` `{string | FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component}`
      */
     rightIcon?: string | Icon
+    /** Size of the rounded */
+    roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
   }
 
   const props = withDefaults(defineProps<Props>(), {
@@ -265,6 +274,7 @@
     borderActive: false,
     leftIcon: undefined,
     rightIcon: undefined,
+    roundedSize: undefined,
   })
 
   const emits = defineEmits<{
@@ -468,6 +478,32 @@
 
       &-left {
         @apply maz-pl-2;
+      }
+
+      &.--rounded {
+        &-none {
+          @apply maz-rounded-none;
+        }
+
+        &-sm {
+          @apply maz-rounded-sm;
+        }
+
+        &-md {
+          @apply maz-rounded-md;
+        }
+
+        &-lg {
+          @apply maz-rounded;
+        }
+
+        &-xl {
+          @apply maz-rounded-xl;
+        }
+
+        &-full {
+          @apply maz-rounded-full;
+        }
       }
     }
 
