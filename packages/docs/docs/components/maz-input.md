@@ -304,21 +304,25 @@ Use the attribute `color` with a value in this [list](./../guide/colors.md), the
 </script>
 ```
 
-## State
+## Rounded Size
 
-<br />
+Use the attribute `rounded-size` with a value in `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'`
+
+<MazInput rounded-size="full" placeholder="Rounded input" />
+
+```html
+  <MazInput rounded-size="full" />
+```
+
+## State
 
 ### Error
 
 <MazInput v-model="inputValue" label="Label" error />
 
-<br />
-
 ### Warning
 
 <MazInput v-model="inputValue" label="Label" warning />
-
-<br />
 
 ### Success
 
