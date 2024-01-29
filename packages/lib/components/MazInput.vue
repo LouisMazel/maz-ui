@@ -214,9 +214,12 @@
     inputmode?: HTMLAttributes['inputmode']
     /** The size of the component */
     size?: Size
-    /** Enable debounce on input */
-    debounce?: boolean
-    /** The delay of the debounce */
+    /** Enable debounce on input - can be `boolean | number`, if it is a number, it is used for the debounce delay */
+    debounce?: boolean | number
+    /**
+     * The delay of the debounce
+     * @deprecated use debounce instead
+     */
     debounceDelay?: number
     /** Display the valid button - this button has type="submit"  */
     validButton?: boolean
@@ -263,6 +266,7 @@
     inputmode: 'text',
     size: 'md',
     debounce: false,
+    /** @deprecated use debounce instead */
     debounceDelay: 500,
     validButton: false,
     validButtonLoading: false,
@@ -274,6 +278,11 @@
   })
 
   const emits = defineEmits<{
+    /**
+     * Event emitted when the input value change
+     * @property {string | number | null | undefined | boolean} value - the new value
+     */
+    (eventName: 'update:model-value', value?: ModelValueSimple): void
     /**
      * Event emitted when the input is focused
      * @property {Event} event - focus event
@@ -299,11 +308,6 @@
   const hasPasswordVisible = ref(false)
   const isFocused = ref(false)
   const input = ref<HTMLElement | undefined>()
-
-  const model = computed<ModelValueSimple>({
-    get: () => props.modelValue,
-    set: (value: ModelValueSimple) => emitValue(value),
-  })
 
   const instance = getCurrentInstance()
 
@@ -351,14 +355,22 @@
 
   const hasValue = computed(() => model.value !== undefined && model.value !== '')
 
-  const debounceEmitValue = debounceFn((value?: ModelValueSimple) => {
-    model.value = value
-  }, props.debounceDelay)
+  const debounceEmitValue = debounceFn(
+    (value?: ModelValueSimple) => {
+      model.value = value
+    },
+    typeof props.debounce === 'number' ? props.debounce : props.debounceDelay ?? 500,
+  )
 
   const emitValue = (value: ModelValueSimple) => {
     if (props.debounce) return debounceEmitValue(value)
-    model.value = value
+    emits('update:model-value', value)
   }
+
+  const model = computed<ModelValueSimple>({
+    get: () => props.modelValue,
+    set: emitValue,
+  })
 
   const shouldUp = computed(() => {
     return (
@@ -372,7 +384,7 @@
 
   const hasLabel = computed(() => !!props.label || !!props.hint)
 
-  const hasRightPart = (): boolean => {
+  function hasRightPart(): boolean {
     return (
       !!slots['right-icon'] ||
       isPasswordType.value ||
@@ -382,21 +394,23 @@
     )
   }
 
-  const hasLeftPart = (): boolean => {
+  function hasLeftPart(): boolean {
     return !!slots['left-icon'] || !!props.leftIcon
   }
 
-  const focus = (event: Event) => {
+  function focus(event: Event) {
     emits('focus', event)
     isFocused.value = true
   }
 
-  const blur = (event: Event) => {
+  function blur(event: Event) {
     emits('blur', event)
     isFocused.value = false
   }
 
-  const change = (event: Event) => emits('change', event)
+  function change(event: Event) {
+    return emits('change', event)
+  }
 </script>
 
 <style lang="postcss" scoped>
