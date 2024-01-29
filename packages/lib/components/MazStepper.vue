@@ -74,7 +74,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, useSlots, ref, type PropType, defineAsyncComponent, type Component } from 'vue'
+  import { computed, useSlots, ref, defineAsyncComponent, type Component } from 'vue'
   import type { Color } from './types'
 
   export type { Color }
@@ -97,25 +97,40 @@
   )
   const ExclamationIcon = defineAsyncComponent(() => import('./../icons/exclamation-triangle.svg'))
 
-  const props = defineProps({
-    modelValue: { type: Number, default: undefined },
-    steps: { type: Array as PropType<Steps>, default: undefined },
-    disabledNextSteps: { type: Boolean, default: false },
-    disabledPreviousSteps: { type: Boolean, default: false },
-    autoValidateSteps: { type: Boolean, default: false },
-    allStepsOpened: { type: Boolean, default: false },
-    allStepsValidated: { type: Boolean, default: false },
-    color: {
-      type: String as PropType<Color>,
-      default: 'primary',
+  const props = withDefaults(
+    defineProps<{
+      /** The current step */
+      modelValue?: number
+      /** The steps */
+      steps?: Steps
+      /** The color of the stepper */
+      color?: Color
+      /** Disable the next steps */
+      disabledNextSteps?: boolean
+      /** Disable the previous steps */
+      disabledPreviousSteps?: boolean
+      /** Auto validate the steps */
+      autoValidateSteps?: boolean
+      /** Open all steps */
+      allStepsOpened?: boolean
+      /** Validate all steps */
+      allStepsValidated?: boolean
+      /** Allow to close the steps */
+      canCloseSteps?: boolean
+    }>(),
+    {
+      modelValue: undefined,
+      steps: undefined,
+      color: 'primary',
     },
-    canCloseSteps: { type: Boolean, default: false },
-  })
+  )
+
+  const emits = defineEmits<{
+    (name: 'update:model-value', value: number): void
+  }>()
 
   const roundStepBgColor = computed(() => `var(--maz-color-${props.color})`)
   const roundStepTextColor = computed(() => `var(--maz-color-${props.color}-contrast)`)
-
-  const emits = defineEmits(['update:model-value'])
 
   const slots = useSlots()
 
