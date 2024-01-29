@@ -1,6 +1,6 @@
 ---
 title: MazStepper
-description: MazStepper is a standalone UI component to
+description: MazStepper is a standalone UI component customizable, reactive for intuitive step-by-step navigation. Ideal for guiding users through forms, workflows, or checkout processes.
 ---
 
 # {{ $frontmatter.title }}
