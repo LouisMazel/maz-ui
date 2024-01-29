@@ -1,5 +1,10 @@
 <template>
-  <div class="m-carousel">
+  <div
+    class="m-carousel"
+    :class="{
+      '--hide-scrollbar': hideScrollbar,
+    }"
+  >
     <div v-if="hasHeader()" class="m-carousel__header" :class="{ '--has-title': hasTitle() }">
       <div v-if="hasTitle()">
         <slot name="title"></slot>
@@ -49,9 +54,14 @@
   const ChevronRightIcon = defineAsyncComponent(() => import('./../icons/chevron-right.svg'))
 
   export type Props = {
+    /** Do not display the scroll buttons */
     noScrollBtn?: boolean
+    /** Aria label for the previous button */
     ariaLabelPreviousButton?: string
+    /** Aria label for the next button */
     ariaLabelNextButton?: string
+    /** Hide the scrollbar when not active */
+    hideScrollbar?: boolean
   }
 
   const props = withDefaults(defineProps<Props>(), {
@@ -113,7 +123,7 @@
 
     &__items {
       @apply maz-z-1 maz-flex maz-flex-1 maz-items-center maz-justify-start
-        maz-space-x-5 maz-overflow-x-auto maz-overflow-y-hidden maz-py-4 maz-pl-3;
+        maz-space-x-5 maz-overflow-y-hidden maz-py-4 maz-pl-3;
 
       scroll-behavior: smooth;
 
@@ -127,6 +137,21 @@
     &__btn.--muted {
       @apply maz-text-muted;
       @apply maz-fill-current;
+    }
+
+    :not(.--hide-scrollbar) .m-carousel__items {
+      @apply maz-overflow-x-auto;
+    }
+
+    &.--hide-scrollbar .m-carousel__items {
+      @apply maz-overflow-x-hidden;
+    }
+
+    &.--hide-scrollbar:hover .m-carousel__items,
+    &.--hide-scrollbar:focus-within .m-carousel__items,
+    &.--hide-scrollbar:active .m-carousel__items,
+    &.--hide-scrollbar:focus .m-carousel__items {
+      @apply maz-overflow-x-auto;
     }
   }
 </style>
