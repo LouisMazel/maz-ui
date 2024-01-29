@@ -247,7 +247,6 @@
   const props = withDefaults(defineProps<Props>(), {
     style: undefined,
     class: undefined,
-    modelValue: undefined,
     placeholder: undefined,
     label: undefined,
     name: undefined,
@@ -348,11 +347,11 @@
     return required ? `${placeholder} *` : placeholder
   })
 
-  const hasValue = computed(() => props.modelValue !== undefined && props.modelValue !== '')
+  const hasValue = computed(() => model.value !== undefined && model.value !== '')
 
   const inputValue = computed({
-    get: () => props.modelValue,
-    set: (value: unknown) => emitValue(value),
+    get: () => model.value,
+    set: (value: ModelValueSimple) => emitValue(value),
   })
 
   const shouldUp = computed(() => {
@@ -397,7 +396,7 @@
     model.value = value
   }, props.debounceDelay)
 
-  const emitValue = (value) => {
+  const emitValue = (value: ModelValueSimple) => {
     if (props.debounce) return debounceEmitValue(value)
     model.value = value
   }
