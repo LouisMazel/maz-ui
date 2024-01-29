@@ -4,7 +4,7 @@
   "description": "A standalone components library for Vue.Js & Nuxt.Js (v3.x)",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "prepare": "npx husky install",
+    "prepare": "npx husky",
     "pre-commit": "lint-staged",
     "commit": "cz",
     "format": "prettier . --write",
@@ -19,25 +19,25 @@
     ]
   },
   "devDependencies": {
-    "@commitlint/config-conventional": "^18.4.4",
-    "@commitlint/cz-commitlint": "^18.4.4",
-    "@types/node": "^20.11.2",
-    "@typescript-eslint/eslint-plugin": "^6.18.1",
-    "@typescript-eslint/parser": "^6.18.1",
+    "@commitlint/config-conventional": "^18.6.0",
+    "@commitlint/cz-commitlint": "^18.6.0",
+    "@types/node": "^20.11.10",
+    "@typescript-eslint/eslint-plugin": "^6.20.0",
+    "@typescript-eslint/parser": "^6.20.0",
     "changelogen": "^0.5.5",
     "commitizen": "^4.3.0",
     "cross-env": "^7.0.3",
     "eslint-config-prettier": "^9.1.0",
-    "eslint-config-standard-with-typescript": "^43.0.0",
+    "eslint-config-standard-with-typescript": "^43.0.1",
     "eslint-plugin-n": "^16.6.2",
     "eslint-plugin-prettier": "^5.1.3",
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-sonarjs": "^0.23.0",
     "eslint-plugin-unicorn": "^50.0.1",
-    "husky": "^8.0.3",
+    "husky": "^9.0.7",
     "lerna": "^8.0.2",
     "lint-staged": "^15.2.0",
-    "prettier": "^3.2.2",
+    "prettier": "^3.2.4",
     "ts-node": "11.0.0-beta.1",
     "typescript": "^5.3.3"
   },
@@ -76,6 +76,6 @@
     }
   },
   "dependencies": {
-    "@commitlint/cli": "^18.4.4"
+    "@commitlint/cli": "^18.6.0"
   }
 }
