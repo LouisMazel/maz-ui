@@ -143,7 +143,8 @@
   import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
 
   import type { Color, ModelValueSimple, Size } from './types'
-  export type { Color, Size, ModelValueSimple } from './types'
+  export type { Color, Size, ModelValueSimple }
+  export type Icon = FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component
 
   const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
   const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
@@ -151,8 +152,6 @@
   const EyeOffIcon = defineAsyncComponent(() => import('./../icons/eye-slash.svg'))
   const EyeIcon = defineAsyncComponent(() => import('./../icons/eye.svg'))
   const CheckIcon = defineAsyncComponent(() => import('./../icons/check.svg'))
-
-  type Icon = FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component
 
   defineOptions({
     inheritAttrs: false,
