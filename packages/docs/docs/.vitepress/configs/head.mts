@@ -42,7 +42,6 @@ export const head: UserConfig['head'] = [
     { name: 'twitter:site', content: '@maz__ui' },
   ],
   ['meta', { name: 'twitter:creator', content: '@mazeel' }],
-  ['meta', { name: 'twitter:image', content: getAssetBaseUrl('/img/maz-ui-preview.jpg') }],
   [
     'link',
     { rel: 'apple-touch-icon', href: getAssetBaseUrl('/img/icons/apple-touch-icon.png') },
@@ -58,7 +57,6 @@ export const head: UserConfig['head'] = [
   ['meta', { name: 'msapplication-TileColor', content: '#2d89ef' }],
   ['meta', { name: 'theme-color', content: '#ffffff' }],
   ['meta', { name: 'msapplication-TileImage', content: getAssetBaseUrl('/img/maz-ui-preview.jpg') }],
-  ['meta', { name: 'og:image', content: getAssetBaseUrl('/img/maz-ui-preview.jpg') }],
   ['meta', { name: 'og:site_name', content: 'Maz-UI' }],
   ['meta', { name: 'og:locale', content: 'en-US' }],
   ['meta', { name: 'article:author', content: 'Loïc Mazuel' }],

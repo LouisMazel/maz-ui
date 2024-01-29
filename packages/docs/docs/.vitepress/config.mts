@@ -1,11 +1,20 @@
 import { defineConfig, HeadConfig } from 'vitepress'
 import { sidebar, head, nav } from './configs/index.mjs'
 import { join } from 'node:path'
+import svgLoader from 'vite-svg-loader'
+import { fileURLToPath } from 'node:url'
+import { getOgImage } from './og-image'
 
 const _dirname = fileURLToPath(new URL('.', import.meta.url))
 
-import svgLoader from 'vite-svg-loader'
-import { fileURLToPath } from 'node:url'
+function pascalCaseToKebabCase(value: string): string {
+  return value.replaceAll(/([\da-z])([A-Z])/g, '$1-$2').toLowerCase()
+}
+
+function getAssetBaseUrl(path: string): string {
+  const base = process.env.NODE_ENV === 'production' ? 'https://maz-ui.com' : ''
+  return `${base}${path}`
+}
 
 export default defineConfig({
   lang: 'en-US',
@@ -79,23 +88,38 @@ export default defineConfig({
     },
   },
 
-  transformHead: ({ siteConfig, siteData, pageData, title, description, head }) => {
+  transformHead: async ({ siteConfig, siteData, pageData, title, description, head }) => {
 
-    const baseUrl = 'https://maz-ui.com'
+    // const baseUrl = 'https://maz-ui.com'
 
     const currentTitle = title ?? pageData.title ?? pageData.frontmatter.title ?? siteData.title
     const currentDescription = description ?? pageData.frontmatter.description ?? pageData.description ?? siteData.description
-    const currentUrl = `${baseUrl}${siteConfig.site.base}${pageData.relativePath.replace('.md', '')}`
+    const currentUrl = getAssetBaseUrl(`${pageData.relativePath.replace('.md', '')}`)
+
+    const ogImageFilename = pascalCaseToKebabCase(currentTitle.split(' ')[0].replace(' | Maz-UI', '').replaceAll(' ', '').replace('/', '-'))
+    const outputDistFolder = '/og-images'
+    const imagePublicPath = `${outputDistFolder}/${ogImageFilename}.png`
+
+    const image = await getOgImage({
+      outputFolder: join(_dirname, `./dist`, outputDistFolder),
+      filename: ogImageFilename,
+      title: currentTitle,
+      description: currentDescription,
+    })
+
+    const ogImage = image ? getAssetBaseUrl(imagePublicPath) : getAssetBaseUrl('/img/maz-ui-preview.jpg')
 
     const pageHead: HeadConfig[] = [
       ['meta', { name: 'og:title', content: currentTitle }],
       ['meta', { name: 'og:url', content: currentUrl }],
       ['meta', { name: 'og:type', content: pageData.relativePath === 'index.md' ? 'website' : 'article' }],
-      ['meta', { name: 'twitter:title', content: currentTitle }],
       ['meta', { name: 'description', content: currentDescription }],
       ['meta', { name: 'og:description', content: currentDescription }],
+      ['meta', { name: 'twitter:title', content: currentTitle }],
+      ['meta', { name: 'twitter:image', content: ogImage }],
       ['meta', { name: 'twitter:description', content: currentDescription }],
       ['meta', { name: 'twitter:image:alt', content: currentDescription }],
+      ['meta', { name: 'og:image', content: ogImage }],
       ['meta', { name: 'og:image:alt', content: currentDescription }],
       ['meta', { name: 'og:updated_time', content: pageData.lastUpdated ? new Date(pageData.lastUpdated).toISOString() : new Date().toISOString() }],
       ['meta', { name: 'article:modified_time', content: pageData.lastUpdated ? new Date(pageData.lastUpdated).toISOString() : new Date().toISOString() }],
