@@ -81,6 +81,35 @@ head:
 
 ## Options
 
+### hide-scrollbar
+
+This options will display the component without scrollbar only when the component is not hovered, focused or active
+
+<MazCarousel hide-scrollbar>
+    <template #title>
+      <h4 class="maz-m-0">Carousel</h4>
+    </template>
+    <MazCard
+      v-for="(item, i) in Array(8)"
+      :key="i"
+      :images="[
+        'https://placekitten.com/250/300'
+      ]"
+      style="min-width: 250px;"
+    >
+      <template #title>
+        <h4 class="maz-m-0">
+          Steven Seagal
+        </h4>
+      </template>
+      <template #content>
+        <p class="maz-text-muted" style="margin-bottom: 0;">
+          You're awesome! You're awesome!
+        </p>
+      </template>
+    </MazCard>
+  </MazCarousel>
+
 ### no-scroll-btn
 
 This options will display the component without scroll buttons
