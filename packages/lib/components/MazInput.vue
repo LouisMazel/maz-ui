@@ -43,7 +43,7 @@
         <input
           :id="instanceId"
           ref="input"
-          v-model="inputValue"
+          v-model="model"
           :type="inputType"
           :name="name"
           v-bind="$attrs"
@@ -157,19 +157,16 @@
     inheritAttrs: false,
   })
 
-  /**
-   * The value of the input
-   * @model
-   */
-  const model = defineModel<ModelValueSimple>({
-    default: undefined,
-  })
-
   export type Props = {
     /** The style of the component */
     style?: HTMLAttributes['style']
     /** The class of the component */
     class?: HTMLAttributes['class']
+    /**
+     * The value of the input
+     * @model
+     */
+    modelValue?: ModelValueSimple
     /** The placeholder of the input */
     placeholder?: string
     /** The label of the component */
@@ -246,6 +243,7 @@
   const props = withDefaults(defineProps<Props>(), {
     style: undefined,
     class: undefined,
+    modelValue: undefined,
     placeholder: undefined,
     label: undefined,
     name: undefined,
@@ -302,6 +300,11 @@
   const isFocused = ref(false)
   const input = ref<HTMLElement | undefined>()
 
+  const model = computed<ModelValueSimple>({
+    get: () => props.modelValue,
+    set: (value: ModelValueSimple) => emitValue(value),
+  })
+
   const instance = getCurrentInstance()
 
   const instanceId = useInstanceUniqId({
@@ -348,10 +351,14 @@
 
   const hasValue = computed(() => model.value !== undefined && model.value !== '')
 
-  const inputValue = computed({
-    get: () => model.value,
-    set: (value: ModelValueSimple) => emitValue(value),
-  })
+  const debounceEmitValue = debounceFn((value?: ModelValueSimple) => {
+    model.value = value
+  }, props.debounceDelay)
+
+  const emitValue = (value: ModelValueSimple) => {
+    if (props.debounce) return debounceEmitValue(value)
+    model.value = value
+  }
 
   const shouldUp = computed(() => {
     return (
@@ -390,15 +397,6 @@
   }
 
   const change = (event: Event) => emits('change', event)
-
-  const debounceEmitValue = debounceFn((value?: ModelValueSimple) => {
-    model.value = value
-  }, props.debounceDelay)
-
-  const emitValue = (value: ModelValueSimple) => {
-    if (props.debounce) return debounceEmitValue(value)
-    model.value = value
-  }
 </script>
 
 <style lang="postcss" scoped>
