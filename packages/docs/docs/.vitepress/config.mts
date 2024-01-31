@@ -94,7 +94,8 @@ export default defineConfig({
 
     const currentTitle = title ?? pageData.title ?? pageData.frontmatter.title ?? siteData.title
     const currentDescription = description ?? pageData.frontmatter.description ?? pageData.description ?? siteData.description
-    const currentUrl = getAssetBaseUrl(`${pageData.relativePath.replace('.md', '')}`)
+
+    const currentUrl = getAssetBaseUrl(`/${pageData.relativePath.replace('.md', '') === 'index' ? '' : pageData.relativePath.replace('.md', '')}`)
 
     const ogImageFilename = pascalCaseToKebabCase(currentTitle.split(' ')[0].replace(' | Maz-UI', '').replaceAll(' ', '').replace('/', '-'))
     const outputDistFolder = '/og-images'
@@ -111,6 +112,7 @@ export default defineConfig({
 
     const pageHead: HeadConfig[] = [
       ['meta', { name: 'og:title', content: currentTitle }],
+      ['link', { rel: 'canonical', href: currentUrl }],
       ['meta', { name: 'og:url', content: currentUrl }],
       ['meta', { name: 'og:type', content: pageData.relativePath === 'index.md' ? 'website' : 'article' }],
       ['meta', { name: 'description', content: currentDescription }],
@@ -123,7 +125,6 @@ export default defineConfig({
       ['meta', { name: 'og:image:alt', content: currentDescription }],
       ['meta', { name: 'og:updated_time', content: pageData.lastUpdated ? new Date(pageData.lastUpdated).toISOString() : new Date().toISOString() }],
       ['meta', { name: 'article:modified_time', content: pageData.lastUpdated ? new Date(pageData.lastUpdated).toISOString() : new Date().toISOString() }],
-      ['link', { rel: 'canonical', href: currentUrl }],
     ]
 
     return [...head, ...pageHead]
