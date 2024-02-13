@@ -557,11 +557,11 @@
     } else if (newModel) {
       asYouTypeFormatted.value =
         selectionRange.cursorAtEnd || results.value.isValid
-          ? (internalValue.value = getAsYouTypeFormat(
+          ? getAsYouTypeFormat(
               results.value.countryCode ?? countryCodeModel.value,
               results.value.formatNational ?? internalValue.value,
-            ))
-          : internalValue.value
+            )
+          : results.value.formatNational
     } else {
       asYouTypeFormatted.value = undefined
     }
