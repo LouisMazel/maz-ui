@@ -23,6 +23,7 @@ npm install dayjs
 
 <MazPicker
   v-model="newDateValue"
+  id="date-picker"
   label="Select date"
 />
 
@@ -86,6 +87,7 @@ npm install dayjs
 <MazPicker
   v-model="dateValue"
   label="Select date"
+  id="date-picker-1"
   color="secondary"
 />
 
@@ -116,6 +118,7 @@ npm install dayjs
   format="YYYY-MM-DD HH:mm"
   label="Select date and time"
   color="secondary"
+  id="date-time-picker-1"
   time
 />
 
@@ -145,6 +148,7 @@ npm install dayjs
   v-model="dateTime12Value"
   format="YYYY-MM-DD hh:mm a"
   label="Select date and time"
+  id="date-time-picker-2"
   color="secondary"
   time
 />
@@ -177,6 +181,7 @@ npm install dayjs
   v-model="dateTimeValue"
   format="YYYY-MM-DD HH:mm"
   label="Select time"
+  id="time-picker-1"
   color="secondary"
   only-time
 />
@@ -207,6 +212,7 @@ npm install dayjs
   v-model="dateTime12Value"
   format="YYYY-MM-DD HH:mm a"
   label="Select time"
+  id="time-picker-2"
   color="secondary"
   only-time
 />
@@ -239,6 +245,7 @@ To enable the range mode, you should provide an object like this `{ start: undef
   v-model="rangeValues"
   label="Select periode"
   color="secondary"
+  id="range-picker-1"
   :min-date="minMaxDates.min"
   :max-date="minMaxDates.max"
   double
@@ -286,6 +293,7 @@ To enable the range mode, you should provide an object like this `{ start: undef
   v-model="rangeValues"
   color="secondary"
   :min-date="minMaxDates.min"
+  id="range-picker-2"
   :max-date="minMaxDates.max"
   :shortcuts="shortcuts"
   inline
@@ -384,9 +392,7 @@ To enable the range mode, you should provide an object like this `{ start: undef
   ]
 </script>
 
-## Props & Events emitted
-
-### Props `shortcuts`
+### Property `shortcuts`
 
 <br />
 
