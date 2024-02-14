@@ -1,5 +1,81 @@
 # Change Log
 
+## v3.31.6...v3.32.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.31.6...v3.32.0)
+
+### 🚀 Enhancements
+
+- **docs:** Generate images for page og:image meta ([f0e4669a](https://github.com/LouisMazel/maz-ui/commit/f0e4669a))
+- **maz-ui:** Add throttle helper function ([bca9bd52](https://github.com/LouisMazel/maz-ui/commit/bca9bd52))
+- **maz-ui:** MazReadingBar - new component ([8f662b97](https://github.com/LouisMazel/maz-ui/commit/8f662b97))
+- **maz-ui:** UseReadingTime - new composable to get reading time of text ([b89fbb40](https://github.com/LouisMazel/maz-ui/commit/b89fbb40))
+- **nuxt-module:** Add auto-import of useReadTime composable ([2914279f](https://github.com/LouisMazel/maz-ui/commit/2914279f))
+- **maz-ui:** MazInput - add option to use custom rounded size ([45f8c39b](https://github.com/LouisMazel/maz-ui/commit/45f8c39b))
+- **maz-ui:** MazCarousel - add option to hide scrollbar when component is not active, focused or hovered ([bfe2942c](https://github.com/LouisMazel/maz-ui/commit/bfe2942c))
+
+### 🩹 Fixes
+
+- **maz-ui:** Tailwing config - cap-f utility class not use prefix ([b9bbba0b](https://github.com/LouisMazel/maz-ui/commit/b9bbba0b))
+- **docs:** Canonical urls of all pages ([7620f440](https://github.com/LouisMazel/maz-ui/commit/7620f440))
+- **maz-ui:** MazCard - make props not required ([897910c8](https://github.com/LouisMazel/maz-ui/commit/897910c8))
+- **maz-ui:** MazCard - make header props not required ([cca9da99](https://github.com/LouisMazel/maz-ui/commit/cca9da99))
+- **maz-ui:** MazCard - scale animation for linked card with href or to ([83398bd7](https://github.com/LouisMazel/maz-ui/commit/83398bd7))
+- **maz-ui:** MazInput - model value type ([0adaefad](https://github.com/LouisMazel/maz-ui/commit/0adaefad))
+- **maz-ui:** MazInput - model value type ([5d12cd2a](https://github.com/LouisMazel/maz-ui/commit/5d12cd2a))
+- **nuxt-module:** Path to modules types ([ef6e00fc](https://github.com/LouisMazel/maz-ui/commit/ef6e00fc))
+
+### 💅 Refactors
+
+- **docs:** Add link to SSR feature card in home page to nuxt module doc ([04384f36](https://github.com/LouisMazel/maz-ui/commit/04384f36))
+- **docs:** Increase size of generate meta image to 1200x630 ([dfe9c0b2](https://github.com/LouisMazel/maz-ui/commit/dfe9c0b2))
+- **maz-ui:** MazBtn - use light border for the theme outlined variant ([2ea8780f](https://github.com/LouisMazel/maz-ui/commit/2ea8780f))
+- **maz-ui:** MazDrawer - remove bg-color-light from drawer content & remove shadow from header ([515ef047](https://github.com/LouisMazel/maz-ui/commit/515ef047))
+- **maz-ui:** MazDrawer - reduce duration of open/close animation ([286af198](https://github.com/LouisMazel/maz-ui/commit/286af198))
+- **maz-ui:** MazCarousel - improve accessibilty by adding aria-label to scroll buttons ([d6cffcef](https://github.com/LouisMazel/maz-ui/commit/d6cffcef))
+- **maz-ui:** MazCard - use a darker color for the border in light mode ([44b591de](https://github.com/LouisMazel/maz-ui/commit/44b591de))
+- **maz-ui:** Export props of components to facilitate overriding ([efc2d8dc](https://github.com/LouisMazel/maz-ui/commit/efc2d8dc))
+- **maz-ui:** MazBadge - add support of theme color ([68e26830](https://github.com/LouisMazel/maz-ui/commit/68e26830))
+- **maz-ui:** MazAvatar & MazLazyImg - add fallback-src option in props API ([442d675e](https://github.com/LouisMazel/maz-ui/commit/442d675e))
+- **maz-ui:** MazCard - add support of vue-router for linked card ([2720381d](https://github.com/LouisMazel/maz-ui/commit/2720381d))
+- **maz-ui:** MazInput - use new hook defineModel ([91081029](https://github.com/LouisMazel/maz-ui/commit/91081029))
+- **docs:** MazInput - add all examples of rounded sizes ([81505624](https://github.com/LouisMazel/maz-ui/commit/81505624))
+- **maz-ui:** MazInput - not use new hook defineModel ([3a38648e](https://github.com/LouisMazel/maz-ui/commit/3a38648e))
+- **maz-ui:** MazInput - not use new hook defineModel ([40376c20](https://github.com/LouisMazel/maz-ui/commit/40376c20))
+- **maz-ui:** MazPicker - enable open/close picker on click on chevron icon ([98d20d48](https://github.com/LouisMazel/maz-ui/commit/98d20d48))
+- **maz-ui:** MazDropdown - add lazy import of RouterLink ([a97e5a74](https://github.com/LouisMazel/maz-ui/commit/a97e5a74))
+
+### 📖 Documentation
+
+- **docs:** Add mention about unicode flag polyfill ([4aab4ffd](https://github.com/LouisMazel/maz-ui/commit/4aab4ffd))
+- **docs:** MazReadingProgressBar - add mention about Teleport ([12cd3d6c](https://github.com/LouisMazel/maz-ui/commit/12cd3d6c))
+
+### 🏡 Chore
+
+- Upgrade dependencies ([e8707f40](https://github.com/LouisMazel/maz-ui/commit/e8707f40))
+- **deps:** Upgrade dependencies ([22ec1c0e](https://github.com/LouisMazel/maz-ui/commit/22ec1c0e))
+- **deps:** Upgrade dependencies ([63d87d9e](https://github.com/LouisMazel/maz-ui/commit/63d87d9e))
+- Update issue and feature github templates ([d9c081cc](https://github.com/LouisMazel/maz-ui/commit/d9c081cc))
+- **deps:** Upgrade dependencies ([2f3b19b1](https://github.com/LouisMazel/maz-ui/commit/2f3b19b1))
+- **maz-ui:** Edit eslitn config ([811f024f](https://github.com/LouisMazel/maz-ui/commit/811f024f))
+- **deps:** Upgrade dependencies ([bf04ddf0](https://github.com/LouisMazel/maz-ui/commit/bf04ddf0))
+- **deps:** Upgrade dependencies ([a5a21835](https://github.com/LouisMazel/maz-ui/commit/a5a21835))
+- **deps:** Upgrade dependencies ([7ec42393](https://github.com/LouisMazel/maz-ui/commit/7ec42393))
+
+### ✅ Tests
+
+- **maz-ui:** MazAvatar - fix test unit ([e6ca1679](https://github.com/LouisMazel/maz-ui/commit/e6ca1679))
+- **maz-ui:** MazInput - fix test unit ([be67ae24](https://github.com/LouisMazel/maz-ui/commit/be67ae24))
+- **maz-ui:** MazInput - fix test unit ([4228ea3d](https://github.com/LouisMazel/maz-ui/commit/4228ea3d))
+
+### 🎨 Styles
+
+- **docs:** Color of block warning code ([591fe46a](https://github.com/LouisMazel/maz-ui/commit/591fe46a))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.31.5...v3.31.6
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.31.5...v3.31.6)
