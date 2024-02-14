@@ -1,6 +1,6 @@
 ---
 title: MazReadingProgressBar
-description: MazReadingProgressBar is a standalone component
+description: MazReadingProgressBar is a standalone component to display a reading progress bar
 ---
 
 # {{ $frontmatter.title }}
@@ -9,11 +9,13 @@ description: MazReadingProgressBar is a standalone component
 
 <!--@include: ./../.vitepress/mixins/getting-started.md-->
 
+This component use the `<Teleport />` component to move the progress bar to the top of the page. You can set the `teleport-selector` prop to change the target of the teleportation.
+
 ## Basic usage
 
 Look at the top of the page to see the component in action (scroll in page to inscrease progress bar width).
 
-<MazReadingProgressBar content-selector=".VPDoc" teleport-selector="#app" distance="200" />
+<MazReadingProgressBar content-selector=".VPDoc" teleport-selector="#app" />
 
 ```vue
 <template>
