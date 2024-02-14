@@ -10,19 +10,19 @@
     "serve": "vitepress serve docs"
   },
   "devDependencies": {
-    "@types/react": "^18.2.48",
+    "@types/react": "^18.2.55",
     "@vercel/og": "^0.6.2",
     "react": "^18.2.0",
     "tailwindcss": "^3.4.1",
-    "vitepress": "1.0.0-rc.40",
-    "vue": "^3.4.15"
+    "vitepress": "1.0.0-rc.42",
+    "vue": "^3.4.19"
   },
   "dependencies": {
     "chart.js": "^4.4.1",
     "chartjs-plugin-datalabels": "^2.2.0",
     "dayjs": "^1.11.10",
     "dropzone": "^5.9.3",
-    "libphonenumber-js": "^1.10.54",
+    "libphonenumber-js": "^1.10.55",
     "maz-ui": "workspace:*",
     "vitepress-plugin-google-analytics": "^1.0.2"
   }
