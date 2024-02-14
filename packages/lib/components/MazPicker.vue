@@ -30,7 +30,12 @@
       @click="isFocused = !isFocused"
     >
       <template #right-icon>
-        <button type="button" tabindex="-1" class="m-picker__button">
+        <button
+          type="button"
+          tabindex="-1"
+          class="m-picker__button"
+          @click="isFocused = !isFocused"
+        >
           <ChevronDownIcon class="m-picker__button__chevron maz-text-lg" />
         </button>
       </template>
@@ -83,7 +88,6 @@
     getCurrentInstance,
     watch,
     nextTick,
-    defineAsyncComponent,
     type HTMLAttributes,
   } from 'vue'
 
@@ -111,11 +115,10 @@
 
   import type { PickerValue, PickerShortcut } from './MazPicker/types'
   import MazPickerContainer from './MazPicker/MazPickerContainer.vue'
+  import ChevronDownIcon from './../icons/chevron-down.svg'
+  import MazInput from './MazInput.vue'
 
   export type { PickerValue, PickerShortcut, Color, Position }
-
-  const ChevronDownIcon = defineAsyncComponent(() => import('./../icons/chevron-down.svg'))
-  const MazInput = defineAsyncComponent(() => import('./MazInput.vue'))
 
   dayjs.extend(customParseFormat)
   dayjs.extend(isBetween)
