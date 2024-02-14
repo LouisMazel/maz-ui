@@ -15,6 +15,7 @@ export default defineConfig({
   components: './[A-Z]*.vue', // the glob to define what files should be documented as components (relative to componentRoot)
   outDir: resolve(_dirname, './../docs/docs/.vitepress/generated-docs'),
   getDestFile: (filename, config) => {
+    // @ts-expect-error
     const filenameKebab = filename.replaceAll(/([\da-z])([A-Z])/g, '$1-$2').toLowerCase()
 
     return join(config.outDir, filenameKebab).replace(/\.vue$/, '.doc.md')
