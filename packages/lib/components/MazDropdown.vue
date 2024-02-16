@@ -153,10 +153,6 @@
 
   export type { Color, Position }
 
-  const RouterLink = defineAsyncComponent(() =>
-    import('vue-router').then(({ RouterLink }) => RouterLink),
-  )
-
   defineOptions({
     inheritAttrs: false,
   })
