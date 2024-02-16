@@ -1,5 +1,17 @@
 # Change Log
 
+## v3.32.0...v3.32.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.32.0...v3.32.1)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazDropdown - remove lazy import of RouterLink ([e9fa8eac](https://github.com/LouisMazel/maz-ui/commit/e9fa8eac))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.31.6...v3.32.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.31.6...v3.32.0)
