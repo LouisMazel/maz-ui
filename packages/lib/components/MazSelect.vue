@@ -28,6 +28,7 @@
           tabindex="-1"
           type="button"
           class="m-select-input__toggle-button maz-custom"
+          aria-label="expand list of options"
           @click.stop="toggleList"
         >
           <ChevronDownIcon class="m-select-chevron maz-text-xl" />
