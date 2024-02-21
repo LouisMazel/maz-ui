@@ -18,7 +18,7 @@
       class="m-card__header maz-border-b maz-border-solid"
       :class="[
         isOpen
-          ? 'maz-rounded-t maz-border-color-light dark:maz-bg-color-lighter'
+          ? 'maz-rounded-t maz-border-color-light dark:maz-border-color-lighter'
           : 'maz-border-transparent',
         { '--is-collapsable': collapsable },
         { 'maz-justify-end': (!$slots['header'] || !header) && collapsable },
@@ -89,7 +89,7 @@
       class="m-card__footer maz-overflow-x-auto maz-p-3"
       :class="[
         {
-          'maz-border-t-2 maz-border-color-light dark:maz-bg-color-lighter':
+          'maz-border-t-2 maz-border-color-light dark:maz-border-color-lighter':
             isColumnVariant && haveSomeContent,
         },
         footerAlignClass,
