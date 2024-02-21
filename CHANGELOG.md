@@ -1,5 +1,17 @@
 # Change Log
 
+## v3.32.1...v3.32.2
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.32.1...v3.32.2)
+
+### 🎨 Styles
+
+- **maz-ui:** MazCard - border color in light mode ([ee5ab2ca](https://github.com/LouisMazel/maz-ui/commit/ee5ab2ca))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.32.0...v3.32.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.32.0...v3.32.1)
