@@ -50,6 +50,7 @@ export const components = {
         { text: 'MazIcon', link: '/components/maz-icon' },
         { text: 'MazLazyImg', link: '/components/maz-lazy-img' },
         { text: 'MazLoadingBar', link: '/components/maz-loading-bar' },
+        { text: 'MazPagination', link: '/components/maz-pagination' },
         { text: 'MazPullToRefresh', link: '/components/maz-pull-to-refresh' },
         { text: 'MazReadingProgressBar', link: '/components/maz-reading-progress-bar' },
         { text: 'MazStepper', link: '/components/maz-stepper' },
