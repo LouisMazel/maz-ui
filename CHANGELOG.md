@@ -1,5 +1,28 @@
 # Change Log
 
+## v3.32.2...v3.33.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.32.2...v3.33.0)
+
+### 🚀 Enhancements
+
+- **maz-ui:** MazPagination - add new component to manage pagination ([6033dbcd](https://github.com/LouisMazel/maz-ui/commit/6033dbcd))
+
+### 🩹 Fixes
+
+- **maz-ui:** MazSelect - toggle list button accessibility (add aria-label) ([#927](https://github.com/LouisMazel/maz-ui/pull/927))
+
+### 🏡 Chore
+
+- **deps:** Upgrade dependencies ([74ca0d93](https://github.com/LouisMazel/maz-ui/commit/74ca0d93))
+- **deps:** Upgrade dependencies ([#937](https://github.com/LouisMazel/maz-ui/pull/937))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+- Mazel <me@loicmazuel.com>
+- Patrick Byrn
+
 ## v3.32.1...v3.32.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.32.1...v3.32.2)
