@@ -1,6 +1,5 @@
 import { isClient } from './../helpers/is-client'
-
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 
 const DEFAULT_OPTIONS = {
   darkClass: 'dark',
@@ -9,6 +8,7 @@ const DEFAULT_OPTIONS = {
   storageThemeValueDark: 'dark',
   storageThemeValueLight: 'light',
   storageThemeValueSystem: 'system',
+  watchChanges: true,
 }
 
 export type StrictThemeHandlerOptions = typeof DEFAULT_OPTIONS
@@ -84,7 +84,7 @@ function setSytemTheme(options: StrictThemeHandlerOptions & { setLocalStorageVal
     localStorage[options.storageThemeKey] = options.storageThemeValueSystem
   }
 
-  autoSetTheme({ ...options, setSelectedTheme: false })
+  autoSetTheme({ ...options })
 }
 
 function getPrefDark(): boolean {
@@ -93,13 +93,14 @@ function getPrefDark(): boolean {
 
 function autoSetTheme(
   options: StrictThemeHandlerOptions & {
-    setSelectedTheme?: boolean
+    // setSelectedTheme?: boolean
     onlyWithStoredValue?: boolean
   },
 ) {
   if (!isClient()) {
     return
   }
+
   if (options.onlyWithStoredValue) {
     if (
       localStorage[options.storageThemeKey] === options.storageThemeValueDark ||
@@ -168,10 +169,28 @@ export function useThemeHandler(opts: ThemeHandlerOptions = DEFAULT_OPTIONS) {
     () => selectedTheme.value === globalOptions.storageThemeValueSystem,
   )
 
+  function themeWatchHandler() {
+    autoSetTheme(globalOptions)
+  }
+
   onMounted(() => {
     if (localStorage[globalOptions.storageThemeKey]) {
       theme.value = localStorage[globalOptions.storageThemeKey]
       selectedTheme.value = localStorage[globalOptions.storageThemeKey]
+    }
+
+    if (globalOptions.watchChanges) {
+      window
+        .matchMedia('(prefers-color-scheme: dark)')
+        .addEventListener('change', themeWatchHandler)
+    }
+  })
+
+  onBeforeUnmount(() => {
+    if (globalOptions.watchChanges) {
+      window
+        .matchMedia('(prefers-color-scheme: dark)')
+        .removeEventListener('change', themeWatchHandler)
     }
   })
 
