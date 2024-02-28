@@ -94,7 +94,7 @@ description: MazDropdown is a standalone dropdown menu component and versatile d
 ## Custom dropdown main button without chevron icon
 
 ::: tip
-  This component uses [MazBtn](./maz-btn.md) has menu button, so it inherits all its props
+  This component uses [MazBtn](./maz-btn.md) has a menu button, so it inherits all its props
 :::
 
 <MazDropdown
@@ -130,6 +130,58 @@ description: MazDropdown is a standalone dropdown menu component and versatile d
 ```
 
 ## Custom slots
+
+### Custom dropdown panel
+
+You can provide a template to replace the default dropdown panel
+
+<MazDropdown>
+  Customized dropdown
+
+  <template #dropdown>
+    <div class="maz-grid maz-grid-cols-3 maz-gap-2">
+      <MazBtn color="transparent"> Item </MazBtn>
+      <MazBtn color="transparent"> Item </MazBtn>
+      <MazBtn color="transparent"> Item </MazBtn>
+      <MazBtn color="transparent"> Item </MazBtn>
+      <MazBtn color="transparent"> Item </MazBtn>
+      <MazBtn color="transparent"> Item </MazBtn>
+      <MazBtn color="transparent"> Item </MazBtn>
+      <MazBtn color="transparent"> Item </MazBtn>
+      <MazBtn color="transparent"> Item </MazBtn>
+      <MazBtn color="transparent"> Item </MazBtn>
+      <MazBtn color="transparent"> Item </MazBtn>
+      <MazBtn color="transparent"> Item </MazBtn>
+    </div>
+  </template>
+</MazDropdown>
+
+::: details Show code
+
+```html
+<MazDropdown>
+  Customized dropdown panel
+
+  <template #dropdown>
+    <div class="maz-grid maz-grid-cols-3 maz-gap-2">
+      <MazBtn color="transparent"> Item </MazBtn>
+      <MazBtn color="transparent"> Item </MazBtn>
+      <MazBtn color="transparent"> Item </MazBtn>
+      <MazBtn color="transparent"> Item </MazBtn>
+      <MazBtn color="transparent"> Item </MazBtn>
+      <MazBtn color="transparent"> Item </MazBtn>
+      <MazBtn color="transparent"> Item </MazBtn>
+      <MazBtn color="transparent"> Item </MazBtn>
+      <MazBtn color="transparent"> Item </MazBtn>
+      <MazBtn color="transparent"> Item </MazBtn>
+      <MazBtn color="transparent"> Item </MazBtn>
+      <MazBtn color="transparent"> Item </MazBtn>
+    </div>
+  </template>
+</MazDropdown>
+```
+
+:::
 
 ### Custom menuitem labels
 
@@ -185,7 +237,7 @@ You can provide a template to replace menuitem labels to add more elements in ea
 
 ### Custom control element
 
-You can provide a HTML element or a component to replace the default button
+You can provide an HTML element or a component to replace the default button
 
 ::: warning
 Add `tabindex="-1"` attribute to your element to avoid a double focus with Tab key

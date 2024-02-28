@@ -1,3 +1,3 @@
 declare module 'maz-ui' {
-  export * from 'maz-ui/modules'
+  export * from 'maz-ui/modules/index.ts'
 }

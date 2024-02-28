@@ -70,70 +70,76 @@
         @mouseenter="['hover', 'both'].includes(trigger) ? setDropdownDebounced(true) : undefined"
         @mouseleave="['hover', 'both'].includes(trigger) ? setDropdownDebounced(false) : undefined"
       >
-        <template v-for="(item, index) in items" :key="index">
-          <!--
-            @slot Custom menu item
-              @binding {Object} item - menu item
-          -->
-          <slot name="menuitem" :item="item">
-            <template v-if="item.to">
-              <RouterLink
-                :target="item.href ? item.target ?? '_self' : undefined"
-                :to="item.to"
-                class="menuitem"
-                tabindex="-1"
-                :class="[
-                  {
-                    '--is-keyboard-selected': keyboardSelectedIndex === index,
-                  },
-                  item.class,
-                ]"
-                @click.stop="closeOnClick"
-              >
-                <slot name="menuitem-label" :item="item">
-                  {{ item.label }}
-                </slot>
-              </RouterLink>
-            </template>
-            <template v-else-if="item.href">
-              <a
-                :target="item.href ? item.target ?? '_self' : undefined"
-                :href="item.href"
-                tabindex="-1"
-                class="menuitem"
-                :class="[
-                  {
-                    '--is-keyboard-selected': keyboardSelectedIndex === index,
-                  },
-                  item.class,
-                ]"
-                @click.stop="closeOnClick"
-              >
-                <slot name="menuitem-label" :item="item">
-                  {{ item.label }}
-                </slot>
-              </a>
-            </template>
-            <template v-else-if="item.action">
-              <button
-                tabindex="-1"
-                type="button"
-                class="menuitem"
-                :class="[
-                  {
-                    '--is-keyboard-selected': keyboardSelectedIndex === index,
-                  },
-                  item.class,
-                ]"
-                @click.stop="!!item.action ? runAction(item, $event) : closeOnClick()"
-              >
-                <slot name="menuitem-label" :item="item">
-                  {{ item.label }}
-                </slot>
-              </button>
-            </template>
-          </slot>
-        </template>
+        <!--
+          @slot Custom dropdown panel
+            @binding {Array} items - items prop data
+        -->
+        <slot name="dropdown" :items="items">
+          <template v-for="(item, index) in items" :key="index">
+            <!--
+              @slot Custom menu item
+                @binding {Object} item - menu item
+            -->
+            <slot name="menuitem" :item="item">
+              <template v-if="item.to">
+                <RouterLink
+                  :target="item.href ? item.target ?? '_self' : undefined"
+                  :to="item.to"
+                  class="menuitem"
+                  tabindex="-1"
+                  :class="[
+                    {
+                      '--is-keyboard-selected': keyboardSelectedIndex === index,
+                    },
+                    item.class,
+                  ]"
+                  @click.stop="closeOnClick"
+                >
+                  <slot name="menuitem-label" :item="item">
+                    {{ item.label }}
+                  </slot>
+                </RouterLink>
+              </template>
+              <template v-else-if="item.href">
+                <a
+                  :target="item.href ? item.target ?? '_self' : undefined"
+                  :href="item.href"
+                  tabindex="-1"
+                  class="menuitem"
+                  :class="[
+                    {
+                      '--is-keyboard-selected': keyboardSelectedIndex === index,
+                    },
+                    item.class,
+                  ]"
+                  @click.stop="closeOnClick"
+                >
+                  <slot name="menuitem-label" :item="item">
+                    {{ item.label }}
+                  </slot>
+                </a>
+              </template>
+              <template v-else-if="item.action">
+                <button
+                  tabindex="-1"
+                  type="button"
+                  class="menuitem"
+                  :class="[
+                    {
+                      '--is-keyboard-selected': keyboardSelectedIndex === index,
+                    },
+                    item.class,
+                  ]"
+                  @click.stop="!!item.action ? runAction(item, $event) : closeOnClick()"
+                >
+                  <slot name="menuitem-label" :item="item">
+                    {{ item.label }}
+                  </slot>
+                </button>
+              </template>
+            </slot>
+          </template>
+        </slot>
       </div>
     </Transition>
   </div>
@@ -170,7 +176,7 @@
     style?: HTMLAttributes['style']
     class?: HTMLAttributes['class']
     /** Menu items */
-    items: MenuItem[]
+    items?: MenuItem[]
     /** Menu should be open? */
     open?: boolean
     /** id of the menu */
@@ -194,6 +200,7 @@
   const props = withDefaults(defineProps<Props>(), {
     class: undefined,
     style: undefined,
+    items: () => [],
     id: undefined,
     trigger: 'both',
     color: 'transparent',
@@ -365,7 +372,7 @@
     }
 
     .menu {
-      @apply maz-absolute maz-z-default-backdrop maz-flex maz-flex-col maz-gap-0.5 maz-overflow-auto maz-rounded maz-bg-color maz-p-2 maz-elevation dark:maz-border dark:maz-border-color-light;
+      @apply maz-absolute maz-z-default-backdrop maz-flex maz-min-h-max maz-min-w-max maz-flex-col maz-gap-0.5 maz-overflow-auto maz-rounded maz-bg-color maz-p-2 maz-elevation dark:maz-border dark:maz-border-color-light;
 
       &.--top:not(.--right, .--left) {
         @apply maz-bottom-full maz-mb-1 maz-origin-bottom;
