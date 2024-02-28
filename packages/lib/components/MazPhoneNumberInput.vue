@@ -31,6 +31,7 @@
 
     <MazSelect
       v-if="!noCountrySelector"
+      :id="`country-selector-${id}`"
       ref="CountrySelector"
       v-model="countryCodeModel"
       class="m-phone-number-input__select"
