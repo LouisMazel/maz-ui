@@ -8,13 +8,13 @@
           <MazBtn :to="{ name: 'index' }" color="transparent"> Home </MazBtn>
           <MazBtn :to="{ name: 'test-page' }" color="transparent"> Test page </MazBtn>
 
-          <MazDropdown id="dropdown" color="transparent" open position="bottom right">
+          <MazDropdown id="dropdown" open color="transparent" position="bottom right">
             <span class="maz-capitalize">
               {{ selectedTheme }}
             </span>
 
             <template #dropdown>
-              <div class="maz-flex maz-flex-col">
+              <div class="maz-grid maz-grid-cols-2">
                 <MazBtn color="transparent" content-class="maz-text-nowrap" @click="autoSetTheme">
                   Auto
                 </MazBtn>

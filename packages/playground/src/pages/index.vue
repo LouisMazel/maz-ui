@@ -3,6 +3,8 @@
     <div>
       <!-- Start Developping Area - You should not commit anything here to keep this place clean for all others -->
 
+      <MazPhoneNumberInput :id="id" v-model="phone" label="Phone number" />
+
       <!-- End Developping Area -->
     </div>
 
@@ -17,6 +19,10 @@
 
   const toast = useToast()
   const wait = useWait()
+
+  const id = useId()
+
+  const phone = ref<string>()
 
   onMounted(async () => {
     wait.start('APP_LOADING')
