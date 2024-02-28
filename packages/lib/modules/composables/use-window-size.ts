@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { isClient } from './../helpers/is-client'
 
 export interface UseWindowSizeOptions {
@@ -42,7 +42,7 @@ export function useWindowSize(options: UseWindowSizeOptions = {}) {
   const width = ref(initialWidth)
   const height = ref(initialHeight)
 
-  const update = () => {
+  function update() {
     if (internalWindow) {
       if (includeScrollbar) {
         width.value = internalWindow.innerWidth
@@ -56,9 +56,17 @@ export function useWindowSize(options: UseWindowSizeOptions = {}) {
 
   update()
 
-  if (internalWindow) {
-    window.addEventListener('resize', update, { passive: true })
-  }
+  onMounted(() => {
+    if (internalWindow) {
+      window.addEventListener('resize', update, { passive: true })
+    }
+  })
+
+  onUnmounted(() => {
+    if (internalWindow) {
+      window.removeEventListener('resize', update)
+    }
+  })
 
   return { width, height }
 }
