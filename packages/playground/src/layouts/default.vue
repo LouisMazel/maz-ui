@@ -5,12 +5,31 @@
         <NuxtLink :to="{ name: 'index' }"> MazUi </NuxtLink>
 
         <nav>
-          <MazBtn :to="{ name: 'index' }"> Home </MazBtn>
-          <MazBtn :to="{ name: 'test-page' }"> Test page </MazBtn>
-          <MazBtn @click="autoSetTheme"> Auto </MazBtn>
-          <MazBtn @click="setDarkTheme"> Dark theme </MazBtn>
-          <MazBtn @click="setLightTheme"> Light theme </MazBtn>
-          <MazBtn @click="setSystemTheme"> System theme </MazBtn>
+          <MazBtn :to="{ name: 'index' }" color="transparent"> Home </MazBtn>
+          <MazBtn :to="{ name: 'test-page' }" color="transparent"> Test page </MazBtn>
+
+          <MazDropdown id="dropdown" color="transparent" open position="bottom right">
+            <span class="maz-capitalize">
+              {{ selectedTheme }}
+            </span>
+
+            <template #dropdown>
+              <div class="maz-flex maz-flex-col">
+                <MazBtn color="transparent" content-class="maz-text-nowrap" @click="autoSetTheme">
+                  Auto
+                </MazBtn>
+                <MazBtn color="transparent" content-class="maz-text-nowrap" @click="setDarkTheme">
+                  Dark
+                </MazBtn>
+                <MazBtn color="transparent" content-class="maz-text-nowrap" @click="setLightTheme">
+                  Light
+                </MazBtn>
+                <MazBtn color="transparent" content-class="maz-text-nowrap" @click="setSystemTheme">
+                  System
+                </MazBtn>
+              </div>
+            </template>
+          </MazDropdown>
         </nav>
       </header>
 
@@ -28,9 +47,10 @@
     return sleep(20000)
   }
 
-  const { autoSetTheme, setSystemTheme, setLightTheme, setDarkTheme } = useThemeHandler()
+  const { autoSetTheme, setSystemTheme, setLightTheme, setDarkTheme, selectedTheme } =
+    useThemeHandler()
 
-  autoSetTheme({ onlyWithStoredValue: true })
+  autoSetTheme()
 </script>
 
 <style lang="postcss">
@@ -48,7 +68,7 @@
       @apply maz-flex maz-w-full maz-flex-wrap maz-items-center maz-justify-between maz-border-b maz-border-color-lighter maz-px-2 maz-py-4;
 
       nav {
-        @apply maz-flex maz-gap-4;
+        @apply maz-flex maz-gap-1;
       }
     }
 
