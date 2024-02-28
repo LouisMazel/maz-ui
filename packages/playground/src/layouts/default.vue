@@ -8,7 +8,7 @@
           <MazBtn :to="{ name: 'index' }" color="transparent"> Home </MazBtn>
           <MazBtn :to="{ name: 'test-page' }" color="transparent"> Test page </MazBtn>
 
-          <MazDropdown id="dropdown" open color="transparent" position="bottom right">
+          <MazDropdown id="dropdown" color="transparent" position="bottom right">
             <span class="maz-capitalize">
               {{ selectedTheme }}
             </span>
