@@ -30,9 +30,6 @@ function getCountryName(
   return displayNamesInstance.of(code)
 }
 
-const PHONE_CHAR_REGEX = /^[\d ().-]+$/
-const NON_ALPHA_REGEX = /^[^a-z]+$/i
-
 let examples: Examples
 
 async function loadPhoneNumberExamplesFile() {
@@ -59,14 +56,9 @@ function sanitizePhoneNumber(input?: string) {
     return ''
   }
 
-  const hasNonAlpha = NON_ALPHA_REGEX.test(input)
-  const hasPhoneChar = PHONE_CHAR_REGEX.test(input)
+  const regex = new RegExp(/[^\d ()+-]/g)
 
-  if (!hasNonAlpha && !hasPhoneChar) {
-    return input.replaceAll(/[^\d.]/g, '')
-  }
-
-  return input
+  return input.replaceAll(regex, '') // Keep only digits, +, (, ), -, and spaces
 }
 
 function getCountriesList(
