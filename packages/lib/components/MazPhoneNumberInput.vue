@@ -433,8 +433,8 @@
         await loadPhoneNumberExamplesFile()
         examplesFileLoaded.value = true
       }
-    } catch {
-      console.error('[maz-ui](MazPhoneNumberInput) while loading phone number examples file')
+    } catch (error) {
+      console.error('[maz-ui](MazPhoneNumberInput) while loading phone number examples file', error)
     }
   }
 
