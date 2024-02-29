@@ -56,9 +56,9 @@ function sanitizePhoneNumber(input?: string) {
     return ''
   }
 
-  const regex = new RegExp(/[^\d ()+-]/g)
+  const regex = new RegExp(/\D/g)
 
-  return input.replaceAll(regex, '') // Keep only digits, +, (, ), -, and spaces
+  return input.replaceAll(regex, '') // Keep only digits
 }
 
 function getCountriesList(
