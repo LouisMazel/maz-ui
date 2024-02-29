@@ -1,5 +1,25 @@
 # Change Log
 
+## v3.33.0...v3.34.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.33.0...v3.34.0)
+
+### 🚀 Enhancements
+
+- **maz-ui:** MazDropdown - add slot to replace dropdown menu ([0a06e150](https://github.com/LouisMazel/maz-ui/commit/0a06e150))
+- **maz-ui:** UseThemeHandler - add listener to auto update theme when mode system changes ([bfcb6719](https://github.com/LouisMazel/maz-ui/commit/bfcb6719))
+
+### 💅 Refactors
+
+- **playground:** Header - move theme buttons in dropdown ([b4582a1a](https://github.com/LouisMazel/maz-ui/commit/b4582a1a))
+- **playground:** Header - move theme buttons in dropdown ([d48241e3](https://github.com/LouisMazel/maz-ui/commit/d48241e3))
+- **maz-ui:** UseWindowSize - remove listener when component is unmount ([74261fe3](https://github.com/LouisMazel/maz-ui/commit/74261fe3))
+- **playground:** Header - dropdown menu closed by default ([500fe845](https://github.com/LouisMazel/maz-ui/commit/500fe845))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.32.2...v3.33.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.32.2...v3.33.0)
