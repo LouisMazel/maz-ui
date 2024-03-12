@@ -185,11 +185,11 @@
       @apply maz-border-theme maz-bg-theme maz-text-color;
 
       &.--outline {
-        @apply maz-border-gray-200 maz-bg-transparent maz-text-theme dark:maz-border-color-lighter;
+        @apply maz-border-border maz-bg-transparent maz-text-theme dark:maz-border-color-lighter;
       }
 
       &.--pastel {
-        @apply maz-border-gray-200 maz-bg-gray-200 maz-text-black;
+        @apply maz-border-border maz-bg-border maz-text-black;
       }
     }
   }

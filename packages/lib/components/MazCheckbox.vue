@@ -185,7 +185,7 @@
     }
 
     > span {
-      @apply maz-relative maz-flex maz-rounded-md maz-border maz-border-gray-200 maz-transition-all maz-duration-300 maz-ease-in-out maz-flex-center dark:maz-border-color-lighter;
+      @apply maz-relative maz-flex maz-rounded-md maz-border maz-border-border maz-transition-all maz-duration-300 maz-ease-in-out maz-flex-center dark:maz-border-color-lighter;
 
       width: v-bind('checkboxSize');
       height: v-bind('checkboxSize');
@@ -216,7 +216,7 @@
       @apply maz-cursor-not-allowed maz-text-muted;
 
       input:checked ~ span {
-        @apply maz-border-gray-200 dark:maz-border-color-lighter;
+        @apply maz-border-border dark:maz-border-color-lighter;
 
         .check-icon {
           @apply maz-text-muted;

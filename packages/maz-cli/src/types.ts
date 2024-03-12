@@ -25,6 +25,10 @@ export interface MazUiConfig {
       }
     }
     /**
+     * Border color applied to components like: inputs, card, etc
+     */
+    borderColor?: string
+    /**
      * Border width applied to components like: inputs, card, etc
      */
     borderWidth?: string

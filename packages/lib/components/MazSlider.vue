@@ -376,7 +376,7 @@
       user-select: none;
 
       @apply maz-flex maz-items-center maz-justify-center maz-rounded-full maz-border
-        maz-border-gray-200 maz-bg-bg-light maz-shadow-md;
+        maz-border-border maz-bg-bg-light maz-shadow-md;
 
       padding: 0.25em 0.5em;
 
@@ -402,7 +402,7 @@
       }
 
       &:hover {
-        @apply maz-bg-gray-200;
+        @apply maz-bg-border;
       }
     }
 

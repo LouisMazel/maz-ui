@@ -199,6 +199,11 @@ The file is generated!
   --maz-bg-color-dark-lighter: hsl(238deg 17% 28%);
 
   /**
+  * Border of components
+  **/
+  --maz-border-color: hsl(220deg 13.04% 90.98%);
+
+  /**
   * DEFAULT BORDER WIDTH (0.063rem = 1px with a font-size base of 16px)
   **/
   --maz-border-width: 0.063rem;

@@ -110,6 +110,7 @@ function getNormalCSSVariables(config: MazUiConfig) {
         : undefined,
     },
     { key: 'border-width', value: config.theme.borderWidth },
+    { key: 'border-color', value: config.theme.borderColor },
     { key: 'border-radius', value: config.theme.borderRadius },
     {
       key: 'font-family',
