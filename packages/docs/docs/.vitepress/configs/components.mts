@@ -25,7 +25,7 @@ export const components = {
       text: 'Data',
       items: [
         { text: 'MazDropzone', link: '/components/maz-dropzone' },
-        { text: 'MazPicker', link: '/components/maz-picker' },
+        { text: 'MazPicker (date, time, range)', link: '/components/maz-picker' },
         { text: 'MazTable (data-table)', link: '/components/maz-table' },
       ]
     },

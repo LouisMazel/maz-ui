@@ -249,6 +249,7 @@ To enable the range mode, you should provide an object like this `{ start: undef
   :min-date="minMaxDates.min"
   :max-date="minMaxDates.max"
   double
+  auto-close
 />
 
 ```vue
