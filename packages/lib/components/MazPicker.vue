@@ -346,7 +346,9 @@
 
       emitValue(value)
 
-      if (props.autoClose && value !== 'object') {
+      const isRangeMode = typeof value === 'object'
+
+      if (props.autoClose && (!isRangeMode || (isRangeMode && value.end))) {
         closeCalendar()
       }
     },
