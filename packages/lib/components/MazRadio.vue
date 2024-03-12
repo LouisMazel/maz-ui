@@ -118,7 +118,7 @@
     @apply maz-relative maz-inline-flex maz-items-center maz-gap-2 maz-outline-none;
 
     > span {
-      @apply maz-relative maz-flex maz-rounded-full maz-border maz-border-gray-200 maz-transition-all maz-duration-300 maz-ease-in-out maz-flex-center dark:maz-border-color-lighter;
+      @apply maz-relative maz-flex maz-rounded-full maz-border maz-border-border maz-transition-all maz-duration-300 maz-ease-in-out maz-flex-center dark:maz-border-color-lighter;
 
       width: v-bind('radioSize');
       height: v-bind('radioSize');
@@ -155,7 +155,7 @@
 
       &.--selected {
         > span {
-          @apply maz-border-gray-200 dark:maz-border-color-lighter;
+          @apply maz-border-border dark:maz-border-color-lighter;
 
           .round {
             @apply maz-bg-muted;

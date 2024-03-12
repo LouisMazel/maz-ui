@@ -264,7 +264,7 @@
     }
 
     .input-wrapper {
-      @apply maz-relative maz-h-[4em] maz-w-[4em] maz-overflow-hidden maz-rounded maz-border maz-border-solid maz-border-gray-200 maz-transition-colors maz-duration-200 maz-ease-in-out dark:maz-border-color-lighter dark:maz-bg-color-light;
+      @apply maz-relative maz-h-[4em] maz-w-[4em] maz-overflow-hidden maz-rounded maz-border maz-border-solid maz-border-border maz-transition-colors maz-duration-200 maz-ease-in-out dark:maz-border-color-lighter dark:maz-bg-color-light;
 
       &:focus-within {
         @apply maz-outline-none;

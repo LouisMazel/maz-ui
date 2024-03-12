@@ -470,7 +470,7 @@
       @apply maz-relative maz-z-1 maz-flex maz-flex-1 maz-overflow-hidden maz-border maz-border-solid maz-bg-color maz-transition-colors maz-duration-300;
 
       &.--default-border {
-        @apply maz-border-gray-200 dark:maz-border-color-lighter;
+        @apply maz-border-border dark:maz-border-color-lighter;
       }
 
       &-input {

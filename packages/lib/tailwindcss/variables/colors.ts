@@ -7,6 +7,7 @@ export const baseColors = {
   current: 'currentColor',
   normal: 'var(--maz-color-text)',
   color: 'var(--maz-color-bg)',
+  border: 'var(--maz-border-color)',
   'color-light': 'var(--maz-color-bg-light)',
   'color-lighter': 'var(--maz-color-bg-lighter)',
   theme: 'var(--maz-color-bg-theme)',

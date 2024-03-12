@@ -188,7 +188,7 @@
 
         &:first-child,
         &:last-child {
-          @apply maz-border maz-border-gray-200;
+          @apply maz-border maz-border-border;
           @apply maz-px-3 maz-py-0;
           @apply dark:maz-border-color-lighter;
         }

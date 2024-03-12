@@ -178,7 +178,7 @@
       @apply maz-min-h-[6.25rem] maz-w-full maz-resize-y maz-rounded maz-border maz-border-solid maz-bg-color maz-p-4 maz-text-normal maz-outline-none;
 
       &.--default-border {
-        @apply maz-border-gray-200;
+        @apply maz-border-border;
       }
     }
 
@@ -190,7 +190,7 @@
 
     &.--is-disabled {
       textarea {
-        @apply maz-cursor-not-allowed maz-border-gray-200 maz-bg-color-lighter maz-text-muted;
+        @apply maz-cursor-not-allowed maz-border-border maz-bg-color-lighter maz-text-muted;
       }
     }
 

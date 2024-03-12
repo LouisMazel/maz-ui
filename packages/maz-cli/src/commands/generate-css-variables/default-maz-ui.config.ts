@@ -23,6 +23,7 @@ export const defaultMazUiConfig = defineConfig({
       },
     },
     borderWidth: '0.125rem',
+    borderColor: 'hsl(220deg 13.04% 90.98%)',
     borderRadius: '0.5rem',
     fontFamily: `system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, oxygen,
     ubuntu, cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif`,

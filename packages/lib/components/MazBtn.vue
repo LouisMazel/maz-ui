@@ -367,7 +367,7 @@
       &:not(.--disabled) {
         &:hover,
         &:focus {
-          @apply maz-bg-gray-200;
+          @apply maz-bg-border;
         }
       }
 
@@ -575,7 +575,7 @@
       }
 
       &.--theme-outline {
-        @apply maz-border-gray-200 maz-text-theme dark:maz-border-color-lighter;
+        @apply maz-border-border maz-text-theme dark:maz-border-color-lighter;
 
         &:not(:disabled):hover,
         &:not(:disabled):focus {
@@ -649,7 +649,7 @@
       }
 
       &.--black-pastel {
-        @apply maz-bg-gray-200 maz-text-black;
+        @apply maz-bg-border maz-text-black;
 
         &:not(:disabled):hover,
         &:not(:disabled):focus {
@@ -658,7 +658,7 @@
       }
 
       &.--theme-pastel {
-        @apply maz-bg-gray-200 maz-text-black;
+        @apply maz-bg-border maz-text-black;
 
         &:not(:disabled):hover,
         &:not(:disabled):focus {
