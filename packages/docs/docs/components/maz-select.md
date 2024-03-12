@@ -92,6 +92,37 @@ You can use your own template to replace the empty icon when no results are foun
 />
 ```
 
+## Opt Group
+
+Group your options like a native optgroup
+
+<MazSelect
+  v-model="optGroupValue"
+  label="Select options"
+  :options="optGroup"
+  multiple
+/>
+
+```vue
+<template>
+  <MazSelect
+    v-model="optGroupValue"
+    label="Select option"
+    :options="optGroup"
+    multiple
+  />
+</template>
+
+<script setup lang="ts">
+  import { ref } from 'vue'
+  const selectedValue = ref()
+  const optGroup = [
+    { label: 'Basic colors', options: ['primary', 'secondary', 'danger'] },
+    { label: 'Custom colors', options: [{ label: 'third', value: 'third' }] },
+  ]
+</script>
+```
+
 ## Custom template options
 
 <br />
@@ -137,10 +168,10 @@ You can use your own template to replace the empty icon when no results are foun
   const selectedUser = ref()
 
   const customTemplateOptions = [
-    { picture: 'https://placekitten.com/100/100', label: 'James Kitten', value: 1 },
-    { picture: 'https://placekitten.com/500/500', label: 'Brad Kitten', value: 2 },
-    { picture: 'https://placekitten.com/300/300', label: 'Cedric Kitten', value: 3 },
-    { picture: 'https://placekitten.com/400/400', label: 'Harry Kitten', value: 4 },
+    { picture: 'https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&seed=JamesSmile', label: 'James Smile', value: 1 },
+    { picture: 'https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&seed=BradSmile', label: 'Brad Smile', value: 2 },
+    { picture: 'https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&seed=CedricSmile', label: 'Cedric Smile', value: 3 },
+    { picture: 'https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&seed=HarrySmile', label: 'Harry Smile', value: 4 },
   ]
 </script>
 ```
@@ -202,6 +233,7 @@ If you want custom keys of these options, you can use:
 <script setup lang="ts">
   import { ref } from 'vue'
 
+  const optGroupValue = ref()
   const selectedValue = ref()
   const selectedValueCustom = ref('danger')
   const selectedUser = ref()
@@ -218,11 +250,16 @@ If you want custom keys of these options, you can use:
     { label: 'black', value: 'black' },
   ]
 
+  const optGroup = [
+    { label: 'Basic colors', options: ['primary', 'secondary', 'danger'] },
+    { label: 'Custom colors', options: [{ label: 'third', value: 'third' }] },
+  ]
+
   const customTemplateOptions = [
-    { picture: 'https://placekitten.com/100/100', label: 'James Kitten', value: 1 },
-    { picture: 'https://placekitten.com/500/500', label: 'Brad Kitten', value: 2 },
-    { picture: 'https://placekitten.com/300/300', label: 'Cedric Kitten', value: 3 },
-    { picture: 'https://placekitten.com/400/400', label: 'Harry Kitten', value: 4 },
+    { picture: 'https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&seed=JamesSmile', label: 'James Smile', value: 1 },
+    { picture: 'https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&seed=BradSmile', label: 'Brad Smile', value: 2 },
+    { picture: 'https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&seed=CedricSmile', label: 'Cedric Smile', value: 3 },
+    { picture: 'https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&seed=HarrySmile', label: 'Harry Smile', value: 4 },
   ]
 
   const customOptions = [

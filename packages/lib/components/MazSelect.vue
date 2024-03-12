@@ -75,40 +75,55 @@
           </span>
         </slot>
         <div v-else class="m-select-list__scroll-wrapper" tabindex="-1">
-          <button
-            v-for="(option, i) in optionsList"
-            :key="i"
-            tabindex="-1"
-            type="button"
-            class="m-select-list-item maz-custom maz-flex-none"
-            :class="[
-              {
-                '--is-keyboard-selected': tmpModelValueIndex === i,
-                '--is-selected': isSelectedOption(option),
-                '--is-none-value': isNullOrUndefined(option[optionValueKey]),
-              },
-            ]"
-            :style="itemHeight ? { minHeight: `${itemHeight}px` } : undefined"
-            @click.prevent.stop="updateValue(option)"
-          >
-            <MazCheckbox
-              v-if="multiple"
-              tabindex="-1"
-              :model-value="isSelectedOption(option)"
-              size="sm"
-              :color="color"
-            />
+          <template v-for="(option, i) in optionsList" :key="i">
             <!--
-              @slot Custom option
-                @binding {Object} option
-                @binding {Boolean} is-selected
+              @slot Custom optgroup label
+                @binding {String} label - the label of the optgroup
             -->
-            <slot :option="option" :is-selected="isSelectedOption(option)">
-              <span>
-                {{ option[optionLabelKey] }}
+            <slot
+              v-if="option.label && !option[optionValueKey]"
+              name="optgroup"
+              :label="option.label"
+            >
+              <span class="m-select-list-optgroup">
+                {{ option.label }}
               </span>
             </slot>
-          </button>
+
+            <button
+              v-else
+              tabindex="-1"
+              type="button"
+              class="m-select-list-item maz-custom maz-flex-none"
+              :class="[
+                {
+                  '--is-keyboard-selected': tmpModelValueIndex === i,
+                  '--is-selected': isSelectedOption(option),
+                  '--is-none-value': isNullOrUndefined(option[optionValueKey]),
+                },
+              ]"
+              :style="itemHeight ? { minHeight: `${itemHeight}px` } : undefined"
+              @click.prevent.stop="updateValue(option)"
+            >
+              <MazCheckbox
+                v-if="multiple"
+                tabindex="-1"
+                :model-value="isSelectedOption(option)"
+                size="sm"
+                :color="color"
+              />
+              <!--
+                @slot Custom option
+                  @binding {Object} option - the option object
+                  @binding {Boolean} is-selected - if the option is selected
+              -->
+              <slot :option="option" :is-selected="isSelectedOption(option)">
+                <span>
+                  {{ option[optionLabelKey] }}
+                </span>
+              </slot>
+            </button>
+          </template>
         </div>
       </div>
     </Transition>
@@ -131,8 +146,18 @@
   import { useInstanceUniqId } from '../modules/composables'
   import { debounceCallback } from './../modules/helpers/debounce-callback'
 
-  type NormalizedOption = Record<string, ModelValueSimple>
-  export type MazSelectOption = NormalizedOption | string | number | boolean
+  export type NormalizedOption = Record<string, ModelValueSimple>
+  export type MazSelectOptionWithOptGroup = {
+    label: string
+    options: (NormalizedOption | string | number | boolean)[]
+  }
+  export type MazSelectOption =
+    | NormalizedOption
+    | string
+    | number
+    | boolean
+    | MazSelectOptionWithOptGroup
+
   export type { Color, Size, ModelValueSimple, Position }
 
   const MazCheckbox = defineAsyncComponent(() => import('./MazCheckbox.vue'))
@@ -278,24 +303,48 @@
     providedId: props.id,
   })
 
-  const optionsNormalized = computed<NormalizedOption[] | undefined>(() =>
-    props.options?.map((option) => {
-      if (typeof option === 'string' || typeof option === 'number' || typeof option === 'boolean') {
-        return {
-          [props.optionValueKey]: option,
-          [props.optionLabelKey]: option,
-          [props.optionInputValueKey]: option,
-        }
-      }
+  function getOptionPayload(option: string | number | boolean): NormalizedOption {
+    return {
+      [props.optionValueKey]: option,
+      [props.optionLabelKey]: option,
+      [props.optionInputValueKey]: option,
+    }
+  }
+  function getNormalizedOptionPayload(option: NormalizedOption): NormalizedOption {
+    return {
+      ...option,
+      [props.optionValueKey]: option[props.optionValueKey],
+      [props.optionLabelKey]: option[props.optionLabelKey],
+      [props.optionInputValueKey]: option[props.optionInputValueKey],
+    }
+  }
 
-      return {
-        ...option,
-        [props.optionValueKey]: option[props.optionValueKey],
-        [props.optionLabelKey]: option[props.optionLabelKey],
-        [props.optionInputValueKey]: option[props.optionInputValueKey],
+  const optionsNormalized = computed<NormalizedOption[]>(() => {
+    const normalizedOptions: NormalizedOption[] = []
+
+    if (!props.options?.length) {
+      return []
+    }
+
+    for (const option of props.options) {
+      if (typeof option === 'string' || typeof option === 'number' || typeof option === 'boolean') {
+        normalizedOptions.push(getOptionPayload(option))
+      } else if ('options' in option && Array.isArray(option.options)) {
+        normalizedOptions.push(
+          { label: option.label },
+          ...option.options.map((opt) =>
+            typeof opt === 'string' || typeof opt === 'number' || typeof opt === 'boolean'
+              ? getOptionPayload(opt)
+              : getNormalizedOptionPayload(opt),
+          ),
+        )
+      } else {
+        normalizedOptions.push(getNormalizedOptionPayload(option as NormalizedOption))
       }
-    }),
-  )
+    }
+
+    return normalizedOptions
+  })
 
   const selectedOptions = computed(
     () =>
@@ -348,7 +397,7 @@
     }
 
     return optionsNormalized.value?.find(
-      (option) => option[props.optionValueKey] === props.modelValue,
+      (option) => props.modelValue && option[props.optionValueKey] === props.modelValue,
     )?.[props.optionInputValueKey]
   })
 
@@ -660,6 +709,10 @@
     .m-select-list {
       @apply maz-absolute maz-z-default-backdrop maz-flex maz-flex-col maz-gap-1 maz-overflow-hidden maz-rounded maz-bg-color maz-p-2 maz-elevation dark:maz-border dark:maz-border-color-light;
 
+      &-optgroup {
+        @apply maz-flex-none maz-p-0.5 maz-text-left maz-text-[0.875em] maz-text-muted;
+      }
+
       min-width: 3.5rem;
 
       &.--top {
@@ -712,6 +765,10 @@
         &.--is-selected {
           color: v-bind('selectedTextColor');
           background-color: v-bind('selectedBgColor');
+
+          &:hover {
+            background-color: v-bind('keyboardSelectedBgColor');
+          }
 
           &.--transparent {
             @apply maz-bg-color;
