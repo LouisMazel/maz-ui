@@ -19,6 +19,7 @@ export function generateComponentsDocumentationCommand(): Command {
           console.log('')
         } else {
           await execPromise('vue-docgen')
+
           console.log('')
           console.log(chalk.bold.green('Components documentation generated'))
           console.log('')

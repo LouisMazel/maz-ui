@@ -32,3 +32,6 @@ jobs:
 
       - name: Build lib
         run: pnpm -r build
+
+      - name: Cat docs generated docs
+        run: cat ./packages/docs/docs/.vitepress/dist/components/maz-picker.html
