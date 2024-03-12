@@ -1,5 +1,27 @@
 # Change Log
 
+## v3.34.0...v3.34.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.34.0...v3.34.1)
+
+### 🩹 Fixes
+
+- **docs:** Generated docs of components ([46db81b2](https://github.com/LouisMazel/maz-ui/commit/46db81b2))
+- **docs:** Generated docs of components ([a430f110](https://github.com/LouisMazel/maz-ui/commit/a430f110))
+
+### 💅 Refactors
+
+- Add CSS variables to choose color of component's borders ([6cc84d9f](https://github.com/LouisMazel/maz-ui/commit/6cc84d9f))
+- **maz-ui:** MazPicker - enable auto-close feature for range date picker ([a3bbb23c](https://github.com/LouisMazel/maz-ui/commit/a3bbb23c))
+
+### 🏡 Chore
+
+- **deps:** Upgrade dependencies ([befca9f9](https://github.com/LouisMazel/maz-ui/commit/befca9f9))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.33.0...v3.34.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.33.0...v3.34.0)
