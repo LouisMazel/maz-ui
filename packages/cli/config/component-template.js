@@ -1,6 +1,6 @@
 /** @type {import('vue-docgen-cli').Templates['component']} */
 // eslint-disable-next-line sonarjs/cognitive-complexity
-export async function component(renderedUsage, document_, _config, _fileName, requiresMd, _subs) {
+export function component(renderedUsage, document_, _config, _fileName, requiresMd, _subs) {
   const { description, tags, functional } = document_
   const { deprecated, author, since, version, see, link } = tags || {}
 
