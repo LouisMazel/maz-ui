@@ -7,7 +7,6 @@ import { resolve, join } from 'node:path'
 import { defineConfig } from 'vue-docgen-cli'
 import { component } from './config/component-template.js'
 
-// @ts-expect-error
 const _dirname = fileURLToPath(new URL('.', import.meta.url))
 
 export default defineConfig({
