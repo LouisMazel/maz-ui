@@ -77,6 +77,6 @@
     }
   },
   "dependencies": {
-    "@commitlint/cli": "^18.6.1"
+    "@commitlint/cli": "^19.1.0"
   }
 }
