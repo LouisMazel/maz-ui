@@ -47,8 +47,8 @@ describe('components/MazSelect.vue', () => {
 
   test('Should show the option label on input for false value', async () => {
     await wrapper.setProps({
-      modelValue: false,
-      options: [{ label: 'Label', value: false }],
+      modelValue: '1',
+      options: [{ label: 'Label', value: '1' }],
     })
 
     expect(wrapper.vm.mazInputValue).toBe('Label')
@@ -101,10 +101,43 @@ describe('components/MazSelect.vue', () => {
     await wrapper.vm.$nextTick()
 
     // Selecting the second option should update the input value and emit a change event with the option value
-    wrapper.findAll('.m-select-list-item').at(0).trigger('click')
+    wrapper.findAll('.m-select-list-item').at(0)?.trigger('click')
     await wrapper.vm.$nextTick()
     expect(wrapper.vm.mazInputValue).toBe('Test 1')
-    expect(wrapper.emitted()['update:model-value'][0][0]).toBe(1)
+    expect(wrapper.emitted('update:model-value')?.[0][0]).toBe(1)
+  })
+
+  test('I can group options', async () => {
+    await wrapper.setProps({
+      modelValue: undefined,
+      options: [
+        {
+          label: 'Group 1',
+          options: [
+            { label: 'Test 1', value: 1 },
+            { label: 'Test 2', value: 2 },
+          ],
+        },
+        {
+          label: 'Group 2',
+          options: [
+            { label: 'Test 3', value: 3 },
+            { label: 'Test 4', value: 4 },
+          ],
+        },
+      ],
+    })
+
+    await wrapper.vm.$nextTick()
+
+    expect(wrapper.vm.optionsNormalized).toStrictEqual([
+      { label: 'Group 1' },
+      { label: 'Test 1', value: 1 },
+      { label: 'Test 2', value: 2 },
+      { label: 'Group 2' },
+      { label: 'Test 3', value: 3 },
+      { label: 'Test 4', value: 4 },
+    ])
   })
 
   test('I can select multiple values', async () => {
@@ -121,11 +154,11 @@ describe('components/MazSelect.vue', () => {
 
     await wrapper.vm.$nextTick()
 
-    await wrapper.findAll('.m-select-list-item').at(3).trigger('click')
-    expect(wrapper.emitted('update:model-value')[0][0]).toEqual([4])
-    await wrapper.findAll('.m-select-list-item').at(4).trigger('click')
-    expect(wrapper.emitted('update:model-value')[1][0]).toEqual([4, 5])
-    await wrapper.findAll('.m-select-list-item').at(3).trigger('click')
-    expect(wrapper.emitted('update:model-value')[2][0]).toEqual([5])
+    await wrapper.findAll('.m-select-list-item').at(3)?.trigger('click')
+    expect(wrapper.emitted('update:model-value')?.[0][0]).toEqual([4])
+    await wrapper.findAll('.m-select-list-item').at(4)?.trigger('click')
+    expect(wrapper.emitted('update:model-value')?.[1][0]).toEqual([4, 5])
+    await wrapper.findAll('.m-select-list-item').at(3)?.trigger('click')
+    expect(wrapper.emitted('update:model-value')?.[2][0]).toEqual([5])
   })
 })
