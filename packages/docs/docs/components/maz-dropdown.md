@@ -189,9 +189,9 @@ You can provide a template to replace menuitem labels to add more elements in ea
 
 <MazDropdown
   :items="[
-    { label: 'Action', action: () => toast.success('CLICKED'), additionnalData: 'https://placekitten.com/240/200' },
-    { label: 'Link (href)', href: 'https://www.google.com', target: '_blank', additionnalData: 'https://placekitten.com/340/300' },
-    { label: 'Router Link', to: { name: 'index' }, additionnalData: 'https://placekitten.com/440/400' },
+    { label: 'Action', action: () => toast.success('CLICKED'), additionnalData: 'https://loremflickr.com/240/200' },
+    { label: 'Link (href)', href: 'https://www.google.com', target: '_blank', additionnalData: 'https://loremflickr.com/340/300' },
+    { label: 'Router Link', to: { name: 'index' }, additionnalData: 'https://loremflickr.com/440/400' },
   ]"
 >
   <template #default>
@@ -213,9 +213,9 @@ You can provide a template to replace menuitem labels to add more elements in ea
 ```html
 <MazDropdown
   :items="[
-    { label: 'Action', action: () => toast.success('CLICKED'), additionnalData: 'https://placekitten.com/240/200' },
-    { label: 'Link (href)', href: 'https://www.google.com', target: '_blank', additionnalData: 'https://placekitten.com/340/300' },
-    { label: 'Router Link', to: { name: 'index' }, additionnalData: 'https://placekitten.com/440/400' },
+    { label: 'Action', action: () => toast.success('CLICKED'), additionnalData: 'https://loremflickr.com/240/200' },
+    { label: 'Link (href)', href: 'https://www.google.com', target: '_blank', additionnalData: 'https://loremflickr.com/340/300' },
+    { label: 'Router Link', to: { name: 'index' }, additionnalData: 'https://loremflickr.com/440/400' },
   ]"
 >
   <template #default>
@@ -249,18 +249,18 @@ Add `tabindex="-1"` attribute to your element to avoid a double focus with Tab k
       {
         label: 'Action',
         action: () => toast.success('CLICKED'),
-        additionnalData: 'https://placekitten.com/240/200',
+        additionnalData: 'https://loremflickr.com/240/200',
       },
       {
         label: 'Link (href)',
         href: 'https://www.google.com',
         target: '_blank',
-        additionnalData: 'https://placekitten.com/340/300',
+        additionnalData: 'https://loremflickr.com/340/300',
       },
       {
         label: 'Router Link',
         to: { name: 'index' },
-        additionnalData: 'https://placekitten.com/440/400',
+        additionnalData: 'https://loremflickr.com/440/400',
       },
     ]"
   >
@@ -268,7 +268,7 @@ Add `tabindex="-1"` attribute to your element to avoid a double focus with Tab k
       <MazAvatar
         clickable
         no-clickable-icon
-        src="https://cdn.artphotolimited.com/images/5ff5a529bd40b83c5a537440/1000x1000/gerard-depardieu-1983.jpg"
+        src="https://loremflickr.com/200/200"
         tabindex="-1"
       />
     </template>
@@ -280,18 +280,18 @@ Add `tabindex="-1"` attribute to your element to avoid a double focus with Tab k
       {
         label: 'Action',
         action: () => toast.success('CLICKED'),
-        additionnalData: 'https://placekitten.com/240/200',
+        additionnalData: 'https://loremflickr.com/240/200',
       },
       {
         label: 'Link (href)',
         href: 'https://www.google.com',
         target: '_blank',
-        additionnalData: 'https://placekitten.com/340/300',
+        additionnalData: 'https://loremflickr.com/340/300',
       },
       {
         label: 'Router Link',
         to: { name: 'index' },
-        additionnalData: 'https://placekitten.com/440/400',
+        additionnalData: 'https://loremflickr.com/440/400',
       },
     ]"
   >
@@ -311,18 +311,18 @@ Add `tabindex="-1"` attribute to your element to avoid a double focus with Tab k
     {
       label: 'Action',
       action: () => toast.success('CLICKED'),
-      additionnalData: 'https://placekitten.com/240/200',
+      additionnalData: 'https://loremflickr.com/240/200',
     },
     {
       label: 'Link (href)',
       href: 'https://www.google.com',
       target: '_blank',
-      additionnalData: 'https://placekitten.com/340/300',
+      additionnalData: 'https://loremflickr.com/340/300',
     },
     {
       label: 'Router Link',
       to: { name: 'index' },
-      additionnalData: 'https://placekitten.com/440/400',
+      additionnalData: 'https://loremflickr.com/440/400',
     },
   ]"
 >
@@ -342,18 +342,18 @@ Add `tabindex="-1"` attribute to your element to avoid a double focus with Tab k
     {
       label: 'Action',
       action: () => toast.success('CLICKED'),
-      additionnalData: 'https://placekitten.com/240/200',
+      additionnalData: 'https://loremflickr.com/240/200',
     },
     {
       label: 'Link (href)',
       href: 'https://www.google.com',
       target: '_blank',
-      additionnalData: 'https://placekitten.com/340/300',
+      additionnalData: 'https://loremflickr.com/340/300',
     },
     {
       label: 'Router Link',
       to: { name: 'index' },
-      additionnalData: 'https://placekitten.com/440/400',
+      additionnalData: 'https://loremflickr.com/440/400',
     },
   ]"
 >

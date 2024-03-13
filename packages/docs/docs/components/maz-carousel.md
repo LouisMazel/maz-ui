@@ -29,7 +29,7 @@ head:
     v-for="(item, i) in Array(8)"
     :key="i"
     :images="[
-      'https://placekitten.com/250/300'
+      'https://loremflickr.com/250/300'
     ]"
     style="min-width: 250px;"
   >
@@ -56,7 +56,7 @@ head:
       v-for="(item, i) in Array(8)"
       :key="i"
       :images="[
-        'https://placekitten.com/250/300'
+        'https://loremflickr.com/250/300'
       ]"
       style="min-width: 250px;"
     >
@@ -93,7 +93,7 @@ This options will display the component without scrollbar only when the componen
       v-for="(item, i) in Array(8)"
       :key="i"
       :images="[
-        'https://placekitten.com/250/300'
+        'https://loremflickr.com/250/300'
       ]"
       style="min-width: 250px;"
     >
