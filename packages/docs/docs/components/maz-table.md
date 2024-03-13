@@ -31,7 +31,7 @@ description: MazTable is designed to be a reusable data table with advanced feat
 
 You can use MazTable and his child component to build a simple table and enjoy the style.
 
-<MazTable size="md" :headers="['#', 'Lastname', 'Firstname', 'Age']">
+<MazTable class="vp-raw" size="md" :headers="['#', 'Lastname', 'Firstname', 'Age']">
   <MazTableRow>
     <MazTableCell>
       1
@@ -136,6 +136,7 @@ You can also provide all your data, the table is auto-generated and you can use 
   hoverable
   background-even
   selected-key="id"
+  class="vp-raw"
   :headers="[
     { label:'#', key: 'index', align: 'center', width: '2rem', sortable: false },
     { label:'Name', key: 'name' },
@@ -367,7 +368,7 @@ You can also provide all your data, the table is auto-generated and you can use 
 
 Enable the loading state with the prop `loading`
 
-<MazTable loading :headers="['#', 'Lastname', 'Firstname', 'Age']">
+<MazTable loading class="vp-raw" :headers="['#', 'Lastname', 'Firstname', 'Age']">
   <MazTableRow>
     <MazTableCell>
       1
@@ -422,7 +423,7 @@ Enable the loading state with the prop `loading`
 
 Available sizes: `'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'`
 
-<MazTable size="xs" :headers="['#', 'Lastname', 'Firstname', 'Age']">
+<MazTable class="vp-raw" size="xs" :headers="['#', 'Lastname', 'Firstname', 'Age']">
   <MazTableRow>
     <MazTableCell>
       1
@@ -439,7 +440,7 @@ Available sizes: `'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'`
   </MazTableRow>
 </MazTable>
 <br />
-<MazTable size="md" :headers="['#', 'Lastname', 'Firstname', 'Age']">
+<MazTable class="vp-raw" size="md" :headers="['#', 'Lastname', 'Firstname', 'Age']">
   <MazTableRow>
     <MazTableCell>
       1
@@ -456,7 +457,7 @@ Available sizes: `'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'`
   </MazTableRow>
 </MazTable>
 <br />
-<MazTable size="lg" :headers="['#', 'Lastname', 'Firstname', 'Age']">
+<MazTable class="vp-raw" size="lg" :headers="['#', 'Lastname', 'Firstname', 'Age']">
   <MazTableRow>
     <MazTableCell>
       1
@@ -548,35 +549,3 @@ type HeadersEnriched = {
 ## MazTableTitle
 
 <!--@include: ./../.vitepress/generated-docs/maz-table-title.doc.md-->
-
-<style lang="postcss">
-  .m-table {
-    table {
-      display: inherit;
-      margin: inherit;
-      overflow-x: inherit;
-
-      tr {
-        background-color: inherit;
-        border-top: inherit;
-        transition: inherit;
-
-        th, td {
-          /* text-align: inherit; */
-          background-color: inherit;
-          border: none;
-          padding: inherit;
-        }
-
-        &:nth-child(2n) {
-          background-color: inherit;
-        }
-      }
-    }
-  }
-
-  .vp-doc th {
-    text-align: inherit;
-  }
-
-</style>

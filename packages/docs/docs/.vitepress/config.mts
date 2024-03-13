@@ -1,9 +1,16 @@
-import { defineConfig, HeadConfig } from 'vitepress'
+import { defineConfig, HeadConfig, postcssIsolateStyles } from 'vitepress'
 import { sidebar, head, nav } from './configs/index.mjs'
 import { join } from 'node:path'
 import svgLoader from 'vite-svg-loader'
 import { fileURLToPath } from 'node:url'
 import { getOgImage } from './og-image'
+
+import postcssNested from 'postcss-nested'
+import postcssUrl from 'postcss-url'
+import tailwindcssNesting from 'tailwindcss/nesting'
+import postcssImport from 'postcss-import'
+import autoprefixer from 'autoprefixer'
+import tailwind from 'tailwindcss'
 
 const _dirname = fileURLToPath(new URL('.', import.meta.url))
 
@@ -86,6 +93,21 @@ export default defineConfig({
         allow: [join(_dirname, './../../../lib')],
       },
     },
+    css: {
+      postcss: {
+        plugins: [
+          postcssUrl,
+          postcssNested,
+          tailwindcssNesting,
+          postcssImport,
+          autoprefixer,
+          tailwind,
+          postcssIsolateStyles({
+            includeFiles: [/vp-doc\.css/]
+          }),
+        ],
+      },
+    }
   },
 
   transformHead: async ({ siteConfig, siteData, pageData, title, description, head }) => {
