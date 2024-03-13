@@ -1,6 +1,6 @@
 {
   "name": "root",
-  "version": "3.34.1",
+  "version": "3.35.0",
   "description": "A standalone components library for Vue.Js & Nuxt.Js (v3.x)",
   "scripts": {
     "preinstall": "npx only-allow pnpm",

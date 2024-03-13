@@ -1,5 +1,17 @@
 # Change Log
 
+## v3.34.1...v3.35.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.34.1...v3.35.0)
+
+### 🚀 Enhancements
+
+- **maz-ui:** MazSelect - add optgroup ([b1053340](https://github.com/LouisMazel/maz-ui/commit/b1053340))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.34.0...v3.34.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.34.0...v3.34.1)
