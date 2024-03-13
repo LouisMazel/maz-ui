@@ -52,7 +52,7 @@ description: MazTabs is a standalone component to display content in tabs with a
 
   const tabs: MazTabsBarItem[] = [
     { label: 'First Tab', disabled: false },
-    { label: 'Second Tab', disabled: false, badge: { color: 'danger', value: 1, roundedSize: 'full' } },
+    { label: 'Second Tab', disabled: false, badge: { color: 'danger', content: 1, roundedSize: 'full' } },
     { label: 'Third Tab', disabled: true },
   ]
 </script>
@@ -144,20 +144,6 @@ You can choose the name of this query parameter with the props `query-param` `@d
   </MazTabsContent>
 </MazTabs>
 
-<script lang="ts" setup>
-  import { ref } from 'vue'
-
-  const currentTab = ref(2)
-
-  const tabs: MazTabsBarItem[] = [
-    { label: 'First Tab', disabled: false },
-    { label: 'Second Tab', disabled: false, badge: { color: 'danger', value: '1', roundedSize: 'full' } },
-    { label: 'Third Tab', disabled: true },
-  ]
-
-  const tabs2: MazTabsBarItem[] = ['First Tab', 'Second Tab', 'Third Tab']
-</script>
-
 ## Custom tabs with slot
 
 <MazTabs>
@@ -193,6 +179,20 @@ You can choose the name of this query parameter with the props `query-param` `@d
 </MazTabs>
 ```
 
+<script lang="ts" setup>
+  import { ref } from 'vue'
+
+  const currentTab = ref(2)
+
+  const tabs: MazTabsBarItem[] = [
+    { label: 'First Tab', disabled: false },
+    { label: 'Second Tab', disabled: false, badge: { color: 'danger', content: 1, roundedSize: 'full' } },
+    { label: 'Third Tab', disabled: true },
+  ]
+
+  const tabs2: MazTabsBarItem[] = ['First Tab', 'Second Tab', 'Third Tab', 'Fourth Tab', 'Fifth Tab', 'Sixth Tab', 'Seventh Tab', 'Eighth Tab', 'Ninth Tab', 'Tenth Tab']
+</script>
+
 ## Types
 
 ```ts
@@ -201,7 +201,7 @@ type MazTabsBarItem =
       label: string
       disabled?: boolean
       badge?: {
-        value: string | number
+        content: string | number
         color?: BadgeColor
         pastel?: boolean
         outline?: boolean
