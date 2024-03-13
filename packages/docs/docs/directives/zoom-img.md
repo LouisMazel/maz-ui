@@ -15,13 +15,13 @@ description: vZoomImg is a Vue 3 directive to enlarge an image like a modal on c
 
 <MazCard overflow-hidden>
   <img
-    src="https://cdn.artphotolimited.com/images/5ff5a529bd40b83c5a537440/1000x1000/gerard-depardieu-1983.jpg"
-    v-zoom-img="{ src: 'https://cdn.artphotolimited.com/images/5ff5a529bd40b83c5a537440/1000x1000/gerard-depardieu-1983.jpg' }"
+    src="https://loremflickr.com/1500/1000"
+    v-zoom-img="{ src: 'https://loremflickr.com/1500/1000' }"
   />
 </MazCard>
 <br />
 <br />
-<MazBtn v-zoom-img="{ src: 'https://placekitten.com/1000/500' }">
+<MazBtn v-zoom-img="{ src: 'https://loremflickr.com/1000/500' }">
   Show photo
 </MazBtn>
 
@@ -29,12 +29,12 @@ description: vZoomImg is a Vue 3 directive to enlarge an image like a modal on c
 <template>
   <MazCard overflow-hidden>
     <img
-      src="https://cdn.artphotolimited.com/images/5ff5a529bd40b83c5a537440/1000x1000/gerard-depardieu-1983.jpg"
-      v-zoom-img="{ src: 'https://cdn.artphotolimited.com/images/5ff5a529bd40b83c5a537440/1000x1000/gerard-depardieu-1983.jpg' }"
+      src="https://loremflickr.com/1500/1000"
+      v-zoom-img="{ src: 'https://loremflickr.com/1500/1000' }"
     />
   </MazCard>
 
-  <MazBtn v-zoom-img="{ src: 'https://placekitten.com/1000/500' }">
+  <MazBtn v-zoom-img="{ src: 'https://loremflickr.com/1000/500' }">
     Show photo
   </MazBtn>
 </template>
@@ -50,7 +50,7 @@ description: vZoomImg is a Vue 3 directive to enlarge an image like a modal on c
 
 <MazCard overflow-hidden>
   <img
-    src="https://www.francetvinfo.fr/pictures/5u9TF9KLx9yxCgqfDV4k0Zk6R3E/752x423/2014/07/01/edd_1.jpg"
+    src="https://loremflickr.com/1200/800"
     v-zoom-img="zoomImgBinding"
   />
 </MazCard>
@@ -59,7 +59,7 @@ description: vZoomImg is a Vue 3 directive to enlarge an image like a modal on c
   import { vZoomImg } from 'maz-ui'
 
   const zoomImgBinding: vZoomImgBinding = {
-    src: 'https://www.francetvinfo.fr/pictures/5u9TF9KLx9yxCgqfDV4k0Zk6R3E/752x423/2014/07/01/edd_1.jpg',
+    src: 'https://loremflickr.com/1200/800',
     alt: 'alt image',
     blur: false,
     scale: false,
@@ -71,7 +71,7 @@ description: vZoomImg is a Vue 3 directive to enlarge an image like a modal on c
 <template>
   <MazCard overflow-hidden>
     <img
-      src="https://www.francetvinfo.fr/pictures/5u9TF9KLx9yxCgqfDV4k0Zk6R3E/752x423/2014/07/01/edd_1.jpg"
+      src="https://loremflickr.com/1200/800"
       v-zoom-img="zoomImgBinding"
     />
   </MazCard>
@@ -81,7 +81,7 @@ description: vZoomImg is a Vue 3 directive to enlarge an image like a modal on c
   import { vZoomImg } from 'maz-ui'
 
   const zoomImgBinding: vZoomImgBinding = {
-    src: 'https://www.francetvinfo.fr/pictures/5u9TF9KLx9yxCgqfDV4k0Zk6R3E/752x423/2014/07/01/edd_1.jpg',
+    src: 'https://loremflickr.com/1200/800',
     alt: 'alt image', // will be set on the zoomed image
     blur: false,
     scale: false,

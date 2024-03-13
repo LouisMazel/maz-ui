@@ -15,11 +15,11 @@ This component uses [vLazyImg](./../directives/lazy-img.md) directive
 
 ## Basic usage
 
-<MazAvatar src="https://placekitten.com/740/600" />
+<MazAvatar src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80" />
 
 ```vue
 <template>
-  <MazAvatar src="https://placekitten.com/740/600" />
+  <MazAvatar src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80" />
 </template>
 
 <script lang="ts" setup>
@@ -39,9 +39,9 @@ See all the options props [here](#props-event-slots)
     size="1.5rem"
   />
   <MazAvatar
-    src="https://placekitten.com/640/600"
+    src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=maz-ui"
     size="2rem"
-    href="https://placekitten.com/640/600"
+    href="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=maz-ui"
     target="_blank"
     rounded-size="none"
     clickable
@@ -52,7 +52,7 @@ See all the options props [here](#props-event-slots)
   </MazAvatar>
 
   <MazAvatar
-    src="https://placekitten.com/200/200"
+    src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=200"
     size="2.5rem"
     clickable
     rounded-size="xl"
@@ -61,7 +61,7 @@ See all the options props [here](#props-event-slots)
   />
 
   <MazAvatar
-    src="https://placekitten.com/740/600"
+    src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=600"
     size="3rem"
     bordered
     noElevation
@@ -75,9 +75,9 @@ See all the options props [here](#props-event-slots)
     size="1.5rem"
   />
   <MazAvatar
-    src="https://placekitten.com/640/600"
+    src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=maz-ui"
     size="2rem"
-    href="https://placekitten.com/640/600"
+    href="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=maz-ui"
     target="_blank"
     rounded-size="none"
     clickable
@@ -88,14 +88,14 @@ See all the options props [here](#props-event-slots)
     </template>
   </MazAvatar>
   <MazAvatar
-    src="https://placekitten.com/200/200"
+    src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=200"
     size="2.5rem"
     clickable
     rounded-size="xl"
     @click="clicked"
   />
   <MazAvatar
-    src="https://placekitten.com/740/600"
+    src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=600"
     size="3rem"
     bordered
   />
@@ -118,11 +118,12 @@ See all the options props [here](#props-event-slots)
 ## Fallback image loaded on error
 
 <MazAvatar
-  fallback-src="https://placekitten.com/200/200"
+  class="vp-raw"
+  fallback-src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=100"
 />
 
 ```html
-<MazAvatar fallback-src="https://placekitten.com/200/200" />
+<MazAvatar fallback-src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=100" />
 ```
 
 <script lang="ts" setup>

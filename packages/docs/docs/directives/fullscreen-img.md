@@ -12,14 +12,14 @@ description: Displays images fullscreen on click
 
 <img
   v-fullscreen-img
-  src="https://focus.telerama.fr/2023/04/11/0/0/2620/2589/1200/0/60/0/90ca012_1681206353942-opaleplus-opale56033-01.jpg"
+  src="https://loremflickr.com/1000/500"
 />
 
 ```vue
 <template>
   <img
     v-fullscreen-img
-    src="https://focus.telerama.fr/2023/04/11/0/0/2620/2589/1200/0/60/0/90ca012_1681206353942-opaleplus-opale56033-01.jpg"
+    src="https://loremflickr.com/1000/500"
   />
 </template>
 
@@ -35,7 +35,7 @@ description: Displays images fullscreen on click
     scaleOnHover: true,
     blurOnHover: true,
   }"
-  src="https://cdn.artphotolimited.com/images/5ff5a529bd40b83c5a537440/1000x1000/gerard-depardieu-1983.jpg"
+  src="https://loremflickr.com/1000/600"
 />
 
 ```html
@@ -44,21 +44,21 @@ description: Displays images fullscreen on click
     scaleOnHover: true,
     blurOnHover: true,
   }"
-  src="https://cdn.artphotolimited.com/images/5ff5a529bd40b83c5a537440/1000x1000/gerard-depardieu-1983.jpg"
+  src="https://loremflickr.com/1000/600"
 />
 ```
 
 ## On custom element
 
 <MazBtn
-  v-fullscreen-img="'https://images.midilibre.fr/api/v1/images/view/5b4c543c8fe56f4b75185454/large/image.jpg'"
+  v-fullscreen-img="'https://loremflickr.com/1000/700'"
 >
   Click me to show image
 </MazBtn>
 
 ```html
 <MazBtn
-  v-fullscreen-img="'https://images.midilibre.fr/api/v1/images/view/5b4c543c8fe56f4b75185454/large/image.jpg'"
+  v-fullscreen-img="'https://loremflickr.com/1000/700'"
 >
   Click me to show image
 </MazBtn>

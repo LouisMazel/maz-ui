@@ -11,7 +11,7 @@ description: MazCard is a standalone component to display some texts and images 
 
 ## Basic usage
 
-<MazCard :images="['https://placekitten.com/600/600']" :gallery-height="300" zoom>
+<MazCard :images="['https://loremflickr.com/600/600']" :gallery-height="300" zoom>
   <template #title>
     <h3 style="margin: 0">
       Cute Kitten
@@ -50,7 +50,7 @@ description: MazCard is a standalone component to display some texts and images 
 ```vue
 <template>
   <MazCard
-    :images="['https://placekitten.com/600/600']"
+    :images="['https://loremflickr.com/600/600']"
     :gallery-height="300"
     zoom
   >
@@ -102,7 +102,7 @@ When you display images, you can change the orientation of the card, available o
 ### Row
 
 <br />
-<MazCard :images="['https://placekitten.com/600/600']" orientation="row">
+<MazCard :images="['https://loremflickr.com/600/600']" orientation="row">
   <template #title>
     <h3 style="margin: 0; margin-bottom: 20px">
       Cute Kitten
@@ -118,7 +118,7 @@ When you display images, you can change the orientation of the card, available o
 ::: details Show code
 
 ```html
-<MazCard :images="['https://placekitten.com/600/600']" orientation="row">
+<MazCard :images="['https://loremflickr.com/600/600']" orientation="row">
   <template #title>
     <h3 style="margin: 0; margin-bottom: 20px">
       Cute Kitten
@@ -138,7 +138,7 @@ When you display images, you can change the orientation of the card, available o
 
 <br />
 
-<MazCard :images="['https://placekitten.com/600/600']" orientation="row-reverse">
+<MazCard :images="['https://loremflickr.com/600/600']" orientation="row-reverse">
   <template #title>
     <h3 style="margin: 0; margin-bottom: 20px">
       Cute Kitten
@@ -155,7 +155,7 @@ When you display images, you can change the orientation of the card, available o
 
 ```html
 <MazCard
-  :images="['https://placekitten.com/600/600']"
+  :images="['https://loremflickr.com/600/600']"
   orientation="row-reverse"
 >
   <template #title>
@@ -178,7 +178,7 @@ When you display images, you can change the orientation of the card, available o
 <br />
 
 <MazCard
-  :images="['https://placekitten.com/600/600']"
+  :images="['https://loremflickr.com/600/600']"
   orientation="column-reverse"
 >
   <template #title>
@@ -197,7 +197,7 @@ When you display images, you can change the orientation of the card, available o
 
 ```html
 <MazCard
-  :images="['https://placekitten.com/600/600']"
+  :images="['https://loremflickr.com/600/600']"
   orientation="column-reverse"
 >
   <template #title>
@@ -294,7 +294,7 @@ To access the link, simply click the card.
 - You can use `:scale="false"` to remove the scale animation on hover
 
 <MazCard
-  :images="['https://placekitten.com/500/500']"
+  :images="['https://loremflickr.com/500/500']"
   href="/components/maz-card#linked-card"
   href-target="_blank"
   style="width: 100%"
@@ -309,7 +309,7 @@ To access the link, simply click the card.
 
 ```html
 <MazCard
-  :images="['https://placekitten.com/1000/1000']"
+  :images="['https://loremflickr.com/1000/1000']"
   href="/components/maz-card#linked-card"
   href-target="_blank"
   scale
@@ -332,7 +332,7 @@ Bordered and has no elevation
 ## Gallery images
 
 <MazCard
-  :images="['https://placekitten.com/600/600', 'https://placekitten.com/700/700', 'https://placekitten.com/400/400', 'https://placekitten.com/300/300']"
+  :images="['https://loremflickr.com/600/600', 'https://loremflickr.com/700/700', 'https://loremflickr.com/400/400', 'https://loremflickr.com/300/300']"
   :images-show-count="3"
   :no-remaining="false"
   zoom
@@ -346,7 +346,7 @@ Bordered and has no elevation
 
 ```html
 <MazCard
-  :images="['https://placekitten.com/600/600', 'https://placekitten.com/700/700', 'https://placekitten.com/400/400', 'https://placekitten.com/300/300']"
+  :images="['https://loremflickr.com/600/600', 'https://loremflickr.com/700/700', 'https://loremflickr.com/400/400', 'https://loremflickr.com/300/300']"
   :images-show-count="3"
   :no-remaining="false"
   zoom

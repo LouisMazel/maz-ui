@@ -12,7 +12,7 @@ description: vLazyImg is a Vue 3 directive to lazy load images with many options
 <img
   style="background-color: var(--maz-color-bg-lighter); width: 80%;"
   class="flex flex-center rounded"
-  v-lazy-img="'https://placekitten.com/1500/1000'"
+  v-lazy-img="'https://loremflickr.com/1500/1000'"
 />
 
 ```vue
@@ -20,7 +20,7 @@ description: vLazyImg is a Vue 3 directive to lazy load images with many options
   <img
     style="background-color: var(--maz-color-bg-lighter); width: 80%;"
     class="flex flex-center rounded"
-    v-lazy-img="'https://placekitten.com/1500/1000'"
+    v-lazy-img="'https://loremflickr.com/1500/1000'"
   />
 </template>
 
@@ -36,7 +36,7 @@ description: vLazyImg is a Vue 3 directive to lazy load images with many options
 <div
   style="height: 200px; width: 100%; background-size: contain;"
   class="flex flex-center rounded"
-  v-lazy-img:bg-image="'https://placekitten.com/1500/1000'"
+  v-lazy-img:bg-image="'https://loremflickr.com/1500/1000'"
 />
 
 ```vue
@@ -44,7 +44,7 @@ description: vLazyImg is a Vue 3 directive to lazy load images with many options
   <div
     style="height: 200px; width: 100%; background-size: contain;"
     class="flex flex-center rounded"
-    v-lazy-img:bg-image="'https://placekitten.com/1500/1000'"
+    v-lazy-img:bg-image="'https://loremflickr.com/1500/1000'"
   />
 </template>
 ```
@@ -73,7 +73,7 @@ description: vLazyImg is a Vue 3 directive to lazy load images with many options
   import { ref } from 'vue'
 
   const lazyBinding: vLazyImgBinding = {
-    src: 'https://cdn.artphotolimited.com/images/5ff5a529bd40b83c5a537440/1000x1000/gerard-depardieu-1983.jpg',
+    src: 'https://loremflickr.com/1500/1000',
     baseClass: 'custom-class',
     loadingClass: 'custom-class-loading',
     loadedClass: 'custom-class-loaded',
@@ -134,7 +134,7 @@ app.mount('#app')
   import { ref } from 'vue'
 
   const lazyBinding: vLazyImgBinding = {
-    src: 'https://cdn.artphotolimited.com/images/5ff5a529bd40b83c5a537440/1000x1000/gerard-depardieu-1983.jpg',
+    src: 'https://loremflickr.com/1500/1000',
     baseClass: 'custom-class',
     loadingClass: 'custom-class-loading',
     loadedClass: 'custom-class-loaded',

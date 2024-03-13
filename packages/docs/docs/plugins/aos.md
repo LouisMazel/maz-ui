@@ -23,7 +23,7 @@ This plugin uses the browser native [Intersection Observer API](https://develope
       data-maz-aos-delay="300"
       data-maz-aos="scale-in"
       size="2rem"
-      src="https://placekitten.com/500/500"
+      src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=maz-ui"
     />
     <div>
       <h1
@@ -32,7 +32,7 @@ This plugin uses the browser native [Intersection Observer API](https://develope
         data-maz-aos-anchor="#parentCard"
         style="margin: 0;"
       >
-        Cat Actor
+        Maz-UI
       </h1>
       <p
         data-maz-aos="zoom-in-left"
@@ -40,7 +40,7 @@ This plugin uses the browser native [Intersection Observer API](https://develope
         style="margin: 0"
         class="maz-text-muted"
       >
-        Actor
+        Library
       </p>
     </div>
   </div>
@@ -50,7 +50,7 @@ This plugin uses the browser native [Intersection Observer API](https://develope
     data-maz-aos-duration="1000"
     style="margin: 0"
   >
-    In the heart of Hollywood's narrow alleyways, there existed an actor like no other—a charismatic feline named Whiskers. With his sleek black fur and piercing eyes, he stole the spotlight in every appearance. Whiskers, known for his versatility and natural talent, seamlessly slipped into dramatic, comedic, or action-packed roles.
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
   </p>
 </MazCard>
 
@@ -61,7 +61,7 @@ This plugin uses the browser native [Intersection Observer API](https://develope
       data-maz-aos-delay="300"
       data-maz-aos="scale-in"
       size="2rem"
-      src="https://placekitten.com/500/500"
+      src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=maz-ui"
     />
     <div>
       <h1
@@ -70,7 +70,7 @@ This plugin uses the browser native [Intersection Observer API](https://develope
         data-maz-aos-anchor="#parentCard"
         style="margin: 0;"
       >
-        Cat Actor
+        Maz-UI
       </h1>
       <p
         data-maz-aos="zoom-in-left"
@@ -78,7 +78,7 @@ This plugin uses the browser native [Intersection Observer API](https://develope
         style="margin: 0"
         class="maz-text-muted"
       >
-        Actor
+        Library
       </p>
     </div>
   </div>
@@ -88,7 +88,7 @@ This plugin uses the browser native [Intersection Observer API](https://develope
     data-maz-aos-duration="1000"
     style="margin: 0"
   >
-    In the heart of Hollywood's narrow alleyways, there existed an actor like no other—a charismatic feline named Whiskers. With his sleek black fur and piercing eyes, he stole the spotlight in every appearance. Whiskers, known for his versatility and natural talent, seamlessly slipped into dramatic, comedic, or action-packed roles.
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
   </p>
 </MazCard>
 ```
@@ -262,7 +262,7 @@ You can run animations programatically with the composable
       data-maz-aos-delay="300"
       data-maz-aos="scale-in"
       size="2rem"
-      src="https://placekitten.com/500/500"
+      src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=maz-ui"
     >
       In the heart of Hollywood's narrow alleyways, there existed an actor like no other—a charismatic feline named Whiskers. With his sleek black fur and piercing eyes, he stole the spotlight in every appearance. Whiskers, known for his versatility and natural talent, seamlessly slipped into dramatic, comedic, or action-packed roles.
     </p>
