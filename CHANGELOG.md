@@ -1,5 +1,17 @@
 # Change Log
 
+## v3.35.0...v3.35.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.35.0...v3.35.1)
+
+### 💅 Refactors
+
+- **maz-ui:** MazTabsBar - improve animations ([dc1b06e8](https://github.com/LouisMazel/maz-ui/commit/dc1b06e8))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.34.1...v3.35.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.34.1...v3.35.0)
