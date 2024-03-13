@@ -7,7 +7,11 @@
       '--elevation': !noElevation,
     }"
   >
-    <div class="m-tabs-bar__indicator" :style="[tabsIndicatorState]"></div>
+    <div
+      class="m-tabs-bar__indicator"
+      :class="{ '--animated': tabsBarHasScrollAnimation }"
+      :style="[tabsIndicatorState]"
+    ></div>
     <template v-for="(item, index) in normalizedItems" :key="index">
       <button
         :ref="(mazBtn) => addElementToItemRefs({ mazBtn, index })"
@@ -32,10 +36,16 @@
             :pastel="item.badge.pastel"
             :outline="item.badge.outline"
             :rounded-size="item.badge.roundedSize"
-            :size="item.badge.size"
-            nowrap
+            :size="item.badge.size ?? '0.7rem'"
+            class="m-tabs-bar__item__badge"
           >
-            {{ item.badge.value }}
+            <!--
+              @slot badge-content - Content in the badge
+                @binding {string | number | boolean} content - content of the badge provided in item
+            -->
+            <slot name="badge-content" :content="item.badge.content">
+              {{ item.badge.content }}
+            </slot>
           </MazBadge>
         </slot>
       </button>
@@ -47,19 +57,18 @@
   import {
     ref,
     computed,
-    watchEffect,
     onBeforeMount,
-    nextTick,
     onMounted,
     defineAsyncComponent,
     type StyleValue,
     type ComponentPublicInstance,
+    watch,
   } from 'vue'
   import type { MazTabsProvide } from './MazTabs.vue'
 
   import { injectStrict } from './../modules/helpers/inject-strict'
-  import { sleep } from './../modules/helpers/sleep'
   import { type BadgeRoundedSize, type BadgeColor } from './MazBadge.vue'
+  import { sleep } from '../modules'
 
   const MazBadge = defineAsyncComponent(() => import('./MazBadge.vue'))
 
@@ -68,7 +77,7 @@
         label: string
         disabled?: boolean
         badge?: {
-          value: string | number
+          content: string | number | boolean
           color?: BadgeColor
           pastel?: boolean
           outline?: boolean
@@ -138,53 +147,53 @@
   )
 
   const tabsIndicatorState = ref<StyleValue>()
+  const tabsBarHasScrollAnimation = ref(false)
 
-  watchEffect(async () => {
+  async function setIndicatorAndScroll() {
     if (!props.autoScroll) {
       return
     }
 
-    const tabsBar = tabsBarRef.value
+    await sleep(150)
 
+    const tabsBar = tabsBarRef.value
     const activeTab = itemRefs.value[currentTab.value - 1]
 
     if (!tabsBar || !activeTab) {
       return
     }
 
-    await nextTick()
-    await sleep(150)
+    const scrollOffset = 50
 
     if (
-      activeTab.offsetLeft < tabsBar.scrollLeft ||
+      activeTab.offsetLeft - scrollOffset < tabsBar.scrollLeft ||
       activeTab.offsetLeft + activeTab.offsetWidth > tabsBar.scrollLeft + tabsBar.clientWidth
     ) {
       const tabBarPaddingLeft = window.getComputedStyle(tabsBar, 'padding-left').paddingLeft
       const tabsBarPaddingOffset = Number(tabBarPaddingLeft.slice(0, -2))
-      tabsBar.scrollTo({
-        left: activeTab.offsetLeft - tabsBarPaddingOffset,
-        behavior: 'smooth', // Ajoutez le défilement fluide
-      })
 
-      await sleep(150)
+      tabsBar.scrollTo({
+        left: activeTab.offsetLeft - tabsBarPaddingOffset - scrollOffset,
+        behavior: tabsBarHasScrollAnimation.value ? 'smooth' : 'instant',
+      })
     }
 
     if (typeof currentTab.value !== 'number') {
-      return {}
+      return
     }
 
-    const tabItemActive: HTMLButtonElement | undefined = itemRefs.value[currentTab.value - 1]
-
-    const indicatorWidth = tabItemActive?.offsetWidth ?? 0
-    const indicatorHeight = tabItemActive?.offsetHeight ?? 0
-    const translateXValue = tabItemActive?.offsetLeft ?? 0
+    const indicatorWidth = activeTab?.offsetWidth ?? 0
+    const indicatorHeight = activeTab?.offsetHeight ?? 0
+    const translateXValue = activeTab?.offsetLeft ?? 0
 
     tabsIndicatorState.value = {
       transform: `translateX(${translateXValue}px)`,
       width: `${indicatorWidth}px`,
       height: `${indicatorHeight}px`,
     }
-  })
+
+    tabsBarHasScrollAnimation.value = true
+  }
 
   function getTabStyle(index: number, disabled: boolean): StyleValue {
     if (disabled) {
@@ -202,6 +211,19 @@
       )
     }
   })
+
+  onMounted(() => {
+    if (props.persistent) {
+      setIndicatorAndScroll()
+    }
+  })
+
+  watch(
+    () => [currentTab.value, normalizedItems.value],
+    () => {
+      setIndicatorAndScroll()
+    },
+  )
 
   function getQueryParamTab() {
     const urlActuelle = new URL(window.location.href)
@@ -248,7 +270,11 @@
     }
 
     &__indicator {
-      @apply maz-absolute maz-left-0 maz-rounded maz-bg-color-light maz-text-center maz-transition-all maz-duration-500 maz-ease-in-out;
+      @apply maz-absolute maz-left-0 maz-rounded maz-bg-color-light maz-text-center;
+
+      &.--animated {
+        @apply maz-transition-all maz-duration-300 maz-ease-in-out;
+      }
     }
   }
 </style>
