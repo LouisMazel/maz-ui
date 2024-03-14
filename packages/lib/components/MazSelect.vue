@@ -81,7 +81,7 @@
                 @binding {String} label - the label of the optgroup
             -->
             <slot
-              v-if="option.label && !option[optionValueKey]"
+              v-if="option.label && isNullOrUndefined(option[optionValueKey])"
               name="optgroup"
               :label="option.label"
             >
