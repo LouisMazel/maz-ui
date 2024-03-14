@@ -1,5 +1,25 @@
 # Change Log
 
+## v3.35.1...v3.35.2
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.35.1...v3.35.2)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazSelect - can select an option with false value ([0e5b0e96](https://github.com/LouisMazel/maz-ui/commit/0e5b0e96))
+
+### 💅 Refactors
+
+- **docs:** Not apply vitepress style to components ([ffdf6c67](https://github.com/LouisMazel/maz-ui/commit/ffdf6c67))
+
+### 🏡 Chore
+
+- **docs:** Replace placekitten by loremflickr ([625401b7](https://github.com/LouisMazel/maz-ui/commit/625401b7))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.35.0...v3.35.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.35.0...v3.35.1)
