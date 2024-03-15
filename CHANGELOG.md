@@ -1,5 +1,17 @@
 # Change Log
 
+## v3.35.2...v3.36.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.35.2...v3.36.0)
+
+### 🚀 Enhancements
+
+- **maz-ui:** Toaster - add close to toast and pass timeout to false to disable auto close ([454020f0](https://github.com/LouisMazel/maz-ui/commit/454020f0))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.35.1...v3.35.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.35.1...v3.35.2)
