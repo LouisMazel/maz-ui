@@ -1,7 +1,7 @@
 import { type App, type Component, createVNode, render } from 'vue'
 
-export function mount(
-  component: Component,
+export function mount<T extends Component>(
+  component: T,
   options?: {
     props?: Record<string, unknown>
     children?: unknown
