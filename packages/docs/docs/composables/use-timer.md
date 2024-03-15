@@ -91,12 +91,34 @@ This composable can be used in Vue 3 components to handle timeouts in a flexible
 </script>
 ```
 
+## Set timeout with start function
+
+Starts the timer with the specified timeout. If the timeout is not provided, it uses the default value of 1000ms.
+
+```ts
+const { start } = useTimer()
+
+start(4000)
+```
+
 ## Types
 
 ```ts
 export interface TimerOptions {
-  timeout: number
+  /**
+   * The time in milliseconds
+   * @default 1000
+   */
+  timeout?: number
+  /**
+   * The callback to execute when the timer is finished
+   * @default undefined
+   */
   callback?: () => unknown
+  /**
+   * The interval to update the remaining time
+   * @default 200
+   */
   remainingTimeUpdate?: number
 }
 ```

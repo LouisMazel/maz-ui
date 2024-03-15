@@ -9,7 +9,12 @@
       v-show="isActive"
       ref="Toaster"
       class="m-toast"
-      :class="[`--${type}`, `--${positionY}`, `--${positionX}`, { 'maz-pb-1': timeout }]"
+      :class="[
+        `--${type}`,
+        `--${positionY}`,
+        `--${positionX}`,
+        { 'maz-pb-1': typeof timeout === 'number' && timeout > 0, '--persistent': persistent },
+      ]"
       role="alert"
       @mouseover="toggleTimer(true)"
       @mouseleave="toggleTimer(false)"
@@ -54,7 +59,10 @@
         <XIcon class="--icon maz-text-xl" />
       </button>
 
-      <div class="progress-bar maz-absolute maz-inset-x-0 maz-bottom-0 maz-h-1">
+      <div
+        v-if="typeof timeout === 'number' && timeout > 0"
+        class="progress-bar maz-absolute maz-inset-x-0 maz-bottom-0 maz-h-1"
+      >
         <div
           :style="{
             width: progressBarWidth,
@@ -69,7 +77,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, defineAsyncComponent, onMounted, ref, type PropType, watch } from 'vue'
+  import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
   import { useTimer } from './../../composables/use-timer'
   import type { LocalToasterOptions } from './toaster-handler'
   import type { ToasterPosition, ToasterAction, ToasterLink } from './types'
@@ -94,23 +102,27 @@
 
   const Toaster = ref<HTMLDivElement>()
 
-  const props = defineProps({
-    position: {
-      type: String as PropType<ToasterPosition>,
-      default: 'bottom-right',
-    },
-    maxToasts: { type: [Number, Boolean], default: false },
-    timeout: { type: Number, default: 10_000 },
-    queue: { type: Boolean, default: false },
-    noPauseOnHover: { type: Boolean, default: false },
-    type: {
-      type: String as PropType<LocalToasterOptions['type']>,
-      default: 'info',
-    },
-    message: { type: String, required: true },
-    link: { type: Object as PropType<ToasterLink>, default: undefined },
-    action: { type: Object as PropType<ToasterAction>, default: undefined },
-    persistent: { type: Boolean, default: false },
+  export type Props = {
+    message: string
+    position?: ToasterPosition
+    maxToasts?: number | boolean
+    timeout?: number | boolean
+    queue?: boolean
+    noPauseOnHover?: boolean
+    type?: LocalToasterOptions['type']
+    link?: ToasterLink
+    action?: ToasterAction
+    persistent?: boolean
+  }
+
+  const props = withDefaults(defineProps<Props>(), {
+    position: 'bottom-right',
+    maxToasts: false,
+    timeout: 10_000,
+    type: 'info',
+    message: undefined,
+    link: undefined,
+    action: undefined,
   })
 
   const iconComponent = computed(() => {
@@ -158,7 +170,7 @@
 
   const { start, stop, pause, resume, remainingTime } = useTimer({
     callback: close,
-    timeout: props.timeout,
+    timeout: typeof props.timeout === 'number' ? props.timeout : 0,
   })
 
   function createParents() {
@@ -201,7 +213,10 @@
     }
 
     isActive.value = true
-    start()
+
+    if (typeof props.timeout === 'number' && props.timeout > 0) {
+      start()
+    }
   }
 
   const progressBarWidth = ref<string>('100%')
@@ -229,7 +244,7 @@
   watch(
     () => remainingTime.value,
     (remainingTime) => {
-      if (typeof remainingTime === 'number') {
+      if (typeof remainingTime === 'number' && typeof props.timeout === 'number') {
         const percent = (100 * (remainingTime as unknown as number)) / props.timeout
         progressBarWidth.value = `${percent}%`
 
@@ -274,6 +289,8 @@
     stopTimer()
     isActive.value = false
   }
+
+  defineExpose({ close })
 
   function onAnimationEnter() {
     emits('open')
@@ -342,7 +359,11 @@
       box-sizing: border-box;
     }
 
-    @apply maz-relative maz-flex maz-w-full maz-cursor-pointer maz-items-center maz-gap-2 maz-self-center maz-overflow-hidden maz-rounded maz-pl-2 maz-pr-2 maz-shadow-md maz-transition maz-duration-300 maz-ease-in-out;
+    @apply maz-relative maz-flex maz-w-full maz-cursor-default maz-items-center maz-gap-2 maz-self-center maz-overflow-hidden maz-rounded maz-pl-2 maz-pr-2 maz-shadow-md maz-transition maz-duration-300 maz-ease-in-out;
+
+    &:not(.--persistent) {
+      @apply maz-cursor-pointer;
+    }
 
     &.--left,
     &.--right {
@@ -370,23 +391,43 @@
     }
 
     &.--info {
-      @apply maz-bg-info maz-text-info-contrast hover:maz-bg-info-400;
+      @apply maz-bg-info maz-text-info-contrast;
+
+      &:not(.--persistent) {
+        @apply hover:maz-bg-info-400;
+      }
     }
 
     &.--success {
-      @apply maz-bg-success maz-text-success-contrast hover:maz-bg-success-400;
+      @apply maz-bg-success maz-text-success-contrast;
+
+      &:not(.--persistent) {
+        @apply hover:maz-bg-success-400;
+      }
     }
 
     &.--warning {
-      @apply maz-bg-warning maz-text-warning-contrast hover:maz-bg-warning-400;
+      @apply maz-bg-warning maz-text-warning-contrast;
+
+      &:not(.--persistent) {
+        @apply hover:maz-bg-warning-400;
+      }
     }
 
     &.--danger {
-      @apply maz-bg-danger maz-text-danger-contrast hover:maz-bg-danger-400;
+      @apply maz-bg-danger maz-text-danger-contrast;
+
+      &:not(.--persistent) {
+        @apply hover:maz-bg-danger-400;
+      }
     }
 
     &.--theme {
-      @apply maz-bg-color maz-text-normal hover:maz-bg-color-light dark:maz-border dark:maz-border-solid  dark:maz-border-color-lighter;
+      @apply maz-bg-color maz-text-normal dark:maz-border dark:maz-border-solid  dark:maz-border-color-lighter;
+
+      &:not(.--persistent) {
+        @apply hover:maz-bg-color-light;
+      }
     }
   }
 

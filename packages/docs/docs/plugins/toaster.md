@@ -15,24 +15,28 @@ This plugin has a composable for easier use, after installing it you can use [us
 ## Basic usage
 
 <div class="maz-flex maz-flex-wrap maz-gap-2">
-  <MazBtn color="theme" @click="showMessage">
+  <MazBtn color="theme" @click="toast.message('Message text')">
     Message
   </MazBtn>
 
-  <MazBtn color="info" @click="showInfo">
+  <MazBtn color="info" @click="toast.info('Info message', { position: 'top', link: { href: 'https://www.loicmazuel.com' } })">
     Info toast on top
   </MazBtn>
 
-  <MazBtn color="danger" @click="showError">
+  <MazBtn color="danger" @click="toast.error('Error message', { position: 'bottom', timeout: 1000 })">
     Error toast on bottom with 1s timeout
   </MazBtn>
 
-  <MazBtn color="warning" @click="showWarning">
+  <MazBtn color="warning" @click="toast.warning('Warning message', { position: 'top-right' })">
     Warning toast on top right
   </MazBtn>
 
-  <MazBtn color="success" @click="showSuccess">
+  <MazBtn color="success" @click="toast.success('Success message', { position: 'bottom-left', persistent: true })">
     Persistent success toast on bottom left
+  </MazBtn>
+
+  <MazBtn color="success" @click="toast.message('No timeout toast', { timeout: false })">
+    Persistent with no timeout
   </MazBtn>
 </div>
 
@@ -52,32 +56,50 @@ Toast can have a link or an action
   </MazBtn>
 </div>
 
+::: details View the code
+
 ```vue
 <template>
-  <MazBtn color="info" @click="showInfo">
-    Show persistent info toast on top
+  <MazBtn
+    color="theme"
+    @click="toast.message('Message text')"
+  >
+    Message
   </MazBtn>
 
-  <MazBtn color="danger" @click="showError">
-    Show error toast on bottom with 1s timeout
+  <MazBtn
+    color="info"
+    @click="toast.info('Info message', { position: 'top', link: { href: 'https://www.loicmazuel.com' } })"
+  >
+    Info toast on top
   </MazBtn>
 
-  <MazBtn color="warning" @click="showWarning">
-    Show warning toast on top right
+  <MazBtn
+    color="danger"@
+    @click="toast.error('Error message', { position: 'bottom', timeout: 1000 })"
+  >
+    Error toast on bottom with 1s timeout
   </MazBtn>
 
-  <MazBtn color="success" @click="showSuccess">
-    Show persistent success toast on bottom left
+  <MazBtn
+    color="warning"
+    @click="toast.warning('Warning message', { position: 'top-right' })"
+  >
+    Warning toast on top right
   </MazBtn>
 
-  <MazBtn color="info" @click="showInfoWithLink">
-    Toast with  link
+  <MazBtn
+    color="success"
+    @click="toast.success('Success message', { position: 'bottom-left', persistent: true })"
+  >
+    Persistent success toast on bottom left
   </MazBtn>
-  <MazBtn color="warning" @click="showInfoWithExternalLink">
-    Toast with blank link
-  </MazBtn>
-  <MazBtn color="danger" @click="showInfoWithAction">
-    Toast with action
+
+  <MazBtn
+    color="success"
+    @click="toast.message('No timeout toast', { timeout: false })"
+  >
+    Persistent with no timeout
   </MazBtn>
 </template>
 
@@ -85,37 +107,6 @@ Toast can have a link or an action
   import { useToast } from 'maz-ui'
 
   const toast = useToast()
-
-  function showMessage () {
-    toast.message('Message text')
-  }
-
-  function showInfo () {
-    toast.info('Info message', {
-      position: 'top',
-      link: 'https://www.loicmazuel.com'
-    })
-  }
-
-  function showError () {
-    toast.error('Error message', {
-      position: 'bottom',
-      timeout: 1000,
-    })
-  }
-
-  function showWarning () {
-    toast.warning('Warning message', {
-      position: 'top-right'
-    })
-  }
-
-  function showSuccess () {
-    toast.success('Success message', {
-      position: 'bottom-left',
-      persistent: true,
-    })
-  }
 
   function showInfoWithLink () {
     toast.info('Toast with link, click -->', {
@@ -152,13 +143,43 @@ Toast can have a link or an action
 </script>
 ```
 
+:::
+
+## Close toast programmatically
+
+You can close a toast programmatically by using the `close` method returned by the `toast` function
+
+<div class="maz-flex maz-flex-wrap maz-gap-2">
+  <MazBtn color="primary" @click="showToastAutoCLose">
+    Show toast
+  </MazBtn>
+</div>
+
+```typescript
+function showToast () {
+  const toastMessage = toast.message('Toast message closed by code')
+
+  setTimeout(() => {
+    toastMessage.close()
+  }, 2000)
+}
+```
+
 <script lang="ts" setup>
   import { useToast, sleep } from 'maz-ui'
 
   const toast = useToast()
 
+  function showToastAutoCLose () {
+    const toastMessage = toast.message('Toast message closed by code')
+
+    setTimeout(() => {
+      toastMessage.close()
+    }, 3000)
+  }
+
   function showMessage () {
-    toast.message('Message text')
+    const t = toast.message('Message text')
   }
 
   function showInfo () {
@@ -244,47 +265,51 @@ app.mount('#app')
 
 ## Options
 
-### Positions
+### Usage
 
 ```ts
-type ToasterPosition =
-  | 'top'
-  | 'top-right'
-  | 'top-left'
-  | 'bottom'
-  | 'bottom-right'
-  | 'bottom-left'
-```
-
-### Persistent
-
-```ts
-const persistent: boolean = false
-```
-
-### Timeout
-
-```ts
-const timeout: number = 10000 // in ms
-```
-
-### Link
-
-```ts
-export type ToasterLink = {
-  href: string
-  text?: string
-  target?: string
-  closeToast?: boolean
+const options: ToasterOptions = {
+  ...
 }
+
+toast.message('Message text', options)
 ```
 
-### Action
+### Type
 
 ```ts
-export type ToasterAction = {
-  func: (..._arguments: unknown[]) => unknown
-  text: string
-  closeToast?: boolean
+type ToasterOptions = {
+  /**
+   * The position of the toast on the screen
+   * @default 'bottom-right'
+   */
+  position?: 'top' | 'top-right' | 'top-left' | 'bottom' | 'bottom-right' | 'bottom-left'
+   /**
+    * The timeout is in ms, it's the time before the toast is automatically closed
+    * if set to `false`, the toast will not be closed automatically
+    * @default 10000
+    */
+   timeout?: number | boolean
+  /**
+   * If the toast is persistent, it can't be closed by user interaction (only on timeout or programmatically)
+   * @default false
+   */
+  persistent?: boolean
+  /** The link will be displayed as a button in the toast */
+  link?: {
+    href: string
+    text?: string
+    /** @default _self */
+    target?: string
+    /** @default false */
+    closeToast?: boolean
+  }
+  /** The action will be displayed as a button in the toast */
+  action?: {
+    func: (..._arguments: unknown[]) => unknown
+    text: string
+    /** @default false */
+    closeToast?: boolean
+  }
 }
 ```

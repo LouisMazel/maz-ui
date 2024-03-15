@@ -1,18 +1,37 @@
 import { ref } from 'vue'
 
 export interface TimerOptions {
-  timeout: number
+  /**
+   * The time in milliseconds
+   * @default 1000
+   */
+  timeout?: number
+  /**
+   * The callback to execute when the timer is finished
+   * @default undefined
+   */
   callback?: () => unknown
+  /**
+   * The interval to update the remaining time
+   * @default 200
+   */
   remainingTimeUpdate?: number
 }
 
-export const useTimer = ({ timeout, callback, remainingTimeUpdate = 200 }: TimerOptions) => {
-  const remainingTime = ref(timeout)
+export const useTimer = ({ timeout = 1000, callback, remainingTimeUpdate = 200 }: TimerOptions) => {
+  const internalTimeout = ref<number>(timeout)
+  const remainingTime = ref<number>(timeout)
 
   let timerId: ReturnType<typeof setInterval> | undefined
 
-  function start() {
-    remainingTime.value = timeout
+  function start(timeout?: number) {
+    if (typeof timeout === 'number') {
+      remainingTime.value = timeout
+    }
+
+    if (typeof timeout === 'number') {
+      internalTimeout.value = timeout
+    }
 
     startInterval()
   }
@@ -43,7 +62,7 @@ export const useTimer = ({ timeout, callback, remainingTimeUpdate = 200 }: Timer
   }
 
   function stop() {
-    remainingTime.value = timeout
+    remainingTime.value = internalTimeout.value
     pause()
   }
 
