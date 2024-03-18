@@ -30,6 +30,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Generate components docs
+        run: pnpm --filter cli cli generate-components-docs
+
       - name: Build lib
         run: pnpm -r build
 
