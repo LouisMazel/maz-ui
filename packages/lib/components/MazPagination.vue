@@ -145,7 +145,7 @@
     fab: true,
   }
 
-  export type Props = {
+  type MazPagnationProps = {
     /** @model The current page number. */
     modelValue?: number
     /**
@@ -178,7 +178,9 @@
     loading?: boolean
   }
 
-  const props = withDefaults(defineProps<Props>(), {
+  export type { MazPagnationProps as Props }
+
+  const props = withDefaults(defineProps<MazPagnationProps>(), {
     modelValue: 1,
     buttonProps: undefined,
     pageRange: 2,

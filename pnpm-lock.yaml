@@ -102,8 +102,8 @@ importers:
         specifier: ^1.7.0
         version: 1.7.0
       vue-docgen-cli:
-        specifier: ^4.67.0
-        version: 4.67.0
+        specifier: ^4.77.0
+        version: 4.77.0
 
   packages/docs:
     dependencies:
@@ -7401,7 +7401,7 @@ packages:
       '@vue/shared': 3.4.21
       entities: 4.5.0
       estree-walker: 2.0.2
-      source-map-js: 1.0.2
+      source-map-js: 1.1.0
     dev: true
 
   /@vue/compiler-dom@3.4.21:
@@ -7428,7 +7428,7 @@ packages:
       estree-walker: 2.0.2
       magic-string: 0.30.8
       postcss: 8.4.36
-      source-map-js: 1.0.2
+      source-map-js: 1.1.0
     dev: true
 
   /@vue/compiler-ssr@3.4.21:
@@ -11271,8 +11271,8 @@ packages:
       regexp.prototype.flags: 1.5.2
       safe-array-concat: 1.1.2
       safe-regex-test: 1.0.3
-      string.prototype.trim: 1.2.8
-      string.prototype.trimend: 1.0.7
+      string.prototype.trim: 1.2.9
+      string.prototype.trimend: 1.0.8
       string.prototype.trimstart: 1.0.7
       typed-array-buffer: 1.0.2
       typed-array-byte-length: 1.0.1
@@ -12242,10 +12242,10 @@ packages:
       - supports-color
     dev: true
 
-  /esm-resolve@1.0.8:
+  /esm-resolve@1.0.9:
     resolution:
       {
-        integrity: sha512-pzYHY8bf7uLpDuefGsI6JtHVS1J3N1uOkIEC36ejvvWhiiMr/xKBX4PrxCtsxeISJbCEMBLkPZvRwZNHgdwn5A==,
+        integrity: sha512-qVENG+4e2s5HO/TMV9LvjpOVNW4HlaZn98q7h0y9R524M1chXNAwrn2bKx+wQs9Qryb22qX8P0rQ5N3e3Udq/w==,
       }
     dev: true
 
@@ -24189,7 +24189,7 @@ packages:
       '@vue/compiler-dom': 3.4.21
       '@vue/compiler-sfc': 3.4.21
       ast-types: 0.16.1
-      esm-resolve: 1.0.8
+      esm-resolve: 1.0.9
       hash-sum: 2.0.0
       lru-cache: 8.0.5
       pug: 3.0.2
@@ -24198,10 +24198,10 @@ packages:
       vue-inbrowser-compiler-independent-utils: 4.71.1
     dev: true
 
-  /vue-docgen-cli@4.67.0:
+  /vue-docgen-cli@4.77.0:
     resolution:
       {
-        integrity: sha512-+61rC7H7zd5NWydAkKCuwW6TnStEJbgxsHk5i4Nb3S8eReuAge35SJ1gvEm6ILj3lUztJzKolpevAfL42OHySw==,
+        integrity: sha512-oa6Y+UcLG11NB8nyylXJPH7Gaiyqi/W4AQWb6e4PfmhtB+pgFGD7d4mveMSf/5fZBOUWIpkH5f8tGvY9mfXFAg==,
       }
     engines: { node: '>=16.3', npm: '>=7' }
     hasBin: true
