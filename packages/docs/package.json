@@ -10,7 +10,7 @@
     "serve": "vitepress serve docs"
   },
   "devDependencies": {
-    "@types/react": "^18.2.66",
+    "@types/react": "^18.2.67",
     "@vercel/og": "^0.6.2",
     "postcss-import": "^16.0.1",
     "postcss-url": "^10.1.3",
