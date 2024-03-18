@@ -1,5 +1,28 @@
 # Change Log
 
+## v3.36.0...v3.36.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.36.0...v3.36.1)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazDialog - add light border to dialog with dark mode ([15fe570b](https://github.com/LouisMazel/maz-ui/commit/15fe570b))
+- Doc generation error with MazPagination component ([d459b2c6](https://github.com/LouisMazel/maz-ui/commit/d459b2c6))
+
+### 🏡 Chore
+
+- **deps:** Upgrade dependencies ([4cd55172](https://github.com/LouisMazel/maz-ui/commit/4cd55172))
+- **deps:** Upgrade dependencies ([0222de36](https://github.com/LouisMazel/maz-ui/commit/0222de36))
+- **deps:** Downgrade vue-docgen-cli to 4.67 ([e46d40f6](https://github.com/LouisMazel/maz-ui/commit/e46d40f6))
+
+### 🤖 CI
+
+- Add job to test doc generation by vue-docgen ([6ba24e05](https://github.com/LouisMazel/maz-ui/commit/6ba24e05))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.35.2...v3.36.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.35.2...v3.36.0)
