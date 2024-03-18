@@ -112,7 +112,7 @@
 
 <style lang="postcss" scoped>
   .m-dialog {
-    @apply maz-flex maz-origin-center maz-flex-col maz-rounded maz-bg-color maz-text-normal;
+    @apply maz-flex maz-origin-center maz-flex-col maz-rounded maz-bg-color maz-text-normal dark:maz-border dark:maz-border-color-light;
 
     &-header {
       @apply maz-flex maz-items-center maz-justify-end maz-pl-6 maz-pr-2 maz-pt-2;
