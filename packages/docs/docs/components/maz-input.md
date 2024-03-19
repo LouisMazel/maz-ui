@@ -18,6 +18,7 @@ description: MazInput is a standalone component that replaces the standard html 
   <MazInput
     v-model="inputValue"
     label="Label"
+    autocomplete="off"
   />
 </template>
 
@@ -31,39 +32,35 @@ description: MazInput is a standalone component that replaces the standard html 
 
 ## Password
 
-<br />
-
-<MazInput v-model="inputValue" label="Label" type="password" name="password" />
+<form>
+  <MazInput v-model="passwordValue" label="Label" type="password" name="password" autocomplete="nope" />
+</form>
 
 ```html
-<MazInput v-model="inputValue" label="Label" type="password" />
+<MazInput v-model="passwordValue" label="Label" type="password" />
 ```
 
 ## Placeholder
 
-<br />
-
-<MazInput placeholder="placeholder" />
+<MazInput v-model="inputValue" placeholder="placeholder" autocomplete="off" />
 
 ```html
-<MazInput placeholder="placeholder" />
+<MazInput v-model="inputValue" placeholder="placeholder" />
 ```
 
 ## Required
 
 > Will add `*` charac to label and placeholder
 
-<MazInput label="label required" required />
+<MazInput v-model="inputValue" label="label required" required autocomplete="off" />
 
 ```html
-<MazInput label="label required" required />
+<MazInput v-model="inputValue" label="label required" required />
 ```
 
 ## Disabled
 
-<br />
-
-<MazInput v-model="inputValue" label="label disabled" disabled />
+<MazInput v-model="inputValue" label="label disabled" disabled autocomplete="off" />
 
 ::: details Show code
 
@@ -81,7 +78,7 @@ description: MazInput is a standalone component that replaces the standard html 
 
 > Will replace the label, useful to display error message
 
-<MazInput v-model="inputValue" label="label hint" hint="An error occured" error />
+<MazInput v-model="inputValue" label="label hint" hint="An error occured" error autocomplete="off" />
 
 ::: details Show code
 
@@ -103,6 +100,7 @@ description: MazInput is a standalone component that replaces the standard html 
   label="label icons"
   left-icon="banknotes"
   right-icon="user"
+  autocomplete="off"
 />
 
 ### Use icon name
@@ -182,6 +180,7 @@ Check out how [MazIcon](./maz-icon.md) works, see all available icons and downlo
 <MazInput
   v-model="inputValue"
   label="label auto-focus"
+  autocomplete="off"
 />
 
 ```html
@@ -200,6 +199,7 @@ Check out how [MazIcon](./maz-icon.md) works, see all available icons and downlo
   v-model="inputValue"
   label="label no-radius"
   no-radius
+  autocomplete="off"
 />
 
 ```html
@@ -214,7 +214,7 @@ Check out how [MazIcon](./maz-icon.md) works, see all available icons and downlo
 
 > The value emit by the input will be delayed, usefull for searching
 
-<MazInput v-model="inputValue" label="label debounce" debounce :debounce-delay="3000" />
+<MazInput v-model="inputValue" label="label debounce" debounce :debounce-delay="3000" autocomplete="off" />
 
 input value: {{ inputValue ?? 'null' }}
 
@@ -240,6 +240,7 @@ input value: {{ inputValue ?? 'null' }}
     :label="['mini', 'xs'].includes(size) ? undefined : size"
     :placeholder="['mini', 'xs'].includes(size) ? size : undefined"
     :size="size"
+    autocomplete="off"
   />
 </div>
 
@@ -254,7 +255,7 @@ input value: {{ inputValue ?? 'null' }}
   />
 </template>
 
-<script setup>
+<script setup lang="ts">
   const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 </script>
 ```
@@ -276,6 +277,7 @@ Use the attribute `color` with a value in this [list](./../guide/colors.md), the
     v-model="inputValue"
     :label="name"
     :color="name"
+    autocomplete="off"
   />
 </div>
 
@@ -308,17 +310,17 @@ Use the attribute `color` with a value in this [list](./../guide/colors.md), the
 
 Use the attribute `rounded-size` with a value in `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'`
 
-<MazInput rounded-size="none" placeholder="Rounded input" />
+<MazInput rounded-size="none" placeholder="Rounded input" autocomplete="off" />
 <br />
-<MazInput rounded-size="sm" placeholder="Rounded input" />
+<MazInput rounded-size="sm" placeholder="Rounded input" autocomplete="off" />
 <br />
-<MazInput rounded-size="md" placeholder="Rounded input" />
+<MazInput rounded-size="md" placeholder="Rounded input" autocomplete="off" />
 <br />
-<MazInput rounded-size="lg" placeholder="Rounded input" />
+<MazInput rounded-size="lg" placeholder="Rounded input" autocomplete="off" />
 <br />
-<MazInput rounded-size="xl" placeholder="Rounded input" />
+<MazInput rounded-size="xl" placeholder="Rounded input" autocomplete="off" />
 <br />
-<MazInput rounded-size="full" placeholder="Rounded input" />
+<MazInput rounded-size="full" placeholder="Rounded input" autocomplete="off" />
 
 ```html
   <MazInput rounded-size="none" placeholder="Rounded input" />
@@ -333,15 +335,15 @@ Use the attribute `rounded-size` with a value in `'none' | 'sm' | 'md' | 'lg' | 
 
 ### Error
 
-<MazInput v-model="inputValue" label="Label" error />
+<MazInput v-model="inputValue" label="Label" error autocomplete="off" />
 
 ### Warning
 
-<MazInput v-model="inputValue" label="Label" warning />
+<MazInput v-model="inputValue" label="Label" warning autocomplete="off" />
 
 ### Success
 
-<MazInput v-model="inputValue" label="Label" success />
+<MazInput v-model="inputValue" label="Label" success autocomplete="off" />
 
 ```html
 <MazInput
@@ -363,9 +365,7 @@ Use the attribute `rounded-size` with a value in `'none' | 'sm' | 'md' | 'lg' | 
 
 ## Valid Button
 
-<br />
-
-<MazInput v-model="inputValue" label="Label" valid-button />
+<MazInput v-model="inputValue" label="Label" valid-button autocomplete="off" />
 
 ```vue
 <template>
@@ -377,9 +377,10 @@ Use the attribute `rounded-size` with a value in `'none' | 'sm' | 'md' | 'lg' | 
 </template>
 ```
 
-<script setup>
+<script setup lang="ts">
   import { ref, computed } from 'vue'
   const inputValue = ref('value')
+  const passwordValue = ref()
 
   const colors = {
     primary: { name: 'primary', hex: '#1e90ff' },

@@ -80,11 +80,7 @@
               @slot Custom optgroup label
                 @binding {String} label - the label of the optgroup
             -->
-            <slot
-              v-if="option.label && isNullOrUndefined(option[optionValueKey])"
-              name="optgroup"
-              :label="option.label"
-            >
+            <slot v-if="option.label && option.isOptGroup" name="optgroup" :label="option.label">
               <span class="m-select-list-optgroup">
                 {{ option.label }}
               </span>
@@ -331,7 +327,7 @@
         normalizedOptions.push(getOptionPayload(option))
       } else if ('options' in option && Array.isArray(option.options)) {
         normalizedOptions.push(
-          { label: option.label },
+          { label: option.label, isOptGroup: true },
           ...option.options.map((opt) =>
             typeof opt === 'string' || typeof opt === 'number' || typeof opt === 'boolean'
               ? getOptionPayload(opt)
@@ -381,6 +377,7 @@
       selectedOptions.value?.some(
         (selectedOption) => selectedOption[props.optionValueKey] === option[props.optionValueKey],
       ) ?? false
+
     return hasOption && !isNullOrUndefined(option[props.optionValueKey])
   }
 
@@ -396,9 +393,13 @@
         .join(', ')
     }
 
-    return optionsNormalized.value?.find(
-      (option) => props.modelValue && option[props.optionValueKey] === props.modelValue,
-    )?.[props.optionInputValueKey]
+    const selectedOption = optionsNormalized.value?.find(
+      (option) => option[props.optionValueKey] === props.modelValue,
+    )
+
+    return isNullOrUndefined(props.modelValue)
+      ? undefined
+      : selectedOption?.[props.optionInputValueKey]
   })
 
   const listTransition = computed(() =>

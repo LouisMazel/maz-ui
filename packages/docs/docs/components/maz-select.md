@@ -272,6 +272,8 @@ If you want custom keys of these options, you can use:
     { valueOption: 'white', labelOption: 'white label', inputLabel: 'white input', },
     { valueOption: 'black', labelOption: 'black label', inputLabel: 'black input', },
   ]
+
+  const alwaysShowMembersBets = ref()
 </script>
 
 ### Types
