@@ -1,5 +1,17 @@
 # Change Log
 
+## v3.36.1...v3.36.2
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.36.1...v3.36.2)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazSelect - show label in input for false value ([cf989805](https://github.com/LouisMazel/maz-ui/commit/cf989805))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.36.0...v3.36.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.36.0...v3.36.1)
