@@ -3,7 +3,7 @@
   "version": "3.36.2",
   "command": {
     "version": {
-      "allowBranch": ["master", "release/*"],
+      "allowBranch": ["master", "release/*", "fix/remove-reset-css"],
       "message": "chore(release): bump version %v",
       "conventionalCommits": true,
       "forceGitTag": false,
