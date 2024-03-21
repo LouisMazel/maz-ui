@@ -131,10 +131,10 @@ describe('components/MazSelect.vue', () => {
     await wrapper.vm.$nextTick()
 
     expect(wrapper.vm.optionsNormalized).toStrictEqual([
-      { label: 'Group 1' },
+      { label: 'Group 1', isOptGroup: true },
       { label: 'Test 1', value: 1 },
       { label: 'Test 2', value: 2 },
-      { label: 'Group 2' },
+      { label: 'Group 2', isOptGroup: true },
       { label: 'Test 3', value: 3 },
       { label: 'Test 4', value: 4 },
     ])
