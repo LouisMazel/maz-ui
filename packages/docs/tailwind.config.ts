@@ -1,8 +1,8 @@
 import type { Config } from 'tailwindcss'
-import tailwindConfigBase from 'maz-ui/tailwindcss/tailwind.config'
+import { tailwindConfig } from 'maz-ui/tailwindcss/tailwind.config'
 
-export default <Config> {
-  presets: [tailwindConfigBase],
+export default <Config>{
+  presets: [tailwindConfig],
   prefix: 'maz-',
   content: [
     './docs/.vitepress/**/*.{js,ts,vue}',
