@@ -162,8 +162,9 @@
               <MazTableCell v-if="$slots.actions">
                 <!--
                   @slot actions - will add actions column
+                    @binding {Object} row - row data
                 -->
-                <slot name="actions"></slot>
+                <slot name="actions" :row="row"></slot>
               </MazTableCell>
             </MazTableRow>
           </template>

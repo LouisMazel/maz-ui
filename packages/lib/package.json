@@ -84,7 +84,7 @@
     "dropzone": "^5.9.3",
     "libphonenumber-js": "^1.9.44",
     "nuxt": "^3.4.0",
-    "unplugin-vue-components": "^0.25.0",
+    "unplugin-vue-components": "^0.26.0",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0"
   },
