@@ -1,5 +1,17 @@
 # Change Log
 
+## v3.36.2...v3.36.3
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.36.2...v3.36.3)
+
+### 💅 Refactors
+
+- **maz-ui:** MazTable - add data row into the actions slot ([59f717a3](https://github.com/LouisMazel/maz-ui/commit/59f717a3))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.36.1...v3.36.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.36.1...v3.36.2)
