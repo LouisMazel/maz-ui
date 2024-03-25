@@ -19,7 +19,7 @@ export default defineNuxtPlugin(({ vueApp, $config }) => {
 
   return {
     provide: {
-      toast: process.server ? toasterServer : instance,
+      toast: import.meta.server ? toasterServer : instance,
     },
   }
 })
