@@ -1,5 +1,21 @@
 # Change Log
 
+## v3.36.3...v3.36.4
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.36.3...v3.36.4)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazDialog - remove close button when persistent props is true ([90439b98](https://github.com/LouisMazel/maz-ui/commit/90439b98))
+
+### ✅ Tests
+
+- **maz-ui:** MazSelect - missing property of opt-group ([58fdd2ed](https://github.com/LouisMazel/maz-ui/commit/58fdd2ed))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.36.2...v3.36.3
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.36.2...v3.36.3)
