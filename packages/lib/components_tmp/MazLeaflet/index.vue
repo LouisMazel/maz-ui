@@ -24,7 +24,7 @@
 
   let Map: typeof MapController
 
-  if (process.browser) {
+  if (import.meta.browser) {
     const { default: map } = require('~/controllers/leaflet')
     Map = map
   }
@@ -68,7 +68,7 @@
       }
 
       onMounted(() => {
-        if (process.browser) {
+        if (import.meta.browser) {
           map = new Map(props.mapId, undefined, {
             zoomControl: false,
           }) as MapController

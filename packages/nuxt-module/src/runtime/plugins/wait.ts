@@ -12,7 +12,7 @@ export default defineNuxtPlugin(() => {
 
   return {
     provide: {
-      wait: process.server ? waitServer : new WaitHandler(),
+      wait: import.meta.server ? waitServer : new WaitHandler(),
     },
   }
 })
