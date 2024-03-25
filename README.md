@@ -33,6 +33,27 @@
 npm install maz-ui
 ```
 
+### Nuxt Module
+
+[Documentation](https://maz-ui.com/guide/nuxt)
+
+```bash
+npm install maz-ui
+```
+
+```ts
+// nuxt.config.js
+
+export default defineNuxtConfig({
+  modules: ['maz-ui/nuxt'],
+  mazUi: {
+    // Options
+  },
+})
+```
+
+All options of the module are available [here](https://maz-ui.com/guide/nuxt)
+
 ### @mazui/cli
 
 [Documentation & Commands](https://maz-ui.com/guide/cli)
