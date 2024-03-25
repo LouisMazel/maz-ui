@@ -1,5 +1,26 @@
 # Change Log
 
+## v3.36.4...v3.36.5
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.36.4...v3.36.5)
+
+### 🩹 Fixes
+
+- Opt in to `import.meta.*` properties ([f3a5498f](https://github.com/LouisMazel/maz-ui/commit/f3a5498f))
+
+### 📖 Documentation
+
+- Add nuxt module documentation in readme ([a4dd683c](https://github.com/LouisMazel/maz-ui/commit/a4dd683c))
+
+### 🏡 Chore
+
+- **deps:** Upgrade dependencies ([76bffa04](https://github.com/LouisMazel/maz-ui/commit/76bffa04))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+- Daniel Roe ([@danielroe](http://github.com/danielroe))
+
 ## v3.36.3...v3.36.4
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.36.3...v3.36.4)
