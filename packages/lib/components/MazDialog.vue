@@ -1,6 +1,7 @@
 <template>
   <MazBackdrop
     v-bind="backdropAttrs"
+    :persistent="persistent"
     transition-name="modal-anim"
     aria-labelledby="dialogTitle"
     aria-describedby="dialogDesc"
@@ -34,7 +35,12 @@
               <slot name="title">{{ title }}</slot>
             </h2>
 
-            <MazBtn v-if="!noClose" class="m-dialog-closebtn" color="transparent" @click="close">
+            <MazBtn
+              v-if="!noClose && !persistent"
+              class="m-dialog-closebtn"
+              color="transparent"
+              @click="close"
+            >
               <XIcon class="maz-text-lg" />
             </MazBtn>
           </div>
@@ -71,19 +77,31 @@
   const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
   const XIcon = defineAsyncComponent(() => import('./../icons/x-mark.svg'))
 
-  defineProps({
-    /** Modal's title in  header */
-    title: { type: String, default: undefined },
+  export type Props = {
+    /** Title of the modal in header */
+    title?: string
     /** Remove the close button in header */
-    noClose: { type: Boolean, default: false },
+    noClose?: boolean
     /** Modal's width */
-    width: { type: String, default: '500px' },
+    width?: string
     /** Modal's max-width */
-    maxWidth: { type: String, default: '95vw' },
+    maxWidth?: string
     /** Modal's max-height */
-    maxHeight: { type: String, default: '95vh' },
+    maxHeight?: string
     /**  Modal's content becomes scrollable - warning: a overflow is applied */
-    scrollable: { type: Boolean, default: false },
+    scrollable?: boolean
+    /** Persistent dialog (not closable by clicking outside and remove close button) */
+    persistent?: boolean
+  }
+
+  withDefaults(defineProps<Props>(), {
+    title: undefined,
+    noClose: false,
+    width: '500px',
+    maxWidth: '95vw',
+    maxHeight: '95vh',
+    scrollable: false,
+    persistent: false,
   })
 
   defineEmits([
