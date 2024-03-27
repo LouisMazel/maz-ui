@@ -10,7 +10,7 @@
     "serve": "vitepress serve docs"
   },
   "devDependencies": {
-    "@types/react": "^18.2.70",
+    "@types/react": "^18.2.72",
     "@vercel/og": "^0.6.2",
     "postcss-import": "^16.1.0",
     "postcss-url": "^10.1.3",
@@ -24,7 +24,7 @@
     "chartjs-plugin-datalabels": "^2.2.0",
     "dayjs": "^1.11.10",
     "dropzone": "^5.9.3",
-    "libphonenumber-js": "^1.10.58",
+    "libphonenumber-js": "^1.10.59",
     "maz-ui": "workspace:*",
     "vitepress-plugin-google-analytics": "^1.0.2"
   }
