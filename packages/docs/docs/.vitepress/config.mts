@@ -5,6 +5,7 @@ import svgLoader from 'vite-svg-loader'
 import { fileURLToPath } from 'node:url'
 import { getOgImage } from './og-image'
 
+import { Plugin } from 'postcss'
 import postcssNested from 'postcss-nested'
 import postcssUrl from 'postcss-url'
 import tailwindcssNesting from 'tailwindcss/nesting'
@@ -96,12 +97,12 @@ export default defineConfig({
     css: {
       postcss: {
         plugins: [
-          postcssUrl,
-          postcssNested,
-          tailwindcssNesting,
-          postcssImport,
-          autoprefixer,
-          tailwind,
+          postcssUrl(),
+          postcssNested(),
+          tailwindcssNesting() as Plugin,
+          postcssImport(),
+          autoprefixer(),
+          tailwind() as Plugin,
           postcssIsolateStyles({
             includeFiles: [/vp-doc\.css/]
           }),
