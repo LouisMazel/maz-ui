@@ -83,7 +83,7 @@
 
 <style lang="postcss">
   .m-switch {
-    @apply maz-relative maz-inline-flex maz-cursor-pointer maz-items-center maz-gap-2;
+    @apply maz-relative maz-inline-flex maz-cursor-pointer maz-items-center maz-gap-2 maz-align-top;
 
     &.--is-disabled {
       @apply maz-cursor-not-allowed;

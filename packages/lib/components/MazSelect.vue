@@ -649,7 +649,7 @@
 
 <style lang="postcss" scoped>
   .m-select {
-    @apply maz-relative;
+    @apply maz-relative maz-inline-flex maz-align-top;
 
     &.--mini {
       @apply maz-text-xs;

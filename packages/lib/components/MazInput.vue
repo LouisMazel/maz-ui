@@ -415,7 +415,7 @@
 
 <style lang="postcss" scoped>
   .m-input {
-    @apply maz-flex maz-flex-col;
+    @apply maz-inline-flex maz-flex-col maz-align-top;
 
     &.--xl {
       @apply maz-h-16;

@@ -163,7 +163,7 @@
 
 <style lang="postcss" scoped>
   .m-avatar {
-    @apply maz-inline-flex maz-flex-col maz-gap-[0.5em] maz-flex-center;
+    @apply maz-inline-flex maz-flex-col maz-gap-[0.5em] maz-align-top maz-flex-center;
     @apply !maz-no-underline;
 
     &__caption {

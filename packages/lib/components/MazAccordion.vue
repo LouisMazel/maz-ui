@@ -91,14 +91,14 @@
 
 <style lang="postcss" scoped>
   .m-accordion {
-    @apply maz-relative maz-inline-flex maz-flex-col maz-gap-4;
+    @apply maz-relative maz-inline-flex maz-flex-col maz-gap-4 maz-align-top;
 
     .spotlight {
       @apply maz-w-full;
     }
 
     .header {
-      @apply maz-flex maz-w-full maz-items-center maz-justify-between maz-gap-4 maz-px-4 maz-py-4 maz-text-left maz-transition-colors maz-duration-300 maz-ease-in-out;
+      @apply maz-inline-flex maz-w-full maz-items-center maz-justify-between maz-gap-4 maz-px-4 maz-py-4 maz-text-left maz-transition-colors maz-duration-300 maz-ease-in-out;
 
       .header-icon {
         @apply maz-transition-transform maz-duration-300 maz-ease-in-out;

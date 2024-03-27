@@ -594,7 +594,7 @@
 
 <style lang="postcss" scoped>
   .m-phone-number-input {
-    @apply maz-relative maz-flex maz-items-center;
+    @apply maz-relative maz-inline-flex maz-items-center maz-align-top;
 
     &__country-flag {
       position: absolute;

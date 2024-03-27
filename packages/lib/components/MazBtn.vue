@@ -237,7 +237,7 @@
 
 <style lang="postcss" scoped>
   .m-btn {
-    @apply maz-flex maz-flex-none maz-items-center maz-gap-2 maz-border maz-border-solid maz-border-transparent maz-text-center maz-text-base maz-text-normal;
+    @apply maz-flex-none maz-items-center maz-gap-2 maz-border maz-border-solid maz-border-transparent maz-text-center maz-align-top maz-text-base maz-text-normal;
 
     & span {
       @apply maz-leading-none;

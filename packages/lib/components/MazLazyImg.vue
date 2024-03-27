@@ -109,7 +109,7 @@
 
 <style lang="postcss" scoped>
   .m-lazy-img-component {
-    @apply maz-relative maz-flex maz-flex-center;
+    @apply maz-relative maz-inline-flex maz-align-top maz-flex-center;
 
     &-loader {
       @apply maz-absolute maz-inset-0 maz-hidden maz-flex-center;
