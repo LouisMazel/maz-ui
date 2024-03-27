@@ -32,5 +32,3 @@ More info about the [aos plugin](./../plugins/aos.md) can be found in its docume
   })
 </script>
 ```
-
-## Documentation

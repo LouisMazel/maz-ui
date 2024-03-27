@@ -1,7 +1,10 @@
 <template>
   <div class="home">
+    <!-- class="maz-space-y-2" -->
     <div>
       <!-- Start Developping Area - You should not commit anything here to keep this place clean for all others -->
+
+      <MazPhoneNumberInput v-model="phone" label="Phone number" />
 
       <!-- End Developping Area -->
     </div>
@@ -18,6 +21,8 @@
 
   const toast = useToast()
   const wait = useWait()
+
+  const phone = ref<string>()
 
   const tabs = ref<MazTabsBarItem[]>([
     { label: 'First Tab', disabled: false },
