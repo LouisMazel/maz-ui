@@ -16,7 +16,7 @@
     "*.{vue,css,scss,postcss,pcss}": "stylelint --fix"
   },
   "devDependencies": {
-    "@nuxt/devtools": "^1.1.3",
+    "@nuxt/devtools": "^1.1.4",
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
     "@nuxtjs/tailwindcss": "^6.11.4",
     "autoprefixer": "^10.4.19",
@@ -28,7 +28,7 @@
     "postcss-nested": "^6.0.1",
     "postcss-url": "^10.1.3",
     "prettier-plugin-tailwindcss": "^0.5.12",
-    "stylelint": "^16.3.0",
+    "stylelint": "^16.3.1",
     "stylelint-config-recommended-vue": "^1.5.0",
     "stylelint-config-standard": "^36.0.0",
     "stylelint-config-tailwindcss": "^0.0.7",
