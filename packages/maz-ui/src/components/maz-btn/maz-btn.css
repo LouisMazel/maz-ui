@@ -1,0 +1,449 @@
+:host {
+  display: block;
+}
+
+.m-btn {
+  @apply maz-flex maz-flex-none maz-items-center maz-gap-2 maz-border maz-border-solid maz-border-transparent maz-text-center maz-text-base maz-text-normal;
+
+  & span {
+    @apply maz-leading-none;
+  }
+
+  &-loader {
+    @apply maz-absolute;
+  }
+
+  &.--cursor-pointer {
+    @apply maz-cursor-pointer;
+  }
+
+  &.--cursor-default {
+    @apply maz-cursor-default;
+  }
+
+  &.--is-link {
+    @apply maz-inline-flex maz-items-center maz-bg-transparent
+      maz-outline-none maz-transition maz-duration-200 maz-ease-in-out;
+
+    &:not(.--no-leading) span {
+      @apply maz-leading-9;
+    }
+
+    &:not(:disabled):hover,
+    &:not(:disabled):focus {
+      &:not(.--no-underline) {
+        @apply maz-underline;
+      }
+    }
+
+    &.--secondary {
+      @apply maz-text-secondary;
+    }
+
+    &.--info {
+      @apply maz-text-info;
+    }
+
+    &.--warning {
+      @apply maz-text-warning-600;
+    }
+
+    &.--danger {
+      @apply maz-text-danger-600;
+    }
+
+    &.--success {
+      @apply maz-text-success-600;
+    }
+
+    &.--white {
+      @apply maz-text-white;
+    }
+
+    &.--black {
+      @apply maz-text-black;
+    }
+
+    &.--theme {
+      @apply maz-text-normal;
+    }
+  }
+
+  &.--is-button {
+    @apply maz-relative maz-inline-flex maz-items-center maz-justify-center maz-overflow-hidden
+      maz-border-transparent maz-bg-transparent maz-font-medium maz-no-underline
+      maz-transition maz-duration-200 maz-ease-in-out;
+
+    &:not(.--no-rounded) {
+      @apply maz-rounded;
+    }
+
+    &.--rounded {
+      @apply maz-rounded-full;
+    }
+
+    &.--xl {
+      @apply maz-px-8 maz-text-xl;
+
+      padding-top: 1.325rem;
+      padding-bottom: 1.325rem;
+    }
+
+    &.--lg {
+      @apply maz-px-6 maz-text-lg;
+
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
+
+    &.--md {
+      @apply maz-px-4;
+
+      padding-top: 0.88rem;
+      padding-bottom: 0.88rem;
+    }
+
+    &.--sm {
+      @apply maz-px-3 maz-text-sm;
+
+      padding-top: 0.625rem;
+      padding-bottom: 0.625rem;
+    }
+
+    &.--xs {
+      @apply maz-px-2 maz-text-sm;
+
+      padding-top: 0.3rem;
+      padding-bottom: 0.3rem;
+    }
+
+    &.--mini {
+      @apply maz-px-1 maz-text-xs;
+
+      padding-top: 0.2rem;
+      padding-bottom: 0.2rem;
+    }
+
+    transition:
+      background 300ms ease-in-out 0ms,
+      color 300ms ease-in-out 0ms;
+
+    /* Not disabled */
+
+    &:not(.--disabled) {
+      &:hover,
+      &:focus {
+        @apply maz-bg-border;
+      }
+    }
+
+    /* Fab */
+
+    &.--fab {
+      @apply maz-flex maz-items-center
+        maz-justify-center maz-rounded-full maz-px-0 maz-py-0;
+
+      &:not(.--no-elevation) {
+        @apply maz-elevation;
+      }
+
+      &.--xl {
+        @apply maz-h-[4.125rem] maz-w-[4.125rem] maz-text-xl;
+      }
+
+      &.--lg {
+        @apply maz-h-[3.375rem] maz-w-[3.375rem] maz-text-lg;
+      }
+
+      &.--md {
+        @apply maz-h-12 maz-w-12;
+      }
+
+      &.--sm {
+        @apply maz-h-[2.375rem] maz-w-[2.375rem] maz-text-sm;
+      }
+
+      &.--xs {
+        @apply maz-h-[1.725rem] maz-w-[1.725rem] maz-text-sm;
+      }
+
+      &.--mini {
+        @apply maz-h-[1.4rem] maz-w-[1.4rem] maz-text-xs;
+      }
+    }
+
+    &.--block {
+      @apply maz-w-full;
+    }
+
+    &.--primary {
+      @apply maz-bg-primary maz-text-primary-contrast;
+
+      &:not(:disabled):hover,
+      &:not(:disabled):focus {
+        @apply maz-bg-primary-600;
+      }
+    }
+
+    &.--secondary {
+      @apply maz-bg-secondary maz-text-secondary-contrast;
+
+      &:not(:disabled):hover,
+      &:not(:disabled):focus {
+        @apply maz-bg-secondary-600;
+      }
+    }
+
+    &.--info {
+      @apply maz-bg-info maz-text-info-contrast;
+
+      &:not(:disabled):hover,
+      &:not(:disabled):focus {
+        @apply maz-bg-info-600;
+      }
+    }
+
+    &.--success {
+      @apply maz-bg-success maz-text-success-contrast;
+
+      &:not(:disabled):hover,
+      &:not(:disabled):focus {
+        @apply maz-bg-success-600;
+      }
+    }
+
+    &.--warning {
+      @apply maz-bg-warning maz-text-warning-contrast;
+
+      &:not(:disabled):hover,
+      &:not(:disabled):focus {
+        @apply maz-bg-warning-600;
+      }
+    }
+
+    &.--danger {
+      @apply maz-bg-danger maz-text-white;
+
+      &:not(:disabled):hover,
+      &:not(:disabled):focus {
+        @apply maz-bg-danger-600;
+      }
+    }
+
+    &.--white {
+      @apply maz-bg-white maz-text-white-contrast;
+
+      &:not(:disabled):hover,
+      &:not(:disabled):focus {
+        @apply maz-bg-gray-300;
+      }
+    }
+
+    &.--black {
+      @apply maz-bg-black maz-text-black-contrast;
+
+      &:not(:disabled):hover,
+      &:not(:disabled):focus {
+        @apply maz-bg-gray-800;
+      }
+    }
+
+    &.--transparent {
+      @apply maz-bg-transparent;
+
+      &:not(:disabled):hover,
+      &:not(:disabled):focus {
+        @apply maz-bg-[#000]/[0.08] dark:maz-bg-[#FFF]/[0.08];
+      }
+    }
+
+    &.--theme {
+      @apply maz-bg-theme maz-text-color;
+
+      &:not(:disabled):hover,
+      &:not(:disabled):focus {
+        @apply maz-bg-theme-hover;
+      }
+    }
+
+    /* OUTLINE */
+
+    &.--primary-outline {
+      @apply maz-border-primary maz-bg-primary-alpha-05 maz-text-primary;
+
+      &:not(:disabled):hover,
+      &:not(:disabled):focus {
+        @apply maz-bg-primary maz-text-primary-contrast;
+      }
+    }
+
+    &.--secondary-outline {
+      @apply maz-border-secondary maz-bg-secondary-alpha-05 maz-text-secondary;
+
+      &:not(:disabled):hover,
+      &:not(:disabled):focus {
+        @apply maz-bg-secondary maz-text-white;
+      }
+    }
+
+    &.--info-outline {
+      @apply maz-border-info maz-bg-info-alpha-05 maz-text-info;
+
+      &:not(:disabled):hover,
+      &:not(:disabled):focus {
+        @apply maz-bg-info maz-text-white;
+      }
+    }
+
+    &.--success-outline {
+      @apply maz-border-success maz-bg-success-alpha-05 maz-text-success;
+
+      &:not(:disabled):hover,
+      &:not(:disabled):focus {
+        @apply maz-bg-success maz-text-white;
+      }
+    }
+
+    &.--danger-outline {
+      @apply maz-border-danger maz-bg-danger-alpha-05 maz-text-danger;
+
+      &:not(:disabled):hover,
+      &:not(:disabled):focus {
+        @apply maz-bg-danger maz-text-white;
+      }
+    }
+
+    &.--warning-outline {
+      @apply maz-border-warning maz-bg-warning-alpha-05 maz-text-warning;
+
+      &:not(:disabled):hover,
+      &:not(:disabled):focus {
+        @apply maz-bg-warning maz-text-white;
+      }
+    }
+
+    &.--white-outline {
+      @apply maz-border-white maz-text-white;
+
+      &:not(:disabled):hover,
+      &:not(:disabled):focus {
+        @apply maz-bg-white maz-text-white-contrast;
+      }
+    }
+
+    &.--black-outline {
+      @apply maz-border-black maz-text-black;
+
+      &:not(:disabled):hover,
+      &:not(:disabled):focus {
+        @apply maz-bg-black maz-text-black-contrast;
+      }
+    }
+
+    &.--theme-outline {
+      @apply maz-border-border maz-text-theme dark:maz-border-color-lighter;
+
+      &:not(:disabled):hover,
+      &:not(:disabled):focus {
+        @apply maz-border-theme maz-bg-theme maz-text-color;
+      }
+    }
+
+    /* PASTEL */
+
+    &.--primary-pastel {
+      @apply maz-bg-primary-50 maz-text-primary;
+
+      &:not(:disabled):hover,
+      &:not(:disabled):focus {
+        @apply maz-bg-primary maz-text-primary-contrast;
+      }
+    }
+
+    &.--secondary-pastel {
+      @apply maz-bg-secondary-50 maz-text-secondary;
+
+      &:not(:disabled):hover,
+      &:not(:disabled):focus {
+        @apply maz-bg-secondary maz-text-secondary-contrast;
+      }
+    }
+
+    &.--info-pastel {
+      @apply maz-bg-info-50 maz-text-info;
+
+      &:not(:disabled):hover,
+      &:not(:disabled):focus {
+        @apply maz-bg-info maz-text-info-contrast;
+      }
+    }
+
+    &.--success-pastel {
+      @apply maz-bg-success-50 maz-text-success;
+
+      &:not(:disabled):hover,
+      &:not(:disabled):focus {
+        @apply maz-bg-success maz-text-success-contrast;
+      }
+    }
+
+    &.--danger-pastel {
+      @apply maz-bg-danger-50 maz-text-danger;
+
+      &:not(:disabled):hover,
+      &:not(:disabled):focus {
+        @apply maz-bg-danger maz-text-danger-contrast;
+      }
+    }
+
+    &.--warning-pastel {
+      @apply maz-bg-warning-50 maz-text-warning;
+
+      &:not(:disabled):hover,
+      &:not(:disabled):focus {
+        @apply maz-bg-warning maz-text-warning-contrast;
+      }
+    }
+
+    &.--white-pastel {
+      @apply maz-bg-gray-100 maz-text-white;
+
+      &:not(:disabled):hover,
+      &:not(:disabled):focus {
+        @apply maz-bg-white maz-text-white-contrast;
+      }
+    }
+
+    &.--black-pastel {
+      @apply maz-bg-border maz-text-black;
+
+      &:not(:disabled):hover,
+      &:not(:disabled):focus {
+        @apply maz-bg-black maz-text-black-contrast;
+      }
+    }
+
+    &.--theme-pastel {
+      @apply maz-bg-border maz-text-black;
+
+      &:not(:disabled):hover,
+      &:not(:disabled):focus {
+        @apply maz-bg-black maz-text-black-contrast;
+      }
+    }
+
+    /* DISABLED */
+
+    &.--disabled {
+      @apply maz-cursor-not-allowed maz-bg-color-lighter maz-text-gray-400;
+    }
+
+    &.--loading {
+      @apply maz-cursor-wait;
+    }
+
+    &.--no-padding {
+      @apply maz-p-0;
+    }
+  }
+}

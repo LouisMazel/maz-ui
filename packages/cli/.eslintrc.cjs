@@ -9,8 +9,10 @@ module.exports = {
     'plugin:unicorn/recommended',
     'plugin:promise/recommended',
     'plugin:prettier/recommended',
-    'standard-with-typescript',
+    'plugin:@typescript-eslint/recommended',
   ],
+  plugins: ['@typescript-eslint'],
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
