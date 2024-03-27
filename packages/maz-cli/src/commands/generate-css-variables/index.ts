@@ -30,6 +30,8 @@ export function generateCssVariables(): Command {
       })
 
       outro(`CSS file generated in ${green(outputPath)}`)
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       log.error('An error occured while generating CSS file')
       log.error(red((error.message ?? error) as string))

@@ -15,12 +15,14 @@ export const logger = {
     console.log(green(message))
     console.log()
   },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   warn: (message: string, error?: any) => {
     console.log()
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     console.warn(yellow(message), error ? yellow(error?.message ?? error) : '')
     console.log()
   },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   error: (message: string, error?: any) => {
     console.log()
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
