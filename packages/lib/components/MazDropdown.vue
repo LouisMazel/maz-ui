@@ -353,7 +353,7 @@
 
 <style lang="postcss">
   .m-dropdown {
-    @apply maz-relative maz-inline-flex maz-flex-col maz-items-start;
+    @apply maz-relative maz-inline-flex maz-flex-col maz-items-start maz-align-top;
 
     & [aria-expanded='true'].m-btn {
       @apply maz-bg-color-light;

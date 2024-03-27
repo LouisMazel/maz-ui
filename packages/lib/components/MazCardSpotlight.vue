@@ -1,6 +1,6 @@
 <template>
   <div
-    class="card"
+    class="m-card"
     :class="{ 'maz-elevation': !noElevation }"
     :style="{ backgroundColor: alphaColor20 }"
   >
@@ -68,42 +68,42 @@
 </script>
 
 <style lang="postcss" scoped>
-  .card {
+  .m-card {
     @apply maz-relative maz-inline-block maz-overflow-hidden maz-rounded maz-p-[var(--maz-border-width)];
 
     background-color: v-bind('alphaColor20');
-  }
 
-  .inner {
-    @apply maz-relative maz-overflow-hidden maz-rounded;
+    .inner {
+      @apply maz-relative maz-overflow-hidden maz-rounded;
 
-    &::before {
-      content: '';
+      &::before {
+        content: '';
 
-      @apply maz-absolute maz-left-0 maz-top-0 maz-z-1 maz-h-full maz-w-full maz-bg-color maz-opacity-[0.9];
+        @apply maz-absolute maz-left-0 maz-top-0 maz-z-1 maz-h-full maz-w-full maz-bg-color maz-opacity-[0.9];
+      }
     }
-  }
 
-  .content {
-    @apply maz-relative maz-z-2;
-  }
+    .content {
+      @apply maz-relative maz-z-2;
+    }
 
-  .blob {
-    @apply maz-absolute maz-left-0 maz-top-0 maz-z-[0] maz-h-64 maz-w-64 maz-rounded-full maz-blur-2xl;
+    .blob {
+      @apply maz-absolute maz-left-0 maz-top-0 maz-z-[0] maz-h-64 maz-w-64 maz-rounded-full maz-blur-2xl;
 
-    background-color: v-bind('alphaColor');
-  }
+      background-color: v-bind('alphaColor');
+    }
 
-  .fakeblob {
-    display: hidden;
-    position: absolute;
-    z-index: -1;
-    top: 0;
-    left: 0;
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
+    .fakeblob {
+      display: hidden;
+      position: absolute;
+      z-index: -1;
+      top: 0;
+      left: 0;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
 
-    @apply maz-h-52 maz-w-52 maz-rounded-full;
+      @apply maz-h-52 maz-w-52 maz-rounded-full;
+    }
   }
 </style>

@@ -81,7 +81,7 @@
 
 <style lang="postcss" scoped>
   .m-radio-buttons {
-    @apply maz-flex maz-flex-wrap maz-gap-2;
+    @apply maz-inline-flex maz-flex-wrap maz-gap-2 maz-align-top;
 
     &__items {
       @apply maz-cursor-pointer maz-rounded maz-px-4 maz-py-2

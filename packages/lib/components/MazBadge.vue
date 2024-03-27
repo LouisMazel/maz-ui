@@ -38,7 +38,7 @@
 
 <style lang="postcss" scoped>
   .m-badge {
-    @apply maz-inline-flex maz-items-center maz-justify-center maz-border maz-font-semibold;
+    @apply maz-inline-flex maz-items-center maz-justify-center maz-border maz-align-top maz-font-semibold;
 
     padding: 0.25em 0.5em;
     line-height: 1.4em;

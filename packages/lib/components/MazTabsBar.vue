@@ -245,7 +245,7 @@
 
 <style lang="postcss" scoped>
   .m-tabs-bar {
-    @apply maz-relative maz-inline-flex maz-max-w-full maz-gap-1 maz-overflow-x-auto maz-rounded maz-p-2 dark:maz-border dark:maz-border-color-lighter;
+    @apply maz-relative maz-inline-flex maz-max-w-full maz-gap-1 maz-overflow-x-auto maz-rounded maz-p-2 maz-align-top dark:maz-border dark:maz-border-color-lighter;
 
     &.--elevation {
       @apply maz-elevation dark:maz-shadow-none;

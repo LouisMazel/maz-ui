@@ -178,7 +178,7 @@
 
 <style lang="postcss">
   .m-input-number {
-    @apply maz-inline-flex;
+    @apply maz-inline-flex maz-align-top;
 
     &__button {
       &.m-btn.--is-button {

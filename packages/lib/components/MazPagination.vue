@@ -267,7 +267,7 @@
 <style lang="postcss" scoped>
   .m-pagination {
     ul {
-      @apply !maz-m-0 maz-flex !maz-list-none maz-items-center maz-gap-2 -maz-space-x-px !maz-p-0 maz-text-base;
+      @apply !maz-m-0 maz-inline-flex !maz-list-none maz-items-center maz-gap-2 -maz-space-x-px !maz-p-0 maz-align-top maz-text-base;
 
       li {
         @apply maz-m-0;

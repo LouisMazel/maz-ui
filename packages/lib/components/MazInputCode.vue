@@ -239,7 +239,7 @@
 
 <style lang="postcss" scoped>
   .m-input-code {
-    @apply maz-flex maz-gap-[1em];
+    @apply maz-inline-flex maz-gap-[1em] maz-align-top;
 
     &.--mini {
       @apply maz-text-[0.625rem];
