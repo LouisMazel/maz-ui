@@ -1,10 +1,10 @@
 <template>
   <div
     ref="mazSelectElement"
+    v-click-outside="closeList"
     class="m-select"
     :class="[{ '--is-open': hasListOpened, '--disabled': disabled }, props.class, `--${size}`]"
     :style="style"
-    @blur.capture="closeList"
   >
     <MazInput
       :id="instanceId"
@@ -20,6 +20,7 @@
       :disabled="disabled"
       @focus.prevent.stop="openList"
       @click.prevent.stop="openList"
+      @blur.prevent.stop="closeList"
       @change="emits('change', $event)"
       @keydown="mainInputKeyboardHandler"
     >
@@ -139,8 +140,10 @@
   } from 'vue'
   import MazInput from './MazInput.vue'
   import type { Color, ModelValueSimple, Position, Size } from './types'
-  import { useInstanceUniqId } from '../modules/composables'
-  import { debounceCallback } from './../modules/helpers/debounce-callback'
+  import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
+  import { debounceCallback } from '../modules/helpers/debounce-callback'
+  import { vClickOutside } from '../modules/directives/click-outside'
+  import { useStringMatching } from '../modules/composables/use-string-matching'
 
   export type NormalizedOption = Record<string, ModelValueSimple>
   export type MazSelectOptionWithOptGroup = {
@@ -435,8 +438,14 @@
 
           return (
             searchInValue(searchValue, query) ||
+            searchInValue(searchValue2, query) ||
             searchInValue(searchValue3, query) ||
-            searchInValue(searchValue2, query)
+            (typeof searchValue === 'string' &&
+              useStringMatching(searchValue, query).isMatching.value) ||
+            (typeof searchValue2 === 'string' &&
+              useStringMatching(searchValue2, query).isMatching.value) ||
+            (typeof searchValue3 === 'string' &&
+              useStringMatching(searchValue3, query).isMatching.value)
           )
         })
       : optionsNormalized.value
@@ -444,7 +453,8 @@
 
   const optionsList = computed(() => getFilteredOptionWithQuery(searchQuery.value))
 
-  const closeList = async (event?: Event) => {
+  async function closeList(event?: Event) {
+    if (!hasListOpened.value) return
     if (
       event &&
       (('relatedTarget' in event &&
@@ -460,7 +470,7 @@
     emits('close', event)
   }
 
-  const openList = async (event?: Event) => {
+  async function openList(event?: Event) {
     if (props.disabled || hasListOpened.value) return
 
     event?.preventDefault()
