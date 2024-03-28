@@ -76,6 +76,7 @@ describe('MazInputTags', () => {
     const input = wrapper.find('.m-input-tags__input input')
     await input.setValue('')
     await input.trigger('keydown.delete')
+    await input.trigger('keydown.delete')
 
     expect(wrapper.emitted('update:model-value')).toBeTruthy()
     expect(wrapper.emitted('update:model-value')[0][0]).toEqual(['tag1'])
