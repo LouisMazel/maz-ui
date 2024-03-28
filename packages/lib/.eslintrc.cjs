@@ -19,8 +19,9 @@ module.exports = {
     'plugin:vuejs-accessibility/recommended',
     '@vue/eslint-config-typescript/recommended',
   ],
+  parser: 'vue-eslint-parser',
   parserOptions: {
-    ecmaVersion: 2023,
+    ecmaVersion: 'latest',
   },
   rules: {
     'no-console': [
