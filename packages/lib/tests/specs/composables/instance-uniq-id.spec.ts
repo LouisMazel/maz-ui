@@ -1,4 +1,4 @@
-import { useInstanceUniqId } from '@modules/composables'
+import { useInstanceUniqId } from '@modules/composables/use-instance-uniq-id'
 
 describe('useInstanceUniqId', () => {
   it('should return the provided id if it exists', () => {
