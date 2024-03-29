@@ -1,5 +1,17 @@
 # Change Log
 
+## v3.37.1...v3.37.2
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.37.1...v3.37.2)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazPhoneNumberInput - add missing import of MazInput ([eb0e40e9](https://github.com/LouisMazel/maz-ui/commit/eb0e40e9))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.37.0...v3.37.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.37.0...v3.37.1)
