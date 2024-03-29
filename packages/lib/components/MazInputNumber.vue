@@ -1,13 +1,13 @@
 <template>
   <div
     class="m-input-number maz-align-center"
-    :class="[`m-input-number--${size}`, props.class]"
+    :class="[`m-input-number--${size}`, props.class, { '--block': block }]"
     :style="style"
   >
     <MazBtn
       v-if="!noButtons"
       color="transparent"
-      :size="size"
+      :size
       tabindex="-1"
       class="m-input-number__button m-input-number__decrement-button"
       :disabled="decrementDisabled || disabled"
@@ -20,13 +20,14 @@
       type="number"
       class="m-input-number__input maz-flex-1"
       :class="{ '--no-buttons': noButtons, '--text-center': textCenter }"
-      :disabled="disabled"
-      :min="min"
-      :max="max"
-      :step="step"
+      :disabled
+      :min
+      :max
+      :step
       v-bind="$attrs"
-      :inputmode="inputmode"
-      :size="size"
+      :inputmode
+      :size
+      block
       @keydown.up.prevent="increment"
       @keydown.down.prevent="decrement"
       @focus="$emit('focus', $event)"
@@ -41,7 +42,7 @@
       color="transparent"
       no-shadow
       tabindex="-1"
-      :size="size"
+      :size
       class="m-input-number__button m-input-number__increment-button"
       :disabled="incrementDisabled || disabled"
       @click="increment"
@@ -89,6 +90,8 @@
     textCenter?: boolean
     /** The inputmode attribute for the input. */
     inputmode?: HTMLAttributes['inputmode']
+    /** The input will be displayed in full width */
+    block?: boolean
   }
 
   const props = withDefaults(defineProps<Props>(), {
@@ -179,6 +182,10 @@
 <style lang="postcss">
   .m-input-number {
     @apply maz-inline-flex maz-align-top;
+
+    &.--block {
+      @apply maz-w-full;
+    }
 
     &__button {
       &.m-btn.--is-button {

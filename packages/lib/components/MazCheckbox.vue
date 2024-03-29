@@ -22,7 +22,9 @@
     <span>
       <CheckIcon class="check-icon" :class="checkIconSize" />
     </span>
-    <slot></slot>
+    <slot>
+      {{ label }}
+    </slot>
   </label>
 </template>
 
@@ -46,6 +48,7 @@
     value?: string | number | boolean
     name?: string
     size?: Size
+    label?: string
     disabled?: boolean
   }
 
@@ -53,6 +56,7 @@
     style: undefined,
     class: undefined,
     modelValue: undefined,
+    label: undefined,
     id: undefined,
     color: 'primary',
     value: undefined,

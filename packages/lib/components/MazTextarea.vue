@@ -162,7 +162,7 @@
 
 <style lang="postcss" scoped>
   .m-textarea {
-    @apply maz-relative maz-inline-flex maz-flex-col maz-align-top;
+    @apply maz-relative maz-flex maz-flex-col maz-align-top;
 
     textarea {
       @apply maz-min-h-[6.25rem] maz-w-full maz-resize-y maz-rounded maz-border maz-border-solid maz-bg-color maz-p-4 maz-text-normal maz-outline-none;

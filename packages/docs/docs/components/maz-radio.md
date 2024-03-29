@@ -75,9 +75,9 @@ description: MazRadio is a standalone component
     name="chosenSize"
     :key="size"
     :size="size"
-    :value="size">
-    {{ size }}
-  </MazRadio>
+    :value="size"
+    :label="size"
+  />
 </div>
 
 ::: details Show code
@@ -90,9 +90,9 @@ description: MazRadio is a standalone component
     name="chosenSize"
     :key="size"
     :size="size"
-    :value="size">
-    {{ size }}
-  </MazRadio>
+    :value="size"
+    :label="size"
+  />
 </template>
 
 <script lang="ts" setup>

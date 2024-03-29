@@ -23,7 +23,9 @@
     <span>
       <span class="round"></span>
     </span>
-    <slot></slot>
+    <slot>
+      {{ label }}
+    </slot>
   </label>
 </template>
 
@@ -42,6 +44,7 @@
       type: [String, Array, Object] as PropType<HTMLAttributes['class']>,
       default: undefined,
     },
+    label: { type: String, default: undefined },
     modelValue: { type: String, default: undefined },
     value: { type: String, required: true },
     name: { type: String, required: true },

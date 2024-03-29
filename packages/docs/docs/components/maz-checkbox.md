@@ -13,15 +13,11 @@ description: MazCheckbox is a standalone component that replaces the standard ht
 
 ```v-model="{{checked}}"```
 
-<MazCheckbox v-model="checked">
-  {{ checked ? 'Checked' : 'Unchecked' }}
-</MazCheckbox>
+<MazCheckbox v-model="checked" :label="checked ? 'Checked' : 'Unchecked'" />
 
 ```vue
 <template>
-  <MazCheckbox v-model="checked">
-    {{ checked ? 'Checked' : 'Unchecked' }}
-  </MazCheckbox>
+  <MazCheckbox v-model="checked" :label="checked ? 'Checked' : 'Unchecked'" />
 </template>
 
 <script lang="ts" setup>

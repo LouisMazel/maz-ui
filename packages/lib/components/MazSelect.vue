@@ -3,7 +3,11 @@
     ref="mazSelectElement"
     v-click-outside="closeList"
     class="m-select"
-    :class="[{ '--is-open': hasListOpened, '--disabled': disabled }, props.class, `--${size}`]"
+    :class="[
+      { '--is-open': hasListOpened, '--disabled': disabled, '--block': block },
+      props.class,
+      `--${size}`,
+    ]"
     :style="style"
   >
     <MazInput
@@ -17,6 +21,7 @@
       :model-value="mazInputValue"
       autocomplete="off"
       :size="size"
+      block
       :disabled="disabled"
       @focus.prevent.stop="openList"
       @click.prevent.stop="openList"
@@ -210,6 +215,8 @@
     required?: boolean
     /** Disable the component */
     disabled?: boolean
+    /** The input will be displayed in full width */
+    block?: boolean
   }
 
   const props = withDefaults(defineProps<Props>(), {
@@ -679,6 +686,10 @@
 
     &.--xl {
       @apply maz-text-xl;
+    }
+
+    &.--block {
+      @apply maz-w-full;
     }
 
     &:not(.--disabled):deep(.m-input-input) {

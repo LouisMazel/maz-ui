@@ -2,6 +2,7 @@
   <MazInput
     v-model="displayPrice"
     class="maz-input-price"
+    :block
     @focus="isActive = true"
     @blur="isActive = false"
   >
@@ -33,12 +34,20 @@
   import MazInput from './MazInput.vue'
 
   export type Props = {
+    /** @model The value of the input */
     modelValue?: number | string
+    /** The currency to use */
     currency?: string
+    /** The locale to use */
     locale?: string
+    /** The minimum value that the input can accept */
     min?: number
+    /** The maximum value that the input can accept */
     max?: number
+    /** The input will be displayed without icon */
     noIcon?: boolean
+    /** The input will be displayed in full width */
+    block?: boolean
   }
 
   const props = withDefaults(defineProps<Props>(), {

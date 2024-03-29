@@ -1,8 +1,8 @@
 <template>
   <div
     class="m-input-tags"
-    :class="[borderStyle, `--${color}`, `--${size}`, props.class]"
-    :style="style"
+    :class="[borderStyle, `--${color}`, `--${size}`, props.class, { '--block': block }]"
+    :style
     @focus.capture="isFocused = true"
     @blur.capture="isFocused = false"
   >
@@ -10,8 +10,8 @@
       <div v-for="({ tag, id }, i) in tags" :key="`tag-${i}`" class="m-input-tags__wrapper">
         <MazBtn
           class="m-input-tags__tag !maz-h-full"
-          :disabled="disabled"
-          :size="size"
+          :disabled
+          :size
           :color="tagsHoveredId === id || lastIdToDelete === id ? 'danger' : color"
           :right-icon="XIcon"
           @click.stop="removeTag(id)"
@@ -29,13 +29,14 @@
       key="input-tags"
       v-model="inputValue"
       v-bind="$attrs"
-      :placeholder="placeholder"
-      :label="label"
+      :placeholder
+      :label
       :aria-label="label || placeholder"
-      :error="error"
-      :disabled="disabled"
-      :color="color"
-      :size="size"
+      :error
+      :disabled
+      :color
+      :block
+      :size
       no-border
       class="m-input-tags__input"
       @keydown.enter="addTags"
@@ -83,6 +84,8 @@
     size?: Size
     /** The color of the input */
     color?: Color
+    /** The input will be displayed in full width */
+    block?: boolean
   }
 
   const props = withDefaults(defineProps<Props>(), {
@@ -204,6 +207,10 @@
 
     &.--mini {
       @apply maz-min-h-6;
+    }
+
+    &.--block {
+      @apply maz-w-full;
     }
 
     &__wrapper {

@@ -12,6 +12,7 @@
       {
         '--is-open': isOpen,
         '--is-disabled': disabled,
+        '--block': block,
       },
       props.class,
     ]"
@@ -21,6 +22,7 @@
       :model-value="inputValue"
       readonly
       v-bind="$attrs"
+      block
       autocomplete="off"
       class="m-picker__input"
       :label="label"
@@ -194,6 +196,8 @@
     disabledDates?: string[]
     /** The disabled hours of the time picker */
     disabledHours?: number[]
+    /** The input will be displayed in full width */
+    block?: boolean
   }
 
   const props = withDefaults(defineProps<Props>(), {
@@ -685,7 +689,11 @@
 
 <style lang="postcss" scoped>
   .m-picker {
-    @apply maz-relative;
+    @apply maz-relative maz-inline-block;
+
+    &.--block {
+      @apply maz-w-full;
+    }
 
     &--left .m-picker-container {
       @apply maz-left-0;

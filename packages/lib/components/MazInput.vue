@@ -10,6 +10,7 @@
         '--is-readonly': readonly,
         '--has-z-2': error || warning || success,
         '--has-state': error || warning || success,
+        '--block': block,
       },
       props.class,
       `--${color}`,
@@ -240,6 +241,8 @@
     rightIcon?: string | Icon
     /** Size of the rounded */
     roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
+    /** The input will be displayed in full width */
+    block?: boolean
   }
 
   const props = withDefaults(defineProps<Props>(), {
@@ -460,6 +463,10 @@
       & .m-input-label {
         @apply maz-text-xs;
       }
+    }
+
+    &.--block {
+      @apply maz-w-full;
     }
 
     &-wrapper {

@@ -1,5 +1,5 @@
 <template>
-  <div class="m-phone-number-input" :class="[props.class]" :style="style">
+  <div class="m-phone-number-input" :class="[props.class, { '--block': block }]" :style="style">
     <CountrySelector
       v-if="!noCountrySelector"
       :id="instanceId"
@@ -31,6 +31,7 @@
       :color
       :size
       :no-example
+      block
       :disabled
       :has-radius="!noCountrySelector"
       :success="success || (!noValidationSuccess ? results.isValid : false)"
@@ -181,6 +182,8 @@
     countrySelectorDisplayName?: boolean
     /** Choose the width of the country selector */
     countrySelectorWidth?: string
+    /** The input will be displayed in full width */
+    block?: boolean
   }
 
   const props = withDefaults(defineProps<Props>(), {
@@ -317,5 +320,9 @@
 <style lang="postcss" scoped>
   .m-phone-number-input {
     @apply maz-relative maz-inline-flex maz-items-center maz-align-top;
+
+    &.--block {
+      @apply maz-w-full;
+    }
   }
 </style>
