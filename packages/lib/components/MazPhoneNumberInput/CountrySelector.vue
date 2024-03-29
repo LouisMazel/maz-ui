@@ -91,7 +91,6 @@
   import MazSelect from '../MazSelect.vue'
   import { countryCodeToUnicodeFlag } from '../../modules/helpers/country-code-to-unicode-flag'
   import { truthyFilter } from '../../modules/helpers/truthy-filter'
-  import { useLibphonenumber } from './use-libphonenumber'
   import { useMazPhoneNumberInput } from './use-maz-phone-number-input'
 
   const props = withDefaults(
@@ -139,8 +138,7 @@
 
   const CountrySelectorRef = ref<ComponentPublicInstance>()
 
-  const { getCountriesList } = useLibphonenumber()
-  const { phoneNumber } = useMazPhoneNumberInput()
+  const { phoneNumber, getCountriesList } = useMazPhoneNumberInput()
 
   const countries = computed(() => getCountriesList(props.countryLocale, props.customCountriesList))
 

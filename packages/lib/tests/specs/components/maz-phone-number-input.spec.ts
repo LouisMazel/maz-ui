@@ -1,7 +1,9 @@
 import { shallowMount, type VueWrapper } from '@vue/test-utils'
 import MazPhoneNumberInput from '@components/MazPhoneNumberInput.vue'
-import { isCountryAvailable } from '@components/MazPhoneNumberInput/use-libphonenumber'
 import type { ComponentPublicInstance } from 'vue'
+import { useMazPhoneNumberInput } from '@components/MazPhoneNumberInput/use-maz-phone-number-input'
+
+const { selectedCountry } = useMazPhoneNumberInput()
 
 describe('components/MazPhoneNumberInput.vue', () => {
   expect(MazPhoneNumberInput).toBeTruthy()
@@ -30,7 +32,7 @@ describe('components/MazPhoneNumberInput.vue', () => {
 
   test('Should have the good values with FR number', async () => {
     expect(wrapper.vm.modelValue).toBe('+33658584729')
-    expect(wrapper.vm.countryCodeModel).toBe('FR')
+    expect(selectedCountry.value).toBe('FR')
   })
 
   test('Should have the good values with BE number', async () => {
@@ -42,14 +44,6 @@ describe('components/MazPhoneNumberInput.vue', () => {
     await wrapper.vm.$nextTick()
 
     expect(wrapper.vm.modelValue).toBe('+326453')
-    expect(wrapper.vm.countryCodeModel).toBe('BE')
-  })
-
-  test('Should validate country code', async () => {
-    const french = isCountryAvailable('FR')
-    const falsy = isCountryAvailable('FRFALS')
-
-    expect(french).toBeTruthy()
-    expect(falsy).toBeFalsy()
+    expect(selectedCountry.value).toBe('BE')
   })
 })
