@@ -21,7 +21,7 @@
   "devDependencies": {
     "@commitlint/config-conventional": "^19.1.0",
     "@commitlint/cz-commitlint": "^19.2.0",
-    "@rushstack/eslint-patch": "^1.9.0",
+    "@rushstack/eslint-patch": "^1.10.1",
     "@types/node": "^20.11.30",
     "@typescript-eslint/eslint-plugin": "^7.4.0",
     "@typescript-eslint/parser": "^7.4.0",
