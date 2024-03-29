@@ -1,5 +1,46 @@
 # Change Log
 
+## v3.36.5...v3.37.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.36.5...v3.37.0)
+
+### 🚀 Enhancements
+
+- **maz-ui:** UseStringMatching - add new composable to make string matching ([a0b10922](https://github.com/LouisMazel/maz-ui/commit/a0b10922))
+
+### 🩹 Fixes
+
+- **maz-ui:** MazPhoneNumberInput - formatting ([679f6abe](https://github.com/LouisMazel/maz-ui/commit/679f6abe))
+
+### 💅 Refactors
+
+- **maz-ui:** MazPhoneNumberInput - add id to country selector ([bd3b2942](https://github.com/LouisMazel/maz-ui/commit/bd3b2942))
+- **maz-ui:** MazPhoneNumberInput - simplify phone number sanitizer method ([fdca0457](https://github.com/LouisMazel/maz-ui/commit/fdca0457))
+- **maz-ui:** MazPhoneNumberInput - add error in log when loading examples fail ([6b64df07](https://github.com/LouisMazel/maz-ui/commit/6b64df07))
+- **maz-ui:** Put inline-flex components that are natively inline (input, button, img, etc) ([5e12b4f4](https://github.com/LouisMazel/maz-ui/commit/5e12b4f4))
+- **maz-ui:** MazSelect - improve close method on blur input ([eb768b1d](https://github.com/LouisMazel/maz-ui/commit/eb768b1d))
+- **maz-ui:** MazInputTags - improve tag sizes to avoid glitch ([023a5555](https://github.com/LouisMazel/maz-ui/commit/023a5555))
+- **maz-ui:** Decrease globale animation durations ([a56c14e3](https://github.com/LouisMazel/maz-ui/commit/a56c14e3))
+- **maz-ui:** MazPhoneNumberInput - rewrite the component to improve it and fix bugs ([6617b2ea](https://github.com/LouisMazel/maz-ui/commit/6617b2ea))
+
+### 🏡 Chore
+
+- **deps:** Upgrade dependencies ([879deaee](https://github.com/LouisMazel/maz-ui/commit/879deaee))
+- **deps:** Use plugin of typescript-eslint instead of standard-with-typescript ([ca1ccc0e](https://github.com/LouisMazel/maz-ui/commit/ca1ccc0e))
+- **maz-ui:** Edit eslint config to add vue parser ([812c7b49](https://github.com/LouisMazel/maz-ui/commit/812c7b49))
+- **deps:** Upgrade dependencies ([39b35639](https://github.com/LouisMazel/maz-ui/commit/39b35639))
+- **deps:** Upgrade dependencies ([1de8b42d](https://github.com/LouisMazel/maz-ui/commit/1de8b42d))
+
+### ✅ Tests
+
+- **maz-ui:** Fix ([a85e4472](https://github.com/LouisMazel/maz-ui/commit/a85e4472))
+- **maz-ui:** Fix ([73f090bd](https://github.com/LouisMazel/maz-ui/commit/73f090bd))
+- **maz-ui:** Fix tests ([3905fef8](https://github.com/LouisMazel/maz-ui/commit/3905fef8))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.36.4...v3.36.5
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.36.4...v3.36.5)
