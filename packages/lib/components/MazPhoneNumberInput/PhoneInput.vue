@@ -20,12 +20,14 @@
     }"
     @focus="inputFocused = true"
     @blur="inputFocused = false"
-    @update:model-value="onValueChange"
+    @update:model-value="($event) => onValueChange($event as string)"
   />
 </template>
 
 <script lang="ts" setup>
   import { ref, computed, onMounted, type ComponentPublicInstance, nextTick } from 'vue'
+  import MazInput from '../MazInput.vue'
+
   import type { Color, Size, Translations } from '../MazPhoneNumberInput.vue'
   import { useLibphonenumber } from './use-libphonenumber'
   import { useMazPhoneNumberInput } from './use-maz-phone-number-input'
