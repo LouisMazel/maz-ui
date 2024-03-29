@@ -1,5 +1,17 @@
 # Change Log
 
+## v3.37.0...v3.37.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.37.0...v3.37.1)
+
+### 💅 Refactors
+
+- **maz-ui:** Inputs - add block prop option to display component in full width ([6b57da78](https://github.com/LouisMazel/maz-ui/commit/6b57da78))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.36.5...v3.37.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.36.5...v3.37.0)
