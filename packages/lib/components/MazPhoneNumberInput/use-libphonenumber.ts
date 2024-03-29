@@ -8,28 +8,8 @@ import {
   isSupportedCountry,
   type Examples,
 } from 'libphonenumber-js'
-import type { Country, Results } from './types'
+import type { Results } from './types'
 import { ref } from 'vue'
-
-let displayNamesInstance: Intl.DisplayNames | undefined = undefined
-let displayNamesLocale: string | undefined = undefined
-
-function getCountryName(
-  locale: string,
-  code: CountryCode | string,
-  customCountriesNameListByIsoCode?: Record<CountryCode, string>,
-): string | undefined {
-  if (customCountriesNameListByIsoCode?.[code]) {
-    return customCountriesNameListByIsoCode[code]
-  }
-
-  if (displayNamesLocale !== locale || !displayNamesInstance) {
-    displayNamesLocale = locale
-    displayNamesInstance = new Intl.DisplayNames([locale], { type: 'region' })
-  }
-
-  return displayNamesInstance.of(code)
-}
 
 const examples = ref<Examples>()
 
@@ -58,65 +38,6 @@ function getPhoneNumberExample(countryCode?: CountryCode) {
     return countryCode ? getExampleNumber(countryCode, examples.value)?.formatNational() : undefined
   } catch (error) {
     console.error(`[maz-ui](MazPhoneNumberInput) ${error}`)
-  }
-}
-
-function getCountriesList(
-  locale?: string,
-  customCountriesNameListByIsoCode?: Record<CountryCode, string>,
-): Country[] | undefined {
-  const countriesList: Country[] = []
-  const isoList = getCountries()
-
-  locale = locale ?? getBrowserLocale()?.browserLocale ?? 'en-US'
-
-  for (const iso2 of isoList) {
-    const name = getCountryName(locale, iso2, customCountriesNameListByIsoCode)
-
-    if (name) {
-      try {
-        const dialCode = getCountryCallingCode(iso2)
-        countriesList.push({
-          iso2,
-          dialCode,
-          name,
-        })
-      } catch (error) {
-        console.error(`[MazPhoneNumberInput](getCountryCallingCode) ${error}`)
-      }
-    }
-  }
-
-  return countriesList
-}
-
-function getBrowserLocale() {
-  if (typeof window === 'undefined') {
-    return
-  }
-
-  const browserLocale = window.navigator.language
-
-  if (!browserLocale) {
-    return
-  }
-
-  let locale = browserLocale.slice(3, 7).toUpperCase()
-
-  if (locale === '') {
-    locale = browserLocale.slice(0, 2).toUpperCase()
-  }
-
-  if (locale === 'EN') {
-    locale = 'US'
-  }
-  if (locale === 'JA') {
-    locale = 'JP'
-  }
-
-  return {
-    locale,
-    browserLocale,
   }
 }
 
@@ -192,9 +113,9 @@ export function useLibphonenumber() {
     getPhoneNumberResults,
     loadPhoneNumberExamplesFile,
     getPhoneNumberExample,
-    getCountriesList,
-    getBrowserLocale,
     isSameCountryCallingCode,
     isCountryAvailable,
+    getCountries,
+    getCountryCallingCode,
   }
 }

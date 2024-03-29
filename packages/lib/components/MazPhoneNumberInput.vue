@@ -74,7 +74,6 @@
     nextTick,
   } from 'vue'
 
-  import { useLibphonenumber } from './MazPhoneNumberInput/use-libphonenumber'
   import { useMazPhoneNumberInput } from './MazPhoneNumberInput/use-maz-phone-number-input'
 
   const emits = defineEmits<{
@@ -210,7 +209,6 @@
     autoFormat: true,
   })
 
-  const { getBrowserLocale } = useLibphonenumber()
   const {
     phoneNumber,
     selectedCountry,
@@ -219,6 +217,7 @@
     setSelectedCountry,
     onPhoneNumberChanged,
     onCountryChanged,
+    getBrowserLocale,
   } = useMazPhoneNumberInput()
 
   const instanceId = useInstanceUniqId({

@@ -1,6 +1,6 @@
-import { type CountryCode } from 'libphonenumber-js'
+import { getCountryCallingCode, type CountryCode, getCountries } from 'libphonenumber-js'
 import { type ComponentPublicInstance, reactive, ref } from 'vue'
-import { type IpWhoResponse, type Results } from './types'
+import { type Country, type IpWhoResponse, type Results } from './types'
 import { useLibphonenumber } from './use-libphonenumber'
 
 const { isCountryAvailable, getPhoneNumberResults, getAsYouTypeFormat } = useLibphonenumber()
@@ -38,23 +38,9 @@ function sanitizePhoneNumber(input?: string) {
   if (!input) {
     return ''
   }
-
-  /**
-   * OLD WAY
-   */
-  // const PHONE_CHAR_REGEX = new RegExp(/^[\d ().-]+$/)
-  // const NON_ALPHA_REGEX = new RegExp(/^[^a-z]+$/i)
-  // const hasNonAlpha = NON_ALPHA_REGEX.test(input)
-  // const hasPhoneChar = PHONE_CHAR_REGEX.test(input)
-
-  // if (!hasNonAlpha && !hasPhoneChar) {
-  //   return input.replaceAll(/[^\d.]/g, '')
-  // }
-
   const regex = new RegExp(/[^\d ()+-]/g) // Keep only digits, (), - and + characters
-  // const regex = new RegExp(/\D/g) // Keep only digits
 
-  return input.replaceAll(regex, '') // Keep only digits, (), - and + characters
+  return input.replaceAll(regex, '').trim() // Keep only digits, (), - and + characters
 }
 
 function saveCursorPosition(PhoneInputRef: ComponentPublicInstance, currentPhoneNumber?: string) {
@@ -154,6 +140,85 @@ function onCountryChanged({
   })
 }
 
+function getBrowserLocale() {
+  if (typeof window === 'undefined') {
+    return
+  }
+
+  const browserLocale = window.navigator.language
+
+  if (!browserLocale) {
+    return
+  }
+
+  let locale = browserLocale.slice(3, 7).toUpperCase()
+
+  if (locale === '') {
+    locale = browserLocale.slice(0, 2).toUpperCase()
+  }
+
+  if (locale === 'EN') {
+    locale = 'US'
+  }
+  if (locale === 'JA') {
+    locale = 'JP'
+  }
+
+  return {
+    locale,
+    browserLocale,
+  }
+}
+
+let displayNamesInstance: Intl.DisplayNames | undefined = undefined
+let displayNamesLocale: string | undefined = undefined
+
+function getCountryName(
+  locale: string,
+  code: CountryCode | string,
+  customCountriesNameListByIsoCode?: Record<CountryCode, string>,
+): string | undefined {
+  if (customCountriesNameListByIsoCode?.[code]) {
+    return customCountriesNameListByIsoCode[code]
+  }
+
+  if (displayNamesLocale !== locale || !displayNamesInstance) {
+    displayNamesLocale = locale
+    displayNamesInstance = new Intl.DisplayNames([locale], { type: 'region' })
+  }
+
+  return displayNamesInstance.of(code)
+}
+
+function getCountriesList(
+  locale?: string,
+  customCountriesNameListByIsoCode?: Record<CountryCode, string>,
+): Country[] | undefined {
+  const countriesList: Country[] = []
+  const isoList = getCountries()
+
+  locale = locale ?? getBrowserLocale()?.browserLocale ?? 'en-US'
+
+  for (const iso2 of isoList) {
+    const name = getCountryName(locale, iso2, customCountriesNameListByIsoCode)
+
+    if (name) {
+      try {
+        const dialCode = getCountryCallingCode(iso2)
+        countriesList.push({
+          iso2,
+          dialCode,
+          name,
+        })
+      } catch (error) {
+        console.error(`[MazPhoneNumberInput](getCountryCallingCode) ${error}`)
+      }
+    }
+  }
+
+  return countriesList
+}
+
 export function useMazPhoneNumberInput() {
   return {
     setSelectedCountry,
@@ -166,5 +231,7 @@ export function useMazPhoneNumberInput() {
     saveCursorPosition,
     onPhoneNumberChanged,
     onCountryChanged,
+    getBrowserLocale,
+    getCountriesList,
   }
 }
