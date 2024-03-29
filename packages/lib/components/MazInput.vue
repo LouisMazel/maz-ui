@@ -129,7 +129,6 @@
     computed,
     onMounted,
     ref,
-    getCurrentInstance,
     defineAsyncComponent,
     useSlots,
     type HTMLAttributes,
@@ -309,11 +308,8 @@
   const isFocused = ref(false)
   const input = ref<HTMLElement | undefined>()
 
-  const instance = getCurrentInstance()
-
   const instanceId = useInstanceUniqId({
     componentName: 'MazInput',
-    instance,
     providedId: props.id,
   })
 
@@ -518,7 +514,7 @@
     }
 
     &-input {
-      @apply maz-m-0 maz-block maz-h-full maz-w-full maz-appearance-none maz-truncate maz-border-none maz-bg-transparent maz-px-4 maz-py-0 maz-text-normal maz-shadow-none maz-outline-none;
+      @apply maz-m-0 maz-h-full maz-w-full maz-appearance-none maz-truncate maz-border-none maz-bg-transparent maz-px-4 maz-py-0 maz-text-normal maz-shadow-none maz-outline-none;
 
       &:-webkit-autofill,
       &:-webkit-autofill:hover,
@@ -534,7 +530,7 @@
     }
 
     &-label {
-      @apply maz-pointer-events-none maz-absolute maz-left-3 maz-block maz-w-full maz-origin-top-left maz-items-center maz-overflow-hidden maz-truncate maz-whitespace-nowrap maz-text-left maz-leading-6;
+      @apply maz-pointer-events-none maz-absolute maz-left-3 maz-w-full maz-origin-top-left maz-items-center maz-overflow-hidden maz-truncate maz-whitespace-nowrap maz-text-left maz-leading-6;
 
       width: calc(100% + 1.3rem);
       transition: transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
@@ -591,6 +587,10 @@
     }
 
     &.--has-label {
+      .m-input-label {
+        @apply maz-pr-3;
+      }
+
       .m-input-input {
         @apply maz-px-3 maz-pt-4;
       }

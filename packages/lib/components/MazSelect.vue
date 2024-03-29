@@ -99,7 +99,7 @@
                   '--is-none-value': isNullOrUndefined(option[optionValueKey]),
                 },
               ]"
-              :style="itemHeight ? { minHeight: `${itemHeight}px` } : undefined"
+              :style="itemHeight ? { height: `${itemHeight}px` } : undefined"
               @click.prevent.stop="updateValue(option)"
             >
               <MazCheckbox
@@ -133,7 +133,6 @@
     computed,
     onBeforeMount,
     nextTick,
-    getCurrentInstance,
     defineAsyncComponent,
     defineOptions,
     type StyleValue,
@@ -164,8 +163,6 @@
   const SearchIcon = defineAsyncComponent(() => import('./../icons/magnifying-glass.svg'))
   const ChevronDownIcon = defineAsyncComponent(() => import('./../icons/chevron-down.svg'))
   const NoSymbolIcon = defineAsyncComponent(() => import('./../icons/no-symbol.svg'))
-
-  const instance = getCurrentInstance()
 
   defineOptions({
     inheritAttrs: false,
@@ -298,7 +295,6 @@
 
   const instanceId = useInstanceUniqId({
     componentName: 'MazSelect',
-    instance,
     providedId: props.id,
   })
 
@@ -603,8 +599,8 @@
         ?.querySelectorAll('.m-select-list-item')
         [selectedIndex]?.scrollIntoView({
           behavior: 'auto',
-          block: 'nearest',
-          inline: 'start',
+          block: 'center',
+          inline: 'center',
         })
     }
   }

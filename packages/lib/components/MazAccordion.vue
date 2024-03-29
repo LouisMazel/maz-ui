@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, ref, useSlots, getCurrentInstance } from 'vue'
+  import { computed, ref, useSlots } from 'vue'
   import MazTransitionExpand from './MazTransitionExpand.vue'
   import MazCardSpotlight from './MazCardSpotlight.vue'
 
@@ -54,7 +54,6 @@
 
   const instanceId = useInstanceUniqId({
     componentName: 'MazAccordion',
-    instance: getCurrentInstance(),
     providedId: props.id,
   })
 
