@@ -29,11 +29,9 @@
 
 <script lang="ts" setup>
   import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
-  import { type PropType, getCurrentInstance, computed, type HTMLAttributes } from 'vue'
+  import { type PropType, computed, type HTMLAttributes } from 'vue'
   import type { Color, Size } from './types'
   export type { Color, Size }
-
-  const instance = getCurrentInstance()
 
   const props = defineProps({
     style: {
@@ -64,7 +62,6 @@
 
   const instanceId = useInstanceUniqId({
     componentName: 'MazCheckbox',
-    instance,
     providedId: props.id,
   })
 

@@ -28,12 +28,10 @@
 
 <script lang="ts" setup>
   import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
-  import { getCurrentInstance, computed, type HTMLAttributes } from 'vue'
+  import { computed, type HTMLAttributes } from 'vue'
   import type { Color, Size } from './types'
   export type { Color, Size }
   import CheckIcon from './../icons/check.svg'
-
-  const instance = getCurrentInstance()
 
   defineOptions({
     inheritAttrs: false,
@@ -72,7 +70,6 @@
 
   const instanceId = useInstanceUniqId({
     componentName: 'MazCheckbox',
-    instance,
     providedId: props.id,
   })
 

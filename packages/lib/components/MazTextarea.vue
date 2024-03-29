@@ -51,14 +51,7 @@
 
 <script lang="ts" setup>
   import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
-  import {
-    computed,
-    onBeforeUnmount,
-    onMounted,
-    ref,
-    getCurrentInstance,
-    type HTMLAttributes,
-  } from 'vue'
+  import { computed, onBeforeUnmount, onMounted, ref, type HTMLAttributes } from 'vue'
   import { TextareaAutogrow } from './MazTextarea/textarea-autogrow'
   import type { Color } from './types'
   export type { Color }
@@ -105,13 +98,10 @@
 
   const emits = defineEmits(['input', 'focus', 'blur', 'change'])
 
-  const instance = getCurrentInstance()
-
   let textareaAutogrow: TextareaAutogrow | undefined
 
   const instanceId = useInstanceUniqId({
     componentName: 'MazTextarea',
-    instance,
     providedId: props.id,
   })
 

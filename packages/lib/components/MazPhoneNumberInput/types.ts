@@ -2,7 +2,7 @@ import type { CountryCallingCode, CountryCode, NationalNumber, NumberType } from
 
 import { type defaultLocales } from './default-locales'
 
-export type Result = {
+export type Results = {
   isValid: boolean
   isPossible?: boolean
   countryCode?: CountryCode
@@ -14,6 +14,7 @@ export type Result = {
   uri?: string
   e164?: string
   rfc3966?: string
+  phoneNumber?: string
 }
 
 export type Translations = typeof defaultLocales

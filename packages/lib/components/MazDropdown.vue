@@ -146,7 +146,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, watch, getCurrentInstance, defineAsyncComponent, type HTMLAttributes } from 'vue'
+  import { ref, watch, defineAsyncComponent, type HTMLAttributes } from 'vue'
   import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
   import { type RouteLocationRaw } from 'vue-router'
   import { debounce } from '../modules/helpers/debounce'
@@ -223,7 +223,6 @@
 
   const instanceId = useInstanceUniqId({
     componentName: 'MazDropdown',
-    instance: getCurrentInstance(),
     providedId: props.id,
   })
 

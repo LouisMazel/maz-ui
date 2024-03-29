@@ -52,7 +52,7 @@
 
   import XIcon from './../icons/x-mark.svg'
   import type { Color, Size } from './types'
-  import { truthyFilter } from '../modules'
+  import { truthyFilter } from '../modules/helpers/truthy-filter'
   export type { Color, Size }
 
   defineOptions({

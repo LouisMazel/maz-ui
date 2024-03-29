@@ -8,7 +8,8 @@ import {
   isSupportedCountry,
   type Examples,
 } from 'libphonenumber-js'
-import type { Country, IpWhoResponse, Result } from './types'
+import type { Country, Results } from './types'
+import { ref } from 'vue'
 
 let displayNamesInstance: Intl.DisplayNames | undefined = undefined
 let displayNamesLocale: string | undefined = undefined
@@ -30,13 +31,18 @@ function getCountryName(
   return displayNamesInstance.of(code)
 }
 
-let examples: Examples
+const examples = ref<Examples>()
 
 async function loadPhoneNumberExamplesFile() {
+  if (examples.value) {
+    return examples.value
+  }
+
   const { default: data } = await import('libphonenumber-js/examples.mobile.json')
 
-  examples = data
-  return examples
+  examples.value = data
+
+  return examples.value
 }
 
 function isSameCountryCallingCode(countryCode: CountryCode, countryCode2: CountryCode) {
@@ -45,20 +51,14 @@ function isSameCountryCallingCode(countryCode: CountryCode, countryCode2: Countr
 
 function getPhoneNumberExample(countryCode?: CountryCode) {
   try {
-    return countryCode ? getExampleNumber(countryCode, examples)?.formatNational() : undefined
+    if (!examples.value) {
+      return
+    }
+
+    return countryCode ? getExampleNumber(countryCode, examples.value)?.formatNational() : undefined
   } catch (error) {
     console.error(`[maz-ui](MazPhoneNumberInput) ${error}`)
   }
-}
-
-function sanitizePhoneNumber(input?: string) {
-  if (!input) {
-    return ''
-  }
-
-  const regex = new RegExp(/\D/g)
-
-  return input.replaceAll(regex, '') // Keep only digits
 }
 
 function getCountriesList(
@@ -68,7 +68,7 @@ function getCountriesList(
   const countriesList: Country[] = []
   const isoList = getCountries()
 
-  locale = locale ?? browserLocale().browserLocale ?? 'en-US'
+  locale = locale ?? getBrowserLocale()?.browserLocale ?? 'en-US'
 
   for (const iso2 of isoList) {
     const name = getCountryName(locale, iso2, customCountriesNameListByIsoCode)
@@ -90,15 +90,15 @@ function getCountriesList(
   return countriesList
 }
 
-function browserLocale() {
+function getBrowserLocale() {
   if (typeof window === 'undefined') {
-    return {}
+    return
   }
 
   const browserLocale = window.navigator.language
 
   if (!browserLocale) {
-    return {}
+    return
   }
 
   let locale = browserLocale.slice(3, 7).toUpperCase()
@@ -114,10 +114,13 @@ function browserLocale() {
     locale = 'JP'
   }
 
-  return { locale, browserLocale }
+  return {
+    locale,
+    browserLocale,
+  }
 }
 
-export function isCountryAvailable(locale: string) {
+function isCountryAvailable(locale: string) {
   try {
     const response = isSupportedCountry(locale)
 
@@ -134,13 +137,13 @@ export function isCountryAvailable(locale: string) {
   }
 }
 
-const getResultsFromPhoneNumber = ({
+function getPhoneNumberResults({
   phoneNumber,
   countryCode,
 }: {
   phoneNumber?: string
   countryCode?: CountryCode
-}): Result => {
+}): Results {
   try {
     if (!phoneNumber) {
       return {
@@ -152,9 +155,9 @@ const getResultsFromPhoneNumber = ({
     const parsedNumber = parsePhoneNumberFromString(phoneNumber, countryCode)
 
     return {
+      countryCode: parsedNumber?.country ?? countryCode,
       isValid: parsedNumber?.isValid() ?? false,
       isPossible: parsedNumber?.isPossible(),
-      countryCode: parsedNumber?.country,
       countryCallingCode: parsedNumber?.countryCallingCode,
       nationalNumber: parsedNumber?.nationalNumber,
       type: parsedNumber?.getType(),
@@ -163,16 +166,17 @@ const getResultsFromPhoneNumber = ({
       uri: parsedNumber?.getURI(),
       e164: parsedNumber?.format('E.164'),
       rfc3966: parsedNumber?.format('RFC3966'),
+      phoneNumber,
     }
   } catch (error) {
     throw new Error(`[MazPhoneNumberInput](getResultsFromPhoneNumber) ${error}`)
   }
 }
 
-function getAsYouTypeFormat(countryCode?: CountryCode, phoneNumber?: string) {
+function getAsYouTypeFormat(countryCode?: CountryCode, phoneNumber?: string): string {
   try {
     if (!phoneNumber) {
-      return
+      return ''
     }
 
     return new AsYouType(countryCode).input(phoneNumber)
@@ -181,27 +185,16 @@ function getAsYouTypeFormat(countryCode?: CountryCode, phoneNumber?: string) {
   }
 }
 
-async function fetchCountryCode() {
-  try {
-    const reponse = await fetch('https://ipwho.is')
-    const { country_code } = (await reponse.json()) as IpWhoResponse
-
-    return country_code
-  } catch (error) {
-    throw new Error(`[MazPhoneNumberInput](fetchCountryCode) ${error}`)
-  }
-}
-
 export function useLibphonenumber() {
   return {
-    fetchCountryCode,
+    examples,
     getAsYouTypeFormat,
-    getResultsFromPhoneNumber,
+    getPhoneNumberResults,
     loadPhoneNumberExamplesFile,
     getPhoneNumberExample,
-    sanitizePhoneNumber,
     getCountriesList,
-    browserLocale,
+    getBrowserLocale,
     isSameCountryCallingCode,
+    isCountryAvailable,
   }
 }

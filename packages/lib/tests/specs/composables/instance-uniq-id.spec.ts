@@ -10,14 +10,8 @@ describe('useInstanceUniqId', () => {
   })
 
   it('should return the uid of the component if no id is provided', () => {
-    const component = {
-      name: 'test-component',
-      uid: 1,
-    }
     const instanceId = useInstanceUniqId({
       componentName: 'test-component',
-      // @ts-ignore
-      instance: component,
     })
     expect(instanceId.value).toBe('test-component-1')
   })

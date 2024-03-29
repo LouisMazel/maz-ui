@@ -1,14 +1,10 @@
 import { useInstanceUniqId } from '@modules/composables/use-instance-uniq-id'
-import type { getCurrentInstance } from 'vue'
 
 let instance: ReturnType<typeof useInstanceUniqId>
 
 beforeEach(() => {
   instance = useInstanceUniqId({
     componentName: 'MazInput',
-    instance: {
-      uid: 2,
-    } as ReturnType<typeof getCurrentInstance>,
     providedId: undefined,
   })
 })

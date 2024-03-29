@@ -2,6 +2,22 @@
   <div class="home">
     <div>
       <!-- Start Developping Area - You should not commit anything here to keep this place clean for all others -->
+      <p>phone: {{ phone }}</p>
+      <p>countryCode: {{ countryCode }}</p>
+      <MazPhoneNumberInput
+        id="phone"
+        v-model="phone"
+        v-model:country-code="countryCode"
+        country-selector-display-name
+        :preferred-countries="['FR', 'DE']"
+        @data="data = $event"
+      />
+
+      <br />
+
+      <code>
+        {{ data }}
+      </code>
 
       <!-- End Developping Area -->
     </div>
@@ -14,21 +30,14 @@
 
 <script lang="ts" setup>
   import { sleep } from 'maz-ui'
-  import type { MazTabsBarItem } from 'maz-ui/components/MazTabsBar.vue'
+  import type { CountryCode, Results } from 'maz-ui/components/MazPhoneNumberInput.vue'
 
   const toast = useToast()
   const wait = useWait()
 
-  const tabs = ref<MazTabsBarItem[]>([
-    { label: 'First Tab', disabled: false },
-    { label: 'Third Tab', disabled: false },
-    { label: 'Fourth Tab', disabled: false },
-    { label: 'Fifth Tab', disabled: false },
-    { label: 'Sixth Tab', disabled: false },
-    { label: 'Seven Tab', disabled: false },
-    { label: 'Height Tab', disabled: false },
-    { label: 'Nine Tab', disabled: false },
-  ])
+  const phone = ref<string>('+33612345678')
+  const countryCode = ref<CountryCode>()
+  const data = ref<Results>()
 
   onMounted(async () => {
     wait.start('APP_LOADING')
@@ -36,7 +45,8 @@
     wait.stop('APP_LOADING')
 
     setTimeout(() => {
-      tabs.value.splice(1, 0, { label: 'Second Tab', disabled: false, badge: { content: 5 } })
+      // countryCode.value = 'BR'
+      // phone.value = '+32485847291'
     }, 1000)
   })
 
