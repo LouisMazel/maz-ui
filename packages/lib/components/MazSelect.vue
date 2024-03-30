@@ -606,8 +606,8 @@
         ?.querySelectorAll('.m-select-list-item')
         [selectedIndex]?.scrollIntoView({
           behavior: 'auto',
-          block: 'center',
-          inline: 'center',
+          block: 'nearest',
+          inline: 'start',
         })
     }
   }
