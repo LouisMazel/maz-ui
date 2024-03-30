@@ -1,5 +1,17 @@
 # Change Log
 
+## v3.37.2...v3.37.3
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.37.2...v3.37.3)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazSelect - fix scroll behavior of options list ([fc9aa28f](https://github.com/LouisMazel/maz-ui/commit/fc9aa28f))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.37.1...v3.37.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.37.1...v3.37.2)
