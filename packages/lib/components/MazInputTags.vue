@@ -46,7 +46,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, computed, type StyleValue } from 'vue'
+  import { ref, computed, type HTMLAttributes } from 'vue'
 
   import MazInput from './MazInput.vue'
   import MazBtn from './MazBtn.vue'
@@ -62,10 +62,9 @@
 
   export type Props = {
     /** Style attribut of the component root element */
-    style?: StyleValue
+    style?: HTMLAttributes['style']
     /** Class attribut of the component root element */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    class?: any
+    class?: HTMLAttributes['class']
     /** @model The modelValue of the input */
     modelValue?: string[] | number[]
     /** The placeholder of the input */

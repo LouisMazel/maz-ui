@@ -140,7 +140,7 @@
     nextTick,
     defineAsyncComponent,
     defineOptions,
-    type StyleValue,
+    type HTMLAttributes,
   } from 'vue'
   import MazInput from './MazInput.vue'
   import type { Color, ModelValueSimple, Position, Size } from './types'
@@ -174,11 +174,10 @@
   })
 
   export type Props = {
-    /** The style of the select */
-    style?: StyleValue
-    /** The class of the select */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    class?: any
+    /** Style attribut of the component root element */
+    style?: HTMLAttributes['style']
+    /** Class attribut of the component root element */
+    class?: HTMLAttributes['class']
     /** The id of the select */
     id?: string
     /** The value of the select */

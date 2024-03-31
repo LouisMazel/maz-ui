@@ -40,6 +40,7 @@ export default defineConfig({
         bgColor: 'hsl(235, 16%, 15%)',
       },
     },
+    borderColor: 'hsl(220deg 13.04% 90.98%)',
     borderWidth: '0.125rem',
     borderRadius: '0.5rem',
     fontFamily: `system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, oxygen,

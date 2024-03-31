@@ -61,20 +61,35 @@
   })
 
   export type Props = {
+    /** Style attribut of the component root element */
     style?: HTMLAttributes['style']
+    /** Class attribut of the component root element */
     class?: HTMLAttributes['class']
+    /** @model The value of the textarea */
     modelValue?: string
+    /** The id of the textarea */
     id?: string
+    /** The name of the textarea */
     name?: string
+    /** The label of the textarea */
     label?: string
+    /** The placeholder of the textarea */
     placeholder?: string
+    /** If the textarea is required */
     required?: boolean
+    /** If the textarea is disabled */
     disabled?: boolean
+    /** If the textarea is readonly */
     readonly?: boolean
+    /** If the textarea has an error */
     error?: boolean
+    /** If the textarea has a success */
     success?: boolean
+    /** If the textarea has a warning */
     warning?: boolean
+    /** The hint of the textarea */
     hint?: string
+    /** The color of the textarea */
     color?: Color
   }
 
@@ -96,7 +111,28 @@
     color: 'primary',
   })
 
-  const emits = defineEmits(['input', 'focus', 'blur', 'change'])
+  const emits = defineEmits<{
+    /**
+     * Emitted when the value of the textarea change
+     * @property {string | undefined} value - The value of the textarea
+     */
+    (event: 'input', value?: string): void
+    /**
+     * Emitted when the textarea is focused
+     * @property {Event} value - The event
+     */
+    (event: 'focus', value: Event): void
+    /**
+     * Emitted when the textarea is blurred
+     * @property {Event} value - The event
+     */
+    (event: 'blur', value: Event): void
+    /**
+     * Emitted when the textarea value change
+     * @property {Event} value - The event
+     */
+    (event: 'change', value: Event): void
+  }>()
 
   let textareaAutogrow: TextareaAutogrow | undefined
 
@@ -121,7 +157,7 @@
 
   const inputValue = computed({
     get: () => props.modelValue,
-    set: (value: unknown) => emits('input', value),
+    set: (value) => emits('input', value),
   })
 
   const focus = (event: Event) => {
@@ -165,10 +201,10 @@
     @apply maz-relative maz-flex maz-flex-col maz-align-top;
 
     textarea {
-      @apply maz-min-h-[6.25rem] maz-w-full maz-resize-y maz-rounded maz-border maz-border-solid maz-bg-color maz-p-4 maz-text-normal maz-outline-none;
+      @apply maz-min-h-[6.25rem] maz-w-full maz-resize-y maz-rounded maz-border maz-border-solid maz-bg-color maz-p-4 maz-text-normal maz-outline-none dark:maz-bg-color-light;
 
       &.--default-border {
-        @apply maz-border-border;
+        @apply maz-border-border dark:maz-border-color-lighter;
       }
     }
 
@@ -180,7 +216,7 @@
 
     &.--is-disabled {
       textarea {
-        @apply maz-cursor-not-allowed maz-border-border maz-bg-color-lighter maz-text-muted;
+        @apply maz-cursor-not-allowed maz-border-border maz-bg-color-lighter maz-text-muted dark:maz-border-color-lighter;
       }
     }
 
@@ -197,24 +233,6 @@
 
       &:not(.--has-state) {
         @apply maz-text-muted;
-      }
-    }
-  }
-
-  html.dark {
-    & .m-textarea {
-      textarea {
-        @apply maz-bg-color-light;
-
-        &.--default-border {
-          @apply maz-border-color-lighter;
-        }
-      }
-
-      &.--is-disabled {
-        textarea {
-          @apply maz-border-color-lighter;
-        }
       }
     }
   }

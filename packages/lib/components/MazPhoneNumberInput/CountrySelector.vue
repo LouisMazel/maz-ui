@@ -86,7 +86,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, type ComponentPublicInstance, computed, type StyleValue } from 'vue'
+  import { ref, type ComponentPublicInstance, computed, type HTMLAttributes } from 'vue'
   import type { Color, Size, Position, CountryCode, Translations } from '../MazPhoneNumberInput.vue'
   import MazSelect from '../MazSelect.vue'
   import { countryCodeToUnicodeFlag } from '../../modules/helpers/country-code-to-unicode-flag'
@@ -95,9 +95,10 @@
 
   const props = withDefaults(
     defineProps<{
-      style?: StyleValue
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      class?: any
+      /** Style attribut of the component root element */
+      style?: HTMLAttributes['style']
+      /** Class attribut of the component root element */
+      class?: HTMLAttributes['class']
       modelValue?: CountryCode
       id: string
       color: Color

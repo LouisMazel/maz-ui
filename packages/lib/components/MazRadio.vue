@@ -37,17 +37,16 @@
 
 <script lang="ts" setup>
   import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
-  import { computed, type StyleValue } from 'vue'
+  import { computed, type HTMLAttributes } from 'vue'
   import type { Color, Size } from './types'
   export type { Color, Size }
 
   const props = withDefaults(
     defineProps<{
       /** Style attribut of the component root element */
-      style?: StyleValue
+      style?: HTMLAttributes['style']
       /** Class attribut of the component root element */
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      class?: any
+      class?: HTMLAttributes['class']
       /** The id of the radio */
       id?: string
       /** @model The value of the radio */
