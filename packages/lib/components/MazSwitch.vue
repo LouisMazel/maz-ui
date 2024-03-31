@@ -21,13 +21,17 @@
     <span class="m-switch__toggle"> </span>
 
     <span v-if="$slots.default" class="m-switch__label">
-      <slot></slot>
+      <!--
+        @slot The label of the switch
+          @binding {Boolean} value - The value of the switch
+      -->
+      <slot :value="modelValue"></slot>
     </span>
   </label>
 </template>
 
 <script lang="ts" setup>
-  import { computed, type HTMLAttributes, type PropType } from 'vue'
+  import { computed, type HTMLAttributes } from 'vue'
   import type { Color } from './types'
   import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
 
@@ -37,28 +41,45 @@
     inheritAttrs: false,
   })
 
-  const props = defineProps({
-    style: {
-      type: [String, Array, Object] as PropType<HTMLAttributes['style']>,
-      default: undefined,
-    },
-    class: {
-      type: [String, Array, Object] as PropType<HTMLAttributes['class']>,
-      default: undefined,
-    },
-    modelValue: { type: Boolean, required: true },
-    id: { type: String, default: undefined },
-    disabled: { type: Boolean, default: false },
-    name: { type: String, default: undefined },
-    color: { type: String as PropType<Color>, default: 'primary' },
+  export type Props = {
+    /** Style attribut of the component root element */
+    style?: HTMLAttributes['style']
+    /** Class attribut of the component root element */
+    class?: HTMLAttributes['class']
+    /** The model value of the switch */
+    modelValue?: boolean
+    /** The id of the switch */
+    id?: string
+    /** If the switch is disabled */
+    disabled?: boolean
+    /** The name of the switch */
+    name?: string
+    /** The color of the switch */
+    color?: Color
+  }
+
+  const props = withDefaults(defineProps<Props>(), {
+    style: undefined,
+    class: undefined,
+    modelValue: false,
+    id: undefined,
+    disabled: false,
+    name: undefined,
+    color: 'primary',
   })
 
-  const emits = defineEmits([
-    /* emitted on value change */
-    'update:model-value',
-    /* emitted on value change */
-    'change',
-  ])
+  const emits = defineEmits<{
+    /**
+     * Emitted when the model value changes
+     * @property {Boolean} value - The new value
+     */
+    (event: 'update:model-value', value: boolean): void
+    /**
+     * Emitted when the model value changes
+     * @property {Boolean} value - The new value
+     */
+    (event: 'change', value: boolean): void
+  }>()
 
   const instanceId = useInstanceUniqId({
     componentName: 'MazCheckbox',

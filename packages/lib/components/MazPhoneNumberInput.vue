@@ -70,9 +70,9 @@
     ref,
     watch,
     defineOptions,
-    type StyleValue,
     type ComponentPublicInstance,
     nextTick,
+    type HTMLAttributes,
   } from 'vue'
 
   import { useMazPhoneNumberInput } from './MazPhoneNumberInput/use-maz-phone-number-input'
@@ -107,10 +107,9 @@
 
   export type Props = {
     /** Style attribut of the component root element */
-    style?: StyleValue
+    style?: HTMLAttributes['style']
     /** Class attribut of the component root element */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    class?: any
+    class?: HTMLAttributes['class']
     /** @model Country calling code + telephone number in international format */
     modelValue?: string
     /** @deprecated */

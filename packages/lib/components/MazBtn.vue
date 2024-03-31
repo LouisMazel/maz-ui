@@ -80,6 +80,7 @@
     type SVGAttributes,
     type ComponentPublicInstance,
     type Component,
+    type HTMLAttributes,
   } from 'vue'
 
   import type { Color, Size } from './types'
@@ -188,8 +189,7 @@
      */
     noElevation?: boolean
     /** The class applied to the content wrapper (<span />) of the button */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    contentClass?: any
+    contentClass?: HTMLAttributes['class']
   }
 
   const props = withDefaults(defineProps<Props>(), {
