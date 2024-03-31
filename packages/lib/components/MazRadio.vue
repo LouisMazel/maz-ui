@@ -5,16 +5,16 @@
     :class="[{ '--disabled': disabled, '--selected': isSelected }, props.class]"
     tabindex="0"
     role="radio"
-    :style="style"
+    :style
     :aria-checked="isSelected"
     @keydown="keyboardHandler($event, value)"
   >
     <input
       :id="instanceId"
-      :value="value"
+      :value
       v-bind="$attrs"
       tabindex="-1"
-      :disabled="disabled"
+      :disabled
       :name="name"
       type="radio"
       :checked="isSelected"
@@ -23,7 +23,13 @@
     <span>
       <span class="round"></span>
     </span>
-    <slot>
+
+    <!--
+      @slot Label of the radio
+        @binding {Boolean} is-selected - If the radio is selected
+        @binding {string | number | boolean} value - The value of the radio
+    -->
+    <slot :is-selected :value>
       {{ label }}
     </slot>
   </label>
@@ -31,37 +37,58 @@
 
 <script lang="ts" setup>
   import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
-  import { type PropType, computed, type HTMLAttributes } from 'vue'
+  import { computed, type StyleValue } from 'vue'
   import type { Color, Size } from './types'
   export type { Color, Size }
 
-  const props = defineProps({
-    style: {
-      type: [String, Array, Object] as PropType<HTMLAttributes['style']>,
-      default: undefined,
+  const props = withDefaults(
+    defineProps<{
+      /** Style attribut of the component root element */
+      style?: StyleValue
+      /** Class attribut of the component root element */
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      class?: any
+      /** The id of the radio */
+      id?: string
+      /** @model The value of the radio */
+      modelValue?: string | number | boolean
+      /** The value of the radio */
+      value: string | number | boolean
+      /** The name of the radio */
+      name: string
+      /** The label of the radio */
+      label?: string
+      /** The color of the radio */
+      color?: Color
+      /** The size of the radio */
+      size?: Size
+      /** The disabled state of the radio */
+      disabled?: boolean
+    }>(),
+    {
+      style: undefined,
+      class: undefined,
+      id: undefined,
+      modelValue: undefined,
+      label: undefined,
+      color: 'primary',
+      size: 'md',
+      disabled: false,
     },
-    class: {
-      type: [String, Array, Object] as PropType<HTMLAttributes['class']>,
-      default: undefined,
-    },
-    label: { type: String, default: undefined },
-    modelValue: { type: String, default: undefined },
-    value: { type: String, required: true },
-    name: { type: String, required: true },
-    id: { type: String, default: undefined },
-    color: {
-      type: String as PropType<Color>,
-      default: 'primary',
-    },
-    size: { type: String as PropType<Size>, default: 'md' },
-    disabled: { type: Boolean, default: false },
-  })
-  const emits = defineEmits([
-    /* emitted when value change */
-    'update:model-value',
-    /* emited when value change */
-    'change',
-  ])
+  )
+
+  const emits = defineEmits<{
+    /**
+     * Event emitted when value change
+     * @property {string | number | boolean} value - selected value
+     */
+    (event: 'update:model-value', value: string | number | boolean): void
+    /**
+     * Event emitted when value change
+     * @property {string | number | boolean} value - selected value
+     */
+    (event: 'change', value: string | number | boolean): void
+  }>()
 
   const instanceId = useInstanceUniqId({
     componentName: 'MazCheckbox',
@@ -100,14 +127,14 @@
       : `var(--maz-color-${props.color}-alpha)`,
   )
 
-  function keyboardHandler(event: KeyboardEvent, value: string) {
+  function keyboardHandler(event: KeyboardEvent, value: string | number | boolean) {
     if (['Space'].includes(event.code)) {
       event.preventDefault()
       emitValue(value)
     }
   }
 
-  function emitValue(value: string) {
+  function emitValue(value: string | number | boolean) {
     emits('update:model-value', value)
     emits('change', value)
   }

@@ -18,6 +18,8 @@ Select a competition
   :options="competitions"
 />
 
+::: details Show code
+
 ```vue
 <template>
   <MazRadioButtons
@@ -86,36 +88,37 @@ Select a competition
 </script>
 ```
 
+:::
+
 ## Custom slot template
 
 Select a competition
 
-<div>
-  <MazRadioButtons
-    v-model="selectedCompetition"
-    :options="competitions"
-    color="secondary"
-  >
-    <template #default="{ option, selected }">
-      <div style="display: flex;">
-        <MazAvatar
-          v-if="option.areaEnsignUrl"
-          :src="option.areaEnsignUrl"
-          style="margin-right: 16px;"
-          size="0.8rem"
-        />
-        <div style="display: flex; flex-direction: column;">
-          <span>
-            {{ option.label }}
-          </span>
-          <span :class="{ 'maz-text-muted': !selected }">
-            {{ option.areaName }}
-          </span>
-        </div>
-      </div>
-    </template>
-  </MazRadioButtons>
-</div>
+<MazRadioButtons
+  v-model="selectedCompetition"
+  :options="competitions"
+  color="secondary"
+  v-slot="{ option, selected }"
+>
+  <div style="display: flex;">
+    <MazAvatar
+      v-if="option.areaEnsignUrl"
+      :src="option.areaEnsignUrl"
+      style="margin-right: 16px;"
+      size="0.8rem"
+    />
+    <div style="display: flex; flex-direction: column;">
+      <span>
+        {{ option.label }}
+      </span>
+      <span :class="{ 'maz-text-muted': !selected }">
+        {{ option.areaName }}
+      </span>
+    </div>
+  </div>
+</MazRadioButtons>
+
+::: details Show code
 
 ```html
 <MazRadioButtons
@@ -144,36 +147,35 @@ Select a competition
 </MazRadioButtons>
 ```
 
+:::
+
 ## Orientation - Column
 
 Select a competition
 
-<div>
-  <MazRadioButtons
-    v-model="selectedCompetition"
-    :options="competitions"
-    orientation="col"
-  >
-    <template #default="{ option, selected }">
-      <div style="display: flex;">
-        <MazAvatar
-          v-if="option.areaEnsignUrl"
-          :src="option.areaEnsignUrl"
-          style="margin-right: 16px;"
-          size="0.8rem"
-        />
-        <div style="display: flex; flex-direction: column;">
-          <span>
-            {{ option.label }}
-          </span>
-          <span :class="{ 'maz-text-muted': !selected }">
-            {{ option.areaName }}
-          </span>
-        </div>
-      </div>
-    </template>
-  </MazRadioButtons>
-</div>
+<MazRadioButtons
+  v-model="selectedCompetition"
+  :options="competitions"
+  orientation="col"
+  v-slot="{ option, selected }"
+>
+  <div style="display: flex;">
+    <MazAvatar
+      v-if="option.areaEnsignUrl"
+      :src="option.areaEnsignUrl"
+      style="margin-right: 16px;"
+      size="0.8rem"
+    />
+    <div style="display: flex; flex-direction: column;">
+      <span>
+        {{ option.label }}
+      </span>
+      <span :class="{ 'maz-text-muted': !selected }">
+        {{ option.areaName }}
+      </span>
+    </div>
+  </div>
+</MazRadioButtons>
 
 ::: details Show code
 
@@ -183,25 +185,24 @@ Select a competition
     v-model="selectedCompetition"
     :options="competitions"
     orientation="col | row"
+    v-slot="{ option, selected }"
   >
-    <template #default="{ option, selected }">
-      <div style="display: flex;">
-        <MazAvatar
-          v-if="option.areaEnsignUrl"
-          :src="option.areaEnsignUrl"
-          style="margin-right: 16px;"
-          size="0.8rem"
-        />
-        <div style="display: flex; flex-direction: column;">
-          <span>
-            {{ option.label }}
-          </span>
-          <span :class="{ 'maz-text-muted': !selected }">
-            {{ option.areaName }}
-          </span>
-        </div>
+    <div style="display: flex;">
+      <MazAvatar
+        v-if="option.areaEnsignUrl"
+        :src="option.areaEnsignUrl"
+        style="margin-right: 16px;"
+        size="0.8rem"
+      />
+      <div style="display: flex; flex-direction: column;">
+        <span>
+          {{ option.label }}
+        </span>
+        <span :class="{ 'maz-text-muted': !selected }">
+          {{ option.areaName }}
+        </span>
       </div>
-    </template>
+    </div>
   </MazRadioButtons>
 </template>
 
@@ -268,6 +269,79 @@ Select a competition
 
 :::
 
+## Selector icon with options equal-size
+
+This option will display a select icon on the left of the label
+
+<MazRadioButtons
+  v-slot="{ option, selected }"
+  v-model="selectedMode"
+  :options="modeOptions"
+  selector
+  equal-size
+  block
+  class="vp-raw"
+>
+  <div class="maz-flex maz-flex-col maz-items-start maz-p-2">
+    <h3 class="maz-mb-2 maz-text-xl maz-font-semibold">
+      {{ option.label }}
+    </h3>
+    <span :class="{ 'maz-text-muted': !selected }">
+      {{ option.description }}
+    </span>
+  </div>
+</MazRadioButtons>
+
+::: details Show code
+
+```vue
+<template>
+  <MazRadioButtons
+    v-slot="{ option, selected }"
+    v-model="selectedMode"
+    :options="modeOptions"
+    selector
+    equal-size
+    block
+  >
+    <div class="flex flex-col items-start p-2">
+      <h3 class="mb-2 text-xl font-semibold">
+        {{ option.label }}
+      </h3>
+      <span :class="{ 'text-muted': !selected }">
+        {{ option.description }}
+      </span>
+    </div>
+  </MazRadioButtons>
+</template>
+
+<script lang="ts" setup>
+  import { ref } from 'vue'
+  import { type ButtonsRadioOption } from 'maz-ui/components/MazRadioButtons'
+
+  const selectedMode = ref('scores')
+
+  const modeOptions: ButtonsRadioOption[] = [
+    {
+      label: 'Scores',
+      value: 'scores',
+      description:
+        'Predict the score of matches. If you find the outcome of the match you win 5 points, if you get the perfect score you double your score!',
+      style: 'min-width: 250px;'
+    },
+    {
+      label: 'Cotes',
+      value: 'odds',
+      description:
+        'Predict with match odds. If you find the correct winner of the match you earn the points associated with the rating, if you have the perfect score you double your score.',
+      style: 'min-width: 250px;'
+    },
+  ]
+</script>
+```
+
+:::
+
 <script lang="ts" setup>
   import { ref } from 'vue'
 
@@ -323,6 +397,45 @@ Select a competition
       areaEnsignUrl: "https://crests.football-data.org/EUR.svg",
     }
   ]
+
+  const selectedMode = ref('scores')
+
+  const modeOptions = [
+    {
+      label: 'Scores',
+      value: 'scores',
+      description:
+        'Predict the score of matches. If you find the outcome of the match you win 5 points, if you get the perfect score you double your score!',
+      style: 'min-width: 250px;'
+    },
+    {
+      label: 'Cotes',
+      value: 'odds',
+      description:
+        'Predict with match odds. If you find the correct winner of the match you earn the points associated with the rating, if you have the perfect score you double your score.',
+      style: 'min-width: 250px;'
+    },
+  ]
 </script>
+
+## Types
+
+### options
+
+The options prop is an array of `ButtonsRadioOption` type
+
+```ts
+export type ButtonsRadioOption = {
+  /** The label of the option */
+  label: string
+  /** The value of the option */
+  value: string | number | boolean
+  /** The classes to apply to the option */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  classes?: any
+  /** The style to apply to the option */
+  style?: StyleValue
+} & Record<string, unknown>
+```
 
 <!--@include: ./../.vitepress/generated-docs/maz-radio-buttons.doc.md-->
