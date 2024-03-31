@@ -207,7 +207,6 @@
     customCountriesList: undefined,
     countryLocale: undefined,
     countrySelectorWidth: '9rem',
-    data: undefined,
     noFormattingAsYouType: false,
     autoFormat: true,
   })

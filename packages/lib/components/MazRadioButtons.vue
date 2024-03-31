@@ -1,35 +1,61 @@
 <template>
-  <div class="m-radio-buttons" :class="[orientation === 'row' ? 'maz-flex-row' : 'maz-flex-col']">
+  <div
+    class="m-radio-buttons"
+    :class="[`--${orientation}`, { '--no-wrap': noWrap, '--block': block }]"
+  >
     <label
       v-for="(option, i) in options"
-      :key="i"
-      :for="option.value.toString()"
-      class="m-radio-buttons__items"
-      :class="{
-        '--is-selected': isSelected(option.value),
-        'maz-elevation': !noElevation,
-      }"
+      :key="`option-${i}-${option.value.toString()}`"
+      :for="`option-${i}-${option.value.toString()}`"
+      class="m-radio-buttons__items maz-group"
+      :class="[
+        {
+          '--is-selected': isSelected(option.value),
+          '--elevation': elevation,
+          '--equal-size': equalSize,
+        },
+        option.classes,
+      ]"
       tabindex="0"
-      :style="
+      :style="[
         isSelected(option.value)
           ? {
               color: `var(--maz-color-${color}-contrast)`,
               backgroundColor: `var(--maz-color-${color})`,
             }
-          : undefined
-      "
+          : undefined,
+        option.style,
+      ]"
       role="radio"
       :aria-checked="isSelected(option.value)"
       @keydown="keyboardHandler($event, option)"
     >
       <input
-        :id="option.value.toString()"
+        :id="`option-${i}-${option.value.toString()}`"
         type="radio"
         :name="name"
         :value="option.value"
         class="maz-hidden"
         @change="selectOption(option)"
       />
+      <div v-if="selector" class="m-radio-buttons__items__checkbox">
+        <span
+          :class="{
+            '--is-selected': isSelected(option.value),
+          }"
+        >
+          <Transition name="maz-radio-buttons-scale">
+            <CheckCircleIcon v-show="isSelected(option.value)" class="maz-h-full maz-w-full" />
+          </Transition>
+        </span>
+      </div>
+
+      <!--
+      @slot Label of the radio
+        @binding {Boolean} selected - If the option is selected
+        @binding {string | number | boolean} option - The value of the option
+    -->
+
       <slot :option="option" :selected="isSelected(option.value)">
         {{ option.label }}
       </slot>
@@ -38,30 +64,72 @@
 </template>
 
 <script lang="ts" setup>
-  import type { PropType } from 'vue'
+  import { type StyleValue, computed, defineAsyncComponent } from 'vue'
   import type { Color } from './types'
+  const CheckCircleIcon = defineAsyncComponent(() => import('./../icons/check.svg'))
 
-  export interface ButtonsRadioOption {
+  export type ButtonsRadioOption = {
+    /** The label of the option */
     label: string
-    value: string | number
+    /** The value of the option */
+    value: string | number | boolean
+    /** The classes to apply to the option */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    classes?: any
+    /** The style to apply to the option */
+    style?: StyleValue
+  } & Record<string, unknown>
+
+  export type Props = {
+    /** @model The value of the selected option */
+    modelValue?: string | number | boolean
+    /** The options to display */
+    options: ButtonsRadioOption[]
+    /** The name of the radio group */
+    name?: string
+    /** The color of the selected radio buttons */
+    color?: Color
+    /** Add elevation to the radio buttons */
+    elevation?: boolean
+    /**
+     * The orientation of the radio buttons
+     * @values 'row' | 'col'
+     */
+    orientation?: 'row' | 'col'
+    /** Disable the wrap of the radio buttons */
+    noWrap?: boolean
+    /** Make all radio buttons the same size */
+    equalSize?: boolean
+    /** Display a selector icon */
+    selector?: boolean
+    /** The component will be displayed in full width */
+    block?: boolean
   }
 
-  const props = defineProps({
-    modelValue: { type: [String, Number], default: undefined },
-    options: { type: Array as PropType<ButtonsRadioOption[]>, required: true },
-    name: {
-      type: String as PropType<HTMLInputElement['name']>,
-      default: 'MazButtonsRadio',
-    },
-    color: {
-      type: String as PropType<Color>,
-      default: 'primary',
-    },
-    noElevation: { type: Boolean, default: false },
-    orientation: { type: String as PropType<'row' | 'col'>, default: 'row' },
+  const props = withDefaults(defineProps<Props>(), {
+    modelValue: undefined,
+    name: 'MazButtonsRadio',
+    color: 'primary',
+    elevation: false,
+    orientation: 'row',
+    noWrap: false,
+    equalSize: false,
+    selector: false,
+    block: false,
   })
 
-  const emits = defineEmits(['update:model-value', 'change'])
+  const emits = defineEmits<{
+    /**
+     * Emitted when the selected option change
+     * @property value The value of the selected option
+     */
+    (event: 'update:model-value', value: string | number | boolean): void
+    /**
+     * Emitted when the selected option change
+     * @property value The value of the selected option
+     */
+    (event: 'change', value: string | number | boolean): void
+  }>()
 
   function selectOption(option: ButtonsRadioOption) {
     emits('update:model-value', option.value)
@@ -77,15 +145,59 @@
       selectOption(option)
     }
   }
+
+  const colorCssVar = computed(() => `var(--maz-color-${props.color}-600)`)
 </script>
 
 <style lang="postcss" scoped>
   .m-radio-buttons {
-    @apply maz-inline-flex maz-flex-wrap maz-gap-2 maz-align-top;
+    @apply maz-inline-flex maz-gap-2 maz-align-top;
+
+    &.--block {
+      @apply maz-w-full;
+    }
+
+    &:not(.--no-wrap) {
+      @apply maz-flex-wrap;
+    }
+
+    &.--row {
+      @apply maz-flex-row;
+    }
+
+    &.--col {
+      @apply maz-flex-col;
+    }
 
     &__items {
-      @apply maz-cursor-pointer maz-rounded maz-px-4 maz-py-2
-        maz-font-medium maz-transition-colors maz-duration-300 maz-elevation;
+      @apply maz-flex maz-cursor-pointer maz-gap-4 maz-rounded maz-border maz-border-color-light
+        maz-bg-color maz-px-4 maz-py-2 maz-font-medium maz-transition-colors maz-duration-300;
+
+      &.--elevation {
+        @apply maz-elevation;
+      }
+
+      &__checkbox {
+        @apply maz-flex maz-flex-center;
+
+        span {
+          @apply maz-flex maz-h-6 maz-w-6 maz-flex-none maz-rounded-full maz-border maz-border-color-light maz-bg-color-lighter maz-p-0.5 maz-text-white maz-transition-colors maz-duration-300 maz-flex-center dark:maz-border-color-lighter dark:maz-bg-color-light;
+
+          &.--is-selected {
+            @apply maz-border-transparent;
+
+            background-color: v-bind('colorCssVar');
+          }
+
+          &:not(.--is-selected) {
+            @apply group-hover:maz-bg-color;
+          }
+        }
+      }
+
+      &.--equal-size {
+        @apply maz-flex-1;
+      }
 
       &:not(.--is-selected) {
         @apply hover:maz-bg-color-light;
@@ -93,9 +205,17 @@
     }
   }
 
-  html.dark {
-    .m-radio-buttons__items:not(.--is-selected) {
-      @apply maz-bg-color-light hover:maz-bg-color-lighter;
-    }
+  .maz-radio-buttons-scale-enter-active,
+  .maz-radio-buttons-scale-leave-active {
+    opacity: 1;
+    z-index: 1;
+    transition: all 300ms cubic-bezier(0.4, 0.52, 0.26, 0.9);
+  }
+
+  .maz-radio-buttons-scale-enter-from,
+  .maz-radio-buttons-scale-leave-to {
+    opacity: 0.4;
+    z-index: 1;
+    transform: scale(0);
   }
 </style>
