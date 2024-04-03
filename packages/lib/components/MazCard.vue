@@ -6,6 +6,7 @@
         'm-card--linked': isLinked,
         'm-card--no-scale': !scale,
         'maz-elevation': elevation,
+        '--block': block,
         'maz-overflow-hidden': overflowHidden || !isOpen,
         'maz-rounded': radius,
         'maz-border maz-border-solid maz-border-color-light': bordered,
@@ -89,7 +90,7 @@
       class="m-card__footer maz-overflow-x-auto maz-p-3"
       :class="[
         {
-          'maz-border-t-2 maz-border-color-light dark:maz-border-color-lighter':
+          'maz-border-t maz-border-color-light dark:maz-border-color-lighter':
             isColumnVariant && haveSomeContent,
         },
         footerAlignClass,
@@ -158,6 +159,8 @@
     collapseOpen?: boolean
     /** Title of the card in header */
     header?: string
+    /** The card will be displayed in full width */
+    block?: boolean
   }
 
   const props = withDefaults(defineProps<Props>(), {
@@ -217,6 +220,10 @@
 <style lang="postcss" scoped>
   .m-card {
     @apply maz-relative maz-inline-flex maz-max-h-full maz-flex-col maz-bg-color dark:maz-border dark:maz-border-color-lighter;
+
+    &.--block {
+      @apply maz-w-full;
+    }
 
     &__header {
       @apply maz-flex maz-items-center maz-px-4 maz-py-3 maz-transition-colors maz-duration-200;
