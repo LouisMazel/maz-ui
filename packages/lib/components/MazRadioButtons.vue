@@ -23,7 +23,7 @@
               color: `var(--maz-color-${color}-contrast)`,
               backgroundColor: `var(--maz-color-${color})`,
             }
-          : undefined,
+          : {},
         option.style,
       ]"
       role="radio"
@@ -43,6 +43,11 @@
           :class="{
             '--is-selected': isSelected(option.value),
           }"
+          :style="[
+            isSelected(option.value)
+              ? { backgroundColor: `var(--maz-color-${props.color}-600)` }
+              : {},
+          ]"
         >
           <Transition name="maz-radio-buttons-scale">
             <CheckCircleIcon v-show="isSelected(option.value)" class="maz-h-full maz-w-full" />
@@ -51,11 +56,10 @@
       </div>
 
       <!--
-      @slot Label of the radio
-        @binding {Boolean} selected - If the option is selected
-        @binding {string | number | boolean} option - The value of the option
-    -->
-
+        @slot Label of the radio
+          @binding {Boolean} selected - If the option is selected
+          @binding {string | number | boolean} option - The value of the option
+      -->
       <slot :option="option" :selected="isSelected(option.value)">
         {{ option.label }}
       </slot>
@@ -64,7 +68,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { type StyleValue, computed, defineAsyncComponent } from 'vue'
+  import { type StyleValue, defineAsyncComponent } from 'vue'
   import type { Color } from './types'
   const CheckCircleIcon = defineAsyncComponent(() => import('./../icons/check.svg'))
 
@@ -145,8 +149,6 @@
       selectOption(option)
     }
   }
-
-  const colorCssVar = computed(() => `var(--maz-color-${props.color}-600)`)
 </script>
 
 <style lang="postcss" scoped>
@@ -183,10 +185,10 @@
         span {
           @apply maz-flex maz-h-6 maz-w-6 maz-flex-none maz-rounded-full maz-border maz-border-color-light maz-bg-color-lighter maz-p-0.5 maz-text-white maz-transition-colors maz-duration-300 maz-flex-center dark:maz-border-color-lighter dark:maz-bg-color-light;
 
+          transition: border-color 0s;
+
           &.--is-selected {
             @apply maz-border-transparent;
-
-            background-color: v-bind('colorCssVar');
           }
 
           &:not(.--is-selected) {
