@@ -1,12 +1,12 @@
-import { resolve } from 'node:path'
+import path from 'node:path'
 import { existsSync } from 'node:fs'
 
 export function directoryExists(filePath: string) {
   return existsSync(filePath)
 }
 export function getOutDirectoryPath(outDirectory: string) {
-  return resolve(process.cwd(), outDirectory)
+  return path.resolve(process.cwd(), outDirectory)
 }
 export function getCurrentDirectoryPath() {
-  return resolve(process.cwd())
+  return path.resolve(process.cwd())
 }
