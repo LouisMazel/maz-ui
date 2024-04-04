@@ -87,6 +87,17 @@ module.exports = {
     'unicorn/prefer-module': 'off',
     'unicorn/no-array-callback-reference': 'off',
     'unicorn/no-useless-undefined': 'off',
+    'unicorn/import-style': [
+      'error',
+      {
+        styles: {
+          'node:path': {
+            named: true,
+            default: false,
+          },
+        },
+      },
+    ],
     // sonar
     'sonarjs/no-duplicate-string': 'off',
     'sonarjs/cognitive-complexity': 'warn',

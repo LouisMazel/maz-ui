@@ -1,5 +1,5 @@
 import { writeFile } from 'node:fs/promises'
-import path from 'node:path'
+import { resolve } from 'node:path'
 import { exit } from 'node:process'
 import { fileURLToPath } from 'node:url'
 
@@ -12,7 +12,7 @@ export async function createLibraryComponentFile({
   filename: string
   filenameKebab: string
 }): Promise<void> {
-  const COMPONENT_FILE_OUTPUT = path.resolve(_dirname, `../../../../lib/components/${filename}.vue`)
+  const COMPONENT_FILE_OUTPUT = resolve(_dirname, `../../../../lib/components/${filename}.vue`)
 
   const componentTemplate = `<template>
   <div class="m-${filenameKebab.split('-')[1]}">${filename}</div>

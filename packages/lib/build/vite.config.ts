@@ -1,5 +1,5 @@
 import minimist from 'minimist'
-import path from 'node:path'
+import { resolve } from 'node:path'
 import { build, type InlineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import svgLoader from 'vite-svg-loader'
@@ -25,24 +25,24 @@ const argv = minimist(process.argv.slice(2))
 
 const staticAssetsToCopy: Target[] = [
   {
-    src: path.resolve(_dirname, '../tailwindcss'),
-    dest: path.resolve(_dirname, '../dist'),
+    src: resolve(_dirname, '../tailwindcss'),
+    dest: resolve(_dirname, '../dist'),
   },
   {
-    src: path.resolve(_dirname, '../package.json'),
-    dest: path.resolve(_dirname, '../dist'),
+    src: resolve(_dirname, '../package.json'),
+    dest: resolve(_dirname, '../dist'),
   },
   {
-    src: path.resolve(_dirname, '../icons'),
-    dest: path.resolve(_dirname, '../dist'),
+    src: resolve(_dirname, '../icons'),
+    dest: resolve(_dirname, '../dist'),
   },
   {
-    src: path.resolve(_dirname, '../bin'),
-    dest: path.resolve(_dirname, '../dist'),
+    src: resolve(_dirname, '../bin'),
+    dest: resolve(_dirname, '../dist'),
   },
   {
-    src: path.resolve(_dirname, '../../../README.md'),
-    dest: path.resolve(_dirname, '../dist'),
+    src: resolve(_dirname, '../../../README.md'),
+    dest: resolve(_dirname, '../dist'),
   },
 ]
 
@@ -115,18 +115,18 @@ const run = async () => {
     if ((!argv.package || argv.package === 'modules') && !argv.component) {
       await build(
         getBuildConfig({
-          path: path.resolve(_dirname, './../modules/index.ts'),
+          path: resolve(_dirname, './../modules/index.ts'),
           name: 'index',
-          outDir: path.resolve(_dirname, '../dist/modules'),
+          outDir: resolve(_dirname, '../dist/modules'),
           isModuleBuild: true,
           format: 'es',
         }),
       )
       await build(
         getBuildConfig({
-          path: path.resolve(_dirname, './../modules/index.ts'),
+          path: resolve(_dirname, './../modules/index.ts'),
           name: 'index',
-          outDir: path.resolve(_dirname, '../dist/modules'),
+          outDir: resolve(_dirname, '../dist/modules'),
           isModuleBuild: true,
           format: 'cjs',
         }),
@@ -135,18 +135,18 @@ const run = async () => {
 
     await build(
       getBuildConfig({
-        path: path.resolve(_dirname, './../resolvers/index.ts'),
+        path: resolve(_dirname, './../resolvers/index.ts'),
         name: 'index',
-        outDir: path.resolve(_dirname, '../dist/resolvers'),
+        outDir: resolve(_dirname, '../dist/resolvers'),
         isModuleBuild: true,
         format: 'cjs',
       }),
     )
     await build(
       getBuildConfig({
-        path: path.resolve(_dirname, './../resolvers/index.ts'),
+        path: resolve(_dirname, './../resolvers/index.ts'),
         name: 'index',
-        outDir: path.resolve(_dirname, '../dist/resolvers'),
+        outDir: resolve(_dirname, '../dist/resolvers'),
         isModuleBuild: true,
         format: 'es',
       }),
@@ -164,7 +164,7 @@ const run = async () => {
         getBuildConfig({
           path: componentPath,
           name,
-          outDir: path.resolve(_dirname, '../dist/components'),
+          outDir: resolve(_dirname, '../dist/components'),
           format: 'es',
         }),
       )
@@ -175,12 +175,12 @@ const run = async () => {
 
     copyAndTransformComponentsTypesFiles()
     copyFileSync(
-      path.resolve('./dist/types/resolvers/index.d.ts'),
-      path.resolve('./dist/resolvers/index.d.ts'),
+      resolve('./dist/types/resolvers/index.d.ts'),
+      resolve('./dist/resolvers/index.d.ts'),
     )
     copyFileSync(
-      path.resolve('./dist/types/resolvers/unplugin-vue-components-resolver.d.ts'),
-      path.resolve('./dist/resolvers/unplugin-vue-components-resolver.d.ts'),
+      resolve('./dist/types/resolvers/unplugin-vue-components-resolver.d.ts'),
+      resolve('./dist/resolvers/unplugin-vue-components-resolver.d.ts'),
     )
 
     await generateLibComponentsEntryFile()
@@ -196,7 +196,7 @@ const run = async () => {
     await execPromise('pnpm -F @mazui/cli build')
 
     // Nuxt Module: rename all module.* to index.*
-    const fileList = await readdir(path.resolve(_dirname, './../dist/nuxt'), {
+    const fileList = await readdir(resolve(_dirname, './../dist/nuxt'), {
       withFileTypes: true,
     })
 
@@ -206,21 +206,21 @@ const run = async () => {
 
     for await (const { path: filePath, name } of fileListToRename) {
       const extenstion = name.slice(Math.max(0, name.indexOf('.')))
-      await rename(path.resolve(filePath, name), path.resolve(filePath, `index${extenstion}`))
+      await rename(resolve(filePath, name), resolve(filePath, `index${extenstion}`))
     }
 
     await replace({
       files: [
-        path.resolve(_dirname, '../dist/nuxt/types.d.mts'),
-        path.resolve(_dirname, '../dist/nuxt/types.d.ts'),
-        path.resolve(_dirname, '../dist/nuxt/index.cjs'),
+        resolve(_dirname, '../dist/nuxt/types.d.mts'),
+        resolve(_dirname, '../dist/nuxt/types.d.ts'),
+        resolve(_dirname, '../dist/nuxt/index.cjs'),
       ],
       from: new RegExp('./module', 'g'),
       to: './index',
     })
 
     await replace({
-      files: path.resolve(_dirname, '../dist/package.json'),
+      files: resolve(_dirname, '../dist/package.json'),
       from: [
         new RegExp('"main": "./modules/index.ts"', 'g'),
         new RegExp('"module": "./modules/index.ts"', 'g'),

@@ -1,13 +1,13 @@
 import { copyFileSync, existsSync, mkdirSync, readdirSync, renameSync, statSync } from 'node:fs'
-import path from 'node:path'
+import { resolve, join } from 'node:path'
 import { logger } from './utils/logger'
 import replace from 'replace-in-file'
 import { fileURLToPath } from 'node:url'
 
 const _dirname = fileURLToPath(new URL('.', import.meta.url))
-const INPUT_COMPONENT_DIR = path.resolve(_dirname, './../dist/types/components')
-const OUTPUT_TYPES_FILES = path.resolve(_dirname, './../dist/components')
-const COMPONENTS_TYPE_PATH = path.resolve(_dirname, './../dist/components/index.d.ts')
+const INPUT_COMPONENT_DIR = resolve(_dirname, './../dist/types/components')
+const OUTPUT_TYPES_FILES = resolve(_dirname, './../dist/components')
+const COMPONENTS_TYPE_PATH = resolve(_dirname, './../dist/components/index.d.ts')
 
 function copyRecursive(inputPath: string, outputPath: string) {
   try {
@@ -21,7 +21,7 @@ function copyRecursive(inputPath: string, outputPath: string) {
         mkdirSync(outputPath)
       }
       for (const childItemName of readdirSync(inputPath)) {
-        copyRecursive(path.join(inputPath, childItemName), path.join(outputPath, childItemName))
+        copyRecursive(join(inputPath, childItemName), join(outputPath, childItemName))
       }
     } else {
       copyFileSync(inputPath, outputPath)

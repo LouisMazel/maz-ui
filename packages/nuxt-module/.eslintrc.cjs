@@ -18,5 +18,16 @@ module.exports = {
         fixStyle: 'inline-type-imports',
       },
     ],
+    'unicorn/import-style': [
+      'error',
+      {
+        styles: {
+          'node:path': {
+            named: true,
+            default: false,
+          },
+        },
+      },
+    ],
   },
 }

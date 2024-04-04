@@ -1,11 +1,11 @@
+import chalk from 'chalk'
+import { resolve } from 'node:path'
 import { Command } from 'commander'
 import { exit } from 'node:process'
 import { multiselect, text, confirm, spinner, cancel, isCancel } from '@clack/prompts'
 import { createDocumentFile } from './create-documentation-file'
 import { createLibraryTestFile } from './create-library-test-file'
 import { createLibraryComponentFile } from './create-library-component-file'
-import chalk from 'chalk'
-import path from 'node:path'
 import { buildEntry } from '../../../../lib/build/entry-builder'
 import { pascalCaseToKebabCase } from './../../utils/pascal-case-to-kebab-case'
 import { fileURLToPath } from 'node:url'
@@ -115,7 +115,7 @@ async function runCreateFiles({
     })
 
     await buildEntry({
-      output: path.resolve(_dirname, './../../../../lib/components/index.ts'),
+      output: resolve(_dirname, './../../../../lib/components/index.ts'),
       componentName: 'fullName',
       scriptName: 'component-entry-generated',
     })
@@ -133,7 +133,7 @@ async function runCreateFiles({
   spinnerLoader.stop('File(s) created')
 
   if (shouldCreateDocumentationFile) {
-    const componentConfigurationFilePath = path.resolve(
+    const componentConfigurationFilePath = resolve(
       _dirname,
       './../../../docs/docs/.vitepress/configs/components.mts',
     )

@@ -1,5 +1,5 @@
 import { writeFile } from 'node:fs/promises'
-import path from 'node:path'
+import { resolve } from 'node:path'
 import { exit } from 'node:process'
 import { fileURLToPath } from 'node:url'
 
@@ -25,7 +25,7 @@ describe('${filename}', () => {
 `
 
   try {
-    const TEST_FILE_OUTPUT = path.resolve(
+    const TEST_FILE_OUTPUT = resolve(
       _dirname,
       `../../../../lib/tests/specs/components/${filenameKebab}.spec.ts`,
     )

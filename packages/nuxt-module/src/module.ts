@@ -1,6 +1,6 @@
+import { dirname } from 'node:path'
 import { defineNuxtModule, addPlugin, createResolver, addImports, addComponent } from '@nuxt/kit'
 import { defu } from 'defu'
-import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import type { AosOptions, ToasterOptions, ThemeHandlerOptions, vLazyImgOptions } from 'maz-ui'
@@ -134,7 +134,7 @@ declare module '@nuxt/schema' {
   }
 }
 
-const _dirname = path.dirname(fileURLToPath(import.meta.url))
+const _dirname = dirname(fileURLToPath(import.meta.url))
 
 export default defineNuxtModule<MazUiNuxtOptions>({
   meta: {

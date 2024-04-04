@@ -48,6 +48,17 @@ module.exports = {
     ],
     // UNICORN
     'unicorn/prefer-module': 'off',
+    'unicorn/import-style': [
+      'error',
+      {
+        styles: {
+          'node:path': {
+            named: true,
+            default: false,
+          },
+        },
+      },
+    ],
     // PRETTIER
     'prettier/prettier': ['error', {}, { usePrettierrc: true }],
   },

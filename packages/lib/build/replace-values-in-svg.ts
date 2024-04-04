@@ -1,11 +1,11 @@
 import fs from 'node:fs'
-import path from 'node:path'
+import { resolve, join } from 'node:path'
 import { logger } from './utils/logger'
 import { fileURLToPath } from 'node:url'
 
 const _dirname = fileURLToPath(new URL('.', import.meta.url))
 
-const SVGFolder = path.resolve(_dirname, '../icons')
+const SVGFolder = resolve(_dirname, '../icons')
 
 fs.readdir(SVGFolder, (err, fichiers) => {
   if (err) {
@@ -14,7 +14,7 @@ fs.readdir(SVGFolder, (err, fichiers) => {
   }
 
   for (const fichier of fichiers) {
-    const filePath = path.join(SVGFolder, fichier)
+    const filePath = join(SVGFolder, fichier)
 
     fs.readFile(filePath, 'utf8', (err, data) => {
       if (err) {

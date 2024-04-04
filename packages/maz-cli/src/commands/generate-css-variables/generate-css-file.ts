@@ -5,7 +5,7 @@ import {
   type VariantColors,
 } from '../../types'
 import { generateColorVariants } from './colors'
-import path from 'node:path'
+import { resolve } from 'node:path'
 import { writeFile } from 'node:fs/promises'
 import { defaultMazUiConfig } from './default-maz-ui.config'
 import tinycolor from 'tinycolor2'
@@ -166,7 +166,7 @@ export async function generateCssFile({
     getNormalCSSVariables(config),
   ])
 
-  const outputPath = path.resolve(process.cwd(), outputCssFilePath)
+  const outputPath = resolve(process.cwd(), outputCssFilePath)
 
   await writeFile(outputPath, css)
 

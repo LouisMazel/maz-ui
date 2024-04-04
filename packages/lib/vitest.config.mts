@@ -1,16 +1,16 @@
 /// <reference types="vitest" />
 
+import { resolve } from 'node:path'
+
 import { defineConfig } from 'vitest/config'
 import Vue from '@vitejs/plugin-vue'
-
-import path from 'node:path'
 
 import svgLoader from 'vite-svg-loader'
 import { fileURLToPath } from 'node:url'
 
 const _dirname = fileURLToPath(new URL('.', import.meta.url))
 
-const projectRoot = path.resolve(_dirname)
+const projectRoot = resolve(_dirname)
 
 export default defineConfig({
   plugins: [Vue(), svgLoader()],
@@ -69,9 +69,9 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@modules': path.resolve(projectRoot, 'modules'),
-      '@components': path.resolve(projectRoot, 'components'),
-      '@tests': path.resolve(projectRoot, 'tests'),
+      '@modules': resolve(projectRoot, 'modules'),
+      '@components': resolve(projectRoot, 'components'),
+      '@tests': resolve(projectRoot, 'tests'),
     },
   },
 })
