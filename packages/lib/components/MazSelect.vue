@@ -1,7 +1,6 @@
 <template>
   <div
     ref="mazSelectElement"
-    v-click-outside="closeList"
     class="m-select"
     :class="[
       { '--is-open': hasListOpened, '--disabled': disabled, '--block': block },
@@ -9,6 +8,7 @@
       `--${size}`,
     ]"
     :style="style"
+    @blur.capture="closeList"
   >
     <MazInput
       :id="instanceId"
@@ -25,7 +25,6 @@
       :disabled="disabled"
       @focus.prevent.stop="openList"
       @click.prevent.stop="openList"
-      @blur.prevent.stop="closeList"
       @change="emits('change', $event)"
       @keydown="mainInputKeyboardHandler"
     >
@@ -146,7 +145,6 @@
   import type { Color, ModelValueSimple, Position, Size } from './types'
   import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
   import { debounceCallback } from '../modules/helpers/debounce-callback'
-  import { vClickOutside } from '../modules/directives/click-outside'
   import { useStringMatching } from '../modules/composables/use-string-matching'
 
   export type NormalizedOption = Record<string, ModelValueSimple>
@@ -171,6 +169,14 @@
 
   defineOptions({
     inheritAttrs: false,
+  })
+
+  defineExpose<{
+    openList: typeof openList
+    closeList: typeof closeList
+  }>({
+    openList,
+    closeList,
   })
 
   export type Props = {

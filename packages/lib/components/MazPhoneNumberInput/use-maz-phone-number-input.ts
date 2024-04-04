@@ -1,5 +1,5 @@
 import { getCountryCallingCode, type CountryCode, getCountries } from 'libphonenumber-js'
-import { type ComponentPublicInstance, reactive, ref } from 'vue'
+import { type ComponentPublicInstance, ref } from 'vue'
 import { type Country, type IpWhoResponse, type Results } from './types'
 import { useLibphonenumber } from './use-libphonenumber'
 
@@ -8,7 +8,7 @@ const { isCountryAvailable, getPhoneNumberResults, getAsYouTypeFormat } = useLib
 const phoneNumber = ref<string>('')
 const selectedCountry = ref<CountryCode>()
 
-const selectionRange = reactive<{
+const selectionRange = ref<{
   start?: number | null
   end?: number | null
   cursorAtEnd?: boolean
@@ -45,11 +45,13 @@ function sanitizePhoneNumber(input?: string) {
 
 function saveCursorPosition(PhoneInputRef: ComponentPublicInstance, currentPhoneNumber?: string) {
   const input = PhoneInputRef?.$el.querySelector('input') as HTMLInputElement | undefined
-  selectionRange.start = input?.selectionStart
-  selectionRange.end = input?.selectionEnd
-  selectionRange.cursorAtEnd =
-    currentPhoneNumber && typeof selectionRange.start === 'number' && currentPhoneNumber.length > 0
-      ? selectionRange.start >= currentPhoneNumber.length
+  selectionRange.value.start = input?.selectionStart
+  selectionRange.value.end = input?.selectionEnd
+  selectionRange.value.cursorAtEnd =
+    currentPhoneNumber &&
+    typeof selectionRange.value.start === 'number' &&
+    currentPhoneNumber.length > 0
+      ? selectionRange.value.start >= currentPhoneNumber.length
       : true
 }
 
@@ -88,7 +90,7 @@ function onPhoneNumberChanged({
 
   if (results.value.isValid && results.value.formatNational && autoFormat) {
     phoneNumber.value = results.value.formatNational
-  } else if (selectionRange.cursorAtEnd && !noFormattingAsYouType) {
+  } else if (selectionRange.value.cursorAtEnd && !noFormattingAsYouType) {
     const asYouTypeFormatted = getAsYouTypeFormat(selectedCountry.value, sanitizedPhoneNumber)
     phoneNumber.value = asYouTypeFormatted
   } else {

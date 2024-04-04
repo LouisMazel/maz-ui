@@ -46,6 +46,9 @@
       }"
       @update:model-value="$emit('update:model-value', $event as CountryCode)"
     >
+      <template #no-results>
+        <slot name="no-results"> </slot>
+      </template>
       <template #default="{ option, isSelected }">
         <div
           class="m-country-selector__select__item maz-flex maz-items-center maz-gap-1 maz-truncate"
@@ -86,7 +89,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, type ComponentPublicInstance, computed, type HTMLAttributes } from 'vue'
+  import { ref, computed, type HTMLAttributes } from 'vue'
   import type { Color, Size, Position, CountryCode, Translations } from '../MazPhoneNumberInput.vue'
   import MazSelect from '../MazSelect.vue'
   import { countryCodeToUnicodeFlag } from '../../modules/helpers/country-code-to-unicode-flag'
@@ -137,7 +140,7 @@
     (event: 'update:model-value', countryCode?: CountryCode): void
   }>()
 
-  const CountrySelectorRef = ref<ComponentPublicInstance>()
+  const CountrySelectorRef = ref<typeof MazSelect>()
 
   const { phoneNumber, getCountriesList } = useMazPhoneNumberInput()
 
@@ -179,7 +182,7 @@
       .filter(truthyFilter)
   })
 
-  function focusCountrySelector() {
+  async function focusCountrySelector() {
     CountrySelectorRef.value?.$el.querySelector('input')?.focus()
   }
 </script>
