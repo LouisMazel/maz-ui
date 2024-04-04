@@ -67,7 +67,7 @@ Use `search` property to add a search input in the options list
 ::: tip
 You can use your own template to replace the empty icon when no results are found
 
-::: details Show code
+::: details View code
 
 ```html
 <MazSelect>

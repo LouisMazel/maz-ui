@@ -14,6 +14,7 @@ import * as components from 'maz-ui/components/index'
 
 import ColorContainer from './components/ColorContainer.vue'
 import NpmBadge from './components/NpmBadge.vue'
+import ComponentDemo from './components/ComponentDemo.vue'
 import { watch } from 'vue'
 
 const theme: typeof DefaultTheme = {
@@ -29,6 +30,7 @@ const theme: typeof DefaultTheme = {
 
     app.component('ColorContainer', ColorContainer)
     app.component('NpmBadge', NpmBadge)
+    app.component('ComponentDemo', ComponentDemo)
 
     Object.entries(components).forEach(([componentName, component]) => {
       app.component(componentName, component)

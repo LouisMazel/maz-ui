@@ -45,7 +45,7 @@ description: MazCard is a standalone component to display some texts and images 
   </template>
 </MazCard>
 
-::: details Show code
+::: details View code
 
 ```vue
 <template>
@@ -115,7 +115,7 @@ When you display images, you can change the orientation of the card, available o
   </template>
 </MazCard>
 
-::: details Show code
+::: details View code
 
 ```html
 <MazCard :images="['https://loremflickr.com/600/600']" orientation="row">
@@ -151,7 +151,7 @@ When you display images, you can change the orientation of the card, available o
   </template>
 </MazCard>
 
-::: details Show code
+::: details View code
 
 ```html
 <MazCard
@@ -193,7 +193,7 @@ When you display images, you can change the orientation of the card, available o
   </template>
 </MazCard>
 
-::: details Show code
+::: details View code
 
 ```html
 <MazCard
@@ -249,7 +249,7 @@ Use props: `collapsable` & `collapse-open`
   </template>
 </MazCard>
 
-::: details Show code
+::: details View code
 
 ```html
 <MazCard collapsable style="width: 100%; margin-bottom: 16px;">
@@ -305,7 +305,7 @@ To access the link, simply click the card.
   </span>
 </MazCard>
 
-::: details Show code
+::: details View code
 
 ```html
 <MazCard
@@ -342,7 +342,7 @@ Bordered and has no elevation
   </span>
 </MazCard>
 
-::: details Show code
+::: details View code
 
 ```html
 <MazCard
@@ -374,7 +374,7 @@ Bordered and has no elevation
   </template>
 </MazCard>
 
-::: details Show code
+::: details View code
 
 ```html
 <MazCard>
@@ -406,7 +406,7 @@ Use the prop option `footer-align="left"`
   </template>
 </MazCard>
 
-::: details Show code
+::: details View code
 
 ```html
 <MazCard footer-align="left">
