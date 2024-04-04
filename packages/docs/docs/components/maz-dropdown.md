@@ -156,7 +156,7 @@ You can provide a template to replace the default dropdown panel
   </template>
 </MazDropdown>
 
-::: details Show code
+::: details View code
 
 ```html
 <MazDropdown>
@@ -208,7 +208,7 @@ You can provide a template to replace menuitem labels to add more elements in ea
   </template>
 </MazDropdown>
 
-::: details Show code
+::: details View code
 
 ```html
 <MazDropdown
@@ -303,7 +303,7 @@ Add `tabindex="-1"` attribute to your element to avoid a double focus with Tab k
   </MazDropdown>
 </div>
 
-::: details Show code
+::: details View code
 
 ```html
 <MazDropdown

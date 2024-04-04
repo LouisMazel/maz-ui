@@ -26,7 +26,7 @@ description: MazRadio is a standalone component
   </MazRadio>
 </div>
 
-::: details Show code
+::: details View code
 
 ```vue
 <template>
@@ -80,7 +80,7 @@ description: MazRadio is a standalone component
   />
 </div>
 
-::: details Show code
+::: details View code
 
 ```vue
 <template>

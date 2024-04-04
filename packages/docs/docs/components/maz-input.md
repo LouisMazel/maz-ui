@@ -62,7 +62,7 @@ description: MazInput is a standalone component that replaces the standard html 
 
 <MazInput v-model="inputValue" label="label disabled" disabled autocomplete="off" />
 
-::: details Show code
+::: details View code
 
 ```html
 <MazInput
@@ -80,7 +80,7 @@ description: MazInput is a standalone component that replaces the standard html 
 
 <MazInput v-model="inputValue" label="label hint" hint="An error occured" error autocomplete="off" />
 
-::: details Show code
+::: details View code
 
 ```html
 <MazInput
@@ -105,7 +105,7 @@ description: MazInput is a standalone component that replaces the standard html 
 
 ### Use icon name
 
-::: details Show code
+::: details View code
 
 When you use the properties `right-icon`, `left-icon` or `icon` with the icon name (string), the component uses `<MazIcon name="..." />` component.
 
@@ -124,7 +124,7 @@ Check out how [MazIcon](./maz-icon.md) works, see all available icons and downlo
 
 ### Use your own SVG icons
 
-::: details Show code
+::: details View code
 
 ```html
 <MazInput
@@ -149,7 +149,7 @@ Check out how [MazIcon](./maz-icon.md) works, see all available icons and downlo
 
 ### Use [vite-svg-loader](https://github.com/jpkleemans/vite-svg-loader)
 
-::: details Show code
+::: details View code
 
 ```vue
 <template>

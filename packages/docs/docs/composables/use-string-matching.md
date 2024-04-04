@@ -9,10 +9,10 @@ description: Efficient composable for string matching tasks, utilizing Levenshte
 
 ## Usage
 
-<div class="maz-bg-color-lighter dark:maz-bg-color dark:maz-border dark:maz-border-color-light maz-rounded maz-overflow-hidden maz-p-4">
-  <div class="maz-flex maz-gap-4 maz-items-start maz-flex-wrap">
-    <MazInput v-model="string1" label="Entrer first string" />
-    <MazInput v-model="string2" label="Entrer second string" />
+<ComponentDemo>
+  <div class="maz-flex maz-gap-4 maz-items-start maz-flex-wrap maz-mb-4">
+    <MazInput v-model="string1" label="Enter first string" />
+    <MazInput v-model="string2" label="Enter second string" />
   </div>
 
   <p class="!maz-mb-1">
@@ -21,31 +21,36 @@ description: Efficient composable for string matching tasks, utilizing Levenshte
   <p class="!maz-my-0">
     <b>score:</b> {{ score }}
   </p>
-</div>
 
-```vue
-<template>
-  <MazInput v-model="string1" label="Entrer first string" />
-  <MazInput v-model="string2" label="Entrer second string" />
+  <template #code>
 
-  <p>
-    <b>isMatching:</b> {{ isMatching }}
-  </p>
-  <p>
-    <b>score:</b> {{ score }}
-  </p>
-</template>
+  ```vue
+  <template>
+    <MazInput v-model="string1" label="Enter first string" />
+    <MazInput v-model="string2" label="Enter second string" />
 
-<script lang="ts" setup>
-  import { ref } from 'vue'
-  import { useStringMatching } from 'maz-ui'
+    <p>
+      <b>isMatching:</b> {{ isMatching }}
+    </p>
+    <p>
+      <b>score:</b> {{ score }}
+    </p>
+  </template>
 
-  const string1 = ref<string>('maz-ui')
-  const string2 = ref<string>('màéz-uiok')
+  <script lang="ts" setup>
+    import { ref } from 'vue'
+    import { useStringMatching } from 'maz-ui'
 
-  const { score, isMatching } = useStringMatching(string1, string2)
-</script>
-```
+    const string1 = ref<string>('maz-ui')
+    const string2 = ref<string>('màéz-uiok')
+
+    const { score, isMatching } = useStringMatching(string1, string2)
+  </script>
+  ```
+
+  </template>
+
+</ComponentDemo>
 
 <script lang="ts" setup>
   import { ref } from 'vue'

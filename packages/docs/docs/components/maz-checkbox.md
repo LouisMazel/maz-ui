@@ -46,7 +46,7 @@ description: MazCheckbox is a standalone component that replaces the standard ht
   </MazCheckbox>
 </div>
 
-::: details Show code
+::: details View code
 
 ```vue
 <template>
@@ -101,7 +101,7 @@ description: MazCheckbox is a standalone component that replaces the standard ht
   </MazCheckbox>
 </div>
 
-::: details Show code
+::: details View code
 
 ```vue
 <template>

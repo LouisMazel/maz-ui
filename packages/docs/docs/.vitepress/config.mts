@@ -37,6 +37,13 @@ export default defineConfig({
 
   base: '/',
 
+  markdown: {
+    theme: {
+      light: 'github-light',
+      dark: 'tokyo-night'
+    }
+  },
+
   sitemap: {
     hostname: 'https://maz-ui.com/',
     transformItems: (items) => {

@@ -17,7 +17,7 @@
   },
   "css.validate": false,
   "stylelint.validate": [
-    "vue",
+    // "vue",
     "css",
     "scss",
     "postcss",

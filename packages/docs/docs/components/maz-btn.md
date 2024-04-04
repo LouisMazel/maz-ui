@@ -41,7 +41,7 @@ description: MazBtn is a standalone component that replaces the standard html bu
   </div>
 </div>
 
-::: details Show code
+::: details View code
 
 ```vue
 <template>
@@ -83,7 +83,7 @@ Use the attribute `size` with value **{{ sizes.join(', ') }}**
   <MazBtn v-for="size in sizes" :size="size">{{ size }}</MazBtn>
 </div>
 
-::: details Show code
+::: details View code
 
 ```vue
 <template>
@@ -107,7 +107,7 @@ Use the attribute `color` with a value in this [list](./../guide/colors.md), the
   <MazBtn v-for="color of colors" :key="color" :color="color">{{ color }}</MazBtn>
 </div>
 
-::: details Show code
+::: details View code
 
 ```html
 <MazBtn>primary</MazBtn>
@@ -131,7 +131,7 @@ Use the attribute `color` with a value in this [list](./../guide/colors.md), the
   <MazBtn v-for="color of colors" :color="color" outline>{{ color }}</MazBtn>
 </div>
 
-::: details Show code
+::: details View code
 
 ```html
 <MazBtn outline>primary</MazBtn>
@@ -157,7 +157,7 @@ It's better in light mode
   <MazBtn v-for="color of colors" :color="color" pastel>{{ color }}</MazBtn>
 </div>
 
-::: details Show code
+::: details View code
 
 ```html
 <MazBtn pastel>primary</MazBtn>
@@ -198,7 +198,7 @@ It's better in light mode
   <MazBtn fab icon="sun" size="xl" />
 </div>
 
-::: details Show code
+::: details View code
 
 ```html
 <MazBtn fab icon="sun" size="mini" />
@@ -247,7 +247,7 @@ It's better in light mode
 
 ### Use icon name
 
-::: details Show code
+::: details View code
 
 When you use the properties `right-icon`, `left-icon` or `icon` with the icon name (string), the component uses `<MazIcon name="..." />` component.
 
@@ -267,7 +267,7 @@ Check out how [MazIcon](./maz-icon.md) works, see all available icons and downlo
 
 ### Use your own SVG icons
 
-::: details Show code
+::: details View code
 
 ```html
 <MazBtn  size="sm">
@@ -299,7 +299,7 @@ Check out how [MazIcon](./maz-icon.md) works, see all available icons and downlo
 
 ### Use [vite-svg-loader](https://github.com/jpkleemans/vite-svg-loader)
 
-::: details Show code
+::: details View code
 
 ```vue
 <template>
@@ -335,7 +335,7 @@ Additional props available include: `no-underline` & `no-leading`
 <MazBtn variant="link" @click="$emit('click')" no-underline>Is Link</MazBtn>
 <MazBtn variant="link" @click="$emit('click')" no-leading>Is Link</MazBtn>
 
-::: details Show code
+::: details View code
 
 ```html
 <MazBtn variant="link" @click="$emit('click')">Is Link</MazBtn>

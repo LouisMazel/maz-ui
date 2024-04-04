@@ -62,7 +62,7 @@ You can use MazTable and his child component to build a simple table and enjoy t
   </MazTableRow>
 </MazTable>
 
-::: details Show code
+::: details View code
 
 ```vue
 <template>
@@ -164,7 +164,7 @@ You can also provide all your data, the table is auto-generated and you can use 
   </template>
 </MazTable>
 
-::: details Show code
+::: details View code
 
 ```vue
 <template>

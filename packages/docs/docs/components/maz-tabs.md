@@ -82,7 +82,7 @@ description: MazTabs is a standalone component to display content in tabs with a
   Set model-value to {{currentTab === 1 ? 2 : 1}}
 </MazBtn>
 
-::: details Show code
+::: details View code
 
 ```vue
 <template>

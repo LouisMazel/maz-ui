@@ -82,7 +82,7 @@ If you want to increase the border width, you must just add padding @default: `v
   </MazCardSpotlight>
 </div>
 
-::: details Show code
+::: details View code
 
 ```html
 <div class="grid gap-4 grid-cols-1 mob-l:grid-cols-2 tab-l:grid-cols-3">
