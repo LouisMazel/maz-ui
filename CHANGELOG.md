@@ -1,5 +1,29 @@
 # Change Log
 
+## v3.37.3...v3.37.4
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.37.3...v3.37.4)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazPhoneNumberInput - support of country selector slots ([19071ccd](https://github.com/LouisMazel/maz-ui/commit/19071ccd))
+
+### 💅 Refactors
+
+- **maz-ui:** MazRadioButtons - imrpove style and add selector prop to display a selector icon ([ce9bed41](https://github.com/LouisMazel/maz-ui/commit/ce9bed41))
+- **maz-ui:** MazCard - add 'block' prop option ([2865ccf5](https://github.com/LouisMazel/maz-ui/commit/2865ccf5))
+- **maz-ui:** MazRadioButtons - use CSS variables directly in style attributes ([716b21e0](https://github.com/LouisMazel/maz-ui/commit/716b21e0))
+- **docs:** Create ComponentDemo to wrapp component and highlight code ([29d56f29](https://github.com/LouisMazel/maz-ui/commit/29d56f29))
+
+### 🏡 Chore
+
+- **deps:** Upgrade dependencies ([efcc0891](https://github.com/LouisMazel/maz-ui/commit/efcc0891))
+- **deps:** Upgrade dependencies ([373d1a52](https://github.com/LouisMazel/maz-ui/commit/373d1a52))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.37.2...v3.37.3
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.37.2...v3.37.3)
