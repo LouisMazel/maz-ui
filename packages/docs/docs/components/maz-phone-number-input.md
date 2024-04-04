@@ -45,25 +45,7 @@ npm install libphonenumber-js
 
 ## Usage
 
-<MazPhoneNumberInput
-  v-model="phoneNumber"
-  v-model:country-code="countryCode"
-  show-code-on-list
-  :preferred-countries="['FR', 'BE', 'DE', 'US', 'GB']"
-  :ignored-countries="['AC']"
-  @update="results = $event"
-/>
-
-<div class="language-js ext-js"><span class="lang">js</span><pre class="language-js"><code>v-model="{{ phoneNumber ?? 'undefined' }}"</code></pre></div>
-
-### Result object is emitted by @update event - [Model](#types)
-
-<div class="language-js ext-js"><span class="lang">js</span><pre class="language-js"><code>{{ results }}</code></pre></div>
-
-::: details Show code
-
-```vue
-<template>
+<ComponentDemo>
   <MazPhoneNumberInput
     v-model="phoneNumber"
     v-model:country-code="countryCode"
@@ -72,21 +54,43 @@ npm install libphonenumber-js
     :ignored-countries="['AC']"
     @update="results = $event"
   />
-  <code>
-    {{ results }}
-  </code>
-</template>
 
-<script setup lang="ts">
-  import MazPhoneNumberInput from 'maz-ui/components/MazPhoneNumberInput'
-  import { ref } from 'vue'
-  const phoneNumber = ref()
-  const countryCode = ref('FR')
-  const results = ref()
-</script>
-```
+  <template #content>
+  <div class="language-js ext-js"><span class="lang">js</span><pre class="language-js"><code>v-model="{{ phoneNumber ?? 'undefined' }}"</code></pre></div>
 
-:::
+**Result object is emitted by `@update` or `@data` events - [Model](#types)**
+
+  <div class="language-js ext-js"><span class="lang">js</span><pre class="language-js"><code>{{ results }}</code></pre></div>
+  </template>
+
+  <template #code>
+
+  ```vue
+  <template>
+    <MazPhoneNumberInput
+      v-model="phoneNumber"
+      v-model:country-code="countryCode"
+      show-code-on-list
+      :preferred-countries="['FR', 'BE', 'DE', 'US', 'GB']"
+      :ignored-countries="['AC']"
+      @update="results = $event"
+    />
+    <code>
+      {{ results }}
+    </code>
+  </template>
+
+  <script setup lang="ts">
+    import MazPhoneNumberInput from 'maz-ui/components/MazPhoneNumberInput'
+    import { ref } from 'vue'
+    const phoneNumber = ref()
+    const countryCode = ref('FR')
+    const results = ref()
+  </script>
+  ```
+
+  </template>
+</ComponentDemo>
 
 ## Translations - Labels & placeholders
 
@@ -131,60 +135,69 @@ npm install libphonenumber-js
 
 ## Show country name instead of calling code
 
-<MazPhoneNumberInput country-selector-display-name />
+<ComponentDemo>
+  <MazPhoneNumberInput country-selector-display-name />
 
-```html
-<MazPhoneNumberInput country-selector-display-name />
-```
+  <template #code>
+
+  ```html
+  <MazPhoneNumberInput country-selector-display-name />
+  ```
+
+  </template>
+</ComponentDemo>
 
 ## Flags replacement with slots
 
-<MazPhoneNumberInput>
-  <template #selector-flag="{ countryCode }">
-    <span
-      style="font-size: 0.8rem; background-color: var(--maz-color-secondary); color: var(--maz-color-secondary-contrast); border-radius: 100px; padding: 2px;"
-    >
-      {{ countryCode }}
-    </span>
+<ComponentDemo>
+  <MazPhoneNumberInput>
+    <template #selector-flag="{ countryCode }">
+      <span
+        style="font-size: 0.8rem; background-color: var(--maz-color-secondary); color: var(--maz-color-secondary-contrast); border-radius: 100px; padding: 2px;"
+      >
+        {{ countryCode }}
+      </span>
+    </template>
+    <template #country-list-flag="{ countryCode }">
+      <MazBadge size="0.8rem" style="margin-right: 10px; width: 26px;">
+        {{ countryCode }}
+      </MazBadge>
+    </template>
+  </MazPhoneNumberInput>
+
+  <template #code>
+
+  You can use available country codes with libraries like [country-flag-icons](https://www.npmjs.com/package/country-flag-icons) to replace unicode flags by SVG flags
+
+  <NpmBadge package="country-flag-icons" />
+
+  ```html
+  <MazPhoneNumberInput>
+    <template #selector-flag="{ countryCode }">
+      <span
+        style="font-size: 0.8rem; background-color: var(--maz-color-secondary); color: var(--maz-color-secondary-contrast); border-radius: 100px; padding: 2px;"
+      >
+        {{ countryCode }}
+      </span>
+    </template>
+    <template #country-list-flag="{ countryCode }">
+      <MazBadge size="0.8rem" style="margin-right: 10px; width: 26px;">
+        {{ countryCode }}
+      </MazBadge>
+    </template>
+  </MazPhoneNumberInput>
+  ```
+
   </template>
-  <template #country-list-flag="{ countryCode }">
-    <MazBadge size="0.8rem" style="margin-right: 10px; width: 26px;">
-      {{ countryCode }}
-    </MazBadge>
-  </template>
-</MazPhoneNumberInput>
 
-::: details
-
-You can use available country codes with libraries like [country-flag-icons](https://www.npmjs.com/package/country-flag-icons) to replace unicode flags by SVG flags
-
-<NpmBadge package="country-flag-icons" />
-
-```html
-<MazPhoneNumberInput>
-  <template #selector-flag="{ countryCode }">
-    <span
-      style="font-size: 0.8rem; background-color: var(--maz-color-secondary); color: var(--maz-color-secondary-contrast); border-radius: 100px; padding: 2px;"
-    >
-      {{ countryCode }}
-    </span>
-  </template>
-  <template #country-list-flag="{ countryCode }">
-    <MazBadge size="0.8rem" style="margin-right: 10px; width: 26px;">
-      {{ countryCode }}
-    </MazBadge>
-  </template>
-</MazPhoneNumberInput>
-```
-
-:::
+</ComponentDemo>
 
 ## Types
 
 **Results emitted by @update event**
 
 ```ts
-export type Result = {
+export type Results = {
   isValid: boolean
   isPossible?: boolean
   countryCode?: CountryCode
