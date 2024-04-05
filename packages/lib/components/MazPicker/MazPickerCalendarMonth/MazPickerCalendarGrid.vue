@@ -324,17 +324,18 @@
     &__container {
       @apply maz-relative maz-grid maz-grid-cols-7 maz-items-start maz-gap-1;
 
-      &.--is-range {
+      /* &.--is-range {
         @apply maz-gap-0 maz-gap-y-1;
-      }
+      } */
 
       & button {
-        @apply maz-h-8 maz-cursor-pointer;
-        @apply maz-p-1 !important;
+        @apply maz-h-8 maz-w-8 maz-cursor-pointer !maz-rounded-full;
+
+        /* @apply maz-p-1 !important; */
 
         &.--is-today {
           &:not(.--is-selected, .--is-between, .--is-between-hoverred) {
-            @apply maz-bg-color-light !important;
+            @apply !maz-bg-color-light dark:!maz-bg-color-lighter;
           }
         }
 
@@ -345,34 +346,34 @@
           }
         }
 
-        &.--is-first:not(.--is-last) {
+        /* &.--is-first:not(.--is-last) {
           @apply maz-rounded-r-none !important;
         }
 
         &.--is-last:not(.--is-first) {
           @apply maz-rounded-l-none !important;
-        }
+        } */
 
         &.--is-between-hoverred {
-          &:not(.--is-last) {
+          /* &:not(.--is-last) {
             @apply maz-rounded-none !important;
-          }
+          } */
 
           background-color: v-bind('betweenColorAlpha') !important;
         }
 
         &.--is-between {
-          @apply maz-rounded-none !important;
+          /* @apply maz-rounded-none !important; */
 
           background-color: v-bind('betweenColor') !important;
 
           &.--white,
           &.--transparent {
-            @apply maz-bg-gray-400 !important;
+            @apply !maz-bg-gray-400;
           }
 
           &.--black {
-            @apply maz-bg-gray-800 !important;
+            @apply !maz-bg-gray-800;
           }
         }
 
@@ -382,16 +383,6 @@
 
         &:disabled {
           @apply maz-cursor-not-allowed;
-        }
-      }
-    }
-  }
-
-  html.dark {
-    & .maz-picker-calendar-grid {
-      button.--is-today {
-        &:not(.--is-selected, .--is-between, .--is-between-hoverred) {
-          @apply maz-bg-color-lighter !important;
         }
       }
     }
