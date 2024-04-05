@@ -27,6 +27,7 @@
       block
       :disabled="disabled"
       @focus.prevent.stop="openList"
+      @blur.prevent.stop="closeList"
       @click.prevent.stop="openList"
       @change="emits('change', $event)"
       @keydown="mainInputKeyboardHandler"
@@ -477,6 +478,16 @@
         event.type === 'keydown')
     ) {
       return event.preventDefault()
+    }
+
+    const eventTargetId =
+      event &&
+      'relatedTarget' in event &&
+      event.relatedTarget instanceof HTMLElement &&
+      event.relatedTarget.getAttribute('id')
+
+    if (props.excludeSelectors?.includes(`#${eventTargetId}`)) {
+      return event?.preventDefault()
     }
 
     await nextTick()
