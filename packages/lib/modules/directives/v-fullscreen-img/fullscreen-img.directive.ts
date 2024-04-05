@@ -1,17 +1,19 @@
 import type { ObjectDirective } from 'vue'
-import { FullscreenImgHandler, type BindingData } from './fullscreen-img.handler'
+import { FullscreenImgHandler, type vFullscreenImgBindingValue } from './fullscreen-img.handler'
 
 let instance: FullscreenImgHandler
 
-export const vFullscreenImg: ObjectDirective = {
-  mounted(el: HTMLElement, binding: BindingData) {
+const directive = {
+  mounted(el: HTMLElement, binding) {
     instance = new FullscreenImgHandler()
     return instance.create(el, binding)
   },
-  updated(el: HTMLElement, binding: BindingData) {
+  updated(el: HTMLElement, binding) {
     return instance.update(el, binding)
   },
   unmounted(el: HTMLElement) {
     return instance.remove(el)
   },
-}
+} satisfies ObjectDirective<HTMLElement, vFullscreenImgBindingValue>
+
+export { directive as vFullscreenImg }

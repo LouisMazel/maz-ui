@@ -1,4 +1,4 @@
-import { type Directive, type DirectiveBinding, type Plugin, type App, nextTick } from 'vue'
+import { type ObjectDirective, type DirectiveBinding, type Plugin, nextTick } from 'vue'
 
 const UNIQUE_ID = '__maz-click-outside__'
 
@@ -7,7 +7,11 @@ const getEventType = () => {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-async function onMounted(el: HTMLElement, binding: DirectiveBinding) {
+type vClickOutsideBindingValue = (...args: any[]) => any
+
+type vClickOutsideDirectiveBinding = DirectiveBinding<vClickOutsideBindingValue>
+
+async function onMounted(el: HTMLElement, binding: vClickOutsideDirectiveBinding) {
   try {
     onUnmounted(el)
 
@@ -50,7 +54,7 @@ function onUnmounted(el: HTMLElement) {
   }
 }
 
-function onUpdated(el: HTMLElement, binding: DirectiveBinding) {
+function onUpdated(el: HTMLElement, binding: vClickOutsideDirectiveBinding) {
   try {
     if (binding.value === binding.oldValue) {
       return
@@ -61,22 +65,16 @@ function onUpdated(el: HTMLElement, binding: DirectiveBinding) {
   }
 }
 
-const directive: Directive = {
+const directive = {
   mounted: onMounted,
   updated: onUpdated,
   unmounted: onUnmounted,
-}
+} satisfies ObjectDirective<HTMLElement, vClickOutsideBindingValue>
 
-const mixin = {
-  directives: { ClickAway: directive },
-}
-
-export { directive, mixin }
-
-const plugin: Plugin = {
-  install: (app: App) => {
+const plugin = {
+  install: (app) => {
     app.directive('click-outside', directive)
   },
-}
+} satisfies Plugin
 
-export { plugin as vClickOutsideInstall, directive as vClickOutside, mixin as vClickOutsideMixin }
+export { directive as vClickOutside, plugin as vClickOutsideInstall, vClickOutsideBindingValue }

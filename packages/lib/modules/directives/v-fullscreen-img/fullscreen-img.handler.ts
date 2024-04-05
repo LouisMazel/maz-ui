@@ -20,11 +20,9 @@ interface vFullscreenImgBindingOptions extends vFullscreenImgOptions {
   alt?: string | null
 }
 
-export type vFullscreenImgBinding = string | vFullscreenImgBindingOptions | undefined
+export type vFullscreenImgBindingValue = string | vFullscreenImgBindingOptions | undefined
 
-export interface BindingData extends DirectiveBinding {
-  value: vFullscreenImgBinding
-}
+export type vFullscreenImgBinding = DirectiveBinding<vFullscreenImgBindingValue>
 
 const STATE_OPEN_CLASS = 'm-fullscreen-is-open'
 
@@ -45,7 +43,10 @@ export class FullscreenImgHandler {
   private mouseLeaveListener: () => void
   private renderPreviewListener: () => void
 
-  private buildOptions(el: HTMLElement, binding: BindingData): vFullscreenImgBindingOptions {
+  private buildOptions(
+    el: HTMLElement,
+    binding: vFullscreenImgBinding,
+  ): vFullscreenImgBindingOptions {
     const options =
       typeof binding.value === 'object' ? binding.value : { src: binding.value, alt: undefined }
 
@@ -80,7 +81,7 @@ export class FullscreenImgHandler {
     return this.options?.alt || el.getAttribute('alt') || el.getAttribute('data-alt')
   }
 
-  public create(el: HTMLElement, binding: BindingData) {
+  public create(el: HTMLElement, binding: vFullscreenImgBinding) {
     this.options = this.buildOptions(el, binding)
 
     if (this.options.disabled) return
@@ -112,7 +113,7 @@ export class FullscreenImgHandler {
     el.addEventListener('click', this.renderPreviewListener)
   }
 
-  public update(el: HTMLElement, binding: BindingData): void {
+  public update(el: HTMLElement, binding: vFullscreenImgBinding): void {
     this.options = this.buildOptions(el, binding)
   }
 

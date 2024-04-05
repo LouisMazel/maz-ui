@@ -13,11 +13,9 @@ interface vZoomImgBindingOptions extends vZoomImgOptions {
   alt?: string
 }
 
-export type vZoomImgBinding = string | vZoomImgBindingOptions
+export type vZoomImgBindingValue = string | vZoomImgBindingOptions
 
-export interface BindingData extends DirectiveBinding {
-  value: vZoomImgBinding
-}
+export type vZoomImgBinding = DirectiveBinding<vZoomImgBindingValue>
 
 enum StateClass {
   OPEN = 'maz-is-open',
@@ -40,7 +38,7 @@ export class VueZoomImg {
   private mouseLeaveListener: () => void
   private renderPreviewListener: () => void
 
-  constructor(binding: BindingData) {
+  constructor(binding: vZoomImgBinding) {
     if (!binding.value) {
       throw new Error(
         '[MazUI](zoom-img) Image path must be defined. Ex: `v-zoom-img="<PATH_TO_IMAGE>"`',
@@ -67,7 +65,7 @@ export class VueZoomImg {
     this.imgEventHandler(true)
   }
 
-  private buildOptions(binding: BindingData): vZoomImgBindingOptions {
+  private buildOptions(binding: vZoomImgBinding): vZoomImgBindingOptions {
     return {
       ...this.defaultOptions,
       ...(typeof binding.value === 'object' ? binding.value : { src: binding.value }),
@@ -108,7 +106,7 @@ export class VueZoomImg {
     el.addEventListener('click', this.renderPreviewListener)
   }
 
-  public update(binding: BindingData): void {
+  public update(binding: vZoomImgBinding): void {
     this.options = this.buildOptions(binding)
   }
 

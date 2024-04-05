@@ -1,13 +1,11 @@
-import type { App } from 'vue'
-import { vZoomImg } from './zoom-img'
+import type { Plugin } from 'vue'
+import { vZoomImg } from './zoom-img.directive'
 
 const plugin = {
-  install(app: App) {
+  install(app) {
     app.directive('zoom-img', vZoomImg)
   },
-}
+} satisfies Plugin
 
-export { plugin as vZoomImgInstall }
-
-export { vZoomImg } from './zoom-img'
-export type { vZoomImgBinding, vZoomImgOptions } from './zoom-img.handler'
+export { plugin as vZoomImgInstall, vZoomImg }
+export type { vZoomImgBindingValue } from './zoom-img.handler'

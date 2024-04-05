@@ -29,11 +29,11 @@ export interface ClassOptions {
 export type vLazyImgOptions = Partial<ClassOptions>
 
 interface vLazyImgBindingOptions extends vLazyImgOptions {
-  src?: string
+  src: string
   disabled?: boolean
 }
 
-export type vLazyImgBinding = string | vLazyImgBindingOptions
+export type vLazyImgBindingValue = string | vLazyImgBindingOptions
 
-export type LazyImgBinding = DirectiveBinding<vLazyImgBinding>
-export type LazyImgDirective = ObjectDirective<HTMLElement, vLazyImgBinding>
+export type vLazyImgBinding = DirectiveBinding<vLazyImgBindingValue>
+export type vLazyImgDirective = ObjectDirective<HTMLElement, vLazyImgBinding>

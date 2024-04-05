@@ -1,8 +1,9 @@
-import { LazyImg, type LazyImgDirective } from './lazy-img-handler'
+import { type ObjectDirective } from 'vue'
+import { LazyImg, type vLazyImgBindingValue } from './lazy-img.handler'
 
 let instance: LazyImg
 
-export const vLazyImg = {
+const directive = {
   created(el, binding) {
     const options = typeof binding.value === 'object' ? binding.value : {}
     instance = new LazyImg(options)
@@ -14,4 +15,6 @@ export const vLazyImg = {
   unmounted(el, binding): void {
     instance.remove(el, binding)
   },
-} satisfies LazyImgDirective
+} satisfies ObjectDirective<HTMLElement, vLazyImgBindingValue>
+
+export { directive as vLazyImg }
