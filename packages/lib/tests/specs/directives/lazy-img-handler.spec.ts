@@ -1,4 +1,4 @@
-import { LazyImg, DEFAULT_OPTIONS } from '@modules/directives/v-lazy-img/lazy-img-handler'
+import { LazyImg, DEFAULT_OPTIONS } from '@modules/directives/v-lazy-img/lazy-img.handler'
 
 describe('LazyImg', () => {
   let lazyImg: LazyImg
