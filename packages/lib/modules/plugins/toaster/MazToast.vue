@@ -33,7 +33,7 @@
         pastel
         :loading="actionLoading"
         size="sm"
-        @click.stop="clickOnAction(action.func, $event)"
+        @click.stop="action ? clickOnAction(action.func, $event) : undefined"
       >
         {{ action.text }}
       </MazBtn>

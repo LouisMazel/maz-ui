@@ -1,11 +1,11 @@
 import { readdir } from 'node:fs/promises'
-import path from 'node:path'
+import { resolve } from 'node:path'
 import { logger } from './utils/logger'
 import { fileURLToPath } from 'node:url'
 
 const _dirname = fileURLToPath(new URL('.', import.meta.url))
 
-const INPUT_ICONS_DIR = path.resolve(_dirname, './../icons')
+const INPUT_ICONS_DIR = resolve(_dirname, './../icons')
 
 export const getIconList = async () => {
   try {
