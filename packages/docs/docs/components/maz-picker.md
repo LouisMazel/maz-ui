@@ -361,8 +361,8 @@ To enable the range mode, you should provide an object like this `{ start: undef
   const dateTimeValue = ref('2022-02-03 16:30')
   const dateTime12Value = ref('2022-02-03 04:30 pm')
 
-  const startDate = dayjs().subtract(1, 'month').set('date', 5)
-  const endDate = dayjs().add(1, 'month').set('date', 25)
+  const startDate = dayjs().set('date', 5)
+  const endDate = dayjs().add(1, 'month').set('date', 22)
 
   const rangeValues = ref({ start: startDate.format('YYYY-MM-DD'), end: endDate.format('YYYY-MM-DD') })
 

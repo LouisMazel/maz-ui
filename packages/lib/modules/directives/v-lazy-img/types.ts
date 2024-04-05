@@ -29,7 +29,7 @@ export interface ClassOptions {
 export type vLazyImgOptions = Partial<ClassOptions>
 
 interface vLazyImgBindingOptions extends vLazyImgOptions {
-  src: string
+  src?: string
   disabled?: boolean
 }
 

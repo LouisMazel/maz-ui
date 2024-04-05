@@ -1,10 +1,4 @@
-import type {
-  DirectiveHook,
-  DirectiveBinding,
-  FunctionDirective,
-  ObjectDirective,
-  Plugin,
-} from 'vue'
+import type { DirectiveBinding, ObjectDirective, Plugin } from 'vue'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type vClosableBindingValueHandler = (...args: any[]) => any
@@ -21,8 +15,6 @@ const handleOutsideClick = (
   event: TouchEvent | MouseEvent,
   element: HTMLElement,
   binding: vClosableBinding,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  vnode: any,
 ) => {
   event.stopPropagation()
 
@@ -31,11 +23,12 @@ const handleOutsideClick = (
   const exclude = typeof binding.value === 'object' ? binding.value.exclude : undefined
 
   let clickedOnExcludedElement = false
+
   if (exclude && exclude.length > 0) {
-    for (const referenceName of exclude) {
-      if (!clickedOnExcludedElement) {
-        const excludedElement = vnode.context.$refs[referenceName]
-        clickedOnExcludedElement = excludedElement.contains(event.target)
+    for (const selector of exclude) {
+      if (!clickedOnExcludedElement && event.target instanceof HTMLElement) {
+        const elementId = document.querySelector(selector)?.getAttribute('id')
+        clickedOnExcludedElement = event.target.getAttribute('id') === elementId
       }
     }
   }
@@ -49,17 +42,15 @@ function getEventType() {
   return document.ontouchstart === null ? 'touchstart' : 'click'
 }
 
-const unbind = ((element: HTMLElement, binding: vClosableBinding, vnode) => {
+function unbind(element: HTMLElement, binding: vClosableBinding) {
   const eventType = getEventType()
 
   /* eslint-disable unicorn/no-invalid-remove-event-listener */
-  document.removeEventListener(eventType, (event) =>
-    handleOutsideClick(event, element, binding, vnode),
-  )
+  document.removeEventListener(eventType, (event) => handleOutsideClick(event, element, binding))
   /* eslint-enable unicorn/no-invalid-remove-event-listener */
-}) satisfies FunctionDirective
+}
 
-const bind = ((element: HTMLElement, binding: vClosableBinding, vnode) => {
+function bind(element: HTMLElement, binding: vClosableBinding) {
   if (
     typeof binding.value !== 'function' &&
     typeof binding.value === 'object' &&
@@ -70,10 +61,8 @@ const bind = ((element: HTMLElement, binding: vClosableBinding, vnode) => {
   }
 
   const eventType = getEventType()
-  document.addEventListener(eventType, (event) =>
-    handleOutsideClick(event, element, binding, vnode),
-  )
-}) satisfies DirectiveHook
+  document.addEventListener(eventType, (event) => handleOutsideClick(event, element, binding))
+}
 
 const directive = {
   mounted: bind,

@@ -246,13 +246,13 @@
 
   function getPositions(offset = props.offset ?? 0) {
     const originalWidth =
-      currentElement.value instanceof HTMLImageElement
+      (currentElement.value instanceof HTMLImageElement
         ? currentElement.value.naturalWidth
-        : currentElement.value.clientWidth
+        : currentElement.value.clientWidth) || 1
     const originalHeight =
-      currentElement.value instanceof HTMLImageElement
+      (currentElement.value instanceof HTMLImageElement
         ? currentElement.value.naturalHeight
-        : currentElement.value.clientHeight
+        : currentElement.value.clientHeight) || 1
 
     // Obtenez les dimensions de la fenêtre
     const windowWidth = window.innerWidth
@@ -269,11 +269,11 @@
     const centerY = (windowHeight - originalHeight * scale) / 2
 
     return {
+      centerX,
+      centerY,
       originalWidth,
       originalHeight,
       scale,
-      centerX,
-      centerY,
     }
   }
 

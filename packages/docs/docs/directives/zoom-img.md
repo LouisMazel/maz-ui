@@ -78,9 +78,9 @@ description: vZoomImg is a Vue 3 directive to enlarge an image like a modal on c
 </template>
 
 <script lang="ts" setup>
-  import { vZoomImg } from 'maz-ui'
+  import { vZoomImg, type vZoomImgBindingValue } from 'maz-ui'
 
-  const zoomImgBinding: vZoomImgBinding = {
+  const zoomImgBinding: vZoomImgBindingValue = {
     src: 'https://loremflickr.com/1200/800',
     alt: 'alt image', // will be set on the zoomed image
     blur: false,
@@ -103,4 +103,21 @@ const app = createApp(App)
 app.use(vZoomImgInstall)
 
 app.mount('#app')
+```
+
+## Types
+
+```ts
+export interface vZoomImgOptions {
+  disabled?: boolean
+  scale?: boolean
+  blur?: boolean
+}
+
+interface vZoomImgBindingOptions extends vZoomImgOptions {
+  src: string
+  alt?: string
+}
+
+export type vZoomImgBindingValue = string | vZoomImgBindingOptions
 ```

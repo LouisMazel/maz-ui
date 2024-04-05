@@ -1,6 +1,6 @@
 ---
-title: vClickOutside
-description: vClickOutside is a Vue 3 directive to trigger a function when the user clicks outside an element
+title: vClosable
+description: vClosable is a Vue 3 directive to trigger a function when the user clicks outside an element, you can exclude some elements
 ---
 
 # {{ $frontmatter.title }}
@@ -11,11 +11,15 @@ description: vClickOutside is a Vue 3 directive to trigger a function when the u
 
 <ComponentDemo>
   <div
+    id="container"
     style="padding: 50px; background-color: var(--maz-color-bg-lighter);"
     class="flex flex-center rounded"
   >
-    <MazCard v-click-outside="clikedOutside">
-      Click outside me
+    <MazCard v-closable="{
+      handler: clikedOutside,
+      exclude: ['#container']
+    }">
+      Click outside from the container
     </MazCard>
   </div>
 
@@ -32,11 +36,15 @@ description: vClickOutside is a Vue 3 directive to trigger a function when the u
   ```vue
   <template>
     <div
+      id="container"
       style="padding: 50px; background-color: var(--maz-color-bg-lighter);"
       class="flex flex-center rounded"
     >
-      <MazCard v-click-outside="clikedOutside">
-        Click outside me
+      <MazCard v-closable="{
+        handler: clikedOutside,
+        exclude: ['#container']
+      }">
+        Click outside from the container
       </MazCard>
     </div>
 
@@ -71,18 +79,27 @@ description: vClickOutside is a Vue 3 directive to trigger a function when the u
 
 ```typescript
 import { createApp } from 'vue'
-import { vClickOutsideInstall } from 'maz-ui'
+import { vClosableInstall } from 'maz-ui'
 
 const app = createApp(App)
 
-app.use(vClickOutsideInstall)
+app.use(vClosableInstall)
 
 app.mount('#app')
 ```
 
+## Types
+
+```ts
+type vClosableBindingValue = (...args: any[]) => any | {
+  handler: (...args: any[]) => any
+  exclude?: string[]
+}
+```
+
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import { vClickOutside } from 'maz-ui'
+  import { vClosable } from 'maz-ui'
 
   const hasClikedOutside = ref(false)
 
