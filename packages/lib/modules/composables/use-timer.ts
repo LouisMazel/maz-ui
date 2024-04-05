@@ -18,7 +18,7 @@ export interface TimerOptions {
   remainingTimeUpdate?: number
 }
 
-export const useTimer = ({ timeout = 1000, callback, remainingTimeUpdate = 200 }: TimerOptions) => {
+export function useTimer({ timeout = 1000, callback, remainingTimeUpdate = 200 }: TimerOptions) {
   const internalTimeout = ref<number>(timeout)
   const remainingTime = ref<number>(timeout)
 

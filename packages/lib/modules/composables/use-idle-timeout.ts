@@ -4,12 +4,12 @@ import {
   type IdleTimeoutOptions,
 } from '../helpers/idle-timeout'
 
-export const useIdleTimeout = ({
+export function useIdleTimeout({
   callback,
   options,
 }: {
   callback: IdleTimeoutCallback
   options?: IdleTimeoutOptions
-}) => {
+}) {
   return new IdleTimeout(callback, options)
 }
