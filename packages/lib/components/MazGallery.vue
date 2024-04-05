@@ -61,7 +61,7 @@
 <script lang="ts" setup>
   import { computed, type PropType, onBeforeMount, defineAsyncComponent } from 'vue'
   import { vFullscreenImg } from './../modules/directives/v-fullscreen-img/fullscreen-img.directive'
-  import { vLazyImg } from './../modules/directives/v-lazy-img/lazy-img'
+  import { vLazyImg } from './../modules/directives/v-lazy-img/lazy-img.directive'
   import type { MazGalleryImage } from './types'
   export type { MazGalleryImage } from './types'
 
@@ -152,10 +152,10 @@
   const imagesHidden = computed(() => {
     return imagesNormalized.value.slice(imagesCount.value, props.images.length)
   })
-  const shouldHaveRemainingLayer = (index: number) => {
-    return (
-      numberImagesRemaining.value && index + 1 === imagesShown.value.length && !props.noRemaining
-    )
+  const shouldHaveRemainingLayer = (index: number): boolean => {
+    if (props.noRemaining) return false
+
+    return (numberImagesRemaining.value && index + 1) === imagesShown.value.length
   }
 </script>
 
