@@ -38,21 +38,10 @@ description: MazGallery is a standalone component used to display images in a co
 </script>
 ```
 
-<script lang="ts" setup>
-  const images: MazGalleryImage[] = [
-    'https://loremflickr.com/640/400',
-    { src: 'https://loremflickr.com/640/600', thumbnail: 'https://loremflickr.com/100/100', alt: 'image description' },
-    { src: 'https://loremflickr.com/640/700', alt: 'image description' },
-    'https://loremflickr.com/640/800',
-    'https://loremflickr.com/640/1000',
-    'https://loremflickr.com/800/800'
-  ]
-</script>
-
 ## Set height by CSS
 
 <MazGallery
-  :images="images"
+  :images="images2"
   class="maz-h-48 mob-l:maz-h-60 tab-s:maz-h-80"
   no-height
 />
@@ -78,3 +67,25 @@ type MazGalleryImage =
 ```
 
 <!--@include: ./../.vitepress/generated-docs/maz-gallery.doc.md-->
+
+<script lang="ts" setup>
+  import { type MazGalleryImage } from 'maz-ui/components/MazGallery'
+
+  const images: MazGalleryImage[] = [
+    'https://loremflickr.com/640/400',
+    { src: 'https://loremflickr.com/640/600', thumbnail: 'https://loremflickr.com/100/100', alt: 'image description' },
+    { src: 'https://loremflickr.com/640/700', alt: 'image description' },
+    'https://loremflickr.com/640/800',
+    'https://loremflickr.com/640/1000',
+    'https://loremflickr.com/800/800'
+  ]
+
+  const images2: MazGalleryImage[] = [
+    'https://loremflickr.com/500/400',
+    { src: 'https://loremflickr.com/500/600', thumbnail: 'https://loremflickr.com/100/100', alt: 'image description' },
+    { src: 'https://loremflickr.com/500/700', alt: 'image description' },
+    'https://loremflickr.com/500/800',
+    'https://loremflickr.com/500/1000',
+    'https://loremflickr.com/500/800'
+  ]
+</script>

@@ -150,9 +150,10 @@ npm install libphonenumber-js
 ## Flags replacement with slots
 
 <ComponentDemo>
-  <MazPhoneNumberInput>
+  <MazPhoneNumberInput :exclude-selectors="['#input-flag-element']">
     <template #selector-flag="{ countryCode }">
       <span
+        id="input-flag-element"
         style="font-size: 0.8rem; background-color: var(--maz-color-secondary); color: var(--maz-color-secondary-contrast); border-radius: 100px; padding: 2px;"
       >
         {{ countryCode }}
@@ -172,9 +173,10 @@ npm install libphonenumber-js
   <NpmBadge package="country-flag-icons" />
 
   ```html
-  <MazPhoneNumberInput>
+  <MazPhoneNumberInput :exclude-selectors="['#input-flag-element']">
     <template #selector-flag="{ countryCode }">
       <span
+        id="input-flag-element"
         style="font-size: 0.8rem; background-color: var(--maz-color-secondary); color: var(--maz-color-secondary-contrast); border-radius: 100px; padding: 2px;"
       >
         {{ countryCode }}

@@ -69,10 +69,10 @@ description: vLazyImg is a Vue 3 directive to lazy load images with many options
 </template>
 
 <script lang="ts" setup>
-  import { vLazyImg, vLazyImgBinding } from 'maz-ui'
+  import { vLazyImg, vLazyImgBindingValue } from 'maz-ui'
   import { ref } from 'vue'
 
-  const lazyBinding: vLazyImgBinding = {
+  const lazyBinding: vLazyImgBindingValue = {
     src: 'https://loremflickr.com/1500/1000',
     baseClass: 'custom-class',
     loadingClass: 'custom-class-loading',
@@ -129,11 +129,50 @@ app.use(vLazyImgInstall, vLazyImgOptions)
 app.mount('#app')
 ```
 
+## Types
+
+```ts
+export interface ClassOptions {
+  baseClass: string
+  loadingClass: string
+  loadedClass: string
+  errorClass: string
+  noPhotoClass: string
+  noPhoto: boolean
+  noUseErrorPhoto: boolean
+  observerOnce: boolean
+  loadOnce: boolean
+  observerOptions: {
+    root?: HTMLElement | null
+    threshold: number
+    rootMargin?: string
+  }
+  /**
+   * @deprecated use `fallbackSrc` instead
+   */
+  errorPhoto?: string
+  fallbackSrc?: string
+  onLoading?: (el: Element) => unknown
+  onLoaded?: (el: Element) => unknown
+  onError?: (el: Element) => unknown
+  onIntersecting?: (el: Element) => unknown
+}
+
+export type vLazyImgOptions = Partial<ClassOptions>
+
+interface vLazyImgBindingOptions extends vLazyImgOptions {
+  src?: string
+  disabled?: boolean
+}
+
+export type vLazyImgBindingValue = string | vLazyImgBindingOptions
+```
+
 <script lang="ts" setup>
-  import { vLazyImg, vLazyImgBinding } from 'maz-ui'
+  import { vLazyImg, vLazyImgBindingValue } from 'maz-ui'
   import { ref } from 'vue'
 
-  const lazyBinding: vLazyImgBinding = {
+  const lazyBinding: vLazyImgBindingValue = {
     src: 'https://loremflickr.com/1500/1000',
     baseClass: 'custom-class',
     loadingClass: 'custom-class-loading',

@@ -101,3 +101,14 @@ export default defineNuxtConfig({
   }
 })
 ```
+
+## Types
+
+```ts
+interface vFullscreenImgBindingOptions extends vFullscreenImgOptions {
+  src: string
+  alt?: string | null
+}
+
+export type vFullscreenImgBindingValue = string | vFullscreenImgBindingOptions | undefined
+```
