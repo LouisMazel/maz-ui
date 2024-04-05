@@ -2,6 +2,7 @@
   <div class="m-country-selector" :class="[props.class, { '--no-flags': noFlags }]" :style="style">
     <button
       v-if="modelValue && !noFlags"
+      :id="`country-selector-flag-button-${id}`"
       class="m-country-selector__country-flag maz-text-xl"
       tabindex="-1"
       type="button"
@@ -44,6 +45,7 @@
       :style="{
         width,
       }"
+      :exclude-selectors="[`#country-selector-flag-button-${id}`, ...(excludeSelectors ?? [])]"
       @update:model-value="$emit('update:model-value', $event as CountryCode)"
     >
       <template #no-results>
@@ -121,6 +123,7 @@
       error?: boolean
       countrySelectorDisplayName?: boolean
       width: string
+      excludeSelectors?: string[]
     }>(),
     {
       class: undefined,
@@ -133,6 +136,7 @@
       customCountriesList: undefined,
       countryLocale: undefined,
       width: '9rem',
+      excludeSelectors: undefined,
     },
   )
 

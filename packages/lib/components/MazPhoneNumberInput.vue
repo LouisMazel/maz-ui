@@ -13,6 +13,7 @@
       :list-position
       :no-flags
       :no-search
+      :exclude-selectors
       :error="error || (!noValidationError ? !!phoneNumber && !selectedCountry : false)"
       :success="success || (!noValidationSuccess ? results?.isValid : false)"
       :locales
@@ -211,6 +212,8 @@
     countrySelectorWidth?: string
     /** The input will be displayed in full width */
     block?: boolean
+    /** Exclude selectors to close country selector list - usefull when you using custom flag */
+    excludeSelectors?: string[]
   }
 
   const props = withDefaults(defineProps<Props>(), {
@@ -236,6 +239,7 @@
     countrySelectorWidth: '9rem',
     noFormattingAsYouType: false,
     autoFormat: true,
+    excludeSelectors: undefined,
   })
 
   const {
