@@ -1,6 +1,10 @@
 <template>
   <div
     ref="mazSelectElement"
+    v-closable="{
+      exclude: excludeSelectors?.length ? excludeSelectors : [],
+      handler: closeList,
+    }"
     class="m-select"
     :class="[
       { '--is-open': hasListOpened, '--disabled': disabled, '--block': block },
@@ -8,7 +12,6 @@
       `--${size}`,
     ]"
     :style="style"
-    @blur.capture="closeList"
   >
     <MazInput
       :id="instanceId"
@@ -146,6 +149,7 @@
   import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
   import { debounceCallback } from '../modules/helpers/debounce-callback'
   import { useStringMatching } from '../modules/composables/use-string-matching'
+  import { vClosable } from '../modules/directives'
 
   export type NormalizedOption = Record<string, ModelValueSimple>
   export type MazSelectOptionWithOptGroup = {
@@ -222,6 +226,8 @@
     disabled?: boolean
     /** The input will be displayed in full width */
     block?: boolean
+    /** The exclude selectors for the v-closable directive - will exclude the elements from the directive */
+    excludeSelectors?: string[]
   }
 
   const props = withDefaults(defineProps<Props>(), {
@@ -240,6 +246,7 @@
     color: 'primary',
     searchPlaceholder: 'Search in options',
     options: undefined,
+    excludeSelectors: undefined,
   })
 
   const emits = defineEmits<{
