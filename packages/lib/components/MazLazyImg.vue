@@ -36,7 +36,7 @@
 
 <script lang="ts" setup>
   import { computed, defineAsyncComponent, type HTMLAttributes } from 'vue'
-  import { vLazyImg } from './../modules/directives/v-lazy-img/lazy-img'
+  import { vLazyImg } from './../modules/directives/v-lazy-img/lazy-img.directive'
   import type { vLazyImgOptions } from './../modules/directives/v-lazy-img/types'
 
   import type { Image } from './types'
