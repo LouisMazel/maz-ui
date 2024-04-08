@@ -1,5 +1,45 @@
 # Change Log
 
+## v3.37.4...v3.37.5
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.37.4...v3.37.5)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazSelect - check exclude selectors to avoid glitch on click ([b5994392](https://github.com/LouisMazel/maz-ui/commit/b5994392))
+- **maz-ui:** VLazyImg - make options optional ([3ccc3b50](https://github.com/LouisMazel/maz-ui/commit/3ccc3b50))
+
+### 💅 Refactors
+
+- **maz-ui:** Directives - improve support of typescript ([c5399d81](https://github.com/LouisMazel/maz-ui/commit/c5399d81))
+- **maz-ui:** Use new path to lazy img directive ([af081ab6](https://github.com/LouisMazel/maz-ui/commit/af081ab6))
+- **maz-ui:** Composables - function syntax instead of arrow function ([39c4ac25](https://github.com/LouisMazel/maz-ui/commit/39c4ac25))
+- **maz-ui:** MazSelect - use closable directive to handle close option list ([eedcdf8f](https://github.com/LouisMazel/maz-ui/commit/eedcdf8f))
+- **maz-ui:** MazPhoneNumberInput - use closable directive to handle the close of countries list ([1a49445b](https://github.com/LouisMazel/maz-ui/commit/1a49445b))
+- **maz-ui:** MazPhoneNumberInput - improve responsive and add orientation prop option to choose the input orientation ([2381b09e](https://github.com/LouisMazel/maz-ui/commit/2381b09e))
+
+### 📖 Documentation
+
+- **docs:** Directives - add documentation for closable and improve others by adding types ([aec078ac](https://github.com/LouisMazel/maz-ui/commit/aec078ac))
+
+### 🏡 Chore
+
+- Eslint config for path import style ([34b1aafa](https://github.com/LouisMazel/maz-ui/commit/34b1aafa))
+- **deps:** Upgrade dependencies ([d8692dd4](https://github.com/LouisMazel/maz-ui/commit/d8692dd4))
+- **deps:** Fix version of eslint ([a501a8cf](https://github.com/LouisMazel/maz-ui/commit/a501a8cf))
+
+### ✅ Tests
+
+- **maz-ui:** Add test for closable directive ([b3ec9101](https://github.com/LouisMazel/maz-ui/commit/b3ec9101))
+
+### 🎨 Styles
+
+- **maz-ui:** MazPicker - rounded style for date in calendar ([cec09120](https://github.com/LouisMazel/maz-ui/commit/cec09120))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.37.3...v3.37.4
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.37.3...v3.37.4)
