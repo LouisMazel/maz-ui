@@ -39,7 +39,7 @@ npm install libphonenumber-js
 - Phone number example for each country in placeholder/label (can be disabled with `no-example` prop)
 - Auto-focus phone number input after selecting a country
 - You can disable the flags: `no-flags` prop
-- Translations: [Component translations](#translations-labels-placeholders) & [countries translations](#translations-country-list)
+- Translations: [Component translations](#labels--placeholders) & [countries translations](#country-list)
 
 :::
 
