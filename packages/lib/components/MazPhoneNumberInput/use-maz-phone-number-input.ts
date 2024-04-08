@@ -1,146 +1,5 @@
 import { getCountryCallingCode, type CountryCode, getCountries } from 'libphonenumber-js'
-import { type ComponentPublicInstance, ref } from 'vue'
-import { type Country, type IpWhoResponse, type Results } from './types'
-import { useLibphonenumber } from './use-libphonenumber'
-
-const { isCountryAvailable, getPhoneNumberResults, getAsYouTypeFormat } = useLibphonenumber()
-
-const phoneNumber = ref<string>('')
-const selectedCountry = ref<CountryCode>()
-
-const selectionRange = ref<{
-  start?: number | null
-  end?: number | null
-  cursorAtEnd?: boolean
-}>({
-  start: 0,
-  end: 0,
-  cursorAtEnd: true,
-})
-
-const results = ref<Results>({
-  isValid: false,
-  countryCode: undefined,
-})
-
-async function fetchCountryCode() {
-  try {
-    const reponse = await fetch('https://ipwho.is')
-    const { country_code } = (await reponse.json()) as IpWhoResponse
-
-    return country_code
-  } catch (error) {
-    throw new Error(`[MazPhoneNumberInput](fetchCountryCode) ${error}`)
-  }
-}
-
-function sanitizePhoneNumber(input?: string) {
-  if (!input) {
-    return ''
-  }
-  const regex = new RegExp(/[^\d ()+-]/g) // Keep only digits, (), - and + characters
-
-  return input.replaceAll(regex, '').trim() // Keep only digits, (), - and + characters
-}
-
-function saveCursorPosition(PhoneInputRef: ComponentPublicInstance, currentPhoneNumber?: string) {
-  const input = PhoneInputRef?.$el.querySelector('input') as HTMLInputElement | undefined
-  selectionRange.value.start = input?.selectionStart
-  selectionRange.value.end = input?.selectionEnd
-  selectionRange.value.cursorAtEnd =
-    currentPhoneNumber &&
-    typeof selectionRange.value.start === 'number' &&
-    currentPhoneNumber.length > 0
-      ? selectionRange.value.start >= currentPhoneNumber.length
-      : true
-}
-
-function setSelectedCountry(countryCode?: string) {
-  if (!countryCode) {
-    return
-  }
-
-  if (!isCountryAvailable(countryCode)) {
-    selectedCountry.value = undefined
-    return
-  }
-
-  selectedCountry.value = countryCode as CountryCode
-}
-
-function onPhoneNumberChanged({
-  newPhoneNumber,
-  autoFormat,
-  noFormattingAsYouType,
-  updateResults = true,
-}: {
-  newPhoneNumber: string
-  autoFormat: boolean
-  noFormattingAsYouType: boolean
-  updateResults?: boolean
-}) {
-  const sanitizedPhoneNumber = sanitizePhoneNumber(newPhoneNumber)
-
-  if (updateResults) {
-    results.value = getPhoneNumberResults({
-      phoneNumber: sanitizedPhoneNumber,
-      countryCode: selectedCountry.value,
-    })
-  }
-
-  if (results.value.isValid && results.value.formatNational && autoFormat) {
-    phoneNumber.value = results.value.formatNational
-  } else if (selectionRange.value.cursorAtEnd && !noFormattingAsYouType) {
-    const asYouTypeFormatted = getAsYouTypeFormat(selectedCountry.value, sanitizedPhoneNumber)
-    phoneNumber.value = asYouTypeFormatted
-  } else {
-    phoneNumber.value = sanitizedPhoneNumber
-  }
-
-  if (results.value.countryCode && results.value.countryCode !== selectedCountry.value) {
-    onCountryChanged({
-      countryCode: results.value.countryCode,
-      autoFormat,
-      noFormattingAsYouType,
-      updateResults: false,
-    })
-  }
-}
-
-function onCountryChanged({
-  countryCode,
-  autoFormat,
-  noFormattingAsYouType,
-  updateResults = true,
-}: {
-  countryCode?: CountryCode
-  autoFormat: boolean
-  noFormattingAsYouType: boolean
-  updateResults?: boolean
-}) {
-  if (!countryCode) {
-    selectedCountry.value = undefined
-    return
-  }
-
-  if (countryCode !== selectedCountry.value) {
-    setSelectedCountry(countryCode)
-  }
-
-  if (updateResults) {
-    results.value = getPhoneNumberResults({
-      phoneNumber: phoneNumber.value,
-      countryCode,
-    })
-  }
-
-  onPhoneNumberChanged({
-    newPhoneNumber: phoneNumber.value,
-    autoFormat,
-    noFormattingAsYouType,
-    updateResults: false,
-  })
-}
+import { type Country, type IpWhoResponse } from './types'
 
 function getBrowserLocale() {
   if (typeof window === 'undefined') {
@@ -221,18 +80,30 @@ function getCountriesList(
   return countriesList
 }
 
+async function fetchCountryCode() {
+  try {
+    const reponse = await fetch('https://ipwho.is')
+    const { country_code } = (await reponse.json()) as IpWhoResponse
+
+    return country_code
+  } catch (error) {
+    throw new Error(`[MazPhoneNumberInput](fetchCountryCode) ${error}`)
+  }
+}
+
+function sanitizePhoneNumber(input?: string) {
+  if (!input) {
+    return ''
+  }
+  const regex = new RegExp(/[^\d ()+-]/g) // Keep only digits, (), - and + characters
+
+  return input.replaceAll(regex, '').trim() // Keep only digits, (), - and + characters
+}
+
 export function useMazPhoneNumberInput() {
   return {
-    setSelectedCountry,
-    results,
     sanitizePhoneNumber,
     fetchCountryCode,
-    selectedCountry,
-    phoneNumber,
-    selectionRange,
-    saveCursorPosition,
-    onPhoneNumberChanged,
-    onCountryChanged,
     getBrowserLocale,
     getCountriesList,
   }

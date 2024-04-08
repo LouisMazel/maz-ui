@@ -1,9 +1,6 @@
 import { shallowMount, type VueWrapper } from '@vue/test-utils'
 import MazPhoneNumberInput from '@components/MazPhoneNumberInput.vue'
 import type { ComponentPublicInstance } from 'vue'
-import { useMazPhoneNumberInput } from '@components/MazPhoneNumberInput/use-maz-phone-number-input'
-
-const { selectedCountry } = useMazPhoneNumberInput()
 
 describe('components/MazPhoneNumberInput.vue', () => {
   expect(MazPhoneNumberInput).toBeTruthy()
@@ -32,7 +29,7 @@ describe('components/MazPhoneNumberInput.vue', () => {
 
   test('Should have the good values with FR number', async () => {
     expect(wrapper.vm.modelValue).toBe('+33658584729')
-    expect(selectedCountry.value).toBe('FR')
+    expect(wrapper.vm.selectedCountry).toBe('FR')
   })
 
   test('Should have the good values with BE number', async () => {
@@ -44,6 +41,6 @@ describe('components/MazPhoneNumberInput.vue', () => {
     await wrapper.vm.$nextTick()
 
     expect(wrapper.vm.modelValue).toBe('+326453')
-    expect(selectedCountry.value).toBe('BE')
+    expect(wrapper.vm.selectedCountry).toBe('BE')
   })
 })

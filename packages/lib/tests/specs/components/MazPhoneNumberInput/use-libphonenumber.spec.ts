@@ -1,9 +1,9 @@
-import { AsYouType, getExampleNumber, isSupportedCountry } from 'libphonenumber-js'
+import { ref } from 'vue'
+import { AsYouType, getExampleNumber, isSupportedCountry, type Examples } from 'libphonenumber-js'
 
 import { useLibphonenumber } from '@components/MazPhoneNumberInput/use-libphonenumber'
 
-const { isCountryAvailable, getPhoneNumberExample, getAsYouTypeFormat, examples } =
-  useLibphonenumber()
+const { isCountryAvailable, getPhoneNumberExample, getAsYouTypeFormat } = useLibphonenumber()
 
 vi.mock('libphonenumber-js', () => ({
   parsePhoneNumberFromString: vi.fn(),
@@ -19,11 +19,11 @@ describe('Unit Tests for use-libphonenumber.ts', () => {
     it('should return a phone number example for a given country code', () => {
       // Mock de la fonction getExampleNumber
       // @ts-expect-error
-      examples.value = { US: 'lpl' }
+      const examples = ref<Examples>({ US: 'lpl' })
       // @ts-expect-error
       getExampleNumber.mockReturnValue({ formatNational: () => '+1 123-456-7890' })
 
-      const result = getPhoneNumberExample('US')
+      const result = getPhoneNumberExample(examples.value, 'US')
       expect(result).toBe('+1 123-456-7890')
     })
 
@@ -80,7 +80,7 @@ describe('Unit Tests for use-libphonenumber.ts', () => {
         expect.objectContaining({
           getAsYouTypeFormat: expect.any(Function),
           getPhoneNumberResults: expect.any(Function),
-          loadPhoneNumberExamplesFile: expect.any(Function),
+          getPhoneNumberExamplesFile: expect.any(Function),
           getPhoneNumberExample: expect.any(Function),
           isCountryAvailable: expect.any(Function),
           getCountries: expect.any(Function),

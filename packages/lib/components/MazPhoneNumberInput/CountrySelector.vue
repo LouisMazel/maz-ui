@@ -92,11 +92,19 @@
 
 <script lang="ts" setup>
   import { ref, computed, type HTMLAttributes } from 'vue'
-  import type { Color, Size, Position, CountryCode, Translations } from '../MazPhoneNumberInput.vue'
+  import type {
+    Color,
+    Size,
+    Position,
+    CountryCode,
+    Translations,
+    InjectedData,
+  } from '../MazPhoneNumberInput.vue'
   import MazSelect from '../MazSelect.vue'
   import { countryCodeToUnicodeFlag } from '../../modules/helpers/country-code-to-unicode-flag'
   import { truthyFilter } from '../../modules/helpers/truthy-filter'
   import { useMazPhoneNumberInput } from './use-maz-phone-number-input'
+  import { injectStrict } from '../../modules/helpers/inject-strict'
 
   const props = withDefaults(
     defineProps<{
@@ -144,9 +152,11 @@
     (event: 'update:model-value', countryCode?: CountryCode): void
   }>()
 
+  const { phoneNumber } = injectStrict<InjectedData>('data')
+
   const CountrySelectorRef = ref<typeof MazSelect>()
 
-  const { phoneNumber, getCountriesList } = useMazPhoneNumberInput()
+  const { getCountriesList } = useMazPhoneNumberInput()
 
   const countries = computed(() => getCountriesList(props.countryLocale, props.customCountriesList))
 
