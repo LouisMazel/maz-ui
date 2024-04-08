@@ -1,5 +1,17 @@
 # Change Log
 
+## v3.37.5...v3.37.6
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.37.5...v3.37.6)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazPhoneNumberInput - use provide/inject for data to not sharing state between instances - issue #1024 ([#1024](https://github.com/LouisMazel/maz-ui/issues/1024))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.37.4...v3.37.5
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.37.4...v3.37.5)
