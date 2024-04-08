@@ -13,11 +13,13 @@
     type="tel"
     inputmode="tel"
     class="m-phone-input"
-    :class="{
-      '--border-radius': hasRadius,
-      '--error': error || !results.isValid,
-      '--focused': inputFocused,
-    }"
+    :class="[
+      {
+        '--border-radius': hasRadius,
+        '--error': error || !results.isValid,
+        '--focused': inputFocused,
+      },
+    ]"
     @focus="inputFocused = true"
     @blur="inputFocused = false"
     @update:model-value="($event) => onValueChange($event as string)"
@@ -111,15 +113,42 @@
   .m-phone-input {
     @apply maz-min-w-52 maz-flex-1;
 
-    &.--border-radius:deep(.m-input-wrapper) {
-      @apply maz-rounded-l-none;
-
-      margin-left: -2px;
-    }
-
     &.--error,
     &.--focused {
       @apply maz-z-1;
+    }
+  }
+
+  /** RESPONSIVE */
+  .m-phone-number-input {
+    &.--responsive .m-phone-input {
+      @apply -maz-mt-0.5 maz-flex-none mob-m:-maz-ml-0.5 mob-m:maz-mt-0 mob-m:maz-flex-auto;
+
+      &.--border-radius {
+        &:deep(.m-input-wrapper) {
+          @apply maz-rounded-t-none mob-m:maz-rounded-l-none mob-m:maz-rounded-tr;
+        }
+      }
+    }
+
+    &.--row .m-phone-input {
+      @apply -maz-ml-0.5;
+
+      &.--border-radius {
+        &:deep(.m-input-wrapper) {
+          @apply maz-rounded-l-none;
+        }
+      }
+    }
+
+    &.--col .m-phone-input {
+      @apply -maz-mt-0.5 maz-ml-0 maz-flex-none;
+
+      &.--border-radius {
+        &:deep(.m-input-wrapper) {
+          @apply maz-rounded-t-none maz-rounded-bl;
+        }
+      }
     }
   }
 </style>

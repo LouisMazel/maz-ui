@@ -150,9 +150,9 @@
 
   const countries = computed(() => getCountriesList(props.countryLocale, props.customCountriesList))
 
-  const countriesList = computed(() => {
-    return countries.value?.filter((item) => !props.ignoredCountries?.includes(item.iso2))
-  })
+  const countriesList = computed(() =>
+    countries.value?.filter((item) => !props.ignoredCountries?.includes(item.iso2)),
+  )
 
   const countriesFiltered = computed(() => {
     const countries = props.onlyCountries || props.preferredCountries
@@ -161,30 +161,30 @@
     )
   })
 
-  const otherCountries = computed(() => {
-    return countriesList.value?.filter((item) => !props.preferredCountries?.includes(item.iso2))
-  })
+  const otherCountries = computed(() =>
+    countriesList.value?.filter((item) => !props.preferredCountries?.includes(item.iso2)),
+  )
 
-  const countriesSorted = computed(() => {
-    return props.preferredCountries
+  const countriesSorted = computed(() =>
+    props.preferredCountries
       ? [...(countriesFiltered.value ?? []), ...(otherCountries.value ?? [])]
       : props.onlyCountries
         ? countriesFiltered.value
-        : countriesList.value
-  })
+        : countriesList.value,
+  )
 
-  const countryOptions = computed(() => {
-    return countriesSorted.value
-      ?.map((country) => {
-        return country
+  const countryOptions = computed(() =>
+    countriesSorted.value
+      ?.map((country) =>
+        country
           ? {
               ...country,
               dialCode: `+${country.dialCode}`,
             }
-          : undefined
-      })
-      .filter(truthyFilter)
-  })
+          : undefined,
+      )
+      .filter(truthyFilter),
+  )
 
   async function focusCountrySelector() {
     CountrySelectorRef.value?.$el.querySelector('input')?.focus()
@@ -193,6 +193,8 @@
 
 <style lang="postcss" scoped>
   .m-country-selector {
+    @apply maz-relative;
+
     &__country-flag {
       position: absolute;
       left: 13px;
@@ -209,8 +211,6 @@
     }
 
     &__select {
-      width: 9rem;
-
       &:deep(.m-input-label) {
         @apply !maz-p-0;
       }
@@ -218,15 +218,46 @@
       &__item {
         @apply maz-w-full maz-text-sm;
       }
-
-      &:deep(.m-select-input .m-input-wrapper) {
-        @apply maz-rounded-r-none !important;
-      }
     }
 
     &:not(.--no-flags) {
       .m-country-selector__select:deep(.m-select-input input) {
-        @apply maz-pl-10 !important;
+        @apply !maz-pl-10;
+      }
+    }
+  }
+
+  /* RESPONSIVE */
+  .m-phone-number-input {
+    &.--responsive .m-country-selector {
+      @apply maz-min-w-full mob-m:maz-min-w-[inherit];
+
+      &__select {
+        @apply maz-min-w-full mob-m:maz-min-w-[inherit];
+
+        :deep(.m-select-input .m-input-wrapper) {
+          @apply maz-rounded-b-none mob-m:maz-rounded-b mob-m:maz-rounded-r-none;
+        }
+      }
+    }
+
+    &.--row .m-country-selector {
+      &__select {
+        :deep(.m-select-input .m-input-wrapper) {
+          @apply maz-rounded-r-none;
+        }
+      }
+    }
+
+    &.--col .m-country-selector {
+      @apply maz-min-w-full;
+
+      &__select {
+        @apply maz-min-w-full;
+
+        :deep(.m-select-input .m-input-wrapper) {
+          @apply maz-rounded-b-none maz-rounded-tr;
+        }
       }
     }
   }

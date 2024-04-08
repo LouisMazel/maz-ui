@@ -29,8 +29,11 @@
       </button>
 
       <MazTransitionExpand>
-        <div v-show="showCode || expanded" class="maz-rounded maz-overflow-hidden maz-text-sm maz-px-4">
-          <slot name="code"></slot>
+        <div v-show="showCode || expanded">
+          <div class="maz-p-4 maz-flex maz-flex-col maz-gap-4 maz-text-sm">
+            <slot name="code"></slot>
+
+          </div>
         </div>
       </MazTransitionExpand>
     </template>
@@ -61,6 +64,18 @@
 
     :deep(a) {
       @apply maz-text-primary maz-underline;
+    }
+
+    :deep(.custom-block) {
+      @apply maz-my-0;
+    }
+
+    :deep(div[class*="language"]) {
+      @apply maz-rounded-none mob-l:maz-rounded !-maz-mx-4 mob-l:!maz-mx-0 maz-my-0;
+
+      code {
+        @apply maz-px-4;
+      }
     }
   }
 </style>
