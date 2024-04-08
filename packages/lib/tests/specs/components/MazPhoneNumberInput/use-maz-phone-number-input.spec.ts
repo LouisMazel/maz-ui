@@ -95,11 +95,7 @@ describe('Unit Tests for use-libphonenumber.ts', () => {
           fetchCountryCode: expect.any(Function),
           getBrowserLocale: expect.any(Function),
           getCountriesList: expect.any(Function),
-          onCountryChanged: expect.any(Function),
-          onPhoneNumberChanged: expect.any(Function),
           sanitizePhoneNumber: expect.any(Function),
-          saveCursorPosition: expect.any(Function),
-          setSelectedCountry: expect.any(Function),
         }),
       )
     })

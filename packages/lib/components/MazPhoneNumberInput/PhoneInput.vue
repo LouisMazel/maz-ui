@@ -30,9 +30,10 @@
   import { ref, computed, onMounted, type ComponentPublicInstance, nextTick } from 'vue'
   import MazInput from '../MazInput.vue'
 
-  import type { Color, Size, Translations } from '../MazPhoneNumberInput.vue'
+  import type { Color, InjectedData, Size, Translations } from '../MazPhoneNumberInput.vue'
   import { useLibphonenumber } from './use-libphonenumber'
-  import { useMazPhoneNumberInput } from './use-maz-phone-number-input'
+  import { type Examples } from 'libphonenumber-js'
+  import { injectStrict } from '../../modules/helpers/inject-strict'
 
   const props = withDefaults(
     defineProps<{
@@ -57,13 +58,16 @@
   )
 
   const emits = defineEmits<{
-    (event: 'update:model-value', phoneNumber?: string): void
+    'update:model-value': [phoneNumber?: string]
   }>()
 
   const modelValue = defineModel<string>()
 
-  const { loadPhoneNumberExamplesFile, getPhoneNumberExample, examples } = useLibphonenumber()
-  const { selectedCountry, results, saveCursorPosition } = useMazPhoneNumberInput()
+  const { getPhoneNumberExamplesFile, getPhoneNumberExample } = useLibphonenumber()
+
+  const { selectionRange, results, selectedCountry } = injectStrict<InjectedData>('data')
+
+  const examples = ref<Examples>()
 
   const inputFocused = ref(false)
 
@@ -77,7 +81,7 @@
     if (props.noExample || !examples.value) {
       return defaultPlaceholder
     } else {
-      const example = getPhoneNumberExample(selectedCountry.value)
+      const example = getPhoneNumberExample(examples.value, selectedCountry.value)
       return results.value?.isValid || !example
         ? defaultPlaceholder
         : `${props.locales.phoneInput.example} ${example}`
@@ -88,7 +92,9 @@
 
   async function loadExamples() {
     try {
-      return loadPhoneNumberExamplesFile()
+      if (examples.value) return
+
+      examples.value = await getPhoneNumberExamplesFile()
     } catch (error) {
       console.error('[maz-ui](MazPhoneNumberInput) while loading phone number examples file', error)
     }
@@ -100,6 +106,18 @@
     }
     await nextTick()
     emits('update:model-value', value)
+  }
+
+  function saveCursorPosition(PhoneInputRef: ComponentPublicInstance, currentPhoneNumber?: string) {
+    const input = PhoneInputRef.$el.querySelector('input') as HTMLInputElement | undefined
+    selectionRange.value.start = input?.selectionStart
+    selectionRange.value.end = input?.selectionEnd
+    selectionRange.value.cursorAtEnd =
+      currentPhoneNumber &&
+      typeof selectionRange.value.start === 'number' &&
+      currentPhoneNumber.length > 0
+        ? selectionRange.value.start >= currentPhoneNumber.length
+        : true
   }
 
   onMounted(() => {

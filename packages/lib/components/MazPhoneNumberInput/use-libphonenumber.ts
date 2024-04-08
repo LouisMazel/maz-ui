@@ -9,37 +9,6 @@ import {
   type Examples,
 } from 'libphonenumber-js'
 import type { Results } from './types'
-import { ref } from 'vue'
-
-const examples = ref<Examples>()
-
-async function loadPhoneNumberExamplesFile() {
-  if (examples.value) {
-    return examples.value
-  }
-
-  const { default: data } = await import('libphonenumber-js/examples.mobile.json')
-
-  examples.value = data
-
-  return examples.value
-}
-
-function isSameCountryCallingCode(countryCode: CountryCode, countryCode2: CountryCode) {
-  return getCountryCallingCode(countryCode) === getCountryCallingCode(countryCode2)
-}
-
-function getPhoneNumberExample(countryCode?: CountryCode) {
-  try {
-    if (!examples.value) {
-      return
-    }
-
-    return countryCode ? getExampleNumber(countryCode, examples.value)?.formatNational() : undefined
-  } catch (error) {
-    console.error(`[maz-ui](MazPhoneNumberInput) ${error}`)
-  }
-}
 
 function isCountryAvailable(locale: string) {
   try {
@@ -106,12 +75,33 @@ function getAsYouTypeFormat(countryCode?: CountryCode, phoneNumber?: string): st
   }
 }
 
+async function getPhoneNumberExamplesFile() {
+  const { default: data } = await import('libphonenumber-js/examples.mobile.json')
+
+  return data
+}
+
+function getPhoneNumberExample(examples: Examples, countryCode?: CountryCode) {
+  try {
+    if (!examples) {
+      return
+    }
+
+    return countryCode ? getExampleNumber(countryCode, examples)?.formatNational() : undefined
+  } catch (error) {
+    console.error(`[maz-ui](MazPhoneNumberInput) ${error}`)
+  }
+}
+
 export function useLibphonenumber() {
+  function isSameCountryCallingCode(countryCode: CountryCode, countryCode2: CountryCode) {
+    return getCountryCallingCode(countryCode) === getCountryCallingCode(countryCode2)
+  }
+
   return {
-    examples,
     getAsYouTypeFormat,
     getPhoneNumberResults,
-    loadPhoneNumberExamplesFile,
+    getPhoneNumberExamplesFile,
     getPhoneNumberExample,
     isSameCountryCallingCode,
     isCountryAvailable,

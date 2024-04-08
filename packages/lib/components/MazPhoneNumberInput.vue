@@ -106,9 +106,12 @@
     type ComponentPublicInstance,
     nextTick,
     type HTMLAttributes,
+    provide,
+    type Ref,
   } from 'vue'
 
   import { useMazPhoneNumberInput } from './MazPhoneNumberInput/use-maz-phone-number-input'
+  import { useLibphonenumber } from './MazPhoneNumberInput/use-libphonenumber'
 
   const emits = defineEmits<{
     /** emitted when country or phone number changes
@@ -253,21 +256,56 @@
     orientation: 'responsive',
   })
 
-  const {
-    phoneNumber,
-    selectedCountry,
-    results,
-    fetchCountryCode,
-    setSelectedCountry,
-    onPhoneNumberChanged,
-    onCountryChanged,
-    getBrowserLocale,
-  } = useMazPhoneNumberInput()
+  const { fetchCountryCode, sanitizePhoneNumber, getBrowserLocale } = useMazPhoneNumberInput()
+  const { isCountryAvailable, getPhoneNumberResults, getAsYouTypeFormat } = useLibphonenumber()
 
   const instanceId = useInstanceUniqId({
     componentName: 'MazPhoneNumberInput',
     providedId: props.id,
   })
+
+  /**
+   * State
+   */
+
+  const phoneNumber = ref<string>('')
+  const selectedCountry = ref<CountryCode>()
+  const results = ref<Results>({
+    isValid: false,
+    countryCode: undefined,
+  })
+
+  type SelectionRange = {
+    start?: number | null
+    end?: number | null
+    cursorAtEnd?: boolean
+  }
+
+  export type InjectedData = {
+    selectedCountry: Ref<CountryCode | undefined>
+    phoneNumber: Ref<string>
+    results: Ref<Results>
+    selectionRange: Ref<SelectionRange>
+  }
+
+  const selectionRange = ref<SelectionRange>({
+    start: 0,
+    end: 0,
+    cursorAtEnd: true,
+  })
+
+  /** Inject */
+
+  provide<InjectedData>('data', {
+    selectedCountry,
+    phoneNumber,
+    results,
+    selectionRange,
+  })
+
+  /**
+   * Logique
+   */
 
   const locales = computed(() => ({
     ...defaultLocales,
@@ -296,6 +334,7 @@
     await nextTick()
     getPhoneNumberInput()?.select()
   }
+
   function countryChanged(countryCode?: CountryCode) {
     onCountryChanged({
       countryCode,
@@ -303,6 +342,93 @@
       noFormattingAsYouType: props.noFormattingAsYouType,
     })
     selectPhoneNumberInput()
+  }
+
+  function setSelectedCountry(countryCode?: string) {
+    if (!countryCode) {
+      return
+    }
+
+    if (!isCountryAvailable(countryCode)) {
+      selectedCountry.value = undefined
+      return
+    }
+
+    selectedCountry.value = countryCode as CountryCode
+  }
+
+  function onPhoneNumberChanged({
+    newPhoneNumber,
+    autoFormat,
+    noFormattingAsYouType,
+    updateResults = true,
+  }: {
+    newPhoneNumber: string
+    autoFormat: boolean
+    noFormattingAsYouType: boolean
+    updateResults?: boolean
+  }) {
+    const sanitizedPhoneNumber = sanitizePhoneNumber(newPhoneNumber)
+
+    if (updateResults) {
+      results.value = getPhoneNumberResults({
+        phoneNumber: sanitizedPhoneNumber,
+        countryCode: selectedCountry.value,
+      })
+    }
+
+    if (results.value.isValid && results.value.formatNational && autoFormat) {
+      phoneNumber.value = results.value.formatNational
+    } else if (selectionRange.value.cursorAtEnd && !noFormattingAsYouType) {
+      const asYouTypeFormatted = getAsYouTypeFormat(selectedCountry.value, sanitizedPhoneNumber)
+      phoneNumber.value = asYouTypeFormatted
+    } else {
+      phoneNumber.value = sanitizedPhoneNumber
+    }
+
+    if (results.value.countryCode && results.value.countryCode !== selectedCountry.value) {
+      onCountryChanged({
+        countryCode: results.value.countryCode,
+        autoFormat,
+        noFormattingAsYouType,
+        updateResults: false,
+      })
+    }
+  }
+
+  function onCountryChanged({
+    countryCode,
+    autoFormat,
+    noFormattingAsYouType,
+    updateResults = true,
+  }: {
+    countryCode?: CountryCode
+    autoFormat: boolean
+    noFormattingAsYouType: boolean
+    updateResults?: boolean
+  }) {
+    if (!countryCode) {
+      selectedCountry.value = undefined
+      return
+    }
+
+    if (countryCode !== selectedCountry.value) {
+      setSelectedCountry(countryCode)
+    }
+
+    if (updateResults) {
+      results.value = getPhoneNumberResults({
+        phoneNumber: phoneNumber.value,
+        countryCode,
+      })
+    }
+
+    onPhoneNumberChanged({
+      newPhoneNumber: phoneNumber.value,
+      autoFormat,
+      noFormattingAsYouType,
+      updateResults: false,
+    })
   }
 
   watch(
