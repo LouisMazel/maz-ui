@@ -55,6 +55,9 @@ npm install libphonenumber-js
     @update="results = $event"
   />
 
+  <br />
+  <br />
+
   <template #content>
   <div class="language-js ext-js"><span class="lang">js</span><pre class="language-js"><code>v-model="{{ phoneNumber ?? 'undefined' }}"</code></pre></div>
 
@@ -92,7 +95,9 @@ npm install libphonenumber-js
   </template>
 </ComponentDemo>
 
-## Translations - Labels & placeholders
+## Translations
+
+### Labels & placeholders
 
 ```html
 <MazPhoneNumberInput
@@ -110,9 +115,11 @@ npm install libphonenumber-js
 />
 ```
 
-## Translations - Country list
+### Country list
 
-**First solution - set country locale**
+Two ways to translate the country list:
+
+#### First solution - set country locale
 
 ```html
 <MazPhoneNumberInput
@@ -120,7 +127,7 @@ npm install libphonenumber-js
 />
 ```
 
-**Second solution - custom list**
+#### Second solution - custom list
 
 ```html
 <MazPhoneNumberInput
@@ -133,21 +140,71 @@ npm install libphonenumber-js
 />
 ```
 
-## Show country name instead of calling code
+## Orientation
+
+`@default "responsive"`
+
+By default, the orientation is responsive, it will be in column on mobile (up to 425px) and in row on desktop
+
+You can force the orientation to be:
+- in column with the `orientation="col"` prop
+- in row with the `orientation="row"` prop
 
 <ComponentDemo>
-  <MazPhoneNumberInput country-selector-display-name />
+  <p class="maz-mb-4 maz-font-semibold">
+    Reduce the window size to see the responsive behavior
+  </p>
+
+  <div class="maz-inline-flex maz-flex-col maz-gap-2 maz-items-start">
+    <MazPhoneNumberInput orientation="responsive" />
+    <MazPhoneNumberInput orientation="row" />
+    <MazPhoneNumberInput orientation="col" />
+  </div>
 
   <template #code>
 
   ```html
-  <MazPhoneNumberInput country-selector-display-name />
+  <MazPhoneNumberInput orientation="responsive" />
+  <MazPhoneNumberInput orientation="row" />
+  <MazPhoneNumberInput orientation="col" />
+  ```
+
+  </template>
+</ComponentDemo>
+
+## Show country name instead of calling code
+
+You can display the country name instead of the calling code with the `country-selector-display-name` prop
+
+<ComponentDemo>
+  <MazPhoneNumberInput
+    country-selector-display-name
+    :translations="{
+      countrySelector: {
+        placeholder: 'Country',
+      },
+    }"
+  />
+
+  <template #code>
+
+  ```html
+  <MazPhoneNumberInput
+    country-selector-display-name
+    :translations="{
+      countrySelector: {
+        placeholder: 'Country',
+      },
+    }"
+  />
   ```
 
   </template>
 </ComponentDemo>
 
 ## Flags replacement with slots
+
+Replace the default flags with slots
 
 <ComponentDemo>
   <MazPhoneNumberInput :exclude-selectors="['#input-flag-element']">
@@ -167,8 +224,6 @@ npm install libphonenumber-js
   </MazPhoneNumberInput>
 
   <template #code>
-
-  You can use available country codes with libraries like [country-flag-icons](https://www.npmjs.com/package/country-flag-icons) to replace unicode flags by SVG flags
 
   <NpmBadge package="country-flag-icons" />
 
@@ -190,13 +245,16 @@ npm install libphonenumber-js
   </MazPhoneNumberInput>
   ```
 
+::: tip
+  You can use available country codes with libraries like [country-flag-icons](https://www.npmjs.com/package/country-flag-icons) to replace unicode flags by SVG flags
+:::
   </template>
 
 </ComponentDemo>
 
 ## Types
 
-**Results emitted by @update event**
+**Results emitted by `@update` or `@data` event**
 
 ```ts
 export type Results = {

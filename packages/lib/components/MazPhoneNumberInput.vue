@@ -1,5 +1,9 @@
 <template>
-  <div class="m-phone-number-input" :class="[props.class, { '--block': block }]" :style="style">
+  <div
+    class="m-phone-number-input"
+    :class="[props.class, { '--block': block }, orientation ? `--${orientation}` : undefined]"
+    :style="style"
+  >
     <CountrySelector
       v-if="!noCountrySelector"
       :id="instanceId"
@@ -107,27 +111,27 @@
   import { useMazPhoneNumberInput } from './MazPhoneNumberInput/use-maz-phone-number-input'
 
   const emits = defineEmits<{
+    /** emitted when country or phone number changes
+     * @property {String} phoneNumber - phoneNumber formatted
+     */
+    'update:model-value': [value: string]
+    /** emitted when selected country changes
+     * @property {CountryCode} countryCode - Country code
+     */
+    'country-code': [countryCode?: CountryCode]
+    /** emitted when country changes
+     * @property {CountryCode} countryCode - Country code
+     */
+    'update:country-code': [countryCode?: CountryCode]
     /**
      * emitted when country or phone number changes
      * @property {Results} results - metadata of current phone number
      */
-    (event: 'update', results: Results): void
+    update: [results: Results]
     /** emitted when country or phone number changes
      * @property {Results} results - metadata of current phone number
      */
-    (event: 'data', results: Results): void
-    /** emitted when selected country changes
-     * @property {CountryCode} countryCode - Country code
-     */
-    (event: 'country-code', countryCode?: CountryCode): void
-    /** emitted when country or phone number changes
-     * @property {String} phoneNumber - phoneNumber formatted
-     */
-    (event: 'update:model-value', phoneNumber?: string): void
-    /** emitted when country changes
-     * @property {CountryCode} countryCode - Country code
-     */
-    (event: 'update:country-code', countryCode?: CountryCode): void
+    data: [results: Results]
   }>()
 
   defineOptions({
@@ -214,6 +218,12 @@
     block?: boolean
     /** Exclude selectors to close country selector list - usefull when you using custom flag */
     excludeSelectors?: string[]
+    /**
+     * Orientation of the inputs in the component
+     * @default "responsive"
+     * @values "row" | "col" | "responsive"
+     */
+    orientation?: 'row' | 'col' | 'responsive'
   }
 
   const props = withDefaults(defineProps<Props>(), {
@@ -240,6 +250,7 @@
     noFormattingAsYouType: false,
     autoFormat: true,
     excludeSelectors: undefined,
+    orientation: 'responsive',
   })
 
   const {
@@ -353,6 +364,14 @@
 
     &.--block {
       @apply maz-w-full;
+    }
+
+    &.--col {
+      @apply maz-flex-col;
+    }
+
+    &.--responsive {
+      @apply maz-flex-col mob-m:maz-flex-row;
     }
   }
 </style>
