@@ -3,7 +3,7 @@ import { LazyImg, DEFAULT_OPTIONS } from './lazy-img.handler'
 import type { vLazyImgOptions, vLazyImgBindingValue } from './types'
 
 const plugin = {
-  install(app, opts) {
+  install(app, opts = {}) {
     const options = {
       ...DEFAULT_OPTIONS,
       ...opts,
