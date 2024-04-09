@@ -1,5 +1,18 @@
 # Change Log
 
+## v3.37.7...v3.37.8
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.37.7...v3.37.8)
+
+### 💅 Refactors
+
+- **docs:** UseThemeHandler - remove default theme ([594a53be](https://github.com/LouisMazel/maz-ui/commit/594a53be))
+- **nuxt-module:** Add auto-import of useStringMatching and improve implementation of useThemeHandler to pass options ([2995c0ac](https://github.com/LouisMazel/maz-ui/commit/2995c0ac))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.37.6...v3.37.7
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.37.6...v3.37.7)
