@@ -1,6 +1,6 @@
 <template>
   <div
-    class="m-input-number maz-align-center"
+    class="m-input-number"
     :class="[`m-input-number--${size}`, props.class, { '--block': block }]"
     :style="style"
   >
@@ -18,7 +18,7 @@
     <MazInput
       :model-value="currentValue"
       type="number"
-      class="m-input-number__input maz-flex-1"
+      class="m-input-number__input"
       :class="{ '--no-buttons': noButtons, '--text-center': textCenter }"
       :disabled
       :min
@@ -34,7 +34,6 @@
       @change="$emit('change', $event)"
       @blur="$emit('blur', $event)"
       @click="$emit('click', $event)"
-      @update="$emit('update', $event)"
       @update:model-value="emitDebounced($event as number | undefined)"
     />
     <MazBtn
@@ -109,18 +108,31 @@
   })
 
   const emits = defineEmits<{
-    /** Emitted when the input value change */
-    (event: 'update:model-value', value: number | undefined): void
-    /** Emitted when the input is focused */
-    (event: 'focus', value: unknown): void
-    /** Emitted when the input is blurred */
-    (event: 'blur', value: unknown): void
-    /** Emitted input is clicked */
-    (event: 'click', value: unknown): void
-    /** Emitted when the value change */
-    (event: 'update', value: unknown): void
-    /** Emitted when the value change */
-    (event: 'change', value: unknown): void
+    /**
+     * Emitted when the input value change
+     * @property {number | undefined} value - value of the input
+     */
+    'update:model-value': [value?: number]
+    /**
+     * Emitted when the input is focused
+     * @property {Event} value - event object
+     */
+    focus: [value: Event]
+    /**
+     * Emitted when the input is blurred
+     * @property {Event} value - event object
+     */
+    blur: [value: Event]
+    /**
+     * Emitted input is clicked
+     * @property {Event} value - event object
+     */
+    click: [value: Event]
+    /**
+     * Emitted when the value change
+     * @property {Event} value - event object
+     */
+    change: [value: Event]
   }>()
 
   const currentValue = computed({
@@ -220,11 +232,11 @@
 
     &__input {
       &:not(.--no-buttons) .m-input-wrapper {
-        @apply maz-z-1 !maz-rounded-none;
+        @apply maz-z-1 maz-rounded-none;
       }
 
       &.--text-center input {
-        @apply !maz-p-0 maz-text-center;
+        @apply maz-p-0 maz-text-center;
       }
 
       /* Chrome, Safari, Edge, Opera */

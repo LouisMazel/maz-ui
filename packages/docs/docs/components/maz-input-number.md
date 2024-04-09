@@ -13,17 +13,46 @@ description: MazInputNumber is a number input component with increment and decre
 
 ## Basic usage
 
-<MazInputNumber
-  v-model="numberValue"
-  placeholder="Enter number"
-  :min="5"
-  :max="10000"
-  :step="5"
-  color="secondary"
-  style="width: 200px;"
-/>
+<ComponentDemo>
+  <MazInputNumber
+    v-model="numberValue"
+    placeholder="Enter number"
+    :min="5"
+    :step="5"
+    :max="10000"
+    color="secondary"
+    style="min-width: 200px"
+  />
 
-`numberValue: {{ numberValue }}`
+  <br />
+  <br />
+
+  `numberValue: {{ numberValue }}`
+
+  <template #code>
+
+  ```vue
+  <template>
+    <MazInputNumber
+      v-model="numberValue"
+      placeholder="Enter number"
+      :min="5"
+      :step="5"
+      :max="10000"
+      color="secondary"
+      style="min-width: 200px"
+    />
+  </template>
+
+  <script lang="ts" setup>
+    import { ref } from 'vue'
+    import MazInputNumber from 'maz-ui/components/MazInputNumber'
+    const numberValue = ref(2)
+  </script>
+  ```
+
+  </template>
+</ComponentDemo>
 
 <script lang="ts" setup>
   import { ref } from 'vue'
@@ -31,36 +60,28 @@ description: MazInputNumber is a number input component with increment and decre
   const numberValue = ref()
 </script>
 
-```vue
-<template>
-  <MazInputNumber
-    v-model="numberValue"
-    placeholder="Enter number"
-    :min="5"
-    :max="10000"
-    size="md"
-    color="secondary"
-    style="width: 200px;"
-  />
-</template>
-
-<script lang="ts" setup>
-  import { ref } from 'vue'
-  import MazInputNumber from 'maz-ui/components/MazInputNumber'
-  const numberValue = ref(2)
-</script>
-```
-
 ## No buttons
 
 You can remove the buttons with the props `no-buttons`
 
-<MazInputNumber
-  v-model="numberValue"
-  placeholder="Enter number"
-  :max="20"
-  style="width: 200px;"
-  no-buttons
-/>
+<ComponentDemo>
+  <MazInputNumber
+    v-model="numberValue"
+    placeholder="Enter number"
+    no-buttons
+  />
+
+  <template #code>
+
+  ```html
+  <MazInputNumber
+    v-model="numberValue"
+    placeholder="Enter number"
+    no-buttons
+  />
+  ```
+
+  </template>
+</ComponentDemo>
 
 <!--@include: ./../.vitepress/generated-docs/maz-input-number.doc.md-->
