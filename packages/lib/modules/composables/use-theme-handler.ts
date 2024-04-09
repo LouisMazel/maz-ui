@@ -1,7 +1,53 @@
 import { isClient } from './../helpers/is-client'
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 
-const DEFAULT_OPTIONS = {
+export type StrictThemeHandlerOptions = {
+  /**
+   * Class to be added to the html element when dark theme is set
+   * @default 'dark'
+   */
+  darkClass: string
+  /**
+   * Class to be added to the html element when light theme is set
+   * @default 'light'
+   */
+  lightClass: string
+  /**
+   * Key to store the theme in local storage
+   * @default 'theme'
+   */
+  storageThemeKey: string
+  /**
+   * Value to set the theme to dark
+   * @default 'dark'
+   */
+  storageThemeValueDark: string
+  /**
+   * Value to set the theme to light
+   * @default 'light'
+   */
+  storageThemeValueLight: string
+  /**
+   * Value to set the theme to system
+   * @default 'system'
+   */
+  storageThemeValueSystem: string
+  /**
+   * Watch for changes in the system theme
+   * @default true
+   */
+  watchChanges: boolean
+  /**
+   * Default theme to set if no theme has been previously set by the user
+   * Useful to force a theme on first visit
+   * The value will not be stored in local storage
+   * @default undefined
+   */
+  defaultTheme?: 'light' | 'dark'
+}
+export type ThemeHandlerOptions = Partial<StrictThemeHandlerOptions>
+
+const DEFAULT_OPTIONS: StrictThemeHandlerOptions = {
   darkClass: 'dark',
   lightClass: 'light',
   storageThemeKey: 'theme',
@@ -11,11 +57,12 @@ const DEFAULT_OPTIONS = {
   watchChanges: true,
 }
 
-export type StrictThemeHandlerOptions = typeof DEFAULT_OPTIONS
-export type ThemeHandlerOptions = Partial<StrictThemeHandlerOptions>
-
 const theme = ref<string>('system')
 const selectedTheme = ref<string>('system')
+
+function getPrefDark(): boolean {
+  return window.matchMedia('(prefers-color-scheme: dark)').matches
+}
 
 function setDarkTheme({
   darkClass,
@@ -69,7 +116,10 @@ function setLightTheme({
   }
 }
 
-function setSytemTheme(options: StrictThemeHandlerOptions & { setLocalStorageValue?: boolean }) {
+function setSytemTheme({
+  setLocalStorageValue = true,
+  ...options
+}: StrictThemeHandlerOptions & { setLocalStorageValue?: boolean }) {
   if (!isClient()) {
     return
   }
@@ -80,75 +130,80 @@ function setSytemTheme(options: StrictThemeHandlerOptions & { setLocalStorageVal
   theme.value = options.storageThemeValueSystem
   selectedTheme.value = options.storageThemeValueSystem
 
-  if (options.setLocalStorageValue) {
+  if (setLocalStorageValue) {
     localStorage[options.storageThemeKey] = options.storageThemeValueSystem
   }
 
-  autoSetTheme({ ...options })
+  return autoSetTheme(options)
 }
 
-function getPrefDark(): boolean {
-  return window.matchMedia('(prefers-color-scheme: dark)').matches
+function setDefaultTheme(options: StrictThemeHandlerOptions) {
+  if (!options.defaultTheme) {
+    return console.error('[maz-ui](useThemeHandler) No default theme set')
+  }
+
+  if (!['light', 'dark'].includes(options.defaultTheme)) {
+    return console.error('[maz-ui](useThemeHandler) Default theme must be "light" or "dark"')
+  }
+
+  switch (options.defaultTheme) {
+    case 'dark': {
+      return setDarkTheme({
+        ...options,
+        setLocalStorageValue: false,
+        setSelectedTheme: true,
+      })
+    }
+    case 'light': {
+      return setLightTheme({
+        ...options,
+        setLocalStorageValue: false,
+        setSelectedTheme: true,
+      })
+    }
+  }
 }
 
-function autoSetTheme(
-  options: StrictThemeHandlerOptions & {
-    // setSelectedTheme?: boolean
-    onlyWithStoredValue?: boolean
-  },
-) {
+function autoSetTheme(options: StrictThemeHandlerOptions) {
   if (!isClient()) {
     return
   }
 
-  if (options.onlyWithStoredValue) {
-    if (
-      localStorage[options.storageThemeKey] === options.storageThemeValueDark ||
-      (localStorage[options.storageThemeKey] === options.storageThemeValueSystem && getPrefDark())
-    ) {
-      setDarkTheme({
-        ...options,
-        setLocalStorageValue: false,
-        setSelectedTheme: false,
-      })
-    } else if (
-      localStorage[options.storageThemeKey] === options.storageThemeValueLight ||
-      (localStorage[options.storageThemeKey] === options.storageThemeValueSystem && !getPrefDark())
-    ) {
-      setLightTheme({
-        ...options,
-        setLocalStorageValue: false,
-        setSelectedTheme: false,
-      })
-    }
-  } else if (
-    localStorage[options.storageThemeKey] === options.storageThemeValueDark ||
-    (!(options.storageThemeKey in localStorage) && getPrefDark()) ||
-    (localStorage[options.storageThemeKey] === options.storageThemeValueSystem && getPrefDark())
-  ) {
-    setDarkTheme({
-      ...options,
-      setLocalStorageValue: false,
-      setSelectedTheme: false,
-    })
-  } else {
-    setLightTheme({
-      ...options,
-      setLocalStorageValue: false,
-      setSelectedTheme: false,
-    })
+  if (!localStorage[options.storageThemeKey] && options.defaultTheme) {
+    return setDefaultTheme(options)
   }
+
+  const shouldSetDarkTheme =
+    localStorage[options.storageThemeKey] === options.storageThemeValueDark ||
+    (!localStorage[options.storageThemeKey] && getPrefDark()) ||
+    (localStorage[options.storageThemeKey] === options.storageThemeValueSystem && getPrefDark())
+
+  return shouldSetDarkTheme
+    ? setDarkTheme({
+        ...options,
+        setLocalStorageValue: false,
+        setSelectedTheme: false,
+      })
+    : setLightTheme({
+        ...options,
+        setLocalStorageValue: false,
+        setSelectedTheme: false,
+      })
 }
 
 function setTheme({
-  shouldSetDarkMode,
+  theme,
   ...rest
-}: StrictThemeHandlerOptions & { shouldSetDarkMode?: boolean }) {
-  if (typeof shouldSetDarkMode !== 'boolean') {
+}: StrictThemeHandlerOptions & { theme: 'light' | 'dark' | 'system' }) {
+  if (theme === 'system') {
     return setSytemTheme(rest)
   }
 
-  return shouldSetDarkMode ? setDarkTheme(rest) : setLightTheme(rest)
+  if (theme === 'dark') {
+    return setDarkTheme(rest)
+  }
+
+  return setLightTheme(rest)
 }
 
 function toggleTheme(options: StrictThemeHandlerOptions) {
@@ -157,17 +212,11 @@ function toggleTheme(options: StrictThemeHandlerOptions) {
     : setDarkTheme(options)
 }
 
-export function useThemeHandler(opts: ThemeHandlerOptions = DEFAULT_OPTIONS) {
+export function useThemeHandler(opts?: ThemeHandlerOptions) {
   const globalOptions = {
     ...DEFAULT_OPTIONS,
     ...opts,
   }
-
-  const hasDarkTheme = computed(() => selectedTheme.value === globalOptions.storageThemeValueDark)
-  const hasLightTheme = computed(() => selectedTheme.value === globalOptions.storageThemeValueLight)
-  const hasSystemTheme = computed(
-    () => selectedTheme.value === globalOptions.storageThemeValueSystem,
-  )
 
   function themeWatchHandler() {
     autoSetTheme(globalOptions)
@@ -175,7 +224,6 @@ export function useThemeHandler(opts: ThemeHandlerOptions = DEFAULT_OPTIONS) {
 
   onMounted(() => {
     if (localStorage[globalOptions.storageThemeKey]) {
-      theme.value = localStorage[globalOptions.storageThemeKey]
       selectedTheme.value = localStorage[globalOptions.storageThemeKey]
     }
 
@@ -195,15 +243,15 @@ export function useThemeHandler(opts: ThemeHandlerOptions = DEFAULT_OPTIONS) {
   })
 
   return {
-    autoSetTheme: (options?: { onlyWithStoredValue?: boolean }) =>
-      autoSetTheme({ ...globalOptions, ...options }),
+    autoSetTheme: () => autoSetTheme(globalOptions),
     toggleTheme: () => toggleTheme(globalOptions),
-    setSystemTheme: () => setSytemTheme({ ...globalOptions, setLocalStorageValue: true }),
-    setDarkTheme: () => setTheme({ ...globalOptions, shouldSetDarkMode: true }),
-    setLightTheme: () => setTheme({ ...globalOptions, shouldSetDarkMode: false }),
-    hasDarkTheme,
-    hasLightTheme,
-    hasSystemTheme,
+    setSystemTheme: () => setTheme({ ...globalOptions, theme: 'system' }),
+    setDarkTheme: () => setTheme({ ...globalOptions, theme: 'dark' }),
+    setLightTheme: () => setTheme({ ...globalOptions, theme: 'light' }),
+    setDefaultTheme: () => setDefaultTheme(globalOptions),
+    hasDarkTheme: computed(() => selectedTheme.value === globalOptions.storageThemeValueDark),
+    hasLightTheme: computed(() => selectedTheme.value === globalOptions.storageThemeValueLight),
+    hasSystemTheme: computed(() => selectedTheme.value === globalOptions.storageThemeValueSystem),
     theme,
     selectedTheme,
   }
