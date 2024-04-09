@@ -1,5 +1,22 @@
 # Change Log
 
+## v3.37.6...v3.37.7
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.37.6...v3.37.7)
+
+### 🩹 Fixes
+
+- **docs:** MazPhoneNumberInput - internal links to translations sections in feature list ([3ad1daaa](https://github.com/LouisMazel/maz-ui/commit/3ad1daaa))
+
+### 💅 Refactors
+
+- **docs:** MazInputNumber - documentation improvement ([a471e698](https://github.com/LouisMazel/maz-ui/commit/a471e698))
+- **maz-ui:** UseThemeHandler - add defaultTheme option to set theme if no theme is already set by the user ([bd0dac8c](https://github.com/LouisMazel/maz-ui/commit/bd0dac8c))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.37.5...v3.37.6
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.37.5...v3.37.6)
