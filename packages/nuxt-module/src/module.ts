@@ -81,6 +81,11 @@ export interface MazUiNuxtOptions {
    */
   injectUseReadingTime?: boolean
   /**
+   * Enable auto-import of useStringMatching composable
+   * @default false
+   */
+  injectUseStringMatching?: boolean
+  /**
    * Globally install of v-zoom-img directive
    * @default false
    */
@@ -300,6 +305,14 @@ export default defineNuxtModule<MazUiNuxtOptions>({
         from: 'maz-ui',
         name: 'useUserVisibility',
         as: 'useUserVisibility',
+      })
+    }
+
+    if (moduleOptions.injectUseStringMatching) {
+      addImports({
+        from: 'maz-ui',
+        name: 'useStringMatching',
+        as: 'useStringMatching',
       })
     }
 
