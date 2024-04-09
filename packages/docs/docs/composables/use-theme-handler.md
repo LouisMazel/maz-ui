@@ -253,7 +253,6 @@ type ThemeHandler = {
     storageThemeValueLight: 'light',
     storageThemeValueSystem: 'system',
     watchChanges: true,
-    defaultTheme: 'dark',
   }
 
   const {
@@ -270,5 +269,6 @@ type ThemeHandler = {
     selectedTheme,
     setDefaultTheme,
   } = useThemeHandler(options)
+
   autoSetTheme()
 </script>
