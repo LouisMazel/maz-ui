@@ -1,36 +1,42 @@
-import { mount } from '@vue/test-utils'
+import { type VueWrapper, mount } from '@vue/test-utils'
 import MazDropdown from '@components/MazDropdown.vue'
 import MazBtn from '@components/MazBtn.vue'
 import { sleep } from '@modules/helpers'
+import { RouterLink } from 'vue-router'
 
 describe('MazDropdown', () => {
-  test('renders a dropdown button with the provided label', async () => {
-    const wrapper = mount(MazDropdown, {
+  let wrapper: VueWrapper<InstanceType<typeof MazDropdown>>
+
+  const actionSpy = vi.fn()
+
+  beforeEach(async () => {
+    wrapper = mount(MazDropdown, {
+      attachTo: document.body,
       slots: {
         default: 'Dropdown Label',
       },
       props: {
-        items: [{ label: 'Menu 1', action: vi.fn() }],
+        items: [{ label: 'Menu 1', action: actionSpy }],
+      },
+      global: {
+        components: {
+          RouterLink,
+        },
       },
     })
 
     await vi.dynamicImportSettled()
+  })
 
+  test('renders a dropdown button with the provided label', async () => {
     const dropdownButton = wrapper.findComponent(MazBtn)
+
     expect(dropdownButton.exists()).toBe(true)
     expect(dropdownButton.text()).toBe('Dropdown Label')
   })
 
-  test('toggles the dropdown when the button is focused', async () => {
-    const wrapper = mount(MazDropdown, {
-      slots: {
-        default: 'Dropdown Label',
-      },
-      props: {
-        trigger: 'click',
-        items: [{ label: 'Menu 1', action: vi.fn() }],
-      },
-    })
+  test('toggles the dropdown when the button is clicked', async () => {
+    await wrapper.setProps({ trigger: 'click' })
 
     await vi.dynamicImportSettled()
 
@@ -38,25 +44,18 @@ describe('MazDropdown', () => {
 
     await wrapper.vm.$nextTick()
 
-    expect(wrapper.vm.dropdownOpen).toBe(false)
+    expect(wrapper.find('[aria-label="Menu"]').isVisible()).toBeFalsy()
 
     await dropdownButton.trigger('click')
-    expect(wrapper.vm.dropdownOpen).toBe(true)
+    expect(wrapper.find('[aria-label="Menu"]').isVisible()).toBeTruthy()
 
     await dropdownButton.trigger('click')
-    expect(wrapper.vm.dropdownOpen).toBe(false)
+    await wrapper.vm.$nextTick()
+    expect(wrapper.find('[aria-label="Menu"]').isVisible()).toBeFalsy()
   })
 
   test('toggles the dropdown when the button is clicked', async () => {
-    const wrapper = mount(MazDropdown, {
-      slots: {
-        default: 'Dropdown Label',
-      },
-      props: {
-        trigger: 'both',
-        items: [{ label: 'Menu 1', action: vi.fn() }],
-      },
-    })
+    await wrapper.setProps({ trigger: 'both' })
 
     await vi.dynamicImportSettled()
 
@@ -64,26 +63,17 @@ describe('MazDropdown', () => {
 
     await wrapper.vm.$nextTick()
 
-    expect(wrapper.vm.dropdownOpen).toBe(false)
+    expect(wrapper.find('[aria-label="Menu"]').isVisible()).toBeFalsy()
 
     await dropdownButton.trigger('focus')
-    expect(wrapper.vm.dropdownOpen).toBe(true)
+    expect(wrapper.find('[aria-label="Menu"]').isVisible()).toBeTruthy()
 
     await dropdownButton.trigger('blur')
     await sleep(200)
-    expect(wrapper.vm.dropdownOpen).toBe(false)
+    expect(wrapper.find('[aria-label="Menu"]').isVisible()).toBeFalsy()
   })
 
   test('emits "update:open" event when the dropdown is toggled', async () => {
-    const wrapper = mount(MazDropdown, {
-      slots: {
-        default: 'Dropdown Label',
-      },
-      props: {
-        items: [{ label: 'Menu 1', action: vi.fn() }],
-      },
-    })
-
     await vi.dynamicImportSettled()
 
     const dropdownButton = wrapper.find('[role="button"]')
@@ -91,56 +81,40 @@ describe('MazDropdown', () => {
     await dropdownButton.trigger('focus')
 
     expect(wrapper.emitted('update:open')).toBeTruthy()
-    expect(wrapper.emitted('update:open')[0]).toEqual([true])
+    expect(wrapper.emitted('update:open')?.[0]).toEqual([true])
 
     await dropdownButton.trigger('blur')
 
     await sleep(200)
 
     expect(wrapper.emitted('update:open')).toBeTruthy()
-    expect(wrapper.emitted('update:open')[1]).toEqual([false])
+    expect(wrapper.emitted('update:open')?.[1]).toEqual([false])
   })
 
   test('closes the dropdown when a menu item is clicked', async () => {
-    const action = vi.fn()
-    const wrapper = mount(MazDropdown, {
-      slots: {
-        default: 'Dropdown Label',
-      },
-      props: {
-        items: [{ label: 'Menu 1', action }],
-      },
-    })
-
     await vi.dynamicImportSettled()
 
     const dropdownButton = wrapper.find('[role="button"]')
 
     await dropdownButton.trigger('focus')
-    expect(wrapper.vm.dropdownOpen).toBe(true)
+    expect(wrapper.find('[aria-label="Menu"]').isVisible()).toBe(true)
 
     const menuItems = wrapper.findAll('.menuitem')
     await menuItems[0].trigger('click')
 
-    expect(action).toHaveBeenCalledTimes(1)
+    expect(actionSpy).toHaveBeenCalledTimes(1)
 
     await sleep(200)
 
-    expect(wrapper.vm.dropdownOpen).toBe(false)
+    expect(wrapper.find('[aria-label="Menu"]').isVisible()).toBe(false)
   })
 
   test('navigates through menu items using the keyboard', async () => {
-    const wrapper = mount(MazDropdown, {
-      slots: {
-        default: 'Dropdown Label',
-        menuitem: '<div class="menuitem">Menu Item 1</div><div class="menuitem">Menu Item 2</div>',
-      },
-      props: {
-        items: [
-          { label: 'Menu 1', action: vi.fn() },
-          { label: 'Menu 2', action: vi.fn() },
-        ],
-      },
+    await wrapper.setProps({
+      items: [
+        { label: 'Menu 1', action: vi.fn() },
+        { label: 'Menu 2', action: vi.fn() },
+      ],
     })
 
     await vi.dynamicImportSettled()
@@ -149,17 +123,26 @@ describe('MazDropdown', () => {
 
     await dropdownButton.trigger('focus')
 
-    expect(wrapper.vm.dropdownOpen).toBe(true)
+    expect(wrapper.find('[aria-label="Menu"]').isVisible()).toBe(true)
 
     // Simulate ArrowDown key
     document.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown' }))
-    expect(wrapper.vm.keyboardSelectedIndex).toBe(0)
+    await wrapper.vm.$nextTick()
+    expect(wrapper.findAll('.menuitem').at(0)?.classes()).toStrictEqual(
+      expect.arrayContaining(['--is-keyboard-selected']),
+    )
 
     // Simulate ArrowUp key
     document.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown' }))
-    expect(wrapper.vm.keyboardSelectedIndex).toBe(1)
+    await wrapper.vm.$nextTick()
+    expect(wrapper.findAll('.menuitem').at(1)?.classes()).toStrictEqual(
+      expect.arrayContaining(['--is-keyboard-selected']),
+    )
 
     document.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown' }))
-    expect(wrapper.vm.keyboardSelectedIndex).toBe(0)
+    await wrapper.vm.$nextTick()
+    expect(wrapper.findAll('.menuitem').at(0)?.classes()).toStrictEqual(
+      expect.arrayContaining(['--is-keyboard-selected']),
+    )
   })
 })
