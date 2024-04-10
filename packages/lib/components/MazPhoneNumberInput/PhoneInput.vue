@@ -1,6 +1,6 @@
 <template>
   <MazInput
-    :id="`phone-number-${id}`"
+    :id
     ref="PhoneInputRef"
     :model-value="modelValue"
     v-bind="$attrs"

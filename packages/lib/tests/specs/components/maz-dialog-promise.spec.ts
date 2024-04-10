@@ -2,7 +2,7 @@ import { type VueWrapper, shallowMount } from '@vue/test-utils'
 import MazDialogPromise, { useMazDialogPromise } from '@components/MazDialogPromise.vue'
 
 describe('MazDialogPromise', () => {
-  let wrapper: VueWrapper
+  let wrapper: VueWrapper<InstanceType<typeof MazDialogPromise>>
 
   const { showDialogAndWaitChoice, removeDialogFromState } = useMazDialogPromise()
 

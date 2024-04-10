@@ -16,7 +16,7 @@ export async function createLibraryTestFile({
 import ${filename} from '@components/${filename}.vue'
 
 describe('${filename}', () => {
-  let wrapper: VueWrapper
+  let wrapper: VueWrapper<InstanceType<typeof ${filename}>>
 
   beforeEach(() => {
     wrapper = shallowMount(${filename})

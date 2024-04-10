@@ -2,7 +2,7 @@ import { shallowMount, type VueWrapper } from '@vue/test-utils'
 import MazInputCode from '@components/MazInputCode.vue'
 
 describe('MazInputCode', () => {
-  let wrapper: VueWrapper
+  let wrapper: VueWrapper<InstanceType<typeof MazInputCode>>
 
   beforeEach(() => {
     wrapper = shallowMount(MazInputCode)
@@ -13,11 +13,10 @@ describe('MazInputCode', () => {
   })
 
   test('renders the correct number of input fields', async () => {
-    const inputFields = wrapper.findAll('input')
-    expect(inputFields).toHaveLength(4)
+    expect(wrapper.findAll('input')).toHaveLength(4)
 
-    await wrapper.setProps({ codeLenght: 6 })
-    expect(inputFields).toHaveLength(4)
+    await wrapper.setProps({ codeLength: 6 })
+    expect(wrapper.findAll('input')).toHaveLength(6)
   })
 
   test('emits completed event when code is complete', async () => {
