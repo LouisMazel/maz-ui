@@ -206,6 +206,7 @@ type MazTabsBarItem =
         pastel?: boolean
         outline?: boolean
         size?: string
+        /** @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'` */
         roundedSize?: BadgeRoundedSize
       }
     }

@@ -331,19 +331,23 @@ With the attribute `variant="link"`, the button looks like a link but it's a but
 Additional props available include: `no-underline` & `no-leading`
 :::
 
-<MazBtn variant="link" @click="$emit('click')">Is Link</MazBtn>
-<MazBtn variant="link" @click="$emit('click')" no-underline>Is Link</MazBtn>
-<MazBtn variant="link" @click="$emit('click')" no-leading>Is Link</MazBtn>
+<ComponentDemo>
+  <div class="maz-flex maz-gap-4 maz-items-center">
+    <MazBtn variant="link" @click="$emit('click')" color="primary">Is Link</MazBtn>
+    <MazBtn variant="link" @click="$emit('click')" no-underline>Is Link</MazBtn>
+    <MazBtn variant="link" @click="$emit('click')" no-leading no-underline>Is Link</MazBtn>
+  </div>
 
-::: details View code
+  <template #code>
 
-```html
-<MazBtn variant="link" @click="$emit('click')">Is Link</MazBtn>
-<MazBtn variant="link" @click="$emit('click')" no-underline>Is Link</MazBtn>
-<MazBtn variant="link" @click="$emit('click')" no-leading>Is Link</MazBtn>
-```
+  ```html
+  <MazBtn variant="link" @click="$emit('click')">Is Link</MazBtn>
+  <MazBtn variant="link" @click="$emit('click')" no-underline>Is Link</MazBtn>
+  <MazBtn variant="link" @click="$emit('click')" no-leading no-underline>Is Link</MazBtn>
+  ```
 
-:::
+  </template>
+</ComponentDemo>
 
 ## [HTMLLinkElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement)
 

@@ -239,7 +239,10 @@
      * `@type` `{string | FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component}`
      */
     rightIcon?: string | Icon
-    /** Size of the rounded */
+    /**
+     * Size of the rounded
+     * @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'`
+     */
     roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
     /** The input will be displayed in full width */
     block?: boolean
