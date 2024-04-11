@@ -49,6 +49,7 @@ export const components = {
         { text: 'MazGallery', link: '/components/maz-gallery' },
         { text: 'MazIcon', link: '/components/maz-icon' },
         { text: 'MazLazyImg', link: '/components/maz-lazy-img' },
+        { text: 'MazLink', link: '/components/maz-link' },
         { text: 'MazLoadingBar', link: '/components/maz-loading-bar' },
         { text: 'MazPagination', link: '/components/maz-pagination' },
         { text: 'MazPullToRefresh', link: '/components/maz-pull-to-refresh' },
