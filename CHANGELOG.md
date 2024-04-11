@@ -1,5 +1,27 @@
 # Change Log
 
+## v3.37.8...v3.38.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.37.8...v3.38.0)
+
+### 🚀 Enhancements
+
+- **maz-ui:** MazLink - new component ([649468c0](https://github.com/LouisMazel/maz-ui/commit/649468c0))
+- **maz-ui:** MazBtn - add prop option to choose the rounded size ([9dbefe27](https://github.com/LouisMazel/maz-ui/commit/9dbefe27))
+
+### 🏡 Chore
+
+- **deps:** Upgrage chalk to v5 ([47152bdb](https://github.com/LouisMazel/maz-ui/commit/47152bdb))
+- **deps:** Upgrade dependencies ([564acb45](https://github.com/LouisMazel/maz-ui/commit/564acb45))
+
+### ✅ Tests
+
+- **maz-ui:** Improve TS support of tests ([5ed1eaad](https://github.com/LouisMazel/maz-ui/commit/5ed1eaad))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.37.7...v3.37.8
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.37.7...v3.37.8)
