@@ -5,13 +5,13 @@
     class="m-btn"
     :class="[
       `--${size}`,
+      `--rounded-${roundedSize}`,
       btnColorClass,
       cursorClass,
       variantClass,
       {
         '--block': block,
         '--no-underline': noUnderline,
-        '--no-leading': noLeading,
         '--fab': fab,
         '--loading': loading,
         '--disabled': isDisabled,
@@ -92,12 +92,13 @@
   const { href, to } = useAttrs()
   const slots = useSlots()
 
-  type Icon = FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component
+  export type Icon = FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component
 
   export type Props = {
     /** The variant of the button - Change UI of component (link or button style)
      * @values `'button' | 'link'`
-     * */
+     * @deprecated Use the component <MazLink /> instead
+     */
     variant?: 'button' | 'link'
     /**
      * The size of the button
@@ -119,6 +120,11 @@
      * @default false
      */
     rounded?: boolean
+    /**
+     * Size of the rounded
+     * @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'`
+     */
+    roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
     /**
      * If true, the button will have no border radius
      * @default false
@@ -143,11 +149,6 @@
      * @default false
      */
     noUnderline?: boolean
-    /**
-     * If true, the button will have no leading (useful with `variant="link"`)
-     * @default false
-     */
-    noLeading?: boolean
     /**
      * Enable the button loader
      * @default false
@@ -201,6 +202,7 @@
     leftIcon: undefined,
     rightIcon: undefined,
     contentClass: undefined,
+    roundedSize: undefined,
   })
 
   onBeforeMount(() => {
@@ -256,12 +258,8 @@
     }
 
     &.--is-link {
-      @apply maz-inline-flex maz-items-center maz-bg-transparent
-        maz-outline-none maz-transition maz-duration-200 maz-ease-in-out;
-
-      &:not(.--no-leading) span {
-        @apply maz-leading-9;
-      }
+      @apply maz-inline-flex maz-items-center
+        maz-transition maz-duration-200 maz-ease-in-out;
 
       &:not(:disabled):hover,
       &:not(:disabled):focus {
@@ -310,10 +308,34 @@
 
       &:not(.--no-rounded) {
         @apply maz-rounded;
-      }
 
-      &.--rounded {
-        @apply maz-rounded-full;
+        &.--rounded {
+          @apply maz-rounded-full;
+
+          &-none {
+            @apply maz-rounded-none;
+          }
+
+          &-sm {
+            @apply maz-rounded-sm;
+          }
+
+          &-md {
+            @apply maz-rounded-md;
+          }
+
+          &-lg {
+            @apply maz-rounded;
+          }
+
+          &-xl {
+            @apply maz-rounded-xl;
+          }
+
+          &-full {
+            @apply maz-rounded-full;
+          }
+        }
       }
 
       &.--xl {
@@ -352,7 +374,7 @@
       }
 
       &.--mini {
-        @apply maz-px-1 maz-text-xs;
+        @apply maz-rounded maz-px-1 maz-text-xs;
 
         padding-top: 0.2rem;
         padding-bottom: 0.2rem;

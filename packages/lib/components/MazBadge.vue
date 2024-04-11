@@ -23,6 +23,9 @@
     nowrap?: boolean
     outline?: boolean
     pastel?: boolean
+    /* Size of the rounded
+     * @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'`
+     */
     roundedSize?: BadgeRoundedSize
   }
 

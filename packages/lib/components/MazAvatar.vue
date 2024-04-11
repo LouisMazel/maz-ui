@@ -113,7 +113,10 @@
     noClickableIcon?: boolean
     /** Number of letters to display in the round text */
     letterCount?: number
-    /** Size of the rounded */
+    /**
+     * Size of the rounded
+     * @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'`
+     */
     roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
     /** The fallback src to replace the src on loading error */
     fallbackSrc?: string
