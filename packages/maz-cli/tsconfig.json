@@ -17,7 +17,7 @@
     "isolatedModules": true
     // "useUnknownInCatchVariables": false
   },
-  "include": ["bin/**/*", "src/**/*", "*.config.ts"],
+  "include": ["bin/**/*", "src/**/*", "*.js"],
   "exclude": ["node_modules", "dist"],
   "ts-node": {
     "esm": true,

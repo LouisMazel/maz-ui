@@ -140,9 +140,9 @@ async function runCreateFiles({
 
     console.log('')
     console.log(
-      chalk.bold.keyword('orange')(
-        `⚠ Now you should add your component reference in the right part in ${chalk.bold.keyword(
-          'dodgerblue',
+      chalk.bold.hex('#ffa500')(
+        `⚠ Now you should add your component reference in the right part in ${chalk.bold.hex(
+          '#1e90ff',
         )(componentConfigurationFilePath)}`,
       ),
     )

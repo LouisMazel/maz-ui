@@ -24,7 +24,8 @@
     "config/**/*",
     "prettier.config.cjs",
     ".eslintrc.cjs",
-    "docgen.config.js"
+    "docgen.config.js",
+    "*.js"
   ],
   "exclude": ["node_modules", "dist"],
   "ts-node": {
