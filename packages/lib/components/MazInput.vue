@@ -125,39 +125,10 @@
   </div>
 </template>
 
-<script lang="ts" setup>
-  import {
-    computed,
-    onMounted,
-    ref,
-    defineAsyncComponent,
-    useSlots,
-    type HTMLAttributes,
-    type FunctionalComponent,
-    type ComponentPublicInstance,
-    type Component,
-    type SVGAttributes,
-  } from 'vue'
+<script lang="ts">
+  export type { Color, Size, ModelValueSimple } from './types'
 
-  import { debounce as debounceFn } from './../modules/helpers/debounce'
-  import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
-
-  import type { Color, ModelValueSimple, Size } from './types'
-  export type { Color, Size, ModelValueSimple }
-  export type Icon = FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component
-
-  const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
-  const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
-
-  const EyeOffIcon = defineAsyncComponent(() => import('./../icons/eye-slash.svg'))
-  const EyeIcon = defineAsyncComponent(() => import('./../icons/eye.svg'))
-  const CheckIcon = defineAsyncComponent(() => import('./../icons/check.svg'))
-
-  defineOptions({
-    inheritAttrs: false,
-  })
-
-  export type Props = {
+  export type Props<T extends ModelValueSimple> = {
     /** The style of the component */
     style?: HTMLAttributes['style']
     /** The class of the component */
@@ -166,7 +137,7 @@
      * The value of the input
      * @model
      */
-    modelValue?: ModelValueSimple
+    modelValue?: T | undefined
     /** The placeholder of the input */
     placeholder?: string
     /** The label of the component */
@@ -247,8 +218,39 @@
     /** The input will be displayed in full width */
     block?: boolean
   }
+</script>
 
-  const props = withDefaults(defineProps<Props>(), {
+<script lang="ts" setup generic="T extends ModelValueSimple">
+  import {
+    computed,
+    onMounted,
+    ref,
+    defineAsyncComponent,
+    useSlots,
+    type HTMLAttributes,
+    type FunctionalComponent,
+    type ComponentPublicInstance,
+    type Component,
+    type SVGAttributes,
+  } from 'vue'
+
+  import { debounce as debounceFn } from './../modules/helpers/debounce'
+  import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
+  import type { Color, ModelValueSimple, Size } from './types'
+  export type Icon = FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component
+
+  const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
+  const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
+
+  const EyeOffIcon = defineAsyncComponent(() => import('./../icons/eye-slash.svg'))
+  const EyeIcon = defineAsyncComponent(() => import('./../icons/eye.svg'))
+  const CheckIcon = defineAsyncComponent(() => import('./../icons/check.svg'))
+
+  defineOptions({
+    inheritAttrs: false,
+  })
+
+  const props = withDefaults(defineProps<Props<T>>(), {
     style: undefined,
     class: undefined,
     modelValue: undefined,
@@ -287,27 +289,27 @@
      * Event emitted when the input value change
      * @property {string | number | null | undefined | boolean} value - the new value
      */
-    (eventName: 'update:model-value', value?: ModelValueSimple): void
+    'update:model-value': [value?: T]
     /**
      * Event emitted when the input is focused
      * @property {Event} event - focus event
      */
-    (eventName: 'focus', event: Event): void
+    focus: [event: Event]
     /**
      * Event emitted when the input is blurred
      * @property {Event} event - blur event
      */
-    (eventName: 'blur', event: Event): void
+    blur: [event: Event]
     /**
      * Event emitted when the input is clicked
      * @property {Event} event - click event
      */
-    (eventName: 'click', event: Event): void
+    click: [event: Event]
     /**
      * Event emitted when the input is changed
      * @property {Event} event - change event
      */
-    (eventName: 'change', event: Event): void
+    change: [event: Event]
   }>()
 
   const hasPasswordVisible = ref(false)
@@ -334,6 +336,7 @@
     if (props.error) return 'maz-border-danger'
     if (props.success) return 'maz-border-success'
     if (props.warning) return 'maz-border-warning'
+
     if (isFocused.value || props.borderActive) {
       if (props.color === 'black') return 'maz-border-black'
       if (props.color === 'danger') return 'maz-border-danger'
@@ -358,20 +361,20 @@
   const hasValue = computed(() => model.value !== undefined && model.value !== '')
 
   const debounceEmitValue = debounceFn(
-    (value?: ModelValueSimple) => {
+    (value?: T) => {
       model.value = value
     },
     typeof props.debounce === 'number' ? props.debounce : props.debounceDelay ?? 500,
   )
 
-  const emitValue = (value: ModelValueSimple) => {
+  const emitValue = (value?: T) => {
     if (props.debounce) return debounceEmitValue(value)
     emits('update:model-value', value)
   }
 
-  const model = computed<ModelValueSimple>({
+  const model = computed({
     get: () => props.modelValue,
-    set: emitValue,
+    set: (value?: T) => emitValue(value),
   })
 
   const shouldUp = computed(() => {
