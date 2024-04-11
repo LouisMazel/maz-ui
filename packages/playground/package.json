@@ -38,6 +38,7 @@
     "vue-router": "^4.3.0"
   },
   "dependencies": {
+    "eslint": "^8",
     "maz-ui": "workspace:*"
   }
 }
