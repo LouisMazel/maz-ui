@@ -55,7 +55,7 @@
     "maz": "maz",
     "lint": "pnpm lint:js && pnpm lint:style",
     "lint:nofix": "cross-env NODE_ENV=production eslint --ext .ts,.js,.mjs,.mts,.cjs,.vue .",
-    "lint:js": "cross-env NODE_ENV=production eslint --fix --ext .ts,.js,.mjs,.mts,.cjs,.vue .",
+    "lint:js": "cross-env NODE_ENV=production eslint --fix .",
     "lint:style": "stylelint --fix \"./**/*.{vue,css,scss,postcss,pcss}\"",
     "format": "prettier . --write",
     "build": "pnpm typecheck && pnpm build:lib",
@@ -118,7 +118,8 @@
     }
   },
   "dependencies": {
-    "@mazui/cli": "workspace:*"
+    "@mazui/cli": "workspace:*",
+    "eslint": "^8"
   },
   "devDependencies": {
     "@babel/core": "^7.24.4",
@@ -137,7 +138,7 @@
     "@vue/tsconfig": "^0.5.1",
     "autoprefixer": "^10.4.19",
     "c8": "^9.1.0",
-    "chalk": "4.1.2",
+    "chalk": "5.3.0",
     "chart.js": "^4.4.2",
     "dayjs": "^1.11.10",
     "defu": "^6.1.4",

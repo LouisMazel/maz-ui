@@ -1,9 +1,11 @@
 import chalk from 'chalk'
+
 import { Command } from 'commander'
 import { clearAndPrintBanner } from './utils/print-banner'
 import { createRequire } from 'node:module'
 import { createFilesCommand } from './commands/create-files'
 import { generateComponentsDocumentationCommand } from './commands/generate-components-docs'
+import { logger } from './utils/logger'
 
 const name = 'cli'
 const program = new Command()
@@ -20,24 +22,24 @@ if (!options.silent) {
 program.version(`${name} ${version}`).usage('<command> [options]')
 
 program.arguments('[command]').action((cmd) => {
-  program.outputHelp()
   if (cmd) {
-    console.log()
-    console.log(chalk.red(`⛔️ Unknown command ${chalk.bold.keyword('dodgerblue')(cmd)}.`))
-    console.log()
+    logger.error(`⛔️ Unknown command ${chalk.bold.hex('#1e90ff')(cmd)}.`)
+    logger.eot()
   }
+
+  program.outputHelp()
 })
 
 program.option('-s, --silent', 'Disable CLI banner log', false)
 
 program.on('--help', () => {
-  console.log()
+  logger.eot()
   console.log(
-    `  Run ${chalk.bold.keyword('dodgerblue')(
+    `  Run ${chalk.bold.hex('#1e90ff')(
       `${name} <command> --help`,
     )} for detailed usage of given command.`,
   )
-  console.log()
+  logger.eot()
 })
 
 program.addCommand(createFilesCommand())

@@ -1,7 +1,7 @@
 import { Command } from 'commander'
 import { exit } from 'node:process'
-import chalk from 'chalk'
 import { execPromise } from '../../utils/exec-promise'
+import { logger } from '../../utils/logger'
 
 export function generateComponentsDocumentationCommand(): Command {
   const createFiles = new Command('generate-components-docs')
@@ -14,15 +14,15 @@ export function generateComponentsDocumentationCommand(): Command {
         if (options.watch) {
           await execPromise('vue-docgen -w')
 
-          console.log('')
-          console.log(chalk.bold.green('Is watching for components documentation generating'))
-          console.log('')
+          logger.eot()
+          logger.success('Is watching for components documentation generating')
+          logger.eot()
         } else {
           await execPromise('vue-docgen')
 
-          console.log('')
-          console.log(chalk.bold.green('Components documentation generated'))
-          console.log('')
+          logger.eot()
+          logger.success('Components documentation generated')
+          logger.eot()
         }
       } catch {
         exit(1)

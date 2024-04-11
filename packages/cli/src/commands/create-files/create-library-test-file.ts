@@ -2,6 +2,7 @@ import { writeFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { exit } from 'node:process'
 import { fileURLToPath } from 'node:url'
+import { logger } from '../../utils/logger'
 
 const _dirname = fileURLToPath(new URL('.', import.meta.url))
 
@@ -32,7 +33,7 @@ describe('${filename}', () => {
 
     await writeFile(TEST_FILE_OUTPUT, testComponentTemplate)
   } catch (error) {
-    console.error(`Error: Failed to create file "${filename}".`, error)
+    logger.error(`Error: Failed to create file "${filename}".`, error)
     exit(1)
   }
 }

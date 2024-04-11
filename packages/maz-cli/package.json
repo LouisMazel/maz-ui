@@ -35,7 +35,7 @@
     "typecheck": "tsc --noEmit",
     "build": "unbuild",
     "build:stub": "unbuild --stub",
-    "dev": "node --loader ts-node/esm src/cli.ts",
+    "dev": "node --import=./register.js src/cli.ts",
     "start": "node --es-module-specifier-resolution=node dist/cli.mjs"
   },
   "lint-staged": {

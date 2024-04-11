@@ -18,7 +18,7 @@
   ],
   "scripts": {
     "lint": "cross-env NODE_ENV=production eslint --ignore-path .gitignore --fix --ext .ts,.js,.mjs,.mts,.cjs .",
-    "cli": "node --loader ts-node/esm src/cli.ts",
+    "cli": "node --import=./register.js src/cli.ts",
     "build": "unbuild",
     "build:stub": "unbuild --stub",
     "pre-commit": "lint-staged",
@@ -33,7 +33,7 @@
     "@clack/prompts": "^0.7.0",
     "@types/clear": "^0.1.4",
     "@types/figlet": "^1.5.8",
-    "chalk": "4.1.2",
+    "chalk": "5.3.0",
     "clear": "^0.1.0",
     "commander": "^12.0.0",
     "figlet": "^1.7.0",
