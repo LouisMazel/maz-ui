@@ -62,7 +62,7 @@
       @apply maz-p-0 maz-rounded-b;
     }
 
-    :deep(a) {
+    :deep(a):not(.m-link) {
       @apply maz-text-primary maz-underline;
     }
 
