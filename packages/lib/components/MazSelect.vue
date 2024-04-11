@@ -144,6 +144,7 @@
     defineAsyncComponent,
     defineOptions,
     type HTMLAttributes,
+    type ComponentPublicInstance,
   } from 'vue'
   import MazInput from './MazInput.vue'
   import type { Color, ModelValueSimple, Position, Size } from './types'
@@ -383,8 +384,8 @@
   })
 
   const mazSelectElement = ref<HTMLDivElement>()
-  const mazInputComponent = ref<typeof MazInput>()
-  const searchInputComponent = ref<typeof MazInput>()
+  const mazInputComponent = ref<ComponentPublicInstance<typeof MazInput>>()
+  const searchInputComponent = ref<ComponentPublicInstance<typeof MazInput>>()
   const optionsListElement = ref<HTMLDivElement>()
 
   const isNullOrUndefined = (value: unknown) => {
