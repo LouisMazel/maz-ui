@@ -135,23 +135,8 @@
   </div>
 </template>
 
-<script lang="ts" setup>
-  import {
-    ref,
-    computed,
-    onBeforeMount,
-    nextTick,
-    defineAsyncComponent,
-    defineOptions,
-    type HTMLAttributes,
-    type ComponentPublicInstance,
-  } from 'vue'
-  import MazInput from './MazInput.vue'
-  import type { Color, ModelValueSimple, Position, Size } from './types'
-  import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
-  import { debounceCallback } from '../modules/helpers/debounce-callback'
-  import { useStringMatching } from '../modules/composables/use-string-matching'
-  import { vClosable } from '../modules/directives'
+<script lang="ts">
+  export type { Color, Size, ModelValueSimple, Position } from './types'
 
   export type NormalizedOption = Record<string, ModelValueSimple>
   export type MazSelectOptionWithOptGroup = {
@@ -165,27 +150,7 @@
     | boolean
     | MazSelectOptionWithOptGroup
 
-  export type { Color, Size, ModelValueSimple, Position }
-
-  const MazCheckbox = defineAsyncComponent(() => import('./MazCheckbox.vue'))
-
-  const SearchIcon = defineAsyncComponent(() => import('./../icons/magnifying-glass.svg'))
-  const ChevronDownIcon = defineAsyncComponent(() => import('./../icons/chevron-down.svg'))
-  const NoSymbolIcon = defineAsyncComponent(() => import('./../icons/no-symbol.svg'))
-
-  defineOptions({
-    inheritAttrs: false,
-  })
-
-  defineExpose<{
-    openList: typeof openList
-    closeList: typeof closeList
-  }>({
-    openList,
-    closeList,
-  })
-
-  export type Props = {
+  export type Props<T extends ModelValueSimple, U extends MazSelectOption> = {
     /** Style attribut of the component root element */
     style?: HTMLAttributes['style']
     /** Class attribut of the component root element */
@@ -193,9 +158,9 @@
     /** The id of the select */
     id?: string
     /** The value of the select */
-    modelValue?: ModelValueSimple | ModelValueSimple[]
+    modelValue?: T | T[]
     /** The options of the select */
-    options?: MazSelectOption[]
+    options?: U[]
     /** The key of the option value */
     optionValueKey?: string
     /** The key of the option label */
@@ -231,10 +196,53 @@
     /** The exclude selectors for the v-closable directive - will exclude the elements from the directive */
     excludeSelectors?: string[]
   }
+  // eslint-disable-next-line prettier/prettier
+</script>
 
-  const props = withDefaults(defineProps<Props>(), {
+<script
+  lang="ts"
+  setup
+  generic="T extends ModelValueSimple, U extends MazSelectOption, M = boolean"
+>
+  import {
+    ref,
+    computed,
+    onBeforeMount,
+    nextTick,
+    defineAsyncComponent,
+    defineOptions,
+    type HTMLAttributes,
+    type ComponentPublicInstance,
+  } from 'vue'
+  import MazInput from './MazInput.vue'
+  import type { Color, ModelValueSimple, Position, Size } from './types'
+  import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
+  import { debounceCallback } from '../modules/helpers/debounce-callback'
+  import { useStringMatching } from '../modules/composables/use-string-matching'
+  import { vClosable } from '../modules/directives'
+
+  const MazCheckbox = defineAsyncComponent(() => import('./MazCheckbox.vue'))
+
+  const SearchIcon = defineAsyncComponent(() => import('./../icons/magnifying-glass.svg'))
+  const ChevronDownIcon = defineAsyncComponent(() => import('./../icons/chevron-down.svg'))
+  const NoSymbolIcon = defineAsyncComponent(() => import('./../icons/no-symbol.svg'))
+
+  defineOptions({
+    inheritAttrs: false,
+  })
+
+  defineExpose<{
+    openList: typeof openList
+    closeList: typeof closeList
+  }>({
+    openList,
+    closeList,
+  })
+
+  const props = withDefaults(defineProps<Props<T, U>>(), {
     id: undefined,
     class: undefined,
+    multiple: undefined,
     style: undefined,
     modelValue: undefined,
     optionValueKey: 'value',
@@ -256,37 +264,37 @@
      * @event 'close'
      * @property {Event} value - the event
      */
-    (event: 'close', value?: Event): void
+    close: [value?: Event]
     /** On list is opened
      * @event 'open'
      * @property {boolean} value - if the list is opened or not
      */
-    (event: 'open', value?: boolean): void
+    open: [value: boolean]
     /** On input blur
      * @event 'blur'
      * @property {Event} value - the event
      */
-    (event: 'blur', value?: Event): void
+    blur: [value: Event]
     /** On input focus
      * @event 'focus'
      * @property {Event} value - the event
      */
-    (event: 'focus', value?: Event): void
+    focus: [value: Event]
     /** On input change value
      * @event 'change'
      * @property {Event} value - the event
      */
-    (event: 'change', value?: Event): void
+    change: [value: Event]
     /** On model value update, returns the new value
      * @event 'update:model-value'
      * @property {ModelValueSimple | ModelValueSimple[]} value - the new value
      */
-    (event: 'update:model-value', value: ModelValueSimple | ModelValueSimple[]): void
+    'update:model-value': [value: T | T[]]
     /** On selected value, returns the option object
      * @event 'selected-option'
      * @property {MazSelectOption} value - the option object
      */
-    (event: 'selected-option', option: MazSelectOption): void
+    'selected-option': [value: U]
   }>()
 
   const listOpened = ref(false)
@@ -345,7 +353,11 @@
     for (const option of props.options) {
       if (typeof option === 'string' || typeof option === 'number' || typeof option === 'boolean') {
         normalizedOptions.push(getOptionPayload(option))
-      } else if ('options' in option && Array.isArray(option.options)) {
+      } else if (
+        typeof option === 'object' &&
+        'options' in option &&
+        Array.isArray(option.options)
+      ) {
         normalizedOptions.push(
           { label: option.label, isOptGroup: true },
           ...option.options.map((opt) =>
@@ -367,7 +379,7 @@
       optionsNormalized.value?.filter((option) => {
         return props.multiple
           ? Array.isArray(props.modelValue)
-            ? props.modelValue.includes(option[props.optionValueKey]) &&
+            ? props.modelValue.includes(option[props.optionValueKey] as T) &&
               !isNullOrUndefined(option[props.optionValueKey])
             : false
           : props.modelValue === option[props.optionValueKey] &&
@@ -497,7 +509,7 @@
     emits('close', event)
   }
 
-  async function openList(event?: Event) {
+  async function openList(event: Event) {
     if (props.disabled || hasListOpened.value) return
 
     event?.preventDefault()
@@ -569,7 +581,7 @@
     } else if (shouldSelect) {
       enterHandler(event, tmpModelValueIndex.value)
     } else if (shouldCloseList) {
-      closeList()
+      closeList(event)
     }
   }
 
@@ -652,7 +664,7 @@
     tmpModelValueIndex.value = index && index >= 0 ? index : 0
   }
 
-  const updateValue = (inputOption: NormalizedOption, mustCloseList = true) => {
+  function updateValue(inputOption: NormalizedOption, mustCloseList = true) {
     if (mustCloseList && !props.multiple) {
       nextTick(() => closeList())
     }
@@ -677,8 +689,8 @@
 
     const selectedValues = newValue.map((option) => option[props.optionValueKey])
 
-    emits('update:model-value', props.multiple ? selectedValues : selectedValues[0])
-    emits('selected-option', inputOption)
+    emits('update:model-value', (props.multiple ? selectedValues : selectedValues[0]) as T | T[])
+    emits('selected-option', inputOption as U)
     updateTmpModelValueIndex(inputOption)
     focusMainInput()
   }

@@ -91,7 +91,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, computed, type HTMLAttributes } from 'vue'
+  import { ref, computed, type HTMLAttributes, type ComponentPublicInstance } from 'vue'
   import type {
     Color,
     Size,
@@ -154,7 +154,7 @@
 
   const { phoneNumber } = injectStrict<InjectedData>('data')
 
-  const CountrySelectorRef = ref<typeof MazSelect>()
+  const CountrySelectorRef = ref<ComponentPublicInstance<typeof MazSelect>>()
 
   const { getCountriesList } = useMazPhoneNumberInput()
 
