@@ -130,7 +130,7 @@
     "@types/dropzone": "^5.7.8",
     "@types/google.maps": "^3.55.7",
     "@vitejs/plugin-vue": "^5.0.4",
-    "@vitest/coverage-v8": "^1.4.0",
+    "@vitest/coverage-v8": "^1.5.0",
     "@vue/compiler-sfc": "^3.4.21",
     "@vue/eslint-config-prettier": "^9.0.0",
     "@vue/eslint-config-typescript": "^13.0.0",
@@ -162,7 +162,7 @@
     "prettier-plugin-tailwindcss": "^0.5.13",
     "replace-in-file": "^7.1.0",
     "rimraf": "^5.0.5",
-    "sass": "^1.74.1",
+    "sass": "^1.75.0",
     "semver": "^7.6.0",
     "sirv": "^2.0.4",
     "stylelint": "^16.3.1",
@@ -177,13 +177,13 @@
     "vite-plugin-lib-inject-css": "^2.0.1",
     "vite-plugin-static-copy": "^1.0.2",
     "vite-svg-loader": "^5.1.0",
-    "vitest": "^1.4.0",
+    "vitest": "^1.5.0",
     "vitest-canvas-mock": "^0.3.3",
     "vue": "^3.4.21",
     "vue-chartjs": "^5.3.1",
     "vue-loader": "^17.4.2",
     "vue-router": "^4.3.0",
-    "vue-tsc": "^2.0.12"
+    "vue-tsc": "^2.0.13"
   },
   "engines": {
     "node": ">= 6.0.0",

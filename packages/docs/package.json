@@ -12,7 +12,7 @@
   "devDependencies": {
     "@types/postcss-import": "^14.0.3",
     "@types/postcss-url": "^10.0.4",
-    "@types/react": "^18.2.75",
+    "@types/react": "^18.2.77",
     "@vercel/og": "^0.6.2",
     "postcss-import": "^16.1.0",
     "postcss-url": "^10.1.3",
