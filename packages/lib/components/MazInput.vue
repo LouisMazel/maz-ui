@@ -528,7 +528,7 @@
     }
 
     &-input {
-      @apply maz-m-0 maz-h-full maz-w-full maz-appearance-none maz-truncate maz-border-none maz-bg-transparent maz-px-4 maz-py-0 maz-text-normal maz-shadow-none;
+      @apply maz-m-0 maz-h-full maz-w-full maz-appearance-none maz-truncate maz-border-none maz-bg-transparent maz-px-4 maz-py-0 maz-text-normal maz-shadow-none maz-outline-none;
 
       &:-webkit-autofill,
       &:-webkit-autofill:hover,
