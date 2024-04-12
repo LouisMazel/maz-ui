@@ -128,7 +128,7 @@
 <script lang="ts">
   export type { Color, Size, ModelValueSimple } from './types'
 
-  export type Props<T extends ModelValueSimple> = {
+  export type Props<T = ModelValueSimple> = {
     /** The style of the component */
     style?: HTMLAttributes['style']
     /** The class of the component */
@@ -218,6 +218,7 @@
     /** The input will be displayed in full width */
     block?: boolean
   }
+  // eslint-disable-next-line prettier/prettier
 </script>
 
 <script lang="ts" setup generic="T extends ModelValueSimple">
