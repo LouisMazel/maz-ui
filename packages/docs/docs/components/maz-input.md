@@ -11,87 +11,115 @@ description: MazInput is a standalone component that replaces the standard html 
 
 ## Basic usage
 
-<MazInput v-model="inputValue" label="Label" name="firstname" />
+<ComponentDemo>
+  <MazInput v-model="inputValue" label="Label" name="firstname" />
 
-```vue
-<template>
-  <MazInput
-    v-model="inputValue"
-    label="Label"
-    autocomplete="off"
-  />
-</template>
+  <template #code>
 
-<script setup>
-  import { ref } from 'vue'
-  import MazInput from 'maz-ui/components/MazInput'
+  ```vue
+  <template>
+    <MazInput
+      v-model="inputValue"
+      label="Label"
+      autocomplete="off"
+    />
+  </template>
 
-  const inputValue = ref('value')
-</script>
-```
+  <script setup>
+    import { ref } from 'vue'
+    import MazInput from 'maz-ui/components/MazInput'
+
+    const inputValue = ref('value')
+  </script>
+  ```
+
+  </template>
+</ComponentDemo>
 
 ## Password
 
-<form>
-  <MazInput v-model="passwordValue" label="Label" type="password" name="password" autocomplete="nope" />
-</form>
+<ComponentDemo>
+  <form>
+    <MazInput v-model="passwordValue" label="Label" type="password" name="password" autocomplete="nope" />
+  </form>
 
-```html
-<MazInput v-model="passwordValue" label="Label" type="password" />
-```
+  <template #code>
+
+  ```html
+  <MazInput v-model="passwordValue" label="Label" type="password" />
+  ```
+
+  </template>
+</ComponentDemo>
 
 ## Placeholder
 
-<MazInput v-model="inputValue" placeholder="placeholder" autocomplete="off" />
+<ComponentDemo>
+  <MazInput v-model="inputValue" placeholder="placeholder" autocomplete="off" />
 
-```html
-<MazInput v-model="inputValue" placeholder="placeholder" />
-```
+  <template #code>
+
+  ```html
+  <MazInput v-model="inputValue" placeholder="placeholder" />
+  ```
+
+  </template>
+</ComponentDemo>
 
 ## Required
 
-> Will add `*` charac to label and placeholder
+> Will make the input required and `*` charac to the label or the placeholder
 
-<MazInput v-model="inputValue" label="label required" required autocomplete="off" />
+<ComponentDemo>
+  <MazInput v-model="inputValue" label="label required" required autocomplete="off" />
 
-```html
-<MazInput v-model="inputValue" label="label required" required />
-```
+  <template #code>
+
+  ```html
+  <MazInput v-model="inputValue" label="label required" required />
+  ```
+
+  </template>
+</ComponentDemo>
 
 ## Disabled
 
-<MazInput v-model="inputValue" label="label disabled" disabled autocomplete="off" />
+<ComponentDemo>
+  <MazInput v-model="inputValue" label="label disabled" disabled autocomplete="off" />
 
-::: details View code
+  <template #code>
 
-```html
-<MazInput
-  v-model="inputValue"
-  label="label disabled"
-  disabled
-/>
-```
+  ```html
+  <MazInput
+    v-model="inputValue"
+    label="label disabled"
+    disabled
+  />
+  ```
 
-:::
+  </template>
+</ComponentDemo>
 
 ## Hint
 
 > Will replace the label, useful to display error message
 
-<MazInput v-model="inputValue" label="label hint" hint="An error occured" error autocomplete="off" />
+<ComponentDemo>
+  <MazInput v-model="inputValue" label="label hint" hint="An error occured" error autocomplete="off" />
 
-::: details View code
+  <template #code>
 
-```html
-<MazInput
-  v-model="inputValue"
-  label="label hint"
-  hint="An error occured"
-  error
-/>
-```
+  ```html
+  <MazInput
+    v-model="inputValue"
+    label="label hint"
+    hint="An error occured"
+    error
+  />
+  ```
 
-:::
+  </template>
+</ComponentDemo>
 
 ## Icons
 
@@ -177,88 +205,116 @@ Check out how [MazIcon](./maz-icon.md) works, see all available icons and downlo
 
 > Will focus automatically the component
 
-<MazInput
-  v-model="inputValue"
-  label="label auto-focus"
-  autocomplete="off"
-/>
+<ComponentDemo>
+  <MazInput
+    v-model="inputValue"
+    label="label auto-focus"
+    autocomplete="off"
+  />
 
-```html
-<MazInput
-  v-model="inputValue"
-  label="label auto-focus"
-  auto-focus
-/>
-```
+  <template #code>
+
+  ```html
+  <MazInput
+    v-model="inputValue"
+    label="label auto-focus"
+    auto-focus
+  />
+  ```
+
+  </template>
+</ComponentDemo>
 
 ## No radius
 
 > Will remove the border radius
 
-<MazInput
-  v-model="inputValue"
-  label="label no-radius"
-  no-radius
-  autocomplete="off"
-/>
+<ComponentDemo>
+  <MazInput
+    v-model="inputValue"
+    label="label no-radius"
+    no-radius
+    autocomplete="off"
+  />
 
-```html
-<MazInput
-  v-model="inputValue"
-  label="label no-radius"
-  no-radius
-/>
-```
+  <template #code>
+
+  ```html
+  <MazInput
+    v-model="inputValue"
+    label="label no-radius"
+    no-radius
+  />
+  ```
+
+  </template>
+</ComponentDemo>
 
 ## Debounce
 
 > The value emit by the input will be delayed, usefull for searching
+>
+> The attribute `debounce` is in milliseconds
+>
+> If the debounce is true, the default debounce delay is 500ms
 
-<MazInput v-model="inputValue" label="label debounce" debounce :debounce-delay="3000" autocomplete="off" />
+<ComponentDemo>
+  <MazInput v-model="inputValue" label="label debounce" :debounce="1000" autocomplete="off" />
 
-input value: {{ inputValue ?? 'null' }}
+  <p class="maz-mt-2">
+    modelValue: {{ inputValue ?? 'null' }}
+  </p>
 
-```html
-<!-- 3000ms = 3 secondes -->
-<MazInput
-  v-model="inputValue"
-  label="label debounce"
-  debounce
-  :debounce-delay="3000"
-/>
-```
+  <template #code>
+
+  ```html
+  <MazInput
+    v-model="inputValue"
+    label="label debounce"
+    :debounce="1000"
+  />
+  ```
+
+  </template>
+</ComponentDemo>
 
 ## Sizes
 
 > Use the attribute `size` with a value in {{ sizes.join(', ') }}
 
-<div class="flex flex-col gap-05">
-  <MazInput
-    v-for="size in sizes"
-    :key="size"
-    v-model="inputValue"
-    :label="['mini', 'xs'].includes(size) ? undefined : size"
-    :placeholder="['mini', 'xs'].includes(size) ? size : undefined"
-    :size="size"
-    autocomplete="off"
-  />
-</div>
+<ComponentDemo>
+  <div class="maz-flex maz-flex-col maz-gap-2">
+    <MazInput
+      v-for="size in sizes"
+      :key="size"
+      v-model="inputValue"
+      :label="['mini', 'xs'].includes(size) ? undefined : size"
+      :placeholder="['mini', 'xs'].includes(size) ? size : undefined"
+      :size="size"
+      autocomplete="off"
+    />
+  </div>
 
-```vue
-<template>
-  <MazInput
-    v-for="size in sizes"
-    :key="size"
-    v-model="inputValue"
-    :label="size"
-    :size="size"
-  />
-</template>
+  <template #code>
 
-<script setup lang="ts">
-  const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
-</script>
-```
+  ```vue
+  <template>
+    <MazInput
+      v-for="size in sizes"
+      :key="size"
+      v-model="inputValue"
+      :label="size"
+      :size="size"
+    />
+  </template>
+
+  <script setup lang="ts">
+    const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
+  </script>
+  ```
+
+  </template>
+</ComponentDemo>
 
 ## Colors
 
@@ -270,112 +326,133 @@ Click on each input to show colors
 Use the attribute `color` with a value in this [list](./../guide/colors.md), the component will use this color
 :::
 
-<div class="flex flex-col gap-05">
-  <MazInput
-    v-for="{ name } in colorsArray"
-    :key="name"
-    v-model="inputValue"
-    :label="name"
-    :color="name"
-    autocomplete="off"
-  />
-</div>
+<ComponentDemo>
+  <div class="maz-flex maz-flex-col maz-gap-2">
+    <MazInput
+      v-for="{ name } in colorsArray"
+      :key="name"
+      v-model="inputValue"
+      :label="name"
+      :color="name"
+      autocomplete="off"
+    />
+  </div>
 
-```vue
-<template>
-  <MazInput
-    v-for="{ name } in colorsArray"
-    :key="name"
-    v-model="inputValue"
-    :label="name"
-    :color="name"
-  />
-</template>
+  <template #code>
 
-<script setup>
-  const colors = {
-    primary: { name: 'primary', hex: '#1e90ff' },
-    secondary: { name: 'secondary', hex: '#1cd1a1' },
-    info: { name: 'info', hex: '#17a2b8' },
-    success: { name: 'success', hex: '#9acd32' },
-    warning: { name: 'warning', hex: '#fcb731' },
-    danger: { name: 'danger', hex: '#ff6d6a' },
-    white: { name: 'white', hex: '#fff' },
-    black: { name: 'black', hex: '#000' },
-  }
-</script>
-```
+  ```vue
+  <template>
+    <MazInput
+      v-for="{ name } in colorsArray"
+      :key="name"
+      v-model="inputValue"
+      :label="name"
+      :color="name"
+    />
+  </template>
+
+  <script setup>
+    const colors = {
+      primary: { name: 'primary', hex: '#1e90ff' },
+      secondary: { name: 'secondary', hex: '#1cd1a1' },
+      info: { name: 'info', hex: '#17a2b8' },
+      success: { name: 'success', hex: '#9acd32' },
+      warning: { name: 'warning', hex: '#fcb731' },
+      danger: { name: 'danger', hex: '#ff6d6a' },
+      white: { name: 'white', hex: '#fff' },
+      black: { name: 'black', hex: '#000' },
+    }
+  </script>
+  ```
+
+  </template>
+</ComponentDemo>
 
 ## Rounded Size
 
 Use the attribute `rounded-size` with a value in `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'`
 
-<MazInput rounded-size="none" placeholder="Rounded input" autocomplete="off" />
-<br />
-<MazInput rounded-size="sm" placeholder="Rounded input" autocomplete="off" />
-<br />
-<MazInput rounded-size="md" placeholder="Rounded input" autocomplete="off" />
-<br />
-<MazInput rounded-size="lg" placeholder="Rounded input" autocomplete="off" />
-<br />
-<MazInput rounded-size="xl" placeholder="Rounded input" autocomplete="off" />
-<br />
-<MazInput rounded-size="full" placeholder="Rounded input" autocomplete="off" />
+<ComponentDemo>
+  <div class="maz-flex maz-flex-col maz-gap-2">
+    <MazInput rounded-size="none" placeholder="Rounded input" autocomplete="off" />
+    <MazInput rounded-size="sm" placeholder="Rounded input" autocomplete="off" />
+    <MazInput rounded-size="md" placeholder="Rounded input" autocomplete="off" />
+    <MazInput rounded-size="lg" placeholder="Rounded input" autocomplete="off" />
+    <MazInput rounded-size="xl" placeholder="Rounded input" autocomplete="off" />
+    <MazInput rounded-size="full" placeholder="Rounded input" autocomplete="off" />
+  </div>
 
-```html
-  <MazInput rounded-size="none" placeholder="Rounded input" />
-  <MazInput rounded-size="sm" placeholder="Rounded input" />
-  <MazInput rounded-size="md" placeholder="Rounded input" />
-  <MazInput rounded-size="lg" placeholder="Rounded input" />
-  <MazInput rounded-size="xl" placeholder="Rounded input" />
-  <MazInput rounded-size="full" placeholder="Rounded input" />
-```
+  <template #code>
+
+  ```html
+    <MazInput rounded-size="none" placeholder="Rounded input" />
+    <MazInput rounded-size="sm" placeholder="Rounded input" />
+    <MazInput rounded-size="md" placeholder="Rounded input" />
+    <MazInput rounded-size="lg" placeholder="Rounded input" />
+    <MazInput rounded-size="xl" placeholder="Rounded input" />
+    <MazInput rounded-size="full" placeholder="Rounded input" />
+  ```
+
+  </template>
+</ComponentDemo>
 
 ## State
 
-### Error
+<ComponentDemo title="Danger">
+  <MazInput v-model="inputValue" label="Label" error autocomplete="off" />
 
-<MazInput v-model="inputValue" label="Label" error autocomplete="off" />
+  <template #code>
 
-### Warning
+  ```html
+    <MazInput v-model="inputValue" label="Label" error />
+  ```
 
-<MazInput v-model="inputValue" label="Label" warning autocomplete="off" />
+  </template>
+</ComponentDemo>
 
-### Success
+<br />
+<br />
 
-<MazInput v-model="inputValue" label="Label" success autocomplete="off" />
+<ComponentDemo title="Warning">
+  <MazInput v-model="inputValue" label="Label" warning autocomplete="off" />
 
-```html
-<MazInput
-  v-model="inputValue"
-  label="Label"
-  error
-/>
-<MazInput
-  v-model="inputValue"
-  label="Label"
-  warning
-/>
-<MazInput
-  v-model="inputValue"
-  label="Label"
-  success
-/>
-```
+  <template #code>
+
+  ```html
+    <MazInput v-model="inputValue" label="Label" warning />
+  ```
+
+  </template>
+</ComponentDemo>
+
+<br />
+<br />
+
+<ComponentDemo title="Success">
+  <MazInput v-model="inputValue" label="Label" success autocomplete="off" />
+
+  <template #code>
+
+  ```html
+    <MazInput v-model="inputValue" label="Label" success />
+  ```
+
+  </template>
+</ComponentDemo>
 
 ## Valid Button
 
-<MazInput v-model="inputValue" label="Label" valid-button autocomplete="off" />
+<ComponentDemo title="Warning">
+  <MazInput v-model="inputValue" label="Label" valid-button autocomplete="off" />
 
-```vue
-<template>
-  <MazInput
-    v-model="inputValue"
-    label="Label"
-    valid-button
-  />
-</template>
-```
+  <template #code>
+
+  ```html
+    <MazInput v-model="inputValue" label="Label" valid-button />
+  ```
+
+  </template>
+</ComponentDemo>
 
 <script setup lang="ts">
   import { ref, computed } from 'vue'

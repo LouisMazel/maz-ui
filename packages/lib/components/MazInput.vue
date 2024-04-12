@@ -362,7 +362,7 @@
 
   const debounceEmitValue = debounceFn(
     (value?: T) => {
-      model.value = value
+      emits('update:model-value', value)
     },
     typeof props.debounce === 'number' ? props.debounce : props.debounceDelay ?? 500,
   )
@@ -527,7 +527,7 @@
     }
 
     &-input {
-      @apply maz-m-0 maz-h-full maz-w-full maz-appearance-none maz-truncate maz-border-none maz-bg-transparent maz-px-4 maz-py-0 maz-text-normal maz-shadow-none maz-outline-none;
+      @apply maz-m-0 maz-h-full maz-w-full maz-appearance-none maz-truncate maz-border-none maz-bg-transparent maz-px-4 maz-py-0 maz-text-normal maz-shadow-none;
 
       &:-webkit-autofill,
       &:-webkit-autofill:hover,
@@ -610,7 +610,8 @@
     }
   }
 
-  html.dark {
+  html.dark,
+  .m-input.dark {
     & .m-input-input {
       &:-webkit-autofill,
       &:-webkit-autofill:hover,
