@@ -1,5 +1,22 @@
 # Change Log
 
+## v3.38.0...v3.39.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.38.0...v3.39.0)
+
+### 🚀 Enhancements
+
+- **maz-ui:** MazInput - make it a generic component ([2ed0c964](https://github.com/LouisMazel/maz-ui/commit/2ed0c964))
+- **maz-ui:** MazSelect - make it a generic component ([e77f6342](https://github.com/LouisMazel/maz-ui/commit/e77f6342))
+
+### 🩹 Fixes
+
+- **maz-ui:** MazInput - debounce method never emit the new value ([190b3de5](https://github.com/LouisMazel/maz-ui/commit/190b3de5))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.37.8...v3.38.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.37.8...v3.38.0)
