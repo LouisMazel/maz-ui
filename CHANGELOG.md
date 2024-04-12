@@ -1,5 +1,17 @@
 # Change Log
 
+## v3.39.0...v3.39.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.39.0...v3.39.1)
+
+### 🏡 Chore
+
+- **deps:** Upgrade dependencies ([8e5024f8](https://github.com/LouisMazel/maz-ui/commit/8e5024f8))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.38.0...v3.39.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.38.0...v3.39.0)
