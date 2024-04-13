@@ -1,6 +1,6 @@
 {
   "name": "cli",
-  "version": "3.39.1",
+  "version": "3.40.0",
   "main": "./dist/cli.mjs",
   "types": "./dist/cli.d.ts",
   "exports": {

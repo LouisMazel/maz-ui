@@ -1,5 +1,17 @@
 # Change Log
 
+## v3.39.1...v3.40.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.39.1...v3.40.0)
+
+### 🚀 Enhancements
+
+- **maz-ui:** Toaster - add option to remove icon in toast ([289ee3e5](https://github.com/LouisMazel/maz-ui/commit/289ee3e5))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.39.0...v3.39.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.39.0...v3.39.1)
