@@ -40,13 +40,20 @@ export type ToasterOptions = {
    */
   persistent?: boolean
   /**
+   * Display an icon in the toast
+   * @default true
+   */
+  icon?: boolean
+  /**
    * The link will be displayed as a button in the toast
    * @default undefined
    */
   link?: {
     href: string
     text?: string
+    /** @default _self */
     target?: string
+    /** @default false */
     closeToast?: boolean
   }
   /**
@@ -56,6 +63,7 @@ export type ToasterOptions = {
   action?: {
     func: (..._arguments: unknown[]) => unknown
     text: string
+    /** @default false */
     closeToast?: boolean
   }
 }

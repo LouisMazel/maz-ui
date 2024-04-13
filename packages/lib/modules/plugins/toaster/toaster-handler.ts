@@ -11,6 +11,7 @@ const DEFAULT_OPTIONS: ToasterOptions = {
   position: 'bottom-right',
   timeout: 10_000,
   persistent: false,
+  icon: true,
 }
 
 export class ToasterHandler {

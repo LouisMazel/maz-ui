@@ -113,6 +113,7 @@
     link?: ToasterLink
     action?: ToasterAction
     persistent?: boolean
+    icon?: boolean
   }
 
   const props = withDefaults(defineProps<Props>(), {
@@ -123,9 +124,12 @@
     message: undefined,
     link: undefined,
     action: undefined,
+    icon: true,
   })
 
   const iconComponent = computed(() => {
+    if (!props.icon) return undefined
+
     switch (props.type) {
       case 'danger': {
         return ExclamationTriangle
