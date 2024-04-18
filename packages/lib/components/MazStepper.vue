@@ -9,6 +9,7 @@
         :class="[
           {
             '--is-current-step': step === currentStep || allStepsOpened,
+            '--disabled': step !== currentStep && !allStepsOpened && isStepDisabled(step),
           },
           `${getStepStateData(step).class}`,
         ]"
@@ -23,17 +24,33 @@
                 class="icon maz-text-xl"
               />
             </div>
-
-            {{ step }}
+            <!--
+              @slot icon-${step} - Replace step number in the circle by an icon for the step
+            -->
+            <slot :name="`icon-${step}`">
+              <template v-if="getStepIcon(step)">
+                <MazIcon v-if="typeof getStepIcon(step) === 'string'" :name="getStepIcon(step)" />
+                <Component :is="getStepIcon(step)" v-else-if="getStepIcon(step)" />
+              </template>
+              <template v-else>
+                {{ step }}
+              </template>
+            </slot>
           </span>
 
           <div class="m-stepper__header__content">
             <span class="m-stepper__title">
+              <!--
+                @slot title-${step} - Title of the step
+              -->
               <slot :name="`title-${step}`">
                 {{ getPropertyInStep('title', step) }}
               </slot>
             </span>
             <span v-if="hasDataForStep('subtitle', step)" class="m-stepper__subtitle">
+              <!--
+                @slot title-${step} - Subtitle of the step
+              -->
               <slot :name="`subtitle-${step}`">
                 {{ getPropertyInStep('subtitle', step) }}
               </slot>
@@ -42,6 +59,9 @@
         </div>
 
         <span v-if="hasDataForStep('titleInfo', step)" class="m-stepper__right">
+          <!--
+            @slot title-info-${step} - Info of the right of the step
+          -->
           <slot :name="`title-info-${step}`">
             {{ getPropertyInStep('titleInfo', step) }}
           </slot>
@@ -57,6 +77,13 @@
         <MazTransitionExpand>
           <div v-show="allStepsOpened || currentStep === step">
             <div class="m-stepper__content__wrapper">
+              <!-- @slot content-${step} - Content of the step
+                @binding {boolean} validated - If the step is validated
+                @binding {boolean} error - If the step has an error
+                @binding {boolean} warning - If the step has a warning
+                @binding {Function} previous-step - Function to go to the previous step
+                @binding {Function} next-step - Function to go to the next step
+              -->
               <slot
                 :name="`content-${step}`"
                 :validated="isStepSuccess(step)"
@@ -74,10 +101,21 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, useSlots, ref, defineAsyncComponent, type Component } from 'vue'
+  import {
+    computed,
+    useSlots,
+    ref,
+    defineAsyncComponent,
+    type Component,
+    type ComponentPublicInstance,
+    type SVGAttributes,
+    type FunctionalComponent,
+  } from 'vue'
   import type { Color } from './types'
 
   export type { Color }
+
+  export type Icon = FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component
 
   export interface Step {
     title?: string
@@ -87,6 +125,7 @@
     error?: boolean
     success?: boolean
     warning?: boolean
+    icon?: string | Icon
   }
   export type Steps = Step[]
 
@@ -97,33 +136,35 @@
   )
   const ExclamationIcon = defineAsyncComponent(() => import('./../icons/exclamation-triangle.svg'))
 
-  const props = withDefaults(
-    defineProps<{
-      /** The current step */
-      modelValue?: number
-      /** The steps */
-      steps?: Steps
-      /** The color of the stepper */
-      color?: Color
-      /** Disable the next steps */
-      disabledNextSteps?: boolean
-      /** Disable the previous steps */
-      disabledPreviousSteps?: boolean
-      /** Auto validate the steps */
-      autoValidateSteps?: boolean
-      /** Open all steps */
-      allStepsOpened?: boolean
-      /** Validate all steps */
-      allStepsValidated?: boolean
-      /** Allow to close the steps */
-      canCloseSteps?: boolean
-    }>(),
-    {
-      modelValue: undefined,
-      steps: undefined,
-      color: 'primary',
-    },
-  )
+  export type Props = {
+    /** The current step */
+    modelValue?: number
+    /** The steps */
+    steps?: Steps
+    /**
+     * The color of the stepper
+     * @default primary
+     */
+    color?: Color
+    /** Disable the next steps */
+    disabledNextSteps?: boolean
+    /** Disable the previous steps */
+    disabledPreviousSteps?: boolean
+    /** Auto validate the steps */
+    autoValidateSteps?: boolean
+    /** Open all steps */
+    allStepsOpened?: boolean
+    /** Validate all steps */
+    allStepsValidated?: boolean
+    /** Allow to close the steps */
+    canCloseSteps?: boolean
+  }
+
+  const props = withDefaults(defineProps<Props>(), {
+    modelValue: undefined,
+    steps: undefined,
+    color: 'primary',
+  })
 
   const emits = defineEmits<{
     (name: 'update:model-value', value: number): void
@@ -158,6 +199,10 @@
     }
 
     return { class: '--normal' }
+  }
+
+  function getStepIcon(step: number): Icon | string | undefined {
+    return props.steps?.[step - 1]?.icon
   }
 
   const getPropertyInStep = (property: 'title' | 'titleInfo' | 'subtitle', step: number) => {
@@ -248,6 +293,10 @@
         @apply maz-cursor-not-allowed;
       }
 
+      &.--disabled {
+        @apply maz-text-gray-400 dark:maz-text-gray-500;
+      }
+
       &.--is-current-step {
         @apply maz-cursor-default;
       }
@@ -325,14 +374,14 @@
     }
 
     &__content {
-      @apply maz-ml-[2rem] maz-border-l maz-border-transparent maz-py-2 maz-pl-8;
+      @apply maz-ml-[1.95rem] maz-border-l-2 maz-border-transparent maz-py-2 maz-pl-8;
 
       &__wrapper {
         @apply maz-py-2;
       }
 
       &:not(.--no-border) {
-        @apply maz-border-color-lighter;
+        @apply maz-border-color-light dark:maz-border-color-lighter;
       }
     }
   }

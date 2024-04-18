@@ -25,7 +25,9 @@ description: MazStepper is a standalone UI component customizable, reactive for 
     <form @submit.prevent="nextStep">
       <MazInput v-model="email" label="E-mail" type="email" autocomplete="new-email" name="new-email" />
       <br />
+      <br />
       <MazInput v-model="password" label="password" type="password" autocomplete="new-password" name="new-password" />
+      <br />
       <br />
       <MazBtn type="submit">
         Sign-In
@@ -45,14 +47,15 @@ description: MazStepper is a standalone UI component customizable, reactive for 
   <template #content-2="{ nextStep, previousStep }">
     <MazInput v-model="address" label="Delivery address" />
     <br />
-    <MazBtn @click="previousStep" color="secondary">
-      Previous
-    </MazBtn>
     <br />
-    <br />
-    <MazBtn @click="nextStep">
-      Validate
-    </MazBtn>
+    <div class="maz-flex maz-gap-4">
+      <MazBtn @click="previousStep" color="secondary">
+        Previous
+      </MazBtn>
+      <MazBtn @click="nextStep">
+        Validate
+      </MazBtn>
+    </div>
   </template>
 
   <template #title-3>
@@ -64,14 +67,15 @@ description: MazStepper is a standalone UI component customizable, reactive for 
   <template #content-3="{ nextStep, previousStep }">
     <MazInput label="Credit card number" type="number" />
     <br />
-    <MazBtn @click="previousStep" color="secondary">
-      Previous
-    </MazBtn>
     <br />
-    <br />
-    <MazBtn @click="nextStep">
-      Payment
-    </MazBtn>
+    <div class="maz-flex maz-gap-4">
+      <MazBtn @click="previousStep" color="secondary">
+        Previous
+      </MazBtn>
+      <MazBtn @click="nextStep">
+        Payment
+      </MazBtn>
+    </div>
   </template>
 </MazStepper>
 
@@ -155,33 +159,13 @@ description: MazStepper is a standalone UI component customizable, reactive for 
 
 :::
 
-## Models
-
-::: info
-
-`step` property model
-
-```ts
-type Steps = Array<{
-  title?: string
-  subtitle?: string
-  titleInfo?: string
-  disabled?: boolean
-  error?: boolean
-  success?: boolean
-  warning?: boolean
-}>
-```
-
-::::
-
 ## Use `step` property instead of slots
 
 Displayed steps are generated with the slots `<template #content-1 />`, but you can provide its title, subtitle and title-info with the `steps` props
 
 <MazStepper
   :steps="[
-    { title: 'Title 1', subtitle: 'Subtitle 1', titleInfo: 'Info 1' },
+    { title: 'Title 1', subtitle: 'Subtitle 1', titleInfo: 'Info 1', },
     { title: 'Title 2', subtitle: 'Subtitle 2', titleInfo: 'Info 2' },
     { title: 'Title 3', subtitle: 'Subtitle 3', titleInfo: 'Info 3' },
     { title: 'Title 4', subtitle: 'Subtitle 4', titleInfo: 'Info 4' },
@@ -406,10 +390,28 @@ Click on step titles to toggle content
   <template #content-3> Content 3 </template>
 </MazStepper>
 
+## Types
+
+`step` property model
+
+```ts
+type Steps = Array<{
+  title?: string
+  subtitle?: string
+  titleInfo?: string
+  disabled?: boolean
+  error?: boolean
+  success?: boolean
+  warning?: boolean
+}>
+```
+
 <script setup lang="ts">
   import { ref } from 'vue'
   const currentStep = ref(2)
   const address = ref('20 Cooper Square')
+
+  import Icon from 'maz-ui/icons/arrow-up.svg'
 
   const email = ref()
   const password = ref()
