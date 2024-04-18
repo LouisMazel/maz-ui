@@ -235,7 +235,9 @@
     openList: typeof openList
     closeList: typeof closeList
   }>({
+    /** Method to open the option list */
     openList,
+    /** Method to close the option list */
     closeList,
   })
 
