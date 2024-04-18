@@ -1,5 +1,17 @@
 # Change Log
 
+## v3.40.1...v3.40.2
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.40.1...v3.40.2)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazStepper - add missing import of MazIcon component ([5ba14df3](https://github.com/LouisMazel/maz-ui/commit/5ba14df3))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.40.0...v3.40.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.40.0...v3.40.1)
