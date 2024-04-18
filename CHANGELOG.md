@@ -1,5 +1,21 @@
 # Change Log
 
+## v3.40.0...v3.40.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.40.0...v3.40.1)
+
+### 💅 Refactors
+
+- **maz-ui:** MazStepper - disabled step has gray text title and add new slot and option to replace step number by icon ([5ec1e23d](https://github.com/LouisMazel/maz-ui/commit/5ec1e23d))
+
+### 📖 Documentation
+
+- MazSelect - add documentation about exposed methods ([9e65d426](https://github.com/LouisMazel/maz-ui/commit/9e65d426))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.39.1...v3.40.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.39.1...v3.40.0)
