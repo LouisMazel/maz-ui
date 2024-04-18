@@ -29,7 +29,10 @@
             -->
             <slot :name="`icon-${step}`">
               <template v-if="getStepIcon(step)">
-                <MazIcon v-if="typeof getStepIcon(step) === 'string'" :name="getStepIcon(step)" />
+                <MazIcon
+                  v-if="typeof getStepIcon(step) === 'string'"
+                  :name="getStepIcon(step) as string"
+                />
                 <Component :is="getStepIcon(step)" v-else-if="getStepIcon(step)" />
               </template>
               <template v-else>
@@ -129,6 +132,7 @@
   }
   export type Steps = Step[]
 
+  const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
   const MazTransitionExpand = defineAsyncComponent(() => import('./MazTransitionExpand.vue'))
   const CheckCircleIcon = defineAsyncComponent(() => import('./../icons/check-circle.svg'))
   const ExclamationCircleIcon = defineAsyncComponent(

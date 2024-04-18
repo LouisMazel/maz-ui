@@ -169,7 +169,7 @@
     target?: string
     href?: string
     to?: RouteLocationRaw
-    class?: string
+    class?: unknown
   } & Record<string, unknown>
 
   export type Props = {
@@ -181,11 +181,19 @@
     open?: boolean
     /** id of the menu */
     id?: string
-    /** Should open the dropdown on click, hover or both */
+    /** Should open the dropdown on click, hover or both
+     * @default 'both'
+     */
     trigger?: 'click' | 'hover' | 'both'
-    /** Button color */
+    /**
+     * Button color
+     * @default 'transparent'
+     */
     color?: Color
-    /** Position of the dropdown */
+    /**
+     * Position of the dropdown
+     * @default 'bottom left'
+     */
     position?: Position
     /** Disable close menu on menuitem clicked */
     noCloseOnClick?: boolean
@@ -193,7 +201,10 @@
     disabled?: boolean
     /** Remove chevron icon in main button */
     noChevron?: boolean
-    /** Description read by screen reader (accessibility) */
+    /**
+     * Description read by screen reader (accessibility)
+     * @default 'Open menu dropdown'
+     */
     screenReaderDescription?: string
   }
 
@@ -205,7 +216,7 @@
     trigger: 'both',
     color: 'transparent',
     position: 'bottom left',
-    screenReaderDescription: 'Menu Dropdown',
+    screenReaderDescription: 'Open menu dropdown',
   })
 
   const emits = defineEmits([
