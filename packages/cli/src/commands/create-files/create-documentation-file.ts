@@ -28,17 +28,23 @@ description: ${filename} is a standalone component
 
 ## Basic usage
 
-<${filename} />
-
-\`\`\`vue
-<template>
+<ComponentDemo>
   <${filename} />
-</template>
 
-<script lang="ts" setup>
-  import ${filename} from 'maz-ui/components/${filename}'
-</script>
-\`\`\`
+  <template #code>
+
+  \`\`\`vue
+  <template>
+    <${filename} />
+  </template>
+
+  <script lang="ts" setup>
+    import ${filename} from 'maz-ui/components/${filename}'
+  </script>
+  \`\`\`
+
+  </template>
+</ComponentDemo>
 
 <!--@include: ./../.vitepress/generated-docs/${filenameKebab}.doc.md-->
 `

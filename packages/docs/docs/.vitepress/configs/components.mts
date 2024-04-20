@@ -33,6 +33,7 @@ export const components = {
       text: 'UI',
       items: [
         { text: 'MazAccordion', link: '/components/maz-accordion' },
+        { text: 'MazAnimatedCounter', link: '/components/maz-animated-counter' },
         { text: 'MazAvatar', link: '/components/maz-avatar' },
         { text: 'MazBadge', link: '/components/maz-badge' },
         { text: 'MazBackdrop', link: '/components/maz-backdrop' },
