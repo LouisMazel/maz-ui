@@ -5,7 +5,7 @@
     class="m-btn"
     :class="[
       `--${size}`,
-      `--rounded-${roundedSize}`,
+      ...[!fab && roundedSize && `--rounded-${roundedSize}`],
       btnColorClass,
       cursorClass,
       variantClass,
@@ -374,7 +374,7 @@
       }
 
       &.--mini {
-        @apply maz-rounded maz-px-1 maz-text-xs;
+        @apply maz-px-1 maz-text-xs;
 
         padding-top: 0.2rem;
         padding-bottom: 0.2rem;
