@@ -62,7 +62,7 @@
     noElevation: false,
     color: 'primary',
     padding: true,
-    contentClass: 'maz-p-4',
+    contentClass: undefined,
     contentStyle: undefined,
     innerOpacity: 0.95,
   })
@@ -107,8 +107,6 @@
 <style lang="postcss" scoped>
   .m-card-spotlight {
     @apply maz-relative maz-inline-block maz-overflow-hidden maz-rounded maz-p-[var(--maz-border-width)];
-
-    /* background-color: v-bind('alphaColor20'); */
 
     .inner {
       @apply maz-relative maz-h-full maz-w-full maz-overflow-hidden maz-rounded;
