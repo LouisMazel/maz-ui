@@ -118,7 +118,7 @@ export default defineConfig({
     }
   },
 
-  transformHead: async ({ siteConfig, siteData, pageData, title, description, head }) => {
+  transformHead: async ({ siteConfig, siteData, pageData, title, description, head, assets }) => {
 
     // const baseUrl = 'https://maz-ui.com'
 

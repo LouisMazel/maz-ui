@@ -1,6 +1,6 @@
 import 'maz-ui/tailwindcss/tailwind.css'
 
-import DefaultTheme from 'vitepress/theme'
+import DefaultTheme from 'vitepress/theme-without-fonts'
 import { inBrowser } from 'vitepress'
 import googleAnalytics from 'vitepress-plugin-google-analytics'
 
