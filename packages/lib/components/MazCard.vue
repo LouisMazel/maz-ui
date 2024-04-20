@@ -14,24 +14,22 @@
     ]"
   >
     <Component
-      :is="collapsable ? 'button' : 'div'"
-      v-if="$slots['header'] || header || collapsable"
+      :is="isCollapsible ? 'button' : 'div'"
+      v-if="$slots['header'] || header || isCollapsible"
       class="m-card__header maz-border-b maz-border-solid"
       :class="[
-        isOpen
-          ? 'maz-rounded-t maz-border-color-light dark:maz-border-color-lighter'
-          : 'maz-border-transparent',
-        { '--is-collapsable': collapsable },
-        { 'maz-justify-end': (!$slots['header'] || !header) && collapsable },
+        isOpen ? 'maz-rounded-t maz-border-color-light' : 'maz-border-transparent',
+        { '--is-collapsible': isCollapsible },
+        { 'maz-justify-end': (!$slots['header'] || !header) && isCollapsible },
         { 'maz-justify-between': $slots['header'] || header },
       ]"
       tabindex="-1"
-      @click.stop="collapsable ? (isOpen = !isOpen) : undefined"
+      @click.stop="isCollapsible ? (isOpen = !isOpen) : undefined"
     >
       <slot v-if="$slots['header'] || header" name="header">{{ header }}</slot>
 
       <MazBtn
-        v-if="collapsable"
+        v-if="isCollapsible"
         color="transparent"
         class="maz-ml-2 maz-text-sm"
         size="xs"
@@ -64,10 +62,10 @@
         />
       </div>
       <div class="maz-min-w-0 maz-flex-1">
-        <Component :is="collapsable ? MazTransitionExpand : 'div'">
+        <Component :is="isCollapsible ? MazTransitionExpand : 'div'">
           <div
             v-show="isOpen"
-            :class="[wrapperClass, { 'maz-p-4': !noPadding && !collapsable }]"
+            :class="[wrapperClass, { 'maz-p-4': !noPadding && !isCollapsible }]"
             class="m-card__content__wrapper"
           >
             <slot>
@@ -90,8 +88,7 @@
       class="m-card__footer maz-overflow-x-auto maz-p-3"
       :class="[
         {
-          'maz-border-t maz-border-color-light dark:maz-border-color-lighter':
-            isColumnVariant && haveSomeContent,
+          'maz-border-t maz-border-color-light': isColumnVariant && haveSomeContent,
         },
         footerAlignClass,
       ]"
@@ -139,7 +136,7 @@
     elevation?: boolean
     /** Set radius to card */
     radius?: boolean
-    /** Set border to card */
+    /** Set border to card (in dark mode, the card is always bordered) */
     bordered?: boolean
     /** Number of images shown in the gallery */
     imagesShowCount?: number
@@ -153,8 +150,14 @@
     noPadding?: boolean
     /** Hide overflow */
     overflowHidden?: boolean
-    /** Card can be open and close */
+    /**
+     * @deprecated Use `collapsible` instead
+     */
     collapsable?: boolean
+    /**
+     * Card can be open and close
+     */
+    collapsible?: boolean
     /** Card is open by default if `true` */
     collapseOpen?: boolean
     /** Title of the card in header */
@@ -183,14 +186,16 @@
 
   const slots = useSlots()
 
-  const isOpen = ref(props.collapsable ? props.collapseOpen : true)
+  const isCollapsible = computed(() => props.collapsible || props.collapsable)
+
+  const isOpen = ref(isCollapsible.value ? props.collapseOpen : true)
 
   const isLinked = computed(() => props.href || props.to)
 
   watch(
     () => props.collapseOpen,
     (value) => {
-      if (props.collapsable) isOpen.value = value
+      if (isCollapsible.value) isOpen.value = value
     },
   )
 
@@ -219,7 +224,7 @@
 
 <style lang="postcss" scoped>
   .m-card {
-    @apply maz-relative maz-inline-flex maz-max-h-full maz-flex-col maz-bg-color dark:maz-border dark:maz-border-color-lighter;
+    @apply maz-relative maz-inline-flex maz-max-h-full maz-flex-col maz-bg-color dark:maz-border dark:maz-border-color-light;
 
     &.--block {
       @apply maz-w-full;
@@ -228,7 +233,7 @@
     &__header {
       @apply maz-flex maz-items-center maz-px-4 maz-py-3 maz-transition-colors maz-duration-200;
 
-      &.--is-collapsable {
+      &.--is-collapsible {
         @apply hover:maz-bg-color-light;
       }
     }

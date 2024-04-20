@@ -26,10 +26,10 @@ describe('components/MazCard.vue', () => {
     expect(header.text()).toContain('Card Header')
   })
 
-  it('toggles collapsable state on header click', async () => {
+  it('toggles collapsible state on header click', async () => {
     const wrapper = mount(MazCard, {
       props: {
-        collapsable: true,
+        collapsible: true,
       },
     })
 
@@ -73,7 +73,7 @@ describe('components/MazCard.vue', () => {
         bordered: true,
         elevation: true,
         orientation: 'row',
-        collapsable: true,
+        collapsible: true,
         collapseOpen: false,
         scale: false,
         href: './',
@@ -84,6 +84,7 @@ describe('components/MazCard.vue', () => {
 
     expect(wrapper.classes()).toContain('maz-elevation')
     expect(wrapper.classes()).toContain('maz-rounded')
+    expect(wrapper.find('button').classes()).toContain('--is-collapsible')
     expect(wrapper.classes()).toContain('maz-border')
     expect(wrapper.classes()).toContain('m-card--linked')
     expect(wrapper.classes()).toContain('m-card--no-scale')

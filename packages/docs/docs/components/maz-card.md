@@ -215,11 +215,11 @@ When you display images, you can change the orientation of the card, available o
 
 :::
 
-## Collapsable
+## Collapsible
 
-Use props: `collapsable` & `collapse-open`
+Use props: `collapsible` & `collapse-open`
 
-<MazCard collapsable style="width: 100%; margin-bottom: 16px;">
+<MazCard collapsible style="width: 100%; margin-bottom: 16px;">
   <template #header>
     <h4 style="margin: 0">
       Lorem Ipsum is simply
@@ -234,7 +234,7 @@ Use props: `collapsable` & `collapse-open`
   </template>
 </MazCard>
 
-<MazCard collapsable collapse-open style="width: 100%;">
+<MazCard collapsible collapse-open style="width: 100%;">
   <template #header>
     <h4 style="margin: 0">
       Lorem Ipsum is simply
@@ -252,7 +252,7 @@ Use props: `collapsable` & `collapse-open`
 ::: details View code
 
 ```html
-<MazCard collapsable style="width: 100%; margin-bottom: 16px;">
+<MazCard collapsible style="width: 100%; margin-bottom: 16px;">
   <template #header>
     <h4 style="margin: 0">
       Lorem Ipsum is simply
@@ -267,7 +267,7 @@ Use props: `collapsable` & `collapse-open`
   </template>
 </MazCard>
 
-<MazCard collapsable collapse-open style="width: 100%;">
+<MazCard collapsible collapse-open style="width: 100%;">
   <template #header>
     <h4 style="margin: 0">
       Lorem Ipsum is simply
