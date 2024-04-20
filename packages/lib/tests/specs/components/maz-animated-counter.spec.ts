@@ -16,7 +16,7 @@ describe('MazAnimatedCounter', () => {
     await wrapper.setProps({ count: 10, prefix: '$' })
 
     // Vérifier que le texte initial rendu contient le préfixe, le compteur et le suffixe
-    expect(wrapper.text()).toContain('$10')
+    expect(wrapper.find('.maz-sr-only').text()).toBe('$ 10')
 
     // Attendre la fin de l'animation initiale
     await new Promise((resolve) => setTimeout(resolve, 100))
@@ -29,7 +29,7 @@ describe('MazAnimatedCounter', () => {
     await wrapper.setProps({ count: 10, suffix: '%' })
 
     // Vérifier que le texte initial rendu contient le préfixe, le compteur et le suffixe
-    expect(wrapper.text()).toContain('10%')
+    expect(wrapper.find('.maz-sr-only').text()).toBe('10 %')
 
     // Mettre à jour le compteur
     await wrapper.setProps({ count: 20 })

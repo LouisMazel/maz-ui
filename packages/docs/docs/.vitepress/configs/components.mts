@@ -42,6 +42,7 @@ export const components = {
         { text: 'MazCardSpotlight', link: '/components/maz-card-spotlight' },
         { text: 'MazCarousel', link: '/components/maz-carousel' },
         { text: 'MazChart', link: '/components/maz-chart' },
+        { text: 'MazCircularProgressBar', link: '/components/maz-circular-progress-bar' },
         { text: 'MazDropdown', link: '/components/maz-dropdown' },
         { text: 'MazFullscreenLoader', link: '/components/maz-fullscreen-loader' },
         { text: 'MazDialog', link: '/components/maz-dialog' },

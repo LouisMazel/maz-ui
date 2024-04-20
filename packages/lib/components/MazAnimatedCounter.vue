@@ -3,16 +3,22 @@
     class="m-animated-counter"
     :class="{
       '--animated': isAnimated,
-      '--prefixed': _prefix,
-      '--suffixed': _suffix,
+      '--prefixed': hasPrefix,
+      '--suffixed': hasSuffix,
     }"
   >
-    <span class="maz-sr-only">{{ _prefix }}{{ count }}{{ _suffix }}</span>
+    <span class="maz-sr-only">
+      <slot name="prefix">{{ prefix }}</slot>
+      {{ count }}
+      <slot name="suffix">{{ suffix }}</slot>
+    </span>
 
-    <!-- @slot Prefix slot - Add a prefix next to the number (e.g: "$") -->
-    <slot name="prefix">{{ _prefix }}</slot>
-    <!-- @slot Suffix slot - Add a suffix next to the number (e.g: "%") -->
-    <slot name="suffix">{{ _suffix }}</slot>
+    <span v-if="hasPrefix || hasSuffix" class="m-animated-counter__fix">
+      <!-- @slot Prefix slot - Add a prefix next to the number (e.g: "$") -->
+      <slot name="prefix">{{ prefix }}</slot>
+      <!-- @slot Suffix slot - Add a suffix next to the number (e.g: "%") -->
+      <slot name="suffix">{{ suffix }}</slot>
+    </span>
   </span>
 </template>
 
@@ -47,8 +53,8 @@
   )
   const slots = useSlots()
 
-  const _prefix = computed(() => props.prefix || slots.prefix)
-  const _suffix = computed(() => props.suffix || slots.suffix)
+  const hasPrefix = computed(() => !!props.prefix || !!slots.prefix)
+  const hasSuffix = computed(() => !!props.suffix || !!slots.suffix)
 
   const isAnimated = ref(true)
 
