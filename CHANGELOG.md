@@ -1,5 +1,21 @@
 # Change Log
 
+## v3.40.3...v3.40.4
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.40.3...v3.40.4)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazBtn - apply rounded size only if it's not a fab button ([259a485d](https://github.com/LouisMazel/maz-ui/commit/259a485d))
+
+### 💅 Refactors
+
+- **maz-ui:** MazCardSpotlight - remove default content-class ([afcfe56f](https://github.com/LouisMazel/maz-ui/commit/afcfe56f))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.40.2...v3.40.3
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.40.2...v3.40.3)
