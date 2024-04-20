@@ -1,5 +1,25 @@
 # Change Log
 
+## v3.40.2...v3.40.3
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.40.2...v3.40.3)
+
+### 💅 Refactors
+
+- **maz-ui:** MazCardSpotlight - add default padding to content and make it more customizable ([b081380d](https://github.com/LouisMazel/maz-ui/commit/b081380d))
+- **maz-ui:** MazCard - typo correction collapsable --> collapsible and make collapsable deprecated ([684f6b99](https://github.com/LouisMazel/maz-ui/commit/684f6b99))
+- **maz-ui:** Remove focus effects on elements to use outline style of browser ([e6e7f4b7](https://github.com/LouisMazel/maz-ui/commit/e6e7f4b7))
+
+### 📖 Documentation
+
+- Update README with theme generator mention for @mazui/cli ([e0656a74](https://github.com/LouisMazel/maz-ui/commit/e0656a74))
+- Update sidebar documentation to add mention about theme generator ([c1a4ba7b](https://github.com/LouisMazel/maz-ui/commit/c1a4ba7b))
+- Improvement documentation about theme generator with @maz-ui/cli ([65809e32](https://github.com/LouisMazel/maz-ui/commit/65809e32))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.40.1...v3.40.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.40.1...v3.40.2)
