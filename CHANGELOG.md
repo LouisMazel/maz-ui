@@ -1,5 +1,18 @@
 # Change Log
 
+## v3.40.4...v3.41.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.40.4...v3.41.0)
+
+### 🚀 Enhancements
+
+- MazAnimatedCounter - new component 🎉 ([f65c3b4e](https://github.com/LouisMazel/maz-ui/commit/f65c3b4e))
+- MazCircularProgressBar - new component 🎉 ([a79d7324](https://github.com/LouisMazel/maz-ui/commit/a79d7324))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.40.3...v3.40.4
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.40.3...v3.40.4)

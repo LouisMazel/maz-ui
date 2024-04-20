@@ -1,6 +1,6 @@
 {
   "loglevel": "verbose",
-  "version": "3.40.4",
+  "version": "3.41.0",
   "command": {
     "version": {
       "allowBranch": ["master", "release/*"],
