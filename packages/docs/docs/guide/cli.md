@@ -1,5 +1,5 @@
 ---
-title: '@mazui/cli'
+title: '@mazui/cli - theme generator'
 description: CLI of maz-ui to generate CSS variables file to theming maz-ui
 ---
 
@@ -49,13 +49,36 @@ export default defineConfig({
 })
 ```
 
-## Generate file
+## Generate CSS file variables
+
+Two ways to generate the CSS file:
+
+### Run CLI command
 
 ```bash
 npx maz-ui generate-css-vars
+# or pnpx maz-ui generate-css-vars
 ```
 
-Then, the file will be generated, and you must import it in your project
+### With package.json script
+
+```json
+{
+  "scripts": {
+    "generate-css-vars": "maz-ui generate-css-vars"
+  }
+}
+```
+
+```bash
+npm run generate-css-vars
+# or yanr generate-css-vars
+# or pnpm generate-css-vars
+```
+
+Then, the file will be generated, and you must import it in your project.
+
+**Be careful, depending on the chosen colors, some variants may need to be adjusted**
 
 ## Maz-UI configuration file Typescript interface
 
@@ -86,6 +109,10 @@ interface MazUiConfig {
         bgColor?: string
       }
     }
+    /**
+     * Border color applied to components like: inputs, card, etc
+     */
+    borderColor?: string
     /**
      * Border width applied to components like: inputs, card, etc
      */

@@ -55,15 +55,36 @@ export default defineConfig({
 })
 ```
 
+## Generate CSS file variables
+
+Two ways to generate the CSS file:
+
 ### Run CLI command
 
 In your terminal, on your root folder project, run this command:
 
 ```bash
 npx maz-ui generate-css-vars
+# or pnpx maz-ui generate-css-vars
 ```
 
-The file is generated!
+### With package.json script
+
+```json
+{
+  "scripts": {
+    "generate-css-vars": "maz-ui generate-css-vars"
+  }
+}
+```
+
+```bash
+npm run generate-css-vars
+# or yanr generate-css-vars
+# or pnpm generate-css-vars
+```
+
+Then, the file will be generated, and you must import it in your project.
 
 **Be careful, depending on the chosen colors, some variants may need to be adjusted**
 
