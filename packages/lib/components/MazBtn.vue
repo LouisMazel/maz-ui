@@ -1,7 +1,7 @@
 <template>
   <Component
     :is="component"
-    :disabled="isDisabled"
+    :disabled="isDisabled || undefined"
     class="m-btn"
     :class="[
       `--${size}`,
@@ -202,7 +202,7 @@
     leftIcon: undefined,
     rightIcon: undefined,
     contentClass: undefined,
-    roundedSize: undefined,
+    roundedSize: 'lg',
   })
 
   onBeforeMount(() => {
@@ -387,8 +387,7 @@
       /* Not disabled */
 
       &:not(.--disabled) {
-        &:hover,
-        &:focus {
+        &:hover {
           @apply maz-bg-border;
         }
       }
@@ -435,8 +434,7 @@
       &.--primary {
         @apply maz-bg-primary maz-text-primary-contrast;
 
-        &:not(:disabled):hover,
-        &:not(:disabled):focus {
+        &:not(:disabled):hover {
           @apply maz-bg-primary-600;
         }
       }
@@ -444,8 +442,7 @@
       &.--secondary {
         @apply maz-bg-secondary maz-text-secondary-contrast;
 
-        &:not(:disabled):hover,
-        &:not(:disabled):focus {
+        &:not(:disabled):hover {
           @apply maz-bg-secondary-600;
         }
       }
@@ -453,8 +450,7 @@
       &.--info {
         @apply maz-bg-info maz-text-info-contrast;
 
-        &:not(:disabled):hover,
-        &:not(:disabled):focus {
+        &:not(:disabled):hover {
           @apply maz-bg-info-600;
         }
       }
@@ -462,8 +458,7 @@
       &.--success {
         @apply maz-bg-success maz-text-success-contrast;
 
-        &:not(:disabled):hover,
-        &:not(:disabled):focus {
+        &:not(:disabled):hover {
           @apply maz-bg-success-600;
         }
       }
@@ -471,8 +466,7 @@
       &.--warning {
         @apply maz-bg-warning maz-text-warning-contrast;
 
-        &:not(:disabled):hover,
-        &:not(:disabled):focus {
+        &:not(:disabled):hover {
           @apply maz-bg-warning-600;
         }
       }
@@ -480,8 +474,7 @@
       &.--danger {
         @apply maz-bg-danger maz-text-white;
 
-        &:not(:disabled):hover,
-        &:not(:disabled):focus {
+        &:not(:disabled):hover {
           @apply maz-bg-danger-600;
         }
       }
@@ -489,8 +482,7 @@
       &.--white {
         @apply maz-bg-white maz-text-white-contrast;
 
-        &:not(:disabled):hover,
-        &:not(:disabled):focus {
+        &:not(:disabled):hover {
           @apply maz-bg-gray-300;
         }
       }
@@ -498,8 +490,7 @@
       &.--black {
         @apply maz-bg-black maz-text-black-contrast;
 
-        &:not(:disabled):hover,
-        &:not(:disabled):focus {
+        &:not(:disabled):hover {
           @apply maz-bg-gray-800;
         }
       }
@@ -507,8 +498,7 @@
       &.--transparent {
         @apply maz-bg-transparent;
 
-        &:not(:disabled):hover,
-        &:not(:disabled):focus {
+        &:not(:disabled):hover {
           @apply maz-bg-[#000]/[0.08] dark:maz-bg-[#FFF]/[0.08];
         }
       }
@@ -516,8 +506,7 @@
       &.--theme {
         @apply maz-bg-theme maz-text-color;
 
-        &:not(:disabled):hover,
-        &:not(:disabled):focus {
+        &:not(:disabled):hover {
           @apply maz-bg-theme-hover;
         }
       }
@@ -527,8 +516,7 @@
       &.--primary-outline {
         @apply maz-border-primary maz-bg-primary-alpha-05 maz-text-primary;
 
-        &:not(:disabled):hover,
-        &:not(:disabled):focus {
+        &:not(:disabled):hover {
           @apply maz-bg-primary maz-text-primary-contrast;
         }
       }
@@ -536,8 +524,7 @@
       &.--secondary-outline {
         @apply maz-border-secondary maz-bg-secondary-alpha-05 maz-text-secondary;
 
-        &:not(:disabled):hover,
-        &:not(:disabled):focus {
+        &:not(:disabled):hover {
           @apply maz-bg-secondary maz-text-white;
         }
       }
@@ -545,8 +532,7 @@
       &.--info-outline {
         @apply maz-border-info maz-bg-info-alpha-05 maz-text-info;
 
-        &:not(:disabled):hover,
-        &:not(:disabled):focus {
+        &:not(:disabled):hover {
           @apply maz-bg-info maz-text-white;
         }
       }
@@ -554,8 +540,7 @@
       &.--success-outline {
         @apply maz-border-success maz-bg-success-alpha-05 maz-text-success;
 
-        &:not(:disabled):hover,
-        &:not(:disabled):focus {
+        &:not(:disabled):hover {
           @apply maz-bg-success maz-text-white;
         }
       }
@@ -563,8 +548,7 @@
       &.--danger-outline {
         @apply maz-border-danger maz-bg-danger-alpha-05 maz-text-danger;
 
-        &:not(:disabled):hover,
-        &:not(:disabled):focus {
+        &:not(:disabled):hover {
           @apply maz-bg-danger maz-text-white;
         }
       }
@@ -572,8 +556,7 @@
       &.--warning-outline {
         @apply maz-border-warning maz-bg-warning-alpha-05 maz-text-warning;
 
-        &:not(:disabled):hover,
-        &:not(:disabled):focus {
+        &:not(:disabled):hover {
           @apply maz-bg-warning maz-text-white;
         }
       }
@@ -581,8 +564,7 @@
       &.--white-outline {
         @apply maz-border-white maz-text-white;
 
-        &:not(:disabled):hover,
-        &:not(:disabled):focus {
+        &:not(:disabled):hover {
           @apply maz-bg-white maz-text-white-contrast;
         }
       }
@@ -590,8 +572,7 @@
       &.--black-outline {
         @apply maz-border-black maz-text-black;
 
-        &:not(:disabled):hover,
-        &:not(:disabled):focus {
+        &:not(:disabled):hover {
           @apply maz-bg-black maz-text-black-contrast;
         }
       }
@@ -599,8 +580,7 @@
       &.--theme-outline {
         @apply maz-border-border maz-text-theme dark:maz-border-color-lighter;
 
-        &:not(:disabled):hover,
-        &:not(:disabled):focus {
+        &:not(:disabled):hover {
           @apply maz-border-theme maz-bg-theme maz-text-color;
         }
       }
@@ -610,8 +590,7 @@
       &.--primary-pastel {
         @apply maz-bg-primary-50 maz-text-primary;
 
-        &:not(:disabled):hover,
-        &:not(:disabled):focus {
+        &:not(:disabled):hover {
           @apply maz-bg-primary maz-text-primary-contrast;
         }
       }
@@ -619,8 +598,7 @@
       &.--secondary-pastel {
         @apply maz-bg-secondary-50 maz-text-secondary;
 
-        &:not(:disabled):hover,
-        &:not(:disabled):focus {
+        &:not(:disabled):hover {
           @apply maz-bg-secondary maz-text-secondary-contrast;
         }
       }
@@ -628,8 +606,7 @@
       &.--info-pastel {
         @apply maz-bg-info-50 maz-text-info;
 
-        &:not(:disabled):hover,
-        &:not(:disabled):focus {
+        &:not(:disabled):hover {
           @apply maz-bg-info maz-text-info-contrast;
         }
       }
@@ -637,8 +614,7 @@
       &.--success-pastel {
         @apply maz-bg-success-50 maz-text-success;
 
-        &:not(:disabled):hover,
-        &:not(:disabled):focus {
+        &:not(:disabled):hover {
           @apply maz-bg-success maz-text-success-contrast;
         }
       }
@@ -646,8 +622,7 @@
       &.--danger-pastel {
         @apply maz-bg-danger-50 maz-text-danger;
 
-        &:not(:disabled):hover,
-        &:not(:disabled):focus {
+        &:not(:disabled):hover {
           @apply maz-bg-danger maz-text-danger-contrast;
         }
       }
@@ -655,8 +630,7 @@
       &.--warning-pastel {
         @apply maz-bg-warning-50 maz-text-warning;
 
-        &:not(:disabled):hover,
-        &:not(:disabled):focus {
+        &:not(:disabled):hover {
           @apply maz-bg-warning maz-text-warning-contrast;
         }
       }
@@ -664,8 +638,7 @@
       &.--white-pastel {
         @apply maz-bg-gray-100 maz-text-white;
 
-        &:not(:disabled):hover,
-        &:not(:disabled):focus {
+        &:not(:disabled):hover {
           @apply maz-bg-white maz-text-white-contrast;
         }
       }
@@ -673,8 +646,7 @@
       &.--black-pastel {
         @apply maz-bg-border maz-text-black;
 
-        &:not(:disabled):hover,
-        &:not(:disabled):focus {
+        &:not(:disabled):hover {
           @apply maz-bg-black maz-text-black-contrast;
         }
       }
@@ -682,8 +654,7 @@
       &.--theme-pastel {
         @apply maz-bg-border maz-text-black;
 
-        &:not(:disabled):hover,
-        &:not(:disabled):focus {
+        &:not(:disabled):hover {
           @apply maz-bg-black maz-text-black-contrast;
         }
       }

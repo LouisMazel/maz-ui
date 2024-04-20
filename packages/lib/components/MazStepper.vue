@@ -283,14 +283,14 @@
     &__header {
       @apply maz-flex maz-w-full maz-cursor-pointer maz-select-text maz-items-center
         maz-justify-between maz-space-x-4 maz-rounded maz-px-4 maz-py-2 maz-text-left
-        maz-outline-none maz-transition-colors maz-duration-200;
+        maz-transition-colors maz-duration-200;
 
       &__content {
         @apply maz-flex maz-flex-none maz-flex-col maz-items-start;
       }
 
       &:not(:disabled) {
-        @apply hover:maz-bg-color-lighter focus:maz-bg-color-lighter;
+        @apply hover:maz-bg-color-lighter hover:dark:maz-bg-color-light;
       }
 
       &:disabled {

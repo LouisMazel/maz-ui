@@ -339,8 +339,7 @@
           }
         }
 
-        &:hover,
-        &:focus {
+        &:hover {
           &:not(.--is-selected, .--is-between, .--is-between-hoverred) {
             background-color: v-bind('hoverColor') !important;
           }

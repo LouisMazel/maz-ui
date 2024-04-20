@@ -432,8 +432,7 @@
     }
 
     &.dz-clickable {
-      &:hover,
-      &:focus {
+      &:hover {
         @apply maz-border-color-lighter maz-bg-color-light;
 
         & .maz-dropzone__main-icon {

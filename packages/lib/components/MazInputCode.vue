@@ -267,13 +267,11 @@
       @apply maz-relative maz-h-[4em] maz-w-[4em] maz-overflow-hidden maz-rounded maz-border maz-border-solid maz-border-border maz-transition-colors maz-duration-200 maz-ease-in-out dark:maz-border-color-lighter dark:maz-bg-color-light;
 
       &:focus-within {
-        @apply maz-outline-none;
-
         border-color: v-bind('borderColor');
       }
 
       input {
-        @apply maz-h-full maz-w-full maz-bg-transparent maz-text-center maz-text-[1.5em] maz-outline-none;
+        @apply maz-h-full maz-w-full maz-bg-transparent maz-text-center maz-text-[1.5em];
       }
 
       &:has(input:disabled) {
