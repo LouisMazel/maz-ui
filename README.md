@@ -54,7 +54,7 @@ export default defineNuxtConfig({
 
 All options of the module are available [here](https://maz-ui.com/guide/nuxt)
 
-### @mazui/cli
+### @mazui/cli (theme generator)
 
 [Documentation & Commands](https://maz-ui.com/guide/cli)
 
