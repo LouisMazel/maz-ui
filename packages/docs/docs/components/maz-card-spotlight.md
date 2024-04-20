@@ -21,8 +21,8 @@ If you want to increase the border width, you must just add padding @default: `v
 
 ## Basic usage
 
-<MazCardSpotlight style="width: 500px; max-width: 100%;">
-  <div style="padding: 20px;">
+<ComponentDemo>
+  <MazCardSpotlight style="width: 500px; max-width: 100%;">
     <h3 style="margin-top: 0; margin-bottom: 30px;">
       Hover this component <br />
       To see the magic appear
@@ -30,13 +30,13 @@ If you want to increase the border width, you must just add padding @default: `v
     <MazBtn color="theme" @click="setLightTheme">
       Switch to light theme
     </MazBtn>
-  </div>
-</MazCardSpotlight>
+  </MazCardSpotlight>
 
-```vue
-<template>
-  <MazCardSpotlight style="width: 500px; max-width: 100%;">
-    <div style="padding: 20px;">
+  <template #code>
+
+  ```vue
+  <template>
+    <MazCardSpotlight style="width: 500px; max-width: 100%;">
       <h3 style="margin-top: 0; margin-bottom: 30px;">
         Hover this component <br />
         To see the magic appear
@@ -44,70 +44,75 @@ If you want to increase the border width, you must just add padding @default: `v
       <MazBtn color="theme" @click="setLightTheme">
         Switch to light theme
       </MazBtn>
-    </div>
-  </MazCardSpotlight>
-</template>
+    </MazCardSpotlight>
+  </template>
 
-<script lang="ts" setup>
-  import MazCardSpotlight from 'maz-ui/components/MazCardSpotlight'
-  import { useThemeHandler } from 'maz-ui'
+  <script lang="ts" setup>
+    import MazCardSpotlight from 'maz-ui/components/MazCardSpotlight'
+    import { useThemeHandler } from 'maz-ui'
 
-  const {
-    setDarkTheme,
-    setLightTheme,
-  } = useThemeHandler()
-</script>
-```
+    const {
+      setDarkTheme,
+      setLightTheme,
+    } = useThemeHandler()
+  </script>
+  ```
+
+  </template>
+</ComponentDemo>
 
 ## Effect with multiple cards and with secondary color
 
-<div class="maz-grid maz-gap-4 maz-grid-cols-1 mob-l:maz-grid-cols-2 tab-l:maz-grid-cols-3">
-  <MazCardSpotlight v-for="competition of competitions" :key="competition.label" color="secondary">
-    <div style="display: flex; padding: 15px;">
-      <MazAvatar
-        v-if="competition.areaEnsignUrl"
-        :src="competition.areaEnsignUrl"
-        style="margin-right: 16px;"
-        size="0.8rem"
-      />
-      <div style="display: flex; flex-direction: column;" class="maz-truncate">
-        <span class="maz-truncate">
-          {{ competition.label }}
-        </span>
-        <span class="maz-truncate">
-          {{ competition.area }}
-        </span>
+<ComponentDemo>
+  <div class="maz-grid maz-gap-4 maz-grid-cols-1 mob-l:maz-grid-cols-2 tab-l:maz-grid-cols-3">
+    <MazCardSpotlight v-for="competition of competitions" :key="competition.label" color="secondary">
+      <div style="display: flex;">
+        <MazAvatar
+          v-if="competition.areaEnsignUrl"
+          :src="competition.areaEnsignUrl"
+          style="margin-right: 16px;"
+          size="0.8rem"
+        />
+        <div style="display: flex; flex-direction: column;" class="maz-truncate">
+          <span class="maz-truncate">
+            {{ competition.label }}
+          </span>
+          <span class="maz-truncate">
+            {{ competition.area }}
+          </span>
+        </div>
       </div>
-    </div>
-  </MazCardSpotlight>
-</div>
+    </MazCardSpotlight>
+  </div>
 
-::: details View code
+  <template #code>
 
-```html
-<div class="grid gap-4 grid-cols-1 mob-l:grid-cols-2 tab-l:grid-cols-3">
-  <MazCardSpotlight v-for="competition of competitions" :key="competition.label" color="secondary">
-    <div class="flex p-4">
-      <MazAvatar
-        v-if="competition.areaEnsignUrl"
-        :src="competition.areaEnsignUrl"
-        style="margin-right: 16px;"
-        size="0.8rem"
-      />
-      <div class="truncate flex column">
-        <span class="truncate">
-          {{ competition.label }}
-        </span>
-        <span class="truncate">
-          {{ competition.area }}
-        </span>
+  ```html
+  <div class="grid gap-4 grid-cols-1 mob-l:grid-cols-2 tab-l:grid-cols-3">
+    <MazCardSpotlight v-for="competition of competitions" :key="competition.label" color="secondary">
+      <div class="flex p-4">
+        <MazAvatar
+          v-if="competition.areaEnsignUrl"
+          :src="competition.areaEnsignUrl"
+          style="margin-right: 16px;"
+          size="0.8rem"
+        />
+        <div class="truncate flex column">
+          <span class="truncate">
+            {{ competition.label }}
+          </span>
+          <span class="truncate">
+            {{ competition.area }}
+          </span>
+        </div>
       </div>
-    </div>
-  </MazCardSpotlight>
-</div>
-```
+    </MazCardSpotlight>
+  </div>
+  ```
 
-:::
+  </template>
+</ComponentDemo>
+
 <!--@include: ./../.vitepress/generated-docs/maz-card-spotlight.doc.md-->
 
 <script lang="ts" setup>

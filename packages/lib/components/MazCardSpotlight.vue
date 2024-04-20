@@ -1,49 +1,86 @@
 <template>
   <div
-    class="m-card"
+    class="m-card-spotlight"
     :class="{ 'maz-elevation': !noElevation }"
     :style="{ backgroundColor: alphaColor20 }"
   >
     <div class="inner">
-      <div class="content">
+      <div class="content" :class="[{ 'maz-p-4': padding }, contentClass]">
         <slot></slot>
       </div>
     </div>
-    <div ref="blobElement" class="blob" :style="{ backgroundColor: alphaColor }"></div>
-    <div ref="fakeblobElement" class="fakeblob"></div>
+    <div
+      v-show="blobVisible"
+      ref="blobElement"
+      class="blob"
+      :style="{ backgroundColor: alphaColor }"
+    ></div>
+    <div v-show="blobVisible" ref="fakeblobElement" class="fakeblob"></div>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { ref, onMounted, onUnmounted, computed } from 'vue'
+  import { ref, onMounted, onUnmounted, computed, type HTMLAttributes, type StyleValue } from 'vue'
   import type { Color } from './types'
 
   export type { Color }
 
   export type Props = {
-    /** The color of the component. */
+    /**
+     * The color of the component.
+     * @default primary
+     */
     color?: Color
-    /** Remove the elevation of the component. */
+    /**
+     * Remove the elevation of the component
+     * @default false
+     */
     noElevation?: boolean
+    /**
+     * Add padding to the content
+     * @default true
+     */
+    padding?: boolean
+    /**
+     * The classes to apply to the content div
+     */
+    contentClass?: HTMLAttributes['class']
+    /**
+     * Style apply to the content div
+     */
+    contentStyle?: StyleValue
+    /**
+     * The opacity of the inner div - should be between 0 and 1
+     * When 0 the spotlight is completely visible
+     * When 1 the spotlight is only visible on borders
+     * @default 0.95
+     */
+    innerOpacity?: number
   }
 
   const props = withDefaults(defineProps<Props>(), {
     noElevation: false,
     color: 'primary',
+    padding: true,
+    contentClass: 'maz-p-4',
+    contentStyle: undefined,
+    innerOpacity: 0.95,
   })
 
   const blobElement = ref<HTMLDivElement>()
   const fakeblobElement = ref<HTMLDivElement>()
+  const blobVisible = ref<boolean>(false)
 
-  function animateBlob(event: MouseEvent) {
+  function animateBlob({ clientX, clientY }: { clientX: number; clientY: number }) {
+    blobVisible.value = true
     const rec = fakeblobElement.value?.getBoundingClientRect()
 
     if (rec) {
       blobElement.value?.animate?.(
         [
           {
-            transform: `translate(${event.clientX - rec.left - rec.width / 2}px,${
-              event.clientY - rec.top - rec.height / 2
+            transform: `translate(${clientX - rec.left - rec.width / 2}px,${
+              clientY - rec.top - rec.height / 2
             }px)`,
           },
         ],
@@ -68,23 +105,25 @@
 </script>
 
 <style lang="postcss" scoped>
-  .m-card {
+  .m-card-spotlight {
     @apply maz-relative maz-inline-block maz-overflow-hidden maz-rounded maz-p-[var(--maz-border-width)];
 
-    background-color: v-bind('alphaColor20');
+    /* background-color: v-bind('alphaColor20'); */
 
     .inner {
-      @apply maz-relative maz-overflow-hidden maz-rounded;
+      @apply maz-relative maz-h-full maz-w-full maz-overflow-hidden maz-rounded;
 
       &::before {
         content: '';
 
-        @apply maz-absolute maz-left-0 maz-top-0 maz-z-1 maz-h-full maz-w-full maz-bg-color maz-opacity-[0.9];
+        @apply maz-absolute maz-left-0 maz-top-0 maz-z-1 maz-h-full maz-w-full maz-bg-color;
+
+        opacity: v-bind('innerOpacity');
       }
     }
 
     .content {
-      @apply maz-relative maz-z-2;
+      @apply maz-relative maz-z-2 maz-h-full maz-w-full;
     }
 
     .blob {

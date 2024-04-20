@@ -8,7 +8,7 @@ describe('MazCardSpotlight', () => {
     await wrapper.vm.$nextTick()
 
     expect(wrapper.exists()).toBe(true)
-    expect(wrapper.classes()).toContain('m-card')
+    expect(wrapper.classes()).toContain('m-card-spotlight')
     expect(wrapper.classes()).toContain('maz-elevation')
   })
 

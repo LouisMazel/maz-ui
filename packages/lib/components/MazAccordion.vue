@@ -21,7 +21,7 @@
             :aria-labelledby="`step-${step}-${instanceId}`"
             :aria-hidden="!isStepOpen(step)"
           >
-            <div class="maz-p-4">
+            <div class="maz-pt-4">
               <slot name="content" :is-open="isStepOpen(step)"></slot>
               <slot :name="`content-${step}`" :is-open="isStepOpen(step)"> </slot>
             </div>
@@ -97,7 +97,7 @@
     }
 
     .header {
-      @apply maz-inline-flex maz-w-full maz-items-center maz-justify-between maz-gap-4 maz-px-4 maz-py-4 maz-text-left maz-transition-colors maz-duration-300 maz-ease-in-out;
+      @apply maz-inline-flex maz-w-full maz-items-center maz-justify-between maz-gap-4 maz-text-left maz-transition-colors maz-duration-300 maz-ease-in-out;
 
       .header-icon {
         @apply maz-transition-transform maz-duration-300 maz-ease-in-out;
