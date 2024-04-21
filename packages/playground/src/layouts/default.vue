@@ -10,7 +10,7 @@
 
           <MazDropdown id="dropdown" color="transparent" position="bottom right">
             <span class="maz-capitalize">
-              {{ selectedTheme }}
+              {{ theme }}
             </span>
 
             <template #dropdown>
@@ -18,13 +18,25 @@
                 <MazBtn color="transparent" content-class="maz-text-nowrap" @click="autoSetTheme">
                   Auto
                 </MazBtn>
-                <MazBtn color="transparent" content-class="maz-text-nowrap" @click="setDarkTheme">
+                <MazBtn
+                  color="transparent"
+                  content-class="maz-text-nowrap"
+                  @click="selectedTheme = 'dark'"
+                >
                   Dark
                 </MazBtn>
-                <MazBtn color="transparent" content-class="maz-text-nowrap" @click="setLightTheme">
+                <MazBtn
+                  color="transparent"
+                  content-class="maz-text-nowrap"
+                  @click="selectedTheme = 'light'"
+                >
                   Light
                 </MazBtn>
-                <MazBtn color="transparent" content-class="maz-text-nowrap" @click="setSystemTheme">
+                <MazBtn
+                  color="transparent"
+                  content-class="maz-text-nowrap"
+                  @click="selectedTheme = 'system'"
+                >
                   System
                 </MazBtn>
               </div>
@@ -47,8 +59,7 @@
     return sleep(20000)
   }
 
-  const { autoSetTheme, setSystemTheme, setLightTheme, setDarkTheme, selectedTheme } =
-    useThemeHandler()
+  const { autoSetTheme, selectedTheme, theme } = useThemeHandler()
 
   autoSetTheme()
 </script>

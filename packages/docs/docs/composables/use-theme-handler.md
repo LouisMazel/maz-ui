@@ -19,7 +19,7 @@ description: Vue composable for handling UI theme - Automatically sets dark and 
         :color="hasDarkTheme ? 'secondary' : 'primary'"
         :class="theme === 'dark' ? '!maz-outline !maz-outline-offset-2 !maz-outline-secondary' : ''"
         size="lg"
-        @click="setDarkTheme"
+        @click="selectedTheme = 'dark'"
       />
     </div>
     <div class="maz-flex maz-flex-center maz-flex-col maz-text-center maz-gap-2">
@@ -30,7 +30,7 @@ description: Vue composable for handling UI theme - Automatically sets dark and 
         :color="hasLightTheme ? 'secondary' : 'primary'"
         :class="theme === 'light' ? '!maz-outline !maz-outline-offset-2 !maz-outline-secondary' : ''"
         size="lg"
-        @click="setLightTheme"
+        @click="selectedTheme = 'light'"
       />
     </div>
     <div class="maz-flex maz-flex-center maz-flex-col maz-text-center maz-gap-2">
@@ -40,7 +40,7 @@ description: Vue composable for handling UI theme - Automatically sets dark and 
         fab
         :color="hasSystemTheme ? 'secondary' : 'primary'"
         size="lg"
-        @click="setSystemTheme"
+        @click="selectedTheme = 'system'"
       />
     </div>
     <div class="maz-flex maz-flex-center maz-flex-col maz-text-center maz-gap-2">
@@ -258,9 +258,6 @@ type ThemeHandler = {
   const {
     autoSetTheme,
     toggleTheme,
-    setDarkTheme,
-    setLightTheme,
-    setSystemTheme,
     theme,
     hasDarkTheme,
     hasLightTheme,

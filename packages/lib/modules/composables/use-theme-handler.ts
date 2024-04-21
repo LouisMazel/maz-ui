@@ -1,5 +1,5 @@
 import { isClient } from './../helpers/is-client'
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 
 export type StrictThemeHandlerOptions = {
   /**
@@ -239,6 +239,25 @@ export function useThemeHandler(opts?: ThemeHandlerOptions) {
       window
         .matchMedia('(prefers-color-scheme: dark)')
         .removeEventListener('change', themeWatchHandler)
+    }
+  })
+
+  watch(selectedTheme, (value) => {
+    localStorage[globalOptions.storageThemeKey] = value
+
+    switch (value) {
+      case globalOptions.storageThemeValueDark: {
+        setDarkTheme(globalOptions)
+        break
+      }
+      case globalOptions.storageThemeValueLight: {
+        setLightTheme(globalOptions)
+        break
+      }
+      case globalOptions.storageThemeValueSystem: {
+        setSytemTheme(globalOptions)
+        break
+      }
     }
   })
 
