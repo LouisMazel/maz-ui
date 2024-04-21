@@ -1,5 +1,17 @@
 # Change Log
 
+## v3.41.0...v3.41.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.41.0...v3.41.1)
+
+### 💅 Refactors
+
+- **maz-ui:** UseThemeHandler - add watcher to update theme when you set selectedTheme value ([888d2b67](https://github.com/LouisMazel/maz-ui/commit/888d2b67))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.40.4...v3.41.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.40.4...v3.41.0)
