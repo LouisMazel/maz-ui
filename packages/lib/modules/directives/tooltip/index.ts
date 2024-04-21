@@ -3,18 +3,18 @@ import { type DirectiveBinding, type ObjectDirective, type Plugin } from 'vue'
 import './style.css'
 import { type Color } from '../../../components/types'
 
+type vTooltipColor = Exclude<Color, 'transparent'> | 'default' | 'light' | 'dark'
+
 type vTooltipOptions = {
   position?: 'top' | 'bottom' | 'left' | 'right'
+  color?: vTooltipColor
 }
-
-type vTooltipColor = Exclude<Color, 'transparent'> | 'default' | 'light' | 'dark'
 
 type vTooltipBindingValue =
   | string
   | ({
       text: string
       open?: boolean
-      color?: vTooltipColor
     } & vTooltipOptions)
 
 const defaultOptions: vTooltipOptions = {
@@ -112,12 +112,12 @@ const plugin = {
       ...options,
     } satisfies vTooltipOptions
 
-    const instance = new TooltipHandler(finalOptions)
+    const appInstance = new TooltipHandler(finalOptions)
 
     app.directive('tooltip', {
-      beforeMount: instance.create.bind(instance),
-      updated: instance.update.bind(instance),
-      unmounted: instance.remove.bind(instance),
+      beforeMount: appInstance.create.bind(appInstance),
+      updated: appInstance.update.bind(appInstance),
+      unmounted: appInstance.remove.bind(appInstance),
     })
   },
 } satisfies Plugin<vTooltipOptions>
