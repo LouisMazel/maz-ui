@@ -47,25 +47,28 @@ export default defineNuxtConfig({
 
 <NpmBadge package="unplugin-vue-components"></NpmBadge>
 
-Use [unplugin-vue-components](https://github.com/unplugin/unplugin-vue-components) and the dedicated maz-ui resolver to auto-import components
+Use [unplugin-vue-components](https://github.com/unplugin/unplugin-vue-components) and the dedicated maz-ui resolver to auto-import components and directives
 
 ```ts
 // vite.config.mts
 
 import Components from 'unplugin-vue-components/vite'
-import { UnpluginVueComponentsResolver } from 'maz-ui/resolvers'
+import { UnpluginVueComponentsResolver, UnpluginDirectivesResolver } from 'maz-ui/resolvers'
 
 export default defineConfig({
   plugins: [
     Components({
       dts: true,
-      resolvers: [UnpluginVueComponentsResolver()],
+      resolvers: [
+        UnpluginVueComponentsResolver(),
+        UnpluginDirectivesResolver(),
+      ],
     }),
   ]
 })
 ```
 
-**Typesript users**: Add this in your `tsconfig.json`
+**Typescript users**: Add this in your `tsconfig.json`
 
 ```json
 {
@@ -107,6 +110,8 @@ app.component('MazBtn', MazBtn)
 ```
 
 ### Not recommended - Fully components installation
+
+Before, you have to install all dependencies of components
 
 ```typescript
 import { createApp } from 'vue'

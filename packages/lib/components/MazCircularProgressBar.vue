@@ -46,19 +46,19 @@
         cx="50"
         cy="50"
         r="46"
-        stroke-width="6"
+        :stroke-width="strokeWidth"
         stroke-dasharray="290"
         stroke-dashoffset="290"
-        :stroke="`url(#${id}-gradient)`"
+        :stroke="stroke ? stroke : `url(#${id}-gradient)`"
         fill="none"
-        stroke-linecap="round"
+        :stroke-linecap="strokeLinecap"
       />
     </svg>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { computed, useSlots } from 'vue'
+  import { type SVGAttributes, computed, useSlots } from 'vue'
   import MazAnimatedCounter from './MazAnimatedCounter.vue'
   import { type Color } from './types'
   import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
@@ -71,7 +71,7 @@
       percentage: number
       /**
        * The size of the progress bar
-       * @default '10em'
+       * @default '10em' (equal 80px for a font-size of 16px)
        */
       size?: string
       /**
@@ -96,6 +96,23 @@
        * Suffix to display next to the number
        */
       suffix?: string
+      /**
+       * The stroke-linecap style
+       * @default 'round'
+       * @values 'butt', 'round', 'square', 'inherit'
+       */
+      strokeLinecap?: SVGAttributes['stroke-linecap']
+      /**
+       * The stroke width
+       * @default 6
+       */
+      strokeWidth?: SVGAttributes['width']
+      /**
+       * The stroke color
+       * Use this prop to override the gradient color
+       * You can use a color name or a color code
+       */
+      stroke?: SVGAttributes['stroke']
     }>(),
     {
       percentage: 0,
@@ -104,6 +121,9 @@
       color: undefined,
       prefix: undefined,
       suffix: undefined,
+      strokeLinecap: 'round',
+      strokeWidth: 6,
+      stroke: undefined,
     },
   )
 
