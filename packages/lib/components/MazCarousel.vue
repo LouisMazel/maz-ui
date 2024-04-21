@@ -93,7 +93,7 @@
     items?.scrollTo(items.scrollLeft - items.clientWidth, 0)
   }
 
-  const setScrollState = (event: UIEvent) => {
+  const setScrollState = (event: Event) => {
     const target = event.target as Element | undefined
 
     if (!target) return
