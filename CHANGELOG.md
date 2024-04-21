@@ -1,5 +1,29 @@
 # Change Log
 
+## v3.41.1...v3.42.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.41.1...v3.42.0)
+
+### 🚀 Enhancements
+
+- **maz-ui:** VToolip - new directive 🎉 ([5b46e809](https://github.com/LouisMazel/maz-ui/commit/5b46e809))
+
+### 📖 Documentation
+
+- Add documentation page of vTooltip ([a1d40d1c](https://github.com/LouisMazel/maz-ui/commit/a1d40d1c))
+
+### 🏡 Chore
+
+- **deps:** Upgrade dependencies ([26f06d9e](https://github.com/LouisMazel/maz-ui/commit/26f06d9e))
+
+### ✅ Tests
+
+- **maz-ui:** VTooltip - add integration tests ([9851e4bb](https://github.com/LouisMazel/maz-ui/commit/9851e4bb))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.41.0...v3.41.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.41.0...v3.41.1)
