@@ -4,29 +4,29 @@
   &::before {
     content: attr(data-tooltip);
 
-    @apply maz-pointer-events-none maz-absolute maz-z-default-backdrop maz-w-max maz-min-w-28 maz-max-w-52 maz-rounded maz-border maz-p-1 maz-text-center maz-transition-all maz-duration-200 maz-elevation;
+    @apply maz-pointer-events-none maz-absolute maz-z-default-backdrop maz-w-max maz-min-w-28 maz-max-w-52 maz-rounded maz-border maz-px-2 maz-py-1 maz-text-center maz-transition-all maz-duration-200 maz-elevation;
   }
 
   &--default::before {
     @apply maz-border-color-light maz-bg-color maz-text-normal dark:maz-border-color-lighter dark:maz-bg-color-light;
   }
   &--primary::before {
-    @apply maz-border-primary maz-bg-primary maz-text-primary-contrast;
+    @apply maz-border-primary-600 maz-bg-primary maz-text-primary-contrast;
   }
   &--secondary::before {
-    @apply maz-border-secondary maz-bg-secondary maz-text-secondary-contrast;
+    @apply maz-border-secondary-600 maz-bg-secondary maz-text-secondary-contrast;
   }
   &--success::before {
-    @apply maz-border-success maz-bg-success maz-text-success-contrast;
+    @apply maz-border-success-600 maz-bg-success maz-text-success-contrast;
   }
   &--warning::before {
-    @apply maz-border-warning maz-bg-warning maz-text-warning-contrast;
+    @apply maz-border-warning-600 maz-bg-warning maz-text-warning-contrast;
   }
   &--danger::before {
-    @apply maz-border-danger maz-bg-danger maz-text-danger-contrast;
+    @apply maz-border-danger-600 maz-bg-danger maz-text-danger-contrast;
   }
   &--info::before {
-    @apply maz-border-info maz-bg-info maz-text-info-contrast;
+    @apply maz-border-info-600 maz-bg-info maz-text-info-contrast;
   }
   &--light::before {
     @apply maz-border-light maz-bg-light maz-text-dark;

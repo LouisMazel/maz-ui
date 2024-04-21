@@ -112,7 +112,7 @@ export interface MazUiNuxtOptions {
    */
   installVLazyImg?: boolean | vLazyImgOptions
   /**
-   * Globally install of v-lazy-img directive
+   * Globally install of v-tooltip directive
    * @default false
    */
   installVTooltip?: boolean | vTooltipOptions
