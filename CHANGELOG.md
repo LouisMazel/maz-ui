@@ -1,5 +1,17 @@
 # Change Log
 
+## v3.42.0...v3.42.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.42.0...v3.42.1)
+
+### 🩹 Fixes
+
+- **maz-ui:** Copy declaration file types of resolvers in dist build ([38fe2d0b](https://github.com/LouisMazel/maz-ui/commit/38fe2d0b))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.41.1...v3.42.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.41.1...v3.42.0)
