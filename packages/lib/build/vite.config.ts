@@ -15,7 +15,7 @@ import replace from 'replace-in-file'
 import { getComponentList } from './get-component-list'
 
 import { libInjectCss } from 'vite-plugin-lib-inject-css'
-import { copyFileSync } from 'node:fs'
+import { cpSync } from 'node:fs'
 
 import { fileURLToPath } from 'node:url'
 
@@ -174,14 +174,7 @@ const run = async () => {
     await execPromise('pnpm -F maz-ui gen:declaration-files')
 
     copyAndTransformComponentsTypesFiles()
-    copyFileSync(
-      resolve('./dist/types/resolvers/index.d.ts'),
-      resolve('./dist/resolvers/index.d.ts'),
-    )
-    copyFileSync(
-      resolve('./dist/types/resolvers/unplugin-vue-components-resolver.d.ts'),
-      resolve('./dist/resolvers/unplugin-vue-components-resolver.d.ts'),
-    )
+    cpSync(resolve('./dist/types/resolvers'), resolve('./dist/resolvers'), { recursive: true })
 
     await generateLibComponentsEntryFile()
 
