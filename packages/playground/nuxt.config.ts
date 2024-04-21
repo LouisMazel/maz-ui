@@ -1,5 +1,4 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-// @ts-expect-error
 import postcss from 'maz-ui/postcss.config.cjs'
 import svgLoader from 'vite-svg-loader'
 
@@ -38,6 +37,9 @@ export default defineNuxtConfig({
     injectUseTimer: true,
     installVZoomImg: true,
     installVLazyImg: true,
+    installVTooltip: {
+      position: 'top',
+    },
     installVClickOutside: true,
     installVFullscreenImg: true,
     devtools: true,

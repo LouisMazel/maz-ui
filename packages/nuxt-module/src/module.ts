@@ -3,7 +3,13 @@ import { defineNuxtModule, addPlugin, createResolver, addImports, addComponent }
 import { defu } from 'defu'
 import { fileURLToPath } from 'node:url'
 
-import type { AosOptions, ToasterOptions, ThemeHandlerOptions, vLazyImgOptions } from 'maz-ui'
+import type {
+  AosOptions,
+  ToasterOptions,
+  ThemeHandlerOptions,
+  vLazyImgOptions,
+  vTooltipOptions,
+} from 'maz-ui'
 import { getComponentList } from './../../lib/build/get-component-list'
 
 export interface MazUiNuxtOptions {
@@ -105,6 +111,11 @@ export interface MazUiNuxtOptions {
    * @default false
    */
   installVLazyImg?: boolean | vLazyImgOptions
+  /**
+   * Globally install of v-lazy-img directive
+   * @default false
+   */
+  installVTooltip?: boolean | vTooltipOptions
   /**
    * Enable auto-import of all components
    * @default true
@@ -250,6 +261,10 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     if (moduleOptions.installVFullscreenImg) {
       addPlugin(resolve(_dirname, './runtime/plugins/v-fullscreen-img'))
+    }
+
+    if (moduleOptions.installVTooltip) {
+      addPlugin(resolve(_dirname, './runtime/plugins/v-tooltip'))
     }
 
     if (moduleOptions.injectUseThemeHandler) {

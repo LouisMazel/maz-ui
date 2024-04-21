@@ -103,8 +103,6 @@ export class LazyImg {
     const dataSrc = this.getImgElement(el).getAttribute('data-lazy-src')
     if (dataSrc) return dataSrc
 
-    binding.value
-
     return this.getSrc(binding)
   }
 
