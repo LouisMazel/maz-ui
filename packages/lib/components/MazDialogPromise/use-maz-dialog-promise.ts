@@ -14,7 +14,7 @@ export interface DialogData {
   confirmText?: string
 }
 
-const confirmDialogData = ref<DialogData>()
+const data = ref<DialogData>()
 
 const dialogState = ref<DialogState[]>([])
 
@@ -56,7 +56,7 @@ const responseDialog = (
 }
 
 export const useMazDialogPromise = () => ({
-  confirmDialogData,
+  data,
   dialogState,
   showDialogAndWaitChoice,
   removeDialogFromState,

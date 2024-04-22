@@ -4,7 +4,7 @@
     @update:model-value="rejectDialog(currentModal)"
   >
     <template #title>
-      <slot name="title">{{ data?.title }}</slot>
+      <slot name="title">{{ currentData?.title }}</slot>
     </template>
     <template #default>
       <!--
@@ -16,7 +16,7 @@
         :resolve="(reason?: string | boolean) => resolveDialog(currentModal, reason)"
         :reject="(reason?: string | boolean) => rejectDialog(currentModal, reason)"
       >
-        {{ data?.message }}</slot
+        {{ currentData?.message }}</slot
       >
     </template>
     <template #footer>
@@ -53,10 +53,10 @@
           </template>
           <template v-else>
             <MazBtn color="danger" outline @click="rejectDialog(currentModal)">
-              <slot name="cancel-text"> {{ data?.cancelText || 'Cancel' }} </slot>
+              <slot name="cancel-text"> {{ currentData?.cancelText || 'Cancel' }} </slot>
             </MazBtn>
             <MazBtn color="success" @click="resolveDialog(currentModal)">
-              <slot name="confirm-text"> {{ data?.confirmText || 'Confirm' }} </slot>
+              <slot name="confirm-text"> {{ currentData?.confirmText || 'Confirm' }} </slot>
             </MazBtn>
           </template>
         </div>
@@ -75,7 +75,7 @@
 </script>
 
 <script lang="ts" setup>
-  import { type PropType, computed, defineAsyncComponent } from 'vue'
+  import { computed, defineAsyncComponent } from 'vue'
   import { type Color, type Size } from './types'
   import {
     useMazDialogPromise,
@@ -99,16 +99,24 @@
   import MazDialog from './MazDialog.vue'
   const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 
-  const props = defineProps({
-    /** Dialog Data - type DialogData */
-    data: { type: Object as PropType<DialogData>, default: undefined },
-    /** Uniq identifier */
-    identifier: { type: String, required: true },
-    /** Custom buttons - type DialogButton[] */
-    buttons: { type: Array as PropType<DialogButton[]>, default: () => [] },
-  })
+  const props = withDefaults(
+    defineProps<{
+      /** Dialog Data - type DialogData */
+      data: DialogData
+      /** Uniq identifier */
+      identifier: string
+      /** Custom buttons - type DialogButton[] */
+      buttons: DialogButton[]
+    }>(),
+    {
+      data: undefined,
+      buttons: () => [],
+    },
+  )
 
-  const { dialogState, rejectDialog, resolveDialog } = useMazDialogPromise()
+  const { dialogState, rejectDialog, resolveDialog, data: composableData } = useMazDialogPromise()
+
+  const currentData = computed(() => props.data ?? composableData.value)
 
   const currentModal = computed(
     () => dialogState.value.find(({ id }) => id === props.identifier) as DialogState,
