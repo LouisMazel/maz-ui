@@ -1,5 +1,17 @@
 # Change Log
 
+## v3.42.1...v3.42.2
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.42.1...v3.42.2)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazDialogPromise - use dialog data from composable ([d6d53c5b](https://github.com/LouisMazel/maz-ui/commit/d6d53c5b))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.42.0...v3.42.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.42.0...v3.42.1)
