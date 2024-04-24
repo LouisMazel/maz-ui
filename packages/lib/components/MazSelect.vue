@@ -220,6 +220,7 @@
   import { debounceCallback } from '../modules/helpers/debounce-callback'
   import { useStringMatching } from '../modules/composables/use-string-matching'
   import { vClosable } from '../modules/directives'
+  import { normalizeString } from '../modules/helpers/normalize-string'
 
   const MazCheckbox = defineAsyncComponent(() => import('./MazCheckbox.vue'))
 
@@ -443,21 +444,8 @@
   const searchQuery = ref<string>('')
   const query = ref<string>('')
 
-  function normalizeString(str: string): string {
-    return str
-      .normalize('NFD')
-      .replaceAll(/[\u0300-\u036F]/g, '')
-      .replaceAll(/[^\dA-Za-z\u0400-\u04FF]/g, '')
-  }
-
   const searchInValue = (value?: ModelValueSimple, query?: string) => {
-    return (
-      query &&
-      value &&
-      normalizeString(value.toString().toLocaleLowerCase().trim()).includes(
-        normalizeString(query.toLocaleLowerCase().trim()),
-      )
-    )
+    return query && value && normalizeString(value).includes(normalizeString(query))
   }
 
   function getFilteredOptionWithQuery(query: string) {
@@ -472,11 +460,11 @@
             searchInValue(searchValue2, query) ||
             searchInValue(searchValue3, query) ||
             (typeof searchValue === 'string' &&
-              useStringMatching(searchValue, query).isMatching.value) ||
+              useStringMatching(searchValue, query, 0.5).isMatching.value) ||
             (typeof searchValue2 === 'string' &&
-              useStringMatching(searchValue2, query).isMatching.value) ||
+              useStringMatching(searchValue2, query, 0.5).isMatching.value) ||
             (typeof searchValue3 === 'string' &&
-              useStringMatching(searchValue3, query).isMatching.value)
+              useStringMatching(searchValue3, query, 0.5).isMatching.value)
           )
         })
       : optionsNormalized.value

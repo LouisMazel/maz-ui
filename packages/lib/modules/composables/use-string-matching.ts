@@ -1,4 +1,5 @@
 import { computed, type Ref } from 'vue'
+import { normalizeString } from '../helpers/normalize-string'
 
 function levenshteinDistance(string1: string, string2: string): number {
   const length1 = string1.length
@@ -26,12 +27,6 @@ function levenshteinDistance(string1: string, string2: string): number {
   }
 
   return matrix[length1][length2]
-}
-
-function normalizeString(str: string): string {
-  const normalized = str.normalize('NFD').replaceAll(/[\u0300-\u036F]/g, '')
-
-  return normalized.toLowerCase()
 }
 
 function getMatchingScore(string1: string, string2: string): number {

@@ -60,7 +60,7 @@ selectedValues: {{ selectedValues }}
 />
 ```
 
-## Search option
+## Search
 
 Use `search` property to add a search input in the options list
 

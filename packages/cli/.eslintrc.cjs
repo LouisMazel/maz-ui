@@ -21,21 +21,21 @@ module.exports = {
   rules: {
     'comma-dangle': ['error', 'always-multiline'],
     'space-before-function-paren': 'off',
-    'no-duplicate-imports': 'error',
     // TYPESCRIPT
+    'no-duplicate-imports': 'error',
     '@typescript-eslint/comma-dangle': ['error', 'always-multiline'],
-    '@typescript-eslint/space-before-function-paren': 'off',
-    '@typescript-eslint/strict-boolean-expressions': 'off',
-    '@typescript-eslint/explicit-function-return-type': 'off',
-    '@typescript-eslint/restrict-template-expressions': 'off',
-    '@typescript-eslint/member-delimiter-style': 'off',
-    '@typescript-eslint/indent': 'off',
     '@typescript-eslint/consistent-type-imports': [
       'error',
       {
         fixStyle: 'inline-type-imports',
       },
     ],
+    '@typescript-eslint/space-before-function-paren': 'off',
+    '@typescript-eslint/strict-boolean-expressions': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/restrict-template-expressions': 'off',
+    '@typescript-eslint/member-delimiter-style': 'off',
+    '@typescript-eslint/indent': 'off',
     '@typescript-eslint/no-unused-vars': [
       'error',
       {
