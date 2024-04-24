@@ -1,5 +1,17 @@
 # Change Log
 
+## v3.42.2...v3.42.3
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.42.2...v3.42.3)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazSelect - search with accented writing ([b2f2dc66e](https://github.com/LouisMazel/maz-ui/commit/b2f2dc66e))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.42.1...v3.42.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.42.1...v3.42.2)
