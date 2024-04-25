@@ -1,5 +1,17 @@
 # Change Log
 
+## v3.42.3...v3.42.4
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.42.3...v3.42.4)
+
+### 💅 Refactors
+
+- **maz-ui:** MazDialogPromise - enrich options to give more option of button actions ([6674373af](https://github.com/LouisMazel/maz-ui/commit/6674373af))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.42.2...v3.42.3
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.42.2...v3.42.3)
