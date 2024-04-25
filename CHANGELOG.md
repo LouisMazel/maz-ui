@@ -1,5 +1,17 @@
 # Change Log
 
+## v3.42.5...v3.42.6
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.42.5...v3.42.6)
+
+### 💅 Refactors
+
+- **maz-ui:** MazDialogPromise - support custom buttons from composable data ([7b31feb9a](https://github.com/LouisMazel/maz-ui/commit/7b31feb9a))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.42.4...v3.42.5
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.42.4...v3.42.5)
