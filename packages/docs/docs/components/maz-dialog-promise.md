@@ -23,9 +23,9 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
 <MazBtn @click="askToUser">Ask user</MazBtn>
 
 <MazDialogPromise
-  :data="dataPromiseOne"
   identifier="one"
 />
+
 <MazDialogPromise identifier="two" :buttons="buttons">
   <template #title>
     Do you really want to delete this user?
@@ -48,51 +48,6 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
     </MazBtn>
   </template>
 </MazDialog>
-
-<script setup lang="ts">
-  import { ref } from 'vue'
-  import { type DialogData, type DialogButton } from 'maz-ui'
-  import MazDialogPromise, {
-    useMazDialogPromise
-  } from 'maz-ui/components/MazDialogPromise.vue'
-
-  const { showDialogAndWaitChoice } = useMazDialogPromise()
-  const confirmDialog = ref(false)
-
-  const askToUser = async () => {
-    try {
-      const responseOne = await showDialogAndWaitChoice('one')
-      console.log('responseOne', responseOne)
-      const responseTwo = await showDialogAndWaitChoice('two')
-      console.log('responseTwo', responseTwo)
-      confirmDialog.value = true
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  const dataPromiseOne: DialogData = {
-    title: 'Delete user',
-    message: 'Are you sure you want to delete this user?',
-  }
-
-  const buttons: DialogButton[] = [
-    {
-      text: 'Cancel',
-      type: 'reject',
-      color: 'danger',
-      response: 'cancel',
-      size: 'sm',
-    },
-    {
-      text: 'Delete!',
-      type: 'resolve',
-      color: 'success',
-      response: 'delete',
-      size: 'lg',
-    },
-  ]
-</script>
 
 ```vue
 <template>
@@ -137,9 +92,9 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
 
   const confirmDialog = ref(false)
 
-  const { showDialogAndWaitChoice } = useMazDialogPromise()
+  const { showDialogAndWaitChoice, data } = useMazDialogPromise()
 
-  const dataPromiseOne: DialogData = {
+  data.value = {
     title: 'Delete user',
     message: 'Are you sure you want to delete this user?',
   }
@@ -149,7 +104,7 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
       text: 'Cancel',
       type: 'reject',
       color: 'danger',
-      response: 'cancel',
+      response: new Error('cancel'),
       size: 'sm',
     },
     {
@@ -161,15 +116,21 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
     },
   ]
 
-  const askToUser = async () => {
+  async function askToUser () {
     try {
       const responseOne = await showDialogAndWaitChoice('one')
-      console.log('responseOne', responseOne)
+      toast.success(responseOne, {
+        position: 'top-right'
+      })
       const responseTwo = await showDialogAndWaitChoice('two')
-      console.log('responseTwo', responseTwo)
+      toast.success(responseTwo, {
+        position: 'top-right'
+      })
       confirmDialog.value = true
     } catch (error) {
-      console.log(error)
+      toast.error(error.message ?? error, {
+        position: 'top-right'
+      })
     }
   }
 </script>
@@ -213,3 +174,55 @@ type Size = 'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 ```
 
 <!--@include: ./../.vitepress/generated-docs/maz-dialog-promise.doc.md-->
+
+<script setup lang="ts">
+  import { ref } from 'vue'
+  import { type DialogData, type DialogButton, useToast } from 'maz-ui'
+  import MazDialogPromise, {
+    useMazDialogPromise
+  } from 'maz-ui/components/MazDialogPromise.vue'
+
+  const { showDialogAndWaitChoice, data } = useMazDialogPromise()
+  const confirmDialog = ref(false)
+  const toast = useToast()
+
+  async function askToUser () {
+    try {
+      const responseOne = await showDialogAndWaitChoice('one')
+      toast.success(responseOne, {
+        position: 'top-right'
+      })
+      const responseTwo = await showDialogAndWaitChoice('two')
+      toast.success(responseTwo, {
+        position: 'top-right'
+      })
+      confirmDialog.value = true
+    } catch (error) {
+      toast.error(error.message, {
+        position: 'top-right'
+      })
+    }
+  }
+
+  data.value = {
+    title: 'Delete user',
+    message: 'Are you sure you want to delete this user?',
+  }
+
+  const buttons: DialogButton[] = [
+    {
+      text: 'Cancel',
+      type: 'reject',
+      color: 'danger',
+      response: new Error('cancel'),
+      size: 'sm',
+    },
+    {
+      text: 'Delete!',
+      type: 'resolve',
+      color: 'success',
+      response: 'delete',
+      size: 'lg',
+    },
+  ]
+</script>

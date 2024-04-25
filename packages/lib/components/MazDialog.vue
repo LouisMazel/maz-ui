@@ -1,7 +1,7 @@
 <template>
   <MazBackdrop
     v-bind="backdropAttrs"
-    :persistent="persistent"
+    :persistent
     transition-name="modal-anim"
     aria-labelledby="dialogTitle"
     aria-describedby="dialogDesc"

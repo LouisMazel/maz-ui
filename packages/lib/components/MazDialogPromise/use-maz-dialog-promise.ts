@@ -1,4 +1,5 @@
 import { ref } from 'vue'
+import { type Color, type Size } from './../types'
 
 export interface DialogState {
   id: string
@@ -7,14 +8,71 @@ export interface DialogState {
   reject?: (reason?: unknown) => void
 }
 
-export interface DialogData {
-  title: string
-  message: string
-  cancelText?: string
-  confirmText?: string
+export type DialogButton = {
+  text?: string
+  block?: boolean
+  color?: Color
+  disabled?: boolean
+  loading?: boolean
+  outline?: boolean
+  rounded?: boolean
+  size?: Size
 }
 
-const data = ref<DialogData>()
+export type CustomDialogButton = DialogButton & {
+  text: string
+  type: 'resolve' | 'reject'
+  response?: unknown
+}
+
+export interface DialogData {
+  /**
+   * Dialog title
+   */
+  title?: string
+  /**
+   * Dialog message
+   */
+  message?: string
+  /**
+   * Dialog cancel text
+   * @default 'Cancel'
+   */
+  cancelText?: string
+  /**
+   * Dialog cancel button
+   */
+  cancelButton?: false | DialogButton
+  /**
+   * Dialog confirm text
+   * @default 'Confirm'
+   */
+  confirmText?: string
+  /**
+   * Dialog confirm button
+   */
+  confirmButton?: false | DialogButton
+  /**
+   * Dialog custom buttons
+   */
+  buttons?: DialogButton[]
+}
+
+export const defaultData = {
+  cancelText: 'Cancel',
+  confirmText: 'Confirm',
+  cancelButton: {
+    text: 'Cancel',
+    color: 'danger',
+    outline: true,
+  },
+  confirmButton: {
+    text: 'Confirm',
+    color: 'success',
+  },
+} satisfies DialogData
+
+const data = ref<DialogData>(defaultData)
 
 const dialogState = ref<DialogState[]>([])
 
@@ -25,9 +83,9 @@ const showDialogAndWaitChoice = (identifier: string, callback?: () => unknown) =
       {
         id: identifier,
         isActive: true,
-        resolve: async () => {
+        resolve: async (response: unknown) => {
           await callback?.()
-          resolve(true)
+          resolve(response)
         },
         reject,
       },
@@ -43,16 +101,18 @@ const removeDialogFromState = (identifier: string) => {
 const responseDialog = (
   type: 'resolve' | 'reject',
   currentDialog: DialogState,
-  response: string | boolean = false,
+  response: unknown = false,
 ) => {
-  if (currentDialog) {
-    currentDialog[type]?.(response)
-    currentDialog.isActive = false
-
-    setTimeout(() => {
-      removeDialogFromState(currentDialog.id)
-    }, 500)
+  if (!currentDialog) {
+    return
   }
+
+  currentDialog[type]?.(response)
+  currentDialog.isActive = false
+
+  setTimeout(() => {
+    removeDialogFromState(currentDialog.id)
+  }, 500)
 }
 
 export const useMazDialogPromise = () => ({
@@ -60,8 +120,8 @@ export const useMazDialogPromise = () => ({
   dialogState,
   showDialogAndWaitChoice,
   removeDialogFromState,
-  rejectDialog: (currentDialog: DialogState, response: string | boolean = 'cancel') =>
+  rejectDialog: (currentDialog: DialogState, response: unknown = new Error('cancel')) =>
     responseDialog('reject', currentDialog, response),
-  resolveDialog: (currentDialog: DialogState, response: string | boolean = 'accept') =>
+  resolveDialog: (currentDialog: DialogState, response: unknown = 'accept') =>
     responseDialog('resolve', currentDialog, response),
 })
