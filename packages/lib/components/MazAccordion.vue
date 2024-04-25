@@ -1,9 +1,9 @@
 <template>
   <div class="m-accordion" role="presentation">
     <template v-for="step in stepCount" :key="step">
-      <MazCardSpotlight class="spotlight">
+      <MazCardSpotlight class="m-accordion__spotlight" :padding="false">
         <button
-          class="header"
+          class="m-accordion__header"
           :aria-controls="`step-${step}-${instanceId}`"
           :aria-expanded="isStepOpen(step)"
           @click="selectStep(step)"
@@ -21,7 +21,7 @@
             :aria-labelledby="`step-${step}-${instanceId}`"
             :aria-hidden="!isStepOpen(step)"
           >
-            <div class="maz-pt-4">
+            <div class="m-accordion__content" :class="contentClass">
               <slot name="content" :is-open="isStepOpen(step)"></slot>
               <slot :name="`content-${step}`" :is-open="isStepOpen(step)"> </slot>
             </div>
@@ -43,11 +43,13 @@
   export type Props = {
     id?: string
     modelValue?: number
+    contentClass?: unknown
   }
 
   const props = withDefaults(defineProps<Props>(), {
     id: undefined,
     modelValue: 0,
+    contentClass: undefined,
   })
 
   const emits = defineEmits(['update:model-value'])
@@ -92,12 +94,12 @@
   .m-accordion {
     @apply maz-relative maz-inline-flex maz-flex-col maz-gap-4 maz-align-top;
 
-    .spotlight {
+    &__spotlight {
       @apply maz-w-full;
     }
 
-    .header {
-      @apply maz-inline-flex maz-w-full maz-items-center maz-justify-between maz-gap-4 maz-text-left maz-transition-colors maz-duration-300 maz-ease-in-out;
+    &__header {
+      @apply maz-inline-flex maz-w-full maz-items-center maz-justify-between maz-gap-4 maz-p-4 maz-text-left maz-transition-colors maz-duration-300 maz-ease-in-out;
 
       .header-icon {
         @apply maz-transition-transform maz-duration-300 maz-ease-in-out;
@@ -108,6 +110,10 @@
           transform: rotate(135deg);
         }
       }
+    }
+
+    &__content {
+      @apply maz-p-4;
     }
   }
 </style>
