@@ -56,13 +56,13 @@
 
   const emits = defineEmits<{
     /** emitted when modal is open */
-    (name: 'open'): void
+    open: [value: void]
     /** emitted when modal is close */
-    (name: 'close'): void
+    close: [value: void]
     /** emitted when modal is open or close */
-    (name: 'update:model-value', value: boolean): void
+    'update:model-value': [value: boolean]
     /** emitted before modal is close */
-    (name: 'before-close'): void
+    'before-close': [value: void]
   }>()
 
   export type Props = {

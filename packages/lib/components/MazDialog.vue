@@ -2,6 +2,7 @@
   <MazBackdrop
     v-bind="backdropAttrs"
     :persistent
+    :model-value="modelValue"
     transition-name="modal-anim"
     aria-labelledby="dialogTitle"
     aria-describedby="dialogDesc"
@@ -72,12 +73,14 @@
     type StyleValue,
     type HTMLAttributes,
   } from 'vue'
-  import MazBackdrop from './MazBackdrop.vue'
+  import MazBackdrop, { type Props as MazBackdropProps } from './MazBackdrop.vue'
 
   const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
   const XIcon = defineAsyncComponent(() => import('./../icons/x-mark.svg'))
 
   export type Props = {
+    /** @model Modal's model value */
+    modelValue: boolean
     /** Title of the modal in header */
     title?: string
     /** Remove the close button in header */
@@ -94,7 +97,7 @@
     persistent?: boolean
   }
 
-  withDefaults(defineProps<Props>(), {
+  withDefaults(defineProps<Props & MazBackdropProps>(), {
     title: undefined,
     noClose: false,
     width: '500px',
@@ -104,14 +107,14 @@
     persistent: false,
   })
 
-  defineEmits([
-    /** Model binding */
-    'update:model-value',
-    /** Emitted when dialog is closed (after animation) */
-    'close',
-    /** Emitted when dialog is opened (after animation) */
-    'open',
-  ])
+  defineEmits<{
+    /** emitted when modal is open */
+    open: [value: void]
+    /** emitted when modal is close */
+    close: [value: void]
+    /** emitted when modal is open or close */
+    'update:model-value': [value: boolean]
+  }>()
 
   const attrs = useAttrs()
 
