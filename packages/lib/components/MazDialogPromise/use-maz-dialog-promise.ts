@@ -55,7 +55,7 @@ export interface DialogData {
   /**
    * Dialog custom buttons
    */
-  buttons?: DialogButton[]
+  buttons?: CustomDialogButton[]
 }
 
 export const defaultData = {

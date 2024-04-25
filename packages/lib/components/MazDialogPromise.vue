@@ -31,9 +31,9 @@
         name="footer-button"
       >
         <div class="maz-flex maz-items-center maz-gap-2">
-          <template v-if="buttons.length > 0">
+          <template v-if="customButtons && customButtons.length > 0">
             <MazBtn
-              v-for="(button, i) in buttons"
+              v-for="(button, i) in customButtons"
               :key="i"
               :color="button.color"
               :size="button.size"
@@ -112,8 +112,10 @@
 
   const props = withDefaults(defineProps<Props>(), {
     data: undefined,
-    buttons: () => [],
+    buttons: undefined,
   })
+
+  const customButtons = computed(() => props.buttons ?? composableData.value.buttons)
 
   const { dialogState, rejectDialog, resolveDialog, data: composableData } = useMazDialogPromise()
 
