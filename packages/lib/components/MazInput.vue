@@ -125,7 +125,23 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup generic="T extends ModelValueSimple">
+  import {
+    computed,
+    onMounted,
+    ref,
+    defineAsyncComponent,
+    useSlots,
+    type HTMLAttributes,
+    type FunctionalComponent,
+    type ComponentPublicInstance,
+    type Component,
+    type SVGAttributes,
+  } from 'vue'
+  import { debounce as debounceFn } from './../modules/helpers/debounce'
+  import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
+  import type { ModelValueSimple } from './types'
+
   export type { Color, Size, ModelValueSimple } from './types'
 
   export type Props<T = ModelValueSimple> = {
@@ -218,26 +234,7 @@
     /** The input will be displayed in full width */
     block?: boolean
   }
-  // eslint-disable-next-line prettier/prettier
-</script>
 
-<script lang="ts" setup generic="T extends ModelValueSimple">
-  import {
-    computed,
-    onMounted,
-    ref,
-    defineAsyncComponent,
-    useSlots,
-    type HTMLAttributes,
-    type FunctionalComponent,
-    type ComponentPublicInstance,
-    type Component,
-    type SVGAttributes,
-  } from 'vue'
-
-  import { debounce as debounceFn } from './../modules/helpers/debounce'
-  import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
-  import type { Color, ModelValueSimple, Size } from './types'
   export type Icon = FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component
 
   const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
