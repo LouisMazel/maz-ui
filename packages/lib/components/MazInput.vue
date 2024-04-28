@@ -125,25 +125,9 @@
   </div>
 </template>
 
-<script lang="ts" setup generic="T extends ModelValueSimple">
-  import {
-    computed,
-    onMounted,
-    ref,
-    defineAsyncComponent,
-    useSlots,
-    type HTMLAttributes,
-    type FunctionalComponent,
-    type ComponentPublicInstance,
-    type Component,
-    type SVGAttributes,
-  } from 'vue'
-  import { debounce as debounceFn } from './../modules/helpers/debounce'
-  import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
-  import type { ModelValueSimple } from './types'
-
+<script lang="ts">
   export type { Color, Size, ModelValueSimple } from './types'
-
+  export type Icon = FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component
   export type Props<T = ModelValueSimple> = {
     /** The style of the component */
     style?: HTMLAttributes['style']
@@ -234,8 +218,24 @@
     /** The input will be displayed in full width */
     block?: boolean
   }
+</script>
 
-  export type Icon = FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component
+<script lang="ts" setup generic="T extends ModelValueSimple">
+  import {
+    computed,
+    onMounted,
+    ref,
+    defineAsyncComponent,
+    useSlots,
+    type HTMLAttributes,
+    type FunctionalComponent,
+    type ComponentPublicInstance,
+    type Component,
+    type SVGAttributes,
+  } from 'vue'
+  import { debounce as debounceFn } from './../modules/helpers/debounce'
+  import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
+  import type { Color, Size, ModelValueSimple } from './types'
 
   const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
   const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
