@@ -1,5 +1,32 @@
 # Change Log
 
+## v3.42.6...v3.42.7
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.42.6...v3.42.7)
+
+### 🩹 Fixes
+
+- Documentation deployment ([3adbb324a](https://github.com/LouisMazel/maz-ui/commit/3adbb324a))
+- **maz-ui:** MazInputTags - don't remove tags on backspace key if value ([fe63d1b26](https://github.com/LouisMazel/maz-ui/commit/fe63d1b26))
+
+### 💅 Refactors
+
+- **maz-ui:** MazAccordion - increase size of clickable area of each items ([2f0800642](https://github.com/LouisMazel/maz-ui/commit/2f0800642))
+- **maz-ui:** MazInput - type export ([99b91d43b](https://github.com/LouisMazel/maz-ui/commit/99b91d43b))
+
+### 🏡 Chore
+
+- Dependabot config - check weekly instead of daily ([44859ebaa](https://github.com/LouisMazel/maz-ui/commit/44859ebaa))
+- **deps:** Upgrade dependencies ([c5e2cabb0](https://github.com/LouisMazel/maz-ui/commit/c5e2cabb0))
+
+### 🎨 Styles
+
+- **maz-ui:** MazInputTags - tags button sizes ([9abdda9de](https://github.com/LouisMazel/maz-ui/commit/9abdda9de))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.42.5...v3.42.6
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.42.5...v3.42.6)
