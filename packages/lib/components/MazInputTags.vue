@@ -9,7 +9,7 @@
     <TransitionGroup name="maz-tags">
       <div v-for="({ tag, id }, i) in tags" :key="`tag-${i}`" class="m-input-tags__wrapper">
         <MazBtn
-          class="m-input-tags__tag !maz-h-full"
+          class="m-input-tags__tag"
           :disabled
           :size
           :color="tagsHoveredId === id || lastIdToDelete === id ? 'danger' : color"
@@ -51,7 +51,7 @@
   import MazInput from './MazInput.vue'
   import MazBtn from './MazBtn.vue'
 
-  import XIcon from './../icons/x-mark.svg'
+  import XIcon from './../icons/trash.svg'
   import type { Color, Size } from './types'
   import { truthyFilter } from '../modules/helpers/truthy-filter'
   export type { Color, Size }
@@ -159,6 +159,9 @@
   })
 
   const removeLastTag = () => {
+    if (inputValue.value || (tags.value && tags.value?.length === 0)) {
+      return
+    }
     if (currentDeleteTimeout.value) {
       clearTimeout(currentDeleteTimeout.value)
     }
@@ -182,7 +185,7 @@
 <style lang="postcss" scoped>
   .m-input-tags {
     @apply maz-relative maz-inline-flex maz-flex-wrap maz-gap-1
-      maz-overflow-hidden maz-rounded maz-border maz-bg-color maz-px-[0.5em] maz-align-top maz-transition-colors maz-duration-200 maz-ease-in-out dark:maz-bg-color-light;
+      maz-overflow-hidden maz-rounded maz-border maz-bg-color maz-p-[0.5em] maz-align-top maz-transition-colors maz-duration-200 maz-ease-in-out dark:maz-bg-color-light;
 
     &.--xl {
       @apply maz-min-h-16;
@@ -213,11 +216,11 @@
     }
 
     &__wrapper {
-      @apply maz-inline-flex maz-h-auto maz-py-1 maz-flex-center;
+      @apply maz-inline-flex maz-h-auto !maz-flex-none maz-flex-center;
     }
 
     &__tag {
-      @apply !maz-px-2 !maz-py-0;
+      @apply !maz-h-full !maz-px-2 !maz-py-2;
     }
 
     &__input {
