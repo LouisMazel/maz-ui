@@ -13,7 +13,6 @@
           :disabled
           :size
           :color="tagsHoveredId === id || lastIdToDelete === id ? 'danger' : color"
-          :right-icon="XIcon"
           @click.stop="removeTag(id)"
           @mouseenter="tagsHoveredId = id"
           @focus="tagsHoveredId = id"
@@ -21,6 +20,12 @@
           @blur="tagsHoveredId = undefined"
         >
           {{ tag }}
+
+          <template #right-icon>
+            <Transition name="maz-scale">
+              <XIcon v-show="tagsHoveredId === id || lastIdToDelete === id" />
+            </Transition>
+          </template>
         </MazBtn>
       </div>
     </TransitionGroup>
@@ -185,7 +190,7 @@
 <style lang="postcss" scoped>
   .m-input-tags {
     @apply maz-relative maz-inline-flex maz-flex-wrap maz-gap-1
-      maz-overflow-hidden maz-rounded maz-border maz-bg-color maz-p-[0.5em] maz-align-top maz-transition-colors maz-duration-200 maz-ease-in-out dark:maz-bg-color-light;
+      maz-overflow-hidden maz-rounded maz-border maz-bg-color maz-px-[0.5em] maz-py-[0.25em] maz-align-top maz-transition-colors maz-duration-200 maz-ease-in-out dark:maz-bg-color-light;
 
     &.--xl {
       @apply maz-min-h-16;

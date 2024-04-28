@@ -99,7 +99,6 @@
   } from './MazDialogPromise/use-maz-dialog-promise'
 
   import MazDialog, { type Props as MazDialogProps } from './MazDialog.vue'
-  const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 
   export type Props = {
     /** Dialog Data - type DialogData */
@@ -109,6 +108,8 @@
     /** Custom buttons - type DialogButton[] */
     buttons?: CustomDialogButton[]
   }
+
+  const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 
   const props = withDefaults(defineProps<Props & MazDialogProps>(), {
     data: undefined,
