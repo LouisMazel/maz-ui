@@ -65,14 +65,14 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, defineAsyncComponent, type PropType } from 'vue'
+  import { computed, type PropType } from 'vue'
   import type { Color } from '../types'
   import type { PickerShortcut, PickerValue } from './types'
   import type { DateTimeFormatOptions } from './utils'
 
-  const MazPickerTime = defineAsyncComponent(() => import('./MazPickerTime.vue'))
-  const MazPickerHeader = defineAsyncComponent(() => import('./MazPickerHeader.vue'))
-  const MazPickerCalendar = defineAsyncComponent(() => import('./MazPickerCalendar.vue'))
+  import MazPickerTime from './MazPickerTime.vue'
+  import MazPickerHeader from './MazPickerHeader.vue'
+  import MazPickerCalendar from './MazPickerCalendar.vue'
 
   const props = defineProps({
     modelValue: {

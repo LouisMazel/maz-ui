@@ -3,6 +3,8 @@
   "private": true,
   "scripts": {
     "dev": "nuxi dev",
+    "playground:build": "nuxi build",
+    "preview": "nuxi preview",
     "postinstall": "nuxi prepare",
     "lint": "pnpm lint:js && pnpm lint:style",
     "lint:js": "cross-env NODE_ENV=production eslint --ignore-path .gitignore --fix --ext .ts,.js,.mjs,.mts,.cjs,.vue .",
