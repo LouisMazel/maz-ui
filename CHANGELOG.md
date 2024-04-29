@@ -1,5 +1,17 @@
 # Change Log
 
+## v3.42.7...v3.42.8
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.42.7...v3.42.8)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazPicker - lazy loading of children components ([b09c35595](https://github.com/LouisMazel/maz-ui/commit/b09c35595))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.42.6...v3.42.7
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.42.6...v3.42.7)
