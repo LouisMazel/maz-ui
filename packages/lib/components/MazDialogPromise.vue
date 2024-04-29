@@ -4,6 +4,9 @@
     @update:model-value="rejectDialog(currentModal)"
   >
     <template #title>
+      <!--
+        @slot title slot - Place your title
+      -->
       <slot name="title">{{ currentData?.title }}</slot>
     </template>
     <template #default>
@@ -21,7 +24,7 @@
     </template>
     <template #footer>
       <!--
-        @slot Footer Buttons slot
+        @slot Footer slot
           @binding {Function} resolve resolve function
           @binding {Function} reject reject function
       -->
@@ -58,6 +61,9 @@
               outline
               @click="rejectDialog(currentModal)"
             >
+              <!--
+                @slot cancel-text slot - Place your cancel text
+              -->
               <slot name="cancel-text">
                 {{ cancelButtonData.text ?? currentData?.cancelText }}
               </slot>
@@ -68,6 +74,9 @@
               v-bind="confirmButtonData"
               @click="resolveDialog(currentModal)"
             >
+              <!--
+                @slot confirm-text slot - Place your confirm text
+              -->
               <slot name="confirm-text">
                 {{ confirmButtonData.text ?? currentData.confirmText }}
               </slot>
@@ -91,7 +100,7 @@
 <script lang="ts" setup>
   import { computed, defineAsyncComponent } from 'vue'
   import {
-    type CustomDialogButton,
+    type DialogCustomButton,
     useMazDialogPromise,
     type DialogData,
     type DialogState,
@@ -100,18 +109,19 @@
 
   import MazDialog, { type Props as MazDialogProps } from './MazDialog.vue'
 
-  export type Props = {
+  export interface InternalProps extends MazDialogProps {
     /** Dialog Data - @type DialogData */
     data?: DialogData
     /** Uniq identifier */
     identifier: string
-    /** Custom buttons - @type DialogButton[] */
-    buttons?: CustomDialogButton[]
-  } & MazDialogProps
+    /** Custom buttons - @type DialogCustomButton[] */
+    buttons?: DialogCustomButton[]
+  }
+  export type Props = InternalProps
 
   const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 
-  const props = withDefaults(defineProps<Props>(), {
+  const props = withDefaults(defineProps<InternalProps>(), {
     data: undefined,
     buttons: undefined,
   })

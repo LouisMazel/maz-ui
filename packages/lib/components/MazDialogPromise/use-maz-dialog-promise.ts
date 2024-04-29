@@ -19,13 +19,13 @@ export type DialogButton = {
   size?: Size
 }
 
-export type CustomDialogButton = DialogButton & {
+export type DialogCustomButton = DialogButton & {
   text: string
   type: 'resolve' | 'reject'
   response?: unknown
 }
 
-export interface DialogData {
+export type DialogData = {
   /**
    * Dialog title
    */
@@ -55,7 +55,7 @@ export interface DialogData {
   /**
    * Dialog custom buttons
    */
-  buttons?: CustomDialogButton[]
+  buttons?: DialogCustomButton[]
 }
 
 export const defaultData = {

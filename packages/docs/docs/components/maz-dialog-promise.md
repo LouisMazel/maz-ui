@@ -85,7 +85,7 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
   import { ref } from 'vue'
 
   import MazDialogPromise, {
-    useMazDialogPromise, type DialogButton, type DialogData
+    useMazDialogPromise, type DialogCustomButton, type DialogData
   } from 'maz-ui/components/MazDialogPromise'
 
   import MazDialog from 'maz-ui/components/MazDialog'
@@ -99,7 +99,7 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
     message: 'Are you sure you want to delete this user?',
   }
 
-  const buttons: DialogButton[] = [
+  const buttons: DialogCustomButton[] = [
     {
       text: 'Cancel',
       type: 'reject',
@@ -140,23 +140,53 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
 
 ```ts
 type DialogData = {
-  title: string
-  message: string
+  /**
+   * Dialog title
+   */
+  title?: string
+  /**
+   * Dialog message
+   */
+  message?: string
+  /**
+   * Dialog cancel text
+   * @default 'Cancel'
+   */
   cancelText?: string
+  /**
+   * Dialog cancel button
+   */
+  cancelButton?: false | DialogButton
+  /**
+   * Dialog confirm text
+   * @default 'Confirm'
+   */
   confirmText?: string
+  /**
+   * Dialog confirm button
+   */
+  confirmButton?: false | DialogButton
+  /**
+   * Dialog custom buttons
+   */
+  buttons?: DialogCustomButton[]
 }
 
-type DialogButton = {
-  response?: string | boolean
-  type: 'resolve' | 'reject'
+ type DialogButton = {
+  text?: string
+  block?: boolean
   color?: Color
-  size?: Size
-  text: string
-  outline?: boolean
-  rounded?: boolean
   disabled?: boolean
   loading?: boolean
-  block?: boolean
+  outline?: boolean
+  rounded?: boolean
+  size?: Size
+}
+
+type DialogCustomButton = DialogButton & {
+  text: string
+  type: 'resolve' | 'reject'
+  response?: unknown
 }
 
 type Color =
@@ -177,7 +207,7 @@ type Size = 'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 
 <script setup lang="ts">
   import { ref } from 'vue'
-  import { type DialogData, type DialogButton, useToast } from 'maz-ui'
+  import { type DialogData, type DialogCustomButton, useToast } from 'maz-ui'
   import MazDialogPromise, {
     useMazDialogPromise
   } from 'maz-ui/components/MazDialogPromise.vue'
@@ -209,7 +239,7 @@ type Size = 'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
     message: 'Are you sure you want to delete this user?',
   }
 
-  const buttons: DialogButton[] = [
+  const buttons: DialogCustomButton[] = [
     {
       text: 'Cancel',
       type: 'reject',
