@@ -80,7 +80,7 @@
 
   export type Props = {
     /** @model Modal's model value */
-    modelValue: boolean
+    modelValue?: boolean
     /** Title of the modal in header */
     title?: string
     /** Remove the close button in header */

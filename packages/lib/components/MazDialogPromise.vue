@@ -101,17 +101,17 @@
   import MazDialog, { type Props as MazDialogProps } from './MazDialog.vue'
 
   export type Props = {
-    /** Dialog Data - type DialogData */
+    /** Dialog Data - @type DialogData */
     data?: DialogData
     /** Uniq identifier */
     identifier: string
-    /** Custom buttons - type DialogButton[] */
+    /** Custom buttons - @type DialogButton[] */
     buttons?: CustomDialogButton[]
-  }
+  } & MazDialogProps
 
   const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 
-  const props = withDefaults(defineProps<Props & MazDialogProps>(), {
+  const props = withDefaults(defineProps<Props>(), {
     data: undefined,
     buttons: undefined,
   })
