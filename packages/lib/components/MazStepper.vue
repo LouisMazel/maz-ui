@@ -3,6 +3,7 @@
     <template v-for="step in stepCount" :key="step">
       <button
         v-if="hasDataForStep('title', step)"
+        :id="`header-step-${step}`"
         type="button"
         :disabled="isStepDisabled(step)"
         class="m-stepper__header"
@@ -77,27 +78,28 @@
           '--no-border': isLastStep(step),
         }"
       >
-        <MazTransitionExpand>
-          <div v-show="allStepsOpened || currentStep === step">
-            <div class="m-stepper__content__wrapper">
-              <!-- @slot content-${step} - Content of the step
+        <MazExpandAnimation
+          :model-value="allStepsOpened || currentStep === step"
+          :aria-labelledby="`header-step-${step}`"
+        >
+          <div class="m-stepper__content__wrapper">
+            <!-- @slot content-${step} - Content of the step
                 @binding {boolean} validated - If the step is validated
                 @binding {boolean} error - If the step has an error
                 @binding {boolean} warning - If the step has a warning
                 @binding {Function} previous-step - Function to go to the previous step
                 @binding {Function} next-step - Function to go to the next step
               -->
-              <slot
-                :name="`content-${step}`"
-                :validated="isStepSuccess(step)"
-                :error="isStepError(step)"
-                :warning="isStepWarning(step)"
-                :next-step="() => selectStep(step + 1)"
-                :previous-step="() => selectStep(step - 1)"
-              ></slot>
-            </div>
+            <slot
+              :name="`content-${step}`"
+              :validated="isStepSuccess(step)"
+              :error="isStepError(step)"
+              :warning="isStepWarning(step)"
+              :next-step="() => selectStep(step + 1)"
+              :previous-step="() => selectStep(step - 1)"
+            ></slot>
           </div>
-        </MazTransitionExpand>
+        </MazExpandAnimation>
       </div>
     </template>
   </div>
@@ -133,7 +135,7 @@
   export type Steps = Step[]
 
   const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
-  const MazTransitionExpand = defineAsyncComponent(() => import('./MazTransitionExpand.vue'))
+  const MazExpandAnimation = defineAsyncComponent(() => import('./MazExpandAnimation.vue'))
   const CheckCircleIcon = defineAsyncComponent(() => import('./../icons/check-circle.svg'))
   const ExclamationCircleIcon = defineAsyncComponent(
     () => import('./../icons/exclamation-circle.svg'),

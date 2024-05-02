@@ -3,6 +3,7 @@
     <template v-for="step in stepCount" :key="step">
       <MazCardSpotlight class="m-accordion__spotlight" :padding="false">
         <button
+          :id="`step-${step}-${instanceId}`"
           class="m-accordion__header"
           :aria-controls="`step-${step}-${instanceId}`"
           :aria-expanded="isStepOpen(step)"
@@ -13,20 +14,16 @@
           <Plus class="header-icon" :class="{ '--rotate': isStepOpen(step) }" />
         </button>
 
-        <MazTransitionExpand animation-duration="300ms">
-          <div
-            v-show="isStepOpen(step)"
-            :id="`step-${step}-${instanceId}`"
-            role="region"
-            :aria-labelledby="`step-${step}-${instanceId}`"
-            :aria-hidden="!isStepOpen(step)"
-          >
-            <div class="m-accordion__content" :class="contentClass">
-              <slot name="content" :is-open="isStepOpen(step)"></slot>
-              <slot :name="`content-${step}`" :is-open="isStepOpen(step)"> </slot>
-            </div>
+        <MazExpandAnimation
+          animation-duration="300ms"
+          :model-value="isStepOpen(step)"
+          :aria-labelledby="`step-${step}-${instanceId}`"
+        >
+          <div class="m-accordion__content" :class="contentClass">
+            <slot name="content" :is-open="isStepOpen(step)"></slot>
+            <slot :name="`content-${step}`" :is-open="isStepOpen(step)"> </slot>
           </div>
-        </MazTransitionExpand>
+        </MazExpandAnimation>
       </MazCardSpotlight>
     </template>
   </div>
@@ -34,7 +31,7 @@
 
 <script lang="ts" setup>
   import { computed, ref, useSlots } from 'vue'
-  import MazTransitionExpand from './MazTransitionExpand.vue'
+  import MazExpandAnimation from './MazExpandAnimation.vue'
   import MazCardSpotlight from './MazCardSpotlight.vue'
 
   import Plus from './../icons/plus.svg'

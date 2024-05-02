@@ -17,7 +17,7 @@ You can change the animation duration with the prop `animation-duration`, should
 
 <ClientOnly>
 <div class="maz-flex maz-flex-col maz-gap-3">
-  <MazCardSpotlight class="flex-1" style="padding: 16px;">
+  <MazCardSpotlight class="flex-1">
     <MazTransitionExpand>
       <div v-if="isShown" class="maz-px-4">
         <p>content 1</p>
@@ -35,7 +35,7 @@ You can change the animation duration with the prop `animation-duration`, should
       </div>
     </MazTransitionExpand>
   </MazCardSpotlight>
-  <MazCardSpotlight class="flex-1" style="padding: 16px;">
+  <MazCardSpotlight class="flex-1">
     <MazTransitionExpand>
       <div v-if="!isShown" class="maz-px-4">
         <p>content 2</p>

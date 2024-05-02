@@ -80,7 +80,7 @@
     perspective: 1000px;
 
     :deep(> *) {
-      @apply maz-duration-[v-bind(animationDuration)];
+      transition-duration: v-bind('animationDuration');
     }
   }
 </style>

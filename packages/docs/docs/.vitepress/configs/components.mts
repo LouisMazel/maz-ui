@@ -44,6 +44,7 @@ export const components = {
         { text: 'MazChart', link: '/components/maz-chart' },
         { text: 'MazCircularProgressBar', link: '/components/maz-circular-progress-bar' },
         { text: 'MazDropdown', link: '/components/maz-dropdown' },
+        { text: 'MazExpandAnimation', link: '/components/maz-expand-animation' },
         { text: 'MazFullscreenLoader', link: '/components/maz-fullscreen-loader' },
         { text: 'MazDialog', link: '/components/maz-dialog' },
         { text: 'MazDialogPromise', link: '/components/maz-dialog-promise' },
