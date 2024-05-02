@@ -1,5 +1,17 @@
 # Change Log
 
+## v3.43.0...v3.43.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.43.0...v3.43.1)
+
+### 💅 Refactors
+
+- **maz-ui:** MazExpandAnimation - remove the overflow hidden when open and animation is finished ([d85a35039](https://github.com/LouisMazel/maz-ui/commit/d85a35039))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.42.8...v3.43.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.42.8...v3.43.0)
