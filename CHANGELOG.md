@@ -1,5 +1,29 @@
 # Change Log
 
+## v3.42.8...v3.43.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.42.8...v3.43.0)
+
+### 🚀 Enhancements
+
+- MazExpandAnimation - new component 🎉 ([8c2a63d7d](https://github.com/LouisMazel/maz-ui/commit/8c2a63d7d))
+
+### 🩹 Fixes
+
+- **docs:** Vue component doc generation while building vitepress ([a5158aa73](https://github.com/LouisMazel/maz-ui/commit/a5158aa73))
+
+### 💅 Refactors
+
+- **maz-ui:** MazDialog - make modelValue prop not required ([30672744f](https://github.com/LouisMazel/maz-ui/commit/30672744f))
+
+### 🏡 Chore
+
+- **deps:** Upgrade dependencies ([83bf16363](https://github.com/LouisMazel/maz-ui/commit/83bf16363))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.42.7...v3.42.8
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.42.7...v3.42.8)
