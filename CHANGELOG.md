@@ -1,5 +1,21 @@
 # Change Log
 
+## v3.43.1...v3.43.2
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.43.1...v3.43.2)
+
+### 💅 Refactors
+
+- **maz-ui:** MazExpandAnimation - use transition event to set overflow hidden ([7198dd9d1](https://github.com/LouisMazel/maz-ui/commit/7198dd9d1))
+
+### 🏡 Chore
+
+- **deps:** Remove eslint from maz-ui's dependencies ([cdde5502e](https://github.com/LouisMazel/maz-ui/commit/cdde5502e))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.43.0...v3.43.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.43.0...v3.43.1)
