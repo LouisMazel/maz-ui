@@ -1,5 +1,17 @@
 # Change Log
 
+## v3.43.2...v3.43.3
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.43.2...v3.43.3)
+
+### 💅 Refactors
+
+- **maz-ui:** MazInputCode - keyboard accessibility - support ArrowLeft and ArrowRight to switch input ([506211965](https://github.com/LouisMazel/maz-ui/commit/506211965))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.43.1...v3.43.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.43.1...v3.43.2)
