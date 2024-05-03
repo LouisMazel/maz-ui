@@ -24,6 +24,7 @@
         :value="inputValues.get(item)"
         @input="handleNewValue($event, item)"
         @keydown="handleKeydown($event, item)"
+        @click="selectInputByIndex(item - 1)"
         @paste="setValueOnPaste"
       />
     </div>
@@ -167,6 +168,14 @@
   function handleKeydown(event: KeyboardEvent, inputIndex: number) {
     const currentInputValue = localMap.value.get(inputIndex)
 
+    if (event.key === 'ArrowRight') {
+      focusAndSelectInputByIndex(inputIndex)
+    }
+
+    if (event.key === 'ArrowLeft') {
+      focusAndSelectInputByIndex(inputIndex - 2)
+    }
+
     if (event.key === 'Backspace' && !currentInputValue) {
       const previousInputIndexToFocus = inputIndex - 1 < 0 ? 0 : inputIndex - 1
 
@@ -219,9 +228,19 @@
 
       input.focus()
       if (selectValue) {
-        input.select()
+        selectInputByIndex(index)
       }
     }, 0)
+  }
+
+  function selectInputByIndex(index: number) {
+    const input = inputList.value[index]
+
+    if (index + 1 > props.codeLength || !input) {
+      return
+    }
+
+    input.select()
   }
 
   const borderColorState = computed(() => {
