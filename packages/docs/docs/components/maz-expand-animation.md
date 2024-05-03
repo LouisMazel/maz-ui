@@ -12,7 +12,7 @@ description: MazExpandAnimation is a standalone component that allows you to ani
 ## Basic usage
 
 <ComponentDemo>
-  <MazBtn @click="visible = !visible"> Show content </MazBtn>
+  <MazBtn @click="visible = !visible"> Exec animation </MazBtn>
 
   <br />
   <br />
@@ -26,7 +26,7 @@ description: MazExpandAnimation is a standalone component that allows you to ani
 
   ```vue
   <template>
-    <MazBtn @click="visible = !visible"> Show content </MazBtn>
+    <MazBtn @click="visible = !visible"> Exec animation </MazBtn>
 
     <MazExpandAnimation v-model="visible">
       Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
@@ -52,7 +52,7 @@ description: MazExpandAnimation is a standalone component that allows you to ani
 - **timing-function**: `String` - default: `ease-in-out` - Timing function of the animation
 
 <ComponentDemo>
-  <MazBtn @click="visible2 = !visible2"> Show content </MazBtn>
+  <MazBtn @click="visible2 = !visible2"> Exec animation </MazBtn>
 
   <br />
   <br />
@@ -66,7 +66,7 @@ description: MazExpandAnimation is a standalone component that allows you to ani
 
   ```vue
   <template>
-    <MazBtn @click="visible = !visible"> Show content </MazBtn>
+    <MazBtn @click="visible = !visible"> Exec animation </MazBtn>
 
     <MazExpandAnimation v-model="visible" duration="1000ms" timing-function="linear">
       Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
