@@ -164,9 +164,6 @@ importers:
       '@mazui/cli':
         specifier: workspace:*
         version: link:../maz-cli
-      eslint:
-        specifier: ^8
-        version: 8.57.0
     devDependencies:
       '@babel/core':
         specifier: ^7.24.5
