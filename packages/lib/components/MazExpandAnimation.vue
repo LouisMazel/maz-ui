@@ -1,5 +1,6 @@
 <template>
   <div
+    ref="expandAnimationRef"
     class="m-expand-animation"
     :class="{ 'm-expand-animation--expanded': isOpen }"
     :aria-hidden="!isOpen"
@@ -18,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, ref, watch } from 'vue'
+  import { onMounted, onUnmounted, ref } from 'vue'
 
   export type Props = {
     /**
@@ -33,38 +34,36 @@
     timingFunction?: string
   }
 
-  const props = withDefaults(defineProps<Props>(), {
+  withDefaults(defineProps<Props>(), {
     duration: '300ms',
     timingFunction: 'ease-in-out',
   })
 
-  function parseTransitionDuration(durationString: string): number {
-    durationString = durationString.trim()
-
-    if (durationString.endsWith('ms')) {
-      return Number.parseFloat(durationString)
-    }
-
-    if (durationString.endsWith('s')) {
-      return Number.parseFloat(durationString) * 1000
-    }
-
-    // Si la chaîne ne correspond à aucun des formats attendus, retourner NaN (Not a Number)
-    return Number.NaN
-  }
-
   const isOpen = defineModel<boolean>()
   const hasOverflowHidden = ref(!isOpen.value)
-  const durationValue = computed(() => parseTransitionDuration(props.duration) + 300)
 
-  watch(isOpen, (value) => {
-    if (value === true) {
-      setTimeout(() => {
-        hasOverflowHidden.value = false
-      }, durationValue.value)
-    } else {
+  const expandAnimationRef = ref<HTMLDivElement>()
+
+  function onTransitionStart() {
+    if (!isOpen.value) {
       hasOverflowHidden.value = true
     }
+  }
+
+  function onTransitionEnd() {
+    if (isOpen.value) {
+      hasOverflowHidden.value = false
+    }
+  }
+
+  onMounted(() => {
+    expandAnimationRef.value?.addEventListener('transitionstart', onTransitionStart, false)
+    expandAnimationRef.value?.addEventListener('transitionend', onTransitionEnd, false)
+  })
+
+  onUnmounted(() => {
+    expandAnimationRef.value?.removeEventListener('transitionstart', onTransitionStart, false)
+    expandAnimationRef.value?.removeEventListener('transitionend', onTransitionEnd, false)
   })
 </script>
 

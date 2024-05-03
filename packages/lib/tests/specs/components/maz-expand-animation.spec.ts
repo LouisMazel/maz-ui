@@ -2,7 +2,7 @@ import { shallowMount } from '@vue/test-utils'
 import MazExpandAnimation from '@components/MazExpandAnimation.vue'
 
 describe('MazExpandAnimation', () => {
-  it('renders with default props', async () => {
+  test('renders with default props', async () => {
     const wrapper = shallowMount(MazExpandAnimation)
 
     // Vérifier que le composant est rendu avec la classe par défaut
@@ -18,7 +18,7 @@ describe('MazExpandAnimation', () => {
     expect(wrapper.text()).toBe('')
   })
 
-  it('expands when isOpen model is true', async () => {
+  test('expands when isOpen model is true', async () => {
     const wrapper = shallowMount(MazExpandAnimation, {
       props: {
         modelValue: true,
@@ -31,7 +31,7 @@ describe('MazExpandAnimation', () => {
     expect(wrapper.attributes('aria-hidden')).toBe('false')
   })
 
-  it('collapses when isOpen model is false', async () => {
+  test('collapses when isOpen model is false', async () => {
     const wrapper = shallowMount(MazExpandAnimation, {
       props: {
         modelValue: false,
@@ -44,7 +44,7 @@ describe('MazExpandAnimation', () => {
     expect(wrapper.attributes('aria-hidden')).toBe('true')
   })
 
-  it('renders content in slot', async () => {
+  test('renders content in slot', async () => {
     const wrapper = shallowMount(MazExpandAnimation, {
       slots: {
         default: '<div>Content in slot</div>',
@@ -53,5 +53,29 @@ describe('MazExpandAnimation', () => {
 
     // Vérifier que le contenu rendu dans la fente est présent
     expect(wrapper.text()).toContain('Content in slot')
+  })
+
+  test('content has overflow hidden only if closed', async () => {
+    const wrapper = shallowMount(MazExpandAnimation, {
+      props: {
+        modelValue: true,
+      },
+      slots: {
+        default: '<div>Content in slot</div>',
+      },
+    })
+
+    expect(wrapper.find('.m-expand-animation__inner').classes('--overflow-hidden')).toBe(false)
+
+    const wrapper2 = shallowMount(MazExpandAnimation, {
+      props: {
+        modelValue: false,
+      },
+      slots: {
+        default: '<div>Content in slot</div>',
+      },
+    })
+
+    expect(wrapper2.find('.m-expand-animation__inner').classes('--overflow-hidden')).toBe(true)
   })
 })
