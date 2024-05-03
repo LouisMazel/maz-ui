@@ -118,8 +118,7 @@
     }
   },
   "dependencies": {
-    "@mazui/cli": "workspace:*",
-    "eslint": "^8"
+    "@mazui/cli": "workspace:*"
   },
   "devDependencies": {
     "@babel/core": "^7.24.5",
