@@ -5,6 +5,7 @@
     :model-value="modelValue"
     v-bind="$attrs"
     :label="inputLabel"
+    :placeholder="computedPlaceholder"
     :disabled
     :color
     :error
@@ -54,6 +55,7 @@
       class: undefined,
       style: undefined,
       label: undefined,
+      placeholder: undefined,
     },
   )
 
@@ -74,6 +76,23 @@
   const inputLabel = computed(() => {
     if (props.label) {
       return props.label
+    }
+
+    const defaultPlaceholder = props.locales.phoneInput.placeholder
+
+    if (props.noExample || !examples.value) {
+      return defaultPlaceholder
+    } else {
+      const example = getPhoneNumberExample(examples.value, selectedCountry.value)
+      return results.value?.isValid || !example
+        ? defaultPlaceholder
+        : `${props.locales.phoneInput.example} ${example}`
+    }
+  })
+
+  const computedPlaceholder = computed(() => {
+    if (props.placeholder) {
+      return props.placeholder
     }
 
     const defaultPlaceholder = props.locales.phoneInput.placeholder
