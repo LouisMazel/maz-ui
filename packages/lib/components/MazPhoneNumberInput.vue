@@ -72,7 +72,8 @@
       :locales
       :no-formatting-as-you-type
       :auto-format
-      :label="placeholder"
+      :label="label"
+      :placeholder="placeholder"
       @update:model-value="
         onPhoneNumberChanged({
           newPhoneNumber: $event,
@@ -158,6 +159,8 @@
     id?: string
     /** Placeholder of the input */
     placeholder?: string
+    /** label of the input */
+    label?: string
     /** List of country codes to place first in the select list - Ex: ['FR', 'BE', 'GE'] */
     preferredCountries?: CountryCode[]
     /** List of country codes to be removed from the select list - Ex: ['FR', 'BE', 'GE'] */
