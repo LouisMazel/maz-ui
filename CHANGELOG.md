@@ -1,5 +1,17 @@
 # Change Log
 
+## v3.43.3...v3.43.4
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.43.3...v3.43.4)
+
+### 💅 Refactors
+
+- **maz-ui:** MazPhoneNumberInput - Add possibility to choose between label or placeholder for phone number input ([#1081](https://github.com/LouisMazel/maz-ui/pull/1081))
+
+### ❤️ Contributors
+
+- Mazel <me@loicmazuel.com>
+
 ## v3.43.2...v3.43.3
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.43.2...v3.43.3)
