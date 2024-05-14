@@ -2,7 +2,7 @@
   <div
     class="m-phone-number-input"
     :class="[props.class, { '--block': block }, orientation ? `--${orientation}` : undefined]"
-    :style="style"
+    :style
   >
     <CountrySelector
       v-if="!noCountrySelector"
@@ -66,6 +66,7 @@
       :no-example
       block
       :disabled
+      v-bind="$attrs"
       :has-radius="!noCountrySelector"
       :success="success || (!noValidationSuccess ? results.isValid : false)"
       :error="error || (!noValidationError ? !!phoneNumber && !results.isValid : false)"
@@ -114,6 +115,11 @@
   import { useMazPhoneNumberInput } from './MazPhoneNumberInput/use-maz-phone-number-input'
   import { useLibphonenumber } from './MazPhoneNumberInput/use-libphonenumber'
 
+  defineOptions({
+    name: 'MazPhoneNumberInput',
+    inheritAttrs: false,
+  })
+
   const emits = defineEmits<{
     /** emitted when country or phone number changes
      * @property {String} phoneNumber - phoneNumber formatted
@@ -137,10 +143,6 @@
      */
     data: [results: Results]
   }>()
-
-  defineOptions({
-    inheritAttrs: false,
-  })
 
   export type Props = {
     /** Style attribut of the component root element */
@@ -246,6 +248,7 @@
     defaultCountryCode: undefined,
     id: undefined,
     placeholder: undefined,
+    label: undefined,
     preferredCountries: undefined,
     ignoredCountries: undefined,
     onlyCountries: undefined,
