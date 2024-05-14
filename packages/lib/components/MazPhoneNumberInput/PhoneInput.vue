@@ -2,9 +2,8 @@
   <MazInput
     :id
     ref="PhoneInputRef"
-    :model-value="modelValue"
-    v-bind="$attrs"
-    :label="inputLabel"
+    :model-value
+    v-bind="{ ...$attrs, ...inputProps }"
     :disabled
     :color
     :error
@@ -30,7 +29,13 @@
   import { ref, computed, onMounted, type ComponentPublicInstance, nextTick } from 'vue'
   import MazInput from '../MazInput.vue'
 
-  import type { Color, InjectedData, Size, Translations } from '../MazPhoneNumberInput.vue'
+  import type {
+    Color,
+    CountryCode,
+    InjectedData,
+    Size,
+    Translations,
+  } from '../MazPhoneNumberInput.vue'
   import { useLibphonenumber } from './use-libphonenumber'
   import { type Examples } from 'libphonenumber-js'
   import { injectStrict } from '../../modules/helpers/inject-strict'
@@ -42,6 +47,7 @@
       size: Size
       locales: Translations
       label?: string
+      placeholder?: string
       noExample?: boolean
       disabled?: boolean
       hasRadius?: boolean
@@ -54,6 +60,7 @@
       class: undefined,
       style: undefined,
       label: undefined,
+      placeholder: undefined,
     },
   )
 
@@ -71,9 +78,14 @@
 
   const inputFocused = ref(false)
 
-  const inputLabel = computed(() => {
-    if (props.label) {
-      return props.label
+  function getCountryPhoneNumberExample(examples: Examples, selectedCountry?: CountryCode) {
+    const example = getPhoneNumberExample(examples, selectedCountry)
+    return example ? `${props.locales.phoneInput.example} ${example}` : undefined
+  }
+
+  const inputLabelOrPlaceholder = computed(() => {
+    if (props.label || props.placeholder) {
+      return props.label || props.placeholder
     }
 
     const defaultPlaceholder = props.locales.phoneInput.placeholder
@@ -81,11 +93,19 @@
     if (props.noExample || !examples.value) {
       return defaultPlaceholder
     } else {
-      const example = getPhoneNumberExample(examples.value, selectedCountry.value)
-      return results.value?.isValid || !example
-        ? defaultPlaceholder
-        : `${props.locales.phoneInput.example} ${example}`
+      const phoneExample = getCountryPhoneNumberExample(examples.value, selectedCountry.value)
+      return results.value?.isValid || !phoneExample ? defaultPlaceholder : phoneExample
     }
+  })
+
+  const inputProps = computed(() => {
+    return props.placeholder
+      ? {
+          placeholder: inputLabelOrPlaceholder.value,
+        }
+      : {
+          label: inputLabelOrPlaceholder.value,
+        }
   })
 
   const PhoneInputRef = ref<ComponentPublicInstance>()
