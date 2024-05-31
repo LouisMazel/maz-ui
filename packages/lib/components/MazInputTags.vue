@@ -22,9 +22,7 @@
           {{ tag }}
 
           <template #right-icon>
-            <Transition name="maz-scale">
-              <XIcon v-show="tagsHoveredId === id || lastIdToDelete === id" />
-            </Transition>
+            <CloseIcon v-if="tagsHoveredId === id || lastIdToDelete === id" />
           </template>
         </MazBtn>
       </div>
@@ -56,10 +54,10 @@
   import MazInput from './MazInput.vue'
   import MazBtn from './MazBtn.vue'
 
-  import XIcon from './../icons/trash.svg'
   import type { Color, Size } from './types'
   import { truthyFilter } from '../modules/helpers/truthy-filter'
   export type { Color, Size }
+  import CloseIcon from './../icons/trash.svg'
 
   defineOptions({
     inheritAttrs: false,
@@ -225,7 +223,7 @@
     }
 
     &__tag {
-      @apply !maz-h-full !maz-px-2 !maz-py-2;
+      @apply !maz-h-full !maz-px-3 !maz-py-2;
     }
 
     &__input {
