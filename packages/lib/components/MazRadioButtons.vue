@@ -6,7 +6,7 @@
     <label
       v-for="(option, i) in options"
       :key="`option-${i}-${option.value.toString()}`"
-      :for="`option-${i}-${option.value.toString()}`"
+      :for="getInputId(option, i)"
       class="m-radio-buttons__items maz-group"
       :class="[
         {
@@ -31,7 +31,7 @@
       @keydown="keyboardHandler($event, option)"
     >
       <input
-        :id="`option-${i}-${option.value.toString()}`"
+        :id="getInputId(option, i)"
         type="radio"
         :name="name"
         :value="option.value"
@@ -148,6 +148,11 @@
       event.preventDefault()
       selectOption(option)
     }
+  }
+
+  function getInputId(option: ButtonsRadioOption, index: number) {
+    const sanitizedModuleName = props.name.replaceAll(/[^\d\sA-Za-z]/g, '').replaceAll(/\s/g, '-')
+    return `option-${index}-${option.value.toString()}-${sanitizedModuleName}`
   }
 </script>
 
