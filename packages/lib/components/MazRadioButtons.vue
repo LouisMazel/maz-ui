@@ -5,8 +5,8 @@
   >
     <label
       v-for="(option, i) in options"
-      :key="`option-${i}-${option.value.toString()}`"
-      :for="`option-${i}-${option.value.toString()}`"
+      :key="`option-${i}-${option.value.toString()}-${name}`"
+      :for="`option-${i}-${option.value.toString()}-${name}`"
       class="m-radio-buttons__items maz-group"
       :class="[
         {
@@ -31,7 +31,7 @@
       @keydown="keyboardHandler($event, option)"
     >
       <input
-        :id="`option-${i}-${option.value.toString()}`"
+        :id="`option-${i}-${option.value.toString()}-${name}`"
         type="radio"
         :name="name"
         :value="option.value"
@@ -70,6 +70,7 @@
 <script lang="ts" setup>
   import { type StyleValue, defineAsyncComponent } from 'vue'
   import type { Color } from './types'
+
   const CheckCircleIcon = defineAsyncComponent(() => import('./../icons/check.svg'))
 
   export type ButtonsRadioOption = {

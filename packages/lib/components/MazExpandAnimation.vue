@@ -8,6 +8,7 @@
   >
     <div
       class="m-expand-animation__inner"
+      v-bind="$attrs"
       :class="{
         '--overflow-hidden': hasOverflowHidden,
       }"
@@ -37,6 +38,10 @@
   withDefaults(defineProps<Props>(), {
     duration: '300ms',
     timingFunction: 'ease-in-out',
+  })
+
+  defineOptions({
+    inheritAttrs: false,
   })
 
   const isOpen = defineModel<boolean>()
