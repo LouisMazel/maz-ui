@@ -11,9 +11,12 @@ import { getColors } from './utils/colors'
 
 export { getNumericScreensFromTailwind }
 
-export default {
+export const baseConfig = {
   darkMode: ['class', '[class~="dark"]'],
   content: [],
+  corePlugins: {
+    preflight: false,
+  },
   theme: {
     extend: {
       fontFamily: {
@@ -42,3 +45,7 @@ export default {
     }),
   ],
 } satisfies Config
+
+export const tailwindConfig = { ...baseConfig, corePlugins: { preflight: true } } satisfies Config
+
+export default baseConfig

@@ -1,7 +1,6 @@
 // Tailwind CSS configuration (https://tailwindcss.com/docs/configuration)
 import type { Config } from 'tailwindcss'
 import tailwindConfigBase from './tailwindcss/tailwind.config'
-import plugin from 'tailwindcss/plugin'
 
 export default <Config>{
   mode: 'build',
@@ -21,17 +20,4 @@ export default <Config>{
     preflight: false,
     container: false,
   },
-  plugins: [
-    plugin(({ addVariant }) => {
-      // @ts-expect-error
-      addVariant('em', (payload) => {
-        payload.container.walkRules((rule) => {
-          rule.selector = `.em\\:${rule.selector.slice(1)}`
-          rule.walkDecls((decl) => {
-            decl.value = decl.value.replace('rem', 'em')
-          })
-        })
-      })
-    }),
-  ],
 }
