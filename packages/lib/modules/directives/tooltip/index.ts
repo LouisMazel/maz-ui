@@ -1,11 +1,11 @@
-import { type DirectiveBinding, type ObjectDirective, type Plugin } from 'vue'
+import type { DirectiveBinding, ObjectDirective, Plugin } from 'vue'
 
 import './style.css'
-import { type Color } from '../../../components/types'
+import type { Color } from '../../../components/types'
 
 type vTooltipColor = Exclude<Color, 'transparent'> | 'default' | 'light' | 'dark'
 
-type vTooltipOptions = {
+interface vTooltipOptions {
   position?: 'top' | 'bottom' | 'left' | 'right'
   color?: vTooltipColor
 }
@@ -13,9 +13,9 @@ type vTooltipOptions = {
 type vTooltipBindingValue =
   | string
   | ({
-      text: string
-      open?: boolean
-    } & vTooltipOptions)
+    text: string
+    open?: boolean
+  } & vTooltipOptions)
 
 const defaultOptions: vTooltipOptions = {
   position: 'top',
@@ -36,11 +36,14 @@ class TooltipHandler {
   getPosition({ modifiers, value }: TooltipBinding): vTooltipOptions['position'] {
     if (modifiers.top) {
       return 'top'
-    } else if (modifiers.bottom) {
+    }
+    else if (modifiers.bottom) {
       return 'bottom'
-    } else if (modifiers.left) {
+    }
+    else if (modifiers.left) {
       return 'left'
-    } else if (modifiers.right) {
+    }
+    else if (modifiers.right) {
       return 'right'
     }
 

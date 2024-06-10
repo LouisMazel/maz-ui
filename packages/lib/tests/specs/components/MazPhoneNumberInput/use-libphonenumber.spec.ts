@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { AsYouType, getExampleNumber, isSupportedCountry, type Examples } from 'libphonenumber-js'
+import { AsYouType, type Examples, getExampleNumber, isSupportedCountry } from 'libphonenumber-js'
 
 import { useLibphonenumber } from '@components/MazPhoneNumberInput/use-libphonenumber'
 
@@ -14,13 +14,13 @@ vi.mock('libphonenumber-js', () => ({
   isSupportedCountry: vi.fn(),
 }))
 
-describe('Unit Tests for use-libphonenumber.ts', () => {
+describe('unit Tests for use-libphonenumber.ts', () => {
   describe('getPhoneNumberExample', () => {
     it('should return a phone number example for a given country code', () => {
       // Mock de la fonction getExampleNumber
-      // @ts-expect-error
+      // @ts-expect-error - test case - test case
       const examples = ref<Examples>({ US: 'lpl' })
-      // @ts-expect-error
+      // @ts-expect-error - test case - test case
       getExampleNumber.mockReturnValue({ formatNational: () => '+1 123-456-7890' })
 
       const result = getPhoneNumberExample(examples.value, 'US')
@@ -29,11 +29,11 @@ describe('Unit Tests for use-libphonenumber.ts', () => {
 
     it('should handle errors gracefully', () => {
       // Mock de la fonction getExampleNumber pour générer une erreur
-      // @ts-expect-error
+      // @ts-expect-error - test case
       getExampleNumber.mockImplementation(() => {
         throw new Error('Example number not available')
       })
-      // @ts-expect-error
+      // @ts-expect-error - test case
       const result = getPhoneNumberExample('InvalidCountryCode')
       expect(result).toBeUndefined()
     })
@@ -42,7 +42,7 @@ describe('Unit Tests for use-libphonenumber.ts', () => {
   describe('isCountryAvailable', () => {
     it('should return true for a supported country', () => {
       // Mock de la fonction isSupportedCountry
-      // @ts-expect-error
+      // @ts-expect-error - test case
       isSupportedCountry.mockReturnValue(true)
 
       const result = isCountryAvailable('US')
@@ -51,7 +51,7 @@ describe('Unit Tests for use-libphonenumber.ts', () => {
 
     it('should return false for an unsupported country', () => {
       // Mock de la fonction isSupportedCountry
-      // @ts-expect-error
+      // @ts-expect-error - test case
       isSupportedCountry.mockReturnValue(false)
 
       const result = isCountryAvailable('InvalidCountryCode')
@@ -62,10 +62,10 @@ describe('Unit Tests for use-libphonenumber.ts', () => {
   describe('getAsYouTypeFormat', () => {
     it('should return the formatted phone number for a given input', () => {
       // Mock de la classe AsYouType
-      // @ts-expect-error
+      // @ts-expect-error - test case
       AsYouType.mockImplementation(() => ({
-        // @ts-expect-error
-        input: (phoneNumber) => `Formatted: ${phoneNumber}`,
+        // @ts-expect-error - test case
+        input: phoneNumber => `Formatted: ${phoneNumber}`,
       }))
 
       const result = getAsYouTypeFormat('US', '123-456-7890')

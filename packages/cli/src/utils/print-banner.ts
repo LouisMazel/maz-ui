@@ -1,6 +1,6 @@
+import { createRequire } from 'node:module'
 import clear from 'clear'
 import figlet from 'figlet'
-import { createRequire } from 'node:module'
 import { logger } from '../../../lib/build/utils/logger'
 
 const nodeRequire = createRequire(import.meta.url)

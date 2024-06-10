@@ -1,7 +1,6 @@
 export {
   ToasterHandler,
   installToaster,
-  toastInstance,
   type ToasterOptions,
   type ToasterPosition,
   type ToasterPositions,
@@ -9,4 +8,4 @@ export {
 
 export { WaitHandler, plugin as installWait, instance as waitInstance } from './wait'
 
-export { AosHandler, plugin as installAos, instance as aosInstance, type AosOptions } from './aos'
+export { AosHandler, plugin as installAos, getInstance as getAosInstance, type AosOptions } from './aos'

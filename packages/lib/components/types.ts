@@ -2,10 +2,10 @@ export type ModelValueSimple = string | number | null | undefined | boolean
 
 export type MazGalleryImage =
   | {
-      thumbnail?: string
-      src: string
-      alt?: string
-    }
+    thumbnail?: string
+    src: string
+    alt?: string
+  }
   | string
 
 export type Color =

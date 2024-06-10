@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils'
 import MazSwitch from '@components/MazSwitch.vue'
 
-describe('MazSwitch', () => {
+describe('mazSwitch', () => {
   it('renders a checkbox input', () => {
     const wrapper = mount(MazSwitch, {
       props: {

@@ -16,7 +16,7 @@ ${include}
 `
 }
 
-export function getComponentImportTemplate({ name, path }: { name: string; path: string }) {
+export function getComponentImportTemplate({ name, path }: { name: string, path: string }) {
   return `export { default as ${name} } from './${path}'`
 }
 
@@ -55,7 +55,8 @@ export async function buildEntry({
     writeFileSync(output, file)
 
     logger.success(`[${scriptName}] ✅`)
-  } catch (error) {
+  }
+  catch (error) {
     logger.error(
       `[${scriptName}] 🔴 Error occurred while generating package components entry file`,
       error,

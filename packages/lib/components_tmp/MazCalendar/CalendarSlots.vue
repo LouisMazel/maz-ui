@@ -1,6 +1,46 @@
+<script lang="ts">
+import { Component, Prop, Vue } from 'nuxt-property-decorator'
+import CalendarSlot from './CalendarSlot.vue'
+import type { Day, DaySlot } from './types'
+
+@Component({
+  components: { CalendarSlot },
+})
+export default class CalendarSlots extends Vue {
+  @Prop({ type: Boolean, default: false })
+    noXOffset!: boolean
+
+  @Prop({ type: () => [], required: true })
+    days!: Day[]
+
+  @Prop({ default: () => [], type: Array })
+    selectedSlots!: DaySlot[]
+
+  @Prop({ default: 'LT', type: String })
+    slotFormat!: string
+
+  @Prop({ type: Boolean, default: false })
+    maxSlotsReached!: boolean
+
+  @Prop({ type: Boolean, default: false })
+    showEndDateSlot?: boolean
+
+  selectSlot(slot: DaySlot) {
+    this.$emit('select-slot', slot)
+  }
+
+  get daysWithSlotsArray() {
+    return this.days.map(day => ({
+      ...day,
+      slots: day.slots ?? [],
+    }))
+  }
+}
+</script>
+
 <template>
   <div class="calendar-slots relative flex w-full gap-2 py-2">
-    <div v-if="!noXOffset" class="w-7"></div>
+    <div v-if="!noXOffset" class="w-7" />
     <div
       v-for="({ slots }, dayIndex) in daysWithSlotsArray"
       :key="dayIndex"
@@ -17,46 +57,6 @@
         @click="selectSlot(slot)"
       />
     </div>
-    <div v-if="!noXOffset" class="w-7"></div>
+    <div v-if="!noXOffset" class="w-7" />
   </div>
 </template>
-
-<script lang="ts">
-  import { Vue, Component, Prop } from 'nuxt-property-decorator'
-  import CalendarSlot from './CalendarSlot.vue'
-  import type { Day, DaySlot } from './types'
-
-  @Component({
-    components: { CalendarSlot },
-  })
-  export default class CalendarSlots extends Vue {
-    @Prop({ type: Boolean, default: false })
-    noXOffset!: boolean
-
-    @Prop({ type: () => [], required: true })
-    days!: Day[]
-
-    @Prop({ default: () => [], type: Array })
-    selectedSlots!: DaySlot[]
-
-    @Prop({ default: 'LT', type: String })
-    slotFormat!: string
-
-    @Prop({ type: Boolean, default: false })
-    maxSlotsReached!: boolean
-
-    @Prop({ type: Boolean, default: false })
-    showEndDateSlot?: boolean
-
-    selectSlot(slot: DaySlot) {
-      this.$emit('select-slot', slot)
-    }
-
-    get daysWithSlotsArray() {
-      return this.days.map((day) => ({
-        ...day,
-        slots: day.slots ?? [],
-      }))
-    }
-  }
-</script>

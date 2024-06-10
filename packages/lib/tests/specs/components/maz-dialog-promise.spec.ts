@@ -1,7 +1,7 @@
 import { type VueWrapper, shallowMount } from '@vue/test-utils'
 import MazDialogPromise, { useMazDialogPromise } from '@components/MazDialogPromise.vue'
 
-describe('MazDialogPromise', () => {
+describe('mazDialogPromise', () => {
   let wrapper: VueWrapper<InstanceType<typeof MazDialogPromise>>
 
   const { showDialogAndWaitChoice, removeDialogFromState } = useMazDialogPromise()
@@ -24,11 +24,11 @@ describe('MazDialogPromise', () => {
     removeDialogFromState('test')
   })
 
-  test('renders the correct title', () => {
-    // @ts-ignore
+  it('renders the correct title', () => {
+    // @ts-expect-error - test case
     expect(wrapper.vm.currentModal).toBeUndefined()
     showDialogAndWaitChoice('test')
-    // @ts-ignore
+    // @ts-expect-error - test case
     expect(wrapper.vm.currentModal.id).toBeTruthy()
   })
 })

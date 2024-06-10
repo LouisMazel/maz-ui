@@ -1,4 +1,4 @@
-import { type ObjectDirective } from 'vue'
+import type { ObjectDirective } from 'vue'
 import { LazyImg, type vLazyImgBindingValue } from './lazy-img.handler'
 
 let instance: LazyImg

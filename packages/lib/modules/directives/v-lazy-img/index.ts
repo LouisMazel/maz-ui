@@ -1,6 +1,6 @@
 import type { Plugin } from 'vue'
-import { LazyImg, DEFAULT_OPTIONS } from './lazy-img.handler'
-import type { vLazyImgOptions, vLazyImgBindingValue } from './types'
+import { DEFAULT_OPTIONS, LazyImg } from './lazy-img.handler'
+import type { vLazyImgBindingValue, vLazyImgOptions } from './types'
 
 const plugin = {
   install(app, opts = {}) {

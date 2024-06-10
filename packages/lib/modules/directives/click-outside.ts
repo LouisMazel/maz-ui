@@ -1,12 +1,11 @@
-import { type ObjectDirective, type DirectiveBinding, type Plugin, nextTick } from 'vue'
+import { type DirectiveBinding, type ObjectDirective, type Plugin, nextTick } from 'vue'
 
 const UNIQUE_ID = '__maz-click-outside__'
 
-const getEventType = () => {
+function getEventType() {
   return document.ontouchstart === null ? 'touchstart' : 'click'
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type vClickOutsideBindingValue = (...args: any[]) => any
 
 type vClickOutsideDirectiveBinding = DirectiveBinding<vClickOutsideBindingValue>
@@ -28,9 +27,9 @@ async function onMounted(el: HTMLElement, binding: vClickOutsideDirectiveBinding
 
     el[UNIQUE_ID] = (event: Event) => {
       if (
-        (!el || (event.target && !el.contains(event.target as Node))) &&
-        callback &&
-        isCallbackFunction
+        (!el || (event.target && !el.contains(event.target as Node)))
+        && callback
+        && isCallbackFunction
       ) {
         return callback.call(vm, event)
       }
@@ -39,7 +38,8 @@ async function onMounted(el: HTMLElement, binding: vClickOutsideDirectiveBinding
     const eventType = getEventType()
 
     document.addEventListener(eventType, el[UNIQUE_ID], { passive: true })
-  } catch (error) {
+  }
+  catch (error) {
     console.error('[maz-ui](vClickOutside)', error)
   }
 }
@@ -49,7 +49,8 @@ function onUnmounted(el: HTMLElement) {
     const eventType = getEventType()
     document.removeEventListener(eventType, el[UNIQUE_ID], false)
     delete el[UNIQUE_ID]
-  } catch (error) {
+  }
+  catch (error) {
     console.error('[maz-ui](vClickOutside)', error)
   }
 }
@@ -60,7 +61,8 @@ function onUpdated(el: HTMLElement, binding: vClickOutsideDirectiveBinding) {
       return
     }
     onMounted(el, binding)
-  } catch (error) {
+  }
+  catch (error) {
     console.error('[maz-ui](vClickOutside)', error)
   }
 }

@@ -1,6 +1,6 @@
 // import { DomEventName } from '@vue/test-utils/dist/constants/dom-events'
 
-export const documentEmitVisibilityState = (value: 'hidden' | 'visible') => {
+export function documentEmitVisibilityState(value: 'hidden' | 'visible') {
   Object.defineProperty(document, 'visibilityState', {
     value,
     writable: true,
@@ -8,10 +8,10 @@ export const documentEmitVisibilityState = (value: 'hidden' | 'visible') => {
   documentEmitEvent('visibilitychange')
 }
 
-export const documentEmitEvent = (event: string) => {
+export function documentEmitEvent(event: string) {
   return document.dispatchEvent(new Event(event))
 }
 
-export const elementEmitEvent = (element: HTMLElement | Window, event: string) => {
+export function elementEmitEvent(element: HTMLElement | Window, event: string) {
   return element.dispatchEvent(new Event(event))
 }

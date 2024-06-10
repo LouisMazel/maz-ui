@@ -3,7 +3,7 @@ import {
   type vFullscreenImgBinding,
 } from '@modules/directives/v-fullscreen-img/fullscreen-img.handler'
 
-describe('FullscreenImgHandler', () => {
+describe('fullscreenImgHandler', () => {
   let el: HTMLElement
   let binding: any
   let handler: FullscreenImgHandler
@@ -22,7 +22,7 @@ describe('FullscreenImgHandler', () => {
     vi.restoreAllMocks()
   })
 
-  test('should set data-src and data-alt attributes', () => {
+  it('should set data-src and data-alt attributes', () => {
     el.setAttribute('src', 'https://example.com/image.jpg')
     el.setAttribute('alt', 'Alt Text')
 
@@ -33,7 +33,7 @@ describe('FullscreenImgHandler', () => {
     expect(el.classList.contains('m-fullscreen-img-instance')).toBeTruthy()
   })
 
-  test('should use value object when provided', () => {
+  it('should use value object when provided', () => {
     binding.value = { src: 'https://example.com/image.jpg', alt: 'Alt Text' }
 
     handler.create(el, binding)
@@ -42,7 +42,7 @@ describe('FullscreenImgHandler', () => {
     expect(el.getAttribute('data-alt')).toEqual('Alt Text')
   })
 
-  test('should delete class on remove', () => {
+  it('should delete class on remove', () => {
     binding.value = { src: 'https://example.com/image.jpg', alt: 'Alt Text' }
 
     handler.create(el, binding)
@@ -55,7 +55,7 @@ describe('FullscreenImgHandler', () => {
   })
 
   it('should update options', () => {
-    // @ts-expect-error
+    // @ts-expect-error - test case
     const buildOptionsSpy = vi.spyOn(handler, 'buildOptions')
 
     handler.create(el, binding)
@@ -73,16 +73,18 @@ describe('FullscreenImgHandler', () => {
   })
 
   it('should build options object with src and alt attributes from value object', () => {
-    const result = handler['buildOptions'](el, binding)
-    expect(result).toEqual({ src: binding.value, alt: null, ...handler['defaultOptions'] })
+    // @ts-expect-error - private method
+    const result = handler.buildOptions(el, binding)
+    // @ts-expect-error - private method
+    expect(result).toEqual({ src: binding.value, alt: null, ...handler.defaultOptions })
   })
 
   it('should prioritize src and alt attributes from value object over attributes of the element', () => {
     el.setAttribute('src', 'some.png')
     el.setAttribute('alt', 'some image')
-    // @ts-expect-error
+    // @ts-expect-error - private method
     const result = handler.buildOptions(el, binding)
-    // @ts-expect-error
+    // @ts-expect-error - private method
     expect(result).toEqual({ src: binding.value, alt: 'some image', ...handler.defaultOptions })
   })
 })

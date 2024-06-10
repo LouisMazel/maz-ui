@@ -1,6 +1,6 @@
 import { computed } from 'vue'
-import { type UseWindowSizeOptions, useWindowSize } from './use-window-size'
 import { getNumericScreensFromTailwind } from '../../tailwindcss/variables/breakpoints'
+import { type UseWindowSizeOptions, useWindowSize } from './use-window-size'
 
 export interface UseBreakpointsOptions extends UseWindowSizeOptions {
   initialWidth?: number
@@ -56,8 +56,8 @@ export function useBreakpoints({
   const isLargeScreen = computed(() => width.value >= numericBreakpoints[largeBreakPoint])
   const isMediumScreen = computed(
     () =>
-      width.value >= numericBreakpoints[mediumBreakPoint] &&
-      width.value < numericBreakpoints[largeBreakPoint],
+      width.value >= numericBreakpoints[mediumBreakPoint]
+      && width.value < numericBreakpoints[largeBreakPoint],
   )
   const isSmallScreen = computed(() => {
     return width.value >= 0 && width.value < numericBreakpoints[mediumBreakPoint]

@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils'
 import MazBackdrop from '@components/MazBackdrop.vue'
 import { sleep } from '@modules/index'
 
-describe('MazBackdrop', () => {
+describe('mazBackdrop', () => {
   it('opens and closes correctly', async () => {
     const wrapper = mount(MazBackdrop, {
       props: {
@@ -10,17 +10,14 @@ describe('MazBackdrop', () => {
       },
     })
     expect(wrapper.vm.present).toBe(true)
-    // @ts-ignore
     await wrapper.vm.close()
     expect(wrapper.vm.present).toBe(false)
   })
 
   it('emits events correctly', async () => {
     const wrapper = mount(MazBackdrop)
-    // @ts-ignore
     await wrapper.vm.toggleModal(true)
     expect(wrapper.vm.present).toBeTruthy()
-    // @ts-ignore
     await wrapper.vm.toggleModal(false)
     expect(wrapper.emitted()['before-close']).toBeTruthy()
     expect(wrapper.vm.present).toBeFalsy()
@@ -31,21 +28,8 @@ describe('MazBackdrop', () => {
     const wrapper = mount(MazBackdrop, {
       props: { beforeClose: spyBeforeClose },
     })
-    // @ts-ignore
     wrapper.vm.toggleModal(false)
     expect(spyBeforeClose).toHaveBeenCalled()
-  })
-
-  it('opens and closes correctly', async () => {
-    const wrapper = mount(MazBackdrop, {
-      props: {
-        modelValue: true,
-      },
-    })
-    expect(wrapper.vm.present).toBe(true)
-    // @ts-ignore
-    await wrapper.vm.close()
-    expect(wrapper.vm.present).toBe(false)
   })
 
   it('adds and removes class from document correctly', async () => {
@@ -57,10 +41,8 @@ describe('MazBackdrop', () => {
       },
     })
     expect(document.documentElement.classList.contains('--backdrop-present')).toBe(true)
-    // @ts-ignore
     await wrapper.vm.close()
     await sleep(300)
-    // @ts-ignore
     await wrapper.vm.onBackdropAnimationLeave()
     expect(document.documentElement.classList.contains('--backdrop-present')).toBe(false)
   })
@@ -72,7 +54,7 @@ describe('MazBackdrop', () => {
         noCloseOnEscKey: false,
       },
     })
-    // @ts-ignore
+    // @ts-expect-error - test case
     await wrapper.vm.onKeyPress({ key: 'Escape' })
     expect(wrapper.vm.present).toBe(false)
   })
@@ -86,7 +68,7 @@ describe('MazBackdrop', () => {
       },
     })
 
-    // @ts-ignore
+    // @ts-expect-error - test case
     await wrapper.vm.onKeyPress({ key: 'Escape' })
     expect(wrapper.vm.present).toBe(true)
   })

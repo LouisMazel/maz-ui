@@ -3,8 +3,8 @@ import MazLazyImg from '@components/MazLazyImg.vue'
 import MazIcon from '@components/MazIcon.vue'
 import { shallowMount } from '@vue/test-utils'
 
-describe('MazAvatar', () => {
-  test('Component should have expected props', () => {
+describe('mazAvatar', () => {
+  it('component should have expected props', () => {
     const wrapper = shallowMount(MazAvatar)
     const expectedProps = [
       'src',
@@ -31,7 +31,7 @@ describe('MazAvatar', () => {
     expect(Object.keys(wrapper.props())).toEqual(expectedProps)
   })
 
-  test('Component props should have correct default values', () => {
+  it('component props should have correct default values', () => {
     const wrapper = shallowMount(MazAvatar)
     expect(wrapper.props().src).toBeUndefined()
     expect(wrapper.props().caption).toBeUndefined()
@@ -50,7 +50,7 @@ describe('MazAvatar', () => {
     expect(wrapper.props().buttonColor).toBe('info')
   })
 
-  test('Component should render correctly', () => {
+  it('component should render correctly', () => {
     const wrapper = shallowMount(MazAvatar)
     expect(wrapper.find('.m-avatar').exists()).toBe(true)
     expect(wrapper.find('.m-avatar__wrapper').exists()).toBe(true)

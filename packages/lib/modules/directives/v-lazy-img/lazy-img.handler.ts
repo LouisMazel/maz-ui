@@ -1,4 +1,5 @@
 import type { ClassOptions, vLazyImgBinding, vLazyImgOptions } from './types'
+
 export * from './types'
 
 const EMPTY_PHOTO = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
@@ -101,7 +102,8 @@ export class LazyImg {
 
   private getImageUrl(el: HTMLElement, binding: vLazyImgBinding): string | null | undefined {
     const dataSrc = this.getImgElement(el).getAttribute('data-lazy-src')
-    if (dataSrc) return dataSrc
+    if (dataSrc)
+      return dataSrc
 
     return this.getSrc(binding)
   }
@@ -114,11 +116,13 @@ export class LazyImg {
         const srcSet = source.getAttribute('data-lazy-srcset')
         if (srcSet) {
           source.srcset = srcSet
-        } else {
+        }
+        else {
           return this.imageHasError(el)
         }
       }
-    } else {
+    }
+    else {
       this.imageHasError(el)
     }
   }
@@ -137,7 +141,8 @@ export class LazyImg {
   }
 
   private async setDefaultPhoto(el: HTMLElement) {
-    if (this.options.noUseErrorPhoto) return
+    if (this.options.noUseErrorPhoto)
+      return
 
     const fallbackSrc = this.options.fallbackSrc ?? this.options.errorPhoto
 
@@ -152,7 +157,8 @@ export class LazyImg {
       for await (const source of sourceElements) {
         source.srcset = errorPhoto
       }
-    } else {
+    }
+    else {
       this.setImgSrc(el, errorPhoto)
     }
   }
@@ -162,7 +168,7 @@ export class LazyImg {
     imgElement.addEventListener('load', () => this.onImgLoadedCallback(el), {
       once: true,
     })
-    imgElement.addEventListener('error', (err) => this.onImgErrorCallback(el, err), { once: true })
+    imgElement.addEventListener('error', err => this.onImgErrorCallback(el, err), { once: true })
   }
 
   private async loadImage(el: HTMLElement, binding: vLazyImgBinding): Promise<void> {
@@ -172,15 +178,18 @@ export class LazyImg {
       this.addEventListenerToImg(el)
 
       await this.setPictureSourceUrls(el)
-    } else {
+    }
+    else {
       const imageUrl = this.getImageUrl(el, binding)
 
-      if (!imageUrl) return this.imageHasError(el)
+      if (!imageUrl)
+        return this.imageHasError(el)
 
       if (this.hasBgImgMode(binding)) {
         el.style.backgroundImage = `url('${imageUrl}')`
         this.imageIsLoaded(el)
-      } else {
+      }
+      else {
         this.addEventListenerToImg(el)
 
         this.setImgSrc(el, imageUrl)
@@ -209,7 +218,8 @@ export class LazyImg {
           observer.unobserve(el)
         }
 
-        if (this.options.loadOnce && this.hasImgLoaded) return
+        if (this.options.loadOnce && this.hasImgLoaded)
+          return
         this.loadImage(el, binding)
       }
     }
@@ -241,7 +251,8 @@ export class LazyImg {
 
     if (window.IntersectionObserver) {
       this.createObserver(el, binding)
-    } else {
+    }
+    else {
       this.loadImage(el, binding)
     }
   }
@@ -251,7 +262,8 @@ export class LazyImg {
     binding: vLazyImgBinding,
     type: 'bind' | 'update',
   ): Promise<void> {
-    if (this.options.noPhoto) return this.imageHasNoPhoto(el)
+    if (this.options.noPhoto)
+      return this.imageHasNoPhoto(el)
 
     await this.imageHandler(el, binding, type)
   }

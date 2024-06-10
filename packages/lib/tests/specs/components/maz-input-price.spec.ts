@@ -10,22 +10,22 @@ describe('components/MazInput.vue', () => {
     },
   })
 
-  test('Should have the model value', () => {
+  it('should have the model value', () => {
     expect(wrapper.vm.modelValue).toBe(12)
   })
 
-  test('Should have the formatted price displayed', () => {
-    // @ts-expect-error
+  it('should have the formatted price displayed', () => {
+    // @ts-expect-error - test case
     expect(wrapper.vm.displayPrice).toBe('12,00 €')
   })
 
-  test('Should have the formatted price displayed', async () => {
+  it('should have the formatted price displayed with zero value', async () => {
     wrapper.setProps({
       modelValue: 0,
     })
     await wrapper.vm.$nextTick()
     expect(wrapper.vm.modelValue).toBe(0)
-    // @ts-expect-error
+    // @ts-expect-error - test case
     expect(wrapper.vm.displayPrice).toBe('0,00 €')
   })
 })

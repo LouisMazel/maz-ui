@@ -1,8 +1,8 @@
 import { mount } from '@vue/test-utils'
 import MazCardSpotlight from '@components/MazCardSpotlight.vue'
 
-describe('MazCardSpotlight', () => {
-  test('renders with default props', async () => {
+describe('mazCardSpotlight', () => {
+  it('renders with default props', async () => {
     const wrapper = mount(MazCardSpotlight)
 
     await wrapper.vm.$nextTick()
@@ -12,7 +12,7 @@ describe('MazCardSpotlight', () => {
     expect(wrapper.classes()).toContain('maz-elevation')
   })
 
-  test('does not render elevation when noElevation prop is true', async () => {
+  it('does not render elevation when noElevation prop is true', async () => {
     const wrapper = mount(MazCardSpotlight, {
       props: {
         noElevation: true,
@@ -24,7 +24,7 @@ describe('MazCardSpotlight', () => {
     expect(wrapper.classes()).not.toContain('maz-elevation')
   })
 
-  test('removes event listener on component unmount', async () => {
+  it('removes event listener on component unmount', async () => {
     const removeEventListener = vi.spyOn(window, 'removeEventListener')
     const wrapper = mount(MazCardSpotlight)
 

@@ -1,5 +1,5 @@
 import { type CosmiconfigResult, cosmiconfig } from 'cosmiconfig'
-import { type MazUiConfig } from '../types'
+import type { MazUiConfig } from '../types'
 
 interface LoadConfigResult extends NonNullable<CosmiconfigResult> {
   config: MazUiConfig
@@ -12,7 +12,8 @@ export async function loadConfig(): Promise<LoadConfigResult> {
 
   if (result?.config) {
     return result
-  } else {
+  }
+  else {
     throw new Error('No config file "maz-ui" found')
   }
 }

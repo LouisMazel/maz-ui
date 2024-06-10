@@ -4,7 +4,7 @@ import MazCheckbox from '@components/MazCheckbox.vue'
 describe('components/MazCheckbox.vue', () => {
   expect(MazCheckbox).toBeTruthy()
 
-  test('renders correctly', () => {
+  it('renders correctly', () => {
     const wrapper = mount(MazCheckbox, {
       props: {
         modelValue: true, // You can provide props here
@@ -22,7 +22,7 @@ describe('components/MazCheckbox.vue', () => {
     wrapper.unmount()
   })
 
-  test('Should have an uniq id', () => {
+  it('should have an uniq id', () => {
     const wrapper = mount(MazCheckbox, {
       props: {
         modelValue: false,

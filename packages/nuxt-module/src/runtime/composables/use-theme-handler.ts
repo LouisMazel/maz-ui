@@ -1,5 +1,5 @@
-import { useNuxtApp } from '#imports'
 import { useThemeHandler as useThemeHandlerComposable, type ThemeHandlerOptions } from 'maz-ui'
+import { useNuxtApp } from '#imports'
 
 export function useThemeHandler(
   options?: ThemeHandlerOptions,
@@ -8,8 +8,8 @@ export function useThemeHandler(
 
   const themeHandlerOptions = $config.public.mazUi?.injectUseThemeHandler
 
-  const mergedOptions: ThemeHandlerOptions =
-    typeof themeHandlerOptions === 'object'
+  const mergedOptions: ThemeHandlerOptions
+    = typeof themeHandlerOptions === 'object'
       ? { ...themeHandlerOptions, ...options }
       : { ...options }
 

@@ -1,6 +1,6 @@
 export type UserVisibilyCallback = ({ isVisible }: { isVisible: boolean }) => void
 
-export type UserVisibilyStrictOptions = {
+export interface UserVisibilyStrictOptions {
   /**
    * Watch immediately
    * @default true

@@ -1,3 +1,62 @@
+<script lang="ts" setup>
+import { computed, ref, useSlots } from 'vue'
+import MazExpandAnimation from './MazExpandAnimation.vue'
+import MazCardSpotlight from './MazCardSpotlight.vue'
+
+import Plus from './../icons/plus.svg'
+import { useInstanceUniqId } from './../modules/composables/use-instance-uniq-id'
+
+export interface Props {
+  id?: string
+  modelValue?: number
+  contentClass?: unknown
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  id: undefined,
+  modelValue: 0,
+  contentClass: undefined,
+})
+
+const emits = defineEmits(['update:model-value'])
+
+const instanceId = useInstanceUniqId({
+  componentName: 'MazAccordion',
+  providedId: props.id,
+})
+
+const slots = useSlots()
+
+const stepCount = computed<number>(
+  () => Object.keys(slots).filter(slot => slot.startsWith('title-')).length,
+)
+
+const localModelValue = ref(props.modelValue)
+
+const currentStep = computed({
+  get: () => props.modelValue || localModelValue.value,
+  set: (value: number) => {
+    localModelValue.value = value
+    emits('update:model-value', value)
+  },
+})
+
+function isStepOpen(index: number) {
+  return currentStep.value === index
+}
+
+function selectStep(index: number) {
+  if (currentStep.value === index) {
+    localModelValue.value = 0
+    emits('update:model-value', 0)
+  }
+  else {
+    localModelValue.value = index
+    emits('update:model-value', index)
+  }
+}
+</script>
+
 <template>
   <div class="m-accordion" role="presentation">
     <template v-for="step in stepCount" :key="step">
@@ -9,7 +68,7 @@
           :aria-expanded="isStepOpen(step)"
           @click="selectStep(step)"
         >
-          <slot :name="`title-${step}`" :is-open="isStepOpen(step)"> </slot>
+          <slot :name="`title-${step}`" :is-open="isStepOpen(step)" />
 
           <Plus class="header-icon" :class="{ '--rotate': isStepOpen(step) }" />
         </button>
@@ -20,8 +79,8 @@
           :aria-labelledby="`step-${step}-${instanceId}`"
         >
           <div class="m-accordion__content" :class="contentClass">
-            <slot name="content" :is-open="isStepOpen(step)"></slot>
-            <slot :name="`content-${step}`" :is-open="isStepOpen(step)"> </slot>
+            <slot name="content" :is-open="isStepOpen(step)" />
+            <slot :name="`content-${step}`" :is-open="isStepOpen(step)" />
           </div>
         </MazExpandAnimation>
       </MazCardSpotlight>
@@ -29,88 +88,30 @@
   </div>
 </template>
 
-<script lang="ts" setup>
-  import { computed, ref, useSlots } from 'vue'
-  import MazExpandAnimation from './MazExpandAnimation.vue'
-  import MazCardSpotlight from './MazCardSpotlight.vue'
-
-  import Plus from './../icons/plus.svg'
-  import { useInstanceUniqId } from './../modules/composables/use-instance-uniq-id'
-
-  export type Props = {
-    id?: string
-    modelValue?: number
-    contentClass?: unknown
-  }
-
-  const props = withDefaults(defineProps<Props>(), {
-    id: undefined,
-    modelValue: 0,
-    contentClass: undefined,
-  })
-
-  const emits = defineEmits(['update:model-value'])
-
-  const instanceId = useInstanceUniqId({
-    componentName: 'MazAccordion',
-    providedId: props.id,
-  })
-
-  const slots = useSlots()
-
-  const stepCount = computed<number>(
-    () => Object.keys(slots).filter((slot) => slot.startsWith('title-')).length,
-  )
-
-  const localModelValue = ref(props.modelValue)
-
-  const currentStep = computed({
-    get: () => props.modelValue || localModelValue.value,
-    set: (value: number) => {
-      localModelValue.value = value
-      emits('update:model-value', value)
-    },
-  })
-
-  function isStepOpen(index: number) {
-    return currentStep.value === index
-  }
-
-  function selectStep(index: number) {
-    if (currentStep.value === index) {
-      localModelValue.value = 0
-      emits('update:model-value', 0)
-    } else {
-      localModelValue.value = index
-      emits('update:model-value', index)
-    }
-  }
-</script>
-
 <style lang="postcss" scoped>
   .m-accordion {
-    @apply maz-relative maz-inline-flex maz-flex-col maz-gap-4 maz-align-top;
+  @apply maz-relative maz-inline-flex maz-flex-col maz-gap-4 maz-align-top;
 
-    &__spotlight {
-      @apply maz-w-full;
-    }
+  &__spotlight {
+    @apply maz-w-full;
+  }
 
-    &__header {
-      @apply maz-inline-flex maz-w-full maz-items-center maz-justify-between maz-gap-4 maz-p-4 maz-text-left maz-transition-colors maz-duration-300 maz-ease-in-out;
+  &__header {
+    @apply maz-inline-flex maz-w-full maz-items-center maz-justify-between maz-gap-4 maz-p-4 maz-text-left maz-transition-colors maz-duration-300 maz-ease-in-out;
 
-      .header-icon {
-        @apply maz-transition-transform maz-duration-300 maz-ease-in-out;
+    .header-icon {
+      @apply maz-transition-transform maz-duration-300 maz-ease-in-out;
 
-        &.--rotate {
-          /* @apply maz-rotate-45; */
+      &.--rotate {
+        /* @apply maz-rotate-45; */
 
-          transform: rotate(135deg);
-        }
+        transform: rotate(135deg);
       }
     }
-
-    &__content {
-      @apply maz-p-4;
-    }
   }
+
+  &__content {
+    @apply maz-p-4;
+  }
+}
 </style>

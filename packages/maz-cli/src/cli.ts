@@ -1,6 +1,6 @@
-import { bold, bgRed, white, blueBright } from 'colorette'
-import { Command } from 'commander'
 import { createRequire } from 'node:module'
+import { bgRed, blueBright, bold, white } from 'colorette'
+import { Command } from 'commander'
 
 import { clearAndPrintBanner, logger } from './utils'
 
@@ -15,7 +15,7 @@ const program = new Command()
 
 const argv = process.argv.slice(2)
 
-const hasSilentOption = argv?.find((argument) => ['-s', '--silent'].includes(argument))
+const hasSilentOption = argv?.find(argument => ['-s', '--silent'].includes(argument))
 
 if (!hasSilentOption) {
   clearAndPrintBanner(true)

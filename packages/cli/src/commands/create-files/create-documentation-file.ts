@@ -50,7 +50,8 @@ description: ${filename} is a standalone component
 `
   try {
     await writeFile(DOCS_FILE_OUTPUT, documentationFileTemplate)
-  } catch (error) {
+  }
+  catch (error) {
     logger.error(`Error: Failed to create file "${filename}".`, error)
     exit(1)
   }

@@ -1,5 +1,5 @@
-import { mount } from '../../helpers/mount-component'
 import type { App } from 'vue'
+import { mount } from '../../helpers/mount-component'
 import MazToast, { type Props } from './MazToast.vue'
 import type { ToasterOptions } from './types'
 
@@ -28,7 +28,7 @@ export class ToasterHandler {
       message,
     }
 
-    const { destroy, vNode } = mount(MazToast, {
+    const { destroy, vNode } = mount<typeof MazToast, Props>(MazToast, {
       props: propsData,
       app: this.app,
     })

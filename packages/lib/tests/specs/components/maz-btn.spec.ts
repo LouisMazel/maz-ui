@@ -1,8 +1,8 @@
 import MazBtn from '@components/MazBtn.vue'
 import { shallowMount } from '@vue/test-utils'
 
-describe('MazBtn', () => {
-  test('renders the component elements and classes correctly', () => {
+describe('mazBtn', () => {
+  it('renders the component elements and classes correctly', () => {
     const wrapper = shallowMount(MazBtn, { slots: { default: 'Button Text' } })
 
     expect(wrapper.find('button').exists()).toBe(true)
@@ -15,10 +15,10 @@ describe('MazBtn', () => {
     expect(wrapper.find('.m-btn').exists()).toBe(true)
   })
 
-  test('renders the button content correctly using slots', () => {
+  it('renders the button content correctly using slots', () => {
     const wrapper = shallowMount(MazBtn, {
       slots: {
-        default: 'Button Text',
+        'default': 'Button Text',
         'left-icon': '<div class="left-icon">Left Icon</div>',
         'right-icon': '<div class="right-icon">Right Icon</div>',
       },
@@ -29,7 +29,7 @@ describe('MazBtn', () => {
     expect(wrapper.find('.m-btn__icon-right').exists()).toBe(true)
   })
 
-  test('shows the loading spinner when the "loading" prop is set to "true"', async () => {
+  it('shows the loading spinner when the "loading" prop is set to "true"', async () => {
     const wrapper = shallowMount(MazBtn, {
       props: {
         loading: true,

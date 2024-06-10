@@ -8,14 +8,16 @@ describe('capitalize', () => {
 
   it('returns an empty string if the value is falsy', () => {
     expect(capitalize('')).toBe('')
+    // @ts-expect-error - test case
     expect(capitalize(null)).toBe('')
+    // @ts-expect-error - test case
     expect(capitalize(undefined)).toBe('')
   })
 
   it('returns a capitalized string if the value is a number', () => {
-    // @ts-ignore
+    // @ts-expect-error - test case
     expect(capitalize(1)).toBe('1')
-    // @ts-ignore
+    // @ts-expect-error - test case
     expect(capitalize(123)).toBe('123')
   })
 })

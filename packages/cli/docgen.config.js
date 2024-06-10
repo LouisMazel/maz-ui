@@ -1,9 +1,8 @@
 // @ts-check
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 
 import { fileURLToPath } from 'node:url'
 
-import { resolve, join } from 'node:path'
+import { join, resolve } from 'node:path'
 import { defineConfig } from 'vue-docgen-cli'
 import { component } from './config/component-template.js'
 
@@ -14,7 +13,7 @@ export default defineConfig({
   components: './[A-Z]*.vue', // the glob to define what files should be documented as components (relative to componentRoot)
   outDir: resolve(_dirname, './../docs/docs/.vitepress/generated-docs'),
   getDestFile: (filename, config) => {
-    // @ts-expect-error
+    // @ts-expect-error - ES version mismatch
     const filenameKebab = filename.replaceAll(/([\da-z])([A-Z])/g, '$1-$2').toLowerCase()
 
     return join(config.outDir, filenameKebab).replace(/\.vue$/, '.doc.md')

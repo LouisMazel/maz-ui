@@ -371,7 +371,6 @@ export type ButtonsRadioOption = {
   /** The value of the option */
   value: string | number | boolean
   /** The classes to apply to the option */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   classes?: any
   /** The style to apply to the option */
   style?: StyleValue

@@ -7,7 +7,8 @@ export function execPromise(command: string) {
       if (error) {
         logger.error('Execution failed', `${error} - ${stdout}`)
         reject(error)
-      } else {
+      }
+      else {
         logger.success(stdout)
         resolve({ stdout, stderr })
       }

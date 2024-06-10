@@ -1,8 +1,7 @@
 import type { DirectiveBinding, ObjectDirective, Plugin } from 'vue'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type vClosableBindingValueHandler = (...args: any[]) => any
-type vClosableBindingValueObject = {
+interface vClosableBindingValueObject {
   handler: vClosableBindingValueHandler
   exclude?: string[]
 }
@@ -11,11 +10,7 @@ type vClosableBindingValue = vClosableBindingValueObject | vClosableBindingValue
 
 type vClosableBinding = DirectiveBinding<vClosableBindingValue>
 
-const handleOutsideClick = (
-  event: TouchEvent | MouseEvent,
-  element: HTMLElement,
-  binding: vClosableBinding,
-) => {
+function handleOutsideClick(event: TouchEvent | MouseEvent, element: HTMLElement, binding: vClosableBinding) {
   event.stopPropagation()
 
   const handler = typeof binding.value === 'function' ? binding.value : binding.value.handler
@@ -45,23 +40,21 @@ function getEventType() {
 function unbind(element: HTMLElement, binding: vClosableBinding) {
   const eventType = getEventType()
 
-  /* eslint-disable unicorn/no-invalid-remove-event-listener */
-  document.removeEventListener(eventType, (event) => handleOutsideClick(event, element, binding))
-  /* eslint-enable unicorn/no-invalid-remove-event-listener */
+  document.removeEventListener(eventType, event => handleOutsideClick(event, element, binding))
 }
 
 function bind(element: HTMLElement, binding: vClosableBinding) {
   if (
-    typeof binding.value !== 'function' &&
-    typeof binding.value === 'object' &&
-    typeof binding.value.handler !== 'function'
+    typeof binding.value !== 'function'
+    && typeof binding.value === 'object'
+    && typeof binding.value.handler !== 'function'
   ) {
     console.error('[maz-ui](vClosable) v-closable directive requires a handler function')
     return
   }
 
   const eventType = getEventType()
-  document.addEventListener(eventType, (event) => handleOutsideClick(event, element, binding))
+  document.addEventListener(eventType, event => handleOutsideClick(event, element, binding))
 }
 
 const directive = {

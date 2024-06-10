@@ -2,12 +2,12 @@ import type { CSSRuleObject } from 'tailwindcss/types/config'
 
 export const utilities = {
   '.padded-container': {
-    width: '100%',
+    'width': '100%',
     'padding-left': 'var(--maz-container-padding)',
     'padding-right': 'var(--maz-container-padding)',
   },
   '.padded-container-no-p': {
-    width: '100%',
+    'width': '100%',
     'padding-left': 'calc(50% - var(--maz-container-max-width) / 2)',
     'padding-right': 'calc(50% - var(--maz-container-max-width) / 2)',
   },

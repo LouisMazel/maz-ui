@@ -1,9 +1,9 @@
-import { Command } from 'commander'
 import { exit } from 'node:process'
-import { intro, outro, log } from '@clack/prompts'
+import { Command } from 'commander'
+import { intro, log, outro } from '@clack/prompts'
+import { green, red } from 'colorette'
 import { loadConfig } from '../../utils'
 import { generateCssFile } from './generate-css-file'
-import { green, red } from 'colorette'
 
 export function generateCssVariables(): Command {
   const command = new Command('generate-css-vars')
@@ -30,9 +30,8 @@ export function generateCssVariables(): Command {
       })
 
       outro(`CSS file generated in ${green(outputPath)}`)
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
+    }
+    catch (error: any) {
       log.error('An error occured while generating CSS file')
       log.error(red((error.message ?? error) as string))
       log.error('')

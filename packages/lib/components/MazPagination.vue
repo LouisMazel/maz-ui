@@ -1,3 +1,137 @@
+<script lang="ts" setup>
+import { computed, defineAsyncComponent } from 'vue'
+import MazBtn, { type Color, type Props as MazBtnProps, type Size } from './MazBtn.vue'
+
+const props = withDefaults(defineProps<MazPagnationProps>(), {
+  modelValue: 1,
+  buttonProps: undefined,
+  pageRange: 2,
+  resultsSize: undefined,
+  activeColor: 'primary',
+  size: 'md',
+})
+const emits = defineEmits<{
+  /**
+   * Emitted when the current page number is changed.
+   * @property {number} value - new page number
+   */
+  (event: 'update:model-value', value: number): void
+}>()
+const ChevronLeft = defineAsyncComponent(() => import('./../icons/chevron-left.svg'))
+const ChevronDoubleLeft = defineAsyncComponent(() => import('./../icons/chevron-double-left.svg'))
+const Ellipsis = defineAsyncComponent(() => import('./../icons/ellipsis-horizontal.svg'))
+
+const DEFAULT_BUTTONS_PROPS: Partial<MazBtnProps> = {
+  size: 'md',
+  color: 'theme',
+  outline: true,
+  noElevation: true,
+  fab: true,
+}
+
+interface MazPagnationProps {
+  /** @model The current page number. */
+  modelValue?: number
+  /**
+   * Props apply to the MazBtn components.
+   */
+  buttonProps?: Partial<MazBtnProps>
+  /**
+   * Number of results in this page. Useful for accessibility to set aria-setsize attribute. Partial of MazBtn props.
+   */
+  resultsSize?: number
+  /**
+   * Color of the active button.
+   */
+  activeColor?: Color
+  /**
+   * Color of the active button.
+   */
+  size?: Size
+  /**
+   * Total number of pages.
+   */
+  totalPages: number
+  /**
+   * Number of buttons to display before and after the current page.
+   */
+  pageRange?: number
+  /**
+   * Enable loading state of current button
+   */
+  loading?: boolean
+}
+
+export type { MazPagnationProps as Props }
+
+const buttonsPropsMerged = computed<MazBtnProps>(() => ({
+  ...DEFAULT_BUTTONS_PROPS,
+  ...props.buttonProps,
+}))
+
+const previousPage = computed(() => (props.modelValue > 1 ? props.modelValue - 1 : 1))
+const nextPage = computed(() =>
+  props.modelValue < props.totalPages ? props.modelValue + 1 : props.totalPages,
+)
+
+const allPages = computed(() =>
+  Array.from({ length: props.totalPages }, (_, index) => {
+    const itemNumber = index + 1
+    return {
+      number: itemNumber,
+      isActive: itemNumber === props.modelValue,
+      loading: itemNumber === props.modelValue && props.loading,
+    }
+  }),
+)
+
+const firstOne = computed(() =>
+  props.modelValue - props.pageRange > 1 ? allPages.value.slice(0, 1) : [],
+)
+
+const lastOne = computed(() =>
+  props.modelValue < props.totalPages - props.pageRange ? allPages.value.slice(-1) : [],
+)
+
+const rangeStartAt = computed(() => {
+  return props.modelValue - props.pageRange - 1 < 0
+    ? 0
+    : props.modelValue - props.pageRange - 1 > props.totalPages - props.pageRange
+      ? props.totalPages - props.pageRange
+      : props.modelValue - props.pageRange - 1
+})
+const rangeEndAt = computed(() =>
+  props.modelValue + props.pageRange > props.totalPages
+    ? props.totalPages
+    : props.modelValue + props.pageRange < props.pageRange
+      ? props.pageRange
+      : props.modelValue + props.pageRange,
+)
+const range = computed(() => allPages.value.slice(rangeStartAt.value, rangeEndAt.value))
+
+const firstDivider = computed(() =>
+  props.modelValue - props.pageRange > 2 ? [{ divider: true }] : [],
+)
+const lastDivider = computed(() =>
+  props.modelValue < props.totalPages - props.pageRange - 1 ? [{ divider: true }] : [],
+)
+
+const pages = computed(() => [
+  ...firstOne.value,
+  ...firstDivider.value,
+  ...range.value,
+  ...lastDivider.value,
+  ...lastOne.value,
+])
+
+function setPageNumber(page: number) {
+  if (page === props.modelValue)
+    return
+
+  emits('update:model-value', page)
+}
+</script>
+
 <template>
   <nav class="m-pagination" role="navigation" aria-label="page navigation">
     <ul>
@@ -5,7 +139,7 @@
         <MazBtn
           v-bind="buttonsPropsMerged"
           :disabled="modelValue === 1"
-          :aria-label="`First Page, Page 1`"
+          aria-label="First Page, Page 1"
           :aria-setsize="resultsSize ?? undefined"
           aria-posinset="1"
           :size="size"
@@ -129,149 +263,14 @@
   </nav>
 </template>
 
-<script lang="ts" setup>
-  import { defineAsyncComponent, computed } from 'vue'
-  import MazBtn, { type Color, type Size, type Props as MazBtnProps } from './MazBtn.vue'
-
-  const ChevronLeft = defineAsyncComponent(() => import('./../icons/chevron-left.svg'))
-  const ChevronDoubleLeft = defineAsyncComponent(() => import('./../icons/chevron-double-left.svg'))
-  const Ellipsis = defineAsyncComponent(() => import('./../icons/ellipsis-horizontal.svg'))
-
-  const DEFAULT_BUTTONS_PROPS: Partial<MazBtnProps> = {
-    size: 'md',
-    color: 'theme',
-    outline: true,
-    noElevation: true,
-    fab: true,
-  }
-
-  type MazPagnationProps = {
-    /** @model The current page number. */
-    modelValue?: number
-    /**
-     * Props apply to the MazBtn components.
-     */
-    buttonProps?: Partial<MazBtnProps>
-    /**
-     * Number of results in this page. Useful for accessibility to set aria-setsize attribute. Partial of MazBtn props.
-     */
-    resultsSize?: number
-    /**
-     * Color of the active button.
-     */
-    activeColor?: Color
-    /**
-     * Color of the active button.
-     */
-    size?: Size
-    /**
-     * Total number of pages.
-     */
-    totalPages: number
-    /**
-     * Number of buttons to display before and after the current page.
-     */
-    pageRange?: number
-    /**
-     * Enable loading state of current button
-     */
-    loading?: boolean
-  }
-
-  export type { MazPagnationProps as Props }
-
-  const props = withDefaults(defineProps<MazPagnationProps>(), {
-    modelValue: 1,
-    buttonProps: undefined,
-    pageRange: 2,
-    resultsSize: undefined,
-    activeColor: 'primary',
-    size: 'md',
-  })
-
-  const emits = defineEmits<{
-    /**
-     * Emitted when the current page number is changed.
-     * @property {number} value - new page number
-     */
-    (event: 'update:model-value', value: number): void
-  }>()
-
-  const buttonsPropsMerged = computed<MazBtnProps>(() => ({
-    ...DEFAULT_BUTTONS_PROPS,
-    ...props.buttonProps,
-  }))
-
-  const previousPage = computed(() => (props.modelValue > 1 ? props.modelValue - 1 : 1))
-  const nextPage = computed(() =>
-    props.modelValue < props.totalPages ? props.modelValue + 1 : props.totalPages,
-  )
-
-  const allPages = computed(() =>
-    Array.from({ length: props.totalPages }, (_, index) => {
-      const itemNumber = index + 1
-      return {
-        number: itemNumber,
-        isActive: itemNumber === props.modelValue,
-        loading: itemNumber === props.modelValue && props.loading,
-      }
-    }),
-  )
-
-  const firstOne = computed(() =>
-    props.modelValue - props.pageRange > 1 ? allPages.value.slice(0, 1) : [],
-  )
-
-  const lastOne = computed(() =>
-    props.modelValue < props.totalPages - props.pageRange ? allPages.value.slice(-1) : [],
-  )
-
-  const rangeStartAt = computed(() => {
-    return props.modelValue - props.pageRange - 1 < 0
-      ? 0
-      : props.modelValue - props.pageRange - 1 > props.totalPages - props.pageRange
-        ? props.totalPages - props.pageRange
-        : props.modelValue - props.pageRange - 1
-  })
-  const rangeEndAt = computed(() =>
-    props.modelValue + props.pageRange > props.totalPages
-      ? props.totalPages
-      : props.modelValue + props.pageRange < props.pageRange
-        ? props.pageRange
-        : props.modelValue + props.pageRange,
-  )
-  const range = computed(() => allPages.value.slice(rangeStartAt.value, rangeEndAt.value))
-
-  const firstDivider = computed(() =>
-    props.modelValue - props.pageRange > 2 ? [{ divider: true }] : [],
-  )
-  const lastDivider = computed(() =>
-    props.modelValue < props.totalPages - props.pageRange - 1 ? [{ divider: true }] : [],
-  )
-
-  const pages = computed(() => [
-    ...firstOne.value,
-    ...firstDivider.value,
-    ...range.value,
-    ...lastDivider.value,
-    ...lastOne.value,
-  ])
-
-  function setPageNumber(page: number) {
-    if (page === props.modelValue) return
-
-    emits('update:model-value', page)
-  }
-</script>
-
 <style lang="postcss" scoped>
   .m-pagination {
-    ul {
-      @apply !maz-m-0 maz-inline-flex !maz-list-none maz-items-center maz-gap-2 -maz-space-x-px !maz-p-0 maz-align-top maz-text-base;
+  ul {
+    @apply !maz-m-0 maz-inline-flex !maz-list-none maz-items-center maz-gap-2 -maz-space-x-px !maz-p-0 maz-align-top maz-text-base;
 
-      li {
-        @apply maz-m-0;
-      }
+    li {
+      @apply maz-m-0;
     }
   }
+}
 </style>

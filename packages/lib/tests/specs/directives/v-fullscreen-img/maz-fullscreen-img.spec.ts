@@ -3,7 +3,7 @@ import { shallowMount } from '@vue/test-utils'
 
 const image = document.createElement('img')
 
-// @ts-expect-error
+// @ts-expect-error - test case
 image.animate = () => {}
 
 const defaultProperties = {
@@ -11,8 +11,8 @@ const defaultProperties = {
   scaleAnimation: false,
 }
 
-describe('MazFullscreenImg', () => {
-  test('should render correctly when opened', async () => {
+describe('mazFullscreenImg', () => {
+  it('should render correctly when opened', async () => {
     const wrapper = shallowMount(MazFullscreenImg, {
       props: {
         src: 'https://via.placeholder.com/150',
@@ -29,7 +29,7 @@ describe('MazFullscreenImg', () => {
     expect(wrapper.find('.m-fullscreen-btn').exists()).toBe(true)
   })
 
-  test('should render correctly with an alternative text', async () => {
+  it('should render correctly with an alternative text', async () => {
     const alt = 'alternative text'
 
     const wrapper = shallowMount(MazFullscreenImg, {

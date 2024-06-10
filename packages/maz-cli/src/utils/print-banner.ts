@@ -1,9 +1,9 @@
-import { bold, blueBright } from 'colorette'
+import { blueBright, bold } from 'colorette'
 import clear from 'clear'
 import figlet from 'figlet'
 import { logger } from './logger'
 
-export const clearAndPrintBanner = (_clear?: boolean): void => {
+export function clearAndPrintBanner(_clear?: boolean): void {
   if (_clear) {
     clear()
   }

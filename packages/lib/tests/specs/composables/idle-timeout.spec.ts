@@ -1,14 +1,14 @@
 import { IdleTimeout, useIdleTimeout } from '@modules/index'
 
-test('useIdleTimeout should create an instance of IdleTimeout', () => {
+it('useIdleTimeout should create an instance of IdleTimeout', () => {
   const callback = vitest.fn()
   const options = { timeout: 10_000 }
   const idle = useIdleTimeout({ callback, options })
 
   expect(idle).toBeInstanceOf(IdleTimeout)
-  // @ts-ignore
+  // @ts-expect-error - test case
   expect(idle.callback).toBe(callback)
-  // @ts-ignore
+  // @ts-expect-error - test case
   expect(idle.options).toEqual({
     element: undefined,
     immediate: true,
@@ -17,10 +17,10 @@ test('useIdleTimeout should create an instance of IdleTimeout', () => {
   })
 })
 
-test('useIdleTimeout should default options to an empty object if not provided', () => {
+it('useIdleTimeout should default options to an empty object if not provided', () => {
   const callback = vitest.fn()
   const idle = useIdleTimeout({ callback })
-  // @ts-ignore
+  // @ts-expect-error - test case
   expect(idle.options).toEqual({
     element: undefined,
     immediate: true,

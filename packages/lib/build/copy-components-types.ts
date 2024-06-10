@@ -1,8 +1,8 @@
 import { copyFileSync, existsSync, mkdirSync, readdirSync, renameSync, statSync } from 'node:fs'
-import { resolve, join } from 'node:path'
-import { logger } from './utils/logger'
-import replace from 'replace-in-file'
+import { join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import replace from 'replace-in-file'
+import { logger } from './utils/logger'
 
 const _dirname = fileURLToPath(new URL('.', import.meta.url))
 const INPUT_COMPONENT_DIR = resolve(_dirname, './../dist/types/components')
@@ -23,16 +23,18 @@ function copyRecursive(inputPath: string, outputPath: string) {
       for (const childItemName of readdirSync(inputPath)) {
         copyRecursive(join(inputPath, childItemName), join(outputPath, childItemName))
       }
-    } else {
+    }
+    else {
       copyFileSync(inputPath, outputPath)
     }
-  } catch (error) {
+  }
+  catch (error) {
     throw new Error(`[copy-components-types](copyRecursive) ${error}`)
   }
 }
 
 function renameAllFiles() {
-  const componentsTypesList = readdirSync(OUTPUT_TYPES_FILES).filter((name) =>
+  const componentsTypesList = readdirSync(OUTPUT_TYPES_FILES).filter(name =>
     name.endsWith('.vue.d.ts'),
   )
   for (const name of componentsTypesList) {
@@ -41,11 +43,11 @@ function renameAllFiles() {
   }
 }
 
-const replaceTypesExtensions = () => {
+function replaceTypesExtensions() {
   const options = {
     files: COMPONENTS_TYPE_PATH,
     from: /vue';/g,
-    to: "js';",
+    to: 'js\';',
   }
 
   return replace(options)
@@ -58,7 +60,8 @@ export function copyAndTransformComponentsTypesFiles() {
     replaceTypesExtensions()
 
     logger.success('[copy-components-types] declaration types files copied ✅')
-  } catch (error) {
+  }
+  catch (error) {
     logger.error(
       '[copy-components-types] 🔴 Error occurred while copying component type files',
       error,

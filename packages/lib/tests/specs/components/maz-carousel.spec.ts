@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils'
 import MazCarousel from '@components/MazCarousel.vue'
 
-describe('MazCarousel', () => {
+describe('mazCarousel', () => {
   it('renders the component', () => {
     const wrapper = mount(MazCarousel, {
       props: {
@@ -32,26 +32,26 @@ describe('MazCarousel', () => {
     scrollableElement.scrollLeft = 30
     scrollableElement.dispatchEvent(new Event('scroll'))
 
-    // @ts-expect-error
+    // @ts-expect-error - test case
     expect(wrapper.vm.isScrolled).toBe(true)
 
     scrollableElement.scrollLeft = 0
     scrollableElement.dispatchEvent(new Event('scroll'))
 
-    // @ts-expect-error
+    // @ts-expect-error - test case
     expect(wrapper.vm.isScrolled).toBe(false)
 
     const itemsScrollWidth = scrollableElement.scrollWidth - scrollableElement.clientWidth
     scrollableElement.scrollLeft = itemsScrollWidth - 30
     scrollableElement.dispatchEvent(new Event('scroll'))
 
-    // @ts-expect-error
+    // @ts-expect-error - test case
     expect(wrapper.vm.isScrolledMax).toBe(false)
 
     scrollableElement.scrollLeft = itemsScrollWidth
     scrollableElement.dispatchEvent(new Event('scroll'))
 
-    // @ts-expect-error
+    // @ts-expect-error - test case
     expect(wrapper.vm.isScrolledMax).toBe(true)
   })
 

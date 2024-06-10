@@ -1,8 +1,8 @@
 import { shallowMount } from '@vue/test-utils'
 import MazExpandAnimation from '@components/MazExpandAnimation.vue'
 
-describe('MazExpandAnimation', () => {
-  test('renders with default props', async () => {
+describe('mazExpandAnimation', () => {
+  it('renders with default props', async () => {
     const wrapper = shallowMount(MazExpandAnimation)
 
     // Vérifier que le composant est rendu avec la classe par défaut
@@ -18,7 +18,7 @@ describe('MazExpandAnimation', () => {
     expect(wrapper.text()).toBe('')
   })
 
-  test('expands when isOpen model is true', async () => {
+  it('expands when isOpen model is true', async () => {
     const wrapper = shallowMount(MazExpandAnimation, {
       props: {
         modelValue: true,
@@ -31,7 +31,7 @@ describe('MazExpandAnimation', () => {
     expect(wrapper.attributes('aria-hidden')).toBe('false')
   })
 
-  test('collapses when isOpen model is false', async () => {
+  it('collapses when isOpen model is false', async () => {
     const wrapper = shallowMount(MazExpandAnimation, {
       props: {
         modelValue: false,
@@ -44,7 +44,7 @@ describe('MazExpandAnimation', () => {
     expect(wrapper.attributes('aria-hidden')).toBe('true')
   })
 
-  test('renders content in slot', async () => {
+  it('renders content in slot', async () => {
     const wrapper = shallowMount(MazExpandAnimation, {
       slots: {
         default: '<div>Content in slot</div>',
@@ -55,7 +55,7 @@ describe('MazExpandAnimation', () => {
     expect(wrapper.text()).toContain('Content in slot')
   })
 
-  test('content has overflow hidden only if closed', async () => {
+  it('content has overflow hidden only if closed', async () => {
     const wrapper = shallowMount(MazExpandAnimation, {
       props: {
         modelValue: true,

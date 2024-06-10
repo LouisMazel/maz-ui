@@ -2,11 +2,7 @@ const DEFAULT_OPTIONS: Intl.NumberFormatOptions = {
   minimumFractionDigits: 2,
 }
 
-export const number = (
-  number: number | string,
-  locale: string,
-  options?: Intl.NumberFormatOptions,
-): string => {
+export function number(number: number | string, locale: string, options?: Intl.NumberFormatOptions): string {
   const filterOptions = {
     ...DEFAULT_OPTIONS,
     ...options,
@@ -24,7 +20,8 @@ export const number = (
 
   try {
     return new Intl.NumberFormat(locale, filterOptions).format(Number(number))
-  } catch (error) {
+  }
+  catch (error) {
     throw new Error(`[maz-ui](FilterNumber) ${error}`)
   }
 }

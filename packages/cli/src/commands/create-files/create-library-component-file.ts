@@ -22,7 +22,8 @@ export async function createLibraryComponentFile({
 
   try {
     await writeFile(COMPONENT_FILE_OUTPUT, componentTemplate)
-  } catch (error) {
+  }
+  catch (error) {
     logger.error(`Error: Failed to create file "${filename}".`, error)
     exit(1)
   }

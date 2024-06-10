@@ -1,4 +1,4 @@
-import { getOffset, isBetween, getOpacityCoeff } from '@components/MazSlider/utils'
+import { getOffset, getOpacityCoeff, isBetween } from '@components/MazSlider/utils'
 
 describe('utils', () => {
   it('should return the correct offset for an element', () => {

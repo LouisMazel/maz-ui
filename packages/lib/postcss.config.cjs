@@ -5,7 +5,7 @@ module.exports = {
     'postcss-nested': {},
     'tailwindcss/nesting': {},
     'postcss-import': {},
-    autoprefixer: {},
-    tailwindcss: {},
+    'autoprefixer': {},
+    'tailwindcss': {},
   },
 }

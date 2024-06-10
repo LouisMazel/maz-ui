@@ -1,25 +1,25 @@
-import { shallowMount, type VueWrapper } from '@vue/test-utils'
+import { type VueWrapper, shallowMount } from '@vue/test-utils'
 import MazInputCode from '@components/MazInputCode.vue'
 
-describe('MazInputCode', () => {
+describe('mazInputCode', () => {
   let wrapper: VueWrapper<InstanceType<typeof MazInputCode>>
 
   beforeEach(() => {
     wrapper = shallowMount(MazInputCode)
   })
 
-  test('Should match with the snapshot', () => {
+  it('should match with the snapshot', () => {
     expect(wrapper.html()).toMatchSnapshot()
   })
 
-  test('renders the correct number of input fields', async () => {
+  it('renders the correct number of input fields', async () => {
     expect(wrapper.findAll('input')).toHaveLength(4)
 
     await wrapper.setProps({ codeLength: 6 })
     expect(wrapper.findAll('input')).toHaveLength(6)
   })
 
-  test('emits completed event when code is complete', async () => {
+  it('emits completed event when code is complete', async () => {
     const inputFields = wrapper.findAll('input')
     await inputFields[0].setValue('1')
     await inputFields[1].setValue('2')
@@ -29,7 +29,7 @@ describe('MazInputCode', () => {
     expect(wrapper.emitted('completed')).toHaveLength(1)
   })
 
-  test('sets initial input values correctly', async () => {
+  it('sets initial input values correctly', async () => {
     await wrapper.setProps({
       modelValue: '1234',
     })
@@ -41,7 +41,7 @@ describe('MazInputCode', () => {
     expect(inputFields[3].element.value).toBe('4')
   })
 
-  test('allows only numeric values when acceptAlpha prop is false', async () => {
+  it('allows only numeric values when acceptAlpha prop is false', async () => {
     const inputFields = wrapper.findAll('input')
 
     await inputFields[0].setValue('a')
@@ -53,7 +53,7 @@ describe('MazInputCode', () => {
     expect(wrapper.emitted('update:model-value')).toStrictEqual([[''], ['1'], ['1'], ['12']])
   })
 
-  test('allows alphanumeric values when acceptAlpha prop is true', async () => {
+  it('allows alphanumeric values when acceptAlpha prop is true', async () => {
     await wrapper.setProps({
       acceptAlpha: true,
     })

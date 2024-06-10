@@ -1,7 +1,7 @@
 import fs from 'node:fs'
-import { resolve, join } from 'node:path'
-import { logger } from './utils/logger'
+import { join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { logger } from './utils/logger'
 
 const _dirname = fileURLToPath(new URL('.', import.meta.url))
 
@@ -32,7 +32,8 @@ fs.readdir(SVGFolder, (err, fichiers) => {
       fs.writeFile(filePath, modifyContent, 'utf8', (err) => {
         if (err) {
           logger.error(`Error while writing file ${fichier} :`, err)
-        } else {
+        }
+        else {
           logger.log(`Attributs updated for ${fichier}`)
         }
       })

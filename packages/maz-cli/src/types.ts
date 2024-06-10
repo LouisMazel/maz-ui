@@ -46,18 +46,18 @@ export type VariantColor = keyof Omit<
 >
 
 export interface OutputColorVariant {
-  50: string
-  100: string
-  200: string
-  300: string
-  400: string
-  base: string
-  600: string
-  700: string
-  800: string
-  900: string
-  contrast: string
-  alpha: string
+  '50': string
+  '100': string
+  '200': string
+  '300': string
+  '400': string
+  'base': string
+  '600': string
+  '700': string
+  '800': string
+  '900': string
+  'contrast': string
+  'alpha': string
   'alpha-20': string
   'alpha-10': string
   'alpha-05': string

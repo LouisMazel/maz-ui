@@ -1,9 +1,9 @@
-import { sleep } from './../../helpers/sleep'
-import { isClient } from './../../helpers/is-client'
 import type { App } from 'vue'
 import type { Router } from 'vue-router'
+import { sleep } from './../../helpers/sleep'
+import { isClient } from './../../helpers/is-client'
 
-export type AosOptions = {
+export interface AosOptions {
   animation?: {
     delay?: number
     duration?: number
@@ -67,7 +67,7 @@ export class AosHandler {
         : []
 
       if (hasChildren) {
-        const children = [...document.querySelectorAll('[data-maz-aos-anchor]')].map((child) =>
+        const children = [...document.querySelectorAll('[data-maz-aos-anchor]')].map(child =>
           child.getAttribute('data-maz-aos-anchor') === `#${entry.target.id}` ? child : undefined,
         )
 
@@ -81,12 +81,12 @@ export class AosHandler {
       for (const element of animateElements) {
         const once = element.getAttribute('data-maz-aos-once')
 
-        const useOnce: boolean =
-          typeof once === 'string' ? once === 'true' : this.options.animation.once
+        const useOnce: boolean
+          = typeof once === 'string' ? once === 'true' : this.options.animation.once
 
         if (
-          typeof this.options.observer.threshold === 'number' &&
-          entry.intersectionRatio > this.options.observer.threshold
+          typeof this.options.observer.threshold === 'number'
+          && entry.intersectionRatio > this.options.observer.threshold
         ) {
           const duration = element.getAttribute('data-maz-aos-duration')
           const delay = element.getAttribute('data-maz-aos-delay')
@@ -118,7 +118,8 @@ export class AosHandler {
 
             observer.unobserve(element)
           }
-        } else {
+        }
+        else {
           element.classList.remove('maz-aos-animate')
         }
       }
@@ -139,11 +140,12 @@ export class AosHandler {
         if (anchorElement) {
           anchorElement.setAttribute('data-maz-aos-children', 'true')
           observer.observe(anchorElement)
-        } else {
-          // eslint-disable-next-line no-console
+        }
+        else {
           console.warn(`[maz-ui](aos) no element found with selector "${anchorAttr}"`)
         }
-      } else {
+      }
+      else {
         observer.observe(element)
       }
     }
@@ -152,13 +154,14 @@ export class AosHandler {
   public runAnimations() {
     if (isClient()) {
       return this.handleObserver()
-    } else {
+    }
+    else {
       console.warn('[MazAos](runAnimations) should be executed on client side')
     }
   }
 }
 
-export let instance: AosHandler
+let instance: AosHandler
 
 export const plugin = {
   install: (app: App, options?: AosOptions) => {
@@ -174,8 +177,13 @@ export const plugin = {
       options.router.afterEach(async () => {
         instance.runAnimations()
       })
-    } else {
+    }
+    else {
       instance.runAnimations()
     }
   },
+}
+
+export function getInstance(): AosHandler {
+  return instance
 }

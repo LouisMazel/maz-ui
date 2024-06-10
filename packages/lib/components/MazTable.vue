@@ -1,8 +1,464 @@
+<script lang="ts" setup>
+import {
+  type HTMLAttributes,
+  type Ref,
+  type StyleValue,
+  type ThHTMLAttributes,
+  computed,
+  onBeforeMount,
+  provide,
+  ref,
+  toRefs,
+  useSlots,
+  watch,
+} from 'vue'
+import SearchIcon from './../icons/magnifying-glass.svg'
+import ArrowIcon from './../icons/arrow-up.svg'
+import ChevronIcon from './../icons/chevron-left.svg'
+import ChevronDoubleIcon from './../icons/chevron-double-left.svg'
+import MazSelect, { type MazSelectOption } from './MazSelect.vue'
+import MazBtn from './MazBtn.vue'
+import MazTableRow from './MazTableRow.vue'
+import MazTableCell from './MazTableCell.vue'
+import MazTableTitle from './MazTableTitle.vue'
+import MazInput from './MazInput.vue'
+import MazLoadingBar from './MazLoadingBar.vue'
+import MazCheckbox from './MazCheckbox.vue'
+import type { Color, Size } from './types'
+
+export type { Size, Color }
+
+export interface HeadersEnriched {
+  label: string
+  key?: string
+  sortable?: boolean
+  hidden?: boolean
+  srOnly?: boolean
+  width?: string
+  maxWidth?: string
+  classes?: ThHTMLAttributes['class']
+  scope?: ThHTMLAttributes['scope']
+  align?: ThHTMLAttributes['align']
+  rowspan?: ThHTMLAttributes['rowspan']
+  colspan?: ThHTMLAttributes['colspan']
+  headers?: ThHTMLAttributes['headers']
+}
+
+  type HeadersNormalized = HeadersEnriched & {
+    thHeaders?: ThHTMLAttributes['headers']
+    sorted?: 'ASC' | 'DESC'
+  }
+
+export type Row = Record<string, any> & {
+  selected?: boolean
+  action?: (row: Row) => unknown
+  classes?: HTMLAttributes['class']
+}
+
+export type Header = string | HeadersEnriched
+
+export interface Props {
+  /** class of the table element */
+  tableClass?: HTMLAttributes['class']
+  /** style of the table element */
+  tableStyle?: StyleValue
+  /** v-model of the table - list of selected rows */
+  modelValue?: (string | boolean | number)[]
+  /**
+   * size of the table
+   * @values `'xl' | 'lg' | 'md' | 'sm' | 'xs' | 'mini'`
+   */
+  size?: Size
+  /** title of the table */
+  title?: string
+  /** headers of the table */
+  headers?: Header[]
+  /** allow sort feature to all columns */
+  sortable?: boolean
+  /** align all headers */
+  headersAlign?: ThHTMLAttributes['align']
+  /** rows of the table - type: `Record<string, string | boolean | number>[]` ; */
+  rows?: Row[]
+  /** add hover effect on rows */
+  hoverable?: boolean
+  /** enable search feature into the table header */
+  search?: boolean
+  /** disabled search in rows - useful to filtering data yourself or make search request to server */
+  noSearchInRow?: boolean
+  /** placeholder of the search input */
+  searchPlaceholder?: string
+  /** Disabled search by column (remove select input "search by") */
+  noSearchBy?: boolean
+  /** placeholder of the search by select */
+  searchByPlaceholder?: string
+  /** label of the search by of all options */
+  searchByAllLabel?: string
+  /** search query in input */
+  searchQuery?: string
+  /** add background color to odd rows */
+  backgroundOdd?: boolean
+  /** add background color to even rows */
+  backgroundEven?: boolean
+  /** add shodow to the table */
+  elevation?: boolean
+  /** no divider between rows */
+  divider?: boolean
+  /** caption of the table */
+  caption?: string
+  /**
+   * caption side
+   * @values `'top' | 'bottom'`
+   */
+  captionSide?: 'top' | 'bottom'
+  /** add pagination into the table footer */
+  pagination?: boolean
+  /** current page of pagination */
+  page?: number
+  /** number of items per page */
+  pageSize?: number
+  /** pages count */
+  totalPages?: number
+  /** label of the pagination all option */
+  paginationAllLabel?: string
+  /** no paginate rows - useful to make paginate request with your server */
+  noPaginateRows?: boolean
+  /** total number of items */
+  totalItems?: number
+  /** loading state */
+  loading?: boolean
+  /** Enable selection of rows */
+  selectable?: boolean
+  /** Enable selection of rows - key of the selected row */
+  selectedKey?: string
+  /**
+   * table layout
+   * @values `'auto' | 'fixed'`
+   */
+  tableLayout?: 'auto' | 'fixed'
+  /** color of the loading bar */
+  color?: Color
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  tableClass: undefined,
+  tableStyle: undefined,
+  modelValue: undefined,
+  title: undefined,
+  size: 'md',
+  rows: undefined,
+  searchQuery: undefined,
+  headers: undefined,
+  headersAlign: 'left',
+  caption: undefined,
+  page: 1,
+  pageSize: 20,
+  totalItems: undefined,
+  selectedKey: undefined,
+  captionSide: 'bottom',
+  tableLayout: undefined,
+  searchPlaceholder: 'Search',
+  searchByPlaceholder: 'Search by',
+  searchByAllLabel: 'All',
+  paginationAllLabel: 'All',
+  color: 'primary',
+  totalPages: undefined,
+})
+
+const emits = defineEmits<{
+  /**
+   * emitted when a row is selected
+   * @property {(Row | string | number | boolean)[]} value list of selected rows (if selectedKey is defined, it will be the value of the selectedKey of the row)
+   */
+  (event: 'update:model-value', value: (Row | string | number | boolean)[] | undefined): void
+  /**
+   * emitted when enter a value in the search input
+   * @property {string} searchQuery search query
+   */
+  (event: 'update:search-query', searchQuery: string | undefined): void
+  /**
+   * emitted when the current page of the pagination change
+   * @property {number} page current page
+   */
+  (event: 'update:page', page: number): void
+  /**
+   * emitted when the page size of the pagination change
+   * @property {number} pageSize current page size
+   */
+  (event: 'update:page-size', pageSize: number): void
+}>()
+
+const hasDivider = computed<boolean>(
+  () => props.divider && !props.backgroundEven && !props.backgroundOdd,
+)
+
+const { size, hoverable, backgroundEven, backgroundOdd } = toRefs(props)
+
+export interface MazTableProvide {
+  size: Ref<Size>
+  hoverable: Ref<boolean>
+  backgroundEven: Ref<boolean>
+  backgroundOdd: Ref<boolean>
+}
+
+provide<MazTableProvide>('maz-table', {
+  size,
+  hoverable,
+  backgroundEven,
+  backgroundOdd,
+})
+
+const rowsNormalized = ref<Row[]>(getNormalizedRows())
+
+const isSelectable = computed<boolean>(() => props.selectable || !!props.selectedKey)
+
+const currentPage = ref(props.page)
+watch(
+  () => props.page,
+  (value) => {
+    currentPage.value = value
+  },
+)
+const currentPageModel = computed({
+  get: () => currentPage.value,
+  set: (value) => {
+    currentPage.value = value
+    emits('update:page', value)
+  },
+})
+
+const pageSizeOptions = computed<MazSelectOption[]>(() => [
+  { label: props.paginationAllLabel, value: Number.POSITIVE_INFINITY },
+  { label: 5, value: 5 },
+  { label: 10, value: 10 },
+  { label: 20, value: 20 },
+  { label: 50, value: 50 },
+  { label: 100, value: 100 },
+  { label: 200, value: 200 },
+])
+const pageSizeModelInternal = ref(props.pageSize)
+watch(
+  () => props.pageSize,
+  (value) => {
+    pageSizeModelInternal.value = value
+  },
+)
+const pageSizeModel = computed({
+  get: () => pageSizeModelInternal.value,
+  set: (value) => {
+    pageSizeModelInternal.value = value
+    emits('update:page-size', value)
+  },
+})
+
+const totalPagesInternal = computed(() => {
+  return props.totalPages
+    ?? (pageSizeModel.value === Number.POSITIVE_INFINITY || !props.rows?.length)
+    ? 1
+    : Math.ceil(props.rows.length / pageSizeModel.value)
+})
+
+function firstPage() {
+  currentPageModel.value = 1
+}
+function lastPage() {
+  currentPageModel.value = totalPagesInternal.value
+}
+
+function previousPage() {
+  currentPageModel.value = currentPageModel.value - 1
+}
+function nextPage() {
+  currentPageModel.value = currentPageModel.value + 1
+}
+
+const rowsOfPage = computed(() => {
+  if (
+    !props.pagination
+    || props.noPaginateRows
+    || pageSizeModel.value === Number.POSITIVE_INFINITY
+  ) {
+    return rowsNormalized.value
+  }
+
+  const start = (currentPage.value - 1) * pageSizeModel.value
+  const end = start + pageSizeModel.value
+
+  return rowsNormalized.value.slice(start, end)
+})
+
+watch(
+  () => [props.rows, props.modelValue],
+  () => {
+    rowsNormalized.value = getNormalizedRows()
+  },
+)
+
+const sortedColumnIndex = ref<number>()
+const sortType = ref<'ASC' | 'DESC'>()
+
+const headersNormalized = ref<HeadersNormalized[]>(getNormalizedHeaders())
+
+const searchByKey = ref<string>()
+const searchByOptions = computed<MazSelectOption[]>(() => [
+  { label: props.searchByAllLabel, value: null },
+  ...headersNormalized.value.map((header) => {
+    return {
+      label: header.label,
+      value: header.key,
+    }
+  }),
+])
+
+const searchQueryModelInternal = ref(props.searchQuery)
+watch(
+  () => props.searchQuery,
+  (value) => {
+    searchQueryModelInternal.value = value
+  },
+)
+const searchQueryModel = computed({
+  get: () => searchQueryModelInternal.value,
+  set: (value) => {
+    searchQueryModelInternal.value = value
+    emits('update:search-query', value)
+  },
+})
+
+function getSortedRows(rows: Row[]) {
+  return [...rows].sort((a, b) => {
+    if (sortedColumnIndex.value === undefined || sortType.value === undefined)
+      return 0
+
+    const aValue = a[headersNormalized.value[sortedColumnIndex.value].key as string]
+    const bValue = b[headersNormalized.value[sortedColumnIndex.value].key as string]
+
+    // Comparez les valeurs en fonction du type de données
+    if (typeof aValue === 'string' && typeof bValue === 'string') {
+      return sortType.value === 'ASC'
+        ? aValue.localeCompare(bValue)
+        : bValue.localeCompare(aValue)
+    }
+    else {
+      return sortType.value === 'ASC' ? aValue - bValue : bValue - aValue
+    }
+  })
+}
+
+function getFilteredRows(rows: Row[]) {
+  if (props.noSearchInRow || typeof searchQueryModel.value !== 'string')
+    return rowsOfPage.value
+
+  const query = searchQueryModel.value.toLowerCase()
+
+  return [...rows].filter((row) => {
+    if (searchByKey.value) {
+      return String(row[searchByKey.value]).toLowerCase().includes(query)
+    }
+
+    return Object.values(row).some((value) => {
+      if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+        return String(value).toLowerCase().includes(query)
+      }
+
+      return false
+    })
+  })
+}
+
+const rowsFiltered = computed<Row[]>(() => {
+  const filteredResults = getFilteredRows(rowsOfPage.value)
+
+  return getSortedRows(filteredResults)
+})
+
+const slots = useSlots()
+
+const hasHeader = computed<boolean>(() => props.search || !!props.title || !!slots.title)
+const hasFooter = computed<boolean>(() => props.pagination)
+
+function getNormalizedHeaders(): HeadersNormalized[] {
+  return (
+    props.headers?.map(header =>
+      typeof header === 'string'
+        ? { label: header, align: props.headersAlign }
+        : { align: props.headersAlign, thHeaders: header.headers, ...header },
+    ) ?? []
+  )
+}
+
+function getNormalizedRows(): Row[] {
+  return (
+    props.rows?.map(row => ({
+      selected: props.modelValue?.includes(props.selectedKey ? row[props.selectedKey] : row),
+      ...row,
+    })) ?? []
+  )
+}
+
+function sortColumn(columnIndex: number) {
+  if (columnIndex === sortedColumnIndex.value) {
+    sortType.value
+        = sortType.value === undefined ? 'DESC' : sortType.value === 'DESC' ? 'ASC' : undefined
+  }
+  else {
+    sortType.value = 'DESC'
+  }
+  sortedColumnIndex.value = sortType.value === undefined ? undefined : columnIndex
+}
+
+const allSelected = computed<boolean>({
+  get: () => {
+    return rowsFiltered.value.every(row => row.selected) ?? false
+  },
+  set: selectAll,
+})
+
+function selectAll(value: boolean) {
+  for (const row of rowsFiltered.value) {
+    row.selected = value
+  }
+
+  emitValues()
+}
+
+function selectRow(value: boolean, index: number) {
+  rowsFiltered.value[index].selected = value
+
+  emitValues()
+}
+
+function emitValues(selectedRows?: (Row | string | number | boolean)[]) {
+  selectedRows = selectedRows ?? getSelectedRows()
+
+  const rows = selectedRows?.length ? selectedRows : undefined
+
+  emits('update:model-value', rows)
+}
+
+function getSelectedRows(): (Row | string | number | boolean)[] {
+  // if (props.selectedKey === undefined) {
+  //   return
+  // }
+
+  return rowsFiltered.value
+    .filter(row => row.selected)
+    .map(row => (props.selectedKey ? row[props.selectedKey] : row))
+}
+
+onBeforeMount(() => {
+  const selectedRows = getSelectedRows()
+
+  if (selectedRows?.length) {
+    emitValues(selectedRows)
+  }
+})
+</script>
+
 <template>
   <div class="m-table" :class="{ '--has-header': hasHeader }">
     <div v-if="hasHeader" class="m-table-header">
       <div class="m-table-spacer">
-        <slot v-if="title || $slots['title']" name="title">
+        <slot v-if="title || $slots.title" name="title">
           <span class="m-table-header-title">
             {{ title }}
           </span>
@@ -106,7 +562,9 @@
               <!--
                 @slot actions-header - replace text of actions header
               -->
-              <slot name="actions-header"> Actions </slot>
+              <slot name="actions-header">
+                Actions
+              </slot>
             </MazTableTitle>
           </MazTableRow>
         </slot>
@@ -164,7 +622,7 @@
                   @slot actions - will add actions column
                     @binding {Object} row - row data
                 -->
-                <slot name="actions" :row="row"></slot>
+                <slot name="actions" :row="row" />
               </MazTableCell>
             </MazTableRow>
           </template>
@@ -183,7 +641,9 @@
                     <!--
                       @slot no-results-text - replace no results test only
                     -->
-                    <slot name="no-results-text"> No results </slot>
+                    <slot name="no-results-text">
+                      No results
+                    </slot>
                   </p>
                 </slot>
               </MazTableCell>
@@ -194,7 +654,7 @@
     </table>
 
     <div v-if="hasFooter" class="m-table-footer">
-      <div class="m-table-spacer"></div>
+      <div class="m-table-spacer" />
 
       <div v-if="pagination" class="m-table-footer-pagination">
         <div class="m-table-footer-pagination-items-per-page">
@@ -262,591 +722,140 @@
   </div>
 </template>
 
-<script lang="ts" setup>
-  import {
-    type ThHTMLAttributes,
-    type StyleValue,
-    type HTMLAttributes,
-    computed,
-    toRefs,
-    type Ref,
-    provide,
-    ref,
-    watch,
-    onBeforeMount,
-    useSlots,
-  } from 'vue'
-  import SearchIcon from './../icons/magnifying-glass.svg'
-  import ArrowIcon from './../icons/arrow-up.svg'
-  import ChevronIcon from './../icons/chevron-left.svg'
-  import ChevronDoubleIcon from './../icons/chevron-double-left.svg'
-  import MazSelect, { type MazSelectOption } from './MazSelect.vue'
-  import MazBtn from './MazBtn.vue'
-  import MazTableRow from './MazTableRow.vue'
-  import MazTableCell from './MazTableCell.vue'
-  import MazTableTitle from './MazTableTitle.vue'
-  import MazInput from './MazInput.vue'
-  import MazLoadingBar from './MazLoadingBar.vue'
-  import MazCheckbox from './MazCheckbox.vue'
-  import type { Color, Size } from './types'
-
-  export type { Size, Color }
-
-  export type HeadersEnriched = {
-    label: string
-    key?: string
-    sortable?: boolean
-    hidden?: boolean
-    srOnly?: boolean
-    width?: string
-    maxWidth?: string
-    classes?: ThHTMLAttributes['class']
-    scope?: ThHTMLAttributes['scope']
-    align?: ThHTMLAttributes['align']
-    rowspan?: ThHTMLAttributes['rowspan']
-    colspan?: ThHTMLAttributes['colspan']
-    headers?: ThHTMLAttributes['headers']
-  }
-
-  type HeadersNormalized = HeadersEnriched & {
-    thHeaders?: ThHTMLAttributes['headers']
-    sorted?: 'ASC' | 'DESC'
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  export type Row = Record<string, any> & {
-    selected?: boolean
-    action?: (row: Row) => unknown
-    classes?: HTMLAttributes['class']
-  }
-
-  export type Header = string | HeadersEnriched
-
-  export type Props = {
-    /** class of the table element */
-    tableClass?: HTMLAttributes['class']
-    /** style of the table element */
-    tableStyle?: StyleValue
-    /** v-model of the table - list of selected rows */
-    modelValue?: (string | boolean | number)[]
-    /** size of the table
-     * @values `'xl' | 'lg' | 'md' | 'sm' | 'xs' | 'mini'`
-     */
-    size?: Size
-    /** title of the table */
-    title?: string
-    /** headers of the table */
-    headers?: Header[]
-    /** allow sort feature to all columns */
-    sortable?: boolean
-    /** align all headers */
-    headersAlign?: ThHTMLAttributes['align']
-    /** rows of the table - type: `Record<string, string | boolean | number>[]` ; */
-    rows?: Row[]
-    /** add hover effect on rows */
-    hoverable?: boolean
-    /** enable search feature into the table header */
-    search?: boolean
-    /** disabled search in rows - useful to filtering data yourself or make search request to server */
-    noSearchInRow?: boolean
-    /** placeholder of the search input */
-    searchPlaceholder?: string
-    /** Disabled search by column (remove select input "search by") */
-    noSearchBy?: boolean
-    /** placeholder of the search by select */
-    searchByPlaceholder?: string
-    /** label of the search by of all options */
-    searchByAllLabel?: string
-    /** search query in input */
-    searchQuery?: string
-    /** add background color to odd rows */
-    backgroundOdd?: boolean
-    /** add background color to even rows */
-    backgroundEven?: boolean
-    /** add shodow to the table */
-    elevation?: boolean
-    /** no divider between rows */
-    divider?: boolean
-    /** caption of the table */
-    caption?: string
-    /** caption side
-     * @values `'top' | 'bottom'`
-     */
-    captionSide?: 'top' | 'bottom'
-    /** add pagination into the table footer */
-    pagination?: boolean
-    /** current page of pagination */
-    page?: number
-    /** number of items per page */
-    pageSize?: number
-    /** pages count */
-    totalPages?: number
-    /** label of the pagination all option */
-    paginationAllLabel?: string
-    /** no paginate rows - useful to make paginate request with your server */
-    noPaginateRows?: boolean
-    /** total number of items */
-    totalItems?: number
-    /** loading state */
-    loading?: boolean
-    /** Enable selection of rows */
-    selectable?: boolean
-    /** Enable selection of rows - key of the selected row */
-    selectedKey?: string
-    /** table layout
-     * @values `'auto' | 'fixed'`
-     */
-    tableLayout?: 'auto' | 'fixed'
-    /** color of the loading bar */
-    color?: Color
-  }
-
-  const props = withDefaults(defineProps<Props>(), {
-    tableClass: undefined,
-    tableStyle: undefined,
-    modelValue: undefined,
-    title: undefined,
-    size: 'md',
-    rows: undefined,
-    searchQuery: undefined,
-    headers: undefined,
-    headersAlign: 'left',
-    caption: undefined,
-    page: 1,
-    pageSize: 20,
-    totalItems: undefined,
-    selectedKey: undefined,
-    captionSide: 'bottom',
-    tableLayout: undefined,
-    searchPlaceholder: 'Search',
-    searchByPlaceholder: 'Search by',
-    searchByAllLabel: 'All',
-    paginationAllLabel: 'All',
-    color: 'primary',
-    totalPages: undefined,
-  })
-
-  const hasDivider = computed<boolean>(
-    () => props.divider && !props.backgroundEven && !props.backgroundOdd,
-  )
-
-  const emits = defineEmits<{
-    /**
-     * emitted when a row is selected
-     * @property {(Row | string | number | boolean)[]} value list of selected rows (if selectedKey is defined, it will be the value of the selectedKey of the row)
-     */
-    (event: 'update:model-value', value: (Row | string | number | boolean)[] | undefined): void
-    /**
-     * emitted when enter a value in the search input
-     * @property {string} searchQuery search query
-     */
-    (event: 'update:search-query', searchQuery: string | undefined): void
-    /**
-     * emitted when the current page of the pagination change
-     * @property {number} page current page
-     */
-    (event: 'update:page', page: number): void
-    /**
-     * emitted when the page size of the pagination change
-     * @property {number} pageSize current page size
-     */
-    (event: 'update:page-size', pageSize: number): void
-  }>()
-
-  const { size, hoverable, backgroundEven, backgroundOdd } = toRefs(props)
-
-  export type MazTableProvide = {
-    size: Ref<Size>
-    hoverable: Ref<boolean>
-    backgroundEven: Ref<boolean>
-    backgroundOdd: Ref<boolean>
-  }
-
-  provide<MazTableProvide>('maz-table', {
-    size,
-    hoverable,
-    backgroundEven,
-    backgroundOdd,
-  })
-
-  const rowsNormalized = ref<Row[]>(getNormalizedRows())
-
-  const isSelectable = computed<boolean>(() => props.selectable || !!props.selectedKey)
-
-  const currentPage = ref(props.page)
-  watch(
-    () => props.page,
-    (value) => {
-      currentPage.value = value
-    },
-  )
-  const currentPageModel = computed({
-    get: () => currentPage.value,
-    set: (value) => {
-      currentPage.value = value
-      emits('update:page', value)
-    },
-  })
-
-  const pageSizeOptions = computed<MazSelectOption[]>(() => [
-    { label: props.paginationAllLabel, value: Number.POSITIVE_INFINITY },
-    { label: 5, value: 5 },
-    { label: 10, value: 10 },
-    { label: 20, value: 20 },
-    { label: 50, value: 50 },
-    { label: 100, value: 100 },
-    { label: 200, value: 200 },
-  ])
-  const pageSizeModelInternal = ref(props.pageSize)
-  watch(
-    () => props.pageSize,
-    (value) => {
-      pageSizeModelInternal.value = value
-    },
-  )
-  const pageSizeModel = computed({
-    get: () => pageSizeModelInternal.value,
-    set: (value) => {
-      pageSizeModelInternal.value = value
-      emits('update:page-size', value)
-    },
-  })
-
-  const totalPagesInternal = computed(() => {
-    return props.totalPages ??
-      (pageSizeModel.value === Number.POSITIVE_INFINITY || !props.rows?.length)
-      ? 1
-      : Math.ceil(props.rows.length / pageSizeModel.value)
-  })
-
-  function firstPage() {
-    currentPageModel.value = 1
-  }
-  function lastPage() {
-    currentPageModel.value = totalPagesInternal.value
-  }
-
-  function previousPage() {
-    currentPageModel.value = currentPageModel.value - 1
-  }
-  function nextPage() {
-    currentPageModel.value = currentPageModel.value + 1
-  }
-
-  const rowsOfPage = computed(() => {
-    if (
-      !props.pagination ||
-      props.noPaginateRows ||
-      pageSizeModel.value === Number.POSITIVE_INFINITY
-    ) {
-      return rowsNormalized.value
-    }
-
-    const start = (currentPage.value - 1) * pageSizeModel.value
-    const end = start + pageSizeModel.value
-
-    return rowsNormalized.value.slice(start, end)
-  })
-
-  watch(
-    () => [props.rows, props.modelValue],
-    () => {
-      rowsNormalized.value = getNormalizedRows()
-    },
-  )
-
-  const searchByKey = ref<string>()
-  const searchByOptions = computed<MazSelectOption[]>(() => [
-    // eslint-disable-next-line unicorn/no-null
-    { label: props.searchByAllLabel, value: null },
-    ...headersNormalized.value.map((header) => {
-      return {
-        label: header.label,
-        value: header.key,
-      }
-    }),
-  ])
-
-  const searchQueryModelInternal = ref(props.searchQuery)
-  watch(
-    () => props.searchQuery,
-    (value) => {
-      searchQueryModelInternal.value = value
-    },
-  )
-  const searchQueryModel = computed({
-    get: () => searchQueryModelInternal.value,
-    set: (value) => {
-      searchQueryModelInternal.value = value
-      emits('update:search-query', value)
-    },
-  })
-
-  function getSortedRows(rows: Row[]) {
-    return [...rows].sort((a, b) => {
-      if (sortedColumnIndex.value === undefined || sortType.value === undefined) return 0
-
-      const aValue = a[headersNormalized.value[sortedColumnIndex.value].key as string]
-      const bValue = b[headersNormalized.value[sortedColumnIndex.value].key as string]
-
-      // Comparez les valeurs en fonction du type de données
-      if (typeof aValue === 'string' && typeof bValue === 'string') {
-        return sortType.value === 'ASC'
-          ? aValue.localeCompare(bValue)
-          : bValue.localeCompare(aValue)
-      } else {
-        return sortType.value === 'ASC' ? aValue - bValue : bValue - aValue
-      }
-    })
-  }
-
-  function getFilteredRows(rows: Row[]) {
-    if (props.noSearchInRow || typeof searchQueryModel.value !== 'string') return rowsOfPage.value
-
-    const query = searchQueryModel.value.toLowerCase()
-
-    return [...rows].filter((row) => {
-      if (searchByKey.value) {
-        return String(row[searchByKey.value]).toLowerCase().includes(query)
-      }
-
-      return Object.values(row).some((value) => {
-        if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
-          return String(value).toLowerCase().includes(query)
-        }
-
-        return false
-      })
-    })
-  }
-
-  const rowsFiltered = computed<Row[]>(() => {
-    const filteredResults = getFilteredRows(rowsOfPage.value)
-
-    return getSortedRows(filteredResults)
-  })
-
-  const slots = useSlots()
-
-  const hasHeader = computed<boolean>(() => props.search || !!props.title || !!slots.title)
-  const hasFooter = computed<boolean>(() => props.pagination)
-
-  const headersNormalized = ref<HeadersNormalized[]>(getNormalizedHeaders())
-
-  function getNormalizedHeaders(): HeadersNormalized[] {
-    return (
-      props.headers?.map((header) =>
-        typeof header === 'string'
-          ? { label: header, align: props.headersAlign }
-          : { align: props.headersAlign, thHeaders: header.headers, ...header },
-      ) ?? []
-    )
-  }
-
-  function getNormalizedRows(): Row[] {
-    return (
-      props.rows?.map((row) => ({
-        selected: props.modelValue?.includes(props.selectedKey ? row[props.selectedKey] : row),
-        ...row,
-      })) ?? []
-    )
-  }
-
-  const sortedColumnIndex = ref<number>()
-  const sortType = ref<'ASC' | 'DESC'>()
-
-  function sortColumn(columnIndex: number) {
-    if (columnIndex === sortedColumnIndex.value) {
-      sortType.value =
-        sortType.value === undefined ? 'DESC' : sortType.value === 'DESC' ? 'ASC' : undefined
-    } else {
-      sortType.value = 'DESC'
-    }
-    sortedColumnIndex.value = sortType.value === undefined ? undefined : columnIndex
-  }
-
-  const allSelected = computed<boolean>({
-    get: () => {
-      return rowsFiltered.value.every((row) => row.selected) ?? false
-    },
-    set: selectAll,
-  })
-
-  function selectAll(value: boolean) {
-    for (const row of rowsFiltered.value) {
-      row.selected = value
-    }
-
-    emitValues()
-  }
-
-  function selectRow(value: boolean, index: number) {
-    rowsFiltered.value[index].selected = value
-
-    emitValues()
-  }
-
-  function emitValues(selectedRows?: (Row | string | number | boolean)[]) {
-    selectedRows = selectedRows ?? getSelectedRows()
-
-    const rows = selectedRows?.length ? selectedRows : undefined
-
-    emits('update:model-value', rows)
-  }
-
-  function getSelectedRows(): (Row | string | number | boolean)[] {
-    // if (props.selectedKey === undefined) {
-    //   return
-    // }
-
-    return rowsFiltered.value
-      .filter((row) => row.selected)
-      .map((row) => (props.selectedKey ? row[props.selectedKey] : row))
-  }
-
-  onBeforeMount(() => {
-    const selectedRows = getSelectedRows()
-
-    if (selectedRows?.length) {
-      emitValues(selectedRows)
-    }
-  })
-</script>
-
 <style lang="postcss" scoped>
   .m-table {
-    @apply maz-relative maz-max-w-full;
+  @apply maz-relative maz-max-w-full;
 
-    &-header {
-      @apply maz-flex maz-max-w-full maz-items-center maz-justify-between maz-gap-2 maz-border-b maz-border-color-light maz-bg-color maz-p-2;
+  &-header {
+    @apply maz-flex maz-max-w-full maz-items-center maz-justify-between maz-gap-2 maz-border-b maz-border-color-light maz-bg-color maz-p-2;
 
-      &-search {
+    &-search {
+      @apply maz-flex maz-items-center maz-gap-2;
+    }
+
+    &-title {
+      @apply maz-font-semibold;
+    }
+  }
+
+  &-footer {
+    @apply maz-flex maz-max-w-full maz-justify-between maz-gap-2 maz-border-t maz-border-color-light maz-bg-color maz-p-2;
+
+    &-pagination {
+      @apply maz-flex maz-items-center maz-gap-4;
+
+      &-buttons {
         @apply maz-flex maz-items-center maz-gap-2;
       }
 
-      &-title {
-        @apply maz-font-semibold;
+      &-items-per-page {
+        @apply maz-flex maz-items-center maz-gap-2;
       }
     }
+  }
 
-    &-footer {
-      @apply maz-flex maz-max-w-full maz-justify-between maz-gap-2 maz-border-t maz-border-color-light maz-bg-color maz-p-2;
+  &.--has-header {
+    @apply maz-rounded;
+  }
 
-      &-pagination {
-        @apply maz-flex maz-items-center maz-gap-4;
-
-        &-buttons {
-          @apply maz-flex maz-items-center maz-gap-2;
-        }
-
-        &-items-per-page {
-          @apply maz-flex maz-items-center maz-gap-2;
-        }
-      }
-    }
-
-    &.--has-header {
+  &:not(.--has-header) {
+    table {
       @apply maz-rounded;
     }
+  }
 
-    &:not(.--has-header) {
-      table {
-        @apply maz-rounded;
-      }
+  table {
+    @apply maz-table maz-w-full maz-border-collapse maz-bg-color;
+
+    table-layout: v-bind('props.tableLayout');
+
+    &.--has-layout {
+      @apply maz-w-full;
     }
 
-    table {
-      @apply maz-table maz-w-full maz-border-collapse maz-bg-color;
+    &.--elevation {
+      @apply maz-elevation;
+    }
 
-      table-layout: v-bind('props.tableLayout');
+    & .m-table-select-column {
+      @apply maz-w-[2.9rem];
+    }
 
-      &.--has-layout {
-        @apply maz-w-full;
-      }
+    caption {
+      @apply maz-p-3;
 
-      &.--elevation {
-        @apply maz-elevation;
-      }
+      caption-side: v-bind('props.captionSide');
+    }
 
-      & .m-table-select-column {
-        @apply maz-w-[2.9rem];
-      }
+    thead {
+      @apply maz-truncate maz-break-all maz-border-b maz-border-color-light maz-font-semibold;
 
-      caption {
-        @apply maz-p-3;
+      th {
+        @apply maz-gap-2 maz-truncate maz-break-all maz-font-semibold maz-tracking-tight;
 
-        caption-side: v-bind('props.captionSide');
-      }
+        &.--hidden {
+          @apply maz-hidden;
+        }
 
-      thead {
-        @apply maz-truncate maz-break-all maz-border-b maz-border-color-light maz-font-semibold;
+        &.--sortable {
+          @apply maz-cursor-pointer hover:maz-bg-color-light hover:dark:maz-bg-color-lighter;
+        }
 
-        th {
-          @apply maz-gap-2 maz-truncate maz-break-all maz-font-semibold maz-tracking-tight;
+        &.--xl {
+          @apply maz-px-5 maz-py-5 maz-text-xl;
+        }
 
-          &.--hidden {
-            @apply maz-hidden;
+        &.--lg {
+          @apply maz-px-4 maz-py-4 maz-text-lg;
+        }
+
+        &.--md {
+          @apply maz-px-3 maz-py-3 maz-text-base;
+        }
+
+        &.--sm {
+          @apply maz-px-2 maz-py-2 maz-text-sm;
+        }
+
+        &.--xs {
+          @apply maz-px-1 maz-py-1 maz-text-xs;
+        }
+
+        &.--mini {
+          @apply maz-px-0.5 maz-py-0.5 maz-text-xs;
+        }
+
+        span {
+          @apply maz-inline-flex maz-items-center maz-gap-1 maz-truncate;
+
+          .m-table-sort-icon-wrapper {
+            @apply maz-h-4 maz-w-4;
           }
 
-          &.--sortable {
-            @apply maz-cursor-pointer hover:maz-bg-color-light hover:dark:maz-bg-color-lighter;
-          }
+          .m-table-sort-icon {
+            @apply maz-text-muted maz-transition-transform maz-duration-300 maz-ease-out;
 
-          &.--xl {
-            @apply maz-px-5 maz-py-5 maz-text-xl;
-          }
+            &.--sorted {
+              @apply maz-block maz-text-normal;
 
-          &.--lg {
-            @apply maz-px-4 maz-py-4 maz-text-lg;
-          }
+              &.--up {
+                @apply maz-rotate-0;
+              }
 
-          &.--md {
-            @apply maz-px-3 maz-py-3 maz-text-base;
-          }
-
-          &.--sm {
-            @apply maz-px-2 maz-py-2 maz-text-sm;
-          }
-
-          &.--xs {
-            @apply maz-px-1 maz-py-1 maz-text-xs;
-          }
-
-          &.--mini {
-            @apply maz-px-0.5 maz-py-0.5 maz-text-xs;
-          }
-
-          span {
-            @apply maz-inline-flex maz-items-center maz-gap-1 maz-truncate;
-
-            .m-table-sort-icon-wrapper {
-              @apply maz-h-4 maz-w-4;
-            }
-
-            .m-table-sort-icon {
-              @apply maz-text-muted maz-transition-transform maz-duration-300 maz-ease-out;
-
-              &.--sorted {
-                @apply maz-block maz-text-normal;
-
-                &.--up {
-                  @apply maz-rotate-0;
-                }
-
-                &.--down {
-                  @apply maz-rotate-180;
-                }
+              &.--down {
+                @apply maz-rotate-180;
               }
             }
           }
         }
       }
+    }
 
-      tbody {
-        &.--divider {
-          @apply maz-divide-y maz-divide-color-light;
-        }
+    tbody {
+      &.--divider {
+        @apply maz-divide-y maz-divide-color-light;
       }
     }
   }
+}
 </style>

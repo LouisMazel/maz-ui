@@ -14,7 +14,7 @@ describe('useTimer', () => {
     })
 
     // Wait for the timeout to complete
-    await new Promise((resolve) => setTimeout(resolve, 1200))
+    await new Promise(resolve => setTimeout(resolve, 1200))
 
     expect(callbackMock).toHaveBeenCalled()
     wrapper.unmount()
@@ -33,13 +33,13 @@ describe('useTimer', () => {
         }, 500)
 
         // Wait for a short duration
-        await new Promise((resolve) => setTimeout(resolve, 300))
+        await new Promise(resolve => setTimeout(resolve, 300))
 
         // Resume and check if the remaining time is still decreasing
         resume()
 
         // Wait for the timeout to complete
-        await new Promise((resolve) => setTimeout(resolve, 800))
+        await new Promise(resolve => setTimeout(resolve, 800))
 
         // Ensure the callback is not triggered (paused during the period)
         expect(remainingTime.value).toBeLessThan(500)
@@ -56,13 +56,13 @@ describe('useTimer', () => {
         start()
 
         // Wait for a short duration
-        await new Promise((resolve) => setTimeout(resolve, 300))
+        await new Promise(resolve => setTimeout(resolve, 300))
 
         // Stop and check if the remaining time is the initial timeout
         stop()
 
         // Wait for the initial timeout duration
-        await new Promise((resolve) => setTimeout(resolve, 800))
+        await new Promise(resolve => setTimeout(resolve, 800))
 
         // Ensure the callback is not triggered, and the remaining time is the initial timeout
         expect(remainingTime.value).toBe(1000)

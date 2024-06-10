@@ -1,10 +1,10 @@
 import { resolve } from 'node:path'
-import { writeFileSync, existsSync, mkdirSync } from 'node:fs'
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
 import postcss from 'postcss'
 import autoprefixer from 'autoprefixer'
 import { compileAsync } from 'sass'
 import { logger } from './utils/logger'
-import { fileURLToPath } from 'node:url'
 
 const _dirname = fileURLToPath(new URL('.', import.meta.url))
 
@@ -12,7 +12,7 @@ const AOS_SCSS_ENTRY = resolve(_dirname, './../modules/plugins/aos/scss/index.sc
 const AOS_SCSS_OUTPUT_DIR = resolve(_dirname, './../dist/css')
 const AOS_SCSS_OUTPUT = resolve(_dirname, './../dist/css/aos.css')
 
-export const compileScss = async () => {
+export async function compileScss() {
   try {
     const result = await compileAsync(AOS_SCSS_ENTRY, {
       style: 'compressed',
@@ -33,7 +33,8 @@ export const compileScss = async () => {
     writeFileSync(AOS_SCSS_OUTPUT, cssPrefixed.css)
 
     logger.success('[BuildScss] ✅ css compiled')
-  } catch (error) {
+  }
+  catch (error) {
     logger.error(`[BuildScss] 🔴 error while compiling scss`, error)
   }
 }

@@ -1,6 +1,6 @@
 import { resolve } from 'node:path'
-import { buildEntry } from './entry-builder'
 import { fileURLToPath } from 'node:url'
+import { buildEntry } from './entry-builder'
 
 const _dirname = fileURLToPath(new URL('.', import.meta.url))
 

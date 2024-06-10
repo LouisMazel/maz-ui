@@ -1,12 +1,12 @@
 import dayjs, { type ConfigType, type OpUnitType } from 'dayjs'
 import weekday from 'dayjs/plugin/weekday'
 
-dayjs.extend(weekday)
-
+import type { IpWhoResponse } from '../MazPhoneNumberInput/types'
 import { date } from './../../modules/filters/date'
 import { capitalize } from './../../modules/filters/capitalize'
 import type { PartialRangeValue } from './types'
-import { type IpWhoResponse } from '../MazPhoneNumberInput/types'
+
+dayjs.extend(weekday)
 
 export type DateTimeFormatOptions = Pick<
   Intl.DateTimeFormatOptions,
@@ -101,7 +101,7 @@ export function getRangeISODate(value: PartialRangeValue, format = 'YYYY-MM-DD')
   }
 }
 
-type CheckValueResponse = {
+interface CheckValueResponse {
   newValue?: string
   newCurrentDate?: string
 }
@@ -122,7 +122,8 @@ export function checkValueWithMinMaxDates({
       newValue: minDate,
       newCurrentDate: dayjs(minDate, format).format(),
     }
-  } else if (maxDate && dayjs(value).isAfter(maxDate)) {
+  }
+  else if (maxDate && dayjs(value).isAfter(maxDate)) {
     return {
       newValue: maxDate,
       newCurrentDate: dayjs(maxDate, format).format(),
@@ -142,7 +143,7 @@ export function isValueDisabledWeekly({
   value: string
   disabledWeekly: number[]
 }): boolean {
-  return disabledWeekly.some((dayNumber) => isSameDay(value, dayNumber))
+  return disabledWeekly.some(dayNumber => isSameDay(value, dayNumber))
 }
 
 export function isValueDisabledDate({
@@ -152,7 +153,7 @@ export function isValueDisabledDate({
   value: string
   disabledDates: string[]
 }): boolean {
-  return disabledDates.some((disabledDate) => dayjs(value).isSame(dayjs(disabledDate), 'date'))
+  return disabledDates.some(disabledDate => dayjs(value).isSame(dayjs(disabledDate), 'date'))
 }
 
 export const scrollToTarget = function (
@@ -167,7 +168,7 @@ export const scrollToTarget = function (
   })
 }
 
-export const findNearestNumberInList = (list: number[], number: number): number => {
+export function findNearestNumberInList(list: number[], number: number): number {
   return list.reduce((prev, curr) => {
     return Math.abs(curr - number) < Math.abs(prev - number) ? curr : prev
   })
@@ -181,7 +182,7 @@ export function convertHour12to24Format(baseHour: number): number {
   return baseHour % 24 || 24
 }
 
-export const convert12To24TimeFormat = (timeStr: string) => {
+export function convert12To24TimeFormat(timeStr: string) {
   const [time, modifier] = timeStr.split(' ')
 
   let hours: string | number = time.split(':')[0]
@@ -202,7 +203,8 @@ export function getBrowserLocale(): string | undefined {
     }
 
     return window.navigator.language
-  } catch (error) {
+  }
+  catch (error) {
     throw new Error(`[MazPhoneNumberInput] (browserLocale) ${error}`)
   }
 }
@@ -213,7 +215,8 @@ export async function fetchLocale(): Promise<string | undefined> {
     const { country_code } = (await reponse.json()) as IpWhoResponse
 
     return country_code
-  } catch (error) {
+  }
+  catch (error) {
     console.error(`[maz-ui](MazPicker)(fetchCountryCode) ${error}`)
   }
 }

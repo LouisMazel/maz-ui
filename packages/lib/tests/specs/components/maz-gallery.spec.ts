@@ -1,8 +1,8 @@
 import { mount } from '@vue/test-utils'
 import MazGallery from '@components/MazGallery.vue'
 
-describe('MazGallery', () => {
-  test('renders images when images prop is provided', () => {
+describe('mazGallery', () => {
+  it('renders images when images prop is provided', () => {
     const images = [
       { src: 'https://via.placeholder.com/500', alt: 'Image 1' },
       { src: 'https://via.placeholder.com/600', alt: 'Image 2' },
@@ -19,7 +19,7 @@ describe('MazGallery', () => {
     expect(galleryItems.length).toBe(images.length)
   })
 
-  test('renders NoPhotographyIcon when no images are provided and hasEmptyLayer prop is true', async () => {
+  it('renders NoPhotographyIcon when no images are provided and hasEmptyLayer prop is true', async () => {
     const wrapper = mount(MazGallery, {
       props: {
         hasEmptyLayer: true,
@@ -37,7 +37,7 @@ describe('MazGallery', () => {
     expect(noPhotographyIcon2.exists()).toBe(false)
   })
 
-  test('applies styles based on props', async () => {
+  it('applies styles based on props', async () => {
     const wrapper = mount(MazGallery, {
       props: {
         images: [
@@ -62,7 +62,7 @@ describe('MazGallery', () => {
     expect(gallery2.classes()).not.toContain('maz-rounded')
   })
 
-  test('applies remaining layer when noRemaining prop is false and there are more images than shown', () => {
+  it('applies remaining layer when noRemaining prop is false and there are more images than shown', () => {
     const images = [
       { src: 'https://via.placeholder.com/500', alt: 'Image 1' },
       { src: 'https://via.placeholder.com/600', alt: 'Image 2' },
@@ -86,7 +86,7 @@ describe('MazGallery', () => {
     expect(remainingLayer.exists()).toBe(true)
   })
 
-  test('does not apply remaining layer when noRemaining prop is true', () => {
+  it('does not apply remaining layer when noRemaining prop is true', () => {
     const images = [
       { src: 'https://via.placeholder.com/500', alt: 'Image 1' },
       { src: 'https://via.placeholder.com/600', alt: 'Image 2' },
@@ -105,7 +105,7 @@ describe('MazGallery', () => {
     expect(remainingLayer.exists()).toBe(false)
   })
 
-  test('emits click event when an image is clicked', async () => {
+  it('emits click event when an image is clicked', async () => {
     const images = [
       { src: 'https://via.placeholder.com/500', alt: 'Image 1' },
       { src: 'https://via.placeholder.com/600', alt: 'Image 2' },
