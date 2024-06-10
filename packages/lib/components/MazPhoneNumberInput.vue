@@ -283,7 +283,7 @@ function onPhoneNumberChanged({
   noFormattingAsYouType,
   updateResults = true,
 }: {
-  newPhoneNumber: string
+  newPhoneNumber?: string
   autoFormat: boolean
   noFormattingAsYouType: boolean
   updateResults?: boolean
@@ -356,7 +356,7 @@ function onCountryChanged({
 watch(
   () => props.modelValue ?? props.defaultPhoneNumber,
   (value, oldValue) => {
-    if (value && value !== oldValue && value !== phoneNumber.value) {
+    if (value !== oldValue && value !== phoneNumber.value) {
       onPhoneNumberChanged({
         newPhoneNumber: value,
         autoFormat: props.autoFormat,
