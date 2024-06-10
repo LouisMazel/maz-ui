@@ -8,7 +8,7 @@ export type ToasterPosition =
 
 export type ToasterPositions = ToasterPosition
 
-export type ToasterLink = {
+export interface ToasterLink {
   href: string
   text?: string
   /** @default _self */
@@ -16,13 +16,13 @@ export type ToasterLink = {
   closeToast?: boolean
 }
 
-export type ToasterAction = {
+export interface ToasterAction {
   func: (..._arguments: unknown[]) => unknown
   text: string
   closeToast?: boolean
 }
 
-export type ToasterOptions = {
+export interface ToasterOptions {
   /**
    * The position of the toast on the screen
    * @default 'bottom-right'

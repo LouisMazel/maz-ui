@@ -1,7 +1,0 @@
-/components_tmp/**/*
-node_modules
-.DS_Store
-dist
-types
-coverage
-*.svg

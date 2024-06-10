@@ -1,7 +1,7 @@
 import { debounceCallback } from '@modules/helpers/debounce-callback'
 
 describe('@modules/helpers/debounce-callback', () => {
-  test('Delaying Callback Execution', () => {
+  it('delaying Callback Execution', () => {
     vi.useFakeTimers()
 
     const fakeCallback1 = vi.fn()
@@ -15,7 +15,7 @@ describe('@modules/helpers/debounce-callback', () => {
     expect(fakeCallback1).toHaveBeenCalledTimes(1)
   })
 
-  test('Cancel Previous Callbacks', () => {
+  it('cancel Previous Callbacks', () => {
     vi.useFakeTimers()
 
     const fakeCallback2 = vi.fn()

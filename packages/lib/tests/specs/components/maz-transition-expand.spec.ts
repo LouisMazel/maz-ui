@@ -6,7 +6,7 @@ describe('components/MazTransitionExpand.vue', () => {
 
   const wrapper = shallowMount(MazTransitionExpand)
 
-  test('Should match with the snapshot', () => {
+  it('should match with the snapshot', () => {
     expect(wrapper.html()).toMatchSnapshot()
   })
 })

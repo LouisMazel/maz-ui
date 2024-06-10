@@ -1,16 +1,31 @@
 {
   "name": "maz-ui",
+  "type": "module",
   "version": "3.43.4",
   "description": "A standalone components library for Vue.Js 3 & Nuxt.Js 3",
   "author": "Louis Mazel <me@loicmazuel.com>",
-  "main": "./modules/index.ts",
-  "module": "./modules/index.ts",
-  "types": "./types/modules/index.d.ts",
-  "type": "module",
-  "bin": {
-    "maz": "./bin/maz.mjs",
-    "maz-ui": "./bin/maz.mjs"
+  "license": "MIT",
+  "homepage": "https://maz-ui.com/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LouisMazel/maz-ui.git"
   },
+  "bugs": {
+    "url": "https://github.com/LouisMazel/maz-ui/issues"
+  },
+  "keywords": [
+    "vue",
+    "nuxt",
+    "components",
+    "vue-component",
+    "framework",
+    "library",
+    "ui",
+    "nuxt",
+    "nuxt3",
+    "module",
+    "nuxt-module"
+  ],
   "exports": {
     ".": {
       "types": "./types/modules/index.d.ts",
@@ -40,24 +55,34 @@
     "./package.json": "./package.json",
     "./*": "./*"
   },
+  "main": "./modules/index.ts",
+  "module": "./modules/index.ts",
+  "types": "./types/modules/index.d.ts",
+  "bin": {
+    "maz": "./bin/maz.mjs",
+    "maz-ui": "./bin/maz.mjs"
+  },
   "files": [
+    "bin",
     "components",
-    "modules",
     "css",
-    "tailwindcss",
-    "nuxt",
-    "types",
     "icons",
+    "modules",
+    "nuxt",
     "resolvers",
-    "bin"
+    "tailwindcss",
+    "types"
   ],
+  "engines": {
+    "node": ">= 6.0.0",
+    "npm": ">= 3.0.0"
+  },
   "scripts": {
     "maz": "maz",
     "lint": "pnpm lint:js && pnpm lint:style",
-    "lint:nofix": "cross-env NODE_ENV=production eslint --ext .ts,.js,.mjs,.mts,.cjs,.vue .",
-    "lint:js": "cross-env NODE_ENV=production eslint --fix .",
+    "lint:nofix": "cross-env NODE_ENV=production eslint",
+    "lint:js": "pnpm lint:nofix --fix",
     "lint:style": "stylelint --fix \"./**/*.{vue,css,scss,postcss,pcss}\"",
-    "format": "prettier . --write",
     "build": "pnpm typecheck && pnpm build:lib",
     "build:lib": "node --loader ts-node/esm build/vite.config.ts",
     "get-icon-list": "node --loader ts-node/esm build/get-icon-list.ts",
@@ -70,11 +95,6 @@
     "pre-commit": "lint-staged",
     "gen:declaration-files": "vue-tsc --declaration --emitDeclarationOnly -p tsconfig.gen-types.json",
     "typecheck": "vue-tsc --noEmit"
-  },
-  "lint-staged": {
-    "*": "prettier -w -u",
-    "*.{js,ts,vue,mjs,mts,cjs}": "cross-env NODE_ENV=production eslint --fix",
-    "*.{vue,css,scss,postcss,pcss}": "stylelint --fix --allow-empty-input"
   },
   "peerDependencies": {
     "@nuxt/kit": "^3.4.0",
@@ -89,31 +109,31 @@
     "vue-router": "^4.0.0"
   },
   "peerDependenciesMeta": {
+    "@nuxt/kit": {
+      "optional": true
+    },
+    "chart.js": {
+      "optional": true
+    },
+    "dayjs": {
+      "optional": true
+    },
+    "defu": {
+      "optional": true
+    },
     "dropzone": {
       "optional": true
     },
     "libphonenumber-js": {
       "optional": true
     },
-    "chart.js": {
-      "optional": true
-    },
-    "vue-router": {
-      "optional": true
-    },
-    "dayjs": {
-      "optional": true
-    },
     "nuxt": {
       "optional": true
     },
-    "@nuxt/kit": {
-      "optional": true
-    },
-    "defu": {
-      "optional": true
-    },
     "unplugin-vue-components": {
+      "optional": true
+    },
+    "vue-router": {
       "optional": true
     }
   },
@@ -121,93 +141,67 @@
     "@mazui/cli": "workspace:*"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.5",
-    "@babel/preset-env": "^7.24.5",
-    "@babel/preset-typescript": "^7.24.1",
+    "@babel/core": "^7.24.7",
+    "@babel/preset-env": "^7.24.7",
+    "@babel/preset-typescript": "^7.24.7",
     "@nuxt/kit": "^3.11.2",
     "@nuxt/schema": "^3.11.2",
     "@types/dropzone": "^5.7.8",
-    "@types/google.maps": "^3.55.8",
-    "@vitejs/plugin-vue": "^5.0.4",
-    "@vitest/coverage-v8": "^1.5.3",
-    "@vue/compiler-sfc": "^3.4.26",
-    "@vue/eslint-config-prettier": "^9.0.0",
-    "@vue/eslint-config-typescript": "^13.0.0",
-    "@vue/test-utils": "^2.4.5",
+    "@types/google.maps": "^3.55.9",
+    "@vitejs/plugin-vue": "^5.0.5",
+    "@vitest/coverage-v8": "^1.6.0",
+    "@vue/compiler-sfc": "^3.4.27",
+    "@vue/test-utils": "^2.4.6",
     "@vue/tsconfig": "^0.5.1",
     "autoprefixer": "^10.4.19",
     "c8": "^9.1.0",
     "chalk": "5.3.0",
-    "chart.js": "^4.4.2",
+    "chart.js": "^4.4.3",
     "dayjs": "^1.11.11",
     "defu": "^6.1.4",
     "dropzone": "^5.9.3",
-    "eslint-plugin-vue": "^9.25.0",
     "eslint-plugin-vuejs-accessibility": "^2.3.0",
     "fs": "0.0.2",
-    "jsdom": "^24.0.0",
+    "jsdom": "^24.1.0",
     "json-templater": "^1.2.0",
-    "libphonenumber-js": "^1.10.61",
+    "libphonenumber-js": "^1.11.3",
     "minimist": "^1.2.8",
     "nuxt": "^3.11.2",
     "onchange": "^7.1.0",
     "path": "^0.12.7",
     "postcss": "^8.4.38",
-    "postcss-html": "^1.6.0",
+    "postcss-html": "^1.7.0",
     "postcss-import": "^16.1.0",
     "postcss-nested": "^6.0.0",
     "postcss-simple-vars": "^7.0.1",
     "postcss-url": "^10.1.3",
-    "prettier-plugin-tailwindcss": "^0.5.14",
-    "replace-in-file": "^7.1.0",
-    "rimraf": "^5.0.5",
-    "sass": "^1.76.0",
-    "semver": "^7.6.0",
+    "replace-in-file": "^7.2.0",
+    "rimraf": "^5.0.7",
+    "sass": "^1.77.4",
+    "semver": "^7.6.2",
     "sirv": "^2.0.4",
-    "stylelint": "^16.5.0",
+    "stylelint": "^16.6.1",
     "stylelint-config-recommended-vue": "^1.5.0",
     "stylelint-config-standard": "^36.0.0",
     "stylelint-config-standard-scss": "^13.1.0",
     "stylelint-config-tailwindcss": "^0.0.7",
-    "tailwindcss": "^3.4.3",
+    "tailwindcss": "^3.4.4",
     "unplugin-vue-components": "^0.27.0",
-    "vite": "^5.2.11",
+    "vite": "^5.2.13",
     "vite-plugin-css-injected-by-js": "^3.5.1",
-    "vite-plugin-lib-inject-css": "^2.0.1",
-    "vite-plugin-static-copy": "^1.0.4",
+    "vite-plugin-lib-inject-css": "^2.1.1",
+    "vite-plugin-static-copy": "^1.0.5",
     "vite-svg-loader": "^5.1.0",
-    "vitest": "^1.5.3",
+    "vitest": "^1.6.0",
     "vitest-canvas-mock": "^0.3.3",
-    "vue": "^3.4.26",
+    "vue": "^3.4.27",
     "vue-chartjs": "^5.3.1",
     "vue-loader": "^17.4.2",
     "vue-router": "^4.3.2",
-    "vue-tsc": "^2.0.16"
+    "vue-tsc": "^2.0.21"
   },
-  "engines": {
-    "node": ">= 6.0.0",
-    "npm": ">= 3.0.0"
-  },
-  "bugs": {
-    "url": "https://github.com/LouisMazel/maz-ui/issues"
-  },
-  "homepage": "https://maz-ui.com/",
-  "keywords": [
-    "vue",
-    "nuxt",
-    "components",
-    "vue-component",
-    "framework",
-    "library",
-    "ui",
-    "nuxt",
-    "nuxt3",
-    "module",
-    "nuxt-module"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/LouisMazel/maz-ui.git"
-  },
-  "license": "MIT"
+  "lint-staged": {
+    "*.{js,ts,vue,mjs,mts,cjs}": "cross-env NODE_ENV=production eslint --fix",
+    "*.{vue,css,scss,postcss,pcss}": "stylelint --fix --allow-empty-input"
+  }
 }

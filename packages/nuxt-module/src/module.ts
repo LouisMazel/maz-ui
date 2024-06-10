@@ -1,7 +1,7 @@
 import { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { defineNuxtModule, addPlugin, createResolver, addImports, addComponent } from '@nuxt/kit'
 import { defu } from 'defu'
-import { fileURLToPath } from 'node:url'
 
 import type {
   AosOptions,
@@ -25,17 +25,17 @@ export interface MazUiNuxtOptions {
   injectAos?:
     | boolean
     | (Omit<AosOptions, 'router'> & {
-        /**
-         * Auto inject aos CSS file
-         * @default true
-         */
-        injectCss?: boolean
-        /**
-         * Set `true` to re-run animations on page change
-         * @default false
-         */
-        router?: boolean
-      })
+      /**
+       * Auto inject aos CSS file
+       * @default true
+       */
+      injectCss?: boolean
+      /**
+       * Set `true` to re-run animations on page change
+       * @default false
+       */
+      router?: boolean
+    })
   /**
    * Install toaster plugin and enable auto-import of useToast composable
    * @default false
@@ -165,7 +165,6 @@ export default defineNuxtModule<MazUiNuxtOptions>({
     injectCss: true,
     injectComponents: true,
   },
-  // eslint-disable-next-line sonarjs/cognitive-complexity
   async setup(options, nuxt) {
     const { resolve } = createResolver(import.meta.url)
 
@@ -176,8 +175,8 @@ export default defineNuxtModule<MazUiNuxtOptions>({
     nuxt.options.runtimeConfig.public.mazUi = moduleOptions
 
     if (moduleOptions.injectCss) {
-      const path =
-        process.env.MAZ_UI_DEV === 'true' ? 'maz-ui/css/index.css' : 'maz-ui/css/main.css'
+      const path
+        = process.env.MAZ_UI_DEV === 'true' ? 'maz-ui/css/index.css' : 'maz-ui/css/main.css'
       nuxt.options.css = [path, ...nuxt.options.css]
     }
 
@@ -210,19 +209,20 @@ export default defineNuxtModule<MazUiNuxtOptions>({
         as: 'useAos',
       })
 
-      const injectAosCSS =
-        typeof moduleOptions.injectAos === 'object' &&
-        typeof moduleOptions.injectAos.injectCss === 'boolean'
+      const injectAosCSS
+        = typeof moduleOptions.injectAos === 'object'
+        && typeof moduleOptions.injectAos.injectCss === 'boolean'
           ? moduleOptions.injectAos.injectCss
           : true
 
       if (
-        typeof moduleOptions.injectAos === 'object' &&
-        injectAosCSS &&
-        process.env.MAZ_UI_DEV === 'true'
+        typeof moduleOptions.injectAos === 'object'
+        && injectAosCSS
+        && process.env.MAZ_UI_DEV === 'true'
       ) {
         nuxt.options.css = ['maz-ui/dist/css/aos.css', ...nuxt.options.css]
-      } else if (typeof moduleOptions.injectAos === 'object' && injectAosCSS) {
+      }
+      else if (typeof moduleOptions.injectAos === 'object' && injectAosCSS) {
         nuxt.options.css = ['maz-ui/css/aos.css', ...nuxt.options.css]
       }
     }

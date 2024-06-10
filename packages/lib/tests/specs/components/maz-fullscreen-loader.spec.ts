@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils'
 import MazFullscreenLoader from '@components/MazFullscreenLoader.vue'
 import MazSpinner from '@components/MazSpinner.vue' // Assurez-vous d'importer correctement le composant MazSpinner
 
-describe('MazFullscreenLoader.vue', () => {
+describe('mazFullscreenLoader.vue', () => {
   it('display the spinner with good properties', async () => {
     const color = 'secondary'
     const size = '2em'

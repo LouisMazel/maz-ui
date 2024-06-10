@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils'
 import MazBottomSheet from '@components/MazBottomSheet.vue'
 
-describe('MazBottomSheet', () => {
+describe('mazBottomSheet', () => {
   it('renders the component', () => {
     const wrapper = mount(MazBottomSheet, {
       props: {

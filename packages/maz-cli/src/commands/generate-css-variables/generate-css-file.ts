@@ -1,16 +1,16 @@
-import {
-  type VariantColor,
-  type MazUiConfig,
-  type OutputColorVariant,
-  type VariantColors,
-} from '../../types'
-import { generateColorVariants } from './colors'
 import { resolve } from 'node:path'
 import { writeFile } from 'node:fs/promises'
-import { defaultMazUiConfig } from './default-maz-ui.config'
 import tinycolor from 'tinycolor2'
+import type {
+  MazUiConfig,
+  OutputColorVariant,
+  VariantColor,
+  VariantColors,
+} from '../../types'
+import { generateColorVariants } from './colors'
+import { defaultMazUiConfig } from './default-maz-ui.config'
 
-function getVariable({ key, value }: { key: string; value: string }) {
+function getVariable({ key, value }: { key: string, value: string }) {
   return `  --maz-${key}: ${value};\n`
 }
 
@@ -22,8 +22,8 @@ export function getVariantColorsCSSVariables(colors: VariantColors) {
 
     for (const shade in color) {
       const value = color[shade as keyof OutputColorVariant]
-      variables +=
-        shade === 'base'
+      variables
+        += shade === 'base'
           ? getVariable({ key: `color-${key}`, value })
           : getVariable({ key: `color-${key}-${shade}`, value })
     }
@@ -148,7 +148,7 @@ export async function generateCssFile({
   }
 
   const variantColors = Object.keys(config.theme.colors).filter(
-    (color) => !['bgOverlay', 'lightTheme', 'darkTheme'].includes(color),
+    color => !['bgOverlay', 'lightTheme', 'darkTheme'].includes(color),
   ) as VariantColor[]
 
   const colorsConfig = {} as unknown as VariantColors

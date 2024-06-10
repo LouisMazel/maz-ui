@@ -1,4 +1,6 @@
-import { type ComponentResolver } from 'unplugin-vue-components'
+/* eslint-disable regexp/no-unused-capturing-group */
+
+import type { ComponentResolver } from 'unplugin-vue-components'
 import { pascalCase } from '../utils'
 
 /**
@@ -11,8 +13,10 @@ export function UnpluginVueComponentsResolver(): ComponentResolver {
   return {
     type: 'component',
     resolve: (name: string) => {
-      if (/^(Maz[A-Z])/.test(name)) return { from: `maz-ui/components/${name}` }
-      else if (/^(maz-[a-z])/.test(name)) return { from: `maz-ui/components/${pascalCase(name)}` }
+      if (/^(Maz[A-Z])/.test(name))
+        return { from: `maz-ui/components/${name}` }
+      else if (/^(maz-[a-z])/.test(name))
+        return { from: `maz-ui/components/${pascalCase(name)}` }
     },
   }
 }

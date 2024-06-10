@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils'
 import MazReadingProgressBar from '@components/MazReadingProgressBar.vue'
 
-describe('MazReadingProgressBar.vue', () => {
+describe('mazReadingProgressBar.vue', () => {
   it('renders with default props', async () => {
     const wrapper = mount(MazReadingProgressBar)
     await wrapper.vm.$nextTick()

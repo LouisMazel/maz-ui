@@ -1,5 +1,5 @@
 import tinycolor from 'tinycolor2'
-import { type MazUiConfig, type OutputColorVariant, type VariantColor } from '../../types'
+import type { MazUiConfig, OutputColorVariant, VariantColor } from '../../types'
 
 export function generateColorVariants({
   kind,
@@ -15,21 +15,21 @@ export function generateColorVariants({
   }
 
   return {
-    50: color.clone().lighten(40).toHslString(),
-    100: color.clone().lighten(30).toHslString(),
-    200: color.clone().lighten(25).toHslString(),
-    300: color.clone().lighten(15).toHslString(),
-    400: color.clone().lighten(10).toHslString(),
-    base: color.clone().toHslString(),
-    600: color.clone().darken(10).toHslString(),
-    700: color.clone().darken(20).toHslString(),
-    800: color.clone().darken(30).toHslString(),
-    900: color.clone().darken(40).toHslString(),
-    alpha: color.clone().setAlpha(0.6).toHslString(),
+    '50': color.clone().lighten(40).toHslString(),
+    '100': color.clone().lighten(30).toHslString(),
+    '200': color.clone().lighten(25).toHslString(),
+    '300': color.clone().lighten(15).toHslString(),
+    '400': color.clone().lighten(10).toHslString(),
+    'base': color.clone().toHslString(),
+    '600': color.clone().darken(10).toHslString(),
+    '700': color.clone().darken(20).toHslString(),
+    '800': color.clone().darken(30).toHslString(),
+    '900': color.clone().darken(40).toHslString(),
+    'alpha': color.clone().setAlpha(0.6).toHslString(),
     'alpha-20': color.clone().setAlpha(0.2).toHslString(),
     'alpha-10': color.clone().setAlpha(0.1).toHslString(),
     'alpha-05': color.clone().setAlpha(0.05).toHslString(),
-    contrast: getContrastColor(color.clone()),
+    'contrast': getContrastColor(color.clone()),
   }
 }
 

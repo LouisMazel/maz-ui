@@ -1,5 +1,5 @@
 import { isClient } from '../is-client'
-import type { IdleTimeoutOptions, IdleTimeoutCallback, IdleTimeoutStrictOption } from './types'
+import type { IdleTimeoutCallback, IdleTimeoutOptions, IdleTimeoutStrictOption } from './types'
 
 export class IdleTimeout {
   private readonly defaultOptions: IdleTimeoutStrictOption = {
@@ -141,8 +141,8 @@ export class IdleTimeout {
       if (event.type === 'mousemove') {
         const { clientX, clientY } = event as MouseEvent
         if (
-          (clientX === undefined && clientY === undefined) ||
-          (clientX === this.lastClientX && clientY === this.lastClientY)
+          (clientX === undefined && clientY === undefined)
+          || (clientX === this.lastClientX && clientY === this.lastClientY)
         ) {
           return
         }
@@ -154,7 +154,8 @@ export class IdleTimeout {
       this.resetTimeout()
 
       this.callback({ isIdle: this.isIdle, eventType: event.type })
-    } catch (error) {
+    }
+    catch (error) {
       throw new Error(`[IdleTimeout](handleEvent) ${error}`)
     }
   }
@@ -187,7 +188,8 @@ export class IdleTimeout {
   public set idle(value: boolean) {
     if (value) {
       this.handleTimeout()
-    } else {
+    }
+    else {
       this.reset()
     }
 

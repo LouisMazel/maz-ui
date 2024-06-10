@@ -1,21 +1,21 @@
-/* eslint-disable unicorn/filename-case */
-
 import { shallowMount } from '@vue/test-utils'
 import NGallery from '../../../components_tmp/NGallery/NGallery.vue'
 import NGalleryScrollButtons from '~/components/ui/NGallery/NGalleryScrollButtons.vue'
 import NGalleryResponsive from '~/components/ui/NGallery/NGalleryResponsive.vue'
 
-const getMedia = () => ({
-  mobile: '',
-  small: '',
-  url: '',
-  sources: [
-    {
-      srcset: '',
-      media: '',
-    },
-  ],
-})
+function getMedia() {
+  return {
+    mobile: '',
+    small: '',
+    url: '',
+    sources: [
+      {
+        srcset: '',
+        media: '',
+      },
+    ],
+  }
+}
 
 describe('~/components/ui/NGallery/NGallery', () => {
   let wrapper: any

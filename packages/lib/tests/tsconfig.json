@@ -1,13 +1,13 @@
 {
   "extends": ["./../node_modules/@vue/tsconfig/tsconfig.dom.json"],
   "compilerOptions": {
-    "types": ["vitest/globals", "vue"],
     "baseUrl": ".",
     "paths": {
       "@modules/*": ["./../modules/*"],
       "@components/*": ["./../components/*"],
       "@tests/*": ["./../tests/*"]
-    }
+    },
+    "types": ["vitest/globals", "vue"]
   },
   "include": ["./../types/*", "**/*", "./../components/**/*", "./../modules/**/*"]
 }

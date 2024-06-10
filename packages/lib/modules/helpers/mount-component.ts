@@ -1,9 +1,9 @@
 import { type App, type Component, createVNode, render } from 'vue'
 
-export function mount<T extends Component>(
+export function mount<T extends Component, P = Record<string, unknown>>(
   component: T,
   options?: {
-    props?: Record<string, unknown>
+    props?: P
     children?: unknown
     app?: App
     element?: HTMLElement
@@ -13,7 +13,8 @@ export function mount<T extends Component>(
   let el = options?.element
 
   function destroy() {
-    if (el) render(null, el)
+    if (el)
+      render(null, el)
   }
 
   const vNode = createVNode(
@@ -27,11 +28,13 @@ export function mount<T extends Component>(
 
     if (el) {
       render(vNode, el)
-    } else if (typeof document !== 'undefined') {
+    }
+    else if (typeof document !== 'undefined') {
       el = document.createElement('div')
       render(vNode, el)
     }
-  } else {
+  }
+  else {
     el = el ?? document.body
     render(vNode, el)
   }

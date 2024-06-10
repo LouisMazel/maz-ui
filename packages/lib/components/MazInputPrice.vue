@@ -1,3 +1,100 @@
+<script lang="ts" setup>
+import { computed, nextTick, onBeforeMount, ref } from 'vue'
+import { currency as currencyFilter } from '../modules/filters/currency'
+import MazInput from './MazInput.vue'
+
+export interface Props {
+  /** @model The value of the input */
+  modelValue?: number | string
+  /** The currency to use */
+  currency?: string
+  /** The locale to use */
+  locale?: string
+  /** The minimum value that the input can accept */
+  min?: number
+  /** The maximum value that the input can accept */
+  max?: number
+  /** The input will be displayed without icon */
+  noIcon?: boolean
+  /** The input will be displayed in full width */
+  block?: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  modelValue: undefined,
+  currency: 'EUR',
+  locale: 'fr-FR',
+  min: 0,
+  max: Number.POSITIVE_INFINITY,
+  noIcon: false,
+})
+
+const emits = defineEmits(['update:model-value', 'formatted'])
+
+const isActive = ref(false)
+const valueString = computed<string>(() => {
+  return getAdjustedPrice(props.modelValue).toString()
+})
+const valueNumber = computed<number>(() => {
+  const value = typeof props.modelValue === 'string' ? Number(props.modelValue) : props.modelValue
+
+  return getAdjustedPrice(value)
+})
+
+const priceFormatted = computed(() =>
+  currencyFilter(valueNumber.value, props.locale, { currency: props.currency }),
+)
+
+function getAdjustedPrice(value?: string | number) {
+  let newValue
+      = typeof value === 'string'
+        ? Number.parseFloat(
+
+          value.replace(',', '.').replaceAll(/[^\d.]/g, ''),
+        )
+        : value
+  if (!newValue || Number.isNaN(newValue))
+    newValue = 0
+  if (newValue < props.min)
+    newValue = props.min
+  if (newValue > props.max)
+    newValue = props.max
+
+  return newValue
+}
+
+const displayPrice = computed({
+  get: () => {
+    if (isActive.value)
+      return valueString.value
+    if (typeof props.modelValue === 'number')
+      return priceFormatted.value
+    return undefined
+  },
+  set: (value) => {
+    if (Number.isNaN(value)) {
+      emitValues()
+    }
+    else {
+      const adjustedPrice = getAdjustedPrice(value)
+      emitValues(adjustedPrice)
+    }
+  },
+})
+
+async function emitValues(newValue?: number) {
+  const adjustedPrice = typeof newValue === 'number' ? getAdjustedPrice(newValue) : undefined
+  emits('update:model-value', adjustedPrice)
+
+  await nextTick()
+  emits('formatted', priceFormatted.value)
+}
+
+onBeforeMount(() => {
+  emitValues(getAdjustedPrice(props.modelValue))
+})
+</script>
+
 <template>
   <MazInput
     v-model="displayPrice"
@@ -27,94 +124,3 @@
     </template>
   </MazInput>
 </template>
-
-<script lang="ts" setup>
-  import { computed, nextTick, onBeforeMount, ref } from 'vue'
-  import { currency as currencyFilter } from '../modules/filters/currency'
-  import MazInput from './MazInput.vue'
-
-  export type Props = {
-    /** @model The value of the input */
-    modelValue?: number | string
-    /** The currency to use */
-    currency?: string
-    /** The locale to use */
-    locale?: string
-    /** The minimum value that the input can accept */
-    min?: number
-    /** The maximum value that the input can accept */
-    max?: number
-    /** The input will be displayed without icon */
-    noIcon?: boolean
-    /** The input will be displayed in full width */
-    block?: boolean
-  }
-
-  const props = withDefaults(defineProps<Props>(), {
-    modelValue: undefined,
-    currency: 'EUR',
-    locale: 'fr-FR',
-    min: 0,
-    max: Number.POSITIVE_INFINITY,
-    noIcon: false,
-  })
-
-  const emits = defineEmits(['update:model-value', 'formatted'])
-
-  const isActive = ref(false)
-  const valueString = computed<string>(() => {
-    return getAdjustedPrice(props.modelValue).toString()
-  })
-  const valueNumber = computed<number>(() => {
-    const value = typeof props.modelValue === 'string' ? Number(props.modelValue) : props.modelValue
-
-    return getAdjustedPrice(value)
-  })
-
-  const priceFormatted = computed(() =>
-    currencyFilter(valueNumber.value, props.locale, { currency: props.currency }),
-  )
-
-  const getAdjustedPrice = (value?: string | number) => {
-    let newValue =
-      typeof value === 'string'
-        ? Number.parseFloat(
-            // eslint-disable-next-line no-useless-escape
-            value.replace(',', '.').replaceAll(/[^\d.]/g, ''),
-          )
-        : value
-    if (!newValue || Number.isNaN(newValue)) newValue = 0
-    if (newValue < props.min) newValue = props.min
-    if (newValue > props.max) newValue = props.max
-
-    return newValue
-  }
-
-  const displayPrice = computed({
-    get: () => {
-      if (isActive.value) return valueString.value
-      if (typeof props.modelValue === 'number') return priceFormatted.value
-      return undefined
-    },
-    set: (value) => {
-      if (Number.isNaN(value)) {
-        emitValues()
-      } else {
-        const adjustedPrice = getAdjustedPrice(value)
-        emitValues(adjustedPrice)
-      }
-    },
-  })
-
-  const emitValues = async (newValue?: number) => {
-    const adjustedPrice = typeof newValue === 'number' ? getAdjustedPrice(newValue) : undefined
-    emits('update:model-value', adjustedPrice)
-
-    await nextTick()
-    emits('formatted', priceFormatted.value)
-  }
-
-  onBeforeMount(() => {
-    emitValues(getAdjustedPrice(props.modelValue))
-  })
-</script>

@@ -1,12 +1,12 @@
 import {
-  parsePhoneNumberFromString,
   AsYouType,
   type CountryCode,
+  type Examples,
   getCountries,
   getCountryCallingCode,
   getExampleNumber,
   isSupportedCountry,
-  type Examples,
+  parsePhoneNumberFromString,
 } from 'libphonenumber-js'
 import type { Results } from './types'
 
@@ -21,7 +21,8 @@ function isCountryAvailable(locale: string) {
     }
 
     return response
-  } catch (error) {
+  }
+  catch (error) {
     console.error(`[maz-ui](MazPhoneNumberInput) ${error}`)
     return false
   }
@@ -58,7 +59,8 @@ function getPhoneNumberResults({
       rfc3966: parsedNumber?.format('RFC3966'),
       phoneNumber,
     }
-  } catch (error) {
+  }
+  catch (error) {
     throw new Error(`[MazPhoneNumberInput](getResultsFromPhoneNumber) ${error}`)
   }
 }
@@ -70,7 +72,8 @@ function getAsYouTypeFormat(countryCode?: CountryCode, phoneNumber?: string): st
     }
 
     return new AsYouType(countryCode).input(phoneNumber)
-  } catch (error) {
+  }
+  catch (error) {
     throw new Error(`[MazPhoneNumberInput](getAsYouTypeFormat) ${error}`)
   }
 }
@@ -88,7 +91,8 @@ function getPhoneNumberExample(examples: Examples, countryCode?: CountryCode) {
     }
 
     return countryCode ? getExampleNumber(countryCode, examples)?.formatNational() : undefined
-  } catch (error) {
+  }
+  catch (error) {
     console.error(`[maz-ui](MazPhoneNumberInput) ${error}`)
   }
 }

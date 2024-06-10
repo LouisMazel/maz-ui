@@ -32,7 +32,8 @@ describe('${filename}', () => {
     )
 
     await writeFile(TEST_FILE_OUTPUT, testComponentTemplate)
-  } catch (error) {
+  }
+  catch (error) {
     logger.error(`Error: Failed to create file "${filename}".`, error)
     exit(1)
   }

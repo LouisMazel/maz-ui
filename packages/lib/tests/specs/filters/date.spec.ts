@@ -1,6 +1,6 @@
 import { date } from '@modules/filters/date'
 
-describe('FilterDate', () => {
+describe('filterDate', () => {
   it('formats a date string as a short date', () => {
     expect(date('2022-01-01', 'en-US')).toEqual('Jan 1, 2022')
   })
@@ -10,13 +10,14 @@ describe('FilterDate', () => {
   })
 
   it('throws an error if the locale is not provided', () => {
+    // @ts-expect-error - test case
     expect(() => date('2022-01-01', undefined)).toThrow(
       '[maz-ui](FilterDate) The `locale` attribute is required.',
     )
   })
 
   it('throws an error if the locale is not a string', () => {
-    // @ts-ignore
+    // @ts-expect-error - test case
     expect(() => date('2022-01-01', 123)).toThrow(
       '[maz-ui](FilterDate) The `locale` attribute must be a string.',
     )

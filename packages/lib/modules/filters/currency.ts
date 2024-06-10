@@ -8,11 +8,7 @@ const DEFAULT_OPTIONS: FilterCurrencyOptions = {
   round: false,
 }
 
-const getFormattedCurrency = (
-  number: number | string,
-  locale: string,
-  options: FilterCurrencyOptions,
-) => {
+function getFormattedCurrency(number: number | string, locale: string, options: FilterCurrencyOptions) {
   let numberToFormat = Number(number)
 
   if (options.round) {
@@ -23,11 +19,7 @@ const getFormattedCurrency = (
   return new Intl.NumberFormat(locale, options).format(numberToFormat)
 }
 
-const validRequiredAttributes = (
-  number: number | string,
-  locale: string,
-  options: FilterCurrencyOptions,
-) => {
+function validRequiredAttributes(number: number | string, locale: string, options: FilterCurrencyOptions) {
   if (number === undefined)
     throw new TypeError('[maz-ui](FilterCurrency) The `number` attribute is required.')
   if (locale === undefined)
@@ -38,11 +30,7 @@ const validRequiredAttributes = (
     throw new TypeError('[maz-ui](FilterCurrency) The `options.currency` attribute is required.')
 }
 
-export const currency = (
-  number: number | string,
-  locale: string,
-  options: FilterCurrencyOptions,
-): string => {
+export function currency(number: number | string, locale: string, options: FilterCurrencyOptions): string {
   const options_: FilterCurrencyOptions = {
     ...DEFAULT_OPTIONS,
     ...options,
@@ -52,8 +40,8 @@ export const currency = (
 
   try {
     return getFormattedCurrency(number, locale, options_)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
+  }
+  catch (error: any) {
     throw new Error(`[maz-ui](FilterCurrency) ${error}`)
   }
 }

@@ -1,7 +1,7 @@
-import { shallowMount, type VueWrapper } from '@vue/test-utils'
+import { type VueWrapper, shallowMount } from '@vue/test-utils'
 import MazLink from '@components/MazLink.vue'
 
-describe('MazLink', () => {
+describe('mazLink', () => {
   let wrapper: VueWrapper<InstanceType<typeof MazLink>>
 
   beforeEach(() => {
@@ -23,7 +23,7 @@ describe('MazLink', () => {
     })
   })
 
-  test('it renders the component correctly', async () => {
+  it('it renders the component correctly', async () => {
     await wrapper.setProps({ href: 'https://www.google.com' })
 
     expect(wrapper.classes('m-link')).toBe(true)
@@ -43,7 +43,7 @@ describe('MazLink', () => {
     expect(icons.at(1)?.attributes('name')).toBe('check')
   })
 
-  test('is router-link if to prop is set', async () => {
+  it('is router-link if to prop is set', async () => {
     await wrapper.setProps({ to: 'https://www.google.com' })
 
     expect(wrapper.attributes('to')).toBe('https://www.google.com')

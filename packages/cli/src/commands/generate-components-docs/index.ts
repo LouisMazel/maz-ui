@@ -1,5 +1,5 @@
-import { Command } from 'commander'
 import { exit } from 'node:process'
+import { Command } from 'commander'
 import { execPromise } from '../../utils/exec-promise'
 import { logger } from '../../utils/logger'
 
@@ -17,14 +17,16 @@ export function generateComponentsDocumentationCommand(): Command {
           logger.eot()
           logger.success('Is watching for components documentation generating')
           logger.eot()
-        } else {
+        }
+        else {
           await execPromise('vue-docgen')
 
           logger.eot()
           logger.success('Components documentation generated')
           logger.eot()
         }
-      } catch {
+      }
+      catch {
         exit(1)
       }
     })

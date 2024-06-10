@@ -1,8 +1,8 @@
 import { mount } from '@vue/test-utils'
 import MazPullToRefresh from '@components/MazPullToRefresh.vue'
 
-describe('MazPullToRefresh', () => {
-  test('renders with default props', async () => {
+describe('mazPullToRefresh', () => {
+  it('renders with default props', async () => {
     const wrapper = mount(MazPullToRefresh, {
       props: {
         action: vi.fn(), // Mock the action prop with a vi mock function
@@ -19,7 +19,7 @@ describe('MazPullToRefresh', () => {
     expect(wrapper.find('.header-text').text()).toContain('Pull to refresh')
   })
 
-  test('triggers action on pull when distance is reached', async () => {
+  it('triggers action on pull when distance is reached', async () => {
     const actionMock = vi.fn()
 
     const wrapper = mount(MazPullToRefresh, {
@@ -57,7 +57,7 @@ describe('MazPullToRefresh', () => {
     // expect(actionMock).toHaveBeenCalled()
   })
 
-  test('does not trigger action if scrollY is greater than 0', async () => {
+  it('does not trigger action if scrollY is greater than 0', async () => {
     const actionMock = vi.fn()
 
     const wrapper = mount(MazPullToRefresh, {
@@ -89,7 +89,7 @@ describe('MazPullToRefresh', () => {
     expect(actionMock).not.toHaveBeenCalled()
   })
 
-  test('resets pull state after action completes', async () => {
+  it('resets pull state after action completes', async () => {
     const actionMock = vi.fn()
 
     const wrapper = mount(MazPullToRefresh, {
@@ -127,13 +127,13 @@ describe('MazPullToRefresh', () => {
     // Simulate action completion
     await wrapper.setProps({ action: vi.fn() })
 
-    // @ts-expect-error
+    // @ts-expect-error - test case
     expect(wrapper.vm.pull.from).toBe(-1)
-    // @ts-expect-error
+    // @ts-expect-error - test case
     expect(wrapper.vm.pull.to).toBe(-1)
-    // @ts-expect-error
+    // @ts-expect-error - test case
     expect(wrapper.vm.pull.distance).toBe(0)
-    // @ts-expect-error
+    // @ts-expect-error - test case
     expect(wrapper.vm.pull.available).toBe(false)
   })
 })

@@ -4,11 +4,7 @@ const DEFAULT_OPTIONS: Intl.DateTimeFormatOptions = {
   year: 'numeric',
 }
 
-export const date = (
-  date: string | number | Date,
-  locale: string,
-  options?: Intl.DateTimeFormatOptions,
-): string => {
+export function date(date: string | number | Date, locale: string, options?: Intl.DateTimeFormatOptions): string {
   if (locale === undefined) {
     throw new TypeError('[maz-ui](FilterDate) The `locale` attribute is required.')
   }
@@ -22,7 +18,8 @@ export const date = (
     const usedDate = date instanceof Date ? date : new Date(date)
 
     return new Intl.DateTimeFormat(locale, opts).format(usedDate)
-  } catch (error: unknown) {
+  }
+  catch (error: unknown) {
     throw new Error(`[maz-ui](FilterDate) ${error}`)
   }
 }

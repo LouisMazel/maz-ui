@@ -1,6 +1,6 @@
-import { LazyImg, DEFAULT_OPTIONS } from '@modules/directives/v-lazy-img/lazy-img.handler'
+import { DEFAULT_OPTIONS, LazyImg } from '@modules/directives/v-lazy-img/lazy-img.handler'
 
-describe('LazyImg', () => {
+describe('lazyImg', () => {
   let lazyImg: LazyImg
 
   beforeEach(() => {
@@ -8,7 +8,7 @@ describe('LazyImg', () => {
   })
 
   it('should have default options', () => {
-    // @ts-ignore
+    // @ts-expect-error - test case
     expect(lazyImg.options).toEqual(DEFAULT_OPTIONS)
   })
 
@@ -20,7 +20,7 @@ describe('LazyImg', () => {
         threshold: 0.5,
       },
     }
-    // @ts-ignore
+    // @ts-expect-error - test case
     const builtOptions = lazyImg.buildOptions(options)
 
     expect(builtOptions).toEqual({
@@ -35,38 +35,38 @@ describe('LazyImg', () => {
 
   it('should have the correct base class', () => {
     const el = document.createElement('div')
-    // @ts-ignore
+    // @ts-expect-error - test case
     lazyImg.setBaseClass(el)
-    // @ts-ignore
+    // @ts-expect-error - test case
     expect(el.classList.contains(lazyImg.options.baseClass)).toBe(true)
   })
 
   it('should add the loading class on the img element when imageIsLoading is called', () => {
     const el = document.createElement('div')
-    // @ts-ignore
+    // @ts-expect-error - test case
     lazyImg.imageIsLoading(el)
     expect(el.classList.contains('m-lazy-loading')).toBe(true)
   })
 
   it('should remove all state classes', () => {
     const el = document.createElement('div')
-    // @ts-ignore
+    // @ts-expect-error - test case
     el.classList.add(lazyImg.options.baseClass)
-    // @ts-ignore
+    // @ts-expect-error - test case
     el.classList.add(lazyImg.options.loadingClass)
-    // @ts-ignore
+    // @ts-expect-error - test case
     el.classList.add(lazyImg.options.errorClass)
-    // @ts-ignore
+    // @ts-expect-error - test case
     el.classList.add(lazyImg.options.noPhotoClass)
-    // @ts-ignore
+    // @ts-expect-error - test case
     lazyImg.removeAllStateClasses(el)
-    // @ts-ignore
+    // @ts-expect-error - test case
     expect(el.classList.contains(lazyImg.options.baseClass)).toBe(true)
-    // @ts-ignore
+    // @ts-expect-error - test case
     expect(el.classList.contains(lazyImg.options.loadingClass)).toBe(false)
-    // @ts-ignore
+    // @ts-expect-error - test case
     expect(el.classList.contains(lazyImg.options.errorClass)).toBe(false)
-    // @ts-ignore
+    // @ts-expect-error - test case
     expect(el.classList.contains(lazyImg.options.noPhotoClass)).toBe(false)
   })
 })

@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils'
 import MazTabsBar from '@components/MazTabsBar.vue'
 import { ref } from 'vue'
 
-describe('MazTabsBar.vue', () => {
+describe('mazTabsBar.vue', () => {
   it('correctly displays tabs', async () => {
     const items = [{ label: 'Tab 1' }, { label: 'Tab 2', disabled: true }, { label: 'Tab 3' }]
     const wrapper = mount(MazTabsBar, {

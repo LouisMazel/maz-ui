@@ -1,8 +1,8 @@
 import { mount } from '@vue/test-utils'
 import MazRadio from '@components/MazRadio.vue'
 
-describe('MazRadio', () => {
-  test('renders a radio input with a label', () => {
+describe('mazRadio', () => {
+  it('renders a radio input with a label', () => {
     const wrapper = mount(MazRadio, {
       props: {
         value: 'option1',
@@ -20,7 +20,7 @@ describe('MazRadio', () => {
     expect(radioLabel.text()).toBe('radio Label')
   })
 
-  test('toggles the radio when the label is clicked', async () => {
+  it('toggles the radio when the label is clicked', async () => {
     const wrapper = mount(MazRadio, {
       props: {
         value: 'option1',
@@ -41,7 +41,7 @@ describe('MazRadio', () => {
     expect(radioInput.element.checked).toBe(true)
   })
 
-  test('applies the "--selected" class when the radio is selected', () => {
+  it('applies the "--selected" class when the radio is selected', () => {
     const wrapper = mount(MazRadio, {
       props: {
         value: 'option1',
@@ -58,7 +58,7 @@ describe('MazRadio', () => {
     expect(radioLabel.classes()).toContain('--selected')
   })
 
-  test('applies the "--disabled" class when the radio is disabled', () => {
+  it('applies the "--disabled" class when the radio is disabled', () => {
     const wrapper = mount(MazRadio, {
       props: {
         value: 'option1',

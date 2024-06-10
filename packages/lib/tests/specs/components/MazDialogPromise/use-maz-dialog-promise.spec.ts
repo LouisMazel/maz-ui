@@ -17,7 +17,7 @@ describe('useMazDialogPromise', () => {
     const { dialogState, removeDialogFromState } = useMazDialogPromise()
     const identifier = 'test-dialog'
 
-    // @ts-ignore
+    // @ts-expect-error - test case
     dialogState.value = [{ id: identifier, isActive: true }]
     expect(dialogState.value).toHaveLength(1)
 
@@ -30,13 +30,11 @@ describe('useMazDialogPromise', () => {
     const identifier = 'test-dialog'
     let resolved = false
 
-    /* eslint-disable promise/always-return */
     const promise = new Promise((resolve) => {
       dialogState.value = [{ id: identifier, isActive: true, resolve }]
     }).then(() => {
       resolved = true
     })
-    /* eslint-enable promise/always-return */
 
     resolveDialog(dialogState.value[0])
     await promise
@@ -49,7 +47,7 @@ describe('useMazDialogPromise', () => {
     let rejected = false
 
     const promise = new Promise((_resolve, reject) => {
-      // @ts-ignore
+      // @ts-expect-error - test case
       dialogState.value = [{ id: identifier, isActive: true, reject }]
     }).catch(() => {
       rejected = true

@@ -1,4 +1,4 @@
-export type SwipeValues = {
+export interface SwipeValues {
   xStart: number | undefined
   yStart: number | undefined
   xEnd: number | undefined
@@ -93,6 +93,7 @@ export class Swipe {
     immediate: false,
     triggerOnEnd: false,
   }
+
   public readonly element: HTMLElement
 
   public xStart: number | undefined
@@ -124,7 +125,8 @@ export class Swipe {
         throw new TypeError('[SwipeHandler] String selector for element is not found')
       }
       this.element = foundElement
-    } else {
+    }
+    else {
       this.element = this.options.element
     }
 
@@ -188,7 +190,8 @@ export class Swipe {
     this.xEnd = event.touches[0].clientX
     this.yEnd = event.touches[0].clientY
 
-    if (!this.xStart || !this.yStart) return
+    if (!this.xStart || !this.yStart)
+      return
 
     this.xDiff = this.xStart - this.xEnd
     this.yDiff = this.yStart - this.yEnd
@@ -211,8 +214,8 @@ export class Swipe {
     }
 
     if (
-      Math.abs(this.xDiff) < this.options.threshold &&
-      Math.abs(this.yDiff) < this.options.threshold
+      Math.abs(this.xDiff) < this.options.threshold
+      && Math.abs(this.yDiff) < this.options.threshold
     ) {
       return
     }
@@ -220,12 +223,15 @@ export class Swipe {
     if (Math.abs(this.xDiff) > Math.abs(this.yDiff)) {
       if (this.xDiff > 0) {
         this.options.onLeft?.(event)
-      } else {
+      }
+      else {
         this.options.onRight?.(event)
       }
-    } else if (this.yDiff > 0) {
+    }
+    else if (this.yDiff > 0) {
       this.options.onUp?.(event)
-    } else {
+    }
+    else {
       this.options.onDown?.(event)
     }
 

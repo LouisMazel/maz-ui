@@ -25,27 +25,27 @@ describe('components/MazSelect.vue', () => {
     })
   })
 
-  test('Should have the model value', () => {
+  it('should have the model value', () => {
     expect(wrapper.vm.modelValue).toBe(1)
   })
 
-  test('Should have an uniq id', () => {
+  it('should have an uniq id', () => {
     expect(wrapper.vm.instanceId).toBe('MazSelect-6')
   })
 
-  test('Should find the options on search', async () => {
+  it('should find the options on search', async () => {
     wrapper.vm.searchQuery = '6'
 
     expect(wrapper.vm.optionsList).toStrictEqual([{ label: 'Test 6', value: 6 }])
   })
 
-  test('Should find the options on search', async () => {
+  it('should find the options on search undefined', async () => {
     wrapper.vm.searchQuery = undefined
 
     expect(wrapper.vm.optionsList).toStrictEqual(options)
   })
 
-  test('Should show the option label on input for false value', async () => {
+  it('should show the option label on input for false value', async () => {
     await wrapper.setProps({
       modelValue: '1',
       options: [{ label: 'Label', value: '1' }],
@@ -54,14 +54,14 @@ describe('components/MazSelect.vue', () => {
     expect(wrapper.vm.mazInputValue).toBe('Label')
   })
 
-  test('Should update modelValue and close list', async () => {
+  it('should update modelValue and close list', async () => {
     await wrapper.vm.updateValue(options[2])
     // expect(wrapper.vm.mazInputValue).toBe('Test 1')
     // expect(wrapper.vm.modelValue).toBe(3)
     expect(wrapper.emitted()['update:model-value']).toStrictEqual([[3]])
   })
 
-  test('Should open the list', async () => {
+  it('should open the list', async () => {
     const scrollIntoView = vi.fn()
     window.HTMLElement.prototype.scrollIntoView = scrollIntoView
     const input = wrapper.find('input')
@@ -69,17 +69,18 @@ describe('components/MazSelect.vue', () => {
     expect(scrollIntoView).toHaveBeenCalled()
   })
 
-  test('Should open the list on enter keydown', async () => {
+  it('should open the list on enter keydown', async () => {
     const input = wrapper.find('input')
     expect(input.exists()).toBeTruthy()
-    // @ts-ignore
+
+    // @ts-expect-error - test case
     input.wrapperElement.dispatchEvent(
       new KeyboardEvent('keydown', { key: 'Enter', code: 'Enter' }),
     )
     expect(wrapper.vm.hasListOpened).toBe(true)
   })
 
-  test('opens and closes the options list when the input is focused or blurred', async () => {
+  it('opens and closes the options list when the input is focused or blurred', async () => {
     // The options list should be closed by default
     expect(wrapper.vm.hasListOpened).toBe(false)
 
@@ -93,7 +94,7 @@ describe('components/MazSelect.vue', () => {
     // expect(wrapper.vm.hasListOpened).toBe(false)
   })
 
-  test('updates the input value and emits a change event when an option is selected', async () => {
+  it('updates the input value and emits a change event when an option is selected', async () => {
     await wrapper.find('input').trigger('focus')
 
     expect(wrapper.vm.hasListOpened).toBe(true)
@@ -107,7 +108,7 @@ describe('components/MazSelect.vue', () => {
     expect(wrapper.emitted('update:model-value')?.[0][0]).toBe(1)
   })
 
-  test('I can group options', async () => {
+  it('i can group options', async () => {
     await wrapper.setProps({
       modelValue: undefined,
       options: [
@@ -140,7 +141,7 @@ describe('components/MazSelect.vue', () => {
     ])
   })
 
-  test('I can select multiple values', async () => {
+  it('i can select multiple values', async () => {
     await wrapper.setProps({
       modelValue: undefined,
       multiple: true,

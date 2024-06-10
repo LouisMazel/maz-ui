@@ -11,7 +11,7 @@ describe('components/MazSlider.vue', () => {
     },
   })
 
-  test('Should have the model value', () => {
+  it('should have the model value', () => {
     expect(wrapper.vm.modelValue).toStrictEqual([25, 50, 75])
   })
 })

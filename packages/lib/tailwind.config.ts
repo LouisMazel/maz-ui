@@ -9,8 +9,7 @@ export default <Config>{
     files: ['./modules/**/*', './components/**/*', 'tailwindcss/**/*', '!components_tmp/**/*'],
     transform: {
       vue: (content) => {
-        const regex = /<style[^>]*>([\S\s]*?)<\/style>/g
-        // @ts-expect-error
+        const regex = /<style[^>]*>([\s\S]*?)<\/style>/g
         return content.replaceAll(regex, '')
       },
     },

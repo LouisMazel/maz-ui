@@ -3,7 +3,7 @@ interface IPosObject {
   y: number
 }
 
-export const getOffset = (elem: HTMLDivElement): IPosObject => {
+export function getOffset(elem: HTMLDivElement): IPosObject {
   const doc = document.documentElement as HTMLElement
   const body = document.body as HTMLElement
   const rect = elem.getBoundingClientRect()
@@ -21,11 +21,7 @@ export const getOffset = (elem: HTMLDivElement): IPosObject => {
  * @param elem Container element
  * @param isReverse From the right/bottom
  */
-export const getPos = (
-  e: MouseEvent | TouchEvent,
-  elem: HTMLDivElement,
-  isReverse = false,
-): IPosObject => {
+export function getPos(e: MouseEvent | TouchEvent, elem: HTMLDivElement, isReverse = false): IPosObject {
   const event = 'targetTouches' in e ? e.targetTouches[0] : e
   const offset = getOffset(elem)
   const posObj = {
@@ -38,11 +34,11 @@ export const getPos = (
   }
 }
 
-export const isBetween = (value: number, prev: number, next: number, direction: string) => {
+export function isBetween(value: number, prev: number, next: number, direction: string) {
   return direction === 'minus' ? (prev ? value >= prev : true) : next ? value <= next : true
 }
 
-export const getOpacityCoeff = (index: number, middle: number, length: number) => {
+export function getOpacityCoeff(index: number, middle: number, length: number) {
   const currentIndex = index + 1
   const isBiggerThanMiddle = middle < currentIndex
   const deviation = isBiggerThanMiddle ? currentIndex - middle : middle - currentIndex

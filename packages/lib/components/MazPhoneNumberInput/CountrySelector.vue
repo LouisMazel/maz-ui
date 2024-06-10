@@ -1,3 +1,114 @@
+<script lang="ts" setup>
+import { type ComponentPublicInstance, type HTMLAttributes, computed, ref } from 'vue'
+import type {
+  Color,
+  CountryCode,
+  InjectedData,
+  Position,
+  Size,
+  Translations,
+} from '../MazPhoneNumberInput.vue'
+import MazSelect from '../MazSelect.vue'
+import { countryCodeToUnicodeFlag } from '../../modules/helpers/country-code-to-unicode-flag'
+import { truthyFilter } from '../../modules/helpers/truthy-filter'
+import { injectStrict } from '../../modules/helpers/inject-strict'
+import { useMazPhoneNumberInput } from './use-maz-phone-number-input'
+
+const props = withDefaults(
+  defineProps<{
+    /** Style attribut of the component root element */
+    style?: HTMLAttributes['style']
+    /** Class attribut of the component root element */
+    class?: HTMLAttributes['class']
+    modelValue?: CountryCode
+    id: string
+    color: Color
+    size: Size
+    preferredCountries?: CountryCode[]
+    ignoredCountries?: CountryCode[]
+    onlyCountries?: CountryCode[]
+    customCountriesList?: Record<CountryCode, string>
+    locales: Translations
+    listPosition?: Position
+    noFlags?: boolean
+    noSearch?: boolean
+    disabled?: boolean
+    showCodeOnList?: boolean
+    countryLocale?: string
+    success?: boolean
+    error?: boolean
+    countrySelectorDisplayName?: boolean
+    width: string
+    excludeSelectors?: string[]
+  }>(),
+  {
+    class: undefined,
+    style: undefined,
+    modelValue: undefined,
+    listPosition: 'bottom left',
+    preferredCountries: undefined,
+    ignoredCountries: undefined,
+    onlyCountries: undefined,
+    customCountriesList: undefined,
+    countryLocale: undefined,
+    width: '9rem',
+    excludeSelectors: undefined,
+  },
+)
+
+defineEmits<{
+  (event: 'update:model-value', countryCode?: CountryCode): void
+}>()
+
+const { phoneNumber } = injectStrict<InjectedData>('data')
+
+const CountrySelectorRef = ref<ComponentPublicInstance<typeof MazSelect>>()
+
+const { getCountriesList } = useMazPhoneNumberInput()
+
+const countries = computed(() => getCountriesList(props.countryLocale, props.customCountriesList))
+
+const countriesList = computed(() =>
+  countries.value?.filter(item => !props.ignoredCountries?.includes(item.iso2)),
+)
+
+const countriesFiltered = computed(() => {
+  const countries = props.onlyCountries || props.preferredCountries
+  return countries?.map(country =>
+    countriesList.value?.find(item => item.iso2.includes(country)),
+  )
+})
+
+const otherCountries = computed(() =>
+  countriesList.value?.filter(item => !props.preferredCountries?.includes(item.iso2)),
+)
+
+const countriesSorted = computed(() =>
+  props.preferredCountries
+    ? [...(countriesFiltered.value ?? []), ...(otherCountries.value ?? [])]
+    : props.onlyCountries
+      ? countriesFiltered.value
+      : countriesList.value,
+)
+
+const countryOptions = computed(() =>
+  countriesSorted.value
+    ?.map(country =>
+      country
+        ? {
+            ...country,
+            dialCode: `+${country.dialCode}`,
+          }
+        : undefined,
+    )
+    .filter(truthyFilter),
+)
+
+async function focusCountrySelector() {
+  CountrySelectorRef.value?.$el.querySelector('input')?.focus()
+}
+</script>
+
 <template>
   <div class="m-country-selector" :class="[props.class, { '--no-flags': noFlags }]" :style="style">
     <button
@@ -49,7 +160,7 @@
       @update:model-value="$emit('update:model-value', $event as CountryCode)"
     >
       <template #no-results>
-        <slot name="no-results"> </slot>
+        <slot name="no-results" />
       </template>
       <template #default="{ option, isSelected }">
         <div
@@ -90,185 +201,74 @@
   </div>
 </template>
 
-<script lang="ts" setup>
-  import { ref, computed, type HTMLAttributes, type ComponentPublicInstance } from 'vue'
-  import type {
-    Color,
-    Size,
-    Position,
-    CountryCode,
-    Translations,
-    InjectedData,
-  } from '../MazPhoneNumberInput.vue'
-  import MazSelect from '../MazSelect.vue'
-  import { countryCodeToUnicodeFlag } from '../../modules/helpers/country-code-to-unicode-flag'
-  import { truthyFilter } from '../../modules/helpers/truthy-filter'
-  import { useMazPhoneNumberInput } from './use-maz-phone-number-input'
-  import { injectStrict } from '../../modules/helpers/inject-strict'
-
-  const props = withDefaults(
-    defineProps<{
-      /** Style attribut of the component root element */
-      style?: HTMLAttributes['style']
-      /** Class attribut of the component root element */
-      class?: HTMLAttributes['class']
-      modelValue?: CountryCode
-      id: string
-      color: Color
-      size: Size
-      preferredCountries?: CountryCode[]
-      ignoredCountries?: CountryCode[]
-      onlyCountries?: CountryCode[]
-      customCountriesList?: Record<CountryCode, string>
-      locales: Translations
-      listPosition?: Position
-      noFlags?: boolean
-      noSearch?: boolean
-      disabled?: boolean
-      showCodeOnList?: boolean
-      countryLocale?: string
-      success?: boolean
-      error?: boolean
-      countrySelectorDisplayName?: boolean
-      width: string
-      excludeSelectors?: string[]
-    }>(),
-    {
-      class: undefined,
-      style: undefined,
-      modelValue: undefined,
-      listPosition: 'bottom left',
-      preferredCountries: undefined,
-      ignoredCountries: undefined,
-      onlyCountries: undefined,
-      customCountriesList: undefined,
-      countryLocale: undefined,
-      width: '9rem',
-      excludeSelectors: undefined,
-    },
-  )
-
-  defineEmits<{
-    (event: 'update:model-value', countryCode?: CountryCode): void
-  }>()
-
-  const { phoneNumber } = injectStrict<InjectedData>('data')
-
-  const CountrySelectorRef = ref<ComponentPublicInstance<typeof MazSelect>>()
-
-  const { getCountriesList } = useMazPhoneNumberInput()
-
-  const countries = computed(() => getCountriesList(props.countryLocale, props.customCountriesList))
-
-  const countriesList = computed(() =>
-    countries.value?.filter((item) => !props.ignoredCountries?.includes(item.iso2)),
-  )
-
-  const countriesFiltered = computed(() => {
-    const countries = props.onlyCountries || props.preferredCountries
-    return countries?.map((country) =>
-      countriesList.value?.find((item) => item.iso2.includes(country)),
-    )
-  })
-
-  const otherCountries = computed(() =>
-    countriesList.value?.filter((item) => !props.preferredCountries?.includes(item.iso2)),
-  )
-
-  const countriesSorted = computed(() =>
-    props.preferredCountries
-      ? [...(countriesFiltered.value ?? []), ...(otherCountries.value ?? [])]
-      : props.onlyCountries
-        ? countriesFiltered.value
-        : countriesList.value,
-  )
-
-  const countryOptions = computed(() =>
-    countriesSorted.value
-      ?.map((country) =>
-        country
-          ? {
-              ...country,
-              dialCode: `+${country.dialCode}`,
-            }
-          : undefined,
-      )
-      .filter(truthyFilter),
-  )
-
-  async function focusCountrySelector() {
-    CountrySelectorRef.value?.$el.querySelector('input')?.focus()
-  }
-</script>
-
 <style lang="postcss" scoped>
   .m-country-selector {
-    @apply maz-relative;
+  @apply maz-relative;
 
-    &__country-flag {
-      position: absolute;
-      left: 13px;
-      z-index: 4;
-      outline: none;
-      border: none;
-      padding: 0;
-      margin: 0;
-      cursor: pointer;
+  &__country-flag {
+    position: absolute;
+    left: 13px;
+    z-index: 4;
+    outline: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
 
-      &.--should-have-bottom-flag {
-        bottom: 2px;
-      }
+    &.--should-have-bottom-flag {
+      bottom: 2px;
     }
+  }
+
+  &__select {
+    &:deep(.m-input-label) {
+      @apply !maz-p-0;
+    }
+
+    &__item {
+      @apply maz-w-full maz-text-sm;
+    }
+  }
+
+  &:not(.--no-flags) {
+    .m-country-selector__select:deep(.m-select-input input) {
+      @apply !maz-pl-10;
+    }
+  }
+}
+
+/* RESPONSIVE */
+.m-phone-number-input {
+  &.--responsive .m-country-selector {
+    @apply maz-min-w-full mob-m:maz-min-w-[inherit];
 
     &__select {
-      &:deep(.m-input-label) {
-        @apply !maz-p-0;
-      }
-
-      &__item {
-        @apply maz-w-full maz-text-sm;
-      }
-    }
-
-    &:not(.--no-flags) {
-      .m-country-selector__select:deep(.m-select-input input) {
-        @apply !maz-pl-10;
-      }
-    }
-  }
-
-  /* RESPONSIVE */
-  .m-phone-number-input {
-    &.--responsive .m-country-selector {
       @apply maz-min-w-full mob-m:maz-min-w-[inherit];
 
-      &__select {
-        @apply maz-min-w-full mob-m:maz-min-w-[inherit];
-
-        :deep(.m-select-input .m-input-wrapper) {
-          @apply maz-rounded-b-none mob-m:maz-rounded-b mob-m:maz-rounded-r-none;
-        }
-      }
-    }
-
-    &.--row .m-country-selector {
-      &__select {
-        :deep(.m-select-input .m-input-wrapper) {
-          @apply maz-rounded-r-none;
-        }
-      }
-    }
-
-    &.--col .m-country-selector {
-      @apply maz-min-w-full;
-
-      &__select {
-        @apply maz-min-w-full;
-
-        :deep(.m-select-input .m-input-wrapper) {
-          @apply maz-rounded-b-none maz-rounded-tr;
-        }
+      :deep(.m-select-input .m-input-wrapper) {
+        @apply maz-rounded-b-none mob-m:maz-rounded-b mob-m:maz-rounded-r-none;
       }
     }
   }
+
+  &.--row .m-country-selector {
+    &__select {
+      :deep(.m-select-input .m-input-wrapper) {
+        @apply maz-rounded-r-none;
+      }
+    }
+  }
+
+  &.--col .m-country-selector {
+    @apply maz-min-w-full;
+
+    &__select {
+      @apply maz-min-w-full;
+
+      :deep(.m-select-input .m-input-wrapper) {
+        @apply maz-rounded-b-none maz-rounded-tr;
+      }
+    }
+  }
+}
 </style>

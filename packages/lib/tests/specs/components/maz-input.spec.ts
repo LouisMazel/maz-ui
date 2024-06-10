@@ -10,12 +10,12 @@ describe('components/MazInput.vue', () => {
     },
   })
 
-  test('Should have the model value', () => {
+  it('should have the model value', () => {
     expect(wrapper.vm.modelValue).toBe('test value')
   })
 
-  test('Should have an uniq id', () => {
-    // @ts-expect-error
+  it('should have an uniq id', () => {
+    // @ts-expect-error - test case
     expect(wrapper.vm.instanceId).toBe('MazInput-1')
   })
 

@@ -4,7 +4,7 @@ import MazBtn from '@components/MazBtn.vue'
 import { sleep } from '@modules/helpers'
 import { RouterLink } from 'vue-router'
 
-describe('MazDropdown', () => {
+describe('mazDropdown', () => {
   let wrapper: VueWrapper<InstanceType<typeof MazDropdown>>
 
   const actionSpy = vi.fn()
@@ -28,14 +28,14 @@ describe('MazDropdown', () => {
     await vi.dynamicImportSettled()
   })
 
-  test('renders a dropdown button with the provided label', async () => {
+  it('renders a dropdown button with the provided label', async () => {
     const dropdownButton = wrapper.findComponent(MazBtn)
 
     expect(dropdownButton.exists()).toBe(true)
     expect(dropdownButton.text()).toBe('Dropdown Label')
   })
 
-  test('toggles the dropdown when the button is clicked', async () => {
+  it('toggles the dropdown when the button is clicked', async () => {
     await wrapper.setProps({ trigger: 'click' })
 
     await vi.dynamicImportSettled()
@@ -54,7 +54,7 @@ describe('MazDropdown', () => {
     expect(wrapper.find('[aria-label="Menu"]').isVisible()).toBeFalsy()
   })
 
-  test('toggles the dropdown when the button is clicked', async () => {
+  it('toggles the dropdown when the button is focused or blurred', async () => {
     await wrapper.setProps({ trigger: 'both' })
 
     await vi.dynamicImportSettled()
@@ -73,7 +73,7 @@ describe('MazDropdown', () => {
     expect(wrapper.find('[aria-label="Menu"]').isVisible()).toBeFalsy()
   })
 
-  test('emits "update:open" event when the dropdown is toggled', async () => {
+  it('emits "update:open" event when the dropdown is toggled', async () => {
     await vi.dynamicImportSettled()
 
     const dropdownButton = wrapper.find('[role="button"]')
@@ -91,7 +91,7 @@ describe('MazDropdown', () => {
     expect(wrapper.emitted('update:open')?.[1]).toEqual([false])
   })
 
-  test('closes the dropdown when a menu item is clicked', async () => {
+  it('closes the dropdown when a menu item is clicked', async () => {
     await vi.dynamicImportSettled()
 
     const dropdownButton = wrapper.find('[role="button"]')
@@ -109,7 +109,7 @@ describe('MazDropdown', () => {
     expect(wrapper.find('[aria-label="Menu"]').isVisible()).toBe(false)
   })
 
-  test('navigates through menu items using the keyboard', async () => {
+  it('navigates through menu items using the keyboard', async () => {
     await wrapper.setProps({
       items: [
         { label: 'Menu 1', action: vi.fn() },

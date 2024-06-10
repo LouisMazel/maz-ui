@@ -1,4 +1,4 @@
-import { mount, type VueWrapper } from '@vue/test-utils'
+import { type VueWrapper, mount } from '@vue/test-utils'
 import MazPhoneNumberInput from '@components/MazPhoneNumberInput.vue'
 
 describe('components/MazPhoneNumberInput.vue', () => {
@@ -14,11 +14,11 @@ describe('components/MazPhoneNumberInput.vue', () => {
     })
   })
 
-  test('Should have an uniq id', async () => {
+  it('should have an uniq id', async () => {
     expect(wrapper.find('#MazPhoneNumberInput-1').exists()).toBe(true)
   })
 
-  test('Should have the provided ifd', async () => {
+  it('should have the provided ifd', async () => {
     wrapper = mount(MazPhoneNumberInput, {
       props: {
         id: 'test',
@@ -28,7 +28,7 @@ describe('components/MazPhoneNumberInput.vue', () => {
     expect(wrapper.find('#test').exists()).toBe(true)
   })
 
-  test('Should have the good values with FR number', async () => {
+  it('should have the good values with FR number', async () => {
     const inputElement = wrapper.find('#MazPhoneNumberInput-28').element as HTMLInputElement
 
     expect(inputElement.value).toBe('06 58 58 47 29')
@@ -36,7 +36,7 @@ describe('components/MazPhoneNumberInput.vue', () => {
     expect(wrapper.emitted('country-code')?.[0][0]).toBe('FR')
   })
 
-  test('Should have the good values with BE number', async () => {
+  it('should have the good values with BE number', async () => {
     await wrapper.setProps({
       modelValue: '+326453',
     })

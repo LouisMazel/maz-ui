@@ -25,7 +25,7 @@ describe('vClosable Directive', () => {
     wrapper.unmount()
   })
 
-  test('should call handler when clicked outside the element', async () => {
+  it('should call handler when clicked outside the element', async () => {
     // Simulate click event outside the element
     document.dispatchEvent(new MouseEvent('touchstart'))
 
@@ -33,16 +33,15 @@ describe('vClosable Directive', () => {
     expect(mockHandler).toHaveBeenCalled()
   })
 
-  test('should not call handler when clicked inside the element', async () => {
+  it('should not call handler when clicked inside the element', async () => {
     // Simulate click event inside the element
-    // @ts-expect-error
     wrapper.element.click()
 
     // Check if handler is not called
     expect(mockHandler).not.toHaveBeenCalled()
   })
 
-  test('should not call handler when clicked on excluded element', async () => {
+  it('should not call handler when clicked on excluded element', async () => {
     // Add an excluded element
     const excludedElement = document.createElement('div')
     excludedElement.setAttribute('id', 'excluded')

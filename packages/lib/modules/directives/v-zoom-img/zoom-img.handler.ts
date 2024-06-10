@@ -34,6 +34,7 @@ export class VueZoomImg {
     blur: true,
     disabled: false,
   }
+
   private mouseEnterListener: () => void
   private mouseLeaveListener: () => void
   private renderPreviewListener: () => void
@@ -80,7 +81,8 @@ export class VueZoomImg {
     /**
      * If is disabled
      */
-    if (this.options.disabled) return
+    if (this.options.disabled)
+      return
 
     /**
      * Set instance style
@@ -91,7 +93,8 @@ export class VueZoomImg {
      */
     setTimeout(() => el.classList.add('maz-zoom-img-instance'))
     el.setAttribute('data-zoom-src', this.options.src)
-    if (this.options.alt) el.setAttribute('data-zoom-alt', this.options.alt)
+    if (this.options.alt)
+      el.setAttribute('data-zoom-alt', this.options.alt)
     /**
      * Add event listeners
      */
@@ -139,7 +142,8 @@ export class VueZoomImg {
 
     if (typeof options === 'object') {
       this.img.setAttribute('src', options.src)
-      if (options.alt) this.img.setAttribute('alt', options.alt)
+      if (options.alt)
+        this.img.setAttribute('alt', options.alt)
       this.img.id = 'MazImgElement'
     }
 
@@ -151,7 +155,8 @@ export class VueZoomImg {
     this.keyboardEventHandler(true)
 
     setTimeout(() => {
-      if (container) container.classList.add('maz-animate')
+      if (container)
+        container.classList.add('maz-animate')
     }, 100)
   }
 
@@ -189,15 +194,19 @@ export class VueZoomImg {
   }
 
   private mouseLeave(el: HTMLElement): void {
-    if (this.options.scale) el.style.transform = ''
-    if (this.options.blur) el.style.filter = ''
+    if (this.options.scale)
+      el.style.transform = ''
+    if (this.options.blur)
+      el.style.filter = ''
     el.style.zIndex = ''
   }
 
   private mouseEnter(el: HTMLElement): void {
     el.style.zIndex = '1'
-    if (this.options.scale) el.style.transform = 'scale(1.1)'
-    if (this.options.blur) el.style.filter = 'blur(2px)'
+    if (this.options.scale)
+      el.style.transform = 'scale(1.1)'
+    if (this.options.blur)
+      el.style.filter = 'blur(2px)'
   }
 
   private keydownLister(e: KeyboardEvent): void {
@@ -214,13 +223,16 @@ export class VueZoomImg {
   private getButton(iconName = 'close'): HTMLButtonElement {
     const button = document.createElement('button')
     button.innerHTML = svgs[iconName]
-    button.addEventListener('click', (): void => {
-      iconName === 'close'
-        ? this.closePreview()
-        : this.allInstances
-          ? this.nextPreviousImage(iconName === 'next')
-          : null
+    const action = iconName === 'close'
+      ? this.closePreview()
+      : this.allInstances
+        ? this.nextPreviousImage(iconName === 'next')
+        : null
+
+    button.addEventListener('click', () => {
+      return action
     })
+
     button.classList.add('maz-zoom-btn')
     button.classList.add(`maz-zoom-btn--${iconName}`)
     return button
@@ -233,15 +245,19 @@ export class VueZoomImg {
       '.maz-zoom-img-instance.maz-is-open',
     )
 
-    if (instance) instance.classList.remove(StateClass.OPEN)
+    if (instance)
+      instance.classList.remove(StateClass.OPEN)
 
-    if (container) container.classList.remove('maz-animate')
+    if (container)
+      container.classList.remove('maz-animate')
 
     this.keyboardEventHandler(false)
 
     setTimeout(() => {
-      if (container) container.remove()
-      if (style) style.remove()
+      if (container)
+        container.remove()
+      if (style)
+        style.remove()
     }, 300)
   }
 
@@ -283,8 +299,10 @@ export class VueZoomImg {
     this.wrapper.style.width = ''
     this.loader.hidden = false
 
-    if (src) this.img.setAttribute('src', src)
-    if (alt) this.img.setAttribute('alt', alt)
+    if (src)
+      this.img.setAttribute('src', src)
+    if (alt)
+      this.img.setAttribute('alt', alt)
   }
 
   private addStyle(styleString: string): void {
@@ -295,12 +313,14 @@ export class VueZoomImg {
   }
 
   private keyboardEventHandler(add: boolean): void {
-    if (add) return document.addEventListener('keydown', this.keydownHandler)
+    if (add)
+      return document.addEventListener('keydown', this.keydownHandler)
     document.removeEventListener('keydown', this.keydownHandler)
   }
 
   private imgEventHandler(add: boolean): void {
-    if (add) return this.img.addEventListener('load', this.onImgLoadedCallback)
+    if (add)
+      return this.img.addEventListener('load', this.onImgLoadedCallback)
     this.img.removeEventListener('load', this.onImgLoadedCallback)
   }
 }

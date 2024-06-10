@@ -47,7 +47,8 @@ export function useWindowSize(options: UseWindowSizeOptions = {}) {
       if (includeScrollbar) {
         width.value = internalWindow.innerWidth
         height.value = internalWindow.innerHeight
-      } else {
+      }
+      else {
         width.value = internalWindow.document.documentElement.clientWidth
         height.value = internalWindow.document.documentElement.clientHeight
       }

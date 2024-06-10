@@ -14,8 +14,8 @@ const pieChart = {
   },
 }
 
-describe('MazChart', () => {
-  test('Should match with  the snapshot', () => {
+describe('mazChart', () => {
+  it('should match with  the snapshot', () => {
     const wrapper = mount(MazChart, {
       props: {
         data: pieChart.data,

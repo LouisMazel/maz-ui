@@ -1,6 +1,6 @@
-import { type Ref, computed, type ComputedRef } from 'vue'
+import { type ComputedRef, type Ref, computed } from 'vue'
 
-export type ReadingTimeOptions = {
+export interface ReadingTimeOptions {
   /** Content to calculate the reading time */
   content?: string | Ref<string>
   /** Selector of the content to calculate the reading time */
@@ -14,7 +14,7 @@ export type ReadingTimeOptions = {
   velocity?: number | Ref<number>
 }
 
-export type ReadingTimeReturn = {
+export interface ReadingTimeReturn {
   /** Content to calculate the reading time */
   content: ComputedRef<string | undefined | null>
   /** Number of words in the content */

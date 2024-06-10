@@ -1,7 +1,7 @@
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { isClient } from './../helpers/is-client'
-import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 
-export type StrictThemeHandlerOptions = {
+export interface StrictThemeHandlerOptions {
   /**
    * Class to be added to the html element when dark theme is set
    * @default 'dark'
@@ -83,7 +83,8 @@ function setDarkTheme({
   document.documentElement.classList.add(darkClass)
 
   theme.value = storageThemeValueDark
-  if (setSelectedTheme) selectedTheme.value = storageThemeValueDark
+  if (setSelectedTheme)
+    selectedTheme.value = storageThemeValueDark
 
   if (setLocalStorageValue) {
     localStorage[storageThemeKey] = storageThemeValueDark
@@ -109,7 +110,8 @@ function setLightTheme({
   document.documentElement.classList.add(lightClass)
 
   theme.value = storageThemeValueLight
-  if (setSelectedTheme) selectedTheme.value = storageThemeValueLight
+  if (setSelectedTheme)
+    selectedTheme.value = storageThemeValueLight
 
   if (setLocalStorageValue) {
     localStorage[storageThemeKey] = storageThemeValueLight
@@ -173,22 +175,22 @@ function autoSetTheme(options: StrictThemeHandlerOptions) {
     return setDefaultTheme(options)
   }
 
-  const shouldSetDarkTheme =
-    localStorage[options.storageThemeKey] === options.storageThemeValueDark ||
-    (!localStorage[options.storageThemeKey] && getPrefDark()) ||
-    (localStorage[options.storageThemeKey] === options.storageThemeValueSystem && getPrefDark())
+  const shouldSetDarkTheme
+    = localStorage[options.storageThemeKey] === options.storageThemeValueDark
+    || (!localStorage[options.storageThemeKey] && getPrefDark())
+    || (localStorage[options.storageThemeKey] === options.storageThemeValueSystem && getPrefDark())
 
   return shouldSetDarkTheme
     ? setDarkTheme({
-        ...options,
-        setLocalStorageValue: false,
-        setSelectedTheme: false,
-      })
+      ...options,
+      setLocalStorageValue: false,
+      setSelectedTheme: false,
+    })
     : setLightTheme({
-        ...options,
-        setLocalStorageValue: false,
-        setSelectedTheme: false,
-      })
+      ...options,
+      setLocalStorageValue: false,
+      setSelectedTheme: false,
+    })
 }
 
 function setTheme({

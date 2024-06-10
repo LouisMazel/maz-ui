@@ -2,8 +2,8 @@ import { mount } from '@vue/test-utils'
 import MazTable from '@components/MazTable.vue'
 import { MazCheckbox, MazLoadingBar } from '@components/index'
 
-describe('MazTable', () => {
-  test('should render the component', async () => {
+describe('mazTable', () => {
+  it('should render the component', async () => {
     const wrapper = mount(MazTable, {
       props: {
         sortable: true,

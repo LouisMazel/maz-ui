@@ -1,8 +1,8 @@
 import type { CountryCallingCode, CountryCode, NationalNumber, NumberType } from 'libphonenumber-js'
 
-import { type defaultLocales } from './default-locales'
+import type { defaultLocales } from './default-locales'
 
-export type Results = {
+export interface Results {
   isValid: boolean
   isPossible?: boolean
   countryCode?: CountryCode
@@ -19,7 +19,7 @@ export type Results = {
 
 export type Translations = typeof defaultLocales
 
-export type Country = {
+export interface Country {
   iso2: CountryCode
   dialCode: CountryCallingCode
   name: string

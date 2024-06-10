@@ -39,6 +39,7 @@ export class FullscreenImgHandler {
       easing: 'ease-in-out',
     },
   }
+
   private mouseEnterListener: () => void
   private mouseLeaveListener: () => void
   private renderPreviewListener: () => void
@@ -47,8 +48,8 @@ export class FullscreenImgHandler {
     el: HTMLElement,
     binding: vFullscreenImgBinding,
   ): vFullscreenImgBindingOptions {
-    const options =
-      typeof binding.value === 'object' ? binding.value : { src: binding.value, alt: undefined }
+    const options
+      = typeof binding.value === 'object' ? binding.value : { src: binding.value, alt: undefined }
 
     const src = options?.src ?? this.getImgSrc(el)
     const alt = options?.alt ?? this.getImgAlt(el)
@@ -84,7 +85,8 @@ export class FullscreenImgHandler {
   public create(el: HTMLElement, binding: vFullscreenImgBinding) {
     this.options = this.buildOptions(el, binding)
 
-    if (this.options.disabled) return
+    if (this.options.disabled)
+      return
 
     el.style.cursor = 'move'
 
@@ -142,14 +144,18 @@ export class FullscreenImgHandler {
   }
 
   private mouseLeave(el: HTMLElement): void {
-    if (this.options.scaleOnHover) el.style.transform = ''
-    if (this.options.blurOnHover) el.style.filter = ''
+    if (this.options.scaleOnHover)
+      el.style.transform = ''
+    if (this.options.blurOnHover)
+      el.style.filter = ''
     el.style.zIndex = ''
   }
 
   private mouseEnter(el: HTMLElement): void {
     el.style.zIndex = '1'
-    if (this.options.scaleOnHover) el.style.transform = 'scale(1.04)'
-    if (this.options.blurOnHover) el.style.filter = 'blur(3px)'
+    if (this.options.scaleOnHover)
+      el.style.transform = 'scale(1.04)'
+    if (this.options.blurOnHover)
+      el.style.filter = 'blur(3px)'
   }
 }

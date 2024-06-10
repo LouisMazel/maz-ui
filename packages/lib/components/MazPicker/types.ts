@@ -1,6 +1,6 @@
 export type SimpleValue = string | undefined
 
-export type RangeValue = {
+export interface RangeValue {
   start: string
   end: string
 }
@@ -9,7 +9,7 @@ export type PartialRangeValue = Partial<RangeValue>
 
 export type PickerValue = SimpleValue | PartialRangeValue
 
-export type PickerShortcut = {
+export interface PickerShortcut {
   identifier: string
   label: string
   value: {

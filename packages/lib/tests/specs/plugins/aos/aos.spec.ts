@@ -1,6 +1,6 @@
 import { AosHandler, type AosOptions } from '@modules/plugins'
 
-describe('AosHandler', () => {
+describe('aosHandler', () => {
   let aosHandler: AosHandler
 
   beforeEach(() => {
@@ -8,14 +8,14 @@ describe('AosHandler', () => {
 
     const observe = vitest.fn()
     const unobserve = vitest.fn()
-    // @ts-ignore
+    // @ts-expect-error - global variable
     window.IntersectionObserver = vitest.fn(() => ({
       observe,
       unobserve,
     }))
   })
 
-  test('should update the options with the provided values', () => {
+  it('should update the options with the provided values', () => {
     const options: AosOptions = {
       delay: 500,
       observer: {
@@ -39,7 +39,7 @@ describe('AosHandler', () => {
     })
   })
 
-  test('should run the animations after the specified delay', () => {
+  it('should run the animations after the specified delay', () => {
     vitest.useFakeTimers()
 
     aosHandler.runAnimations()

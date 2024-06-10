@@ -2,20 +2,40 @@
   <MazPullToRefresh :action="action">
     <main>
       <header>
-        <NuxtLink :to="{ name: 'index' }"> MazUi </NuxtLink>
+        <NuxtLink :to="{ name: 'index' }">
+          MazUi
+        </NuxtLink>
 
         <nav>
-          <MazBtn :to="{ name: 'index' }" color="transparent"> Home </MazBtn>
-          <MazBtn :to="{ name: 'test-page' }" color="transparent"> Test page </MazBtn>
+          <MazBtn
+            :to="{ name: 'index' }"
+            color="transparent"
+          >
+            Home
+          </MazBtn>
+          <MazBtn
+            :to="{ name: 'test-page' }"
+            color="transparent"
+          >
+            Test page
+          </MazBtn>
 
-          <MazDropdown id="dropdown" color="transparent" position="bottom right">
+          <MazDropdown
+            id="dropdown"
+            color="transparent"
+            position="bottom right"
+          >
             <span class="maz-capitalize">
               {{ theme }}
             </span>
 
             <template #dropdown>
               <div class="maz-grid maz-grid-cols-2">
-                <MazBtn color="transparent" content-class="maz-text-nowrap" @click="autoSetTheme">
+                <MazBtn
+                  color="transparent"
+                  content-class="maz-text-nowrap"
+                  @click="autoSetTheme"
+                >
                   Auto
                 </MazBtn>
                 <MazBtn
@@ -53,15 +73,15 @@
 </template>
 
 <script setup lang="ts">
-  import { sleep } from 'maz-ui'
+import { sleep } from 'maz-ui'
 
-  function action() {
-    return sleep(20000)
-  }
+function action() {
+  return sleep(20000)
+}
 
-  const { autoSetTheme, selectedTheme, theme } = useThemeHandler()
+const { autoSetTheme, selectedTheme, theme } = useThemeHandler()
 
-  autoSetTheme()
+autoSetTheme()
 </script>
 
 <style lang="postcss">

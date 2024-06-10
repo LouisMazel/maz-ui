@@ -1,3 +1,47 @@
+<script lang="ts">
+import { Component, Prop, Vue } from 'nuxt-property-decorator'
+import type { Day } from './types'
+
+import CalendarWeekButton from './CalendarWeekButton.vue'
+
+@Component({
+  components: { CalendarWeekButton },
+})
+export default class CalendarDays extends Vue {
+  @Prop({ required: true, type: Array })
+    days!: Day[]
+
+  @Prop({ default: 'dddd', type: String })
+    dayFormat!: string
+
+  @Prop({ default: 'll', type: String })
+    dateFormat!: string
+
+  @Prop({ type: Boolean, default: false })
+    noWeekSwitch!: boolean
+
+  @Prop({ type: Boolean, default: false })
+    canBackWeek!: boolean
+
+  @Prop({ default: false, type: Boolean })
+    canForwardWeek!: boolean
+
+  @Prop({ default: false, type: Boolean })
+    noShowDay!: boolean
+
+  @Prop({ default: false, type: Boolean })
+    noShowDate!: boolean
+
+  formattedDay(date: string) {
+    return this.$dayjs(date).format(this.dayFormat)
+  }
+
+  formattedDate(date: string) {
+    return this.$dayjs(date).format(this.dateFormat)
+  }
+}
+</script>
+
 <template>
   <div
     class="calendar-slot flex items-center gap-2 border-b border-gray-stroke py-1"
@@ -27,47 +71,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts">
-  import { Vue, Component, Prop } from 'nuxt-property-decorator'
-  import type { Day } from './types'
-
-  import CalendarWeekButton from './CalendarWeekButton.vue'
-
-  @Component({
-    components: { CalendarWeekButton },
-  })
-  export default class CalendarDays extends Vue {
-    @Prop({ required: true, type: Array })
-    days!: Day[]
-
-    @Prop({ default: 'dddd', type: String })
-    dayFormat!: string
-
-    @Prop({ default: 'll', type: String })
-    dateFormat!: string
-
-    @Prop({ type: Boolean, default: false })
-    noWeekSwitch!: boolean
-
-    @Prop({ type: Boolean, default: false })
-    canBackWeek!: boolean
-
-    @Prop({ default: false, type: Boolean })
-    canForwardWeek!: boolean
-
-    @Prop({ default: false, type: Boolean })
-    noShowDay!: boolean
-
-    @Prop({ default: false, type: Boolean })
-    noShowDate!: boolean
-
-    formattedDay(date: string) {
-      return this.$dayjs(date).format(this.dayFormat)
-    }
-
-    formattedDate(date: string) {
-      return this.$dayjs(date).format(this.dateFormat)
-    }
-  }
-</script>

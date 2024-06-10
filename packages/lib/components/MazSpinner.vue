@@ -1,3 +1,18 @@
+<script lang="ts" setup>
+import type { PropType } from 'vue'
+import type { Color } from './types'
+
+export type { Color }
+
+defineProps({
+  size: { type: String, default: '2em' },
+  color: {
+    type: String as PropType<Color>,
+    default: 'primary',
+  },
+})
+</script>
+
 <template>
   <svg
     :width="size"
@@ -18,67 +33,53 @@
   </svg>
 </template>
 
-<script lang="ts" setup>
-  import type { PropType } from 'vue'
-  import type { Color } from './types'
-  export type { Color }
-
-  defineProps({
-    size: { type: String, default: '2em' },
-    color: {
-      type: String as PropType<Color>,
-      default: 'primary',
-    },
-  })
-</script>
-
 <style lang="postcss" scoped>
   .m-spinner {
-    @apply maz-animate-spin maz-fill-current;
-    @apply maz-m-0 !important;
+  @apply maz-animate-spin maz-fill-current;
+  @apply maz-m-0 !important;
 
-    &--normal {
-      @apply maz-text-normal;
-    }
-
-    &--primary {
-      @apply maz-text-primary;
-    }
-
-    &--secondary {
-      @apply maz-text-secondary;
-    }
-
-    &--info {
-      @apply maz-text-info;
-    }
-
-    &--warning {
-      @apply maz-text-warning;
-    }
-
-    &--danger {
-      @apply maz-text-danger;
-    }
-
-    &--success {
-      @apply maz-text-success;
-    }
-
-    &--black {
-      @apply maz-text-black;
-    }
-
-    &--white {
-      @apply maz-text-white;
-    }
-
-    &--transparent {
-      @apply maz-text-white;
-    }
-
-    &--theme {
-      @apply maz-text-theme;
-    }
+  &--normal {
+    @apply maz-text-normal;
   }
+
+  &--primary {
+    @apply maz-text-primary;
+  }
+
+  &--secondary {
+    @apply maz-text-secondary;
+  }
+
+  &--info {
+    @apply maz-text-info;
+  }
+
+  &--warning {
+    @apply maz-text-warning;
+  }
+
+  &--danger {
+    @apply maz-text-danger;
+  }
+
+  &--success {
+    @apply maz-text-success;
+  }
+
+  &--black {
+    @apply maz-text-black;
+  }
+
+  &--white {
+    @apply maz-text-white;
+  }
+
+  &--transparent {
+    @apply maz-text-white;
+  }
+
+  &--theme {
+    @apply maz-text-theme;
+  }
+}
 </style>

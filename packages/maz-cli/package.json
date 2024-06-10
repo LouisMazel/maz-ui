@@ -1,19 +1,10 @@
 {
   "name": "@mazui/cli",
+  "type": "module",
   "version": "3.43.4",
   "description": "CLI of Maz-ui",
   "license": "MIT",
-  "type": "module",
-  "types": "./dist/cli.d.ts",
-  "exports": {
-    ".": "./dist/cli.mjs",
-    "./cli": "./bin/maz.mjs",
-    "./types": "./dist/cli.d.ts"
-  },
-  "bin": {
-    "maz": "./bin/maz.mjs",
-    "maz-ui": "./bin/maz.mjs"
-  },
+  "homepage": "https://maz-ui.com/guide/cli",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/LouisMazel/maz-ui.git"
@@ -21,7 +12,16 @@
   "bugs": {
     "url": "https://github.com/LouisMazel/maz-ui/issues"
   },
-  "homepage": "https://maz-ui.com/guide/cli",
+  "exports": {
+    ".": "./dist/cli.mjs",
+    "./cli": "./bin/maz.mjs",
+    "./types": "./dist/cli.d.ts"
+  },
+  "types": "./dist/cli.d.ts",
+  "bin": {
+    "maz": "./bin/maz.mjs",
+    "maz-ui": "./bin/maz.mjs"
+  },
   "files": [
     "bin",
     "dist"
@@ -29,24 +29,18 @@
   "scripts": {
     "pre-commit": "lint-staged",
     "commit": "cz",
-    "lint": "cross-env NODE_ENV=production eslint --ignore-path .gitignore --fix --ext .ts,.js,.mjs,.mts,.cjs src",
-    "format": "prettier . --write",
-    "beautify": "pnpm format && pnpm lint",
+    "lint": "cross-env NODE_ENV=production eslint --fix src",
     "typecheck": "tsc --noEmit",
     "build": "unbuild",
     "build:stub": "unbuild --stub",
     "dev": "node --import=./register.js src/cli.ts",
     "start": "node --es-module-specifier-resolution=node dist/cli.mjs"
   },
-  "lint-staged": {
-    "*": "prettier -w -u",
-    "*.{js,ts,mjs,mts,cjs}": "cross-env NODE_ENV=production eslint --fix"
-  },
   "dependencies": {
     "@clack/prompts": "^0.7.0",
     "clear": "^0.1.0",
     "colorette": "^2.0.20",
-    "commander": "^12.0.0",
+    "commander": "^12.1.0",
     "cosmiconfig": "^9.0.0",
     "figlet": "^1.7.0",
     "tinycolor2": "^1.6.0"
@@ -56,5 +50,8 @@
     "@types/figlet": "^1.5.8",
     "@types/tinycolor2": "^1.4.6",
     "unbuild": "^2.0.0"
+  },
+  "lint-staged": {
+    "*.{js,ts,mjs,mts,cjs}": "cross-env NODE_ENV=production eslint --fix"
   }
 }

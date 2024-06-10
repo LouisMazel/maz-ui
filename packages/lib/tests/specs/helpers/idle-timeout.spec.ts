@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable ts/ban-ts-comment */
 
 import {
   IdleTimeout,
-  sleep,
-  type IdleTimeoutOptions,
   type IdleTimeoutCallback,
+  type IdleTimeoutOptions,
+  sleep,
 } from '@modules/helpers'
 
 const DEFAULT_TIMEOUT = 300
@@ -28,28 +28,28 @@ afterAll(() => {
 })
 
 describe('@modules/helpers/idle-timeout', () => {
-  describe('Given app want trigger user idle', () => {
-    describe('When instance is launch', () => {
-      it('Then instance is IdleTimeout', () => {
+  describe('given app want trigger user idle', () => {
+    describe('when instance is launch', () => {
+      it('then instance is IdleTimeout', () => {
         expect(instance).toBeInstanceOf(IdleTimeout)
       })
 
-      it('Then idle to be false', () => {
+      it('then idle to be false', () => {
         expect(instance?.idle).toBeFalsy()
       })
 
-      it('Then instance returns timeout option', () => {
+      it('then instance returns timeout option', () => {
         expect(instance?.timeout).toBe(DEFAULT_TIMEOUT)
       })
 
-      it('Then user is new not idle callback called and idle equal "false"', async () => {
+      it('then user is new not idle callback called and idle equal "false"', async () => {
         await sleep(DEFAULT_TIMEOUT)
         expect(instance?.idle).toBeTruthy()
         expect(callback).toHaveBeenCalledWith({
           isIdle: true,
         })
 
-        // @ts-ignore
+        // @ts-expect-error
         instance?.handleEvent(
           new MouseEvent('mousemove', {
             clientX: 150,
@@ -64,22 +64,22 @@ describe('@modules/helpers/idle-timeout', () => {
         })
       })
 
-      it('Then idle is "true" and callback called after time', async () => {
+      it('then idle is "true" and callback called after time', async () => {
         await sleep(DEFAULT_TIMEOUT)
         expect(instance?.idle).toBeTruthy()
         expect(callback).toHaveBeenCalledWith({ isIdle: true })
       })
     })
 
-    describe('When instance is paused', () => {
-      it('Then the timeout is paused and idle is falsy', async () => {
+    describe('when instance is paused', () => {
+      it('then the timeout is paused and idle is falsy', async () => {
         instance?.pause()
         await sleep(DEFAULT_TIMEOUT)
         expect(instance?.idle).toBeFalsy()
         expect(callback).not.toHaveBeenCalled()
       })
 
-      it('Then the timeout is resumed and idle is truthy after timeout', async () => {
+      it('then the timeout is resumed and idle is truthy after timeout', async () => {
         instance?.pause()
         await sleep(DEFAULT_TIMEOUT)
         expect(instance?.idle).toBeFalsy()
@@ -91,8 +91,8 @@ describe('@modules/helpers/idle-timeout', () => {
       })
     })
 
-    describe('When instance is reset', () => {
-      it('Then instance idle is "false" and callback called', async () => {
+    describe('when instance is reset', () => {
+      it('then instance idle is "false" and callback called', async () => {
         await sleep(DEFAULT_TIMEOUT)
         expect(instance?.idle).toBeTruthy()
         instance?.reset()
@@ -100,7 +100,7 @@ describe('@modules/helpers/idle-timeout', () => {
         await sleep(DEFAULT_TIMEOUT)
       })
 
-      it('Then the timeout is resumed and idle is truthy after timeout', async () => {
+      it('then the timeout is resumed and idle is truthy after timeout', async () => {
         instance?.pause()
         await sleep(DEFAULT_TIMEOUT)
         expect(instance?.idle).toBeFalsy()
@@ -110,8 +110,8 @@ describe('@modules/helpers/idle-timeout', () => {
       })
     })
 
-    describe('When instance idle has been set', () => {
-      it('Then instance idle set to "true"', () => {
+    describe('when instance idle has been set', () => {
+      it('then instance idle set to "true"', () => {
         if (instance) {
           expect(instance.idle).toBeFalsy()
           instance.idle = true
@@ -120,7 +120,7 @@ describe('@modules/helpers/idle-timeout', () => {
         }
       })
 
-      it('Then instance idle set to "false"', async () => {
+      it('then instance idle set to "false"', async () => {
         if (instance) {
           await sleep(DEFAULT_TIMEOUT)
           expect(instance.idle).toBeTruthy()
@@ -131,8 +131,8 @@ describe('@modules/helpers/idle-timeout', () => {
       })
     })
 
-    describe('When instance timeout is set', () => {
-      it('Then instance timeout returns new value', () => {
+    describe('when instance timeout is set', () => {
+      it('then instance timeout returns new value', () => {
         if (instance) {
           expect(instance.timeout).toBe(DEFAULT_TIMEOUT)
           instance.timeout = 1000
@@ -141,8 +141,8 @@ describe('@modules/helpers/idle-timeout', () => {
       })
     })
 
-    describe('When instance is destroy', () => {
-      it('Then instance not have called callback after timeout', async () => {
+    describe('when instance is destroy', () => {
+      it('then instance not have called callback after timeout', async () => {
         instance?.destroy()
         await sleep(DEFAULT_TIMEOUT)
         expect(callback).not.toHaveBeenCalled()
@@ -150,8 +150,8 @@ describe('@modules/helpers/idle-timeout', () => {
       })
     })
 
-    describe('When instance is destroy and reset', () => {
-      it('Then instance is not destroyed', () => {
+    describe('when instance is destroy and reset', () => {
+      it('then instance is not destroyed', () => {
         instance?.destroy()
         expect(instance?.destroyed).toBeTruthy()
         instance?.reset()
@@ -159,8 +159,8 @@ describe('@modules/helpers/idle-timeout', () => {
       })
     })
 
-    describe('When instance has immediate option', () => {
-      it('Then callback is called immediately', () => {
+    describe('when instance has immediate option', () => {
+      it('then callback is called immediately', () => {
         const immediateCallback: IdleTimeoutCallback = vitest.fn()
         const _immediateInstance = new IdleTimeout(immediateCallback, {
           ...options,
@@ -170,8 +170,8 @@ describe('@modules/helpers/idle-timeout', () => {
       })
     })
 
-    describe('When instance has once option to "true"', () => {
-      it('Then the instance is destroy after timeout', async () => {
+    describe('when instance has once option to "true"', () => {
+      it('then the instance is destroy after timeout', async () => {
         const immediateCallback: IdleTimeoutCallback = vitest.fn()
         const immediateInstance = new IdleTimeout(immediateCallback, {
           ...options,
@@ -183,5 +183,3 @@ describe('@modules/helpers/idle-timeout', () => {
     })
   })
 })
-
-/* eslint-enable @typescript-eslint/ban-ts-comment */

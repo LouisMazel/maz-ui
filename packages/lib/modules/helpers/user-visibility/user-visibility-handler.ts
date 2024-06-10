@@ -60,7 +60,8 @@ export class UserVisibility {
     if (document.visibilityState === 'visible' && !this.isVisible) {
       this.clearTimeout()
       this.emitCallback()
-    } else if (document.visibilityState === 'hidden') {
+    }
+    else if (document.visibilityState === 'hidden') {
       this.initTimeout()
     }
   }

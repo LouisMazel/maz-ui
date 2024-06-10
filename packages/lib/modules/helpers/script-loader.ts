@@ -1,5 +1,4 @@
 interface IWindow extends Window {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any
 }
 
@@ -42,7 +41,8 @@ export class ScriptLoader {
   public removeTag(tag: Element | string) {
     if (typeof tag === 'string') {
       document.head.querySelector(`[data-identifier="${tag}"]`)?.remove()
-    } else {
+    }
+    else {
       tag.remove()
     }
   }
@@ -88,7 +88,8 @@ export class ScriptLoader {
         })
 
         document.head.append(script)
-      } catch (error) {
+      }
+      catch (error) {
         throw new Error(`[ScriptLoader](init) ${error}`)
       }
     })

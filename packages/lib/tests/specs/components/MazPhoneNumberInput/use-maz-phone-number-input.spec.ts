@@ -1,8 +1,8 @@
 import { useMazPhoneNumberInput } from '@components/MazPhoneNumberInput/use-maz-phone-number-input'
 import { getCountries, getCountryCallingCode } from 'libphonenumber-js'
 
-const { sanitizePhoneNumber, getCountriesList, fetchCountryCode, getBrowserLocale } =
-  useMazPhoneNumberInput()
+const { sanitizePhoneNumber, getCountriesList, fetchCountryCode, getBrowserLocale }
+  = useMazPhoneNumberInput()
 
 vi.mock('libphonenumber-js', () => ({
   parsePhoneNumberFromString: vi.fn(),
@@ -13,7 +13,7 @@ vi.mock('libphonenumber-js', () => ({
   isSupportedCountry: vi.fn(),
 }))
 
-describe('Unit Tests for use-libphonenumber.ts', () => {
+describe('unit Tests for use-libphonenumber.ts', () => {
   describe('sanitizePhoneNumber', () => {
     it('should remove non-numeric characters from the input', () => {
       const result = sanitizePhoneNumber('(1234) 567 890 frfr')
@@ -29,7 +29,7 @@ describe('Unit Tests for use-libphonenumber.ts', () => {
   describe('getCountriesList', () => {
     it('should return a list of countries with iso2, dialCode, and name', () => {
       // Mock de la fonction getCountries
-      // @ts-expect-error
+      // @ts-expect-error - test case
       getCountries.mockReturnValue(['US', 'CA'])
 
       const result = getCountriesList('fr-FR')
@@ -42,7 +42,7 @@ describe('Unit Tests for use-libphonenumber.ts', () => {
 
     it('should handle errors gracefully', () => {
       // Mock de la fonction getCountryCallingCode pour générer une erreur
-      // @ts-expect-error
+      // @ts-expect-error - test case
       getCountryCallingCode.mockImplementation(() => {
         throw new Error('Error getting dial code')
       })
@@ -67,7 +67,7 @@ describe('Unit Tests for use-libphonenumber.ts', () => {
   describe('fetchCountryCode', () => {
     it('should return the country code from an API', async () => {
       // Mock de la fonction fetch
-      global.fetch = vi.fn().mockResolvedValue({
+      globalThis.fetch = vi.fn().mockResolvedValue({
         json: vi.fn().mockResolvedValue({ country_code: 'FR' }),
       })
 
@@ -77,11 +77,13 @@ describe('Unit Tests for use-libphonenumber.ts', () => {
 
     it('should handle errors when fetching the country code', async () => {
       // Mock de la fonction fetch pour générer une erreur
-      global.fetch = vi.fn().mockRejectedValue(new Error('API error'))
+      globalThis.fetch = vi.fn().mockRejectedValue(new Error('API error'))
 
       try {
         await fetchCountryCode()
-      } catch (error) {
+      }
+      catch (error) {
+        // @ts-expect-error - test case
         expect(error.message).toBe('[MazPhoneNumberInput](fetchCountryCode) Error: API error')
       }
     })

@@ -1,9 +1,9 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable ts/ban-ts-comment */
 
 import {
+  UserVisibility,
   type UserVisibilyCallback,
   type UserVisibilyOptions,
-  UserVisibility,
   sleep,
 } from '@modules/helpers'
 
@@ -30,40 +30,40 @@ afterAll(() => {
 })
 
 describe('@modules/helpers/user-visibility.ts', () => {
-  describe('Given app want trigger user idle', () => {
-    describe('When instance is launch', () => {
-      it('Then instance is IdleTimeout', async () => {
+  describe('given app want trigger user idle', () => {
+    describe('when instance is launch', () => {
+      it('then instance is IdleTimeout', async () => {
         expect(instance).toBeInstanceOf(UserVisibility)
         await sleep(DEFAULT_TIMEOUT)
         if (instance) {
-          // @ts-ignore
+          // @ts-expect-error
           const startSpy = vitest.spyOn(instance, 'addEventListener')
-          // @ts-ignore
+          // @ts-expect-error
           instance.addEventListener()
           expect(startSpy).toHaveBeenCalled()
         }
       })
 
-      it('Then instance emit callback on demand', () => {
-        // @ts-ignore
+      it('then instance emit callback on demand', () => {
+        // @ts-expect-error
         instance?.emitCallback()
         expect(callback).toHaveBeenCalled()
       })
 
-      it('Then instance emit callback after timeout', async () => {
+      it('then instance emit callback after timeout', async () => {
         documentEmitVisibilityState('hidden')
         expect(callback).not.toHaveBeenCalled()
         await sleep(DEFAULT_TIMEOUT)
         expect(callback).toHaveBeenCalled()
       })
 
-      it('Then instance emit callback on demand', () => {
+      it('then instance is destroy', () => {
         instance?.destroy()
       })
     })
 
-    describe('When instance has immediate option to "true"', () => {
-      it('Then instance have called callback', () => {
+    describe('when instance has immediate option to "true"', () => {
+      it('then instance have called callback', () => {
         const _newInstance = new UserVisibility(callback, {
           ...options,
           immediate: true,
@@ -72,8 +72,8 @@ describe('@modules/helpers/user-visibility.ts', () => {
       })
     })
 
-    describe('When instance has once option to "true"', () => {
-      it('Then instance have called callback and is destroy', async () => {
+    describe('when instance has once option to "true"', () => {
+      it('then instance have called callback and is destroy', async () => {
         documentEmitVisibilityState('hidden')
         const _newInstance = new UserVisibility(callback, {
           ...options,

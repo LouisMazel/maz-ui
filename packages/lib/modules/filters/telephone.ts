@@ -1,6 +1,6 @@
 import { parsePhoneNumberFromString } from 'libphonenumber-js'
 
-export const telephone = (telephone: string): string => {
+export function telephone(telephone: string): string {
   if (!telephone) {
     throw new TypeError('The `telephone` attribute is required.')
   }

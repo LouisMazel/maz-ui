@@ -1,23 +1,21 @@
-import minimist from 'minimist'
 import { resolve } from 'node:path'
-import { build, type InlineConfig } from 'vite'
+import { readdir, rename } from 'node:fs/promises'
+import { cpSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
+import minimist from 'minimist'
+import { type InlineConfig, build } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import svgLoader from 'vite-svg-loader'
-import { viteStaticCopy, type Target } from 'vite-plugin-static-copy'
+import { type Target, viteStaticCopy } from 'vite-plugin-static-copy'
+import replace from 'replace-in-file'
+import { libInjectCss } from 'vite-plugin-lib-inject-css'
 import { logger } from './utils/logger'
 import { execPromise } from './utils/exec-promise'
 import { generateComponentsEntryFile } from './generate-components-entry'
 import { generateLibComponentsEntryFile } from './generate-lib-entry'
 import { compileScss } from './compile-scss'
 import { copyAndTransformComponentsTypesFiles } from './copy-components-types'
-import { readdir, rename } from 'node:fs/promises'
-import replace from 'replace-in-file'
 import { getComponentList } from './get-component-list'
-
-import { libInjectCss } from 'vite-plugin-lib-inject-css'
-import { cpSync } from 'node:fs'
-
-import { fileURLToPath } from 'node:url'
 
 const _dirname = fileURLToPath(new URL('.', import.meta.url))
 
@@ -46,7 +44,7 @@ const staticAssetsToCopy: Target[] = [
   },
 ]
 
-const getBuildConfig = ({
+function getBuildConfig({
   path,
   name,
   outDir,
@@ -60,52 +58,54 @@ const getBuildConfig = ({
   path: string
   hash?: string
   isModuleBuild?: boolean
-}): InlineConfig => ({
-  build: {
-    emptyOutDir: false,
-    outDir,
-    minify: true,
-    cssCodeSplit: true,
-    cssMinify: true,
-    lib: {
+}): InlineConfig {
+  return {
+    build: {
+      emptyOutDir: false,
+      outDir,
+      minify: true,
+      cssCodeSplit: true,
+      cssMinify: true,
+      lib: {
       // Can be an array of multiple entry points
-      entry: path,
-      formats: [format],
-      fileName: name,
-      name,
-    },
-    rollupOptions: {
-      treeshake: true,
-      external: ['vue', 'libphonenumber-js', '/^dayjs:.*/', 'chart.js', 'dropzone', 'vue-chartjs'],
-      output: {
-        exports: 'named',
-        chunkFileNames: `chunks/[name]-[hash].${format === 'es' ? 'mjs' : 'cjs'}`,
-        assetFileNames: `assets/[name].[ext]`,
-        entryFileNames: `[name].${format === 'es' ? 'mjs' : 'cjs'}`,
-        preserveModules: false,
-        globals: {
-          vue: 'Vue',
-          'libphonenumber-js': 'libphonenumber-js',
-          dayjs: 'dayjs',
-          dropzone: 'dropzone',
-          'vue-chartjs': 'vue-chartjs',
-          'chart.js': 'chart.js',
-          'dayjs/plugin/customParseFormat': 'dayjs/plugin/customParseFormat',
-          'dayjs/plugin/weekday': 'dayjs/plugin/weekday',
-          'dayjs/plugin/isBetween': 'dayjs/plugin/isBetween',
+        entry: path,
+        formats: [format],
+        fileName: name,
+        name,
+      },
+      rollupOptions: {
+        treeshake: true,
+        external: ['vue', 'libphonenumber-js', '/^dayjs:.*/', 'chart.js', 'dropzone', 'vue-chartjs'],
+        output: {
+          exports: 'named',
+          chunkFileNames: `chunks/[name]-[hash].${format === 'es' ? 'mjs' : 'cjs'}`,
+          assetFileNames: `assets/[name].[ext]`,
+          entryFileNames: `[name].${format === 'es' ? 'mjs' : 'cjs'}`,
+          preserveModules: false,
+          globals: {
+            'vue': 'Vue',
+            'libphonenumber-js': 'libphonenumber-js',
+            'dayjs': 'dayjs',
+            'dropzone': 'dropzone',
+            'vue-chartjs': 'vue-chartjs',
+            'chart.js': 'chart.js',
+            'dayjs/plugin/customParseFormat': 'dayjs/plugin/customParseFormat',
+            'dayjs/plugin/weekday': 'dayjs/plugin/weekday',
+            'dayjs/plugin/isBetween': 'dayjs/plugin/isBetween',
+          },
         },
       },
     },
-  },
-  plugins: [
-    Vue(),
-    svgLoader(),
-    libInjectCss(),
-    ...(isModuleBuild ? [viteStaticCopy({ targets: staticAssetsToCopy })] : []),
-  ],
-})
+    plugins: [
+      Vue(),
+      svgLoader(),
+      libInjectCss(),
+      ...(isModuleBuild ? [viteStaticCopy({ targets: staticAssetsToCopy })] : []),
+    ],
+  }
+}
 
-const run = async () => {
+async function run() {
   try {
     // const hash = generateRandomHash()
     await execPromise('rimraf dist')
@@ -194,7 +194,7 @@ const run = async () => {
     })
 
     const fileListToRename = fileList.filter(
-      (dirent) => dirent.isFile() && dirent.name.startsWith('module'),
+      dirent => dirent.isFile() && dirent.name.startsWith('module'),
     )
 
     for await (const { path: filePath, name } of fileListToRename) {
@@ -237,7 +237,8 @@ const run = async () => {
     })
 
     logger.success('[vite.config.js](run) 💚 library builded with success 💚')
-  } catch (error) {
+  }
+  catch (error) {
     logger.error('[vite.config.js](run) 🔴 Error while building library', error)
 
     throw new Error(`[vite.config.js](run) 🔴 Error while building library - ${error}`)
@@ -245,5 +246,3 @@ const run = async () => {
 }
 
 run()
-
-/* eslint-enable @typescript-eslint/ban-ts-comment */

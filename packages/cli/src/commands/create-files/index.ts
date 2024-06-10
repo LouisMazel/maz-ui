@@ -1,14 +1,14 @@
-import chalk from 'chalk'
 import { resolve } from 'node:path'
-import { Command } from 'commander'
 import { exit } from 'node:process'
-import { multiselect, text, confirm, spinner, cancel, isCancel } from '@clack/prompts'
+import { fileURLToPath } from 'node:url'
+import chalk from 'chalk'
+import { Command } from 'commander'
+import { cancel, confirm, isCancel, multiselect, spinner, text } from '@clack/prompts'
+import { buildEntry } from '../../../../lib/build/entry-builder'
 import { createDocumentFile } from './create-documentation-file'
 import { createLibraryTestFile } from './create-library-test-file'
 import { createLibraryComponentFile } from './create-library-component-file'
-import { buildEntry } from '../../../../lib/build/entry-builder'
 import { pascalCaseToKebabCase } from './../../utils/pascal-case-to-kebab-case'
-import { fileURLToPath } from 'node:url'
 
 const _dirname = fileURLToPath(new URL('.', import.meta.url))
 
@@ -58,7 +58,8 @@ export function createFilesCommand(): Command {
             fileTypes: fileTypes as string[],
           })
         }
-      } catch {
+      }
+      catch {
         exit(1)
       }
     })
@@ -72,7 +73,8 @@ async function getComponentName(initialValue?: string): Promise<string> {
     placeholder: 'Not sure',
     initialValue,
     validate(value) {
-      if (value.length === 0) return 'Value is required!'
+      if (value.length === 0)
+        return 'Value is required!'
     },
   })
 

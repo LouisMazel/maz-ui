@@ -1,5 +1,5 @@
-import { defineNuxtPlugin } from '#imports'
 import { WaitHandler } from 'maz-ui'
+import { defineNuxtPlugin } from '#imports'
 
 export default defineNuxtPlugin(() => {
   const waitServer = {

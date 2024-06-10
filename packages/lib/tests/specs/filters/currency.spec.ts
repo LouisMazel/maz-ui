@@ -10,19 +10,21 @@ describe('currency', () => {
   })
 
   it('throws an error if the number attribute is not provided', () => {
+    // @ts-expect-error - test case
     expect(() => currency(undefined, 'en-US', { currency: 'USD' })).toThrow(
       '[maz-ui](FilterCurrency) The `number` attribute is required.',
     )
   })
 
   it('throws an error if the locale attribute is not provided', () => {
+    // @ts-expect-error - test case
     expect(() => currency(123.45, undefined, { currency: 'USD' })).toThrow(
       '[maz-ui](FilterCurrency) The `locale` attribute is required.',
     )
   })
 
   it('throws an error if the locale attribute is not a string', () => {
-    // @ts-ignore
+    // @ts-expect-error - test case
     expect(() => currency(123.45, 123, { currency: 'USD' })).toThrow(
       '[maz-ui](FilterCurrency) The `locale` attribute must be a string.',
     )

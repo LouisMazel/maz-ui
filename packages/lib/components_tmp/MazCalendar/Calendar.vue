@@ -439,4 +439,4 @@
       }
     }
   }
-</script>
+</template>

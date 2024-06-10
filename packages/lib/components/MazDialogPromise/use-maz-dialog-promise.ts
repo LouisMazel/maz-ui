@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { type Color, type Size } from './../types'
+import type { Color, Size } from './../types'
 
 export interface DialogState {
   id: string
@@ -8,7 +8,7 @@ export interface DialogState {
   reject?: (reason?: unknown) => void
 }
 
-export type DialogButton = {
+export interface DialogButton {
   text?: string
   block?: boolean
   color?: Color
@@ -25,7 +25,7 @@ export type DialogCustomButton = DialogButton & {
   response?: unknown
 }
 
-export type DialogData = {
+export interface DialogData {
   /**
    * Dialog title
    */
@@ -76,7 +76,7 @@ const data = ref<DialogData>(defaultData)
 
 const dialogState = ref<DialogState[]>([])
 
-const showDialogAndWaitChoice = (identifier: string, callback?: () => unknown) => {
+function showDialogAndWaitChoice(identifier: string, callback?: () => unknown) {
   return new Promise((resolve, reject) => {
     dialogState.value = [
       ...dialogState.value,
@@ -93,16 +93,12 @@ const showDialogAndWaitChoice = (identifier: string, callback?: () => unknown) =
   })
 }
 
-const removeDialogFromState = (identifier: string) => {
+function removeDialogFromState(identifier: string) {
   dialogState.value = dialogState.value.filter(({ id }) => id !== identifier)
   return dialogState.value
 }
 
-const responseDialog = (
-  type: 'resolve' | 'reject',
-  currentDialog: DialogState,
-  response: unknown = false,
-) => {
+function responseDialog(type: 'resolve' | 'reject', currentDialog: DialogState, response: unknown = false) {
   if (!currentDialog) {
     return
   }
@@ -115,13 +111,15 @@ const responseDialog = (
   }, 500)
 }
 
-export const useMazDialogPromise = () => ({
-  data,
-  dialogState,
-  showDialogAndWaitChoice,
-  removeDialogFromState,
-  rejectDialog: (currentDialog: DialogState, response: unknown = new Error('cancel')) =>
-    responseDialog('reject', currentDialog, response),
-  resolveDialog: (currentDialog: DialogState, response: unknown = 'accept') =>
-    responseDialog('resolve', currentDialog, response),
-})
+export function useMazDialogPromise() {
+  return {
+    data,
+    dialogState,
+    showDialogAndWaitChoice,
+    removeDialogFromState,
+    rejectDialog: (currentDialog: DialogState, response: unknown = new Error('cancel')) =>
+      responseDialog('reject', currentDialog, response),
+    resolveDialog: (currentDialog: DialogState, response: unknown = 'accept') =>
+      responseDialog('resolve', currentDialog, response),
+  }
+}

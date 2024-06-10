@@ -1,4 +1,4 @@
-type NormalizeStringOptions = {
+interface NormalizeStringOptions {
   /**
    * Remove accents from the string
    * @default true
@@ -61,57 +61,9 @@ export function normalizeString(
   options?: NormalizeStringOptions,
 ): string {
   const finalOptions = { ...defaultOptions, ...options }
-  /* eslint-disable prettier/prettier */
-  const accentsMap: Record<string, string> = {
-    À: 'A',
-    Á: 'A',
-    Â: 'A',
-    Ã: 'A',
-    Ä: 'A',
-    Å: 'A',
-    à: 'a',
-    á: 'a',
-    â: 'a',
-    ã: 'a',
-    ä: 'a',
-    å: 'a',
-    È: 'E',
-    É: 'E',
-    Ê: 'E',
-    Ë: 'E',
-    è: 'e',
-    é: 'e',
-    ê: 'e',
-    ë: 'e',
-    Î: 'I',
-    Ï: 'I',
-    í: 'I',
-    î: 'i',
-    ï: 'i',
-    Ô: 'O',
-    Õ: 'O',
-    Ö: 'O',
-    Ø: 'O',
-    ô: 'o',
-    õ: 'o',
-    ö: 'o',
-    ø: 'o',
-    Ù: 'U',
-    Ú: 'U',
-    Û: 'U',
-    Ü: 'U',
-    ù: 'u',
-    ú: 'u',
-    û: 'u',
-    ü: 'u',
-    Ç: 'C',
-    ç: 'c',
-    ÿ: 'y',
-    Ñ: 'N',
-    ñ: 'n',
-    ó: 'o',
+
+  const accentsMap: Record<string, string> = { À: 'A', Á: 'A', Â: 'A', Ã: 'A', Ä: 'A', Å: 'A', à: 'a', á: 'a', â: 'a', ã: 'a', ä: 'a', å: 'a', È: 'E', É: 'E', Ê: 'E', Ë: 'E', è: 'e', é: 'e', ê: 'e', ë: 'e', Î: 'I', Ï: 'I', í: 'I', î: 'i', ï: 'i', Ô: 'O', Õ: 'O', Ö: 'O', Ø: 'O', ô: 'o', õ: 'o', ö: 'o', ø: 'o', Ù: 'U', Ú: 'U', Û: 'U', Ü: 'U', ù: 'u', ú: 'u', û: 'u', ü: 'u', Ç: 'C', ç: 'c', ÿ: 'y', Ñ: 'N', ñ: 'n', ó: 'o',
   }
-  /* eslint-enable  */
 
   let result = input.toString()
 
@@ -144,7 +96,7 @@ export function normalizeString(
   }
 
   if (finalOptions.removeSpecialCharacters) {
-    result = result.replaceAll(/[^\dA-Za-z-]/g, '')
+    result = result.replaceAll(/[^\dA-Z-]/gi, '')
   }
 
   if (finalOptions.trim) {

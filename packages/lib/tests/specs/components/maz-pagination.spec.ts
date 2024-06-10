@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils'
 import MazPagination from '@components/MazPagination.vue'
 
-describe('MazPagination.vue', () => {
+describe('mazPagination.vue', () => {
   // Test rendering with default props
   it('renders with default props', async () => {
     const wrapper = mount(MazPagination, {

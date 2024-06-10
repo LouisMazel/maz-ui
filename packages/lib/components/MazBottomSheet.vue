@@ -1,3 +1,18 @@
+<script lang="ts" setup>
+import { defineAsyncComponent } from 'vue'
+import MazBackdrop from './MazBackdrop.vue'
+import XIcon from './../icons/x-mark.svg'
+
+defineProps({
+  noClose: { type: Boolean, default: false },
+  noPadding: { type: Boolean, default: false },
+})
+
+const emits = defineEmits(['update:model-value', 'open', 'close'])
+
+const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
+</script>
+
 <template>
   <MazBackdrop
     transition-name="bottom-sheet-anim"
@@ -34,38 +49,23 @@
   </MazBackdrop>
 </template>
 
-<script lang="ts" setup>
-  import MazBackdrop from './MazBackdrop.vue'
-  import XIcon from './../icons/x-mark.svg'
-  import { defineAsyncComponent } from 'vue'
-
-  const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
-
-  defineProps({
-    noClose: { type: Boolean, default: false },
-    noPadding: { type: Boolean, default: false },
-  })
-
-  const emits = defineEmits(['update:model-value', 'open', 'close'])
-</script>
-
 <style lang="postcss" scoped>
   .m-bottom-sheet {
-    &__container {
-      @apply maz-relative maz-bg-color maz-text-normal maz-elevation;
+  &__container {
+    @apply maz-relative maz-bg-color maz-text-normal maz-elevation;
 
-      padding-left: 3rem;
-      padding-right: 3rem;
-      box-shadow: 0 -5px 20px hsl(0deg 0% 0% / 20%);
-    }
-
-    &__content-wrapper {
-      @apply maz-flex maz-flex-col maz-flex-center;
-    }
-
-    &__close {
-      @apply maz-absolute !important;
-      @apply maz-right-4 maz-top-4;
-    }
+    padding-left: 3rem;
+    padding-right: 3rem;
+    box-shadow: 0 -5px 20px hsl(0deg 0% 0% / 20%);
   }
+
+  &__content-wrapper {
+    @apply maz-flex maz-flex-col maz-flex-center;
+  }
+
+  &__close {
+    @apply maz-absolute !important;
+    @apply maz-right-4 maz-top-4;
+  }
+}
 </style>

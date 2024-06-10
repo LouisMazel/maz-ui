@@ -1,11 +1,11 @@
-import { mount, config } from '@vue/test-utils'
+import { config, mount } from '@vue/test-utils'
 import MazToast from '@modules/plugins/toaster/MazToast.vue'
 
 config.global.stubs = {
   transition: false,
 }
 
-describe('MazToast', () => {
+describe('mazToast', () => {
   it('renders with default props', async () => {
     const wrapper = mount(MazToast, {
       props: {
@@ -45,7 +45,7 @@ describe('MazToast', () => {
 
     await wrapper.vm.$nextTick()
 
-    // @ts-expect-error
+    // @ts-expect-error - private method
     wrapper.vm.onAnimationEnter()
 
     expect(wrapper.emitted('open')).toBeTruthy()
@@ -60,7 +60,7 @@ describe('MazToast', () => {
 
     await wrapper.vm.$nextTick()
 
-    // @ts-expect-error
+    // @ts-expect-error - private method
     wrapper.vm.onAnimationLeave()
 
     expect(wrapper.emitted('close')).toBeTruthy()
@@ -81,7 +81,7 @@ describe('MazToast', () => {
 
     await closeButton.trigger('click')
 
-    // @ts-expect-error
+    // @ts-expect-error - private method
     expect(wrapper.vm.isActive).toBe(false)
   })
 

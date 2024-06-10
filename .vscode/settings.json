@@ -4,20 +4,6 @@
     "source.fixAll.eslint": "explicit",
     "source.fixAll.stylelint": "explicit"
   },
-  "[vue]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "eslint.validate": [
-    "vue",
-    "javascript",
-    "typescript"
-  ],
   "editor.quickSuggestions": {
     "other": true,
     "comments": false,
@@ -25,4 +11,5 @@
   },
   "css.validate": false,
   "prettier.enable": false,
+  "eslint.enable": false
 }

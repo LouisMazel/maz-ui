@@ -3,7 +3,7 @@ import MazPicker from '@components/MazPicker.vue'
 import MazInput from '@components/MazInput.vue'
 
 describe('components/MazPicker.vue', () => {
-  test('Should exists', () => {
+  it('should exists', () => {
     expect(MazPicker).toBeTruthy()
   })
 
@@ -13,7 +13,7 @@ describe('components/MazPicker.vue', () => {
     },
   })
 
-  test('Should have 12 hour format on time mode', async () => {
+  it('should have 12 hour format on time mode', async () => {
     await wrapper.setProps({
       format: 'hh:mm a',
       onlyTime: true,

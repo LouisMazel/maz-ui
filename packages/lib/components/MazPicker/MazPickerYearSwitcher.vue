@@ -1,3 +1,56 @@
+<script lang="ts" setup>
+import { type PropType, computed, ref } from 'vue'
+import dayjs, { type Dayjs } from 'dayjs'
+import { date } from './../../modules/filters/date'
+import type { Color } from './../types'
+import { isSameDate } from './utils'
+
+import MazBtn from './../MazBtn.vue'
+import XIcon from './../../icons/x-mark.svg'
+import ChevronLeftIcon from './../../icons/chevron-left.svg'
+
+const props = defineProps({
+  color: { type: String as PropType<Color>, required: true },
+  locale: { type: String, required: true },
+  calendarDate: { type: String, required: true },
+})
+
+const emits = defineEmits(['update:calendar-date', 'close'])
+
+const currentDateTmp = ref(props.calendarDate)
+
+const years = computed<
+    {
+      label: string
+      date: Dayjs
+    }[]
+  >(() => {
+    return Array.from({ length: 15 }, (_v, i) => i - 7).map((yearNumber) => {
+      const currentYear = dayjs(currentDateTmp.value).get('year')
+      const dateYear = dayjs(currentDateTmp.value).set('year', currentYear + yearNumber)
+
+      return {
+        label: date(dateYear.format(), props.locale, {
+          year: 'numeric',
+        }),
+        date: dateYear,
+      }
+    })
+  })
+
+function selectYear(date: Dayjs) {
+  emits('update:calendar-date', dayjs(date).format())
+  emits('close')
+}
+
+function previousYears() {
+  currentDateTmp.value = dayjs(currentDateTmp.value).subtract(7, 'year').format()
+}
+function nextYears() {
+  currentDateTmp.value = dayjs(currentDateTmp.value).add(7, 'year').format()
+}
+</script>
+
 <template>
   <div class="maz-picker-year-switcher">
     <div class="maz-picker-year-switcher__header">
@@ -31,69 +84,16 @@
   </div>
 </template>
 
-<script lang="ts" setup>
-  import { date } from './../../modules/filters/date'
-  import { computed, type PropType, ref } from 'vue'
-  import dayjs, { type Dayjs } from 'dayjs'
-  import type { Color } from './../types'
-  import { isSameDate } from './utils'
-
-  import MazBtn from './../MazBtn.vue'
-  import XIcon from './../../icons/x-mark.svg'
-  import ChevronLeftIcon from './../../icons/chevron-left.svg'
-
-  const props = defineProps({
-    color: { type: String as PropType<Color>, required: true },
-    locale: { type: String, required: true },
-    calendarDate: { type: String, required: true },
-  })
-
-  const emits = defineEmits(['update:calendar-date', 'close'])
-
-  const currentDateTmp = ref(props.calendarDate)
-
-  const years = computed<
-    {
-      label: string
-      date: Dayjs
-    }[]
-  >(() => {
-    return Array.from({ length: 15 }, (_v, i) => i - 7).map((yearNumber) => {
-      const currentYear = dayjs(currentDateTmp.value).get('year')
-      const dateYear = dayjs(currentDateTmp.value).set('year', currentYear + yearNumber)
-
-      return {
-        label: date(dateYear.format(), props.locale, {
-          year: 'numeric',
-        }),
-        date: dateYear,
-      }
-    })
-  })
-
-  const selectYear = (date: Dayjs) => {
-    emits('update:calendar-date', dayjs(date).format())
-    emits('close')
-  }
-
-  const previousYears = () => {
-    currentDateTmp.value = dayjs(currentDateTmp.value).subtract(7, 'year').format()
-  }
-  const nextYears = () => {
-    currentDateTmp.value = dayjs(currentDateTmp.value).add(7, 'year').format()
-  }
-</script>
-
 <style lang="postcss" scoped>
   .maz-picker-year-switcher {
-    @apply maz-absolute maz-inset-0 maz-z-1 maz-flex maz-flex-col maz-bg-color;
+  @apply maz-absolute maz-inset-0 maz-z-1 maz-flex maz-flex-col maz-bg-color;
 
-    &__header {
-      @apply maz-flex maz-justify-between maz-space-x-2 maz-border-b maz-border-color-lighter maz-p-2;
-    }
-
-    &__main {
-      @apply maz-grid maz-flex-1 maz-grid-cols-3 maz-gap-2 maz-overflow-y-auto maz-p-2 maz-flex-center;
-    }
+  &__header {
+    @apply maz-flex maz-justify-between maz-space-x-2 maz-border-b maz-border-color-lighter maz-p-2;
   }
+
+  &__main {
+    @apply maz-grid maz-flex-1 maz-grid-cols-3 maz-gap-2 maz-overflow-y-auto maz-p-2 maz-flex-center;
+  }
+}
 </style>

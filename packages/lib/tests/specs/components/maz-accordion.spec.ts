@@ -2,8 +2,8 @@ import { mount } from '@vue/test-utils'
 import MazAccordion from '@components/MazAccordion.vue'
 import MazCardSpotlight from '@components/MazCardSpotlight.vue'
 
-describe('MazAccordion', () => {
-  test('renders with default props', async () => {
+describe('mazAccordion', () => {
+  it('renders with default props', async () => {
     const wrapper = mount(MazAccordion)
 
     await wrapper.vm.$nextTick()
@@ -13,7 +13,7 @@ describe('MazAccordion', () => {
     expect(wrapper.findAllComponents(MazCardSpotlight)).toHaveLength(0)
   })
 
-  test('renders the correct number of steps based on provided slots', async () => {
+  it('renders the correct number of steps based on provided slots', async () => {
     const wrapper = mount(MazAccordion, {
       slots: {
         'title-1': 'Step 1 Title',
@@ -29,7 +29,7 @@ describe('MazAccordion', () => {
     expect(steps[1].text()).toContain('Step 2 Title')
   })
 
-  test('emits the correct step when a step is selected', async () => {
+  it('emits the correct step when a step is selected', async () => {
     const wrapper = mount(MazAccordion, {
       slots: {
         'title-1': 'Step 1 Title',
@@ -48,7 +48,7 @@ describe('MazAccordion', () => {
     expect(wrapper.emitted('update:model-value')).toEqual([[1], [2]])
   })
 
-  test('closes the step when the same step is selected again', async () => {
+  it('closes the step when the same step is selected again', async () => {
     const wrapper = mount(MazAccordion, {
       slots: {
         'title-1': 'Step 1 Title',
@@ -66,7 +66,7 @@ describe('MazAccordion', () => {
     expect(wrapper.emitted('update:model-value')).toEqual([[1], [0]])
   })
 
-  test('updates the icon rotation class when a step is selected', async () => {
+  it('updates the icon rotation class when a step is selected', async () => {
     const wrapper = mount(MazAccordion, {
       slots: {
         'title-1': 'Step 1 Title',

@@ -12,23 +12,19 @@ describe('components/MazTextarea/textarea-autogrow.ts', () => {
     const _textareaAutogrow = new TextareaAutogrow(textareaElement)
   })
 
-  test('Should add css style on init', () => {
-    /* eslint-disable @typescript-eslint/ban-ts-comment */
-    // @ts-ignore
+  it('should add css style on init', () => {
     expect(textareaElement.style.resize).toBe('none')
-    // @ts-ignore
     expect(textareaElement.style.boxSizing).toBe('border-box')
-    /* eslint-enable @typescript-eslint/ban-ts-comment */
   })
 
-  test('Should add css style on focus event', () => {
+  it('should add css style on focus event', () => {
     elementEmitEvent(textareaElement, 'focus')
 
     expect(textareaElement.style.height).toBe('0px')
     expect(textareaElement.style.overflow).toBe('hidden')
   })
 
-  test('Should add css style on resize event', () => {
+  it('should add css style on resize event', () => {
     elementEmitEvent(textareaElement, 'focus')
     elementEmitEvent(window, 'resize')
 
@@ -49,15 +45,15 @@ describe('components/MazTextarea.vue', () => {
     },
   )
 
-  test('Should have the model value', () => {
+  it('should have the model value', () => {
     expect(wrapper.vm.modelValue).toBe('Un text')
   })
 
-  test('Should have an uniq id', () => {
+  it('should have an uniq id', () => {
     expect(wrapper.vm.instanceId).toBe('MazTextarea-1')
   })
 
-  test('Should up the label if the component is focused', async () => {
+  it('should up the label if the component is focused', async () => {
     await wrapper.setProps({
       modelValue: undefined,
       label: 'Label',
@@ -66,22 +62,22 @@ describe('components/MazTextarea.vue', () => {
     expect(wrapper.vm.shouldUp).toBeTruthy()
   })
 
-  test('Should emit focus event', () => {
+  it('should emit focus event', () => {
     wrapper.vm.focus()
     expect(wrapper.emitted().focus).toBeTruthy()
   })
 
-  test('Should emit blur event', () => {
+  it('should emit blur event', () => {
     wrapper.vm.blur()
     expect(wrapper.emitted().blur).toBeTruthy()
   })
 
-  test('Should emit change event', () => {
+  it('should emit change event', () => {
     wrapper.vm.change()
     expect(wrapper.emitted().change).toBeTruthy()
   })
 
-  test('Should have border color according with the color prop', async () => {
+  it('should have border color according with the color prop', async () => {
     await wrapper.setProps({
       error: true,
     })
