@@ -1,5 +1,34 @@
 # Change Log
 
+## v3.43.4...v3.44.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.43.4...v3.44.0)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazRadioButtons - identify input with his name ([7dc57f63e](https://github.com/LouisMazel/maz-ui/commit/7dc57f63e))
+- **maz-ui:** MazPhoneNumberInput - can reinitialize v-model value to null ([394f2b431](https://github.com/LouisMazel/maz-ui/commit/394f2b431))
+- **maz-ui:** MazInput - import/export errors ([eb1b2c818](https://github.com/LouisMazel/maz-ui/commit/eb1b2c818))
+
+### 💅 Refactors
+
+- **maz-ui:** Remove reset css file ([cb71a3182](https://github.com/LouisMazel/maz-ui/commit/cb71a3182))
+- **maz-ui:** MazRadioButtons - add funciton to get the option id ([189ec7850](https://github.com/LouisMazel/maz-ui/commit/189ec7850))
+- **maz-ui:** MazInputTags - add tags on blur ([72aab2a0b](https://github.com/LouisMazel/maz-ui/commit/72aab2a0b))
+
+### 🏡 Chore
+
+- Upgrade dependencies ([a0c6928f1](https://github.com/LouisMazel/maz-ui/commit/a0c6928f1))
+- Upgrade dependencies ([91532b938](https://github.com/LouisMazel/maz-ui/commit/91532b938))
+
+### ✅ Tests
+
+- **maz-ui:** Upgrade snapshoot ([1309c1413](https://github.com/LouisMazel/maz-ui/commit/1309c1413))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.43.3...v3.43.4
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.43.3...v3.43.4)
