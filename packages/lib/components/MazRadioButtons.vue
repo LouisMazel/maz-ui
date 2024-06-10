@@ -80,6 +80,10 @@ function keyboardHandler(event: KeyboardEvent, option: ButtonsRadioOption) {
     selectOption(option)
   }
 }
+
+function getOptionId(option: ButtonsRadioOption, i: number) {
+  return `option-${i}-${option.value.toString()}-${props.name}`
+}
 </script>
 
 <template>
@@ -89,8 +93,8 @@ function keyboardHandler(event: KeyboardEvent, option: ButtonsRadioOption) {
   >
     <label
       v-for="(option, i) in options"
-      :key="`option-${i}-${option.value.toString()}-${name}`"
-      :for="`option-${i}-${option.value.toString()}-${name}`"
+      :key="getOptionId(option, i)"
+      :for="getOptionId(option, i)"
       class="m-radio-buttons__items maz-group"
       :class="[
         {
@@ -115,7 +119,7 @@ function keyboardHandler(event: KeyboardEvent, option: ButtonsRadioOption) {
       @keydown="keyboardHandler($event, option)"
     >
       <input
-        :id="`option-${i}-${option.value.toString()}-${name}`"
+        :id="getOptionId(option, i)"
         type="radio"
         :name="name"
         :value="option.value"
