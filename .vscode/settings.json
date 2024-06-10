@@ -11,5 +11,5 @@
   },
   "css.validate": false,
   "prettier.enable": false,
-  "eslint.enable": false
+  "eslint.enable": true
 }

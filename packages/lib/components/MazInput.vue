@@ -1,23 +1,5 @@
 <script lang="ts">
-</script>
-
-<script lang="ts" setup generic="T extends ModelValueSimple">
-import {
-  type Component,
-  type ComponentPublicInstance,
-  type FunctionalComponent,
-  type HTMLAttributes,
-  type SVGAttributes,
-  computed,
-  defineAsyncComponent,
-  onMounted,
-  ref,
-  useSlots,
-} from 'vue'
-import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
-import { debounce as debounceFn } from './../modules/helpers/debounce'
-import type { Color, ModelValueSimple, Size } from './types'
-
+/* eslint-disable import/first */
 export type { Color, Size, ModelValueSimple } from './types'
 export type Icon = FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component
 export interface Props<T = ModelValueSimple> {
@@ -110,6 +92,24 @@ export interface Props<T = ModelValueSimple> {
   /** The input will be displayed in full width */
   block?: boolean
 }
+</script>
+
+<script lang="ts" setup generic="T extends ModelValueSimple">
+import {
+  type Component,
+  type ComponentPublicInstance,
+  type FunctionalComponent,
+  type HTMLAttributes,
+  type SVGAttributes,
+  computed,
+  defineAsyncComponent,
+  onMounted,
+  ref,
+  useSlots,
+} from 'vue'
+import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
+import { debounce as debounceFn } from './../modules/helpers/debounce'
+import type { Color, ModelValueSimple, Size } from './types'
 
 defineOptions({
   inheritAttrs: false,
