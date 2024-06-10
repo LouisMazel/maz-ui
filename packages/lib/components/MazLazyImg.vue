@@ -1,4 +1,4 @@
-<template lang="ts" setup>
+<script lang="ts" setup>
 import { type HTMLAttributes, computed, defineAsyncComponent } from 'vue'
 import { vLazyImg } from './../modules/directives/v-lazy-img/lazy-img.directive'
 import type { vLazyImgOptions } from './../modules/directives/v-lazy-img/types'

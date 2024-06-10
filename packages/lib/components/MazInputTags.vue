@@ -26,6 +26,7 @@ const props = withDefaults(defineProps<Props>(), {
   warning: false,
   size: 'md',
   color: 'primary',
+  addTagsOnBlur: true,
 })
 
 const emits = defineEmits(['update:model-value'])
@@ -55,6 +56,8 @@ export interface Props {
   color?: Color
   /** The input will be displayed in full width */
   block?: boolean
+  /** Add tags on blur */
+  addTagsOnBlur?: boolean
 }
 
 const isFocused = ref(false)
@@ -72,7 +75,7 @@ const tags = computed(() =>
   }),
 )
 
-function addTags(event: KeyboardEvent) {
+function addTags(event: Event) {
   if (inputValue.value) {
     lastIdToDelete.value = undefined
     event.preventDefault()
@@ -194,6 +197,7 @@ function removeTag(id: string) {
       class="m-input-tags__input"
       @keydown.enter="addTags"
       @keydown.delete="removeLastTag"
+      @blur="addTagsOnBlur ? addTags($event) : undefined"
     />
   </div>
 </template>
