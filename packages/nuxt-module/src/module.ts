@@ -157,7 +157,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
     name: 'maz-ui',
     configKey: 'mazUi',
     compatibility: {
-      nuxt: '^3.0.0',
+      nuxt: '>=3.0.0',
     },
   },
   defaults: {
