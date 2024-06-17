@@ -27,7 +27,7 @@
     "changelogen": "^0.5.5",
     "commitizen": "^4.3.0",
     "cross-env": "^7.0.3",
-    "eslint": "9.4.0",
+    "eslint": "9.5.0",
     "eslint-plugin-sonarjs": "^1.0.3",
     "eslint-plugin-tailwindcss": "^3.17.0",
     "husky": "^9.0.11",
