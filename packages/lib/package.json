@@ -82,7 +82,7 @@
     "lint": "pnpm lint:js && pnpm lint:style",
     "lint:nofix": "cross-env NODE_ENV=production eslint",
     "lint:js": "pnpm lint:nofix --fix",
-    "lint:style": "stylelint --fix \"./**/*.{vue,css,scss,postcss,pcss}\"",
+    "lint:style": "stylelint --fix \"./**/*.{vue,css,scss,postcss,pcss,html}\"",
     "build": "pnpm typecheck && pnpm build:lib",
     "build:lib": "node --loader ts-node/esm build/vite.config.ts",
     "get-icon-list": "node --loader ts-node/esm build/get-icon-list.ts",
@@ -104,7 +104,7 @@
     "dropzone": "^5.9.3",
     "libphonenumber-js": "^1.9.44",
     "nuxt": "^3.4.0",
-    "unplugin-vue-components": "^0.26.0",
+    "unplugin-vue-components": "^0.27.0",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0"
   },

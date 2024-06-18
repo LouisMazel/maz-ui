@@ -6,7 +6,7 @@ import { tailwindConfig } from 'maz-ui/tailwindcss/tailwind.config.ts'
 export default <Config>{
   prefix: 'maz-',
   presets: [tailwindConfig],
-  content: ['./src/**/*', './../lib/modules/**/*', './../lib/components/**/*'],
+  content: ['./../lib/modules/**/*', './../lib/components/**/*'],
   corePlugins: {
     container: false,
   },

@@ -25,18 +25,18 @@ const years = computed<
       date: Dayjs
     }[]
   >(() => {
-    return Array.from({ length: 15 }, (_v, i) => i - 7).map((yearNumber) => {
-      const currentYear = dayjs(currentDateTmp.value).get('year')
-      const dateYear = dayjs(currentDateTmp.value).set('year', currentYear + yearNumber)
+  return Array.from({ length: 15 }, (_v, i) => i - 7).map((yearNumber) => {
+    const currentYear = dayjs(currentDateTmp.value).get('year')
+    const dateYear = dayjs(currentDateTmp.value).set('year', currentYear + yearNumber)
 
-      return {
-        label: date(dateYear.format(), props.locale, {
-          year: 'numeric',
-        }),
-        date: dateYear,
-      }
-    })
+    return {
+      label: date(dateYear.format(), props.locale, {
+        year: 'numeric',
+      }),
+      date: dateYear,
+    }
   })
+})
 
 function selectYear(date: Dayjs) {
   emits('update:calendar-date', dayjs(date).format())

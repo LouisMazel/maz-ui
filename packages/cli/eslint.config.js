@@ -4,7 +4,6 @@ import sonarjs from 'eslint-plugin-sonarjs'
 export default antfu(
   {
     formatters: true,
-    vue: true,
     typescript: true,
     ignores: ['components_tmp/**/*'],
     rules: {

@@ -25,7 +25,7 @@
   1520px = max-width + (padding-desktop * 2)
   1520px = 1440px + (2.5rem * 2)
 */
-@media only screen and (min-width: 1520px) {
+@media only screen and (width >= 1520px) {
   :root {
     --maz-container-width: var(--maz-container-max-width);
   }

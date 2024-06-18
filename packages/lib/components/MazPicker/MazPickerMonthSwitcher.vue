@@ -24,12 +24,12 @@ const months = computed<
       date: Dayjs
     }[]
   >(() => {
-    return Array.from({ length: 12 }, (_v, i) => i).map((monthNumber) => {
-      const monthDate = dayjs(props.calendarDate).set('month', monthNumber)
+  return Array.from({ length: 12 }, (_v, i) => i).map((monthNumber) => {
+    const monthDate = dayjs(props.calendarDate).set('month', monthNumber)
 
-      return props.double
-        ? {
-            label: `${capitalize(
+    return props.double
+      ? {
+          label: `${capitalize(
               date(monthDate.format(), props.locale, {
                 month: 'short',
               }),
@@ -38,18 +38,18 @@ const months = computed<
                 month: 'short',
               }),
             )}`,
-            date: monthDate,
-          }
-        : {
-            label: capitalize(
-              date(monthDate.format(), props.locale, {
-                month: 'long',
-              }),
-            ),
-            date: monthDate,
-          }
-    })
+          date: monthDate,
+        }
+      : {
+          label: capitalize(
+            date(monthDate.format(), props.locale, {
+              month: 'long',
+            }),
+          ),
+          date: monthDate,
+        }
   })
+})
 
 function selectMonth(date: Dayjs) {
   emits('update:calendar-date', date.format())

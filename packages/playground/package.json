@@ -8,7 +8,7 @@
     "postinstall": "nuxi prepare",
     "lint": "pnpm lint:js && pnpm lint:style",
     "lint:js": "cross-env NODE_ENV=production eslint --fix .",
-    "lint:style": "stylelint --fix \"**/*.{vue,css,scss,postcss,pcss,mjs,mts,cjs}\"",
+    "lint:style": "stylelint --fix \"**/*.{vue,css,scss,postcss,pcss}\"",
     "pre-commit": "lint-staged"
   },
   "lint-staged": {
