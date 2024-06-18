@@ -1,10 +1,10 @@
 // Tailwind CSS configuration (https://tailwindcss.com/docs/configuration)
 import type { Config } from 'tailwindcss'
-import { tailwindConfig } from './tailwindcss/tailwind.config'
+import tailwindConfigBase from './tailwindcss/tailwind.config'
 
 export default <Config>{
   mode: 'build',
-  presets: [tailwindConfig],
+  presets: [tailwindConfigBase],
   content: {
     files: ['./modules/**/*', './components/**/*', 'tailwindcss/**/*', '!components_tmp/**/*'],
     transform: {
@@ -15,4 +15,8 @@ export default <Config>{
     },
   },
   prefix: 'maz-',
+  corePlugins: {
+    preflight: false,
+    container: false,
+  },
 }
