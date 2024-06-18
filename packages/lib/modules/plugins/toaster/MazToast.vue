@@ -97,9 +97,10 @@ const queueTimer = ref<ReturnType<typeof setTimeout>>()
 const containerClassName = `m-toast-container --${positionY.value} --${positionX.value}`
 const selectorContainerClass = `.${containerClassName.replaceAll(' ', '.')}`
 
-const { start, stop, pause, resume, remainingTime } = useTimer({
-  callback: close,
+const timer = useTimer({
+  callback: closeToast,
   timeout: typeof props.timeout === 'number' ? props.timeout : 0,
+  callbackOffsetTime: 200,
 })
 
 function createParents() {
@@ -145,7 +146,7 @@ function showNotice() {
   isActive.value = true
 
   if (typeof props.timeout === 'number' && props.timeout > 0) {
-    start()
+    timer.start()
   }
 }
 
@@ -172,15 +173,11 @@ function getProgressBarColor() {
 }
 
 watch(
-  () => remainingTime.value,
+  timer.remainingTime,
   (remainingTime) => {
     if (typeof props.timeout === 'number') {
       const percent = (100 * remainingTime) / props.timeout
       progressBarWidth.value = `${percent}%`
-
-      if (remainingTime <= 0) {
-        close()
-      }
     }
   },
 )
@@ -189,7 +186,7 @@ function click(event: Event) {
   emits('click', event)
 
   if (!props.persistent) {
-    close()
+    closeToast()
   }
 }
 
@@ -204,7 +201,7 @@ async function clickOnAction(func: ToasterAction['func'], event: Event) {
 
 function toggleTimer(shouldPause: boolean) {
   if (!props.noPauseOnHover) {
-    shouldPause ? pause() : resume()
+    shouldPause ? timer.pause() : timer.resume()
   }
 }
 
@@ -215,12 +212,12 @@ function stopTimer() {
   }
 }
 
-function close() {
+function closeToast() {
   stopTimer()
   isActive.value = false
 }
 
-defineExpose({ close })
+defineExpose({ closeToast })
 
 function onAnimationEnter() {
   emits('open')

@@ -35,7 +35,7 @@ export class ToasterHandler {
 
     return {
       destroy,
-      close: () => vNode.component?.exposed?.close(),
+      close: () => vNode.component?.exposed?.closeToast(),
     }
   }
 
