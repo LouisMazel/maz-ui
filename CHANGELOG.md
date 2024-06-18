@@ -1,5 +1,17 @@
 # Change Log
 
+## v3.44.1...v3.44.2
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.44.1...v3.44.2)
+
+### 🏡 Chore
+
+- Indicate compatibility with new v4 major ([e55f49810](https://github.com/LouisMazel/maz-ui/commit/e55f49810))
+
+### ❤️ Contributors
+
+- Daniel Roe ([@danielroe](http://github.com/danielroe))
+
 ## v3.44.0...v3.44.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.44.0...v3.44.1)
