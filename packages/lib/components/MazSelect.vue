@@ -72,7 +72,6 @@ import {
   type HTMLAttributes,
   computed,
   defineAsyncComponent,
-  defineOptions,
   nextTick,
   onBeforeMount,
   ref,
