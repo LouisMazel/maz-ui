@@ -1,5 +1,22 @@
 # Change Log
 
+## v3.44.0...v3.44.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.44.0...v3.44.1)
+
+### 💅 Refactors
+
+- **maz-ui:** Tailwind - enable preflight css ([da6e6fae6](https://github.com/LouisMazel/maz-ui/commit/da6e6fae6))
+- **maz-ui:** Toaster - close toast when timeout is ended ([3295c74e0](https://github.com/LouisMazel/maz-ui/commit/3295c74e0))
+
+### 🏡 Chore
+
+- **deps:** Upgrade dependencies ([807e67237](https://github.com/LouisMazel/maz-ui/commit/807e67237))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.43.4...v3.44.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.43.4...v3.44.0)

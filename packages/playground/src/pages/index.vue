@@ -37,4 +37,10 @@ toast.message('Votre mot de passe a été mis à jour', {
 toast.success('Votre mot de passe a été mis à jour', {
   position: 'bottom-right',
 })
+toast.warning('Votre mot de passe a été mis à jour', {
+  position: 'bottom-right',
+})
+toast.error('Votre mot de passe a été mis à jour', {
+  position: 'bottom-right',
+})
 </script>

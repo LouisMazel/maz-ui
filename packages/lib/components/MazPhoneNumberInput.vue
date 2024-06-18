@@ -5,7 +5,6 @@ import {
   type HTMLAttributes,
   type Ref,
   computed,
-  defineOptions,
   nextTick,
   onMounted,
   provide,

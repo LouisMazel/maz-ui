@@ -16,9 +16,14 @@ export interface TimerOptions {
    * @default 200
    */
   remainingTimeUpdate?: number
+  /**
+   * The offset time to execute the callback
+   * @default 0
+   */
+  callbackOffsetTime?: number
 }
 
-export function useTimer({ timeout = 1000, callback, remainingTimeUpdate = 200 }: TimerOptions) {
+export function useTimer({ timeout = 1000, callback, remainingTimeUpdate = 200, callbackOffsetTime = 0 }: TimerOptions) {
   const internalTimeout = ref<number>(timeout)
   const remainingTime = ref<number>(timeout)
 
@@ -42,7 +47,7 @@ export function useTimer({ timeout = 1000, callback, remainingTimeUpdate = 200 }
         remainingTime.value -= remainingTimeUpdate
         if (remainingTime.value <= 0) {
           stop()
-          callback?.()
+          setTimeout(() => callback?.(), callbackOffsetTime)
         }
       }, remainingTimeUpdate)
     }
@@ -62,7 +67,7 @@ export function useTimer({ timeout = 1000, callback, remainingTimeUpdate = 200 }
   }
 
   function stop() {
-    remainingTime.value = internalTimeout.value
+    setTimeout(() => remainingTime.value = internalTimeout.value, callbackOffsetTime * 2)
     pause()
   }
 

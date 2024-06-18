@@ -120,5 +120,10 @@ export interface TimerOptions {
    * @default 200
    */
   remainingTimeUpdate?: number
+  /**
+   * The offset time to execute the callback
+   * @default 0
+   */
+  callbackOffsetTime?: number
 }
 ```
