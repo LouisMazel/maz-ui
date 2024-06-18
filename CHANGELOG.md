@@ -1,5 +1,17 @@
 # Change Log
 
+## v3.44.2...v3.44.3
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.44.2...v3.44.3)
+
+### 💅 Refactors
+
+- **maz-ui:** Add reset css file ([8a02e99e5](https://github.com/LouisMazel/maz-ui/commit/8a02e99e5))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.44.1...v3.44.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.44.1...v3.44.2)
