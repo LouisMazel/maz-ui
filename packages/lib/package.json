@@ -175,7 +175,7 @@
     "postcss-nested": "^6.0.0",
     "postcss-simple-vars": "^7.0.1",
     "postcss-url": "^10.1.3",
-    "replace-in-file": "^7.2.0",
+    "replace-in-file": "^8.1.0",
     "rimraf": "^5.0.7",
     "sass": "^1.77.6",
     "semver": "^7.6.2",
