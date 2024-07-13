@@ -1,6 +1,6 @@
 {
   "name": "nuxt-module",
-  "version": "3.44.3",
+  "version": "3.44.4-beta.0",
   "license": "MIT",
   "type": "module",
   "exports": {
@@ -28,18 +28,18 @@
     "*.{js,ts}": "cross-env NODE_ENV=production eslint --fix"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.12.2",
+    "@nuxt/kit": "^3.12.3",
     "maz-ui": "workspace:*"
   },
   "devDependencies": {
-    "@nuxt/devtools": "^1.3.3",
+    "@nuxt/devtools": "^1.3.9",
     "@nuxt/eslint-config": "^0.3.13",
-    "@nuxt/module-builder": "^0.7.1",
-    "@nuxt/schema": "^3.12.2",
+    "@nuxt/module-builder": "^0.8.1",
+    "@nuxt/schema": "^3.12.3",
     "@nuxt/test-utils": "^3.13.1",
     "defu": "^6.1.4",
-    "nuxt": "^3.12.2",
-    "vitest": "^1.6.0"
+    "nuxt": "^3.12.3",
+    "vitest": "^2.0.2"
   },
   "unbuild": {
     "failOnWarn": false

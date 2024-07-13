@@ -7,7 +7,7 @@ import { type InlineConfig, build } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import svgLoader from 'vite-svg-loader'
 import { type Target, viteStaticCopy } from 'vite-plugin-static-copy'
-import replace from 'replace-in-file'
+import { replaceInFile } from 'replace-in-file'
 import { libInjectCss } from 'vite-plugin-lib-inject-css'
 import { logger } from './utils/logger'
 import { execPromise } from './utils/exec-promise'
@@ -202,7 +202,7 @@ async function run() {
       await rename(resolve(filePath, name), resolve(filePath, `index${extenstion}`))
     }
 
-    await replace({
+    await replaceInFile({
       files: [
         resolve(_dirname, '../dist/nuxt/types.d.mts'),
         resolve(_dirname, '../dist/nuxt/types.d.ts'),
@@ -212,7 +212,7 @@ async function run() {
       to: './index',
     })
 
-    await replace({
+    await replaceInFile({
       files: resolve(_dirname, '../dist/package.json'),
       from: [
         new RegExp('"main": "./modules/index.ts"', 'g'),
