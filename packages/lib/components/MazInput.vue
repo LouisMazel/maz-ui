@@ -173,6 +173,11 @@ const emits = defineEmits<{
    * @property {Event} event - change event
    */
   'change': [event: Event]
+  /**
+   * Event emitted when the input is changed
+   * @property {Event} event - change event
+   */
+  'input': [event: Event]
 }>()
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
@@ -299,6 +304,9 @@ function blur(event: Event) {
 function change(event: Event) {
   return emits('change', event)
 }
+function emitInputEvent(event: Event) {
+  return emits('input', event)
+}
 </script>
 
 <template>
@@ -362,6 +370,7 @@ function change(event: Event) {
             blur,
             focus,
             change,
+            input: emitInputEvent,
           }"
           @click="$emit('click', $event)"
         >

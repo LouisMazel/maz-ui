@@ -140,6 +140,12 @@ const emits = defineEmits<{
    */
   'change': [value: Event]
   /**
+   * On input value
+   * @event 'input'
+   * @property {Event} value - the event
+   */
+  'input': [value: Event]
+  /**
    * On model value update, returns the new value
    * @event 'update:model-value'
    * @property {ModelValueSimple | ModelValueSimple[]} value - the new value
@@ -603,6 +609,7 @@ function updateValue(inputOption: NormalizedOption, mustCloseList = true) {
       @blur.prevent.stop="closeList"
       @click.prevent.stop="openList"
       @change="emits('change', $event)"
+      @input="emits('input', $event)"
       @keydown="mainInputKeyboardHandler"
     >
       <template #right-icon>
