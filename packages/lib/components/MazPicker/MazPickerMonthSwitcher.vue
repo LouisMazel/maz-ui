@@ -19,11 +19,11 @@ const props = defineProps({
 const emits = defineEmits(['update:calendar-date', 'close'])
 
 const months = computed<
-    {
-      label: string
-      date: Dayjs
-    }[]
-  >(() => {
+  {
+    label: string
+    date: Dayjs
+  }[]
+>(() => {
   return Array.from({ length: 12 }, (_v, i) => i).map((monthNumber) => {
     const monthDate = dayjs(props.calendarDate).set('month', monthNumber)
 

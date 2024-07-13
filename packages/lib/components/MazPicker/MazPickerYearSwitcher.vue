@@ -20,11 +20,11 @@ const emits = defineEmits(['update:calendar-date', 'close'])
 const currentDateTmp = ref(props.calendarDate)
 
 const years = computed<
-    {
-      label: string
-      date: Dayjs
-    }[]
-  >(() => {
+  {
+    label: string
+    date: Dayjs
+  }[]
+>(() => {
   return Array.from({ length: 15 }, (_v, i) => i - 7).map((yearNumber) => {
     const currentYear = dayjs(currentDateTmp.value).get('year')
     const dateYear = dayjs(currentDateTmp.value).set('year', currentYear + yearNumber)
