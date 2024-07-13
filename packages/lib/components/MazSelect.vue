@@ -393,7 +393,12 @@ function focusMainInput() {
 }
 
 function toggleList(event: Event) {
-  listOpened.value ? closeList(event) : focusMainInput()
+  if (listOpened.value) {
+    closeList(event)
+  }
+  else {
+    focusMainInput()
+  }
 }
 
 function focusSearchInputAndSetQuery(q: string) {
@@ -433,7 +438,12 @@ function mainInputKeyboardHandler(event: KeyboardEvent) {
     event.preventDefault()
     openList(event)
 
-    props.search ? focusSearchInputAndSetQuery(keyPressed) : searchOptionWithQuery(keyPressed)
+    if (props.search) {
+      focusSearchInputAndSetQuery(keyPressed)
+    }
+    else {
+      searchOptionWithQuery(keyPressed)
+    }
   }
   else {
     keyboardHandler(event)

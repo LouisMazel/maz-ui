@@ -115,7 +115,12 @@ function onElementFocus() {
 }
 function onElementMouseenter() {
   if (['hover', 'both'].includes(props.trigger)) {
-    dropdownOpen.value === false ? setDropdown(true) : setDropdownDebounced(true)
+    if (dropdownOpen.value === false) {
+      setDropdown(true)
+    }
+    else {
+      setDropdownDebounced(true)
+    }
   }
 }
 function onElementMouseleave() {

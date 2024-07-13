@@ -200,8 +200,15 @@ async function clickOnAction(func: ToasterAction['func'], event: Event) {
 }
 
 function toggleTimer(shouldPause: boolean) {
-  if (!props.noPauseOnHover) {
-    shouldPause ? timer.pause() : timer.resume()
+  if (props.noPauseOnHover) {
+    return
+  }
+
+  if (shouldPause) {
+    timer.pause()
+  }
+  else {
+    timer.resume()
   }
 }
 
