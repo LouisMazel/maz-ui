@@ -3,7 +3,7 @@
   "version": "3.44.3",
   "command": {
     "version": {
-      "allowBranch": ["master", "release/*"],
+      "allowBranch": ["master", "release/*", "feature/use-form-validator"],
       "message": "chore(release): bump version %v",
       "conventionalCommits": true,
       "forceGitTag": false,

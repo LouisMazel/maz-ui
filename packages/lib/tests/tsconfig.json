@@ -1,13 +1,12 @@
 {
-  "extends": ["./../node_modules/@vue/tsconfig/tsconfig.dom.json"],
+  "extends": ["./../tsconfig.json"],
   "compilerOptions": {
-    "baseUrl": ".",
     "paths": {
       "@modules/*": ["./../modules/*"],
       "@components/*": ["./../components/*"],
       "@tests/*": ["./../tests/*"]
     },
-    "types": ["vitest/globals", "vue"]
+    "types": ["@types/node", "vite-svg-loader", "vitest/globals", "vue"]
   },
   "include": ["./../types/*", "**/*", "./../components/**/*", "./../modules/**/*"]
 }
