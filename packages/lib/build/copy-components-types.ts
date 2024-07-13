@@ -1,7 +1,7 @@
 import { copyFileSync, existsSync, mkdirSync, readdirSync, renameSync, statSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import replace from 'replace-in-file'
+import { replaceInFile } from 'replace-in-file'
 import { logger } from './utils/logger'
 
 const _dirname = fileURLToPath(new URL('.', import.meta.url))
@@ -50,7 +50,7 @@ function replaceTypesExtensions() {
     to: 'js\';',
   }
 
-  return replace(options)
+  return replaceInFile(options)
 }
 
 export function copyAndTransformComponentsTypesFiles() {
