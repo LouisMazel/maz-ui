@@ -4,20 +4,34 @@ import type {
   BaseSchemaAsync,
   ErrorMessage,
   InferIssue,
-  ObjectEntries,
-  ObjectEntriesAsync,
   ObjectSchema,
   ObjectSchemaAsync,
 } from 'valibot'
 import type { ComponentPublicInstance, Ref } from 'vue'
 
-export type Validation<TInput = unknown, TOutput = unknown, TIssue extends BaseIssue<TInput> = BaseIssue<TInput>> =
-  | BaseSchema<TInput, TOutput, TIssue>
-  | BaseSchemaAsync<TInput, TOutput, TIssue>
-export type ObjectValidationSchema =
-  | ObjectSchemaAsync<ObjectEntriesAsync, ErrorMessage<BaseIssue<unknown>> | undefined>
-  | ObjectSchema<ObjectEntries, ErrorMessage<BaseIssue<unknown>> | undefined>
-export type ValidationIssues = InferIssue<Validation>[]
+import type { useFormField, useFormValidator } from './index'
+
+export type ValidationAsync<
+  TInput extends BaseFormPayload,
+  TOutput extends BaseFormPayload = TInput,
+  TIssue extends BaseIssue<TInput> = BaseIssue<TInput>,
+> = BaseSchema<TInput, TOutput, TIssue> | BaseSchemaAsync<TInput, TOutput, TIssue>
+export type ValidationSync<
+  TInput extends BaseFormPayload,
+  TOutput extends BaseFormPayload = TInput,
+  TIssue extends BaseIssue<TInput> = BaseIssue<TInput>,
+> = BaseSchema<TInput, TOutput, TIssue>
+
+export type Validation<TInput extends BaseFormPayload> = ValidationSync<TInput> | ValidationAsync<TInput>
+
+export type ObjectValidationSchema<
+  Model extends BaseFormPayload = BaseFormPayload,
+  ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>,
+> =
+  | ObjectSchemaAsync<Record<ModelKey, ValidationAsync<Model>>, ErrorMessage<BaseIssue<unknown>> | undefined>
+  | ObjectSchema<Record<ModelKey, ValidationSync<Model>>, ErrorMessage<BaseIssue<unknown>> | undefined>
+
+export type ValidationIssues<TInput extends BaseFormPayload> = InferIssue<Validation<TInput>>[]
 
 export type ExtractModelKey<T> = Extract<keyof T, string>
 
@@ -66,31 +80,34 @@ export interface FormContext<
   validateField: (name: ModelKey) => void
   fieldsStates: FieldsStates<Model>
   options: StrictOptions
-  schema: Ref<ObjectValidationSchema>
+  schema: Ref<ObjectValidationSchema<Model>>
   payload: Ref<Model>
 }
 
-export interface FieldState<T> {
+export interface FieldState<Model extends BaseFormPayload, FieldType = Model[ExtractModelKey<Model>]> {
   blurred: boolean
   dirty: boolean
   error: boolean
-  errors: ValidationIssues
+  errors: ValidationIssues<Model>
   valid: boolean
-  initialValue: T | undefined
+  initialValue?: FieldType | Readonly<FieldType>
   validating: boolean
   validated: boolean
   mode: StrictOptions['mode'] | 'none'
 }
 
 export type FieldsStates<
-  Model extends BaseFormPayload,
+  Model extends BaseFormPayload = BaseFormPayload,
   ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>,
-> = Record<ModelKey, FieldState<Model[ModelKey]>>
+> = Record<ModelKey, FieldState<Model>>
 
-export type BaseFormPayload = Record<string, unknown | undefined>
+export type BaseFormPayload = Record<string, any>
 
 export interface FormFieldOptions<T> {
   mode?: StrictOptions['mode'] | 'none'
   defaultValue?: T
-  componentRef?: Ref<ComponentPublicInstance | undefined>
+  componentRef?: Ref<ComponentPublicInstance | HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | undefined>
 }
+
+export type UseFormValidator<T extends BaseFormPayload = BaseFormPayload> = typeof useFormValidator<T>
+export type UseFormField<T extends BaseFormPayload = BaseFormPayload> = typeof useFormField<T>
