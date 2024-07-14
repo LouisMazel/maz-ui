@@ -1,5 +1,6 @@
 import type { Ref } from 'vue'
 
+import { objectAsync } from 'valibot'
 import { freezeValue } from '../../helpers/freeze-value'
 import type {
   BaseFormPayload,
@@ -7,23 +8,24 @@ import type {
   FieldState,
   FieldsStates,
   FormFieldOptions,
+  FormSchema,
   ObjectValidationSchema,
   StrictOptions,
   ValidationIssues,
 } from './types'
 
-let validbot: typeof import('valibot').safeParseAsync | undefined
+const storeValidbot: Record<keyof typeof import('valibot') | string, any> = {}
 
-export async function getValibotValidationMethod() {
-  if (validbot) {
-    return validbot
+export async function getValibotValidationMethod(methodName: keyof typeof import('valibot')) {
+  if (storeValidbot[methodName]) {
+    return storeValidbot[methodName]
   }
 
-  const { safeParseAsync } = await import('valibot')
+  const valibot = await import('valibot')
 
-  validbot = safeParseAsync
+  storeValidbot[methodName] = valibot[methodName]
 
-  return safeParseAsync
+  return valibot[methodName]
 }
 
 export function fieldHasValidation<Model extends BaseFormPayload>(
@@ -185,4 +187,8 @@ export function removeEventFromInteractiveElements({
     element.removeEventListener('input', onInput)
     element.removeEventListener('change', onInput)
   })
+}
+
+export function getValidationSchema<ModelKey extends string>(formSchema: FormSchema<ModelKey>) {
+  return objectAsync(formSchema)
 }
