@@ -22,35 +22,36 @@ npm install valibot
 <ComponentDemo>
   <div class="maz-flex maz-flex-col maz-gap-4">
     <MazInput
-      v-model="name"
+      v-model="model.name"
       ref="nameInputRef"
       label="Enter your name"
-      :hint="nameErrorMessage"
-      :error="nameHasError"
-      :class="{ 'has-error': nameHasError }"
+      :hint="errorMessages.name"
+      :error="!!errorMessages.name"
+      :class="{ 'has-error': !!errorMessages.name }"
     />
     <MazInput
-      v-model="age"
+      v-model="model.age"
       ref="ageInputRef"
       type="number"
       label="Enter your age"
-      :hint="ageErrorMessage"
-      :error="ageHasError"
-      :class="{ 'has-error': ageHasError }"
+      :hint="errorMessages.age"
+      :error="!!errorMessages.age"
+      :class="{ 'has-error': !!errorMessages.age }"
     />
     <MazSelect
-      v-model="country"
+      v-model="model.country"
       ref="selectInputRef"
       :options="[{ label: 'France', value: 'FR' }, { label: 'United States', value: 'US' }]"
       label="Select your nationality"
-      :hint="countryErrorMessage"
-      :error="countryHasError"
+      :hint="errorMessages.country"
+      :error="!!errorMessages.country"
+      :class="{ 'has-error': !!errorMessages.country }"
     />
-    <MazCheckbox ref="agreeInputRef" v-model="agree">
+    <MazCheckbox ref="agreeInputRef" v-model="model.agree" :class="{ 'has-error': !!errorMessages.agree }">
       <div>
         <p>I agree to the terms and conditions</p>
-        <p v-if="agreeErrorMessage" class="maz-text-danger-600 maz-text-sm">
-          {{ agreeErrorMessage }}
+        <p v-if="errorMessages.agree" class="maz-text-danger-600 maz-text-sm">
+          {{ errorMessages.agree }}
         </p>
       </div>
     </MazCheckbox>
@@ -63,78 +64,74 @@ npm install valibot
   ```vue
   <template>
     <MazInput
-      v-model="name"
+      v-model="model.name"
       ref="nameInputRef"
       label="Enter your name"
-      :hint="nameErrorMessage"
-      :success="nameIsValid"
-      :error="nameHasError"
-      :class="{ 'has-error': nameHasError }"
+      :hint="errorMessages.name"
+      :error="!!errorMessages.name"
+      :class="{ 'has-error': !!errorMessages.name }"
     />
     <MazInput
-      v-model="age"
+      v-model="model.age"
       ref="ageInputRef"
       type="number"
       label="Enter your age"
-      :hint="ageErrorMessage"
-      :success="ageIsValid"
-      :error="ageHasError"
-      :class="{ 'has-error': ageHasError }"
+      :hint="errorMessages.age"
+      :error="!!errorMessages.age"
+      :class="{ 'has-error': !!errorMessages.age }"
     />
-    <MazCheckbox ref="agreeInputRef" v-model="isAgree" label="I agree to the terms and conditions" />
-    <MazBtn @click="onSubmit" :loading="isSubmitting" :disabled="isValid">
-      <!-- You can disable the submit button with :disabled="isValid"  -->
+    <MazSelect
+      v-model="model.country"
+      ref="selectInputRef"
+      :options="[{ label: 'France', value: 'FR' }, { label: 'United States', value: 'US' }]"
+      label="Select your nationality"
+      :hint="errorMessages.age"
+      :error="!!errorMessages.age"
+      :class="{ 'has-error': !!errorMessages.age }"
+    />
+    <MazCheckbox ref="agreeInputRef" v-model="model.agree" :class="{ 'has-error': !!errorMessages.agree }">
+      <div>
+        <p>I agree to the terms and conditions</p>
+        <p v-if="errorMessages.agree" class="maz-text-danger-600 maz-text-sm">
+          {{ errorMessages.agree }}
+        </p>
+      </div>
+    </MazCheckbox>
+    <MazBtn @click="onSubmit" :loading="isSubmitting">
       Submit
     </MazBtn>
   </template>
 
   <script lang="ts" setup>
     import { ref, type ComponentPublicInstance } from 'vue'
-    import { useFormValidator, useFormField, sleep } from 'maz-ui'
+    import { useFormValidator, useFormField, sleep, useToast } from 'maz-ui'
     import { string, object, nonEmpty, pipe, number, minValue, maxValue, boolean, literal } from 'valibot'
+
+    const toast = useToast()
 
     type Model = {
       name: string
       age: number
+      agree: boolean
+      country: string
     }
 
-    const nameInputRef = ref<ComponentPublicInstance>()
-    const ageInputRef = ref<ComponentPublicInstance>()
-    const agreeInputRef = ref<ComponentPublicInstance>()
-    const selectInputRef = ref<ComponentPublicInstance>()
-
-    const schema = ref(
-      object({
+    const { model, isValid, isSubmitting, handleSubmit, errorMessages } = useFormValidator<Model>({
+      schema: {
         name: pipe(string('Name is required'), nonEmpty('Name is required')),
         age: pipe(number('Age is required'), minValue(18, 'Age must be greater than 18'), maxValue(100, 'Age must be less than 100')),
         agree: pipe(boolean('You must agree to the terms and conditions'), literal(true, 'You must agree to the terms and conditions')),
         country: pipe(string('Country is required'), nonEmpty('Country is required')),
-      }),
-    )
-
-    const { model, isValid, isSubmitting, handleSubmit } = useFormValidator<Model>({
-      schema,
-      options: { mode: 'eager', scrollToErrorSelector: '.has-error' },
-    })
-
-    const { value: name, errorMessage: nameErrorMessage, hasError: nameHasError } = useFormField<Model>('name', {
-      componentRef: nameInputRef,
-    })
-    const { value: age, errorMessage: ageErrorMessage, hasError: ageHasError } = useFormField<Model>('age', {
-      componentRef: ageInputRef,
-    })
-    const { value: country, errorMessage: countryErrorMessage, hasError: countryHasError } = useFormField<Model>('country', {
-      componentRef: selectInputRef,
-      mode: 'lazy',
-    })
-    const { value: agree, errorMessage: agreeErrorMessage, hasError: agreeHasError } = useFormField<Model>('agree', {
-      componentRef: agreeInputRef,
+      },
+      defaultValues: { name: 'John Doe' },
+      options: { mode: 'lazy', scrollToErrorSelector: '.has-error' },
     })
 
     const onSubmit = handleSubmit(async (formData) => {
       // Form submission logic
       console.log(formData)
       await sleep(2000)
+      toast.success('Form submitted', { position: 'top' })
     })
   </script>
   ```
@@ -142,57 +139,40 @@ npm install valibot
   </template>
 </ComponentDemo>
 
-## useFormValidator
-
 <script lang="ts" setup>
   import { ref, type ComponentPublicInstance } from 'vue'
-  import { useFormValidator, useFormField, sleep } from 'maz-ui'
+  import { useFormValidator, useFormField, sleep, useToast } from 'maz-ui'
   import { string, object, nonEmpty, pipe, number, minValue, maxValue, boolean, literal } from 'valibot'
+
+  const toast = useToast()
 
   type Model = {
     name: string
     age: number
+    agree: boolean
+    country: string
   }
 
-  const nameInputRef = ref<ComponentPublicInstance>()
-  const ageInputRef = ref<ComponentPublicInstance>()
-  const agreeInputRef = ref<ComponentPublicInstance>()
-  const selectInputRef = ref<ComponentPublicInstance>()
-
-  const schema = ref(
-    object({
+  const { model, isValid, isSubmitting, handleSubmit, errorMessages } = useFormValidator<Model>({
+    schema: {
       name: pipe(string('Name is required'), nonEmpty('Name is required')),
       age: pipe(number('Age is required'), minValue(18, 'Age must be greater than 18'), maxValue(100, 'Age must be less than 100')),
       agree: pipe(boolean('You must agree to the terms and conditions'), literal(true, 'You must agree to the terms and conditions')),
       country: pipe(string('Country is required'), nonEmpty('Country is required')),
-    }),
-  )
-
-  const { model, isValid, isSubmitting, handleSubmit } = useFormValidator<Model>({
-    schema,
-    options: { mode: 'eager', scrollToErrorSelector: '.has-error' },
-  })
-
-  const { value: name, errorMessage: nameErrorMessage, hasError: nameHasError } = useFormField<Model>('name', {
-    componentRef: nameInputRef,
-  })
-  const { value: age, errorMessage: ageErrorMessage, hasError: ageHasError } = useFormField<Model>('age', {
-    componentRef: ageInputRef,
-  })
-  const { value: country, errorMessage: countryErrorMessage, hasError: countryHasError } = useFormField<Model>('country', {
-    componentRef: selectInputRef,
-    mode: 'lazy',
-  })
-  const { value: agree, errorMessage: agreeErrorMessage, hasError: agreeHasError } = useFormField<Model>('agree', {
-    componentRef: agreeInputRef,
+    },
+    defaultValues: { name: 'John Doe' },
+    options: { mode: 'lazy', scrollToErrorSelector: '.has-error' },
   })
 
   const onSubmit = handleSubmit(async (formData) => {
     // Form submission logic
     console.log(formData)
     await sleep(2000)
+    toast.success('Form submitted', { position: 'top' })
   })
 </script>
+
+## useFormValidator
 
 `useFormValidator` is the main composable for initializing form validation.
 
@@ -217,6 +197,7 @@ npm install valibot
 - `isSubmitted`: `Ref<boolean>` - Indicates if the form has been submitted.
 - `isValid`: `ComputedRef<boolean>` - Indicates if the form is valid.
 - `errors`: `ComputedRef<Record<ModelKey, ValidationIssues>>` - Validation errors for each field.
+- `errorsMessages`: `ComputedRef<Record<string, string>>` - The first validation error message for each field.
 - `model`: `Ref<Model>` - The form's data model.
 - `context`: `FormContext<Model, ModelKey>` - The form context for internal use.
 - `fieldsStates`: `FieldsStates<ModelKey>` - The validation state of each field.
@@ -240,7 +221,7 @@ const schema = ref(
   }),
 )
 
-const { model, isValid, errors, handleSubmit, isSubmitting } = useFormValidator<{
+const { model, isValid, errorMessages, handleSubmit, isSubmitting } = useFormValidator<{
   name: string
   age: number
 }>({
@@ -257,10 +238,10 @@ const onSubmit = handleSubmit(async (formData) => {
 <template>
   <form @submit="onSubmit">
     <input v-model="model.name">
-    <span v-if="errors.name">{{ errors.name[0]?.message }}</span>
+    <span v-if="errorMessages.name">{{ errorMessages.name }}</span>
 
     <input v-model="model.age">
-    <span v-if="errors.age">{{ errors.age[0]?.message }}</span>
+    <span v-if="errorMessages.age">{{ errorMessages.age }}</span>
 
     <button type="submit" :disabled="isSubmitting">
       Submit
@@ -276,6 +257,10 @@ Before using `useFormField`, make sure you have initialized the form with `useFo
 :::
 
 `useFormField` is a composable for handling validation at the individual form field level.
+
+Useful for fine-grained control over form fields, `useFormField` provides computed properties for validation state, error messages, and more.
+
+To use the modes `eager`, `onInput`, or `onBlur`, you must use this `useFormField` composable to add the necessary validation events.
 
 ### Parameters
 
@@ -313,10 +298,16 @@ import MazInput from 'maz-ui/components/MazInput'
 
 const componentRef = ref<ComponentPublicInstance>()
 
-const { value, errorMessage, isValid, validationEvents } = useFormField('name', {
+useFormValidator({
+  schema: {
+    name: pipe(string('Name is required'), nonEmpty('Name is required')),
+  },
+})
+
+const { value, errorMessage, isValid } = useFormField('name', {
   defaultValue: '',
   mode: 'eager',
-  componentRef
+  componentRef, // Necessary for 'eager', 'onInput', 'onBlur' validation modes to add validation events
 })
 </script>
 

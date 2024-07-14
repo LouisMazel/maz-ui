@@ -24,6 +24,8 @@ export type ObjectValidationSchema<
 
 export type ValidationIssues = InferIssue<Validation>[]
 
+export type FormSchema<ModelKey extends string> = Record<ModelKey, Validation>
+
 export type ExtractModelKey<T> = Extract<keyof T, string>
 
 export interface Options<
@@ -69,9 +71,9 @@ export interface FormContext<
   addFieldValidationWatch: (name: ModelKey) => void
   setFieldValidationState: (name: ModelKey, setError?: boolean) => void
   validateField: (name: ModelKey) => void
-  fieldsStates: FieldsStates<Model>
+  fieldsStates: Ref<FieldsStates<Model>>
   options: StrictOptions
-  schema: Ref<ObjectValidationSchema<Model>>
+  internalSchema: Ref<ObjectValidationSchema<Model>>
   payload: Ref<Model>
   errorMessages: Ref<Record<ModelKey, string | undefined>>
 }

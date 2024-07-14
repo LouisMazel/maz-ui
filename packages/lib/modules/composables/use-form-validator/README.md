@@ -47,6 +47,7 @@
 - `isSubmitted`: `Ref<boolean>` - Indicates if the form has been submitted.
 - `isValid`: `ComputedRef<boolean>` - Indicates if the form is valid.
 - `errors`: `ComputedRef<Record<ModelKey, ValidationIssues>>` - Validation errors for each field.
+- `errorsMessages`: `ComputedRef<Record<string, string>>` - The first validation error message for each field.
 - `model`: `Ref<Model>` - The form's data model.
 - `context`: `FormContext<Model, ModelKey>` - The form context for internal use.
 - `fieldsStates`: `FieldsStates<ModelKey>` - The validation state of each field.

@@ -1,6 +1,6 @@
 import type { SafeParseResult } from 'valibot'
-import type { InjectionKey, Ref, WatchStopHandle } from 'vue'
-import { computed, inject, onUnmounted, provide, reactive, ref, toValue, watch } from 'vue'
+import type { ComputedRef, InjectionKey, MaybeRefOrGetter, ModelRef, Ref, WatchStopHandle } from 'vue'
+import { computed, inject, onUnmounted, provide, ref, toValue, watch } from 'vue'
 
 import { debounceAsync } from '../../helpers/debounce-async'
 import { freezeValue } from '../../helpers/freeze-value'
@@ -14,6 +14,7 @@ import {
   getFieldsErrors,
   getFieldsStates,
   getValibotValidationMethod,
+  getValidationSchema,
   isEmptyValue,
   mergeFieldState,
   removeEventFromInteractiveElements,
@@ -25,6 +26,7 @@ import type {
   FieldsStates,
   FormContext,
   FormFieldOptions,
+  FormSchema,
   ObjectValidationSchema,
   Options,
   StrictOptions,
@@ -37,16 +39,17 @@ let formContext: FormContext | null = null
 export function useFormValidator<
   Model extends BaseFormPayload,
   ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>,
-  Schema extends ObjectValidationSchema<Model> = ObjectValidationSchema<Model>,
+  SchemaType extends FormSchema<ModelKey> = FormSchema<ModelKey>,
+  ValibotSchema extends ObjectValidationSchema<Model> = ObjectValidationSchema<Model>,
 >({
   schema,
   model,
   defaultValues,
   options,
 }: {
-  schema: Ref<Schema>
-  model?: Ref<Partial<Model>>
-  defaultValues?: Ref<Partial<Model>>
+  schema: MaybeRefOrGetter<SchemaType>
+  model?: Ref<Partial<Model>> | ModelRef<Model>
+  defaultValues?: Partial<Model>
   options?: Options<Model>
 }) {
   const opts = {
@@ -58,31 +61,42 @@ export function useFormValidator<
   } satisfies StrictOptions<Model>
 
   const payload = ref({
+    ...defaultValues,
     ...model?.value,
-    ...defaultValues?.value,
   }) as Ref<Model>
-  const fieldsStates = reactive(
-    getFieldsStates(schema.value, defaultValues?.value ?? payload.value, opts.mode),
-  ) as FieldsStates<Model>
+
+  const internalSchema = computed(() => getValidationSchema<ModelKey>(toValue(schema))) as unknown as ComputedRef<ValibotSchema>
+  const fieldsStates = ref(
+    getFieldsStates(internalSchema.value, defaultValues ?? payload.value, opts.mode),
+  ) as Ref<FieldsStates<Model>>
+
+  watch(
+    internalSchema,
+    (newSchema) => {
+      fieldsStates.value = getFieldsStates(newSchema, defaultValues ?? payload.value, opts.mode)
+    },
+    { deep: true },
+  )
 
   const isSubmitting = ref(false)
   const isSubmitted = ref(false)
-  const isValid = computed(() => Object.values(fieldsStates).every(({ valid }) => valid))
-  const isDirty = computed(() => Object.values(fieldsStates).some(({ dirty }) => dirty))
-  const errors = computed(() => getFieldsErrors(fieldsStates))
+  const isValid = computed(() => Object.values(fieldsStates.value).every(({ valid }) => valid))
+  const isDirty = computed(() => Object.values(fieldsStates.value).some(({ dirty }) => dirty))
+  const errors = computed(() => getFieldsErrors(fieldsStates.value))
   const errorMessages = computed(() => {
     return Object.entries(errors.value).reduce((acc, [name, value]) => {
-      acc[name] = fieldsStates[name].error ? value[0].message : undefined
+      acc[name] = fieldsStates.value[name].error ? value[0].message : undefined
       return acc
     }, {} as Record<ModelKey, string | undefined>)
   })
 
   async function getFieldValidationResult(name: ModelKey): Promise<{
-    result: SafeParseResult<Schema['entries'][ModelKey]>
+    result: SafeParseResult<ValibotSchema['entries'][ModelKey]>
     isValid: boolean
   }> {
-    const safeParseAsync = await getValibotValidationMethod()
-    const result = await safeParseAsync(schema.value.entries[name], payload.value[name] ?? '')
+    const safeParseAsync = await getValibotValidationMethod('safeParseAsync')
+    const result = await safeParseAsync(internalSchema.value.entries[name], payload.value[name] ?? '')
+
     return {
       result,
       isValid: result.success,
@@ -92,11 +106,11 @@ export function useFormValidator<
   async function setFieldValidationState(name: ModelKey, setError = true) {
     await sleep(0)
 
-    const fieldState = fieldsStates[name]
+    const fieldState = fieldsStates.value[name]
 
     fieldState.validating = true
 
-    if (!schema.value.entries[name]) {
+    if (!internalSchema.value.entries[name]) {
       // Validate if the field is not in the schema
       fieldState.valid = true
       fieldState.validating = false
@@ -138,26 +152,26 @@ export function useFormValidator<
     watch(
       () => toValue(payload.value)[name],
       () => handleFieldInput(name, true),
-      { deep: schema.value.entries[name].type === 'object' },
+      { deep: internalSchema.value.entries[name].type === 'object' },
     )
   }
 
   function addFieldsValidationWatch() {
-    for (const name in schema.value.entries) {
+    for (const name in internalSchema.value.entries) {
       addFieldValidationWatch(name as ModelKey)
     }
   }
 
   async function validateForm(setError = true) {
     await Promise.all(
-      Object.keys(schema.value.entries).map(name => setFieldValidationState(name as ModelKey, setError)),
+      Object.keys(fieldsStates.value).map(name => setFieldValidationState(name as ModelKey, setError)),
     )
 
     return isValid.value
   }
 
   function canExecuteValidation(name: ModelKey) {
-    const { dirty, blurred, mode } = fieldsStates[name]
+    const { dirty, blurred, mode } = fieldsStates.value[name]
 
     return (
       isSubmitted.value
@@ -171,7 +185,7 @@ export function useFormValidator<
 
   function handleFieldBlur(name: ModelKey, force = false) {
     const fieldValue = payload.value[name]
-    const fieldState = fieldsStates[name]
+    const fieldState = fieldsStates.value[name]
     const isDirty = !isEmptyValue(fieldValue) && !isEqual(fieldValue, fieldState.initialValue)
 
     fieldState.dirty = isDirty
@@ -186,7 +200,7 @@ export function useFormValidator<
 
   function handleFieldInput(name: ModelKey, force = false) {
     const fieldValue = payload.value[name]
-    const fieldState = fieldsStates[name]
+    const fieldState = fieldsStates.value[name]
 
     fieldState.validated = false
 
@@ -232,7 +246,7 @@ export function useFormValidator<
     addFieldValidationWatch,
     validateField,
     options: opts,
-    schema,
+    internalSchema,
     setFieldValidationState,
     errorMessages,
   } satisfies FormContext<Model, ModelKey>
@@ -245,7 +259,9 @@ export function useFormValidator<
     addFieldsValidationWatch()
   }
 
-  validateForm(opts.mode === 'aggressive')
+  watch(internalSchema, () => {
+    validateForm(opts.mode === 'aggressive')
+  }, { deep: true, immediate: true })
 
   watch(
     payload,
@@ -291,24 +307,24 @@ export function useFormField<
     payload,
     options: formOptions,
     addFieldValidationWatch,
-    schema,
+    internalSchema,
     setFieldValidationState,
     errorMessages,
   } = context
 
   const opts = {
     ...options,
-    mode: fieldHasValidation(name, schema.value) ? options?.mode ?? formOptions.mode : 'none',
+    mode: fieldHasValidation(name, internalSchema.value) ? options?.mode ?? formOptions.mode : 'none',
   } satisfies FormFieldOptions<FieldType>
 
-  fieldsStates[name] = mergeFieldState({ name, fieldsStates, payload, schema, options: opts })
+  fieldsStates.value[name] = mergeFieldState({ name, fieldsStates: fieldsStates.value, payload, schema: internalSchema, options: opts })
 
-  const fieldState = computed(() => fieldsStates[name])
+  const fieldState = computed(() => fieldsStates.value[name])
 
   if (opts.defaultValue !== undefined && !isEqual(payload.value[name], opts.defaultValue)) {
     const initialValue = opts.defaultValue
     payload.value[name] = initialValue
-    fieldsStates[name].initialValue = freezeValue(initialValue)
+    fieldsStates.value[name].initialValue = freezeValue(initialValue)
   }
 
   if (['aggressive', 'lazy'].includes(fieldState.value.mode) && !['aggressive', 'lazy'].includes(formOptions.mode)) {
@@ -341,7 +357,7 @@ export function useFormField<
   if (
     opts.componentRef
     && !['aggressive', 'lazy'].includes(formOptions.mode)
-    && !['aggressive', 'lazy'].includes(fieldsStates[name].mode)
+    && !['aggressive', 'lazy'].includes(fieldsStates.value[name].mode)
   ) {
     let interactiveElements: HTMLElement[] = []
     let unwatchHandle: WatchStopHandle | null = null
