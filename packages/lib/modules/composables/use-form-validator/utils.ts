@@ -127,7 +127,7 @@ export function getFieldsErrors<
   Model extends BaseFormPayload,
   ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>,
 >(fieldsStates: FieldsStates<Model>) {
-  const fieldsErrors = {} as Record<ModelKey, ValidationIssues<Model>>
+  const fieldsErrors = {} as Record<ModelKey, ValidationIssues>
 
   for (const [name, { errors }] of Object.entries(fieldsStates)) {
     fieldsErrors[name as ModelKey] = errors
