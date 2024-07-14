@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import { minLength, minValue, number, object, pipe, string } from 'valibot'
+import { minLength, minValue, number, pipe, string } from 'valibot'
 import { defineComponent, nextTick, ref } from 'vue'
 
 import type { UseFormField, UseFormValidator } from '@modules/composables/use-form-validator'
@@ -15,12 +15,10 @@ interface Model {
 function createFormComponent(_useFormValidator: UseFormValidator<Model>, _useFormField: typeof useFormField) {
   return defineComponent({
     setup() {
-      const schema = ref(
-        object({
-          name: pipe(string(), minLength(3, 'Name must be at least 3 characters')),
-          age: pipe(number(), minValue(18, 'You must be at least 18 years old')),
-        }),
-      )
+      const schema = {
+        name: pipe(string(), minLength(3, 'Name must be at least 3 characters')),
+        age: pipe(number(), minValue(18, 'You must be at least 18 years old')),
+      }
 
       const initialModel = ref({
         name: '',
@@ -73,7 +71,7 @@ describe('given useFormValidator', () => {
   describe('when model is updated', () => {
     it('then isDirty is updated', async () => {
       form.model.value.name = 'John'
-      await nextTick()
+      await sleep(0)
       expect(form.isDirty.value).toBe(true)
     })
   })

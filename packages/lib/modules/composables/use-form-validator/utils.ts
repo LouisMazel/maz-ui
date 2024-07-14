@@ -1,6 +1,3 @@
-import type { Ref } from 'vue'
-
-import { objectAsync } from 'valibot'
 import { freezeValue } from '../../helpers/freeze-value'
 import type {
   BaseFormPayload,
@@ -9,7 +6,6 @@ import type {
   FieldsStates,
   FormFieldOptions,
   FormSchema,
-  ObjectValidationSchema,
   StrictOptions,
   ValidationIssues,
 } from './types'
@@ -30,9 +26,9 @@ export async function getValibotValidationMethod(methodName: keyof typeof import
 
 export function fieldHasValidation<Model extends BaseFormPayload>(
   field: string,
-  schema: ObjectValidationSchema<Model>,
+  schema: FormSchema<Model>,
 ) {
-  return Object.keys(schema.entries).includes(field)
+  return Object.keys(schema).includes(field)
 }
 
 export function scrollToError(selector = '.has-input-error') {
@@ -57,7 +53,7 @@ export function getFieldState<
   mode,
 }: {
   name: ModelKey
-  schema?: ObjectValidationSchema<Model>
+  schema?: FormSchema<Model>
   initialValue?: Model[ModelKey] | Readonly<Model[ModelKey]>
   mode?: StrictOptions['mode'] | 'none'
 }): FieldState<Model> {
@@ -79,10 +75,10 @@ export function getFieldState<
 export function getFieldsStates<
   Model extends BaseFormPayload,
   ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>,
->(schema: ObjectValidationSchema<Model>, payload: Partial<Model>, mode: StrictOptions['mode']): FieldsStates<Model> {
+>(schema: FormSchema<Model>, payload: Partial<Model>, mode: StrictOptions['mode']): FieldsStates<Model> {
   const fieldsStates = {} as FieldsStates<Model>
 
-  for (const [name] of Object.entries(schema.entries)) {
+  for (const [name] of Object.entries(schema)) {
     const fieldName = name as ModelKey
     fieldsStates[fieldName] = getFieldState<Model, ModelKey>({
       name: fieldName,
@@ -107,14 +103,14 @@ export function mergeFieldState<
 }: {
   name: ModelKey
   fieldsStates: FieldsStates<Model>
-  payload: Ref<Model>
-  schema: Ref<ObjectValidationSchema<Model>>
+  payload: Model
+  schema: FormSchema<Model>
   options: FormFieldOptions<Model[ModelKey]>
 }) {
   const newFieldState = getFieldState<Model>({
     name,
-    schema: schema.value,
-    initialValue: freezeValue(options.defaultValue ?? payload.value[name]),
+    schema,
+    initialValue: freezeValue(options.defaultValue ?? payload[name]),
     mode: options.mode,
   })
 
@@ -189,6 +185,7 @@ export function removeEventFromInteractiveElements({
   })
 }
 
-export function getValidationSchema<ModelKey extends string>(formSchema: FormSchema<ModelKey>) {
+export async function getValidationSchema<Model extends BaseFormPayload>(formSchema: FormSchema<Model>) {
+  const objectAsync = await getValibotValidationMethod('objectAsync')
   return objectAsync(formSchema)
 }

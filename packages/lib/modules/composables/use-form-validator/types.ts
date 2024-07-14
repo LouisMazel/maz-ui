@@ -24,7 +24,7 @@ export type ObjectValidationSchema<
 
 export type ValidationIssues = InferIssue<Validation>[]
 
-export type FormSchema<ModelKey extends string> = Record<ModelKey, Validation>
+export type FormSchema<Model extends BaseFormPayload, ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>> = Record<ModelKey, Validation>
 
 export type ExtractModelKey<T> = Extract<keyof T, string>
 
@@ -73,7 +73,7 @@ export interface FormContext<
   validateField: (name: ModelKey) => void
   fieldsStates: Ref<FieldsStates<Model>>
   options: StrictOptions
-  internalSchema: Ref<ObjectValidationSchema<Model>>
+  internalSchema: Ref<FormSchema<Model>>
   payload: Ref<Model>
   errorMessages: Ref<Record<ModelKey, string | undefined>>
 }

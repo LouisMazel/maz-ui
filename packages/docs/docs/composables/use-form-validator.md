@@ -153,7 +153,7 @@ npm install valibot
     country: string
   }
 
-  const { model, isValid, isSubmitting, handleSubmit, errorMessages } = useFormValidator<Model>({
+  const { model, isValid, isSubmitting, handleSubmit, errorMessages, fieldsStates } = useFormValidator<Model>({
     schema: {
       name: pipe(string('Name is required'), nonEmpty('Name is required')),
       age: pipe(number('Age is required'), minValue(18, 'Age must be greater than 18'), maxValue(100, 'Age must be less than 100')),
