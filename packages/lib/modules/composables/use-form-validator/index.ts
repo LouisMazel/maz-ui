@@ -1,5 +1,5 @@
 import type { SafeParseResult } from 'valibot'
-import type { ComputedRef, InjectionKey, MaybeRefOrGetter, ModelRef, Ref, WatchStopHandle } from 'vue'
+import type { InjectionKey, MaybeRefOrGetter, ModelRef, Ref, WatchStopHandle } from 'vue'
 import { computed, inject, onUnmounted, provide, ref, toValue, watch } from 'vue'
 
 import { debounceAsync } from '../../helpers/debounce-async'
@@ -39,7 +39,7 @@ let formContext: FormContext | null = null
 export function useFormValidator<
   Model extends BaseFormPayload,
   ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>,
-  SchemaType extends FormSchema<ModelKey> = FormSchema<ModelKey>,
+  SchemaType extends FormSchema<Model> = FormSchema<Model>,
   ValibotSchema extends ObjectValidationSchema<Model> = ObjectValidationSchema<Model>,
 >({
   schema,
@@ -65,7 +65,7 @@ export function useFormValidator<
     ...model?.value,
   }) as Ref<Model>
 
-  const internalSchema = computed(() => getValidationSchema<ModelKey>(toValue(schema))) as unknown as ComputedRef<ValibotSchema>
+  const internalSchema = computed<FormSchema<Model>>(() => toValue(schema))
   const fieldsStates = ref(
     getFieldsStates(internalSchema.value, defaultValues ?? payload.value, opts.mode),
   ) as Ref<FieldsStates<Model>>
@@ -94,8 +94,9 @@ export function useFormValidator<
     result: SafeParseResult<ValibotSchema['entries'][ModelKey]>
     isValid: boolean
   }> {
+    const schema = await getValidationSchema(internalSchema.value)
     const safeParseAsync = await getValibotValidationMethod('safeParseAsync')
-    const result = await safeParseAsync(internalSchema.value.entries[name], payload.value[name] ?? '')
+    const result = await safeParseAsync(schema.entries[name], payload.value[name] ?? '')
 
     return {
       result,
@@ -110,7 +111,7 @@ export function useFormValidator<
 
     fieldState.validating = true
 
-    if (!internalSchema.value.entries[name]) {
+    if (!internalSchema.value[name]) {
       // Validate if the field is not in the schema
       fieldState.valid = true
       fieldState.validating = false
@@ -151,13 +152,15 @@ export function useFormValidator<
   function addFieldValidationWatch(name: ModelKey) {
     watch(
       () => toValue(payload.value)[name],
-      () => handleFieldInput(name, true),
-      { deep: internalSchema.value.entries[name].type === 'object' },
+      () => {
+        handleFieldInput(name, true)
+      },
+      { deep: typeof internalSchema.value[name] === 'object' },
     )
   }
 
   function addFieldsValidationWatch() {
-    for (const name in internalSchema.value.entries) {
+    for (const name in internalSchema.value) {
       addFieldValidationWatch(name as ModelKey)
     }
   }
@@ -317,7 +320,7 @@ export function useFormField<
     mode: fieldHasValidation(name, internalSchema.value) ? options?.mode ?? formOptions.mode : 'none',
   } satisfies FormFieldOptions<FieldType>
 
-  fieldsStates.value[name] = mergeFieldState({ name, fieldsStates: fieldsStates.value, payload, schema: internalSchema, options: opts })
+  fieldsStates.value[name] = mergeFieldState({ name, fieldsStates: fieldsStates.value, payload: payload.value, schema: internalSchema.value, options: opts })
 
   const fieldState = computed(() => fieldsStates.value[name])
 

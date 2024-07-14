@@ -8,15 +8,13 @@ import {
   removeEventFromInteractiveElements,
   scrollToError,
 } from '@modules/composables/use-form-validator/utils'
-import type { BaseFormPayload, FieldsStates, ObjectValidationSchema } from '@modules/composables/use-form-validator/types'
+import type { BaseFormPayload, FieldsStates, FormSchema } from '@modules/composables/use-form-validator/types'
 
 describe('given fieldHasValidation function', () => {
   const schema = {
-    entries: {
-      name: { type: 'string' },
-      age: { type: 'number' },
-    },
-  } as unknown as ObjectValidationSchema
+    name: { type: 'string' },
+    age: { type: 'number' },
+  } as unknown as FormSchema<BaseFormPayload>
 
   describe('when checking for a field present in the schema', () => {
     it('then it should return true', () => {
@@ -52,7 +50,6 @@ describe('given scrollToError function', () => {
   describe('when called with a selector for a non-existing element', () => {
     it('then it should not scroll', () => {
       globalThis.document.querySelector = vi.fn().mockReturnValue(null)
-      // @ts-expect-error - mocking global window object
       globalThis.window.scrollTo = vi.fn()
 
       scrollToError('.non-existent')
@@ -66,10 +63,8 @@ describe('given getFieldState function', () => {
   describe('when called for a field with validation', () => {
     it('then it should return the correct field state', () => {
       const schema = {
-        entries: {
-          name: { type: 'string' },
-        },
-      } as unknown as ObjectValidationSchema
+        name: { type: 'string' },
+      } as unknown as FormSchema<BaseFormPayload>
 
       const state = getFieldState({ name: 'name', schema, initialValue: 'John', mode: 'eager' })
 
@@ -110,11 +105,9 @@ describe('given getFieldsStates function', () => {
   describe('when called with a schema', () => {
     it('then it should return the correct fields states', () => {
       const schema = {
-        entries: {
-          name: { type: 'string' },
-          age: { type: 'number' },
-        },
-      } as unknown as ObjectValidationSchema
+        name: { type: 'string' },
+        age: { type: 'number' },
+      } as unknown as FormSchema<BaseFormPayload>
 
       const states = getFieldsStates(schema, {}, 'eager')
 
