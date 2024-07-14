@@ -7,6 +7,16 @@ description: useFormValidator and useFormField are two Vue 3 composables designe
 
 `useFormValidator` and `useFormField` are two Vue 3 composables designed to simplify form validation using [Valibot](https://valibot.dev/guides/introduction/) as the validation library. These composables offer a flexible and typed approach to handle form validation in your Vue 3 applications.
 
+## Prerequisites
+
+To use this composable, you have to install the [`Valibot`](https://valibot.dev/) dependency
+
+<NpmBadge package="valibot" />
+
+```bash
+npm install valibot
+```
+
 ## Basic Usage
 
 <ComponentDemo>
@@ -81,7 +91,7 @@ description: useFormValidator and useFormField are two Vue 3 composables designe
   <script lang="ts" setup>
     import { ref, type ComponentPublicInstance } from 'vue'
     import { useFormValidator, useFormField, sleep } from 'maz-ui'
-    import { string, object, nonEmpty, pipe, number, minValue, maxValue, boolean } from 'valibot'
+    import { string, object, nonEmpty, pipe, number, minValue, maxValue, boolean, literal } from 'valibot'
 
     type Model = {
       name: string
@@ -91,12 +101,14 @@ description: useFormValidator and useFormField are two Vue 3 composables designe
     const nameInputRef = ref<ComponentPublicInstance>()
     const ageInputRef = ref<ComponentPublicInstance>()
     const agreeInputRef = ref<ComponentPublicInstance>()
+    const selectInputRef = ref<ComponentPublicInstance>()
 
     const schema = ref(
       object({
         name: pipe(string('Name is required'), nonEmpty('Name is required')),
         age: pipe(number('Age is required'), minValue(18, 'Age must be greater than 18'), maxValue(100, 'Age must be less than 100')),
-        agree: pipe(boolean('You must agree to the terms and conditions')),
+        agree: pipe(boolean('You must agree to the terms and conditions'), literal(true, 'You must agree to the terms and conditions')),
+        country: pipe(string('Country is required'), nonEmpty('Country is required')),
       }),
     )
 
@@ -105,13 +117,17 @@ description: useFormValidator and useFormField are two Vue 3 composables designe
       options: { mode: 'eager', scrollToErrorSelector: '.has-error' },
     })
 
-    const { value: name, errorMessage: nameErrorMessage, isValid: nameIsValid, hasError: nameHasError } = useFormField<Model>('name', {
+    const { value: name, errorMessage: nameErrorMessage, hasError: nameHasError } = useFormField<Model>('name', {
       componentRef: nameInputRef,
     })
-    const { value: age, errorMessage: ageErrorMessage, isValid: ageIsValid, hasError: ageHasError } = useFormField<Model>('age', {
+    const { value: age, errorMessage: ageErrorMessage, hasError: ageHasError } = useFormField<Model>('age', {
       componentRef: ageInputRef,
     })
-    const { value: agree, errorMessage: agreeErrorMessage, isValid: agreeIsValid, hasError: agreeHasError } = useFormField<Model>('agree', {
+    const { value: country, errorMessage: countryErrorMessage, hasError: countryHasError } = useFormField<Model>('country', {
+      componentRef: selectInputRef,
+      mode: 'lazy',
+    })
+    const { value: agree, errorMessage: agreeErrorMessage, hasError: agreeHasError } = useFormField<Model>('agree', {
       componentRef: agreeInputRef,
     })
 
@@ -165,6 +181,7 @@ description: useFormValidator and useFormField are two Vue 3 composables designe
   })
   const { value: country, errorMessage: countryErrorMessage, hasError: countryHasError } = useFormField<Model>('country', {
     componentRef: selectInputRef,
+    mode: 'lazy',
   })
   const { value: agree, errorMessage: agreeErrorMessage, hasError: agreeHasError } = useFormField<Model>('agree', {
     componentRef: agreeInputRef,
@@ -254,6 +271,10 @@ const onSubmit = handleSubmit(async (formData) => {
 
 ## useFormField
 
+::: warning
+Before using `useFormField`, make sure you have initialized the form with `useFormValidator`.
+:::
+
 `useFormField` is a composable for handling validation at the individual form field level.
 
 ### Parameters
@@ -262,7 +283,7 @@ const onSubmit = handleSubmit(async (formData) => {
 - `options`: `FormFieldOptions<T>` (optional) - Field-specific options.
   - `defaultValue`: `FieldType` (optional) - The default value of the field.
   - `mode`: `Options['mode']` (optional) - The validation mode for the field (default: 'eager') - [see validation modes](#validation-modes)
-  - `componentRef`: `Ref<ComponentPublicInstance>` (optional) - Reference to the component to associate and trigger validation events (not necessary for `lazy`, `aggressive` validation modes)
+  - `componentRef`: `Ref<ComponentPublicInstance | HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>` (optional) - Reference to the component to associate and trigger validation events (not necessary for `lazy`, `aggressive` validation modes)
 
 ### Return
 

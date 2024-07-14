@@ -2,21 +2,11 @@ import type { SafeParseResult } from 'valibot'
 import type { InjectionKey, Ref, WatchStopHandle } from 'vue'
 import { computed, inject, onUnmounted, provide, reactive, ref, toValue, watch } from 'vue'
 
-import { sleep } from '../../helpers/sleep'
 import { debounceAsync } from '../../helpers/debounce-async'
 import { freezeValue } from '../../helpers/freeze-value'
 import { isEqual } from '../../helpers/is-equal'
+import { sleep } from '../../helpers/sleep'
 import { throttleAsync } from '../../helpers/throttle-async'
-import type {
-  BaseFormPayload,
-  ExtractModelKey,
-  FieldsStates,
-  FormContext,
-  FormFieldOptions,
-  ObjectValidationSchema,
-  Options,
-  StrictOptions,
-} from './types'
 import {
   addEventToInteractiveElements,
   fieldHasValidation,
@@ -29,17 +19,25 @@ import {
   removeEventFromInteractiveElements,
   scrollToError,
 } from './utils'
+import type {
+  BaseFormPayload,
+  ExtractModelKey,
+  FieldsStates,
+  FormContext,
+  FormFieldOptions,
+  ObjectValidationSchema,
+  Options,
+  StrictOptions,
+} from './types'
 
 const FormContextKey: InjectionKey<FormContext> = Symbol('FormContext')
 
 let formContext: FormContext | null = null
 
-export type UseFormValidator<T extends BaseFormPayload = BaseFormPayload> = typeof useFormValidator<T>
-
 export function useFormValidator<
   Model extends BaseFormPayload,
   ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>,
-  Schema extends ObjectValidationSchema = ObjectValidationSchema,
+  Schema extends ObjectValidationSchema<Model> = ObjectValidationSchema<Model>,
 >({
   schema,
   model,
@@ -267,11 +265,6 @@ export function useFormValidator<
   }
 }
 
-export type UseFormField<
-  T extends BaseFormPayload = BaseFormPayload,
-  Key extends Extract<keyof T, string> = Extract<keyof T, string>,
-> = typeof useFormField<T, Key>
-
 export function useFormField<
   Model extends BaseFormPayload,
   ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>,
@@ -344,19 +337,27 @@ export function useFormField<
     let interactiveElements: HTMLElement[] = []
     let unwatchHandle: WatchStopHandle | null = null
 
+    const addEvents = () => {
+      addEventToInteractiveElements({
+        interactiveElements,
+        onBlur: blurEvents.onBlur,
+        onInput: inputEvents['onUpdate:modelValue'],
+        mode: fieldState.value.mode,
+      })
+    }
+
     unwatchHandle = watch(
       opts.componentRef,
       (newRef) => {
-        if (newRef?.$el) {
+        if (newRef && newRef instanceof HTMLElement) {
+          unwatchHandle?.()
+          interactiveElements = findInteractiveElements(newRef)
+          addEvents()
+        }
+        else if (newRef?.$el) {
           unwatchHandle?.()
           interactiveElements = findInteractiveElements(newRef.$el)
-
-          addEventToInteractiveElements({
-            interactiveElements,
-            onBlur: blurEvents.onBlur,
-            onInput: inputEvents['onUpdate:modelValue'],
-            mode: fieldState.value.mode,
-          })
+          addEvents()
         }
       },
       { immediate: true },

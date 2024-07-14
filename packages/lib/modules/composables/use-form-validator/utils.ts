@@ -26,7 +26,10 @@ export async function getValibotValidationMethod() {
   return safeParseAsync
 }
 
-export function fieldHasValidation(field: string, schema: ObjectValidationSchema) {
+export function fieldHasValidation<Model extends BaseFormPayload>(
+  field: string,
+  schema: ObjectValidationSchema<Model>,
+) {
   return Object.keys(schema.entries).includes(field)
 }
 
@@ -43,7 +46,7 @@ export function isEmptyValue(value: unknown) {
 }
 
 export function getFieldState<
-  Model extends BaseFormPayload,
+  Model extends BaseFormPayload = BaseFormPayload,
   ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>,
 >({
   name,
@@ -52,11 +55,11 @@ export function getFieldState<
   mode,
 }: {
   name: ModelKey
-  schema?: ObjectValidationSchema
-  initialValue: Model[ModelKey]
+  schema?: ObjectValidationSchema<Model>
+  initialValue?: Model[ModelKey] | Readonly<Model[ModelKey]>
   mode?: StrictOptions['mode'] | 'none'
-}): FieldState<Model[ModelKey]> {
-  const hasValidation = schema ? fieldHasValidation(name, schema) : false
+}): FieldState<Model> {
+  const hasValidation = schema ? fieldHasValidation<Model>(name, schema) : false
 
   return {
     blurred: false,
@@ -74,7 +77,7 @@ export function getFieldState<
 export function getFieldsStates<
   Model extends BaseFormPayload,
   ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>,
->(schema: ObjectValidationSchema, payload: Partial<Model>, mode: StrictOptions['mode']): FieldsStates<Model> {
+>(schema: ObjectValidationSchema<Model>, payload: Partial<Model>, mode: StrictOptions['mode']): FieldsStates<Model> {
   const fieldsStates = {} as FieldsStates<Model>
 
   for (const [name] of Object.entries(schema.entries)) {
@@ -103,10 +106,10 @@ export function mergeFieldState<
   name: ModelKey
   fieldsStates: FieldsStates<Model>
   payload: Ref<Model>
-  schema: Ref<ObjectValidationSchema>
+  schema: Ref<ObjectValidationSchema<Model>>
   options: FormFieldOptions<Model[ModelKey]>
 }) {
-  const newFieldState = getFieldState({
+  const newFieldState = getFieldState<Model>({
     name,
     schema: schema.value,
     initialValue: freezeValue(options.defaultValue ?? payload.value[name]),
@@ -124,7 +127,7 @@ export function getFieldsErrors<
   Model extends BaseFormPayload,
   ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>,
 >(fieldsStates: FieldsStates<Model>) {
-  const fieldsErrors = {} as Record<ModelKey, ValidationIssues>
+  const fieldsErrors = {} as Record<ModelKey, ValidationIssues<Model>>
 
   for (const [name, { errors }] of Object.entries(fieldsStates)) {
     fieldsErrors[name as ModelKey] = errors
@@ -134,7 +137,11 @@ export function getFieldsErrors<
 }
 
 export function findInteractiveElements(el: HTMLElement) {
-  return el.querySelectorAll<HTMLElement>('input, select, textarea') as unknown as HTMLElement[]
+  if (el instanceof HTMLInputElement || el instanceof HTMLSelectElement || el instanceof HTMLTextAreaElement) {
+    return [el]
+  }
+
+  return [...el.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>('input, select, textarea')]
 }
 
 export function addEventToInteractiveElements({
@@ -154,8 +161,6 @@ export function addEventToInteractiveElements({
     }
 
     if (['onInput', 'eager'].includes(mode)) {
-      element.addEventListener('change', onInput)
-
       if (element.getAttribute('type') === 'radio' || element.getAttribute('type') === 'checkbox') {
         element.addEventListener('change', onInput)
       }

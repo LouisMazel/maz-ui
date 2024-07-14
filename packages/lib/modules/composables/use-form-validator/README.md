@@ -101,6 +101,8 @@ const onSubmit = handleSubmit(async (formData) => {
 
 ## useFormField
 
+> Before using `useFormField`, make sure you have initialized the form with `useFormValidator`.
+
 `useFormField` is a composable for handling validation at the individual form field level.
 
 ### Parameters
@@ -109,7 +111,7 @@ const onSubmit = handleSubmit(async (formData) => {
 - `options`: `FormFieldOptions<T>` (optional) - Field-specific options.
   - `defaultValue`: `FieldType` (optional) - The default value of the field.
   - `mode`: `Options['mode']` (optional) - The validation mode for the field.
-  - `componentRef`: `Ref<ComponentPublicInstance>` (optional) - Reference to the component to associate and trigger validation events (not necessary for `lazy`, `aggressive` validation modes)
+  - `componentRef`: `Ref<ComponentPublicInstance | HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>` (optional) - Reference to the component to associate and trigger validation events (not necessary for `lazy`, `aggressive` validation modes)
 
 ### Return
 
