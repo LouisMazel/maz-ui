@@ -70,6 +70,12 @@ export function useFormValidator<
   const isValid = computed(() => Object.values(fieldsStates).every(({ valid }) => valid))
   const isDirty = computed(() => Object.values(fieldsStates).some(({ dirty }) => dirty))
   const errors = computed(() => getFieldsErrors(fieldsStates))
+  const errorMessages = computed(() => {
+    return Object.entries(errors.value).reduce((acc, [name, value]) => {
+      acc[name] = fieldsStates[name].error ? value[0].message : undefined
+      return acc
+    }, {} as Record<ModelKey, string | undefined>)
+  })
 
   async function getFieldValidationResult(name: ModelKey): Promise<{
     result: SafeParseResult<Schema['entries'][ModelKey]>
@@ -228,6 +234,7 @@ export function useFormValidator<
     options: opts,
     schema,
     setFieldValidationState,
+    errorMessages,
   } satisfies FormContext<Model, ModelKey>
 
   formContext = context as unknown as FormContext
@@ -262,6 +269,7 @@ export function useFormValidator<
     validateForm,
     scrollToError,
     handleSubmit,
+    errorMessages,
   }
 }
 
@@ -285,6 +293,7 @@ export function useFormField<
     addFieldValidationWatch,
     schema,
     setFieldValidationState,
+    errorMessages,
   } = context
 
   const opts = {
@@ -373,13 +382,10 @@ export function useFormField<
     })
   }
 
-  const hasError = computed(() => fieldState.value.error)
-  const errors = computed(() => fieldState.value.errors)
-
   return {
-    hasError,
-    errors,
-    errorMessage: computed(() => (hasError.value ? errors.value[0]?.message : undefined)),
+    hasError: computed(() => fieldState.value.error),
+    errors: computed(() => fieldState.value.errors),
+    errorMessage: computed(() => errorMessages.value[name]),
     isValid: computed(() => fieldState.value.valid),
     isDirty: computed(() => fieldState.value.dirty),
     isBlurred: computed(() => fieldState.value.blurred),

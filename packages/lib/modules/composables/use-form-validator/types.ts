@@ -73,6 +73,7 @@ export interface FormContext<
   options: StrictOptions
   schema: Ref<ObjectValidationSchema<Model>>
   payload: Ref<Model>
+  errorMessages: Ref<Record<ModelKey, string | undefined>>
 }
 
 export interface FieldState<Model extends BaseFormPayload, FieldType = Model[ExtractModelKey<Model>]> {
