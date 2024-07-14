@@ -11,27 +11,18 @@ import type { ComponentPublicInstance, Ref } from 'vue'
 
 import type { useFormField, useFormValidator } from './index'
 
-export type ValidationAsync<
-  TInput extends BaseFormPayload,
-  TOutput extends BaseFormPayload = TInput,
-  TIssue extends BaseIssue<TInput> = BaseIssue<TInput>,
-> = BaseSchema<TInput, TOutput, TIssue> | BaseSchemaAsync<TInput, TOutput, TIssue>
-export type ValidationSync<
-  TInput extends BaseFormPayload,
-  TOutput extends BaseFormPayload = TInput,
-  TIssue extends BaseIssue<TInput> = BaseIssue<TInput>,
-> = BaseSchema<TInput, TOutput, TIssue>
-
-export type Validation<TInput extends BaseFormPayload> = ValidationSync<TInput> | ValidationAsync<TInput>
+export type ValidationSync = BaseSchema<unknown, unknown, BaseIssue<unknown>>
+export type ValidationAsync = ValidationSync | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>
+export type Validation = ValidationAsync
 
 export type ObjectValidationSchema<
   Model extends BaseFormPayload = BaseFormPayload,
   ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>,
 > =
-  | ObjectSchemaAsync<Record<ModelKey, ValidationAsync<Model>>, ErrorMessage<BaseIssue<unknown>> | undefined>
-  | ObjectSchema<Record<ModelKey, ValidationSync<Model>>, ErrorMessage<BaseIssue<unknown>> | undefined>
+  | ObjectSchemaAsync<Record<ModelKey, ValidationAsync>, ErrorMessage<BaseIssue<unknown>> | undefined>
+  | ObjectSchema<Record<string, ValidationSync>, ErrorMessage<BaseIssue<unknown>> | undefined>
 
-export type ValidationIssues<TInput extends BaseFormPayload> = InferIssue<Validation<TInput>>[]
+export type ValidationIssues = InferIssue<Validation>[]
 
 export type ExtractModelKey<T> = Extract<keyof T, string>
 
@@ -88,7 +79,7 @@ export interface FieldState<Model extends BaseFormPayload, FieldType = Model[Ext
   blurred: boolean
   dirty: boolean
   error: boolean
-  errors: ValidationIssues<Model>
+  errors: ValidationIssues
   valid: boolean
   initialValue?: FieldType | Readonly<FieldType>
   validating: boolean
