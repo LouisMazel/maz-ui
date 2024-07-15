@@ -1,4 +1,4 @@
-type AsyncFunction<T, Args extends unknown[]> = (...args: Args) => Promise<T>
+type AsyncFunction<T, Args extends unknown[]> = (...args: Args) => T | Promise<T>
 
 interface ThrottleState<T, Args extends unknown[]> {
   promise: Promise<T> | null
@@ -9,7 +9,7 @@ interface ThrottleState<T, Args extends unknown[]> {
 /**
  * Throttle an async function - called at first call and then at intervals (only the last call is executed)
  */
-export function throttleAsync<T, Args extends unknown[]>(
+export function throttleId<T, Args extends unknown[]>(
   func: AsyncFunction<T, Args>,
   interval: number,
 ): (identifier: string, ...args: Args) => Promise<T> {

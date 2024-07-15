@@ -1,4 +1,4 @@
-type AsyncFunction<T, Args extends unknown[]> = (...args: Args) => Promise<T>
+type AsyncFunction<T, Args extends unknown[]> = (...args: Args) => T | Promise<T>
 
 interface DebouncedFunctionMap<T> {
   [key: string]: {
@@ -10,7 +10,7 @@ interface DebouncedFunctionMap<T> {
 /**
  * Debounce an async function - called after a delay (only the last call is executed)
  */
-export function debounceAsync<T, Args extends unknown[]>(
+export function debounceId<T, Args extends unknown[]>(
   func: AsyncFunction<T, Args>,
   delay: number,
 ): (identifier: string, ...args: Args) => Promise<T> {

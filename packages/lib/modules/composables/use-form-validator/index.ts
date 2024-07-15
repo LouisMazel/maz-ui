@@ -1,11 +1,11 @@
 import type { ComponentInternalInstance, InjectionKey, Ref, WatchStopHandle } from 'vue'
 import { computed, getCurrentInstance, inject, onUnmounted, provide, ref, toValue, watch } from 'vue'
 
-import { debounceAsync } from '../../helpers/debounce-async'
+import { debounceId } from '../../helpers/debounce-id'
+import { throttleId } from '../../helpers/throttle-id'
 import { freezeValue } from '../../helpers/freeze-value'
 import { isEqual } from '../../helpers/is-equal'
 import { sleep } from '../../helpers/sleep'
-import { throttleAsync } from '../../helpers/throttle-async'
 import {
   addEventToInteractiveElements,
   fieldHasValidation,
@@ -131,11 +131,11 @@ export function useFormValidator<
   async function validateField(name: ModelKey) {
     if (opts.throttledFields?.[name]) {
       const delay = typeof opts.throttledFields?.[name] === 'number' ? opts.throttledFields[name] : 1000
-      throttleAsync(setFieldValidationState, delay)(name, name)
+      throttleId(setFieldValidationState, delay)(name, name)
     }
     else if (opts.debouncedFields?.[name]) {
       const delay = typeof opts.debouncedFields?.[name] === 'number' ? opts.debouncedFields[name] : 300
-      debounceAsync(setFieldValidationState, delay)(name, name)
+      debounceId(setFieldValidationState, delay)(name, name)
     }
     else {
       setFieldValidationState(name)
