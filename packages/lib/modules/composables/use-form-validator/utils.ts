@@ -10,9 +10,10 @@ import type {
   ValidationIssues,
 } from './types'
 
-const storeValidbot: Record<keyof typeof import('valibot') | string, any> = {}
+type Valibot = typeof import('valibot')
+const storeValidbot: Record<keyof Valibot | string, any> = {}
 
-export async function getValibotValidationMethod(methodName: keyof typeof import('valibot')) {
+export async function getValibotValidationMethod<MethodName extends keyof Valibot>(methodName: MethodName): Promise<Valibot[MethodName]> {
   if (storeValidbot[methodName]) {
     return storeValidbot[methodName]
   }
@@ -54,7 +55,7 @@ export function getFieldState<
 }: {
   name: ModelKey
   schema?: FormSchema<Model>
-  initialValue?: Model[ModelKey] | Readonly<Model[ModelKey]>
+  initialValue?: Readonly<Model[ModelKey]>
   mode?: StrictOptions['mode'] | 'none'
 }): FieldState<Model> {
   const hasValidation = schema ? fieldHasValidation<Model>(name, schema) : false
@@ -68,7 +69,7 @@ export function getFieldState<
     validating: false,
     validated: false,
     mode: hasValidation ? mode ?? 'eager' : 'none',
-    initialValue,
+    initialValue: freezeValue(initialValue),
   }
 }
 
@@ -84,7 +85,7 @@ export function getFieldsStates<
       name: fieldName,
       schema,
       mode,
-      initialValue: payload[name] as Model[ModelKey],
+      initialValue: freezeValue(payload[name]),
     })
   }
 
@@ -110,7 +111,7 @@ export function mergeFieldState<
   const newFieldState = getFieldState<Model>({
     name,
     schema,
-    initialValue: freezeValue(options.defaultValue ?? payload[name]),
+    initialValue: options.defaultValue ?? payload[name],
     mode: options.mode,
   })
 
@@ -154,11 +155,11 @@ export function addEventToInteractiveElements({
   mode: StrictOptions['mode'] | 'none'
 }) {
   interactiveElements.forEach((element) => {
-    if (['onBlur', 'eager'].includes(mode)) {
+    if (['blur', 'eager'].includes(mode)) {
       element.addEventListener('blur', onBlur)
     }
 
-    if (['onInput', 'eager'].includes(mode)) {
+    if (mode === 'eager') {
       if (element.getAttribute('type') === 'radio' || element.getAttribute('type') === 'checkbox') {
         element.addEventListener('change', onInput)
       }
