@@ -1,12 +1,12 @@
-import { throttleAsync } from '@modules/helpers/throttle-async'
+import { throttleId } from '@modules/helpers/throttle-id'
 
-describe('given throttleAsync function', () => {
+describe('given throttleId function', () => {
   describe('when calling a throttled function multiple times within the interval', () => {
     it('then it should only execute once immediately and queue the next call', async () => {
       vi.useFakeTimers()
 
       const mockFn = vi.fn().mockResolvedValue('result')
-      const throttledFn = throttleAsync(mockFn, 1000)
+      const throttledFn = throttleId(mockFn, 1000)
 
       throttledFn('test', 1)
       await vi.advanceTimersByTimeAsync(300)
@@ -30,7 +30,7 @@ describe('given throttleAsync function', () => {
     it('then it should execute separately for each identifier', async () => {
       vi.useFakeTimers()
       const mockFn = vi.fn().mockResolvedValue('result')
-      const throttledFn = throttleAsync(mockFn, 1000)
+      const throttledFn = throttleId(mockFn, 1000)
 
       throttledFn('id1', 1)
       throttledFn('id2', 2)
@@ -47,7 +47,7 @@ describe('given throttleAsync function', () => {
     it('then it should reject with the error', async () => {
       vi.useFakeTimers()
       const mockFn = vi.fn().mockRejectedValue(new Error('Test error'))
-      const throttledFn = throttleAsync(mockFn, 1000)
+      const throttledFn = throttleId(mockFn, 1000)
 
       await expect(throttledFn('test')).rejects.toThrow('Test error')
 

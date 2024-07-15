@@ -1,11 +1,11 @@
-import { debounceAsync } from '@modules/helpers/debounce-async'
+import { debounceId } from '@modules/helpers/debounce-id'
 
-describe('given debounceAsync function', () => {
+describe('given debounceId function', () => {
   describe('when calling a debounced function multiple times', () => {
     it('then it should only execute once after the delay', async () => {
       vi.useFakeTimers()
       const mockFn = vi.fn().mockResolvedValue('result')
-      const debouncedFn = debounceAsync(mockFn, 100)
+      const debouncedFn = debounceId(mockFn, 100)
 
       debouncedFn('test', 1, 2, 3)
       debouncedFn('test', 4, 5, 6)
@@ -26,7 +26,7 @@ describe('given debounceAsync function', () => {
     it('then it should execute separately for each identifier', async () => {
       vi.useFakeTimers()
       const mockFn = vi.fn().mockResolvedValue('result')
-      const debouncedFn = debounceAsync(mockFn, 100)
+      const debouncedFn = debounceId(mockFn, 100)
 
       debouncedFn('id1', 1, 2, 3)
       debouncedFn('id2', 4, 5, 6)
