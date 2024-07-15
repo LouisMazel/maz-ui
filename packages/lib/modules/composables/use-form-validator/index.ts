@@ -1,6 +1,5 @@
-import type { SafeParseResult } from 'valibot'
-import type { InjectionKey, MaybeRefOrGetter, ModelRef, Ref, WatchStopHandle } from 'vue'
-import { computed, inject, onUnmounted, provide, ref, toValue, watch } from 'vue'
+import type { ComponentInternalInstance, InjectionKey, Ref, WatchStopHandle } from 'vue'
+import { computed, getCurrentInstance, inject, onUnmounted, provide, ref, toValue, watch } from 'vue'
 
 import { debounceAsync } from '../../helpers/debounce-async'
 import { freezeValue } from '../../helpers/freeze-value'
@@ -27,36 +26,33 @@ import type {
   FormContext,
   FormFieldOptions,
   FormSchema,
-  ObjectValidationSchema,
-  Options,
   StrictOptions,
+  UseFormValidatorParams,
 } from './types'
 
-const FormContextKey: InjectionKey<FormContext> = Symbol('FormContext')
-
-let formContext: FormContext | null = null
+type CustomInstance = ComponentInternalInstance & { formContexts?: Map<string | symbol | InjectionKey<FormContext>, FormContext> }
+const FormContextKey: InjectionKey<FormContext> = Symbol('main')
 
 export function useFormValidator<
   Model extends BaseFormPayload,
   ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>,
-  SchemaType extends FormSchema<Model> = FormSchema<Model>,
-  ValibotSchema extends ObjectValidationSchema<Model> = ObjectValidationSchema<Model>,
 >({
   schema,
   model,
   defaultValues,
   options,
-}: {
-  schema: MaybeRefOrGetter<SchemaType>
-  model?: Ref<Partial<Model>> | ModelRef<Model>
-  defaultValues?: Partial<Model>
-  options?: Options<Model>
-}) {
+}: UseFormValidatorParams<Model>) {
+  const instance = getCurrentInstance() as CustomInstance
+  if (!instance) {
+    throw new Error('useFormValidator must be called within setup()')
+  }
+
   const opts = {
-    mode: 'eager',
+    mode: 'lazy',
     scrollToErrorSelector: '.has-input-error',
     debouncedFields: null,
     throttledFields: null,
+    identifier: FormContextKey,
     ...options,
   } satisfies StrictOptions<Model>
 
@@ -90,10 +86,7 @@ export function useFormValidator<
     }, {} as Record<ModelKey, string | undefined>)
   })
 
-  async function getFieldValidationResult(name: ModelKey): Promise<{
-    result: SafeParseResult<ValibotSchema['entries'][ModelKey]>
-    isValid: boolean
-  }> {
+  async function getFieldValidationResult(name: ModelKey) {
     const schema = await getValidationSchema(internalSchema.value)
     const safeParseAsync = await getValibotValidationMethod('safeParseAsync')
     const result = await safeParseAsync(schema.entries[name], payload.value[name] ?? '')
@@ -136,12 +129,12 @@ export function useFormValidator<
   }
 
   async function validateField(name: ModelKey) {
-    if (typeof opts.throttledFields?.[name] === 'number' || opts.throttledFields?.[name]) {
-      const delay = (typeof opts.throttledFields?.[name] === 'number' ? opts.throttledFields?.[name] : 1000) as number
+    if (opts.throttledFields?.[name]) {
+      const delay = typeof opts.throttledFields?.[name] === 'number' ? opts.throttledFields[name] : 1000
       throttleAsync(setFieldValidationState, delay)(name, name)
     }
-    else if (typeof opts.debouncedFields?.[name] === 'number' || opts.debouncedFields?.[name]) {
-      const delay = (typeof opts.debouncedFields?.[name] === 'number' ? opts.debouncedFields?.[name] : 300) as number
+    else if (opts.debouncedFields?.[name]) {
+      const delay = typeof opts.debouncedFields?.[name] === 'number' ? opts.debouncedFields[name] : 300
       debounceAsync(setFieldValidationState, delay)(name, name)
     }
     else {
@@ -174,13 +167,12 @@ export function useFormValidator<
   }
 
   function canExecuteValidation(name: ModelKey) {
-    const { dirty, blurred, mode } = fieldsStates.value[name]
+    const { blurred, mode } = fieldsStates.value[name]
 
     return (
       isSubmitted.value
       || (mode === 'eager' && blurred)
-      || (mode === 'onInput' && dirty)
-      || (mode === 'onBlur' && blurred)
+      || (mode === 'blur' && blurred)
       || mode === 'aggressive'
       || mode === 'lazy'
     )
@@ -254,9 +246,10 @@ export function useFormValidator<
     errorMessages,
   } satisfies FormContext<Model, ModelKey>
 
-  formContext = context as unknown as FormContext
+  provide(opts.identifier, context as unknown as FormContext)
 
-  provide(FormContextKey, context as unknown as FormContext)
+  instance.formContexts ??= new Map()
+  instance.formContexts.set(opts.identifier, context as unknown as FormContext)
 
   if (['aggressive', 'lazy'].includes(opts.mode)) {
     addFieldsValidationWatch()
@@ -277,6 +270,7 @@ export function useFormValidator<
   )
 
   return {
+    identifier: opts.identifier,
     isDirty,
     isSubmitting,
     isSubmitted,
@@ -292,12 +286,21 @@ export function useFormValidator<
   }
 }
 
-export function useFormField<
-  Model extends BaseFormPayload,
-  ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>,
-  FieldType = Model[ModelKey] | undefined,
->(name: ModelKey, options?: FormFieldOptions<FieldType>) {
-  const context = formContext ?? inject<FormContext>(FormContextKey)
+export function useFormField<FieldType = unknown, Model extends BaseFormPayload = BaseFormPayload>(
+  name: ExtractModelKey<Model>,
+  options?: Omit<FormFieldOptions<FieldType>, 'context'>,
+) {
+  const opts = {
+    formIdentifier: FormContextKey,
+    ...options,
+  } satisfies FormFieldOptions<FieldType>
+
+  const instance = getCurrentInstance() as CustomInstance
+  if (!instance) {
+    throw new Error('useFormField must be called within setup()')
+  }
+
+  const context = instance.formContexts?.get(opts.formIdentifier) ?? inject<FormContext>(opts.formIdentifier)
 
   if (!context) {
     throw new Error('useFormField must be used within a form (useFormValidator)')
@@ -315,10 +318,7 @@ export function useFormField<
     errorMessages,
   } = context
 
-  const opts = {
-    ...options,
-    mode: fieldHasValidation(name, internalSchema.value) ? options?.mode ?? formOptions.mode : 'none',
-  } satisfies FormFieldOptions<FieldType>
+  opts.mode = fieldHasValidation(name, internalSchema.value) ? options?.mode ?? formOptions.mode : 'none'
 
   fieldsStates.value[name] = mergeFieldState({ name, fieldsStates: fieldsStates.value, payload: payload.value, schema: internalSchema.value, options: opts })
 
@@ -350,7 +350,7 @@ export function useFormField<
       return
     }
 
-    if (fieldState.value.mode === 'onInput' || (fieldState.value.blurred && fieldState.value.mode === 'eager')) {
+    if (fieldState.value.blurred && fieldState.value.mode === 'eager') {
       return inputEvents
     }
 

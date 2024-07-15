@@ -1,13 +1,5 @@
-import type {
-  BaseIssue,
-  BaseSchema,
-  BaseSchemaAsync,
-  ErrorMessage,
-  InferIssue,
-  ObjectSchema,
-  ObjectSchemaAsync,
-} from 'valibot'
-import type { ComponentPublicInstance, Ref } from 'vue'
+import type { BaseIssue, BaseSchema, BaseSchemaAsync, InferIssue } from 'valibot'
+import type { ComponentPublicInstance, InjectionKey, MaybeRefOrGetter, ModelRef, Ref } from 'vue'
 
 import type { useFormField, useFormValidator } from './index'
 
@@ -15,20 +7,13 @@ export type ValidationSync = BaseSchema<unknown, unknown, BaseIssue<unknown>>
 export type ValidationAsync = ValidationSync | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>
 export type Validation = ValidationAsync
 
-export type ObjectValidationSchema<
-  Model extends BaseFormPayload = BaseFormPayload,
-  ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>,
-> =
-  | ObjectSchemaAsync<Record<ModelKey, ValidationAsync>, ErrorMessage<BaseIssue<unknown>> | undefined>
-  | ObjectSchema<Record<string, ValidationSync>, ErrorMessage<BaseIssue<unknown>> | undefined>
-
 export type ValidationIssues = InferIssue<Validation>[]
 
-export type FormSchema<Model extends BaseFormPayload, ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>> = Record<ModelKey, Validation>
+export type FormSchema<Model extends BaseFormPayload> = Record<ExtractModelKey<Model>, Validation>
 
 export type ExtractModelKey<T> = Extract<keyof T, string>
 
-export interface Options<
+export interface FormValidatorOptions<
   Model extends BaseFormPayload = BaseFormPayload,
   ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>,
 > {
@@ -37,11 +22,10 @@ export interface Options<
    * - eager: validate on blur at first (only if the field is not empty) and then on input value change
    * - lazy: validate on input value change
    * - aggressive: validate all fields immediately on form creation and on input value change
-   * - onBlur: validate on blur
-   * - onInput: validate on input value change
+   * - blur: validate on blur
    * @default 'eager'
    */
-  mode?: 'eager' | 'lazy' | 'aggressive' | 'onBlur' | 'onInput'
+  mode?: 'eager' | 'lazy' | 'aggressive' | 'blur'
   /**
    * Fields that should be throttled
    * Useful for fields that require a network request to avoid spamming the server
@@ -59,8 +43,13 @@ export interface Options<
    * @default '.has-input-error'
    */
   scrollToErrorSelector?: string
+  /**
+   * Identifier to use for the form
+   * Useful to have multiple forms on the same page
+   */
+  identifier?: string | symbol | InjectionKey<FormContext>
 }
-export type StrictOptions<Model extends BaseFormPayload = BaseFormPayload> = Required<Options<Model>>
+export type StrictOptions<Model extends BaseFormPayload = BaseFormPayload> = Required<FormValidatorOptions<Model>>
 
 export interface FormContext<
   Model extends BaseFormPayload = BaseFormPayload,
@@ -84,24 +73,40 @@ export interface FieldState<Model extends BaseFormPayload, FieldType = Model[Ext
   error: boolean
   errors: ValidationIssues
   valid: boolean
-  initialValue?: FieldType | Readonly<FieldType>
+  initialValue?: Readonly<FieldType>
   validating: boolean
   validated: boolean
   mode: StrictOptions['mode'] | 'none'
 }
 
-export type FieldsStates<
-  Model extends BaseFormPayload = BaseFormPayload,
-  ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>,
-> = Record<ModelKey, FieldState<Model>>
+export type FieldsStates<Model extends BaseFormPayload = BaseFormPayload> = Record<
+  ExtractModelKey<Model>,
+  FieldState<Model>
+>
 
 export type BaseFormPayload = Record<string, any>
 
-export interface FormFieldOptions<T> {
+export interface FormFieldOptions<FieldType = unknown> {
   mode?: StrictOptions['mode'] | 'none'
-  defaultValue?: T
+  /** Default value for the field */
+  defaultValue?: FieldType
+  /**
+   * Identifier to use for the form
+   * Useful to have multiple forms on the same page
+   */
+  formIdentifier?: string | symbol | InjectionKey<FormContext>
+  /** Ref to the component instance or the input element */
   componentRef?: Ref<ComponentPublicInstance | HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | undefined>
 }
 
-export type UseFormValidator<T extends BaseFormPayload = BaseFormPayload> = typeof useFormValidator<T>
-export type UseFormField<T extends BaseFormPayload = BaseFormPayload> = typeof useFormField<T>
+export type UseFormValidator<Model extends BaseFormPayload = BaseFormPayload> = typeof useFormValidator<Model>
+export interface UseFormValidatorParams<Model extends BaseFormPayload> {
+  schema: MaybeRefOrGetter<FormSchema<Model>>
+  model?: Ref<Partial<Model>> | ModelRef<Partial<Model>>
+  defaultValues?: Partial<Model>
+  options?: FormValidatorOptions<Model>
+}
+export type UseFormField<FieldType = unknown, Model extends BaseFormPayload = BaseFormPayload> = typeof useFormField<
+  FieldType,
+  Model
+>

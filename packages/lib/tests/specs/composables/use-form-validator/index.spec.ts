@@ -31,8 +31,8 @@ function createFormComponent(_useFormValidator: UseFormValidator<Model>, _useFor
         options: { mode: 'aggressive' },
       })
 
-      const nameField = _useFormField<Model, 'name'>('name')
-      const ageField = _useFormField<Model, 'age'>('age', { defaultValue: 10 })
+      const nameField = _useFormField<string, Model>('name')
+      const ageField = _useFormField<number, Model>('age', { defaultValue: 10 })
 
       return { form, nameField, ageField }
     },
@@ -101,8 +101,8 @@ describe('given useFormValidator', () => {
 
 describe('given useFormField', () => {
   let wrapper: ReturnType<typeof mount>
-  let nameField: ReturnType<UseFormField<Model>>
-  let ageField: ReturnType<UseFormField<Model>>
+  let nameField: ReturnType<UseFormField<string, Model>>
+  let ageField: ReturnType<UseFormField<string, Model>>
 
   beforeEach(() => {
     const FormComponent = createFormComponent(useFormValidator, useFormField)
