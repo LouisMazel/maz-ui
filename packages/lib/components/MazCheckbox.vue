@@ -33,7 +33,7 @@ const emits = defineEmits([
 export interface Props {
   style?: HTMLAttributes['style']
   class?: HTMLAttributes['class']
-  modelValue?: boolean | (string | number)[]
+  modelValue?: boolean | string | (string | number)[]
   id?: string
   color?: Color
   value?: string | number | boolean
@@ -114,11 +114,11 @@ const checkboxBoxShadow = computed(() =>
 function keyboardHandler(event: KeyboardEvent) {
   if (['Space'].includes(event.code)) {
     event.preventDefault()
-    emitValue(props.value ?? !props.modelValue)
+    emitValue((event?.target as HTMLInputElement)?.checked, props.value)
   }
 }
 
-function getNewValue(value: boolean | string | number) {
+function getNewValue(checked: boolean, value: boolean | string | number) {
   if (
     typeof value === 'boolean'
     && (typeof props.modelValue === 'boolean'
@@ -133,12 +133,12 @@ function getNewValue(value: boolean | string | number) {
       : [...props.modelValue, value]
   }
   else {
-    return [value]
+    return checked ? value : undefined
   }
 }
 
-function emitValue(value: boolean | string | number) {
-  const newValue = getNewValue(value)
+function emitValue(checked: boolean, value: boolean | string | number) {
+  const newValue = getNewValue(checked, value)
 
   emits('update:model-value', newValue)
   emits('change', newValue)
@@ -154,7 +154,6 @@ function emitValue(value: boolean | string | number) {
     :style="style"
     role="checkbox"
     :aria-checked="isChecked"
-    @keydown="keyboardHandler"
   >
     <input
       :id="instanceId"
@@ -164,7 +163,8 @@ function emitValue(value: boolean | string | number) {
       :disabled="disabled"
       :name="name"
       type="checkbox"
-      @change="emitValue(value ?? ($event?.target as HTMLInputElement)?.checked)"
+      @keydown="keyboardHandler"
+      @change="emitValue(($event?.target as HTMLInputElement)?.checked, value)"
     >
     <span>
       <CheckIcon class="check-icon" :class="checkIconSize" />
