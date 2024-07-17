@@ -30,9 +30,9 @@
     "stylelint-config-recommended-vue": "^1.5.0",
     "stylelint-config-standard": "^36.0.1",
     "stylelint-config-tailwindcss": "^0.0.7",
-    "tailwindcss": "^3.4.4",
+    "tailwindcss": "^3.4.6",
     "vite-svg-loader": "^5.1.0",
-    "vue": "^3.4.31",
+    "vue": "^3.4.32",
     "vue-router": "^4.4.0"
   },
   "dependencies": {

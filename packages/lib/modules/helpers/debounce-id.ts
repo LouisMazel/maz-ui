@@ -11,12 +11,13 @@ interface DebouncedFunctionMap<T> {
  * Debounce an async function - called after a delay (only the last call is executed)
  */
 export function debounceId<T, Args extends unknown[]>(
+  identifier: string,
   func: AsyncFunction<T, Args>,
   delay: number,
-): (identifier: string, ...args: Args) => Promise<T> {
+): (...args: Args) => Promise<T> {
   const debouncedFunctions: DebouncedFunctionMap<T> = {}
 
-  return async function (identifier: string, ...args: Args): Promise<T> {
+  return async function (...args: Args): Promise<T> {
     if (!debouncedFunctions[identifier]) {
       debouncedFunctions[identifier] = { timer: null, promise: null }
     }

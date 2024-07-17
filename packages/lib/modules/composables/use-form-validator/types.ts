@@ -1,6 +1,14 @@
 import type { BaseIssue, BaseSchema, BaseSchemaAsync, InferIssue } from 'valibot'
-import type { ComponentPublicInstance, InjectionKey, MaybeRefOrGetter, ModelRef, Ref } from 'vue'
+import type {
+  ComponentInternalInstance,
+  ComponentPublicInstance,
+  InjectionKey,
+  MaybeRefOrGetter,
+  ModelRef,
+  Ref,
+} from 'vue'
 
+import type { getValidateFunction } from './utils'
 import type { useFormField, useFormValidator } from './index'
 
 export type ValidationSync = BaseSchema<unknown, unknown, BaseIssue<unknown>>
@@ -13,6 +21,11 @@ export type FormSchema<Model extends BaseFormPayload> = Record<ExtractModelKey<M
 
 export type ExtractModelKey<T> = Extract<keyof T, string>
 
+export type CustomInstance<Model extends BaseFormPayload> = ComponentInternalInstance & {
+  formContexts?: Map<string | symbol | InjectionKey<FormContext<Model>>, FormContext<Model>>
+}
+export type FormContextInjectionKey<Model extends BaseFormPayload = BaseFormPayload> = InjectionKey<FormContext<Model>>
+
 export interface FormValidatorOptions<
   Model extends BaseFormPayload = BaseFormPayload,
   ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>,
@@ -23,9 +36,10 @@ export interface FormValidatorOptions<
    * - lazy: validate on input value change
    * - aggressive: validate all fields immediately on form creation and on input value change
    * - blur: validate on blur
-   * @default 'eager'
+   * - input: validate on input value change
+   * @default 'lazy'
    */
-  mode?: 'eager' | 'lazy' | 'aggressive' | 'blur'
+  mode?: 'eager' | 'lazy' | 'aggressive' | 'blur' | 'input' | 'none'
   /**
    * Fields that should be throttled
    * Useful for fields that require a network request to avoid spamming the server
@@ -40,9 +54,9 @@ export interface FormValidatorOptions<
   debouncedFields?: Partial<Record<ModelKey, number | true>> | null
   /**
    * Scroll to the first error found
-   * @default '.has-input-error'
+   * @default '.has-field-error'
    */
-  scrollToErrorSelector?: string
+  scrollToError?: string | false
   /**
    * Identifier to use for the form
    * Useful to have multiple forms on the same page
@@ -55,16 +69,13 @@ export interface FormContext<
   Model extends BaseFormPayload = BaseFormPayload,
   ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>,
 > {
-  handleFieldInput: (name: ModelKey, force?: boolean) => void
-  handleFieldBlur: (name: ModelKey, force?: boolean) => void
   addFieldValidationWatch: (name: ModelKey) => void
-  setFieldValidationState: (name: ModelKey, setError?: boolean) => void
-  validateField: (name: ModelKey) => void
   fieldsStates: Ref<FieldsStates<Model>>
   options: StrictOptions
   internalSchema: Ref<FormSchema<Model>>
   payload: Ref<Model>
   errorMessages: Ref<Record<ModelKey, string | undefined>>
+  isSubmitted: Ref<boolean>
 }
 
 export interface FieldState<Model extends BaseFormPayload, FieldType = Model[ExtractModelKey<Model>]> {
@@ -76,7 +87,8 @@ export interface FieldState<Model extends BaseFormPayload, FieldType = Model[Ext
   initialValue?: Readonly<FieldType>
   validating: boolean
   validated: boolean
-  mode: StrictOptions['mode'] | 'none'
+  validateFunction: ReturnType<typeof getValidateFunction<Model>>
+  mode: StrictOptions['mode']
 }
 
 export type FieldsStates<Model extends BaseFormPayload = BaseFormPayload> = Record<
@@ -87,7 +99,7 @@ export type FieldsStates<Model extends BaseFormPayload = BaseFormPayload> = Reco
 export type BaseFormPayload = Record<string, any>
 
 export interface FormFieldOptions<FieldType = unknown> {
-  mode?: StrictOptions['mode'] | 'none'
+  mode?: StrictOptions['mode']
   /** Default value for the field */
   defaultValue?: FieldType
   /**
@@ -106,7 +118,7 @@ export interface UseFormValidatorParams<Model extends BaseFormPayload> {
   defaultValues?: Partial<Model>
   options?: FormValidatorOptions<Model>
 }
-export type UseFormField<FieldType = unknown, Model extends BaseFormPayload = BaseFormPayload> = typeof useFormField<
-  FieldType,
-  Model
->
+export type UseFormField<
+  FieldType extends Model[ExtractModelKey<Model>],
+  Model extends BaseFormPayload = BaseFormPayload,
+> = typeof useFormField<FieldType, Model>

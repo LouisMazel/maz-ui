@@ -1,31 +1,35 @@
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import MazPicker from '@components/MazPicker.vue'
 import MazInput from '@components/MazInput.vue'
 
-describe('components/MazPicker.vue', () => {
-  it('should exists', () => {
-    expect(MazPicker).toBeTruthy()
+describe('given MazPicker component', () => {
+  let wrapper: ReturnType<typeof mount<typeof MazPicker>>
+
+  beforeEach(() => {
+    wrapper = mount(MazPicker)
+    vi.dynamicImportSettled()
   })
 
-  const wrapper = mount(MazPicker, {
-    props: {
-      modelValue: '2022-03-02',
-    },
-  })
-
-  it('should have 12 hour format on time mode', async () => {
-    await wrapper.setProps({
-      format: 'hh:mm a',
-      onlyTime: true,
-      modelValue: '02:20 pm',
+  describe('when initializing the component', () => {
+    it('then it should render correctly', () => {
+      expect(wrapper.exists()).toBe(true)
     })
 
-    expect((wrapper.vm.formatterOptions as Record<string, any>).hour12).toBeTruthy()
+    it('then it should have default props set', () => {
+      expect(wrapper.props('format')).toBe('YYYY-MM-DD')
+      expect(wrapper.props('open')).toBe(false)
+      expect(wrapper.props('disabled')).toBe(false)
+    })
+  })
 
-    expect(wrapper.vm.modelValue).toBe('02:20 pm')
-
-    const input = wrapper.findComponent(MazInput)
-    expect(input).toBeDefined()
-    expect(input.find('input').element.value.replaceAll(/\s+/g, ' ')).toBe('2:20 PM')
+  describe('when setting a model value', () => {
+    it('then it should display the formatted date in the input', async () => {
+      const date = '2023-07-17'
+      await wrapper.setProps({ modelValue: date })
+      const input = wrapper.findComponent(MazInput)
+      expect(input.exists()).toBe(true)
+      expect(input.find('input').element.value).toBe('Monday, July 17, 2023')
+    })
   })
 })

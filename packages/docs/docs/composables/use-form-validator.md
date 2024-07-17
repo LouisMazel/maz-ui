@@ -22,7 +22,7 @@ npm install valibot
 In this example, we will create a simple form with three fields: `name`, `age`, and `country`. The form will be validated in `lazy` mode, which means that the fields will be validated on every change.
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-4">
+  <form class="maz-flex maz-flex-col maz-gap-4" @submit="onSubmit">
     <MazInput
       v-model="model.name"
       label="Enter your name"
@@ -54,48 +54,50 @@ In this example, we will create a simple form with three fields: `name`, `age`, 
         </p>
       </div>
     </MazCheckbox>
-    <MazBtn @click="onSubmit" :loading="isSubmitting">
+    <MazBtn type="submit" :loading="isSubmitting">
       Submit
     </MazBtn>
-  </div>
+  </form>
   <template #code>
 
   ```vue
   <template>
-    <MazInput
-      v-model="model.name"
-      label="Enter your name"
-      :hint="errorMessages.name"
-      :error="!!errorMessages.name"
-      :class="{ 'has-error': !!errorMessages.name }"
-    />
-    <MazInput
-      v-model="model.age"
-      type="number"
-      label="Enter your age"
-      :hint="errorMessages.age"
-      :error="!!errorMessages.age"
-      :class="{ 'has-error': !!errorMessages.age }"
-    />
-    <MazSelect
-      v-model="model.country"
-      :options="[{ label: 'France', value: 'FR' }, { label: 'United States', value: 'US' }]"
-      label="Select your nationality"
-      :hint="errorMessages.age"
-      :error="!!errorMessages.age"
-      :class="{ 'has-error': !!errorMessages.age }"
-    />
-    <MazCheckbox ref="agreeInputRef" v-model="model.agree" :class="{ 'has-error': !!errorMessages.agree }">
-      <div>
-        <p>I agree to the terms and conditions</p>
-        <p v-if="errorMessages.agree" class="maz-text-danger-600 maz-text-sm">
-          {{ errorMessages.agree }}
-        </p>
-      </div>
-    </MazCheckbox>
-    <MazBtn @click="onSubmit" :loading="isSubmitting">
-      Submit
-    </MazBtn>
+    <form @submit="onSubmit">
+      <MazInput
+        v-model="model.name"
+        label="Enter your name"
+        :hint="errorMessages.name"
+        :error="!!errorMessages.name"
+        :class="{ 'has-error': !!errorMessages.name }"
+      />
+      <MazInput
+        v-model="model.age"
+        type="number"
+        label="Enter your age"
+        :hint="errorMessages.age"
+        :error="!!errorMessages.age"
+        :class="{ 'has-error': !!errorMessages.age }"
+      />
+      <MazSelect
+        v-model="model.country"
+        :options="[{ label: 'France', value: 'FR' }, { label: 'United States', value: 'US' }]"
+        label="Select your nationality"
+        :hint="errorMessages.age"
+        :error="!!errorMessages.age"
+        :class="{ 'has-error': !!errorMessages.age }"
+      />
+      <MazCheckbox ref="agreeInputRef" v-model="model.agree" :class="{ 'has-error': !!errorMessages.agree }">
+        <div>
+          <p>I agree to the terms and conditions</p>
+          <p v-if="errorMessages.agree" class="maz-text-danger-600 maz-text-sm">
+            {{ errorMessages.agree }}
+          </p>
+        </div>
+      </MazCheckbox>
+      <MazBtn type="submit" :loading="isSubmitting">
+        Submit
+      </MazBtn>
+    </form>
   </template>
 
   <script lang="ts" setup>
@@ -120,7 +122,7 @@ In this example, we will create a simple form with three fields: `name`, `age`, 
         country: pipe(string('Country is required'), nonEmpty('Country is required')),
       },
       defaultValues: { name: 'John Doe' },
-      options: { mode: 'lazy', scrollToErrorSelector: '.has-error' },
+      options: { mode: 'lazy', scrollToError: '.has-error' },
     })
 
     const onSubmit = handleSubmit(async (formData) => {
@@ -140,14 +142,14 @@ In this example, we will create a simple form with three fields: `name`, `age`, 
 With eager mode, each form field is validated on blur (if not empty) and then on every change.
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-4">
+  <form class="maz-flex maz-flex-col maz-gap-4" @submit="onSubmit2">
     <MazInput
       v-model="name"
       ref="nameRef"
       label="Enter your name"
       :hint="nameErrorMessage"
       :error="!!nameErrorMessage"
-      :class="{ 'has-error': !!nameErrorMessage }"
+      :class="{ 'has-error-form2': !!nameErrorMessage }"
     />
     <MazInput
       v-model="age"
@@ -156,7 +158,7 @@ With eager mode, each form field is validated on blur (if not empty) and then on
       label="Enter your age"
       :hint="ageErrorMessage"
       :error="!!ageErrorMessage"
-      :class="{ 'has-error': !!ageErrorMessage }"
+      :class="{ 'has-error-form2': !!ageErrorMessage }"
     />
     <MazSelect
       v-model="country"
@@ -164,9 +166,9 @@ With eager mode, each form field is validated on blur (if not empty) and then on
       label="Select your nationality"
       :hint="countryErrorMessage"
       :error="!!countryErrorMessage"
-      :class="{ 'has-error': !!countryErrorMessage }"
+      :class="{ 'has-error-form2': !!countryErrorMessage }"
     />
-    <MazCheckbox ref="agreeRef" v-model="agree" :class="{ 'has-error': !!agreeErrorMessage }">
+    <MazCheckbox ref="agreeRef" v-model="agree" :class="{ 'has-error-form2': !!agreeErrorMessage }">
       <div>
         <p>I agree to the terms and conditions</p>
         <p v-if="agreeErrorMessage" class="maz-text-danger-600 maz-text-sm">
@@ -174,51 +176,53 @@ With eager mode, each form field is validated on blur (if not empty) and then on
         </p>
       </div>
     </MazCheckbox>
-    <MazBtn @click="onSubmit2" :loading="isSubmitting2">
+    <MazBtn type="submit" :loading="isSubmitting2">
       Submit
     </MazBtn>
-  </div>
+  </form>
 
   <template #code>
 
 ```vue
 <template>
-   <MazInput
-    v-model="name"
-    ref="nameRef"
-    label="Enter your name"
-    :hint="nameErrorMessage"
-    :error="!!nameErrorMessage"
-    :class="{ 'has-error': !!nameErrorMessage }"
-  />
-  <MazInput
-    v-model="age"
-    ref="ageRef"
-    type="number"
-    label="Enter your age"
-    :hint="ageErrorMessage"
-    :error="!!ageErrorMessage"
-    :class="{ 'has-error': !!ageErrorMessage }"
-  />
-  <MazSelect
-    v-model="country"
-    :options="[{ label: 'France', value: 'FR' }, { label: 'United States', value: 'US' }]"
-    label="Select your nationality"
-    :hint="countryErrorMessage"
-    :error="!!countryErrorMessage"
-    :class="{ 'has-error': !!countryErrorMessage }"
-  />
-  <MazCheckbox ref="agreeRef" v-model="agree" :class="{ 'has-error': !!agreeErrorMessage }">
-    <div>
-      <p>I agree to the terms and conditions</p>
-      <p v-if="agreeErrorMessage" class="maz-text-danger-600 maz-text-sm">
-        {{ agreeErrorMessage }}
-      </p>
-    </div>
-  </MazCheckbox>
-  <MazBtn @click="onSubmit" :loading="isSubmitting">
-    Submit
-  </MazBtn>
+  <form @submit="onSubmit">
+    <MazInput
+      v-model="name"
+      ref="nameRef"
+      label="Enter your name"
+      :hint="nameErrorMessage"
+      :error="!!nameErrorMessage"
+      :class="{ 'has-error-form2': !!nameErrorMessage }"
+    />
+    <MazInput
+      v-model="age"
+      ref="ageRef"
+      type="number"
+      label="Enter your age"
+      :hint="ageErrorMessage"
+      :error="!!ageErrorMessage"
+      :class="{ 'has-error-form2': !!ageErrorMessage }"
+    />
+    <MazSelect
+      v-model="country"
+      :options="[{ label: 'France', value: 'FR' }, { label: 'United States', value: 'US' }]"
+      label="Select your nationality"
+      :hint="countryErrorMessage"
+      :error="!!countryErrorMessage"
+      :class="{ 'has-error-form2': !!countryErrorMessage }"
+    />
+    <MazCheckbox ref="agreeRef" v-model="agree" :class="{ 'has-error-form2': !!agreeErrorMessage }">
+      <div>
+        <p>I agree to the terms and conditions</p>
+        <p v-if="agreeErrorMessage" class="maz-text-danger-600 maz-text-sm">
+          {{ agreeErrorMessage }}
+        </p>
+      </div>
+    </MazCheckbox>
+    <MazBtn type="submit" :loading="isSubmitting">
+      Submit
+    </MazBtn>
+  </form>
 </template>
 
 <script setup lang="ts">
@@ -229,7 +233,7 @@ With eager mode, each form field is validated on blur (if not empty) and then on
       agree: pipe(boolean('You must agree to the terms and conditions'), literal(true, 'You must agree to the terms and conditions')),
       country: pipe(string('Country is required'), nonEmpty('Country is required')),
     },
-    options: { mode: 'eager', scrollToErrorSelector: '.has-error', identifier: 'form2' },
+    options: { mode: 'eager', scrollToError: '.has-error-form2', identifier: 'form2' },
   })
 
   const nameRef = ref<ComponentPublicInstance>()
@@ -275,7 +279,7 @@ With eager mode, each form field is validated on blur (if not empty) and then on
       country: pipe(string('Country is required'), nonEmpty('Country is required')),
     },
     defaultValues: { name: 'John Doe' },
-    options: { mode: 'eager', scrollToErrorSelector: '.has-error' },
+    options: { mode: 'lazy', scrollToError: '.has-error' },
   })
 
   const onSubmit = handleSubmit(async (formData) => {
@@ -292,7 +296,7 @@ With eager mode, each form field is validated on blur (if not empty) and then on
       agree: pipe(boolean('You must agree to the terms and conditions'), literal(true, 'You must agree to the terms and conditions')),
       country: pipe(string('Country is required'), nonEmpty('Country is required')),
     },
-    options: { mode: 'eager', scrollToErrorSelector: '.has-error', identifier: 'form2' },
+    options: { mode: 'eager', scrollToError: '.has-error-form2', identifier: 'form2' },
   })
 
   const nameRef = ref<ComponentPublicInstance>()
@@ -316,6 +320,8 @@ With eager mode, each form field is validated on blur (if not empty) and then on
 
 `useFormValidator` is the main composable for initializing form validation.
 
+It accepts a validation schema, default values, and configuration options to handle form validation.
+
 ### Parameters
 
 `useFormValidator` accepts an object with the following properties:
@@ -324,10 +330,10 @@ With eager mode, each form field is validated on blur (if not empty) and then on
 - `model`: `Ref<Model>` (optional) - A reference to the form's data model.
 - `defaultValues`: `Partial<Model>` (optional) - Default values for the form fields.
 - `options`: `FormValidatorOptions` (optional) - Configuration options for the form validation behavior.
-  - `mode`: `'eager' | 'lazy' | 'aggressive' | 'blur'`  (optional) - Form validation mode. (default: 'lazy') - To use the `eager` or `blur` validation modes, you must use the `useFormField` composable to add the necessary validation events. - [see validation modes](#validation-modes)
+  - `mode`: `'eager' | 'lazy' | 'aggressive' | 'blur' | 'input'`  (optional) - Form validation mode. (default: 'lazy') - To use the `eager` or `blur` validation modes, you must use the `useFormField` composable to add the necessary validation events. - [see validation modes](#validation-modes)
   - `throttledFields`: `Partial<Record<ModelKey, number | true>>` (optional) - Fields to validate with throttling. It's an object where the key is the field name and the value is the throttle time in milliseconds or `true` for the default throttle time (1000ms).
   - `debouncedFields`: `Partial<Record<ModelKey, number | true>>` (optional) - Fields to validate with debouncing. It's an object where the key is the field name and the value is the debounce time in milliseconds or `true` for the default debounce time (300ms).
-  - `scrollToErrorSelector`: `string` (optional) - CSS selector for scrolling to errors (default '.has-input-error')
+  - `scrollToError`: `string | false` (optional) - Disable or provide a CSS selector for scrolling to errors (default '.has-field-error')
   - `identifier`: `string | symbol` (optional) - Identifier for the form (useful when you have multiple forms on the same component)
 
 ### Return
@@ -341,17 +347,16 @@ With eager mode, each form field is validated on blur (if not empty) and then on
 - `errors`: `ComputedRef<Record<ModelKey, ValidationIssues>>` - Validation errors for each field.
 - `errorsMessages`: `ComputedRef<Record<string, string>>` - The first validation error message for each field.
 - `model`: `Ref<Model>` - The form's data model.
-- `context`: `FormContext` - The form context for internal use.
 - `fieldsStates`: `FieldsStates` - The validation state of each field.
 - `validateForm`: `(setError?: boolean) => Promise<boolean>` - Function to validate the entire form.
 - `scrollToError`: `(selector?: string, options?: { offset?: number }) => void` - Function to scroll to the first field with an error.
-- `handleSubmit`: `(successCallback: (model: Model) => Promise<unknown> | unknown, scrollToError?: boolean | string) => (event: Event) => Promise<void>` - Form submission handler, the callback is called if the form is valid and passes the complete payload as an argument. The second argument is a selector to scroll to the first field with an error.
+- `handleSubmit`: `successCallback: (model: Model) => Promise<unknown> | unknown, scrollToError?: false | string` - Form submission handler, the callback is called if the form is valid and passes the complete payload as an argument. The second argument is optional and can be used to disable or provide a CSS selector for scrolling to errors (default '.has-field-error').
 
 ### Usage Example
 
 ```vue
 <script setup lang="ts">
-import { nonEmpty, object, pipe, string } from 'valibot'
+import { nonEmpty, object, pipe, string, number } from 'valibot'
 import { ref } from 'vue'
 
 import { useFormValidator, useFormField } from 'maz-ui'
@@ -362,7 +367,7 @@ const { model, isValid, errorMessages, handleSubmit, isSubmitting } = useFormVal
 }>({
   schema: {
     name: pipe(string(), nonEmpty('Name is required')),
-    age: pipe(string(), nonEmpty('Age is required')),
+    age: pipe(number(), nonEmpty('Age is required')),
   },
   options: { mode: 'lazy' },
 })
@@ -405,7 +410,7 @@ To use the modes `eager` or `blur`, you must use this `useFormField` composable 
 - `name`: `ModelKey` - The name of the field in the validation schema.
 - `options`: `FormFieldOptions<T>` (optional) - Field-specific options.
   - `defaultValue`: `T` (optional) - The default value of the field.
-  - `mode`: `'eager' | 'lazy' | 'aggressive' | 'blur'` (optional) - The validation mode for the field - [see validation modes](#validation-modes)
+  - `mode`: `'eager' | 'lazy' | 'aggressive' | 'blur' | 'input'` (optional) - The validation mode for the field - [see validation modes](#validation-modes)
   - `componentRef`: `Ref<ComponentPublicInstance | HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>` (optional) - Reference to the component to associate and trigger validation events (not necessary for `lazy`, `aggressive` validation modes)
   - `formIdentifier`: `string | symbol` (optional) - Identifier for the form (useful when you have multiple forms on the same component)
 
@@ -421,7 +426,7 @@ To use the modes `eager` or `blur`, you must use this `useFormField` composable 
 - `hasError`: `ComputedRef<boolean>` - Indicates if the field has errors.
 - `isValidated`: `ComputedRef<boolean>` - Indicates if the field has been validated.
 - `isValidating`: `ComputedRef<boolean>` - Indicates if the field is currently being validated.
-- `mode`: `ComputedRef<StrictOptions['mode'] | 'none'>` - The validation mode for the field.
+- `mode`: `ComputedRef<StrictOptions['mode']>` - The validation mode for the field.
 - `value`: `ComputedRef<T>` - The value of the field.
 - `validationEvents`: `ComputedRef<{ onBlur?: () => void; 'onUpdate:modelValue'?: () => void; }>` - Validation events to bind to the field. They are used to trigger field validation, to be used like this `v-bind="{ ...validationEvents }"` (components must emit `blur` and `update:modelValue` events to trigger field validation) - Not necessary for `lazy`, `aggressive` validation modes or if you use the component reference when initializing the composable.
 
@@ -443,17 +448,21 @@ useFormValidator({
   schema: {
     name: pipe(string('Name is required'), nonEmpty('Name is required')),
   },
+  mode: 'eager',
 })
 
-const { value, errorMessage, isValid } = useFormField('name', {
-  defaultValue: '',
-  mode: 'eager',
+const { value, errorMessage, isValid, hasError } = useFormField('name', {
   componentRef, // Necessary for 'eager', 'blur' validation modes to add validation events
 })
 </script>
 
 <template>
-  <MazInput ref="componentRef" v-model="value" :error-message="errorMessage" />
+  <MazInput
+    ref="componentRef"
+    v-model="value"
+    :hint="errorMessage"
+    :error="hasError"
+  />
 </template>
 ```
 
@@ -463,18 +472,18 @@ const { value, errorMessage, isValid } = useFormField('name', {
 
 The configurable options for `useFormValidator` include:
 
-- `mode`: [Validation mode](#validation-modes) ('eager', 'lazy', 'aggressive', 'blur')
-- `throttledFields`: Fields to validate with throttling
-- `debouncedFields`: Fields to validate with debouncing
-- `scrollToErrorSelector`: CSS selector for scrolling to errors
+- `mode`: [Validation mode](#validation-modes) ('eager', 'lazy', 'aggressive', 'blur' or 'input')
+- `throttledFields`: Fields to validate with throttling (e.g `{ name: 1000 }` or `{ name: true }` for the default throttle time (1000ms))
+- `debouncedFields`: Fields to validate with debouncing (e.g `{ name: 300 }` or `{ name: true }` for the default debounce time (300ms))
+- `scrollToError`: Disable or provide a CSS selector for scrolling to errors (default '.has-field-error')
 
 ### FormFieldOptions
 
 The configurable options for `useFormField` include:
 
 - `defaultValue`: The default value of the field
-- `mode`: [Validation mode](#validation-modes) ('eager', 'lazy', 'aggressive', 'blur') - To override the form validation mode
-- `componentRef`: Reference to the component to associate and trigger validation events
+- `mode`: [Validation mode](#validation-modes) ('eager', 'lazy', 'aggressive', 'blur' or 'input') - To override the form validation mode
+- `componentRef`: Reference to the component or HTML element to associate and trigger validation events
 
 ## Validation Modes
 
@@ -482,7 +491,7 @@ The configurable options for `useFormField` include:
 - `aggressive`: Validates all fields immediately and on every change - can't be overridden by `useFormField`
 - `eager`: (recommended) Validates on initial blur (if not empty), then on every change (requires `useFormField`)
 - `blur`: Validates only on focus loss (requires `useFormField`)
-<!-- - `input`: Validates on every change - similar to `lazy` but can be overridden by `useFormField` -->
+- `input`: Validates on every change - similar to `lazy` but can be overridden by `useFormField` to use `eager` or `blur` mode on a specific field (requires `useFormField`)
 
 ## Best Practices
 

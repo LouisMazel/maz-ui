@@ -129,9 +129,7 @@ export class AosHandler {
   private async handleObserver() {
     await sleep(this.options.delay)
 
-    const observer = new IntersectionObserver(this.handleIntersect.bind(this), {
-      ...this.options.observer,
-    })
+    const observer = new IntersectionObserver(this.handleIntersect.bind(this), this.options.observer)
 
     for (const element of document.querySelectorAll('[data-maz-aos]')) {
       const anchorAttr = element.getAttribute('data-maz-aos-anchor')
@@ -172,7 +170,6 @@ export const plugin = {
     if (!isClient()) {
       return
     }
-
     if (options?.router) {
       options.router.afterEach(async () => {
         instance.runAnimations()

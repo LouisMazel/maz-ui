@@ -18,12 +18,6 @@ export default defineConfig({
     port: 1111,
   },
   test: {
-    // setupFiles: ['vitest-canvas-mock'],
-    // server: {
-    //   deps: {
-    //     inline: ['vitest-canvas-mock'],
-    //   },
-    // },
     globalSetup: './vitest-global.setup.ts',
     environment: 'jsdom',
     environmentOptions: {

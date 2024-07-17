@@ -1,58 +1,54 @@
-import type { ComponentInternalInstance, InjectionKey, Ref, WatchStopHandle } from 'vue'
-import { computed, getCurrentInstance, inject, onUnmounted, provide, ref, toValue, watch } from 'vue'
+import type { Ref, WatchStopHandle } from 'vue'
+import { computed, onUnmounted, provide, ref, toValue, watch } from 'vue'
 
-import { debounceId } from '../../helpers/debounce-id'
-import { throttleId } from '../../helpers/throttle-id'
 import { freezeValue } from '../../helpers/freeze-value'
 import { isEqual } from '../../helpers/is-equal'
-import { sleep } from '../../helpers/sleep'
-import {
-  addEventToInteractiveElements,
-  fieldHasValidation,
-  findInteractiveElements,
-  getFieldsErrors,
-  getFieldsStates,
-  getValibotValidationMethod,
-  getValidationSchema,
-  isEmptyValue,
-  mergeFieldState,
-  removeEventFromInteractiveElements,
-  scrollToError,
-} from './utils'
 import type {
   BaseFormPayload,
   ExtractModelKey,
   FieldsStates,
   FormContext,
+  FormContextInjectionKey,
   FormFieldOptions,
   FormSchema,
+  FormValidatorOptions,
   StrictOptions,
   UseFormValidatorParams,
 } from './types'
+import {
+  addEventToInteractiveElements,
+  fieldHasValidation,
+  findInteractiveElements,
+  getContext,
+  getErrorMessages,
+  getFieldsErrors,
+  getFieldsStates,
+  getInstance,
+  getValidationEvents,
+  handleFieldBlur,
+  handleFieldInput,
+  removeEventFromInteractiveElements,
+  scrollToError,
+  setFieldValidationState,
+  updateFieldState,
+  validateForm,
+} from './utils'
+import { CONFIG } from './config'
 
-type CustomInstance = ComponentInternalInstance & { formContexts?: Map<string | symbol | InjectionKey<FormContext>, FormContext> }
-const FormContextKey: InjectionKey<FormContext> = Symbol('main')
+const FormContextKey: FormContextInjectionKey = Symbol('main')
 
 export function useFormValidator<
   Model extends BaseFormPayload,
   ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>,
->({
-  schema,
-  model,
-  defaultValues,
-  options,
-}: UseFormValidatorParams<Model>) {
-  const instance = getCurrentInstance() as CustomInstance
-  if (!instance) {
-    throw new Error('useFormValidator must be called within setup()')
-  }
+>({ schema, model, defaultValues, options }: UseFormValidatorParams<Model>) {
+  const instance = getInstance<Model>('useFormValidator')
 
   const opts = {
-    mode: 'lazy',
-    scrollToErrorSelector: '.has-input-error',
+    mode: CONFIG.mode,
+    scrollToError: CONFIG.scrollToErrorSelector,
     debouncedFields: null,
     throttledFields: null,
-    identifier: FormContextKey,
+    identifier: 'main',
     ...options,
   } satisfies StrictOptions<Model>
 
@@ -62,14 +58,21 @@ export function useFormValidator<
   }) as Ref<Model>
 
   const internalSchema = computed<FormSchema<Model>>(() => toValue(schema))
+  const defaultPayload = defaultValues ?? payload.value
   const fieldsStates = ref(
-    getFieldsStates(internalSchema.value, defaultValues ?? payload.value, opts.mode),
+    getFieldsStates({
+      schema: internalSchema.value,
+      payload: defaultPayload,
+      options: opts,
+    }),
   ) as Ref<FieldsStates<Model>>
 
   watch(
     internalSchema,
-    (newSchema) => {
-      fieldsStates.value = getFieldsStates(newSchema, defaultValues ?? payload.value, opts.mode)
+    (schema) => {
+      fieldsStates.value = getFieldsStates({
+        schema,
+      })
     },
     { deep: true },
   )
@@ -79,195 +82,107 @@ export function useFormValidator<
   const isValid = computed(() => Object.values(fieldsStates.value).every(({ valid }) => valid))
   const isDirty = computed(() => Object.values(fieldsStates.value).some(({ dirty }) => dirty))
   const errors = computed(() => getFieldsErrors(fieldsStates.value))
-  const errorMessages = computed(() => {
-    return Object.entries(errors.value).reduce((acc, [name, value]) => {
-      acc[name] = fieldsStates.value[name].error ? value[0].message : undefined
-      return acc
-    }, {} as Record<ModelKey, string | undefined>)
-  })
-
-  async function getFieldValidationResult(name: ModelKey) {
-    const schema = await getValidationSchema(internalSchema.value)
-    const safeParseAsync = await getValibotValidationMethod('safeParseAsync')
-    const result = await safeParseAsync(schema.entries[name], payload.value[name] ?? '')
-
-    return {
-      result,
-      isValid: result.success,
-    }
-  }
-
-  async function setFieldValidationState(name: ModelKey, setError = true) {
-    await sleep(0)
-
-    const fieldState = fieldsStates.value[name]
-
-    fieldState.validating = true
-
-    if (!internalSchema.value[name]) {
-      // Validate if the field is not in the schema
-      fieldState.valid = true
-      fieldState.validating = false
-      fieldState.validated = true
-      fieldState.errors = []
-      fieldState.error = false
-      return
-    }
-
-    const { result, isValid } = await getFieldValidationResult(name)
-
-    fieldState.valid = isValid
-
-    if (setError) {
-      fieldState.error = !isValid
-    }
-
-    fieldState.errors = result.issues ?? []
-
-    fieldState.validating = false
-    fieldState.validated = true
-  }
-
-  async function validateField(name: ModelKey) {
-    if (opts.throttledFields?.[name]) {
-      const delay = typeof opts.throttledFields?.[name] === 'number' ? opts.throttledFields[name] : 1000
-      throttleId(setFieldValidationState, delay)(name, name)
-    }
-    else if (opts.debouncedFields?.[name]) {
-      const delay = typeof opts.debouncedFields?.[name] === 'number' ? opts.debouncedFields[name] : 300
-      debounceId(setFieldValidationState, delay)(name, name)
-    }
-    else {
-      setFieldValidationState(name)
-    }
-  }
+  const errorMessages = computed(() => getErrorMessages(errors.value, fieldsStates.value))
 
   function addFieldValidationWatch(name: ModelKey) {
     watch(
       () => toValue(payload.value)[name],
       () => {
-        handleFieldInput(name, true)
+        handleFieldInput<Model>({
+          name,
+          fieldsStates: fieldsStates.value,
+          payload: payload.value,
+          schema: internalSchema.value,
+          isSubmitted: isSubmitted.value,
+          force: true,
+        })
       },
       { deep: typeof internalSchema.value[name] === 'object' },
     )
   }
 
   function addFieldsValidationWatch() {
-    for (const name in internalSchema.value) {
+    for (const name of Object.keys(internalSchema.value)) {
       addFieldValidationWatch(name as ModelKey)
     }
   }
 
-  async function validateForm(setError = true) {
-    await Promise.all(
-      Object.keys(fieldsStates.value).map(name => setFieldValidationState(name as ModelKey, setError)),
-    )
-
-    return isValid.value
-  }
-
-  function canExecuteValidation(name: ModelKey) {
-    const { blurred, mode } = fieldsStates.value[name]
-
-    return (
-      isSubmitted.value
-      || (mode === 'eager' && blurred)
-      || (mode === 'blur' && blurred)
-      || mode === 'aggressive'
-      || mode === 'lazy'
-    )
-  }
-
-  function handleFieldBlur(name: ModelKey, force = false) {
-    const fieldValue = payload.value[name]
-    const fieldState = fieldsStates.value[name]
-    const isDirty = !isEmptyValue(fieldValue) && !isEqual(fieldValue, fieldState.initialValue)
-
-    fieldState.dirty = isDirty
-    fieldState.blurred = fieldState.blurred || isDirty
-
-    if (!force && !canExecuteValidation(name)) {
-      return
-    }
-
-    validateField(name)
-  }
-
-  function handleFieldInput(name: ModelKey, force = false) {
-    const fieldValue = payload.value[name]
-    const fieldState = fieldsStates.value[name]
-
-    fieldState.validated = false
-
-    const isDirty = !isEmptyValue(fieldValue) && !isEqual(fieldValue, fieldState.initialValue)
-
-    fieldState.dirty = isDirty
-
-    if (!force && !canExecuteValidation(name)) {
-      return
-    }
-
-    validateField(name)
-  }
-
-  function handleSubmit(
-    successCallback: (model: Model) => Promise<unknown> | unknown,
-    enableScrollOrSelector?: boolean | string,
+  function handleSubmit<Func extends (model: Model) => Promise<Awaited<ReturnType<Func>>> | ReturnType<Func>>(
+    successCallback: Func,
+    enableScrollOrSelector?: FormValidatorOptions['scrollToError'],
   ) {
-    return async (event: Event) => {
+    return async (event?: Event) => {
       isSubmitted.value = true
       isSubmitting.value = true
 
-      event.preventDefault()
+      event?.preventDefault()
 
-      const isValidForm = await validateForm()
+      await validateForm<Model>({
+        fieldsStates: fieldsStates.value,
+        payload: payload.value,
+        schema: internalSchema.value,
+      })
 
-      if (isValidForm) {
-        await successCallback(payload.value)
+      const scrollToErrorParam
+        = typeof enableScrollOrSelector === 'string' ? enableScrollOrSelector : opts.scrollToError
+
+      let response: Awaited<ReturnType<Func>> | ReturnType<Func> | undefined
+
+      if (isValid.value) {
+        response = await successCallback(payload.value)
       }
-      else if (enableScrollOrSelector || opts.scrollToErrorSelector) {
-        scrollToError(typeof enableScrollOrSelector === 'string' ? enableScrollOrSelector : opts.scrollToErrorSelector)
+      else if (typeof scrollToErrorParam !== 'boolean') {
+        scrollToError(scrollToErrorParam)
       }
 
       isSubmitting.value = false
+
+      return response
     }
   }
 
   const context = {
-    handleFieldInput,
-    handleFieldBlur,
     fieldsStates,
     payload,
     addFieldValidationWatch,
-    validateField,
     options: opts,
     internalSchema,
-    setFieldValidationState,
     errorMessages,
-  } satisfies FormContext<Model, ModelKey>
-
-  provide(opts.identifier, context as unknown as FormContext)
+    isSubmitted,
+  } as unknown as FormContext<Model>
 
   instance.formContexts ??= new Map()
-  instance.formContexts.set(opts.identifier, context as unknown as FormContext)
+  instance.formContexts.set(opts.identifier, context)
 
-  if (['aggressive', 'lazy'].includes(opts.mode)) {
+  provide(FormContextKey as FormContextInjectionKey<Model>, context)
+
+  const shouldAddFieldsWatches = ['aggressive', 'lazy'].includes(opts.mode)
+  if (shouldAddFieldsWatches) {
     addFieldsValidationWatch()
   }
 
-  watch(internalSchema, () => {
-    validateForm(opts.mode === 'aggressive')
-  }, { deep: true, immediate: true })
-
   watch(
-    payload,
-    (newModel) => {
-      if (model) {
-        model.value = newModel
-      }
+    internalSchema,
+    () => {
+      validateForm<Model>({
+        fieldsStates: fieldsStates.value,
+        payload: payload.value,
+        schema: internalSchema.value,
+        setError: opts.mode === 'aggressive',
+      })
     },
-    { immediate: true },
+    { deep: true, immediate: true },
   )
+
+  if (model) {
+    watch(
+      payload,
+      (newModel) => {
+        model.value = newModel
+      },
+      { immediate: true },
+    )
+  }
 
   return {
     identifier: opts.identifier,
@@ -277,7 +192,6 @@ export function useFormValidator<
     isValid,
     errors,
     model: payload,
-    context,
     fieldsStates,
     validateForm,
     scrollToError,
@@ -286,41 +200,35 @@ export function useFormValidator<
   }
 }
 
-export function useFormField<FieldType = unknown, Model extends BaseFormPayload = BaseFormPayload>(
-  name: ExtractModelKey<Model>,
-  options?: Omit<FormFieldOptions<FieldType>, 'context'>,
-) {
+export function useFormField<
+  FieldType extends Model[ExtractModelKey<Model>],
+  Model extends BaseFormPayload = BaseFormPayload,
+>(name: ExtractModelKey<Model>, options?: FormFieldOptions<FieldType>) {
   const opts = {
     formIdentifier: FormContextKey,
     ...options,
   } satisfies FormFieldOptions<FieldType>
 
-  const instance = getCurrentInstance() as CustomInstance
-  if (!instance) {
-    throw new Error('useFormField must be called within setup()')
-  }
-
-  const context = instance.formContexts?.get(opts.formIdentifier) ?? inject<FormContext>(opts.formIdentifier)
-
-  if (!context) {
-    throw new Error('useFormField must be used within a form (useFormValidator)')
-  }
-
   const {
-    handleFieldInput,
-    handleFieldBlur,
     fieldsStates,
     payload,
     options: formOptions,
     addFieldValidationWatch,
     internalSchema,
-    setFieldValidationState,
     errorMessages,
-  } = context
+    isSubmitted,
+  } = getContext<Model>(opts.formIdentifier, 'useFormField')
 
-  opts.mode = fieldHasValidation(name, internalSchema.value) ? options?.mode ?? formOptions.mode : 'none'
+  const fieldMode = fieldHasValidation(name, internalSchema.value) ? options?.mode ?? formOptions.mode : 'none'
+  opts.mode = fieldMode
 
-  fieldsStates.value[name] = mergeFieldState({ name, fieldsStates: fieldsStates.value, payload: payload.value, schema: internalSchema.value, options: opts })
+  fieldsStates.value[name] = updateFieldState<Model>({
+    name,
+    fieldsStates: fieldsStates.value,
+    payload: payload.value,
+    schema: internalSchema.value,
+    options: { ...formOptions, ...opts },
+  })
 
   const fieldState = computed(() => fieldsStates.value[name])
 
@@ -330,32 +238,49 @@ export function useFormField<FieldType = unknown, Model extends BaseFormPayload 
     fieldsStates.value[name].initialValue = freezeValue(initialValue)
   }
 
-  if (['aggressive', 'lazy'].includes(fieldState.value.mode) && !['aggressive', 'lazy'].includes(formOptions.mode)) {
+  const shouldAddWatchToField
+    = ['aggressive', 'lazy'].includes(fieldState.value.mode) && !['aggressive', 'lazy'].includes(formOptions.mode)
+  if (shouldAddWatchToField) {
     addFieldValidationWatch(name)
   }
 
   if (fieldState.value.mode !== 'none') {
-    setFieldValidationState(name, fieldState.value.mode === 'aggressive' || formOptions.mode === 'aggressive')
+    setFieldValidationState({
+      name,
+      fieldsStates: fieldsStates.value,
+      payload: payload.value,
+      schema: internalSchema.value,
+      setError: fieldState.value.mode === 'aggressive' || formOptions.mode === 'aggressive',
+    })
   }
 
-  const blurEvents = {
-    onBlur: () => handleFieldBlur(name),
-  }
-  const inputEvents = {
-    'onUpdate:modelValue': () => handleFieldInput(name),
-  }
+  const events = {
+    onBlur: () => {
+      handleFieldBlur<Model>({
+        name,
+        fieldsStates: fieldsStates.value,
+        payload: payload.value,
+        schema: internalSchema.value,
+        isSubmitted: isSubmitted.value,
+      })
+    },
+    onInput: () =>
+      handleFieldInput<Model>({
+        name,
+        fieldsStates: fieldsStates.value,
+        payload: payload.value,
+        schema: internalSchema.value,
+        isSubmitted: isSubmitted.value,
+      }),
+  } as const
 
-  const validationEvents = computed(() => {
-    if (opts.componentRef || ['aggressive', 'lazy', 'none'].includes(fieldState.value.mode)) {
-      return
-    }
-
-    if (fieldState.value.blurred && fieldState.value.mode === 'eager') {
-      return inputEvents
-    }
-
-    return blurEvents
-  })
+  const validationEvents = computed(() =>
+    getValidationEvents({
+      componentRef: opts.componentRef?.value,
+      events,
+      fieldState: fieldState.value,
+    }),
+  )
 
   if (
     opts.componentRef
@@ -368,8 +293,7 @@ export function useFormField<FieldType = unknown, Model extends BaseFormPayload 
     const addEvents = () => {
       addEventToInteractiveElements({
         interactiveElements,
-        onBlur: blurEvents.onBlur,
-        onInput: inputEvents['onUpdate:modelValue'],
+        events,
         mode: fieldState.value.mode,
       })
     }
@@ -394,8 +318,7 @@ export function useFormField<FieldType = unknown, Model extends BaseFormPayload 
     onUnmounted(() => {
       removeEventFromInteractiveElements({
         interactiveElements,
-        onBlur: blurEvents.onBlur,
-        onInput: inputEvents['onUpdate:modelValue'],
+        events,
       })
       unwatchHandle?.()
     })
@@ -411,7 +334,7 @@ export function useFormField<FieldType = unknown, Model extends BaseFormPayload 
     isValidated: computed(() => fieldState.value.validated),
     isValidating: computed(() => fieldState.value.validating),
     mode: computed(() => fieldState.value.mode),
-    value: computed<FieldType>({
+    value: computed({
       get: () => payload.value[name] as FieldType,
       set: value => (payload.value[name] = value),
     }),
