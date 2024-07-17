@@ -6,13 +6,13 @@ describe('given throttleId function', () => {
       vi.useFakeTimers()
 
       const mockFn = vi.fn().mockResolvedValue('result')
-      const throttledFn = throttleId(mockFn, 1000)
+      const throttledFn = throttleId('test', mockFn, 1000)
 
-      throttledFn('test', 1)
+      throttledFn(1)
       await vi.advanceTimersByTimeAsync(300)
-      throttledFn('test', 2)
+      throttledFn(2)
       await vi.advanceTimersByTimeAsync(300)
-      throttledFn('test', 3)
+      throttledFn(3)
 
       expect(mockFn).toHaveBeenCalledTimes(1)
       expect(mockFn).toHaveBeenCalledWith(1)
@@ -30,10 +30,11 @@ describe('given throttleId function', () => {
     it('then it should execute separately for each identifier', async () => {
       vi.useFakeTimers()
       const mockFn = vi.fn().mockResolvedValue('result')
-      const throttledFn = throttleId(mockFn, 1000)
+      const throttledFn = throttleId('id1', mockFn, 1000)
+      const throttledFn2 = throttleId('id2', mockFn, 1000)
 
-      throttledFn('id1', 1)
-      throttledFn('id2', 2)
+      throttledFn(1)
+      throttledFn2(2)
 
       expect(mockFn).toHaveBeenCalledTimes(2)
       expect(mockFn).toHaveBeenNthCalledWith(1, 1)
@@ -47,9 +48,9 @@ describe('given throttleId function', () => {
     it('then it should reject with the error', async () => {
       vi.useFakeTimers()
       const mockFn = vi.fn().mockRejectedValue(new Error('Test error'))
-      const throttledFn = throttleId(mockFn, 1000)
+      const throttledFn = throttleId('test', mockFn, 1000)
 
-      await expect(throttledFn('test')).rejects.toThrow('Test error')
+      await expect(throttledFn()).rejects.toThrow('Test error')
 
       vi.useRealTimers()
     })

@@ -5,11 +5,11 @@ describe('given debounceId function', () => {
     it('then it should only execute once after the delay', async () => {
       vi.useFakeTimers()
       const mockFn = vi.fn().mockResolvedValue('result')
-      const debouncedFn = debounceId(mockFn, 100)
+      const debouncedFn = debounceId('test', mockFn, 100)
 
-      debouncedFn('test', 1, 2, 3)
-      debouncedFn('test', 4, 5, 6)
-      debouncedFn('test', 7, 8, 9)
+      debouncedFn(1, 2, 3)
+      debouncedFn(4, 5, 6)
+      debouncedFn(7, 8, 9)
 
       expect(mockFn).not.toHaveBeenCalled()
 
@@ -26,10 +26,11 @@ describe('given debounceId function', () => {
     it('then it should execute separately for each identifier', async () => {
       vi.useFakeTimers()
       const mockFn = vi.fn().mockResolvedValue('result')
-      const debouncedFn = debounceId(mockFn, 100)
+      const debouncedFn = debounceId('id1', mockFn, 100)
+      const debouncedFn2 = debounceId('id2', mockFn, 100)
 
-      debouncedFn('id1', 1, 2, 3)
-      debouncedFn('id2', 4, 5, 6)
+      debouncedFn(1, 2, 3)
+      debouncedFn2(4, 5, 6)
 
       await vi.runAllTimersAsync()
 

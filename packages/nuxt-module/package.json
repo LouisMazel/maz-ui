@@ -39,7 +39,7 @@
     "@nuxt/test-utils": "^3.13.1",
     "defu": "^6.1.4",
     "nuxt": "^3.12.3",
-    "vitest": "^2.0.2"
+    "vitest": "^2.0.3"
   },
   "unbuild": {
     "failOnWarn": false

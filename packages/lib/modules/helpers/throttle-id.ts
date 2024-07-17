@@ -10,12 +10,13 @@ interface ThrottleState<T, Args extends unknown[]> {
  * Throttle an async function - called at first call and then at intervals (only the last call is executed)
  */
 export function throttleId<T, Args extends unknown[]>(
+  identifier: string,
   func: AsyncFunction<T, Args>,
   interval: number,
-): (identifier: string, ...args: Args) => Promise<T> {
+): (...args: Args) => Promise<T> {
   const state: Record<string, ThrottleState<T, Args>> = {}
 
-  return async (identifier: string, ...args: Args): Promise<T> => {
+  return async (...args: Args): Promise<T> => {
     const now = Date.now()
 
     if (!state[identifier]) {

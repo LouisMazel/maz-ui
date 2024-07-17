@@ -232,8 +232,8 @@ export class LazyImg {
     ) => {
       this.handleIntersectionObserver(el, binding, entries, intersectionObserver)
     }
-    const observerOptions: ClassOptions['observerOptions'] = this.options.observerOptions
 
+    const observerOptions: ClassOptions['observerOptions'] = this.options.observerOptions
     const observer = new IntersectionObserver(observerCallback, observerOptions)
 
     observer.observe(el)
