@@ -1,7 +1,6 @@
 import type { BaseIssue, BaseSchema, BaseSchemaAsync, InferIssue } from 'valibot'
 import type {
   ComponentInternalInstance,
-  ComponentPublicInstance,
   InjectionKey,
   MaybeRefOrGetter,
   ModelRef,
@@ -108,7 +107,7 @@ export interface FormFieldOptions<FieldType = unknown> {
    */
   formIdentifier?: string | symbol | InjectionKey<FormContext>
   /** Ref to the component instance or the input element */
-  componentRef?: Ref<ComponentPublicInstance | HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | undefined>
+  ref?: string
 }
 
 export type UseFormValidator<Model extends BaseFormPayload = BaseFormPayload> = typeof useFormValidator<Model>

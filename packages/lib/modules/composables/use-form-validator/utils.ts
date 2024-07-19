@@ -1,4 +1,4 @@
-import type { ComponentPublicInstance, InjectionKey } from 'vue'
+import type { InjectionKey } from 'vue'
 import { getCurrentInstance, inject, nextTick } from 'vue'
 
 import { debounceId } from '../../helpers/debounce-id'
@@ -499,18 +499,18 @@ export function getContext<Model extends BaseFormPayload>(
 }
 
 export function getValidationEvents<Model extends BaseFormPayload>({
-  componentRef,
+  ref,
   fieldState,
   events,
 }: {
-  componentRef: ComponentPublicInstance | HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | undefined
+  ref?: string
   fieldState: FieldState<Model>
   events: {
     onBlur: () => void
     onInput: () => void
   }
 }) {
-  if (componentRef || ['aggressive', 'lazy', 'none'].includes(fieldState.mode)) {
+  if (ref || ['aggressive', 'lazy', 'none'].includes(fieldState.mode)) {
     return
   }
 
