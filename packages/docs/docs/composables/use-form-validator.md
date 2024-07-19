@@ -162,6 +162,7 @@ With eager mode, each form field is validated on blur (if not empty) and then on
     />
     <MazSelect
       v-model="country"
+      v-bind="{ ...validationEvents }"
       :options="[{ label: 'France', value: 'FR' }, { label: 'United States', value: 'US' }]"
       label="Select your nationality"
       :hint="countryErrorMessage"
@@ -205,6 +206,7 @@ With eager mode, each form field is validated on blur (if not empty) and then on
     />
     <MazSelect
       v-model="country"
+      v-bind="{ ...validationEvents }"
       :options="[{ label: 'France', value: 'FR' }, { label: 'United States', value: 'US' }]"
       label="Select your nationality"
       :hint="countryErrorMessage"
@@ -236,14 +238,10 @@ With eager mode, each form field is validated on blur (if not empty) and then on
     options: { mode: 'eager', scrollToError: '.has-error-form2', identifier: 'form2' },
   })
 
-  const nameRef = ref<ComponentPublicInstance>()
-  const ageRef = ref<ComponentPublicInstance>()
-  const agreeRef = ref<ComponentPublicInstance>()
-
-  const { value: name, errorMessage: nameErrorMessage } = useFormField('name', { componentRef: nameRef, formIdentifier: 'form2' })
-  const { value: age, errorMessage: ageErrorMessage } = useFormField('age', { componentRef: ageRef, formIdentifier: 'form2'  })
-  const { value: agree, errorMessage: agreeErrorMessage } = useFormField('agree', { componentRef: agreeRef, formIdentifier: 'form2'  })
-  const { value: country, errorMessage: countryErrorMessage } = useFormField('country', { mode: 'lazy', formIdentifier: 'form2'  })
+  const { value: name, errorMessage: nameErrorMessage } = useFormField('name', { ref: 'nameRef', formIdentifier: 'form2' })
+  const { value: age, errorMessage: ageErrorMessage } = useFormField('age', { ref: 'ageRef', formIdentifier: 'form2'  })
+  const { value: agree, errorMessage: agreeErrorMessage } = useFormField('agree', { ref: 'agreeRef', formIdentifier: 'form2'  })
+  const { value: country, errorMessage: countryErrorMessage, validationEvents } = useFormField('country', { mode: 'lazy', formIdentifier: 'form2'  })
 
   const onSubmit = handleSubmit(async (formData) => {
     // Form submission logic
@@ -299,14 +297,10 @@ With eager mode, each form field is validated on blur (if not empty) and then on
     options: { mode: 'eager', scrollToError: '.has-error-form2', identifier: 'form2' },
   })
 
-  const nameRef = ref<ComponentPublicInstance>()
-  const ageRef = ref<ComponentPublicInstance>()
-  const agreeRef = ref<ComponentPublicInstance>()
-
-  const { value: name, errorMessage: nameErrorMessage } = useFormField('name', { componentRef: nameRef, formIdentifier: 'form2' })
-  const { value: age, errorMessage: ageErrorMessage } = useFormField('age', { componentRef: ageRef, formIdentifier: 'form2'  })
-  const { value: agree, errorMessage: agreeErrorMessage } = useFormField('agree', { componentRef: agreeRef, formIdentifier: 'form2'  })
-  const { value: country, errorMessage: countryErrorMessage } = useFormField('country', { mode: 'lazy', formIdentifier: 'form2'  })
+  const { value: name, errorMessage: nameErrorMessage } = useFormField('name', { ref: 'nameRef', formIdentifier: 'form2' })
+  const { value: age, errorMessage: ageErrorMessage } = useFormField('age', { ref: 'ageRef', formIdentifier: 'form2'  })
+  const { value: agree, errorMessage: agreeErrorMessage } = useFormField('agree', { ref: 'agreeRef', formIdentifier: 'form2'  })
+  const { value: country, errorMessage: countryErrorMessage, validationEvents } = useFormField('country', { formIdentifier: 'form2' })
 
   const onSubmit2 = handleSubmit2(async (formData) => {
     // Form submission logic
@@ -411,7 +405,7 @@ To use the modes `eager` or `blur`, you must use this `useFormField` composable 
 - `options`: `FormFieldOptions<T>` (optional) - Field-specific options.
   - `defaultValue`: `T` (optional) - The default value of the field.
   - `mode`: `'eager' | 'lazy' | 'aggressive' | 'blur' | 'input'` (optional) - The validation mode for the field - [see validation modes](#validation-modes)
-  - `componentRef`: `Ref<ComponentPublicInstance | HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>` (optional) - Reference to the component to associate and trigger validation events (not necessary for `lazy`, `aggressive` validation modes)
+  - `ref`: `string` (optional) - Reference to the component to associate and trigger validation events (not necessary for `lazy`, `aggressive` validation modes)
   - `formIdentifier`: `string | symbol` (optional) - Identifier for the form (useful when you have multiple forms on the same component)
 
 ### Return
@@ -442,8 +436,6 @@ import { ref } from 'vue'
 import { useFormField } from 'maz-ui'
 import MazInput from 'maz-ui/components/MazInput'
 
-const componentRef = ref<ComponentPublicInstance>()
-
 useFormValidator({
   schema: {
     name: pipe(string('Name is required'), nonEmpty('Name is required')),
@@ -452,13 +444,13 @@ useFormValidator({
 })
 
 const { value, errorMessage, isValid, hasError } = useFormField('name', {
-  componentRef, // Necessary for 'eager', 'blur' validation modes to add validation events
+  ref: 'inputRef', // Necessary for 'eager', 'blur' validation modes to add validation events
 })
 </script>
 
 <template>
   <MazInput
-    ref="componentRef"
+    ref="inputRef"
     v-model="value"
     :hint="errorMessage"
     :error="hasError"
@@ -483,7 +475,7 @@ The configurable options for `useFormField` include:
 
 - `defaultValue`: The default value of the field
 - `mode`: [Validation mode](#validation-modes) ('eager', 'lazy', 'aggressive', 'blur' or 'input') - To override the form validation mode
-- `componentRef`: Reference to the component or HTML element to associate and trigger validation events
+- `ref`: Reference to the component or HTML element to associate and trigger validation events
 
 ## Validation Modes
 

@@ -22,7 +22,6 @@ import {
 import type { FieldState, FieldsStates, FormSchema, Validation, ValidationIssues } from '@modules/composables/use-form-validator/types'
 
 import { minLength, pipe, string } from 'valibot'
-import type { ComponentPublicInstance } from 'vue'
 
 describe('given fieldHasValidation function', () => {
   const schema = {
@@ -467,9 +466,9 @@ describe('given getValidationEvents function', () => {
     onInput: vi.fn(),
   }
 
-  it('returns undefined when componentRef is provided', () => {
+  it('returns undefined when ref is provided', () => {
     const result = getValidationEvents({
-      componentRef: {} as ComponentPublicInstance,
+      ref: 'test',
       fieldState: { mode: 'eager' } as FieldState<{ name: string }>,
       events: mockEvents,
     })
@@ -478,14 +477,12 @@ describe('given getValidationEvents function', () => {
 
   it('returns undefined for aggressive or lazy mode', () => {
     const result = getValidationEvents({
-      componentRef: undefined,
       fieldState: { mode: 'aggressive' } as FieldState<{ name: string }>,
       events: mockEvents,
     })
     expect(result).toBeUndefined()
 
     const result2 = getValidationEvents({
-      componentRef: undefined,
       fieldState: { mode: 'lazy' } as FieldState<{ name: string }>,
       events: mockEvents,
     })
@@ -494,21 +491,18 @@ describe('given getValidationEvents function', () => {
 
   it('returns all events for other modes', () => {
     const result = getValidationEvents({
-      componentRef: undefined,
-      fieldState: { mode: 'blur' } as unknown as FieldState<{ name: string }>,
+      fieldState: { mode: 'blur' } as FieldState<{ name: string }>,
       events: mockEvents,
     })
     expect(result).toEqual({ 'onBlur': mockEvents.onBlur, 'onUpdate:modelValue': mockEvents.onInput })
 
     const result2 = getValidationEvents({
-      componentRef: undefined,
       fieldState: { mode: 'input' } as FieldState<{ name: string }>,
       events: mockEvents,
     })
     expect(result2).toEqual({ 'onBlur': mockEvents.onBlur, 'onUpdate:modelValue': mockEvents.onInput })
 
     const result3 = getValidationEvents({
-      componentRef: undefined,
       fieldState: { mode: 'eager' } as FieldState<{ name: string }>,
       events: mockEvents,
     })

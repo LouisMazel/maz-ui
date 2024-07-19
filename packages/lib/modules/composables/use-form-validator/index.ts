@@ -1,8 +1,9 @@
-import type { Ref, WatchStopHandle } from 'vue'
-import { computed, onUnmounted, provide, ref, toValue, watch } from 'vue'
+import type { ComponentPublicInstance, Ref } from 'vue'
+import { computed, onMounted, onUnmounted, provide, ref, toValue, watch } from 'vue'
 
 import { freezeValue } from '../../helpers/freeze-value'
 import { isEqual } from '../../helpers/is-equal'
+import { checkAvailability } from '../../helpers/check-availability'
 import type {
   BaseFormPayload,
   ExtractModelKey,
@@ -276,21 +277,21 @@ export function useFormField<
 
   const validationEvents = computed(() =>
     getValidationEvents({
-      componentRef: opts.componentRef?.value,
+      ref: opts.ref,
       events,
       fieldState: fieldState.value,
     }),
   )
 
   if (
-    opts.componentRef
+    opts.ref
     && !['aggressive', 'lazy'].includes(formOptions.mode)
     && !['aggressive', 'lazy'].includes(fieldsStates.value[name].mode)
   ) {
     let interactiveElements: HTMLElement[] = []
-    let unwatchHandle: WatchStopHandle | null = null
 
-    const addEvents = () => {
+    const handleInteractiveElements = (element: HTMLElement) => {
+      interactiveElements = findInteractiveElements(element)
       addEventToInteractiveElements({
         interactiveElements,
         events,
@@ -298,29 +299,24 @@ export function useFormField<
       })
     }
 
-    unwatchHandle = watch(
-      opts.componentRef,
-      (newRef) => {
-        if (newRef && newRef instanceof HTMLElement) {
-          unwatchHandle?.()
-          interactiveElements = findInteractiveElements(newRef)
-          addEvents()
+    onMounted(() => {
+      const instance = getInstance<Model>(`useFormField of ${name}`)
+
+      checkAvailability(() => instance.refs[opts.ref as string] as HTMLElement | ComponentPublicInstance | undefined, (element) => {
+        const interactiveElement = element instanceof HTMLElement ? element : element?.$el
+        if (interactiveElement) {
+          handleInteractiveElements(interactiveElement)
         }
-        else if (newRef?.$el) {
-          unwatchHandle?.()
-          interactiveElements = findInteractiveElements(newRef.$el)
-          addEvents()
-        }
-      },
-      { immediate: true },
-    )
+      }, {
+        errorMessage: `[maz-ui](useFormField) No element found for ref ${opts.ref} for field ${name}`,
+      })
+    })
 
     onUnmounted(() => {
       removeEventFromInteractiveElements({
         interactiveElements,
         events,
       })
-      unwatchHandle?.()
     })
   }
 
