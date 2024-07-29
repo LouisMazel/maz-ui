@@ -137,8 +137,8 @@ export function getFieldsStates<
   options,
 }: {
   schema: FormSchema<Model>
-  payload?: Partial<Model>
-  options?: StrictOptions<Model>
+  payload: Partial<Model>
+  options: StrictOptions<Model>
 }): FieldsStates<Model> {
   const fieldsStates = {} as FieldsStates<Model>
 
@@ -212,41 +212,29 @@ export function findInteractiveElements(el: HTMLElement) {
 
 export function addEventToInteractiveElements({
   interactiveElements,
-  events,
+  onBlurHandler,
   mode,
 }: {
   interactiveElements: HTMLElement[]
-  events: {
-    onBlur: () => void
-    onInput: () => void
-  }
+  onBlurHandler: () => void
   mode: StrictOptions['mode']
 }) {
   interactiveElements.forEach((element) => {
-    if (['blur', 'eager', 'input'].includes(mode)) {
-      element.addEventListener('blur', events.onBlur)
-      element.addEventListener('input', events.onInput)
-      if (element.getAttribute('type') === 'radio' || element.getAttribute('type') === 'checkbox') {
-        element.addEventListener('change', events.onInput)
-      }
+    if (hasModeIncludes(mode, ['eager', 'blur'])) {
+      element.addEventListener('blur', onBlurHandler)
     }
   })
 }
 
 export function removeEventFromInteractiveElements({
   interactiveElements,
-  events,
+  onBlurHandler,
 }: {
   interactiveElements: HTMLElement[]
-  events: {
-    onBlur: () => void
-    onInput: () => void
-  }
+  onBlurHandler: () => void
 }) {
   interactiveElements.forEach((element) => {
-    element.removeEventListener('blur', events.onBlur)
-    element.removeEventListener('input', events.onInput)
-    element.removeEventListener('change', events.onInput)
+    element.removeEventListener('blur', onBlurHandler)
   })
 }
 
@@ -350,7 +338,7 @@ export function validateForm<
 }) {
   return Promise.all(
     Object.keys(fieldsStates).map(name =>
-      setFieldValidationState({
+      setFieldValidationState<Model>({
         name: name as ModelKey,
         setError,
         fieldsStates,
@@ -370,27 +358,22 @@ export function canExecuteValidation<Model extends BaseFormPayload>({
   fieldState: FieldState<Model>
   isSubmitted: boolean
 }): boolean {
-  const { dirty, blurred, mode, valid } = fieldState
+  const { dirty, blurred, mode } = fieldState
 
-  if (eventName === 'blur' && mode === 'input') {
-    return false
-  }
-
-  if (eventName === 'input' && mode === 'blur') {
-    return false
-  }
-
-  if (valid) {
+  if (
+    (eventName === 'blur' && hasModeIncludes(mode, ['lazy', 'aggressive']))
+    || (eventName === 'input' && mode === 'blur')
+    || mode === 'none'
+  ) {
     return false
   }
 
   return (
     isSubmitted
     || (mode === 'eager' && blurred)
-    || (mode === 'input' && dirty)
     || (mode === 'blur' && blurred)
-    || mode === 'aggressive'
-    || mode === 'lazy'
+    || (mode === 'aggressive' && dirty)
+    || (mode === 'lazy' && dirty)
   )
 }
 
@@ -414,6 +397,7 @@ export function handleFieldBlur<
 }) {
   const fieldValue = payload[name]
   const fieldState = fieldsStates[name]
+
   const isDirty = !isEmptyValue(fieldValue) && !isEqual(fieldValue, fieldState.initialValue)
 
   fieldState.dirty = isDirty
@@ -442,26 +426,25 @@ export function handleFieldInput<
   fieldsStates,
   schema,
   isSubmitted,
-  force = false,
+  forceValidation = false,
 }: {
   name: ModelKey
   payload: Model
   fieldsStates: FieldsStates<Model>
   schema: FormSchema<Model>
   isSubmitted: boolean
-  force?: boolean
+  forceValidation?: boolean
 }) {
   const fieldValue = payload[name]
   const fieldState = fieldsStates[name]
 
   fieldState.validated = false
-  fieldState.valid = false
 
   const isDirty = !isEmptyValue(fieldValue) && !isEqual(fieldValue, fieldState.initialValue)
 
   fieldState.dirty = isDirty
 
-  const shouldValidate = force || canExecuteValidation<Model>({ eventName: 'input', fieldState, isSubmitted })
+  const shouldValidate = forceValidation || canExecuteValidation<Model>({ eventName: 'input', fieldState, isSubmitted })
 
   if (!shouldValidate) {
     return
@@ -501,22 +484,18 @@ export function getContext<Model extends BaseFormPayload>(
 export function getValidationEvents<Model extends BaseFormPayload>({
   ref,
   fieldState,
-  events,
+  onBlurHandler,
 }: {
   ref?: string
   fieldState: FieldState<Model>
-  events: {
-    onBlur: () => void
-    onInput: () => void
-  }
+  onBlurHandler: () => void
 }) {
-  if (ref || ['aggressive', 'lazy', 'none'].includes(fieldState.mode)) {
+  if (ref || hasModeIncludes(fieldState.mode, ['aggressive', 'lazy', 'none'])) {
     return
   }
 
   return {
-    'onBlur': events.onBlur,
-    'onUpdate:modelValue': events.onInput,
+    onBlur: onBlurHandler,
   }
 }
 
@@ -538,4 +517,8 @@ export async function getValibotValidationMethod<MethodName extends keyof Valibo
 export async function getValidationSchema<Model extends BaseFormPayload>(formSchema: FormSchema<Model>) {
   const objectAsync = await getValibotValidationMethod('objectAsync')
   return objectAsync(formSchema)
+}
+
+export function hasModeIncludes(value: StrictOptions['mode'], modes: StrictOptions['mode'][]) {
+  return modes.includes(value)
 }

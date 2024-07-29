@@ -1,6 +1,29 @@
 <script lang="ts">
 /* eslint-disable import/first */
-export type { Color, Size, ModelValueSimple, Position } from './types'
+export type { Color, ModelValueSimple, Position, Size } from './types'
+</script>
+
+<script
+  lang="ts"
+  setup
+  generic="T extends ModelValueSimple, U extends MazSelectOption, M = boolean"
+>
+import {
+  type ComponentPublicInstance,
+  type HTMLAttributes,
+  computed,
+  defineAsyncComponent,
+  nextTick,
+  onBeforeMount,
+  ref,
+} from 'vue'
+import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
+import { debounceCallback } from '../modules/helpers/debounce-callback'
+import { useStringMatching } from '../modules/composables/use-string-matching'
+import { vClosable } from '../modules/directives'
+import { normalizeString } from '../modules/helpers/normalize-string'
+import type { Color, ModelValueSimple, Position, Size } from './types'
+import MazInput from './MazInput.vue'
 
 export type NormalizedOption = Record<string, ModelValueSimple>
 export interface MazSelectOptionWithOptGroup {
@@ -60,29 +83,6 @@ export interface Props<T extends ModelValueSimple, U extends MazSelectOption> {
   /** The exclude selectors for the v-closable directive - will exclude the elements from the directive */
   excludeSelectors?: string[]
 }
-</script>
-
-<script
-  lang="ts"
-  setup
-  generic="T extends ModelValueSimple, U extends MazSelectOption, M = boolean"
->
-import {
-  type ComponentPublicInstance,
-  type HTMLAttributes,
-  computed,
-  defineAsyncComponent,
-  nextTick,
-  onBeforeMount,
-  ref,
-} from 'vue'
-import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
-import { debounceCallback } from '../modules/helpers/debounce-callback'
-import { useStringMatching } from '../modules/composables/use-string-matching'
-import { vClosable } from '../modules/directives'
-import { normalizeString } from '../modules/helpers/normalize-string'
-import type { Color, ModelValueSimple, Position, Size } from './types'
-import MazInput from './MazInput.vue'
 
 defineOptions({
   inheritAttrs: false,

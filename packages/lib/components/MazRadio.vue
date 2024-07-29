@@ -1,41 +1,46 @@
-<script lang="ts" setup>
-import { type HTMLAttributes, computed } from 'vue'
+<script lang="ts">
+export type { Color, Size } from './types'
+</script>
+
+<script lang="ts" setup generic="T extends string | number | boolean">
+/* eslint-disable import/first */
+import { type HTMLAttributes, computed, ref } from 'vue'
 import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
 import type { Color, Size } from './types'
 
-export type { Color, Size }
+export interface Props<T = string | number | boolean> {
+  /** Style attribut of the component root element */
+  style?: HTMLAttributes['style']
+  /** Class attribut of the component root element */
+  class?: HTMLAttributes['class']
+  /** The id of the radio */
+  id?: string
+  /** @model The value of the radio */
+  modelValue?: T
+  /** The value of the radio */
+  value: T
+  /** The name of the radio */
+  name: string
+  /** The label of the radio */
+  label?: string
+  /** The color of the radio */
+  color?: Color
+  /** The size of the radio */
+  size?: Size
+  /** The disabled state of the radio */
+  disabled?: boolean
+  /** Whether there is an error with the input. */
+  error?: boolean
+  /** Whether the input is successful. */
+  success?: boolean
+  /** Whether there is a warning with the input. */
+  warning?: boolean
+  /** The hint text to display below the input. */
+  hint?: string
+}
 
 const props = withDefaults(
-  defineProps<{
-    /** Style attribut of the component root element */
-    style?: HTMLAttributes['style']
-    /** Class attribut of the component root element */
-    class?: HTMLAttributes['class']
-    /** The id of the radio */
-    id?: string
-    /** @model The value of the radio */
-    modelValue?: string | number | boolean
-    /** The value of the radio */
-    value: string | number | boolean
-    /** The name of the radio */
-    name: string
-    /** The label of the radio */
-    label?: string
-    /** The color of the radio */
-    color?: Color
-    /** The size of the radio */
-    size?: Size
-    /** The disabled state of the radio */
-    disabled?: boolean
-    /** Whether there is an error with the input. */
-    error?: boolean
-    /** Whether the input is successful. */
-    success?: boolean
-    /** Whether there is a warning with the input. */
-    warning?: boolean
-    /** The hint text to display below the input. */
-    hint?: string
-  }>(),
+  defineProps<Props<T>>(),
   {
     style: undefined,
     class: undefined,
@@ -53,12 +58,22 @@ const emits = defineEmits<{
    * Event emitted when value change
    * @property {string | number | boolean} value - selected value
    */
-  (event: 'update:model-value', value: string | number | boolean): void
+  'update:model-value': [value: T]
   /**
    * Event emitted when value change
    * @property {string | number | boolean} value - selected value
    */
-  (event: 'change', value: string | number | boolean): void
+  'change': [value: T]
+  /**
+   * Emitted when the checkbox lost focus
+   * @property {FocusEvent} value - The focus event
+   */
+  'blur': [value: FocusEvent]
+  /**
+   * Emitted when the checkbox is focused
+   * @property {FocusEvent} value - The focus event
+   */
+  'focus': [value: FocusEvent]
 }>()
 
 const instanceId = useInstanceUniqId({
@@ -108,16 +123,27 @@ const radioBoxShadow = computed(() => {
     : `var(--maz-color-${props.color}-alpha)`
 })
 
-function keyboardHandler(event: KeyboardEvent, value: string | number | boolean) {
+function keyboardHandler(event: KeyboardEvent) {
   if (['Space'].includes(event.code)) {
     event.preventDefault()
-    emitValue(value)
+    emitValue()
   }
 }
 
-function emitValue(value: string | number | boolean) {
-  emits('update:model-value', value)
-  emits('change', value)
+function emitValue() {
+  emits('update:model-value', props.value)
+  emits('change', props.value)
+}
+
+const inputRef = ref<HTMLInputElement>()
+
+function onBlur(event: FocusEvent) {
+  inputRef.value?.dispatchEvent(new Event('blur'))
+  emits('blur', event)
+}
+function onFocus(event: FocusEvent) {
+  inputRef.value?.dispatchEvent(new Event('focus'))
+  emits('focus', event)
 }
 </script>
 
@@ -130,18 +156,21 @@ function emitValue(value: string | number | boolean) {
     role="radio"
     :style
     :aria-checked="isSelected"
-    @keydown="keyboardHandler($event, value)"
+    @blur="onBlur"
+    @focus="onFocus"
+    @keydown="keyboardHandler"
   >
     <input
       :id="instanceId"
+      ref="inputRef"
       :value
       v-bind="$attrs"
       tabindex="-1"
       :disabled
-      :name="name"
+      :name
       type="radio"
       :checked="isSelected"
-      @change="emitValue(($event?.target as HTMLInputElement)?.value)"
+      @change="emitValue()"
     >
 
     <span>
@@ -154,7 +183,7 @@ function emitValue(value: string | number | boolean) {
         @binding {string | number | boolean} value - The value of the radio
     -->
     <div class="m-radio__text">
-      <slot :is-selected :value>
+      <slot :is-selected="isSelected" :value="value as T">
         {{ label }}
       </slot>
 

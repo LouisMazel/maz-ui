@@ -324,7 +324,7 @@ It accepts a validation schema, default values, and configuration options to han
 - `model`: `Ref<Model>` (optional) - A reference to the form's data model.
 - `defaultValues`: `Partial<Model>` (optional) - Default values for the form fields.
 - `options`: `FormValidatorOptions` (optional) - Configuration options for the form validation behavior.
-  - `mode`: `'eager' | 'lazy' | 'aggressive' | 'blur' | 'input'`  (optional) - Form validation mode. (default: 'lazy') - To use the `eager` or `blur` validation modes, you must use the `useFormField` composable to add the necessary validation events. - [see validation modes](#validation-modes)
+  - `mode`: `'eager' | 'lazy' | 'aggressive' | 'blur'`  (optional) - Form validation mode. (default: 'lazy') - To use the `eager` or `blur` validation modes, you must use the `useFormField` composable to add the necessary validation events. - [see validation modes](#validation-modes)
   - `throttledFields`: `Partial<Record<ModelKey, number | true>>` (optional) - Fields to validate with throttling. It's an object where the key is the field name and the value is the throttle time in milliseconds or `true` for the default throttle time (1000ms).
   - `debouncedFields`: `Partial<Record<ModelKey, number | true>>` (optional) - Fields to validate with debouncing. It's an object where the key is the field name and the value is the debounce time in milliseconds or `true` for the default debounce time (300ms).
   - `scrollToError`: `string | false` (optional) - Disable or provide a CSS selector for scrolling to errors (default '.has-field-error')
@@ -404,7 +404,7 @@ To use the modes `eager` or `blur`, you must use this `useFormField` composable 
 - `name`: `ModelKey` - The name of the field in the validation schema.
 - `options`: `FormFieldOptions<T>` (optional) - Field-specific options.
   - `defaultValue`: `T` (optional) - The default value of the field.
-  - `mode`: `'eager' | 'lazy' | 'aggressive' | 'blur' | 'input'` (optional) - The validation mode for the field - [see validation modes](#validation-modes)
+  - `mode`: `'eager' | 'lazy' | 'aggressive' | 'blur'` (optional) - The validation mode for the field - [see validation modes](#validation-modes)
   - `ref`: `string` (optional) - Reference to the component to associate and trigger validation events (not necessary for `lazy`, `aggressive` validation modes)
   - `formIdentifier`: `string | symbol` (optional) - Identifier for the form (useful when you have multiple forms on the same component)
 
@@ -444,7 +444,7 @@ useFormValidator({
 })
 
 const { value, errorMessage, isValid, hasError } = useFormField('name', {
-  ref: 'inputRef', // Necessary for 'eager', 'blur' and 'input' validation modes to add validation events
+  ref: 'inputRef', // Necessary for 'eager' and 'blur' validation modes to add validation events
 })
 </script>
 
@@ -464,7 +464,7 @@ const { value, errorMessage, isValid, hasError } = useFormField('name', {
 
 The configurable options for `useFormValidator` include:
 
-- `mode`: [Validation mode](#validation-modes) ('eager', 'lazy', 'aggressive', 'blur' or 'input')
+- `mode`: [Validation mode](#validation-modes) ('eager', 'lazy', 'aggressive' or 'blur')
 - `throttledFields`: Fields to validate with throttling (e.g `{ name: 1000 }` or `{ name: true }` for the default throttle time (1000ms))
 - `debouncedFields`: Fields to validate with debouncing (e.g `{ name: 300 }` or `{ name: true }` for the default debounce time (300ms))
 - `scrollToError`: Disable or provide a CSS selector for scrolling to errors (default '.has-field-error')
@@ -474,16 +474,15 @@ The configurable options for `useFormValidator` include:
 The configurable options for `useFormField` include:
 
 - `defaultValue`: The default value of the field
-- `mode`: [Validation mode](#validation-modes) ('eager', 'lazy', 'aggressive', 'blur' or 'input') - To override the form validation mode
+- `mode`: [Validation mode](#validation-modes) ('eager', 'lazy', 'aggressive' or 'blur') - To override the form validation mode
 - `ref`: Reference to the component or HTML element to associate and trigger validation events
 
 ## Validation Modes
 
-- `lazy`: (default) Validates only on value changes - can't be overridden by `useFormField`
-- `aggressive`: Validates all fields immediately and on every change - can't be overridden by `useFormField`
+- `lazy`: (default) Validates only on value changes
+- `aggressive`: Validates all fields immediately and on every change
 - `eager`: (recommended) Validates on initial blur (if not empty), then on every change (requires `useFormField`)
 - `blur`: Validates only on focus loss (requires `useFormField`)
-- `input`: Validates on every change - similar to `lazy` but can be overridden by `useFormField` to use `eager` or `blur` mode on a specific field (requires `useFormField`)
 
 ## Best Practices
 

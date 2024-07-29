@@ -2,7 +2,7 @@ import { flushPromises, mount } from '@vue/test-utils'
 import { minLength, minValue, number, pipe, string } from 'valibot'
 import { defineComponent, nextTick, ref } from 'vue'
 
-import type { UseFormField, UseFormValidator } from '@modules/composables/use-form-validator'
+import type { StrictOptions, UseFormField, UseFormValidator } from '@modules/composables/use-form-validator'
 import { useFormField, useFormValidator } from '@modules/composables/use-form-validator'
 
 interface Model {
@@ -11,7 +11,7 @@ interface Model {
 }
 
 const defaultOptions: {
-  mode?: 'lazy' | 'aggressive' | 'blur' | 'eager' | 'input'
+  mode?: StrictOptions['mode']
   useEvents?: boolean
 } = {
   mode: 'aggressive',
@@ -72,10 +72,16 @@ describe('given useFormValidator', () => {
   let form: ReturnType<UseFormValidator<Model>>
 
   beforeEach(() => {
+    vi.useFakeTimers()
+
     const FormComponent = createFormComponent()
     wrapper = mount(FormComponent)
     // @ts-expect-error - form is private
     form = wrapper.vm.form
+  })
+
+  afterEach(() => {
+    wrapper.unmount()
   })
 
   describe('when mounted', () => {
@@ -94,7 +100,10 @@ describe('given useFormValidator', () => {
   describe('when model is updated', () => {
     it('then isDirty is updated', async () => {
       form.model.value.name = 'John'
-      await nextTick()
+
+      vi.advanceTimersByTime(200)
+      await flushPromises()
+
       expect(form.isDirty.value).toBe(true)
     })
   })
@@ -129,6 +138,7 @@ describe('given useFormField with aggressive mode', () => {
 
   beforeEach(() => {
     vi.useFakeTimers()
+
     const FormComponent = createFormComponent()
     wrapper = mount(FormComponent)
     // @ts-expect-error - nameField is private
@@ -164,8 +174,8 @@ describe('given useFormField with aggressive mode', () => {
     it('then it update value and validate on input', async () => {
       nameField.value.value = 'Jo'
 
-      await flushPromises()
       vi.advanceTimersByTime(300)
+      await flushPromises()
 
       expect(nameField.isDirty.value).toBe(true)
       expect(nameField.isValid.value).toBe(false)
@@ -174,8 +184,8 @@ describe('given useFormField with aggressive mode', () => {
 
       nameField.value.value = 'John'
 
-      await flushPromises()
       vi.advanceTimersByTime(300)
+      await flushPromises()
 
       expect(nameField.isValid.value).toBe(true)
       expect(nameField.hasError.value).toBe(false)
@@ -349,49 +359,6 @@ describe('given useFormField with blur mode', () => {
       wrapper.find('input').element.value = 'John'
       // @ts-expect-error - method is defined
       nameField.validationEvents.value.onBlur()
-
-      await flushPromises()
-      vi.advanceTimersByTime(300)
-
-      expect(nameField.isValid.value).toBe(true)
-      expect(nameField.hasError.value).toBe(false)
-    })
-  })
-})
-
-describe('given useFormField with input mode', () => {
-  let wrapper: ReturnType<typeof mount>
-  let nameField: ReturnType<UseFormField<string>>
-
-  beforeEach(() => {
-    vi.useFakeTimers()
-    const FormComponent = createFormComponent({
-      mode: 'input',
-      useEvents: true,
-    })
-
-    wrapper = mount(FormComponent)
-    // @ts-expect-error - nameField is private
-    nameField = wrapper.vm.nameField
-  })
-
-  afterEach(() => {
-    vi.useRealTimers()
-  })
-
-  describe('when field value is updated', () => {
-    it('then it validates on every input', async () => {
-      nameField.value.value = 'J'
-      nameField.validationEvents.value?.['onUpdate:modelValue']()
-
-      await flushPromises()
-      vi.advanceTimersByTime(300)
-
-      expect(nameField.isValid.value).toBe(false)
-      expect(nameField.hasError.value).toBe(true)
-
-      nameField.value.value = 'John'
-      nameField.validationEvents.value?.['onUpdate:modelValue']()
 
       await flushPromises()
       vi.advanceTimersByTime(300)

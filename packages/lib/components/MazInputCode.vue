@@ -1,50 +1,20 @@
-<script lang="ts" setup>
+<script lang="ts">
+export type { Color } from './types'
+</script>
+
+<script lang="ts" setup generic="T extends string | number">
+/* eslint-disable import/first */
 import { type HTMLAttributes, computed, ref, watch } from 'vue'
 import type { Color } from './types'
 
-  type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
-
-export type { Color, Size }
-
-defineOptions({
-  inheritAttrs: false,
-})
-
-const props = withDefaults(defineProps<Props>(), {
-  style: undefined,
-  class: undefined,
-  modelValue: undefined,
-  codeLength: 4,
-  type: 'text',
-  acceptAlpha: false,
-  required: false,
-  disabled: false,
-  error: false,
-  success: false,
-  warning: false,
-  size: 'md',
-  color: 'primary',
-})
-
-const emits = defineEmits<{
-  /**
-   * Update the model value.
-   * @param value The new value of the model.
-   */
-  (event: 'update:model-value', value?: string | number): void
-  /**
-   * Emitted when all inputs are set.
-   */
-  (event: 'completed'): void
-}>()
-
-export interface Props {
+export type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+export interface Props<T = string | number> {
   /** The style of the component. */
   style?: HTMLAttributes['style']
   /** The class of the component. */
   class?: HTMLAttributes['class']
   /** The value of the component (v-model). */
-  modelValue?: string | number
+  modelValue?: T
   /** The length of the code. */
   codeLength?: number
   /** The type of the input field. */
@@ -69,6 +39,38 @@ export interface Props {
   hint?: string
 }
 
+defineOptions({
+  inheritAttrs: false,
+})
+
+const props = withDefaults(defineProps<Props<T>>(), {
+  style: undefined,
+  class: undefined,
+  modelValue: undefined,
+  codeLength: 4,
+  type: 'text',
+  acceptAlpha: false,
+  required: false,
+  disabled: false,
+  error: false,
+  success: false,
+  warning: false,
+  size: 'md',
+  color: 'primary',
+})
+
+const emits = defineEmits<{
+  /**
+   * Update the model value.
+   * @param value The new value of the model.
+   */
+  'update:model-value': [value?: T]
+  /**
+   * Emitted when all inputs are set.
+   */
+  'completed': [value: void]
+}>()
+
 const inputList = ref<HTMLInputElement[]>([])
 const localMap = ref<Map<number, string | undefined>>(new Map())
 
@@ -86,7 +88,7 @@ const inputValues = computed({
   get: () => localMap.value,
   set: (value) => {
     const emittedValue = getEmittedValue(value)
-    emits('update:model-value', emittedValue)
+    emits('update:model-value', emittedValue as T)
 
     if (emittedValue?.toString().length === props.codeLength) {
       emits('completed')

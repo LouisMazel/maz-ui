@@ -29,7 +29,9 @@ const props = withDefaults(defineProps<Props>(), {
   addTagsOnBlur: true,
 })
 
-const emits = defineEmits(['update:model-value'])
+const emits = defineEmits<{
+  'update:model-value': [value?: (string | number)[]]
+}>()
 
 export interface Props {
   /** Style attribut of the component root element */
@@ -37,7 +39,7 @@ export interface Props {
   /** Class attribut of the component root element */
   class?: HTMLAttributes['class']
   /** @model The modelValue of the input */
-  modelValue?: string[] | number[]
+  modelValue?: (string | number)[]
   /** The placeholder of the input */
   placeholder?: string
   /** The label of the input */
@@ -69,7 +71,7 @@ const lastIdToDelete = ref<string>()
 const currentDeleteTimeout = ref<NodeJS.Timeout>()
 
 const tags = computed(() =>
-  props.modelValue?.map((tag) => {
+  props.modelValue?.map((tag: string | number) => {
     return {
       tag,
       id: Math.random().toString(36).slice(2, 11),
