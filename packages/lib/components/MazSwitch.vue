@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { type HTMLAttributes, computed } from 'vue'
+import { type HTMLAttributes, computed, ref } from 'vue'
 import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
 import type { Color } from './types'
 
@@ -24,12 +24,22 @@ const emits = defineEmits<{
    * Emitted when the model value changes
    * @property {boolean} value - The new value
    */
-  (event: 'update:model-value', value: boolean): void
+  'update:model-value': [value: boolean]
   /**
    * Emitted when the model value changes
    * @property {boolean} value - The new value
    */
-  (event: 'change', value: boolean): void
+  'change': [value: boolean]
+  /**
+   * Emitted when the checkbox lost focus
+   * @property {FocusEvent} value - The focus event
+   */
+  'blur': [value: FocusEvent]
+  /**
+   * Emitted when the checkbox is focused
+   * @property {FocusEvent} value - The focus event
+   */
+  'focus': [value: FocusEvent]
 }>()
 
 export interface Props {
@@ -70,10 +80,27 @@ const bgColorStyle = computed<HTMLAttributes['class']>(() =>
   props.modelValue ? `var(--maz-color-${props.color})` : 'var(--maz-color-white)',
 )
 
-function emit(e: Event) {
-  const target = e.target as HTMLInputElement | undefined
-  emits('update:model-value', target?.checked ?? false)
-  emits('change', target?.checked ?? false)
+function emit() {
+  emits('update:model-value', !props.modelValue)
+  emits('change', !props.modelValue)
+}
+
+const inputRef = ref<HTMLInputElement>()
+
+function keyboardHandler(event: KeyboardEvent) {
+  if (['Space'].includes(event.code)) {
+    event.preventDefault()
+    emit()
+  }
+}
+
+function onBlur(event: FocusEvent) {
+  inputRef.value?.dispatchEvent(new Event('blur'))
+  emits('blur', event)
+}
+function onFocus(event: FocusEvent) {
+  inputRef.value?.dispatchEvent(new Event('focus'))
+  emits('focus', event)
 }
 </script>
 
@@ -86,12 +113,17 @@ function emit(e: Event) {
     :style="style"
     :aria-checked="modelValue"
     tabindex="0"
+    @blur="onBlur"
+    @focus="onFocus"
+    @keydown="keyboardHandler"
   >
     <input
       :id="instanceId"
       v-bind="$attrs"
+      ref="inputRef"
       type="checkbox"
       :name="name"
+      tabindex="-1"
       :checked="modelValue"
       :aria-label="label"
       :disabled="disabled"

@@ -12,6 +12,7 @@ import {
   getValidationEvents,
   handleFieldBlur,
   handleFieldInput,
+  hasModeIncludes,
   isEmptyValue,
   removeEventFromInteractiveElements,
   scrollToError,
@@ -19,7 +20,7 @@ import {
   updateFieldState,
   validateField,
 } from '@modules/composables/use-form-validator/utils'
-import type { FieldState, FieldsStates, FormSchema, Validation, ValidationIssues } from '@modules/composables/use-form-validator/types'
+import type { FieldState, FieldsStates, FormSchema, StrictOptions, Validation, ValidationIssues } from '@modules/composables/use-form-validator/types'
 
 import { minLength, pipe, string } from 'valibot'
 
@@ -126,6 +127,7 @@ describe('given getFieldsStates function', () => {
       const states = getFieldsStates({
         schema,
         payload: {},
+        options: { mode: 'lazy' } as StrictOptions,
       })
 
       expect(states).toEqual({
@@ -202,18 +204,12 @@ describe('given addEventToInteractiveElements function', () => {
         { addEventListener: vi.fn(), getAttribute: vi.fn().mockReturnValue('text') },
         { addEventListener: vi.fn(), getAttribute: vi.fn().mockReturnValue('radio') },
       ] as unknown as HTMLElement[]
-      const onBlur = vi.fn()
-      const onInput = vi.fn()
+      const onBlurHandler = vi.fn()
 
-      addEventToInteractiveElements({ interactiveElements: mockElements, events: {
-        onBlur,
-        onInput,
-      }, mode: 'eager' })
+      addEventToInteractiveElements({ interactiveElements: mockElements, onBlurHandler, mode: 'eager' })
 
-      expect(mockElements[0].addEventListener).toHaveBeenCalledWith('blur', onBlur)
-      expect(mockElements[0].addEventListener).toHaveBeenCalledWith('input', onInput)
-      expect(mockElements[1].addEventListener).toHaveBeenCalledWith('blur', onBlur)
-      expect(mockElements[1].addEventListener).toHaveBeenCalledWith('change', onInput)
+      expect(mockElements[0].addEventListener).toHaveBeenCalledWith('blur', onBlurHandler)
+      expect(mockElements[1].addEventListener).toHaveBeenCalledWith('blur', onBlurHandler)
     })
   })
 })
@@ -222,18 +218,12 @@ describe('given removeEventFromInteractiveElements function', () => {
   describe('when called with interactive elements and event handlers', () => {
     it('then it removes all event listeners from interactive elements', () => {
       const mockElements = [{ removeEventListener: vi.fn() }, { removeEventListener: vi.fn() }] as unknown as HTMLElement[]
-      const onBlur = vi.fn()
-      const onInput = vi.fn()
+      const onBlurHandler = vi.fn()
 
-      removeEventFromInteractiveElements({ interactiveElements: mockElements, events: {
-        onBlur,
-        onInput,
-      } })
+      removeEventFromInteractiveElements({ interactiveElements: mockElements, onBlurHandler })
 
       mockElements.forEach((element) => {
-        expect(element.removeEventListener).toHaveBeenCalledWith('blur', onBlur)
-        expect(element.removeEventListener).toHaveBeenCalledWith('input', onInput)
-        expect(element.removeEventListener).toHaveBeenCalledWith('change', onInput)
+        expect(element.removeEventListener).toHaveBeenCalledWith('blur', onBlurHandler)
       })
     })
   })
@@ -429,14 +419,14 @@ describe('given handleFieldInput function', () => {
   } as unknown as FormSchema<{ name: string }>
 
   const fieldsStates = {
-    name: { dirty: false, blurred: false, mode: 'eager', valid: true, initialValue: '' },
+    name: { dirty: false, blurred: false, mode: 'eager', valid: true, initialValue: '', validateFunction: vi.fn() },
   } as unknown as FieldsStates<{ name: string }>
 
   it('updates field state and validates on input', () => {
     const payload = { name: 'John' }
-    handleFieldInput({ name: 'name', payload, fieldsStates, schema, isSubmitted: false })
+    handleFieldInput({ name: 'name', payload, fieldsStates, schema, isSubmitted: true })
     expect(fieldsStates.name.dirty).toBe(true)
-    expect(fieldsStates.name.valid).toBe(false)
+    expect(fieldsStates.name.validateFunction).toHaveBeenCalledTimes(1)
   })
 })
 
@@ -461,16 +451,13 @@ describe('given getErrorMessages function', () => {
 })
 
 describe('given getValidationEvents function', () => {
-  const mockEvents = {
-    onBlur: vi.fn(),
-    onInput: vi.fn(),
-  }
+  const onBlurHandler = vi.fn()
 
   it('returns undefined when ref is provided', () => {
     const result = getValidationEvents({
       ref: 'test',
       fieldState: { mode: 'eager' } as FieldState<{ name: string }>,
-      events: mockEvents,
+      onBlurHandler,
     })
     expect(result).toBeUndefined()
   })
@@ -478,13 +465,13 @@ describe('given getValidationEvents function', () => {
   it('returns undefined for aggressive or lazy mode', () => {
     const result = getValidationEvents({
       fieldState: { mode: 'aggressive' } as FieldState<{ name: string }>,
-      events: mockEvents,
+      onBlurHandler,
     })
     expect(result).toBeUndefined()
 
     const result2 = getValidationEvents({
       fieldState: { mode: 'lazy' } as FieldState<{ name: string }>,
-      events: mockEvents,
+      onBlurHandler,
     })
     expect(result2).toBeUndefined()
   })
@@ -492,20 +479,24 @@ describe('given getValidationEvents function', () => {
   it('returns all events for other modes', () => {
     const result = getValidationEvents({
       fieldState: { mode: 'blur' } as FieldState<{ name: string }>,
-      events: mockEvents,
+      onBlurHandler,
     })
-    expect(result).toEqual({ 'onBlur': mockEvents.onBlur, 'onUpdate:modelValue': mockEvents.onInput })
-
-    const result2 = getValidationEvents({
-      fieldState: { mode: 'input' } as FieldState<{ name: string }>,
-      events: mockEvents,
-    })
-    expect(result2).toEqual({ 'onBlur': mockEvents.onBlur, 'onUpdate:modelValue': mockEvents.onInput })
+    expect(result).toEqual({ onBlur: onBlurHandler })
 
     const result3 = getValidationEvents({
       fieldState: { mode: 'eager' } as FieldState<{ name: string }>,
-      events: mockEvents,
+      onBlurHandler,
     })
-    expect(result3).toEqual({ 'onBlur': mockEvents.onBlur, 'onUpdate:modelValue': mockEvents.onInput })
+    expect(result3).toEqual({ onBlur: onBlurHandler })
+  })
+})
+
+describe('given hasModeIncludes function', () => {
+  it('returns error messages for fields with errors', () => {
+    const result = hasModeIncludes('blur', ['blur'])
+    expect(result).toBe(true)
+
+    const result2 = hasModeIncludes('eager', ['blur'])
+    expect(result2).toBe(false)
   })
 })

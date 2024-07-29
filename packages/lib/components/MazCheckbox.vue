@@ -1,42 +1,21 @@
-<script lang="ts" setup>
-import { type HTMLAttributes, computed } from 'vue'
+<script lang="ts">
+export type { Color, Size } from './types'
+</script>
+
+<script lang="ts" setup generic="T extends boolean | (string | number)[]">
+/* eslint-disable import/first */
+import { type HTMLAttributes, computed, ref } from 'vue'
 import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
 import type { Color, Size } from './types'
 import CheckIcon from './../icons/check.svg'
 
-export type { Color, Size }
-
-defineOptions({
-  inheritAttrs: false,
-})
-
-const props = withDefaults(defineProps<Props>(), {
-  style: undefined,
-  class: undefined,
-  modelValue: undefined,
-  label: undefined,
-  id: undefined,
-  color: 'primary',
-  value: undefined,
-  name: 'm-checkbox',
-  size: 'md',
-  disabled: false,
-})
-
-const emits = defineEmits([
-  /* emitted when value change */
-  'update:model-value',
-  /* emited when value change */
-  'change',
-])
-
-export interface Props {
+export interface Props<T = boolean | (string | number)[]> {
   /** Style attribut of the component root element */
   style?: HTMLAttributes['style']
   /** Class attribut of the component root element */
   class?: HTMLAttributes['class']
   /** The model value of the checkbox */
-  modelValue?: boolean | (string | number)[]
+  modelValue?: T
   /** The id of the checkbox */
   id?: string
   /** The color of the checkbox */
@@ -60,6 +39,49 @@ export interface Props {
   /** The hint text to display below the input. */
   hint?: string
 }
+
+defineOptions({
+  inheritAttrs: false,
+})
+
+const props = withDefaults(
+  defineProps<Props<T>>(),
+  {
+    style: undefined,
+    class: undefined,
+    modelValue: undefined,
+    label: undefined,
+    id: undefined,
+    color: 'primary',
+    value: undefined,
+    name: 'm-checkbox',
+    size: 'md',
+    disabled: false,
+  },
+)
+
+const emits = defineEmits<{
+  /**
+   * Emitted when the model value change
+   * @property value The new value
+   */
+  'update:model-value': [value: T]
+  /**
+   * Emitted when the model value change
+   * @property value The new value
+   */
+  'change': [value: T]
+  /**
+   * Emitted when the checkbox lost focus
+   * @property {FocusEvent} value - The focus event
+   */
+  'blur': [value: FocusEvent]
+  /**
+   * Emitted when the checkbox is focused
+   * @property {FocusEvent} value - The focus event
+   */
+  'focus': [value: FocusEvent]
+}>()
 
 const instanceId = useInstanceUniqId({
   componentName: 'MazCheckbox',
@@ -168,8 +190,19 @@ function getNewValue(value: boolean | string | number) {
 function emitValue(value: boolean | string | number) {
   const newValue = getNewValue(value)
 
-  emits('update:model-value', newValue)
-  emits('change', newValue)
+  emits('update:model-value', newValue as T)
+  emits('change', newValue as T)
+}
+
+const inputRef = ref<HTMLInputElement>()
+
+function onBlur(event: FocusEvent) {
+  inputRef.value?.dispatchEvent(new Event('blur'))
+  emits('blur', event)
+}
+function onFocus(event: FocusEvent) {
+  inputRef.value?.dispatchEvent(new Event('focus'))
+  emits('focus', event)
 }
 </script>
 
@@ -179,18 +212,21 @@ function emitValue(value: boolean | string | number) {
     class="m-checkbox"
     :class="[{ '--disabled': disabled, '--error': error, '--warning': warning, '--success': success }, props.class]"
     tabindex="0"
-    :style="style"
+    :style
     role="checkbox"
     :aria-checked="isChecked"
     @keydown="keyboardHandler"
+    @blur="onBlur"
+    @focus="onFocus"
   >
     <input
       :id="instanceId"
+      ref="inputRef"
       :checked="isChecked"
       v-bind="$attrs"
       tabindex="-1"
-      :disabled="disabled"
-      :name="name"
+      :disabled
+      :name
       type="checkbox"
       @change="emitValue(value ?? ($event?.target as HTMLInputElement)?.checked)"
     >

@@ -38,7 +38,7 @@ export interface FormValidatorOptions<
    * - input: validate on input value change
    * @default 'lazy'
    */
-  mode?: 'eager' | 'lazy' | 'aggressive' | 'blur' | 'input' | 'none'
+  mode?: 'eager' | 'lazy' | 'aggressive' | 'blur' | 'none'
   /**
    * Fields that should be throttled
    * Useful for fields that require a network request to avoid spamming the server
@@ -68,7 +68,6 @@ export interface FormContext<
   Model extends BaseFormPayload = BaseFormPayload,
   ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>,
 > {
-  addFieldValidationWatch: (name: ModelKey) => void
   fieldsStates: Ref<FieldsStates<Model>>
   options: StrictOptions
   internalSchema: Ref<FormSchema<Model>>

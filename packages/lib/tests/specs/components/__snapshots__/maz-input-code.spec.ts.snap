@@ -2,17 +2,19 @@
 
 exports[`mazInputCode > should match with the snapshot 1`] = `
 "<fieldset data-v-757e2ef4="" class="m-input-code --md">
-  <div data-v-757e2ef4="" class="input-wrapper">
-    <!-- eslint-disable-next-line vuejs-accessibility/form-control-has-label --><input data-v-757e2ef4="" type="text" minlength="1" maxlength="1" inputmode="numeric" pattern="[0-9]{1}" autocomplete="do-not-autofill">
-  </div>
-  <div data-v-757e2ef4="" class="input-wrapper">
-    <!-- eslint-disable-next-line vuejs-accessibility/form-control-has-label --><input data-v-757e2ef4="" type="text" minlength="1" maxlength="1" inputmode="numeric" pattern="[0-9]{1}" autocomplete="do-not-autofill">
-  </div>
-  <div data-v-757e2ef4="" class="input-wrapper">
-    <!-- eslint-disable-next-line vuejs-accessibility/form-control-has-label --><input data-v-757e2ef4="" type="text" minlength="1" maxlength="1" inputmode="numeric" pattern="[0-9]{1}" autocomplete="do-not-autofill">
-  </div>
-  <div data-v-757e2ef4="" class="input-wrapper">
-    <!-- eslint-disable-next-line vuejs-accessibility/form-control-has-label --><input data-v-757e2ef4="" type="text" minlength="1" maxlength="1" inputmode="numeric" pattern="[0-9]{1}" autocomplete="do-not-autofill">
-  </div>
+  <div data-v-757e2ef4="" class="m-input-code__wrapper">
+    <div data-v-757e2ef4="" class="input-wrapper">
+      <!-- eslint-disable-next-line vuejs-accessibility/form-control-has-label --><input data-v-757e2ef4="" type="text" minlength="1" maxlength="1" inputmode="numeric" pattern="[0-9]{1}" autocomplete="do-not-autofill">
+    </div>
+    <div data-v-757e2ef4="" class="input-wrapper">
+      <!-- eslint-disable-next-line vuejs-accessibility/form-control-has-label --><input data-v-757e2ef4="" type="text" minlength="1" maxlength="1" inputmode="numeric" pattern="[0-9]{1}" autocomplete="do-not-autofill">
+    </div>
+    <div data-v-757e2ef4="" class="input-wrapper">
+      <!-- eslint-disable-next-line vuejs-accessibility/form-control-has-label --><input data-v-757e2ef4="" type="text" minlength="1" maxlength="1" inputmode="numeric" pattern="[0-9]{1}" autocomplete="do-not-autofill">
+    </div>
+    <div data-v-757e2ef4="" class="input-wrapper">
+      <!-- eslint-disable-next-line vuejs-accessibility/form-control-has-label --><input data-v-757e2ef4="" type="text" minlength="1" maxlength="1" inputmode="numeric" pattern="[0-9]{1}" autocomplete="do-not-autofill">
+    </div>
+  </div><span data-v-757e2ef4="" class="m-input-code__hint"></span>
 </fieldset>"
 `;

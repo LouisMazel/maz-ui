@@ -1,50 +1,28 @@
-<script lang="ts" setup>
-import { type StyleValue, defineAsyncComponent } from 'vue'
+<script lang="ts">
+export type { Color } from './types'
+</script>
+
+<script lang="ts" setup generic="T extends string | number | boolean">
+/* eslint-disable import/first */
+import { type StyleValue, defineAsyncComponent, ref } from 'vue'
 import type { Color } from './types'
 
-const props = withDefaults(defineProps<Props>(), {
-  modelValue: undefined,
-  name: 'MazButtonsRadio',
-  color: 'primary',
-  elevation: false,
-  orientation: 'row',
-  noWrap: false,
-  equalSize: false,
-  selector: false,
-  block: false,
-})
-
-const emits = defineEmits<{
-  /**
-   * Emitted when the selected option change
-   * @property value The value of the selected option
-   */
-  (event: 'update:model-value', value: string | number | boolean): void
-  /**
-   * Emitted when the selected option change
-   * @property value The value of the selected option
-   */
-  (event: 'change', value: string | number | boolean): void
-}>()
-
-const CheckCircleIcon = defineAsyncComponent(() => import('./../icons/check.svg'))
-
-export type ButtonsRadioOption = {
+export type ButtonsRadioOption<T = string | number | boolean> = {
   /** The label of the option */
   label: string
   /** The value of the option */
-  value: string | number | boolean
+  value: T
   /** The classes to apply to the option */
   classes?: any
   /** The style to apply to the option */
   style?: StyleValue
 } & Record<string, unknown>
 
-export interface Props {
+export interface Props<T = string | number | boolean> {
   /** @model The value of the selected option */
-  modelValue?: string | number | boolean
+  modelValue?: T
   /** The options to display */
-  options: ButtonsRadioOption[]
+  options: ButtonsRadioOption<T>[]
   /** The name of the radio group */
   name?: string
   /** The color of the selected radio buttons */
@@ -75,23 +53,71 @@ export interface Props {
   hint?: string
 }
 
-function selectOption(option: ButtonsRadioOption) {
+const props = withDefaults(defineProps<Props<T>>(), {
+  modelValue: undefined,
+  name: 'MazButtonsRadio',
+  color: 'primary',
+  elevation: false,
+  orientation: 'row',
+  noWrap: false,
+  equalSize: false,
+  selector: false,
+  block: false,
+})
+
+const emits = defineEmits<{
+  /**
+   * Emitted when the selected option change
+   * @property value The value of the selected option
+   */
+  'update:model-value': [value: T]
+  /**
+   * Emitted when the selected option change
+   * @property value The value of the selected option
+   */
+  'change': [value: T]
+  /**
+   * Emitted when the checkbox lost focus
+   * @property {FocusEvent} value - The focus event
+   */
+  'blur': [value: FocusEvent]
+  /**
+   * Emitted when the checkbox is focused
+   * @property {FocusEvent} value - The focus event
+   */
+  'focus': [value: FocusEvent]
+}>()
+
+const CheckCircleIcon = defineAsyncComponent(() => import('./../icons/check.svg'))
+
+function selectOption(option: ButtonsRadioOption<T>) {
   emits('update:model-value', option.value)
 }
 
-function isSelected(value: ButtonsRadioOption['value']) {
+function isSelected(value: ButtonsRadioOption<T>['value']) {
   return props.modelValue === value
 }
 
-function keyboardHandler(event: KeyboardEvent, option: ButtonsRadioOption) {
+function keyboardHandler(event: KeyboardEvent, option: ButtonsRadioOption<T>) {
   if (['Space'].includes(event.code)) {
     event.preventDefault()
     selectOption(option)
   }
 }
 
-function getOptionId(option: ButtonsRadioOption, i: number) {
+function getOptionId(option: ButtonsRadioOption<T>, i: number) {
   return `option-${i}-${option.value.toString()}-${props.name}`
+}
+
+const inputRef = ref<HTMLInputElement[]>()
+
+function onBlur(index: number, event: FocusEvent) {
+  inputRef.value?.[index]?.dispatchEvent(new Event('blur'))
+  emits('blur', event)
+}
+function onFocus(index: number, event: FocusEvent) {
+  inputRef.value?.[index]?.dispatchEvent(new Event('focus'))
+  emits('focus', event)
 }
 </script>
 
@@ -126,10 +152,14 @@ function getOptionId(option: ButtonsRadioOption, i: number) {
         role="radio"
         :aria-checked="isSelected(option.value)"
         @keydown="keyboardHandler($event, option)"
+        @blur="onBlur(i, $event)"
+        @focus="onFocus(i, $event)"
       >
         <input
           :id="getOptionId(option, i)"
+          ref="inputRef"
           type="radio"
+          tabindex="-1"
           :name="name"
           :value="option.value"
           class="maz-hidden"

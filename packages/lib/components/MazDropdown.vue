@@ -10,6 +10,7 @@ import type { Color } from './MazBtn.vue'
 defineOptions({
   inheritAttrs: false,
 })
+
 const props = withDefaults(defineProps<Props>(), {
   class: undefined,
   style: undefined,
@@ -20,18 +21,20 @@ const props = withDefaults(defineProps<Props>(), {
   position: 'bottom left',
   screenReaderDescription: 'Open menu dropdown',
 })
-const emits = defineEmits([
+
+const emits = defineEmits<{
   /**
    * emitted when a menu item is clicked
    */
-  'menuitem-clicked',
+  'menuitem-clicked': [event: Event]
   /**
    * Triggers when the number changes
    *
    * @property {boolean} open new value
    */
-  'update:open',
-])
+  'update:open': [value: boolean]
+}>()
+
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 const ChevronDownIcon = defineAsyncComponent(() => import('./../icons/chevron-down.svg'))
 

@@ -210,7 +210,7 @@ You can also provide all your data, the table is auto-generated and you can use 
   </MazTable>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
   import MazTable from 'maz-ui/components/MazTable'
 
   const competitions = [

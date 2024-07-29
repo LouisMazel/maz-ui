@@ -33,17 +33,22 @@ const emits = defineEmits<{
    * Emitted when the value of the textarea change
    * @property {string | undefined} value - The value of the textarea
    */
+  (event: 'update:model-value', value?: string): void
+  /**
+   * Emitted when the value of the textarea change
+   * @property {string | undefined} value - The value of the textarea
+   */
   (event: 'input', value?: string): void
   /**
    * Emitted when the textarea is focused
    * @property {Event} value - The event
    */
-  (event: 'focus', value: Event): void
+  (event: 'focus', value: FocusEvent): void
   /**
    * Emitted when the textarea is blurred
    * @property {Event} value - The event
    */
-  (event: 'blur', value: Event): void
+  (event: 'blur', value: FocusEvent): void
   /**
    * Emitted when the textarea value change
    * @property {Event} value - The event
@@ -107,20 +112,25 @@ onBeforeUnmount(() => {
 
 const inputValue = computed({
   get: () => props.modelValue,
-  set: value => emits('input', value),
+  set: (value) => {
+    emits('update:model-value', value)
+    emits('input', value)
+  },
 })
 
-function focus(event: Event) {
+function focus(event: FocusEvent) {
   emits('focus', event)
   isFocused.value = true
 }
 
-function blur(event: Event) {
+function blur(event: FocusEvent) {
   emits('blur', event)
   isFocused.value = false
 }
 
-const change = (event: Event) => emits('change', event)
+function change(event: Event) {
+  emits('change', event)
+}
 
 const hasLabelOrHint = computed(() => props.label || props.hint)
 

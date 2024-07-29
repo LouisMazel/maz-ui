@@ -28,6 +28,7 @@ import {
   getValidationEvents,
   handleFieldBlur,
   handleFieldInput,
+  hasModeIncludes,
   removeEventFromInteractiveElements,
   scrollToError,
   setFieldValidationState,
@@ -59,11 +60,11 @@ export function useFormValidator<
   }) as Ref<Model>
 
   const internalSchema = computed<FormSchema<Model>>(() => toValue(schema))
-  const defaultPayload = defaultValues ?? payload.value
+
   const fieldsStates = ref(
-    getFieldsStates({
+    getFieldsStates<Model>({
       schema: internalSchema.value,
-      payload: defaultPayload,
+      payload: defaultValues ?? payload.value,
       options: opts,
     }),
   ) as Ref<FieldsStates<Model>>
@@ -73,6 +74,8 @@ export function useFormValidator<
     (schema) => {
       fieldsStates.value = getFieldsStates({
         schema,
+        payload: defaultValues ?? payload.value,
+        options: opts,
       })
     },
     { deep: true },
@@ -95,7 +98,7 @@ export function useFormValidator<
           payload: payload.value,
           schema: internalSchema.value,
           isSubmitted: isSubmitted.value,
-          force: true,
+          forceValidation: hasModeIncludes(fieldsStates.value[name].mode, ['aggressive', 'lazy']),
         })
       },
       { deep: typeof internalSchema.value[name] === 'object' },
@@ -145,22 +148,18 @@ export function useFormValidator<
   const context = {
     fieldsStates,
     payload,
-    addFieldValidationWatch,
     options: opts,
     internalSchema,
     errorMessages,
     isSubmitted,
-  } as unknown as FormContext<Model>
+  } as FormContext<Model>
 
   instance.formContexts ??= new Map()
   instance.formContexts.set(opts.identifier, context)
 
   provide(FormContextKey as FormContextInjectionKey<Model>, context)
 
-  const shouldAddFieldsWatches = ['aggressive', 'lazy'].includes(opts.mode)
-  if (shouldAddFieldsWatches) {
-    addFieldsValidationWatch()
-  }
+  addFieldsValidationWatch()
 
   watch(
     internalSchema,
@@ -214,7 +213,6 @@ export function useFormField<
     fieldsStates,
     payload,
     options: formOptions,
-    addFieldValidationWatch,
     internalSchema,
     errorMessages,
     isSubmitted,
@@ -239,63 +237,43 @@ export function useFormField<
     fieldsStates.value[name].initialValue = freezeValue(initialValue)
   }
 
-  const shouldAddWatchToField
-    = ['aggressive', 'lazy'].includes(fieldState.value.mode) && !['aggressive', 'lazy'].includes(formOptions.mode)
-  if (shouldAddWatchToField) {
-    addFieldValidationWatch(name)
-  }
-
-  if (fieldState.value.mode !== 'none') {
-    setFieldValidationState({
+  if (fieldMode !== 'none') {
+    setFieldValidationState<Model>({
       name,
       fieldsStates: fieldsStates.value,
       payload: payload.value,
       schema: internalSchema.value,
-      setError: fieldState.value.mode === 'aggressive' || formOptions.mode === 'aggressive',
+      setError: fieldMode === 'aggressive',
     })
   }
 
-  const events = {
-    onBlur: () => {
-      handleFieldBlur<Model>({
-        name,
-        fieldsStates: fieldsStates.value,
-        payload: payload.value,
-        schema: internalSchema.value,
-        isSubmitted: isSubmitted.value,
-      })
-    },
-    onInput: () =>
-      handleFieldInput<Model>({
-        name,
-        fieldsStates: fieldsStates.value,
-        payload: payload.value,
-        schema: internalSchema.value,
-        isSubmitted: isSubmitted.value,
-      }),
-  } as const
+  function onBlurHandler() {
+    handleFieldBlur<Model>({
+      name,
+      fieldsStates: fieldsStates.value,
+      payload: payload.value,
+      schema: internalSchema.value,
+      isSubmitted: isSubmitted.value,
+    })
+  }
 
   const validationEvents = computed(() =>
     getValidationEvents({
       ref: opts.ref,
-      events,
+      onBlurHandler,
       fieldState: fieldState.value,
     }),
   )
 
-  if (
-    opts.ref
-    && !['aggressive', 'lazy'].includes(formOptions.mode)
-    && !['aggressive', 'lazy'].includes(fieldState.value.mode)
-  ) {
+  if (opts.ref && hasModeIncludes(fieldMode, ['eager', 'blur'])) {
     let interactiveElements: HTMLElement[] = []
 
     const handleInteractiveElements = (element: HTMLElement) => {
       interactiveElements = findInteractiveElements(element)
       addEventToInteractiveElements({
         interactiveElements,
-        events,
-        mode: fieldState.value.mode,
+        onBlurHandler,
+        mode: fieldMode,
       })
     }
 
@@ -315,7 +293,7 @@ export function useFormField<
     onUnmounted(() => {
       removeEventFromInteractiveElements({
         interactiveElements,
-        events,
+        onBlurHandler,
       })
     })
   }
