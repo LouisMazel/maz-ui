@@ -162,7 +162,7 @@ With eager mode, each form field is validated on blur (if not empty) and then on
     />
     <MazSelect
       v-model="country"
-      v-bind="{ ...validationEvents }"
+      ref="countryRef"
       :options="[{ label: 'France', value: 'FR' }, { label: 'United States', value: 'US' }]"
       label="Select your nationality"
       :hint="countryErrorMessage"
@@ -300,7 +300,7 @@ With eager mode, each form field is validated on blur (if not empty) and then on
   const { value: name, errorMessage: nameErrorMessage } = useFormField('name', { ref: 'nameRef', formIdentifier: 'form2' })
   const { value: age, errorMessage: ageErrorMessage } = useFormField('age', { ref: 'ageRef', formIdentifier: 'form2'  })
   const { value: agree, errorMessage: agreeErrorMessage } = useFormField('agree', { ref: 'agreeRef', formIdentifier: 'form2'  })
-  const { value: country, errorMessage: countryErrorMessage, validationEvents } = useFormField('country', { formIdentifier: 'form2' })
+  const { value: country, errorMessage: countryErrorMessage, validationEvents } = useFormField('country', { ref: 'countryRef', formIdentifier: 'form2' })
 
   const onSubmit2 = handleSubmit2(async (formData) => {
     // Form submission logic
@@ -430,7 +430,7 @@ To use the modes `eager` or `blur`, you must use this `useFormField` composable 
 
 `useFormField` is a composable for handling validation at the individual form field level.
 
-```vue
+```vue{14,20}
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useFormField } from 'maz-ui'
@@ -444,7 +444,7 @@ useFormValidator({
 })
 
 const { value, errorMessage, isValid, hasError } = useFormField('name', {
-  ref: 'inputRef', // Necessary for 'eager', 'blur' validation modes to add validation events
+  ref: 'inputRef', // Necessary for 'eager', 'blur' and 'input' validation modes to add validation events
 })
 </script>
 

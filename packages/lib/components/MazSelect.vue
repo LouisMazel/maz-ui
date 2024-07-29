@@ -391,6 +391,9 @@ async function openList(event: Event) {
 function focusMainInput() {
   ;(mazInputComponent.value?.$el as HTMLElement).querySelector('input')?.focus()
 }
+function emitInputMainInput() {
+  ;(mazInputComponent.value?.$el as HTMLElement).querySelector('input')?.dispatchEvent(new Event('input'))
+}
 
 function toggleList(event: Event) {
   if (listOpened.value) {
@@ -582,6 +585,7 @@ function updateValue(inputOption: NormalizedOption, mustCloseList = true) {
 
   emits('update:model-value', (props.multiple ? selectedValues : selectedValues[0]) as T | T[])
   emits('selected-option', inputOption as U)
+  emitInputMainInput()
   updateTmpModelValueIndex(inputOption)
   focusMainInput()
 }

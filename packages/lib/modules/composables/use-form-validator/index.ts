@@ -286,7 +286,7 @@ export function useFormField<
   if (
     opts.ref
     && !['aggressive', 'lazy'].includes(formOptions.mode)
-    && !['aggressive', 'lazy'].includes(fieldsStates.value[name].mode)
+    && !['aggressive', 'lazy'].includes(fieldState.value.mode)
   ) {
     let interactiveElements: HTMLElement[] = []
 
@@ -303,7 +303,7 @@ export function useFormField<
       const instance = getInstance<Model>(`useFormField of ${name}`)
 
       checkAvailability(() => instance.refs[opts.ref as string] as HTMLElement | ComponentPublicInstance | undefined, (element) => {
-        const interactiveElement = element instanceof HTMLElement ? element : element?.$el
+        const interactiveElement = element instanceof HTMLElement ? element : element?.$el as HTMLElement | undefined
         if (interactiveElement) {
           handleInteractiveElements(interactiveElement)
         }

@@ -54,6 +54,7 @@ export interface Props {
   /**
    * The orientation of the radio buttons
    * @values 'row' | 'col'
+   * @default 'row'
    */
   orientation?: 'row' | 'col'
   /** Disable the wrap of the radio buttons */
@@ -64,6 +65,14 @@ export interface Props {
   selector?: boolean
   /** The component will be displayed in full width */
   block?: boolean
+  /** Whether there is an error with the input. */
+  error?: boolean
+  /** Whether the input is successful. */
+  success?: boolean
+  /** Whether there is a warning with the input. */
+  warning?: boolean
+  /** The hint text to display below the input. */
+  hint?: string
 }
 
 function selectOption(option: ButtonsRadioOption) {
@@ -89,90 +98,103 @@ function getOptionId(option: ButtonsRadioOption, i: number) {
 <template>
   <div
     class="m-radio-buttons"
-    :class="[`--${orientation}`, { '--no-wrap': noWrap, '--block': block }]"
   >
-    <label
-      v-for="(option, i) in options"
-      :key="getOptionId(option, i)"
-      :for="getOptionId(option, i)"
-      class="m-radio-buttons__items maz-group"
-      :class="[
-        {
-          '--is-selected': isSelected(option.value),
-          '--elevation': elevation,
-          '--equal-size': equalSize,
-        },
-        option.classes,
-      ]"
-      tabindex="0"
-      :style="[
-        isSelected(option.value)
-          ? {
-            color: `var(--maz-color-${color}-contrast)`,
-            backgroundColor: `var(--maz-color-${color})`,
-          }
-          : {},
-        option.style,
-      ]"
-      role="radio"
-      :aria-checked="isSelected(option.value)"
-      @keydown="keyboardHandler($event, option)"
-    >
-      <input
-        :id="getOptionId(option, i)"
-        type="radio"
-        :name="name"
-        :value="option.value"
-        class="maz-hidden"
-        @change="selectOption(option)"
-      >
-      <div v-if="selector" class="m-radio-buttons__items__checkbox">
-        <span
-          :class="{
+    <div class="m-radio-buttons__wrapper" :class="[`--${orientation}`, { '--no-wrap': noWrap, '--block': block }]">
+      <label
+        v-for="(option, i) in options"
+        :key="getOptionId(option, i)"
+        :for="getOptionId(option, i)"
+        class="m-radio-buttons__items maz-group"
+        :class="[
+          {
             '--is-selected': isSelected(option.value),
-          }"
-          :style="[
-            isSelected(option.value)
-              ? { backgroundColor: `var(--maz-color-${props.color}-600)` }
-              : {},
-          ]"
+            '--elevation': elevation,
+            '--equal-size': equalSize,
+          },
+          option.classes,
+        ]"
+        tabindex="0"
+        :style="[
+          isSelected(option.value)
+            ? {
+              color: `var(--maz-color-${color}-contrast)`,
+              backgroundColor: `var(--maz-color-${color})`,
+            }
+            : {},
+          option.style,
+        ]"
+        role="radio"
+        :aria-checked="isSelected(option.value)"
+        @keydown="keyboardHandler($event, option)"
+      >
+        <input
+          :id="getOptionId(option, i)"
+          type="radio"
+          :name="name"
+          :value="option.value"
+          class="maz-hidden"
+          @change="selectOption(option)"
         >
-          <Transition name="maz-radio-buttons-scale">
-            <CheckCircleIcon v-show="isSelected(option.value)" class="maz-h-full maz-w-full" />
-          </Transition>
-        </span>
-      </div>
+        <div v-if="selector" class="m-radio-buttons__items__checkbox">
+          <span
+            :class="{
+              '--is-selected': isSelected(option.value),
+            }"
+            :style="[
+              isSelected(option.value)
+                ? { backgroundColor: `var(--maz-color-${props.color}-600)` }
+                : {},
+            ]"
+          >
+            <Transition name="maz-radio-buttons-scale">
+              <CheckCircleIcon v-show="isSelected(option.value)" class="maz-h-full maz-w-full" />
+            </Transition>
+          </span>
+        </div>
 
-      <!--
-        @slot Label of the radio
-          @binding {Boolean} selected - If the option is selected
-          @binding {string | number | boolean} option - The value of the option
-      -->
-      <slot :option="option" :selected="isSelected(option.value)">
-        {{ option.label }}
-      </slot>
-    </label>
+        <!--
+          @slot Label of the radio
+            @binding {Boolean} selected - If the option is selected
+            @binding {string | number | boolean} option - The value of the option
+        -->
+        <slot :option="option" :selected="isSelected(option.value)">
+          {{ option.label }}
+        </slot>
+      </label>
+    </div>
+    <span
+      v-if="hint"
+      class="m-radio-buttons__hint" :class="{
+        '--error': error,
+        '--success': success,
+        '--warning': warning,
+      }"
+    >{{ hint }}</span>
   </div>
 </template>
 
 <style lang="postcss" scoped>
   .m-radio-buttons {
-  @apply maz-inline-flex maz-gap-2 maz-align-top;
+  @apply maz-inline-flex maz-gap-1 maz-align-top maz-flex-col;
+
+  &__wrapper {
+    @apply maz-inline-flex maz-gap-2;
+
+    &:not(.--no-wrap) {
+      @apply maz-flex-wrap;
+    }
+
+    &.--row {
+      @apply maz-flex-row;
+    }
+
+    &.--col {
+      @apply maz-flex-col;
+    }
+  }
 
   &.--block {
     @apply maz-w-full;
-  }
-
-  &:not(.--no-wrap) {
-    @apply maz-flex-wrap;
-  }
-
-  &.--row {
-    @apply maz-flex-row;
-  }
-
-  &.--col {
-    @apply maz-flex-col;
   }
 
   &__items {
@@ -207,6 +229,22 @@ function getOptionId(option: ButtonsRadioOption, i: number) {
 
     &:not(.--is-selected) {
       @apply hover:maz-bg-color-light;
+    }
+  }
+
+  &__hint {
+    @apply maz-text-sm maz-text-muted;
+
+    &.--error {
+      @apply maz-text-danger-600;
+    }
+
+    &.--success {
+      @apply maz-text-success-600;
+    }
+
+    &.--warning {
+      @apply maz-text-warning-600;
     }
   }
 }

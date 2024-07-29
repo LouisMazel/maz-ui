@@ -45,8 +45,18 @@ export interface Props {
   disabled?: boolean
   /** The name of the switch */
   name?: string
+  /** Text label */
+  label?: string
   /** The color of the switch */
   color?: Color
+  /** Whether there is an error with the input. */
+  error?: boolean
+  /** Whether the input is successful. */
+  success?: boolean
+  /** Whether there is a warning with the input. */
+  warning?: boolean
+  /** The hint text to display below the input. */
+  hint?: string
 }
 
 const instanceId = useInstanceUniqId({
@@ -83,18 +93,30 @@ function emit(e: Event) {
       type="checkbox"
       :name="name"
       :checked="modelValue"
+      :aria-label="label"
       :disabled="disabled"
       class="m-switch__input"
       @change="emit"
     >
     <span class="m-switch__toggle" />
 
-    <span v-if="$slots.default" class="m-switch__label">
+    <span v-if="$slots.default || label || hint" class="m-switch__text">
       <!--
         @slot The label of the switch
           @binding {Boolean} value - The value of the switch
       -->
-      <slot :value="modelValue" />
+      <slot :value="modelValue">
+        {{ label }}
+      </slot>
+
+      <span
+        v-if="hint"
+        class="m-switch__hint" :class="{
+          '--error': error,
+          '--success': success,
+          '--warning': warning,
+        }"
+      >{{ hint }}</span>
     </span>
   </label>
 </template>
@@ -114,7 +136,7 @@ function emit(e: Event) {
   }
 
   &__toggle {
-    @apply maz-h-6 maz-w-12;
+    @apply maz-h-6 maz-w-12 maz-relative;
 
     &::before {
       content: '';
@@ -151,6 +173,26 @@ function emit(e: Event) {
       &::before {
         @apply maz-bg-color-lighter dark:maz-bg-color-light;
       }
+    }
+  }
+
+  &__text {
+    @apply maz-flex maz-flex-col maz-gap-0;
+  }
+
+  &__hint {
+    @apply maz-text-sm maz-text-muted;
+
+    &.--error {
+      @apply maz-text-danger-600;
+    }
+
+    &.--success {
+      @apply maz-text-success-600;
+    }
+
+    &.--warning {
+      @apply maz-text-warning-600;
     }
   }
 }

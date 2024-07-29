@@ -19,7 +19,7 @@
     ]
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^2.22.4",
+    "@antfu/eslint-config": "^2.23.2",
     "@commitlint/cli": "^19.3.0",
     "@commitlint/config-conventional": "^19.2.2",
     "@commitlint/cz-commitlint": "^19.2.0",
@@ -30,8 +30,8 @@
     "eslint": "9.7.0",
     "eslint-plugin-sonarjs": "^1.0.3",
     "eslint-plugin-tailwindcss": "^3.17.4",
-    "husky": "^9.1.0",
-    "lerna": "^8.1.6",
+    "husky": "^9.1.1",
+    "lerna": "^8.1.7",
     "lint-staged": "^15.2.7",
     "prettier": "^3.3.3",
     "ts-node": "11.0.0-beta.1",
