@@ -65,6 +65,8 @@ export interface Props {
   size?: Size
   /** The color of the component. */
   color?: Color
+  /** The hint text to display below the input. */
+  hint?: string
 }
 
 const inputList = ref<HTMLInputElement[]>([])
@@ -234,35 +236,44 @@ const borderColor = computed(() => {
     :disabled="disabled"
     :style="style"
   >
-    <div v-for="item in codeLength" :key="item" class="input-wrapper" :class="borderColorState">
-      <!-- eslint-disable-next-line vuejs-accessibility/form-control-has-label -->
-      <input
-        :ref="
-          (el) => {
-            inputList[item - 1] = el as HTMLInputElement
-          }
-        "
-        type="text"
-        minlength="1"
-        maxlength="1"
-        :inputmode="acceptAlpha ? 'text' : 'numeric'"
-        :pattern="acceptAlpha ? '[a-zA-Z0-9]{1}' : '[0-9]{1}'"
-        autocomplete="do-not-autofill"
-        :required="required"
-        v-bind="$attrs"
-        :value="inputValues.get(item)"
-        @input="handleNewValue($event, item)"
-        @keydown="handleKeydown($event, item)"
-        @click="selectInputByIndex(item - 1)"
-        @paste="setValueOnPaste"
-      >
+    <div class="m-input-code__wrapper">
+      <div v-for="item in codeLength" :key="item" class="input-wrapper" :class="borderColorState">
+        <!-- eslint-disable-next-line vuejs-accessibility/form-control-has-label -->
+        <input
+          :ref="
+            (el) => {
+              inputList[item - 1] = el as HTMLInputElement
+            }
+          "
+          type="text"
+          minlength="1"
+          maxlength="1"
+          :inputmode="acceptAlpha ? 'text' : 'numeric'"
+          :pattern="acceptAlpha ? '[a-zA-Z0-9]{1}' : '[0-9]{1}'"
+          autocomplete="do-not-autofill"
+          :required="required"
+          v-bind="$attrs"
+          :value="inputValues.get(item)"
+          @input="handleNewValue($event, item)"
+          @keydown="handleKeydown($event, item)"
+          @click="selectInputByIndex(item - 1)"
+          @paste="setValueOnPaste"
+        >
+      </div>
     </div>
+    <span
+      class="m-input-code__hint" :class="{
+        '--error': error,
+        '--success': success,
+        '--warning': warning,
+      }"
+    >{{ hint }}</span>
   </fieldset>
 </template>
 
 <style lang="postcss" scoped>
   .m-input-code {
-  @apply maz-inline-flex maz-gap-[1em] maz-align-top;
+  @apply maz-inline-flex maz-flex-col maz-gap-[0.5em] maz-align-top;
 
   &.--mini {
     @apply maz-text-[0.625rem];
@@ -286,6 +297,26 @@ const borderColor = computed(() => {
     @apply maz-text-xl;
   }
 
+  &__wrapper {
+    @apply maz-inline-flex maz-gap-[1em];
+  }
+
+  &__hint {
+    @apply maz-text-sm maz-text-muted;
+
+    &.--error {
+      @apply maz-text-danger-600;
+    }
+
+    &.--success {
+      @apply maz-text-success-600;
+    }
+
+    &.--warning {
+      @apply maz-text-warning-600;
+    }
+  }
+
   .input-wrapper {
     @apply maz-relative maz-h-[4em] maz-w-[4em] maz-overflow-hidden maz-rounded maz-border maz-border-solid maz-border-border maz-transition-colors maz-duration-200 maz-ease-in-out dark:maz-border-color-lighter dark:maz-bg-color-light;
 
@@ -294,7 +325,7 @@ const borderColor = computed(() => {
     }
 
     input {
-      @apply maz-h-full maz-w-full maz-bg-transparent maz-text-center maz-text-[1.5em];
+      @apply maz-h-full maz-w-full maz-bg-transparent maz-text-center maz-text-[1.5em] maz-outline-none;
     }
 
     &:has(input:disabled) {

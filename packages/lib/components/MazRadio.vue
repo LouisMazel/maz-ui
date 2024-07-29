@@ -27,6 +27,14 @@ const props = withDefaults(
     size?: Size
     /** The disabled state of the radio */
     disabled?: boolean
+    /** Whether there is an error with the input. */
+    error?: boolean
+    /** Whether the input is successful. */
+    success?: boolean
+    /** Whether there is a warning with the input. */
+    warning?: boolean
+    /** The hint text to display below the input. */
+    hint?: string
   }>(),
   {
     style: undefined,
@@ -84,11 +92,21 @@ const radioSize = computed(() => {
 })
 
 const radioSelectedColor = computed(() => `var(--maz-color-${props.color})`)
-const radioBoxShadow = computed(() =>
-  ['black', 'transparent'].includes(props.color)
+const radioBoxShadow = computed(() => {
+  if (props.error) {
+    return `var(--maz-color-danger)`
+  }
+  else if (props.warning) {
+    return `var(--maz-color-warning)`
+  }
+  else if (props.success) {
+    return `var(--maz-color-success)`
+  }
+
+  return ['black', 'transparent'].includes(props.color)
     ? `var(--maz-color-muted)`
-    : `var(--maz-color-${props.color}-alpha)`,
-)
+    : `var(--maz-color-${props.color}-alpha)`
+})
 
 function keyboardHandler(event: KeyboardEvent, value: string | number | boolean) {
   if (['Space'].includes(event.code)) {
@@ -106,8 +124,8 @@ function emitValue(value: string | number | boolean) {
 <template>
   <label
     :for="instanceId"
-    class="m-checkbox"
-    :class="[{ '--disabled': disabled, '--selected': isSelected }, props.class]"
+    class="m-radio"
+    :class="[{ '--disabled': disabled, '--selected': isSelected, '--error': error, '--warning': warning, '--success': success }, props.class]"
     tabindex="0"
     role="radio"
     :style
@@ -125,6 +143,7 @@ function emitValue(value: string | number | boolean) {
       :checked="isSelected"
       @change="emitValue(($event?.target as HTMLInputElement)?.value)"
     >
+
     <span>
       <span class="round" />
     </span>
@@ -134,14 +153,25 @@ function emitValue(value: string | number | boolean) {
         @binding {Boolean} is-selected - If the radio is selected
         @binding {string | number | boolean} value - The value of the radio
     -->
-    <slot :is-selected :value>
-      {{ label }}
-    </slot>
+    <div class="m-radio__text">
+      <slot :is-selected :value>
+        {{ label }}
+      </slot>
+
+      <span
+        v-if="hint"
+        class="m-radio__hint" :class="{
+          '--error': error,
+          '--success': success,
+          '--warning': warning,
+        }"
+      >{{ hint }}</span>
+    </div>
   </label>
 </template>
 
 <style lang="postcss" scoped>
-  .m-checkbox {
+  .m-radio {
   @apply maz-relative maz-inline-flex maz-items-center maz-gap-2 maz-align-top maz-outline-none;
 
   > span {
@@ -169,6 +199,10 @@ function emitValue(value: string | number | boolean) {
     }
   }
 
+  &__text {
+    @apply maz-flex maz-flex-col maz-gap-0;
+  }
+
   input {
     @apply maz-hidden;
   }
@@ -191,11 +225,38 @@ function emitValue(value: string | number | boolean) {
     }
   }
 
-  &:not(.--disabled) {
+  &__hint {
+    @apply maz-text-sm maz-text-muted;
+
+    &.--error {
+      @apply maz-text-danger-600;
+    }
+
+    &.--success {
+      @apply maz-text-success-600;
+    }
+
+    &.--warning {
+      @apply maz-text-warning-600;
+    }
+  }
+
+  &:not(.--disabled),
+  &:not(.--selected) {
     @apply maz-cursor-pointer;
 
     &:hover > span,
     &:focus > span {
+      @apply maz-transition-all maz-duration-300 maz-ease-in-out;
+
+      box-shadow: 0 0 0 0.125rem v-bind('radioBoxShadow');
+    }
+  }
+
+  &.--error,
+  &.--warning,
+  &.--success {
+    > span {
       @apply maz-transition-all maz-duration-300 maz-ease-in-out;
 
       box-shadow: 0 0 0 0.125rem v-bind('radioBoxShadow');

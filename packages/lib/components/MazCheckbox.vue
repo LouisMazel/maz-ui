@@ -31,16 +31,34 @@ const emits = defineEmits([
 ])
 
 export interface Props {
+  /** Style attribut of the component root element */
   style?: HTMLAttributes['style']
+  /** Class attribut of the component root element */
   class?: HTMLAttributes['class']
+  /** The model value of the checkbox */
   modelValue?: boolean | (string | number)[]
+  /** The id of the checkbox */
   id?: string
+  /** The color of the checkbox */
   color?: Color
+  /** The value of the checkbox when selected */
   value?: string | number | boolean
+  /** The name of the checkbox */
   name?: string
+  /** The size of the checkbox */
   size?: Size
+  /** Text label */
   label?: string
+  /** If the checkbox is disabled */
   disabled?: boolean
+  /** Whether there is an error with the input. */
+  error?: boolean
+  /** Whether the input is successful. */
+  success?: boolean
+  /** Whether there is a warning with the input. */
+  warning?: boolean
+  /** The hint text to display below the input. */
+  hint?: string
 }
 
 const instanceId = useInstanceUniqId({
@@ -105,11 +123,21 @@ const checkIconSize = computed(() => {
 
 const checkIconColor = computed(() => `var(--maz-color-${props.color}-contrast)`)
 const checkboxSelectedColor = computed(() => `var(--maz-color-${props.color})`)
-const checkboxBoxShadow = computed(() =>
-  ['black', 'transparent'].includes(props.color)
+const checkboxBoxShadow = computed(() => {
+  if (props.error) {
+    return `var(--maz-color-danger)`
+  }
+  else if (props.warning) {
+    return `var(--maz-color-warning)`
+  }
+  else if (props.success) {
+    return `var(--maz-color-success)`
+  }
+
+  return ['black', 'transparent'].includes(props.color)
     ? `var(--maz-color-muted)`
-    : `var(--maz-color-${props.color}-alpha)`,
-)
+    : `var(--maz-color-${props.color}-alpha)`
+})
 
 function keyboardHandler(event: KeyboardEvent) {
   if (['Space'].includes(event.code)) {
@@ -149,7 +177,7 @@ function emitValue(value: boolean | string | number) {
   <label
     :for="instanceId"
     class="m-checkbox"
-    :class="[{ '--disabled': disabled }, props.class]"
+    :class="[{ '--disabled': disabled, '--error': error, '--warning': warning, '--success': success }, props.class]"
     tabindex="0"
     :style="style"
     role="checkbox"
@@ -169,9 +197,20 @@ function emitValue(value: boolean | string | number) {
     <span>
       <CheckIcon class="check-icon" :class="checkIconSize" />
     </span>
-    <slot>
-      {{ label }}
-    </slot>
+    <div class="m-checkbox__text">
+      <slot :value>
+        {{ label }}
+      </slot>
+
+      <span
+        v-if="hint"
+        class="m-checkbox__hint" :class="{
+          '--error': error,
+          '--success': success,
+          '--warning': warning,
+        }"
+      >{{ hint }}</span>
+    </div>
   </label>
 </template>
 
@@ -234,6 +273,36 @@ function emitValue(value: boolean | string | number) {
 
     &:hover > span,
     &:focus > span {
+      @apply maz-transition-all maz-duration-300 maz-ease-in-out;
+
+      box-shadow: 0 0 0 0.125rem v-bind('checkboxBoxShadow');
+    }
+  }
+
+  &__text {
+    @apply maz-flex maz-flex-col maz-gap-0;
+  }
+
+  &__hint {
+    @apply maz-text-sm maz-text-muted;
+
+    &.--error {
+      @apply maz-text-danger-600;
+    }
+
+    &.--success {
+      @apply maz-text-success-600;
+    }
+
+    &.--warning {
+      @apply maz-text-warning-600;
+    }
+  }
+
+  &.--error,
+  &.--warning,
+  &.--success {
+    > span {
       @apply maz-transition-all maz-duration-300 maz-ease-in-out;
 
       box-shadow: 0 0 0 0.125rem v-bind('checkboxBoxShadow');

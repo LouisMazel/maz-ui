@@ -58,6 +58,8 @@ export interface Props {
   block?: boolean
   /** Add tags on blur */
   addTagsOnBlur?: boolean
+  /** The hint text to display below the input. */
+  hint?: string
 }
 
 const isFocused = ref(false)
@@ -174,6 +176,7 @@ function removeTag(id: string) {
         >
           {{ tag }}
 
+          <template #left-icon />
           <template #right-icon>
             <CloseIcon v-if="tagsHoveredId === id || lastIdToDelete === id" />
           </template>
@@ -189,6 +192,9 @@ function removeTag(id: string) {
       :label
       :aria-label="label || placeholder"
       :error
+      :hint
+      :success
+      :warning
       :disabled
       :color
       :block
@@ -240,7 +246,7 @@ function removeTag(id: string) {
   }
 
   &__tag {
-    @apply !maz-h-full !maz-px-3 !maz-py-2;
+    @apply !maz-h-full !maz-px-2 !maz-py-2;
   }
 
   &__input {

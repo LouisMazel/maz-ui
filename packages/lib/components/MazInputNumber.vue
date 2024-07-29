@@ -81,6 +81,14 @@ export interface Props {
   inputmode?: HTMLAttributes['inputmode']
   /** The input will be displayed in full width */
   block?: boolean
+  /** Will display the input in error state. */
+  error?: boolean
+  /** The hint text to display below the input. */
+  hint?: string
+  /** Will display the input in success state. */
+  success?: boolean
+  /** Will display the input in warning state. */
+  warning?: boolean
 }
 
 const currentValue = computed({
@@ -170,6 +178,10 @@ function decrement() {
       :min
       :max
       :step
+      :error
+      :success
+      :warning
+      :hint
       v-bind="$attrs"
       :inputmode
       :size

@@ -92,6 +92,11 @@ export interface MazUiNuxtOptions {
    */
   injectUseStringMatching?: boolean
   /**
+   * Enable auto-import of useFormValidator and useFormField composables
+   * @default false
+   */
+  injectUseFormValidator?: boolean
+  /**
    * Globally install of v-zoom-img directive
    * @default false
    */
@@ -336,6 +341,19 @@ export default defineNuxtModule<MazUiNuxtOptions>({
         from: 'maz-ui',
         name: 'useTimer',
         as: 'useTimer',
+      })
+    }
+
+    if (moduleOptions.injectUseFormValidator) {
+      addImports({
+        from: 'maz-ui',
+        name: 'useFormValidator',
+        as: 'useFormValidator',
+      })
+      addImports({
+        from: 'maz-ui',
+        name: 'useFormField',
+        as: 'useFormField',
       })
     }
 

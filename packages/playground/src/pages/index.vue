@@ -3,6 +3,8 @@
     <div>
       <!-- Start Developping Area - You should not commit anything here to keep this place clean for all others -->
 
+      <TestForm />
+
       <!-- End Developping Area -->
     </div>
 
