@@ -1,6 +1,6 @@
 /* eslint-disable regexp/no-unused-capturing-group */
 
-import type { ComponentResolver } from 'unplugin-vue-components'
+import type { ComponentResolver } from 'unplugin-vue-components/types'
 import { pascalCase } from '../utils'
 
 /**

@@ -1,4 +1,4 @@
-import type { ComponentResolver } from 'unplugin-vue-components'
+import type { ComponentResolver } from 'unplugin-vue-components/types'
 
 /**
  * Resolver for Maz-UI (directives)
