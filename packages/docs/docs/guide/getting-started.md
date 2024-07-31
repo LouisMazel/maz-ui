@@ -47,13 +47,13 @@ export default defineNuxtConfig({
 
 <NpmBadge package="unplugin-vue-components"></NpmBadge>
 
-Use [unplugin-vue-components](https://github.com/unplugin/unplugin-vue-components) and the dedicated maz-ui resolver to auto-import components and directives
+Use [unplugin-vue-components](https://github.com/unplugin/unplugin-vue-components) and the dedicated maz-ui resolver to auto-import components, directives and modules
 
 ```ts
 // vite.config.mts
 
 import Components from 'unplugin-vue-components/vite'
-import { UnpluginVueComponentsResolver, UnpluginDirectivesResolver } from 'maz-ui/resolvers'
+import { UnpluginVueComponentsResolver, UnpluginDirectivesResolver, UnpluginModulesResolver } from 'maz-ui/resolvers'
 
 export default defineConfig({
   plugins: [
@@ -62,6 +62,7 @@ export default defineConfig({
       resolvers: [
         UnpluginVueComponentsResolver(),
         UnpluginDirectivesResolver(),
+        UnpluginModulesResolver(),
       ],
     }),
   ]
@@ -75,12 +76,29 @@ export default defineConfig({
   ...
   "include": [
     "components.d.ts",
+    "auto-imports.d.ts",
   ],
   ...
 }
 ```
 
-Then, you don't need to import all maz-ui components into your components
+Then, you don't need to import maz-ui components, directives and modules in your files
+
+```vue
+<template>
+  <MazBtn v-click-outside="clikedOutside">Button</MazBtn>
+</template>
+
+<script lang="ts" setup>
+const toast = useToast()
+
+toast.message('Hello world!')
+
+function clikedOutside () {
+  console.log('clicked outside')
+}
+</script>
+```
 
 :::
 
