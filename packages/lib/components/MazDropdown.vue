@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { type HTMLAttributes, defineAsyncComponent, ref, watch } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
-import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
+import { useInstanceUniqId } from '../modules/composables/useInstanceUniqId'
 import { debounce } from '../modules/helpers/debounce'
 import { vClickOutside } from '../modules/directives/click-outside'
 import type { Position } from './types'

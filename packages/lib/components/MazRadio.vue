@@ -5,7 +5,7 @@ export type { Color, Size } from './types'
 <script lang="ts" setup generic="T extends string | number | boolean">
 /* eslint-disable import/first */
 import { type HTMLAttributes, computed, ref } from 'vue'
-import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
+import { useInstanceUniqId } from '../modules/composables/useInstanceUniqId'
 import type { Color, Size } from './types'
 
 export interface Props<T = string | number | boolean> {
@@ -65,19 +65,19 @@ const emits = defineEmits<{
    */
   'change': [value: T]
   /**
-   * Emitted when the checkbox lost focus
+   * Emitted when the radio lost focus
    * @property {FocusEvent} value - The focus event
    */
   'blur': [value: FocusEvent]
   /**
-   * Emitted when the checkbox is focused
+   * Emitted when the radio is focused
    * @property {FocusEvent} value - The focus event
    */
   'focus': [value: FocusEvent]
 }>()
 
 const instanceId = useInstanceUniqId({
-  componentName: 'MazCheckbox',
+  componentName: 'MazRadio',
   providedId: props.id,
 })
 

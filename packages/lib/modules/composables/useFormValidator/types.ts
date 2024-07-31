@@ -2,8 +2,7 @@ import type { BaseIssue, BaseSchema, BaseSchemaAsync, InferIssue } from 'valibot
 import type {
   ComponentInternalInstance,
   InjectionKey,
-  MaybeRefOrGetter,
-  ModelRef,
+  MaybeRef,
   Ref,
 } from 'vue'
 
@@ -16,14 +15,15 @@ export type Validation = ValidationAsync
 
 export type ValidationIssues = InferIssue<Validation>[]
 
-export type FormSchema<Model extends BaseFormPayload> = Record<ExtractModelKey<Model>, Validation>
-
 export type ExtractModelKey<T> = Extract<keyof T, string>
+
+// make this type not all keys are required
+export type FormSchema<Model extends BaseFormPayload> = Record<ExtractModelKey<Model>, Validation>
 
 export type CustomInstance<Model extends BaseFormPayload> = ComponentInternalInstance & {
   formContexts?: Map<string | symbol | InjectionKey<FormContext<Model>>, FormContext<Model>>
 }
-export type FormContextInjectionKey<Model extends BaseFormPayload = BaseFormPayload> = InjectionKey<FormContext<Model>>
+// export type FormContextInjectionKey<Model extends BaseFormPayload = BaseFormPayload> = InjectionKey<FormContext<Model>>
 
 export interface FormValidatorOptions<
   Model extends BaseFormPayload = BaseFormPayload,
@@ -38,7 +38,7 @@ export interface FormValidatorOptions<
    * - input: validate on input value change
    * @default 'lazy'
    */
-  mode?: 'eager' | 'lazy' | 'aggressive' | 'blur' | 'progressive' | 'none'
+  mode?: 'eager' | 'lazy' | 'aggressive' | 'blur' | 'progressive'
   /**
    * Fields that should be throttled
    * Useful for fields that require a network request to avoid spamming the server
@@ -59,6 +59,7 @@ export interface FormValidatorOptions<
   /**
    * Identifier to use for the form
    * Useful to have multiple forms on the same page
+   * @default `Symbol('main')`
    */
   identifier?: string | symbol | InjectionKey<FormContext>
 }
@@ -86,7 +87,7 @@ export interface FieldState<Model extends BaseFormPayload, FieldType = Model[Ext
   validating: boolean
   validated: boolean
   validateFunction: ReturnType<typeof getValidateFunction<Model>>
-  mode: StrictOptions['mode']
+  mode?: StrictOptions['mode']
 }
 
 export type FieldsStates<Model extends BaseFormPayload = BaseFormPayload> = Record<
@@ -103,6 +104,7 @@ export interface FormFieldOptions<FieldType = unknown> {
   /**
    * Identifier to use for the form
    * Useful to have multiple forms on the same page
+   * @default `Symbol('main')`
    */
   formIdentifier?: string | symbol | InjectionKey<FormContext>
   /** Ref to the component instance or the input element */
@@ -111,9 +113,9 @@ export interface FormFieldOptions<FieldType = unknown> {
 
 export type UseFormValidator<Model extends BaseFormPayload = BaseFormPayload> = typeof useFormValidator<Model>
 export interface UseFormValidatorParams<Model extends BaseFormPayload> {
-  schema: MaybeRefOrGetter<FormSchema<Model>>
-  model?: Ref<Partial<Model>> | ModelRef<Partial<Model>>
-  defaultValues?: Partial<Model>
+  schema: MaybeRef<FormSchema<Model>>
+  defaultValues?: MaybeRef<Partial<Model>>
+  model?: Ref<Partial<Model>>
   options?: FormValidatorOptions<Model>
 }
 export type UseFormField<

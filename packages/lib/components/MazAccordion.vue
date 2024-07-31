@@ -4,7 +4,7 @@ import MazExpandAnimation from './MazExpandAnimation.vue'
 import MazCardSpotlight from './MazCardSpotlight.vue'
 
 import Plus from './../icons/plus.svg'
-import { useInstanceUniqId } from './../modules/composables/use-instance-uniq-id'
+import { useInstanceUniqId } from './../modules/composables/useInstanceUniqId'
 
 export interface Props {
   id?: string

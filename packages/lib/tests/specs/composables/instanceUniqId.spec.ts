@@ -1,10 +1,10 @@
-import { useInstanceUniqId } from '@modules/composables/use-instance-uniq-id'
+import { useInstanceUniqId } from '@modules/composables/useInstanceUniqId'
 
 describe('useInstanceUniqId', () => {
   it('should return providedId even if componentName is not provided', () => {
     const providedId = 'provided-id'
 
-    const id = useInstanceUniqId({ providedId })
+    const id = useInstanceUniqId({ componentName: 'MazInput', providedId })
 
     expect(id.value).toBe(providedId)
   })

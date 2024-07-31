@@ -11,7 +11,7 @@ import {
   ref,
   watch,
 } from 'vue'
-import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
+import { useInstanceUniqId } from '../modules/composables/useInstanceUniqId'
 import type { Results, Translations } from './MazPhoneNumberInput/types'
 import CountrySelector from './MazPhoneNumberInput/CountrySelector.vue'
 import PhoneInput from './MazPhoneNumberInput/PhoneInput.vue'

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { type HTMLAttributes, computed, ref } from 'vue'
-import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
+import { useInstanceUniqId } from '../modules/composables/useInstanceUniqId'
 import type { Color } from './types'
 
 export type { Color }
@@ -31,12 +31,12 @@ const emits = defineEmits<{
    */
   'change': [value: boolean]
   /**
-   * Emitted when the checkbox lost focus
+   * Emitted when the switch lost focus
    * @property {FocusEvent} value - The focus event
    */
   'blur': [value: FocusEvent]
   /**
-   * Emitted when the checkbox is focused
+   * Emitted when the switch is focused
    * @property {FocusEvent} value - The focus event
    */
   'focus': [value: FocusEvent]
@@ -70,7 +70,7 @@ export interface Props {
 }
 
 const instanceId = useInstanceUniqId({
-  componentName: 'MazCheckbox',
+  componentName: 'MazSwitch',
   providedId: props.id,
 })
 

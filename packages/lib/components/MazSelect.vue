@@ -17,9 +17,9 @@ import {
   onBeforeMount,
   ref,
 } from 'vue'
-import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
+import { useInstanceUniqId } from '../modules/composables/useInstanceUniqId'
 import { debounceCallback } from '../modules/helpers/debounce-callback'
-import { useStringMatching } from '../modules/composables/use-string-matching'
+import { useStringMatching } from '../modules/composables/useStringMatching'
 import { vClosable } from '../modules/directives'
 import { normalizeString } from '../modules/helpers/normalize-string'
 import type { Color, ModelValueSimple, Position, Size } from './types'

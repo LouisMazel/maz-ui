@@ -33,7 +33,7 @@
     "tailwindcss": "^3.4.7",
     "vite-svg-loader": "^5.1.0",
     "vue": "^3.4.35",
-    "vue-router": "^4.4.0"
+    "vue-router": "^4.4.2"
   },
   "dependencies": {
     "maz-ui": "workspace:*"

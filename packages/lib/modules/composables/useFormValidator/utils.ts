@@ -124,7 +124,7 @@ export function getFieldState<
     validated: false,
     initialValue: freezeValue(initialValue),
     validateFunction,
-    mode: hasValidation ? options?.mode ?? fieldState?.mode ?? CONFIG.mode : 'none',
+    mode: hasValidation ? options?.mode ?? fieldState?.mode ?? CONFIG.mode : undefined,
   }
 }
 
@@ -142,13 +142,13 @@ export function getFieldsStates<
 }): FieldsStates<Model> {
   const fieldsStates = {} as FieldsStates<Model>
 
-  for (const name in schema) {
-    const fieldName = name as ModelKey
-    fieldsStates[fieldName] = getFieldState<Model>({
-      name: fieldName,
+  for (const fieldName in schema) {
+    const name = fieldName as ModelKey
+    fieldsStates[name] = getFieldState<Model>({
+      name,
       schema,
       options,
-      fieldState: fieldsStates[fieldName],
+      fieldState: fieldsStates[name],
       initialValue: payload?.[name],
     })
   }
@@ -156,34 +156,68 @@ export function getFieldsStates<
   return fieldsStates
 }
 
+export function updateFieldsStates<
+  Model extends BaseFormPayload,
+  ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>,
+>({
+  fieldsStates,
+  payload,
+  schema,
+  options,
+  updateMode = false,
+}: {
+  fieldsStates: FieldsStates<Model>
+  payload: Model
+  schema: FormSchema<Model>
+  options: StrictOptions<Model>
+  updateMode?: boolean
+}) {
+  for (const fieldName in schema) {
+    const name = fieldName as ModelKey
+    fieldsStates[name] = updateFieldState<Model>({
+      name,
+      fieldState: fieldsStates[name],
+      payload,
+      schema,
+      options,
+      updateMode,
+    })
+  }
+}
+
 export function updateFieldState<
   Model extends BaseFormPayload,
   ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>,
 >({
   name,
-  fieldsStates,
+  fieldState,
   payload,
   schema,
   options,
+  updateMode = true,
 }: {
   name: ModelKey
-  fieldsStates: FieldsStates<Model>
+  fieldState: FieldState<Model>
   payload: Model
   schema: FormSchema<Model>
   options: FormFieldOptions<Model[ModelKey]> & StrictOptions<Model>
+  updateMode?: boolean
 }): FieldState<Model> {
-  const { initialValue, mode } = getFieldState<Model>({
+  const { initialValue, mode, ...rest } = getFieldState<Model>({
     name,
     schema,
     initialValue: options.defaultValue ?? payload[name],
-    fieldState: fieldsStates[name],
+    fieldState,
     options,
   })
 
+  const newMode = updateMode ? mode ?? fieldState.mode ?? CONFIG.mode : fieldState.mode
+
   return {
-    ...fieldsStates[name],
+    ...fieldState,
     initialValue,
-    mode,
+    mode: newMode,
+    ...(fieldState?.mode && newMode !== fieldState.mode ? rest : {}),
   }
 }
 
@@ -220,7 +254,7 @@ export function addEventToInteractiveElements({
   mode: StrictOptions['mode']
 }) {
   interactiveElements.forEach((element) => {
-    if (hasModeIncludes(mode, ['eager', 'blur', 'progressive'])) {
+    if (hasModeIncludes(['eager', 'blur', 'progressive'], mode)) {
       element.addEventListener('blur', onBlurHandler)
     }
   })
@@ -360,9 +394,9 @@ export function canExecuteValidation<Model extends BaseFormPayload>({
   const { dirty, blurred, mode, valid } = fieldState
 
   const shouldNotValidate
-    = (eventName === 'blur' && (hasModeIncludes(mode, ['lazy', 'aggressive']) || valid))
+    = (eventName === 'blur' && (hasModeIncludes(['lazy', 'aggressive'], mode) || valid))
     || (eventName === 'input' && mode === 'blur')
-    || mode === 'none'
+    || !mode
 
   if (shouldNotValidate) {
     return false
@@ -489,7 +523,7 @@ export function getValidationEvents<Model extends BaseFormPayload>({
   fieldState: FieldState<Model>
   onBlurHandler: () => void
 }) {
-  if (ref || hasModeIncludes(fieldState.mode, ['aggressive', 'lazy', 'none'])) {
+  if (ref || hasModeIncludes(['aggressive', 'lazy'], fieldState.mode)) {
     return
   }
 
@@ -518,6 +552,10 @@ export async function getValidationSchema<Model extends BaseFormPayload>(formSch
   return objectAsync(formSchema)
 }
 
-export function hasModeIncludes(value: StrictOptions['mode'], modes: StrictOptions['mode'][]) {
+export function hasModeIncludes(modes: StrictOptions['mode'][], value?: StrictOptions['mode']): value is StrictOptions['mode'] {
+  if (!value) {
+    return false
+  }
+
   return modes.includes(value)
 }

@@ -1,4 +1,4 @@
-import { useSwipe } from '@modules/composables/use-swipe'
+import { useSwipe } from '@modules/composables/useSwipe'
 
 const swipeHandlerMock = {
   start: vi.fn(),

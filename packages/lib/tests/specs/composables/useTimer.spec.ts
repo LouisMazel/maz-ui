@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import { useTimer } from '@modules/composables/use-timer'
+import { useTimer } from '@modules/composables/useTimer'
 
 describe('useTimer', () => {
   it('should start and trigger callback when timeout is reached', async () => {
