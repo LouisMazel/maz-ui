@@ -1,7 +1,7 @@
 {
   "name": "maz-ui",
   "type": "module",
-  "version": "3.44.4-beta.10",
+  "version": "3.44.4-beta.11",
   "description": "A standalone components library for Vue.Js 3 & Nuxt.Js 3",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
@@ -190,6 +190,7 @@
     "stylelint-config-standard-scss": "^13.1.0",
     "stylelint-config-tailwindcss": "^0.0.7",
     "tailwindcss": "^3.4.7",
+    "unplugin-auto-import": "^0.18.2",
     "unplugin-vue-components": "^0.27.3",
     "valibot": "^0.37.0",
     "vite": "^5.3.5",

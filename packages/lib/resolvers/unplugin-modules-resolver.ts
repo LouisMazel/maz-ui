@@ -1,9 +1,7 @@
-import type { ComponentResolverFunction } from 'unplugin-vue-components/types'
+import type { ResolverFunction } from 'unplugin-auto-import/types'
 
-export function UnpluginModulesResolver(): ComponentResolverFunction {
+export function UnpluginModulesResolver(): ResolverFunction {
   return (name) => {
-    type MazUiModules = keyof typeof import('maz-ui')
-
     const modules = [
       'capitalize',
       'checkAvailability',
@@ -33,9 +31,9 @@ export function UnpluginModulesResolver(): ComponentResolverFunction {
       'useUserVisibility',
       'useWait',
       'useWindowSize',
-    ] as MazUiModules[]
+    ]
 
-    if (modules.includes(name as MazUiModules)) {
+    if (modules.includes(name)) {
       return {
         from: 'maz-ui',
         name,
