@@ -1,7 +1,7 @@
 {
   "name": "maz-ui",
   "type": "module",
-  "version": "3.44.4-beta.11",
+  "version": "3.44.4-beta.12",
   "description": "A standalone components library for Vue.Js 3 & Nuxt.Js 3",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
@@ -146,7 +146,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
-    "@babel/preset-env": "^7.25.2",
+    "@babel/preset-env": "^7.25.3",
     "@babel/preset-typescript": "^7.24.7",
     "@nuxt/kit": "^3.12.4",
     "@nuxt/schema": "^3.12.4",
@@ -203,7 +203,7 @@
     "vue": "^3.4.35",
     "vue-chartjs": "^5.3.1",
     "vue-loader": "^17.4.2",
-    "vue-router": "^4.4.0",
+    "vue-router": "^4.4.2",
     "vue-tsc": "^2.0.29"
   },
   "lint-staged": {

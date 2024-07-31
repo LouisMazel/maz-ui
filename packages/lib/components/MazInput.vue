@@ -16,7 +16,7 @@ import {
   ref,
   useSlots,
 } from 'vue'
-import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
+import { useInstanceUniqId } from '../modules/composables/useInstanceUniqId'
 import { debounce as debounceFn } from './../modules/helpers/debounce'
 import type { Color, ModelValueSimple, Size } from './types'
 

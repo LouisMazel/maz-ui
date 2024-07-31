@@ -3,14 +3,17 @@
     class="maz-flex maz-flex-col maz-gap-4"
     @submit="onSubmit"
   >
+    model: <pre>{{ model }}</pre>
+    <br>
+    defaultValues: <pre>{{ defaultValues }}</pre>
     <MazInput
       ref="nameRef"
       v-model="name"
       label="Enter your name"
       :hint="nameErrorMessage"
       :error="!!nameErrorMessage"
-      :success="isValidName"
-      :class="{ 'has-error-form2': !!nameErrorMessage }"
+      :success="fieldsStates?.name.valid"
+      :class="{ 'has-error-form': !!nameErrorMessage }"
     />
     <MazInput
       ref="ageRef"
@@ -20,7 +23,7 @@
       :hint="ageErrorMessage"
       :error="!!ageErrorMessage"
       :success="isValidAge"
-      :class="{ 'has-error-form2': !!ageErrorMessage }"
+      :class="{ 'has-error-form': !!ageErrorMessage }"
     />
     <MazSelect
       ref="countryRef"
@@ -30,7 +33,7 @@
       :hint="countryErrorMessage"
       :error="!!countryErrorMessage"
       :success="isValidCountry"
-      :class="{ 'has-error-form2': !!countryErrorMessage }"
+      :class="{ 'has-error-form': !!countryErrorMessage }"
     />
     <MazInputCode
       ref="codeRef"
@@ -93,7 +96,7 @@
     />
     <MazRadioButtons
       ref="radioButtonsRef"
-      v-model="radioButtons"
+      v-model="model.radioButtons"
       :options="[{ label: 'Option 1', value: 'radio1' }, { label: 'Option 2', value: 'radio2' }]"
       :error="!!radioButtonsError"
       :hint="radioButtonsError"
@@ -107,7 +110,6 @@
       label="Switch"
       :success="isValidSwitch"
     />
-    isValidTextarea: {{ isValidTextarea }}
     <MazTextarea
       ref="textareaRef"
       v-model="textarea"
@@ -119,7 +121,7 @@
     <MazCheckbox
       ref="agreeRef"
       v-model="agree"
-      :class="{ 'has-error-form2': !!agreeErrorMessage }"
+      :class="{ 'has-error-form': !!agreeErrorMessage }"
       label="I agree to the terms and conditions"
       :hint="agreeErrorMessage"
       :error="!!agreeErrorMessage"
@@ -135,6 +137,7 @@
 </template>
 
 <script setup lang="ts">
+import type { FormSchema } from 'maz-ui'
 import { pipe, string, number as numberAction, nonEmpty, minValue, literal, boolean, maxValue, minLength, array } from 'valibot'
 
 type Model = {
@@ -153,38 +156,54 @@ type Model = {
   textarea: string
 }
 
-const { isSubmitting, handleSubmit } = useFormValidator<Model>({
-  schema: {
-    name: pipe(string('Name is required'), nonEmpty('Name is required')),
-    age: pipe(numberAction('Age is required'), minValue(18, 'Age must be greater than 18'), maxValue(100, 'Age must be less than 100')),
-    agree: pipe(boolean('You must agree to the terms and conditions'), literal(true, 'You must agree to the terms and conditions')),
-    country: pipe(string('Country is required'), nonEmpty('Country is required')),
-    code: pipe(string('Code is required'), nonEmpty('Code is required'), minLength(4, 'Code must be 4 characters')),
-    number: pipe(numberAction('Number is required'), minValue(1, 'Number min 1')),
-    price: pipe(numberAction('Price is required'), minValue(2, 'Price min 2')),
-    tags: pipe(array(string(), 'Tags is required'), nonEmpty('Tags is required')),
-    phone: pipe(string('Phone is required'), nonEmpty('Phone is required')),
-    radio: pipe(string('Radio is required'), nonEmpty('Radio is required')),
-    radioButtons: pipe(string('RadioButtons is required'), nonEmpty('RadioButtons is required')),
-    switch: pipe(boolean('Switch is required'), literal(true, 'Switch is required')),
-    textarea: pipe(string('Textarea is required'), nonEmpty('Textarea is required')),
-  },
-  options: { mode: 'progressive', scrollToError: '.has-error-form2', identifier: 'form2' },
+const defaultValues = ref<Partial<Model>>({
+  name: 'Mazel',
 })
 
-const { value: name, errorMessage: nameErrorMessage, isValid: isValidName } = useFormField('name', { ref: 'nameRef', formIdentifier: 'form2' })
-const { value: age, errorMessage: ageErrorMessage, isValid: isValidAge } = useFormField('age', { ref: 'ageRef', formIdentifier: 'form2' })
-const { value: agree, errorMessage: agreeErrorMessage, isValid: isValidAgree } = useFormField('agree', { ref: 'agreeRef', formIdentifier: 'form2' })
-const { value: country, errorMessage: countryErrorMessage, isValid: isValidCountry } = useFormField('country', { ref: 'countryRef', formIdentifier: 'form2' })
-const { value: code, errorMessage: codeError, isValid: isValidCode } = useFormField('code', { ref: 'codeRef', formIdentifier: 'form2' })
-const { value: number, errorMessage: numberError, isValid: isValidNumber } = useFormField('number', { ref: 'numberRef', formIdentifier: 'form2' })
-const { value: price, errorMessage: priceError, isValid: isValidPrice } = useFormField('price', { ref: 'priceRef', formIdentifier: 'form2' })
-const { value: tags, errorMessage: tagsError, isValid: isValidTags } = useFormField('tags', { ref: 'tagsRef', formIdentifier: 'form2' })
-const { value: phone, errorMessage: phoneError, isValid: isValidPhone } = useFormField('phone', { ref: 'phoneRef', formIdentifier: 'form2' })
-const { value: radio, errorMessage: radioError, isValid: isValidRadio } = useFormField('radio', { ref: 'radioRef', formIdentifier: 'form2' })
-const { value: radioButtons, errorMessage: radioButtonsError, isValid: isValidButtons } = useFormField('radioButtons', { ref: 'radioButtonsRef', formIdentifier: 'form2' })
-const { value: switchValue, errorMessage: switchError, isValid: isValidSwitch } = useFormField('switch', { ref: 'switchRef', formIdentifier: 'form2' })
-const { value: textarea, errorMessage: textareaError, isValid: isValidTextarea } = useFormField('textarea', { ref: 'textareaRef', formIdentifier: 'form2' })
+const schema = ref<FormSchema<Model>>({
+  name: pipe(string('Name is required'), nonEmpty('Name is required')),
+  age: pipe(numberAction('Age is required'), minValue(18, 'Age must be greater than 18'), maxValue(100, 'Age must be less than 100')),
+  agree: pipe(boolean('You must agree to the terms and conditions'), literal(true, 'You must agree to the terms and conditions')),
+  country: pipe(string('Country is required'), nonEmpty('Country is required')),
+  code: pipe(string('Code is required'), nonEmpty('Code is required'), minLength(4, 'Code must be 4 characters')),
+  number: pipe(numberAction('Number is required'), minValue(1, 'Number min 1')),
+  price: pipe(numberAction('Price is required'), minValue(2, 'Price min 2')),
+  tags: pipe(array(string(), 'Tags is required'), nonEmpty('Tags is required')),
+  phone: pipe(string('Phone is required'), nonEmpty('Phone is required')),
+  radio: pipe(string('Radio is required'), nonEmpty('Radio is required')),
+  radioButtons: pipe(string('RadioButtons is required'), nonEmpty('RadioButtons is required')),
+  switch: pipe(boolean('Switch is required'), literal(true, 'Switch is required')),
+  textarea: pipe(string('Textarea is required'), nonEmpty('Textarea is required')),
+})
+
+setTimeout(() => {
+  defaultValues.value.age = 33
+}, 1000)
+
+// setTimeout(() => {
+//   schema.value.name = pipe(string('Name is required'), nonEmpty('Name is required'), minLength(3, 'Name must be at least 3 characters'))
+// }, 2000)
+
+const { isSubmitting, handleSubmit, model, fieldsStates } = useFormValidator<Model>({
+  schema,
+  defaultValues,
+  options: { mode: 'blur', scrollToError: '.has-error-form' },
+})
+
+const { value: name, errorMessage: nameErrorMessage } = useFormField('name', { ref: 'nameRef' })
+const { value: age, errorMessage: ageErrorMessage, isValid: isValidAge } = useFormField('age', { ref: 'ageRef' })
+const { value: agree, errorMessage: agreeErrorMessage, isValid: isValidAgree } = useFormField('agree', { ref: 'agreeRef' })
+const { value: country, errorMessage: countryErrorMessage, isValid: isValidCountry } = useFormField('country', { ref: 'countryRef' })
+const { value: code, errorMessage: codeError, isValid: isValidCode } = useFormField('code', { ref: 'codeRef' })
+const { value: number, errorMessage: numberError, isValid: isValidNumber } = useFormField('number', { ref: 'numberRef' })
+const { value: price, errorMessage: priceError, isValid: isValidPrice } = useFormField('price', { ref: 'priceRef' })
+const { value: tags, errorMessage: tagsError, isValid: isValidTags } = useFormField('tags', { ref: 'tagsRef' })
+const { value: phone, errorMessage: phoneError, isValid: isValidPhone } = useFormField('phone', { ref: 'phoneRef' })
+const { value: radio, errorMessage: radioError, isValid: isValidRadio } = useFormField('radio', { ref: 'radioRef' })
+const { errorMessage: radioButtonsError, isValid: isValidButtons } = useFormField('radioButtons', { ref: 'radioButtonsRef' })
+const { value: switchValue, errorMessage: switchError, isValid: isValidSwitch } = useFormField('switch', { ref: 'switchRef' })
+const { value: textarea, errorMessage: textareaError, isValid: isValidTextarea } = useFormField('textarea', { ref: 'textareaRef' })
+
 const onSubmit = handleSubmit(async (formData) => {
   // Form submission logic
   console.log(formData)

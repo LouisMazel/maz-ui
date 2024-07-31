@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { type SVGAttributes, computed, useSlots } from 'vue'
-import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
+import { useInstanceUniqId } from '../modules/composables/useInstanceUniqId'
 import MazAnimatedCounter from './MazAnimatedCounter.vue'
 import type { Color } from './types'
 

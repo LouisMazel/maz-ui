@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { useReadingTime } from '@modules/composables/use-reading-time'
+import { useReadingTime } from '@modules/composables/useReadingTime'
 
 describe('given the useReadingTime composable', () => {
   describe('when content is provided directly and velocity is default', () => {

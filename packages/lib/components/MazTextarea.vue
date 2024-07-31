@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { type HTMLAttributes, computed, onBeforeUnmount, onMounted, ref } from 'vue'
-import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
+import { useInstanceUniqId } from '../modules/composables/useInstanceUniqId'
 import { TextareaAutogrow } from './MazTextarea/textarea-autogrow'
 import type { Color } from './types'
 

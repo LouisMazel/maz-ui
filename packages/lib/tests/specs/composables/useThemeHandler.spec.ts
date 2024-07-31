@@ -1,4 +1,4 @@
-import { useThemeHandler } from '@modules/composables/use-theme-handler'
+import { useThemeHandler } from '@modules/composables/useThemeHandler'
 
 describe('useThemeHandler', () => {
   let themeHandler: ReturnType<typeof useThemeHandler>

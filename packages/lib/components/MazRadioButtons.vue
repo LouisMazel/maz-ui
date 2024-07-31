@@ -77,12 +77,12 @@ const emits = defineEmits<{
    */
   'change': [value: T]
   /**
-   * Emitted when the checkbox lost focus
+   * Emitted when the a radio button lost focus
    * @property {FocusEvent} value - The focus event
    */
   'blur': [value: FocusEvent]
   /**
-   * Emitted when the checkbox is focused
+   * Emitted when the a radio button is focused
    * @property {FocusEvent} value - The focus event
    */
   'focus': [value: FocusEvent]

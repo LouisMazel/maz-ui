@@ -5,7 +5,7 @@ export type { Color, Size } from './types'
 <script lang="ts" setup generic="T extends boolean | (string | number)[]">
 /* eslint-disable import/first */
 import { type HTMLAttributes, computed, ref } from 'vue'
-import { useInstanceUniqId } from '../modules/composables/use-instance-uniq-id'
+import { useInstanceUniqId } from '../modules/composables/useInstanceUniqId'
 import type { Color, Size } from './types'
 import CheckIcon from './../icons/check.svg'
 
