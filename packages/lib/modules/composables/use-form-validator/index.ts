@@ -92,13 +92,15 @@ export function useFormValidator<
     watch(
       () => toValue(payload.value)[name],
       () => {
+        const fieldState = fieldsStates.value[name]
+
         handleFieldInput<Model>({
           name,
-          fieldsStates: fieldsStates.value,
+          fieldState,
           payload: payload.value,
           schema: internalSchema.value,
           isSubmitted: isSubmitted.value,
-          forceValidation: hasModeIncludes(fieldsStates.value[name].mode, ['aggressive', 'lazy']),
+          forceValidation: hasModeIncludes(fieldState.mode, ['aggressive', 'lazy', 'progressive']),
         })
       },
       { deep: typeof internalSchema.value[name] === 'object' },
@@ -240,7 +242,7 @@ export function useFormField<
   if (fieldMode !== 'none') {
     setFieldValidationState<Model>({
       name,
-      fieldsStates: fieldsStates.value,
+      fieldState: fieldState.value,
       payload: payload.value,
       schema: internalSchema.value,
       setError: fieldMode === 'aggressive',
@@ -250,7 +252,7 @@ export function useFormField<
   function onBlurHandler() {
     handleFieldBlur<Model>({
       name,
-      fieldsStates: fieldsStates.value,
+      fieldState: fieldState.value,
       payload: payload.value,
       schema: internalSchema.value,
       isSubmitted: isSubmitted.value,
@@ -265,7 +267,7 @@ export function useFormField<
     }),
   )
 
-  if (opts.ref && hasModeIncludes(fieldMode, ['eager', 'blur'])) {
+  if (opts.ref && hasModeIncludes(fieldMode, ['eager', 'blur', 'progressive'])) {
     let interactiveElements: HTMLElement[] = []
 
     const handleInteractiveElements = (element: HTMLElement) => {

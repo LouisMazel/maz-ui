@@ -39,7 +39,7 @@ export function getErrorMessages<
 
   for (const [name, value] of Object.entries(errors)) {
     const issues = value as ValidationIssues
-    errorMessages[name as ModelKey] = fieldsStates[name as ModelKey].error ? issues[0].message : undefined
+    errorMessages[name as ModelKey] = fieldsStates[name as ModelKey].error && issues[0] ? issues[0].message : undefined
   }
 
   return errorMessages
@@ -220,7 +220,7 @@ export function addEventToInteractiveElements({
   mode: StrictOptions['mode']
 }) {
   interactiveElements.forEach((element) => {
-    if (hasModeIncludes(mode, ['eager', 'blur'])) {
+    if (hasModeIncludes(mode, ['eager', 'blur', 'progressive'])) {
       element.addEventListener('blur', onBlurHandler)
     }
   })
@@ -257,20 +257,18 @@ export async function setFieldValidationState<
   ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>,
 >({
   name,
-  fieldsStates,
+  fieldState,
   schema,
   payload,
   setError = true,
 }: {
   name: ModelKey
-  fieldsStates: FieldsStates<Model>
+  fieldState: FieldState<Model>
   schema: FormSchema<Model>
   payload: Model
   setError?: boolean
 }) {
   await nextTick()
-
-  const fieldState = fieldsStates[name]
 
   fieldState.validating = true
 
@@ -303,23 +301,24 @@ export function validateField<
   ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>,
 >({
   name,
-  fieldsStates,
+  fieldState,
   payload,
   schema,
 }: {
   name: ModelKey
-  fieldsStates: FieldsStates<Model>
+  fieldState: FieldState<Model>
   payload: Model
   schema: FormSchema<Model>
 }) {
   const validationParams: Parameters<typeof setFieldValidationState<Model>>[0] = {
     name,
-    fieldsStates,
+    fieldState,
     payload,
     schema,
+    setError: fieldState.mode === 'progressive' ? fieldState.valid || fieldState.blurred : true,
   }
 
-  return fieldsStates[name].validateFunction?.(validationParams)
+  return fieldState.validateFunction?.(validationParams)
 }
 
 export function validateForm<
@@ -341,7 +340,7 @@ export function validateForm<
       setFieldValidationState<Model>({
         name: name as ModelKey,
         setError,
-        fieldsStates,
+        fieldState: fieldsStates[name],
         payload,
         schema,
       }),
@@ -358,13 +357,14 @@ export function canExecuteValidation<Model extends BaseFormPayload>({
   fieldState: FieldState<Model>
   isSubmitted: boolean
 }): boolean {
-  const { dirty, blurred, mode } = fieldState
+  const { dirty, blurred, mode, valid } = fieldState
 
-  if (
-    (eventName === 'blur' && hasModeIncludes(mode, ['lazy', 'aggressive']))
+  const shouldNotValidate
+    = (eventName === 'blur' && (hasModeIncludes(mode, ['lazy', 'aggressive']) || valid))
     || (eventName === 'input' && mode === 'blur')
     || mode === 'none'
-  ) {
+
+  if (shouldNotValidate) {
     return false
   }
 
@@ -374,6 +374,7 @@ export function canExecuteValidation<Model extends BaseFormPayload>({
     || (mode === 'blur' && blurred)
     || (mode === 'aggressive' && dirty)
     || (mode === 'lazy' && dirty)
+    || mode === 'progressive'
   )
 }
 
@@ -384,19 +385,18 @@ export function handleFieldBlur<
   name,
   force = false,
   payload,
-  fieldsStates,
+  fieldState,
   schema,
   isSubmitted,
 }: {
   name: ModelKey
   payload: Model
-  fieldsStates: FieldsStates<Model>
+  fieldState: FieldState<Model>
   schema: FormSchema<Model>
   isSubmitted: boolean
   force?: boolean
 }) {
   const fieldValue = payload[name]
-  const fieldState = fieldsStates[name]
 
   const isDirty = !isEmptyValue(fieldValue) && !isEqual(fieldValue, fieldState.initialValue)
 
@@ -411,7 +411,7 @@ export function handleFieldBlur<
 
   return validateField<Model>({
     name,
-    fieldsStates,
+    fieldState,
     schema,
     payload,
   })
@@ -423,20 +423,19 @@ export function handleFieldInput<
 >({
   name,
   payload,
-  fieldsStates,
+  fieldState,
   schema,
   isSubmitted,
   forceValidation = false,
 }: {
   name: ModelKey
   payload: Model
-  fieldsStates: FieldsStates<Model>
+  fieldState: FieldState<Model>
   schema: FormSchema<Model>
   isSubmitted: boolean
   forceValidation?: boolean
 }) {
   const fieldValue = payload[name]
-  const fieldState = fieldsStates[name]
 
   fieldState.validated = false
 
@@ -452,7 +451,7 @@ export function handleFieldInput<
 
   return validateField<Model>({
     name,
-    fieldsStates,
+    fieldState,
     schema,
     payload,
   })

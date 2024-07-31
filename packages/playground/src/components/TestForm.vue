@@ -9,6 +9,7 @@
       label="Enter your name"
       :hint="nameErrorMessage"
       :error="!!nameErrorMessage"
+      :success="isValidName"
       :class="{ 'has-error-form2': !!nameErrorMessage }"
     />
     <MazInput
@@ -18,6 +19,7 @@
       label="Enter your age"
       :hint="ageErrorMessage"
       :error="!!ageErrorMessage"
+      :success="isValidAge"
       :class="{ 'has-error-form2': !!ageErrorMessage }"
     />
     <MazSelect
@@ -27,6 +29,7 @@
       label="Select your nationality"
       :hint="countryErrorMessage"
       :error="!!countryErrorMessage"
+      :success="isValidCountry"
       :class="{ 'has-error-form2': !!countryErrorMessage }"
     />
     <MazInputCode
@@ -34,6 +37,7 @@
       v-model="code"
       :error="!!codeError"
       :hint="codeError"
+      :success="isValidCode"
     />
     <MazInputNumber
       ref="numberRef"
@@ -42,6 +46,7 @@
       :error="!!numberError"
       :text-center="false"
       :hint="numberError"
+      :success="isValidNumber"
     />
     <MazInputPrice
       ref="priceRef"
@@ -49,18 +54,21 @@
       label="Enter a price"
       :error="!!priceError"
       :hint="priceError"
+      :success="isValidPrice"
     />
     <MazInputTags
       ref="tagsRef"
       v-model="tags"
       :error="!!tagsError"
       :hint="tagsError"
+      :success="isValidTags"
     />
     <MazPhoneNumberInput
       ref="phoneRef"
       v-model="phone"
       :error="!!phoneError"
       :hint="phoneError"
+      :success="isValidPhone"
     />
     <MazRadio
       ref="radioRef"
@@ -69,6 +77,7 @@
       name="radio"
       :error="!!radioError"
       :hint="radioError"
+      :success="isValidRadio"
     >
       Switch
     </MazRadio>
@@ -80,6 +89,7 @@
       :warning="!!radioError"
       :hint="radioError"
       label="Switch"
+      :success="isValidRadio"
     />
     <MazRadioButtons
       ref="radioButtonsRef"
@@ -87,6 +97,7 @@
       :options="[{ label: 'Option 1', value: 'radio1' }, { label: 'Option 2', value: 'radio2' }]"
       :error="!!radioButtonsError"
       :hint="radioButtonsError"
+      :success="isValidButtons"
     />
     <MazSwitch
       ref="switchRef"
@@ -94,12 +105,16 @@
       :warning="!!switchError"
       :hint="switchError"
       label="Switch"
+      :success="isValidSwitch"
     />
+    isValidTextarea: {{ isValidTextarea }}
     <MazTextarea
       ref="textareaRef"
       v-model="textarea"
+      label="Enter your message"
       :hint="textareaError"
       :error="!!textareaError"
+      :success="isValidTextarea"
     />
     <MazCheckbox
       ref="agreeRef"
@@ -108,6 +123,7 @@
       label="I agree to the terms and conditions"
       :hint="agreeErrorMessage"
       :error="!!agreeErrorMessage"
+      :success="isValidAgree"
     />
     <MazBtn
       type="submit"
@@ -153,22 +169,22 @@ const { isSubmitting, handleSubmit } = useFormValidator<Model>({
     switch: pipe(boolean('Switch is required'), literal(true, 'Switch is required')),
     textarea: pipe(string('Textarea is required'), nonEmpty('Textarea is required')),
   },
-  options: { mode: 'blur', scrollToError: '.has-error-form2', identifier: 'form2' },
+  options: { mode: 'progressive', scrollToError: '.has-error-form2', identifier: 'form2' },
 })
 
-const { value: name, errorMessage: nameErrorMessage } = useFormField('name', { ref: 'nameRef', formIdentifier: 'form2' })
-const { value: age, errorMessage: ageErrorMessage } = useFormField('age', { ref: 'ageRef', formIdentifier: 'form2' })
-const { value: agree, errorMessage: agreeErrorMessage } = useFormField('agree', { ref: 'agreeRef', formIdentifier: 'form2' })
-const { value: country, errorMessage: countryErrorMessage } = useFormField('country', { ref: 'countryRef', formIdentifier: 'form2' })
-const { value: code, errorMessage: codeError } = useFormField('code', { ref: 'codeRef', formIdentifier: 'form2' })
-const { value: number, errorMessage: numberError } = useFormField('number', { ref: 'numberRef', formIdentifier: 'form2' })
-const { value: price, errorMessage: priceError } = useFormField('price', { ref: 'priceRef', formIdentifier: 'form2' })
-const { value: tags, errorMessage: tagsError } = useFormField('tags', { ref: 'tagsRef', formIdentifier: 'form2' })
-const { value: phone, errorMessage: phoneError } = useFormField('phone', { ref: 'phoneRef', formIdentifier: 'form2' })
-const { value: radio, errorMessage: radioError } = useFormField('radio', { ref: 'radioRef', formIdentifier: 'form2' })
-const { value: radioButtons, errorMessage: radioButtonsError } = useFormField('radioButtons', { ref: 'radioButtonsRef', formIdentifier: 'form2' })
-const { value: switchValue, errorMessage: switchError } = useFormField('switch', { ref: 'switchRef', formIdentifier: 'form2' })
-const { value: textarea, errorMessage: textareaError } = useFormField('textarea', { ref: 'textareaRef', formIdentifier: 'form2', mode: 'eager' })
+const { value: name, errorMessage: nameErrorMessage, isValid: isValidName } = useFormField('name', { ref: 'nameRef', formIdentifier: 'form2' })
+const { value: age, errorMessage: ageErrorMessage, isValid: isValidAge } = useFormField('age', { ref: 'ageRef', formIdentifier: 'form2' })
+const { value: agree, errorMessage: agreeErrorMessage, isValid: isValidAgree } = useFormField('agree', { ref: 'agreeRef', formIdentifier: 'form2' })
+const { value: country, errorMessage: countryErrorMessage, isValid: isValidCountry } = useFormField('country', { ref: 'countryRef', formIdentifier: 'form2' })
+const { value: code, errorMessage: codeError, isValid: isValidCode } = useFormField('code', { ref: 'codeRef', formIdentifier: 'form2' })
+const { value: number, errorMessage: numberError, isValid: isValidNumber } = useFormField('number', { ref: 'numberRef', formIdentifier: 'form2' })
+const { value: price, errorMessage: priceError, isValid: isValidPrice } = useFormField('price', { ref: 'priceRef', formIdentifier: 'form2' })
+const { value: tags, errorMessage: tagsError, isValid: isValidTags } = useFormField('tags', { ref: 'tagsRef', formIdentifier: 'form2' })
+const { value: phone, errorMessage: phoneError, isValid: isValidPhone } = useFormField('phone', { ref: 'phoneRef', formIdentifier: 'form2' })
+const { value: radio, errorMessage: radioError, isValid: isValidRadio } = useFormField('radio', { ref: 'radioRef', formIdentifier: 'form2' })
+const { value: radioButtons, errorMessage: radioButtonsError, isValid: isValidButtons } = useFormField('radioButtons', { ref: 'radioButtonsRef', formIdentifier: 'form2' })
+const { value: switchValue, errorMessage: switchError, isValid: isValidSwitch } = useFormField('switch', { ref: 'switchRef', formIdentifier: 'form2' })
+const { value: textarea, errorMessage: textareaError, isValid: isValidTextarea } = useFormField('textarea', { ref: 'textareaRef', formIdentifier: 'form2' })
 const onSubmit = handleSubmit(async (formData) => {
   // Form submission logic
   console.log(formData)

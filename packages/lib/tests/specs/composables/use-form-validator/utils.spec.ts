@@ -360,20 +360,19 @@ describe('given validateField function', () => {
     name: { type: 'string', minLength: 3 },
   } as unknown as FormSchema<{ name: string }>
 
-  const fieldsStates = {
-    name: {
-      validateFunction: vi.fn(),
-    },
-  } as unknown as FieldsStates<{ name: string }>
+  const fieldState = {
+    validateFunction: vi.fn(),
+  } as unknown as FieldState<{ name: string }>
 
   it('calls validateFunction with correct parameters', () => {
     const payload = { name: 'John' }
-    validateField({ name: 'name', fieldsStates, payload, schema })
-    expect(fieldsStates.name.validateFunction).toHaveBeenCalledWith({
+    validateField({ name: 'name', fieldState, payload, schema })
+    expect(fieldState.validateFunction).toHaveBeenCalledWith({
       name: 'name',
-      fieldsStates,
+      fieldState,
       payload,
       schema,
+      setError: true,
     })
   })
 })
@@ -401,15 +400,19 @@ describe('given handleFieldBlur function', () => {
     name: { type: 'string', minLength: 3 },
   } as unknown as FormSchema<{ name: string }>
 
-  const fieldsStates = {
-    name: { dirty: false, blurred: false, mode: 'eager', valid: false, initialValue: '' },
-  } as unknown as FieldsStates<{ name: string }>
+  const fieldState = {
+    dirty: false,
+    blurred: false,
+    mode: 'eager',
+    valid: false,
+    initialValue: '',
+  } as unknown as FieldState<{ name: string }>
 
   it('updates field state and validates on blur', () => {
     const payload = { name: 'John' }
-    handleFieldBlur({ name: 'name', payload, fieldsStates, schema, isSubmitted: false })
-    expect(fieldsStates.name.dirty).toBe(true)
-    expect(fieldsStates.name.blurred).toBe(true)
+    handleFieldBlur({ name: 'name', payload, fieldState, schema, isSubmitted: false })
+    expect(fieldState.dirty).toBe(true)
+    expect(fieldState.blurred).toBe(true)
   })
 })
 
@@ -418,15 +421,20 @@ describe('given handleFieldInput function', () => {
     name: { type: 'string', minLength: 3 },
   } as unknown as FormSchema<{ name: string }>
 
-  const fieldsStates = {
-    name: { dirty: false, blurred: false, mode: 'eager', valid: true, initialValue: '', validateFunction: vi.fn() },
-  } as unknown as FieldsStates<{ name: string }>
+  const fieldState = {
+    dirty: false,
+    blurred: false,
+    mode: 'eager',
+    valid: true,
+    initialValue: '',
+    validateFunction: vi.fn(),
+  } as unknown as FieldState<{ name: string }>
 
   it('updates field state and validates on input', () => {
     const payload = { name: 'John' }
-    handleFieldInput({ name: 'name', payload, fieldsStates, schema, isSubmitted: true })
-    expect(fieldsStates.name.dirty).toBe(true)
-    expect(fieldsStates.name.validateFunction).toHaveBeenCalledTimes(1)
+    handleFieldInput({ name: 'name', payload, fieldState, schema, isSubmitted: true })
+    expect(fieldState.dirty).toBe(true)
+    expect(fieldState.validateFunction).toHaveBeenCalledTimes(1)
   })
 })
 
