@@ -404,7 +404,7 @@ To use the modes `eager` or `blur`, you must use this `useFormField` composable 
 - `name`: `ModelKey` - The name of the field in the validation schema.
 - `options`: `FormFieldOptions<T>` (optional) - Field-specific options.
   - `defaultValue`: `T` (optional) - The default value of the field.
-  - `mode`: `'eager' | 'lazy' | 'aggressive' | 'blur'` (optional) - The validation mode for the field - [see validation modes](#validation-modes)
+  - `mode`: `'eager' | 'lazy' | 'aggressive' | 'blur' | 'progressive'` (optional) - The validation mode for the field - [see validation modes](#validation-modes)
   - `ref`: `string` (optional) - Reference to the component to associate and trigger validation events (not necessary for `lazy`, `aggressive` validation modes)
   - `formIdentifier`: `string | symbol` (optional) - Identifier for the form (useful when you have multiple forms on the same component)
 
@@ -422,7 +422,7 @@ To use the modes `eager` or `blur`, you must use this `useFormField` composable 
 - `isValidating`: `ComputedRef<boolean>` - Indicates if the field is currently being validated.
 - `mode`: `ComputedRef<StrictOptions['mode']>` - The validation mode for the field.
 - `value`: `ComputedRef<T>` - The value of the field.
-- `validationEvents`: `ComputedRef<{ onBlur?: () => void; 'onUpdate:modelValue'?: () => void; }>` - Validation events to bind to the field. They are used to trigger field validation, to be used like this `v-bind="{ ...validationEvents }"` (components must emit `blur` and `update:modelValue` events to trigger field validation) - Not necessary for `lazy`, `aggressive` validation modes or if you use the component reference when initializing the composable.
+- `validationEvents`: `ComputedRef<{ onBlur?: () => void; 'onUpdate:modelValue'?: () => void; }>` - Validation events to bind to the field. They are used to trigger field validation, to be used like this `v-bind="{ ...validationEvents }"` (components must emit `blur` event to trigger field validation) - Not necessary for `lazy`, `aggressive` validation modes or if you use the component reference when initializing the composable.
 
 ### Usage Example
 
@@ -464,7 +464,7 @@ const { value, errorMessage, isValid, hasError } = useFormField('name', {
 
 The configurable options for `useFormValidator` include:
 
-- `mode`: [Validation mode](#validation-modes) ('eager', 'lazy', 'aggressive' or 'blur')
+- `mode`: [Validation mode](#validation-modes) ('eager', 'lazy', 'aggressive', 'progressive' or 'blur')
 - `throttledFields`: Fields to validate with throttling (e.g `{ name: 1000 }` or `{ name: true }` for the default throttle time (1000ms))
 - `debouncedFields`: Fields to validate with debouncing (e.g `{ name: 300 }` or `{ name: true }` for the default debounce time (300ms))
 - `scrollToError`: Disable or provide a CSS selector for scrolling to errors (default '.has-field-error')
@@ -481,8 +481,9 @@ The configurable options for `useFormField` include:
 
 - `lazy`: (default) Validates only on value changes
 - `aggressive`: Validates all fields immediately and on every change
-- `eager`: (recommended) Validates on initial blur (if not empty), then on every change (requires `useFormField`)
-- `blur`: Validates only on focus loss (requires `useFormField`)
+- `eager`: (recommended) Validates on initial blur (if not empty), then on every change (requires `useFormField` to add validation events)
+- `blur`: Validates only on focus loss (requires `useFormField` to add validation events)
+- `progressive`: Validates the field at each user interaction (value change or blur). The first validation state (isValid, hasError or errorMessage appearance) will only be available when the field entry is valid or at blur. Then the validation will be as for the `lazy` mode for the next interactions (requires `useFormField` to add validation events)
 
 ## Best Practices
 

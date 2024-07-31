@@ -345,26 +345,141 @@ describe('given useFormField with blur mode', () => {
 
   describe('when field is blurred', () => {
     it('then it validates on every blur', async () => {
-      // @ts-expect-error - method is defined
-      nameField.validationEvents.value.onBlur()
+      expect(nameField.isValid.value).toBe(false)
+      expect(nameField.hasError.value).toBe(false)
+      expect(nameField.isBlurred.value).toBe(false)
+      expect(nameField.errorMessage.value).toBeUndefined()
 
+      nameField.validationEvents.value?.onBlur()
+      vi.advanceTimersByTime(200)
       await flushPromises()
-      vi.advanceTimersByTime(300)
 
       expect(nameField.isValid.value).toBe(false)
       expect(nameField.hasError.value).toBe(true)
       expect(nameField.isBlurred.value).toBe(true)
+      expect(nameField.errorMessage.value).toBe('Name must be at least 3 characters')
 
       nameField.value.value = 'John'
-      wrapper.find('input').element.value = 'John'
-      // @ts-expect-error - method is defined
-      nameField.validationEvents.value.onBlur()
-
+      nameField.validationEvents.value?.onBlur()
+      vi.advanceTimersByTime(200)
       await flushPromises()
-      vi.advanceTimersByTime(300)
 
       expect(nameField.isValid.value).toBe(true)
       expect(nameField.hasError.value).toBe(false)
+      expect(nameField.isBlurred.value).toBe(true)
+      expect(nameField.errorMessage.value).toBeUndefined()
+    })
+  })
+})
+
+describe('given useFormField with progressive mode', () => {
+  let wrapper: ReturnType<typeof mount>
+  let nameField: ReturnType<UseFormField<string>>
+
+  beforeEach(() => {
+    vi.useFakeTimers()
+    const FormComponent = createFormComponent({
+      mode: 'progressive',
+    })
+
+    wrapper = mount(FormComponent)
+    // @ts-expect-error - nameField is private
+    nameField = wrapper.vm.nameField
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+    wrapper.unmount()
+  })
+
+  describe('when field is blurred', () => {
+    it('then it validates on every blur', async () => {
+      expect(nameField.isValid.value).toBe(false)
+      expect(nameField.hasError.value).toBe(false)
+      expect(nameField.isBlurred.value).toBe(false)
+      expect(nameField.errorMessage.value).toBeUndefined()
+
+      nameField.validationEvents.value?.onBlur()
+      vi.advanceTimersByTime(200)
+      await flushPromises()
+
+      expect(nameField.isValid.value).toBe(false)
+      expect(nameField.hasError.value).toBe(true)
+      expect(nameField.isBlurred.value).toBe(true)
+      expect(nameField.errorMessage.value).toBe('Name must be at least 3 characters')
+
+      nameField.value.value = 'John'
+      nameField.validationEvents.value?.onBlur()
+      vi.advanceTimersByTime(200)
+      await flushPromises()
+
+      expect(nameField.isValid.value).toBe(true)
+      expect(nameField.hasError.value).toBe(false)
+      expect(nameField.isBlurred.value).toBe(true)
+      expect(nameField.errorMessage.value).toBeUndefined()
+    })
+
+    it('then on input it displays success state only when it\'s valid', async () => {
+      expect(nameField.isValid.value).toBe(false)
+      expect(nameField.hasError.value).toBe(false)
+      expect(nameField.isBlurred.value).toBe(false)
+      expect(nameField.errorMessage.value).toBeUndefined()
+
+      nameField.value.value = 'Jo'
+      vi.advanceTimersByTime(200)
+      await flushPromises()
+
+      expect(nameField.isValid.value).toBe(false)
+      expect(nameField.hasError.value).toBe(false)
+      expect(nameField.isBlurred.value).toBe(false)
+      expect(nameField.errorMessage.value).toBeUndefined()
+
+      nameField.value.value = 'John'
+      vi.advanceTimersByTime(200)
+      await flushPromises()
+
+      expect(nameField.isValid.value).toBe(true)
+      expect(nameField.hasError.value).toBe(false)
+      expect(nameField.isBlurred.value).toBe(false)
+      expect(nameField.errorMessage.value).toBeUndefined()
+    })
+
+    it('then it blurred and update state on input', async () => {
+      nameField.validationEvents.value?.onBlur()
+      vi.advanceTimersByTime(200)
+      await flushPromises()
+
+      expect(nameField.isValid.value).toBe(false)
+      expect(nameField.hasError.value).toBe(true)
+      expect(nameField.isBlurred.value).toBe(true)
+      expect(nameField.errorMessage.value).toBe('Name must be at least 3 characters')
+
+      nameField.value.value = 'Jo'
+      vi.advanceTimersByTime(200)
+      await flushPromises()
+
+      expect(nameField.isValid.value).toBe(false)
+      expect(nameField.hasError.value).toBe(true)
+      expect(nameField.isBlurred.value).toBe(true)
+      expect(nameField.errorMessage.value).toBe('Name must be at least 3 characters')
+
+      nameField.value.value = 'John'
+      vi.advanceTimersByTime(200)
+      await flushPromises()
+
+      expect(nameField.isValid.value).toBe(true)
+      expect(nameField.hasError.value).toBe(false)
+      expect(nameField.isBlurred.value).toBe(true)
+      expect(nameField.errorMessage.value).toBeUndefined()
+
+      nameField.value.value = 'Jo'
+      vi.advanceTimersByTime(200)
+      await flushPromises()
+
+      expect(nameField.isValid.value).toBe(false)
+      expect(nameField.hasError.value).toBe(true)
+      expect(nameField.isBlurred.value).toBe(true)
+      expect(nameField.errorMessage.value).toBe('Name must be at least 3 characters')
     })
   })
 })

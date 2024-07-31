@@ -38,7 +38,7 @@ export interface FormValidatorOptions<
    * - input: validate on input value change
    * @default 'lazy'
    */
-  mode?: 'eager' | 'lazy' | 'aggressive' | 'blur' | 'none'
+  mode?: 'eager' | 'lazy' | 'aggressive' | 'blur' | 'progressive' | 'none'
   /**
    * Fields that should be throttled
    * Useful for fields that require a network request to avoid spamming the server

@@ -35,6 +35,7 @@ toast.message('Votre mot de passe a été mis à jour', {
     func: () => toast.success('CLICKED'),
     text: 'Button',
   },
+  timeout: 100000,
 })
 toast.success('Votre mot de passe a été mis à jour', {
   position: 'bottom-right',
