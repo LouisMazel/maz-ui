@@ -1,5 +1,8 @@
+import { DefaultTheme } from "vitepress";
+
 export const composables = {
   text: 'Composables',
+  collapsed: false,
   items: [
     { text: 'useAos', link: '/composables/use-aos' },
     { text: 'useBreakpoints', link: '/composables/use-breakpoints' },
@@ -15,4 +18,4 @@ export const composables = {
     { text: 'useWait', link: '/composables/use-wait' },
     { text: 'useWindowSize', link: '/composables/use-window-size' },
   ]
-}
+} satisfies DefaultTheme.SidebarItem

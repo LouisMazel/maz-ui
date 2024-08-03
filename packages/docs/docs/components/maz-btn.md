@@ -25,8 +25,6 @@ description: MazBtn is a standalone component that replaces the standard html bu
 
 ## Loading
 
-<br />
-
 <div class="flex items-start gap-05 flex-wrap">
   <div v-for="color of colors"
       :key="color" class="maz-flex maz-flex-col maz-flex-center">
@@ -125,8 +123,6 @@ Use the attribute `color` with a value in this [list](./../guide/colors.md), the
 
 ## Outline
 
-<br />
-
 <div class="flex items-start gap-05 flex-wrap">
   <MazBtn v-for="color of colors" :color="color" outline>{{ color }}</MazBtn>
 </div>
@@ -175,17 +171,30 @@ It's better in light mode
 
 ## Rounded
 
-<br />
-
 <MazBtn rounded>rounded</MazBtn>
 
 ```html
 <MazBtn rounded>rounded</MazBtn>
+<!-- or -->
+<MazBtn rounded-size="full">rounded</MazBtn>
+```
+
+## Rounded Size
+
+<div class="flex items-start gap-05 rounded maz-p-3 flex-wrap">
+  <MazBtn v-for="size of ['none', 'sm', 'md', 'lg', 'xl', 'full']" :rounded-size="size">{{ size }}</MazBtn>
+</div>
+
+```html
+<MazBtn rounded-size="none">none</MazBtn>
+<MazBtn rounded-size="sm">sm</MazBtn>
+<MazBtn rounded-size="md">md</MazBtn>
+<MazBtn rounded-size="lg">lg</MazBtn>
+<MazBtn rounded-size="xl">xl</MazBtn>
+<MazBtn rounded-size="full">full</MazBtn>
 ```
 
 ## Fab
-
-<br />
 
 <div class="maz-flex maz-gap-5 maz-items-center">
   <MazBtn fab icon="sun" size="mini" />
@@ -224,8 +233,6 @@ It's better in light mode
 ```
 
 ## Disabled
-
-<br />
 
 <MazBtn disabled>disabled</MazBtn>
 

@@ -1,9 +1,12 @@
+import { DefaultTheme } from "vitepress";
+
 export const components = {
   text: 'Components',
-  activeMatch: '/components',
+  collapsed: false,
   items: [
     {
       text: 'Form',
+      collapsed: false,
       items: [
         { text: 'MazBtn', link: '/components/maz-btn' },
         { text: 'MazCheckbox', link: '/components/maz-checkbox' },
@@ -23,6 +26,7 @@ export const components = {
     },
     {
       text: 'Data',
+      collapsed: false,
       items: [
         { text: 'MazDropzone', link: '/components/maz-dropzone' },
         { text: 'MazPicker (date, time, range)', link: '/components/maz-picker' },
@@ -31,6 +35,7 @@ export const components = {
     },
     {
       text: 'UI',
+      collapsed: false,
       items: [
         { text: 'MazAccordion', link: '/components/maz-accordion' },
         { text: 'MazAnimatedCounter', link: '/components/maz-animated-counter' },
@@ -64,4 +69,4 @@ export const components = {
       ]
     }
   ]
-}
+} satisfies DefaultTheme.SidebarItem

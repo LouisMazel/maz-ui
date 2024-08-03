@@ -65,6 +65,7 @@ export interface Props {
   /**
    * Size of the rounded
    * @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'`
+   * @default 'lg'
    */
   roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
   /**
@@ -177,7 +178,7 @@ const btnType = computed(() => (component.value === 'button' ? props.type : unde
     class="m-btn"
     :class="[
       `--${size}`,
-      ...[!fab && roundedSize && `--rounded-${roundedSize}`],
+      ...[!fab && !rounded && roundedSize && `--rounded-${roundedSize}`],
       btnColorClass,
       cursorClass,
       variantClass,
@@ -308,7 +309,7 @@ const btnType = computed(() => (component.value === 'button' ? props.type : unde
   &.--is-button {
     @apply maz-relative maz-inline-flex maz-items-center maz-justify-center maz-overflow-hidden
         maz-border-transparent maz-bg-transparent maz-font-medium maz-no-underline
-        maz-transition maz-duration-200 maz-ease-in-out;
+        maz-transition-all maz-duration-200 maz-ease-in-out;
 
     &:not(.--no-rounded) {
       @apply maz-rounded;
@@ -384,9 +385,9 @@ const btnType = computed(() => (component.value === 'button' ? props.type : unde
       padding-bottom: 0.2rem;
     }
 
-    transition:
+    /* transition:
       background 300ms ease-in-out 0ms,
-      color 300ms ease-in-out 0ms;
+      color 300ms ease-in-out 0ms; */
 
     /* Not disabled */
 

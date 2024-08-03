@@ -6,11 +6,11 @@ import { guide } from './guide.mjs'
 import { composables } from './composables.mjs'
 import { plugins } from './plugins.mjs'
 
-export const sidebar: DefaultTheme.SidebarItem[] = [
+export const sidebar = [
   guide,
   components,
   plugins,
   composables,
   directives,
   helpers,
-]
+] satisfies DefaultTheme.SidebarItem[]
