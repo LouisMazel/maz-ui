@@ -5,7 +5,7 @@ export const getAssetBaseUrl = (path: string): string => {
   return `${base}${path}`
 }
 
-export const head: UserConfig['head'] = [
+export const head = [
   ['meta', { name: 'theme-color', content: '#1d90ff' }],
   [
     'link',
@@ -84,4 +84,4 @@ export const head: UserConfig['head'] = [
   ['meta', { name: 'og:locale', content: 'en-US' }],
   ['meta', { name: 'article:author', content: 'Loïc Mazuel' }],
   // ['script', { src: 'https://www.googletagmanager.com/gtag/js?id=G-EM35TM23ZC', async: 'true' }]
-]
+] satisfies UserConfig['head']

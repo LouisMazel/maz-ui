@@ -12,7 +12,7 @@ import { helpers } from './helpers.mjs'
 import { composables } from './composables.mjs'
 import { plugins } from './plugins.mjs'
 
-export const nav: DefaultTheme.NavItem[] = [
+export const nav = [
   guide,
   components,
   {
@@ -34,4 +34,4 @@ export const nav: DefaultTheme.NavItem[] = [
       },
     ],
   },
-]
+] satisfies DefaultTheme.NavItem[]

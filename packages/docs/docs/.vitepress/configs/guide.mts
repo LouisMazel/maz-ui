@@ -1,6 +1,8 @@
+import { DefaultTheme } from "vitepress";
+
 export const guide = {
   text: 'Guide',
-  activeMatch: '/guide',
+  collapsed: false,
   items: [
     { text: 'Getting Started', link: '/guide/getting-started' },
     { text: 'Basic colors', link: '/guide/colors' },
@@ -9,4 +11,4 @@ export const guide = {
     { text: 'Nuxt Module', link: '/guide/nuxt' },
     { text: '@maz-ui/cli (theme generator)', link: '/guide/cli' },
   ],
-}
+} satisfies DefaultTheme.SidebarItem
