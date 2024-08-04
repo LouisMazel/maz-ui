@@ -1,5 +1,46 @@
 # Change Log
 
+## v3.44.3...v3.45.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.44.3...v3.45.0)
+
+### 🚀 Enhancements
+
+- **maz-ui:** UseFormValidator - composable to simplify form validation with Valibot ([9fc1725d2](https://github.com/LouisMazel/maz-ui/commit/9fc1725d2))
+- **maz-ui:** UseFormValidator - improve types ([3e8c06565](https://github.com/LouisMazel/maz-ui/commit/3e8c06565))
+- **maz-ui:** UseFormValidator - support no reactive schema ([bf147cf49](https://github.com/LouisMazel/maz-ui/commit/bf147cf49))
+- **maz-ui:** UseFormValidator - make valibot not mandatory ([4e98945ce](https://github.com/LouisMazel/maz-ui/commit/4e98945ce))
+- **maz-ui:** UseFormValidator - can use multiple forms on the same component ([cdcf27799](https://github.com/LouisMazel/maz-ui/commit/cdcf27799))
+- **maz-ui:** UseFormValidator - get refs from component instance ([b8bea2730](https://github.com/LouisMazel/maz-ui/commit/b8bea2730))
+- **maz-ui:** Add hint and states to all form components ([c9455a60b](https://github.com/LouisMazel/maz-ui/commit/c9455a60b))
+- **maz-ui:** UseFormValidator - use watch instead of input HTML event ([ed176a965](https://github.com/LouisMazel/maz-ui/commit/ed176a965))
+- **maz-ui:** UseFormValidator - add progressive mode ([826d8d739](https://github.com/LouisMazel/maz-ui/commit/826d8d739))
+- **maz-ui:** Add modules resolver for unplugin-auto-import ([05059eeb9](https://github.com/LouisMazel/maz-ui/commit/05059eeb9))
+- **maz-ui:** MazPicker - add transformer function option to format value displayed into input field ([656fee421](https://github.com/LouisMazel/maz-ui/commit/656fee421))
+
+### 🩹 Fixes
+
+- **maz-ui:** MazSelect - increase thresold of search results #1120 ([#1120](https://github.com/LouisMazel/maz-ui/issues/1120))
+- **maz-ui:** MazSelect - should not select option with space key while searching #1121 ([#1121](https://github.com/LouisMazel/maz-ui/issues/1121))
+
+### 💅 Refactors
+
+- Linter configs ([0ee50bd5b](https://github.com/LouisMazel/maz-ui/commit/0ee50bd5b))
+- **maz-ui:** UseFormValidator - reduce complexity ([01212e3f4](https://github.com/LouisMazel/maz-ui/commit/01212e3f4))
+
+### 🏡 Chore
+
+- **deps:** Upgrade dependencies ([1bcd4f6f7](https://github.com/LouisMazel/maz-ui/commit/1bcd4f6f7))
+- **deps:** Upgrade dependencies ([2516fc63c](https://github.com/LouisMazel/maz-ui/commit/2516fc63c))
+
+### 🎨 Styles
+
+- **docs:** Re-design homepage ([760e7753c](https://github.com/LouisMazel/maz-ui/commit/760e7753c))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.44.2...v3.44.3
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.44.2...v3.44.3)
