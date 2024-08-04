@@ -40,7 +40,7 @@ html.dark {
   --vp-c-bg-elv: hsl(235deg 16% 12%);
   --vp-c-bg-elv-mute: var(--maz-color-bg);
 
-  --vp-custom-block-info-bg: var(--maz-color-info-600);
+  --vp-custom-block-info-bg: var(--maz-color-info-alpha);
   --vp-custom-block-info-border: var(--maz-color-info-400);
   --vp-custom-block-info-text: var(--maz-color-info-contrast);
 
@@ -96,6 +96,16 @@ html.dark {
 
 .custom-block.tip a {
   color: var(--maz-color-black) !important;
+}
+
+.custom-block.info code {
+  background-color: var(--maz-color-info-600) !important;
+  color: var(--maz-color-info-contrast) !important;
+}
+
+.custom-block.tip code {
+  background-color: var(--maz-color-success-600) !important;
+  color: var(--maz-color-info-contrast) !important;
 }
 
 html.dark .custom-block.details a {
