@@ -21,11 +21,14 @@ npm install dayjs
 
 ## Basic Usage
 
-<MazPicker
-  v-model="newDateValue"
-  id="date-picker"
-  label="Select date"
-/>
+<ComponentDemo>
+  <MazPicker
+    v-model="newDateValue"
+    id="date-picker"
+    label="Select date"
+  />
+
+  <template #code>
 
 ```html
 <MazPicker
@@ -33,6 +36,9 @@ npm install dayjs
   label="Select date"
 />
 ```
+
+  </template>
+</ComponentDemo>
 
 ## Documentation
 
@@ -60,6 +66,8 @@ npm install dayjs
 
 - `inputDateStyle`: To customize the date time format into the input - Must be a value of [Intl.DateTimeFormatOptions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#parameters) - Default option: `{ dateStyle: 'full' }`
 
+- `inputDateTransformer`: `(payload: { formattedDate?: string; value?: PickerValue; locale: string }) => string` - To transform the value displayed into the input - Must return a string
+
 - `shortcut`: With the shortcut property, you can specify a shortcut that's selected by default by passing its identifier.
 
 - `min-date` & `max-date`: Must have the same format as model-value - the component will validate the dates automatically - Exemple: [see example](#inline-with-custom-shortcuts)
@@ -82,14 +90,17 @@ npm install dayjs
 
 ## Date Picker
 
-<div class="language-html ext-html"><pre class="language-json"><code>v-model="{{ dateValue }}"</code></pre></div>
+  <div class="language-html ext-html"><pre class="language-json"><code>v-model="{{ dateValue }}"</code></pre></div>
 
-<MazPicker
-  v-model="dateValue"
-  label="Select date"
-  id="date-picker-1"
-  color="secondary"
-/>
+<ComponentDemo>
+  <MazPicker
+    v-model="dateValue"
+    label="Select date"
+    id="date-picker-1"
+    color="secondary"
+  />
+
+  <template #code>
 
 ```vue
 <template>
@@ -107,12 +118,16 @@ npm install dayjs
 </script>
 ```
 
+  </template>
+</ComponentDemo>
+
 ## Date Time Picker
 
 ### 24 format
 
 <div class="language-html ext-html"><pre class="language-json"><code>v-model="{{ dateTimeValue }}"</code></pre></div>
 
+<ComponentDemo>
 <MazPicker
   v-model="dateTimeValue"
   format="YYYY-MM-DD HH:mm"
@@ -121,6 +136,8 @@ npm install dayjs
   id="date-time-picker-1"
   time
 />
+
+  <template #code>
 
 ```vue
 <template>
@@ -140,18 +157,24 @@ npm install dayjs
 </script>
 ```
 
+  </template>
+</ComponentDemo>
+
 ### 12 format
 
 <div class="language-html ext-html"><pre class="language-json"><code>v-model="{{ dateTime12Value }}"</code></pre></div>
 
-<MazPicker
-  v-model="dateTime12Value"
-  format="YYYY-MM-DD hh:mm a"
-  label="Select date and time"
-  id="date-time-picker-2"
-  color="secondary"
-  time
-/>
+<ComponentDemo>
+  <MazPicker
+    v-model="dateTime12Value"
+    format="YYYY-MM-DD hh:mm a"
+    label="Select date and time"
+    id="date-time-picker-2"
+    color="secondary"
+    time
+  />
+
+  <template #code>
 
 ```vue
 <template>
@@ -171,20 +194,26 @@ npm install dayjs
 </script>
 ```
 
+  </template>
+</ComponentDemo>
+
 ## Time Picker
 
 ### 24h format
 
 <div class="language-html ext-html"><pre class="language-json"><code>v-model="{{ dateTimeValue }}"</code></pre></div>
 
-<MazPicker
-  v-model="dateTimeValue"
-  format="YYYY-MM-DD HH:mm"
-  label="Select time"
-  id="time-picker-1"
-  color="secondary"
-  only-time
-/>
+<ComponentDemo>
+  <MazPicker
+    v-model="dateTimeValue"
+    format="YYYY-MM-DD HH:mm"
+    label="Select time"
+    id="time-picker-1"
+    color="secondary"
+    only-time
+  />
+
+  <template #code>
 
 ```vue
 <template>
@@ -204,36 +233,45 @@ npm install dayjs
 </script>
 ```
 
+  </template>
+</ComponentDemo>
+
 ### 12h format
 
 <code>v-model="{{ dateTime12Value }}"</code>
 
-<MazPicker
-  v-model="dateTime12Value"
-  format="YYYY-MM-DD HH:mm a"
-  label="Select time"
-  id="time-picker-2"
-  color="secondary"
-  only-time
-/>
-
-```vue
-<template>
+<ComponentDemo>
   <MazPicker
     v-model="dateTime12Value"
     format="YYYY-MM-DD HH:mm a"
     label="Select time"
+    id="time-picker-2"
     color="secondary"
     only-time
   />
-</template>
 
-<script setup lang="ts">
-  import MazPicker from 'maz-ui/components/MazPicker'
-  import { ref } from 'vue'
-  const dateTime12Value = ref('2022-02-03 04:30 pm')
-</script>
-```
+  <template #code>
+
+  ```vue
+  <template>
+    <MazPicker
+      v-model="dateTime12Value"
+      format="YYYY-MM-DD HH:mm a"
+      label="Select time"
+      color="secondary"
+      only-time
+    />
+  </template>
+
+  <script setup lang="ts">
+    import MazPicker from 'maz-ui/components/MazPicker'
+    import { ref } from 'vue'
+    const dateTime12Value = ref('2022-02-03 04:30 pm')
+  </script>
+  ```
+
+  </template>
+</ComponentDemo>
 
 ## Range Picker
 
@@ -241,16 +279,19 @@ To enable the range mode, you should provide an object like this `{ start: undef
 
 <div class="language-json ext-json"><pre class="language-json"><code>v-model="{{ rangeValues }}"</code></pre></div>
 
-<MazPicker
-  v-model="rangeValues"
-  label="Select periode"
-  color="secondary"
-  id="range-picker-1"
-  :min-date="minMaxDates.min"
-  :max-date="minMaxDates.max"
-  double
-  auto-close
-/>
+<ComponentDemo>
+  <MazPicker
+    v-model="rangeValues"
+    label="Select periode"
+    color="secondary"
+    id="range-picker-1"
+    :min-date="minMaxDates.min"
+    :max-date="minMaxDates.max"
+    double
+    auto-close
+  />
+
+  <template #code>
 
 ```vue
 <template>
@@ -280,6 +321,9 @@ To enable the range mode, you should provide an object like this `{ start: undef
 </script>
 ```
 
+  </template>
+</ComponentDemo>
+
 ## Inline with custom shortcuts
 
 **Inputs**
@@ -290,16 +334,19 @@ To enable the range mode, you should provide an object like this `{ start: undef
 
 <code>max-date: {{ minMaxDates.max }}</code>
 
-<MazPicker
-  v-model="rangeValues"
-  color="secondary"
-  :min-date="minMaxDates.min"
-  id="range-picker-2"
-  :max-date="minMaxDates.max"
-  :shortcuts="shortcuts"
-  inline
-  double
-/>
+<ComponentDemo>
+  <MazPicker
+    v-model="rangeValues"
+    color="secondary"
+    :min-date="minMaxDates.min"
+    id="range-picker-2"
+    :max-date="minMaxDates.max"
+    :shortcuts="shortcuts"
+    inline
+    double
+  />
+
+  <template #code>
 
 ```vue
 <template>
@@ -350,6 +397,9 @@ To enable the range mode, you should provide an object like this `{ start: undef
   ]
 </script>
 ```
+
+  </template>
+</ComponentDemo>
 
 <script setup lang="ts">
   import { ref } from 'vue'
@@ -502,5 +552,27 @@ const shortcuts = [
 ```
 
 :::
+
+## Types
+
+### PickerValue
+
+```ts
+type PickerValue = string | undefined | { start: string; end: string }
+```
+
+### Position
+
+```ts
+export type Position =
+  | 'top'
+  | 'top right'
+  | 'top left'
+  | 'bottom'
+  | 'bottom right'
+  | 'bottom left'
+  | 'left'
+  | 'right'
+```
 
 <!--@include: ./../.vitepress/generated-docs/maz-picker.doc.md-->

@@ -393,7 +393,7 @@ onMounted(() => {
   }
 
   &__message {
-    @apply maz-m-0 maz-text-left maz-font-medium;
+    @apply maz-m-0 maz-text-start maz-font-medium;
   }
 
   & .--close {

@@ -97,7 +97,7 @@ function selectStep(index: number) {
   }
 
   &__header {
-    @apply maz-inline-flex maz-w-full maz-items-center maz-justify-between maz-gap-4 maz-p-4 maz-text-left maz-transition-colors maz-duration-300 maz-ease-in-out;
+    @apply maz-inline-flex maz-w-full maz-items-center maz-justify-between maz-gap-4 maz-p-4 maz-text-start maz-transition-colors maz-duration-300 maz-ease-in-out;
 
     .header-icon {
       @apply maz-transition-transform maz-duration-300 maz-ease-in-out;

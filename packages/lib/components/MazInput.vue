@@ -562,7 +562,7 @@ function emitInputEvent(event: Event) {
   }
 
   &-label {
-    @apply maz-pointer-events-none maz-absolute maz-left-3 maz-w-full maz-origin-top-left maz-items-center maz-overflow-hidden maz-truncate maz-whitespace-nowrap maz-text-left maz-leading-6;
+    @apply maz-pointer-events-none maz-absolute maz-left-3 maz-w-full maz-origin-top-left maz-items-center maz-overflow-hidden maz-truncate maz-whitespace-nowrap maz-text-start maz-leading-6;
 
     width: calc(100% + 1.3rem);
     transition: transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
@@ -621,6 +621,10 @@ function emitInputEvent(event: Event) {
   &.--has-label {
     .m-input-label {
       @apply maz-pr-3;
+
+      [dir='rtl'] & {
+        @apply maz-pr-0 maz-pl-3;
+      }
     }
 
     .m-input-input {
