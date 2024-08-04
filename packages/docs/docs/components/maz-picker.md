@@ -26,6 +26,7 @@ npm install dayjs
     v-model="newDateValue"
     id="date-picker"
     label="Select date"
+    :input-date-transformer="({ value }) => dayjs(value).format('YYYY/MM/DD')"
   />
 
   <template #code>
@@ -442,6 +443,32 @@ To enable the range mode, you should provide an object like this `{ start: undef
     },
   ]
 </script>
+
+## Using input-date-transformer
+
+You can use the `input-date-transformer` prop to transform the value displayed into the input.
+
+<ComponentDemo>
+  <MazPicker
+    v-model="newDateValue"
+    id="date-picker"
+    label="Select date"
+    :input-date-transformer="({ value }) => dayjs(value).format('YYYY/MM/DD')"
+  />
+
+  <template #code>
+
+```html
+<MazPicker
+  v-model="newDateValue"
+  label="Select date"
+  :input-date-transformer="({ value }) => dayjs(value).format('YYYY/MM/DD')"
+/>
+```
+
+  </template>
+
+</ComponentDemo>
 
 ### Property `shortcuts`
 
