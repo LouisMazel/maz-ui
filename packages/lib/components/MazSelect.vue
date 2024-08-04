@@ -337,11 +337,11 @@ function getFilteredOptionWithQuery(query: string) {
         || searchInValue(searchValue2, query)
         || searchInValue(searchValue3, query)
         || (typeof searchValue === 'string'
-        && useStringMatching(searchValue, query, 0.5).isMatching.value)
+        && useStringMatching(searchValue, query).isMatching.value)
         || (typeof searchValue2 === 'string'
-        && useStringMatching(searchValue2, query, 0.5).isMatching.value)
+        && useStringMatching(searchValue2, query).isMatching.value)
         || (typeof searchValue3 === 'string'
-        && useStringMatching(searchValue3, query, 0.5).isMatching.value)
+        && useStringMatching(searchValue3, query).isMatching.value)
       )
     })
     : optionsNormalized.value
