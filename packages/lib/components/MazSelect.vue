@@ -453,11 +453,11 @@ function mainInputKeyboardHandler(event: KeyboardEvent) {
   }
 }
 
-function keyboardHandler(event: KeyboardEvent) {
+function keyboardHandler(event: KeyboardEvent, shouldSelectWithSpace = true) {
   const code = event.code
 
   const isArrow = ['ArrowUp', 'ArrowDown'].includes(code)
-  const shouldSelect = ['Enter', 'Space'].includes(code)
+  const shouldSelect = (shouldSelectWithSpace ? ['Enter', 'Space'] : ['Enter']).includes(code)
   const shouldCloseList = code === 'Escape' && hasListOpened.value
 
   if (isArrow) {
@@ -666,7 +666,7 @@ function updateValue(inputOption: NormalizedOption, mustCloseList = true) {
           tabindex="-1"
           class="m-select-list__search-input maz-flex-none"
           :left-icon="SearchIcon"
-          @keydown="keyboardHandler"
+          @keydown="keyboardHandler($event, false)"
           @update:model-value="tmpModelValueIndex = 0"
         />
         <!--
