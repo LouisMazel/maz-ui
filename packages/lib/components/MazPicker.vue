@@ -51,9 +51,8 @@ const props = withDefaults(defineProps<Props>(), {
   open: false,
   label: undefined,
   placeholder: undefined,
-  inputDateStyle: () => ({
-    dateStyle: 'full',
-  }),
+  inputDateStyle: () => ({ dateStyle: 'full' }),
+  inputDateTransformer: undefined,
   locale: undefined,
   noHeader: false,
   disabled: false,
@@ -139,10 +138,6 @@ const emits = defineEmits(['update:model-value', 'close'])
 dayjs.extend(customParseFormat)
 dayjs.extend(isBetween)
 
-const defaultInputDateStyle = {
-  dateStyle: 'full',
-} satisfies Intl.DateTimeFormatOptions
-
 export interface Props {
   /** The style of the component */
   style?: HTMLAttributes['style']
@@ -160,6 +155,11 @@ export interface Props {
   placeholder?: string
   /** The style of the input date */
   inputDateStyle?: Intl.DateTimeFormatOptions
+  /**
+   * The transformer of the input date
+   * @type {(payload: { formattedDate?: string; value?: PickerValue; locale: string }) => string}
+   */
+  inputDateTransformer?: (payload: { formattedDate?: string, value?: PickerValue, locale: string }) => string
   /** The locale of the component */
   locale?: string
   /** If true, the header will be hidden */
@@ -212,8 +212,8 @@ export interface Props {
 
 const instance = getCurrentInstance()
 
-const internalLocale = ref<string>(props.locale || 'en-US')
-const currentLocale = computed<string>(() => props.locale ?? internalLocale.value)
+const internalLocale = ref(props.locale)
+const currentLocale = computed<string>(() => props.locale ?? internalLocale.value ?? 'en-US')
 
 const containerUniqueId = computed(() => `mazPickerContainer-${instance?.uid}`)
 
@@ -291,18 +291,19 @@ const isHour12 = computed(
 )
 
 const formatterOptions = computed<DateTimeFormatOptions>(() => ({
-  ...defaultInputDateStyle,
   ...props.inputDateStyle,
   timeStyle: props.inputDateStyle.timeStyle ?? hasTime.value ? 'short' : undefined,
-  hour12: props.inputDateStyle.hour12 ?? isHour12.value,
-}))
+  hour12: hasTime.value ? props.inputDateStyle.hour12 ?? isHour12.value : undefined,
+} satisfies DateTimeFormatOptions))
 
 const inputValue = computed(() => {
   if (!currentValue.value)
     return
 
+  let formattedDate: string | undefined
+
   if (props.onlyTime) {
-    return currentValue.value
+    formattedDate = currentValue.value
       ? date(dayjs(currentValue.value as string).format(), currentLocale.value, {
         timeStyle: formatterOptions.value.timeStyle,
         hour12: formatterOptions.value.hour12,
@@ -310,19 +311,21 @@ const inputValue = computed(() => {
       : undefined
   }
   else if (typeof currentValue.value === 'object') {
-    return getRangeFormattedDate({
+    formattedDate = getRangeFormattedDate({
       value: currentValue.value,
       locale: currentLocale.value,
       options: formatterOptions.value,
     })
   }
   else {
-    return getFormattedDate({
+    formattedDate = getFormattedDate({
       value: dayjs(currentValue.value).format(),
       locale: currentLocale.value,
       options: formatterOptions.value,
     })
   }
+
+  return props.inputDateTransformer && formattedDate ? props.inputDateTransformer({ formattedDate, value: props.modelValue, locale: currentLocale.value }) : formattedDate
 })
 
 const isFocused = ref(false)

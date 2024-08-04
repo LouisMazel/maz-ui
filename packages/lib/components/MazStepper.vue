@@ -282,12 +282,12 @@ function isLastStep(step: number): boolean {
 <style lang="postcss" scoped>
   .m-stepper {
   &__right {
-    @apply maz-truncate maz-text-right maz-text-sm maz-text-primary;
+    @apply maz-truncate maz-text-end maz-text-sm maz-text-primary;
   }
 
   &__header {
     @apply maz-flex maz-w-full maz-cursor-pointer maz-select-text maz-items-center
-        maz-justify-between maz-space-x-4 maz-rounded maz-px-4 maz-py-2 maz-text-left
+        maz-justify-between maz-space-x-4 maz-rounded maz-px-4 maz-py-2 maz-text-start
         maz-transition-colors maz-duration-200;
 
     &__content {

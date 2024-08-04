@@ -797,7 +797,7 @@ function updateValue(inputOption: NormalizedOption, mustCloseList = true) {
     @apply maz-absolute maz-z-default-backdrop maz-flex maz-flex-col maz-gap-1 maz-overflow-hidden maz-rounded maz-bg-color maz-p-2 maz-elevation dark:maz-border dark:maz-border-color-light;
 
     &-optgroup {
-      @apply maz-flex-none maz-p-0.5 maz-text-left maz-text-[0.875em] maz-text-muted;
+      @apply maz-flex-none maz-p-0.5 maz-text-start maz-text-[0.875em] maz-text-muted;
     }
 
     min-width: 3.5rem;
@@ -827,7 +827,7 @@ function updateValue(inputOption: NormalizedOption, mustCloseList = true) {
     }
 
     &-item {
-      @apply maz-flex maz-w-full maz-cursor-pointer maz-items-center maz-gap-3 maz-truncate maz-rounded maz-bg-transparent maz-px-3 maz-py-[0.5em] maz-text-left maz-text-[1em] maz-transition-colors maz-duration-300 maz-ease-in-out focus-within:maz-bg-color-light hover:maz-bg-color-light;
+      @apply maz-flex maz-w-full maz-cursor-pointer maz-items-center maz-gap-3 maz-truncate maz-rounded maz-bg-transparent maz-px-3 maz-py-[0.5em] maz-text-start maz-text-[1em] maz-transition-colors maz-duration-300 maz-ease-in-out focus-within:maz-bg-color-light hover:maz-bg-color-light;
 
       span {
         @apply maz-truncate;

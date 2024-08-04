@@ -127,6 +127,13 @@
       :error="!!agreeErrorMessage"
       :success="isValidAgree"
     />
+    <MazPicker
+      v-model="date"
+      :hint="dateError"
+      :error="!!dateError"
+      :success="isValidDate"
+      picker-position="top"
+    />
     <MazBtn
       type="submit"
       :loading="isSubmitting"
@@ -154,6 +161,7 @@ type Model = {
   radioButtons: string
   switch: boolean
   textarea: string
+  date: string
 }
 
 const defaultValues = ref<Partial<Model>>({
@@ -174,6 +182,7 @@ const schema = ref<FormSchema<Model>>({
   radioButtons: pipe(string('RadioButtons is required'), nonEmpty('RadioButtons is required')),
   switch: pipe(boolean('Switch is required'), literal(true, 'Switch is required')),
   textarea: pipe(string('Textarea is required'), nonEmpty('Textarea is required')),
+  date: pipe(string('Date is required'), nonEmpty('Date is required')),
 })
 
 setTimeout(() => {
@@ -203,6 +212,7 @@ const { value: radio, errorMessage: radioError, isValid: isValidRadio } = useFor
 const { errorMessage: radioButtonsError, isValid: isValidButtons } = useFormField('radioButtons', { ref: 'radioButtonsRef' })
 const { value: switchValue, errorMessage: switchError, isValid: isValidSwitch } = useFormField('switch', { ref: 'switchRef' })
 const { value: textarea, errorMessage: textareaError, isValid: isValidTextarea } = useFormField('textarea', { ref: 'textareaRef' })
+const { value: date, errorMessage: dateError, isValid: isValidDate } = useFormField('date', { ref: 'dateRef' })
 
 const onSubmit = handleSubmit(async (formData) => {
   // Form submission logic

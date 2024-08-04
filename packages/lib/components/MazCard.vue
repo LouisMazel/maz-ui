@@ -115,7 +115,7 @@ const haveSomeContent = computed(() => {
 const galleryWidthComputed = computed(() => (haveSomeContent.value ? props.galleryWidth : '100%'))
 
 const footerAlignClass = computed(() =>
-  props.footerAlign === 'right' ? 'maz-text-right' : 'maz-text-left',
+  props.footerAlign === 'right' ? 'maz-text-end' : 'maz-text-start',
 )
 </script>
 
