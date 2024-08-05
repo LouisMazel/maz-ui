@@ -8,11 +8,6 @@ on:
       - 'packages/docs/**'
       - 'packages/lib/**'
       - '.github/workflows/doc-deploy.yml'
-  pull_request:
-    branches:
-      - master
-    paths:
-      - '.github/workflows/doc-deploy.yml'
 
 jobs:
   doc-build-and-deploy:
