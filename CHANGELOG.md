@@ -1,5 +1,30 @@
 # Change Log
 
+## v3.45.0...v3.45.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.45.0...v3.45.1)
+
+### 🩹 Fixes
+
+- **docs:** Add missing env var in doc deploy CI ([c61268421](https://github.com/LouisMazel/maz-ui/commit/c61268421))
+- **docs:** Deploy doc with ftp ([fdef5c90e](https://github.com/LouisMazel/maz-ui/commit/fdef5c90e))
+
+### 📖 Documentation
+
+- **docs:** UseFormValidator - improve documentation ([58708077e](https://github.com/LouisMazel/maz-ui/commit/58708077e))
+
+### 🏡 Chore
+
+- **deps:** Upgrade dependencies ([fc968c71c](https://github.com/LouisMazel/maz-ui/commit/fc968c71c))
+
+### 🎨 Styles
+
+- **maz-ui:** MazCardSpotlight - correct inner container border radius ([baac41555](https://github.com/LouisMazel/maz-ui/commit/baac41555))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.44.3...v3.45.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.44.3...v3.45.0)
