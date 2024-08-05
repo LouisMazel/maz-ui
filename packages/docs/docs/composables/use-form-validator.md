@@ -405,7 +405,7 @@ With progressive mode, the field becomes valid after the first successful valida
   <form class="maz-flex maz-flex-col maz-gap-4" @submit="onSubmitProgressive">
     <MazInput
       v-model="nameProgressive"
-      ref="nameRef"
+      ref="nameProgressiveRef"
       label="Enter your name"
       :hint="nameMessageProgressive"
       :error="!!nameMessageProgressive"
@@ -414,7 +414,7 @@ With progressive mode, the field becomes valid after the first successful valida
     />
     <MazInput
       v-model="ageProgressive"
-      ref="ageRef"
+      ref="ageProgressiveRef"
       type="number"
       label="Enter your age"
       :hint="ageMessageProgressive"
@@ -424,7 +424,7 @@ With progressive mode, the field becomes valid after the first successful valida
     />
     <MazSelect
       v-model="countryProgressive"
-      ref="countryRef"
+      ref="countryProgressiveRef"
       :options="[{ label: 'France', value: 'FR' }, { label: 'United States', value: 'US' }]"
       label="Select your nationality"
       :hint="countryMessageProgressive"
@@ -434,7 +434,7 @@ With progressive mode, the field becomes valid after the first successful valida
     />
     <MazCheckbox
       v-model="agreeProgressive"
-      ref="agreeRef"
+      ref="agreeProgressiveRef"
       :hint="agreeMessageProgressive"
       :error="!!agreeMessageProgressive"
       :class="{ 'has-error-progressive': !!agreeMessageProgressive }"
@@ -686,7 +686,7 @@ To use the modes `eager` or `blur`, you must use this `useFormField` composable 
 - `isValidating`: `ComputedRef<boolean>` - Indicates if the field is currently being validated.
 - `mode`: `ComputedRef<StrictOptions['mode']>` - The validation mode for the field.
 - `value`: `ComputedRef<T>` - The value of the field.
-- `validationEvents`: `ComputedRef<{ onBlur?: () => void; }>` - Validation events to bind to the field. They are used to trigger field validation, to be used like this `v-bind="{ ...validationEvents }"` (components must emit `blur` event to trigger field validation) - Not necessary for `lazy`, `aggressive` validation modes or if you use the component reference when initializing the composable.
+- `validationEvents`: `ComputedRef<{ onBlur?: () => void; }>` - Validation events to bind to the field. They are used to trigger field validation, to be used like this `v-bind="validationEvents"` (components must emit `blur` event to trigger field validation) - Not necessary for `lazy`, `aggressive` validation modes or if you use the component reference when initializing the composable.
 
 ## Types
 
@@ -818,10 +818,10 @@ type FormFieldOptions<T> = {
     options: { mode: 'progressive', scrollToError: '.has-error-progressive', identifier: 'form-progressive' },
   })
 
-  const { value: nameProgressive, isValid: nameValidProgressive, hasError: nameErrorProgressive, errorMessage: nameMessageProgressive } = useFormField('name', { ref: 'nameRef', formIdentifier: 'form-progressive' })
-  const { value: ageProgressive, isValid: ageValidProgressive, hasError: ageErrorProgressive, errorMessage: ageMessageProgressive } = useFormField('age', { ref: 'ageRef', formIdentifier: 'form-progressive'  })
-  const { value: countryProgressive, isValid: countryValidProgressive, hasError: countryErrorProgressive, errorMessage: countryMessageProgressive, validationEventsProgressive } = useFormField('country', { ref: 'countryRef', formIdentifier: 'form-progressive' })
-  const { value: agreeProgressive, isValid: agreeValidProgressive, hasError: agreeErrorProgressive, errorMessage: agreeMessageProgressive } = useFormField('agree', { ref: 'agreeRef', formIdentifier: 'form-progressive'  })
+  const { value: nameProgressive, isValid: nameValidProgressive, hasError: nameErrorProgressive, errorMessage: nameMessageProgressive } = useFormField('name', { ref: 'nameProgressiveRef', formIdentifier: 'form-progressive' })
+  const { value: ageProgressive, isValid: ageValidProgressive, hasError: ageErrorProgressive, errorMessage: ageMessageProgressive } = useFormField('age', { ref: 'ageProgressiveRef', formIdentifier: 'form-progressive'  })
+  const { value: countryProgressive, isValid: countryValidProgressive, hasError: countryErrorProgressive, errorMessage: countryMessageProgressive, validationEventsProgressive } = useFormField('country', { ref: 'countryProgressiveRef', formIdentifier: 'form-progressive' })
+  const { value: agreeProgressive, isValid: agreeValidProgressive, hasError: agreeErrorProgressive, errorMessage: agreeMessageProgressive } = useFormField('agree', { ref: 'agreeProgressiveRef', formIdentifier: 'form-progressive'  })
 
   const onSubmitProgressive = handleSubmitProgressive(async (formData) => {
     // Form submission logic

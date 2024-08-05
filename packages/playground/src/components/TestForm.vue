@@ -184,8 +184,6 @@ const { isSubmitting, handleSubmit, model, fieldsStates } = useFormValidator<Sch
   options: { mode: 'blur', scrollToError: '.has-error-form' },
 })
 
-model.value
-
 const { value: name, errorMessage: nameErrorMessage } = useFormField('name', { ref: 'nameRef' })
 const { value: age, errorMessage: ageErrorMessage, isValid: isValidAge } = useFormField('age', { ref: 'ageRef' })
 const { value: agree, errorMessage: agreeErrorMessage, isValid: isValidAgree } = useFormField('agree', { ref: 'agreeRef' })
