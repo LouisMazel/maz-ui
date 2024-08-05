@@ -109,7 +109,9 @@ onUnmounted(() => {
   @apply maz-relative maz-inline-block maz-overflow-hidden maz-rounded maz-p-[var(--maz-border-width)];
 
   .inner {
-    @apply maz-relative maz-h-full maz-w-full maz-overflow-hidden maz-rounded;
+    @apply maz-relative maz-h-full maz-w-full maz-overflow-hidden;
+
+    border-radius: calc(var(--maz-border-radius) - var(--maz-border-width));
 
     &::before {
       content: '';
