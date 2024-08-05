@@ -275,7 +275,7 @@ In this example, we will use the `useFormField` composable to handle the validat
 With eager mode, each form field is validated on blur (if not empty) and then on every change. This mode is made for a better user experience, as the user will see the validation errors only after they have finished typing.
 
 <ComponentDemo>
-  <form class="maz-flex maz-flex-col maz-gap-4" @submit="onSubmit2">
+  <form class="maz-flex maz-flex-col maz-gap-4" @submit="onSubmitEager">
     <MazInput
       v-model="name"
       ref="nameRef"
@@ -311,7 +311,7 @@ With eager mode, each form field is validated on blur (if not empty) and then on
     >
       I agree to the terms and conditions
     </MazCheckbox>
-    <MazBtn type="submit" :loading="isSubmittingProgressive">
+    <MazBtn type="submit" :loading="isSubmittingEager">
       Submit
     </MazBtn>
   </form>
@@ -660,8 +660,9 @@ Before using `useFormField`, make sure you have initialized the form with `useFo
 `useFormField` is a composable for handling validation at the individual form field level.
 
 Useful for fine-grained control over form fields, `useFormField` provides computed properties for validation state, error messages, and more.
+Can be very useful when you are using fields in child components of form.
 
-To use the modes `eager` or `blur`, you must use this `useFormField` composable to add the necessary validation events.
+To use the modes `eager`, `progressive` or `blur`, you must use this `useFormField` composable to add the [necessary validation events](#introduction).
 
 ### Parameters ([FormFieldOptions](#formfieldoptions))
 
@@ -786,7 +787,7 @@ type FormFieldOptions<T> = {
     toast.success('Form submitted', { position: 'top' })
   })
 
-  const { isValid: isValid2, isSubmitting: isSubmitting2, handleSubmit: handleSubmit2 } = useFormValidator<Model>({
+  const { isValid: isValidEager, isSubmitting: isSubmittingEager, handleSubmit: handleSubmitEager } = useFormValidator<Model>({
     schema: {
       name: pipe(string('Name is required'), nonEmpty('Name is required'), minLength(3, 'Name must be at least 3 characters')),
       age: pipe(number('Age is required'), minValue(18, 'Age must be greater than 18'), maxValue(100, 'Age must be less than 100')),
@@ -801,7 +802,7 @@ type FormFieldOptions<T> = {
   const { value: country, hasError: hasErrorCountry, errorMessage: countryErrorMessage, validationEvents } = useFormField('country', { mode: 'lazy', formIdentifier: 'form-eager'  })
   const { value: agree, hasError: hasErrorAgree, errorMessage: agreeErrorMessage } = useFormField('agree', { ref: 'agreeRef', formIdentifier: 'form-eager'  })
 
-  const onSubmit2 = handleSubmit2(async (formData) => {
+  const onSubmitEager = handleSubmitEager(async (formData) => {
     // Form submission logic
     console.log(formData)
     await sleep(2000)
@@ -846,6 +847,6 @@ type FormFieldOptions<T> = {
     // Form submission logic
     console.log(formData)
     await sleep(2000)
-    toast.success('Form submitted', { position: 'top' })
+    toast.success(`Form submitted with ${JSON.stringify(formData)}`, { position: 'top' })
   })
 </script>

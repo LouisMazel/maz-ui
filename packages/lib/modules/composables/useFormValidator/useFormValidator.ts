@@ -131,10 +131,13 @@ export function useFormValidator<
     enableScrollOrSelector?: FormValidatorOptions['scrollToError'],
   ) {
     return async (event?: Event) => {
+      event?.preventDefault()
+
+      if (isSubmitting.value)
+        return
+
       isSubmitted.value = true
       isSubmitting.value = true
-
-      event?.preventDefault()
 
       await internalValidateForm(true)
 
