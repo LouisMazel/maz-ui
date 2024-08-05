@@ -379,7 +379,7 @@ export function validateForm<
         fieldState: fieldsStates[name],
         payload,
         schema,
-        setErrorIfInvalidAndNotEmpty: true,
+        setErrorIfInvalidAndNotEmpty: fieldsStates[name].mode === 'lazy',
       }),
     ),
   )

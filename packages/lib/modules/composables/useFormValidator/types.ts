@@ -18,13 +18,11 @@ export type ValidationIssues = InferIssue<Validation>[]
 
 export type ExtractModelKey<T> = Extract<keyof T, string>
 
-// make this type not all keys are required
 export type FormSchema<Model> = Record<ExtractModelKey<Model>, Validation>
 
 export type CustomInstance<Model extends BaseFormPayload> = ComponentInternalInstance & {
   formContexts?: Map<string | symbol | InjectionKey<FormContext<Model>>, FormContext<Model>>
 }
-// export type FormContextInjectionKey<Model extends BaseFormPayload = BaseFormPayload> = InjectionKey<FormContext<Model>>
 
 export interface FormValidatorOptions<
   Model extends BaseFormPayload = BaseFormPayload,
@@ -120,7 +118,7 @@ export interface FormFieldOptions<FieldType> {
    * Useful when you have multiple forms on the same component
    * Should be the same as the one used in `useFormValidator`
    */
-  formIdentifier?: string | symbol | InjectionKey<FormContext>
+  formIdentifier?: string | symbol
 }
 
 export type UseFormValidator<Model extends BaseFormPayload = BaseFormPayload> = typeof useFormValidator<Model>
