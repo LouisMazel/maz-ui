@@ -17,6 +17,23 @@ To use this composable, you have to install the [`Valibot`](https://valibot.dev/
 npm install valibot
 ```
 
+## Best Practices
+
+1. Use typed Valibot schemas to ensure type consistency.
+2. Choose the appropriate validation mode based on your form's needs.
+3. Use `useFormField` for fine-grained management of each form field.
+4. Take advantage of the validation events returned by `useFormField` to properly bind fields.
+5. Use the `handleSubmit` returned by `useFormValidator` to handle form submission securely.
+6. Leverage computed values like `isValid`, `hasError`, `errorMessage`, etc to control your user interface state.
+
+## Validation Modes
+
+- `lazy`: (default) Validates only on value changes
+- `aggressive`: Validates all fields immediately and on every change
+- `eager`: (recommended) Validates on initial blur (if not empty), then on every change **(requires `useFormField` to add validation events)**
+- `blur`: Validates only on focus loss **(requires `useFormField` to add validation events)**
+- `progressive`: Validates the field at each user interaction (value change or blur). The first validation state (isValid, hasError or errorMessage appearance) will only be available when the field entry is valid or at blur. Then the validation will be as for the `lazy` mode for the next interactions **(requires `useFormField` to add validation events)**
+
 ## Basic Usage (lazy mode)
 
 In this example, we will create a simple form with three fields: `name`, `age`, and `country`. The form will be validated in `lazy` mode, which means that the fields will be validated on every change.
@@ -28,6 +45,7 @@ In this example, we will create a simple form with three fields: `name`, `age`, 
       label="Enter your name"
       :hint="errorMessages.name"
       :error="!!errorMessages.name"
+      success=""
       :class="{ 'has-error': !!errorMessages.name }"
     />
     <MazInput
@@ -114,7 +132,7 @@ In this example, we will create a simple form with three fields: `name`, `age`, 
       country: string
     }
 
-    const { model, isValid, isSubmitting, handleSubmit, errorMessages } = useFormValidator<Model>({
+    const { model, isValid, isSubmitting, handleSubmit, errorMessages, fieldsStates } = useFormValidator<Model>({
       schema: {
         name: pipe(string('Name is required'), nonEmpty('Name is required')),
         age: pipe(number('Age is required'), minValue(18, 'Age must be greater than 18'), maxValue(100, 'Age must be less than 100')),
@@ -228,7 +246,7 @@ With eager mode, each form field is validated on blur (if not empty) and then on
 </template>
 
 <script setup lang="ts">
-  const { isValid, isSubmitting, handleSubmit } = useFormValidator<Model>({
+  const { isValid, isSubmitting, handleSubmit, fieldsStates } = useFormValidator<Model>({
     schema: {
       name: pipe(string('Name is required'), nonEmpty('Name is required')),
       age: pipe(number('Age is required'), minValue(18, 'Age must be greater than 18'), maxValue(100, 'Age must be less than 100')),
@@ -310,6 +328,36 @@ With eager mode, each form field is validated on blur (if not empty) and then on
   })
 </script>
 
+## Throlling and Debouncing
+
+You can use the `throttledFields` and `debouncedFields` options to throttle or debounce the validation of specific fields.
+
+<ComponentDemo>
+  <form class="maz-flex maz-flex-col maz-gap-4">
+    <!-- <MazInput
+      v-model="name"
+      ref="nameRef"
+      label="Enter your name"
+      :hint="nameErrorMessage"
+      :error="!!nameErrorMessage"
+      :class="{ 'has-error-form2': !!nameErrorMessage }"
+    />
+    <MazInput
+      v-model="age"
+      ref="ageRef"
+      type="number"
+      label="Enter your age"
+      :hint="ageErrorMessage"
+      :error="!!ageErrorMessage"
+      :class="{ 'has-error-form2': !!ageErrorMessage }"
+    />
+    </MazCheckbox> -->
+    <MazBtn type="submit" :loading="isSubmitting2">
+      Submit
+    </MazBtn>
+  </form>
+</ComponentDemo>
+
 ## useFormValidator
 
 `useFormValidator` is the main composable for initializing form validation.
@@ -342,7 +390,7 @@ It accepts a validation schema, default values, and configuration options to han
 - `errorsMessages`: `ComputedRef<Record<string, string>>` - The first validation error message for each field.
 - `model`: `Ref<Model>` - The form's data model.
 - `fieldsStates`: `FieldsStates` - The validation state of each field.
-- `validateForm`: `(setError?: boolean) => Promise<boolean>` - Function to validate the entire form.
+- `validateForm`: `() => Promise<boolean>` - Function to validate the entire form.
 - `scrollToError`: `(selector?: string, options?: { offset?: number }) => void` - Function to scroll to the first field with an error.
 - `handleSubmit`: `successCallback: (model: Model) => Promise<unknown> | unknown, scrollToError?: false | string` - Form submission handler, the callback is called if the form is valid and passes the complete payload as an argument. The second argument is optional and can be used to disable or provide a CSS selector for scrolling to errors (default '.has-field-error').
 
@@ -405,7 +453,7 @@ To use the modes `eager` or `blur`, you must use this `useFormField` composable 
 - `options`: `FormFieldOptions<T>` (optional) - Field-specific options.
   - `defaultValue`: `T` (optional) - The default value of the field.
   - `mode`: `'eager' | 'lazy' | 'aggressive' | 'blur' | 'progressive'` (optional) - The validation mode for the field - [see validation modes](#validation-modes)
-  - `ref`: `string` (optional) - Reference to the component to associate and trigger validation events (not necessary for `lazy`, `aggressive` validation modes)
+  - `ref`: `string` (optional) - Reference to the component to associate and trigger validation events on HTML Form elements (input, select and textarea) - not necessary for `lazy`, `aggressive` validation modes
   - `formIdentifier`: `string | symbol` (optional) - Identifier for the form (useful when you have multiple forms on the same component)
 
 ### Return
@@ -444,7 +492,7 @@ useFormValidator({
 })
 
 const { value, errorMessage, isValid, hasError } = useFormField('name', {
-  ref: 'inputRef', // Necessary for 'eager' and 'blur' validation modes to add validation events
+  ref: 'inputRef', // Necessary for 'eager', 'progressive' and 'blur' validation modes to add validation events
 })
 </script>
 
@@ -476,20 +524,3 @@ The configurable options for `useFormField` include:
 - `defaultValue`: The default value of the field
 - `mode`: [Validation mode](#validation-modes) ('eager', 'lazy', 'aggressive' or 'blur') - To override the form validation mode
 - `ref`: Reference to the component or HTML element to associate and trigger validation events
-
-## Validation Modes
-
-- `lazy`: (default) Validates only on value changes
-- `aggressive`: Validates all fields immediately and on every change
-- `eager`: (recommended) Validates on initial blur (if not empty), then on every change (requires `useFormField` to add validation events)
-- `blur`: Validates only on focus loss (requires `useFormField` to add validation events)
-- `progressive`: Validates the field at each user interaction (value change or blur). The first validation state (isValid, hasError or errorMessage appearance) will only be available when the field entry is valid or at blur. Then the validation will be as for the `lazy` mode for the next interactions (requires `useFormField` to add validation events)
-
-## Best Practices
-
-1. Use typed Valibot schemas to ensure type consistency.
-2. Choose the appropriate validation mode based on your form's needs.
-3. Use `useFormField` for fine-grained management of each form field.
-4. Take advantage of the validation events returned by `useFormField` to properly bind fields.
-5. Use the `handleSubmit` returned by `useFormValidator` to handle form submission securely.
-6. Leverage computed values like `isValid`, `hasError`, `errorMessage`, etc to control your user interface state.
