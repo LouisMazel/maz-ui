@@ -1,4 +1,4 @@
-import type { BaseIssue, BaseSchema, BaseSchemaAsync, InferIssue } from 'valibot'
+import type { BaseIssue, BaseSchema, BaseSchemaAsync, InferIssue, InferOutput, ObjectEntries, ObjectEntriesAsync, objectAsync } from 'valibot'
 import type {
   ComponentInternalInstance,
   InjectionKey,
@@ -6,6 +6,7 @@ import type {
   Ref,
 } from 'vue'
 
+import type { InferMaybeRef } from '../../helpers/InferMaybeRef'
 import type { getValidateFunction } from './utils'
 import type { useFormField, useFormValidator } from './index'
 
@@ -18,7 +19,7 @@ export type ValidationIssues = InferIssue<Validation>[]
 export type ExtractModelKey<T> = Extract<keyof T, string>
 
 // make this type not all keys are required
-export type FormSchema<Model extends BaseFormPayload> = Record<ExtractModelKey<Model>, Validation>
+export type FormSchema<Model> = Record<ExtractModelKey<Model>, Validation>
 
 export type CustomInstance<Model extends BaseFormPayload> = ComponentInternalInstance & {
   formContexts?: Map<string | symbol | InjectionKey<FormContext<Model>>, FormContext<Model>>
@@ -31,24 +32,25 @@ export interface FormValidatorOptions<
 > {
   /**
    * Validation mode
-   * - eager: validate on blur at first (only if the field is not empty) and then on input value change
    * - lazy: validate on input value change
    * - aggressive: validate all fields immediately on form creation and on input value change
    * - blur: validate on blur
-   * - input: validate on input value change
+   * - eager: validate on blur at first (only if the field is not empty) and then on input value change
+   * - progressive: field becomes valid after the first validation and then validate on input value change. If invalid validate on blur.
    * @default 'lazy'
    */
   mode?: 'eager' | 'lazy' | 'aggressive' | 'blur' | 'progressive'
   /**
-   * Fields that should be throttled
+   * Fields to validate with throttling
    * Useful for fields that require a network request to avoid spamming the server
-   * It's an object with the field name as key and the throttle time in milliseconds as value or true to use the default throttle time
+   * @example { name: 1000 } or { name: true } for the default throttle time (1000ms)
    */
   throttledFields?: Partial<Record<ModelKey, number | true>> | null
   /**
-   * Fields that should be debounced
-   * Useful to wait for the user to finish typing before validating the field
-   * It's an object with the field name as key and the debounce time in milliseconds as value or true to use the default debounce time
+   * Fields to validate with debouncing
+   * Useful to wait for the user to finish typing before validating
+   * Useful for fields that require a network request to avoid spamming the server
+   * @example { name: 300 } or { name: true } for the default debounce time (300ms)
    */
   debouncedFields?: Partial<Record<ModelKey, number | true>> | null
   /**
@@ -59,9 +61,9 @@ export interface FormValidatorOptions<
   /**
    * Identifier to use for the form
    * Useful to have multiple forms on the same page
-   * @default `Symbol('main')`
+   * @default `main-form-validator`
    */
-  identifier?: string | symbol | InjectionKey<FormContext>
+  identifier?: string | symbol
 }
 export type StrictOptions<Model extends BaseFormPayload = BaseFormPayload> = Required<FormValidatorOptions<Model>>
 
@@ -97,18 +99,28 @@ export type FieldsStates<Model extends BaseFormPayload = BaseFormPayload> = Reco
 
 export type BaseFormPayload = Record<string, any>
 
-export interface FormFieldOptions<FieldType = unknown> {
-  mode?: StrictOptions['mode']
-  /** Default value for the field */
+export interface FormFieldOptions<FieldType> {
+  /**
+   * Default value of the field
+   * @default undefined
+   */
   defaultValue?: FieldType
   /**
-   * Identifier to use for the form
-   * Useful to have multiple forms on the same page
-   * @default `Symbol('main')`
+   * Validation mode
+   * To override the form validation mode
+   */
+  mode?: StrictOptions['mode']
+  /**
+   * Reference to the component or HTML element to associate and trigger validation events
+   * Necessary for 'eager', 'progressive' and 'blur' validation modes
+   */
+  ref?: string
+  /**
+   * Identifier for the form
+   * Useful when you have multiple forms on the same component
+   * Should be the same as the one used in `useFormValidator`
    */
   formIdentifier?: string | symbol | InjectionKey<FormContext>
-  /** Ref to the component instance or the input element */
-  ref?: string
 }
 
 export type UseFormValidator<Model extends BaseFormPayload = BaseFormPayload> = typeof useFormValidator<Model>
@@ -122,3 +134,5 @@ export type UseFormField<
   FieldType extends Model[ExtractModelKey<Model>],
   Model extends BaseFormPayload = BaseFormPayload,
 > = typeof useFormField<FieldType, Model>
+
+export type InferFormValidatorSchema<T extends ObjectEntries | ObjectEntriesAsync | Ref<ObjectEntries> | Ref<ObjectEntriesAsync>> = InferOutput<ReturnType<typeof objectAsync<InferMaybeRef<T>>>>

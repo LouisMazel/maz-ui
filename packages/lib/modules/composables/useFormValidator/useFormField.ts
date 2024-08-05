@@ -67,6 +67,7 @@ export function useFormField<
       payload: payload.value,
       schema: internalSchema.value,
       setError: fieldMode === 'aggressive',
+      setErrorIfInvalidAndNotEmpty: true,
     })
   }
 

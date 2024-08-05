@@ -30,9 +30,9 @@
   --vp-custom-block-details-border: var(--maz-bg-color-light-lighter);
   --vp-custom-block-details-text: var(--maz-color-text-dark);
 
-  --vp-custom-block-tip-bg: var(--maz-color-success-400);
+  --vp-custom-block-tip-bg: var(--maz-color-success);
   --vp-custom-block-tip-border: var(--maz-color-success-600);
-  --vp-custom-block-tip-text: var(--maz-color-black);
+  --vp-custom-block-tip-text: var(--maz-color-success-contrast);
 }
 
 html.dark {
@@ -46,7 +46,7 @@ html.dark {
 
   --vp-custom-block-tip-bg: var(--maz-color-success-alpha);
   --vp-custom-block-tip-border: var(--maz-color-success-400);
-  --vp-custom-block-tip-text: var(--maz-color-white);
+  --vp-custom-block-tip-text: var(--maz-color-success-contrast);
 
   --vp-custom-block-details-bg: var(--maz-bg-color-dark-light);
   --vp-custom-block-details-border: var(--maz-bg-color-dark-lighter);

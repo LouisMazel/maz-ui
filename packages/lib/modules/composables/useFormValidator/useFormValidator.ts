@@ -92,12 +92,12 @@ export function useFormValidator<
 
   internalValidateForm()
 
-  function internalValidateForm(setError = opts.mode === 'aggressive') {
+  function internalValidateForm(showErrors = opts.mode === 'aggressive') {
     return validateForm<Model>({
       fieldsStates: fieldsStates.value,
       payload: payload.value,
       schema: internalSchema.value,
-      setError,
+      showErrors,
     })
   }
 

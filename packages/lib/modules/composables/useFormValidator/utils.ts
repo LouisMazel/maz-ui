@@ -295,12 +295,14 @@ export async function setFieldValidationState<
   schema,
   payload,
   setError = true,
+  setErrorIfInvalidAndNotEmpty = false,
 }: {
   name: ModelKey
   fieldState: FieldState<Model>
   schema: FormSchema<Model>
   payload: Model
   setError?: boolean
+  setErrorIfInvalidAndNotEmpty?: boolean
 }) {
   await nextTick()
 
@@ -320,7 +322,7 @@ export async function setFieldValidationState<
 
   fieldState.valid = isValid
 
-  if (setError) {
+  if (setError || (setErrorIfInvalidAndNotEmpty && !isValid && !isEmptyValue(payload[name]))) {
     fieldState.error = !isValid
   }
 
@@ -361,11 +363,11 @@ export function validateForm<
 >({
   fieldsStates,
   payload,
-  setError = true,
+  showErrors = true,
   schema,
 }: {
   fieldsStates: FieldsStates<Model>
-  setError?: boolean
+  showErrors?: boolean
   payload: Model
   schema: FormSchema<Model>
 }) {
@@ -373,10 +375,11 @@ export function validateForm<
     Object.keys(fieldsStates).map(name =>
       setFieldValidationState<Model>({
         name: name as ModelKey,
-        setError,
+        setError: showErrors,
         fieldState: fieldsStates[name],
         payload,
         schema,
+        setErrorIfInvalidAndNotEmpty: true,
       }),
     ),
   )

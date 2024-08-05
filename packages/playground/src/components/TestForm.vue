@@ -144,31 +144,10 @@
 </template>
 
 <script setup lang="ts">
-import type { FormSchema } from 'maz-ui'
+import type { InferFormValidatorSchema } from 'maz-ui'
 import { pipe, string, number as numberAction, nonEmpty, minValue, literal, boolean, maxValue, minLength, array } from 'valibot'
 
-type Model = {
-  name: string
-  age: number
-  agree: boolean
-  country: string
-  code: string
-  number: number
-  price: number
-  tags: string[]
-  phone: string
-  radio: string
-  radioButtons: string
-  switch: boolean
-  textarea: string
-  date: string
-}
-
-const defaultValues = ref<Partial<Model>>({
-  name: 'Mazel',
-})
-
-const schema = ref<FormSchema<Model>>({
+const schema = ref({
   name: pipe(string('Name is required'), nonEmpty('Name is required')),
   age: pipe(numberAction('Age is required'), minValue(18, 'Age must be greater than 18'), maxValue(100, 'Age must be less than 100')),
   agree: pipe(boolean('You must agree to the terms and conditions'), literal(true, 'You must agree to the terms and conditions')),
@@ -185,6 +164,12 @@ const schema = ref<FormSchema<Model>>({
   date: pipe(string('Date is required'), nonEmpty('Date is required')),
 })
 
+type Schema = InferFormValidatorSchema<typeof schema>
+
+const defaultValues = ref<Partial<Schema>>({
+  name: 'Mazel',
+})
+
 setTimeout(() => {
   defaultValues.value.age = 33
 }, 1000)
@@ -193,11 +178,13 @@ setTimeout(() => {
 //   schema.value.name = pipe(string('Name is required'), nonEmpty('Name is required'), minLength(3, 'Name must be at least 3 characters'))
 // }, 2000)
 
-const { isSubmitting, handleSubmit, model, fieldsStates } = useFormValidator<Model>({
+const { isSubmitting, handleSubmit, model, fieldsStates } = useFormValidator<Schema>({
   schema,
   defaultValues,
   options: { mode: 'blur', scrollToError: '.has-error-form' },
 })
+
+model.value
 
 const { value: name, errorMessage: nameErrorMessage } = useFormField('name', { ref: 'nameRef' })
 const { value: age, errorMessage: ageErrorMessage, isValid: isValidAge } = useFormField('age', { ref: 'ageRef' })
