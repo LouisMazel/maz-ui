@@ -8,6 +8,11 @@ on:
       - 'packages/docs/**'
       - 'packages/lib/**'
       - '.github/workflows/doc-deploy.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - '.github/workflows/doc-deploy.yml'
 
 jobs:
   doc-build-and-deploy:
@@ -25,9 +30,6 @@ jobs:
           node-version: '21'
           cache: 'pnpm'
 
-      - name: Get last repo version
-        run: git pull origin master
-
       - name: Install dependencies
         run: pnpm install
 
@@ -39,10 +41,11 @@ jobs:
           VITE_GITHUB_TOKEN: ${{ secrets.GH_TOKEN_STARS }}
         run: pnpm --filter docs build
 
-      - name: Deploy to maz-ui.com
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Deploy to Hostinger
+        uses: SamKirkland/FTP-Deploy-Action@4.0.0
         with:
-          personal_token: ${{ secrets.GH_ACCESS_TOKEN }}
-          external_repository: LouisMazel/maz-ui
-          publish_dir: packages/docs/docs/.vitepress/dist
-          publish_branch: docs
+          server: ${{ secrets.HOSTINGER_FTP_SERVER }}
+          username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
+          password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
+          local-dir: ./packages/docs/docs/.vitepress/dist/
+          server-dir: /public_html/

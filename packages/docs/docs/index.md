@@ -18,7 +18,7 @@ hero:
   <MazBtn href="/composables/use-theme-handler" color="theme" size="md" pastel rounded>Composables</MazBtn>
   <MazBtn href="/helpers/currency" color="theme" size="md" pastel rounded>Helpers</MazBtn>
   <MazBtn href="/directives/zoom-img" color="theme" size="md" pastel rounded>Directives</MazBtn>
-  <MazBtn rounded v-if="starCount" href="https://github.com/LouisMazel/maz-ui" target="blank" outline color="theme" size="sm">
+  <MazBtn rounded v-if="typeof starCount === 'number'" href="https://github.com/LouisMazel/maz-ui" target="blank" outline color="theme" size="sm">
     <template #left-icon>
       <GithubIcon class="maz-text-lg" />
     </template>
@@ -127,7 +127,7 @@ hero:
     }
   }
 
-  const starCount = ref<number>()
+  const starCount = ref<number>(0)
 
   getStarCount('LouisMazel', 'maz-ui').then((count) => {
     starCount.value = count
