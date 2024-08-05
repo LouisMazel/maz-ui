@@ -35,6 +35,8 @@ jobs:
         run: pnpm --filter cli cli generate-components-docs
 
       - name: Build docs
+        env:
+          VITE_GITHUB_TOKEN: ${{ secrets.GH_TOKEN_STARS }}
         run: pnpm --filter docs build
 
       - name: Deploy to maz-ui.com
