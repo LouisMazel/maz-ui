@@ -1,5 +1,21 @@
 # Change Log
 
+## v3.45.1...v3.45.2
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.45.1...v3.45.2)
+
+### 🩹 Fixes
+
+- **docs:** UseFormValidator - eager form reactivity ([f87aee488](https://github.com/LouisMazel/maz-ui/commit/f87aee488))
+
+### 🏡 Chore
+
+- **deps:** Fix peer dependencies supported version on valibot, unplugin-auto-import & unplugin-vue-components ([c94d9ae25](https://github.com/LouisMazel/maz-ui/commit/c94d9ae25))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.45.0...v3.45.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.45.0...v3.45.1)
