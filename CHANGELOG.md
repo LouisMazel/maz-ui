@@ -1,5 +1,22 @@
 # Change Log
 
+## v3.45.2...v3.45.3
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.45.2...v3.45.3)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazTabsBar - current tabs init when model value is defined ([3d84bea9f](https://github.com/LouisMazel/maz-ui/commit/3d84bea9f))
+
+### 🏡 Chore
+
+- **deps:** Upgrade dependencies ([797d58131](https://github.com/LouisMazel/maz-ui/commit/797d58131))
+- **deps:** Upgrade dependencies ([0b2490396](https://github.com/LouisMazel/maz-ui/commit/0b2490396))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.45.1...v3.45.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.45.1...v3.45.2)
