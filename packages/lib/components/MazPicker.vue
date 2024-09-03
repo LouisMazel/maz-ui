@@ -260,7 +260,7 @@ onBeforeMount(() => {
   }
   if (hasTime.value && !(props.format.includes('h') || props.format.includes('H'))) {
     console.error(
-        `[maz-ui](MazPicker) When you use the time picker, you must provided a format with time - Ex: "YYYY-MM-DD HH:mm"`,
+      `[maz-ui](MazPicker) When you use the time picker, you must provided a format with time - Ex: "YYYY-MM-DD HH:mm"`,
     )
   }
   if (props.format.includes('h') && !(props.format.includes('a') || props.format.includes('A'))) {
@@ -447,7 +447,7 @@ function addEventToTriggerCustomElement(selector: string) {
   }
   else {
     throw new Error(
-        `[maz-ui](MazPicker) impossible to find custom element with selector "${selector}"`,
+      `[maz-ui](MazPicker) impossible to find custom element with selector "${selector}"`,
     )
   }
 }

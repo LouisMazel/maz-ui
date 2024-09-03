@@ -30,14 +30,14 @@ const months = computed<
     return props.double
       ? {
           label: `${capitalize(
-              date(monthDate.format(), props.locale, {
-                month: 'short',
-              }),
-            )} - ${capitalize(
-              date(monthDate.add(1, 'month').format(), props.locale, {
-                month: 'short',
-              }),
-            )}`,
+            date(monthDate.format(), props.locale, {
+              month: 'short',
+            }),
+          )} - ${capitalize(
+            date(monthDate.add(1, 'month').format(), props.locale, {
+              month: 'short',
+            }),
+          )}`,
           date: monthDate,
         }
       : {

@@ -153,7 +153,7 @@ function getTabStyle(index: number, disabled: boolean): StyleValue {
 onBeforeMount(() => {
   if (currentTab.value < 1 || currentTab.value > normalizedItems.value.length) {
     console.error(
-        `[maz-ui](MazTabsBar) The model-value should be between 1 and ${normalizedItems.value.length}`,
+      `[maz-ui](MazTabsBar) The model-value should be between 1 and ${normalizedItems.value.length}`,
     )
   }
 })

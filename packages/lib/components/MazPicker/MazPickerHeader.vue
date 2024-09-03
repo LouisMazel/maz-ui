@@ -35,20 +35,20 @@ const transitionName = ref<'maz-slidevnext' | 'maz-slidevprev'>('maz-slidevnext'
 const year = computed(() => {
   if (props.modelValue && typeof props.modelValue === 'object') {
     return `${
-        props.modelValue.start
-          ? date(props.modelValue.start, props.locale, {
-              year: 'numeric',
-              timeZone: props.formatterOptions.timeZone,
-            })
-          : '...'
-      } - ${
-        props.modelValue.end
-          ? date(props.modelValue.end, props.locale, {
-              year: 'numeric',
-              timeZone: props.formatterOptions.timeZone,
-            })
-          : '...'
-      }`
+      props.modelValue.start
+        ? date(props.modelValue.start, props.locale, {
+          year: 'numeric',
+          timeZone: props.formatterOptions.timeZone,
+        })
+        : '...'
+    } - ${
+      props.modelValue.end
+        ? date(props.modelValue.end, props.locale, {
+          year: 'numeric',
+          timeZone: props.formatterOptions.timeZone,
+        })
+        : '...'
+    }`
   }
   else if (typeof props.modelValue === 'string') {
     return date(props.modelValue, props.locale, {
@@ -70,28 +70,28 @@ const dateString = computed(() => {
   ) {
     const dateOption = props.noShortcuts && !props.double ? 'short' : 'long'
     return `${
-        props.modelValue.start
-          ? capitalize(
-              date(props.modelValue.start, props.locale, {
-                weekday: dateOption,
-                month: dateOption,
-                day: 'numeric',
-                timeZone: props.formatterOptions.timeZone,
-              }),
-            )
-          : '...'
-      } - ${
-        props.modelValue.end
-          ? capitalize(
-              date(props.modelValue.end, props.locale, {
-                weekday: dateOption,
-                month: dateOption,
-                day: 'numeric',
-                timeZone: props.formatterOptions.timeZone,
-              }),
-            )
-          : '...'
-      }`
+      props.modelValue.start
+        ? capitalize(
+          date(props.modelValue.start, props.locale, {
+            weekday: dateOption,
+            month: dateOption,
+            day: 'numeric',
+            timeZone: props.formatterOptions.timeZone,
+          }),
+        )
+        : '...'
+    } - ${
+      props.modelValue.end
+        ? capitalize(
+          date(props.modelValue.end, props.locale, {
+            weekday: dateOption,
+            month: dateOption,
+            day: 'numeric',
+            timeZone: props.formatterOptions.timeZone,
+          }),
+        )
+        : '...'
+    }`
   }
   else if (typeof props.modelValue === 'string') {
     return capitalize(

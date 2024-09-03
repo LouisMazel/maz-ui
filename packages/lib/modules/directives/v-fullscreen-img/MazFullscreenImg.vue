@@ -139,7 +139,7 @@ async function useNextInstance(currentInstance: HTMLElement, nextInstance: HTMLE
 
 function nextPreviousImage(which: 'next' | 'previous'): void {
   const currentInstance: HTMLElement | null = document.querySelector(
-      `.m-fullscreen-img-instance.${props.openInstanceClass}`,
+    `.m-fullscreen-img-instance.${props.openInstanceClass}`,
   )
 
   if (currentInstance) {
