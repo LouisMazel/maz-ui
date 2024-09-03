@@ -187,7 +187,7 @@ watch(
 
       if (MazPickerTime.value) {
         const item = MazPickerTime.value.querySelector(
-            `.m-picker-time__column .m-btn`,
+          `.m-picker-time__column .m-btn`,
         ) as HTMLButtonElement
         const itemHeight = item?.offsetHeight
         const timePickerHeight = MazPickerTime.value?.offsetHeight
@@ -246,7 +246,7 @@ async function scrollColumn(identifier: ColumnIdentifier, hasSmoothEffect = true
       | undefined
 
     const selectedButton = MazPickerTime.value.querySelector(
-        `.m-picker-time__column__${identifier} .--is-selected`,
+      `.m-picker-time__column__${identifier} .--is-selected`,
     ) as HTMLButtonElement | undefined
 
     if (dividerHeight.value && column && selectedButton && MazPickerTime.value) {

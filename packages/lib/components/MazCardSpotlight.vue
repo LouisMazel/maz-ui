@@ -59,8 +59,8 @@ function animateBlob({ clientX, clientY }: { clientX: number, clientY: number })
       [
         {
           transform: `translate(${clientX - rec.left - rec.width / 2}px,${
-              clientY - rec.top - rec.height / 2
-            }px)`,
+            clientY - rec.top - rec.height / 2
+          }px)`,
         },
       ],
       {
