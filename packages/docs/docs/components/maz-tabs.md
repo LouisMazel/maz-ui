@@ -104,8 +104,8 @@ description: MazTabs is a standalone component to display content in tabs with a
 
   <br />
 
-  <MazBtn @click="currentTab = 1">
-    Set model-value to 1
+  <MazBtn @click="currentTab = currentTab === 1 ? 2 : 1">
+    Set model-value to {{currentTab === 1 ? 2 : 1}}
   </MazBtn>
 </template>
 
