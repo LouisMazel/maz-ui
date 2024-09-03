@@ -15,6 +15,27 @@ import type { MazTabsProvide } from './MazTabs.vue'
 import { injectStrict } from './../modules/helpers/inject-strict'
 import type { BadgeColor, BadgeRoundedSize } from './MazBadge.vue'
 
+export interface Props {
+  /** The items to display in the tabs bar */
+  items: MazTabsBarItem[]
+  /** Will add a query param to the url to keep the selected tab on page refresh */
+  persistent?: boolean
+  /**
+   * The name of the query param to add to the url
+   * @default tab
+   */
+  queryParam?: string
+  /** Will make the tabs bar full width */
+  block?: boolean
+  /** Will remove the elevation */
+  noElevation?: boolean
+  /**
+   * Will add a scroll on the tabs bar to show selected element
+   * @default true
+   */
+  autoScroll?: boolean
+}
+
 const props = withDefaults(defineProps<Props>(), {
   queryParam: 'tab',
   autoScroll: true,
@@ -44,27 +65,6 @@ function selectTab(tabIndex: number) {
   if (props.persistent) {
     addOrUpdateQueryParamTab(tabIndex + 1)
   }
-}
-
-export interface Props {
-  /** The items to display in the tabs bar */
-  items: MazTabsBarItem[]
-  /** Will add a query param to the url to keep the selected tab on page refresh */
-  persistent?: boolean
-  /**
-   * The name of the query param to add to the url
-   * @default tab
-   */
-  queryParam?: string
-  /** Will make the tabs bar full width */
-  block?: boolean
-  /** Will remove the elevation */
-  noElevation?: boolean
-  /**
-   * Will add a scroll on the tabs bar to show selected element
-   * @default true
-   */
-  autoScroll?: boolean
 }
 
 const tabsBarRef = ref<HTMLDivElement>()
@@ -159,7 +159,7 @@ onBeforeMount(() => {
 })
 
 onMounted(() => {
-  if (props.persistent) {
+  if (props.persistent || currentTab.value) {
     setIndicatorAndScroll()
   }
 })
