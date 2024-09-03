@@ -213,7 +213,7 @@ function toggleTimer(shouldPause: boolean) {
 }
 
 function stopTimer() {
-  stop()
+  timer.stop()
   if (queueTimer.value) {
     clearTimeout(queueTimer.value)
   }

@@ -4,12 +4,12 @@ import type { Mock } from 'vitest'
 
 describe('vClosable Directive', () => {
   let wrapper: ReturnType<typeof mount>
-  let mockHandler: Mock<any, any>
+  let mockHandler: Mock<any>
 
   beforeEach(() => {
     mockHandler = vi.fn()
     wrapper = mount({
-      template: '<div v-closable="handler"></div>',
+      template: '<div v-closable="handler"></div>q',
       directives: {
         closable: vClosable,
       },
