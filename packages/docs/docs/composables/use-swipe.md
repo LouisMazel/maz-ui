@@ -151,7 +151,7 @@ interface UseSwipeOptions {
    * The HTML element on which the swipe events will be handled. This can be either a direct reference to the element or a CSS selector.
    * @required
    */
-  element: HTMLElement | string
+  element: HTMLElement | string | Ref<HTMLElement>
   /** Callback executed when a left swipe is detected. */
   onLeft?: (event: TouchEvent) => void
   /** Callback executed when a right swipe is detected. */
