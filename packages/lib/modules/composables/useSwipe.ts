@@ -1,7 +1,8 @@
-import { ref } from 'vue'
+import type { MaybeRef } from 'vue'
+import { computed, ref, toValue } from 'vue'
 import { Swipe, type SwipeOptions } from '../helpers/swipe-handler'
 
-export function useSwipe(options: Omit<SwipeOptions, 'onValuesChanged'>) {
+export function useSwipe(options: Omit<SwipeOptions, 'onValuesChanged' | 'element'> & { element: MaybeRef<HTMLElement> | string | null | undefined }) {
   const xDiff = ref<number>()
   const yDiff = ref<number>()
   const xStart = ref<number>()
@@ -9,9 +10,11 @@ export function useSwipe(options: Omit<SwipeOptions, 'onValuesChanged'>) {
   const yStart = ref<number>()
   const yEnd = ref<number>()
 
+  const element = computed(() => toValue(options.element))
+
   const swiper = new Swipe({
     ...options,
-    element: options.element,
+    element: element.value,
     onValuesChanged(values) {
       xDiff.value = values.xDiff
       yDiff.value = values.yDiff
@@ -29,7 +32,15 @@ export function useSwipe(options: Omit<SwipeOptions, 'onValuesChanged'>) {
     xEnd,
     yStart,
     yEnd,
-    start: swiper.start,
+    start: () => {
+      if (element.value) {
+        swiper.options.element = element.value
+        swiper.start()
+      }
+      else {
+        swiper.start()
+      }
+    },
     stop: swiper.stop,
   }
 }

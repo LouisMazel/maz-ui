@@ -18,7 +18,7 @@ export interface SwipeOptions {
    * The element on which the swipe events will be handled.
    * @default null
    */
-  element: HTMLElement | string
+  element?: HTMLElement | string | null
   /**
    * Callback function to be executed when a left swipe is detected.
    * @default undefined
@@ -85,16 +85,16 @@ type DefaultSwipeOptions = Required<
 
 type SwipeOptionsWithDefaults = SwipeOptions & DefaultSwipeOptions
 
-export class Swipe {
-  private readonly defaultOptions: DefaultSwipeOptions = {
-    preventDefaultOnTouchMove: false,
-    preventDefaultOnMouseWheel: false,
-    threshold: 50,
-    immediate: false,
-    triggerOnEnd: false,
-  }
+const defaultOptions: DefaultSwipeOptions = {
+  preventDefaultOnTouchMove: false,
+  preventDefaultOnMouseWheel: false,
+  threshold: 50,
+  immediate: false,
+  triggerOnEnd: false,
+}
 
-  public readonly element: HTMLElement
+export class Swipe {
+  public element: HTMLElement
 
   public xStart: number | undefined
   public yStart: number | undefined
@@ -108,39 +108,33 @@ export class Swipe {
   private readonly onToucheEndCallback: (event: TouchEvent) => void
   private readonly onMouseWheelCallback: (event: Event) => void
 
-  private options: SwipeOptionsWithDefaults
+  public readonly start: (element?: typeof this.options.element) => void
+  public readonly stop: () => void
+
+  public options: SwipeOptionsWithDefaults
 
   constructor(readonly inputOption: SwipeOptions) {
-    this.options = { ...this.defaultOptions, ...inputOption }
-
-    if (!this.options.element) {
-      throw new Error(
-        '[SwipeHandler] Element should be provided. Its can be a string selector or an HTMLElement',
-      )
-    }
-
-    if (typeof this.options.element === 'string') {
-      const foundElement = document.querySelector(this.options.element)
-      if (!(foundElement instanceof HTMLElement)) {
-        throw new TypeError('[SwipeHandler] String selector for element is not found')
-      }
-      this.element = foundElement
-    }
-    else {
-      this.element = this.options.element
-    }
+    this.options = { ...defaultOptions, ...inputOption }
 
     this.onToucheStartCallback = this.toucheStartHandler.bind(this)
     this.onToucheMoveCallback = this.handleTouchMove.bind(this)
     this.onToucheEndCallback = this.handleTouchEnd.bind(this)
     this.onMouseWheelCallback = this.handleMouseWheel.bind(this)
+    this.start = this.startListening.bind(this)
+    this.stop = this.stopListening.bind(this)
+
+    if (this.options.element) {
+      this.setElement(this.options.element)
+    }
 
     if (this.options.immediate) {
       this.start()
     }
   }
 
-  start() {
+  private startListening() {
+    this.setElement(this.options.element)
+
     this.element.addEventListener('touchstart', this.onToucheStartCallback, { passive: true })
     this.element.addEventListener('touchmove', this.onToucheMoveCallback, { passive: true })
     if (this.options.triggerOnEnd) {
@@ -151,13 +145,34 @@ export class Swipe {
     }
   }
 
-  public stop() {
+  private stopListening() {
     this.element.removeEventListener('touchstart', this.onToucheStartCallback)
     this.element.removeEventListener('touchmove', this.onToucheMoveCallback)
     this.element.removeEventListener('touchend', this.onToucheEndCallback)
 
     if (this.options.preventDefaultOnMouseWheel) {
       this.element.removeEventListener('mousewheel', this.onMouseWheelCallback)
+    }
+  }
+
+  private setElement(element?: HTMLElement | string | null) {
+    if (!element) {
+      console.error(
+        '[maz-ui][SwipeHandler](setElement) Element should be provided. Its can be a string selector or an HTMLElement',
+      )
+      return
+    }
+
+    if (typeof element === 'string') {
+      const foundElement = document.querySelector(element)
+      if (!(foundElement instanceof HTMLElement)) {
+        console.error('[maz-ui][SwipeHandler](setElement) String selector for element is not found')
+        return
+      }
+      this.element = foundElement
+    }
+    else {
+      this.element = element
     }
   }
 

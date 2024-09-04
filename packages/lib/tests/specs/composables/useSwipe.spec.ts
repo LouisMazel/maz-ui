@@ -1,6 +1,7 @@
 import { useSwipe } from '@modules/composables/useSwipe'
 
 const swipeHandlerMock = {
+  options: {},
   start: vi.fn(),
   stop: vi.fn(),
   onValuesChanged: vi.fn(),
