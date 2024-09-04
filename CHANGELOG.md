@@ -1,5 +1,17 @@
 # Change Log
 
+## v3.45.3...v3.45.4
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.45.3...v3.45.4)
+
+### 💅 Refactors
+
+- **maz-ui:** UseSwipe - add documentation and SSR compatibility ([131dbb6fa](https://github.com/LouisMazel/maz-ui/commit/131dbb6fa))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.45.2...v3.45.3
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.45.2...v3.45.3)
