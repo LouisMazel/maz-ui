@@ -346,7 +346,7 @@ export function validateField<
   payload: Model
   schema: FormSchema<Model>
 }) {
-  const validationParams: Parameters<typeof setFieldValidationState<Model>>[0] = {
+  const validationParams: Parameters<typeof setFieldValidationState<Model>>[number] = {
     name,
     fieldState,
     payload,
