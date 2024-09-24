@@ -98,16 +98,6 @@ html.dark {
   color: var(--maz-color-black) !important;
 }
 
-.custom-block.info code {
-  background-color: var(--maz-color-info-600) !important;
-  color: var(--maz-color-info-contrast) !important;
-}
-
-.custom-block.tip code {
-  background-color: var(--maz-color-success-600) !important;
-  color: var(--maz-color-info-contrast) !important;
-}
-
 html.dark .custom-block.details a {
   color: var(--maz-color-white) !important;
 }

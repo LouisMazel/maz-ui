@@ -81,6 +81,15 @@ You can use your own template to replace the empty icon when no results are foun
 
 :::
 
+::: info
+You can adjust the search results by using `search-threshold` where 1 is a perfect match and 0 is a match with any character
+
+```html
+<MazSelect :search-threshold="0.75" :options="[...]" />
+```
+
+:::
+
 <MazSelect label="Select color" v-model="selectedValue" :options="colors" search />
 
 ```html

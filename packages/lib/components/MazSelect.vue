@@ -48,13 +48,25 @@ export interface Props<T extends ModelValueSimple, U extends MazSelectOption> {
   modelValue?: T | T[]
   /** The options of the select */
   options?: U[]
-  /** The key of the option value */
+  /**
+   * The key of the option value
+   * @default 'value'
+   */
   optionValueKey?: string
-  /** The key of the option label */
+  /**
+   * The key of the option label
+   * @default 'label'
+   */
   optionLabelKey?: string
-  /** The key of the option input value */
+  /**
+   * The key of the option input value
+   * @default 'label'
+   */
   optionInputValueKey?: string
-  /** The position of the list */
+  /**
+   * The position of the list
+   * @default 'bottom left'
+   */
   listPosition?: Position
   /** The height of the option list item */
   itemHeight?: number
@@ -62,14 +74,28 @@ export interface Props<T extends ModelValueSimple, U extends MazSelectOption> {
   maxListHeight?: number
   /** The max width of the option list */
   maxListWidth?: number
-  /** The size of the select */
+  /**
+   * The size of the select
+   * @default 'md'
+   */
   size?: Size
-  /** The color of the select */
+  /**
+   * The color of the select
+   * @default 'primary'
+   */
   color?: Color
   /** Display search input in option list */
   search?: boolean
-  /** The placeholder of the search input */
+  /**
+   * The placeholder of the search input
+   * @default 'Search in options'
+   */
   searchPlaceholder?: string
+  /**
+   * The threshold for the search input where 1 is a perfect match and 0 is a match with any character
+   * @default 0.75
+   */
+  searchThreshold?: number
   /** if true, the option list is opened by default */
   open?: boolean
   /** Enable the multiple selection */
@@ -103,9 +129,10 @@ const props = withDefaults(defineProps<Props<T, U>>(), {
   maxListWidth: undefined,
   size: 'md',
   color: 'primary',
-  searchPlaceholder: 'Search in options',
   options: undefined,
   excludeSelectors: undefined,
+  searchPlaceholder: 'Search in options',
+  searchThreshold: 0.75,
 })
 
 const emits = defineEmits<{
@@ -332,16 +359,18 @@ function getFilteredOptionWithQuery(query: string) {
       const searchValue3 = option[props.optionValueKey]
       const searchValue2 = option[props.optionInputValueKey]
 
+      const threshold = props.searchThreshold
+
       return (
         searchInValue(searchValue, query)
         || searchInValue(searchValue2, query)
         || searchInValue(searchValue3, query)
         || (typeof searchValue === 'string'
-        && useStringMatching(searchValue, query).isMatching.value)
+        && useStringMatching(searchValue, query, threshold).isMatching.value)
         || (typeof searchValue2 === 'string'
-        && useStringMatching(searchValue2, query).isMatching.value)
+        && useStringMatching(searchValue2, query, threshold).isMatching.value)
         || (typeof searchValue3 === 'string'
-        && useStringMatching(searchValue3, query).isMatching.value)
+        && useStringMatching(searchValue3, query, threshold).isMatching.value)
       )
     })
     : optionsNormalized.value
