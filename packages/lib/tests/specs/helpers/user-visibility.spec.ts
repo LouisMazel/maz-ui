@@ -1,10 +1,10 @@
 /* eslint-disable ts/ban-ts-comment */
 
 import {
+  sleep,
   UserVisibility,
   type UserVisibilyCallback,
   type UserVisibilyOptions,
-  sleep,
 } from '@modules/helpers'
 
 import { documentEmitVisibilityState } from '@tests/helpers/document-event'

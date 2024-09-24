@@ -1,6 +1,6 @@
-import { mount } from '@vue/test-utils'
-import { vClosable } from '@modules/directives/closable'
 import type { Mock } from 'vitest'
+import { vClosable } from '@modules/directives/closable'
+import { mount } from '@vue/test-utils'
 
 describe('vClosable Directive', () => {
   let wrapper: ReturnType<typeof mount>

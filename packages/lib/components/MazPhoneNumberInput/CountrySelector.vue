@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { type ComponentPublicInstance, type HTMLAttributes, computed, ref } from 'vue'
 import type {
   Color,
   CountryCode,
@@ -8,10 +7,11 @@ import type {
   Size,
   Translations,
 } from '../MazPhoneNumberInput.vue'
-import MazSelect from '../MazSelect.vue'
+import { type ComponentPublicInstance, computed, type HTMLAttributes, ref } from 'vue'
 import { countryCodeToUnicodeFlag } from '../../modules/helpers/country-code-to-unicode-flag'
-import { truthyFilter } from '../../modules/helpers/truthy-filter'
 import { injectStrict } from '../../modules/helpers/inject-strict'
+import { truthyFilter } from '../../modules/helpers/truthy-filter'
+import MazSelect from '../MazSelect.vue'
 import { useMazPhoneNumberInput } from './use-maz-phone-number-input'
 
 const props = withDefaults(

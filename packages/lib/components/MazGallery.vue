@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { type PropType, computed, defineAsyncComponent, onBeforeMount } from 'vue'
+import type { MazGalleryImage } from './types'
+import { computed, defineAsyncComponent, onBeforeMount, type PropType } from 'vue'
 import { vFullscreenImg } from './../modules/directives/v-fullscreen-img/fullscreen-img.directive'
 import { vLazyImg } from './../modules/directives/v-lazy-img/lazy-img.directive'
-import type { MazGalleryImage } from './types'
 
 export type { MazGalleryImage } from './types'
 

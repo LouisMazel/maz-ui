@@ -1,14 +1,14 @@
 import type { ComponentPublicInstance } from 'vue'
-import { computed, onMounted, onUnmounted } from 'vue'
-
-import { freezeValue } from '../../helpers/freeze-value'
-import { isEqual } from '../../helpers/is-equal'
-import { checkAvailability } from '../../helpers/check-availability'
 import type {
   BaseFormPayload,
   ExtractModelKey,
   FormFieldOptions,
 } from './types'
+
+import { computed, onMounted, onUnmounted } from 'vue'
+import { checkAvailability } from '../../helpers/check-availability'
+import { freezeValue } from '../../helpers/freeze-value'
+import { isEqual } from '../../helpers/is-equal'
 import {
   addEventToInteractiveElements,
   fieldHasValidation,

@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { type SVGAttributes, computed, useSlots } from 'vue'
+import type { Color } from './types'
+import { computed, type SVGAttributes, useSlots } from 'vue'
 import { useInstanceUniqId } from '../modules/composables/useInstanceUniqId'
 import MazAnimatedCounter from './MazAnimatedCounter.vue'
-import type { Color } from './types'
 
 const props = withDefaults(
   defineProps<{

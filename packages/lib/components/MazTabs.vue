@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { type Ref, computed, provide, ref } from 'vue'
+import { computed, provide, type Ref, ref } from 'vue'
 
 export interface Props {
   /** The the selected tab number */

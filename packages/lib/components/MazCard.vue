@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { type HTMLAttributes, computed, defineAsyncComponent, ref, useSlots, watch } from 'vue'
 import type { RouterLinkProps } from 'vue-router'
 import type { MazGalleryImage } from './types'
+import { computed, defineAsyncComponent, type HTMLAttributes, ref, useSlots, watch } from 'vue'
 
 export type { MazGalleryImage } from './types'
 

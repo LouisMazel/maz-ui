@@ -1,13 +1,13 @@
 <script lang="ts" setup>
-import { type PropType, computed } from 'vue'
-import dayjs, { type Dayjs } from 'dayjs'
 import type { Color } from '../types'
-import { date } from './../../modules/filters/date'
+import dayjs, { type Dayjs } from 'dayjs'
+import { computed, type PropType } from 'vue'
+import XIcon from './../../icons/x-mark.svg'
 import { capitalize } from './../../modules/filters/capitalize'
-import { isSameDate } from './utils'
+import { date } from './../../modules/filters/date'
 
 import MazBtn from './../MazBtn.vue'
-import XIcon from './../../icons/x-mark.svg'
+import { isSameDate } from './utils'
 
 const props = defineProps({
   calendarDate: { type: String, required: true },

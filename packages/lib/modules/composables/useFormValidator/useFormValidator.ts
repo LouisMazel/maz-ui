@@ -1,6 +1,4 @@
 import type { Ref } from 'vue'
-import { computed, provide, ref, watch } from 'vue'
-
 import type {
   BaseFormPayload,
   ExtractModelKey,
@@ -11,6 +9,9 @@ import type {
   StrictOptions,
   UseFormValidatorParams,
 } from './types'
+
+import { computed, provide, ref, watch } from 'vue'
+import { CONFIG } from './config'
 import {
   getErrorMessages,
   getFieldsErrors,
@@ -22,7 +23,6 @@ import {
   updateFieldsStates,
   validateForm,
 } from './utils'
-import { CONFIG } from './config'
 
 export function useFormValidator<
   Model extends BaseFormPayload,

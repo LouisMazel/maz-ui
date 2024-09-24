@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { defineAsyncComponent, onMounted, onUnmounted } from 'vue'
 import type { Color } from './types'
+import { defineAsyncComponent, onMounted, onUnmounted } from 'vue'
 
 withDefaults(defineProps<Props>(), { color: 'primary', size: '3em' })
 

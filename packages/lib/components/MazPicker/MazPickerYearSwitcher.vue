@@ -1,13 +1,13 @@
 <script lang="ts" setup>
-import { type PropType, computed, ref } from 'vue'
-import dayjs, { type Dayjs } from 'dayjs'
-import { date } from './../../modules/filters/date'
 import type { Color } from './../types'
-import { isSameDate } from './utils'
-
-import MazBtn from './../MazBtn.vue'
-import XIcon from './../../icons/x-mark.svg'
+import dayjs, { type Dayjs } from 'dayjs'
+import { computed, type PropType, ref } from 'vue'
 import ChevronLeftIcon from './../../icons/chevron-left.svg'
+import XIcon from './../../icons/x-mark.svg'
+
+import { date } from './../../modules/filters/date'
+import MazBtn from './../MazBtn.vue'
+import { isSameDate } from './utils'
 
 const props = defineProps({
   color: { type: String as PropType<Color>, required: true },

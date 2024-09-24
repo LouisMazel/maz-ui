@@ -1,5 +1,5 @@
-import { mount } from '@vue/test-utils'
 import MazRadio from '@components/MazRadio.vue'
+import { mount } from '@vue/test-utils'
 
 describe('mazRadio', () => {
   it('renders a radio input with a label', () => {

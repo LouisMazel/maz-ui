@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import { type HTMLAttributes, defineAsyncComponent, ref, watch } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
-import { useInstanceUniqId } from '../modules/composables/useInstanceUniqId'
-import { debounce } from '../modules/helpers/debounce'
-import { vClickOutside } from '../modules/directives/click-outside'
-import type { Position } from './types'
 import type { Color } from './MazBtn.vue'
+import type { Position } from './types'
+import { defineAsyncComponent, type HTMLAttributes, ref, watch } from 'vue'
+import { useInstanceUniqId } from '../modules/composables/useInstanceUniqId'
+import { vClickOutside } from '../modules/directives/click-outside'
+import { debounce } from '../modules/helpers/debounce'
 
 defineOptions({
   inheritAttrs: false,

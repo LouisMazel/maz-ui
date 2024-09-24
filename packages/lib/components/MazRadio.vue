@@ -4,9 +4,9 @@ export type { Color, Size } from './types'
 
 <script lang="ts" setup generic="T extends string | number | boolean">
 /* eslint-disable import/first */
-import { type HTMLAttributes, computed, ref } from 'vue'
-import { useInstanceUniqId } from '../modules/composables/useInstanceUniqId'
 import type { Color, Size } from './types'
+import { computed, type HTMLAttributes, ref } from 'vue'
+import { useInstanceUniqId } from '../modules/composables/useInstanceUniqId'
 
 export interface Props<T = string | number | boolean> {
   /** Style attribut of the component root element */

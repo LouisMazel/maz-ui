@@ -1,5 +1,5 @@
-import { mount } from '@vue/test-utils'
 import MazCarousel from '@components/MazCarousel.vue'
+import { mount } from '@vue/test-utils'
 
 describe('mazCarousel', () => {
   it('renders the component', () => {

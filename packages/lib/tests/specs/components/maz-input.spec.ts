@@ -1,5 +1,5 @@
-import { shallowMount } from '@vue/test-utils'
 import MazInput from '@components/MazInput.vue'
+import { shallowMount } from '@vue/test-utils'
 
 describe('components/MazInput.vue', () => {
   expect(MazInput).toBeTruthy()

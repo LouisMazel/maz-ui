@@ -1,5 +1,5 @@
-import { type VueWrapper, mount } from '@vue/test-utils'
 import MazPhoneNumberInput from '@components/MazPhoneNumberInput.vue'
+import { mount, type VueWrapper } from '@vue/test-utils'
 
 describe('components/MazPhoneNumberInput.vue', () => {
   expect(MazPhoneNumberInput).toBeTruthy()

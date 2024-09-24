@@ -1,8 +1,8 @@
 <script lang="ts" setup>
+import type { Color } from './types'
 import { computed, defineAsyncComponent, onUnmounted, ref, watch } from 'vue'
 import { isClient } from '../modules/helpers/is-client'
 import { isInStandaloneMode } from '../modules/helpers/is-standalone-mode'
-import type { Color } from './types'
 
 export type { Color } from './types'
 

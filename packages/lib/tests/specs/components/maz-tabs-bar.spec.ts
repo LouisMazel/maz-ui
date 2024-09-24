@@ -1,5 +1,5 @@
-import { mount } from '@vue/test-utils'
 import MazTabsBar from '@components/MazTabsBar.vue'
+import { mount } from '@vue/test-utils'
 import { ref } from 'vue'
 
 describe('mazTabsBar.vue', () => {

@@ -1,4 +1,4 @@
-import type { BaseIssue, BaseSchema, BaseSchemaAsync, InferIssue, InferOutput, ObjectEntries, ObjectEntriesAsync, objectAsync } from 'valibot'
+import type { BaseIssue, BaseSchema, BaseSchemaAsync, InferIssue, InferOutput, objectAsync, ObjectEntries, ObjectEntriesAsync } from 'valibot'
 import type {
   ComponentInternalInstance,
   InjectionKey,
@@ -7,8 +7,8 @@ import type {
 } from 'vue'
 
 import type { InferMaybeRef } from '../../helpers/InferMaybeRef'
-import type { getValidateFunction } from './utils'
 import type { useFormField, useFormValidator } from './index'
+import type { getValidateFunction } from './utils'
 
 export type ValidationSync = BaseSchema<unknown, unknown, BaseIssue<unknown>>
 export type ValidationAsync = ValidationSync | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>

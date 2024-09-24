@@ -1,5 +1,5 @@
-import tinycolor from 'tinycolor2'
 import type { MazUiConfig, OutputColorVariant, VariantColor } from '../../types'
+import tinycolor from 'tinycolor2'
 
 export function generateColorVariants({
   kind,

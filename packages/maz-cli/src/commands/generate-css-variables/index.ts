@@ -1,7 +1,7 @@
 import { exit } from 'node:process'
-import { Command } from 'commander'
 import { intro, log, outro } from '@clack/prompts'
 import { green, red } from 'colorette'
+import { Command } from 'commander'
 import { loadConfig } from '../../utils'
 import { generateCssFile } from './generate-css-file'
 

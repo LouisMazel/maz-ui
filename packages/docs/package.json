@@ -13,21 +13,21 @@
   "devDependencies": {
     "@types/postcss-import": "^14.0.3",
     "@types/postcss-url": "^10.0.4",
-    "@types/react": "^18.3.5",
-    "@vercel/og": "^0.6.2",
+    "@types/react": "^18.3.9",
+    "@vercel/og": "^0.6.3",
     "postcss-import": "^16.1.0",
     "postcss-url": "^10.1.3",
     "react": "^18.3.1",
-    "tailwindcss": "^3.4.10",
+    "tailwindcss": "^3.4.13",
     "vitepress": "1.3.4",
-    "vue": "^3.4.38"
+    "vue": "^3.5.8"
   },
   "dependencies": {
     "chart.js": "^4.4.4",
     "chartjs-plugin-datalabels": "^2.2.0",
     "dayjs": "^1.11.13",
     "dropzone": "^5.9.3",
-    "libphonenumber-js": "^1.11.7",
+    "libphonenumber-js": "^1.11.9",
     "maz-ui": "workspace:*",
     "vitepress-plugin-google-analytics": "^1.0.2"
   }

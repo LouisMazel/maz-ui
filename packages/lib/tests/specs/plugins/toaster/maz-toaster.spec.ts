@@ -1,5 +1,5 @@
-import { config, mount } from '@vue/test-utils'
 import MazToast from '@modules/plugins/toaster/MazToast.vue'
+import { config, mount } from '@vue/test-utils'
 
 config.global.stubs = {
   transition: false,

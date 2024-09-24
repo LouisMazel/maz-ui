@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import { type PropType, computed, defineAsyncComponent, ref } from 'vue'
 import type { Dayjs } from 'dayjs'
 import type { Color } from '../types'
 import type { PickerShortcut, PickerValue } from './types'
+import { computed, defineAsyncComponent, type PropType, ref } from 'vue'
 
-import MazPickerCalendarSwitcher from './MazPickerCalendarSwitcher.vue'
 import MazPickerCalendarMonth from './MazPickerCalendarMonth/MazPickerCalendarMonth.vue'
+import MazPickerCalendarSwitcher from './MazPickerCalendarSwitcher.vue'
 
 const props = defineProps({
   modelValue: {

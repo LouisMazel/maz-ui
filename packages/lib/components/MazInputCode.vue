@@ -4,8 +4,8 @@ export type { Color } from './types'
 
 <script lang="ts" setup generic="T extends string | number">
 /* eslint-disable import/first */
-import { type HTMLAttributes, computed, ref, watch } from 'vue'
 import type { Color } from './types'
+import { computed, type HTMLAttributes, ref, watch } from 'vue'
 
 export type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 export interface Props<T = string | number> {

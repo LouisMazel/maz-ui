@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import {
-  type HTMLAttributes,
-  type StyleValue,
   computed,
   defineAsyncComponent,
+  type HTMLAttributes,
+  type StyleValue,
   useAttrs,
 } from 'vue'
 import MazBackdrop, { type Props as MazBackdropProps } from './MazBackdrop.vue'

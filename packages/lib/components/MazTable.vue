@@ -1,32 +1,32 @@
 <script lang="ts" setup>
+import type { Color, Size } from './types'
 import {
-  type HTMLAttributes,
-  type Ref,
-  type StyleValue,
-  type ThHTMLAttributes,
   computed,
+  type HTMLAttributes,
   onBeforeMount,
   provide,
+  type Ref,
   ref,
+  type StyleValue,
+  type ThHTMLAttributes,
   toRefs,
   useSlots,
   watch,
 } from 'vue'
-import SearchIcon from './../icons/magnifying-glass.svg'
 import ArrowIcon from './../icons/arrow-up.svg'
-import ChevronIcon from './../icons/chevron-left.svg'
 import ChevronDoubleIcon from './../icons/chevron-double-left.svg'
-import MazSelect, { type MazSelectOption } from './MazSelect.vue'
+import ChevronIcon from './../icons/chevron-left.svg'
+import SearchIcon from './../icons/magnifying-glass.svg'
 import MazBtn from './MazBtn.vue'
-import MazTableRow from './MazTableRow.vue'
-import MazTableCell from './MazTableCell.vue'
-import MazTableTitle from './MazTableTitle.vue'
+import MazCheckbox from './MazCheckbox.vue'
 import MazInput from './MazInput.vue'
 import MazLoadingBar from './MazLoadingBar.vue'
-import MazCheckbox from './MazCheckbox.vue'
-import type { Color, Size } from './types'
+import MazSelect, { type MazSelectOption } from './MazSelect.vue'
+import MazTableCell from './MazTableCell.vue'
+import MazTableRow from './MazTableRow.vue'
+import MazTableTitle from './MazTableTitle.vue'
 
-export type { Size, Color }
+export type { Color, Size }
 
 export interface HeadersEnriched {
   label: string

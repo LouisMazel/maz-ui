@@ -1,8 +1,5 @@
 <script lang="ts" setup>
-import { type ComponentPublicInstance, computed, nextTick, onMounted, ref } from 'vue'
 import type { Examples } from 'libphonenumber-js'
-import MazInput from '../MazInput.vue'
-
 import type {
   Color,
   CountryCode,
@@ -10,7 +7,10 @@ import type {
   Size,
   Translations,
 } from '../MazPhoneNumberInput.vue'
+import { type ComponentPublicInstance, computed, nextTick, onMounted, ref } from 'vue'
+
 import { injectStrict } from '../../modules/helpers/inject-strict'
+import MazInput from '../MazInput.vue'
 import { useLibphonenumber } from './use-libphonenumber'
 
 const props = withDefaults(

@@ -1,6 +1,6 @@
 import MazAvatar from '@components/MazAvatar.vue'
-import MazLazyImg from '@components/MazLazyImg.vue'
 import MazIcon from '@components/MazIcon.vue'
+import MazLazyImg from '@components/MazLazyImg.vue'
 import { shallowMount } from '@vue/test-utils'
 
 describe('mazAvatar', () => {

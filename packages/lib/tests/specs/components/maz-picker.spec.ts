@@ -1,7 +1,7 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { mount } from '@vue/test-utils'
-import MazPicker from '@components/MazPicker.vue'
 import MazInput from '@components/MazInput.vue'
+import MazPicker from '@components/MazPicker.vue'
+import { mount } from '@vue/test-utils'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 describe('given MazPicker component', () => {
   let wrapper: ReturnType<typeof mount<typeof MazPicker>>

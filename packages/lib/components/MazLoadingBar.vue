@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
 import type { Color } from './types'
+import { computed } from 'vue'
 
 export type { Color }
 

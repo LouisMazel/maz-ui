@@ -147,9 +147,11 @@ declare module '@nuxt/schema' {
   interface NuxtConfig {
     mazUi?: MazUiNuxtOptions
   }
+
   interface NuxtOptions {
-    mazUi?: MazUiNuxtOptions
+    mazUi: MazUiNuxtOptions
   }
+
   interface PublicRuntimeConfig {
     mazUi: MazUiNuxtOptions
   }

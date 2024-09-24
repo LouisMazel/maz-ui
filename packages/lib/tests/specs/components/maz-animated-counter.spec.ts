@@ -1,5 +1,5 @@
-import { type VueWrapper, shallowMount } from '@vue/test-utils'
 import MazAnimatedCounter from '@components/MazAnimatedCounter.vue'
+import { shallowMount, type VueWrapper } from '@vue/test-utils'
 
 describe('mazAnimatedCounter', () => {
   let wrapper: VueWrapper<InstanceType<typeof MazAnimatedCounter>>

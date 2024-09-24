@@ -1,19 +1,19 @@
 <script lang="ts" setup>
+import type { BadgeColor, BadgeRoundedSize } from './MazBadge.vue'
+import type { MazTabsProvide } from './MazTabs.vue'
 import {
   type ComponentPublicInstance,
-  type StyleValue,
   computed,
   defineAsyncComponent,
   onBeforeMount,
   onMounted,
   ref,
+  type StyleValue,
   watch,
 } from 'vue'
-import { sleep } from '../modules'
-import type { MazTabsProvide } from './MazTabs.vue'
 
+import { sleep } from '../modules'
 import { injectStrict } from './../modules/helpers/inject-strict'
-import type { BadgeColor, BadgeRoundedSize } from './MazBadge.vue'
 
 export interface Props {
   /** The items to display in the tabs bar */

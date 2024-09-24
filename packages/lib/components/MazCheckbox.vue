@@ -4,9 +4,9 @@ export type { Color, Size } from './types'
 
 <script lang="ts" setup generic="T extends boolean | (string | number)[]">
 /* eslint-disable import/first */
-import { type HTMLAttributes, computed, ref } from 'vue'
-import { useInstanceUniqId } from '../modules/composables/useInstanceUniqId'
 import type { Color, Size } from './types'
+import { computed, type HTMLAttributes, ref } from 'vue'
+import { useInstanceUniqId } from '../modules/composables/useInstanceUniqId'
 import CheckIcon from './../icons/check.svg'
 
 export interface Props<T = boolean | (string | number)[]> {
@@ -172,8 +172,8 @@ function getNewValue(value: boolean | string | number) {
   if (
     typeof value === 'boolean'
     && (typeof props.modelValue === 'boolean'
-    || props.modelValue === undefined
-    || props.modelValue === null)
+      || props.modelValue === undefined
+      || props.modelValue === null)
   ) {
     return !props.modelValue
   }

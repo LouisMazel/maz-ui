@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { type HTMLAttributes, computed, ref } from 'vue'
-import { useInstanceUniqId } from '../modules/composables/useInstanceUniqId'
 import type { Color } from './types'
+import { computed, type HTMLAttributes, ref } from 'vue'
+import { useInstanceUniqId } from '../modules/composables/useInstanceUniqId'
 
 export type { Color }
 

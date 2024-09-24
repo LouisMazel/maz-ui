@@ -1,4 +1,4 @@
-import { type ComputedRef, type Ref, computed } from 'vue'
+import { computed, type ComputedRef, type Ref } from 'vue'
 
 export interface ReadingTimeOptions {
   /** Content to calculate the reading time */

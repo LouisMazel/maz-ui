@@ -1,5 +1,5 @@
-import { shallowMount } from '@vue/test-utils'
 import MazExpandAnimation from '@components/MazExpandAnimation.vue'
+import { shallowMount } from '@vue/test-utils'
 
 describe('mazExpandAnimation', () => {
   it('renders with default props', async () => {

@@ -1,9 +1,9 @@
 // @ts-check
 
 import antfu from '@antfu/eslint-config'
-import vueA11y from 'eslint-plugin-vuejs-accessibility'
-import tailwind from 'eslint-plugin-tailwindcss'
 import sonarjs from 'eslint-plugin-sonarjs'
+import tailwind from 'eslint-plugin-tailwindcss'
+import vueA11y from 'eslint-plugin-vuejs-accessibility'
 
 export default antfu(
   {

@@ -1,7 +1,7 @@
-import { ref } from 'vue'
+import { useLibphonenumber } from '@components/MazPhoneNumberInput/use-libphonenumber'
 import { AsYouType, type Examples, getExampleNumber, isSupportedCountry } from 'libphonenumber-js'
 
-import { useLibphonenumber } from '@components/MazPhoneNumberInput/use-libphonenumber'
+import { ref } from 'vue'
 
 const { isCountryAvailable, getPhoneNumberExample, getAsYouTypeFormat } = useLibphonenumber()
 

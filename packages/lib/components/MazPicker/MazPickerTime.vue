@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import { type PropType, computed, nextTick, ref, watch } from 'vue'
-import dayjs, { type Dayjs } from 'dayjs'
 import type { Color } from '../types'
-import { type DateTimeFormatOptions, findNearestNumberInList, scrollToTarget } from './utils'
 import type { PickerValue } from './types'
-
+import dayjs, { type Dayjs } from 'dayjs'
+import { computed, nextTick, type PropType, ref, watch } from 'vue'
 import MazBtn from './../MazBtn.vue'
+
+import { type DateTimeFormatOptions, findNearestNumberInList, scrollToTarget } from './utils'
 
 type ColumnIdentifier = 'hour' | 'minute' | 'ampm'
 

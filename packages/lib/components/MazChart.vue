@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { type PropType, defineAsyncComponent } from 'vue'
 import {
   ArcElement,
   BarElement,
@@ -8,15 +7,16 @@ import {
   type ChartData,
   type ChartType,
   Legend,
-  LineElement,
   LinearScale,
+  LineElement,
   PointElement,
   Title,
   Tooltip,
   type UpdateMode,
 } from 'chart.js'
+import { defineAsyncComponent, type PropType } from 'vue'
 
-export type { ChartType, ChartData, UpdateMode }
+export type { ChartData, ChartType, UpdateMode }
 
 const props = defineProps({
   /**

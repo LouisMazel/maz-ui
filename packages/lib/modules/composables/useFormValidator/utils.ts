@@ -1,23 +1,23 @@
 import type { InjectionKey } from 'vue'
-import { getCurrentInstance, inject, nextTick } from 'vue'
-
-import { debounceId } from '../../helpers/debounce-id'
-import { freezeValue } from '../../helpers/freeze-value'
-import { isEqual } from '../../helpers/is-equal'
-import { throttleId } from '../../helpers/throttle-id'
-import { CONFIG } from './config'
 import type {
   BaseFormPayload,
   CustomInstance,
   ExtractModelKey,
-  FieldState,
   FieldsStates,
+  FieldState,
   FormContext,
   FormFieldOptions,
   FormSchema,
   StrictOptions,
   ValidationIssues,
 } from './index'
+
+import { getCurrentInstance, inject, nextTick } from 'vue'
+import { debounceId } from '../../helpers/debounce-id'
+import { freezeValue } from '../../helpers/freeze-value'
+import { isEqual } from '../../helpers/is-equal'
+import { throttleId } from '../../helpers/throttle-id'
+import { CONFIG } from './config'
 
 export function fieldHasValidation<Model extends BaseFormPayload>(field: string, schema: FormSchema<Model>) {
   return Object.keys(schema).includes(field)

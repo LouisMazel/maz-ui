@@ -1,5 +1,5 @@
-import { shallowMount } from '@vue/test-utils'
 import { vClickOutside } from '@modules/directives/click-outside'
+import { shallowMount } from '@vue/test-utils'
 
 describe('vClickOutside directive', () => {
   it('does not call the callback function when clicked inside the element', async () => {

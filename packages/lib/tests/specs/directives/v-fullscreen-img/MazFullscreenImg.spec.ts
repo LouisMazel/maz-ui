@@ -1,8 +1,8 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
-import { nextTick } from 'vue'
 import MazFullscreenImg from '@modules/directives/v-fullscreen-img/MazFullscreenImg.vue'
+import { mount } from '@vue/test-utils'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { nextTick } from 'vue'
 
 describe('given MazFullscreenImg component', () => {
   let wrapper: VueWrapper<any>

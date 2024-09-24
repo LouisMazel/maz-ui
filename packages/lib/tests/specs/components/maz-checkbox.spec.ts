@@ -1,5 +1,5 @@
-import { mount } from '@vue/test-utils'
 import MazCheckbox from '@components/MazCheckbox.vue'
+import { mount } from '@vue/test-utils'
 
 describe('components/MazCheckbox.vue', () => {
   expect(MazCheckbox).toBeTruthy()

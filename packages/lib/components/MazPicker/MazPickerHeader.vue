@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import { type PropType, computed, ref, watch } from 'vue'
-
-import dayjs from 'dayjs'
 import type { Color } from '../types'
-import { date } from './../../modules/filters/date'
-import { capitalize } from './../../modules/filters/capitalize'
+
 import type { PickerValue } from './types'
 import type { DateTimeFormatOptions } from './utils'
+import dayjs from 'dayjs'
+import { computed, type PropType, ref, watch } from 'vue'
+import { capitalize } from './../../modules/filters/capitalize'
+import { date } from './../../modules/filters/date'
 
 const props = defineProps({
   modelValue: {

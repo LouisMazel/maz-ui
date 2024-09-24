@@ -1,8 +1,15 @@
 <script lang="ts" setup>
+import type { PickerShortcut, PickerValue } from './MazPicker/types'
+
+import type { Color, Position } from './types'
+import dayjs from 'dayjs'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
+
+import isBetween from 'dayjs/plugin/isBetween'
 import {
-  type HTMLAttributes,
   computed,
   getCurrentInstance,
+  type HTMLAttributes,
   nextTick,
   onBeforeMount,
   onMounted,
@@ -11,18 +18,16 @@ import {
   watch,
 } from 'vue'
 
-import dayjs from 'dayjs'
-import customParseFormat from 'dayjs/plugin/customParseFormat'
-import isBetween from 'dayjs/plugin/isBetween'
-
 import { vClickOutside } from '../modules/directives/click-outside'
-import type { Color, Position } from './types'
+
+import ChevronDownIcon from './../icons/chevron-down.svg'
 
 import { date } from './../modules/filters/date'
-
+import MazInput from './MazInput.vue'
+import MazPickerContainer from './MazPicker/MazPickerContainer.vue'
 import {
-  type DateTimeFormatOptions,
   checkValueWithMinMaxDates,
+  type DateTimeFormatOptions,
   fetchLocale,
   getBrowserLocale,
   getFormattedDate,
@@ -33,12 +38,7 @@ import {
   isValueDisabledWeekly,
 } from './MazPicker/utils'
 
-import type { PickerShortcut, PickerValue } from './MazPicker/types'
-import MazPickerContainer from './MazPicker/MazPickerContainer.vue'
-import ChevronDownIcon from './../icons/chevron-down.svg'
-import MazInput from './MazInput.vue'
-
-export type { PickerValue, PickerShortcut, Color, Position }
+export type { Color, PickerShortcut, PickerValue, Position }
 
 defineOptions({
   inheritAttrs: false,
@@ -544,7 +544,7 @@ watch(
       if (
         !oldValue
         || (typeof oldValue === 'object'
-        && (oldValue.start !== value.start || oldValue.end !== value.end))
+          && (oldValue.start !== value.start || oldValue.end !== value.end))
       ) {
         emitValue(value)
         checkMinMaxValues(value)
@@ -610,7 +610,7 @@ watch(
     else if (
       typeof value === 'string'
       && (isValueDisabledWeekly({ value, disabledWeekly })
-      || isValueDisabledDate({ value, disabledDates }))
+        || isValueDisabledDate({ value, disabledDates }))
     ) {
       currentValue.value = undefined
     }

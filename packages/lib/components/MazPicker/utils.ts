@@ -1,10 +1,10 @@
+import type { IpWhoResponse } from '../MazPhoneNumberInput/types'
+import type { PartialRangeValue } from './types'
+
 import dayjs, { type ConfigType, type OpUnitType } from 'dayjs'
 import weekday from 'dayjs/plugin/weekday'
-
-import type { IpWhoResponse } from '../MazPhoneNumberInput/types'
-import { date } from './../../modules/filters/date'
 import { capitalize } from './../../modules/filters/capitalize'
-import type { PartialRangeValue } from './types'
+import { date } from './../../modules/filters/date'
 
 dayjs.extend(weekday)
 

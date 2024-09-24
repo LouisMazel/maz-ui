@@ -1,6 +1,6 @@
-import { ref } from 'vue'
-
 import { freezeValue } from '@modules/helpers/freeze-value'
+
+import { ref } from 'vue'
 
 describe('given freezeValue function', () => {
   describe('when freezing a primitive value', () => {

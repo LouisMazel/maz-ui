@@ -1,5 +1,5 @@
-import { mount } from '@vue/test-utils'
 import MazReadingProgressBar from '@components/MazReadingProgressBar.vue'
+import { mount } from '@vue/test-utils'
 
 describe('mazReadingProgressBar.vue', () => {
   it('renders with default props', async () => {

@@ -2,10 +2,10 @@ import { createRequire } from 'node:module'
 import chalk from 'chalk'
 
 import { Command } from 'commander'
-import { clearAndPrintBanner } from './utils/print-banner'
 import { createFilesCommand } from './commands/create-files'
 import { generateComponentsDocumentationCommand } from './commands/generate-components-docs'
 import { logger } from './utils/logger'
+import { clearAndPrintBanner } from './utils/print-banner'
 
 const name = 'cli'
 const program = new Command()

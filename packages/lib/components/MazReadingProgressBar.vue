@@ -1,14 +1,14 @@
 <script lang="ts" setup>
+import type { Color } from './types'
 import {
-  type HTMLAttributes,
   computed,
+  type HTMLAttributes,
   nextTick,
   onBeforeUnmount,
   onMounted,
   ref,
   watch,
 } from 'vue'
-import type { Color } from './types'
 import { throttle } from './../modules/helpers/throttle'
 
 export type { Color }

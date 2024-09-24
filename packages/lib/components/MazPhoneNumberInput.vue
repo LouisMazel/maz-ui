@@ -1,28 +1,28 @@
 <script lang="ts" setup>
 import type { CountryCode } from 'libphonenumber-js'
+import type { Results, Translations } from './MazPhoneNumberInput/types'
+import type { Color, Position, Size } from './types'
 import {
   type ComponentPublicInstance,
-  type HTMLAttributes,
-  type Ref,
   computed,
+  type HTMLAttributes,
   nextTick,
   onMounted,
   provide,
+  type Ref,
   ref,
   watch,
 } from 'vue'
 import { useInstanceUniqId } from '../modules/composables/useInstanceUniqId'
-import type { Results, Translations } from './MazPhoneNumberInput/types'
 import CountrySelector from './MazPhoneNumberInput/CountrySelector.vue'
-import PhoneInput from './MazPhoneNumberInput/PhoneInput.vue'
-import type { Color, Position, Size } from './types'
-
 import { defaultLocales } from './MazPhoneNumberInput/default-locales'
 
-import { useMazPhoneNumberInput } from './MazPhoneNumberInput/use-maz-phone-number-input'
-import { useLibphonenumber } from './MazPhoneNumberInput/use-libphonenumber'
+import PhoneInput from './MazPhoneNumberInput/PhoneInput.vue'
 
-export type { Color, Size, Position, CountryCode, Results, Results as Result, Translations }
+import { useLibphonenumber } from './MazPhoneNumberInput/use-libphonenumber'
+import { useMazPhoneNumberInput } from './MazPhoneNumberInput/use-maz-phone-number-input'
+
+export type { Color, CountryCode, Position, Results, Results as Result, Size, Translations }
 
 defineOptions({
   name: 'MazPhoneNumberInput',

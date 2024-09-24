@@ -1,5 +1,5 @@
-import { mount } from '@vue/test-utils'
 import MazLoadingBar from '@components/MazLoadingBar.vue'
+import { mount } from '@vue/test-utils'
 
 describe('mazLoadingBar', () => {
   it('renders default color correctly', () => {

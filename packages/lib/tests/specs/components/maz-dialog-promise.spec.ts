@@ -1,5 +1,5 @@
-import { type VueWrapper, shallowMount } from '@vue/test-utils'
 import MazDialogPromise, { useMazDialogPromise } from '@components/MazDialogPromise.vue'
+import { shallowMount, type VueWrapper } from '@vue/test-utils'
 
 describe('mazDialogPromise', () => {
   let wrapper: VueWrapper<InstanceType<typeof MazDialogPromise>>

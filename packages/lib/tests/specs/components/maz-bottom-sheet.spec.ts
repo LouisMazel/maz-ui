@@ -1,5 +1,5 @@
-import { mount } from '@vue/test-utils'
 import MazBottomSheet from '@components/MazBottomSheet.vue'
+import { mount } from '@vue/test-utils'
 
 describe('mazBottomSheet', () => {
   it('renders the component', () => {

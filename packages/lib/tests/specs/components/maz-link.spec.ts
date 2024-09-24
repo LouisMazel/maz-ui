@@ -1,5 +1,5 @@
-import { type VueWrapper, shallowMount } from '@vue/test-utils'
 import MazLink from '@components/MazLink.vue'
+import { shallowMount, type VueWrapper } from '@vue/test-utils'
 
 describe('mazLink', () => {
   let wrapper: VueWrapper<InstanceType<typeof MazLink>>

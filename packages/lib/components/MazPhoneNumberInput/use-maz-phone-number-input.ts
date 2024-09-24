@@ -1,5 +1,5 @@
-import { type CountryCode, getCountries, getCountryCallingCode } from 'libphonenumber-js'
 import type { Country, IpWhoResponse } from './types'
+import { type CountryCode, getCountries, getCountryCallingCode } from 'libphonenumber-js'
 
 function getBrowserLocale() {
   if (typeof window === 'undefined') {

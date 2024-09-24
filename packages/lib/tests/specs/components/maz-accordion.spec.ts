@@ -1,6 +1,6 @@
-import { mount } from '@vue/test-utils'
 import MazAccordion from '@components/MazAccordion.vue'
 import MazCardSpotlight from '@components/MazCardSpotlight.vue'
+import { mount } from '@vue/test-utils'
 
 describe('mazAccordion', () => {
   it('renders with default props', async () => {
