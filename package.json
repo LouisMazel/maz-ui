@@ -28,7 +28,7 @@
     "commitizen": "^4.3.0",
     "cross-env": "^7.0.3",
     "eslint": "9.11.1",
-    "eslint-plugin-sonarjs": "^1.0.4",
+    "eslint-plugin-sonarjs": "^2.0.2",
     "eslint-plugin-tailwindcss": "^3.17.4",
     "husky": "^9.1.6",
     "lerna": "^8.1.8",
