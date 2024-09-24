@@ -1,13 +1,13 @@
 <script setup lang="ts">
+import type { Component } from 'nuxt/schema'
+import type { RouteLocationRaw } from 'vue-router'
+import type { Color } from './types'
 import {
   type ComponentPublicInstance,
+  defineAsyncComponent,
   type FunctionalComponent,
   type SVGAttributes,
-  defineAsyncComponent,
 } from 'vue'
-import type { RouteLocationRaw } from 'vue-router'
-import type { Component } from 'nuxt/schema'
-import type { Color } from './types'
 
 withDefaults(defineProps<Props>(), {
   id: undefined,

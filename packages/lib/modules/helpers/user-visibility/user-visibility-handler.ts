@@ -1,5 +1,5 @@
-import { isClient } from '../is-client'
 import type { UserVisibilyCallback, UserVisibilyOptions, UserVisibilyStrictOptions } from './types'
+import { isClient } from '../is-client'
 
 export class UserVisibility {
   private eventHandlerFunction: () => void

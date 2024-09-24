@@ -1,14 +1,14 @@
 import { resolve } from 'node:path'
 import { exit } from 'node:process'
 import { fileURLToPath } from 'node:url'
+import { cancel, confirm, isCancel, multiselect, spinner, text } from '@clack/prompts'
 import chalk from 'chalk'
 import { Command } from 'commander'
-import { cancel, confirm, isCancel, multiselect, spinner, text } from '@clack/prompts'
 import { buildEntry } from '../../../../lib/build/entry-builder'
-import { createDocumentFile } from './create-documentation-file'
-import { createLibraryTestFile } from './create-library-test-file'
-import { createLibraryComponentFile } from './create-library-component-file'
 import { pascalCaseToKebabCase } from './../../utils/pascal-case-to-kebab-case'
+import { createDocumentFile } from './create-documentation-file'
+import { createLibraryComponentFile } from './create-library-component-file'
+import { createLibraryTestFile } from './create-library-test-file'
 
 const _dirname = fileURLToPath(new URL('.', import.meta.url))
 

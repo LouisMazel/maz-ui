@@ -1,5 +1,5 @@
-import { mount } from '@vue/test-utils'
 import MazInputTags from '@components/MazInputTags.vue'
+import { mount } from '@vue/test-utils'
 
 describe('mazInputTags', () => {
   it('renders with default props', async () => {

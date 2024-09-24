@@ -1,9 +1,9 @@
-import { flushPromises, mount } from '@vue/test-utils'
-import { minLength, minValue, number, pipe, string } from 'valibot'
-import { defineComponent, nextTick, ref } from 'vue'
-
 import type { StrictOptions, UseFormField, UseFormValidator } from '@modules/composables/useFormValidator/index'
 import { useFormField, useFormValidator } from '@modules/composables/useFormValidator/index'
+import { flushPromises, mount } from '@vue/test-utils'
+
+import { minLength, minValue, number, pipe, string } from 'valibot'
+import { defineComponent, nextTick, ref } from 'vue'
 
 interface Model {
   name: string

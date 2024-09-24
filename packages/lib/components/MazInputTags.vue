@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import { type HTMLAttributes, computed, ref } from 'vue'
-
-import { truthyFilter } from '../modules/helpers/truthy-filter'
-import MazInput from './MazInput.vue'
-import MazBtn from './MazBtn.vue'
-
 import type { Color, Size } from './types'
+
+import { computed, type HTMLAttributes, ref } from 'vue'
+import { truthyFilter } from '../modules/helpers/truthy-filter'
 import CloseIcon from './../icons/trash.svg'
+
+import MazBtn from './MazBtn.vue'
+import MazInput from './MazInput.vue'
 
 export type { Color, Size }
 

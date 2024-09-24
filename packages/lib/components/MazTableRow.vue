@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { injectStrict } from './../modules/helpers/inject-strict'
 import type { MazTableProvide } from './MazTable.vue'
+import { injectStrict } from './../modules/helpers/inject-strict'
 
 export interface Props {
   /** Override hoverable of table props */

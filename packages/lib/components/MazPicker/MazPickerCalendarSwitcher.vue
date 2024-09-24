@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
 import dayjs from 'dayjs'
-import { capitalize } from './../../modules/filters/capitalize'
-import { date } from './../../modules/filters/date'
-
-import MazBtn from './../MazBtn.vue'
+import { computed } from 'vue'
 import ChevronLeftIcon from './../../icons/chevron-left.svg'
+import { capitalize } from './../../modules/filters/capitalize'
+
+import { date } from './../../modules/filters/date'
+import MazBtn from './../MazBtn.vue'
 
 const props = defineProps({
   calendarDate: { type: String, default: undefined },

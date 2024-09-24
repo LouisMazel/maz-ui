@@ -1,13 +1,14 @@
+import type { FieldsStates, FieldState, FormSchema, StrictOptions, Validation, ValidationIssues } from '@modules/composables/useFormValidator/types'
 import {
   addEventToInteractiveElements,
   canExecuteValidation,
   fieldHasValidation,
   findInteractiveElements,
   getErrorMessages,
-  getFieldState,
-  getFieldValidationResult,
   getFieldsErrors,
   getFieldsStates,
+  getFieldState,
+  getFieldValidationResult,
   getValidateFunction,
   getValidationEvents,
   handleFieldBlur,
@@ -17,11 +18,10 @@ import {
   removeEventFromInteractiveElements,
   scrollToError,
   setFieldValidationState,
-  updateFieldState,
   updateFieldsStates,
+  updateFieldState,
   validateField,
 } from '@modules/composables/useFormValidator/utils'
-import type { FieldState, FieldsStates, FormSchema, StrictOptions, Validation, ValidationIssues } from '@modules/composables/useFormValidator/types'
 import { minLength, pipe, string } from 'valibot'
 
 describe('given fieldHasValidation function', () => {

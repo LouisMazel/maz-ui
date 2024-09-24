@@ -4,8 +4,8 @@ export type { Color } from './types'
 
 <script lang="ts" setup generic="T extends string | number | boolean">
 /* eslint-disable import/first */
-import { type StyleValue, defineAsyncComponent, ref } from 'vue'
 import type { Color } from './types'
+import { defineAsyncComponent, ref, type StyleValue } from 'vue'
 
 export type ButtonsRadioOption<T = string | number | boolean> = {
   /** The label of the option */

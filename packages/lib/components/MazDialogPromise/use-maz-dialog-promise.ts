@@ -1,5 +1,5 @@
-import { ref } from 'vue'
 import type { Color, Size } from './../types'
+import { ref } from 'vue'
 
 export interface DialogState {
   id: string

@@ -1,5 +1,5 @@
-import { resolve } from 'node:path'
 import { existsSync } from 'node:fs'
+import { resolve } from 'node:path'
 
 export function directoryExists(filePath: string) {
   return existsSync(filePath)

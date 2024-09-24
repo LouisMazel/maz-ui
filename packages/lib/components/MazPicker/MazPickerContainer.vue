@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import { type PropType, computed } from 'vue'
 import type { Color } from '../types'
 import type { PickerShortcut, PickerValue } from './types'
 import type { DateTimeFormatOptions } from './utils'
+import { computed, type PropType } from 'vue'
 
-import MazPickerTime from './MazPickerTime.vue'
-import MazPickerHeader from './MazPickerHeader.vue'
 import MazPickerCalendar from './MazPickerCalendar.vue'
+import MazPickerHeader from './MazPickerHeader.vue'
+import MazPickerTime from './MazPickerTime.vue'
 
 const props = defineProps({
   modelValue: {

@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import { type HTMLAttributes, computed } from 'vue'
-import { debounce } from '../modules/helpers/debounce'
 import type { Size } from './types'
+import { computed, type HTMLAttributes } from 'vue'
+import { debounce } from '../modules/helpers/debounce'
 
+import MinusIcon from './../icons/minus.svg'
+import PlusIcon from './../icons/plus.svg'
 import MazBtn from './MazBtn.vue'
 import MazInput from './MazInput.vue'
-import PlusIcon from './../icons/plus.svg'
-import MinusIcon from './../icons/minus.svg'
 
 export type { Size }
 

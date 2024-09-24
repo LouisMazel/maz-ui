@@ -1,5 +1,5 @@
-import { mount } from '@vue/test-utils'
 import MazPagination from '@components/MazPagination.vue'
+import { mount } from '@vue/test-utils'
 
 describe('mazPagination.vue', () => {
   // Test rendering with default props

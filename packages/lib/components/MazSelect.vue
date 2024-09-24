@@ -8,21 +8,21 @@ export type { Color, ModelValueSimple, Position, Size } from './types'
   setup
   generic="T extends ModelValueSimple, U extends MazSelectOption, M = boolean"
 >
+import type { Color, ModelValueSimple, Position, Size } from './types'
 import {
   type ComponentPublicInstance,
-  type HTMLAttributes,
   computed,
   defineAsyncComponent,
+  type HTMLAttributes,
   nextTick,
   onBeforeMount,
   ref,
 } from 'vue'
 import { useInstanceUniqId } from '../modules/composables/useInstanceUniqId'
-import { debounceCallback } from '../modules/helpers/debounce-callback'
 import { useStringMatching } from '../modules/composables/useStringMatching'
 import { vClosable } from '../modules/directives'
+import { debounceCallback } from '../modules/helpers/debounce-callback'
 import { normalizeString } from '../modules/helpers/normalize-string'
-import type { Color, ModelValueSimple, Position, Size } from './types'
 import MazInput from './MazInput.vue'
 
 export type NormalizedOption = Record<string, ModelValueSimple>
@@ -290,7 +290,7 @@ const selectedOptions = computed(
           && !isNullOrUndefined(option[props.optionValueKey])
           : false
         : props.modelValue === option[props.optionValueKey]
-        && !isNullOrUndefined(option[props.optionValueKey])
+          && !isNullOrUndefined(option[props.optionValueKey])
     }) ?? [],
 )
 
@@ -366,11 +366,11 @@ function getFilteredOptionWithQuery(query: string) {
         || searchInValue(searchValue2, query)
         || searchInValue(searchValue3, query)
         || (typeof searchValue === 'string'
-        && useStringMatching(searchValue, query, threshold).isMatching.value)
-        || (typeof searchValue2 === 'string'
-        && useStringMatching(searchValue2, query, threshold).isMatching.value)
-        || (typeof searchValue3 === 'string'
-        && useStringMatching(searchValue3, query, threshold).isMatching.value)
+          && useStringMatching(searchValue, query, threshold).isMatching.value)
+          || (typeof searchValue2 === 'string'
+            && useStringMatching(searchValue2, query, threshold).isMatching.value)
+            || (typeof searchValue3 === 'string'
+              && useStringMatching(searchValue3, query, threshold).isMatching.value)
       )
     })
     : optionsNormalized.value
@@ -384,8 +384,8 @@ async function closeList(event?: Event) {
   if (
     event
     && (('relatedTarget' in event
-    && mazSelectElement.value?.contains(event.relatedTarget as Node))
-    || event.type === 'keydown')
+      && mazSelectElement.value?.contains(event.relatedTarget as Node))
+      || event.type === 'keydown')
   ) {
     return event.preventDefault()
   }

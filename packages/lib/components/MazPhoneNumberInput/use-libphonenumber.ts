@@ -1,3 +1,4 @@
+import type { Results } from './types'
 import {
   AsYouType,
   type CountryCode,
@@ -8,7 +9,6 @@ import {
   isSupportedCountry,
   parsePhoneNumberFromString,
 } from 'libphonenumber-js'
-import type { Results } from './types'
 
 function isCountryAvailable(locale: string) {
   try {

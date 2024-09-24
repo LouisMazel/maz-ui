@@ -3,10 +3,10 @@
 import { resolve } from 'node:path'
 
 import { fileURLToPath } from 'node:url'
-import { defineConfig } from 'vitest/config'
 import Vue from '@vitejs/plugin-vue'
-
 import svgLoader from 'vite-svg-loader'
+
+import { defineConfig } from 'vitest/config'
 
 const _dirname = fileURLToPath(new URL('.', import.meta.url))
 

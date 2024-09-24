@@ -1,4 +1,4 @@
-import { type DirectiveBinding, type ObjectDirective, type Plugin, nextTick } from 'vue'
+import { type DirectiveBinding, nextTick, type ObjectDirective, type Plugin } from 'vue'
 
 const UNIQUE_ID = '__maz-click-outside__'
 

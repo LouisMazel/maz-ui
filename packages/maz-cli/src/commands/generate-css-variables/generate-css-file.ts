@@ -1,12 +1,12 @@
-import { resolve } from 'node:path'
-import { writeFile } from 'node:fs/promises'
-import tinycolor from 'tinycolor2'
 import type {
   MazUiConfig,
   OutputColorVariant,
   VariantColor,
   VariantColors,
 } from '../../types'
+import { writeFile } from 'node:fs/promises'
+import { resolve } from 'node:path'
+import tinycolor from 'tinycolor2'
 import { generateColorVariants } from './colors'
 import { defaultMazUiConfig } from './default-maz-ui.config'
 
@@ -43,6 +43,15 @@ function getVariablesInRoot(variables: string[]) {
   css += '}\n'
 
   return css
+}
+
+function getFontFamily(config: MazUiConfig) {
+  const fontFamily = config.theme.fontFamily
+    ? `${config.theme.fontFamily}, ${defaultMazUiConfig.theme.fontFamily}`
+    : defaultMazUiConfig.theme.fontFamily
+  return typeof config.theme.fontFamily === 'string'
+    ? fontFamily
+    : undefined
 }
 
 function getNormalCSSVariables(config: MazUiConfig) {
@@ -114,12 +123,7 @@ function getNormalCSSVariables(config: MazUiConfig) {
     { key: 'border-radius', value: config.theme.borderRadius },
     {
       key: 'font-family',
-      value:
-        typeof config.theme.fontFamily === 'string'
-          ? config.theme.fontFamily
-            ? `${config.theme.fontFamily}, ${defaultMazUiConfig.theme.fontFamily}`
-            : defaultMazUiConfig.theme.fontFamily
-          : undefined,
+      value: getFontFamily(config),
     },
   ]
 

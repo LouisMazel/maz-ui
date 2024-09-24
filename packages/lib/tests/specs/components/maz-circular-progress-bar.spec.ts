@@ -1,5 +1,5 @@
-import { type VueWrapper, mount } from '@vue/test-utils'
 import MazCircularProgressBar from '@components/MazCircularProgressBar.vue'
+import { mount, type VueWrapper } from '@vue/test-utils'
 
 describe('mazCircularProgressBar', () => {
   let wrapper: VueWrapper<InstanceType<typeof MazCircularProgressBar>>

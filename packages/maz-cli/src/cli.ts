@@ -2,9 +2,9 @@ import { createRequire } from 'node:module'
 import { bgRed, blueBright, bold, white } from 'colorette'
 import { Command } from 'commander'
 
-import { clearAndPrintBanner, logger } from './utils'
-
 import { commands } from './commands'
+
+import { clearAndPrintBanner, logger } from './utils'
 
 const nodeRequire = createRequire(import.meta.url)
 
@@ -44,5 +44,5 @@ for (const command of commands) {
 
 program.parse()
 
-export * from './types'
 export * from './define-config'
+export * from './types'

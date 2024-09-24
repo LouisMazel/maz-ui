@@ -1,5 +1,5 @@
-import { mount } from '@vue/test-utils'
 import MazGallery from '@components/MazGallery.vue'
+import { mount } from '@vue/test-utils'
 
 describe('mazGallery', () => {
   it('renders images when images prop is provided', () => {

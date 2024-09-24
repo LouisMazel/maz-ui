@@ -1,5 +1,4 @@
 /** @type {import('vue-docgen-cli').Templates['component']} */
-
 export function component(renderedUsage, document_, _config, _fileName, requiresMd, _subs) {
   const { description, tags, functional } = document_
   const { deprecated, author, since, version, see, link } = tags || {}
@@ -7,9 +6,11 @@ export function component(renderedUsage, document_, _config, _fileName, requires
   const hasEvents = !!renderedUsage.events
   const hasSlots = !!renderedUsage.slots
 
+  const andChar = hasSlots || hasEvents ? ' & ' : ''
+
   return `
-  ${!hasEvents && !hasSlots ? '## Component informations' : '## Props'}${hasEvents && hasSlots ? ', ' : hasSlots || hasEvents ? ' & ' : ''
-    } ${hasEvents ? 'Event' : ''} ${hasEvents && hasSlots ? '& ' : ''}${hasSlots ? 'Slots' : ''}
+  ${!hasEvents && !hasSlots ? '## Component informations' : '## Props'}${hasEvents && hasSlots ? ', ' : andChar
+} ${hasEvents ? 'Event' : ''} ${hasEvents && hasSlots ? '& ' : ''}${hasSlots ? 'Slots' : ''}
 
   ${deprecated ? `> **Deprecated** ${deprecated[0].title}\n` : ''}
   ${description ? `> ${description}` : ''}
@@ -28,6 +29,6 @@ export function component(renderedUsage, document_, _config, _fileName, requires
   ${requiresMd.length > 0
       ? `---\n${requiresMd.map(component => component.content).join('\n---\n')}`
       : ''
-    }
+  }
   `
 }

@@ -1,5 +1,5 @@
-import { shallowMount } from '@vue/test-utils'
 import MazSlider from '@components/MazSlider.vue'
+import { shallowMount } from '@vue/test-utils'
 
 describe('components/MazSlider.vue', () => {
   expect(MazSlider).toBeTruthy()

@@ -1,5 +1,5 @@
-import { shallowMount } from '@vue/test-utils'
 import { injectStrict } from '@modules/helpers'
+import { shallowMount } from '@vue/test-utils'
 
 describe('injectStrict', () => {
   it('should return the fallback value if provided and the key is not found in the provide context', () => {

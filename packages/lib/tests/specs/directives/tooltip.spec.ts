@@ -1,5 +1,5 @@
-import { mount } from '@vue/test-utils'
 import { vTooltip } from '@modules/directives/tooltip'
+import { mount } from '@vue/test-utils'
 import { ref } from 'vue'
 
 describe('vTooltip directive', () => {

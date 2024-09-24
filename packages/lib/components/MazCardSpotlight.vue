@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { type HTMLAttributes, type StyleValue, computed, onMounted, onUnmounted, ref } from 'vue'
 import type { Color } from './types'
+import { computed, type HTMLAttributes, onMounted, onUnmounted, ref, type StyleValue } from 'vue'
 
 export type { Color }
 

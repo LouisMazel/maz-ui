@@ -1,8 +1,8 @@
-import { AosHandler, type AosOptions, getInstance, plugin } from '@modules/plugins/aos/index'
-import { isClient } from '@modules/helpers/is-client'
-import { sleep } from '@modules/helpers/sleep'
 import type { App } from 'vue'
 import type { Router } from 'vue-router'
+import { isClient } from '@modules/helpers/is-client'
+import { sleep } from '@modules/helpers/sleep'
+import { AosHandler, type AosOptions, getInstance, plugin } from '@modules/plugins/aos/index'
 
 // Mock dependencies
 vi.mock('@modules/helpers/sleep', () => ({

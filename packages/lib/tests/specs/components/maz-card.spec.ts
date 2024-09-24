@@ -1,6 +1,6 @@
-import { mount } from '@vue/test-utils'
-import MazCard from '@components/MazCard.vue'
 import { MazGallery } from '@components/index'
+import MazCard from '@components/MazCard.vue'
+import { mount } from '@vue/test-utils'
 
 describe('components/MazCard.vue', () => {
   it('renders with default props', async () => {

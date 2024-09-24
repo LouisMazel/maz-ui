@@ -1,15 +1,15 @@
 <script lang="ts">
+import type { DropzoneFile, DropzoneOptions } from 'dropzone'
 import {
   type ComponentPublicInstance,
-  type PropType,
   computed,
   defineAsyncComponent,
   defineComponent,
   onBeforeUnmount,
   onMounted,
+  type PropType,
   ref,
 } from 'vue'
-import type { DropzoneFile, DropzoneOptions } from 'dropzone'
 
 function dropzoneFix<T>(component: T): T {
   return (component as any).default ?? component

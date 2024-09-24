@@ -1,2 +1,2 @@
-export type { IdleTimeoutOptions, IdleTimeoutCallback } from './types'
 export { IdleTimeout } from './idle-timeout-handler'
+export type { IdleTimeoutCallback, IdleTimeoutOptions } from './types'

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { type PropType, computed, nextTick, onMounted, ref, watchEffect } from 'vue'
+import { computed, nextTick, onMounted, type PropType, ref, watchEffect } from 'vue'
 
 import { injectStrict } from '../modules/helpers/inject-strict'
 

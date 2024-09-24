@@ -1,5 +1,5 @@
-import { mount } from '@vue/test-utils'
 import MazPullToRefresh from '@components/MazPullToRefresh.vue'
+import { mount } from '@vue/test-utils'
 
 describe('mazPullToRefresh', () => {
   it('renders with default props', async () => {

@@ -1,24 +1,24 @@
 <script lang="ts">
 /* eslint-disable import/first */
-export type { Color, Size, ModelValueSimple } from './types'
+export type { Color, ModelValueSimple, Size } from './types'
 </script>
 
 <script lang="ts" setup generic="T extends ModelValueSimple">
+import type { Color, ModelValueSimple, Size } from './types'
 import {
   type Component,
   type ComponentPublicInstance,
-  type FunctionalComponent,
-  type HTMLAttributes,
-  type SVGAttributes,
   computed,
   defineAsyncComponent,
+  type FunctionalComponent,
+  type HTMLAttributes,
   onMounted,
   ref,
+  type SVGAttributes,
   useSlots,
 } from 'vue'
 import { useInstanceUniqId } from '../modules/composables/useInstanceUniqId'
 import { debounce as debounceFn } from './../modules/helpers/debounce'
-import type { Color, ModelValueSimple, Size } from './types'
 
 export type Icon = FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component
 export interface Props<T = ModelValueSimple> {
@@ -270,9 +270,9 @@ const shouldUp = computed(() => {
   return (
     (!!props.label || !!props.hint)
     && (isFocused.value
-    || !!hasValue.value
-    || !!props.placeholder
-    || ['date', 'month', 'week'].includes(props.type))
+      || !!hasValue.value
+      || !!props.placeholder
+      || ['date', 'month', 'week'].includes(props.type))
   )
 })
 

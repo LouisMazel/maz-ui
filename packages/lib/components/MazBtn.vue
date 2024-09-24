@@ -1,18 +1,18 @@
 <script lang="ts" setup>
+import type { Color, Size } from './types'
+
 import {
   type Component,
   type ComponentPublicInstance,
-  type FunctionalComponent,
-  type HTMLAttributes,
-  type SVGAttributes,
   computed,
   defineAsyncComponent,
+  type FunctionalComponent,
+  type HTMLAttributes,
   onBeforeMount,
+  type SVGAttributes,
   useAttrs,
   useSlots,
 } from 'vue'
-
-import type { Color, Size } from './types'
 
 export type { Color, Size }
 

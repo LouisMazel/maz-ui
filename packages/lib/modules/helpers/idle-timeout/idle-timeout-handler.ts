@@ -1,5 +1,5 @@
-import { isClient } from '../is-client'
 import type { IdleTimeoutCallback, IdleTimeoutOptions, IdleTimeoutStrictOption } from './types'
+import { isClient } from '../is-client'
 
 export class IdleTimeout {
   private readonly defaultOptions: IdleTimeoutStrictOption = {

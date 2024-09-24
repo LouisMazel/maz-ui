@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { computed, defineAsyncComponent } from 'vue'
-
 import type { Color } from './types'
+
+import { computed, defineAsyncComponent } from 'vue'
 
 export type { Color }
 

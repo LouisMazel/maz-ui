@@ -1,8 +1,8 @@
 // @ts-check
 
-import { fileURLToPath } from 'node:url'
-
 import { join, resolve } from 'node:path'
+
+import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vue-docgen-cli'
 import { component } from './config/component-template.js'
 

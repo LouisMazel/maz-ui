@@ -1,5 +1,5 @@
-import { shallowMount } from '@vue/test-utils'
 import MazIcon from '@components/MazIcon.vue'
+import { shallowMount } from '@vue/test-utils'
 
 describe('mazIcon', () => {
   it('renders correctly with custom name prop', async () => {

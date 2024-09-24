@@ -1,5 +1,5 @@
-import { mount } from '@vue/test-utils'
 import MazTabs from '@components/MazTabs.vue'
+import { mount } from '@vue/test-utils'
 
 describe('mazTabs.vue', () => {
   it('should display the content', () => {

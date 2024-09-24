@@ -1,7 +1,7 @@
 import type { DirectiveBinding, ObjectDirective, Plugin } from 'vue'
 
-import './style.css'
 import type { Color } from '../../../components/types'
+import './style.css'
 
 type vTooltipColor = Exclude<Color, 'transparent'> | 'default' | 'light' | 'dark'
 
@@ -126,9 +126,9 @@ const plugin = {
 } satisfies Plugin<vTooltipOptions>
 
 export {
-  plugin as vTooltipInstall,
   directive as vTooltip,
-  type vTooltipOptions,
+  plugin as vTooltipInstall,
   type vTooltipBindingValue,
   type vTooltipColor,
+  type vTooltipOptions,
 }

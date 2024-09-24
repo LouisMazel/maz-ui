@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { type PropType, ref, watch } from 'vue'
 import type { Color } from '../types'
 import type { PickerShortcut, PickerValue, RangeValue } from './types'
+import { type PropType, ref, watch } from 'vue'
 
 import MazBtn from './../MazBtn.vue'
 

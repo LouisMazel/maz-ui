@@ -1,7 +1,7 @@
 import { shallowMount } from '@vue/test-utils'
-import NGallery from '../../../components_tmp/NGallery/NGallery.vue'
-import NGalleryScrollButtons from '~/components/ui/NGallery/NGalleryScrollButtons.vue'
 import NGalleryResponsive from '~/components/ui/NGallery/NGalleryResponsive.vue'
+import NGalleryScrollButtons from '~/components/ui/NGallery/NGalleryScrollButtons.vue'
+import NGallery from '../../../components_tmp/NGallery/NGallery.vue'
 
 function getMedia() {
   return {

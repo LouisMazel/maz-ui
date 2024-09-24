@@ -1,5 +1,5 @@
-import type { Mock } from 'vitest'
 import type { ScriptLoaderOptions } from '@modules/helpers/script-loader'
+import type { Mock } from 'vitest'
 import { ScriptLoader } from '@modules/helpers/script-loader'
 
 describe('given ScriptLoader class', () => {

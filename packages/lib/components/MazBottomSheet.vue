@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { defineAsyncComponent } from 'vue'
-import MazBackdrop from './MazBackdrop.vue'
 import XIcon from './../icons/x-mark.svg'
+import MazBackdrop from './MazBackdrop.vue'
 
 defineProps({
   noClose: { type: Boolean, default: false },

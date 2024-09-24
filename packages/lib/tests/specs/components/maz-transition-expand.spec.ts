@@ -1,5 +1,5 @@
-import { shallowMount } from '@vue/test-utils'
 import MazTransitionExpand from '@components/MazTransitionExpand.vue'
+import { shallowMount } from '@vue/test-utils'
 
 describe('components/MazTransitionExpand.vue', () => {
   expect(MazTransitionExpand).toBeTruthy()

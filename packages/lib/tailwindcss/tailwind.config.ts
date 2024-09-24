@@ -1,13 +1,13 @@
 // @ts-check
 
+import type { Config } from 'tailwindcss'
 // Tailwind CSS configuration (https://tailwindcss.com/docs/configuration)
 import plugin from 'tailwindcss/plugin'
-import type { Config } from 'tailwindcss'
 
-import { utilities } from './variables/utilities'
-import { getNumericScreensFromTailwind, screens } from './variables/breakpoints'
-import { zIndex } from './variables/z-indexes'
 import { getColors } from './utils/colors'
+import { getNumericScreensFromTailwind, screens } from './variables/breakpoints'
+import { utilities } from './variables/utilities'
+import { zIndex } from './variables/z-indexes'
 
 export { getNumericScreensFromTailwind }
 

@@ -1,7 +1,7 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { ref } from 'vue'
 import { useBreakpoints } from '@modules/composables/useBreakpoints'
 import { useWindowSize } from '@modules/composables/useWindowSize'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { ref } from 'vue'
 import { getNumericScreensFromTailwind } from '../../../tailwindcss/variables/breakpoints'
 
 vi.mock('@modules/composables/useWindowSize', () => ({

@@ -1,5 +1,5 @@
-import { mount } from '@vue/test-utils'
 import MazCardSpotlight from '@components/MazCardSpotlight.vue'
+import { mount } from '@vue/test-utils'
 
 describe('mazCardSpotlight', () => {
   it('renders with default props', async () => {

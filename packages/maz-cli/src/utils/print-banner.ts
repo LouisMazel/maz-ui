@@ -1,5 +1,5 @@
-import { blueBright, bold } from 'colorette'
 import clear from 'clear'
+import { blueBright, bold } from 'colorette'
 import figlet from 'figlet'
 import { logger } from './logger'
 

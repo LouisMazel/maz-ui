@@ -1,15 +1,15 @@
 <script lang="ts" setup>
+import type { Color } from './types'
 import {
   type Component,
   type ComponentPublicInstance,
-  type FunctionalComponent,
-  type SVGAttributes,
   computed,
   defineAsyncComponent,
+  type FunctionalComponent,
   ref,
+  type SVGAttributes,
   useSlots,
 } from 'vue'
-import type { Color } from './types'
 
 export type { Color }
 
@@ -153,9 +153,9 @@ function isStepDisabled(step: number): boolean {
   return (
     isDisabled
     ?? (isCurrentStepDisabled
-    || isAutoDisabledNext
-    || isAutoDisabledPrevious
-    || props.allStepsOpened)
+      || isAutoDisabledNext
+      || isAutoDisabledPrevious
+      || props.allStepsOpened)
   )
 }
 

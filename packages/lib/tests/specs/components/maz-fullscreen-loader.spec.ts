@@ -1,6 +1,6 @@
-import { mount } from '@vue/test-utils'
 import MazFullscreenLoader from '@components/MazFullscreenLoader.vue'
-import MazSpinner from '@components/MazSpinner.vue' // Assurez-vous d'importer correctement le composant MazSpinner
+import MazSpinner from '@components/MazSpinner.vue'
+import { mount } from '@vue/test-utils' // Assurez-vous d'importer correctement le composant MazSpinner
 
 describe('mazFullscreenLoader.vue', () => {
   it('display the spinner with good properties', async () => {

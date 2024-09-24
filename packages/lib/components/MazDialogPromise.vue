@@ -1,24 +1,24 @@
 <script lang="ts">
 /* eslint-disable import/first */
 export {
-  useMazDialogPromise,
-  type DialogState,
   type DialogData,
+  type DialogState,
+  useMazDialogPromise,
 } from './MazDialogPromise/use-maz-dialog-promise'
 export type { Color, Size } from './types'
 </script>
 
 <script lang="ts" setup>
 import { computed, defineAsyncComponent } from 'vue'
+import MazDialog, { type Props as MazDialogProps } from './MazDialog.vue'
+
 import {
+  defaultData,
   type DialogCustomButton,
   type DialogData,
   type DialogState,
-  defaultData,
   useMazDialogPromise,
 } from './MazDialogPromise/use-maz-dialog-promise'
-
-import MazDialog, { type Props as MazDialogProps } from './MazDialog.vue'
 
 export interface InternalProps extends MazDialogProps {
   /** Dialog Data - @type DialogData */

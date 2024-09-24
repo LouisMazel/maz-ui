@@ -1,7 +1,7 @@
 import type { Mock } from 'vitest'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { isClient } from '@modules/helpers/is-client'
 import { isInStandaloneMode } from '@modules/helpers/is-standalone-mode'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 // Mock the is-client module
 vi.mock('@modules/helpers/is-client', () => ({

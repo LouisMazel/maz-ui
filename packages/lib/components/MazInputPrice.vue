@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import type { FilterCurrencyOptions } from '../modules/filters/currency'
-import { currency as currencyFilter } from '../modules/filters/currency'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import BanknotesIcon from '../icons/banknotes.svg'
+import { currency as currencyFilter } from '../modules/filters/currency'
 import MazInput from './MazInput.vue'
 
 export interface Props {

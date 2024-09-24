@@ -1,18 +1,18 @@
 <script lang="ts" setup>
+import type { Color } from './types'
 import {
-  type CSSProperties,
-  type PropType,
   computed,
+  type CSSProperties,
   nextTick,
   onBeforeUnmount,
   onMounted,
+  type PropType,
   ref,
   watch,
 } from 'vue'
-import { debounce } from './../modules/helpers/debounce'
 
+import { debounce } from './../modules/helpers/debounce'
 import { getOpacityCoeff, getPos, isBetween } from './MazSlider/utils'
-import type { Color } from './types'
 
 export type { Color }
 

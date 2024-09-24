@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import { computed, ref, useSlots } from 'vue'
-import MazExpandAnimation from './MazExpandAnimation.vue'
-import MazCardSpotlight from './MazCardSpotlight.vue'
-
 import Plus from './../icons/plus.svg'
 import { useInstanceUniqId } from './../modules/composables/useInstanceUniqId'
+
+import MazCardSpotlight from './MazCardSpotlight.vue'
+import MazExpandAnimation from './MazExpandAnimation.vue'
 
 export interface Props {
   id?: string

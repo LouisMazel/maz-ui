@@ -1,6 +1,6 @@
-import { mount } from '@vue/test-utils'
-import MazTable from '@components/MazTable.vue'
 import { MazCheckbox, MazLoadingBar } from '@components/index'
+import MazTable from '@components/MazTable.vue'
+import { mount } from '@vue/test-utils'
 
 describe('mazTable', () => {
   it('should render the component', async () => {
