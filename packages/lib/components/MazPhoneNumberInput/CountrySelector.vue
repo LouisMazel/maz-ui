@@ -38,6 +38,7 @@ const props = withDefaults(
     success?: boolean
     error?: boolean
     countrySelectorDisplayName?: boolean
+    searchThreshold?: number
     width: string
     excludeSelectors?: string[]
   }>(),
@@ -150,6 +151,7 @@ async function focusCountrySelector() {
       :success
       :search="!noSearch"
       :search-placeholder="locales.countrySelector.searchPlaceholder"
+      :search-threshold
       :options="countryOptions"
       :hint="!!phoneNumber && !modelValue ? locales.countrySelector.error : undefined"
       :label="locales.countrySelector.placeholder"
