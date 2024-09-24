@@ -1,5 +1,17 @@
 # Change Log
 
+## v3.45.5...v3.45.6
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.45.5...v3.45.6)
+
+### 🚀 Enhancements
+
+- **maz-ui:** MazPhoneNumberInput - add search-threshold prop option to adjust search results ([6bfcaa938](https://github.com/LouisMazel/maz-ui/commit/6bfcaa938))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.45.4...v3.45.5
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.45.4...v3.45.5)
