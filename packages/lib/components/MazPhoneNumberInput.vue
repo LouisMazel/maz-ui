@@ -55,6 +55,7 @@ const props = withDefaults(defineProps<Props>(), {
   autoFormat: true,
   excludeSelectors: undefined,
   orientation: 'responsive',
+  searchThreshold: 0.75,
 })
 
 const emits = defineEmits<{
@@ -126,6 +127,11 @@ export interface Props {
   noExample?: boolean
   /** Disable search input in country list */
   noSearch?: boolean
+  /**
+   * Threshold of the search input in country list where 1 is a perfect match and 0 is a match with any character
+   * @default 0.75
+   */
+  searchThreshold?: number
   /** By default the component use the browser locale to set the default country code if not country code is provided */
   noUseBrowserLocale?: boolean
   /** The component will make a request (https://ipwho.is) to get the location of the user and use it to set the default country code */
@@ -430,6 +436,7 @@ watch(
       :success="success || (!noValidationSuccess ? results?.isValid : false)"
       :locales
       :disabled
+      :search-threshold
       :show-code-on-list
       :only-countries
       :preferred-countries
