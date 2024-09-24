@@ -1,5 +1,29 @@
 # Change Log
 
+## v3.45.4...v3.45.5
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.45.4...v3.45.5)
+
+### 🚀 Enhancements
+
+- **maz-ui:** MazSelect - add search-threshold prop option to adjust search results ([293f28151](https://github.com/LouisMazel/maz-ui/commit/293f28151))
+
+### 🩹 Fixes
+
+- **docs:** UseSwipe - correct type of element ([aa85ff58d](https://github.com/LouisMazel/maz-ui/commit/aa85ff58d))
+
+### 🏡 Chore
+
+- **deps:** Upgrade dependencies and exec linter ([894315066](https://github.com/LouisMazel/maz-ui/commit/894315066))
+
+### ✅ Tests
+
+- **maz-ui:** UseFormValidator - add tests ([9f74464c7](https://github.com/LouisMazel/maz-ui/commit/9f74464c7))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.45.3...v3.45.4
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.45.3...v3.45.4)
