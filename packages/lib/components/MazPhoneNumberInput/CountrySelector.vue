@@ -136,7 +136,7 @@ async function focusCountrySelector() {
       :id="`country-selector-${id}`"
       ref="CountrySelectorRef"
       :model-value="modelValue"
-      v-bind="$attrs"
+      v-bind="{ ...$attrs }"
       class="m-country-selector__select"
       option-value-key="iso2"
       option-label-key="name"

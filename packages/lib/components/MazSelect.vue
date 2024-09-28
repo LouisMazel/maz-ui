@@ -108,6 +108,11 @@ export interface Props<T extends ModelValueSimple, U extends MazSelectOption> {
   block?: boolean
   /** The exclude selectors for the v-closable directive - will exclude the elements from the directive */
   excludeSelectors?: string[]
+  /**
+   * The autocomplete attribute of the input
+   * @default 'off'
+   */
+  autocomplete?: string
 }
 
 defineOptions({
@@ -133,6 +138,7 @@ const props = withDefaults(defineProps<Props<T, U>>(), {
   excludeSelectors: undefined,
   searchPlaceholder: 'Search in options',
   searchThreshold: 0.75,
+  autocomplete: 'off',
 })
 
 const emits = defineEmits<{
@@ -644,9 +650,9 @@ function updateValue(inputOption: NormalizedOption, mustCloseList = true) {
       :border-active="listOpened"
       :color="color"
       :model-value="mazInputValue"
-      autocomplete="off"
       :size="size"
       block
+      :autocomplete
       :disabled="disabled"
       @focus.prevent.stop="openList"
       @blur.prevent.stop="closeList"
@@ -691,6 +697,7 @@ function updateValue(inputOption: NormalizedOption, mustCloseList = true) {
           :color="color"
           :placeholder="searchPlaceholder"
           name="search"
+          inputmode="search"
           autocomplete="off"
           tabindex="-1"
           class="m-select-list__search-input maz-flex-none"

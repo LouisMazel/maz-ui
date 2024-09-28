@@ -56,6 +56,15 @@ const props = withDefaults(defineProps<Props>(), {
   excludeSelectors: undefined,
   orientation: 'responsive',
   searchThreshold: 0.75,
+  countrySelectAttributes: () => ({
+    name: 'country',
+    autocomplete: 'off',
+  }),
+  phoneInputAttributes: () => ({
+    name: 'phone',
+    autocomplete: 'tel',
+    inputmode: 'tel',
+  }),
 })
 
 const emits = defineEmits<{
@@ -179,6 +188,16 @@ export interface Props {
    * @values "row" | "col" | "responsive"
    */
   orientation?: 'row' | 'col' | 'responsive'
+  /**
+   * Meta attributes of the country input
+   * @default {Record<string, unknown>} { autocomplete: 'off', name: 'country' }
+   */
+  countrySelectAttributes?: Record<string, unknown>
+  /**
+   * Meta attributes of the phone number input
+   * @default {Record<string, unknown>} { autocomplete: 'tel', name: 'phone', inputmode: 'tel' }
+   */
+  phoneInputAttributes?: Record<string, unknown>
 }
 
 const { fetchCountryCode, sanitizePhoneNumber, getBrowserLocale } = useMazPhoneNumberInput()
@@ -421,6 +440,7 @@ watch(
     <CountrySelector
       v-if="!noCountrySelector"
       :id="instanceId"
+      v-bind="countrySelectAttributes"
       :model-value="selectedCountry"
       :color
       :size
@@ -476,12 +496,12 @@ watch(
       :id="instanceId"
       ref="PhoneInputRef"
       :model-value="phoneNumber"
+      v-bind="{ ...$attrs, ...phoneInputAttributes }"
       :color
       :size
       :no-example
       block
       :disabled
-      v-bind="$attrs"
       :has-radius="!noCountrySelector"
       :success="success || (!noValidationSuccess ? results.isValid : false)"
       :error="error || (!noValidationError ? !!phoneNumber && !results.isValid : false)"
