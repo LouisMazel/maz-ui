@@ -134,8 +134,6 @@ onMounted(() => {
     :error
     :size
     :success
-    type="tel"
-    inputmode="tel"
     class="m-phone-input"
     :class="[
       {
