@@ -1,5 +1,6 @@
 export * from './useAos'
 export * from './useBreakpoints'
+export * from './useDialog'
 export * from './useFormValidator'
 export * from './useIdleTimeout'
 export * from './useInstanceUniqId'

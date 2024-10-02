@@ -1,14 +1,18 @@
 <script lang="ts" setup>
+import type {
+  ComponentPublicInstance,
+  HTMLAttributes,
+  StyleValue,
+} from 'vue'
 import {
   computed,
   defineAsyncComponent,
-  type HTMLAttributes,
-  type StyleValue,
+  ref,
   useAttrs,
 } from 'vue'
 import MazBackdrop, { type Props as MazBackdropProps } from './MazBackdrop.vue'
 
-withDefaults(defineProps<Props & MazBackdropProps>(), {
+const props = withDefaults(defineProps<Props>(), {
   title: undefined,
   noClose: false,
   width: '500px',
@@ -28,7 +32,7 @@ defineEmits<{
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 const XIcon = defineAsyncComponent(() => import('./../icons/x-mark.svg'))
 
-export interface Props {
+export interface Props extends MazBackdropProps {
   /** @model Modal's model value */
   modelValue?: boolean
   /** Title of the modal in header */
@@ -49,6 +53,12 @@ export interface Props {
 
 const attrs = useAttrs()
 
+const backdrop = ref<ComponentPublicInstance<typeof MazBackdrop>>()
+
+defineExpose({
+  close: () => backdrop.value?.close?.(),
+})
+
 const backdropAttrs = computed(() => ({
   ...attrs,
   class: undefined,
@@ -64,7 +74,8 @@ const wrapperAttrs = computed<{
 
 <template>
   <MazBackdrop
-    v-bind="backdropAttrs"
+    v-bind="{ ...backdropAttrs, ...props }"
+    ref="backdrop"
     :persistent
     :model-value="modelValue"
     transition-name="modal-anim"

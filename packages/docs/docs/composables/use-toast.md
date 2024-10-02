@@ -18,10 +18,6 @@ More info about [toaster plugin](./../plugins/toaster.md) in its documentation
 ## Usage
 
 ```vue
-<template>
-  <img data-maz-aos="scale-in" />
-</template>
-
 <script lang="ts" setup>
   import { useToast } from 'maz-ui'
 
@@ -67,4 +63,5 @@ More info about [toaster plugin](./../plugins/toaster.md) in its documentation
   })
   toast.warning('warning message')
   toast.error('error message')
+  toast.message('message')
 </script>

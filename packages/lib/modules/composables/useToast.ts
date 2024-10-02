@@ -1,4 +1,4 @@
-import type { ToasterHandler } from '../plugins/toaster'
+import type { ToasterHandler } from '../plugins/toaster/ToasterHandler'
 import { injectStrict } from '../helpers/inject-strict'
 
 export function useToast() {

@@ -9,6 +9,7 @@ import type {
   ThemeHandlerOptions,
   vLazyImgOptions,
   vTooltipOptions,
+  DialogOptions,
 } from 'maz-ui'
 import { getComponentList } from './../../lib/build/get-component-list'
 
@@ -41,6 +42,11 @@ export interface MazUiNuxtOptions {
    * @default false
    */
   injectUseToast?: boolean | ToasterOptions
+  /**
+   * Install dialog plugin and enable auto-import of useToast composable
+   * @default false
+   */
+  injectUseDialog?: boolean | DialogOptions
   /**
    * Install wait plugin and enable auto-import of useWait composable
    * @default false
@@ -241,6 +247,16 @@ export default defineNuxtModule<MazUiNuxtOptions>({
         from: resolve(_dirname, './runtime/composables/useToast'),
         name: 'useToast',
         as: 'useToast',
+      })
+    }
+
+    if (moduleOptions.injectUseDialog) {
+      addPlugin(resolve(_dirname, './runtime/plugins/dialog'))
+
+      addImports({
+        from: resolve(_dirname, './runtime/composables/useDialog'),
+        name: 'useDialog',
+        as: 'useDialog',
       })
     }
 

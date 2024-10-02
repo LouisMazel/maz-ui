@@ -1,10 +1,10 @@
-import { type App, type Component, createVNode, render } from 'vue'
+import { type App, type Component, createVNode, render, type VNodeProps } from 'vue'
 
 export function mount<T extends Component, P = Record<string, unknown>>(
   component: T,
   options?: {
-    props?: P
-    children?: unknown
+    props?: P & VNodeProps
+    children?: Parameters<typeof createVNode>[2]
     app?: App
     element?: HTMLElement
     addDestroyInProps?: boolean
@@ -17,9 +17,11 @@ export function mount<T extends Component, P = Record<string, unknown>>(
       render(null, el)
   }
 
+  const props = { ...options?.props, ...(options?.addDestroyInProps ? { destroy } : {}) }
+
   const vNode = createVNode(
     component,
-    { ...options?.props, ...(options?.addDestroyInProps ? { destroy } : {}) },
+    props,
     options?.children,
   )
 

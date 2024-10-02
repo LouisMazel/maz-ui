@@ -24,13 +24,7 @@ export default defineNuxtConfig({
       timeout: 3000,
       persistent: false,
     },
-    injectUseThemeHandler: {
-      darkClass: 'dark',
-      lightClass: 'light',
-      storageThemeKey: 'theme',
-      storageThemeValueDark: 'dark',
-      storageThemeValueLight: 'light',
-    },
+    injectUseDialog: true,
     injectUseIdleTimeout: true,
     injectUseUserVisibility: true,
     injectUseWait: true,
@@ -39,6 +33,13 @@ export default defineNuxtConfig({
     injectUseFormValidator: true,
     injectUseTimer: true,
     installVZoomImg: true,
+    injectUseThemeHandler: {
+      darkClass: 'dark',
+      lightClass: 'light',
+      storageThemeKey: 'theme',
+      storageThemeValueDark: 'dark',
+      storageThemeValueLight: 'light',
+    },
     installVLazyImg: true,
     installVTooltip: {
       position: 'top',

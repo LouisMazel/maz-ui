@@ -6,6 +6,7 @@ export const composables = {
   items: [
     { text: 'useAos', link: '/composables/use-aos' },
     { text: 'useBreakpoints', link: '/composables/use-breakpoints' },
+    { text: 'useDialog', link: '/composables/use-dialog' },
     { text: 'useFormValidator', link: '/composables/use-form-validator' },
     { text: 'useIdleTimeout', link: '/composables/use-idle-timeout' },
     { text: 'useReadingTime', link: '/composables/use-reading-time' },

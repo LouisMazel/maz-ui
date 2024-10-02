@@ -1,52 +1,65 @@
 <script lang="ts">
 /* eslint-disable import/first */
 export {
-  type DialogData,
-  type DialogState,
-  useMazDialogPromise,
-} from './MazDialogPromise/use-maz-dialog-promise'
-export type { Color, Size } from './types'
-</script>
-
-<script lang="ts" setup>
-import { computed, defineAsyncComponent } from 'vue'
-import MazDialog, { type Props as MazDialogProps } from './MazDialog.vue'
-
-import {
-  defaultData,
   type DialogCustomButton,
   type DialogData,
   type DialogState,
   useMazDialogPromise,
-} from './MazDialogPromise/use-maz-dialog-promise'
+} from './MazDialogPromise/useMazDialogPromise'
+export type { Color, Size } from './types'
+</script>
 
-export interface InternalProps extends MazDialogProps {
+<script lang="ts" setup>
+import type { ComponentPublicInstance } from 'vue'
+import type {
+  DialogCustomButton,
+  DialogData,
+  DialogState,
+  PromiseButton,
+} from './MazDialogPromise/useMazDialogPromise'
+import { computed, defineAsyncComponent, ref } from 'vue'
+
+import MazDialog, { type Props as MazDialogProps } from './MazDialog.vue'
+import {
+  defaultData,
+  useMazDialogPromise,
+} from './MazDialogPromise/useMazDialogPromise'
+
+export type Props = MazDialogProps & DialogData & {
   /** Dialog Data - @type DialogData */
   data?: DialogData
+  /** Message to display */
+  message?: string
   /** Uniq identifier */
   identifier: string
   /** Custom buttons - @type DialogCustomButton[] */
   buttons?: DialogCustomButton[]
 }
-export type Props = InternalProps
 
-const props = withDefaults(defineProps<InternalProps>(), {
+const props = withDefaults(defineProps<Props>(), {
   data: undefined,
   buttons: undefined,
 })
 
+defineEmits<{
+  /** emitted when modal is open */
+  open: [value: void]
+  /** emitted when modal is close */
+  close: [value: void]
+}>()
+
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 
-const customButtons = computed(() => props.buttons ?? composableData.value.buttons)
-
 const { dialogState, rejectDialog, resolveDialog, data: composableData } = useMazDialogPromise()
+
+const customButtons = computed(() => props.buttons ?? props.data?.buttons ?? composableData.value.buttons)
 
 const cancelButtonData = computed(() => {
   const hasButton
       = composableData.value?.cancelButton ?? props.data?.cancelButton ?? defaultData.cancelButton
 
   if (!hasButton)
-    return false
+    return
 
   return {
     ...defaultData.cancelButton,
@@ -59,7 +72,7 @@ const confirmButtonData = computed(() => {
       = composableData.value?.confirmButton ?? props.data?.confirmButton ?? defaultData.confirmButton
 
   if (!hasButton)
-    return false
+    return
 
   return {
     ...defaultData.confirmButton,
@@ -77,11 +90,33 @@ const currentData = computed<DialogData>(() => ({
 const currentModal = computed(
   () => dialogState.value.find(({ id }) => id === props.identifier) as DialogState,
 )
+
+const dialog = ref<ComponentPublicInstance<typeof MazDialog>>()
+
+defineExpose({
+  close: () => dialog.value?.close?.(),
+})
+
+function isPromiseButton(button: DialogCustomButton): button is PromiseButton {
+  return 'type' in button && (button.type === 'resolve' || button.type === 'reject')
+}
+
+function customButtonAction(currentModal: DialogState, button: DialogCustomButton) {
+  return isPromiseButton(button)
+    ? button.type === 'resolve'
+      ? resolveDialog(currentModal, button.response)
+      : rejectDialog(currentModal, button.response)
+    : resolveDialog(currentModal, undefined, button.action)
+}
 </script>
 
 <template>
   <MazDialog
-    :model-value="currentModal?.isActive ?? false"
+    ref="dialog"
+    v-bind="{ ...$attrs, ...props }"
+    :model-value="currentModal?.isActive ?? modelValue ?? false"
+    @close="$emit('close', $event)"
+    @open="$emit('open', $event)"
     @update:model-value="rejectDialog(currentModal)"
   >
     <template #title>
@@ -89,7 +124,7 @@ const currentModal = computed(
         @slot title slot - Place your title
       -->
       <slot name="title">
-        {{ currentData?.title }}
+        {{ title || currentData?.title }}
       </slot>
     </template>
     <template #default>
@@ -99,10 +134,10 @@ const currentModal = computed(
           @binding {Function} reject reject function
       -->
       <slot
-        :resolve="(reason?: string | boolean) => resolveDialog(currentModal, reason)"
-        :reject="(reason?: string | boolean) => rejectDialog(currentModal, reason)"
+        :resolve="(reason?: unknown) => resolveDialog(currentModal, reason)"
+        :reject="(reason?: unknown) => rejectDialog(currentModal, reason)"
       >
-        {{ currentData?.message }}
+        {{ message || currentData?.message }}
       </slot>
     </template>
     <template #footer>
@@ -112,27 +147,20 @@ const currentModal = computed(
           @binding {Function} reject reject function
       -->
       <slot
-        :resolve="(reason?: string | boolean) => resolveDialog(currentModal, reason)"
-        :reject="(reason?: string | boolean) => rejectDialog(currentModal, reason)"
+        :resolve="(reason?: unknown) => resolveDialog(currentModal, reason)"
+        :reject="(reason?: unknown) => rejectDialog(currentModal, reason)"
         name="footer-button"
       >
         <div class="maz-flex maz-items-center maz-gap-2">
-          <template v-if="customButtons && customButtons.length > 0">
+          <template v-if="customButtons">
             <MazBtn
               v-for="(button, i) in customButtons"
               :key="i"
-              :color="button.color"
-              :size="button.size"
-              :outline="button.outline"
-              :rounded="button.rounded"
-              :disabled="button.disabled"
-              :block="button.block"
-              :loading="button.loading"
-              @click="
-                button.type === 'resolve'
-                  ? resolveDialog(currentModal, button.response)
-                  : rejectDialog(currentModal, button.response)
-              "
+              v-bind="{
+                ...button,
+                type: 'button',
+              }"
+              @click="customButtonAction(currentModal, button)"
             >
               {{ button.text }}
             </MazBtn>
@@ -141,14 +169,13 @@ const currentModal = computed(
             <MazBtn
               v-if="cancelButtonData"
               v-bind="cancelButtonData"
-              outline
               @click="rejectDialog(currentModal)"
             >
               <!--
                 @slot cancel-text slot - Place your cancel text
               -->
               <slot name="cancel-text">
-                {{ cancelButtonData.text ?? currentData?.cancelText }}
+                {{ cancelButtonData.text || currentData?.cancelText }}
               </slot>
             </MazBtn>
 
@@ -161,7 +188,7 @@ const currentModal = computed(
                 @slot confirm-text slot - Place your confirm text
               -->
               <slot name="confirm-text">
-                {{ confirmButtonData.text ?? currentData.confirmText }}
+                {{ confirmButtonData.text || currentData.confirmText }}
               </slot>
             </MazBtn>
           </template>
