@@ -12,27 +12,7 @@ import {
 } from 'vue'
 import MazBackdrop, { type Props as MazBackdropProps } from './MazBackdrop.vue'
 
-const props = withDefaults(defineProps<Props>(), {
-  title: undefined,
-  noClose: false,
-  width: '500px',
-  maxWidth: '95vw',
-  maxHeight: '95vh',
-  scrollable: false,
-  persistent: false,
-})
-defineEmits<{
-  /** emitted when modal is open */
-  'open': [value: void]
-  /** emitted when modal is close */
-  'close': [value: void]
-  /** emitted when modal is open or close */
-  'update:model-value': [value: boolean]
-}>()
-const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
-const XIcon = defineAsyncComponent(() => import('./../icons/x-mark.svg'))
-
-export interface Props extends MazBackdropProps {
+export interface InternalProps {
   /** @model Modal's model value */
   modelValue?: boolean
   /** Title of the modal in header */
@@ -50,6 +30,30 @@ export interface Props extends MazBackdropProps {
   /** Persistent dialog (not closable by clicking outside and remove close button) */
   persistent?: boolean
 }
+
+export type Props = InternalProps & MazBackdropProps
+
+const props = withDefaults(defineProps<Props & MazBackdropProps>(), {
+  title: undefined,
+  noClose: false,
+  width: '500px',
+  maxWidth: '95vw',
+  maxHeight: '95vh',
+  scrollable: false,
+  persistent: false,
+})
+
+defineEmits<{
+  /** emitted when modal is open */
+  'open': [value: void]
+  /** emitted when modal is close */
+  'close': [value: void]
+  /** emitted when modal is open or close */
+  'update:model-value': [value: boolean]
+}>()
+
+const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
+const XIcon = defineAsyncComponent(() => import('./../icons/x-mark.svg'))
 
 const attrs = useAttrs()
 

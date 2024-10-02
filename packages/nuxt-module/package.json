@@ -32,7 +32,7 @@
     "maz-ui": "workspace:*"
   },
   "devDependencies": {
-    "@nuxt/devtools": "^1.5.1",
+    "@nuxt/devtools": "^1.5.2",
     "@nuxt/eslint-config": "^0.5.7",
     "@nuxt/module-builder": "^0.8.4",
     "@nuxt/schema": "^3.13.2",
