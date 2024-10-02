@@ -7,6 +7,7 @@
     <br>
     defaultValues: <pre>{{ defaultValues }}</pre>
     <MazInput
+      id="name"
       ref="nameRef"
       v-model="name"
       label="Enter your name"
@@ -16,6 +17,7 @@
       :class="{ 'has-error-form': !!nameErrorMessage }"
     />
     <MazInput
+      id="age"
       ref="ageRef"
       v-model="age"
       type="number"
@@ -26,6 +28,7 @@
       :class="{ 'has-error-form': !!ageErrorMessage }"
     />
     <MazSelect
+      id="country"
       ref="countryRef"
       v-model="country"
       :options="[{ label: 'France', value: 'FR' }, { label: 'United States', value: 'US' }]"
@@ -36,6 +39,7 @@
       :class="{ 'has-error-form': !!countryErrorMessage }"
     />
     <MazInputCode
+      id="code"
       ref="codeRef"
       v-model="code"
       :error="!!codeError"
@@ -43,6 +47,7 @@
       :success="isValidCode"
     />
     <MazInputNumber
+      id="number"
       ref="numberRef"
       v-model="number"
       label="Enter a number"
@@ -52,6 +57,7 @@
       :success="isValidNumber"
     />
     <MazInputPrice
+      id="price"
       ref="priceRef"
       v-model="price"
       label="Enter a price"
@@ -60,6 +66,7 @@
       :success="isValidPrice"
     />
     <MazInputTags
+      id="tags"
       ref="tagsRef"
       v-model="tags"
       :error="!!tagsError"
@@ -67,6 +74,7 @@
       :success="isValidTags"
     />
     <MazPhoneNumberInput
+      id="phone"
       ref="phoneRef"
       v-model="phone"
       :error="!!phoneError"
@@ -74,6 +82,7 @@
       :success="isValidPhone"
     />
     <MazRadio
+      id="radio"
       ref="radioRef"
       v-model="radio"
       :value="'radio1'"
@@ -85,6 +94,7 @@
       Switch
     </MazRadio>
     <MazRadio
+      id="radio2"
       ref="radioRef"
       v-model="radio"
       :value="'radio2'"
@@ -95,6 +105,7 @@
       :success="isValidRadio"
     />
     <MazRadioButtons
+      id="radioButtons"
       ref="radioButtonsRef"
       v-model="model.radioButtons"
       :options="[{ label: 'Option 1', value: 'radio1' }, { label: 'Option 2', value: 'radio2' }]"
@@ -103,6 +114,7 @@
       :success="isValidButtons"
     />
     <MazSwitch
+      id="switch"
       ref="switchRef"
       v-model="switchValue"
       :warning="!!switchError"
@@ -111,6 +123,7 @@
       :success="isValidSwitch"
     />
     <MazTextarea
+      id="textarea"
       ref="textareaRef"
       v-model="textarea"
       label="Enter your message"
@@ -119,6 +132,7 @@
       :success="isValidTextarea"
     />
     <MazCheckbox
+      id="agree"
       ref="agreeRef"
       v-model="agree"
       :class="{ 'has-error-form': !!agreeErrorMessage }"
@@ -128,6 +142,8 @@
       :success="isValidAgree"
     />
     <MazPicker
+      id="date"
+      ref="dateRef"
       v-model="date"
       :hint="dateError"
       :error="!!dateError"

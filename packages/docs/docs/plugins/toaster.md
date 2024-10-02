@@ -272,6 +272,8 @@ const options: ToasterOptions = {
   ...
 }
 
+const toast = useToast()
+
 toast.message('Message text', options)
 ```
 

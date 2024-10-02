@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { LocalToasterOptions } from './toaster-handler'
+import type { LocalToasterOptions } from './ToasterHandler'
 import type { ToasterAction, ToasterLink, ToasterPosition } from './types'
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useTimer } from './../../composables/useTimer'
