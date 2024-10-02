@@ -15,9 +15,10 @@ withDefaults(defineProps<Props>(), {
   color: 'primary',
   href: '#',
   to: undefined,
-  target: '_slef',
+  target: '_self',
   download: undefined,
   rel: undefined,
+  autoExternal: true,
   ariaLabel: undefined,
   underline: false,
   underlineOnlyHover: true,
@@ -64,7 +65,10 @@ export interface Props {
   underline?: boolean
   /** Add an underline only on hover */
   underlineOnlyHover?: boolean
-  /** Add an external icon to the link if target is '_blank' */
+  /**
+   * Add an external icon to the link if target is '_blank'
+   * @default true
+   */
   autoExternal?: boolean
   /**
    * The name of the icon or component to display on the left of the text
@@ -130,7 +134,7 @@ export interface Props {
 
 <style lang="postcss" scoped>
   .m-link {
-  @apply maz-inline-flex maz-cursor-pointer maz-items-center maz-gap-1 maz-transition-colors maz-duration-200 maz-ease-in-out;
+  @apply maz-inline-flex maz-cursor-pointer maz-items-center maz-gap-1 maz-transition-colors maz-duration-200 maz-ease-in-out maz-no-underline;
 
   &.--underline {
     @apply maz-underline;

@@ -12,10 +12,11 @@ description: MazDropdown is a standalone dropdown menu component and versatile d
 ## Basic usage
 
 <MazDropdown
+  open
   :items="[
     { label: 'Action', action: () => toast.success('CLICKED') },
-    { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
-    { label: 'Router Link', to: { name: 'index' } },
+    { label: 'Link (href)', href: 'https://www.google.com', target: '_blank', color: 'secondary' },
+    { label: 'Router Link', to: { name: 'index' }, color: 'danger' },
   ]"
 >
   Dropdown Menu
@@ -26,8 +27,8 @@ description: MazDropdown is a standalone dropdown menu component and versatile d
   <MazDropdown
     :items="[
       { label: 'Action', action: () => toast.success('CLICKED') },
-      { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
-      { label: 'Router Link', to: { name: 'index' } },
+      { label: 'Link (href)', href: 'https://www.google.com', target: '_blank', color: 'secondary' },
+      { label: 'Router Link', to: { name: 'index' }, color: 'danger' },
     ]"
   >
     Dropdown Menu
