@@ -1,11 +1,14 @@
 <script lang="ts" setup>
 import type { RouteLocationRaw } from 'vue-router'
 import type { Color } from './MazBtn.vue'
+import type { Props as MazLinkProps } from './MazLink.vue'
 import type { Position } from './types'
 import { defineAsyncComponent, type HTMLAttributes, ref, watch } from 'vue'
 import { useInstanceUniqId } from '../modules/composables/useInstanceUniqId'
 import { vClickOutside } from '../modules/directives/click-outside'
 import { debounce } from '../modules/helpers/debounce'
+
+export type { Color, Position }
 
 defineOptions({
   inheritAttrs: false,
@@ -38,16 +41,23 @@ const emits = defineEmits<{
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 const ChevronDownIcon = defineAsyncComponent(() => import('./../icons/chevron-down.svg'))
 
-export type { Color, Position }
-
-export type MenuItem = {
+type ItemBase = Record<string, unknown> & {
   label: string
-  action?: () => unknown
+  class?: unknown
+  color?: Color
+}
+
+type LinkItem = ItemBase & MazLinkProps & {
   target?: string
   href?: string
   to?: RouteLocationRaw
-  class?: unknown
-} & Record<string, unknown>
+}
+
+type ActionItem = ItemBase & {
+  action?: () => unknown
+}
+
+export type MenuItem = (LinkItem | ActionItem)
 
 export interface Props {
   style?: HTMLAttributes['style']
@@ -143,7 +153,11 @@ function setDropdown(value: boolean) {
   emits('update:open', value)
 }
 
-async function runAction(item: MenuItem, event: Event) {
+function isActionItem(item: MenuItem): item is ActionItem {
+  return 'action' in item
+}
+
+async function runAction(item: ActionItem, event: Event) {
   emits('menuitem-clicked', event)
 
   await item.action?.()
@@ -316,31 +330,16 @@ watch(
                 @binding {Object} item - menu item
             -->
             <slot name="menuitem" :item="item">
-              <template v-if="item.to">
-                <RouterLink
+              {{ item.label }}
+              <template v-if="item.to || item.href">
+                <MazLink
                   :target="item.href ? item.target ?? '_self' : undefined"
                   :to="item.to"
-                  class="menuitem"
-                  tabindex="-1"
-                  :class="[
-                    {
-                      '--is-keyboard-selected': keyboardSelectedIndex === index,
-                    },
-                    item.class,
-                  ]"
-                  @click.stop="closeOnClick"
-                >
-                  <slot name="menuitem-label" :item="item">
-                    {{ item.label }}
-                  </slot>
-                </RouterLink>
-              </template>
-              <template v-else-if="item.href">
-                <a
-                  :target="item.href ? item.target ?? '_self' : undefined"
                   :href="item.href"
-                  tabindex="-1"
+                  :color="item.color ?? 'theme'"
+                  v-bind="item"
                   class="menuitem"
+                  tabindex="-1"
                   :class="[
                     {
                       '--is-keyboard-selected': keyboardSelectedIndex === index,
@@ -352,20 +351,22 @@ watch(
                   <slot name="menuitem-label" :item="item">
                     {{ item.label }}
                   </slot>
-                </a>
+                </MazLink>
               </template>
               <template v-else-if="item.action">
                 <button
                   tabindex="-1"
                   type="button"
-                  class="menuitem"
+                  v-bind="item"
+                  class="menuitem menuitem__button"
                   :class="[
                     {
                       '--is-keyboard-selected': keyboardSelectedIndex === index,
                     },
                     item.class,
+                    `--${item.color ?? 'theme'}`,
                   ]"
-                  @click.stop="!!item.action ? runAction(item, $event) : closeOnClick()"
+                  @click.stop="isActionItem(item) ? runAction(item, $event) : closeOnClick()"
                 >
                   <slot name="menuitem-label" :item="item">
                     {{ item.label }}
@@ -440,6 +441,48 @@ watch(
 
       &.--is-keyboard-selected {
         @apply maz-bg-color-light;
+      }
+
+      &.menuitem__button {
+        &:disabled {
+          @apply maz-cursor-not-allowed maz-opacity-50;
+        }
+
+        &.--primary {
+          @apply maz-text-primary hover:maz-text-primary-600;
+        }
+
+        &.--secondary {
+          @apply maz-text-secondary hover:maz-text-secondary-600;
+        }
+
+        &.--info {
+          @apply maz-text-info hover:maz-text-info-600;
+        }
+
+        &.--warning {
+          @apply maz-text-warning-600 hover:maz-text-warning-800;
+        }
+
+        &.--danger {
+          @apply maz-text-danger-600 hover:maz-text-danger-800;
+        }
+
+        &.--success {
+          @apply maz-text-success-600 hover:maz-text-success-800;
+        }
+
+        &.--white {
+          @apply maz-text-white hover:maz-text-gray-300;
+        }
+
+        &.--black {
+          @apply maz-text-black hover:maz-text-gray-800;
+        }
+
+        &.--theme {
+          @apply maz-text-normal hover:maz-text-black dark:hover:maz-text-white;
+        }
       }
     }
   }
