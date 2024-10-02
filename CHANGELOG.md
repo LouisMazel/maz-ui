@@ -1,5 +1,25 @@
 # Change Log
 
+## v3.45.6...v3.46.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.45.6...v3.46.0)
+
+### 🚀 Enhancements
+
+- **maz-ui:** Add new dialog plugin to display dialog modals programmatically ([88b860391](https://github.com/LouisMazel/maz-ui/commit/88b860391))
+
+### 🩹 Fixes
+
+- **maz-ui:** MazPhoneNumberInput - auto-fill ([9533d0f19](https://github.com/LouisMazel/maz-ui/commit/9533d0f19))
+
+### 🏡 Chore
+
+- **deps:** Upgrade dependencies ([b6f7124fb](https://github.com/LouisMazel/maz-ui/commit/b6f7124fb))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.45.5...v3.45.6
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.45.5...v3.45.6)
