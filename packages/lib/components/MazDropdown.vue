@@ -39,6 +39,7 @@ const emits = defineEmits<{
 }>()
 
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
+const MazLink = defineAsyncComponent(() => import('./MazLink.vue'))
 const ChevronDownIcon = defineAsyncComponent(() => import('./../icons/chevron-down.svg'))
 
 type ItemBase = Record<string, unknown> & {
@@ -57,7 +58,9 @@ type ActionItem = ItemBase & {
   action?: () => unknown
 }
 
-export type MenuItem = (LinkItem | ActionItem)
+export type MenuItem =
+  | (LinkItem & { action?: never })
+  | (ActionItem & { href?: never, to?: never, target?: never })
 
 export interface Props {
   style?: HTMLAttributes['style']
@@ -155,6 +158,10 @@ function setDropdown(value: boolean) {
 
 function isActionItem(item: MenuItem): item is ActionItem {
   return 'action' in item
+}
+
+function isLinkItem(item: MenuItem): item is LinkItem {
+  return 'href' in item || 'to' in item
 }
 
 async function runAction(item: ActionItem, event: Event) {
@@ -330,8 +337,7 @@ watch(
                 @binding {Object} item - menu item
             -->
             <slot name="menuitem" :item="item">
-              {{ item.label }}
-              <template v-if="item.to || item.href">
+              <template v-if="isLinkItem(item)">
                 <MazLink
                   :target="item.href ? item.target ?? '_self' : undefined"
                   :to="item.to"
@@ -353,7 +359,7 @@ watch(
                   </slot>
                 </MazLink>
               </template>
-              <template v-else-if="item.action">
+              <template v-else-if="isActionItem(item)">
                 <button
                   tabindex="-1"
                   type="button"
@@ -366,7 +372,7 @@ watch(
                     item.class,
                     `--${item.color ?? 'theme'}`,
                   ]"
-                  @click.stop="isActionItem(item) ? runAction(item, $event) : closeOnClick()"
+                  @click.stop="runAction(item, $event)"
                 >
                   <slot name="menuitem-label" :item="item">
                     {{ item.label }}
