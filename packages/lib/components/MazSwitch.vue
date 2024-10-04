@@ -76,10 +76,6 @@ const instanceId = useInstanceUniqId({
 
 const bgColorClassVar = computed(() => `var(--maz-color-${props.color}-alpha)`)
 
-const bgColorStyle = computed<HTMLAttributes['class']>(() =>
-  props.modelValue ? `var(--maz-color-${props.color})` : 'var(--maz-color-white)',
-)
-
 function emit() {
   emits('update:model-value', !props.modelValue)
   emits('change', !props.modelValue)
@@ -174,9 +170,8 @@ function onFocus(event: FocusEvent) {
       content: '';
       transition: all 200ms ease-in-out;
 
-      @apply maz-relative maz-left-1 maz-top-1 maz-block maz-h-4 maz-w-10 maz-rounded-full;
-
-      background-color: v-bind('bgColorClassVar');
+      @apply maz-relative maz-left-0 maz-top-0.5 maz-block maz-h-5 maz-w-[3rem] maz-rounded-full;
+      @apply maz-bg-color-light dark:maz-bg-color-lighter;
     }
 
     &::after {
@@ -184,8 +179,8 @@ function onFocus(event: FocusEvent) {
 
       @apply maz-absolute maz-left-0 maz-top-0 maz-block maz-h-6 maz-w-6 maz-rounded-full;
 
-      background-color: v-bind('bgColorStyle');
-      box-shadow: 0 2px 8px 0 hsl(0deg 0% 0% / 20%);
+      background-color: white;
+      box-shadow: 0 0 4px 0 hsl(0deg 0% 0% / 20%);
       transition: all 200ms ease-in-out;
     }
   }
@@ -194,16 +189,22 @@ function onFocus(event: FocusEvent) {
     &::after {
       @apply maz-translate-x-6;
     }
+
+    &::before {
+      background-color: v-bind('bgColorClassVar');
+    }
   }
 
   &__input:disabled {
     + .m-switch__toggle {
-      &::after {
-        @apply maz-bg-color-light dark:maz-bg-color-lighter;
-      }
-
       &::before {
         @apply maz-bg-color-lighter dark:maz-bg-color-light;
+      }
+
+      &::after {
+        @apply maz-bg-color-light dark:maz-bg-color-lighter;
+
+        box-shadow: none;
       }
     }
   }
