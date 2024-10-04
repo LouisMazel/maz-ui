@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import type { Color } from './types'
+import type { HTMLAttributes } from 'vue'
 
+import type { Color } from './types'
 import { computed, defineAsyncComponent } from 'vue'
 
 export type { Color }
@@ -17,8 +18,10 @@ const props = withDefaults(defineProps<Props>(), {
   letterCount: undefined,
   roundedSize: 'full',
   fallbackSrc: undefined,
+  loading: 'intersecting',
 })
-defineEmits<{
+const emits = defineEmits<{
+  /** Emitted when the avatar is clicked */
   (name: 'click', event: MouseEvent): void
   /** Emitted when the image is intersecting */
   (name: 'intersecting', el: Element): void
@@ -33,6 +36,10 @@ const MazLazyImg = defineAsyncComponent(() => import('./MazLazyImg.vue'))
 const PencilIcon = defineAsyncComponent(() => import('./../icons/pencil.svg'))
 
 export interface Props {
+  /** The style of the component */
+  style?: HTMLAttributes['style']
+  /** The class of the component */
+  class?: HTMLAttributes['class']
   /** The source of the image */
   src?: string | null
   /** The caption of the avatar */
@@ -76,6 +83,12 @@ export interface Props {
   fallbackSrc?: string
   /** Load the fallback image by default */
   noPhoto?: boolean
+  /**
+   * The loading strategy of the image - lazy, eager or intersecting
+   * @default 'intersecting'
+   * @values `'lazy' | 'eager' | 'intersecting'`
+   */
+  loading?: 'lazy' | 'eager' | 'intersecting'
 }
 
 const componentType = computed(() => (props.to ? 'RouterLink' : props.href ? 'a' : 'div'))
@@ -90,17 +103,35 @@ function getInitials(name: string, lettersCount = props.letterCount) {
 
   return letters.slice(0, lettersCount)
 }
+
+const shouldDisplayImg = computed(() => props.src || (!props.src && !props.caption))
+
+function handleImageError(event: Event) {
+  emits('error', event.target as Element)
+
+  if (props.fallbackSrc && event.target instanceof HTMLImageElement) {
+    const currentSrc = new URL(event.target.src)
+    const fallbackSrc = new URL(props.fallbackSrc)
+
+    if (currentSrc.href === fallbackSrc.href) {
+      return
+    }
+
+    event.target.src = props.fallbackSrc
+  }
+}
 </script>
 
 <template>
   <Component
     :is="componentType"
-    :style="{ fontSize: size }"
+    :style="[{ fontSize: size }, style]"
     class="m-avatar"
     :class="[
       {
         '--has-link': isLink,
       },
+      props.class,
     ]"
     :href="href"
     :to="to"
@@ -119,21 +150,32 @@ function getInitials(name: string, lettersCount = props.letterCount) {
         `--rounded-${square ? 'none' : roundedSize}`,
       ]"
     >
-      <MazLazyImg
-        v-if="src || (!src && !caption)"
-        class="m-avatar__picture maz-w-full maz-max-w-full"
-        :image="src"
-        :alt="alt"
-        :no-photo="noPhoto"
-        image-height-full
-        :no-loader="noLoader"
-        :fallback-src="fallbackSrc"
-        @click="clickable ? $emit('click', $event) : null"
-        @error="$emit('error', $event)"
-        @loaded="$emit('loaded', $event)"
-        @loading="$emit('loading', $event)"
-        @intersecting="$emit('intersecting', $event)"
-      />
+      <template v-if="shouldDisplayImg">
+        <MazLazyImg
+          v-if="loading === 'intersecting'"
+          v-bind="$attrs"
+          class="m-avatar__picture maz-w-full maz-max-w-full"
+          :src
+          :alt
+          :no-photo
+          image-height-full
+          :no-loader
+          :fallback-src
+          @click="clickable ? $emit('click', $event) : null"
+          @error="$emit('error', $event)"
+          @loaded="$emit('loaded', $event)"
+          @loading="$emit('loading', $event)"
+          @intersecting="$emit('intersecting', $event)"
+        />
+        <img
+          v-else
+          class="m-avatar__picture maz-w-full maz-max-w-full"
+          :src="src ?? fallbackSrc"
+          :alt="alt"
+          :loading
+          @error="handleImageError"
+        >
+      </template>
       <slot v-if="caption && !src" name="round-text">
         <span class="m-avatar__initial"> {{ getInitials(caption) }} </span>
       </slot>
