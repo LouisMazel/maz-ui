@@ -15,7 +15,7 @@ This component uses [vLazyImg](./../directives/lazy-img.md) directive
 
 ## Basic usage
 
-<MazAvatar src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80" />
+<MazAvatar :lazy="false" src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80" />
 
 ```vue
 <template>
@@ -119,11 +119,63 @@ See all the options props [here](#props-event-slots)
 
 <MazAvatar
   class="vp-raw"
+  src="https://broken-link-image-src.com"
   fallback-src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=100"
 />
 
 ```html
-<MazAvatar fallback-src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=100" />
+<MazAvatar
+  src="https://broken-link-image-src.com"
+  fallback-src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=100"
+/>
+```
+
+## Loading
+
+The props `loading` has 3 possible values: `intersecting`, `lazy`, or `eager`.
+
+By default, the value is `intersecting` which means the image will be loaded when it's intersecting with the `IntersectionObserver` browser API. This mode uses the [`MazLazyImg`](./maz-lazy-img.md) component with [`vLazyImg`](./../directives/lazy-img.md) directive to handle the lazy loading.
+
+Native modes:
+- `lazy`: The image will be loaded only when it's in the viewport
+- `eager`: The image will be loaded immediately
+
+These modes are native use an `HTMLImageElement` with the `loading` attribute. (see [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#attr-loading)). **Useful for SSR (Server Side Rendering) or when you want to load the image immediately.**
+
+<div class="flex gap-05 items-center flex-wrap">
+  <MazAvatar
+    class="vp-raw"
+    loading="intersecting"
+    src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=123"
+  />
+  <MazAvatar
+    class="vp-raw"
+    loading="lazy"
+    src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=123"
+  />
+  <MazAvatar
+    class="vp-raw"
+    loading="eager"
+    src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=123"
+  />
+</div>
+
+```html
+<MazAvatar
+  class="vp-raw"
+  loading="intersecting"
+  src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=123"
+/>
+<MazAvatar
+  class="vp-raw"
+  loading="lazy"
+  src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=123"
+/>
+<MazAvatar
+  class="vp-raw"
+  loading="eager"
+  src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=123"
+/>
 ```
 
 <script lang="ts" setup>
