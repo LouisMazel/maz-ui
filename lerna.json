@@ -1,6 +1,6 @@
 {
   "loglevel": "verbose",
-  "version": "3.46.0",
+  "version": "3.46.1-beta.0",
   "command": {
     "version": {
       "allowBranch": ["master", "release/*", "feature/use-form-validator"],
