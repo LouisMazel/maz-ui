@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { RouteLocationRaw } from 'vue-router'
 import type { Color } from './MazBtn.vue'
-import type { Props as MazLinkProps } from './MazLink.vue'
+import type { MazLinkProps } from './MazLink.vue'
 import type { Position } from './types'
 import { defineAsyncComponent, type HTMLAttributes, ref, watch } from 'vue'
 import { useInstanceUniqId } from '../modules/composables/useInstanceUniqId'

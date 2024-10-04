@@ -9,7 +9,7 @@ import {
   type SVGAttributes,
 } from 'vue'
 
-withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<MazLinkProps>(), {
   id: undefined,
   title: undefined,
   color: 'primary',
@@ -32,7 +32,7 @@ const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
 
 export type Icon = FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component
 
-export interface Props {
+export interface MazLinkProps {
   /** The id of the link */
   id?: string
   /** The title of the link */
