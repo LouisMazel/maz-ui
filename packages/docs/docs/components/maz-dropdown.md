@@ -12,7 +12,6 @@ description: MazDropdown is a standalone dropdown menu component and versatile d
 ## Basic usage
 
 <MazDropdown
-  open
   :items="[
     { label: 'Action', action: () => toast.success('CLICKED') },
     { label: 'Link (href)', href: 'https://www.google.com', target: '_blank', color: 'secondary' },

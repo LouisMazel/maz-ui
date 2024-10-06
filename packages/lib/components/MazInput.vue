@@ -4,23 +4,18 @@ export type { Color, ModelValueSimple, Size } from './types'
 </script>
 
 <script lang="ts" setup generic="T extends ModelValueSimple">
-import type { Color, ModelValueSimple, Size } from './types'
+import type { Color, Icon, ModelValueSimple, Size } from './types'
 import {
-  type Component,
-  type ComponentPublicInstance,
   computed,
   defineAsyncComponent,
-  type FunctionalComponent,
   type HTMLAttributes,
   onMounted,
   ref,
-  type SVGAttributes,
   useSlots,
 } from 'vue'
 import { useInstanceUniqId } from '../modules/composables/useInstanceUniqId'
 import { debounce as debounceFn } from './../modules/helpers/debounce'
 
-export type Icon = FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component
 export interface Props<T = ModelValueSimple> {
   /** The style of the component */
   style?: HTMLAttributes['style']
