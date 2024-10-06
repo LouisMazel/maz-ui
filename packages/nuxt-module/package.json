@@ -1,6 +1,6 @@
 {
   "name": "nuxt-module",
-  "version": "3.46.1-beta.3",
+  "version": "3.46.1-beta.4",
   "license": "MIT",
   "type": "module",
   "exports": {
