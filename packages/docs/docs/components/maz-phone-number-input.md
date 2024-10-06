@@ -12,7 +12,7 @@ description: MazPhoneNumberInput is a standalone input component that helps the 
 <!--@include: ./../.vitepress/mixins/maz-input-props.md-->
 
 ::: warning
-  The flags do not seem to work in Google Chrome with Windows but you can use this polyfill: [https://www.npmjs.com/package/country-flag-emoji-polyfill](https://www.npmjs.com/package/country-flag-emoji-polyfill)
+For some countries with multiple valid number lengths like Anguilla (AI), you may need to disable the auto formatting (as you type) with `auto-format="false"` prop
 :::
 
 ## Prerequisites
@@ -53,6 +53,7 @@ npm install libphonenumber-js
     :preferred-countries="['FR', 'BE', 'DE', 'US', 'GB']"
     :ignored-countries="['AC']"
     @update="results = $event"
+    :auto-format="false"
   />
 
   <br />
@@ -211,7 +212,7 @@ Replace the default flags with slots
     <template #selector-flag="{ countryCode }">
       <span
         id="input-flag-element"
-        style="font-size: 0.8rem; background-color: var(--maz-color-secondary); color: var(--maz-color-secondary-contrast); border-radius: 100px; padding: 2px;"
+        style="font-size: 0.8rem; background-color: var(--maz-color-secondary); color: var(--maz-color-secondary-contrast); border-radius: 20%; padding: 3px; line-height: 1;"
       >
         {{ countryCode }}
       </span>

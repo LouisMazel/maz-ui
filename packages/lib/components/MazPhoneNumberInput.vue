@@ -190,12 +190,12 @@ export interface Props {
   orientation?: 'row' | 'col' | 'responsive'
   /**
    * Meta attributes of the country input
-   * @default {Record<string, unknown>} { autocomplete: 'off', name: 'country' }
+   * @default `{Record<string, unknown>}` `{ autocomplete: 'off', name: 'country' }`
    */
   countrySelectAttributes?: Record<string, unknown>
   /**
    * Meta attributes of the phone number input
-   * @default {Record<string, unknown>} { autocomplete: 'tel', name: 'phone', inputmode: 'tel' }
+   * @default `{Record<string, unknown>}` `{ autocomplete: 'tel', name: 'phone', inputmode: 'tel' }`
    */
   phoneInputAttributes?: Record<string, unknown>
 }
@@ -211,13 +211,14 @@ const instanceId = useInstanceUniqId({
 /**
  * State
  */
-
 const phoneNumber = ref<string>('')
 const selectedCountry = ref<CountryCode>()
 const results = ref<Results>({
   isValid: false,
   countryCode: undefined,
 })
+
+const asYouTypeFormatted = ref<string>()
 
 interface SelectionRange {
   start?: number | null
@@ -282,8 +283,6 @@ async function selectPhoneNumberInput() {
 function countryChanged(countryCode?: CountryCode) {
   onCountryChanged({
     countryCode,
-    autoFormat: props.autoFormat,
-    noFormattingAsYouType: props.noFormattingAsYouType,
   })
   selectPhoneNumberInput()
 }
@@ -303,13 +302,9 @@ function setSelectedCountry(countryCode?: string) {
 
 function onPhoneNumberChanged({
   newPhoneNumber,
-  autoFormat,
-  noFormattingAsYouType,
   updateResults = true,
 }: {
   newPhoneNumber?: string
-  autoFormat: boolean
-  noFormattingAsYouType: boolean
   updateResults?: boolean
 }) {
   const sanitizedPhoneNumber = sanitizePhoneNumber(newPhoneNumber)
@@ -321,22 +316,15 @@ function onPhoneNumberChanged({
     })
   }
 
-  if (results.value.isValid && results.value.formatNational && autoFormat) {
-    phoneNumber.value = results.value.formatNational
-  }
-  else if (selectionRange.value.cursorAtEnd && !noFormattingAsYouType) {
-    const asYouTypeFormatted = getAsYouTypeFormat(selectedCountry.value, sanitizedPhoneNumber)
-    phoneNumber.value = asYouTypeFormatted
-  }
-  else {
-    phoneNumber.value = sanitizedPhoneNumber
+  if (selectionRange.value.cursorAtEnd && !props.noFormattingAsYouType && props.autoFormat) {
+    const phoneNumberToFormat = results.value.isValid ? results.value.formatNational : sanitizedPhoneNumber
+    asYouTypeFormatted.value = getAsYouTypeFormat(selectedCountry.value, phoneNumberToFormat)
+    phoneNumber.value = asYouTypeFormatted.value
   }
 
   if (results.value.countryCode && results.value.countryCode !== selectedCountry.value) {
     onCountryChanged({
       countryCode: results.value.countryCode,
-      autoFormat,
-      noFormattingAsYouType,
       updateResults: false,
     })
   }
@@ -344,13 +332,9 @@ function onPhoneNumberChanged({
 
 function onCountryChanged({
   countryCode,
-  autoFormat,
-  noFormattingAsYouType,
   updateResults = true,
 }: {
   countryCode?: CountryCode
-  autoFormat: boolean
-  noFormattingAsYouType: boolean
   updateResults?: boolean
 }) {
   if (!countryCode) {
@@ -371,8 +355,6 @@ function onCountryChanged({
 
   onPhoneNumberChanged({
     newPhoneNumber: phoneNumber.value,
-    autoFormat,
-    noFormattingAsYouType,
     updateResults: false,
   })
 }
@@ -383,8 +365,6 @@ watch(
     if (value !== oldValue && value !== phoneNumber.value) {
       onPhoneNumberChanged({
         newPhoneNumber: value,
-        autoFormat: props.autoFormat,
-        noFormattingAsYouType: props.noFormattingAsYouType,
       })
     }
   },
@@ -399,8 +379,6 @@ watch(
     if (value && value !== oldValue && value !== selectedCountry.value) {
       onCountryChanged({
         countryCode: value,
-        autoFormat: props.autoFormat,
-        noFormattingAsYouType: props.noFormattingAsYouType,
       })
     }
   },
@@ -495,7 +473,7 @@ watch(
     <PhoneInput
       :id="instanceId"
       ref="PhoneInputRef"
-      :model-value="phoneNumber"
+      v-model="phoneNumber"
       v-bind="{ ...$attrs, ...phoneInputAttributes }"
       :color
       :size
@@ -513,8 +491,6 @@ watch(
       @update:model-value="
         onPhoneNumberChanged({
           newPhoneNumber: $event,
-          autoFormat,
-          noFormattingAsYouType,
         })
       "
     />
