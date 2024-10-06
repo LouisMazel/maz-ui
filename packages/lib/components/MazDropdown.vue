@@ -103,6 +103,15 @@ export interface MazDropdownProps {
    * @default 'Open menu dropdown'
    */
   screenReaderDescription?: string
+  /**
+   * Class for the menu panel - useful for custom dropdown panel (background, border, etc.)
+   */
+  menuPanelClass?: HTMLAttributes['class']
+  /**
+   * Style for the menu panel - useful for custom dropdown panel (background, border, etc.)
+   * You may use `!important` to override the default style
+   */
+  menuPanelStyle?: HTMLAttributes['style']
 }
 
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
@@ -320,12 +329,13 @@ watch(
         aria-label="Menu"
         class="menu"
         tabindex="-1"
-        :class="{
+        :class="[{
           '--top': position.includes('top'),
           '--left': position.includes('left'),
           '--right': position.includes('right'),
           '--bottom': position.includes('bottom'),
-        }"
+        }, menuPanelClass]"
+        :style="menuPanelStyle"
         @focus="setDropdownDebounced(true)"
         @blur="setDropdownDebounced(false)"
         @mouseenter="['hover', 'both'].includes(trigger) ? setDropdownDebounced(true) : undefined"
