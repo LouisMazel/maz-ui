@@ -16,7 +16,7 @@ describe('components/MazInput.vue', () => {
 
   it('should have an uniq id', () => {
     // @ts-expect-error - test case
-    expect(wrapper.vm.instanceId).toBe('MazInput-1')
+    expect(wrapper.vm.instanceId).toBe('MazInput-v-0')
   })
 
   it('should emit an input event with the new value when the input value changes', () => {

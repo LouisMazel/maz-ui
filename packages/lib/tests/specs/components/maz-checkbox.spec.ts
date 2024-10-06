@@ -29,7 +29,8 @@ describe('components/MazCheckbox.vue', () => {
       },
     })
 
-    expect(wrapper.vm.instanceId).toBe('MazCheckbox-4')
+    // @ts-expect-error instanceId is a private property
+    expect(wrapper.vm.instanceId).toBe('MazCheckbox-v-0')
 
     wrapper.unmount()
   })

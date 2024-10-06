@@ -8,10 +8,8 @@ const _dirname = fileURLToPath(new URL('.', import.meta.url))
 
 export async function createLibraryTestFile({
   filename,
-  filenameKebab,
 }: {
   filename: string
-  filenameKebab: string
 }): Promise<void> {
   const testComponentTemplate = `import { shallowMount, type VueWrapper } from '@vue/test-utils'
 import ${filename} from '@components/${filename}.vue'
@@ -28,7 +26,7 @@ describe('${filename}', () => {
   try {
     const TEST_FILE_OUTPUT = resolve(
       _dirname,
-      `../../../../lib/tests/specs/components/${filenameKebab}.spec.ts`,
+      `../../../../lib/tests/specs/components/${filename}.spec.ts`,
     )
 
     await writeFile(TEST_FILE_OUTPUT, testComponentTemplate)
