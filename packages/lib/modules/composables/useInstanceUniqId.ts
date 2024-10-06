@@ -1,4 +1,4 @@
-import { computed, getCurrentInstance } from 'vue'
+import { computed, useId } from 'vue'
 
 export function useInstanceUniqId({
   componentName,
@@ -7,5 +7,6 @@ export function useInstanceUniqId({
   componentName: string
   providedId?: string
 }) {
-  return computed(() => providedId ?? `${componentName}-${getCurrentInstance()?.uid}`)
+  const id = useId()
+  return computed(() => providedId ?? `${componentName}-${id}`)
 }

@@ -1,19 +1,14 @@
 <script lang="ts" setup>
-import type { Color } from './types'
+import type { Color, Icon } from './types'
 import {
   type Component,
-  type ComponentPublicInstance,
   computed,
   defineAsyncComponent,
-  type FunctionalComponent,
   ref,
-  type SVGAttributes,
   useSlots,
 } from 'vue'
 
 export type { Color }
-
-export type Icon = FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component
 
 export interface Step {
   title?: string

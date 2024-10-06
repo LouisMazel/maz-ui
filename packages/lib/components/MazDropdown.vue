@@ -4,7 +4,7 @@ import type { Color } from './MazBtn.vue'
 import type { MazLinkProps } from './MazLink.vue'
 import type { Position } from './types'
 import { defineAsyncComponent, type HTMLAttributes, ref, watch } from 'vue'
-import { useInstanceUniqId } from '../modules/composables/useInstanceUniqId'
+import { useInstanceUniqId } from '../modules'
 import { vClickOutside } from '../modules/directives/click-outside'
 import { debounce } from '../modules/helpers/debounce'
 
@@ -14,11 +14,11 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<MazDropdownProps>(), {
   class: undefined,
   style: undefined,
-  items: () => [],
   id: undefined,
+  items: () => [],
   trigger: 'both',
   color: 'transparent',
   position: 'bottom left',
@@ -28,19 +28,20 @@ const props = withDefaults(defineProps<Props>(), {
 const emits = defineEmits<{
   /**
    * emitted when a menu item is clicked
+   * @property {Event} event - the click event
    */
   'menuitem-clicked': [event: Event]
   /**
    * Triggers when the number changes
-   *
    * @property {boolean} open new value
    */
   'update:open': [value: boolean]
 }>()
 
-const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
-const MazLink = defineAsyncComponent(() => import('./MazLink.vue'))
-const ChevronDownIcon = defineAsyncComponent(() => import('./../icons/chevron-down.svg'))
+const instanceId = useInstanceUniqId({
+  componentName: 'MazDropdown',
+  providedId: props.id,
+})
 
 type ItemBase = Record<string, unknown> & {
   label: string
@@ -62,10 +63,15 @@ export type MenuItem =
   | (LinkItem & { action?: never })
   | (ActionItem & { href?: never, to?: never, target?: never })
 
-export interface Props {
+export interface MazDropdownProps {
+  /** Style object */
   style?: HTMLAttributes['style']
+  /** Class name */
   class?: HTMLAttributes['class']
-  /** Menu items */
+  /**
+   * Menu items
+   * @default '[]'
+   */
   items?: MenuItem[]
   /** Menu should be open? */
   open?: boolean
@@ -99,10 +105,9 @@ export interface Props {
   screenReaderDescription?: string
 }
 
-const instanceId = useInstanceUniqId({
-  componentName: 'MazDropdown',
-  providedId: props.id,
-})
+const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
+const MazLink = defineAsyncComponent(() => import('./MazLink.vue'))
+const ChevronDownIcon = defineAsyncComponent(() => import('./../icons/chevron-down.svg'))
 
 const dropdownOpen = ref(props.open)
 const keyboardSelectedIndex = ref<number>()
@@ -275,7 +280,8 @@ watch(
       @mouseenter="onElementMouseenter"
       @mouseleave="onElementMouseleave"
     >
-      <span :id="`${instanceId}-labelspan`" class="maz-sr-only">
+      <span v-if="screenReaderDescription || $slots['screen-reader-description']" :id="`${instanceId}-labelspan`" class="maz-sr-only">
+        <!-- @slot Description for screen reader (hidden) -->
         <slot name="screen-reader-description">
           {{ screenReaderDescription }}
         </slot>
@@ -287,13 +293,13 @@ watch(
       -->
       <slot name="element" :is-open="dropdownOpen">
         <MazBtn
-          :color="color"
-          :disabled="disabled"
           :aria-labelledby="`${instanceId}-labelspan`"
-          v-bind="$attrs"
+          :color
+          :disabled
+          v-bind="{ ...$attrs }"
           tabindex="-1"
         >
-          <span class="button-span">
+          <span v-if="$slots.default || !noChevron" class="button-span">
             <!-- @slot Button text -->
             <slot />
 
@@ -303,7 +309,6 @@ watch(
               class="chevron-icon"
             />
           </span>
-          <!-- @slot Menu Label -->
         </MazBtn>
       </slot>
     </div>
@@ -334,7 +339,7 @@ watch(
           <template v-for="(item, index) in items" :key="index">
             <!--
               @slot Custom menu item
-                @binding {Object} item - menu item
+                @binding {MenuItem} item - menu item
             -->
             <slot name="menuitem" :item="item">
               <template v-if="isLinkItem(item)">
@@ -344,6 +349,7 @@ watch(
                   :href="item.href"
                   :color="item.color ?? 'theme'"
                   v-bind="item"
+                  :underline-only-hover="item.underlineOnlyHover ?? false"
                   class="menuitem"
                   tabindex="-1"
                   :class="[
@@ -354,6 +360,10 @@ watch(
                   ]"
                   @click.stop="closeOnClick"
                 >
+                  <!--
+                    @slot Custom label for menu item
+                      @binding {MenuItem} - item menu item
+                  -->
                   <slot name="menuitem-label" :item="item">
                     {{ item.label }}
                   </slot>

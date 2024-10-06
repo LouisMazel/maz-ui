@@ -1,3 +1,5 @@
+import type { Component, ComponentPublicInstance, FunctionalComponent, SVGAttributes } from 'vue'
+
 export type ModelValueSimple = string | number | null | undefined | boolean
 
 export type MazGalleryImage =
@@ -55,3 +57,5 @@ export interface DataImage {
 }
 
 export type Image = DataImage | string
+
+export type Icon = FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component

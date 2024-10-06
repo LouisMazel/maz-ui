@@ -1,15 +1,11 @@
 <script lang="ts" setup>
-import type { Color, Size } from './types'
+import type { Color, Icon, Size } from './types'
 
 import {
-  type Component,
-  type ComponentPublicInstance,
   computed,
   defineAsyncComponent,
-  type FunctionalComponent,
   type HTMLAttributes,
   onBeforeMount,
-  type SVGAttributes,
   useAttrs,
   useSlots,
 } from 'vue'
@@ -32,8 +28,6 @@ const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
 
 const { href, to } = useAttrs()
 const slots = useSlots()
-
-export type Icon = FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component
 
 export interface Props {
   /**
