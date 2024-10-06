@@ -62,6 +62,8 @@ export interface Props {
   observerOptions?: vLazyImgOptions['observerOptions']
   /** The fallback src to replace the src on loading error */
   fallbackSrc?: string
+  /** The classes of the image element */
+  imgClass?: HTMLAttributes['class']
 }
 
 const src = computed(() => props.image || props.src)
@@ -86,19 +88,20 @@ const sources = computed(() => {
     }"
     class="m-lazy-img-component"
     :class="[{ '--use-loader': !noLoader, '--height-full': imageHeightFull }, props.class]"
-    :style="style"
+    :style
   >
     <source
       v-for="({ srcset, media }, sourceIndex) in sources"
       :key="sourceIndex"
       :data-lazy-srcset="srcset"
-      :media="media"
+      :media
     >
     <img
       v-bind="$attrs"
       src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
       loading="lazy"
-      :alt="alt"
+      :alt
+      :class="imgClass"
     >
     <div v-if="!noLoader" class="m-lazy-img-component-loader">
       <MazSpinner size="2em" />
@@ -115,9 +118,9 @@ const sources = computed(() => {
     @apply maz-absolute maz-inset-0 maz-hidden maz-flex-center;
   }
 
-  &:not(.m-lazy-error, .m-lazy-no-photo) img {
+  /* &:not(.m-lazy-error, .m-lazy-no-photo) img {
     @apply maz-h-full maz-w-full;
-  }
+  } */
 
   &.--height-full img {
     @apply maz-max-h-full maz-w-min maz-max-w-min !important;

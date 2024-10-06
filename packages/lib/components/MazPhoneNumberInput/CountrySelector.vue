@@ -8,9 +8,10 @@ import type {
   Translations,
 } from '../MazPhoneNumberInput.vue'
 import { type ComponentPublicInstance, computed, type HTMLAttributes, ref } from 'vue'
-import { countryCodeToUnicodeFlag } from '../../modules/helpers/country-code-to-unicode-flag'
+import { countryFlagUrlFromFlagcdn } from '../../modules/helpers/country-flag-from-flagcn'
 import { injectStrict } from '../../modules/helpers/inject-strict'
 import { truthyFilter } from '../../modules/helpers/truthy-filter'
+import MazLazyImg from '../MazLazyImg.vue'
 import MazSelect from '../MazSelect.vue'
 import { useMazPhoneNumberInput } from './use-maz-phone-number-input'
 
@@ -115,7 +116,7 @@ async function focusCountrySelector() {
     <button
       v-if="modelValue && !noFlags"
       :id="`country-selector-flag-button-${id}`"
-      class="m-country-selector__country-flag maz-text-xl"
+      class="m-country-selector__country-flag"
       tabindex="-1"
       type="button"
       :class="{
@@ -128,7 +129,13 @@ async function focusCountrySelector() {
           @binding {String} country-code - current selected country code - Ex: `"FR"`
       -->
       <slot name="selector-flag" :country-code="modelValue">
-        {{ countryCodeToUnicodeFlag(modelValue) }}
+        <MazLazyImg
+          :src="countryFlagUrlFromFlagcdn(modelValue, 'h20')"
+          :alt="modelValue"
+          width="20"
+          height="20"
+          img-class="maz-w-5 maz-h-4 maz-rounded-sm"
+        />
       </slot>
     </button>
 
@@ -142,6 +149,7 @@ async function focusCountrySelector() {
       option-label-key="name"
       :option-input-value-key="countrySelectorDisplayName ? 'name' : 'dialCode'"
       :max-list-width="250"
+      :min-list-width="200"
       :disabled
       :color
       :size
@@ -166,12 +174,12 @@ async function focusCountrySelector() {
       </template>
       <template #default="{ option, isSelected }">
         <div
-          class="m-country-selector__select__item maz-flex maz-items-center maz-gap-1 maz-truncate"
+          class="m-country-selector__select__item"
           :class="{
             'm-country-selector__select__item--selected': isSelected,
           }"
         >
-          <span v-if="!noFlags && typeof option.iso2 === 'string'" class="maz-text-lg">
+          <span v-if="!noFlags && typeof option.iso2 === 'string'" class="m-country-selector__select__item__flag-container">
             <!--
               @slot Country list flag
                 @binding {String} country-code - country code of option - Ex: `"FR"`
@@ -184,7 +192,13 @@ async function focusCountrySelector() {
               :option="option"
               :is-selected="isSelected"
             >
-              {{ countryCodeToUnicodeFlag(option.iso2) }}
+              <MazLazyImg
+                :src="countryFlagUrlFromFlagcdn(option.iso2 as CountryCode, 'h20')"
+                :alt="`${option.name} flag`"
+                width="20"
+                height="20"
+                img-class="maz-rounded-full maz-w-5 maz-h-5"
+              />
             </slot>
           </span>
           <span
@@ -209,13 +223,16 @@ async function focusCountrySelector() {
 
   &__country-flag {
     position: absolute;
-    left: 13px;
+    left: 0.813rem;
     z-index: 4;
     outline: none;
     border: none;
     padding: 0;
     margin: 0;
+    top: 1.25rem;
     cursor: pointer;
+
+    @apply maz-flex maz-flex-center;
 
     &.--should-have-bottom-flag {
       bottom: 2px;
@@ -228,7 +245,11 @@ async function focusCountrySelector() {
     }
 
     &__item {
-      @apply maz-w-full maz-text-sm;
+      @apply maz-w-full maz-text-sm maz-flex maz-items-center maz-gap-1 maz-truncate;
+
+      &__flag-container {
+        @apply maz-flex maz-flex-center;
+      }
     }
   }
 
