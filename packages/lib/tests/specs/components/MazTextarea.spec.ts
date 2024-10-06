@@ -50,7 +50,7 @@ describe('components/MazTextarea.vue', () => {
   })
 
   it('should have an uniq id', () => {
-    expect(wrapper.vm.instanceId).toBe('MazTextarea-1')
+    expect(wrapper.vm.instanceId).toBe('MazTextarea-v-0')
   })
 
   it('should up the label if the component is focused', async () => {
