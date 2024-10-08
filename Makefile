@@ -100,13 +100,12 @@ print-version:
 publish-prerelease:
 	pnpx lerna version prerelease --preid beta
 	git add -u
-	git commit -m "chore(release): bump version to $(version)"
+	git commit -m "chore(release): bump version to $($(shell jq -r .version packages/lib/package.json))"
 	git push origin HEAD
 	make build-lib
 	cd packages/lib/dist && pnpm publish --access public --tag beta --no-git-checks
 
 # CLI
-
 create-component-files:
 	pnpm --filter cli cli create-files -f $(name)
 generate-components-docs:
