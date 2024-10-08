@@ -74,7 +74,12 @@ const instanceId = useInstanceUniqId({
   providedId: props.id,
 })
 
-const bgColorClassVar = computed(() => `var(--maz-color-${props.color}-alpha)`)
+const bgColorClassVar = computed(() => {
+  if (props.color === 'theme')
+    return 'var(--maz-color-bg-theme)'
+
+  return `var(--maz-color-${props.color}-alpha)`
+})
 
 function emit() {
   emits('update:model-value', !props.modelValue)
@@ -170,16 +175,15 @@ function onFocus(event: FocusEvent) {
       content: '';
       transition: all 200ms ease-in-out;
 
-      @apply maz-relative maz-left-0 maz-top-0.5 maz-block maz-h-5 maz-w-[3rem] maz-rounded-full;
+      @apply maz-relative maz-left-0 maz-top-0.5 maz-block maz-h-6 maz-w-[3rem] maz-rounded-full;
       @apply maz-bg-color-light dark:maz-bg-color-lighter;
     }
 
     &::after {
       content: '';
 
-      @apply maz-absolute maz-left-0 maz-top-0 maz-block maz-h-6 maz-w-6 maz-rounded-full;
+      @apply maz-absolute maz-left-0.5 maz-top-1 maz-block maz-h-5 maz-w-5 maz-rounded-full maz-bg-color;
 
-      background-color: white;
       box-shadow: 0 0 4px 0 hsl(0deg 0% 0% / 20%);
       transition: all 200ms ease-in-out;
     }
