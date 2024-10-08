@@ -112,6 +112,10 @@ export interface MazDropdownProps {
    * You may use `!important` to override the default style
    */
   menuPanelStyle?: HTMLAttributes['style']
+  /**
+   * If true, the button will have a full width
+   */
+  block?: boolean
 }
 
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
@@ -274,7 +278,7 @@ watch(
     v-click-outside="onClickOutside"
     class="m-dropdown"
     :style="style"
-    :class="[props.class]"
+    :class="[props.class, { '--block': block }]"
   >
     <div
       role="button"
@@ -307,17 +311,16 @@ watch(
           :disabled
           v-bind="{ ...$attrs }"
           tabindex="-1"
+          :block
         >
-          <span v-if="$slots.default || !noChevron" class="button-span">
-            <!-- @slot Button text -->
-            <slot />
-
+          <slot />
+          <template v-if="!noChevron" #right-icon>
             <ChevronDownIcon
               v-if="!noChevron"
               :class="{ 'maz-rotate-180': dropdownOpen }"
               class="chevron-icon"
             />
-          </span>
+          </template>
         </MazBtn>
       </slot>
     </div>
@@ -411,6 +414,10 @@ watch(
   .m-dropdown {
   @apply maz-relative maz-inline-flex maz-flex-col maz-items-start maz-align-top;
 
+  &.--block {
+    @apply maz-w-full;
+  }
+
   & [aria-expanded='true'].m-btn {
     @apply maz-bg-color-light;
   }
@@ -421,10 +428,6 @@ watch(
 
   .chevron-icon {
     @apply maz-text-lg maz-transition-transform maz-duration-200 maz-ease-in-out;
-  }
-
-  .button-span {
-    @apply maz-flex maz-items-center maz-gap-2;
   }
 
   .menu {

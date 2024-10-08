@@ -33,28 +33,28 @@
               <div class="maz-grid maz-grid-cols-2">
                 <MazBtn
                   color="transparent"
-                  content-class="maz-text-nowrap"
+                  class="maz-text-nowrap"
                   @click="autoSetTheme"
                 >
                   Auto
                 </MazBtn>
                 <MazBtn
                   color="transparent"
-                  content-class="maz-text-nowrap"
+                  class="maz-text-nowrap"
                   @click="selectedTheme = 'dark'"
                 >
                   Dark
                 </MazBtn>
                 <MazBtn
                   color="transparent"
-                  content-class="maz-text-nowrap"
+                  class="maz-text-nowrap"
                   @click="selectedTheme = 'light'"
                 >
                   Light
                 </MazBtn>
                 <MazBtn
                   color="transparent"
-                  content-class="maz-text-nowrap"
+                  class="maz-text-nowrap"
                   @click="selectedTheme = 'system'"
                 >
                   System
