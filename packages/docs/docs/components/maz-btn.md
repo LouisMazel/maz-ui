@@ -31,6 +31,7 @@ description: MazBtn is a standalone component that replaces the standard html bu
     <MazBtn
       loading
       :color="color"
+      left-icon="user"
       right-icon="user"
     >
       {{ color }}
@@ -74,7 +75,7 @@ description: MazBtn is a standalone component that replaces the standard html bu
 ## Sizes
 
 ::: tip
-Use the attribute `size` with value **{{ sizes.join(', ') }}**
+Use the attribute `size` with value `{{ sizes.join(', ') }}`
 :::
 
 <div class="flex items-start gap-05 items-center flex-wrap">
@@ -226,7 +227,7 @@ It's better in light mode
 
 > Will take `width: 100%;`
 
-<MazBtn block>block</MazBtn>
+<MazBtn block icon="users" right-icon="sun" size="md">block</MazBtn>
 
 ```html
 <MazBtn block>block</MazBtn>
