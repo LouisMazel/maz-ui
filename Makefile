@@ -97,10 +97,13 @@ release:
 print-version:
 	@echo "Version is: $(version)"
 
+commit:
+	git commit -m "chore(release): script of $(shell jq -r .version packages/lib/package.json)"
+
 publish-prerelease:
 	pnpx lerna version prerelease --preid beta
 	git add -u
-	git commit -m "chore(release): bump version to $($(shell jq -r .version packages/lib/package.json))"
+	git commit -m "chore(release): bump version to $(shell jq -r .version packages/lib/package.json)"
 	git push origin HEAD
 	make build-lib
 	cd packages/lib/dist && pnpm publish --access public --tag beta --no-git-checks
