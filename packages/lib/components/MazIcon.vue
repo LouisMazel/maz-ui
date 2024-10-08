@@ -179,8 +179,6 @@ watchEffect(() => getSource(fullSrc.value))
 </script>
 
 <template>
-  <!-- eslint-disable vue/no-v-html -->
-  <!-- eslint-disable vue/html-self-closing -->
   <svg
     v-if="svgElSource"
     ref="svgElem"
@@ -192,7 +190,5 @@ watchEffect(() => getSource(fullSrc.value))
     }"
     :style="`font-size: ${size}`"
     v-html="getSvgContent(svgElSource)"
-  ></svg>
-  <!-- eslint-enable vue/no-v-html -->
-  <!-- eslint-enable vue/html-self-closing -->
+  />
 </template>
