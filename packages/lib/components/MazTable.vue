@@ -57,7 +57,78 @@ export type Row = Record<string, any> & {
 
 export type Header = string | HeadersEnriched
 
-export interface Props {
+export interface Translations {
+  searchByAllLabel?: string
+  searchByPlaceholder?: string
+  searchPlaceholder?: string
+  paginationAllLabel?: string
+  noResults?: string
+  actionHeader?: string
+  paginationRowsPerPage?: string
+  paginationOf?: string
+}
+
+const props = withDefaults(defineProps<MazTableProps>(), {
+  tableClass: undefined,
+  tableStyle: undefined,
+  modelValue: undefined,
+  title: undefined,
+  size: 'md',
+  rows: undefined,
+  searchQuery: undefined,
+  headers: undefined,
+  headersAlign: 'left',
+  caption: undefined,
+  page: 1,
+  pageSize: 20,
+  totalItems: undefined,
+  selectedKey: undefined,
+  captionSide: 'bottom',
+  tableLayout: undefined,
+  searchPlaceholder: 'Search',
+  searchByPlaceholder: 'Search by',
+  searchByAllLabel: 'All',
+  paginationAllLabel: 'All',
+  color: 'primary',
+  totalPages: undefined,
+  roundedSize: 'lg',
+})
+
+const emits = defineEmits<{
+  /**
+   * emitted when a row is selected
+   * @property {(Row | string | number | boolean)[]} value list of selected rows (if selectedKey is defined, it will be the value of the selectedKey of the row)
+   */
+  (event: 'update:model-value', value: (Row | string | number | boolean)[] | undefined): void
+  /**
+   * emitted when enter a value in the search input
+   * @property {string} searchQuery search query
+   */
+  (event: 'update:search-query', searchQuery: string | undefined): void
+  /**
+   * emitted when the current page of the pagination change
+   * @property {number} page current page
+   */
+  (event: 'update:page', page: number): void
+  /**
+   * emitted when the page size of the pagination change
+   * @property {number} pageSize current page size
+   */
+  (event: 'update:page-size', pageSize: number): void
+}>()
+
+const defaultTranslations: Required<Translations> = {
+  noResults: 'No results',
+  actionHeader: 'Actions',
+  searchByAllLabel: 'All',
+  searchByPlaceholder: 'Search by',
+  searchPlaceholder: 'Search',
+  paginationAllLabel: 'All',
+  paginationRowsPerPage: 'Rows per page',
+  paginationOf: 'of',
+}
+
+export interface MazTableProps {
   /** class of the table element */
   tableClass?: HTMLAttributes['class']
   /** style of the table element */
@@ -67,8 +138,14 @@ export interface Props {
   /**
    * size of the table
    * @values `'xl' | 'lg' | 'md' | 'sm' | 'xs' | 'mini'`
+   * @default `'md'`
    */
   size?: Size
+  /**
+   * Size of the search inputs
+   * @values `'xl' | 'lg' | 'md' | 'sm' | 'xs' | 'mini'`
+   */
+  searchInputSize?: Size
   /** title of the table */
   title?: string
   /** headers of the table */
@@ -137,55 +214,32 @@ export interface Props {
   tableLayout?: 'auto' | 'fixed'
   /** color of the loading bar */
   color?: Color
+  /**
+   * translations
+   * @default `{ searchByAllLabel: 'All', searchByPlaceholder: 'Search by', searchPlaceholder: 'Search', paginationAllLabel: 'All', noResults: 'No results' }`
+   * @type {Translations}
+   */
+  translations?: Translations
+  /**
+   * Size of the rounded
+   * @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'`
+   * @default 'lg'
+   */
+  roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  tableClass: undefined,
-  tableStyle: undefined,
-  modelValue: undefined,
-  title: undefined,
-  size: 'md',
-  rows: undefined,
-  searchQuery: undefined,
-  headers: undefined,
-  headersAlign: 'left',
-  caption: undefined,
-  page: 1,
-  pageSize: 20,
-  totalItems: undefined,
-  selectedKey: undefined,
-  captionSide: 'bottom',
-  tableLayout: undefined,
-  searchPlaceholder: 'Search',
-  searchByPlaceholder: 'Search by',
-  searchByAllLabel: 'All',
-  paginationAllLabel: 'All',
-  color: 'primary',
-  totalPages: undefined,
-})
+const t = computed<Required<Translations>>(() => {
+  const { translations, searchByAllLabel, searchByPlaceholder, searchPlaceholder, paginationAllLabel } = props
 
-const emits = defineEmits<{
-  /**
-   * emitted when a row is selected
-   * @property {(Row | string | number | boolean)[]} value list of selected rows (if selectedKey is defined, it will be the value of the selectedKey of the row)
-   */
-  (event: 'update:model-value', value: (Row | string | number | boolean)[] | undefined): void
-  /**
-   * emitted when enter a value in the search input
-   * @property {string} searchQuery search query
-   */
-  (event: 'update:search-query', searchQuery: string | undefined): void
-  /**
-   * emitted when the current page of the pagination change
-   * @property {number} page current page
-   */
-  (event: 'update:page', page: number): void
-  /**
-   * emitted when the page size of the pagination change
-   * @property {number} pageSize current page size
-   */
-  (event: 'update:page-size', pageSize: number): void
-}>()
+  return {
+    ...defaultTranslations,
+    ...translations,
+    searchByAllLabel,
+    searchByPlaceholder,
+    searchPlaceholder,
+    paginationAllLabel,
+  }
+})
 
 const hasDivider = computed<boolean>(
   () => props.divider && !props.backgroundEven && !props.backgroundOdd,
@@ -227,7 +281,7 @@ const currentPageModel = computed({
 })
 
 const pageSizeOptions = computed<MazSelectOption[]>(() => [
-  { label: props.paginationAllLabel, value: Number.POSITIVE_INFINITY },
+  { label: t.value.paginationAllLabel, value: Number.POSITIVE_INFINITY },
   { label: 5, value: 5 },
   { label: 10, value: 10 },
   { label: 20, value: 20 },
@@ -298,9 +352,9 @@ const sortType = ref<'ASC' | 'DESC'>()
 
 const headersNormalized = ref<HeadersNormalized[]>(getNormalizedHeaders())
 
-const searchByKey = ref<string>()
+const searchByKey = ref<string>('all')
 const searchByOptions = computed<MazSelectOption[]>(() => [
-  { label: props.searchByAllLabel, value: null },
+  { label: props.searchByAllLabel, value: 'all' },
   ...headersNormalized.value.map((header) => {
     return {
       label: header.label,
@@ -457,8 +511,8 @@ onBeforeMount(() => {
 <template>
   <div class="m-table" :class="{ '--has-header': hasHeader }">
     <div v-if="hasHeader" class="m-table-header">
-      <div class="m-table-spacer">
-        <slot v-if="title || $slots.title" name="title">
+      <div v-if="title || $slots.title" class="m-table-spacer">
+        <slot name="title">
           <span class="m-table-header-title">
             {{ title }}
           </span>
@@ -469,200 +523,204 @@ onBeforeMount(() => {
         <MazSelect
           v-if="!noSearchBy"
           v-model="searchByKey"
-          :color="color"
+          :rounded-size
+          :color
           :style="{ width: '8rem' }"
-          :placeholder="searchByPlaceholder"
-          :size="size"
+          :placeholder="t.searchByPlaceholder"
+          :size="searchInputSize ?? size"
           :options="searchByOptions"
         />
         <MazInput
           v-model="searchQueryModel"
-          :size="size"
-          :color="color"
-          :placeholder="searchPlaceholder"
+          :size="searchInputSize ?? size"
+          :rounded-size
+          :color
+          :placeholder="t.searchPlaceholder"
           :left-icon="SearchIcon"
         />
       </div>
     </div>
+    <div class="m-table-wrapper" :class="[`--rounded-${roundedSize}`]">
+      <table
+        :class="[{ '--elevation': elevation, '--has-layout': tableLayout }, tableClass]"
+        :style="tableStyle"
+      >
+        <caption v-if="caption || $slots.caption">
+          <!--
+            @slot caption - add caption on top or bottom of the table
+          -->
+          <slot name="caption">
+            {{ caption }}
+          </slot>
+        </caption>
 
-    <table
-      :class="[{ '--elevation': elevation, '--has-layout': tableLayout }, tableClass]"
-      :style="tableStyle"
-    >
-      <caption v-if="caption || $slots.caption">
-        <!--
-          @slot caption - add caption on top or bottom of the table
-        -->
-        <slot name="caption">
-          {{ caption }}
-        </slot>
-      </caption>
-
-      <thead v-if="headersNormalized">
-        <!--
-          @slot thead - content in thead element
-        -->
-        <slot name="thead">
-          <MazTableRow no-hoverable>
-            <MazTableTitle
-              v-if="isSelectable"
-              align="left"
-              :class="`--${size}`"
-              class="m-table-select-column"
-            >
-              <MazCheckbox v-model="allSelected" size="xs" />
-            </MazTableTitle>
-            <MazTableTitle
-              v-for="(header, columnIndex) in headersNormalized"
-              :key="columnIndex"
-              :scope="header.scope"
-              :align="header.align"
-              :rowspan="header.rowspan"
-              :colspan="header.colspan"
-              :headers="header.thHeaders"
-              :style="{ width: header.width, textAlign: header.align }"
-              class="maz-group"
-              :class="[
-                { '--hidden': header.hidden, '--sortable': header.sortable ?? sortable },
-                header.classes,
-                `--${size}`,
-              ]"
-              @click="(header.sortable ?? sortable) && sortColumn(columnIndex)"
-            >
-              <span :class="{ 'maz-sr-only': header.srOnly }">
-                <!--
-                @slot header - replace column header
-                  @binding {Object} header - header data
-                  @binding {String} label - header label
-              -->
-                <slot name="header" :header="header" :label="header.label">
-                  <!--
-                    @slot header-label-{key} - replace column header label
-                      @binding {Object} header - header data
-                      @binding {String} label - header label
-                  -->
-                  <slot :name="`header-label-${header.key}`" :header="header" :label="header.label">
-                    {{ header.label }}
-                  </slot>
-
-                  <div v-if="header.sortable ?? sortable" class="m-table-sort-icon-wrapper">
-                    <ArrowIcon
-                      class="m-table-sort-icon maz-hidden group-hover:maz-block"
-                      :class="{
-                        '--sorted': columnIndex === sortedColumnIndex,
-                        '--up': sortType === 'DESC',
-                        '--down': sortType === 'ASC',
-                      }"
-                    />
-                  </div>
-                </slot>
-              </span>
-            </MazTableTitle>
-            <MazTableTitle v-if="$slots.actions" align="left" :class="`--${size}`">
-              <!--
-                @slot actions-header - replace text of actions header
-              -->
-              <slot name="actions-header">
-                Actions
-              </slot>
-            </MazTableTitle>
-          </MazTableRow>
-        </slot>
-      </thead>
-
-      <MazLoadingBar v-if="loading" :color="color" class="!maz-absolute" />
-
-      <tbody :class="{ '--divider': hasDivider }">
-        <slot>
-          <template v-if="rowsFiltered.length > 0">
-            <MazTableRow
-              v-for="(row, rowIndex) in rowsFiltered"
-              :key="rowIndex"
-              :class="row.classes"
-              @click="row.action && row.action(row)"
-            >
-              <MazTableCell v-if="isSelectable" class="m-table-select-column">
-                <!--
-                  @slot select - replace checkbox component
-                    @binding {Object} row - row data
-                    @binding {Boolean} selected - if selected or not
-                -->
-                <slot name="select" :row="row" :selected="row.selected">
-                  <MazCheckbox
-                    size="xs"
-                    :model-value="row.selected"
-                    @update:model-value="selectRow($event, rowIndex)"
-                  />
-                </slot>
-              </MazTableCell>
-              <MazTableCell
-                v-for="({ key, align, classes }, dataIndex) in headersNormalized"
-                :key="dataIndex"
-                :align="align"
-                :class="classes"
+        <thead v-if="headersNormalized">
+          <!--
+            @slot thead - content in thead element
+          -->
+          <slot name="thead">
+            <MazTableRow no-hoverable>
+              <MazTableTitle
+                v-if="isSelectable"
+                align="left"
+                :class="`--${size}`"
+                class="m-table-select-column"
               >
-                <!--
-                  @slot cell - replace all row cells
-                    @binding {Object} row - row data
-                    @binding {Boolean} value - cell value
-                -->
-                <slot v-if="key" name="cell" :row="row" :value="row[key]">
+                <MazCheckbox v-model="allSelected" size="xs" />
+              </MazTableTitle>
+              <MazTableTitle
+                v-for="(header, columnIndex) in headersNormalized"
+                :key="columnIndex"
+                :scope="header.scope"
+                :align="header.align"
+                :rowspan="header.rowspan"
+                :colspan="header.colspan"
+                :headers="header.thHeaders"
+                :style="{ width: header.width, textAlign: header.align }"
+                class="maz-group"
+                :class="[
+                  { '--hidden': header.hidden, '--sortable': header.sortable ?? sortable },
+                  header.classes,
+                  `--${size}`,
+                ]"
+                @click="(header.sortable ?? sortable) && sortColumn(columnIndex)"
+              >
+                <span :class="{ 'maz-sr-only': header.srOnly }">
                   <!--
-                    @slot cell-{key} - replace row cells of column
+                  @slot header - replace column header
+                    @binding {Object} header - header data
+                    @binding {String} label - header label
+                -->
+                  <slot name="header" :header="header" :label="header.label">
+                    <!--
+                      @slot header-label-{key} - replace column header label
+                        @binding {Object} header - header data
+                        @binding {String} label - header label
+                    -->
+                    <slot :name="`header-label-${header.key}`" :header="header" :label="header.label">
+                      {{ header.label }}
+                    </slot>
+
+                    <div v-if="header.sortable ?? sortable" class="m-table-sort-icon-wrapper">
+                      <ArrowIcon
+                        class="m-table-sort-icon maz-hidden group-hover:maz-block"
+                        :class="{
+                          '--sorted': columnIndex === sortedColumnIndex,
+                          '--up': sortType === 'DESC',
+                          '--down': sortType === 'ASC',
+                        }"
+                      />
+                    </div>
+                  </slot>
+                </span>
+              </MazTableTitle>
+              <MazTableTitle v-if="$slots.actions" align="left" :class="`--${size}`">
+                <!--
+                  @slot actions-header - replace text of actions header
+                -->
+                <slot name="actions-header">
+                  {{ t.actionHeader }}
+                </slot>
+              </MazTableTitle>
+            </MazTableRow>
+          </slot>
+        </thead>
+
+        <MazLoadingBar v-if="loading" :color="color" class="!maz-absolute" />
+
+        <tbody :class="{ '--divider': hasDivider }">
+          <slot>
+            <template v-if="rowsFiltered.length > 0">
+              <MazTableRow
+                v-for="(row, rowIndex) in rowsFiltered"
+                :key="rowIndex"
+                :class="row.classes"
+                @click="row.action && row.action(row)"
+              >
+                <MazTableCell v-if="isSelectable" class="m-table-select-column">
+                  <!--
+                    @slot select - replace checkbox component
+                      @binding {Object} row - row data
+                      @binding {Boolean} selected - if selected or not
+                  -->
+                  <slot name="select" :row="row" :selected="row.selected">
+                    <MazCheckbox
+                      size="xs"
+                      :model-value="row.selected"
+                      @update:model-value="selectRow($event, rowIndex)"
+                    />
+                  </slot>
+                </MazTableCell>
+                <MazTableCell
+                  v-for="({ key, align, classes }, dataIndex) in headersNormalized"
+                  :key="dataIndex"
+                  :align="align"
+                  :class="classes"
+                >
+                  <!--
+                    @slot cell - replace all row cells
                       @binding {Object} row - row data
                       @binding {Boolean} value - cell value
                   -->
-                  <slot :name="`cell-${key}`" :row="row" :value="row[key]">
-                    {{ row[key] }}
-                  </slot>
-                </slot>
-              </MazTableCell>
-              <MazTableCell v-if="$slots.actions">
-                <!--
-                  @slot actions - will add actions column
-                    @binding {Object} row - row data
-                -->
-                <slot name="actions" :row="row" />
-              </MazTableCell>
-            </MazTableRow>
-          </template>
-          <template v-else>
-            <MazTableRow>
-              <MazTableCell
-                :colspan="
-                  headersNormalized.length + (isSelectable ? 1 : 0) + ($slots.actions ? 1 : 0)
-                "
-              >
-                <!--
-                  @slot no-results - replace no results
-                -->
-                <slot name="no-results">
-                  <p class="maz-text-center maz-text-muted">
+                  <slot v-if="key" name="cell" :row="row" :value="row[key]">
                     <!--
-                      @slot no-results-text - replace no results test only
+                      @slot cell-{key} - replace row cells of column
+                        @binding {Object} row - row data
+                        @binding {Boolean} value - cell value
                     -->
-                    <slot name="no-results-text">
-                      No results
+                    <slot :name="`cell-${key}`" :row="row" :value="row[key]">
+                      {{ row[key] }}
                     </slot>
-                  </p>
-                </slot>
-              </MazTableCell>
-            </MazTableRow>
-          </template>
-        </slot>
-      </tbody>
-    </table>
+                  </slot>
+                </MazTableCell>
+                <MazTableCell v-if="$slots.actions">
+                  <!--
+                    @slot actions - will add actions column
+                      @binding {Object} row - row data
+                  -->
+                  <slot name="actions" :row="row" />
+                </MazTableCell>
+              </MazTableRow>
+            </template>
+            <template v-else>
+              <MazTableRow>
+                <MazTableCell
+                  :colspan="
+                    headersNormalized.length + (isSelectable ? 1 : 0) + ($slots.actions ? 1 : 0)
+                  "
+                >
+                  <!--
+                    @slot no-results - replace no results
+                  -->
+                  <slot name="no-results">
+                    <p class="maz-text-center maz-text-muted">
+                      <!--
+                        @slot no-results-text - replace no results test only
+                      -->
+                      <slot name="no-results-text">
+                        {{ t.noResults }}
+                      </slot>
+                    </p>
+                  </slot>
+                </MazTableCell>
+              </MazTableRow>
+            </template>
+          </slot>
+        </tbody>
+      </table>
+    </div>
 
     <div v-if="hasFooter" class="m-table-footer">
       <div class="m-table-spacer" />
 
       <div v-if="pagination" class="m-table-footer-pagination">
         <div class="m-table-footer-pagination-items-per-page">
-          <span class="maz-hidden maz-text-sm maz-text-muted tab-s:maz-block"> Item per page </span>
+          <span class="maz-hidden maz-text-sm tab-s:maz-block"> {{ t.paginationRowsPerPage }} </span>
           <MazSelect
             v-model="pageSizeModel"
             :options="pageSizeOptions"
-            :size="size"
+            :rounded-size
+            :size
             :color="color"
             list-position="top"
             :style="{ width: '5rem' }"
@@ -670,15 +728,15 @@ onBeforeMount(() => {
         </div>
 
         <span v-if="totalPagesInternal" class="maz-whitespace-nowrap maz-text-sm">
-          {{ currentPageModel }} - {{ rowsFiltered.length }} of {{ totalPagesInternal }}
+          {{ currentPageModel }} - {{ rowsFiltered.length }} {{ t.paginationOf }} {{ totalPagesInternal }}
         </span>
 
         <div class="m-table-footer-pagination-buttons">
           <MazBtn
             :disabled="currentPageModel === 1"
-            :size="size"
+            :size
             color="transparent"
-            fab
+            :rounded-size
             no-elevation
             @click="firstPage"
           >
@@ -687,9 +745,9 @@ onBeforeMount(() => {
 
           <MazBtn
             :disabled="currentPageModel === 1"
-            :size="size"
+            :size
             color="transparent"
-            fab
+            :rounded-size
             no-elevation
             @click="previousPage"
           >
@@ -697,9 +755,9 @@ onBeforeMount(() => {
           </MazBtn>
           <MazBtn
             :disabled="currentPageModel === totalPagesInternal"
-            :size="size"
+            :size
             color="transparent"
-            fab
+            :rounded-size
             no-elevation
             @click="nextPage"
           >
@@ -708,9 +766,9 @@ onBeforeMount(() => {
 
           <MazBtn
             :disabled="currentPageModel === totalPagesInternal"
-            :size="size"
+            :size
             color="transparent"
-            fab
+            :rounded-size
             no-elevation
             @click="lastPage"
           >
@@ -727,7 +785,7 @@ onBeforeMount(() => {
   @apply maz-relative maz-max-w-full;
 
   &-header {
-    @apply maz-flex maz-max-w-full maz-items-center maz-justify-between maz-gap-2 maz-border-b maz-border-color-light maz-bg-color maz-p-2;
+    @apply maz-flex maz-max-w-full maz-items-center maz-justify-between maz-gap-2 maz-bg-color maz-py-2;
 
     &-search {
       @apply maz-flex maz-items-center maz-gap-2;
@@ -739,18 +797,42 @@ onBeforeMount(() => {
   }
 
   &-footer {
-    @apply maz-flex maz-max-w-full maz-justify-between maz-gap-2 maz-border-t maz-border-color-light maz-bg-color maz-p-2;
+    @apply maz-flex maz-max-w-full maz-justify-between maz-gap-2 maz-bg-color maz-p-2;
 
     &-pagination {
       @apply maz-flex maz-items-center maz-gap-4;
 
       &-buttons {
-        @apply maz-flex maz-items-center maz-gap-2;
+        @apply maz-flex maz-items-center maz-gap-1;
       }
 
       &-items-per-page {
-        @apply maz-flex maz-items-center maz-gap-2;
+        @apply maz-flex maz-items-center maz-gap-1;
       }
+    }
+  }
+
+  &-wrapper {
+    @apply maz-overflow-hidden maz-border maz-border-solid maz-border-color-light maz-rounded-xl;
+
+    &.--rounded-none {
+      @apply maz-rounded-none;
+    }
+
+    &.--rounded-sm {
+      @apply maz-rounded-sm;
+    }
+
+    &.--rounded-md {
+      @apply maz-rounded-md;
+    }
+
+    &.--rounded-lg {
+      @apply maz-rounded-lg;
+    }
+
+    &.--rounded-xl {
+      @apply maz-rounded-xl;
     }
   }
 
@@ -788,10 +870,10 @@ onBeforeMount(() => {
     }
 
     thead {
-      @apply maz-truncate maz-break-all maz-border-b maz-border-color-light maz-font-semibold;
+      @apply maz-truncate maz-break-all maz-border-b maz-border-color-light;
 
       th {
-        @apply maz-gap-2 maz-truncate maz-break-all maz-font-semibold maz-tracking-tight;
+        @apply maz-gap-2 maz-truncate maz-break-all maz-font-normal maz-text-muted maz-tracking-tight;
 
         &.--hidden {
           @apply maz-hidden;
@@ -802,19 +884,19 @@ onBeforeMount(() => {
         }
 
         &.--xl {
-          @apply maz-px-5 maz-py-5 maz-text-xl;
+          @apply maz-px-5 maz-py-5 maz-text-lg;
         }
 
         &.--lg {
-          @apply maz-px-4 maz-py-4 maz-text-lg;
+          @apply maz-px-4 maz-py-4 maz-text-base;
         }
 
         &.--md {
-          @apply maz-px-3 maz-py-3 maz-text-base;
+          @apply maz-px-3 maz-py-3 maz-text-sm;
         }
 
         &.--sm {
-          @apply maz-px-2 maz-py-2 maz-text-sm;
+          @apply maz-px-2 maz-py-2 maz-text-xs;
         }
 
         &.--xs {
