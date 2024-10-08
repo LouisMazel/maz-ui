@@ -170,6 +170,7 @@ function removeTag(id: string) {
           :disabled
           :size
           :color="tagsHoveredId === id || lastIdToDelete === id ? 'danger' : color"
+          :right-icon="tagsHoveredId === id || lastIdToDelete === id ? CloseIcon : undefined"
           @click.stop="removeTag(id)"
           @mouseenter="tagsHoveredId = id"
           @focus="tagsHoveredId = id"
@@ -177,11 +178,6 @@ function removeTag(id: string) {
           @blur="tagsHoveredId = undefined"
         >
           {{ tag }}
-
-          <template #left-icon />
-          <template #right-icon>
-            <CloseIcon v-if="tagsHoveredId === id || lastIdToDelete === id" />
-          </template>
         </MazBtn>
       </div>
     </TransitionGroup>
