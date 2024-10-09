@@ -19,6 +19,7 @@ const props = withDefaults(defineProps<Props>(), {
   leftIcon: undefined,
   rightIcon: undefined,
   roundedSize: 'lg',
+  justify: 'center',
 })
 const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
 const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
@@ -124,6 +125,10 @@ export interface Props {
    * @default false
    */
   noElevation?: boolean
+  /**
+   * Choose how the elements are aligned in the button
+   */
+  justify?: 'start' | 'end' | 'center' | 'between' | 'around' | 'evenly'
 }
 
 const component = computed(() => {
@@ -168,6 +173,22 @@ const iconClassSize = computed(() => {
     return 'maz-text-sm'
   return 'md'
 })
+
+const justifyClass = computed(() => {
+  if (props.justify === 'start')
+    return 'maz-justify-start'
+  if (props.justify === 'end')
+    return 'maz-justify-end'
+  if (props.justify === 'center')
+    return 'maz-justify-center'
+  if (props.justify === 'between')
+    return 'maz-justify-between'
+  if (props.justify === 'around')
+    return 'maz-justify-around'
+  if (props.justify === 'evenly')
+    return 'maz-justify-evenly'
+  return 'maz-justify-center'
+})
 </script>
 
 <template>
@@ -181,6 +202,7 @@ const iconClassSize = computed(() => {
       btnColorClass,
       cursorClass,
       variantClass,
+      justifyClass,
       {
         '--block': block,
         '--no-underline': noUnderline,
@@ -302,7 +324,7 @@ const iconClassSize = computed(() => {
   &.--is-button {
     @apply maz-inline-flex maz-items-center maz-overflow-hidden
         maz-border-transparent maz-bg-transparent maz-font-medium maz-no-underline
-        maz-transition-all maz-duration-200 maz-ease-in-out maz-justify-between;
+        maz-transition-all maz-duration-200 maz-ease-in-out;
 
     &:not(.--no-rounded) {
       @apply maz-rounded;
@@ -411,7 +433,7 @@ const iconClassSize = computed(() => {
       @apply maz-bg-primary maz-text-primary-contrast;
 
       &:not(:disabled):hover {
-        @apply maz-bg-primary-600;
+        @apply maz-bg-primary-700;
       }
     }
 
@@ -419,7 +441,7 @@ const iconClassSize = computed(() => {
       @apply maz-bg-secondary maz-text-secondary-contrast;
 
       &:not(:disabled):hover {
-        @apply maz-bg-secondary-600;
+        @apply maz-bg-secondary-700;
       }
     }
 
@@ -427,7 +449,7 @@ const iconClassSize = computed(() => {
       @apply maz-bg-info maz-text-info-contrast;
 
       &:not(:disabled):hover {
-        @apply maz-bg-info-600;
+        @apply maz-bg-info-700;
       }
     }
 
@@ -435,7 +457,7 @@ const iconClassSize = computed(() => {
       @apply maz-bg-success maz-text-success-contrast;
 
       &:not(:disabled):hover {
-        @apply maz-bg-success-600;
+        @apply maz-bg-success-700;
       }
     }
 
@@ -443,7 +465,7 @@ const iconClassSize = computed(() => {
       @apply maz-bg-warning maz-text-warning-contrast;
 
       &:not(:disabled):hover {
-        @apply maz-bg-warning-600;
+        @apply maz-bg-warning-700;
       }
     }
 
@@ -451,7 +473,7 @@ const iconClassSize = computed(() => {
       @apply maz-bg-danger maz-text-white;
 
       &:not(:disabled):hover {
-        @apply maz-bg-danger-600;
+        @apply maz-bg-danger-700;
       }
     }
 
@@ -459,7 +481,7 @@ const iconClassSize = computed(() => {
       @apply maz-bg-white maz-text-white-contrast;
 
       &:not(:disabled):hover {
-        @apply maz-bg-gray-300;
+        @apply maz-bg-gray-400;
       }
     }
 
