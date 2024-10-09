@@ -97,9 +97,6 @@ release:
 print-version:
 	@echo "Version is: $(version)"
 
-commit:
-	git commit -m "chore(release): script of $(shell jq -r .version packages/lib/package.json)"
-
 publish-prerelease:
 	pnpx lerna version prerelease --preid beta
 	git add -u
