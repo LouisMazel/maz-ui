@@ -1,5 +1,7 @@
 <script lang="ts" setup>
+import type { MazSelectOption } from './MazSelect.vue'
 import type { Color, Size } from './types'
+
 import {
   computed,
   type HTMLAttributes,
@@ -13,18 +15,68 @@ import {
   useSlots,
   watch,
 } from 'vue'
-import ArrowIcon from './../icons/arrow-up.svg'
-import ChevronDoubleIcon from './../icons/chevron-double-left.svg'
-import ChevronIcon from './../icons/chevron-left.svg'
-import SearchIcon from './../icons/magnifying-glass.svg'
-import MazBtn from './MazBtn.vue'
-import MazCheckbox from './MazCheckbox.vue'
-import MazInput from './MazInput.vue'
-import MazLoadingBar from './MazLoadingBar.vue'
-import MazSelect, { type MazSelectOption } from './MazSelect.vue'
-import MazTableCell from './MazTableCell.vue'
-import MazTableRow from './MazTableRow.vue'
-import MazTableTitle from './MazTableTitle.vue'
+import { defineAsyncComponent } from 'vue'
+
+const props = withDefaults(defineProps<MazTableProps>(), {
+  tableClass: undefined,
+  tableStyle: undefined,
+  modelValue: undefined,
+  title: undefined,
+  size: 'md',
+  rows: undefined,
+  searchQuery: undefined,
+  headers: undefined,
+  headersAlign: 'left',
+  caption: undefined,
+  page: 1,
+  pageSize: 20,
+  totalItems: undefined,
+  selectedKey: undefined,
+  captionSide: 'bottom',
+  tableLayout: undefined,
+  searchPlaceholder: 'Search',
+  searchByPlaceholder: 'Search by',
+  searchByAllLabel: 'All',
+  paginationAllLabel: 'All',
+  color: 'primary',
+  totalPages: undefined,
+  roundedSize: 'lg',
+})
+const emits = defineEmits<{
+  /**
+   * emitted when a row is selected
+   * @property {(Row | string | number | boolean)[]} value list of selected rows (if selectedKey is defined, it will be the value of the selectedKey of the row)
+   */
+  (event: 'update:model-value', value: (Row | string | number | boolean)[] | undefined): void
+  /**
+   * emitted when enter a value in the search input
+   * @property {string} searchQuery search query
+   */
+  (event: 'update:search-query', searchQuery: string | undefined): void
+  /**
+   * emitted when the current page of the pagination change
+   * @property {number} page current page
+   */
+  (event: 'update:page', page: number): void
+  /**
+   * emitted when the page size of the pagination change
+   * @property {number} pageSize current page size
+   */
+  (event: 'update:page-size', pageSize: number): void
+}>()
+
+const ArrowIcon = defineAsyncComponent(() => import('./../icons/arrow-up.svg'))
+const ChevronDoubleIcon = defineAsyncComponent(() => import('./../icons/chevron-double-left.svg'))
+const ChevronIcon = defineAsyncComponent(() => import('./../icons/chevron-left.svg'))
+const SearchIcon = defineAsyncComponent(() => import('./../icons/magnifying-glass.svg'))
+const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
+const MazCheckbox = defineAsyncComponent(() => import('./MazCheckbox.vue'))
+const MazInput = defineAsyncComponent(() => import('./MazInput.vue'))
+const MazLoadingBar = defineAsyncComponent(() => import('./MazLoadingBar.vue'))
+const MazSelect = defineAsyncComponent(() => import('./MazSelect.vue'))
+const MazTableCell = defineAsyncComponent(() => import('./MazTableCell.vue'))
+const MazTableRow = defineAsyncComponent(() => import('./MazTableRow.vue'))
+const MazTableTitle = defineAsyncComponent(() => import('./MazTableTitle.vue'))
 
 export type { Color, Size }
 
@@ -68,55 +120,6 @@ export interface Translations {
   paginationOf?: string
 }
 
-const props = withDefaults(defineProps<MazTableProps>(), {
-  tableClass: undefined,
-  tableStyle: undefined,
-  modelValue: undefined,
-  title: undefined,
-  size: 'md',
-  rows: undefined,
-  searchQuery: undefined,
-  headers: undefined,
-  headersAlign: 'left',
-  caption: undefined,
-  page: 1,
-  pageSize: 20,
-  totalItems: undefined,
-  selectedKey: undefined,
-  captionSide: 'bottom',
-  tableLayout: undefined,
-  searchPlaceholder: 'Search',
-  searchByPlaceholder: 'Search by',
-  searchByAllLabel: 'All',
-  paginationAllLabel: 'All',
-  color: 'primary',
-  totalPages: undefined,
-  roundedSize: 'lg',
-})
-
-const emits = defineEmits<{
-  /**
-   * emitted when a row is selected
-   * @property {(Row | string | number | boolean)[]} value list of selected rows (if selectedKey is defined, it will be the value of the selectedKey of the row)
-   */
-  (event: 'update:model-value', value: (Row | string | number | boolean)[] | undefined): void
-  /**
-   * emitted when enter a value in the search input
-   * @property {string} searchQuery search query
-   */
-  (event: 'update:search-query', searchQuery: string | undefined): void
-  /**
-   * emitted when the current page of the pagination change
-   * @property {number} page current page
-   */
-  (event: 'update:page', page: number): void
-  /**
-   * emitted when the page size of the pagination change
-   * @property {number} pageSize current page size
-   */
-  (event: 'update:page-size', pageSize: number): void
-}>()
-
 const defaultTranslations: Required<Translations> = {
   noResults: 'No results',
   actionHeader: 'Actions',
@@ -145,7 +148,7 @@ export interface MazTableProps {
    * Size of the search inputs
    * @values `'xl' | 'lg' | 'md' | 'sm' | 'xs' | 'mini'`
    */
-  searchInputSize?: Size
+  inputSize?: Size
   /** title of the table */
   title?: string
   /** headers of the table */
@@ -352,9 +355,9 @@ const sortType = ref<'ASC' | 'DESC'>()
 
 const headersNormalized = ref<HeadersNormalized[]>(getNormalizedHeaders())
 
-const searchByKey = ref<string>('all')
+const searchByKey = ref<string>()
 const searchByOptions = computed<MazSelectOption[]>(() => [
-  { label: props.searchByAllLabel, value: 'all' },
+  { label: props.searchByAllLabel, value: null },
   ...headersNormalized.value.map((header) => {
     return {
       label: header.label,
@@ -527,14 +530,15 @@ onBeforeMount(() => {
           :color
           :style="{ width: '8rem' }"
           :placeholder="t.searchByPlaceholder"
-          :size="searchInputSize ?? size"
+          :size="inputSize ?? size"
           :options="searchByOptions"
         />
         <MazInput
           v-model="searchQueryModel"
-          :size="searchInputSize ?? size"
+          :size="inputSize ?? size"
           :rounded-size
           :color
+          :debounce="300"
           :placeholder="t.searchPlaceholder"
           :left-icon="SearchIcon"
         />
@@ -566,7 +570,7 @@ onBeforeMount(() => {
                 :class="`--${size}`"
                 class="m-table-select-column"
               >
-                <MazCheckbox v-model="allSelected" size="xs" />
+                <MazCheckbox v-model="allSelected" size="sm" />
               </MazTableTitle>
               <MazTableTitle
                 v-for="(header, columnIndex) in headersNormalized"
@@ -645,7 +649,7 @@ onBeforeMount(() => {
                   -->
                   <slot name="select" :row="row" :selected="row.selected">
                     <MazCheckbox
-                      size="xs"
+                      size="sm"
                       :model-value="row.selected"
                       @update:model-value="selectRow($event, rowIndex)"
                     />
@@ -720,7 +724,7 @@ onBeforeMount(() => {
             v-model="pageSizeModel"
             :options="pageSizeOptions"
             :rounded-size
-            :size
+            :size="inputSize ?? size"
             :color="color"
             list-position="top"
             :style="{ width: '5rem' }"
