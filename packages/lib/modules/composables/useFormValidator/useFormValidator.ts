@@ -1,4 +1,4 @@
-import type { Ref } from 'vue'
+import type { Ref, WatchStopHandle } from 'vue'
 import type {
   BaseFormPayload,
   ExtractModelKey,
@@ -10,7 +10,7 @@ import type {
   UseFormValidatorParams,
 } from './types'
 
-import { computed, provide, ref, watch } from 'vue'
+import { computed, nextTick, provide, ref, watch } from 'vue'
 import { CONFIG } from './config'
 import {
   getErrorMessages,
@@ -101,8 +101,12 @@ export function useFormValidator<
     })
   }
 
-  function addFieldValidationWatch(name: ModelKey) {
-    watch(
+  const watchedPayloadStopFunctions: WatchStopHandle[] = []
+
+  async function addFieldValidationWatch(name: ModelKey) {
+    await nextTick()
+
+    const watchStopFunc = watch(
       () => payload.value[name],
       () => {
         const fieldState = fieldsStates.value[name]
@@ -118,9 +122,15 @@ export function useFormValidator<
       },
       { deep: typeof internalSchema.value[name] === 'object' },
     )
+
+    watchedPayloadStopFunctions.push(watchStopFunc)
   }
 
   function addFieldsValidationWatch() {
+    for (const watchStopFunc of watchedPayloadStopFunctions) {
+      watchStopFunc()
+    }
+
     for (const name of Object.keys(internalSchema.value)) {
       addFieldValidationWatch(name as ModelKey)
     }
