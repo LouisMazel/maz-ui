@@ -6,6 +6,30 @@
 
       <!-- <TestForm /> -->
 
+      <MazChecklist
+        v-model="languages"
+        title="Select your languages"
+        :search="{
+          enabled: true,
+          placeholder: 'Search a language',
+          debounce: 300,
+          autoFocus: true,
+        }"
+        :items="languagesOptions"
+      >
+        <template #item="{ item }">
+          <div class="flex w-full items-center justify-between">
+            <span class="capitalize">{{ item.label }}</span>
+            <MazBadge
+              color="theme"
+              outline
+            >
+              {{ item.value }}
+            </MazBadge>
+          </div>
+        </template>
+      </MazChecklist>
+
       <!-- End Developping Area -->
     </div>
 
@@ -23,6 +47,8 @@ import { sleep } from 'maz-ui'
 
 const toast = useToast()
 const wait = useWait()
+const languages = ref<string[]>([])
+const languagesOptions = ref<{ label: string, value: string }[]>([])
 
 onMounted(async () => {
   wait.start('APP_LOADING')
