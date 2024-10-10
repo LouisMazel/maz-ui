@@ -11,19 +11,103 @@ description: MazBtn is a standalone component that replaces the standard html bu
 
 ## Basic usage
 
-<ComponentDemo>
+<ComponentDemo expanded>
   <MazBtn>Button</MazBtn>
 
   <template #code>
 
   ```vue
-  <MazBtn>Button</MazBtn>
+  <template>
+    <MazBtn>Button</MazBtn>
+  </template>
+
+  <script setup lang="ts">
+    import MazBtn from 'maz-ui/components/MazBtn'
+  </script>
   ```
 
   </template>
 </ComponentDemo>
 
+## Sizes
+
+Use the attribute `size` with value `{{ sizes.join(', ') }}`
+
+<ComponentDemo>
+  <div class="flex items-start gap-05 items-center flex-wrap">
+    <MazBtn v-for="size in sizes" :size="size">{{ size }}</MazBtn>
+  </div>
+
+  <template #code>
+
+  ```vue
+  <template>
+    <MazBtn v-for="size in sizes" :size="size">{{ size }}</MazBtn>
+  </template>
+
+  <script setup lang="ts">
+    const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
+  </script>
+  ```
+
+  </template>
+</ComponentDemo>
+
+## Colors
+
+Use the attribute `color` with a value in this [list](./../guide/colors.md), the component will use this color
+
+<ComponentDemo>
+  <div class="flex items-start gap-05 flex-wrap">
+    <MazBtn v-for="color of colors" :key="color" :color="color">{{ color }}</MazBtn>
+  </div>
+
+  <template #code>
+
+```html
+<MazBtn>primary</MazBtn>
+<MazBtn color="secondary">secondary</MazBtn>
+<MazBtn color="info">info</MazBtn>
+<MazBtn color="success">success</MazBtn>
+<MazBtn color="warning">warning</MazBtn>
+<MazBtn color="danger">danger</MazBtn>
+<MazBtn color="white">white</MazBtn>
+<MazBtn color="black">black</MazBtn>
+<MazBtn color="transparent">transparent</MazBtn>
+```
+
+  </template>
+</ComponentDemo>
+
+## Outline
+
+Transform the button into an outline button with the attribute `outline`
+
+<ComponentDemo>
+<div class="flex items-start gap-05 flex-wrap">
+  <MazBtn v-for="color of colors" :color="color" outline>{{ color }}</MazBtn>
+</div>
+
+<template #code>
+
+```html
+<MazBtn outline>primary</MazBtn>
+<MazBtn color="secondary" outline>secondary</MazBtn>
+<MazBtn color="info" outline>info</MazBtn>
+<MazBtn color="success" outline>success</MazBtn>
+<MazBtn color="warning" outline>warning</MazBtn>
+<MazBtn color="danger" outline>danger</MazBtn>
+<MazBtn color="white" outline>white</MazBtn>
+<MazBtn color="black" outline>black</MazBtn>
+<MazBtn color="transparent" outline>transparent</MazBtn>
+```
+
+  </template>
+</ComponentDemo>
+
 ## Loading
+
+The loading state is available with the attribute `loading`
 
 <ComponentDemo>
   <div class="flex items-start gap-05 flex-wrap">
@@ -74,87 +158,11 @@ description: MazBtn is a standalone component that replaces the standard html bu
   </template>
 </ComponentDemo>
 
-## Sizes
-
-::: tip
-Use the attribute `size` with value `{{ sizes.join(', ') }}`
-:::
-
-<ComponentDemo>
-  <div class="flex items-start gap-05 items-center flex-wrap">
-    <MazBtn v-for="size in sizes" :size="size">{{ size }}</MazBtn>
-  </div>
-
-  <template #code>
-
-  ```vue
-  <template>
-    <MazBtn v-for="size in sizes" :size="size">{{ size }}</MazBtn>
-  </template>
-
-  <script setup lang="ts">
-    const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
-  </script>
-  ```
-
-  </template>
-</ComponentDemo>
-
-## Colors
-
-::: tip
-Use the attribute `color` with a value in this [list](./../guide/colors.md), the component will use this color
-:::
-
-<ComponentDemo>
-  <div class="flex items-start gap-05 flex-wrap">
-    <MazBtn v-for="color of colors" :key="color" :color="color">{{ color }}</MazBtn>
-  </div>
-
-  <template #code>
-
-```html
-<MazBtn>primary</MazBtn>
-<MazBtn color="secondary">secondary</MazBtn>
-<MazBtn color="info">info</MazBtn>
-<MazBtn color="success">success</MazBtn>
-<MazBtn color="warning">warning</MazBtn>
-<MazBtn color="danger">danger</MazBtn>
-<MazBtn color="white">white</MazBtn>
-<MazBtn color="black">black</MazBtn>
-<MazBtn color="transparent">transparent</MazBtn>
-```
-
-  </template>
-</ComponentDemo>
-
-## Outline
-
-<ComponentDemo>
-<div class="flex items-start gap-05 flex-wrap">
-  <MazBtn v-for="color of colors" :color="color" outline>{{ color }}</MazBtn>
-</div>
-
-<template #code>
-
-```html
-<MazBtn outline>primary</MazBtn>
-<MazBtn color="secondary" outline>secondary</MazBtn>
-<MazBtn color="info" outline>info</MazBtn>
-<MazBtn color="success" outline>success</MazBtn>
-<MazBtn color="warning" outline>warning</MazBtn>
-<MazBtn color="danger" outline>danger</MazBtn>
-<MazBtn color="white" outline>white</MazBtn>
-<MazBtn color="black" outline>black</MazBtn>
-<MazBtn color="transparent" outline>transparent</MazBtn>
-```
-
-  </template>
-</ComponentDemo>
-
 ## Pastel
 
-::: tip
+The pastel state is available with the attribute `pastel`
+
+::: info
 It's better in light mode
 :::
 
@@ -183,6 +191,8 @@ It's better in light mode
 
 ## Rounded
 
+Make the button rounded with the attribute `rounded`
+
 <ComponentDemo>
   <MazBtn rounded>rounded</MazBtn>
 
@@ -198,6 +208,8 @@ It's better in light mode
 </ComponentDemo>
 
 ## Rounded Size
+
+Choose the size of the rounded with the attribute `rounded-size` and value `none`, `sm`, `md`, `lg`, `xl`, `full`
 
 <ComponentDemo>
 
@@ -220,6 +232,8 @@ It's better in light mode
 </ComponentDemo>
 
 ## Fab
+
+The button can be a fab button with the attribute `fab`
 
 <ComponentDemo>
   <div class="maz-flex maz-gap-5 maz-items-center">
@@ -251,10 +265,10 @@ It's better in light mode
 
 ## Block
 
-> Will take `width: 100%;`
+Will take `width: 100%;`
 
 <ComponentDemo>
-  <MazBtn block icon="users" right-icon="sun" size="md">block</MazBtn>
+  <MazBtn block>block</MazBtn>
 
   <template #code>
 
@@ -416,6 +430,29 @@ Check out how [MazIcon](./maz-icon.md) works, see all available icons and downlo
 
 :::
 
+### Use your own components
+
+::: details View code
+
+<MazBtn :left-icon="MazSpinner" size="sm" color="theme">
+  left-icon
+</MazBtn>
+
+```vue
+<template>
+  <MazBtn :left-icon="MazSpinner" size="sm" color="info">
+    left-icon
+  </MazBtn>
+</template>
+
+<script lang="ts" setup>
+  import MazBtn from 'maz-ui/components/MazBtn'
+  import MazSpinner from 'maz-ui/components/MazSpinner'
+</script>
+```
+
+:::
+
 ## Link
 
 ::: tip
@@ -474,6 +511,7 @@ When `to` attribute is provided, the component automatically becomes a `<RouterL
 
 <script setup lang="ts">
   import { computed } from 'vue'
+  import MazSpinner from 'maz-ui/components/MazSpinner.vue'
 
   const colors = [
     'primary',
