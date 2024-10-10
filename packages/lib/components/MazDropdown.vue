@@ -1,21 +1,24 @@
 <script lang="ts" setup>
 import type { RouteLocationRaw } from 'vue-router'
 import type { Color } from './MazBtn.vue'
+import type { MazLinkProps } from './MazLink.vue'
 import type { Position } from './types'
 import { defineAsyncComponent, type HTMLAttributes, ref, watch } from 'vue'
-import { useInstanceUniqId } from '../modules/composables/useInstanceUniqId'
+import { useInstanceUniqId } from '../modules'
 import { vClickOutside } from '../modules/directives/click-outside'
 import { debounce } from '../modules/helpers/debounce'
+
+export type { Color, Position }
 
 defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<MazDropdownProps>(), {
   class: undefined,
   style: undefined,
-  items: () => [],
   id: undefined,
+  items: () => [],
   trigger: 'both',
   color: 'transparent',
   position: 'bottom left',
@@ -25,34 +28,50 @@ const props = withDefaults(defineProps<Props>(), {
 const emits = defineEmits<{
   /**
    * emitted when a menu item is clicked
+   * @property {Event} event - the click event
    */
   'menuitem-clicked': [event: Event]
   /**
    * Triggers when the number changes
-   *
    * @property {boolean} open new value
    */
   'update:open': [value: boolean]
 }>()
 
-const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
-const ChevronDownIcon = defineAsyncComponent(() => import('./../icons/chevron-down.svg'))
+const instanceId = useInstanceUniqId({
+  componentName: 'MazDropdown',
+  providedId: props.id,
+})
 
-export type { Color, Position }
-
-export type MenuItem = {
+type ItemBase = Record<string, unknown> & {
   label: string
-  action?: () => unknown
+  class?: unknown
+  color?: Color
+}
+
+type LinkItem = ItemBase & MazLinkProps & {
   target?: string
   href?: string
   to?: RouteLocationRaw
-  class?: unknown
-} & Record<string, unknown>
+}
 
-export interface Props {
+type ActionItem = ItemBase & {
+  action?: () => unknown
+}
+
+export type MenuItem =
+  | (LinkItem & { action?: never })
+  | (ActionItem & { href?: never, to?: never, target?: never })
+
+export interface MazDropdownProps {
+  /** Style object */
   style?: HTMLAttributes['style']
+  /** Class name */
   class?: HTMLAttributes['class']
-  /** Menu items */
+  /**
+   * Menu items
+   * @default '[]'
+   */
   items?: MenuItem[]
   /** Menu should be open? */
   open?: boolean
@@ -84,12 +103,24 @@ export interface Props {
    * @default 'Open menu dropdown'
    */
   screenReaderDescription?: string
+  /**
+   * Class for the menu panel - useful for custom dropdown panel (background, border, etc.)
+   */
+  menuPanelClass?: HTMLAttributes['class']
+  /**
+   * Style for the menu panel - useful for custom dropdown panel (background, border, etc.)
+   * You may use `!important` to override the default style
+   */
+  menuPanelStyle?: HTMLAttributes['style']
+  /**
+   * If true, the button will have a full width
+   */
+  block?: boolean
 }
 
-const instanceId = useInstanceUniqId({
-  componentName: 'MazDropdown',
-  providedId: props.id,
-})
+const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
+const MazLink = defineAsyncComponent(() => import('./MazLink.vue'))
+const ChevronDownIcon = defineAsyncComponent(() => import('./../icons/chevron-down.svg'))
 
 const dropdownOpen = ref(props.open)
 const keyboardSelectedIndex = ref<number>()
@@ -143,7 +174,15 @@ function setDropdown(value: boolean) {
   emits('update:open', value)
 }
 
-async function runAction(item: MenuItem, event: Event) {
+function isActionItem(item: MenuItem): item is ActionItem {
+  return 'action' in item
+}
+
+function isLinkItem(item: MenuItem): item is LinkItem {
+  return 'href' in item || 'to' in item
+}
+
+async function runAction(item: ActionItem, event: Event) {
   emits('menuitem-clicked', event)
 
   await item.action?.()
@@ -239,7 +278,7 @@ watch(
     v-click-outside="onClickOutside"
     class="m-dropdown"
     :style="style"
-    :class="[props.class]"
+    :class="[props.class, { '--block': block }]"
   >
     <div
       role="button"
@@ -254,7 +293,8 @@ watch(
       @mouseenter="onElementMouseenter"
       @mouseleave="onElementMouseleave"
     >
-      <span :id="`${instanceId}-labelspan`" class="maz-sr-only">
+      <span v-if="screenReaderDescription || $slots['screen-reader-description']" :id="`${instanceId}-labelspan`" class="maz-sr-only">
+        <!-- @slot Description for screen reader (hidden) -->
         <slot name="screen-reader-description">
           {{ screenReaderDescription }}
         </slot>
@@ -266,23 +306,21 @@ watch(
       -->
       <slot name="element" :is-open="dropdownOpen">
         <MazBtn
-          :color="color"
-          :disabled="disabled"
           :aria-labelledby="`${instanceId}-labelspan`"
-          v-bind="$attrs"
+          :color
+          :disabled
+          v-bind="{ ...$attrs }"
           tabindex="-1"
+          :block
         >
-          <span class="button-span">
-            <!-- @slot Button text -->
-            <slot />
-
+          <slot />
+          <template v-if="!noChevron" #right-icon>
             <ChevronDownIcon
               v-if="!noChevron"
               :class="{ 'maz-rotate-180': dropdownOpen }"
               class="chevron-icon"
             />
-          </span>
-          <!-- @slot Menu Label -->
+          </template>
         </MazBtn>
       </slot>
     </div>
@@ -294,12 +332,13 @@ watch(
         aria-label="Menu"
         class="menu"
         tabindex="-1"
-        :class="{
+        :class="[{
           '--top': position.includes('top'),
           '--left': position.includes('left'),
           '--right': position.includes('right'),
           '--bottom': position.includes('bottom'),
-        }"
+        }, menuPanelClass]"
+        :style="menuPanelStyle"
         @focus="setDropdownDebounced(true)"
         @blur="setDropdownDebounced(false)"
         @mouseenter="['hover', 'both'].includes(trigger) ? setDropdownDebounced(true) : undefined"
@@ -313,34 +352,19 @@ watch(
           <template v-for="(item, index) in items" :key="index">
             <!--
               @slot Custom menu item
-                @binding {Object} item - menu item
+                @binding {MenuItem} item - menu item
             -->
             <slot name="menuitem" :item="item">
-              <template v-if="item.to">
-                <RouterLink
+              <template v-if="isLinkItem(item)">
+                <MazLink
                   :target="item.href ? item.target ?? '_self' : undefined"
                   :to="item.to"
-                  class="menuitem"
-                  tabindex="-1"
-                  :class="[
-                    {
-                      '--is-keyboard-selected': keyboardSelectedIndex === index,
-                    },
-                    item.class,
-                  ]"
-                  @click.stop="closeOnClick"
-                >
-                  <slot name="menuitem-label" :item="item">
-                    {{ item.label }}
-                  </slot>
-                </RouterLink>
-              </template>
-              <template v-else-if="item.href">
-                <a
-                  :target="item.href ? item.target ?? '_self' : undefined"
                   :href="item.href"
-                  tabindex="-1"
+                  :color="item.color ?? 'theme'"
+                  v-bind="item"
+                  :underline-only-hover="item.underlineOnlyHover ?? false"
                   class="menuitem"
+                  tabindex="-1"
                   :class="[
                     {
                       '--is-keyboard-selected': keyboardSelectedIndex === index,
@@ -349,23 +373,29 @@ watch(
                   ]"
                   @click.stop="closeOnClick"
                 >
+                  <!--
+                    @slot Custom label for menu item
+                      @binding {MenuItem} - item menu item
+                  -->
                   <slot name="menuitem-label" :item="item">
                     {{ item.label }}
                   </slot>
-                </a>
+                </MazLink>
               </template>
-              <template v-else-if="item.action">
+              <template v-else-if="isActionItem(item)">
                 <button
                   tabindex="-1"
                   type="button"
-                  class="menuitem"
+                  v-bind="item"
+                  class="menuitem menuitem__button"
                   :class="[
                     {
                       '--is-keyboard-selected': keyboardSelectedIndex === index,
                     },
                     item.class,
+                    `--${item.color ?? 'theme'}`,
                   ]"
-                  @click.stop="!!item.action ? runAction(item, $event) : closeOnClick()"
+                  @click.stop="runAction(item, $event)"
                 >
                   <slot name="menuitem-label" :item="item">
                     {{ item.label }}
@@ -384,6 +414,10 @@ watch(
   .m-dropdown {
   @apply maz-relative maz-inline-flex maz-flex-col maz-items-start maz-align-top;
 
+  &.--block {
+    @apply maz-w-full;
+  }
+
   & [aria-expanded='true'].m-btn {
     @apply maz-bg-color-light;
   }
@@ -394,10 +428,6 @@ watch(
 
   .chevron-icon {
     @apply maz-text-lg maz-transition-transform maz-duration-200 maz-ease-in-out;
-  }
-
-  .button-span {
-    @apply maz-flex maz-items-center maz-gap-2;
   }
 
   .menu {
@@ -440,6 +470,48 @@ watch(
 
       &.--is-keyboard-selected {
         @apply maz-bg-color-light;
+      }
+
+      &.menuitem__button {
+        &:disabled {
+          @apply maz-cursor-not-allowed maz-opacity-50;
+        }
+
+        &.--primary {
+          @apply maz-text-primary hover:maz-text-primary-600;
+        }
+
+        &.--secondary {
+          @apply maz-text-secondary hover:maz-text-secondary-600;
+        }
+
+        &.--info {
+          @apply maz-text-info hover:maz-text-info-600;
+        }
+
+        &.--warning {
+          @apply maz-text-warning-600 hover:maz-text-warning-800;
+        }
+
+        &.--danger {
+          @apply maz-text-danger-600 hover:maz-text-danger-800;
+        }
+
+        &.--success {
+          @apply maz-text-success-600 hover:maz-text-success-800;
+        }
+
+        &.--white {
+          @apply maz-text-white hover:maz-text-gray-300;
+        }
+
+        &.--black {
+          @apply maz-text-black hover:maz-text-gray-800;
+        }
+
+        &.--theme {
+          @apply maz-text-normal hover:maz-text-black dark:hover:maz-text-white;
+        }
       }
     }
   }

@@ -19,7 +19,6 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const emits = defineEmits(['update:model-value'])
-
 const instanceId = useInstanceUniqId({
   componentName: 'MazAccordion',
   providedId: props.id,

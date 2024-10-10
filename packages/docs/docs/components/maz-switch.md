@@ -31,21 +31,6 @@ description: MazSwitch is a standalone component that replaces the standard html
   </MazSwitch>
 </div>
 
-<script lang="ts" setup>
-  import { ref } from 'vue'
-  const switchValue = ref(false)
-  const switchValueDisabled = ref(false)
-
-  const colors = [
-    'primary',
-    'secondary',
-    'info',
-    'success',
-    'warning',
-    'danger',
-  ]
-</script>
-
 ```vue
 <template>
   <MazSwitch
@@ -81,8 +66,25 @@ description: MazSwitch is a standalone component that replaces the standard html
     'success',
     'warning',
     'danger',
+    'theme',
   ]
 </script>
 ```
 
 <!--@include: ./../.vitepress/generated-docs/maz-switch.doc.md-->
+
+<script lang="ts" setup>
+  import { ref } from 'vue'
+  const switchValue = ref(false)
+  const switchValueDisabled = ref(false)
+
+  const colors = [
+    'primary',
+    'secondary',
+    'info',
+    'success',
+    'warning',
+    'danger',
+    'theme',
+  ]
+</script>

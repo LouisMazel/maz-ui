@@ -19,7 +19,7 @@
 
 
     <template #footer v-if="$slots.code">
-      <button v-if="!expanded" @click="showCode = !showCode" class="vp-raw maz-bg-color hover:maz-bg-color-light maz-py-3 maz-px-3 maz-w-full maz-flex maz-items-center maz-justify-between maz-transition-all maz-duration-300">
+      <button v-show="!expanded" @click="showCode = !showCode" class="vp-raw maz-bg-color hover:maz-bg-color-light maz-py-3 maz-px-3 maz-w-full maz-flex maz-items-center maz-justify-between maz-transition-all maz-duration-300">
         <span class="maz-text-sm maz-flex maz-gap-2 maz-items-center maz-text-primary">
           <CodeIcon />
           View code

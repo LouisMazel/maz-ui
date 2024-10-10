@@ -15,6 +15,7 @@ describe('mazTabs.vue', () => {
   it('initialize component with good value', () => {
     const wrapper = mount(MazTabs)
 
+    // @ts-expect-error currentTab is a private property
     expect(wrapper.vm.currentTab).toBe(1)
   })
 })

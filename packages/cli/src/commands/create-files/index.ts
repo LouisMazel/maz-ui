@@ -107,7 +107,6 @@ async function runCreateFiles({
   if (shouldCreateAllFiles || fileTypes.includes('test')) {
     await createLibraryTestFile({
       filename,
-      filenameKebab,
     })
   }
   if (shouldCreateAllFiles || fileTypes.includes('vue')) {

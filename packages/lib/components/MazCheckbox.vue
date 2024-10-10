@@ -99,23 +99,23 @@ const isChecked = computed(() =>
 const checkboxSize = computed(() => {
   switch (props.size) {
     case 'xl': {
-      return '2.25rem'
-    }
-    case 'lg': {
       return '2rem'
     }
+    case 'lg': {
+      return '1.75rem'
+    }
     case 'sm': {
-      return '1.425rem'
+      return '1.25rem'
     }
     case 'xs': {
-      return '1.325rem'
+      return '1rem'
     }
     case 'mini': {
-      return '1.2rem'
+      return '0.75rem'
     }
 
     default: {
-      return '1.625rem'
+      return '1.5rem'
     }
   }
 })
@@ -143,8 +143,20 @@ const checkIconSize = computed(() => {
   }
 })
 
-const checkIconColor = computed(() => `var(--maz-color-${props.color}-contrast)`)
-const checkboxSelectedColor = computed(() => `var(--maz-color-${props.color})`)
+const checkIconColor = computed(() => {
+  if (props.color === 'theme') {
+    return 'var(--maz-color-bg)'
+  }
+
+  return `var(--maz-color-${props.color}-contrast)`
+})
+const checkboxSelectedColor = computed(() => {
+  if (props.color === 'theme') {
+    return 'var(--maz-color-bg-theme)'
+  }
+
+  return `var(--maz-color-${props.color})`
+})
 const checkboxBoxShadow = computed(() => {
   if (props.error) {
     return `var(--maz-color-danger)`
@@ -156,7 +168,7 @@ const checkboxBoxShadow = computed(() => {
     return `var(--maz-color-success)`
   }
 
-  return ['black', 'transparent'].includes(props.color)
+  return ['black', 'transparent', 'theme'].includes(props.color)
     ? `var(--maz-color-muted)`
     : `var(--maz-color-${props.color}-alpha)`
 })

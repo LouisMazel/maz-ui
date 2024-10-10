@@ -74,6 +74,10 @@ export interface Props<T extends ModelValueSimple, U extends MazSelectOption> {
   maxListHeight?: number
   /** The max width of the option list */
   maxListWidth?: number
+  /** The min height of the option list */
+  minListHeight?: number
+  /** The min width of the option list */
+  minListWidth?: number
   /**
    * The size of the select
    * @default 'md'
@@ -132,6 +136,8 @@ const props = withDefaults(defineProps<Props<T, U>>(), {
   itemHeight: undefined,
   maxListHeight: 240,
   maxListWidth: undefined,
+  minListWidth: undefined,
+  minListHeight: undefined,
   size: 'md',
   color: 'primary',
   options: undefined,
@@ -687,6 +693,8 @@ function updateValue(inputOption: NormalizedOption, mustCloseList = true) {
         :style="{
           maxHeight: `${maxListHeight}px`,
           maxWidth: `${maxListWidth}px`,
+          minHeight: `${minListHeight}px`,
+          minWidth: `${minListWidth}px`,
         }"
       >
         <MazInput

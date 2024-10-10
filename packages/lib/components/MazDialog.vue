@@ -121,10 +121,10 @@ const wrapperAttrs = computed<{
               v-if="!noClose && !persistent"
               class="m-dialog-closebtn"
               color="transparent"
+              size="sm"
+              :icon="XIcon"
               @click="close"
-            >
-              <XIcon class="maz-text-lg" />
-            </MazBtn>
+            />
           </div>
         </slot>
         <div id="dialogDesc" class="m-dialog-content">
@@ -151,7 +151,7 @@ const wrapperAttrs = computed<{
   @apply maz-flex maz-origin-center maz-flex-col maz-rounded maz-bg-color maz-text-normal dark:maz-border dark:maz-border-color-light;
 
   &-header {
-    @apply maz-flex maz-items-center maz-justify-end maz-pl-6 maz-pr-2 maz-pt-2;
+    @apply maz-flex maz-items-baseline maz-justify-end maz-pl-6 maz-pr-2 maz-pt-2;
 
     &.--has-title {
       @apply maz-justify-between;

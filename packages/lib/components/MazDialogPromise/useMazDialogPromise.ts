@@ -124,7 +124,7 @@ export function useMazDialogPromise() {
     dialogState,
     showDialogAndWaitChoice,
     removeDialogFromState,
-    rejectDialog: async (currentDialog: DialogState, response: unknown = 'cancel', action?: () => unknown) => {
+    rejectDialog: async (currentDialog: DialogState, response: unknown = new Error('cancel'), action?: () => unknown) => {
       await action?.()
       return responseDialog('reject', currentDialog, response)
     },

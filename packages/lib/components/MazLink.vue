@@ -1,23 +1,20 @@
 <script setup lang="ts">
-import type { Component } from 'nuxt/schema'
 import type { RouteLocationRaw } from 'vue-router'
-import type { Color } from './types'
+import type { Color, Icon } from './types'
 import {
-  type ComponentPublicInstance,
   defineAsyncComponent,
-  type FunctionalComponent,
-  type SVGAttributes,
 } from 'vue'
 
-withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<MazLinkProps>(), {
   id: undefined,
   title: undefined,
   color: 'primary',
   href: '#',
   to: undefined,
-  target: '_slef',
+  target: '_self',
   download: undefined,
   rel: undefined,
+  autoExternal: true,
   ariaLabel: undefined,
   underline: false,
   underlineOnlyHover: true,
@@ -29,9 +26,7 @@ const ExternalIcon = defineAsyncComponent(
 )
 const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
 
-export type Icon = FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component
-
-export interface Props {
+export interface MazLinkProps {
   /** The id of the link */
   id?: string
   /** The title of the link */
@@ -64,7 +59,10 @@ export interface Props {
   underline?: boolean
   /** Add an underline only on hover */
   underlineOnlyHover?: boolean
-  /** Add an external icon to the link if target is '_blank' */
+  /**
+   * Add an external icon to the link if target is '_blank'
+   * @default true
+   */
   autoExternal?: boolean
   /**
    * The name of the icon or component to display on the left of the text
@@ -130,7 +128,7 @@ export interface Props {
 
 <style lang="postcss" scoped>
   .m-link {
-  @apply maz-inline-flex maz-cursor-pointer maz-items-center maz-gap-1 maz-transition-colors maz-duration-200 maz-ease-in-out;
+  @apply maz-inline-flex maz-cursor-pointer maz-items-center maz-gap-1 maz-transition-colors maz-duration-200 maz-ease-in-out maz-no-underline;
 
   &.--underline {
     @apply maz-underline;

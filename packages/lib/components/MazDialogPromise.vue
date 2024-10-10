@@ -31,6 +31,8 @@ export interface MazDialogPromiseProps {
 export type Props = MazDialogPromiseProps & MazDialogProps & DialogData
 
 const props = withDefaults(defineProps<MazDialogPromiseProps & MazDialogProps & DialogData>(), {
+  identifier: undefined,
+  message: undefined,
   data: undefined,
   buttons: undefined,
 })

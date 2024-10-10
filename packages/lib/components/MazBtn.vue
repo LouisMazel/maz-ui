@@ -1,15 +1,9 @@
 <script lang="ts" setup>
-import type { Color, Size } from './types'
+import type { Color, Icon, Size } from './types'
 
 import {
-  type Component,
-  type ComponentPublicInstance,
   computed,
   defineAsyncComponent,
-  type FunctionalComponent,
-  type HTMLAttributes,
-  onBeforeMount,
-  type SVGAttributes,
   useAttrs,
   useSlots,
 } from 'vue'
@@ -24,16 +18,14 @@ const props = withDefaults(defineProps<Props>(), {
   icon: undefined,
   leftIcon: undefined,
   rightIcon: undefined,
-  contentClass: undefined,
   roundedSize: 'lg',
+  justify: 'center',
 })
 const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
 const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
 
 const { href, to } = useAttrs()
 const slots = useSlots()
-
-export type Icon = FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component
 
 export interface Props {
   /**
@@ -133,15 +125,11 @@ export interface Props {
    * @default false
    */
   noElevation?: boolean
-  /** The class applied to the content wrapper (<span />) of the button */
-  contentClass?: HTMLAttributes['class']
+  /**
+   * Choose how the elements are aligned in the button
+   */
+  justify?: 'start' | 'end' | 'center' | 'between' | 'around' | 'evenly'
 }
-
-onBeforeMount(() => {
-  if (props.icon && !props.fab) {
-    console.error('[maz-ui](MazBtn) the prop "icon" must be used only with "fab" props')
-  }
-})
 
 const component = computed(() => {
   if (href)
@@ -167,8 +155,40 @@ const hasLoader = computed(() => props.loading && props.variant === 'button')
 const hasLeftIcon = computed(() => !!slots['left-icon'] || props.leftIcon)
 const hasRightIcon = computed(() => !!slots['right-icon'] || props.rightIcon)
 const hasIcon = computed(() => hasLeftIcon.value || hasRightIcon.value)
-const hasFabIcon = computed(() => props.fab && (props.icon || !!slots.icon))
+const hasFabIcon = computed(() => (props.icon || !!slots.icon))
 const btnType = computed(() => (component.value === 'button' ? props.type : undefined))
+
+const iconClassSize = computed(() => {
+  if (props.size === 'xl')
+    return 'maz-text-3xl'
+  if (props.size === 'lg')
+    return 'maz-text-2xl'
+  if (props.size === 'md')
+    return 'maz-text-xl'
+  if (props.size === 'sm')
+    return 'maz-text-lg'
+  if (props.size === 'xs')
+    return 'maz-text-base'
+  if (props.size === 'mini')
+    return 'maz-text-sm'
+  return 'md'
+})
+
+const justifyClass = computed(() => {
+  if (props.justify === 'start')
+    return 'maz-justify-start'
+  if (props.justify === 'end')
+    return 'maz-justify-end'
+  if (props.justify === 'center')
+    return 'maz-justify-center'
+  if (props.justify === 'between')
+    return 'maz-justify-between'
+  if (props.justify === 'around')
+    return 'maz-justify-around'
+  if (props.justify === 'evenly')
+    return 'maz-justify-evenly'
+  return 'maz-justify-center'
+})
 </script>
 
 <template>
@@ -182,6 +202,7 @@ const btnType = computed(() => (component.value === 'button' ? props.type : unde
       btnColorClass,
       cursorClass,
       variantClass,
+      justifyClass,
       {
         '--block': block,
         '--no-underline': noUnderline,
@@ -197,62 +218,56 @@ const btnType = computed(() => (component.value === 'button' ? props.type : unde
     ]"
     :type="btnType"
   >
-    <div
-      v-if="hasLeftIcon"
-      class="m-btn__icon-left maz-flex maz-flex-center"
-      :class="{ 'maz-invisible': hasLoader }"
-    >
-      <!--
-        @slot left-icon - The icon to display on the left of the button
-      -->
-      <slot name="left-icon">
-        <MazIcon v-if="typeof leftIcon === 'string'" :name="leftIcon" />
-        <Component :is="leftIcon" v-else-if="leftIcon" />
-      </slot>
+    <!--
+      @slot left-icon - The icon to display on the left of the button
+    -->
+    <slot name="left-icon">
+      <MazIcon v-if="typeof leftIcon === 'string'" :name="leftIcon" :class="[iconClassSize]" />
+      <Component :is="leftIcon" v-else-if="leftIcon" :class="[iconClassSize]" />
+    </slot>
+
+    <!--
+      @slot icon - The icon to display on the fab button
+    -->
+    <slot v-if="hasFabIcon" name="icon">
+      <MazIcon v-if="typeof icon === 'string'" :name="icon" :class="[iconClassSize]" />
+      <Component :is="icon" v-else-if="icon" :class="[iconClassSize]" />
+    </slot>
+
+    <!--
+      @slot default - The content of the button
+    -->
+    <slot />
+
+    <!--
+      @slot left-icon - The icon to display on the left of the button
+    -->
+    <slot v-if="hasRightIcon" name="right-icon">
+      <MazIcon v-if="typeof rightIcon === 'string'" :name="rightIcon" :class="[iconClassSize]" />
+      <Component :is="rightIcon" v-else-if="rightIcon" :class="[iconClassSize]" />
+    </slot>
+
+    <div v-if="hasLoader" class="m-btn-loader-container">
+      <MazSpinner size="2em" :color="color" />
     </div>
-
-    <div v-if="hasFabIcon" class="m-btn__icon" :class="{ 'maz-invisible': hasLoader }">
-      <!--
-        @slot icon - The icon to display on the fab button
-      -->
-      <slot name="icon">
-        <MazIcon v-if="typeof icon === 'string'" :name="icon" />
-        <Component :is="icon" v-else-if="icon" />
-      </slot>
-    </div>
-
-    <span v-if="$slots.default" :class="[{ 'maz-invisible': hasLoader }, contentClass]">
-      <!--
-        @slot default - The content of the button
-      -->
-      <slot />
-    </span>
-
-    <div v-if="hasRightIcon" class="m-btn__icon-right" :class="{ 'maz-invisible': hasLoader }">
-      <!--
-        @slot right-icon - The icon to display on the right of the button
-      -->
-      <slot name="right-icon">
-        <MazIcon v-if="typeof rightIcon === 'string'" :name="rightIcon" />
-        <Component :is="rightIcon" v-else-if="rightIcon" />
-      </slot>
-    </div>
-
-    <MazSpinner v-if="hasLoader" class="m-btn-loader" size="2em" :color="color" />
   </Component>
 </template>
 
 <style lang="postcss" scoped>
   .m-btn {
-  @apply maz-flex-none maz-items-center maz-gap-2 maz-border maz-border-solid maz-border-transparent maz-text-center maz-align-top maz-text-base maz-text-normal;
+  @apply maz-relative maz-flex-none maz-items-center maz-gap-2 maz-border maz-border-solid maz-border-transparent maz-text-center maz-align-top maz-text-base maz-text-normal;
 
   & span {
     @apply maz-leading-none;
   }
 
-  &-loader {
-    @apply maz-absolute;
+  &-loader-container {
+    @apply maz-absolute maz-inset-0 maz-flex maz-items-center maz-justify-center maz-bg-color-lighter;
   }
+
+  /* &-loader {
+    @apply maz-absolute;
+  } */
 
   &.--cursor-pointer {
     @apply maz-cursor-pointer;
@@ -307,9 +322,9 @@ const btnType = computed(() => (component.value === 'button' ? props.type : unde
   }
 
   &.--is-button {
-    @apply maz-relative maz-inline-flex maz-items-center maz-justify-center maz-overflow-hidden
+    @apply maz-inline-flex maz-items-center maz-overflow-hidden
         maz-border-transparent maz-bg-transparent maz-font-medium maz-no-underline
-        maz-transition-all maz-duration-200 maz-ease-in-out;
+        maz-transition-all maz-duration-200 maz-ease-in-out maz-py-0.5;
 
     &:not(.--no-rounded) {
       @apply maz-rounded;
@@ -343,51 +358,30 @@ const btnType = computed(() => (component.value === 'button' ? props.type : unde
       }
     }
 
+    /* Sizes */
     &.--xl {
-      @apply maz-px-8 maz-text-xl;
-
-      padding-top: 1.325rem;
-      padding-bottom: 1.325rem;
+      @apply maz-min-h-16 maz-px-8 maz-text-xl;
     }
 
     &.--lg {
-      @apply maz-px-6 maz-text-lg;
-
-      padding-top: 1rem;
-      padding-bottom: 1rem;
+      @apply maz-min-h-14 maz-px-6;
     }
 
     &.--md {
-      @apply maz-px-4;
-
-      padding-top: 0.88rem;
-      padding-bottom: 0.88rem;
+      @apply maz-min-h-12 maz-px-4;
     }
 
     &.--sm {
-      @apply maz-px-3 maz-text-sm;
-
-      padding-top: 0.625rem;
-      padding-bottom: 0.625rem;
+      @apply maz-min-h-10 maz-px-3;
     }
 
     &.--xs {
-      @apply maz-px-2 maz-text-sm;
-
-      padding-top: 0.3rem;
-      padding-bottom: 0.3rem;
+      @apply maz-min-h-8 maz-px-2 maz-text-sm;
     }
 
     &.--mini {
-      @apply maz-px-1 maz-text-xs;
-
-      padding-top: 0.2rem;
-      padding-bottom: 0.2rem;
+      @apply maz-min-h-6 maz-px-1 maz-text-xs;
     }
-
-    /* transition:
-      background 300ms ease-in-out 0ms,
-      color 300ms ease-in-out 0ms; */
 
     /* Not disabled */
 
@@ -400,35 +394,34 @@ const btnType = computed(() => (component.value === 'button' ? props.type : unde
     /* Fab */
 
     &.--fab {
-      @apply maz-flex maz-items-center
-          maz-justify-center maz-rounded-full maz-px-0 maz-py-0;
+      @apply maz-flex maz-items-center maz-justify-center maz-rounded-full maz-px-1 maz-py-1;
 
       &:not(.--no-elevation) {
         @apply maz-elevation;
       }
 
       &.--xl {
-        @apply maz-h-[4.125rem] maz-w-[4.125rem] maz-text-xl;
+        @apply maz-w-16;
       }
 
       &.--lg {
-        @apply maz-h-[3.375rem] maz-w-[3.375rem] maz-text-lg;
+        @apply maz-w-14;
       }
 
       &.--md {
-        @apply maz-h-12 maz-w-12;
+        @apply maz-w-12;
       }
 
       &.--sm {
-        @apply maz-h-[2.375rem] maz-w-[2.375rem] maz-text-sm;
+        @apply maz-w-10;
       }
 
       &.--xs {
-        @apply maz-h-[1.725rem] maz-w-[1.725rem] maz-text-sm;
+        @apply maz-w-8;
       }
 
       &.--mini {
-        @apply maz-h-[1.4rem] maz-w-[1.4rem] maz-text-xs;
+        @apply maz-w-6;
       }
     }
 
@@ -440,7 +433,7 @@ const btnType = computed(() => (component.value === 'button' ? props.type : unde
       @apply maz-bg-primary maz-text-primary-contrast;
 
       &:not(:disabled):hover {
-        @apply maz-bg-primary-600;
+        @apply maz-bg-primary-700;
       }
     }
 
@@ -448,7 +441,7 @@ const btnType = computed(() => (component.value === 'button' ? props.type : unde
       @apply maz-bg-secondary maz-text-secondary-contrast;
 
       &:not(:disabled):hover {
-        @apply maz-bg-secondary-600;
+        @apply maz-bg-secondary-700;
       }
     }
 
@@ -456,7 +449,7 @@ const btnType = computed(() => (component.value === 'button' ? props.type : unde
       @apply maz-bg-info maz-text-info-contrast;
 
       &:not(:disabled):hover {
-        @apply maz-bg-info-600;
+        @apply maz-bg-info-700;
       }
     }
 
@@ -464,7 +457,7 @@ const btnType = computed(() => (component.value === 'button' ? props.type : unde
       @apply maz-bg-success maz-text-success-contrast;
 
       &:not(:disabled):hover {
-        @apply maz-bg-success-600;
+        @apply maz-bg-success-700;
       }
     }
 
@@ -472,7 +465,7 @@ const btnType = computed(() => (component.value === 'button' ? props.type : unde
       @apply maz-bg-warning maz-text-warning-contrast;
 
       &:not(:disabled):hover {
-        @apply maz-bg-warning-600;
+        @apply maz-bg-warning-700;
       }
     }
 
@@ -480,7 +473,7 @@ const btnType = computed(() => (component.value === 'button' ? props.type : unde
       @apply maz-bg-danger maz-text-white;
 
       &:not(:disabled):hover {
-        @apply maz-bg-danger-600;
+        @apply maz-bg-danger-700;
       }
     }
 
@@ -488,7 +481,7 @@ const btnType = computed(() => (component.value === 'button' ? props.type : unde
       @apply maz-bg-white maz-text-white-contrast;
 
       &:not(:disabled):hover {
-        @apply maz-bg-gray-300;
+        @apply maz-bg-gray-400;
       }
     }
 

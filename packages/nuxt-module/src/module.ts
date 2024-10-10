@@ -21,7 +21,7 @@ export interface MazUiNuxtOptions {
   injectCss?: boolean
   /**
    * Install aos plugin and enable auto-import of useAos composable
-   * @default false
+   * @default true
    */
   injectAos?:
     | boolean
@@ -39,92 +39,92 @@ export interface MazUiNuxtOptions {
     })
   /**
    * Install toaster plugin and enable auto-import of useToast composable
-   * @default false
+   * @default true
    */
   injectUseToast?: boolean | ToasterOptions
   /**
    * Install dialog plugin and enable auto-import of useToast composable
-   * @default false
+   * @default true
    */
   injectUseDialog?: boolean | DialogOptions
   /**
    * Install wait plugin and enable auto-import of useWait composable
-   * @default false
+   * @default true
    */
   injectUseWait?: boolean
   /**
    * Enable auto-import of useSwipe composable
-   * @default false
+   * @default true
    */
   injectUseSwiper?: boolean
   /**
    * Enable auto-import of useThemeHandler composable
-   * @default false
+   * @default true
    */
   injectUseThemeHandler?: boolean | ThemeHandlerOptions
   /**
    * Enable auto-import of useIdleTimeout composable
-   * @default false
+   * @default true
    */
   injectUseIdleTimeout?: boolean
   /**
    * Enable auto-import of useUserVisibility composable
-   * @default false
+   * @default true
    */
   injectUseUserVisibility?: boolean
   /**
    * Enable auto-import of useTimer composable
-   * @default false
+   * @default true
    */
   injectUseTimer?: boolean
   /**
    * Enable auto-import of useWindowSize composable
-   * @default false
+   * @default true
    */
   injectUseWindowSize?: boolean
   /**
    * Enable auto-import of useBreakpoints composable
-   * @default false
+   * @default true
    */
   injectUseBreakpoints?: boolean
   /**
    * Enable auto-import of useReadingTime composable
-   * @default false
+   * @default true
    */
   injectUseReadingTime?: boolean
   /**
    * Enable auto-import of useStringMatching composable
-   * @default false
+   * @default true
    */
   injectUseStringMatching?: boolean
   /**
    * Enable auto-import of useFormValidator and useFormField composables
-   * @default false
+   * @default true
    */
   injectUseFormValidator?: boolean
   /**
    * Globally install of v-zoom-img directive
-   * @default false
+   * @default true
    */
   installVZoomImg?: boolean
   /**
    * Globally install of v-click-outside directive
-   * @default false
+   * @default true
    */
   installVClickOutside?: boolean
   /**
    * Globally install of v-fullscreen-img directive
-   * @default false
+   * @default true
    */
   installVFullscreenImg?: boolean
   /**
    * Globally install of v-lazy-img directive
-   * @default false
+   * @default true
    */
   installVLazyImg?: boolean | vLazyImgOptions
   /**
    * Globally install of v-tooltip directive
-   * @default false
+   * @default true
    */
   installVTooltip?: boolean | vTooltipOptions
   /**
@@ -134,7 +134,7 @@ export interface MazUiNuxtOptions {
   injectComponents?: boolean
   /**
    * Default path to public svg icons folder for `<MazIcon />` component
-   * @default undefined
+   * @default ''
    */
   defaultMazIconPath?: string
   /**
@@ -142,11 +142,6 @@ export interface MazUiNuxtOptions {
    * @default true
    */
   devtools?: boolean
-  // /**
-  //  * Enable auto-import of useCurrency composable
-  //  * @default false
-  //  */
-  // injectUseCurrency?: boolean
 }
 
 declare module '@nuxt/schema' {
@@ -165,6 +160,32 @@ declare module '@nuxt/schema' {
 
 const _dirname = dirname(fileURLToPath(import.meta.url))
 
+const defaults: Required<MazUiNuxtOptions> = {
+  defaultMazIconPath: '',
+  devtools: true,
+  injectAos: true,
+  injectComponents: true,
+  injectCss: true,
+  injectUseDialog: true,
+  injectUseIdleTimeout: true,
+  injectUseReadingTime: true,
+  injectUseWindowSize: true,
+  injectUseBreakpoints: true,
+  injectUseUserVisibility: true,
+  injectUseStringMatching: true,
+  injectUseTimer: true,
+  injectUseThemeHandler: true,
+  injectUseToast: true,
+  injectUseWait: true,
+  injectUseSwiper: true,
+  installVClickOutside: true,
+  installVFullscreenImg: true,
+  installVLazyImg: true,
+  installVTooltip: true,
+  installVZoomImg: true,
+  injectUseFormValidator: true,
+}
+
 export default defineNuxtModule<MazUiNuxtOptions>({
   meta: {
     name: 'maz-ui',
@@ -173,11 +194,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       nuxt: '>=3.0.0',
     },
   },
-  defaults: {
-    devtools: true,
-    injectCss: true,
-    injectComponents: true,
-  },
+  defaults,
   async setup(options, nuxt) {
     const { resolve } = createResolver(import.meta.url)
 

@@ -12,8 +12,6 @@ export default defineNuxtConfig({
 
   mazUi: {
     defaultMazIconPath: '/icons',
-    injectComponents: true,
-    injectCss: true,
     injectAos: {
       router: true,
       injectCss: true,
@@ -24,15 +22,6 @@ export default defineNuxtConfig({
       timeout: 3000,
       persistent: false,
     },
-    injectUseDialog: true,
-    injectUseIdleTimeout: true,
-    injectUseUserVisibility: true,
-    injectUseWait: true,
-    injectUseWindowSize: true,
-    injectUseBreakpoints: true,
-    injectUseFormValidator: true,
-    injectUseTimer: true,
-    installVZoomImg: true,
     injectUseThemeHandler: {
       darkClass: 'dark',
       lightClass: 'light',
@@ -44,9 +33,6 @@ export default defineNuxtConfig({
     installVTooltip: {
       position: 'top',
     },
-    installVClickOutside: true,
-    installVFullscreenImg: true,
-    devtools: true,
   },
 
   srcDir: 'src/',
