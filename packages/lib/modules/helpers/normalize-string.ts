@@ -1,4 +1,4 @@
-interface NormalizeStringOptions {
+export interface NormalizeStringOptions {
   /**
    * Remove accents from the string
    * @default true
