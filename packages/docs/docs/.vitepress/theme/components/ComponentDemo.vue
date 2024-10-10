@@ -19,7 +19,7 @@
 
 
     <template #footer v-if="$slots.code">
-      <button v-show="!expanded" @click="showCode = !showCode" class="vp-raw maz-bg-color hover:maz-bg-color-light maz-py-3 maz-px-3 maz-w-full maz-flex maz-items-center maz-justify-between maz-transition-all maz-duration-300">
+      <button @click="showCode = !showCode" class="vp-raw maz-bg-color hover:maz-bg-color-light maz-py-3 maz-px-3 maz-w-full maz-flex maz-items-center maz-justify-between maz-transition-all maz-duration-300">
         <span class="maz-text-sm maz-flex maz-gap-2 maz-items-center maz-text-primary">
           <CodeIcon />
           View code
@@ -29,7 +29,7 @@
       </button>
 
       <MazTransitionExpand>
-        <div v-show="showCode || expanded">
+        <div v-show="showCode">
           <div class="maz-p-4 maz-flex maz-flex-col maz-gap-4 maz-text-sm">
             <slot name="code"></slot>
 
@@ -50,7 +50,8 @@
     title?: string
     expanded?: boolean
   }>(), {
-    title: undefined
+    title: undefined,
+    expanded: false
   })
 
   const showCode = ref(props.expanded)
