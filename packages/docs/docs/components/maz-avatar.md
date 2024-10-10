@@ -162,17 +162,14 @@ These modes are native use an `HTMLImageElement` with the `loading` attribute. (
 
 ```html
 <MazAvatar
-  class="vp-raw"
   loading="intersecting"
   src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=123"
 />
 <MazAvatar
-  class="vp-raw"
   loading="lazy"
   src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=123"
 />
 <MazAvatar
-  class="vp-raw"
   loading="eager"
   src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=123"
 />

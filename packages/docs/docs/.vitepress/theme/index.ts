@@ -10,7 +10,7 @@ import './main.css'
 
 import { ToasterOptions, installToaster, installWait, AosOptions, installAos, getAosInstance, vFullscreenImgInstall, installDialog } from 'maz-ui'
 
-import * as components from 'maz-ui/components/index'
+import * as components from 'maz-ui/components'
 
 import ColorContainer from './components/ColorContainer.vue'
 import NpmBadge from './components/NpmBadge.vue'
