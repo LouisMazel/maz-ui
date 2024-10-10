@@ -324,7 +324,7 @@ const justifyClass = computed(() => {
   &.--is-button {
     @apply maz-inline-flex maz-items-center maz-overflow-hidden
         maz-border-transparent maz-bg-transparent maz-font-medium maz-no-underline
-        maz-transition-all maz-duration-200 maz-ease-in-out;
+        maz-transition-all maz-duration-200 maz-ease-in-out maz-py-0.5;
 
     &:not(.--no-rounded) {
       @apply maz-rounded;
@@ -360,27 +360,27 @@ const justifyClass = computed(() => {
 
     /* Sizes */
     &.--xl {
-      @apply maz-h-16 maz-px-8 maz-text-xl;
+      @apply maz-min-h-16 maz-px-8 maz-text-xl;
     }
 
     &.--lg {
-      @apply maz-h-14 maz-px-6;
+      @apply maz-min-h-14 maz-px-6;
     }
 
     &.--md {
-      @apply maz-h-12 maz-px-4;
+      @apply maz-min-h-12 maz-px-4;
     }
 
     &.--sm {
-      @apply maz-h-10 maz-px-3;
+      @apply maz-min-h-10 maz-px-3;
     }
 
     &.--xs {
-      @apply maz-h-8 maz-px-2 maz-text-sm;
+      @apply maz-min-h-8 maz-px-2 maz-text-sm;
     }
 
     &.--mini {
-      @apply maz-h-6 maz-px-1 maz-text-xs;
+      @apply maz-min-h-6 maz-px-1 maz-text-xs;
     }
 
     /* Not disabled */

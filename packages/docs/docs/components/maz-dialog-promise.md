@@ -22,9 +22,7 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
 
 <MazBtn @click="askToUser">Ask user</MazBtn>
 
-<MazDialogPromise
-  identifier="one"
-/>
+<MazDialogPromise identifier="one" />
 
 <MazDialogPromise identifier="two" :buttons="buttons">
   <template #title>
