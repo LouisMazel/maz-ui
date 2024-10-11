@@ -42,12 +42,12 @@
     "colorette": "^2.0.20",
     "commander": "^12.1.0",
     "cosmiconfig": "^9.0.0",
-    "figlet": "^1.7.0",
+    "figlet": "^1.8.0",
     "tinycolor2": "^1.6.0"
   },
   "devDependencies": {
     "@types/clear": "^0.1.4",
-    "@types/figlet": "^1.5.8",
+    "@types/figlet": "^1.7.0",
     "@types/tinycolor2": "^1.4.6",
     "unbuild": "^2.0.0"
   },
