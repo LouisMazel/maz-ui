@@ -1,5 +1,60 @@
 # Change Log
 
+## v3.46.0...v3.47.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.46.0...v3.47.0)
+
+### 🚀 Enhancements
+
+- **maz-ui:** MazAvatar - add loading option to choose for SSR compatibilty ([8269acd01](https://github.com/LouisMazel/maz-ui/commit/8269acd01))
+- **maz-ui:** MazDropdown - add options to apply class and style to menu panel ([866c3c502](https://github.com/LouisMazel/maz-ui/commit/866c3c502))
+- **maz-ui:** MazDropdown - add block options ([fab52bf74](https://github.com/LouisMazel/maz-ui/commit/fab52bf74))
+- **maz-ui:** MazTable - add translation prop, choose the rounded size of elements and size on search input components ([38c52b013](https://github.com/LouisMazel/maz-ui/commit/38c52b013))
+- **maz-ui:** MazBtn - add justify options to choose how elements in button are aligned ([cbeb8d900](https://github.com/LouisMazel/maz-ui/commit/cbeb8d900))
+- **maz-ui:** MazCheckList - new component ([fd935945c](https://github.com/LouisMazel/maz-ui/commit/fd935945c))
+- **maz-ui:** UseLanguageDisplayNames - new composable get and manage languages ([77adc06a2](https://github.com/LouisMazel/maz-ui/commit/77adc06a2))
+
+### 🩹 Fixes
+
+- **maz-ui:** UseFormValidator - watch new values in schema ([fa2e85228](https://github.com/LouisMazel/maz-ui/commit/fa2e85228))
+
+### 💅 Refactors
+
+- **maz-ui:** MazDropdown - menu item by inherits MazLink props ([842e7b771](https://github.com/LouisMazel/maz-ui/commit/842e7b771))
+- **maz-ui:** Use useId composable to generate component ids ([5c9b4d25a](https://github.com/LouisMazel/maz-ui/commit/5c9b4d25a))
+- **maz-ui:** MazPhoneNumberInput - use flag from flagcdn and add possibility to disable auto-format ([b448a9dd5](https://github.com/LouisMazel/maz-ui/commit/b448a9dd5))
+- **maz-ui:** MazBtn - add size ton icons, clean DOM and remove content-class prop ([b8b43a65d](https://github.com/LouisMazel/maz-ui/commit/b8b43a65d))
+- **maz-ui:** MazCheckbox - add theme color ([96e8f5d7d](https://github.com/LouisMazel/maz-ui/commit/96e8f5d7d))
+- **maz-ui:** MazSwitch - add theme color ([aa6485b1b](https://github.com/LouisMazel/maz-ui/commit/aa6485b1b))
+- **maz-ui:** MazIcon - clean comments ([740eecac4](https://github.com/LouisMazel/maz-ui/commit/740eecac4))
+- **maz-ui:** MazInputTags - display trash icon with MazBtn ([b0af9a476](https://github.com/LouisMazel/maz-ui/commit/b0af9a476))
+- **docs:** Use v-show instead v-show ComponentDemo to index code part ([7be6e36f5](https://github.com/LouisMazel/maz-ui/commit/7be6e36f5))
+- **nuxt-module:** Enable all features by default ([968bcfef4](https://github.com/LouisMazel/maz-ui/commit/968bcfef4))
+- **maz-ui:** MazBtn - use min-height instead height to set the minimal height ([a0c0bdb17](https://github.com/LouisMazel/maz-ui/commit/a0c0bdb17))
+- **maz-ui:** MazDialog - reduce size of the close button ([ddd7f0861](https://github.com/LouisMazel/maz-ui/commit/ddd7f0861))
+- **maz-ui:** MazDialogPromise - by default, the reject button throw an new Error('cancel') ([ff4bd8de9](https://github.com/LouisMazel/maz-ui/commit/ff4bd8de9))
+
+### 📖 Documentation
+
+- **docs:** MazBtn - add exemple with icon custom component ([2ebe1b821](https://github.com/LouisMazel/maz-ui/commit/2ebe1b821))
+
+### 🏡 Chore
+
+- Pre-release script improvements ([ad26d9975](https://github.com/LouisMazel/maz-ui/commit/ad26d9975))
+- **root:** Clean Makefile ([fd9e413ea](https://github.com/LouisMazel/maz-ui/commit/fd9e413ea))
+
+### ✅ Tests
+
+- **maz-ui:** Improve tests for MazBtn and MazTable ([c904e1fb4](https://github.com/LouisMazel/maz-ui/commit/c904e1fb4))
+
+### 🎨 Styles
+
+- **maz-ui:** MazSwitch - improve UX and UI ([3814a782b](https://github.com/LouisMazel/maz-ui/commit/3814a782b))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.46.1-beta.6...v3.47.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.46.1-beta.6...v3.47.0)
