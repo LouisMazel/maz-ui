@@ -53,7 +53,6 @@ npm install libphonenumber-js
     :preferred-countries="['FR', 'BE', 'DE', 'US', 'GB']"
     :ignored-countries="['AC']"
     @update="results = $event"
-    :auto-format="false"
   />
 
   <br />
@@ -139,6 +138,14 @@ Two ways to translate the country list:
     US: 'Etats-Unis',
   }"
 />
+```
+
+## Auto formatting
+
+Becareful, the auto formatting is enabled by default and can have some issues with some countries with multiple valid number lengths like Anguilla (AI), you can disable it with the `auto-format` prop
+
+```html
+<MazPhoneNumberInput v-model="phoneNumber" :auto-format="false" />
 ```
 
 ## Orientation

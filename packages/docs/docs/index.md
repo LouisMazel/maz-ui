@@ -18,14 +18,8 @@ hero:
   <MazBtn href="/composables/use-theme-handler" color="theme" size="md" pastel rounded>Composables</MazBtn>
   <MazBtn href="/helpers/currency" color="theme" size="md" pastel rounded>Helpers</MazBtn>
   <MazBtn href="/directives/zoom-img" color="theme" size="md" pastel rounded>Directives</MazBtn>
-  <MazBtn rounded v-if="typeof starCount === 'number'" href="https://github.com/LouisMazel/maz-ui" target="blank" outline color="theme" size="sm">
-    <template #left-icon>
-      <GithubIcon class="maz-text-lg" />
-    </template>
+  <MazBtn rounded v-if="typeof starCount === 'number'" href="https://github.com/LouisMazel/maz-ui" target="blank" outline color="theme" left-icon="github" size="md" :right-icon="StarIcon">
     <MazAnimatedCounter :count="starCount" class="maz-text-xl maz-pl-2" />
-    <template #right-icon>
-      <StarIcon class="maz-text-lg" />
-    </template>
   </MazBtn>
 </div>
 
@@ -101,7 +95,6 @@ hero:
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import GithubIcon from 'maz-ui/icons/github.svg'
   import StarIcon from 'maz-ui/icons/star-solid.svg'
 
   const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN;

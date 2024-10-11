@@ -1,6 +1,6 @@
 ---
 title: MazAccordion
-description: MazAccordion is a standalone component
+description: MazAccordion is a standalone component that allows you to create an accordion with a title and content.
 ---
 
 # {{ $frontmatter.title }}
