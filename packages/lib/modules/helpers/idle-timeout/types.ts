@@ -1,4 +1,4 @@
-import { IdleTimeout } from "./idle-timeout-handler"
+import type { IdleTimeout } from './idle-timeout-handler'
 
 export type IdleTimeoutCallback = ({
   isIdle,

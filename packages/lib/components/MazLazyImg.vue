@@ -114,39 +114,40 @@ const sources = computed(() => {
 
 <style lang="postcss" scoped>
   .m-lazy-img-component {
-    @apply maz-relative maz-inline-flex maz-align-top maz-flex-center;
+  @apply maz-relative maz-inline-flex maz-align-top maz-flex-center;
 
-    &.--block {
+  &.--block {
+    @apply maz-w-full;
+
+    img {
       @apply maz-w-full;
-
-      img {
-        @apply maz-w-full;
-      }
     }
+  }
 
-    &-loader {
-      @apply maz-absolute maz-inset-0 maz-hidden maz-flex-center;
-    }
+  &-loader {
+    @apply maz-absolute maz-inset-0 maz-hidden maz-flex-center;
+  }
 
-    /* &:not(.m-lazy-error, .m-lazy-no-photo) img {
+  /* &:not(.m-lazy-error, .m-lazy-no-photo) img {
       @apply maz-h-full maz-w-full;
     } */
 
-    &.--height-full img {
-      @apply maz-max-h-full maz-w-min maz-max-w-min !important;
-    }
+  &.--height-full img {
+    @apply maz-max-h-full maz-w-min maz-max-w-min !important;
+  }
 
-    &.m-lazy-error:not(.m-lazy-no-photo) {
-      @apply maz-bg-color-light;
-      img {
-        @apply maz-h-1/2 maz-w-1/2;
-      }
-    }
+  &.m-lazy-error:not(.m-lazy-no-photo) {
+    @apply maz-bg-color-light;
 
-    &.m-lazy-loading {
-      & .m-lazy-img-component-loader {
-        @apply maz-flex;
-      }
+    img {
+      @apply maz-h-1/2 maz-w-1/2;
     }
   }
+
+  &.m-lazy-loading {
+    & .m-lazy-img-component-loader {
+      @apply maz-flex;
+    }
+  }
+}
 </style>

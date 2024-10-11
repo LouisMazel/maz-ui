@@ -2,15 +2,17 @@
 import type { Color } from './types'
 import { defineAsyncComponent, onMounted, onUnmounted } from 'vue'
 
-withDefaults(defineProps<Props>(), { color: 'primary', size: '3em' })
+const { color = 'primary', size = '3em', teleportSelector = 'body' } = defineProps<MazFullscreenLoaderProps>()
 
 const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
 
-export interface Props {
+export interface MazFullscreenLoaderProps {
   /** The color of the spinner */
   color?: Color
   /** The size of the spinner */
   size?: string
+  /** The selector to teleport the loader */
+  teleportSelector?: string
 }
 
 function addClassToDocument() {
@@ -31,15 +33,18 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div
-    class="maz-fixed maz-inset-0 maz-z-default-backdrop maz-flex maz-flex-col maz-gap-2 maz-bg-overlay maz-text-center maz-backdrop-blur maz-flex-center"
-  >
-    <MazSpinner :color="color" :size="size" />
+  <Teleport :to="teleportSelector">
+    <div
+      class="m-fullscreen-loader maz-fixed maz-inset-0 maz-z-default-backdrop maz-flex maz-flex-col maz-gap-2 maz-bg-overlay maz-text-center maz-backdrop-blur maz-flex-center"
+      v-bind="$attrs"
+    >
+      <MazSpinner :color="color" :size="size" />
 
-    <span v-if="$slots.default">
-      <slot />
-    </span>
-  </div>
+      <span v-if="$slots.default">
+        <slot />
+      </span>
+    </div>
+  </Teleport>
 </template>
 
 <style lang="postcss">
