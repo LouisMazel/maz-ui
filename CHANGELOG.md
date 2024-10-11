@@ -1,5 +1,9 @@
 # Change Log
 
+## v3.46.1-beta.6...v3.47.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.46.1-beta.6...v3.47.0)
+
 ## v3.45.6...v3.46.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.45.6...v3.46.0)
