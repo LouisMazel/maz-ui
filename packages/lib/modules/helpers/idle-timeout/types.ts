@@ -1,10 +1,14 @@
+import { IdleTimeout } from "./idle-timeout-handler"
+
 export type IdleTimeoutCallback = ({
   isIdle,
   eventType,
+  instance,
 }: {
   isIdle: boolean
   eventType?: string
-}) => void
+  instance: IdleTimeout
+}) => unknown
 
 export interface IdleTimeoutStrictOption {
   /**
@@ -23,7 +27,7 @@ export interface IdleTimeoutStrictOption {
    */
   once: boolean
   /**
-   * Watch immediately
+   * Watch immediately on load (make it false is useful for SSR context)
    * @default true
    */
   immediate: boolean

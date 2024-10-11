@@ -63,7 +63,7 @@ export class IdleTimeout {
     this.resetTimeout()
 
     if (this.options.immediate) {
-      this.callback({ isIdle: false })
+      this.callback({ isIdle: false, instance: this })
     }
   }
 
@@ -87,7 +87,7 @@ export class IdleTimeout {
     }
 
     this.resetTimeout()
-    this.callback({ isIdle: this.isIdle })
+    this.callback({ isIdle: this.isIdle, instance: this })
     this.remainingTime = 0
   }
 
@@ -96,7 +96,7 @@ export class IdleTimeout {
     this.isIdle = false
     this.remainingTime = 0
     this.resetTimeout()
-    this.callback({ isIdle: this.isIdle })
+    this.callback({ isIdle: this.isIdle, instance: this })
   }
 
   public destroy(): void {
@@ -153,7 +153,7 @@ export class IdleTimeout {
 
       this.resetTimeout()
 
-      this.callback({ isIdle: this.isIdle, eventType: event.type })
+      this.callback({ isIdle: this.isIdle, eventType: event.type, instance: this })
     }
     catch (error) {
       throw new Error(`[IdleTimeout](handleEvent) ${error}`)
@@ -162,7 +162,7 @@ export class IdleTimeout {
 
   private handleTimeout(): void {
     this.isIdle = true
-    this.callback({ isIdle: this.isIdle })
+    this.callback({ isIdle: this.isIdle, instance: this })
 
     if (this.options.once) {
       this.destroy()
@@ -193,6 +193,6 @@ export class IdleTimeout {
       this.reset()
     }
 
-    this.callback({ isIdle: this.isIdle })
+    this.callback({ isIdle: this.isIdle, instance: this })
   }
 }
