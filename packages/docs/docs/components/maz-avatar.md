@@ -1,6 +1,6 @@
 ---
 title: MazAvatar
-description: MazAvatar is a standalone component to display images or svgs in a wrapper
+description: MazAvatar is a standalone component that displays an image or an icon with a caption. It can be used to display a user's profile picture, a placeholder image, or an icon.
 ---
 
 # {{ $frontmatter.title }}

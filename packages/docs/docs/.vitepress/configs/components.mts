@@ -10,6 +10,7 @@ export const components = {
       items: [
         { text: 'MazBtn', link: '/components/maz-btn' },
         { text: 'MazCheckbox', link: '/components/maz-checkbox' },
+        { text: 'MazChecklist', link: '/components/maz-checklist' },
         { text: 'MazInput', link: '/components/maz-input' },
         { text: 'MazInputCode', link: '/components/maz-input-code' },
         { text: 'MazInputNumber', link: '/components/maz-input-number' },
@@ -47,7 +48,6 @@ export const components = {
         { text: 'MazCardSpotlight', link: '/components/maz-card-spotlight' },
         { text: 'MazCarousel', link: '/components/maz-carousel' },
         { text: 'MazChart', link: '/components/maz-chart' },
-        { text: 'MazChecklist', link: '/components/maz-checklist' },
         { text: 'MazCircularProgressBar', link: '/components/maz-circular-progress-bar' },
         { text: 'MazDropdown', link: '/components/maz-dropdown' },
         { text: 'MazExpandAnimation', link: '/components/maz-expand-animation' },
