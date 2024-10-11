@@ -1,16 +1,25 @@
 <script lang="ts" setup>
-import type { PropType } from 'vue'
 import type { Color } from './types'
 
 export type { Color }
 
-defineProps({
-  size: { type: String, default: '2em' },
-  color: {
-    type: String as PropType<Color>,
-    default: 'primary',
-  },
-})
+export interface MazSpinnerProps {
+  /**
+   * The size of the spinner
+   * @default 2em
+   */
+  size?: string
+  /**
+   * The color of the spinner
+   * @default theme
+   */
+  color?: Color
+}
+
+const {
+  size = '2em',
+  color = 'theme',
+} = defineProps<MazSpinnerProps>()
 </script>
 
 <template>
