@@ -1,10 +1,10 @@
-import MazCheckList from '@components/MazChecklist.vue'
-import MazInput from '@components/MazInput.vue'
 import { mount } from '@vue/test-utils'
+import MazChecklist from '../../../components/MazChecklist.vue'
+import MazInput from '../../../components/MazInput.vue'
 
-describe('mazCheckList', () => {
+describe('mazChecklist', () => {
   it('renders the component', () => {
-    const wrapper = mount(MazCheckList, {
+    const wrapper = mount(MazChecklist, {
       props: {
         items: [
           { label: 'Item 1', value: '1' },
@@ -16,7 +16,7 @@ describe('mazCheckList', () => {
   })
 
   it('renders the correct number of items', () => {
-    const wrapper = mount(MazCheckList, {
+    const wrapper = mount(MazChecklist, {
       props: {
         items: [
           { label: 'Item 1', value: '1' },
@@ -31,7 +31,7 @@ describe('mazCheckList', () => {
   })
 
   it('filters items based on query', async () => {
-    const wrapper = mount(MazCheckList, {
+    const wrapper = mount(MazChecklist, {
       props: {
         items: [
           { label: 'Apple', value: '1' },
@@ -52,7 +52,7 @@ describe('mazCheckList', () => {
   })
 
   it('emits update:query event when query changes', async () => {
-    const wrapper = mount(MazCheckList, {
+    const wrapper = mount(MazChecklist, {
       props: {
         items: [
           { label: 'Apple', value: '1' },
@@ -71,7 +71,7 @@ describe('mazCheckList', () => {
   })
 
   it('emits update:model-value event when item is checked', async () => {
-    const wrapper = mount(MazCheckList, {
+    const wrapper = mount(MazChecklist, {
       props: {
         items: [
           { label: 'Item 1', value: '1' },
@@ -88,7 +88,7 @@ describe('mazCheckList', () => {
   })
 
   it('displays no results message when no items match the query', async () => {
-    const wrapper = mount(MazCheckList, {
+    const wrapper = mount(MazChecklist, {
       props: {
         items: [
           { label: 'Apple', value: '1' },
@@ -97,9 +97,11 @@ describe('mazCheckList', () => {
         search: { enabled: true },
       },
     })
+    await vi.dynamicImportSettled()
     const input = wrapper.findComponent(MazInput)
     await input.setValue('Cherry')
-    const noResults = wrapper.find('.maz-text-muted')
+    const noResults = wrapper.find('span.maz-text-muted')
+
     expect(noResults.exists()).toBe(true)
     expect(noResults.text()).toBe('No results found')
   })

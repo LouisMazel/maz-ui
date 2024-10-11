@@ -14,7 +14,6 @@ import { normalizeString, type NormalizeStringOptions } from '../modules/helpers
 import { computed, defineAsyncComponent, ref, watch } from 'vue'
 import MazCardSpotlight from './MazCardSpotlight.vue'
 import MazCheckbox from './MazCheckbox.vue'
-import MazInput from './MazInput.vue'
 
 export type ItemOption = {
   label: string
@@ -75,6 +74,7 @@ const props = withDefaults(
     color: 'primary',
   },
 )
+
 const emits = defineEmits<{
   /**
    * Emitted when the query change
@@ -87,11 +87,14 @@ const emits = defineEmits<{
    */
   'update:model-value': [value?: T[]]
 }>()
+
+const MazInput = defineAsyncComponent(() => import('./MazInput.vue'))
+
 const SearchIcon = defineAsyncComponent(
-  () => import('maz-ui/icons/magnifying-glass.svg'),
+  () => import('../icons/magnifying-glass.svg'),
 )
 const NoResultsIcon = defineAsyncComponent(
-  () => import('maz-ui/icons/no-symbol.svg'),
+  () => import('../icons/no-symbol.svg'),
 )
 
 const internalQuery = ref<string | undefined>(props.query)

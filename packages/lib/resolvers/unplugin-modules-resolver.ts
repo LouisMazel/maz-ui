@@ -29,6 +29,8 @@ const modules = [
   'useUserVisibility',
   'useWait',
   'useWindowSize',
+  'useFormValidator',
+  'useFormField',
 ]
 
 export function UnpluginModulesResolver(): ResolverFunction {
