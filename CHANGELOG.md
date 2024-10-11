@@ -1,5 +1,35 @@
 # Change Log
 
+## v3.47.0...v3.47.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.47.0...v3.47.1)
+
+### 🩹 Fixes
+
+- **docs:** UseIdleTimeout - fix JS errors ([e3c49ecaa](https://github.com/LouisMazel/maz-ui/commit/e3c49ecaa))
+- **maz-ui:** MazDialogPromise - change button texts with options data.cancelText and data.confirmText ([13c26be37](https://github.com/LouisMazel/maz-ui/commit/13c26be37))
+
+### 💅 Refactors
+
+- **maz-ui:** MazLazyImg x MazAvatar - add bg color light when the img is in error ([28dbec3e4](https://github.com/LouisMazel/maz-ui/commit/28dbec3e4))
+- **maz-ui:** MazSpinner - the default color is now 'theme' ([7132b6ffc](https://github.com/LouisMazel/maz-ui/commit/7132b6ffc))
+- **maz-ui:** MazFullscreenLoader uses Teleport now (to body by default) ([e3335383f](https://github.com/LouisMazel/maz-ui/commit/e3335383f))
+
+### 🏡 Chore
+
+- Update changelog ([7e9b06605](https://github.com/LouisMazel/maz-ui/commit/7e9b06605))
+- **deps:** Upgrade dependencies ([47a09d01a](https://github.com/LouisMazel/maz-ui/commit/47a09d01a))
+
+### ✅ Tests
+
+- **maz-ui:** Idle-timeout - fix ([cfa2ffe36](https://github.com/LouisMazel/maz-ui/commit/cfa2ffe36))
+- **maz-ui:** MazDialogPromise - add more tests ([7b3ca68b4](https://github.com/LouisMazel/maz-ui/commit/7b3ca68b4))
+
+### ❤️ Contributors
+
+- Mazel <mazuel.loic@gmail.com>
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.46.0...v3.47.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.46.0...v3.47.0)
