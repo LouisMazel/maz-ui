@@ -50,6 +50,12 @@ const { dialogState, rejectDialog, resolveDialog, data: composableData } = useMa
 
 const customButtons = computed(() => props.buttons ?? props.data?.buttons ?? composableData.value.buttons)
 
+const currentData = computed<DialogData>(() => ({
+  ...defaultData,
+  ...composableData.value,
+  ...props.data,
+}))
+
 const cancelButtonData = computed(() => {
   const hasButton
       = composableData.value?.cancelButton ?? props.data?.cancelButton ?? defaultData.cancelButton
@@ -57,10 +63,15 @@ const cancelButtonData = computed(() => {
   if (!hasButton)
     return
 
-  return {
+  const mergedData = {
     ...defaultData.cancelButton,
     ...composableData.value?.cancelButton,
     ...props.data?.cancelButton,
+  }
+
+  return {
+    ...mergedData,
+    text: currentData.value.cancelText || mergedData.text,
   }
 })
 const confirmButtonData = computed(() => {
@@ -70,18 +81,17 @@ const confirmButtonData = computed(() => {
   if (!hasButton)
     return
 
-  return {
+  const mergedData = {
     ...defaultData.confirmButton,
     ...composableData.value?.confirmButton,
     ...props.data?.confirmButton,
   }
-})
 
-const currentData = computed<DialogData>(() => ({
-  ...defaultData,
-  ...composableData.value,
-  ...props.data,
-}))
+  return {
+    ...mergedData,
+    text: currentData.value.confirmText || mergedData.text,
+  }
+})
 
 const currentModal = computed(
   () => dialogState.value.find(({ id }) => id === props.identifier) as DialogState,
@@ -171,7 +181,7 @@ function customButtonAction(currentModal: DialogState, button: DialogCustomButto
                 @slot cancel-text slot - Place your cancel text
               -->
               <slot name="cancel-text">
-                {{ cancelButtonData.text || currentData?.cancelText }}
+                {{ cancelButtonData.text }}
               </slot>
             </MazBtn>
 
@@ -184,7 +194,7 @@ function customButtonAction(currentModal: DialogState, button: DialogCustomButto
                 @slot confirm-text slot - Place your confirm text
               -->
               <slot name="confirm-text">
-                {{ confirmButtonData.text || currentData.confirmText }}
+                {{ confirmButtonData.text }}
               </slot>
             </MazBtn>
           </template>
