@@ -47,6 +47,7 @@ describe('@modules/helpers/idle-timeout', () => {
         expect(instance?.idle).toBeTruthy()
         expect(callback).toHaveBeenCalledWith({
           isIdle: true,
+          instance: expect.any(IdleTimeout),
         })
 
         // @ts-expect-error
@@ -61,13 +62,14 @@ describe('@modules/helpers/idle-timeout', () => {
         expect(callback).toHaveBeenCalledWith({
           isIdle: false,
           eventType: 'mousemove',
+          instance: expect.any(IdleTimeout),
         })
       })
 
       it('then idle is "true" and callback called after time', async () => {
         await sleep(DEFAULT_TIMEOUT)
         expect(instance?.idle).toBeTruthy()
-        expect(callback).toHaveBeenCalledWith({ isIdle: true })
+        expect(callback).toHaveBeenCalledWith({ isIdle: true, instance: expect.any(IdleTimeout) })
       })
     })
 
@@ -87,7 +89,7 @@ describe('@modules/helpers/idle-timeout', () => {
         instance?.resume()
         await sleep(DEFAULT_TIMEOUT)
         expect(instance?.idle).toBeTruthy()
-        expect(callback).toHaveBeenCalledWith({ isIdle: true })
+        expect(callback).toHaveBeenCalledWith({ isIdle: true, instance: expect.any(IdleTimeout) })
       })
     })
 
@@ -116,7 +118,7 @@ describe('@modules/helpers/idle-timeout', () => {
           expect(instance.idle).toBeFalsy()
           instance.idle = true
           expect(instance.idle).toBeTruthy()
-          expect(callback).toHaveBeenCalledWith({ isIdle: true })
+          expect(callback).toHaveBeenCalledWith({ isIdle: true, instance: expect.any(IdleTimeout) })
         }
       })
 
@@ -126,7 +128,7 @@ describe('@modules/helpers/idle-timeout', () => {
           expect(instance.idle).toBeTruthy()
           instance.idle = false
           expect(instance.idle).toBeFalsy()
-          expect(callback).toHaveBeenCalledWith({ isIdle: false })
+          expect(callback).toHaveBeenCalledWith({ isIdle: false, instance: expect.any(IdleTimeout) })
         }
       })
     })
