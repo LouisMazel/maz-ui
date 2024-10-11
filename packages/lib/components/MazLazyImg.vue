@@ -64,6 +64,8 @@ export interface Props {
   fallbackSrc?: string
   /** The classes of the image element */
   imgClass?: HTMLAttributes['class']
+  /** The image will be displayed in full width */
+  block?: boolean
 }
 
 const src = computed(() => props.image || props.src)
@@ -87,7 +89,7 @@ const sources = computed(() => {
       onError: (el) => $emit('error', el),
     }"
     class="m-lazy-img-component"
-    :class="[{ '--use-loader': !noLoader, '--height-full': imageHeightFull }, props.class]"
+    :class="[{ '--use-loader': !noLoader, '--height-full': imageHeightFull, '--block': block }, props.class]"
     :style
   >
     <source
@@ -112,30 +114,39 @@ const sources = computed(() => {
 
 <style lang="postcss" scoped>
   .m-lazy-img-component {
-  @apply maz-relative maz-inline-flex maz-align-top maz-flex-center;
+    @apply maz-relative maz-inline-flex maz-align-top maz-flex-center;
 
-  &-loader {
-    @apply maz-absolute maz-inset-0 maz-hidden maz-flex-center;
-  }
+    &.--block {
+      @apply maz-w-full;
 
-  /* &:not(.m-lazy-error, .m-lazy-no-photo) img {
-    @apply maz-h-full maz-w-full;
-  } */
+      img {
+        @apply maz-w-full;
+      }
+    }
 
-  &.--height-full img {
-    @apply maz-max-h-full maz-w-min maz-max-w-min !important;
-  }
+    &-loader {
+      @apply maz-absolute maz-inset-0 maz-hidden maz-flex-center;
+    }
 
-  &.m-lazy-error:not(.m-lazy-no-photo) {
-    img {
-      @apply maz-h-1/2 maz-w-1/2;
+    /* &:not(.m-lazy-error, .m-lazy-no-photo) img {
+      @apply maz-h-full maz-w-full;
+    } */
+
+    &.--height-full img {
+      @apply maz-max-h-full maz-w-min maz-max-w-min !important;
+    }
+
+    &.m-lazy-error:not(.m-lazy-no-photo) {
+      @apply maz-bg-color-light;
+      img {
+        @apply maz-h-1/2 maz-w-1/2;
+      }
+    }
+
+    &.m-lazy-loading {
+      & .m-lazy-img-component-loader {
+        @apply maz-flex;
+      }
     }
   }
-
-  &.m-lazy-loading {
-    & .m-lazy-img-component-loader {
-      @apply maz-flex;
-    }
-  }
-}
 </style>

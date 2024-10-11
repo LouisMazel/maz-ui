@@ -11,5 +11,6 @@
   },
   "css.validate": false,
   "prettier.enable": false,
-  "eslint.enable": true
+  "eslint.enable": true,
+  "vitest.disableWorkspaceWarning": true,
 }
