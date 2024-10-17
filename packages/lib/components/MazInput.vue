@@ -323,7 +323,7 @@ function emitInputEvent(event: Event) {
       `--${color}`,
       `--${size}`,
     ]"
-    :style="style"
+    :style
   >
     <div
       class="m-input-wrapper"
