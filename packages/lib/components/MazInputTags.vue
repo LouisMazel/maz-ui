@@ -153,6 +153,23 @@ function removeTag(id: string) {
   const tagsArray = tags.value?.filter(tag => tag.id !== id).map(tag => tag.tag)
   emits('update:model-value', tagsArray)
 }
+
+const buttonSize = computed(() => {
+  if (props.size === 'mini')
+    return 'mini'
+  if (props.size === 'xs')
+    return 'mini'
+  if (props.size === 'sm')
+    return 'xs'
+  if (props.size === 'md')
+    return 'sm'
+  if (props.size === 'lg')
+    return 'md'
+  if (props.size === 'xl')
+    return 'lg'
+
+  return props.size
+})
 </script>
 
 <template>
@@ -168,7 +185,7 @@ function removeTag(id: string) {
         <MazBtn
           class="m-input-tags__tag"
           :disabled
-          :size
+          :size="buttonSize"
           :color="tagsHoveredId === id || lastIdToDelete === id ? 'danger' : color"
           :right-icon="tagsHoveredId === id || lastIdToDelete === id ? CloseIcon : undefined"
           @click.stop="removeTag(id)"
@@ -207,7 +224,7 @@ function removeTag(id: string) {
 </template>
 
 <style lang="postcss" scoped>
-  .m-input-tags {
+.m-input-tags {
   @apply maz-relative maz-inline-flex maz-flex-wrap maz-gap-1
       maz-overflow-hidden maz-rounded maz-border maz-bg-color maz-px-[0.5em] maz-py-[0.25em] maz-align-top maz-transition-colors maz-duration-200 maz-ease-in-out dark:maz-bg-color-light;
 
@@ -241,10 +258,6 @@ function removeTag(id: string) {
 
   &__wrapper {
     @apply maz-inline-flex maz-h-auto !maz-flex-none maz-flex-center;
-  }
-
-  &__tag {
-    @apply !maz-h-full !maz-px-2 !maz-py-2;
   }
 
   &__input {
