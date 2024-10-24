@@ -1,84 +1,6 @@
-<script lang="ts" setup>
-import type { MazSelectOption } from './MazSelect.vue'
-import type { Color, Size } from './types'
-
-import {
-  computed,
-  type HTMLAttributes,
-  onBeforeMount,
-  provide,
-  type Ref,
-  ref,
-  type StyleValue,
-  type ThHTMLAttributes,
-  toRefs,
-  useSlots,
-  watch,
-} from 'vue'
-import { defineAsyncComponent } from 'vue'
-
-const props = withDefaults(defineProps<MazTableProps>(), {
-  tableClass: undefined,
-  tableStyle: undefined,
-  modelValue: undefined,
-  title: undefined,
-  size: 'md',
-  rows: undefined,
-  searchQuery: undefined,
-  headers: undefined,
-  headersAlign: 'left',
-  caption: undefined,
-  page: 1,
-  pageSize: 20,
-  totalItems: undefined,
-  selectedKey: undefined,
-  captionSide: 'bottom',
-  tableLayout: undefined,
-  searchPlaceholder: 'Search',
-  searchByPlaceholder: 'Search by',
-  searchByAllLabel: 'All',
-  paginationAllLabel: 'All',
-  color: 'primary',
-  totalPages: undefined,
-  roundedSize: 'lg',
-})
-const emits = defineEmits<{
-  /**
-   * emitted when a row is selected
-   * @property {(Row | string | number | boolean)[]} value list of selected rows (if selectedKey is defined, it will be the value of the selectedKey of the row)
-   */
-  (event: 'update:model-value', value: (Row | string | number | boolean)[] | undefined): void
-  /**
-   * emitted when enter a value in the search input
-   * @property {string} searchQuery search query
-   */
-  (event: 'update:search-query', searchQuery: string | undefined): void
-  /**
-   * emitted when the current page of the pagination change
-   * @property {number} page current page
-   */
-  (event: 'update:page', page: number): void
-  /**
-   * emitted when the page size of the pagination change
-   * @property {number} pageSize current page size
-   */
-  (event: 'update:page-size', pageSize: number): void
-}>()
-
-const ArrowIcon = defineAsyncComponent(() => import('./../icons/arrow-up.svg'))
-const ChevronDoubleIcon = defineAsyncComponent(() => import('./../icons/chevron-double-left.svg'))
-const ChevronIcon = defineAsyncComponent(() => import('./../icons/chevron-left.svg'))
-const SearchIcon = defineAsyncComponent(() => import('./../icons/magnifying-glass.svg'))
-const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
-const MazCheckbox = defineAsyncComponent(() => import('./MazCheckbox.vue'))
-const MazInput = defineAsyncComponent(() => import('./MazInput.vue'))
-const MazLoadingBar = defineAsyncComponent(() => import('./MazLoadingBar.vue'))
-const MazSelect = defineAsyncComponent(() => import('./MazSelect.vue'))
-const MazTableCell = defineAsyncComponent(() => import('./MazTableCell.vue'))
-const MazTableRow = defineAsyncComponent(() => import('./MazTableRow.vue'))
-const MazTableTitle = defineAsyncComponent(() => import('./MazTableTitle.vue'))
-
-export type { Color, Size }
+<script lang="ts">
+/* eslint-disable import/first */
+export type { Color, Size } from './types'
 
 export interface HeadersEnriched {
   label: string
@@ -120,18 +42,7 @@ export interface Translations {
   paginationOf?: string
 }
 
-const defaultTranslations: Required<Translations> = {
-  noResults: 'No results',
-  actionHeader: 'Actions',
-  searchByAllLabel: 'All',
-  searchByPlaceholder: 'Search by',
-  searchPlaceholder: 'Search',
-  paginationAllLabel: 'All',
-  paginationRowsPerPage: 'Rows per page',
-  paginationOf: 'of',
-}
-
-export interface MazTableProps {
+export interface MazTableProps<T extends Row> {
   /** class of the table element */
   tableClass?: HTMLAttributes['class']
   /** style of the table element */
@@ -158,7 +69,7 @@ export interface MazTableProps {
   /** align all headers */
   headersAlign?: ThHTMLAttributes['align']
   /** rows of the table - type: `Record<string, string | boolean | number>[]` ; */
-  rows?: Row[]
+  rows?: T[]
   /** add hover effect on rows */
   hoverable?: boolean
   /** enable search feature into the table header */
@@ -231,6 +142,105 @@ export interface MazTableProps {
   roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
 }
 
+export interface MazTableProvide {
+  size: Ref<Size>
+  hoverable: Ref<boolean>
+  backgroundEven: Ref<boolean>
+  backgroundOdd: Ref<boolean>
+}
+</script>
+
+<script lang="ts" setup generic="T extends Row">
+import type { MazSelectOption } from './MazSelect.vue'
+import type { Color, Size } from './types'
+
+import {
+  computed,
+  type HTMLAttributes,
+  onBeforeMount,
+  provide,
+  type Ref,
+  ref,
+  type StyleValue,
+  type ThHTMLAttributes,
+  toRefs,
+  useSlots,
+  watch,
+} from 'vue'
+import { defineAsyncComponent } from 'vue'
+
+const props = withDefaults(defineProps<MazTableProps<T>>(), {
+  tableClass: undefined,
+  tableStyle: undefined,
+  modelValue: undefined,
+  title: undefined,
+  size: 'md',
+  rows: undefined,
+  searchQuery: undefined,
+  headers: undefined,
+  headersAlign: 'left',
+  caption: undefined,
+  page: 1,
+  pageSize: 20,
+  totalItems: undefined,
+  selectedKey: undefined,
+  captionSide: 'bottom',
+  tableLayout: undefined,
+  searchPlaceholder: 'Search',
+  searchByPlaceholder: 'Search by',
+  searchByAllLabel: 'All',
+  paginationAllLabel: 'All',
+  color: 'primary',
+  totalPages: undefined,
+  roundedSize: 'lg',
+})
+const emits = defineEmits<{
+  /**
+   * emitted when a row is selected
+   * @property {(Row | string | number | boolean)[]} value list of selected rows (if selectedKey is defined, it will be the value of the selectedKey of the row)
+   */
+  (event: 'update:model-value', value: (Row | string | number | boolean)[] | undefined): void
+  /**
+   * emitted when enter a value in the search input
+   * @property {string} searchQuery search query
+   */
+  (event: 'update:search-query', searchQuery: string | undefined): void
+  /**
+   * emitted when the current page of the pagination change
+   * @property {number} page current page
+   */
+  (event: 'update:page', page: number): void
+  /**
+   * emitted when the page size of the pagination change
+   * @property {number} pageSize current page size
+   */
+  (event: 'update:page-size', pageSize: number): void
+}>()
+
+const ArrowIcon = defineAsyncComponent(() => import('./../icons/arrow-up.svg'))
+const ChevronDoubleIcon = defineAsyncComponent(() => import('./../icons/chevron-double-left.svg'))
+const ChevronIcon = defineAsyncComponent(() => import('./../icons/chevron-left.svg'))
+const SearchIcon = defineAsyncComponent(() => import('./../icons/magnifying-glass.svg'))
+const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
+const MazCheckbox = defineAsyncComponent(() => import('./MazCheckbox.vue'))
+const MazInput = defineAsyncComponent(() => import('./MazInput.vue'))
+const MazLoadingBar = defineAsyncComponent(() => import('./MazLoadingBar.vue'))
+const MazSelect = defineAsyncComponent(() => import('./MazSelect.vue'))
+const MazTableCell = defineAsyncComponent(() => import('./MazTableCell.vue'))
+const MazTableRow = defineAsyncComponent(() => import('./MazTableRow.vue'))
+const MazTableTitle = defineAsyncComponent(() => import('./MazTableTitle.vue'))
+
+const defaultTranslations: Required<Translations> = {
+  noResults: 'No results',
+  actionHeader: 'Actions',
+  searchByAllLabel: 'All',
+  searchByPlaceholder: 'Search by',
+  searchPlaceholder: 'Search',
+  paginationAllLabel: 'All',
+  paginationRowsPerPage: 'Rows per page',
+  paginationOf: 'of',
+}
+
 const t = computed<Required<Translations>>(() => {
   const { translations, searchByAllLabel, searchByPlaceholder, searchPlaceholder, paginationAllLabel } = props
 
@@ -250,13 +260,6 @@ const hasDivider = computed<boolean>(
 
 const { size, hoverable, backgroundEven, backgroundOdd } = toRefs(props)
 
-export interface MazTableProvide {
-  size: Ref<Size>
-  hoverable: Ref<boolean>
-  backgroundEven: Ref<boolean>
-  backgroundOdd: Ref<boolean>
-}
-
 provide<MazTableProvide>('maz-table', {
   size,
   hoverable,
@@ -264,7 +267,7 @@ provide<MazTableProvide>('maz-table', {
   backgroundOdd,
 })
 
-const rowsNormalized = ref<Row[]>(getNormalizedRows())
+const rowsNormalized = ref<T[]>(getNormalizedRows())
 
 const isSelectable = computed<boolean>(() => props.selectable || !!props.selectedKey)
 
@@ -381,7 +384,7 @@ const searchQueryModel = computed({
   },
 })
 
-function getSortedRows(rows: Row[]) {
+function getSortedRows(rows: T[]) {
   return [...rows].sort((a, b) => {
     if (sortedColumnIndex.value === undefined || sortType.value === undefined)
       return 0
@@ -401,7 +404,7 @@ function getSortedRows(rows: Row[]) {
   })
 }
 
-function getFilteredRows(rows: Row[]) {
+function getFilteredRows(rows: T[]) {
   if (props.noSearchInRow || typeof searchQueryModel.value !== 'string')
     return rowsOfPage.value
 
@@ -422,10 +425,10 @@ function getFilteredRows(rows: Row[]) {
   })
 }
 
-const rowsFiltered = computed<Row[]>(() => {
-  const filteredResults = getFilteredRows(rowsOfPage.value)
+const rowsFiltered = computed<T[]>(() => {
+  const filteredResults = getFilteredRows(rowsOfPage.value as T[])
 
-  return getSortedRows(filteredResults)
+  return getSortedRows(filteredResults as T[])
 })
 
 const slots = useSlots()
@@ -443,7 +446,7 @@ function getNormalizedHeaders(): HeadersNormalized[] {
   )
 }
 
-function getNormalizedRows(): Row[] {
+function getNormalizedRows(): T[] {
   return (
     props.rows?.map(row => ({
       selected: props.modelValue?.includes(props.selectedKey ? row[props.selectedKey] : row),
@@ -484,7 +487,7 @@ function selectRow(value: boolean, index: number) {
   emitValues()
 }
 
-function emitValues(selectedRows?: (Row | string | number | boolean)[]) {
+function emitValues(selectedRows?: (T | string | number | boolean)[]) {
   selectedRows = selectedRows ?? getSelectedRows()
 
   const rows = selectedRows?.length ? selectedRows : undefined
@@ -492,7 +495,7 @@ function emitValues(selectedRows?: (Row | string | number | boolean)[]) {
   emits('update:model-value', rows)
 }
 
-function getSelectedRows(): (Row | string | number | boolean)[] {
+function getSelectedRows(): (T | string | number | boolean)[] {
   // if (props.selectedKey === undefined) {
   //   return
   // }

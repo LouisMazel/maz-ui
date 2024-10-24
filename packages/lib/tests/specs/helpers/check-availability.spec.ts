@@ -85,4 +85,51 @@ describe('given checkAvailability helper', () => {
     expect(consoleWarnSpy).toHaveBeenCalledTimes(1)
     expect(consoleWarnSpy).toHaveBeenCalledWith(expect.stringContaining('20 attempts'))
   })
+
+  it('should stop retrying if expectedValue is not met', () => {
+    const mockGetRef = vi.fn(() => 'unexpectedValue')
+    const mockCallback = vi.fn()
+    const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+
+    checkAvailability(mockGetRef, mockCallback, { maxAttempts: 5, interval: 50, expectedValue: 'expectedValue' })
+
+    for (let i = 0; i < 5; i++) {
+      vi.advanceTimersByTime(50)
+    }
+
+    expect(mockGetRef).toHaveBeenCalledTimes(6) // Initial + 5 retries
+    expect(mockCallback).not.toHaveBeenCalled()
+    expect(consoleWarnSpy).toHaveBeenCalledTimes(1)
+    expect(consoleWarnSpy).toHaveBeenCalledWith(expect.stringContaining('5 attempts'))
+  })
+
+  it('should call callback if expectedValue is met', () => {
+    const mockGetRef = vi.fn(() => 'expectedValue')
+    const mockCallback = vi.fn()
+
+    checkAvailability(mockGetRef, mockCallback, { expectedValue: 'expectedValue' })
+
+    expect(mockGetRef).toHaveBeenCalledTimes(1)
+    expect(mockCallback).toHaveBeenCalledTimes(1)
+    expect(mockCallback).toHaveBeenCalledWith('expectedValue')
+  })
+
+  it('should continue retrying until expectedValue is met', () => {
+    let callCount = 0
+    const mockGetRef = vi.fn(() => {
+      callCount++
+      return callCount === 3 ? 'expectedValue' : 'unexpectedValue'
+    })
+    const mockCallback = vi.fn()
+
+    checkAvailability(mockGetRef, mockCallback, { maxAttempts: 5, interval: 50, expectedValue: 'expectedValue' })
+
+    for (let i = 0; i < 3; i++) {
+      vi.advanceTimersByTime(50)
+    }
+
+    expect(mockGetRef).toHaveBeenCalledTimes(3)
+    expect(mockCallback).toHaveBeenCalledTimes(1)
+    expect(mockCallback).toHaveBeenCalledWith('expectedValue')
+  })
 })
