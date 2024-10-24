@@ -3,6 +3,7 @@
 - [ ] Bug fix
 - [ ] Feature
 - [ ] Code style update
+- [ ] UI
 - [ ] Refactor
 - [ ] Dependencies
 - [ ] Documentation
