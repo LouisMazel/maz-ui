@@ -1,5 +1,6 @@
 import type { DirectiveBinding } from 'vue'
 
+import type { MazFullscreenImgProps } from './MazFullscreenImg.vue'
 import { mount } from './../../../modules/helpers/mount-component'
 import MazFullscreenImg from './MazFullscreenImg.vue'
 
@@ -132,7 +133,7 @@ export class FullscreenImgHandler {
   private renderPreview(el: HTMLElement) {
     el.classList.add(STATE_OPEN_CLASS)
 
-    return mount(MazFullscreenImg, {
+    return mount<typeof MazFullscreenImg, MazFullscreenImgProps>(MazFullscreenImg, {
       props: {
         ...this.options,
         openInstanceClass: STATE_OPEN_CLASS,
