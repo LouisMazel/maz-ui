@@ -167,7 +167,7 @@ function getProgressBarColor() {
       return 'maz-bg-warning-700'
     }
     default: {
-      return 'maz-bg-secondary'
+      return 'maz-bg-primary'
     }
   }
 }

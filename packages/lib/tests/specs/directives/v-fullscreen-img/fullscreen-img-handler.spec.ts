@@ -87,4 +87,12 @@ describe('fullscreenImgHandler', () => {
     // @ts-expect-error - private method
     expect(result).toEqual({ src: binding.value, alt: 'some image', ...handler.defaultOptions })
   })
+
+  it('preserves other attributes on the element', () => {
+    el.setAttribute('id', 'test-id')
+    el.setAttribute('class', 'existing-class')
+    handler.create(el, binding)
+    expect(el.getAttribute('id')).toBe('test-id')
+    expect(el.classList.contains('existing-class')).toBeTruthy()
+  })
 })

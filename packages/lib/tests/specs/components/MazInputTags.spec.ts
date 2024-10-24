@@ -1,3 +1,5 @@
+import type { Size } from '@components/MazBtn.vue'
+import MazBtn from '@components/MazBtn.vue'
 import MazInputTags from '@components/MazInputTags.vue'
 import { mount } from '@vue/test-utils'
 
@@ -14,6 +16,32 @@ describe('mazInputTags', () => {
     expect(wrapper.exists()).toBe(true)
     expect(wrapper.classes()).toContain('m-input-tags')
     expect(wrapper.find('.m-input-tags__input').exists()).toBe(true)
+  })
+
+  it('applies correct buttonSize based on size prop', async () => {
+    const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
+    const expectedButtonSizes = {
+      mini: 'mini',
+      xs: 'mini',
+      sm: 'xs',
+      md: 'sm',
+      lg: 'md',
+      xl: 'lg',
+    }
+
+    for (const size of sizes) {
+      const wrapper = mount(MazInputTags, {
+        props: {
+          modelValue: ['tag1'],
+          size: size as Size,
+        },
+      })
+
+      await wrapper.vm.$nextTick()
+
+      const tagButton = wrapper.findComponent(MazBtn)
+      expect(tagButton.props('size')).toBe(expectedButtonSizes[size])
+    }
   })
 
   it('renders with tags from modelValue prop', async () => {
@@ -45,7 +73,7 @@ describe('mazInputTags', () => {
     await input.trigger('keydown.enter')
 
     expect(wrapper.emitted('update:model-value')).toBeTruthy()
-    expect(wrapper.emitted('update:model-value')[0][0]).toEqual(['tag1', 'tag2'])
+    expect(wrapper.emitted('update:model-value')?.[0][0]).toEqual(['tag1', 'tag2'])
   })
 
   it('emits update:model-value when tags are removed', async () => {
@@ -61,7 +89,7 @@ describe('mazInputTags', () => {
     await tag.trigger('click')
 
     expect(wrapper.emitted('update:model-value')).toBeTruthy()
-    expect(wrapper.emitted('update:model-value')[0][0]).toEqual(['tag2'])
+    expect(wrapper.emitted('update:model-value')?.[0][0]).toEqual(['tag2'])
   })
 
   it('emits update:model-value when last tag is removed on backspace', async () => {
@@ -79,7 +107,7 @@ describe('mazInputTags', () => {
     await input.trigger('keydown.delete')
 
     expect(wrapper.emitted('update:model-value')).toBeTruthy()
-    expect(wrapper.emitted('update:model-value')[0][0]).toEqual(['tag1'])
+    expect(wrapper.emitted('update:model-value')?.[0][0]).toEqual(['tag1'])
   })
 
   it('applies error style when error prop is true', async () => {

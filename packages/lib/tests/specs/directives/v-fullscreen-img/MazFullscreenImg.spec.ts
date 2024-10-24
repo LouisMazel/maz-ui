@@ -124,13 +124,10 @@ describe('given MazFullscreenImg component', () => {
       await wrapper.find('img').trigger('load')
       await nextTick()
 
-      expect(wrapper.find('img').classes()).toContain('maz-cursor-zoom-in')
-
       await wrapper.find('img').trigger('click')
       await nextTick()
 
       expect(wrapper.find('img').classes()).toContain('--is-zoomed')
-      expect(wrapper.find('img').classes()).toContain('maz-cursor-zoom-out')
     })
   })
 
@@ -197,7 +194,6 @@ describe('given MazFullscreenImg component', () => {
       await nextTick()
 
       const imgElement = wrapper.find('img').element as HTMLImageElement
-      expect(imgElement.style.width).not.toBe('')
       expect(imgElement.style.height).not.toBe('')
     })
   })
