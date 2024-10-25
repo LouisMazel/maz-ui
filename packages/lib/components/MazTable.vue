@@ -18,14 +18,14 @@ export interface HeadersEnriched {
   headers?: ThHTMLAttributes['headers']
 }
 
-  type HeadersNormalized = HeadersEnriched & {
-    thHeaders?: ThHTMLAttributes['headers']
-    sorted?: 'ASC' | 'DESC'
-  }
+type HeadersNormalized = HeadersEnriched & {
+  thHeaders?: ThHTMLAttributes['headers']
+  sorted?: 'ASC' | 'DESC'
+}
 
-export type Row = Record<string, any> & {
+export type Row<T extends Row<T>> = Record<string, any> & {
   selected?: boolean
-  action?: (row: Row) => unknown
+  action?: (row: T) => unknown
   classes?: HTMLAttributes['class']
 }
 
@@ -42,7 +42,7 @@ export interface Translations {
   paginationOf?: string
 }
 
-export interface MazTableProps<T extends Row> {
+export interface MazTableProps<T extends Row<T>> {
   /** class of the table element */
   tableClass?: HTMLAttributes['class']
   /** style of the table element */
@@ -150,7 +150,7 @@ export interface MazTableProvide {
 }
 </script>
 
-<script lang="ts" setup generic="T extends Row">
+<script lang="ts" setup generic="T extends Row<T>">
 import type { MazSelectOption } from './MazSelect.vue'
 import type { Color, Size } from './types'
 
@@ -199,7 +199,7 @@ const emits = defineEmits<{
    * emitted when a row is selected
    * @property {(Row | string | number | boolean)[]} value list of selected rows (if selectedKey is defined, it will be the value of the selectedKey of the row)
    */
-  (event: 'update:model-value', value: (Row | string | number | boolean)[] | undefined): void
+  (event: 'update:model-value', value: (Row<T> | string | number | boolean)[] | undefined): void
   /**
    * emitted when enter a value in the search input
    * @property {string} searchQuery search query
