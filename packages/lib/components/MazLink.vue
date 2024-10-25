@@ -9,7 +9,7 @@ withDefaults(defineProps<MazLinkProps>(), {
   id: undefined,
   title: undefined,
   color: 'primary',
-  href: '#',
+  href: undefined,
   to: undefined,
   target: '_self',
   download: undefined,
