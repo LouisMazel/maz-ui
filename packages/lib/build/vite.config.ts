@@ -97,7 +97,13 @@ function getBuildConfig({
       },
     },
     plugins: [
-      Vue(),
+      Vue({
+        template: {
+          compilerOptions: {
+            comments: false,
+          },
+        },
+      }),
       svgLoader(),
       libInjectCss(),
       ...(isModuleBuild ? [viteStaticCopy({ targets: staticAssetsToCopy })] : []),

@@ -19,8 +19,8 @@ import { isEqual } from '../../helpers/is-equal'
 import { throttleId } from '../../helpers/throttle-id'
 import { CONFIG } from './config'
 
-export function fieldHasValidation<Model extends BaseFormPayload>(field: string, schema: FormSchema<Model>) {
-  return Object.keys(schema).includes(field)
+export function fieldHasValidation<Model extends BaseFormPayload, ModelKey extends ExtractModelKey<FormSchema<Model>>>(field: ModelKey, schema: FormSchema<Model>) {
+  return Object.keys(schema).includes(field as string)
 }
 
 export function scrollToError(selector = CONFIG.scrollToErrorSelector) {
@@ -91,7 +91,7 @@ export function getValidateFunction<
 
 export function getFieldState<
   Model extends BaseFormPayload = BaseFormPayload,
-  ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>,
+  ModelKey extends ExtractModelKey<FormSchema<Model>> = ExtractModelKey<FormSchema<Model>>,
 >({
   name,
   schema,
@@ -105,7 +105,7 @@ export function getFieldState<
   fieldState: FieldState<Model>
   options?: Pick<StrictOptions<Model>, 'debouncedFields' | 'throttledFields' | 'mode'>
 }): FieldState<Model> {
-  const hasValidation = schema ? fieldHasValidation<Model>(name, schema) : false
+  const hasValidation = schema ? fieldHasValidation<Model, ModelKey>(name, schema) : false
 
   const validateFunction = getValidateFunction({
     name,
@@ -130,7 +130,7 @@ export function getFieldState<
 
 export function getFieldsStates<
   Model extends BaseFormPayload,
-  ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>,
+  ModelKey extends ExtractModelKey<FormSchema<Model>> = ExtractModelKey<FormSchema<Model>>,
 >({
   schema,
   payload,
@@ -158,7 +158,7 @@ export function getFieldsStates<
 
 export function updateFieldsStates<
   Model extends BaseFormPayload,
-  ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>,
+  ModelKey extends ExtractModelKey<FormSchema<Model>> = ExtractModelKey<FormSchema<Model>>,
 >({
   fieldsStates,
   payload,
@@ -187,7 +187,7 @@ export function updateFieldsStates<
 
 export function updateFieldState<
   Model extends BaseFormPayload,
-  ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>,
+  ModelKey extends ExtractModelKey<FormSchema<Model>> = ExtractModelKey<FormSchema<Model>>,
 >({
   name,
   fieldState,
@@ -274,7 +274,7 @@ export function removeEventFromInteractiveElements({
 
 export async function getFieldValidationResult<
   Model extends BaseFormPayload,
-  ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>,
+  ModelKey extends ExtractModelKey<FormSchema<Model>> = ExtractModelKey<FormSchema<Model>>,
 >(name: ModelKey, schema: FormSchema<Model>, value: Model[ModelKey]) {
   const fieldSchema = await getValidationSchema(schema)
   const safeParseAsync = await getValibotValidationMethod('safeParseAsync')
@@ -288,7 +288,7 @@ export async function getFieldValidationResult<
 
 export async function setFieldValidationState<
   Model extends BaseFormPayload,
-  ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>,
+  ModelKey extends ExtractModelKey<FormSchema<Model>> = ExtractModelKey<FormSchema<Model>>,
 >({
   name,
   fieldState,
@@ -334,7 +334,7 @@ export async function setFieldValidationState<
 
 export function validateField<
   Model extends BaseFormPayload,
-  ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>,
+  ModelKey extends ExtractModelKey<FormSchema<Model>> = ExtractModelKey<FormSchema<Model>>,
 >({
   name,
   fieldState,
@@ -359,7 +359,7 @@ export function validateField<
 
 export function validateForm<
   Model extends BaseFormPayload,
-  ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>,
+  ModelKey extends ExtractModelKey<FormSchema<Model>> = ExtractModelKey<FormSchema<Model>>,
 >({
   fieldsStates,
   payload,
@@ -417,7 +417,7 @@ export function canExecuteValidation<Model extends BaseFormPayload>({
 
 export function handleFieldBlur<
   Model extends BaseFormPayload,
-  ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>,
+  ModelKey extends ExtractModelKey<FormSchema<Model>> = ExtractModelKey<FormSchema<Model>>,
 >({
   name,
   force = false,
@@ -456,7 +456,7 @@ export function handleFieldBlur<
 
 export function handleFieldInput<
   Model extends BaseFormPayload,
-  ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>,
+  ModelKey extends ExtractModelKey<FormSchema<Model>> = ExtractModelKey<FormSchema<Model>>,
 >({
   name,
   payload,

@@ -3,6 +3,7 @@ import type {
   BaseFormPayload,
   ExtractModelKey,
   FormFieldOptions,
+  FormSchema,
 } from './types'
 
 import { computed, onMounted, onUnmounted } from 'vue'
@@ -26,7 +27,7 @@ import {
 export function useFormField<
   FieldType extends Model[ExtractModelKey<Model>],
   Model extends BaseFormPayload = BaseFormPayload,
->(name: ExtractModelKey<Model>, options?: FormFieldOptions<FieldType>) {
+>(name: ExtractModelKey<FormSchema<Model>>, options?: FormFieldOptions<FieldType>) {
   const opts = {
     formIdentifier: 'main-form-validator',
     ...options,
@@ -102,7 +103,7 @@ export function useFormField<
     }
 
     onMounted(() => {
-      const instance = getInstance<Model>(`useFormField of ${name}`)
+      const instance = getInstance<Model>(`useFormField of ${name.toString()}`)
 
       checkAvailability(() => instance.refs[opts.ref as string] as HTMLElement | ComponentPublicInstance | undefined, (element) => {
         const interactiveElement = element instanceof HTMLElement ? element : element?.$el as HTMLElement | undefined
@@ -110,7 +111,7 @@ export function useFormField<
           handleInteractiveElements(interactiveElement)
         }
       }, {
-        errorMessage: `[maz-ui](useFormField) No element found for ref ${opts.ref} for field ${name}`,
+        errorMessage: `[maz-ui](useFormField) No element found for ref ${opts.ref} for field ${name.toString()}`,
       })
     })
 
