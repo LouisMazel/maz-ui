@@ -103,7 +103,7 @@ export function useFormField<
     }
 
     onMounted(() => {
-      const instance = getInstance<Model>(`useFormField of ${name.toString()}`)
+      const instance = getInstance<Model>(`useFormField of ${name as string}`)
 
       checkAvailability(() => instance.refs[opts.ref as string] as HTMLElement | ComponentPublicInstance | undefined, (element) => {
         const interactiveElement = element instanceof HTMLElement ? element : element?.$el as HTMLElement | undefined
@@ -111,7 +111,7 @@ export function useFormField<
           handleInteractiveElements(interactiveElement)
         }
       }, {
-        errorMessage: `[maz-ui](useFormField) No element found for ref ${opts.ref} for field ${name.toString()}`,
+        errorMessage: `[maz-ui](useFormField) No element found for ref ${opts.ref} for field ${name as string}`,
       })
     })
 
