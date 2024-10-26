@@ -18,7 +18,11 @@ export type ValidationIssues = InferIssue<Validation>[]
 
 export type ExtractModelKey<T> = Extract<keyof T, string>
 
-export type FormSchema<Model> = Record<ExtractModelKey<Model>, Validation>
+export type FormSchema<Model> = {
+  [K in ExtractModelKey<Model> as Model[K] extends Required<Model>[K] ? K : never]: Validation
+} & {
+  [K in ExtractModelKey<Model> as Model[K] extends Required<Model>[K] ? never : K]?: Validation
+}
 
 export type CustomInstance<Model extends BaseFormPayload> = ComponentInternalInstance & {
   formContexts?: Map<string | symbol | InjectionKey<FormContext<Model>>, FormContext<Model>>
