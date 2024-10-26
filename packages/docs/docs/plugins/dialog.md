@@ -20,7 +20,7 @@ You can display a simple dialog with a title and a message. The dialog will have
 
 <ComponentDemo>
   <div class="maz-flex maz-flex-wrap maz-gap-2">
-    <MazBtn color="theme" @click="openDialog">
+    <MazBtn color="theme" @click="openDialogTexts">
       Show dialog
     </MazBtn>
   </div>
@@ -64,6 +64,46 @@ You can display a simple dialog with a title and a message. The dialog will have
   </template>
 </ComponentDemo>
 
+## Change button texts
+
+The confirmText and cancelText properties allow you to change the texts of the confirm and cancel buttons.
+
+<ComponentDemo>
+  <div class="maz-flex maz-flex-wrap maz-gap-2">
+    <MazBtn color="theme" @click="openDialogTexts">
+      Show dialog with custom button texts
+    </MazBtn>
+  </div>
+
+  <template #code>
+
+  ```vue
+  <template>
+    <MazBtn color="theme" @click="openDialogTexts">
+      Show dialog with custom button texts
+    </MazBtn>
+  </template>
+
+  <script lang="ts" setup>
+    import { useDialog, useToast } from 'maz-ui'
+
+    const dialog = useDialog()
+    const toast = useToast()
+
+    async function openDialogTexts() {
+      dialog.open({
+        title: 'Dialog title',
+        message: 'Dialog message',
+        confirmText: 'Confirmer',
+        cancelText: 'Annuler',
+      })
+    }
+  </script>
+  ```
+
+  </template>
+</ComponentDemo>
+
 ## Custom buttons with actions
 
 The buttons property allows you to display custom buttons in the dialog and replace the default confirm and cancel buttons. You can use all props of [`MazBtn`](./../components/maz-btn.md#props) component. Each button can have a custom action to execute when clicked.
@@ -96,8 +136,9 @@ The buttons property allows you to display custom buttons in the dialog and repl
         message: 'Dialog message',
         buttons: [
           {
-            text: 'Custom button',
-            color: 'info',
+            text: 'Cancel 😱',
+            color: 'theme',
+            outline: true,
             action: () => {
               toast.info('Custom button clicked', {
                 position: 'bottom',
@@ -105,8 +146,8 @@ The buttons property allows you to display custom buttons in the dialog and repl
             },
           },
           {
-            text: 'Custom button 2',
-            color: 'success',
+            text: 'Confirm 🚀',
+            color: 'theme',
             action: () => {
               toast.success('Custom button 2 clicked', {
                 position: 'bottom',
@@ -331,14 +372,36 @@ type DialogOptions = Partial<Omit<MazDialogPromiseProps, 'modelValue'>> & {
     }
   }
 
+  async function openDialogTexts() {
+    const { promise } = dialog.open({
+      title: 'Dialog title',
+      message: 'Dialog message',
+      confirmText: 'Confirmer',
+      cancelText: 'Annuler',
+    })
+
+    try {
+      await promise
+
+      toast.success('Dialog confirmed', {
+        position: 'bottom',
+      })
+    } catch (error) {
+      toast.error('Dialog cancelled', {
+        position: 'bottom',
+      })
+    }
+  }
+
   async function openDialogActions() {
     dialog.open({
       title: 'Dialog title',
       message: 'Dialog message',
       buttons: [
         {
-          text: 'Custom button',
-          color: 'info',
+          text: 'Cancel 😱',
+          color: 'theme',
+          outline: true,
           action: () => {
             toast.info('Custom button clicked', {
               position: 'bottom',
@@ -346,8 +409,8 @@ type DialogOptions = Partial<Omit<MazDialogPromiseProps, 'modelValue'>> & {
           },
         },
         {
-          text: 'Custom button 2',
-          color: 'success',
+          text: 'Confirm 🚀',
+          color: 'theme',
           action: () => {
             toast.success('Custom button 2 clicked', {
               position: 'bottom',

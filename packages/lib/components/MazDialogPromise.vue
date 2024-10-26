@@ -71,7 +71,7 @@ const cancelButtonData = computed(() => {
 
   return {
     ...mergedData,
-    text: currentData.value.cancelText || mergedData.text,
+    text: props.cancelText || currentData.value.cancelText || mergedData.text,
   }
 })
 const confirmButtonData = computed(() => {
@@ -89,7 +89,7 @@ const confirmButtonData = computed(() => {
 
   return {
     ...mergedData,
-    text: currentData.value.confirmText || mergedData.text,
+    text: props.confirmText || currentData.value.confirmText || mergedData.text,
   }
 })
 

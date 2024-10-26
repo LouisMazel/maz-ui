@@ -309,7 +309,7 @@ watch(
           :aria-labelledby="`${instanceId}-labelspan`"
           :color
           :disabled
-          v-bind="{ ...$attrs }"
+          v-bind="$attrs"
           tabindex="-1"
           :block
         >
