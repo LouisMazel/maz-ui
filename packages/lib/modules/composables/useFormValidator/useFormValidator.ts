@@ -10,7 +10,7 @@ import type {
   UseFormValidatorParams,
 } from './types'
 
-import { computed, nextTick, provide, ref, toValue, watch } from 'vue'
+import { computed, nextTick, provide, ref, watch } from 'vue'
 import { CONFIG } from './config'
 import {
   getErrorMessages,
@@ -40,7 +40,7 @@ export function useFormValidator<
 
   const internalDefaultValues = ref(defaultValues) as Ref<Partial<Model>>
   const payload = ref({ ...internalDefaultValues.value, ...model?.value }) as Ref<Model>
-  const internalSchema = toValue(schema) as Ref<FormSchema<Model>>
+  const internalSchema = ref(schema) as Ref<FormSchema<Model>>
   const fieldsStates = ref(
     getFieldsStates<Model>({
       schema: internalSchema.value,
