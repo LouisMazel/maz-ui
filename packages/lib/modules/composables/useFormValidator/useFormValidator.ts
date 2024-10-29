@@ -148,23 +148,28 @@ export function useFormValidator<
       isSubmitted.value = true
       isSubmitting.value = true
 
-      await internalValidateForm(true)
+      try {
+        await internalValidateForm(true)
 
-      const scrollToErrorParam
-        = typeof enableScrollOrSelector === 'string' ? enableScrollOrSelector : opts.scrollToError
+        const scrollToErrorParam
+          = typeof enableScrollOrSelector === 'string' ? enableScrollOrSelector : opts.scrollToError
 
-      let response: Awaited<ReturnType<Func>> | ReturnType<Func> | undefined
+        let response: Awaited<ReturnType<Func>> | ReturnType<Func> | undefined
 
-      if (isValid.value) {
-        response = await successCallback(payload.value)
+        if (isValid.value) {
+          response = await successCallback(payload.value)
+        }
+        else if (typeof scrollToErrorParam !== 'boolean') {
+          scrollToError(scrollToErrorParam)
+        }
+
+        isSubmitting.value = false
+
+        return response
       }
-      else if (typeof scrollToErrorParam !== 'boolean') {
-        scrollToError(scrollToErrorParam)
+      finally {
+        isSubmitting.value = false
       }
-
-      isSubmitting.value = false
-
-      return response
     }
   }
 

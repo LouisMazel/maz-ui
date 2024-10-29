@@ -33,7 +33,7 @@ export function scrollToError(selector = CONFIG.scrollToErrorSelector) {
 
 export function getErrorMessages<
   Model extends BaseFormPayload = BaseFormPayload,
-  ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>,
+  ModelKey extends ExtractModelKey<FormSchema<Model>> = ExtractModelKey<FormSchema<Model>>,
 >(errors: Record<ModelKey, ValidationIssues>, fieldsStates: FieldsStates<Model>) {
   const errorMessages = {} as Record<ModelKey, string | undefined>
 
@@ -51,7 +51,7 @@ export function isEmptyValue(value: unknown) {
 
 export function getValidateFunction<
   Model extends BaseFormPayload,
-  ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>,
+  ModelKey extends ExtractModelKey<FormSchema<Model>> = ExtractModelKey<FormSchema<Model>>,
 >({
   name,
   hasValidation,
@@ -67,21 +67,23 @@ export function getValidateFunction<
     return
   }
 
-  if (debouncedFields?.[name] && throttledFields?.[name]) {
-    throw new Error(`The field "${name}" cannot be both debounced and throttled`)
+  const fieldName = String(name)
+
+  if (debouncedFields?.[fieldName] && throttledFields?.[fieldName]) {
+    throw new Error(`The field "${fieldName}" cannot be both debounced and throttled`)
   }
-  else if (debouncedFields?.[name]) {
+  else if (debouncedFields?.[fieldName]) {
     return debounceId(
-      name,
+      fieldName,
       setFieldValidationState<Model>,
-      typeof debouncedFields[name] === 'number' ? debouncedFields[name] : CONFIG.debounceTime,
+      typeof debouncedFields[fieldName] === 'number' ? debouncedFields[fieldName] : CONFIG.debounceTime,
     )
   }
-  else if (throttledFields?.[name]) {
+  else if (throttledFields?.[fieldName]) {
     return throttleId(
-      name,
+      fieldName,
       setFieldValidationState<Model>,
-      typeof throttledFields[name] === 'number' ? throttledFields[name] : CONFIG.throttleTime,
+      typeof throttledFields[fieldName] === 'number' ? throttledFields[fieldName] : CONFIG.throttleTime,
     )
   }
   else {
@@ -223,7 +225,7 @@ export function updateFieldState<
 
 export function getFieldsErrors<
   Model extends BaseFormPayload,
-  ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>,
+  ModelKey extends ExtractModelKey<FormSchema<Model>> = ExtractModelKey<FormSchema<Model>>,
 >(fieldsStates: FieldsStates<Model>) {
   const fieldsErrors = {} as Record<ModelKey, ValidationIssues>
 
