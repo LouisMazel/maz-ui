@@ -19,9 +19,9 @@ export type ValidationIssues = InferIssue<Validation>[]
 export type ExtractModelKey<T> = Extract<keyof T, string>
 
 export type FormSchema<Model> = {
-  [K in ExtractModelKey<Model> as Model[K] extends Required<Model>[K] ? K : never]: Validation
+  [K in Extract<keyof Model, string> as Model[K] extends Required<Model>[K] ? K : never]: Validation
 } & {
-  [K in ExtractModelKey<Model> as Model[K] extends Required<Model>[K] ? never : K]?: Validation
+  [K in Extract<keyof Model, string> as Model[K] extends Required<Model>[K] ? never : K]?: Validation
 }
 
 export type CustomInstance<Model extends BaseFormPayload> = ComponentInternalInstance & {
@@ -30,7 +30,7 @@ export type CustomInstance<Model extends BaseFormPayload> = ComponentInternalIns
 
 export interface FormValidatorOptions<
   Model extends BaseFormPayload = BaseFormPayload,
-  ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>,
+  ModelKey extends ExtractModelKey<FormSchema<Model>> = ExtractModelKey<FormSchema<Model>>,
 > {
   /**
    * Validation mode
@@ -71,7 +71,7 @@ export type StrictOptions<Model extends BaseFormPayload = BaseFormPayload> = Req
 
 export interface FormContext<
   Model extends BaseFormPayload = BaseFormPayload,
-  ModelKey extends ExtractModelKey<Model> = ExtractModelKey<Model>,
+  ModelKey extends ExtractModelKey<FormSchema<Model>> = ExtractModelKey<FormSchema<Model>>,
 > {
   fieldsStates: Ref<FieldsStates<Model>>
   options: StrictOptions
@@ -81,7 +81,7 @@ export interface FormContext<
   isSubmitted: Ref<boolean>
 }
 
-export interface FieldState<Model extends BaseFormPayload, FieldType = Model[ExtractModelKey<Model>]> {
+export interface FieldState<Model extends BaseFormPayload, FieldType = Model[ExtractModelKey<FormSchema<Model>>]> {
   blurred: boolean
   dirty: boolean
   error: boolean
@@ -133,7 +133,7 @@ export interface UseFormValidatorParams<Model extends BaseFormPayload> {
   options?: FormValidatorOptions<Model>
 }
 export type UseFormField<
-  FieldType extends Model[ExtractModelKey<Model>],
+  FieldType extends Model[ExtractModelKey<FormSchema<Model>>],
   Model extends BaseFormPayload = BaseFormPayload,
 > = typeof useFormField<FieldType, Model>
 

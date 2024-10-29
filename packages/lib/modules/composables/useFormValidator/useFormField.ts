@@ -25,7 +25,7 @@ import {
 } from './utils'
 
 export function useFormField<
-  FieldType extends Model[ExtractModelKey<Model>],
+  FieldType extends Model[ExtractModelKey<FormSchema<Model>>],
   Model extends BaseFormPayload = BaseFormPayload,
 >(name: ExtractModelKey<FormSchema<Model>>, options?: FormFieldOptions<FieldType>) {
   const opts = {
