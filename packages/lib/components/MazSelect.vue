@@ -544,11 +544,11 @@ function arrowHandler(event: KeyboardEvent, currentIndex?: number) {
 }
 
 function enterHandler(event: KeyboardEvent, currentIndex?: number) {
-  event.preventDefault()
-
   if (!hasListOpened.value) {
-    return openList(event)
+    return
   }
+
+  event.preventDefault()
 
   const newValue = currentIndex
     ? optionsList.value?.[currentIndex] ?? optionsList.value?.[0]
