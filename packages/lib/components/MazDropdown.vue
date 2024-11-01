@@ -2,11 +2,13 @@
 import type { RouteLocationRaw } from 'vue-router'
 import type { Color } from './MazBtn.vue'
 import type { MazLinkProps } from './MazLink.vue'
-import type { Position } from './types'
+import type { Icon, Position } from './types'
 import { defineAsyncComponent, type HTMLAttributes, ref, watch } from 'vue'
 import { useInstanceUniqId } from '../modules'
 import { vClickOutside } from '../modules/directives/click-outside'
 import { debounce } from '../modules/helpers/debounce'
+
+import MazIcon from './MazIcon.vue'
 
 export type { Color, Position }
 
@@ -116,6 +118,8 @@ export interface MazDropdownProps {
    * If true, the button will have a full width
    */
   block?: boolean
+
+  dropdownIcon?: string | Icon
 }
 
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
@@ -315,8 +319,12 @@ watch(
         >
           <slot />
           <template v-if="!noChevron" #right-icon>
+            <template v-if="dropdownIcon">
+              <MazIcon v-if="typeof dropdownIcon === 'string'" :name="dropdownIcon" />
+              <Component :is="dropdownIcon" v-else-if="dropdownIcon" />
+            </template>
             <ChevronDownIcon
-              v-if="!noChevron"
+              v-else
               :class="{ 'maz-rotate-180': dropdownOpen }"
               class="chevron-icon"
             />
