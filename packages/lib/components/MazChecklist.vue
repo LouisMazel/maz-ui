@@ -166,28 +166,28 @@ function updateQuery(value?: string) {
         </slot>
       </div>
       <label
-        v-for="{ label, value } of filteredItems"
-        :key="value"
-        :for="value"
+        v-for="item of filteredItems"
+        :key="item.value"
+        :for="item.value"
         class="m-checklist-item maz-flex maz-w-full maz-cursor-pointer maz-items-center maz-gap-4 maz-rounded maz-px-3 maz-py-2 maz-text-left hover:maz-bg-color-light"
       >
         <MazCheckbox
-          :id="value"
+          :id="item.value"
           :model-value="props.modelValue"
-          :value
+          :value="item.value"
           :color
           @update:model-value="(event) => emits('update:model-value', event)"
         />
         <!-- @slot use this slot to customize the item
-        @binding { label: string, value: string }
+              @binding { selectedValues: T[], item: O }
          -->
         <slot
           :selected-values="modelValue"
-          :item="{ label, value }"
+          :item="item"
           name="item"
         >
           <span class="cap-f">
-            {{ label }}
+            {{ item.label }}
           </span>
         </slot>
       </label>
