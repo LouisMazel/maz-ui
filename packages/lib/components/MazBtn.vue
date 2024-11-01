@@ -5,7 +5,6 @@ import {
   computed,
   defineAsyncComponent,
   useAttrs,
-  useSlots,
 } from 'vue'
 
 export type { Color, Size }
@@ -25,7 +24,6 @@ const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
 const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
 
 const { href, to } = useAttrs()
-const slots = useSlots()
 
 export interface Props {
   /**
@@ -152,10 +150,6 @@ const isDisabled = computed(
 const cursorClass = computed(() => (isDisabled.value ? '--cursor-default' : '--cursor-pointer'))
 const variantClass = computed(() => `--is-${props.variant}`)
 const hasLoader = computed(() => props.loading && props.variant === 'button')
-const hasLeftIcon = computed(() => !!slots['left-icon'] || props.leftIcon)
-const hasRightIcon = computed(() => !!slots['right-icon'] || props.rightIcon)
-const hasIcon = computed(() => hasLeftIcon.value || hasRightIcon.value)
-const hasFabIcon = computed(() => (props.icon || !!slots.icon))
 const btnType = computed(() => (component.value === 'button' ? props.type : undefined))
 
 const iconClassSize = computed(() => {
@@ -209,7 +203,6 @@ const justifyClass = computed(() => {
         '--fab': fab,
         '--loading': loading,
         '--disabled': isDisabled,
-        '--icon': hasIcon,
         '--rounded': rounded,
         '--no-rounded': noRounded,
         '--no-padding': noPadding,
@@ -229,7 +222,7 @@ const justifyClass = computed(() => {
     <!--
       @slot icon - The icon to display on the fab button
     -->
-    <slot v-if="hasFabIcon" name="icon">
+    <slot name="icon">
       <MazIcon v-if="typeof icon === 'string'" :name="icon" :class="[iconClassSize]" />
       <Component :is="icon" v-else-if="icon" :class="[iconClassSize]" />
     </slot>
@@ -242,7 +235,7 @@ const justifyClass = computed(() => {
     <!--
       @slot left-icon - The icon to display on the left of the button
     -->
-    <slot v-if="hasRightIcon" name="right-icon">
+    <slot name="right-icon">
       <MazIcon v-if="typeof rightIcon === 'string'" :name="rightIcon" :class="[iconClassSize]" />
       <Component :is="rightIcon" v-else-if="rightIcon" :class="[iconClassSize]" />
     </slot>
