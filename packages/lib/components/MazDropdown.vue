@@ -2,15 +2,15 @@
 import type { RouteLocationRaw } from 'vue-router'
 import type { Color } from './MazBtn.vue'
 import type { MazLinkProps } from './MazLink.vue'
-import type { Icon, Position } from './types'
-import { defineAsyncComponent, type HTMLAttributes, ref, watch } from 'vue'
+import type { Icon, Position, Size } from './types'
+import { computed, defineAsyncComponent, type HTMLAttributes, ref, watch } from 'vue'
 import { useInstanceUniqId } from '../modules'
 import { vClickOutside } from '../modules/directives/click-outside'
 import { debounce } from '../modules/helpers/debounce'
 
 import MazIcon from './MazIcon.vue'
 
-export type { Color, Position }
+export type { Color, Position, Size }
 
 defineOptions({
   inheritAttrs: false,
@@ -25,6 +25,8 @@ const props = withDefaults(defineProps<MazDropdownProps>(), {
   color: 'transparent',
   position: 'bottom left',
   screenReaderDescription: 'Open menu dropdown',
+  dropdownIconAnimation: true,
+  size: 'md',
 })
 
 const emits = defineEmits<{
@@ -118,8 +120,22 @@ export interface MazDropdownProps {
    * If true, the button will have a full width
    */
   block?: boolean
-
+  /**
+   * Custom dropdown icon
+   * You can use a string to define the icon name or a Vue component
+   * @default undefined
+   */
   dropdownIcon?: string | Icon
+  /**
+   * If true, the dropdown icon will rotate when the dropdown is open
+   * @default true
+   */
+  dropdownIconAnimation?: boolean
+  /**
+   * Size of the button
+   * @default 'md'
+   */
+  size?: Size
 }
 
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
@@ -128,6 +144,22 @@ const ChevronDownIcon = defineAsyncComponent(() => import('./../icons/chevron-do
 
 const dropdownOpen = ref(props.open)
 const keyboardSelectedIndex = ref<number>()
+
+const iconClassSize = computed(() => {
+  if (props.size === 'xl')
+    return 'maz-text-lg'
+  if (props.size === 'lg')
+    return 'maz-text-base'
+  if (props.size === 'md')
+    return 'maz-text-base'
+  if (props.size === 'sm')
+    return 'maz-text-base'
+  if (props.size === 'xs')
+    return 'maz-text-sm'
+  if (props.size === 'mini')
+    return 'maz-text-sm'
+  return 'maz-text-lg'
+})
 
 const setDropdownDebounced = debounce((value: boolean) => {
   setDropdown(value)
@@ -281,7 +313,7 @@ watch(
     :id="instanceId"
     v-click-outside="onClickOutside"
     class="m-dropdown"
-    :style="style"
+    :style
     :class="[props.class, { '--block': block }]"
   >
     <div
@@ -305,7 +337,7 @@ watch(
       </span>
       <!--
         @slot Custom Element
-          @binding {Boolen} is-open close function
+          @binding {Boolen} is-open - dropdown open state
           @default `<MazBtn />`
       -->
       <slot name="element" :is-open="dropdownOpen">
@@ -316,18 +348,28 @@ watch(
           v-bind="$attrs"
           tabindex="-1"
           :block
+          :size
         >
           <slot />
+
           <template v-if="!noChevron" #right-icon>
-            <template v-if="dropdownIcon">
-              <MazIcon v-if="typeof dropdownIcon === 'string'" :name="dropdownIcon" />
-              <Component :is="dropdownIcon" v-else-if="dropdownIcon" />
-            </template>
-            <ChevronDownIcon
-              v-else
-              :class="{ 'maz-rotate-180': dropdownOpen }"
-              class="chevron-icon"
-            />
+            <!--
+              @slot Custom dropdown icon
+                @binding {Boolean} is-open - dropdown open state
+                @default `<ChevronDownIcon />`
+            -->
+            <slot name="dropdown-icon" :is-open="dropdownOpen">
+              <MazIcon v-if="typeof dropdownIcon === 'string'" :name="dropdownIcon" :class="[{ '--open': dropdownOpen && dropdownIconAnimation }, iconClassSize]" />
+              <Component
+                :is="dropdownIcon" v-else-if="dropdownIcon" :class="[{ '--open': dropdownOpen && dropdownIconAnimation }, iconClassSize]"
+                class="m-dropdown__icon"
+              />
+              <ChevronDownIcon
+                v-else
+                :class="[{ '--open': dropdownOpen && dropdownIconAnimation }, iconClassSize]"
+                class="m-dropdown__icon"
+              />
+            </slot>
           </template>
         </MazBtn>
       </slot>
@@ -434,8 +476,12 @@ watch(
     @apply maz-h-full maz-w-full maz-outline-none;
   }
 
-  .chevron-icon {
-    @apply maz-text-lg maz-transition-transform maz-duration-200 maz-ease-in-out;
+  &__icon {
+    @apply maz-transition-transform maz-duration-200 maz-ease-in-out;
+
+    &.--open {
+      @apply maz-rotate-180;
+    }
   }
 
   .menu {

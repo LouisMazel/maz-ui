@@ -91,6 +91,69 @@ description: MazDropdown is a standalone dropdown menu component and versatile d
 </MazDropdown>
 ```
 
+## Custom dropdown icon
+
+You can provide an icon to replace the default chevron icon and disable the animation
+
+<MazDropdown
+  :items="[
+    { label: 'Action', action: () => toast.success('CLICKED') },
+    { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
+    { label: 'Router Link', to: { name: 'index' } },
+  ]"
+  trigger="hover"
+  :dropdown-icon="ChevronUpDownIcon"
+>
+  Custom icon
+</MazDropdown>
+
+<MazDropdown
+  :items="[
+    { label: 'Action', action: () => toast.success('CLICKED') },
+    { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
+    { label: 'Router Link', to: { name: 'index' } },
+  ]"
+  trigger="hover"
+  :dropdown-icon="ChevronUpDownIcon"
+  :dropdown-icon-animation="false"
+>
+  No icon animation
+</MazDropdown>
+
+```vue{7}
+<script lang="ts" setup>
+  // Use vite-svg-loader to import SVG as Vue component
+  import ChevronUpDownIcon from 'maz-ui/icons/chevron-up-down.svg?component'
+</script>
+
+<template>
+  <MazDropdown
+    :items="[
+      { label: 'Action', action: () => toast.success('CLICKED') },
+      { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
+      { label: 'Router Link', to: { name: 'index' } },
+    ]"
+    trigger="hover"
+    :dropdown-icon="ChevronUpDownIcon"
+  >
+    Hover me
+  </MazDropdown>
+
+  <MazDropdown
+    :items="[
+      { label: 'Action', action: () => toast.success('CLICKED') },
+      { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
+      { label: 'Router Link', to: { name: 'index' } },
+    ]"
+    trigger="hover"
+    :dropdown-icon="ChevronUpDownIcon"
+    :dropdown-icon-animation="false"
+  >
+    No icon animation
+  </MazDropdown>
+</template>
+```
+
 ## Custom dropdown main button without chevron icon
 
 ::: tip
@@ -535,6 +598,8 @@ type MenuItem = {
 <script lang="ts" setup>
   import { ref, onMounted } from 'vue'
   import { useToast } from 'maz-ui'
+
+  import ChevronUpDownIcon from 'maz-ui/icons/chevron-up-down.svg?component'
 
   const toast = useToast()
 
