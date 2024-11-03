@@ -168,7 +168,7 @@ function isLastStep(step: number): boolean {
 </script>
 
 <template>
-  <div class="m-stepper">
+  <div class="m-stepper" :style="[{ '--round-step-bg-color': roundStepBgColor, '--round-step-text-color': roundStepTextColor }]">
     <template v-for="step in stepCount" :key="step">
       <button
         v-if="hasDataForStep('title', step)"
@@ -364,8 +364,8 @@ function isLastStep(step: number): boolean {
     @apply maz-relative maz-flex maz-h-8 maz-w-8 maz-flex-none
         maz-overflow-hidden maz-rounded-full maz-text-lg maz-flex-center;
 
-    background-color: v-bind('roundStepBgColor');
-    color: v-bind('roundStepTextColor');
+    background-color: var(--round-step-bg-color);
+    color: var(--round-step-text-color);
 
     &__circle {
       @apply maz-absolute maz-inset-0 maz-flex maz-scale-0 maz-rounded-full

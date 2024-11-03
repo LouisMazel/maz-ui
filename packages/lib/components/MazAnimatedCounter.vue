@@ -57,6 +57,10 @@ const durationInMs = computed(() => `${props.duration}ms`)
       '--prefixed': hasPrefix,
       '--suffixed': hasSuffix,
     }"
+    :style="{
+      '--count': count,
+      '--animation-duration': durationInMs,
+    }"
   >
     <span class="maz-sr-only">
       <slot name="prefix">{{ prefix }}</slot>
@@ -78,7 +82,7 @@ const durationInMs = computed(() => `${props.duration}ms`)
   @apply maz-whitespace-nowrap maz-tabular-nums;
 
   &.--animated {
-    animation: counter v-bind('durationInMs') ease-out forwards;
+    animation: counter var(--animation-duration) ease-out forwards;
     counter-set: count var(--count-end);
   }
 
@@ -113,7 +117,7 @@ const durationInMs = computed(() => `${props.duration}ms`)
   }
 
   to {
-    --count-end: v-bind(count);
+    --count-end: var(--count);
   }
 }
 </style>

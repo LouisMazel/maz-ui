@@ -645,7 +645,7 @@ function updateValue(inputOption: NormalizedOption, mustCloseList = true) {
       props.class,
       `--${size}`,
     ]"
-    :style="style"
+    :style="[style, { '--keyboard-selected-bg-color': keyboardSelectedBgColor, '--selected-bg-color': selectedBgColor, '--selected-text-color': selectedTextColor }]"
   >
     <MazInput
       :id="instanceId"
@@ -881,10 +881,10 @@ function updateValue(inputOption: NormalizedOption, mustCloseList = true) {
         @apply maz-bg-color-light dark:maz-bg-color-lighter;
 
         &.--is-selected {
-          background-color: v-bind('keyboardSelectedBgColor');
+          background-color: var(--keyboard-selected-bg-color);
 
           &:hover {
-            background-color: v-bind('keyboardSelectedBgColor');
+            background-color: var(--keyboard-selected-bg-color);
           }
         }
       }
@@ -894,11 +894,11 @@ function updateValue(inputOption: NormalizedOption, mustCloseList = true) {
       }
 
       &.--is-selected {
-        color: v-bind('selectedTextColor');
-        background-color: v-bind('selectedBgColor');
+        color: var(--selected-text-color);
+        background-color: var(--selected-bg-color);
 
         &:hover {
-          background-color: v-bind('keyboardSelectedBgColor');
+          background-color: var(--selected-bg-color);
         }
 
         &.--transparent {

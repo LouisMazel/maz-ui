@@ -224,7 +224,7 @@ function onFocus(event: FocusEvent) {
     class="m-checkbox"
     :class="[{ '--disabled': disabled, '--error': error, '--warning': warning, '--success': success }, props.class]"
     tabindex="0"
-    :style
+    :style="[style, { '--checkbox-selected-color': checkboxSelectedColor, '--checkbox-box-shadow-color': checkboxBoxShadow }]"
     role="checkbox"
     :aria-checked="isChecked"
     @keydown="keyboardHandler"
@@ -242,8 +242,8 @@ function onFocus(event: FocusEvent) {
       type="checkbox"
       @change="emitValue(value ?? ($event?.target as HTMLInputElement)?.checked)"
     >
-    <span>
-      <CheckIcon class="check-icon" :class="checkIconSize" />
+    <span :style="{ width: checkboxSize, height: checkboxSize }">
+      <CheckIcon class="check-icon" :class="checkIconSize" :style="{ color: checkIconColor }" />
     </span>
     <div class="m-checkbox__text">
       <slot :value>
@@ -257,6 +257,7 @@ function onFocus(event: FocusEvent) {
           '--success': success,
           '--warning': warning,
         }"
+        :style="{ boxShadow: `0 0 0 0.125rem ${checkboxBoxShadow}` }"
       >{{ hint }}</span>
     </div>
   </label>
@@ -267,8 +268,6 @@ function onFocus(event: FocusEvent) {
   @apply maz-relative maz-inline-flex maz-items-center maz-gap-2 maz-align-top maz-outline-none;
 
   .check-icon {
-    color: v-bind('checkIconColor');
-
     @apply maz-scale-0 maz-transition-transform maz-duration-300 maz-ease-in-out;
 
     :deep(path) {
@@ -278,9 +277,6 @@ function onFocus(event: FocusEvent) {
 
   > span {
     @apply maz-relative maz-flex maz-rounded-md maz-border maz-border-border maz-transition-all maz-duration-300 maz-ease-in-out maz-flex-center dark:maz-border-color-lighter;
-
-    width: v-bind('checkboxSize');
-    height: v-bind('checkboxSize');
   }
 
   input {
@@ -291,8 +287,8 @@ function onFocus(event: FocusEvent) {
     }
 
     &:checked ~ span {
-      border-color: v-bind('checkboxSelectedColor');
-      background-color: v-bind('checkboxSelectedColor');
+      border-color: var(--checkbox-selected-color);
+      background-color: var(--checkbox-selected-color);
 
       .check-icon {
         @apply maz-scale-100;
@@ -323,7 +319,7 @@ function onFocus(event: FocusEvent) {
     &:focus > span {
       @apply maz-transition-all maz-duration-300 maz-ease-in-out;
 
-      box-shadow: 0 0 0 0.125rem v-bind('checkboxBoxShadow');
+      box-shadow: 0 0 0 0.125rem var(--checkbox-box-shadow-color);
     }
   }
 
@@ -352,8 +348,6 @@ function onFocus(event: FocusEvent) {
   &.--success {
     > span {
       @apply maz-transition-all maz-duration-300 maz-ease-in-out;
-
-      box-shadow: 0 0 0 0.125rem v-bind('checkboxBoxShadow');
     }
   }
 }

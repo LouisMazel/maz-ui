@@ -8,7 +8,6 @@ import customParseFormat from 'dayjs/plugin/customParseFormat'
 import isBetween from 'dayjs/plugin/isBetween'
 import {
   computed,
-  getCurrentInstance,
   type HTMLAttributes,
   nextTick,
   onBeforeMount,
@@ -18,10 +17,11 @@ import {
   watch,
 } from 'vue'
 
+import { useInstanceUniqId } from '../modules'
+
 import { vClickOutside } from '../modules/directives/click-outside'
 
 import ChevronDownIcon from './../icons/chevron-down.svg'
-
 import { date } from './../modules/filters/date'
 import MazInput from './MazInput.vue'
 import MazPickerContainer from './MazPicker/MazPickerContainer.vue'
@@ -139,6 +139,8 @@ dayjs.extend(customParseFormat)
 dayjs.extend(isBetween)
 
 export interface Props {
+  /** The id of the component */
+  id?: string
   /** The style of the component */
   style?: HTMLAttributes['style']
   /** The class of the component */
@@ -210,12 +212,12 @@ export interface Props {
   block?: boolean
 }
 
-const instance = getCurrentInstance()
+const instanceId = useInstanceUniqId({ componentName: 'MazPicker', providedId: props.id })
 
 const internalLocale = ref(props.locale)
 const currentLocale = computed<string>(() => props.locale ?? internalLocale.value ?? 'en-US')
 
-const containerUniqueId = computed(() => `mazPickerContainer-${instance?.uid}`)
+const containerUniqueId = computed(() => `mazPickerContainer-${instanceId.value}`)
 
 const MazPicker = ref<HTMLDivElement>()
 

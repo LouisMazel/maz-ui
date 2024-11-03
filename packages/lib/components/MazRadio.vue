@@ -154,7 +154,7 @@ function onFocus(event: FocusEvent) {
     :class="[{ '--disabled': disabled, '--selected': isSelected, '--error': error, '--warning': warning, '--success': success }, props.class]"
     tabindex="0"
     role="radio"
-    :style
+    :style="[style, { '--radio-size': radioSize, '--radio-selected-color': radioSelectedColor, '--radio-box-shadow': radioBoxShadow }]"
     :aria-checked="isSelected"
     @blur="onBlur"
     @focus="onFocus"
@@ -206,13 +206,13 @@ function onFocus(event: FocusEvent) {
   > span {
     @apply maz-relative maz-flex maz-rounded-full maz-border maz-border-border maz-transition-all maz-duration-300 maz-ease-in-out maz-flex-center dark:maz-border-color-lighter;
 
-    width: v-bind('radioSize');
-    height: v-bind('radioSize');
+    width: var(--radio-size);
+    height: var(--radio-size);
 
     .round {
       @apply maz-h-[50%] maz-w-[50%] maz-scale-0 maz-rounded-full maz-transition-transform maz-duration-300 maz-ease-in-out;
 
-      background-color: v-bind('radioSelectedColor');
+      background-color: var(--radio-selected-color);
     }
   }
 
@@ -221,7 +221,7 @@ function onFocus(event: FocusEvent) {
   }
 
   &.--selected > span {
-    border-color: v-bind('radioSelectedColor');
+    border-color: var(--radio-selected-color);
 
     .round {
       @apply maz-scale-100;
@@ -278,7 +278,7 @@ function onFocus(event: FocusEvent) {
     &:focus > span {
       @apply maz-transition-all maz-duration-300 maz-ease-in-out;
 
-      box-shadow: 0 0 0 0.125rem v-bind('radioBoxShadow');
+      box-shadow: 0 0 0 0.125rem var(--radio-box-shadow);
     }
   }
 
@@ -288,7 +288,7 @@ function onFocus(event: FocusEvent) {
     > span {
       @apply maz-transition-all maz-duration-300 maz-ease-in-out;
 
-      box-shadow: 0 0 0 0.125rem v-bind('radioBoxShadow');
+      box-shadow: 0 0 0 0.125rem var(--radio-box-shadow);
     }
   }
 }
