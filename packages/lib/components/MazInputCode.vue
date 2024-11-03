@@ -236,7 +236,7 @@ const borderColor = computed(() => {
     class="m-input-code"
     :class="[size ? `--${size}` : undefined, props.class]"
     :disabled="disabled"
-    :style="style"
+    :style="[style, { '--input-border-color': borderColor }]"
   >
     <div class="m-input-code__wrapper">
       <div v-for="item in codeLength" :key="item" class="input-wrapper" :class="borderColorState">
@@ -323,7 +323,7 @@ const borderColor = computed(() => {
     @apply maz-relative maz-h-[4em] maz-w-[4em] maz-overflow-hidden maz-rounded maz-border maz-border-solid maz-border-border maz-transition-colors maz-duration-200 maz-ease-in-out dark:maz-border-color-lighter dark:maz-bg-color-light;
 
     &:focus-within {
-      border-color: v-bind('borderColor');
+      border-color: var(--input-border-color);
     }
 
     input {

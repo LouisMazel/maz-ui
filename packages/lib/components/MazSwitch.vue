@@ -111,7 +111,7 @@ function onFocus(event: FocusEvent) {
     class="m-switch"
     :class="[{ '--is-disabled': disabled }, props.class]"
     role="switch"
-    :style="style"
+    :style="[style, { '--switch-color': bgColorClassVar }]"
     :aria-checked="modelValue"
     tabindex="0"
     @blur="onBlur"
@@ -195,7 +195,7 @@ function onFocus(event: FocusEvent) {
     }
 
     &::before {
-      background-color: v-bind('bgColorClassVar');
+      background-color: var(--switch-color);
     }
   }
 

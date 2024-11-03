@@ -100,6 +100,10 @@ const dashoffset = computed<number>(() => {
     class="m-circular-progress-bar"
     :style="[
       {
+        '--animation-duration': animationDuration,
+        '--dashoffset': dashoffset,
+      },
+      {
         fontSize: size,
       },
     ]"
@@ -178,14 +182,14 @@ const dashoffset = computed<number>(() => {
     @apply maz-absolute -maz-rotate-90;
 
     circle {
-      animation: animate v-bind(animationDuration) linear forwards;
+      animation: animate linear forwards var(--animation-duration);
     }
   }
-}
 
-@keyframes animate {
-  to {
-    stroke-dashoffset: v-bind(dashoffset);
+  @keyframes animate {
+    to {
+      stroke-dashoffset: var(--dashoffset);
+    }
   }
 }
 </style>

@@ -87,7 +87,7 @@ onUnmounted(() => {
   <div
     class="m-card-spotlight"
     :class="{ 'maz-elevation': !noElevation }"
-    :style="{ backgroundColor: alphaColor20 }"
+    :style="{ 'backgroundColor': alphaColor20, '--inner-opacity': innerOpacity }"
   >
     <div class="inner">
       <div class="content" :class="[{ 'maz-p-4': padding }, contentClass]">
@@ -118,7 +118,7 @@ onUnmounted(() => {
 
       @apply maz-absolute maz-left-0 maz-top-0 maz-z-1 maz-h-full maz-w-full maz-bg-color;
 
-      opacity: v-bind('innerOpacity');
+      opacity: var(--inner-opacity);
     }
   }
 
@@ -128,8 +128,6 @@ onUnmounted(() => {
 
   .blob {
     @apply maz-absolute maz-left-0 maz-top-0 maz-z-[0] maz-h-64 maz-w-64 maz-rounded-full maz-blur-2xl;
-
-    background-color: v-bind('alphaColor');
   }
 
   .fakeblob {

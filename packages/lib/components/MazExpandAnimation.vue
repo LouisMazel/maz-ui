@@ -58,6 +58,7 @@ onUnmounted(() => {
     :class="{ 'm-expand-animation--expanded': isOpen }"
     :aria-hidden="!isOpen"
     role="region"
+    :style="[{ '--expand-animation-duration': duration, '--expand-animation-timing-function': timingFunction }]"
   >
     <div
       class="m-expand-animation__inner"
@@ -76,7 +77,7 @@ onUnmounted(() => {
   .m-expand-animation {
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows v-bind('duration') v-bind('timingFunction');
+  transition: grid-template-rows var(--expand-animation-duration) var(--expand-animation-timing-function);
 
   &__inner.--overflow-hidden {
     overflow: hidden;

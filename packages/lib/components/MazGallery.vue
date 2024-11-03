@@ -105,7 +105,7 @@ function shouldHaveRemainingLayer(index: number): boolean {
   <div
     v-if="images.length > 0 || hasEmptyLayer"
     class="m-gallery maz-flex"
-    :style="[sizeStyle]"
+    :style="[sizeStyle, { '--gallery-separator-color': separatorColor }]"
     :class="{ 'maz-rounded': !noRadius }"
   >
     <section class="m-gallery__wrapper maz-flex maz-flex-1">
@@ -173,7 +173,7 @@ function shouldHaveRemainingLayer(index: number): boolean {
     @apply maz-absolute maz-top-0 maz-m-0 maz-h-1/2 maz-w-full
         maz-overflow-hidden maz-border-l-2 maz-p-0;
 
-    border-color: v-bind('separatorColor');
+    border-color: var(--gallery-separator-color);
 
     &--1 {
       left: 0;
@@ -216,7 +216,7 @@ function shouldHaveRemainingLayer(index: number): boolean {
     &--4 {
       @apply maz-border-t-2;
 
-      border-color: v-bind('separatorColor');
+      border-color: var(--gallery-separator-color);
       top: 50%;
       left: 50%;
       width: 25%;
@@ -230,7 +230,7 @@ function shouldHaveRemainingLayer(index: number): boolean {
     &--5 {
       @apply maz-border-t-2;
 
-      border-color: v-bind('separatorColor');
+      border-color: var(--gallery-separator-color);
       top: 50%;
       left: 75%;
       width: 25%;
@@ -246,7 +246,7 @@ function shouldHaveRemainingLayer(index: number): boolean {
     &--5 {
       @apply maz-border-t-2;
 
-      border-color: v-bind('separatorColor');
+      border-color: var(--gallery-separator-color);
     }
 
     &__image {

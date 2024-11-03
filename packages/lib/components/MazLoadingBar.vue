@@ -20,7 +20,10 @@ const colorCSVariables = computed(() => ({
 </script>
 
 <template>
-  <div class="m-loading-bar">
+  <div
+    class="m-loading-bar"
+    :style="[{ '--loading-bar-height': height, '--loading-bar-color': colorCSVariables.alpha, '--loading-bar-main-color': colorCSVariables.main }]"
+  >
     <div />
   </div>
 </template>
@@ -29,12 +32,12 @@ const colorCSVariables = computed(() => ({
   .m-loading-bar {
   @apply maz-relative maz-block maz-w-full maz-overflow-hidden;
 
-  height: v-bind('height');
-  background-color: v-bind('colorCSVariables.alpha');
+  height: var(--loading-bar-height);
+  background-color: var(--loading-bar-color);
   overflow: hidden;
 
   div {
-    background-color: v-bind('colorCSVariables.main');
+    background-color: var(--loading-bar-main-color);
 
     &::before {
       content: '';
