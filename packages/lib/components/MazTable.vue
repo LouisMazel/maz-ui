@@ -140,6 +140,11 @@ export interface MazTableProps<T extends Row<T>> {
    * @default 'lg'
    */
   roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
+  /**
+   * Enable truncate on cells
+   * @default `true`
+   */
+  truncate?: boolean
 }
 
 export interface MazTableProvide {
@@ -147,6 +152,7 @@ export interface MazTableProvide {
   hoverable: Ref<boolean>
   backgroundEven: Ref<boolean>
   backgroundOdd: Ref<boolean>
+  truncate: Ref<boolean>
 }
 </script>
 
@@ -193,6 +199,7 @@ const props = withDefaults(defineProps<MazTableProps<T>>(), {
   color: 'primary',
   totalPages: undefined,
   roundedSize: 'lg',
+  truncate: true,
 })
 const emits = defineEmits<{
   /**
@@ -258,13 +265,14 @@ const hasDivider = computed<boolean>(
   () => props.divider && !props.backgroundEven && !props.backgroundOdd,
 )
 
-const { size, hoverable, backgroundEven, backgroundOdd } = toRefs(props)
+const { size, hoverable, backgroundEven, backgroundOdd, truncate } = toRefs(props)
 
 provide<MazTableProvide>('maz-table', {
   size,
   hoverable,
   backgroundEven,
   backgroundOdd,
+  truncate,
 })
 
 const rowsNormalized = ref<T[]>(getNormalizedRows())
@@ -547,7 +555,11 @@ onBeforeMount(() => {
         />
       </div>
     </div>
-    <div class="m-table-wrapper" :class="[`--rounded-${roundedSize}`]">
+    <div
+      class="m-table-wrapper" :class="[`--rounded-${roundedSize}`, {
+        '--truncate': truncate,
+      }]"
+    >
       <table
         :class="[{ '--elevation': elevation, '--has-layout': tableLayout }, tableClass]"
         :style="tableStyle"
@@ -820,7 +832,11 @@ onBeforeMount(() => {
   }
 
   &-wrapper {
-    @apply maz-overflow-hidden maz-border maz-border-solid maz-border-color-light maz-rounded-xl;
+    @apply maz-border maz-border-solid maz-border-color-light maz-rounded-xl maz-overflow-auto;
+
+    &.--truncate {
+      @apply maz-overflow-hidden;
+    }
 
     &.--rounded-none {
       @apply maz-rounded-none;
@@ -828,18 +844,130 @@ onBeforeMount(() => {
 
     &.--rounded-sm {
       @apply maz-rounded-sm;
+
+      table {
+        @apply maz-rounded-sm;
+
+        thead tr:hover:first-child {
+          @apply maz-rounded-b-sm;
+
+          th:first-child {
+            @apply maz-rounded-tl-sm;
+          }
+
+          th:last-child {
+            @apply maz-rounded-tr-sm;
+          }
+        }
+
+        tbody tr:hover:last-child {
+          @apply maz-rounded-b-sm;
+
+          td:first-child {
+            @apply maz-rounded-bl-sm;
+          }
+
+          td:last-child {
+            @apply maz-rounded-br-sm;
+          }
+        }
+      }
     }
 
     &.--rounded-md {
       @apply maz-rounded-md;
+
+      table {
+        @apply maz-rounded-md;
+
+        thead tr:hover:first-child {
+          @apply maz-rounded-b-md;
+
+          th:first-child {
+            @apply maz-rounded-tl-md;
+          }
+
+          th:last-child {
+            @apply maz-rounded-tr-md;
+          }
+        }
+
+        tbody tr:hover:last-child {
+          @apply maz-rounded-b-md;
+
+          td:first-child {
+            @apply maz-rounded-bl-md;
+          }
+
+          td:last-child {
+            @apply maz-rounded-br-md;
+          }
+        }
+      }
     }
 
     &.--rounded-lg {
       @apply maz-rounded-lg;
+
+      table {
+        @apply maz-rounded-lg;
+
+        thead tr:hover:first-child {
+          @apply maz-rounded-b-lg;
+
+          th:first-child {
+            @apply maz-rounded-tl-lg;
+          }
+
+          th:last-child {
+            @apply maz-rounded-tr-lg;
+          }
+        }
+
+        tbody tr:hover:last-child {
+          @apply maz-rounded-b-lg;
+
+          td:first-child {
+            @apply maz-rounded-bl-lg;
+          }
+
+          td:last-child {
+            @apply maz-rounded-br-lg;
+          }
+        }
+      }
     }
 
     &.--rounded-xl {
       @apply maz-rounded-xl;
+
+      table {
+        @apply maz-rounded-xl;
+
+        thead tr:hover:first-child {
+          @apply maz-rounded-b-xl;
+
+          th:first-child {
+            @apply maz-rounded-tl-xl;
+          }
+
+          th:last-child {
+            @apply maz-rounded-tr-xl;
+          }
+        }
+
+        tbody tr:hover:last-child {
+          @apply maz-rounded-b-xl;
+
+          td:first-child {
+            @apply maz-rounded-bl-xl;
+          }
+
+          td:last-child {
+            @apply maz-rounded-br-xl;
+          }
+        }
+      }
     }
   }
 
@@ -856,7 +984,7 @@ onBeforeMount(() => {
   table {
     @apply maz-table maz-w-full maz-border-collapse maz-bg-color;
 
-    table-layout: v-bind('props.tableLayout');
+    table-layout: v-bind('tableLayout');
 
     &.--has-layout {
       @apply maz-w-full;
@@ -873,7 +1001,7 @@ onBeforeMount(() => {
     caption {
       @apply maz-p-3;
 
-      caption-side: v-bind('props.captionSide');
+      caption-side: v-bind('captionSide');
     }
 
     thead {
@@ -887,7 +1015,7 @@ onBeforeMount(() => {
         }
 
         &.--sortable {
-          @apply maz-cursor-pointer hover:maz-bg-color-light hover:dark:maz-bg-color-lighter;
+          @apply maz-cursor-pointer hover:maz-bg-color-dark;
         }
 
         &.--xl {

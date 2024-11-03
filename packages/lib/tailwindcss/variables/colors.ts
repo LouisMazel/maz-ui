@@ -10,6 +10,8 @@ export const baseColors = {
   'border': 'var(--maz-border-color)',
   'color-light': 'var(--maz-color-bg-light)',
   'color-lighter': 'var(--maz-color-bg-lighter)',
+  'color-dark': 'var(--maz-color-bg-dark)',
+  'color-darker': 'var(--maz-color-bg-darker)',
   'theme': 'var(--maz-color-bg-theme)',
   'theme-hover': 'var(--maz-color-bg-theme-hover)',
   'bg-dark': 'var(--maz-bg-color-dark)',

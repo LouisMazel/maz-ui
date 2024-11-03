@@ -37,7 +37,7 @@ const { hoverable, backgroundEven, backgroundOdd } = injectStrict<MazTableProvid
 
   &.--hoverable {
     &:hover {
-      @apply maz-cursor-pointer maz-bg-color-light dark:maz-bg-color-lighter;
+      @apply maz-cursor-pointer maz-bg-color-dark;
     }
   }
 }

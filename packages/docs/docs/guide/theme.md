@@ -211,14 +211,18 @@ Then, the file will be generated, and you must import it in your project.
   --maz-bg-overlay: hsl(0deg 0% 0% / 30%);
 
   /** BG LIGHT COLOR **/
-  --maz-bg-color-light: hsl(0deg 0% 100%);
-  --maz-bg-color-light-light: hsl(0deg 0% 94%);
   --maz-bg-color-light-lighter: hsl(0deg 0% 97%);
+  --maz-bg-color-light-light: hsl(0deg 0% 94%);
+  --maz-bg-color-light: hsl(0deg 0% 100%);
+  --maz-bg-color-light-dark: hsl(0deg 0% 91%);
+  --maz-bg-color-light-darker: hsl(0deg 0% 88%);
 
-  /** BG DARK COLOR **/
+  /** BG DARK COLOR **/;
+  --maz-bg-color-dark-lighter: hsl(238deg 16% 25%);
+  --maz-bg-color-dark-light: hsl(237deg 16% 20%);
   --maz-bg-color-dark: hsl(235deg 16% 15%);
-  --maz-bg-color-dark-light: hsl(237deg 17% 23%);
-  --maz-bg-color-dark-lighter: hsl(238deg 17% 28%);
+  --maz-bg-color-dark-dark: hsl(238deg 16% 12%);
+  --maz-bg-color-dark-darker: hsl(238deg 16% 7%);
 
   /**
   * Border of components
