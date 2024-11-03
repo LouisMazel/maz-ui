@@ -4,7 +4,7 @@ import type { Color } from './MazBtn.vue'
 import type { MazLinkProps } from './MazLink.vue'
 import type { Icon, Position, Size } from './types'
 import { computed, defineAsyncComponent, type HTMLAttributes, ref, watch } from 'vue'
-import { useInstanceUniqId } from '../modules'
+import { useInstanceUniqId } from '../modules/composables/useInstanceUniqId'
 import { vClickOutside } from '../modules/directives/click-outside'
 import { debounce } from '../modules/helpers/debounce'
 

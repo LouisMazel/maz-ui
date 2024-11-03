@@ -17,7 +17,7 @@ import {
   watch,
 } from 'vue'
 
-import { useInstanceUniqId } from '../modules'
+import { useInstanceUniqId } from '../modules/composables/useInstanceUniqId'
 
 import { vClickOutside } from '../modules/directives/click-outside'
 
