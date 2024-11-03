@@ -141,10 +141,10 @@ export interface MazTableProps<T extends Row<T>> {
    */
   roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
   /**
-   * Enable truncate on cells
-   * @default `true`
+   * Enable scrollable on table
+   * @default `false`
    */
-  truncate?: boolean
+  scrollable?: boolean
 }
 
 export interface MazTableProvide {
@@ -152,8 +152,9 @@ export interface MazTableProvide {
   hoverable: Ref<boolean>
   backgroundEven: Ref<boolean>
   backgroundOdd: Ref<boolean>
-  truncate: Ref<boolean>
 }
+
+export const mazTableKey = 'maz-table'
 </script>
 
 <script lang="ts" setup generic="T extends Row<T>">
@@ -199,7 +200,7 @@ const props = withDefaults(defineProps<MazTableProps<T>>(), {
   color: 'primary',
   totalPages: undefined,
   roundedSize: 'lg',
-  truncate: true,
+  scrollable: false,
 })
 const emits = defineEmits<{
   /**
@@ -265,14 +266,13 @@ const hasDivider = computed<boolean>(
   () => props.divider && !props.backgroundEven && !props.backgroundOdd,
 )
 
-const { size, hoverable, backgroundEven, backgroundOdd, truncate } = toRefs(props)
+const { size, hoverable, backgroundEven, backgroundOdd } = toRefs(props)
 
-provide<MazTableProvide>('maz-table', {
+provide<MazTableProvide>(mazTableKey, {
   size,
   hoverable,
   backgroundEven,
   backgroundOdd,
-  truncate,
 })
 
 const rowsNormalized = ref<T[]>(getNormalizedRows())
@@ -557,7 +557,7 @@ onBeforeMount(() => {
     </div>
     <div
       class="m-table-wrapper" :class="[`--rounded-${roundedSize}`, {
-        '--truncate': truncate,
+        '--scrollable': scrollable,
       }]"
     >
       <table
@@ -832,10 +832,10 @@ onBeforeMount(() => {
   }
 
   &-wrapper {
-    @apply maz-border maz-border-solid maz-border-color-light maz-rounded-xl maz-overflow-auto;
+    @apply maz-border maz-border-solid maz-border-color-light maz-rounded-xl;
 
-    &.--truncate {
-      @apply maz-overflow-hidden;
+    &.--scrollable {
+      @apply maz-overflow-auto;
     }
 
     &.--rounded-none {
@@ -1005,10 +1005,10 @@ onBeforeMount(() => {
     }
 
     thead {
-      @apply maz-truncate maz-break-all maz-border-b maz-border-color-light;
+      @apply maz-break-all maz-border-b maz-border-color-light;
 
       th {
-        @apply maz-gap-2 maz-truncate maz-break-all maz-font-normal maz-text-muted maz-tracking-tight;
+        @apply maz-gap-2 maz-break-all maz-font-normal maz-text-muted maz-tracking-tight;
 
         &.--hidden {
           @apply maz-hidden;
@@ -1043,7 +1043,7 @@ onBeforeMount(() => {
         }
 
         span {
-          @apply maz-inline-flex maz-items-center maz-gap-1 maz-truncate;
+          @apply maz-inline-flex maz-items-center maz-gap-1;
 
           .m-table-sort-icon-wrapper {
             @apply maz-h-4 maz-w-4;

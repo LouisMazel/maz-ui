@@ -12,7 +12,7 @@ import {
   watch,
 } from 'vue'
 
-import { sleep } from '../modules'
+import { sleep } from '../modules/helpers/sleep'
 import { injectStrict } from './../modules/helpers/inject-strict'
 
 export interface Props {

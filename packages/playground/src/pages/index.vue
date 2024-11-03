@@ -3,42 +3,6 @@
     <div>
       <!-- Start Developping Area - You should not commit anything here to keep this place clean for all others -->
 
-      <MazTable
-        size="sm"
-        :headers="['#', 'Lastname', 'Firstname', 'Age']"
-        hoverable
-        sortable
-      >
-        <MazTableRow>
-          <MazTableCell>
-            1
-          </MazTableCell>
-          <MazTableCell>
-            John
-          </MazTableCell>
-          <MazTableCell>
-            Doe
-          </MazTableCell>
-          <MazTableCell>
-            99
-          </MazTableCell>
-        </MazTableRow>
-        <MazTableRow>
-          <MazTableCell>
-            2
-          </MazTableCell>
-          <MazTableCell>
-            Doe
-          </MazTableCell>
-          <MazTableCell>
-            John
-          </MazTableCell>
-          <MazTableCell>
-            30
-          </MazTableCell>
-        </MazTableRow>
-      </MazTable>
-
       <!-- End Developping Area -->
     </div>
 
