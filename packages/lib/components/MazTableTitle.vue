@@ -1,19 +1,28 @@
 <script lang="ts" setup>
 import type { MazTableProvide } from './MazTable.vue'
+import { computed } from 'vue'
 import { injectStrict } from './../modules/helpers/inject-strict'
 
-const { size } = injectStrict<MazTableProvide>('maz-table')
+const { truncate = true } = defineProps<{
+  truncate?: boolean
+}>()
+
+const { size, truncate: tableTruncate } = injectStrict<MazTableProvide>('maz-table')
+
+const hasTruncate = computed(() => truncate || tableTruncate.value)
 </script>
 
 <template>
-  <th class="m-table-title" :class="`--${size}`">
+  <th class="m-table-title" :class="[`--${size}`, { '--truncate': hasTruncate }]">
     <slot />
   </th>
 </template>
 
 <style lang="postcss" scoped>
-  .m-table-title {
-  @apply maz-truncate;
+.m-table-title {
+  &.--truncate {
+    @apply maz-truncate;
+  }
 
   &.--xl {
     @apply maz-px-5 maz-py-5 maz-text-xl;

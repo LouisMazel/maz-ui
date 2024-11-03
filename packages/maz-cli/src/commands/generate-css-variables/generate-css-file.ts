@@ -82,6 +82,14 @@ function getNormalCSSVariables(config: MazUiConfig) {
             key: 'bg-color-light-lighter',
             value: tinycolor(config.theme.colors.lightTheme?.bgColor).darken(7.5).toHslString(),
           },
+          {
+            key: 'bg-color-light-dark',
+            value: tinycolor(config.theme.colors.lightTheme?.bgColor).darken(11.5).toHslString(),
+          },
+          {
+            key: 'bg-color-light-darker',
+            value: tinycolor(config.theme.colors.lightTheme?.bgColor).darken(15.5).toHslString(),
+          },
         ]
       : []),
     {
@@ -109,6 +117,14 @@ function getNormalCSSVariables(config: MazUiConfig) {
           {
             key: 'bg-color-dark-lighter',
             value: tinycolor(config.theme.colors.darkTheme?.bgColor).lighten(7.5).toHslString(),
+          },
+          {
+            key: 'bg-color-dark-dark',
+            value: tinycolor(config.theme.colors.darkTheme?.bgColor).darken(3.75).toHslString(),
+          },
+          {
+            key: 'bg-color-dark-darker',
+            value: tinycolor(config.theme.colors.darkTheme?.bgColor).darken(7.5).toHslString(),
           },
         ]
       : []),
