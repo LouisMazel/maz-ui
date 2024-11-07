@@ -1,4 +1,4 @@
-import { DefaultTheme } from "vitepress";
+import type { DefaultTheme } from 'vitepress'
 
 export const directives = {
   text: 'Directives',
@@ -10,5 +10,5 @@ export const directives = {
     { text: 'v-lazy-img', link: '/directives/lazy-img' },
     { text: 'v-tooltip', link: '/directives/tooltip' },
     { text: 'v-zoom-img', link: '/directives/zoom-img' },
-  ]
+  ],
 } satisfies DefaultTheme.SidebarItem

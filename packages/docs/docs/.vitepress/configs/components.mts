@@ -1,4 +1,4 @@
-import { DefaultTheme } from "vitepress";
+import type { DefaultTheme } from 'vitepress'
 
 export const components = {
   text: 'Components',
@@ -23,7 +23,7 @@ export const components = {
         { text: 'MazSlider', link: '/components/maz-slider' },
         { text: 'MazSwitch', link: '/components/maz-switch' },
         { text: 'MazTextarea', link: '/components/maz-textarea' },
-      ]
+      ],
     },
     {
       text: 'Data',
@@ -32,7 +32,7 @@ export const components = {
         { text: 'MazDropzone', link: '/components/maz-dropzone' },
         { text: 'MazPicker (date, time, range)', link: '/components/maz-picker' },
         { text: 'MazTable (data-table)', link: '/components/maz-table' },
-      ]
+      ],
     },
     {
       text: 'UI',
@@ -67,7 +67,7 @@ export const components = {
         { text: 'MazSpinner', link: '/components/maz-spinner' },
         { text: 'MazTabs', link: '/components/maz-tabs' },
         { text: 'MazTransitionExpand', link: '/components/maz-transition-expand' },
-      ]
-    }
-  ]
+      ],
+    },
+  ],
 } satisfies DefaultTheme.SidebarItem

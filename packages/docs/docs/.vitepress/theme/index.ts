@@ -1,21 +1,22 @@
-import 'maz-ui/tailwindcss/tailwind.css'
+import type { AosOptions, ToasterOptions } from 'maz-ui'
+import { getAosInstance, installAos, installDialog, installToaster, installWait, vFullscreenImgInstall } from 'maz-ui'
 
-import DefaultTheme from 'vitepress/theme-without-fonts'
+import * as components from 'maz-ui/components'
 import { inBrowser } from 'vitepress'
-import googleAnalytics from 'vitepress-plugin-google-analytics'
+import DefaultTheme from 'vitepress/theme-without-fonts'
 
+import googleAnalytics from 'vitepress-plugin-google-analytics'
+import { watch } from 'vue'
+
+import ColorContainer from './components/ColorContainer.vue'
+
+import ComponentDemo from './components/ComponentDemo.vue'
+
+import NpmBadge from './components/NpmBadge.vue'
+import 'maz-ui/tailwindcss/tailwind.css'
 // import 'maz-ui/css/main.css'
 import 'maz-ui/modules/plugins/aos/scss/index.scss'
 import './main.css'
-
-import { ToasterOptions, installToaster, installWait, AosOptions, installAos, getAosInstance, vFullscreenImgInstall, installDialog } from 'maz-ui'
-
-import * as components from 'maz-ui/components'
-
-import ColorContainer from './components/ColorContainer.vue'
-import NpmBadge from './components/NpmBadge.vue'
-import ComponentDemo from './components/ComponentDemo.vue'
-import { watch } from 'vue'
 
 const theme: typeof DefaultTheme = {
   ...DefaultTheme,
@@ -48,7 +49,7 @@ const theme: typeof DefaultTheme = {
         duration: 400,
         once: false,
         delay: 0,
-      }
+      },
     }
 
     app.use(installToaster, toasterOptions)

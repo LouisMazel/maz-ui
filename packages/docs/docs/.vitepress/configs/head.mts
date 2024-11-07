@@ -1,6 +1,6 @@
-import { UserConfig } from 'vitepress'
+import type { UserConfig } from 'vitepress'
 
-export const getAssetBaseUrl = (path: string): string => {
+export function getAssetBaseUrl(path: string): string {
   const base = process.env.NODE_ENV === 'production' ? 'https://maz-ui.com' : ''
   return `${base}${path}`
 }

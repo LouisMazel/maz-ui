@@ -1,4 +1,4 @@
-import { DefaultTheme } from "vitepress";
+import type { DefaultTheme } from 'vitepress'
 
 export const helpers = {
   text: 'Helpers',
@@ -9,5 +9,5 @@ export const helpers = {
     { text: 'currency', link: '/helpers/currency' },
     { text: 'date', link: '/helpers/date' },
     { text: 'number', link: '/helpers/number' },
-  ]
+  ],
 } satisfies DefaultTheme.SidebarItem
