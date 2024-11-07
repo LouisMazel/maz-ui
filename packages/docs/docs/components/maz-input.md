@@ -29,8 +29,39 @@ description: MazInput is a standalone component that replaces the standard html 
     import { ref } from 'vue'
     import MazInput from 'maz-ui/components/MazInput'
 
-    const inputValue = ref('value')
+    const inputValue = ref()
   </script>
+  ```
+
+  </template>
+</ComponentDemo>
+
+## Top label
+
+<ComponentDemo>
+  <MazInput v-model="inputValue" top-label="Top label" placeholder="Placeholder" autocomplete="off" />
+
+  <template #code>
+
+  ```html
+  <MazInput v-model="inputValue" top-label="Top label" placeholder="Placeholder" />
+  ```
+
+  </template>
+</ComponentDemo>
+
+## Assistive text
+
+<ComponentDemo>
+  <MazInput v-model="inputValue" top-label="Top label" assistive-text="Assistive text" placeholder="Placeholder" />
+  <br />
+  <br />
+  <MazInput v-model="inputValue" error top-label="Top label" assistive-text="Assistive text" placeholder="Placeholder" />
+
+  <template #code>
+
+  ```html
+  <MazInput v-model="inputValue" top-label="Top label" assistive-text="Assistive text" placeholder="Placeholder" />
   ```
 
   </template>
@@ -102,16 +133,16 @@ description: MazInput is a standalone component that replaces the standard html 
 
 ## Hint
 
-> Will replace the label, useful to display error message
+> Will replace the label, useful to display short message
 
 <ComponentDemo>
-  <MazInput v-model="inputValue" label="label hint" hint="An error occured" error autocomplete="off" />
+  <MazInput model-value="any value" label="label hint" hint="An error occured" error autocomplete="off" />
 
   <template #code>
 
   ```html
   <MazInput
-    v-model="inputValue"
+    model-value="any value"
     label="label hint"
     hint="An error occured"
     error
@@ -283,7 +314,7 @@ Check out how [MazIcon](./maz-icon.md) works, see all available icons and downlo
 > Use the attribute `size` with a value in {{ sizes.join(', ') }}
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-2">
+  <div class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
     <MazInput
       v-for="size in sizes"
       :key="size"
@@ -327,7 +358,7 @@ Use the attribute `color` with a value in this [list](./../guide/colors.md), the
 :::
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-2">
+  <div class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
     <MazInput
       v-for="{ name } in colorsArray"
       :key="name"
@@ -373,7 +404,7 @@ Use the attribute `color` with a value in this [list](./../guide/colors.md), the
 Use the attribute `rounded-size` with a value in `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'`
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-2">
+  <div class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
     <MazInput rounded-size="none" placeholder="Rounded input" autocomplete="off" />
     <MazInput rounded-size="sm" placeholder="Rounded input" autocomplete="off" />
     <MazInput rounded-size="md" placeholder="Rounded input" autocomplete="off" />
@@ -456,7 +487,7 @@ Use the attribute `rounded-size` with a value in `'none' | 'sm' | 'md' | 'lg' | 
 
 <script setup lang="ts">
   import { ref, computed } from 'vue'
-  const inputValue = ref('value')
+  const inputValue = ref()
   const passwordValue = ref()
 
   const colors = {
