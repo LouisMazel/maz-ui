@@ -58,6 +58,7 @@ export class AosHandler {
     }
   }
 
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   private handleIntersect(entries: IntersectionObserverEntry[], observer: IntersectionObserver) {
     for (const entry of entries) {
       const target = entry.target as HTMLElement

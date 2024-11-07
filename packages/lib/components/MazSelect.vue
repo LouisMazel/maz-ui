@@ -379,10 +379,10 @@ function getFilteredOptionWithQuery(query: string) {
         || searchInValue(searchValue3, query)
         || (typeof searchValue === 'string'
           && useStringMatching(searchValue, query, threshold).isMatching.value)
-          || (typeof searchValue2 === 'string'
-            && useStringMatching(searchValue2, query, threshold).isMatching.value)
-            || (typeof searchValue3 === 'string'
-              && useStringMatching(searchValue3, query, threshold).isMatching.value)
+        || (typeof searchValue2 === 'string'
+          && useStringMatching(searchValue2, query, threshold).isMatching.value)
+        || (typeof searchValue3 === 'string'
+          && useStringMatching(searchValue3, query, threshold).isMatching.value)
       )
     })
     : optionsNormalized.value
@@ -397,7 +397,7 @@ async function closeList(event?: Event) {
     event
     && (('relatedTarget' in event
       && mazSelectElement.value?.contains(event.relatedTarget as Node))
-      || event.type === 'keydown')
+    || event.type === 'keydown')
   ) {
     return event.preventDefault()
   }

@@ -12,6 +12,7 @@ import type { getValidateFunction } from './utils'
 
 export type ValidationSync = BaseSchema<unknown, unknown, BaseIssue<unknown>>
 export type ValidationAsync = ValidationSync | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>
+// eslint-disable-next-line sonarjs/redundant-type-aliases
 export type Validation = ValidationAsync
 
 export type ValidationIssues = InferIssue<Validation>[]

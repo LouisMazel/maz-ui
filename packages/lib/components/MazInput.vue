@@ -214,6 +214,7 @@ const isPasswordType = computed(() => props.type === 'password')
 
 const inputType = computed(() => (hasPasswordVisible.value ? 'text' : props.type))
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 const borderStyle = computed(() => {
   if (props.noBorder)
     return undefined

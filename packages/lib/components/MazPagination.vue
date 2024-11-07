@@ -10,13 +10,12 @@ const props = withDefaults(defineProps<MazPagnationProps>(), {
   activeColor: 'primary',
   size: 'md',
 })
-const emits = defineEmits<{
-  /**
-   * Emitted when the current page number is changed.
-   * @property {number} value - new page number
-   */
-  (event: 'update:model-value', value: number): void
-}>()
+const emits = defineEmits</**
+                           * Emitted when the current page number is changed.
+                           * @property {number} value - new page number
+                           */
+  (event: 'update:model-value', value: number) => void
+>()
 const ChevronLeft = defineAsyncComponent(() => import('./../icons/chevron-left.svg'))
 const ChevronDoubleLeft = defineAsyncComponent(() => import('./../icons/chevron-double-left.svg'))
 const Ellipsis = defineAsyncComponent(() => import('./../icons/ellipsis-horizontal.svg'))

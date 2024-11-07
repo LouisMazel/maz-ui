@@ -21,10 +21,25 @@ export default antfu(
   sonarjs.configs.recommended,
   {
     rules: {
+      ...sonarjs.configs.recommended.rules,
       'tailwindcss/no-custom-classname': 'off',
       'node/prefer-global/process': 'off',
       'sonarjs/no-duplicate-string': 'off',
       'prefer-regex-literals': 'off',
+      'sonarjs/class-name': 'off',
+      'sonarjs/no-vue-bypass-sanitization': 'off',
+      'sonarjs/no-nested-conditional': 'off',
+      'sonarjs/sonar-no-unused-vars': 'off',
+    },
+  },
+  {
+    files: ['**/*.spec.ts'],
+    rules: {
+      'sonarjs/no-nested-functions': 'off',
+      'sonarjs/sonar-no-unused-vars': 'off',
+      'sonarjs/no-empty-function': 'off',
+      'sonarjs/cognitive-complexity': 'off',
+      'sonarjs/no-hardcoded-credentials': 'off',
     },
   },
 )

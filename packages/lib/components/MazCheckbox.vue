@@ -9,6 +9,8 @@ import { computed, type HTMLAttributes, ref } from 'vue'
 import { useInstanceUniqId } from '../modules/composables/useInstanceUniqId'
 import CheckIcon from './../icons/check.svg'
 
+export type CheckboxValue = string | number | boolean
+
 export interface Props<T = boolean | (string | number)[]> {
   /** Style attribut of the component root element */
   style?: HTMLAttributes['style']
@@ -21,7 +23,7 @@ export interface Props<T = boolean | (string | number)[]> {
   /** The color of the checkbox */
   color?: Color
   /** The value of the checkbox when selected */
-  value?: string | number | boolean
+  value?: CheckboxValue
   /** The name of the checkbox */
   name?: string
   /** The size of the checkbox */
