@@ -135,7 +135,7 @@ export interface MazTableProps<T extends Row<T>> {
    */
   translations?: Translations
   /**
-   * Size of the rounded
+   * Size radius of the component's border
    * @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'`
    * @default 'lg'
    */
@@ -832,14 +832,14 @@ onBeforeMount(() => {
   }
 
   &-wrapper {
-    @apply maz-border maz-border-solid maz-border-color-light maz-rounded-xl;
+    @apply maz-border maz-border-solid maz-border-color-light;
 
     &.--scrollable {
       @apply maz-overflow-auto;
     }
 
-    &.--rounded-none {
-      @apply maz-rounded-none;
+    &:not(.--rounded-none) {
+      @apply maz-rounded-xl;
     }
 
     &.--rounded-sm {
