@@ -1,72 +1,16 @@
-<script lang="ts" setup>
+<script lang="ts">
+/* eslint-disable import/first */
 import type { Color } from './types'
-import { computed, type HTMLAttributes, onBeforeUnmount, onMounted, ref, useSlots } from 'vue'
-import { useInstanceUniqId } from '../modules/composables/useInstanceUniqId'
-import { TextareaAutogrow } from './MazTextarea/textarea-autogrow'
 
 export type { Color }
 
-defineOptions({
-  inheritAttrs: false,
-})
-
-const props = withDefaults(defineProps<Props>(), {
-  style: undefined,
-  class: undefined,
-  modelValue: undefined,
-  id: undefined,
-  name: 'MazTextarea',
-  label: undefined,
-  placeholder: undefined,
-  required: false,
-  disabled: false,
-  readonly: false,
-  error: false,
-  success: false,
-  warning: false,
-  hint: undefined,
-  color: 'primary',
-  padding: true,
-  transparent: false,
-  border: true,
-  appendJustify: 'end',
-})
-
-const emits = defineEmits<{
-  /**
-   * Emitted when the value of the textarea change
-   * @property {string | undefined} value - The value of the textarea
-   */
-  (event: 'update:model-value', value?: string): void
-  /**
-   * Emitted when the value of the textarea change
-   * @property {string | undefined} value - The value of the textarea
-   */
-  (event: 'input', value?: string): void
-  /**
-   * Emitted when the textarea is focused
-   * @property {Event} value - The event
-   */
-  (event: 'focus', value: FocusEvent): void
-  /**
-   * Emitted when the textarea is blurred
-   * @property {Event} value - The event
-   */
-  (event: 'blur', value: FocusEvent): void
-  /**
-   * Emitted when the textarea value change
-   * @property {Event} value - The event
-   */
-  (event: 'change', value: Event): void
-}>()
-
-export interface Props {
+export interface MazTextareaProps<T extends string | undefined> {
   /** Style attribut of the component root element */
   style?: HTMLAttributes['style']
   /** Class attribut of the component root element */
   class?: HTMLAttributes['class']
   /** @model The value of the textarea */
-  modelValue?: string
+  modelValue?: T
   /** The id of the textarea */
   id?: string
   /** The name of the textarea */
@@ -118,6 +62,66 @@ export interface Props {
    */
   appendJustify?: 'start' | 'end' | 'center' | 'space-between' | 'space-around' | 'space-evenly'
 }
+</script>
+
+<script lang="ts" setup generic="T extends string | undefined">
+import { computed, type HTMLAttributes, onBeforeUnmount, onMounted, ref, useSlots } from 'vue'
+import { useInstanceUniqId } from '../modules/composables/useInstanceUniqId'
+import { TextareaAutogrow } from './MazTextarea/textarea-autogrow'
+
+defineOptions({
+  inheritAttrs: false,
+})
+
+const props = withDefaults(defineProps<MazTextareaProps<T>>(), {
+  style: undefined,
+  class: undefined,
+  modelValue: undefined,
+  id: undefined,
+  name: 'MazTextarea',
+  label: undefined,
+  placeholder: undefined,
+  required: false,
+  disabled: false,
+  readonly: false,
+  error: false,
+  success: false,
+  warning: false,
+  hint: undefined,
+  color: 'primary',
+  padding: true,
+  transparent: false,
+  border: true,
+  appendJustify: 'end',
+})
+
+const emits = defineEmits<{
+  /**
+   * Emitted when the value of the textarea change
+   * @property {string | undefined} value - The value of the textarea
+   */
+  (event: 'update:model-value', value?: T): void
+  /**
+   * Emitted when the value of the textarea change
+   * @property {string | undefined} value - The value of the textarea
+   */
+  (event: 'input', value?: string): void
+  /**
+   * Emitted when the textarea is focused
+   * @property {Event} value - The event
+   */
+  (event: 'focus', value: FocusEvent): void
+  /**
+   * Emitted when the textarea is blurred
+   * @property {Event} value - The event
+   */
+  (event: 'blur', value: FocusEvent): void
+  /**
+   * Emitted when the textarea value change
+   * @property {Event} value - The event
+   */
+  (event: 'change', value: Event): void
+}>()
 
 let textareaAutogrow: TextareaAutogrow | undefined
 
