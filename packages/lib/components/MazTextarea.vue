@@ -293,7 +293,7 @@ const hasBorderStyle = computed(() => borderStyle.value !== '--default-border')
   }
 
   &.--padding {
-    @apply maz-p-4;
+    @apply maz-px-4 maz-py-3;
   }
 
   &.--rounded-sm {
