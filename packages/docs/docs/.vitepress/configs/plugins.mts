@@ -1,4 +1,4 @@
-import { DefaultTheme } from 'vitepress';
+import type { DefaultTheme } from 'vitepress'
 
 export const plugins = {
   text: 'Plugins',
@@ -8,5 +8,5 @@ export const plugins = {
     { text: 'dialog', link: '/plugins/dialog' },
     { text: 'toaster', link: '/plugins/toaster' },
     { text: 'wait', link: '/plugins/wait' },
-  ]
+  ],
 } satisfies DefaultTheme.NavItemChildren | DefaultTheme.SidebarItem

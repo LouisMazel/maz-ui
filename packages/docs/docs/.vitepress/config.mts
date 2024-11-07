@@ -1,17 +1,18 @@
-import { defineConfig, HeadConfig, postcssIsolateStyles } from 'vitepress'
-import { sidebar, head, nav } from './configs/index.mjs'
+import type { Plugin } from 'postcss'
+import type { HeadConfig } from 'vitepress'
 import { join } from 'node:path'
-import svgLoader from 'vite-svg-loader'
 import { fileURLToPath } from 'node:url'
-import { getOgImage } from './og-image'
-
-import { Plugin } from 'postcss'
-import postcssNested from 'postcss-nested'
-import postcssUrl from 'postcss-url'
-import tailwindcssNesting from 'tailwindcss/nesting'
-import postcssImport from 'postcss-import'
 import autoprefixer from 'autoprefixer'
+import postcssImport from 'postcss-import'
+import postcssNested from 'postcss-nested'
+
+import postcssUrl from 'postcss-url'
 import tailwind from 'tailwindcss'
+import tailwindcssNesting from 'tailwindcss/nesting'
+import svgLoader from 'vite-svg-loader'
+import { defineConfig, postcssIsolateStyles } from 'vitepress'
+import { head, nav, sidebar } from './configs/index.mjs'
+import { getOgImage } from './og-image'
 
 const _dirname = fileURLToPath(new URL('.', import.meta.url))
 
@@ -40,8 +41,8 @@ export default defineConfig({
   markdown: {
     theme: {
       light: 'github-light',
-      dark: 'tokyo-night'
-    }
+      dark: 'tokyo-night',
+    },
   },
 
   sitemap: {
@@ -62,7 +63,7 @@ export default defineConfig({
       }
 
       return modifyItems
-    }
+    },
   },
 
   head,
@@ -79,18 +80,18 @@ export default defineConfig({
     ],
     footer: {
       // message: 'Released under the MIT License.',
-      copyright: 'Made by LouisMazel with ❤️'
+      copyright: 'Made by LouisMazel with ❤️',
     },
 
     editLink: {
       pattern: 'https://github.com/LouisMazel/maz-ui/edit/master/packages/docs/docs/:path',
-      text: 'Edit this page on GitHub'
+      text: 'Edit this page on GitHub',
     },
 
     algolia: {
       appId: '4ML7HKE73Z',
       apiKey: 'a98bd8a34144a39eb5c59898582e093f',
-      indexName: 'maz-ui-3'
+      indexName: 'maz-ui-3',
     },
   },
 
@@ -111,15 +112,14 @@ export default defineConfig({
           autoprefixer(),
           tailwind() as Plugin,
           postcssIsolateStyles({
-            includeFiles: [/vp-doc\.css/]
+            includeFiles: [/vp-doc\.css/],
           }),
         ],
       },
-    }
+    },
   },
 
-  transformHead: async ({ siteConfig, siteData, pageData, title, description, head, assets }) => {
-
+  transformHead: async ({ siteData, pageData, title, description, head }) => {
     // const baseUrl = 'https://maz-ui.com'
 
     const currentTitle = title ?? pageData.title ?? pageData.frontmatter.title ?? siteData.title

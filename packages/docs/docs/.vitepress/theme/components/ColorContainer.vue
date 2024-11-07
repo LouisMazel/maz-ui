@@ -1,3 +1,10 @@
+<script lang="ts" setup>
+defineProps<{
+  color: string
+  hex: string
+}>()
+</script>
+
 <template>
   <div
     class="color-container"
@@ -9,13 +16,6 @@
     </span>
   </div>
 </template>
-
-<script lang="ts" setup>
-defineProps<{
-  color: string;
-  hex: string
-}>()
-</script>
 
 <style lang="postcss" scoped>
 .color-container {

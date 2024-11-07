@@ -1,7 +1,8 @@
-import React from 'react'
+import { Buffer } from 'node:buffer'
+import { mkdir, writeFile } from 'node:fs/promises'
+import { join } from 'node:path'
 import { ImageResponse } from '@vercel/og'
-import { writeFile, mkdir } from 'fs/promises'
-import { join } from 'path'
+import React from 'react'
 
 export function ogImage({ title, description }: { title: string, description: string }) {
   return new ImageResponse(
@@ -39,7 +40,7 @@ export function ogImage({ title, description }: { title: string, description: st
       width: 1200,
       height: 630,
       // emoji: 'twemoji'
-    }
+    },
   )
 }
 
@@ -58,8 +59,9 @@ export async function getOgImage({ outputFolder, filename, title, description }:
     await writeFile(imagePath, image)
 
     return imagePath
-  } catch (error) {
-    console.log(error)
+  }
+  catch (error) {
+    console.error(`Error generating og image: ${error}`)
     throw error
   }
 }

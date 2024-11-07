@@ -8,6 +8,6 @@ export default <Config>{
     './docs/.vitepress/**/*.{js,ts,vue}',
     './docs/**/*.md',
     './../lib/components/**/*.vue',
-    './../lib/modules/**/*.vue'
-  ]
+    './../lib/modules/**/*.vue',
+  ],
 }
