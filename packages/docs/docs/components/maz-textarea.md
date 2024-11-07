@@ -19,7 +19,6 @@ This component has the "autogrow" feature, so when the user writes, the textarea
   <MazTextarea
     v-model="value"
     name="comment"
-    id="comment"
     label="Enter your comment"
   />
 
@@ -30,7 +29,6 @@ This component has the "autogrow" feature, so when the user writes, the textarea
   <MazTextarea
     v-model="value"
     name="comment"
-    id="comment"
     label="Enter your comment"
   />
 </template>
@@ -54,7 +52,6 @@ You can use the `label` and `append` slots to customize the label and the append
   <MazTextarea
     v-model="value"
     name="comment"
-    id="comment"
   >
     <template #label>
       <MazIcon name="envelope" class="maz-text-xl" />
@@ -73,7 +70,6 @@ You can use the `label` and `append` slots to customize the label and the append
 <MazTextarea
   v-model="value"
   name="comment"
-  id="comment"
 >
   <template #label>
     <MazIcon name="envelope" class="maz-text-xl" />
@@ -96,14 +92,12 @@ You can use the `hint` attribute to display a hint message. This will replace th
     <MazTextarea
       v-model="value"
       name="comment"
-      id="comment"
       label="This is a label"
       hint="This is a hint message"
     />
     <MazTextarea
       v-model="value"
       name="comment"
-      id="comment"
       label="This is a label"
       hint="This is a hint message"
       error
@@ -111,7 +105,6 @@ You can use the `hint` attribute to display a hint message. This will replace th
     <MazTextarea
       v-model="value"
       name="comment"
-      id="comment"
       label="This is a label"
       hint="This is a hint message"
       success
@@ -119,7 +112,6 @@ You can use the `hint` attribute to display a hint message. This will replace th
     <MazTextarea
       v-model="value"
       name="comment"
-      id="comment"
       label="This is a label"
       hint="This is a hint message"
       warning
@@ -133,14 +125,12 @@ You can use the `hint` attribute to display a hint message. This will replace th
   <MazTextarea
     v-model="value"
     name="comment"
-    id="comment"
     label="This is a label"
     hint="This is a hint message"
   />
   <MazTextarea
     v-model="value"
     name="comment"
-    id="comment"
     label="This is a label"
     hint="This is a hint message"
     error
@@ -148,7 +138,6 @@ You can use the `hint` attribute to display a hint message. This will replace th
   <MazTextarea
     v-model="value"
     name="comment"
-    id="comment"
     label="This is a label"
     hint="This is a hint message"
     success
@@ -156,12 +145,29 @@ You can use the `hint` attribute to display a hint message. This will replace th
   <MazTextarea
     v-model="value"
     name="comment"
-    id="comment"
     label="This is a label"
     hint="This is a hint message"
     warning
   />
 </template>
+```
+
+  </template>
+</ComponentDemo>
+
+## Disabled
+
+<ComponentDemo>
+  <MazTextarea
+    v-model="value"
+    name="comment"
+    label="This is a label"
+    disabled
+  />
+
+  <template #code>
+
+```html disabled />
 ```
 
   </template>

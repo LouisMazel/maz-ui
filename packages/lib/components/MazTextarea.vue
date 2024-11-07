@@ -280,11 +280,11 @@ const hasBorderStyle = computed(() => borderStyle.value !== '--default-border')
   .m-textarea {
   @apply maz-min-h-[6.25rem] maz-relative maz-flex maz-flex-col maz-align-top maz-text-normal;
 
-  &:not(.--background-transparent) {
+  &:not(.--background-transparent, .--is-disabled) {
     @apply maz-bg-color dark:maz-bg-color-light;
   }
 
-  &.--border {
+  &.--border:not(.--is-disabled) {
     @apply maz-border maz-border-solid;
 
     &:not(.--has-border-style) {
@@ -339,8 +339,14 @@ const hasBorderStyle = computed(() => borderStyle.value !== '--default-border')
   }
 
   &.--is-disabled {
-    textarea {
-      @apply maz-cursor-not-allowed maz-border-border maz-bg-color-lighter maz-text-muted dark:maz-border-color-lighter;
+    @apply maz-cursor-not-allowed maz-border-border maz-bg-color-lighter maz-text-muted dark:maz-border-color-lighter;
+
+    & * {
+      @apply maz-cursor-not-allowed maz-text-muted;
+    }
+
+    & > label {
+      @apply maz-text-gray-300 dark:maz-text-gray-600;
     }
   }
 
