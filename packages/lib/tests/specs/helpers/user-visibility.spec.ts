@@ -75,6 +75,7 @@ describe('@modules/helpers/user-visibility.ts', () => {
     describe('when instance has once option to "true"', () => {
       it('then instance have called callback and is destroy', async () => {
         documentEmitVisibilityState('hidden')
+
         const _newInstance = new UserVisibility(callback, {
           ...options,
           once: true,

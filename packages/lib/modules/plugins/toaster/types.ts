@@ -6,6 +6,7 @@ export type ToasterPosition =
   | 'bottom-right'
   | 'bottom-left'
 
+// eslint-disable-next-line sonarjs/redundant-type-aliases
 export type ToasterPositions = ToasterPosition
 
 export interface ToasterLink {

@@ -459,6 +459,7 @@ function removeEventToTriggerCustomElement(selector: string) {
   target?.removeEventListener('click', toggleProgramatically)
 }
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 function checkMinMaxValues(value: PickerValue) {
   if (props.minDate || props.maxDate) {
     if (typeof value === 'string') {
@@ -576,10 +577,8 @@ watch(
       if (!props.inline && isMounted.value)
         document.addEventListener('keydown', keyboardHandler)
     }
-    else {
-      if (!props.inline && isMounted.value) {
-        document.removeEventListener('keydown', keyboardHandler)
-      }
+    else if (!props.inline && isMounted.value) {
+      document.removeEventListener('keydown', keyboardHandler)
     }
   },
   { immediate: true },

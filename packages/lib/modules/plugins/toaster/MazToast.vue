@@ -287,7 +287,6 @@ onMounted(() => {
       >
         {{ action.text }}
       </MazBtn>
-
       <MazBtn
         v-if="link"
         data-test="link-btn"

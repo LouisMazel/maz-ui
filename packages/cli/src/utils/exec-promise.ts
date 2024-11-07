@@ -3,6 +3,7 @@ import { logger } from './logger'
 
 export async function execPromise(command: string): Promise<{ stdout: string, stderr: string }> {
   return await new Promise((resolve, reject) => {
+    // eslint-disable-next-line sonarjs/os-command
     exec(command, (error, stdout, stderr) => {
       if (error) {
         logger.error(`🔴 [cli](${command}) Execution failed - ${error.message}.`, error)

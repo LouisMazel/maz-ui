@@ -27,9 +27,7 @@ const props = withDefaults(defineProps<Props>(), {
   steps: undefined,
   color: 'primary',
 })
-const emits = defineEmits<{
-  (name: 'update:model-value', value: number): void
-}>()
+const emits = defineEmits<(name: 'update:model-value', value: number) => void>()
 const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
 const MazExpandAnimation = defineAsyncComponent(() => import('./MazExpandAnimation.vue'))
 const CheckCircleIcon = defineAsyncComponent(() => import('./../icons/check-circle.svg'))

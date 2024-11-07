@@ -121,11 +121,13 @@ function getAllInstances(): HTMLElement[] {
 }
 
 function getNewInstanceIndex(allInstances: HTMLElement[], newInstanceIndex: number): number {
-  return newInstanceIndex < 0
-    ? allInstances.length - 1
-    : newInstanceIndex >= allInstances.length
-      ? 0
-      : newInstanceIndex
+  if (newInstanceIndex < 0) {
+    return allInstances.length - 1
+  }
+  if (newInstanceIndex >= allInstances.length) {
+    return 0
+  }
+  return newInstanceIndex
 }
 
 async function useNextInstance(currentInstance: HTMLElement, nextInstance: HTMLElement) {

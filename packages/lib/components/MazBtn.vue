@@ -137,13 +137,13 @@ const component = computed(() => {
   return 'button'
 })
 
-const btnColorClass = computed(() =>
-  props.pastel
-    ? `--${props.color}-pastel`
-    : props.outline
-      ? `--${props.color}-outline`
-      : `--${props.color}`,
-)
+const btnColorClass = computed(() => {
+  if (props.pastel)
+    return `--${props.color}-pastel`
+  if (props.outline)
+    return `--${props.color}-outline`
+  return `--${props.color}`
+})
 const isDisabled = computed(
   () => (props.loading || props.disabled) && component.value === 'button',
 )

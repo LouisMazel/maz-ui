@@ -52,9 +52,9 @@ const hours = computed(() => {
         || (props.minDate && currentDate.value
           ? dayjs(props.minDate).isAfter(hourValue, 'hour')
           : false)
-          || (props.maxDate && currentDate.value
-            ? dayjs(props.maxDate).isBefore(hourValue, 'hour')
-            : false)
+        || (props.maxDate && currentDate.value
+          ? dayjs(props.maxDate).isBefore(hourValue, 'hour')
+          : false)
 
     return {
       label: `${hourBase < 10 ? '0' : ''}${hourBase}`,
@@ -74,9 +74,9 @@ const minutes = computed(() => {
         = (props.minDate && currentDate.value
           ? dayjs(props.minDate).isAfter(minuteValue, 'minute')
           : false)
-          || (props.maxDate && currentDate.value
-            ? dayjs(props.maxDate).isBefore(minuteValue, 'minute')
-            : false)
+        || (props.maxDate && currentDate.value
+          ? dayjs(props.maxDate).isBefore(minuteValue, 'minute')
+          : false)
 
     return {
       label: `${minute < 10 ? '0' : ''}${minute}`,
@@ -118,12 +118,14 @@ const ampm = computed<{ label: string, value: 'am' | 'pm' }[]>(() =>
     : [],
 )
 
+type TimeValue = Dayjs | 'am' | 'pm'
+
 const columns = computed(() => {
   const columns: {
     identifier: ColumnIdentifier
     values: {
       label: string
-      value: Dayjs | 'am' | 'pm'
+      value: TimeValue
       isDisabled?: boolean
     }[]
   }[] = [
@@ -256,7 +258,8 @@ async function scrollColumn(identifier: ColumnIdentifier, hasSmoothEffect = true
   }
 }
 
-async function selectTime(identifier: ColumnIdentifier, value: Dayjs | 'am' | 'pm') {
+// eslint-disable-next-line sonarjs/cognitive-complexity
+async function selectTime(identifier: ColumnIdentifier, value: TimeValue) {
   const newDate = dayjs(currentDate.value)
 
   if (identifier === 'hour' && typeof value === 'object') {

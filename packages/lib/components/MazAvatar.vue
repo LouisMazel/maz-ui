@@ -91,7 +91,13 @@ export interface Props {
   loading?: 'lazy' | 'eager' | 'intersecting'
 }
 
-const componentType = computed(() => (props.to ? 'RouterLink' : props.href ? 'a' : 'div'))
+const componentType = computed(() => {
+  if (props.to)
+    return 'RouterLink'
+  if (props.href)
+    return 'a'
+  return 'div'
+})
 const isLink = computed(() => !!props.to || !!props.href)
 
 function getInitials(name: string, lettersCount = props.letterCount) {
@@ -133,7 +139,7 @@ function handleImageError(event: Event) {
       },
       props.class,
     ]"
-    :href="href"
+    :href
     :to="to"
     :target="isLink ? target : undefined"
   >

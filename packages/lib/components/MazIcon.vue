@@ -105,8 +105,8 @@ function getSvgAttrs(svgEl: SVGElement) {
 }
 
 function getSvgContent(svgEl: SVGElement) {
-  let svgElNode = svgEl.cloneNode(true)
-  svgElNode = props.transformSource(svgEl)
+  svgEl.cloneNode(true)
+  const svgElNode = props.transformSource(svgEl)
 
   if (props.title) {
     setTitle(svgElNode as SVGElement, props.title)

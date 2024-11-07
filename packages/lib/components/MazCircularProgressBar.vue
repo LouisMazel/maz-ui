@@ -76,17 +76,23 @@ const hasSuffix = computed(() => !!props.suffix || !!slots.suffix)
 const id = useInstanceUniqId({
   componentName: 'MazCircularProgressBar',
 })
-
 const adjustedPercentage = computed<number>(() => {
-  return props.percentage > 100 ? 100 : props.percentage <= 0 ? 0.5 : props.percentage
+  if (props.percentage > 100)
+    return 100
+  if (props.percentage <= 0)
+    return 0.5
+  return props.percentage
 })
 
 const currentColor = computed<Color | undefined>(() =>
-  props.autoColor ? getStatusColor(props.percentage) : props.color,
+  props.autoColor ? getStatusColor(adjustedPercentage.value) : props.color,
 )
-
 function getStatusColor(percent: number): Color {
-  return percent < 50 || percent > 100 ? 'danger' : percent < 100 ? 'warning' : 'success'
+  if (percent < 50 || percent > 100)
+    return 'danger'
+  if (percent < 100)
+    return 'warning'
+  return 'success'
 }
 
 const animationDuration = computed<string>(() => `${props.duration}ms`)

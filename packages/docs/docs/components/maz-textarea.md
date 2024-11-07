@@ -57,12 +57,34 @@ You can use the `label` and `append` slots to customize the label and the append
     id="comment"
   >
     <template #label>
-      The custom label
+      <MazIcon name="envelope" class="maz-text-xl" />
+      <span class="maz-ml-2">
+        The custom label
+      </span>
     </template>
     <template #append>
       <MazBtn icon="paper-airplane" size="sm" @click="sendMessage" />
     </template>
   </MazTextarea>
+
+  <template #code>
+
+```html
+<MazTextarea
+  v-model="value"
+  name="comment"
+  id="comment"
+>
+  <template #label>
+    <MazIcon name="envelope" class="maz-text-xl" />
+    <span class="maz-ml-2">
+      The custom label
+    </span>
+  </template>
+</MazTextarea>
+```
+
+  </template>
 </ComponentDemo>
 
 ## With hint and state

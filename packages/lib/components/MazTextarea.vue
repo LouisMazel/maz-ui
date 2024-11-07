@@ -172,6 +172,7 @@ const shouldUp = computed(
 
 const hasAppend = computed(() => !!slots.append)
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 const borderStyle = computed(() => {
   if (props.error)
     return 'maz-border-danger'

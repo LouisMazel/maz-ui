@@ -223,14 +223,18 @@ export class VueZoomImg {
   private getButton(iconName = 'close'): HTMLButtonElement {
     const button = document.createElement('button')
     button.innerHTML = svgs[iconName]
-    const action = iconName === 'close'
-      ? this.closePreview()
-      : this.allInstances
-        ? this.nextPreviousImage(iconName === 'next')
-        : null
+    const getAction = () => {
+      if (iconName === 'close')
+        return this.closePreview()
+
+      if (this.allInstances)
+        return this.nextPreviousImage(iconName === 'next')
+
+      return null
+    }
 
     button.addEventListener('click', () => {
-      return action
+      getAction()
     })
 
     button.classList.add('maz-zoom-btn')
@@ -262,11 +266,14 @@ export class VueZoomImg {
   }
 
   private getNewInstanceIndex(newInstanceIndex: number): number {
-    return newInstanceIndex < 0
-      ? this.allInstances.length - 1
-      : newInstanceIndex >= this.allInstances.length
-        ? 0
-        : newInstanceIndex
+    let nextIndex = newInstanceIndex
+    if (nextIndex < 0) {
+      nextIndex = this.allInstances.length - 1
+    }
+    else if (nextIndex >= this.allInstances.length) {
+      nextIndex = 0
+    }
+    return nextIndex
   }
 
   private nextPreviousImage(isNext: boolean): void {

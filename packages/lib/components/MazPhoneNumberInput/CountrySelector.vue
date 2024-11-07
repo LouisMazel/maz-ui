@@ -58,9 +58,7 @@ const props = withDefaults(
   },
 )
 
-defineEmits<{
-  (event: 'update:model-value', countryCode?: CountryCode): void
-}>()
+defineEmits<(event: 'update:model-value', countryCode?: CountryCode) => void>()
 
 const { phoneNumber } = injectStrict<InjectedData>('data')
 

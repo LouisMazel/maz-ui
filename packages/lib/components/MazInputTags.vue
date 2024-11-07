@@ -74,7 +74,7 @@ const tags = computed(() =>
   props.modelValue?.map((tag: string | number) => {
     return {
       tag,
-      id: Math.random().toString(36).slice(2, 11),
+      id: crypto.randomUUID(),
     }
   }),
 )
@@ -100,6 +100,7 @@ function addTags(event: Event) {
   }
 }
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 const borderStyle = computed(() => {
   if (props.error)
     return 'maz-border-danger'

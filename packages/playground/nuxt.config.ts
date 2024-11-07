@@ -4,11 +4,31 @@ import svgLoader from 'vite-svg-loader'
 
 export default defineNuxtConfig({
   modules: ['nuxt-module', '@nuxtjs/tailwindcss'],
+
+  devtools: { enabled: true },
+
+  app: {
+    head: {
+      title: 'Dev App - Maz-UI',
+      htmlAttrs: {
+        class: 'dark',
+      },
+    },
+  },
   css: ['~/css/main.css'],
+
+  srcDir: 'src/',
 
   devServer: {
     port: 3333,
   },
+  compatibilityDate: '2024-07-22',
+
+  vite: {
+    plugins: [svgLoader()],
+  },
+
+  postcss,
 
   mazUi: {
     defaultMazIconPath: '/icons',
@@ -34,24 +54,4 @@ export default defineNuxtConfig({
       position: 'top',
     },
   },
-
-  srcDir: 'src/',
-
-  app: {
-    head: {
-      title: 'Dev App - Maz-UI',
-      htmlAttrs: {
-        class: 'dark',
-      },
-    },
-  },
-
-  postcss,
-
-  vite: {
-    plugins: [svgLoader()],
-  },
-
-  devtools: { enabled: true },
-  compatibilityDate: '2024-07-22',
 })

@@ -8,13 +8,12 @@ export interface Props {
 
 const props = defineProps<Props>()
 
-const emits = defineEmits<{
-  /**
-   * Emitted when the selected tab change
-   * @property {number} newValue new value set
-   */
-  (event: 'update:model-value', index: number): void
-}>()
+const emits = defineEmits</**
+                           * Emitted when the selected tab change
+                           * @property {number} newValue new value set
+                           */
+  (event: 'update:model-value', index: number) => void
+>()
 
 const localValue = ref(1)
 

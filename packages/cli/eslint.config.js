@@ -13,4 +13,9 @@ export default antfu(
     },
   },
   sonarjs.configs.recommended,
+  {
+    rules: {
+      ...sonarjs.configs.recommended.rules,
+    },
+  },
 )

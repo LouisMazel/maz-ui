@@ -1,3 +1,4 @@
+// eslint-disable-next-line sonarjs/redundant-type-aliases
 export type LoaderId = unknown
 
 export const DEFAULT_LOADER: LoaderId = ''
