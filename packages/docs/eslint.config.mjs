@@ -14,7 +14,7 @@ export default antfu(
     },
   },
   {
-    ignores: ['components_tmp/**/*'],
+    ignores: ['docs/**/*.md'],
   },
   ...vueA11y.configs['flat/recommended'],
   ...tailwind.configs['flat/recommended'],

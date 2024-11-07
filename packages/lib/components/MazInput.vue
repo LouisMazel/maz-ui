@@ -28,8 +28,21 @@ export interface Props<T = ModelValueSimple> {
   modelValue?: T | undefined
   /** The placeholder of the input */
   placeholder?: string
-  /** The label of the component */
+  /**
+   * The label of the component
+   * This label will be displayed inside the input and will be up when the input is focused
+   */
   label?: string
+  /**
+   * The top label of the component
+   * This label will be displayed above the input
+   */
+  topLabel?: string
+  /**
+   * The additional text of the component
+   * This text will be displayed below the input
+   */
+  assistiveText?: string
   /** The attribut name of the input */
   name?: string
   /** The color of the component */
@@ -307,8 +320,7 @@ function emitInputEvent(event: Event) {
 
 <template>
   <div
-    class="m-input"
-    :class="[
+    class="m-input" :class="[
       {
         '--is-focused': isFocused || borderActive,
         '--should-up': shouldUp,
@@ -321,16 +333,17 @@ function emitInputEvent(event: Event) {
       },
       props.class,
       `--${color}`,
-      `--${size}`,
-    ]"
-    :style
+    ]" :style
   >
+    <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
+    <label v-if="topLabel" :for="instanceId" class="m-input-top-label">{{ topLabel }}</label>
+
     <div
-      class="m-input-wrapper"
-      :class="[
+      class="m-input-wrapper" :class="[
         inputClasses,
         borderStyle,
         !roundedSize ? { 'maz-rounded': !noRadius } : `--rounded-${roundedSize}`,
+        { '--block': block },
       ]"
     >
       <div v-if="hasLeftPart()" class="m-input-wrapper-left">
@@ -338,43 +351,25 @@ function emitInputEvent(event: Event) {
           @slot left-icon - The icon to display on the left of the input
         -->
         <slot v-if="$slots['left-icon'] || leftIcon" name="left-icon">
-          <MazIcon
-            v-if="typeof leftIcon === 'string'"
-            :name="leftIcon"
-            class="maz-text-xl maz-text-muted"
-          />
+          <MazIcon v-if="typeof leftIcon === 'string'" :name="leftIcon" class="maz-text-xl maz-text-muted" />
           <Component :is="leftIcon" v-else-if="leftIcon" class="maz-text-xl maz-text-muted" />
         </slot>
       </div>
 
-      <div class="m-input-wrapper-input">
+      <div class="m-input-wrapper-input" :class="[`--${size}`, { '--top-label': !!topLabel }]">
         <input
-          :id="instanceId"
-          ref="input"
-          v-model="model"
-          :type="inputType"
-          :name="name"
-          v-bind="$attrs"
-          :inputmode="inputmode"
-          :placeholder="computedPlaceholder"
-          :aria-label="label || placeholder"
-          :disabled="disabled"
-          :readonly="readonly"
-          :required="required"
-          class="m-input-input"
-          v-on="{
+          :id="instanceId" ref="input" v-model="model" :type="inputType" :name="name" v-bind="$attrs"
+          :inputmode="inputmode" :placeholder="computedPlaceholder" :aria-label="label || placeholder"
+          :disabled="disabled" :readonly="readonly" :required="required" class="m-input-input" v-on="{
             blur,
             focus,
             change,
             input: emitInputEvent,
-          }"
-          @click="$emit('click', $event)"
+          }" @click="$emit('click', $event)"
         >
 
         <span
-          v-if="label || hint"
-          class="m-input-label"
-          :class="[
+          v-if="label || hint" class="m-input-label" :class="[
             {
               'maz-text-danger-600': error,
               'maz-text-success-600': success,
@@ -392,19 +387,12 @@ function emitInputEvent(event: Event) {
           @slot right-icon - The icon to display on the right of the input
         -->
         <slot v-if="$slots['right-icon'] || rightIcon" name="right-icon">
-          <MazIcon
-            v-if="typeof rightIcon === 'string'"
-            :name="rightIcon"
-            class="maz-text-xl maz-text-muted"
-          />
+          <MazIcon v-if="typeof rightIcon === 'string'" :name="rightIcon" class="maz-text-xl maz-text-muted" />
           <Component :is="rightIcon" v-else-if="rightIcon" class="maz-text-xl maz-text-muted" />
         </slot>
 
         <MazBtn
-          v-if="isPasswordType"
-          color="transparent"
-          tabindex="-1"
-          size="mini"
+          v-if="isPasswordType" color="transparent" tabindex="-1" size="mini"
           @click.stop="hasPasswordVisible = !hasPasswordVisible"
         >
           <EyeOffIcon v-if="hasPasswordVisible" class="maz-text-xl maz-text-muted" />
@@ -416,81 +404,52 @@ function emitInputEvent(event: Event) {
         -->
         <slot v-if="$slots['valid-button'] || validButton" name="valid-button">
           <MazBtn
-            color="transparent"
-            :disabled="disabled"
-            tabindex="-1"
-            :loading="validButtonLoading"
-            class="m-input-valid-button"
-            size="mini"
-            type="submit"
+            color="transparent" :disabled="disabled" tabindex="-1" :loading="validButtonLoading"
+            class="m-input-valid-button" size="mini" type="submit"
           >
             <CheckIcon class="maz-text-2xl maz-text-normal" />
           </MazBtn>
         </slot>
       </div>
     </div>
+
+    <div
+      v-if="assistiveText" class="m-input-bottom-text" :class="[
+        {
+          'maz-text-danger-600': error,
+          'maz-text-success-600': success,
+          'maz-text-warning-600': warning,
+          'maz-text-muted': !error && !success && !warning,
+        },
+      ]"
+    >
+      {{ assistiveText }}
+    </div>
   </div>
 </template>
 
 <style lang="postcss" scoped>
-  .m-input {
-  @apply maz-inline-flex maz-flex-col maz-align-top;
-
-  &.--xl {
-    @apply maz-h-16;
-
-    & .m-input-input,
-    & .m-input-label {
-      @apply maz-text-xl;
-    }
-  }
-
-  &.--lg {
-    @apply maz-h-14;
-
-    & .m-input-input,
-    & .m-input-label {
-      @apply maz-text-lg;
-    }
-  }
-
-  &.--md {
-    @apply maz-h-12;
-  }
-
-  &.--sm {
-    @apply maz-h-10;
-
-    & .m-input-input,
-    & .m-input-label {
-      @apply maz-text-sm;
-    }
-  }
-
-  &.--xs {
-    @apply maz-h-8;
-
-    & .m-input-input,
-    & .m-input-label {
-      @apply maz-text-xs;
-    }
-  }
-
-  &.--mini {
-    @apply maz-h-6;
-
-    & .m-input-input,
-    & .m-input-label {
-      @apply maz-text-xs;
-    }
-  }
+.m-input {
+  @apply maz-inline-flex maz-flex-col maz-align-top maz-items-start;
 
   &.--block {
     @apply maz-w-full;
   }
 
+  &-top-label {
+    @apply maz-mb-2 maz-text-normal;
+  }
+
+  &-bottom-text {
+    @apply maz-mt-1 maz-text-sm;
+  }
+
   &-wrapper {
     @apply maz-relative maz-z-1 maz-flex maz-flex-1 maz-overflow-hidden maz-border maz-border-solid maz-bg-color maz-transition-colors maz-duration-300;
+
+    &.--block {
+      @apply maz-w-full;
+    }
 
     &.--default-border {
       @apply maz-border-border dark:maz-border-color-lighter;
@@ -498,6 +457,55 @@ function emitInputEvent(event: Event) {
 
     &-input {
       @apply maz-relative maz-flex maz-w-full maz-max-w-full maz-flex-1 maz-items-center;
+
+      &.--xl {
+        height: calc(4rem - (var(--maz-border-width) * 2));
+
+        & .m-input-input,
+        & .m-input-label {
+          @apply maz-text-xl;
+        }
+      }
+
+      &.--lg {
+        height: calc(3.5rem - (var(--maz-border-width) * 2));
+
+        & .m-input-input,
+        & .m-input-label {
+          @apply maz-text-lg;
+        }
+      }
+
+      &.--md {
+        height: calc(3rem - (var(--maz-border-width) * 2));
+      }
+
+      &.--sm {
+        height: calc(2.5rem - (var(--maz-border-width) * 2));
+
+        & .m-input-input,
+        & .m-input-label {
+          @apply maz-text-sm;
+        }
+      }
+
+      &.--xs {
+        height: calc(2rem - (var(--maz-border-width) * 2));
+
+        & .m-input-input,
+        & .m-input-label {
+          @apply maz-text-xs;
+        }
+      }
+
+      &.--mini {
+        height: calc(1.5rem - (var(--maz-border-width) * 2));
+
+        & .m-input-input,
+        & .m-input-label {
+          @apply maz-text-xs;
+        }
+      }
     }
 
     &-right,

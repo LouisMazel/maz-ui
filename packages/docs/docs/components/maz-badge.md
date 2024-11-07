@@ -199,7 +199,7 @@ description: MazBadge is a standalone component to show short text in colored co
 <script lang="ts" setup>
   import MazBadge from 'maz-ui/components/MazBadge'
 
-  const roundedSize = ['sm', 'md', 'lg', 'xl', 'full']
+  const roundedSize = ['none', 'sm', 'md', 'lg', 'xl', 'full']
 </script>
 ```
 
@@ -217,7 +217,7 @@ description: MazBadge is a standalone component to show short text in colored co
     'theme',
   ]
 
-  const roundedSize = ['sm', 'md', 'lg', 'xl', 'full']
+  const roundedSize = ['none', 'sm', 'md', 'lg', 'xl', 'full']
 </script>
 
 <!--@include: ./../.vitepress/generated-docs/maz-badge.doc.md-->
