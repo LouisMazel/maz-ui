@@ -288,22 +288,22 @@ By default, the justify is `center`
 <ComponentDemo>
   <div class="maz-flex maz-flex-col maz-gap-2">
     <MazBtn block justify="center" icon="users" right-icon="sun" size="md">center</MazBtn>
-    <MazBtn block justify="between" icon="users" right-icon="sun" size="md">between</MazBtn>
-    <MazBtn block justify="end" icon="users" right-icon="sun" size="md">end</MazBtn>
     <MazBtn block justify="start" icon="users" right-icon="sun" size="md">start</MazBtn>
-    <MazBtn block justify="around" icon="users" right-icon="sun" size="md">around</MazBtn>
-    <MazBtn block justify="evenly" icon="users" right-icon="sun" size="md">evenly</MazBtn>
+    <MazBtn block justify="end" icon="users" right-icon="sun" size="md">end</MazBtn>
+    <MazBtn block justify="space-between" icon="users" right-icon="sun" size="md">between</MazBtn>
+    <MazBtn block justify="space-around" icon="users" right-icon="sun" size="md">around</MazBtn>
+    <MazBtn block justify="space-evenly" icon="users" right-icon="sun" size="md">evenly</MazBtn>
   </div>
 
   <template #code>
 
   ```html
   <MazBtn block justify="center" icon="users" right-icon="sun" size="md">center</MazBtn>
-  <MazBtn block justify="between" icon="users" right-icon="sun" size="md">between</MazBtn>
-  <MazBtn block justify="end" icon="users" right-icon="sun" size="md">end</MazBtn>
   <MazBtn block justify="start" icon="users" right-icon="sun" size="md">start</MazBtn>
-  <MazBtn block justify="around" icon="users" right-icon="sun" size="md">around</MazBtn>
-  <MazBtn block justify="evenly" icon="users" right-icon="sun" size="md">evenly</MazBtn>
+  <MazBtn block justify="end" icon="users" right-icon="sun" size="md">end</MazBtn>
+  <MazBtn block justify="space-between" icon="users" right-icon="sun" size="md">between</MazBtn>
+  <MazBtn block justify="space-around" icon="users" right-icon="sun" size="md">around</MazBtn>
+  <MazBtn block justify="space-evenly" icon="users" right-icon="sun" size="md">evenly</MazBtn>
   ```
 
   </template>
