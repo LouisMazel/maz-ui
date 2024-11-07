@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { Color } from './types'
-import { computed, type HTMLAttributes, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, type HTMLAttributes, onBeforeUnmount, onMounted, ref, useSlots } from 'vue'
 import { useInstanceUniqId } from '../modules/composables/useInstanceUniqId'
 import { TextareaAutogrow } from './MazTextarea/textarea-autogrow'
 
@@ -26,6 +26,10 @@ const props = withDefaults(defineProps<Props>(), {
   warning: false,
   hint: undefined,
   color: 'primary',
+  padding: true,
+  transparent: false,
+  border: true,
+  appendJustify: 'end',
 })
 
 const emits = defineEmits<{
@@ -87,6 +91,32 @@ export interface Props {
   hint?: string
   /** The color of the textarea */
   color?: Color
+  /**
+   * Size radius of the component's border
+   * @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'`
+   */
+  roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
+  /**
+   * If the textarea has a padding
+   * @default true
+   */
+  padding?: boolean
+  /**
+   * If the textarea has a transparent background
+   * @default false
+   */
+  transparent?: boolean
+  /**
+   * If the textarea has no border
+   * @default false
+   */
+  border?: boolean
+  /**
+   * The alignment of the append slot
+   * @values `'start' | 'end' | 'center' | 'space-between' | 'space-around' | 'space-evenly'`
+   * @default 'end'
+   */
+  appendJustify?: 'start' | 'end' | 'center' | 'space-between' | 'space-around' | 'space-evenly'
 }
 
 let textareaAutogrow: TextareaAutogrow | undefined
@@ -132,11 +162,15 @@ function change(event: Event) {
   emits('change', event)
 }
 
-const hasLabelOrHint = computed(() => props.label || props.hint)
+const slots = useSlots()
+
+const hasLabelOrHint = computed(() => props.label || props.hint || !!slots.label)
 
 const shouldUp = computed(
   () => hasLabelOrHint.value && (isFocused.value || hasValue.value || !!props.placeholder),
 )
+
+const hasAppend = computed(() => !!slots.append)
 
 const borderStyle = computed(() => {
   if (props.error)
@@ -165,19 +199,28 @@ const borderStyle = computed(() => {
   }
   return '--default-border'
 })
+
+const hasBorderStyle = computed(() => borderStyle.value !== '--default-border')
 </script>
 
 <template>
-  <div
+  <label
     class="m-textarea"
+    :for="instanceId"
     :class="[
       {
         '--is-disabled': disabled,
         '--has-label': hasLabelOrHint,
+        '--background-transparent': transparent,
+        '--padding': padding,
+        '--border': border,
+        '--has-border-style': hasBorderStyle,
       },
+      borderStyle,
+      roundedSize ? `--rounded-${roundedSize}` : '--rounded',
       props.class,
     ]"
-    :style="style"
+    :style="[style, `--append-justify: ${appendJustify}`]"
   >
     <!-- eslint-disable vuejs-accessibility/label-has-for -->
     <label
@@ -194,7 +237,13 @@ const borderStyle = computed(() => {
         },
       ]"
     >
-      {{ hint || label }}
+      <!-- @slot Label - Replace the label -->
+      <slot v-if="!hint" name="label">
+        {{ label }}
+      </slot>
+      <span v-else>
+        {{ hint }}
+      </span>
       <sup v-if="required">*</sup>
     </label>
     <!-- eslint-enable vuejs-accessibility/label-has-for -->
@@ -204,35 +253,83 @@ const borderStyle = computed(() => {
       ref="TextareaElement"
       v-bind="$attrs"
       v-model="inputValue"
-      :placeholder="placeholder"
-      :name="name"
-      :disabled="disabled"
-      :required="required"
-      :class="[borderStyle]"
+      :placeholder
+      :name
+      :disabled
+      :required
+      :class="{ '--has-append': hasAppend }"
       v-on="{
         blur,
         focus,
         change,
       }"
     />
-  </div>
+    <div v-if="hasAppend" class="m-textarea__append">
+      <!-- @slot Append - Replace the append -->
+      <slot name="append" />
+    </div>
+  </label>
 </template>
 
 <style lang="postcss" scoped>
   .m-textarea {
-  @apply maz-relative maz-flex maz-flex-col maz-align-top;
+  @apply maz-min-h-[6.25rem] maz-relative maz-flex maz-flex-col maz-align-top maz-text-normal;
 
-  textarea {
-    @apply maz-min-h-[6.25rem] maz-w-full maz-resize-y maz-rounded maz-border maz-border-solid maz-bg-color maz-p-4 maz-text-normal maz-outline-none dark:maz-bg-color-light;
+  &:not(.--background-transparent) {
+    @apply maz-bg-color dark:maz-bg-color-light;
+  }
 
-    &.--default-border {
+  &.--border {
+    @apply maz-border maz-border-solid;
+
+    &:not(.--has-border-style) {
       @apply maz-border-border dark:maz-border-color-lighter;
     }
   }
 
+  &.--padding {
+    @apply maz-p-4;
+  }
+
+  &.--rounded-sm {
+    @apply maz-rounded-sm;
+  }
+
+  &.--rounded-md {
+    @apply maz-rounded-md;
+  }
+
+  &.--rounded-lg {
+    @apply maz-rounded-lg;
+  }
+
+  &.--rounded-xl {
+    @apply maz-rounded-xl;
+  }
+
+  &.--rounded-full {
+    @apply maz-rounded-full;
+  }
+
+  &.--rounded {
+    @apply maz-rounded;
+  }
+
   &.--has-label {
-    textarea {
-      @apply maz-pt-6;
+    @apply maz-pt-6;
+  }
+
+  &__append {
+    @apply maz-inline-flex;
+
+    justify-content: var(--append-justify);
+  }
+
+  textarea {
+    @apply maz-w-full maz-resize-y maz-outline-none maz-bg-transparent;
+
+    &.--has-append {
+      @apply maz-pb-4;
     }
   }
 
