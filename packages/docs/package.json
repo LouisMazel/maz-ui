@@ -8,7 +8,17 @@
     "dev": "vitepress dev docs",
     "build": "vitepress build docs",
     "preview": "vitepress preview docs",
-    "serve": "vitepress serve docs"
+    "serve": "vitepress serve docs",
+    "lint": "cross-env NODE_ENV=production eslint"
+  },
+  "dependencies": {
+    "chart.js": "^4.4.4",
+    "chartjs-plugin-datalabels": "^2.2.0",
+    "dayjs": "^1.11.13",
+    "dropzone": "^5.9.3",
+    "libphonenumber-js": "^1.11.11",
+    "maz-ui": "workspace:*",
+    "vitepress-plugin-google-analytics": "^1.0.2"
   },
   "devDependencies": {
     "@types/postcss-import": "^14.0.3",
@@ -22,13 +32,7 @@
     "vitepress": "1.4.0",
     "vue": "^3.5.11"
   },
-  "dependencies": {
-    "chart.js": "^4.4.4",
-    "chartjs-plugin-datalabels": "^2.2.0",
-    "dayjs": "^1.11.13",
-    "dropzone": "^5.9.3",
-    "libphonenumber-js": "^1.11.11",
-    "maz-ui": "workspace:*",
-    "vitepress-plugin-google-analytics": "^1.0.2"
+  "lint-staged": {
+    "*.{js,ts,vue,mjs,mts,cjs}": "cross-env NODE_ENV=production eslint --fix"
   }
 }

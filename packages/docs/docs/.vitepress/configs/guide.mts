@@ -1,4 +1,4 @@
-import { DefaultTheme } from "vitepress";
+import type { DefaultTheme } from 'vitepress'
 
 export const guide = {
   text: 'Guide',
@@ -9,6 +9,6 @@ export const guide = {
     { text: 'Theme', link: '/guide/theme' },
     { text: 'Dark mode', link: '/guide/dark-mode' },
     { text: 'Nuxt Module', link: '/guide/nuxt' },
-    { text: '@maz-ui/cli (theme generator)', link: '/guide/cli' },
+    { text: '@mazui/cli (theme generator)', link: '/guide/cli' },
   ],
 } satisfies DefaultTheme.SidebarItem

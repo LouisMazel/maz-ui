@@ -592,7 +592,7 @@
 
 - Update README with theme generator mention for @mazui/cli ([e0656a74](https://github.com/LouisMazel/maz-ui/commit/e0656a74))
 - Update sidebar documentation to add mention about theme generator ([c1a4ba7b](https://github.com/LouisMazel/maz-ui/commit/c1a4ba7b))
-- Improvement documentation about theme generator with @maz-ui/cli ([65809e32](https://github.com/LouisMazel/maz-ui/commit/65809e32))
+- Improvement documentation about theme generator with @mazui/cli ([65809e32](https://github.com/LouisMazel/maz-ui/commit/65809e32))
 
 ### ❤️ Contributors
 

@@ -1,3 +1,79 @@
+<script lang="ts" setup>
+import { onBeforeMount, ref, watch } from 'vue'
+
+const props = defineProps({
+  component: { type: String, required: true },
+  componentInstance: { type: Object, default: undefined },
+  methods: { type: Array, default: undefined },
+})
+
+const camelToSnakeCase = (str: string): string => str.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`)
+
+const options = ref()
+const events = ref()
+const componentMethods = ref()
+
+function getValidatorValues(validator: string) {
+  const firstPart = String(validator)?.split('[')[1]
+  const secondePart = firstPart?.split(']')[0]
+
+  const array = secondePart ? secondePart.replaceAll('"', '').split(',') : secondePart
+
+  return array ?? '-'
+}
+// @ts-expect-error - untyped import
+const getComponent = async () => (await import(`maz-ui/components`))[props.component]
+
+async function getEvents() {
+  const component = await getComponent()
+
+  if (component?.emits) {
+    events.value = component.emits
+  }
+}
+
+async function getOptions() {
+  const component = await getComponent()
+
+  const componentProps = component?.props as Record<string, Record<string, any>> | undefined
+
+  if (componentProps) {
+    options.value = Object.entries(componentProps).map((prop) => {
+      return {
+        name: camelToSnakeCase(prop[0]),
+        type: Array.isArray(prop[1].type) ? prop[1].type.map(type => type.name).join('|') : prop[1].type?.name ?? '-',
+        defaultValue: (typeof prop[1].default === 'boolean'
+          ? prop[1].default
+          : typeof prop[1].default === 'function'
+            ? prop[1].default()
+            : prop[1].default?.name ?? prop[1].default) ?? '-',
+        required: prop[1].required ? 'true' : 'false',
+        values: getValidatorValues(prop[1].validator),
+      }
+    })
+  }
+}
+
+function setMethods() {
+  componentMethods.value = props.methods?.length
+    ? props.methods
+    : props.componentInstance
+      ? Object.values(props.componentInstance).filter(value => typeof value === 'function')
+      : undefined
+}
+
+watch(
+  () => props.componentInstance,
+  () => setMethods(),
+  { immediate: true },
+)
+
+onBeforeMount(async () => {
+  await getOptions()
+  await getEvents()
+})
+</script>
+
 <template>
   <table v-if="options" class="component-prop-doc" style="display: table;">
     <thead>
@@ -51,7 +127,7 @@
     </tbody>
   </table>
   <span v-else>
-    <br />
+    <br>
     No props for this component
   </span>
   <div class="flex items-start" style="gap: 2rem;">
@@ -85,79 +161,3 @@
     </table>
   </div>
 </template>
-
-<script lang="ts" setup>
-import { ref, onBeforeMount, watch } from 'vue'
-
-const props = defineProps({
-  component: { type: String, required: true },
-  componentInstance: { type: Object, default: undefined },
-  methods: { type: Array, default: undefined },
-})
-
-const camelToSnakeCase = (str: string): string => str.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`)
-
-const options = ref()
-const events = ref()
-const componentMethods = ref()
-
-const getValidatorValues = (validator: string) => {
-  const firstPart = String(validator)?.split('[')[1]
-  const secondePart = firstPart?.split(']')[0]
-
-  const array = secondePart ? secondePart.replaceAll('"', '').split(',') : secondePart
-
-  return array ?? '-'
-}
-
-const getComponent = async () => (await import(`maz-ui/components`))[props.component]
-
-const getEvents = async () => {
-  const component = await getComponent()
-
-  if (component?.emits) {
-    events.value = component.emits
-  }
-}
-
-const getOptions = async () => {
-  const component = await getComponent()
-
-  const componentProps = component?.props as Record<string, Record<string, any>> | undefined
-
-  if (componentProps) {
-    options.value = Object.entries(componentProps).map((prop) => {
-      return {
-        name: camelToSnakeCase(prop[0]),
-        type: Array.isArray(prop[1].type) ? prop[1].type.map((type) => type.name).join('|') : prop[1].type?.name ?? '-',
-        defaultValue: (typeof prop[1].default === 'boolean'
-          ? prop[1].default
-          : typeof prop[1].default === 'function'
-          ? prop[1].default()
-          : prop[1].default?.name ?? prop[1].default) ?? '-',
-        required: prop[1].required ? 'true' : 'false',
-        values: getValidatorValues(prop[1].validator),
-      }
-    })
-  }
-}
-
-const setMethods = () => {
-  componentMethods.value = props.methods?.length
-  ? props.methods
-  : props.componentInstance
-    ? Object.values(props.componentInstance).filter((value) => typeof value === 'function')
-    : undefined
-}
-
-watch(
-  () => props.componentInstance,
-  () => setMethods(),
-  { immediate: true }
-)
-
-onBeforeMount(async () => {
-  await getOptions()
-  await getEvents()
-})
-</script>
