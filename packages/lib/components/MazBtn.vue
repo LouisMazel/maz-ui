@@ -126,7 +126,7 @@ export interface Props {
   /**
    * Choose how the elements are aligned in the button
    */
-  justify?: 'start' | 'end' | 'center' | 'between' | 'around' | 'evenly'
+  justify?: 'start' | 'end' | 'center' | 'space-between' | 'space-around' | 'space-evenly'
 }
 
 const component = computed(() => {
@@ -165,23 +165,7 @@ const iconClassSize = computed(() => {
     return 'maz-text-base'
   if (props.size === 'mini')
     return 'maz-text-sm'
-  return 'md'
-})
-
-const justifyClass = computed(() => {
-  if (props.justify === 'start')
-    return 'maz-justify-start'
-  if (props.justify === 'end')
-    return 'maz-justify-end'
-  if (props.justify === 'center')
-    return 'maz-justify-center'
-  if (props.justify === 'between')
-    return 'maz-justify-between'
-  if (props.justify === 'around')
-    return 'maz-justify-around'
-  if (props.justify === 'evenly')
-    return 'maz-justify-evenly'
-  return 'maz-justify-center'
+  return 'maz-text-xl'
 })
 </script>
 
@@ -196,7 +180,6 @@ const justifyClass = computed(() => {
       btnColorClass,
       cursorClass,
       variantClass,
-      justifyClass,
       {
         '--block': block,
         '--no-underline': noUnderline,
@@ -209,6 +192,7 @@ const justifyClass = computed(() => {
         '--no-elevation': noElevation,
       },
     ]"
+    :style="[`--justify: ${justify}`]"
     :type="btnType"
   >
     <!--
@@ -247,15 +231,17 @@ const justifyClass = computed(() => {
 </template>
 
 <style lang="postcss" scoped>
-  .m-btn {
+.m-btn {
   @apply maz-relative maz-flex-none maz-items-center maz-gap-2 maz-border maz-border-solid maz-border-transparent maz-text-center maz-align-top maz-text-base maz-text-normal;
+
+  justify-content: var(--justify);
 
   & span {
     @apply maz-leading-none;
   }
 
   &-loader-container {
-    @apply maz-absolute maz-inset-0 maz-flex maz-items-center maz-justify-center maz-bg-color-lighter;
+    @apply maz-absolute maz-inset-0 maz-flex maz-items-center maz-justify-center maz-bg-color-light dark:maz-bg-color-lighter;
   }
 
   /* &-loader {
@@ -319,15 +305,11 @@ const justifyClass = computed(() => {
         maz-border-transparent maz-bg-transparent maz-font-medium maz-no-underline
         maz-transition-all maz-duration-200 maz-ease-in-out maz-py-0.5;
 
-    &:not(.--no-rounded) {
+    &:not(.--no-rounded, .--rounded-none) {
       @apply maz-rounded;
 
       &.--rounded {
         @apply maz-rounded-full;
-
-        &-none {
-          @apply maz-rounded-none;
-        }
 
         &-sm {
           @apply maz-rounded-sm;
@@ -505,7 +487,7 @@ const justifyClass = computed(() => {
     /* OUTLINE */
 
     &.--primary-outline {
-      @apply maz-border-primary maz-bg-primary-alpha-05 maz-text-primary;
+      @apply maz-bg-primary-alpha-05 maz-text-primary maz-border-primary;
 
       &:not(:disabled):hover {
         @apply maz-bg-primary maz-text-primary-contrast;
@@ -653,7 +635,7 @@ const justifyClass = computed(() => {
     /* DISABLED */
 
     &.--disabled {
-      @apply maz-cursor-not-allowed maz-bg-color-lighter maz-text-gray-400;
+      @apply maz-cursor-not-allowed maz-bg-color-light dark:maz-bg-color-lighter maz-text-gray-400 maz-border-color-light dark:maz-border-color-lighter;
     }
 
     &.--loading {
