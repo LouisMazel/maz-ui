@@ -253,14 +253,6 @@ function handleImageError(event: Event) {
     }
 
     &.--rounded {
-      &-none {
-        @apply maz-rounded-none;
-
-        .m-avatar__button {
-          @apply maz-rounded-none;
-        }
-      }
-
       &-sm {
         @apply maz-rounded-sm;
 

@@ -10,9 +10,10 @@ export interface Props {
   nowrap?: boolean
   outline?: boolean
   pastel?: boolean
-  /* Size of the rounded
-     * @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'`
-     */
+  /**
+   * Size radius of the component's border
+   * @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'`
+   */
   roundedSize?: BadgeRoundedSize
 }
 
@@ -52,10 +53,6 @@ withDefaults(defineProps<Props>(), {
   }
 
   &.--rounded {
-    &-none {
-      @apply maz-rounded-none;
-    }
-
     &-sm {
       @apply maz-rounded-sm;
     }

@@ -349,25 +349,11 @@ watch(
         }
       }
 
-      /* &.--is-first:not(.--is-last) {
-          @apply maz-rounded-r-none !important;
-        }
-
-        &.--is-last:not(.--is-first) {
-          @apply maz-rounded-l-none !important;
-        } */
-
       &.--is-between-hoverred {
-        /* &:not(.--is-last) {
-            @apply maz-rounded-none !important;
-          } */
-
         background-color: v-bind('betweenColorAlpha') !important;
       }
 
       &.--is-between {
-        /* @apply maz-rounded-none !important; */
-
         background-color: v-bind('betweenColor') !important;
 
         &.--white,

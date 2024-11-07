@@ -112,7 +112,7 @@ export interface Props<T = ModelValueSimple> {
    */
   rightIcon?: string | Icon
   /**
-   * Size of the rounded
+   * Size radius of the component's border
    * @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'`
    */
   roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
@@ -522,10 +522,6 @@ function emitInputEvent(event: Event) {
     }
 
     &.--rounded {
-      &-none {
-        @apply maz-rounded-none;
-      }
-
       &-sm {
         @apply maz-rounded-sm;
       }

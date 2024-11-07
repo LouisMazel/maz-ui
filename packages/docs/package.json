@@ -9,7 +9,8 @@
     "build": "vitepress build docs",
     "preview": "vitepress preview docs",
     "serve": "vitepress serve docs",
-    "lint": "cross-env NODE_ENV=production eslint"
+    "lint": "cross-env NODE_ENV=production eslint",
+    "pre-commit": "lint-staged"
   },
   "dependencies": {
     "chart.js": "^4.4.4",
