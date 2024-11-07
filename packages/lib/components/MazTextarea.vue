@@ -4,7 +4,7 @@ import type { Color } from './types'
 
 export type { Color }
 
-export interface MazTextareaProps<T extends string | undefined> {
+export interface MazTextareaProps<T extends string | undefined | null> {
   /** Style attribut of the component root element */
   style?: HTMLAttributes['style']
   /** Class attribut of the component root element */
@@ -64,7 +64,7 @@ export interface MazTextareaProps<T extends string | undefined> {
 }
 </script>
 
-<script lang="ts" setup generic="T extends string | undefined">
+<script lang="ts" setup generic="T extends string | undefined | null">
 import { computed, type HTMLAttributes, onBeforeUnmount, onMounted, ref, useSlots } from 'vue'
 import { useInstanceUniqId } from '../modules/composables/useInstanceUniqId'
 import { TextareaAutogrow } from './MazTextarea/textarea-autogrow'
@@ -105,7 +105,7 @@ const emits = defineEmits<{
    * Emitted when the value of the textarea change
    * @property {string | undefined} value - The value of the textarea
    */
-  (event: 'input', value?: string): void
+  (event: 'input', value?: T): void
   /**
    * Emitted when the textarea is focused
    * @property {Event} value - The event
