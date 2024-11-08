@@ -99,11 +99,11 @@ print-version-lib:
 
 publish-prerelease:
 	pnpx lerna version prerelease --preid beta
-	$(eval NEW_VERSION := $(shell pnpm --filter maz-ui exec -- node -p "require('./package.json').version"))
-	git add -u
-	git commit -m "chore(release): bump version to $(NEW_VERSION)"
-	git push origin HEAD
-	make build-lib
+	@NEW_VERSION=$$(pnpm --filter maz-ui exec -- node -p "require('./package.json').version") && \
+	git add -u && \
+	git commit -m "chore(release): bump version to $$NEW_VERSION" && \
+	git push origin HEAD && \
+	make build-lib && \
 	cd packages/lib/dist && pnpm publish --access public --tag beta --no-git-checks
 
 # CLI
