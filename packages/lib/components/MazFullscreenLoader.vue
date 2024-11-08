@@ -19,7 +19,7 @@ function addClassToDocument() {
   document.documentElement.classList.add('--maz-fullscreen-loader-present')
 }
 
-async function removeClassFromDocument() {
+function removeClassFromDocument() {
   document.documentElement.classList.remove('--maz-fullscreen-loader-present')
 }
 

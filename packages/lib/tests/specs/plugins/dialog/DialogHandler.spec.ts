@@ -35,7 +35,7 @@ describe('dialogHandler', () => {
     vi.restoreAllMocks()
   })
 
-  it('should open a dialog with default options', async () => {
+  it('should open a dialog with default options', () => {
     vi.useFakeTimers()
 
     const { promise, destroy, close } = dialog.open({})
@@ -51,7 +51,7 @@ describe('dialogHandler', () => {
     }, 700)
   })
 
-  it('should call close and destroy functions when promise resolves', async () => {
+  it('should call close and destroy functions when promise resolves', () => {
     const { close, destroy } = dialog.open({})
 
     resolveFn('resolved')
@@ -69,7 +69,7 @@ describe('dialogHandler', () => {
     expect(promise).toBeInstanceOf(Promise)
   })
 
-  it('should call promiseCallback if provided', async () => {
+  it('should call promiseCallback if provided', () => {
     dialog.open({ promiseCallback })
 
     resolveFn('resolved')

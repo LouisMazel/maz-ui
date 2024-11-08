@@ -3,7 +3,7 @@ import { mount } from '@vue/test-utils'
 import { ref } from 'vue'
 
 describe('mazTabsBar.vue', () => {
-  it('correctly displays tabs', async () => {
+  it('correctly displays tabs', () => {
     const items = [{ label: 'Tab 1' }, { label: 'Tab 2', disabled: true }, { label: 'Tab 3' }]
     const wrapper = mount(MazTabsBar, {
       props: { items },
@@ -44,6 +44,7 @@ describe('mazTabsBar.vue', () => {
       },
     })
 
+    // @ts-expect-error - currentTab is private
     expect(wrapper.vm.currentTab).toBe(1)
   })
 
@@ -64,6 +65,7 @@ describe('mazTabsBar.vue', () => {
 
     await wrapper.find('.m-tabs-bar__item:nth-child(4)').trigger('click')
 
+    // @ts-expect-error - currentTab is private
     expect(wrapper.vm.currentTab).toBe(3)
   })
 })

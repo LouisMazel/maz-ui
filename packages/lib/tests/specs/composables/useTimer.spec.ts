@@ -20,7 +20,7 @@ describe('useTimer', () => {
     wrapper.unmount()
   })
 
-  it('should pause and resume the timer correctly', async () => {
+  it('should pause and resume the timer correctly', () => {
     const wrapper = mount({
       template: '<div></div>',
       async setup() {
@@ -48,7 +48,7 @@ describe('useTimer', () => {
     })
   })
 
-  it('should stop the timer', async () => {
+  it('should stop the timer', () => {
     const wrapper = mount({
       template: '<div></div>',
       async setup() {

@@ -33,13 +33,13 @@ describe('components/MazSelect.vue', () => {
     expect(wrapper.vm.instanceId).toBe('MazSelect-v-0')
   })
 
-  it('should find the options on search', async () => {
+  it('should find the options on search', () => {
     wrapper.vm.searchQuery = '6'
 
     expect(wrapper.vm.optionsList).toStrictEqual([{ label: 'Test 6', value: 6 }])
   })
 
-  it('should find the options on search undefined', async () => {
+  it('should find the options on search undefined', () => {
     wrapper.vm.searchQuery = undefined
 
     expect(wrapper.vm.optionsList).toStrictEqual(options)
@@ -69,7 +69,7 @@ describe('components/MazSelect.vue', () => {
     expect(scrollIntoView).toHaveBeenCalled()
   })
 
-  it('opens and closes the options list when the input is focused or blurred', async () => {
+  it('opens and closes the options list when the input is focused or blurred', () => {
     // The options list should be closed by default
     expect(wrapper.vm.hasListOpened).toBe(false)
 

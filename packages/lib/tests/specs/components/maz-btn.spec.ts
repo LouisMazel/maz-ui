@@ -105,7 +105,7 @@ describe('mazBtn.vue', () => {
     expect(wrapper.html()).toContain('<span>Click me</span>')
   })
 
-  it('renders left icon slot content', async () => {
+  it('renders left icon slot content', () => {
     const wrapper = mount(MazBtn, {
       slots: {
         'left-icon': '<MazIcon name="arrow-left" />',

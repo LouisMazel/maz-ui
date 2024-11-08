@@ -33,7 +33,7 @@ function addClassToDocument() {
   document.documentElement.classList.add(MODAL_OPENED_CLASS)
 }
 
-async function removeClassFromDocument() {
+function removeClassFromDocument() {
   const backdropPresents = document.querySelector('.m-backdrop.--present')
 
   if (!backdropPresents) {

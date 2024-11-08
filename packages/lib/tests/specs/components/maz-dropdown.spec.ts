@@ -28,7 +28,7 @@ describe('mazDropdown', () => {
     await vi.dynamicImportSettled()
   })
 
-  it('renders a dropdown button with the provided label', async () => {
+  it('renders a dropdown button with the provided label', () => {
     const dropdownButton = wrapper.findComponent(MazBtn)
 
     expect(dropdownButton.exists()).toBe(true)

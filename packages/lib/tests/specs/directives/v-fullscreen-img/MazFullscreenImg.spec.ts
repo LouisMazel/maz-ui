@@ -39,7 +39,7 @@ describe('given MazFullscreenImg component', () => {
   })
 
   describe('when mounting the component', () => {
-    it('then it should render correctly', async () => {
+    it('then it should render correctly', () => {
       wrapper = mount(MazFullscreenImg, {
         props: {
           src: 'test-image.jpg',
@@ -97,7 +97,7 @@ describe('given MazFullscreenImg component', () => {
   })
 
   describe('when pressing Escape key', () => {
-    it('then it should emit close event', async () => {
+    it('then it should emit close event', () => {
       wrapper = mount(MazFullscreenImg, {
         props: {
           src: 'test-image.jpg',

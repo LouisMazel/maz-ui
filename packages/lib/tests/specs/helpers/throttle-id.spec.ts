@@ -27,7 +27,7 @@ describe('given throttleId function', () => {
   })
 
   describe('when calling throttled functions with different identifiers', () => {
-    it('then it should execute separately for each identifier', async () => {
+    it('then it should execute separately for each identifier', () => {
       vi.useFakeTimers()
       const mockFn = vi.fn().mockResolvedValue('result')
       const throttledFn = throttleId('id1', mockFn, 1000)
