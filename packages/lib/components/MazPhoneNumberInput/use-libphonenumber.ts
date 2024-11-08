@@ -32,8 +32,8 @@ function getPhoneNumberResults({
   phoneNumber,
   countryCode,
 }: {
-  phoneNumber?: string
-  countryCode?: CountryCode
+  phoneNumber?: string | undefined | null
+  countryCode?: CountryCode | undefined | null
 }): Results {
   try {
     if (!phoneNumber) {
@@ -65,26 +65,13 @@ function getPhoneNumberResults({
   }
 }
 
-function getAsYouTypeFormat(countryCode?: CountryCode, phoneNumber?: string): string {
-  try {
-    if (!phoneNumber) {
-      return ''
-    }
-
-    return new AsYouType(countryCode).input(phoneNumber)
-  }
-  catch (error) {
-    throw new Error(`[MazPhoneNumberInput](getAsYouTypeFormat) ${error}`)
-  }
-}
-
 async function getPhoneNumberExamplesFile() {
   const { default: data } = await import('libphonenumber-js/examples.mobile.json')
 
   return data
 }
 
-function getPhoneNumberExample(examples: Examples, countryCode?: CountryCode) {
+function getPhoneNumberExample(examples: Examples, countryCode?: CountryCode | undefined | null) {
   try {
     if (!examples) {
       return
@@ -94,6 +81,21 @@ function getPhoneNumberExample(examples: Examples, countryCode?: CountryCode) {
   }
   catch (error) {
     console.error(`[maz-ui](MazPhoneNumberInput) ${error}`)
+  }
+}
+
+function getAsYouTypeFormat(countryCode?: CountryCode | undefined | null, phoneNumber?: string | undefined | null): string | undefined {
+  try {
+    if (!phoneNumber || !countryCode) {
+      return
+    }
+
+    const asYouTypeInstance = new AsYouType(countryCode)
+
+    return asYouTypeInstance.input(phoneNumber)
+  }
+  catch (error) {
+    throw new Error(`[MazPhoneNumberInput](getAsYouTypeFormat) ${error}`)
   }
 }
 

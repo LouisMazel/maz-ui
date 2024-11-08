@@ -5,7 +5,7 @@ import type { defaultLocales } from './default-locales'
 export interface Results {
   isValid: boolean
   isPossible?: boolean
-  countryCode?: CountryCode
+  countryCode?: CountryCode | undefined | null
   countryCallingCode?: CountryCallingCode
   nationalNumber?: NationalNumber
   type?: NumberType

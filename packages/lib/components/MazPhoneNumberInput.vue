@@ -7,9 +7,9 @@ import {
   computed,
   type HTMLAttributes,
   nextTick,
+  onBeforeMount,
   onMounted,
   provide,
-  type Ref,
   ref,
   watch,
 } from 'vue'
@@ -72,17 +72,17 @@ const emits = defineEmits<{
    * emitted when country or phone number changes
    * @property {string} phoneNumber - phoneNumber formatted
    */
-  'update:model-value': [value: string]
+  'update:model-value': [value: string | undefined | null]
   /**
    * emitted when selected country changes
    * @property {CountryCode} countryCode - Country code
    */
-  'country-code': [countryCode?: CountryCode]
+  'country-code': [countryCode?: CountryCode | undefined | null]
   /**
    * emitted when country changes
    * @property {CountryCode} countryCode - Country code
    */
-  'update:country-code': [countryCode?: CountryCode]
+  'update:country-code': [countryCode?: CountryCode | undefined | null]
   /**
    * emitted when country or phone number changes
    * @property {Results} results - metadata of current phone number
@@ -101,13 +101,13 @@ export interface Props {
   /** Class attribut of the component root element */
   class?: HTMLAttributes['class']
   /** @model Country calling code + telephone number in international format */
-  modelValue?: string
+  modelValue?: string | undefined | null
   /** @deprecated */
-  defaultPhoneNumber?: string
+  defaultPhoneNumber?: string | undefined | null
   /** @model Country code selected - Ex: "FR" */
-  countryCode?: CountryCode
+  countryCode?: CountryCode | undefined | null
   /** @deprecated - use country-code or v-model:country-code */
-  defaultCountryCode?: CountryCode
+  defaultCountryCode?: CountryCode | undefined | null
   /** Id of the component */
   id?: string
   /** Placeholder of the input */
@@ -211,8 +211,8 @@ const instanceId = useInstanceUniqId({
 /**
  * State
  */
-const phoneNumber = ref<string>('')
-const selectedCountry = ref<CountryCode>()
+const phoneNumber = ref<string | undefined | null>()
+const selectedCountry = ref<CountryCode | undefined | null>()
 const results = ref<Results>({
   isValid: false,
   countryCode: undefined,
@@ -227,10 +227,10 @@ interface SelectionRange {
 }
 
 export interface InjectedData {
-  selectedCountry: Ref<CountryCode | undefined>
-  phoneNumber: Ref<string>
-  results: Ref<Results>
-  selectionRange: Ref<SelectionRange>
+  selectedCountry: typeof selectedCountry
+  phoneNumber: typeof phoneNumber
+  results: typeof results
+  selectionRange: typeof selectionRange
 }
 
 const selectionRange = ref<SelectionRange>({
@@ -257,14 +257,16 @@ const locales = computed(() => ({
   ...props.translations,
 }))
 
-onMounted(async () => {
+onBeforeMount(async () => {
   setSelectedCountry(props.countryCode ?? props.defaultCountryCode)
 
   if (props.fetchCountry && !selectedCountry.value) {
     const countryCode = await fetchCountryCode()
     setSelectedCountry(countryCode)
   }
+})
 
+onMounted(() => {
   if (!props.defaultCountryCode && !props.noUseBrowserLocale && !selectedCountry.value) {
     const countryCode = getBrowserLocale()?.locale
     setSelectedCountry(countryCode)
@@ -287,7 +289,7 @@ function countryChanged(countryCode?: CountryCode) {
   selectPhoneNumberInput()
 }
 
-function setSelectedCountry(countryCode?: string) {
+function setSelectedCountry(countryCode?: string | undefined | null) {
   if (!countryCode) {
     return
   }
@@ -304,7 +306,7 @@ function onPhoneNumberChanged({
   newPhoneNumber,
   updateResults = true,
 }: {
-  newPhoneNumber?: string
+  newPhoneNumber?: string | undefined | null
   updateResults?: boolean
 }) {
   const sanitizedPhoneNumber = sanitizePhoneNumber(newPhoneNumber)
@@ -319,7 +321,10 @@ function onPhoneNumberChanged({
   if (selectionRange.value.cursorAtEnd && !props.noFormattingAsYouType && props.autoFormat) {
     const phoneNumberToFormat = results.value.isValid ? results.value.formatNational : sanitizedPhoneNumber
     asYouTypeFormatted.value = getAsYouTypeFormat(selectedCountry.value, phoneNumberToFormat)
-    phoneNumber.value = asYouTypeFormatted.value
+    phoneNumber.value = asYouTypeFormatted.value || phoneNumberToFormat
+  }
+  else {
+    phoneNumber.value = props.modelValue || props.defaultPhoneNumber || sanitizedPhoneNumber
   }
 
   if (results.value.countryCode && results.value.countryCode !== selectedCountry.value) {

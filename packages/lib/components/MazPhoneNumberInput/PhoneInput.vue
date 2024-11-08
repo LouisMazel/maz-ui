@@ -41,7 +41,7 @@ const emits = defineEmits<{
   'update:model-value': [phoneNumber?: string]
 }>()
 
-const modelValue = defineModel<string>()
+const modelValue = defineModel<string | undefined | null>()
 
 const { getPhoneNumberExamplesFile, getPhoneNumberExample } = useLibphonenumber()
 
@@ -51,7 +51,7 @@ const examples = ref<Examples>()
 
 const inputFocused = ref(false)
 
-function getCountryPhoneNumberExample(examples: Examples, selectedCountry?: CountryCode) {
+function getCountryPhoneNumberExample(examples: Examples, selectedCountry?: CountryCode | undefined | null) {
   const example = getPhoneNumberExample(examples, selectedCountry)
   return example ? `${props.locales.phoneInput.example} ${example}` : undefined
 }
