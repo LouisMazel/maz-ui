@@ -54,6 +54,21 @@ const props = withDefaults(
      * You can use a color name or a color code
      */
     stroke?: SVGAttributes['stroke']
+    /**
+     * The percentage value of the success color
+     * @default 100
+     */
+    successPercentage?: number
+    /**
+     * The percentage value of the warning color
+     * @default 50
+     */
+    warningPercentage?: number
+    /**
+     * The percentage value of the danger color
+     * @default 25
+     */
+    dangerPercentage?: number
   }>(),
   {
     percentage: 0,
@@ -65,6 +80,9 @@ const props = withDefaults(
     strokeLinecap: 'round',
     strokeWidth: 6,
     stroke: undefined,
+    successPercentage: 100,
+    warningPercentage: 75,
+    dangerPercentage: 50,
   },
 )
 
@@ -88,11 +106,14 @@ const currentColor = computed<Color | undefined>(() =>
   props.autoColor ? getStatusColor(adjustedPercentage.value) : props.color,
 )
 function getStatusColor(percent: number): Color {
-  if (percent < 50 || percent > 100)
+  if (percent < props.dangerPercentage || percent > 100)
     return 'danger'
-  if (percent < 100)
+  if (percent < props.warningPercentage)
     return 'warning'
-  return 'success'
+  if (percent >= props.successPercentage)
+    return 'success'
+
+  return 'primary'
 }
 
 const animationDuration = computed<string>(() => `${props.duration}ms`)
