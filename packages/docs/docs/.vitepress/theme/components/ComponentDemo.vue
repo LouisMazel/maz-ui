@@ -24,7 +24,7 @@ const showCode = ref(props.expanded)
       </h3>
     </template>
     <template #content>
-      <div class="maz-p-4">
+      <div class="content maz-p-4">
         <div class="vp-raw">
           <slot />
         </div>
@@ -65,6 +65,12 @@ const showCode = ref(props.expanded)
 
   :deep(.custom-block) {
     @apply maz-my-0;
+  }
+
+  .content {
+    &:deep(div[class*='language']) {
+      @apply mob-l:maz-rounded;
+    }
   }
 
   :deep(div[class*='language']) {

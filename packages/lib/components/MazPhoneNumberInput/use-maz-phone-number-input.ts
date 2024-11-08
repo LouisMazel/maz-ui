@@ -93,7 +93,7 @@ async function fetchCountryCode() {
   }
 }
 
-function sanitizePhoneNumber(input?: string) {
+function sanitizePhoneNumber(input?: string | undefined | null) {
   if (!input) {
     return ''
   }

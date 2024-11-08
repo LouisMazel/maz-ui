@@ -8,4 +8,10 @@ describe('useInstanceUniqId', () => {
 
     expect(id.value).toBe(providedId)
   })
+
+  it('should return id with no colon', () => {
+    const id = useInstanceUniqId({ componentName: 'MazInput' })
+
+    expect(id.value).not.toContain(':')
+  })
 })

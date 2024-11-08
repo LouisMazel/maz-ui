@@ -21,7 +21,7 @@ const props = withDefaults(
     style?: HTMLAttributes['style']
     /** Class attribut of the component root element */
     class?: HTMLAttributes['class']
-    modelValue?: CountryCode
+    modelValue?: CountryCode | undefined | null
     id: string
     color: Color
     size: Size
@@ -104,7 +104,7 @@ const countryOptions = computed(() =>
     .filter(truthyFilter),
 )
 
-async function focusCountrySelector() {
+function focusCountrySelector() {
   CountrySelectorRef.value?.$el.querySelector('input')?.focus()
 }
 </script>
@@ -146,6 +146,7 @@ async function focusCountrySelector() {
       option-value-key="iso2"
       option-label-key="name"
       :option-input-value-key="countrySelectorDisplayName ? 'name' : 'dialCode'"
+      name="country"
       :max-list-width="250"
       :min-list-width="200"
       :disabled

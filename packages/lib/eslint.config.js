@@ -30,6 +30,7 @@ export default antfu(
       'sonarjs/no-vue-bypass-sanitization': 'off',
       'sonarjs/no-nested-conditional': 'off',
       'sonarjs/sonar-no-unused-vars': 'off',
+      'require-await': 'error',
     },
   },
   {

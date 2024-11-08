@@ -95,7 +95,7 @@ npm install libphonenumber-js
   </template>
 </ComponentDemo>
 
-## Translations
+<!-- ## Translations
 
 ### Labels & placeholders
 
@@ -258,7 +258,7 @@ Replace the default flags with slots
 :::
   </template>
 
-</ComponentDemo>
+</ComponentDemo> -->
 
 ## Types
 
@@ -290,7 +290,7 @@ type CountryCode = 'AC' | 'AD' | 'AE' | 'AF' | 'AG' | 'AI' | 'AL' | 'AM' | 'AO' 
 
 <script setup lang="ts">
   import { ref } from 'vue'
-  const phoneNumber = ref()
+  const phoneNumber = ref('0657575658')
   const countryCode = ref('FR')
 
   const phoneNumber2 = ref('+3263')
