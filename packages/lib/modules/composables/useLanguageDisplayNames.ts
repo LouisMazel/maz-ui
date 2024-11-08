@@ -1,6 +1,6 @@
 import { computed, type MaybeRefOrGetter, toValue } from 'vue'
 
-export const isoCodes = [
+const bcp47Codes = [
   'af-ZA',
   'sq-AL',
   'ar-DZ',
@@ -139,102 +139,255 @@ export const isoCodes = [
   'vi-VN',
 ] as const
 
-export type IsoCode = (typeof isoCodes)[number]
+export const iso6391Codes = [
+  'aa',
+  'ab',
+  'ae',
+  'af',
+  'ak',
+  'am',
+  'an',
+  'ar',
+  'as',
+  'av',
+  'ay',
+  'az',
+  'ba',
+  'be',
+  'bg',
+  'bh',
+  'bi',
+  'bm',
+  'bn',
+  'bo',
+  'br',
+  'bs',
+  'ca',
+  'ce',
+  'ch',
+  'co',
+  'cr',
+  'cs',
+  'cu',
+  'cv',
+  'cy',
+  'da',
+  'de',
+  'dv',
+  'dz',
+  'ee',
+  'el',
+  'en',
+  'eo',
+  'es',
+  'et',
+  'eu',
+  'fa',
+  'ff',
+  'fi',
+  'fj',
+  'fo',
+  'fr',
+  'fy',
+  'ga',
+  'gd',
+  'gl',
+  'gn',
+  'gu',
+  'gv',
+  'ha',
+  'he',
+  'hi',
+  'ho',
+  'hr',
+  'ht',
+  'hu',
+  'hy',
+  'hz',
+  'ia',
+  'id',
+  'ie',
+  'ig',
+  'ii',
+  'ik',
+  'io',
+  'is',
+  'it',
+  'iu',
+  'ja',
+  'jv',
+  'ka',
+  'kg',
+  'ki',
+  'kj',
+  'kk',
+  'kl',
+  'km',
+  'kn',
+  'ko',
+  'kr',
+  'ks',
+  'ku',
+  'kv',
+  'kw',
+  'ky',
+  'la',
+  'lb',
+  'lg',
+  'li',
+  'ln',
+  'lo',
+  'lt',
+  'lu',
+  'lv',
+  'mg',
+  'mh',
+  'mi',
+  'mk',
+  'ml',
+  'mn',
+  'mr',
+  'ms',
+  'mt',
+  'my',
+  'na',
+  'nb',
+  'nd',
+  'ne',
+  'ng',
+  'nl',
+  'nn',
+  'no',
+  'nr',
+  'nv',
+  'ny',
+  'oc',
+  'oj',
+  'om',
+  'or',
+  'os',
+  'pa',
+  'pi',
+  'pl',
+  'ps',
+  'pt',
+  'qu',
+  'rm',
+  'rn',
+  'ro',
+  'ru',
+  'rw',
+  'sa',
+  'sc',
+  'sd',
+  'se',
+  'sg',
+  'si',
+  'sk',
+  'sl',
+  'sm',
+  'sn',
+  'so',
+  'sq',
+  'sr',
+  'ss',
+  'st',
+  'su',
+  'sv',
+  'sw',
+  'ta',
+  'te',
+  'tg',
+  'th',
+  'ti',
+  'tk',
+  'tl',
+  'tn',
+  'to',
+  'tr',
+  'ts',
+  'tt',
+  'tw',
+  'ty',
+  'ug',
+  'uk',
+  'ur',
+  'uz',
+  've',
+  'vi',
+  'vo',
+  'wa',
+  'wo',
+  'xh',
+  'yi',
+  'yo',
+  'za',
+  'zh',
+  'zu',
+] as const
 
-function getLanguageDisplayName(isoCode?: MaybeRefOrGetter<string>, locale?: MaybeRefOrGetter<string>) {
-  return computed(() => {
-    const resolvedLocale = toValue(locale)
-    const resolvedIsoCode = toValue(isoCode)
+export const languageCodes = [...iso6391Codes, ...bcp47Codes]
 
-    try {
-      if (!resolvedLocale || !resolvedIsoCode) {
+export type IsoCode = (typeof bcp47Codes)[number]
+export type Iso6391Code = (typeof iso6391Codes)[number]
+export type LanguageCode = (typeof languageCodes)[number]
+
+export function useLanguageDisplayNames(mainLocale?: MaybeRefOrGetter<string | LanguageCode>) {
+  function getLanguageDisplayName(code?: MaybeRefOrGetter<string | LanguageCode>, locale?: MaybeRefOrGetter<string | LanguageCode>) {
+    return computed(() => {
+      const resolvedLocale = toValue(locale)
+      const resolvedIsoCode = toValue(code)
+
+      try {
+        if (!resolvedLocale || !resolvedIsoCode) {
+          return resolvedIsoCode
+        }
+
+        const languageInstance = new Intl.DisplayNames([resolvedLocale], { type: 'language' })
+
+        return languageInstance.of(resolvedIsoCode) || resolvedIsoCode
+      }
+      catch {
         return resolvedIsoCode
       }
-
-      const languageInstance = new Intl.DisplayNames([resolvedLocale], { type: 'language' })
-
-      return languageInstance.of(resolvedIsoCode) || resolvedIsoCode
-    }
-    catch {
-      return resolvedIsoCode
-    }
-  })
-}
-
-function getAllPossibleLanguages(locale?: MaybeRefOrGetter<string>) {
-  return computed(() => {
-    const resolvedLocale = toValue(locale)
-
-    if (!resolvedLocale) {
-      return []
-    }
-
-    const A = 65
-    const Z = 90
-    const languageInstance = new Intl.DisplayNames([resolvedLocale], { type: 'language' })
-
-    const languages: {
-      language: string
-      code: string
-    }[] = []
-
-    for (let index = A; index <= Z; ++index) {
-      for (let index_ = A; index_ <= Z; ++index_) {
-        const code = String.fromCodePoint(index) + String.fromCodePoint(index_)
-        const language = languageInstance.of(code)
-        if (
-          language
-          && code.toLocaleLowerCase() !== language.toLocaleLowerCase()
-        ) {
-          languages.push({
-            language,
-            code,
-          })
-        }
-      }
-    }
-
-    return languages
-  })
-}
-
-function getLanguageDisplayNamesForIsoCodes(locale?: MaybeRefOrGetter<string>) {
-  return computed(() => {
-    const resolvedLocale = toValue(locale)
-
-    if (!resolvedLocale) {
-      return []
-    }
-
-    const languageInstance = new Intl.DisplayNames([resolvedLocale], {
-      type: 'language',
     })
+  }
 
-    return isoCodes
-      .map((code) => {
-        try {
-          const language = languageInstance.of(code)
-          if (!language || code.toLocaleLowerCase() === language.toLocaleLowerCase()) {
+  function getAllLanguageDisplayNames(locale?: MaybeRefOrGetter<string | LanguageCode>) {
+    return computed(() => {
+      const resolvedLocale = toValue(locale)
+
+      if (!resolvedLocale) {
+        return []
+      }
+
+      const languageInstance = new Intl.DisplayNames([resolvedLocale], {
+        type: 'language',
+      })
+
+      return languageCodes
+        .map((code) => {
+          try {
+            const language = languageInstance.of(code)
+            if (!language || code.toLocaleLowerCase() === language.toLocaleLowerCase()) {
+              return undefined
+            }
+
+            return {
+              language,
+              code,
+            }
+          }
+          catch {
             return undefined
           }
+        })
+        .filter(Boolean)
+    })
+  }
 
-          return {
-            language,
-            code,
-          }
-        }
-        catch {
-          return undefined
-        }
-      })
-      .filter(Boolean)
-  })
-}
-
-export function useLanguageDisplayNames(mainLocale?: MaybeRefOrGetter<string>) {
   return {
-    getLanguageDisplayName: ({ isoCode, locale }: { isoCode?: MaybeRefOrGetter<string>, locale?: MaybeRefOrGetter<string> }) => getLanguageDisplayName(isoCode, locale || mainLocale),
-    getAllPossibleLanguages: (locale?: MaybeRefOrGetter<string>) => getAllPossibleLanguages(locale || mainLocale),
-    getLanguageDisplayNamesForIsoCodes: (locale?: MaybeRefOrGetter<string>) => getLanguageDisplayNamesForIsoCodes(locale || mainLocale),
+    getLanguageDisplayName: ({ code, locale }: { code?: MaybeRefOrGetter<string | LanguageCode>, locale?: MaybeRefOrGetter<string | LanguageCode> }) => getLanguageDisplayName(code, locale || mainLocale),
+    getAllLanguageDisplayNames: (locale?: MaybeRefOrGetter<string | LanguageCode>) => getAllLanguageDisplayNames(locale || mainLocale),
   }
 }
