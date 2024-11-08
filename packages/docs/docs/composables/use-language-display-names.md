@@ -43,12 +43,12 @@ To see `useLanguageDisplayNames` in action, you can try out the following demo. 
       search
     />
     <MazSelect
-      v-model="isoCode"
+      v-model="code"
       label="Select a language"
       :options="localeOptions"
       search
     />
-    <p>Language Display Name: {{ languageDisplayName || 'undefined' }}</p>
+    <p>Translated Language: {{ languageDisplayName || 'undefined' }}</p>
   </div>
 
   <template #code>
@@ -74,12 +74,12 @@ To see `useLanguageDisplayNames` in action, you can try out the following demo. 
       search
     />
     <MazSelect
-      v-model="isoCode"
+      v-model="code"
       label="Select a language"
       :options="localeOptions"
       search
     />
-    <p>Language Display Name: {{ languageDisplayName || 'undefined' }}</p>
+    <p>Translated Language: {{ languageDisplayName || 'undefined' }}</p>
   </template>
 
   <script lang="ts" setup>
@@ -87,13 +87,13 @@ To see `useLanguageDisplayNames` in action, you can try out the following demo. 
     import { useLanguageDisplayNames } from 'maz-ui'
 
     const selectedLocale = ref('en-US')
-    const isoCode = ref('')
+    const code = ref('')
 
-    const { getLanguageDisplayName, getAllPossibleLanguages } = useLanguageDisplayNames(selectedLocale)
+    const { getLanguageDisplayName, getAllLanguageDisplayNames } = useLanguageDisplayNames(selectedLocale)
 
-    const languageDisplayName = getLanguageDisplayName({ isoCode })
+    const languageDisplayName = getLanguageDisplayName({ code })
 
-    const localeOptions = computed(() => getAllPossibleLanguages('en-US').value.map(({ language, code }) => ({
+    const localeOptions = computed(() => getAllLanguageDisplayNames('en-US').value.map(({ language, code }) => ({
       label: `${language} (${code})`,
       value: code
     })))
@@ -122,26 +122,16 @@ Fetches the display name of a language based on the provided locale and ISO code
 ```ts
 function getLanguageDisplayName(options: {
   locale?: MaybeRefOrGetter<string>,
-  isoCode?: MaybeRefOrGetter<string>
+  code?: MaybeRefOrGetter<string>
 }): ComputedRef<string | undefined>
 ```
 
-### `getAllPossibleLanguages`
-
-Fetches all possible language display names for a given locale.
-
-```ts
-function getAllPossibleLanguages(
-  locale?: MaybeRefOrGetter<string>
-): ComputedRef<{ language: string; code: string }[]>
-```
-
-### `getDisplayNamesForIsoCodes`
+### `getAllLanguageDisplayNames`
 
 Fetches the display names for all predefined ISO codes for a given locale.
 
 ```ts
-function getLanguageDisplayNamesForIsoCodes(
+function getAllLanguageDisplayNames(
   locale?: MaybeRefOrGetter<string>
 ): ComputedRef<{ language: string; code: string }[]>
 ```
@@ -153,21 +143,20 @@ function getLanguageDisplayNamesForIsoCodes(
 - Handle errors gracefully by providing fallback values when the display name cannot be fetched.
 - The `Intl.DisplayNames` API is used internally to fetch and format the language names based on the provided locale and ISO code.
 - The composable supports multiple locales, allowing you to fetch language names in different languages.
-- Use the `getAllPossibleLanguages` function to fetch all possible language display names for a given locale.
-- Use the `getDisplayNamesForIsoCodes` function to fetch the display names for all predefined ISO codes for a given locale.
+- Use the `getAllLanguageDisplayNames` function to fetch the display names for all predefined ISO codes for a given locale.
 
 <script lang="ts" setup>
 import { ref, computed } from 'vue'
 import { useLanguageDisplayNames } from 'maz-ui'
 
-const selectedLocale = ref('en-US')
-const isoCode = ref('')
+const selectedLocale = ref('fr-FR')
+const code = ref('')
 
-const { getLanguageDisplayName, getAllPossibleLanguages } = useLanguageDisplayNames(selectedLocale)
+const { getLanguageDisplayName, getAllLanguageDisplayNames } = useLanguageDisplayNames(selectedLocale)
 
-const languageDisplayName = getLanguageDisplayName({ isoCode })
+const languageDisplayName = getLanguageDisplayName({ code })
 
-const localeOptions = computed(() => getAllPossibleLanguages('en-US').value.map(({ language, code }) => ({
+const localeOptions = computed(() => getAllLanguageDisplayNames('en-US').value.map(({ language, code }) => ({
   label: `${language} (${code})`,
   value: code
 })))

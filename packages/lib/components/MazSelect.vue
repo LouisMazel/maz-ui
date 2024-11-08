@@ -706,6 +706,7 @@ function updateValue(inputOption: NormalizedOption, mustCloseList = true) {
           :placeholder="searchPlaceholder"
           name="search"
           inputmode="search"
+          block
           autocomplete="off"
           tabindex="-1"
           class="m-select-list__search-input maz-flex-none"
