@@ -43,7 +43,7 @@ function getPhoneNumberResults({
       }
     }
 
-    const parsedNumber = parsePhoneNumberFromString(phoneNumber, countryCode)
+    const parsedNumber = parsePhoneNumberFromString(phoneNumber, countryCode ?? undefined)
 
     return {
       countryCode: parsedNumber?.country ?? countryCode,

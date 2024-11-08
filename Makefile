@@ -94,13 +94,13 @@ release:
 	pnpm release:bump-version $(type)
 	pnpm release:changelogen
 
-print-version:
-	@echo "Version is: $(version)"
+print-version-lib:
+	@echo "Version is: $(shell pnpm --filter maz-ui exec -- node -p "require('./package.json').version")"
 
 publish-prerelease:
 	pnpx lerna version prerelease --preid beta
 	git add -u
-	git commit -m "chore(release): bump version to $(shell jq -r .version packages/lib/package.json)"
+	git commit -m "chore(release): bump version to $(shell pnpm --filter maz-ui exec -- node -p "require('./package.json').version")"
 	git push origin HEAD
 	make build-lib
 	cd packages/lib/dist && pnpm publish --access public --tag beta --no-git-checks
