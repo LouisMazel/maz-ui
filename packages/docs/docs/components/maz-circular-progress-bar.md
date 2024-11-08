@@ -98,16 +98,19 @@ The color of the component is automatically according to the percentage. The col
 
 <ComponentDemo>
   <div class="maz-flex maz-gap-3 maz-flex-wrap maz-items-center">
-    <MazCircularProgressBar :percentage="100" auto-color />
-    <MazCircularProgressBar :percentage="50" auto-color />
-    <MazCircularProgressBar :percentage="25" auto-color />
-    <MazCircularProgressBar :percentage="0" auto-color />
+    <MazCircularProgressBar :percentage="0" auto-color size="9rem" />
+    <MazCircularProgressBar :percentage="25" auto-color size="9rem" />
+    <MazCircularProgressBar :percentage="50" auto-color size="9rem" />
+    <MazCircularProgressBar :percentage="100" auto-color size="9rem" />
   </div>
 
   <template #code>
 
   ```vue
-  <MazCircularProgressBar :percentage="75" :duration="5000" />
+  <MazCircularProgressBar :percentage="0" auto-color size="9rem" />
+  <MazCircularProgressBar :percentage="25" auto-color size="9rem" />
+  <MazCircularProgressBar :percentage="50" auto-color size="9rem" />
+  <MazCircularProgressBar :percentage="100" auto-color size="9rem" />
   ```
 
   </template>
