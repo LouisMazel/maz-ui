@@ -12,7 +12,7 @@ describe('mazCircularProgressBar', () => {
     })
   })
 
-  it('renders progress bar with default values', async () => {
+  it('renders progress bar with default values', () => {
     // Vérifier que le pourcentage initial est correct
     expect(wrapper.text()).toContain('50')
   })

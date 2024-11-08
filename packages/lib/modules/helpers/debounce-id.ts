@@ -17,7 +17,7 @@ export function debounceId<T, Args extends unknown[]>(
 ): (...args: Args) => Promise<T> {
   const debouncedFunctions: DebouncedFunctionMap<T> = {}
 
-  return async function (...args: Args): Promise<T> {
+  return function (...args: Args): Promise<T> {
     if (!debouncedFunctions[identifier]) {
       debouncedFunctions[identifier] = { timer: null, promise: null }
     }

@@ -1,7 +1,7 @@
 import { useMazDialogPromise } from '@components/MazDialogPromise.vue'
 
 describe('useMazDialogPromise', () => {
-  it('should add a dialog to the state when showDialogAndWaitChoice is called', async () => {
+  it('should add a dialog to the state when showDialogAndWaitChoice is called', () => {
     const { dialogState, showDialogAndWaitChoice, resolveDialog } = useMazDialogPromise()
     const identifier = 'test-dialog'
 
@@ -13,7 +13,7 @@ describe('useMazDialogPromise', () => {
     resolveDialog(dialogState.value[0])
   })
 
-  it('should remove a dialog from the state when removeDialogFromState is called', async () => {
+  it('should remove a dialog from the state when removeDialogFromState is called', () => {
     const { dialogState, removeDialogFromState } = useMazDialogPromise()
     const identifier = 'test-dialog'
 

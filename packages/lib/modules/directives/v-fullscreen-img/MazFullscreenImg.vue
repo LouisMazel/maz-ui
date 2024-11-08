@@ -83,7 +83,7 @@ function onImageLoaded() {
 
 watch(
   loadedOnce,
-  async (value) => {
+  (value) => {
     if (value) {
       openFullscreen()
     }
@@ -130,7 +130,7 @@ function getNewInstanceIndex(allInstances: HTMLElement[], newInstanceIndex: numb
   return newInstanceIndex
 }
 
-async function useNextInstance(currentInstance: HTMLElement, nextInstance: HTMLElement) {
+function useNextInstance(currentInstance: HTMLElement, nextInstance: HTMLElement) {
   currentInstance.classList.remove(props.openInstanceClass)
   nextInstance.classList.add(props.openInstanceClass)
 
@@ -205,7 +205,7 @@ function setZoomStyles() {
   }
 }
 
-async function toggleZoom() {
+function toggleZoom() {
   if (isZoomed.value) {
     isZoomed.value = !isZoomed.value
     setEndAnimationStyles()

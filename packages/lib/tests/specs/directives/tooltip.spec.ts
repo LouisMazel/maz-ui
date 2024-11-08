@@ -10,7 +10,7 @@ describe('vTooltip directive', () => {
     wrapper.unmount()
   })
 
-  it('renders tooltip with default values', async () => {
+  it('renders tooltip with default values', () => {
     wrapper = mount({
       template: `<div v-tooltip="'Tooltip text'"></div>`,
       directives: {
@@ -43,7 +43,7 @@ describe('vTooltip directive', () => {
     expect(wrapper.attributes('data-tooltip')).toContain('New tooltip text')
   })
 
-  it('when open is true, renders tooltip with open class', async () => {
+  it('when open is true, renders tooltip with open class', () => {
     wrapper = mount({
       template: `<div v-tooltip="{ text: 'Tooltip text', open: true }"></div>`,
       directives: {
@@ -54,7 +54,7 @@ describe('vTooltip directive', () => {
     expect(wrapper.classes('m-tooltip--open')).toBe(true)
   })
 
-  it('when a color is provided, renders tooltip with color class', async () => {
+  it('when a color is provided, renders tooltip with color class', () => {
     wrapper = mount({
       template: `<div v-tooltip="{ text: 'Tooltip text', color: 'primary' }"></div>`,
       directives: {

@@ -182,7 +182,7 @@ function addOrUpdateQueryParamTab(tab: number) {
   window.history.replaceState({}, document.title, urlActuelle.toString())
 }
 
-onMounted(async () => {
+onMounted(() => {
   if (props.persistent) {
     updateCurrentTab(getQueryParamTab() || currentTab.value || 1)
   }

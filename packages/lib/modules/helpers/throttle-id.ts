@@ -16,6 +16,7 @@ export function throttleId<T, Args extends unknown[]>(
 ): (...args: Args) => Promise<T> {
   const state: Record<string, ThrottleState<T, Args>> = {}
 
+  // eslint-disable-next-line require-await
   return async (...args: Args): Promise<T> => {
     const now = Date.now()
 

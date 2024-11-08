@@ -13,7 +13,7 @@ const { currentTab } = injectStrict<MazTabsProvide>('maz-tabs')
 
 watch(
   () => currentTab.value,
-  async (value, oldValue) => {
+  (value, oldValue) => {
     if (typeof value === 'number' && typeof oldValue === 'number') {
       const newTabIsBigger = oldValue < value
       transitionName.value = newTabIsBigger ? 'maz-tab-transition' : 'maz-tab-reverse-transition'

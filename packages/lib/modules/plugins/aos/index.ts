@@ -172,7 +172,7 @@ export const plugin = {
       return
     }
     if (options?.router) {
-      options.router.afterEach(async () => {
+      options.router.afterEach(() => {
         instance.runAnimations()
       })
     }
