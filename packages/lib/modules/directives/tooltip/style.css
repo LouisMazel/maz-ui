@@ -57,14 +57,14 @@
 
   &--top::before {
     transform-origin: bottom left;
-    bottom: calc(100% + 16px);
+    bottom: calc(100% + var(--tooltip-offset, 16px));
     left: 50%;
     transform: scale(0) translate(-50%, 0);
   }
 
   &--bottom::before {
     transform-origin: top left;
-    top: calc(100% + 16px);
+    top: calc(100% + var(--tooltip-offset, 16px));
     left: 50%;
     transform: scale(0) translate(-50%, 0);
   }
@@ -72,14 +72,14 @@
   &--left::before {
     transform-origin: top right;
     top: 50%;
-    right: calc(100% + 16px);
+    right: calc(100% + var(--tooltip-offset, 16px));
     transform: scale(0) translate(0, -50%);
   }
 
   &--right::before {
     transform-origin: top left;
     top: 50%;
-    left: calc(100% + 16px);
+    left: calc(100% + var(--tooltip-offset, 16px));
     transform: scale(0) translate(0, -50%);
   }
 

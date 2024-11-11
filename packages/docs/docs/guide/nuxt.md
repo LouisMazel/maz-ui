@@ -87,7 +87,7 @@ export interface MazUiNuxtOptions {
   injectCss?: boolean
   /**
    * Install aos plugin and enable auto-import of useAos composable
-   * @default false
+   * @default true
    */
   injectAos?:
     | boolean
@@ -105,67 +105,67 @@ export interface MazUiNuxtOptions {
       })
   /**
    * Install toaster plugin and enable auto-import of useToast composable
-   * @default false
+   * @default true
    */
   injectUseToast?: boolean | ToasterOptions
   /**
    * Install wait plugin and enable auto-import of useWait composable
-   * @default false
+   * @default true
    */
   injectUseWait?: boolean
   /**
    * Enable auto-import of useThemeHandler composable
-   * @default false
+   * @default true
    */
   injectUseThemeHandler?: boolean | ThemeHandlerOptions
   /**
    * Enable auto-import of useIdleTimeout composable
-   * @default false
+   * @default true
    */
   injectUseIdleTimeout?: boolean
   /**
    * Enable auto-import of useUserVisibility composable
-   * @default false
+   * @default true
    */
   injectUseUserVisibility?: boolean
   /**
    * Enable auto-import of useTimer composable
-   * @default false
+   * @default true
    */
   injectUseTimer?: boolean
   /**
    * Enable auto-import of useWindowSize composable
-   * @default false
+   * @default true
    */
   injectUseWindowSize?: boolean
   /**
    * Enable auto-import of useBreakpoints composable
-   * @default false
+   * @default true
    */
   injectUseBreakpoints?: boolean
   /**
    * Globally install of v-zoom-img directive
-   * @default false
+   * @default true
    */
   installVZoomImg?: boolean
   /**
    * Globally install of v-click-outside directive
-   * @default false
+   * @default true
    */
   installVClickOutside?: boolean
   /**
    * Globally install of v-fullscreen-img directive
-   * @default false
+   * @default true
    */
   installVFullscreenImg?: boolean
   /**
    * Globally install of v-lazy-img directive
-   * @default false
+   * @default true
    */
   installVLazyImg?: boolean | vLazyImgOptions
   /**
    * Globally install of v-tooltip directive
-   * @default false
+   * @default true
    */
   installVTooltip?: boolean | vTooltipOptions
   /**

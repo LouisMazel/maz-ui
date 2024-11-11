@@ -141,6 +141,48 @@ description: vTooltip is a Vue 3 directive to display a text when the user hover
   </template>
 </ComponentDemo>
 
+## Offset
+
+<ComponentDemo>
+  <div
+    class="maz-flex maz-gap-3 maz-flex-wrap"
+  >
+    <MazBtn v-tooltip="{ text: 'Tooltip text', offset: '0rem' }">
+      0rem
+    </MazBtn>
+    <MazBtn v-tooltip="{ text: 'Tooltip text', offset: '0.5rem' }">
+      0.5rem
+    </MazBtn>
+    <MazBtn v-tooltip="{ text: 'Tooltip text', offset: '1.5rem' }">
+      1.5rem
+    </MazBtn>
+    <MazBtn v-tooltip="{ text: 'Tooltip text', offset: '2rem' }">
+      2rem
+    </MazBtn>
+  </div>
+  <br />
+  <div
+    class="maz-flex maz-gap-3 maz-flex-wrap"
+  >
+    <MazBtn v-tooltip="{ text: 'Tooltip text', offset: '0px' }">
+      0px
+    </MazBtn>
+    <MazBtn v-tooltip="{ text: 'Tooltip text', offset: '10px' }">
+      10px
+    </MazBtn>
+    <MazBtn v-tooltip="{ text: 'Tooltip text', offset: '20px' }">
+      20px
+    </MazBtn>
+    <MazBtn v-tooltip="{ text: 'Tooltip text', offset: '30px' }">
+      30px
+    </MazBtn>
+  </div>
+
+  <template #code>
+
+  </template>
+</ComponentDemo>
+
 ## Open programmatically
 
 <ComponentDemo>

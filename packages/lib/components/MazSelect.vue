@@ -6,7 +6,7 @@ export type { Color, ModelValueSimple, Position, Size } from './types'
 <script
   lang="ts"
   setup
-  generic="T extends ModelValueSimple, U extends MazSelectOption, M = boolean"
+  generic="T extends ModelValueSimple, U extends MazSelectOption"
 >
 import type { Color, ModelValueSimple, Position, Size } from './types'
 import {
@@ -20,7 +20,7 @@ import {
 } from 'vue'
 import { useInstanceUniqId } from '../modules/composables/useInstanceUniqId'
 import { useStringMatching } from '../modules/composables/useStringMatching'
-import { vClosable } from '../modules/directives'
+import { vClosable } from '../modules/directives/closable'
 import { debounceCallback } from '../modules/helpers/debounce-callback'
 import { normalizeString } from '../modules/helpers/normalize-string'
 import MazInput from './MazInput.vue'
