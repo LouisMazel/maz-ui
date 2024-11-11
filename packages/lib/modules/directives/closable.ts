@@ -1,6 +1,6 @@
 import type { DirectiveBinding, ObjectDirective, Plugin } from 'vue'
 
-type vClosableBindingValueHandler = (...args: any[]) => any
+type vClosableBindingValueHandler = (event: Event) => any
 interface vClosableBindingValueObject {
   handler: vClosableBindingValueHandler
   exclude?: string[]
@@ -23,13 +23,13 @@ function handleOutsideClick(event: TouchEvent | MouseEvent, element: HTMLElement
     for (const selector of exclude) {
       if (!clickedOnExcludedElement && event.target instanceof HTMLElement) {
         const elementId = document.querySelector(selector)?.getAttribute('id')
-        clickedOnExcludedElement = event.target.getAttribute('id') === elementId
+        clickedOnExcludedElement = (event.target.getAttribute('id') === elementId || document.querySelector(selector)?.contains(event.target as HTMLElement)) ?? false
       }
     }
   }
 
   if (!element.contains(event.target as HTMLElement) && !clickedOnExcludedElement) {
-    handler?.()
+    handler?.(event)
   }
 }
 

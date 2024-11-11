@@ -636,7 +636,7 @@ function updateValue(inputOption: NormalizedOption, mustCloseList = true) {
   <div
     ref="mazSelectElement"
     v-closable="{
-      exclude: excludeSelectors?.length ? excludeSelectors : [],
+      exclude: excludeSelectors,
       handler: closeList,
     }"
     class="m-select"
