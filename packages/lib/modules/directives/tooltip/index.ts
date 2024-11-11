@@ -6,15 +6,36 @@ import './style.css'
 type vTooltipColor = Exclude<Color, 'transparent'> | 'default' | 'light' | 'dark'
 
 interface vTooltipOptions {
+  /**
+   * Position of the tooltip
+   * @default 'top'
+   */
   position?: 'top' | 'bottom' | 'left' | 'right'
+  /**
+   * Color of the tooltip
+   * @default 'default'
+   */
   color?: vTooltipColor
 }
 
 type vTooltipBindingValue =
   | string
   | ({
+    /**
+     * Text to display in the tooltip
+     * @default ''
+     */
     text: string
+    /**
+     * Open the tooltip
+     * @default false
+     */
     open?: boolean
+    /**
+     * Offset of the tooltip
+     * @default '1rem'
+     */
+    offset?: string
   } & vTooltipOptions)
 
 const defaultOptions: vTooltipOptions = {
@@ -62,8 +83,16 @@ class TooltipHandler {
     return typeof value === 'string' ? 'default' : value.color ?? 'default'
   }
 
+  getOffset({ value }: TooltipBinding) {
+    return typeof value === 'string' ? '1rem' : value.offset ?? '1rem'
+  }
+
   create(el: HTMLElement, binding: TooltipBinding) {
     el.setAttribute('data-tooltip', this.getText(binding))
+    const offset = this.getOffset(binding)
+    if (offset) {
+      el.style.setProperty('--tooltip-offset', offset)
+    }
     el.classList.add('m-tooltip')
 
     const position = this.getPosition(binding)
