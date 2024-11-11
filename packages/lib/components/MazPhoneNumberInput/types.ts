@@ -14,6 +14,7 @@ export interface Results {
   uri?: string
   e164?: string
   rfc3966?: string
+  possibleCountries?: CountryCode[]
   phoneNumber?: string
 }
 

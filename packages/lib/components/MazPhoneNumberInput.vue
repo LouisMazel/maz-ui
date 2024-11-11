@@ -19,8 +19,8 @@ import { defaultLocales } from './MazPhoneNumberInput/default-locales'
 
 import PhoneInput from './MazPhoneNumberInput/PhoneInput.vue'
 
-import { useLibphonenumber } from './MazPhoneNumberInput/use-libphonenumber'
-import { useMazPhoneNumberInput } from './MazPhoneNumberInput/use-maz-phone-number-input'
+import { useLibphonenumber } from './MazPhoneNumberInput/useLibphonenumber'
+import { useMazPhoneNumberInput } from './MazPhoneNumberInput/useMazPhoneNumberInput'
 
 export type { Color, CountryCode, Position, Results, Results as Result, Size, Translations }
 
@@ -86,6 +86,7 @@ const emits = defineEmits<{
   /**
    * emitted when country or phone number changes
    * @property {Results} results - metadata of current phone number
+   * @deprecated use data instead
    */
   'update': [results: Results]
   /**
@@ -295,6 +296,7 @@ function setSelectedCountry(countryCode?: string | undefined | null) {
   }
 
   if (!isCountryAvailable(countryCode)) {
+    console.warn(`[MazPhoneNumberInput] Country code not available: "${countryCode}"`)
     selectedCountry.value = undefined
     return
   }
@@ -305,9 +307,11 @@ function setSelectedCountry(countryCode?: string | undefined | null) {
 function onPhoneNumberChanged({
   newPhoneNumber,
   updateResults = true,
+  updateCountry = true,
 }: {
   newPhoneNumber?: string | undefined | null
   updateResults?: boolean
+  updateCountry?: boolean
 }) {
   const sanitizedPhoneNumber = sanitizePhoneNumber(newPhoneNumber)
 
@@ -324,10 +328,10 @@ function onPhoneNumberChanged({
     phoneNumber.value = asYouTypeFormatted.value || phoneNumberToFormat
   }
   else {
-    phoneNumber.value = props.modelValue || props.defaultPhoneNumber || sanitizedPhoneNumber
+    phoneNumber.value = results.value.isValid ? results.value.formatNational : sanitizedPhoneNumber
   }
 
-  if (results.value.countryCode && results.value.countryCode !== selectedCountry.value) {
+  if (updateCountry && results.value.countryCode && results.value.countryCode !== selectedCountry.value) {
     onCountryChanged({
       countryCode: results.value.countryCode,
       updateResults: false,
@@ -361,6 +365,7 @@ function onCountryChanged({
   onPhoneNumberChanged({
     newPhoneNumber: phoneNumber.value,
     updateResults: false,
+    updateCountry: false,
   })
 }
 
