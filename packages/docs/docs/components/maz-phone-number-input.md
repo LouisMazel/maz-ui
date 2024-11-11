@@ -50,7 +50,7 @@ npm install libphonenumber-js
     v-model="phoneNumber"
     v-model:country-code="countryCode"
     show-code-on-list
-    :preferred-countries="['FR', 'BE', 'DE', 'US', 'GB']"
+    :preferred-countries="['FR', 'BE', 'DE', 'GB', 'US', 'CA']"
     :ignored-countries="['AC']"
     @update="results = $event"
   />
@@ -74,7 +74,7 @@ npm install libphonenumber-js
       v-model="phoneNumber"
       v-model:country-code="countryCode"
       show-code-on-list
-      :preferred-countries="['FR', 'BE', 'DE', 'US', 'GB']"
+      :preferred-countries="['FR', 'BE', 'DE', 'GB', 'US', 'CA']"
       :ignored-countries="['AC']"
       @update="results = $event"
     />
@@ -95,7 +95,7 @@ npm install libphonenumber-js
   </template>
 </ComponentDemo>
 
-<!-- ## Translations
+## Translations
 
 ### Labels & placeholders
 
@@ -258,7 +258,7 @@ Replace the default flags with slots
 :::
   </template>
 
-</ComponentDemo> -->
+</ComponentDemo>
 
 ## Types
 
@@ -277,6 +277,8 @@ export type Results = {
   uri?: string
   e164?: string
   rfc3966?: string
+  possibleCountries?: CountryCode[]
+  phoneNumber?: string
 }
 ```
 
@@ -290,8 +292,8 @@ type CountryCode = 'AC' | 'AD' | 'AE' | 'AF' | 'AG' | 'AI' | 'AL' | 'AM' | 'AO' 
 
 <script setup lang="ts">
   import { ref } from 'vue'
-  const phoneNumber = ref('0657575658')
-  const countryCode = ref('FR')
+  const phoneNumber = ref()
+  const countryCode = ref()
 
   const phoneNumber2 = ref('+3263')
   const results = ref()

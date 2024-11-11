@@ -44,10 +44,11 @@ function getPhoneNumberResults({
     }
 
     const parsedNumber = parsePhoneNumberFromString(phoneNumber, countryCode ?? undefined)
+    const isValid = parsedNumber?.isValid() ?? false
 
     return {
-      countryCode: parsedNumber?.country ?? countryCode,
-      isValid: parsedNumber?.isValid() ?? false,
+      countryCode: parsedNumber?.country,
+      isValid,
       isPossible: parsedNumber?.isPossible(),
       countryCallingCode: parsedNumber?.countryCallingCode,
       nationalNumber: parsedNumber?.nationalNumber,
@@ -57,6 +58,7 @@ function getPhoneNumberResults({
       uri: parsedNumber?.getURI(),
       e164: parsedNumber?.format('E.164'),
       rfc3966: parsedNumber?.format('RFC3966'),
+      possibleCountries: parsedNumber?.getPossibleCountries(),
       phoneNumber,
     }
   }

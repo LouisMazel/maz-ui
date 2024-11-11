@@ -13,7 +13,7 @@ import { injectStrict } from '../../modules/helpers/inject-strict'
 import { truthyFilter } from '../../modules/helpers/truthy-filter'
 import MazLazyImg from '../MazLazyImg.vue'
 import MazSelect from '../MazSelect.vue'
-import { useMazPhoneNumberInput } from './use-maz-phone-number-input'
+import { useMazPhoneNumberInput } from './useMazPhoneNumberInput'
 
 const props = withDefaults(
   defineProps<{
@@ -62,7 +62,7 @@ defineEmits<(event: 'update:model-value', countryCode?: CountryCode) => void>()
 
 const { phoneNumber } = injectStrict<InjectedData>('data')
 
-const CountrySelectorRef = ref<ComponentPublicInstance<typeof MazSelect>>()
+const CountrySelectorRef = ref<ComponentPublicInstance<typeof MazSelect> & { openList: () => void }>()
 
 const { getCountriesList } = useMazPhoneNumberInput()
 
@@ -105,7 +105,7 @@ const countryOptions = computed(() =>
 )
 
 function focusCountrySelector() {
-  CountrySelectorRef.value?.$el.querySelector('input')?.focus()
+  CountrySelectorRef.value?.openList()
 }
 </script>
 
@@ -244,7 +244,7 @@ function focusCountrySelector() {
     }
 
     &__item {
-      @apply maz-w-full maz-text-sm maz-flex maz-items-center maz-gap-1 maz-truncate;
+      @apply maz-w-full maz-text-sm maz-flex maz-items-center maz-gap-2 maz-truncate;
 
       &__flag-container {
         @apply maz-flex maz-flex-center;

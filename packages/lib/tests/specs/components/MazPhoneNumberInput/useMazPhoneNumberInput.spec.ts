@@ -1,4 +1,4 @@
-import { useMazPhoneNumberInput } from '@components/MazPhoneNumberInput/use-maz-phone-number-input'
+import { useMazPhoneNumberInput } from '@components/MazPhoneNumberInput/useMazPhoneNumberInput'
 import { getCountries, getCountryCallingCode } from 'libphonenumber-js'
 
 const { sanitizePhoneNumber, getCountriesList, fetchCountryCode, getBrowserLocale }
@@ -13,7 +13,7 @@ vi.mock('libphonenumber-js', () => ({
   isSupportedCountry: vi.fn(),
 }))
 
-describe('unit Tests for use-libphonenumber.ts', () => {
+describe('unit Tests for useMazPhoneNumberInput.ts', () => {
   describe('sanitizePhoneNumber', () => {
     it('should remove non-numeric characters from the input', () => {
       const result = sanitizePhoneNumber('(1234) 567 890 frfr')

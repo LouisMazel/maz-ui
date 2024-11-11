@@ -11,7 +11,7 @@ import { type ComponentPublicInstance, computed, nextTick, onMounted, ref } from
 
 import { injectStrict } from '../../modules/helpers/inject-strict'
 import MazInput from '../MazInput.vue'
-import { useLibphonenumber } from './use-libphonenumber'
+import { useLibphonenumber } from './useLibphonenumber'
 
 const props = withDefaults(
   defineProps<{
