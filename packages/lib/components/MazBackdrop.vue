@@ -1,20 +1,23 @@
 <script lang="ts" setup>
-import { type HTMLAttributes, onMounted, ref, watch } from 'vue'
+import { type HTMLAttributes, nextTick, onMounted, ref, watch } from 'vue'
 
 defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<Props>(), {
-  modelValue: false,
-  teleportSelector: 'body',
-  beforeClose: undefined,
-  persistent: false,
-  noCloseOnEscKey: false,
-  transitionName: 'backdrop-anim',
-  backdropClass: undefined,
-  backdropContentClass: undefined,
-})
+const {
+  modelValue = false,
+  teleportSelector = 'body',
+  beforeClose = undefined,
+  persistent = false,
+  noCloseOnEscKey = false,
+  transitionName = 'backdrop-anim',
+  backdropClass = undefined,
+  backdropContentClass = undefined,
+  contentPadding = false,
+  justify = 'none',
+  align = 'none',
+} = defineProps<MazBackdropProps>()
 
 const emits = defineEmits<{
   /** emitted when modal is open */
@@ -41,18 +44,34 @@ function removeClassFromDocument() {
   }
 }
 
-export interface Props {
+export interface MazBackdropProps {
+  /** @model Modal's model value */
   modelValue?: boolean
+  /** Teleport selector */
   teleportSelector?: string
+  /** Function called before modal is close */
   beforeClose?: () => Promise<void> | void
+  /** Persistent dialog (not closable by clicking outside and remove close button) */
   persistent?: boolean
+  /** Prevent close on escape key */
   noCloseOnEscKey?: boolean
+  /** Transition name */
   transitionName?: string
+  /** Backdrop class */
   backdropClass?: HTMLAttributes['class']
+  /** Backdrop content class */
   backdropContentClass?: HTMLAttributes['class']
+  /** Add padding to the content */
+  contentPadding?: boolean
+  /** Justify content */
+  justify?: 'center' | 'end' | 'start' | 'space-between' | 'space-around' | 'none'
+  /** Align content */
+  align?: 'center' | 'end' | 'start' | 'none'
+  /** Variant */
+  variant?: 'bottom-sheet' | 'dialog' | 'drawer'
 }
 
-const present = ref(props.modelValue)
+const present = ref(modelValue)
 
 function close() {
   toggleModal(false)
@@ -61,7 +80,7 @@ function close() {
 async function toggleModal(value) {
   if (!value) {
     emits('before-close')
-    await props.beforeClose?.()
+    await beforeClose?.()
   }
 
   present.value = value
@@ -78,13 +97,13 @@ function onBackdropAnimationLeave() {
 }
 
 function onBackdropClicked() {
-  if (!props.persistent) {
+  if (!persistent) {
     close()
   }
 }
 
 function onKeyPress(event: KeyboardEvent) {
-  if (!props.noCloseOnEscKey && event.key === 'Escape' && !props.persistent) {
+  if (!noCloseOnEscKey && event.key === 'Escape' && !persistent) {
     close()
   }
 }
@@ -100,7 +119,7 @@ function removeClassAndEventToDocument() {
 }
 
 onMounted(() => {
-  if (props.modelValue) {
+  if (modelValue) {
     addClassAndEventToDocument()
   }
   else {
@@ -108,16 +127,41 @@ onMounted(() => {
   }
 })
 
+let initialFocusableElement: HTMLElement | null = null
+
+function findFirstFocusableElement(selector: string) {
+  const modal = document.querySelector(selector)
+  const focusableElements = 'a[href], button, textarea, input[type="text"], input[type="radio"], input[type="checkbox"], select'
+
+  const focusableElementsArray = modal && Array.from(modal.querySelectorAll<HTMLLinkElement | HTMLButtonElement | HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>(focusableElements))
+
+  const visibleFocusableElements = focusableElementsArray?.filter((el) => {
+    const style = window.getComputedStyle(el)
+    return style.display !== 'none' && style.visibility !== 'hidden' && !el.disabled
+  })
+
+  return visibleFocusableElements && visibleFocusableElements.length > 0 ? visibleFocusableElements[0] : null
+}
+
 watch(
-  () => props.modelValue,
-  (value) => {
+  () => modelValue,
+  async (value) => {
     present.value = value
 
     if (value) {
       addClassAndEventToDocument()
+
+      initialFocusableElement = document.activeElement as HTMLElement | null
+
+      await nextTick()
+      const firstFocusableElement = findFirstFocusableElement('.m-backdrop-content')
+      firstFocusableElement?.focus()
     }
     else {
       removeClassAndEventToDocument()
+
+      await nextTick()
+      initialFocusableElement?.focus()
     }
   },
 )
@@ -141,27 +185,24 @@ defineExpose({
       @after-enter="onBackdropAnimationEnter"
       @after-leave="onBackdropAnimationLeave"
     >
-      <div
-        v-if="present"
-        class="m-backdrop --present"
-        :class="[backdropClass]"
-        tabindex="-1"
-        role="dialog"
-      >
-        <button
-          class="m-backdrop-overlay"
-          :class="{ '--disabled': persistent }"
-          tabindex="-1"
-          @click.self="onBackdropClicked"
-        />
-        <div
-          class="m-backdrop-content"
-          :class="backdropContentClass"
-          v-bind="$attrs"
-          role="document"
-          tabindex="0"
-        >
-          <slot :close="close" />
+      <div v-if="present" class="m-backdrop --present" v-bind="$attrs" :class="[backdropClass, variant && `--variant-${variant}`, { '--persistent': persistent }]">
+        <div role="dialog" class="m-backdrop-container" aria-modal="true">
+          <div class="m-backdrop-wrapper">
+            <!-- eslint-disable-next-line vuejs-accessibility/click-events-have-key-events -->
+            <div
+              class="m-backdrop-content"
+              :class="[backdropContentClass, `--justify-${justify}`, `--align-${align}`, { '--padding': contentPadding }]"
+              role="button"
+              tabindex="-1"
+              @click.self="onBackdropClicked"
+            >
+              <!-- @slot Place your content here
+                @binding {Function} close close function
+                @binding {Function} on-backdrop-clicked onBackdropClicked function (respects persistent prop)
+              -->
+              <slot :close="close" :on-backdrop-clicked="onBackdropClicked" />
+            </div>
+          </div>
         </div>
       </div>
     </Transition>
@@ -169,100 +210,207 @@ defineExpose({
 </template>
 
 <style lang="postcss">
-  html.--backdrop-present {
+html.--backdrop-present {
   overflow-y: hidden;
   height: 100vh !important;
 }
 </style>
 
-<style lang="postcss">
-  .m-backdrop.bottom-sheet-anim-enter-active,
-.m-backdrop.bottom-sheet-anim-leave-active {
-  transition: opacity ease-in-out 250ms;
-
-  & .m-backdrop-content {
-    transition: transform ease-in-out 250ms;
-    transform: translateY(0);
-  }
-}
-
-.m-backdrop.bottom-sheet-anim-enter-from,
-.m-backdrop.bottom-sheet-anim-leave-to {
-  opacity: 0;
-
-  & .m-backdrop-content {
-    transform: translateY(100%);
-  }
-}
-
-.m-backdrop.modal-anim-enter-active,
-.m-backdrop.modal-anim-leave-active {
-  transition: opacity ease-in-out 250ms;
-
-  & .m-backdrop-content {
-    transition-property: transform, opacity;
-    transition-duration: 250ms;
-    transition-timing-function: ease-in-out;
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.m-backdrop.modal-anim-enter-from,
-.m-backdrop.modal-anim-leave-to {
-  opacity: 0;
-
-  & .m-backdrop-content {
-    opacity: 0;
-    transform: scale(0.5);
-  }
-}
-
-.m-backdrop.backdrop-anim-enter-active,
-.m-backdrop.backdrop-anim-leave-active {
-  transition: opacity ease-in-out 250ms;
-}
-
-.m-backdrop.backdrop-anim-enter-from,
-.m-backdrop.backdrop-anim-leave-to {
-  opacity: 0;
-}
-
+<style lang="postcss" scoped>
 .m-backdrop {
-  @apply maz-fixed maz-inset-0 maz-z-default-backdrop maz-flex maz-opacity-100 maz-flex-center;
+  @apply maz-fixed maz-inset-0 maz-z-default-backdrop maz-bg-overlay;
 
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(4px);
 
-  &-overlay {
-    touch-action: none;
-
-    @apply maz-absolute maz-inset-0 maz-bg-overlay;
-
-    &:not(.--disabled) {
-      @apply maz-cursor-pointer;
+  &.--persistent {
+    & .m-backdrop-content {
+      @apply maz-cursor-default;
     }
+  }
+
+  &-container {
+    @apply maz-fixed maz-inset-0 maz-z-default-backdrop;
+  }
+
+  &-wrapper {
+    @apply maz-fixed maz-inset-0 maz-overflow-y-auto;
   }
 
   &-content {
-    @apply maz-relative maz-z-1 focus:maz-outline-none;
-  }
+    @apply maz-flex maz-min-h-full tab-s:maz-items-center tab-s:maz-p-0 maz-items-end;
 
-  &.--bottom-sheet {
-    & .m-backdrop-content {
-      @apply maz-absolute maz-bottom-0 maz-left-0 maz-right-0;
+    &.--padding {
+      @apply maz-p-4;
+    }
+
+    &.--justify-center {
+      @apply maz-justify-center;
+    }
+
+    &.--justify-end {
+      @apply maz-justify-end;
+    }
+
+    &.--justify-start {
+      @apply maz-justify-start;
+    }
+
+    &.--justify-space-between {
+      @apply maz-justify-between;
+    }
+
+    &.--justify-space-around {
+      @apply maz-justify-around;
+    }
+
+    &.--align-center {
+      @apply maz-items-center;
+    }
+
+    &.--align-end {
+      @apply maz-items-end;
+    }
+
+    &.--align-start {
+      @apply maz-items-start;
+    }
+
+    > * {
+      @apply maz-cursor-default;
     }
   }
 
-  &.--fullscreen {
-    @apply maz-items-start mob-l:maz-items-center;
-
-    &.--center-top {
-      @apply maz-items-start mob-l:maz-pt-28;
+  &.--variant-bottom-sheet {
+    .m-backdrop-content {
+      @apply maz-fixed maz-inset-0;
     }
+  }
 
-    & .m-backdrop-content {
-      @apply maz-relative maz-w-full mob-l:maz-w-auto;
+  &.--variant-drawer {
+    .m-backdrop-content {
+      @apply maz-fixed maz-inset-0;
     }
+  }
+
+  /*
+* Animations
+*/
+  &.bottom-sheet-anim-enter-active,
+  &.bottom-sheet-anim-leave-active {
+    transition: opacity 250ms ease-in-out;
+
+    & .m-backdrop-content > * {
+      transition: transform 250ms ease-in-out;
+    }
+  }
+
+  &.bottom-sheet-anim-enter-from,
+  &.bottom-sheet-anim-leave-to {
+    opacity: 0;
+
+    & .m-backdrop-content > * {
+      transform: translateY(100%);
+    }
+  }
+
+  &.modal-anim-enter-active,
+  &.modal-anim-leave-active {
+    transition: opacity 250ms ease-in-out;
+
+    & .m-backdrop-content > * {
+      transition: transform 250ms ease-in-out;
+    }
+  }
+
+  &.modal-anim-enter-from,
+  &.modal-anim-leave-to {
+    opacity: 0;
+
+    & .m-backdrop-content > * {
+      transform: scale(0.5);
+    }
+  }
+
+  &.drawer-anim-top-enter-active,
+  &.drawer-anim-top-leave-active {
+    transition: opacity 250ms ease-in-out;
+
+    & .m-backdrop-content > * {
+      transition: transform 250ms ease-in-out;
+    }
+  }
+
+  &.drawer-anim-top-enter-from,
+  &.drawer-anim-top-leave-to {
+    opacity: 0;
+
+    & .m-backdrop-content > * {
+      transform: translateY(-100%);
+    }
+  }
+
+  &.drawer-anim-bottom-enter-active,
+  &.drawer-anim-bottom-leave-active {
+    transition: opacity 250ms ease-in-out;
+
+    & .m-backdrop-content > * {
+      transition: transform 250ms ease-in-out;
+    }
+  }
+
+  &.drawer-anim-bottom-enter-from,
+  &.drawer-anim-bottom-leave-to {
+    opacity: 0;
+
+    & .m-backdrop-content > * {
+      transform: translateY(100%);
+    }
+  }
+
+  &.drawer-anim-left-enter-active,
+  &.drawer-anim-left-leave-active {
+    transition: opacity 250ms ease-in-out;
+
+    & .m-backdrop-content > * {
+      transition: transform 250ms ease-in-out;
+    }
+  }
+
+  &.drawer-anim-left-enter-from,
+  &.drawer-anim-left-leave-to {
+    opacity: 0;
+
+    & .m-backdrop-content > * {
+      transform: translateX(-100%);
+    }
+  }
+
+  &.drawer-anim-right-enter-active,
+  &.drawer-anim-right-leave-active {
+    transition: opacity 250ms ease-in-out;
+
+    & .m-backdrop-content > * {
+      transition: transform 250ms ease-in-out;
+    }
+  }
+
+  &.drawer-anim-right-enter-from,
+  &.drawer-anim-right-leave-to {
+    opacity: 0;
+
+    & .m-backdrop-content > * {
+      transform: translateX(100%);
+    }
+  }
+
+  &.backdrop-anim-enter-active,
+  &.backdrop-anim-leave-active {
+    transition: opacity 250ms ease-in-out;
+  }
+
+  &.backdrop-anim-enter-from,
+  &.backdrop-anim-leave-to {
+    opacity: 0;
   }
 }
 </style>

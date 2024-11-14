@@ -14,7 +14,7 @@ import type {
 } from './MazDialogPromise/useMazDialogPromise'
 import { computed, defineAsyncComponent, ref } from 'vue'
 
-import MazDialog, { type Props as MazDialogProps } from './MazDialog.vue'
+import MazDialog, { type MazDialogProps } from './MazDialog.vue'
 import { defaultData, useMazDialogPromise } from './MazDialogPromise/useMazDialogPromise'
 
 export interface MazDialogPromiseProps {
