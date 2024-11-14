@@ -1,7 +1,7 @@
 {
   "name": "cli",
   "type": "module",
-  "version": "3.47.2-beta.19",
+  "version": "3.47.2-beta.20",
   "exports": {
     ".": "./dist/cli.mjs",
     "./cli": "./bin/cli.mjs",
