@@ -15,110 +15,40 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
 
 ## Basic usage
 
-<MazDrawer variant="top" v-model="isOpenedTop">
-  <template #title>
-    Drawer top
-  </template>
-  <template #default="{ close }">
-    <div style="padding: 16px;">
-      <p>
-        Content
-      </p>
-      <div class="flex flex-wrap gap-05">
-        <MazBtn color="danger" @click="close">
-          Close
-        </MazBtn>
-        <MazBtn color="success" @click="close">
-          Confirm
-        </MazBtn>
-      </div>
+<ComponentDemo expanded>
+  <div class="maz-flex maz-flex-col maz-gap-2 maz-flex-center">
+    <MazBtn @click="isOpenedTop = !isOpenedTop">
+      Open top drawer
+    </MazBtn>
+    <div class="maz-flex maz-flex-wrap maz-gap-2">
+      <MazBtn @click="isOpenedLeft = !isOpenedLeft">
+        Open left drawer
+      </MazBtn>
+      <MazBtn @click="isOpenedRight = !isOpenedRight">
+        Open right drawer
+      </MazBtn>
     </div>
-  </template>
-</MazDrawer>
+    <MazBtn @click="isOpenedBottom = !isOpenedBottom">
+      Open bottom drawer
+    </MazBtn>
+  </div>
 
-<MazDrawer variant="bottom" v-model="isOpenedBottom">
-  <template #title>
-    Drawer bottom
-  </template>
-  <template #default="{ close }">
-    <div style="padding: 16px;">
-      <p>
-        Content
-      </p>
-      <div class="flex flex-wrap gap-05">
-        <MazBtn color="danger" @click="close">
-          Close
-        </MazBtn>
-        <MazBtn color="success" @click="close">
-          Confirm
-        </MazBtn>
-      </div>
-    </div>
-  </template>
-</MazDrawer>
+  <template #code>
 
-<MazDrawer variant="left" v-model="isOpenedLeft">
-  <template #title>
-    Drawer left
-  </template>
-  <template #default="{ close }">
-    <div style="padding: 16px;">
-      <p>
-        Content
-      </p>
-      <div class="flex flex-wrap gap-05">
-        <MazBtn color="danger" @click="close">
-          Close
-        </MazBtn>
-        <MazBtn color="success" @click="close">
-          Confirm
-        </MazBtn>
-      </div>
-    </div>
-  </template>
-</MazDrawer>
-
-<MazDrawer variant="right" v-model="isOpenedRight">
-  <template #title>
-    Drawer right
-  </template>
-  <template #default="{ close }">
-    <div style="padding: 16px;">
-      <p>
-        Content
-      </p>
-      <div class="flex flex-wrap gap-05">
-        <MazBtn color="danger" @click="close">
-          Close
-        </MazBtn>
-        <MazBtn color="success" @click="close">
-          Confirm
-        </MazBtn>
-      </div>
-    </div>
-  </template>
-</MazDrawer>
-
-<div class="flex flex-wrap gap-05">
+  ```html
   <MazBtn @click="isOpenedTop = !isOpenedTop">
     Open top drawer
   </MazBtn>
-
+  <MazBtn @click="isOpenedLeft = !isOpenedLeft">
+    Open left drawer
+  </MazBtn>
+  <MazBtn @click="isOpenedRight = !isOpenedRight">
+    Open right drawer
+  </MazBtn>
   <MazBtn @click="isOpenedBottom = !isOpenedBottom">
     Open bottom drawer
   </MazBtn>
 
-  <MazBtn @click="isOpenedRight = !isOpenedRight">
-    Open right drawer
-  </MazBtn>
-
-  <MazBtn @click="isOpenedLeft = !isOpenedLeft">
-    Open left drawer
-  </MazBtn>
-</div>
-
-```vue
-<template>
   <MazDrawer variant="top" v-model="isOpenedTop">
     <template #title>
       Drawer top
@@ -128,12 +58,9 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
         <p>
           Content
         </p>
-        <div class="flex flex-wrap gap-05">
+        <div class="maz-flex maz-flex-wrap maz-gap-2 maz-mt-4">
           <MazBtn color="danger" @click="close">
             Close
-          </MazBtn>
-          <MazBtn color="success" @click="close">
-            Confirm
           </MazBtn>
         </div>
       </div>
@@ -149,12 +76,9 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
         <p>
           Content
         </p>
-        <div class="flex flex-wrap gap-05">
+        <div class="maz-flex maz-flex-wrap maz-gap-2 maz-mt-4">
           <MazBtn color="danger" @click="close">
             Close
-          </MazBtn>
-          <MazBtn color="success" @click="close">
-            Confirm
           </MazBtn>
         </div>
       </div>
@@ -170,12 +94,9 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
         <p>
           Content
         </p>
-        <div class="flex flex-wrap gap-05">
+        <div class="maz-flex maz-flex-wrap maz-gap-2 maz-mt-4">
           <MazBtn color="danger" @click="close">
             Close
-          </MazBtn>
-          <MazBtn color="success" @click="close">
-            Confirm
           </MazBtn>
         </div>
       </div>
@@ -191,47 +112,90 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
         <p>
           Content
         </p>
-        <div class="flex flex-wrap gap-05">
+        <div class="maz-flex maz-flex-wrap maz-gap-2 maz-mt-4">
           <MazBtn color="danger" @click="close">
             Close
-          </MazBtn>
-          <MazBtn color="success" @click="close">
-            Confirm
           </MazBtn>
         </div>
       </div>
     </template>
   </MazDrawer>
-  <div class="flex flex-wrap gap-05">
-    <MazBtn @click="isOpenedTop = !isOpenedTop">
-      Open top drawer
-    </MazBtn>
+  ```
 
-    <MazBtn @click="isOpenedBottom = !isOpenedBottom">
-      Open bottom drawer
-    </MazBtn>
+  </template>
+</ComponentDemo>
 
-    <MazBtn @click="isOpenedRight = !isOpenedRight">
-      Open right drawer
-    </MazBtn>
+<MazDrawer variant="top" v-model="isOpenedTop">
+  <template #title>
+    Drawer top
+  </template>
+  <template #default="{ close }">
+    <div style="padding: 16px;">
+      <p>
+        Content
+      </p>
+      <div class="maz-flex maz-flex-wrap maz-gap-2 maz-mt-4">
+        <MazBtn color="danger" @click="close">
+          Close
+        </MazBtn>
+      </div>
+    </div>
+  </template>
+</MazDrawer>
 
-    <MazBtn @click="isOpenedLeft = !isOpenedLeft">
-      Open left drawer
-    </MazBtn>
-  </div>
-</template>
+<MazDrawer variant="bottom" v-model="isOpenedBottom">
+  <template #title>
+    Drawer bottom
+  </template>
+  <template #default="{ close }">
+    <div style="padding: 16px;">
+      <p>
+        Content
+      </p>
+      <div class="maz-flex maz-flex-wrap maz-gap-2 maz-mt-4">
+        <MazBtn color="danger" @click="close">
+          Close
+        </MazBtn>
+      </div>
+    </div>
+  </template>
+</MazDrawer>
 
-<script lang="ts" setup>
-  import { ref } from 'vue'
+<MazDrawer variant="left" v-model="isOpenedLeft">
+  <template #title>
+    Drawer left
+  </template>
+  <template #default="{ close }">
+    <div style="padding: 16px;">
+      <p>
+        Content
+      </p>
+      <div class="maz-flex maz-flex-wrap maz-gap-2 maz-mt-4">
+        <MazBtn color="danger" @click="close">
+          Close
+        </MazBtn>
+      </div>
+    </div>
+  </template>
+</MazDrawer>
 
-  import MazDrawer from 'maz-ui/components/MazDrawer'
-
-  const isOpenedTop = ref(false)
-  const isOpenedBottom = ref(false)
-  const isOpenedRight = ref(false)
-  const isOpenedLeft = ref(false)
-</script>
-```
+<MazDrawer variant="right" v-model="isOpenedRight">
+  <template #title>
+    Drawer right
+  </template>
+  <template #default="{ close }">
+    <div style="padding: 16px;">
+      <p>
+        Content
+      </p>
+      <div class="maz-flex maz-flex-wrap maz-gap-2 maz-mt-4">
+        <MazBtn color="danger" @click="close">
+          Close
+        </MazBtn>
+      </div>
+    </div>
+  </template>
+</MazDrawer>
 
 <script lang="ts" setup>
   import { ref } from 'vue'

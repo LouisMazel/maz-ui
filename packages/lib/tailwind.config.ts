@@ -10,6 +10,7 @@ export default <Config>{
     transform: {
       vue: (content) => {
         const regex = /<style[^>]*>([\s\S]*?)<\/style>/g
+        // @ts-expect-error - not include in tsconfig
         return content.replaceAll(regex, '')
       },
     },
