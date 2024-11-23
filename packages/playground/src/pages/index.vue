@@ -3,6 +3,27 @@
     <div>
       <!-- Start Developping Area - You should not commit anything here to keep this place clean for all others -->
 
+      <MazDropdown2 enable-context-menu>
+        <template #trigger>
+          <button type="button">
+            Click me
+          </button>
+        </template>
+        <MazDropdownItem>
+          Option 1
+          <template #submenu>
+            <MazDropdownItem parent-id="option1">
+              Sous-option 1.1
+            </MazDropdownItem>
+            <MazDropdownItem parent-id="option1">
+              Sous-option 1.2
+            </MazDropdownItem>
+          </template>
+        </MazDropdownItem>
+        <MazDropdownItem>Option 2</MazDropdownItem>
+        <MazDropdownItem>Option 3</MazDropdownItem>
+      </MazDropdown2>
+
       <!-- End Developping Area -->
     </div>
 
@@ -17,6 +38,8 @@
 
 <script lang="ts" setup>
 import { sleep } from 'maz-ui'
+import MazDropdown2 from '../../../lib/components/MazDropdown/MazDropdown2.vue'
+import MazDropdownItem from '../../../lib/components/MazDropdown/MazDropdownItem.vue'
 
 const toast = useToast()
 const wait = useWait()
