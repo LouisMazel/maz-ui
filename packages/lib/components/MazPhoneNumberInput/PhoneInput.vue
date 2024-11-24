@@ -1,139 +1,91 @@
 <script lang="ts" setup>
-import type { Examples } from 'libphonenumber-js'
+import type { Props } from '../MazInput.vue'
 import type {
-  Color,
   CountryCode,
   InjectedData,
-  Size,
   Translations,
 } from '../MazPhoneNumberInput.vue'
-import { type ComponentPublicInstance, computed, nextTick, onMounted, ref } from 'vue'
 
+import { computed, onMounted, ref } from 'vue'
 import { injectStrict } from '../../modules/helpers/inject-strict'
 import MazInput from '../MazInput.vue'
 import { useLibphonenumber } from './useLibphonenumber'
+import { useMazPhoneNumberInput } from './useMazPhoneNumberInput'
 
-const props = withDefaults(
-  defineProps<{
-    id: string
-    color: Color
-    size: Size
-    locales: Translations
-    label?: string
-    placeholder?: string
-    noExample?: boolean
-    disabled?: boolean
-    hasRadius?: boolean
-    success?: boolean
-    error?: boolean
-    autoFormat?: boolean
-    noFormattingAsYouType?: boolean
-  }>(),
-  {
-    class: undefined,
-    style: undefined,
-    label: undefined,
-    placeholder: undefined,
-  },
-)
+interface PhoneInputProps extends Omit<Props, 'modelValue'> {
+  id: string
+  locales: Translations
+  noExample: boolean
+  hasRadius: boolean
+  autoFormat: boolean
+}
 
-const emits = defineEmits<{
-  'update:model-value': [phoneNumber?: string]
-}>()
+const { placeholder, label, noExample, locales, autoFormat, name, inputmode, autocomplete } = defineProps<PhoneInputProps>()
+
+const { getPhoneNumberExample, getAsYouTypeFormat, loadExamples } = useLibphonenumber()
+const { sanitizePhoneNumber } = useMazPhoneNumberInput()
+const { results, selectedCountry } = injectStrict<InjectedData>('data')
 
 const modelValue = defineModel<string | undefined | null>()
 
-const { getPhoneNumberExamplesFile, getPhoneNumberExample } = useLibphonenumber()
-
-const { selectionRange, results, selectedCountry } = injectStrict<InjectedData>('data')
-
-const examples = ref<Examples>()
+const asYouTypeFormatted = computed(() => {
+  const phoneNumberToFormat = results.value.isValid ? results.value.formatNational : modelValue.value
+  return getAsYouTypeFormat(selectedCountry.value, phoneNumberToFormat) || phoneNumberToFormat
+})
 
 const inputFocused = ref(false)
+const displayedPhoneNumber = computed({
+  get: () => !inputFocused.value && autoFormat ? asYouTypeFormatted.value : modelValue.value,
+  set: (value) => {
+    modelValue.value = sanitizePhoneNumber(value)
+  },
+})
 
-function getCountryPhoneNumberExample(examples: Examples, selectedCountry?: CountryCode | undefined | null) {
-  const example = getPhoneNumberExample(examples, selectedCountry)
-  return example ? `${props.locales.phoneInput.example} ${example}` : undefined
+function getCountryPhoneNumberExample(selectedCountry?: CountryCode | undefined | null) {
+  const example = getPhoneNumberExample(selectedCountry)
+  return example ? `${locales.phoneInput.example} ${example}` : undefined
 }
-
 const inputLabelOrPlaceholder = computed(() => {
-  if (props.label || props.placeholder) {
-    return props.label || props.placeholder
+  if (label || placeholder) {
+    return label || placeholder
   }
 
-  const defaultPlaceholder = props.locales.phoneInput.placeholder
+  const defaultPlaceholder = locales.phoneInput.placeholder
 
-  if (props.noExample || !examples.value) {
+  if (noExample || !inputFocused.value) {
     return defaultPlaceholder
   }
   else {
-    const phoneExample = getCountryPhoneNumberExample(examples.value, selectedCountry.value)
+    const phoneExample = getCountryPhoneNumberExample(selectedCountry.value)
     return results.value?.isValid || !phoneExample ? defaultPlaceholder : phoneExample
   }
 })
 
 const inputProps = computed(() => {
-  return props.placeholder
-    ? {
-        placeholder: inputLabelOrPlaceholder.value,
-      }
-    : {
-        label: inputLabelOrPlaceholder.value,
-      }
+  return placeholder
+    ? { placeholder: inputLabelOrPlaceholder.value }
+    : { label: inputLabelOrPlaceholder.value }
 })
 
-const PhoneInputRef = ref<ComponentPublicInstance>()
-
-async function loadExamples() {
-  try {
-    if (examples.value)
-      return
-
-    examples.value = await getPhoneNumberExamplesFile()
-  }
-  catch (error) {
-    console.error('[maz-ui](MazPhoneNumberInput) while loading phone number examples file', error)
-  }
-}
-
-async function onValueChange(value?: string) {
-  if (PhoneInputRef.value && value) {
-    saveCursorPosition(PhoneInputRef.value, value)
-  }
-  await nextTick()
-  emits('update:model-value', value)
-}
-
-function saveCursorPosition(PhoneInputRef: ComponentPublicInstance, currentPhoneNumber?: string) {
-  const input = PhoneInputRef.$el.querySelector('input') as HTMLInputElement | undefined
-  selectionRange.value.start = input?.selectionStart
-  selectionRange.value.end = input?.selectionEnd
-  selectionRange.value.cursorAtEnd
-      = currentPhoneNumber
-      && typeof selectionRange.value.start === 'number'
-      && currentPhoneNumber.length > 0
-      ? selectionRange.value.start >= currentPhoneNumber.length
-      : true
-}
-
 onMounted(() => {
-  if (!props.noExample) {
+  if (!noExample)
     loadExamples()
-  }
 })
 </script>
 
 <template>
   <MazInput
     :id
-    ref="PhoneInputRef"
-    :model-value
+    v-model="displayedPhoneNumber"
     v-bind="{ ...$attrs, ...inputProps }"
     :disabled
     :color
     :error
     :size
     :success
+    :name
+    :inputmode
+    :autocomplete
     class="m-phone-input"
     :class="[
       {
@@ -144,12 +96,11 @@ onMounted(() => {
     ]"
     @focus="inputFocused = true"
     @blur="inputFocused = false"
-    @update:model-value="($event) => onValueChange($event as string)"
   />
 </template>
 
 <style lang="postcss" scoped>
-  .m-phone-input {
+.m-phone-input {
   @apply maz-min-w-52 maz-flex-1;
 
   &.--error,

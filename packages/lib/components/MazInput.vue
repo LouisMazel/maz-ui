@@ -118,6 +118,8 @@ export interface Props<T = ModelValueSimple> {
   roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
   /** The input will be displayed in full width */
   block?: boolean
+  /** The attribut autocomplete of the input */
+  autocomplete?: string
 }
 
 defineOptions({
@@ -359,14 +361,27 @@ function emitInputEvent(event: Event) {
 
       <div class="m-input-wrapper-input" :class="[`--${size}`, { '--top-label': !!topLabel }]">
         <input
-          :id="instanceId" ref="input" v-model="model" :type="inputType" :name="name" v-bind="$attrs"
-          :inputmode="inputmode" :placeholder="computedPlaceholder" :aria-label="label || placeholder"
-          :disabled="disabled" :readonly="readonly" :required="required" class="m-input-input" v-on="{
+          :id="instanceId"
+          v-bind="$attrs"
+          ref="input"
+          v-model="model"
+          :name
+          :placeholder="computedPlaceholder"
+          :aria-label="label || placeholder"
+          :type="inputType"
+          :inputmode
+          :disabled
+          :readonly
+          :autocomplete
+          :required
+          class="m-input-input"
+          v-on="{
             blur,
             focus,
             change,
             input: emitInputEvent,
-          }" @click="$emit('click', $event)"
+          }"
+          @click="$emit('click', $event)"
         >
 
         <span

@@ -56,6 +56,7 @@ const props = withDefaults(defineProps<Props>(), {
   excludeSelectors: undefined,
   orientation: 'responsive',
   searchThreshold: 0.75,
+  noExample: false,
   countrySelectAttributes: () => ({
     name: 'country',
     autocomplete: 'off',
@@ -160,6 +161,7 @@ export interface Props {
   /**
    * Disabled auto-format as you type
    * @default false
+   * @deprecated use autoFormat instead
    */
   noFormattingAsYouType?: boolean
   /**
@@ -201,93 +203,77 @@ export interface Props {
   phoneInputAttributes?: Record<string, unknown>
 }
 
-const { fetchCountryCode, sanitizePhoneNumber, getBrowserLocale } = useMazPhoneNumberInput()
-const { isCountryAvailable, getPhoneNumberResults, getAsYouTypeFormat } = useLibphonenumber()
+/** Composables */
+const { fetchCountryCode, getBrowserLocale } = useMazPhoneNumberInput()
+const { isCountryAvailable, getPhoneNumberResults } = useLibphonenumber()
 
 const instanceId = useInstanceUniqId({
   componentName: 'MazPhoneNumberInput',
   providedId: props.id,
 })
 
-/**
- * State
- */
+/** Models */
+
 const phoneNumber = ref<string | undefined | null>()
 const selectedCountry = ref<CountryCode | undefined | null>()
-const results = ref<Results>({
-  isValid: false,
-  countryCode: undefined,
-})
 
-const asYouTypeFormatted = ref<string>()
-
-interface SelectionRange {
-  start?: number | null
-  end?: number | null
-  cursorAtEnd?: boolean
-}
-
-export interface InjectedData {
-  selectedCountry: typeof selectedCountry
-  phoneNumber: typeof phoneNumber
-  results: typeof results
-  selectionRange: typeof selectionRange
-}
-
-const selectionRange = ref<SelectionRange>({
-  start: 0,
-  end: 0,
-  cursorAtEnd: true,
-})
-
-/** Inject */
-
-provide<InjectedData>('data', {
-  selectedCountry,
-  phoneNumber,
-  results,
-  selectionRange,
-})
-
-/**
- * Logique
- */
-
+/** State */
+const isPhoneNumberInternalUpdate = ref(false)
+const isCountryInternalUpdate = ref(false)
 const locales = computed(() => ({
   ...defaultLocales,
   ...props.translations,
 }))
+const hasAutoFormat = computed(() => props.autoFormat && !props.noFormattingAsYouType)
+
+const results = ref<Results>({
+  isValid: false,
+  countryCode: props.countryCode ?? props.defaultCountryCode,
+  phoneNumber: props.modelValue,
+})
+const PhoneInputRef = ref<ComponentPublicInstance>()
+
+/** Logic */
 
 onBeforeMount(async () => {
-  setSelectedCountry(props.countryCode ?? props.defaultCountryCode)
+  onCountryChanged({ countryCode: props.countryCode ?? props.defaultCountryCode })
 
   if (props.fetchCountry && !selectedCountry.value) {
     const countryCode = await fetchCountryCode()
-    setSelectedCountry(countryCode)
+    onCountryChanged({ countryCode: countryCode as CountryCode })
   }
 })
 
 onMounted(() => {
-  if (!props.defaultCountryCode && !props.noUseBrowserLocale && !selectedCountry.value) {
+  if (!props.defaultCountryCode && !props.countryCode && !props.noUseBrowserLocale) {
     const countryCode = getBrowserLocale()?.locale
-    setSelectedCountry(countryCode)
+    onCountryChanged({ countryCode: countryCode as CountryCode })
   }
 })
 
-const PhoneInputRef = ref<ComponentPublicInstance>()
+function updateTheResults({
+  phone = phoneNumber.value || props.modelValue,
+  countryCode = selectedCountry.value,
+  checkCountryCode = false,
+}: {
+  phone?: string | undefined | null
+  countryCode?: CountryCode | undefined | null
+  checkCountryCode?: boolean
+}) {
+  results.value = getPhoneNumberResults({
+    phoneNumber: phone,
+    countryCode,
+    checkCountryCode,
+  })
+}
+
 function getPhoneNumberInput() {
   return PhoneInputRef.value?.$el.querySelector('input') as HTMLInputElement | undefined
 }
+
 async function selectPhoneNumberInput() {
   await nextTick()
   getPhoneNumberInput()?.select()
-}
-
-function countryChanged(countryCode?: CountryCode) {
-  onCountryChanged({
-    countryCode,
-  })
-  selectPhoneNumberInput()
 }
 
 function setSelectedCountry(countryCode?: string | undefined | null) {
@@ -306,117 +292,120 @@ function setSelectedCountry(countryCode?: string | undefined | null) {
 
 function onPhoneNumberChanged({
   newPhoneNumber,
-  updateResults = true,
-  updateCountry = true,
 }: {
   newPhoneNumber?: string | undefined | null
-  updateResults?: boolean
-  updateCountry?: boolean
 }) {
-  const sanitizedPhoneNumber = sanitizePhoneNumber(newPhoneNumber)
+  updateTheResults({ phone: newPhoneNumber })
 
-  if (updateResults) {
-    results.value = getPhoneNumberResults({
-      phoneNumber: sanitizedPhoneNumber,
-      countryCode: selectedCountry.value,
-    })
-  }
-
-  if (selectionRange.value.cursorAtEnd && !props.noFormattingAsYouType && props.autoFormat) {
-    const phoneNumberToFormat = results.value.isValid ? results.value.formatNational : sanitizedPhoneNumber
-    asYouTypeFormatted.value = getAsYouTypeFormat(selectedCountry.value, phoneNumberToFormat)
-    phoneNumber.value = asYouTypeFormatted.value || phoneNumberToFormat
-  }
-  else {
-    phoneNumber.value = results.value.isValid ? results.value.formatNational : sanitizedPhoneNumber
-  }
-
-  if (updateCountry && results.value.countryCode && results.value.countryCode !== selectedCountry.value) {
+  if (results.value.parsedCountryCode && results.value.parsedCountryCode !== selectedCountry.value) {
     onCountryChanged({
-      countryCode: results.value.countryCode,
+      countryCode: results.value.parsedCountryCode,
       updateResults: false,
     })
   }
+
+  isPhoneNumberInternalUpdate.value = true
+
+  if (results.value.isValid && hasAutoFormat.value) {
+    phoneNumber.value = results.value.formatNational?.trim().replaceAll(new RegExp(/\D/g), '')
+  }
+  else {
+    phoneNumber.value = newPhoneNumber
+  }
+
+  if (results.value.e164) {
+    emits('update:model-value', results.value.e164)
+  }
+  else {
+    emits('update:model-value', results.value.phoneNumber)
+  }
+
+  setTimeout(() => {
+    isPhoneNumberInternalUpdate.value = false
+  }, 0)
 }
 
 function onCountryChanged({
   countryCode,
   updateResults = true,
+  selectPhoneNumber = false,
 }: {
-  countryCode?: CountryCode
+  countryCode?: CountryCode | undefined | null
   updateResults?: boolean
+  selectPhoneNumber?: boolean
 }) {
   if (!countryCode) {
     selectedCountry.value = undefined
     return
   }
 
+  isCountryInternalUpdate.value = true
+
   if (countryCode !== selectedCountry.value) {
     setSelectedCountry(countryCode)
   }
 
   if (updateResults) {
-    results.value = getPhoneNumberResults({
-      phoneNumber: phoneNumber.value,
-      countryCode,
+    updateTheResults({
+      countryCode: selectedCountry.value,
+      checkCountryCode: true,
     })
   }
 
-  onPhoneNumberChanged({
-    newPhoneNumber: phoneNumber.value,
-    updateResults: false,
-    updateCountry: false,
-  })
+  const code = results.value.countryCode || results.value.parsedCountryCode
+  emits('country-code', code)
+  emits('update:country-code', code)
+
+  if (selectPhoneNumber && !results.value.isValid) {
+    selectPhoneNumberInput()
+  }
+
+  setTimeout(() => {
+    isCountryInternalUpdate.value = false
+  }, 0)
 }
+
+/** Watchers */
 
 watch(
   () => props.modelValue ?? props.defaultPhoneNumber,
   (value, oldValue) => {
-    if (value !== oldValue && value !== phoneNumber.value) {
-      onPhoneNumberChanged({
-        newPhoneNumber: value,
-      })
+    if (!isPhoneNumberInternalUpdate.value && value !== oldValue && value !== phoneNumber.value) {
+      onPhoneNumberChanged({ newPhoneNumber: value })
     }
   },
-  {
-    immediate: true,
-  },
+  { immediate: true },
 )
-
 watch(
   () => props.countryCode ?? props.defaultCountryCode,
   (value, oldValue) => {
-    if (value && value !== oldValue && value !== selectedCountry.value) {
-      onCountryChanged({
-        countryCode: value,
-      })
+    if (!isCountryInternalUpdate.value && value && value !== oldValue && value !== selectedCountry.value) {
+      onCountryChanged({ countryCode: value })
     }
   },
-  {
-    immediate: true,
-  },
+  { immediate: true },
 )
-
 watch(
   results,
   (value) => {
     emits('update', value)
     emits('data', value)
-
-    if (value.e164 && value.isValid) {
-      emits('update:model-value', value.e164)
-    }
-    else {
-      emits('update:model-value', phoneNumber.value)
-    }
-
-    emits('country-code', selectedCountry.value)
-    emits('update:country-code', selectedCountry.value)
   },
-  {
-    immediate: true,
-  },
+  { immediate: true },
 )
+
+/** Inject */
+export interface InjectedData {
+  selectedCountry: typeof selectedCountry
+  phoneNumber: typeof phoneNumber
+  results: typeof results
+}
+
+provide<InjectedData>('data', {
+  selectedCountry,
+  phoneNumber,
+  results,
+})
 </script>
 
 <template>
@@ -449,7 +438,7 @@ watch(
       :only-countries
       :preferred-countries
       :width="countrySelectorWidth"
-      @update:model-value="countryChanged"
+      @update:model-value="onCountryChanged({ countryCode: $event, selectPhoneNumber: true })"
     >
       <template #no-results>
         <!--
@@ -479,14 +468,14 @@ watch(
         />
       </template>
     </CountrySelector>
-
     <PhoneInput
       :id="instanceId"
       ref="PhoneInputRef"
-      v-model="phoneNumber"
+      :model-value="phoneNumber"
       v-bind="{ ...$attrs, ...phoneInputAttributes }"
       :color
       :size
+      :auto-format="hasAutoFormat"
       :no-example
       block
       :disabled
@@ -494,15 +483,9 @@ watch(
       :success="success || (!noValidationSuccess ? results.isValid : false)"
       :error="error || (!noValidationError ? !!phoneNumber && !results.isValid : false)"
       :locales
-      :no-formatting-as-you-type
-      :auto-format
-      :label="label"
-      :placeholder="placeholder"
-      @update:model-value="
-        onPhoneNumberChanged({
-          newPhoneNumber: $event,
-        })
-      "
+      :label
+      :placeholder
+      @update:model-value="onPhoneNumberChanged({ newPhoneNumber: $event })"
     />
   </div>
 </template>

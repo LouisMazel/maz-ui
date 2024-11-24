@@ -172,7 +172,7 @@
     "fs": "0.0.2",
     "jsdom": "^25.0.1",
     "json-templater": "^1.2.0",
-    "libphonenumber-js": "^1.11.14",
+    "libphonenumber-js": "^1.11.15",
     "minimist": "^1.2.8",
     "nuxt": "^3.14.159",
     "onchange": "^7.1.0",

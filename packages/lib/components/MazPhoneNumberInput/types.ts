@@ -6,6 +6,7 @@ export interface Results {
   isValid: boolean
   isPossible?: boolean
   countryCode?: CountryCode | undefined | null
+  parsedCountryCode?: CountryCode | undefined | null
   countryCallingCode?: CountryCallingCode
   nationalNumber?: NationalNumber
   type?: NumberType
@@ -15,7 +16,7 @@ export interface Results {
   e164?: string
   rfc3966?: string
   possibleCountries?: CountryCode[]
-  phoneNumber?: string
+  phoneNumber?: string | undefined | null
 }
 
 export type Translations = typeof defaultLocales

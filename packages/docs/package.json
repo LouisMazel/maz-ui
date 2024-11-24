@@ -17,7 +17,7 @@
     "chartjs-plugin-datalabels": "^2.2.0",
     "dayjs": "^1.11.13",
     "dropzone": "^5.9.3",
-    "libphonenumber-js": "^1.11.14",
+    "libphonenumber-js": "^1.11.15",
     "maz-ui": "workspace:*",
     "vitepress-plugin-google-analytics": "^1.0.2"
   },
