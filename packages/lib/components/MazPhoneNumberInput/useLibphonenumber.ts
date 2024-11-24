@@ -9,6 +9,9 @@ import {
   isSupportedCountry,
   parsePhoneNumberFromString,
 } from 'libphonenumber-js'
+import { ref } from 'vue'
+
+const examples = ref<Examples>()
 
 function isCountryAvailable(locale: string) {
   try {
@@ -31,9 +34,11 @@ function isCountryAvailable(locale: string) {
 function getPhoneNumberResults({
   phoneNumber,
   countryCode,
+  checkCountryCode = false,
 }: {
   phoneNumber?: string | undefined | null
   countryCode?: CountryCode | undefined | null
+  checkCountryCode?: boolean
 }): Results {
   try {
     if (!phoneNumber) {
@@ -46,9 +51,12 @@ function getPhoneNumberResults({
     const parsedNumber = parsePhoneNumberFromString(phoneNumber, countryCode ?? undefined)
     const isValid = parsedNumber?.isValid() ?? false
 
+    const isSameCountryCode = countryCode && checkCountryCode ? parsedNumber?.country && countryCode === parsedNumber.country : true
+
     return {
-      countryCode: parsedNumber?.country,
-      isValid,
+      isValid: isValid && !!isSameCountryCode,
+      countryCode,
+      parsedCountryCode: parsedNumber?.country,
       isPossible: parsedNumber?.isPossible(),
       countryCallingCode: parsedNumber?.countryCallingCode,
       nationalNumber: parsedNumber?.nationalNumber,
@@ -73,13 +81,13 @@ async function getPhoneNumberExamplesFile() {
   return data
 }
 
-function getPhoneNumberExample(examples: Examples, countryCode?: CountryCode | undefined | null) {
+function getPhoneNumberExample(countryCode?: CountryCode | undefined | null) {
   try {
-    if (!examples) {
+    if (!examples.value) {
       return
     }
 
-    return countryCode ? getExampleNumber(countryCode, examples)?.formatNational() : undefined
+    return countryCode ? getExampleNumber(countryCode, examples.value)?.formatNational() : undefined
   }
   catch (error) {
     console.error(`[maz-ui](MazPhoneNumberInput) ${error}`)
@@ -101,12 +109,25 @@ function getAsYouTypeFormat(countryCode?: CountryCode | undefined | null, phoneN
   }
 }
 
-export function useLibphonenumber() {
-  function isSameCountryCallingCode(countryCode: CountryCode, countryCode2: CountryCode) {
-    return getCountryCallingCode(countryCode) === getCountryCallingCode(countryCode2)
-  }
+function isSameCountryCallingCode(countryCode: CountryCode, countryCode2: CountryCode) {
+  return getCountryCallingCode(countryCode) === getCountryCallingCode(countryCode2)
+}
 
+async function loadExamples() {
+  try {
+    if (examples.value)
+      return
+
+    examples.value = await getPhoneNumberExamplesFile()
+  }
+  catch (error) {
+    console.error('[maz-ui](MazPhoneNumberInput) while loading phone number examples file', error)
+  }
+}
+
+export function useLibphonenumber() {
   return {
+    examples,
     getAsYouTypeFormat,
     getPhoneNumberResults,
     getPhoneNumberExamplesFile,
@@ -115,5 +136,6 @@ export function useLibphonenumber() {
     isCountryAvailable,
     getCountries,
     getCountryCallingCode,
+    loadExamples,
   }
 }

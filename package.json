@@ -4,7 +4,7 @@
   "description": "A standalone components library for Vue.Js & Nuxt.Js (v3.x)",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "clean": "git clean -fXd -e \\!.env.local -e \\!.idea -e \\!.idea/**/* -e \\!.vscode -e \\!.vscode/**/* -e \\!*.crt -e \\!*.key",
+    "clean": "git clean -fXd -e \\!.env -e \\!.env.* -e \\!.idea -e \\!.idea/**/* -e \\!.vscode -e \\!.vscode/**/* -e \\!*.crt -e \\!*.key",
     "prepare": "npx husky",
     "pre-commit": "lint-staged",
     "commit": "cz",
