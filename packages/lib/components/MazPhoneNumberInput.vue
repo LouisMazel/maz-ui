@@ -236,7 +236,9 @@ const PhoneInputRef = ref<ComponentPublicInstance>()
 /** Logic */
 
 onBeforeMount(async () => {
-  onCountryChanged({ countryCode: props.countryCode ?? props.defaultCountryCode })
+  if ((props.countryCode || props.defaultCountryCode) && !selectedCountry.value) {
+    onCountryChanged({ countryCode: props.countryCode ?? props.defaultCountryCode })
+  }
 
   if (props.fetchCountry && !selectedCountry.value) {
     const countryCode = await fetchCountryCode()
@@ -245,7 +247,7 @@ onBeforeMount(async () => {
 })
 
 onMounted(() => {
-  if (!props.defaultCountryCode && !props.countryCode && !props.noUseBrowserLocale) {
+  if (!selectedCountry.value && !props.noUseBrowserLocale) {
     const countryCode = getBrowserLocale()?.locale
     onCountryChanged({ countryCode: countryCode as CountryCode })
   }
@@ -304,14 +306,14 @@ function onPhoneNumberChanged({
     })
   }
 
-  isPhoneNumberInternalUpdate.value = true
-
   if (results.value.isValid && hasAutoFormat.value) {
     phoneNumber.value = results.value.formatNational?.trim().replaceAll(new RegExp(/\D/g), '')
   }
   else {
     phoneNumber.value = newPhoneNumber
   }
+
+  isPhoneNumberInternalUpdate.value = true
 
   if (results.value.e164) {
     emits('update:model-value', results.value.e164)
