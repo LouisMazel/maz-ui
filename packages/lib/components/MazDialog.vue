@@ -10,6 +10,7 @@ import {
   nextTick,
   ref,
   useAttrs,
+  useSlots,
   watch,
 } from 'vue'
 import MazBackdrop, { type MazBackdropProps } from './MazBackdrop.vue'
@@ -102,6 +103,9 @@ const wrapperAttrs = computed<{
 
 const dialogContent = ref<HTMLElement>()
 
+const slots = useSlots()
+const hasFooter = computed(() => !!slots.footer)
+
 if (props.scrollable) {
   watch(() => props.modelValue, async (newVal) => {
     await nextTick()
@@ -167,7 +171,7 @@ if (props.scrollable) {
           />
         </div>
       </slot>
-      <div id="dialogDesc" ref="dialogContent" class="m-dialog-content">
+      <div id="dialogDesc" ref="dialogContent" class="m-dialog-content" :class="{ '--bottom-padding': !hasFooter }">
         <!--
             @slot Default content
               @binding {Function} close close function
@@ -175,7 +179,7 @@ if (props.scrollable) {
           -->
         <slot :close :on-backdrop-clicked />
       </div>
-      <div v-if="$slots.footer" class="m-dialog-footer">
+      <div v-if="hasFooter" class="m-dialog-footer">
         <!--
             @slot Footer slot
               @binding {Function} close close function
@@ -218,13 +222,21 @@ if (props.scrollable) {
     &-icon {
       flex: 0 0 auto;
     }
+
+    & .--bottom-padding {
+      @apply maz-pb-4;
+    }
   }
 
   &.--scrollable {
     @apply maz-max-h-[95vh] maz-my-0;
 
     .m-dialog-content {
-      @apply maz-overflow-auto maz-border-y maz-border-color-light maz-py-4;
+      @apply maz-overflow-auto maz-border-t maz-border-color-light maz-py-4;
+
+      &:not(.--bottom-padding) {
+        @apply maz-border-b;
+      }
     }
   }
 }
