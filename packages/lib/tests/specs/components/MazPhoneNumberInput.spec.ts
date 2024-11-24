@@ -53,7 +53,7 @@ describe('components/MazPhoneNumberInput.vue', () => {
 
     const htmlInput = wrapper.find('input[name="phone"]').element as HTMLInputElement
 
-    expect(htmlInput.value).toBe('+326453')
+    expect(htmlInput.value).toBe('+32 64 53')
 
     expect(wrapper.vm.modelValue).toBe('+326453')
     expect(wrapper.emitted('country-code')?.[0][0]).toBe('BE')
