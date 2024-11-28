@@ -248,29 +248,29 @@ export function findInteractiveElements(el: HTMLElement) {
 
 export function addEventToInteractiveElements({
   interactiveElements,
-  onBlurHandler,
+  onBlur,
   mode,
 }: {
   interactiveElements: HTMLElement[]
-  onBlurHandler: () => void
+  onBlur: () => void
   mode: StrictOptions['mode']
 }) {
   interactiveElements.forEach((element) => {
     if (hasModeIncludes(['eager', 'blur', 'progressive'], mode)) {
-      element.addEventListener('blur', onBlurHandler)
+      element.addEventListener('blur', onBlur)
     }
   })
 }
 
 export function removeEventFromInteractiveElements({
   interactiveElements,
-  onBlurHandler,
+  onBlur,
 }: {
   interactiveElements: HTMLElement[]
-  onBlurHandler: () => void
+  onBlur: () => void
 }) {
   interactiveElements.forEach((element) => {
-    element.removeEventListener('blur', onBlurHandler)
+    element.removeEventListener('blur', onBlur)
   })
 }
 
@@ -522,18 +522,18 @@ export function getContext<Model extends BaseFormPayload>(
 export function getValidationEvents<Model extends BaseFormPayload>({
   ref,
   fieldState,
-  onBlurHandler,
+  onBlur,
 }: {
   ref?: string
   fieldState: FieldState<Model>
-  onBlurHandler: () => void
+  onBlur: () => void
 }) {
   if (ref || hasModeIncludes(['aggressive', 'lazy'], fieldState.mode)) {
     return
   }
 
   return {
-    onBlur: onBlurHandler,
+    onBlur,
   }
 }
 
