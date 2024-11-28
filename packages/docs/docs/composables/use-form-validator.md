@@ -70,7 +70,7 @@ const { model } = useFormValidator<Model>({
 
 To use the `eager`, `blur`, or `progressive` validation modes, you must use the `useFormField` composable to add the necessary validation events.
 
-Two ways to bind validation events:
+3 ways to bind validation events:
 
 ##### 1. Use the `ref` attribute on the component to get the reference
 
@@ -104,7 +104,7 @@ const { value, errorMessage, isValid, hasError } = useFormField('name', {
 
 You can use the `v-bind` directive to bind the validation events to the component or HTML element.
 
-If you use this method with a custom component, the component must emit the `blur` event to trigger the field validation.
+If you use this method with a custom component, the component must emit the `blur` event to trigger the field validation. Otherwise, use the first method.
 
 ```vue{7,16}
 <template>
@@ -119,10 +119,25 @@ If you use this method with a custom component, the component must emit the `blu
   <input v-model="value" v-bind="validationEvents" />
 </template>
 
+##### 3. Use the `onBlur` handler directly from `useFormField`
+
+This method works if the component emits the `blur` event. Otherwise, use the first method.
+
+```vue{7}
+<template>
+  <MazInput
+    v-model="value"
+    :hint="errorMessage"
+    :error="hasError"
+    :success="isValid"
+    @blur="onBlur"
+  />
+</template>
+
 <script setup lang="ts">
 import { useFormField } from 'maz-ui'
 
-const { value, errorMessage, isValid, hasError, validationEvents } = useFormField('name')
+const { value, errorMessage, isValid, hasError, onBlur } = useFormField('name')
 </script>
 ```
 

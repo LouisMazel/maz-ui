@@ -1,9 +1,10 @@
-import type { ComponentPublicInstance } from 'vue'
+import type { ComponentPublicInstance, ComputedRef, WritableComputedRef } from 'vue'
 import type {
   BaseFormPayload,
   ExtractModelKey,
   FormFieldOptions,
   FormSchema,
+  ValidationIssues,
 } from './types'
 
 import { computed, onMounted, onUnmounted } from 'vue'
@@ -24,10 +25,62 @@ import {
   updateFieldState,
 } from './utils'
 
+interface UseFormFieldReturn<FieldType> {
+  /**
+   * Indicates if the field has an error
+   */
+  hasError: ComputedRef<boolean>
+  /**
+   * Errors of the field
+   */
+  errors: ComputedRef<ValidationIssues>
+  /**
+   * Error message of the field
+   * It's the first error of the field
+   */
+  errorMessage: ComputedRef<string | undefined>
+  /**
+   * Indicates if the field is valid
+   */
+  isValid: ComputedRef<boolean>
+  /**
+   * Indicates if the field has been modified
+   */
+  isDirty: ComputedRef<boolean>
+  /**
+   * Indicates if the field has been blurred
+   */
+  isBlurred: ComputedRef<boolean>
+  /**
+   * Indicates if the field has been validated
+   */
+  isValidated: ComputedRef<boolean>
+  /**
+   * Indicates if the field is validating
+   */
+  isValidating: ComputedRef<boolean>
+  /**
+   * Validation mode of the field
+   */
+  mode: ComputedRef<FormFieldOptions<FieldType>['mode']>
+  /**
+   * Value of the field
+   */
+  value: WritableComputedRef<FieldType>
+  /**
+   * Validation events of the field
+   */
+  validationEvents: ComputedRef<ReturnType<typeof getValidationEvents>>
+  /**
+   * Function to handle the blur event of the field
+   */
+  onBlur: () => void
+}
+
 export function useFormField<
   FieldType extends Model[ExtractModelKey<FormSchema<Model>>],
   Model extends BaseFormPayload = BaseFormPayload,
->(name: ExtractModelKey<FormSchema<Model>>, options?: FormFieldOptions<FieldType>) {
+>(name: ExtractModelKey<FormSchema<Model>>, options?: FormFieldOptions<FieldType>): UseFormFieldReturn<FieldType> {
   const opts = {
     formIdentifier: 'main-form-validator',
     ...options,
@@ -72,7 +125,7 @@ export function useFormField<
     })
   }
 
-  function onBlurHandler() {
+  function onBlur() {
     handleFieldBlur<Model>({
       name,
       fieldState: fieldState.value,
@@ -85,7 +138,7 @@ export function useFormField<
   const validationEvents = computed(() =>
     getValidationEvents({
       ref: opts.ref,
-      onBlurHandler,
+      onBlur,
       fieldState: fieldState.value,
     }),
   )
@@ -97,7 +150,7 @@ export function useFormField<
       interactiveElements = findInteractiveElements(element)
       addEventToInteractiveElements({
         interactiveElements,
-        onBlurHandler,
+        onBlur,
         mode: fieldMode,
       })
     }
@@ -118,7 +171,7 @@ export function useFormField<
     onUnmounted(() => {
       removeEventFromInteractiveElements({
         interactiveElements,
-        onBlurHandler,
+        onBlur,
       })
     })
   }
@@ -138,5 +191,6 @@ export function useFormField<
       set: value => (payload.value[name] = value),
     }),
     validationEvents,
+    onBlur,
   }
 }
