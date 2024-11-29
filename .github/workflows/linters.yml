@@ -24,9 +24,6 @@ jobs:
           node-version: '21'
           cache: 'pnpm'
 
-      - name: Print app version package.json
-        run: cat ./packages/lib/package.json | grep version
-
       - name: Install modules
         run: pnpm install
 

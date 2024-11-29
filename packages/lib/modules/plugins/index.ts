@@ -14,4 +14,4 @@ export {
   type ToasterPositions,
 } from './toaster'
 
-export { instance as waitInstance, plugin as installWait, WaitHandler } from './wait'
+export { plugin as installWait, WaitHandler, instance as waitInstance } from './wait'

@@ -3,9 +3,9 @@ import { getAosInstance, installAos, installDialog, installToaster, installWait,
 
 import * as components from 'maz-ui/components'
 import { inBrowser } from 'vitepress'
-import DefaultTheme from 'vitepress/theme-without-fonts'
-
 import googleAnalytics from 'vitepress-plugin-google-analytics'
+
+import DefaultTheme from 'vitepress/theme-without-fonts'
 import { watch } from 'vue'
 
 import ColorContainer from './components/ColorContainer.vue'

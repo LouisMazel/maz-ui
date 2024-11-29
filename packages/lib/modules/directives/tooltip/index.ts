@@ -156,8 +156,8 @@ const plugin = {
 
 export {
   directive as vTooltip,
-  plugin as vTooltipInstall,
   type vTooltipBindingValue,
   type vTooltipColor,
+  plugin as vTooltipInstall,
   type vTooltipOptions,
 }

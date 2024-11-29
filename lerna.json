@@ -3,7 +3,7 @@
   "version": "3.48.1-beta.1",
   "command": {
     "version": {
-      "allowBranch": ["master", "release/*", "feat/rename-tw-css-variables"],
+      "allowBranch": ["master", "release/*"],
       "message": "chore(release): bump version %v",
       "conventionalCommits": true,
       "forceGitTag": false,
