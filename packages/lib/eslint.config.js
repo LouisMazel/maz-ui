@@ -37,11 +37,8 @@ export default antfu(
     files: ['**/*.spec.ts'],
     rules: {
       'sonarjs/no-nested-functions': 'off',
-      'sonarjs/sonar-no-unused-vars': 'off',
-      'sonarjs/no-empty-function': 'off',
       'sonarjs/cognitive-complexity': 'off',
       'sonarjs/no-hardcoded-credentials': 'off',
-      'sonarjs/no-vue-bypass-sanitization': 'off',
     },
   },
 )

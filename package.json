@@ -20,23 +20,22 @@
     ]
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^3.8.0",
-    "@commitlint/cli": "^19.5.0",
-    "@commitlint/config-conventional": "^19.5.0",
+    "@antfu/eslint-config": "^3.11.2",
+    "@commitlint/cli": "^19.6.0",
+    "@commitlint/config-conventional": "^19.6.0",
     "@commitlint/cz-commitlint": "^19.5.0",
-    "@types/node": "^22.9.0",
+    "@types/node": "^22.10.1",
     "changelogen": "^0.5.7",
     "commitizen": "^4.3.1",
     "cross-env": "^7.0.3",
     "eslint": "9.14.0",
     "eslint-plugin-sonarjs": "^2.0.4",
     "eslint-plugin-tailwindcss": "^3.17.5",
-    "husky": "^9.1.6",
+    "husky": "^9.1.7",
     "lerna": "^8.1.9",
     "lint-staged": "^15.2.10",
-    "prettier": "^3.3.3",
-    "ts-node": "11.0.0-beta.1",
-    "typescript": "^5.6.3"
+    "prettier": "^3.4.1",
+    "ts-node": "11.0.0-beta.1"
   },
   "repository": {
     "type": "git",

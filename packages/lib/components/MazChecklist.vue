@@ -9,9 +9,9 @@ import type {
   Color,
   Props as MazInputProps,
 } from './MazInput.vue'
-import { normalizeString, type NormalizeStringOptions } from '../modules/helpers/normalize-string'
-/* eslint-disable vuejs-accessibility/label-has-for */
 import { computed, defineAsyncComponent, ref, watch } from 'vue'
+/* eslint-disable vuejs-accessibility/label-has-for */
+import { normalizeString, type NormalizeStringOptions } from '../modules/helpers/normalize-string'
 import MazCardSpotlight from './MazCardSpotlight.vue'
 import MazCheckbox from './MazCheckbox.vue'
 

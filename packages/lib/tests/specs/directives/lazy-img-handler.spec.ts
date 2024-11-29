@@ -13,9 +13,13 @@ class IntersectionObserverMock {
     this.callback([{ target, isIntersecting: true } as IntersectionObserverEntry], this as unknown as IntersectionObserver)
   }
 
-  unobserve() {}
+  unobserve() {
+    //
+  }
 
-  disconnect() {}
+  disconnect() {
+    //
+  }
 }
 
 globalThis.IntersectionObserver = IntersectionObserverMock as unknown as typeof IntersectionObserver

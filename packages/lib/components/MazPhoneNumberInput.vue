@@ -22,7 +22,7 @@ import PhoneInput from './MazPhoneNumberInput/PhoneInput.vue'
 import { useLibphonenumber } from './MazPhoneNumberInput/useLibphonenumber'
 import { useMazPhoneNumberInput } from './MazPhoneNumberInput/useMazPhoneNumberInput'
 
-export type { Color, CountryCode, Position, Results, Results as Result, Size, Translations }
+export type { Color, CountryCode, Position, Results as Result, Results, Size, Translations }
 
 defineOptions({
   name: 'MazPhoneNumberInput',

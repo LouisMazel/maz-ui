@@ -7,5 +7,5 @@ const plugin = {
   },
 } satisfies Plugin
 
-export { plugin as vZoomImgInstall, vZoomImg }
+export { vZoomImg, plugin as vZoomImgInstall }
 export type { vZoomImgBindingValue } from './zoom-img.handler'
