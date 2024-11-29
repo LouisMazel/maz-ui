@@ -84,7 +84,7 @@ lastUpdated: false
 
     const query = ref<string>()
     const languages = ref<string[]>()
-    const languagesOptions = useLanguageDisplayNames('en-US').getLanguageDisplayNamesForIsoCodes().value.map(({ code, language }) => ({
+    const languagesOptions = useLanguageDisplayNames('en-US').getAllLanguageDisplayNames().value.map(({ code, language }) => ({
       label: language,
       value: code,
     }))
@@ -101,7 +101,7 @@ lastUpdated: false
   import { useLanguageDisplayNames } from 'maz-ui'
   const query = ref()
   const languages = ref<string[]>()
-  const languagesOptions = useLanguageDisplayNames('en-US').getLanguageDisplayNamesForIsoCodes().value.map(({ code, language }) => ({
+  const languagesOptions = useLanguageDisplayNames('en-US').getAllLanguageDisplayNames().value.map(({ code, language }) => ({
     label: language,
     value: code,
   }))
