@@ -105,12 +105,12 @@ export default defineConfig({
     css: {
       postcss: {
         plugins: [
-          postcssUrl(),
+          postcssUrl() as Plugin,
           postcssNested(),
-          tailwindcssNesting() as Plugin,
+          tailwindcssNesting(),
           postcssImport(),
           autoprefixer(),
-          tailwind() as Plugin,
+          tailwind(),
           postcssIsolateStyles({
             includeFiles: [/vp-doc\.css/],
           }),

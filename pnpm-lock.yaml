@@ -243,6 +243,9 @@ importers:
       postcss-nested:
         specifier: ^7.0.2
         version: 7.0.2(postcss@8.4.47)
+      postcss-replace:
+        specifier: ^2.0.1
+        version: 2.0.1(postcss@8.4.47)
       postcss-simple-vars:
         specifier: ^7.0.1
         version: 7.0.1(postcss@8.4.47)
@@ -11906,6 +11909,13 @@ packages:
       }
     engines: { node: '>= 0.4' }
 
+  object-path@0.11.8:
+    resolution:
+      {
+        integrity: sha512-YJjNZrlXJFM42wTBn6zgOJVar9KFJvzx6sTWDte8sWZF//cnjl0BxHNpfZx+ZffXX63A9q0b1zsFiBX4g4X5KA==,
+      }
+    engines: { node: '>= 10.12.0' }
+
   object.assign@4.1.5:
     resolution:
       {
@@ -13100,6 +13110,15 @@ packages:
     engines: { node: ^18.12.0 || ^20.9.0 || >=22.0 }
     peerDependencies:
       postcss: ^8.4.31
+
+  postcss-replace@2.0.1:
+    resolution:
+      {
+        integrity: sha512-T83GVovCkBQkFCTmuid0B2bWNu/O0Bh/HDMeEGFC62EwMvVBLZQFYM7iBbcGT48QDXSNSX6e/X1Q7/Syh5NFng==,
+      }
+    engines: { node: ^12 || ^14 || >=16 }
+    peerDependencies:
+      postcss: ^8.4
 
   postcss-resolve-nested-selector@0.1.6:
     resolution:
@@ -25713,6 +25732,8 @@ snapshots:
 
   object-keys@1.1.1: {}
 
+  object-path@0.11.8: {}
+
   object.assign@4.1.5:
     dependencies:
       call-bind: 1.0.7
@@ -26443,6 +26464,12 @@ snapshots:
     dependencies:
       postcss: 8.4.47
       postcss-value-parser: 4.2.0
+
+  postcss-replace@2.0.1(postcss@8.4.47):
+    dependencies:
+      kind-of: 6.0.3
+      object-path: 0.11.8
+      postcss: 8.4.47
 
   postcss-resolve-nested-selector@0.1.6: {}
 

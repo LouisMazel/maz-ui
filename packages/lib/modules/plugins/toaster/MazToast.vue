@@ -347,8 +347,7 @@ onMounted(() => {
     @apply maz-bottom-0 maz-flex maz-flex-col-reverse;
 
     & > :not([hidden]) ~ :not([hidden]) {
-      margin-bottom: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
-      margin-top: calc(0.5rem * var(--tw-space-y-reverse));
+      @apply maz-my-2;
     }
   }
 

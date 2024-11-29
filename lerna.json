@@ -3,7 +3,7 @@
   "version": "3.48.0",
   "command": {
     "version": {
-      "allowBranch": ["master", "release/*", "feature/use-form-validator"],
+      "allowBranch": ["master", "release/*", "feat/rename-tw-css-variables"],
       "message": "chore(release): bump version %v",
       "conventionalCommits": true,
       "forceGitTag": false,
