@@ -25,7 +25,7 @@ watch(
 </script>
 
 <template>
-  <div class="m-tabs-content maz-relative" :class="{ 'maz-overflow-hidden': hideOverflow }">
+  <div class="m-tabs-content maz-relative m-reset-css" :class="{ 'maz-overflow-hidden': hideOverflow }">
     <slot />
   </div>
 </template>

@@ -35,7 +35,7 @@ onUnmounted(() => {
 <template>
   <Teleport :to="teleportSelector">
     <div
-      class="m-fullscreen-loader maz-fixed maz-inset-0 maz-z-default-backdrop maz-flex maz-flex-col maz-gap-2 maz-bg-overlay maz-text-center maz-backdrop-blur maz-flex-center"
+      class="m-fullscreen-loader m-reset-css"
       v-bind="$attrs"
     >
       <MazSpinner :color="color" :size="size" />
@@ -51,5 +51,11 @@ onUnmounted(() => {
   html.--maz-fullscreen-loader-present {
   overflow-y: hidden;
   height: 100vh;
+}
+</style>
+
+<style lang="postcss" scoped>
+.m-fullscreen-loader {
+  @apply maz-fixed maz-inset-0 maz-z-default-backdrop maz-flex maz-flex-col maz-gap-2 maz-bg-overlay maz-text-center maz-backdrop-blur maz-flex-center;
 }
 </style>

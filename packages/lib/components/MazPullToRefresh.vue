@@ -220,7 +220,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="m-pull-to-refresh" :class="{ '--available': pull.available || pullHeight > 10 }">
+  <div class="m-pull-to-refresh m-reset-css" :class="{ '--available': pull.available || pullHeight > 10 }">
     <div
       v-if="!isDisabled"
       class="loading-header"

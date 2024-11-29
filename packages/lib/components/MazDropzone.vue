@@ -326,7 +326,7 @@ export default defineComponent({
     ref="ButtonElement"
     type="button"
     name="maz-dropzone"
-    class="maz-dropzone"
+    class="maz-dropzone m-reset-css"
     :style="[dropzoneStyle]"
   >
     <template v-if="dropzoneReady">

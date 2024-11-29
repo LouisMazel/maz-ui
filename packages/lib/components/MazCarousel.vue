@@ -59,7 +59,7 @@ function setScrollState(event: Event) {
 
 <template>
   <div
-    class="m-carousel"
+    class="m-carousel m-reset-css"
     :class="{
       '--hide-scrollbar': hideScrollbar,
     }"

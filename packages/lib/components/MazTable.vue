@@ -465,8 +465,9 @@ function getNormalizedRows(): T[] {
 
 function sortColumn(columnIndex: number) {
   if (columnIndex === sortedColumnIndex.value) {
+    const sortTypeValue = sortType.value === 'DESC' ? 'ASC' : undefined
     sortType.value
-        = sortType.value === undefined ? 'DESC' : sortType.value === 'DESC' ? 'ASC' : undefined
+        = sortType.value === undefined ? 'DESC' : sortTypeValue
   }
   else {
     sortType.value = 'DESC'
@@ -523,7 +524,7 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <div class="m-table" :class="{ '--has-header': hasHeader }">
+  <div class="m-table m-reset-css" :class="{ '--has-header': hasHeader }">
     <div v-if="hasHeader" class="m-table-header">
       <div v-if="title || $slots.title" class="m-table-spacer">
         <slot name="title">

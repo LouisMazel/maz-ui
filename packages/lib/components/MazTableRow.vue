@@ -13,7 +13,7 @@ const { hoverable, backgroundEven, backgroundOdd } = injectStrict<MazTableProvid
 
 <template>
   <tr
-    class="m-table-row"
+    class="m-table-row m-reset-css"
     :class="{
       '--hoverable': hoverable && !noHoverable,
       '--background-odd': backgroundOdd,

@@ -132,7 +132,7 @@ function setPageNumber(page: number) {
 </script>
 
 <template>
-  <nav class="m-pagination" role="navigation" aria-label="page navigation">
+  <nav class="m-pagination m-reset-css" role="navigation" aria-label="page navigation">
     <ul>
       <li>
         <MazBtn

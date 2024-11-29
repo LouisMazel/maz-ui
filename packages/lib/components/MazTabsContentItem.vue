@@ -33,7 +33,7 @@ const isCurrentTab = computed(() => {
 
 <template>
   <Transition :name="transitionName">
-    <div v-show="isCurrentTab" ref="MazTabsContentItem" class="m-tabs-content-item">
+    <div v-show="isCurrentTab" ref="MazTabsContentItem" class="m-tabs-content-item m-reset-css">
       <slot />
     </div>
   </Transition>

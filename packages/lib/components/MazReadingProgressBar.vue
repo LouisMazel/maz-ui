@@ -135,7 +135,7 @@ onBeforeUnmount(() => {
 
 <template>
   <Teleport :to="teleportSelector">
-    <div class="m-reading-progress-bar" v-bind="$attrs">
+    <div class="m-reading-progress-bar m-reset-css" v-bind="$attrs">
       <div
         :class="barClass"
         :style="{
@@ -149,7 +149,7 @@ onBeforeUnmount(() => {
 </template>
 
 <style lang="postcss" scoped>
-  .m-reading-progress-bar {
+.m-reading-progress-bar {
   @apply maz-fixed maz-top-0 maz-z-default-backdrop maz-w-full;
 }
 </style>

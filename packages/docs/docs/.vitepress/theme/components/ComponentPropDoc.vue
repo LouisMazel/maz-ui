@@ -77,21 +77,23 @@ onBeforeMount(async () => {
 <template>
   <table v-if="options" class="component-prop-doc" style="display: table;">
     <thead>
-      <th>
-        Prop
-      </th>
-      <th>
-        Type
-      </th>
-      <th>
-        Required
-      </th>
-      <th>
-        Default
-      </th>
-      <th>
-        Possible Value
-      </th>
+      <tr>
+        <th>
+          Prop
+        </th>
+        <th>
+          Type
+        </th>
+        <th>
+          Required
+        </th>
+        <th>
+          Default
+        </th>
+        <th>
+          Possible Value
+        </th>
+      </tr>
     </thead>
     <tbody>
       <tr v-for="({ name, type, defaultValue, required, values }, i) in options" :key="i">
@@ -133,9 +135,11 @@ onBeforeMount(async () => {
   <div class="flex items-start" style="gap: 2rem;">
     <table v-if="events" class="component-prop-doc" style="display: table;">
       <thead>
-        <th>
-          Events
-        </th>
+        <tr>
+          <th>
+            Events
+          </th>
+        </tr>
       </thead>
       <tbody>
         <tr v-for="(event, i) in events" :key="i">
@@ -147,9 +151,11 @@ onBeforeMount(async () => {
     </table>
     <table v-if="componentMethods" class="component-prop-doc" style="display: table;">
       <thead>
-        <th>
-          Methods
-        </th>
+        <tr>
+          <th>
+            Methods
+          </th>
+        </tr>
       </thead>
       <tbody>
         <tr v-for="(method, i) in componentMethods" :key="i">

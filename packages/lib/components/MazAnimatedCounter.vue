@@ -51,7 +51,7 @@ const durationInMs = computed(() => `${props.duration}ms`)
 
 <template>
   <span
-    class="m-animated-counter"
+    class="m-animated-counter m-reset-css"
     :class="{
       '--animated': isAnimated,
       '--prefixed': hasPrefix,

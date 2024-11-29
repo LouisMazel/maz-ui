@@ -233,7 +233,7 @@ const borderColor = computed(() => {
 
 <template>
   <fieldset
-    class="m-input-code"
+    class="m-input-code m-reset-css"
     :class="[size ? `--${size}` : undefined, props.class]"
     :disabled="disabled"
     :style="[style, { '--input-border-color': borderColor }]"

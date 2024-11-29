@@ -210,7 +210,7 @@ const hasBorderStyle = computed(() => borderStyle.value !== '--default-border')
 
 <template>
   <label
-    class="m-textarea"
+    class="m-textarea m-reset-css"
     :for="instanceId"
     :class="[
       {

@@ -1,5 +1,5 @@
 import type { Config } from 'tailwindcss'
-import { tailwindConfig } from 'maz-ui/tailwindcss/tailwind.config.ts'
+import tailwindConfig from 'maz-ui/tailwindcss/tailwind.config.ts'
 
 export default <Config>{
   presets: [tailwindConfig],

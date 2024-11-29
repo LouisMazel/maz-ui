@@ -64,7 +64,7 @@ function leave(element: HTMLElement) {
 
 <template>
   <TransitionGroup
-    class="m-transition-expand"
+    class="m-transition-expand m-reset-css"
     name="maz-expand"
     tag="div"
     @enter="(el: Element) => enter(el as HTMLElement)"
