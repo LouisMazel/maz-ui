@@ -3,6 +3,10 @@
     <div>
       <!-- Start Developping Area - You should not commit anything here to keep this place clean for all others -->
 
+      <h1 class="maz-cap-f">
+        hello world
+      </h1>
+
       <!-- <TestForm /> -->
 
       <MazChecklist
