@@ -57,7 +57,7 @@ function selectStep(index: number) {
 </script>
 
 <template>
-  <div class="m-accordion" role="presentation">
+  <div class="m-accordion m-reset-css" role="presentation">
     <template v-for="step in stepCount" :key="step">
       <MazCardSpotlight class="m-accordion__spotlight" :padding="false">
         <button

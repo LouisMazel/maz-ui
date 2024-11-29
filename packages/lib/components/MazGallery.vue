@@ -104,7 +104,7 @@ function shouldHaveRemainingLayer(index: number): boolean {
 <template>
   <div
     v-if="images.length > 0 || hasEmptyLayer"
-    class="m-gallery maz-flex"
+    class="m-gallery m-reset-css"
     :style="[sizeStyle, { '--gallery-separator-color': separatorColor }]"
     :class="{ 'maz-rounded': !noRadius }"
   >
@@ -162,8 +162,8 @@ function shouldHaveRemainingLayer(index: number): boolean {
 </template>
 
 <style lang="postcss" scoped>
-  .m-gallery {
-  @apply maz-relative maz-overflow-hidden;
+.m-gallery {
+  @apply maz-relative maz-overflow-hidden maz-flex;
 
   &__hidden {
     @apply maz-hidden;

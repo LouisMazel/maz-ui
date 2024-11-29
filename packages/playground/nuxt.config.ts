@@ -53,5 +53,6 @@ export default defineNuxtConfig({
     installVTooltip: {
       position: 'top',
     },
+    injectCss: true,
   },
 })

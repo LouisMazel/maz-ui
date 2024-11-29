@@ -21,7 +21,7 @@ const colorCSVariables = computed(() => ({
 
 <template>
   <div
-    class="m-loading-bar"
+    class="m-loading-bar m-reset-css"
     :style="[{ '--loading-bar-height': height, '--loading-bar-color': colorCSVariables.alpha, '--loading-bar-main-color': colorCSVariables.main }]"
   >
     <div />

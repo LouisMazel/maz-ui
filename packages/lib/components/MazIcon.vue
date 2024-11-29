@@ -182,6 +182,7 @@ watchEffect(() => getSource(fullSrc.value))
   <svg
     v-if="svgElSource"
     ref="svgElem"
+    class="m-icon m-reset-css"
     width="1em"
     height="1em"
     v-bind="{

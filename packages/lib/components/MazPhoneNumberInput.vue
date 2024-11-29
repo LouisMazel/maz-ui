@@ -412,7 +412,7 @@ provide<InjectedData>('data', {
 
 <template>
   <div
-    class="m-phone-number-input"
+    class="m-phone-number-input m-reset-css"
     :class="[props.class, { '--block': block }, orientation ? `--${orientation}` : undefined]"
     :style
   >

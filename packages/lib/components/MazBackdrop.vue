@@ -185,7 +185,7 @@ defineExpose({
       @after-enter="onBackdropAnimationEnter"
       @after-leave="onBackdropAnimationLeave"
     >
-      <div v-if="present" class="m-backdrop --present" v-bind="$attrs" :class="[backdropClass, variant && `--variant-${variant}`, { '--persistent': persistent }]">
+      <div v-if="present" class="m-backdrop --present m-reset-css" v-bind="$attrs" :class="[backdropClass, variant && `--variant-${variant}`, { '--persistent': persistent }]">
         <div role="dialog" class="m-backdrop-container" aria-modal="true">
           <div class="m-backdrop-wrapper">
             <!-- eslint-disable-next-line vuejs-accessibility/click-events-have-key-events -->

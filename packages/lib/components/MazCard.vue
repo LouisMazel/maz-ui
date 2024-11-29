@@ -121,7 +121,7 @@ const footerAlignClass = computed(() =>
 
 <template>
   <div
-    class="m-card"
+    class="m-card m-reset-css"
     :class="[
       {
         'm-card--linked': isLinked,

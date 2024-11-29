@@ -342,7 +342,8 @@ function emitInputEvent(event: Event) {
     <label v-if="topLabel" :for="instanceId" class="m-input-top-label">{{ topLabel }}</label>
 
     <div
-      class="m-input-wrapper" :class="[
+      class="m-input-wrapper m-reset-css"
+      :class="[
         inputClasses,
         borderStyle,
         !roundedSize ? { 'maz-rounded': !noRadius } : `--rounded-${roundedSize}`,

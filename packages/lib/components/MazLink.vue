@@ -32,8 +32,8 @@ export interface MazLinkProps {
   /** The title of the link */
   title?: string
   /**
-   * The color of the link
-   * @default '#'
+   * The href of the link
+   * @default undefined
    */
   href?: string
   /** The route location (router-link) of the link */
@@ -81,7 +81,7 @@ export interface MazLinkProps {
   <Component
     :is="to ? 'router-link' : 'a'"
     :id
-    class="m-link"
+    class="m-link m-reset-css"
     :class="[
       {
         '--underline': underline,

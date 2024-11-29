@@ -385,7 +385,7 @@ onBeforeUnmount(() => {
   <div
     ref="FullscreenImgElement"
     role="button"
-    class="m-fullscreen-img"
+    class="m-fullscreen-img m-reset-css"
     tabindex="0"
     @click.stop="close"
     @keypress.esc.prevent="close"

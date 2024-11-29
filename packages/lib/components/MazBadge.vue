@@ -29,7 +29,7 @@ withDefaults(defineProps<Props>(), {
 
 <template>
   <span
-    class="m-badge"
+    class="m-badge m-reset-css"
     :class="[
       `--${color}`,
       { '--outline': outline, '--pastel': pastel, '--nowrap': nowrap },

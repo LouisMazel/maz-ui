@@ -27,7 +27,11 @@ const props = withDefaults(defineProps<Props>(), {
   steps: undefined,
   color: 'primary',
 })
-const emits = defineEmits<(name: 'update:model-value', value: number) => void>()
+
+const emits = defineEmits<{
+  'update:model-value': [value: number]
+}>()
+
 const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
 const MazExpandAnimation = defineAsyncComponent(() => import('./MazExpandAnimation.vue'))
 const CheckCircleIcon = defineAsyncComponent(() => import('./../icons/check-circle.svg'))
@@ -166,7 +170,7 @@ function isLastStep(step: number): boolean {
 </script>
 
 <template>
-  <div class="m-stepper" :style="[{ '--round-step-bg-color': roundStepBgColor, '--round-step-text-color': roundStepTextColor }]">
+  <div class="m-stepper m-reset-css" :style="[{ '--round-step-bg-color': roundStepBgColor, '--round-step-text-color': roundStepTextColor }]">
     <template v-for="step in stepCount" :key="step">
       <button
         v-if="hasDataForStep('title', step)"

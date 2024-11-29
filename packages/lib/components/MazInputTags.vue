@@ -175,7 +175,7 @@ const buttonSize = computed(() => {
 
 <template>
   <div
-    class="m-input-tags"
+    class="m-input-tags m-reset-css"
     :class="[borderStyle, `--${color}`, `--${size}`, props.class, { '--block': block }]"
     :style
     @focus.capture="isFocused = true"

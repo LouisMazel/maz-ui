@@ -192,7 +192,7 @@ onMounted(() => {
 <template>
   <div
     ref="tabsBarRef"
-    class="m-tabs-bar"
+    class="m-tabs-bar m-reset-css"
     :class="{
       '--block': block,
       '--elevation': !noElevation,
@@ -245,7 +245,7 @@ onMounted(() => {
 </template>
 
 <style lang="postcss" scoped>
-  .m-tabs-bar {
+.m-tabs-bar {
   @apply maz-relative maz-inline-flex maz-max-w-full maz-gap-1 maz-overflow-x-auto maz-rounded maz-p-2 maz-align-top maz-bg-color dark:maz-border dark:maz-border-color-light;
 
   &.--elevation {

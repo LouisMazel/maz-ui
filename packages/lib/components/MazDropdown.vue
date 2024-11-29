@@ -312,7 +312,7 @@ watch(
   <div
     :id="instanceId"
     v-click-outside="onClickOutside"
-    class="m-dropdown"
+    class="m-dropdown m-reset-css"
     :style
     :class="[props.class, { '--block': block }]"
   >

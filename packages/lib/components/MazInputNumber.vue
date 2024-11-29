@@ -154,7 +154,7 @@ function decrement() {
 
 <template>
   <div
-    class="m-input-number"
+    class="m-input-number m-reset-css"
     :class="[`m-input-number--${size}`, props.class, { '--block': block }]"
     :style="style"
   >

@@ -124,7 +124,7 @@ function updateInternalValue(value?: string | number) {
 <template>
   <MazInput
     :model-value="displayPrice"
-    class="maz-input-price"
+    class="maz-input-price m-reset-css"
     :block
     :error
     :success

@@ -150,7 +150,7 @@ function onFocus(event: FocusEvent) {
 <template>
   <label
     :for="instanceId"
-    class="m-radio"
+    class="m-radio m-reset-css"
     :class="[{ '--disabled': disabled, '--selected': isSelected, '--error': error, '--warning': warning, '--success': success }, props.class]"
     tabindex="0"
     role="radio"

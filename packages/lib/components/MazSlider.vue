@@ -119,7 +119,7 @@ async function buildComponent(emitValue?: boolean) {
   await calcPos()
   await nextTick()
 
-  for (const [index, _value] of computedValue.value.entries()) {
+  for (const [index] of computedValue.value.entries()) {
     setBtnDividers(index)
   }
 }
@@ -304,7 +304,7 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
   <!-- eslint-disable vuejs-accessibility/mouse-events-have-key-events -->
   <div
     :style="[wrapperStyle, { fontSize: size }]"
-    class="m-slider"
+    class="m-slider m-reset-css"
     role="button"
     tabindex="-1"
     :class="[`m-slider--${color}`]"

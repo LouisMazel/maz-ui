@@ -1,28 +1,40 @@
-*,
-::before,
-::after {
-  border-width: 0;
-  border-style: solid;
-  border-color: currentcolor;
-  box-sizing: border-box;
-}
+@layer maz-ui-reset {
+  .m-reset-css {
+    &,
+    & *,
+    &::before,
+    &::after {
+      border-width: 0;
+      border-style: solid;
+      border-color: currentcolor;
+      box-sizing: border-box;
+    }
 
-button {
-  background-color: transparent;
-}
+    &:is(button),
+    button {
+      background-color: inherit;
+      padding: inherit;
+    }
 
-button,
-input,
-optgroup,
-select,
-textarea {
-  font-family: inherit;
-  font-feature-settings: inherit;
-  font-variation-settings: inherit;
-  font-size: 100%;
-  font-weight: inherit;
-  line-height: inherit;
-  letter-spacing: inherit;
-  color: inherit;
-  margin: 0;
+    button,
+    &:is(button),
+    input,
+    &:is(input),
+    optgroup,
+    &:is(optgroup),
+    select,
+    &:is(select),
+    textarea,
+    &:is(textarea) {
+      font-family: inherit;
+      font-feature-settings: inherit;
+      font-variation-settings: inherit;
+      font-size: 100%;
+      font-weight: inherit;
+      line-height: inherit;
+      letter-spacing: inherit;
+      color: inherit;
+      margin: 0;
+    }
+  }
 }
