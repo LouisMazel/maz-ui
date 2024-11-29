@@ -7,5 +7,11 @@ module.exports = {
     'postcss-import': {},
     'autoprefixer': {},
     'tailwindcss': {},
+    'postcss-replace': {
+      pattern: /(--tw|\*)/g,
+      data: {
+        '--tw': '--maz-tw',
+      },
+    },
   },
 }
