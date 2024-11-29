@@ -1,5 +1,68 @@
 # Change Log
 
+## v3.47.1...v3.48.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.47.1...v3.48.0)
+
+### 🚀 Enhancements
+
+- **maz-ui:** Add new CSS variables - maz-bg-color-dark-dark, maz-bg-color-dark-darker, maz-bg-color-light-dark and maz-bg-color-dark-darker ([a6b653042](https://github.com/LouisMazel/maz-ui/commit/a6b653042))
+- **docs:** Add new sections for populare and latest components and module ([5337d336d](https://github.com/LouisMazel/maz-ui/commit/5337d336d))
+- **maz-ui:** MazInput - add new options: topLabel (label above the input) and assistiveText (text below the input) ([9ac994c75](https://github.com/LouisMazel/maz-ui/commit/9ac994c75))
+- **maz-ui:** MazTextarea - add new prop options: padding (bool), transparent, border (bool), roundedSize. add slots: label and append (with appendJustify props) ([986dcf5d9](https://github.com/LouisMazel/maz-ui/commit/986dcf5d9))
+- **maz-ui:** MazTextarea - make it a generic component ([54669c454](https://github.com/LouisMazel/maz-ui/commit/54669c454))
+- **maz-ui:** VToolip - add offset option ([50fd5dc34](https://github.com/LouisMazel/maz-ui/commit/50fd5dc34))
+- **maz-ui:** UseFormValidator - expose the onBlur method ([cc66cffbd](https://github.com/LouisMazel/maz-ui/commit/cc66cffbd))
+- **maz-ui:** Styles - can disable reset CSS ([#1180](https://github.com/LouisMazel/maz-ui/pull/1180))
+
+### 🩹 Fixes
+
+- **maz-ui:** MazDialogPromise - cancelText and confirmText display by default in the button if provided ([1b6c09289](https://github.com/LouisMazel/maz-ui/commit/1b6c09289))
+- **maz-ui:** UseFormValidator - not required property in partial model in the schema ([69b42dae1](https://github.com/LouisMazel/maz-ui/commit/69b42dae1))
+- **maz-ui:** MazPhoneNumberInput - the phone number should be displayed on mount ([10ec4a6e1](https://github.com/LouisMazel/maz-ui/commit/10ec4a6e1))
+- **maz-ui:** MazPhoneNumberInput - country switching and formatting number ([65e131836](https://github.com/LouisMazel/maz-ui/commit/65e131836))
+- **maz-ui:** MazPhoneNumberInput - fix some errors with formatted phone numbers ([2c51fee59](https://github.com/LouisMazel/maz-ui/commit/2c51fee59))
+- **maz-ui:** MazPhoneNumberInput - fix some errors with formatted phone numbers ([79a81c02d](https://github.com/LouisMazel/maz-ui/commit/79a81c02d))
+- **maz-ui:** Typescript issue with generate tailwind config ([b71c7496d](https://github.com/LouisMazel/maz-ui/commit/b71c7496d))
+- **maz-ui:** MazDialog - add padding on the bottom to the content when no footer ([edd3113d5](https://github.com/LouisMazel/maz-ui/commit/edd3113d5))
+
+### 💅 Refactors
+
+- **maz-ui:** V-fullscreen-img - improve animation behavior and UX ([81c9596b5](https://github.com/LouisMazel/maz-ui/commit/81c9596b5))
+- **maz-ui:** MazTable - make it a generic component (TS) ([276cf7fbc](https://github.com/LouisMazel/maz-ui/commit/276cf7fbc))
+- **maz-ui:** Toaster - use primary color for message toast for the progress bar ([9074b70a1](https://github.com/LouisMazel/maz-ui/commit/9074b70a1))
+- **maz-ui:** MazLink - href is undefined by default ([fe3be6bba](https://github.com/LouisMazel/maz-ui/commit/fe3be6bba))
+- **maz-ui:** MazTable - add data row into the actions slot ([cef169c8a](https://github.com/LouisMazel/maz-ui/commit/cef169c8a))
+- **maz-ui:** UseFormValidator - TS improvements: a non required key in model should not required in input schema ([c146c100c](https://github.com/LouisMazel/maz-ui/commit/c146c100c))
+- **maz-ui:** MazSelect - not stop enter key event (to submit form) ([3c9e276ca](https://github.com/LouisMazel/maz-ui/commit/3c9e276ca))
+- **maz-ui:** MazChecklist - item slot share all item payload ([a2a9e0bd6](https://github.com/LouisMazel/maz-ui/commit/a2a9e0bd6))
+- **maz-ui:** MazDropdown - add dropdownIcon prop to replace the icon ([993c27870](https://github.com/LouisMazel/maz-ui/commit/993c27870))
+- **maz-ui:** MazDropdown - add dropdownIconAnimation to disable the icon animation on open ([e4354e54c](https://github.com/LouisMazel/maz-ui/commit/e4354e54c))
+- **maz-ui:** Reduce hydration warnings from Nuxt (use CSS variables instead of v-bind in style) ([9fc1f556f](https://github.com/LouisMazel/maz-ui/commit/9fc1f556f))
+- **maz-ui:** MazTable - remove truncate prop option and add scrollable option ([117a4390a](https://github.com/LouisMazel/maz-ui/commit/117a4390a))
+- **maz-ui:** MazBtn - use space-between, space-around and space-evenly instead of between, around, evenly for justify options ([6e1782da2](https://github.com/LouisMazel/maz-ui/commit/6e1782da2))
+- **maz-ui:** MazBtn, MazAvatar, MazBadge, MazInput, MazTable: CSS - not apply a border radius to 0 when rounded-size is none to let the dev set his own border-radius without important ([5a330786e](https://github.com/LouisMazel/maz-ui/commit/5a330786e))
+- **maz-ui:** UseLanguageDisplayNames - add all languages codes (BCP 47 & ISO 639 1) ad delete getAllPossibleLanguages ([151f3fd49](https://github.com/LouisMazel/maz-ui/commit/151f3fd49))
+- **maz-ui:** MazCircularProgressBar - Add options to control the auto-color states ([14f1fe2f9](https://github.com/LouisMazel/maz-ui/commit/14f1fe2f9))
+- **maz-ui:** VClosable - improve excluded element dectection ([36af1ed32](https://github.com/LouisMazel/maz-ui/commit/36af1ed32))
+- **maz-ui:** MazBackdrop - improve behavior and UX for MazDialog, MarDrawer and MazBottomSheet ([84f7a1cab](https://github.com/LouisMazel/maz-ui/commit/84f7a1cab))
+
+### 🏡 Chore
+
+- **docs:** Linter parsing ([77d4e9d1e](https://github.com/LouisMazel/maz-ui/commit/77d4e9d1e))
+- Linters parsing ([3f863cfa9](https://github.com/LouisMazel/maz-ui/commit/3f863cfa9))
+- **maz-ui:** Remove useless async functions ([4043d9db4](https://github.com/LouisMazel/maz-ui/commit/4043d9db4))
+- **deps:** Upgrade dependencies ([7d246fd6a](https://github.com/LouisMazel/maz-ui/commit/7d246fd6a))
+
+### 🎨 Styles
+
+- **maz-ui:** MazInputTags - tags button sizes ([bdee7f93f](https://github.com/LouisMazel/maz-ui/commit/bdee7f93f))
+
+### ❤️ Contributors
+
+- Mazel <me@loicmazuel.com>
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.47.0...v3.47.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.47.0...v3.47.1)
