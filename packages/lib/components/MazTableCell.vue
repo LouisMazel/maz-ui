@@ -6,7 +6,7 @@ const { size } = injectStrict<MazTableProvide>(mazTableKey)
 </script>
 
 <template>
-  <td class="m-table-cell" :class="[`--${size}`]">
+  <td class="m-table-cell  m-reset-css" :class="[`--${size}`]">
     <slot />
   </td>
 </template>

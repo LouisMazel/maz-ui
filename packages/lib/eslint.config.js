@@ -41,6 +41,7 @@ export default antfu(
       'sonarjs/no-empty-function': 'off',
       'sonarjs/cognitive-complexity': 'off',
       'sonarjs/no-hardcoded-credentials': 'off',
+      'sonarjs/no-vue-bypass-sanitization': 'off',
     },
   },
 )

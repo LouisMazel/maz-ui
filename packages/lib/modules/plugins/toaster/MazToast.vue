@@ -94,7 +94,7 @@ const actionLoading = ref(false)
 const isActive = ref(false)
 const queueTimer = ref<ReturnType<typeof setTimeout>>()
 
-const containerClassName = `m-toast-container --${positionY.value} --${positionX.value}`
+const containerClassName = `m-toast-container m-reset-css --${positionY.value} --${positionX.value}`
 const selectorContainerClass = `.${containerClassName.replaceAll(' ', '.')}`
 
 const timer = useTimer({
@@ -256,7 +256,7 @@ onMounted(() => {
     <button
       v-show="isActive"
       ref="Toaster"
-      class="m-toast"
+      class="m-toast m-reset-css"
       :class="[
         `--${type}`,
         `--${positionY}`,
@@ -327,8 +327,6 @@ onMounted(() => {
 
 <style lang="postcss">
 .m-toast-container {
-  box-sizing: border-box;
-
   @apply maz-fixed maz-flex maz-flex-col maz-gap-2 maz-p-4;
 
   z-index: 1051;

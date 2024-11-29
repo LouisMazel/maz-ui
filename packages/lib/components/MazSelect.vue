@@ -639,7 +639,7 @@ function updateValue(inputOption: NormalizedOption, mustCloseList = true) {
       exclude: excludeSelectors,
       handler: closeList,
     }"
-    class="m-select"
+    class="m-select m-reset-css"
     :class="[
       { '--is-open': hasListOpened, '--disabled': disabled, '--block': block },
       props.class,

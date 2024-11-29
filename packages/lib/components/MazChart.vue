@@ -115,5 +115,5 @@ const component = defineAsyncComponent(async () => {
 
 <template>
   <!-- @vue-expect-error -->
-  <Component :is="component" v-bind="props" />
+  <Component :is="component" class="m-chart m-reset-css" v-bind="props" />
 </template>

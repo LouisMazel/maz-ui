@@ -3,7 +3,6 @@ import type { Config } from 'tailwindcss'
 import tailwindConfigBase from './tailwindcss/tailwind.config'
 
 export default <Config>{
-  mode: 'build',
   presets: [tailwindConfigBase],
   content: {
     files: ['./modules/**/*', './components/**/*', 'tailwindcss/**/*', '!components_tmp/**/*'],

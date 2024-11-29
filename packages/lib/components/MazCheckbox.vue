@@ -223,7 +223,7 @@ function onFocus(event: FocusEvent) {
 <template>
   <label
     :for="instanceId"
-    class="m-checkbox"
+    class="m-checkbox m-reset-css"
     :class="[{ '--disabled': disabled, '--error': error, '--warning': warning, '--success': success }, props.class]"
     tabindex="0"
     :style="[style, { '--checkbox-selected-color': checkboxSelectedColor, '--checkbox-box-shadow-color': checkboxBoxShadow }]"

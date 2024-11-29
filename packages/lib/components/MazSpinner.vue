@@ -32,7 +32,7 @@ const {
     y="0px"
     viewBox="0 0 50 50"
     xml:space="preserve"
-    class="m-spinner"
+    class="m-spinner m-reset-css"
     :class="`m-spinner--${color}`"
     style="enable-background: new 0 0 50 50"
   >

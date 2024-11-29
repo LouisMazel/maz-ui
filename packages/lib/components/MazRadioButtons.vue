@@ -123,7 +123,7 @@ function onFocus(index: number, event: FocusEvent) {
 
 <template>
   <div
-    class="m-radio-buttons"
+    class="m-radio-buttons m-reset-css"
   >
     <div class="m-radio-buttons__wrapper" :class="[`--${orientation}`, { '--no-wrap': noWrap, '--block': block }]">
       <label

@@ -8,12 +8,13 @@ export interface Props {
 
 const props = defineProps<Props>()
 
-const emits = defineEmits</**
-                           * Emitted when the selected tab change
-                           * @property {number} newValue new value set
-                           */
-  (event: 'update:model-value', index: number) => void
->()
+const emits = defineEmits<{
+  /**
+   * Emitted when the selected tab change
+   * @property {number} newValue new value set
+   */
+  'update:model-value': [value: number]
+}>()
 
 const localValue = ref(1)
 
@@ -43,7 +44,7 @@ provide<MazTabsProvide>('maz-tabs', {
 </script>
 
 <template>
-  <div class="m-tabs">
+  <div class="m-tabs m-reset-css">
     <slot />
   </div>
 </template>

@@ -91,7 +91,7 @@
       :hint="radioError"
       :success="isValidRadio"
     >
-      Switch
+      Radio 1
     </MazRadio>
     <MazRadio
       id="radio2"
@@ -101,7 +101,7 @@
       name="radio"
       :warning="!!radioError"
       :hint="radioError"
-      label="Switch"
+      label="Radio 2"
       :success="isValidRadio"
     />
     <MazRadioButtons

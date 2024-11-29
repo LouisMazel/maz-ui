@@ -9,5 +9,6 @@ export default <Config>{
   content: ['./../lib/modules/**/*', './../lib/components/**/*'],
   corePlugins: {
     container: false,
+    preflight: true,
   },
 }

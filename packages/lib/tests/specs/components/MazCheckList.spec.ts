@@ -100,7 +100,7 @@ describe('mazChecklist', () => {
     await vi.dynamicImportSettled()
     const input = wrapper.findComponent(MazInput)
     await input.setValue('Cherry')
-    const noResults = wrapper.find('span.maz-text-muted')
+    const noResults = wrapper.find('span.no-results-text')
 
     expect(noResults.exists()).toBe(true)
     expect(noResults.text()).toBe('No results found')

@@ -132,7 +132,7 @@ function handleImageError(event: Event) {
   <Component
     :is="componentType"
     :style="[{ fontSize: size }, style]"
-    class="m-avatar"
+    class="m-avatar m-reset-css"
     :class="[
       {
         '--has-link': isLink,

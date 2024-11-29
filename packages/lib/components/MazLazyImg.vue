@@ -88,7 +88,7 @@ const sources = computed(() => {
       onLoaded: (el) => $emit('loaded', el),
       onError: (el) => $emit('error', el),
     }"
-    class="m-lazy-img-component"
+    class="m-lazy-img-component m-reset-css"
     :class="[{ '--use-loader': !noLoader, '--height-full': imageHeightFull, '--block': block }, props.class]"
     :style
   >

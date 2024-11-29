@@ -124,7 +124,7 @@ const dashoffset = computed<number>(() => {
 
 <template>
   <div
-    class="m-circular-progress-bar"
+    class="m-circular-progress-bar m-reset-css"
     :style="[
       {
         '--animation-duration': animationDuration,

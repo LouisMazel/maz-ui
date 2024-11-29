@@ -624,7 +624,7 @@ watch(
   <div
     ref="MazPicker"
     v-click-outside="closeCalendarOnClickOutside"
-    class="m-picker"
+    class="m-picker m-reset-css"
     role="none"
     :style="style"
     :class="[

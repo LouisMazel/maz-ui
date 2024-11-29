@@ -124,9 +124,9 @@ function updateQuery(value?: string) {
 </script>
 
 <template>
-  <div class="m-checklist maz-flex maz-flex-col maz-gap-4">
-    <label v-if="search?.enabled" for="query" class="maz-flex maz-items-center maz-justify-between maz-gap-4">
-      <span v-if="$slots.title || title" class="maz-flex-none maz-truncate">
+  <div class="m-checklist m-reset-css">
+    <label v-if="search?.enabled" for="query" class="search-label">
+      <span v-if="$slots.title || title" class="title">
         <!-- @slot use this slot to customize the title -->
         <slot name="title">
           {{ title }}
@@ -150,15 +150,15 @@ function updateQuery(value?: string) {
       :color
       :no-elevation="!elevation"
       :padding="false"
-      content-class="maz-flex maz-flex-col maz-maz-gap-2 maz-overflow-y-auto maz-bg-color maz-px-3 maz-py-2"
+      content-class="card-content"
     >
-      <div v-if="filteredItems?.length === 0" class="maz-flex maz-h-full maz-flex-center">
+      <div v-if="filteredItems?.length === 0" class="no-results">
         <!-- @slot use this slot to customize the no results area -->
         <slot name="no-results">
-          <div class="maz-flex maz-h-full maz-flex-col maz-gap-3 maz-flex-center">
-            <NoResultsIcon class="maz-text-3xl maz-text-muted" />
+          <div class="no-results-content">
+            <NoResultsIcon class="no-results-icon" />
 
-            <span class="maz-text-muted">
+            <span class="no-results-text">
               <!-- @slot use this slot to customize the no results message -->
               <slot name="no-results-text"> No results found </slot>
             </span>
@@ -169,7 +169,7 @@ function updateQuery(value?: string) {
         v-for="item of filteredItems"
         :key="item.value"
         :for="item.value"
-        class="m-checklist-item maz-flex maz-w-full maz-cursor-pointer maz-items-center maz-gap-4 maz-rounded maz-px-3 maz-py-2 maz-text-left hover:maz-bg-color-light"
+        class="m-checklist-item m-reset-css"
       >
         <MazCheckbox
           :id="item.value"
@@ -186,7 +186,7 @@ function updateQuery(value?: string) {
           :item="item"
           name="item"
         >
-          <span class="cap-f">
+          <span class="item-label">
             {{ item.label }}
           </span>
         </slot>
@@ -194,3 +194,45 @@ function updateQuery(value?: string) {
     </MazCardSpotlight>
   </div>
 </template>
+
+<style lang="postcss" scoped>
+.m-checklist {
+  @apply maz-flex maz-flex-col maz-gap-4;
+
+  .search-label {
+    @apply maz-flex maz-items-center maz-justify-between maz-gap-4;
+  }
+
+  .title {
+    @apply maz-flex-none maz-truncate;
+  }
+
+  :deep(.card-content) {
+    @apply maz-flex maz-flex-col maz-gap-2 maz-overflow-y-auto maz-bg-color maz-px-3 maz-py-2;
+  }
+
+  .no-results {
+    @apply maz-flex maz-h-full maz-flex-center;
+  }
+
+  .no-results-content {
+    @apply maz-flex maz-h-full maz-flex-col maz-gap-3 maz-flex-center;
+  }
+
+  .no-results-icon {
+    @apply maz-text-3xl maz-text-muted;
+  }
+
+  .no-results-text {
+    @apply maz-text-muted;
+  }
+
+  .m-checklist-item {
+    @apply maz-flex maz-w-full maz-cursor-pointer maz-items-center maz-gap-4 maz-rounded maz-px-3 maz-py-2 maz-text-left hover:maz-bg-color-light;
+  }
+
+  .item-label {
+    @apply maz-cap-f;
+  }
+}
+</style>

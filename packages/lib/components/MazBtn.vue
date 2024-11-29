@@ -173,7 +173,7 @@ const iconClassSize = computed(() => {
   <Component
     :is="component"
     :disabled="isDisabled || undefined"
-    class="m-btn"
+    class="m-btn m-reset-css"
     :class="[
       `--${size}`,
       ...[!fab && !rounded && roundedSize && `--rounded-${roundedSize}`],

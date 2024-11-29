@@ -108,7 +108,7 @@ function onFocus(event: FocusEvent) {
 <template>
   <label
     :for="instanceId"
-    class="m-switch"
+    class="m-switch m-reset-css"
     :class="[{ '--is-disabled': disabled }, props.class]"
     role="switch"
     :style="[style, { '--switch-color': bgColorClassVar }]"

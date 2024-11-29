@@ -54,7 +54,7 @@ onUnmounted(() => {
 <template>
   <div
     ref="expandAnimationRef"
-    class="m-expand-animation"
+    class="m-expand-animation m-reset-css"
     :class="{ 'm-expand-animation--expanded': isOpen }"
     :aria-hidden="!isOpen"
     role="region"
