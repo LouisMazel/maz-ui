@@ -358,7 +358,6 @@ export function useLanguageDisplayNames(mainLocale?: MaybeRefOrGetter<string | L
         return !language || isSameLanguageThanCode(language, resolvedIsoCode) ? undefined : language
       }
       catch {
-        console.error('Error getting language display name', { resolvedLocale, resolvedIsoCode })
         return resolvedIsoCode
       }
     })
