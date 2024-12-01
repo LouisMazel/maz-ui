@@ -11,6 +11,12 @@ description: useLanguageDisplayNames is a Vue 3 composable that provides functio
 
 `useLanguageDisplayNames` allows you to fetch and format language names based on ISO codes using the `Intl.DisplayNames` API. This composable is particularly useful for applications that need to display language names in a user-friendly format based on different locales.
 
+::: warning
+
+Depending on your environment (client or node server) and the browser you are using, the `Intl.DisplayNames` results can be differents (e.g, Firefox and Chrome can return different results).
+
+:::
+
 ## Key Features
 
 - Fetches language display names based on ISO codes

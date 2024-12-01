@@ -332,6 +332,12 @@ export type IsoCode = (typeof bcp47Codes)[number]
 export type Iso6391Code = (typeof iso6391Codes)[number]
 export type LanguageCode = (typeof languageCodes)[number]
 
+let languageInstance: Intl.DisplayNames | undefined
+
+function isSameLanguageThanCode(language: string, code: string) {
+  return !language || language?.toLocaleLowerCase() === code.toLocaleLowerCase()
+}
+
 export function useLanguageDisplayNames(mainLocale?: MaybeRefOrGetter<string | LanguageCode>) {
   function getLanguageDisplayName(code?: MaybeRefOrGetter<string | LanguageCode>, locale?: MaybeRefOrGetter<string | LanguageCode>) {
     return computed(() => {
@@ -343,11 +349,16 @@ export function useLanguageDisplayNames(mainLocale?: MaybeRefOrGetter<string | L
           return resolvedIsoCode
         }
 
-        const languageInstance = new Intl.DisplayNames([resolvedLocale], { type: 'language' })
+        if (!languageInstance || resolvedLocale !== languageInstance.resolvedOptions().locale) {
+          languageInstance = new Intl.DisplayNames([resolvedLocale], { type: 'language' })
+        }
 
-        return languageInstance.of(resolvedIsoCode) || resolvedIsoCode
+        const language = languageInstance.of(resolvedIsoCode)
+
+        return !language || isSameLanguageThanCode(language, resolvedIsoCode) ? undefined : language
       }
       catch {
+        console.error('Error getting language display name', { resolvedLocale, resolvedIsoCode })
         return resolvedIsoCode
       }
     })
@@ -361,15 +372,18 @@ export function useLanguageDisplayNames(mainLocale?: MaybeRefOrGetter<string | L
         return []
       }
 
-      const languageInstance = new Intl.DisplayNames([resolvedLocale], {
-        type: 'language',
-      })
+      if (!languageInstance || resolvedLocale !== languageInstance.resolvedOptions().locale) {
+        languageInstance = new Intl.DisplayNames([resolvedLocale], {
+          type: 'language',
+        })
+      }
 
       return languageCodes
         .map((code) => {
           try {
-            const language = languageInstance.of(code)
-            if (!language || code.toLocaleLowerCase() === language.toLocaleLowerCase()) {
+            const language = languageInstance?.of(code)
+
+            if (!language || isSameLanguageThanCode(language, code)) {
               return undefined
             }
 

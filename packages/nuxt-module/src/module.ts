@@ -103,6 +103,11 @@ export interface MazUiNuxtOptions {
    */
   injectUseFormValidator?: boolean
   /**
+   * Enable auto-import of useLanguageDisplayNames composable
+   * @default true
+   */
+  injectUseLanguageDisplayNames?: boolean
+  /**
    * Globally install of v-zoom-img directive
    * @default true
    */
@@ -184,6 +189,7 @@ const defaults: Required<MazUiNuxtOptions> = {
   installVTooltip: true,
   installVZoomImg: true,
   injectUseFormValidator: true,
+  injectUseLanguageDisplayNames: true,
 }
 
 export default defineNuxtModule<MazUiNuxtOptions>({
@@ -222,12 +228,6 @@ export default defineNuxtModule<MazUiNuxtOptions>({
               : `maz-ui/components/${name}.mjs`,
         })
       }
-
-      addImports({
-        from: 'maz-ui',
-        name: 'useMazDialogPromise',
-        as: 'useMazDialogPromise',
-      })
     }
 
     if (moduleOptions.injectAos) {
@@ -255,6 +255,30 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       else if (typeof moduleOptions.injectAos === 'object' && injectAosCSS) {
         nuxt.options.css = ['maz-ui/css/aos.css', ...nuxt.options.css]
       }
+    }
+
+    /**
+     * Directives
+     */
+
+    if (moduleOptions.installVZoomImg) {
+      addPlugin(resolve(_dirname, './runtime/plugins/v-zoom-img'))
+    }
+
+    if (moduleOptions.installVLazyImg) {
+      addPlugin(resolve(_dirname, './runtime/plugins/v-lazy-img'))
+    }
+
+    if (moduleOptions.installVClickOutside) {
+      addPlugin(resolve(_dirname, './runtime/plugins/v-click-outside'))
+    }
+
+    if (moduleOptions.installVFullscreenImg) {
+      addPlugin(resolve(_dirname, './runtime/plugins/v-fullscreen-img'))
+    }
+
+    if (moduleOptions.installVTooltip) {
+      addPlugin(resolve(_dirname, './runtime/plugins/v-tooltip'))
     }
 
     if (moduleOptions.injectUseToast) {
@@ -285,26 +309,6 @@ export default defineNuxtModule<MazUiNuxtOptions>({
         name: 'useWait',
         as: 'useWait',
       })
-    }
-
-    if (moduleOptions.installVZoomImg) {
-      addPlugin(resolve(_dirname, './runtime/plugins/v-zoom-img'))
-    }
-
-    if (moduleOptions.installVLazyImg) {
-      addPlugin(resolve(_dirname, './runtime/plugins/v-lazy-img'))
-    }
-
-    if (moduleOptions.installVClickOutside) {
-      addPlugin(resolve(_dirname, './runtime/plugins/v-click-outside'))
-    }
-
-    if (moduleOptions.installVFullscreenImg) {
-      addPlugin(resolve(_dirname, './runtime/plugins/v-fullscreen-img'))
-    }
-
-    if (moduleOptions.installVTooltip) {
-      addPlugin(resolve(_dirname, './runtime/plugins/v-tooltip'))
     }
 
     if (moduleOptions.injectUseThemeHandler) {
@@ -392,13 +396,13 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       })
     }
 
-    // if (moduleOptions.injectUseCurrency) {
-    //   addImports({
-    //     from: 'maz-ui',
-    //     name: 'useCurrency',
-    //     as: 'useCurrency',
-    //   })
-    // }
+    if (moduleOptions.injectUseLanguageDisplayNames) {
+      addImports({
+        from: 'maz-ui',
+        name: 'useLanguageDisplayNames',
+        as: 'useLanguageDisplayNames',
+      })
+    }
 
     if (moduleOptions.defaultMazIconPath) {
       addPlugin(resolve(_dirname, './runtime/plugins/maz-icon-path'))
