@@ -1,5 +1,17 @@
 # Change Log
 
+## v3.48.1-beta.1...v3.48.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.48.1-beta.1...v3.48.1)
+
+### 🏡 Chore
+
+- Improve changelogen script ([2d7bb4b98](https://github.com/LouisMazel/maz-ui/commit/2d7bb4b98))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.48.0...v3.48.1-beta.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.48.0...v3.48.1-beta.1)

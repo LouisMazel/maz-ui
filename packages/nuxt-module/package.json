@@ -1,6 +1,6 @@
 {
   "name": "nuxt-module",
-  "version": "3.48.1-beta.1",
+  "version": "3.48.1",
   "license": "MIT",
   "type": "module",
   "exports": {
@@ -39,8 +39,8 @@
     "@nuxt/test-utils": "^3.14.4",
     "defu": "^6.1.4",
     "nuxt": "^3.14.1592",
-    "vitest": "^2.1.6",
-    "typescript": "5.6.2"
+    "typescript": "5.6.2",
+    "vitest": "^2.1.6"
   },
   "unbuild": {
     "failOnWarn": false
