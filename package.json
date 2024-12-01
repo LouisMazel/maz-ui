@@ -12,7 +12,8 @@
     "lint": "lerna run lint --parallel",
     "release": "pnpm release:bump-version && pnpm release:changelogen",
     "release:bump-version": "lerna version",
-    "release:changelogen": "ts-node ./changelog-generate.ts"
+    "release:changelogen": "ts-node -e \"import { updateChangelog } from './changelog-generate'; updateChangelog()\"",
+    "release:check-config": "ts-node -e \"import { checkConfig } from './changelog-generate'; checkConfig()\""
   },
   "lint-staged": {
     "!(node_modules/**/*|packages/**/*|.prettierignore|.gitignore|.editorconfig).*": [

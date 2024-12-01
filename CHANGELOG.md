@@ -1,5 +1,26 @@
 # Change Log
 
+## v3.48.0...v3.48.1-beta.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.48.0...v3.48.1-beta.1)
+
+### 🩹 Fixes
+
+- **docs:** MazChecklist documentation page ([b24e9b422](https://github.com/LouisMazel/maz-ui/commit/b24e9b422))
+- **maz-ui:** Rename tailwind CSS variables to avoid conflicts with other libraries also using tailwind ([fc313a386](https://github.com/LouisMazel/maz-ui/commit/fc313a386))
+
+### 💅 Refactors
+
+- **maz-ui:** UseLanguageDisplayNames - improve performances ([8b7a815b0](https://github.com/LouisMazel/maz-ui/commit/8b7a815b0))
+
+### 🏡 Chore
+
+- **deps:** Upgrade dependencies ([bb411ff26](https://github.com/LouisMazel/maz-ui/commit/bb411ff26))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.47.1...v3.48.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.47.1...v3.48.0)

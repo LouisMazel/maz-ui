@@ -1,12 +1,12 @@
-import { exec } from 'node:child_process'
-import { existsSync, promises as fsp } from 'node:fs'
 import {
   generateMarkDown,
   getGitDiff,
-  parseCommits,
   loadChangelogConfig,
+  parseCommits,
   syncGithubRelease,
 } from 'changelogen'
+import { exec } from 'node:child_process'
+import { existsSync, promises as fsp } from 'node:fs'
 import { version } from './lerna.json'
 
 async function execPromise(command: string): Promise<{ stdout: string; stderr: string }> {
@@ -22,7 +22,22 @@ async function execPromise(command: string): Promise<{ stdout: string; stderr: s
   })
 }
 
-async function updateChangelog() {
+export async function checkConfig() {
+  const config = await loadChangelogConfig(process.cwd())
+
+  if (!config.output) {
+    throw new Error('No output specified in changelog config')
+  }
+
+  if (!config.tokens.github) {
+    throw new Error('No GitHub token specified in changelog config')
+  }
+
+  console.log('Changelogen config is valid')
+}
+
+export async function updateChangelog() {
+  await checkConfig()
   // const { stdout: penultimateTag } = await execPromise("git tag --sort=-v:refname | sed -n '2p'")
   const { stdout: previousTag } = await execPromise("git tag --sort=-v:refname | sed -n '1p'")
   const previousTagTrimed = previousTag.trim()
@@ -83,17 +98,15 @@ async function updateChangelog() {
   await execPromise(`git push origin HEAD`)
 
   try {
-    await syncGithubRelease(config, {
+    const response = await syncGithubRelease(config, {
       version: newTag.replace('v', ''),
       body: changelogWithoutTitle,
     })
 
     console.log()
-    console.log('Release pushed to GitHub.')
+    console.log('Release pushed to GitHub.', response)
     console.log()
   } catch (error: any) {
     console.error('error', error)
   }
 }
-
-updateChangelog()
