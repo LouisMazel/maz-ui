@@ -22,7 +22,7 @@
       >
         <template #item="{ item }">
           <div class="maz-flex maz-w-full maz-items-center maz-justify-between">
-            <span class="maz-capitalize">{{ item.label }}</span>
+            <span>{{ item.label }}</span>
             <MazBadge
               color="theme"
               outline
@@ -48,16 +48,30 @@
 <script lang="ts" setup>
 import { sleep } from 'maz-ui'
 
+const { getLanguageDisplayName } = useLanguageDisplayNames('en')
 const toast = useToast()
 const wait = useWait()
 const languages = ref<string[]>([])
-const languagesOptions = ref<{ label: string, value: string }[]>([
-  { label: 'French', value: 'fr' },
-  { label: 'English', value: 'en' },
-  { label: 'Spanish', value: 'es' },
-  { label: 'German', value: 'de' },
-  { label: 'Italian', value: 'it' },
-])
+
+function getLanguageDisplayNames() {
+  return [
+    { label: getLanguageDisplayName({ code: 'aa' }).value || 'aa', value: 'aa' },
+    { label: getLanguageDisplayName({ code: 'fr' }).value || 'fr', value: 'fr' },
+    { label: getLanguageDisplayName({ code: 'en' }).value || 'en', value: 'en' },
+    { label: getLanguageDisplayName({ code: 'es' }).value || 'es', value: 'es' },
+    { label: getLanguageDisplayName({ code: 'de' }).value || 'de', value: 'de' },
+    { label: getLanguageDisplayName({ code: 'it' }).value || 'it', value: 'it' },
+  ]
+}
+const languagesOptions = ref<{ label: string, value: string }[]>(getLanguageDisplayNames())
+
+onMounted(() => {
+  languagesOptions.value = getLanguageDisplayNames()
+
+  setTimeout(() => {
+    languagesOptions.value = getLanguageDisplayNames()
+  }, 3000)
+})
 
 onMounted(async () => {
   wait.start('APP_LOADING')

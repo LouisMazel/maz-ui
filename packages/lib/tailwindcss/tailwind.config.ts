@@ -14,9 +14,6 @@ export { getNumericScreensFromTailwind }
 export const baseConfig = {
   darkMode: ['class', '[class~="dark"]'],
   content: [],
-  corePlugins: {
-    preflight: false,
-  },
   theme: {
     extend: {
       fontFamily: {
@@ -44,6 +41,9 @@ export const baseConfig = {
       addUtilities(utilities)
     }),
   ],
+  corePlugins: {
+    preflight: false,
+  },
 } satisfies Config
 
 export const tailwindConfig = { ...baseConfig, corePlugins: { preflight: true } } satisfies Config
