@@ -12,7 +12,7 @@ import MazInput from '../MazInput.vue'
 import { useLibphonenumber } from './useLibphonenumber'
 import { useMazPhoneNumberInput } from './useMazPhoneNumberInput'
 
-interface PhoneInputProps extends Omit<Props, 'modelValue'> {
+type PhoneInputProps = Omit<Props, 'modelValue'> & {
   id: string
   locales: Translations
   noExample: boolean
