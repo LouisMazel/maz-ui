@@ -1,5 +1,21 @@
 # Change Log
 
+## v3.48.1-beta.1...v3.48.2
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.48.1-beta.1...v3.48.2)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazPhoneNumberInput - generate type definition file ([bab1b0139](https://github.com/LouisMazel/maz-ui/commit/bab1b0139))
+
+### 🏡 Chore
+
+- Improve changelogen script ([2d7bb4b98](https://github.com/LouisMazel/maz-ui/commit/2d7bb4b98))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.48.1-beta.1...v3.48.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.48.1-beta.1...v3.48.1)
