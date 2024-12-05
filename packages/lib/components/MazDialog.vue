@@ -223,7 +223,7 @@ if (props.scrollable) {
       flex: 0 0 auto;
     }
 
-    & .--bottom-padding {
+    &.--bottom-padding {
       @apply maz-pb-4;
     }
   }

@@ -5,9 +5,7 @@ export default antfu(
   {
     formatters: true,
     typescript: true,
-    ignores: ['components_tmp/**/*'],
     rules: {
-      'vue/custom-event-name-casing': ['error', 'kebab-case'],
       'n/prefer-global/process': 'off',
       'no-console': 'off',
     },
