@@ -1,5 +1,17 @@
 # Change Log
 
+## v3.48.2...v3.48.3
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.48.2...v3.48.3)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazDialog - add padding to bottom when no footer ([1a774556a](https://github.com/LouisMazel/maz-ui/commit/1a774556a))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.48.1-beta.1...v3.48.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.48.1-beta.1...v3.48.2)
