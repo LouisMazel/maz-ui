@@ -1,19 +1,26 @@
 import { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { defineNuxtModule, addPlugin, createResolver, addImports, addComponent } from '@nuxt/kit'
+import { addComponent, addImports, addPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
 import { defu } from 'defu'
 
 import type {
   AosOptions,
-  ToasterOptions,
+  DialogOptions,
   ThemeHandlerOptions,
+  ToasterOptions,
   vLazyImgOptions,
   vTooltipOptions,
-  DialogOptions,
 } from 'maz-ui'
 import { getComponentList } from './../../lib/build/get-component-list'
 
 export interface MazUiNuxtOptions {
+  /**
+   * Prefix for composables
+   * @description This prefix will be added after `use` keyword
+   * @example `composablePrefix: 'Maz'` will generate `useMazToast` composable instead of `useToast`
+   * @default ''
+   */
+  autoImportPrefix?: string
   /**
    * Enable auto-import of main css file
    * @default true
@@ -167,6 +174,7 @@ const _dirname = dirname(fileURLToPath(import.meta.url))
 
 const defaults: Required<MazUiNuxtOptions> = {
   defaultMazIconPath: '',
+  autoImportPrefix: '',
   devtools: true,
   injectAos: true,
   injectComponents: true,
@@ -236,7 +244,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       addImports({
         from: resolve(_dirname, './runtime/composables/useAos'),
         name: 'useAos',
-        as: 'useAos',
+        as: `use${moduleOptions.autoImportPrefix}Aos`,
       })
 
       const injectAosCSS
@@ -287,7 +295,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       addImports({
         from: resolve(_dirname, './runtime/composables/useToast'),
         name: 'useToast',
-        as: 'useToast',
+        as: `use${moduleOptions.autoImportPrefix}Toast`,
       })
     }
 
@@ -297,7 +305,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       addImports({
         from: resolve(_dirname, './runtime/composables/useDialog'),
         name: 'useDialog',
-        as: 'useDialog',
+        as: `use${moduleOptions.autoImportPrefix}Dialog`,
       })
     }
 
@@ -307,7 +315,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       addImports({
         from: resolve(_dirname, './runtime/composables/useWait'),
         name: 'useWait',
-        as: 'useWait',
+        as: `use${moduleOptions.autoImportPrefix}Wait`,
       })
     }
 
@@ -315,7 +323,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       addImports({
         from: resolve(_dirname, './runtime/composables/useThemeHandler'),
         name: 'useThemeHandler',
-        as: 'useThemeHandler',
+        as: `use${moduleOptions.autoImportPrefix}ThemeHandler`,
       })
     }
 
@@ -323,7 +331,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       addImports({
         from: 'maz-ui',
         name: 'useIdleTimeout',
-        as: 'useIdleTimeout',
+        as: `use${moduleOptions.autoImportPrefix}IdleTimeout`,
       })
     }
 
@@ -331,7 +339,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       addImports({
         from: 'maz-ui',
         name: 'useReadingTime',
-        as: 'useReadingTime',
+        as: `use${moduleOptions.autoImportPrefix}ReadingTime`,
       })
     }
 
@@ -339,7 +347,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       addImports({
         from: 'maz-ui',
         name: 'useWindowSize',
-        as: 'useWindowSize',
+        as: `use${moduleOptions.autoImportPrefix}WindowSize`,
       })
     }
 
@@ -355,7 +363,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       addImports({
         from: 'maz-ui',
         name: 'useUserVisibility',
-        as: 'useUserVisibility',
+        as: `use${moduleOptions.autoImportPrefix}UserVisibility`,
       })
     }
 
@@ -363,7 +371,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       addImports({
         from: 'maz-ui',
         name: 'useUserVisibility',
-        as: 'useUserVisibility',
+        as: `use${moduleOptions.autoImportPrefix}UserVisibility`,
       })
     }
 
@@ -371,7 +379,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       addImports({
         from: 'maz-ui',
         name: 'useStringMatching',
-        as: 'useStringMatching',
+        as: `use${moduleOptions.autoImportPrefix}StringMatching`,
       })
     }
 
@@ -379,7 +387,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       addImports({
         from: 'maz-ui',
         name: 'useTimer',
-        as: 'useTimer',
+        as: `use${moduleOptions.autoImportPrefix}Timer`,
       })
     }
 
@@ -387,12 +395,12 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       addImports({
         from: 'maz-ui',
         name: 'useFormValidator',
-        as: 'useFormValidator',
+        as: `use${moduleOptions.autoImportPrefix}FormValidator`,
       })
       addImports({
         from: 'maz-ui',
         name: 'useFormField',
-        as: 'useFormField',
+        as: `use${moduleOptions.autoImportPrefix}FormField`,
       })
     }
 
@@ -400,7 +408,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       addImports({
         from: 'maz-ui',
         name: 'useLanguageDisplayNames',
-        as: 'useLanguageDisplayNames',
+        as: `use${moduleOptions.autoImportPrefix}LanguageDisplayNames`,
       })
     }
 
