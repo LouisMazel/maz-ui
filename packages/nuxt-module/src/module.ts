@@ -17,7 +17,7 @@ export interface MazUiNuxtOptions {
   /**
    * Prefix for composables
    * @description This prefix will be added after `use` keyword
-   * @example `composablePrefix: 'Maz'` will generate `useMazToast` composable instead of `useToast`
+   * @example `autoImportPrefix: 'Maz'` will generate `useMazToast` composable instead of `useToast`
    * @default ''
    */
   autoImportPrefix?: string

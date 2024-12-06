@@ -81,6 +81,13 @@ The components, plugins and tools are auto-imported
 ```ts
 export interface MazUiNuxtOptions {
   /**
+   * Prefix for composables
+   * @description This prefix will be added after `use` keyword
+   * @example `composablePrefix: 'Maz'` will generate `useMazToast` composable instead of `useToast`
+   * @default ''
+   */
+  autoImportPrefix?: string
+  /**
    * Enable auto-import of main css file
    * @default true
    */
