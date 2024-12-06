@@ -3,7 +3,7 @@
   "version": "3.48.3",
   "command": {
     "version": {
-      "allowBranch": ["master", "release/*"],
+      "allowBranch": ["master", "release/*", "refactor/nuxt-module_add-import-prefix"],
       "message": "chore(release): bump version %v",
       "conventionalCommits": true,
       "forceGitTag": false,
