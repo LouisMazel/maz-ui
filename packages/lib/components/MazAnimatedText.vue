@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { checkAvailability } from 'maz-ui'
-import { computed, onMounted, ref, useTemplateRef } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 interface MazAnimatedTextProps {
   /**
@@ -76,7 +76,7 @@ const isClient = ref(false)
 
 const animatedClass = computed(() => isVisible.value ? `maz-animate-slide-${direction}-blur` : 'maz-invisible')
 
-const element = useTemplateRef<HTMLDivElement>('element')
+const element = ref<HTMLDivElement>()
 
 onMounted(() => {
   isClient.value = true
