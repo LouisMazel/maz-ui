@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, defineProps, onMounted, useTemplateRef } from 'vue'
+import { computed, defineProps, onMounted, ref } from 'vue'
 
 interface MazAnimatedElementProps {
   /**
@@ -24,7 +24,7 @@ const { direction = 'up', delay = 0, duration = 2000 } = defineProps<MazAnimated
 
 const animatedClass = computed(() => `animate-slide-${direction}-blur`)
 
-const element = useTemplateRef<HTMLDivElement>('element')
+const element = ref<HTMLDivElement>()
 
 onMounted(() => {
   const observer = new IntersectionObserver((entries) => {
