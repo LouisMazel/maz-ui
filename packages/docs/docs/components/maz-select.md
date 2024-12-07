@@ -13,52 +13,73 @@ description: MazSelect is a standalone component that replaces the standard html
 
 ## Basic usage
 
-<MazSelect
-  label="Select color"
-  v-model="selectedValue"
-  :color="selectedValue"
-  :options="['primary', 'secondary', 'info', 'success', 'danger', 'warning']"
-/>
-
-selectedValue: {{ selectedValue }}
-
-```vue
-<template>
+<ComponentDemo expanded>
   <MazSelect
-    v-model="selectedValue"
     label="Select color"
-    :color="color"
+    v-model="selectedValue"
+    :color="selectedValue"
     :options="['primary', 'secondary', 'info', 'success', 'danger', 'warning']"
   />
-</template>
 
-<script setup lang="ts">
-  import { ref } from 'vue'
-  import MazSelect from 'maz-ui/components/MazSelect'
+  <br />
+  <br />
 
-  const selectedValue = ref()
-</script>
-```
+  selectedValue: {{ selectedValue }}
+
+  <template #code>
+
+  ```vue
+  <template>
+    <MazSelect
+      v-model="selectedValue"
+      label="Select color"
+      :color="color"
+      :options="['primary', 'secondary', 'info', 'success', 'danger', 'warning']"
+    />
+
+    selectedValue: {{ selectedValue }}
+  </template>
+
+  <script setup lang="ts">
+    import { ref } from 'vue'
+    import MazSelect from 'maz-ui/components/MazSelect'
+
+    const selectedValue = ref()
+  </script>
+  ```
+
+  </template>
+</ComponentDemo>
 
 ## Multiple
 
-<MazSelect
-  v-model="selectedValues"
-  :options="colors"
-  label="Choose options"
-  multiple
-/>
+<ComponentDemo>
+  <MazSelect
+    v-model="selectedValues"
+    :options="colors"
+    label="Choose options"
+    multiple
+  />
 
-selectedValues: {{ selectedValues }}
+  <br />
+  <br />
 
-```html
-<MazSelect
-  v-model="selectedValues"
-  :options="colors"
-  label="Choose options"
-  multiple
-/>
-```
+  selectedValues: {{ selectedValues }}
+
+  <template #code>
+
+  ```html
+  <MazSelect
+    v-model="selectedValues"
+    :options="colors"
+    label="Choose options"
+    multiple
+  />
+  ```
+
+</template>
+
+</ComponentDemo>
 
 ## Search
 
@@ -90,54 +111,109 @@ You can adjust the search results by using `search-threshold` where 1 is a perfe
 
 :::
 
-<MazSelect label="Select color" v-model="selectedValue" :options="colors" search />
+<ComponentDemo>
+  <MazSelect label="Select color" v-model="selectedValue" :options="colors" search />
 
-```html
-<MazSelect
-  v-model="selectedValue"
-  label="Select color"
-  :options="colors"
-  search
-/>
+  <template #code>
+
+  ```html
+  <MazSelect
+    v-model="selectedValue"
+    label="Select color"
+    :options="colors"
+    search
+  />
+  ```
+
+  </template>
+</ComponentDemo>
+
+### Custom search function
+
+You can provide your own search function to customize the search behavior
+
+<ComponentDemo>
+  <MazSelect
+    placeholder="Select color"
+    v-model="selectedValue"
+    :options="colors"
+    search
+    :search-function="customSearchFunction"
+  />
+
+  <template #code>
+
+  ```vue
+  <template>
+    <MazSelect
+      placeholder="Select color"
+      v-model="selectedValue"
+      :options="colors"
+      search
+      :search-function="customSearchFunction"
+    />
+  </template>
+
+  <script lang="ts" setup>
+    import MazSelect from 'maz-ui/components/MazSelect'
+
+    const selectedValue = ref()
+
+    function customSearchFunction(query: string, options: typeof colors) {
+      return options.filter(
+        (option) => option.label.toLowerCase().includes(query.toLowerCase())
+      )
+    }
+  </script>
 ```
+
+</template>
+</ComponentDemo>
 
 ## Opt Group
 
 Group your options like a native optgroup
 
-<MazSelect
-  v-model="optGroupValue"
-  label="Select options"
-  :options="optGroup"
-  multiple
-/>
-
-```vue
-<template>
+<ComponentDemo>
   <MazSelect
     v-model="optGroupValue"
-    label="Select option"
+    label="Select options"
     :options="optGroup"
     multiple
   />
-</template>
 
-<script setup lang="ts">
-  import { ref } from 'vue'
-  const selectedValue = ref()
-  const optGroup = [
-    { label: 'Basic colors', options: ['primary', 'secondary', 'danger'] },
-    { label: 'Custom colors', options: [{ label: 'third', value: 'third' }] },
-  ]
-</script>
-```
+  <template #code>
+
+  ```vue
+  <template>
+    <MazSelect
+      v-model="optGroupValue"
+      label="Select option"
+      :options="optGroup"
+      multiple
+    />
+  </template>
+
+  <script setup lang="ts">
+    import { ref } from 'vue'
+    const selectedValue = ref()
+    const optGroup = [
+      { label: 'Basic colors', options: ['primary', 'secondary', 'danger'] },
+      { label: 'Custom colors', options: [{ label: 'third', value: 'third' }] },
+    ]
+  </script>
+  ```
+
+  </template>
+</ComponentDemo>
 
 ## Custom template options
 
-<br />
+Customize the options list with your own template
 
-<MazSelect
-  label="Select color"
+<ComponentDemo>
+  <MazSelect
+    label="Select color"
   v-model="selectedUser"
   :options="customTemplateOptions"
   v-slot="{ option, isSelected }"
@@ -151,9 +227,11 @@ Group your options like a native optgroup
   </div>
 </MazSelect>
 
-```vue{6}
-<template>
-  <MazSelect
+  <template #code>
+
+  ```vue{6}
+  <template>
+    <MazSelect
     label="Select color"
     v-model="selectedUser"
     :options="customTemplateOptions"
@@ -165,25 +243,28 @@ Group your options like a native optgroup
       <strong>
         {{ option.label }}
       </strong>
-    </div>
-  </MazSelect>
-</template>
+      </div>
+    </MazSelect>
+  </template>
 
-<script lang="ts" setup>
-  import { ref } from 'vue'
-  import MazSelect from 'maz-ui/components/MazSelect'
-  import MazAvatar from 'maz-ui/components/MazAvatar'
+  <script lang="ts" setup>
+    import { ref } from 'vue'
+    import MazSelect from 'maz-ui/components/MazSelect'
+    import MazAvatar from 'maz-ui/components/MazAvatar'
 
-  const selectedUser = ref()
+    const selectedUser = ref()
 
-  const customTemplateOptions = [
-    { picture: 'https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&seed=JamesSmile', label: 'James Smile', value: 1 },
-    { picture: 'https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&seed=BradSmile', label: 'Brad Smile', value: 2 },
-    { picture: 'https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&seed=CedricSmile', label: 'Cedric Smile', value: 3 },
-    { picture: 'https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&seed=HarrySmile', label: 'Harry Smile', value: 4 },
-  ]
-</script>
-```
+    const customTemplateOptions = [
+      { picture: 'https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&seed=JamesSmile', label: 'James Smile', value: 1 },
+      { picture: 'https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&seed=BradSmile', label: 'Brad Smile', value: 2 },
+      { picture: 'https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&seed=CedricSmile', label: 'Cedric Smile', value: 3 },
+      { picture: 'https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&seed=HarrySmile', label: 'Harry Smile', value: 4 },
+    ]
+  </script>
+  ```
+
+  </template>
+</ComponentDemo>
 
 ## Custom options model
 
@@ -199,45 +280,51 @@ If you want custom keys of these options, you can use:
 
 <br />
 
-<MazSelect
-  v-model="selectedValueCustom"
-  :options="customOptions"
-  :color="selectedValueCustom"
-  option-value-key="valueOption"
-  option-label-key="labelOption"
-  option-input-value-key="inputLabel"
-  search
-/>
-
-```vue
-<template>
+<ComponentDemo>
   <MazSelect
     v-model="selectedValueCustom"
-    :options="options"
+    :options="customOptions"
     :color="selectedValueCustom"
     option-value-key="valueOption"
     option-label-key="labelOption"
     option-input-value-key="inputLabel"
     search
   />
-</template>
 
-<script lang="ts" setup>
-  import { ref } from 'vue'
-  const selectedValueCustom = ref('danger')
+  <template #code>
 
-  const customOptions = [
-    { valueOption: 'primary', labelOption: 'primary label', inputLabel: 'primary input', },
-    { valueOption: 'secondary', labelOption: 'secondary label', inputLabel: 'secondary input', },
-    { valueOption: 'info', labelOption: 'info label', inputLabel: 'info input', },
-    { valueOption: 'success', labelOption: 'success label', inputLabel: 'success input', },
-    { valueOption: 'warning', labelOption: 'warning label', inputLabel: 'warning input', },
-    { valueOption: 'danger', labelOption: 'danger label', inputLabel: 'danger input', },
-    { valueOption: 'white', labelOption: 'white label', inputLabel: 'white input', },
-    { valueOption: 'black', labelOption: 'black label', inputLabel: 'black input', },
-  ]
-</script>
-```
+  ```vue
+  <template>
+    <MazSelect
+      v-model="selectedValueCustom"
+      :options="options"
+      :color="selectedValueCustom"
+      option-value-key="valueOption"
+      option-label-key="labelOption"
+      option-input-value-key="inputLabel"
+      search
+    />
+  </template>
+
+  <script lang="ts" setup>
+    import { ref } from 'vue'
+    const selectedValueCustom = ref('danger')
+
+    const customOptions = [
+      { valueOption: 'primary', labelOption: 'primary label', inputLabel: 'primary input', },
+      { valueOption: 'secondary', labelOption: 'secondary label', inputLabel: 'secondary input', },
+      { valueOption: 'info', labelOption: 'info label', inputLabel: 'info input', },
+      { valueOption: 'success', labelOption: 'success label', inputLabel: 'success input', },
+      { valueOption: 'warning', labelOption: 'warning label', inputLabel: 'warning input', },
+      { valueOption: 'danger', labelOption: 'danger label', inputLabel: 'danger input', },
+      { valueOption: 'white', labelOption: 'white label', inputLabel: 'white input', },
+      { valueOption: 'black', labelOption: 'black label', inputLabel: 'black input', },
+    ]
+  </script>
+  ```
+
+  </template>
+</ComponentDemo>
 
 <script setup lang="ts">
   import { ref } from 'vue'
@@ -283,6 +370,10 @@ If you want custom keys of these options, you can use:
   ]
 
   const alwaysShowMembersBets = ref()
+
+  function customSearchFunction(query: string, options: typeof colors) {
+    return options.filter((option) => option.label.toLowerCase().includes(query.toLowerCase()))
+  }
 </script>
 
 ### Types

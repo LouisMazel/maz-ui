@@ -37,7 +37,7 @@ export type MazSelectOption =
   | boolean
   | MazSelectOptionWithOptGroup
 
-export interface Props<T extends ModelValueSimple, U extends MazSelectOption> {
+export interface MazSelectProps<T extends ModelValueSimple, U extends MazSelectOption> {
   /** Style attribut of the component root element */
   style?: HTMLAttributes['style']
   /** Class attribut of the component root element */
@@ -96,6 +96,11 @@ export interface Props<T extends ModelValueSimple, U extends MazSelectOption> {
    */
   searchPlaceholder?: string
   /**
+   * Replace the default search function to provide a custom search function
+   * @default undefined
+   */
+  searchFunction?: (query: string, options: U[]) => U[] | undefined
+  /**
    * The threshold for the search input where 1 is a perfect match and 0 is a match with any character
    * @default 0.75
    */
@@ -123,7 +128,7 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<Props<T, U>>(), {
+const props = withDefaults(defineProps<MazSelectProps<T, U>>(), {
   id: undefined,
   class: undefined,
   multiple: undefined,
@@ -260,14 +265,14 @@ function getNormalizedOptionPayload(option: NormalizedOption): NormalizedOption 
   }
 }
 
-const optionsNormalized = computed<NormalizedOption[]>(() => {
+function getNormalizedOptions(options: U[]) {
   const normalizedOptions: NormalizedOption[] = []
 
-  if (!props.options?.length) {
+  if (!options?.length) {
     return []
   }
 
-  for (const option of props.options) {
+  for (const option of options) {
     if (typeof option === 'string' || typeof option === 'number' || typeof option === 'boolean') {
       normalizedOptions.push(getOptionPayload(option))
     }
@@ -291,7 +296,9 @@ const optionsNormalized = computed<NormalizedOption[]>(() => {
   }
 
   return normalizedOptions
-})
+}
+
+const optionsNormalized = computed<NormalizedOption[]>(() => getNormalizedOptions(props.options ?? []))
 
 const selectedOptions = computed(
   () =>
@@ -317,7 +324,7 @@ onBeforeMount(() => {
 const mazSelectElement = ref<HTMLDivElement>()
 const mazInputComponent = ref<ComponentPublicInstance<typeof MazInput>>()
 const searchInputComponent = ref<ComponentPublicInstance<typeof MazInput>>()
-const optionsListElement = ref<HTMLDivElement>()
+const optionListElement = ref<HTMLDivElement>()
 
 function isNullOrUndefined(value: unknown) {
   return value === undefined || value === null
@@ -388,7 +395,11 @@ function getFilteredOptionWithQuery(query: string) {
     : optionsNormalized.value
 }
 
-const optionsList = computed(() => getFilteredOptionWithQuery(searchQuery.value))
+const optionList = computed(() => {
+  return props.searchFunction && props.search && searchQuery.value
+    ? getNormalizedOptions(props.searchFunction(searchQuery.value, props.options ?? []) ?? [])
+    : getFilteredOptionWithQuery(searchQuery.value)
+})
 
 async function closeList(event?: Event) {
   if (!hasListOpened.value)
@@ -461,7 +472,7 @@ function searchOptionWithQuery(keyPressed: string) {
   const filteredOptions = getFilteredOptionWithQuery(query.value)
 
   if (filteredOptions?.length) {
-    tmpModelValueIndex.value = optionsList.value?.findIndex(
+    tmpModelValueIndex.value = optionList.value?.findIndex(
       option => option[props.optionValueKey] === filteredOptions[0][props.optionValueKey],
     )
 
@@ -519,7 +530,7 @@ function arrowHandler(event: KeyboardEvent, currentIndex?: number) {
   if (!hasListOpened.value)
     openList(event)
 
-  const optionsLength = optionsList.value?.length
+  const optionsLength = optionList.value?.length
 
   if (!optionsLength) {
     return
@@ -551,8 +562,8 @@ function enterHandler(event: KeyboardEvent, currentIndex?: number) {
   event.preventDefault()
 
   const newValue = currentIndex
-    ? optionsList.value?.[currentIndex] ?? optionsList.value?.[0]
-    : optionsList.value?.[0]
+    ? optionList.value?.[currentIndex] ?? optionList.value?.[0]
+    : optionList.value?.[0]
 
   if (!isNullOrUndefined(newValue)) {
     updateValue(newValue as Record<string, ModelValueSimple>)
@@ -569,7 +580,7 @@ async function scrollToOptionIndex(index?: number) {
   const selectedIndex = index ?? tmpModelValueIndex.value
 
   if (typeof selectedIndex === 'number' && selectedIndex >= 0) {
-    const item = optionsListElement.value
+    const item = optionListElement.value
       ?.querySelectorAll('.m-select-list-item')
 
     item?.[selectedIndex]?.scrollIntoView({
@@ -581,7 +592,7 @@ async function scrollToOptionIndex(index?: number) {
 }
 
 function updateTmpModelValueIndex(inputOption?: NormalizedOption) {
-  const index = optionsList.value?.findIndex((option) => {
+  const index = optionList.value?.findIndex((option) => {
     if (props.multiple && Array.isArray(props.modelValue)) {
       if (inputOption) {
         return inputOption[props.optionValueKey] === option[props.optionValueKey]
@@ -682,7 +693,7 @@ function updateValue(inputOption: NormalizedOption, mustCloseList = true) {
     <Transition :name="listTransition">
       <div
         v-if="hasListOpened"
-        ref="optionsListElement"
+        ref="optionListElement"
         class="m-select-list"
         :class="{
           '--top': listPosition.includes('top'),
@@ -717,13 +728,13 @@ function updateValue(inputOption: NormalizedOption, mustCloseList = true) {
         <!--
           @slot No results slot - Displayed when no results corresponding with search query
         -->
-        <slot v-if="!optionsList || optionsList.length <= 0" name="no-results">
+        <slot v-if="!optionList || optionList.length <= 0" name="no-results">
           <span class="m-select-list__no-results">
             <NoSymbolIcon class="maz-h-6 maz-w-6 maz-text-normal" />
           </span>
         </slot>
         <div v-else class="m-select-list__scroll-wrapper" tabindex="-1">
-          <template v-for="(option, i) in optionsList" :key="i">
+          <template v-for="(option, i) in optionList" :key="i">
             <!--
               @slot Custom optgroup label
                 @binding {String} label - the label of the optgroup
