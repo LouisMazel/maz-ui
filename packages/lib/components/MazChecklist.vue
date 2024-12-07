@@ -20,7 +20,7 @@ export type ItemOption = {
   value: string
 } & Record<string, any>
 
-export interface MazCheckListProps<T, O> {
+export interface MazChecklistProps<T, O> {
   /**
    * The model value of the checklist (selected items)
    */
@@ -44,15 +44,20 @@ export interface MazCheckListProps<T, O> {
   elevation?: boolean
   /**
    * The search input options
-   * @default { enabled: false }
+   * @default { enabled: false, debounce: 300, autoFocus: false }
    */
   search?: {
     enabled?: boolean
   } & MazInputProps<string>
   /**
-   * The options to normalize the search query
+   * The options to normalize the search query (used by the default search function)
    */
   searchOptions?: NormalizeStringOptions
+  /**
+   * Replace the default search function to provide a custom search function
+   * @default undefined
+   */
+  searchFunction?: (query: string, items: O[]) => O[] | undefined
   /**
    * The color of the checklist (card, checkbox and search input)
    * @default primary
@@ -61,7 +66,7 @@ export interface MazCheckListProps<T, O> {
 }
 
 const props = withDefaults(
-  defineProps<MazCheckListProps<T, O>>(),
+  defineProps<MazChecklistProps<T, O>>(),
   {
     modelValue: undefined,
     query: undefined,
@@ -107,14 +112,16 @@ watch(
 )
 
 const filteredItems = computed(() => {
-  if (!internalQuery.value) {
+  if (!internalQuery.value || !props.search.enabled) {
     return props.items
   }
 
   const normalizedQuery = normalizeString(internalQuery.value, props.searchOptions)
-  return props.items?.filter(({ label }) =>
-    normalizeString(label, props.searchOptions).includes(normalizedQuery),
-  )
+  return props.searchFunction
+    ? props.searchFunction(normalizedQuery, props.items ?? [])
+    : props.items?.filter(({ label, value }) =>
+      normalizeString(label, props.searchOptions).includes(normalizedQuery) || normalizeString(value, props.searchOptions).includes(normalizedQuery),
+    )
 })
 
 function updateQuery(value?: string) {
