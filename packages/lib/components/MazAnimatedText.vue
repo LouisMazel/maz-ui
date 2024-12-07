@@ -88,8 +88,8 @@ onMounted(() => {
     })
   })
 
-  checkAvailability(() => element.value, (okok) => {
-    observer.observe(okok)
+  checkAvailability(() => element.value, (element) => {
+    observer.observe(element)
   })
 })
 </script>
