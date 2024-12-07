@@ -20,11 +20,17 @@ const props = withDefaults(
      * Suffix to display next to the number
      */
     suffix?: string
+    /**
+     * Delay before the animation starts in milliseconds
+     * @default 100
+     */
+    delay?: number
   }>(),
   {
     duration: 1000,
     prefix: undefined,
     suffix: undefined,
+    delay: 100,
   },
 )
 const slots = useSlots()
@@ -42,7 +48,7 @@ watch(
     isAnimated.value = false
     setTimeout(() => {
       isAnimated.value = true
-    }, 100)
+    }, props.delay)
   },
 )
 
