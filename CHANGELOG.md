@@ -1,5 +1,36 @@
 # Change Log
 
+## v3.48.3...v3.49.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.48.3...v3.49.0)
+
+### 🚀 Enhancements
+
+- **maz-ui:** MazCheckList - add search-function option to replace the default search function ([053b3a1d8](https://github.com/LouisMazel/maz-ui/commit/053b3a1d8))
+- **maz-ui:** MazSelect - add search-function option to replace the default search function ([32aa42d81](https://github.com/LouisMazel/maz-ui/commit/32aa42d81))
+- **maz-ui:** MazAnimatedElement: new component to animated elements ([e26e2e214](https://github.com/LouisMazel/maz-ui/commit/e26e2e214))
+- **maz-ui:** MazAnimatedText: new component to animated text ([7878ce9ad](https://github.com/LouisMazel/maz-ui/commit/7878ce9ad))
+- **maz-ui:** MazAnimatedCounter - add delay option to run the animation ([b274ff63b](https://github.com/LouisMazel/maz-ui/commit/b274ff63b))
+
+### 💅 Refactors
+
+- **nuxt-module:** Add import prefix to avoid conflicts with other libs or existing modules ([d37120bdc](https://github.com/LouisMazel/maz-ui/commit/d37120bdc))
+- **maz-ui:** Theme - change the contrast color (used by text) of success color to improve contrast ratio ([97708bd76](https://github.com/LouisMazel/maz-ui/commit/97708bd76))
+- **maz-ui:** MazBtn - remove the default font-weight on button text ([f166d2d98](https://github.com/LouisMazel/maz-ui/commit/f166d2d98))
+
+### 📖 Documentation
+
+- Documentation improvement of @mazui/cli ([e513cbda7](https://github.com/LouisMazel/maz-ui/commit/e513cbda7))
+- New hero section of maz-ui documentation ([6edd6669c](https://github.com/LouisMazel/maz-ui/commit/6edd6669c))
+
+### ✅ Tests
+
+- **maz-ui:** MazSelect - fix search tests ([c4a3acfd2](https://github.com/LouisMazel/maz-ui/commit/c4a3acfd2))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.48.2...v3.48.3
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.48.2...v3.48.3)
