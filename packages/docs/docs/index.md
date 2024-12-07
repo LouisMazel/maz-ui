@@ -3,93 +3,144 @@ layout: home
 title: Maz UI - Standalone Components and Tools Library for Vue & Nuxt
 description: Build amazing interfaces with Maz-UI - standalone components & tools library for Vue.JS & Nuxt.JS
 hero:
-  name: Maz-UI
-  text: Lightweight and efficient library
-  tagline: Standalone components and tools for Vue & Nuxt
-  image:
-    src: /img/maz-ui-illu.png
-    alt: Logo of Maz-UI
+  # name: Maz-UI
+  # text: Lightweight and efficient library
+  # tagline: Standalone components and tools for Vue & Nuxt
+  # image:
+  #   src: /img/maz-ui-illu.png
+  #   alt: Logo of Maz-UI
 ---
 
-<section class="maz-flex maz-pb-14 maz-flex-wrap maz-justify-center maz-items-center tab-l:maz-justify-start maz-gap-2">
-  <MazBtn href="/guide/getting-started" color="primary" size="md" rounded>Get Started</MazBtn>
-  <MazBtn href="/components/maz-btn" color="theme" size="md" pastel rounded>Components</MazBtn>
-  <MazBtn href="/plugins/toaster" color="theme" size="md" pastel rounded>Plugins</MazBtn>
-  <MazBtn href="/composables/use-theme-handler" color="theme" size="md" pastel rounded>Composables</MazBtn>
-  <MazBtn href="/helpers/currency" color="theme" size="md" pastel rounded>Helpers</MazBtn>
-  <MazBtn href="/directives/fullscreen-img" color="theme" size="md" pastel rounded>Directives</MazBtn>
-  <MazBtn rounded v-if="typeof starCount === 'number'" href="https://github.com/LouisMazel/maz-ui" target="blank" outline color="theme" left-icon="github" size="md" :right-icon="StarIcon">
-    <MazAnimatedCounter :count="starCount" class="maz-text-xl maz-pl-2" />
-  </MazBtn>
+<section id="hero" class="maz-py-12 tab-m:maz-py-24 vp-raw">
+  <div class="maz-mx-auto maz-max-w-3xl">
+    <MazAnimatedText
+      text="Collection of standalone components, plugins, directives, composables and more"
+      direction="up"
+      :delay="0"
+      tag="h2"
+      class="maz-text-xl maz-tracking-tight maz-text-muted tab-m:maz-flex-center tab-m:maz-w-full"
+      :duration="2000"
+      :column-gap="0.2"
+    />
+    <MazAnimatedText
+      text="Lightweight and efficient library for"
+      last-word="Vue & Nuxt"
+      direction="up"
+      :delay="500"
+      tag="h1"
+      class="maz-mt-6 maz-text-4xl maz-tracking-tighter maz-font-bold tab-m:maz-flex-center tab-m:maz-text-5xl lg:maz-text-6xl"
+    />
+  </div>
+  <MazAnimatedElement :delay="1000">
+    <div class="maz-mt-12 maz-flex maz-flex-col maz-gap-4 maz-flex-center mob-l:maz-flex-row">
+      <MazBtn
+        color="theme"
+        size="lg"
+        href="/guide/getting-started"
+        class="maz-w-full mob-l:maz-w-auto maz-font-semibold"
+        :left-icon="PlayIcon"
+      >
+        Get Started
+      </MazBtn>
+      <MazBtn v-if="typeof starCount === 'number'" href="https://github.com/LouisMazel/maz-ui" target="blank" outline color="theme" left-icon="github" size="lg" :right-icon="StarIcon" class="maz-w-full mob-l:maz-w-auto maz-font-semibold">
+        <MazAnimatedCounter :delay="1250" :count="starCount" class="maz-text-xl maz-pl-2" />
+      </MazBtn>
+    </div>
+  </MazAnimatedElement>
+  <MazAnimatedElement :delay="1250" class="maz-mt-6 maz-flex maz-flex-col maz-gap-4">
+    <p class="maz-text-base maz-text-muted maz-text-center">
+      Start discovering
+    </p>
+    <div class="maz-flex maz-gap-4 maz-flex-center maz-flex-row maz-flex-wrap">
+      <MazBtn href="/components/maz-btn" color="theme" size="md" pastel>Components</MazBtn>
+      <MazBtn href="/plugins/toaster" color="theme" size="md" pastel>Plugins</MazBtn>
+      <MazBtn href="/composables/use-form-validator" color="theme" size="md" pastel>Composables</MazBtn>
+      <MazBtn href="/helpers/currency" color="theme" size="md" pastel>Helpers</MazBtn>
+      <MazBtn href="/directives/fullscreen-img" color="theme" size="md" pastel>Directives</MazBtn>
+    </div>
+  </MazAnimatedElement>
+  <!-- <MazAnimatedElement :delay="1500" class="maz-mt-12 tab-m:maz-mt-20">
+    <MazCardSpotlight
+      :padding="false"
+      class="maz-relative maz-w-full"
+      content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start"
+    >
+      <DemoPage />
+    </MazCardSpotlight>
+  </MazAnimatedElement> -->
 </section>
-<section class="maz-grid mob-l:maz-grid-cols-2 tab-m:maz-grid-cols-3 maz-gap-4 maz-flex-wrap vp-raw">
-  <MazCardSpotlight no-elevation content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
-    <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
-      ⚡️
-    </span>
-    <h2 class="maz-text-base maz-font-semibold">Standalone</h2>
-    <p class="dark:maz-text-gray-300 maz-text-muted maz-text-sm">
-      All components or tools are standalone; if you want, you can use only one module from this library.
-      You don't need to install the whole library.
-    </p>
-  </MazCardSpotlight>
-  <MazCardSpotlight no-elevation content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
-    <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
-      👨‍❤️‍👨
-    </span>
-    <h2 class="maz-text-base maz-font-semibold">SSR Friendly</h2>
-    <p class="dark:maz-text-gray-300 maz-text-muted maz-text-sm">
-      All components work with Nuxt, no need to install components on the client side.
-    </p>
-  </MazCardSpotlight>
-  <MazCardSpotlight no-elevation content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
-    <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
-      🔐
-    </span>
-    <h2 class="maz-text-base maz-font-semibold">Typescript</h2>
-    <p class="dark:maz-text-gray-300 maz-text-muted maz-text-sm">
-      This library is written in Typescript, so all types and declarations are directly available.
-    </p>
-  </MazCardSpotlight>
-  <a href="/guide/theme" class="maz-flex">
-    <MazCardSpotlight no-elevation class="maz-w-full" content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
+
+<section class="vp-raw">
+  <h2 class="maz-text-2xl maz-font-bold maz-mb-8">Why choose Maz-UI ?</h2>
+  <div class="maz-grid mob-l:maz-grid-cols-2 tab-m:maz-grid-cols-3 maz-gap-4 maz-flex-wrap vp-raw">
+    <MazCardSpotlight no-elevation content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
       <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
-        💄
+        ⚡️
       </span>
-      <h2 class="maz-text-base maz-font-semibold">Theming</h2>
+      <h2 class="maz-text-base maz-font-semibold">Standalone</h2>
       <p class="dark:maz-text-gray-300 maz-text-muted maz-text-sm">
-        Created with TailwindCSS | Optimized CSS file sizes | Complies with all CSS best practices | Use your theme easily.
+        All components or tools are standalone; if you want, you can use only one module from this library.
+        You don't need to install the whole library.
       </p>
-      <div class="maz-flex-1"></div>
-      <MazBtn color="theme" outline size="sm" block href="/guide/theme">Discover</MazBtn>
     </MazCardSpotlight>
-  </a>
-  <a href="/guide/dark-mode" class="maz-flex">
-    <MazCardSpotlight no-elevation class="maz-w-full" content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
+    <MazCardSpotlight no-elevation content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
       <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
-        🌗
+        👨‍❤️‍👨
       </span>
-      <h2 class="maz-text-base maz-font-semibold">Dark and Light Theme</h2>
+      <h2 class="maz-text-base maz-font-semibold">SSR Friendly</h2>
       <p class="dark:maz-text-gray-300 maz-text-muted maz-text-sm">
-        All components support the Dark and Light themes.
+        All components work with Nuxt, no need to install components on the client side.
       </p>
-      <div class="maz-flex-1"></div>
-      <MazBtn color="theme" outline size="sm" block href="/guide/dark-mode">Discover</MazBtn>
     </MazCardSpotlight>
-  </a>
-  <a href="/plugins/toaster" class="maz-flex">
-    <MazCardSpotlight no-elevation class="maz-w-full" content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
+    <MazCardSpotlight no-elevation content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
       <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
-        🛠
+        🔐
       </span>
-      <h2 class="maz-text-base maz-font-semibold">Tools</h2>
+      <h2 class="maz-text-base maz-font-semibold">Typescript</h2>
       <p class="dark:maz-text-gray-300 maz-text-muted maz-text-sm">
-        Maz-ui provides many modules, plugins, directives, filters and composables
+        This library is written in Typescript, so all types and declarations are directly available.
       </p>
-      <div class="maz-flex-1"></div>
-      <MazBtn color="theme" outline size="sm" block href="/plugins/toaster">Discover</MazBtn>
     </MazCardSpotlight>
-  </a>
+    <a href="/guide/theme" class="maz-flex">
+      <MazCardSpotlight no-elevation class="maz-w-full" content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
+        <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
+          💄
+        </span>
+        <h2 class="maz-text-base maz-font-semibold">Theming</h2>
+        <p class="dark:maz-text-gray-300 maz-text-muted maz-text-sm">
+          Created with TailwindCSS | Optimized CSS file sizes | Complies with all CSS best practices | Use your theme easily.
+        </p>
+        <div class="maz-flex-1"></div>
+        <MazBtn color="theme" outline size="sm" block href="/guide/theme">Discover</MazBtn>
+      </MazCardSpotlight>
+    </a>
+    <a href="/guide/dark-mode" class="maz-flex">
+      <MazCardSpotlight no-elevation class="maz-w-full" content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
+        <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
+          🌗
+        </span>
+        <h2 class="maz-text-base maz-font-semibold">Dark and Light Theme</h2>
+        <p class="dark:maz-text-gray-300 maz-text-muted maz-text-sm">
+          All components support the Dark and Light themes.
+        </p>
+        <div class="maz-flex-1"></div>
+        <MazBtn color="theme" outline size="sm" block href="/guide/dark-mode">Discover</MazBtn>
+      </MazCardSpotlight>
+    </a>
+    <a href="/plugins/toaster" class="maz-flex">
+      <MazCardSpotlight no-elevation class="maz-w-full" content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
+        <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
+          🛠
+        </span>
+        <h2 class="maz-text-base maz-font-semibold">Tools</h2>
+        <p class="dark:maz-text-gray-300 maz-text-muted maz-text-sm">
+          Maz-ui provides many modules, plugins, directives, filters and composables
+        </p>
+        <div class="maz-flex-1"></div>
+        <MazBtn color="theme" outline size="sm" block href="/plugins/toaster">Discover</MazBtn>
+      </MazCardSpotlight>
+    </a>
+  </div>
 </section>
 
 <section class="maz-mt-12 vp-raw">
@@ -100,7 +151,7 @@ hero:
         <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
           📞
         </span>
-        <MazBadge color="info" class="maz-text-base" rounded>Component</MazBadge>
+        <MazBadge color="primary" class="maz-text-base">Component</MazBadge>
       </div>
       <h3 class="maz-text-base maz-font-semibold">MazPhoneNumberInput</h3>
       <p class="dark:maz-text-gray-300 maz-text-muted maz-text-sm">
@@ -114,7 +165,7 @@ hero:
         <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
           ✏️
         </span>
-        <MazBadge color="info" class="maz-text-base" rounded>Component</MazBadge>
+        <MazBadge color="primary" class="maz-text-base">Component</MazBadge>
       </div>
       <h3 class="maz-text-base maz-font-semibold">MazInput</h3>
       <p class="dark:maz-text-gray-300 maz-text-muted maz-text-sm">
@@ -128,7 +179,7 @@ hero:
         <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
           🔔
         </span>
-        <MazBadge color="info" class="maz-text-base" rounded>Plugin</MazBadge>
+        <MazBadge color="info" class="maz-text-base">Plugin</MazBadge>
       </div>
       <h3 class="maz-text-base maz-font-semibold">Toaster</h3>
       <p class="dark:maz-text-gray-300 maz-text-muted maz-text-sm">
@@ -146,9 +197,37 @@ hero:
     <MazCardSpotlight color="secondary" no-elevation content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
         <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
+          ✨
+        </span>
+        <MazBadge color="primary" class="maz-text-base">Component</MazBadge>
+      </div>
+      <h3 class="maz-text-base maz-font-semibold">MazAnimatedText</h3>
+      <p class="dark:maz-text-gray-300 maz-text-muted maz-text-sm">
+        A text animation component that brings your content to life with smooth sliding blur effects and gradient highlights. Perfect for creating engaging headings and text transitions.
+      </p>
+      <div class="maz-flex-1"></div>
+      <MazBtn color="theme" outline size="sm" block href="/components/maz-animated-text">Discover</MazBtn>
+    </MazCardSpotlight>
+    <MazCardSpotlight color="secondary" no-elevation content-class="maz-flex maz-flex-col maz-gap-2">
+      <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
+        <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
+          🎭
+        </span>
+        <MazBadge color="primary" class="maz-text-base">Component</MazBadge>
+      </div>
+      <h3 class="maz-text-base maz-font-semibold">MazAnimatedElement</h3>
+      <p class="dark:maz-text-gray-300 maz-text-muted maz-text-sm">
+        A versatile animation component that adds smooth entrance animations to any element. Features multiple animation directions and customizable timing for creating engaging UI interactions.
+      </p>
+      <div class="maz-flex-1"></div>
+      <MazBtn color="theme" outline size="sm" block href="/components/maz-animated-element">Discover</MazBtn>
+    </MazCardSpotlight>
+    <MazCardSpotlight color="secondary" no-elevation content-class="maz-flex maz-flex-col maz-gap-2">
+      <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
+        <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
           🔦
         </span>
-        <MazBadge color="secondary" class="maz-text-base" rounded>Component</MazBadge>
+        <MazBadge color="primary" class="maz-text-base">Component</MazBadge>
       </div>
       <h3 class="maz-text-base maz-font-semibold">MazCardSpotlight</h3>
       <p class="dark:maz-text-gray-300 maz-text-muted maz-text-sm">
@@ -162,7 +241,7 @@ hero:
         <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
           📝
         </span>
-        <MazBadge color="secondary" class="maz-text-base" rounded>Composable</MazBadge>
+        <MazBadge color="success" class="maz-text-base">Composable</MazBadge>
       </div>
       <h3 class="maz-text-base maz-font-semibold">useFormValidator</h3>
       <p class="dark:maz-text-gray-300 maz-text-muted maz-text-sm">
@@ -176,7 +255,7 @@ hero:
         <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
           📋
         </span>
-        <MazBadge color="secondary" class="maz-text-base" rounded>Component</MazBadge>
+        <MazBadge color="primary" class="maz-text-base">Component</MazBadge>
       </div>
       <h3 class="maz-text-base maz-font-semibold">MazChecklist</h3>
       <p class="dark:maz-text-gray-300 maz-text-muted maz-text-sm">
@@ -190,7 +269,7 @@ hero:
         <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
           💬
         </span>
-        <MazBadge color="secondary" class="maz-text-base" rounded>Plugin</MazBadge>
+        <MazBadge color="info" class="maz-text-base">Plugin</MazBadge>
       </div>
       <h3 class="maz-text-base maz-font-semibold">Dialog</h3>
       <p class="dark:maz-text-gray-300 maz-text-muted maz-text-sm">
@@ -204,7 +283,7 @@ hero:
         <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
           🖼️
         </span>
-        <MazBadge color="secondary" class="maz-text-base" rounded>Directive</MazBadge>
+        <MazBadge color="warning" class="maz-text-base">Directive</MazBadge>
       </div>
       <h3 class="maz-text-base maz-font-semibold">v-fullscreen-img</h3>
       <p class="dark:maz-text-gray-300 maz-text-muted maz-text-sm">
@@ -218,7 +297,7 @@ hero:
         <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
           🌍
         </span>
-        <MazBadge color="secondary" class="maz-text-base" rounded>Composable</MazBadge>
+        <MazBadge color="success" class="maz-text-base">Composable</MazBadge>
       </div>
       <h3 class="maz-text-base maz-font-semibold">useLanguageDisplayNames</h3>
       <p class="dark:maz-text-gray-300 maz-text-muted maz-text-sm">
@@ -227,14 +306,31 @@ hero:
       <div class="maz-flex-1"></div>
       <MazBtn color="theme" outline size="sm" block href="/composables/use-language-display-names">Discover</MazBtn>
     </MazCardSpotlight>
+    <MazCardSpotlight color="secondary" no-elevation content-class="maz-flex maz-flex-col maz-gap-2">
+      <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
+        <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
+          📊
+        </span>
+        <MazBadge color="primary" class="maz-text-base">Component</MazBadge>
+      </div>
+      <h3 class="maz-text-base maz-font-semibold">MazTable</h3>
+      <p class="dark:maz-text-gray-300 maz-text-muted maz-text-sm">
+        A powerful table component with sorting, search, pagination and selection features. Perfect for displaying and managing tabular data in an interactive manner.
+      </p>
+      <div class="maz-flex-1"></div>
+      <MazBtn color="theme" outline size="sm" block href="/components/maz-table">Discover</MazBtn>
+    </MazCardSpotlight>
   </div>
 </section>
 
 <script lang="ts" setup>
   import { ref } from 'vue'
   import StarIcon from 'maz-ui/icons/star-solid.svg'
+  import PlayIcon from 'maz-ui/icons/play.svg'
 
   const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN;
+
+  console.log('GITHUB_TOKEN', import.meta.env.VITE_GITHUB_TOKEN)
 
   async function getStarCount(owner = 'LouisMazel', repo = 'maz-ui') {
     try {

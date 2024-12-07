@@ -12,6 +12,7 @@ import ColorContainer from './components/ColorContainer.vue'
 
 import ComponentDemo from './components/ComponentDemo.vue'
 
+// import DemoPage from './components/DemoPage.vue'
 import NpmBadge from './components/NpmBadge.vue'
 import 'maz-ui/tailwindcss/tailwind.css'
 // import 'maz-ui/css/main.css'
@@ -32,6 +33,7 @@ const theme: typeof DefaultTheme = {
     app.component('ColorContainer', ColorContainer)
     app.component('NpmBadge', NpmBadge)
     app.component('ComponentDemo', ComponentDemo)
+    // app.component('DemoPage', DemoPage)
 
     Object.entries(components).forEach(([componentName, component]) => {
       app.component(componentName, component)
