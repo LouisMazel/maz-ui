@@ -40,6 +40,8 @@ export const components = {
       items: [
         { text: 'MazAccordion', link: '/components/maz-accordion' },
         { text: 'MazAnimatedCounter', link: '/components/maz-animated-counter' },
+        { text: 'MazAnimatedElement', link: '/components/maz-animated-element' },
+        { text: 'MazAnimatedText', link: '/components/maz-animated-text' },
         { text: 'MazAvatar', link: '/components/maz-avatar' },
         { text: 'MazBadge', link: '/components/maz-badge' },
         { text: 'MazBackdrop', link: '/components/maz-backdrop' },
