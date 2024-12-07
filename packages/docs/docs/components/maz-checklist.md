@@ -10,9 +10,9 @@ lastUpdated: false
 
 <!--@include: ./../.vitepress/mixins/getting-started.md-->
 
-## Usage
+## Basic usage
 
-<ComponentDemo>
+<ComponentDemo expanded>
 
   Selected languages: {{ languages || 'none' }}
 
@@ -28,7 +28,7 @@ lastUpdated: false
       enabled: true,
       placeholder: 'Search a language',
       debounce: 300,
-      autoFocus: true,
+      autoFocus: false,
       size: 'sm'
     }"
     :items="languagesOptions"
@@ -60,7 +60,7 @@ lastUpdated: false
         enabled: true,
         placeholder: 'Search a language',
         debounce: 300,
-        autoFocus: true,
+        autoFocus: false,
         size: 'sm'
       }"
       :items="languagesOptions"
@@ -94,6 +94,61 @@ lastUpdated: false
   </template>
 </ComponentDemo>
 
+## Custom search function
+
+You can replace the default search function by providing a custom search function.
+
+<ComponentDemo>
+  <MazChecklist
+    v-model="languages"
+    v-model:query="query"
+    :search="{
+      enabled: true,
+      placeholder: 'Search a language',
+    }"
+    :items="languagesOptions"
+    :search-function="customSearchFunction"
+    class="maz-max-h-80"
+  />
+
+  <template #code>
+
+  ```vue
+  <template>
+    <MazChecklist
+      v-model="languages"
+      v-model:query="query"
+      :search="{
+        enabled: true,
+        placeholder: 'Search a language',
+      }"
+      :items="languagesOptions"
+      :search-function="customSearchFunction"
+      class="maz-max-h-80"
+    />
+  </template>
+
+  <script lang="ts" setup>
+    const query = ref()
+    const languages = ref<string[]>()
+    const languagesOptions = useLanguageDisplayNames('en-US').getAllLanguageDisplayNames().value.map(({ code, language }) => ({
+      label: language,
+      value: code,
+    }))
+
+    function customSearchFunction(query: string, items: typeof languagesOptions) {
+      return items.filter(
+        ({ label, value }) =>
+          label.toLowerCase().includes(query.toLowerCase()) ||
+          value.toLowerCase().includes(query.toLowerCase()),
+      )
+    }
+  </script>
+  ```
+
+  </template>
+</ComponentDemo>
+
 <!--@include: ./../.vitepress/generated-docs/maz-checklist.doc.md-->
 
 <script lang="ts" setup>
@@ -105,4 +160,12 @@ lastUpdated: false
     label: language,
     value: code,
   }))
+
+  function customSearchFunction(query: string, items: typeof languagesOptions) {
+    return items.filter(
+      ({ label, value }) =>
+        label.toLowerCase().includes(query.toLowerCase()) ||
+        value.toLowerCase().includes(query.toLowerCase()),
+    )
+  }
 </script>
