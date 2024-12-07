@@ -302,7 +302,7 @@ const iconClassSize = computed(() => {
 
   &.--is-button {
     @apply maz-inline-flex maz-items-center maz-overflow-hidden
-        maz-border-transparent maz-bg-transparent maz-font-medium maz-no-underline
+        maz-border-transparent maz-bg-transparent maz-no-underline
         maz-transition-all maz-duration-200 maz-ease-in-out maz-py-0.5;
 
     &:not(.--no-rounded, .--rounded-none) {
