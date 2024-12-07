@@ -21,6 +21,7 @@ describe('components/MazSelect.vue', () => {
       props: {
         modelValue: 1,
         options,
+        search: true,
       },
     })
   })
@@ -36,13 +37,13 @@ describe('components/MazSelect.vue', () => {
   it('should find the options on search', () => {
     wrapper.vm.searchQuery = '6'
 
-    expect(wrapper.vm.optionsList).toStrictEqual([{ label: 'Test 6', value: 6 }])
+    expect(wrapper.vm.optionList).toStrictEqual([{ label: 'Test 6', value: 6 }])
   })
 
   it('should find the options on search undefined', () => {
     wrapper.vm.searchQuery = undefined
 
-    expect(wrapper.vm.optionsList).toStrictEqual(options)
+    expect(wrapper.vm.optionList).toStrictEqual(options)
   })
 
   it('should show the option label on input for false value', async () => {
