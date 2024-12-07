@@ -250,13 +250,6 @@ const borderStyle = computed(() => {
 
 const slots = useSlots()
 
-const computedPlaceholder = computed(() => {
-  const { required, placeholder } = props
-  if (!placeholder)
-    return undefined
-  return required ? `${placeholder} *` : placeholder
-})
-
 const hasValue = computed(() => model.value !== undefined && model.value !== '')
 
 const debounceEmitValue = debounceFn(
@@ -367,7 +360,7 @@ function emitInputEvent(event: Event) {
           ref="input"
           v-model="model"
           :name
-          :placeholder="computedPlaceholder"
+          :placeholder
           :aria-label="label || placeholder"
           :type="inputType"
           :inputmode
@@ -395,7 +388,6 @@ function emitInputEvent(event: Event) {
           ]"
         >
           {{ hint || label }}
-          <sup v-if="required">*</sup>
         </span>
       </div>
 

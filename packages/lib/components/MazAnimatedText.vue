@@ -95,7 +95,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="m-component m-animated-text">
+  <div class="m-reset-css m-animated-text">
     <template v-if="isClient">
       <Component :is="tag" ref="element" v-bind="$attrs" class="m-animated-text__root" :style="{ columnGap: `${columnGap}rem`, rowGap: `${rowGap}rem` }">
         <span

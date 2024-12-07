@@ -185,11 +185,11 @@ const footerAlignClass = computed(() =>
         />
       </div>
       <div class="maz-min-w-0 maz-flex-1">
-        <Component :is="isCollapsible ? MazTransitionExpand : 'div'">
+        <Component :is="isCollapsible ? MazTransitionExpand : 'div'" class="maz-h-full">
           <div
             v-show="isOpen"
             :class="[wrapperClass, { 'maz-p-4': !noPadding && !isCollapsible }]"
-            class="m-card__content__wrapper"
+            class="m-card__content__wrapper maz-h-full"
           >
             <slot>
               <div v-if="$slots.title" class="m-card__title">

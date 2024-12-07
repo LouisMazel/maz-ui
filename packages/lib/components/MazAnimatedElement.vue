@@ -46,7 +46,7 @@ onMounted(() => {
 <template>
   <div
     ref="element"
-    class="m-animated-element m-component --invisible" :style="{
+    class="m-animated-element m-reset-css --invisible" :style="{
       animationDuration: `${duration}ms`,
       animationDelay: `${delay}ms`,
     }"

@@ -232,7 +232,7 @@ const iconClassSize = computed(() => {
 
 <style lang="postcss" scoped>
 .m-btn {
-  @apply maz-relative maz-flex-none maz-items-center maz-gap-2 maz-border maz-border-solid maz-border-transparent maz-text-center maz-align-top maz-text-base maz-text-normal;
+  @apply maz-relative maz-items-center maz-gap-2 maz-border maz-border-solid maz-border-transparent maz-text-center maz-align-top maz-text-base maz-text-normal;
 
   justify-content: var(--justify);
 

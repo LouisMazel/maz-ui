@@ -59,15 +59,53 @@ hero:
       <MazBtn href="/directives/fullscreen-img" color="theme" size="md" pastel>Directives</MazBtn>
     </div>
   </MazAnimatedElement>
-  <!-- <MazAnimatedElement :delay="1500" class="maz-mt-12 tab-m:maz-mt-20">
-    <MazCardSpotlight
-      :padding="false"
-      class="maz-relative maz-w-full"
-      content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start"
-    >
-      <DemoPage />
-    </MazCardSpotlight>
-  </MazAnimatedElement> -->
+
+  <MazAnimatedElement :delay="0" class="maz-mt-12 tab-m:maz-mt-20 maz-hidden tab-m:maz-block">
+    <MazTabs>
+      <div class="maz-flex maz-justify-between maz-items-center maz-gap-4">
+        <MazTabsBar :items="['Dashboard', 'Product Page', 'Auth Page']" class="maz-mb-4 maz-border maz-border-color-light" no-elevation />
+        <h3 class="maz-text-2xl maz-font-bold maz-mb-4">
+          Demonstrations
+        </h3>
+      </div>
+      <MazTabsContent>
+        <MazTabsContentItem :tab="1">
+          <MazCard
+            bordered
+            no-padding
+            overflow-hidden
+            class="maz-relative maz-w-full"
+            content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start"
+          >
+            <DemoDashboardPage />
+          </MazCard>
+        </MazTabsContentItem>
+        <MazTabsContentItem :tab="2">
+          <MazCard
+            bordered
+            no-padding
+            overflow-hidden
+            class="maz-relative maz-w-full"
+            content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start"
+          >
+            <DemoProductPage />
+          </MazCard>
+        </MazTabsContentItem>
+        <MazTabsContentItem :tab="3">
+          <MazCard
+            bordered
+            no-padding
+            overflow-hidden
+            class="maz-relative maz-w-full"
+            content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start"
+          >
+            <DemoAuthPage />
+          </MazCard>
+        </MazTabsContentItem>
+      </MazTabsContent>
+    </MazTabs>
+  </MazAnimatedElement>
+
 </section>
 
 <section class="vp-raw">
@@ -329,8 +367,6 @@ hero:
   import PlayIcon from 'maz-ui/icons/play.svg'
 
   const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN;
-
-  console.log('GITHUB_TOKEN', import.meta.env.VITE_GITHUB_TOKEN)
 
   async function getStarCount(owner = 'LouisMazel', repo = 'maz-ui') {
     try {
