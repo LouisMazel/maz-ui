@@ -105,4 +105,52 @@ describe('mazChecklist', () => {
     expect(noResults.exists()).toBe(true)
     expect(noResults.text()).toBe('No results found')
   })
+
+  it('should use custom search function when provided', async () => {
+    const searchFunction = (query: string, items: any[]) => {
+      return items.filter(item => item.label.toLowerCase().includes(query.toLowerCase()))
+    }
+
+    const wrapper = mount(MazChecklist, {
+      props: {
+        items: [
+          { label: 'Apple', value: '1' },
+          { label: 'Banana', value: '2' },
+          { label: 'Orange', value: '3' },
+        ],
+        search: { enabled: true },
+        searchFunction,
+      },
+    })
+    await vi.dynamicImportSettled()
+
+    const input = wrapper.findComponent(MazInput)
+    await input.setValue('ba')
+
+    const items = wrapper.findAll('.m-checklist-item')
+    expect(items).toHaveLength(1)
+    expect(items[0].text()).toBe('Banana')
+  })
+
+  it('should return empty array when search function returns undefined', async () => {
+    const searchFunction = () => undefined
+
+    const wrapper = mount(MazChecklist, {
+      props: {
+        items: [
+          { label: 'Apple', value: '1' },
+          { label: 'Banana', value: '2' },
+        ],
+        search: { enabled: true },
+        searchFunction,
+      },
+    })
+    await vi.dynamicImportSettled()
+
+    const input = wrapper.findComponent(MazInput)
+    await input.setValue('test')
+
+    const items = wrapper.findAll('.m-checklist-item')
+    expect(items).toHaveLength(0)
+  })
 })

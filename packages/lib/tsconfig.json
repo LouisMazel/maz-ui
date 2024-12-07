@@ -3,6 +3,7 @@
   "compilerOptions": {
     "target": "ESNext",
     "lib": ["esnext", "DOM", "DOM.iterable", "scripthost"],
+    "rootDir": ".",
     "module": "ESNext",
     "types": ["@types/node", "vite-svg-loader"],
     "strictPropertyInitialization": false,

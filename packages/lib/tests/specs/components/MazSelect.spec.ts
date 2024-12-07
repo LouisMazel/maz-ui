@@ -152,4 +152,67 @@ describe('components/MazSelect.vue', () => {
     await wrapper.findAll('.m-select-list-item').at(3)?.trigger('click')
     expect(wrapper.emitted('update:model-value')?.[2][0]).toEqual([5])
   })
+
+  it('should use custom search function when provided', async () => {
+    const searchFunction = (query: string, options: any[]) => {
+      return options.filter(option => option.label.toLowerCase().includes(query.toLowerCase()))
+    }
+
+    await wrapper.setProps({
+      search: true,
+      searchFunction,
+      options: [
+        { label: 'Apple', value: 1 },
+        { label: 'Banana', value: 2 },
+        { label: 'Orange', value: 3 },
+      ],
+    })
+
+    await wrapper.find('input').trigger('focus')
+
+    const searchInput = wrapper.find('.m-select-list__search-input input')
+    await searchInput.setValue('ba')
+
+    expect(wrapper.vm.optionList).toHaveLength(1)
+    expect(wrapper.vm.optionList[0].label).toBe('Banana')
+  })
+
+  it('should use default search when no search function provided', async () => {
+    await wrapper.setProps({
+      search: true,
+      options: [
+        { label: 'Apple', value: 1 },
+        { label: 'Banana', value: 2 },
+        { label: 'Orange', value: 3 },
+      ],
+    })
+
+    await wrapper.find('input').trigger('focus')
+
+    const searchInput = wrapper.find('.m-select-list__search-input input')
+    await searchInput.setValue('ba')
+
+    expect(wrapper.vm.optionList).toHaveLength(1)
+    expect(wrapper.vm.optionList[0].label).toBe('Banana')
+  })
+
+  it('should return empty array when search function returns undefined', async () => {
+    const searchFunction = () => undefined
+
+    await wrapper.setProps({
+      search: true,
+      searchFunction,
+      options: [
+        { label: 'Apple', value: 1 },
+        { label: 'Banana', value: 2 },
+      ],
+    })
+
+    await wrapper.find('input').trigger('focus')
+
+    const searchInput = wrapper.find('.m-select-list__search-input input')
+    await searchInput.setValue('test')
+
+    expect(wrapper.vm.optionList).toHaveLength(0)
+  })
 })
