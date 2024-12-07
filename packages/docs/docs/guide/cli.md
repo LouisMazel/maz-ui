@@ -62,6 +62,15 @@ npx maz-ui generate-css-vars
 
 ### With package.json script
 
+1. First, install the CLI package:
+
+```bash
+npm install @mazui/cli
+# or pnpm add @mazui/cli
+```
+
+2. Then, add the script in your `package.json`:
+
 ```json
 {
   "scripts": {
@@ -69,6 +78,8 @@ npx maz-ui generate-css-vars
   }
 }
 ```
+
+3. Finally, run the script:
 
 ```bash
 npm run generate-css-vars
