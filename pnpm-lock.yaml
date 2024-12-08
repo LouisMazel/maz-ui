@@ -97,9 +97,6 @@ importers:
       dayjs:
         specifier: ^1.11.13
         version: 1.11.13
-      dropzone:
-        specifier: ^5.9.3
-        version: 5.9.3
       libphonenumber-js:
         specifier: ^1.11.16
         version: 1.11.16
@@ -204,9 +201,6 @@ importers:
       defu:
         specifier: ^6.1.4
         version: 6.1.4
-      dropzone:
-        specifier: ^5.9.3
-        version: 5.9.3
       eslint-plugin-vuejs-accessibility:
         specifier: ^2.4.1
         version: 2.4.1(eslint@9.14.0(jiti@2.4.0))
@@ -7774,12 +7768,6 @@ packages:
         integrity: sha512-ZmdL2rui+eB2YwhsWzjInR8LldtZHGDoQ1ugH85ppHKwpUHL7j7rN0Ti9NCnGiQbhaZ11FpR+7ao1dNsmduNUg==,
       }
     engines: { node: '>=12' }
-
-  dropzone@5.9.3:
-    resolution:
-      {
-        integrity: sha512-Azk8kD/2/nJIuVPK+zQ9sjKMRIpRvNyqn9XwbBHNq+iNuSccbJS6hwm1Woy0pMST0erSo0u4j+KJaodndDk4vA==,
-      }
 
   duplexer@0.1.2:
     resolution:
@@ -23210,8 +23198,6 @@ snapshots:
       dotenv: 16.4.5
 
   dotenv@16.4.5: {}
-
-  dropzone@5.9.3: {}
 
   duplexer@0.1.2: {}
 
