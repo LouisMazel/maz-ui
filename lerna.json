@@ -3,7 +3,11 @@
   "version": "3.50.1",
   "command": {
     "version": {
-      "allowBranch": ["master", "release/*", "refactor/next"],
+      "allowBranch": [
+        "master",
+        "release/*",
+        "refactor/next"
+      ],
       "message": "chore(release): bump version %v",
       "conventionalCommits": true,
       "forceGitTag": false,
