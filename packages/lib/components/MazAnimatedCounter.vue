@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref, useSlots, watch } from 'vue'
+import { ref, watch } from 'vue'
 
 const props = withDefaults(
   defineProps<{
@@ -33,97 +33,61 @@ const props = withDefaults(
     delay: 100,
   },
 )
-const slots = useSlots()
 
-const hasPrefix = computed(() => !!props.prefix || !!slots.prefix)
-const hasSuffix = computed(() => !!props.suffix || !!slots.suffix)
+const currentCount = ref(0)
 
-const isAnimated = ref(true)
+function animate(start: number, end: number, duration: number, delay: number) {
+  currentCount.value = start
+
+  setTimeout(() => {
+    const startTime = performance.now()
+
+    const updateCount = (currentTime: number) => {
+      const elapsed = currentTime - startTime
+      const progress = Math.min(elapsed / duration, 1)
+
+      const easeOutQuad = (t: number) => t * (2 - t)
+
+      currentCount.value = Math.round(
+        start + (end - start) * easeOutQuad(progress),
+      )
+
+      if (progress < 1) {
+        requestAnimationFrame(updateCount)
+      }
+    }
+
+    requestAnimationFrame(updateCount)
+  }, delay)
+}
 
 watch(
   () => props.count,
-  (count, oldCount) => {
-    if (count === oldCount)
+  (newCount, oldCount) => {
+    if (newCount === oldCount) {
       return
-    isAnimated.value = false
-    setTimeout(() => {
-      isAnimated.value = true
-    }, props.delay)
-  },
-)
+    }
 
-const durationInMs = computed(() => `${props.duration}ms`)
+    const startValue = oldCount ?? 0
+    animate(startValue, newCount, props.duration, props.delay)
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
-  <span
-    class="m-animated-counter m-reset-css"
-    :class="{
-      '--animated': isAnimated,
-      '--prefixed': hasPrefix,
-      '--suffixed': hasSuffix,
-    }"
-    :style="{
-      '--count': count,
-      '--animation-duration': durationInMs,
-    }"
-  >
+  <span class="m-animated-counter m-reset-css">
     <span class="maz-sr-only">
-      <slot name="prefix">{{ prefix }}</slot>
-      {{ count }}
-      <slot name="suffix">{{ suffix }}</slot>
+      <slot name="prefix">{{ prefix }}</slot>{{ count }}<slot name="suffix">{{ suffix }}</slot>
     </span>
 
-    <span v-if="hasPrefix || hasSuffix" class="m-animated-counter__fix">
-      <!-- @slot Prefix slot - Add a prefix next to the number (e.g: "$") -->
-      <slot name="prefix">{{ prefix }}</slot>
-      <!-- @slot Suffix slot - Add a suffix next to the number (e.g: "%") -->
-      <slot name="suffix">{{ suffix }}</slot>
-    </span>
+    <!-- Keep this on one line to avoid spacing issues (space between elements) -->
+    <slot name="prefix">{{ prefix }}</slot>{{ currentCount }}<slot name="suffix">{{ suffix }}</slot>
   </span>
 </template>
 
 <style lang="postcss" scoped>
-  .m-animated-counter {
+.m-animated-counter {
   @apply maz-whitespace-nowrap maz-tabular-nums;
-
-  &.--animated {
-    animation: counter var(--animation-duration) ease-out forwards;
-    counter-set: count var(--count-end);
-  }
-
-  &.--prefixed::after {
-    content: counter(count);
-  }
-
-  &.--suffixed::before {
-    content: counter(count);
-  }
-
-  &:not(.--prefixed, .--suffixed)::before {
-    content: counter(count);
-  }
-}
-
-@property --count {
-  syntax: '<integer>';
-  initial-value: 0;
-  inherits: false;
-}
-
-@property --count-end {
-  syntax: '<integer>';
-  initial-value: 0;
-  inherits: false;
-}
-
-@keyframes counter {
-  from {
-    --count-end: 0;
-  }
-
-  to {
-    --count-end: var(--count);
-  }
 }
 </style>

@@ -16,7 +16,7 @@ export async function createLibraryComponentFile({
   const COMPONENT_FILE_OUTPUT = resolve(_dirname, `../../../../lib/components/${filename}.vue`)
 
   const componentTemplate = `<template>
-  <div class="m-${filenameKebab.split('-')[1]}">${filename}</div>
+  <div class="m-${filenameKebab.split('-')[1]} m-reset-css">${filename}</div>
 </template>
 `
 

@@ -11,8 +11,8 @@ description: MazAnimatedCounter is a standalone component that allows you to ani
 
 ## Basic usage
 
-<ComponentDemo>
-  <MazAnimatedCounter :count="4000" />
+<ComponentDemo expanded>
+  <MazAnimatedCounter :count="count" />
 
   <template #code>
 
@@ -23,11 +23,26 @@ description: MazAnimatedCounter is a standalone component that allows you to ani
 
   <script lang="ts" setup>
     import MazAnimatedCounter from 'maz-ui/components/MazAnimatedCounter'
+
+    const count = ref(Math.floor(Math.random() * 99999))
+
+    setInterval(() => {
+      count.value = Math.floor(Math.random() * 99999)
+    }, 3000)
   </script>
   ```
 
   </template>
 </ComponentDemo>
+
+<script setup lang="ts">
+  import { ref } from 'vue'
+  const count = ref(Math.floor(Math.random() * 99999))
+
+  setInterval(() => {
+    count.value = Math.floor(Math.random() * 99999)
+  }, 3000)
+</script>
 
 ## duration
 
