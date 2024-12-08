@@ -786,7 +786,7 @@ function updateValue(inputOption: NormalizedOption, mustCloseList = true) {
 </template>
 
 <style lang="postcss" scoped>
-  .m-select {
+.m-select {
   @apply maz-relative maz-inline-flex maz-align-top;
 
   &.--mini {

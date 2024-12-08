@@ -101,7 +101,6 @@
     "chart.js": "^4.0.0",
     "dayjs": "^1.1.0",
     "defu": "^6.0.0",
-    "dropzone": "^5.9.3",
     "libphonenumber-js": "^1.9.44",
     "nuxt": "^3.4.0",
     "unplugin-auto-import": ">=0.18.0 <1.0.0",
@@ -121,9 +120,6 @@
       "optional": true
     },
     "defu": {
-      "optional": true
-    },
-    "dropzone": {
       "optional": true
     },
     "libphonenumber-js": {
@@ -167,7 +163,6 @@
     "chart.js": "^4.4.7",
     "dayjs": "^1.11.13",
     "defu": "^6.1.4",
-    "dropzone": "^5.9.3",
     "eslint-plugin-vuejs-accessibility": "^2.4.1",
     "fs": "0.0.2",
     "jsdom": "^25.0.1",
