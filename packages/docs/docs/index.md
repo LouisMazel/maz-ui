@@ -2,7 +2,7 @@
 layout: home
 title: Maz UI - Standalone Components and Tools Library for Vue & Nuxt
 description: Build amazing interfaces with Maz-UI - standalone components & tools library for Vue.JS & Nuxt.JS
-hero:
+# hero:
   # name: Maz-UI
   # text: Lightweight and efficient library
   # tagline: Standalone components and tools for Vue & Nuxt
@@ -12,6 +12,7 @@ hero:
 ---
 
 <section id="hero" class="maz-py-12 tab-m:maz-py-24 vp-raw">
+  TEST
   <div class="maz-mx-auto maz-max-w-3xl">
     <MazAnimatedText
       text="Collection of standalone components, plugins, directives, composables and more"
@@ -362,7 +363,7 @@ hero:
 </section>
 
 <script lang="ts" setup>
-  import { ref } from 'vue'
+  import { ref, onMounted } from 'vue'
   import StarIcon from 'maz-ui/icons/star-solid.svg'
   import PlayIcon from 'maz-ui/icons/play.svg'
 
@@ -391,7 +392,7 @@ hero:
 
   const starCount = ref<number>(0)
 
-  getStarCount('LouisMazel', 'maz-ui').then((count) => {
-    starCount.value = count
+  onMounted(async () => {
+    starCount.value = await getStarCount('LouisMazel', 'maz-ui')
   })
 </script>
