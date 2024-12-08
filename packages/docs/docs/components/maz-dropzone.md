@@ -1,6 +1,6 @@
 ---
 title: MazDropzone
-description: MazDropzone is a standalone component to help a user upload different type of files with a beautiful design system. It works with dropzone.js and is not SSR compatible with Nuxt.JS
+description: MazDropzone is a powerful and flexible file upload component with drag & drop support, progress tracking, and customizable UI. Perfect for handling single or multiple file uploads in your Vue applications.
 ---
 
 # {{ $frontmatter.title }}
@@ -9,180 +9,358 @@ description: MazDropzone is a standalone component to help a user upload differe
 
 <!--@include: ./../.vitepress/mixins/getting-started.md-->
 
-To use this component, you have to install the `dropzone` dependency
+## Key Features
 
-<NpmBadge package="dropzone" dist-tag="5" />
+- 🎯 Drag & drop support
+- 📁 Single or multiple file uploads
+- 🖼️ Image preview thumbnails
+- 🚀 Auto upload support
+- ⚡ Async file processing
+- 🎨 Fully customizable UI
+- 🌐 Support for various file types
+- ⚙️ Extensive configuration options
+- 🔒 File validation (size, type, count)
+- 🌍 Internationalization support
 
-```bash
-npm install dropzone@^5.9.3
-```
+## Basic Usage
 
-## Basic usage
+<ComponentDemo expanded>
+  <MazDropzone
+    ref="dropzone"
+    v-model="files"
+    :max-file-size="3"
+    :max-files="5"
+    @upload-success="onUploadSuccess"
+    @upload-error="onUploadError"
+    @error="onError"
+    url="https://httpbin.org/post"
+    :request-options="{
+      headers: { 'My-Awesome-Header': 'header value' },
+    }"
+  />
 
-<MazDropzone
-  ref="mazDropzoneInstance"
-  :options="dropzoneOptions"
-  @error="error"
-  @success="success"
-  @sending="loading = true"
-  @complete="loading = false"
-  style="margin-bottom: 20px;"
-/>
+  <br />
+  <div class="maz-text-center">
+    <MazBtn @click="dropzone?.uploadFiles()" :loading="dropzone?.isUploading">
+      Upload Files
+    </MazBtn>
+  </div>
 
-<p v-if="errorMessage" style="color: red; text-align: center; margin: 20px 0;">
-  {{ errorMessage }}
-</p>
+  <template #code>
 
-<div class="flex flex-center">
-  <MazBtn left-icon="arrow-up-tray" :loading="loading" @click="sendFiles">
-    Send Files
-  </MazBtn>
-</div>
-
-> Set `:options="{ autoProcessQueue: true }"` to upload automatically the files (no button needed)
-
-```vue
-<template>
-  <ClientOnly>
+  ```vue
+  <template>
     <MazDropzone
-      ref="mazDropzoneInstance"
-      :options="dropzoneOptions"
-      @error="error"
-      @success="success"
-      @sending="loading = true"
-      @complete="loading = false"
+      v-model="files"
+      :data-types="['image/*']"
+      :max-file-size="3"
+      :max-files="5"
+      @upload-success="onUploadSuccess"
+      @upload-error="onUploadError"
+      @error="onError"
+      url="https://httpbin.org/post"
+      :request-options="{
+        headers: { 'My-Awesome-Header': 'header value' },
+      }"
     />
-  </ClientOnly>
 
-  <p v-if="errorMessage" style="color: red; text-align: center;">
-    {{ errorMessage }}
-  </p>
+    <MazBtn @click="dropzone?.uploadFiles()" :loading="dropzone?.isUploading">
+      Upload Files
+    </MazBtn>
+  </template>
 
-  <MazBtn left-icon="arrow-up-tray" :loading="loading" @click="sendFiles">
-    Send Files
-  </MazBtn>
-</template>
+  <script setup lang="ts">
+    import { ref } from 'vue'
+    import { useToast } from 'maz-ui'
 
-<script lang="ts" setup>
+    const toast = useToast()
+
+    const files = ref<File[]>([])
+    const dropzone = ref<InstanceType<typeof MazDropzone>>()
+
+    const onUploadSuccess = ({ file, response }) => {
+      console.log('Upload success:', file, response)
+      toast.success(`File ${file.name} uploaded successfully`)
+    }
+
+    const onUploadError = ({ file, code, error }) => {
+      console.error('Upload failed:', file, code, error)
+      toast.error(`File ${file.name} upload failed: ${code} - ${error}`)
+    }
+
+    const onError = ({ files, event, code }) => {
+      console.error('Error:', files, event, code)
+      toast.error(`${files?.length} files upload failed: ${code} - ${files?.map(file => file.name).join(', ')}`)
+    }
+  </script>
+  ```
+
+  </template>
+</ComponentDemo>
+
+## File Type Restrictions
+
+You can restrict allowed file types using the `data-types` prop:
+
+<ComponentDemo>
+  <MazDropzone
+    v-model="files"
+    :data-types="['image/jpeg', 'image/png']"
+    :max-file-size="5"
+    @error="onError"
+  />
+
+  <template #code>
+
+  ```html
+  <MazDropzone
+    v-model="files"
+    :data-types="['image/jpeg', 'image/png']"
+    :max-file-size="5"
+    @error="onError"
+  />
+  ```
+
+  </template>
+</ComponentDemo>
+
+## Auto Upload
+
+Enable automatic file upload using the `auto-upload` prop. Files can be uploaded individually (`single`) in separate requests or all at once (`multiple`) in a single request:
+
+<ComponentDemo>
+  <MazDropzone
+    v-model="files"
+    auto-upload="single"
+    upload-url="https://your-upload-endpoint.com/upload"
+    @upload-success="onUploadSuccess"
+    @upload-error="onUploadError"
+    @error="onError"
+  />
+
+  <template #code>
+
+  ```html
+  <MazDropzone
+    v-model="files"
+    auto-upload="single"
+    upload-url="https://your-upload-endpoint.com/upload"
+    @upload-success="onUploadSuccess"
+    @upload-error="onUploadError"
+    @error="onError"
+  />
+  ```
+
+  </template>
+</ComponentDemo>
+
+You can also upload all files at once using `multiple`:
+
+::: tip
+Multiple upload is allowed:
+- when `max-files` is greater than 1
+- when `auto-upload` is set to `multiple`
+- when `multiple` prop is set to `true`
+
+[Link to the source code](https://github.com/maz-ui/maz-ui/blob/main/components/MazDropzone.vue#L219)
+:::
+
+<ComponentDemo>
+  <MazDropzone
+    v-model="files"
+    auto-upload="multiple"
+    upload-url="https://your-upload-endpoint.com/upload"
+    @upload-success-multiple="onUploadSuccessMultiple"
+    @upload-error-multiple="onUploadErrorMultiple"
+    @error="onError"
+  />
+
+  <template #code>
+
+  ```html
+  <template>
+    <MazDropzone
+      v-model="files"
+      auto-upload="multiple"
+      upload-url="https://your-upload-endpoint.com/upload"
+      @upload-success-multiple="onUploadSuccessMultiple"
+      @upload-error-multiple="onUploadErrorMultiple"
+      @error="onError"
+    />
+  </template>
+
+  <script setup lang="ts">
   import { ref } from 'vue'
-  import MazDropzone, { MazDropzoneInstance, MazDropzoneOptions } from 'maz-ui/components/MazDropzone'
-  import MazBtn from 'maz-ui/components/MazBtn'
+  import { useToast } from 'maz-ui'
 
-  const loading = ref(false)
-  const mazDropzoneInstance = ref<MazDropzoneInstance>()
-  const errorMessage = ref<string>()
+  const files = ref<File[]>([])
 
-  const error = ({ file, message }) => {
-    console.log('dropzone-error', { file, message })
-    errorMessage.value = message
-  }
-  const success = ({ file, response }) => {
-    console.log('dropzone-success', { file, response })
-  }
-  const sendFiles = () => mazDropzoneInstance.value?.processQueue()
+  const toast = useToast()
 
-  const dropzoneOptionsBase: MazDropzoneOptions = {
-    url: 'https://httpbin.org/post',
-    headers: { 'My-Awesome-Header': 'header value' },
-    acceptedFiles: 'image/jpeg,image/jpg,image/png',
-    maxFilesize: 5,
-    maxFiles: 5,
-    maxThumbnailFilesize: 3,
-    autoProcessQueue: false,
-    autoRemoveOnError: true,
+  const onUploadSuccessMultiple = ({ files, response }) => {
+    console.log('Upload success:', files, response)
+    toast.success(`${files.length} files uploaded successfully`)
   }
 
-  const translations: MazDropzoneOptions = {
-    dictDefaultMessage: 'Choose or drop a file',
-    dictFilesDescriptions: `(PNG or JPG under ${dropzoneOptionsBase.maxFilesize} MB)`,
-    dictFallbackMessage: 'Your browser is not supported',
-    dictFileTooBig: `File(s) too big (max: ${dropzoneOptionsBase.maxFilesize} MB)`,
-    dictInvalidFileType: `File type not supported`,
-    dictRemoveFile: 'Remove',
-    dictCancelUpload: 'Cancel upload',
-    dictMaxFilesExceeded: `You can not upload any more files. (max: ${dropzoneOptionsBase.maxFiles})`,
-    dictUploadCanceled: 'Upload canceled',
+  const onUploadErrorMultiple = ({ files, code, error }) => {
+    console.error('Upload failed:', files, code, error)
+    toast.error(`${files.length} files upload failed: ${code} - ${error}`)
   }
 
-  const dropzoneOptions: MazDropzoneOptions = {
-    ...dropzoneOptionsBase,
-    ...translations
-  }
-</script>
-```
+  </script>
+  ```
 
-<script lang="ts" setup>
-  import { ref, onMounted } from 'vue'
-  import ComponentPropDoc from './../.vitepress/theme/components/ComponentPropDoc.vue'
+  </template>
+</ComponentDemo>
 
-  const loading = ref(false)
-  const mazDropzoneInstance = ref<MazDropzoneInstance>()
+## Custom Upload Area
 
-  const errorMessage = ref<string>()
+Customize the upload area using slots:
 
-  const error = ({ file, message }) => {
-    console.log('dropzone-error', { file, message })
-    errorMessage.value = message
-  }
-  const success = ({ file, response }) => {
-    console.log('dropzone-success', { file, response })
-  }
-  const sendFiles = () => mazDropzoneInstance.value?.processQueue()
+<ComponentDemo>
+  <MazDropzone v-model="files" @error="onError">
+    <template #no-files-area="{ handleFileInputClick }">
+      <div class="maz-flex maz-flex-col maz-items-center maz-gap-4">
+        <MazIcon name="arrow-up-on-square" class="maz-text-4xl" />
+        <p>Drop your files here or click to browse</p>
+        <MazBtn @click="handleFileInputClick">
+          Select Files
+        </MazBtn>
+      </div>
+    </template>
+  </MazDropzone>
 
-  const dropzoneOptionsBase: MazDropzoneOptions = {
-    url: 'https://httpbin.org/post',
-    headers: { 'My-Awesome-Header': 'header value' },
-    acceptedFiles: 'image/jpeg,image/jpg,image/png',
-    maxFilesize: 5,
-    maxFiles: 5,
-    maxThumbnailFilesize: 3,
-    autoProcessQueue: false,
-    autoRemoveOnError: true,
-  }
+  <template #code>
 
-  const translations: MazDropzoneOptions = {
-    dictDefaultMessage: 'Choose or drop a file',
-    dictFilesDescriptions: `(PNG or JPG under ${dropzoneOptionsBase.maxFilesize} MB)`,
-    dictFallbackMessage: 'Your browser is not supported',
-    dictFileTooBig: `File(s) too big (max: ${dropzoneOptionsBase.maxFilesize} MB)`,
-    dictInvalidFileType: `File type not supported`,
-    dictRemoveFile: 'Remove',
-    dictCancelUpload: 'Cancel upload',
-    dictMaxFilesExceeded: `You can not upload any more files. (max: ${dropzoneOptionsBase.maxFiles})`,
-    dictUploadCanceled: 'Upload canceled',
-  }
+  ```html
+  <MazDropzone v-model="files" @error="onError">
+    <template #no-files-area="{ handleFileInputClick }">
+      <div class="maz-flex maz-flex-col maz-items-center maz-gap-4">
+        <MazIcon name="arrow-up-on-square" class="maz-text-4xl" />
+        <p>Drop your files here or click to browse</p>
+        <MazBtn @click="handleFileInputClick">
+          Select Files
+        </MazBtn>
+      </div>
+    </template>
+  </MazDropzone>
+  ```
 
-  const dropzoneOptions: MazDropzoneOptions = {
-    ...dropzoneOptionsBase,
-    ...translations
-  }
-</script>
+  </template>
+</ComponentDemo>
 
-## Props, Events emitted & Methods
+## Custom Translations
 
-<ComponentPropDoc
-  component="MazDropzone"
-  :component-instance="mazDropzoneInstance"
-  :methods="[
-    { name: 'setOption' },
-    { name: 'manuallyAddFile' },
-    { name: 'removeAllFiles' },
-    { name: 'processQueue' },
-    { name: 'destroy' },
-    { name: 'disable' },
-    { name: 'enable' },
-    { name: 'accept' },
-    { name: 'addFile' },
-    { name: 'resizeImage' },
-    { name: 'cancelUpload' },
-    { name: 'getAcceptedFiles' },
-    { name: 'getRejectedFiles' },
-    { name: 'getFilesWithStatus' },
-    { name: 'getQueuedFiles' },
-    { name: 'getUploadingFiles' },
-    { name: 'getAddedFiles' },
-    { name: 'getActiveFiles' },
-  ]"
-/>
+Customize text messages using the `translations` prop:
+
+<ComponentDemo>
+  <MazDropzone
+    v-model="files"
+    :translations="{
+      dragAndDrop: 'Drag files here',
+      selectFile: 'Browse files',
+      fileInfos: 'Accepted files: Images up to 5MB'
+    }"
+    @error="onError"
+  />
+
+  <template #code>
+
+  ```html
+  <MazDropzone
+    v-model="files"
+    :translations="{
+      dragAndDrop: 'Drag files here',
+      selectFile: 'Browse files',
+      fileInfos: 'Accepted files: Images up to 5MB'
+    }"
+    @error="onError"
+  />
+  ```
+
+  </template>
+</ComponentDemo>
+
+## Custom Upload Request
+
+Customize the upload request using `uploadUrl`, `requestOptions` and `transformBody`:
+
+<ComponentDemo>
+  <MazDropzone
+    v-model="files"
+    upload-url="/api/upload"
+    :request-options="{
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer token123'
+      },
+    }"
+    :transform-body="(formData, files) => {
+      // Add additional data to FormData
+      formData.append('userId', '123')
+      formData.append('fileCount', files.length.toString())
+      return formData
+    }"
+    @error="onError"
+  />
+
+  <template #code>
+
+  ```html
+  <MazDropzone
+    v-model="files"
+    upload-url="/api/upload"
+    :request-options="{
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer token123'
+      },
+    }"
+    :transform-body="(formData, files) => {
+      // Add additional data to FormData
+      formData.append('userId', '123')
+      formData.append('fileCount', files.length.toString())
+      return formData
+    }"
+    @error="onError"
+  />
+  ```
+
+  </template>
+</ComponentDemo>
 
 <!--@include: ./../.vitepress/generated-docs/maz-dropzone.doc.md-->
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useToast } from 'maz-ui'
+
+const files = ref<File[]>([])
+const dropzone = ref<InstanceType<typeof MazDropzone>>()
+const toast = useToast()
+
+const onUploadSuccess = ({ file, response }) => {
+  console.log('Upload success:', file, response)
+  toast.success(`File ${file.name} uploaded successfully`)
+}
+
+const onUploadError = ({ file, code, error }) => {
+  console.error('Upload failed:', file, code, error)
+  toast.error(`File ${file.name} upload failed: ${code} - ${error}`)
+}
+
+const onUploadSuccessMultiple = ({ files, response }) => {
+  console.log('Upload success:', files, response)
+  toast.success(`${files.length} files uploaded successfully`)
+}
+
+const onUploadErrorMultiple = ({ files, code, error }) => {
+  console.error('Upload failed:', files, code, error)
+  toast.error(`${files.length} files upload failed: ${code} - ${error}`)
+}
+
+const onError = ({ files, event, code }) => {
+  console.error('Error:', files, event, code)
+  toast.error(`${files?.length} files upload failed: ${code} - ${files?.map(file => file.name).join(', ')}`)
+}
+</script>
