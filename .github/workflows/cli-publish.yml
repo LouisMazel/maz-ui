@@ -3,6 +3,9 @@ name: Cli Publish To Npm
 on:
   release:
     types: [published]
+  # push:
+  #   paths:
+  #     - '.github/workflows/cli-publish.yml'
 
 jobs:
   cli-publish:
@@ -20,7 +23,7 @@ jobs:
         with:
           cache: 'pnpm'
           node-version: '21'
-          # registry-url: 'https://registry.npmjs.org'
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Get last repo version
         run: git pull origin master

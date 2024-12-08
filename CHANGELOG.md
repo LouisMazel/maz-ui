@@ -1,5 +1,25 @@
 # Change Log
 
+## v3.49.2...v3.49.3
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.49.2...v3.49.3)
+
+### 🩹 Fixes
+
+- **maz-ui:** Add hash to css files to avoid overriding ([09e7a35a8](https://github.com/LouisMazel/maz-ui/commit/09e7a35a8))
+
+### 📖 Documentation
+
+- Update README ([0a50bf1f8](https://github.com/LouisMazel/maz-ui/commit/0a50bf1f8))
+
+### 🏡 Chore
+
+- **deps:** Upgrade dependencies ([bb218e371](https://github.com/LouisMazel/maz-ui/commit/bb218e371))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.49.1...v3.49.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.49.1...v3.49.2)
