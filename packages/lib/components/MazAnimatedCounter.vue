@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
+import { isClient } from '../modules/helpers/is-client'
 
 const props = withDefaults(
   defineProps<{
@@ -36,13 +37,30 @@ const props = withDefaults(
 
 const currentCount = ref(0)
 
-function animate(start: number, end: number, duration: number, delay: number) {
-  currentCount.value = start
+function getRequestAnimationFrame() {
+  if (typeof window === 'undefined' || !window.requestAnimationFrame) {
+    return (callback: FrameRequestCallback): number => {
+      setTimeout(callback, 1000 / 60)
+      return 0
+    }
+  }
 
+  return window.requestAnimationFrame.bind(window)
+}
+
+function animate(start: number, end: number, duration: number, delay: number) {
+  const requestAnim = getRequestAnimationFrame()
+
+  if (!isClient()) {
+    currentCount.value = end
+    return
+  }
+
+  currentCount.value = start
   setTimeout(() => {
     const startTime = performance.now()
 
-    const updateCount = (currentTime: number) => {
+    const updateCount = (currentTime: number = performance.now()) => {
       const elapsed = currentTime - startTime
       const progress = Math.min(elapsed / duration, 1)
 
@@ -53,11 +71,11 @@ function animate(start: number, end: number, duration: number, delay: number) {
       )
 
       if (progress < 1) {
-        requestAnimationFrame(updateCount)
+        requestAnim(updateCount)
       }
     }
 
-    requestAnimationFrame(updateCount)
+    requestAnim(updateCount)
   }, delay)
 }
 

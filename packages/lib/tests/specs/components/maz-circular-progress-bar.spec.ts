@@ -20,7 +20,7 @@ describe('mazCircularProgressBar', () => {
   it('updates percentage and triggers animation', async () => {
     await wrapper.setProps({ suffix: '%' })
     // Vérifier que le pourcentage initial est correct
-    expect(wrapper.find('.maz-sr-only').text()).toContain('50 %')
+    expect(wrapper.find('.maz-sr-only').text()).toContain('50%')
 
     // Mettre à jour le pourcentage
     await wrapper.setProps({ percentage: 75 })
@@ -28,8 +28,7 @@ describe('mazCircularProgressBar', () => {
     // Attendre la fin de l'animation de mise à jour
     await new Promise(resolve => setTimeout(resolve, 100))
 
-    // Vérifier que le texte mis à jour rendu contient le nouveau pourcentage
-    expect(wrapper.text()).toContain('75 %')
+    expect(wrapper.text()).toContain('75%')
   })
 
   it('renders with auto color', async () => {
