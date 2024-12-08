@@ -1,5 +1,21 @@
 # Change Log
 
+## v3.49.0...v3.49.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.49.0...v3.49.1)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazAnimateCounter - animation on mobile browsers ([984ec3731](https://github.com/LouisMazel/maz-ui/commit/984ec3731))
+
+### 📖 Documentation
+
+- Add demonstration page on home page ([4aeb5ca58](https://github.com/LouisMazel/maz-ui/commit/4aeb5ca58))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.48.3...v3.49.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.48.3...v3.49.0)
