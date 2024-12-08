@@ -26,9 +26,11 @@ description: MazAnimatedCounter is a standalone component that allows you to ani
 
     const count = ref(Math.floor(Math.random() * 99999))
 
-    setInterval(() => {
-      count.value = Math.floor(Math.random() * 99999)
-    }, 3000)
+    onMounted(() => {
+      setInterval(() => {
+        count.value = Math.floor(Math.random() * 99999)
+      }, 3000)
+    })
   </script>
   ```
 
@@ -36,12 +38,14 @@ description: MazAnimatedCounter is a standalone component that allows you to ani
 </ComponentDemo>
 
 <script setup lang="ts">
-  import { ref } from 'vue'
+  import { ref, onMounted } from 'vue'
   const count = ref(Math.floor(Math.random() * 99999))
 
-  setInterval(() => {
-    count.value = Math.floor(Math.random() * 99999)
-  }, 3000)
+  onMounted(() => {
+    setInterval(() => {
+      count.value = Math.floor(Math.random() * 99999)
+    }, 3000)
+  })
 </script>
 
 ## duration

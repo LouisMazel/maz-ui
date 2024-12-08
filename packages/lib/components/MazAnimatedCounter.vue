@@ -38,7 +38,8 @@ const props = withDefaults(
 const currentCount = ref(0)
 
 function getRequestAnimationFrame() {
-  if (typeof window === 'undefined' || !window.requestAnimationFrame) {
+  /* Polyfill for server-side rendering */
+  if (!isClient() || !window.requestAnimationFrame) {
     return (callback: FrameRequestCallback): number => {
       setTimeout(callback, 1000 / 60)
       return 0
