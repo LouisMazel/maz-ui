@@ -1,4 +1,4 @@
-name: Lib Tests Unit & Publish Coverage
+name: Unit Tests
 
 on:
   push:
