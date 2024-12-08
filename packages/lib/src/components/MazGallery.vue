@@ -196,7 +196,7 @@ function shouldHaveRemainingLayer(index: number): boolean {
         :class="{ 'maz-rounded-xl': radius }"
         :style="[sizeStyle]"
       >
-        <NoPhotographyIcon class="maz-h-8 maz-w-8" />
+        <NoPhotographyIcon class="maz-size-8" />
       </div>
     </section>
     <div

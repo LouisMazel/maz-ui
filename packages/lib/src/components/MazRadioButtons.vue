@@ -173,7 +173,7 @@ function onFocus(index: number, event: FocusEvent) {
             ]"
           >
             <Transition name="maz-radio-buttons-scale">
-              <CheckCircleIcon v-show="isSelected(option.value)" class="maz-h-full maz-w-full" />
+              <CheckCircleIcon v-show="isSelected(option.value)" class="maz-size-full" />
             </Transition>
           </span>
         </div>
