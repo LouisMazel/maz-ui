@@ -1,5 +1,17 @@
 # Change Log
 
+## v3.49.1...v3.49.2
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.49.1...v3.49.2)
+
+### 💅 Refactors
+
+- **maz-ui:** MazAnimateCounter - make it SSR friendly ([6187cc2b0](https://github.com/LouisMazel/maz-ui/commit/6187cc2b0))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.49.0...v3.49.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.49.0...v3.49.1)
