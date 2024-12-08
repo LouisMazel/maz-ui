@@ -58,7 +58,7 @@ function getBuildConfig({
   path: string
   hash?: string
   isModuleBuild?: boolean
-}): InlineConfig {
+}) {
   return {
     build: {
       emptyOutDir: false,
@@ -72,14 +72,15 @@ function getBuildConfig({
         formats: [format],
         fileName: name,
         name,
+        cssFileName: '[name].[hash].css',
       },
       rollupOptions: {
         treeshake: true,
         external: ['vue', 'libphonenumber-js', '/^dayjs:.*/', 'chart.js', 'dropzone', 'vue-chartjs'],
         output: {
           exports: 'named',
-          chunkFileNames: `chunks/[name]-[hash].${format === 'es' ? 'mjs' : 'cjs'}`,
-          assetFileNames: `assets/[name].[ext]`,
+          chunkFileNames: `chunks/[name].[hash].${format === 'es' ? 'mjs' : 'cjs'}`,
+          assetFileNames: 'assets/[name].[hash].[ext]',
           entryFileNames: `[name].${format === 'es' ? 'mjs' : 'cjs'}`,
           preserveModules: false,
           globals: {
@@ -108,7 +109,7 @@ function getBuildConfig({
       libInjectCss(),
       ...(isModuleBuild ? [viteStaticCopy({ targets: staticAssetsToCopy })] : []),
     ],
-  }
+  } satisfies InlineConfig
 }
 
 async function run() {
@@ -165,10 +166,10 @@ async function run() {
       argv.component ? name === argv.component : true,
     )
 
-    for await (const { path: componentPath, name } of componentToBuild) {
+    for await (const { path, name } of componentToBuild) {
       await build(
         getBuildConfig({
-          path: componentPath,
+          path,
           name,
           outDir: resolve(_dirname, '../dist/components'),
           format: 'es',
