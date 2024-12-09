@@ -2,10 +2,13 @@
 import type { Dayjs } from 'dayjs'
 import type { Color } from '../types'
 import type { PickerShortcut, PickerValue } from './types'
-import { computed, defineAsyncComponent, type PropType, ref } from 'vue'
+import { computed, type PropType, ref } from 'vue'
 
 import MazPickerCalendarMonth from './MazPickerCalendarMonth/MazPickerCalendarMonth.vue'
 import MazPickerCalendarSwitcher from './MazPickerCalendarSwitcher.vue'
+import MazPickerMonthSwitcher from './MazPickerMonthSwitcher.vue'
+import MazPickerShortcuts from './MazPickerShortcuts.vue'
+import MazPickerYearSwitcher from './MazPickerYearSwitcher.vue'
 
 const props = defineProps({
   modelValue: {
@@ -31,9 +34,6 @@ const props = defineProps({
   disabled: { type: Boolean, required: true },
 })
 const emits = defineEmits(['update:model-value', 'update:calendar-date'])
-const MazPickerMonthSwitcher = defineAsyncComponent(() => import('./MazPickerMonthSwitcher.vue'))
-const MazPickerYearSwitcher = defineAsyncComponent(() => import('./MazPickerYearSwitcher.vue'))
-const MazPickerShortcuts = defineAsyncComponent(() => import('./MazPickerShortcuts.vue'))
 
 const hoverredDay = ref<Dayjs>()
 
