@@ -1,5 +1,26 @@
 # Change Log
 
+## v3.50.0...v3.50.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.50.0...v3.50.1)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazPicker - js errors while lazy loading of children components ([7a75f72f4](https://github.com/LouisMazel/maz-ui/commit/7a75f72f4))
+
+### 💅 Refactors
+
+- **docs:** Move MazChart into data section ([5d84d77a3](https://github.com/LouisMazel/maz-ui/commit/5d84d77a3))
+
+### 🏡 Chore
+
+- **docs:** Improve error handling ([3d25123a9](https://github.com/LouisMazel/maz-ui/commit/3d25123a9))
+- **docs:** Improve deployment - can be deployed outside from github actions ([559971162](https://github.com/LouisMazel/maz-ui/commit/559971162))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.49.3...v3.50.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.49.3...v3.50.0)
