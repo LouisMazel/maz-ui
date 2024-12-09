@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, defineProps, onMounted, ref } from 'vue'
+import { computed, defineProps, onBeforeUnmount, onMounted, ref } from 'vue'
 
 interface MazAnimatedElementProps {
   /**
@@ -18,29 +18,42 @@ interface MazAnimatedElementProps {
    * @default 2000
    */
   duration?: number
+  /**
+   * Play the animation only once
+   * @default true
+   */
+  once?: boolean
 }
 
-const { direction = 'up', delay = 0, duration = 2000 } = defineProps<MazAnimatedElementProps>()
+const { direction = 'up', delay = 0, duration = 2000, once = true } = defineProps<MazAnimatedElementProps>()
 
 const animatedClass = computed(() => `animate-slide-${direction}-blur`)
 
 const element = ref<HTMLDivElement>()
 
+let observer: IntersectionObserver | null = null
+
 onMounted(() => {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.remove('--invisible')
-        entry.target.classList.add(animatedClass.value)
-        observer.unobserve(entry.target)
+  observer = new IntersectionObserver(([entry]) => {
+    if (entry.isIntersecting) {
+      entry.target.classList.remove('--invisible')
+      entry.target.classList.add(animatedClass.value)
+      if (once === true) {
+        observer?.unobserve(entry.target)
       }
-    })
+    }
+    else if (once === false) {
+      entry.target.classList.add('--invisible')
+      entry.target.classList.remove(animatedClass.value)
+    }
   })
 
   if (element.value) {
     observer.observe(element.value)
   }
 })
+
+onBeforeUnmount(() => observer?.disconnect())
 </script>
 
 <template>
