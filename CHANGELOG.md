@@ -1,5 +1,33 @@
 # Change Log
 
+## v3.49.3...v3.50.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.49.3...v3.50.0)
+
+### 🚀 Enhancements
+
+- **maz-ui:** MazAnimatedCounter - add an option to replay or not the animation when the component is visible again ([6b392802a](https://github.com/LouisMazel/maz-ui/commit/6b392802a))
+- **maz-ui:** MazAnimatedText - add an option to replay or not the animation when the component is visible again ([a293456d4](https://github.com/LouisMazel/maz-ui/commit/a293456d4))
+- **maz-ui:** MazAnimatedElement - add an option to replay or not the animation when the component is visible again ([2f2b27a2b](https://github.com/LouisMazel/maz-ui/commit/2f2b27a2b))
+- **maz-ui:** MazCircularProgressBar - add an option to replay or not the animation when the component is visible again ([345b9c7bc](https://github.com/LouisMazel/maz-ui/commit/345b9c7bc))
+
+### 🩹 Fixes
+
+- **maz-ui:** MazSlider - remove warning log when component is not visible ([912c2b4f0](https://github.com/LouisMazel/maz-ui/commit/912c2b4f0))
+
+### 💅 Refactors
+
+- **docs:** Add screenshot of demonstrations for mobile and tablet ([87327704c](https://github.com/LouisMazel/maz-ui/commit/87327704c))
+- **maz-ui:** MazTable - use inputSize for pagination button to fit with input size ([b5701b0cd](https://github.com/LouisMazel/maz-ui/commit/b5701b0cd))
+
+### 🏡 Chore
+
+- **deps:** Upgrade dependencies ([f5899b67c](https://github.com/LouisMazel/maz-ui/commit/f5899b67c))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v3.49.2...v3.49.3
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.49.2...v3.49.3)
