@@ -10,7 +10,8 @@
     "preview": "vitepress preview docs",
     "serve": "vitepress serve docs",
     "lint": "cross-env NODE_ENV=production eslint",
-    "pre-commit": "lint-staged"
+    "pre-commit": "lint-staged",
+    "ftp-deploy": "node ./ftp-deploy.mjs"
   },
   "dependencies": {
     "chart.js": "^4.4.7",
@@ -22,6 +23,7 @@
     "vitepress-plugin-google-analytics": "^1.0.2"
   },
   "devDependencies": {
+    "@samkirkland/ftp-deploy": "^1.2.4",
     "@types/postcss-import": "^14.0.3",
     "@types/postcss-url": "^10.0.4",
     "@types/react": "^19.0.1",

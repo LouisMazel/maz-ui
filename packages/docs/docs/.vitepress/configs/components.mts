@@ -29,6 +29,7 @@ export const components = {
       text: 'Data',
       collapsed: false,
       items: [
+        { text: 'MazChart', link: '/components/maz-chart' },
         { text: 'MazDropzone', link: '/components/maz-dropzone' },
         { text: 'MazPicker (date, time, range)', link: '/components/maz-picker' },
         { text: 'MazTable (data-table)', link: '/components/maz-table' },
@@ -49,7 +50,6 @@ export const components = {
         { text: 'MazCard', link: '/components/maz-card' },
         { text: 'MazCardSpotlight', link: '/components/maz-card-spotlight' },
         { text: 'MazCarousel', link: '/components/maz-carousel' },
-        { text: 'MazChart', link: '/components/maz-chart' },
         { text: 'MazCircularProgressBar', link: '/components/maz-circular-progress-bar' },
         { text: 'MazDropdown', link: '/components/maz-dropdown' },
         { text: 'MazExpandAnimation', link: '/components/maz-expand-animation' },
