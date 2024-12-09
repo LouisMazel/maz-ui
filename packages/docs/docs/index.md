@@ -387,6 +387,11 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
   const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN;
 
   async function getStarCount(owner = 'LouisMazel', repo = 'maz-ui') {
+    if (!GITHUB_TOKEN) {
+      console.warn('GitHub token is not defined')
+      return null
+    }
+
     try {
       const response = await fetch(`https://api.github.com/repos/${owner}/${repo}`, {
         headers: {
@@ -396,7 +401,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(`HTTP error status: ${response.status}`);
       }
 
       const data = await response.json();
