@@ -754,7 +754,7 @@ onBeforeMount(() => {
         <div class="m-table-footer-pagination-buttons">
           <MazBtn
             :disabled="currentPageModel === 1"
-            :size
+            :size="inputSize ?? size"
             color="transparent"
             :rounded-size
             no-elevation
@@ -765,7 +765,7 @@ onBeforeMount(() => {
 
           <MazBtn
             :disabled="currentPageModel === 1"
-            :size
+            :size="inputSize ?? size"
             color="transparent"
             :rounded-size
             no-elevation
@@ -775,7 +775,7 @@ onBeforeMount(() => {
           </MazBtn>
           <MazBtn
             :disabled="currentPageModel === totalPagesInternal"
-            :size
+            :size="inputSize ?? size"
             color="transparent"
             :rounded-size
             no-elevation
@@ -786,7 +786,7 @@ onBeforeMount(() => {
 
           <MazBtn
             :disabled="currentPageModel === totalPagesInternal"
-            :size
+            :size="inputSize ?? size"
             color="transparent"
             :rounded-size
             no-elevation
