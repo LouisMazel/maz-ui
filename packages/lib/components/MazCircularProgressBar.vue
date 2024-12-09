@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { Color } from './types'
-import { computed, type SVGAttributes, useSlots } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, type SVGAttributes, useSlots } from 'vue'
 import { useInstanceUniqId } from '../modules/composables/useInstanceUniqId'
 import MazAnimatedCounter from './MazAnimatedCounter.vue'
 
@@ -20,6 +20,11 @@ const props = withDefaults(
      * @default 1000
      */
     duration?: number
+    /**
+     * Delay before the animation starts in milliseconds
+     * @default 100
+     */
+    delay?: number
     /**
      * The color of the progress bar
      */
@@ -55,20 +60,28 @@ const props = withDefaults(
      */
     stroke?: SVGAttributes['stroke']
     /**
-     * The percentage value of the success color
+     * The percentage value of the success level
+     * @description The progress circle will be filled with the success color when the percentage is greater than or equal to this value
      * @default 100
      */
     successPercentage?: number
     /**
-     * The percentage value of the warning color
+     * The percentage value of the warning level
+     * @description The progress circle will be filled with the warning color when the percentage is greater than or equal to this value
      * @default 50
      */
     warningPercentage?: number
     /**
-     * The percentage value of the danger color
+     * The percentage value of the danger level
+     * @description The progress circle will be filled with the danger color when the percentage is greater than or equal to this value
      * @default 25
      */
     dangerPercentage?: number
+    /**
+     * Play the animation only once
+     * @default true
+     */
+    once?: boolean
   }>(),
   {
     percentage: 0,
@@ -83,6 +96,7 @@ const props = withDefaults(
     successPercentage: 100,
     warningPercentage: 75,
     dangerPercentage: 50,
+    once: true,
   },
 )
 
@@ -120,6 +134,34 @@ const animationDuration = computed<string>(() => `${props.duration}ms`)
 const dashoffset = computed<number>(() => {
   return Math.round(290 - 290 * (adjustedPercentage.value / 100))
 })
+
+const isVisible = ref(false)
+const circleRef = ref<HTMLElement | null>(null)
+const hasBeenAnimated = ref(false)
+
+let observer: IntersectionObserver | null = null
+
+onMounted(() => {
+  observer = new IntersectionObserver(([entry]) => {
+    if (!isVisible.value || !props.once) {
+      isVisible.value = entry.isIntersecting
+    }
+
+    if (props.once && circleRef.value) {
+      observer?.unobserve(circleRef.value)
+
+      circleRef.value?.addEventListener('animationend', () => {
+        hasBeenAnimated.value = true
+      })
+    }
+  })
+
+  if (circleRef.value) {
+    observer.observe(circleRef.value)
+  }
+})
+
+onBeforeUnmount(() => observer?.disconnect())
 </script>
 
 <template>
@@ -129,6 +171,7 @@ const dashoffset = computed<number>(() => {
       {
         '--animation-duration': animationDuration,
         '--dashoffset': dashoffset,
+        '--delay': `${delay}ms`,
       },
       {
         fontSize: size,
@@ -141,7 +184,13 @@ const dashoffset = computed<number>(() => {
           <!-- @slot Default slot - Replace the percaentage value -->
           <slot />
         </span>
-        <MazAnimatedCounter v-else :count="percentage" :duration="duration">
+        <MazAnimatedCounter
+          v-else
+          :count="percentage"
+          :duration
+          :delay
+          :once
+        >
           <template v-if="hasPrefix" #prefix>
             <!-- @slot Prefix slot - Add a prefix next to the number (e.g: "$") -->
             <slot name="prefix">
@@ -157,7 +206,16 @@ const dashoffset = computed<number>(() => {
         </MazAnimatedCounter>
       </div>
     </div>
-    <svg xmlns="http://www.w3.org/2000/svg" height="1em" width="1em" viewBox="0 0 100 100">
+    <svg
+      ref="circleRef"
+      xmlns="http://www.w3.org/2000/svg"
+      height="1em"
+      width="1em"
+      :class="{
+        animate: isVisible,
+      }"
+      viewBox="0 0 100 100"
+    >
       <defs>
         <linearGradient :id="`${id}-gradient`" x1="0" x2="0" y1="1" y2="0">
           <stop
@@ -180,7 +238,7 @@ const dashoffset = computed<number>(() => {
         r="46"
         :stroke-width="strokeWidth"
         stroke-dasharray="290"
-        stroke-dashoffset="290"
+        :stroke-dashoffset="hasBeenAnimated ? dashoffset : 290"
         :stroke="stroke ? stroke : `url(#${id}-gradient)`"
         fill="none"
         :stroke-linecap="strokeLinecap"
@@ -190,7 +248,7 @@ const dashoffset = computed<number>(() => {
 </template>
 
 <style lang="postcss" scoped>
-  .m-circular-progress-bar {
+.m-circular-progress-bar {
   @apply maz-relative maz-inline-flex maz-h-[1em] maz-w-[1em] maz-flex-center;
 
   .outer {
@@ -209,8 +267,16 @@ const dashoffset = computed<number>(() => {
     @apply maz-absolute -maz-rotate-90;
 
     circle {
+      will-change: stroke-dashoffset;
       animation: animate linear forwards var(--animation-duration);
+      animation-delay: var(--delay);
     }
+
+    /* &.animate circle {
+      animation: animate linear forwards var(--animation-duration);
+      animation-delay: var(--delay);
+      animation-play-state: running;
+    } */
   }
 
   @keyframes animate {
