@@ -15,7 +15,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
   <div class="maz-mx-auto maz-max-w-3xl">
     <MazAnimatedText
       text="Collection of standalone components, plugins, directives, composables and more"
-      direction="up"
+      direction="down"
       :delay="0"
       tag="h2"
       class="maz-text-xl maz-tracking-tight maz-text-muted tab-m:maz-flex-center tab-m:maz-w-full"
@@ -25,7 +25,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
     <MazAnimatedText
       text="Lightweight and efficient library for"
       last-word="Vue & Nuxt"
-      direction="up"
+      direction="down"
       :delay="500"
       tag="h1"
       class="maz-mt-6 maz-text-4xl maz-tracking-tighter maz-font-bold tab-m:maz-flex-center tab-m:maz-text-5xl lg:maz-text-6xl"
@@ -60,11 +60,11 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
     </div>
   </MazAnimatedElement>
 
-  <MazAnimatedElement :delay="0" class="maz-mt-12 tab-m:maz-mt-20 maz-hidden tab-m:maz-block">
+  <MazAnimatedElement :delay="1500" class="maz-mt-12 tab-m:maz-mt-20">
     <MazTabs>
-      <div class="maz-flex maz-justify-between maz-items-center maz-gap-4">
-        <MazTabsBar :items="['Dashboard', 'Product Page', 'Auth Page']" class="maz-mb-4 maz-border maz-border-color-light" no-elevation />
-        <h3 class="maz-text-2xl maz-font-bold maz-mb-4">
+      <div class="maz-flex maz-justify-between maz-items-start tab-m:maz-items-center maz-gap-4 maz-mb-4 maz-flex-col-reverse tab-m:maz-flex-row">
+        <MazTabsBar :items="['Dashboard', 'Product Page', 'Auth Page']" class="maz-border maz-border-color-light" no-elevation />
+        <h3 class="maz-text-2xl maz-font-bold">
           Demonstrations
         </h3>
       </div>
@@ -77,7 +77,13 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
             class="maz-relative maz-w-full"
             content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start"
           >
-            <DemoDashboardPage />
+            <DemoDashboardPage :delay="2000" class="maz-hidden tab-m:maz-block" />
+            <div class="dark:maz-hidden">
+              <MazLazyImg class="maz-block tab-m:!maz-hidden maz-w-full" src="./assets/dashboard-2light.png" alt="Maz-UI" />
+            </div>
+            <div class="maz-hidden dark:maz-block">
+              <MazLazyImg src="./assets/dashboard-dark.png" class="maz-block tab-m:!maz-hidden" alt="Maz-UI" />
+            </div>
           </MazCard>
         </MazTabsContentItem>
         <MazTabsContentItem :tab="2">
@@ -88,7 +94,13 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
             class="maz-relative maz-w-full"
             content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start"
           >
-            <DemoProductPage />
+            <DemoProductPage class="maz-hidden tab-m:maz-block" />
+            <div class="dark:maz-hidden">
+              <MazLazyImg class="maz-block tab-m:!maz-hidden" src="./assets/product-page-light.png" alt="Maz-UI" />
+            </div>
+            <div class="maz-hidden dark:maz-block">
+              <MazLazyImg src="./assets/product-page-dark.png" class="maz-block tab-m:!maz-hidden" alt="Maz-UI" />
+            </div>
           </MazCard>
         </MazTabsContentItem>
         <MazTabsContentItem :tab="3">
@@ -99,7 +111,13 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
             class="maz-relative maz-w-full"
             content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start"
           >
-            <DemoAuthPage />
+            <DemoAuthPage class="maz-hidden tab-m:maz-flex" />
+            <div class="dark:maz-hidden">
+              <MazLazyImg class="maz-block tab-m:!maz-hidden" src="./assets/auth-page-light.png" alt="Maz-UI" />
+            </div>
+            <div class="maz-hidden dark:maz-block">
+              <MazLazyImg src="./assets/auth-page-dark.png" class="maz-block tab-m:!maz-hidden" alt="Maz-UI" />
+            </div>
           </MazCard>
         </MazTabsContentItem>
       </MazTabsContent>
