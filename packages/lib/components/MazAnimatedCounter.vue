@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { isClient } from '../modules/helpers/is-client'
 
 const props = withDefaults(
@@ -26,16 +26,24 @@ const props = withDefaults(
      * @default 100
      */
     delay?: number
+    /**
+     * Play the animation only once
+     * @default true
+     */
+    once?: boolean
   }>(),
   {
     duration: 1000,
     prefix: undefined,
     suffix: undefined,
     delay: 100,
+    once: true,
   },
 )
 
 const currentCount = ref(0)
+
+const elementRef = ref<HTMLElement | null>(null)
 
 function getRequestAnimationFrame() {
   /* Polyfill for server-side rendering */
@@ -80,6 +88,33 @@ function animate(start: number, end: number, duration: number, delay: number) {
   }, delay)
 }
 
+function startAnimation(start: number, end: number) {
+  animate(start, end, props.duration, props.delay)
+}
+
+let observer: IntersectionObserver | null = null
+
+onMounted(() => {
+  if (props.once)
+    return
+
+  observer = new IntersectionObserver(([entry]) => {
+    if (entry.isIntersecting) {
+      startAnimation(0, props.count)
+
+      if (props.once) {
+        observer?.unobserve(entry.target)
+      }
+    }
+  })
+
+  if (elementRef.value) {
+    observer.observe(elementRef.value)
+  }
+})
+
+onBeforeUnmount(() => observer?.disconnect())
+
 watch(
   () => props.count,
   (newCount, oldCount) => {
@@ -88,14 +123,14 @@ watch(
     }
 
     const startValue = oldCount ?? 0
-    animate(startValue, newCount, props.duration, props.delay)
+    startAnimation(startValue, newCount)
   },
   { immediate: true },
 )
 </script>
 
 <template>
-  <span class="m-animated-counter m-reset-css">
+  <span ref="elementRef" class="m-animated-counter m-reset-css">
     <span class="maz-sr-only">
       <slot name="prefix">{{ prefix }}</slot>{{ count }}<slot name="suffix">{{ suffix }}</slot>
     </span>
