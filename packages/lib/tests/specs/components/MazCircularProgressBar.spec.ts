@@ -1,6 +1,15 @@
 import MazCircularProgressBar from '@components/MazCircularProgressBar.vue'
 import { mount, type VueWrapper } from '@vue/test-utils'
 
+const mockIntersectionObserver = vi.fn()
+mockIntersectionObserver.mockReturnValue({
+  observe: () => null,
+  unobserve: () => null,
+  disconnect: () => null,
+})
+
+window.IntersectionObserver = mockIntersectionObserver
+
 describe('mazCircularProgressBar', () => {
   let wrapper: VueWrapper<InstanceType<typeof MazCircularProgressBar>>
 
@@ -13,19 +22,15 @@ describe('mazCircularProgressBar', () => {
   })
 
   it('renders progress bar with default values', () => {
-    // Vérifier que le pourcentage initial est correct
     expect(wrapper.text()).toContain('50')
   })
 
   it('updates percentage and triggers animation', async () => {
     await wrapper.setProps({ suffix: '%' })
-    // Vérifier que le pourcentage initial est correct
     expect(wrapper.find('.maz-sr-only').text()).toContain('50%')
 
-    // Mettre à jour le pourcentage
     await wrapper.setProps({ percentage: 75 })
 
-    // Attendre la fin de l'animation de mise à jour
     await new Promise(resolve => setTimeout(resolve, 100))
 
     expect(wrapper.text()).toContain('75%')
@@ -37,7 +42,6 @@ describe('mazCircularProgressBar', () => {
       autoColor: true,
     })
 
-    // Vérifier que la classe de couleur est correcte pour le pourcentage initial
     expect(wrapper.find('svg stop').attributes('stop-color')).toContain('maz-color-danger')
 
     await wrapper.setProps({
@@ -45,7 +49,6 @@ describe('mazCircularProgressBar', () => {
       autoColor: true,
     })
 
-    // Vérifier que la classe de couleur est correcte pour le pourcentage initial
     expect(wrapper.find('svg stop').attributes('stop-color')).toContain('maz-color-warning')
 
     await wrapper.setProps({
@@ -53,7 +56,6 @@ describe('mazCircularProgressBar', () => {
       autoColor: true,
     })
 
-    // Vérifier que la classe de couleur est correcte pour le pourcentage initial
     expect(wrapper.find('svg stop').attributes('stop-color')).toContain('maz-color-success')
   })
 })
