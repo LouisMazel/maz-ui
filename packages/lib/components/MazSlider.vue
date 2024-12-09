@@ -217,7 +217,7 @@ async function calcPos() {
   await nextTick()
   const { min, max, log } = props
   const barWidth = MazSlider.value?.clientWidth
-  if (barWidth) {
+  if (typeof barWidth === 'number') {
     buttonPositions.value = tmpValues.value?.map(v =>
       log
         ? (barWidth / max) * (min + (Math.log(v) - minLog.value) / scale.value)
@@ -232,7 +232,7 @@ async function getCursorsValues() {
   await nextTick()
   const { max, min, log } = props
   const barWidth = MazSlider.value?.clientWidth
-  if (barWidth) {
+  if (typeof barWidth === 'number') {
     return log
       ? buttonPositions.value?.map((pos: number) => {
         const position = pos / (barWidth / max)
