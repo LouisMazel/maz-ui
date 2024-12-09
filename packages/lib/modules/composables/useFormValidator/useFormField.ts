@@ -8,7 +8,7 @@ import type {
 } from './types'
 
 import { computed, onMounted, onUnmounted } from 'vue'
-import { checkAvailability } from '../../helpers/check-availability'
+import { checkAvailability } from '../../helpers/checkAvailability'
 import { freezeValue } from '../../helpers/freeze-value'
 import { isEqual } from '../../helpers/is-equal'
 import {

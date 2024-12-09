@@ -1,4 +1,4 @@
-export * from './check-availability'
+export * from './checkAvailability'
 export * from './country-code-to-unicode-flag'
 export * from './debounce'
 export * from './idle-timeout'
