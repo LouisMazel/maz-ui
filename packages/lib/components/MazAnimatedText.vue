@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { checkAvailability } from 'maz-ui'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { checkAvailability } from '../modules/helpers/checkAvailability'
 
 interface MazAnimatedTextProps {
   /**
@@ -49,6 +49,11 @@ interface MazAnimatedTextProps {
    * @default 2000
    */
   duration?: number
+  /**
+   * Play the animation only once
+   * @default true
+   */
+  once?: boolean
 }
 
 defineOptions({
@@ -65,6 +70,7 @@ const {
   columnGap = 0.5,
   rowGap = 0,
   duration = 2000,
+  once = true,
 } = defineProps<MazAnimatedTextProps>()
 
 const words = computed(() => text.split(' '))
@@ -78,20 +84,25 @@ const animatedClass = computed(() => isVisible.value ? `maz-animate-slide-${dire
 
 const element = ref<HTMLDivElement>()
 
+let observer: IntersectionObserver | null = null
+
 onMounted(() => {
   isClient.value = true
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        isVisible.value = true
-      }
-    })
+
+  observer = new IntersectionObserver(([entry]) => {
+    isVisible.value = entry.isIntersecting
+
+    if (once && element.value) {
+      observer?.unobserve(element.value)
+    }
   })
 
   checkAvailability(() => element.value, (element) => {
-    observer.observe(element)
+    observer?.observe(element)
   })
 })
+
+onBeforeUnmount(() => observer?.disconnect())
 </script>
 
 <template>
