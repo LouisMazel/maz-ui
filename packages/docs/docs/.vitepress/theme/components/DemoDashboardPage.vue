@@ -2,6 +2,10 @@
 import dataLabels from 'chartjs-plugin-datalabels'
 import { ref } from 'vue'
 
+const { delay = 100 } = defineProps<{
+  delay: number
+}>()
+
 const selectedPeriod = ref('last_7_days')
 const selectedCategories = ref(['sales', 'customers', 'orders'])
 const dateRange = ref({
@@ -96,6 +100,7 @@ const tableHeaders = [
         label="Date Range"
         class="maz-w-64"
         locale="en-US"
+        picker-position="bottom right"
         :input-date-style="{
           dateStyle: 'medium',
         }"
@@ -111,16 +116,20 @@ const tableHeaders = [
             :percentage="85"
             color="success"
             size="3rem"
+            :delay
+            :once="false"
           />
-          <div>
+          <div class="maz-truncate">
             <div class="maz-text-xl maz-font-bold">
               <MazAnimatedCounter
+                :delay
                 :count="28945"
                 prefix="$"
                 separator=","
+                :once="false"
               />
             </div>
-            <div class="maz-text-sm maz-text-muted">
+            <div class="maz-truncate maz-text-sm maz-text-muted">
               Total Revenue
             </div>
           </div>
@@ -133,15 +142,19 @@ const tableHeaders = [
             :percentage="65"
             color="info"
             size="3rem"
+            :delay
+            :once="false"
           />
-          <div>
+          <div class="maz-truncate">
             <div class="maz-text-xl maz-font-bold">
               <MazAnimatedCounter
+                :delay
                 :count="384"
                 separator=","
+                :once="false"
               />
             </div>
-            <div class="maz-text-sm maz-text-muted">
+            <div class="maz-truncate maz-text-sm maz-text-muted">
               New Orders
             </div>
           </div>
@@ -154,15 +167,19 @@ const tableHeaders = [
             :percentage="92"
             color="warning"
             size="3rem"
+            :delay
+            :once="false"
           />
-          <div>
+          <div class="maz-truncate">
             <div class="maz-text-xl maz-font-bold">
               <MazAnimatedCounter
+                :delay
                 :count="1482"
                 separator=","
+                :once="false"
               />
             </div>
-            <div class="maz-text-sm maz-text-muted">
+            <div class="maz-truncate maz-text-sm maz-text-muted">
               Active Customers
             </div>
           </div>
@@ -175,15 +192,19 @@ const tableHeaders = [
             :percentage="78"
             color="danger"
             size="3rem"
+            :delay
+            :once="false"
           />
-          <div>
+          <div class="maz-truncate">
             <div class="maz-text-xl maz-font-bold">
               <MazAnimatedCounter
+                :delay
                 :count="94"
                 suffix="%"
+                :once="false"
               />
             </div>
-            <div class="maz-text-sm maz-text-muted">
+            <div class="maz-truncate maz-text-sm maz-text-muted">
               Customer Satisfaction
             </div>
           </div>
@@ -225,7 +246,7 @@ const tableHeaders = [
             Sales Overview
           </h3>
         </template>
-        <MazChart v-bind="salesData" height="150" />
+        <MazChart v-bind="salesData" height="125" />
       </MazCard>
 
       <MazCard bordered :elevation="false" block>
