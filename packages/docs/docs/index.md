@@ -79,10 +79,10 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
           >
             <DemoDashboardPage :delay="2000" class="maz-hidden tab-m:maz-block" />
             <div class="dark:maz-hidden">
-              <MazLazyImg class="maz-block tab-m:!maz-hidden maz-w-full" src="/img/demo/dashboard-light.png" alt="Maz-UI" />
+              <MazLazyImg class="maz-block tab-m:!maz-hidden maz-w-full maz-min-h-40" src="/img/demo/dashboard-light.png" alt="Maz-UI" />
             </div>
             <div class="maz-hidden dark:maz-block">
-              <MazLazyImg src="/img/demo/dashboard-dark.png" class="maz-block tab-m:!maz-hidden maz-w-full" alt="Maz-UI" />
+              <MazLazyImg src="/img/demo/dashboard-dark.png" class="maz-block tab-m:!maz-hidden maz-w-full maz-min-h-40" alt="Maz-UI" />
             </div>
           </MazCard>
         </MazTabsContentItem>
@@ -96,10 +96,10 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
           >
             <DemoProductPage class="maz-hidden tab-m:maz-block" />
             <div class="dark:maz-hidden">
-              <MazLazyImg class="maz-block tab-m:!maz-hidden maz-w-full" src="/img/demo/product-page-light.png" alt="Maz-UI" />
+              <MazLazyImg class="maz-block tab-m:!maz-hidden maz-w-full maz-min-h-40" src="/img/demo/product-page-light.png" alt="Maz-UI" />
             </div>
             <div class="maz-hidden dark:maz-block">
-              <MazLazyImg src="/img/demo/product-page-dark.png" class="maz-block tab-m:!maz-hidden maz-w-full" alt="Maz-UI" />
+              <MazLazyImg src="/img/demo/product-page-dark.png" class="maz-block tab-m:!maz-hidden maz-w-full maz-min-h-40" alt="Maz-UI" />
             </div>
           </MazCard>
         </MazTabsContentItem>
@@ -113,10 +113,10 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
           >
             <DemoAuthPage class="maz-hidden tab-m:maz-flex" />
             <div class="dark:maz-hidden">
-              <MazLazyImg class="maz-block tab-m:!maz-hidden  maz-w-full" src="/img/demo/auth-page-light.png" alt="Maz-UI" />
+              <MazLazyImg class="maz-block tab-m:!maz-hidden maz-w-full maz-min-h-40" src="/img/demo/auth-page-light.png" alt="Maz-UI" />
             </div>
             <div class="maz-hidden dark:maz-block">
-              <MazLazyImg src="/img/demo/auth-page-dark.png" class="maz-block tab-m:!maz-hidden maz-w-full" alt="Maz-UI" />
+              <MazLazyImg src="/img/demo/auth-page-dark.png" class="maz-block tab-m:!maz-hidden maz-w-full maz-min-h-40" alt="Maz-UI" />
             </div>
           </MazCard>
         </MazTabsContentItem>
