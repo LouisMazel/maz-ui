@@ -36,6 +36,7 @@ export default defineConfig({
       include: ['modules', 'components'],
       exclude: [
         'components/index.ts',
+        'components/constantes.ts',
         'components/MazPhoneNumberInput/constantes/locales.ts',
         'tailwindcss/**/*',
         'modules/types/**/*',

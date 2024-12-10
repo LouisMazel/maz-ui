@@ -131,7 +131,8 @@ You can replace the default search function by providing a custom search functio
   <script lang="ts" setup>
     const query = ref()
     const languages = ref<string[]>()
-    const languagesOptions = useLanguageDisplayNames('en-US').getAllLanguageDisplayNames().value.map(({ code, language }) => ({
+    const languagesOptions = ref([])
+    languagesOptions.value = useLanguageDisplayNames('en-US').getAllLanguageDisplayNames().value.map(({ code, language }) => ({
       label: language,
       value: code,
     }))
@@ -156,7 +157,8 @@ You can replace the default search function by providing a custom search functio
   import { useLanguageDisplayNames } from 'maz-ui'
   const query = ref()
   const languages = ref<string[]>()
-  const languagesOptions = useLanguageDisplayNames('en-US').getAllLanguageDisplayNames().value.map(({ code, language }) => ({
+  const languagesOptions = ref([])
+  languagesOptions.value = useLanguageDisplayNames('en-US').getAllLanguageDisplayNames().value.map(({ code, language }) => ({
     label: language,
     value: code,
   }))
