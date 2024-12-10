@@ -384,28 +384,16 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
   import StarIcon from 'maz-ui/icons/star-solid.svg'
   import PlayIcon from 'maz-ui/icons/play.svg'
 
-  const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN;
-
-  async function getStarCount(owner = 'LouisMazel', repo = 'maz-ui') {
-    if (!GITHUB_TOKEN) {
-      console.warn('GitHub token is not defined')
-      return null
-    }
-
+  async function getStarCount() {
     try {
-      const response = await fetch(`https://api.github.com/repos/${owner}/${repo}`, {
-        headers: {
-          'Authorization': `token ${GITHUB_TOKEN}`,
-          'Accept': 'application/vnd.github.v3+json'
-        }
-      });
+      const response = await fetch(`https://ungh.cc/repos/LouisMazel/maz-ui`);
 
       if (!response.ok) {
         throw new Error(`HTTP error status: ${response.status}`);
       }
 
       const data = await response.json();
-      return data.stargazers_count;
+      return data.repo.stars;
     } catch (error) {
       console.error('Erreur lors de la récupération des données:', error);
       return null;
@@ -414,7 +402,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
 
   const starCount = ref<number>(0)
 
-  getStarCount('LouisMazel', 'maz-ui').then((count) => {
+  getStarCount().then((count) => {
     starCount.value = count
   })
 </script>

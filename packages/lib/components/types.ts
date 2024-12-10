@@ -22,19 +22,6 @@ export type Color =
   | 'transparent'
   | 'theme'
 
-export const colors: Color[] = [
-  'primary',
-  'secondary',
-  'info',
-  'success',
-  'warning',
-  'danger',
-  'white',
-  'black',
-  'transparent',
-  'theme',
-]
-
 export type Size = 'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 
 export type Position =
