@@ -74,7 +74,8 @@ const tags = computed(() =>
   props.modelValue?.map((tag: string | number) => {
     return {
       tag,
-      id: crypto.randomUUID(),
+      // eslint-disable-next-line sonarjs/pseudo-random
+      id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
     }
   }),
 )
