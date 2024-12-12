@@ -1,4 +1,4 @@
-import { throttleId } from '@modules/helpers/throttle-id'
+import { throttleId } from '@helpers/throttleId'
 
 describe('given throttleId function', () => {
   describe('when calling a throttled function multiple times within the interval', () => {

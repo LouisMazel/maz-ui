@@ -1,4 +1,4 @@
-import { normalizeString } from '@modules/helpers/normalize-string'
+import { normalizeString } from '@helpers/normalizeString'
 
 describe('normalizeString', () => {
   it('should normalize accents by default', () => {

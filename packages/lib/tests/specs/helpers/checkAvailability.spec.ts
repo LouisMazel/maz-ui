@@ -1,4 +1,4 @@
-import { checkAvailability } from '@modules/helpers'
+import { checkAvailability } from '@helpers/checkAvailability'
 
 describe('given checkAvailability helper', () => {
   beforeEach(() => {

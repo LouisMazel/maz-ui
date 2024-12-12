@@ -1,7 +1,5 @@
 /// <reference types="vitest" />
 
-import { resolve } from 'node:path'
-
 import { fileURLToPath } from 'node:url'
 import Vue from '@vitejs/plugin-vue'
 import svgLoader from 'vite-svg-loader'
@@ -9,8 +7,6 @@ import svgLoader from 'vite-svg-loader'
 import { defineConfig } from 'vitest/config'
 
 const _dirname = fileURLToPath(new URL('.', import.meta.url))
-
-const projectRoot = resolve(_dirname)
 
 export default defineConfig({
   plugins: [Vue(), svgLoader()],
@@ -46,7 +42,7 @@ export default defineConfig({
         'modules/helpers/user-visibility/index.ts',
         'modules/helpers/idle-timeout/index.ts',
         'modules/helpers/truthy-filter.ts',
-        'modules/helpers/is-client.ts',
+        'modules/helpers/isClient.ts',
         'modules/helpers/sleep.ts',
         'modules/plugins/index.ts',
         'modules/plugins/dialog/index.ts',
@@ -74,9 +70,16 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@modules': resolve(projectRoot, 'modules'),
-      '@components': resolve(projectRoot, 'components'),
-      '@tests': resolve(projectRoot, 'tests'),
+      '@': fileURLToPath(new URL('src', import.meta.url)),
+      '@components': fileURLToPath(new URL('src/components', import.meta.url)),
+      '@composables': fileURLToPath(new URL('src/composables', import.meta.url)),
+      '@directives': fileURLToPath(new URL('src/directives', import.meta.url)),
+      '@filters': fileURLToPath(new URL('src/filters', import.meta.url)),
+      '@helpers': fileURLToPath(new URL('src/helpers', import.meta.url)),
+      '@icons': fileURLToPath(new URL('src/icons', import.meta.url)),
+      '@plugins': fileURLToPath(new URL('src/plugins', import.meta.url)),
+      '@resolvers': fileURLToPath(new URL('src/resolvers', import.meta.url)),
+      '@tests': fileURLToPath(new URL('tests', import.meta.url)),
     },
   },
 })

@@ -6,7 +6,7 @@ const _dirname = fileURLToPath(new URL('.', import.meta.url))
 
 export function generateComponentsEntryFile() {
   return buildEntry({
-    output: resolve(_dirname, './../components/index.ts'),
+    output: resolve(_dirname, './../src/components/index.ts'),
     componentName: 'fullName',
     scriptName: 'generate-components-entry',
   })

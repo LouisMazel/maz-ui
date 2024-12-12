@@ -1,4 +1,4 @@
-import type { FieldsStates, FieldState, FormSchema, StrictOptions, Validation, ValidationIssues } from '@modules/composables/useFormValidator/types'
+import type { FieldsStates, FieldState, FormSchema, StrictOptions, Validation, ValidationIssues } from '@composables/useFormValidator/types'
 import {
   addEventToInteractiveElements,
   canExecuteValidation,
@@ -21,7 +21,7 @@ import {
   updateFieldsStates,
   updateFieldState,
   validateField,
-} from '@modules/composables/useFormValidator/utils'
+} from '@composables/useFormValidator/utils'
 import { minLength, pipe, string } from 'valibot'
 
 describe('given fieldHasValidation function', () => {

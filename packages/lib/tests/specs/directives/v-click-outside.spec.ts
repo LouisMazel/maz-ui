@@ -1,4 +1,4 @@
-import { vClickOutside } from '@modules/directives/click-outside'
+import { vClickOutside } from '@directives/vClickOutside'
 import { shallowMount } from '@vue/test-utils'
 
 describe('vClickOutside directive', () => {
