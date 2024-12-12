@@ -1,4 +1,4 @@
-import MazFullscreenImg from '@modules/directives/v-fullscreen-img/MazFullscreenImg.vue'
+import MazFullscreenImg from '@directives/vFullscreenImg/MazFullscreenImg.vue'
 import { shallowMount } from '@vue/test-utils'
 
 const image = document.createElement('img')

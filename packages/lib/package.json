@@ -28,22 +28,14 @@
   ],
   "exports": {
     ".": {
-      "types": "./types/modules/index.d.ts",
-      "import": "./modules/index.ts",
-      "require": "./modules/index.ts"
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/maz-ui.js",
+      "require": "./dist/maz-ui.cjs"
     },
     "./components": {
-      "types": "./types/components/index.d.ts",
-      "default": "./components/index.ts"
-    },
-    "./resolvers": {
-      "types": "./types/resolvers/index.d.ts",
-      "import": "./resolvers/index.ts",
-      "require": "./resolvers/index.ts"
-    },
-    "./components/*": {
-      "types": "./types/components/*.vue.d.ts",
-      "default": "./components/*"
+      "types": "./dist/types/components/index.d.ts",
+      "import": "./dist/components.js",
+      "require": "./dist/components.cjs"
     },
     "./nuxt": {
       "types": "./nuxt/types.d.ts",
@@ -55,9 +47,9 @@
     "./package.json": "./package.json",
     "./*": "./*"
   },
-  "main": "./modules/index.ts",
-  "module": "./modules/index.ts",
-  "types": "./types/modules/index.d.ts",
+  "main": "./dist/maz-ui.cjs",
+  "module": "./dist/maz-ui.mjs",
+  "types": "./dist/types/index.d.ts",
   "bin": {
     "maz": "./bin/maz.mjs",
     "maz-ui": "./bin/maz.mjs"
@@ -84,6 +76,7 @@
     "lint:js": "pnpm lint:nofix --fix",
     "lint:style": "stylelint --fix \"./**/*.{vue,css,scss,postcss,pcss,html}\"",
     "build": "pnpm typecheck && pnpm build:lib",
+    "build:only": "vite build",
     "build:lib": "node --loader ts-node/esm build/vite.config.ts",
     "get-icon-list": "node --loader ts-node/esm build/get-icon-list.ts",
     "replace-svg-values": "node --loader ts-node/esm build/replace-values-in-svg.ts",
@@ -93,7 +86,7 @@
     "test:unit:coverage:watch": "vitest watch --coverage",
     "test:unit:coverage:master": "vitest run --coverage --changed master",
     "pre-commit": "lint-staged",
-    "gen:declaration-files": "vue-tsc --declaration --emitDeclarationOnly -p tsconfig.gen-types.json",
+    "gen:declaration-files": "vue-tsc --declaration --emitDeclarationOnly -p tsconfig.types.json",
     "typecheck": "vue-tsc --noEmit --skipLibCheck"
   },
   "peerDependencies": {
@@ -170,6 +163,7 @@
     "dropzone": "^5.9.3",
     "eslint-plugin-vuejs-accessibility": "^2.4.1",
     "fs": "0.0.2",
+    "glob": "^11.0.0",
     "jsdom": "^25.0.1",
     "json-templater": "^1.2.0",
     "libphonenumber-js": "^1.11.16",
@@ -202,6 +196,7 @@
     "valibot": "^0.42.1",
     "vite": "^6.0.1",
     "vite-plugin-css-injected-by-js": "^3.5.2",
+    "vite-plugin-dts": "^4.3.0",
     "vite-plugin-lib-inject-css": "^2.1.1",
     "vite-plugin-static-copy": "^2.2.0",
     "vite-svg-loader": "^5.1.0",

@@ -1,4 +1,4 @@
-import { injectStrict } from '@modules/helpers'
+import { injectStrict } from '@helpers/injectStrict'
 import { shallowMount } from '@vue/test-utils'
 
 describe('injectStrict', () => {

@@ -1,4 +1,4 @@
-import { useLanguageDisplayNames } from '@modules/composables/useLanguageDisplayNames'
+import { useLanguageDisplayNames } from '@composables/useLanguageDisplayNames'
 import { describe, expect, it } from 'vitest'
 import { ref } from 'vue'
 

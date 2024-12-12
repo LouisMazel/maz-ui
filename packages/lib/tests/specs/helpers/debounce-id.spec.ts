@@ -1,4 +1,4 @@
-import { debounceId } from '@modules/helpers/debounce-id'
+import { debounceId } from '@helpers/debounceId'
 
 describe('given debounceId function', () => {
   describe('when calling a debounced function multiple times', () => {

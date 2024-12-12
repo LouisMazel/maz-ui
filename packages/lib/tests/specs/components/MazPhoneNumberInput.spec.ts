@@ -1,4 +1,4 @@
-import type { Results } from '@components/MazPhoneNumberInput.vue'
+import type { Results } from '@components/MazPhoneNumberInput/types'
 import MazPhoneNumberInput from '@components/MazPhoneNumberInput.vue'
 import CountrySelector from '@components/MazPhoneNumberInput/CountrySelector.vue'
 import PhoneInput from '@components/MazPhoneNumberInput/PhoneInput.vue'

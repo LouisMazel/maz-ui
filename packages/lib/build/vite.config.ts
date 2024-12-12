@@ -49,14 +49,12 @@ function getBuildConfig({
   name,
   outDir,
   format,
-  // hash,
   isModuleBuild,
 }: {
   format: 'es' | 'cjs'
   name: string
   outDir: string
   path: string
-  hash?: string
   isModuleBuild?: boolean
 }) {
   return {

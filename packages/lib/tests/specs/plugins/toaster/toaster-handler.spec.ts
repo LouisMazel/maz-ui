@@ -1,4 +1,4 @@
-import { ToasterHandler } from '@modules/plugins'
+import { ToasterHandler } from '@plugins/toaster'
 import { createApp } from 'vue'
 
 describe('toasterHandler', () => {

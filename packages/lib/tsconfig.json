@@ -3,8 +3,18 @@
   "compilerOptions": {
     "target": "ESNext",
     "lib": ["esnext", "DOM", "DOM.iterable", "scripthost"],
-    "rootDir": ".",
+    "baseUrl": ".",
     "module": "ESNext",
+    "paths": {
+      "@components/*": ["src/components/*"],
+      "@composables/*": ["src/composables/*"],
+      "@directives/*": ["src/directives/*"],
+      "@filters/*": ["src/filters/*"],
+      "@helpers/*": ["src/helpers/*"],
+      "@icons/*": ["src/icons/*"],
+      "@plugins/*": ["src/plugins/*"],
+      "@resolvers/*": ["src/resolvers/*"]
+    },
     "types": ["@types/node", "vite-svg-loader"],
     "strictPropertyInitialization": false,
     "noImplicitAny": false,
@@ -12,8 +22,8 @@
     "ignoreDeprecations": "5.0",
     "verbatimModuleSyntax": false
   },
-  "include": ["modules", "components", "tailwindcss/**/*", "icons", "utils", "resolvers"],
-  "exclude": ["node_modules", "components_tmp/**/*"],
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "src/components_tmp/**/*"],
   "ts-node": {
     "esm": true,
     "experimentalSpecifierResolution": "node"

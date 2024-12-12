@@ -1,6 +1,6 @@
 // Tailwind CSS configuration (https://tailwindcss.com/docs/configuration)
 import type { Config } from 'tailwindcss'
-import tailwindConfigBase from './tailwindcss/tailwind.config'
+import tailwindConfigBase from './src/tailwindcss/tailwind.config'
 
 export default <Config>{
   presets: [tailwindConfigBase],
