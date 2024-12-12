@@ -1,6 +1,6 @@
-import type { ScriptLoaderOptions } from '@modules/helpers/script-loader'
+import type { ScriptLoaderOptions } from '@helpers/scriptLoader'
 import type { Mock } from 'vitest'
-import { ScriptLoader } from '@modules/helpers/script-loader'
+import { ScriptLoader } from '@helpers/scriptLoader'
 
 describe('given ScriptLoader class', () => {
   let mockDocument: {

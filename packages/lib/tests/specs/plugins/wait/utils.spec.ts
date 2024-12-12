@@ -1,4 +1,4 @@
-import { contains, DEFAULT_LOADER, hasItems, pop, push, uniq } from '@modules/plugins/wait/utils'
+import { contains, DEFAULT_LOADER, hasItems, pop, push, uniq } from '@plugins/wait/utils'
 
 describe('uniq', () => {
   it('should return an array with unique elements', () => {

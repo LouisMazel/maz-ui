@@ -1,4 +1,4 @@
-import { freezeValue } from '@modules/helpers/freeze-value'
+import { freezeValue } from '@helpers/freezeValue'
 
 import { ref } from 'vue'
 

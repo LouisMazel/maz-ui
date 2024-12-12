@@ -14,7 +14,7 @@ export default antfu(
     },
   },
   {
-    ignores: ['components_tmp/**/*'],
+    ignores: ['src/components_tmp/**/*'],
   },
   ...vueA11y.configs['flat/recommended'],
   ...tailwind.configs['flat/recommended'],

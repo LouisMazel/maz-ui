@@ -1,4 +1,4 @@
-import { isEqual } from '@modules/helpers/is-equal'
+import { isEqual } from '@helpers/isEqual'
 
 describe('given isEqual function', () => {
   describe('when comparing primitive values', () => {

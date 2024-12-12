@@ -1,4 +1,4 @@
-import { useSwipe } from '@modules/composables/useSwipe'
+import { useSwipe } from '@composables/useSwipe'
 
 const swipeHandlerMock = {
   options: {},
@@ -6,7 +6,7 @@ const swipeHandlerMock = {
   stop: vi.fn(),
   onValuesChanged: vi.fn(),
 }
-vi.mock('@modules/helpers/swipe-handler', () => ({
+vi.mock('@helpers/swipeHandler', () => ({
   Swipe: vi.fn().mockImplementation(() => swipeHandlerMock),
 }))
 

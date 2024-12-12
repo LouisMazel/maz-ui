@@ -1,5 +1,5 @@
 import type { VueWrapper } from '@vue/test-utils'
-import MazFullscreenImg from '@modules/directives/v-fullscreen-img/MazFullscreenImg.vue'
+import MazFullscreenImg from '@directives/vFullscreenImg/MazFullscreenImg.vue'
 import { mount } from '@vue/test-utils'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'

@@ -1,6 +1,6 @@
+import MazChecklist from '@components/MazChecklist.vue'
+import MazInput from '@components/MazInput.vue'
 import { mount } from '@vue/test-utils'
-import MazChecklist from '../../../components/MazChecklist.vue'
-import MazInput from '../../../components/MazInput.vue'
 
 describe('mazChecklist', () => {
   it('renders the component', () => {

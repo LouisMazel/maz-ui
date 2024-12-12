@@ -1,4 +1,4 @@
-import { DEFAULT_OPTIONS, LazyImg } from '@modules/directives/v-lazy-img/lazy-img.handler'
+import { DEFAULT_OPTIONS, LazyImg } from '@directives/vLazyImg/lazy-img.handler'
 
 class IntersectionObserverMock {
   callback: IntersectionObserverCallback

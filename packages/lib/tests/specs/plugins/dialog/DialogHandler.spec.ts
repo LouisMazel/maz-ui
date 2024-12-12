@@ -1,11 +1,10 @@
-import { DialogHandler } from '@modules/plugins/dialog/DialogHandler'
+import { DialogHandler } from '@plugins/dialog/DialogHandler'
 import { describe, expect, it, vi } from 'vitest'
 import { createApp } from 'vue'
 
 let resolveFn: (value: unknown) => void
 const promiseCallback = vi.fn()
-vi.mock('@components/MazDialogPromise.vue', () => ({
-  default: {},
+vi.mock('@components/MazDialogPromise/useMazDialogPromise', () => ({
   useMazDialogPromise: () => ({
     showDialogAndWaitChoice: () => new Promise((resolve) => {
       resolveFn = resolve
@@ -14,7 +13,7 @@ vi.mock('@components/MazDialogPromise.vue', () => ({
   }),
 }))
 
-vi.mock('@modules/helpers/mount-component', () => ({
+vi.mock('@helpers/mountComponent', () => ({
   mount: () => ({
     destroy: vi.fn(),
     vNode: {

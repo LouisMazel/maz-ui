@@ -1,14 +1,14 @@
 import type { Mock } from 'vitest'
-import { isClient } from '@modules/helpers/is-client'
-import { isInStandaloneMode } from '@modules/helpers/is-standalone-mode'
+import { isClient } from '@helpers/isClient'
+import { isStandaloneMode } from '@helpers/isStandaloneMode'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-// Mock the is-client module
-vi.mock('@modules/helpers/is-client', () => ({
+// Mock the isClient module
+vi.mock('@helpers/isClient', () => ({
   isClient: vi.fn(),
 }))
 
-describe('given isInStandaloneMode function', () => {
+describe('given isStandaloneMode function', () => {
   beforeEach(() => {
     vi.resetAllMocks()
   })
@@ -16,7 +16,7 @@ describe('given isInStandaloneMode function', () => {
   describe('when not in a client environment', () => {
     it('then it should return false', () => {
       (isClient as Mock).mockReturnValue(false)
-      expect(isInStandaloneMode()).toBe(false)
+      expect(isStandaloneMode()).toBe(false)
     })
   })
 
@@ -32,7 +32,7 @@ describe('given isInStandaloneMode function', () => {
           matchMedia: () => ({ matches: false }),
         } as any
 
-        expect(isInStandaloneMode()).toBe(true)
+        expect(isStandaloneMode()).toBe(true)
       })
     })
 
@@ -43,7 +43,7 @@ describe('given isInStandaloneMode function', () => {
           matchMedia: () => ({ matches: true }),
         } as any
 
-        expect(isInStandaloneMode()).toBe(true)
+        expect(isStandaloneMode()).toBe(true)
       })
     })
 
@@ -54,7 +54,7 @@ describe('given isInStandaloneMode function', () => {
           matchMedia: () => ({ matches: false }),
         } as any
 
-        expect(isInStandaloneMode()).toBe(false)
+        expect(isStandaloneMode()).toBe(false)
       })
     })
   })

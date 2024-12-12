@@ -1,4 +1,4 @@
-import { useReadingTime } from '@modules/composables/useReadingTime'
+import { useReadingTime } from '@composables/useReadingTime'
 import { ref } from 'vue'
 
 describe('given the useReadingTime composable', () => {

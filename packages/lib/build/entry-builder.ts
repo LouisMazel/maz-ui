@@ -19,6 +19,9 @@ ${include}
 export function getComponentImportTemplate({ name, path }: { name: string, path: string }) {
   return `export { default as ${name} } from './${path}'`
 }
+export function getComponentTypeTemplate(path: string) {
+  return `export type * from './${path}'`
+}
 
 export async function buildEntry({
   output,
@@ -42,6 +45,7 @@ export async function buildEntry({
           name: component.name,
           path: `${component[componentName]}${extension ?? ''}`,
         }),
+        getComponentTypeTemplate(`${component[componentName]}${extension ?? ''}`),
       )
     }
 

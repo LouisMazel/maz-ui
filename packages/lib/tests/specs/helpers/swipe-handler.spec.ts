@@ -1,5 +1,5 @@
-import type { SwipeOptions } from '@modules/helpers/swipe-handler'
-import { Swipe } from '@modules/helpers/swipe-handler'
+import type { SwipeOptions } from '@helpers/swipeHandler'
+import { Swipe } from '@helpers/swipeHandler'
 
 describe('given Swipe class', () => {
   let mockElement: HTMLElement

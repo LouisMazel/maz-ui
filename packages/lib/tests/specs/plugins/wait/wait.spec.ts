@@ -1,4 +1,4 @@
-import { installWait, WaitHandler } from '@modules/plugins'
+import { installWait, WaitHandler } from '@plugins/index'
 import { createApp } from 'vue'
 
 describe('waitHandler', () => {

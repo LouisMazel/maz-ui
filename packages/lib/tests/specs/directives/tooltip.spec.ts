@@ -1,4 +1,4 @@
-import { vTooltip } from '@modules/directives/tooltip'
+import { vTooltip } from '@directives/vTooltip'
 import { mount } from '@vue/test-utils'
 import { ref } from 'vue'
 

@@ -1,4 +1,4 @@
-import { sleep } from '@modules/helpers/sleep'
+import { sleep } from '@helpers/sleep'
 
 describe('given sleep function', () => {
   describe('when called with a duration', () => {

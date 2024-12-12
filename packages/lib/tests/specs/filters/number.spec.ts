@@ -1,4 +1,4 @@
-import { number } from '@modules/filters/number'
+import { number } from '@filters/number'
 
 describe('filterNumber', () => {
   it('should return the formatted number with default options', () => {
