@@ -73,7 +73,7 @@
       :hint="tagsError"
       :success="isValidTags"
     />
-    <MazPhoneNumberInput
+    <MazInputPhoneNumber
       id="phone"
       ref="phoneRef"
       v-model="phone"

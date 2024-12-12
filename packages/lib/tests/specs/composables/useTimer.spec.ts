@@ -1,4 +1,4 @@
-import { useTimer } from '@modules/composables/useTimer'
+import { useTimer } from '@composables/useTimer'
 import { mount } from '@vue/test-utils'
 
 describe('useTimer', () => {

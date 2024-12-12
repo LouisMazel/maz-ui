@@ -1,4 +1,4 @@
-import { throttle } from '@modules/helpers/throttle'
+import { throttle } from '@helpers/throttle'
 
 describe('given throttle function', () => {
   beforeEach(() => {

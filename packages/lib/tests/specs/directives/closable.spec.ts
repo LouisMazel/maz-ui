@@ -1,5 +1,5 @@
 import type { Mock } from 'vitest'
-import { vClosable } from '@modules/directives/closable'
+import { vClosable } from '@directives/vClosable'
 import { mount } from '@vue/test-utils'
 
 describe('vClosable Directive', () => {
