@@ -13,7 +13,8 @@
       "@helpers/*": ["src/helpers/*"],
       "@icons/*": ["src/icons/*"],
       "@plugins/*": ["src/plugins/*"],
-      "@resolvers/*": ["src/resolvers/*"]
+      "@resolvers/*": ["src/resolvers/*"],
+      "@ts-helpers/*": ["src/ts-helpers/*"]
     },
     "types": ["@types/node", "vite-svg-loader"],
     "strictPropertyInitialization": false,
