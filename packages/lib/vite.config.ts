@@ -66,6 +66,7 @@ export default defineConfig({
       '@icons': fileURLToPath(new URL('src/icons', import.meta.url)),
       '@plugins': fileURLToPath(new URL('src/plugins', import.meta.url)),
       '@resolvers': fileURLToPath(new URL('src/resolvers', import.meta.url)),
+      '@ts-helpers': fileURLToPath(new URL('src/ts-helpers', import.meta.url)),
     },
   },
   build: {

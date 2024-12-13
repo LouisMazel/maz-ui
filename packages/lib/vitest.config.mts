@@ -80,6 +80,7 @@ export default defineConfig({
       '@plugins': fileURLToPath(new URL('src/plugins', import.meta.url)),
       '@resolvers': fileURLToPath(new URL('src/resolvers', import.meta.url)),
       '@tests': fileURLToPath(new URL('tests', import.meta.url)),
+      '@ts-helpers': fileURLToPath(new URL('src/ts-helpers', import.meta.url)),
     },
   },
 })

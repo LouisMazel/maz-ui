@@ -1,7 +1,7 @@
 {
   "name": "maz-ui",
   "type": "module",
-  "version": "3.50.1",
+  "version": "4.0.0-alpha.1",
   "description": "A standalone components library for Vue.Js 3 & Nuxt.Js 3",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
@@ -56,14 +56,7 @@
   },
   "files": [
     "bin",
-    "components",
-    "css",
-    "icons",
-    "modules",
-    "nuxt",
-    "resolvers",
-    "tailwindcss",
-    "types"
+    "dist"
   ],
   "engines": {
     "node": ">= 6.0.0",

@@ -1,4 +1,6 @@
 version := $(shell jq -r .version packages/lib/package.json)
+pretype := 'prerelease'
+preid := 'alpha'
 
 serve-all:
 	pnpm --parallel serve
@@ -98,13 +100,13 @@ print-version-lib:
 	@echo "Version is: $(shell pnpm --filter maz-ui exec -- node -p "require('./package.json').version")"
 
 publish-prerelease:
-	pnpx lerna version prerelease --preid beta
+	pnpx lerna version $(pretype) --preid $(preid)
 	@NEW_VERSION=$$(pnpm --filter maz-ui exec -- node -p "require('./package.json').version") && \
 	git add -u && \
 	git commit -m "chore(release): bump version to $$NEW_VERSION" && \
 	git push origin HEAD && \
-	make build-lib && \
-	cd packages/lib/dist && pnpm publish --access public --tag beta --no-git-checks
+	pnpm --filter maz-ui build:only && \
+	cd packages/lib && pnpm publish --access public --tag $(preid) --no-git-checks
 
 # CLI
 create-component-files:
