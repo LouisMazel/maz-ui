@@ -1,6 +1,6 @@
 import type { Plugin } from 'vite'
 
-import { compileScss } from './compile-scss'
+import { compileScss } from './compileScss'
 import { execPromise } from './utils/exec-promise'
 import { logger } from './utils/logger'
 

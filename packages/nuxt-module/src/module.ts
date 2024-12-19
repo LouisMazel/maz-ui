@@ -11,7 +11,7 @@ import type {
   vLazyImgOptions,
   vTooltipOptions,
 } from 'maz-ui/src/index.ts'
-import { getComponentList } from './../../lib/build/get-component-list'
+import { getComponentList } from './../../lib/build/getComponentList'
 
 export interface MazUiNuxtOptions {
   /**

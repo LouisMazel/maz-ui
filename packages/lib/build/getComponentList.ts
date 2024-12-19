@@ -24,7 +24,7 @@ export async function getComponentList() {
   }
   catch (error) {
     throw new Error(
-      `[get-component-list] 🔴 Error occurred while generating components entry file ${error}`,
+      `[getComponentList] 🔴 Error occurred while getting component list ${error}`,
     )
   }
 }
