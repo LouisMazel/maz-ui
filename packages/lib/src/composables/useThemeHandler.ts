@@ -1,5 +1,5 @@
-import { isClient } from '@helpers/isClient'
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { isClient } from '../helpers/isClient'
 
 export interface StrictThemeHandlerOptions {
   /**

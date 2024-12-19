@@ -1,5 +1,5 @@
-import { isClient } from '@helpers/isClient'
 import { onMounted, onUnmounted, ref } from 'vue'
+import { isClient } from '../helpers/isClient'
 
 export interface UseWindowSizeOptions {
   /**

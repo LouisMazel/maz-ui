@@ -1,4 +1,4 @@
-import { debounce } from '@helpers/debounce'
+import { debounce } from '../../helpers/debounce'
 
 export class TextareaAutogrow {
   private element: HTMLTextAreaElement

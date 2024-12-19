@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import type { Color } from '@components/types'
-import { isClient } from '@helpers/isClient'
-import { isStandaloneMode } from '@helpers/isStandaloneMode'
-
+import type { Color } from './types'
 import { computed, defineAsyncComponent, onUnmounted, ref, watch } from 'vue'
+import { isClient } from '../helpers/isClient'
+
+import { isStandaloneMode } from '../helpers/isStandaloneMode'
 
 const props = withDefaults(defineProps<MazPullToRefreshProps>(), {
   distance: 100,
@@ -18,7 +18,7 @@ const props = withDefaults(defineProps<MazPullToRefreshProps>(), {
 
 const emits = defineEmits(['loaded', 'start', 'error', 'finish', 'response'])
 
-const MazSpinner = defineAsyncComponent(() => import('@components/MazSpinner.vue'))
+const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
 
 export interface MazPullToRefreshProps {
   distance?: number

@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import type { PickerShortcut, PickerValue, RangeValue } from '@components/MazPicker/types'
-import type { Color } from '@components/types'
-import MazBtn from '@components/MazBtn.vue'
-
+import type { Color } from '../types'
+import type { PickerShortcut, PickerValue, RangeValue } from './types'
 import { type PropType, ref, watch } from 'vue'
+
+import MazBtn from '../MazBtn.vue'
 
 const props = defineProps({
   color: { type: String as PropType<Color>, required: true },

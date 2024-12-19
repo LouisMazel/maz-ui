@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-import type { PickerShortcut, PickerValue } from '@components/MazPicker/types'
-import type { DateTimeFormatOptions } from '@components/MazPicker/utils'
-import type { Color } from '@components/types'
+import type { Color } from '../types'
+import type { PickerShortcut, PickerValue } from './types'
+import type { DateTimeFormatOptions } from './utils'
+
 import { computed, defineAsyncComponent, type PropType } from 'vue'
 
 const props = defineProps({
@@ -42,9 +43,9 @@ const props = defineProps({
 
 const emits = defineEmits(['update:model-value', 'update:calendar-date', 'close'])
 
-const MazPickerCalendar = defineAsyncComponent(() => import('@components/MazPicker/MazPickerCalendar.vue'))
-const MazPickerHeader = defineAsyncComponent(() => import('@components/MazPicker/MazPickerHeader.vue'))
-const MazPickerTime = defineAsyncComponent(() => import('@components/MazPicker/MazPickerTime.vue'))
+const MazPickerCalendar = defineAsyncComponent(() => import('../MazPicker/MazPickerCalendar.vue'))
+const MazPickerHeader = defineAsyncComponent(() => import('../MazPicker/MazPickerHeader.vue'))
+const MazPickerTime = defineAsyncComponent(() => import('../MazPicker/MazPickerTime.vue'))
 
 const currentDate = computed({
   get: () => props.modelValue,

@@ -1,3 +1,4 @@
+import type { Ref, WatchStopHandle } from 'vue'
 import type {
   BaseFormPayload,
   ExtractModelKey,
@@ -7,10 +8,10 @@ import type {
   FormValidatorOptions,
   StrictOptions,
   UseFormValidatorParams,
-} from '@composables/useFormValidator/types'
-import type { Ref, WatchStopHandle } from 'vue'
+} from '../composables/useFormValidator/types'
 
-import { CONFIG } from '@composables/useFormValidator/config'
+import { computed, nextTick, provide, ref, watch } from 'vue'
+import { CONFIG } from '../composables/useFormValidator/config'
 import {
   getErrorMessages,
   getFieldsErrors,
@@ -21,8 +22,7 @@ import {
   scrollToError,
   updateFieldsStates,
   validateForm,
-} from '@composables/useFormValidator/utils'
-import { computed, nextTick, provide, ref, watch } from 'vue'
+} from '../composables/useFormValidator/utils'
 
 export function useFormValidator<
   Model extends BaseFormPayload,

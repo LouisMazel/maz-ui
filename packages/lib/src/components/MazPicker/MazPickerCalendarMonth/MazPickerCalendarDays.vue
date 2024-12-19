@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { getDaysOfWeek } from '@components/MazPicker/utils'
 import { computed } from 'vue'
+import { getDaysOfWeek } from '../utils'
 
 const props = defineProps({
   locale: { type: String, required: true },

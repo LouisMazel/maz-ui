@@ -68,4 +68,4 @@ const plugin = {
   },
 } satisfies Plugin
 
-export { directive as vClosable, vClosableBindingValue, plugin as vClosableInstall }
+export { directive as vClosable, type vClosableBindingValue, plugin as vClosableInstall }

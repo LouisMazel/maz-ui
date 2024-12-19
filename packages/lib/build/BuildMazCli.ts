@@ -8,12 +8,15 @@ export function BuildMazCli(): Plugin {
     name: 'vite-build-maz-cli',
     async buildEnd() {
       try {
+        await execPromise('pnpm -F @mazui/cli typecheck')
         await execPromise('pnpm -F @mazui/cli build')
 
         logger.success('[BuildMazCli] ✅ maz cli built')
       }
       catch (error) {
         logger.error('[BuildMazCli] 🔴 error while building maz cli', error)
+
+        throw error
       }
     },
   }

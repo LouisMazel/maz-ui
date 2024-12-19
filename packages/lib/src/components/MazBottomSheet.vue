@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import MazBackdrop from '@components/MazBackdrop.vue'
 import { defineAsyncComponent } from 'vue'
+import MazBackdrop from './MazBackdrop.vue'
 
 export interface MazBottomSheetProps {
   /** @model Modal's model value */
@@ -22,8 +22,8 @@ const emits = defineEmits<{
   'close': [value: void]
 }>()
 
-const MazBtn = defineAsyncComponent(() => import('@components/MazBtn.vue'))
-const XIcon = defineAsyncComponent(() => import('@icons/x-mark.svg'))
+const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
+const XIcon = defineAsyncComponent(() => import('../../icons/x-mark.svg'))
 </script>
 
 <template>

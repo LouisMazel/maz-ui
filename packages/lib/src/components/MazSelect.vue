@@ -3,14 +3,7 @@
   setup
   generic="T extends ModelValueSimple, U extends MazSelectOption"
 >
-import type { Color, ModelValueSimple, Position, Size } from '@components/types'
-import MazInput from '@components/MazInput.vue'
-import { useInstanceUniqId } from '@composables/useInstanceUniqId'
-import { useStringMatching } from '@composables/useStringMatching'
-import { vClosable } from '@directives/vClosable'
-import { debounceCallback } from '@helpers/debounceCallback'
-import { normalizeString } from '@helpers/normalizeString'
-
+import type { Color, ModelValueSimple, Position, Size } from './types'
 import {
   type ComponentPublicInstance,
   computed,
@@ -20,6 +13,13 @@ import {
   onBeforeMount,
   ref,
 } from 'vue'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId'
+import { useStringMatching } from '../composables/useStringMatching'
+import { vClosable } from '../directives/vClosable'
+import { debounceCallback } from '../helpers/debounceCallback'
+import { normalizeString } from '../helpers/normalizeString'
+
+import MazInput from './MazInput.vue'
 
 export type NormalizedOption = Record<string, ModelValueSimple>
 export interface MazSelectOptionWithOptGroup {
@@ -199,11 +199,11 @@ const emits = defineEmits<{
   'selected-option': [value: U]
 }>()
 
-const MazCheckbox = defineAsyncComponent(() => import('@components/MazCheckbox.vue'))
+const MazCheckbox = defineAsyncComponent(() => import('./MazCheckbox.vue'))
 
-const SearchIcon = defineAsyncComponent(() => import('@icons/magnifying-glass.svg'))
-const ChevronDownIcon = defineAsyncComponent(() => import('@icons/chevron-down.svg'))
-const NoSymbolIcon = defineAsyncComponent(() => import('@icons/no-symbol.svg'))
+const SearchIcon = defineAsyncComponent(() => import('../../icons/magnifying-glass.svg'))
+const ChevronDownIcon = defineAsyncComponent(() => import('../../icons/chevron-down.svg'))
+const NoSymbolIcon = defineAsyncComponent(() => import('../../icons/no-symbol.svg'))
 
 defineExpose<{
   openList: typeof openList

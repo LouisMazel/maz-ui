@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import MazBackdrop from '@components/MazBackdrop.vue'
-
 import { computed, defineAsyncComponent, useSlots } from 'vue'
+
+import MazBackdrop from './MazBackdrop.vue'
 
 const props = withDefaults(defineProps<MazDrawerProps>(), {
   title: undefined,
@@ -41,8 +41,8 @@ export interface MazDrawerProps {
   noClose?: boolean
 }
 
-const MazBtn = defineAsyncComponent(() => import('@components/MazBtn.vue'))
-const XIcon = defineAsyncComponent(() => import('@icons/x-mark.svg'))
+const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
+const XIcon = defineAsyncComponent(() => import('../../icons/x-mark.svg'))
 
 const justify = computed(() => {
   if (props.variant === 'left') {

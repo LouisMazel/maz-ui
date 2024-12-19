@@ -1,7 +1,7 @@
 {
   "name": "maz-ui",
   "type": "module",
-  "version": "4.0.0-alpha.3",
+  "version": "4.0.0-alpha.4",
   "description": "A standalone components library for Vue.Js 3 & Nuxt.Js 3",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
@@ -40,7 +40,6 @@
     },
     "./styles": "./dist/css/main.css",
     "./aos-styles": "./dist/css/aos.css",
-    "./icons": "./dist/icons",
     "./package.json": "./package.json",
     "./*": "./*"
   },
@@ -53,7 +52,9 @@
   },
   "files": [
     "bin",
-    "dist"
+    "dist",
+    "icons",
+    "tailwindcss"
   ],
   "engines": {
     "node": ">= 6.0.0",
@@ -65,9 +66,8 @@
     "lint:nofix": "cross-env NODE_ENV=production eslint",
     "lint:js": "pnpm lint:nofix --fix",
     "lint:style": "stylelint --fix \"./**/*.{vue,css,scss,postcss,pcss,html}\"",
-    "build": "pnpm typecheck && pnpm build:lib",
+    "build": "pnpm typecheck && pnpm build:only",
     "build:only": "vite build",
-    "build:lib": "node --loader ts-node/esm build/vite.config.ts",
     "get-icon-list": "node --loader ts-node/esm build/getIconList.ts",
     "replace-svg-values": "node --loader ts-node/esm build/replaceValuesInSvg.ts",
     "test:unit": "vitest",

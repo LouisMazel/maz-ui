@@ -1,7 +1,5 @@
 <script lang="ts" setup generic="T extends ModelValueSimple">
-import type { Color, Icon, ModelValueSimple, Size } from '@components/types'
-import { useInstanceUniqId } from '@composables/useInstanceUniqId'
-import { debounce as debounceFn } from '@helpers/debounce'
+import type { Color, Icon, ModelValueSimple, Size } from './types'
 import {
   computed,
   defineAsyncComponent,
@@ -10,6 +8,8 @@ import {
   ref,
   useSlots,
 } from 'vue'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId'
+import { debounce as debounceFn } from '../helpers/debounce'
 
 export interface MazInputProps<T = ModelValueSimple> {
   /** The style of the component */
@@ -187,12 +187,12 @@ const emits = defineEmits<{
   'input': [event: Event]
 }>()
 
-const MazIcon = defineAsyncComponent(() => import('@components/MazIcon.vue'))
-const MazBtn = defineAsyncComponent(() => import('@components/MazBtn.vue'))
+const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
+const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 
-const EyeOffIcon = defineAsyncComponent(() => import('@icons/eye-slash.svg'))
-const EyeIcon = defineAsyncComponent(() => import('@icons/eye.svg'))
-const CheckIcon = defineAsyncComponent(() => import('@icons/check.svg'))
+const EyeOffIcon = defineAsyncComponent(() => import('../../icons/eye-slash.svg'))
+const EyeIcon = defineAsyncComponent(() => import('../../icons/eye.svg'))
+const CheckIcon = defineAsyncComponent(() => import('../../icons/check.svg'))
 
 const hasPasswordVisible = ref(false)
 const isFocused = ref(false)

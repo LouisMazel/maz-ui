@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { MazGalleryImage } from '@components/types'
 import type { RouterLinkProps } from 'vue-router'
+import type { MazGalleryImage } from './types'
 import { computed, defineAsyncComponent, type HTMLAttributes, ref, useSlots, watch } from 'vue'
 
 const props = withDefaults(defineProps<MazCardProps>(), {
@@ -21,11 +21,11 @@ const props = withDefaults(defineProps<MazCardProps>(), {
   header: undefined,
 })
 
-const MazBtn = defineAsyncComponent(() => import('@components/MazBtn.vue'))
-const MazGallery = defineAsyncComponent(() => import('@components/MazGallery.vue'))
-const MazTransitionExpand = defineAsyncComponent(() => import('@components/MazTransitionExpand.vue'))
+const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
+const MazGallery = defineAsyncComponent(() => import('./MazGallery.vue'))
+const MazTransitionExpand = defineAsyncComponent(() => import('./MazTransitionExpand.vue'))
 
-const ChevronDownIcon = defineAsyncComponent(() => import('@icons/chevron-down.svg'))
+const ChevronDownIcon = defineAsyncComponent(() => import('../../icons/chevron-down.svg'))
 
 export interface MazCardProps {
   /** Images displayed */

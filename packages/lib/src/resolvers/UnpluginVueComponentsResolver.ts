@@ -1,7 +1,7 @@
 /* eslint-disable regexp/no-unused-capturing-group */
 
 import type { ComponentResolver } from 'unplugin-vue-components/types'
-import { pascalCase } from '@filters/pascalCase'
+import { pascalCase } from '../filters/pascalCase'
 
 /**
  * Resolver for Maz-UI (components)

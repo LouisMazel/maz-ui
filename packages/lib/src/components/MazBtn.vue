@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Color, Icon, Size } from '@components/types'
+import type { Color, Icon, Size } from './types'
 
 import { computed, defineAsyncComponent, useAttrs } from 'vue'
 
@@ -15,8 +15,8 @@ const props = withDefaults(defineProps<MazBtnProps>(), {
   justify: 'center',
 })
 
-const MazIcon = defineAsyncComponent(() => import('@components/MazIcon.vue'))
-const MazSpinner = defineAsyncComponent(() => import('@components/MazSpinner.vue'))
+const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
+const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
 
 const { href, to } = useAttrs()
 

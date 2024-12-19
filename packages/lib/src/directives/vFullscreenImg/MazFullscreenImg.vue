@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
-import MazSpinner from '@components/MazSpinner.vue'
-import { checkAvailability } from '@helpers/checkAvailability'
-
 import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
+import MazSpinner from '../../components/MazSpinner.vue'
+
+import { checkAvailability } from '../../helpers/checkAvailability'
 
 const props = withDefaults(defineProps<MazFullscreenImgProps>(), {
   zoom: true,
@@ -20,8 +20,8 @@ const props = withDefaults(defineProps<MazFullscreenImgProps>(), {
 
 const emits = defineEmits(['close', 'previous', 'next', 'before-close'])
 
-const XMark = defineAsyncComponent(() => import('@icons/x-mark.svg'))
-const ChevronLeft = defineAsyncComponent(() => import('@icons/chevron-left.svg'))
+const XMark = defineAsyncComponent(() => import('../../../icons/x-mark.svg'))
+const ChevronLeft = defineAsyncComponent(() => import('../../../icons/chevron-left.svg'))
 
 export interface MazFullscreenImgProps {
   src: string

@@ -1,5 +1,5 @@
 <script lang="ts" setup generic="T extends string | number | boolean">
-import type { Color } from '@components/types'
+import type { Color } from './types'
 import { defineAsyncComponent, ref, type StyleValue } from 'vue'
 
 export type MazRadioButtonsOption<T = string | number | boolean> = {
@@ -83,7 +83,7 @@ const emits = defineEmits<{
   'focus': [value: FocusEvent]
 }>()
 
-const CheckCircleIcon = defineAsyncComponent(() => import('@icons/check.svg'))
+const CheckCircleIcon = defineAsyncComponent(() => import('../../icons/check.svg'))
 
 function selectOption(option: MazRadioButtonsOption<T>) {
   emits('update:model-value', option.value)

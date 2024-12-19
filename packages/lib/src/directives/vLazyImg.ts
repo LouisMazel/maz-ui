@@ -24,4 +24,5 @@ const plugin = {
 } satisfies Plugin<vLazyImgOptions>
 
 export { vLazyImg } from './vLazyImg/lazy-img.directive'
-export { vLazyImgBindingValue, plugin as vLazyImgInstall, vLazyImgOptions }
+export { plugin as vLazyImgInstall }
+export type { vLazyImgBindingValue, vLazyImgOptions }

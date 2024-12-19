@@ -1,23 +1,23 @@
 <script lang="ts">
 /* eslint-disable import/first */
-export { useMazDialogPromise } from '@components/MazDialogPromise/useMazDialogPromise'
-export type * from '@components/MazDialogPromise/useMazDialogPromise'
+export { useMazDialogPromise } from './MazDialogPromise/useMazDialogPromise'
+export type * from './MazDialogPromise/useMazDialogPromise'
 </script>
 
 <script lang="ts" setup>
+import type { ComponentPublicInstance } from 'vue'
 import type {
   MazDialogCustomButton,
   MazDialogData,
   MazDialogPromiseButton,
   MazDialogState,
-} from '@components/MazDialogPromise/useMazDialogPromise'
-import type { ComponentPublicInstance } from 'vue'
-import MazBtn from '@components/MazBtn.vue'
-import MazDialog, { type MazDialogProps } from '@components/MazDialog.vue'
-
-import { defaultData, useMazDialogPromise } from '@components/MazDialogPromise/useMazDialogPromise'
-
+} from './MazDialogPromise/useMazDialogPromise'
 import { computed, ref } from 'vue'
+import MazBtn from './MazBtn.vue'
+
+import MazDialog, { type MazDialogProps } from './MazDialog.vue'
+
+import { defaultData, useMazDialogPromise } from './MazDialogPromise/useMazDialogPromise'
 
 export interface MazDialogPromiseInternalProps {
   /** Dialog Data - @type DialogData */

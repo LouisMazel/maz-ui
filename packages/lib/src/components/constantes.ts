@@ -1,6 +1,4 @@
-import type { Color } from '@components/types'
-
-export const colors: Color[] = [
+export const colors = [
   'primary',
   'secondary',
   'info',

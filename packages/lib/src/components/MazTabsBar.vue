@@ -1,9 +1,6 @@
 <script lang="ts" setup>
-import type { MazBadgeColor, MazBadgeRoundedSize } from '@components/MazBadge.vue'
-import type { MazTabsProvide } from '@components/MazTabs.vue'
-import { injectStrict } from '@helpers/injectStrict'
-import { sleep } from '@helpers/sleep'
-
+import type { MazBadgeColor, MazBadgeRoundedSize } from './MazBadge.vue'
+import type { MazTabsProvide } from './MazTabs.vue'
 import {
   type ComponentPublicInstance,
   computed,
@@ -14,6 +11,9 @@ import {
   type StyleValue,
   watch,
 } from 'vue'
+import { injectStrict } from '../helpers/injectStrict'
+
+import { sleep } from '../helpers/sleep'
 
 const props = withDefaults(defineProps<MazTabsBarProps>(), {
   queryParam: 'tab',
@@ -56,7 +56,7 @@ export type MazTabsBarItem =
   }
   | string
 
-const MazBadge = defineAsyncComponent(() => import('@components/MazBadge.vue'))
+const MazBadge = defineAsyncComponent(() => import('./MazBadge.vue'))
 
 const { currentTab, updateCurrentTab } = injectStrict<MazTabsProvide>('maz-tabs')
 

@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import type { LocalToasterOptions } from './ToasterHandler'
 import type { ToasterAction, ToasterLink, ToasterPosition } from './types'
-import MazBtn from '@components/MazBtn.vue'
-import { useTimer } from '@composables/useTimer'
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
+import MazBtn from '../../components/MazBtn.vue'
+import { useTimer } from '../../composables/useTimer'
 
 const props = withDefaults(defineProps<Props>(), {
   position: 'bottom-right',
@@ -18,13 +18,13 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emits = defineEmits(['close', 'click', 'open'])
 
-const XIcon = defineAsyncComponent(() => import('@icons/x-mark.svg'))
-const ExternalLink = defineAsyncComponent(() => import('@icons/arrow-top-right-on-square.svg'))
-const ExclamationTriangle = defineAsyncComponent(() => import('@icons/exclamation-triangle.svg'))
-const ExclamationCircle = defineAsyncComponent(() => import('@icons/exclamation-circle.svg'))
-const InformationCircle = defineAsyncComponent(() => import('@icons/information-circle.svg'))
-const CheckCircle = defineAsyncComponent(() => import('@icons/check-circle.svg'))
-const Link = defineAsyncComponent(() => import('@icons/link.svg'))
+const XIcon = defineAsyncComponent(() => import('../../../icons/x-mark.svg'))
+const ExternalLink = defineAsyncComponent(() => import('../../../icons/arrow-top-right-on-square.svg'))
+const ExclamationTriangle = defineAsyncComponent(() => import('../../../icons/exclamation-triangle.svg'))
+const ExclamationCircle = defineAsyncComponent(() => import('../../../icons/exclamation-circle.svg'))
+const InformationCircle = defineAsyncComponent(() => import('../../../icons/information-circle.svg'))
+const CheckCircle = defineAsyncComponent(() => import('../../../icons/check-circle.svg'))
+const Link = defineAsyncComponent(() => import('../../../icons/link.svg'))
 
 const Toaster = ref<HTMLDivElement>()
 

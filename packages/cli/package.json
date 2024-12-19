@@ -1,7 +1,7 @@
 {
   "name": "cli",
   "type": "module",
-  "version": "4.0.0-alpha.3",
+  "version": "4.0.0-alpha.4",
   "exports": {
     ".": "./dist/cli.mjs",
     "./cli": "./bin/cli.mjs",
@@ -22,7 +22,8 @@
     "build": "unbuild",
     "build:stub": "unbuild --stub",
     "pre-commit": "lint-staged",
-    "vue-docgen": "vue-docgen"
+    "vue-docgen": "vue-docgen",
+    "typecheck": "tsc --noEmit --skipLibCheck"
   },
   "devDependencies": {
     "@clack/prompts": "^0.8.2",
