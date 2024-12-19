@@ -10,7 +10,7 @@ import type {
   ToasterOptions,
   vLazyImgOptions,
   vTooltipOptions,
-} from 'maz-ui'
+} from 'maz-ui/src/index.ts'
 import { getComponentList } from './../../lib/build/get-component-list'
 
 export interface MazUiNuxtOptions {

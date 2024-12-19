@@ -110,4 +110,5 @@ export { default as MazTextarea } from './MazTextarea.vue'
 export type * from './MazTextarea.vue'
 export { default as MazTransitionExpand } from './MazTransitionExpand.vue'
 export type * from './MazTransitionExpand.vue'
+
 export * from './types'
