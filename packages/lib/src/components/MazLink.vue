@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Color, Icon } from '@components/types'
 import type { RouteLocationRaw } from 'vue-router'
+import type { Color, Icon } from './types'
 import { defineAsyncComponent } from 'vue'
 
 withDefaults(defineProps<MazLinkProps>(), {
@@ -19,8 +19,8 @@ withDefaults(defineProps<MazLinkProps>(), {
   leftIcon: undefined,
   rightIcon: undefined,
 })
-const ExternalIcon = defineAsyncComponent(() => import('@icons/arrow-top-right-on-square.svg'))
-const MazIcon = defineAsyncComponent(() => import('@components/MazIcon.vue'))
+const ExternalIcon = defineAsyncComponent(() => import('../../icons/arrow-top-right-on-square.svg'))
+const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
 
 export interface MazLinkProps {
   /** The id of the link */

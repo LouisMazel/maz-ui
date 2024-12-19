@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import type { MazLinkProps } from '@components/MazLink.vue'
-import type { Color, Icon, Position, Size } from '@components/types'
 import type { RouteLocationRaw } from 'vue-router'
-import { useInstanceUniqId } from '@composables/useInstanceUniqId'
-import { vClickOutside } from '@directives/vClickOutside'
-import { debounce } from '@helpers/debounce'
+import type { MazLinkProps } from './MazLink.vue'
+import type { Color, Icon, Position, Size } from './types'
 import { computed, defineAsyncComponent, type HTMLAttributes, ref, watch } from 'vue'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId'
+import { vClickOutside } from '../directives/vClickOutside'
+import { debounce } from '../helpers/debounce'
 
 defineOptions({
   inheritAttrs: false,
@@ -36,9 +36,9 @@ const emits = defineEmits<{
   'update:open': [value: boolean]
 }>()
 
-const MazBtn = defineAsyncComponent(() => import('@components/MazBtn.vue'))
-const MazIcon = defineAsyncComponent(() => import('@components/MazIcon.vue'))
-const MazLink = defineAsyncComponent(() => import('@components/MazLink.vue'))
+const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
+const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
+const MazLink = defineAsyncComponent(() => import('./MazLink.vue'))
 
 const instanceId = useInstanceUniqId({
   componentName: 'MazDropdown',
@@ -136,7 +136,7 @@ export interface MazDropdownProps {
   size?: Size
 }
 
-const ChevronDownIcon = defineAsyncComponent(() => import('@icons/chevron-down.svg'))
+const ChevronDownIcon = defineAsyncComponent(() => import('../../icons/chevron-down.svg'))
 
 const dropdownOpen = ref(props.open)
 const keyboardSelectedIndex = ref<number>()

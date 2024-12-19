@@ -1,12 +1,7 @@
 <script lang="ts" setup>
-import type { MazInputPhoneNumberTranslations, Results } from '@components/MazInputPhoneNumber/types'
-import type { Color, Position, Size } from '@components/types'
 import type { CountryCode } from 'libphonenumber-js'
-import { defaultLocales } from '@components/MazInputPhoneNumber/default-locales'
-import { useLibphonenumber } from '@components/MazInputPhoneNumber/useLibphonenumber'
-import { useMazInputPhoneNumber } from '@components/MazInputPhoneNumber/useMazInputPhoneNumber'
-
-import { useInstanceUniqId } from '@composables/useInstanceUniqId'
+import type { MazInputPhoneNumberTranslations, Results } from './MazInputPhoneNumber/types'
+import type { Color, Position, Size } from './types'
 import {
   type ComponentPublicInstance,
   computed,
@@ -19,6 +14,11 @@ import {
   ref,
   watch,
 } from 'vue'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId'
+import { defaultLocales } from './MazInputPhoneNumber/default-locales'
+
+import { useLibphonenumber } from './MazInputPhoneNumber/useLibphonenumber'
+import { useMazInputPhoneNumber } from './MazInputPhoneNumber/useMazInputPhoneNumber'
 
 defineOptions({
   name: 'MazInputPhoneNumber',
@@ -93,8 +93,8 @@ const emits = defineEmits<{
   'data': [results: Results]
 }>()
 
-const CountrySelector = defineAsyncComponent(() => import('@components/MazInputPhoneNumber/CountrySelector.vue'))
-const PhoneInput = defineAsyncComponent(() => import('@components/MazInputPhoneNumber/PhoneInput.vue'))
+const CountrySelector = defineAsyncComponent(() => import('./MazInputPhoneNumber/CountrySelector.vue'))
+const PhoneInput = defineAsyncComponent(() => import('./MazInputPhoneNumber/PhoneInput.vue'))
 
 export interface MazInputPhoneNumberProps {
   /** Style attribut of the component root element */

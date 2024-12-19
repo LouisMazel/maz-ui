@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import type { Color, Size } from '@components/types'
-import MazBtn, { type MazBtnProps } from '@components/MazBtn.vue'
+import type { Color, Size } from './types'
 import { computed, defineAsyncComponent } from 'vue'
+import MazBtn, { type MazBtnProps } from './MazBtn.vue'
 
 const props = withDefaults(defineProps<MazPaginationProps>(), {
   modelValue: 1,
@@ -18,9 +18,9 @@ const emits = defineEmits<
    */
   (event: 'update:model-value', value: number) => void
 >()
-const ChevronLeft = defineAsyncComponent(() => import('@icons/chevron-left.svg'))
-const ChevronDoubleLeft = defineAsyncComponent(() => import('@icons/chevron-double-left.svg'))
-const Ellipsis = defineAsyncComponent(() => import('@icons/ellipsis-horizontal.svg'))
+const ChevronLeft = defineAsyncComponent(() => import('../../icons/chevron-left.svg'))
+const ChevronDoubleLeft = defineAsyncComponent(() => import('../../icons/chevron-double-left.svg'))
+const Ellipsis = defineAsyncComponent(() => import('../../icons/ellipsis-horizontal.svg'))
 
 const DEFAULT_BUTTONS_PROPS: Partial<MazBtnProps> = {
   size: 'md',

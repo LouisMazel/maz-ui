@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import { getNumericScreensFromTailwind } from '../tailwindcss/variables/breakpoints'
+import { getNumericScreensFromTailwind } from '../../tailwindcss/variables/breakpoints'
 import { useWindowSize, type UseWindowSizeOptions } from './useWindowSize'
 
 export interface UseBreakpointsOptions extends UseWindowSizeOptions {

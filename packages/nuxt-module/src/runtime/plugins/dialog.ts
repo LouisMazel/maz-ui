@@ -8,7 +8,7 @@ export default defineNuxtPlugin(({ vueApp, $config }) => {
 
   const instance = new DialogHandler(vueApp, options)
 
-  const toasterServer = {
+  const dialogServer = {
     open: () => {
       return {
         promise: Promise.resolve(),
@@ -20,7 +20,7 @@ export default defineNuxtPlugin(({ vueApp, $config }) => {
 
   return {
     provide: {
-      dialog: import.meta.server ? toasterServer : instance,
+      dialog: import.meta.server ? dialogServer : instance,
     },
   }
 })

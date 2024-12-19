@@ -1,14 +1,18 @@
 <script lang="ts" setup>
-import type { MazInputPhoneNumberInjectedData } from '@components/MazInputPhoneNumber.vue'
-import type { MazInputPhoneNumberTranslations } from '@components/MazInputPhoneNumber/types'
-import type { Color, Position, Size } from '@components/types'
 import type { CountryCode } from 'libphonenumber-js'
-import { useMazInputPhoneNumber } from '@components/MazInputPhoneNumber/useMazInputPhoneNumber'
-import MazSelect from '@components/MazSelect.vue'
-import { countryFlagUrlFromFlagCdn } from '@helpers/countryFlagFromFlagCdn'
-import { injectStrict } from '@helpers/injectStrict'
-import { truthyFilter } from '@helpers/truthyFilter'
+
+import type { MazInputPhoneNumberInjectedData } from './../MazInputPhoneNumber.vue'
+
+import type { Color, Position, Size } from './../types'
+import type { MazInputPhoneNumberTranslations } from './types'
+
 import { type ComponentPublicInstance, computed, defineAsyncComponent, type HTMLAttributes, ref } from 'vue'
+
+import { countryFlagUrlFromFlagCdn } from '../../helpers/countryFlagFromFlagCdn'
+import { injectStrict } from '../../helpers/injectStrict'
+import { truthyFilter } from '../../helpers/truthyFilter'
+import MazSelect from '../MazSelect.vue'
+import { useMazInputPhoneNumber } from './../MazInputPhoneNumber/useMazInputPhoneNumber'
 
 const props = withDefaults(
   defineProps<{
@@ -55,7 +59,7 @@ const props = withDefaults(
 
 defineEmits<(event: 'update:model-value', countryCode?: CountryCode) => void>()
 
-const MazLazyImg = defineAsyncComponent(() => import('@components/MazLazyImg.vue'))
+const MazLazyImg = defineAsyncComponent(() => import('../MazLazyImg.vue'))
 
 const { phoneNumber } = injectStrict<MazInputPhoneNumberInjectedData>('data')
 

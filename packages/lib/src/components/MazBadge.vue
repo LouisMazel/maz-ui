@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Color } from '@components/types'
+import type { Color } from './types'
 
 export type MazBadgeColor = Color | 'gray'
 export type MazBadgeRoundedSize = 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'

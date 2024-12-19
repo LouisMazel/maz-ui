@@ -156,8 +156,8 @@ export const mazTableKey = 'maz-table' as const
 </script>
 
 <script lang="ts" setup generic="T extends Row<T>">
-import type { MazSelectOption } from '@components/MazSelect.vue'
-import type { Color, Size } from '@components/types'
+import type { MazSelectOption } from './MazSelect.vue'
+import type { Color, Size } from './types'
 
 import {
   computed,
@@ -223,19 +223,19 @@ const emits = defineEmits<{
   (event: 'update:page-size', pageSize: number): void
 }>()
 
-const MazBtn = defineAsyncComponent(() => import('@components/MazBtn.vue'))
-const MazCheckbox = defineAsyncComponent(() => import('@components/MazCheckbox.vue'))
-const MazInput = defineAsyncComponent(() => import('@components/MazInput.vue'))
-const MazLoadingBar = defineAsyncComponent(() => import('@components/MazLoadingBar.vue'))
-const MazSelect = defineAsyncComponent(() => import('@components/MazSelect.vue'))
-const MazTableCell = defineAsyncComponent(() => import('@components/MazTableCell.vue'))
-const MazTableRow = defineAsyncComponent(() => import('@components/MazTableRow.vue'))
-const MazTableTitle = defineAsyncComponent(() => import('@components/MazTableTitle.vue'))
+const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
+const MazCheckbox = defineAsyncComponent(() => import('./MazCheckbox.vue'))
+const MazInput = defineAsyncComponent(() => import('./MazInput.vue'))
+const MazLoadingBar = defineAsyncComponent(() => import('./MazLoadingBar.vue'))
+const MazSelect = defineAsyncComponent(() => import('./MazSelect.vue'))
+const MazTableCell = defineAsyncComponent(() => import('./MazTableCell.vue'))
+const MazTableRow = defineAsyncComponent(() => import('./MazTableRow.vue'))
+const MazTableTitle = defineAsyncComponent(() => import('./MazTableTitle.vue'))
 
-const ArrowIcon = defineAsyncComponent(() => import('@icons/arrow-up.svg'))
-const ChevronDoubleIcon = defineAsyncComponent(() => import('@icons/chevron-double-left.svg'))
-const ChevronIcon = defineAsyncComponent(() => import('@icons/chevron-left.svg'))
-const SearchIcon = defineAsyncComponent(() => import('@icons/magnifying-glass.svg'))
+const ArrowIcon = defineAsyncComponent(() => import('../../icons/arrow-up.svg'))
+const ChevronDoubleIcon = defineAsyncComponent(() => import('../../icons/chevron-double-left.svg'))
+const ChevronIcon = defineAsyncComponent(() => import('../../icons/chevron-left.svg'))
+const SearchIcon = defineAsyncComponent(() => import('../../icons/magnifying-glass.svg'))
 
 const defaultTranslations: Required<MazTableTranslations> = {
   noResults: 'No results',

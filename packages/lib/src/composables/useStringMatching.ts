@@ -1,5 +1,5 @@
-import { normalizeString } from '@helpers/normalizeString'
 import { computed, type Ref } from 'vue'
+import { normalizeString } from '../helpers/normalizeString'
 
 function levenshteinDistance(string1: string, string2: string): number {
   const length1 = string1.length

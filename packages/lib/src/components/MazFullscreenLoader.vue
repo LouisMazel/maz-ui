@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import type { Color } from '@components/types'
-import MazSpinner from '@components/MazSpinner.vue'
+import type { Color } from './types'
 import { onMounted, onUnmounted } from 'vue'
+import MazSpinner from './MazSpinner.vue'
 
 const { color = 'primary', size = '3em', teleportSelector = 'body' } = defineProps<MazFullscreenLoaderProps>()
 

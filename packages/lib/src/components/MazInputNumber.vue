@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import type { Size } from '@components/types'
-import MazInput from '@components/MazInput.vue'
-import { debounce } from '@helpers/debounce'
+import type { Size } from './types'
 import { computed, defineAsyncComponent, type HTMLAttributes } from 'vue'
+import { debounce } from '../helpers/debounce'
+import MazInput from './MazInput.vue'
 
 defineOptions({
   inheritAttrs: false,
@@ -85,9 +85,9 @@ export interface MazInputNumberProps {
   warning?: boolean
 }
 
-const MazBtn = defineAsyncComponent(() => import('@components/MazBtn.vue'))
-const MinusIcon = defineAsyncComponent(() => import('@icons/minus.svg'))
-const PlusIcon = defineAsyncComponent(() => import('@icons/plus.svg'))
+const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
+const MinusIcon = defineAsyncComponent(() => import('../../icons/minus.svg'))
+const PlusIcon = defineAsyncComponent(() => import('../../icons/plus.svg'))
 
 const currentValue = computed({
   get: () => props.modelValue,
