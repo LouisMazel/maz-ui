@@ -49,7 +49,7 @@ export async function buildEntry({
       )
     }
 
-    includeComponentTemplate.push(`export * from './types'`)
+    includeComponentTemplate.push(`\nexport * from './types'`)
 
     const file = getEntryComponentTemplate({
       include: includeComponentTemplate.join(EOL),
@@ -57,8 +57,6 @@ export async function buildEntry({
     })
 
     writeFileSync(output, file)
-
-    logger.success(`[${scriptName}] ✅`)
   }
   catch (error) {
     logger.error(

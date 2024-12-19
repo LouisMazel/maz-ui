@@ -1,24 +1,42 @@
-import { extname, relative } from 'node:path'
-import { fileURLToPath } from 'node:url'
-import vue from '@vitejs/plugin-vue'
+import { rmSync } from 'node:fs'
+import { extname, relative, resolve } from 'node:path'
+import Vue from '@vitejs/plugin-vue'
 import { glob } from 'glob'
 import { defineConfig, type UserConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 import { libInjectCss } from 'vite-plugin-lib-inject-css'
 
-import svgLoader from 'vite-svg-loader'
-// import { generateComponentsEntryFile } from './build/generate-components-entry'
+import { type Target, viteStaticCopy } from 'vite-plugin-static-copy'
 
+import SvgLoader from 'vite-svg-loader'
+import rootPkg from '../../package.json' assert { type: 'json' }
+import { BuildMazCli } from './build/BuildMazCli'
+import { BuildNuxtModule } from './build/BuildNuxtModule'
+import { CompileStyles } from './build/CompileStyles'
 import { GenerateComponentsEntry } from './build/GenerateComponentsEntry'
-// import { getComponentList } from './build/get-component-list'
-import pkg from './package.json'
+import pkg from './package.json' assert { type: 'json' }
+
+rmSync('dist', { recursive: true, force: true })
+
+function resolver(path: string) {
+  return resolve(__dirname, path)
+}
 
 function getEntries(pattern: string) {
   return [
     relative('src', pattern.slice(0, pattern.length - extname(pattern).length)),
-    fileURLToPath(new URL(pattern, import.meta.url)),
+    resolver(pattern),
   ]
 }
+
+const external = [
+  ...Object.keys(pkg.peerDependencies),
+  ...Object.keys(pkg.devDependencies),
+  ...Object.keys(rootPkg.devDependencies),
+  'dayjs/plugin/customParseFormat',
+  'dayjs/plugin/weekday',
+  'dayjs/plugin/isBetween',
+]
 
 const componentEntries = Object.fromEntries(
   glob.sync([
@@ -31,8 +49,8 @@ const componentEntries = Object.fromEntries(
 
 const moduleEntries = Object.fromEntries(
   glob.sync([
-    'src/composables/use*.ts',
-    'src/directives/v*.ts',
+    'src/composables/*.ts',
+    'src/directives/*.ts',
     'src/filters/*.ts',
     'src/helpers/*.ts',
     'src/resolvers/*.ts',
@@ -43,69 +61,79 @@ const moduleEntries = Object.fromEntries(
     .map(getEntries),
 )
 
+const staticAssetsToCopy = [
+  { src: resolver('src/tailwindcss'), dest: resolver('dist') },
+  { src: resolver('src/icons'), dest: resolver('dist') },
+  { src: resolver('bin'), dest: resolver('dist') },
+  { src: resolver('../../README.md'), dest: resolver('.') },
+] satisfies Target[]
+
 export default defineConfig({
   plugins: [
     GenerateComponentsEntry(),
-    vue(),
+    Vue(),
+    SvgLoader(),
     libInjectCss(),
-    svgLoader(),
     dts({
-      tsconfigPath: './tsconfig.json',
-      entryRoot: 'src',
-      outDir: 'dist/types',
+      tsconfigPath: resolver('./tsconfig.json'),
+      entryRoot: resolver('src'),
+      outDir: resolver('dist/types'),
     }),
+    viteStaticCopy({ targets: staticAssetsToCopy }),
+    CompileStyles(),
+    BuildNuxtModule(),
+    BuildMazCli(),
   ],
   resolve: {
     alias: {
-      // '@': fileURLToPath(new URL('src', import.meta.url)),
-      '@components': fileURLToPath(new URL('src/components', import.meta.url)),
-      '@composables': fileURLToPath(new URL('src/composables', import.meta.url)),
-      '@directives': fileURLToPath(new URL('src/directives', import.meta.url)),
-      '@filters': fileURLToPath(new URL('src/filters', import.meta.url)),
-      '@helpers': fileURLToPath(new URL('src/helpers', import.meta.url)),
-      '@icons': fileURLToPath(new URL('src/icons', import.meta.url)),
-      '@plugins': fileURLToPath(new URL('src/plugins', import.meta.url)),
-      '@resolvers': fileURLToPath(new URL('src/resolvers', import.meta.url)),
-      '@ts-helpers': fileURLToPath(new URL('src/ts-helpers', import.meta.url)),
+      '@components': resolver('src/components'),
+      '@composables': resolver('src/composables'),
+      '@directives': resolver('src/directives'),
+      '@filters': resolver('src/filters'),
+      '@helpers': resolver('src/helpers'),
+      '@icons': resolver('src/icons'),
+      '@plugins': resolver('src/plugins'),
+      '@resolvers': resolver('src/resolvers'),
+      '@ts-helpers': resolver('src/ts-helpers'),
     },
   },
   build: {
     cssCodeSplit: true,
-    emptyOutDir: true,
+    emptyOutDir: false,
     minify: true,
+    sourcemap: true,
     cssMinify: true,
     terserOptions: {
       compress: true,
     },
     lib: {
       entry: {
-        ...moduleEntries,
-        'maz-ui': fileURLToPath(new URL('src/index.ts', import.meta.url)),
         ...componentEntries,
-        'components': fileURLToPath(new URL('src/components/index.ts', import.meta.url)),
+        ...moduleEntries,
+        index: resolver('src/index.ts'),
       },
-      // formats: ['es', 'cjs'],
-      fileName: (format, name) => format === 'es' ? `${name}.js` : `${name}.cjs`,
-      // cssFileName: '[name].[hash].css',
+      fileName: (format, name) => format === 'es' ? `${name}.mjs` : `${name}.cjs`,
+      cssFileName: '[name].[hash].css',
     },
     rollupOptions: {
-      external: [...Object.keys(pkg.peerDependencies), ...Object.keys(pkg.devDependencies), /\.css$/],
+      external,
       output: [
         {
           format: 'es',
-          chunkFileNames: 'chunks/[name].[hash].js',
+          chunkFileNames: 'chunks/[name].[hash].mjs',
           assetFileNames: 'assets/[name].[hash][extname]',
           exports: 'named',
-          // preserveModules: true,
-          preserveModulesRoot: 'src',
-          entryFileNames: '[name].js',
+          entryFileNames: '[name].mjs',
+          preserveModules: false,
         },
-        // {
-        //   format: 'cjs',
-        //   chunkFileNames: 'chunks/[name].[hash].cjs',
-        //   assetFileNames: 'assets/[name].[hash][extname]',
-        //   exports: 'named',
-        // },
+        {
+          format: 'cjs',
+          chunkFileNames: 'chunks/[name].[hash].cjs',
+          assetFileNames: 'assets/[name].[hash][extname]',
+          exports: 'named',
+          entryFileNames: '[name].cjs',
+          preserveModules: false,
+        },
       ],
       // output: {
       //   // chunkFileNames: 'chunks/[name].[hash].js',

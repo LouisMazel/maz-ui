@@ -190,14 +190,13 @@ async function run() {
 
     await compileScss()
 
-    await execPromise('pnpm -F nuxt-module build')
     await execPromise('pnpm -F @mazui/cli build')
 
+    await execPromise('pnpm -F nuxt-module build')
     // Nuxt Module: rename all module.* to index.*
     const fileList = await readdir(resolve(_dirname, './../dist/nuxt'), {
       withFileTypes: true,
     })
-
     const fileListToRename = fileList.filter(
       dirent => dirent.isFile() && dirent.name.startsWith('module'),
     )

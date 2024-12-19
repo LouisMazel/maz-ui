@@ -26,29 +26,26 @@
     "module",
     "nuxt-module"
   ],
+  "sideEffects": false,
   "exports": {
     ".": {
       "types": "./dist/types/index.d.ts",
-      "import": "./dist/maz-ui.js",
-      "require": "./dist/maz-ui.cjs"
-    },
-    "./components": {
-      "types": "./dist/types/components/index.d.ts",
-      "import": "./dist/components.js",
-      "require": "./dist/components.cjs"
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
     },
     "./nuxt": {
-      "types": "./nuxt/types.d.ts",
-      "import": "./nuxt/index.mjs",
-      "require": "./nuxt/index.cjs"
+      "types": "./dist/nuxt/types.d.ts",
+      "import": "./dist/nuxt/module.mjs",
+      "require": "./dist/nuxt/module.cjs"
     },
-    "./styles": "./css/main.css",
-    "./aos-styles": "./css/aos.css",
+    "./styles": "./dist/css/main.css",
+    "./aos-styles": "./dist/css/aos.css",
+    "./icons": "./dist/icons",
     "./package.json": "./package.json",
     "./*": "./*"
   },
-  "main": "./dist/maz-ui.cjs",
-  "module": "./dist/maz-ui.mjs",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
   "types": "./dist/types/index.d.ts",
   "bin": {
     "maz": "./bin/maz.mjs",
