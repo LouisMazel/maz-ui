@@ -12,7 +12,7 @@ import {
   ref,
 } from 'vue'
 
-const MazSpinner = defineAsyncComponent(() => import('@components/MazSpinner.vue'))
+const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
 
 function dropzoneFix<T>(component: T): T {
   return (component as any).default ?? component

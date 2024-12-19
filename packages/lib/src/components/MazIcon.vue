@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { injectStrict } from '@helpers/injectStrict'
-
 import { computed, nextTick, onMounted, type PropType, ref, watchEffect } from 'vue'
+
+import { injectStrict } from '../helpers/injectStrict'
 
 const props = defineProps({
   /** The source path of the SVG file - e.g: `/icons/home.svg` */

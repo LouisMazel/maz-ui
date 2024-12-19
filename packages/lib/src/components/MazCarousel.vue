@@ -6,10 +6,10 @@ const props = withDefaults(defineProps<MazCarouselProps>(), {
   ariaLabelNextButton: 'Scroll to next items',
 })
 
-const MazBtn = defineAsyncComponent(() => import('@components/MazBtn.vue'))
+const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 
-const ChevronLeftIcon = defineAsyncComponent(() => import('@icons/chevron-left.svg'))
-const ChevronRightIcon = defineAsyncComponent(() => import('@icons/chevron-right.svg'))
+const ChevronLeftIcon = defineAsyncComponent(() => import('../../icons/chevron-left.svg'))
+const ChevronRightIcon = defineAsyncComponent(() => import('../../icons/chevron-right.svg'))
 
 export interface MazCarouselProps {
   /** Do not display the scroll buttons */

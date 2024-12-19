@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import MazInput from '@components/MazInput.vue'
-import { currency as currencyFilter, type FilterCurrencyOptions } from '@filters/currency'
 import { computed, defineAsyncComponent, nextTick, onMounted, ref, watch } from 'vue'
+import { currency as currencyFilter, type FilterCurrencyOptions } from '../filters/currency'
+import MazInput from './MazInput.vue'
 
 const props = withDefaults(defineProps<MazInputPriceProps>(), {
   modelValue: undefined,
@@ -20,7 +20,7 @@ const emits = defineEmits<{
   'focus': [value: Event]
 }>()
 
-const BanknotesIcon = defineAsyncComponent(() => import('@icons/banknotes.svg'))
+const BanknotesIcon = defineAsyncComponent(() => import('../../icons/banknotes.svg'))
 
 export interface MazInputPriceProps {
   /** @model The value of the input */

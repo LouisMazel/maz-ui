@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import MazCardSpotlight from '@components/MazCardSpotlight.vue'
-import MazExpandAnimation from '@components/MazExpandAnimation.vue'
-import { useInstanceUniqId } from '@composables/useInstanceUniqId'
-
-import PlusIcon from '@icons/plus.svg'
-
 import { computed, ref, useSlots } from 'vue'
+import PlusIcon from '../../icons/plus.svg'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId'
+
+import MazCardSpotlight from './MazCardSpotlight.vue'
+
+import MazExpandAnimation from './MazExpandAnimation.vue'
 
 export interface MazAccordionProps {
   id?: string

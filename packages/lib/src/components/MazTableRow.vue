@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import type { MazTableProvide } from '@components/MazTable.vue'
-import { mazTableKey } from '@components/MazTable.vue'
-import { injectStrict } from '@helpers/injectStrict'
+import type { MazTableProvide } from './MazTable.vue'
+import { injectStrict } from '../helpers/injectStrict'
+import { mazTableKey } from './MazTable.vue'
 
 export interface MazTableRowProps {
   /** Override hoverable of table props */

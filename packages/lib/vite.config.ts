@@ -62,9 +62,6 @@ const moduleEntries = Object.fromEntries(
 )
 
 const staticAssetsToCopy = [
-  { src: resolver('src/tailwindcss'), dest: resolver('dist') },
-  { src: resolver('src/icons'), dest: resolver('dist') },
-  { src: resolver('bin'), dest: resolver('dist') },
   { src: resolver('../../README.md'), dest: resolver('.') },
 ] satisfies Target[]
 
@@ -84,19 +81,6 @@ export default defineConfig({
     BuildNuxtModule(),
     BuildMazCli(),
   ],
-  resolve: {
-    alias: {
-      '@components': resolver('src/components'),
-      '@composables': resolver('src/composables'),
-      '@directives': resolver('src/directives'),
-      '@filters': resolver('src/filters'),
-      '@helpers': resolver('src/helpers'),
-      '@icons': resolver('src/icons'),
-      '@plugins': resolver('src/plugins'),
-      '@resolvers': resolver('src/resolvers'),
-      '@ts-helpers': resolver('src/ts-helpers'),
-    },
-  },
   build: {
     cssCodeSplit: true,
     emptyOutDir: false,

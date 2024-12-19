@@ -1,4 +1,4 @@
-import type { Country, IpWhoResponse } from '@components/MazInputPhoneNumber/types'
+import type { Country, IpWhoResponse } from './types'
 import { type CountryCode, getCountries, getCountryCallingCode } from 'libphonenumber-js'
 
 function getBrowserLocale() {
