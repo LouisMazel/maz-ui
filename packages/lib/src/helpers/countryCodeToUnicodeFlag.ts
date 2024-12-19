@@ -1,4 +1,4 @@
-import { truthyFilter } from '@helpers/truthyFilter'
+import { truthyFilter } from './truthyFilter'
 
 export function countryCodeToUnicodeFlag(locale: string) {
   return [...locale]

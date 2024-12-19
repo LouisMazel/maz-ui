@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import type { PickerValue } from '@components/MazPicker/types'
-import type { DateTimeFormatOptions } from '@components/MazPicker/utils'
-import type { Color } from '@components/types'
-import { capitalize } from '@filters/capitalize'
-import { date } from '@filters/date'
+import type { Color } from '../types'
+import type { PickerValue } from './types'
+import type { DateTimeFormatOptions } from './utils'
 import dayjs from 'dayjs'
 import { computed, type PropType, ref, watch } from 'vue'
+import { capitalize } from '../../filters/capitalize'
+import { date } from '../../filters/date'
 
 const props = defineProps({
   modelValue: {

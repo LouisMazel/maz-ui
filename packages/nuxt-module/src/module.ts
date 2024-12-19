@@ -10,7 +10,7 @@ import type {
   ToasterOptions,
   vLazyImgOptions,
   vTooltipOptions,
-} from 'maz-ui/src/index.ts'
+} from 'maz-ui'
 import { getComponentList } from './../../lib/build/getComponentList'
 
 export interface MazUiNuxtOptions {
@@ -220,7 +220,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     if (moduleOptions.injectCss) {
       const path
-        = process.env.MAZ_UI_DEV === 'true' ? 'maz-ui/css/index.css' : 'maz-ui/css/main.css'
+        = process.env.MAZ_UI_DEV === 'true' ? 'maz-ui/src/css/index.css' : 'maz-ui/dist/css/main.css'
       nuxt.options.css = [path, ...nuxt.options.css]
     }
 
@@ -228,13 +228,18 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       const componentList = await getComponentList()
 
       for (const { name } of componentList) {
-        addComponent({
-          name,
-          filePath:
-            process.env.MAZ_UI_DEV === 'true'
-              ? `maz-ui/components/${name}.vue`
-              : `maz-ui/components/${name}.mjs`,
-        })
+        if (process.env.MAZ_UI_DEV === 'true') {
+          addComponent({
+            name,
+            filePath: `maz-ui/src/components/${name}.vue`,
+          })
+        }
+        else {
+          addComponent({
+            name,
+            filePath: `maz-ui/dist/components/${name}.mjs`,
+          })
+        }
       }
     }
 
@@ -253,16 +258,20 @@ export default defineNuxtModule<MazUiNuxtOptions>({
           ? moduleOptions.injectAos.injectCss
           : true
 
-      if (
-        typeof moduleOptions.injectAos === 'object'
-        && injectAosCSS
-        && process.env.MAZ_UI_DEV === 'true'
-      ) {
+      if (typeof moduleOptions.injectAos === 'object' && injectAosCSS) {
         nuxt.options.css = ['maz-ui/dist/css/aos.css', ...nuxt.options.css]
       }
-      else if (typeof moduleOptions.injectAos === 'object' && injectAosCSS) {
-        nuxt.options.css = ['maz-ui/css/aos.css', ...nuxt.options.css]
-      }
+
+      // if (
+      //   typeof moduleOptions.injectAos === 'object'
+      //   && injectAosCSS
+      //   && process.env.MAZ_UI_DEV === 'true'
+      // ) {
+      //   nuxt.options.css = ['maz-ui/dist/css/aos.css', ...nuxt.options.css]
+      // }
+      // else if (typeof moduleOptions.injectAos === 'object' && injectAosCSS) {
+      //   nuxt.options.css = ['maz-ui/dist/css/aos.css', ...nuxt.options.css]
+      // }
     }
 
     /**

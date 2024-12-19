@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import type { Color } from '@components/types'
-import { useInstanceUniqId } from '@composables/useInstanceUniqId'
-
+import type { Color } from './types'
 import { computed, type HTMLAttributes, ref } from 'vue'
+
+import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 
 defineOptions({
   inheritAttrs: false,

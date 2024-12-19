@@ -1,13 +1,12 @@
 <script lang="ts" setup>
-import type { Color } from '@components/types'
-import type { PropType } from 'vue'
+import type { Color } from '../types'
 
-import MazBtn from '@components/MazBtn.vue'
-import CheckIcon from '@icons/check.svg'
+import CheckIcon from '../../../icons/check.svg'
+import MazBtn from '../MazBtn.vue'
 
-defineProps({
-  color: { type: String as PropType<Color>, required: true },
-})
+defineProps<{
+  color: Color
+}>()
 
 defineEmits(['close'])
 </script>

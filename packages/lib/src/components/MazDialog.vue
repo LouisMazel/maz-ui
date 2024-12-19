@@ -4,8 +4,6 @@ import type {
   HTMLAttributes,
   StyleValue,
 } from 'vue'
-import MazBackdrop, { type MazBackdropProps } from '@components/MazBackdrop.vue'
-
 import {
   computed,
   defineAsyncComponent,
@@ -15,6 +13,8 @@ import {
   useSlots,
   watch,
 } from 'vue'
+
+import MazBackdrop, { type MazBackdropProps } from './MazBackdrop.vue'
 
 defineOptions({
   name: 'MazDialog',
@@ -45,7 +45,7 @@ defineEmits<{
   'update:model-value': [value: boolean]
 }>()
 
-const MazBtn = defineAsyncComponent(() => import('@components/MazBtn.vue'))
+const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 
 export interface InternalProps {
   /** @model Modal's model value */
@@ -66,7 +66,7 @@ export interface InternalProps {
 
 export type MazDialogProps = InternalProps & MazBackdropProps
 
-const XIcon = defineAsyncComponent(() => import('@icons/x-mark.svg'))
+const XIcon = defineAsyncComponent(() => import('../../icons/x-mark.svg'))
 
 const attrs = useAttrs()
 

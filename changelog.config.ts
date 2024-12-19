@@ -1,4 +1,4 @@
-import { ChangelogConfig } from 'changelogen'
+import type { ChangelogConfig } from 'changelogen'
 
 function getDefaultConfig(): ChangelogConfig {
   return {

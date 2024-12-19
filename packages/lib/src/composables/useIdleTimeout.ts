@@ -2,7 +2,7 @@ import {
   IdleTimeout,
   type IdleTimeoutCallback,
   type IdleTimeoutOptions,
-} from '@helpers/idleTimeout'
+} from '../helpers/idleTimeout'
 
 export function useIdleTimeout({
   callback,

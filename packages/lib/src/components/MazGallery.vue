@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import type { MazGalleryImage } from '@components/types'
-import { vFullscreenImg } from '@directives/vFullscreenImg'
-import { vLazyImg } from '@directives/vLazyImg'
+import type { MazGalleryImage } from './types'
 import { computed, defineAsyncComponent, onBeforeMount, type PropType } from 'vue'
+import { vFullscreenImg } from '../directives/vFullscreenImg'
+import { vLazyImg } from '../directives/vLazyImg'
 
 const props = defineProps({
   /**
@@ -40,7 +40,7 @@ const props = defineProps({
   separatorColor: { type: String, default: 'transparent' },
 })
 
-const NoPhotographyIcon = defineAsyncComponent(() => import('@icons/no-photography.svg'))
+const NoPhotographyIcon = defineAsyncComponent(() => import('../../icons/no-photography.svg'))
 
 onBeforeMount(() => {
   if (props.imagesShownCount > 5)

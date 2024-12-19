@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { isClient } from '@helpers/isClient'
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { isClient } from '../helpers/isClient'
 
 export interface MazAnimatedCounterProps {
   /**

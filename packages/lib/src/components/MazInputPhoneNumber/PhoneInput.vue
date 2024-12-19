@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import type { MazInputPhoneNumberInjectedData } from '@components/MazInputPhoneNumber.vue'
-import type { MazInputPhoneNumberTranslations } from '@components/MazInputPhoneNumber/types'
 import type { CountryCode } from 'libphonenumber-js'
-import MazInput, { type MazInputProps } from '@components/MazInput.vue'
-import { useLibphonenumber } from '@components/MazInputPhoneNumber/useLibphonenumber'
-import { useMazInputPhoneNumber } from '@components/MazInputPhoneNumber/useMazInputPhoneNumber'
-import { injectStrict } from '@helpers/injectStrict'
+import type { MazInputPhoneNumberInjectedData } from '../MazInputPhoneNumber.vue'
+import type { MazInputPhoneNumberTranslations } from './types'
 import { computed, onMounted, ref } from 'vue'
+import { injectStrict } from '../../helpers/injectStrict'
+import MazInput, { type MazInputProps } from '../MazInput.vue'
+import { useLibphonenumber } from './useLibphonenumber'
+import { useMazInputPhoneNumber } from './useMazInputPhoneNumber'
 
 type PhoneInputProps = Omit<MazInputProps, 'modelValue'> & {
   id: string

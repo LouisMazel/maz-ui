@@ -1,11 +1,13 @@
+import type { ComponentPublicInstance, ComputedRef, WritableComputedRef } from 'vue'
 import type {
   BaseFormPayload,
   ExtractModelKey,
   FormFieldOptions,
   FormSchema,
   ValidationIssues,
-} from '@composables/useFormValidator/types'
-import type { ComponentPublicInstance, ComputedRef, WritableComputedRef } from 'vue'
+} from '../composables/useFormValidator/types'
+
+import { computed, onMounted, onUnmounted } from 'vue'
 
 import {
   addEventToInteractiveElements,
@@ -19,11 +21,10 @@ import {
   removeEventFromInteractiveElements,
   setFieldValidationState,
   updateFieldState,
-} from '@composables/useFormValidator/utils'
-import { checkAvailability } from '@helpers/checkAvailability'
-import { freezeValue } from '@helpers/freezeValue'
-import { isEqual } from '@helpers/isEqual'
-import { computed, onMounted, onUnmounted } from 'vue'
+} from '../composables/useFormValidator/utils'
+import { checkAvailability } from '../helpers/checkAvailability'
+import { freezeValue } from '../helpers/freezeValue'
+import { isEqual } from '../helpers/isEqual'
 
 interface UseFormFieldReturn<FieldType> {
   /**

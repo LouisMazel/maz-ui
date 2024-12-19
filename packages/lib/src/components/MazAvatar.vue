@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { Color } from '@components/types'
 import type { HTMLAttributes } from 'vue'
+import type { Color } from './types'
 
 import { computed, defineAsyncComponent } from 'vue'
 
@@ -32,8 +32,8 @@ const emits = defineEmits<{
   (name: 'error', el: Element): void
 }>()
 
-const MazLazyImg = defineAsyncComponent(() => import('@components/MazLazyImg.vue'))
-const PencilIcon = defineAsyncComponent(() => import('@icons/pencil.svg'))
+const MazLazyImg = defineAsyncComponent(() => import('./MazLazyImg.vue'))
+const PencilIcon = defineAsyncComponent(() => import('../../icons/pencil.svg'))
 
 export interface MazAvatarProps {
   /** The style of the component */

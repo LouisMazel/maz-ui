@@ -79,4 +79,4 @@ const plugin = {
   },
 } satisfies Plugin
 
-export { directive as vClickOutside, vClickOutsideBindingValue, plugin as vClickOutsideInstall }
+export { directive as vClickOutside, type vClickOutsideBindingValue, plugin as vClickOutsideInstall }

@@ -1,7 +1,7 @@
 import type { App } from 'vue'
-import MazDialogPromise, { type MazDialogPromiseProps } from '@components/MazDialogPromise.vue'
-import { useMazDialogPromise } from '@components/MazDialogPromise/useMazDialogPromise'
-import { mount } from '@helpers/mountComponent'
+import MazDialogPromise, { type MazDialogPromiseProps } from '../../components/MazDialogPromise.vue'
+import { useMazDialogPromise } from '../../components/MazDialogPromise/useMazDialogPromise'
+import { mount } from '../../helpers/mountComponent'
 
 export type DialogOptions = Partial<Omit<MazDialogPromiseProps, 'modelValue'>> & {
   promiseCallback?: () => unknown

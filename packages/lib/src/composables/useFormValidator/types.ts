@@ -1,14 +1,14 @@
-import type { useFormField } from '@composables/useFormField'
-import type { useFormValidator } from '@composables/useFormValidator'
-import type { InferMaybeRef } from '@ts-helpers/InferMaybeRef'
-
+import type { InferMaybeRef } from 'src/ts-helpers/InferMaybeRef'
 import type { BaseIssue, BaseSchema, BaseSchemaAsync, InferIssue, InferOutput, objectAsync, ObjectEntries, ObjectEntriesAsync } from 'valibot'
+
 import type {
   ComponentInternalInstance,
   InjectionKey,
   MaybeRef,
   Ref,
 } from 'vue'
+import type { useFormField } from './../useFormField'
+import type { useFormValidator } from './../useFormValidator'
 import type { getValidateFunction } from './utils'
 
 export type ValidationSync = BaseSchema<unknown, unknown, BaseIssue<unknown>>

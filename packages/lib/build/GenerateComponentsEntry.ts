@@ -14,6 +14,8 @@ export function GenerateComponentsEntry(): Plugin {
       }
       catch (error) {
         logger.error('[GenerateComponentsEntry] 🔴 error while generating components entry', error)
+
+        throw error
       }
     },
   }

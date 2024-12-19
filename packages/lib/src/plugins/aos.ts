@@ -1,7 +1,7 @@
 import type { App } from 'vue'
 import type { Router } from 'vue-router'
-import { isClient } from '@helpers/isClient'
-import { sleep } from '@helpers/sleep'
+import { isClient } from './../helpers/isClient'
+import { sleep } from './../helpers/sleep'
 
 export interface AosOptions {
   animation?: {

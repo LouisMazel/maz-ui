@@ -1,10 +1,10 @@
 <script lang="ts" setup generic="T extends string, O extends ItemOption">
-import type { MazInputProps } from '@components/MazInput.vue'
-import type { Color } from '@components/types'
-import MazCardSpotlight from '@components/MazCardSpotlight.vue'
-import MazCheckbox from '@components/MazCheckbox.vue'
-import { normalizeString, type NormalizeStringOptions } from '@helpers/normalizeString'
+import type { MazInputProps } from './MazInput.vue'
+import type { Color } from './types'
 import { computed, defineAsyncComponent, ref, watch } from 'vue'
+import { normalizeString, type NormalizeStringOptions } from '../helpers/normalizeString'
+import MazCardSpotlight from './MazCardSpotlight.vue'
+import MazCheckbox from './MazCheckbox.vue'
 
 export type ItemOption = {
   label: string
@@ -84,9 +84,9 @@ const emits = defineEmits<{
   'update:model-value': [value?: T[]]
 }>()
 
-const MazInput = defineAsyncComponent(() => import('@components/MazInput.vue'))
-const SearchIcon = defineAsyncComponent(() => import('@icons/magnifying-glass.svg'))
-const NoResultsIcon = defineAsyncComponent(() => import('@icons/no-symbol.svg'))
+const MazInput = defineAsyncComponent(() => import('./MazInput.vue'))
+const SearchIcon = defineAsyncComponent(() => import('../../icons/magnifying-glass.svg'))
+const NoResultsIcon = defineAsyncComponent(() => import('../../icons/no-symbol.svg'))
 
 const internalQuery = ref<string | undefined>(props.query)
 

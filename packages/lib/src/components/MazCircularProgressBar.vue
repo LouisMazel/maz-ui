@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import type { Color } from '@components/types'
-import { useInstanceUniqId } from '@composables/useInstanceUniqId'
+import type { Color } from './types'
 import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref, type SVGAttributes, useSlots } from 'vue'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 
 const props = withDefaults(
   defineProps<{
@@ -99,7 +99,7 @@ const props = withDefaults(
   },
 )
 
-const MazAnimatedCounter = defineAsyncComponent(() => import('@components/MazAnimatedCounter.vue'))
+const MazAnimatedCounter = defineAsyncComponent(() => import('./MazAnimatedCounter.vue'))
 
 const slots = useSlots()
 

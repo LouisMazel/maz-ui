@@ -1,6 +1,6 @@
 import type { MaybeRef } from 'vue'
-import { Swipe, type SwipeOptions } from '@helpers/swipeHandler'
 import { computed, ref, toValue } from 'vue'
+import { Swipe, type SwipeOptions } from '../helpers/swipeHandler'
 
 export function useSwipe(options: Omit<SwipeOptions, 'onValuesChanged' | 'element'> & { element: MaybeRef<HTMLElement> | string | null | undefined }) {
   const xDiff = ref<number>()

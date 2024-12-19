@@ -1,8 +1,8 @@
 <script lang="ts" setup generic="T extends boolean | (string | number)[]">
-import type { Color, Size } from '@components/types'
-import { useInstanceUniqId } from '@composables/useInstanceUniqId'
-import CheckIcon from '@icons/check.svg'
+import type { Color, Size } from './types'
 import { computed, type HTMLAttributes, ref } from 'vue'
+import CheckIcon from '../../icons/check.svg'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 
 export type CheckboxValue = string | number | boolean
 

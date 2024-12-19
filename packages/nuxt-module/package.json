@@ -1,6 +1,6 @@
 {
   "name": "nuxt-module",
-  "version": "4.0.0-alpha.3",
+  "version": "4.0.0-alpha.4",
   "license": "MIT",
   "type": "module",
   "exports": {
@@ -21,7 +21,8 @@
     "lint:fix": "pnpm lint --fix",
     "format": "prettier --ignore-path .gitignore . --write",
     "test": "vitest run",
-    "test:watch": "vitest watch"
+    "test:watch": "vitest watch",
+    "typecheck": "tsc --noEmit --skipLibCheck --project tsconfig.check.json"
   },
   "lint-staged": {
     "*": "prettier -w -u",

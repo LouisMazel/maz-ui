@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import type { Color, Size } from '@components/types'
-import MazBtn from '@components/MazBtn.vue'
-import MazInput from '@components/MazInput.vue'
-import { truthyFilter } from '@helpers/truthyFilter'
+import type { Color, Size } from './types'
 import { computed, defineAsyncComponent, type HTMLAttributes, ref } from 'vue'
+import { truthyFilter } from '../helpers/truthyFilter'
+import MazBtn from './MazBtn.vue'
+import MazInput from './MazInput.vue'
 
 defineOptions({
   inheritAttrs: false,
@@ -28,7 +28,7 @@ const emits = defineEmits<{
   'update:model-value': [value?: (string | number)[]]
 }>()
 
-const CloseIcon = defineAsyncComponent(() => import('@icons/trash.svg'))
+const CloseIcon = defineAsyncComponent(() => import('../../icons/trash.svg'))
 
 export interface MazInputTagsProps {
   /** Style attribut of the component root element */

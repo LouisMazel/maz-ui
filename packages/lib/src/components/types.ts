@@ -1,4 +1,5 @@
 import type { Component, ComponentPublicInstance, FunctionalComponent, SVGAttributes } from 'vue'
+import type { colors } from './constantes'
 
 export type ModelValueSimple = string | number | null | undefined | boolean
 
@@ -10,17 +11,7 @@ export type MazGalleryImage =
   }
   | string
 
-export type Color =
-  | 'primary'
-  | 'secondary'
-  | 'info'
-  | 'success'
-  | 'warning'
-  | 'danger'
-  | 'white'
-  | 'black'
-  | 'transparent'
-  | 'theme'
+export type Color = (typeof colors)[number]
 
 export type Size = 'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 

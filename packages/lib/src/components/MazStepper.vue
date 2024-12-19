@@ -1,8 +1,5 @@
 <script lang="ts" setup>
-import type { Color, Icon } from '@components/types'
-import MazExpandAnimation from '@components/MazExpandAnimation.vue'
-import MazIcon from '@components/MazIcon.vue'
-
+import type { Color, Icon } from './types'
 import {
   type Component,
   computed,
@@ -10,6 +7,9 @@ import {
   ref,
   useSlots,
 } from 'vue'
+import MazExpandAnimation from './MazExpandAnimation.vue'
+
+import MazIcon from './MazIcon.vue'
 
 export interface MazStepperStep {
   title?: string
@@ -33,9 +33,9 @@ const emits = defineEmits<{
   'update:model-value': [value: number]
 }>()
 
-const CheckCircleIcon = defineAsyncComponent(() => import('@icons/check-circle.svg'))
-const ExclamationCircleIcon = defineAsyncComponent(() => import('@icons/exclamation-circle.svg'))
-const ExclamationIcon = defineAsyncComponent(() => import('@icons/exclamation-triangle.svg'))
+const CheckCircleIcon = defineAsyncComponent(() => import('../../icons/check-circle.svg'))
+const ExclamationCircleIcon = defineAsyncComponent(() => import('../../icons/exclamation-circle.svg'))
+const ExclamationIcon = defineAsyncComponent(() => import('../../icons/exclamation-triangle.svg'))
 
 export interface MazStepperProps {
   /** The current step */

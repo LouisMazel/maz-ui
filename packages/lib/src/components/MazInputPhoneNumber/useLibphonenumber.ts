@@ -1,4 +1,4 @@
-import type { Results } from '@components/MazInputPhoneNumber/types'
+import type { Results } from './types'
 import {
   AsYouType,
   type CountryCode,

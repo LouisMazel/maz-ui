@@ -1,6 +1,6 @@
 <script lang="ts">
 /* eslint-disable import/first */
-import type { Color } from '@components/types'
+import type { Color } from './types'
 
 export interface MazTextareaProps<T extends string | undefined | null> {
   /** Style attribut of the component root element */
@@ -63,9 +63,9 @@ export interface MazTextareaProps<T extends string | undefined | null> {
 </script>
 
 <script lang="ts" setup generic="T extends string | undefined | null">
-import { TextareaAutogrow } from '@components/MazTextarea/textarea-autogrow'
-import { useInstanceUniqId } from '@composables/useInstanceUniqId'
 import { computed, type HTMLAttributes, onBeforeUnmount, onMounted, ref, useSlots } from 'vue'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId'
+import { TextareaAutogrow } from './MazTextarea/textarea-autogrow'
 
 defineOptions({
   inheritAttrs: false,

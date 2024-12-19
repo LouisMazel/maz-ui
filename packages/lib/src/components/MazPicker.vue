@@ -1,25 +1,6 @@
 <script lang="ts" setup>
-import type { PickerShortcut, PickerValue } from '@components/MazPicker/types'
-import type { Color, Position } from '@components/types'
-import MazPickerContainer from '@components/MazPicker/MazPickerContainer.vue'
-import {
-  checkValueWithMinMaxDates,
-  type DateTimeFormatOptions,
-  fetchLocale,
-  getBrowserLocale,
-  getFormattedDate,
-  getISODate,
-  getRangeFormattedDate,
-  getRangeISODate,
-  isValueDisabledDate,
-  isValueDisabledWeekly,
-} from '@components/MazPicker/utils'
-import { useInstanceUniqId } from '@composables/useInstanceUniqId'
-import { vClickOutside } from '@directives/vClickOutside'
-import { date } from '@filters/date'
-
-import ChevronDownIcon from '@icons/chevron-down.svg'
-
+import type { PickerShortcut, PickerValue } from './MazPicker/types'
+import type { Color, Position } from './types'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import isBetween from 'dayjs/plugin/isBetween'
@@ -34,6 +15,25 @@ import {
   ref,
   watch,
 } from 'vue'
+import ChevronDownIcon from '../../icons/chevron-down.svg'
+
+import { useInstanceUniqId } from '../composables/useInstanceUniqId'
+
+import { vClickOutside } from '../directives/vClickOutside'
+import { date } from '../filters/date'
+import MazPickerContainer from './MazPicker/MazPickerContainer.vue'
+import {
+  checkValueWithMinMaxDates,
+  type DateTimeFormatOptions,
+  fetchLocale,
+  getBrowserLocale,
+  getFormattedDate,
+  getISODate,
+  getRangeFormattedDate,
+  getRangeISODate,
+  isValueDisabledDate,
+  isValueDisabledWeekly,
+} from './MazPicker/utils'
 
 defineOptions({
   inheritAttrs: false,
@@ -207,7 +207,7 @@ export interface MazPickerProps {
   block?: boolean
 }
 
-const MazInput = defineAsyncComponent(() => import('@components/MazInput.vue'))
+const MazInput = defineAsyncComponent(() => import('./MazInput.vue'))
 const instanceId = useInstanceUniqId({ componentName: 'MazPicker', providedId: props.id })
 
 const internalLocale = ref(props.locale)

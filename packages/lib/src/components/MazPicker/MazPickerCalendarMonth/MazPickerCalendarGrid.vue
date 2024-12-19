@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import type { PartialRangeValue, PickerValue } from '@components/MazPicker/types'
-import type { Color } from '@components/types'
-import MazBtn from '@components/MazBtn.vue'
-import { getDaysInMonth, getFirstDayOfMonth, isSameDate, isSameDay, isToday } from '@components/MazPicker/utils'
-import { debounce } from '@helpers/debounce'
+import type { Color } from '../../types'
+import type { PartialRangeValue, PickerValue } from '../types'
 import dayjs, { type Dayjs } from 'dayjs'
-
 import { computed, type PropType, ref, watch } from 'vue'
+import { debounce } from '../../../helpers/debounce'
+import MazBtn from '../../MazBtn.vue'
+
+import { getDaysInMonth, getFirstDayOfMonth, isSameDate, isSameDay, isToday } from '../utils'
 
 const props = defineProps({
   modelValue: {
