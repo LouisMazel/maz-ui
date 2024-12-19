@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import type { MazImage } from '@components/types'
-import type { vLazyImgOptions } from '@directives/vLazyImg'
-import { vLazyImg } from '@directives/vLazyImg'
-
+import type { vLazyImgOptions } from '../directives/vLazyImg'
+import type { MazImage } from './types'
 import { computed, defineAsyncComponent, type HTMLAttributes } from 'vue'
+
+import { vLazyImg } from '../directives/vLazyImg'
 
 defineOptions({
   inheritAttrs: false,
@@ -30,7 +30,7 @@ defineEmits<{
   (name: 'error', el: Element): void
 }>()
 
-const MazSpinner = defineAsyncComponent(() => import('@components/MazSpinner.vue'))
+const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
 
 export interface MazLazyImgProps {
   /** The style of the component */

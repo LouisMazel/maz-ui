@@ -1,6 +1,6 @@
-import type { defaultLocales } from '@components/MazInputPhoneNumber/default-locales'
-
 import type { CountryCallingCode, CountryCode, NationalNumber, NumberType } from 'libphonenumber-js'
+
+import type { defaultLocales } from './default-locales'
 
 export interface Results {
   isValid: boolean

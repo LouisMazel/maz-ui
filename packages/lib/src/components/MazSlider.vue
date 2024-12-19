@@ -1,8 +1,5 @@
 <script lang="ts" setup>
-import type { Color } from '@components/types'
-import { getOpacityCoeff, getPos, isBetween } from '@components/MazSlider/utils'
-
-import { debounce } from '@helpers/debounce'
+import type { Color } from './types'
 import {
   computed,
   type CSSProperties,
@@ -13,6 +10,9 @@ import {
   ref,
   watch,
 } from 'vue'
+
+import { debounce } from '../helpers/debounce'
+import { getOpacityCoeff, getPos, isBetween } from './MazSlider/utils'
 
 const props = defineProps({
   /** Array of cursors values */

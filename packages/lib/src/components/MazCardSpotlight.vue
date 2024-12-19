@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Color } from '@components/types'
+import type { Color } from './types'
 import { computed, type HTMLAttributes, onMounted, onUnmounted, ref, type StyleValue } from 'vue'
 
 export interface MazCardSpotlightProps {

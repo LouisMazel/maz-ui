@@ -1,5 +1,5 @@
 <script lang="ts" setup generic="T extends string | number">
-import type { Color } from '@components/types'
+import type { Color } from './types'
 import { computed, type HTMLAttributes, ref, watch } from 'vue'
 
 export type MazInputCodeSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'

@@ -5,22 +5,12 @@
     "lib": ["esnext", "DOM", "DOM.iterable", "scripthost"],
     "baseUrl": ".",
     "module": "ESNext",
-    "paths": {
-      "@components/*": ["src/components/*"],
-      "@composables/*": ["src/composables/*"],
-      "@directives/*": ["src/directives/*"],
-      "@filters/*": ["src/filters/*"],
-      "@helpers/*": ["src/helpers/*"],
-      "@icons/*": ["src/icons/*"],
-      "@plugins/*": ["src/plugins/*"],
-      "@resolvers/*": ["src/resolvers/*"],
-      "@ts-helpers/*": ["src/ts-helpers/*"]
-    },
     "types": ["@types/node", "vite-svg-loader"],
     "strictPropertyInitialization": false,
     "noImplicitAny": false,
     "noImplicitThis": false,
     "ignoreDeprecations": "5.0",
+    "isolatedModules": true,
     "verbatimModuleSyntax": false
   },
   "include": ["src/**/*"],

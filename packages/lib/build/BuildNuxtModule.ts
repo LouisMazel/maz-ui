@@ -8,6 +8,7 @@ export function BuildNuxtModule(): Plugin {
     name: 'vite-build-nuxt-module',
     async buildEnd() {
       try {
+        // await execPromise('pnpm -F nuxt-module typecheck')
         await execPromise('pnpm -F nuxt-module build')
         // Nuxt Module: rename all module.* to index.*
         // const fileList = await readdir(resolve(__dirname, '../dist/nuxt'), {
@@ -26,6 +27,8 @@ export function BuildNuxtModule(): Plugin {
       }
       catch (error) {
         logger.error('[BuildNuxtModule] 🔴 error while building nuxt module', error)
+
+        throw error
       }
     },
   }

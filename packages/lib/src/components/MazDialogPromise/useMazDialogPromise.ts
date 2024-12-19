@@ -1,6 +1,6 @@
-import type { MazBtnProps } from '@components/MazBtn.vue'
-import type { Size } from '@components/types'
 import type { Ref } from 'vue'
+import type { MazBtnProps } from '../MazBtn.vue'
+import type { Size } from '../types'
 import { ref } from 'vue'
 
 export interface MazDialogState {
