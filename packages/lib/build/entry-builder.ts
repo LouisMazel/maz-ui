@@ -1,6 +1,6 @@
 import { writeFileSync } from 'node:fs'
 import { EOL } from 'node:os'
-import { getComponentList } from './get-component-list'
+import { getComponentList } from './getComponentList'
 import { logger } from './utils/logger'
 
 export function getEntryComponentTemplate({

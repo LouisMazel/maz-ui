@@ -5,7 +5,7 @@ import { logger } from './utils/logger'
 
 const _dirname = fileURLToPath(new URL('.', import.meta.url))
 
-const INPUT_ICONS_DIR = resolve(_dirname, './../icons')
+const INPUT_ICONS_DIR = resolve(_dirname, './../src/icons')
 
 export async function getIconList() {
   try {
