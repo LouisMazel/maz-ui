@@ -13,12 +13,14 @@ window.IntersectionObserver = mockIntersectionObserver
 describe('mazCircularProgressBar', () => {
   let wrapper: VueWrapper<InstanceType<typeof MazCircularProgressBar>>
 
-  beforeEach(() => {
+  beforeEach(async () => {
     wrapper = mount(MazCircularProgressBar, {
       props: {
         percentage: 50,
       },
     })
+
+    await vi.dynamicImportSettled()
   })
 
   it('renders progress bar with default values', () => {

@@ -6,9 +6,9 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 describe('given MazPicker component', () => {
   let wrapper: ReturnType<typeof mount<typeof MazPicker>>
 
-  beforeEach(() => {
+  beforeEach(async () => {
     wrapper = mount(MazPicker)
-    vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
   })
 
   describe('when initializing the component', () => {

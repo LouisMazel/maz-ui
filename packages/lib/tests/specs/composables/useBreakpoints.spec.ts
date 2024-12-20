@@ -1,4 +1,4 @@
-import { getNumericScreensFromTailwind } from '@/tailwindcss/variables/breakpoints'
+import { getNumericScreensFromTailwind } from '@/../tailwindcss/variables/breakpoints'
 import { useBreakpoints } from '@composables/useBreakpoints'
 import { useWindowSize } from '@composables/useWindowSize'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
@@ -8,7 +8,7 @@ vi.mock('@composables/useWindowSize', () => ({
   useWindowSize: vi.fn(),
 }))
 
-vi.mock('@/tailwindcss/variables/breakpoints', () => ({
+vi.mock('@/../tailwindcss/variables/breakpoints', () => ({
   getNumericScreensFromTailwind: vi.fn(),
 }))
 
