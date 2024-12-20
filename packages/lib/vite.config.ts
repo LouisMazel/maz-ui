@@ -13,6 +13,7 @@ import rootPkg from '../../package.json' assert { type: 'json' }
 import { BuildMazCli } from './build/BuildMazCli'
 import { BuildNuxtModule } from './build/BuildNuxtModule'
 import { CompileStyles } from './build/CompileStyles'
+import { CopyComponentTypes } from './build/CopyComponentTypes'
 import { GenerateComponentsEntry } from './build/GenerateComponentsEntry'
 import pkg from './package.json' assert { type: 'json' }
 
@@ -80,6 +81,7 @@ export default defineConfig({
     CompileStyles(),
     BuildNuxtModule(),
     BuildMazCli(),
+    CopyComponentTypes(),
   ],
   build: {
     cssCodeSplit: true,

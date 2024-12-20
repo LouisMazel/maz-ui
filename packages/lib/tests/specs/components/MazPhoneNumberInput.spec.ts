@@ -1,33 +1,37 @@
-import type { Results } from '@components/MazPhoneNumberInput/types'
-import MazPhoneNumberInput from '@components/MazPhoneNumberInput.vue'
-import CountrySelector from '@components/MazPhoneNumberInput/CountrySelector.vue'
-import PhoneInput from '@components/MazPhoneNumberInput/PhoneInput.vue'
+import type { Results } from '@components/MazInputPhoneNumber/types'
+import MazInputPhoneNumber from '@components/MazInputPhoneNumber.vue'
+import CountrySelector from '@components/MazInputPhoneNumber/CountrySelector.vue'
+import PhoneInput from '@components/MazInputPhoneNumber/PhoneInput.vue'
 import { mount, type VueWrapper } from '@vue/test-utils'
 import { nextTick } from 'vue'
 
-describe('components/MazPhoneNumberInput.vue', () => {
-  expect(MazPhoneNumberInput).toBeTruthy()
+describe('components/MazInputPhoneNumber.vue', () => {
+  expect(MazInputPhoneNumber).toBeTruthy()
 
-  let wrapper: VueWrapper<InstanceType<typeof MazPhoneNumberInput>>
+  let wrapper: VueWrapper<InstanceType<typeof MazInputPhoneNumber>>
 
-  beforeEach(() => {
-    wrapper = mount(MazPhoneNumberInput, {
+  beforeEach(async () => {
+    wrapper = mount(MazInputPhoneNumber, {
       props: {
         modelValue: '+33658585858',
       },
     })
+
+    await vi.dynamicImportSettled()
   })
 
   it('should have an uniq id', () => {
-    expect(wrapper.find('#MazPhoneNumberInput-v-0').exists()).toBe(true)
+    expect(wrapper.find('#MazInputPhoneNumber-v-0').exists()).toBe(true)
   })
 
-  it('should have the provided id', () => {
-    wrapper = mount(MazPhoneNumberInput, {
+  it('should have the provided id', async () => {
+    wrapper = mount(MazInputPhoneNumber, {
       props: {
         id: 'test',
       },
     })
+
+    await vi.dynamicImportSettled()
 
     expect(wrapper.find('#test').exists()).toBe(true)
   })
@@ -40,12 +44,14 @@ describe('components/MazPhoneNumberInput.vue', () => {
     expect(wrapper.emitted('country-code')?.[0][0]).toBe('FR')
   })
 
-  it('should have the good values with BE number', () => {
-    wrapper = mount(MazPhoneNumberInput, {
+  it('should have the good values with BE number', async () => {
+    wrapper = mount(MazInputPhoneNumber, {
       props: {
         modelValue: '+326453',
       },
     })
+
+    await vi.dynamicImportSettled()
 
     const inputElement = wrapper.findComponent(PhoneInput)
 
@@ -72,28 +78,31 @@ describe('components/MazPhoneNumberInput.vue', () => {
   })
 
   it('should format phone number as you type when autoFormat is true', async () => {
-    wrapper = mount(MazPhoneNumberInput, {
+    wrapper = mount(MazInputPhoneNumber, {
       props: {
-        modelValue: '',
+        modelValue: '0612345678',
         countryCode: 'FR',
         autoFormat: true,
       },
     })
 
+    await vi.dynamicImportSettled()
+
     const input = wrapper.find<HTMLInputElement>('input[name="phone"]')
-    await input.setValue('0612345678')
 
     expect(input.element.value).toBe('06 12 34 56 78')
   })
 
   it('should not format phone number when autoFormat is false', async () => {
-    wrapper = mount(MazPhoneNumberInput, {
+    wrapper = mount(MazInputPhoneNumber, {
       props: {
         modelValue: '',
         countryCode: 'FR',
         autoFormat: false,
       },
     })
+
+    await vi.dynamicImportSettled()
 
     const input = wrapper.find<HTMLInputElement>('input[name="phone"]')
     await input.setValue('0612345678')
@@ -172,7 +181,7 @@ describe('components/MazPhoneNumberInput.vue', () => {
   })
 
   it('should fetch country on mount when fetchCountry is true', async () => {
-    wrapper = mount(MazPhoneNumberInput, {
+    wrapper = mount(MazInputPhoneNumber, {
       props: {
         fetchCountry: true,
       },

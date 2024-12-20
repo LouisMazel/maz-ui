@@ -10,18 +10,6 @@ export function BuildNuxtModule(): Plugin {
       try {
         // await execPromise('pnpm -F nuxt-module typecheck')
         await execPromise('pnpm -F nuxt-module build')
-        // Nuxt Module: rename all module.* to index.*
-        // const fileList = await readdir(resolve(__dirname, '../dist/nuxt'), {
-        //   withFileTypes: true,
-        // })
-
-        // const fileListToRename = fileList.filter(
-        //   dirent => dirent.isFile() && dirent.name.startsWith('module'),
-        // )
-
-        // for await (const { path: filePath, name } of fileListToRename) {
-        //   await rename(resolve(filePath, name), resolve(filePath, `index${extname(name)}`))
-        // }
 
         logger.success('[BuildNuxtModule] ✅ nuxt module built')
       }

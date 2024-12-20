@@ -1,5 +1,5 @@
-import type { StrictOptions, UseFormField, UseFormValidator } from '@composables/useFormValidator/index'
-import { useFormField, useFormValidator } from '@composables/useFormValidator/index'
+import type { StrictOptions, UseFormField, UseFormValidator } from '@composables/index'
+import { useFormField, useFormValidator } from '@composables/index'
 import { flushPromises, mount } from '@vue/test-utils'
 
 import { minLength, minValue, number, pipe, string } from 'valibot'
