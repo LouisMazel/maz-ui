@@ -1,4 +1,4 @@
-import { useLibphonenumber } from '@components/MazPhoneNumberInput/useLibphonenumber'
+import { useLibphonenumber } from '@components/MazInputPhoneNumber/useLibphonenumber'
 import { AsYouType, getExampleNumber, isSupportedCountry } from 'libphonenumber-js'
 
 const { isCountryAvailable, getPhoneNumberExample, getAsYouTypeFormat, loadExamples } = useLibphonenumber()
