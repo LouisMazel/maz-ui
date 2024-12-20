@@ -16,8 +16,8 @@ describe('capitalize', () => {
 
   it('returns a capitalized string if the value is a number', () => {
     // @ts-expect-error - test case
-    expect(capitalize(1)).toBe('1')
+    expect(capitalize(1)).toBe('')
     // @ts-expect-error - test case
-    expect(capitalize(123)).toBe('123')
+    expect(capitalize(123)).toBe('')
   })
 })

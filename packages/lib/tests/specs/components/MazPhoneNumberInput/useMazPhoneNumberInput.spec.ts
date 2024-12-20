@@ -1,8 +1,8 @@
-import { useMazPhoneNumberInput } from '@components/MazPhoneNumberInput/useMazPhoneNumberInput'
+import { useMazInputPhoneNumber } from '@components/MazInputPhoneNumber/useMazInputPhoneNumber'
 import { getCountries, getCountryCallingCode } from 'libphonenumber-js'
 
 const { sanitizePhoneNumber, getCountriesList, fetchCountryCode, getBrowserLocale }
-  = useMazPhoneNumberInput()
+  = useMazInputPhoneNumber()
 
 vi.mock('libphonenumber-js', () => ({
   parsePhoneNumberFromString: vi.fn(),
@@ -84,14 +84,14 @@ describe('unit Tests for useMazPhoneNumberInput.ts', () => {
       }
       catch (error) {
         // @ts-expect-error - test case
-        expect(error.message).toBe('[MazPhoneNumberInput](fetchCountryCode) Error: API error')
+        expect(error.message).toBe('[MazInputPhoneNumber](fetchCountryCode) Error: API error')
       }
     })
   })
 
   describe('useLibphonenumber', () => {
     it('should return an object with the expected functions', () => {
-      const mazPhoneNumberInputFunctions = useMazPhoneNumberInput()
+      const mazPhoneNumberInputFunctions = useMazInputPhoneNumber()
       expect(mazPhoneNumberInputFunctions).toEqual(
         expect.objectContaining({
           fetchCountryCode: expect.any(Function),
