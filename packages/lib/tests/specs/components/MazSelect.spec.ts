@@ -215,4 +215,50 @@ describe('components/MazSelect.vue', () => {
 
     expect(wrapper.vm.optionList).toHaveLength(0)
   })
+
+  it('should return whole object when returnObject props is true', async () => {
+    await wrapper.setProps({
+      modelValue: undefined,
+      returnObject: true,
+    })
+
+    await wrapper.find('input').trigger('focus')
+
+    expect(wrapper.vm.hasListOpened).toBe(true)
+
+    await wrapper.vm.$nextTick()
+
+    await wrapper.findAll('.m-select-list-item').at(3)?.trigger('click')
+    expect(wrapper.emitted('update:model-value')?.[0][0]).toEqual({ label: 'Test 4', value: 4 })
+  })
+
+  it('should return whole object when returnObject props is true and override custom option model', async () => {
+    const options = [
+      { valueOption: 'primary', labelOption: 'primary label', inputLabel: 'primary input' },
+      { valueOption: 'secondary', labelOption: 'secondary label', inputLabel: 'secondary input' },
+      { valueOption: 'info', labelOption: 'info label', inputLabel: 'info input' },
+      { valueOption: 'success', labelOption: 'success label', inputLabel: 'success input' },
+      { valueOption: 'warning', labelOption: 'warning label', inputLabel: 'warning input' },
+      { valueOption: 'danger', labelOption: 'danger label', inputLabel: 'danger input' },
+      { valueOption: 'white', labelOption: 'white label', inputLabel: 'white input' },
+      { valueOption: 'black', labelOption: 'black label', inputLabel: 'black input' },
+    ]
+    await wrapper.setProps({
+      modelValue: undefined,
+      returnObject: true,
+      options,
+      optionValueKey: 'valueOption',
+      optionLabelKey: 'labelOption',
+      optionInputValueKey: 'inputLabel',
+    })
+
+    await wrapper.find('input').trigger('focus')
+
+    expect(wrapper.vm.hasListOpened).toBe(true)
+
+    await wrapper.vm.$nextTick()
+
+    await wrapper.findAll('.m-select-list-item').at(3)?.trigger('click')
+    expect(wrapper.emitted('update:model-value')?.[0][0]).toEqual({ valueOption: 'success', labelOption: 'success label', inputLabel: 'success input' })
+  })
 })
