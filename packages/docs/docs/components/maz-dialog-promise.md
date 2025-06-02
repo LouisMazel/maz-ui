@@ -208,7 +208,7 @@ type Size = 'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
   import { type DialogData, type DialogCustomButton, useToast } from 'maz-ui'
   import MazDialogPromise, {
     useMazDialogPromise
-  } from 'maz-ui/components/MazDialogPromise.vue'
+  } from 'maz-ui/src/components/MazDialogPromise.vue'
 
   const { showDialogAndWaitChoice, data } = useMazDialogPromise()
   const confirmDialog = ref(false)

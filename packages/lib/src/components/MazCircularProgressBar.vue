@@ -3,135 +3,139 @@ import type { Color } from './types'
 import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref, type SVGAttributes, useSlots } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 
-const props = withDefaults(
-  defineProps<{
-    /**
-     * The percentage value of the progress bar
-     */
-    percentage: number
-    /**
-     * The size of the progress bar
-     * @default '10em' (equal 80px for a font-size of 16px)
-     */
-    size?: string
-    /**
-     * Duration of the animation in milliseconds
-     * @default 1000
-     */
-    duration?: number
-    /**
-     * Delay before the animation starts in milliseconds
-     * @default 100
-     */
-    delay?: number
-    /**
-     * The color of the progress bar
-     */
-    color?: Color
-    /**
-     * Auto color based on the count (danger, warning, success)
-     * @default false
-     */
-    autoColor?: boolean
-    /**
-     * Suffix to display next to the number
-     */
-    prefix?: string
-    /**
-     * Suffix to display next to the number
-     */
-    suffix?: string
-    /**
-     * The stroke-linecap style
-     * @default 'round'
-     * @values 'butt', 'round', 'square', 'inherit'
-     */
-    strokeLinecap?: SVGAttributes['stroke-linecap']
-    /**
-     * The stroke width
-     * @default 6
-     */
-    strokeWidth?: SVGAttributes['width']
-    /**
-     * The stroke color
-     * Use this prop to override the gradient color
-     * You can use a color name or a color code
-     */
-    stroke?: SVGAttributes['stroke']
-    /**
-     * The percentage value of the success level
-     * @description The progress circle will be filled with the success color when the percentage is greater than or equal to this value
-     * @default 100
-     */
-    successPercentage?: number
-    /**
-     * The percentage value of the warning level
-     * @description The progress circle will be filled with the warning color when the percentage is greater than or equal to this value
-     * @default 50
-     */
-    warningPercentage?: number
-    /**
-     * The percentage value of the danger level
-     * @description The progress circle will be filled with the danger color when the percentage is greater than or equal to this value
-     * @default 25
-     */
-    dangerPercentage?: number
-    /**
-     * Play the animation only once
-     * @default true
-     */
-    once?: boolean
-  }>(),
-  {
-    percentage: 0,
-    size: '10em',
-    duration: 1000,
-    color: undefined,
-    prefix: undefined,
-    suffix: undefined,
-    strokeLinecap: 'round',
-    strokeWidth: 6,
-    stroke: undefined,
-    successPercentage: 100,
-    warningPercentage: 75,
-    dangerPercentage: 50,
-    once: true,
-  },
-)
+export interface MazCircularProgressBarProps {
+  /**
+   * The percentage value of the progress bar
+   * @required
+   */
+  percentage: number
+  /**
+   * The size of the progress bar
+   * @default '10em' (equal 80px for a font-size of 16px)
+   */
+  size?: string
+  /**
+   * Duration of the animation in milliseconds
+   * @default 1000
+   */
+  duration?: number
+  /**
+   * Delay before the animation starts in milliseconds
+   * @default 100
+   */
+  delay?: number
+  /**
+   * The color of the progress bar
+   * @type Color
+   * @default undefined
+   */
+  color?: Color
+  /**
+   * Auto color based on the count (danger, warning, success)
+   * @default false
+   */
+  autoColor?: boolean
+  /**
+   * Suffix to display next to the number
+   */
+  prefix?: string
+  /**
+   * Suffix to display next to the number
+   */
+  suffix?: string
+  /**
+   * The stroke-linecap style
+   * @default 'round'
+   * @values 'butt', 'round', 'square', 'inherit'
+   */
+  strokeLinecap?: SVGAttributes['stroke-linecap']
+  /**
+   * The stroke width
+   * @default 6
+   */
+  strokeWidth?: SVGAttributes['width']
+  /**
+   * The stroke color
+   * Use this prop to override the gradient color
+   * You can use a color name or a color code
+   */
+  stroke?: SVGAttributes['stroke']
+  /**
+   * The percentage value of the success level
+   * @description The progress circle will be filled with the success color when the percentage is greater than or equal to this value
+   * @default 100
+   */
+  successPercentage?: number
+  /**
+   * The percentage value of the warning level
+   * @description The progress circle will be filled with the warning color when the percentage is greater than or equal to this value
+   * @default 50
+   */
+  warningPercentage?: number
+  /**
+   * The percentage value of the danger level
+   * @description The progress circle will be filled with the danger color when the percentage is greater than or equal to this value
+   * @default 25
+   */
+  dangerPercentage?: number
+  /**
+   * Play the animation only once
+   * @default true
+   */
+  once?: boolean
+}
+
+const {
+  percentage = 0,
+  size = '10em',
+  duration = 1000,
+  delay = 100,
+  color = undefined,
+  autoColor = false,
+  prefix = undefined,
+  suffix = undefined,
+  strokeLinecap = 'round',
+  strokeWidth = 6,
+  stroke = undefined,
+  successPercentage = 100,
+  warningPercentage = 75,
+  dangerPercentage = 50,
+  once = true,
+} = defineProps<MazCircularProgressBarProps>()
 
 const MazAnimatedCounter = defineAsyncComponent(() => import('./MazAnimatedCounter.vue'))
 
 const slots = useSlots()
 
-const hasPrefix = computed(() => !!props.prefix || !!slots.prefix)
-const hasSuffix = computed(() => !!props.suffix || !!slots.suffix)
+const hasPrefix = computed(() => !!prefix || !!slots.prefix)
+const hasSuffix = computed(() => !!suffix || !!slots.suffix)
 
 const id = useInstanceUniqId({
   componentName: 'MazCircularProgressBar',
 })
 const adjustedPercentage = computed<number>(() => {
-  if (props.percentage > 100)
+  if (percentage > 100)
     return 100
-  if (props.percentage <= 0)
+  if (percentage <= 0)
     return 0.5
-  return props.percentage
+  return percentage
 })
 
 const currentColor = computed<Color | undefined>(() =>
-  props.autoColor ? getStatusColor(adjustedPercentage.value) : props.color,
+  autoColor ? getStatusColor(adjustedPercentage.value) : color,
 )
-function getStatusColor(percent: number): Color {
-  if (percent < props.dangerPercentage || percent > 100)
+function getStatusColor(percent: number) {
+  if (percent < dangerPercentage || percent > 100)
     return 'danger'
-  if (percent < props.warningPercentage)
+  if (percent < warningPercentage)
     return 'warning'
-  if (percent >= props.successPercentage)
+  if (percent >= successPercentage)
     return 'success'
 
   return 'primary'
 }
 
-const animationDuration = computed<string>(() => `${props.duration}ms`)
+const animationDuration = computed<string>(() => `${duration}ms`)
 const dashoffset = computed<number>(() => {
   return Math.round(290 - 290 * (adjustedPercentage.value / 100))
 })
@@ -144,11 +148,11 @@ let observer: IntersectionObserver | null = null
 
 onMounted(() => {
   observer = new IntersectionObserver(([entry]) => {
-    if (!isVisible.value || !props.once) {
+    if (!isVisible.value || !once) {
       isVisible.value = entry.isIntersecting
     }
 
-    if (props.once && circleRef.value) {
+    if (once && circleRef.value) {
       observer?.unobserve(circleRef.value)
 
       circleRef.value?.addEventListener('animationend', () => {
@@ -272,12 +276,6 @@ onBeforeUnmount(() => observer?.disconnect())
       animation: animate linear forwards var(--animation-duration);
       animation-delay: var(--delay);
     }
-
-    /* &.animate circle {
-      animation: animate linear forwards var(--animation-duration);
-      animation-delay: var(--delay);
-      animation-play-state: running;
-    } */
   }
 
   @keyframes animate {

@@ -1,4 +1,4 @@
-import { computed, type Ref } from 'vue'
+import { computed, type MaybeRefOrGetter, toValue } from 'vue'
 import { normalizeString } from '../helpers/normalizeString'
 
 function levenshteinDistance(string1: string, string2: string): number {
@@ -43,17 +43,17 @@ function getMatchingResults(string1: string, string2: string, threshold = 0.75):
 }
 
 export function useStringMatching(
-  string1: string | Ref<string>,
-  string2: string | Ref<string>,
-  threshold: number | Ref<number> = 0.75,
+  string1: MaybeRefOrGetter<string>,
+  string2: MaybeRefOrGetter<string>,
+  threshold: MaybeRefOrGetter<number> = 0.75,
 ) {
   const _string1 = computed(() =>
-    normalizeString(typeof string1 === 'string' ? string1 : string1.value),
+    normalizeString(toValue(string1)),
   )
   const _string2 = computed(() =>
-    normalizeString(typeof string2 === 'string' ? string2 : string2.value),
+    normalizeString(toValue(string2)),
   )
-  const _threshold = computed(() => (typeof threshold === 'number' ? threshold : threshold.value))
+  const _threshold = computed(() => toValue(threshold))
 
   const score = computed(() => getMatchingScore(_string1.value, _string2.value))
 

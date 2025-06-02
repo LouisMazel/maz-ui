@@ -47,7 +47,7 @@ defineEmits<{
 
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 
-export interface InternalProps {
+interface InternalProps {
   /** @model Modal's model value */
   modelValue?: boolean
   /** Title of the modal in header */

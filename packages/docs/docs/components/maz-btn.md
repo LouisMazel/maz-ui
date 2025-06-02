@@ -511,7 +511,7 @@ When `to` attribute is provided, the component automatically becomes a `<RouterL
 
 <script setup lang="ts">
   import { computed } from 'vue'
-  import MazSpinner from 'maz-ui/components/MazSpinner.vue'
+  import MazSpinner from 'maz-ui/src/components/MazSpinner.vue'
 
   const colors = [
     'primary',
