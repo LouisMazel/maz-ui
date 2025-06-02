@@ -21,6 +21,7 @@ function getBrowserLocale() {
   if (locale === 'EN') {
     locale = 'US'
   }
+
   if (locale === 'JA') {
     locale = 'JP'
   }

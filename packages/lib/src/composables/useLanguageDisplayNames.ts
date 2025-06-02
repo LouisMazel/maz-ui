@@ -338,67 +338,67 @@ function isSameLanguageThanCode(language: string, code: string) {
   return !language || language?.toLocaleLowerCase() === code.toLocaleLowerCase()
 }
 
-export function useLanguageDisplayNames(mainLocale?: MaybeRefOrGetter<string | LanguageCode>) {
-  function getLanguageDisplayName(code?: MaybeRefOrGetter<string | LanguageCode>, locale?: MaybeRefOrGetter<string | LanguageCode>) {
-    return computed(() => {
-      const resolvedLocale = toValue(locale)
-      const resolvedIsoCode = toValue(code)
+function getLanguageDisplayName(code?: MaybeRefOrGetter<string | LanguageCode>, locale?: MaybeRefOrGetter<string | LanguageCode>) {
+  return computed(() => {
+    const resolvedLocale = toValue(locale)
+    const resolvedIsoCode = toValue(code)
 
-      try {
-        if (!resolvedLocale || !resolvedIsoCode) {
-          return resolvedIsoCode
-        }
-
-        if (!languageInstance || resolvedLocale !== languageInstance.resolvedOptions().locale) {
-          languageInstance = new Intl.DisplayNames([resolvedLocale], { type: 'language' })
-        }
-
-        const language = languageInstance.of(resolvedIsoCode)
-
-        return !language || isSameLanguageThanCode(language, resolvedIsoCode) ? undefined : language
-      }
-      catch {
+    try {
+      if (!resolvedLocale || !resolvedIsoCode) {
         return resolvedIsoCode
-      }
-    })
-  }
-
-  function getAllLanguageDisplayNames(locale?: MaybeRefOrGetter<string | LanguageCode>) {
-    return computed(() => {
-      const resolvedLocale = toValue(locale)
-
-      if (!resolvedLocale) {
-        return []
       }
 
       if (!languageInstance || resolvedLocale !== languageInstance.resolvedOptions().locale) {
-        languageInstance = new Intl.DisplayNames([resolvedLocale], {
-          type: 'language',
-        })
+        languageInstance = new Intl.DisplayNames([resolvedLocale], { type: 'language' })
       }
 
-      return languageCodes
-        .map((code) => {
-          try {
-            const language = languageInstance?.of(code)
+      const language = languageInstance.of(resolvedIsoCode)
 
-            if (!language || isSameLanguageThanCode(language, code)) {
-              return undefined
-            }
+      return !language || isSameLanguageThanCode(language, resolvedIsoCode) ? undefined : language
+    }
+    catch {
+      return resolvedIsoCode
+    }
+  })
+}
 
-            return {
-              language,
-              code,
-            }
-          }
-          catch {
+function getAllLanguageDisplayNames(locale?: MaybeRefOrGetter<string | LanguageCode>) {
+  return computed(() => {
+    const resolvedLocale = toValue(locale)
+
+    if (!resolvedLocale) {
+      return []
+    }
+
+    if (!languageInstance || resolvedLocale !== languageInstance.resolvedOptions().locale) {
+      languageInstance = new Intl.DisplayNames([resolvedLocale], {
+        type: 'language',
+      })
+    }
+
+    return languageCodes
+      .map((code) => {
+        try {
+          const language = languageInstance?.of(code)
+
+          if (!language || isSameLanguageThanCode(language, code)) {
             return undefined
           }
-        })
-        .filter(Boolean)
-    })
-  }
 
+          return {
+            language,
+            code,
+          }
+        }
+        catch {
+          return undefined
+        }
+      })
+      .filter(Boolean)
+  })
+}
+
+export function useLanguageDisplayNames(mainLocale?: MaybeRefOrGetter<string | LanguageCode>) {
   return {
     getLanguageDisplayName: ({ code, locale }: { code?: MaybeRefOrGetter<string | LanguageCode>, locale?: MaybeRefOrGetter<string | LanguageCode> }) => getLanguageDisplayName(code, locale || mainLocale),
     getAllLanguageDisplayNames: (locale?: MaybeRefOrGetter<string | LanguageCode>) => getAllLanguageDisplayNames(locale || mainLocale),

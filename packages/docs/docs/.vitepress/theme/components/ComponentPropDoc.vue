@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import { onBeforeMount, ref, watch } from 'vue'
 
-const props = defineProps({
-  component: { type: String, required: true },
-  componentInstance: { type: Object, default: undefined },
-  methods: { type: Array, default: undefined },
-})
+const { component, componentInstance, methods } = defineProps<{
+  component: string
+  componentInstance?: object
+  methods?: string[]
+}>()
 
 const camelToSnakeCase = (str: string): string => str.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`)
 
@@ -21,8 +21,8 @@ function getValidatorValues(validator: string) {
 
   return array ?? '-'
 }
-// @ts-expect-error - untyped import
-const getComponent = async () => (await import(`maz-ui/components`))[props.component]
+
+const getComponent = async () => (await import(`maz-ui/src/components/${component}.vue`))
 
 async function getEvents() {
   const component = await getComponent()
@@ -55,15 +55,15 @@ async function getOptions() {
 }
 
 function setMethods() {
-  componentMethods.value = props.methods?.length
-    ? props.methods
-    : props.componentInstance
-      ? Object.values(props.componentInstance).filter(value => typeof value === 'function')
+  componentMethods.value = methods?.length
+    ? methods
+    : componentInstance
+      ? Object.values(componentInstance).filter(value => typeof value === 'function')
       : undefined
 }
 
 watch(
-  () => props.componentInstance,
+  () => componentInstance,
   () => setMethods(),
   { immediate: true },
 )
