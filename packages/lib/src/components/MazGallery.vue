@@ -1,59 +1,120 @@
 <script lang="ts" setup>
 import type { MazGalleryImage } from './types'
-import { computed, defineAsyncComponent, onBeforeMount, type PropType } from 'vue'
+import { computed, defineAsyncComponent, onBeforeMount } from 'vue'
 import { vFullscreenImg } from '../directives/vFullscreenImg'
 import { vLazyImg } from '../directives/vLazyImg'
 
-const props = defineProps({
+export interface MazGalleryProps {
   /**
    *  Array of string or object: `['https://via.placeholder.com/500', 'https://via.placeholder.com/600']` or `[{ slug: 'https://via.placeholder.com/500', alt: 'image descripton' }, { slug: 'https://via.placeholder.com/600', alt: 'image descripton' }]`
    */
-  images: {
-    type: Array as PropType<MazGalleryImage[]>,
-    default: () => [],
-  },
-  /** Images count shown (max: 5) */
-  imagesShownCount: { type: Number, default: 5 },
-  /** Remove transparent layer with the remain count (ex: +2) */
-  noRemaining: { type: Boolean, default: false },
-  /** Height of gallery */
-  height: { type: [Number, String], default: 150 },
-  /** Remove default height - useful to set height with css */
-  noHeight: { type: Boolean, default: false },
-  /** Width of gallery */
-  width: { type: [Number, String], default: '100%' },
-  /** Remove default width */
-  noWidth: { type: Boolean, default: false },
-  /** Disable the border radius of the gallery */
-  noRadius: { type: Boolean, default: false },
-  /** Disable full size display when clicking on image */
-  noZoom: { type: Boolean, default: false },
-  /** Layer with photography icon when no images is provided */
-  hasEmptyLayer: { type: Boolean, default: true },
-  /** Lazy load image - if false, images are directly loaded */
-  lazy: { type: Boolean, default: true },
-  /** Disable blur effect on image hover */
-  blur: { type: Boolean, default: true },
-  /** Disable scale animation effect on image hover */
-  scale: { type: Boolean, default: true },
-  /** Choose color of borders between images - Should be a CSS color or CSS variable - Ex: `#000` or `var(--maz-color-bg-light)` */
-  separatorColor: { type: String, default: 'transparent' },
-})
+  images: MazGalleryImage[]
+  /**
+   * Images count shown (max: 5)
+   * @type number
+   * @default 5
+   */
+  imagesShownCount?: number
+  /**
+   * Remove transparent layer with the remain count (ex: +2)
+   * @type boolean
+   * @default false
+   */
+  noRemaining?: boolean
+  /**
+   * Height of gallery
+   * @type number | string
+   * @default 150
+   */
+  height?: number | string
+  /**
+   * Remove default height - useful to set height with css
+   * @type boolean
+   * @default false
+   */
+  noHeight?: boolean
+  /**
+   * Width of gallery
+   * @type number | string
+   * @default '100%'
+   */
+  width?: number | string
+  /**
+   * Remove default width
+   * @type boolean
+   * @default false
+   */
+  noWidth?: boolean
+  /**
+   * Disable the border radius of the gallery
+   * @type boolean
+   * @default false
+   */
+  noRadius?: boolean
+  /**
+   * Disable full size display when clicking on image
+   * @type boolean
+   * @default false
+   */
+  noZoom?: boolean
+  /**
+   * Layer with photography icon when no images is provided
+   * @type boolean
+   * @default true
+   */
+  hasEmptyLayer?: boolean
+  /**
+   * Lazy load image - if false, images are directly loaded
+   * @type boolean
+   * @default true
+   */
+  lazy?: boolean
+  /**
+   * Disable blur effect on image hover
+   * @type boolean
+   * @default true
+   */
+  blur?: boolean
+  /**
+   * Disable scale animation effect on image hover
+   * @type boolean
+   * @default true
+   */
+  scale?: boolean
+  /**
+   * Choose color of borders between images - Should be a CSS color or CSS variable - Ex: `#000` or `var(--maz-color-bg-light)`
+   * @type string
+   * @default 'transparent'
+   */
+  separatorColor?: string
+}
+
+const {
+  images = [],
+  imagesShownCount = 5,
+  noRemaining = false,
+  height = 150,
+  noHeight = false,
+  width = '100%',
+  noWidth = false,
+  noRadius = false,
+  noZoom = false,
+  hasEmptyLayer = true,
+  lazy = true,
+  blur = true,
+  scale = true,
+  separatorColor = 'transparent',
+} = defineProps<MazGalleryProps>()
 
 const NoPhotographyIcon = defineAsyncComponent(() => import('../../icons/no-photography.svg'))
 
 onBeforeMount(() => {
-  if (props.imagesShownCount > 5)
+  if (imagesShownCount > 5)
 
     console.warn('[MazUI](m-gallery) The maximum of "images-shown-count" is 5')
 })
 
 const sizeStyle = computed(() => {
-  const noWidth = props.noWidth
-  const width = props.width
-  const noHeight = props.noHeight
-  const height = props.height
-
   return {
     ...(noWidth
       ? {}
@@ -70,16 +131,16 @@ const sizeStyle = computed(() => {
   }
 })
 const imagesCount = computed(() => {
-  return props.imagesShownCount <= 5 ? props.imagesShownCount : 5
+  return imagesShownCount <= 5 ? imagesShownCount : 5
 })
 const numberImagesRemaining = computed(() => {
   return (
-    props.images.length
-    - (props.images.length < imagesCount.value ? props.images.length : imagesCount.value)
+    images.length
+    - (images.length < imagesCount.value ? images.length : imagesCount.value)
   )
 })
 const imagesNormalized = computed(() => {
-  return props.images.map(image =>
+  return images.map(image =>
     typeof image === 'object'
       ? { ...image, thumbnail: image.thumbnail ?? image.src }
       : { src: image, thumbnail: image, alt: undefined },
@@ -89,10 +150,10 @@ const imagesShown = computed(() => {
   return imagesNormalized.value.slice(0, imagesCount.value)
 })
 const imagesHidden = computed(() => {
-  return imagesNormalized.value.slice(imagesCount.value, props.images.length)
+  return imagesNormalized.value.slice(imagesCount.value, images.length)
 })
 function shouldHaveRemainingLayer(index: number): boolean {
-  if (props.noRemaining)
+  if (noRemaining)
     return false
 
   return (numberImagesRemaining.value && index + 1) === imagesShown.value.length

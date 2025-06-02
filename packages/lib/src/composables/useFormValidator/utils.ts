@@ -46,7 +46,7 @@ export function getErrorMessages<
   return errorMessages
 }
 
-export function isEmptyValue(value: unknown) {
+export function isEmptyValue(value: unknown): value is null | undefined | '' {
   return value === undefined || value === null || value === ''
 }
 
@@ -438,7 +438,7 @@ export function handleFieldBlur<
 }) {
   const fieldValue = payload[name]
 
-  const isDirty = !isEmptyValue(fieldValue) && !isEqual(fieldValue, fieldState.initialValue)
+  const isDirty = !isEqual(fieldValue, fieldState.initialValue)
 
   fieldState.dirty = isDirty
   fieldState.blurred = fieldState.blurred || (fieldState.mode === 'eager' ? isDirty : true)
@@ -479,7 +479,7 @@ export function handleFieldInput<
 
   fieldState.validated = false
 
-  const isDirty = !isEmptyValue(fieldValue) && !isEqual(fieldValue, fieldState.initialValue)
+  const isDirty = !isEqual(fieldValue, fieldState.initialValue)
 
   fieldState.dirty = isDirty
 

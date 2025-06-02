@@ -41,6 +41,7 @@ function getCountryPhoneNumberExample(selectedCountry?: CountryCode | undefined 
   const example = getPhoneNumberExample(selectedCountry)
   return example ? `${locales.phoneInput.example} ${example}` : undefined
 }
+
 const inputLabelOrPlaceholder = computed(() => {
   if (label || placeholder) {
     return label || placeholder

@@ -38,6 +38,16 @@
       "import": "./dist/nuxt/module.mjs",
       "require": "./dist/nuxt/module.cjs"
     },
+    "./components/*": {
+      "types": "./dist/types/components/*.vue.d.ts",
+      "import": "./dist/components/*.mjs",
+      "require": "./dist/components/*.cjs"
+    },
+    "./composables/*": {
+      "types": "./dist/types/composables/*.ts",
+      "import": "./dist/composables/*.mjs",
+      "require": "./dist/composables/*.cjs"
+    },
     "./styles": "./dist/css/main.css",
     "./aos-styles": "./dist/css/aos.css",
     "./package.json": "./package.json",
@@ -90,7 +100,7 @@
     "unplugin-auto-import": ">=0.18.0 <1.0.0",
     "unplugin-vue-components": ">=0.27.0 <1.0.0",
     "valibot": ">=0.30.0 <1.0.0",
-    "vue": "^3.0.0",
+    "vue": "^3.5.0",
     "vue-router": "^4.0.0"
   },
   "peerDependenciesMeta": {

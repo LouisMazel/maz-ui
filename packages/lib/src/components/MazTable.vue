@@ -152,7 +152,7 @@ export interface MazTableProvide {
   backgroundOdd: Ref<boolean>
 }
 
-export const mazTableKey = 'maz-table' as const
+export const mazTableKey: InjectionKey<MazTableProvide> = Symbol('maz-table')
 </script>
 
 <script lang="ts" setup generic="T extends Row<T>">
@@ -163,6 +163,7 @@ import {
   computed,
   defineAsyncComponent,
   type HTMLAttributes,
+  type InjectionKey,
   onBeforeMount,
   provide,
   type Ref,
@@ -175,28 +176,16 @@ import {
 } from 'vue'
 
 const props = withDefaults(defineProps<MazTableProps<T>>(), {
-  tableClass: undefined,
-  tableStyle: undefined,
-  modelValue: undefined,
-  title: undefined,
   size: 'md',
-  rows: undefined,
-  searchQuery: undefined,
-  headers: undefined,
   headersAlign: 'left',
-  caption: undefined,
   page: 1,
   pageSize: 20,
-  totalItems: undefined,
-  selectedKey: undefined,
   captionSide: 'bottom',
-  tableLayout: undefined,
   searchPlaceholder: 'Search',
   searchByPlaceholder: 'Search by',
   searchByAllLabel: 'All',
   paginationAllLabel: 'All',
   color: 'primary',
-  totalPages: undefined,
   roundedSize: 'lg',
   scrollable: false,
 })
@@ -267,7 +256,7 @@ const hasDivider = computed<boolean>(
 
 const { size, hoverable, backgroundEven, backgroundOdd } = toRefs(props)
 
-provide<MazTableProvide>(mazTableKey, {
+provide(mazTableKey, {
   size,
   hoverable,
   backgroundEven,
@@ -318,25 +307,16 @@ const pageSizeModel = computed({
 })
 
 const totalPagesInternal = computed(() => {
-  return props.totalPages
-    ?? (pageSizeModel.value === Number.POSITIVE_INFINITY || !props.rows?.length)
+  if (props.totalPages) {
+    return props.totalPages
+  }
+
+  return (pageSizeModel.value === Number.POSITIVE_INFINITY || !totalItemsInternal.value)
     ? 1
-    : Math.ceil(props.rows.length / pageSizeModel.value)
+    : Math.ceil(totalItemsInternal.value / pageSizeModel.value)
 })
 
-function firstPage() {
-  currentPageModel.value = 1
-}
-function lastPage() {
-  currentPageModel.value = totalPagesInternal.value
-}
-
-function previousPage() {
-  currentPageModel.value = currentPageModel.value - 1
-}
-function nextPage() {
-  currentPageModel.value = currentPageModel.value + 1
-}
+const totalItemsInternal = computed(() => props.totalItems ?? props.rows?.length)
 
 const rowsOfPage = computed(() => {
   if (
@@ -352,6 +332,27 @@ const rowsOfPage = computed(() => {
 
   return rowsNormalized.value.slice(start, end)
 })
+
+const rowsFromTo = computed(() => {
+  return {
+    from: (currentPage.value - 1) * pageSizeModel.value + 1,
+    to: Math.min(currentPage.value * pageSizeModel.value, totalItemsInternal.value ?? 0),
+  }
+})
+
+function firstPage() {
+  currentPageModel.value = 1
+}
+function lastPage() {
+  currentPageModel.value = totalPagesInternal.value
+}
+
+function previousPage() {
+  currentPageModel.value--
+}
+function nextPage() {
+  currentPageModel.value++
+}
 
 watch(
   () => [props.rows, props.modelValue],
@@ -504,10 +505,6 @@ function emitValues(selectedRows?: (T | string | number | boolean)[]) {
 }
 
 function getSelectedRows(): (T | string | number | boolean)[] {
-  // if (props.selectedKey === undefined) {
-  //   return
-  // }
-
   return rowsFiltered.value
     .filter(row => row.selected)
     .map(row => (props.selectedKey ? row[props.selectedKey] : row))
@@ -645,7 +642,7 @@ onBeforeMount(() => {
           </slot>
         </thead>
 
-        <MazLoadingBar v-if="loading" :color="color" class="!maz-absolute" />
+        <MazLoadingBar v-if="loading" :color class="!maz-absolute" />
 
         <tbody :class="{ '--divider': hasDivider }">
           <slot>
@@ -747,7 +744,7 @@ onBeforeMount(() => {
         </div>
 
         <span v-if="totalPagesInternal" class="maz-whitespace-nowrap maz-text-sm">
-          {{ currentPageModel }} - {{ rowsFiltered.length }} {{ t.paginationOf }} {{ totalPagesInternal }}
+          {{ rowsFromTo.from }} - {{ rowsFromTo.to }} {{ t.paginationOf }} {{ totalItemsInternal }}
         </span>
 
         <div class="m-table-footer-pagination-buttons">
@@ -772,6 +769,7 @@ onBeforeMount(() => {
           >
             <ChevronIcon class="maz-text-base" />
           </MazBtn>
+
           <MazBtn
             :disabled="currentPageModel === totalPagesInternal"
             :size="inputSize ?? size"

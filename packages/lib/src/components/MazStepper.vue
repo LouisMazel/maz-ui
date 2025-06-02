@@ -23,11 +23,17 @@ export interface MazStepperStep {
 }
 export type MazStepperSteps = MazStepperStep[]
 
-const props = withDefaults(defineProps<MazStepperProps>(), {
-  modelValue: undefined,
-  steps: undefined,
-  color: 'primary',
-})
+const {
+  modelValue,
+  steps,
+  color = 'primary',
+  disabledNextSteps,
+  disabledPreviousSteps,
+  autoValidateSteps,
+  allStepsOpened,
+  allStepsValidated,
+  canCloseSteps,
+} = defineProps<MazStepperProps>()
 
 const emits = defineEmits<{
   'update:model-value': [value: number]
@@ -61,8 +67,8 @@ export interface MazStepperProps {
   canCloseSteps?: boolean
 }
 
-const roundStepBgColor = computed(() => `var(--maz-color-${props.color})`)
-const roundStepTextColor = computed(() => `var(--maz-color-${props.color}-contrast)`)
+const roundStepBgColor = computed(() => `var(--maz-color-${color})`)
+const roundStepTextColor = computed(() => `var(--maz-color-${color}-contrast)`)
 
 const slots = useSlots()
 
@@ -73,7 +79,7 @@ const stepCount = computed<number>(
 const localModelValue = ref(1)
 
 const currentStep = computed({
-  get: () => props.modelValue ?? localModelValue.value,
+  get: () => modelValue ?? localModelValue.value,
   set: (value: number) => {
     localModelValue.value = value
     emits('update:model-value', value)
@@ -95,15 +101,15 @@ function getStepStateData(step: number): { icon?: Component, class: string } {
 }
 
 function getStepIcon(step: number): Icon | string | undefined {
-  return props.steps?.[step - 1]?.icon
+  return steps?.[step - 1]?.icon
 }
 
 function getPropertyInStep(property: 'title' | 'titleInfo' | 'subtitle', step: number) {
-  return props.steps?.[step - 1]?.[property]
+  return steps?.[step - 1]?.[property]
 }
 
 function selectStep(step: number) {
-  if (currentStep.value === step && props.canCloseSteps) {
+  if (currentStep.value === step && canCloseSteps) {
     currentStep.value = 0
   }
   else if (step < 1) {
@@ -124,41 +130,41 @@ function hasDataForStep(property: 'title' | 'titleInfo' | 'subtitle', step: numb
     .filter(slot => slot.startsWith(`${data}-`))
     .includes(`${data}-${step}`)
 
-  const hasData = !!props.steps?.[step - 1]?.[property]
+  const hasData = !!steps?.[step - 1]?.[property]
 
   return hasSlot || hasData
 }
 
 function isStepSuccess(step: number): boolean {
-  const isValidated = props.steps?.[step - 1]?.success
+  const isValidated = steps?.[step - 1]?.success
   const hasErrorOrWarningState = isStepError(step) || isStepWarning(step)
 
   const isAutoValidated
-      = props.autoValidateSteps && step < currentStep.value && !hasErrorOrWarningState
-  return isValidated ?? (isAutoValidated || props.allStepsValidated)
+      = autoValidateSteps && step < currentStep.value && !hasErrorOrWarningState
+  return isValidated ?? (isAutoValidated || allStepsValidated)
 }
 
 function isStepDisabled(step: number): boolean {
-  const isDisabled = props.steps?.[step - 1]?.disabled
-  const isCurrentStepDisabled = currentStep.value === step && !props.canCloseSteps
-  const isAutoDisabledNext = props.disabledNextSteps && step > currentStep.value
-  const isAutoDisabledPrevious = props.disabledPreviousSteps && step < currentStep.value
+  const isDisabled = steps?.[step - 1]?.disabled
+  const isCurrentStepDisabled = currentStep.value === step && !canCloseSteps
+  const isAutoDisabledNext = disabledNextSteps && step > currentStep.value
+  const isAutoDisabledPrevious = disabledPreviousSteps && step < currentStep.value
 
   return (
     isDisabled
     ?? (isCurrentStepDisabled
       || isAutoDisabledNext
       || isAutoDisabledPrevious
-      || props.allStepsOpened)
+      || allStepsOpened)
   )
 }
 
 function isStepError(step: number) {
-  return props.steps?.[step - 1]?.error
+  return steps?.[step - 1]?.error
 }
 
 function isStepWarning(step: number) {
-  return props.steps?.[step - 1]?.warning
+  return steps?.[step - 1]?.warning
 }
 
 function isLastStep(step: number): boolean {

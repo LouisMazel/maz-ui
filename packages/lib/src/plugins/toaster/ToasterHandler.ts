@@ -21,7 +21,7 @@ export class ToasterHandler {
   ) {}
 
   private show(message: string, options: LocalToasterOptions) {
-    const propsData: Props = {
+    const props: Props = {
       ...DEFAULT_OPTIONS,
       ...this.globalOptions,
       ...options,
@@ -29,7 +29,7 @@ export class ToasterHandler {
     }
 
     const { destroy, vNode } = mount<typeof MazToast, Props>(MazToast, {
-      props: propsData,
+      props,
       app: this.app,
     })
 

@@ -1,25 +1,31 @@
 <script lang="ts" setup>
-import { computed, nextTick, onMounted, type PropType, ref, watchEffect } from 'vue'
+import { computed, nextTick, onMounted, ref, watchEffect } from 'vue'
 
 import { injectStrict } from '../helpers/injectStrict'
 
-const props = defineProps({
+export interface MazIconProps {
   /** The source path of the SVG file - e.g: `/icons/home.svg` */
-  src: { type: String, default: undefined },
+  src?: string
   /** The path of the folder where the SVG files are stored - e.g: `/icons` */
-  path: { type: String, default: undefined },
+  path?: string
   /** The name of the SVG file - e.g: `home` */
-  name: { type: String, default: undefined },
+  name?: string
   /** The size of the SVG file - e.g: `1em` */
-  size: { type: String, default: undefined },
+  size?: string
   /** The title of the SVG file - e.g: `Home` */
-  title: { type: String, default: undefined },
+  title?: string
   /** The function to transform the source of the SVG file - e.g: `(svg) => svg` */
-  transformSource: {
-    type: Function as PropType<(param: SVGElement) => typeof param>,
-    default: (svg: SVGElement) => svg,
-  },
-})
+  transformSource?: (svg: SVGElement) => SVGElement
+}
+
+const {
+  src,
+  path,
+  name,
+  size,
+  title,
+  transformSource = (svg: SVGElement) => svg,
+} = defineProps<MazIconProps>()
 const emits = defineEmits<{
   /**
    * emitted when SVG file is loaded
@@ -49,21 +55,21 @@ function getMazIconPath() {
   }
 }
 
-const iconPath = computed(() => props.path ?? getMazIconPath())
+const iconPath = computed(() => path ?? getMazIconPath())
 const fullSrc = computed(() => {
-  if (props.src) {
-    return props.src
+  if (src) {
+    return src
   }
   else if (iconPath.value) {
-    return `${iconPath.value}/${props.name}.svg`
+    return `${iconPath.value}/${name}.svg`
   }
   else {
-    return `/${props.name}.svg`
+    return `/${name}.svg`
   }
 })
 
 onMounted(() => {
-  if (!props.name && !props.src) {
+  if (!name && !src) {
     console.error('[maz-ui](MazIcon) you should provide "name" or "src" as prop')
   }
 })
@@ -106,10 +112,10 @@ function getSvgAttrs(svgEl: SVGElement) {
 
 function getSvgContent(svgEl: SVGElement) {
   svgEl.cloneNode(true)
-  const svgElNode = props.transformSource(svgEl)
+  const svgElNode = transformSource(svgEl)
 
-  if (props.title) {
-    setTitle(svgElNode as SVGElement, props.title)
+  if (title) {
+    setTitle(svgElNode as SVGElement, title)
   }
 
   // copy inner html
@@ -154,7 +160,7 @@ function download(url: string): Promise<SVGElement> {
           const result = parser.parseFromString(request.responseText, 'text/xml')
           let svgEl = result.querySelectorAll('svg')[0] as SVGElement
           if (svgEl) {
-            svgEl = props.transformSource(svgEl)
+            svgEl = transformSource(svgEl)
             resolve(svgEl)
           }
           else {

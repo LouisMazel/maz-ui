@@ -9,13 +9,13 @@ import { libInjectCss } from 'vite-plugin-lib-inject-css'
 import { type Target, viteStaticCopy } from 'vite-plugin-static-copy'
 
 import SvgLoader from 'vite-svg-loader'
-import rootPkg from '../../package.json' assert { type: 'json' }
+import rootPkg from '../../package.json'
 import { BuildMazCli } from './build/BuildMazCli'
 import { BuildNuxtModule } from './build/BuildNuxtModule'
 import { CompileStyles } from './build/CompileStyles'
-import { CopyComponentTypes } from './build/CopyComponentTypes'
+// import { CopyComponentTypes } from './build/CopyComponentTypes'
 import { GenerateComponentsEntry } from './build/GenerateComponentsEntry'
-import pkg from './package.json' assert { type: 'json' }
+import pkg from './package.json'
 
 rmSync('dist', { recursive: true, force: true })
 
@@ -81,7 +81,7 @@ export default defineConfig({
     CompileStyles(),
     BuildNuxtModule(),
     BuildMazCli(),
-    CopyComponentTypes(),
+    // CopyComponentTypes(),
   ],
   build: {
     cssCodeSplit: true,

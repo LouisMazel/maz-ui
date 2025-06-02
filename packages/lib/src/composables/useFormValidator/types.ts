@@ -130,8 +130,8 @@ export interface FormFieldOptions<FieldType> {
 export type UseFormValidator<Model extends BaseFormPayload = BaseFormPayload> = typeof useFormValidator<Model>
 export interface UseFormValidatorParams<Model extends BaseFormPayload> {
   schema: MaybeRef<FormSchema<Model>>
-  defaultValues?: MaybeRef<Partial<Model> | undefined>
-  model?: Ref<Partial<Model> | undefined>
+  defaultValues?: MaybeRef<Partial<Model> | undefined | null>
+  model?: Ref<Partial<Model> | undefined | null>
   options?: FormValidatorOptions<Model>
 }
 export type UseFormField<
