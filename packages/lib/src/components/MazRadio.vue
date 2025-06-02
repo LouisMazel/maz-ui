@@ -1,6 +1,7 @@
 <script lang="ts" setup generic="T extends string | number | boolean">
+import type { HTMLAttributes } from 'vue'
 import type { Color, Size } from './types'
-import { computed, type HTMLAttributes, ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 
 export interface MazRadioProps<T = string | number | boolean> {

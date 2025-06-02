@@ -1,12 +1,13 @@
 <script lang="ts" setup>
 import type { CountryCode } from 'libphonenumber-js'
+import type { ComponentPublicInstance, HTMLAttributes } from 'vue'
 import type { MazInputPhoneNumberTranslations, Results } from './MazInputPhoneNumber/types'
 import type { Color, Position, Size } from './types'
 import {
-  type ComponentPublicInstance,
+
   computed,
   defineAsyncComponent,
-  type HTMLAttributes,
+
   nextTick,
   onBeforeMount,
   onMounted,

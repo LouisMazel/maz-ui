@@ -177,20 +177,20 @@ function autoSetTheme(options: StrictThemeHandlerOptions) {
 
   const shouldSetDarkTheme
     = localStorage[options.storageThemeKey] === options.storageThemeValueDark
-    || (!localStorage[options.storageThemeKey] && getPrefDark())
-    || (localStorage[options.storageThemeKey] === options.storageThemeValueSystem && getPrefDark())
+      || (!localStorage[options.storageThemeKey] && getPrefDark())
+      || (localStorage[options.storageThemeKey] === options.storageThemeValueSystem && getPrefDark())
 
   return shouldSetDarkTheme
     ? setDarkTheme({
-      ...options,
-      setLocalStorageValue: false,
-      setSelectedTheme: false,
-    })
+        ...options,
+        setLocalStorageValue: false,
+        setSelectedTheme: false,
+      })
     : setLightTheme({
-      ...options,
-      setLocalStorageValue: false,
-      setSelectedTheme: false,
-    })
+        ...options,
+        setLocalStorageValue: false,
+        setSelectedTheme: false,
+      })
 }
 
 function setTheme({

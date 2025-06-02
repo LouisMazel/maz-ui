@@ -1,14 +1,15 @@
 <script lang="ts">
 import type { DropzoneFile, DropzoneOptions } from 'dropzone'
 
+import type { ComponentPublicInstance, PropType } from 'vue'
 import {
-  type ComponentPublicInstance,
+
   computed,
   defineAsyncComponent,
   defineComponent,
   onBeforeUnmount,
   onMounted,
-  type PropType,
+
   ref,
 } from 'vue'
 

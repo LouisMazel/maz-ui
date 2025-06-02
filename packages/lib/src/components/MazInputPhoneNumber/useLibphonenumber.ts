@@ -1,8 +1,8 @@
+import type { CountryCode, Examples } from 'libphonenumber-js'
 import type { Results } from './types'
 import {
   AsYouType,
-  type CountryCode,
-  type Examples,
+
   getCountries,
   getCountryCallingCode,
   getExampleNumber,

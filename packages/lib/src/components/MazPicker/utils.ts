@@ -1,7 +1,8 @@
+import type { ConfigType, OpUnitType } from 'dayjs'
 import type { IpWhoResponse } from '../../components/MazInputPhoneNumber/types'
-import type { PartialRangeValue } from '../../components/MazPicker/types'
 
-import dayjs, { type ConfigType, type OpUnitType } from 'dayjs'
+import type { PartialRangeValue } from '../../components/MazPicker/types'
+import dayjs from 'dayjs'
 
 import weekday from 'dayjs/plugin/weekday'
 import { capitalize } from '../../filters/capitalize'
@@ -157,12 +158,7 @@ export function isValueDisabledDate({
   return disabledDates.some(disabledDate => dayjs(value).isSame(dayjs(disabledDate), 'date'))
 }
 
-export const scrollToTarget = function (
-  scrollContainer: HTMLElement,
-  target: HTMLElement,
-  offset = 0,
-  hasSmoothEffect = true,
-) {
+export function scrollToTarget(scrollContainer: HTMLElement, target: HTMLElement, offset = 0, hasSmoothEffect = true) {
   scrollContainer.scrollTo({
     top: target.offsetTop - offset,
     behavior: hasSmoothEffect ? 'smooth' : 'auto',

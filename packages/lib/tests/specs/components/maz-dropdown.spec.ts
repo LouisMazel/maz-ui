@@ -1,7 +1,8 @@
+import type { VueWrapper } from '@vue/test-utils'
 import MazBtn from '@components/MazBtn.vue'
 import MazDropdown from '@components/MazDropdown.vue'
 import { sleep } from '@helpers/sleep'
-import { mount, type VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { RouterLink } from 'vue-router'
 
 describe('mazDropdown', () => {

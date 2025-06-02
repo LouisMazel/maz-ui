@@ -156,20 +156,19 @@ export const mazTableKey: InjectionKey<MazTableProvide> = Symbol('maz-table')
 </script>
 
 <script lang="ts" setup generic="T extends Row<T>">
+import type { HTMLAttributes, InjectionKey, Ref, StyleValue, ThHTMLAttributes } from 'vue'
 import type { MazSelectOption } from './MazSelect.vue'
-import type { Color, Size } from './types'
 
+import type { Color, Size } from './types'
 import {
   computed,
   defineAsyncComponent,
-  type HTMLAttributes,
-  type InjectionKey,
+
   onBeforeMount,
   provide,
-  type Ref,
+
   ref,
-  type StyleValue,
-  type ThHTMLAttributes,
+
   toRefs,
   useSlots,
   watch,

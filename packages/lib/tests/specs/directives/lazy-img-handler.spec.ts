@@ -127,7 +127,7 @@ describe('given LazyImg handler', () => {
       expect(mockElement.classList.contains(DEFAULT_OPTIONS.loadedClass)).toBe(false)
       expect(mockElement.classList.contains(DEFAULT_OPTIONS.loadingClass)).toBe(false)
       expect(mockElement.classList.contains(DEFAULT_OPTIONS.errorClass)).toBe(false)
-      expect(mockElement.style.backgroundImage).toBe('url(https://example.com/image.jpg)')
+      expect(mockElement.style.backgroundImage).toBe('url("https://example.com/image.jpg")')
     })
   })
 
@@ -136,7 +136,7 @@ describe('given LazyImg handler', () => {
       const bgImageBinding = { ...mockBinding, arg: 'bg-image' }
       await lazyImg.add(mockElement, bgImageBinding)
 
-      expect(mockElement.style.backgroundImage).toBe(`url(${mockBinding.value})`)
+      expect(mockElement.style.backgroundImage).toBe(`url("${mockBinding.value}")`)
     })
   })
 

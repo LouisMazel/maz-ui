@@ -1,7 +1,8 @@
 import type { App } from 'vue'
+import type { MazToastProps } from './MazToast.vue'
 import type { ToasterOptions } from './types'
 import { mount } from './../../helpers/mountComponent'
-import MazToast, { type Props } from './MazToast.vue'
+import MazToast from './MazToast.vue'
 
 export interface LocalToasterOptions extends ToasterOptions {
   type: 'success' | 'info' | 'warning' | 'danger' | 'theme'
@@ -21,14 +22,14 @@ export class ToasterHandler {
   ) {}
 
   private show(message: string, options: LocalToasterOptions) {
-    const props: Props = {
+    const props: MazToastProps = {
       ...DEFAULT_OPTIONS,
       ...this.globalOptions,
       ...options,
       message,
     }
 
-    const { destroy, vNode } = mount<typeof MazToast, Props>(MazToast, {
+    const { destroy, vNode } = mount<typeof MazToast, MazToastProps>(MazToast, {
       props,
       app: this.app,
     })

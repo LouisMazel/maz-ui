@@ -1,12 +1,13 @@
 <script lang="ts" setup>
 import type { CountryCode } from 'libphonenumber-js'
 
+import type { ComponentPublicInstance, HTMLAttributes } from 'vue'
+
 import type { MazInputPhoneNumberInjectedData } from './../MazInputPhoneNumber.vue'
-
 import type { Color, Position, Size } from './../types'
-import type { MazInputPhoneNumberTranslations } from './types'
 
-import { type ComponentPublicInstance, computed, defineAsyncComponent, type HTMLAttributes, ref } from 'vue'
+import type { MazInputPhoneNumberTranslations } from './types'
+import { computed, defineAsyncComponent, ref } from 'vue'
 
 import { countryFlagUrlFromFlagCdn } from '../../helpers/countryFlagFromFlagCdn'
 import { injectStrict } from '../../helpers/injectStrict'
@@ -14,48 +15,42 @@ import { truthyFilter } from '../../helpers/truthyFilter'
 import MazSelect from '../MazSelect.vue'
 import { useMazInputPhoneNumber } from './../MazInputPhoneNumber/useMazInputPhoneNumber'
 
-const props = withDefaults(
-  defineProps<{
-    /** Style attribut of the component root element */
-    style?: HTMLAttributes['style']
-    /** Class attribut of the component root element */
-    class?: HTMLAttributes['class']
-    modelValue?: CountryCode | undefined | null
-    id: string
-    color: Color
-    size: Size
-    preferredCountries?: CountryCode[]
-    ignoredCountries?: CountryCode[]
-    onlyCountries?: CountryCode[]
-    customCountriesList?: Record<CountryCode, string>
-    locales: MazInputPhoneNumberTranslations
-    listPosition?: Position
-    noFlags?: boolean
-    noSearch?: boolean
-    disabled?: boolean
-    showCodeOnList?: boolean
-    countryLocale?: string
-    success?: boolean
-    error?: boolean
-    countrySelectorDisplayName?: boolean
-    searchThreshold?: number
-    width: string
-    excludeSelectors?: string[]
-  }>(),
-  {
-    class: undefined,
-    style: undefined,
-    modelValue: undefined,
-    listPosition: 'bottom left',
-    preferredCountries: undefined,
-    ignoredCountries: undefined,
-    onlyCountries: undefined,
-    customCountriesList: undefined,
-    countryLocale: undefined,
-    width: '9rem',
-    excludeSelectors: undefined,
-  },
-)
+const {
+  listPosition = 'bottom left',
+  width = '9rem',
+  preferredCountries,
+  ignoredCountries,
+  onlyCountries,
+  customCountriesList,
+  class: className,
+  countryLocale,
+} = defineProps<{
+  /** Style attribut of the component root element */
+  style?: HTMLAttributes['style']
+  /** Class attribut of the component root element */
+  class?: HTMLAttributes['class']
+  modelValue?: CountryCode | undefined | null
+  id: string
+  color: Color
+  size: Size
+  preferredCountries?: CountryCode[]
+  ignoredCountries?: CountryCode[]
+  onlyCountries?: CountryCode[]
+  customCountriesList?: Record<CountryCode, string>
+  locales: MazInputPhoneNumberTranslations
+  listPosition?: Position
+  noFlags?: boolean
+  noSearch?: boolean
+  disabled?: boolean
+  showCodeOnList?: boolean
+  countryLocale?: string
+  success?: boolean
+  error?: boolean
+  countrySelectorDisplayName?: boolean
+  searchThreshold?: number
+  width?: string
+  excludeSelectors?: string[]
+}>()
 
 defineEmits<(event: 'update:model-value', countryCode?: CountryCode) => void>()
 
@@ -67,27 +62,27 @@ const CountrySelectorRef = ref<ComponentPublicInstance<typeof MazSelect> & { ope
 
 const { getCountriesList } = useMazInputPhoneNumber()
 
-const countries = computed(() => getCountriesList(props.countryLocale, props.customCountriesList))
+const countries = computed(() => getCountriesList(countryLocale, customCountriesList))
 
 const countriesList = computed(() =>
-  countries.value?.filter(item => !props.ignoredCountries?.includes(item.iso2)),
+  countries.value?.filter(item => !ignoredCountries?.includes(item.iso2)),
 )
 
 const countriesFiltered = computed(() => {
-  const countries = props.onlyCountries || props.preferredCountries
+  const countries = onlyCountries || preferredCountries
   return countries?.map(country =>
     countriesList.value?.find(item => item.iso2.includes(country)),
   )
 })
 
 const otherCountries = computed(() =>
-  countriesList.value?.filter(item => !props.preferredCountries?.includes(item.iso2)),
+  countriesList.value?.filter(item => !preferredCountries?.includes(item.iso2)),
 )
 
 const countriesSorted = computed(() =>
-  props.preferredCountries
+  preferredCountries
     ? [...(countriesFiltered.value ?? []), ...(otherCountries.value ?? [])]
-    : props.onlyCountries
+    : onlyCountries
       ? countriesFiltered.value
       : countriesList.value,
 )
@@ -111,7 +106,7 @@ function focusCountrySelector() {
 </script>
 
 <template>
-  <div class="m-country-selector" :class="[props.class, { '--no-flags': noFlags }]" :style="style">
+  <div class="m-country-selector" :class="[className, { '--no-flags': noFlags }]" :style="style">
     <button
       v-if="modelValue && !noFlags"
       :id="`country-selector-flag-button-${id}`"

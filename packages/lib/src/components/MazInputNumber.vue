@@ -1,6 +1,7 @@
 <script lang="ts" setup>
+import type { HTMLAttributes } from 'vue'
 import type { Size } from './types'
-import { computed, defineAsyncComponent, type HTMLAttributes } from 'vue'
+import { computed, defineAsyncComponent } from 'vue'
 import { debounce } from '../helpers/debounce'
 import MazInput from './MazInput.vue'
 
