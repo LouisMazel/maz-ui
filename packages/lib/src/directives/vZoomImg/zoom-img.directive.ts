@@ -1,5 +1,6 @@
 import type { ObjectDirective } from 'vue'
-import { VueZoomImg, type vZoomImgBindingValue } from './zoom-img.handler'
+import type { vZoomImgBindingValue } from './zoom-img.handler'
+import { VueZoomImg } from './zoom-img.handler'
 
 let instance: VueZoomImg
 

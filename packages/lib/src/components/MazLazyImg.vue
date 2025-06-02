@@ -1,7 +1,8 @@
 <script lang="ts" setup>
+import type { HTMLAttributes } from 'vue'
 import type { vLazyImgOptions } from '../directives/vLazyImg'
 import type { MazImage } from './types'
-import { computed, defineAsyncComponent, type HTMLAttributes } from 'vue'
+import { computed, defineAsyncComponent } from 'vue'
 
 import { vLazyImg } from '../directives/vLazyImg'
 

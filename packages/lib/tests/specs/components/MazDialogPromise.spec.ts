@@ -1,5 +1,6 @@
+import type { VueWrapper } from '@vue/test-utils'
 import MazDialogPromise, { useMazDialogPromise } from '@components/MazDialogPromise.vue'
-import { mount, type VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 
 describe('given MazDialogPromise component', () => {
   let wrapper: VueWrapper<InstanceType<typeof MazDialogPromise>>
@@ -24,6 +25,13 @@ describe('given MazDialogPromise component', () => {
         identifier: 'test',
         teleportSelector: '#teleport-target',
       },
+      global: {
+        stubs: {
+          Teleport: {
+            template: '<div><slot /></div>',
+          },
+        },
+      },
     })
   })
 
@@ -45,11 +53,11 @@ describe('given MazDialogPromise component', () => {
   })
 
   it('renders the correct message', () => {
-    const message = teleportTarget.querySelector<HTMLDivElement>('.m-dialog-content')
-    const header = teleportTarget.querySelector<HTMLDivElement>('.m-dialog-header')
+    const message = wrapper.find('.m-dialog-content')
+    const header = wrapper.find('.m-dialog-header')
 
-    expect(message?.textContent).toBe('Test Message')
-    expect(header?.textContent).toBe('Test Title')
+    expect(message.text()).toBe('Test Message')
+    expect(header.text()).toBe('Test Title')
 
     // @ts-expect-error - private value
     expect(wrapper.vm.confirmButtonData).toStrictEqual({ text: 'Yes', color: 'success' })

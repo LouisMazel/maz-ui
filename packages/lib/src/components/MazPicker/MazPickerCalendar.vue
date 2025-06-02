@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import type { Dayjs } from 'dayjs'
+import type { PropType } from 'vue'
 import type { Color } from '../types'
 import type { PickerShortcut, PickerValue } from './types'
-import { computed, defineAsyncComponent, type PropType, ref } from 'vue'
+import { computed, defineAsyncComponent, ref } from 'vue'
 
 const props = defineProps({
   modelValue: {

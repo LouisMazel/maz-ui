@@ -63,7 +63,8 @@ export interface MazTextareaProps<T extends string | undefined | null> {
 </script>
 
 <script lang="ts" setup generic="T extends string | undefined | null">
-import { computed, type HTMLAttributes, onBeforeUnmount, onMounted, ref, useSlots } from 'vue'
+import type { HTMLAttributes } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, useSlots } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import { TextareaAutogrow } from './MazTextarea/textarea-autogrow'
 
@@ -169,7 +170,7 @@ const slots = useSlots()
 const hasLabelOrHint = computed(() => props.label || props.hint || !!slots.label)
 
 const shouldUp = computed(
-  () => hasLabelOrHint.value && (isFocused.value || hasValue.value || !!props.placeholder),
+  () => hasLabelOrHint.value && (hasValue.value || !!props.placeholder),
 )
 
 const hasAppend = computed(() => !!slots.append)
@@ -218,6 +219,7 @@ const hasBorderStyle = computed(() => borderStyle.value !== '--default-border')
         '--padding': padding,
         '--border': border,
         '--has-border-style': hasBorderStyle,
+        '--should-up': shouldUp,
       },
       borderStyle,
       roundedSize ? `--rounded-${roundedSize}` : '--rounded',
@@ -236,7 +238,6 @@ const hasBorderStyle = computed(() => borderStyle.value !== '--default-border')
           'maz-text-success-600': success,
           'maz-text-warning-600': warning,
           '--has-state': error || warning || success,
-          '--should-up': shouldUp,
         },
       ]"
     >
@@ -278,6 +279,8 @@ const hasBorderStyle = computed(() => borderStyle.value !== '--default-border')
   .m-textarea {
   @apply maz-min-h-[6.25rem] maz-relative maz-flex maz-flex-col maz-align-top maz-text-normal;
 
+  transition: padding 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+
   &:not(.--background-transparent, .--is-disabled) {
     @apply maz-bg-color dark:maz-bg-color-light;
   }
@@ -316,10 +319,6 @@ const hasBorderStyle = computed(() => borderStyle.value !== '--default-border')
 
   &.--rounded {
     @apply maz-rounded;
-  }
-
-  &.--has-label {
-    @apply maz-pt-6;
   }
 
   &__append {
@@ -361,6 +360,14 @@ const hasBorderStyle = computed(() => borderStyle.value !== '--default-border')
 
     &:not(.--has-state) {
       @apply maz-text-muted;
+    }
+  }
+
+  &.--should-up {
+    @apply maz-pt-6;
+
+    & .m-textarea__label {
+      transform: scale(0.8) translateY(-0.65rem);
     }
   }
 }

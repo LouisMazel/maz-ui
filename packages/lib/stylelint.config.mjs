@@ -13,6 +13,7 @@ export default {
   // https://stylelint.io/user-guide/configuration
   rules: {
     'at-rule-no-unknown': [true, { ignoreAtRules: ['screen', 'layer', 'tailwind', 'each', 'for', 'use'] }],
+    'at-rule-no-deprecated': [true, { ignoreAtRules: ['apply'] }],
     'scss/at-rule-no-unknown': [true, { ignoreAtRules: ['screen', 'layer', 'tailwind', 'each', 'for', 'use'] }],
     'selector-pseudo-class-no-unknown': [true, { ignorePseudoClasses: ['deep'] }],
     'selector-class-pattern': undefined,

@@ -23,6 +23,7 @@ describe('mazGallery', () => {
     const wrapper = mount(MazGallery, {
       props: {
         hasEmptyLayer: true,
+        images: [],
       },
     })
 

@@ -1,8 +1,9 @@
 <script lang="ts" setup>
+import type { CSSProperties } from 'vue'
 import type { Color } from './types'
 import {
   computed,
-  type CSSProperties,
+
   nextTick,
   onBeforeUnmount,
   onMounted,
@@ -228,13 +229,13 @@ async function getCursorsValues() {
   if (typeof barWidth === 'number') {
     return log
       ? buttonPositions.value?.map((pos: number) => {
-        const position = pos / (barWidth / max)
-        const value = Math.exp((position - min) * scale.value + minLog.value)
-        return Math.round(value)
-      })
+          const position = pos / (barWidth / max)
+          const value = Math.exp((position - min) * scale.value + minLog.value)
+          return Math.round(value)
+        })
       : buttonPositions.value?.map(
-        (pos: number) => Math.round(pos / (barWidth / range.value)) + min,
-      )
+          (pos: number) => Math.round(pos / (barWidth / range.value)) + min,
+        )
   }
   else {
     console.warn('[maz-ui][MazSlider] ref component not found')

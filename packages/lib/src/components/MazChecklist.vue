@@ -1,8 +1,9 @@
 <script lang="ts" setup generic="T extends string, O extends ItemOption">
+import type { NormalizeStringOptions } from '../helpers/normalizeString'
 import type { MazInputProps } from './MazInput.vue'
 import type { Color } from './types'
 import { computed, defineAsyncComponent, ref, watch } from 'vue'
-import { normalizeString, type NormalizeStringOptions } from '../helpers/normalizeString'
+import { normalizeString } from '../helpers/normalizeString'
 import MazCardSpotlight from './MazCardSpotlight.vue'
 import MazCheckbox from './MazCheckbox.vue'
 
@@ -106,8 +107,8 @@ const filteredItems = computed(() => {
   return props.searchFunction
     ? props.searchFunction(normalizedQuery, props.items ?? [])
     : props.items?.filter(({ label, value }) =>
-      normalizeString(label, props.searchOptions).includes(normalizedQuery) || normalizeString(value, props.searchOptions).includes(normalizedQuery),
-    )
+        normalizeString(label, props.searchOptions).includes(normalizedQuery) || normalizeString(value, props.searchOptions).includes(normalizedQuery),
+      )
 })
 
 function updateQuery(value?: string) {

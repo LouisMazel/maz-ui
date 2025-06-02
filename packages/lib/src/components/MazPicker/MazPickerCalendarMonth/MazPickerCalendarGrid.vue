@@ -1,8 +1,10 @@
 <script lang="ts" setup>
+import type { Dayjs } from 'dayjs'
+import type { PropType } from 'vue'
 import type { Color } from '../../types'
 import type { PartialRangeValue, PickerValue } from '../types'
-import dayjs, { type Dayjs } from 'dayjs'
-import { computed, type PropType, ref, watch } from 'vue'
+import dayjs from 'dayjs'
+import { computed, ref, watch } from 'vue'
 import { debounce } from '../../../helpers/debounce'
 import MazBtn from '../../MazBtn.vue'
 

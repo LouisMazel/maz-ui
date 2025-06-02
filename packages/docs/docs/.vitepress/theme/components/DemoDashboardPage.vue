@@ -3,7 +3,7 @@ import dataLabels from 'chartjs-plugin-datalabels'
 import { ref } from 'vue'
 
 const { delay = 100 } = defineProps<{
-  delay: number
+  delay?: number
 }>()
 
 const selectedPeriod = ref('last_7_days')

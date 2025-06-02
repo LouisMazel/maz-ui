@@ -1,6 +1,7 @@
+import type { vFullscreenImgBinding } from '@directives/vFullscreenImg/fullscreen-img.handler'
 import {
   FullscreenImgHandler,
-  type vFullscreenImgBinding,
+
 } from '@directives/vFullscreenImg/fullscreen-img.handler'
 
 describe('fullscreenImgHandler', () => {

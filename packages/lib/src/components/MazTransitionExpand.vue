@@ -29,7 +29,7 @@ function enter(element: HTMLElement) {
   // Force repaint to make sure the
   // animation is triggered correctly.
 
-  // eslint-disable-next-line ts/no-unused-expressions, sonarjs/no-unused-expressions
+  // eslint-disable-next-line ts/no-unused-expressions
   getComputedStyle(element).height
 
   // Trigger the animation.
@@ -53,7 +53,7 @@ function leave(element: HTMLElement) {
   // Force repaint to make sure the
   // animation is triggered correctly.
 
-  // eslint-disable-next-line ts/no-unused-expressions, sonarjs/no-unused-expressions
+  // eslint-disable-next-line ts/no-unused-expressions
   getComputedStyle(element).height
 
   nextTick(() => {

@@ -1,7 +1,8 @@
 <script lang="ts" setup>
+import type { HTMLAttributes } from 'vue'
 import type { RouterLinkProps } from 'vue-router'
 import type { MazGalleryImage } from './types'
-import { computed, defineAsyncComponent, type HTMLAttributes, ref, useSlots, watch } from 'vue'
+import { computed, defineAsyncComponent, ref, useSlots, watch } from 'vue'
 
 const props = withDefaults(defineProps<MazCardProps>(), {
   images: undefined,
