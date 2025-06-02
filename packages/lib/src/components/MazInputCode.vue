@@ -1,6 +1,7 @@
 <script lang="ts" setup generic="T extends string | number">
+import type { HTMLAttributes } from 'vue'
 import type { Color } from './types'
-import { computed, type HTMLAttributes, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 export type MazInputCodeSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 export interface MazInputCodeProps<T = string | number> {

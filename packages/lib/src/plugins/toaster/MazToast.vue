@@ -5,16 +5,19 @@ import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import MazBtn from '../../components/MazBtn.vue'
 import { useTimer } from '../../composables/useTimer'
 
-const props = withDefaults(defineProps<Props>(), {
-  position: 'bottom-right',
-  maxToasts: false,
-  timeout: 10_000,
-  type: 'info',
-  message: undefined,
-  link: undefined,
-  action: undefined,
-  icon: true,
-})
+const {
+  position = 'bottom-right',
+  maxToasts = false,
+  timeout = 10_000,
+  type = 'info',
+  message,
+  link,
+  action,
+  icon = true,
+  queue,
+  noPauseOnHover,
+  persistent,
+} = defineProps<MazToastProps>()
 
 const emits = defineEmits(['close', 'click', 'open'])
 
@@ -28,7 +31,7 @@ const Link = defineAsyncComponent(() => import('../../../icons/link.svg'))
 
 const Toaster = ref<HTMLDivElement>()
 
-export interface Props {
+export interface MazToastProps {
   message: string
   position?: ToasterPosition
   maxToasts?: number | boolean
@@ -43,10 +46,10 @@ export interface Props {
 }
 
 const iconComponent = computed(() => {
-  if (!props.icon)
+  if (!icon)
     return undefined
 
-  switch (props.type) {
+  switch (type) {
     case 'danger': {
       return ExclamationTriangle
     }
@@ -65,11 +68,11 @@ const iconComponent = computed(() => {
   }
 })
 
-const positionY = computed(() => (props.position.includes('top') ? 'top' : 'bottom'))
+const positionY = computed(() => (position.includes('top') ? 'top' : 'bottom'))
 const positionX = computed(() => {
-  if (props.position.includes('left'))
+  if (position.includes('left'))
     return 'left'
-  if (props.position.includes('right'))
+  if (position.includes('right'))
     return 'right'
   return 'center'
 })
@@ -90,7 +93,7 @@ const selectorContainerClass = `.${containerClassName.replaceAll(' ', '.')}`
 
 const timer = useTimer({
   callback: closeToast,
-  timeout: typeof props.timeout === 'number' ? props.timeout : 0,
+  timeout: typeof timeout === 'number' ? timeout : 0,
   callbackOffsetTime: 200,
 })
 
@@ -111,12 +114,12 @@ function createParents() {
 function shouldQueue() {
   const container = document.querySelector(selectorContainerClass)
 
-  if (!props.queue && props.maxToasts === false) {
+  if (!queue && maxToasts === false) {
     return false
   }
 
-  if (typeof props.maxToasts === 'number' && container) {
-    return props.maxToasts <= container.childElementCount
+  if (typeof maxToasts === 'number' && container) {
+    return maxToasts <= container.childElementCount
   }
 
   return container && container.childElementCount > 0
@@ -136,7 +139,7 @@ function showNotice() {
 
   isActive.value = true
 
-  if (typeof props.timeout === 'number' && props.timeout > 0) {
+  if (typeof timeout === 'number' && timeout > 0) {
     timer.start()
   }
 }
@@ -144,7 +147,7 @@ function showNotice() {
 const progressBarWidth = ref<string>('100%')
 
 function getProgressBarColor() {
-  switch (props.type) {
+  switch (type) {
     case 'danger': {
       return 'maz-bg-danger-700'
     }
@@ -166,8 +169,8 @@ function getProgressBarColor() {
 watch(
   timer.remainingTime,
   (remainingTime) => {
-    if (typeof props.timeout === 'number') {
-      const percent = (100 * remainingTime) / props.timeout
+    if (typeof timeout === 'number') {
+      const percent = (100 * remainingTime) / timeout
       progressBarWidth.value = `${percent}%`
     }
   },
@@ -176,7 +179,7 @@ watch(
 function click(event: Event) {
   emits('click', event)
 
-  if (!props.persistent) {
+  if (!persistent) {
     closeToast()
   }
 }
@@ -185,13 +188,13 @@ async function clickOnAction(func: ToasterAction['func'], event: Event) {
   actionLoading.value = true
   await func()
   actionLoading.value = false
-  if (props.action?.closeToast) {
+  if (action?.closeToast) {
     click(event)
   }
 }
 
 function toggleTimer(shouldPause: boolean) {
-  if (props.noPauseOnHover) {
+  if (noPauseOnHover) {
     return
   }
 

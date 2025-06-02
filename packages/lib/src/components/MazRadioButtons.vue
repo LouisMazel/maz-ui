@@ -1,6 +1,7 @@
 <script lang="ts" setup generic="T extends string | number | boolean">
+import type { StyleValue } from 'vue'
 import type { Color } from './types'
-import { defineAsyncComponent, ref, type StyleValue } from 'vue'
+import { defineAsyncComponent, ref } from 'vue'
 
 export type MazRadioButtonsOption<T = string | number | boolean> = {
   /** The label of the option */

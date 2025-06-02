@@ -1,5 +1,6 @@
+import type { VueWrapper } from '@vue/test-utils'
 import MazInputCode from '@components/MazInputCode.vue'
-import { shallowMount, type VueWrapper } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 
 describe('mazInputCode', () => {
   let wrapper: VueWrapper<InstanceType<typeof MazInputCode>>

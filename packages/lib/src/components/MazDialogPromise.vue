@@ -6,6 +6,7 @@ export type * from './MazDialogPromise/useMazDialogPromise'
 
 <script lang="ts" setup>
 import type { ComponentPublicInstance } from 'vue'
+import type { MazDialogProps } from './MazDialog.vue'
 import type {
   MazDialogCustomButton,
   MazDialogData,
@@ -13,9 +14,9 @@ import type {
   MazDialogState,
 } from './MazDialogPromise/useMazDialogPromise'
 import { computed, ref } from 'vue'
-import MazBtn from './MazBtn.vue'
 
-import MazDialog, { type MazDialogProps } from './MazDialog.vue'
+import MazBtn from './MazBtn.vue'
+import MazDialog from './MazDialog.vue'
 
 import { defaultData, useMazDialogPromise } from './MazDialogPromise/useMazDialogPromise'
 
@@ -32,12 +33,7 @@ export interface MazDialogPromiseInternalProps {
 
 export type MazDialogPromiseProps = MazDialogPromiseInternalProps & MazDialogProps & MazDialogData
 
-const props = withDefaults(defineProps<MazDialogPromiseProps>(), {
-  identifier: undefined,
-  message: undefined,
-  data: undefined,
-  buttons: undefined,
-})
+const { identifier, message, data, buttons, cancelText, confirmText } = defineProps<MazDialogPromiseProps>()
 
 defineEmits<{
   /** emitted when modal is open */
@@ -48,17 +44,17 @@ defineEmits<{
 
 const { dialogState, rejectDialog, resolveDialog, data: composableData } = useMazDialogPromise()
 
-const customButtons = computed(() => props.buttons ?? props.data?.buttons ?? composableData.value.buttons)
+const customButtons = computed(() => buttons ?? data?.buttons ?? composableData.value.buttons)
 
 const currentData = computed<MazDialogData>(() => ({
   ...defaultData,
   ...composableData.value,
-  ...props.data,
+  ...data,
 }))
 
 const cancelButtonData = computed(() => {
   const hasButton
-      = composableData.value?.cancelButton ?? props.data?.cancelButton ?? defaultData.cancelButton
+      = composableData.value?.cancelButton ?? data?.cancelButton ?? defaultData.cancelButton
 
   if (!hasButton)
     return
@@ -66,17 +62,17 @@ const cancelButtonData = computed(() => {
   const mergedData = {
     ...defaultData.cancelButton,
     ...composableData.value?.cancelButton,
-    ...props.data?.cancelButton,
+    ...data?.cancelButton,
   }
 
   return {
     ...mergedData,
-    text: props.cancelText || currentData.value.cancelText || mergedData.text,
+    text: cancelText || currentData.value.cancelText || mergedData.text,
   }
 })
 const confirmButtonData = computed(() => {
   const hasButton
-      = composableData.value?.confirmButton ?? props.data?.confirmButton ?? defaultData.confirmButton
+      = composableData.value?.confirmButton ?? data?.confirmButton ?? defaultData.confirmButton
 
   if (!hasButton)
     return
@@ -84,17 +80,17 @@ const confirmButtonData = computed(() => {
   const mergedData = {
     ...defaultData.confirmButton,
     ...composableData.value?.confirmButton,
-    ...props.data?.confirmButton,
+    ...data?.confirmButton,
   }
 
   return {
     ...mergedData,
-    text: props.confirmText || currentData.value.confirmText || mergedData.text,
+    text: confirmText || currentData.value.confirmText || mergedData.text,
   }
 })
 
 const currentModal = computed(
-  () => dialogState.value.find(({ id }) => id === props.identifier) as MazDialogState,
+  () => dialogState.value.find(({ id }) => id === identifier) as MazDialogState,
 )
 
 const dialog = ref<ComponentPublicInstance<typeof MazDialog>>()
@@ -119,7 +115,7 @@ function customButtonAction(currentModal: MazDialogState, button: MazDialogCusto
 <template>
   <MazDialog
     ref="dialog"
-    v-bind="{ ...$attrs, ...props }"
+    v-bind="{ ...$attrs, ...$props }"
     :model-value="currentModal?.isActive ?? modelValue ?? false"
     @close="$emit('close', $event)"
     @open="$emit('open', $event)"

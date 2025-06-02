@@ -1,7 +1,9 @@
 <script lang="ts" setup>
+import type { Dayjs } from 'dayjs'
+import type { PropType } from 'vue'
 import type { Color } from '../types'
-import dayjs, { type Dayjs } from 'dayjs'
-import { computed, type PropType, ref } from 'vue'
+import dayjs from 'dayjs'
+import { computed, ref } from 'vue'
 import ChevronLeftIcon from '../../../icons/chevron-left.svg'
 import XIcon from '../../../icons/x-mark.svg'
 

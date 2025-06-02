@@ -1,9 +1,9 @@
 {
-  "name": "playground",
+  "name": "nuxt-app",
   "private": true,
   "scripts": {
     "dev": "nuxi dev",
-    "playground:build": "nuxi build",
+    "nuxt-app:build": "nuxi build",
     "preview": "nuxi preview",
     "postinstall": "nuxi prepare",
     "lint": "pnpm lint:js && pnpm lint:style",

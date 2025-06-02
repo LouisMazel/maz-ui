@@ -1,7 +1,9 @@
 <script lang="ts" setup>
+import type { Dayjs } from 'dayjs'
+import type { PropType } from 'vue'
 import type { Color } from '../types'
-import dayjs, { type Dayjs } from 'dayjs'
-import { computed, type PropType } from 'vue'
+import dayjs from 'dayjs'
+import { computed } from 'vue'
 import XIcon from '../../../icons/x-mark.svg'
 import { capitalize } from '../../filters/capitalize'
 

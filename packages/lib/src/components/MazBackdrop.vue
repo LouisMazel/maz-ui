@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { type HTMLAttributes, nextTick, onMounted, ref, watch } from 'vue'
+import type { HTMLAttributes } from 'vue'
+import { nextTick, onMounted, ref, watch } from 'vue'
 
 defineOptions({
   inheritAttrs: false,

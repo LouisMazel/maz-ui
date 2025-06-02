@@ -4,9 +4,8 @@
   "license": "MIT",
   "type": "module",
   "exports": {
-    ".": {
-      "default": "./src/module.ts"
-    }
+    ".": "./src/module.ts",
+    "./*": "./*"
   },
   "main": "./src/module.ts",
   "files": [
@@ -22,7 +21,7 @@
     "format": "prettier --ignore-path .gitignore . --write",
     "test": "vitest run",
     "test:watch": "vitest watch",
-    "typecheck": "tsc --noEmit --skipLibCheck --project tsconfig.check.json"
+    "typecheck": "vue-tsc --noEmit --skipLibCheck --project tsconfig.check.json"
   },
   "lint-staged": {
     "*": "prettier -w -u",
@@ -33,15 +32,15 @@
     "maz-ui": "workspace:*"
   },
   "devDependencies": {
-    "@nuxt/devtools": "^1.7.0",
-    "@nuxt/eslint-config": "^0.7.6",
-    "@nuxt/module-builder": "^0.8.4",
+    "@nuxt/devtools": "^2.4.1",
+    "@nuxt/eslint-config": "^1.4.1",
+    "@nuxt/module-builder": "^1.0.1",
     "@nuxt/schema": "^3.17.4",
     "@nuxt/test-utils": "^3.19.1",
     "defu": "^6.1.4",
     "nuxt": "^3.17.4",
-    "typescript": "5.6.2",
-    "vitest": "^2.1.9"
+    "typescript": "~5.8.3",
+    "vitest": "^3.2.0"
   },
   "unbuild": {
     "failOnWarn": false

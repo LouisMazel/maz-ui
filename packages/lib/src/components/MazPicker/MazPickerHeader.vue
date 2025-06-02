@@ -1,9 +1,10 @@
 <script lang="ts" setup>
+import type { PropType } from 'vue'
 import type { Color } from '../types'
 import type { PickerValue } from './types'
 import type { DateTimeFormatOptions } from './utils'
 import dayjs from 'dayjs'
-import { computed, type PropType, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { capitalize } from '../../filters/capitalize'
 import { date } from '../../filters/date'
 
@@ -36,16 +37,16 @@ const year = computed(() => {
     return `${
       props.modelValue.start
         ? date(props.modelValue.start, props.locale, {
-          year: 'numeric',
-          timeZone: props.formatterOptions.timeZone,
-        })
+            year: 'numeric',
+            timeZone: props.formatterOptions.timeZone,
+          })
         : '...'
     } - ${
       props.modelValue.end
         ? date(props.modelValue.end, props.locale, {
-          year: 'numeric',
-          timeZone: props.formatterOptions.timeZone,
-        })
+            year: 'numeric',
+            timeZone: props.formatterOptions.timeZone,
+          })
         : '...'
     }`
   }
@@ -71,24 +72,24 @@ const dateString = computed(() => {
     return `${
       props.modelValue.start
         ? capitalize(
-          date(props.modelValue.start, props.locale, {
-            weekday: dateOption,
-            month: dateOption,
-            day: 'numeric',
-            timeZone: props.formatterOptions.timeZone,
-          }),
-        )
+            date(props.modelValue.start, props.locale, {
+              weekday: dateOption,
+              month: dateOption,
+              day: 'numeric',
+              timeZone: props.formatterOptions.timeZone,
+            }),
+          )
         : '...'
     } - ${
       props.modelValue.end
         ? capitalize(
-          date(props.modelValue.end, props.locale, {
-            weekday: dateOption,
-            month: dateOption,
-            day: 'numeric',
-            timeZone: props.formatterOptions.timeZone,
-          }),
-        )
+            date(props.modelValue.end, props.locale, {
+              weekday: dateOption,
+              month: dateOption,
+              day: 'numeric',
+              timeZone: props.formatterOptions.timeZone,
+            }),
+          )
         : '...'
     }`
   }
@@ -111,10 +112,10 @@ const dateStringArray = computed(() => (props.hasDate ? [dateString.value] : und
 const timeValue = computed(() => {
   return refDate.value
     ? date(refDate.value, props.locale, {
-      timeStyle: 'short',
-      timeZone: props.formatterOptions.timeZone,
-      hour12: props.formatterOptions.hour12,
-    })
+        timeStyle: 'short',
+        timeZone: props.formatterOptions.timeZone,
+        hour12: props.formatterOptions.hour12,
+      })
     : undefined
 })
 
@@ -128,7 +129,7 @@ watch(
 
     transitionName.value
         = dayjs(currentValue).isAfter(oldValue, 'date')
-        || dayjs(currentValue).isSame(oldValue, 'date')
+          || dayjs(currentValue).isSame(oldValue, 'date')
         ? 'maz-slidevnext'
         : 'maz-slidevprev'
   },

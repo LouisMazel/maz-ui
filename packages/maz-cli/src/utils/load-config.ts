@@ -1,5 +1,6 @@
+import type { CosmiconfigResult } from 'cosmiconfig'
 import type { MazUiConfig } from '../types'
-import { cosmiconfig, type CosmiconfigResult } from 'cosmiconfig'
+import { cosmiconfig } from 'cosmiconfig'
 
 interface LoadConfigResult extends NonNullable<CosmiconfigResult> {
   config: MazUiConfig

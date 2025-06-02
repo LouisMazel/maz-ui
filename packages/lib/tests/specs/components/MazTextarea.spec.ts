@@ -1,14 +1,16 @@
+import type { VueWrapper } from '@vue/test-utils'
 import type { ComponentPublicInstance } from 'vue'
 import MazTextarea from '@components/MazTextarea.vue'
 import { TextareaAutogrow } from '@components/MazTextarea/textarea-autogrow'
 import { elementEmitEvent } from '@tests/helpers/document-event'
-import { shallowMount, type VueWrapper } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 
 describe('components/MazTextarea/textarea-autogrow.ts', () => {
   let textareaElement: HTMLTextAreaElement
 
   beforeEach(() => {
     textareaElement = document.createElement('textarea')
+    // eslint-disable-next-line sonarjs/no-unused-vars
     const _textareaAutogrow = new TextareaAutogrow(textareaElement)
   })
 
@@ -53,12 +55,18 @@ describe('components/MazTextarea.vue', () => {
     expect(wrapper.vm.instanceId).toBe('MazTextarea-v-0')
   })
 
-  it('should up the label if the component is focused', async () => {
+  it('should up the label if the component has value', async () => {
     await wrapper.setProps({
       modelValue: undefined,
       label: 'Label',
     })
-    wrapper.vm.focus()
+
+    expect(wrapper.vm.shouldUp).toBeFalsy()
+
+    await wrapper.setProps({
+      modelValue: 'Un text',
+    })
+
     expect(wrapper.vm.shouldUp).toBeTruthy()
   })
 

@@ -1,4 +1,5 @@
-import { type App, type Component, createVNode, render, type VNodeProps } from 'vue'
+import type { App, Component, VNodeProps } from 'vue'
+import { createVNode, render } from 'vue'
 
 export function mount<T extends Component, P = Record<string, unknown>>(
   component: T,

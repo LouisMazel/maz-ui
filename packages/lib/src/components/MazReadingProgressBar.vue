@@ -1,8 +1,9 @@
 <script lang="ts" setup>
+import type { HTMLAttributes } from 'vue'
 import type { Color } from './types'
 import {
   computed,
-  type HTMLAttributes,
+
   nextTick,
   onBeforeUnmount,
   onMounted,

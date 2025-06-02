@@ -1,5 +1,6 @@
+import type { VueWrapper } from '@vue/test-utils'
 import MazDialog from '@components/MazDialog.vue'
-import { shallowMount, type VueWrapper } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 
 describe('mazDialog', () => {
   let wrapper: VueWrapper<InstanceType<typeof MazDialog>>
