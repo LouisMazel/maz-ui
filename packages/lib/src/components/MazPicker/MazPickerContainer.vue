@@ -1,9 +1,10 @@
 <script lang="ts" setup>
+import type { PropType } from 'vue'
 import type { Color } from '../types'
 import type { PickerShortcut, PickerValue } from './types'
-import type { DateTimeFormatOptions } from './utils'
 
-import { computed, defineAsyncComponent, type PropType } from 'vue'
+import type { DateTimeFormatOptions } from './utils'
+import { computed, defineAsyncComponent } from 'vue'
 
 const props = defineProps({
   modelValue: {

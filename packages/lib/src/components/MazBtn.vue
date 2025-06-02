@@ -3,17 +3,23 @@ import type { Color, Icon, Size } from './types'
 
 import { computed, defineAsyncComponent, useAttrs } from 'vue'
 
-const props = withDefaults(defineProps<MazBtnProps>(), {
-  variant: 'button',
-  size: 'md',
-  color: 'primary',
-  type: 'button',
-  icon: undefined,
-  leftIcon: undefined,
-  rightIcon: undefined,
-  roundedSize: 'lg',
-  justify: 'center',
-})
+const {
+  variant = 'button',
+  size = 'md',
+  color = 'primary',
+  type = 'button',
+  icon,
+  leftIcon,
+  rightIcon,
+  roundedSize = 'lg',
+  justify = 'center',
+  pastel,
+  outline,
+  loading,
+  disabled,
+  block,
+  noUnderline,
+} = defineProps<MazBtnProps>()
 
 const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
 const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
@@ -133,32 +139,32 @@ const component = computed(() => {
 })
 
 const btnColorClass = computed(() => {
-  if (props.pastel)
-    return `--${props.color}-pastel`
-  if (props.outline)
-    return `--${props.color}-outline`
-  return `--${props.color}`
+  if (pastel)
+    return `--${color}-pastel`
+  if (outline)
+    return `--${color}-outline`
+  return `--${color}`
 })
 const isDisabled = computed(
-  () => (props.loading || props.disabled) && component.value === 'button',
+  () => (loading || disabled) && component.value === 'button',
 )
 const cursorClass = computed(() => (isDisabled.value ? '--cursor-default' : '--cursor-pointer'))
-const variantClass = computed(() => `--is-${props.variant}`)
-const hasLoader = computed(() => props.loading && props.variant === 'button')
-const btnType = computed(() => (component.value === 'button' ? props.type : undefined))
+const variantClass = computed(() => `--is-${variant}`)
+const hasLoader = computed(() => loading && variant === 'button')
+const btnType = computed(() => (component.value === 'button' ? type : undefined))
 
 const iconClassSize = computed(() => {
-  if (props.size === 'xl')
+  if (size === 'xl')
     return 'maz-text-3xl'
-  if (props.size === 'lg')
+  if (size === 'lg')
     return 'maz-text-2xl'
-  if (props.size === 'md')
+  if (size === 'md')
     return 'maz-text-xl'
-  if (props.size === 'sm')
+  if (size === 'sm')
     return 'maz-text-lg'
-  if (props.size === 'xs')
+  if (size === 'xs')
     return 'maz-text-base'
-  if (props.size === 'mini')
+  if (size === 'mini')
     return 'maz-text-sm'
   return 'maz-text-xl'
 })

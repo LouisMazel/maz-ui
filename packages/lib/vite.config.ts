@@ -1,12 +1,14 @@
+import type { UserConfig } from 'vite'
+import type { Target } from 'vite-plugin-static-copy'
 import { rmSync } from 'node:fs'
 import { extname, relative, resolve } from 'node:path'
 import Vue from '@vitejs/plugin-vue'
 import { glob } from 'glob'
-import { defineConfig, type UserConfig } from 'vite'
+import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
-import { libInjectCss } from 'vite-plugin-lib-inject-css'
 
-import { type Target, viteStaticCopy } from 'vite-plugin-static-copy'
+import { libInjectCss } from 'vite-plugin-lib-inject-css'
+import { viteStaticCopy } from 'vite-plugin-static-copy'
 
 import SvgLoader from 'vite-svg-loader'
 import rootPkg from '../../package.json'

@@ -1,7 +1,7 @@
+import type { UserVisibilyCallback, UserVisibilyOptions } from '../helpers/userVisibility'
 import {
   UserVisibility,
-  type UserVisibilyCallback,
-  type UserVisibilyOptions,
+
 } from '../helpers/userVisibility'
 
 export function useUserVisibility({

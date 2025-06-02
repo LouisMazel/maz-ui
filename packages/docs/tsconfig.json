@@ -9,6 +9,7 @@
     "module": "esnext",
     "moduleResolution": "Node",
     "resolveJsonModule": true,
+    "types": ["node"],
     "strict": true,
     "noUnusedLocals": true,
     "esModuleInterop": true,

@@ -90,7 +90,7 @@ export interface MazGalleryProps {
 }
 
 const {
-  images = [],
+  images,
   imagesShownCount = 5,
   noRemaining = false,
   height = 150,

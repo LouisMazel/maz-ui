@@ -1,6 +1,7 @@
 <script lang="ts" setup generic="T extends boolean | (string | number)[]">
+import type { HTMLAttributes } from 'vue'
 import type { Color, Size } from './types'
-import { computed, type HTMLAttributes, ref } from 'vue'
+import { computed, ref } from 'vue'
 import CheckIcon from '../../icons/check.svg'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 

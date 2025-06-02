@@ -1,6 +1,7 @@
 <script lang="ts" setup>
+import type { HTMLAttributes } from 'vue'
 import type { Color, Size } from './types'
-import { computed, defineAsyncComponent, type HTMLAttributes, ref } from 'vue'
+import { computed, defineAsyncComponent, ref } from 'vue'
 import { truthyFilter } from '../helpers/truthyFilter'
 import MazBtn from './MazBtn.vue'
 import MazInput from './MazInput.vue'

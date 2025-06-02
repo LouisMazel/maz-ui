@@ -1,11 +1,14 @@
 <script lang="ts" setup>
+import type { Dayjs } from 'dayjs'
+import type { PropType } from 'vue'
 import type { Color } from '../types'
 import type { PickerValue } from './types'
-import dayjs, { type Dayjs } from 'dayjs'
-import { computed, nextTick, type PropType, ref, watch } from 'vue'
-import MazBtn from '../MazBtn.vue'
+import type { DateTimeFormatOptions } from './utils'
+import dayjs from 'dayjs'
+import { computed, nextTick, ref, watch } from 'vue'
 
-import { type DateTimeFormatOptions, findNearestNumberInList, scrollToTarget } from './utils'
+import MazBtn from '../MazBtn.vue'
+import { findNearestNumberInList, scrollToTarget } from './utils'
 
 type ColumnIdentifier = 'hour' | 'minute' | 'ampm'
 
@@ -49,12 +52,12 @@ const hours = computed(() => {
 
     const isDisabled
         = isDisableHour(hour12or24)
-        || (props.minDate && currentDate.value
-          ? dayjs(props.minDate).isAfter(hourValue, 'hour')
-          : false)
-        || (props.maxDate && currentDate.value
-          ? dayjs(props.maxDate).isBefore(hourValue, 'hour')
-          : false)
+          || (props.minDate && currentDate.value
+            ? dayjs(props.minDate).isAfter(hourValue, 'hour')
+            : false)
+          || (props.maxDate && currentDate.value
+            ? dayjs(props.maxDate).isBefore(hourValue, 'hour')
+            : false)
 
     return {
       label: `${hourBase < 10 ? '0' : ''}${hourBase}`,
@@ -95,9 +98,9 @@ const currentHour = computed(() => {
 const currentMinute = computed(() =>
   typeof currentDate.value === 'string'
     ? findNearestNumberInList(
-      minutes.value.map(({ value }) => value.get('minute')),
-      dayjs(currentDate.value).get('minute'),
-    )
+        minutes.value.map(({ value }) => value.get('minute')),
+        dayjs(currentDate.value).get('minute'),
+      )
     : undefined,
 )
 

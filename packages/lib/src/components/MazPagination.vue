@@ -1,7 +1,8 @@
 <script lang="ts" setup>
+import type { MazBtnProps } from './MazBtn.vue'
 import type { Color, Size } from './types'
 import { computed, defineAsyncComponent } from 'vue'
-import MazBtn, { type MazBtnProps } from './MazBtn.vue'
+import MazBtn from './MazBtn.vue'
 
 const props = withDefaults(defineProps<MazPaginationProps>(), {
   modelValue: 1,

@@ -3,12 +3,13 @@
   setup
   generic="T extends ModelValueSimple, U extends MazSelectOption"
 >
+import type { ComponentPublicInstance, HTMLAttributes } from 'vue'
 import type { Color, ModelValueSimple, Position, Size } from './types'
 import {
-  type ComponentPublicInstance,
+
   computed,
   defineAsyncComponent,
-  type HTMLAttributes,
+
   nextTick,
   onBeforeMount,
   ref,
@@ -370,24 +371,24 @@ function searchInValue(value?: ModelValueSimple, query?: string) {
 function getFilteredOptionWithQuery(query: string) {
   return query
     ? optionsNormalized.value?.filter((option) => {
-      const searchValue = option[props.optionLabelKey]
-      const searchValue3 = option[props.optionValueKey]
-      const searchValue2 = option[props.optionInputValueKey]
+        const searchValue = option[props.optionLabelKey]
+        const searchValue3 = option[props.optionValueKey]
+        const searchValue2 = option[props.optionInputValueKey]
 
-      const threshold = props.searchThreshold
+        const threshold = props.searchThreshold
 
-      return (
-        searchInValue(searchValue, query)
-        || searchInValue(searchValue2, query)
-        || searchInValue(searchValue3, query)
-        || (typeof searchValue === 'string'
-          && useStringMatching(searchValue, query, threshold).isMatching.value)
-        || (typeof searchValue2 === 'string'
-          && useStringMatching(searchValue2, query, threshold).isMatching.value)
-        || (typeof searchValue3 === 'string'
-          && useStringMatching(searchValue3, query, threshold).isMatching.value)
-      )
-    })
+        return (
+          searchInValue(searchValue, query)
+          || searchInValue(searchValue2, query)
+          || searchInValue(searchValue3, query)
+          || (typeof searchValue === 'string'
+            && useStringMatching(searchValue, query, threshold).isMatching.value)
+          || (typeof searchValue2 === 'string'
+            && useStringMatching(searchValue2, query, threshold).isMatching.value)
+          || (typeof searchValue3 === 'string'
+            && useStringMatching(searchValue3, query, threshold).isMatching.value)
+        )
+      })
     : optionsNormalized.value
 }
 
@@ -411,9 +412,9 @@ async function closeList(event?: Event) {
 
   const eventTargetId
       = event
-      && 'relatedTarget' in event
-      && event.relatedTarget instanceof HTMLElement
-      && event.relatedTarget.getAttribute('id')
+        && 'relatedTarget' in event
+        && event.relatedTarget instanceof HTMLElement
+        && event.relatedTarget.getAttribute('id')
 
   if (props.excludeSelectors?.includes(`#${eventTargetId}`)) {
     return event?.preventDefault()

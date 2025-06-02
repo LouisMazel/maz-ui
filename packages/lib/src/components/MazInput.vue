@@ -1,9 +1,10 @@
 <script lang="ts" setup generic="T extends ModelValueSimple">
+import type { HTMLAttributes } from 'vue'
 import type { Color, Icon, ModelValueSimple, Size } from './types'
 import {
   computed,
   defineAsyncComponent,
-  type HTMLAttributes,
+
   onMounted,
   ref,
   useSlots,
@@ -270,10 +271,11 @@ const hasValue = computed(() => model.value !== undefined && model.value !== '')
 const shouldUp = computed(() => {
   return (
     (!!props.label || !!props.hint)
-    && (isFocused.value
-      || !!hasValue.value
+    && (
+      !!hasValue.value
       || !!props.placeholder
-      || ['date', 'month', 'week'].includes(props.type))
+      || ['date', 'month', 'week'].includes(props.type)
+    )
   )
 })
 
@@ -553,6 +555,8 @@ function emitInputEvent(event: Event) {
   &-input {
     @apply maz-m-0 maz-h-full maz-w-full maz-appearance-none maz-truncate maz-border-none maz-bg-transparent maz-px-4 maz-py-0 maz-text-normal maz-shadow-none maz-outline-none;
 
+    transition: padding 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+
     &:-webkit-autofill,
     &:-webkit-autofill:hover,
     &:-webkit-autofill:focus {
@@ -582,6 +586,10 @@ function emitInputEvent(event: Event) {
   &.--should-up {
     & .m-input-label {
       transform: scale(0.8) translateY(-0.65em);
+    }
+
+    & .m-input-input {
+      @apply maz-pt-4;
     }
   }
 
@@ -633,7 +641,7 @@ function emitInputEvent(event: Event) {
     }
 
     .m-input-input {
-      @apply maz-px-3 maz-pt-4;
+      @apply maz-px-3;
     }
   }
 }

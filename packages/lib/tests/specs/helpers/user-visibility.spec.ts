@@ -1,11 +1,11 @@
 /* eslint-disable ts/ban-ts-comment */
 
-import { sleep } from '@helpers/sleep'
+import type { UserVisibilyCallback, UserVisibilyOptions } from '@helpers/userVisibility'
 
+import { sleep } from '@helpers/sleep'
 import {
   UserVisibility,
-  type UserVisibilyCallback,
-  type UserVisibilyOptions,
+
 } from '@helpers/userVisibility'
 import { documentEmitVisibilityState } from './../../helpers/document-event'
 
@@ -64,6 +64,7 @@ describe('@helpers/user-visibility.ts', () => {
 
     describe('when instance has immediate option to "true"', () => {
       it('then instance have called callback', () => {
+        // eslint-disable-next-line sonarjs/no-unused-vars
         const _newInstance = new UserVisibility(callback, {
           ...options,
           immediate: true,
@@ -76,6 +77,7 @@ describe('@helpers/user-visibility.ts', () => {
       it('then instance have called callback and is destroy', async () => {
         documentEmitVisibilityState('hidden')
 
+        // eslint-disable-next-line sonarjs/no-unused-vars
         const _newInstance = new UserVisibility(callback, {
           ...options,
           once: true,
