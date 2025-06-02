@@ -1,8 +1,9 @@
 <script lang="ts" setup>
+import type { HTMLAttributes } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
 import type { MazLinkProps } from './MazLink.vue'
 import type { Color, Icon, Position, Size } from './types'
-import { computed, defineAsyncComponent, type HTMLAttributes, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, ref, watch } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import { vClickOutside } from '../directives/vClickOutside'
 import { debounce } from '../helpers/debounce'

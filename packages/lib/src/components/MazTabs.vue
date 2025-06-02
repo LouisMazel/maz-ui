@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { computed, provide, type Ref, ref } from 'vue'
+import type { Ref } from 'vue'
+import { computed, provide, ref } from 'vue'
 
 export interface MazTabsProps {
   /** The the selected tab number */

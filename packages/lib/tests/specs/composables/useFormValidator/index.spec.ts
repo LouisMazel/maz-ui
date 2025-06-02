@@ -243,6 +243,7 @@ describe('given useFormField with eager mode', () => {
       // @ts-expect-error - method is defined
       nameField.validationEvents.value.onBlur()
 
+      // eslint-disable-next-line sonarjs/no-hardcoded-passwords
       passwordField.value.value = 'password'
       // @ts-expect-error - method is defined
       passwordField.validationEvents.value.onBlur()

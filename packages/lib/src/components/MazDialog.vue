@@ -4,6 +4,8 @@ import type {
   HTMLAttributes,
   StyleValue,
 } from 'vue'
+import type { MazBackdropProps } from './MazBackdrop.vue'
+
 import {
   computed,
   defineAsyncComponent,
@@ -13,15 +15,14 @@ import {
   useSlots,
   watch,
 } from 'vue'
-
-import MazBackdrop, { type MazBackdropProps } from './MazBackdrop.vue'
+import MazBackdrop from './MazBackdrop.vue'
 
 defineOptions({
   name: 'MazDialog',
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<InternalProps & MazBackdropProps>(), {
+const props = withDefaults(defineProps<DialogProps & MazBackdropProps>(), {
   /** Title of the modal in header */
   title: undefined,
   /** Remove the close button in header */
@@ -47,7 +48,7 @@ defineEmits<{
 
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 
-interface InternalProps {
+export interface DialogProps {
   /** @model Modal's model value */
   modelValue?: boolean
   /** Title of the modal in header */
@@ -64,7 +65,7 @@ interface InternalProps {
   persistent?: boolean
 }
 
-export type MazDialogProps = InternalProps & MazBackdropProps
+export interface MazDialogProps extends DialogProps, MazBackdropProps {}
 
 const XIcon = defineAsyncComponent(() => import('../../icons/x-mark.svg'))
 

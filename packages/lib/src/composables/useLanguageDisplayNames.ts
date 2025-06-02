@@ -1,4 +1,5 @@
-import { computed, type MaybeRefOrGetter, toValue } from 'vue'
+import type { MaybeRefOrGetter } from 'vue'
+import { computed, toValue } from 'vue'
 
 const bcp47Codes = [
   'af-ZA',

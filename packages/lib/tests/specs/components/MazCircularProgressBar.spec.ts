@@ -1,5 +1,6 @@
+import type { VueWrapper } from '@vue/test-utils'
 import MazCircularProgressBar from '@components/MazCircularProgressBar.vue'
-import { mount, type VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 
 const mockIntersectionObserver = vi.fn()
 mockIntersectionObserver.mockReturnValue({

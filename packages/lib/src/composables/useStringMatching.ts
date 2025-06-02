@@ -1,4 +1,5 @@
-import { computed, type MaybeRefOrGetter, toValue } from 'vue'
+import type { MaybeRefOrGetter } from 'vue'
+import { computed, toValue } from 'vue'
 import { normalizeString } from '../helpers/normalizeString'
 
 function levenshteinDistance(string1: string, string2: string): number {

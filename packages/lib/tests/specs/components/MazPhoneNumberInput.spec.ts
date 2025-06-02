@@ -1,8 +1,9 @@
 import type { Results } from '@components/MazInputPhoneNumber/types'
+import type { VueWrapper } from '@vue/test-utils'
 import MazInputPhoneNumber from '@components/MazInputPhoneNumber.vue'
 import CountrySelector from '@components/MazInputPhoneNumber/CountrySelector.vue'
 import PhoneInput from '@components/MazInputPhoneNumber/PhoneInput.vue'
-import { mount, type VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 
 describe('components/MazInputPhoneNumber.vue', () => {

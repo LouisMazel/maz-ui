@@ -1,9 +1,9 @@
 /* eslint-disable ts/ban-ts-comment */
 
+import type { IdleTimeoutCallback, IdleTimeoutOptions } from '@helpers/idleTimeout'
 import {
   IdleTimeout,
-  type IdleTimeoutCallback,
-  type IdleTimeoutOptions,
+
 } from '@helpers/idleTimeout'
 import { sleep } from '@helpers/sleep'
 
@@ -164,6 +164,7 @@ describe('@helpers/idle-timeout', () => {
     describe('when instance has immediate option', () => {
       it('then callback is called immediately', () => {
         const immediateCallback: IdleTimeoutCallback = vitest.fn()
+        // eslint-disable-next-line sonarjs/no-unused-vars
         const _immediateInstance = new IdleTimeout(immediateCallback, {
           ...options,
           immediate: true,

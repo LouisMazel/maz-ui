@@ -108,7 +108,8 @@
     --maz-border-width: 0.063rem;
     --maz-border-color: hsl(220deg 13.04% 90.98%);
     --maz-border-radius: 0.7rem;
-    --maz-font-family: system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, oxygen, ubuntu, cantarell,
-      'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    --maz-font-family:
+      system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, oxygen, ubuntu, cantarell, 'Fira Sans',
+      'Droid Sans', 'Helvetica Neue', sans-serif;
   }
 }

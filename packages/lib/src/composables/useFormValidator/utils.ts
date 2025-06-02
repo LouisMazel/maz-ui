@@ -401,8 +401,8 @@ export function canExecuteValidation<Model extends BaseFormPayload>({
 
   const shouldNotValidate
     = (eventName === 'blur' && (hasModeIncludes(['lazy', 'aggressive'], mode) || valid))
-    || (eventName === 'input' && mode === 'blur')
-    || !mode
+      || (eventName === 'input' && mode === 'blur')
+      || !mode
 
   if (shouldNotValidate) {
     return false
