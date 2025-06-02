@@ -42,7 +42,7 @@
     "colorette": "^2.0.20",
     "commander": "^12.1.0",
     "cosmiconfig": "^9.0.0",
-    "figlet": "^1.8.0",
+    "figlet": "^1.8.1",
     "tinycolor2": "^1.6.0",
     "typescript": "5.6.2"
   },

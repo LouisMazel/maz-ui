@@ -22,7 +22,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           cache: 'pnpm'
-          node-version: '21'
+          node-version: '22'
           registry-url: 'https://registry.npmjs.org'
 
       - name: Get last repo version

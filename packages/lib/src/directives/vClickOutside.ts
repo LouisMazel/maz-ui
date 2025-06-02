@@ -1,6 +1,6 @@
 import { type DirectiveBinding, nextTick, type ObjectDirective, type Plugin } from 'vue'
 
-const UNIQUE_ID = '__maz-click-outside__'
+const UNIQUE_ID = '__maz-click-outside__' as const
 
 function getEventType() {
   return document.ontouchstart === null ? 'touchstart' : 'click'
