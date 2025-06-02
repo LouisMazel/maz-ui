@@ -14,11 +14,11 @@
     "ftp-deploy": "node ./ftp-deploy.mjs"
   },
   "dependencies": {
-    "chart.js": "^4.4.7",
+    "chart.js": "^4.4.9",
     "chartjs-plugin-datalabels": "^2.2.0",
     "dayjs": "^1.11.13",
     "dropzone": "^5.9.3",
-    "libphonenumber-js": "^1.11.16",
+    "libphonenumber-js": "^1.12.8",
     "maz-ui": "workspace:*",
     "vitepress-plugin-google-analytics": "^1.0.2"
   },
@@ -26,15 +26,15 @@
     "@samkirkland/ftp-deploy": "^1.2.4",
     "@types/postcss-import": "^14.0.3",
     "@types/postcss-url": "^10.0.4",
-    "@types/react": "^19.0.1",
-    "@vercel/og": "^0.6.4",
+    "@types/react": "^19.1.6",
+    "@vercel/og": "^0.6.8",
     "postcss-import": "^16.1.0",
     "postcss-url": "^10.1.3",
-    "react": "^19.0.0",
-    "tailwindcss": "^3.4.16",
+    "react": "^19.1.0",
+    "tailwindcss": "^3.4.17",
     "typescript": "5.6.2",
     "vitepress": "1.5.0",
-    "vue": "^3.5.13"
+    "vue": "^3.5.16"
   },
   "lint-staged": {
     "*.{js,ts,vue,mjs,mts,cjs}": "cross-env NODE_ENV=production eslint --fix"

@@ -254,11 +254,11 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
       const injectAosCSS
         = typeof moduleOptions.injectAos === 'object'
-        && typeof moduleOptions.injectAos.injectCss === 'boolean'
+          && typeof moduleOptions.injectAos.injectCss === 'boolean'
           ? moduleOptions.injectAos.injectCss
           : true
 
-      if (typeof moduleOptions.injectAos === 'object' && injectAosCSS) {
+      if (injectAosCSS) {
         nuxt.options.css = ['maz-ui/dist/css/aos.css', ...nuxt.options.css]
       }
 
