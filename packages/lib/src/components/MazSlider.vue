@@ -6,7 +6,6 @@ import {
   nextTick,
   onBeforeUnmount,
   onMounted,
-  type PropType,
   ref,
   watch,
 } from 'vue'
@@ -14,35 +13,37 @@ import {
 import { debounce } from '../helpers/debounce'
 import { getOpacityCoeff, getPos, isBetween } from './MazSlider/utils'
 
-const props = defineProps({
+export interface MazSliderProps {
   /** Array of cursors values */
-  modelValue: {
-    type: [Number, Array] as PropType<number | number[]>,
-    required: true,
-    validator: (value: string) => {
-      return ['number'].includes(typeof value) || Array.isArray(value) || value === null
-    },
-  },
+  modelValue: number | number[] | undefined | null
   /** array of cursors label */
-  labels: { type: Array, default: undefined },
+  labels?: string[]
   /** min value of sliders */
-  min: { type: Number, default: 0 },
+  min?: number
   /** max value of sliders */
-  max: { type: Number, default: 100 },
+  max?: number
   /** height size of slider bar */
-  size: { type: String, default: undefined },
+  size?: string
   /** remove div in different colors */
-  noDivider: { type: Boolean, default: false },
+  noDivider?: boolean
   /** become a logarithmic slider (exponential) */
-  log: { type: Boolean, default: false },
+  log?: boolean
   /** main slider color */
-  color: {
-    type: String as PropType<Color>,
-    default: 'primary',
-  },
+  color?: Color
   /** disables cursor animation when active */
-  noCursorAnim: { type: Boolean, default: false },
-})
+  noCursorAnim?: boolean
+}
+
+const {
+  modelValue,
+  labels,
+  min = 0,
+  max = 100,
+  color = 'primary',
+  noDivider = false,
+  log = false,
+  noCursorAnim = false,
+} = defineProps<MazSliderProps>()
 
 const emits = defineEmits(['update:model-value'])
 
@@ -58,44 +59,42 @@ const dividers = ref<CSSProperties[]>([])
 // COMPUTED
 
 const computedValue = computed<number[]>(() => {
-  if (typeof props.modelValue === 'number') {
-    return [props.modelValue]
+  if (typeof modelValue === 'number') {
+    return [modelValue]
   }
-  else if (props.modelValue) {
-    return props.modelValue
+  else if (modelValue) {
+    return modelValue
   }
   else {
     return [0]
   }
 })
 const minLog = computed(() => {
-  return Math.log(props.min || 1)
+  return Math.log(min || 1)
 })
 const maxLog = computed(() => {
-  return Math.log(props.max)
+  return Math.log(max)
 })
 const scale = computed(() => {
-  const { min, max } = props
   return (maxLog.value - minLog.value) / (max - min)
 })
 const range = computed(() => {
-  const { min, max } = props
   return max - min
 })
 const wrapperStyle = computed(() => {
   return {
-    paddingTop: props.labels ? `2.5em` : `1em`,
+    paddingTop: labels ? `2.5em` : `1em`,
   }
 })
-const hasMultipleValues = computed(() => Array.isArray(props.modelValue))
+const hasMultipleValues = computed(() => Array.isArray(modelValue))
 
 watch(
-  () => props.modelValue,
+  () => modelValue,
   () => (tmpValues.value = computedValue.value),
   { immediate: true },
 )
 watch(
-  () => [computedValue.value, props.min, props.max, props.log].join(','),
+  () => [computedValue.value, min, max, log].join(','),
   () => buildComponent(true),
 )
 
@@ -148,7 +147,6 @@ function blurCursor(i: number) {
 }
 function checkValues() {
   // check if values are not below the min or above the max
-  const { min, max } = props
   const valuesChecked = computedValue.value.map((v: number) =>
     v < min ? min : v > max ? max : v,
   )
@@ -160,12 +158,11 @@ function emitValue(values: number[]) {
   emits('update:model-value', valueToEmit)
 }
 function getLabel(i: number) {
-  const { labels } = props
   return labels ? labels[i] : undefined
 }
 function setBtnDividers(i: number) {
   setBtnStyle(i)
-  if (!props.noDivider)
+  if (!noDivider)
     setDividers()
 }
 async function setBtnStyle(i: number) {
@@ -213,7 +210,6 @@ function setDividers() {
 
 async function calcPos() {
   await nextTick()
-  const { min, max, log } = props
   const barWidth = MazSlider.value?.clientWidth
   if (typeof barWidth === 'number') {
     buttonPositions.value = tmpValues.value?.map(v =>
@@ -228,7 +224,6 @@ async function calcPos() {
 }
 async function getCursorsValues() {
   await nextTick()
-  const { max, min, log } = props
   const barWidth = MazSlider.value?.clientWidth
   if (typeof barWidth === 'number') {
     return log
@@ -315,7 +310,7 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
       ref="MazSlider"
       class="m-slider__bar"
       role="slider"
-      :aria-valuenow="modelValue.toString()"
+      :aria-valuenow="modelValue?.toString()"
       :aria-valuemin="min"
       :aria-valuemax="max"
     >

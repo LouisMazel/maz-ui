@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url'
 import Vue from '@vitejs/plugin-vue'
 import SvgLoader from 'vite-svg-loader'
 
-import { defineConfig } from 'vitest/config'
+import { coverageConfigDefaults, defaultExclude, defineConfig } from 'vitest/config'
 
 const _dirname = fileURLToPath(new URL('.', import.meta.url))
 
@@ -29,8 +29,9 @@ export default defineConfig({
       provider: 'v8',
       all: true,
       reporter: ['clover', 'html'],
-      include: ['modules', 'components'],
+      include: ['src/**/*'],
       exclude: [
+        ...coverageConfigDefaults.exclude,
         'src/components/index.ts',
         'src/components/constantes.ts',
         'src/components/MazPhoneNumberInput/constantes/locales.ts',
@@ -67,6 +68,7 @@ export default defineConfig({
       ],
       extension: ['.js', '.ts', '.vue'],
     },
+    exclude: defaultExclude,
   },
   resolve: {
     alias: {

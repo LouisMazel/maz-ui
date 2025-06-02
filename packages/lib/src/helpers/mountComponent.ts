@@ -10,7 +10,7 @@ export function mount<T extends Component, P = Record<string, unknown>>(
     addDestroyInProps?: boolean
   },
 ) {
-  let el = options?.element
+  let el = options?.element ?? document.body
 
   function destroy() {
     if (el)

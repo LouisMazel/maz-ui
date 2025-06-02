@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, defineProps, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 
 export interface MazAnimatedElementProps {
   /**

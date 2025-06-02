@@ -254,7 +254,6 @@ function onFocus(event: FocusEvent) {
           '--success': success,
           '--warning': warning,
         }"
-        :style="{ boxShadow: `0 0 0 0.125rem ${checkboxBoxShadow}` }"
       >{{ hint }}</span>
     </div>
   </label>

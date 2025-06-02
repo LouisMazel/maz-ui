@@ -1,71 +1,79 @@
-<script lang="ts" setup>
+<script lang="ts">
+/* eslint-disable import/first */
+import type {
+  ChartData,
+  ChartOptions,
+  ChartType,
+  DefaultDataPoint,
+  Plugin,
+  UpdateMode,
+} from 'chart.js'
+
+export type { ChartData, ChartType, DefaultDataPoint, Plugin, UpdateMode } from 'chart.js'
+
+export interface MazChartProps<T extends ChartType = ChartType, TData = DefaultDataPoint<T>, TLabel = unknown> {
+  /**
+   * Type of the chart
+   * @type ChartType
+   * @values 'bar', 'line', 'scatter', 'bubble', 'pie', 'doughnut', 'polarArea', 'radar'
+   * @required
+   */
+  type: T
+  /**
+   * Data of the chart
+   * @type ChartData<T, TData, TLabel>
+   * @required
+   */
+  data: ChartData<T, TData, TLabel>
+  /**
+   * Options of the chart
+   * @type ChartOptions<T>
+   * @default {}
+   */
+  options?: ChartOptions<T>
+  /**
+   * Plugins of the chart
+   * @type Plugin[]
+   */
+  plugins?: Plugin[]
+  /**
+   * Dataset ID key
+   * @type string
+   */
+  datasetIdKey?: string
+  /**
+   * Update mode
+   * @type UpdateMode
+   * @values 'resize', 'reset', 'none', 'hide', 'show', 'default', 'active'
+   * @default 'default'
+   */
+  updateMode?: UpdateMode
+}
+</script>
+
+<script lang="ts" setup generic="T extends ChartType, TData = DefaultDataPoint<T>, TLabel = unknown">
 import {
   ArcElement,
   BarElement,
   CategoryScale,
   Chart,
-  type ChartData,
-  type ChartType,
   Legend,
   LinearScale,
   LineElement,
   PointElement,
   Title,
   Tooltip,
-  type UpdateMode,
 } from 'chart.js'
-import { defineAsyncComponent, type PropType } from 'vue'
+import { defineAsyncComponent } from 'vue'
 
-export type { ChartData, ChartType, UpdateMode }
-
-const props = defineProps({
-  /**
-   * Chart.js chart type
-   */
-  type: {
-    type: String as PropType<ChartType>,
-    required: true,
-  },
-  /**
-   * The data object that is passed into the Chart.js chart
-   * @see https://www.chartjs.org/docs/latest/getting-started/
-   */
-  data: {
-    type: Object as PropType<ChartData<ChartType>>,
-    required: true,
-  },
-  /**
-   * The options object that is passed into the Chart.js chart
-   * @see https://www.chartjs.org/docs/latest/general/options.html
-   */
-  options: {
-    type: Object,
-    default: () => ({}),
-  },
-  /**
-   * The plugins array that is passed into the Chart.js chart
-   * @see https://www.chartjs.org/docs/latest/developers/plugins.html
-   */
-  plugins: {
-    type: Array,
-    default: () => [],
-  },
-  /**
-   * Key name to identificate dataset
-   */
-  datasetIdKey: {
-    type: String,
-    default: 'label',
-  },
-  /**
-   * A mode string to indicate transition configuration should be used.
-   * @see https://www.chartjs.org/docs/latest/developers/api.html#update-mode
-   */
-  updateMode: {
-    type: String as PropType<UpdateMode>,
-    default: undefined,
-  },
-})
+const {
+  type,
+  data,
+  options = {},
+  plugins,
+  datasetIdKey,
+  updateMode,
+} = defineProps<MazChartProps<T, TData, TLabel>>()
 
 Chart.register(
   CategoryScale,
@@ -84,36 +92,22 @@ const component = defineAsyncComponent(async () => {
     'vue-chartjs'
   )
 
-  switch (props.type) {
-    case 'bar': {
-      return Bar
-    }
-    case 'line': {
-      return Line
-    }
-    case 'scatter': {
-      return Scatter
-    }
-    case 'bubble': {
-      return Bubble
-    }
-    case 'pie': {
-      return Pie
-    }
-    case 'doughnut': {
-      return Doughnut
-    }
-    case 'polarArea': {
-      return PolarArea
-    }
-    case 'radar': {
-      return Radar
-    }
-  }
+  const components = {
+    bar: Bar,
+    line: Line,
+    scatter: Scatter,
+    bubble: Bubble,
+    pie: Pie,
+    doughnut: Doughnut,
+    polarArea: PolarArea,
+    radar: Radar,
+  } as const
+
+  return components[type]
 })
 </script>
 
 <template>
   <!-- @vue-expect-error -->
-  <Component :is="component" class="m-chart m-reset-css" v-bind="props" />
+  <Component :is="component" class="m-chart m-reset-css" :data :options :plugins :dataset-id-key :update-mode />
 </template>
