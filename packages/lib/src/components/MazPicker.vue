@@ -1,5 +1,7 @@
 <script lang="ts" setup>
+import type { HTMLAttributes } from 'vue'
 import type { PickerShortcut, PickerValue } from './MazPicker/types'
+import type { DateTimeFormatOptions } from './MazPicker/utils'
 import type { Color, Position } from './types'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
@@ -7,7 +9,7 @@ import isBetween from 'dayjs/plugin/isBetween'
 import {
   computed,
   defineAsyncComponent,
-  type HTMLAttributes,
+
   nextTick,
   onBeforeMount,
   onMounted,
@@ -15,16 +17,16 @@ import {
   ref,
   watch,
 } from 'vue'
+
 import ChevronDownIcon from '../../icons/chevron-down.svg'
 
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
-
 import { vClickOutside } from '../directives/vClickOutside'
 import { date } from '../filters/date'
 import MazPickerContainer from './MazPicker/MazPickerContainer.vue'
 import {
   checkValueWithMinMaxDates,
-  type DateTimeFormatOptions,
+
   fetchLocale,
   getBrowserLocale,
   getFormattedDate,
@@ -303,9 +305,9 @@ const inputValue = computed(() => {
   if (props.onlyTime) {
     formattedDate = currentValue.value
       ? date(dayjs(currentValue.value as string).format(), currentLocale.value, {
-        timeStyle: formatterOptions.value.timeStyle,
-        hour12: formatterOptions.value.hour12,
-      })
+          timeStyle: formatterOptions.value.timeStyle,
+          hour12: formatterOptions.value.hour12,
+        })
       : undefined
   }
   else if (typeof currentValue.value === 'object') {

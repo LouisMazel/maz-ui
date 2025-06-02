@@ -4,8 +4,6 @@ import { join } from 'node:path'
 import { ImageResponse } from '@vercel/og'
 import React from 'react'
 
-/* eslint-disable sonarjs/no-unknown-property, sonarjs/anchor-is-valid */
-
 export function ogImage({ title, description }: { title: string, description: string }) {
   return new ImageResponse(
     (

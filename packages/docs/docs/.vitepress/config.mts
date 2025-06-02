@@ -4,8 +4,8 @@ import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import autoprefixer from 'autoprefixer'
 import postcssImport from 'postcss-import'
-import postcssNested from 'postcss-nested'
 
+import postcssNested from 'postcss-nested'
 import postcssUrl from 'postcss-url'
 import tailwind from 'tailwindcss'
 import tailwindcssNesting from 'tailwindcss/nesting'
@@ -96,7 +96,7 @@ export default defineConfig({
   },
 
   vite: {
-    plugins: [svgLoader()],
+    plugins: [svgLoader() as any],
     server: {
       fs: {
         allow: [join(_dirname, './../../../lib')],

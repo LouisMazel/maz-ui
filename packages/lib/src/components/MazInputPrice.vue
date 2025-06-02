@@ -1,6 +1,7 @@
 <script lang="ts" setup>
+import type { FilterCurrencyOptions } from '../filters/currency'
 import { computed, defineAsyncComponent, nextTick, onMounted, ref, watch } from 'vue'
-import { currency as currencyFilter, type FilterCurrencyOptions } from '../filters/currency'
+import { currency as currencyFilter } from '../filters/currency'
 import MazInput from './MazInput.vue'
 
 const props = withDefaults(defineProps<MazInputPriceProps>(), {
@@ -115,6 +116,7 @@ function onFocus(event: Event) {
 }
 function onInput() {
   emits('input', internalValue.value)
+  emitValues(internalValue.value)
 }
 function updateInternalValue(value?: string | number) {
   internalValue.value = getAdjustedPrice(value)

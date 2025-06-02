@@ -1,6 +1,7 @@
+import type { VueWrapper } from '@vue/test-utils'
 import type { ComponentPublicInstance } from 'vue'
 import MazSelect from '@components/MazSelect.vue'
-import { mount, type VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 
 describe('components/MazSelect.vue', () => {
   expect(MazSelect).toBeTruthy()

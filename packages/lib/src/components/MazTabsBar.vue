@@ -1,14 +1,15 @@
 <script lang="ts" setup>
+import type { ComponentPublicInstance, StyleValue } from 'vue'
 import type { MazBadgeColor, MazBadgeRoundedSize } from './MazBadge.vue'
 import type { MazTabsProvide } from './MazTabs.vue'
 import {
-  type ComponentPublicInstance,
+
   computed,
   defineAsyncComponent,
   onBeforeMount,
   onMounted,
   ref,
-  type StyleValue,
+
   watch,
 } from 'vue'
 import { injectStrict } from '../helpers/injectStrict'

@@ -1,6 +1,7 @@
 <script lang="ts" setup>
+import type { HTMLAttributes, StyleValue } from 'vue'
 import type { Color } from './types'
-import { computed, type HTMLAttributes, onMounted, onUnmounted, ref, type StyleValue } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 
 export interface MazCardSpotlightProps {
   /**
@@ -129,7 +130,6 @@ onUnmounted(() => {
   }
 
   .fakeblob {
-    display: hidden;
     position: absolute;
     z-index: -1;
     top: 0;

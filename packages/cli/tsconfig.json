@@ -7,6 +7,7 @@
     "module": "ESNext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
+    "types": ["node"],
     "strict": true,
     "strictNullChecks": true,
     "noImplicitAny": true,

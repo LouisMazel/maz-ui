@@ -44,25 +44,6 @@ describe('mazFullscreenImg', () => {
 
     await wrapper.vm.$nextTick()
 
-    // expect(wrapper.find('.m-fullscreen-img-wrapper').isVisible()).toBe(true)
     expect(wrapper.find('img').attributes('alt')).toBe(alt)
   })
-
-  // test('should close the component and destroy it correctly', async () => {
-  //   const destroy = vi.fn()
-
-  //   const wrapper = shallowMount(MazFullscreenImg, {
-  //     props: {
-  //       src: 'https://via.placeholder.com/150',
-  //       alt: 'placeholder image',
-  //       openInstanceClass: 'zv-open',
-  //       destroy,
-  //       ...defaultProperties,
-  //     },
-  //   })
-
-  //   await wrapper.find('.m-fullscreen-btn.--close').trigger('click')
-
-  //   expect(wrapper.emitted('before-close')).toBeTruthy()
-  // })
 })

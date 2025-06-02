@@ -1,8 +1,10 @@
 <script lang="ts" setup>
+import type { Dayjs } from 'dayjs'
+import type { PropType } from 'vue'
 import type { Color } from '../../types'
 import type { PickerValue } from '../types'
-import dayjs, { type Dayjs } from 'dayjs'
-import { computed, type PropType } from 'vue'
+import dayjs from 'dayjs'
+import { computed } from 'vue'
 import MazPickerCalendarDays from './MazPickerCalendarDays.vue'
 
 import MazPickerCalendarGrid from './MazPickerCalendarGrid.vue'
@@ -32,8 +34,6 @@ const modelValue = computed({
   get: () => props.modelValue,
   set: value => emits('update:model-value', value),
 })
-
-// const isRangeMode = computed(() => typeof modelValue.value === 'object')
 
 const hoverredDay = computed({
   get: () => props.hoverredDay,

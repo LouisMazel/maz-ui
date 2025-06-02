@@ -1,6 +1,7 @@
 <script lang="ts" setup>
+import type { SVGAttributes } from 'vue'
 import type { Color } from './types'
-import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref, type SVGAttributes, useSlots } from 'vue'
+import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref, useSlots } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 
 export interface MazCircularProgressBarProps {
@@ -86,17 +87,17 @@ export interface MazCircularProgressBarProps {
 }
 
 const {
-  percentage = 0,
+  percentage,
   size = '10em',
   duration = 1000,
   delay = 100,
-  color = undefined,
+  color,
   autoColor = false,
-  prefix = undefined,
-  suffix = undefined,
+  prefix,
+  suffix,
   strokeLinecap = 'round',
   strokeWidth = 6,
-  stroke = undefined,
+  stroke,
   successPercentage = 100,
   warningPercentage = 75,
   dangerPercentage = 50,
