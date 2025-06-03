@@ -1,8 +1,8 @@
 import type { App } from 'vue'
 import type { MazDialogPromiseProps } from '../../components/MazDialogPromise.vue'
-import MazDialogPromise from '../../components/MazDialogPromise.vue'
+import { defineAsyncComponent } from 'vue'
 import { useMazDialogPromise } from '../../components/MazDialogPromise/useMazDialogPromise'
-import { mount } from '../../helpers/mountComponent'
+import { useMountComponent } from '../../composables/useMountComponent'
 
 export type DialogOptions = Partial<Omit<MazDialogPromiseProps, 'modelValue'>> & {
   promiseCallback?: () => unknown
@@ -26,7 +26,9 @@ export class DialogHandler {
       ...options,
     }
 
-    const { destroy, vNode } = mount<typeof MazDialogPromise, MazDialogPromiseProps>(MazDialogPromise, {
+    const MazDialogPromise = defineAsyncComponent(() => import('../../components/MazDialogPromise.vue'))
+
+    const { destroy, vNode } = useMountComponent<typeof MazDialogPromise, MazDialogPromiseProps>(MazDialogPromise, {
       props,
       app: this.app,
     })

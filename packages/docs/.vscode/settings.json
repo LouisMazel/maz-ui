@@ -83,5 +83,21 @@
     "scss",
     "pcss",
     "postcss"
-  ]
+  ],
+  "editor.quickSuggestions": {
+    "other": "on",
+    "comments": "on",
+    "strings": "on"
+  },
+  "editor.wordBasedSuggestions": "allDocuments",
+  "editor.suggest.showWords": true,
+  "markdown.suggest.paths.enabled": true,
+  "[markdown]": {
+    "editor.quickSuggestions": {
+      "other": "on",
+      "comments": "on",
+      "strings": "on"
+    },
+    "editor.wordBasedSuggestions": "allDocuments"
+  }
 }

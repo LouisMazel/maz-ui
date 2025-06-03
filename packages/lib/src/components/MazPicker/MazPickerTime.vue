@@ -2,7 +2,7 @@
 import type { Dayjs } from 'dayjs'
 import type { PropType } from 'vue'
 import type { Color } from '../types'
-import type { PickerValue } from './types'
+import type { MazPickerValue } from './types'
 import type { DateTimeFormatOptions } from './utils'
 import dayjs from 'dayjs'
 import { computed, nextTick, ref, watch } from 'vue'
@@ -14,7 +14,7 @@ type ColumnIdentifier = 'hour' | 'minute' | 'ampm'
 
 const props = defineProps({
   modelValue: {
-    type: [String, Object] as PropType<PickerValue>,
+    type: [String, Object] as PropType<MazPickerValue>,
     default: undefined,
   },
   calendarDate: { type: String, required: true },
@@ -346,7 +346,18 @@ async function selectTime(identifier: ColumnIdentifier, value: TimeValue) {
   }
 
   &__column {
-    @apply maz-flex maz-flex-col maz-overflow-y-scroll maz-px-1;
+    @apply maz-flex maz-flex-col maz-overflow-y-auto maz-px-1;
+
+    /* Hide scrollbar for webkit browsers (Chrome, Safari, Edge) */
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Hide scrollbar for Firefox */
+    scrollbar-width: none;
+
+    /* Hide scrollbar for IE and Edge legacy */
+    -ms-overflow-style: none;
 
     &__items {
       @apply maz-flex maz-flex-col maz-space-y-1;

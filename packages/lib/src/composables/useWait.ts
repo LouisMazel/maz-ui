@@ -1,6 +1,6 @@
 import type { WaitHandler } from '../plugins/wait'
-import { injectStrict } from '../helpers/injectStrict'
+import { useInjectStrict } from '../composables/useInjectStrict'
 
 export function useWait() {
-  return injectStrict<WaitHandler>('wait')
+  return useInjectStrict<WaitHandler>('wait')
 }

@@ -9,8 +9,8 @@ import type { Color, Position, Size } from './../types'
 import type { MazInputPhoneNumberTranslations } from './types'
 import { computed, defineAsyncComponent, ref } from 'vue'
 
+import { useInjectStrict } from '../../composables/useInjectStrict'
 import { countryFlagUrlFromFlagCdn } from '../../helpers/countryFlagFromFlagCdn'
-import { injectStrict } from '../../helpers/injectStrict'
 import { truthyFilter } from '../../helpers/truthyFilter'
 import MazSelect from '../MazSelect.vue'
 import { useMazInputPhoneNumber } from './../MazInputPhoneNumber/useMazInputPhoneNumber'
@@ -39,8 +39,8 @@ const {
   customCountriesList?: Record<CountryCode, string>
   locales: MazInputPhoneNumberTranslations
   listPosition?: Position
-  noFlags?: boolean
-  noSearch?: boolean
+  hideFlags?: boolean
+  search?: boolean
   disabled?: boolean
   showCodeOnList?: boolean
   countryLocale?: string
@@ -49,14 +49,14 @@ const {
   countrySelectorDisplayName?: boolean
   searchThreshold?: number
   width?: string
-  excludeSelectors?: string[]
+  excludedSelectors?: string[]
 }>()
 
 defineEmits<(event: 'update:model-value', countryCode?: CountryCode) => void>()
 
 const MazLazyImg = defineAsyncComponent(() => import('../MazLazyImg.vue'))
 
-const { phoneNumber } = injectStrict<MazInputPhoneNumberInjectedData>('data')
+const { phoneNumber } = useInjectStrict<MazInputPhoneNumberInjectedData>('data')
 
 const CountrySelectorRef = ref<ComponentPublicInstance<typeof MazSelect> & { openList: () => void }>()
 
@@ -106,9 +106,9 @@ function focusCountrySelector() {
 </script>
 
 <template>
-  <div class="m-country-selector" :class="[className, { '--no-flags': noFlags }]" :style="style">
+  <div class="m-country-selector" :class="[className, { '--no-flags': hideFlags }]" :style="style">
     <button
-      v-if="modelValue && !noFlags"
+      v-if="modelValue && !hideFlags"
       :id="`country-selector-flag-button-${id}`"
       class="m-country-selector__country-flag"
       tabindex="-1"
@@ -152,7 +152,7 @@ function focusCountrySelector() {
       :list-position
       :item-height="38"
       :success
-      :search="!noSearch"
+      :search
       :search-placeholder="locales.countrySelector.searchPlaceholder"
       :search-threshold
       :options="countryOptions"
@@ -161,7 +161,7 @@ function focusCountrySelector() {
       :style="{
         width,
       }"
-      :exclude-selectors="[`#country-selector-flag-button-${id}`, ...(excludeSelectors ?? [])]"
+      :exclude-selectors="[`#country-selector-flag-button-${id}`, ...(excludedSelectors ?? [])]"
       @update:model-value="$emit('update:model-value', $event as CountryCode)"
     >
       <template #no-results>
@@ -174,7 +174,7 @@ function focusCountrySelector() {
             'm-country-selector__select__item--selected': isSelected,
           }"
         >
-          <span v-if="!noFlags && typeof option.iso2 === 'string'" class="m-country-selector__select__item__flag-container">
+          <span v-if="!hideFlags && typeof option.iso2 === 'string'" class="m-country-selector__select__item__flag-container">
             <!--
               @slot Country list flag
                 @binding {String} country-code - country code of option - Ex: `"FR"`

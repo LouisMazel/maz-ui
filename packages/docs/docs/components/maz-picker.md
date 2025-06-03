@@ -113,7 +113,7 @@ npm install dayjs
 </template>
 
 <script setup lang="ts">
-  import MazPicker from 'maz-ui/components/MazPicker'
+  import { MazPicker } from 'maz-ui/components'
   import { ref } from 'vue'
   const dateValue = ref('2022-02-03')
 </script>
@@ -152,7 +152,7 @@ npm install dayjs
 </template>
 
 <script setup lang="ts">
-  import MazPicker from 'maz-ui/components/MazPicker'
+  import { MazPicker } from 'maz-ui/components'
   import { ref } from 'vue'
   const dateTimeValue = ref('2022-02-03 16:30')
 </script>
@@ -189,7 +189,7 @@ npm install dayjs
 </template>
 
 <script setup lang="ts">
-  import MazPicker from 'maz-ui/components/MazPicker'
+  import { MazPicker } from 'maz-ui/components'
   import { ref } from 'vue'
   const dateTime12Value = ref('2022-02-03 04:30 pm')
 </script>
@@ -228,7 +228,7 @@ npm install dayjs
 </template>
 
 <script setup lang="ts">
-  import MazPicker from 'maz-ui/components/MazPicker'
+  import { MazPicker } from 'maz-ui/components'
   import { ref } from 'vue'
   const dateTimeValue = ref('2022-02-03 16:30')
 </script>
@@ -265,7 +265,7 @@ npm install dayjs
   </template>
 
   <script setup lang="ts">
-    import MazPicker from 'maz-ui/components/MazPicker'
+    import { MazPicker } from 'maz-ui/components'
     import { ref } from 'vue'
     const dateTime12Value = ref('2022-02-03 04:30 pm')
   </script>
@@ -307,7 +307,7 @@ To enable the range mode, you should provide an object like this `{ start: undef
 </template>
 
 <script setup lang="ts">
-  import MazPicker from 'maz-ui/components/MazPicker'
+  import { MazPicker } from 'maz-ui/components'
   import { ref } from 'vue'
 
   const rangeValues = ref({
@@ -364,7 +364,7 @@ To enable the range mode, you should provide an object like this `{ start: undef
 
 <script setup lang="ts">
   import { ref } from 'vue'
-  import MazPicker, { type  PickerShortcut } from 'maz-ui/components/MazPicker'
+  import { MazPicker, type MazPickerShortcut } from 'maz-ui/components'
 
   const startDate = dayjs().subtract(1, 'month').set('date', 5)
   const endDate = dayjs().add(1, 'month').set('date', 25)
@@ -376,7 +376,7 @@ To enable the range mode, you should provide an object like this `{ start: undef
     max: endDate.add(2, 'days').format('YYYY-MM-DD'),
   })
 
-  const shortcuts: PickerShortcut[] = [
+  const shortcuts: MazPickerShortcut[] = [
     {
       label: 'Next month',
       identifier: 'nextMonth',
@@ -422,7 +422,7 @@ To enable the range mode, you should provide an object like this `{ start: undef
     max: endDate.add(2, 'days').format('YYYY-MM-DD'),
   })
 
-  const shortcuts: PickerShortcut[] = [
+  const shortcuts: MazPickerShortcut[] = [
     {
       label: 'Next month',
       identifier: 'nextMonth',
@@ -477,7 +477,7 @@ You can use the `input-date-transformer` prop to transform the value displayed i
 #### Model
 
 ```ts
-interface PickerShortcut {
+interface MazPickerShortcut {
   identifier: string // should be uniq
   label: string
   value: {
@@ -486,15 +486,15 @@ interface PickerShortcut {
   }
 }
 
-type PickerShortcuts = PickerShortcut[]
+type MazPickerShortcuts = MazPickerShortcut[]
 ```
 
 #### Example
 
 ```ts
-import { PickerShortcut } from 'maz-ui/components/MazPicker'
+import { type MazPickerShortcut } from 'maz-ui/components'
 
-const shortcuts: PickerShortcut[] = [{
+const shortcuts: MazPickerShortcut[] = [{
   label: 'Next month',
   identifier: 'nextMonth',
   value: {

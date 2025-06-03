@@ -1,6 +1,6 @@
 import type { DialogHandler } from '../plugins/dialog/DialogHandler'
-import { injectStrict } from '../helpers/injectStrict'
+import { useInjectStrict } from '../composables/useInjectStrict'
 
 export function useDialog() {
-  return injectStrict<DialogHandler>('dialog')
+  return useInjectStrict<DialogHandler>('dialog')
 }

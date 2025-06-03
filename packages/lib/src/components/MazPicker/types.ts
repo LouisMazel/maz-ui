@@ -1,15 +1,13 @@
-export type SimpleValue = string | undefined
-
-export interface RangeValue {
+export interface MazPickerRangeValue {
   start: string
   end: string
 }
 
-export type PartialRangeValue = Partial<RangeValue>
+export type MazPickerPartialRangeValue = Partial<MazPickerRangeValue>
 
-export type PickerValue = SimpleValue | PartialRangeValue
+export type MazPickerValue = string | undefined | MazPickerPartialRangeValue
 
-export interface PickerShortcut {
+export interface MazPickerShortcut {
   identifier: string
   label: string
   value: {

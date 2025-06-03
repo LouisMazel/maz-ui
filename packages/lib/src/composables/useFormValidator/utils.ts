@@ -14,8 +14,8 @@ import type {
 
 import { getCurrentInstance, inject, nextTick } from 'vue'
 
+import { useFreezeValue } from './../../composables/useFreezeValue'
 import { debounceId } from './../../helpers/debounceId'
-import { freezeValue } from './../../helpers/freezeValue'
 import { isEqual } from './../../helpers/isEqual'
 import { throttleId } from './../../helpers/throttleId'
 import { CONFIG } from './config'
@@ -125,7 +125,7 @@ export function getFieldState<
     valid: !hasValidation,
     validating: false,
     validated: false,
-    initialValue: freezeValue(initialValue),
+    initialValue: useFreezeValue(initialValue),
     validateFunction,
     mode: hasValidation ? options?.mode ?? fieldState?.mode ?? CONFIG.mode : undefined,
   }

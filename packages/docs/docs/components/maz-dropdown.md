@@ -35,7 +35,7 @@ description: MazDropdown is a standalone dropdown menu component and versatile d
 </template>
 
 <script lang="ts" setup>
-  import MazDropdown from 'maz-ui/components/MazDropdown'
+  import { MazDropdown } from 'maz-ui/components'
 </script>
 ```
 
@@ -164,7 +164,7 @@ You can provide an icon to replace the default chevron icon and disable the anim
   color="primary"
   fab
   pastel
-  no-chevron
+  :chevron="false"
   icon="bars-3"
   size="xl"
   :items="[
@@ -172,7 +172,7 @@ You can provide an icon to replace the default chevron icon and disable the anim
     { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
     { label: 'Router Link', to: { name: 'index' } },
   ]"
-  no-close-on-click
+  :close-on-click="false"
 />
 
 ```html{2-7}
@@ -180,7 +180,7 @@ You can provide an icon to replace the default chevron icon and disable the anim
   color="primary"
   fab
   pastel
-  no-chevron
+  :chevron="false"
   icon="bars-3"
   size="xl"
   :items="[
@@ -188,7 +188,7 @@ You can provide an icon to replace the default chevron icon and disable the anim
     { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
     { label: 'Router Link', to: { name: 'index' } },
   ]"
-  no-close-on-click
+  :close-on-click="false"
 />
 ```
 
@@ -330,7 +330,7 @@ Add `tabindex="-1"` attribute to your element to avoid a double focus with Tab k
     <template #element>
       <MazAvatar
         clickable
-        no-clickable-icon
+        hide-clickable-icon
         src="https://loremflickr.com/200/200"
         tabindex="-1"
       />
@@ -392,7 +392,7 @@ Add `tabindex="-1"` attribute to your element to avoid a double focus with Tab k
   <template #element>
     <MazAvatar
       clickable
-      no-clickable-icon
+      hide-clickable-icon
       src="https://cdn.artphotolimited.com/images/5ff5a529bd40b83c5a537440/1000x1000/gerard-depardieu-1983.jpg"
       tabindex="-1"
     />
@@ -597,7 +597,7 @@ type MenuItem = {
 
 <script lang="ts" setup>
   import { ref, onMounted } from 'vue'
-  import { useToast } from 'maz-ui'
+  import { useToast } from 'maz-ui/src/composables/useToast'
 
   import ChevronUpDownIcon from 'maz-ui/icons/chevron-up-down.svg?component'
 

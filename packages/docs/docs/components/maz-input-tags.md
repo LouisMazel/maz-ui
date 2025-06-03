@@ -37,7 +37,7 @@ description: MazInputTags is a standalone component like free inputs to help use
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import MazInputTags from 'maz-ui/components/MazInputTags'
+  import { MazInputTags } from 'maz-ui/components'
 
   const tags = ref(['tags 1', 'tags 2'])
   const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
@@ -76,7 +76,7 @@ description: MazInputTags is a standalone component like free inputs to help use
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import MazInputTags from 'maz-ui/components/MazInputTags'
+  import { MazInputTags } from 'maz-ui/components'
 
   const tags = ref(['tags 1', 'tags 2'])
   const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
@@ -109,7 +109,7 @@ description: MazInputTags is a standalone component like free inputs to help use
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import MazInputTags from 'maz-ui/components/MazInputTags'
+  import { MazInputTags } from 'maz-ui/components'
 
   const tags = ref(['tags 1', 'tags 2'])
   const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']

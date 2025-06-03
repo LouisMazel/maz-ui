@@ -22,7 +22,7 @@ description: MazCircularProgressBar is a standalone component
   </template>
 
   <script lang="ts" setup>
-    import MazCircularProgressBar from 'maz-ui/components/MazCircularProgressBar'
+    import { MazCircularProgressBar } from 'maz-ui/components'
   </script>
   ```
 

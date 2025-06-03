@@ -6,12 +6,12 @@ export interface MazBottomSheetProps {
   /** @model Modal's model value */
   modelValue?: boolean
   /** Remove the close button */
-  noClose?: boolean
+  hideCloseButton?: boolean
   /** Remove the padding on the container */
-  noPadding?: boolean
+  padding?: boolean
 }
 
-defineProps<MazBottomSheetProps>()
+const { padding = true, hideCloseButton = false } = defineProps<MazBottomSheetProps>()
 
 const emits = defineEmits<{
   /** Emitted when the model value is updated */
@@ -43,7 +43,7 @@ const XIcon = defineAsyncComponent(() => import('../../icons/x-mark.svg'))
       <div
         class="m-bottom-sheet__container"
         :class="{
-          '--no-padding': noPadding,
+          '--padding': !padding,
         }"
       >
         <!--
@@ -53,7 +53,7 @@ const XIcon = defineAsyncComponent(() => import('../../icons/x-mark.svg'))
         <slot :close="close" />
 
         <MazBtn
-          v-if="!noClose"
+          v-if="!hideCloseButton"
           size="sm"
           class="m-bottom-sheet__close"
           color="transparent"
@@ -71,7 +71,7 @@ const XIcon = defineAsyncComponent(() => import('../../icons/x-mark.svg'))
   &__container {
     @apply maz-relative maz-bg-color maz-text-normal maz-elevation maz-w-full maz-px-12 maz-rounded-t-2xl;
 
-    &:not(.--no-padding) {
+    &.--padding {
       @apply maz-py-6;
     }
 

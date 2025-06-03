@@ -10,11 +10,12 @@ type vClosableBindingValue = vClosableBindingValueObject | vClosableBindingValue
 
 type vClosableBinding = DirectiveBinding<vClosableBindingValue>
 
+const listenerMap = new WeakMap<HTMLElement, (event: TouchEvent | MouseEvent) => void>()
+
 function handleOutsideClick(event: TouchEvent | MouseEvent, element: HTMLElement, binding: vClosableBinding) {
   event.stopPropagation()
 
   const handler = typeof binding.value === 'function' ? binding.value : binding.value.handler
-
   const exclude = typeof binding.value === 'object' ? binding.value.exclude : undefined
 
   let clickedOnExcludedElement = false
@@ -37,10 +38,14 @@ function getEventType() {
   return document.ontouchstart === null ? 'touchstart' : 'click'
 }
 
-function unbind(element: HTMLElement, binding: vClosableBinding) {
+function unbind(element: HTMLElement) {
   const eventType = getEventType()
+  const listener = listenerMap.get(element)
 
-  document.removeEventListener(eventType, event => handleOutsideClick(event, element, binding))
+  if (listener) {
+    document.removeEventListener(eventType, listener)
+    listenerMap.delete(element)
+  }
 }
 
 function bind(element: HTMLElement, binding: vClosableBinding) {
@@ -54,7 +59,10 @@ function bind(element: HTMLElement, binding: vClosableBinding) {
   }
 
   const eventType = getEventType()
-  document.addEventListener(eventType, event => handleOutsideClick(event, element, binding))
+  const listener = (event: TouchEvent | MouseEvent) => handleOutsideClick(event, element, binding)
+
+  listenerMap.set(element, listener)
+  document.addEventListener(eventType, listener)
 }
 
 const directive = {

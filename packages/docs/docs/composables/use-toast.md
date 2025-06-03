@@ -19,7 +19,7 @@ More info about [toaster plugin](./../plugins/toaster.md) in its documentation
 
 ```vue
 <script lang="ts" setup>
-  import { useToast } from 'maz-ui'
+  import { useToast } from 'maz-ui/composables'
 
   const toast = useToast()
 
@@ -43,25 +43,29 @@ More info about [toaster plugin](./../plugins/toaster.md) in its documentation
 ```
 
 <script lang="ts" setup>
-  import { useToast } from 'maz-ui'
+  import { onMounted } from 'vue'
+  import { useToast } from 'maz-ui/src/composables/useToast'
 
   const toast = useToast()
 
-  toast.info('info message', {
-    action: {
-      func: () => toast.success('clicked'),
-      text: 'Click me',
-      closeToast: true
-    }
+  onMounted(() => {
+    toast.info('info message', {
+      action: {
+        func: () => toast.success('clicked'),
+        text: 'Click me',
+        closeToast: true
+      }
+    })
+    toast.success('success message', {
+      link: {
+        href: '/composables/use-toast',
+        text: 'Follow me',
+        closeToast: true,
+      }
+    })
+    toast.warning('warning message')
+    toast.error('error message')
+    toast.message('message')
   })
-  toast.success('success message', {
-    link: {
-      href: '/composables/use-toast',
-      text: 'Follow me',
-      closeToast: true,
-    }
-  })
-  toast.warning('warning message')
-  toast.error('error message')
-  toast.message('message')
+
 </script>

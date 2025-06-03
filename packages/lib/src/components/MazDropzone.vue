@@ -3,13 +3,11 @@ import type { DropzoneFile, DropzoneOptions } from 'dropzone'
 
 import type { ComponentPublicInstance, PropType } from 'vue'
 import {
-
   computed,
   defineAsyncComponent,
   defineComponent,
   onBeforeUnmount,
   onMounted,
-
   ref,
 } from 'vue'
 

@@ -32,7 +32,8 @@ More info about the [wait plugin](./../plugins/wait.md) in its documentation
 
 <script lang="ts" setup>
   import { onMounted } from 'vue'
-  import { useWait, sleep } from 'maz-ui'
+  import { sleep } from 'maz-ui'
+  import { useWait } from 'maz-ui/composables'
 
   const wait = useWait()
 
@@ -46,7 +47,8 @@ More info about the [wait plugin](./../plugins/wait.md) in its documentation
 
 <script lang="ts" setup>
   import { onMounted } from 'vue'
-  import { useWait, sleep } from 'maz-ui'
+  import { sleep } from 'maz-ui/src/index'
+  import { useWait } from 'maz-ui/src/composables/useWait'
 
   const wait = useWait()
 

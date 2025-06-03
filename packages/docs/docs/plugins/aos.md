@@ -187,7 +187,7 @@ You can choose one of these timing function to animate elements nicely:
 
 ```ts
 import { createApp, useRouter } from 'vue'
-import { installAos, AosOptions } from 'maz-ui'
+import { installAos, AosOptions } from 'maz-ui/plugins'
 
 // ⚠️ import necessary CSS file ⚠️
 import 'maz-ui/aos-styles' // or import 'maz-ui/css/aos.css'
@@ -235,7 +235,7 @@ export default {
 `plugins/maz-aos.client.ts`
 
 ```ts
-import { installAos, AosOptions } from 'maz-ui'
+import { installAos, AosOptions } from 'maz-ui/plugins'
 
 export default ({ vueApp, $router: router }) => {
   const options: AosOptions = {
@@ -271,7 +271,7 @@ You can run animations programatically with the composable
 
 <script lang="ts" setup>
   import { onMounted } from 'vue'
-  import { useAos } from 'maz-ui'
+  import { useAos } from 'maz-ui/composables'
 
   const aos = useAos()
 

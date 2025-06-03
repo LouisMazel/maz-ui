@@ -27,7 +27,7 @@ description: MazInput is a standalone component that replaces the standard html 
 
   <script setup>
     import { ref } from 'vue'
-    import MazInput from 'maz-ui/components/MazInput'
+    import { MazInput } from 'maz-ui/components'
 
     const inputValue = ref()
   </script>
@@ -222,7 +222,7 @@ Check out how [MazIcon](./maz-icon.md) works, see all available icons and downlo
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import MazInput from 'maz-ui/components/MazInput'
+  import { MazInput } from 'maz-ui/components'
   import BanknotesIcon from 'maz-ui/icons/banknotes.svg'
   import UserIcon from 'maz-ui/icons/user.svg'
 

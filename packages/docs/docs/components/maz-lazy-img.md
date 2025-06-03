@@ -17,7 +17,7 @@ description: MazLazyImg is a standalone component to display images and svgs wit
 </template>
 
 <script setup lang="ts">
-  import MazLazyImg from 'maz-ui/components/MazLazyImg'
+  import { MazLazyImg } from 'maz-ui/components'
 </script>
 ```
 

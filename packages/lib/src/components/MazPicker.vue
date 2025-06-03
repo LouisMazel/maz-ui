@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
-import type { PickerShortcut, PickerValue } from './MazPicker/types'
+import type { MazPickerShortcut, MazPickerValue } from './MazPicker/types'
 import type { DateTimeFormatOptions } from './MazPicker/utils'
 import type { Color, Position } from './types'
 import dayjs from 'dayjs'
@@ -9,7 +9,6 @@ import isBetween from 'dayjs/plugin/isBetween'
 import {
   computed,
   defineAsyncComponent,
-
   nextTick,
   onBeforeMount,
   onMounted,
@@ -22,7 +21,7 @@ import ChevronDownIcon from '../../icons/chevron-down.svg'
 
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import { vClickOutside } from '../directives/vClickOutside'
-import { date } from '../filters/date'
+import { date } from '../formatters/date'
 import MazPickerContainer from './MazPicker/MazPickerContainer.vue'
 import {
   checkValueWithMinMaxDates,
@@ -36,6 +35,8 @@ import {
   isValueDisabledDate,
   isValueDisabledWeekly,
 } from './MazPicker/utils'
+
+export type { MazPickerPartialRangeValue, MazPickerRangeValue, MazPickerShortcut, MazPickerValue } from './MazPicker/types'
 
 defineOptions({
   inheritAttrs: false,
@@ -51,7 +52,7 @@ const props = withDefaults(defineProps<MazPickerProps>(), {
   inputDateStyle: () => ({ dateStyle: 'full' }),
   inputDateTransformer: undefined,
   locale: undefined,
-  noHeader: false,
+  hideHeader: false,
   disabled: false,
   firstDayOfWeek: 0,
   autoClose: false,
@@ -63,9 +64,8 @@ const props = withDefaults(defineProps<MazPickerProps>(), {
   time: false,
   onlyTime: false,
   minuteInterval: 5,
-  noUseBrowserLocale: false,
-  noFetchLocal: false,
-  noShortcuts: false,
+  useBrowserLocale: true,
+  fetchLocal: true,
   shortcut: undefined,
   shortcuts: () => [
     {
@@ -131,7 +131,10 @@ const props = withDefaults(defineProps<MazPickerProps>(), {
   disabledDates: () => [],
   disabledHours: () => [],
 })
-const emits = defineEmits(['update:model-value', 'close'])
+const emits = defineEmits<{
+  'update:model-value': [value: MazPickerValue | undefined]
+  'close': [void]
+}>()
 dayjs.extend(customParseFormat)
 dayjs.extend(isBetween)
 
@@ -143,7 +146,7 @@ export interface MazPickerProps {
   /** The class of the component */
   class?: HTMLAttributes['class']
   /** The value of the component */
-  modelValue?: PickerValue
+  modelValue?: MazPickerValue
   /** The format of the date */
   format?: string
   /** If true picker window will be open */
@@ -158,11 +161,11 @@ export interface MazPickerProps {
    * The transformer of the input date
    * @type {(payload: { formattedDate?: string; value?: PickerValue; locale: string }) => string}
    */
-  inputDateTransformer?: (payload: { formattedDate?: string, value?: PickerValue, locale: string }) => string
+  inputDateTransformer?: (payload: { formattedDate?: string, value?: MazPickerValue, locale: string }) => string
   /** The locale of the component */
   locale?: string
   /** If true, the header will be hidden */
-  noHeader?: boolean
+  hideHeader?: boolean
   /** If true, the component will be disabled */
   disabled?: boolean
   /** The first day of the week (between 0 and 6) */
@@ -185,16 +188,20 @@ export interface MazPickerProps {
   onlyTime?: boolean
   /** The interval of the minutes */
   minuteInterval?: number
-  /** If true, the browser locale will be used */
-  noUseBrowserLocale?: boolean
-  /** If true, the browser locale will not be fetched */
-  noFetchLocal?: boolean
-  /** If true, the shortcuts will be hidden */
-  noShortcuts?: boolean
+  /**
+   * If true, the browser locale will be used
+   * @default true
+   */
+  useBrowserLocale?: boolean
+  /**
+   * If true, the browser locale will be fetched
+   * @default false
+   */
+  fetchLocal?: boolean
   /** The shortcuts of the picker */
-  shortcuts?: PickerShortcut[]
-  /** The shortcut of the picker */
-  shortcut?: string
+  shortcuts?: MazPickerShortcut[] | false
+  /** The identifier of the selected shortcut of the picker */
+  shortcut?: MazPickerShortcut['identifier']
   /** The min date of the picker */
   minDate?: string
   /** The max date of the picker */
@@ -219,7 +226,7 @@ const containerUniqueId = computed(() => `mazPickerContainer-${instanceId.value}
 
 const MazPicker = ref<HTMLDivElement>()
 
-const currentValue = computed<PickerValue>({
+const currentValue = computed<MazPickerValue>({
   get: () => {
     return props.modelValue && typeof props.modelValue === 'object'
       ? {
@@ -270,7 +277,7 @@ onBeforeMount(() => {
   }
 })
 
-function getCalendarDate(value: PickerValue): string {
+function getCalendarDate(value: MazPickerValue): string {
   const baseDate = (typeof value === 'object' ? value.start : value) ?? dayjs().format()
 
   if (props.minDate && dayjs(baseDate).isBefore(props.minDate)) {
@@ -355,10 +362,10 @@ onMounted(async () => {
 
   if (!props.locale) {
     const browserLocale = getBrowserLocale()
-    if (!props.noUseBrowserLocale && browserLocale) {
+    if (props.useBrowserLocale && browserLocale) {
       internalLocale.value = browserLocale
     }
-    else if (!props.noFetchLocal) {
+    else if (props.fetchLocal) {
       const locale = await fetchLocale()
 
       if (locale)
@@ -458,7 +465,7 @@ function removeEventToTriggerCustomElement(selector: string) {
 }
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
-function checkMinMaxValues(value: PickerValue) {
+function checkMinMaxValues(value: MazPickerValue) {
   if (props.minDate || props.maxDate) {
     if (typeof value === 'string') {
       const { newValue, newCurrentDate } = checkValueWithMinMaxDates({
@@ -520,7 +527,7 @@ function setCalendarDate(value: string) {
   }
 }
 
-function emitValue(value: PickerValue) {
+function emitValue(value: MazPickerValue) {
   if (typeof value === 'object') {
     const newValue = getRangeISODate(value, props.format)
     emits('update:model-value', newValue)
@@ -538,8 +545,8 @@ function emitValue(value: PickerValue) {
 watch(
   () => [currentValue.value, props.minDate, props.maxDate],
   (values, oldValues) => {
-    const value = values[0] as PickerValue
-    const oldValue = oldValues?.[0] as PickerValue
+    const value = values[0] as MazPickerValue
+    const oldValue = oldValues?.[0] as MazPickerValue
 
     if (typeof value === 'object' && (value.start || value.end)) {
       if (
@@ -586,7 +593,7 @@ watch(
 watch(
   () => [currentValue.value, props.disabledWeekly, props.disabledDates],
   (values) => {
-    const value = values[0] as PickerValue
+    const value = values[0] as MazPickerValue
     const disabledWeekly = values[1] as number[]
     const disabledDates = values[2] as string[]
 
@@ -678,7 +685,7 @@ watch(
         :double="hasDouble"
         :has-time="hasTime"
         :formatter-options="formatterOptions"
-        :no-header="noHeader"
+        :hide-header="hideHeader"
         :min-date="minDate"
         :format="format"
         :is-hour12="isHour12"
@@ -686,13 +693,12 @@ watch(
         :disabled-weekly="disabledWeekly"
         :inline="inline"
         :first-day-of-week="firstDayOfWeek"
-        :shortcuts="shortcuts"
+        :shortcuts
         :shortcut="shortcut"
         :disabled="disabled"
         :disabled-hours="disabledHours"
         :disabled-dates="disabledDates"
         :minute-interval="minuteInterval"
-        :no-shortcuts="noShortcuts"
         @close="closeCalendar"
       />
     </Transition>

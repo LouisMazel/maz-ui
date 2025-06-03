@@ -12,9 +12,9 @@ describe('waitHandler', () => {
   })
 
   it('should start a loader', () => {
-    const stop = waitHandler.start('loader1')
+    const instance = waitHandler.start('loader1')
     expect(waitHandler.isLoading('loader1')).toBe(true)
-    stop()
+    instance.stop()
   })
 
   it('should stop a loader', () => {

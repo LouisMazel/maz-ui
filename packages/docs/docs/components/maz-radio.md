@@ -44,7 +44,7 @@ description: MazRadio is a standalone component
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import MazRadio from 'maz-ui/components/MazRadio'
+  import { MazRadio } from 'maz-ui/components'
 
   const chosenColor = ref('primary')
   const chosenSize = ref('mini')
@@ -97,7 +97,7 @@ description: MazRadio is a standalone component
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import MazRadio, { type Size } from 'maz-ui/components/MazRadio'
+  import { MazRadio, type Size } from 'maz-ui/components'
 
   const chosenSize = ref('mini')
 

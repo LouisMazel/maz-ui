@@ -75,7 +75,6 @@ function setScrollState(event: Event) {
           color="transparent"
           class="m-carousel__btn"
           :class="{ '--muted': !isScrolled }"
-          no-elevation
           fab
           :aria-label="ariaLabelPreviousButton"
           @click="previous"
@@ -89,7 +88,6 @@ function setScrollState(event: Event) {
           class="m-carousel__btn"
           :class="{ '--muted': isScrolledMax }"
           fab
-          no-elevation
           :aria-label="ariaLabelNextButton"
           @click="next"
         >

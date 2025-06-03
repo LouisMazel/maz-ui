@@ -35,7 +35,7 @@ This plugin has a composable for easier use, after installing it you can use [us
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import { useWait } from 'maz-ui'
+  import { useWait } from 'maz-ui/composables'
 
   const wait = useWait()
 
@@ -59,7 +59,7 @@ This plugin has a composable for easier use, after installing it you can use [us
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import { useWait } from 'maz-ui'
+  import { useWait } from 'maz-ui/src/composables/useWait'
 
   const wait = useWait()
 
@@ -86,7 +86,7 @@ This plugin has a composable for easier use, after installing it you can use [us
 
 ```ts
 import { createApp } from 'vue'
-import { installWait } from 'maz-ui'
+import { installWait } from 'maz-ui/plugins'
 
 const app = createApp(App)
 
