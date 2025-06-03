@@ -35,7 +35,7 @@ You can display a simple dialog with a title and a message. The dialog will have
   </template>
 
   <script lang="ts" setup>
-    import { useDialog, useToast } from 'maz-ui'
+    import { useDialog, useToast } from 'maz-ui/composables'
 
     const dialog = useDialog()
     const toast = useToast()
@@ -85,7 +85,7 @@ The confirmText and cancelText properties allow you to change the texts of the c
   </template>
 
   <script lang="ts" setup>
-    import { useDialog, useToast } from 'maz-ui'
+    import { useDialog, useToast } from 'maz-ui/composables'
 
     const dialog = useDialog()
     const toast = useToast()
@@ -125,7 +125,7 @@ The buttons property allows you to display custom buttons in the dialog and repl
   </template>
 
   <script lang="ts" setup>
-    import { useDialog, useToast } from 'maz-ui'
+    import { useDialog, useToast } from 'maz-ui/composables'
 
     const dialog = useDialog()
     const toast = useToast()
@@ -184,7 +184,7 @@ The buttons property allows you to display custom buttons in the dialog and repl
   </template>
 
   <script lang="ts" setup>
-    import { useDialog, useToast } from 'maz-ui'
+    import { useDialog, useToast } from 'maz-ui/composables'
 
     const dialog = useDialog()
     const toast = useToast()
@@ -248,7 +248,7 @@ You can close the dialog programmatically by calling the close method returned b
   </template>
 
   <script lang="ts" setup>
-    import { useDialog, useToast } from 'maz-ui'
+    import { useDialog, useToast } from 'maz-ui/composables'
 
     const dialog = useDialog()
 
@@ -276,7 +276,7 @@ You can close the dialog programmatically by calling the close method returned b
 
 ```ts
 import { createApp } from 'vue'
-import { installDialog, DialogOptions } from 'maz-ui'
+import { installDialog, DialogOptions } from 'maz-ui/plugins'
 
 const app = createApp(App)
 
@@ -294,9 +294,9 @@ app.mount('#app')
 ### Usage
 
 ```ts
-import { injectStrict, type DialogHandler } from 'maz-ui'
+import { useInjectStrict, type DialogHandler } from 'maz-ui/composables'
 
-const dialog = injectStrict<DialogHandler>('dialog')
+const dialog = useInjectStrict<DialogHandler>('dialog')
 /*
  * or use `useDialog` composable to get the dialog handler
  * const dialog = useDialog()
@@ -313,7 +313,7 @@ dialog.open(options)
 ### Type
 
 ```ts
-import type { Props as MazBtnProps } from 'maz-ui/components/MazBtn'
+import type { MazBtnProps } from 'maz-ui/components'
 
 type DialogOptions = Partial<Omit<MazDialogPromiseProps, 'modelValue'>> & {
   /**
@@ -348,7 +348,7 @@ type DialogOptions = Partial<Omit<MazDialogPromiseProps, 'modelValue'>> & {
 ```
 
 <script lang="ts" setup>
-  import { useDialog, useToast } from 'maz-ui'
+  import { useDialog, useToast } from 'maz-ui/src/composables/index'
 
   const dialog = useDialog()
   const toast = useToast()

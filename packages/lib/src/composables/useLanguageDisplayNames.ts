@@ -140,7 +140,7 @@ const bcp47Codes = [
   'vi-VN',
 ] as const
 
-export const iso6391Codes = [
+const iso6391Codes = [
   'aa',
   'ab',
   'ae',
@@ -327,7 +327,7 @@ export const iso6391Codes = [
   'zu',
 ] as const
 
-export const languageCodes = [...iso6391Codes, ...bcp47Codes]
+const languageCodes = [...iso6391Codes, ...bcp47Codes]
 
 export type IsoCode = (typeof bcp47Codes)[number]
 export type Iso6391Code = (typeof iso6391Codes)[number]

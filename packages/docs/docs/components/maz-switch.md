@@ -54,7 +54,7 @@ description: MazSwitch is a standalone component that replaces the standard html
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import MazSwitch from 'maz-ui/components/MazSwitch'
+  import { MazSwitch } from 'maz-ui/components'
 
   const switchValue = ref(false)
   const switchValueDisabled = ref(false)

@@ -1,31 +1,24 @@
 <script lang="ts" setup>
-import type { PropType } from 'vue'
 import type { Color } from '../types'
-import type { PickerShortcut, PickerValue, RangeValue } from './types'
+import type { MazPickerRangeValue, MazPickerShortcut, MazPickerValue } from './types'
 import { ref, watch } from 'vue'
 
 import MazBtn from '../MazBtn.vue'
 
-const props = defineProps({
-  color: { type: String as PropType<Color>, required: true },
-  modelValue: {
-    type: [String, Object] as PropType<PickerValue>,
-    default: undefined,
-  },
-  shortcuts: {
-    type: Array as PropType<PickerShortcut[]>,
-    required: true,
-  },
-  double: { type: Boolean, required: true },
-  shortcut: { type: String, default: undefined },
-  disabled: { type: Boolean, required: true },
-})
+const props = defineProps<{
+  color: Color
+  modelValue: MazPickerValue
+  shortcuts: MazPickerShortcut[] | false
+  double: boolean
+  shortcut: MazPickerShortcut['identifier'] | undefined
+  disabled: boolean
+}>()
 
 const emits = defineEmits(['update:model-value'])
 
-const selectedShortcut = ref(props.shortcut)
+const selectedShortcut = ref<MazPickerShortcut['identifier'] | undefined>(props.shortcut)
 
-function selectShortcut(value: PickerShortcut['value'], identifier: PickerShortcut['identifier']) {
+function selectShortcut(value: MazPickerShortcut['value'], identifier: MazPickerShortcut['identifier']) {
   selectedShortcut.value = identifier
   emits('update:model-value', value)
 }
@@ -33,7 +26,7 @@ function selectShortcut(value: PickerShortcut['value'], identifier: PickerShortc
 watch(
   () => props.modelValue,
   (value) => {
-    const values = value as RangeValue
+    const values = value as MazPickerRangeValue
     if (!values?.end) {
       selectedShortcut.value = undefined
     }
@@ -43,7 +36,7 @@ watch(
 watch(
   () => props.shortcut,
   (shortcut) => {
-    const newShortcut = props.shortcuts.find(({ identifier }) => shortcut === identifier)
+    const newShortcut = props.shortcuts && props.shortcuts.find(({ identifier }) => shortcut === identifier)
     if (newShortcut) {
       const { value, identifier } = newShortcut
       selectShortcut(value, identifier)

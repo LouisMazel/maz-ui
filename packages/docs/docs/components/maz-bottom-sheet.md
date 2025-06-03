@@ -1,6 +1,6 @@
 ---
 title: MazBottomSheet
-description: MazBottomSheet is a standalone component like a simple dialog but at the bottom of screen
+description: MazBottomSheet is a standalone component like a simple dialog but at the bottom of screen. Useful for mobile UX.
 ---
 
 # {{ $frontmatter.title }}
@@ -38,8 +38,7 @@ This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop
 
     <script setup>
       import { ref } from 'vue'
-      import MazBtn from 'maz-ui/components/MazBtn'
-      import MazBottomSheet from 'maz-ui/components/MazBottomSheet'
+      import { MazBtn, MazBottomSheet } from 'maz-ui/components'
 
       const isOpen = ref(false)
     </script>

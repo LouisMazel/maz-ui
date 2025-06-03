@@ -19,7 +19,7 @@ description: MazLoadingBar is a standalone component
 </template>
 
 <script lang="ts" setup>
-  import MazLoadingBar from 'maz-ui/components/MazLoadingBar'
+  import { MazLoadingBar } from 'maz-ui/components'
 </script>
 ```
 

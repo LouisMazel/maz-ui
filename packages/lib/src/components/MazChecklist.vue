@@ -1,4 +1,4 @@
-<script lang="ts" setup generic="T extends string, O extends ItemOption">
+<script lang="ts" setup generic="T extends string, O extends MazChecklistItemOption">
 import type { NormalizeStringOptions } from '../helpers/normalizeString'
 import type { MazInputProps } from './MazInput.vue'
 import type { Color } from './types'
@@ -7,7 +7,7 @@ import { normalizeString } from '../helpers/normalizeString'
 import MazCardSpotlight from './MazCardSpotlight.vue'
 import MazCheckbox from './MazCheckbox.vue'
 
-export type ItemOption = {
+export type MazChecklistItemOption = {
   label: string
   value: string
 } & Record<string, any>
@@ -143,7 +143,7 @@ function updateQuery(value?: string) {
 
     <MazCardSpotlight
       :color
-      :no-elevation="!elevation"
+      :elevation
       :padding="false"
       content-class="card-content"
     >

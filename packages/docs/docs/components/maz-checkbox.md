@@ -22,7 +22,7 @@ description: MazCheckbox is a standalone component that replaces the standard ht
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import MazCheckbox from 'maz-ui/components/MazCheckbox'
+  import { MazCheckbox } from 'maz-ui/components'
 
   const checked = ref(false)
 </script>
@@ -65,7 +65,7 @@ description: MazCheckbox is a standalone component that replaces the standard ht
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import MazCheckbox, { type Color } from 'maz-ui/components/MazCheckbox'
+  import { MazCheckbox, type Color } from 'maz-ui/components'
 
   const chosenColors = ref([])
 
@@ -120,7 +120,7 @@ description: MazCheckbox is a standalone component that replaces the standard ht
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import MazCheckbox, { type Size } from 'maz-ui/components/MazCheckbox'
+  import { MazCheckbox, type Size } from 'maz-ui/components'
 
   const chosenSizes = ref([])
 
@@ -144,7 +144,7 @@ description: MazCheckbox is a standalone component that replaces the standard ht
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import { type Color, type Size } from 'maz-ui/components/MazCheckbox'
+  import { type Color, type Size } from 'maz-ui/components'
 
   const checked = ref(false)
   const chosenColors = ref([])

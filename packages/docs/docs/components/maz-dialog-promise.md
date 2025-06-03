@@ -82,11 +82,7 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
 <script setup>
   import { ref } from 'vue'
 
-  import MazDialogPromise, {
-    useMazDialogPromise, type DialogCustomButton, type DialogData
-  } from 'maz-ui/components/MazDialogPromise'
-
-  import MazDialog from 'maz-ui/components/MazDialog'
+  import { MazDialog, MazDialogPromise, useMazDialogPromise }'maz-ui/components'
 
   const confirmDialog = ref(false)
 
@@ -205,9 +201,9 @@ type Size = 'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 
 <script setup lang="ts">
   import { ref } from 'vue'
-  import { type DialogData, type DialogCustomButton, useToast } from 'maz-ui'
+  import { useToast } from 'maz-ui/src/composables/useToast'
   import MazDialogPromise, {
-    useMazDialogPromise
+    useMazDialogPromise, type DialogCustomButton, type DialogData
   } from 'maz-ui/src/components/MazDialogPromise.vue'
 
   const { showDialogAndWaitChoice, data } = useMazDialogPromise()

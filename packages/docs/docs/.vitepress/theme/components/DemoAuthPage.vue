@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 /* eslint-disable vue/no-unused-refs */
-import { useFormField, useFormValidator, useToast } from 'maz-ui'
+import { useFormField, useFormValidator, useToast } from 'maz-ui/src/composables/index.js'
 import { email, nonEmpty, pipe, string } from 'valibot'
 import { ref } from 'vue'
 

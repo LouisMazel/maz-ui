@@ -1,4 +1,4 @@
-import { capitalize } from '@filters/capitalize'
+import { capitalize } from '@formatters/capitalize'
 
 describe('capitalize', () => {
   it('capitalizes the first letter of a string', () => {

@@ -48,8 +48,8 @@ If you want to increase the border width, you must just add padding @default: `v
   </template>
 
   <script lang="ts" setup>
-    import MazCardSpotlight from 'maz-ui/components/MazCardSpotlight'
-    import { useThemeHandler } from 'maz-ui'
+    import { MazCardSpotlight } from 'maz-ui/src/components'
+    import { useThemeHandler } from 'maz-ui/composables'
 
     const {
       setDarkTheme,
@@ -116,7 +116,7 @@ If you want to increase the border width, you must just add padding @default: `v
 <!--@include: ./../.vitepress/generated-docs/maz-card-spotlight.doc.md-->
 
 <script lang="ts" setup>
-  import { useThemeHandler } from 'maz-ui'
+  import { useThemeHandler } from 'maz-ui/src/composables/useThemeHandler'
 
   const {
     setDarkTheme,

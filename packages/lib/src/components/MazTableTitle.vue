@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { injectStrict } from '../helpers/injectStrict'
+import { useInjectStrict } from '../composables/useInjectStrict'
 import { mazTableKey } from './MazTable.vue'
 
-const { size } = injectStrict(mazTableKey)
+const { size } = useInjectStrict(mazTableKey)
 </script>
 
 <template>

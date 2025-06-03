@@ -4,10 +4,8 @@ import type { ComponentPublicInstance, HTMLAttributes } from 'vue'
 import type { MazInputPhoneNumberTranslations, Results } from './MazInputPhoneNumber/types'
 import type { Color, Position, Size } from './types'
 import {
-
   computed,
   defineAsyncComponent,
-
   nextTick,
   onBeforeMount,
   onMounted,
@@ -27,33 +25,13 @@ defineOptions({
 })
 
 const props = withDefaults(defineProps<MazInputPhoneNumberProps>(), {
-  class: undefined,
-  style: undefined,
   listPosition: 'bottom left',
   color: 'primary',
   size: 'md',
-  modelValue: undefined,
-  /** @deprecated */
-  defaultPhoneNumber: undefined,
-  countryCode: undefined,
-  /** @deprecated */
-  defaultCountryCode: undefined,
-  id: undefined,
-  placeholder: undefined,
-  label: undefined,
-  preferredCountries: undefined,
-  ignoredCountries: undefined,
-  onlyCountries: undefined,
-  translations: undefined,
-  customCountriesList: undefined,
-  countryLocale: undefined,
   countrySelectorWidth: '9rem',
-  noFormattingAsYouType: false,
   autoFormat: true,
-  excludeSelectors: undefined,
   orientation: 'responsive',
   searchThreshold: 0.75,
-  noExample: false,
   countrySelectAttributes: () => ({
     name: 'country',
     autocomplete: 'off',
@@ -63,6 +41,10 @@ const props = withDefaults(defineProps<MazInputPhoneNumberProps>(), {
     autocomplete: 'tel',
     inputmode: 'tel',
   }),
+  useBrowserLocale: true,
+  search: true,
+  validationError: true,
+  validationSuccess: true,
 })
 
 const emits = defineEmits<{
@@ -84,12 +66,6 @@ const emits = defineEmits<{
   /**
    * emitted when country or phone number changes
    * @property {Results} results - metadata of current phone number
-   * @deprecated use data instead
-   */
-  'update': [results: Results]
-  /**
-   * emitted when country or phone number changes
-   * @property {Results} results - metadata of current phone number
    */
   'data': [results: Results]
 }>()
@@ -104,12 +80,8 @@ export interface MazInputPhoneNumberProps {
   class?: HTMLAttributes['class']
   /** @model Country calling code + telephone number in international format */
   modelValue?: string | undefined | null
-  /** @deprecated */
-  defaultPhoneNumber?: string | undefined | null
   /** @model Country code selected - Ex: "FR" */
   countryCode?: CountryCode | undefined | null
-  /** @deprecated - use country-code or v-model:country-code */
-  defaultCountryCode?: CountryCode | undefined | null
   /** Id of the component */
   id?: string
   /** Placeholder of the input */
@@ -131,24 +103,27 @@ export interface MazInputPhoneNumberProps {
   /** Component size applied - Ex: "sm" */
   size?: Size
   /** Remove flags in country list */
-  noFlags?: boolean
+  hideFlags?: boolean
   /** Disable input */
   disabled?: boolean
   /** No show the phone number example */
   noExample?: boolean
   /** Disable search input in country list */
-  noSearch?: boolean
+  search?: boolean
   /**
    * Threshold of the search input in country list where 1 is a perfect match and 0 is a match with any character
    * @default 0.75
    */
   searchThreshold?: number
-  /** By default the component use the browser locale to set the default country code if not country code is provided */
-  noUseBrowserLocale?: boolean
+  /**
+   * If true, the browser locale will be used
+   * @default true
+   */
+  useBrowserLocale?: boolean
   /** The component will make a request (https://ipwho.is) to get the location of the user and use it to set the default country code */
   fetchCountry?: boolean
   /** No show the country selector */
-  noCountrySelector?: boolean
+  hideCountrySelector?: boolean
   /** Show country calling code in the country list */
   showCodeOnList?: boolean
   /** Replace country names */
@@ -159,20 +134,14 @@ export interface MazInputPhoneNumberProps {
    */
   autoFormat?: boolean
   /**
-   * Disabled auto-format as you type
-   * @default false
-   * @deprecated use autoFormat instead
-   */
-  noFormattingAsYouType?: boolean
-  /**
    * locale of country list - Ex: "fr-FR"
    * @default {string} browser locale
    */
   countryLocale?: string
   /** Disable validation error UI */
-  noValidationError?: boolean
+  validationError?: boolean
   /** Disable validation success UI */
-  noValidationSuccess?: boolean
+  validationSuccess?: boolean
   /** Add success UI */
   success?: boolean
   /** Add error UI */
@@ -184,7 +153,7 @@ export interface MazInputPhoneNumberProps {
   /** The input will be displayed in full width */
   block?: boolean
   /** Exclude selectors to close country selector list - usefull when you using custom flag */
-  excludeSelectors?: string[]
+  excludedSelectors?: string[]
   /**
    * Orientation of the inputs in the component
    * @default "responsive"
@@ -224,11 +193,11 @@ const locales = computed(() => ({
   ...defaultLocales,
   ...props.translations,
 }))
-const hasAutoFormat = computed(() => props.autoFormat && !props.noFormattingAsYouType)
+const hasAutoFormat = computed(() => props.autoFormat)
 
 const results = ref<Results>({
   isValid: false,
-  countryCode: props.countryCode ?? props.defaultCountryCode,
+  countryCode: props.countryCode,
   phoneNumber: props.modelValue,
 })
 const PhoneInputRef = ref<ComponentPublicInstance>()
@@ -236,18 +205,24 @@ const PhoneInputRef = ref<ComponentPublicInstance>()
 /** Logic */
 
 onBeforeMount(async () => {
-  if ((props.countryCode || props.defaultCountryCode) && !selectedCountry.value) {
-    onCountryChanged({ countryCode: props.countryCode ?? props.defaultCountryCode })
+  if (props.countryCode && !selectedCountry.value) {
+    onCountryChanged({ countryCode: props.countryCode })
   }
 
   if (props.fetchCountry && !selectedCountry.value) {
-    const countryCode = await fetchCountryCode()
-    onCountryChanged({ countryCode: countryCode as CountryCode })
+    const { data: countryCode, error } = await fetchCountryCode()
+
+    if (error) {
+      console.error(`[MazInputPhoneNumber](onBeforeMount) Error while fetching country code - ${error.message}`)
+      return
+    }
+
+    onCountryChanged({ countryCode })
   }
 })
 
 onMounted(() => {
-  if (!selectedCountry.value && !props.noUseBrowserLocale) {
+  if (!selectedCountry.value && props.useBrowserLocale) {
     const countryCode = getBrowserLocale()?.locale
     onCountryChanged({ countryCode: countryCode as CountryCode })
   }
@@ -332,7 +307,7 @@ function onCountryChanged({
   updateResults = true,
   selectPhoneNumber = false,
 }: {
-  countryCode?: CountryCode | undefined | null
+  countryCode?: CountryCode
   updateResults?: boolean
   selectPhoneNumber?: boolean
 }) {
@@ -370,7 +345,7 @@ function onCountryChanged({
 /** Watchers */
 
 watch(
-  () => props.modelValue ?? props.defaultPhoneNumber,
+  () => props.modelValue,
   (value, oldValue) => {
     if (!isPhoneNumberInternalUpdate.value && value !== oldValue && value !== phoneNumber.value) {
       onPhoneNumberChanged({ newPhoneNumber: value })
@@ -379,7 +354,7 @@ watch(
   { immediate: true },
 )
 watch(
-  () => props.countryCode ?? props.defaultCountryCode,
+  () => props.countryCode,
   (value, oldValue) => {
     if (!isCountryInternalUpdate.value && value && value !== oldValue && value !== selectedCountry.value) {
       onCountryChanged({ countryCode: value })
@@ -389,10 +364,7 @@ watch(
 )
 watch(
   results,
-  (value) => {
-    emits('update', value)
-    emits('data', value)
-  },
+  value => emits('data', value),
   { immediate: true },
 )
 
@@ -417,7 +389,7 @@ provide<MazInputPhoneNumberInjectedData>('data', {
     :style
   >
     <CountrySelector
-      v-if="!noCountrySelector"
+      v-if="!hideCountrySelector"
       :id="instanceId"
       v-bind="countrySelectAttributes"
       :model-value="selectedCountry"
@@ -428,11 +400,11 @@ provide<MazInputPhoneNumberInjectedData>('data', {
       :custom-countries-list
       :ignored-countries
       :list-position
-      :no-flags
-      :no-search
-      :exclude-selectors
-      :error="error || (!noValidationError ? !!phoneNumber && !selectedCountry : false)"
-      :success="success || (!noValidationSuccess ? results?.isValid : false)"
+      :hide-flags
+      :search
+      :excluded-selectors
+      :error="error || (validationError ? !!phoneNumber && !selectedCountry : false)"
+      :success="success || (validationSuccess ? results?.isValid : false)"
       :locales
       :disabled
       :search-threshold
@@ -482,9 +454,9 @@ provide<MazInputPhoneNumberInjectedData>('data', {
       :no-example
       block
       :disabled
-      :has-radius="!noCountrySelector"
-      :success="success || (!noValidationSuccess ? results.isValid : false)"
-      :error="error || (!noValidationError ? !!phoneNumber && !results.isValid : false)"
+      :has-radius="!hideCountrySelector"
+      :success="success || (validationSuccess ? results.isValid : false)"
+      :error="error || (validationError ? !!phoneNumber && !results.isValid : false)"
       :locales
       :label
       :placeholder

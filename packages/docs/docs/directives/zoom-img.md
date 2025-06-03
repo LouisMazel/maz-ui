@@ -40,7 +40,7 @@ description: vZoomImg is a Vue 3 directive to enlarge an image like a modal on c
 </template>
 
 <script lang="ts" setup>
-  import { vZoomImg } from 'maz-ui'
+  import { vZoomImg } from 'maz-ui/directives'
 </script>
 ```
 
@@ -56,7 +56,7 @@ description: vZoomImg is a Vue 3 directive to enlarge an image like a modal on c
 </MazCard>
 
 <script lang="ts" setup>
-  import { vZoomImg } from 'maz-ui'
+  import { vZoomImg } from 'maz-ui/src/directives/vZoomImg'
 
   const zoomImgBinding: vZoomImgBinding = {
     src: 'https://loremflickr.com/1200/800',
@@ -78,7 +78,7 @@ description: vZoomImg is a Vue 3 directive to enlarge an image like a modal on c
 </template>
 
 <script lang="ts" setup>
-  import { vZoomImg, type vZoomImgBindingValue } from 'maz-ui'
+  import { vZoomImg, type vZoomImgBindingValue } from 'maz-ui/directives'
 
   const zoomImgBinding: vZoomImgBindingValue = {
     src: 'https://loremflickr.com/1200/800',
@@ -96,7 +96,7 @@ description: vZoomImg is a Vue 3 directive to enlarge an image like a modal on c
 
 ```typescript
 import { createApp } from 'vue'
-import { vZoomImgInstall, type vZoomImgOptions } from 'maz-ui'
+import { vZoomImgInstall, type vZoomImgOptions } from 'maz-ui/directives'
 
 const app = createApp(App)
 

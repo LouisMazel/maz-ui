@@ -75,7 +75,7 @@ head:
 </template>
 
 <script lang="ts" setup>
-  import MazCarousel from 'maz-ui/components/MazCarousel'
+  import { MazCarousel } from 'maz-ui/components'
 </script>
 ```
 

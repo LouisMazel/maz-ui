@@ -25,7 +25,7 @@ description: vLazyImg is a Vue 3 directive to lazy load images with many options
 </template>
 
 <script lang="ts" setup>
-  import { vLazyImg } from 'maz-ui'
+  import { vLazyImg } from 'maz-ui/directives'
 </script>
 ```
 
@@ -69,7 +69,7 @@ description: vLazyImg is a Vue 3 directive to lazy load images with many options
 </template>
 
 <script lang="ts" setup>
-  import { vLazyImg, vLazyImgBindingValue } from 'maz-ui'
+  import { vLazyImg, vLazyImgBindingValue } from 'maz-ui/directives'
   import { ref } from 'vue'
 
   const lazyBinding: vLazyImgBindingValue = {
@@ -78,8 +78,7 @@ description: vLazyImg is a Vue 3 directive to lazy load images with many options
     loadingClass: 'custom-class-loading',
     loadedClass: 'custom-class-loaded',
     errorClass: 'custom-class-error',
-    noPhotoClass: 'custom-class-no-photo',
-    noUseErrorPhoto: true,
+    fallbackClass: 'custom-class-fallback',
     observerOnce: false, // launch onIntersecting function each times where the user scrolls on the image
     loadOnce: false,
     onLoading: (el: Element) => console.log('loading', el),
@@ -96,7 +95,7 @@ description: vLazyImg is a Vue 3 directive to lazy load images with many options
 
 ```typescript
 import { createApp } from 'vue'
-import { vLazyImgInstall, vLazyImgOptions } from 'maz-ui'
+import { vLazyImgInstall, type vLazyImgOptions } from 'maz-ui/directives'
 import errorPhoto from 'path/to/error-photo.png'
 
 const app = createApp(App)
@@ -107,8 +106,7 @@ const vLazyImgOptions: vLazyImgOptions = {
   loadedClass: 'm-lazy-loaded',
   loadingClass: 'm-lazy-loading',
   errorClass: 'm-lazy-error',
-  noPhotoClass: 'm-lazy-no-photo',
-  noPhoto: false,
+  fallbackClass: 'm-lazy-fallback',
   observerOnce: true,
   loadOnce: true,
   noUseErrorPhoto: false,
@@ -132,33 +130,25 @@ app.mount('#app')
 ## Types
 
 ```ts
-export interface ClassOptions {
-  baseClass: string
-  loadingClass: string
-  loadedClass: string
-  errorClass: string
-  noPhotoClass: string
-  noPhoto: boolean
-  noUseErrorPhoto: boolean
-  observerOnce: boolean
-  loadOnce: boolean
-  observerOptions: {
+export interface vLazyImgOptions {
+  baseClass?: string
+  loadingClass?: string
+  loadedClass?: string
+  errorClass?: string
+  fallbackClass?: string
+  observerOnce?: boolean
+  loadOnce?: boolean
+  observerOptions?: {
     root?: HTMLElement | null
     threshold: number
     rootMargin?: string
   }
-  /**
-   * @deprecated use `fallbackSrc` instead
-   */
-  errorPhoto?: string
   fallbackSrc?: string
   onLoading?: (el: Element) => unknown
   onLoaded?: (el: Element) => unknown
   onError?: (el: Element) => unknown
   onIntersecting?: (el: Element) => unknown
 }
-
-export type vLazyImgOptions = Partial<ClassOptions>
 
 interface vLazyImgBindingOptions extends vLazyImgOptions {
   src?: string
@@ -169,7 +159,7 @@ export type vLazyImgBindingValue = string | vLazyImgBindingOptions
 ```
 
 <script lang="ts" setup>
-  import { vLazyImg, vLazyImgBindingValue } from 'maz-ui'
+  import { vLazyImg, type vLazyImgBindingValue } from 'maz-ui/src/directives/vLazyImg'
   import { ref } from 'vue'
 
   const lazyBinding: vLazyImgBindingValue = {
@@ -178,7 +168,7 @@ export type vLazyImgBindingValue = string | vLazyImgBindingOptions
     loadingClass: 'custom-class-loading',
     loadedClass: 'custom-class-loaded',
     errorClass: 'custom-class-error',
-    noPhotoClass: 'custom-class-no-photo',
+    fallbackClass: 'custom-class-fallback',
     noUseErrorPhoto: true,
     observerOnce: false,
     loadOnce: true,

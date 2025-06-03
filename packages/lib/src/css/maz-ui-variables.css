@@ -90,9 +90,9 @@
     --maz-color-danger-alpha-10: hsl(1deg 100% 71% / 10%);
     --maz-color-danger-alpha-05: hsl(1deg 100% 71% / 05%);
     --maz-color-danger-contrast: hsl(0deg 0% 100%);
-    --maz-color-text-light: hsl(0deg 0% 85%);
+    --maz-color-text-light: hsl(210deg 8% 14%);
     --maz-color-muted-light: hsl(0deg 0% 0% / 54%);
-    --maz-color-text-dark: hsl(210deg 8% 14%);
+    --maz-color-text-dark: hsl(0deg 0% 85%);
     --maz-color-muted-dark: hsl(0deg 0% 89% / 54%);
     --maz-bg-overlay: hsl(0deg 0% 0% / 30%);
     --maz-bg-color-light-lighter: hsl(0deg 0% 97%);

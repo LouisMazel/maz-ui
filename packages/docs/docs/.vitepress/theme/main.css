@@ -1,5 +1,6 @@
 :root {
   --vp-font-family-base: Manrope, sans-serif;
+  --vp-c-bg: var(--maz-color-bg);
   --vp-c-brand: var(--maz-color-primary);
   --vp-c-brand-1: var(--maz-color-primary);
   --vp-c-gutter: var(--maz-color-bg-light);
@@ -29,7 +30,7 @@
 
   --vp-custom-block-details-bg: var(--maz-bg-color-light-light);
   --vp-custom-block-details-border: var(--maz-bg-color-light-lighter);
-  --vp-custom-block-details-text: var(--maz-color-text-dark);
+  --vp-custom-block-details-text: var(--maz-color-text-light);
 
   --vp-custom-block-tip-bg: var(--maz-color-success);
   --vp-custom-block-tip-border: var(--maz-color-success-600);
@@ -37,10 +38,9 @@
 }
 
 html.dark {
-  --vp-c-bg: var(--maz-color-bg);
   --vp-c-bg-elv: hsl(235deg 16% 12%);
   --vp-c-bg-elv-mute: var(--maz-color-bg);
-  --vp-c-gutter: var(--maz-color-bg-light);
+  --vp-c-gutter: var(--maz-color-bg-dark);
 
   --vp-custom-block-info-bg: var(--maz-color-info-alpha);
   --vp-custom-block-info-border: var(--maz-color-info-400);
@@ -52,7 +52,7 @@ html.dark {
 
   --vp-custom-block-details-bg: var(--maz-bg-color-dark-light);
   --vp-custom-block-details-border: var(--maz-bg-color-dark-lighter);
-  --vp-custom-block-details-text: var(--maz-color-text-light);
+  --vp-custom-block-details-text: var(--maz-color-text-dark);
 
   --vp-c-bg-alt: hsl(235deg 16% 12%);
   --vp-c-bg-soft-up: var(--maz-color-bg-lighter);
@@ -64,7 +64,7 @@ html.dark {
   --vp-button-alt-hover-bg: var(--maz-color-bg-lighter);
   --vp-button-alt-hover-border: var(--maz-color-bg-light);
   --vp-c-divider-light: var(--maz-color-bg-light);
-  --vp-c-text-2: var(--maz-color-text-light);
+  --vp-c-text-2: var(--maz-color-text-dark);
 
   --vp-custom-block-warning-bg: var(--maz-color-warning-700);
   --vp-custom-block-warning-border: var(--maz-color-warning-600);

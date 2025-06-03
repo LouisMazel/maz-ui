@@ -1,3 +1,0 @@
-// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
-
-exports[`components/MazTransitionExpand.vue > should match with the snapshot 1`] = `"<transition-group-stub data-v-76cbd327="" name="maz-expand" tag="div" appear="false" persisted="false" css="true" class="m-transition-expand m-reset-css"></transition-group-stub>"`;

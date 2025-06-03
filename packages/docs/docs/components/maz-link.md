@@ -22,7 +22,7 @@ description: MazLink is a standalone component
   </template>
 
   <script lang="ts" setup>
-    import MazLink from 'maz-ui/components/MazLink'
+    import { MazLink } from 'maz-ui/components'
   </script>
   ```
 

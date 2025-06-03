@@ -39,7 +39,7 @@ description: Efficient composable for string matching tasks, utilizing Levenshte
 
   <script lang="ts" setup>
     import { ref } from 'vue'
-    import { useStringMatching } from 'maz-ui'
+    import { useStringMatching } from 'maz-ui/composables'
 
     const string1 = ref<string>('maz-ui')
     const string2 = ref<string>('màéz-uiok')
@@ -54,7 +54,7 @@ description: Efficient composable for string matching tasks, utilizing Levenshte
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import { useStringMatching } from 'maz-ui'
+  import { useStringMatching } from 'maz-ui/src/composables/useStringMatching'
 
   const string1 = ref<string>('maz-ui')
   const string2 = ref<string>('méz-ui')

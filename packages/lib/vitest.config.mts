@@ -19,6 +19,7 @@ export default defineConfig({
     environmentOptions: {
       jsdom: {
         resources: 'usable',
+        html: 'jsdom',
       },
     },
     env: {
@@ -34,7 +35,7 @@ export default defineConfig({
         ...coverageConfigDefaults.exclude,
         'src/components/index.ts',
         'src/components/constantes.ts',
-        'src/components/MazPhoneNumberInput/constantes/locales.ts',
+        'src/components/MazInputPhoneNumber/constantes/locales.ts',
         'tailwindcss/**/*',
         'src/types/**/*',
         'src/index.ts',
@@ -50,8 +51,8 @@ export default defineConfig({
         'src/plugins/wait/index.ts',
         'src/plugins/toaster/index.ts',
         'src/plugins/aos.ts',
-        'src/filters/index.ts',
-        'src/composables/useUserVisibilty.ts',
+        'src/formatters/index.ts',
+        'src/composables/useUserVisibility.ts',
         'src/composables/useAos.ts',
         'src/composables/useToast.ts',
         'src/composables/useDialog.ts',
@@ -77,7 +78,7 @@ export default defineConfig({
       '@components': fileURLToPath(new URL('src/components', import.meta.url)),
       '@composables': fileURLToPath(new URL('src/composables', import.meta.url)),
       '@directives': fileURLToPath(new URL('src/directives', import.meta.url)),
-      '@filters': fileURLToPath(new URL('src/filters', import.meta.url)),
+      '@formatters': fileURLToPath(new URL('src/formatters', import.meta.url)),
       '@helpers': fileURLToPath(new URL('src/helpers', import.meta.url)),
       '@icons': fileURLToPath(new URL('src/icons', import.meta.url)),
       '@plugins': fileURLToPath(new URL('src/plugins', import.meta.url)),

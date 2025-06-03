@@ -214,7 +214,7 @@ const buttonSize = computed(() => {
       :color
       :block
       :size
-      no-border
+      :border="false"
       class="m-input-tags__input"
       @keydown.enter="addTags"
       @keydown.delete="removeLastTag"

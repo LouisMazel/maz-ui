@@ -1,46 +1,59 @@
 <script lang="ts" setup>
-import type { PropType } from 'vue'
 import type { Color } from '../types'
-import type { PickerShortcut, PickerValue } from './types'
+import type { MazPickerShortcut, MazPickerValue } from './types'
 
 import type { DateTimeFormatOptions } from './utils'
 import { computed, defineAsyncComponent } from 'vue'
 
-const props = defineProps({
-  modelValue: {
-    type: [String, Object] as PropType<PickerValue>,
-    default: undefined,
-  },
-  calendarDate: { type: String, required: true },
-  color: { type: String as PropType<Color>, required: true },
-  locale: { type: String, required: true },
-  noHeader: { type: Boolean, default: false },
-  firstDayOfWeek: { type: Number, required: true },
-  double: { type: Boolean, required: true },
-  hasDate: { type: Boolean, required: true },
-  minDate: { type: String, default: undefined },
-  maxDate: { type: String, default: undefined },
-  inline: { type: Boolean, required: true },
-  noShortcuts: { type: Boolean, required: true },
-  shortcuts: {
-    type: Array as PropType<PickerShortcut[]>,
-    required: true,
-  },
-  shortcut: { type: String, default: undefined },
-  hasTime: { type: Boolean, required: true },
-  isOpen: { type: Boolean, required: true },
-  format: { type: String, required: true },
-  isHour12: { type: Boolean, required: true },
-  formatterOptions: {
-    type: Object as PropType<DateTimeFormatOptions>,
-    required: true,
-  },
-  minuteInterval: { type: Number, required: true },
-  disabled: { type: Boolean, required: true },
-  disabledWeekly: { type: Array as PropType<number[]>, required: true },
-  disabledHours: { type: Array as PropType<number[]>, required: true },
-  disabledDates: { type: Array as PropType<string[]>, required: true },
-})
+const {
+  modelValue,
+  calendarDate,
+  color,
+  locale,
+  hideHeader,
+  firstDayOfWeek,
+  double,
+  hasDate,
+  minDate,
+  maxDate,
+  inline,
+  shortcuts,
+  shortcut,
+  hasTime,
+  isOpen,
+  format,
+  isHour12,
+  formatterOptions,
+  minuteInterval,
+  disabled,
+  disabledWeekly,
+  disabledHours,
+  disabledDates,
+} = defineProps<{
+  modelValue: MazPickerValue | undefined
+  calendarDate: string
+  color: Color
+  locale: string
+  hideHeader: boolean
+  firstDayOfWeek: number
+  double: boolean
+  hasDate: boolean
+  minDate: string | undefined
+  maxDate: string | undefined
+  inline: boolean
+  shortcuts: MazPickerShortcut[] | false
+  shortcut: string | undefined
+  hasTime: boolean
+  isOpen: boolean
+  format: string
+  isHour12: boolean
+  formatterOptions: DateTimeFormatOptions
+  minuteInterval: number
+  disabled: boolean
+  disabledWeekly: number[]
+  disabledHours: number[]
+  disabledDates: string[]
+}>()
 
 const emits = defineEmits(['update:model-value', 'update:calendar-date', 'close'])
 
@@ -49,14 +62,14 @@ const MazPickerHeader = defineAsyncComponent(() => import('../MazPicker/MazPicke
 const MazPickerTime = defineAsyncComponent(() => import('../MazPicker/MazPickerTime.vue'))
 
 const currentDate = computed({
-  get: () => props.modelValue,
+  get: () => modelValue,
   set: (value) => {
     emits('update:model-value', value)
   },
 })
 
-const calendarDate = computed({
-  get: () => props.calendarDate,
+const currentCalendarDate = computed({
+  get: () => calendarDate,
   set: calendarDate => emits('update:calendar-date', calendarDate),
 })
 </script>
@@ -71,7 +84,7 @@ const calendarDate = computed({
     }"
   >
     <MazPickerHeader
-      v-if="!noHeader"
+      v-if="!hideHeader"
       :color="color"
       :has-time="hasTime"
       :model-value="modelValue"
@@ -80,7 +93,7 @@ const calendarDate = computed({
       :has-date="hasDate"
       :formatter-options="formatterOptions"
       :double="double"
-      :no-shortcuts="noShortcuts"
+      :hide-shortcuts="!shortcuts"
       class="m-picker-container__header"
     />
 
@@ -88,7 +101,7 @@ const calendarDate = computed({
       <MazPickerCalendar
         v-if="hasDate"
         v-model="currentDate"
-        v-model:calendar-date="calendarDate"
+        v-model:calendar-date="currentCalendarDate"
         :color="color"
         :locale="locale"
         :has-time="hasTime"
@@ -101,14 +114,13 @@ const calendarDate = computed({
         :disabled-dates="disabledDates"
         :shortcuts="shortcuts"
         :shortcut="shortcut"
-        :no-shortcuts="noShortcuts"
         class="m-picker-container__calendar"
       />
 
       <MazPickerTime
         v-if="hasTime"
         v-model="currentDate"
-        v-model:calendar-date="calendarDate"
+        v-model:calendar-date="currentCalendarDate"
         :is-open="isOpen"
         :color="color"
         :locale="locale"

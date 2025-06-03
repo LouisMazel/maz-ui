@@ -15,7 +15,7 @@ describe('components/MazCard.vue', () => {
   it('renders with header slot content', async () => {
     const wrapper = mount(MazCard, {
       slots: {
-        header: '<div>Card Header</div>',
+        title: '<div>Card Header</div>',
       },
     })
 
@@ -38,12 +38,12 @@ describe('components/MazCard.vue', () => {
     const header = wrapper.find('.m-card__header')
 
     await header.trigger('click')
-
-    expect(wrapper.vm.isOpen).toBe(true)
+    // @ts-expect-error - private
+    expect(wrapper.vm.collapseOpenModel).toBe(true)
 
     await header.trigger('click')
-
-    expect(wrapper.vm.isOpen).toBe(false)
+    // @ts-expect-error - private
+    expect(wrapper.vm.collapseOpenModel).toBe(false)
   })
 
   it('renders with gallery images', async () => {
@@ -55,7 +55,9 @@ describe('components/MazCard.vue', () => {
 
     const wrapper = mount(MazCard, {
       props: {
-        images,
+        gallery: {
+          images,
+        },
       },
     })
 

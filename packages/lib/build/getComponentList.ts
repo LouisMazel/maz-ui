@@ -5,22 +5,27 @@ import { fileURLToPath } from 'node:url'
 const _dirname = fileURLToPath(new URL('.', import.meta.url))
 const INPUT_COMPONENT_DIR = resolve(_dirname, './../src/components')
 
-export async function getComponentList() {
+export async function getComponentList(inputComponentDir: string = INPUT_COMPONENT_DIR) {
   try {
-    const fileList = await readdir(INPUT_COMPONENT_DIR, { withFileTypes: true })
-    return fileList
+    const fileList = await readdir(inputComponentDir, { withFileTypes: true })
+
+    const componentList = fileList
       .filter(
         dirent =>
           dirent.isFile()
           && dirent.name.startsWith('Maz')
+          && !dirent.name.endsWith('.cjs')
+          && !dirent.name.endsWith('.map')
           && !dirent.name.endsWith('.d.ts')
           && !dirent.name.endsWith('.css'),
       )
       .map(({ name }) => ({
         name: name.split('.')[0],
         fullName: `${name}`,
-        path: `${INPUT_COMPONENT_DIR}/${name}`,
+        path: `${inputComponentDir}/${name}`,
       }))
+
+    return componentList
   }
   catch (error) {
     throw new Error(

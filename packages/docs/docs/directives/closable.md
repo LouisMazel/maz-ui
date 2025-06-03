@@ -58,7 +58,7 @@ description: vClosable is a Vue 3 directive to trigger a function when the user 
   </template>
 
   <script lang="ts" setup>
-    import { vClickOutside } from 'maz-ui'
+    import { vClosable } from 'maz-ui/directives'
     import { ref } from 'vue'
 
     const hasClikedOutside = ref(false)
@@ -79,7 +79,7 @@ description: vClosable is a Vue 3 directive to trigger a function when the user 
 
 ```typescript
 import { createApp } from 'vue'
-import { vClosableInstall } from 'maz-ui'
+import { vClosableInstall } from 'maz-ui/directives'
 
 const app = createApp(App)
 
@@ -99,7 +99,7 @@ type vClosableBindingValue = (...args: any[]) => any | {
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import { vClosable } from 'maz-ui'
+  import { vClosable } from 'maz-ui/src/directives/vClosable'
 
   const hasClikedOutside = ref(false)
 

@@ -1,4 +1,4 @@
-import { vFullscreenImgInstall } from 'maz-ui'
+import { vFullscreenImgInstall } from 'maz-ui/directives'
 import { defineNuxtPlugin } from '#imports'
 
 export default defineNuxtPlugin(({ vueApp }) => {

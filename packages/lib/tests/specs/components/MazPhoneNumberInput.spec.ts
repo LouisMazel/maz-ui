@@ -116,7 +116,7 @@ describe('components/MazInputPhoneNumber.vue', () => {
   it('should show validation error when phone number is invalid', async () => {
     await wrapper.find('input[name="phone"]').setValue('+3361')
     await wrapper.setProps({
-      noValidationError: false,
+      validationError: true,
     })
 
     await nextTick()
@@ -130,7 +130,7 @@ describe('components/MazInputPhoneNumber.vue', () => {
   it('should no show validation error when phone number is invalid', async () => {
     await wrapper.find('input[name="phone"]').setValue('+3361')
     await wrapper.setProps({
-      noValidationError: true,
+      validationError: false,
     })
 
     const phoneInput = wrapper.findComponent(PhoneInput)
@@ -153,7 +153,7 @@ describe('components/MazInputPhoneNumber.vue', () => {
   it('should no show validation success when phone number is valid', async () => {
     await wrapper.setProps({
       modelValue: '+33612345678',
-      noValidationSuccess: true,
+      validationSuccess: false,
     })
 
     const phoneInput = wrapper.findComponent(PhoneInput)
@@ -172,9 +172,9 @@ describe('components/MazInputPhoneNumber.vue', () => {
     expect(phoneInput.props('disabled')).toBeDefined()
   })
 
-  it('should hide country selector when noCountrySelector is true', async () => {
+  it('should hide country selector when hideCountrySelector is true', async () => {
     await wrapper.setProps({
-      noCountrySelector: true,
+      hideCountrySelector: true,
     })
 
     const countrySelect = wrapper.findComponent(CountrySelector)

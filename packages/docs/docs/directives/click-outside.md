@@ -50,7 +50,7 @@ description: vClickOutside is a Vue 3 directive to trigger a function when the u
   </template>
 
   <script lang="ts" setup>
-    import { vClickOutside } from 'maz-ui'
+    import { vClickOutside } from 'maz-ui/directives'
     import { ref } from 'vue'
 
     const hasClikedOutside = ref(false)
@@ -71,7 +71,7 @@ description: vClickOutside is a Vue 3 directive to trigger a function when the u
 
 ```typescript
 import { createApp } from 'vue'
-import { vClickOutsideInstall } from 'maz-ui'
+import { vClickOutsideInstall } from 'maz-ui/directives'
 
 const app = createApp(App)
 
@@ -82,7 +82,7 @@ app.mount('#app')
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import { vClickOutside } from 'maz-ui'
+  import { vClickOutside } from 'maz-ui/src/directives/vClickOutside'
 
   const hasClikedOutside = ref(false)
 

@@ -34,7 +34,7 @@ More info about [dialog plugin](./../plugins/dialog.md) in its documentation
   </template>
 
   <script lang="ts" setup>
-    import { useDialog } from 'maz-ui'
+    import { useDialog } from 'maz-ui/composables'
 
     const dialog = useDialog()
 
@@ -52,7 +52,7 @@ More info about [dialog plugin](./../plugins/dialog.md) in its documentation
 </ComponentDemo>
 
 <script lang="ts" setup>
-  import { useDialog } from 'maz-ui'
+  import { useDialog } from 'maz-ui/src/composables/useDialog'
 
   const dialog = useDialog()
 

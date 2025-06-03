@@ -2,7 +2,7 @@
 import type { Dayjs } from 'dayjs'
 import type { PropType } from 'vue'
 import type { Color } from '../../types'
-import type { PartialRangeValue, PickerValue } from '../types'
+import type { MazPickerPartialRangeValue, MazPickerValue } from '../types'
 import dayjs from 'dayjs'
 import { computed, ref, watch } from 'vue'
 import { debounce } from '../../../helpers/debounce'
@@ -12,7 +12,7 @@ import { getDaysInMonth, getFirstDayOfMonth, isSameDate, isSameDay, isToday } fr
 
 const props = defineProps({
   modelValue: {
-    type: [String, Object] as PropType<PickerValue>,
+    type: [String, Object] as PropType<MazPickerValue>,
     default: undefined,
   },
   calendarDate: { type: String, required: true },
@@ -66,7 +66,7 @@ const emptyDaysCount = computed(() => {
 })
 
 function setHoverredDay(day?: Dayjs) {
-  const value = props.modelValue as PartialRangeValue
+  const value = props.modelValue as MazPickerPartialRangeValue
 
   if (value.start && !value.end && day && day.isAfter(value.start)) {
     emits('update:hoverred-day', day)
@@ -77,7 +77,7 @@ function setHoverredDay(day?: Dayjs) {
 }
 
 function isBetweenHoverred(day: Dayjs): DaySelect | undefined {
-  const value = props.modelValue as PartialRangeValue
+  const value = props.modelValue as MazPickerPartialRangeValue
 
   if (!value.start || !props.hoverredDay) {
     return undefined
@@ -206,7 +206,7 @@ function checkIsSameDate(day: Dayjs): boolean {
 }
 
 function checkIsBetween(day: Dayjs): boolean {
-  const value = props.modelValue as PartialRangeValue
+  const value = props.modelValue as MazPickerPartialRangeValue
 
   if (!value.start || !value.end) {
     return false

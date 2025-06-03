@@ -2,7 +2,7 @@
 import type { Dayjs } from 'dayjs'
 import type { PropType } from 'vue'
 import type { Color } from '../../types'
-import type { PickerValue } from '../types'
+import type { MazPickerValue } from '../types'
 import dayjs from 'dayjs'
 import { computed } from 'vue'
 import MazPickerCalendarDays from './MazPickerCalendarDays.vue'
@@ -11,7 +11,7 @@ import MazPickerCalendarGrid from './MazPickerCalendarGrid.vue'
 
 const props = defineProps({
   modelValue: {
-    type: [String, Object] as PropType<PickerValue>,
+    type: [String, Object] as PropType<MazPickerValue>,
     default: undefined,
   },
   color: { type: String as PropType<Color>, required: true },

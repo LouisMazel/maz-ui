@@ -35,7 +35,7 @@ This component has the "autogrow" feature, so when the user writes, the textarea
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import MazTextarea from 'maz-ui/components/MazTextarea'
+  import { MazTextarea } from 'maz-ui/components'
 
   const value = ref()
 </script>
@@ -66,18 +66,39 @@ You can use the `label` and `append` slots to customize the label and the append
 
   <template #code>
 
-```html
-<MazTextarea
-  v-model="value"
-  name="comment"
->
-  <template #label>
-    <MazIcon name="envelope" class="maz-text-xl" />
-    <span class="maz-ml-2">
-      The custom label
-    </span>
-  </template>
-</MazTextarea>
+```vue
+<template>
+  <MazTextarea
+    v-model="value"
+    name="comment"
+  >
+    <template #label>
+      <MazIcon name="envelope" class="maz-text-xl" />
+      <span class="maz-ml-2">
+        The custom label
+      </span>
+    </template>
+    <template #append>
+      <MazBtn icon="paper-airplane" size="sm" @click="sendMessage" />
+    </template>
+  </MazTextarea>
+</template>
+
+<script lang="ts" setup>
+  import { ref } from 'vue'
+  import { useToast } from 'maz-ui/composables'
+
+  const value = ref<string>()
+
+  const toast = useToast()
+
+  function sendMessage() {
+    toast.success('Message sent', {
+      position: 'top-right',
+    })
+    value.value = ''
+  }
+</script>
 ```
 
   </template>
@@ -177,7 +198,7 @@ You can use the `hint` attribute to display a hint message. This will replace th
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import { useToast } from 'maz-ui'
+  import { useToast } from 'maz-ui/src/composables/useToast'
 
   const value = ref()
 

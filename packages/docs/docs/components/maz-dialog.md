@@ -50,7 +50,7 @@ This component usex `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
 
 <script setup>
   import { ref } from 'vue'
-  import MazDialog from 'maz-ui/components/MazDialog'
+  import { MazDialog } from 'maz-ui/components'
 
   const isOpen = ref(false)
 </script>

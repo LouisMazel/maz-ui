@@ -46,7 +46,7 @@ To get a typed model from the Valibot schema, you can use the `InferFormValidato
 ```ts{14}
 import { ref } from 'vue'
 import { pipe, string, nonEmpty, number, minValue, maxValue, minLength } from 'valibot'
-import { InferFormValidatorSchema } from 'maz-ui'
+import { InferFormValidatorSchema } from 'maz-ui/composables'
 
 const schema = ref({
   name: pipe(string('Name is required'), nonEmpty('Name is required'), minLength(3, 'Name must be at least 3 characters')),
@@ -92,7 +92,7 @@ This method will search HTML elements (input, select, and textarea) into the com
 </template>
 
 <script setup lang="ts">
-import { useFormField } from 'maz-ui'
+import { useFormField } from 'maz-ui/composables'
 
 const { value, errorMessage, isValid, hasError } = useFormField('name', {
   ref: 'inputRef',
@@ -135,7 +135,7 @@ This method works if the component emits the `blur` event. Otherwise, use the fi
 </template>
 
 <script setup lang="ts">
-import { useFormField } from 'maz-ui'
+import { useFormField } from 'maz-ui/composables'
 
 const { value, errorMessage, isValid, hasError, onBlur } = useFormField('name')
 </script>
@@ -248,8 +248,8 @@ In this example, we will create a simple form with four fields: `name`, `age`, `
 
   <script lang="ts" setup>
     import { ref } from 'vue'
-    import { useFormValidator, sleep, useToast } from 'maz-ui'
-    import type { InferFormValidatorSchema } from 'maz-ui'
+    import { sleep } from 'maz-ui'
+    import { useFormValidator, useToast, type InferFormValidatorSchema } from 'maz-ui/composables'
     import { string, nonEmpty, pipe, number, minValue, maxValue, boolean, literal, minLength } from 'valibot'
 
     const toast = useToast()
@@ -378,7 +378,8 @@ With eager mode, each form field is validated on blur (if not empty) and then on
 </template>
 
 <script setup lang="ts">
-  import { useFormValidator, useFormField, sleep, useToast, InferFormValidatorSchema } from 'maz-ui'
+  import { sleep } from 'maz-ui'
+  import { useFormValidator, useFormField, useToast, InferFormValidatorSchema } from 'maz-ui/composables'
   import { string, nonEmpty, pipe, number, minValue, maxValue, boolean, literal, minLength } from 'valibot'
 
   const schema = {
@@ -508,7 +509,8 @@ With progressive mode, the field becomes valid after the first successful valida
 </template>
 
 <script setup lang="ts">
-  import { useFormValidator, useFormField, sleep, useToast, InferFormValidatorSchema } from 'maz-ui'
+  import { sleep } from 'maz-ui'
+  import { useFormValidator, useFormField, useToast, InferFormValidatorSchema } from 'maz-ui/composables'
   import { string, nonEmpty, pipe, number, minValue, maxValue, boolean, literal, minLength } from 'valibot'
 
   const schema =  {
@@ -603,7 +605,8 @@ You can set the throttle or debounce time in milliseconds or use `true` for the 
 </template>
 
 <script setup lang="ts">
-  import { useFormValidator, sleep, useToast, InferFormValidatorSchema } from 'maz-ui'
+  import { sleep } from 'maz-ui'
+  import { useFormValidator, useToast, InferFormValidatorSchema } from 'maz-ui/composables'
   import { string, nonEmpty, pipe, number, minValue, minLength } from 'valibot'
 
   const { model, fieldsStates, isValid, isSubmitting, errorMessages, handleSubmit } = useFormValidator({
@@ -777,7 +780,8 @@ type FormFieldOptions<T> = {
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import { useFormValidator, useFormField, sleep, useToast } from 'maz-ui'
+  import { useFormValidator, useFormField, useToast } from 'maz-ui/src/composables/index'
+  import { sleep } from 'maz-ui'
   import { string, object, nonEmpty, pipe, number, minValue, maxValue, boolean, literal, minLength } from 'valibot'
 
   const toast = useToast()

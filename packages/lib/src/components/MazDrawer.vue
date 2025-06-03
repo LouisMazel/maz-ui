@@ -38,7 +38,7 @@ export interface MazDrawerProps {
   /** The class of the backdrop */
   backdropClass?: string
   /** Disable the close button */
-  noClose?: boolean
+  hideCloseButton?: boolean
 }
 
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
@@ -99,7 +99,7 @@ const hasTitle = computed(() => {
               {{ title }}
             </slot>
           </h4>
-          <div v-if="!noClose" class="m-drawer-header__close">
+          <div v-if="!hideCloseButton" class="m-drawer-header__close">
             <MazBtn size="sm" color="transparent" @click="close">
               <XIcon class="icon maz-text-lg" />
             </MazBtn>

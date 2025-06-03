@@ -23,7 +23,7 @@ Look at the top of the page to see the component in action (scroll in page to in
 </template>
 
 <script lang="ts" setup>
-  import MazReadingProgressBar from 'maz-ui/components/MazReadingProgressBar'
+  import { MazReadingProgressBar } from 'maz-ui/components'
 </script>
 ```
 

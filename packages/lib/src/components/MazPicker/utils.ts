@@ -1,12 +1,12 @@
 import type { ConfigType, OpUnitType } from 'dayjs'
 import type { IpWhoResponse } from '../../components/MazInputPhoneNumber/types'
 
-import type { PartialRangeValue } from '../../components/MazPicker/types'
+import type { MazPickerPartialRangeValue } from '../../components/MazPicker/types'
 import dayjs from 'dayjs'
 
 import weekday from 'dayjs/plugin/weekday'
-import { capitalize } from '../../filters/capitalize'
-import { date } from '../../filters/date'
+import { capitalize } from '../../formatters/capitalize'
+import { date } from '../../formatters/date'
 
 dayjs.extend(weekday)
 
@@ -32,7 +32,7 @@ export function getRangeFormattedDate({
   locale,
   options,
 }: {
-  value: PartialRangeValue
+  value: MazPickerPartialRangeValue
   locale: string
   options: Intl.DateTimeFormatOptions
 }): string | undefined {
@@ -96,7 +96,7 @@ export function getISODate(value?: ConfigType, format = 'YYYY-MM-DD'): string | 
   return dayjs(value).format(format)
 }
 
-export function getRangeISODate(value: PartialRangeValue, format = 'YYYY-MM-DD') {
+export function getRangeISODate(value: MazPickerPartialRangeValue, format = 'YYYY-MM-DD') {
   return {
     start: getISODate(value.start, format),
     end: getISODate(value.end, format),

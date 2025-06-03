@@ -9,17 +9,16 @@ import dts from 'vite-plugin-dts'
 
 import { libInjectCss } from 'vite-plugin-lib-inject-css'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
-
 import SvgLoader from 'vite-svg-loader'
+
 import rootPkg from '../../package.json'
+
 import { BuildMazCli } from './build/BuildMazCli'
 import { BuildNuxtModule } from './build/BuildNuxtModule'
 import { CompileStyles } from './build/CompileStyles'
-// import { CopyComponentTypes } from './build/CopyComponentTypes'
-import { GenerateComponentsEntry } from './build/GenerateComponentsEntry'
 import pkg from './package.json'
 
-rmSync('dist', { recursive: true, force: true })
+rmSync(resolver('dist'), { recursive: true, force: true })
 
 function resolver(path: string) {
   return resolve(__dirname, path)
@@ -41,22 +40,14 @@ const external = [
   'dayjs/plugin/isBetween',
 ]
 
-const componentEntries = Object.fromEntries(
-  glob.sync([
-    'src/components/*.vue',
-  ], {
-    ignore: ['**/*/index.ts'],
-  })
-    .map(getEntries),
-)
-
 const moduleEntries = Object.fromEntries(
   glob.sync([
+    'src/components/*.vue',
     'src/composables/*.ts',
     'src/directives/*.ts',
-    'src/filters/*.ts',
-    'src/helpers/*.ts',
     'src/resolvers/*.ts',
+    'src/formatters/*.ts',
+    'src/helpers/*.ts',
     'src/plugins/*.ts',
   ], {
     ignore: ['**/*/index.ts'],
@@ -70,7 +61,6 @@ const staticAssetsToCopy = [
 
 export default defineConfig({
   plugins: [
-    GenerateComponentsEntry(),
     Vue(),
     SvgLoader(),
     libInjectCss(),
@@ -78,12 +68,30 @@ export default defineConfig({
       tsconfigPath: resolver('./tsconfig.json'),
       entryRoot: resolver('src'),
       outDir: resolver('dist/types'),
+      // include: [
+      //   'src/components/*.vue',
+      //   'src/composables/*.ts',
+      //   'src/directives/*.ts',
+      //   'src/resolvers/*.ts',
+      //   'src/formatters/*.ts',
+      //   'src/helpers/*.ts',
+      //   'src/plugins/*.ts',
+      //   'src/components/types.ts',
+      //   'src/components/index.ts',
+      //   'src/composables/index.ts',
+      //   'src/plugins/index.ts',
+      //   'src/directives/index.ts',
+      //   'src/resolvers/index.ts',
+      //   'src/helpers/index.ts',
+      //   'src/formatters/index.ts',
+      //   'src/index.ts',
+      //   'src/types/*.d.ts',
+      // ],
     }),
     viteStaticCopy({ targets: staticAssetsToCopy }),
     CompileStyles(),
     BuildNuxtModule(),
     BuildMazCli(),
-    // CopyComponentTypes(),
   ],
   build: {
     cssCodeSplit: true,
@@ -96,15 +104,26 @@ export default defineConfig({
     },
     lib: {
       entry: {
-        ...componentEntries,
         ...moduleEntries,
-        index: resolver('src/index.ts'),
+        'components/index': resolver('src/components/index.ts'),
+        'composables/index': resolver('src/composables/index.ts'),
+        'plugins/index': resolver('src/plugins/index.ts'),
+        'directives/index': resolver('src/directives/index.ts'),
+        'resolvers/index': resolver('src/resolvers/index.ts'),
+        'helpers/index': resolver('src/helpers/index.ts'),
+        'formatters/index': resolver('src/formatters/index.ts'),
+        'index': resolver('src/index.ts'),
       },
       fileName: (format, name) => format === 'es' ? `${name}.mjs` : `${name}.cjs`,
       cssFileName: '[name].[hash].css',
     },
     rollupOptions: {
       external,
+      treeshake: {
+        moduleSideEffects: (id, _external) => {
+          return id.includes('.css') || id.includes('.vue?vue&type=style')
+        },
+      },
       output: [
         {
           format: 'es',
@@ -113,6 +132,8 @@ export default defineConfig({
           exports: 'named',
           entryFileNames: '[name].mjs',
           preserveModules: false,
+          interop: 'auto',
+          generatedCode: 'es2015',
         },
         {
           format: 'cjs',
@@ -121,13 +142,9 @@ export default defineConfig({
           exports: 'named',
           entryFileNames: '[name].cjs',
           preserveModules: false,
+          interop: 'auto',
         },
       ],
-      // output: {
-      //   // chunkFileNames: 'chunks/[name].[hash].js',
-      //   // assetFileNames: 'assets/[name].[hash][extname]',
-      //   // entryFileNames: '[name].js',
-      // },
     },
   },
 } satisfies UserConfig)

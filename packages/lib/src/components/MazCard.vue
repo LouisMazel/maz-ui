@@ -1,36 +1,49 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
 import type { RouterLinkProps } from 'vue-router'
-import type { MazGalleryImage } from './types'
-import { computed, defineAsyncComponent, ref, useSlots, watch } from 'vue'
+import type { MazGalleryProps } from './MazGallery.vue'
+import { computed, defineAsyncComponent, useSlots } from 'vue'
 
-const props = withDefaults(defineProps<MazCardProps>(), {
-  images: undefined,
-  orientation: 'column',
-  href: undefined,
-  to: undefined,
-  hrefTarget: '_self',
-  footerAlign: 'right',
-  galleryWidth: 200,
-  galleryHeight: 150,
-  elevation: true,
-  radius: true,
-  imagesShowCount: 3,
-  noRemaining: true,
-  scale: true,
-  wrapperClass: undefined,
-  header: undefined,
-})
+const {
+  gallery = undefined,
+  orientation = 'column',
+  href = undefined,
+  to = undefined,
+  hrefTarget = '_self',
+  footerAlign = 'right',
+  elevation = false,
+  radius = true,
+  padding = true,
+  scale = true,
+  wrapperClass = undefined,
+  title = undefined,
+  collapsible = false,
+  bordered = true,
+  collapseOpen = false,
+} = defineProps<MazCardProps>()
+
+defineEmits<{
+  /**
+   * Update the collapseOpen model
+   * @value boolean
+   */
+  'update:collapseOpen': [boolean]
+}>()
+
+const DEFAULT_GALLERY_OPTIONS: MazGalleryProps = {
+  displayedCount: 3,
+  remaining: false,
+  width: 200,
+  height: 150,
+}
 
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 const MazGallery = defineAsyncComponent(() => import('./MazGallery.vue'))
-const MazTransitionExpand = defineAsyncComponent(() => import('./MazTransitionExpand.vue'))
+const MazExpandAnimation = defineAsyncComponent(() => import('./MazExpandAnimation.vue'))
 
 const ChevronDownIcon = defineAsyncComponent(() => import('../../icons/chevron-down.svg'))
 
 export interface MazCardProps {
-  /** Images displayed */
-  images?: MazGalleryImage[]
   /** Card variant: Must be `column | row | row-reverse | column-reverse` */
   orientation?: 'column' | 'row' | 'row-reverse' | 'column-reverse'
   /** Make card a link (footer area excluded) */
@@ -41,83 +54,75 @@ export interface MazCardProps {
   hrefTarget?: '_blank' | '_self' | '_parent' | '_top' | string
   /** Footer text alignment: `right | left` */
   footerAlign?: 'right' | 'left'
-  /** Gallery image width */
-  galleryWidth?: string | number
-  /** Gallery image height */
-  galleryHeight?: string | number
-  /** Enable "zoom" image on click (can't be used when the card has a link) */
-  zoom?: boolean
+  /** Images gallery props options (see `MazGallery` component) */
+  gallery?: MazGalleryProps
+  /** scale animation on hover (only linked cards) */
+  scale?: boolean
   /** Set elevation to card (box-shadow) */
   elevation?: boolean
   /** Set radius to card */
   radius?: boolean
   /** Set border to card (in dark mode, the card is always bordered) */
   bordered?: boolean
-  /** Number of images shown in the gallery */
-  imagesShowCount?: number
-  /** Remove transparent layer with the remain count (ex: +2) */
-  noRemaining?: boolean
-  /** scale animation on hover (only linked cards) */
-  scale?: boolean
   /** add classes to wrapper */
   wrapperClass?: HTMLAttributes['class']
   /** Remove padding from content wrapper */
-  noPadding?: boolean
+  padding?: boolean
   /** Hide overflow */
   overflowHidden?: boolean
-  /**
-   * @deprecated Use `collapsible` instead
-   */
-  collapsable?: boolean
-  /**
-   * Card can be open and close
-   */
+  /** Make card collapsible */
   collapsible?: boolean
-  /** Card is open by default if `true` */
+  /**
+   * Card is open by default if `true`
+   * @model
+   */
   collapseOpen?: boolean
   /** Title of the card in header */
-  header?: string
+  title?: string
   /** The card will be displayed in full width */
   block?: boolean
 }
 
 const slots = useSlots()
 
-const isCollapsible = computed(() => props.collapsible || props.collapsable)
+const collapseOpenModel = defineModel<boolean>('collapseOpen', { default: false })
 
-const isOpen = ref(isCollapsible.value ? props.collapseOpen : true)
+collapseOpenModel.value = collapsible ? collapseOpen : true
 
-const isLinked = computed(() => props.href || props.to)
-
-watch(
-  () => props.collapseOpen,
-  (value) => {
-    if (isCollapsible.value)
-      isOpen.value = value
-  },
-)
-
-const wrapperData = computed(() => {
-  return {
-    is: props.href ? 'a' : props.to ? 'router-link' : 'div',
-    ...(props.href && { href: props.href }),
-    ...(props.to && { to: props.to }),
-    target: props.hrefTarget,
-  }
-})
-
-const isColumnVariant = computed(() => ['column', 'column-reverse'].includes(props.orientation))
-
+const isColumnVariant = computed(() => ['column', 'column-reverse'].includes(orientation))
 const haveSomeContent = computed(() => {
-  const supportedSlots = new Set(['default', 'title', 'subtitle', 'content'])
+  const supportedSlots = new Set(['default', 'content-title', 'content-subtitle', 'content-body'])
   return Object.keys(slots).some(val => supportedSlots.has(val))
 })
-
-const galleryWidthComputed = computed(() => (haveSomeContent.value ? props.galleryWidth : '100%'))
-
+const galleryHeightComputed = computed(() => (haveSomeContent.value ? gallery?.height ?? DEFAULT_GALLERY_OPTIONS.height : '100%'))
+const galleryWidthComputed = computed(() => (haveSomeContent.value ? gallery?.width ?? DEFAULT_GALLERY_OPTIONS.width : '100%'))
+const galleryOptions = computed(() => {
+  return {
+    ...DEFAULT_GALLERY_OPTIONS,
+    radius,
+    width: isColumnVariant.value ? false : galleryWidthComputed.value,
+    height: !isColumnVariant.value && haveSomeContent.value ? false : galleryHeightComputed.value,
+    ...gallery,
+  }
+})
+const wrapperData = computed(() => {
+  return {
+    is: href ? 'a' : to ? 'router-link' : 'div',
+    ...(href && { href }),
+    ...(to && { to }),
+    target: hrefTarget,
+  }
+})
 const footerAlignClass = computed(() =>
-  props.footerAlign === 'right' ? 'maz-text-end' : 'maz-text-start',
+  footerAlign === 'right' ? 'maz-text-end' : 'maz-text-start',
 )
+
+const isLinked = computed(() => href || to)
+
+function toggleCollapse() {
+  if (collapsible)
+    collapseOpenModel.value = !collapseOpenModel.value
+}
 </script>
 
 <template>
@@ -129,38 +134,41 @@ const footerAlignClass = computed(() =>
         'm-card--no-scale': !scale,
         'maz-elevation': elevation,
         '--block': block,
-        'maz-overflow-hidden': overflowHidden || !isOpen,
+        'maz-overflow-hidden': overflowHidden || !collapseOpenModel,
         'maz-rounded': radius,
         'maz-border maz-border-solid maz-border-color-light': bordered,
       },
     ]"
   >
     <Component
-      :is="isCollapsible ? 'button' : 'div'"
-      v-if="$slots.header || header || isCollapsible"
+      :is="collapsible ? 'button' : 'div'"
+      v-if="$slots.title || title || collapsible"
       class="m-card__header maz-border-b maz-border-solid"
       :class="[
-        isOpen ? 'maz-rounded-t maz-border-color-light' : 'maz-border-transparent',
-        { '--is-collapsible': isCollapsible },
-        { 'maz-justify-end': (!$slots.header || !header) && isCollapsible },
-        { 'maz-justify-between': $slots.header || header },
+        collapseOpenModel ? 'maz-rounded-t maz-border-color-light' : 'maz-border-transparent',
+        { '--is-collapsible': collapsible },
+        { 'maz-justify-end': (!$slots.title || !title) && collapsible },
+        { 'maz-justify-between': $slots.title || title },
       ]"
       tabindex="-1"
-      @click.stop="isCollapsible ? (isOpen = !isOpen) : undefined"
+      @click.stop="collapsible ? toggleCollapse() : undefined"
     >
-      <slot v-if="$slots.header || header" name="header">
-        {{ header }}
+      <!--
+        @slot title - The title of the card
+      -->
+      <slot v-if="$slots.title || title" name="title">
+        {{ title }}
       </slot>
 
       <MazBtn
-        v-if="isCollapsible"
+        v-if="collapsible"
         color="transparent"
         class="maz-ml-2 maz-text-sm"
         size="xs"
-        @click.stop="isOpen = !isOpen"
+        @click.stop="toggleCollapse"
       >
         <ChevronDownIcon
-          :class="{ '--is-open': isOpen }"
+          :class="{ '--is-open': collapseOpenModel }"
           class="m-card__collapse-icon maz-text-xl"
         />
       </MazBtn>
@@ -171,38 +179,42 @@ const footerAlignClass = computed(() =>
       class="m-card__wrapper"
       :class="[`m-card__wrapper--${orientation}`, { 'm-card__link': isLinked }]"
     >
-      <div v-if="images" class="m-card__gallery__wrapper">
+      <div v-if="galleryOptions.images" class="m-card__gallery__wrapper">
         <MazGallery
-          :no-radius="!radius"
-          :width="galleryWidthComputed"
-          :height="galleryHeight"
-          :images-shown-count="imagesShowCount"
-          :images="images"
-          :no-zoom="!zoom"
-          :no-width="isColumnVariant"
-          :no-height="!isColumnVariant && haveSomeContent"
-          :no-remaining="noRemaining"
+          v-bind="galleryOptions"
           class="m-card__gallery maz-flex-1"
         />
       </div>
       <div class="maz-min-w-0 maz-flex-1">
-        <Component :is="isCollapsible ? MazTransitionExpand : 'div'" class="maz-h-full">
+        <Component :is="collapsible ? MazExpandAnimation : 'div'" v-model="collapseOpenModel" class="maz-h-full">
           <div
-            v-show="isOpen"
-            :class="[wrapperClass, { 'maz-p-4': !noPadding && !isCollapsible }]"
-            class="m-card__content__wrapper maz-h-full"
+            :class="[wrapperClass, { 'maz-p-4': padding }]"
+            class="m-card__content__wrapper"
           >
-            <slot>
-              <div v-if="$slots.title" class="m-card__title">
-                <slot name="title" />
-              </div>
-              <div v-if="$slots.subtitle" class="m-card__subtitle">
-                <slot name="subtitle" />
-              </div>
-              <div v-if="$slots.content" class="m-card__content">
-                <slot name="content" />
-              </div>
-            </slot>
+            <div v-if="$slots['content-title']" class="m-card__title">
+              <!--
+              @slot content-title - The title of the card
+              @binding collapse-open - The collapse open state of the card
+            -->
+              <slot name="content-title" :collapse-open="collapseOpenModel" />
+            </div>
+            <div v-if="$slots['content-subtitle']" class="m-card__subtitle">
+              <!--
+              @slot content-subtitle - The subtitle of the card
+            -->
+              <slot name="content-subtitle" />
+            </div>
+            <div v-if="$slots['content-body']" class="m-card__content">
+              <!--
+              @slot content-body - The body of the card
+            -->
+              <slot name="content-body" />
+            </div>
+            <!--
+              @slot default - The content of the card
+              @binding collapse-open - The collapse open state of the card
+            -->
+            <slot :collapse-open="collapseOpenModel" />
           </div>
         </Component>
       </div>
@@ -217,10 +229,15 @@ const footerAlignClass = computed(() =>
         footerAlignClass,
       ]"
     >
+      <!--
+        @slot footer - The footer of the card
+      -->
       <slot name="footer" />
     </div>
-    <div v-if="$slots.actions" class="m-card__actions maz-flex maz-p-2">
-      <!-- @slot action of gallery -->
+    <div v-if="$slots.actions && galleryOptions.images" class="m-card__actions maz-flex maz-p-2">
+      <!--
+        @slot actions - The actions of the image gallery (only if gallery is displayed)
+      -->
       <slot name="actions" />
     </div>
   </div>
@@ -290,7 +307,7 @@ const footerAlignClass = computed(() =>
   }
 
   &__content__wrapper {
-    @apply maz-relative maz-max-w-full;
+    @apply maz-relative maz-max-w-full maz-h-full maz-flex maz-flex-col maz-gap-2;
   }
 
   &__title,

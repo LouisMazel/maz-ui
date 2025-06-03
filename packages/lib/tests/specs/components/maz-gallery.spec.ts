@@ -56,7 +56,7 @@ describe('mazGallery', () => {
     expect(gallery.attributes('style')).toContain('width: 50%')
     expect(gallery.classes()).toContain('maz-rounded')
 
-    await wrapper.setProps({ noRadius: true })
+    await wrapper.setProps({ radius: false })
 
     const gallery2 = wrapper.find('.m-gallery')
 

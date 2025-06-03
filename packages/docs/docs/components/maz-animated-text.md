@@ -26,7 +26,7 @@ This component is SSR friendly. It will display the brut text on the server side
   </template>
 
   <script lang="ts" setup>
-    import MazAnimatedText from 'maz-ui/components/MazAnimatedText'
+    import { MazAnimatedText } from 'maz-ui/components'
   </script>
   ```
 

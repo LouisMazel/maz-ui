@@ -10,13 +10,6 @@ describe('mazBtn.vue', () => {
     expect(wrapper.classes()).toContain('m-btn')
   })
 
-  it('renders as a link when variant is "link"', () => {
-    const wrapper = mount(MazBtn, {
-      props: { variant: 'link' },
-    })
-    expect(wrapper.classes()).toContain('--is-link')
-  })
-
   it('renders with the correct size class', () => {
     const wrapper = mount(MazBtn, {
       props: { size: 'lg' },

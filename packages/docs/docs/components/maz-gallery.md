@@ -12,20 +12,20 @@ description: MazGallery is a standalone component used to display images in a co
 ## Basic usage
 
 <MazGallery
-  :images="images"
+  :images
   :height="320"
 />
 
 ```vue
 <template>
   <MazGallery
-    :images="images"
+    :images
     :height="320"
   />
 </template>
 
 <script lang="ts" setup>
-  import MazGallery, { type MazGalleryImage } from 'maz-ui/components/MazGallery'
+  import { MazGallery, type MazGalleryImage } from 'maz-ui/components'
 
   const images: MazGalleryImage[] = [
     'https://loremflickr.com/640/400',
@@ -43,14 +43,14 @@ description: MazGallery is a standalone component used to display images in a co
 <MazGallery
   :images="images2"
   class="maz-h-48 mob-l:maz-h-60 tab-s:maz-h-80"
-  no-height
+  :height="false"
 />
 
 ```html
 <MazGallery
   :images="images"
-  class="maz-h-48 mob-l:maz-h-60 tab-s:maz-h-80"
-  no-height
+  class="h-48 md:h-60 lg:h-80"
+  :height="false"
 />
 ```
 
@@ -69,7 +69,7 @@ type MazGalleryImage =
 <!--@include: ./../.vitepress/generated-docs/maz-gallery.doc.md-->
 
 <script lang="ts" setup>
-  import { type MazGalleryImage } from 'maz-ui/components/MazGallery'
+  import { type MazGalleryImage } from 'maz-ui/components'
 
   const images: MazGalleryImage[] = [
     'https://loremflickr.com/640/400',

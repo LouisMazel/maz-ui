@@ -22,7 +22,6 @@ export interface MazStepperStep {
   warning?: boolean
   icon?: string | Icon
 }
-export type MazStepperSteps = MazStepperStep[]
 
 const {
   modelValue,
@@ -48,7 +47,7 @@ export interface MazStepperProps {
   /** The current step */
   modelValue?: number
   /** The steps */
-  steps?: MazStepperSteps
+  steps?: MazStepperStep[]
   /**
    * The color of the stepper
    * @default primary

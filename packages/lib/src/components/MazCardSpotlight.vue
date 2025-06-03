@@ -36,14 +36,14 @@ export interface MazCardSpotlightProps {
   innerOpacity?: number
 }
 
-const props = withDefaults(defineProps<MazCardSpotlightProps>(), {
-  noElevation: false,
-  color: 'primary',
-  padding: true,
-  contentClass: undefined,
-  contentStyle: undefined,
-  innerOpacity: 0.95,
-})
+const {
+  noElevation = false,
+  color = 'primary',
+  padding = true,
+  contentClass = undefined,
+  contentStyle = undefined,
+  innerOpacity = 0.95,
+} = defineProps<MazCardSpotlightProps>()
 
 const blobElement = ref<HTMLDivElement>()
 const fakeblobElement = ref<HTMLDivElement>()
@@ -70,8 +70,8 @@ function animateBlob({ clientX, clientY }: { clientX: number, clientY: number })
   }
 }
 
-const alphaColor = computed(() => `var(--maz-color-${props.color}-alpha)`)
-const alphaColor20 = computed(() => `var(--maz-color-${props.color}-alpha-20)`)
+const alphaColor = computed(() => `var(--maz-color-${color}-alpha)`)
+const alphaColor20 = computed(() => `var(--maz-color-${color}-alpha-20)`)
 
 onMounted(() => {
   window.addEventListener('mousemove', animateBlob)
@@ -89,7 +89,7 @@ onUnmounted(() => {
     :style="{ 'backgroundColor': alphaColor20, '--inner-opacity': innerOpacity }"
   >
     <div class="inner">
-      <div class="content" :class="[{ 'maz-p-4': padding }, contentClass]">
+      <div class="content" :class="[{ 'maz-p-4': padding }, contentClass]" :style="contentStyle">
         <slot />
       </div>
     </div>

@@ -17,6 +17,7 @@ const {
   queue,
   noPauseOnHover,
   persistent,
+  destroy,
 } = defineProps<MazToastProps>()
 
 const emits = defineEmits(['close', 'click', 'open'])
@@ -43,6 +44,7 @@ export interface MazToastProps {
   action?: ToasterAction
   persistent?: boolean
   icon?: boolean
+  destroy?: () => void
 }
 
 const iconComponent = computed(() => {
@@ -227,6 +229,7 @@ function onAnimationEnter() {
 function onAnimationLeave() {
   emits('close')
   Toaster.value?.remove()
+  destroy?.()
 
   const container = document.querySelector(selectorContainerClass)
   if (container && !container?.hasChildNodes()) {
@@ -339,10 +342,6 @@ onMounted(() => {
 
   &.--bottom {
     @apply maz-bottom-0 maz-flex maz-flex-col-reverse;
-
-    & > :not([hidden]) ~ :not([hidden]) {
-      @apply maz-my-2;
-    }
   }
 
   &.--right {

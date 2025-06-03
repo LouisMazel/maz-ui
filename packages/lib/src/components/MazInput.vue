@@ -75,20 +75,13 @@ export interface MazInputProps<T = ModelValueSimple> {
   /** The class of the input wrapper div element */
   inputClasses?: string
   /** Remove the border of the input */
-  noBorder?: boolean
-  /** Remove the radius of the input */
-  noRadius?: boolean
+  border?: boolean
   /** The attribut inputmode of the input */
   inputmode?: HTMLAttributes['inputmode']
   /** The size of the component */
   size?: Size
-  /** Enable debounce on input - can be `boolean | number`, if it is a number, it is used for the debounce delay */
+  /** Enable debounce on input - can be `boolean | number`, if it is a number, it is used for the debounce delay - if `true`, the delay is 500ms */
   debounce?: boolean | number
-  /**
-   * The delay of the debounce
-   * @deprecated use debounce instead
-   */
-  debounceDelay?: number
   /** Display the valid button - this button has type="submit"  */
   validButton?: boolean
   /** Display the loading state on the valid button */
@@ -110,6 +103,7 @@ export interface MazInputProps<T = ModelValueSimple> {
   /**
    * Size radius of the component's border
    * @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'`
+   * @default 'lg'
    */
   roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
   /** The input will be displayed in full width */
@@ -121,6 +115,7 @@ export interface MazInputProps<T = ModelValueSimple> {
 defineOptions({
   inheritAttrs: false,
 })
+
 const props = withDefaults(defineProps<MazInputProps<T>>(), {
   style: undefined,
   class: undefined,
@@ -139,20 +134,17 @@ const props = withDefaults(defineProps<MazInputProps<T>>(), {
   warning: false,
   hint: undefined,
   inputClasses: undefined,
-  noBorder: false,
-  noRadius: false,
+  border: true,
   inputmode: 'text',
   size: 'md',
   debounce: false,
-  /** @deprecated use debounce instead */
-  debounceDelay: 500,
   validButton: false,
   validButtonLoading: false,
   autoFocus: false,
   borderActive: false,
   leftIcon: undefined,
   rightIcon: undefined,
-  roundedSize: undefined,
+  roundedSize: 'lg',
 })
 
 const emits = defineEmits<{
@@ -216,7 +208,7 @@ const inputType = computed(() => (hasPasswordVisible.value ? 'text' : props.type
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 const borderStyle = computed(() => {
-  if (props.noBorder)
+  if (!props.border)
     return undefined
   if (props.error)
     return 'maz-border-danger'
@@ -252,7 +244,7 @@ const debounceEmitValue = debounceFn(
   (value?: T) => {
     emits('update:model-value', value)
   },
-  typeof props.debounce === 'number' ? props.debounce : props.debounceDelay ?? 500,
+  typeof props.debounce === 'number' ? props.debounce : 500,
 )
 
 function emitValue(value?: T) {
@@ -338,7 +330,7 @@ function emitInputEvent(event: Event) {
       :class="[
         inputClasses,
         borderStyle,
-        !roundedSize ? { 'maz-rounded': !noRadius } : `--rounded-${roundedSize}`,
+        `--rounded-${roundedSize}`,
         { '--block': block },
       ]"
     >

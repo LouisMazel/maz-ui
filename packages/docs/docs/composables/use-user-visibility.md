@@ -59,7 +59,7 @@ Switch tabs for a second to see events
 <script lang="ts" setup>
   import { onMounted, ref, onBeforeUnmount } from 'vue'
 
-  import { useUserVisibility } from 'maz-ui'
+  import { useUserVisibility } from 'maz-ui/composables'
 
   const events = ref([])
 
@@ -90,7 +90,7 @@ Switch tabs for a second to see events
 <script lang="ts" setup>
   import { onMounted, ref, onBeforeUnmount } from 'vue'
 
-  import { useUserVisibility } from 'maz-ui'
+  import { useUserVisibility } from 'maz-ui/src/composables/useUserVisibility'
 
   const events = ref([])
 

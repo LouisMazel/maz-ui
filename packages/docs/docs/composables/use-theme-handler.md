@@ -120,7 +120,7 @@ Always run `autoSetTheme` method on app initialization and let the user change t
 
   import MazBtn from 'maz-ui/components/MazBtn'
 
-  import { useThemeHandler, type ThemeHandlerOptions } from 'maz-ui'
+  import { useThemeHandler, type ThemeHandlerOptions } from 'maz-ui/composables'
 
   // Optional
   const options: ThemeHandlerOptions = {
@@ -243,7 +243,7 @@ type ThemeHandler = {
 ```
 
 <script lang="ts" setup>
-  import { useThemeHandler, type ThemeHandlerOptions } from 'maz-ui'
+  import { useThemeHandler, type ThemeHandlerOptions } from 'maz-ui/src/composables/useThemeHandler'
 
   const options: ThemeHandlerOptions = {
     darkClass: 'dark',

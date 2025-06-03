@@ -51,7 +51,7 @@ Here's an example of using the useSwipe composable:
 </template>
 
 <script lang="ts" setup>
-import { useSwipe } from 'maz-ui'
+import { useSwipe } from 'maz-ui/composables'
 import { onMounted, onUnmounted, ref } from 'vue'
 
 const swipeContainer = ref<HTMLDivElement>()
@@ -97,7 +97,7 @@ onUnmounted(() => {
 ```
 
 <script lang="ts" setup>
-import { useSwipe } from 'maz-ui'
+import { useSwipe } from 'maz-ui/src/composables/useSwipe'
 import { onMounted, onUnmounted, ref } from 'vue'
 
 const swipeContainer = ref<HTMLDivElement>()

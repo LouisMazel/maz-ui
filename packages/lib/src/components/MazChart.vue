@@ -9,7 +9,7 @@ import type {
   UpdateMode,
 } from 'chart.js'
 
-export type { ChartData, ChartType, DefaultDataPoint, Plugin, UpdateMode } from 'chart.js'
+export type { ChartData as MazChartData, DefaultDataPoint as MazChartDefaultDataPoint, Plugin as MazChartPlugin, ChartType as MazChartType, UpdateMode as MazChartUpdateMode } from 'chart.js'
 
 export interface MazChartProps<T extends ChartType = ChartType, TData = DefaultDataPoint<T>, TLabel = unknown> {
   /**

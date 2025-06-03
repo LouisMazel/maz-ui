@@ -112,7 +112,7 @@ function clikedOutside () {
 </template>
 
 <script lang="ts" setup>
-  import MazBtn from 'maz-ui/components/MazBtn'
+  import { MazBtn } from 'maz-ui/components'
 </script>
 ```
 
@@ -120,7 +120,7 @@ function clikedOutside () {
 
 ```typescript
 import { createApp } from 'vue'
-import MazBtn from 'maz-ui/components/MazBtn'
+import { MazBtn } from 'maz-ui/components'
 
 const app = createApp(App)
 app.component('MazBtn', MazBtn)
@@ -130,6 +130,7 @@ app.component('MazBtn', MazBtn)
 ### Not recommended - Fully components installation
 
 Before, you have to install all dependencies of components
+Instead use the [UnpluginVueComponentsResolver](./../guide/getting-started.md#recommendations)
 
 ```typescript
 import { createApp } from 'vue'

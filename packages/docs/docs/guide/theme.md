@@ -200,11 +200,11 @@ Then, the file will be generated, and you must import it in your project.
   --maz-color-black-contrast: hsl(0deg 0% 100%);
 
   /** TEXT COLOR LIGHT **/
-  --maz-color-text-light: hsl(0deg 0% 85%);
+  --maz-color-text-light: hsl(210deg 8% 14%);
   --maz-color-muted-light: hsl(0deg 0% 0% / 54%);
 
   /** TEXT COLOR DARK **/
-  --maz-color-text-dark: hsl(210deg 8% 14%);
+  --maz-color-text-dark: hsl(0deg 0% 85%);
   --maz-color-muted-dark: hsl(0deg 0% 89% / 54%);
 
   /** BG OVERLAY **/

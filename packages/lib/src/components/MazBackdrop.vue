@@ -11,7 +11,7 @@ const {
   teleportSelector = 'body',
   beforeClose = undefined,
   persistent = false,
-  noCloseOnEscKey = false,
+  closeOnEscKey = true,
   transitionName = 'backdrop-anim',
   backdropClass = undefined,
   backdropContentClass = undefined,
@@ -55,7 +55,7 @@ export interface MazBackdropProps {
   /** Persistent dialog (not closable by clicking outside and remove close button) */
   persistent?: boolean
   /** Prevent close on escape key */
-  noCloseOnEscKey?: boolean
+  closeOnEscKey?: boolean
   /** Transition name */
   transitionName?: string
   /** Backdrop class */
@@ -104,7 +104,7 @@ function onBackdropClicked() {
 }
 
 function onKeyPress(event: KeyboardEvent) {
-  if (!noCloseOnEscKey && event.key === 'Escape' && !persistent) {
+  if (closeOnEscKey && event.key === 'Escape' && !persistent) {
     close()
   }
 }

@@ -12,20 +12,21 @@ export class WaitHandler {
 
   stop(loaderId: LoaderId = DEFAULT_LOADER) {
     this._loaders.value = pop(this._loaders.value)(loaderId)
+    return this
   }
 
   start(loaderId: LoaderId = DEFAULT_LOADER) {
     this._loaders.value = push(this._loaders.value)(loaderId)
-    return () => this.stop(loaderId)
-  }
-
-  get anyLoading() {
-    return computed(() => hasItems(this._loaders.value))
+    return this
   }
 
   isLoading(loaderId: LoaderId = DEFAULT_LOADER): boolean {
     const isLoading = computed(() => contains(this._loaders.value)(loaderId))
     return isLoading.value
+  }
+
+  get anyLoading() {
+    return computed(() => hasItems(this._loaders.value))
   }
 }
 

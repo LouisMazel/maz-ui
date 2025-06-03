@@ -23,7 +23,7 @@ This component uses [vLazyImg](./../directives/lazy-img.md) directive
 </template>
 
 <script lang="ts" setup>
-  import MazAvatar from 'maz-ui/components/MazAvatar'
+  import { MazAvatar } from 'maz-ui/components'
 </script>
 ```
 
@@ -102,7 +102,7 @@ See all the options props [here](#props-event-slots)
 </template>
 
 <script lang="ts" setup>
-  import MazAvatar from 'maz-ui/components/MazAvatar'
+  import { MazAvatar } from 'maz-ui/components'
   const clicked = () => { console.log('clicked') }
 </script>
 ```

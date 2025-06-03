@@ -26,7 +26,7 @@ const props = withDefaults(defineProps<DialogProps & MazBackdropProps>(), {
   /** Title of the modal in header */
   title: undefined,
   /** Remove the close button in header */
-  noClose: false,
+  hideCloseButton: false,
   /** Modal's max-width */
   maxWidth: '100%',
   /** Modal's min-width */
@@ -54,7 +54,7 @@ export interface DialogProps {
   /** Title of the modal in header */
   title?: string
   /** Remove the close button in header */
-  noClose?: boolean
+  hideCloseButton?: boolean
   /** Modal's max-width */
   maxWidth?: string
   /** Modal's min-width */
@@ -81,7 +81,7 @@ const backdropProps = computed(() => {
   const dialogPropKeys: (keyof MazDialogProps)[] = [
     'modelValue',
     'title',
-    'noClose',
+    'hideCloseButton',
     'maxWidth',
     'minWidth',
     'scrollable',
@@ -166,7 +166,7 @@ if (props.scrollable) {
           </h2>
 
           <MazBtn
-            v-if="!noClose && !persistent"
+            v-if="!hideCloseButton && !persistent"
             color="transparent"
             size="sm"
             :icon="XIcon"

@@ -49,7 +49,7 @@ description: vTooltip is a Vue 3 directive to display a text when the user hover
   </template>
 
   <script lang="ts" setup>
-    import { vTooltip } from 'maz-ui'
+    import { vTooltip } from 'maz-ui/directives'
   </script>
   ```
 
@@ -209,7 +209,7 @@ description: vTooltip is a Vue 3 directive to display a text when the user hover
 
   <script lang="ts" setup>
     import { ref } from 'vue'
-    import { vTooltip } from 'maz-ui'
+    import { vTooltip } from 'maz-ui/directives'
     const open = ref(true)
   </script>
   ```
@@ -225,7 +225,7 @@ description: vTooltip is a Vue 3 directive to display a text when the user hover
 
 ```typescript
 import { createApp } from 'vue'
-import { vTooltipInstall } from 'maz-ui'
+import { vTooltipInstall } from 'maz-ui/directives'
 
 const app = createApp(App)
 
@@ -260,6 +260,6 @@ type vTooltipBindingValue =
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import { vTooltip } from 'maz-ui'
+  import { vTooltip } from 'maz-ui/src/directives/vTooltip'
   const open = ref(true)
 </script>

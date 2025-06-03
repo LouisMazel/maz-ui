@@ -9,11 +9,9 @@ export const DEFAULT_OPTIONS: ClassOptions = {
   loadedClass: 'm-lazy-loaded',
   loadingClass: 'm-lazy-loading',
   errorClass: 'm-lazy-error',
-  noPhotoClass: 'm-lazy-no-photo',
-  noPhoto: false,
+  fallbackClass: 'm-lazy-fallback',
   observerOnce: true,
   loadOnce: false,
-  noUseErrorPhoto: false,
   observerOptions: {
     threshold: 0.1,
   },
@@ -61,7 +59,7 @@ export class LazyImg {
     this.removeClass(el, this.options.loadedClass)
     this.removeClass(el, this.options.loadingClass)
     this.removeClass(el, this.options.errorClass)
-    this.removeClass(el, this.options.noPhotoClass)
+    this.removeClass(el, this.options.fallbackClass)
   }
 
   private setBaseClass(el: HTMLElement) {
@@ -71,13 +69,6 @@ export class LazyImg {
   private imageIsLoading(el: HTMLElement) {
     this.addClass(el, this.options.loadingClass)
     this.options.onLoading?.(el)
-  }
-
-  private imageHasNoPhoto(el: HTMLElement) {
-    this.removeClass(el, this.options.loadingClass)
-    this.addClass(el, this.options.noPhotoClass)
-
-    this.setDefaultPhoto(el)
   }
 
   private imageIsLoaded(el: HTMLElement): void {
@@ -141,13 +132,13 @@ export class LazyImg {
   }
 
   private async setDefaultPhoto(el: HTMLElement) {
-    if (this.options.noUseErrorPhoto)
+    if (this.options.fallbackSrc === false)
       return
 
-    const fallbackSrc = this.options.fallbackSrc ?? this.options.errorPhoto
+    const fallbackSrc = this.options.fallbackSrc
 
     if (typeof fallbackSrc === 'string') {
-      this.addClass(el, this.options.noPhotoClass)
+      this.addClass(el, this.options.fallbackClass)
     }
 
     const errorPhoto = fallbackSrc ?? (await this.loadErrorPhoto())
@@ -262,9 +253,6 @@ export class LazyImg {
     binding: vLazyImgBinding,
     type: 'bind' | 'update',
   ): Promise<void> {
-    if (this.options.noPhoto)
-      return this.imageHasNoPhoto(el)
-
     await this.imageHandler(el, binding, type)
   }
 

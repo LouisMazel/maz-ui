@@ -73,7 +73,7 @@ Then, import and use only the components, composables, and more you need:
 </template>
 
 <script setup lang="ts">
-  import MazBtn from 'maz-ui/components/MazBtn'
+  import { MazBtn } from 'maz-ui/components'
 </script>
 ```
 

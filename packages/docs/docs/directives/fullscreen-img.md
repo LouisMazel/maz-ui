@@ -24,7 +24,7 @@ description: Displays images fullscreen on click
 </template>
 
 <script setup lang="ts">
-  import { vFullscreenImg } from 'maz-ui'
+  import { vFullscreenImg } from 'maz-ui/directives'
 </script>
 ```
 
@@ -72,7 +72,7 @@ description: Displays images fullscreen on click
 
 ```ts
 import { createApp } from 'vue'
-import { vFullscreenImgInstall } from 'maz-ui'
+import { vFullscreenImgInstall } from 'maz-ui/directives'
 
 const app = createApp(App)
 

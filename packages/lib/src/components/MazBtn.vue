@@ -4,7 +4,6 @@ import type { Color, Icon, Size } from './types'
 import { computed, defineAsyncComponent, useAttrs } from 'vue'
 
 const {
-  variant = 'button',
   size = 'md',
   color = 'primary',
   type = 'button',
@@ -18,7 +17,8 @@ const {
   loading,
   disabled,
   block,
-  noUnderline,
+  underline,
+  padding = true,
 } = defineProps<MazBtnProps>()
 
 const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
@@ -27,12 +27,6 @@ const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
 const { href, to } = useAttrs()
 
 export interface MazBtnProps {
-  /**
-   * The variant of the button - Change UI of component (link or button style)
-   * @values `'button' | 'link'`
-   * @deprecated Use the component <MazLink /> instead
-   */
-  variant?: 'button' | 'link'
   /**
    * The size of the button
    * @values `'xl' | 'lg' | 'md' | 'sm' | 'xs' | 'mini'`
@@ -49,21 +43,11 @@ export interface MazBtnProps {
    */
   type?: 'submit' | 'reset' | 'button'
   /**
-   * If true, the button will have a full border radius
-   * @default false
-   */
-  rounded?: boolean
-  /**
    * Size of the rounded
    * @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'`
    * @default 'lg'
    */
   roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
-  /**
-   * If true, the button will have no border radius
-   * @default false
-   */
-  noRounded?: boolean
   /**
    * If true, the button have the "border" style
    * @default false
@@ -83,7 +67,7 @@ export interface MazBtnProps {
    * If true, the button will have no underline on hover (useful with `variant="link"`)
    * @default false
    */
-  noUnderline?: boolean
+  underline?: boolean
   /**
    * Enable the button loader
    * @default false
@@ -116,14 +100,9 @@ export interface MazBtnProps {
   rightIcon?: string | Icon
   /**
    * If true, the button will have no padding
-   * @default false
+   * @default true
    */
-  noPadding?: boolean
-  /**
-   * If true, the button will have no box-shadow
-   * @default false
-   */
-  noElevation?: boolean
+  padding?: boolean
   /**
    * Choose how the elements are aligned in the button
    */
@@ -149,8 +128,6 @@ const isDisabled = computed(
   () => (loading || disabled) && component.value === 'button',
 )
 const cursorClass = computed(() => (isDisabled.value ? '--cursor-default' : '--cursor-pointer'))
-const variantClass = computed(() => `--is-${variant}`)
-const hasLoader = computed(() => loading && variant === 'button')
 const btnType = computed(() => (component.value === 'button' ? type : undefined))
 
 const iconClassSize = computed(() => {
@@ -177,20 +154,16 @@ const iconClassSize = computed(() => {
     class="m-btn m-reset-css"
     :class="[
       `--${size}`,
-      ...[!fab && !rounded && roundedSize && `--rounded-${roundedSize}`],
+      ...[!fab && roundedSize && `--rounded-${roundedSize}`],
       btnColorClass,
       cursorClass,
-      variantClass,
       {
         '--block': block,
-        '--no-underline': noUnderline,
+        '--no-underline': !underline,
         '--fab': fab,
         '--loading': loading,
         '--disabled': isDisabled,
-        '--rounded': rounded,
-        '--no-rounded': noRounded,
-        '--no-padding': noPadding,
-        '--no-elevation': noElevation,
+        '--no-padding': !padding,
       },
     ]"
     :style="[`--justify: ${justify}`]"
@@ -225,7 +198,7 @@ const iconClassSize = computed(() => {
       <Component :is="rightIcon" v-else-if="rightIcon" :class="[iconClassSize]" />
     </slot>
 
-    <div v-if="hasLoader" class="m-btn-loader-container">
+    <div v-if="loading" class="m-btn-loader-container">
       <MazSpinner size="2em" :color="color" />
     </div>
   </Component>
@@ -257,395 +230,345 @@ const iconClassSize = computed(() => {
     @apply maz-cursor-default;
   }
 
-  &.--is-link {
-    @apply maz-inline-flex maz-items-center
-        maz-transition maz-duration-200 maz-ease-in-out;
+  @apply maz-inline-flex maz-items-center maz-overflow-hidden
+      maz-border-transparent maz-bg-transparent maz-no-underline
+      maz-transition-all maz-duration-200 maz-ease-in-out maz-py-0.5;
 
-    &:not(:disabled):hover,
-    &:not(:disabled):focus {
-      &:not(.--no-underline) {
-        @apply maz-underline;
+  &:not(.--rounded-none) {
+    @apply maz-rounded;
+
+    &.--rounded {
+      @apply maz-rounded-full;
+
+      &-sm {
+        @apply maz-rounded-sm;
       }
-    }
 
-    &.--secondary {
-      @apply maz-text-secondary;
-    }
+      &-md {
+        @apply maz-rounded-md;
+      }
 
-    &.--info {
-      @apply maz-text-info;
-    }
+      &-lg {
+        @apply maz-rounded;
+      }
 
-    &.--warning {
-      @apply maz-text-warning-600;
-    }
+      &-xl {
+        @apply maz-rounded-xl;
+      }
 
-    &.--danger {
-      @apply maz-text-danger-600;
-    }
-
-    &.--success {
-      @apply maz-text-success-600;
-    }
-
-    &.--white {
-      @apply maz-text-white;
-    }
-
-    &.--black {
-      @apply maz-text-black;
-    }
-
-    &.--theme {
-      @apply maz-text-normal;
+      &-full {
+        @apply maz-rounded-full;
+      }
     }
   }
 
-  &.--is-button {
-    @apply maz-inline-flex maz-items-center maz-overflow-hidden
-        maz-border-transparent maz-bg-transparent maz-no-underline
-        maz-transition-all maz-duration-200 maz-ease-in-out maz-py-0.5;
+  /* Sizes */
+  &.--xl {
+    @apply maz-min-h-16 maz-px-8 maz-text-xl;
+  }
 
-    &:not(.--no-rounded, .--rounded-none) {
-      @apply maz-rounded;
+  &.--lg {
+    @apply maz-min-h-14 maz-px-6;
+  }
 
-      &.--rounded {
-        @apply maz-rounded-full;
+  &.--md {
+    @apply maz-min-h-12 maz-px-4;
+  }
 
-        &-sm {
-          @apply maz-rounded-sm;
-        }
+  &.--sm {
+    @apply maz-min-h-10 maz-px-3;
+  }
 
-        &-md {
-          @apply maz-rounded-md;
-        }
+  &.--xs {
+    @apply maz-min-h-8 maz-px-2 maz-text-sm;
+  }
 
-        &-lg {
-          @apply maz-rounded;
-        }
+  &.--mini {
+    @apply maz-min-h-6 maz-px-1 maz-text-xs;
+  }
 
-        &-xl {
-          @apply maz-rounded-xl;
-        }
+  /* Not disabled */
 
-        &-full {
-          @apply maz-rounded-full;
-        }
-      }
+  &:not(.--disabled) {
+    &:hover {
+      @apply maz-bg-border;
     }
+  }
 
-    /* Sizes */
+  /* Fab */
+
+  &.--fab {
+    @apply maz-flex maz-items-center maz-justify-center maz-rounded-full maz-px-1 maz-py-1;
+
     &.--xl {
-      @apply maz-min-h-16 maz-px-8 maz-text-xl;
+      @apply maz-w-16;
     }
 
     &.--lg {
-      @apply maz-min-h-14 maz-px-6;
+      @apply maz-w-14;
     }
 
     &.--md {
-      @apply maz-min-h-12 maz-px-4;
+      @apply maz-w-12;
     }
 
     &.--sm {
-      @apply maz-min-h-10 maz-px-3;
+      @apply maz-w-10;
     }
 
     &.--xs {
-      @apply maz-min-h-8 maz-px-2 maz-text-sm;
+      @apply maz-w-8;
     }
 
     &.--mini {
-      @apply maz-min-h-6 maz-px-1 maz-text-xs;
+      @apply maz-w-6;
     }
+  }
 
-    /* Not disabled */
+  &.--block {
+    @apply maz-w-full;
+  }
 
-    &:not(.--disabled) {
-      &:hover {
-        @apply maz-bg-border;
-      }
+  &.--primary {
+    @apply maz-bg-primary maz-text-primary-contrast;
+
+    &:not(:disabled):hover {
+      @apply maz-bg-primary-700;
     }
+  }
 
-    /* Fab */
+  &.--secondary {
+    @apply maz-bg-secondary maz-text-secondary-contrast;
 
-    &.--fab {
-      @apply maz-flex maz-items-center maz-justify-center maz-rounded-full maz-px-1 maz-py-1;
-
-      &:not(.--no-elevation) {
-        @apply maz-elevation;
-      }
-
-      &.--xl {
-        @apply maz-w-16;
-      }
-
-      &.--lg {
-        @apply maz-w-14;
-      }
-
-      &.--md {
-        @apply maz-w-12;
-      }
-
-      &.--sm {
-        @apply maz-w-10;
-      }
-
-      &.--xs {
-        @apply maz-w-8;
-      }
-
-      &.--mini {
-        @apply maz-w-6;
-      }
+    &:not(:disabled):hover {
+      @apply maz-bg-secondary-700;
     }
+  }
 
-    &.--block {
-      @apply maz-w-full;
+  &.--info {
+    @apply maz-bg-info maz-text-info-contrast;
+
+    &:not(:disabled):hover {
+      @apply maz-bg-info-700;
     }
+  }
 
-    &.--primary {
+  &.--success {
+    @apply maz-bg-success maz-text-success-contrast;
+
+    &:not(:disabled):hover {
+      @apply maz-bg-success-700;
+    }
+  }
+
+  &.--warning {
+    @apply maz-bg-warning maz-text-warning-contrast;
+
+    &:not(:disabled):hover {
+      @apply maz-bg-warning-700;
+    }
+  }
+
+  &.--danger {
+    @apply maz-bg-danger maz-text-white;
+
+    &:not(:disabled):hover {
+      @apply maz-bg-danger-700;
+    }
+  }
+
+  &.--white {
+    @apply maz-bg-white maz-text-white-contrast;
+
+    &:not(:disabled):hover {
+      @apply maz-bg-gray-400;
+    }
+  }
+
+  &.--black {
+    @apply maz-bg-black maz-text-black-contrast;
+
+    &:not(:disabled):hover {
+      @apply maz-bg-gray-800;
+    }
+  }
+
+  &.--transparent {
+    @apply maz-bg-transparent;
+
+    &:not(:disabled):hover {
+      @apply maz-bg-[#000]/[0.08] dark:maz-bg-[#FFF]/[0.08];
+    }
+  }
+
+  &.--theme {
+    @apply maz-bg-theme maz-text-color;
+
+    &:not(:disabled):hover {
+      @apply maz-bg-theme-hover;
+    }
+  }
+
+  /* OUTLINE */
+
+  &.--primary-outline {
+    @apply maz-bg-primary-alpha-05 maz-text-primary maz-border-primary;
+
+    &:not(:disabled):hover {
       @apply maz-bg-primary maz-text-primary-contrast;
-
-      &:not(:disabled):hover {
-        @apply maz-bg-primary-700;
-      }
     }
+  }
 
-    &.--secondary {
-      @apply maz-bg-secondary maz-text-secondary-contrast;
+  &.--secondary-outline {
+    @apply maz-border-secondary maz-bg-secondary-alpha-05 maz-text-secondary;
 
-      &:not(:disabled):hover {
-        @apply maz-bg-secondary-700;
-      }
+    &:not(:disabled):hover {
+      @apply maz-bg-secondary maz-text-white;
     }
+  }
 
-    &.--info {
-      @apply maz-bg-info maz-text-info-contrast;
+  &.--info-outline {
+    @apply maz-border-info maz-bg-info-alpha-05 maz-text-info;
 
-      &:not(:disabled):hover {
-        @apply maz-bg-info-700;
-      }
+    &:not(:disabled):hover {
+      @apply maz-bg-info maz-text-white;
     }
+  }
 
-    &.--success {
-      @apply maz-bg-success maz-text-success-contrast;
+  &.--success-outline {
+    @apply maz-border-success maz-bg-success-alpha-05 maz-text-success;
 
-      &:not(:disabled):hover {
-        @apply maz-bg-success-700;
-      }
+    &:not(:disabled):hover {
+      @apply maz-bg-success maz-text-white;
     }
+  }
 
-    &.--warning {
-      @apply maz-bg-warning maz-text-warning-contrast;
+  &.--danger-outline {
+    @apply maz-border-danger maz-bg-danger-alpha-05 maz-text-danger;
 
-      &:not(:disabled):hover {
-        @apply maz-bg-warning-700;
-      }
-    }
-
-    &.--danger {
+    &:not(:disabled):hover {
       @apply maz-bg-danger maz-text-white;
-
-      &:not(:disabled):hover {
-        @apply maz-bg-danger-700;
-      }
     }
+  }
 
-    &.--white {
+  &.--warning-outline {
+    @apply maz-border-warning maz-bg-warning-alpha-05 maz-text-warning;
+
+    &:not(:disabled):hover {
+      @apply maz-bg-warning maz-text-white;
+    }
+  }
+
+  &.--white-outline {
+    @apply maz-border-white maz-text-white;
+
+    &:not(:disabled):hover {
       @apply maz-bg-white maz-text-white-contrast;
-
-      &:not(:disabled):hover {
-        @apply maz-bg-gray-400;
-      }
     }
+  }
 
-    &.--black {
+  &.--black-outline {
+    @apply maz-border-black maz-text-black;
+
+    &:not(:disabled):hover {
       @apply maz-bg-black maz-text-black-contrast;
-
-      &:not(:disabled):hover {
-        @apply maz-bg-gray-800;
-      }
     }
+  }
 
-    &.--transparent {
-      @apply maz-bg-transparent;
+  &.--theme-outline {
+    @apply maz-border-border maz-text-theme dark:maz-border-color-lighter;
 
-      &:not(:disabled):hover {
-        @apply maz-bg-[#000]/[0.08] dark:maz-bg-[#FFF]/[0.08];
-      }
+    &:not(:disabled):hover {
+      @apply maz-border-theme maz-bg-theme maz-text-color;
     }
+  }
 
-    &.--theme {
-      @apply maz-bg-theme maz-text-color;
+  /* PASTEL */
 
-      &:not(:disabled):hover {
-        @apply maz-bg-theme-hover;
-      }
+  &.--primary-pastel {
+    @apply maz-bg-primary-50 maz-text-primary;
+
+    &:not(:disabled):hover {
+      @apply maz-bg-primary maz-text-primary-contrast;
     }
+  }
 
-    /* OUTLINE */
+  &.--secondary-pastel {
+    @apply maz-bg-secondary-50 maz-text-secondary;
 
-    &.--primary-outline {
-      @apply maz-bg-primary-alpha-05 maz-text-primary maz-border-primary;
-
-      &:not(:disabled):hover {
-        @apply maz-bg-primary maz-text-primary-contrast;
-      }
+    &:not(:disabled):hover {
+      @apply maz-bg-secondary maz-text-secondary-contrast;
     }
+  }
 
-    &.--secondary-outline {
-      @apply maz-border-secondary maz-bg-secondary-alpha-05 maz-text-secondary;
+  &.--info-pastel {
+    @apply maz-bg-info-50 maz-text-info;
 
-      &:not(:disabled):hover {
-        @apply maz-bg-secondary maz-text-white;
-      }
+    &:not(:disabled):hover {
+      @apply maz-bg-info maz-text-info-contrast;
     }
+  }
 
-    &.--info-outline {
-      @apply maz-border-info maz-bg-info-alpha-05 maz-text-info;
+  &.--success-pastel {
+    @apply maz-bg-success-50 maz-text-success;
 
-      &:not(:disabled):hover {
-        @apply maz-bg-info maz-text-white;
-      }
+    &:not(:disabled):hover {
+      @apply maz-bg-success maz-text-success-contrast;
     }
+  }
 
-    &.--success-outline {
-      @apply maz-border-success maz-bg-success-alpha-05 maz-text-success;
+  &.--danger-pastel {
+    @apply maz-bg-danger-50 maz-text-danger;
 
-      &:not(:disabled):hover {
-        @apply maz-bg-success maz-text-white;
-      }
+    &:not(:disabled):hover {
+      @apply maz-bg-danger maz-text-danger-contrast;
     }
+  }
 
-    &.--danger-outline {
-      @apply maz-border-danger maz-bg-danger-alpha-05 maz-text-danger;
+  &.--warning-pastel {
+    @apply maz-bg-warning-50 maz-text-warning;
 
-      &:not(:disabled):hover {
-        @apply maz-bg-danger maz-text-white;
-      }
+    &:not(:disabled):hover {
+      @apply maz-bg-warning maz-text-warning-contrast;
     }
+  }
 
-    &.--warning-outline {
-      @apply maz-border-warning maz-bg-warning-alpha-05 maz-text-warning;
+  &.--white-pastel {
+    @apply maz-bg-gray-100 maz-text-white;
 
-      &:not(:disabled):hover {
-        @apply maz-bg-warning maz-text-white;
-      }
+    &:not(:disabled):hover {
+      @apply maz-bg-white maz-text-white-contrast;
     }
+  }
 
-    &.--white-outline {
-      @apply maz-border-white maz-text-white;
+  &.--black-pastel {
+    @apply maz-bg-border maz-text-black;
 
-      &:not(:disabled):hover {
-        @apply maz-bg-white maz-text-white-contrast;
-      }
+    &:not(:disabled):hover {
+      @apply maz-bg-black maz-text-black-contrast;
     }
+  }
 
-    &.--black-outline {
-      @apply maz-border-black maz-text-black;
+  &.--theme-pastel {
+    @apply maz-bg-border maz-text-black;
 
-      &:not(:disabled):hover {
-        @apply maz-bg-black maz-text-black-contrast;
-      }
+    &:not(:disabled):hover {
+      @apply maz-bg-black maz-text-black-contrast;
     }
+  }
 
-    &.--theme-outline {
-      @apply maz-border-border maz-text-theme dark:maz-border-color-lighter;
+  /* DISABLED */
 
-      &:not(:disabled):hover {
-        @apply maz-border-theme maz-bg-theme maz-text-color;
-      }
-    }
+  &.--disabled {
+    @apply maz-cursor-not-allowed maz-bg-color-light dark:maz-bg-color-lighter maz-text-gray-400 maz-border-color-light dark:maz-border-color-lighter;
+  }
 
-    /* PASTEL */
+  &.--loading {
+    @apply maz-cursor-wait;
+  }
 
-    &.--primary-pastel {
-      @apply maz-bg-primary-50 maz-text-primary;
-
-      &:not(:disabled):hover {
-        @apply maz-bg-primary maz-text-primary-contrast;
-      }
-    }
-
-    &.--secondary-pastel {
-      @apply maz-bg-secondary-50 maz-text-secondary;
-
-      &:not(:disabled):hover {
-        @apply maz-bg-secondary maz-text-secondary-contrast;
-      }
-    }
-
-    &.--info-pastel {
-      @apply maz-bg-info-50 maz-text-info;
-
-      &:not(:disabled):hover {
-        @apply maz-bg-info maz-text-info-contrast;
-      }
-    }
-
-    &.--success-pastel {
-      @apply maz-bg-success-50 maz-text-success;
-
-      &:not(:disabled):hover {
-        @apply maz-bg-success maz-text-success-contrast;
-      }
-    }
-
-    &.--danger-pastel {
-      @apply maz-bg-danger-50 maz-text-danger;
-
-      &:not(:disabled):hover {
-        @apply maz-bg-danger maz-text-danger-contrast;
-      }
-    }
-
-    &.--warning-pastel {
-      @apply maz-bg-warning-50 maz-text-warning;
-
-      &:not(:disabled):hover {
-        @apply maz-bg-warning maz-text-warning-contrast;
-      }
-    }
-
-    &.--white-pastel {
-      @apply maz-bg-gray-100 maz-text-white;
-
-      &:not(:disabled):hover {
-        @apply maz-bg-white maz-text-white-contrast;
-      }
-    }
-
-    &.--black-pastel {
-      @apply maz-bg-border maz-text-black;
-
-      &:not(:disabled):hover {
-        @apply maz-bg-black maz-text-black-contrast;
-      }
-    }
-
-    &.--theme-pastel {
-      @apply maz-bg-border maz-text-black;
-
-      &:not(:disabled):hover {
-        @apply maz-bg-black maz-text-black-contrast;
-      }
-    }
-
-    /* DISABLED */
-
-    &.--disabled {
-      @apply maz-cursor-not-allowed maz-bg-color-light dark:maz-bg-color-lighter maz-text-gray-400 maz-border-color-light dark:maz-border-color-lighter;
-    }
-
-    &.--loading {
-      @apply maz-cursor-wait;
-    }
-
-    &.--no-padding {
-      @apply maz-p-0;
-    }
+  &.--no-padding {
+    @apply maz-p-0;
   }
 }
 </style>

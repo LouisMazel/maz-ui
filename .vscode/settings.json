@@ -4,13 +4,24 @@
     "source.fixAll.eslint": "explicit",
     "source.fixAll.stylelint": "explicit"
   },
-  "editor.quickSuggestions": {
-    "other": true,
-    "comments": false,
-    "strings": true
-  },
   "css.validate": false,
   "prettier.enable": false,
   "eslint.enable": true,
   "vitest.disableWorkspaceWarning": true,
+  "editor.quickSuggestions": {
+    "other": "on",
+    "comments": "on",
+    "strings": "on"
+  },
+  "editor.wordBasedSuggestions": "allDocuments",
+  "editor.suggest.showWords": true,
+  "markdown.suggest.paths.enabled": true,
+  "[markdown]": {
+    "editor.quickSuggestions": {
+      "other": "on",
+      "comments": "on",
+      "strings": "on"
+    },
+    "editor.wordBasedSuggestions": "allDocuments"
+  }
 }

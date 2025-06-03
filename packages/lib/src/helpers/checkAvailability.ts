@@ -1,4 +1,4 @@
-export function checkAvailability<T>(getRef: () => T | null | undefined, callback: (component: NonNullable<T>) => void, options?: { maxAttempts?: number, interval?: number, errorMessage?: string, expectedValue?: T }) {
+export function checkAvailability<T>(getRef: () => T | null | undefined, callback: (component: NonNullable<T>) => void, options?: { maxAttempts?: number, interval?: number, errorMessage?: string, expectedValue?: T, onError?: (error: Error) => void }) {
   const opts = {
     maxAttempts: 20,
     interval: 100,
@@ -16,7 +16,7 @@ export function checkAvailability<T>(getRef: () => T | null | undefined, callbac
           setTimeout(check, opts.interval)
         }
         else {
-          console.warn(opts.errorMessage || `[maz-ui](checkAvailability) Nothing found after ${opts.maxAttempts} attempts for ref ${ref}`)
+          opts.onError?.(new Error(opts.errorMessage || `[maz-ui](checkAvailability) Nothing found after ${opts.maxAttempts} attempts`))
         }
       }
       else {
@@ -28,7 +28,7 @@ export function checkAvailability<T>(getRef: () => T | null | undefined, callbac
       setTimeout(check, opts.interval)
     }
     else {
-      console.warn(opts.errorMessage || `[maz-ui](checkAvailability) Nothing found or expected value after ${opts.maxAttempts} attempts for ref ${ref}`)
+      opts.onError?.(new Error(opts.errorMessage || `[maz-ui](checkAvailability) Nothing found after ${opts.maxAttempts} attempts`))
     }
   }
 

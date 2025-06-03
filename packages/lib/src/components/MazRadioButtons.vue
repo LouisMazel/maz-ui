@@ -32,7 +32,7 @@ export interface MazRadioButtonsProps<T = string | number | boolean> {
    */
   orientation?: 'row' | 'col'
   /** Disable the wrap of the radio buttons */
-  noWrap?: boolean
+  wrap?: boolean
   /** Make all radio buttons the same size */
   equalSize?: boolean
   /** Display a selector icon */
@@ -55,7 +55,7 @@ const props = withDefaults(defineProps<MazRadioButtonsProps<T>>(), {
   color: 'primary',
   elevation: false,
   orientation: 'row',
-  noWrap: false,
+  wrap: true,
   equalSize: false,
   selector: false,
   block: false,
@@ -121,7 +121,7 @@ function onFocus(index: number, event: FocusEvent) {
   <div
     class="m-radio-buttons m-reset-css"
   >
-    <div class="m-radio-buttons__wrapper" :class="[`--${orientation}`, { '--no-wrap': noWrap, '--block': block }]">
+    <div class="m-radio-buttons__wrapper" :class="[`--${orientation}`, { '--wrap': !wrap, '--block': block }]">
       <label
         v-for="(option, i) in options"
         :key="getOptionId(option, i)"
@@ -206,7 +206,7 @@ function onFocus(index: number, event: FocusEvent) {
   &__wrapper {
     @apply maz-inline-flex maz-gap-2;
 
-    &:not(.--no-wrap) {
+    &.--wrap {
       @apply maz-flex-wrap;
     }
 

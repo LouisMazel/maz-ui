@@ -18,7 +18,7 @@ const props = withDefaults(defineProps<MazInputNumberProps>(), {
   min: Number.NEGATIVE_INFINITY,
   step: 1,
   size: 'md',
-  noButtons: false,
+  buttons: true,
   textCenter: true,
   inputmode: 'numeric',
 })
@@ -69,7 +69,7 @@ export interface MazInputNumberProps {
   /** The size of the input number component. */
   size?: Size
   /** Whether to hide the increment and decrement buttons or not. */
-  noButtons?: boolean
+  hideButtons?: boolean
   /** Whether to center the text inside the input or not. */
   textCenter?: boolean
   /** The inputmode attribute for the input. */
@@ -158,10 +158,9 @@ function decrement() {
     :style="style"
   >
     <MazBtn
-      v-if="!noButtons"
+      v-if="!hideButtons"
       color="transparent"
       :size
-      tabindex="-1"
       class="m-input-number__button m-input-number__decrement-button"
       :disabled="decrementDisabled || disabled"
       @click="decrement"
@@ -172,7 +171,7 @@ function decrement() {
       :model-value="currentValue"
       type="number"
       class="m-input-number__input"
-      :class="{ '--no-buttons': noButtons, '--text-center': textCenter }"
+      :class="{ '--no-buttons': hideButtons, '--text-center': textCenter }"
       :disabled
       :min
       :max
@@ -194,10 +193,8 @@ function decrement() {
       @update:model-value="emitDebounced($event as number | undefined)"
     />
     <MazBtn
-      v-if="!noButtons"
+      v-if="!hideButtons"
       color="transparent"
-      no-shadow
-      tabindex="-1"
       :size
       class="m-input-number__button m-input-number__increment-button"
       :disabled="incrementDisabled || disabled"
@@ -217,7 +214,7 @@ function decrement() {
   }
 
   &__button {
-    &.m-btn.--is-button {
+    &.m-btn {
       &::before {
         content: none !important;
       }

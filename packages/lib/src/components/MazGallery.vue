@@ -4,59 +4,49 @@ import { computed, defineAsyncComponent, onBeforeMount } from 'vue'
 import { vFullscreenImg } from '../directives/vFullscreenImg'
 import { vLazyImg } from '../directives/vLazyImg'
 
+export type { MazGalleryImage } from './types'
+
 export interface MazGalleryProps {
   /**
    *  Array of string or object: `['https://via.placeholder.com/500', 'https://via.placeholder.com/600']` or `[{ slug: 'https://via.placeholder.com/500', alt: 'image descripton' }, { slug: 'https://via.placeholder.com/600', alt: 'image descripton' }]`
    */
-  images: MazGalleryImage[]
+  images?: MazGalleryImage[]
   /**
    * Images count shown (max: 5)
    * @type number
    * @default 5
    */
-  imagesShownCount?: number
+  displayedCount?: number
   /**
    * Remove transparent layer with the remain count (ex: +2)
    * @type boolean
-   * @default false
+   * @default true
    */
-  noRemaining?: boolean
+  remaining?: boolean
   /**
-   * Height of gallery
-   * @type number | string
+   * Height of gallery - set to `false` to remove default height
+   * @type number | string | false
    * @default 150
    */
-  height?: number | string
+  height?: number | string | false
   /**
-   * Remove default height - useful to set height with css
-   * @type boolean
-   * @default false
-   */
-  noHeight?: boolean
-  /**
-   * Width of gallery
-   * @type number | string
+   * Width of gallery - set to `false` to remove default width
+   * @type number | string | false
    * @default '100%'
    */
-  width?: number | string
-  /**
-   * Remove default width
-   * @type boolean
-   * @default false
-   */
-  noWidth?: boolean
+  width?: number | string | false
   /**
    * Disable the border radius of the gallery
    * @type boolean
    * @default false
    */
-  noRadius?: boolean
+  radius?: boolean
   /**
    * Disable full size display when clicking on image
    * @type boolean
    * @default false
    */
-  noZoom?: boolean
+  zoom?: boolean
   /**
    * Layer with photography icon when no images is provided
    * @type boolean
@@ -90,15 +80,13 @@ export interface MazGalleryProps {
 }
 
 const {
-  images,
-  imagesShownCount = 5,
-  noRemaining = false,
-  height = 150,
-  noHeight = false,
+  images = [],
+  displayedCount = 5,
+  remaining = true,
+  height = '100%',
   width = '100%',
-  noWidth = false,
-  noRadius = false,
-  noZoom = false,
+  radius = true,
+  zoom = true,
   hasEmptyLayer = true,
   lazy = true,
   blur = true,
@@ -109,20 +97,20 @@ const {
 const NoPhotographyIcon = defineAsyncComponent(() => import('../../icons/no-photography.svg'))
 
 onBeforeMount(() => {
-  if (imagesShownCount > 5)
+  if (displayedCount > 5)
 
     console.warn('[MazUI](m-gallery) The maximum of "images-shown-count" is 5')
 })
 
 const sizeStyle = computed(() => {
   return {
-    ...(noWidth
+    ...(width === false
       ? {}
       : {
           flex: `0 0 ${typeof width}` === 'number' ? `${width}px` : width,
           width: typeof width === 'number' ? `${width}px` : width,
         }),
-    ...(noHeight
+    ...(height === false
       ? {}
       : {
           height: typeof height === 'number' ? `${height}px` : `${height}`,
@@ -131,7 +119,7 @@ const sizeStyle = computed(() => {
   }
 })
 const imagesCount = computed(() => {
-  return imagesShownCount <= 5 ? imagesShownCount : 5
+  return displayedCount <= 5 ? displayedCount : 5
 })
 const numberImagesRemaining = computed(() => {
   return (
@@ -153,7 +141,7 @@ const imagesHidden = computed(() => {
   return imagesNormalized.value.slice(imagesCount.value, images.length)
 })
 function shouldHaveRemainingLayer(index: number): boolean {
-  if (noRemaining)
+  if (!remaining)
     return false
 
   return (numberImagesRemaining.value && index + 1) === imagesShown.value.length
@@ -165,7 +153,7 @@ function shouldHaveRemainingLayer(index: number): boolean {
     v-if="images.length > 0 || hasEmptyLayer"
     class="m-gallery m-reset-css"
     :style="[sizeStyle, { '--gallery-separator-color': separatorColor }]"
-    :class="{ 'maz-rounded': !noRadius }"
+    :class="{ 'maz-rounded': radius }"
   >
     <section class="m-gallery__wrapper maz-flex maz-flex-1">
       <figure
@@ -179,7 +167,7 @@ function shouldHaveRemainingLayer(index: number): boolean {
           v-fullscreen-img="{
             src: image.src,
             alt: image.alt,
-            disabled: noZoom || shouldHaveRemainingLayer(i),
+            disabled: !zoom || shouldHaveRemainingLayer(i),
             blurOnHover: blur,
             scaleOnHover: scale,
           }"
@@ -193,7 +181,7 @@ function shouldHaveRemainingLayer(index: number): boolean {
           v-fullscreen-img="{
             src: image.src,
             alt: image.alt,
-            disabled: noZoom,
+            disabled: !zoom,
             blurOnHover: false,
             scaleOnHover: scale,
           }"
@@ -205,7 +193,7 @@ function shouldHaveRemainingLayer(index: number): boolean {
       <div
         v-if="hasEmptyLayer && images.length === 0"
         class="empty-layer maz-flex maz-w-full maz-bg-color-light maz-text-normal maz-flex-center"
-        :class="{ 'maz-rounded-xl': !noRadius }"
+        :class="{ 'maz-rounded-xl': radius }"
         :style="[sizeStyle]"
       >
         <NoPhotographyIcon class="maz-h-8 maz-w-8" />
@@ -214,7 +202,7 @@ function shouldHaveRemainingLayer(index: number): boolean {
     <div
       v-for="(image, i) in imagesHidden"
       :key="i"
-      v-fullscreen-img="{ src: image.src, disabled: noZoom }"
+      v-fullscreen-img="{ src: image.src, disabled: !zoom }"
       class="m-gallery__hidden"
     />
   </div>

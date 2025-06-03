@@ -1,7 +1,6 @@
 @layer maz-ui-theme {
   :root {
-    /* TODO: Invert text variables in V4 */
-    --maz-color-text: var(--maz-color-text-dark);
+    --maz-color-text: var(--maz-color-text-light);
     --maz-color-muted: var(--maz-color-muted-light);
     --maz-color-bg-light: var(--maz-bg-color-light-light);
     --maz-color-bg-lighter: var(--maz-bg-color-light-lighter);
@@ -16,9 +15,7 @@
 
   [class~='dark'] {
     /* USAGE */
-
-    /* TODO: Invert text variables in V4 */
-    --maz-color-text: var(--maz-color-text-light);
+    --maz-color-text: var(--maz-color-text-dark);
     --maz-color-muted: var(--maz-color-muted-dark);
     --maz-color-bg-light: var(--maz-bg-color-dark-light);
     --maz-color-bg-lighter: var(--maz-bg-color-dark-lighter);

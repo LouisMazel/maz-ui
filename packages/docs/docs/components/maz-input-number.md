@@ -46,7 +46,7 @@ description: MazInputNumber is a number input component with increment and decre
 
   <script lang="ts" setup>
     import { ref } from 'vue'
-    import MazInputNumber from 'maz-ui/components/MazInputNumber'
+    import { MazInputNumber } from 'maz-ui/components'
     const numberValue = ref(2)
   </script>
   ```
@@ -62,13 +62,13 @@ description: MazInputNumber is a number input component with increment and decre
 
 ## No buttons
 
-You can remove the buttons with the props `no-buttons`
+You can remove the buttons with the props `hide-buttons`
 
 <ComponentDemo>
   <MazInputNumber
     v-model="numberValue"
     placeholder="Enter number"
-    no-buttons
+    hide-buttons
   />
 
   <template #code>
@@ -77,7 +77,7 @@ You can remove the buttons with the props `no-buttons`
   <MazInputNumber
     v-model="numberValue"
     placeholder="Enter number"
-    no-buttons
+    hide-buttons
   />
   ```
 
