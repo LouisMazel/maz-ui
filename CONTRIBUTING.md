@@ -44,7 +44,7 @@ pnpm install
 Once your dependencies are installed, to run the server of the developing nuxt 3 app, use this command:
 
 ```shell
-pnpm -F playground dev
+pnpm -F nuxt-app dev
 ```
 
 This will start the development server available at [http://localhost:3333](http://localhost:3333).
@@ -67,7 +67,7 @@ When you submit your PR, you should provide all information asked in the descrip
 
 ## Be clean
 
-Please, clean all your changes and don't commit anything in `package/playground`
+Please, clean all your changes and don't commit anything in `package/nuxt-app`
 
 ---
 

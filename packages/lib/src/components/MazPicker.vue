@@ -22,7 +22,7 @@ import ChevronDownIcon from '../../icons/chevron-down.svg'
 
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import { vClickOutside } from '../directives/vClickOutside'
-import { date } from '../filters/date'
+import { date } from '../formatters/date'
 import MazPickerContainer from './MazPicker/MazPickerContainer.vue'
 import {
   checkValueWithMinMaxDates,

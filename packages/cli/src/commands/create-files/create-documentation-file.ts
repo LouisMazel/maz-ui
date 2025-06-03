@@ -39,7 +39,7 @@ description: ${filename} is a standalone component
   </template>
 
   <script lang="ts" setup>
-    import ${filename} from 'maz-ui/components/${filename}'
+    import { ${filename} } from 'maz-ui'
   </script>
   \`\`\`
 

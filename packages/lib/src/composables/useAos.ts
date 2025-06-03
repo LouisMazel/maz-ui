@@ -1,6 +1,6 @@
 import type { AosHandler } from '../plugins/aos'
-import { injectStrict } from '../helpers/injectStrict'
+import { useInjectStrict } from '../composables/useInjectStrict'
 
 export function useAos() {
-  return injectStrict<AosHandler>('aos')
+  return useInjectStrict<AosHandler>('aos')
 }

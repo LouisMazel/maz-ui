@@ -5,9 +5,9 @@ import type { Color } from '../types'
 import dayjs from 'dayjs'
 import { computed } from 'vue'
 import XIcon from '../../../icons/x-mark.svg'
-import { capitalize } from '../../filters/capitalize'
+import { capitalize } from '../../formatters/capitalize'
 
-import { date } from '../../filters/date'
+import { date } from '../../formatters/date'
 
 import MazBtn from '../MazBtn.vue'
 import { isSameDate } from './utils'

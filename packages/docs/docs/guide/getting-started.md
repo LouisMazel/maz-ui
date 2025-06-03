@@ -53,7 +53,7 @@ Use [unplugin-vue-components](https://github.com/unplugin/unplugin-vue-component
 // vite.config.mts
 
 import Components from 'unplugin-vue-components/vite'
-import { UnpluginVueComponentsResolver, UnpluginDirectivesResolver, UnpluginModulesResolver } from 'maz-ui/resolvers'
+import { UnpluginVueComponentsResolver, UnpluginDirectivesResolver, UnpluginModulesResolver } from 'maz-ui'
 
 export default defineConfig({
   plugins: [

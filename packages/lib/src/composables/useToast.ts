@@ -1,6 +1,6 @@
 import type { ToasterHandler } from '../plugins/toaster/ToasterHandler'
-import { injectStrict } from '../helpers/injectStrict'
+import { useInjectStrict } from '../composables/useInjectStrict'
 
 export function useToast() {
-  return injectStrict<ToasterHandler>('toast')
+  return useInjectStrict<ToasterHandler>('toast')
 }

@@ -13,4 +13,4 @@ export const installToaster = {
 }
 
 export { ToasterHandler } from './toaster/ToasterHandler'
-export type { ToasterOptions, ToasterPosition, ToasterPositions } from './toaster/types'
+export type { ToasterOptions, ToasterPosition } from './toaster/types'

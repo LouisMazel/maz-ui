@@ -6,8 +6,8 @@ serve-all:
 	pnpm --parallel serve
 serve-docs:
 	pnpm --filter docs dev
-serve-playground:
-	pnpm --filter playground dev
+serve-nuxt-app:
+	pnpm --filter nuxt-app dev
 
 audit:
 	pnpm audit
@@ -51,8 +51,8 @@ install-cli:
 	pnpm --filter cli install
 install-lib:
 	pnpm --filter maz-ui install
-install-playground:
-	pnpm --filter playground install
+install-nuxt-app:
+	pnpm --filter nuxt-app install
 
 reinstall-all:
 	make clean-all install
@@ -61,8 +61,8 @@ lint-staged: ## lint-staged
 	npm run pre-commit
 lint-staged-lib: ## lint-staged lib
 	pnpm --filter maz-ui lint-staged
-lint-staged-playground: ## lint-staged playground
-	make --directory=packages/playground lint-staged
+lint-staged-nuxt-app: ## lint-staged nuxt-app
+	make --directory=packages/nuxt-app lint-staged
 lint-staged-cli: ## lint-staged cli
 	make --directory=packages/cli lint-staged
 

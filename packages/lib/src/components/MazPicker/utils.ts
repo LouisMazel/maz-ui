@@ -5,8 +5,8 @@ import type { PartialRangeValue } from '../../components/MazPicker/types'
 import dayjs from 'dayjs'
 
 import weekday from 'dayjs/plugin/weekday'
-import { capitalize } from '../../filters/capitalize'
-import { date } from '../../filters/date'
+import { capitalize } from '../../formatters/capitalize'
+import { date } from '../../formatters/date'
 
 dayjs.extend(weekday)
 

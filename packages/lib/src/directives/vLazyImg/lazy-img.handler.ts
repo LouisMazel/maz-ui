@@ -13,7 +13,6 @@ export const DEFAULT_OPTIONS: ClassOptions = {
   noPhoto: false,
   observerOnce: true,
   loadOnce: false,
-  noUseErrorPhoto: false,
   observerOptions: {
     threshold: 0.1,
   },
@@ -141,10 +140,10 @@ export class LazyImg {
   }
 
   private async setDefaultPhoto(el: HTMLElement) {
-    if (this.options.noUseErrorPhoto)
+    if (this.options.fallbackSrc === false)
       return
 
-    const fallbackSrc = this.options.fallbackSrc ?? this.options.errorPhoto
+    const fallbackSrc = this.options.fallbackSrc
 
     if (typeof fallbackSrc === 'string') {
       this.addClass(el, this.options.noPhotoClass)
