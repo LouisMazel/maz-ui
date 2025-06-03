@@ -1,6 +1,13 @@
 import { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { addComponent, addImports, addPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
+import {
+  addComponent,
+  addComponentsDir,
+  addImports,
+  addPlugin,
+  createResolver,
+  defineNuxtModule,
+} from '@nuxt/kit'
 import { defu } from 'defu'
 
 import type {
@@ -210,6 +217,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
   },
   defaults,
   async setup(options, nuxt) {
+    console.log('setup', process.env.MAZ_UI_DEV)
     const { resolve } = createResolver(import.meta.url)
 
     nuxt.options.build.transpile = ['maz-ui', ...nuxt.options.build.transpile]
@@ -229,9 +237,9 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
       for (const { name } of componentList) {
         if (process.env.MAZ_UI_DEV === 'true') {
-          addComponent({
-            name,
-            filePath: `maz-ui/src/components/${name}.vue`,
+          addComponentsDir({
+            path: resolve(_dirname, 'maz-ui/src/components'),
+            // prefix: 'Maz',
           })
         }
         else {
@@ -259,19 +267,12 @@ export default defineNuxtModule<MazUiNuxtOptions>({
           : true
 
       if (injectAosCSS) {
-        nuxt.options.css = ['maz-ui/dist/css/aos.css', ...nuxt.options.css]
+        const aosCssPath
+          = process.env.MAZ_UI_DEV === 'true'
+            ? 'maz-ui/src/plugins/aos/scss/index.scss'
+            : 'maz-ui/aos-styles'
+        nuxt.options.css = [aosCssPath, ...nuxt.options.css]
       }
-
-      // if (
-      //   typeof moduleOptions.injectAos === 'object'
-      //   && injectAosCSS
-      //   && process.env.MAZ_UI_DEV === 'true'
-      // ) {
-      //   nuxt.options.css = ['maz-ui/dist/css/aos.css', ...nuxt.options.css]
-      // }
-      // else if (typeof moduleOptions.injectAos === 'object' && injectAosCSS) {
-      //   nuxt.options.css = ['maz-ui/dist/css/aos.css', ...nuxt.options.css]
-      // }
     }
 
     /**

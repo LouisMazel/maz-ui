@@ -5,8 +5,8 @@ import type { PickerValue } from './types'
 import type { DateTimeFormatOptions } from './utils'
 import dayjs from 'dayjs'
 import { computed, ref, watch } from 'vue'
-import { capitalize } from '../../filters/capitalize'
-import { date } from '../../filters/date'
+import { capitalize } from '../../formatters/capitalize'
+import { date } from '../../formatters/date'
 
 const props = defineProps({
   modelValue: {

@@ -9,8 +9,8 @@ import type { Color, Position, Size } from './../types'
 import type { MazInputPhoneNumberTranslations } from './types'
 import { computed, defineAsyncComponent, ref } from 'vue'
 
+import { useInjectStrict } from '../../composables/useInjectStrict'
 import { countryFlagUrlFromFlagCdn } from '../../helpers/countryFlagFromFlagCdn'
-import { injectStrict } from '../../helpers/injectStrict'
 import { truthyFilter } from '../../helpers/truthyFilter'
 import MazSelect from '../MazSelect.vue'
 import { useMazInputPhoneNumber } from './../MazInputPhoneNumber/useMazInputPhoneNumber'
@@ -56,7 +56,7 @@ defineEmits<(event: 'update:model-value', countryCode?: CountryCode) => void>()
 
 const MazLazyImg = defineAsyncComponent(() => import('../MazLazyImg.vue'))
 
-const { phoneNumber } = injectStrict<MazInputPhoneNumberInjectedData>('data')
+const { phoneNumber } = useInjectStrict<MazInputPhoneNumberInjectedData>('data')
 
 const CountrySelectorRef = ref<ComponentPublicInstance<typeof MazSelect> & { openList: () => void }>()
 

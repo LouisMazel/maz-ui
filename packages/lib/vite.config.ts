@@ -1,6 +1,5 @@
 import type { UserConfig } from 'vite'
 import type { Target } from 'vite-plugin-static-copy'
-import { rmSync } from 'node:fs'
 import { extname, relative, resolve } from 'node:path'
 import Vue from '@vitejs/plugin-vue'
 import { glob } from 'glob'
@@ -15,11 +14,8 @@ import rootPkg from '../../package.json'
 import { BuildMazCli } from './build/BuildMazCli'
 import { BuildNuxtModule } from './build/BuildNuxtModule'
 import { CompileStyles } from './build/CompileStyles'
-// import { CopyComponentTypes } from './build/CopyComponentTypes'
 import { GenerateComponentsEntry } from './build/GenerateComponentsEntry'
 import pkg from './package.json'
-
-rmSync('dist', { recursive: true, force: true })
 
 function resolver(path: string) {
   return resolve(__dirname, path)
@@ -41,22 +37,14 @@ const external = [
   'dayjs/plugin/isBetween',
 ]
 
-const componentEntries = Object.fromEntries(
-  glob.sync([
-    'src/components/*.vue',
-  ], {
-    ignore: ['**/*/index.ts'],
-  })
-    .map(getEntries),
-)
-
 const moduleEntries = Object.fromEntries(
   glob.sync([
+    'src/components/*.vue',
     'src/composables/*.ts',
     'src/directives/*.ts',
-    'src/filters/*.ts',
-    'src/helpers/*.ts',
     'src/resolvers/*.ts',
+    'src/formatters/*.ts',
+    'src/helpers/*.ts',
     'src/plugins/*.ts',
   ], {
     ignore: ['**/*/index.ts'],
@@ -83,11 +71,10 @@ export default defineConfig({
     CompileStyles(),
     BuildNuxtModule(),
     BuildMazCli(),
-    // CopyComponentTypes(),
   ],
   build: {
     cssCodeSplit: true,
-    emptyOutDir: false,
+    emptyOutDir: true,
     minify: true,
     sourcemap: true,
     cssMinify: true,
@@ -96,15 +83,26 @@ export default defineConfig({
     },
     lib: {
       entry: {
-        ...componentEntries,
         ...moduleEntries,
-        index: resolver('src/index.ts'),
+        'components/index': resolver('src/components/index.ts'),
+        'composables/index': resolver('src/composables/index.ts'),
+        'plugins/index': resolver('src/plugins/index.ts'),
+        'directives/index': resolver('src/directives/index.ts'),
+        'resolvers/index': resolver('src/resolvers/index.ts'),
+        'helpers/index': resolver('src/helpers/index.ts'),
+        'formatters/index': resolver('src/formatters/index.ts'),
+        'index': resolver('src/index.ts'),
       },
       fileName: (format, name) => format === 'es' ? `${name}.mjs` : `${name}.cjs`,
       cssFileName: '[name].[hash].css',
     },
     rollupOptions: {
       external,
+      treeshake: {
+        moduleSideEffects: (id, _external) => {
+          return id.includes('.css') || id.includes('.vue?vue&type=style')
+        },
+      },
       output: [
         {
           format: 'es',
@@ -113,6 +111,8 @@ export default defineConfig({
           exports: 'named',
           entryFileNames: '[name].mjs',
           preserveModules: false,
+          interop: 'auto',
+          generatedCode: 'es2015',
         },
         {
           format: 'cjs',
@@ -121,13 +121,9 @@ export default defineConfig({
           exports: 'named',
           entryFileNames: '[name].cjs',
           preserveModules: false,
+          interop: 'auto',
         },
       ],
-      // output: {
-      //   // chunkFileNames: 'chunks/[name].[hash].js',
-      //   // assetFileNames: 'assets/[name].[hash][extname]',
-      //   // entryFileNames: '[name].js',
-      // },
     },
   },
 } satisfies UserConfig)

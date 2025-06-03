@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { MazTabsProvide } from './MazTabs.vue'
 import { computed, ref, watch } from 'vue'
-import { injectStrict } from '../helpers/injectStrict'
+import { useInjectStrict } from '../composables/useInjectStrict'
 
 const props = defineProps({
   tab: { type: Number, required: true },
@@ -9,7 +9,7 @@ const props = defineProps({
 const transitionName = ref<string>('maz-tab-transition')
 const MazTabsContentItem = ref()
 
-const { currentTab } = injectStrict<MazTabsProvide>('maz-tabs')
+const { currentTab } = useInjectStrict<MazTabsProvide>('maz-tabs')
 
 watch(
   () => currentTab.value,

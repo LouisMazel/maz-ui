@@ -294,9 +294,9 @@ app.mount('#app')
 ### Usage
 
 ```ts
-import { injectStrict, type DialogHandler } from 'maz-ui'
+import { useInjectStrict, type DialogHandler } from 'maz-ui'
 
-const dialog = injectStrict<DialogHandler>('dialog')
+const dialog = useInjectStrict<DialogHandler>('dialog')
 /*
  * or use `useDialog` composable to get the dialog handler
  * const dialog = useDialog()
@@ -313,7 +313,7 @@ dialog.open(options)
 ### Type
 
 ```ts
-import type { Props as MazBtnProps } from 'maz-ui/components/MazBtn'
+import type { MazBtnProps } from 'maz-ui'
 
 type DialogOptions = Partial<Omit<MazDialogPromiseProps, 'modelValue'>> & {
   /**

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { injectStrict } from '../helpers/injectStrict'
+import { useInjectStrict } from '../composables/useInjectStrict'
 import { mazTableKey } from './MazTable.vue'
 
 export interface MazTableRowProps {
@@ -8,7 +8,7 @@ export interface MazTableRowProps {
 }
 
 defineProps<MazTableRowProps>()
-const { hoverable, backgroundEven, backgroundOdd } = injectStrict(mazTableKey)
+const { hoverable, backgroundEven, backgroundOdd } = useInjectStrict(mazTableKey)
 </script>
 
 <template>

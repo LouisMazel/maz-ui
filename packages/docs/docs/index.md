@@ -190,7 +190,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
         </span>
         <h2 class="maz-text-base maz-font-semibold">Tools</h2>
         <p class="dark:maz-text-gray-300 maz-text-muted maz-text-sm">
-          Maz-ui provides many modules, plugins, directives, filters and composables
+          Maz-ui provides many modules, plugins, directives, formatters and composables
         </p>
         <div class="maz-flex-1"></div>
         <MazBtn color="theme" outline size="sm" block href="/plugins/toaster">Discover</MazBtn>
@@ -209,7 +209,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
         </span>
         <MazBadge color="primary" class="maz-text-base">Component</MazBadge>
       </div>
-      <h3 class="maz-text-base maz-font-semibold">MazPhoneNumberInput</h3>
+      <h3 class="maz-text-base maz-font-semibold">MazInputPhoneNumber</h3>
       <p class="dark:maz-text-gray-300 maz-text-muted maz-text-sm">
         A powerful phone number input component with international number formatting and validation.
       </p>

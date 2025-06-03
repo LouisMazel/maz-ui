@@ -1,6 +1,7 @@
 // @ts-check
 
 import antfu from '@antfu/eslint-config'
+import pluginOxlint from 'eslint-plugin-oxlint'
 import sonarjs from 'eslint-plugin-sonarjs'
 import tailwind from 'eslint-plugin-tailwindcss'
 import vueA11y from 'eslint-plugin-vuejs-accessibility'
@@ -17,6 +18,7 @@ export default antfu(
     ignores: ['src/components_tmp/**/*'],
   },
   ...vueA11y.configs['flat/recommended'],
+  ...pluginOxlint.configs['flat/recommended'],
   ...tailwind.configs['flat/recommended'],
   sonarjs.configs.recommended,
   {

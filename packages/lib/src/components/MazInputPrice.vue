@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import type { FilterCurrencyOptions } from '../filters/currency'
+import type { FilterCurrencyOptions } from '../formatters/currency'
 import { computed, defineAsyncComponent, nextTick, onMounted, ref, watch } from 'vue'
-import { currency as currencyFilter } from '../filters/currency'
+import { currency as currencyFilter } from '../formatters/currency'
 import MazInput from './MazInput.vue'
 
 const props = withDefaults(defineProps<MazInputPriceProps>(), {
