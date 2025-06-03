@@ -7,7 +7,7 @@ import { computed, ref } from 'vue'
 import ChevronLeftIcon from '../../../icons/chevron-left.svg'
 import XIcon from '../../../icons/x-mark.svg'
 
-import { date } from '../../filters/date'
+import { date } from '../../formatters/date'
 import MazBtn from '../MazBtn.vue'
 
 import { isSameDate } from './utils'

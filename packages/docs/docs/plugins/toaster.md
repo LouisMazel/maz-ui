@@ -166,7 +166,8 @@ function showToast () {
 ```
 
 <script lang="ts" setup>
-  import { useToast, sleep } from 'maz-ui'
+  import { useToast } from 'maz-ui/src/composables/useToast'
+  import { sleep } from 'maz-ui/src/helpers/sleep'
 
   const toast = useToast()
 

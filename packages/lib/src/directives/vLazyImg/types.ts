@@ -7,7 +7,6 @@ export interface ClassOptions {
   errorClass: string
   noPhotoClass: string
   noPhoto: boolean
-  noUseErrorPhoto: boolean
   observerOnce: boolean
   loadOnce: boolean
   observerOptions: {
@@ -15,11 +14,7 @@ export interface ClassOptions {
     threshold: number
     rootMargin?: string
   }
-  /**
-   * @deprecated use `fallbackSrc` instead
-   */
-  errorPhoto?: string
-  fallbackSrc?: string
+  fallbackSrc?: string | false
   onLoading?: (el: Element) => unknown
   onLoaded?: (el: Element) => unknown
   onError?: (el: Element) => unknown

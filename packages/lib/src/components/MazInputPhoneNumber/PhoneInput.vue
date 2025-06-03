@@ -4,7 +4,7 @@ import type { MazInputProps } from '../MazInput.vue'
 import type { MazInputPhoneNumberInjectedData } from '../MazInputPhoneNumber.vue'
 import type { MazInputPhoneNumberTranslations } from './types'
 import { computed, onMounted, ref } from 'vue'
-import { injectStrict } from '../../helpers/injectStrict'
+import { useInjectStrict } from '../../composables/useInjectStrict'
 import MazInput from '../MazInput.vue'
 import { useLibphonenumber } from './useLibphonenumber'
 import { useMazInputPhoneNumber } from './useMazInputPhoneNumber'
@@ -12,7 +12,7 @@ import { useMazInputPhoneNumber } from './useMazInputPhoneNumber'
 type PhoneInputProps = Omit<MazInputProps, 'modelValue'> & {
   id: string
   locales: MazInputPhoneNumberTranslations
-  noExample: boolean
+  noExample?: boolean
   hasRadius: boolean
   autoFormat: boolean
 }
@@ -21,7 +21,7 @@ const { placeholder, label, noExample, locales, autoFormat, name, inputmode, aut
 
 const { getPhoneNumberExample, getAsYouTypeFormat, loadExamples } = useLibphonenumber()
 const { sanitizePhoneNumber } = useMazInputPhoneNumber()
-const { results, selectedCountry } = injectStrict<MazInputPhoneNumberInjectedData>('data')
+const { results, selectedCountry } = useInjectStrict<MazInputPhoneNumberInjectedData>('data')
 
 const modelValue = defineModel<string | undefined | null>()
 

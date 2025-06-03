@@ -4,10 +4,8 @@ import type { ComponentPublicInstance, HTMLAttributes } from 'vue'
 import type { MazInputPhoneNumberTranslations, Results } from './MazInputPhoneNumber/types'
 import type { Color, Position, Size } from './types'
 import {
-
   computed,
   defineAsyncComponent,
-
   nextTick,
   onBeforeMount,
   onMounted,
@@ -27,33 +25,13 @@ defineOptions({
 })
 
 const props = withDefaults(defineProps<MazInputPhoneNumberProps>(), {
-  class: undefined,
-  style: undefined,
   listPosition: 'bottom left',
   color: 'primary',
   size: 'md',
-  modelValue: undefined,
-  /** @deprecated */
-  defaultPhoneNumber: undefined,
-  countryCode: undefined,
-  /** @deprecated */
-  defaultCountryCode: undefined,
-  id: undefined,
-  placeholder: undefined,
-  label: undefined,
-  preferredCountries: undefined,
-  ignoredCountries: undefined,
-  onlyCountries: undefined,
-  translations: undefined,
-  customCountriesList: undefined,
-  countryLocale: undefined,
   countrySelectorWidth: '9rem',
-  noFormattingAsYouType: false,
   autoFormat: true,
-  excludeSelectors: undefined,
   orientation: 'responsive',
   searchThreshold: 0.75,
-  noExample: false,
   countrySelectAttributes: () => ({
     name: 'country',
     autocomplete: 'off',
@@ -104,12 +82,8 @@ export interface MazInputPhoneNumberProps {
   class?: HTMLAttributes['class']
   /** @model Country calling code + telephone number in international format */
   modelValue?: string | undefined | null
-  /** @deprecated */
-  defaultPhoneNumber?: string | undefined | null
   /** @model Country code selected - Ex: "FR" */
   countryCode?: CountryCode | undefined | null
-  /** @deprecated - use country-code or v-model:country-code */
-  defaultCountryCode?: CountryCode | undefined | null
   /** Id of the component */
   id?: string
   /** Placeholder of the input */
@@ -228,7 +202,7 @@ const hasAutoFormat = computed(() => props.autoFormat && !props.noFormattingAsYo
 
 const results = ref<Results>({
   isValid: false,
-  countryCode: props.countryCode ?? props.defaultCountryCode,
+  countryCode: props.countryCode,
   phoneNumber: props.modelValue,
 })
 const PhoneInputRef = ref<ComponentPublicInstance>()
@@ -236,8 +210,8 @@ const PhoneInputRef = ref<ComponentPublicInstance>()
 /** Logic */
 
 onBeforeMount(async () => {
-  if ((props.countryCode || props.defaultCountryCode) && !selectedCountry.value) {
-    onCountryChanged({ countryCode: props.countryCode ?? props.defaultCountryCode })
+  if (props.countryCode && !selectedCountry.value) {
+    onCountryChanged({ countryCode: props.countryCode })
   }
 
   if (props.fetchCountry && !selectedCountry.value) {
@@ -370,7 +344,7 @@ function onCountryChanged({
 /** Watchers */
 
 watch(
-  () => props.modelValue ?? props.defaultPhoneNumber,
+  () => props.modelValue,
   (value, oldValue) => {
     if (!isPhoneNumberInternalUpdate.value && value !== oldValue && value !== phoneNumber.value) {
       onPhoneNumberChanged({ newPhoneNumber: value })
@@ -379,7 +353,7 @@ watch(
   { immediate: true },
 )
 watch(
-  () => props.countryCode ?? props.defaultCountryCode,
+  () => props.countryCode,
   (value, oldValue) => {
     if (!isCountryInternalUpdate.value && value && value !== oldValue && value !== selectedCountry.value) {
       onCountryChanged({ countryCode: value })

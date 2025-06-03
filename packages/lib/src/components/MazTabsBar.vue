@@ -12,7 +12,7 @@ import {
 
   watch,
 } from 'vue'
-import { injectStrict } from '../helpers/injectStrict'
+import { useInjectStrict } from '../composables/useInjectStrict'
 
 import { sleep } from '../helpers/sleep'
 
@@ -59,7 +59,7 @@ export type MazTabsBarItem =
 
 const MazBadge = defineAsyncComponent(() => import('./MazBadge.vue'))
 
-const { currentTab, updateCurrentTab } = injectStrict<MazTabsProvide>('maz-tabs')
+const { currentTab, updateCurrentTab } = useInjectStrict<MazTabsProvide>('maz-tabs')
 
 function selectTab(tabIndex: number) {
   updateCurrentTab(tabIndex + 1)
