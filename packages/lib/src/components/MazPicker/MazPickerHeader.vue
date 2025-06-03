@@ -1,30 +1,23 @@
 <script lang="ts" setup>
-import type { PropType } from 'vue'
 import type { Color } from '../types'
-import type { PickerValue } from './types'
+import type { MazPickerValue } from './types'
 import type { DateTimeFormatOptions } from './utils'
 import dayjs from 'dayjs'
 import { computed, ref, watch } from 'vue'
-import { capitalize } from '../../filters/capitalize'
-import { date } from '../../filters/date'
+import { capitalize } from '../../formatters/capitalize'
+import { date } from '../../formatters/date'
 
-const props = defineProps({
-  modelValue: {
-    type: [String, Object] as PropType<PickerValue>,
-    default: undefined,
-  },
-  color: { type: String as PropType<Color>, required: true },
-  locale: { type: String, required: true },
-  noShortcuts: { type: Boolean, required: true },
-  double: { type: Boolean, required: true },
-  hasDate: { type: Boolean, required: true },
-  hasTime: { type: Boolean, required: true },
-  formatterOptions: {
-    type: Object as PropType<DateTimeFormatOptions>,
-    required: true,
-  },
-  calendarDate: { type: String, required: true },
-})
+const props = defineProps<{
+  modelValue: MazPickerValue | undefined
+  color: Color
+  locale: string
+  hideShortcuts: boolean
+  double: boolean
+  hasDate: boolean
+  hasTime: boolean
+  formatterOptions: DateTimeFormatOptions
+  calendarDate: string
+}>()
 
 const refDate = computed(() =>
   typeof props.modelValue === 'string' ? props.modelValue : props.modelValue?.start,
@@ -68,7 +61,7 @@ const dateString = computed(() => {
     && typeof props.modelValue === 'object'
     && (props.modelValue.start || props.modelValue.end)
   ) {
-    const dateOption = props.noShortcuts && !props.double ? 'short' : 'long'
+    const dateOption = props.hideShortcuts && !props.double ? 'short' : 'long'
     return `${
       props.modelValue.start
         ? capitalize(

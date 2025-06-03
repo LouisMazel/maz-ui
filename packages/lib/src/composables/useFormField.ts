@@ -22,8 +22,8 @@ import {
   setFieldValidationState,
   updateFieldState,
 } from '../composables/useFormValidator/utils'
+import { useFreezeValue } from '../composables/useFreezeValue'
 import { checkAvailability } from '../helpers/checkAvailability'
-import { freezeValue } from '../helpers/freezeValue'
 import { isEqual } from '../helpers/isEqual'
 
 interface UseFormFieldReturn<FieldType> {
@@ -112,7 +112,7 @@ export function useFormField<
   if (opts.defaultValue !== undefined && !isEqual(payload.value[name], opts.defaultValue)) {
     const initialValue = opts.defaultValue
     payload.value[name] = initialValue
-    fieldsStates.value[name].initialValue = freezeValue(initialValue)
+    fieldsStates.value[name].initialValue = useFreezeValue(initialValue)
   }
 
   if (fieldMode) {

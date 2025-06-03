@@ -11,19 +11,41 @@ description: MazCard is a standalone component to display some texts and images 
 
 ## Basic usage
 
-<MazCard :images="['https://loremflickr.com/600/600']" :gallery-height="300" zoom>
+<MazCard class="vp-raw">
   <template #title>
-    <h3 style="margin: 0">
-      Cute Kitten
-    </h3>
+    Cute Kitten
   </template>
-  <template #subtitle>
-    <span>
-      Cat
-    </span>
+
+  <p class="maz-text-muted">
+    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+  </p>
+</MazCard>
+
+```vue
+<template>
+  <MazCard class="vp-raw" title="Cute Kitten">
+    <p class="maz-text-muted">
+      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+    </p>
+  </MazCard>
+</template>
+
+<script lang="ts" setup>
+  import { MazCard } from 'maz-ui/components'
+</script>
+```
+
+## Advanced usage
+
+<MazCard :gallery="{ images: ['https://picsum.photos/480/480'], height: 300 }" class="vp-raw">
+  <template #content-title>
+    Cute Kitten
   </template>
-  <template #content>
-    <p class="maz-text-muted" style="margin: 0; margin-top: 20px">
+  <template #content-subtitle>
+    Cat
+  </template>
+  <template #content-body>
+    <p class="maz-text-muted" style="margin: 0;">
       Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
     </p>
   </template>
@@ -45,17 +67,16 @@ description: MazCard is a standalone component to display some texts and images 
   </template>
 </MazCard>
 
+
 ::: details View code
 
 ```vue
 <template>
   <MazCard
-    :images="['https://loremflickr.com/600/600']"
-    :gallery-height="300"
-    zoom
+    :gallery="{ images: ['https://picsum.photos/520/520'], height: 300, zoom: true }"
   >
-    <template #title>
-      <h3 style="margin: 0">
+    <template #content-title>
+      <h3>
         Cute Kitten
       </h3>
     </template>
@@ -64,8 +85,8 @@ description: MazCard is a standalone component to display some texts and images 
         Cat
       </span>
     </template>
-    <template #content>
-      <p class="maz-text-muted" style="margin: 0; margin-top: 20px">
+    <template #content-body>
+      <p class="maz-text-muted">
         Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
       </p>
     </template>
@@ -89,7 +110,7 @@ description: MazCard is a standalone component to display some texts and images 
 </template>
 
 <script lang="ts" setup>
-  import MazCard from 'maz-ui/components/MazCard'
+  import { MazCard } from 'maz-ui/components'
 </script>
 ```
 
@@ -102,14 +123,12 @@ When you display images, you can change the orientation of the card, available o
 ### Row
 
 <br />
-<MazCard :images="['https://loremflickr.com/600/600']" orientation="row">
-  <template #title>
-    <h3 style="margin: 0; margin-bottom: 20px">
-      Cute Kitten
-    </h3>
+<MazCard :gallery="{ images: ['https://picsum.photos/450/450'] }" orientation="row" class="vp-raw">
+  <template #content-title>
+    <h3> Cute Kitten </h3>
   </template>
-  <template #content>
-    <p class="maz-text-muted" style="margin: 0">
+  <template #content-body>
+    <p class="maz-text-muted">
       Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
     </p>
   </template>
@@ -118,14 +137,12 @@ When you display images, you can change the orientation of the card, available o
 ::: details View code
 
 ```html
-<MazCard :images="['https://loremflickr.com/600/600']" orientation="row">
-  <template #title>
-    <h3 style="margin: 0; margin-bottom: 20px">
-      Cute Kitten
-    </h3>
+<MazCard :gallery="{ images: ['https://picsum.photos/450/450'] }" orientation="row">
+  <template #content-title>
+    <h3> Cute Kitten </h3>
   </template>
-  <template #content>
-    <p class="maz-text-muted" style="margin: 0">
+  <template #content-body>
+    <p class="maz-text-muted">
       Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
     </p>
   </template>
@@ -138,14 +155,12 @@ When you display images, you can change the orientation of the card, available o
 
 <br />
 
-<MazCard :images="['https://loremflickr.com/600/600']" orientation="row-reverse">
-  <template #title>
-    <h3 style="margin: 0; margin-bottom: 20px">
-      Cute Kitten
-    </h3>
+<MazCard :gallery="{ images: ['https://picsum.photos/380/380'] }" orientation="row-reverse" class="vp-raw">
+  <template #content-title>
+    <h3> Cute Kitten </h3>
   </template>
-  <template #content>
-    <p class="maz-text-muted" style="margin: 0">
+  <template #content-body>
+    <p class="maz-text-muted">
       Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
     </p>
   </template>
@@ -155,20 +170,19 @@ When you display images, you can change the orientation of the card, available o
 
 ```html
 <MazCard
-  :images="['https://loremflickr.com/600/600']"
+  :gallery="{ images: ['https://picsum.photos/380/380'] }"
   orientation="row-reverse"
 >
-  <template #title>
-    <h3 style="margin: 0; margin-bottom: 20px">
-      Cute Kitten
-    </h3>
+  <template #content-title>
+    <h3> Cute Kitten </h3>
   </template>
-  <template #content>
-    <p class="maz-text-muted" style="margin: 0">
+  <template #content-body>
+    <p class="maz-text-muted">
       Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
     </p>
   </template>
 </MazCard>
+
 ```
 
 :::
@@ -178,16 +192,15 @@ When you display images, you can change the orientation of the card, available o
 <br />
 
 <MazCard
-  :images="['https://loremflickr.com/600/600']"
+  :gallery="{ images: ['https://picsum.photos/420/420'], height: 300 }"
   orientation="column-reverse"
+  class="vp-raw"
 >
-  <template #title>
-    <h3 style="margin: 0; margin-bottom: 20px">
-      Cute Kitten
-    </h3>
+  <template #content-title>
+    <h3> Cute Kitten </h3>
   </template>
-  <template #content>
-    <p class="maz-text-muted" style="margin: 0">
+  <template #content-body>
+    <p class="maz-text-muted">
       Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
     </p>
   </template>
@@ -197,16 +210,14 @@ When you display images, you can change the orientation of the card, available o
 
 ```html
 <MazCard
-  :images="['https://loremflickr.com/600/600']"
+  :gallery="{ images: ['https://picsum.photos/420/420'], height: 300 }"
   orientation="column-reverse"
 >
-  <template #title>
-    <h3 style="margin: 0; margin-bottom: 20px">
-      Cute Kitten
-    </h3>
+  <template #content-title>
+    <h3> Cute Kitten </h3>
   </template>
-  <template #content>
-    <p class="maz-text-muted" style="margin: 0">
+  <template #content-body>
+    <p class="maz-text-muted">
       Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
     </p>
   </template>
@@ -217,71 +228,49 @@ When you display images, you can change the orientation of the card, available o
 
 ## Collapsible
 
-Use props: `collapsible` & `collapse-open`
+Use props: `collapsible` & `v-model:collapse-open`
 
-<MazCard collapsible style="width: 100%; margin-bottom: 16px;">
-  <template #header>
-    <h4 style="margin: 0">
-      Lorem Ipsum is simply
-    </h4>
-  </template>
-  <template #content>
-    <div style="padding: 16px;">
-      <p style="margin: 0">
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-      </p>
-    </div>
-  </template>
+<MazCard collapsible title="Lorem Ipsum is simply" block style="margin-bottom: 1rem;" class="vp-raw">
+  <p>
+    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+  </p>
 </MazCard>
 
-<MazCard collapsible collapse-open style="width: 100%;">
-  <template #header>
-    <h4 style="margin: 0">
-      Lorem Ipsum is simply
-    </h4>
-  </template>
-  <template #content>
-    <div style="padding: 16px;">
-      <p style="margin: 0">
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-      </p>
-    </div>
-  </template>
+<MazCard collapsible v-model:collapse-open="cardOpen" title="Lorem Ipsum is simply" block class="vp-raw">
+  <p>
+    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+  </p>
 </MazCard>
 
 ::: details View code
 
-```html
-<MazCard collapsible style="width: 100%; margin-bottom: 16px;">
-  <template #header>
-    <h4 style="margin: 0">
-      Lorem Ipsum is simply
-    </h4>
-  </template>
-  <template #content>
-    <div style="padding: 16px;">
-      <p style="margin: 0">
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-      </p>
-    </div>
-  </template>
-</MazCard>
+```vue
+<template>
+  <MazCard collapsible title="Lorem Ipsum is simply" block style="margin-bottom: 1rem;">
+    <p>
+      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+    </p>
+  </MazCard>
 
-<MazCard collapsible collapse-open style="width: 100%;">
-  <template #header>
-    <h4 style="margin: 0">
-      Lorem Ipsum is simply
-    </h4>
-  </template>
-  <template #content>
-    <div style="padding: 16px;">
-      <p style="margin: 0">
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-      </p>
-    </div>
-  </template>
-</MazCard>
+  <MazCard collapsible v-model:collapse-open="cardOpen" title="Lorem Ipsum is simply" block>
+    <p>
+      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+    </p>
+  </MazCard>
+</template>
+
+<script setup>
+  import { ref } from 'vue'
+
+  const cardOpen = ref(true)
+</script>
 ```
+
+<script setup>
+  import { ref } from 'vue'
+
+  const cardOpen = ref(true)
+</script>
 
 :::
 
@@ -294,25 +283,23 @@ To access the link, simply click the card.
 - You can use `:scale="false"` to remove the scale animation on hover
 
 <MazCard
-  :images="['https://loremflickr.com/500/500']"
+  :gallery="{ images: ['https://picsum.photos/400/400'], height: 300 }"
   href="/components/maz-card#linked-card"
   href-target="_blank"
-  style="width: 100%"
-  scale
+  block
+  class="vp-raw"
 >
-  <span style="color: var(--vp-c-text-1)">
-    Click on the card to follow the href link
-  </span>
+  Click on the card to follow the href link
 </MazCard>
 
 ::: details View code
 
 ```html
 <MazCard
-  :images="['https://loremflickr.com/1000/1000']"
+  :gallery="{ images: ['https://picsum.photos/400/400'], height: 300 }"
   href="/components/maz-card#linked-card"
   href-target="_blank"
-  scale
+  block
 >
   <span>
     Click on the card to follow the href link
@@ -321,39 +308,65 @@ To access the link, simply click the card.
 ```
 
 :::
-Bordered and has no elevation
 
-<MazCard bordered :elevation="false">
-  <span>
-    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-  </span>
+## Bordered
+
+<MazCard bordered class="vp-raw">
+  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
 </MazCard>
+
+::: details View code
+
+```html
+<MazCard bordered>
+  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+</MazCard>
+```
+
+:::
+
+## Elevation
+
+<MazCard elevation :bordered="false" class="vp-raw">
+  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+</MazCard>
+
+::: details View code
+
+```html
+<MazCard elevation :bordered="false">
+  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+</MazCard>
+```
+
+:::
 
 ## Gallery images
 
 <MazCard
-  :images="['https://loremflickr.com/600/600', 'https://loremflickr.com/700/700', 'https://loremflickr.com/400/400', 'https://loremflickr.com/300/300']"
-  :images-show-count="3"
-  :no-remaining="false"
-  zoom
+  :gallery="{
+    images: ['https://picsum.photos/640/640', 'https://picsum.photos/560/560', 'https://picsum.photos/720/720', 'https://picsum.photos/360/360'],
+    displayedCount: 3,
+    remaining: true,
+    zoom: true,
+  }"
+  class="vp-raw"
 >
-  <span>
-    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-  </span>
+  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
 </MazCard>
 
 ::: details View code
 
 ```html
 <MazCard
-  :images="['https://loremflickr.com/600/600', 'https://loremflickr.com/700/700', 'https://loremflickr.com/400/400', 'https://loremflickr.com/300/300']"
-  :images-show-count="3"
-  :no-remaining="false"
-  zoom
+  :gallery="{
+    images: ['https://picsum.photos/640/640', 'https://picsum.photos/560/560', 'https://picsum.photos/720/720', 'https://picsum.photos/360/360'],
+    displayedCount: 3,
+    remaining: true,
+    zoom: true,
+  }"
 >
-  <span>
-    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-  </span>
+  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
 </MazCard>
 ```
 
@@ -363,10 +376,9 @@ Bordered and has no elevation
 
 ### Basic
 
-<MazCard>
-  <span>
-    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-  </span>
+<MazCard class="vp-raw">
+  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+
   <template #footer>
     <MazBtn>
       Button
@@ -378,9 +390,8 @@ Bordered and has no elevation
 
 ```html
 <MazCard>
-  <span>
-    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-  </span>
+  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+
   <template #footer>
     <MazBtn>
       Button
@@ -395,10 +406,9 @@ Bordered and has no elevation
 
 Use the prop option `footer-align="left"`
 
-<MazCard footer-align="left">
-  <span>
-    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-  </span>
+<MazCard footer-align="left" class="vp-raw">
+  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+
   <template #footer>
     <MazBtn>
       Button
@@ -410,9 +420,8 @@ Use the prop option `footer-align="left"`
 
 ```html
 <MazCard footer-align="left">
-  <span>
-    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-  </span>
+  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+
   <template #footer>
     <MazBtn>
       Button

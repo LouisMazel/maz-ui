@@ -27,7 +27,6 @@ const DEFAULT_BUTTONS_PROPS: Partial<MazBtnProps> = {
   size: 'md',
   color: 'theme',
   outline: true,
-  noElevation: true,
   fab: true,
 }
 

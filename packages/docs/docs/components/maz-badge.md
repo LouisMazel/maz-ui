@@ -23,7 +23,7 @@ description: MazBadge is a standalone component to show short text in colored co
 </template>
 
 <script lang="ts" setup>
-  import MazBadge from 'maz-ui/components/MazBadge'
+  import { MazBadge } from 'maz-ui/components'
 </script>
 ```
 
@@ -49,7 +49,7 @@ description: MazBadge is a standalone component to show short text in colored co
 </template>
 
 <script lang="ts" setup>
-  import MazBadge from 'maz-ui/components/MazBadge'
+  import { MazBadge } from 'maz-ui/components'
 
   const colors = [
     'primary',
@@ -83,7 +83,7 @@ description: MazBadge is a standalone component to show short text in colored co
 </template>
 
 <script lang="ts" setup>
-  import MazBadge from 'maz-ui/components/MazBadge'
+  import { MazBadge } from 'maz-ui/components'
 
   const colors = [
     'primary',
@@ -117,7 +117,7 @@ description: MazBadge is a standalone component to show short text in colored co
 </template>
 
 <script lang="ts" setup>
-  import MazBadge from 'maz-ui/components/MazBadge'
+  import { MazBadge } from 'maz-ui/components'
 
   const colors = [
     'primary',
@@ -175,7 +175,7 @@ description: MazBadge is a standalone component to show short text in colored co
 </template>
 
 <script lang="ts" setup>
-  import MazBadge from 'maz-ui/components/MazBadge'
+  import { MazBadge } from 'maz-ui/components'
 </script>
 ```
 
@@ -197,7 +197,7 @@ description: MazBadge is a standalone component to show short text in colored co
 </template>
 
 <script lang="ts" setup>
-  import MazBadge from 'maz-ui/components/MazBadge'
+  import { MazBadge } from 'maz-ui/components'
 
   const roundedSize = ['none', 'sm', 'md', 'lg', 'xl', 'full']
 </script>

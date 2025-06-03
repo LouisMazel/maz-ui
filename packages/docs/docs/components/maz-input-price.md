@@ -48,7 +48,7 @@ formattedPrice: {{ formattedPrice }}
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import MazInputPrice from 'maz-ui/components/MazInputPrice'
+  import { MazInputPrice } from 'maz-ui/components'
 
   const priceValue = ref(2)
   const formattedPrice = ref()

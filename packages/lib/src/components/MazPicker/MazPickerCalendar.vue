@@ -1,33 +1,26 @@
 <script lang="ts" setup>
 import type { Dayjs } from 'dayjs'
-import type { PropType } from 'vue'
 import type { Color } from '../types'
-import type { PickerShortcut, PickerValue } from './types'
+import type { MazPickerShortcut, MazPickerValue } from './types'
 import { computed, defineAsyncComponent, ref } from 'vue'
 
-const props = defineProps({
-  modelValue: {
-    type: [String, Object] as PropType<PickerValue>,
-    default: undefined,
-  },
-  calendarDate: { type: String, required: true },
-  color: { type: String as PropType<Color>, required: true },
-  locale: { type: String, required: true },
-  firstDayOfWeek: { type: Number, required: true },
-  double: { type: Boolean, required: true },
-  minDate: { type: String, default: undefined },
-  maxDate: { type: String, default: undefined },
-  disabledWeekly: { type: Array as PropType<number[]>, required: true },
-  disabledDates: { type: Array as PropType<string[]>, required: true },
-  shortcuts: {
-    type: Array as PropType<PickerShortcut[]>,
-    required: true,
-  },
-  noShortcuts: { type: Boolean, required: true },
-  hasTime: { type: Boolean, required: true },
-  shortcut: { type: String, default: undefined },
-  disabled: { type: Boolean, required: true },
-})
+const props = defineProps<{
+  modelValue: MazPickerValue | undefined
+  calendarDate: string
+  color: Color
+  locale: string
+  firstDayOfWeek: number
+  double: boolean
+  minDate: string | undefined
+  maxDate: string | undefined
+  disabledWeekly: number[]
+  disabledDates: string[]
+  shortcuts: MazPickerShortcut[] | false
+  hasTime: boolean
+  shortcut: MazPickerShortcut['identifier'] | undefined
+  disabled: boolean
+}>()
+
 const emits = defineEmits(['update:model-value', 'update:calendar-date'])
 const MazPickerCalendarMonth = defineAsyncComponent(() => import('../MazPicker/MazPickerCalendarMonth/MazPickerCalendarMonth.vue'))
 const MazPickerCalendarSwitcher = defineAsyncComponent(() => import('../MazPicker/MazPickerCalendarSwitcher.vue'))
@@ -40,7 +33,7 @@ const hoverredDay = ref<Dayjs>()
 const isRangeMode = computed(() => props.modelValue && typeof props.modelValue === 'object')
 
 const hasShortcuts = computed(
-  () => !props.noShortcuts && props.shortcuts.length > 0 && isRangeMode.value,
+  () => props.shortcuts && props.shortcuts.length > 0 && isRangeMode.value,
 )
 
 const monthSwitcherOpen = ref(false)

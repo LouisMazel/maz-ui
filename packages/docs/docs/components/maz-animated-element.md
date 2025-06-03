@@ -26,7 +26,7 @@ description: MazAnimatedElement is a standalone component that animates its cont
   </template>
 
   <script lang="ts" setup>
-    import MazAnimatedElement from 'maz-ui/components/MazAnimatedElement'
+    import { MazAnimatedElement } from 'maz-ui/components'
   </script>
   ```
 

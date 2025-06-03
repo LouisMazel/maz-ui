@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import type { MazTabsProvide } from './MazTabs.vue'
 import { ref, watch } from 'vue'
+import { useInjectStrict } from '../composables/useInjectStrict'
 import { debounce } from '../helpers/debounce'
-import { injectStrict } from '../helpers/injectStrict'
 
 const hideOverflow = ref(false)
 
-const { currentTab } = injectStrict<MazTabsProvide>('maz-tabs')
+const { currentTab } = useInjectStrict<MazTabsProvide>('maz-tabs')
 
 const allowOverFlow = debounce(() => {
   hideOverflow.value = false

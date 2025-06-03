@@ -42,7 +42,7 @@ description: MazSelect is a standalone component that replaces the standard html
 
   <script setup lang="ts">
     import { ref } from 'vue'
-    import MazSelect from 'maz-ui/components/MazSelect'
+    import { MazSelect } from 'maz-ui/components'
 
     const selectedValue = ref()
   </script>
@@ -155,7 +155,7 @@ You can provide your own search function to customize the search behavior
   </template>
 
   <script lang="ts" setup>
-    import MazSelect from 'maz-ui/components/MazSelect'
+    import { MazSelect } from 'maz-ui/components'
 
     const selectedValue = ref()
 
@@ -249,8 +249,7 @@ Customize the options list with your own template
 
   <script lang="ts" setup>
     import { ref } from 'vue'
-    import MazSelect from 'maz-ui/components/MazSelect'
-    import MazAvatar from 'maz-ui/components/MazAvatar'
+    import { MazSelect, MazAvatar } from 'maz-ui/components'
 
     const selectedUser = ref()
 

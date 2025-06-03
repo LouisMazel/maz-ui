@@ -1,16 +1,18 @@
 import { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { addComponent, addImports, addPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
+import {
+  addComponent,
+  addImports,
+  addPlugin,
+  createResolver,
+  defineNuxtModule,
+} from '@nuxt/kit'
 import { defu } from 'defu'
 
-import type {
-  AosOptions,
-  DialogOptions,
-  ThemeHandlerOptions,
-  ToasterOptions,
-  vLazyImgOptions,
-  vTooltipOptions,
-} from 'maz-ui'
+import type { vLazyImgOptions, vTooltipOptions, vFullscreenImgOptions } from 'maz-ui/directives'
+import type { AosOptions, DialogOptions, ToasterOptions } from 'maz-ui/plugins'
+import type { ThemeHandlerOptions } from 'maz-ui/composables'
+
 import { getComponentList } from './../../lib/build/getComponentList'
 
 export interface MazUiNuxtOptions {
@@ -128,7 +130,7 @@ export interface MazUiNuxtOptions {
    * Globally install of v-fullscreen-img directive
    * @default true
    */
-  installVFullscreenImg?: boolean
+  installVFullscreenImg?: boolean | vFullscreenImgOptions
   /**
    * Globally install of v-lazy-img directive
    * @default true
@@ -225,7 +227,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
     }
 
     if (moduleOptions.injectComponents) {
-      const componentList = await getComponentList()
+      const componentList = await getComponentList(process.env.MAZ_UI_DEV !== 'true' ? resolve(_dirname, './../../lib/src/components') : resolve(_dirname, './../node_modules/maz-ui/dist/components'))
 
       for (const { name } of componentList) {
         if (process.env.MAZ_UI_DEV === 'true') {
@@ -259,19 +261,12 @@ export default defineNuxtModule<MazUiNuxtOptions>({
           : true
 
       if (injectAosCSS) {
-        nuxt.options.css = ['maz-ui/dist/css/aos.css', ...nuxt.options.css]
+        const aosCssPath
+          = process.env.MAZ_UI_DEV === 'true'
+            ? 'maz-ui/src/plugins/aos/scss/index.scss'
+            : 'maz-ui/aos-styles'
+        nuxt.options.css = [aosCssPath, ...nuxt.options.css]
       }
-
-      // if (
-      //   typeof moduleOptions.injectAos === 'object'
-      //   && injectAosCSS
-      //   && process.env.MAZ_UI_DEV === 'true'
-      // ) {
-      //   nuxt.options.css = ['maz-ui/dist/css/aos.css', ...nuxt.options.css]
-      // }
-      // else if (typeof moduleOptions.injectAos === 'object' && injectAosCSS) {
-      //   nuxt.options.css = ['maz-ui/dist/css/aos.css', ...nuxt.options.css]
-      // }
     }
 
     /**
@@ -338,7 +333,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     if (moduleOptions.injectUseIdleTimeout) {
       addImports({
-        from: 'maz-ui',
+        from: 'maz-ui/composables',
         name: 'useIdleTimeout',
         as: `use${moduleOptions.autoImportPrefix}IdleTimeout`,
       })
@@ -346,7 +341,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     if (moduleOptions.injectUseReadingTime) {
       addImports({
-        from: 'maz-ui',
+        from: 'maz-ui/composables',
         name: 'useReadingTime',
         as: `use${moduleOptions.autoImportPrefix}ReadingTime`,
       })
@@ -354,7 +349,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     if (moduleOptions.injectUseWindowSize) {
       addImports({
-        from: 'maz-ui',
+        from: 'maz-ui/composables',
         name: 'useWindowSize',
         as: `use${moduleOptions.autoImportPrefix}WindowSize`,
       })
@@ -362,7 +357,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     if (moduleOptions.injectUseBreakpoints) {
       addImports({
-        from: 'maz-ui',
+        from: 'maz-ui/composables',
         name: 'useBreakpoints',
         as: 'useBreakpoints',
       })
@@ -370,7 +365,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     if (moduleOptions.injectUseUserVisibility) {
       addImports({
-        from: 'maz-ui',
+        from: 'maz-ui/composables',
         name: 'useUserVisibility',
         as: `use${moduleOptions.autoImportPrefix}UserVisibility`,
       })
@@ -378,7 +373,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     if (moduleOptions.injectUseUserVisibility) {
       addImports({
-        from: 'maz-ui',
+        from: 'maz-ui/composables',
         name: 'useUserVisibility',
         as: `use${moduleOptions.autoImportPrefix}UserVisibility`,
       })
@@ -386,7 +381,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     if (moduleOptions.injectUseStringMatching) {
       addImports({
-        from: 'maz-ui',
+        from: 'maz-ui/composables',
         name: 'useStringMatching',
         as: `use${moduleOptions.autoImportPrefix}StringMatching`,
       })
@@ -394,7 +389,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     if (moduleOptions.injectUseTimer) {
       addImports({
-        from: 'maz-ui',
+        from: 'maz-ui/composables',
         name: 'useTimer',
         as: `use${moduleOptions.autoImportPrefix}Timer`,
       })
@@ -402,12 +397,12 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     if (moduleOptions.injectUseFormValidator) {
       addImports({
-        from: 'maz-ui',
+        from: 'maz-ui/composables',
         name: 'useFormValidator',
         as: `use${moduleOptions.autoImportPrefix}FormValidator`,
       })
       addImports({
-        from: 'maz-ui',
+        from: 'maz-ui/composables',
         name: 'useFormField',
         as: `use${moduleOptions.autoImportPrefix}FormField`,
       })
@@ -415,7 +410,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     if (moduleOptions.injectUseLanguageDisplayNames) {
       addImports({
-        from: 'maz-ui',
+        from: 'maz-ui/composables',
         name: 'useLanguageDisplayNames',
         as: `use${moduleOptions.autoImportPrefix}LanguageDisplayNames`,
       })

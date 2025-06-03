@@ -22,13 +22,13 @@ import { normalizeString } from '../helpers/normalizeString'
 
 import MazInput from './MazInput.vue'
 
-export type NormalizedOption = Record<string, ModelValueSimple>
+export type MazSelectNormalizedOption = Record<string, ModelValueSimple>
 export interface MazSelectOptionWithOptGroup {
   label: string
-  options: (NormalizedOption | string | number | boolean)[]
+  options: (MazSelectNormalizedOption | string | number | boolean)[]
 }
 export type MazSelectOption =
-  | NormalizedOption
+  | MazSelectNormalizedOption
   | string
   | number
   | boolean
@@ -113,7 +113,7 @@ export interface MazSelectProps<T extends ModelValueSimple, U extends MazSelectO
   /** The input will be displayed in full width */
   block?: boolean
   /** The exclude selectors for the v-closable directive - will exclude the elements from the directive */
-  excludeSelectors?: string[]
+  excludedSelectors?: string[]
   /**
    * The autocomplete attribute of the input
    * @default 'off'
@@ -143,7 +143,7 @@ const props = withDefaults(defineProps<MazSelectProps<T, U>>(), {
   size: 'md',
   color: 'primary',
   options: undefined,
-  excludeSelectors: undefined,
+  excludedSelectors: undefined,
   searchPlaceholder: 'Search in options',
   searchThreshold: 0.75,
   autocomplete: 'off',
@@ -246,14 +246,14 @@ const instanceId = useInstanceUniqId({
   providedId: props.id,
 })
 
-function getOptionPayload(option: string | number | boolean): NormalizedOption {
+function getOptionPayload(option: string | number | boolean): MazSelectNormalizedOption {
   return {
     [props.optionValueKey]: option,
     [props.optionLabelKey]: option,
     [props.optionInputValueKey]: option,
   }
 }
-function getNormalizedOptionPayload(option: NormalizedOption): NormalizedOption {
+function getNormalizedOptionPayload(option: MazSelectNormalizedOption): MazSelectNormalizedOption {
   return {
     ...option,
     [props.optionValueKey]: option[props.optionValueKey],
@@ -263,7 +263,7 @@ function getNormalizedOptionPayload(option: NormalizedOption): NormalizedOption 
 }
 
 function getNormalizedOptions(options: U[]) {
-  const normalizedOptions: NormalizedOption[] = []
+  const normalizedOptions: MazSelectNormalizedOption[] = []
 
   if (!options?.length) {
     return []
@@ -288,14 +288,14 @@ function getNormalizedOptions(options: U[]) {
       )
     }
     else {
-      normalizedOptions.push(getNormalizedOptionPayload(option as NormalizedOption))
+      normalizedOptions.push(getNormalizedOptionPayload(option as MazSelectNormalizedOption))
     }
   }
 
   return normalizedOptions
 }
 
-const optionsNormalized = computed<NormalizedOption[]>(() => getNormalizedOptions(props.options ?? []))
+const optionsNormalized = computed<MazSelectNormalizedOption[]>(() => getNormalizedOptions(props.options ?? []))
 
 const selectedOptions = computed(
   () =>
@@ -327,7 +327,7 @@ function isNullOrUndefined(value: unknown) {
   return value === undefined || value === null
 }
 
-function isSelectedOption(option: NormalizedOption) {
+function isSelectedOption(option: MazSelectNormalizedOption) {
   const hasOption
       = selectedOptions.value?.some(
         selectedOption => selectedOption[props.optionValueKey] === option[props.optionValueKey],
@@ -416,7 +416,7 @@ async function closeList(event?: Event) {
         && event.relatedTarget instanceof HTMLElement
         && event.relatedTarget.getAttribute('id')
 
-  if (props.excludeSelectors?.includes(`#${eventTargetId}`)) {
+  if (props.excludedSelectors?.includes(`#${eventTargetId}`)) {
     return event?.preventDefault()
   }
 
@@ -588,7 +588,7 @@ async function scrollToOptionIndex(index?: number) {
   }
 }
 
-function updateTmpModelValueIndex(inputOption?: NormalizedOption) {
+function updateTmpModelValueIndex(inputOption?: MazSelectNormalizedOption) {
   const index = optionList.value?.findIndex((option) => {
     if (props.multiple && Array.isArray(props.modelValue)) {
       if (inputOption) {
@@ -605,7 +605,7 @@ function updateTmpModelValueIndex(inputOption?: NormalizedOption) {
   tmpModelValueIndex.value = index && index >= 0 ? index : 0
 }
 
-function updateValue(inputOption: NormalizedOption, mustCloseList = true) {
+function updateValue(inputOption: MazSelectNormalizedOption, mustCloseList = true) {
   if (mustCloseList && !props.multiple) {
     nextTick(() => closeList())
   }
@@ -644,7 +644,7 @@ function updateValue(inputOption: NormalizedOption, mustCloseList = true) {
   <div
     ref="mazSelectElement"
     v-closable="{
-      exclude: excludeSelectors,
+      exclude: excludedSelectors,
       handler: closeList,
     }"
     class="m-select m-reset-css"

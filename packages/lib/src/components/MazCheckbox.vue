@@ -5,7 +5,7 @@ import { computed, ref } from 'vue'
 import CheckIcon from '../../icons/check.svg'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 
-export type CheckboxValue = string | number | boolean
+export type MazCheckboxValue = string | number | boolean
 
 export interface MazCheckboxProps<T = boolean | (string | number)[]> {
   /** Style attribut of the component root element */
@@ -19,7 +19,7 @@ export interface MazCheckboxProps<T = boolean | (string | number)[]> {
   /** The color of the checkbox */
   color?: Color
   /** The value of the checkbox when selected */
-  value?: CheckboxValue
+  value?: MazCheckboxValue
   /** The name of the checkbox */
   name?: string
   /** The size of the checkbox */

@@ -34,7 +34,7 @@ Wrap your app inside this component
 </template>
 
 <script lang="ts" setup>
-  import MazPullToRefresh from 'maz-ui/components/MazPullToRefresh'
+  import { MazPullToRefresh } from 'maz-ui/components'
 
   async function pullToRefreshAction() {
     // do promise or just `window.location.reload()`

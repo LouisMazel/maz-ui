@@ -3,43 +3,63 @@ import type { ComponentPublicInstance, StyleValue } from 'vue'
 import type { MazBadgeColor, MazBadgeRoundedSize } from './MazBadge.vue'
 import type { MazTabsProvide } from './MazTabs.vue'
 import {
-
   computed,
   defineAsyncComponent,
   onBeforeMount,
   onMounted,
   ref,
-
   watch,
 } from 'vue'
-import { injectStrict } from '../helpers/injectStrict'
+import { useInjectStrict } from '../composables/useInjectStrict'
 
 import { sleep } from '../helpers/sleep'
 
-const props = withDefaults(defineProps<MazTabsBarProps>(), {
-  queryParam: 'tab',
-  autoScroll: true,
-})
+const {
+  items,
+  persistent = false,
+  queryParam = 'tab',
+  autoScroll = true,
+  block = false,
+  elevation = false,
+  bordered = true,
+} = defineProps<MazTabsBarProps>()
 
 export interface MazTabsBarProps {
-  /** The items to display in the tabs bar */
+  /**
+   * The items to display in the tabs bar
+   * @type MazTabsBarItem[]
+   */
   items: MazTabsBarItem[]
-  /** Will add a query param to the url to keep the selected tab on page refresh */
+  /**
+   * Will add a query param to the url to keep the selected tab on page refresh
+   * @default false
+   */
   persistent?: boolean
   /**
    * The name of the query param to add to the url
    * @default tab
    */
   queryParam?: string
-  /** Will make the tabs bar full width */
+  /**
+   * Will make the tabs bar full width
+   * @default false
+   */
   block?: boolean
-  /** Will remove the elevation */
-  noElevation?: boolean
+  /**
+   * Will remove the elevation
+   * @default false
+   */
+  elevation?: boolean
   /**
    * Will add a scroll on the tabs bar to show selected element
    * @default true
    */
   autoScroll?: boolean
+  /**
+   * Will add a border to the tabs bar
+   * @default true
+   */
+  bordered?: boolean
 }
 
 export type MazTabsBarItem =
@@ -59,11 +79,11 @@ export type MazTabsBarItem =
 
 const MazBadge = defineAsyncComponent(() => import('./MazBadge.vue'))
 
-const { currentTab, updateCurrentTab } = injectStrict<MazTabsProvide>('maz-tabs')
+const { currentTab, updateCurrentTab } = useInjectStrict<MazTabsProvide>('maz-tabs')
 
 function selectTab(tabIndex: number) {
   updateCurrentTab(tabIndex + 1)
-  if (props.persistent) {
+  if (persistent) {
     addOrUpdateQueryParamTab(tabIndex + 1)
   }
 }
@@ -86,7 +106,7 @@ function addElementToItemRefs({
 }
 
 const normalizedItems = computed(() =>
-  props.items.map(item => ({
+  items.map(item => ({
     label: typeof item === 'string' ? item : item.label,
     disabled: typeof item === 'string' ? false : item.disabled ?? false,
     badge: typeof item === 'string' ? undefined : item.badge,
@@ -97,7 +117,7 @@ const tabsIndicatorState = ref<StyleValue>()
 const tabsBarHasScrollAnimation = ref(false)
 
 async function setIndicatorAndScroll() {
-  if (!props.autoScroll) {
+  if (!autoScroll) {
     return
   }
 
@@ -160,7 +180,7 @@ onBeforeMount(() => {
 })
 
 onMounted(() => {
-  if (props.persistent || currentTab.value) {
+  if (persistent || currentTab.value) {
     setIndicatorAndScroll()
   }
 })
@@ -174,17 +194,17 @@ watch(
 
 function getQueryParamTab() {
   const urlActuelle = new URL(window.location.href)
-  return Number(urlActuelle.searchParams.get(props.queryParam))
+  return Number(urlActuelle.searchParams.get(queryParam))
 }
 
 function addOrUpdateQueryParamTab(tab: number) {
   const urlActuelle = new URL(window.location.href)
-  urlActuelle.searchParams.set(props.queryParam, String(tab))
+  urlActuelle.searchParams.set(queryParam, String(tab))
   window.history.replaceState({}, document.title, urlActuelle.toString())
 }
 
 onMounted(() => {
-  if (props.persistent) {
+  if (persistent) {
     updateCurrentTab(getQueryParamTab() || currentTab.value || 1)
   }
 })
@@ -196,7 +216,8 @@ onMounted(() => {
     class="m-tabs-bar m-reset-css"
     :class="{
       '--block': block,
-      '--elevation': !noElevation,
+      '--elevation': elevation,
+      '--bordered': bordered,
     }"
   >
     <div
@@ -255,6 +276,10 @@ onMounted(() => {
 
   &.--block {
     @apply maz-w-full;
+  }
+
+  &.--bordered {
+    @apply maz-border maz-border-color-light;
   }
 
   &__item {

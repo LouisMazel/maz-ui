@@ -1,6 +1,6 @@
 <script lang="ts">
 /* eslint-disable import/first */
-export interface HeadersEnriched {
+export interface MazTableHeadersEnriched {
   label: string
   key?: string
   sortable?: boolean
@@ -16,18 +16,18 @@ export interface HeadersEnriched {
   headers?: ThHTMLAttributes['headers']
 }
 
-type HeadersNormalized = HeadersEnriched & {
+type MazTableHeadersNormalized = MazTableHeadersEnriched & {
   thHeaders?: ThHTMLAttributes['headers']
   sorted?: 'ASC' | 'DESC'
 }
 
-export type Row<T extends Row<T>> = Record<string, any> & {
+export type MazTableRow<T extends MazTableRow<T>> = Record<string, any> & {
   selected?: boolean
   action?: (row: T) => unknown
   classes?: HTMLAttributes['class']
 }
 
-export type Header = string | HeadersEnriched
+export type MazTableHeader = string | MazTableHeadersEnriched
 
 export interface MazTableTranslations {
   searchByAllLabel?: string
@@ -40,7 +40,7 @@ export interface MazTableTranslations {
   paginationOf?: string
 }
 
-export interface MazTableProps<T extends Row<T>> {
+export interface MazTableProps<T extends MazTableRow<T>> {
   /** class of the table element */
   tableClass?: HTMLAttributes['class']
   /** style of the table element */
@@ -61,7 +61,7 @@ export interface MazTableProps<T extends Row<T>> {
   /** title of the table */
   title?: string
   /** headers of the table */
-  headers?: Header[]
+  headers?: MazTableHeader[]
   /** allow sort feature to all columns */
   sortable?: boolean
   /** align all headers */
@@ -73,11 +73,11 @@ export interface MazTableProps<T extends Row<T>> {
   /** enable search feature into the table header */
   search?: boolean
   /** disabled search in rows - useful to filtering data yourself or make search request to server */
-  noSearchInRow?: boolean
+  hideSearchInRow?: boolean
   /** placeholder of the search input */
   searchPlaceholder?: string
   /** Disabled search by column (remove select input "search by") */
-  noSearchBy?: boolean
+  hideSearchBy?: boolean
   /** placeholder of the search by select */
   searchByPlaceholder?: string
   /** label of the search by of all options */
@@ -155,20 +155,17 @@ export interface MazTableProvide {
 export const mazTableKey: InjectionKey<MazTableProvide> = Symbol('maz-table')
 </script>
 
-<script lang="ts" setup generic="T extends Row<T>">
+<script lang="ts" setup generic="T extends MazTableRow<T>">
 import type { HTMLAttributes, InjectionKey, Ref, StyleValue, ThHTMLAttributes } from 'vue'
 import type { MazSelectOption } from './MazSelect.vue'
-
 import type { Color, Size } from './types'
+
 import {
   computed,
   defineAsyncComponent,
-
   onBeforeMount,
   provide,
-
   ref,
-
   toRefs,
   useSlots,
   watch,
@@ -193,7 +190,7 @@ const emits = defineEmits<{
    * emitted when a row is selected
    * @property {(Row | string | number | boolean)[]} value list of selected rows (if selectedKey is defined, it will be the value of the selectedKey of the row)
    */
-  (event: 'update:model-value', value: (Row<T> | string | number | boolean)[] | undefined): void
+  (event: 'update:model-value', value: (MazTableRow<T> | string | number | boolean)[] | undefined): void
   /**
    * emitted when enter a value in the search input
    * @property {string} searchQuery search query
@@ -217,7 +214,7 @@ const MazInput = defineAsyncComponent(() => import('./MazInput.vue'))
 const MazLoadingBar = defineAsyncComponent(() => import('./MazLoadingBar.vue'))
 const MazSelect = defineAsyncComponent(() => import('./MazSelect.vue'))
 const MazTableCell = defineAsyncComponent(() => import('./MazTableCell.vue'))
-const MazTableRow = defineAsyncComponent(() => import('./MazTableRow.vue'))
+const MazTableRowComponent = defineAsyncComponent(() => import('./MazTableRow.vue'))
 const MazTableTitle = defineAsyncComponent(() => import('./MazTableTitle.vue'))
 
 const ArrowIcon = defineAsyncComponent(() => import('../../icons/arrow-up.svg'))
@@ -363,7 +360,7 @@ watch(
 const sortedColumnIndex = ref<number>()
 const sortType = ref<'ASC' | 'DESC'>()
 
-const headersNormalized = ref<HeadersNormalized[]>(getNormalizedHeaders())
+const headersNormalized = ref<MazTableHeadersNormalized[]>(getNormalizedHeaders())
 
 const searchByKey = ref<string>()
 const searchByOptions = computed<MazSelectOption[]>(() => [
@@ -412,7 +409,7 @@ function getSortedRows(rows: T[]) {
 }
 
 function getFilteredRows(rows: T[]) {
-  if (props.noSearchInRow || typeof searchQueryModel.value !== 'string')
+  if (props.hideSearchInRow || typeof searchQueryModel.value !== 'string')
     return rowsOfPage.value
 
   const query = searchQueryModel.value.toLowerCase()
@@ -443,7 +440,7 @@ const slots = useSlots()
 const hasHeader = computed<boolean>(() => props.search || !!props.title || !!slots.title)
 const hasFooter = computed<boolean>(() => props.pagination)
 
-function getNormalizedHeaders(): HeadersNormalized[] {
+function getNormalizedHeaders(): MazTableHeadersNormalized[] {
   return (
     props.headers?.map(header =>
       typeof header === 'string'
@@ -531,7 +528,7 @@ onBeforeMount(() => {
 
       <div v-if="search" class="m-table-header-search">
         <MazSelect
-          v-if="!noSearchBy"
+          v-if="!hideSearchBy"
           v-model="searchByKey"
           :rounded-size
           :color
@@ -574,7 +571,7 @@ onBeforeMount(() => {
             @slot thead - content in thead element
           -->
           <slot name="thead">
-            <MazTableRow no-hoverable>
+            <MazTableRowComponent no-hoverable>
               <MazTableTitle
                 v-if="isSelectable"
                 align="left"
@@ -637,7 +634,7 @@ onBeforeMount(() => {
                   {{ t.actionHeader }}
                 </slot>
               </MazTableTitle>
-            </MazTableRow>
+            </MazTableRowComponent>
           </slot>
         </thead>
 
@@ -646,7 +643,7 @@ onBeforeMount(() => {
         <tbody :class="{ '--divider': hasDivider }">
           <slot>
             <template v-if="rowsFiltered.length > 0">
-              <MazTableRow
+              <MazTableRowComponent
                 v-for="(row, rowIndex) in rowsFiltered"
                 :key="rowIndex"
                 :class="row.classes"
@@ -695,10 +692,10 @@ onBeforeMount(() => {
                   -->
                   <slot name="actions" :row="row" />
                 </MazTableCell>
-              </MazTableRow>
+              </MazTableRowComponent>
             </template>
             <template v-else>
-              <MazTableRow>
+              <MazTableRowComponent>
                 <MazTableCell
                   :colspan="
                     headersNormalized.length + (isSelectable ? 1 : 0) + ($slots.actions ? 1 : 0)
@@ -718,7 +715,7 @@ onBeforeMount(() => {
                     </p>
                   </slot>
                 </MazTableCell>
-              </MazTableRow>
+              </MazTableRowComponent>
             </template>
           </slot>
         </tbody>
@@ -752,7 +749,6 @@ onBeforeMount(() => {
             :size="inputSize ?? size"
             color="transparent"
             :rounded-size
-            no-elevation
             @click="firstPage"
           >
             <ChevronDoubleIcon class="maz-text-base" />
@@ -763,7 +759,6 @@ onBeforeMount(() => {
             :size="inputSize ?? size"
             color="transparent"
             :rounded-size
-            no-elevation
             @click="previousPage"
           >
             <ChevronIcon class="maz-text-base" />
@@ -774,7 +769,6 @@ onBeforeMount(() => {
             :size="inputSize ?? size"
             color="transparent"
             :rounded-size
-            no-elevation
             @click="nextPage"
           >
             <ChevronIcon class="maz-rotate-180 maz-text-base" />
@@ -785,7 +779,6 @@ onBeforeMount(() => {
             :size="inputSize ?? size"
             color="transparent"
             :rounded-size
-            no-elevation
             @click="lastPage"
           >
             <ChevronDoubleIcon class="maz-rotate-180 maz-text-base" />

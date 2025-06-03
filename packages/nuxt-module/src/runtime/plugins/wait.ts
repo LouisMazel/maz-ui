@@ -1,4 +1,4 @@
-import { WaitHandler } from 'maz-ui'
+import { WaitHandler } from 'maz-ui/plugins'
 import { defineNuxtPlugin } from '#imports'
 
 export default defineNuxtPlugin(() => {

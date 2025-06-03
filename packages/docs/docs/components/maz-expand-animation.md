@@ -15,11 +15,12 @@ description: MazExpandAnimation is a standalone component that allows you to ani
   <MazBtn @click="visible = !visible"> Exec animation </MazBtn>
 
   <br />
-  <br />
 
   <MazExpandAnimation v-model="visible">
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    <div class="maz-pt-4">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    </div>
   </MazExpandAnimation>
 
   <template #code>
@@ -36,7 +37,7 @@ description: MazExpandAnimation is a standalone component that allows you to ani
   </template>
 
   <script lang="ts" setup>
-    import MazExpandAnimation from 'maz-ui/components/MazExpandAnimation'
+    import { MazExpandAnimation } from 'maz-ui/components'
     import { ref } from 'vue'
 
     const visible = ref(false)
@@ -55,11 +56,12 @@ description: MazExpandAnimation is a standalone component that allows you to ani
   <MazBtn @click="visible2 = !visible2"> Exec animation </MazBtn>
 
   <br />
-  <br />
 
   <MazExpandAnimation v-model="visible2" duration="1000ms" timing-function="linear">
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    <div class="maz-pt-4">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    </div>
   </MazExpandAnimation>
 
   <template #code>
@@ -76,7 +78,7 @@ description: MazExpandAnimation is a standalone component that allows you to ani
   </template>
 
   <script lang="ts" setup>
-    import MazExpandAnimation from 'maz-ui/components/MazExpandAnimation'
+    import { MazExpandAnimation } from 'maz-ui/components'
     import { ref } from 'vue'
 
     const visible = ref(false)

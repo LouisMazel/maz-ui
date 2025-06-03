@@ -21,13 +21,13 @@ description: MazPagination is a standalone component
 </template>
 
 <script lang="ts" setup>
-  import MazPagination, { type Props } from 'maz-ui/components/MazPagination'
+  import { MazPagination, type MazPaginationProps } from 'maz-ui/components'
 
   import { ref } from 'vue'
 
   const currentPage = ref(1)
 
-  const props: Props = {
+  const props: MazPaginationProps = {
     resultsSize: 100,
     totalPages: 10,
     activeColor: 'primary',
@@ -64,7 +64,7 @@ description: MazPagination is a standalone component
 </div>
 
 <script lang="ts" setup>
-  import type { Props } from 'maz-ui/components/MazPagination'
+  import type { MazPaginationProps } from 'maz-ui/components'
   import { ref } from 'vue'
 
   const currentPage = ref(1)

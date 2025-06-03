@@ -10,7 +10,7 @@ export function UnpluginDirectivesResolver(): ComponentResolver {
   return {
     type: 'directive',
     resolve: (name: string) => {
-      return { from: `maz-ui`, as: `v${name}`, name: `v${name}` }
+      return { from: `maz-ui/directives`, as: `v${name}`, name: `v${name}` }
     },
   }
 }

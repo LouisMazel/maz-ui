@@ -100,9 +100,7 @@ You can use MazTable and his child component to build a simple table and enjoy t
   </template>
 
   <script lang="ts" setup>
-    import MazTable from 'maz-ui/components/MazTable'
-    import MazTableRow from 'maz-ui/components/MazTableRow'
-    import MazTableCell from 'maz-ui/components/MazTableCell'
+    import { MazTable, MazTableRow, MazTableCell } from 'maz-ui/components'
   </script>
   ```
 
@@ -217,7 +215,7 @@ v-model:page-size="{{pageSize ?? 'undefined'}}"
   </template>
 
   <script lang="ts" setup>
-    import MazTable from 'maz-ui/components/MazTable'
+    import { MazTable } from 'maz-ui/components'
 
     const competitions = [
     {

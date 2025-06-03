@@ -1,5 +1,5 @@
 import type { VueWrapper } from '@vue/test-utils'
-import MazDialogPromise, { useMazDialogPromise } from '@components/MazDialogPromise.vue'
+import { MazDialogPromise, useMazDialogPromise } from '@components/index.ts'
 import { mount } from '@vue/test-utils'
 
 describe('given MazDialogPromise component', () => {

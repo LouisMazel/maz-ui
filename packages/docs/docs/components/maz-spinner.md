@@ -17,7 +17,7 @@ description: MazSpinner is a standalone component that replaces the standard htm
 </template>
 
 <script>
-  import MazSpinner from 'maz-ui/components/MazSpinner'
+  import { MazSpinner } from 'maz-ui/components'
 </script>
 ```
 

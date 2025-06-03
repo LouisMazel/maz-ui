@@ -45,10 +45,7 @@ description: MazTabs is a standalone component to display content in tabs with a
 </template>
 
 <script lang="ts" setup>
-  import MazTabs from 'maz-ui/components/MazTabs'
-  import MazTabsBar, { MazTabsBarItem } from 'maz-ui/components/MazTabsBar'
-  import MazTabsContent from 'maz-ui/components/MazTabsContent'
-  import MazTabsContentItem from 'maz-ui/components/MazTabsContentItem'
+  import { MazTabs, MazTabsBar, type MazTabsBarItem, MazTabsContent, MazTabsContentItem } from 'maz-ui/components'
 
   const tabs: MazTabsBarItem[] = [
     { label: 'First Tab', disabled: false },
