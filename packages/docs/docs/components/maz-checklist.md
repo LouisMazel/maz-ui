@@ -78,9 +78,9 @@ lastUpdated: false
   </template>
 
   <script lang="ts" setup>
-    import MazChecklist from 'maz-ui/components/MazChecklist'
     import { ref } from 'vue'
-    import { useLanguageDisplayNames } from 'maz-ui'
+    import { MazChecklist } from 'maz-ui/components'
+    import { useLanguageDisplayNames } from 'maz-ui/composables'
 
     const query = ref<string>()
     const languages = ref<string[]>()
@@ -154,7 +154,7 @@ You can replace the default search function by providing a custom search functio
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import { useLanguageDisplayNames } from 'maz-ui'
+  import { useLanguageDisplayNames } from 'maz-ui/src/composables/useLanguageDisplayNames'
   const query = ref()
   const languages = ref<string[]>()
   const languagesOptions = ref([])

@@ -1,4 +1,4 @@
-import { useThemeHandler as useThemeHandlerComposable, type ThemeHandlerOptions } from 'maz-ui'
+import { useThemeHandler as useThemeHandlerComposable, type ThemeHandlerOptions } from 'maz-ui/composables'
 import { useNuxtApp } from '#imports'
 
 export function useThemeHandler(

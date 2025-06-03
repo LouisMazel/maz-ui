@@ -44,8 +44,7 @@ description: MazFullscreenLoader is a standalone component
 <script lang="ts" setup>
   import { ref } from 'vue'
 
-  import MazFullscreenLoader from 'maz-ui/components/MazFullscreenLoader'
-  import MazBtn from 'maz-ui/components/MazBtn'
+  import { MazFullscreenLoader, MazBtn } from 'maz-ui/components'
 
   const showLoader = ref(false)
 </script>

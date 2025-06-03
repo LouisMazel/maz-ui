@@ -34,7 +34,7 @@ description: MazRadioButtons is a standalone component to select a value in a li
   <script lang="ts" setup>
     import { ref } from 'vue'
 
-    import MazRadioButtons from 'maz-ui/components/MazRadioButtons'
+    import { MazRadioButtons } from 'maz-ui/components'
 
     const selectedCompetition = ref<string>()
 
@@ -221,8 +221,7 @@ description: MazRadioButtons is a standalone component to select a value in a li
   <script lang="ts" setup>
     import { ref } from 'vue'
 
-    import MazRadioButtons from 'maz-ui/components/MazRadioButtons'
-    import MazAvatar from 'maz-ui/components/MazAvatar'
+    import { MazRadioButtons, MazAvatar } from 'maz-ui/components'
 
     const selectedCompetition = ref<string>()
 
@@ -332,7 +331,7 @@ This option will display a select icon on the left of the label
 
   <script lang="ts" setup>
     import { ref } from 'vue'
-    import { type ButtonsRadioOption } from 'maz-ui/components/MazRadioButtons'
+    import { type MazButtonsRadioOption } from 'maz-ui/components'
 
     const selectedMode = ref('scores')
 

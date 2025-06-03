@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, nextTick, onMounted, ref, watchEffect } from 'vue'
 
-import { injectStrict } from '../helpers/injectStrict'
+import { useInjectStrict } from '../composables/useInjectStrict'
 
 export interface MazIconProps {
   /** The source path of the SVG file - e.g: `/icons/home.svg` */
@@ -48,7 +48,7 @@ const svgElem = ref<SVGElement>()
 
 function getMazIconPath() {
   try {
-    return injectStrict<string>('mazIconPath')
+    return useInjectStrict<string>('mazIconPath')
   }
   catch {
     return undefined

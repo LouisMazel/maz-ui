@@ -13,7 +13,7 @@ vi.mock('libphonenumber-js', () => ({
   isSupportedCountry: vi.fn(),
 }))
 
-describe('unit Tests for useMazPhoneNumberInput.ts', () => {
+describe('unit Tests for useMazInputPhoneNumber.ts', () => {
   describe('sanitizePhoneNumber', () => {
     it('should remove non-numeric characters from the input', () => {
       const result = sanitizePhoneNumber('(1234) 567 890 frfr')
@@ -72,7 +72,7 @@ describe('unit Tests for useMazPhoneNumberInput.ts', () => {
       })
 
       const result = await fetchCountryCode()
-      expect(result).toBe('FR')
+      expect(result.data).toBe('FR')
     })
 
     it('should handle errors when fetching the country code', async () => {
@@ -91,8 +91,8 @@ describe('unit Tests for useMazPhoneNumberInput.ts', () => {
 
   describe('useLibphonenumber', () => {
     it('should return an object with the expected functions', () => {
-      const mazPhoneNumberInputFunctions = useMazInputPhoneNumber()
-      expect(mazPhoneNumberInputFunctions).toEqual(
+      const mazInputPhoneNumberFunctions = useMazInputPhoneNumber()
+      expect(mazInputPhoneNumberFunctions).toEqual(
         expect.objectContaining({
           fetchCountryCode: expect.any(Function),
           getBrowserLocale: expect.any(Function),

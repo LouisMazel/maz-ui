@@ -83,15 +83,28 @@ function getCountriesList(
   return countriesList
 }
 
-async function fetchCountryCode() {
+async function fetchCountryCode(): Promise<{ data: CountryCode, error: undefined } | { data: undefined, error: Error }> {
   try {
     const reponse = await fetch('https://ipwho.is')
     const { country_code } = (await reponse.json()) as IpWhoResponse
 
-    return country_code
+    if (!country_code) {
+      return {
+        data: undefined,
+        error: new Error(`[MazInputPhoneNumber](fetchCountryCode) No country code found`),
+      }
+    }
+
+    return {
+      data: country_code as CountryCode,
+      error: undefined,
+    }
   }
   catch (error) {
-    throw new Error(`[MazInputPhoneNumber](fetchCountryCode) ${error}`)
+    return {
+      data: undefined,
+      error: new Error(`[MazInputPhoneNumber](fetchCountryCode) ${error}`),
+    }
   }
 }
 

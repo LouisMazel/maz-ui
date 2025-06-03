@@ -67,11 +67,11 @@ export interface MazAvatarProps {
   /** Make the image height full */
   imageHeightFull?: boolean
   /** Remove the loader */
-  noLoader?: boolean
+  hideLoader?: boolean
   /** The color of the clickable button */
   buttonColor?: Color
   /** Remove the icon on hover when component is clickable */
-  noClickableIcon?: boolean
+  hideClickableIcon?: boolean
   /** Number of letters to display in the round text */
   letterCount?: number
   /**
@@ -81,8 +81,6 @@ export interface MazAvatarProps {
   roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
   /** The fallback src to replace the src on loading error */
   fallbackSrc?: string
-  /** Load the fallback image by default */
-  noPhoto?: boolean
   /**
    * The loading strategy of the image - lazy, eager or intersecting
    * @default 'intersecting'
@@ -163,9 +161,8 @@ function handleImageError(event: Event) {
           class="m-avatar__picture maz-w-full maz-max-w-full"
           :src
           :alt
-          :no-photo
           image-height-full
-          :no-loader
+          :hide-loader
           :fallback-src
           @click="clickable ? $emit('click', $event) : null"
           @error="$emit('error', $event)"
@@ -198,7 +195,7 @@ function handleImageError(event: Event) {
         }"
         @click="$emit('click', $event)"
       >
-        <slot v-if="!noClickableIcon" name="icon">
+        <slot v-if="!hideClickableIcon" name="icon">
           <PencilIcon class="m-avatar__button__icon" />
         </slot>
       </button>

@@ -22,7 +22,7 @@ description: MazBtn is a standalone component that replaces the standard html bu
   </template>
 
   <script setup lang="ts">
-    import MazBtn from 'maz-ui/components/MazBtn'
+    import { MazBtn } from 'maz-ui/components'
   </script>
   ```
 
@@ -184,24 +184,6 @@ It's better in light mode
   <MazBtn color="white" pastel>white</MazBtn>
   <MazBtn color="black" pastel>black</MazBtn>
   <MazBtn color="transparent" pastel>transparent</MazBtn>
-  ```
-
-  </template>
-</ComponentDemo>
-
-## Rounded
-
-Make the button rounded with the attribute `rounded`
-
-<ComponentDemo>
-  <MazBtn rounded>rounded</MazBtn>
-
-  <template #code>
-
-  ```html
-  <MazBtn rounded>rounded</MazBtn>
-  <!-- or -->
-  <MazBtn rounded-size="full">rounded</MazBtn>
   ```
 
   </template>
@@ -420,7 +402,7 @@ Check out how [MazIcon](./maz-icon.md) works, see all available icons and downlo
 </template>
 
 <script lang="ts" setup>
-  import MazBtn from 'maz-ui/components/MazBtn'
+  import { MazBtn } from 'maz-ui/components'
 
   import CheckIcon from 'maz-ui/icons/check.svg'
   import HomeIcon from 'maz-ui/icons/home.svg'
@@ -446,40 +428,11 @@ Check out how [MazIcon](./maz-icon.md) works, see all available icons and downlo
 </template>
 
 <script lang="ts" setup>
-  import MazBtn from 'maz-ui/components/MazBtn'
-  import MazSpinner from 'maz-ui/components/MazSpinner'
+  import { MazBtn, MazSpinner } from 'maz-ui/components'
 </script>
 ```
 
 :::
-
-## Link
-
-::: tip
-With the attribute `variant="link"`, the button looks like a link but it's a button, so you can use the event `@click`
-
-Additional props available include: `no-underline` & `no-leading`
-
-If you want to use a real link, you can use the [MazLink](./maz-link.md) component
-:::
-
-<ComponentDemo>
-  <div class="maz-flex maz-gap-4 maz-items-center">
-    <MazBtn variant="link" @click="$emit('click')" color="primary">Is Link</MazBtn>
-    <MazBtn variant="link" @click="$emit('click')" no-underline>Is Link</MazBtn>
-    <MazBtn variant="link" @click="$emit('click')" no-leading no-underline>Is Link</MazBtn>
-  </div>
-
-  <template #code>
-
-  ```html
-  <MazBtn variant="link" @click="$emit('click')">Is Link</MazBtn>
-  <MazBtn variant="link" @click="$emit('click')" no-underline>Is Link</MazBtn>
-  <MazBtn variant="link" @click="$emit('click')" no-leading no-underline>Is Link</MazBtn>
-  ```
-
-  </template>
-</ComponentDemo>
 
 ## [HTMLLinkElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement)
 
@@ -511,7 +464,7 @@ When `to` attribute is provided, the component automatically becomes a `<RouterL
 
 <script setup lang="ts">
   import { computed } from 'vue'
-  import MazSpinner from 'maz-ui/src/components/MazSpinner.vue'
+  import { MazSpinner } from 'maz-ui/src/components/index'
 
   const colors = [
     'primary',

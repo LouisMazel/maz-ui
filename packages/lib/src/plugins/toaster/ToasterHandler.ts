@@ -1,8 +1,8 @@
 import type { App } from 'vue'
 import type { MazToastProps } from './MazToast.vue'
 import type { ToasterOptions } from './types'
-import { mount } from './../../helpers/mountComponent'
-import MazToast from './MazToast.vue'
+import { defineAsyncComponent } from 'vue'
+import { useMountComponent } from './../../composables/useMountComponent'
 
 export interface LocalToasterOptions extends ToasterOptions {
   type: 'success' | 'info' | 'warning' | 'danger' | 'theme'
@@ -29,7 +29,9 @@ export class ToasterHandler {
       message,
     }
 
-    const { destroy, vNode } = mount<typeof MazToast, MazToastProps>(MazToast, {
+    const MazToast = defineAsyncComponent(() => import('./MazToast.vue'))
+
+    const { destroy, vNode } = useMountComponent<typeof MazToast, MazToastProps>(MazToast, {
       props,
       app: this.app,
     })

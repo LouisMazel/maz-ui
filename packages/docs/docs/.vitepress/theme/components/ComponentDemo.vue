@@ -15,7 +15,7 @@ const showCode = ref(props.expanded)
 </script>
 
 <template>
-  <MazCard class="component-demo" :elevation="false" bordered block no-padding footer-align="left">
+  <MazCard class="component-demo" block footer-align="left">
     <template v-if="$slots.title || title" #header>
       <h3 class="vp-raw maz-text-lg maz-font-semibold">
         <slot name="title">
@@ -23,8 +23,8 @@ const showCode = ref(props.expanded)
         </slot>
       </h3>
     </template>
-    <template #content>
-      <div class="content maz-p-4">
+    <template #default>
+      <div class="content">
         <div class="vp-raw">
           <slot />
         </div>
@@ -42,13 +42,11 @@ const showCode = ref(props.expanded)
         <ChevronIcon :class="{ '-maz-rotate-180': !showCode }" class="maz-transition-all maz-duration-300" />
       </button>
 
-      <MazTransitionExpand>
-        <div v-show="showCode">
-          <div class="maz-flex maz-flex-col maz-gap-4 maz-text-sm">
-            <slot name="code" />
-          </div>
+      <MazExpandAnimation v-model="showCode">
+        <div class="code-wrapper maz-flex maz-flex-col maz-gap-4 maz-text-sm">
+          <slot name="code" />
         </div>
-      </MazTransitionExpand>
+      </MazExpandAnimation>
     </template>
   </MazCard>
 </template>

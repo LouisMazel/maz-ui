@@ -104,7 +104,7 @@ Toast can have a link or an action
 </template>
 
 <script lang="ts" setup>
-  import { useToast } from 'maz-ui'
+  import { useToast } from 'maz-ui/composables'
 
   const toast = useToast()
 
@@ -166,7 +166,8 @@ function showToast () {
 ```
 
 <script lang="ts" setup>
-  import { useToast, sleep } from 'maz-ui'
+  import { useToast } from 'maz-ui/src/composables/useToast'
+  import { sleep } from 'maz-ui/src/helpers/sleep'
 
   const toast = useToast()
 
@@ -247,7 +248,7 @@ function showToast () {
 
 ```ts
 import { createApp } from 'vue'
-import { installToaster, ToasterOptions } from 'maz-ui'
+import { installToaster, ToasterOptions } from 'maz-ui/plugins'
 
 const app = createApp(App)
 

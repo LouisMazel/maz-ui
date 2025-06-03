@@ -72,7 +72,7 @@ description: MazAccordion is a standalone component that allows you to create an
 </template>
 
 <script lang="ts" setup>
-  import MazAccordion from 'maz-ui/components/MazAccordion'
+  import { MazAccordion } from 'maz-ui/components'
 </script>
 ```
 

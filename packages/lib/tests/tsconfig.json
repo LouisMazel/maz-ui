@@ -8,7 +8,7 @@
       "@components/*": ["src/components/*"],
       "@composables/*": ["src/composables/*"],
       "@directives/*": ["src/directives/*"],
-      "@filters/*": ["src/filters/*"],
+      "@formatters/*": ["src/formatters/*"],
       "@helpers/*": ["src/helpers/*"],
       "@icons/*": ["src/icons/*"],
       "@plugins/*": ["src/plugins/*"],

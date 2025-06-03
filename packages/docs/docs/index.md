@@ -63,7 +63,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
   <MazAnimatedElement :delay="1500" class="maz-mt-12 tab-m:maz-mt-20">
     <MazTabs>
       <div class="maz-flex maz-justify-between maz-items-start tab-m:maz-items-center maz-gap-4 maz-mb-4 maz-flex-col-reverse tab-m:maz-flex-row">
-        <MazTabsBar :items="['Dashboard', 'Product Page', 'Auth Page']" class="maz-border maz-border-color-light" no-elevation />
+        <MazTabsBar :items="['Dashboard', 'Product Page', 'Auth Page']" class="maz-border maz-border-color-light" />
         <h3 class="maz-text-2xl maz-font-bold">
           Demonstrations
         </h3>
@@ -72,7 +72,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
         <MazTabsContentItem :tab="1">
           <MazCard
             bordered
-            no-padding
+            :padding="false"
             overflow-hidden
             class="maz-relative maz-w-full"
             content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start"
@@ -89,7 +89,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
         <MazTabsContentItem :tab="2">
           <MazCard
             bordered
-            no-padding
+            :padding="false"
             overflow-hidden
             class="maz-relative maz-w-full"
             content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start"
@@ -106,7 +106,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
         <MazTabsContentItem :tab="3">
           <MazCard
             bordered
-            no-padding
+            :padding="false"
             overflow-hidden
             class="maz-relative maz-w-full"
             content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start"
@@ -129,7 +129,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
 <section class="vp-raw">
   <h2 class="maz-text-2xl maz-font-bold maz-mb-8">Why choose Maz-UI ?</h2>
   <div class="maz-grid mob-l:maz-grid-cols-2 tab-m:maz-grid-cols-3 maz-gap-4 maz-flex-wrap vp-raw">
-    <MazCardSpotlight no-elevation content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
+    <MazCardSpotlight content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
       <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
         ⚡️
       </span>
@@ -139,7 +139,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
         You don't need to install the whole library.
       </p>
     </MazCardSpotlight>
-    <MazCardSpotlight no-elevation content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
+    <MazCardSpotlight content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
       <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
         👨‍❤️‍👨
       </span>
@@ -148,7 +148,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
         All components work with Nuxt, no need to install components on the client side.
       </p>
     </MazCardSpotlight>
-    <MazCardSpotlight no-elevation content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
+    <MazCardSpotlight content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
       <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
         🔐
       </span>
@@ -158,7 +158,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
       </p>
     </MazCardSpotlight>
     <a href="/guide/theme" class="maz-flex">
-      <MazCardSpotlight no-elevation class="maz-w-full" content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
+      <MazCardSpotlight class="maz-w-full" content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
         <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
           💄
         </span>
@@ -171,7 +171,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
       </MazCardSpotlight>
     </a>
     <a href="/guide/dark-mode" class="maz-flex">
-      <MazCardSpotlight no-elevation class="maz-w-full" content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
+      <MazCardSpotlight class="maz-w-full" content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
         <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
           🌗
         </span>
@@ -184,13 +184,13 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
       </MazCardSpotlight>
     </a>
     <a href="/plugins/toaster" class="maz-flex">
-      <MazCardSpotlight no-elevation class="maz-w-full" content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
+      <MazCardSpotlight class="maz-w-full" content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
         <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
           🛠
         </span>
         <h2 class="maz-text-base maz-font-semibold">Tools</h2>
         <p class="dark:maz-text-gray-300 maz-text-muted maz-text-sm">
-          Maz-ui provides many modules, plugins, directives, filters and composables
+          Maz-ui provides many modules, plugins, directives, formatters and composables
         </p>
         <div class="maz-flex-1"></div>
         <MazBtn color="theme" outline size="sm" block href="/plugins/toaster">Discover</MazBtn>
@@ -202,21 +202,21 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
 <section class="maz-mt-12 vp-raw">
   <h2 class="maz-text-2xl maz-font-bold maz-mb-8">Popular Components & Modules</h2>
   <div class="maz-grid maz-grid-cols-1 tab-m:maz-grid-cols-2 tab-l:maz-grid-cols-3 maz-gap-4">
-    <MazCardSpotlight color="info" no-elevation content-class="maz-flex maz-flex-col maz-gap-2">
+    <MazCardSpotlight color="info" content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
         <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
           📞
         </span>
         <MazBadge color="primary" class="maz-text-base">Component</MazBadge>
       </div>
-      <h3 class="maz-text-base maz-font-semibold">MazPhoneNumberInput</h3>
+      <h3 class="maz-text-base maz-font-semibold">MazInputPhoneNumber</h3>
       <p class="dark:maz-text-gray-300 maz-text-muted maz-text-sm">
         A powerful phone number input component with international number formatting and validation.
       </p>
       <div class="maz-flex-1"></div>
       <MazBtn color="theme" outline size="sm" block href="/components/maz-phone-number-input">Discover</MazBtn>
     </MazCardSpotlight>
-    <MazCardSpotlight color="info" no-elevation content-class="maz-flex maz-flex-col maz-gap-2">
+    <MazCardSpotlight color="info" content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
         <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
           ✏️
@@ -230,7 +230,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
       <div class="maz-flex-1"></div>
       <MazBtn color="theme" outline size="sm" block href="/components/maz-input">Discover</MazBtn>
     </MazCardSpotlight>
-    <MazCardSpotlight color="info" no-elevation content-class="maz-flex maz-flex-col maz-gap-2">
+    <MazCardSpotlight color="info" content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
         <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
           🔔
@@ -250,7 +250,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
 <section class="maz-mt-12 vp-raw">
   <h2 class="maz-text-2xl maz-font-bold maz-mb-8">Latest Components & Modules</h2>
   <div class="maz-grid maz-grid-cols-1 tab-m:maz-grid-cols-2 tab-l:maz-grid-cols-3 maz-gap-4">
-    <MazCardSpotlight color="secondary" no-elevation content-class="maz-flex maz-flex-col maz-gap-2">
+    <MazCardSpotlight color="secondary" content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
         <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
           ✨
@@ -264,7 +264,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
       <div class="maz-flex-1"></div>
       <MazBtn color="theme" outline size="sm" block href="/components/maz-animated-text">Discover</MazBtn>
     </MazCardSpotlight>
-    <MazCardSpotlight color="secondary" no-elevation content-class="maz-flex maz-flex-col maz-gap-2">
+    <MazCardSpotlight color="secondary" content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
         <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
           🎭
@@ -278,7 +278,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
       <div class="maz-flex-1"></div>
       <MazBtn color="theme" outline size="sm" block href="/components/maz-animated-element">Discover</MazBtn>
     </MazCardSpotlight>
-    <MazCardSpotlight color="secondary" no-elevation content-class="maz-flex maz-flex-col maz-gap-2">
+    <MazCardSpotlight color="secondary" content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
         <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
           🔦
@@ -292,7 +292,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
       <div class="maz-flex-1"></div>
       <MazBtn color="theme" outline size="sm" block href="/components/maz-card-spotlight">Discover</MazBtn>
     </MazCardSpotlight>
-    <MazCardSpotlight color="secondary" no-elevation content-class="maz-flex maz-flex-col maz-gap-2">
+    <MazCardSpotlight color="secondary" content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
         <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
           📝
@@ -306,7 +306,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
       <div class="maz-flex-1"></div>
       <MazBtn color="theme" outline size="sm" block href="/composables/use-form-validator">Discover</MazBtn>
     </MazCardSpotlight>
-    <MazCardSpotlight color="secondary" no-elevation content-class="maz-flex maz-flex-col maz-gap-2">
+    <MazCardSpotlight color="secondary" content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
         <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
           📋
@@ -320,7 +320,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
       <div class="maz-flex-1"></div>
       <MazBtn color="theme" outline size="sm" block href="/components/maz-checklist">Discover</MazBtn>
     </MazCardSpotlight>
-    <MazCardSpotlight color="secondary" no-elevation content-class="maz-flex maz-flex-col maz-gap-2">
+    <MazCardSpotlight color="secondary" content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
         <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
           💬
@@ -334,7 +334,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
       <div class="maz-flex-1"></div>
       <MazBtn color="theme" outline size="sm" block href="/plugins/dialog">Discover</MazBtn>
     </MazCardSpotlight>
-    <MazCardSpotlight color="secondary" no-elevation content-class="maz-flex maz-flex-col maz-gap-2">
+    <MazCardSpotlight color="secondary" content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
         <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
           🖼️
@@ -348,7 +348,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
       <div class="maz-flex-1"></div>
       <MazBtn color="theme" outline size="sm" block href="/directives/fullscreen-img">Discover</MazBtn>
     </MazCardSpotlight>
-    <MazCardSpotlight color="secondary" no-elevation content-class="maz-flex maz-flex-col maz-gap-2">
+    <MazCardSpotlight color="secondary" content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
         <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
           🌍
@@ -362,7 +362,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
       <div class="maz-flex-1"></div>
       <MazBtn color="theme" outline size="sm" block href="/composables/use-language-display-names">Discover</MazBtn>
     </MazCardSpotlight>
-    <MazCardSpotlight color="secondary" no-elevation content-class="maz-flex maz-flex-col maz-gap-2">
+    <MazCardSpotlight color="secondary" content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
         <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
           📊

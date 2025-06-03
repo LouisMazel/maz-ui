@@ -1,4 +1,4 @@
-import { DialogHandler } from 'maz-ui'
+import { DialogHandler } from 'maz-ui/plugins'
 import { defineNuxtPlugin } from '#imports'
 
 export default defineNuxtPlugin(({ vueApp, $config }) => {

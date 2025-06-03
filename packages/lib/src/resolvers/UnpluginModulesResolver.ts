@@ -1,37 +1,58 @@
 import type { ResolverFunction } from 'unplugin-auto-import/types'
 
-const modules = [
-  'capitalize',
-  'checkAvailability',
-  'countryCodeToUnicodeFlag',
-  'currency',
-  'date',
-  'debounce',
-  'injectStrict',
-  'isClient',
-  'normalizeString',
-  'number',
-  'sleep',
-  'throttle',
-  'truthyFilter',
-  'useAos',
-  'useBreakpoints',
-  'useFormField',
-  'useFormValidator',
-  'useIdleTimeout',
-  'useInstanceUniqId',
-  'useReadingTime',
-  'useStringMatching',
-  'useSwipe',
-  'useThemeHandler',
-  'useTimer',
-  'useToast',
-  'useUserVisibility',
-  'useWait',
-  'useWindowSize',
-  'useFormValidator',
-  'useFormField',
-]
+type Composables = keyof typeof import('maz-ui/src/composables/index.ts')
+type Modules = keyof typeof import('maz-ui/src/index.ts')
+
+const composablesMap: Record<Composables, true> = {
+  useInjectStrict: true,
+  useAos: true,
+  useBreakpoints: true,
+  useFormField: true,
+  useFormValidator: true,
+  useIdleTimeout: true,
+  useInstanceUniqId: true,
+  useReadingTime: true,
+  useStringMatching: true,
+  useSwipe: true,
+  useThemeHandler: true,
+  useTimer: true,
+  useToast: true,
+  useUserVisibility: true,
+  useWait: true,
+  useWindowSize: true,
+  useLanguageDisplayNames: true,
+  useFreezeValue: true,
+  useDialog: true,
+  useMountComponent: true,
+}
+
+const modulesMap: Record<Modules, true> = {
+  capitalize: true,
+  checkAvailability: true,
+  countryCodeToUnicodeFlag: true,
+  currency: true,
+  date: true,
+  debounce: true,
+  isClient: true,
+  normalizeString: true,
+  number: true,
+  sleep: true,
+  throttle: true,
+  truthyFilter: true,
+  IdleTimeout: true,
+  throttleId: true,
+  pascalCase: true,
+  camelCase: true,
+  isStandaloneMode: true,
+  debounceId: true,
+  countryFlagUrlFromFlagCdn: true,
+  isEqual: true,
+  debounceCallback: true,
+  ScriptLoader: true,
+  Swipe: true,
+  UserVisibility: true,
+  TextareaAutogrow: true,
+}
 
 /**
  * Resolver for Maz-UI (modules)
@@ -41,9 +62,16 @@ const modules = [
  */
 export function UnpluginModulesResolver(): ResolverFunction {
   return (name) => {
-    if (modules.includes(name)) {
+    if (modulesMap[name]) {
       return {
         from: 'maz-ui',
+        name,
+      }
+    }
+
+    if (name.startsWith('use') && composablesMap[name]) {
+      return {
+        from: 'maz-ui/composables',
         name,
       }
     }

@@ -21,7 +21,7 @@ description: This component creates a customizable input code field with feature
 </template>
 
 <script lang="ts" setup>
-  import MazInputCode from 'maz-ui/components/MazInputCode'
+  import { MazInputCode } from 'maz-ui/components'
 
   const code = ref()
 </script>

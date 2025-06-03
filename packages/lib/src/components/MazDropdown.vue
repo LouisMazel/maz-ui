@@ -23,6 +23,8 @@ const props = withDefaults(defineProps<MazDropdownProps>(), {
   screenReaderDescription: 'Open menu dropdown',
   dropdownIconAnimation: true,
   size: 'md',
+  closeOnClick: true,
+  chevron: true,
 })
 const emits = defineEmits<{
   /**
@@ -67,9 +69,9 @@ export type MenuItem =
   | (ActionItem & { href?: never, to?: never, target?: never })
 
 export interface MazDropdownProps {
-  /** Style object */
+  /** The style of the component */
   style?: HTMLAttributes['style']
-  /** Class name */
+  /** The class of the component */
   class?: HTMLAttributes['class']
   /**
    * Menu items
@@ -95,12 +97,21 @@ export interface MazDropdownProps {
    * @default 'bottom left'
    */
   position?: Position
-  /** Disable close menu on menuitem clicked */
-  noCloseOnClick?: boolean
-  /** Disable menu */
+  /**
+   * Disable close menu on menuitem clicked
+   * @default true
+   */
+  closeOnClick?: boolean
+  /**
+   * Disable the dropdown
+   * @default false
+   */
   disabled?: boolean
-  /** Remove chevron icon in main button */
-  noChevron?: boolean
+  /**
+   * Remove chevron icon in main button
+   * @default false
+   */
+  chevron?: boolean
   /**
    * Description read by screen reader (accessibility)
    * @default 'Open menu dropdown'
@@ -220,13 +231,13 @@ async function runAction(item: ActionItem, event: Event) {
 
   await item.action?.()
 
-  if (!props.noCloseOnClick) {
+  if (props.closeOnClick) {
     closeOnClick()
   }
 }
 
 function closeOnClick() {
-  if (props.noCloseOnClick === false)
+  if (props.closeOnClick)
     setDropdown(false)
 }
 
@@ -349,7 +360,7 @@ watch(
         >
           <slot />
 
-          <template v-if="!noChevron" #right-icon>
+          <template v-if="chevron" #right-icon>
             <!--
               @slot Custom dropdown icon
                 @binding {Boolean} is-open - dropdown open state

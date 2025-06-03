@@ -11,7 +11,7 @@
     "noImplicitThis": false,
     "ignoreDeprecations": "5.0",
     "isolatedModules": true,
-    "verbatimModuleSyntax": false
+    "verbatimModuleSyntax": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "src/components_tmp/**/*"],

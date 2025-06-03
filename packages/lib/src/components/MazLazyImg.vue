@@ -13,11 +13,11 @@ defineOptions({
 const props = withDefaults(defineProps<MazLazyImgProps>(), {
   style: undefined,
   class: undefined,
-  image: undefined,
   src: undefined,
   alt: undefined,
   observerOptions: undefined,
   fallbackSrc: undefined,
+  observerOnce: true,
 })
 
 defineEmits<{
@@ -38,8 +38,6 @@ export interface MazLazyImgProps {
   style?: HTMLAttributes['style']
   /** The class of the component */
   class?: HTMLAttributes['class']
-  /** @deprecated Use `src` instead */
-  image?: MazImage | null
   /**
    * The source of the image
    * @type {string | Image | null}
@@ -47,12 +45,10 @@ export interface MazLazyImgProps {
   src?: MazImage | null
   /** The alt of the image */
   alt?: string
-  /** Display the fallback image */
-  noPhoto?: boolean
   /** Remove the loader */
-  noLoader?: boolean
+  hideLoader?: boolean
   /** Remove the observer once the image is loaded */
-  noObserverOnce?: boolean
+  observerOnce?: boolean
   /** Remove the observer once the image is loaded */
   loadOnce?: boolean
   /** Make the image height full */
@@ -67,28 +63,25 @@ export interface MazLazyImgProps {
   block?: boolean
 }
 
-const src = computed(() => props.image || props.src)
-
 const sources = computed(() => {
-  return typeof src.value === 'string' ? [{ srcset: src.value }] : src.value?.sources
+  return typeof props.src === 'string' ? [{ srcset: props.src }] : props.src?.sources
 })
 </script>
 
 <template>
   <picture
     v-lazy-img="{
-      noPhoto,
       loadOnce,
       observerOptions,
       fallbackSrc,
-      observerOnce: !noObserverOnce,
+      observerOnce,
       onIntersecting: (el) => $emit('intersecting', el),
       onLoading: (el) => $emit('loading', el),
       onLoaded: (el) => $emit('loaded', el),
       onError: (el) => $emit('error', el),
     }"
     class="m-lazy-img-component m-reset-css"
-    :class="[{ '--use-loader': !noLoader, '--height-full': imageHeightFull, '--block': block }, props.class]"
+    :class="[{ '--use-loader': !hideLoader, '--height-full': imageHeightFull, '--block': block }, props.class]"
     :style
   >
     <source
@@ -104,7 +97,7 @@ const sources = computed(() => {
       :alt
       :class="imgClass"
     >
-    <div v-if="!noLoader" class="m-lazy-img-component-loader">
+    <div v-if="!hideLoader" class="m-lazy-img-component-loader">
       <MazSpinner size="2em" />
     </div>
     <slot />
@@ -127,15 +120,11 @@ const sources = computed(() => {
     @apply maz-absolute maz-inset-0 maz-hidden maz-flex-center;
   }
 
-  /* &:not(.m-lazy-error, .m-lazy-no-photo) img {
-      @apply maz-h-full maz-w-full;
-    } */
-
   &.--height-full img {
     @apply maz-max-h-full maz-w-min maz-max-w-min !important;
   }
 
-  &.m-lazy-error:not(.m-lazy-no-photo) {
+  &.m-lazy-error:not(.m-lazy-fallback) {
     @apply maz-bg-color-light;
 
     img {
