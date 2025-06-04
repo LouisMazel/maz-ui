@@ -11,7 +11,7 @@ description: MazSlider is a standalone component that replaces the standard html
 
 ## Basic usage
 
-<MazSlider v-model="sliderValue" />
+<MazSlider v-model="sliderValue" class="vp-raw" />
 
 ```vue
 <template>
@@ -26,6 +26,14 @@ description: MazSlider is a standalone component that replaces the standard html
 ```
 
 ## Options
+
+### Step
+
+<MazSlider v-model="sliderValue" :step="10" class="vp-raw" />
+
+```html
+<MazSlider v-model="sliderValue" :step="10" class="vp-raw" />
+```
 
 ### Multiple sliders & labels
 
