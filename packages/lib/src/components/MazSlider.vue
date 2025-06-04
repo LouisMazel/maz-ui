@@ -23,6 +23,8 @@ export interface MazSliderProps {
   min?: number
   /** max value of sliders */
   max?: number
+  /** step value for slider increments */
+  step?: number
   /** height size of slider bar */
   size?: string
   /** remove div in different colors */
@@ -40,6 +42,7 @@ const {
   labels,
   min = 0,
   max = 100,
+  step = 1,
   color = 'primary',
   noDivider = false,
   log = false,
@@ -122,13 +125,17 @@ async function buildComponent(emitValue?: boolean) {
   }
 }
 
+function roundToStep(value: number): number {
+  return Math.round((value - min) / step) * step + min
+}
+
 function cursorKeyDown(event: KeyboardEvent, i: number) {
   if (event.key === 'ArrowLeft') {
     if (
       tmpValues.value
-      && isBetween(tmpValues.value[i] - 1, tmpValues.value[i - 1], tmpValues.value[i + 1], 'minus')
+      && isBetween(tmpValues.value[i] - step, tmpValues.value[i - 1], tmpValues.value[i + 1], 'minus')
     ) {
-      tmpValues.value[i]--
+      tmpValues.value[i] = Math.max(min, tmpValues.value[i] - step)
       emitValue(tmpValues.value)
     }
   }
@@ -136,9 +143,9 @@ function cursorKeyDown(event: KeyboardEvent, i: number) {
   else if (
     event.key === 'ArrowRight'
     && tmpValues.value
-    && isBetween(tmpValues.value[i] + 1, tmpValues.value[i - 1], tmpValues.value[i + 1], 'plus')
+    && isBetween(tmpValues.value[i] + step, tmpValues.value[i - 1], tmpValues.value[i + 1], 'plus')
   ) {
-    tmpValues.value[i]++
+    tmpValues.value[i] = Math.min(max, tmpValues.value[i] + step)
     emitValue(tmpValues.value)
   }
 }
@@ -148,9 +155,10 @@ function blurCursor(i: number) {
 }
 function checkValues() {
   // check if values are not below the min or above the max
-  const valuesChecked = computedValue.value.map((v: number) =>
-    v < min ? min : v > max ? max : v,
-  )
+  const valuesChecked = computedValue.value.map((v: number) => {
+    const checkedValue = v < min ? min : v > max ? max : v
+    return roundToStep(checkedValue)
+  })
   emitValue(valuesChecked)
   tmpValues.value = valuesChecked
 }
@@ -231,10 +239,10 @@ async function getCursorsValues() {
       ? buttonPositions.value?.map((pos: number) => {
           const position = pos / (barWidth / max)
           const value = Math.exp((position - min) * scale.value + minLog.value)
-          return Math.round(value)
+          return roundToStep(Math.round(value))
         })
       : buttonPositions.value?.map(
-          (pos: number) => Math.round(pos / (barWidth / range.value)) + min,
+          (pos: number) => roundToStep(Math.round(pos / (barWidth / range.value)) + min),
         )
   }
   else {
@@ -384,7 +392,7 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
     padding: 0.25em 0.5em;
 
     & span {
-      @apply maz-flex maz-items-center maz-text-dark;
+      @apply maz-flex maz-items-center maz-text-normal;
 
       margin-left: 0.25em;
       margin-right: 0.25em;
