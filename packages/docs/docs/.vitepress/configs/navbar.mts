@@ -33,6 +33,10 @@ export const nav = [
         text: 'Contributing',
         link: 'https://github.com/LouisMazel/maz-ui/blob/master/CONTRIBUTING.md',
       },
+      {
+        text: 'Migration v4',
+        link: '/guide/migration-v4',
+      },
     ],
   },
 ] satisfies DefaultTheme.NavItem[]
