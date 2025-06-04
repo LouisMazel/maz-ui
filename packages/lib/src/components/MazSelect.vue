@@ -727,7 +727,7 @@ function updateValue(inputOption: MazSelectNormalizedOption, mustCloseList = tru
         -->
         <slot v-if="!optionList || optionList.length <= 0" name="no-results">
           <span class="m-select-list__no-results">
-            <NoSymbolIcon class="maz-h-6 maz-w-6 maz-text-normal" />
+            <NoSymbolIcon class="maz-size-6 maz-text-normal" />
           </span>
         </slot>
         <div v-else class="m-select-list__scroll-wrapper" tabindex="-1">
@@ -783,7 +783,7 @@ function updateValue(inputOption: MazSelectNormalizedOption, mustCloseList = tru
 </template>
 
 <style lang="postcss" scoped>
-  .m-select {
+.m-select {
   @apply maz-relative maz-inline-flex maz-align-top;
 
   &.--mini {

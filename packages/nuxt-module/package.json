@@ -28,19 +28,19 @@
     "*.{js,ts}": "cross-env NODE_ENV=production eslint --fix"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.17.4",
-    "maz-ui": "workspace:*"
+    "@nuxt/kit": "catalog:",
+    "maz-ui": "workspace:*",
+    "defu": "^6.1.4"
   },
   "devDependencies": {
     "@nuxt/devtools": "^2.4.1",
     "@nuxt/eslint-config": "^1.4.1",
     "@nuxt/module-builder": "^1.0.1",
-    "@nuxt/schema": "^3.17.4",
+    "@nuxt/schema": "catalog:",
     "@nuxt/test-utils": "^3.19.1",
-    "defu": "^6.1.4",
-    "nuxt": "^3.17.4",
-    "typescript": "~5.8.3",
-    "vitest": "^3.2.0"
+    "nuxt": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   },
   "unbuild": {
     "failOnWarn": false

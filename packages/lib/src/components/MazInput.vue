@@ -307,7 +307,7 @@ function emitInputEvent(event: Event) {
 
 <template>
   <div
-    class="m-input" :class="[
+    class="m-input m-reset-css" :class="[
       {
         '--is-focused': isFocused || borderActive,
         '--should-up': shouldUp,
@@ -326,7 +326,7 @@ function emitInputEvent(event: Event) {
     <label v-if="topLabel" :for="instanceId" class="m-input-top-label">{{ topLabel }}</label>
 
     <div
-      class="m-input-wrapper m-reset-css"
+      class="m-input-wrapper"
       :class="[
         inputClasses,
         borderStyle,
