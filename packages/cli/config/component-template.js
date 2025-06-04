@@ -7,12 +7,24 @@ export function component(renderedUsage, document_, _config, _fileName, requires
 
   const hasEvents = !!renderedUsage.events
   const hasSlots = !!renderedUsage.slots
+  const hasExpose = !!renderedUsage.expose
 
-  const andChar = hasSlots || hasEvents ? ' & ' : ''
+  const parts = []
+  if (renderedUsage.props)
+    parts.push('Props')
+  if (hasEvents)
+    parts.push('Events')
+  if (hasSlots)
+    parts.push('Slots')
+  if (hasExpose)
+    parts.push('Exposed methods')
+
+  const title = parts.length > 0
+    ? `## ${parts.join(', ')}`
+    : '## Component API'
 
   return `
-  ${!hasEvents && !hasSlots ? '## Component informations' : '## Props'}${hasEvents && hasSlots ? ', ' : andChar
-  } ${hasEvents ? 'Event' : ''} ${hasEvents && hasSlots ? '& ' : ''}${hasSlots ? 'Slots' : ''}
+  ${title}
 
   ${deprecated ? `> **Deprecated** ${deprecated[0].title}\n` : ''}
   ${description ? `> ${description}` : ''}

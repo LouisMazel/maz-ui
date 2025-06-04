@@ -1,709 +1,931 @@
-<script lang="ts">
-import type { DropzoneFile, DropzoneOptions } from 'dropzone'
+<script lang="ts" setup>
+import type { MazBtnProps } from './MazBtn.vue'
+import type { MazSpinnerProps } from './MazSpinner.vue'
+import type { Color } from './types'
+import { computed, defineAsyncComponent, onBeforeMount, ref } from 'vue'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId'
+import { useDropZone } from './../composables/useDropzone'
+import { sleep } from './../helpers/sleep'
+import MazBtn from './MazBtn.vue'
+import MazIcon from './MazIcon.vue'
 
-import type { ComponentPublicInstance, PropType } from 'vue'
-import {
-  computed,
-  defineAsyncComponent,
-  defineComponent,
-  onBeforeUnmount,
-  onMounted,
-  ref,
-} from 'vue'
+const {
+  id,
+  multiple = false,
+  dataTypes,
+  preventDefaultForUnhandled = true,
+  allowDuplicates = false,
+  disabled = false,
+  maxFiles,
+  maxFileSize,
+  preview = true,
+  translations,
+  selectFileBtnProps = {},
+  removeFileBtnProps = {},
+  color = 'primary',
+  spinnerProps = {},
+  autoUpload = false,
+  url,
+  requestOptions,
+  transformBody,
+  minFileSize,
+} = defineProps<MazDropzoneProps>()
+
+const emits = defineEmits<{
+  /**
+   * Event emitted when files are dropped in the dropzone
+   * @property {{ files: File[] | null, event: DragEvent }} values - The dropped files and the drag event
+   */
+  'drop': [values: { files: File[] | null, event: DragEvent }]
+  /**
+   * Event emitted when dragged files enter the dropzone
+   * @property {{ files: File[] | null, event: DragEvent }} values - The dragged files and the drag event
+   */
+  'enter': [values: { files: File[] | null, event: DragEvent }]
+  /**
+   * Event emitted when dragged files leave the dropzone
+   * @property {{ files: File[] | null, event: DragEvent }} values - The dragged files and the drag event
+   */
+  'leave': [values: { files: File[] | null, event: DragEvent }]
+  /**
+   * Event emitted when dragged files are over the dropzone
+   * @property {{ files: File[] | null, event: DragEvent }} values - The dragged files and the drag event
+   */
+  'over': [values: { files: File[] | null, event: DragEvent }]
+  /**
+   * Event emitted when a file is added to the dropzone
+   * @property {File} value - The added file
+   */
+  'add': [value: File]
+  /**
+   * Event emitted when a file is removed from the dropzone
+   * @property {File} value - The removed file
+   */
+  'remove': [value: File]
+  /**
+   * Event emitted when an error occurs
+   * @property {{ files: File[] | null, event: DragEvent | null, code: MazDropzoneErrorCode }} values - The files, event and error code
+   */
+  'error': [values: { files: File[] | null, event: DragEvent | null, code: MazDropzoneErrorCode }]
+  /**
+   * Event emitted when an error occurs during file upload
+   * @property {{ file: File, code: MazDropzoneErrorCode, error: unknown }} values - The file, error code and error details
+   */
+  'upload-error': [values: { file: File, code: MazDropzoneErrorCode, error: unknown }]
+  /**
+   * Event emitted when an error occurs during multiple files upload
+   * @property {{ files: File[], code: MazDropzoneErrorCode, error: unknown }} values - The files, error code and error details
+   */
+  'upload-error-multiple': [values: { files: File[], code: MazDropzoneErrorCode, error: unknown }]
+  /**
+   * Event emitted when a file is successfully uploaded
+   * @property {{ file: File, response?: Response }} values - The uploaded file and the response
+   */
+  'upload-success': [values: { file: File, response?: Response }]
+  /**
+   * Event emitted when multiple files are successfully uploaded
+   * @property {{ files: File[], response?: Response }} values - The uploaded files and the response
+   */
+  'upload-success-multiple': [values: { files: File[], response?: Response }]
+}>()
 
 const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
 
-function dropzoneFix<T>(component: T): T {
-  return (component as any).default ?? component
+const TrashIcon = defineAsyncComponent(() => import('./../../icons/trash.svg'))
+const CheckCircleIcon = defineAsyncComponent(() => import('./../../icons/check-circle.svg'))
+const XCircleIcon = defineAsyncComponent(() => import('./../../icons/x-circle.svg'))
+
+export type MazDropzoneErrorCode = 'FILE_SIZE_EXCEEDED' | 'MAX_FILES_EXCEEDED' | 'FILE_TYPE_NOT_ALLOWED' | 'FILE_DUPLICATED' | 'FILE_UPLOAD_ERROR' | 'NO_FILES_TO_UPLOAD' | 'FILE_UPLOAD_ERROR_MULTIPLE' | 'NO_URL' | 'FILE_SIZE_TOO_SMALL'
+
+// eslint-disable-next-line ts/consistent-type-definitions
+export type MazDropzoneProps = {
+  /**
+   * The id of the dropzone
+   */
+  id?: string
+  /**
+   * Allow multiple files to be uploaded.
+   * @default false
+   */
+  multiple?: boolean
+  /**
+   * Allowed data types/MIME types for files (e.g. ['application/json'])
+   * @default ['*\/*']
+   */
+  dataTypes?: string[]
+  /**
+   * Prevent default behavior for unhandled drag & drop events.
+   * @default true
+   */
+  preventDefaultForUnhandled?: boolean
+  /**
+   * Maximum file size in MB.
+   */
+  maxFileSize?: number
+  /**
+   * Maximum number of files allowed.
+   */
+  maxFiles?: number
+  /**
+   * Disable the dropzone
+   */
+  disabled?: boolean
+  /**
+   * Show file preview
+   */
+  preview?: boolean
+  /**
+   * Minimum file size in MB
+   */
+  minFileSize?: number
+  /**
+   * Allow duplicates
+   * @default false
+   */
+  allowDuplicates?: boolean
+  /**
+   * Translations
+   * @description Custom translations for the component
+   * @default { dragAndDrop: 'Drag and drop your files', fileInfos: '${dataTypes} ${multiple ? 'files' : 'file'} - ${maxFileSize ? `${maxFileSize} MB max` : ''} - ${multiple && maxFiles ? `${maxFiles} max files` : ''}', selectFile: 'Select file', divider: '-' }
+   */
+  translations?: {
+    dragAndDrop?: string
+    fileInfos?: string
+    selectFile?: string
+    divider?: string
+  }
+  /**
+   * Main color of the component
+   * @default 'primary'
+   */
+  color?: Color
+  /**
+   * MazBtn props - https://maz-ui.com/components/maz-btn#props
+   * @default {}
+   */
+  selectFileBtnProps?: MazBtnProps
+  /**
+   * MazBtn props - https://maz-ui.com/components/maz-btn#props
+   * @default {}
+   */
+  removeFileBtnProps?: MazBtnProps
+  /**
+   * MazSpinner props - https://maz-ui.com/components/maz-spinner#props
+   * @default {}
+   */
+  spinnerProps?: MazSpinnerProps
+  /**
+   * Auto upload files
+   * @description If set to `multiple`, all files will be uploaded at once in a single request. If set to `single`, files will be uploaded one by one in separate requests. If set to `false`, no upload will be done automatically.
+   * @default false
+   */
+  autoUpload?: 'multiple' | 'single' | false
+  /**
+   * Upload URL
+   * @description If set, files will be uploaded to the given URL.
+   */
+  url?: string
+  /**
+   * Request options
+   * @description Request options to be used for the upload (using fetch) - https://developer.mozilla.org/en-US/docs/Web/API/fetch#options
+   * @example `{ mode: 'no-cors', headers: { 'Content-Type': 'multipart/form-data', 'Authorization': 'Bearer 1234567890' } }`
+   */
+  requestOptions?: RequestInit
+  /**
+   * Transform the body of the request
+   */
+  transformBody?: (formData: FormData) => RequestInit['body']
 }
 
-export interface MazDropzoneOptions extends DropzoneOptions {
-  dictFilesDescriptions?: string
-  autoRemoveOnError?: boolean
+const filesData = defineModel<MazDropzoneFileData[]>({
+  default: () => [],
+})
+
+onBeforeMount(async () => {
+  if (filesData.value.length) {
+    filesData.value = await Promise.all(filesData.value.map(fileData => getFileData(fileData.file)))
+  }
+})
+
+export interface MazDropzoneFileData {
+  file: File
+  name?: string
+  size?: number
+  type?: string
+  lastModified?: number
+  sizeInMb?: string
+  thumbnail?: string | undefined
+  lastModifiedDate?: Date
+  uploading?: boolean
+  success?: boolean
+  error?: boolean
+  url?: string
 }
 
-export interface MazDropzoneFile extends DropzoneFile {
-  manuallyAdded?: boolean
+const dropZoneRef = ref<HTMLLabelElement>()
+
+const isUploading = ref(false)
+
+const hasMultiple = computed(() => multiple || (maxFiles ? maxFiles > 1 : false) || autoUpload === 'multiple')
+
+const instanceId = useInstanceUniqId({
+  componentName: 'MazDropzone',
+  providedId: id,
+})
+
+function uploadFile(formData: FormData) {
+  if (!url) {
+    emits('error', {
+      files: null,
+      event: null,
+      code: 'NO_URL',
+    })
+    throw new Error('NO_URL')
+  }
+
+  try {
+    const body = transformBody?.(formData) ?? formData
+
+    return fetch(url, {
+      method: 'POST',
+      body,
+      ...requestOptions,
+    })
+  }
+  catch {
+    emits('error', {
+      files: null,
+      event: null,
+      code: 'FILE_UPLOAD_ERROR',
+    })
+  }
 }
 
-export interface IMazDropzone extends Dropzone {
-  options: MazDropzoneOptions
+function getFormData(file: File) {
+  const formData = new FormData()
+  formData.append('file', file)
+  return formData
 }
 
-export interface MazDropzoneInstance extends ComponentPublicInstance {
-  manuallyAddFile: (file: DropzoneFile, fileUrl: string) => void
-  setOption: (option: string, value: unknown) => IMazDropzone['options']
-  processQueue: IMazDropzone['processQueue']
-  removeFile: IMazDropzone['removeFile']
-  removeAllFiles: IMazDropzone['removeAllFiles']
-  destroy: IMazDropzone['destroy']
-  disable: IMazDropzone['disable']
-  enable: IMazDropzone['enable']
-  accept: IMazDropzone['accept']
-  addFile: IMazDropzone['addFile']
-  resizeImage: IMazDropzone['resizeImage']
-  cancelUpload: IMazDropzone['cancelUpload']
-  getAcceptedFiles: () => MazDropzoneFile[]
-  getRejectedFiles: () => MazDropzoneFile[]
-  getFilesWithStatus: IMazDropzone['getFilesWithStatus']
-  getQueuedFiles: IMazDropzone['getQueuedFiles']
-  getUploadingFiles: IMazDropzone['getUploadingFiles']
-  getAddedFiles: IMazDropzone['getAddedFiles']
-  getActiveFiles: IMazDropzone['getActiveFiles']
+function getFormDataMultiple() {
+  const formData = new FormData()
+  filesData.value.forEach(fileData => formData.append('files', fileData.file))
+  return formData
 }
 
-const previewTemplate = `<div class="dz-preview dz-file-preview maz-flex-1">
-  <div class="dz-image">
-      <div data-dz-thumbnail-bg></div>
-  </div>
-  <div class="dz-details">
-      <div class="dz-filename"><span data-dz-name></span></div>
-      <div class="dz-size"><span data-dz-size></span></div>
-  </div>
-  <div class="dz-progress">
-    <span class="dz-upload" data-dz-uploadprogress></span>
-  </div>
-  <div class="dz-success-mark">
-    <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" height="6rem" viewBox="0 0 24 24" width="6rem" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
-  </div>
-  <div class="dz-error-mark">
-    <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" height="6rem" viewBox="0 0 24 24" width="6rem" fill="currentColor"><path d="M11 15h2v2h-2v-2zm0-8h2v6h-2V7zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/></svg>
-  </div>
-</div>`
+async function uploadFilesMultiple() {
+  if (!filesData.value.length) {
+    emits('error', {
+      files: filesData.value.map(f => f.file),
+      event: null,
+      code: 'NO_FILES_TO_UPLOAD',
+    })
+    return
+  }
 
-export default defineComponent({
-  name: 'MazDropzone',
-  components: { MazSpinner },
-  props: {
-    options: { type: Object as PropType<MazDropzoneOptions>, required: true },
-    height: {
-      type: [Number, String] as PropType<number | string>,
-      default: '245px',
-    },
-    width: {
-      type: [Number, String] as PropType<number | string>,
-      default: '100%',
-    },
-    noDestroyOnUnmount: { type: Boolean, default: false },
-  },
-  emits: [
-    'thumbnail',
-    'error',
-    'drop',
-    'dragstart',
-    'dragend',
-    'dragenter',
-    'dragover',
-    'dragleave',
-    'paste',
-    'addedfile',
-    'addedfiles',
-    'removedfile',
-    'success',
-    'processing',
-    'processingmultiple',
-    'uploadprogress',
-    'totaluploadprogress',
-    'sending',
-    'sendingmultiple',
-    'canceled',
-    'canceledmultiple',
-    'complete',
-    'completemultiple',
-    'maxfilesexceeded',
-    'maxfilesreached',
-    'queuecomplete',
-    'reset',
-  ],
-  setup(props, { emit }) {
-    const ButtonElement = ref<HTMLButtonElement>()
-    const dropzoneReady = ref(false)
-    let dropzone: IMazDropzone
-    const dropzoneOptions = ref<MazDropzoneOptions>()
+  try {
+    isUploading.value = true
+    filesData.value = filesData.value.map(f => ({ ...f, uploading: true, success: false, error: false }))
+    const formData = getFormDataMultiple()
+    const response = await uploadFile(formData)
+    filesData.value = filesData.value.map(f => ({ ...f, uploading: false, success: true, error: false }))
+    emits('upload-success-multiple', { files: filesData.value.map(f => f.file), response })
+  }
+  catch (error) {
+    filesData.value = filesData.value.map(f => ({ ...f, uploading: false, success: false, error: true }))
+    emits('upload-error-multiple', { files: filesData.value.map(f => f.file), code: 'FILE_UPLOAD_ERROR_MULTIPLE', error })
+  }
+  finally {
+    isUploading.value = false
+    await sleep(1000)
+    filesData.value = filesData.value.filter(f => f.error)
+  }
+}
 
-    const dropzoneStyle = computed(() => ({
-      width: typeof props.width === 'number' ? `${props.width}px` : props.width,
-      height: typeof props.height === 'number' ? `${props.height}px` : props.height,
-    }))
+async function uploadFiles() {
+  if (!filesData.value.length) {
+    emits('error', {
+      files: filesData.value.map(f => f.file),
+      event: null,
+      code: 'NO_FILES_TO_UPLOAD',
+    })
+    throw new Error('NO_FILES_TO_UPLOAD')
+  }
 
-    const setOption = (option: string, value: unknown): MazDropzoneOptions => {
-      dropzone.options = {
-        ...dropzone.options,
-        [option]: value,
+  try {
+    isUploading.value = true
+
+    for await (const fileData of filesData.value) {
+      const formData = getFormData(fileData.file)
+
+      try {
+        fileData.error = false
+        fileData.uploading = true
+        const response = await uploadFile(formData)
+        emits('upload-success', { file: fileData.file, response })
+        fileData.success = true
       }
-      return dropzone.options
-    }
-    const manuallyAddFile: MazDropzoneInstance['manuallyAddFile'] = (file, fileUrl) => {
-      dropzone.emit('addedfile', file)
-      dropzone.emit('thumbnail', file, fileUrl)
-      dropzone.files.push(file)
-    }
-    const removeAllFiles: MazDropzoneInstance['removeAllFiles'] = shouldRemoveAllFiles =>
-      dropzone.removeAllFiles(shouldRemoveAllFiles)
-    const processQueue: MazDropzoneInstance['processQueue'] = () => dropzone.processQueue()
-    const destroy: MazDropzoneInstance['destroy'] = () => dropzone.destroy()
-    const disable: MazDropzoneInstance['disable'] = () => dropzone.disable()
-    const enable: MazDropzoneInstance['enable'] = () => dropzone.enable()
-    const accept: MazDropzoneInstance['accept'] = (file, done) => dropzone.accept(file, done)
-    const addFile: MazDropzoneInstance['addFile'] = file => dropzone.addFile(file)
-    const resizeImage: MazDropzoneInstance['resizeImage'] = (
-      file,
-      width,
-      height,
-      resizeMethod,
-      callback,
-    ) => dropzone.resizeImage(file, width, height, resizeMethod, callback)
-    const cancelUpload: MazDropzoneInstance['cancelUpload'] = file =>
-      dropzone.cancelUpload(file)
-    const getAcceptedFiles: MazDropzoneInstance['getAcceptedFiles'] = () =>
-      dropzone.getAcceptedFiles() as MazDropzoneFile[]
-    const getRejectedFiles: MazDropzoneInstance['getRejectedFiles'] = () =>
-      dropzone.getRejectedFiles() as MazDropzoneFile[]
-    const getFilesWithStatus: MazDropzoneInstance['getFilesWithStatus'] = () =>
-      dropzone.getFilesWithStatus(status)
-    const getQueuedFiles: MazDropzoneInstance['getQueuedFiles'] = () => dropzone.getQueuedFiles()
-    const getUploadingFiles: MazDropzoneInstance['getUploadingFiles'] = () =>
-      dropzone.getUploadingFiles()
-    const getAddedFiles: MazDropzoneInstance['getAddedFiles'] = () => dropzone.getAddedFiles()
-    const getActiveFiles: MazDropzoneInstance['getActiveFiles'] = () => dropzone.getActiveFiles()
-
-    const thumbnail: DropzoneOptions['thumbnail'] = (file: MazDropzoneFile, dataUrl) => {
-      emit('thumbnail', { file, dataUrl })
-      let thumbnailElement: HTMLImageElement
-      file.previewElement.classList.remove('dz-file-preview')
-      const ref = file.previewElement.querySelectorAll('[data-dz-thumbnail-bg]')
-
-      ref.forEach((r: Element) => {
-        thumbnailElement = r as HTMLImageElement
-        thumbnailElement.alt = file.name
-        thumbnailElement.style.backgroundImage = `url('${dataUrl}')`
-      })
-
-      if (file.status === 'success')
-        dropzone.emit('complete', file)
-    }
-
-    const error: DropzoneOptions['error'] = (file, message, xhr) => {
-      emit('error', { file, message, xhr })
-      if (dropzone.options.autoRemoveOnError) {
-        setTimeout(() => dropzone.removeFile(file), 3000)
-      }
-    }
-
-    const errorMultiple: DropzoneOptions['errormultiple'] = (files, message, xhr) => {
-      emit('error', { files, message, xhr })
-      if (dropzone.options.autoRemoveOnError) {
-        setTimeout(() => {
-          for (const file of files) dropzone.removeFile(file)
-        }, 3000)
-      }
-    }
-
-    onMounted(async () => {
-      const defaultOptions: MazDropzoneOptions = {
-        parallelUploads: props.options.maxFiles,
-        previewTemplate,
-        addRemoveLinks: true,
-      }
-
-      if (ButtonElement.value) {
-        const { default: DropzoneJs } = await import('dropzone')
-
-        const Constructor = dropzoneFix(DropzoneJs)
-
-        dropzone = new Constructor(ButtonElement.value, {
-          ...defaultOptions,
-          ...props.options,
+      catch (error) {
+        fileData.error = true
+        emits('upload-error', {
+          file: fileData.file,
+          code: 'FILE_UPLOAD_ERROR',
+          error,
         })
-
-        if (dropzone) {
-          dropzoneOptions.value = dropzone.options as MazDropzoneOptions
-
-          dropzoneReady.value = true
-
-          /**
-           * Dropzone Events
-           */
-
-          dropzone.on('thumbnail', thumbnail)
-          dropzone.on('error', error)
-          dropzone.on('errormultiple', errorMultiple)
-          dropzone.on('drop', (e: DragEvent) => emit('drop', e))
-          dropzone.on('dragstart', (e: DragEvent) => emit('dragstart', e))
-          dropzone.on('dragend', (e: DragEvent) => emit('dragend', e))
-          dropzone.on('dragenter', (e: DragEvent) => emit('dragenter', e))
-          dropzone.on('dragover', (e: DragEvent) => emit('dragover', e))
-          dropzone.on('dragleave', (e: DragEvent) => emit('dragleave', e))
-          dropzone.on('paste', (e: DragEvent) => emit('paste', e))
-          dropzone.on('addedfile', (file: DropzoneFile) => emit('addedfile', file))
-          dropzone.on('addedfiles', (files: DropzoneFile[]) => emit('addedfiles', files))
-          dropzone.on('removedfile', (file: DropzoneFile) => emit('removedfile', file))
-          dropzone.on(
-            'success',
-            (file: DropzoneFile, response: Record<string, unknown> | string) =>
-              emit('success', { file, response }),
-          )
-          dropzone.on('successmultiple', (files: DropzoneFile[], responseText: string) =>
-            emit('success', { files, responseText }))
-          dropzone.on('processing', (file: DropzoneFile) => emit('processing', file))
-          dropzone.on('processingmultiple', (files: DropzoneFile[]) =>
-            emit('processingmultiple', files))
-          dropzone.on(
-            'uploadprogress',
-            (file: DropzoneFile, progress: number, bytesSent: number) =>
-              emit('uploadprogress', { file, progress, bytesSent }),
-          )
-          dropzone.on(
-            'totaluploadprogress',
-            (totalProgress: number, totalBytes: number, totalBytesSent: number) =>
-              emit('totaluploadprogress', {
-                totalProgress,
-                totalBytes,
-                totalBytesSent,
-              }),
-          )
-          dropzone.on('sending', (file: DropzoneFile, xhr: XMLHttpRequest, formData: FormData) =>
-            emit('sending', { file, xhr, formData }))
-          dropzone.on(
-            'sendingmultiple',
-            (files: DropzoneFile[], xhr: XMLHttpRequest, formData: FormData) =>
-              emit('sendingmultiple', { files, xhr, formData }),
-          )
-          dropzone.on('canceled', (file: DropzoneFile) => emit('canceled', file))
-          dropzone.on('canceledmultiple', (files: DropzoneFile[]) =>
-            emit('canceledmultiple', files))
-          dropzone.on('complete', (file: DropzoneFile) => emit('complete', file))
-          dropzone.on('completemultiple', (files: DropzoneFile[]) =>
-            emit('completemultiple', files))
-          dropzone.on('maxfilesexceeded', (file: DropzoneFile) => emit('maxfilesexceeded', file))
-          dropzone.on('maxfilesreached', (files: DropzoneFile[]) =>
-            emit('maxfilesreached', files))
-          dropzone.on('queuecomplete', () => {
-            if (getAcceptedFiles().every(file => file.manuallyAdded))
-              return
-            emit('queuecomplete')
-          })
-          dropzone.on('reset', () => emit('reset'))
-        }
       }
-    })
-
-    onBeforeUnmount(() => {
-      if (!props.noDestroyOnUnmount)
-        dropzone.destroy()
-    })
-
-    return {
-      ButtonElement,
-      dropzoneReady,
-      dropzoneOptions,
-      dropzoneStyle,
-      setOption,
-      manuallyAddFile,
-      removeAllFiles,
-      processQueue,
-      destroy,
-      disable,
-      enable,
-      accept,
-      addFile,
-      resizeImage,
-      cancelUpload,
-      getAcceptedFiles,
-      getRejectedFiles,
-      getFilesWithStatus,
-      getQueuedFiles,
-      getUploadingFiles,
-      getAddedFiles,
-      getActiveFiles,
+      finally {
+        fileData.uploading = false
+      }
     }
-  },
+  }
+  finally {
+    isUploading.value = false
+    await sleep(1000)
+    filesData.value = filesData.value.filter(f => f.error)
+  }
+}
+
+async function getFileData(file: File): Promise<MazDropzoneFileData> {
+  const fileData: MazDropzoneFileData = {
+    file,
+    name: file.name,
+    size: file.size,
+    type: file.type,
+    lastModified: file.lastModified,
+    sizeInMb: (file.size / 1024 / 1024).toFixed(2),
+    lastModifiedDate: new Date(file.lastModified),
+    url: URL.createObjectURL(file),
+    thumbnail: undefined,
+    uploading: false,
+    success: false,
+    error: false,
+  }
+
+  if (file.type.startsWith('image/')) {
+    await new Promise((resolve) => {
+      const reader = new FileReader()
+
+      reader.onload = (event) => {
+        const thumbnail = event.target?.result
+        fileData.thumbnail = thumbnail ? thumbnail as string : undefined
+
+        resolve(null)
+      }
+
+      reader.readAsDataURL(file)
+    })
+  }
+
+  if (maxFileSize && file.size > maxFileSize * 1024 * 1024) {
+    emits('error', {
+      files: [file],
+      event: null,
+      code: 'FILE_SIZE_EXCEEDED',
+    })
+  }
+
+  if (minFileSize && file.size < minFileSize * 1024 * 1024) {
+    emits('error', {
+      files: [file],
+      event: null,
+      code: 'FILE_SIZE_TOO_SMALL',
+    })
+  }
+
+  return fileData
+}
+
+// eslint-disable-next-line sonarjs/cognitive-complexity
+async function handleFiles(files: File[] | FileList | null) {
+  if (disabled || !files)
+    return null
+
+  for await (const file of files) {
+    if (!isFileTypeAllowed(file)) {
+      emits('error', {
+        files: [file],
+        event: null,
+        code: 'FILE_TYPE_NOT_ALLOWED',
+      })
+      continue
+    }
+
+    if (!hasMultiple.value && filesData.value.length >= 1) {
+      emits('error', {
+        files: [file],
+        event: null,
+        code: 'MAX_FILES_EXCEEDED',
+      })
+      continue
+    }
+
+    if (maxFiles && filesData.value.length >= maxFiles) {
+      emits('error', {
+        files: [file],
+        event: null,
+        code: 'MAX_FILES_EXCEEDED',
+      })
+      continue
+    }
+
+    if (maxFileSize && file.size > maxFileSize * 1024 * 1024) {
+      emits('error', {
+        files: [file],
+        event: null,
+        code: 'FILE_SIZE_EXCEEDED',
+      })
+      continue
+    }
+
+    if (minFileSize && file.size < minFileSize * 1024 * 1024) {
+      emits('error', {
+        files: [file],
+        event: null,
+        code: 'FILE_SIZE_TOO_SMALL',
+      })
+      continue
+    }
+
+    if (!allowDuplicates && filesData.value.find(f => f.name === file.name && f.size === file.size && f.type === file.type)) {
+      emits('error', {
+        files: [file],
+        event: null,
+        code: 'FILE_DUPLICATED',
+      })
+      continue
+    }
+
+    const fileData = await getFileData(file)
+
+    filesData.value.push(fileData)
+    emits('add', fileData.file)
+  }
+
+  if (autoUpload === 'single')
+    uploadFiles()
+  else if (autoUpload === 'multiple')
+    uploadFilesMultiple()
+
+  return filesData.value
+}
+
+async function onDrop(files: File[] | null, event: DragEvent) {
+  await handleFiles(files)
+
+  emits('drop', {
+    files,
+    event,
+  })
+}
+
+function onError(files: File[] | null, event: DragEvent) {
+  emits('error', {
+    files,
+    event,
+    code: 'FILE_TYPE_NOT_ALLOWED',
+  })
+}
+
+function onEnter(files: File[] | null, event: DragEvent) {
+  emits('enter', { files, event })
+}
+
+function onLeave(files: File[] | null, event: DragEvent) {
+  emits('leave', { files, event })
+}
+
+function onOver(files: File[] | null, event: DragEvent) {
+  emits('over', { files, event })
+}
+
+const { isOverDropZone, isOverError } = useDropZone(dropZoneRef, { dataTypes, onDrop, preventDefaultForUnhandled, multiple: hasMultiple.value, onError, onEnter, onLeave, onOver })
+
+const fileInput = ref<HTMLInputElement>()
+
+function handleFileUpload(event: Event) {
+  const input = event.target as HTMLInputElement
+  const files = input?.files
+  if (files) {
+    handleFiles(files)
+  }
+  setTimeout(() => {
+    input.value = ''
+  }, 3000)
+}
+
+const fileIconMap: Record<string, string> = {
+  jpeg: 'photo',
+  png: 'photo',
+  tiff: 'photo',
+  bmp: 'photo',
+  webp: 'photo',
+  svg: 'photo',
+  ico: 'photo',
+  gif: 'gif',
+  mp4: 'camera',
+  webm: 'camera',
+  ogg: 'camera',
+  mp3: 'speaker-wave',
+  wav: 'speaker-wave',
+  m4a: 'speaker-wave',
+  aac: 'speaker-wave',
+  flac: 'speaker-wave',
+  zip: 'archive-box',
+  rar: 'archive-box',
+  tar: 'archive-box',
+  gz: 'archive-box',
+  exe: 'command-line',
+  dll: 'command-line',
+  so: 'command-line',
+  dylib: 'command-line',
+  dmg: 'command-line',
+  deb: 'command-line',
+  rpm: 'command-line',
+  apk: 'command-line',
+  app: 'command-line',
+  xls: 'document',
+  xlsx: 'document',
+  ppt: 'document',
+  pptx: 'document',
+  pdf: 'document',
+  json: 'document',
+  xml: 'document',
+  csv: 'document',
+  tsv: 'document',
+  txt: 'document',
+  doc: 'document',
+  docx: 'document',
+  document: 'document',
+}
+
+function getFileIcon(fileData: MazDropzoneFileData) {
+  const type = fileData.file.type.split('/')?.[1]?.split('+')?.[0]?.toLowerCase()
+  const extension = fileData.file.name.split('.').pop()?.toLowerCase()
+  return fileIconMap[type] || (extension && fileIconMap[extension]) || fileIconMap.document
+}
+
+function handleFileInputClick() {
+  if (fileInput.value) {
+    fileInput.value.click()
+  }
+}
+
+function handleFileRemove(fileData: MazDropzoneFileData) {
+  if (fileData.url) {
+    URL.revokeObjectURL(fileData.url)
+  }
+  filesData.value = filesData.value.filter(f => f.file !== fileData.file)
+  emits('remove', fileData.file)
+}
+
+const selectAreaCanBeDisplayed = ref(true)
+
+const dataTypesString = computed(() => {
+  return dataTypes?.map(type => type.split('/')[1]?.split('+')[0]?.toUpperCase()).join(', ')
+})
+
+const allFileIsAccepted = computed<boolean>(() => dataTypes?.length === 1 && dataTypes[0] === '*/*')
+
+const t = computed(() => {
+  return {
+    dragAndDrop: translations?.dragAndDrop || 'Drag and drop your files',
+    fileInfos: translations?.fileInfos || [
+      dataTypesString.value ? `${dataTypesString.value} ${hasMultiple.value ? 'files' : 'file'}` : '',
+      maxFileSize ? `${maxFileSize} MB max` : '',
+      hasMultiple.value && maxFiles ? `${maxFiles} max files` : '',
+    ].filter(Boolean).join(' - '),
+    selectFile: translations?.selectFile || 'Select file',
+    divider: translations?.divider || '-',
+  } satisfies MazDropzoneProps['translations']
+})
+
+const mainColor = computed(() => {
+  return `var(--maz-color-${color})`
+})
+
+function reset() {
+  filesData.value.forEach((fileData) => {
+    if (fileData.url) {
+      URL.revokeObjectURL(fileData.url)
+    }
+  })
+  filesData.value = []
+}
+
+function addFile(file: File) {
+  handleFiles([file])
+}
+
+function removeFile(file: File) {
+  filesData.value = filesData.value.filter(f => f.file !== file)
+}
+
+function isFileTypeAllowed(file: File): boolean {
+  if (!dataTypes || dataTypes.includes('*/*'))
+    return true
+
+  return dataTypes.some((type) => {
+    if (type.endsWith('/*')) {
+      return file.type.startsWith(type.slice(0, -1))
+    }
+    return file.type === type
+  })
+}
+
+defineExpose({
+  /**
+   * Upload files
+   * @description With this method, the files are uploaded one by one (a request for each file)
+   * @usage `mazDropzoneInstance.value?.uploadFiles()`
+   */
+  uploadFiles,
+  /**
+   * Upload multiple files
+   * @description With this method, the files are uploaded all at once in a single request
+   * @usage `mazDropzoneInstance.value?.uploadFilesMultiple()`
+   */
+  uploadFilesMultiple,
+  /**
+   * Get form data
+   * @description Get the form data of one file
+   * @usage `const formData = mazDropzoneInstance.value?.getFormData(file)`
+   */
+  getFormData,
+  /**
+   * Get form data multiple
+   * @description Get the form data of all files
+   * @usage `const formData = mazDropzoneInstance.value?.getFormDataMultiple()`
+   */
+  getFormDataMultiple,
+  /**
+   * Reset the files
+   * @description Remove all files from the dropzone
+   * @usage `mazDropzoneInstance.value?.reset()`
+   */
+  reset,
+  /**
+   * Check if the files are uploading
+   * @type boolean
+   * @description Check if the files are uploading
+   * @usage `const isUploading = mazDropzoneInstance.value?.isUploading`
+   */
+  isUploading,
+  /**
+   * Add a file to the dropzone
+   * @description Add a file manually to the dropzone
+   * @usage `mazDropzoneInstance.value?.addFile(file)`
+   */
+  addFile,
+  /**
+   * Remove a file from the dropzone
+   * @description Remove a file manually from the dropzone
+   * @usage `mazDropzoneInstance.value?.removeFile(file)`
+   */
+  removeFile,
 })
 </script>
 
 <template>
-  <button
-    ref="ButtonElement"
-    type="button"
-    name="maz-dropzone"
-    class="maz-dropzone m-reset-css"
-    :style="[dropzoneStyle]"
+  <label
+    ref="dropZoneRef"
+    role="button"
+    tabindex="0"
+    :for="`input-file-uploader-${instanceId}`"
+    class="m-dropzone m-reset-css"
+    :class="{
+      'm-dropzone--disabled': disabled,
+      'm-dropzone--is-over-drop-zone': isOverDropZone,
+      'm-dropzone--is-over-error': isOverError,
+    }"
+    :style="{
+      '--active-color': mainColor,
+    }"
   >
-    <template v-if="dropzoneReady">
-      <slot :options="dropzoneOptions">
-        <div class="dz-message">
-          <slot name="icon">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              height="2em"
-              width="2em"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              class="maz-dropzone__main-icon maz-text-normal"
-              aria-hidden="true"
-            >
-              <path d="M0 0h24v24H0V0z" fill="none" />
-              <path
-                d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM19 18H6c-2.21 0-4-1.79-4-4 0-2.05 1.53-3.76 3.56-3.97l1.07-.11.5-.95C8.08 7.14 9.94 6 12 6c2.62 0 4.88 1.86 5.39 4.43l.3 1.5 1.53.11c1.56.1 2.78 1.41 2.78 2.96 0 1.65-1.35 3-3 3zM8 13h2.55v3h2.9v-3H16l-4-4z"
+    <!--
+      @slot files-area - Slot to customize the files area
+      @binding {FileData[]} files-data - The files data
+    -->
+    <slot name="files-area" :files-data="filesData">
+      <TransitionGroup name="file-scale" tag="div" class="m-dropzone__files-container" @before-enter="selectAreaCanBeDisplayed = false" @after-leave="selectAreaCanBeDisplayed = filesData.length === 0">
+
+        <div v-for="(file) in filesData" :key="`${file.name}-${file.size}-${file}`" class="m-dropzone__file-item group" @click.prevent="">
+          <!--
+            @slot file-item - Slot to customize the file item
+            @binding {FileData} file - The drop file data
+          -->
+          <slot name="file-item" :file="file">
+            <div v-if="file.thumbnail && preview" :style="{ backgroundImage: `url(${file.thumbnail})`, backgroundSize: 'cover', backgroundPosition: 'center' }" class="m-dropzone__thumbnail" />
+            <div class="m-dropzone__overlay" />
+
+            <div class="m-dropzone__icon-container">
+              <Transition name="icon-scale">
+                <MazSpinner v-if="file.uploading" :color class="m-dropzone__spinner" v-bind="spinnerProps" />
+                <CheckCircleIcon v-else-if="file.success" class="m-dropzone__success-icon" />
+                <XCircleIcon v-else-if="file.error" class="m-dropzone__error-icon" />
+                <MazIcon v-else :name="getFileIcon(file)" class="m-dropzone__file-icon" />
+              </Transition>
+            </div>
+
+            <div class="m-dropzone__description">
+              <div class="m-dropzone__file-info">
+                <span class="m-dropzone__file-name">{{ file.name }}</span>
+                <span class="m-dropzone__file-size">{{ file.sizeInMb }} MB</span>
+              </div>
+              <MazBtn
+                v-if="!file.uploading && !file.success"
+                size="xs"
+                :icon="TrashIcon"
+                :disabled
+                :color
+                v-bind="removeFileBtnProps"
+                @click.prevent="handleFileRemove(file)"
               />
-            </svg>
+            </div>
           </slot>
-          <p class="maz-my-2 maz-text-normal">
-            {{ dropzoneOptions?.dictDefaultMessage }}
-          </p>
-          <p class="maz-my-0 maz-text-muted">
-            {{ dropzoneOptions?.dictFilesDescriptions }}
-          </p>
         </div>
+      </TransitionGroup>
+    </slot>
+
+    <template v-if="filesData.length === 0 && selectAreaCanBeDisplayed">
+      <!--
+        @slot no-files-area - Slot to customize the no files area
+        @binding {Function} handle-file-input-click - The function to handle the file input click
+      -->
+      <slot name="no-files-area" :handle-file-input-click="handleFileInputClick">
+        <div class="m-dropzone__content">
+          <!--
+            @slot upload-icon - Slot to customize the upload icon
+          -->
+          <slot name="upload-icon">
+            <MazIcon name="arrow-up-on-square" class="m-dropzone__upload-icon" />
+          </slot>
+
+          <span class="m-dropzone__upload-text">
+            {{ t.dragAndDrop }}
+          </span>
+        </div>
+        <span>{{ t.divider }}</span>
+        <MazBtn :disabled :color v-bind="selectFileBtnProps" @click="handleFileInputClick">
+          {{ t.selectFile }}
+        </MazBtn>
+
+        <p v-if="!allFileIsAccepted" class="m-dropzone__info-text">
+          {{ t.fileInfos }}
+        </p>
       </slot>
     </template>
-    <MazSpinner v-else />
-  </button>
+
+    <input
+      :id="`input-file-uploader-${instanceId}`"
+      ref="fileInput"
+      :multiple="hasMultiple"
+      type="file"
+      :accept="dataTypes?.join(',')"
+      tabindex="-1"
+      :disabled
+      class="m-dropzone__file-input"
+      @change="handleFileUpload"
+    >
+  </label>
 </template>
 
-<style lang="postcss">
-  @keyframes passing-through {
-  0% {
-    opacity: 0;
-    transform: translateY(40px);
+<style lang="postcss" scoped>
+.m-dropzone {
+  @apply maz-flex maz-w-full maz-flex-col maz-gap-2 maz-overflow-hidden maz-rounded maz-border maz-border-dashed maz-border-color-light maz-p-6 maz-transition-colors maz-duration-200 maz-ease-in-out maz-flex-center hover:maz-border-color-lighter hover:maz-bg-color-dark dark:hover:maz-bg-color-darker maz-cursor-pointer;
+
+  &--disabled {
+    @apply maz-cursor-not-allowed maz-opacity-50;
   }
 
-  30%,
-  70% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  &--is-over-drop-zone:not(&--is-over-error) {
+    @apply maz-bg-color-darker;
 
-  100% {
-    opacity: 0;
-    transform: translateY(-40px);
-  }
-}
+    border-color: var(--active-color);
 
-@keyframes slide-in {
-  0% {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-
-  30% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-
-  10% {
-    transform: scale(1.1);
-  }
-
-  20% {
-    transform: scale(1);
-  }
-}
-
-.maz-dropzone {
-  @apply maz-m-0 maz-inline-flex maz-items-center maz-justify-center maz-overflow-auto
-      maz-rounded maz-border maz-border-dashed maz-border-color-light maz-bg-color
-      maz-p-4 maz-text-center maz-outline-none
-      maz-transition-all maz-duration-200 maz-ease-out;
-
-  min-height: 245px;
-
-  &:not(.dz-clickable) {
-    @apply maz-bg-color-light;
-  }
-
-  &.dz-clickable,
-  &.dz-clickable.dz-message,
-  &.dz-clickable.dz-message * {
-    @apply maz-cursor-pointer;
-  }
-
-  & .dz-message {
-    @apply maz-flex maz-flex-col maz-items-center maz-justify-center maz-text-center;
-  }
-
-  &.dz-clickable {
-    &:hover {
-      @apply maz-border-color-lighter maz-bg-color-light;
-
-      & .maz-dropzone__main-icon {
-        @apply maz-text-primary maz-transition-all maz-duration-200 maz-ease-out;
-      }
+    .maz-dropzone__upload-icon {
+      color: var(--active-color);
     }
   }
 
-  &.dz-started .dz-message {
+  &--is-over-error {
+    @apply maz-border-danger;
+
+    .maz-dropzone__upload-icon {
+      @apply maz-text-danger;
+    }
+  }
+
+  &__content {
+    @apply maz-flex maz-flex-col maz-gap-1 maz-flex-center;
+  }
+
+  &__files-container {
+    @apply maz-flex maz-flex-wrap maz-items-center maz-justify-center maz-gap-4;
+
+    position: relative;
+  }
+
+  &__file-item {
+    @apply maz-relative maz-flex maz-size-40 maz-cursor-auto maz-flex-col maz-items-center maz-overflow-hidden maz-rounded maz-bg-color-light;
+
+    transition: all 300ms ease-in-out;
+  }
+
+  &__thumbnail {
+    @apply maz-absolute maz-inset-0;
+  }
+
+  &__overlay {
+    @apply maz-absolute maz-inset-0 maz-bg-gray-800/50;
+  }
+
+  &__icon-container {
+    @apply maz-z-2 maz-flex maz-flex-1 maz-p-2 maz-flex-center;
+  }
+
+  &__spinner {
+    @apply maz-text-lg;
+  }
+
+  &__success-icon {
+    @apply maz-text-4xl maz-text-success;
+  }
+
+  &__error-icon {
+    @apply maz-text-4xl maz-text-danger;
+  }
+
+  &__file-icon {
+    @apply maz-text-3xl maz-text-color-dark dark:maz-text-normal;
+  }
+
+  &__description {
+    @apply maz-z-2 maz-flex maz-w-full maz-flex-col maz-gap-1 maz-truncate maz-p-2 maz-text-color-dark dark:maz-text-normal;
+  }
+
+  &__file-info {
+    @apply maz-flex maz-flex-col maz-gap-0.5 maz-text-center maz-text-sm maz-font-semibold;
+  }
+
+  &__file-name {
+    @apply maz-truncate;
+  }
+
+  &__file-size {
+    @apply maz-truncate;
+  }
+
+  &__upload-icon {
+    @apply maz-text-3xl;
+  }
+
+  &__upload-text {
+    @apply maz-text-center;
+  }
+
+  &__info-text {
+    @apply maz-mt-4 maz-text-center maz-text-sm maz-text-muted;
+  }
+
+  &__file-input {
     @apply maz-hidden;
   }
 
-  &.dz-drag-hover {
-    @apply maz-border-solid;
-
-    & .dz-message {
-      @apply maz-opacity-50;
-    }
+  .icon-scale-enter-active,
+  .icon-scale-leave-active {
+    transition: transform 300ms ease-in-out;
   }
 
-  & .dz-message .dz-button {
-    @apply maz-cursor-pointer maz-border-none maz-bg-transparent maz-p-0;
+  .icon-scale-enter-from {
+    opacity: 0;
+    position: absolute;
+    transform: scale(0);
   }
 
-  & .dz-details {
-    @apply maz-absolute maz-inset-0 maz-z-20 maz-flex maz-flex-col maz-items-center
-        maz-justify-center maz-rounded maz-px-4 maz-py-8 maz-text-center maz-leading-10 maz-text-white maz-opacity-0;
-
-    background-color: var(--maz-color-primary-alpha);
-    transition: opacity 0.2s linear;
-
-    & .dz-size {
-      & span {
-        @apply maz-text-base maz-text-white;
-      }
-    }
-
-    & .dz-filename {
-      width: 100%;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      overflow: hidden;
-
-      span {
-        color: white;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-      }
-    }
+  .icon-scale-leave-to {
+    display: none;
   }
 
-  & .dz-image {
-    overflow: hidden;
-    position: relative;
-    display: block;
-    z-index: 10;
-    width: 100%;
-    height: 100%;
-    margin: 0 auto;
-
-    @apply maz-rounded maz-border-color-lighter;
-
-    & img {
-      display: block;
-    }
-
-    & > div[data-dz-thumbnail-bg] {
-      width: inherit;
-      height: inherit;
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center;
-    }
+  .file-scale-enter-active {
+    transition: all 300ms ease-in-out;
   }
 
-  & .dz-preview {
-    position: relative;
-    display: inline-block;
-    vertical-align: top;
-    margin: 0;
-    min-height: auto;
-    height: 100%;
-    background: transparent;
-    max-width: 200px;
-    overflow: hidden;
+  .file-scale-leave-active {
+    transition: all 300ms ease-in-out;
+  }
 
-    &:not(:last-child) {
-      margin-right: 0.5rem;
-    }
+  .file-scale-enter-from {
+    opacity: 0;
+    transform: scale(0.3);
+  }
 
-    &.dz-file-preview {
-      & .dz-image {
-        border-radius: 20px;
-        background: #999;
-        background: linear-gradient(to bottom, #eee, #ddd);
-      }
+  .file-scale-leave-to {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
 
-      & .dz-details {
-        opacity: 1;
-      }
-    }
-
-    &.dz-image-preview {
-      background-color: transparent;
-
-      & .dz-details {
-        transition: opacity 0.2s linear;
-      }
-    }
-
-    & .dz-remove {
-      text-align: center;
-      display: block;
-      cursor: pointer;
-      position: absolute;
-      z-index: 30;
-      color: white;
-      top: inherit;
-      left: 5px;
-      right: 5px;
-      bottom: 5px;
-      padding: 10px 5px;
-      border: 2px white solid;
-      text-decoration: none;
-      text-transform: uppercase;
-      font-size: 0.8rem;
-      opacity: 0;
-      transition: all 300ms ease-in-out;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      overflow: hidden;
-
-      @apply maz-rounded;
-
-      &:hover {
-        @apply maz-bg-white maz-text-primary;
-      }
-    }
-
-    &:hover {
-      z-index: 1000;
-
-      & .dz-details,
-      & .dz-remove {
-        opacity: 1;
-      }
-
-      & .dz-image img {
-        transform: scale(1.05, 1.05);
-        filter: blur(8px);
-      }
-    }
-
-    & .dz-error-message {
-      pointer-events: none;
-      z-index: 1000;
-      position: absolute;
-      display: block;
-      display: none;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      border-radius: 8px;
-      top: 130px;
-      background: #be2626;
-      background: linear-gradient(to bottom, #be2626, #a92222);
-      padding: 0.5em 1.2em;
-      color: white;
-      margin-left: auto;
-      margin-right: auto;
-      left: 0;
-      width: 100%;
-      text-align: center;
-    }
-
-    & .dz-success-mark,
-    & .dz-error-mark {
-      pointer-events: none;
-      opacity: 0;
-      z-index: 500;
-      position: absolute;
-      display: block;
-      margin-left: auto;
-      margin-top: auto;
-      width: 100%;
-      top: 30%;
-      left: 0;
-
-      @apply maz-flex maz-flex-col maz-items-center maz-justify-center;
-
-      & .material-icons {
-        background-color: var(--maz-color-success-alpha);
-        border-radius: 50%;
-        color: white;
-        font-size: 70px;
-      }
-    }
-
-    & .dz-error-mark {
-      & .material-icons {
-        background-color: var(--maz-color-danger-alpha);
-      }
-    }
-
-    &.dz-success .dz-success-mark {
-      animation: passing-through 3s cubic-bezier(0.77, 0, 0.175, 1);
-    }
-
-    &.dz-error {
-      & .dz-error-message {
-        display: block;
-      }
-
-      & .dz-error-mark {
-        opacity: 1;
-        animation: slide-in 3s cubic-bezier(0.77, 0, 0.175, 1);
-      }
-
-      & .dz-details {
-        background-color: var(--maz-color-danger-alpha);
-      }
-
-      &:hover .dz-error-message {
-        opacity: 1;
-        pointer-events: auto;
-      }
-
-      & .dz-remove:hover {
-        @apply maz-text-danger;
-      }
-    }
-
-    & .dz-progress {
-      opacity: 1;
-      z-index: 1000;
-      pointer-events: none;
-      position: absolute;
-      height: 1rem;
-      top: 50%;
-      margin-top: -0.5rem;
-      transform: scale(1);
-      overflow: visible;
-      width: 50%;
-      left: 25%;
-
-      @apply maz-rounded-full maz-bg-gray-100;
-
-      & .dz-upload {
-        position: absolute;
-        transition: width 300ms ease-in-out;
-
-        @apply maz-absolute maz-inset-0 maz-w-0 maz-rounded-full maz-bg-success;
-      }
-
-      & .progress-title {
-        display: inline-block;
-        position: relative;
-        top: -30px;
-      }
-    }
-
-    &.dz-processing .dz-progress {
-      opacity: 1;
-      transition: all 0.2s linear;
-    }
-
-    &.dz-complete .dz-progress {
-      opacity: 0;
-      transition: opacity 0.4s ease-in;
-    }
-
-    &:not(.dz-processing) .dz-progress {
-      animation: pulse 6s ease infinite;
-    }
+  .file-scale-move {
+    transition: transform 300ms ease-in-out;
   }
 }
 </style>

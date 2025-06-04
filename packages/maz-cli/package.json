@@ -44,7 +44,7 @@
     "cosmiconfig": "^9.0.0",
     "figlet": "^1.8.1",
     "tinycolor2": "^1.6.0",
-    "typescript": "~5.8.3"
+    "typescript": "catalog:"
   },
   "devDependencies": {
     "@types/clear": "^0.1.4",
