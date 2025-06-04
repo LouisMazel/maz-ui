@@ -13,8 +13,6 @@ import type { vLazyImgOptions, vTooltipOptions, vFullscreenImgOptions } from 'ma
 import type { AosOptions, DialogOptions, ToasterOptions } from 'maz-ui/plugins'
 import type { ThemeHandlerOptions } from 'maz-ui/composables'
 
-import { getComponentList } from './../../lib/build/getComponentList'
-
 export interface MazUiNuxtOptions {
   /**
    * Prefix for composables
@@ -172,6 +170,65 @@ declare module '@nuxt/schema' {
   }
 }
 
+type ComponentNames = keyof typeof import('maz-ui/src/components/index.js')
+
+const COMPONENT_NAMES: Omit<Record<ComponentNames, true>, 'useMazDialogPromise'> = {
+  MazAccordion: true,
+  MazAnimatedCounter: true,
+  MazAnimatedElement: true,
+  MazAnimatedText: true,
+  MazAvatar: true,
+  MazBackdrop: true,
+  MazBadge: true,
+  MazBottomSheet: true,
+  MazBtn: true,
+  MazCard: true,
+  MazCardSpotlight: true,
+  MazCarousel: true,
+  MazChart: true,
+  MazCheckbox: true,
+  MazChecklist: true,
+  MazCircularProgressBar: true,
+  MazDialog: true,
+  MazDialogPromise: true,
+  MazDrawer: true,
+  MazDropdown: true,
+  MazDropzone: true,
+  MazExpandAnimation: true,
+  MazFullscreenLoader: true,
+  MazGallery: true,
+  MazIcon: true,
+  MazInput: true,
+  MazInputCode: true,
+  MazInputNumber: true,
+  MazInputPhoneNumber: true,
+  MazInputPrice: true,
+  MazInputTags: true,
+  MazLazyImg: true,
+  MazLink: true,
+  MazLoadingBar: true,
+  MazPagination: true,
+  MazPicker: true,
+  MazPullToRefresh: true,
+  MazRadio: true,
+  MazRadioButtons: true,
+  MazReadingProgressBar: true,
+  MazSelect: true,
+  MazSlider: true,
+  MazSpinner: true,
+  MazStepper: true,
+  MazSwitch: true,
+  MazTable: true,
+  MazTableCell: true,
+  MazTableRow: true,
+  MazTableTitle: true,
+  MazTabs: true,
+  MazTabsBar: true,
+  MazTabsContent: true,
+  MazTabsContentItem: true,
+  MazTextarea: true,
+}
+
 const _dirname = dirname(fileURLToPath(import.meta.url))
 
 const defaults: Required<MazUiNuxtOptions> = {
@@ -227,9 +284,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
     }
 
     if (moduleOptions.injectComponents) {
-      const componentList = await getComponentList(process.env.MAZ_UI_DEV !== 'true' ? resolve(_dirname, './../../lib/src/components') : resolve(_dirname, './../node_modules/maz-ui/dist/components'))
-
-      for (const { name } of componentList) {
+      for (const name of Object.keys(COMPONENT_NAMES)) {
         if (process.env.MAZ_UI_DEV === 'true') {
           addComponent({
             name,
