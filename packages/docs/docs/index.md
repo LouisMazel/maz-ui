@@ -11,6 +11,20 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
   #   alt: Logo of Maz-UI
 ---
 
+
+<section class="maz-mt-12 vp-raw">
+  <div class="maz-flex maz-items-center maz-gap-4 maz-bg-color-light maz-rounded-lg maz-p-6">
+    <span class="maz-text-3xl">🎉</span>
+    <div>
+      <h3 class="maz-text-lg maz-font-semibold">Maz-UI v4 is here!</h3>
+      <p class="maz-text-sm maz-text-muted maz-mt-1">
+        Discover our latest major release with improved performance, better tree-shaking, and enhanced TypeScript support.
+        <MazLink href="/guide/migration-v4" class="maz-ml-2">View migration guide →</MazLink>
+      </p>
+    </div>
+  </div>
+</section>
+
 <section id="hero" class="maz-py-12 tab-m:maz-py-24 vp-raw">
   <div class="maz-mx-auto maz-max-w-3xl">
     <MazAnimatedText
@@ -164,7 +178,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
         </span>
         <h2 class="maz-text-base maz-font-semibold">Theming</h2>
         <p class="dark:maz-text-gray-300 maz-text-muted maz-text-sm">
-          Created with TailwindCSS | Optimized CSS file sizes | Complies with all CSS best practices | Use your theme easily.
+          Created with TailwindCSS | Optimized CSS file sizes | Complies with all CSS best practices | Use your theme easily.
         </p>
         <div class="maz-flex-1"></div>
         <MazBtn color="theme" outline size="sm" block href="/guide/theme">Discover</MazBtn>
@@ -198,6 +212,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
     </a>
   </div>
 </section>
+
 
 <section class="maz-mt-12 vp-raw">
   <h2 class="maz-text-2xl maz-font-bold maz-mb-8">Popular Components & Modules</h2>
