@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import type { IconComponent } from '@maz-ui/icons'
 import type { RouteLocationRaw } from 'vue-router'
-import type { Color, Icon } from './types'
+import type { MazColor } from './types'
+import { ArrowTopRightOnSquare } from '@maz-ui/icons'
 import { defineAsyncComponent } from 'vue'
 
 withDefaults(defineProps<MazLinkProps>(), {
@@ -19,7 +21,6 @@ withDefaults(defineProps<MazLinkProps>(), {
   leftIcon: undefined,
   rightIcon: undefined,
 })
-const ExternalIcon = defineAsyncComponent(() => import('../../icons/arrow-top-right-on-square.svg'))
 const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
 
 export interface MazLinkProps {
@@ -38,7 +39,7 @@ export interface MazLinkProps {
    * The color of the link
    * @default 'primary'
    */
-  color?: Color
+  color?: MazColor
   /**
    * The target of the link
    * @default '_self'
@@ -64,12 +65,12 @@ export interface MazLinkProps {
    * The name of the icon or component to display on the left of the text
    * `@type` `{string | FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component}`
    */
-  leftIcon?: string | Icon
+  leftIcon?: string | IconComponent
   /**
    * The name of the icon or component to display on the right of the text
    * `@type` `{string | FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component}`
    */
-  rightIcon?: string | Icon
+  rightIcon?: string | IconComponent
 }
 </script>
 
@@ -117,7 +118,7 @@ export interface MazLinkProps {
       @slot external-icon - Replace the default external icon
     -->
     <slot v-if="autoExternal && target === '_blank'" name="external-icon">
-      <ExternalIcon />
+      <ArrowTopRightOnSquare />
     </slot>
   </Component>
 </template>

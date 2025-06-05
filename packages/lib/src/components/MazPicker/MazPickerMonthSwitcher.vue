@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import type { Dayjs } from 'dayjs'
 import type { PropType } from 'vue'
-import type { Color } from '../types'
+import type { MazColor } from '../types'
+import XIcon from '@maz-ui/icons/svg/x-mark.svg'
 import dayjs from 'dayjs'
 import { computed } from 'vue'
-import XIcon from '../../../icons/x-mark.svg'
 import { capitalize } from '../../formatters/capitalize'
 
 import { date } from '../../formatters/date'
@@ -14,7 +14,7 @@ import { isSameDate } from './utils'
 
 const props = defineProps({
   calendarDate: { type: String, required: true },
-  color: { type: String as PropType<Color>, required: true },
+  color: { type: String as PropType<MazColor>, required: true },
   locale: { type: String, required: true },
   double: { type: Boolean, required: true },
 })

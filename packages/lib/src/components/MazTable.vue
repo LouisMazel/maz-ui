@@ -52,12 +52,12 @@ export interface MazTableProps<T extends MazTableRow<T>> {
    * @values `'xl' | 'lg' | 'md' | 'sm' | 'xs' | 'mini'`
    * @default `'md'`
    */
-  size?: Size
+  size?: MazSize
   /**
    * Size of the search inputs
    * @values `'xl' | 'lg' | 'md' | 'sm' | 'xs' | 'mini'`
    */
-  inputSize?: Size
+  inputSize?: MazSize
   /** title of the table */
   title?: string
   /** headers of the table */
@@ -125,7 +125,7 @@ export interface MazTableProps<T extends MazTableRow<T>> {
    */
   tableLayout?: 'auto' | 'fixed'
   /** color of the loading bar */
-  color?: Color
+  color?: MazColor
   /**
    * translations
    * @default `{ searchByAllLabel: 'All', searchByPlaceholder: 'Search by', searchPlaceholder: 'Search', paginationAllLabel: 'All', noResults: 'No results' }`
@@ -146,7 +146,7 @@ export interface MazTableProps<T extends MazTableRow<T>> {
 }
 
 export interface MazTableProvide {
-  size: Ref<Size>
+  size: Ref<MazSize>
   hoverable: Ref<boolean>
   backgroundEven: Ref<boolean>
   backgroundOdd: Ref<boolean>
@@ -158,7 +158,8 @@ export const mazTableKey: InjectionKey<MazTableProvide> = Symbol('maz-table')
 <script lang="ts" setup generic="T extends MazTableRow<T>">
 import type { HTMLAttributes, InjectionKey, Ref, StyleValue, ThHTMLAttributes } from 'vue'
 import type { MazSelectOption } from './MazSelect.vue'
-import type { Color, Size } from './types'
+import type { MazColor, MazSize } from './types'
+import { ArrowUp, ChevronDoubleLeft, ChevronLeft, MagnifyingGlass } from '@maz-ui/icons'
 
 import {
   computed,
@@ -216,11 +217,6 @@ const MazSelect = defineAsyncComponent(() => import('./MazSelect.vue'))
 const MazTableCell = defineAsyncComponent(() => import('./MazTableCell.vue'))
 const MazTableRowComponent = defineAsyncComponent(() => import('./MazTableRow.vue'))
 const MazTableTitle = defineAsyncComponent(() => import('./MazTableTitle.vue'))
-
-const ArrowIcon = defineAsyncComponent(() => import('../../icons/arrow-up.svg'))
-const ChevronDoubleIcon = defineAsyncComponent(() => import('../../icons/chevron-double-left.svg'))
-const ChevronIcon = defineAsyncComponent(() => import('../../icons/chevron-left.svg'))
-const SearchIcon = defineAsyncComponent(() => import('../../icons/magnifying-glass.svg'))
 
 const defaultTranslations: Required<MazTableTranslations> = {
   noResults: 'No results',
@@ -544,7 +540,7 @@ onBeforeMount(() => {
           :color
           :debounce="300"
           :placeholder="t.searchPlaceholder"
-          :left-icon="SearchIcon"
+          :left-icon="MagnifyingGlass"
         />
       </div>
     </div>
@@ -614,7 +610,7 @@ onBeforeMount(() => {
                     </slot>
 
                     <div v-if="header.sortable ?? sortable" class="m-table-sort-icon-wrapper">
-                      <ArrowIcon
+                      <ArrowUp
                         class="m-table-sort-icon maz-hidden group-hover:maz-block"
                         :class="{
                           '--sorted': columnIndex === sortedColumnIndex,
@@ -751,7 +747,7 @@ onBeforeMount(() => {
             :rounded-size
             @click="firstPage"
           >
-            <ChevronDoubleIcon class="maz-text-base" />
+            <ChevronDoubleLeft class="maz-text-base" />
           </MazBtn>
 
           <MazBtn
@@ -761,7 +757,7 @@ onBeforeMount(() => {
             :rounded-size
             @click="previousPage"
           >
-            <ChevronIcon class="maz-text-base" />
+            <ChevronLeft class="maz-text-base" />
           </MazBtn>
 
           <MazBtn
@@ -771,7 +767,7 @@ onBeforeMount(() => {
             :rounded-size
             @click="nextPage"
           >
-            <ChevronIcon class="maz-rotate-180 maz-text-base" />
+            <ChevronLeft class="maz-rotate-180 maz-text-base" />
           </MazBtn>
 
           <MazBtn
@@ -781,7 +777,7 @@ onBeforeMount(() => {
             :rounded-size
             @click="lastPage"
           >
-            <ChevronDoubleIcon class="maz-rotate-180 maz-text-base" />
+            <ChevronDoubleLeft class="maz-rotate-180 maz-text-base" />
           </MazBtn>
         </div>
       </div>

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Color } from './types'
+import type { MazColor } from './types'
 
 export interface MazSpinnerProps {
   /**
@@ -11,7 +11,7 @@ export interface MazSpinnerProps {
    * The color of the spinner
    * @default theme
    */
-  color?: Color
+  color?: MazColor
 }
 
 const {

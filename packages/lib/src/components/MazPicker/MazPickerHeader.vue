@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Color } from '../types'
+import type { MazColor } from '../types'
 import type { MazPickerValue } from './types'
 import type { DateTimeFormatOptions } from './utils'
 import dayjs from 'dayjs'
@@ -9,7 +9,7 @@ import { date } from '../../formatters/date'
 
 const props = defineProps<{
   modelValue: MazPickerValue | undefined
-  color: Color
+  color: MazColor
   locale: string
   hideShortcuts: boolean
   double: boolean

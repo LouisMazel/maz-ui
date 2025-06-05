@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
-import type { Color, Size } from './types'
-import { computed, defineAsyncComponent, ref } from 'vue'
+import type { MazColor, MazSize } from './types'
+import { Trash } from '@maz-ui/icons'
+import { computed, ref } from 'vue'
 import { truthyFilter } from '../helpers/truthyFilter'
 import MazBtn from './MazBtn.vue'
 import MazInput from './MazInput.vue'
@@ -29,8 +30,6 @@ const emits = defineEmits<{
   'update:model-value': [value?: (string | number)[]]
 }>()
 
-const CloseIcon = defineAsyncComponent(() => import('../../icons/trash.svg'))
-
 export interface MazInputTagsProps {
   /** Style attribut of the component root element */
   style?: HTMLAttributes['style']
@@ -51,9 +50,9 @@ export interface MazInputTagsProps {
   /** Display the input with warning style */
   warning?: boolean
   /** The size of the input */
-  size?: Size
+  size?: MazSize
   /** The color of the input */
-  color?: Color
+  color?: MazColor
   /** The input will be displayed in full width */
   block?: boolean
   /** Add tags on blur */
@@ -187,7 +186,7 @@ const buttonSize = computed(() => {
           :disabled
           :size="buttonSize"
           :color="tagsHoveredId === id || lastIdToDelete === id ? 'danger' : color"
-          :right-icon="tagsHoveredId === id || lastIdToDelete === id ? CloseIcon : undefined"
+          :right-icon="tagsHoveredId === id || lastIdToDelete === id ? Trash : undefined"
           @click.stop="removeTag(id)"
           @mouseenter="tagsHoveredId = id"
           @focus="tagsHoveredId = id"

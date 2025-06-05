@@ -1,7 +1,8 @@
 <script lang="ts" setup generic="T extends string, O extends MazChecklistItemOption">
 import type { NormalizeStringOptions } from '../helpers/normalizeString'
 import type { MazInputProps } from './MazInput.vue'
-import type { Color } from './types'
+import type { MazColor } from './types'
+import { MagnifyingGlass, NoSymbol } from '@maz-ui/icons'
 import { computed, defineAsyncComponent, ref, watch } from 'vue'
 import { normalizeString } from '../helpers/normalizeString'
 import MazCardSpotlight from './MazCardSpotlight.vue'
@@ -54,7 +55,7 @@ export interface MazChecklistProps<T, O> {
    * The color of the checklist (card, checkbox and search input)
    * @default primary
    */
-  color?: Color
+  color?: MazColor
 }
 
 const props = withDefaults(
@@ -86,8 +87,6 @@ const emits = defineEmits<{
 }>()
 
 const MazInput = defineAsyncComponent(() => import('./MazInput.vue'))
-const SearchIcon = defineAsyncComponent(() => import('../../icons/magnifying-glass.svg'))
-const NoResultsIcon = defineAsyncComponent(() => import('../../icons/no-symbol.svg'))
 
 const internalQuery = ref<string | undefined>(props.query)
 
@@ -132,7 +131,7 @@ function updateQuery(value?: string) {
         :model-value="internalQuery"
         v-bind="search"
         :color
-        :left-icon="search.leftIcon ?? SearchIcon"
+        :left-icon="search.leftIcon ?? MagnifyingGlass"
         :debounce="search.debounce ?? 300"
         :label="search?.label"
         :name="search?.name ?? 'search'"
@@ -151,7 +150,7 @@ function updateQuery(value?: string) {
         <!-- @slot use this slot to customize the no results area -->
         <slot name="no-results">
           <div class="no-results-content">
-            <NoResultsIcon class="no-results-icon" />
+            <NoSymbol class="no-results-icon" />
 
             <span class="no-results-text">
               <!-- @slot use this slot to customize the no results message -->

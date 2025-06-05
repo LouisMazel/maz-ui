@@ -1,10 +1,16 @@
 <script lang="ts" setup>
-import type { MazGalleryImage } from './types'
-import { computed, defineAsyncComponent, onBeforeMount } from 'vue'
+import { NoPhotography } from '@maz-ui/icons'
+import { computed, onBeforeMount } from 'vue'
 import { vFullscreenImg } from '../directives/vFullscreenImg'
 import { vLazyImg } from '../directives/vLazyImg'
 
-export type { MazGalleryImage } from './types'
+export type MazGalleryImage =
+  | {
+    thumbnail?: string
+    src: string
+    alt?: string
+  }
+  | string
 
 export interface MazGalleryProps {
   /**
@@ -93,8 +99,6 @@ const {
   scale = true,
   separatorColor = 'transparent',
 } = defineProps<MazGalleryProps>()
-
-const NoPhotographyIcon = defineAsyncComponent(() => import('../../icons/no-photography.svg'))
 
 onBeforeMount(() => {
   if (displayedCount > 5)
@@ -196,7 +200,7 @@ function shouldHaveRemainingLayer(index: number): boolean {
         :class="{ 'maz-rounded-xl': radius }"
         :style="[sizeStyle]"
       >
-        <NoPhotographyIcon class="maz-size-8" />
+        <NoPhotography class="maz-size-8" />
       </div>
     </section>
     <div

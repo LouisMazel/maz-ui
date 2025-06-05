@@ -1,15 +1,15 @@
 <script lang="ts" setup>
+import type { IconComponent } from '@maz-ui/icons'
 import type { Component } from 'vue'
-import type { Color, Icon } from './types'
+import type { MazColor } from './types'
+import { CheckCircle, ExclamationCircle, ExclamationTriangle } from '@maz-ui/icons'
 import {
-
   computed,
-  defineAsyncComponent,
   ref,
   useSlots,
 } from 'vue'
-import MazExpandAnimation from './MazExpandAnimation.vue'
 
+import MazExpandAnimation from './MazExpandAnimation.vue'
 import MazIcon from './MazIcon.vue'
 
 export interface MazStepperStep {
@@ -20,7 +20,7 @@ export interface MazStepperStep {
   error?: boolean
   success?: boolean
   warning?: boolean
-  icon?: string | Icon
+  icon?: string | IconComponent
 }
 
 const {
@@ -39,10 +39,6 @@ const emits = defineEmits<{
   'update:model-value': [value: number]
 }>()
 
-const CheckCircleIcon = defineAsyncComponent(() => import('../../icons/check-circle.svg'))
-const ExclamationCircleIcon = defineAsyncComponent(() => import('../../icons/exclamation-circle.svg'))
-const ExclamationIcon = defineAsyncComponent(() => import('../../icons/exclamation-triangle.svg'))
-
 export interface MazStepperProps {
   /** The current step */
   modelValue?: number
@@ -52,7 +48,7 @@ export interface MazStepperProps {
    * The color of the stepper
    * @default primary
    */
-  color?: Color
+  color?: MazColor
   /** Disable the next steps */
   disabledNextSteps?: boolean
   /** Disable the previous steps */
@@ -88,19 +84,19 @@ const currentStep = computed({
 
 function getStepStateData(step: number): { icon?: Component, class: string } {
   if (isStepSuccess(step)) {
-    return { icon: CheckCircleIcon, class: '--success' }
+    return { icon: CheckCircle, class: '--success' }
   }
   else if (isStepWarning(step)) {
-    return { icon: ExclamationIcon, class: '--warning' }
+    return { icon: ExclamationTriangle, class: '--warning' }
   }
   else if (isStepError(step)) {
-    return { icon: ExclamationCircleIcon, class: '--error' }
+    return { icon: ExclamationCircle, class: '--error' }
   }
 
   return { class: '--normal' }
 }
 
-function getStepIcon(step: number): Icon | string | undefined {
+function getStepIcon(step: number): IconComponent | string | undefined {
   return steps?.[step - 1]?.icon
 }
 

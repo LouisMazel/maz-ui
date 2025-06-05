@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import type { MazBtnProps } from '../MazBtn.vue'
-import type { Size } from '../types'
+import type { MazSize } from '../types'
 import { ref } from 'vue'
 
 export interface MazDialogState {
@@ -12,7 +12,7 @@ export interface MazDialogState {
 
 export interface MazDialogButton extends MazBtnProps {
   text?: string
-  size?: Size
+  size?: MazSize
 }
 
 export interface MazDialogActionButton {

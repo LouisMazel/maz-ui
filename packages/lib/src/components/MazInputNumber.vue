@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
-import type { Size } from './types'
+import type { MazSize } from './types'
+import { Minus, Plus } from '@maz-ui/icons'
 import { computed, defineAsyncComponent } from 'vue'
 import { debounce } from '../helpers/debounce'
 import MazInput from './MazInput.vue'
@@ -67,7 +68,7 @@ export interface MazInputNumberProps {
   /** The step value for incrementing or decrementing the input number. */
   step?: number
   /** The size of the input number component. */
-  size?: Size
+  size?: MazSize
   /** Whether to hide the increment and decrement buttons or not. */
   hideButtons?: boolean
   /** Whether to center the text inside the input or not. */
@@ -87,8 +88,6 @@ export interface MazInputNumberProps {
 }
 
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
-const MinusIcon = defineAsyncComponent(() => import('../../icons/minus.svg'))
-const PlusIcon = defineAsyncComponent(() => import('../../icons/plus.svg'))
 
 const currentValue = computed({
   get: () => props.modelValue,
@@ -165,7 +164,7 @@ function decrement() {
       :disabled="decrementDisabled || disabled"
       @click="decrement"
     >
-      <MinusIcon class="m-input-number__button__icon" />
+      <Minus class="m-input-number__button__icon" />
     </MazBtn>
     <MazInput
       :model-value="currentValue"
@@ -200,7 +199,7 @@ function decrement() {
       :disabled="incrementDisabled || disabled"
       @click="increment"
     >
-      <PlusIcon class="m-input-number__button__icon" />
+      <Plus class="m-input-number__button__icon" />
     </MazBtn>
   </div>
 </template>

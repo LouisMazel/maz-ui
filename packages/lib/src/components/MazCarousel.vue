@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { ChevronLeft, ChevronRight } from '@maz-ui/icons'
 import { defineAsyncComponent, ref, useSlots } from 'vue'
 
 const props = withDefaults(defineProps<MazCarouselProps>(), {
@@ -7,9 +8,6 @@ const props = withDefaults(defineProps<MazCarouselProps>(), {
 })
 
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
-
-const ChevronLeftIcon = defineAsyncComponent(() => import('../../icons/chevron-left.svg'))
-const ChevronRightIcon = defineAsyncComponent(() => import('../../icons/chevron-right.svg'))
 
 export interface MazCarouselProps {
   /** Do not display the scroll buttons */
@@ -80,7 +78,7 @@ function setScrollState(event: Event) {
           @click="previous"
         >
           <slot name="previous-icon">
-            <ChevronLeftIcon class="maz-text-lg" />
+            <ChevronLeft class="maz-text-lg" />
           </slot>
         </MazBtn>
         <MazBtn
@@ -92,7 +90,7 @@ function setScrollState(event: Event) {
           @click="next"
         >
           <slot name="next-icon">
-            <ChevronRightIcon class="maz-text-lg" />
+            <ChevronRight class="maz-text-lg" />
           </slot>
         </MazBtn>
       </div>

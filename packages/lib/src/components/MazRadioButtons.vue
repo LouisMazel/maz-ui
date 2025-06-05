@@ -1,7 +1,8 @@
 <script lang="ts" setup generic="T extends string | number | boolean">
 import type { StyleValue } from 'vue'
-import type { Color } from './types'
-import { defineAsyncComponent, ref } from 'vue'
+import type { MazColor } from './types'
+import { Check } from '@maz-ui/icons'
+import { ref } from 'vue'
 
 export type MazRadioButtonsOption<T = string | number | boolean> = {
   /** The label of the option */
@@ -22,7 +23,7 @@ export interface MazRadioButtonsProps<T = string | number | boolean> {
   /** The name of the radio group */
   name?: string
   /** The color of the selected radio buttons */
-  color?: Color
+  color?: MazColor
   /** Add elevation to the radio buttons */
   elevation?: boolean
   /**
@@ -83,8 +84,6 @@ const emits = defineEmits<{
    */
   'focus': [value: FocusEvent]
 }>()
-
-const CheckCircleIcon = defineAsyncComponent(() => import('../../icons/check.svg'))
 
 function selectOption(option: MazRadioButtonsOption<T>) {
   emits('update:model-value', option.value)
@@ -173,7 +172,7 @@ function onFocus(index: number, event: FocusEvent) {
             ]"
           >
             <Transition name="maz-radio-buttons-scale">
-              <CheckCircleIcon v-show="isSelected(option.value)" class="maz-size-full" />
+              <Check v-show="isSelected(option.value)" class="maz-size-full" />
             </Transition>
           </span>
         </div>
