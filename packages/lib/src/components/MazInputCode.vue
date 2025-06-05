@@ -1,6 +1,6 @@
 <script lang="ts" setup generic="T extends string | number">
 import type { HTMLAttributes } from 'vue'
-import type { Color } from './types'
+import type { MazColor } from './types'
 import { computed, ref, watch } from 'vue'
 
 export type MazInputCodeSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
@@ -30,7 +30,7 @@ export interface MazInputCodeProps<T = string | number> {
   /** The size of the component. */
   size?: MazInputCodeSize
   /** The color of the component. */
-  color?: Color
+  color?: MazColor
   /** The hint text to display below the input. */
   hint?: string
 }

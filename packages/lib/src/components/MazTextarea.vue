@@ -1,6 +1,6 @@
 <script lang="ts">
 /* eslint-disable import/first */
-import type { Color } from './types'
+import type { MazColor } from './types'
 
 export interface MazTextareaProps<T extends string | undefined | null> {
   /** Style attribut of the component root element */
@@ -32,7 +32,7 @@ export interface MazTextareaProps<T extends string | undefined | null> {
   /** The hint of the textarea */
   hint?: string
   /** The color of the textarea */
-  color?: Color
+  color?: MazColor
   /**
    * Size radius of the component's border
    * @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'`

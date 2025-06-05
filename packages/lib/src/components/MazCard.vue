@@ -2,6 +2,7 @@
 import type { HTMLAttributes } from 'vue'
 import type { RouterLinkProps } from 'vue-router'
 import type { MazGalleryProps } from './MazGallery.vue'
+import { ChevronDown } from '@maz-ui/icons'
 import { computed, defineAsyncComponent, useSlots } from 'vue'
 
 const {
@@ -40,8 +41,6 @@ const DEFAULT_GALLERY_OPTIONS: MazGalleryProps = {
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 const MazGallery = defineAsyncComponent(() => import('./MazGallery.vue'))
 const MazExpandAnimation = defineAsyncComponent(() => import('./MazExpandAnimation.vue'))
-
-const ChevronDownIcon = defineAsyncComponent(() => import('../../icons/chevron-down.svg'))
 
 export interface MazCardProps {
   /** Card variant: Must be `column | row | row-reverse | column-reverse` */
@@ -167,7 +166,7 @@ function toggleCollapse() {
         size="xs"
         @click.stop="toggleCollapse"
       >
-        <ChevronDownIcon
+        <ChevronDown
           :class="{ '--is-open': collapseOpenModel }"
           class="m-card__collapse-icon maz-text-xl"
         />

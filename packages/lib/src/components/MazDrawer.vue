@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, useSlots } from 'vue'
+import { XMark } from '@maz-ui/icons'
 
+import { computed, defineAsyncComponent, useSlots } from 'vue'
 import MazBackdrop from './MazBackdrop.vue'
 
 const props = withDefaults(defineProps<MazDrawerProps>(), {
@@ -42,7 +43,6 @@ export interface MazDrawerProps {
 }
 
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
-const XIcon = defineAsyncComponent(() => import('../../icons/x-mark.svg'))
 
 const justify = computed(() => {
   if (props.variant === 'left') {
@@ -101,7 +101,7 @@ const hasTitle = computed(() => {
           </h4>
           <div v-if="!hideCloseButton" class="m-drawer-header__close">
             <MazBtn size="sm" color="transparent" @click="close">
-              <XIcon class="icon maz-text-lg" />
+              <XMark class="icon maz-text-lg" />
             </MazBtn>
           </div>
         </header>

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { SVGAttributes } from 'vue'
-import type { Color } from './types'
+import type { MazColor } from './types'
 import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref, useSlots } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 
@@ -30,7 +30,7 @@ export interface MazCircularProgressBarProps {
    * @type Color
    * @default undefined
    */
-  color?: Color
+  color?: MazColor
   /**
    * Auto color based on the count (danger, warning, success)
    * @default false
@@ -122,7 +122,7 @@ const adjustedPercentage = computed<number>(() => {
   return percentage
 })
 
-const currentColor = computed<Color | undefined>(() =>
+const currentColor = computed<MazColor | undefined>(() =>
   autoColor ? getStatusColor(adjustedPercentage.value) : color,
 )
 function getStatusColor(percent: number) {

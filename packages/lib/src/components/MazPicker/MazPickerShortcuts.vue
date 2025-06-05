@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import type { Color } from '../types'
+import type { MazColor } from '../types'
 import type { MazPickerRangeValue, MazPickerShortcut, MazPickerValue } from './types'
 import { ref, watch } from 'vue'
 
 import MazBtn from '../MazBtn.vue'
 
 const props = defineProps<{
-  color: Color
+  color: MazColor
   modelValue: MazPickerValue
   shortcuts: MazPickerShortcut[] | false
   double: boolean

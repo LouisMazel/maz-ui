@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import type { Dayjs } from 'dayjs'
-import type { Color } from '../types'
+import type { MazColor } from '../types'
 import type { MazPickerShortcut, MazPickerValue } from './types'
 import { computed, defineAsyncComponent, ref } from 'vue'
 
 const props = defineProps<{
   modelValue: MazPickerValue | undefined
   calendarDate: string
-  color: Color
+  color: MazColor
   locale: string
   firstDayOfWeek: number
   double: boolean
