@@ -1,6 +1,7 @@
 {
   "name": "docs",
   "version": "4.0.0-alpha.5",
+  "private": true,
   "description": "documentation of maz-ui",
   "author": "LouisMazel <me@loicmazuel.com>",
   "license": "ISC",

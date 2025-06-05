@@ -1,0 +1,40 @@
+name: Icons Publish To Npm
+
+on:
+  release:
+    types: [published]
+  # push:
+  #   paths:
+  #     - '.github/workflows/icons-publish.yml'
+
+jobs:
+  icons-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.11.1
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          cache: 'pnpm'
+          node-version: '22'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Get last repo version
+        run: git pull origin master
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build Icons
+        run: pnpm --filter @maz-ui/icons build
+
+      - name: Publish package to npm registry
+        run: cd packages/icons && pnpm publish --access public --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

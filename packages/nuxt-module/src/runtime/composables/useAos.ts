@@ -1,4 +1,4 @@
-import type { AosHandler } from 'maz-ui/plugins'
+import type { AosHandler } from 'maz-ui/plugins/aos'
 import { useNuxtApp } from 'nuxt/app'
 
 export function useAos(): AosHandler {

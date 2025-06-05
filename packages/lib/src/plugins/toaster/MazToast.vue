@@ -200,10 +200,10 @@ function click(event: Event, shouldClose: boolean = true) {
 }
 const isActionLoading = ref(false)
 async function onButtonClick(button: ToasterButton, event: Event) {
-  if (button.action) {
+  if (button.onClick) {
     isActionLoading.value = true
     timer.reset()
-    await button.action()
+    await button.onClick()
     isActionLoading.value = false
   }
 

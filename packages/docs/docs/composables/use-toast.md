@@ -24,14 +24,14 @@ More info about [toaster plugin](./../plugins/toaster.md) in its documentation
   const toast = useToast()
 
   toast.info('info message', {
-    action: {
-      func: () => toast.success('clicked'),
+    button: {
+      onClick: () => toast.success('clicked'),
       text: 'Click me',
       closeToast: true
     }
   })
   toast.success('success message', {
-    link: {
+    button: {
       href: '/composables/use-toast',
       text: 'Follow me',
       closeToast: true,
@@ -50,14 +50,14 @@ More info about [toaster plugin](./../plugins/toaster.md) in its documentation
 
   onMounted(() => {
     toast.info('info message', {
-      action: {
-        func: () => toast.success('clicked'),
+      button: {
+        onClick: () => toast.success('clicked'),
         text: 'Click me',
         closeToast: true
       }
     })
     toast.success('success message', {
-      link: {
+      button: {
         href: '/composables/use-toast',
         text: 'Follow me',
         closeToast: true,

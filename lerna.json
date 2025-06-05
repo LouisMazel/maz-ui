@@ -6,7 +6,7 @@
       "allowBranch": [
         "master",
         "release/*",
-        "refactor/next"
+        "feature/theming"
       ],
       "message": "chore(release): bump version %v",
       "conventionalCommits": true,

@@ -3,6 +3,30 @@
   "version": "4.0.0-alpha.5",
   "license": "MIT",
   "type": "module",
+  "description": "Nuxt module for Maz-UI",
+  "author": "Louis Mazel <me@loicmazuel.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LouisMazel/maz-ui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/LouisMazel/maz-ui/issues"
+  },
+  "keywords": [
+    "vue",
+    "nuxt",
+    "components",
+    "vue-component",
+    "framework",
+    "library",
+    "ui",
+    "nuxt",
+    "nuxt3",
+    "module",
+    "nuxt-module",
+    "maz-ui"
+  ],
+  "homepage": "https://maz-ui.com/guide/nuxt",
   "main": "./dist/module.mjs",
   "types": "./dist/types.d.mts",
   "exports": {

@@ -17,7 +17,7 @@ describe('mazDropdown', () => {
         default: 'Dropdown Label',
       },
       props: {
-        items: [{ label: 'Menu 1', action: actionSpy }],
+        items: [{ label: 'Menu 1', onClick: actionSpy }],
       },
       global: {
         components: {
@@ -113,8 +113,8 @@ describe('mazDropdown', () => {
   it('navigates through menu items using the keyboard', async () => {
     await wrapper.setProps({
       items: [
-        { label: 'Menu 1', action: vi.fn() },
-        { label: 'Menu 2', action: vi.fn() },
+        { label: 'Menu 1', onClick: vi.fn() },
+        { label: 'Menu 2', onClick: vi.fn() },
       ],
     })
 
