@@ -38,7 +38,7 @@ describe('mazChecklist', () => {
           { label: 'Banana', value: '2' },
           { label: 'Cherry', value: '3' },
         ],
-        search: { enabled: true },
+        search: true,
       },
     })
     await vi.dynamicImportSettled()
@@ -59,7 +59,7 @@ describe('mazChecklist', () => {
           { label: 'Banana', value: '2' },
           { label: 'Cherry', value: '3' },
         ],
-        search: { enabled: true },
+        search: true,
       },
     })
     await vi.dynamicImportSettled()
@@ -94,7 +94,7 @@ describe('mazChecklist', () => {
           { label: 'Apple', value: '1' },
           { label: 'Banana', value: '2' },
         ],
-        search: { enabled: true },
+        search: true,
       },
     })
     await vi.dynamicImportSettled()
@@ -118,7 +118,7 @@ describe('mazChecklist', () => {
           { label: 'Banana', value: '2' },
           { label: 'Orange', value: '3' },
         ],
-        search: { enabled: true },
+        search: true,
         searchFunction,
       },
     })
@@ -141,7 +141,7 @@ describe('mazChecklist', () => {
           { label: 'Apple', value: '1' },
           { label: 'Banana', value: '2' },
         ],
-        search: { enabled: true },
+        search: true,
         searchFunction,
       },
     })
