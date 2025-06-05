@@ -117,7 +117,7 @@
       id="switch"
       ref="switchRef"
       v-model="switchValue"
-      :warning="!!switchError"
+      :error="!!switchError"
       :hint="switchError"
       label="Switch"
       :success="isValidSwitch"
@@ -160,7 +160,7 @@
 </template>
 
 <script setup lang="ts">
-import type { InferFormValidatorSchema } from 'maz-ui/src/composables/index.js'
+import type { InferSchemaFormValidator } from 'maz-ui/src/composables/index.js'
 import { pipe, string, number as numberAction, nonEmpty, minValue, literal, boolean, maxValue, minLength, array } from 'valibot'
 
 const schema = ref({
@@ -180,7 +180,7 @@ const schema = ref({
   date: pipe(string('Date is required'), nonEmpty('Date is required')),
 })
 
-type Schema = InferFormValidatorSchema<typeof schema>
+type Schema = InferSchemaFormValidator<typeof schema>
 
 const defaultValues = ref<Partial<Schema>>({
   name: 'Mazel',

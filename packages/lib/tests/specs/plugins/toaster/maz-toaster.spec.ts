@@ -102,9 +102,9 @@ describe('mazToast', () => {
     const wrapper = mount(MazToast, {
       props: {
         message: 'Test message',
-        action: {
+        button: {
           text: 'Undo',
-          func: vi.fn(),
+          onClick: vi.fn(),
         },
       },
     })
@@ -122,9 +122,9 @@ describe('mazToast', () => {
     const wrapper = mount(MazToast, {
       props: {
         message: 'Test message',
-        action: {
+        button: {
           text: 'Undo',
-          func: actionFunc,
+          onClick: actionFunc,
         },
       },
     })
@@ -142,9 +142,9 @@ describe('mazToast', () => {
     const wrapper = mount(MazToast, {
       props: {
         message: 'Test message',
-        action: {
+        button: {
           text: 'Undo',
-          func: vi.fn(),
+          onClick: vi.fn(),
           closeToast: true,
         },
       },
@@ -163,7 +163,7 @@ describe('mazToast', () => {
     const wrapper = mount(MazToast, {
       props: {
         message: 'Test message',
-        link: {
+        button: {
           text: 'View Details',
           href: 'https://example.com',
         },

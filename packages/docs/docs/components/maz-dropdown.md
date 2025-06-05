@@ -13,7 +13,7 @@ description: MazDropdown is a standalone dropdown menu component and versatile d
 
 <MazDropdown
   :items="[
-    { label: 'Action', action: () => toast.success('CLICKED') },
+    { label: 'Action', onClick: () => toast.success('CLICKED') },
     { label: 'Link (href)', href: 'https://www.google.com', target: '_blank', color: 'secondary' },
     { label: 'Router Link', to: { name: 'index' }, color: 'danger' },
   ]"
@@ -25,7 +25,7 @@ description: MazDropdown is a standalone dropdown menu component and versatile d
 <template>
   <MazDropdown
     :items="[
-      { label: 'Action', action: () => toast.success('CLICKED') },
+      { label: 'Action', onClick: () => toast.success('CLICKED') },
       { label: 'Link (href)', href: 'https://www.google.com', target: '_blank', color: 'secondary' },
       { label: 'Router Link', to: { name: 'index' }, color: 'danger' },
     ]"
@@ -43,7 +43,7 @@ description: MazDropdown is a standalone dropdown menu component and versatile d
 
 <MazDropdown
   :items="[
-    { label: 'Action', action: () => toast.success('CLICKED') },
+    { label: 'Action', onClick: () => toast.success('CLICKED') },
     { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
     { label: 'Router Link', to: { name: 'index' } },
   ]"
@@ -55,7 +55,7 @@ description: MazDropdown is a standalone dropdown menu component and versatile d
 ```html{7}
 <MazDropdown
   :items="[
-    { label: 'Action', action: () => toast.success('CLICKED') },
+    { label: 'Action', onClick: () => toast.success('CLICKED') },
     { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
     { label: 'Router Link', to: { name: 'index' } },
   ]"
@@ -69,7 +69,7 @@ description: MazDropdown is a standalone dropdown menu component and versatile d
 
 <MazDropdown
   :items="[
-    { label: 'Action', action: () => toast.success('CLICKED') },
+    { label: 'Action', onClick: () => toast.success('CLICKED') },
     { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
     { label: 'Router Link', to: { name: 'index' } },
   ]"
@@ -81,7 +81,7 @@ description: MazDropdown is a standalone dropdown menu component and versatile d
 ```html{7}
 <MazDropdown
   :items="[
-    { label: 'Action', action: () => toast.success('CLICKED') },
+    { label: 'Action', onClick: () => toast.success('CLICKED') },
     { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
     { label: 'Router Link', to: { name: 'index' } },
   ]"
@@ -97,7 +97,7 @@ You can provide an icon to replace the default chevron icon and disable the anim
 
 <MazDropdown
   :items="[
-    { label: 'Action', action: () => toast.success('CLICKED') },
+    { label: 'Action', onClick: () => toast.success('CLICKED') },
     { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
     { label: 'Router Link', to: { name: 'index' } },
   ]"
@@ -109,7 +109,7 @@ You can provide an icon to replace the default chevron icon and disable the anim
 
 <MazDropdown
   :items="[
-    { label: 'Action', action: () => toast.success('CLICKED') },
+    { label: 'Action', onClick: () => toast.success('CLICKED') },
     { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
     { label: 'Router Link', to: { name: 'index' } },
   ]"
@@ -129,7 +129,7 @@ You can provide an icon to replace the default chevron icon and disable the anim
 <template>
   <MazDropdown
     :items="[
-      { label: 'Action', action: () => toast.success('CLICKED') },
+      { label: 'Action', onClick: () => toast.success('CLICKED') },
       { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
       { label: 'Router Link', to: { name: 'index' } },
     ]"
@@ -141,7 +141,7 @@ You can provide an icon to replace the default chevron icon and disable the anim
 
   <MazDropdown
     :items="[
-      { label: 'Action', action: () => toast.success('CLICKED') },
+      { label: 'Action', onClick: () => toast.success('CLICKED') },
       { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
       { label: 'Router Link', to: { name: 'index' } },
     ]"
@@ -168,7 +168,7 @@ You can provide an icon to replace the default chevron icon and disable the anim
   icon="bars-3"
   size="xl"
   :items="[
-    { label: 'Action', action: () => toast.success('CLICKED') },
+    { label: 'Action', onClick: () => toast.success('CLICKED') },
     { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
     { label: 'Router Link', to: { name: 'index' } },
   ]"
@@ -184,7 +184,7 @@ You can provide an icon to replace the default chevron icon and disable the anim
   icon="bars-3"
   size="xl"
   :items="[
-    { label: 'Action', action: () => toast.success('CLICKED') },
+    { label: 'Action', onClick: () => toast.success('CLICKED') },
     { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
     { label: 'Router Link', to: { name: 'index' } },
   ]"
@@ -252,7 +252,7 @@ You can provide a template to replace menuitem labels to add more elements in ea
 
 <MazDropdown
   :items="[
-    { label: 'Action', action: () => toast.success('CLICKED'), additionnalData: 'https://loremflickr.com/240/200' },
+    { label: 'Action', onClick: () => toast.success('CLICKED'), additionnalData: 'https://loremflickr.com/240/200' },
     { label: 'Link (href)', href: 'https://www.google.com', target: '_blank', additionnalData: 'https://loremflickr.com/340/300' },
     { label: 'Router Link', to: { name: 'index' }, additionnalData: 'https://loremflickr.com/440/400' },
   ]"
@@ -276,7 +276,7 @@ You can provide a template to replace menuitem labels to add more elements in ea
 ```html
 <MazDropdown
   :items="[
-    { label: 'Action', action: () => toast.success('CLICKED'), additionnalData: 'https://loremflickr.com/240/200' },
+    { label: 'Action', onClick: () => toast.success('CLICKED'), additionnalData: 'https://loremflickr.com/240/200' },
     { label: 'Link (href)', href: 'https://www.google.com', target: '_blank', additionnalData: 'https://loremflickr.com/340/300' },
     { label: 'Router Link', to: { name: 'index' }, additionnalData: 'https://loremflickr.com/440/400' },
   ]"
@@ -311,7 +311,7 @@ Add `tabindex="-1"` attribute to your element to avoid a double focus with Tab k
     :items="[
       {
         label: 'Action',
-        action: () => toast.success('CLICKED'),
+        onClick: () => toast.success('CLICKED'),
         additionnalData: 'https://loremflickr.com/240/200',
       },
       {
@@ -342,7 +342,7 @@ Add `tabindex="-1"` attribute to your element to avoid a double focus with Tab k
     :items="[
       {
         label: 'Action',
-        action: () => toast.success('CLICKED'),
+        onClick: () => toast.success('CLICKED'),
         additionnalData: 'https://loremflickr.com/240/200',
       },
       {
@@ -373,7 +373,7 @@ Add `tabindex="-1"` attribute to your element to avoid a double focus with Tab k
   :items="[
     {
       label: 'Action',
-      action: () => toast.success('CLICKED'),
+      onClick: () => toast.success('CLICKED'),
       additionnalData: 'https://loremflickr.com/240/200',
     },
     {
@@ -404,7 +404,7 @@ Add `tabindex="-1"` attribute to your element to avoid a double focus with Tab k
   :items="[
     {
       label: 'Action',
-      action: () => toast.success('CLICKED'),
+      onClick: () => toast.success('CLICKED'),
       additionnalData: 'https://loremflickr.com/240/200',
     },
     {
@@ -437,7 +437,7 @@ isOpen: {{ isOpen }}
 <MazDropdown
   v-model:open="isOpen"
   :items="[
-    { label: 'Action', action: () => toast.success('CLICKED') },
+    { label: 'Action', onClick: () => toast.success('CLICKED') },
     { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
     { label: 'Router Link', to: { name: 'index' } },
   ]"
@@ -457,7 +457,7 @@ isOpen: {{ isOpen }}
   <MazDropdown
     v-model:open="isOpen"
     :items="[
-      { label: 'Action', action: () => toast.success('CLICKED') },
+      { label: 'Action', onClick: () => toast.success('CLICKED') },
       { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
       { label: 'Router Link', to: { name: 'index' } },
     ]"
@@ -483,7 +483,7 @@ isOpen: {{ isOpen }}
   <MazDropdown
     color="theme"
     :items="[
-      { label: 'Action', action: () => toast.success('CLICKED') },
+      { label: 'Action', onClick: () => toast.success('CLICKED') },
       { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
       { label: 'Router Link', to: { name: 'index' } },
       { label: 'Long Label To Show Large Menu', to: { name: 'index' } },
@@ -495,7 +495,7 @@ isOpen: {{ isOpen }}
   <MazDropdown
     color="theme"
     :items="[
-      { label: 'Action', action: () => toast.success('CLICKED') },
+      { label: 'Action', onClick: () => toast.success('CLICKED') },
       { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
       { label: 'Router Link', to: { name: 'index' } },
       { label: 'Long Label To Show Large Menu', to: { name: 'index' } },
@@ -507,7 +507,7 @@ isOpen: {{ isOpen }}
   <MazDropdown
     color="theme"
     :items="[
-      { label: 'Action', action: () => toast.success('CLICKED') },
+      { label: 'Action', onClick: () => toast.success('CLICKED') },
       { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
       { label: 'Router Link', to: { name: 'index' } },
       { label: 'Long Label To Show Large Menu', to: { name: 'index' } },
@@ -519,7 +519,7 @@ isOpen: {{ isOpen }}
   <MazDropdown
     color="theme"
     :items="[
-      { label: 'Action', action: () => toast.success('CLICKED') },
+      { label: 'Action', onClick: () => toast.success('CLICKED') },
       { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
       { label: 'Router Link', to: { name: 'index' } },
       { label: 'Long Label To Show Large Menu', to: { name: 'index' } },
@@ -531,7 +531,7 @@ isOpen: {{ isOpen }}
   <MazDropdown
     color="theme"
     :items="[
-      { label: 'Action', action: () => toast.success('CLICKED') },
+      { label: 'Action', onClick: () => toast.success('CLICKED') },
       { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
       { label: 'Router Link', to: { name: 'index' } },
       { label: 'Long Label To Show Large Menu', to: { name: 'index' } },
@@ -543,7 +543,7 @@ isOpen: {{ isOpen }}
   <MazDropdown
     color="theme"
     :items="[
-      { label: 'Action', action: () => toast.success('CLICKED') },
+      { label: 'Action', onClick: () => toast.success('CLICKED') },
       { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
       { label: 'Router Link', to: { name: 'index' } },
       { label: 'Long Label To Show Large Menu', to: { name: 'index' } },
@@ -555,7 +555,7 @@ isOpen: {{ isOpen }}
   <MazDropdown
     color="theme"
     :items="[
-      { label: 'Action', action: () => toast.success('CLICKED') },
+      { label: 'Action', onClick: () => toast.success('CLICKED') },
       { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
       { label: 'Router Link', to: { name: 'index' } },
       { label: 'Long Label To Show Large Menu', to: { name: 'index' } },
@@ -567,7 +567,7 @@ isOpen: {{ isOpen }}
   <MazDropdown
     color="theme"
     :items="[
-      { label: 'Action', action: () => toast.success('CLICKED') },
+      { label: 'Action', onClick: () => toast.success('CLICKED') },
       { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
       { label: 'Router Link', to: { name: 'index' } },
       { label: 'Long Label To Show Large Menu', to: { name: 'index' } },
@@ -585,7 +585,7 @@ isOpen: {{ isOpen }}
 ```ts
 type MenuItem = {
   label: string
-  action?: () => unknown
+  onClick?: () => unknown
   target?: string
   href?: string
   to?: RouteLocationRaw
@@ -609,7 +609,7 @@ type MenuItem = {
   }
 
   const menuItems = [
-    { label: 'Menu Item 1', action: () => toast.success('Clicked') },
+    { label: 'Menu Item 1', onClick: () => toast.success('Clicked') },
   ]
 
   const isOpen = ref(false)

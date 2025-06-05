@@ -1,6 +1,4 @@
-import type { InferMaybeRef } from 'src/ts-helpers/InferMaybeRef'
-import type { BaseIssue, BaseSchema, BaseSchemaAsync, InferIssue, InferOutput, objectAsync, ObjectEntries, ObjectEntriesAsync } from 'valibot'
-
+import type { BaseIssue, BaseSchema, BaseSchemaAsync, InferIssue, InferOutput, objectAsync } from 'valibot'
 import type {
   ComponentInternalInstance,
   InjectionKey,
@@ -139,4 +137,10 @@ export type UseFormField<
   Model extends BaseFormPayload = BaseFormPayload,
 > = typeof useFormField<FieldType, Model>
 
-export type InferFormValidatorSchema<T extends ObjectEntries | ObjectEntriesAsync | Ref<ObjectEntries> | Ref<ObjectEntriesAsync>> = InferOutput<ReturnType<typeof objectAsync<InferMaybeRef<T>>>>
+export type InferSchemaFormValidator<T> = T extends Ref<infer U>
+  ? U extends Record<string, Validation>
+    ? InferOutput<ReturnType<typeof objectAsync<U>>>
+    : never
+  : T extends Record<string, Validation>
+    ? InferOutput<ReturnType<typeof objectAsync<T>>>
+    : never

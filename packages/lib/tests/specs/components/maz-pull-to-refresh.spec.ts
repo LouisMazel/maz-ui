@@ -5,7 +5,7 @@ describe('mazPullToRefresh', () => {
   it('renders with default props', async () => {
     const wrapper = mount(MazPullToRefresh, {
       props: {
-        action: vi.fn(), // Mock the action prop with a vi mock function
+        onClick: vi.fn(), // Mock the action prop with a vi mock function
       },
       slots: {
         default: 'Content Slot',
@@ -24,7 +24,7 @@ describe('mazPullToRefresh', () => {
 
     const wrapper = mount(MazPullToRefresh, {
       props: {
-        action: actionMock,
+        onClick: actionMock,
       },
       slots: {
         default: 'Content Slot',
@@ -62,7 +62,7 @@ describe('mazPullToRefresh', () => {
 
     const wrapper = mount(MazPullToRefresh, {
       props: {
-        action: actionMock,
+        onClick: actionMock,
       },
       slots: {
         default: 'Content Slot',
@@ -94,7 +94,7 @@ describe('mazPullToRefresh', () => {
 
     const wrapper = mount(MazPullToRefresh, {
       props: {
-        action: actionMock,
+        onClick: actionMock,
       },
       slots: {
         default: 'Content Slot',
@@ -125,7 +125,7 @@ describe('mazPullToRefresh', () => {
     wrapper.trigger('touchend')
 
     // Simulate action completion
-    await wrapper.setProps({ action: vi.fn() })
+    await wrapper.setProps({ onClick: vi.fn() })
 
     // @ts-expect-error - test case
     expect(wrapper.vm.pull.from).toBe(-1)

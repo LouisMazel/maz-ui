@@ -1,4 +1,4 @@
-import type { WaitHandler } from 'maz-ui/plugins'
+import type { WaitHandler } from 'maz-ui/plugins/wait'
 import { useNuxtApp } from 'nuxt/app'
 
 export function useWait(): WaitHandler {

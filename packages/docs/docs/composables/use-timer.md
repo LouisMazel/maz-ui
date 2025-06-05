@@ -49,8 +49,8 @@ This composable can be used in Vue 3 components to handle timeouts in a flexible
   const { start, stop, pause, resume, remainingTime } = useTimer({
     timeout: 4000,
     callback: () => toast.info('Timeout end', {
-      action: {
-        func: start,
+      button: {
+        onClick: start,
         text: 're-start',
         closeToast: true,
       },
@@ -82,8 +82,8 @@ This composable can be used in Vue 3 components to handle timeouts in a flexible
   const { start, stop, pause, resume, remainingTime } = useTimer({
     timeout: 4000,
     callback: () => toast.info('Timeout end', {
-      action: {
-        func: start,
+      button: {
+        onClick: start,
         text: 're-start',
         closeToast: true,
       },

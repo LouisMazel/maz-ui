@@ -162,7 +162,7 @@ export class AosHandler {
 
 let instance: AosHandler
 
-export const plugin = {
+export const installAos = {
   install: (app: App, options?: AosOptions) => {
     instance = new AosHandler(options)
 
@@ -182,6 +182,6 @@ export const plugin = {
   },
 }
 
-export function getInstance(): AosHandler {
+export function getAosInstance(): AosHandler {
   return instance
 }
