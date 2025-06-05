@@ -2,10 +2,12 @@
 import type { HTMLAttributes } from 'vue'
 import type { MazPickerShortcut, MazPickerValue } from './MazPicker/types'
 import type { DateTimeFormatOptions } from './MazPicker/utils'
-import type { Color, Position } from './types'
+import type { MazColor, MazPosition } from './types'
+import ChevronDownIcon from '@maz-ui/icons/svg/chevron-down.svg'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import isBetween from 'dayjs/plugin/isBetween'
+
 import {
   computed,
   defineAsyncComponent,
@@ -16,8 +18,6 @@ import {
   ref,
   watch,
 } from 'vue'
-
-import ChevronDownIcon from '../../icons/chevron-down.svg'
 
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import { vClickOutside } from '../directives/vClickOutside'
@@ -179,9 +179,9 @@ export interface MazPickerProps {
   /** If true, the picker will be inline */
   inline?: boolean
   /** The color of the component */
-  color?: Color
+  color?: MazColor
   /** The position of the picker */
-  pickerPosition?: Position
+  pickerPosition?: MazPosition
   /** If true, the picker has a time picker */
   time?: boolean
   /** If true, the picker will be a time picker */

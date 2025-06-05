@@ -1,8 +1,10 @@
 <script lang="ts" setup>
+import type { IconComponent } from '@maz-ui/icons'
 import type { HTMLAttributes } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
 import type { MazLinkProps } from './MazLink.vue'
-import type { Color, Icon, Position, Size } from './types'
+import type { MazColor, MazPosition, MazSize } from './types'
+import { ChevronDown } from '@maz-ui/icons'
 import { computed, defineAsyncComponent, ref, watch } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import { vClickOutside } from '../directives/vClickOutside'
@@ -51,7 +53,7 @@ const instanceId = useInstanceUniqId({
 type ItemBase = Record<string, unknown> & {
   label: string
   class?: unknown
-  color?: Color
+  color?: MazColor
 }
 
 type LinkItem = ItemBase & MazLinkProps & {
@@ -91,12 +93,12 @@ export interface MazDropdownProps {
    * Button color
    * @default 'transparent'
    */
-  color?: Color
+  color?: MazColor
   /**
    * Position of the dropdown
    * @default 'bottom left'
    */
-  position?: Position
+  position?: MazPosition
   /**
    * Disable close menu on menuitem clicked
    * @default true
@@ -135,7 +137,7 @@ export interface MazDropdownProps {
    * You can use a string to define the icon name or a Vue component
    * @default undefined
    */
-  dropdownIcon?: string | Icon
+  dropdownIcon?: string | IconComponent
   /**
    * If true, the dropdown icon will rotate when the dropdown is open
    * @default true
@@ -145,10 +147,8 @@ export interface MazDropdownProps {
    * Size of the button
    * @default 'md'
    */
-  size?: Size
+  size?: MazSize
 }
-
-const ChevronDownIcon = defineAsyncComponent(() => import('../../icons/chevron-down.svg'))
 
 const dropdownOpen = ref(props.open)
 const keyboardSelectedIndex = ref<number>()
@@ -372,7 +372,7 @@ watch(
                 :is="dropdownIcon" v-else-if="dropdownIcon" :class="[{ '--open': dropdownOpen && dropdownIconAnimation }, iconClassSize]"
                 class="m-dropdown__icon"
               />
-              <ChevronDownIcon
+              <ChevronDown
                 v-else
                 :class="[{ '--open': dropdownOpen && dropdownIconAnimation }, iconClassSize]"
                 class="m-dropdown__icon"

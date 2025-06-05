@@ -1,6 +1,8 @@
-<script lang="ts" setup generic="T extends ModelValueSimple">
+<script lang="ts" setup generic="T extends MazInputValue">
+import type { IconComponent } from '@maz-ui/icons'
 import type { HTMLAttributes } from 'vue'
-import type { Color, Icon, ModelValueSimple, Size } from './types'
+import type { MazColor, MazSize } from './types'
+import { Check, Eye, EyeSlash } from '@maz-ui/icons'
 import {
   computed,
   defineAsyncComponent,
@@ -12,7 +14,9 @@ import {
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import { debounce as debounceFn } from '../helpers/debounce'
 
-export interface MazInputProps<T = ModelValueSimple> {
+export type MazInputValue = string | number | null | undefined | boolean
+
+export interface MazInputProps<T = MazInputValue> {
   /** The style of the component */
   style?: HTMLAttributes['style']
   /** The class of the component */
@@ -42,7 +46,7 @@ export interface MazInputProps<T = ModelValueSimple> {
   /** The attribut name of the input */
   name?: string
   /** The color of the component */
-  color?: Color
+  color?: MazColor
   /** The attribut type of the input */
   type?:
     | 'text'
@@ -79,7 +83,7 @@ export interface MazInputProps<T = ModelValueSimple> {
   /** The attribut inputmode of the input */
   inputmode?: HTMLAttributes['inputmode']
   /** The size of the component */
-  size?: Size
+  size?: MazSize
   /** Enable debounce on input - can be `boolean | number`, if it is a number, it is used for the debounce delay - if `true`, the delay is 500ms */
   debounce?: boolean | number
   /** Display the valid button - this button has type="submit"  */
@@ -94,12 +98,12 @@ export interface MazInputProps<T = ModelValueSimple> {
    * The left icon of the input
    * `@type` `{string | FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component}`
    */
-  leftIcon?: string | Icon
+  leftIcon?: string | IconComponent
   /**
    * The right icon of the input
    * `@type` `{string | FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component}`
    */
-  rightIcon?: string | Icon
+  rightIcon?: string | IconComponent
   /**
    * Size radius of the component's border
    * @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'`
@@ -182,10 +186,6 @@ const emits = defineEmits<{
 
 const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
-
-const EyeOffIcon = defineAsyncComponent(() => import('../../icons/eye-slash.svg'))
-const EyeIcon = defineAsyncComponent(() => import('../../icons/eye.svg'))
-const CheckIcon = defineAsyncComponent(() => import('../../icons/check.svg'))
 
 const hasPasswordVisible = ref(false)
 const isFocused = ref(false)
@@ -395,8 +395,8 @@ function emitInputEvent(event: Event) {
           v-if="isPasswordType" color="transparent" tabindex="-1" size="mini"
           @click.stop="hasPasswordVisible = !hasPasswordVisible"
         >
-          <EyeOffIcon v-if="hasPasswordVisible" class="maz-text-xl maz-text-muted" />
-          <EyeIcon v-else class="maz-text-xl maz-text-muted" />
+          <EyeSlash v-if="hasPasswordVisible" class="maz-text-xl maz-text-muted" />
+          <Eye v-else class="maz-text-xl maz-text-muted" />
         </MazBtn>
 
         <!--
@@ -407,7 +407,7 @@ function emitInputEvent(event: Event) {
             color="transparent" :disabled="disabled" tabindex="-1" :loading="validButtonLoading"
             class="m-input-valid-button" size="mini" type="submit"
           >
-            <CheckIcon class="maz-text-2xl maz-text-normal" />
+            <Check class="maz-text-2xl maz-text-normal" />
           </MazBtn>
         </slot>
       </div>

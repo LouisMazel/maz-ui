@@ -2,7 +2,7 @@
 import type { CountryCode } from 'libphonenumber-js'
 import type { ComponentPublicInstance, HTMLAttributes } from 'vue'
 import type { MazInputPhoneNumberTranslations, Results } from './MazInputPhoneNumber/types'
-import type { Color, Position, Size } from './types'
+import type { MazColor, MazPosition, MazSize } from './types'
 import {
   computed,
   defineAsyncComponent,
@@ -97,11 +97,11 @@ export interface MazInputPhoneNumberProps {
   /** Locale strings of the component */
   translations?: Partial<MazInputPhoneNumberTranslations>
   /** Position where the list of countries will be opened */
-  listPosition?: Position
+  listPosition?: MazPosition
   /** Component color applied - Ex: "secondary" */
-  color?: Color
+  color?: MazColor
   /** Component size applied - Ex: "sm" */
-  size?: Size
+  size?: MazSize
   /** Remove flags in country list */
   hideFlags?: boolean
   /** Disable input */

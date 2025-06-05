@@ -4,7 +4,7 @@ import type { CountryCode } from 'libphonenumber-js'
 import type { ComponentPublicInstance, HTMLAttributes } from 'vue'
 
 import type { MazInputPhoneNumberInjectedData } from './../MazInputPhoneNumber.vue'
-import type { Color, Position, Size } from './../types'
+import type { MazColor, MazPosition, MazSize } from './../types'
 
 import type { MazInputPhoneNumberTranslations } from './types'
 import { computed, defineAsyncComponent, ref } from 'vue'
@@ -31,14 +31,14 @@ const {
   class?: HTMLAttributes['class']
   modelValue?: CountryCode | undefined | null
   id: string
-  color: Color
-  size: Size
+  color: MazColor
+  size: MazSize
   preferredCountries?: CountryCode[]
   ignoredCountries?: CountryCode[]
   onlyCountries?: CountryCode[]
   customCountriesList?: Record<CountryCode, string>
   locales: MazInputPhoneNumberTranslations
-  listPosition?: Position
+  listPosition?: MazPosition
   hideFlags?: boolean
   search?: boolean
   disabled?: boolean

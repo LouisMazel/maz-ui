@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import type { MazBtnProps } from './MazBtn.vue'
-import type { Color, Size } from './types'
-import { computed, defineAsyncComponent } from 'vue'
+import type { MazColor, MazSize } from './types'
+import { ChevronDoubleLeft, ChevronLeft, EllipsisHorizontal } from '@maz-ui/icons'
+import { computed } from 'vue'
 import MazBtn from './MazBtn.vue'
 
 const props = withDefaults(defineProps<MazPaginationProps>(), {
@@ -19,9 +20,6 @@ const emits = defineEmits<
    */
   (event: 'update:model-value', value: number) => void
 >()
-const ChevronLeft = defineAsyncComponent(() => import('../../icons/chevron-left.svg'))
-const ChevronDoubleLeft = defineAsyncComponent(() => import('../../icons/chevron-double-left.svg'))
-const Ellipsis = defineAsyncComponent(() => import('../../icons/ellipsis-horizontal.svg'))
 
 const DEFAULT_BUTTONS_PROPS: Partial<MazBtnProps> = {
   size: 'md',
@@ -44,11 +42,11 @@ export interface MazPaginationProps {
   /**
    * Color of the active button.
    */
-  activeColor?: Color
+  activeColor?: MazColor
   /**
    * Color of the active button.
    */
-  size?: Size
+  size?: MazSize
   /**
    * Total number of pages.
    */
@@ -212,7 +210,7 @@ function setPageNumber(page: number) {
 
         <template v-else-if="page.divider">
           <div v-bind="buttonsPropsMerged" class="flex p-2 flex-center">
-            <Ellipsis />
+            <EllipsisHorizontal />
           </div>
         </template>
       </li>

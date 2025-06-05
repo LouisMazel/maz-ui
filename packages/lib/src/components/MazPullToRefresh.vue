@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Color } from './types'
+import type { MazColor } from './types'
 import { computed, defineAsyncComponent, onUnmounted, ref, watch } from 'vue'
 import { isClient } from '../helpers/isClient'
 
@@ -26,7 +26,7 @@ export interface MazPullToRefreshProps {
   action?: () => unknown
   containerSelector?: string
   headerClass?: string
-  spinnerColor?: Color
+  spinnerColor?: MazColor
   disabled?: boolean
   standaloneMode?: boolean
 }
