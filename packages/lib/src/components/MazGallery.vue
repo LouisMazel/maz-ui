@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { NoPhotography } from '@maz-ui/icons'
+import { MazNoPhotography } from '@maz-ui/icons'
 import { computed, onBeforeMount } from 'vue'
 import { vFullscreenImg } from '../directives/vFullscreenImg'
 import { vLazyImg } from '../directives/vLazyImg'
@@ -200,7 +200,7 @@ function shouldHaveRemainingLayer(index: number): boolean {
         :class="{ 'maz-rounded-xl': radius }"
         :style="[sizeStyle]"
       >
-        <NoPhotography class="maz-size-8" />
+        <MazNoPhotography class="maz-size-8" />
       </div>
     </section>
     <div

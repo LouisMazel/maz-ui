@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { ToasterButton, ToasterOptions } from './types'
-import { ArrowTopRightOnSquare, CheckCircle, ExclamationCircle, ExclamationTriangle, InformationCircle, Link, XMark } from '@maz-ui/icons'
+import { MazArrowTopRightOnSquare, MazCheckCircle, MazExclamationCircle, MazExclamationTriangle, MazInformationCircle, MazLink, MazXMark } from '@maz-ui/icons'
 import { computed, onMounted, ref, watch } from 'vue'
 import MazBtn from '../../components/MazBtn.vue'
 import { useTimer } from '../../composables/useTimer'
@@ -64,16 +64,16 @@ const iconComponent = computed(() => {
 
   switch (type) {
     case 'danger': {
-      return ExclamationTriangle
+      return MazExclamationTriangle
     }
     case 'info': {
-      return InformationCircle
+      return MazInformationCircle
     }
     case 'success': {
-      return CheckCircle
+      return MazCheckCircle
     }
     case 'warning': {
-      return ExclamationCircle
+      return MazExclamationCircle
     }
     default: {
       return undefined
@@ -256,9 +256,9 @@ function getButtonRightIcon(button: ToasterButton) {
   }
 
   if (button.target === '_blank') {
-    return ArrowTopRightOnSquare
+    return MazArrowTopRightOnSquare
   }
-  return Link
+  return MazLink
 }
 
 defineExpose({ closeToast })
@@ -322,7 +322,7 @@ onMounted(() => {
       </button>
       <!-- eslint-enable vuejs-accessibility/mouse-events-have-key-events -->
       <button class="m-toast__close" @click.stop="click($event)">
-        <XMark class="m-toast__close-icon" />
+        <MazXMark class="m-toast__close-icon" />
       </button>
     </div>
   </Transition>

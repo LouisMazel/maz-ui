@@ -1,10 +1,10 @@
-import type { AosOptions, ToasterOptions } from 'maz-ui/src/plugins/index'
+import type { AosOptions, ToasterOptions } from 'maz-ui/src/plugins/index.js'
 
 import type { Theme } from 'vitepress'
-import * as components from 'maz-ui/src/components/index'
-import { vFullscreenImgInstall } from 'maz-ui/src/directives/vFullscreenImg'
+import * as components from 'maz-ui/src/components/index.js'
+import { vFullscreenImgInstall } from 'maz-ui/src/directives/vFullscreenImg.js'
 
-import { getAosInstance, installAos, installDialog, installToaster, installWait } from 'maz-ui/src/plugins/index'
+import { getAosInstance, installAos, installDialog, installToaster, installWait } from 'maz-ui/src/plugins/index.js'
 import { inBrowser } from 'vitepress'
 import googleAnalytics from 'vitepress-plugin-google-analytics'
 import DefaultTheme from 'vitepress/theme-without-fonts'

@@ -1,22 +1,13 @@
-import type { Plugin } from 'vite'
+import { resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { buildEntry } from './entry-builder'
 
-import { generateComponentsEntryFile } from './generate-components-entry'
-import { logger } from './utils/logger'
+const _dirname = fileURLToPath(new URL('.', import.meta.url))
 
-export function GenerateComponentsEntry(): Plugin {
-  return {
-    name: 'vite-generate-components-entry',
-    async buildStart() {
-      try {
-        await generateComponentsEntryFile()
-
-        logger.success('[GenerateComponentsEntry] ✅ components entry generated')
-      }
-      catch (error) {
-        logger.error('[GenerateComponentsEntry] 🔴 error while generating components entry', error)
-
-        throw error
-      }
-    },
-  }
+export function generateComponentsEntryFile() {
+  return buildEntry({
+    output: resolve(_dirname, './../src/components/index.ts'),
+    componentName: 'fullName',
+    scriptName: 'generate-components-entry',
+  })
 }

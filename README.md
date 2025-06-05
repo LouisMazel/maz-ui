@@ -116,7 +116,7 @@ Customize Maz UI to match your brand with our dedicated CLI tool:
 
 ```bash
 # Install the CLI
-npm install -g @mazui/cli
+npm install -g @maz-ui/cli
 
 # Generate your theme
 maz generate-css-vars

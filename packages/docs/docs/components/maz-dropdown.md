@@ -102,7 +102,7 @@ You can provide an icon to replace the default chevron icon and disable the anim
     { label: 'Router Link', to: { name: 'index' } },
   ]"
   trigger="hover"
-  :dropdown-icon="ChevronUpDownIcon"
+  :dropdown-icon="MazChevronUpDown"
 >
   Custom icon
 </MazDropdown>
@@ -114,7 +114,7 @@ You can provide an icon to replace the default chevron icon and disable the anim
     { label: 'Router Link', to: { name: 'index' } },
   ]"
   trigger="hover"
-  :dropdown-icon="ChevronUpDownIcon"
+  :dropdown-icon="MazChevronUpDown"
   :dropdown-icon-animation="false"
 >
   No icon animation
@@ -123,7 +123,7 @@ You can provide an icon to replace the default chevron icon and disable the anim
 ```vue{7}
 <script lang="ts" setup>
   // Use vite-svg-loader to import SVG as Vue component
-  import ChevronUpDownIcon from 'maz-ui/icons/chevron-up-down.svg?component'
+  import MazChevronUpDown from '@maz-ui/icons/chevron-up-down.svg?component'
 </script>
 
 <template>
@@ -134,7 +134,7 @@ You can provide an icon to replace the default chevron icon and disable the anim
       { label: 'Router Link', to: { name: 'index' } },
     ]"
     trigger="hover"
-    :dropdown-icon="ChevronUpDownIcon"
+    :dropdown-icon="MazChevronUpDown"
   >
     Hover me
   </MazDropdown>
@@ -146,7 +146,7 @@ You can provide an icon to replace the default chevron icon and disable the anim
       { label: 'Router Link', to: { name: 'index' } },
     ]"
     trigger="hover"
-    :dropdown-icon="ChevronUpDownIcon"
+    :dropdown-icon="MazChevronUpDown"
     :dropdown-icon-animation="false"
   >
     No icon animation
@@ -598,8 +598,7 @@ type MenuItem = {
 <script lang="ts" setup>
   import { ref, onMounted } from 'vue'
   import { useToast } from 'maz-ui/src/composables/useToast'
-
-  import ChevronUpDownIcon from 'maz-ui/icons/chevron-up-down.svg?component'
+  import { MazChevronUpDown } from '@maz-ui/icons'
 
   const toast = useToast()
 

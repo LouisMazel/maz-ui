@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
-import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
+import { MazChevronLeft, MazXMark } from '@maz-ui/icons'
+import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import MazSpinner from '../../components/MazSpinner.vue'
 
 import { checkAvailability } from '../../helpers/checkAvailability'
@@ -19,9 +20,6 @@ const props = withDefaults(defineProps<MazFullscreenImgProps>(), {
 })
 
 const emits = defineEmits(['close', 'previous', 'next', 'before-close'])
-
-const XMark = defineAsyncComponent(() => import('../../../icons/x-mark.svg'))
-const ChevronLeft = defineAsyncComponent(() => import('../../../icons/chevron-left.svg'))
 
 export interface MazFullscreenImgProps {
   src: string
@@ -397,7 +395,7 @@ onBeforeUnmount(() => {
       class="m-fullscreen-btn --next"
       @click.stop="nextPreviousImage('next')"
     >
-      <ChevronLeft class="maz-rotate-180" />
+      <MazChevronLeft class="maz-rotate-180" />
     </button>
     <button
       v-if="loadedOnce && hasMultipleInstances"
@@ -405,11 +403,11 @@ onBeforeUnmount(() => {
       class="m-fullscreen-btn --previous"
       @click.stop="nextPreviousImage('previous')"
     >
-      <ChevronLeft />
+      <MazChevronLeft />
     </button>
 
     <button type="button" class="m-fullscreen-btn --close" @click="close">
-      <XMark />
+      <MazXMark />
     </button>
 
     <div class="m-fullscreen-img-scroller">

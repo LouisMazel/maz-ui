@@ -1,5 +1,5 @@
 ---
-title: '@mazui/cli - theme generator'
+title: '@maz-ui/cli - theme generator'
 description: CLI of maz-ui to generate CSS variables file to theming maz-ui
 ---
 
@@ -16,7 +16,7 @@ All colors can be in HEX, RGB, RGBA, HSL, HSLA and named formats.
 No theme variables are required, you can put only one if you wish
 
 ```ts
-import { defineConfig } from '@mazui/cli'
+import { defineConfig } from '@maz-ui/cli'
 
 export default defineConfig({
   outputCssFilePath: './css/maz-ui-variables.css',
@@ -65,8 +65,8 @@ npx maz-ui generate-css-vars
 1. First, install the CLI package:
 
 ```bash
-npm install @mazui/cli
-# or pnpm add @mazui/cli
+npm install @maz-ui/cli
+# or pnpm add @maz-ui/cli
 ```
 
 2. Then, add the script in your `package.json`:

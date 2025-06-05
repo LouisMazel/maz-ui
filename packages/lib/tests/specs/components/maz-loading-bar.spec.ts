@@ -4,7 +4,9 @@ import { mount } from '@vue/test-utils'
 describe('mazLoadingBar', () => {
   it('renders default color correctly', () => {
     const wrapper = mount(MazLoadingBar)
-    expect(wrapper.vm.colorCSVariables.alpha).toBe('var(--maz-color-primary-alpha-20)')
-    expect(wrapper.vm.colorCSVariables.main).toBe('var(--maz-color-primary)')
+    // @ts-expect-error - colorCSSVariables is not typed
+    expect(wrapper.vm.colorCSSVariables.alpha).toBe('var(--maz-color-primary-alpha-20)')
+    // @ts-expect-error - colorCSSVariables is not typed
+    expect(wrapper.vm.colorCSSVariables.main).toBe('var(--maz-color-primary)')
   })
 })

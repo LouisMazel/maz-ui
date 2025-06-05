@@ -116,7 +116,7 @@ Customize Maz UI to match your brand with our dedicated CLI tool:
 
 ```bash
 # Install the CLI
-npm install -g @mazui/cli
+npm install -g @maz-ui/cli
 
 # Generate your theme
 maz generate-css-vars
@@ -129,6 +129,40 @@ The CLI will automatically:
 - Output a ready-to-use CSS file
 
 To know how configure the CLI, check [theming options](https://maz-ui.com/guide/theme) in our documentation.
+
+## Icons
+
+Maz UI provides a comprehensive set of beautiful icons (300+) ready-to-use for Vue applications, based on the amazing [Heroicons](https://heroicons.com/) set. All icons are optimized as Vue components with full TypeScript support.
+
+### Documentation
+
+Please refer to [](https://maz-ui.com/guide/icons)
+
+### Installation
+
+```bash
+npm install @maz-ui/icons
+```
+
+### Usage
+
+Import the icons you need from the package:
+
+```vue
+<script setup>
+import { MazCheckCircle, MazXMark, MazArrowTopRightOnSquare } from '@maz-ui/icons'
+</script>
+
+<template>
+  <div>
+    <CheckCircle class="text-green-500 h-6 w-6" />
+    <XMark @click="close" class="text-red-500 h-5 w-5 cursor-pointer" />
+    <ArrowTopRightOnSquare class="text-blue-500 h-4 w-4" />
+  </div>
+</template>
+```
+
+> **Note:** Icons are asynchronous Vue components optimized for tree-shaking. Only imported icons will be included in your final bundle.
 
 ## 🧰 What's included?
 

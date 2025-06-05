@@ -1,4 +1,4 @@
-import { defineConfig } from '@mazui/cli'
+import { defineConfig } from '@maz-ui/cli'
 
 export default defineConfig({
   outputCssFilePath: './css/maz-ui-variables.css',

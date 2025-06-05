@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
 import type { MazColor, MazSize } from './types'
-import { Trash } from '@maz-ui/icons'
+import { MazTrash } from '@maz-ui/icons'
 import { computed, ref } from 'vue'
 import { truthyFilter } from '../helpers/truthyFilter'
 import MazBtn from './MazBtn.vue'
@@ -186,7 +186,7 @@ const buttonSize = computed(() => {
           :disabled
           :size="buttonSize"
           :color="tagsHoveredId === id || lastIdToDelete === id ? 'danger' : color"
-          :right-icon="tagsHoveredId === id || lastIdToDelete === id ? Trash : undefined"
+          :right-icon="tagsHoveredId === id || lastIdToDelete === id ? MazTrash : undefined"
           @click.stop="removeTag(id)"
           @mouseenter="tagsHoveredId = id"
           @focus="tagsHoveredId = id"

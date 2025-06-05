@@ -6,7 +6,7 @@ import type {
 } from 'vue'
 import type { MazBackdropProps } from './MazBackdrop.vue'
 
-import { XMark } from '@maz-ui/icons'
+import { MazXMark } from '@maz-ui/icons'
 import {
   computed,
   defineAsyncComponent,
@@ -168,7 +168,7 @@ if (props.scrollable) {
             v-if="!hideCloseButton && !persistent"
             color="transparent"
             size="sm"
-            :icon="XMark"
+            :icon="MazXMark"
             @click="close"
           />
         </div>

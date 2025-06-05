@@ -37,7 +37,7 @@ If you want to increase the border width, you must just add padding @default: `v
   ```vue
   <template>
     <MazCardSpotlight style="width: 500px; max-width: 100%;">
-      <h3 style="margin-top: 0; margin-bottom: 30px;">
+      <h3 style="margin-top: 0; Fmargin-bottom: 30px;">
         Hover this component <br />
         To see the magic appear
       </h3>
@@ -48,7 +48,7 @@ If you want to increase the border width, you must just add padding @default: `v
   </template>
 
   <script lang="ts" setup>
-    import { MazCardSpotlight } from 'maz-ui/src/components'
+    import MazCardSpotlight from 'maz-ui/components/MazCardSpotlight'
     import { useThemeHandler } from 'maz-ui/composables'
 
     const {
