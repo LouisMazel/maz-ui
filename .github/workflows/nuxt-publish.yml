@@ -1,0 +1,40 @@
+name: Nuxt Publish To Npm
+
+on:
+  release:
+    types: [published]
+  # push:
+  #   paths:
+  #     - '.github/workflows/nuxt-publish.yml'
+
+jobs:
+  nuxt-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.11.1
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          cache: 'pnpm'
+          node-version: '22'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Get last repo version
+        run: git pull origin master
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build Nuxt
+        run: pnpm --filter @maz-ui/nuxt build
+
+      - name: Publish package to npm registry
+        run: cd packages/nuxt-module && pnpm publish --access public --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

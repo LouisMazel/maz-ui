@@ -1,22 +1,41 @@
 import type { Plugin } from 'vite'
 
+import { existsSync } from 'node:fs'
+import { resolve } from 'node:path'
 import { execPromise } from './utils/exec-promise'
 import { logger } from './utils/logger'
 
-export function ViteBuildIcons(): Plugin {
+async function buildIcons() {
+  try {
+    await execPromise('pnpm -F @maz-ui/icons build')
+
+    logger.success('[BuildIcons] ✅ icons built')
+  }
+  catch (error) {
+    logger.error('[BuildIcons] 🔴 error while building icons', error)
+
+    throw error
+  }
+}
+
+export function ViteBuildIcons({ testing } = { testing: false }): Plugin {
   return {
     name: 'vite-build-icons',
-    async buildEnd() {
-      try {
-        await execPromise('pnpm -F @maz-ui/icons build')
+    async configResolved() {
+      const distFolderExists = existsSync(resolve(__dirname, '../../icons/dist'))
 
-        logger.success('[BuildIcons] ✅ icons built')
+      if (distFolderExists) {
+        return
       }
-      catch (error) {
-        logger.error('[BuildIcons] 🔴 error while building icons', error)
 
-        throw error
+      await buildIcons()
+    },
+    async buildStart() {
+      if (testing) {
+        return
       }
+
+      await buildIcons()
     },
   }
 }

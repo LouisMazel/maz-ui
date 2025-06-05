@@ -3,8 +3,6 @@
     <div>
       <!-- Start Developping Area - You should not commit anything here to keep this place clean for all others -->
 
-      <!-- <TestForm /> -->
-
       <MazAnimatedText
         text="Hello world"
         last-word="true"
@@ -14,7 +12,6 @@
         v-model="languages"
         title="Select your languages"
         :search="{
-          enabled: true,
           placeholder: 'Search a language',
           debounce: 300,
           autoFocus: false,
@@ -38,7 +35,7 @@
     </div>
 
     <MazFullscreenLoader
-      v-if="wait.isLoading('APP_LOADING')"
+      v-if="wait.isLoading('APP_LOADING') ?? true"
       color="secondary"
     >
       Loading...
@@ -82,8 +79,8 @@ onMounted(async () => {
   toast.message('Votre mot de passe a été mis à jour', {
     position: 'bottom-left',
     timeout: 10000,
-    action: {
-      func: () => toast.success('CLICKED'),
+    button: {
+      onClick: () => toast.success('CLICKED'),
       text: 'Button',
     },
   })

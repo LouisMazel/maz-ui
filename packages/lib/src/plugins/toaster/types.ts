@@ -29,7 +29,7 @@ export interface ToasterButton extends MazBtnProps {
   /**
    * The method to call when the button is clicked
    */
-  action?: () => unknown
+  onClick?: () => unknown
   /**
    * The route to navigate to when the button is clicked
    * (only with `vue-router`)

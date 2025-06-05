@@ -19,7 +19,7 @@ This plugin has a composable for easier use, after installing it you can use [us
     Message
   </MazBtn>
 
-  <MazBtn color="info" @click="toast.info('Info message', { position: 'top', link: { href: 'https://www.loicmazuel.com' } })">
+  <MazBtn color="info" @click="toast.info('Info message', { position: 'top', button: { href: 'https://www.loicmazuel.com' } })">
     Info toast on top
   </MazBtn>
 
@@ -110,7 +110,7 @@ Toast can have a link or an action
 
   function showInfoWithLink () {
     toast.info('Toast with link, click -->', {
-      link: {
+      button: {
         href: 'https://www.loicmazuel.com',
       }
     })
@@ -118,7 +118,7 @@ Toast can have a link or an action
 
   function showInfoWithExternalLink () {
     toast.warning('Toast with link', {
-      link: {
+      button: {
         href: 'https://www.loicmazuel.com',
         target: '_blank',
         closeToast: true,
@@ -129,8 +129,8 @@ Toast can have a link or an action
 
   function showInfoWithAction () {
     toast.error('Toast with action', {
-      action: {
-        func: () => new Promise(async (resolve) => {
+      button: {
+        onClick: () => new Promise(async (resolve) => {
           await sleep(3000)
           resolve()
           toast.success('Promise executed')
@@ -211,7 +211,7 @@ function showToast () {
 
   function showInfoWithLink () {
     toast.info('Toast with link, click -->', {
-      link: {
+      button: {
         href: 'https://www.loicmazuel.com',
       }
     })
@@ -219,7 +219,7 @@ function showToast () {
 
   function showInfoWithExternalLink () {
     toast.warning('Toast with link', {
-      link: {
+      button: {
         href: 'https://www.loicmazuel.com',
         target: '_blank',
         closeToast: true,
@@ -230,8 +230,8 @@ function showToast () {
 
   function showInfoWithAction () {
     toast.error('Toast with action', {
-      action: {
-        func: () => new Promise(async (resolve) => {
+      button: {
+        onClick: () => new Promise(async (resolve) => {
           await sleep(3000)
           resolve()
         }),
@@ -304,27 +304,29 @@ type ToasterOptions = {
    */
   icon?: boolean
   /**
-   * The link will be displayed as a button in the toast
+   * The action will be displayed as a button in the toast
    * @default undefined
    */
-  link?: {
-    href: string
+  button?: MazBtnProps & {
+    text: string
+    onClick: () => unknown
+    href?: string
     text?: string
     /** @default _self */
     target?: string
     /** @default false */
     closeToast?: boolean
-  }
-  /**
-   * The action will be displayed as a button in the toast
-   * @default undefined
-   */
-  action?: {
-    func: (..._arguments: unknown[]) => unknown
+  },
+  buttons?: (MazBtnProps & {
     text: string
+    onClick: () => unknown
+    href?: string
+    text?: string
+    /** @default _self */
+    target?: string
     /** @default false */
     closeToast?: boolean
-  }
+  })[]
 }
 
 ```
