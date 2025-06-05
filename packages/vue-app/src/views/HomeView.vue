@@ -1,39 +1,39 @@
 <script setup lang="ts">
 import { useToast } from 'maz-ui/src/composables/index.ts';
-import { MazBtn } from 'maz-ui/src/components/index.ts';
 
-const toast = useToast()
+const { message, success, error, info, warning } = useToast()
 
-function showToast() {
-  toast.success('Hello, world!', {
+async function showToast() {
+  message(`Hello, <strong>world</strong>!`, {
     position: 'top-right',
-    timeout: 5000,
+    timeout: 1000,
+    html: true,
+    persistent: true,
+    maxToasts: 2,
+    queue: true,
   })
-  toast.error('Hello, world!', {
+  info('Hello, world!', {
     position: 'bottom-right',
-    timeout: 5000,
+    timeout: 10000,
   })
-  toast.warning('Hello, world!', {
+  warning ('Hello, world!', {
     position: 'bottom-left',
-    timeout: 5000,
+    timeout: 10000,
   })
-  toast.info('Hello, world!', {
+  error('Hello, world!', {
     position: 'bottom',
-    timeout: 5000,
+    timeout: 10000,
   })
-  toast.message('Hello, world!', {
-    position: 'top',
-    timeout: 5000,
+  success('Hello, world!', {
+    position: 'top-left',
+    timeout: 10000,
   })
 }
 </script>
 
 <template>
-  <div id="home">
+  <div id="home" class="maz-flex maz-justify-center maz-items-center maz-h-screen">
+    <AcademicCap />
     <MazBtn @click="showToast">Click me</MazBtn>
-
-    <div class="maz-flex maz-flex-col maz-gap-4 maz-text-normal">
-      Text
-    </div>
   </div>
 </template>

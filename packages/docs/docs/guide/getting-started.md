@@ -53,16 +53,16 @@ Use [unplugin-vue-components](https://github.com/unplugin/unplugin-vue-component
 // vite.config.mts
 
 import Components from 'unplugin-vue-components/vite'
-import { UnpluginVueComponentsResolver, UnpluginDirectivesResolver, UnpluginModulesResolver } from 'maz-ui/resolvers'
+import { MazComponentsResolver, MazDirectivesResolver, MazModulesResolver } from 'maz-ui/resolvers'
 
 export default defineConfig({
   plugins: [
     Components({
       dts: true,
       resolvers: [
-        UnpluginVueComponentsResolver(),
-        UnpluginDirectivesResolver(),
-        UnpluginModulesResolver(),
+        MazComponentsResolver(),
+        MazDirectivesResolver(),
+        MazModulesResolver(),
       ],
     }),
   ]
@@ -130,7 +130,7 @@ app.component('MazBtn', MazBtn)
 ### Not recommended - Fully components installation
 
 Before, you have to install all dependencies of components
-Instead use the [UnpluginVueComponentsResolver](./../guide/getting-started.md#recommendations)
+Instead use the [MazComponentsResolver](./../guide/getting-started.md#recommendations)
 
 ```typescript
 import { createApp } from 'vue'

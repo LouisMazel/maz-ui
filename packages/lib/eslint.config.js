@@ -12,6 +12,12 @@ export default antfu(
     vue: true,
     rules: {
       'vue/custom-event-name-casing': ['error', 'kebab-case'],
+      'vue/no-undef-components': [
+        'error',
+        {
+          ignorePatterns: ['RouterView', 'RouterLink'],
+        },
+      ],
     },
     ignores: ['**/*.md'],
   },

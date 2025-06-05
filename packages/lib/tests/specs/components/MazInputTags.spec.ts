@@ -1,4 +1,4 @@
-import type { Size } from '@components/MazBtn.vue'
+import type { MazSize } from '@components/types'
 import MazBtn from '@components/MazBtn.vue'
 import MazInputTags from '@components/MazInputTags.vue'
 import { mount } from '@vue/test-utils'
@@ -33,7 +33,7 @@ describe('mazInputTags', () => {
       const wrapper = mount(MazInputTags, {
         props: {
           modelValue: ['tag1'],
-          size: size as Size,
+          size: size as MazSize,
         },
       })
 

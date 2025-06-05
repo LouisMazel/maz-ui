@@ -6,7 +6,7 @@
 import type { ComponentPublicInstance, HTMLAttributes } from 'vue'
 import type { MazInputValue } from './MazInput.vue'
 import type { MazColor, MazPosition, MazSize } from './types'
-import { ChevronDown, MagnifyingGlass, NoSymbol } from '@maz-ui/icons'
+import { MazChevronDown, MazMagnifyingGlass, MazNoSymbol } from '@maz-ui/icons'
 import {
   computed,
   defineAsyncComponent,
@@ -680,7 +680,7 @@ function updateValue(inputOption: MazSelectNormalizedOption, mustCloseList = tru
           :aria-label="`${hasListOpened ? 'collapse' : 'expand'} list of options`"
           @click.stop="toggleList"
         >
-          <ChevronDown class="m-select-chevron maz-text-xl" />
+          <MazChevronDown class="m-select-chevron maz-text-xl" />
         </button>
       </template>
     </MazInput>
@@ -715,7 +715,7 @@ function updateValue(inputOption: MazSelectNormalizedOption, mustCloseList = tru
           autocomplete="off"
           tabindex="-1"
           class="m-select-list__search-input maz-flex-none"
-          :left-icon="MagnifyingGlass"
+          :left-icon="MazMagnifyingGlass"
           @keydown="keyboardHandler($event, false)"
           @update:model-value="tmpModelValueIndex = 0"
         />
@@ -724,7 +724,7 @@ function updateValue(inputOption: MazSelectNormalizedOption, mustCloseList = tru
         -->
         <slot v-if="!optionList || optionList.length <= 0" name="no-results">
           <span class="m-select-list__no-results">
-            <NoSymbol class="maz-size-6 maz-text-normal" />
+            <MazNoSymbol class="maz-size-6 maz-text-normal" />
           </span>
         </slot>
         <div v-else class="m-select-list__scroll-wrapper" tabindex="-1">

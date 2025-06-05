@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
 import type { MazSize } from './types'
-import { Minus, Plus } from '@maz-ui/icons'
+import { MazMinus, MazPlus } from '@maz-ui/icons'
 import { computed, defineAsyncComponent } from 'vue'
 import { debounce } from '../helpers/debounce'
 import MazInput from './MazInput.vue'
@@ -164,7 +164,7 @@ function decrement() {
       :disabled="decrementDisabled || disabled"
       @click="decrement"
     >
-      <Minus class="m-input-number__button__icon" />
+      <MazMinus class="m-input-number__button__icon" />
     </MazBtn>
     <MazInput
       :model-value="currentValue"
@@ -199,7 +199,7 @@ function decrement() {
       :disabled="incrementDisabled || disabled"
       @click="increment"
     >
-      <Plus class="m-input-number__button__icon" />
+      <MazPlus class="m-input-number__button__icon" />
     </MazBtn>
   </div>
 </template>

@@ -1,6 +1,6 @@
 /** @type {import('stylelint').Config} */
 export default {
-  ignoreFiles: ['components_tmp/**/*', 'node_modules/**/*', '.DS_Store', 'dist/**/*', 'types/**/*', 'coverage/**/*'],
+  ignoreFiles: ['node_modules/**/*', '.DS_Store', 'dist/**/*', 'types/**/*', 'coverage/**/*'],
   plugins: ['stylelint-scss'],
   extends: [
     'stylelint-config-standard',

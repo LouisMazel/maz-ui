@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { XMark } from '@maz-ui/icons'
+import { MazXMark } from '@maz-ui/icons'
 
 import { computed, defineAsyncComponent, useSlots } from 'vue'
 import MazBackdrop from './MazBackdrop.vue'
@@ -101,7 +101,7 @@ const hasTitle = computed(() => {
           </h4>
           <div v-if="!hideCloseButton" class="m-drawer-header__close">
             <MazBtn size="sm" color="transparent" @click="close">
-              <XMark class="icon maz-text-lg" />
+              <MazXMark class="icon maz-text-lg" />
             </MazBtn>
           </div>
         </header>
