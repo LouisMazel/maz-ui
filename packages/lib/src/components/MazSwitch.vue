@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
-import type { Color } from './types'
+import type { MazColor } from './types'
 import { computed, ref } from 'vue'
 
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
@@ -58,7 +58,7 @@ export interface MazSwitchProps {
   /** Text label */
   label?: string
   /** The color of the switch */
-  color?: Color
+  color?: MazColor
   /** Whether there is an error with the input. */
   error?: boolean
   /** Whether the input is successful. */

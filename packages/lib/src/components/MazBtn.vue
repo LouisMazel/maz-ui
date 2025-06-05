@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import type { Color, Icon, Size } from './types'
+import type { IconComponent } from '@maz-ui/icons'
+import type { MazColor, MazSize } from './types'
 
 import { computed, defineAsyncComponent, useAttrs } from 'vue'
 
@@ -17,7 +18,6 @@ const {
   loading,
   disabled,
   block,
-  underline,
   padding = true,
 } = defineProps<MazBtnProps>()
 
@@ -28,15 +28,20 @@ const { href, to } = useAttrs()
 
 export interface MazBtnProps {
   /**
+   * The text of the button, if not provided, the slot will be used
+   * @default undefined
+   */
+  text?: string
+  /**
    * The size of the button
    * @values `'xl' | 'lg' | 'md' | 'sm' | 'xs' | 'mini'`
    */
-  size?: Size
+  size?: MazSize
   /**
    * The color of the button
    * @values `'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'danger' | 'white' | 'black' | 'transparent' | 'theme'`
    */
-  color?: Color
+  color?: MazColor
   /**
    * The type of the button
    * @values `'submit' | 'reset' | 'button'`
@@ -64,11 +69,6 @@ export interface MazBtnProps {
    */
   block?: boolean
   /**
-   * If true, the button will have no underline on hover (useful with `variant="link"`)
-   * @default false
-   */
-  underline?: boolean
-  /**
    * Enable the button loader
    * @default false
    */
@@ -87,17 +87,17 @@ export interface MazBtnProps {
    * The name of the icon to display or component, only with fab
    * `@type` `{string | FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component}`
    */
-  icon?: string | Icon
+  icon?: string | IconComponent
   /**
    * The name of the icon or component to display on the left of the button
    * `@type` `{string | FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component}`
    */
-  leftIcon?: string | Icon
+  leftIcon?: string | IconComponent
   /**
    * The name of the icon or component to display on the right of the button
    * `@type` `{string | FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component}`
    */
-  rightIcon?: string | Icon
+  rightIcon?: string | IconComponent
   /**
    * If true, the button will have no padding
    * @default true
@@ -150,7 +150,7 @@ const iconClassSize = computed(() => {
 <template>
   <Component
     :is="component"
-    :disabled="isDisabled || undefined"
+    :disabled="isDisabled"
     class="m-btn m-reset-css"
     :class="[
       `--${size}`,
@@ -159,7 +159,6 @@ const iconClassSize = computed(() => {
       cursorClass,
       {
         '--block': block,
-        '--no-underline': !underline,
         '--fab': fab,
         '--loading': loading,
         '--disabled': isDisabled,
@@ -188,7 +187,9 @@ const iconClassSize = computed(() => {
     <!--
       @slot default - The content of the button
     -->
-    <slot />
+    <slot>
+      {{ text }}
+    </slot>
 
     <!--
       @slot left-icon - The icon to display on the left of the button

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { Dayjs } from 'dayjs'
 import type { PropType } from 'vue'
-import type { Color } from '../../types'
+import type { MazColor } from '../../types'
 import type { MazPickerValue } from '../types'
 import dayjs from 'dayjs'
 import { computed } from 'vue'
@@ -14,7 +14,7 @@ const props = defineProps({
     type: [String, Object] as PropType<MazPickerValue>,
     default: undefined,
   },
-  color: { type: String as PropType<Color>, required: true },
+  color: { type: String as PropType<MazColor>, required: true },
   locale: { type: String, required: true },
   hasTime: { type: Boolean, required: true },
   firstDayOfWeek: { type: Number, required: true },

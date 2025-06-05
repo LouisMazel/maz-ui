@@ -1,8 +1,8 @@
 <script lang="ts" setup generic="T extends boolean | (string | number)[]">
 import type { HTMLAttributes } from 'vue'
-import type { Color, Size } from './types'
+import type { MazColor, MazSize } from './types'
+import { Check } from '@maz-ui/icons'
 import { computed, ref } from 'vue'
-import CheckIcon from '../../icons/check.svg'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 
 export type MazCheckboxValue = string | number | boolean
@@ -17,13 +17,13 @@ export interface MazCheckboxProps<T = boolean | (string | number)[]> {
   /** The id of the checkbox */
   id?: string
   /** The color of the checkbox */
-  color?: Color
+  color?: MazColor
   /** The value of the checkbox when selected */
   value?: MazCheckboxValue
   /** The name of the checkbox */
   name?: string
   /** The size of the checkbox */
-  size?: Size
+  size?: MazSize
   /** Text label */
   label?: string
   /** If the checkbox is disabled */
@@ -241,7 +241,7 @@ function onFocus(event: FocusEvent) {
       @change="emitValue(value ?? ($event?.target as HTMLInputElement)?.checked)"
     >
     <span :style="{ width: checkboxSize, height: checkboxSize }">
-      <CheckIcon class="check-icon" :class="checkIconSize" :style="{ color: checkIconColor }" />
+      <Check class="check-icon" :class="checkIconSize" :style="{ color: checkIconColor }" />
     </span>
     <div class="m-checkbox__text">
       <slot :value>

@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import type { Dayjs } from 'dayjs'
 import type { PropType } from 'vue'
-import type { Color } from '../types'
+import type { MazColor } from '../types'
+import ChevronLeft from '@maz-ui/icons/svg/chevron-left.svg'
+import XMark from '@maz-ui/icons/svg/x-mark.svg'
 import dayjs from 'dayjs'
 import { computed, ref } from 'vue'
-import ChevronLeftIcon from '../../../icons/chevron-left.svg'
-import XIcon from '../../../icons/x-mark.svg'
 
 import { date } from '../../formatters/date'
 import MazBtn from '../MazBtn.vue'
@@ -13,7 +13,7 @@ import MazBtn from '../MazBtn.vue'
 import { isSameDate } from './utils'
 
 const props = defineProps({
-  color: { type: String as PropType<Color>, required: true },
+  color: { type: String as PropType<MazColor>, required: true },
   locale: { type: String, required: true },
   calendarDate: { type: String, required: true },
 })
@@ -59,14 +59,14 @@ function nextYears() {
     <div class="maz-picker-year-switcher__header">
       <div class="maz-flex maz-space-x-2">
         <MazBtn size="xs" color="transparent" type="button" @click.stop="previousYears">
-          <ChevronLeftIcon class="maz-text-lg" />
+          <ChevronLeft class="maz-text-lg" />
         </MazBtn>
         <MazBtn size="xs" color="transparent" type="button" @click.stop="nextYears">
-          <ChevronLeftIcon class="maz-rotate-180 maz-text-lg" />
+          <ChevronLeft class="maz-rotate-180 maz-text-lg" />
         </MazBtn>
       </div>
       <MazBtn size="xs" color="transparent" type="button" @click.stop="$emit('close', $event)">
-        <XIcon class="maz-text-lg" />
+        <XMark class="maz-text-lg" />
       </MazBtn>
     </div>
     <div class="maz-picker-year-switcher__main">

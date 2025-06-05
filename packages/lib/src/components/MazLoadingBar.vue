@@ -1,17 +1,17 @@
 <script lang="ts" setup>
-import type { Color } from './types'
+import type { MazColor } from './types'
 import { computed } from 'vue'
 
 export interface MazLoadingBarProps {
   /** The color of the component. */
-  color?: Color
+  color?: MazColor
   /** The height of the component. */
   height?: string
 }
 
 const props = withDefaults(defineProps<MazLoadingBarProps>(), { color: 'primary', height: '0.125rem' })
 
-const colorCSVariables = computed(() => ({
+const colorCSSVariables = computed(() => ({
   alpha: `var(--maz-color-${props.color}-alpha-20)`,
   main: `var(--maz-color-${props.color})`,
 }))
@@ -20,7 +20,7 @@ const colorCSVariables = computed(() => ({
 <template>
   <div
     class="m-loading-bar m-reset-css"
-    :style="[{ '--loading-bar-height': height, '--loading-bar-color': colorCSVariables.alpha, '--loading-bar-main-color': colorCSVariables.main }]"
+    :style="[{ '--loading-bar-height': height, '--loading-bar-color': colorCSSVariables.alpha, '--loading-bar-main-color': colorCSSVariables.main }]"
   >
     <div />
   </div>

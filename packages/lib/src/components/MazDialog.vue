@@ -6,6 +6,7 @@ import type {
 } from 'vue'
 import type { MazBackdropProps } from './MazBackdrop.vue'
 
+import { XMark } from '@maz-ui/icons'
 import {
   computed,
   defineAsyncComponent,
@@ -66,8 +67,6 @@ export interface DialogProps {
 }
 
 export interface MazDialogProps extends DialogProps, MazBackdropProps {}
-
-const XIcon = defineAsyncComponent(() => import('../../icons/x-mark.svg'))
 
 const attrs = useAttrs()
 
@@ -169,7 +168,7 @@ if (props.scrollable) {
             v-if="!hideCloseButton && !persistent"
             color="transparent"
             size="sm"
-            :icon="XIcon"
+            :icon="XMark"
             @click="close"
           />
         </div>

@@ -1,12 +1,13 @@
 <script
   lang="ts"
   setup
-  generic="T extends ModelValueSimple, U extends MazSelectOption"
+  generic="T extends MazInputValue, U extends MazSelectOption"
 >
 import type { ComponentPublicInstance, HTMLAttributes } from 'vue'
-import type { Color, ModelValueSimple, Position, Size } from './types'
+import type { MazInputValue } from './MazInput.vue'
+import type { MazColor, MazPosition, MazSize } from './types'
+import { ChevronDown, MagnifyingGlass, NoSymbol } from '@maz-ui/icons'
 import {
-
   computed,
   defineAsyncComponent,
 
@@ -18,11 +19,11 @@ import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import { useStringMatching } from '../composables/useStringMatching'
 import { vClosable } from '../directives/vClosable'
 import { debounceCallback } from '../helpers/debounceCallback'
-import { normalizeString } from '../helpers/normalizeString'
 
+import { normalizeString } from '../helpers/normalizeString'
 import MazInput from './MazInput.vue'
 
-export type MazSelectNormalizedOption = Record<string, ModelValueSimple>
+export type MazSelectNormalizedOption = Record<string, MazInputValue>
 export interface MazSelectOptionWithOptGroup {
   label: string
   options: (MazSelectNormalizedOption | string | number | boolean)[]
@@ -34,7 +35,7 @@ export type MazSelectOption =
   | boolean
   | MazSelectOptionWithOptGroup
 
-export interface MazSelectProps<T extends ModelValueSimple, U extends MazSelectOption> {
+export interface MazSelectProps<T extends MazInputValue, U extends MazSelectOption> {
   /** Style attribut of the component root element */
   style?: HTMLAttributes['style']
   /** Class attribut of the component root element */
@@ -64,7 +65,7 @@ export interface MazSelectProps<T extends ModelValueSimple, U extends MazSelectO
    * The position of the list
    * @default 'bottom left'
    */
-  listPosition?: Position
+  listPosition?: MazPosition
   /** The height of the option list item */
   itemHeight?: number
   /** The max height of the option list */
@@ -79,12 +80,12 @@ export interface MazSelectProps<T extends ModelValueSimple, U extends MazSelectO
    * The size of the select
    * @default 'md'
    */
-  size?: Size
+  size?: MazSize
   /**
    * The color of the select
    * @default 'primary'
    */
-  color?: Color
+  color?: MazColor
   /** Display search input in option list */
   search?: boolean
   /**
@@ -189,7 +190,7 @@ const emits = defineEmits<{
   /**
    * On model value update, returns the new value
    * @event 'update:model-value'
-   * @property {ModelValueSimple | ModelValueSimple[]} value - the new value
+   * @property {MazInputValue | MazInputValue[]} value - the new value
    */
   'update:model-value': [value: T | T[]]
   /**
@@ -201,10 +202,6 @@ const emits = defineEmits<{
 }>()
 
 const MazCheckbox = defineAsyncComponent(() => import('./MazCheckbox.vue'))
-
-const SearchIcon = defineAsyncComponent(() => import('../../icons/magnifying-glass.svg'))
-const ChevronDownIcon = defineAsyncComponent(() => import('../../icons/chevron-down.svg'))
-const NoSymbolIcon = defineAsyncComponent(() => import('../../icons/no-symbol.svg'))
 
 defineExpose<{
   openList: typeof openList
@@ -364,7 +361,7 @@ const listTransition = computed(() =>
 const searchQuery = ref<string>('')
 const query = ref<string>('')
 
-function searchInValue(value?: ModelValueSimple, query?: string) {
+function searchInValue(value?: MazInputValue, query?: string) {
   return query && value && normalizeString(value).includes(normalizeString(query))
 }
 
@@ -563,7 +560,7 @@ function enterHandler(event: KeyboardEvent, currentIndex?: number) {
     : optionList.value?.[0]
 
   if (!isNullOrUndefined(newValue)) {
-    updateValue(newValue as Record<string, ModelValueSimple>)
+    updateValue(newValue as Record<string, MazInputValue>)
   }
 }
 
@@ -683,7 +680,7 @@ function updateValue(inputOption: MazSelectNormalizedOption, mustCloseList = tru
           :aria-label="`${hasListOpened ? 'collapse' : 'expand'} list of options`"
           @click.stop="toggleList"
         >
-          <ChevronDownIcon class="m-select-chevron maz-text-xl" />
+          <ChevronDown class="m-select-chevron maz-text-xl" />
         </button>
       </template>
     </MazInput>
@@ -718,7 +715,7 @@ function updateValue(inputOption: MazSelectNormalizedOption, mustCloseList = tru
           autocomplete="off"
           tabindex="-1"
           class="m-select-list__search-input maz-flex-none"
-          :left-icon="SearchIcon"
+          :left-icon="MagnifyingGlass"
           @keydown="keyboardHandler($event, false)"
           @update:model-value="tmpModelValueIndex = 0"
         />
@@ -727,7 +724,7 @@ function updateValue(inputOption: MazSelectNormalizedOption, mustCloseList = tru
         -->
         <slot v-if="!optionList || optionList.length <= 0" name="no-results">
           <span class="m-select-list__no-results">
-            <NoSymbolIcon class="maz-size-6 maz-text-normal" />
+            <NoSymbol class="maz-size-6 maz-text-normal" />
           </span>
         </slot>
         <div v-else class="m-select-list__scroll-wrapper" tabindex="-1">
