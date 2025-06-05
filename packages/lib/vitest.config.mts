@@ -6,8 +6,6 @@ import SvgLoader from 'vite-svg-loader'
 
 import { coverageConfigDefaults, defaultExclude, defineConfig } from 'vitest/config'
 
-const _dirname = fileURLToPath(new URL('.', import.meta.url))
-
 export default defineConfig({
   plugins: [Vue(), SvgLoader()],
   server: {

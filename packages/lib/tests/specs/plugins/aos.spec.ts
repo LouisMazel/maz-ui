@@ -146,7 +146,7 @@ describe('given AosHandler runAnimations method', () => {
     it('then it should log a warning and not call handleObserver', async () => {
       vi.mocked(isClient).mockReturnValue(false)
 
-      const consoleWarnSpy = vi.spyOn(console, 'warn')
+      const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
       // @ts-expect-error - ignore
       const handleObserverSpy = vi.spyOn(aosHandler, 'handleObserver')
       await aosHandler.runAnimations()

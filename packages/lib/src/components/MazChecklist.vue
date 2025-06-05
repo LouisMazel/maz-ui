@@ -39,9 +39,7 @@ export interface MazChecklistProps<T, O> {
    * The search input options
    * @default { enabled: false, debounce: 300, autoFocus: false }
    */
-  search?: {
-    enabled?: boolean
-  } & MazInputProps<string>
+  search?: boolean | MazInputProps<string>
   /**
    * The options to normalize the search query (used by the default search function)
    */
@@ -58,20 +56,7 @@ export interface MazChecklistProps<T, O> {
   color?: MazColor
 }
 
-const props = withDefaults(
-  defineProps<MazChecklistProps<T, O>>(),
-  {
-    modelValue: undefined,
-    query: undefined,
-    elevation: false,
-    items: undefined,
-    title: undefined,
-    search: () => ({
-      enabled: false,
-    }),
-    color: 'primary',
-  },
-)
+const { modelValue, query, elevation = false, items, title, search = true, searchOptions, searchFunction, color = 'primary' } = defineProps<MazChecklistProps<T, O>>()
 
 const emits = defineEmits<{
   /**
@@ -88,25 +73,25 @@ const emits = defineEmits<{
 
 const MazInput = defineAsyncComponent(() => import('./MazInput.vue'))
 
-const internalQuery = ref<string | undefined>(props.query)
+const internalQuery = ref<string | undefined>(query)
 
 watch(
-  () => props.query,
+  () => query,
   (value) => {
     internalQuery.value = value
   },
 )
 
 const filteredItems = computed(() => {
-  if (!internalQuery.value || !props.search.enabled) {
-    return props.items
+  if (!internalQuery.value || !search) {
+    return items
   }
 
-  const normalizedQuery = normalizeString(internalQuery.value, props.searchOptions)
-  return props.searchFunction
-    ? props.searchFunction(normalizedQuery, props.items ?? [])
-    : props.items?.filter(({ label, value }) =>
-        normalizeString(label, props.searchOptions).includes(normalizedQuery) || normalizeString(value, props.searchOptions).includes(normalizedQuery),
+  const normalizedQuery = normalizeString(internalQuery.value, searchOptions)
+  return searchFunction
+    ? searchFunction(normalizedQuery, items ?? [])
+    : items?.filter(({ label, value }) =>
+        normalizeString(label, searchOptions).includes(normalizedQuery) || normalizeString(value, searchOptions).includes(normalizedQuery),
       )
 })
 
@@ -119,7 +104,7 @@ function updateQuery(value?: string) {
 <template>
   <div class="m-checklist m-reset-css">
     <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
-    <label v-if="search?.enabled" for="query" class="search-label">
+    <label v-if="search" for="query" class="search-label">
       <span v-if="$slots.title || title" class="title">
         <!-- @slot use this slot to customize the title -->
         <slot name="title">
@@ -129,13 +114,12 @@ function updateQuery(value?: string) {
       <MazInput
         id="query"
         :model-value="internalQuery"
-        v-bind="search"
+        v-bind="typeof search === 'object' ? search : {}"
         :color
-        :left-icon="search.leftIcon ?? MazMagnifyingGlass"
-        :debounce="search.debounce ?? 300"
-        :label="search?.label"
-        :name="search?.name ?? 'search'"
-        :placeholder="search?.placeholder"
+        :left-icon="typeof search === 'object' ? search.leftIcon ?? MazMagnifyingGlass : undefined"
+        :debounce="typeof search === 'object' ? search.debounce ?? 300 : undefined"
+        :label="typeof search === 'object' ? search.label : undefined"
+        :name="typeof search === 'object' ? search.name ?? 'search' : undefined"
         @update:model-value="(event) => updateQuery(event as string)"
       />
     </label>
@@ -168,7 +152,7 @@ function updateQuery(value?: string) {
       >
         <MazCheckbox
           :id="item.value"
-          :model-value="props.modelValue"
+          :model-value="modelValue"
           :value="item.value"
           :color
           @update:model-value="(event) => emits('update:model-value', event)"
