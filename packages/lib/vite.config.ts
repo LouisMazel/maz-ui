@@ -4,16 +4,13 @@ import Vue from '@vitejs/plugin-vue'
 import { glob } from 'glob'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
-
 import { libInjectCss } from 'vite-plugin-lib-inject-css'
+
 // import { viteStaticCopy } from 'vite-plugin-static-copy'
 import SvgLoader from 'vite-svg-loader'
-
 import rootPkg from '../../package.json'
 
-import { ViteBuildMazCli } from './build/ViteBuildMazCli'
-import { ViteBuildNuxtModule } from './build/ViteBuildNuxtModule'
-import { ViteCompileStyles } from './build/ViteCompileStyles'
+import { ViteBuildIcons, ViteBuildMazCli, ViteBuildNuxtModule, ViteCompileStyles } from './build'
 
 import pkg from './package.json'
 
@@ -83,6 +80,7 @@ export default defineConfig({
       //   'src/types/*.d.ts',
       // ],
     }),
+    ViteBuildIcons(),
     ViteCompileStyles(),
     ViteBuildNuxtModule(),
     ViteBuildMazCli(),

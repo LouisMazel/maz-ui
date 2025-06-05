@@ -157,7 +157,6 @@
     "build": "pnpm typecheck && pnpm build:only",
     "build:only": "vite build",
     "build:analyze": "node --loader ts-node/esm build/analyze-bundle.ts",
-    "get-icon-list": "node --loader ts-node/esm build/getIconList.ts",
     "test:unit": "vitest",
     "test:unit:watch": "vitest watch",
     "test:unit:coverage": "vitest run --coverage",
