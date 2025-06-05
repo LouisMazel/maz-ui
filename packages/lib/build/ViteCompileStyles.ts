@@ -4,7 +4,7 @@ import { compileScss } from './compileScss'
 import { execPromise } from './utils/exec-promise'
 import { logger } from './utils/logger'
 
-export function CompileStyles(): Plugin {
+export function ViteCompileStyles(): Plugin {
   return {
     name: 'vite-compile-styles',
     async buildEnd() {

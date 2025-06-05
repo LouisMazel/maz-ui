@@ -9,7 +9,7 @@ export const guide = {
     { text: 'Theme', link: '/guide/theme' },
     { text: 'Dark mode', link: '/guide/dark-mode' },
     { text: 'Nuxt Module', link: '/guide/nuxt' },
-    { text: '@mazui/cli (theme generator)', link: '/guide/cli' },
+    { text: '@maz-ui/cli (theme generator)', link: '/guide/cli' },
     { text: 'Migration v4', link: '/guide/migration-v4' },
   ],
 } satisfies DefaultTheme.SidebarItem

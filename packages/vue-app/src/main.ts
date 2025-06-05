@@ -1,6 +1,5 @@
 import { createApp } from 'vue'
-import { installWait } from 'maz-ui/src/plugins/index.ts'
-import { installToaster } from 'maz-ui/plugins/toaster'
+import { installWait, installToaster } from 'maz-ui/src/plugins/index.ts'
 
 import App from './App.vue'
 import router from './router'

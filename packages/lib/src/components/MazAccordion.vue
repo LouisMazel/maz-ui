@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Plus } from '@maz-ui/icons'
+import { MazPlus } from '@maz-ui/icons'
 import { computed, ref, useSlots } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 
@@ -70,7 +70,7 @@ function selectStep(index: number) {
         >
           <slot :name="`title-${step}`" :is-open="isStepOpen(step)" />
 
-          <Plus class="header-icon" :class="{ '--rotate': isStepOpen(step) }" />
+          <MazPlus class="header-icon" :class="{ '--rotate': isStepOpen(step) }" />
         </button>
 
         <MazExpandAnimation

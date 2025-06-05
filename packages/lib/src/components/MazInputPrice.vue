@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { FilterCurrencyOptions } from '../formatters/currency'
-import { Banknotes } from '@maz-ui/icons'
+import { MazBanknotes } from '@maz-ui/icons'
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { currency as currencyFilter } from '../formatters/currency'
 import MazInput from './MazInput.vue'
@@ -139,7 +139,7 @@ function updateInternalValue(value?: string | number) {
   >
     <template #left-icon>
       <slot v-if="!noIcon" name="left-icon">
-        <Banknotes class="maz-text-xl" />
+        <MazBanknotes class="maz-text-xl" />
       </slot>
     </template>
   </MazInput>

@@ -53,29 +53,16 @@ async function generateIconsComponentsEntry(files: string[]) {
   const imports = files.map((file) => {
     const name = toPascalCase(file.replace('.svg', ''))
     const finalName = reservedNames.includes(name) ? `${name}Icon` : name
-    return `  ${finalName}: defineAsyncComponent(() => import('./../svg/${file}?component')),`
-  }).join('\n')
-
-  const namedExports = files.map((file) => {
-    const name = toPascalCase(file.replace('.svg', ''))
-    const finalName = reservedNames.includes(name) ? `${name}Icon` : name
-    return `export const ${finalName} = icons.${finalName}`
+    return `export const Maz${finalName} = defineAsyncComponent(() => import('./../svg/${file}?component'));`
   }).join('\n')
 
   try {
-    const content = `import type { Component, ComponentPublicInstance, FunctionalComponent, SVGAttributes } from 'vue'
-import { defineAsyncComponent } from 'vue'
+    const content = `import type { Component, ComponentPublicInstance, FunctionalComponent } from 'vue';
+import { defineAsyncComponent } from 'vue';
 
 export type IconComponent = FunctionalComponent | ComponentPublicInstance | Component
-export type IconName = keyof typeof icons
 
-const icons = {
 ${imports}
-} satisfies Record<string, IconComponent>
-
-${namedExports}
-
-export default icons
 `
 
     await writeFile(outputIndex, content)
@@ -92,7 +79,7 @@ export default icons
 export function ViteGenerateIconsComponentsEntry(): Plugin {
   return {
     name: 'vite-generate-icons-components-entry',
-    async buildStart() {
+    async configResolved() {
       logger.log('[ViteGenerateIconsComponentsEntry] ✅ starting to generate icons components entry')
       const files = await readdir(svgDir)
 

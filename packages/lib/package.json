@@ -30,7 +30,13 @@
     "*.css",
     "*.vue",
     "**/plugins/**",
-    "**/directives/**"
+    "**/directives/**",
+    "**/composables/useThemeHandler*",
+    "**/composables/useToast*",
+    "**/composables/useDialog*",
+    "**/composables/useMountComponent*",
+    "**/helpers/scriptLoader*",
+    "**/helpers/userVisibility*"
   ],
   "exports": {
     ".": {
@@ -113,6 +119,11 @@
       "import": "./dist/resolvers/*.mjs",
       "require": "./dist/resolvers/*.cjs"
     },
+    "./icons": {
+      "types": "./dist/types/icons/index.d.ts",
+      "import": "./dist/icons/index.mjs",
+      "require": "./dist/icons/index.cjs"
+    },
     "./styles": "./dist/css/main.css",
     "./aos-styles": "./dist/css/aos.css",
     "./package.json": "./package.json",
@@ -126,14 +137,15 @@
     "maz-ui": "./bin/maz.mjs"
   },
   "files": [
+    "LICENSE",
+    "README.md",
     "bin",
     "dist",
-    "icons",
+    "svg",
     "tailwindcss"
   ],
   "engines": {
-    "node": ">= 6.0.0",
-    "npm": ">= 3.0.0"
+    "node": ">= 16.0.0"
   },
   "scripts": {
     "maz": "maz",
@@ -146,7 +158,6 @@
     "build:only": "vite build",
     "build:analyze": "node --loader ts-node/esm build/analyze-bundle.ts",
     "get-icon-list": "node --loader ts-node/esm build/getIconList.ts",
-    "replace-svg-values": "node --loader ts-node/esm build/replaceValuesInSvg.ts",
     "test:unit": "vitest",
     "test:unit:watch": "vitest watch",
     "test:unit:coverage": "vitest run --coverage",
@@ -157,6 +168,7 @@
     "typecheck": "vue-tsc --noEmit --skipLibCheck"
   },
   "peerDependencies": {
+    "@maz-ui/icons": "workspace:*",
     "@nuxt/kit": "^3.4.0",
     "chart.js": "^4.0.0",
     "dayjs": "^1.1.0",
@@ -170,6 +182,9 @@
     "vue-router": "^4.0.0"
   },
   "peerDependenciesMeta": {
+    "@maz-ui/icons": {
+      "optional": true
+    },
     "@nuxt/kit": {
       "optional": true
     },
@@ -202,12 +217,13 @@
     }
   },
   "dependencies": {
-    "@mazui/cli": "workspace:*"
+    "@maz-ui/cli": "workspace:*"
   },
   "devDependencies": {
     "@babel/core": "^7.27.4",
     "@babel/preset-env": "^7.27.2",
     "@babel/preset-typescript": "^7.27.1",
+    "@maz-ui/icons": "workspace:*",
     "@nuxt/kit": "^3.17.5",
     "@nuxt/schema": "^3.17.5",
     "@types/dropzone": "^5.7.9",

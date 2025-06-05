@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { XMark } from '@maz-ui/icons'
+import { MazXMark } from '@maz-ui/icons'
 import { defineAsyncComponent } from 'vue'
 import MazBackdrop from './MazBackdrop.vue'
 
@@ -59,7 +59,7 @@ const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
           color="transparent"
           @click="close"
         >
-          <XMark class="maz-text-lg" />
+          <MazXMark class="maz-text-lg" />
         </MazBtn>
       </div>
     </template>

@@ -2,7 +2,7 @@
 import type { IconComponent } from '@maz-ui/icons'
 import type { RouteLocationRaw } from 'vue-router'
 import type { MazColor } from './types'
-import { ArrowTopRightOnSquare } from '@maz-ui/icons'
+import { MazArrowTopRightOnSquare } from '@maz-ui/icons'
 import { defineAsyncComponent } from 'vue'
 
 withDefaults(defineProps<MazLinkProps>(), {
@@ -118,7 +118,7 @@ export interface MazLinkProps {
       @slot external-icon - Replace the default external icon
     -->
     <slot v-if="autoExternal && target === '_blank'" name="external-icon">
-      <ArrowTopRightOnSquare />
+      <MazArrowTopRightOnSquare />
     </slot>
   </Component>
 </template>

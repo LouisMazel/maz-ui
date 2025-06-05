@@ -1,9 +1,9 @@
 import type { DirectiveBinding, ObjectDirective, Plugin } from 'vue'
 
-import type { Color } from '../components/types'
+import type { MazColor } from '../components/types'
 import './vTooltip/style.css'
 
-type vTooltipColor = Exclude<Color, 'transparent'> | 'default' | 'light' | 'dark'
+type vTooltipColor = Exclude<MazColor, 'transparent'> | 'default' | 'light' | 'dark'
 
 interface vTooltipOptions {
   /**

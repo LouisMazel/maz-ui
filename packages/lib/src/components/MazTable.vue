@@ -159,7 +159,7 @@ export const mazTableKey: InjectionKey<MazTableProvide> = Symbol('maz-table')
 import type { HTMLAttributes, InjectionKey, Ref, StyleValue, ThHTMLAttributes } from 'vue'
 import type { MazSelectOption } from './MazSelect.vue'
 import type { MazColor, MazSize } from './types'
-import { ArrowUp, ChevronDoubleLeft, ChevronLeft, MagnifyingGlass } from '@maz-ui/icons'
+import { MazArrowUp, MazChevronDoubleLeft, MazChevronLeft, MazMagnifyingGlass } from '@maz-ui/icons'
 
 import {
   computed,
@@ -540,7 +540,7 @@ onBeforeMount(() => {
           :color
           :debounce="300"
           :placeholder="t.searchPlaceholder"
-          :left-icon="MagnifyingGlass"
+          :left-icon="MazMagnifyingGlass"
         />
       </div>
     </div>
@@ -610,7 +610,7 @@ onBeforeMount(() => {
                     </slot>
 
                     <div v-if="header.sortable ?? sortable" class="m-table-sort-icon-wrapper">
-                      <ArrowUp
+                      <MazArrowUp
                         class="m-table-sort-icon maz-hidden group-hover:maz-block"
                         :class="{
                           '--sorted': columnIndex === sortedColumnIndex,
@@ -747,7 +747,7 @@ onBeforeMount(() => {
             :rounded-size
             @click="firstPage"
           >
-            <ChevronDoubleLeft class="maz-text-base" />
+            <MazChevronDoubleLeft class="maz-text-base" />
           </MazBtn>
 
           <MazBtn
@@ -757,7 +757,7 @@ onBeforeMount(() => {
             :rounded-size
             @click="previousPage"
           >
-            <ChevronLeft class="maz-text-base" />
+            <MazChevronLeft class="maz-text-base" />
           </MazBtn>
 
           <MazBtn
@@ -767,7 +767,7 @@ onBeforeMount(() => {
             :rounded-size
             @click="nextPage"
           >
-            <ChevronLeft class="maz-rotate-180 maz-text-base" />
+            <MazChevronLeft class="maz-rotate-180 maz-text-base" />
           </MazBtn>
 
           <MazBtn
@@ -777,7 +777,7 @@ onBeforeMount(() => {
             :rounded-size
             @click="lastPage"
           >
-            <ChevronDoubleLeft class="maz-rotate-180 maz-text-base" />
+            <MazChevronDoubleLeft class="maz-rotate-180 maz-text-base" />
           </MazBtn>
         </div>
       </div>

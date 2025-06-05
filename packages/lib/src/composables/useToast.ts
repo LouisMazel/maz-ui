@@ -2,5 +2,13 @@ import type { ToasterHandler } from '../plugins/toaster/ToasterHandler'
 import { useInjectStrict } from '../composables/useInjectStrict'
 
 export function useToast() {
-  return useInjectStrict<ToasterHandler>('toast')
+  const toast = useInjectStrict<ToasterHandler>('toast')
+
+  return {
+    message: toast.message.bind(toast),
+    success: toast.success.bind(toast),
+    error: toast.error.bind(toast),
+    info: toast.info.bind(toast),
+    warning: toast.warning.bind(toast),
+  }
 }

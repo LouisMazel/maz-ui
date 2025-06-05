@@ -11,6 +11,8 @@ const DIST_DIR = path.join(_dirname, '../dist')
 const CHUNKS_DIR = path.join(DIST_DIR, 'chunks')
 const ANALYSES_DIR = path.join(_dirname, './analyses')
 const RESULTS_FILE = path.join(ANALYSES_DIR, 'bundle-analysis.json')
+const svgDir = path.join(_dirname, '../../icons/svg')
+const svgFiles = fs.readdirSync(svgDir).map(file => file.replace('.svg', ''))
 
 interface Analysis {
   timestamp: string
@@ -145,30 +147,10 @@ function categorizeChunk(filename: string): string {
 }
 
 function isIconFile(name: string): boolean {
-  const iconKeywords = [
-    'icon',
-    'arrow',
-    'chevron',
-    'check',
-    'eye',
-    'plus',
-    'minus',
-    'x-mark',
-    'magnifying',
-    'exclamation',
-    'information',
-    'trash',
-    'pencil',
-    'link',
-    'banknotes',
-    'no-symbol',
-    'no-photography',
-  ]
-
-  return iconKeywords.some(keyword => name.includes(keyword))
+  return svgFiles.some(file => name.includes(file))
 }
 
-function getChunkTypeIcon(type) {
+function getChunkTypeIcon(type: string) {
   const icons = {
     components: '🧩',
     icons: '🎨',
@@ -314,6 +296,7 @@ function analyzeBundle() {
     { name: 'directives', file: 'directives/index.mjs' },
     { name: 'formatters', file: 'formatters/index.mjs' },
     { name: 'resolvers', file: 'resolvers/index.mjs' },
+    { name: 'icons', file: 'icons/index.mjs' },
   ]
 
   categoryIndexes.forEach(({ name, file }) => {

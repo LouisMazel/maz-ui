@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from 'vue'
 import type { RouterLinkProps } from 'vue-router'
 import type { MazGalleryProps } from './MazGallery.vue'
-import { ChevronDown } from '@maz-ui/icons'
+import { MazChevronDown } from '@maz-ui/icons'
 import { computed, defineAsyncComponent, useSlots } from 'vue'
 
 const {
@@ -166,7 +166,7 @@ function toggleCollapse() {
         size="xs"
         @click.stop="toggleCollapse"
       >
-        <ChevronDown
+        <MazChevronDown
           :class="{ '--is-open': collapseOpenModel }"
           class="m-card__collapse-icon maz-text-xl"
         />

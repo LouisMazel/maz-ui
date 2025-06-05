@@ -1,7 +1,7 @@
 <script lang="ts" setup generic="T extends boolean | (string | number)[]">
 import type { HTMLAttributes } from 'vue'
 import type { MazColor, MazSize } from './types'
-import { Check } from '@maz-ui/icons'
+import { MazCheck } from '@maz-ui/icons'
 import { computed, ref } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 
@@ -241,7 +241,7 @@ function onFocus(event: FocusEvent) {
       @change="emitValue(value ?? ($event?.target as HTMLInputElement)?.checked)"
     >
     <span :style="{ width: checkboxSize, height: checkboxSize }">
-      <Check class="check-icon" :class="checkIconSize" :style="{ color: checkIconColor }" />
+      <MazCheck class="check-icon" :class="checkIconSize" :style="{ color: checkIconColor }" />
     </span>
     <div class="m-checkbox__text">
       <slot :value>

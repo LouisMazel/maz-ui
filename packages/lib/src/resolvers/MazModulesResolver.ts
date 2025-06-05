@@ -60,16 +60,16 @@ const modulesMap: Record<Modules, true> = {
  * @author @louismazel
  * @link https://maz-ui.com
  */
-export function UnpluginModulesResolver(): ResolverFunction {
+export function MazModulesResolver(): ResolverFunction {
   return (name) => {
-    if (modulesMap[name]) {
+    if (modulesMap[name] === true) {
       return {
         from: 'maz-ui',
         name,
       }
     }
 
-    if (name.startsWith('use') && composablesMap[name]) {
+    if (composablesMap[name] === true) {
       return {
         from: 'maz-ui/composables',
         name,

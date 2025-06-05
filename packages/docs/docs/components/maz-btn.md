@@ -310,13 +310,16 @@ By default, the justify is `center`
 
 <ComponentDemo>
   <div class="maz-flex maz-gap-2 maz-rounded maz-flex-wrap maz-items-center">
-    <MazBtn :left-icon="CheckIcon" size="sm">
+    <MazBtn :left-icon="MazCheck" size="sm">
       left-icon
     </MazBtn>
-    <MazBtn :right-icon="HomeIcon">
+    <MazBtn :right-icon="MazHome">
       right-icon
     </MazBtn>
-    <MazBtn fab :icon="CommandLineIcon" size="lg" />
+    <MazBtn fab :icon="MazCommandLine" size="lg" />
+    <MazBtn :left-icon="MazSpinner" size="sm" color="warning">
+      MazSpinner
+    </MazBtn>
   </div>
 
   <template #code>
@@ -392,21 +395,18 @@ Check out how [MazIcon](./maz-icon.md) works, see all available icons and downlo
 
 ```vue
 <template>
-  <MazBtn :left-icon="CheckIcon" size="sm">
+  <MazBtn :left-icon="MazCheck" size="sm">
     left-icon
   </MazBtn>
-  <MazBtn :right-icon="HomeIcon">
+  <MazBtn :right-icon="MazHome">
     right-icon
   </MazBtn>
-  <MazBtn fab :icon="CommandLineIcon" size="lg" />
+  <MazBtn fab :icon="MazCommandLine" size="lg" />
 </template>
 
 <script lang="ts" setup>
   import { MazBtn } from 'maz-ui/components'
-
-  import CheckIcon from 'maz-ui/icons/check.svg'
-  import HomeIcon from 'maz-ui/icons/home.svg'
-  import CommandLineIcon from 'maz-ui/icons/command-line.svg'
+  import { MazCheck, MazHome, MazCommandLine } from '@maz-ui/icons'
 </script>
 ```
 
@@ -415,10 +415,6 @@ Check out how [MazIcon](./maz-icon.md) works, see all available icons and downlo
 ### Use your own components
 
 ::: details View code
-
-<MazBtn :left-icon="MazSpinner" size="sm" color="theme">
-  left-icon
-</MazBtn>
 
 ```vue
 <template>
@@ -464,7 +460,8 @@ When `to` attribute is provided, the component automatically becomes a `<RouterL
 
 <script setup lang="ts">
   import { computed } from 'vue'
-  import { MazSpinner } from 'maz-ui/src/components/index'
+  import { MazCheck, MazHome, MazCommandLine } from '@maz-ui/icons'
+  import MazSpinner from 'maz-ui/src/components/MazSpinner.vue'
 
   const colors = [
     'primary',
@@ -481,9 +478,6 @@ When `to` attribute is provided, the component automatically becomes a `<RouterL
 
   const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 
-  import CheckIcon from 'maz-ui/icons/check.svg'
-  import HomeIcon from 'maz-ui/icons/home.svg'
-  import CommandLineIcon from 'maz-ui/icons/command-line.svg'
 </script>
 
 <!--@include: ./../.vitepress/generated-docs/maz-btn.doc.md-->

@@ -84,20 +84,19 @@ You can add an icon on the left and right to the link text with the `left-icon` 
 For more information about the icons, please check the [MazBtn](./maz-btn.md#icons) page.
 
 <ComponentDemo>
-  <MazLink left-icon="home" :right-icon="CheckIcon"> View product detail </MazLink>
+  <MazLink left-icon="home" :right-icon="MazCheck"> View product detail </MazLink>
 
   <template #code>
 
   ```vue
   <template>
-    <MazLink left-icon="home" :right-icon="CheckIcon">
+    <MazLink left-icon="home" :right-icon="MazHome">
       View product detail
     </MazLink>
   </template>
 
   <script lang="ts" setup>
-    import CheckIcon from 'maz-ui/icons/check.svg'
-    import HomeIcon from 'maz-ui/icons/home.svg'
+    import { MazCheck, MazHome } from '@maz-ui/icons'
   </script>
   ```
 
@@ -123,7 +122,6 @@ When you use the `autoExternal` prop, the component will have an external icon i
 </ComponentDemo>
 
 <script setup lang="ts">
-  import CheckIcon from 'maz-ui/icons/check.svg'
-  import HomeIcon from 'maz-ui/icons/home.svg'
+  import { MazCheck, MazHome } from '@maz-ui/icons'
 </script>
 <!--@include: ./../.vitepress/generated-docs/maz-link.doc.md-->

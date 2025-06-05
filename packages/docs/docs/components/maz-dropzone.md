@@ -382,7 +382,7 @@ Customize the upload request using `uploadUrl`, `requestOptions` and `transformB
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useToast } from 'maz-ui/src/composables/index'
+import { useToast } from 'maz-ui/src/composables/useToast'
 
 const files = ref<File[]>([])
 const dropzone = ref<InstanceType<typeof MazDropzone>>()
