@@ -1,27 +1,31 @@
 {
-  "name": "nuxt-module",
+  "name": "@maz-ui/nuxt",
   "version": "4.0.0-alpha.5",
   "license": "MIT",
   "type": "module",
+  "main": "./dist/module.mjs",
+  "types": "./dist/types.d.mts",
   "exports": {
-    ".": "./src/module.ts",
+    ".": {
+      "types": "./dist/types.d.mts",
+      "import": "./dist/module.mjs"
+    },
     "./*": "./*"
   },
-  "main": "./src/module.ts",
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "pnpm prepare && nuxt-module-build build --outDir=./../lib/dist/nuxt --failOnWarn=false",
+    "prepack": "nuxt-module-build build",
+    "build": "pnpm prepare && nuxt-module-build build",
     "prepare": "nuxt-module-build build --stub && nuxt-module-build prepare",
     "dev": "nuxi dev playground",
-    "dev:prepare": "pnpm prepare && nuxi prepare playground",
+    "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
     "lint": "cross-env NODE_ENV=production eslint .",
     "lint:fix": "pnpm lint --fix",
     "format": "prettier --ignore-path .gitignore . --write",
-    "test": "vitest run",
-    "test:watch": "vitest watch",
-    "typecheck": "vue-tsc --noEmit --skipLibCheck --project tsconfig.check.json"
+    "typecheck": "vue-tsc --noEmit --skipLibCheck --project tsconfig.check.json",
+    "release": "npm run lint && npm run prepack && changelogen --release && npm publish && git push --follow-tags"
   },
   "lint-staged": {
     "*": "prettier -w -u",
