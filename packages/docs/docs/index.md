@@ -137,7 +137,6 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
       </MazTabsContent>
     </MazTabs>
   </MazAnimatedElement>
-
 </section>
 
 <section class="vp-raw">
@@ -213,6 +212,75 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
   </div>
 </section>
 
+<section class="maz-my-12 vp-raw">
+  <h2 class="maz-text-2xl maz-font-bold maz-mb-8">Ecosystem</h2>
+  <div class="maz-grid maz-grid-cols-1 tab-m:maz-grid-cols-2 maz-gap-4">
+    <a href="/guide/nuxt" class="maz-flex">
+      <MazCardSpotlight class="maz-w-full" color="success" content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
+        <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between maz-w-full">
+          <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
+            🚀
+          </span>
+          <MazBadge color="success" class="maz-text-base">Package</MazBadge>
+        </div>
+        <h3 class="maz-text-base maz-font-semibold">@maz-ui/nuxt</h3>
+        <p class="dark:maz-text-gray-300 maz-text-muted maz-text-sm">
+          Official Nuxt module with auto-imports, optimized builds, and seamless SSR support. Zero configuration required.
+        </p>
+        <div class="maz-flex-1"></div>
+        <MazBtn color="theme" outline size="sm" block href="/guide/nuxt">Discover</MazBtn>
+      </MazCardSpotlight>
+    </a>
+    <a href="/guide/icons" class="maz-flex">
+      <MazCardSpotlight class="maz-w-full" color="warning" content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
+        <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between maz-w-full">
+          <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
+            🎨
+          </span>
+          <MazBadge color="warning" class="maz-text-base">Package</MazBadge>
+        </div>
+        <h3 class="maz-text-base maz-font-semibold">@maz-ui/icons</h3>
+        <p class="dark:maz-text-gray-300 maz-text-muted maz-text-sm">
+          328+ beautiful SVG icons ready for Vue. Multiple usage patterns: components, direct SVG files, or auto-import.
+        </p>
+        <div class="maz-flex-1"></div>
+        <MazBtn color="theme" outline size="sm" block href="/guide/icons">Discover</MazBtn>
+      </MazCardSpotlight>
+    </a>
+    <a href="/guide/cli" class="maz-flex">
+      <MazCardSpotlight class="maz-w-full" color="info" content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
+        <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between maz-w-full">
+          <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
+            ⚙️
+          </span>
+          <MazBadge color="info" class="maz-text-base">Package</MazBadge>
+        </div>
+        <h3 class="maz-text-base maz-font-semibold">@maz-ui/cli</h3>
+        <p class="dark:maz-text-gray-300 maz-text-muted maz-text-sm">
+          Powerful CLI tool for theme generation, color palette creation, and CSS variables management. Streamline your workflow.
+        </p>
+        <div class="maz-flex-1"></div>
+        <MazBtn color="theme" outline size="sm" block href="/guide/cli">Discover</MazBtn>
+      </MazCardSpotlight>
+    </a>
+    <a href="/guide/themes" class="maz-flex">
+      <MazCardSpotlight class="maz-w-full" color="danger" content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
+        <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between maz-w-full">
+          <span class="maz-py-1 maz-px-2 maz-bg-color-light maz-rounded-md maz-text-2xl">
+            🎭
+          </span>
+          <MazBadge color="danger" class="maz-text-base">Package</MazBadge>
+        </div>
+        <h3 class="maz-text-base maz-font-semibold">@maz-ui/themes</h3>
+        <p class="dark:maz-text-gray-300 maz-text-muted maz-text-sm">
+          Pre-built theme collections and design tokens for rapid UI development. Ready-to-use color schemes and styles.
+        </p>
+        <div class="maz-flex-1"></div>
+        <MazBtn color="theme" outline size="sm" block href="/guide/themes">Discover</MazBtn>
+      </MazCardSpotlight>
+    </a>
+  </div>
+</section>
 
 <section class="maz-mt-12 vp-raw">
   <h2 class="maz-text-2xl maz-font-bold maz-mb-8">Popular Components & Modules</h2>
