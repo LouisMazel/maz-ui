@@ -1,7 +1,7 @@
-export { AosHandler, type AosOptions, getInstance as getAosInstance, plugin as installAos } from './aos'
+export { AosHandler, type AosOptions, getAosInstance, installAos } from './aos'
 
 export * from './dialog'
 
 export * from './toaster'
 
-export { plugin as installWait, WaitHandler, instance as waitInstance } from './wait'
+export { installWait, WaitHandler, waitInstance } from './wait'

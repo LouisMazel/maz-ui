@@ -105,11 +105,14 @@ publish-prerelease:
 	git add -u && \
 	git commit -m "chore(release): bump version to $$NEW_VERSION" && \
 	git push origin HEAD && \
-	pnpm --filter maz-ui build:only && \
-	cd packages/lib && pnpm publish --access public --tag $(preid) --no-git-checks
-	pnpm --filter @maz-ui/cli build:only
-	cd ../..
-	cd packages/maz-cli && pnpm publish --access public --tag $(preid) --no-git-checks
+	pnpm --filter maz-ui build && \
+	cd packages/lib && pnpm publish --access public --tag $(preid) --no-git-checks && \
+	cd ../.. && \
+	cd packages/cli && pnpm publish --access public --tag $(preid) --no-git-checks && \
+	cd ../.. && \
+	cd packages/nuxt-module && pnpm publish --access public --tag $(preid) --no-git-checks && \
+	cd ../.. && \
+	cd packages/icons && pnpm publish --access public --tag $(preid) --no-git-checks
 
 # CLI
 create-component-files:

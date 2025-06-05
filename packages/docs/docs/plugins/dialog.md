@@ -139,7 +139,7 @@ The buttons property allows you to display custom buttons in the dialog and repl
             text: 'Cancel 😱',
             color: 'theme',
             outline: true,
-            action: () => {
+            onClick: () => {
               toast.info('Custom button clicked', {
                 position: 'bottom',
               })
@@ -148,7 +148,7 @@ The buttons property allows you to display custom buttons in the dialog and repl
           {
             text: 'Confirm 🚀',
             color: 'theme',
-            action: () => {
+            onClick: () => {
               toast.success('Custom button 2 clicked', {
                 position: 'bottom',
               })
@@ -402,7 +402,7 @@ type DialogOptions = Partial<Omit<MazDialogPromiseProps, 'modelValue'>> & {
           text: 'Cancel 😱',
           color: 'theme',
           outline: true,
-          action: () => {
+          onClick: () => {
             toast.info('Custom button clicked', {
               position: 'bottom',
             })
@@ -411,7 +411,7 @@ type DialogOptions = Partial<Omit<MazDialogPromiseProps, 'modelValue'>> & {
         {
           text: 'Confirm 🚀',
           color: 'theme',
-          action: () => {
+          onClick: () => {
             toast.success('Custom button 2 clicked', {
               position: 'bottom',
             })

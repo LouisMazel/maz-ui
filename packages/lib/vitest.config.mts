@@ -5,9 +5,10 @@ import Vue from '@vitejs/plugin-vue'
 import SvgLoader from 'vite-svg-loader'
 
 import { coverageConfigDefaults, defaultExclude, defineConfig } from 'vitest/config'
+import { ViteBuildIcons } from './build'
 
 export default defineConfig({
-  plugins: [Vue(), SvgLoader()],
+  plugins: [Vue(), SvgLoader(), ViteBuildIcons({ testing: true })],
   server: {
     port: 1111,
   },
