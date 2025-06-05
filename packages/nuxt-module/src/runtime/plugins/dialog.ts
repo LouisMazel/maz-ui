@@ -1,5 +1,5 @@
 import { DialogHandler } from 'maz-ui/plugins'
-import { defineNuxtPlugin } from '#imports'
+import { defineNuxtPlugin } from 'nuxt/app'
 
 export default defineNuxtPlugin(({ vueApp, $config }) => {
   const dialogOptions = $config.public.mazUi?.injectUseDialog
