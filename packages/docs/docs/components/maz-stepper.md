@@ -408,11 +408,9 @@ type Steps = Array<{
 
 <script setup lang="ts">
   import { ref } from 'vue'
+
   const currentStep = ref(2)
   const address = ref('20 Cooper Square')
-
-  import Icon from 'maz-ui/icons/arrow-up.svg'
-
   const email = ref()
   const password = ref()
 </script>

@@ -6,7 +6,7 @@ import type { ComponentResolver } from 'unplugin-vue-components/types'
  * @author @louismazel
  * @link https://maz-ui.com
  */
-export function UnpluginDirectivesResolver(): ComponentResolver {
+export function MazDirectivesResolver(): ComponentResolver {
   return {
     type: 'directive',
     resolve: (name: string) => {

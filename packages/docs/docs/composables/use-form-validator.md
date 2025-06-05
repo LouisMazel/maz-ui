@@ -780,7 +780,9 @@ type FormFieldOptions<T> = {
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import { useFormValidator, useFormField, useToast } from 'maz-ui/src/composables/index'
+  import { useFormValidator } from 'maz-ui/src/composables/useFormValidator'
+  import { useFormField } from 'maz-ui/src/composables/useFormField'
+  import { useToast } from 'maz-ui/src/composables/useToast'
   import { sleep } from 'maz-ui'
   import { string, object, nonEmpty, pipe, number, minValue, maxValue, boolean, literal, minLength } from 'valibot'
 

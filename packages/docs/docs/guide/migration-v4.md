@@ -579,56 +579,6 @@ grep -r "from ['\"]maz-ui['\"]" --include="*.vue" --include="*.ts" .
 npm run build:analyze
 ```
 
-## 🔧 Bundler Configuration
-
-### Vite
-
-```javascript
-// vite.config.js
-export default {
-  resolve: {
-    alias: {
-      '@maz-ui': 'maz-ui/src'
-    }
-  },
-  optimizeDeps: {
-    include: [
-      'maz-ui/helpers',
-      'maz-ui/composables'
-    ]
-  }
-}
-```
-
-### Webpack
-
-```javascript
-// webpack.config.js
-module.exports = {
-  resolve: {
-    alias: {
-      '@maz-ui/components': 'maz-ui/dist/components',
-      '@maz-ui/composables': 'maz-ui/dist/composables',
-      '@maz-ui/helpers': 'maz-ui/dist/helpers'
-    }
-  }
-}
-```
-
-### Nuxt 3
-
-```javascript
-// nuxt.config.ts
-export default defineNuxtConfig({
-  modules: ['maz-ui/nuxt'],
-  mazUi: {
-    injectComponents: true,
-    injectCss: true,
-    // ... other options
-  }
-})
-```
-
 ## ✅ Complete Migration Checklist
 
 ### Dependencies

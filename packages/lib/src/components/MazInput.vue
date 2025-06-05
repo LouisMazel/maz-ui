@@ -2,7 +2,7 @@
 import type { IconComponent } from '@maz-ui/icons'
 import type { HTMLAttributes } from 'vue'
 import type { MazColor, MazSize } from './types'
-import { Check, Eye, EyeSlash } from '@maz-ui/icons'
+import { MazCheck, MazEye, MazEyeSlash } from '@maz-ui/icons'
 import {
   computed,
   defineAsyncComponent,
@@ -395,8 +395,8 @@ function emitInputEvent(event: Event) {
           v-if="isPasswordType" color="transparent" tabindex="-1" size="mini"
           @click.stop="hasPasswordVisible = !hasPasswordVisible"
         >
-          <EyeSlash v-if="hasPasswordVisible" class="maz-text-xl maz-text-muted" />
-          <Eye v-else class="maz-text-xl maz-text-muted" />
+          <MazEyeSlash v-if="hasPasswordVisible" class="maz-text-xl maz-text-muted" />
+          <MazEye v-else class="maz-text-xl maz-text-muted" />
         </MazBtn>
 
         <!--
@@ -407,7 +407,7 @@ function emitInputEvent(event: Event) {
             color="transparent" :disabled="disabled" tabindex="-1" :loading="validButtonLoading"
             class="m-input-valid-button" size="mini" type="submit"
           >
-            <Check class="maz-text-2xl maz-text-normal" />
+            <MazCheck class="maz-text-2xl maz-text-normal" />
           </MazBtn>
         </slot>
       </div>

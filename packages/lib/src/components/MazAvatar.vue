@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
 import type { MazColor } from './types'
-import { Pencil } from '@maz-ui/icons'
+import { MazPencil } from '@maz-ui/icons'
 import { computed, defineAsyncComponent } from 'vue'
 
 const props = withDefaults(defineProps<MazAvatarProps>(), {
@@ -195,7 +195,7 @@ function handleImageError(event: Event) {
         @click="$emit('click', $event)"
       >
         <slot v-if="!hideClickableIcon" name="icon">
-          <Pencil class="m-avatar__button__icon" />
+          <MazPencil class="m-avatar__button__icon" />
         </slot>
       </button>
     </div>

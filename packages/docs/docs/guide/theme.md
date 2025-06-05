@@ -11,7 +11,7 @@ You must override `--maz-***` [CSS variables](#list-of-css-variables)
 
 ## Generate your theme with the CLI included
 
-<NpmBadge package="@mazui/cli"></NpmBadge>
+<NpmBadge package="@maz-ui/cli"></NpmBadge>
 
 ### Add maz-ui config file
 
@@ -22,7 +22,7 @@ All input colors can be in HEX, RGB, RGBA, HSL, HSLA and named formats.
 No theme variables are required, you can put only one if you wish
 
 ```ts
-import { defineConfig } from '@mazui/cli'
+import { defineConfig } from '@maz-ui/cli'
 
 export default defineConfig({
   outputCssFilePath: './css/maz-ui-variables.css',

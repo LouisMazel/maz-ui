@@ -2,7 +2,7 @@
 import type { NormalizeStringOptions } from '../helpers/normalizeString'
 import type { MazInputProps } from './MazInput.vue'
 import type { MazColor } from './types'
-import { MagnifyingGlass, NoSymbol } from '@maz-ui/icons'
+import { MazMagnifyingGlass, MazNoSymbol } from '@maz-ui/icons'
 import { computed, defineAsyncComponent, ref, watch } from 'vue'
 import { normalizeString } from '../helpers/normalizeString'
 import MazCardSpotlight from './MazCardSpotlight.vue'
@@ -131,7 +131,7 @@ function updateQuery(value?: string) {
         :model-value="internalQuery"
         v-bind="search"
         :color
-        :left-icon="search.leftIcon ?? MagnifyingGlass"
+        :left-icon="search.leftIcon ?? MazMagnifyingGlass"
         :debounce="search.debounce ?? 300"
         :label="search?.label"
         :name="search?.name ?? 'search'"
@@ -150,7 +150,7 @@ function updateQuery(value?: string) {
         <!-- @slot use this slot to customize the no results area -->
         <slot name="no-results">
           <div class="no-results-content">
-            <NoSymbol class="no-results-icon" />
+            <MazNoSymbol class="no-results-icon" />
 
             <span class="no-results-text">
               <!-- @slot use this slot to customize the no results message -->

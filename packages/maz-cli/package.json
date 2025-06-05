@@ -1,5 +1,5 @@
 {
-  "name": "@mazui/cli",
+  "name": "@maz-ui/cli",
   "type": "module",
   "version": "4.0.0-alpha.5",
   "description": "CLI of Maz-ui",

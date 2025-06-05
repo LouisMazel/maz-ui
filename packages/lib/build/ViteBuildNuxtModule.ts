@@ -3,7 +3,7 @@ import type { Plugin } from 'vite'
 import { execPromise } from './utils/exec-promise'
 import { logger } from './utils/logger'
 
-export function BuildNuxtModule(): Plugin {
+export function ViteBuildNuxtModule(): Plugin {
   return {
     name: 'vite-build-nuxt-module',
     async buildEnd() {

@@ -71,11 +71,16 @@ export function useTimer({ timeout = 1000, callback, remainingTimeUpdate = 200, 
     pause()
   }
 
+  function reset() {
+    remainingTime.value = internalTimeout.value
+  }
+
   return {
     remainingTime,
     start,
     pause,
     resume,
     stop,
+    reset,
   }
 }

@@ -52,11 +52,11 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
         size="lg"
         href="/guide/getting-started"
         class="maz-w-full mob-l:maz-w-auto maz-font-semibold"
-        :left-icon="PlayIcon"
+        :left-icon="MazPlay"
       >
         Get Started
       </MazBtn>
-      <MazBtn v-if="typeof starCount === 'number'" href="https://github.com/LouisMazel/maz-ui" target="blank" outline color="theme" left-icon="github" size="lg" :right-icon="StarIcon" class="maz-w-full mob-l:maz-w-auto maz-font-semibold">
+      <MazBtn v-if="typeof starCount === 'number'" href="https://github.com/LouisMazel/maz-ui" target="blank" outline color="theme" left-icon="github" size="lg" :right-icon="MazStar" class="maz-w-full mob-l:maz-w-auto maz-font-semibold">
         <MazAnimatedCounter :delay="1250" :count="starCount" class="maz-text-xl maz-pl-2" />
       </MazBtn>
     </div>
@@ -396,8 +396,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import StarIcon from 'maz-ui/icons/star-solid.svg'
-  import PlayIcon from 'maz-ui/icons/play.svg'
+  import { MazStar, MazPlay } from '@maz-ui/icons'
 
   async function getStarCount() {
     try {

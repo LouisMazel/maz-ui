@@ -33,12 +33,20 @@ export default defineConfig({
     ViteGenerateIconsComponentsEntry(),
   ],
   build: {
+    emptyOutDir: false,
+    minify: true,
+    sourcemap: false,
+    cssMinify: true,
+    terserOptions: {
+      compress: true,
+    },
     lib: {
       entry: {
         'index': resolver('./src/index.ts'),
+        'resolvers': resolver('./src/resolvers.ts')
       },
       fileName: (format, name) => format === 'es' ? `${name}.mjs` : `${name}.cjs`,
-      name: 'MazIcons',
+      name: '@maz-ui/icons',
     },
     rollupOptions: {
       external,
@@ -65,12 +73,6 @@ export default defineConfig({
           minifyInternalExports: true,
         },
       ],
-    },
-    emptyOutDir: true,
-    sourcemap: true,
-    minify: true,
-    terserOptions: {
-      compress: true,
     },
   },
 })

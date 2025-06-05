@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { MazBtnProps } from './MazBtn.vue'
 import type { MazColor, MazSize } from './types'
-import { ChevronDoubleLeft, ChevronLeft, EllipsisHorizontal } from '@maz-ui/icons'
+import { MazChevronDoubleLeft, MazChevronLeft, MazEllipsisHorizontal } from '@maz-ui/icons'
 import { computed } from 'vue'
 import MazBtn from './MazBtn.vue'
 
@@ -149,7 +149,7 @@ function setPageNumber(page: number) {
             -->
             <slot name="first-page-sr" :page="1">First Page, page 1</slot>
           </span>
-          <ChevronDoubleLeft />
+          <MazChevronDoubleLeft />
         </MazBtn>
       </li>
 
@@ -172,7 +172,7 @@ function setPageNumber(page: number) {
               Previous Page, page {{ previousPage }}
             </slot>
           </span>
-          <ChevronLeft />
+          <MazChevronLeft />
         </MazBtn>
       </li>
 
@@ -210,7 +210,7 @@ function setPageNumber(page: number) {
 
         <template v-else-if="page.divider">
           <div v-bind="buttonsPropsMerged" class="flex p-2 flex-center">
-            <EllipsisHorizontal />
+            <MazEllipsisHorizontal />
           </div>
         </template>
       </li>
@@ -232,7 +232,7 @@ function setPageNumber(page: number) {
             -->
             <slot name="next-page-sr" :page="nextPage">Next Page, page {{ nextPage }}</slot>
           </span>
-          <ChevronLeft class="-maz-rotate-180" />
+          <MazChevronLeft class="-maz-rotate-180" />
         </MazBtn>
       </li>
 
@@ -253,7 +253,7 @@ function setPageNumber(page: number) {
             -->
             <slot name="last-page-sr" :page="totalPages">Last Page, page {{ totalPages }}</slot>
           </span>
-          <ChevronDoubleLeft class="-maz-rotate-180" />
+          <MazChevronDoubleLeft class="-maz-rotate-180" />
         </MazBtn>
       </li>
     </ul>
