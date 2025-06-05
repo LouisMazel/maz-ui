@@ -1,3 +1,7 @@
+import type { IconComponent } from '@maz-ui/icons'
+import type { RouteLocationRaw } from 'vue-router'
+import type { MazBtnProps } from '../../components/index.ts'
+
 export type ToasterPosition =
   | 'top'
   | 'top-right'
@@ -6,26 +10,79 @@ export type ToasterPosition =
   | 'bottom-right'
   | 'bottom-left'
 
-export interface ToasterLink {
-  href: string
+export interface ToasterButton extends MazBtnProps {
+  /**
+   * If the toast is closed when the button is clicked
+   * @default false
+   */
+  closeToast?: boolean
+  /**
+   * The text of the button
+   */
   text?: string
-  /** @default _self */
+  /**
+   * The target of the button
+   * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#attr-target
+   * @default _self
+   */
   target?: string
-  closeToast?: boolean
-}
-
-export interface ToasterAction {
-  func: (..._arguments: unknown[]) => unknown
-  text: string
-  closeToast?: boolean
+  /**
+   * The method to call when the button is clicked
+   */
+  action?: () => unknown
+  /**
+   * The route to navigate to when the button is clicked
+   * (only with `vue-router`)
+   */
+  to?: RouteLocationRaw
+  /**
+   * The URL to navigate to when the button is clicked
+   * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#attr-href
+   */
+  href?: string
+  /**
+   * The size of the button
+   * @default 'xs'
+   */
+  size?: MazBtnProps['size']
+  /**
+   * The color of the button
+   * @default color of the toast
+   */
+  color?: MazBtnProps['color']
 }
 
 export interface ToasterOptions {
+  /**
+   * If the message is HTML
+   * @default false
+   */
+  html?: boolean
+  /**
+   * The type of the toast
+   * @default 'theme'
+   */
+  type?: 'theme' | 'success' | 'info' | 'warning' | 'danger'
+  /**
+   * The maximum number of toasts to display
+   * @default 5
+   */
+  maxToasts?: number | boolean
+  /**
+   * If the toast is queued, it will be displayed in the order of the toasts
+   * @default false
+   */
+  queue?: boolean
   /**
    * The position of the toast on the screen
    * @default 'bottom-right'
    */
   position?: ToasterPosition
+  /**
+   * If the toast is paused on hover, it will be paused when the mouse is over the toast
+   * @default true
+   */
+  pauseOnHover?: boolean
   /**
    * The timeout is in ms, it's the time before the toast is automatically closed
    * if set to `false`, the toast will not be closed automatically
@@ -33,7 +90,7 @@ export interface ToasterOptions {
    */
   timeout?: number | boolean
   /**
-   * If the toast is persistent, it can't be closed by user interaction (only on timeout or programmatically)
+   * If the toast is persistent, the user should close it manually
    * @default false
    */
   persistent?: boolean
@@ -41,27 +98,15 @@ export interface ToasterOptions {
    * Display an icon in the toast
    * @default true
    */
-  icon?: boolean
-  /**
-   * The link will be displayed as a button in the toast
-   * @default undefined
-   */
-  link?: {
-    href: string
-    text?: string
-    /** @default _self */
-    target?: string
-    /** @default false */
-    closeToast?: boolean
-  }
+  icon?: false | IconComponent
   /**
    * The action will be displayed as a button in the toast
    * @default undefined
    */
-  action?: {
-    func: (..._arguments: unknown[]) => unknown
-    text: string
-    /** @default false */
-    closeToast?: boolean
-  }
+  button?: ToasterButton
+  /**
+   * The actions will be displayed as a buttons in the toast
+   * @default undefined
+   */
+  buttons?: ToasterButton[]
 }
