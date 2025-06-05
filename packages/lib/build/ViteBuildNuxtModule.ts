@@ -9,7 +9,7 @@ export function ViteBuildNuxtModule(): Plugin {
     async buildEnd() {
       try {
         // await execPromise('pnpm -F nuxt-module typecheck')
-        await execPromise('pnpm -F nuxt-module build')
+        await execPromise('pnpm -F @maz-ui/nuxt build')
 
         logger.success('[BuildNuxtModule] ✅ nuxt module built')
       }

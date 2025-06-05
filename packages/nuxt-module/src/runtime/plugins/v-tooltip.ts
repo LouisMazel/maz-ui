@@ -1,5 +1,5 @@
 import { vTooltipInstall } from 'maz-ui/directives'
-import { defineNuxtPlugin } from '#imports'
+import { defineNuxtPlugin } from 'nuxt/app'
 
 export default defineNuxtPlugin(({ vueApp, $config }) => {
   const installVTooltip = $config.public.mazUi?.installVTooltip
