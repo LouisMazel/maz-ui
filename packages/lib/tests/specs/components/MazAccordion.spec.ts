@@ -2,6 +2,12 @@ import MazAccordion from '@components/MazAccordion.vue'
 import MazCardSpotlight from '@components/MazCardSpotlight.vue'
 import { mount } from '@vue/test-utils'
 
+vi.mock('@maz-ui/icons', () => ({
+  MazPlus: {
+    template: '<div>+</div>',
+  },
+}))
+
 describe('mazAccordion', () => {
   it('renders with default props', async () => {
     const wrapper = mount(MazAccordion)
@@ -74,7 +80,6 @@ describe('mazAccordion', () => {
     })
 
     await wrapper.vm.$nextTick()
-
     const step = wrapper.findComponent(MazCardSpotlight)
 
     await step.find('button').trigger('click')
