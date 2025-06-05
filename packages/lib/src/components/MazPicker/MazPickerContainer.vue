@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Color } from '../types'
+import type { MazColor } from '../types'
 import type { MazPickerShortcut, MazPickerValue } from './types'
 
 import type { DateTimeFormatOptions } from './utils'
@@ -32,7 +32,7 @@ const {
 } = defineProps<{
   modelValue: MazPickerValue | undefined
   calendarDate: string
-  color: Color
+  color: MazColor
   locale: string
   hideHeader: boolean
   firstDayOfWeek: number

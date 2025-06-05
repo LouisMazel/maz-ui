@@ -1,6 +1,6 @@
 <script lang="ts" setup generic="T extends string | number | boolean">
 import type { HTMLAttributes } from 'vue'
-import type { Color, Size } from './types'
+import type { MazColor, MazSize } from './types'
 import { computed, ref } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 
@@ -20,9 +20,9 @@ export interface MazRadioProps<T = string | number | boolean> {
   /** The label of the radio */
   label?: string
   /** The color of the radio */
-  color?: Color
+  color?: MazColor
   /** The size of the radio */
-  size?: Size
+  size?: MazSize
   /** The disabled state of the radio */
   disabled?: boolean
   /** Whether there is an error with the input. */

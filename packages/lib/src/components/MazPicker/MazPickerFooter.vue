@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import type { Color } from '../types'
+import type { MazColor } from '../types'
 
-import CheckIcon from '../../../icons/check.svg'
+import CheckIcon from '@maz-ui/icons/svg/check.svg'
 import MazBtn from '../MazBtn.vue'
 
 defineProps<{
-  color: Color
+  color: MazColor
 }>()
 
 defineEmits(['close'])

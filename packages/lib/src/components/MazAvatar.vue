@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
-import type { Color } from './types'
-
+import type { MazColor } from './types'
+import { Pencil } from '@maz-ui/icons'
 import { computed, defineAsyncComponent } from 'vue'
 
 const props = withDefaults(defineProps<MazAvatarProps>(), {
@@ -33,7 +33,6 @@ const emits = defineEmits<{
 }>()
 
 const MazLazyImg = defineAsyncComponent(() => import('./MazLazyImg.vue'))
-const PencilIcon = defineAsyncComponent(() => import('../../icons/pencil.svg'))
 
 export interface MazAvatarProps {
   /** The style of the component */
@@ -69,7 +68,7 @@ export interface MazAvatarProps {
   /** Remove the loader */
   hideLoader?: boolean
   /** The color of the clickable button */
-  buttonColor?: Color
+  buttonColor?: MazColor
   /** Remove the icon on hover when component is clickable */
   hideClickableIcon?: boolean
   /** Number of letters to display in the round text */
@@ -196,7 +195,7 @@ function handleImageError(event: Event) {
         @click="$emit('click', $event)"
       >
         <slot v-if="!hideClickableIcon" name="icon">
-          <PencilIcon class="m-avatar__button__icon" />
+          <Pencil class="m-avatar__button__icon" />
         </slot>
       </button>
     </div>

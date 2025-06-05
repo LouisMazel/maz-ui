@@ -1,7 +1,7 @@
 <script lang="ts" setup>
+import ChevronLeft from '@maz-ui/icons/svg/chevron-left.svg'
 import dayjs from 'dayjs'
 import { computed } from 'vue'
-import ChevronLeftIcon from '../../../icons/chevron-left.svg'
 
 import { capitalize } from '../../formatters/capitalize'
 import { date } from '../../formatters/date'
@@ -72,7 +72,7 @@ function nextMonth() {
       {{ yearLabel }}
     </MazBtn>
     <MazBtn size="xs" color="transparent" type="button" @click="nextMonth">
-      <ChevronLeftIcon class="maz-rotate-180 maz-text-lg" />
+      <ChevronLeft class="maz-rotate-180 maz-text-lg" />
     </MazBtn>
   </div>
 </template>

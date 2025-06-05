@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { Dayjs } from 'dayjs'
 import type { PropType } from 'vue'
-import type { Color } from '../types'
+import type { MazColor } from '../types'
 import type { MazPickerValue } from './types'
 import type { DateTimeFormatOptions } from './utils'
 import dayjs from 'dayjs'
@@ -23,7 +23,7 @@ const props = defineProps({
     required: true,
   },
   locale: { type: String, required: true },
-  color: { type: String as PropType<Color>, required: true },
+  color: { type: String as PropType<MazColor>, required: true },
   isOpen: { type: Boolean, required: true },
   hasDate: { type: Boolean, required: true },
   minuteInterval: { type: Number, required: true },

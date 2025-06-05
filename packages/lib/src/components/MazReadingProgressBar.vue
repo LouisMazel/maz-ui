@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
-import type { Color } from './types'
+import type { MazColor } from './types'
 import {
   computed,
 
@@ -22,7 +22,7 @@ export interface MazReadingProgressBarProps {
    * Color of the progress bar
    * @default primary
    */
-  color?: Color
+  color?: MazColor
   /**
    * Selector of the element to teleport the progress bar
    * @default body

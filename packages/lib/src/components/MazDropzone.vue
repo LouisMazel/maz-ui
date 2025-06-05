@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import type { MazBtnProps } from './MazBtn.vue'
 import type { MazSpinnerProps } from './MazSpinner.vue'
-import type { Color } from './types'
+import type { MazColor } from './types'
+import { CheckCircle, Trash, XCircle } from '@maz-ui/icons'
 import { computed, defineAsyncComponent, onBeforeMount, ref } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import { useDropZone } from './../composables/useDropzone'
@@ -91,10 +92,6 @@ const emits = defineEmits<{
 
 const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
 
-const TrashIcon = defineAsyncComponent(() => import('./../../icons/trash.svg'))
-const CheckCircleIcon = defineAsyncComponent(() => import('./../../icons/check-circle.svg'))
-const XCircleIcon = defineAsyncComponent(() => import('./../../icons/x-circle.svg'))
-
 export type MazDropzoneErrorCode = 'FILE_SIZE_EXCEEDED' | 'MAX_FILES_EXCEEDED' | 'FILE_TYPE_NOT_ALLOWED' | 'FILE_DUPLICATED' | 'FILE_UPLOAD_ERROR' | 'NO_FILES_TO_UPLOAD' | 'FILE_UPLOAD_ERROR_MULTIPLE' | 'NO_URL' | 'FILE_SIZE_TOO_SMALL'
 
 // eslint-disable-next-line ts/consistent-type-definitions
@@ -158,7 +155,7 @@ export type MazDropzoneProps = {
    * Main color of the component
    * @default 'primary'
    */
-  color?: Color
+  color?: MazColor
   /**
    * MazBtn props - https://maz-ui.com/components/maz-btn#props
    * @default {}
@@ -720,8 +717,8 @@ defineExpose({
             <div class="m-dropzone__icon-container">
               <Transition name="icon-scale">
                 <MazSpinner v-if="file.uploading" :color class="m-dropzone__spinner" v-bind="spinnerProps" />
-                <CheckCircleIcon v-else-if="file.success" class="m-dropzone__success-icon" />
-                <XCircleIcon v-else-if="file.error" class="m-dropzone__error-icon" />
+                <CheckCircle v-else-if="file.success" class="m-dropzone__success-icon" />
+                <XCircle v-else-if="file.error" class="m-dropzone__error-icon" />
                 <MazIcon v-else :name="getFileIcon(file)" class="m-dropzone__file-icon" />
               </Transition>
             </div>
@@ -734,7 +731,7 @@ defineExpose({
               <MazBtn
                 v-if="!file.uploading && !file.success"
                 size="xs"
-                :icon="TrashIcon"
+                :icon="Trash"
                 :disabled
                 :color
                 v-bind="removeFileBtnProps"

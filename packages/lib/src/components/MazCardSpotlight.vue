@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { HTMLAttributes, StyleValue } from 'vue'
-import type { Color } from './types'
+import type { MazColor } from './types'
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 
 export interface MazCardSpotlightProps {
@@ -8,7 +8,7 @@ export interface MazCardSpotlightProps {
    * The color of the component.
    * @default primary
    */
-  color?: Color
+  color?: MazColor
   /**
    * Remove the elevation of the component
    * @default false

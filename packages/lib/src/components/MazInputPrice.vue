@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { FilterCurrencyOptions } from '../formatters/currency'
-import { computed, defineAsyncComponent, nextTick, onMounted, ref, watch } from 'vue'
+import { Banknotes } from '@maz-ui/icons'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { currency as currencyFilter } from '../formatters/currency'
 import MazInput from './MazInput.vue'
 
@@ -20,8 +21,6 @@ const emits = defineEmits<{
   'blur': [value: Event]
   'focus': [value: Event]
 }>()
-
-const BanknotesIcon = defineAsyncComponent(() => import('../../icons/banknotes.svg'))
 
 export interface MazInputPriceProps {
   /** @model The value of the input */
@@ -140,7 +139,7 @@ function updateInternalValue(value?: string | number) {
   >
     <template #left-icon>
       <slot v-if="!noIcon" name="left-icon">
-        <BanknotesIcon class="maz-text-xl" />
+        <Banknotes class="maz-text-xl" />
       </slot>
     </template>
   </MazInput>

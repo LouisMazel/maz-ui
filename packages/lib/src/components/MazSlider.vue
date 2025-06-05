@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { CSSProperties } from 'vue'
-import type { Color } from './types'
+import type { MazColor } from './types'
 import {
   computed,
 
@@ -32,7 +32,7 @@ export interface MazSliderProps {
   /** become a logarithmic slider (exponential) */
   log?: boolean
   /** main slider color */
-  color?: Color
+  color?: MazColor
   /** disables cursor animation when active */
   noCursorAnim?: boolean
 }

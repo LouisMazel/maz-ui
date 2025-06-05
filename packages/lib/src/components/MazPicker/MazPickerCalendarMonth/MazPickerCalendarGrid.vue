@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { Dayjs } from 'dayjs'
 import type { PropType } from 'vue'
-import type { Color } from '../../types'
+import type { MazColor } from '../../types'
 import type { MazPickerPartialRangeValue, MazPickerValue } from '../types'
 import dayjs from 'dayjs'
 import { computed, ref, watch } from 'vue'
@@ -19,7 +19,7 @@ const props = defineProps({
   hasTime: { type: Boolean, required: true },
   locale: { type: String, required: true },
   firstDayOfWeek: { type: Number, required: true },
-  color: { type: String as PropType<Color>, required: true },
+  color: { type: String as PropType<MazColor>, required: true },
   minDate: { type: String, default: undefined },
   maxDate: { type: String, default: undefined },
   disabledWeekly: { type: Array as PropType<number[]>, required: true },
@@ -119,7 +119,7 @@ function isLastDay(day: Dayjs): boolean {
   return false
 }
 
-function getDayButtonColor(date: Dayjs): Color {
+function getDayButtonColor(date: Dayjs): MazColor {
   const value = props.modelValue
 
   if (typeof value === 'object') {
