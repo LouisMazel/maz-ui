@@ -31,7 +31,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build Lib
+      - name: Build Cli
         run: pnpm --filter @maz-ui/cli build
 
       - name: Publish package to npm registry

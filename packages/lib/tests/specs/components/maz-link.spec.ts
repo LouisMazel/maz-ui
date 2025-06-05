@@ -37,7 +37,7 @@ describe('mazLink', () => {
     expect(wrapper.attributes('id')).toBe('link')
     expect(wrapper.attributes('target')).toBe('_blank')
     expect(wrapper.text()).toBe('Link')
-    expect(wrapper.find('external-icon-stub').exists()).toBe(true)
+    expect(wrapper.find('async-component-wrapper-stub').exists()).toBe(true)
     expect(wrapper.find('maz-icon-stub').exists()).toBe(true)
     const icons = wrapper.findAll('maz-icon-stub')
     expect(icons.at(0)?.attributes('name')).toBe('home')
