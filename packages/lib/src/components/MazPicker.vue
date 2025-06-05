@@ -3,7 +3,7 @@ import type { HTMLAttributes } from 'vue'
 import type { MazPickerShortcut, MazPickerValue } from './MazPicker/types'
 import type { DateTimeFormatOptions } from './MazPicker/utils'
 import type { MazColor, MazPosition } from './types'
-import ChevronDownIcon from '@maz-ui/icons/svg/chevron-down.svg'
+import MazChevronDownIcon from '@maz-ui/icons/svg/chevron-down.svg'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import isBetween from 'dayjs/plugin/isBetween'
@@ -665,7 +665,7 @@ watch(
           class="m-picker__button"
           @click="isFocused = !isFocused"
         >
-          <ChevronDownIcon class="m-picker__button__chevron maz-text-lg" />
+          <MazChevronDownIcon class="m-picker__button__chevron maz-text-lg" />
         </button>
       </template>
     </MazInput>

@@ -1,3 +1,3 @@
-export * from './UnpluginDirectivesResolver'
-export * from './UnpluginModulesResolver'
-export * from './UnpluginVueComponentsResolver'
+export * from './MazComponentsResolver'
+export * from './MazDirectivesResolver'
+export * from './MazModulesResolver'

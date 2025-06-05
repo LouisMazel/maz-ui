@@ -4,7 +4,7 @@ import { copyAndTransformComponentsTypesFiles } from './copy-components-types'
 import { execPromise } from './utils/exec-promise'
 import { logger } from './utils/logger'
 
-export function CopyComponentTypes(): Plugin {
+export function ViteCopyComponentTypes(): Plugin {
   return {
     name: 'vite-copy-component-types',
     async writeBundle() {

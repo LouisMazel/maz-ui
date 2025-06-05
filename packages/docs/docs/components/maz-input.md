@@ -215,16 +215,16 @@ Check out how [MazIcon](./maz-icon.md) works, see all available icons and downlo
   <MazInput
     v-model="inputValue"
     label="label icons"
-    :left-icon="BanknotesIcon"
-    :right-icon="UserIcon"
+    :left-icon="MazBanknotes"
+    :right-icon="MazUser"
   />
 </template>
 
 <script lang="ts" setup>
   import { ref } from 'vue'
   import { MazInput } from 'maz-ui/components'
-  import BanknotesIcon from 'maz-ui/icons/banknotes.svg'
-  import UserIcon from 'maz-ui/icons/user.svg'
+  import MazBanknotes from '@maz-ui/svg/banknotes.svg'
+  import MazUser from '@maz-ui/svg/user.svg'
 
   const inputValue = ref('value')
 </script>

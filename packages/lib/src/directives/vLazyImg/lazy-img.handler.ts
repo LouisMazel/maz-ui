@@ -32,7 +32,7 @@ export class LazyImg {
   }
 
   private async loadErrorPhoto() {
-    const { default: photo } = await import('../../../icons/no-photography.svg?url')
+    const { default: photo } = await import('@maz-ui/icons/svg/no-photography.svg?url')
     return photo
   }
 

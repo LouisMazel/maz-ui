@@ -1,7 +1,7 @@
 <script lang="ts" setup generic="T extends string | number | boolean">
 import type { StyleValue } from 'vue'
 import type { MazColor } from './types'
-import { Check } from '@maz-ui/icons'
+import { MazCheck } from '@maz-ui/icons'
 import { ref } from 'vue'
 
 export type MazRadioButtonsOption<T = string | number | boolean> = {
@@ -172,7 +172,7 @@ function onFocus(index: number, event: FocusEvent) {
             ]"
           >
             <Transition name="maz-radio-buttons-scale">
-              <Check v-show="isSelected(option.value)" class="maz-size-full" />
+              <MazCheck v-show="isSelected(option.value)" class="maz-size-full" />
             </Transition>
           </span>
         </div>

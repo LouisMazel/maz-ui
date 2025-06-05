@@ -1,8 +1,6 @@
-import type { Config } from 'tailwindcss'
-import tailwindConfig from 'maz-ui/tailwindcss/tailwind.config.js'
+import { defineMazTailwindConfig } from 'maz-ui/tailwindcss/tailwind.config.js'
 
-export default <Config>{
-  presets: [tailwindConfig],
+export default defineMazTailwindConfig({
   prefix: 'maz-',
   content: [
     './docs/.vitepress/**/*.{js,ts,vue}',
@@ -10,4 +8,4 @@ export default <Config>{
     './../lib/src/components/**/*.vue',
     './../lib/src/modules/**/*.vue',
   ],
-}
+})

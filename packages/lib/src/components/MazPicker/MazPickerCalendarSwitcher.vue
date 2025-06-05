@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import ChevronLeft from '@maz-ui/icons/svg/chevron-left.svg'
+import { MazChevronLeft } from '@maz-ui/icons'
 import dayjs from 'dayjs'
 import { computed } from 'vue'
 
@@ -51,7 +51,7 @@ function nextMonth() {
 <template>
   <div class="m-picker-calendar-switcher">
     <MazBtn size="xs" color="transparent" type="button" @click="previousMonth">
-      <ChevronLeftIcon class="maz-text-lg" />
+      <MazChevronLeft class="maz-text-lg" />
     </MazBtn>
     <MazBtn
       size="sm"
@@ -72,7 +72,7 @@ function nextMonth() {
       {{ yearLabel }}
     </MazBtn>
     <MazBtn size="xs" color="transparent" type="button" @click="nextMonth">
-      <ChevronLeft class="maz-rotate-180 maz-text-lg" />
+      <MazChevronLeft class="maz-rotate-180 maz-text-lg" />
     </MazBtn>
   </div>
 </template>

@@ -4,7 +4,7 @@ import type { HTMLAttributes } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
 import type { MazLinkProps } from './MazLink.vue'
 import type { MazColor, MazPosition, MazSize } from './types'
-import { ChevronDown } from '@maz-ui/icons'
+import { MazChevronDown } from '@maz-ui/icons'
 import { computed, defineAsyncComponent, ref, watch } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import { vClickOutside } from '../directives/vClickOutside'
@@ -372,7 +372,7 @@ watch(
                 :is="dropdownIcon" v-else-if="dropdownIcon" :class="[{ '--open': dropdownOpen && dropdownIconAnimation }, iconClassSize]"
                 class="m-dropdown__icon"
               />
-              <ChevronDown
+              <MazChevronDown
                 v-else
                 :class="[{ '--open': dropdownOpen && dropdownIconAnimation }, iconClassSize]"
                 class="m-dropdown__icon"

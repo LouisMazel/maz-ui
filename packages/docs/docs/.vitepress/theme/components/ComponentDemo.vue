@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import ChevronIcon from 'maz-ui/icons/chevron-up.svg'
-import CodeIcon from 'maz-ui/icons/code-bracket.svg'
 import { ref } from 'vue'
 
 const props = withDefaults(defineProps<{
@@ -35,11 +33,11 @@ const showCode = ref(props.expanded)
     <template v-if="$slots.code" #footer>
       <button class="vp-raw maz-flex maz-w-full maz-items-center maz-justify-between maz-bg-color maz-p-3 maz-transition-all maz-duration-300 hover:maz-bg-color-light" @click="showCode = !showCode">
         <span class="maz-flex maz-items-center maz-gap-2 maz-text-sm maz-text-primary">
-          <CodeIcon />
+          <MazCodeBracket />
           View code
         </span>
 
-        <ChevronIcon :class="{ '-maz-rotate-180': !showCode }" class="maz-transition-all maz-duration-300" />
+        <MazChevronUp :class="{ '-maz-rotate-180': !showCode }" class="maz-transition-all maz-duration-300" />
       </button>
 
       <MazExpandAnimation v-model="showCode">

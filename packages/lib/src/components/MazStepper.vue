@@ -2,7 +2,7 @@
 import type { IconComponent } from '@maz-ui/icons'
 import type { Component } from 'vue'
 import type { MazColor } from './types'
-import { CheckCircle, ExclamationCircle, ExclamationTriangle } from '@maz-ui/icons'
+import { MazCheckCircle, MazExclamationCircle, MazExclamationTriangle } from '@maz-ui/icons'
 import {
   computed,
   ref,
@@ -84,13 +84,13 @@ const currentStep = computed({
 
 function getStepStateData(step: number): { icon?: Component, class: string } {
   if (isStepSuccess(step)) {
-    return { icon: CheckCircle, class: '--success' }
+    return { icon: MazCheckCircle, class: '--success' }
   }
   else if (isStepWarning(step)) {
-    return { icon: ExclamationTriangle, class: '--warning' }
+    return { icon: MazExclamationTriangle, class: '--warning' }
   }
   else if (isStepError(step)) {
-    return { icon: ExclamationCircle, class: '--error' }
+    return { icon: MazExclamationCircle, class: '--error' }
   }
 
   return { class: '--normal' }

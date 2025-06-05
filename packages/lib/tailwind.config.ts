@@ -1,15 +1,11 @@
-// Tailwind CSS configuration (https://tailwindcss.com/docs/configuration)
-import type { Config } from 'tailwindcss'
-import tailwindConfigBase from './tailwindcss/tailwind.config'
+import { defineMazTailwindConfig } from './tailwindcss/tailwind.config'
 
-export default <Config>{
-  presets: [tailwindConfigBase],
+export default defineMazTailwindConfig({
   content: {
-    files: ['./src/**/*', 'tailwindcss/**/*', '!src/components_tmp/**/*'],
+    files: ['./src/**/*', 'tailwindcss/**/*'],
     transform: {
       vue: (content) => {
         const regex = /<style[^>]*>([\s\S]*?)<\/style>/g
-        // @ts-expect-error - not include in tsconfig
         return content.replaceAll(regex, '')
       },
     },
@@ -19,4 +15,4 @@ export default <Config>{
     preflight: false,
     container: false,
   },
-}
+})

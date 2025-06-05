@@ -107,7 +107,7 @@ publish-prerelease:
 	git push origin HEAD && \
 	pnpm --filter maz-ui build:only && \
 	cd packages/lib && pnpm publish --access public --tag $(preid) --no-git-checks
-	pnpm --filter @mazui/cli build:only
+	pnpm --filter @maz-ui/cli build:only
 	cd ../..
 	cd packages/maz-cli && pnpm publish --access public --tag $(preid) --no-git-checks
 

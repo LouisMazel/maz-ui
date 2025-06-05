@@ -32,7 +32,7 @@ jobs:
         run: pnpm install
 
       - name: Build Lib
-        run: pnpm --filter @mazui/cli build
+        run: pnpm --filter @maz-ui/cli build
 
       - name: Publish package to npm registry
         run: cd packages/maz-cli && pnpm publish --access public --no-git-checks

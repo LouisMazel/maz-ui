@@ -138,7 +138,8 @@ A plugin to know the amount of time a user has spent on your website
 <script lang="ts" setup>
   import { onMounted, ref, onBeforeUnmount } from 'vue'
 
-  import { useIdleTimeout, useDialog } from 'maz-ui/src/composables/index'
+  import { useIdleTimeout } from 'maz-ui/src/composables/useIdleTimeout'
+  import { useDialog } from 'maz-ui/src/composables/useDialog'
 
   const dialog = useDialog()
 

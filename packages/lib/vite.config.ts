@@ -1,5 +1,3 @@
-import type { UserConfig } from 'vite'
-import type { Target } from 'vite-plugin-static-copy'
 import { rmSync } from 'node:fs'
 import { extname, relative, resolve } from 'node:path'
 import Vue from '@vitejs/plugin-vue'
@@ -8,14 +6,15 @@ import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 
 import { libInjectCss } from 'vite-plugin-lib-inject-css'
-import { viteStaticCopy } from 'vite-plugin-static-copy'
+// import { viteStaticCopy } from 'vite-plugin-static-copy'
 import SvgLoader from 'vite-svg-loader'
 
 import rootPkg from '../../package.json'
 
-import { BuildMazCli } from './build/BuildMazCli'
-import { BuildNuxtModule } from './build/BuildNuxtModule'
-import { CompileStyles } from './build/CompileStyles'
+import { ViteBuildMazCli } from './build/ViteBuildMazCli'
+import { ViteBuildNuxtModule } from './build/ViteBuildNuxtModule'
+import { ViteCompileStyles } from './build/ViteCompileStyles'
+
 import pkg from './package.json'
 
 rmSync(resolver('dist'), { recursive: true, force: true })
@@ -55,10 +54,6 @@ const moduleEntries = Object.fromEntries(
     .map(getEntries),
 )
 
-const staticAssetsToCopy = [
-  { src: resolver('../../README.md'), dest: resolver('.') },
-] satisfies Target[]
-
 export default defineConfig({
   plugins: [
     Vue(),
@@ -88,16 +83,15 @@ export default defineConfig({
       //   'src/types/*.d.ts',
       // ],
     }),
-    viteStaticCopy({ targets: staticAssetsToCopy }),
-    CompileStyles(),
-    BuildNuxtModule(),
-    BuildMazCli(),
+    ViteCompileStyles(),
+    ViteBuildNuxtModule(),
+    ViteBuildMazCli(),
   ],
   build: {
     cssCodeSplit: true,
     emptyOutDir: false,
     minify: true,
-    sourcemap: true,
+    sourcemap: false,
     cssMinify: true,
     terserOptions: {
       compress: true,
@@ -135,16 +129,16 @@ export default defineConfig({
           interop: 'auto',
           generatedCode: 'es2015',
         },
-        {
-          format: 'cjs',
-          chunkFileNames: 'chunks/[name].[hash].cjs',
-          assetFileNames: 'assets/[name].[hash][extname]',
-          exports: 'named',
-          entryFileNames: '[name].cjs',
-          preserveModules: false,
-          interop: 'auto',
-        },
+        // {
+        //   format: 'cjs',
+        //   chunkFileNames: 'chunks/[name].[hash].cjs',
+        //   assetFileNames: 'assets/[name].[hash][extname]',
+        //   exports: 'named',
+        //   entryFileNames: '[name].cjs',
+        //   preserveModules: false,
+        //   interop: 'auto',
+        // },
       ],
     },
   },
-} satisfies UserConfig)
+})

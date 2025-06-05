@@ -31,4 +31,4 @@ jobs:
         run: pnpm --filter cli cli generate-components-docs
 
       - name: Build lib
-        run: pnpm -r build
+        run: pnpm --filter @maz-ui/icons build && pnpm --filter maz-ui build && pnpm -r build
