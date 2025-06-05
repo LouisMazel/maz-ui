@@ -34,5 +34,8 @@ jobs:
       - name: Install modules
         run: pnpm install --frozen-lockfile
 
+      - name: Build icons package
+        run: pnpm --filter @maz-ui/icons build
+
       - name: Test units
         run: pnpm --filter maz-ui test:unit --silent

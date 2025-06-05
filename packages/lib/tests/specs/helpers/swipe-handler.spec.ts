@@ -30,7 +30,7 @@ describe('given Swipe class', () => {
 
     it('then it should throw an error if string selector is not found', () => {
       vi.spyOn(document, 'querySelector').mockReturnValue(null)
-      const spy = vi.spyOn(console, 'error')
+      const spy = vi.spyOn(console, 'error').mockImplementation(() => {})
       // eslint-disable-next-line sonarjs/no-unused-vars
       const _swipe = new Swipe({ element: '#test' })
       expect(spy).toHaveBeenCalledWith('[maz-ui][SwipeHandler](setElement) String selector for element is not found')

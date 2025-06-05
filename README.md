@@ -138,6 +138,40 @@ To know how configure the CLI, check [theming options](https://maz-ui.com/guide/
 - 📏 [Directives](https://maz-ui.com/directives/fullscreen-img) - Useful Vue directives
 - 🛠️ [Helpers](https://maz-ui.com/helpers/currency) - Useful utilities for common tasks
 
+## Icons
+
+Maz UI provides a comprehensive set of beautiful icons (300+) ready-to-use for Vue applications, based on the amazing [Heroicons](https://heroicons.com/) set. All icons are optimized as Vue components with full TypeScript support.
+
+### Documentation
+
+Please refer to [](https://maz-ui.com/guide/icons)
+
+### Installation
+
+```bash
+npm install @maz-ui/icons
+```
+
+### Usage
+
+Import the icons you need from the package:
+
+```vue
+<script setup>
+import { MazCheckCircle, MazXMark, MazArrowTopRightOnSquare } from '@maz-ui/icons'
+</script>
+
+<template>
+  <div>
+    <CheckCircle class="text-green-500 h-6 w-6" />
+    <XMark @click="close" class="text-red-500 h-5 w-5 cursor-pointer" />
+    <ArrowTopRightOnSquare class="text-blue-500 h-4 w-4" />
+  </div>
+</template>
+```
+
+> **Note:** Icons are asynchronous Vue components optimized for tree-shaking. Only imported icons will be included in your final bundle.
+
 ## 🤝 Contributing
 
 We're always looking for contributors! Check out our [contribution guide](./CONTRIBUTING.md) to get started.

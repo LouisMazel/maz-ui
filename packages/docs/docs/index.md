@@ -12,20 +12,20 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
 ---
 
 
-<section class="maz-mt-12 vp-raw">
+<section class="maz-mt-6 vp-raw">
   <div class="maz-flex maz-items-center maz-gap-4 maz-bg-color-light maz-rounded-lg maz-p-6">
     <span class="maz-text-3xl">🎉</span>
     <div>
       <h3 class="maz-text-lg maz-font-semibold">Maz-UI v4 is here!</h3>
-      <p class="maz-text-sm maz-text-muted maz-mt-1">
-        Discover our latest major release with improved performance, better tree-shaking, and enhanced TypeScript support.
-        <MazLink href="/guide/migration-v4" class="maz-ml-2">View migration guide →</MazLink>
+      <p class="maz-text-sm maz-text-muted maz-my-1">
+        Discover the latest major release with improved performance, better tree-shaking, and enhanced TypeScript support.
       </p>
+      <MazLink href="/guide/migration-v4">View migration guide →</MazLink>
     </div>
   </div>
 </section>
 
-<section id="hero" class="maz-py-12 tab-m:maz-py-24 vp-raw">
+<section id="hero" class="maz-py-6 tab-m:maz-py-12 vp-raw">
   <div class="maz-mx-auto maz-max-w-3xl">
     <MazAnimatedText
       text="Collection of standalone components, plugins, directives, composables and more"
