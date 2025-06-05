@@ -63,7 +63,7 @@ type LinkItem = ItemBase & MazLinkProps & {
 }
 
 type ActionItem = ItemBase & {
-  action?: () => unknown
+  onClick?: () => unknown
 }
 
 export type MenuItem =
@@ -229,7 +229,7 @@ function isLinkItem(item: MenuItem): item is LinkItem {
 async function runAction(item: ActionItem, event: Event) {
   emits('menuitem-clicked', event)
 
-  await item.action?.()
+  await item.onClick?.()
 
   if (props.closeOnClick) {
     closeOnClick()

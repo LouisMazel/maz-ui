@@ -30,10 +30,10 @@ export class WaitHandler {
   }
 }
 
-export const instance = new WaitHandler()
+export const waitInstance = new WaitHandler()
 
-export const plugin = {
+export const installWait = {
   install: (app: App) => {
-    app.provide('wait', instance)
+    app.provide('wait', waitInstance)
   },
 }

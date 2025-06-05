@@ -108,7 +108,7 @@ function customButtonAction(currentModal: MazDialogState, button: MazDialogCusto
     ? button.type === 'resolve'
       ? resolveDialog(currentModal, button.response)
       : rejectDialog(currentModal, button.response)
-    : resolveDialog(currentModal, undefined, button.action)
+    : resolveDialog(currentModal, undefined, button.onClick)
 }
 </script>
 

@@ -17,7 +17,7 @@ export interface MazDialogButton extends MazBtnProps {
 
 export interface MazDialogActionButton {
   text: string
-  action: () => unknown
+  onClick: () => unknown
 }
 
 export interface MazDialogPromiseButton {
@@ -124,12 +124,12 @@ export function useMazDialogPromise() {
     dialogState,
     showDialogAndWaitChoice,
     removeDialogFromState,
-    rejectDialog: async (currentDialog: MazDialogState, response: unknown = new Error('cancel'), action?: () => unknown) => {
-      await action?.()
+    rejectDialog: async (currentDialog: MazDialogState, response: unknown = new Error('cancel'), onClick?: () => unknown) => {
+      await onClick?.()
       return responseDialog('reject', currentDialog, response)
     },
-    resolveDialog: async (currentDialog: MazDialogState, response: unknown = 'accept', action?: () => unknown) => {
-      await action?.()
+    resolveDialog: async (currentDialog: MazDialogState, response: unknown = 'accept', onClick?: () => unknown) => {
+      await onClick?.()
       return responseDialog('resolve', currentDialog, response)
     },
   }

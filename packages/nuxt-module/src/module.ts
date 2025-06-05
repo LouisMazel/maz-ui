@@ -283,20 +283,15 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       nuxt.options.css = [path, ...nuxt.options.css]
     }
 
+    const basePath = process.env.MAZ_UI_DEV === 'true' ? 'maz-ui/src' : 'maz-ui'
+    const extension = process.env.MAZ_UI_DEV === 'true' ? '.ts' : ''
+
     if (moduleOptions.injectComponents) {
       for (const name of Object.keys(COMPONENT_NAMES)) {
-        if (process.env.MAZ_UI_DEV === 'true') {
-          addComponent({
-            name,
-            filePath: `maz-ui/src/components/${name}.vue`,
-          })
-        }
-        else {
-          addComponent({
-            name,
-            filePath: `maz-ui/dist/components/${name}.mjs`,
-          })
-        }
+        addComponent({
+          name,
+          filePath: `${basePath}/components/${name}.vue`,
+        })
       }
     }
 
@@ -388,7 +383,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     if (moduleOptions.injectUseIdleTimeout) {
       addImports({
-        from: 'maz-ui/composables',
+        from: `${basePath}/composables/useIdleTimeout${extension}`,
         name: 'useIdleTimeout',
         as: `use${moduleOptions.autoImportPrefix}IdleTimeout`,
       })
@@ -396,7 +391,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     if (moduleOptions.injectUseReadingTime) {
       addImports({
-        from: 'maz-ui/composables',
+        from: `${basePath}/composables/useReadingTime${extension}`,
         name: 'useReadingTime',
         as: `use${moduleOptions.autoImportPrefix}ReadingTime`,
       })
@@ -404,7 +399,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     if (moduleOptions.injectUseWindowSize) {
       addImports({
-        from: 'maz-ui/composables',
+        from: `${basePath}/composables/useWindowSize${extension}`,
         name: 'useWindowSize',
         as: `use${moduleOptions.autoImportPrefix}WindowSize`,
       })
@@ -412,7 +407,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     if (moduleOptions.injectUseBreakpoints) {
       addImports({
-        from: 'maz-ui/composables',
+        from: `${basePath}/composables/useBreakpoints${extension}`,
         name: 'useBreakpoints',
         as: 'useBreakpoints',
       })
@@ -420,7 +415,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     if (moduleOptions.injectUseUserVisibility) {
       addImports({
-        from: 'maz-ui/composables',
+        from: `${basePath}/composables/useUserVisibility${extension}`,
         name: 'useUserVisibility',
         as: `use${moduleOptions.autoImportPrefix}UserVisibility`,
       })
@@ -428,7 +423,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     if (moduleOptions.injectUseUserVisibility) {
       addImports({
-        from: 'maz-ui/composables',
+        from: `${basePath}/composables/useUserVisibility${extension}`,
         name: 'useUserVisibility',
         as: `use${moduleOptions.autoImportPrefix}UserVisibility`,
       })
@@ -436,7 +431,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     if (moduleOptions.injectUseStringMatching) {
       addImports({
-        from: 'maz-ui/composables',
+        from: `${basePath}/composables/useStringMatching${extension}`,
         name: 'useStringMatching',
         as: `use${moduleOptions.autoImportPrefix}StringMatching`,
       })
@@ -444,7 +439,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     if (moduleOptions.injectUseTimer) {
       addImports({
-        from: 'maz-ui/composables',
+        from: `${basePath}/composables/useTimer${extension}`,
         name: 'useTimer',
         as: `use${moduleOptions.autoImportPrefix}Timer`,
       })
@@ -452,12 +447,12 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     if (moduleOptions.injectUseFormValidator) {
       addImports({
-        from: 'maz-ui/composables',
+        from: `${basePath}/composables/useFormValidator${extension}`,
         name: 'useFormValidator',
         as: `use${moduleOptions.autoImportPrefix}FormValidator`,
       })
       addImports({
-        from: 'maz-ui/composables',
+        from: `${basePath}/composables/useFormField${extension}`,
         name: 'useFormField',
         as: `use${moduleOptions.autoImportPrefix}FormField`,
       })
@@ -465,7 +460,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     if (moduleOptions.injectUseLanguageDisplayNames) {
       addImports({
-        from: 'maz-ui/composables',
+        from: `${basePath}/composables/useLanguageDisplayNames${extension}`,
         name: 'useLanguageDisplayNames',
         as: `use${moduleOptions.autoImportPrefix}LanguageDisplayNames`,
       })

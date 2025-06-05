@@ -8,7 +8,7 @@ import { isStandaloneMode } from '../helpers/isStandaloneMode'
 const props = withDefaults(defineProps<MazPullToRefreshProps>(), {
   distance: 100,
   offset: 0,
-  action: undefined,
+  onClick: undefined,
   containerSelector: undefined,
   headerClass: undefined,
   spinnerColor: 'theme',
@@ -23,7 +23,7 @@ const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
 export interface MazPullToRefreshProps {
   distance?: number
   offset?: number
-  action?: () => unknown
+  onClick?: () => unknown
   containerSelector?: string
   headerClass?: string
   spinnerColor?: MazColor
@@ -34,7 +34,7 @@ export interface MazPullToRefreshProps {
 const isDisabled = computed(
   () =>
     props.disabled
-    || props.action === undefined
+    || props.onClick === undefined
     || (props.standaloneMode && isClient() && !isStandaloneMode()),
 )
 
@@ -164,7 +164,7 @@ async function runAction() {
   try {
     setLoading(true)
     emits('start')
-    const response = await props.action?.()
+    const response = await props.onClick?.()
     emits('loaded')
     emits('response', response)
   }

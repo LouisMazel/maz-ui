@@ -4,7 +4,7 @@
   "description": "Icons set in SVG and Vue components",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
-  "homepage": "https://maz-ui.com/",
+  "homepage": "https://maz-ui.com/guide/icons",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/LouisMazel/maz-ui.git"
@@ -12,6 +12,22 @@
   "bugs": {
     "url": "https://github.com/LouisMazel/maz-ui/issues"
   },
+  "keywords": [
+    "vue",
+    "nuxt",
+    "components",
+    "vue-component",
+    "framework",
+    "library",
+    "ui",
+    "nuxt",
+    "nuxt3",
+    "module",
+    "nuxt-module",
+    "maz-ui",
+    "icons",
+    "svg"
+  ],
   "type": "module",
   "sideEffects": false,
   "main": "./dist/index.cjs",
