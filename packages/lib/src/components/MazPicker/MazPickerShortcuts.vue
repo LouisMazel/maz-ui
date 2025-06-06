@@ -53,7 +53,7 @@ watch(
       :key="identifier"
       type="button"
       size="sm"
-      :disabled="disabled"
+      :disabled
       :color="identifier === selectedShortcut ? props.color : 'transparent'"
       :class="{ '--is-selected': identifier === selectedShortcut }"
       @click.stop="selectShortcut(value, identifier)"
@@ -64,10 +64,15 @@ watch(
 </template>
 
 <style lang="postcss" scoped>
-  .maz-picker-shortcuts {
-  @apply maz-flex maz-flex-col maz-items-start maz-gap-1
-      maz-overflow-y-auto maz-border-r maz-border-color-lighter maz-p-2;
+.maz-picker-shortcuts {
+  @apply maz-flex maz-flex-col maz-items-start maz-gap-1 maz-overflow-y-auto maz-border-r maz-border-color-lighter maz-p-2;
 
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   max-height: 18.75rem;
 
   & > button {

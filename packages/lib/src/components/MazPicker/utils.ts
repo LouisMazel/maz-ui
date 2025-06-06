@@ -1,7 +1,7 @@
 import type { ConfigType, OpUnitType } from 'dayjs'
 import type { IpWhoResponse } from '../../components/MazInputPhoneNumber/types'
 
-import type { MazPickerPartialRangeValue } from '../../components/MazPicker/types'
+import type { MazPickerPartialRangeValue, MazPickerValue } from '../../components/MazPicker/types'
 import dayjs from 'dayjs'
 
 import weekday from 'dayjs/plugin/weekday'
@@ -96,7 +96,11 @@ export function getISODate(value?: ConfigType, format = 'YYYY-MM-DD'): string | 
   return dayjs(value).format(format)
 }
 
-export function getRangeISODate(value: MazPickerPartialRangeValue, format = 'YYYY-MM-DD') {
+export function getRangeISODate(value?: MazPickerPartialRangeValue, format = 'YYYY-MM-DD') {
+  if (!value) {
+    return undefined
+  }
+
   return {
     start: getISODate(value.start, format),
     end: getISODate(value.end, format),
@@ -114,7 +118,7 @@ export function checkValueWithMinMaxDates({
   maxDate,
   format,
 }: {
-  value: string
+  value?: string
   minDate?: string
   maxDate?: string
   format: string
@@ -216,4 +220,12 @@ export async function fetchLocale(): Promise<string | undefined> {
   catch (error) {
     console.error(`[maz-ui](MazPicker)(fetchCountryCode) ${error}`)
   }
+}
+
+export function isRangeValue(value: MazPickerValue): value is MazPickerPartialRangeValue {
+  return !!value && typeof value === 'object'
+}
+
+export function isValidDate(value: unknown): value is ConfigType {
+  return !!value && (typeof value === 'string' || typeof value === 'number' || value instanceof Date) && dayjs(value).isValid()
 }
