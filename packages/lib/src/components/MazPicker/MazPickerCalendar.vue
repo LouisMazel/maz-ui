@@ -19,6 +19,7 @@ const props = defineProps<{
   hasTime: boolean
   shortcut: MazPickerShortcut['identifier'] | undefined
   disabled: boolean
+  range: boolean
 }>()
 
 const emits = defineEmits(['update:model-value', 'update:calendar-date'])
@@ -30,10 +31,8 @@ const MazPickerYearSwitcher = defineAsyncComponent(() => import('../MazPicker/Ma
 
 const hoverredDay = ref<Dayjs>()
 
-const isRangeMode = computed(() => props.modelValue && typeof props.modelValue === 'object')
-
 const hasShortcuts = computed(
-  () => props.shortcuts && props.shortcuts.length > 0 && isRangeMode.value,
+  () => props.shortcuts && props.shortcuts.length > 0 && props.range,
 )
 
 const monthSwitcherOpen = ref(false)
@@ -91,7 +90,7 @@ const calendarDate = computed({
           @close="yearSwitcherOpen = false"
         />
       </Transition>
-      <div class="maz-picker-calendar__months">
+      <div class="maz-picker-calendar__months" :class="{ '--is-range': range }">
         <MazPickerCalendarMonth
           v-for="month in months"
           :key="month"
@@ -108,6 +107,7 @@ const calendarDate = computed({
           :disabled="disabled"
           :disabled-weekly="disabledWeekly"
           :disabled-dates="disabledDates"
+          :range
         />
       </div>
     </div>
@@ -115,7 +115,7 @@ const calendarDate = computed({
 </template>
 
 <style lang="postcss" scoped>
-  .maz-picker-calendar {
+.maz-picker-calendar {
   @apply maz-relative maz-flex maz-w-full;
 
   &__main {
@@ -126,7 +126,7 @@ const calendarDate = computed({
     &.--has-double {
       width: 34rem;
 
-      & .maz-picker-calendar__months > *:first-child {
+      & .maz-picker-calendar__months > :first-child {
         @apply maz-border-r maz-border-color-lighter;
       }
     }
@@ -134,6 +134,10 @@ const calendarDate = computed({
 
   &__months {
     @apply maz-flex maz-w-full maz-flex-1;
+
+    &.--is-range {
+      @apply maz-px-2;
+    }
   }
 }
 
