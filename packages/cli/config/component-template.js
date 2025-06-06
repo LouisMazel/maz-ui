@@ -1,5 +1,5 @@
-/** @type {import('vue-docgen-cli').Templates['component']} */
 
+/** @type {import('vue-docgen-cli').Templates['component']} */
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export function component(renderedUsage, document_, _config, _fileName, requiresMd, _subs) {
   const { description, tags, functional } = document_

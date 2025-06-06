@@ -224,7 +224,7 @@ export const MazLanguage = defineAsyncComponent(() => import('./../svg/language.
 export const MazLifebuoy = defineAsyncComponent(() => import('./../svg/lifebuoy.svg?component'));
 export const MazLightBulb = defineAsyncComponent(() => import('./../svg/light-bulb.svg?component'));
 export const MazLinkSlash = defineAsyncComponent(() => import('./../svg/link-slash.svg?component'));
-export const MazLink = defineAsyncComponent(() => import('./../svg/link.svg?component'));
+export const MazLinkIcon = defineAsyncComponent(() => import('./../svg/link.svg?component'));
 export const MazListBullet = defineAsyncComponent(() => import('./../svg/list-bullet.svg?component'));
 export const MazLockClosed = defineAsyncComponent(() => import('./../svg/lock-closed.svg?component'));
 export const MazLockOpen = defineAsyncComponent(() => import('./../svg/lock-open.svg?component'));
@@ -272,7 +272,7 @@ export const MazPuzzlePiece = defineAsyncComponent(() => import('./../svg/puzzle
 export const MazQrCode = defineAsyncComponent(() => import('./../svg/qr-code.svg?component'));
 export const MazQuestionMarkCircle = defineAsyncComponent(() => import('./../svg/question-mark-circle.svg?component'));
 export const MazQueueList = defineAsyncComponent(() => import('./../svg/queue-list.svg?component'));
-export const MazRadio = defineAsyncComponent(() => import('./../svg/radio.svg?component'));
+export const MazRadioIcon = defineAsyncComponent(() => import('./../svg/radio.svg?component'));
 export const MazReceiptPercent = defineAsyncComponent(() => import('./../svg/receipt-percent.svg?component'));
 export const MazReceiptRefund = defineAsyncComponent(() => import('./../svg/receipt-refund.svg?component'));
 export const MazRectangleGroup = defineAsyncComponent(() => import('./../svg/rectangle-group.svg?component'));

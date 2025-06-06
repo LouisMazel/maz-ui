@@ -10,8 +10,9 @@
       id="name"
       ref="nameRef"
       v-model="name"
-      label="Enter your name"
-      :hint="nameErrorMessage"
+      top-label="Enter your name"
+      :assistive-text="nameErrorMessage"
+      placeholder="John Doe"
       :error="!!nameErrorMessage"
       :success="fieldsStates?.name.valid"
       :class="{ 'has-error-form': !!nameErrorMessage }"
@@ -70,7 +71,9 @@
       ref="tagsRef"
       v-model="tags"
       :error="!!tagsError"
-      :hint="tagsError"
+      top-label="Enter tags"
+      size="sm"
+      :assistive-text="tagsError"
       :success="isValidTags"
     />
     <MazInputPhoneNumber
@@ -78,6 +81,7 @@
       ref="phoneRef"
       v-model="phone"
       :error="!!phoneError"
+      placeholder="Enter your phone number"
       :hint="phoneError"
       :success="isValidPhone"
     />
@@ -146,6 +150,7 @@
       ref="dateRef"
       v-model="date"
       :hint="dateError"
+      color="theme"
       :error="!!dateError"
       :success="isValidDate"
       picker-position="top"
@@ -161,7 +166,7 @@
 
 <script setup lang="ts">
 import type { InferSchemaFormValidator } from 'maz-ui/src/composables/index.js'
-import { pipe, string, number as numberAction, nonEmpty, minValue, literal, boolean, maxValue, minLength, array } from 'valibot'
+import { pipe, string, number as numberAction, nonEmpty, minValue, literal, boolean, maxValue, minLength, array, object } from 'valibot'
 
 const schema = ref({
   name: pipe(string('Name is required'), nonEmpty('Name is required')),
@@ -177,13 +182,20 @@ const schema = ref({
   radioButtons: pipe(string('RadioButtons is required'), nonEmpty('RadioButtons is required')),
   switch: pipe(boolean('Switch is required'), literal(true, 'Switch is required')),
   textarea: pipe(string('Textarea is required'), nonEmpty('Textarea is required')),
-  date: pipe(string('Date is required'), nonEmpty('Date is required')),
+  date: object({
+    start: pipe(string('Start date is required'), nonEmpty('Start date is required')),
+    end: pipe(string('End date is required'), nonEmpty('End date is required')),
+  }),
 })
 
 type Schema = InferSchemaFormValidator<typeof schema>
 
 const defaultValues = ref<Partial<Schema>>({
   name: 'Mazel',
+  date: {
+    start: undefined,
+    end: undefined,
+  },
 })
 
 setTimeout(() => {
@@ -197,7 +209,7 @@ setTimeout(() => {
 const { isSubmitting, handleSubmit, model, fieldsStates } = useFormValidator<Schema>({
   schema,
   defaultValues,
-  options: { mode: 'blur', scrollToError: '.has-error-form' },
+  options: { mode: 'progressive', scrollToError: '.has-error-form' },
 })
 
 const { value: name, errorMessage: nameErrorMessage } = useFormField('name', { ref: 'nameRef' })

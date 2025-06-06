@@ -131,16 +131,11 @@ function updateInternalValue(value?: string | number) {
     :success
     :warning
     :hint
+    :left-icon="noIcon ? undefined : MazBanknotes"
     @focus="onFocus"
     @blur="onBlur"
     @input="onInput"
     @keydown.enter="emitValues(internalValue)"
     @update:model-value="updateInternalValue($event)"
-  >
-    <template #left-icon>
-      <slot v-if="!noIcon" name="left-icon">
-        <MazBanknotes class="maz-text-xl" />
-      </slot>
-    </template>
-  </MazInput>
+  />
 </template>

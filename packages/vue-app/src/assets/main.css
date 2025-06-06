@@ -3,6 +3,8 @@ html, body {
   padding: 0;
   box-sizing: border-box;
   font-family: var(--maz-font-family);
+
+  @apply maz-text-normal;
 }
 
 #app {

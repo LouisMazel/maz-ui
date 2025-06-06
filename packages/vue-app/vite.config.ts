@@ -8,24 +8,34 @@ import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import { MazDirectivesResolver, MazModulesResolver, MazComponentsResolver } from './../lib/src/resolvers/index.js'
 import { MazIconsResolver } from '@maz-ui/icons/resolvers'
+import dts from 'vite-plugin-dts'
 
 export default defineConfig({
   plugins: [
     vue(),
     vueDevTools(),
     VueSvgLoader(),
+    dts({
+      compilerOptions: {
+        noEmit: true,
+      },
+      include: ['lib/src/**/*.vue', 'lib/src/**/*.ts'],
+      exclude: ['node_modules', 'dist'],
+      insertTypesEntry: true,
+      logLevel: 'error',
+    }),
     Components({
       dts: true,
       resolvers: [
-        MazComponentsResolver(),
-        MazDirectivesResolver(),
-        MazIconsResolver(),
+        MazComponentsResolver({ devMode: true }),
+        MazDirectivesResolver({ devMode: true }),
+        MazIconsResolver({ devMode: true }),
       ],
     }),
     AutoImport({
       imports: ['vue', 'vue-router'],
       resolvers: [
-        MazModulesResolver(),
+        MazModulesResolver({ devMode: true }),
       ],
       dts: true,
     }),
