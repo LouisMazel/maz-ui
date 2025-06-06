@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { ToasterButton, ToasterOptions } from './types'
-import { MazArrowTopRightOnSquare, MazCheckCircle, MazExclamationCircle, MazExclamationTriangle, MazInformationCircle, MazLink, MazXMark } from '@maz-ui/icons'
+import { MazArrowTopRightOnSquare, MazCheckCircle, MazExclamationCircle, MazExclamationTriangle, MazInformationCircle, MazLinkIcon, MazXMark } from '@maz-ui/icons'
 import { computed, onMounted, ref, watch } from 'vue'
 import MazBtn from '../../components/MazBtn.vue'
 import { useTimer } from '../../composables/useTimer'
@@ -258,7 +258,7 @@ function getButtonRightIcon(button: ToasterButton) {
   if (button.target === '_blank') {
     return MazArrowTopRightOnSquare
   }
-  return MazLink
+  return MazLinkIcon
 }
 
 defineExpose({ closeToast })

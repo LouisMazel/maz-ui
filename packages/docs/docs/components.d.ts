@@ -26,7 +26,7 @@ declare module 'vue' {
     MazInputCode: typeof import('maz-ui/components/MazInputCode')['default']
     MazInputNumber: typeof import('maz-ui/components/MazInputNumber')['default']
     MazInputPrice: typeof import('maz-ui/components/MazInputPrice')['default']
-    MazLink: typeof import('@maz-ui/icons')['MazLink']
+    MazLink: typeof import('maz-ui/components/MazLink')['default']
     MazPicker: typeof import('maz-ui/components/MazPicker')['default']
     MazSelect: typeof import('maz-ui/components/MazSelect')['default']
     MazSlider: typeof import('maz-ui/components/MazSlider')['default']

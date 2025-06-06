@@ -2,7 +2,6 @@
 const { autoSetTheme, setDarkTheme, setLightTheme } = useThemeHandler()
 
 autoSetTheme()
-setDarkTheme()
 </script>
 
 <template>

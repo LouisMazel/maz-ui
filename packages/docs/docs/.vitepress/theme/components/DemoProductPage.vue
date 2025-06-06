@@ -18,7 +18,7 @@ const price = ref(100)
             'https://images.unsplash.com/photo-1487215078519-e21cc028cb29?w=800',
             'https://images.unsplash.com/photo-1607294846590-fd005d7973e8?w=800',
           ]"
-          no-height
+          :height="false"
           :images-shown-count="4"
           class="maz-mb-6 maz-h-64"
         />

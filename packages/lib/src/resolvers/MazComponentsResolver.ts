@@ -12,15 +12,19 @@ const icons = Object.keys(MazIcons)
  * @author @louismazel
  * @link https://maz-ui.com
  */
-export function MazComponentsResolver(): ComponentResolver {
+export function MazComponentsResolver(options?: { devMode?: boolean }): ComponentResolver {
   return {
     type: 'component',
     resolve: (name: string) => {
+      const { devMode = false } = options || {}
+      const base = devMode ? 'maz-ui/src/components' : 'maz-ui/components'
+      const extension = devMode ? '.vue' : ''
+
       if (/^(Maz[A-Z])/.test(name) && !icons.includes(name)) {
-        return { from: `maz-ui/components/${name}` }
+        return { from: `${base}/${name}${extension}` }
       }
       else if (/^(maz-[a-z])/.test(name)) {
-        return { from: `maz-ui/components/${pascalCase(name)}` }
+        return { from: `${base}/${pascalCase(name)}` }
       }
     },
   }
