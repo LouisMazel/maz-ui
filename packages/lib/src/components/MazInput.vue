@@ -1,12 +1,11 @@
 <script lang="ts" setup generic="T extends MazInputValue">
 import type { IconComponent } from '@maz-ui/icons'
-import type { HTMLAttributes } from 'vue'
+import type { HTMLAttributes, InputHTMLAttributes } from 'vue'
 import type { MazColor, MazSize } from './types'
-import { MazCheck, MazEye, MazEyeSlash } from '@maz-ui/icons'
+import { MazEye, MazEyeSlash } from '@maz-ui/icons'
 import {
   computed,
   defineAsyncComponent,
-
   onMounted,
   ref,
   useSlots,
@@ -17,102 +16,194 @@ import { debounce as debounceFn } from '../helpers/debounce'
 export type MazInputValue = string | number | null | undefined | boolean
 
 export interface MazInputProps<T = MazInputValue> {
-  /** The style of the component */
+  /**
+   * Inline styles to apply to the component root element
+   * @type {HTMLAttributes['style']}
+   */
   style?: HTMLAttributes['style']
-  /** The class of the component */
+  /**
+   * CSS classes to apply to the component root element
+   * @type {HTMLAttributes['class']}
+   */
   class?: HTMLAttributes['class']
   /**
-   * The value of the input
+   * The current value of the input field. This prop is used for two-way data binding with v-model
    * @model
+   * @type {T}
+   * @example <MazInput v-model="inputValue" />
    */
   modelValue?: T | undefined
-  /** The placeholder of the input */
-  placeholder?: string
   /**
-   * The label of the component
-   * This label will be displayed inside the input and will be up when the input is focused
+   * Text displayed when the input is empty to guide the user
+   * @type {string}
+   * @example "Enter your email address"
+   */
+  placeholder?: InputHTMLAttributes['placeholder']
+  /**
+   * Floating label that appears inside the input and moves up when focused or filled.
+   * Provides better UX than traditional placeholders
+   * @type {string}
+   * @example "Email Address"
    */
   label?: string
   /**
-   * The top label of the component
-   * This label will be displayed above the input
+   * Static label displayed above the input field. Unlike the floating label, this remains fixed
+   * @type {string}
+   * @example "User Information"
    */
   topLabel?: string
   /**
-   * The additional text of the component
-   * This text will be displayed below the input
+   * Helper text displayed below the input to provide additional context or validation feedback
+   * @type {string}
+   * @example "Must contain at least 8 characters"
    */
   assistiveText?: string
-  /** The attribut name of the input */
-  name?: string
-  /** The color of the component */
+  /**
+   * Theme color that affects the border and focus states of the input
+   * @values primary, secondary, info, success, warning, danger, white, black
+   * @type {MazColor}
+   * @example "primary"
+   */
   color?: MazColor
-  /** The attribut type of the input */
-  type?:
-    | 'text'
-    | 'date'
-    | 'number'
-    | 'tel'
-    | 'search'
-    | 'url'
-    | 'password'
-    | 'month'
-    | 'time'
-    | 'week'
-    | 'email'
-  /** The attribut required of the input */
+  /**
+   * HTML input type attribute that determines the input behavior and validation
+   * @type {InputHTMLAttributes['type']}
+   * @values text, password, email, number, tel, url, search, date, time, datetime-local, month, week
+   * @example "email"
+   */
+  type?: InputHTMLAttributes['type']
+  /**
+   * Makes the input field mandatory for form submission
+   * @type {boolean}
+   * @example true
+   */
   required?: boolean
-  /** The attribut disabled of the input */
+  /**
+   * Disables the input field, preventing user interaction and form submission
+   * @type {boolean}
+   * @example false
+   */
   disabled?: boolean
-  /** The attribut readonly of the input */
+  /**
+   * Makes the input field read-only, allowing selection but preventing modification
+   * @type {boolean}
+   * @example false
+   */
   readonly?: boolean
-  /** The attribut id of the input */
+  /**
+   * Unique identifier for the input element, used for form labels and accessibility
+   * @type {string}
+   * @example "user-email"
+   */
   id?: string
-  /** Enable error state UI */
+  /**
+   * Applies error styling (red border and text) to indicate validation failure
+   * @type {boolean}
+   * @example true
+   */
   error?: boolean
-  /** Enable success state UI */
+  /**
+   * Applies success styling (green border and text) to indicate successful validation
+   * @type {boolean}
+   * @example true
+   */
   success?: boolean
-  /** Enable warning state UI */
+  /**
+   * Applies warning styling (orange border and text) to indicate potential issues
+   * @type {boolean}
+   * @example true
+   */
   warning?: boolean
-  /** The hint will replace the label */
+  /**
+   * Alternative text that replaces the label when provided. Useful for contextual hints
+   * @type {string}
+   * @example "Optional field"
+   */
   hint?: string
-  /** The class of the input wrapper div element */
+  /**
+   * Additional CSS classes to apply specifically to the input wrapper element
+   * @type {string}
+   * @example "custom-input-wrapper"
+   */
   inputClasses?: string
-  /** Remove the border of the input */
+  /**
+   * Controls whether the input has a visible border. Set to false for borderless inputs
+   * @type {boolean}
+   * @example true
+   */
   border?: boolean
-  /** The attribut inputmode of the input */
-  inputmode?: HTMLAttributes['inputmode']
-  /** The size of the component */
+  /**
+   * HTML inputmode attribute that provides hints for virtual keyboards on mobile devices
+   * @type {InputHTMLAttributes['inputmode']}
+   * @values text, numeric, decimal, tel, search, email, url
+   * @example "numeric"
+   */
+  inputmode?: InputHTMLAttributes['inputmode']
+  /**
+   * Controls the height and text size of the input component
+   * @values xs, sm, md, lg, xl, mini
+   * @type {MazSize}
+   * @example "md"
+   */
   size?: MazSize
-  /** Enable debounce on input - can be `boolean | number`, if it is a number, it is used for the debounce delay - if `true`, the delay is 500ms */
+  /**
+   * Enables input debouncing to limit the frequency of value updates.
+   * When true, uses 500ms delay. When a number, uses that value as delay in milliseconds
+   * @type {boolean | number}
+   * @example true
+   * @example 300
+   */
   debounce?: boolean | number
-  /** Display the valid button - this button has type="submit"  */
-  validButton?: boolean
-  /** Display the loading state on the valid button */
-  validButtonLoading?: boolean
-  /** if true the input will be focus on render */
+  /**
+   * Automatically focuses the input when the component mounts
+   * @type {boolean}
+   * @example false
+   */
   autoFocus?: boolean
-  /** if true the component has the colorized border by default, not only on focus */
+  /**
+   * When true, shows the colored border immediately instead of only on focus
+   * @type {boolean}
+   * @example false
+   */
   borderActive?: boolean
   /**
-   * The left icon of the input
-   * `@type` `{string | FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component}`
+   * Icon displayed on the left side of the input. Can be an icon name string or icon component
+   * @type {string | IconComponent}
+   * @example "user"
+   * @example UserIcon
    */
   leftIcon?: string | IconComponent
   /**
-   * The right icon of the input
-   * `@type` `{string | FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component}`
+   * Icon displayed on the right side of the input. Can be an icon name string or icon component
+   * @type {string | IconComponent}
+   * @example "search"
+   * @example SearchIcon
    */
   rightIcon?: string | IconComponent
   /**
-   * Size radius of the component's border
-   * @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'`
-   * @default 'lg'
+   * Controls the border radius of the input component
+   * @values none, sm, md, lg, xl, full
+   * @type {'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'}
+   * @example "lg"
    */
   roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
-  /** The input will be displayed in full width */
+  /**
+   * Makes the input expand to the full width of its container
+   * @type {boolean}
+   * @example false
+   */
   block?: boolean
-  /** The attribut autocomplete of the input */
+  /**
+   * The name of the input field. Used for form submission and validation
+   * @type {string}
+   * @example "email"
+   */
+  name?: string
+  /**
+   * The autocomplete attribute for the input field. Used for form submission and validation
+   * @type {string}
+   * @example "email"
+   */
   autocomplete?: string
 }
 
@@ -126,13 +217,11 @@ const props = withDefaults(defineProps<MazInputProps<T>>(), {
   modelValue: undefined,
   placeholder: undefined,
   label: undefined,
-  name: undefined,
   id: undefined,
   color: 'primary',
   type: 'text',
   required: false,
   disabled: false,
-  readonly: false,
   error: false,
   success: false,
   warning: false,
@@ -142,8 +231,6 @@ const props = withDefaults(defineProps<MazInputProps<T>>(), {
   inputmode: 'text',
   size: 'md',
   debounce: false,
-  validButton: false,
-  validButtonLoading: false,
   autoFocus: false,
   borderActive: false,
   leftIcon: undefined,
@@ -153,33 +240,48 @@ const props = withDefaults(defineProps<MazInputProps<T>>(), {
 
 const emits = defineEmits<{
   /**
-   * Event emitted when the input value change
-   * @property {string | number | null | undefined | boolean} value - the new value
+   * Triggered when the input value changes, used for v-model two-way binding.
+   * This event is debounced if the debounce prop is enabled
+   * @property {T} value - The new input value (string, number, boolean, null, or undefined)
+   * @example
+   * <MazInput @update:model-value="handleValueChange" />
    */
   'update:model-value': [value?: T]
   /**
-   * Event emitted when the input is focused
-   * @property {Event} event - focus event
+   * Triggered when the input field gains focus (user clicks or tabs into the field)
+   * @arg {Event} event - The native focus event object
+   * @example
+   * <MazInput @focus="onInputFocus" />
    */
   'focus': [event: Event]
   /**
-   * Event emitted when the input is blurred
-   * @property {Event} event - blur event
+   * Triggered when the input field loses focus (user clicks outside or tabs away)
+   * @arg {Event} event - The native blur event object
+   * @example
+   * <MazInput @blur="onInputBlur" />
    */
   'blur': [event: Event]
   /**
-   * Event emitted when the input is clicked
-   * @property {Event} event - click event
+   * Triggered when the user clicks on the input field
+   * @arg {Event} event - The native click event object
+   * @example
+   * <MazInput @click="onInputClick" />
    */
   'click': [event: Event]
   /**
-   * Event emitted when the input is changed
-   * @property {Event} event - change event
+   * Triggered when the input value changes and the field loses focus.
+   * Different from input event which fires on every keystroke
+   * @arg {Event} event - The native change event object
+   * @example
+   * <MazInput @change="onInputChange" />
    */
   'change': [event: Event]
   /**
-   * Event emitted when the input is changed
-   * @property {Event} event - change event
+   * Triggered on every keystroke or input interaction (real-time input changes).
+   * This is the raw input event, not debounced
+   * @arg {Event} event - The native input event object
+   * @example
+   * <MazInput @input="onInputType" />
    */
   'input': [event: Event]
 }>()
@@ -277,8 +379,6 @@ function hasRightPart(): boolean {
   return (
     !!slots['right-icon']
     || isPasswordType.value
-    || !!slots['valid-button']
-    || props.validButton
     || !!props.rightIcon
   )
 }
@@ -303,6 +403,16 @@ function change(event: Event) {
 function emitInputEvent(event: Event) {
   return emits('input', event)
 }
+
+const stateColor = computed(() => {
+  if (props.error)
+    return 'maz-text-danger-600'
+  if (props.success)
+    return 'maz-text-success-600'
+  if (props.warning)
+    return 'maz-text-warning-600'
+  return undefined
+})
 </script>
 
 <template>
@@ -323,7 +433,7 @@ function emitInputEvent(event: Event) {
     ]" :style
   >
     <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
-    <label v-if="topLabel" :for="instanceId" class="m-input-top-label">{{ topLabel }}</label>
+    <label v-if="topLabel" :for="instanceId" class="m-input-top-label" :class="stateColor">{{ topLabel }}</label>
 
     <div
       class="m-input-wrapper"
@@ -336,11 +446,12 @@ function emitInputEvent(event: Event) {
     >
       <div v-if="hasLeftPart()" class="m-input-wrapper-left">
         <!--
-          @slot left-icon - The icon to display on the left of the input
+          @slot Custom content for the left side of the input field.
+          Typically used for icons, buttons, or text. Overrides the leftIcon prop when used
         -->
         <slot v-if="$slots['left-icon'] || leftIcon" name="left-icon">
-          <MazIcon v-if="typeof leftIcon === 'string'" :name="leftIcon" class="maz-text-xl maz-text-muted" />
-          <Component :is="leftIcon" v-else-if="leftIcon" class="maz-text-xl maz-text-muted" />
+          <MazIcon v-if="typeof leftIcon === 'string'" :name="leftIcon" class="maz-text-xl" :class="stateColor || 'maz-text-muted'" />
+          <Component :is="leftIcon" v-else-if="leftIcon" class="maz-text-xl" :class="stateColor || 'maz-text-muted'" />
         </slot>
       </div>
 
@@ -350,14 +461,12 @@ function emitInputEvent(event: Event) {
           v-bind="$attrs"
           ref="input"
           v-model="model"
-          :name
           :placeholder
           :aria-label="label || placeholder"
           :type="inputType"
           :inputmode
           :disabled
           :readonly
-          :autocomplete
           :required
           class="m-input-input"
           v-on="{
@@ -370,13 +479,7 @@ function emitInputEvent(event: Event) {
         >
 
         <span
-          v-if="label || hint" class="m-input-label" :class="[
-            {
-              'maz-text-danger-600': error,
-              'maz-text-success-600': success,
-              'maz-text-warning-600': warning,
-            },
-          ]"
+          v-if="label || hint" class="m-input-label" :class="stateColor"
         >
           {{ hint || label }}
         </span>
@@ -384,11 +487,13 @@ function emitInputEvent(event: Event) {
 
       <div v-if="hasRightPart()" class="m-input-wrapper-right">
         <!--
-          @slot right-icon - The icon to display on the right of the input
+          @slot Custom content for the right side of the input field.
+          Typically used for icons, buttons, or action elements. Overrides the rightIcon prop when used.
+          Note: For password inputs, the visibility toggle button will appear after this slot content
         -->
         <slot v-if="$slots['right-icon'] || rightIcon" name="right-icon">
-          <MazIcon v-if="typeof rightIcon === 'string'" :name="rightIcon" class="maz-text-xl maz-text-muted" />
-          <Component :is="rightIcon" v-else-if="rightIcon" class="maz-text-xl maz-text-muted" />
+          <MazIcon v-if="typeof rightIcon === 'string'" :name="rightIcon" class="maz-text-xl" :class="stateColor || 'maz-text-muted'" />
+          <Component :is="rightIcon" v-else-if="rightIcon" class="maz-text-xl" :class="stateColor || 'maz-text-muted'" />
         </slot>
 
         <MazBtn
@@ -398,18 +503,6 @@ function emitInputEvent(event: Event) {
           <MazEyeSlash v-if="hasPasswordVisible" class="maz-text-xl maz-text-muted" />
           <MazEye v-else class="maz-text-xl maz-text-muted" />
         </MazBtn>
-
-        <!--
-          @slot valid-button - Replace the valid button by your own
-        -->
-        <slot v-if="$slots['valid-button'] || validButton" name="valid-button">
-          <MazBtn
-            color="transparent" :disabled="disabled" tabindex="-1" :loading="validButtonLoading"
-            class="m-input-valid-button" size="mini" type="submit"
-          >
-            <MazCheck class="maz-text-2xl maz-text-normal" />
-          </MazBtn>
-        </slot>
       </div>
     </div>
 

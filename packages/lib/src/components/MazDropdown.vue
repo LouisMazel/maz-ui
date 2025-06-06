@@ -14,29 +14,32 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<MazDropdownProps>(), {
-  class: undefined,
-  style: undefined,
-  id: undefined,
-  items: () => [],
-  trigger: 'both',
-  color: 'transparent',
-  position: 'bottom left',
-  screenReaderDescription: 'Open menu dropdown',
-  dropdownIconAnimation: true,
-  size: 'md',
-  closeOnClick: true,
-  chevron: true,
-})
+const {
+  class: classProp,
+  style: styleProp,
+  id,
+  items = [],
+  trigger = 'both',
+  color = 'transparent',
+  position = 'bottom left',
+  screenReaderDescription = 'Open menu dropdown',
+  dropdownIconAnimation = true,
+  size = 'md',
+  closeOnClick = true,
+  chevron = true,
+  open,
+  disabled,
+} = defineProps<MazDropdownProps>()
+
 const emits = defineEmits<{
   /**
-   * emitted when a menu item is clicked
-   * @property {Event} event - the click event
+   * Emitted when a menu item is clicked
+   * @property {Event} event - The native click event from the menu item interaction
    */
   'menuitem-clicked': [event: Event]
   /**
-   * Triggers when the number changes
-   * @property {boolean} open new value
+   * Emitted when the dropdown open state changes
+   * @property {boolean} value - The new open state (true when opened, false when closed)
    */
   'update:open': [value: boolean]
 }>()
@@ -47,7 +50,7 @@ const MazLink = defineAsyncComponent(() => import('./MazLink.vue'))
 
 const instanceId = useInstanceUniqId({
   componentName: 'MazDropdown',
-  providedId: props.id,
+  providedId: id,
 })
 
 type ItemBase = Record<string, unknown> & {
@@ -71,100 +74,144 @@ export type MenuItem =
   | (ActionItem & { href?: never, to?: never, target?: never })
 
 export interface MazDropdownProps {
-  /** The style of the component */
+  /**
+   * Inline styles to apply to the component root element
+   * @type {HTMLAttributes['style']}
+   */
   style?: HTMLAttributes['style']
-  /** The class of the component */
+  /**
+   * CSS classes to apply to the component root element
+   * @type {HTMLAttributes['class']}
+   */
   class?: HTMLAttributes['class']
   /**
-   * Menu items
-   * @default '[]'
+   * Menu items to display in the dropdown
+   * Each item can be either a link (with href/to properties) or an action (with onClick function)
+   * @type {MenuItem[]}
+   * @default []
+   * @example
+   * [
+   *   { label: 'Profile', href: '/profile' },
+   *   { label: 'Settings', onClick: () => console.log('Settings clicked') }
+   * ]
    */
   items?: MenuItem[]
-  /** Menu should be open? */
+  /**
+   * Controls whether the dropdown menu is open
+   * @type {boolean}
+   * @default false
+   */
   open?: boolean
-  /** id of the menu */
+  /**
+   * Unique identifier for the dropdown component
+   * @type {string}
+   */
   id?: string
   /**
-   * Should open the dropdown on click, hover or both
+   * Determines how the dropdown should be triggered
+   * @type {'click' | 'hover' | 'both'}
+   * @values click, hover, both
    * @default 'both'
+   * @example 'click' - Opens only on click
+   * @example 'hover' - Opens only on hover
+   * @example 'both' - Opens on both click and hover
    */
   trigger?: 'click' | 'hover' | 'both'
   /**
-   * Button color
+   * Color theme for the dropdown button
+   * @type {MazColor}
+   * @values primary, secondary, info, success, warning, danger, white, black, transparent
    * @default 'transparent'
    */
   color?: MazColor
   /**
-   * Position of the dropdown
+   * Position where the dropdown menu should appear relative to the trigger button
+   * @type {MazPosition}
+   * @values top, bottom, left, right, top-left, top-right, bottom-left, bottom-right
    * @default 'bottom left'
+   * @example 'top right' - Menu appears above and to the right
    */
   position?: MazPosition
   /**
-   * Disable close menu on menuitem clicked
+   * Controls whether the dropdown menu closes when a menu item is clicked
+   * @type {boolean}
    * @default true
    */
   closeOnClick?: boolean
   /**
-   * Disable the dropdown
+   * Disables the dropdown functionality
+   * @type {boolean}
    * @default false
    */
   disabled?: boolean
   /**
-   * Remove chevron icon in main button
-   * @default false
+   * Controls whether to show the chevron icon in the trigger button
+   * @type {boolean}
+   * @default true
    */
   chevron?: boolean
   /**
-   * Description read by screen reader (accessibility)
+   * Accessible description for screen readers describing the dropdown functionality
+   * @type {string}
    * @default 'Open menu dropdown'
    */
   screenReaderDescription?: string
   /**
-   * Class for the menu panel - useful for custom dropdown panel (background, border, etc.)
+   * Additional CSS classes to apply to the dropdown menu panel
+   * Useful for customizing the dropdown appearance (background, border, etc.)
+   * @type {HTMLAttributes['class']}
    */
   menuPanelClass?: HTMLAttributes['class']
   /**
-   * Style for the menu panel - useful for custom dropdown panel (background, border, etc.)
-   * You may use `!important` to override the default style
+   * Inline styles to apply to the dropdown menu panel
+   * Useful for custom styling. You may use `!important` to override default styles
+   * @type {HTMLAttributes['style']}
    */
   menuPanelStyle?: HTMLAttributes['style']
   /**
-   * If true, the button will have a full width
+   * Makes the dropdown button expand to full width of its container
+   * @type {boolean}
+   * @default false
    */
   block?: boolean
   /**
-   * Custom dropdown icon
-   * You can use a string to define the icon name or a Vue component
-   * @default undefined
+   * Icon to use instead of the default chevron for the dropdown indicator
+   * Can be either an icon name string or a Vue component
+   * @type {string | IconComponent}
+   * @example 'arrow-down'
+   * @example ArrowDownIcon (import { ArrowDownIcon } from '@maz-ui/icons')
    */
   dropdownIcon?: string | IconComponent
   /**
-   * If true, the dropdown icon will rotate when the dropdown is open
+   * Controls whether the dropdown icon rotates when the dropdown is opened
+   * @type {boolean}
    * @default true
    */
   dropdownIconAnimation?: boolean
   /**
-   * Size of the button
+   * Size of the dropdown button
+   * @type {MazSize}
+   * @values mini, xs, sm, md, lg, xl
    * @default 'md'
    */
   size?: MazSize
 }
 
-const dropdownOpen = ref(props.open)
+const dropdownOpen = ref(open)
 const keyboardSelectedIndex = ref<number>()
 
 const iconClassSize = computed(() => {
-  if (props.size === 'xl')
+  if (size === 'xl')
     return 'maz-text-lg'
-  if (props.size === 'lg')
+  if (size === 'lg')
     return 'maz-text-base'
-  if (props.size === 'md')
+  if (size === 'md')
     return 'maz-text-base'
-  if (props.size === 'sm')
+  if (size === 'sm')
     return 'maz-text-base'
-  if (props.size === 'xs')
+  if (size === 'xs')
     return 'maz-text-sm'
-  if (props.size === 'mini')
+  if (size === 'mini')
     return 'maz-text-sm'
   return 'maz-text-lg'
 })
@@ -184,15 +231,15 @@ function toggleDropdown() {
 }
 
 function onElementClick() {
-  if (['click'].includes(props.trigger))
+  if (['click'].includes(trigger))
     toggleDropdown()
 }
 function onElementFocus() {
-  if (['hover', 'both'].includes(props.trigger))
+  if (['hover', 'both'].includes(trigger))
     setDropdown(true)
 }
 function onElementMouseenter() {
-  if (['hover', 'both'].includes(props.trigger)) {
+  if (['hover', 'both'].includes(trigger)) {
     if (dropdownOpen.value === false) {
       setDropdown(true)
     }
@@ -202,7 +249,7 @@ function onElementMouseenter() {
   }
 }
 function onElementMouseleave() {
-  if (['hover', 'both'].includes(props.trigger)) {
+  if (['hover', 'both'].includes(trigger)) {
     setDropdownDebounced(false)
   }
 }
@@ -211,7 +258,7 @@ function onElementBlur() {
 }
 
 function setDropdown(value: boolean) {
-  if (props.disabled)
+  if (disabled)
     return
 
   dropdownOpen.value = value
@@ -231,13 +278,13 @@ async function runAction(item: ActionItem, event: Event) {
 
   await item.onClick?.()
 
-  if (props.closeOnClick) {
-    closeOnClick()
+  if (closeOnClick) {
+    closeDropdown()
   }
 }
 
-function closeOnClick() {
-  if (props.closeOnClick)
+function closeDropdown() {
+  if (closeOnClick)
     setDropdown(false)
 }
 
@@ -257,7 +304,7 @@ function keydownHandler(event: KeyboardEvent) {
 
     item.click()
 
-    closeOnClick()
+    closeDropdown()
   }
 }
 
@@ -275,7 +322,7 @@ function arrowHandler(event: KeyboardEvent) {
   if (!dropdownOpen.value)
     setDropdown(true)
 
-  const itemLength = props.items?.length
+  const itemLength = items?.length
 
   if (!itemLength)
     return
@@ -311,7 +358,7 @@ watch(
   },
 )
 watch(
-  () => props.open,
+  () => open,
   value => setDropdown(value),
 )
 </script>
@@ -321,8 +368,8 @@ watch(
     :id="instanceId"
     v-click-outside="onClickOutside"
     class="m-dropdown m-reset-css"
-    :style
-    :class="[props.class, { '--block': block }]"
+    :style="styleProp"
+    :class="[classProp, { '--block': block }]"
   >
     <div
       role="button"
@@ -338,15 +385,19 @@ watch(
       @mouseleave="onElementMouseleave"
     >
       <span v-if="screenReaderDescription || $slots['screen-reader-description']" :id="`${instanceId}-labelspan`" class="maz-sr-only">
-        <!-- @slot Description for screen reader (hidden) -->
+        <!--
+          @slot description for screen readers (hidden from visual display)
+          Provides accessibility information about the dropdown functionality
+          @default 'Open menu dropdown'
+        -->
         <slot name="screen-reader-description">
           {{ screenReaderDescription }}
         </slot>
       </span>
       <!--
-        @slot Custom Element
-          @binding {Boolen} is-open - dropdown open state
-          @default `<MazBtn />`
+        @slot trigger element for the dropdown
+        @binding {boolean} is-open - Current state of the dropdown (true when open, false when closed)
+        @default MazBtn component with default styling
       -->
       <slot name="element" :is-open="dropdownOpen">
         <MazBtn
@@ -358,13 +409,14 @@ watch(
           :block
           :size
         >
+          <!-- @slot Text content of the trigger element -->
           <slot />
 
           <template v-if="chevron" #right-icon>
             <!--
-              @slot Custom dropdown icon
-                @binding {Boolean} is-open - dropdown open state
-                @default `<ChevronDownIcon />`
+              @slot Dropdown indicator icon
+              @binding {boolean} is-open - Current state of the dropdown (true when open, false when closed)
+              @default MazChevronDown icon with rotation animation
             -->
             <slot name="dropdown-icon" :is-open="dropdownOpen">
               <MazIcon v-if="typeof dropdownIcon === 'string'" :name="dropdownIcon" :class="[{ '--open': dropdownOpen && dropdownIconAnimation }, iconClassSize]" />
@@ -403,14 +455,14 @@ watch(
         @mouseleave="['hover', 'both'].includes(trigger) ? setDropdownDebounced(false) : undefined"
       >
         <!--
-          @slot Custom dropdown panel
-            @binding {Array} items - items prop data
+          @slot Dropdown menu panel content
+          @binding {MenuItem[]} items - Array of menu items passed via the items prop
         -->
         <slot name="dropdown" :items="items">
           <template v-for="(item, index) in items" :key="index">
             <!--
-              @slot Custom menu item
-                @binding {MenuItem} item - menu item
+              @slot Menu item component
+              @binding {MenuItem} item - Individual menu item object with properties like label, href, onClick, etc.
             -->
             <slot name="menuitem" :item="item">
               <template v-if="isLinkItem(item)">
@@ -429,11 +481,11 @@ watch(
                     },
                     item.class,
                   ]"
-                  @click.stop="closeOnClick"
+                  @click.stop="closeDropdown"
                 >
                   <!--
-                    @slot Custom label for menu item
-                      @binding {MenuItem} - item menu item
+                    @slot Label content for menu item
+                    @binding {MenuItem} item - Individual menu item object containing label and other properties
                   -->
                   <slot name="menuitem-label" :item="item">
                     {{ item.label }}
@@ -455,6 +507,10 @@ watch(
                   ]"
                   @click.stop="runAction(item, $event)"
                 >
+                  <!--
+                    @slot Label content for menu item
+                    @binding {MenuItem} item - Individual menu item object containing label and other properties
+                  -->
                   <slot name="menuitem-label" :item="item">
                     {{ item.label }}
                   </slot>

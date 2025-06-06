@@ -213,6 +213,7 @@ const buttonSize = computed(() => {
       :color
       :block
       :size
+      input-classes="maz-w-full"
       :border="false"
       class="m-input-tags__input"
       @keydown.enter="addTags"
