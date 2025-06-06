@@ -252,6 +252,14 @@ watch(
     }
   }
 
+  &.--theme {
+    @apply maz-bg-theme dark:maz-bg-color-light maz-text-color dark:maz-text-normal;
+
+    & .m-picker-header__year-text {
+      @apply maz-text-color dark:maz-text-normal;
+    }
+  }
+
   &.--transparent {
     @apply maz-border-b maz-border-color-light maz-text-normal;
   }

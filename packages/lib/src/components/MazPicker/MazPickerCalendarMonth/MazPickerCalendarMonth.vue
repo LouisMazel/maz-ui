@@ -26,6 +26,7 @@ const props = defineProps({
   disabledDates: { type: Array as PropType<string[]>, required: true },
   hoverredDay: { type: Object as PropType<Dayjs>, default: undefined },
   disabled: { type: Boolean, required: true },
+  range: { type: Boolean, required: true },
 })
 
 const emits = defineEmits(['update:model-value', 'update:calendar-date', 'update:hoverred-day'])
@@ -51,7 +52,7 @@ const calendarDateWithOffset = computed({
 </script>
 
 <template>
-  <div class="maz-picker-calendar-month --has-padding">
+  <div class="maz-picker-calendar-month" :class="{ '--has-padding': !range }">
     <MazPickerCalendarDays
       :locale="locale"
       :first-day-of-week="firstDayOfWeek"
@@ -71,6 +72,7 @@ const calendarDateWithOffset = computed({
       :disabled-weekly="disabledWeekly"
       :disabled-dates="disabledDates"
       :disabled="disabled"
+      :range
     />
   </div>
 </template>
