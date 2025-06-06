@@ -9,14 +9,16 @@ const icons = Object.keys(MazIcons)
  * @author @louismazel
  * @link https://maz-ui.com
  */
-export function MazIconsResolver(): ComponentResolver {
+export function MazIconsResolver(options?: { devMode?: boolean }): ComponentResolver {
   return {
     type: 'component',
     resolve: (name: string) => {
+      const { devMode = false } = options || {}
+      const base = devMode ? '@maz-ui/icons/src/index.ts' : '@maz-ui/icons'
       if (icons.includes(name)) {
         return {
           name,
-          from: '@maz-ui/icons'
+          from: base,
         }
       }
     },

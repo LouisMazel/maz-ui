@@ -60,18 +60,22 @@ const modulesMap: Record<Modules, true> = {
  * @author @louismazel
  * @link https://maz-ui.com
  */
-export function MazModulesResolver(): ResolverFunction {
+export function MazModulesResolver(options?: { devMode?: boolean }): ResolverFunction {
   return (name) => {
+    const { devMode = false } = options || {}
+    const base = devMode ? 'maz-ui/src' : 'maz-ui'
+    const extension = devMode ? '/index.ts' : ''
+
     if (modulesMap[name] === true) {
       return {
-        from: 'maz-ui',
+        from: `${base}${extension}`,
         name,
       }
     }
 
     if (composablesMap[name] === true) {
       return {
-        from: 'maz-ui/composables',
+        from: `${base}/composables${extension}`,
         name,
       }
     }
