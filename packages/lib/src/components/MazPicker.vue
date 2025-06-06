@@ -1,11 +1,14 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
+import type { MazInputProps } from './MazInput.vue'
 import type { MazPickerShortcut, MazPickerValue } from './MazPicker/types'
 import type { DateTimeFormatOptions } from './MazPicker/utils'
 import type { MazColor, MazPosition } from './types'
+import { MazCalendar } from '@maz-ui/icons'
 import MazChevronDownIcon from '@maz-ui/icons/svg/chevron-down.svg'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
+
 import isBetween from 'dayjs/plugin/isBetween'
 
 import {
@@ -18,20 +21,18 @@ import {
   ref,
   watch,
 } from 'vue'
-
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import { vClickOutside } from '../directives/vClickOutside'
 import { date } from '../formatters/date'
-import MazPickerContainer from './MazPicker/MazPickerContainer.vue'
 import {
   checkValueWithMinMaxDates,
-
   fetchLocale,
   getBrowserLocale,
   getFormattedDate,
   getISODate,
   getRangeFormattedDate,
   getRangeISODate,
+  isRangeValue,
   isValueDisabledDate,
   isValueDisabledWeekly,
 } from './MazPicker/utils'
@@ -41,15 +42,16 @@ export type { MazPickerPartialRangeValue, MazPickerRangeValue, MazPickerShortcut
 defineOptions({
   inheritAttrs: false,
 })
-const props = withDefaults(defineProps<MazPickerProps>(), {
+
+const props = withDefaults(defineProps<MazPickerProps & MazPickerInputProps>(), {
   style: undefined,
   class: undefined,
   modelValue: undefined,
-  format: 'YYYY-MM-DD',
+  format: 'YYYY-MM-DD HH:mm',
   open: false,
   label: undefined,
   placeholder: undefined,
-  inputDateStyle: () => ({ dateStyle: 'full' }),
+  inputDateStyle: () => ({ dateStyle: 'medium', timeStyle: 'full' }),
   inputDateTransformer: undefined,
   locale: undefined,
   hideHeader: false,
@@ -130,90 +132,276 @@ const props = withDefaults(defineProps<MazPickerProps>(), {
   disabledWeekly: () => [],
   disabledDates: () => [],
   disabledHours: () => [],
+  range: false,
 })
+
 const emits = defineEmits<{
+  /**
+   * Emitted when the picker value changes
+   * @event update:model-value
+   * @property {MazPickerValue | undefined} value - The new selected value
+   */
   'update:model-value': [value: MazPickerValue | undefined]
+
+  /**
+   * Emitted when the picker closes
+   * @event close
+   */
   'close': [void]
 }>()
+
+const MazPickerContainer = defineAsyncComponent(() => import('./MazPicker/MazPickerContainer.vue'))
+
+type MazPickerInputProps = Omit<MazInputProps, 'modelValue' | 'debounce' | 'type'>
+
 dayjs.extend(customParseFormat)
 dayjs.extend(isBetween)
 
 export interface MazPickerProps {
-  /** The id of the component */
-  id?: string
-  /** The style of the component */
-  style?: HTMLAttributes['style']
-  /** The class of the component */
-  class?: HTMLAttributes['class']
-  /** The value of the component */
-  modelValue?: MazPickerValue
-  /** The format of the date */
-  format?: string
-  /** If true picker window will be open */
-  open?: boolean
-  /** The label of the input */
-  label?: string
-  /** The placeholder of the input */
-  placeholder?: string
-  /** The style of the input date */
-  inputDateStyle?: Intl.DateTimeFormatOptions
   /**
-   * The transformer of the input date
-   * @type {(payload: { formattedDate?: string; value?: PickerValue; locale: string }) => string}
+   * The unique identifier of the component
+   * @type {string}
+   */
+  id?: string
+
+  /**
+   * The inline style object for the component
+   * @type {HTMLAttributes['style']}
+   */
+  style?: HTMLAttributes['style']
+
+  /**
+   * The CSS class(es) to apply to the component
+   * @type {HTMLAttributes['class']}
+   */
+  class?: HTMLAttributes['class']
+
+  /**
+   * The value of the date picker component
+   * If an object is provided, the picker will be a range picker
+   * @type {MazPickerValue}
+   * @default undefined
+   */
+  modelValue?: MazPickerValue
+
+  /**
+   * The format pattern for date display and parsing
+   * @type {string}
+   * @default 'YYYY-MM-DD'
+   * @example 'YYYY-MM-DD', 'DD/MM/YYYY', 'YYYY-MM-DD HH:mm'
+   */
+  format?: string
+
+  /**
+   * Controls whether the picker window is open
+   * @type {boolean}
+   * @default false
+   */
+  open?: boolean
+
+  /**
+   * The label text displayed above the input field
+   * @type {string}
+   */
+  label?: string
+
+  /**
+   * The placeholder text shown when no value is selected
+   * @type {string}
+   */
+  placeholder?: string
+
+  /**
+   * The Intl.DateTimeFormatOptions for styling the input date display
+   * @type {Intl.DateTimeFormatOptions}
+   * @default { dateStyle: 'full' }
+   */
+  inputDateStyle?: Intl.DateTimeFormatOptions
+
+  /**
+   * Custom function to transform the formatted date display
+   * @type {Function}
+   * @param {object} payload - The transformation payload
+   * @param {string} payload.formattedDate - The formatted date string
+   * @param {MazPickerValue} payload.value - The current picker value
+   * @param {string} payload.locale - The current locale
+   * @returns {string} The transformed date string
    */
   inputDateTransformer?: (payload: { formattedDate?: string, value?: MazPickerValue, locale: string }) => string
-  /** The locale of the component */
-  locale?: string
-  /** If true, the header will be hidden */
-  hideHeader?: boolean
-  /** If true, the component will be disabled */
-  disabled?: boolean
-  /** The first day of the week (between 0 and 6) */
-  firstDayOfWeek?: 0 | 1 | 2 | 3 | 4 | 5 | 6
-  /** If true, the picker will close after a date selection */
-  autoClose?: boolean
-  /** The selector of the custom element to trigger the picker */
-  customElementSelector?: string
-  /** If true, the picker will be double */
-  double?: boolean
-  /** If true, the picker will be inline */
-  inline?: boolean
-  /** The color of the component */
-  color?: MazColor
-  /** The position of the picker */
-  pickerPosition?: MazPosition
-  /** If true, the picker has a time picker */
-  time?: boolean
-  /** If true, the picker will be a time picker */
-  onlyTime?: boolean
-  /** The interval of the minutes */
-  minuteInterval?: number
+
   /**
-   * If true, the browser locale will be used
+   * The locale string for date formatting and localization
+   * @type {string}
+   * @example 'en-US', 'fr-FR', 'de-DE'
+   */
+  locale?: string
+
+  /**
+   * Controls whether the calendar header is hidden
+   * @type {boolean}
+   * @default false
+   */
+  hideHeader?: boolean
+
+  /**
+   * Controls whether the component is disabled
+   * @type {boolean}
+   * @default false
+   */
+  disabled?: boolean
+
+  /**
+   * The first day of the week in the calendar
+   * @type {number}
+   * @values 0, 1, 2, 3, 4, 5, 6
+   * @default 0
+   * @example 0 (Sunday), 1 (Monday), 6 (Saturday)
+   */
+  firstDayOfWeek?: 0 | 1 | 2 | 3 | 4 | 5 | 6
+
+  /**
+   * Controls whether the picker closes automatically after date selection
+   * @type {boolean}
+   * @default false
+   */
+  autoClose?: boolean
+
+  /**
+   * CSS selector for a custom element that triggers the picker
+   * @type {string}
+   * @example '#my-button', '.trigger-class'
+   */
+  customElementSelector?: string
+
+  /**
+   * Controls whether the picker displays two months side by side
+   * @type {boolean}
+   * @default false
+   */
+  double?: boolean
+
+  /**
+   * Controls whether the picker is displayed inline without input field
+   * @type {boolean}
+   * @default false
+   */
+  inline?: boolean
+
+  /**
+   * The color theme of the component
+   * @type {MazColor}
+   * @values primary, secondary, success, danger, warning, info
+   * @default 'primary'
+   */
+  color?: MazColor
+
+  /**
+   * The position where the picker popover should appear
+   * @type {MazPosition}
+   * @values top, bottom, left, right, top-left, top-right, bottom-left, bottom-right
+   */
+  pickerPosition?: MazPosition
+
+  /**
+   * Controls whether the picker includes a time selector
+   * @type {boolean}
+   * @default false
+   */
+  time?: boolean
+
+  /**
+   * Controls whether the picker shows only time selection (no date)
+   * @type {boolean}
+   * @default false
+   */
+  onlyTime?: boolean
+
+  /**
+   * The interval in minutes for the time picker minute selection
+   * @type {number}
+   * @default 5
+   * @values 1, 5, 10, 15, 30
+   */
+  minuteInterval?: number
+
+  /**
+   * Controls whether to automatically detect and use the browser's locale
+   * @type {boolean}
    * @default true
    */
   useBrowserLocale?: boolean
+
   /**
-   * If true, the browser locale will be fetched
-   * @default false
+   * Controls whether to fetch locale data dynamically
+   * @type {boolean}
+   * @default true
    */
   fetchLocal?: boolean
-  /** The shortcuts of the picker */
+
+  /**
+   * Array of predefined date range shortcuts or false to disable
+   * @type {MazPickerShortcut[] | false}
+   * @default [predefined shortcuts array]
+   */
   shortcuts?: MazPickerShortcut[] | false
-  /** The identifier of the selected shortcut of the picker */
+
+  /**
+   * The identifier of the currently selected shortcut
+   * @type {string}
+   */
   shortcut?: MazPickerShortcut['identifier']
-  /** The min date of the picker */
+
+  /**
+   * The minimum selectable date in ISO format
+   * @type {string}
+   * @example '2023-01-01'
+   */
   minDate?: string
-  /** The max date of the picker */
+
+  /**
+   * The maximum selectable date in ISO format
+   * @type {string}
+   * @example '2024-12-31'
+   */
   maxDate?: string
-  /** The disabled  weekly days of the picker */
+
+  /**
+   * Array of weekday numbers to disable (0 = Sunday, 6 = Saturday)
+   * @type {number[]}
+   * @default []
+   * @example [0, 6] to disable weekends
+   */
   disabledWeekly?: number[]
-  /** The disabled dates of the picker */
+
+  /**
+   * Array of specific dates to disable in ISO format
+   * @type {string[]}
+   * @default []
+   * @example ['2023-12-25', '2024-01-01']
+   */
   disabledDates?: string[]
-  /** The disabled hours of the time picker */
+
+  /**
+   * Array of hour numbers to disable in the time picker (0-23)
+   * @type {number[]}
+   * @default []
+   * @example [0, 1, 2, 22, 23] to disable night hours
+   */
   disabledHours?: number[]
-  /** The input will be displayed in full width */
+
+  /**
+   * Controls whether the input displays in full width
+   * @type {boolean}
+   * @default false
+   */
   block?: boolean
+
+  /**
+   * Controls whether the picker operates in range selection mode
+   * @type {boolean}
+   * @default false
+   */
+  range?: boolean
 }
 
 const MazInput = defineAsyncComponent(() => import('./MazInput.vue'))
@@ -228,16 +416,18 @@ const MazPicker = ref<HTMLDivElement>()
 
 const currentValue = computed<MazPickerValue>({
   get: () => {
-    return props.modelValue && typeof props.modelValue === 'object'
+    const isRangeMode = typeof props.modelValue === 'object' || props.range
+
+    return isRangeMode
       ? {
-          start: props.modelValue.start
+          start: typeof props.modelValue === 'object' && props.modelValue.start
             ? dayjs(props.modelValue.start, props.format).format()
             : undefined,
-          end: props.modelValue.end
+          end: typeof props.modelValue === 'object' && props.modelValue.end
             ? dayjs(props.modelValue.end, props.format).format()
             : undefined,
         }
-      : props.modelValue
+      : typeof props.modelValue === 'string'
         ? dayjs(props.modelValue, props.format).format()
         : undefined
   },
@@ -246,11 +436,18 @@ const currentValue = computed<MazPickerValue>({
       return
     }
 
-    emitValue(value)
+    const emittedValue = props.range && !isRangeValue(value)
+      ? {
+          start: value,
+          end: undefined,
+        }
+      : value
 
-    const isRangeMode = typeof value === 'object'
+    emitValue(emittedValue)
 
-    if (props.autoClose && (!isRangeMode || (isRangeMode && value.end))) {
+    const isRangeMode = typeof value === 'object' || props.range
+
+    if (props.autoClose && (!isRangeMode || (isRangeMode && typeof value === 'object' && value.end))) {
       closeCalendar()
     }
   },
@@ -259,7 +456,7 @@ const currentValue = computed<MazPickerValue>({
 const hasTime = computed(() => props.time || props.onlyTime)
 const hasDouble = computed(() => props.double && !props.onlyTime)
 const hasDate = computed(() => !props.onlyTime)
-const isRangeMode = computed(() => typeof currentValue.value === 'object')
+const isRangeMode = computed(() => typeof currentValue.value === 'object' || props.range)
 
 onBeforeMount(() => {
   if (isRangeMode.value && hasTime.value) {
@@ -277,6 +474,11 @@ onBeforeMount(() => {
   }
 })
 
+/**
+ * Gets the base calendar date considering min/max constraints
+ * @param {MazPickerValue} value - The picker value
+ * @returns {string} The formatted date for the calendar
+ */
 function getCalendarDate(value: MazPickerValue): string {
   const baseDate = (typeof value === 'object' ? value.start : value) ?? dayjs().format()
 
@@ -317,7 +519,7 @@ const inputValue = computed(() => {
         })
       : undefined
   }
-  else if (typeof currentValue.value === 'object') {
+  else if (isRangeMode.value) {
     formattedDate = getRangeFormattedDate({
       value: currentValue.value,
       locale: currentLocale.value,
@@ -466,58 +668,61 @@ function removeEventToTriggerCustomElement(selector: string) {
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 function checkMinMaxValues(value: MazPickerValue) {
-  if (props.minDate || props.maxDate) {
-    if (typeof value === 'string') {
+  if (!props.minDate && !props.maxDate) {
+    return
+  }
+
+  if (!isRangeMode.value && (typeof value === 'string' || !value)) {
+    const { newValue, newCurrentDate } = checkValueWithMinMaxDates({
+      value,
+      minDate: props.minDate,
+      maxDate: props.maxDate,
+      format: props.format,
+    })
+
+    if (newValue) {
+      emitValue(newValue)
+    }
+    if (newCurrentDate) {
+      setCalendarDate(newCurrentDate)
+    }
+  }
+
+  else if (isRangeMode.value && isRangeValue(value)) {
+    let newStartValue = value.start
+    let newEndValue = value.end
+
+    if (value.start) {
       const { newValue, newCurrentDate } = checkValueWithMinMaxDates({
-        value,
+        value: value.start,
         minDate: props.minDate,
         maxDate: props.maxDate,
         format: props.format,
       })
 
-      if (newValue) {
-        emitValue(newValue)
-      }
+      if (newValue)
+        newStartValue = newValue
+
       if (newCurrentDate) {
         setCalendarDate(newCurrentDate)
       }
     }
-    else if (typeof value === 'object' && (value.start || value.end)) {
-      let newStartValue = value.start
-      let newEndValue = value.end
-
-      if (value.start) {
-        const { newValue, newCurrentDate } = checkValueWithMinMaxDates({
-          value: value.start,
-          minDate: props.minDate,
-          maxDate: props.maxDate,
-          format: props.format,
-        })
-
-        if (newValue)
-          newStartValue = newValue
-
-        if (newCurrentDate) {
-          setCalendarDate(newCurrentDate)
-        }
-      }
-      if (value.end) {
-        const { newValue } = checkValueWithMinMaxDates({
-          value: value.end,
-          minDate: props.minDate,
-          maxDate: props.maxDate,
-          format: props.format,
-        })
-
-        if (newValue)
-          newEndValue = newValue
-      }
-
-      emitValue({
-        start: newStartValue,
-        end: newEndValue,
+    if (value.end) {
+      const { newValue } = checkValueWithMinMaxDates({
+        value: value.end,
+        minDate: props.minDate,
+        maxDate: props.maxDate,
+        format: props.format,
       })
+
+      if (newValue)
+        newEndValue = newValue
     }
+
+    emitValue({
+      start: newStartValue,
+      end: newEndValue,
+    })
   }
 }
 
@@ -528,15 +733,15 @@ function setCalendarDate(value: string) {
 }
 
 function emitValue(value: MazPickerValue) {
-  if (typeof value === 'object') {
-    const newValue = getRangeISODate(value, props.format)
+  if (isRangeMode.value && (typeof value === 'object' || value === undefined)) {
+    const newValue = getRangeISODate(value, props.format) ?? { start: undefined, end: undefined }
     emits('update:model-value', newValue)
 
     if (newValue.start) {
       setCalendarDate(newValue.start)
     }
   }
-  else {
+  else if (typeof value === 'string' || value === undefined) {
     emits('update:model-value', getISODate(value, props.format))
   }
 }
@@ -658,6 +863,9 @@ watch(
       :color="color"
       @click="isFocused = !isFocused"
     >
+      <template #left-icon>
+        <MazCalendar class="maz-text-lg" />
+      </template>
       <template #right-icon>
         <button
           type="button"
@@ -674,7 +882,7 @@ watch(
       :name="pickerContainerPosition.vertical === 'top' ? 'maz-slideinvert' : 'maz-slide'"
     >
       <MazPickerContainer
-        v-show="isOpen"
+        v-if="isOpen"
         :id="containerUniqueId"
         v-model="currentValue"
         v-model:calendar-date="calendarDate"
@@ -699,6 +907,7 @@ watch(
         :disabled-hours="disabledHours"
         :disabled-dates="disabledDates"
         :minute-interval="minuteInterval"
+        :range
         @close="closeCalendar"
       />
     </Transition>

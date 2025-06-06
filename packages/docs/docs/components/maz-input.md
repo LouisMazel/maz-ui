@@ -471,20 +471,6 @@ Use the attribute `rounded-size` with a value in `'none' | 'sm' | 'md' | 'lg' | 
   </template>
 </ComponentDemo>
 
-## Valid Button
-
-<ComponentDemo title="Warning">
-  <MazInput v-model="inputValue" label="Label" valid-button autocomplete="off" />
-
-  <template #code>
-
-  ```html
-    <MazInput v-model="inputValue" label="Label" valid-button />
-  ```
-
-  </template>
-</ComponentDemo>
-
 <script setup lang="ts">
   import { ref, computed } from 'vue'
   const inputValue = ref()

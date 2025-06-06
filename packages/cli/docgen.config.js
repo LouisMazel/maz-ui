@@ -8,8 +8,6 @@ import { component } from './config/component-template.js'
 
 const _dirname = fileURLToPath(new URL('.', import.meta.url))
 
-console.log('dirname', _dirname, resolve(_dirname, './../lib/src/components'), resolve(_dirname, './../docs/docs/.vitepress/generated-docs'))
-
 export default defineConfig({
   componentsRoot: resolve(_dirname, './../lib/src/components'),
   components: './[A-Z]*.vue', // the glob to define what files should be documented as components (relative to componentRoot)

@@ -2,6 +2,8 @@ import { readdir, readFile, writeFile } from 'node:fs/promises'
 import { join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import type { Plugin } from 'vite'
+// @ts-ignore
+import { getComponentList } from '../../lib/build/getComponentList'
 import { logger } from './logger'
 
 function toPascalCase(str: string) {
@@ -18,22 +20,32 @@ const outputIndex = resolve(_dirname, '../src/index.ts')
 
 async function replaceValuesInSvg(files: string[]) {
   try {
-    const colorRegex = /(stroke|fill|color|stop-color|flood-color|lighting-color)="#[\dA-Fa-f]{3}(?:[\dA-Fa-f]{3})?"/g
-    const rgbRegex = /(stroke|fill|color|stop-color|flood-color|lighting-color)="rgb\([^)]+\)"/g
     const svgFiles = files.filter(file => file.endsWith('.svg'))
 
     for (const file of svgFiles) {
       const filePath = join(svgDir, file)
       let content = await readFile(filePath, 'utf-8')
 
-      // width/height
-      content = content.replace(/<svg[^>]*width="[^"]*"/g, '<svg width="1em"')
-      content = content.replace(/<svg[^>]*height="[^"]*"/g, '<svg height="1em"')
+      if (!/\swidth\s*=/.test(content)) {
+        content = content.replace(/<svg\b/, '<svg width="1em"')
+      } else {
+        content = content.replace(/\swidth\s*=\s*"[^"]*"/g, ' width="1em"')
+      }
 
-      // couleurs HEX
-      content = content.replace(colorRegex, '$1="currentColor"')
-      // couleurs rgb()
-      content = content.replace(rgbRegex, '$1="currentColor"')
+      if (!/\sheight\s*=/.test(content)) {
+        content = content.replace(/<svg\b/, '<svg height="1em"')
+      } else {
+        content = content.replace(/\sheight\s*=\s*"[^"]*"/g, ' height="1em"')
+      }
+
+      const colorRegex = /\b(stroke|fill|color|stop-color|flood-color|lighting-color)\b="(?:#[\dA-Fa-f]{3,8}|rgb\([^)]+\)|rgba\([^)]+\)|hsl\([^)]+\)|hsla\([^)]+\)|[a-zA-Z]+)"/g
+      content = content.replace(colorRegex, (match, attribute, ...args) => {
+        const colorValue = match.split('=')[1].replace(/"/g, '')
+        if (colorValue === 'none' || colorValue === 'transparent') {
+          return match
+        }
+        return `${attribute}="currentColor"`
+      })
 
       await writeFile(filePath, content)
     }
@@ -48,11 +60,12 @@ async function replaceValuesInSvg(files: string[]) {
 }
 
 async function generateIconsComponentsEntry(files: string[]) {
-  const reservedNames = ['Map', 'Object', 'String', 'Number', 'Boolean', 'Array', 'Date', 'RegExp', 'Error', 'Function', 'Promise', 'Set', 'WeakMap', 'WeakSet', 'Symbol', 'Proxy', 'Reflect', 'Math', 'JSON', 'Intl', 'Console', 'Window', 'Document', 'Element', 'HTMLElement', 'Node', 'Event', 'EventTarget', 'Location', 'History', 'Navigator', 'Screen', 'Storage', 'URL', 'URLSearchParams', 'FormData', 'File', 'Blob', 'FileReader', 'XMLHttpRequest', 'WebSocket', 'Worker', 'SharedWorker', 'ServiceWorker', 'Cache', 'Request', 'Response', 'Headers', 'Body', 'ReadableStream', 'WritableStream', 'TransformStream', 'ByteLengthQueuingStrategy', 'CountQueuingStrategy', 'TextEncoder', 'TextDecoder', 'Image', 'ImageData', 'Canvas', 'CanvasRenderingContext2D', 'WebGLRenderingContext', 'WebGL2RenderingContext', 'Audio', 'AudioContext', 'AudioBuffer', 'AudioBufferSourceNode', 'GainNode', 'OscillatorNode', 'AnalyserNode', 'BiquadFilterNode', 'ChannelMergerNode', 'ChannelSplitterNode', 'ConvolverNode', 'DelayNode', 'DynamicsCompressorNode', 'IIRFilterNode', 'MediaElementAudioSourceNode', 'MediaStreamAudioDestinationNode', 'MediaStreamAudioSourceNode', 'PannerNode', 'StereoPannerNode', 'WaveShaperNode', 'MediaStream', 'MediaStreamTrack', 'MediaRecorder', 'MediaDevices', 'MediaQueryList', 'MutationObserver', 'IntersectionObserver', 'ResizeObserver', 'Performance', 'PerformanceEntry', 'PerformanceMark', 'PerformanceMeasure', 'PerformanceNavigation', 'PerformanceResourceTiming', 'PerformanceTiming', 'PerformanceObserver', 'PerformanceObserverEntryList', 'PerformancePaintTiming', 'PerformanceServerTiming', 'PerformanceNavigationTiming', 'PerformanceLongTaskTiming', 'PerformanceEventTiming', 'PerformanceLayoutShift', 'PerformanceFirstInput', 'PerformanceLargestContentfulPaint', 'PerformanceElementTiming', 'PerformanceResourceTiming', 'PerformanceServerTiming', 'PerformanceNavigationTiming', 'PerformancePaintTiming', 'PerformanceLongTaskTiming', 'PerformanceEventTiming', 'PerformanceLayoutShift', 'PerformanceFirstInput', 'PerformanceLargestContentfulPaint', 'PerformanceElementTiming']
+  const componentNameList = (await getComponentList()).map(({ name }) => name)
+  const reservedNames = [...componentNameList, 'Map', 'Object', 'String', 'Number', 'Boolean', 'Array', 'Date', 'RegExp', 'Error', 'Function', 'Promise', 'Set', 'WeakMap', 'WeakSet', 'Symbol', 'Proxy', 'Reflect', 'Math', 'JSON', 'Intl', 'Console', 'Window', 'Document', 'Element', 'HTMLElement', 'Node', 'Event', 'EventTarget', 'Location', 'History', 'Navigator', 'Screen', 'Storage', 'URL', 'URLSearchParams', 'FormData', 'File', 'Blob', 'FileReader', 'XMLHttpRequest', 'WebSocket', 'Worker', 'SharedWorker', 'ServiceWorker', 'Cache', 'Request', 'Response', 'Headers', 'Body', 'ReadableStream', 'WritableStream', 'TransformStream', 'ByteLengthQueuingStrategy', 'CountQueuingStrategy', 'TextEncoder', 'TextDecoder', 'Image', 'ImageData', 'Canvas', 'CanvasRenderingContext2D', 'WebGLRenderingContext', 'WebGL2RenderingContext', 'Audio', 'AudioContext', 'AudioBuffer', 'AudioBufferSourceNode', 'GainNode', 'OscillatorNode', 'AnalyserNode', 'BiquadFilterNode', 'ChannelMergerNode', 'ChannelSplitterNode', 'ConvolverNode', 'DelayNode', 'DynamicsCompressorNode', 'IIRFilterNode', 'MediaElementAudioSourceNode', 'MediaStreamAudioDestinationNode', 'MediaStreamAudioSourceNode', 'PannerNode', 'StereoPannerNode', 'WaveShaperNode', 'MediaStream', 'MediaStreamTrack', 'MediaRecorder', 'MediaDevices', 'MediaQueryList', 'MutationObserver', 'IntersectionObserver', 'ResizeObserver', 'Performance', 'PerformanceEntry', 'PerformanceMark', 'PerformanceMeasure', 'PerformanceNavigation', 'PerformanceResourceTiming', 'PerformanceTiming', 'PerformanceObserver', 'PerformanceObserverEntryList', 'PerformancePaintTiming', 'PerformanceServerTiming', 'PerformanceNavigationTiming', 'PerformanceLongTaskTiming', 'PerformanceEventTiming', 'PerformanceLayoutShift', 'PerformanceFirstInput', 'PerformanceLargestContentfulPaint', 'PerformanceElementTiming', 'PerformanceResourceTiming', 'PerformanceServerTiming', 'PerformanceNavigationTiming', 'PerformancePaintTiming', 'PerformanceLongTaskTiming', 'PerformanceEventTiming', 'PerformanceLayoutShift', 'PerformanceFirstInput', 'PerformanceLargestContentfulPaint', 'PerformanceElementTiming']
 
   const imports = files.map((file) => {
     const name = toPascalCase(file.replace('.svg', ''))
-    const finalName = reservedNames.includes(name) ? `${name}Icon` : name
+    const finalName = reservedNames.includes(name) || reservedNames.includes(`Maz${name}`) || reservedNames.includes(`Maz${name}Icon`) ? `${name}Icon` : name
     return `export const Maz${finalName} = defineAsyncComponent(() => import('./../svg/${file}?component'));`
   }).join('\n')
 
