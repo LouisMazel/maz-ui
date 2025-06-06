@@ -2,13 +2,13 @@
 import type { Dayjs } from 'dayjs'
 import type { PropType } from 'vue'
 import type { MazColor } from '../../types'
-import type { MazPickerPartialRangeValue, MazPickerValue } from '../types'
+import type { MazPickerValue } from '../types'
 import dayjs from 'dayjs'
 import { computed, ref, watch } from 'vue'
 import { debounce } from '../../../helpers/debounce'
 import MazBtn from '../../MazBtn.vue'
 
-import { getDaysInMonth, getFirstDayOfMonth, isSameDate, isSameDay, isToday } from '../utils'
+import { getDaysInMonth, getFirstDayOfMonth, isRangeValue, isSameDate, isSameDay, isValidDate } from '../utils'
 
 const props = defineProps({
   modelValue: {
@@ -26,6 +26,7 @@ const props = defineProps({
   disabledDates: { type: Array as PropType<string[]>, required: true },
   hoverredDay: { type: Object as PropType<Dayjs>, default: undefined },
   disabled: { type: Boolean, required: true },
+  range: { type: Boolean, required: true },
 })
 
 const emits = defineEmits(['update:model-value', 'update:hoverred-day'])
@@ -42,11 +43,13 @@ const transitionName = ref<'maz-slidenext' | 'maz-slideprev'>('maz-slidenext')
 
 const calendarDateArray = computed<string[]>(() => [props.calendarDate])
 
-const isRangeMode = computed(() => props.modelValue && typeof props.modelValue === 'object')
+const hoverColor = computed(() => {
+  if (props.color === 'theme') {
+    return ''
+  }
 
-const hoverColor = computed(() => `var(--maz-color-${props.color}-alpha-20)`)
-const betweenColor = computed(() => `var(--maz-color-${props.color}-alpha)`)
-const betweenColorAlpha = computed(() => `var(--maz-color-${props.color}-alpha-20)`)
+  return `var(--maz-color-${props.color}-alpha-20)`
+})
 
 const modelValue = computed({
   get: () => props.modelValue,
@@ -66,7 +69,11 @@ const emptyDaysCount = computed(() => {
 })
 
 function setHoverredDay(day?: Dayjs) {
-  const value = props.modelValue as MazPickerPartialRangeValue
+  const value = props.modelValue
+
+  if (!value || !isRangeValue(value)) {
+    return
+  }
 
   if (value.start && !value.end && day && day.isAfter(value.start)) {
     emits('update:hoverred-day', day)
@@ -77,13 +84,13 @@ function setHoverredDay(day?: Dayjs) {
 }
 
 function isBetweenHoverred(day: Dayjs): DaySelect | undefined {
-  const value = props.modelValue as MazPickerPartialRangeValue
+  const value = props.modelValue
 
-  if (!value.start || !props.hoverredDay) {
+  if (!value || !isRangeValue(value) || !value.start || !props.hoverredDay) {
     return undefined
   }
 
-  const isBetween = dayjs(day).isBetween(value.start, props.hoverredDay, 'date', '(]')
+  const isBetween = dayjs(day).isBetween(value.start, props.hoverredDay, 'date', '()')
 
   return isBetween ? DaySelect.BETWEEN_HOVERRED : undefined
 }
@@ -158,7 +165,7 @@ function isSelectedOrBetween(day: Dayjs): DaySelect {
 }
 
 function selectDay(value: Dayjs) {
-  if (isRangeMode.value) {
+  if (props.range) {
     setHoverredDay()
   }
 
@@ -191,24 +198,19 @@ function selectDay(value: Dayjs) {
   }
 }
 
-function checkIsToday(day: Dayjs): boolean {
-  return isToday(day)
-}
-
 function checkIsSameDate(day: Dayjs): boolean {
-  if (!props.modelValue) {
+  const value = props.modelValue
+  if (!value || !isValidDate(value)) {
     return false
   }
-
-  const value = props.modelValue as string
 
   return isSameDate(day, value, 'date')
 }
 
 function checkIsBetween(day: Dayjs): boolean {
-  const value = props.modelValue as MazPickerPartialRangeValue
+  const value = props.modelValue
 
-  if (!value.start || !value.end) {
+  if (!isRangeValue(value) || !value.start || !value.end) {
     return false
   }
 
@@ -280,7 +282,7 @@ watch(
         v-for="(dateArray, dateIndex) in [calendarDateArray]"
         :key="`${dateArray[dateIndex]}`"
         class="maz-picker-calendar-grid__container"
-        :class="{ '--is-range': isRangeMode }"
+        :class="{ '--is-range': range }"
       >
         <div v-for="first in emptyDaysCount" :key="first" />
         <MazBtn
@@ -297,20 +299,20 @@ watch(
               || isDisabledDate(date)
           "
           :class="{
-            '--is-today': checkIsToday(date),
-            '--is-first': isFirstDay(date),
-            '--is-last': isLastDay(date) || (isRangeMode && isLastDayHoverred(date)),
+            '--is-first': isFirstDay(date) && isSelectedOrBetween(date) === DaySelect.SELECTED,
+            '--is-last': isLastDay(date) && isSelectedOrBetween(date) === DaySelect.SELECTED,
+            '--is-last-hoverred': isLastDayHoverred(date),
             '--is-selected': isSelectedOrBetween(date) === DaySelect.SELECTED,
             '--is-between': isSelectedOrBetween(date) === DaySelect.BETWEEN,
-            '--is-between-hoverred': isRangeMode
+            '--is-between-hoverred': range
               ? isBetweenHoverred(date) === DaySelect.BETWEEN_HOVERRED
               : undefined,
           }"
           @click="selectDay(date)"
-          @mouseover="isRangeMode ? setHoverredDay(date) : undefined"
-          @mouseleave="isRangeMode ? setHoverredDay() : undefined"
-          @focus="isRangeMode ? setHoverredDay(date) : undefined"
-          @blur="isRangeMode ? setHoverredDay() : undefined"
+          @mouseover="range ? setHoverredDay(date) : undefined"
+          @mouseleave="range ? setHoverredDay() : undefined"
+          @focus="range ? setHoverredDay(date) : undefined"
+          @blur="range ? setHoverredDay() : undefined"
         >
           <span>
             {{ label }}
@@ -328,22 +330,20 @@ watch(
   transition: all 300ms ease-in-out;
 
   &__container {
-    @apply maz-relative maz-grid maz-grid-cols-7 maz-items-start maz-gap-1;
+    @apply maz-relative maz-grid maz-grid-cols-7 maz-items-start maz-gap-y-1;
 
-    /* &.--is-range {
-        @apply maz-gap-0 maz-gap-y-1;
-      } */
+    &:not(.--is-range) {
+      @apply maz-gap-x-1;
+    }
+
+    &.--is-range {
+      button {
+        @apply maz-w-full;
+      }
+    }
 
     & button {
-      @apply maz-h-8 maz-w-8 maz-cursor-pointer !maz-rounded-full;
-
-      /* @apply maz-p-1 !important; */
-
-      &.--is-today {
-        &:not(.--is-selected, .--is-between, .--is-between-hoverred) {
-          @apply !maz-bg-color-light dark:!maz-bg-color-lighter;
-        }
-      }
+      @apply maz-h-8 maz-w-8 maz-cursor-pointer maz-rounded-full;
 
       &:hover {
         &:not(.--is-selected, .--is-between, .--is-between-hoverred) {
@@ -351,12 +351,21 @@ watch(
         }
       }
 
+      &.--is-first {
+        @apply !maz-rounded-r-none;
+      }
+
+      &.--is-last-hoverred,
+      &.--is-last {
+        @apply !maz-rounded-l-none;
+      }
+
       &.--is-between-hoverred {
-        background-color: v-bind('betweenColorAlpha') !important;
+        @apply maz-bg-color-light !maz-rounded-none;
       }
 
       &.--is-between {
-        background-color: v-bind('betweenColor') !important;
+        @apply maz-bg-color-light !maz-rounded-none maz-text-normal;
 
         &.--white,
         &.--transparent {

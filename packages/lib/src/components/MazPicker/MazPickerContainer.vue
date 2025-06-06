@@ -1,9 +1,11 @@
 <script lang="ts" setup>
+import { ref } from 'vue'
 import type { MazColor } from '../types'
 import type { MazPickerShortcut, MazPickerValue } from './types'
 
 import type { DateTimeFormatOptions } from './utils'
 import { computed, defineAsyncComponent } from 'vue'
+import dayjs from 'dayjs'
 
 const {
   modelValue,
@@ -29,6 +31,7 @@ const {
   disabledWeekly,
   disabledHours,
   disabledDates,
+  range,
 } = defineProps<{
   modelValue: MazPickerValue | undefined
   calendarDate: string
@@ -53,6 +56,7 @@ const {
   disabledWeekly: number[]
   disabledHours: number[]
   disabledDates: string[]
+  range: boolean
 }>()
 
 const emits = defineEmits(['update:model-value', 'update:calendar-date', 'close'])
@@ -60,6 +64,25 @@ const emits = defineEmits(['update:model-value', 'update:calendar-date', 'close'
 const MazPickerCalendar = defineAsyncComponent(() => import('../MazPicker/MazPickerCalendar.vue'))
 const MazPickerHeader = defineAsyncComponent(() => import('../MazPicker/MazPickerHeader.vue'))
 const MazPickerTime = defineAsyncComponent(() => import('../MazPicker/MazPickerTime.vue'))
+
+const lastTimeValue = ref<string>()
+
+function saveLastTimeValue(value: string) {
+  lastTimeValue.value = dayjs(value).format('HH:mm')
+  emits('update:model-value', value)
+}
+
+function emitDateValue(value: string) {
+  if (hasTime) {
+    const date = dayjs(value).format('YYYY-MM-DD')
+    const time = lastTimeValue.value || '00:00'
+    const timeEmitted = dayjs(`${date} ${time}`).format(format)
+    emits('update:model-value', timeEmitted)
+  }
+  else {
+    emits('update:model-value', value)
+  }
+}
 
 const currentDate = computed({
   get: () => modelValue,
@@ -100,7 +123,7 @@ const currentCalendarDate = computed({
     <div class="m-picker-container__wrapper">
       <MazPickerCalendar
         v-if="hasDate"
-        v-model="currentDate"
+        :model-value="currentDate"
         v-model:calendar-date="currentCalendarDate"
         :color="color"
         :locale="locale"
@@ -114,12 +137,14 @@ const currentCalendarDate = computed({
         :disabled-dates="disabledDates"
         :shortcuts="shortcuts"
         :shortcut="shortcut"
+        :range
+        @update:model-value="emitDateValue"
         class="m-picker-container__calendar"
       />
 
       <MazPickerTime
         v-if="hasTime"
-        v-model="currentDate"
+        :model-value="currentDate"
         v-model:calendar-date="currentCalendarDate"
         :is-open="isOpen"
         :color="color"
@@ -133,6 +158,7 @@ const currentCalendarDate = computed({
         :minute-interval="minuteInterval"
         :formatter-options="formatterOptions"
         :is-hour12="isHour12"
+        @update:model-value="saveLastTimeValue"
         class="m-picker-container__time"
       />
     </div>
@@ -165,6 +191,20 @@ const currentCalendarDate = computed({
 
   & :deep(button):is(:disabled) {
     @apply maz-bg-transparent !maz-text-gray-300 !important;
+  }
+
+  &:not(.--has-date) {
+    .m-picker-container__time {
+      @apply maz-w-full;
+
+      &:deep(.m-picker-time__column__hour) {
+        @apply maz-w-1/2;
+      }
+
+      &:deep(.m-picker-time__column__minute) {
+        @apply maz-w-1/2;
+      }
+    }
   }
 }
 
