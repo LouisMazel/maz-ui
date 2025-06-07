@@ -157,17 +157,17 @@ export type MazDropzoneProps = {
    */
   color?: MazColor
   /**
-   * MazBtn props - https://maz-ui.com/components/maz-btn#props
+   * MazBtn props [MazBtn props](/components/maz-btn#props)
    * @default {}
    */
   selectFileBtnProps?: MazBtnProps
   /**
-   * MazBtn props - https://maz-ui.com/components/maz-btn#props
+   * MazBtn props [MazBtn props](/components/maz-btn#props)
    * @default {}
    */
   removeFileBtnProps?: MazBtnProps
   /**
-   * MazSpinner props - https://maz-ui.com/components/maz-spinner#props
+   * MazSpinner props [MazSpinner props](/components/maz-spinner#props)
    * @default {}
    */
   spinnerProps?: MazSpinnerProps
@@ -184,7 +184,7 @@ export type MazDropzoneProps = {
   url?: string
   /**
    * Request options
-   * @description Request options to be used for the upload (using fetch) - https://developer.mozilla.org/en-US/docs/Web/API/fetch#options
+   * @description Request options to be used for the upload (using fetch) [Request options](https://developer.mozilla.org/en-US/docs/Web/API/fetch#options)
    * @example `{ mode: 'no-cors', headers: { 'Content-Type': 'multipart/form-data', 'Authorization': 'Bearer 1234567890' } }`
    */
   requestOptions?: RequestInit

@@ -45,7 +45,10 @@ export interface MazTableProps<T extends MazTableRow<T>> {
   tableClass?: HTMLAttributes['class']
   /** style of the table element */
   tableStyle?: StyleValue
-  /** v-model of the table - list of selected rows */
+  /**
+   * v-model of the table - list of selected rows
+   * @model
+   */
   modelValue?: (string | boolean | number)[]
   /**
    * size of the table
@@ -74,15 +77,12 @@ export interface MazTableProps<T extends MazTableRow<T>> {
   search?: boolean
   /** disabled search in rows - useful to filtering data yourself or make search request to server */
   hideSearchInRow?: boolean
-  /** placeholder of the search input */
-  searchPlaceholder?: string
   /** Disabled search by column (remove select input "search by") */
   hideSearchBy?: boolean
-  /** placeholder of the search by select */
-  searchByPlaceholder?: string
-  /** label of the search by of all options */
-  searchByAllLabel?: string
-  /** search query in input */
+  /**
+   * search query in input
+   * @model
+   */
   searchQuery?: string
   /** add background color to odd rows */
   backgroundOdd?: boolean
@@ -101,14 +101,18 @@ export interface MazTableProps<T extends MazTableRow<T>> {
   captionSide?: 'top' | 'bottom'
   /** add pagination into the table footer */
   pagination?: boolean
-  /** current page of pagination */
+  /**
+   * current page of pagination
+   * @model
+   */
   page?: number
-  /** number of items per page */
+  /**
+   * number of items per page
+   * @model
+   */
   pageSize?: number
   /** pages count */
   totalPages?: number
-  /** label of the pagination all option */
-  paginationAllLabel?: string
   /** no paginate rows - useful to make paginate request with your server */
   noPaginateRows?: boolean
   /** total number of items */
@@ -178,10 +182,6 @@ const props = withDefaults(defineProps<MazTableProps<T>>(), {
   page: 1,
   pageSize: 20,
   captionSide: 'bottom',
-  searchPlaceholder: 'Search',
-  searchByPlaceholder: 'Search by',
-  searchByAllLabel: 'All',
-  paginationAllLabel: 'All',
   color: 'primary',
   roundedSize: 'lg',
   scrollable: false,
@@ -229,18 +229,10 @@ const defaultTranslations: Required<MazTableTranslations> = {
   paginationOf: 'of',
 }
 
-const t = computed<Required<MazTableTranslations>>(() => {
-  const { translations, searchByAllLabel, searchByPlaceholder, searchPlaceholder, paginationAllLabel } = props
-
-  return {
-    ...defaultTranslations,
-    ...translations,
-    searchByAllLabel,
-    searchByPlaceholder,
-    searchPlaceholder,
-    paginationAllLabel,
-  }
-})
+const t = computed<Required<MazTableTranslations>>(() => ({
+  ...defaultTranslations,
+  ...props.translations,
+}))
 
 const hasDivider = computed<boolean>(
   () => props.divider && !props.backgroundEven && !props.backgroundOdd,
@@ -360,7 +352,7 @@ const headersNormalized = ref<MazTableHeadersNormalized[]>(getNormalizedHeaders(
 
 const searchByKey = ref<string>()
 const searchByOptions = computed<MazSelectOption[]>(() => [
-  { label: props.searchByAllLabel, value: null },
+  { label: t.value.searchByAllLabel, value: null },
   ...headersNormalized.value.map((header) => {
     return {
       label: header.label,

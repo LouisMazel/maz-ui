@@ -1,6 +1,6 @@
 import { exit } from 'node:process'
 import { Command } from 'commander'
-import { execPromise } from '../../utils/exec-promise'
+import { execPromise } from '../../utils/execPromise'
 import { logger } from '../../utils/logger'
 
 export function generateComponentsDocumentationCommand(): Command {
@@ -20,7 +20,6 @@ export function generateComponentsDocumentationCommand(): Command {
         }
         else {
           await execPromise('vue-docgen')
-
           logger.eot()
           logger.success('Components documentation generated')
           logger.eot()

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { MazPickerValue } from 'maz-ui/components';
 
-import * as MazIcons from '@maz-ui/icons'
+import * as MazIcons from '@maz-ui/icons';
 
 const { message, success, error, info, warning } = useToast()
 
@@ -37,11 +37,10 @@ const date = ref<MazPickerValue>()
 
 <template>
   <div id="home" class="maz-flex maz-justify-center maz-items-center maz-h-screen">
-    <MazAcademicCap />
     <div class="maz-flex maz-flex-wrap maz-gap-2">
       <Component v-for="(icon, i) in MazIcons" :key="i" :is="icon" class="maz-w-10 maz-h-10" />
     </div>
 
-    <MazBtn @click="showToast">Click me</MazBtn>
+    <MazBtn @click="showToast">Show toast</MazBtn>
   </div>
 </template>

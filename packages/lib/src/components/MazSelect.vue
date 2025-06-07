@@ -45,7 +45,7 @@ export interface MazSelectProps<T extends MazInputValue, U extends MazSelectOpti
   /** The value of the select */
   modelValue?: T | T[]
   /** The options of the select */
-  options?: U[]
+  options: U[]
   /**
    * The key of the option value
    * @default 'value'
@@ -143,7 +143,6 @@ const props = withDefaults(defineProps<MazSelectProps<T, U>>(), {
   minListHeight: undefined,
   size: 'md',
   color: 'primary',
-  options: undefined,
   excludedSelectors: undefined,
   searchPlaceholder: 'Search in options',
   searchThreshold: 0.75,
@@ -259,7 +258,7 @@ function getNormalizedOptionPayload(option: MazSelectNormalizedOption): MazSelec
   }
 }
 
-function getNormalizedOptions(options: U[]) {
+function getNormalizedOptions(options: U[] | undefined) {
   const normalizedOptions: MazSelectNormalizedOption[] = []
 
   if (!options?.length) {
@@ -308,10 +307,6 @@ const selectedOptions = computed(
 )
 
 onBeforeMount(() => {
-  if (!props.options?.length) {
-    console.warn('[maz-ui](MazSelect) you must provide options')
-  }
-
   updateTmpModelValueIndex()
 })
 
