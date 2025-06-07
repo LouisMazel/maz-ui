@@ -11,6 +11,7 @@ export default antfu(
     formatters: true,
     vue: true,
     rules: {
+      'no-console': [process.env.NODE_ENV === 'production' ? 'error' : 'warn'],
       'vue/custom-event-name-casing': ['error', 'kebab-case'],
       'vue/no-undef-components': [
         'error',

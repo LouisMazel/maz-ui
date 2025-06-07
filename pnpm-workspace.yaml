@@ -1,6 +1,8 @@
 packages:
+  - 'apps/*'
   - 'packages/*'
   - '.'
+
 catalog:
   '@babel/core': ^7.27.4
   '@babel/preset-env': ^7.27.2
