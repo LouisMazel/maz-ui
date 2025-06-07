@@ -1,11 +1,10 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
 import type { MazColor } from '../types'
 import type { MazPickerShortcut, MazPickerValue } from './types'
-
 import type { DateTimeFormatOptions } from './utils'
-import { computed, defineAsyncComponent } from 'vue'
+
 import dayjs from 'dayjs'
+import { computed, defineAsyncComponent, ref } from 'vue'
 
 const {
   modelValue,
@@ -65,7 +64,7 @@ const MazPickerCalendar = defineAsyncComponent(() => import('../MazPicker/MazPic
 const MazPickerHeader = defineAsyncComponent(() => import('../MazPicker/MazPickerHeader.vue'))
 const MazPickerTime = defineAsyncComponent(() => import('../MazPicker/MazPickerTime.vue'))
 
-const lastTimeValue = ref<string>()
+const lastTimeValue = ref<string>(typeof modelValue === 'string' && hasTime ? dayjs(modelValue).format('HH:mm') : '00:00')
 
 function saveLastTimeValue(value: string) {
   lastTimeValue.value = dayjs(value).format('HH:mm')
@@ -123,8 +122,8 @@ const currentCalendarDate = computed({
     <div class="m-picker-container__wrapper">
       <MazPickerCalendar
         v-if="hasDate"
-        :model-value="currentDate"
         v-model:calendar-date="currentCalendarDate"
+        :model-value="currentDate"
         :color="color"
         :locale="locale"
         :has-time="hasTime"
@@ -138,14 +137,14 @@ const currentCalendarDate = computed({
         :shortcuts="shortcuts"
         :shortcut="shortcut"
         :range
-        @update:model-value="emitDateValue"
         class="m-picker-container__calendar"
+        @update:model-value="emitDateValue"
       />
 
       <MazPickerTime
         v-if="hasTime"
-        :model-value="currentDate"
         v-model:calendar-date="currentCalendarDate"
+        :model-value="currentDate"
         :is-open="isOpen"
         :color="color"
         :locale="locale"
@@ -158,8 +157,8 @@ const currentCalendarDate = computed({
         :minute-interval="minuteInterval"
         :formatter-options="formatterOptions"
         :is-hour12="isHour12"
-        @update:model-value="saveLastTimeValue"
         class="m-picker-container__time"
+        @update:model-value="saveLastTimeValue"
       />
     </div>
   </div>

@@ -5,7 +5,7 @@ import type { MazColor } from '../types'
 import type { MazPickerValue } from './types'
 import type { DateTimeFormatOptions } from './utils'
 import dayjs from 'dayjs'
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 
 import MazBtn from '../MazBtn.vue'
 import { findNearestNumberInList, scrollToTarget } from './utils'
@@ -184,29 +184,23 @@ function getHour12or24(hourValue: number) {
   }
 }
 
-watch(
-  () => props.isOpen,
-  async (value) => {
-    if (value) {
-      await nextTick()
+onMounted(() => {
+  if (!MazPickerTime.value) {
+    return
+  }
 
-      if (MazPickerTime.value) {
-        const item = MazPickerTime.value.querySelector(
-          `.m-picker-time__column .m-btn`,
-        ) as HTMLButtonElement
-        const itemHeight = item?.offsetHeight
-        const timePickerHeight = MazPickerTime.value?.offsetHeight
+  const item = MazPickerTime.value.querySelector(
+    `.m-picker-time__column .m-btn`,
+  ) as HTMLButtonElement
+  const itemHeight = item?.offsetHeight
+  const timePickerHeight = MazPickerTime.value.offsetHeight
 
-        const divHeight = timePickerHeight / 2 - itemHeight / 2
+  const divHeight = timePickerHeight / 2 - itemHeight / 2
 
-        dividerHeight.value = divHeight / 16
-      }
+  dividerHeight.value = divHeight / 16
 
-      scrollColumns(false)
-    }
-  },
-  { immediate: true },
-)
+  scrollColumns(false)
+})
 
 watch(
   () => props.modelValue,
