@@ -5,6 +5,14 @@ export async function execPromise(command: string): Promise<{ stdout: string, st
   return await new Promise((resolve, reject) => {
     // eslint-disable-next-line sonarjs/os-command
     exec(command, (error, stdout, stderr) => {
+      if (stdout) {
+        logger.log(`🟡 [cli](${command}) stdout: ${stdout}`)
+      }
+
+      if (stderr) {
+        logger.warn(`🟡 [cli](${command}) stderr:`, stderr)
+      }
+
       if (error) {
         logger.error(`🔴 [cli](${command}) Execution failed - ${error.message}.`, error)
         reject(error)

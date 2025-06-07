@@ -1,7 +1,7 @@
 import type { Plugin } from 'vite'
 
 import { compileScss } from './compileScss'
-import { execPromise } from './utils/exec-promise'
+import { execPromise } from './utils/execPromise'
 import { logger } from './utils/logger'
 
 export function ViteCompileStyles(): Plugin {

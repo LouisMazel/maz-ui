@@ -2,7 +2,7 @@ import type { Plugin } from 'vite'
 
 import { existsSync } from 'node:fs'
 import { resolve } from 'node:path'
-import { execPromise } from './utils/exec-promise'
+import { execPromise } from './utils/execPromise'
 import { logger } from './utils/logger'
 
 async function buildIcons() {

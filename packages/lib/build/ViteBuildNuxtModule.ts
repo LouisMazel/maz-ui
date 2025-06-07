@@ -1,6 +1,6 @@
 import type { Plugin } from 'vite'
 
-import { execPromise } from './utils/exec-promise'
+import { execPromise } from './utils/execPromise'
 import { logger } from './utils/logger'
 
 export function ViteBuildNuxtModule(): Plugin {

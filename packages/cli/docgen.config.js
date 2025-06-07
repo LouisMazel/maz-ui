@@ -4,7 +4,7 @@ import { join, resolve } from 'node:path'
 
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vue-docgen-cli'
-import { component } from './config/component-template.js'
+import { component, props } from './config/templates.js'
 
 const _dirname = fileURLToPath(new URL('.', import.meta.url))
 
@@ -19,6 +19,11 @@ export default defineConfig({
   },
   templates: {
     component,
+    props,
+    // events,
+    // methods,
+    // slots,
+
   },
   docsRepo: 'LouisMazel/maz-ui',
   docsBranch: 'master',
