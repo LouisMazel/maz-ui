@@ -21,6 +21,8 @@ npm install dayjs
 
 ## Basic Usage
 
+<div class="language-html ext-html"><pre class="language-json"><code>v-model="{{ newDateValue }}"</code></pre></div>
+
 <ComponentDemo>
   <MazPicker
     v-model="newDateValue"
@@ -402,48 +404,6 @@ To enable the range mode, you should provide an object like this `{ start: undef
   </template>
 </ComponentDemo>
 
-<script setup lang="ts">
-  import { ref } from 'vue'
-  import dayjs from 'dayjs'
-
-  const timeValue = ref('16:30')
-  const newDateValue = ref()
-  const dateValue = ref('2022-02-03')
-  const dateTimeValue = ref('2022-02-03 16:30')
-  const dateTime12Value = ref('2022-02-03 04:30 pm')
-
-  const startDate = dayjs().set('date', 5)
-  const endDate = dayjs().add(1, 'month').set('date', 22)
-
-  const rangeValues = ref({ start: startDate.format('YYYY-MM-DD'), end: endDate.format('YYYY-MM-DD') })
-
-  const minMaxDates = ref({
-    min: startDate.subtract(2, 'days').format('YYYY-MM-DD'),
-    max: endDate.add(2, 'days').format('YYYY-MM-DD'),
-  })
-
-  const shortcuts: MazPickerShortcut[] = [
-    {
-      label: 'Next month',
-      identifier: 'nextMonth',
-      value: {
-        start: dayjs().add(1, 'month').set('date', 1).format('YYYY-MM-DD'),
-        end: dayjs()
-          .add(1, 'month')
-          .set('date', dayjs().add(1, 'month').daysInMonth())
-          .format('YYYY-MM-DD'),
-      },
-    }, {
-      label: 'Last 3 days',
-      identifier: 'last3Days',
-      value: {
-        start: dayjs().subtract(2, 'days').format('YYYY-MM-DD'),
-        end: dayjs().format('YYYY-MM-DD'),
-      },
-    },
-  ]
-</script>
-
 ## Using input-date-transformer
 
 You can use the `input-date-transformer` prop to transform the value displayed into the input.
@@ -603,3 +563,46 @@ export type Position =
 ```
 
 <!--@include: ./../.vitepress/generated-docs/maz-picker.doc.md-->
+
+
+<script setup lang="ts">
+  import { ref } from 'vue'
+  import dayjs from 'dayjs'
+
+  const timeValue = ref('16:30')
+  const newDateValue = ref()
+  const dateValue = ref('2022-02-03')
+  const dateTimeValue = ref('2022-02-03 16:30')
+  const dateTime12Value = ref('2022-02-03 04:30 pm')
+
+  const startDate = dayjs().set('date', 5)
+  const endDate = dayjs().add(1, 'month').set('date', 22)
+
+  const rangeValues = ref({ start: startDate.format('YYYY-MM-DD'), end: endDate.format('YYYY-MM-DD') })
+
+  const minMaxDates = ref({
+    min: startDate.subtract(2, 'days').format('YYYY-MM-DD'),
+    max: endDate.add(2, 'days').format('YYYY-MM-DD'),
+  })
+
+  const shortcuts: MazPickerShortcut[] = [
+    {
+      label: 'Next month',
+      identifier: 'nextMonth',
+      value: {
+        start: dayjs().add(1, 'month').set('date', 1).format('YYYY-MM-DD'),
+        end: dayjs()
+          .add(1, 'month')
+          .set('date', dayjs().add(1, 'month').daysInMonth())
+          .format('YYYY-MM-DD'),
+      },
+    }, {
+      label: 'Last 3 days',
+      identifier: 'last3Days',
+      value: {
+        start: dayjs().subtract(2, 'days').format('YYYY-MM-DD'),
+        end: dayjs().format('YYYY-MM-DD'),
+      },
+    },
+  ]
+</script>

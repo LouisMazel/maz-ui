@@ -6,7 +6,8 @@ export const logger = {
   divider: () => log('----------------------------------------'),
   eot: () => log(),
   brand: (message: string) => log(chalk.bold.hex('#1e90ff')(message)),
-  log: (message: string | string[]) => log(message),
+  log: (...message: unknown[]) => log(...message),
   success: (message: string | string[]) => log(chalk.green(message)),
   error: (message: string, error?: unknown) => log(chalk.red(message, error)),
+  warn: (message: string, error?: unknown) => log(chalk.yellow(message, error)),
 }

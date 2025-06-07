@@ -382,7 +382,7 @@ watch(
       }
 
       &:disabled {
-        @apply maz-cursor-not-allowed;
+        @apply maz-cursor-not-allowed maz-border-transparent;
       }
     }
   }

@@ -4,7 +4,7 @@ import type { MazInputProps } from './MazInput.vue'
 import type { MazPickerShortcut, MazPickerValue } from './MazPicker/types'
 import type { DateTimeFormatOptions } from './MazPicker/utils'
 import type { MazColor, MazPosition } from './types'
-import { MazCalendar } from '@maz-ui/icons'
+import { MazCalendar, MazClock } from '@maz-ui/icons'
 import MazChevronDownIcon from '@maz-ui/icons/svg/chevron-down.svg'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
@@ -47,7 +47,7 @@ const props = withDefaults(defineProps<MazPickerProps & MazPickerInputProps>(), 
   style: undefined,
   class: undefined,
   modelValue: undefined,
-  format: 'YYYY-MM-DD HH:mm',
+  format: 'YYYY-MM-DD',
   open: false,
   label: undefined,
   placeholder: undefined,
@@ -519,14 +519,14 @@ const inputValue = computed(() => {
         })
       : undefined
   }
-  else if (isRangeMode.value) {
+  else if (isRangeMode.value && isRangeValue(currentValue.value)) {
     formattedDate = getRangeFormattedDate({
       value: currentValue.value,
       locale: currentLocale.value,
       options: formatterOptions.value,
     })
   }
-  else {
+  else if (typeof currentValue.value === 'string') {
     formattedDate = getFormattedDate({
       value: dayjs(currentValue.value).format(),
       locale: currentLocale.value,
@@ -850,7 +850,7 @@ watch(
     ]"
   >
     <MazInput
-      v-if="!customElementSelector && !inline"
+      v-show="!customElementSelector && !inline"
       :model-value="inputValue"
       readonly
       v-bind="$attrs"
@@ -864,7 +864,8 @@ watch(
       @click="isFocused = !isFocused"
     >
       <template #left-icon>
-        <MazCalendar class="maz-text-lg" />
+        <MazCalendar v-if="hasDate" class="maz-text-xl" @click="isFocused = !isFocused" />
+        <MazClock v-else-if="hasTime" class="maz-text-xl" @click="isFocused = !isFocused" />
       </template>
       <template #right-icon>
         <button
@@ -907,7 +908,7 @@ watch(
         :disabled-hours="disabledHours"
         :disabled-dates="disabledDates"
         :minute-interval="minuteInterval"
-        :range
+        :range="isRangeMode"
         @close="closeCalendar"
       />
     </Transition>
