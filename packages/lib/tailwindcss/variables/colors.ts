@@ -1,50 +1,34 @@
 export const baseColors = {
-  'transparent': 'transparent',
-  'black': 'var(--maz-color-black)',
-  'black-contrast': 'var(--maz-color-black-contrast)',
-  'white': 'var(--maz-color-white)',
-  'white-contrast': 'var(--maz-color-white-contrast)',
-  'current': 'currentColor',
-  'normal': 'var(--maz-color-text)',
-  'color': 'var(--maz-color-bg)',
-  'border': 'var(--maz-border-color)',
-  'color-light': 'var(--maz-color-bg-light)',
-  'color-lighter': 'var(--maz-color-bg-lighter)',
-  'color-dark': 'var(--maz-color-bg-dark)',
-  'color-darker': 'var(--maz-color-bg-darker)',
-  'theme': 'var(--maz-color-bg-theme)',
-  'theme-hover': 'var(--maz-color-bg-theme-hover)',
-  'bg-dark': 'var(--maz-bg-color-dark)',
-  'bg-light': 'var(--maz-bg-color-light)',
-  'light': 'var(--maz-color-text-light)',
-  'dark': 'var(--maz-color-text-dark)',
-  'muted': 'var(--maz-color-muted)',
-  'overlay': 'var(--maz-bg-overlay)',
+  overlay: 'hsl(var(--maz-overlay) / <alpha-value>)',
+  muted: 'hsl(var(--maz-muted) / <alpha-value>)',
+  divider: 'hsl(var(--maz-border) / <alpha-value>)',
 }
 
-export const variations = [
-  'DEFAULT',
+export const scaleColors = {
+  primary: 'primary',
+  secondary: 'secondary',
+  accent: 'accent',
+  destructive: 'destructive',
+  success: 'success',
+  warning: 'warning',
+  contrast: 'contrast',
+  info: 'info',
+  foreground: 'foreground',
+  surface: 'background',
+} as const
+
+export const colorScales = [
   '50',
   '100',
   '200',
   '300',
   '400',
+  '500',
   '600',
   '700',
   '800',
   '900',
-  'contrast',
-  'alpha',
-  'alpha-20',
-  'alpha-10',
-  'alpha-05',
-]
+] as const
 
-export const variatingColors = {
-  primary: true,
-  secondary: true,
-  info: true,
-  success: true,
-  warning: true,
-  danger: true,
-}
+export type ScaleColorName = keyof typeof scaleColors
+export type ColorScale = typeof colorScales[number]

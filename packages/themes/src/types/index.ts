@@ -9,6 +9,8 @@ export interface ThemeColors {
   'secondary-foreground': HSL
   'accent': HSL
   'accent-foreground': HSL
+  'info': HSL
+  'info-foreground': HSL
   'contrast': HSL
   'contrast-foreground': HSL
   'destructive': HSL
@@ -17,7 +19,6 @@ export interface ThemeColors {
   'success-foreground': HSL
   'warning': HSL
   'warning-foreground': HSL
-  'text': HSL
   'overlay': HSL
   'muted': HSL
   'border': HSL
@@ -49,8 +50,8 @@ export interface BaseThemePreset extends Required<ThemePreset> {
 export interface ThemeConfig {
   preset?: BaseThemePreset
   overrides?: ThemePreset
-  strategy?: 'runtime' | 'build' | 'hybrid'
-  darkMode?: 'auto' | 'class' | 'media'
+  strategy?: Strategy
+  darkMode?: DarkMode
 }
 
 export interface ColorScale {
@@ -68,9 +69,13 @@ export interface ColorScale {
 
 export type ColorMode = 'light' | 'dark' | 'auto'
 
+export type DarkMode = 'class' | 'media' | 'auto'
+
+export type Strategy = 'runtime' | 'buildtime' | 'hybrid'
+
 export interface ThemeState {
   currentPreset: BaseThemePreset
   colorMode: ColorMode
   isDark: boolean
-  strategy: 'runtime' | 'build' | 'hybrid'
+  strategy: Strategy
 }

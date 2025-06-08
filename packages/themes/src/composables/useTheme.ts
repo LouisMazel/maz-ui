@@ -1,6 +1,6 @@
 import type { BaseThemePreset, ColorMode, ThemePreset, ThemeState } from '../types'
-import { computed, ref, type Ref, watchEffect } from 'vue'
-import { generateThemeCSS, injectCSS } from '../utils/css-generator'
+import { computed, ref, watchEffect } from 'vue'
+import { generateCriticalCSS, generateFullCSS, injectCSS } from '../utils/css-generator'
 import { mergePresets } from '../utils/preset-merger'
 
 const state = ref<ThemeState | null>(null)
@@ -23,11 +23,17 @@ export function useTheme() {
   }
 
   const currentPreset = computed(() => state.value!.currentPreset)
-  const colorMode = computed(() => state.value!.colorMode)
+
+  // Rendre colorMode vraiment réactif avec getter/setter
+  const colorMode = computed<ColorMode>({
+    get: () => state.value!.colorMode,
+    set: (mode: ColorMode) => setColorMode(mode),
+  })
+
   const isDark = computed(() => state.value!.isDark)
   const strategy = computed(() => state.value!.strategy)
 
-  const updateTheme = (preset: ThemePreset | Partial<ThemePreset>) => {
+  function updateTheme(preset: ThemePreset | Partial<ThemePreset>) {
     if (!state.value)
       return
 
@@ -38,14 +44,22 @@ export function useTheme() {
     state.value.currentPreset = newPreset
 
     if (state.value.strategy === 'runtime' || state.value.strategy === 'hybrid') {
-      const css = generateThemeCSS(newPreset, {
-        darkMode: state.value.colorMode === 'auto' ? 'media' : 'class',
-      })
-      injectCSS(css)
+      const cssOptions = {
+        mode: 'both' as const,
+        darkSelector: state.value.colorMode === 'auto' ? 'media' as const : 'class' as const,
+        prefix: 'maz',
+      }
+
+      // Régénérer le CSS critique et complet
+      const criticalCSS = generateCriticalCSS(newPreset, cssOptions)
+      const fullCSS = generateFullCSS(newPreset, cssOptions)
+
+      injectCSS(criticalCSS, 'maz-theme-critical')
+      injectCSS(fullCSS, 'maz-theme-full')
     }
   }
 
-  const setColorMode = (mode: ColorMode) => {
+  function setColorMode(mode: ColorMode) {
     if (!state.value)
       return
 
@@ -59,9 +73,14 @@ export function useTheme() {
     }
 
     updateDocumentClass()
+
+    // Sauvegarder la préférence utilisateur
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('maz-color-mode', mode)
+    }
   }
 
-  const toggleDarkMode = () => {
+  function toggleDarkMode() {
     if (!state.value)
       return
 
@@ -69,10 +88,10 @@ export function useTheme() {
   }
 
   return {
-    currentPreset: currentPreset as Ref<ThemePreset>,
-    colorMode: colorMode as Ref<ColorMode>,
-    isDark: isDark as Ref<boolean>,
-    strategy: strategy as Ref<'runtime' | 'build' | 'hybrid'>,
+    currentPreset,
+    colorMode,
+    isDark,
+    strategy,
     updateTheme,
     setColorMode,
     toggleDarkMode,
@@ -82,7 +101,23 @@ export function useTheme() {
 export function _initThemeState(initialState: ThemeState) {
   state.value = initialState
 
-  if (typeof window !== 'undefined' && initialState.colorMode === 'auto') {
+  // Restaurer la préférence utilisateur sauvegardée
+  if (typeof localStorage !== 'undefined' && typeof window !== 'undefined') {
+    const savedMode = localStorage.getItem('maz-color-mode') as ColorMode | null
+
+    if (savedMode) {
+      state.value.colorMode = savedMode
+
+      if (savedMode === 'auto') {
+        state.value.isDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+      }
+      else {
+        state.value.isDark = savedMode === 'dark'
+      }
+    }
+  }
+
+  if (typeof window !== 'undefined' && state.value.colorMode === 'auto') {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
 
     const updateFromMedia = () => {

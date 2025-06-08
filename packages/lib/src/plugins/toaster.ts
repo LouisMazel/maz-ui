@@ -8,9 +8,30 @@ export function createToaster(app: App, options?: ToasterOptions): ToasterHandle
 
 export const ToasterPlugin = {
   install(app: App, options?: ToasterOptions) {
-    app.provide('toast', createToaster(app, options))
+    const toasterHandler = createToaster(app, options)
+    app.provide('toast', toasterHandler)
+    app.config.globalProperties.$toast = toasterHandler
   },
 }
 
-export { ToasterHandler } from './toaster/ToasterHandler'
+declare module '@vue/runtime-core' {
+  interface ComponentCustomProperties {
+    /**
+     * Toaster handler instance
+     * @description You should install the plugin to use this property
+     * @examl
+     * ```ts
+     * import { ToasterPlugin } from 'maz-ui/plugins/toaster'
+     * import { createApp } from 'vue'
+     *
+     * const app = createApp(App)
+     * app.use(ToasterPlugin)
+     *
+     * const toast = useToast()
+     * toast.success('Hello, world!')
+     */
+    $toast: ToasterHandler
+  }
+}
+
 export type { ToasterOptions, ToasterPosition } from './toaster/types'
