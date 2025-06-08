@@ -1,5 +1,5 @@
-import Vue from '@vitejs/plugin-vue'
 import { resolve } from 'node:path'
+import Vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 // import { viteStaticCopy } from 'vite-plugin-static-copy'
@@ -34,16 +34,24 @@ export default defineConfig({
   ],
   build: {
     emptyOutDir: false,
-    minify: true,
     sourcemap: false,
-    cssMinify: true,
+    minify: 'terser',
     terserOptions: {
-      compress: true,
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+      mangle: true,
+      module: true,
+      toplevel: true,
+      format: {
+        comments: false,
+      },
     },
     lib: {
       entry: {
-        'index': resolver('./src/index.ts'),
-        'resolvers': resolver('./src/resolvers.ts')
+        index: resolver('./src/index.ts'),
+        resolvers: resolver('./src/resolvers.ts'),
       },
       fileName: (format, name) => format === 'es' ? `${name}.mjs` : `${name}.cjs`,
       name: '@maz-ui/icons',
@@ -60,16 +68,6 @@ export default defineConfig({
           preserveModules: true,
           interop: 'auto',
           generatedCode: 'es2015',
-          minifyInternalExports: true,
-        },
-        {
-          format: 'cjs',
-          chunkFileNames: 'chunks/[name].[hash].cjs',
-          assetFileNames: 'assets/[name].[hash][extname]',
-          exports: 'named',
-          entryFileNames: '[name].cjs',
-          preserveModules: true,
-          interop: 'auto',
           minifyInternalExports: true,
         },
       ],

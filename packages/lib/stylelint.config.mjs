@@ -26,6 +26,7 @@ export default {
     {
       files: [
         '**/*.vue',
+        '**/*.html',
       ],
       customSyntax: 'postcss-html',
     },

@@ -2,34 +2,34 @@ import type { DirectiveBinding } from 'vue'
 import { style } from './style'
 import { svgs } from './svgs'
 
-export interface vZoomImgOptions {
+export interface VZoomImgOptions {
   disabled?: boolean
   scale?: boolean
   blur?: boolean
 }
 
-interface vZoomImgBindingOptions extends vZoomImgOptions {
+interface VZoomImgBindingOptions extends VZoomImgOptions {
   src: string
   alt?: string
 }
 
-export type vZoomImgBindingValue = string | vZoomImgBindingOptions
+export type VZoomImgBindingValue = string | VZoomImgBindingOptions
 
-export type vZoomImgBinding = DirectiveBinding<vZoomImgBindingValue>
+export type VZoomImgBinding = DirectiveBinding<VZoomImgBindingValue>
 
 enum StateClass {
   OPEN = 'maz-is-open',
 }
 
-export class VueZoomImg {
-  private options: vZoomImgBindingOptions
+export class ZoomImgHandler {
+  private options: VZoomImgBindingOptions
   private loader: HTMLDivElement
   private wrapper: HTMLDivElement
   private img: HTMLImageElement
   private keydownHandler: (e: KeyboardEvent) => void
   private onImgLoadedCallback: EventListener
   private buttonsAdded: boolean
-  private defaultOptions: vZoomImgOptions = {
+  private defaultOptions: VZoomImgOptions = {
     scale: true,
     blur: true,
     disabled: false,
@@ -39,7 +39,7 @@ export class VueZoomImg {
   private mouseLeaveListener: () => void
   private renderPreviewListener: () => void
 
-  constructor(binding: vZoomImgBinding) {
+  constructor(binding: VZoomImgBinding) {
     if (!binding.value) {
       throw new Error(
         '[MazUI](zoom-img) Image path must be defined. Ex: `v-zoom-img="<PATH_TO_IMAGE>"`',
@@ -66,7 +66,7 @@ export class VueZoomImg {
     this.imgEventHandler(true)
   }
 
-  private buildOptions(binding: vZoomImgBinding): vZoomImgBindingOptions {
+  private buildOptions(binding: VZoomImgBinding): VZoomImgBindingOptions {
     return {
       ...this.defaultOptions,
       ...(typeof binding.value === 'object' ? binding.value : { src: binding.value }),
@@ -109,7 +109,7 @@ export class VueZoomImg {
     el.addEventListener('click', this.renderPreviewListener)
   }
 
-  public update(binding: vZoomImgBinding): void {
+  public update(binding: VZoomImgBinding): void {
     this.options = this.buildOptions(binding)
   }
 
@@ -127,7 +127,7 @@ export class VueZoomImg {
     el.style.cursor = ''
   }
 
-  private renderPreview(el: HTMLElement, options?: vZoomImgBindingOptions): void {
+  private renderPreview(el: HTMLElement, options?: VZoomImgBindingOptions): void {
     el.classList.add(StateClass.OPEN)
     this.addStyle(style)
 

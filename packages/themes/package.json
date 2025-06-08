@@ -1,0 +1,94 @@
+{
+  "name": "@maz-ui/themes",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Theme system for Maz-UI with TypeScript support and CSS variables",
+  "author": "Louis Mazel <me@loicmazuel.com>",
+  "license": "MIT",
+  "homepage": "https://maz-ui.com/guide/themes",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LouisMazel/maz-ui.git"
+  },
+  "bugs": "https://github.com/LouisMazel/maz-ui/issues",
+  "keywords": [
+    "vue",
+    "theme",
+    "css-variables",
+    "typescript",
+    "maz-ui"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/index.mjs"
+    },
+    "./presets": {
+      "types": "./dist/types/presets/index.d.ts",
+      "import": "./dist/presets/index.mjs"
+    },
+    "./presets/*": {
+      "types": "./dist/types/presets/*.d.ts",
+      "import": "./dist/presets/*.mjs"
+    },
+    "./composables": {
+      "types": "./dist/types/composables/index.d.ts",
+      "import": "./dist/composables/index.mjs"
+    },
+    "./composables/*": {
+      "types": "./dist/types/composables/*.d.ts",
+      "import": "./dist/composables/*.mjs"
+    },
+    "./utils": {
+      "types": "./dist/types/utils/index.d.ts",
+      "import": "./dist/utils/index.mjs"
+    },
+    "./utils/*": {
+      "types": "./dist/types/utils/*.d.ts",
+      "import": "./dist/utils/*.mjs"
+    },
+    "./build": {
+      "types": "./dist/types/build/index.d.ts",
+      "import": "./dist/build/index.mjs"
+    },
+    "./build/*": {
+      "types": "./dist/types/build/*.d.ts",
+      "import": "./dist/build/*.mjs"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/types/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "build": "vite build",
+    "vite:dev": "vite build --watch",
+    "typecheck": "vue-tsc --noEmit",
+    "lint": "eslint . --fix",
+    "lint:check": "eslint .",
+    "pre-commit": "lint-staged"
+  },
+  "peerDependencies": {
+    "vue": "^3.5.0"
+  },
+  "peerDependenciesMeta": {
+    "vue": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.30",
+    "glob": "catalog:",
+    "typescript": "^5.8.3",
+    "vue": "^3.5.16",
+    "vue-tsc": "^2.2.10"
+  },
+  "lint-staged": {
+    "*.{js,ts,vue,mjs,mts,cjs}": "cross-env NODE_ENV=production eslint --fix"
+  }
+}

@@ -10,8 +10,13 @@
     "noImplicitAny": false,
     "noImplicitThis": false,
     "ignoreDeprecations": "5.0",
+    "esModuleInterop": true,
     "isolatedModules": true,
-    "verbatimModuleSyntax": true
+    "verbatimModuleSyntax": true,
+    "skipLibCheck": true
+  },
+  "vueCompilerOptions": {
+    "checkUnknownComponents": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules"],

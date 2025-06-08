@@ -1,4 +1,5 @@
 export * from './ViteBuildIcons'
 export * from './ViteBuildMazCli'
 export * from './ViteBuildNuxtModule'
+export * from './ViteBuildThemes'
 export * from './ViteCompileStyles'

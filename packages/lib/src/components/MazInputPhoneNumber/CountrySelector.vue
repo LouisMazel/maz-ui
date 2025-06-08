@@ -79,13 +79,15 @@ const otherCountries = computed(() =>
   countriesList.value?.filter(item => !preferredCountries?.includes(item.iso2)),
 )
 
-const countriesSorted = computed(() =>
-  preferredCountries
-    ? [...(countriesFiltered.value ?? []), ...(otherCountries.value ?? [])]
-    : onlyCountries
-      ? countriesFiltered.value
-      : countriesList.value,
-)
+const countriesSorted = computed(() => {
+  if (preferredCountries) {
+    return [...(countriesFiltered.value ?? []), ...(otherCountries.value ?? [])]
+  }
+  if (onlyCountries) {
+    return countriesFiltered.value
+  }
+  return countriesList.value
+})
 
 const countryOptions = computed(() =>
   countriesSorted.value
@@ -97,7 +99,7 @@ const countryOptions = computed(() =>
           }
         : undefined,
     )
-    .filter(truthyFilter),
+    .filter(truthyFilter) ?? [],
 )
 
 function focusCountrySelector() {

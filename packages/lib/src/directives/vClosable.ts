@@ -1,18 +1,18 @@
 import type { DirectiveBinding, ObjectDirective, Plugin } from 'vue'
 
-type vClosableBindingValueHandler = (event: Event) => any
-interface vClosableBindingValueObject {
-  handler: vClosableBindingValueHandler
+type VClosableBindingValueHandler = (event: Event) => any
+interface VClosableBindingValueObject {
+  handler: VClosableBindingValueHandler
   exclude?: string[]
 }
 
-type vClosableBindingValue = vClosableBindingValueObject | vClosableBindingValueHandler
+type VClosableBindingValue = VClosableBindingValueObject | VClosableBindingValueHandler
 
-type vClosableBinding = DirectiveBinding<vClosableBindingValue>
+type VClosableBinding = DirectiveBinding<VClosableBindingValue>
 
 const listenerMap = new WeakMap<HTMLElement, (event: TouchEvent | MouseEvent) => void>()
 
-function handleOutsideClick(event: TouchEvent | MouseEvent, element: HTMLElement, binding: vClosableBinding) {
+function handleOutsideClick(event: TouchEvent | MouseEvent, element: HTMLElement, binding: VClosableBinding) {
   event.stopPropagation()
 
   const handler = typeof binding.value === 'function' ? binding.value : binding.value.handler
@@ -48,7 +48,7 @@ function unbind(element: HTMLElement) {
   }
 }
 
-function bind(element: HTMLElement, binding: vClosableBinding) {
+function bind(element: HTMLElement, binding: VClosableBinding) {
   if (
     typeof binding.value !== 'function'
     && typeof binding.value === 'object'
@@ -68,7 +68,7 @@ function bind(element: HTMLElement, binding: vClosableBinding) {
 const directive = {
   mounted: bind,
   unmounted: unbind,
-} satisfies ObjectDirective<HTMLElement, vClosableBindingValue>
+} satisfies ObjectDirective<HTMLElement, VClosableBindingValue>
 
 const plugin = {
   install: (app) => {
@@ -76,4 +76,4 @@ const plugin = {
   },
 } satisfies Plugin
 
-export { directive as vClosable, type vClosableBindingValue, plugin as vClosableInstall }
+export { directive as vClosable, type VClosableBindingValue, plugin as vClosableInstall }

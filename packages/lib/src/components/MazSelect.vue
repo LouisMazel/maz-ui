@@ -28,12 +28,12 @@ export interface MazSelectOptionWithOptGroup {
   label: string
   options: (MazSelectNormalizedOption | string | number | boolean)[]
 }
-export type MazSelectOption =
-  | MazSelectNormalizedOption
-  | string
-  | number
-  | boolean
-  | MazSelectOptionWithOptGroup
+export type MazSelectOption
+  = | MazSelectNormalizedOption
+    | string
+    | number
+    | boolean
+    | MazSelectOptionWithOptGroup
 
 export interface MazSelectProps<T extends MazInputValue, U extends MazSelectOption> {
   /** Style attribut of the component root element */
@@ -293,17 +293,20 @@ function getNormalizedOptions(options: U[] | undefined) {
 
 const optionsNormalized = computed<MazSelectNormalizedOption[]>(() => getNormalizedOptions(props.options ?? []))
 
+function isOptionInSelection(option: MazSelectNormalizedOption): boolean {
+  if (isNullOrUndefined(option[props.optionValueKey])) {
+    return false
+  }
+
+  if (props.multiple) {
+    return Array.isArray(props.modelValue) && props.modelValue.includes(option[props.optionValueKey] as T)
+  }
+
+  return props.modelValue === option[props.optionValueKey]
+}
+
 const selectedOptions = computed(
-  () =>
-    optionsNormalized.value?.filter((option) => {
-      return props.multiple
-        ? Array.isArray(props.modelValue)
-          ? props.modelValue.includes(option[props.optionValueKey] as T)
-          && !isNullOrUndefined(option[props.optionValueKey])
-          : false
-        : props.modelValue === option[props.optionValueKey]
-          && !isNullOrUndefined(option[props.optionValueKey])
-    }) ?? [],
+  () => optionsNormalized.value?.filter(isOptionInSelection) ?? [],
 )
 
 onBeforeMount(() => {
