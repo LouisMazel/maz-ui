@@ -2,6 +2,7 @@ import { defineBuildConfig } from 'unbuild'
 
 export default defineBuildConfig({
   declaration: true,
+  clean: true,
   rollup: {
     inlineDependencies: true,
     resolve: {
@@ -10,4 +11,5 @@ export default defineBuildConfig({
   },
   entries: ['src/cli'],
   externals: [],
+  failOnWarn: true,
 })

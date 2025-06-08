@@ -1,5 +1,4 @@
 <script lang="ts">
-/* eslint-disable import/first */
 export interface MazTableHeadersEnriched {
   label: string
   key?: string

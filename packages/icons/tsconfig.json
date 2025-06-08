@@ -1,12 +1,8 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "dist",
-    "rootDir": ".",
     "composite": true,
-    "declaration": true,
-    "declarationDir": "dist/types",
-    "emitDeclarationOnly": true,
+    "rootDir": ".",
     "module": "esnext",
     "moduleResolution": "bundler",
     "paths": {
@@ -18,7 +14,11 @@
       "node",
       "vite",
       "vite-svg-loader"
-    ]
+    ],
+    "declaration": true,
+    "declarationDir": "dist/types",
+    "emitDeclarationOnly": true,
+    "outDir": "dist"
   },
   "include": [
     "**/*.ts",

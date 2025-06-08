@@ -69,8 +69,5 @@
     "nuxt": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
-  },
-  "unbuild": {
-    "failOnWarn": false
   }
 }

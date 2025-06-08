@@ -41,96 +41,80 @@
   "exports": {
     ".": {
       "types": "./dist/types/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
+      "import": "./dist/index.mjs"
     },
     "./components": {
       "types": "./dist/types/components/index.d.ts",
-      "import": "./dist/components/index.mjs",
-      "require": "./dist/components/index.cjs"
+      "import": "./dist/components/index.mjs"
     },
     "./composables": {
       "types": "./dist/types/composables/index.d.ts",
-      "import": "./dist/composables/index.mjs",
-      "require": "./dist/composables/index.cjs"
+      "import": "./dist/composables/index.mjs"
     },
     "./helpers": {
       "types": "./dist/types/helpers/index.d.ts",
-      "import": "./dist/helpers/index.mjs",
-      "require": "./dist/helpers/index.cjs"
+      "import": "./dist/helpers/index.mjs"
     },
     "./plugins": {
       "types": "./dist/types/plugins/index.d.ts",
-      "import": "./dist/plugins/index.mjs",
-      "require": "./dist/plugins/index.cjs"
+      "import": "./dist/plugins/index.mjs"
     },
     "./directives": {
       "types": "./dist/types/directives/index.d.ts",
-      "import": "./dist/directives/index.mjs",
-      "require": "./dist/directives/index.cjs"
+      "import": "./dist/directives/index.mjs"
     },
     "./formatters": {
       "types": "./dist/types/formatters/index.d.ts",
-      "import": "./dist/formatters/index.mjs",
-      "require": "./dist/formatters/index.cjs"
+      "import": "./dist/formatters/index.mjs"
     },
     "./resolvers": {
       "types": "./dist/types/resolvers/index.d.ts",
-      "import": "./dist/resolvers/index.mjs",
-      "require": "./dist/resolvers/index.cjs"
+      "import": "./dist/resolvers/index.mjs"
     },
     "./nuxt": {
       "types": "./dist/nuxt/types.d.ts",
-      "import": "./dist/nuxt/module.mjs",
-      "require": "./dist/nuxt/module.cjs"
+      "import": "./dist/nuxt/module.mjs"
     },
     "./components/*": {
       "types": "./dist/types/components/*.vue.d.ts",
-      "import": "./dist/components/*.mjs",
-      "require": "./dist/components/*.cjs"
+      "import": "./dist/components/*.mjs"
     },
     "./composables/*": {
       "types": "./dist/types/composables/*.d.ts",
-      "import": "./dist/composables/*.mjs",
-      "require": "./dist/composables/*.cjs"
+      "import": "./dist/composables/*.mjs"
     },
     "./helpers/*": {
       "types": "./dist/types/helpers/*.d.ts",
-      "import": "./dist/helpers/*.mjs",
-      "require": "./dist/helpers/*.cjs"
+      "import": "./dist/helpers/*.mjs"
     },
     "./plugins/*": {
       "types": "./dist/types/plugins/*.d.ts",
-      "import": "./dist/plugins/*.mjs",
-      "require": "./dist/plugins/*.cjs"
+      "import": "./dist/plugins/*.mjs"
     },
     "./directives/*": {
       "types": "./dist/types/directives/*.d.ts",
-      "import": "./dist/directives/*.mjs",
-      "require": "./dist/directives/*.cjs"
+      "import": "./dist/directives/*.mjs"
     },
     "./formatters/*": {
       "types": "./dist/types/formatters/*.d.ts",
-      "import": "./dist/formatters/*.mjs",
-      "require": "./dist/formatters/*.cjs"
+      "import": "./dist/formatters/*.mjs"
     },
     "./resolvers/*": {
       "types": "./dist/types/resolvers/*.d.ts",
-      "import": "./dist/resolvers/*.mjs",
-      "require": "./dist/resolvers/*.cjs"
+      "import": "./dist/resolvers/*.mjs"
     },
     "./icons": {
       "types": "./dist/types/icons/index.d.ts",
-      "import": "./dist/icons/index.mjs",
-      "require": "./dist/icons/index.cjs"
+      "import": "./dist/icons/index.mjs"
     },
     "./styles": "./dist/css/main.css",
     "./aos-styles": "./dist/css/aos.css",
     "./package.json": "./package.json",
     "./*": "./*"
   },
-  "main": "./dist/index.cjs",
+  "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
+  "unpkg": "./dist/index.mjs",
   "types": "./dist/types/index.d.ts",
   "bin": {
     "maz": "./bin/maz.mjs",
@@ -163,7 +147,6 @@
     "test:unit:coverage:watch": "vitest watch --coverage",
     "test:unit:coverage:master": "vitest run --coverage --changed master",
     "pre-commit": "lint-staged",
-    "gen:declaration-files": "vue-tsc --declaration --emitDeclarationOnly -p tsconfig.types.json",
     "typecheck": "vue-tsc --noEmit --skipLibCheck"
   },
   "peerDependencies": {
@@ -216,17 +199,18 @@
     }
   },
   "dependencies": {
-    "@maz-ui/cli": "workspace:*"
+    "@maz-ui/cli": "workspace:*",
+    "@maz-ui/icons": "workspace:*",
+    "@maz-ui/themes": "workspace:*"
   },
   "devDependencies": {
     "@babel/core": "^7.27.4",
     "@babel/preset-env": "^7.27.2",
     "@babel/preset-typescript": "^7.27.1",
+    "@maz-ui/eslint-config": "workspace:*",
     "@maz-ui/icons": "workspace:*",
     "@nuxt/kit": "^3.17.5",
     "@nuxt/schema": "^3.17.5",
-    "@types/dropzone": "^5.7.9",
-    "@types/google.maps": "^3.58.1",
     "@vitejs/plugin-vue": "^5.2.4",
     "@vitest/coverage-v8": "^3.2.2",
     "@vue/compiler-sfc": "^3.5.16",
@@ -238,7 +222,6 @@
     "chart.js": "^4.4.9",
     "dayjs": "^1.11.13",
     "defu": "^6.1.4",
-    "eslint-plugin-vuejs-accessibility": "^2.4.1",
     "fs": "0.0.2",
     "glob": "catalog:",
     "jsdom": "^26.1.0",
@@ -276,13 +259,13 @@
     "vite-plugin-lib-inject-css": "^2.2.2",
     "vite-plugin-static-copy": "^3.0.0",
     "vite-svg-loader": "^5.1.0",
-    "vitest": "^3.2.2",
+    "vitest": "catalog:",
     "vitest-canvas-mock": "^0.3.3",
     "vue": "^3.5.16",
     "vue-chartjs": "^5.3.2",
     "vue-loader": "^17.4.2",
     "vue-router": "^4.5.1",
-    "vue-tsc": "^2.2.10"
+    "vue-tsc": "catalog:"
   },
   "lint-staged": {
     "*.{js,ts,vue,mjs,mts,cjs}": "cross-env NODE_ENV=production eslint --fix",

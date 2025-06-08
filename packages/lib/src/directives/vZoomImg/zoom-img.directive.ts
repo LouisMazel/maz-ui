@@ -1,12 +1,12 @@
 import type { ObjectDirective } from 'vue'
-import type { vZoomImgBindingValue } from './zoom-img.handler'
-import { VueZoomImg } from './zoom-img.handler'
+import type { VZoomImgBindingValue } from './zoom-img.handler'
+import { ZoomImgHandler } from './zoom-img.handler'
 
-let instance: VueZoomImg
+let instance: ZoomImgHandler
 
 export const vZoomImg = {
   created(el: HTMLElement, binding): void {
-    instance = new VueZoomImg(binding)
+    instance = new ZoomImgHandler(binding)
     instance.create(el)
   },
   updated(_el: HTMLElement, binding): void {
@@ -15,4 +15,4 @@ export const vZoomImg = {
   unmounted(el: HTMLElement): void {
     instance.remove(el)
   },
-} satisfies ObjectDirective<HTMLElement, vZoomImgBindingValue>
+} satisfies ObjectDirective<HTMLElement, VZoomImgBindingValue>

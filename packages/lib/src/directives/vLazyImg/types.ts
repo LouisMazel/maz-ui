@@ -20,14 +20,14 @@ export interface ClassOptions {
   onIntersecting?: (el: Element) => unknown
 }
 
-export type vLazyImgOptions = Partial<ClassOptions>
+export type VLazyImgOptions = Partial<ClassOptions>
 
-interface vLazyImgBindingOptions extends vLazyImgOptions {
+interface VLazyImgBindingOptions extends VLazyImgOptions {
   src?: string
   disabled?: boolean
 }
 
-export type vLazyImgBindingValue = string | vLazyImgBindingOptions
+export type VLazyImgBindingValue = string | VLazyImgBindingOptions
 
-export type vLazyImgBinding = DirectiveBinding<vLazyImgBindingValue>
-export type vLazyImgDirective = ObjectDirective<HTMLElement, vLazyImgBinding>
+export type VLazyImgBinding = DirectiveBinding<VLazyImgBindingValue>
+export type VLazyImgDirective = ObjectDirective<HTMLElement, VLazyImgBinding>

@@ -1,8 +1,8 @@
 {
   "name": "vue-app",
+  "type": "module",
   "version": "0.0.0",
   "private": true,
-  "type": "module",
   "scripts": {
     "dev": "vite",
     "preview": "vite preview",
@@ -10,7 +10,7 @@
     "type-check": "vue-tsc --build",
     "lint:oxlint": "oxlint . --fix -D correctness --ignore-path .gitignore",
     "lint:eslint": "eslint . --fix",
-    "lint": "run-s lint:*",
+    "vue-app:lint": "run-s lint:*",
     "format": "prettier --write src/"
   },
   "dependencies": {
@@ -18,24 +18,22 @@
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
+    "@maz-ui/eslint-config": "workspace:*",
     "@maz-ui/icons": "workspace:*",
+    "@maz-ui/themes": "workspace:*",
     "@tsconfig/node22": "^22.0.1",
     "@types/node": "^22.15.30",
     "@vitejs/plugin-vue": "^5.2.4",
-    "@vue/eslint-config-prettier": "^10.2.0",
-    "@vue/eslint-config-typescript": "^14.5.0",
     "@vue/tsconfig": "^0.7.0",
-    "eslint": "^9.22.0",
-    "eslint-plugin-oxlint": "^0.17.0",
-    "eslint-plugin-vue": "~10.1.0",
+    "eslint-plugin-oxlint": "^0.18.0",
     "jiti": "^2.4.2",
     "maz-ui": "workspace:*",
     "npm-run-all2": "^8.0.4",
-    "oxlint": "^0.17.0",
+    "oxlint": "^0.18.0",
     "prettier": "3.5.3",
     "typescript": "~5.8.3",
     "vite": "^6.3.5",
     "vite-plugin-vue-devtools": "^7.7.2",
-    "vue-tsc": "^2.2.10"
+    "vue-tsc": "catalog:"
   }
 }

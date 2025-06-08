@@ -62,8 +62,8 @@ export interface MazTabsBarProps {
   bordered?: boolean
 }
 
-export type MazTabsBarItem =
-  | {
+export type MazTabsBarItem
+  = | {
     label: string
     disabled?: boolean
     badge?: {

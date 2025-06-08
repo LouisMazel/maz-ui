@@ -4,7 +4,7 @@ import type { MazFullscreenImgProps } from './MazFullscreenImg.vue'
 import { useMountComponent } from '../../composables/useMountComponent'
 import MazFullscreenImg from './MazFullscreenImg.vue'
 
-export interface vFullscreenImgOptions {
+export interface VFullscreenImgOptions {
   disabled?: boolean
   scaleOnHover?: boolean
   blurOnHover?: boolean
@@ -16,20 +16,20 @@ export interface vFullscreenImgOptions {
   }
 }
 
-interface vFullscreenImgBindingOptions extends vFullscreenImgOptions {
+interface VFullscreenImgBindingOptions extends VFullscreenImgOptions {
   src: string
   alt?: string | null
 }
 
-export type vFullscreenImgBindingValue = string | vFullscreenImgBindingOptions | undefined
+export type VFullscreenImgBindingValue = string | VFullscreenImgBindingOptions | undefined
 
-export type vFullscreenImgBinding = DirectiveBinding<vFullscreenImgBindingValue>
+export type VFullscreenImgBinding = DirectiveBinding<VFullscreenImgBindingValue>
 
 const STATE_OPEN_CLASS = 'm-fullscreen-is-open'
 
 export class FullscreenImgHandler {
-  private options: vFullscreenImgBindingOptions
-  private defaultOptions: vFullscreenImgOptions = {
+  private options: VFullscreenImgBindingOptions
+  private defaultOptions: VFullscreenImgOptions = {
     scaleOnHover: false,
     blurOnHover: false,
     disabled: false,
@@ -47,8 +47,8 @@ export class FullscreenImgHandler {
 
   private buildOptions(
     el: HTMLElement,
-    binding: vFullscreenImgBinding,
-  ): vFullscreenImgBindingOptions {
+    binding: VFullscreenImgBinding,
+  ): VFullscreenImgBindingOptions {
     const options
       = typeof binding.value === 'object' ? binding.value : { src: binding.value, alt: undefined }
 
@@ -83,7 +83,7 @@ export class FullscreenImgHandler {
     return this.options?.alt || el.getAttribute('alt') || el.getAttribute('data-alt')
   }
 
-  public create(el: HTMLElement, binding: vFullscreenImgBinding) {
+  public create(el: HTMLElement, binding: VFullscreenImgBinding) {
     this.options = this.buildOptions(el, binding)
 
     if (this.options.disabled)
@@ -116,7 +116,7 @@ export class FullscreenImgHandler {
     el.addEventListener('click', this.renderPreviewListener)
   }
 
-  public update(el: HTMLElement, binding: vFullscreenImgBinding): void {
+  public update(el: HTMLElement, binding: VFullscreenImgBinding): void {
     this.options = this.buildOptions(el, binding)
   }
 
