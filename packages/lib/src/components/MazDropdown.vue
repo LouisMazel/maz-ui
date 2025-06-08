@@ -69,9 +69,9 @@ type ActionItem = ItemBase & {
   onClick?: () => unknown
 }
 
-export type MenuItem =
-  | (LinkItem & { action?: never })
-  | (ActionItem & { href?: never, to?: never, target?: never })
+export type MenuItem
+  = | (LinkItem & { action?: never })
+    | (ActionItem & { href?: never, to?: never, target?: never })
 
 export interface MazDropdownProps {
   /**

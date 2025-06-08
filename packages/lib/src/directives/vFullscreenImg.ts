@@ -9,4 +9,4 @@ const plugin = {
 
 export { plugin as vFullscreenImgInstall }
 export { vFullscreenImg } from './vFullscreenImg/fullscreen-img.directive'
-export type { vFullscreenImgBindingValue, vFullscreenImgOptions } from './vFullscreenImg/fullscreen-img.handler'
+export type { VFullscreenImgBindingValue, VFullscreenImgOptions } from './vFullscreenImg/fullscreen-img.handler'

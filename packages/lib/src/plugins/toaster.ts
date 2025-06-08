@@ -6,7 +6,7 @@ export function createToaster(app: App, options?: ToasterOptions): ToasterHandle
   return new ToasterHandler(app, options)
 }
 
-export const installToaster = {
+export const ToasterPlugin = {
   install(app: App, options?: ToasterOptions) {
     app.provide('toast', createToaster(app, options))
   },

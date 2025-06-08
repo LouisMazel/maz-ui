@@ -31,6 +31,7 @@ function isCountryAvailable(locale: string) {
   }
 }
 
+// eslint-disable-next-line complexity
 function getPhoneNumberResults({
   phoneNumber,
   countryCode,

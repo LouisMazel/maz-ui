@@ -32,7 +32,7 @@ export class WaitHandler {
 
 export const waitInstance = new WaitHandler()
 
-export const installWait = {
+export const WaitPlugin = {
   install: (app: App) => {
     app.provide('wait', waitInstance)
   },

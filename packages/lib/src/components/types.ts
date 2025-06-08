@@ -6,12 +6,12 @@ export type MazColor = (typeof colors)[number]
 
 export type MazSize = 'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 
-export type MazPosition =
-  | 'top'
-  | 'top right'
-  | 'top left'
-  | 'bottom'
-  | 'bottom right'
-  | 'bottom left'
-  | 'left'
-  | 'right'
+export type MazPosition
+  = | 'top'
+    | 'top right'
+    | 'top left'
+    | 'bottom'
+    | 'bottom right'
+    | 'bottom left'
+    | 'left'
+    | 'right'

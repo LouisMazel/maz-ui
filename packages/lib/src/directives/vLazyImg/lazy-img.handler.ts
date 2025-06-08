@@ -1,4 +1,4 @@
-import type { ClassOptions, vLazyImgBinding, vLazyImgOptions } from './types'
+import type { ClassOptions, VLazyImgBinding, VLazyImgOptions } from './types'
 
 export * from './types'
 
@@ -25,18 +25,18 @@ export class LazyImg {
   private onImgErrorCallback: (el: HTMLElement, err: ErrorEvent) => void
   private hasImgLoaded = false
 
-  constructor(opts: vLazyImgOptions = {}) {
+  constructor(opts: VLazyImgOptions = {}) {
     this.options = this.buildOptions(opts)
     this.onImgLoadedCallback = this.imageIsLoaded.bind(this)
     this.onImgErrorCallback = this.imageHasError.bind(this)
   }
 
   private async loadErrorPhoto() {
-    const { default: photo } = await import('@maz-ui/icons/svg/no-photography.svg?url')
+    const { default: photo } = await import('@maz-ui/icons/svg/no-image.svg?url')
     return photo
   }
 
-  private buildOptions(opts: vLazyImgOptions): ClassOptions {
+  private buildOptions(opts: VLazyImgOptions): ClassOptions {
     return {
       ...this.defaultOptions,
       ...opts,
@@ -87,11 +87,11 @@ export class LazyImg {
     this.setDefaultPhoto(el)
   }
 
-  private getSrc(binding: vLazyImgBinding) {
+  private getSrc(binding: VLazyImgBinding) {
     return typeof binding.value === 'object' ? binding.value.src : binding.value
   }
 
-  private getImageUrl(el: HTMLElement, binding: vLazyImgBinding): string | null | undefined {
+  private getImageUrl(el: HTMLElement, binding: VLazyImgBinding): string | null | undefined {
     const dataSrc = this.getImgElement(el).getAttribute('data-lazy-src')
     if (dataSrc)
       return dataSrc
@@ -118,7 +118,7 @@ export class LazyImg {
     }
   }
 
-  private hasBgImgMode(binding: vLazyImgBinding): boolean {
+  private hasBgImgMode(binding: VLazyImgBinding): boolean {
     return binding.arg === 'bg-image'
   }
 
@@ -162,7 +162,7 @@ export class LazyImg {
     imgElement.addEventListener('error', err => this.onImgErrorCallback(el, err), { once: true })
   }
 
-  private async loadImage(el: HTMLElement, binding: vLazyImgBinding): Promise<void> {
+  private async loadImage(el: HTMLElement, binding: VLazyImgBinding): Promise<void> {
     this.imageIsLoading(el)
 
     if (this.isPictureElement(el)) {
@@ -195,7 +195,7 @@ export class LazyImg {
 
   private handleIntersectionObserver(
     el: HTMLElement,
-    binding: vLazyImgBinding,
+    binding: VLazyImgBinding,
     entries: IntersectionObserverEntry[],
     observer: IntersectionObserver,
   ) {
@@ -216,7 +216,7 @@ export class LazyImg {
     }
   }
 
-  private createObserver(el: HTMLElement, binding: vLazyImgBinding) {
+  private createObserver(el: HTMLElement, binding: VLazyImgBinding) {
     const observerCallback = (
       entries: IntersectionObserverEntry[],
       intersectionObserver: IntersectionObserver,
@@ -232,7 +232,7 @@ export class LazyImg {
 
   private async imageHandler(
     el: HTMLElement,
-    binding: vLazyImgBinding,
+    binding: VLazyImgBinding,
     type: 'bind' | 'update',
   ): Promise<void> {
     if (type === 'update') {
@@ -250,13 +250,13 @@ export class LazyImg {
 
   private async bindUpdateHandler(
     el: HTMLElement,
-    binding: vLazyImgBinding,
+    binding: VLazyImgBinding,
     type: 'bind' | 'update',
   ): Promise<void> {
     await this.imageHandler(el, binding, type)
   }
 
-  public async add(el: HTMLElement, binding: vLazyImgBinding): Promise<void> {
+  public async add(el: HTMLElement, binding: VLazyImgBinding): Promise<void> {
     if (this.hasBgImgMode(binding) && this.isPictureElement(el)) {
       throw new Error(`[MazLazyImg] You can't use the "bg-image" mode with "<picture />" element`)
     }
@@ -270,7 +270,7 @@ export class LazyImg {
     await this.bindUpdateHandler(el, binding, 'bind')
   }
 
-  public async update(el: HTMLElement, binding: vLazyImgBinding): Promise<void> {
+  public async update(el: HTMLElement, binding: VLazyImgBinding): Promise<void> {
     if (binding.value !== binding.oldValue) {
       this.hasImgLoaded = false
       this.removeAllStateClasses(el)
@@ -279,7 +279,7 @@ export class LazyImg {
     }
   }
 
-  public remove(el: HTMLElement, binding: vLazyImgBinding) {
+  public remove(el: HTMLElement, binding: VLazyImgBinding) {
     this.hasImgLoaded = false
     if (this.hasBgImgMode(binding)) {
       el.style.backgroundImage = ''

@@ -3,9 +3,9 @@ import type { DirectiveBinding, ObjectDirective, Plugin } from 'vue'
 import type { MazColor } from '../components/types'
 import './vTooltip/style.css'
 
-type vTooltipColor = Exclude<MazColor, 'transparent'> | 'default' | 'light' | 'dark'
+type VTooltipColor = Exclude<MazColor, 'transparent'> | 'default' | 'light' | 'dark'
 
-interface vTooltipOptions {
+interface VTooltipOptions {
   /**
    * Position of the tooltip
    * @default 'top'
@@ -15,46 +15,46 @@ interface vTooltipOptions {
    * Color of the tooltip
    * @default 'default'
    */
-  color?: vTooltipColor
+  color?: VTooltipColor
 }
 
-type vTooltipBindingValue =
-  | string
-  | ({
+type VTooltipBindingValue
+  = | string
+    | ({
     /**
      * Text to display in the tooltip
      * @default ''
      */
-    text: string
-    /**
-     * Open the tooltip
-     * @default false
-     */
-    open?: boolean
-    /**
-     * Offset of the tooltip
-     * @default '1rem'
-     */
-    offset?: string
-  } & vTooltipOptions)
+      text: string
+      /**
+       * Open the tooltip
+       * @default false
+       */
+      open?: boolean
+      /**
+       * Offset of the tooltip
+       * @default '1rem'
+       */
+      offset?: string
+    } & VTooltipOptions)
 
-const defaultOptions: vTooltipOptions = {
+const defaultOptions: VTooltipOptions = {
   position: 'top',
 }
 
-export type TooltipBinding = DirectiveBinding<vTooltipBindingValue>
+export type TooltipBinding = DirectiveBinding<VTooltipBindingValue>
 
 class TooltipHandler {
-  options: vTooltipOptions
+  options: VTooltipOptions
 
-  constructor(options: vTooltipOptions = {}) {
+  constructor(options: VTooltipOptions = {}) {
     this.options = {
       ...defaultOptions,
       ...options,
     }
   }
 
-  getPosition({ modifiers, value }: TooltipBinding): vTooltipOptions['position'] {
+  getPosition({ modifiers, value }: TooltipBinding): VTooltipOptions['position'] {
     if (modifiers.top) {
       return 'top'
     }
@@ -79,7 +79,7 @@ class TooltipHandler {
     return typeof value === 'string' ? false : value.open ?? false
   }
 
-  getColor({ value }: TooltipBinding): vTooltipColor {
+  getColor({ value }: TooltipBinding): VTooltipColor {
     return typeof value === 'string' ? 'default' : value.color ?? 'default'
   }
 
@@ -135,14 +135,14 @@ const directive = {
   unmounted(el: HTMLElement, binding) {
     return instance.remove(el, binding)
   },
-} satisfies ObjectDirective<HTMLElement, vTooltipBindingValue>
+} satisfies ObjectDirective<HTMLElement, VTooltipBindingValue>
 
 const plugin = {
   install: (app, options = defaultOptions) => {
     const finalOptions = {
       ...defaultOptions,
       ...options,
-    } satisfies vTooltipOptions
+    } satisfies VTooltipOptions
 
     const appInstance = new TooltipHandler(finalOptions)
 
@@ -152,12 +152,12 @@ const plugin = {
       unmounted: appInstance.remove.bind(appInstance),
     })
   },
-} satisfies Plugin<vTooltipOptions>
+} satisfies Plugin<VTooltipOptions>
 
 export {
   directive as vTooltip,
-  type vTooltipBindingValue,
-  type vTooltipColor,
+  type VTooltipBindingValue,
+  type VTooltipColor,
   plugin as vTooltipInstall,
-  type vTooltipOptions,
+  type VTooltipOptions,
 }

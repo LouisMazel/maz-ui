@@ -16,6 +16,7 @@ module.exports = {
         '@maz-ui/icons',
         '@maz-ui/cli',
         '@maz-ui/eslint-config',
+        '@maz-ui/themes',
       ],
     ],
     'subject-case': [2, 'never', ['upper-case', 'pascal-case', 'start-case']],

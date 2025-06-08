@@ -1,9 +1,0 @@
-{
-  "extends": ["./tsconfig.json"],
-  "compilerOptions": {
-    "declaration": true,
-    "declarationDir": "dist/tmp_types",
-    "emitDeclarationOnly": true,
-    "noEmit": false
-  }
-}
