@@ -1,5 +1,4 @@
 <script lang="ts">
-/* eslint-disable import/first */
 import type {
   ChartData,
   ChartOptions,

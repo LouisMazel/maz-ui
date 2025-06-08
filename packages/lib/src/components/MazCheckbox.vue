@@ -86,13 +86,17 @@ const instanceId = useInstanceUniqId({
   providedId: props.id,
 })
 
-const isChecked = computed(() =>
-  typeof props.value !== 'boolean' && Array.isArray(props.modelValue)
-    ? props.modelValue.includes(props.value as never)
-    : typeof props.modelValue === 'boolean'
-      ? props.modelValue
-      : false,
-)
+const isChecked = computed(() => {
+  if (typeof props.value !== 'boolean' && Array.isArray(props.modelValue)) {
+    return props.modelValue.includes(props.value as never)
+  }
+
+  else if (typeof props.modelValue === 'boolean') {
+    return props.modelValue
+  }
+
+  return false
+})
 
 const checkboxSize = computed(() => {
   switch (props.size) {

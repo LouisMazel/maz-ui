@@ -8,7 +8,11 @@ import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import VueSvgLoader from 'vite-svg-loader'
-import { MazComponentsResolver, MazDirectivesResolver, MazModulesResolver } from './../../packages/lib/src/resolvers/index.js'
+import {
+  MazComponentsResolver,
+  MazDirectivesResolver,
+  MazModulesResolver,
+} from './../../packages/lib/src/resolvers/index.js'
 
 export default defineConfig({
   plugins: [
@@ -34,15 +38,13 @@ export default defineConfig({
     }),
     AutoImport({
       imports: ['vue', 'vue-router'],
-      resolvers: [
-        MazModulesResolver({ devMode: true }),
-      ],
+      resolvers: [MazModulesResolver({ devMode: true })],
       dts: true,
     }),
   ],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
 })

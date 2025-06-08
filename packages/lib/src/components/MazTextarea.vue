@@ -1,5 +1,4 @@
 <script lang="ts">
-/* eslint-disable import/first */
 import type { MazColor } from './types'
 
 export interface MazTextareaProps<T extends string | undefined | null> {

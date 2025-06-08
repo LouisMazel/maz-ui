@@ -1,7 +1,5 @@
-export { AosHandler, type AosOptions, getAosInstance, installAos } from './aos'
-
-export * from './dialog'
-
-export * from './toaster'
-
-export { installWait, WaitHandler, waitInstance } from './wait'
+export { AosHandler, type AosOptions, AosPlugin, getAosInstance } from './aos'
+export { type DialogOptions, DialogPlugin } from './dialog'
+export { type MazThemePluginOptions, MazUi } from './maz-ui'
+export { type ToasterOptions, ToasterPlugin, type ToasterPosition } from './toaster'
+export { WaitHandler, waitInstance, WaitPlugin } from './wait'

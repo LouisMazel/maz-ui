@@ -2,13 +2,13 @@ import type { IconComponent } from '@maz-ui/icons'
 import type { RouteLocationRaw } from 'vue-router'
 import type { MazBtnProps } from '../../components/index.ts'
 
-export type ToasterPosition =
-  | 'top'
-  | 'top-right'
-  | 'top-left'
-  | 'bottom'
-  | 'bottom-right'
-  | 'bottom-left'
+export type ToasterPosition
+  = | 'top'
+    | 'top-right'
+    | 'top-left'
+    | 'bottom'
+    | 'bottom-right'
+    | 'bottom-left'
 
 export interface ToasterButton extends MazBtnProps {
   /**

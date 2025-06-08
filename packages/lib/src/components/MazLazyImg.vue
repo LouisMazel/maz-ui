@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
-import type { vLazyImgOptions } from '../directives/vLazyImg'
+import type { VLazyImgOptions } from '../directives/vLazyImg'
 import { computed, defineAsyncComponent } from 'vue'
 
 import { vLazyImg } from '../directives/vLazyImg'
@@ -64,7 +64,7 @@ export interface MazLazyImgProps {
   /** Make the image height full */
   imageHeightFull?: boolean
   /** The options of the observer */
-  observerOptions?: vLazyImgOptions['observerOptions']
+  observerOptions?: VLazyImgOptions['observerOptions']
   /** The fallback src to replace the src on loading error */
   fallbackSrc?: string
   /** The classes of the image element */
