@@ -1,5 +1,4 @@
 <script lang="ts">
-/* eslint-disable import/first */
 export { useMazDialogPromise } from './MazDialogPromise/useMazDialogPromise'
 export type * from './MazDialogPromise/useMazDialogPromise'
 </script>
@@ -104,11 +103,13 @@ function isPromiseButton(button: MazDialogCustomButton): button is MazDialogProm
 }
 
 function customButtonAction(currentModal: MazDialogState, button: MazDialogCustomButton) {
-  return isPromiseButton(button)
-    ? button.type === 'resolve'
+  if (isPromiseButton(button)) {
+    return button.type === 'resolve'
       ? resolveDialog(currentModal, button.response)
       : rejectDialog(currentModal, button.response)
-    : resolveDialog(currentModal, undefined, button.onClick)
+  }
+
+  return resolveDialog(currentModal, undefined, button.onClick)
 }
 </script>
 

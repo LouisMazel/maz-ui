@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import type { HTMLAttributes } from 'vue'
-import type { RouterLinkProps } from 'vue-router'
+import type { Component, HTMLAttributes } from 'vue'
 import type { MazGalleryProps } from './MazGallery.vue'
 import { MazChevronDown } from '@maz-ui/icons'
 import { computed, defineAsyncComponent, useSlots } from 'vue'
+import { RouterLink, type RouterLinkProps } from 'vue-router'
 
 const {
   gallery = undefined,
@@ -105,8 +105,17 @@ const galleryOptions = computed(() => {
   }
 })
 const wrapperData = computed(() => {
+  let componentType: string | Component = 'div'
+
+  if (href) {
+    componentType = 'a'
+  }
+  else if (to) {
+    componentType = RouterLink
+  }
+
   return {
-    is: href ? 'a' : to ? 'router-link' : 'div',
+    is: componentType,
     ...(href && { href }),
     ...(to && { to }),
     target: hrefTarget,

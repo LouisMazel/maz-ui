@@ -32,7 +32,6 @@
     "chalk": "catalog:",
     "clear": "^0.1.0",
     "commander": "^14.0.0",
-    "eslint-plugin-format": "^1.0.1",
     "figlet": "^1.8.1",
     "typescript": "catalog:",
     "vue-docgen-cli": "^4.79.0"

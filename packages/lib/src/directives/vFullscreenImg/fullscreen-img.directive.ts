@@ -1,5 +1,5 @@
 import type { ObjectDirective } from 'vue'
-import type { vFullscreenImgBindingValue } from './fullscreen-img.handler'
+import type { VFullscreenImgBindingValue } from './fullscreen-img.handler'
 import { FullscreenImgHandler } from './fullscreen-img.handler'
 
 let instance: FullscreenImgHandler
@@ -15,6 +15,6 @@ const directive = {
   unmounted(el: HTMLElement) {
     return instance.remove(el)
   },
-} satisfies ObjectDirective<HTMLElement, vFullscreenImgBindingValue>
+} satisfies ObjectDirective<HTMLElement, VFullscreenImgBindingValue>
 
 export { directive as vFullscreenImg }

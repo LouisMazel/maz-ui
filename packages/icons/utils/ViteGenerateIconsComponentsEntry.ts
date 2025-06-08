@@ -1,7 +1,7 @@
+import type { Plugin } from 'vite'
 import { readdir, readFile, writeFile } from 'node:fs/promises'
 import { join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import type { Plugin } from 'vite'
 // @ts-ignore
 import { getComponentList } from '../../lib/build/getComponentList'
 import { logger } from './logger'
@@ -28,18 +28,21 @@ async function replaceValuesInSvg(files: string[]) {
 
       if (!/\swidth\s*=/.test(content)) {
         content = content.replace(/<svg\b/, '<svg width="1em"')
-      } else {
+      }
+      else {
         content = content.replace(/\swidth\s*=\s*"[^"]*"/g, ' width="1em"')
       }
 
       if (!/\sheight\s*=/.test(content)) {
         content = content.replace(/<svg\b/, '<svg height="1em"')
-      } else {
+      }
+      else {
         content = content.replace(/\sheight\s*=\s*"[^"]*"/g, ' height="1em"')
       }
 
+      // eslint-disable-next-line sonarjs/regex-complexity, regexp/no-useless-assertions
       const colorRegex = /\b(stroke|fill|color|stop-color|flood-color|lighting-color)\b="(?:#[\dA-Fa-f]{3,8}|rgb\([^)]+\)|rgba\([^)]+\)|hsl\([^)]+\)|hsla\([^)]+\)|[a-zA-Z]+)"/g
-      content = content.replace(colorRegex, (match, attribute, ...args) => {
+      content = content.replace(colorRegex, (match, attribute) => {
         const colorValue = match.split('=')[1].replace(/"/g, '')
         if (colorValue === 'none' || colorValue === 'transparent') {
           return match
@@ -94,7 +97,7 @@ export function ViteGenerateIconsComponentsEntry(): Plugin {
     name: 'vite-generate-icons-components-entry',
     async configResolved() {
       logger.log('[ViteGenerateIconsComponentsEntry] ✅ starting to generate icons components entry')
-      const files = await readdir(svgDir)
+      const files = (await readdir(svgDir)).filter(file => file.endsWith('.svg') && !file.endsWith('.DS_Store'))
 
       try {
         await replaceValuesInSvg(files)

@@ -10,7 +10,7 @@ import { libInjectCss } from 'vite-plugin-lib-inject-css'
 import SvgLoader from 'vite-svg-loader'
 import rootPkg from '../../package.json'
 
-import { ViteBuildIcons, ViteBuildMazCli, ViteBuildNuxtModule, ViteCompileStyles } from './build'
+import { ViteBuildIcons, ViteBuildMazCli, ViteBuildNuxtModule, ViteBuildThemes, ViteCompileStyles } from './build'
 
 import pkg from './package.json'
 
@@ -84,15 +84,25 @@ export default defineConfig({
     ViteCompileStyles(),
     ViteBuildNuxtModule(),
     ViteBuildMazCli(),
+    ViteBuildThemes(),
   ],
   build: {
     cssCodeSplit: true,
     emptyOutDir: false,
-    minify: true,
     sourcemap: false,
     cssMinify: true,
+    minify: 'terser',
     terserOptions: {
-      compress: true,
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+      mangle: true,
+      module: true,
+      toplevel: true,
+      format: {
+        comments: false,
+      },
     },
     lib: {
       entry: {
@@ -115,6 +125,7 @@ export default defineConfig({
         moduleSideEffects: (id, _external) => {
           return id.includes('.css') || id.includes('.vue?vue&type=style')
         },
+        preset: 'recommended',
       },
       output: [
         {
@@ -123,19 +134,10 @@ export default defineConfig({
           assetFileNames: 'assets/[name].[hash][extname]',
           exports: 'named',
           entryFileNames: '[name].mjs',
-          preserveModules: false,
+          preserveModules: true,
           interop: 'auto',
           generatedCode: 'es2015',
         },
-        // {
-        //   format: 'cjs',
-        //   chunkFileNames: 'chunks/[name].[hash].cjs',
-        //   assetFileNames: 'assets/[name].[hash][extname]',
-        //   exports: 'named',
-        //   entryFileNames: '[name].cjs',
-        //   preserveModules: false,
-        //   interop: 'auto',
-        // },
       ],
     },
   },

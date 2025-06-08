@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { MazPickerValue } from 'maz-ui/components';
-
-import * as MazIcons from '@maz-ui/icons';
+import type { MazPickerValue } from 'maz-ui/components'
+import * as MazIcons from '@maz-ui/icons'
+import { useTheme } from '@maz-ui/themes'
 
 const { message, success, error, info, warning } = useToast()
 
-async function showToast() {
+function showToast() {
   message(`Hello, <strong>world</strong>!`, {
     position: 'top-right',
     timeout: 1000,
@@ -18,7 +18,7 @@ async function showToast() {
     position: 'bottom-right',
     timeout: 10000,
   })
-  warning ('Hello, world!', {
+  warning('Hello, world!', {
     position: 'bottom-left',
     timeout: 10000,
   })
@@ -33,14 +33,23 @@ async function showToast() {
 }
 
 const date = ref<MazPickerValue>()
+
+const { currentPreset, colorMode, isDark, strategy, updateTheme, setColorMode, toggleDarkMode } =
+  useTheme()
 </script>
 
 <template>
-  <div id="home" class="maz-flex maz-justify-center maz-items-center maz-h-screen">
+  <div id="home" class="maz-flex maz-h-screen maz-flex-col maz-items-center maz-justify-center">
     <div class="maz-flex maz-flex-wrap maz-gap-2">
-      <Component v-for="(icon, i) in MazIcons" :key="i" :is="icon" class="maz-w-10 maz-h-10" />
+      <Component
+        :is="icon"
+        v-for="[key, icon] in Object.entries(MazIcons)"
+        :key="key"
+        class="maz-text-sm"
+        :class="key"
+      />
     </div>
 
-    <MazBtn @click="showToast">Show toast</MazBtn>
+    <MazBtn @click="showToast"> Show toast </MazBtn>
   </div>
 </template>

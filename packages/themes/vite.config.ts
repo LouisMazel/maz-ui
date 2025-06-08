@@ -1,0 +1,82 @@
+import { extname, relative, resolve } from 'node:path'
+import vue from '@vitejs/plugin-vue'
+import { glob } from 'glob'
+
+import { defineConfig } from 'vite'
+import dts from 'vite-plugin-dts'
+import rootPkg from '../../package.json'
+import pkg from './package.json'
+
+const external = [
+  ...Object.keys(pkg.peerDependencies),
+  ...Object.keys(pkg.devDependencies),
+  ...Object.keys(rootPkg.devDependencies),
+]
+
+function resolver(path: string) {
+  return resolve(__dirname, path)
+}
+
+function getEntries(pattern: string) {
+  return [
+    relative('src', pattern.slice(0, pattern.length - extname(pattern).length)),
+    resolver(pattern),
+  ]
+}
+
+const entries = Object.fromEntries(
+  glob.sync('src/**/*.ts', {
+    ignore: ['**/*/index.ts', '**/*/types.ts'],
+  })
+    .map(getEntries),
+)
+
+export default defineConfig({
+  plugins: [
+    vue(),
+    dts({
+      tsconfigPath: resolver('./tsconfig.json'),
+      entryRoot: resolver('src'),
+      outDir: resolver('dist/types'),
+      include: ['src/**/*.ts'],
+    }),
+  ],
+  build: {
+    lib: {
+      entry: {
+        ...entries,
+        'index': 'src/index.ts',
+        'build/index': 'src/build/build-themes.ts',
+        'presets/index': 'src/presets/index.ts',
+        'utils/index': 'src/utils/index.ts',
+        'composables/index': 'src/composables/useTheme.ts',
+      },
+    },
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
+    rollupOptions: {
+      external,
+      treeshake: {
+        moduleSideEffects: false,
+        preset: 'recommended',
+      },
+      output: [
+        {
+          format: 'es',
+          chunkFileNames: 'chunks/[name].[hash].mjs',
+          assetFileNames: 'assets/[name].[hash][extname]',
+          exports: 'named',
+          entryFileNames: '[name].mjs',
+          preserveModules: true,
+          interop: 'auto',
+          generatedCode: 'es2015',
+        },
+      ],
+    },
+  },
+})

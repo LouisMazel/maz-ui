@@ -108,17 +108,22 @@ export class AosHandler {
 
           element.classList.add('maz-aos-animate')
 
-          if (useOnce) {
-            const parentAnchor = element.getAttribute('data-maz-aos-anchor')
-            if (parentAnchor) {
-              const anchorElement = document.querySelector<HTMLElement>(parentAnchor)
-              if (anchorElement) {
-                observer.unobserve(anchorElement)
-              }
-            }
-
-            observer.unobserve(element)
+          if (!useOnce) {
+            element.classList.remove('maz-aos-animate')
+            return
           }
+
+          const parentAnchor = element.getAttribute('data-maz-aos-anchor')
+          if (!parentAnchor) {
+            return
+          }
+
+          const anchorElement = document.querySelector<HTMLElement>(parentAnchor)
+          if (anchorElement) {
+            observer.unobserve(anchorElement)
+          }
+
+          observer.unobserve(element)
         }
         else {
           element.classList.remove('maz-aos-animate')
@@ -162,7 +167,7 @@ export class AosHandler {
 
 let instance: AosHandler
 
-export const installAos = {
+export const AosPlugin = {
   install: (app: App, options?: AosOptions) => {
     instance = new AosHandler(options)
 
