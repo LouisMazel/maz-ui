@@ -35,5 +35,27 @@ export const waitInstance = new WaitHandler()
 export const WaitPlugin = {
   install: (app: App) => {
     app.provide('wait', waitInstance)
+    app.config.globalProperties.$wait = waitInstance
   },
+}
+
+declare module '@vue/runtime-core' {
+  interface ComponentCustomProperties {
+    /**
+     * Wait handler instance
+     * @description You should install the plugin to use this property
+     * @examl
+     * ```ts
+     * import { WaitPlugin } from 'maz-ui/plugins/wait'
+     * import { createApp } from 'vue'
+     *
+     * const app = createApp(App)
+     * app.use(WaitPlugin)
+     *
+     * const wait = useWait()
+     * wait.start()
+     * ```
+     */
+    $wait: WaitHandler
+  }
 }

@@ -172,6 +172,7 @@ export const AosPlugin = {
     instance = new AosHandler(options)
 
     app.provide('aos', instance)
+    app.config.globalProperties.$aos = instance
 
     if (!isClient()) {
       return
@@ -185,6 +186,26 @@ export const AosPlugin = {
       instance.runAnimations()
     }
   },
+}
+
+declare module '@vue/runtime-core' {
+  interface ComponentCustomProperties {
+    /**
+     * Aos handler instance
+     * @description You should install the plugin to use this property
+     * @examl
+     * ```ts
+     * import { AosPlugin } from 'maz-ui/plugins/aos'
+     * import { createApp } from 'vue'
+     *
+     * const app = createApp(App)
+     * app.use(AosPlugin)
+     *
+     * const aos = useAos()
+     * aos.runAnimations()
+     */
+    $aos: AosHandler
+  }
 }
 
 export function getAosInstance(): AosHandler {
