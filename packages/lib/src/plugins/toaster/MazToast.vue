@@ -1,8 +1,7 @@
 <script lang="ts" setup>
 import type { ToasterButton, ToasterOptions } from './types'
 import { MazArrowTopRightOnSquare, MazCheckCircle, MazExclamationCircle, MazExclamationTriangle, MazInformationCircle, MazLinkIcon, MazXMark } from '@maz-ui/icons'
-import { computed, onMounted, ref, watch } from 'vue'
-import MazBtn from '../../components/MazBtn.vue'
+import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useTimer } from '../../composables/useTimer'
 
 const {
@@ -26,6 +25,8 @@ const emits = defineEmits<{
   click: [Event]
   open: []
 }>()
+
+const MazBtn = defineAsyncComponent(() => import('../../components/MazBtn.vue'))
 
 const Toaster = ref<HTMLDivElement>()
 
@@ -162,7 +163,7 @@ const progressBarWidth = ref<string>('100%')
 function getProgressBarColor() {
   switch (type) {
     case 'danger': {
-      return 'maz-bg-danger-700'
+      return 'maz-bg-destructive-700'
     }
     case 'info': {
       return 'maz-bg-info-700'
@@ -174,7 +175,7 @@ function getProgressBarColor() {
       return 'maz-bg-warning-700'
     }
     default: {
-      return 'maz-bg-theme'
+      return 'maz-bg-constrast'
     }
   }
 }
@@ -360,7 +361,7 @@ onMounted(() => {
 }
 </style>
 
-<style lang="postcss" scoped>
+<!-- <style lang="postcss" scoped>
 .m-toast {
   box-sizing: border-box;
 
@@ -417,51 +418,51 @@ onMounted(() => {
 
   &.--info {
     .m-toast__button {
-      @apply maz-bg-info-alpha-10 maz-text-info-600 dark:maz-text-info-600 maz-border-info-alpha-20 hover:maz-bg-info-alpha-20;
+      @apply maz-bg-info/10 maz-text-info-600 maz-border-info/20 hover:maz-bg-info/20;
     }
 
     & .m-toast__close {
-      @apply maz-bg-info-alpha-10 maz-border-info-alpha-20 maz-text-info-600 dark:maz-text-info-600 hover:maz-bg-info-alpha-20 hover:maz-text-info-700;
+      @apply maz-bg-info/10 maz-border-info/20 maz-text-info-600 hover:maz-bg-info/20 hover:maz-text-info-700;
     }
   }
 
   &.--success {
     .m-toast__button {
-      @apply maz-bg-success-alpha-10 maz-text-success-600 dark:maz-text-success-600 maz-border-success-alpha-20 hover:maz-bg-success-alpha-20;
+      @apply maz-bg-success/10 maz-text-success-600 maz-border-success/20 hover:maz-bg-success/20;
     }
 
     & .m-toast__close {
-      @apply maz-bg-success-alpha-10 maz-border-success-alpha-20 maz-text-success-600 dark:maz-text-success-600 hover:maz-bg-success-alpha-20 hover:maz-text-success-700;
+      @apply maz-bg-success/10 maz-border-success/20 maz-text-success-600 hover:maz-bg-success/20 hover:maz-text-success-700;
     }
   }
 
   &.--warning {
     .m-toast__button {
-      @apply maz-bg-warning-alpha-10 maz-text-warning-600 dark:maz-text-warning-600 maz-border-warning-alpha-20 hover:maz-bg-warning-alpha-20;
+      @apply maz-bg-warning/10 maz-text-warning-600 maz-border-warning/20 hover:maz-bg-warning/20;
     }
 
     & .m-toast__close {
-      @apply maz-bg-warning-alpha-10 maz-border-warning-alpha-20 maz-text-warning-600 dark:maz-text-warning-600 hover:maz-bg-warning-alpha-20 hover:maz-text-warning-700;
+      @apply maz-bg-warning/10 maz-border-warning/20 maz-text-warning-600 hover:maz-bg-warning/20 hover:maz-text-warning-700;
     }
   }
 
   &.--danger {
     .m-toast__button {
-      @apply maz-bg-danger-alpha-10 maz-text-danger-600 dark:maz-text-danger-600 maz-border-danger-alpha-20 hover:maz-bg-danger-alpha-20;
+      @apply maz-bg-destructive/10 maz-text-destructive-600 maz-border-destructive/20 hover:maz-bg-destructive/20;
     }
 
     & .m-toast__close {
-      @apply maz-bg-danger-alpha-10 maz-border-danger-alpha-20 maz-text-danger-600 dark:maz-text-danger-600 hover:maz-bg-danger-alpha-20 hover:maz-text-danger-700;
+      @apply maz-bg-destructive/10 maz-border-destructive/20 maz-text-destructive-600 hover:maz-bg-destructive/20 hover:maz-text-destructive-700;
     }
   }
 
   &.--theme {
     .m-toast__button {
-      @apply maz-bg-color maz-text-normal maz-border-neutral-600/20 dark:maz-border-neutral-600/50 hover:maz-bg-neutral-600/20;
+      @apply maz-bg-surface maz-text-foreground maz-border-neutral-600/20 dark:maz-border-neutral-600/50 hover:maz-bg-neutral-600/20;
     }
 
     & .m-toast__close {
-      @apply maz-bg-color maz-text-normal hover:maz-bg-neutral-600/20 maz-border-neutral-600/50 dark:maz-border-neutral-600/50;
+      @apply maz-bg-surface maz-text-foreground hover:maz-bg-neutral-600/20 maz-border-neutral-600/50 dark:maz-border-neutral-600/50;
     }
   }
 
@@ -526,4 +527,4 @@ onMounted(() => {
   z-index: 0;
   transform: scale(0.6) translateX(-200%);
 }
-</style>
+</style> -->
