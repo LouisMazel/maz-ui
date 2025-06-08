@@ -2,6 +2,31 @@ export default defineNuxtConfig({
   modules: ['../src/module'],
   devtools: { enabled: true },
   mazUi: {
-    defaultMazIconPath: '/icons/path',
+    general: {
+      defaultMazIconPath: '/icons/path',
+      autoImportPrefix: '',
+      devtools: true,
+    },
+    css: {
+      injectMainCss: true,
+    },
+    theme: {
+      preset: 'mazUi',
+      strategy: 'hybrid',
+      darkMode: 'class',
+    },
+    components: {
+      autoImport: true,
+    },
+    composables: {
+      useTheme: true,
+      useAos: true,
+      useToast: true,
+      useDialog: true,
+    },
+    directives: {
+      vTooltip: true,
+      vLazyImg: true,
+    },
   },
 })

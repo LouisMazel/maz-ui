@@ -1,4 +1,4 @@
-import { vZoomImgInstall } from 'maz-ui/directives'
+import { vZoomImgInstall } from 'maz-ui/directives/vZoomImg'
 import { defineNuxtPlugin } from 'nuxt/app'
 
 export default defineNuxtPlugin(({ vueApp }) => {

@@ -1,24 +1,21 @@
 import type { CSSRuleObject } from 'tailwindcss/types/config'
 
 export const utilities = {
-  '.padded-container': {
-    'width': '100%',
-    'padding-left': 'var(--maz-container-padding)',
-    'padding-right': 'var(--maz-container-padding)',
-  },
-  '.padded-container-no-p': {
-    'width': '100%',
-    'padding-left': 'calc(50% - var(--maz-container-max-width) / 2)',
-    'padding-right': 'calc(50% - var(--maz-container-max-width) / 2)',
-  },
-  '.elevation': {
-    'box-shadow': '0 5px 10px 0 hsla(0, 0%, 0%, 0.05)',
-  },
   '.flex-center': {
+    'display': 'flex',
     'align-items': 'center',
     'justify-content': 'center',
   },
+  '.padded-container-no-p': {
+    'width': '100%',
+    'padding-inline': 'calc(50% - var(--maz-container-max-width) / 2)',
+  },
+  '.padded-container': {
+    'width': '100%',
+    'padding-inline': 'var(--maz-container-padding)',
+  },
+
   '.cap-f::first-letter': {
     'text-transform': 'capitalize',
   },
-} satisfies CSSRuleObject | CSSRuleObject[]
+} satisfies CSSRuleObject
