@@ -1,124 +1,310 @@
 import type { BaseThemePreset, ThemeAppearance, ThemeColors } from '../types'
 import { generateColorScale } from './color-utils'
 
-export function generateThemeCSS(preset: BaseThemePreset, options: { darkMode?: 'auto' | 'class' | 'media', prefix?: string } = {}): string {
-  const { darkMode = 'class', prefix = 'maz' } = options
+// =============================================================================
+// TYPES & CONSTANTS
+// =============================================================================
 
-  let css = `@layer maz-ui-theme {\n`
+type ThemeMode = 'light' | 'dark' | 'both'
+type DarkSelector = 'class' | 'media'
 
-  css += generateColorVariables({ colors: preset.colors.light, appearance: preset.appearance, selector: ':root', prefix, scale: true })
-
-  if (darkMode === 'class') {
-    css += generateColorVariables({ colors: preset.colors.dark, selector: '.dark', prefix, scale: true })
-  }
-  else if (darkMode === 'media') {
-    css += generateColorVariables({ colors: preset.colors.dark, selector: '', mediaQuery: '@media (prefers-color-scheme: dark)', prefix, scale: true })
-  }
-
-  return css
+export interface CriticalCSSOptions {
+  /** Variables de couleur critiques à inclure */
+  criticalColors?: (keyof ThemeColors)[]
+  /** Variables d'apparence critiques à inclure */
+  criticalAppearance?: (keyof ThemeAppearance)[]
+  /** Mode de thème à générer */
+  mode?: ThemeMode
+  /** Sélecteur pour le mode sombre: 'class' (.dark) | 'media' (@media) */
+  darkSelector?: DarkSelector
+  /** Préfixe des variables CSS */
+  prefix?: string
 }
 
-export function generateCriticalThemeCSS(preset: BaseThemePreset, options: { darkMode?: 'auto' | 'class' | 'media', prefix?: string } = {}): string {
-  const { darkMode = 'class', prefix = 'maz' } = options
+export interface FullCSSOptions {
+  /** Variables critiques à exclure (pour éviter la duplication) */
+  excludeCritical?: (keyof ThemeColors)[]
+  /** Mode de thème à générer */
+  mode?: ThemeMode
+  /** Sélecteur pour le mode sombre: 'class' (.dark) | 'media' (@media) */
+  darkSelector?: DarkSelector
+  /** Préfixe des variables CSS */
+  prefix?: string
+  /** Inclure les échelles de couleur (50-900) */
+  includeColorScales?: boolean
+}
 
-  const criticalColors: (keyof ThemeColors)[] = [
-    'background',
-    'foreground',
-    'primary',
-    'primary-foreground',
-    'secondary',
-    'secondary-foreground',
-    'text',
-    'border',
-  ]
+// Variables critiques par défaut
+const DEFAULT_CRITICAL_COLORS: (keyof ThemeColors)[] = [
+  'background',
+  'foreground',
+  'primary',
+  'secondary',
+  'border',
+]
 
-  const criticalAppearance: (keyof ThemeAppearance)[] = [
-    'radius',
-    'font-family',
-  ]
+const DEFAULT_CRITICAL_APPEARANCE: (keyof ThemeAppearance)[] = [
+  'radius',
+  'font-family',
+]
 
-  const lightColors = Object.fromEntries(
-    criticalColors.map(key => [key, preset.colors?.light?.[key]]),
-  )
+// =============================================================================
+// CSS CRITIQUE - Pour éviter le FOUC
+// =============================================================================
 
-  const darkColors = Object.fromEntries(
-    criticalColors.map(key => [key, preset.colors?.dark?.[key]]),
-  )
+/**
+ * Génère le CSS critique pour éviter le FOUC
+ * Contient uniquement les variables essentielles
+ */
+export function generateCriticalCSS(
+  preset: BaseThemePreset,
+  options: CriticalCSSOptions = {},
+): string {
+  const {
+    criticalColors = DEFAULT_CRITICAL_COLORS,
+    criticalAppearance = DEFAULT_CRITICAL_APPEARANCE,
+    mode = 'both',
+    darkSelector = 'class',
+    prefix = 'maz',
+  } = options
 
-  const appearance = Object.fromEntries(
-    criticalAppearance.map(key => [key, preset.appearance?.[key]]),
-  )
+  const lightCritical = extractCriticalVariables(preset.colors.light, criticalColors)
+  const darkCritical = extractCriticalVariables(preset.colors.dark, criticalColors)
+  const appearanceCritical = extractCriticalAppearance(preset.appearance, criticalAppearance)
 
   let css = '@layer maz-ui-theme {\n'
 
-  css += `  ${generateColorVariables({ colors: lightColors, appearance, selector: ':root', prefix, scale: false })}\n`
-
-  if (darkMode === 'class') {
-    css += `  ${generateColorVariables({ colors: darkColors, selector: '.dark', prefix, scale: false })}`
+  // Thème light
+  if (mode === 'light' || mode === 'both') {
+    css += generateVariablesBlock({
+      selector: ':root',
+      colors: lightCritical,
+      appearance: appearanceCritical,
+      prefix,
+    })
   }
-  else if (darkMode === 'media') {
-    css += `  ${generateColorVariables({ colors: darkColors, mediaQuery: '@media (prefers-color-scheme: dark)', prefix, scale: false })}`
+
+  // Thème dark
+  if (mode === 'dark' || mode === 'both') {
+    css += generateVariablesBlock({
+      selector: darkSelector === 'media' ? ':root' : '.dark',
+      mediaQuery: darkSelector === 'media' ? '@media (prefers-color-scheme: dark)' : undefined,
+      colors: darkCritical,
+      appearance: mode === 'dark' ? appearanceCritical : undefined, // Apparence seulement si mode dark uniquement
+      prefix,
+    })
   }
 
   css += '}\n'
-
   return css
 }
 
-function generateColorVariables<T extends ThemeColors, Scale extends boolean>({
+// =============================================================================
+// CSS COMPLET - Toutes les variables sauf les critiques
+// =============================================================================
+
+/**
+ * Génère le CSS complet sans les variables critiques
+ * Évite la duplication avec le CSS critique
+ */
+export function generateFullCSS(
+  preset: BaseThemePreset,
+  options: FullCSSOptions = {},
+): string {
+  const {
+    excludeCritical = DEFAULT_CRITICAL_COLORS,
+    mode = 'both',
+    darkSelector = 'class',
+    prefix = 'maz',
+    includeColorScales = true,
+  } = options
+
+  const lightColors = excludeVariables(preset.colors.light, excludeCritical)
+  const darkColors = excludeVariables(preset.colors.dark, excludeCritical)
+  const appearance = excludeAppearanceVariables(preset.appearance, DEFAULT_CRITICAL_APPEARANCE)
+
+  let css = '@layer maz-ui-theme {\n'
+
+  // Thème light - Variables restantes + échelles
+  if (mode === 'light' || mode === 'both') {
+    css += generateVariablesBlock({
+      selector: ':root',
+      colors: lightColors,
+      appearance,
+      prefix,
+      includeScales: includeColorScales,
+      preset,
+    })
+  }
+
+  // Thème dark - Variables restantes + échelles
+  if (mode === 'dark' || mode === 'both') {
+    css += generateVariablesBlock({
+      selector: darkSelector === 'media' ? ':root' : '.dark',
+      mediaQuery: darkSelector === 'media' ? '@media (prefers-color-scheme: dark)' : undefined,
+      colors: darkColors,
+      appearance: mode === 'dark' ? appearance : undefined, // Apparence seulement si mode dark uniquement
+      prefix,
+      includeScales: includeColorScales,
+      preset,
+      isDark: true,
+    })
+  }
+
+  css += '}\n'
+  return css
+}
+
+// =============================================================================
+// UTILITAIRES - Fonctions helpers
+// =============================================================================
+
+/**
+ * Extrait les variables de couleur critiques
+ */
+function extractCriticalVariables(
+  colors: ThemeColors,
+  criticalKeys: (keyof ThemeColors)[],
+): Partial<ThemeColors> {
+  return Object.fromEntries(
+    criticalKeys
+      .filter(key => colors[key])
+      .map(key => [key, colors[key]]),
+  )
+}
+
+/**
+ * Extrait les variables d'apparence critiques
+ */
+function extractCriticalAppearance(
+  appearance: ThemeAppearance | undefined,
+  criticalKeys: (keyof ThemeAppearance)[],
+): Partial<ThemeAppearance> {
+  if (!appearance)
+    return {}
+
+  return Object.fromEntries(
+    criticalKeys
+      .filter(key => appearance[key])
+      .map(key => [key, appearance[key]]),
+  )
+}
+
+/**
+ * Exclut les variables critiques des couleurs
+ */
+function excludeVariables(
+  colors: ThemeColors,
+  excludeKeys: (keyof ThemeColors)[],
+): Partial<ThemeColors> {
+  return Object.fromEntries(
+    Object.entries(colors).filter(([key]) => !excludeKeys.includes(key as keyof ThemeColors)),
+  )
+}
+
+/**
+ * Exclut les variables d'apparence critiques
+ */
+function excludeAppearanceVariables(
+  appearance: ThemeAppearance | undefined,
+  excludeKeys: (keyof ThemeAppearance)[],
+): Partial<ThemeAppearance> {
+  if (!appearance)
+    return {}
+
+  return Object.fromEntries(
+    Object.entries(appearance).filter(([key]) => !excludeKeys.includes(key as keyof ThemeAppearance)),
+  )
+}
+
+/**
+ * Génère un bloc de variables CSS
+ */
+function generateVariablesBlock({
+  selector,
+  mediaQuery,
   colors,
   appearance,
-  selector = '',
-  mediaQuery,
-  prefix = 'maz',
-  scale,
-}: { colors: Scale extends true ? T : Partial<T>, appearance?: Partial<ThemeAppearance>, selector?: string, mediaQuery?: string, prefix: string, scale: Scale }): string {
-  const noScaleColors: (keyof ThemeColors)[] = ['border', 'muted', 'overlay']
+  prefix,
+  includeScales = false,
+  preset,
+  isDark = false,
+}: {
+  selector: string
+  mediaQuery?: string
+  colors?: Partial<ThemeColors>
+  appearance?: Partial<ThemeAppearance>
+  prefix: string
+  includeScales?: boolean
+  preset?: BaseThemePreset
+  isDark?: boolean
+}): string {
+  const variables: string[] = []
 
-  let variables = ''
-
-  if (scale === false) {
-    variables += Object.entries(colors)
-      .map(([key, value]) => {
-        if (!noScaleColors.includes(key as keyof ThemeColors)) {
-          return `    --${prefix}-${key}-500: ${value};`
-        }
-        return `    --${prefix}-${key}: ${value};`
-      })
-      .join('\n')
+  // Variables de couleur
+  if (colors) {
+    Object.entries(colors).forEach(([key, value]) => {
+      if (value) {
+        variables.push(`  --${prefix}-${key}: ${value};`)
+      }
+    })
   }
 
+  // Variables d'apparence
   if (appearance) {
-    const appearanceVariables = Object.entries(appearance)
-      .map(([key, value]) => `  --${prefix}-${key}: ${value};`)
-      .join('\n')
-
-    variables += `  \n${appearanceVariables}\n`
+    Object.entries(appearance).forEach(([key, value]) => {
+      if (value) {
+        variables.push(`  --${prefix}-${key}: ${value};`)
+      }
+    })
   }
 
-  if (scale === true) {
-    variables += `      \n${generateColorScaleVariables({ baseColor: colors.primary!, colorName: 'primary', prefix })}`
-    variables += `      \n${generateColorScaleVariables({ baseColor: colors.secondary!, colorName: 'secondary', prefix })}`
-    variables += `      \n${generateColorScaleVariables({ baseColor: colors.accent!, colorName: 'accent', prefix })}`
-    variables += `      \n${generateColorScaleVariables({ baseColor: colors.destructive!, colorName: 'destructive', prefix })}`
-    variables += `      \n${generateColorScaleVariables({ baseColor: colors.success!, colorName: 'success', prefix })}`
-    variables += `      \n${generateColorScaleVariables({ baseColor: colors.warning!, colorName: 'warning', prefix })}`
-    variables += `      \n${generateColorScaleVariables({ baseColor: colors.contrast!, colorName: 'contrast', prefix })}`
+  // Échelles de couleur (50-900)
+  if (includeScales && preset) {
+    const sourceColors = isDark ? preset.colors.dark : preset.colors.light
+    const colorScales = generateAllColorScales(sourceColors, prefix)
+    variables.push(...colorScales)
   }
 
-  return `${selector || mediaQuery} {\n${variables}\n  }\n`
+  // Construction du bloc CSS
+  const content = variables.join('\n')
+
+  if (mediaQuery) {
+    return `\n  ${mediaQuery} {\n    ${selector} {\n${content.replace(/^/gm, '  ')}\n    }\n  }\n`
+  }
+
+  return `\n  ${selector} {\n${content}\n  }\n`
 }
 
-function generateColorScaleVariables({ baseColor, colorName, prefix = 'maz' }: { baseColor: string, colorName: string, prefix: string }): string {
-  const scale = generateColorScale(baseColor)
+/**
+ * Génère toutes les échelles de couleur (50-900)
+ */
+function generateAllColorScales(colors: ThemeColors, prefix: string): string[] {
+  const colorScales: string[] = []
 
-  const variables = Object.entries(scale)
-    .map(([key, value]) => `  --${prefix}-${colorName}-${key}: ${value};`)
-    .join('\n')
+  // Couleurs qui ont des échelles
+  const scaleColors = ['primary', 'secondary', 'accent', 'destructive', 'success', 'warning', 'info', 'contrast'] as const
 
-  return `${variables}\n`
+  scaleColors.forEach((colorName) => {
+    const baseColor = colors[colorName]
+    if (baseColor) {
+      const scale = generateColorScale(baseColor)
+      Object.entries(scale).forEach(([scaleKey, scaleValue]) => {
+        colorScales.push(`  --${prefix}-${colorName}-${scaleKey}: ${scaleValue};`)
+      })
+    }
+  })
+
+  return colorScales
 }
 
+// =============================================================================
+// UTILITAIRES D'INJECTION - Pour l'utilisation runtime
+// =============================================================================
+
+/**
+ * Injecte le CSS dans le DOM
+ */
 export function injectCSS(css: string, id: string = 'maz-theme-vars'): void {
   if (typeof document === 'undefined')
     return
@@ -127,18 +313,21 @@ export function injectCSS(css: string, id: string = 'maz-theme-vars'): void {
 
   if (!styleElement) {
     styleElement = document.createElement('style')
-    styleElement.id = `${id}`
+    styleElement.id = id
     document.head.appendChild(styleElement)
   }
 
   styleElement.textContent = css
 }
 
+/**
+ * Supprime le CSS du DOM
+ */
 export function removeCSS(id: string = 'maz-theme-vars'): void {
   if (typeof document === 'undefined')
     return
 
-  const styleElement = document.getElementById(`${id}`)
+  const styleElement = document.getElementById(id)
   if (styleElement) {
     styleElement.remove()
   }

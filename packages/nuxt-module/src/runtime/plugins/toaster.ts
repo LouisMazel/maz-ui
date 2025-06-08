@@ -1,4 +1,4 @@
-import { ToasterHandler } from 'maz-ui/plugins'
+import { ToasterHandler } from 'maz-ui/plugins/toaster'
 import { defineNuxtPlugin } from 'nuxt/app'
 
 export default defineNuxtPlugin(({ vueApp, $config }) => {
