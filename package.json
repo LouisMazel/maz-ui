@@ -54,13 +54,6 @@
     "url": "https://github.com/LouisMazel/maz-ui/issues"
   },
   "homepage": "https://maz-ui.com/",
-  "pnpm": {
-    "peerDependencyRules": {
-      "allowedVersions": {
-        "jiti": "2.3.3"
-      }
-    }
-  },
   "config": {
     "commitizen": {
       "path": "@commitlint/cz-commitlint"

@@ -786,7 +786,7 @@ defineExpose({
 
 <style lang="postcss" scoped>
 .m-dropzone {
-  @apply maz-flex maz-w-full maz-flex-col maz-gap-2 maz-overflow-hidden maz-rounded maz-border maz-border-dashed maz-border-divider-400 maz-p-6 maz-transition-colors maz-duration-200 maz-ease-in-out maz-flex-center hover:maz-bg-surface-600 dark:hover:maz-bg-surface-700 maz-cursor-pointer;
+  @apply maz-flex maz-w-full maz-flex-col maz-gap-2 maz-overflow-hidden maz-rounded maz-border maz-border-dashed maz-border-divider maz-p-6 maz-transition-colors maz-duration-200 maz-ease-in-out maz-flex-center hover:maz-bg-surface-600 dark:hover:maz-bg-surface-700 maz-cursor-pointer;
 
   &--disabled {
     @apply maz-cursor-not-allowed maz-opacity-50;

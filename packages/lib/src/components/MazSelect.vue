@@ -826,7 +826,7 @@ function updateValue(inputOption: MazSelectNormalizedOption, mustCloseList = tru
   }
 
   .m-select-list {
-    @apply maz-absolute maz-z-default-backdrop maz-flex maz-flex-col maz-gap-1 maz-overflow-hidden maz-rounded maz-bg-surface maz-p-2 maz-elevation dark:maz-border dark:maz-border-divider-400;
+    @apply maz-absolute maz-z-default-backdrop maz-flex maz-flex-col maz-gap-1 maz-overflow-hidden maz-rounded maz-bg-surface maz-p-2 maz-drop-shadow-md maz-shadow-elevation;
 
     &-optgroup {
       @apply maz-flex-none maz-p-0.5 maz-text-start maz-text-[0.875em] maz-text-muted;

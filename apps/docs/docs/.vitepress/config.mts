@@ -4,14 +4,13 @@ import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { MazIconsResolver } from '@maz-ui/icons/resolvers'
 import autoprefixer from 'autoprefixer'
-import { MazComponentsResolver, MazDirectivesResolver, MazModulesResolver } from 'maz-ui/resolvers'
+import { MazComponentsResolver, MazDirectivesResolver } from 'maz-ui/resolvers'
 
 import postcssImport from 'postcss-import'
 import postcssNested from 'postcss-nested'
 import postcssUrl from 'postcss-url'
 import tailwind from 'tailwindcss'
 import tailwindcssNesting from 'tailwindcss/nesting'
-import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import svgLoader from 'vite-svg-loader'
 import { defineConfig, postcssIsolateStyles } from 'vitepress'
@@ -109,12 +108,6 @@ export default defineConfig({
           MazDirectivesResolver(),
           MazIconsResolver(),
         ],
-      }),
-      AutoImport({
-        resolvers: [
-          MazModulesResolver(),
-        ],
-        dts: true,
       }),
     ],
     server: {

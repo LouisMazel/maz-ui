@@ -8,16 +8,18 @@ export function useMountComponent<T extends Component | string, P = Record<strin
     children?: Parameters<typeof createVNode>[2]
     app?: App
     element?: HTMLElement
+    noRender?: boolean
   },
 ) {
   const el = options?.element ?? document.createElement('div')
 
   function destroy() {
-    if (el)
+    if (el) {
       render(null, el)
+    }
   }
 
-  const props = { ...options?.props, destroy }
+  const props = { ...options?.props }
 
   const vNode = createVNode(
     component,
@@ -25,12 +27,13 @@ export function useMountComponent<T extends Component | string, P = Record<strin
     options?.children,
   )
 
+  // Appliquer le contexte de l'app si fourni
   if (options?.app) {
     vNode.appContext = options.app._context
-
-    render(vNode, el)
   }
-  else {
+
+  // Rendre le composant sauf si noRender est true
+  if (!options?.noRender) {
     render(vNode, el)
   }
 

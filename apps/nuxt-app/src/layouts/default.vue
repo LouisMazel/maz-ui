@@ -95,7 +95,7 @@ const { colorMode } = useTheme()
     @apply maz-flex maz-min-h-screen maz-flex-col maz-padded-container;
 
     header {
-      @apply maz-flex maz-w-full maz-flex-wrap maz-items-center maz-justify-between maz-border-b maz-border-divider-400 maz-px-2 maz-py-4;
+      @apply maz-flex maz-w-full maz-flex-wrap maz-items-center maz-justify-between maz-border-b maz-border-divider maz-px-2 maz-py-4;
 
       nav {
         @apply maz-flex maz-gap-1;

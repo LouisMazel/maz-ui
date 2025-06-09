@@ -809,7 +809,7 @@ onBeforeMount(() => {
   }
 
   &-wrapper {
-    @apply maz-border maz-border-solid maz-border-divider-400;
+    @apply maz-border maz-border-solid maz-border-divider maz-overflow-hidden;
 
     &.--scrollable {
       @apply maz-overflow-auto;
@@ -968,7 +968,7 @@ onBeforeMount(() => {
     }
 
     &.--elevation {
-      @apply maz-elevation;
+      @apply maz-drop-shadow-md maz-shadow-elevation;
     }
 
     & .m-table-select-column {
@@ -982,7 +982,7 @@ onBeforeMount(() => {
     }
 
     thead {
-      @apply maz-break-all maz-border-b maz-border-divider-400;
+      @apply maz-break-all maz-border-b maz-border-divider;
 
       th {
         @apply maz-gap-2 maz-break-all maz-font-normal maz-text-muted maz-tracking-tight;

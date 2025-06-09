@@ -4,11 +4,11 @@
   &::before {
     content: attr(data-tooltip);
 
-    @apply maz-pointer-events-none maz-absolute maz-z-default-backdrop maz-w-max maz-max-w-52 maz-rounded maz-border maz-px-2 maz-py-1 maz-text-center maz-transition-all maz-duration-200 maz-elevation;
+    @apply maz-pointer-events-none maz-absolute maz-z-default-backdrop maz-w-max maz-max-w-52 maz-rounded maz-border maz-px-2 maz-py-1 maz-text-center maz-transition-all maz-duration-200 maz-drop-shadow-md maz-shadow-elevation;
   }
 
   &--default::before {
-    @apply maz-border-divider-400 maz-bg-surface maz-text-foreground dark:maz-border-divider-300 dark:maz-bg-surface-100;
+    @apply maz-border-divider maz-bg-surface maz-text-foreground dark:maz-bg-surface-100;
   }
 
   &--primary::before {

@@ -257,7 +257,7 @@ watch(
   }
 
   &.--transparent {
-    @apply maz-border-b maz-border-divider-400 maz-text-foreground;
+    @apply maz-border-b maz-border-divider maz-text-foreground;
   }
 }
 </style>

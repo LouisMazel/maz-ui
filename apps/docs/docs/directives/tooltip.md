@@ -71,6 +71,9 @@ import { vTooltip } from 'maz-ui/directives'
     <MazBtn v-tooltip="{ text: 'Tooltip text', color: 'secondary' }" color="secondary">
       Secondary
     </MazBtn>
+    <MazBtn v-tooltip="{ text: 'Tooltip text', color: 'accent' }" color="accent">
+      Accent
+    </MazBtn>
     <MazBtn v-tooltip="{ text: 'Tooltip text', color: 'success' }" color="success">
       Success
     </MazBtn>
@@ -78,25 +81,13 @@ import { vTooltip } from 'maz-ui/directives'
       Warning
     </MazBtn>
     <MazBtn v-tooltip="{ text: 'Tooltip text', color: 'destructive' }" color="destructive">
-      destructive
+      Destructive
     </MazBtn>
     <MazBtn v-tooltip="{ text: 'Tooltip text', color: 'info' }" color="info">
       Info
     </MazBtn>
-    <MazBtn v-tooltip="{ text: 'Tooltip text', color: 'light' }" color="white">
-      light
-    </MazBtn>
-    <MazBtn v-tooltip="{ text: 'Tooltip text', color: 'dark' }" color="black">
-      Dark
-    </MazBtn>
-    <MazBtn v-tooltip="{ text: 'Tooltip text', color: 'white' }" color="white">
-      White
-    </MazBtn>
-    <MazBtn v-tooltip="{ text: 'Tooltip text', color: 'black' }" color="black">
-      Black
-    </MazBtn>
-    <MazBtn v-tooltip="{ text: 'Tooltip text', color: 'constrast' }" color="constrast">
-      constrast
+    <MazBtn v-tooltip="{ text: 'Tooltip text', color: 'contrast' }" color="contrast">
+      Contrast
     </MazBtn>
   </div>
 
@@ -127,24 +118,12 @@ import { vTooltip } from 'maz-ui/directives'
   Info
 </MazBtn>
 
-<MazBtn v-tooltip="{ text: 'Tooltip text', color: 'light' }" color="white">
-  light
+<MazBtn v-tooltip="{ text: 'Tooltip text', color: 'accent' }" color="accent">
+  Accent
 </MazBtn>
 
-<MazBtn v-tooltip="{ text: 'Tooltip text', color: 'dark' }" color="black">
-  Dark
-</MazBtn>
-
-<MazBtn v-tooltip="{ text: 'Tooltip text', color: 'white' }" color="white">
-  White
-</MazBtn>
-
-<MazBtn v-tooltip="{ text: 'Tooltip text', color: 'black' }" color="black">
-  Black
-</MazBtn>
-
-<MazBtn v-tooltip="{ text: 'Tooltip text', color: 'constrast' }" color="constrast">
-  constrast
+<MazBtn v-tooltip="{ text: 'Tooltip text', color: 'contrast' }" color="contrast">
+  Contrast
 </MazBtn>
 ```
 
@@ -257,7 +236,7 @@ Please refer to the [Nuxt module documentation](./../guide/nuxt.md) for more inf
 ```ts
 interface VTooltipOptions {
   position?: 'top' | 'bottom' | 'left' | 'right'
-  color?: 'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'destructive' | 'white' | 'black' | 'constrast' | 'default' | 'light' | 'dark'
+  color?: 'primary' | 'secondary' | 'info' | 'accent' | 'success' | 'warning' | 'destructive' | 'contrast' | 'default'
 }
 
 type VTooltipBindingValue

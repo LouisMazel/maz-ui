@@ -11,9 +11,11 @@ const _dirname = fileURLToPath(new URL('.', import.meta.url))
 export default defineConfig({
   componentsRoot: resolve(_dirname, './../lib/src/components'),
   components: './[A-Z]*.vue', // the glob to define what files should be documented as components (relative to componentRoot)
-  outDir: resolve(_dirname, './../docs/docs/.vitepress/generated-docs'),
+  outDir: resolve(_dirname, './../../apps/docs/docs/.vitepress/generated-docs'),
   getDestFile: (filename, config) => {
     const filenameKebab = filename.replaceAll(/([\da-z])([A-Z])/g, '$1-$2').toLowerCase()
+
+    console.log(filenameKebab)
 
     return join(config.outDir, filenameKebab).replace(/\.vue$/, '.doc.md')
   },

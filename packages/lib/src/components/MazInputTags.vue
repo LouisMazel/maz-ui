@@ -122,7 +122,7 @@ const borderStyle = computed(() => {
       return 'maz-border-warning'
   }
 
-  return 'maz-border-divider dark:maz-border-divider-400'
+  return 'maz-border-divider'
 })
 
 function removeLastTag() {

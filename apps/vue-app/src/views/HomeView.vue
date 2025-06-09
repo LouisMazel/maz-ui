@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import type { MazPickerValue } from 'maz-ui/components'
-import * as MazIcons from '@maz-ui/icons'
 import { useTheme } from '@maz-ui/themes'
+import { vTooltip } from 'maz-ui/src/directives/vTooltip.js'
 
 const { message, success, error, info, warning } = useToast()
 
@@ -32,7 +31,7 @@ function showToast() {
   })
 }
 
-const date = ref<MazPickerValue>()
+const isOpen = ref(true)
 
 const { currentPreset, colorMode, isDark, strategy, updateTheme, setColorMode, toggleDarkMode } =
   useTheme()
@@ -40,30 +39,24 @@ const { currentPreset, colorMode, isDark, strategy, updateTheme, setColorMode, t
 
 <template>
   <div id="home" class="maz-flex maz-h-screen maz-flex-col maz-items-center maz-justify-center">
-    <div class="maz-flex maz-flex-wrap maz-gap-2">
-      <Component
-        :is="icon"
-        v-for="[key, icon] in Object.entries(MazIcons)"
-        :key="key"
-        class="maz-text-sm"
-        :class="key"
-      />
-    </div>
+    <MazPopover position="top-start">
+      <template #trigger>
+        <MazBtn color="destructive" @click="isOpen = !isOpen"> Hello </MazBtn>
+      </template>
 
-    <MazBadge outline color="destructive">COUCOUCOUCOUC</MazBadge>
+      <template #default>
+        <div class="maz-p-4">Hello</div>
+      </template>
+    </MazPopover>
 
-    <MazBtn pastel color="contrast" @click="showToast"> Show toast contrast </MazBtn>
-    <MazBtn color="primary" @click="showToast"> Show toast primary </MazBtn>
-    <MazBtn color="secondary" @click="colorMode = 'dark'">
-      Set color mode to dark secondary
-    </MazBtn>
-    <MazBtn color="accent" @click="setColorMode('light')"> Set color mode to light accent </MazBtn>
-    <MazBtn color="destructive" @click="setColorMode('auto')">
-      Set color mode to auto destructive
-    </MazBtn>
-    <MazBtn disabled color="success" @click="toggleDarkMode"> Toggle dark mode success </MazBtn>
-    <MazBtn color="warning" @click="toggleDarkMode"> Toggle dark mode warning </MazBtn>
-    <MazBtn color="transparent" @click="toggleDarkMode"> Toggle dark mode transparent </MazBtn>
-    <MazBtn color="info" @click="toggleDarkMode"> Toggle dark mode info </MazBtn>
+    <p
+      v-if="isOpen"
+      v-tooltip="{
+        text: 'COUCOUCOUCOUC',
+      }"
+      color="destructive"
+    >
+      Tooltipdzadzdzdzss
+    </p>
   </div>
 </template>
