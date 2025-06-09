@@ -11,12 +11,8 @@ import { inBrowser } from 'vitepress'
 import DefaultTheme from 'vitepress/theme-without-fonts'
 
 import { watch } from 'vue'
-
-import ColorContainer from './components/ColorContainer.vue'
 import ComponentDemo from './components/ComponentDemo.vue'
-import DemoAuthPage from './components/DemoAuthPage.vue'
-import DemoDashboardPage from './components/DemoDashboardPage.vue'
-import DemoProductPage from './components/DemoProductPage.vue'
+
 import Layout from './components/Layout.vue'
 import NpmBadge from './components/NpmBadge.vue'
 import 'maz-ui/src/plugins/aos/scss/index.scss'
@@ -34,12 +30,8 @@ export default {
 
     app.provide('mazIconPath', '/icons')
 
-    app.component('ColorContainer', ColorContainer)
     app.component('NpmBadge', NpmBadge)
     app.component('ComponentDemo', ComponentDemo)
-    app.component('DemoProductPage', DemoProductPage)
-    app.component('DemoAuthPage', DemoAuthPage)
-    app.component('DemoDashboardPage', DemoDashboardPage)
 
     Object.entries(components).forEach(([componentName, component]) => {
       app.component(componentName, component)

@@ -286,7 +286,7 @@ const hasBorderStyle = computed(() => borderStyle.value !== '--default-border')
     @apply maz-border maz-border-solid;
 
     &:not(.--has-border-style) {
-      @apply maz-border-divider dark:maz-border-divider-400;
+      @apply maz-border-divider;
     }
   }
 
@@ -333,7 +333,7 @@ const hasBorderStyle = computed(() => borderStyle.value !== '--default-border')
   }
 
   &.--is-disabled {
-    @apply maz-cursor-not-allowed maz-border-divider maz-bg-surface-300 maz-text-muted dark:maz-border-divider-400;
+    @apply maz-cursor-not-allowed maz-border-divider maz-bg-surface-300 maz-text-muted;
 
     & * {
       @apply maz-cursor-not-allowed maz-text-muted;

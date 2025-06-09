@@ -9,7 +9,6 @@ const { colorMode, setColorMode } = useTheme()
     <nav class="maz-flex maz-items-center maz-gap-4 maz-p-4">
       <MazLink to="/"> Home </MazLink>
       <MazLink to="/about"> About </MazLink>
-      {{ colorMode }}
       <MazLink @click="setColorMode('dark')"> Dark </MazLink>
       <MazLink @click="setColorMode('light')"> Light </MazLink>
     </nav>

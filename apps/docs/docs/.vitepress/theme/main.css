@@ -28,6 +28,7 @@ html.dark {
   --vp-c-bg-elv: hsl(235deg 16% 12%);
   --vp-c-bg-elv-mute: hsl(var(--maz-background));
   --vp-c-gutter: hsl(var(--maz-border));
+  --vp-c-bg-soft: hsl(var(--maz-background-400) / 60%);
 }
 
 .text {

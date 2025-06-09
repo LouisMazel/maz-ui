@@ -69,7 +69,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
   <MazAnimatedElement :delay="1250" class="maz-mt-12 tab-l:maz-mt-20">
     <MazTabs>
       <div class="maz-flex maz-justify-between maz-items-start tab-l:maz-items-center maz-gap-4 maz-mb-4 maz-flex-col-reverse tab-l:maz-flex-row">
-        <MazTabsBar :items="['Dashboard', 'Product Page', 'Auth Page']" class="maz-border maz-border-divider-400" />
+        <MazTabsBar :items="['Dashboard', 'Product Page', 'Auth Page']" />
         <div class="maz-flex maz-gap-2 maz-items-center maz-flex-row-reverse tab-l:maz-flex-row">
           <MazBtn size="sm" fab :color="currentPreset.name === 'pristine' ? 'primary' : 'contrast'" outline @click="toggleDarkMode">
             <MazMoon v-if="isDark" />
@@ -307,6 +307,20 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
     <MazCardSpotlight color="info" content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
         <span class="maz-py-1 maz-px-2 maz-bg-surface-400 maz-rounded-md maz-text-2xl">
+          🪟
+        </span>
+        <MazBadge color="primary" class="maz-text-base">Component</MazBadge>
+      </div>
+      <h3 class="maz-text-base maz-font-semibold">MazPopover</h3>
+      <p class="dark:maz-text-gray-300 maz-text-muted maz-text-sm">
+        A powerful popover component with various customization options and smooth animations.
+      </p>
+      <div class="maz-flex-1"></div>
+      <MazBtn :color="currentPreset.name === 'pristine' ? 'primary' : 'contrast'" outline size="sm" block href="/components/maz-popover">Discover</MazBtn>
+    </MazCardSpotlight>
+    <MazCardSpotlight color="info" content-class="maz-flex maz-flex-col maz-gap-2">
+      <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
+        <span class="maz-py-1 maz-px-2 maz-bg-surface-400 maz-rounded-md maz-text-2xl">
           ✏️
         </span>
         <MazBadge color="primary" class="maz-text-base">Component</MazBadge>
@@ -468,6 +482,10 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
 </section> -->
 
 <script lang="ts" setup>
+  import DemoAuthPage from './.vitepress/theme/components/DemoAuthPage.vue'
+  import DemoDashboardPage from './.vitepress/theme/components/DemoDashboardPage.vue'
+  import DemoProductPage from './.vitepress/theme/components/DemoProductPage.vue'
+
   import { ref, computed } from 'vue'
   import { MazStar, MazPlay, MazGithub, MazSun, MazMoon } from '@maz-ui/icons'
   import { useTheme } from '@maz-ui/themes'
