@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 /* eslint-disable vue/no-unused-refs */
-import { useFormField, useFormValidator, useToast } from 'maz-ui/src/composables/index.js'
+import { useFormField, useFormValidator, useToast } from 'maz-ui/composables'
+import MazDialog from 'maz-ui/src/components/MazDialog.vue'
 import { email, nonEmpty, pipe, string } from 'valibot'
 import { ref } from 'vue'
 
@@ -61,10 +62,10 @@ const onSubmit = handleSubmit(() => {
 
 <template>
   <div class="vp-raw maz-flex">
-    <div class="maz-hidden maz-flex-1 maz-flex-col maz-justify-center maz-gap-2 maz-bg-theme maz-p-6 tab-m:maz-flex">
+    <div class="maz-hidden maz-flex-1 maz-flex-col maz-justify-center maz-gap-2 maz-bg-contrast maz-p-6 tab-m:maz-flex">
       <MazIcon src="/img/logo.svg" size="3rem" style="height: 1em !important; width: auto;" />
 
-      <p class="maz-text-center maz-text-sm maz-text-white dark:maz-text-black">
+      <p class="maz-text-center maz-text-sm maz-text-contrast-foreground">
         Standalone components and tools library for Vue & Nuxt
       </p>
     </div>
@@ -107,22 +108,22 @@ const onSubmit = handleSubmit(() => {
             />
 
             <div class="maz-flex maz-items-center maz-justify-between">
-              <MazCheckbox v-model="model.rememberMe" color="theme">
+              <MazCheckbox v-model="model.rememberMe" color="contrast">
                 Remember me
               </MazCheckbox>
 
-              <MazLink color="theme" href="#" @click.prevent="forgotPassword">
+              <MazLink color="contrast" href="#" @click.prevent="forgotPassword">
                 Forgot password?
               </MazLink>
             </div>
 
-            <MazBtn type="submit" color="theme" block :loading="isLoading">
+            <MazBtn type="submit" color="contrast" block :loading="isLoading">
               Sign In
             </MazBtn>
 
             <div class="maz-text-center maz-text-muted">
               Don't have an account?
-              <MazLink color="theme" href="#" @click.prevent="goToRegister">
+              <MazLink color="contrast" href="#" @click.prevent="goToRegister">
                 Register
               </MazLink>
             </div>
@@ -148,12 +149,12 @@ const onSubmit = handleSubmit(() => {
               <MazBtn color="secondary" block @click="previousStep">
                 Back
               </MazBtn>
-              <MazBtn color="theme" block :loading="isLoading" @click="verifyCode">
+              <MazBtn color="contrast" block :loading="isLoading" @click="verifyCode">
                 Verify
               </MazBtn>
             </div>
 
-            <MazBtn color="theme" outline block @click="resendCode">
+            <MazBtn color="contrast" outline block @click="resendCode">
               Resend code
             </MazBtn>
           </div>
@@ -164,7 +165,7 @@ const onSubmit = handleSubmit(() => {
     <MazDialog v-model="showSuccessDialog" title="Welcome back!">
       <p>You have successfully signed in.</p>
       <template #footer="{ close }">
-        <MazBtn color="theme" @click="close">
+        <MazBtn color="contrast" @click="close">
           Continue
         </MazBtn>
       </template>

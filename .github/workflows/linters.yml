@@ -25,7 +25,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install modules
-        run: pnpm install
+        run: pnpm install --frozen-lockfile --ignore-scripts && pnpm store prune
 
       - name: Run linters
         run: pnpm --parallel -r lint

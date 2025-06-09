@@ -15,7 +15,7 @@ Propose your website by opening an [issue](https://github.com/LouisMazel/maz-ui/
 :::
 
 <div class="flex flex-col" style="display: flex; flex-direction: column; gap: 2rem">
-  <MazCard zoom v-for="({images, description, link, title, github }, i) in projects" :key="i" class="maz-w-full" :gallery-height="350" :images="images">
+  <MazCard zoom v-for="({images, description, link, title, github }, i) in projects" :key="i" class="maz-w-full" elevation :gallery="{ images, height: 350 }">
     <h1 class="maz-m-0" style="margin-bottom: 16px;">
       {{ title }}
     </h1>

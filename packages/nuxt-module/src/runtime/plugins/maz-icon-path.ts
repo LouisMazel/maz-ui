@@ -1,7 +1,7 @@
 import { defineNuxtPlugin } from 'nuxt/app'
 
 export default defineNuxtPlugin(({ $config, vueApp }) => {
-  const defaultMazIconPath = $config.public.mazUi?.defaultMazIconPath
+  const defaultMazIconPath = $config.public.mazUi?.general?.defaultMazIconPath
 
   vueApp.provide('mazIconPath', defaultMazIconPath)
 

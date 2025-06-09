@@ -1,8 +1,4 @@
-export const baseColors = {
-  overlay: 'hsl(var(--maz-overlay) / <alpha-value>)',
-  muted: 'hsl(var(--maz-muted) / <alpha-value>)',
-  divider: 'hsl(var(--maz-border) / <alpha-value>)',
-}
+export const baseColors = {}
 
 export const scaleColors = {
   primary: 'primary',
@@ -15,6 +11,10 @@ export const scaleColors = {
   info: 'info',
   foreground: 'foreground',
   surface: 'background',
+  divider: 'border',
+  elevation: 'shadow',
+  overlay: 'overlay',
+  muted: 'muted',
 } as const
 
 export const colorScales = [

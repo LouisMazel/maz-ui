@@ -15,7 +15,7 @@ This plugin has a composable for easier use, after installing it you can use [us
 ## Basic usage
 
 <div class="maz-flex maz-flex-wrap maz-gap-2">
-  <MazBtn color="theme" @click="toast.message('Message text')">
+  <MazBtn color="contrast" @click="toast.message('Message text')">
     Message
   </MazBtn>
 
@@ -23,7 +23,7 @@ This plugin has a composable for easier use, after installing it you can use [us
     Info toast on top
   </MazBtn>
 
-  <MazBtn color="danger" @click="toast.error('Error message', { position: 'bottom', timeout: 1000 })">
+  <MazBtn color="destructive" @click="toast.error('Error message', { position: 'bottom', timeout: 1000 })">
     Error toast on bottom with 1s timeout
   </MazBtn>
 
@@ -51,7 +51,7 @@ Toast can have a link or an action
   <MazBtn color="warning" @click="showInfoWithExternalLink">
     Toast with blank link
   </MazBtn>
-  <MazBtn color="danger" @click="showInfoWithAction">
+  <MazBtn color="destructive" @click="showInfoWithAction">
     Toast with action
   </MazBtn>
 </div>
@@ -61,7 +61,7 @@ Toast can have a link or an action
 ```vue
 <template>
   <MazBtn
-    color="theme"
+    color="contrast"
     @click="toast.message('Message text')"
   >
     Message
@@ -75,7 +75,7 @@ Toast can have a link or an action
   </MazBtn>
 
   <MazBtn
-    color="danger"@
+    color="destructive"@
     @click="toast.error('Error message', { position: 'bottom', timeout: 1000 })"
   >
     Error toast on bottom with 1s timeout
@@ -166,8 +166,8 @@ function showToast () {
 ```
 
 <script lang="ts" setup>
-  import { useToast } from 'maz-ui/src/composables/useToast'
-  import { sleep } from 'maz-ui/src/helpers/sleep'
+  import { useToast } from 'maz-ui/composables/useToast'
+  import { sleep } from 'maz-ui/helpers/sleep'
 
   const toast = useToast()
 

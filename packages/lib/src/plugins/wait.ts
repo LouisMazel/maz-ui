@@ -1,4 +1,4 @@
-import type { App } from 'vue'
+import type { Plugin } from 'vue'
 import type { LoaderId } from './wait/utils'
 import { computed, ref } from 'vue'
 import { contains, DEFAULT_LOADER, hasItems, pop, push } from './wait/utils'
@@ -32,8 +32,8 @@ export class WaitHandler {
 
 export const waitInstance = new WaitHandler()
 
-export const WaitPlugin = {
-  install: (app: App) => {
+export const WaitPlugin: Plugin = {
+  install: (app) => {
     app.provide('wait', waitInstance)
     app.config.globalProperties.$wait = waitInstance
   },

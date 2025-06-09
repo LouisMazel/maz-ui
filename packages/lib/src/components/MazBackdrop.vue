@@ -219,9 +219,7 @@ html.--backdrop-present {
 
 <style lang="postcss" scoped>
 .m-backdrop {
-  @apply maz-fixed maz-inset-0 maz-z-default-backdrop maz-bg-overlay;
-
-  backdrop-filter: blur(4px);
+  @apply maz-fixed maz-inset-0 maz-z-default-backdrop maz-bg-overlay/5 maz-backdrop-blur;
 
   &.--persistent {
     & .m-backdrop-content {

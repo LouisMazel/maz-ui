@@ -1,4 +1,5 @@
 export type HSL = `${number} ${number}% ${number}%`
+export type SizeUnit = `${number}${'rem' | 'px' | 'em' | 'vw' | 'vh' | 'vmin' | 'vmax' | '%'}`
 
 export interface ThemeColors {
   'background': HSL
@@ -22,11 +23,12 @@ export interface ThemeColors {
   'overlay': HSL
   'muted': HSL
   'border': HSL
+  'shadow': HSL
 }
 
 export interface ThemeAppearance {
-  'radius': string
-  'border-width': string
+  'radius': SizeUnit
+  'border-width': SizeUnit
   'font-family': string
 }
 
@@ -51,7 +53,7 @@ export interface ThemeConfig {
   preset?: BaseThemePreset
   overrides?: ThemePreset
   strategy?: Strategy
-  darkMode?: DarkMode
+  darkModeStrategy?: DarkMode
 }
 
 export interface ColorScale {
@@ -78,4 +80,5 @@ export interface ThemeState {
   colorMode: ColorMode
   isDark: boolean
   strategy: Strategy
+  darkModeStrategy: DarkMode
 }

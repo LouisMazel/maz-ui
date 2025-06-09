@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "chart.js": "catalog:",
+    "@maz-ui/themes": "workspace:*",
     "chartjs-plugin-datalabels": "^2.2.0",
     "dayjs": "^1.11.13",
     "libphonenumber-js": "catalog:",

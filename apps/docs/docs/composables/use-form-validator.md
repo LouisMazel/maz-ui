@@ -154,7 +154,7 @@ In this example, we will create a simple form with four fields: `name`, `age`, `
 <ComponentDemo>
   <b>Form State</b>
 
-  <div class="maz-text-xs maz-p-2 maz-bg-color-light maz-rounded maz-mt-2">
+  <div class="maz-text-xs maz-p-2 maz-bg-surface-400 maz-rounded maz-mt-2">
     <pre>{{ { isValid, isSubmitting, isDirty, isSubmitted, errorMessages } }}</pre>
   </div>
 

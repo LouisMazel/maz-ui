@@ -9,32 +9,32 @@ type ThemeMode = 'light' | 'dark' | 'both'
 type DarkSelector = 'class' | 'media'
 
 export interface CriticalCSSOptions {
-  /** Variables de couleur critiques à inclure */
+  /** Critical color variables to include */
   criticalColors?: (keyof ThemeColors)[]
-  /** Variables d'apparence critiques à inclure */
+  /** Critical appearance variables to include */
   criticalAppearance?: (keyof ThemeAppearance)[]
-  /** Mode de thème à générer */
+  /** Theme mode to generate */
   mode?: ThemeMode
-  /** Sélecteur pour le mode sombre: 'class' (.dark) | 'media' (@media) */
+  /** Dark mode selector: 'class' (.dark) | 'media' (@media) */
   darkSelector?: DarkSelector
-  /** Préfixe des variables CSS */
+  /** CSS variables prefix */
   prefix?: string
 }
 
 export interface FullCSSOptions {
-  /** Variables critiques à exclure (pour éviter la duplication) */
+  /** Critical variables to exclude (to avoid duplication) */
   excludeCritical?: (keyof ThemeColors)[]
-  /** Mode de thème à générer */
+  /** Theme mode to generate */
   mode?: ThemeMode
-  /** Sélecteur pour le mode sombre: 'class' (.dark) | 'media' (@media) */
+  /** Dark mode selector: 'class' (.dark) | 'media' (@media) */
   darkSelector?: DarkSelector
-  /** Préfixe des variables CSS */
+  /** CSS variables prefix */
   prefix?: string
-  /** Inclure les échelles de couleur (50-900) */
+  /** Include color scales (50-900) */
   includeColorScales?: boolean
 }
 
-// Variables critiques par défaut
+// Default critical variables
 const DEFAULT_CRITICAL_COLORS: (keyof ThemeColors)[] = [
   'background',
   'foreground',
@@ -48,13 +48,11 @@ const DEFAULT_CRITICAL_APPEARANCE: (keyof ThemeAppearance)[] = [
   'font-family',
 ]
 
-// =============================================================================
-// CSS CRITIQUE - Pour éviter le FOUC
-// =============================================================================
+const scaleColors = ['primary', 'secondary', 'accent', 'destructive', 'success', 'warning', 'info', 'contrast', 'background', 'foreground', 'border', 'muted', 'overlay', 'shadow'] as const
 
 /**
- * Génère le CSS critique pour éviter le FOUC
- * Contient uniquement les variables essentielles
+ * Generates critical CSS to prevent FOUC
+ * Contains only essential variables
  */
 export function generateCriticalCSS(
   preset: BaseThemePreset,
@@ -74,7 +72,7 @@ export function generateCriticalCSS(
 
   let css = '@layer maz-ui-theme {\n'
 
-  // Thème light
+  // Light theme
   if (mode === 'light' || mode === 'both') {
     css += generateVariablesBlock({
       selector: ':root',
@@ -84,13 +82,13 @@ export function generateCriticalCSS(
     })
   }
 
-  // Thème dark
+  // Dark theme
   if (mode === 'dark' || mode === 'both') {
     css += generateVariablesBlock({
       selector: darkSelector === 'media' ? ':root' : '.dark',
       mediaQuery: darkSelector === 'media' ? '@media (prefers-color-scheme: dark)' : undefined,
       colors: darkCritical,
-      appearance: mode === 'dark' ? appearanceCritical : undefined, // Apparence seulement si mode dark uniquement
+      appearance: mode === 'dark' ? appearanceCritical : undefined, // Appearance only if dark mode only
       prefix,
     })
   }
@@ -100,12 +98,12 @@ export function generateCriticalCSS(
 }
 
 // =============================================================================
-// CSS COMPLET - Toutes les variables sauf les critiques
+// FULL CSS - All variables except critical ones
 // =============================================================================
 
 /**
- * Génère le CSS complet sans les variables critiques
- * Évite la duplication avec le CSS critique
+ * Generates full CSS without critical variables
+ * Avoids duplication with critical CSS
  */
 export function generateFullCSS(
   preset: BaseThemePreset,
@@ -125,7 +123,6 @@ export function generateFullCSS(
 
   let css = '@layer maz-ui-theme {\n'
 
-  // Thème light - Variables restantes + échelles
   if (mode === 'light' || mode === 'both') {
     css += generateVariablesBlock({
       selector: ':root',
@@ -137,13 +134,13 @@ export function generateFullCSS(
     })
   }
 
-  // Thème dark - Variables restantes + échelles
+  // Dark theme - Remaining variables + scales
   if (mode === 'dark' || mode === 'both') {
     css += generateVariablesBlock({
       selector: darkSelector === 'media' ? ':root' : '.dark',
       mediaQuery: darkSelector === 'media' ? '@media (prefers-color-scheme: dark)' : undefined,
       colors: darkColors,
-      appearance: mode === 'dark' ? appearance : undefined, // Apparence seulement si mode dark uniquement
+      appearance: mode === 'dark' ? appearance : undefined, // Appearance only if dark mode only
       prefix,
       includeScales: includeColorScales,
       preset,
@@ -156,11 +153,11 @@ export function generateFullCSS(
 }
 
 // =============================================================================
-// UTILITAIRES - Fonctions helpers
+// UTILITIES - Helper functions
 // =============================================================================
 
 /**
- * Extrait les variables de couleur critiques
+ * Extracts critical color variables
  */
 function extractCriticalVariables(
   colors: ThemeColors,
@@ -174,7 +171,7 @@ function extractCriticalVariables(
 }
 
 /**
- * Extrait les variables d'apparence critiques
+ * Extracts critical appearance variables
  */
 function extractCriticalAppearance(
   appearance: ThemeAppearance | undefined,
@@ -191,7 +188,7 @@ function extractCriticalAppearance(
 }
 
 /**
- * Exclut les variables critiques des couleurs
+ * Excludes critical variables from colors
  */
 function excludeVariables(
   colors: ThemeColors,
@@ -203,7 +200,7 @@ function excludeVariables(
 }
 
 /**
- * Exclut les variables d'apparence critiques
+ * Excludes critical appearance variables
  */
 function excludeAppearanceVariables(
   appearance: ThemeAppearance | undefined,
@@ -218,7 +215,7 @@ function excludeAppearanceVariables(
 }
 
 /**
- * Génère un bloc de variables CSS
+ * Generates a CSS variables block
  */
 function generateVariablesBlock({
   selector,
@@ -241,7 +238,6 @@ function generateVariablesBlock({
 }): string {
   const variables: string[] = []
 
-  // Variables de couleur
   if (colors) {
     Object.entries(colors).forEach(([key, value]) => {
       if (value) {
@@ -250,7 +246,6 @@ function generateVariablesBlock({
     })
   }
 
-  // Variables d'apparence
   if (appearance) {
     Object.entries(appearance).forEach(([key, value]) => {
       if (value) {
@@ -259,14 +254,13 @@ function generateVariablesBlock({
     })
   }
 
-  // Échelles de couleur (50-900)
   if (includeScales && preset) {
     const sourceColors = isDark ? preset.colors.dark : preset.colors.light
     const colorScales = generateAllColorScales(sourceColors, prefix)
     variables.push(...colorScales)
   }
 
-  // Construction du bloc CSS
+  // CSS block construction
   const content = variables.join('\n')
 
   if (mediaQuery) {
@@ -277,13 +271,10 @@ function generateVariablesBlock({
 }
 
 /**
- * Génère toutes les échelles de couleur (50-900)
+ * Generates all color scales (50-900)
  */
 function generateAllColorScales(colors: ThemeColors, prefix: string): string[] {
   const colorScales: string[] = []
-
-  // Couleurs qui ont des échelles
-  const scaleColors = ['primary', 'secondary', 'accent', 'destructive', 'success', 'warning', 'info', 'contrast'] as const
 
   scaleColors.forEach((colorName) => {
     const baseColor = colors[colorName]
@@ -299,11 +290,11 @@ function generateAllColorScales(colors: ThemeColors, prefix: string): string[] {
 }
 
 // =============================================================================
-// UTILITAIRES D'INJECTION - Pour l'utilisation runtime
+// INJECTION UTILITIES - For runtime use
 // =============================================================================
 
 /**
- * Injecte le CSS dans le DOM
+ * Injects CSS into the DOM
  */
 export function injectCSS(css: string, id: string = 'maz-theme-vars'): void {
   if (typeof document === 'undefined')

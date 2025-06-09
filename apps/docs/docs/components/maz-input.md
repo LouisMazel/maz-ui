@@ -360,7 +360,7 @@ Use the attribute `color` with a value in this [list](./../guide/colors.md), the
 <ComponentDemo>
   <div class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
     <MazInput
-      v-for="{ name } in colorsArray"
+      v-for="name in colors"
       :key="name"
       v-model="inputValue"
       :label="name"
@@ -374,7 +374,7 @@ Use the attribute `color` with a value in this [list](./../guide/colors.md), the
   ```vue
   <template>
     <MazInput
-      v-for="{ name } in colorsArray"
+      v-for="name in colors"
       :key="name"
       v-model="inputValue"
       :label="name"
@@ -383,16 +383,7 @@ Use the attribute `color` with a value in this [list](./../guide/colors.md), the
   </template>
 
   <script setup>
-    const colors = {
-      primary: { name: 'primary', hex: '#1e90ff' },
-      secondary: { name: 'secondary', hex: '#1cd1a1' },
-      info: { name: 'info', hex: '#17a2b8' },
-      success: { name: 'success', hex: '#9acd32' },
-      warning: { name: 'warning', hex: '#fcb731' },
-      danger: { name: 'danger', hex: '#ff6d6a' },
-      white: { name: 'white', hex: '#fff' },
-      black: { name: 'black', hex: '#000' },
-    }
+    const colors = ['primary', 'secondary', 'info', 'success', 'warning', 'destructive', 'accent', 'contrast']
   </script>
   ```
 
@@ -429,7 +420,7 @@ Use the attribute `rounded-size` with a value in `'none' | 'sm' | 'md' | 'lg' | 
 
 ## State
 
-<ComponentDemo title="Danger">
+<ComponentDemo title="destructive">
   <MazInput v-model="inputValue" label="Label" error autocomplete="off" />
 
   <template #code>
@@ -476,20 +467,18 @@ Use the attribute `rounded-size` with a value in `'none' | 'sm' | 'md' | 'lg' | 
   const inputValue = ref()
   const passwordValue = ref()
 
-  const colors = {
-    primary: { name: 'primary', hex: '#1e90ff' },
-    secondary: { name: 'secondary', hex: '#1cd1a1' },
-    info: { name: 'info', hex: '#17a2b8' },
-    success: { name: 'success', hex: '#9acd32' },
-    warning: { name: 'warning', hex: '#fcb731' },
-    danger: { name: 'danger', hex: '#ff6d6a' },
-    white: { name: 'white', hex: '#fff' },
-    black: { name: 'black', hex: '#000' },
-  }
-
   const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 
-  const colorsArray = computed(() => Object.values(colors))
+  const colors = [
+    'primary',
+    'secondary',
+    'info',
+    'success',
+    'warning',
+    'destructive',
+    'accent',
+    'contrast',
+  ]
 </script>
 
 <!--@include: ./../.vitepress/generated-docs/maz-input.doc.md-->

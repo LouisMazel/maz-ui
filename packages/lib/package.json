@@ -31,7 +31,6 @@
     "*.vue",
     "**/plugins/**",
     "**/directives/**",
-    "**/composables/useThemeHandler*",
     "**/composables/useToast*",
     "**/composables/useDialog*",
     "**/composables/useMountComponent*",
@@ -107,6 +106,14 @@
       "types": "./dist/types/icons/index.d.ts",
       "import": "./dist/icons/index.mjs"
     },
+    "./tailwindcss": {
+      "types": "./dist/types/tailwindcss/index.d.ts",
+      "import": "./dist/tailwindcss/index.mjs"
+    },
+    "./tailwindcss/*": {
+      "types": "./dist/types/tailwindcss/*.d.ts",
+      "import": "./dist/tailwindcss/*.mjs"
+    },
     "./styles": "./dist/css/main.css",
     "./aos-styles": "./dist/css/aos.css",
     "./package.json": "./package.json",
@@ -140,6 +147,7 @@
     "lint:style": "stylelint --fix \"./**/*.{vue,css,scss,postcss,pcss,html}\"",
     "build": "pnpm typecheck && pnpm build:only",
     "build:only": "vite build",
+    "build:dev": "vite build --watch",
     "build:analyze": "node --loader ts-node/esm build/analyze-bundle.ts",
     "test:unit": "vitest",
     "test:unit:watch": "vitest watch",

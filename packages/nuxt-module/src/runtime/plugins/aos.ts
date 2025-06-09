@@ -1,15 +1,15 @@
-import { type AosOptions, AosHandler, installAos } from 'maz-ui/plugins/aos'
+import { type AosOptions, AosHandler, AosPlugin } from 'maz-ui/plugins/aos'
 import { defineNuxtPlugin, useRouter } from 'nuxt/app'
 
 export default defineNuxtPlugin(({ $config, vueApp }) => {
-  const aosOptions = $config.public.mazUi?.injectAos
+  const aosOptions = $config.public.mazUi?.composables?.useAos
 
   const options: AosOptions
     = typeof aosOptions === 'object'
       ? { ...aosOptions, router: aosOptions.router ? useRouter() : undefined }
       : {}
 
-  vueApp.use(installAos, options)
+  vueApp.use(AosPlugin, options)
 
   return {
     provide: {

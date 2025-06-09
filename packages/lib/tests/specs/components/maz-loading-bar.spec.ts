@@ -5,8 +5,8 @@ describe('mazLoadingBar', () => {
   it('renders default color correctly', () => {
     const wrapper = mount(MazLoadingBar)
     // @ts-expect-error - colorCSSVariables is not typed
-    expect(wrapper.vm.colorCSSVariables.alpha).toBe('var(--maz-color-primary-alpha-20)')
+    expect(wrapper.vm.colorCSSVariables.alpha).toBe('hsl(var(--maz-primary) / 20%)')
     // @ts-expect-error - colorCSSVariables is not typed
-    expect(wrapper.vm.colorCSSVariables.main).toBe('var(--maz-color-primary)')
+    expect(wrapper.vm.colorCSSVariables.main).toBe('hsl(var(--maz-primary))')
   })
 })

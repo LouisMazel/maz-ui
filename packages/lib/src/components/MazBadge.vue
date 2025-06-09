@@ -75,122 +75,98 @@ withDefaults(defineProps<MazBadgeProps>(), {
   }
 
   &.--primary {
-    @apply maz-border-primary maz-bg-primary maz-text-primary-contrast;
+    @apply maz-border-primary maz-bg-primary maz-text-primary-foreground;
 
     &.--outline {
-      @apply maz-bg-transparent maz-text-primary;
+      @apply maz-border-primary maz-bg-primary/5 maz-text-primary;
     }
 
     &.--pastel {
-      @apply maz-border-primary-100 maz-bg-primary-100 maz-text-primary-800;
+      @apply maz-border-primary-100 maz-bg-primary-100 maz-text-primary;
     }
   }
 
   &.--info {
-    @apply maz-border-info maz-bg-info maz-text-info-contrast;
+    @apply maz-border-info maz-bg-info maz-text-info-foreground;
 
     &.--outline {
-      @apply maz-bg-transparent maz-text-info;
+      @apply maz-border-info maz-bg-info/5 maz-text-info;
     }
 
     &.--pastel {
-      @apply maz-border-info-100 maz-bg-info-100 maz-text-info-800;
-    }
-  }
-
-  &.--gray {
-    @apply maz-border-gray-400 maz-bg-gray-400 maz-text-white;
-
-    &.--outline {
-      @apply maz-bg-transparent maz-text-gray-400;
-    }
-
-    &.--pastel {
-      @apply maz-border-gray-100 maz-bg-gray-100 maz-text-gray-800;
-    }
-  }
-
-  &.--black {
-    @apply maz-border-black maz-bg-black maz-text-white;
-
-    &.--outline {
-      @apply maz-bg-transparent maz-text-black;
-    }
-
-    &.--pastel {
-      @apply maz-border-gray-400 maz-bg-gray-400 maz-text-black;
-    }
-  }
-
-  &.--white {
-    @apply maz-border-white maz-bg-white maz-text-gray-800;
-
-    &.--outline {
-      @apply maz-bg-transparent maz-text-gray-800;
-    }
-
-    &.--pastel {
-      @apply maz-border-gray-100 maz-bg-gray-100 maz-text-gray-800;
+      @apply maz-border-info-100 maz-bg-info-100 maz-text-info;
     }
   }
 
   &.--secondary {
-    @apply maz-border-secondary maz-bg-secondary maz-text-secondary-contrast;
+    @apply maz-border-secondary maz-bg-secondary maz-text-secondary-foreground;
 
     &.--outline {
-      @apply maz-bg-transparent maz-text-secondary;
+      @apply maz-border-secondary maz-bg-secondary/5 maz-text-secondary;
     }
 
     &.--pastel {
-      @apply maz-border-secondary-100 maz-bg-secondary-100 maz-text-secondary-800;
+      @apply maz-border-secondary-100 maz-bg-secondary-100 maz-text-secondary;
     }
   }
 
-  &.--danger {
-    @apply maz-border-danger maz-bg-danger maz-text-danger-contrast;
+  &.--destructive {
+    @apply maz-border-destructive maz-bg-destructive maz-text-destructive-foreground;
 
     &.--outline {
-      @apply maz-bg-transparent maz-text-danger;
+      @apply maz-border-destructive maz-bg-destructive/5 maz-text-destructive;
     }
 
     &.--pastel {
-      @apply maz-border-danger-100 maz-bg-danger-100 maz-text-danger-800;
+      @apply maz-border-destructive-100 maz-bg-destructive-100 maz-text-destructive;
     }
   }
 
   &.--warning {
-    @apply maz-border-warning maz-bg-warning maz-text-warning-contrast;
+    @apply maz-border-warning maz-bg-warning maz-text-warning-foreground;
 
     &.--outline {
-      @apply maz-bg-transparent maz-text-warning;
+      @apply maz-border-warning maz-bg-warning/5 maz-text-warning;
     }
 
     &.--pastel {
-      @apply maz-border-warning-100 maz-bg-warning-100 maz-text-warning-800;
+      @apply maz-border-warning-100 maz-bg-warning-100 maz-text-warning;
     }
   }
 
   &.--success {
-    @apply maz-border-success maz-bg-success maz-text-success-contrast;
+    @apply maz-border-success maz-bg-success maz-text-success-foreground;
 
     &.--outline {
-      @apply maz-bg-transparent maz-text-success;
+      @apply maz-border-success maz-bg-success/5 maz-text-success;
     }
 
     &.--pastel {
-      @apply maz-border-success-100 maz-bg-success-100 maz-text-success-800;
+      @apply maz-border-success-100 maz-bg-success-100 maz-text-success;
     }
   }
 
-  &.--theme {
-    @apply maz-border-theme maz-bg-theme maz-text-color;
+  &.--contrast {
+    @apply maz-border-contrast maz-bg-contrast maz-text-contrast-foreground;
 
     &.--outline {
-      @apply maz-border-border maz-bg-transparent maz-text-theme dark:maz-border-color-lighter;
+      @apply maz-border-contrast maz-bg-contrast/5 maz-text-contrast;
     }
 
     &.--pastel {
-      @apply maz-border-border maz-bg-border maz-text-black;
+      @apply maz-bg-contrast-100 maz-border-contrast-100 maz-text-contrast;
+    }
+  }
+
+  &.--accent {
+    @apply maz-border-accent maz-bg-accent maz-text-accent-foreground;
+
+    &.--outline {
+      @apply maz-border-accent maz-bg-accent/5 maz-text-accent;
+    }
+
+    &.--pastel {
+      @apply maz-border-accent-100 maz-bg-accent-100 maz-text-accent;
     }
   }
 }

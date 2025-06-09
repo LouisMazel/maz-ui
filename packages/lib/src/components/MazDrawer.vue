@@ -118,10 +118,10 @@ const hasTitle = computed(() => {
   @apply maz-items-stretch;
 
   .m-drawer-content-wrap {
-    @apply maz-overflow-y-auto maz-bg-color maz-pointer-events-auto maz-flex maz-flex-col;
+    @apply maz-overflow-y-auto maz-bg-surface maz-pointer-events-auto maz-flex maz-flex-col;
 
     > .m-drawer-header {
-      @apply maz-z-1 maz-flex maz-h-16 maz-shrink-0 maz-items-center maz-border-b maz-border-color-light maz-bg-color maz-bg-clip-padding maz-pl-4 maz-pr-2 maz-py-3;
+      @apply maz-z-1 maz-flex maz-h-16 maz-shrink-0 maz-items-center maz-border-b maz-border-divider-400 maz-bg-surface maz-bg-clip-padding maz-pl-4 maz-pr-2 maz-py-3;
 
       .m-drawer-header__title {
         @apply maz-m-0 maz-text-xl maz-font-semibold;

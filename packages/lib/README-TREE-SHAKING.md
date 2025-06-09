@@ -35,11 +35,11 @@ import { sleep } from 'maz-ui'
 
 ```typescript
 // ✅ OPTIMAL - Import spécifique
-import { useThemeHandler } from 'maz-ui/composables/useThemeHandler'
+import { useTimer } from 'maz-ui/composables/useTimer'
 import { useBreakpoints } from 'maz-ui/composables/useBreakpoints'
 
 // ✅ ACCEPTABLE - Import par catégorie
-import { useThemeHandler, useBreakpoints } from 'maz-ui/composables'
+import { useTimer, useBreakpoints } from 'maz-ui/composables'
 ```
 
 ### Pour les plugins (avec side effects)
@@ -190,7 +190,7 @@ import { useFormValidator } from 'maz-ui/composables'
 
 ```typescript
 import { MazBtn, MazInput, MazDialog } from 'maz-ui/components'
-import { useThemeHandler, useBreakpoints } from 'maz-ui/composables'
+import { useTimer, useBreakpoints } from 'maz-ui/composables'
 import { installToaster } from 'maz-ui/plugins'
 
 // ~150KB dans le bundle final (au lieu de 500KB)

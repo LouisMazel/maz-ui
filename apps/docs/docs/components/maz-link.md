@@ -38,10 +38,9 @@ description: MazLink is a standalone component
     <MazLink color="info"> View product detail </MazLink>
     <MazLink color="success"> View product detail </MazLink>
     <MazLink color="warning"> View product detail </MazLink>
-    <MazLink color="danger"> View product detail </MazLink>
-    <MazLink color="white"> View product detail </MazLink>
-    <MazLink color="black"> View product detail </MazLink>
-    <MazLink color="theme"> View product detail </MazLink>
+    <MazLink color="destructive"> View product detail </MazLink>
+    <MazLink color="accent"> View product detail </MazLink>
+    <MazLink color="contrast"> View product detail </MazLink>
   </div>
 
   <template #code>
@@ -52,10 +51,9 @@ description: MazLink is a standalone component
   <MazLink color="info"> View product detail </MazLink>
   <MazLink color="success"> View product detail </MazLink>
   <MazLink color="warning"> View product detail </MazLink>
-  <MazLink color="danger"> View product detail </MazLink>
-  <MazLink color="white"> View product detail </MazLink>
-  <MazLink color="black"> View product detail </MazLink>
-  <MazLink color="theme"> View product detail </MazLink>
+  <MazLink color="destructive"> View product detail </MazLink>
+  <MazLink color="accent"> View product detail </MazLink>
+  <MazLink color="contrast"> View product detail </MazLink>
   ```
 
   </template>

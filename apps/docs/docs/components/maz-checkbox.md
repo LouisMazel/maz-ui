@@ -75,10 +75,9 @@ description: MazCheckbox is a standalone component that replaces the standard ht
     'info',
     'success',
     'warning',
-    'danger',
-    'white',
-    'black',
-    'theme',
+    'destructive',
+    'contrast',
+    'accent',
   ]
 </script>
 ```
@@ -156,10 +155,9 @@ description: MazCheckbox is a standalone component that replaces the standard ht
     'info',
     'success',
     'warning',
-    'danger',
-    'white',
-    'black',
-    'theme',
+    'destructive',
+    'contrast',
+    'accent',
   ]
 
   const sizes: Size[] = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']

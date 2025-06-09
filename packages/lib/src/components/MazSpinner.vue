@@ -46,7 +46,7 @@ const {
   @apply maz-m-0 !important;
 
   &--normal {
-    @apply maz-text-normal;
+    @apply maz-text-foreground;
   }
 
   &--primary {
@@ -57,6 +57,10 @@ const {
     @apply maz-text-secondary;
   }
 
+  &--accent {
+    @apply maz-text-accent;
+  }
+
   &--info {
     @apply maz-text-info;
   }
@@ -65,28 +69,20 @@ const {
     @apply maz-text-warning;
   }
 
-  &--danger {
-    @apply maz-text-danger;
+  &--destructive {
+    @apply maz-text-destructive;
   }
 
   &--success {
     @apply maz-text-success;
   }
 
-  &--black {
-    @apply maz-text-black;
-  }
-
-  &--white {
-    @apply maz-text-white;
-  }
-
   &--transparent {
     @apply maz-text-white;
   }
 
-  &--theme {
-    @apply maz-text-theme;
+  &--contrast {
+    @apply maz-text-contrast;
   }
 }
 </style>

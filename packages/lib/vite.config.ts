@@ -45,6 +45,7 @@ const moduleEntries = Object.fromEntries(
     'src/formatters/*.ts',
     'src/helpers/*.ts',
     'src/plugins/*.ts',
+    'src/tailwindcss/**/*.ts',
   ], {
     ignore: ['**/*/index.ts'],
   })
@@ -114,6 +115,7 @@ export default defineConfig({
         'resolvers/index': resolver('src/resolvers/index.ts'),
         'helpers/index': resolver('src/helpers/index.ts'),
         'formatters/index': resolver('src/formatters/index.ts'),
+        'tailwindcss/index': resolver('src/tailwindcss/index.ts'),
         'index': resolver('src/index.ts'),
       },
       fileName: (format, name) => format === 'es' ? `${name}.mjs` : `${name}.cjs`,

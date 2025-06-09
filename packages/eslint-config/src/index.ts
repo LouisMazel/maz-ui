@@ -43,7 +43,7 @@ const defaultOptions: MazESLintOptions = {
  * })
  * ```
  */
-export function defineConfig(options: MazESLintOptions = {}, ...userConfigs: MazESLintUserConfig[]): Promise<MazESLintConfig> {
+export function defineConfig(options: MazESLintOptions = {}, ...userConfigs: MazESLintUserConfig[]): MazESLintConfig {
   const opts = { ...defaultOptions, ...options }
 
   const env = opts.env || process.env.NODE_ENV || 'development'
@@ -100,7 +100,7 @@ export function defineConfig(options: MazESLintOptions = {}, ...userConfigs: Maz
     formatters: opts.formatters,
     ...opts,
     rules: allRules,
-  }, ...userConfigs, ...additionalConfigs)
+  }, ...userConfigs, ...additionalConfigs) as MazESLintConfig
 }
 
 // Export types

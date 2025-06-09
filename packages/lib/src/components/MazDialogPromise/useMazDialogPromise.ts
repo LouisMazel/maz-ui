@@ -44,7 +44,7 @@ export interface MazDialogData {
   cancelText?: string
   /**
    * Dialog cancel button
-   * @default { text: 'Cancel', color: 'danger', outline: true }`
+   * @default { text: 'Cancel', color: 'destructive', outline: true }`
    */
   cancelButton?: false | MazDialogButton
   /**
@@ -68,7 +68,7 @@ export const defaultData = {
   confirmText: 'Confirm',
   cancelButton: {
     text: 'Cancel',
-    color: 'danger',
+    color: 'destructive',
   },
   confirmButton: {
     text: 'Confirm',

@@ -8,4 +8,9 @@ export default defineConfig(
     tailwindcss: true,
     sonarjs: true,
   },
+  {
+    rules: {
+      'sonarjs/no-nested-conditional': 'off',
+    },
+  },
 )

@@ -1,38 +1,36 @@
-import type { AosOptions, ToasterOptions } from 'maz-ui/src/plugins/index.js'
+import type { AosOptions, ToasterOptions } from 'maz-ui/plugins'
 
 import type { Theme } from 'vitepress'
-import * as components from 'maz-ui/src/components/index.js'
-import { vFullscreenImgInstall } from 'maz-ui/src/directives/vFullscreenImg.js'
+import * as components from 'maz-ui/components'
 
-import { AosPlugin, DialogPlugin, getAosInstance, ToasterPlugin, WaitPlugin } from 'maz-ui/src/plugins/index.js'
+import { vFullscreenImgInstall } from 'maz-ui/directives/vFullscreenImg'
+import { MazUiPlugin } from 'maz-ui/plugins/maz-ui'
+import { AosPlugin, DialogPlugin, ToasterPlugin, WaitPlugin } from 'maz-ui/src/plugins/index.js'
+
 import { inBrowser } from 'vitepress'
-import googleAnalytics from 'vitepress-plugin-google-analytics'
 import DefaultTheme from 'vitepress/theme-without-fonts'
 
 import { watch } from 'vue'
+
 import ColorContainer from './components/ColorContainer.vue'
-
 import ComponentDemo from './components/ComponentDemo.vue'
-
 import DemoAuthPage from './components/DemoAuthPage.vue'
 import DemoDashboardPage from './components/DemoDashboardPage.vue'
 import DemoProductPage from './components/DemoProductPage.vue'
 import Layout from './components/Layout.vue'
 import NpmBadge from './components/NpmBadge.vue'
 import 'maz-ui/src/plugins/aos/scss/index.scss'
-import 'maz-ui/tailwindcss/tailwind.css'
 
+import 'maz-ui/styles'
 import './main.css'
 
 export default {
   extends: DefaultTheme,
   Layout,
   enhanceApp(ctx) {
-    googleAnalytics({
-      id: 'G-EM35TM23ZC',
-    })
-
     const { app, router: { route } } = ctx
+
+    app.use(MazUiPlugin, { darkModeStrategy: 'class', strategy: 'runtime' })
 
     app.provide('mazIconPath', '/icons')
 
@@ -52,6 +50,7 @@ export default {
       position: 'bottom-right',
       timeout: 10_000,
     }
+    app.use(ToasterPlugin, toasterOptions)
 
     const aosOptions: AosOptions = {
       delay: 500,
@@ -61,18 +60,17 @@ export default {
         delay: 0,
       },
     }
-
-    app.use(ToasterPlugin, toasterOptions)
-    app.use(WaitPlugin)
     app.use(AosPlugin, aosOptions)
+
+    app.use(WaitPlugin)
     app.use(DialogPlugin)
     app.use(vFullscreenImgInstall)
 
     watch(
       () => route.path,
-      () => {
-        if (inBrowser) {
-          getAosInstance().runAnimations()
+      (path, oldPath) => {
+        if (inBrowser && path !== oldPath) {
+          app.config.globalProperties.$aos.runAnimations()
         }
       },
     )

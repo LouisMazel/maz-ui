@@ -63,8 +63,8 @@ export interface MazStepperProps {
   canCloseSteps?: boolean
 }
 
-const roundStepBgColor = computed(() => `var(--maz-color-${color})`)
-const roundStepTextColor = computed(() => `var(--maz-color-${color}-contrast)`)
+const roundStepBgColor = computed(() => `hsl(var(--maz-${color}))`)
+const roundStepTextColor = computed(() => `hsl(var(--maz-${color}-foreground))`)
 
 const slots = useSlots()
 
@@ -291,7 +291,7 @@ function isLastStep(step: number): boolean {
     }
 
     &:not(:disabled) {
-      @apply hover:maz-bg-color-lighter hover:dark:maz-bg-color-light;
+      @apply hover:maz-bg-surface-300 hover:dark:maz-bg-surface-400;
     }
 
     &:disabled {
@@ -320,7 +320,7 @@ function isLastStep(step: number): boolean {
       }
 
       svg {
-        @apply maz-text-success-contrast;
+        @apply maz-text-success-foreground;
       }
     }
 
@@ -334,21 +334,21 @@ function isLastStep(step: number): boolean {
       }
 
       svg {
-        @apply maz-text-warning-contrast;
+        @apply maz-text-warning-foreground;
       }
     }
 
     &.--error {
       .m-stepper__count__circle {
-        @apply maz-scale-100 maz-bg-danger;
+        @apply maz-scale-100 maz-bg-destructive;
       }
 
       .m-stepper__right {
-        @apply maz-text-danger;
+        @apply maz-text-destructive;
       }
 
       svg {
-        @apply maz-text-danger-contrast;
+        @apply maz-text-destructive-foreground;
       }
     }
   }
@@ -374,7 +374,7 @@ function isLastStep(step: number): boolean {
     }
 
     svg {
-      @apply maz-text-success-contrast;
+      @apply maz-text-success-foreground;
     }
   }
 
@@ -386,7 +386,7 @@ function isLastStep(step: number): boolean {
     }
 
     &:not(.--no-border) {
-      @apply maz-border-color-light dark:maz-border-color-lighter;
+      @apply maz-border-divider-400;
     }
   }
 }
