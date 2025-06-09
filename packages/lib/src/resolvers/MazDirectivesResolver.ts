@@ -1,4 +1,5 @@
 import type { ComponentResolver } from 'unplugin-vue-components/types'
+import { capitalize } from './../formatters/capitalize'
 
 /**
  * Resolver for Maz-UI (directives)
@@ -6,14 +7,14 @@ import type { ComponentResolver } from 'unplugin-vue-components/types'
  * @author @louismazel
  * @link https://maz-ui.com
  */
-export function MazDirectivesResolver(options?: { devMode?: boolean }): ComponentResolver {
+export function MazDirectivesResolver(options?: { devMode?: boolean, prefix?: string }): ComponentResolver {
   return {
     type: 'directive',
     resolve: (name: string) => {
-      const { devMode = false } = options || {}
+      const { devMode = false, prefix = '' } = options || {}
       const base = devMode ? 'maz-ui/src/directives/index.ts' : 'maz-ui/directives'
 
-      return { from: base, as: `v${name}`, name: `v${name}` }
+      return { from: base, as: `v${capitalize(prefix)}${name.replace(/^v/, '')}`, name: `v${name}` }
     },
   }
 }

@@ -1,4 +1,5 @@
 import type { ResolverFunction } from 'unplugin-auto-import/types'
+import { capitalize } from './../formatters/capitalize'
 
 type Modules = keyof typeof import('maz-ui/src/index.ts')
 type Composables = keyof typeof import('maz-ui/src/composables/index.ts')
@@ -59,9 +60,9 @@ const modulesMap: Record<Modules, true> = {
  * @author @louismazel
  * @link https://maz-ui.com
  */
-export function MazModulesResolver(options?: { devMode?: boolean }): ResolverFunction {
+export function MazModulesResolver(options?: { devMode?: boolean, prefix?: string }): ResolverFunction {
   return (name) => {
-    const { devMode = false } = options || {}
+    const { devMode = false, prefix = '' } = options || {}
     const base = devMode ? 'maz-ui/src' : 'maz-ui'
     const extension = devMode ? '/index.ts' : ''
 
@@ -69,6 +70,7 @@ export function MazModulesResolver(options?: { devMode?: boolean }): ResolverFun
       return {
         from: `${base}${extension}`,
         name,
+        as: `${prefix.toLowerCase()}${capitalize(name)}`,
       }
     }
 
@@ -76,6 +78,7 @@ export function MazModulesResolver(options?: { devMode?: boolean }): ResolverFun
       return {
         from: `${base}/composables${extension}`,
         name,
+        as: `use${capitalize(prefix)}${name.replace(/^use/, '')}`,
       }
     }
 
