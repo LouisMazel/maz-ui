@@ -84,7 +84,7 @@ describe('components/MazCard.vue', () => {
 
     await vi.dynamicImportSettled()
 
-    expect(wrapper.classes()).toContain('maz-elevation')
+    expect(wrapper.classes()).toContain('maz-drop-shadow-md maz-shadow-elevation')
     expect(wrapper.classes()).toContain('maz-rounded')
     expect(wrapper.find('button').classes()).toContain('--is-collapsible')
     expect(wrapper.classes()).toContain('maz-border')

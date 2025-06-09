@@ -1,4 +1,4 @@
-import { defineConfig } from '@maz-ui/eslint-config'
+import { defineConfig } from '@maz-ui/eslint-config/src/index.ts'
 import pluginOxlint from 'eslint-plugin-oxlint'
 
 export default defineConfig(

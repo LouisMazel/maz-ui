@@ -64,7 +64,7 @@ const price = ref(100)
           169,99€
         </div>
 
-        <hr class="maz-my-4 maz-border-t maz-border-divider-400">
+        <hr class="maz-my-4 maz-border-t maz-border-divider">
 
         <div>
           <h2 class="maz-mb-2 maz-text-xl maz-font-semibold">

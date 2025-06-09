@@ -63,6 +63,7 @@ export const components = {
         { text: 'MazLink', link: '/components/maz-link' },
         { text: 'MazLoadingBar', link: '/components/maz-loading-bar' },
         { text: 'MazPagination', link: '/components/maz-pagination' },
+        { text: 'MazPopover', link: '/components/maz-popover' },
         { text: 'MazPullToRefresh', link: '/components/maz-pull-to-refresh' },
         { text: 'MazReadingProgressBar', link: '/components/maz-reading-progress-bar' },
         { text: 'MazStepper', link: '/components/maz-stepper' },

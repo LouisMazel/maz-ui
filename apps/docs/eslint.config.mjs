@@ -1,6 +1,6 @@
 // @ts-check
 
-import { defineConfig } from '@maz-ui/eslint-config'
+import { defineConfig } from '@maz-ui/eslint-config/src/index.ts'
 
 export default defineConfig(
   {

@@ -4,7 +4,7 @@ A comprehensive collection of **328 beautiful SVG icons** ready for use in your 
 
 ## ✨ Features
 
-- 🎯 **328+ High-quality icons** - Comprehensive set covering all common use cases
+- 🎯 **300+ icons** - Comprehensive set covering all common use cases
 - 📦 **Multiple usage patterns** - Direct SVG files, Vue components, or auto-import
 - 🔧 **TypeScript support** - Full type definitions included
 - ⚡️ **Tree-shakeable** - Import only the icons you need
@@ -255,19 +255,7 @@ All icons support CSS custom properties for advanced styling:
 
 ## 📋 Available Icons
 
-The library includes **328 carefully crafted icons** covering all common use cases:
-
-### Categories Include:
-- **Navigation**: arrows, chevrons, menu icons
-- **Actions**: check, plus, minus, delete, edit
-- **Communication**: mail, chat, phone, bell
-- **Media**: play, pause, video, camera, music
-- **Files**: document, folder, download, upload
-- **Users**: user, group, profile, authentication
-- **Interface**: settings, search, filter, sort
-- **Business**: calendar, briefcase, chart, money
-- **Technology**: cloud, database, code, wifi
-- **Social**: heart, star, share, bookmark
+The library includes **300+ carefully** covering all common use cases:
 
 ### Icon Naming Convention
 
@@ -284,6 +272,8 @@ import {
   MazChatBubbleLeft   // chat-bubble-left.svg
 } from '@maz-ui/icons'
 ```
+
+You can search icons on [Heroicons](https://heroicons.com/) and copy the name of the icon to use it in your project.
 
 ## 🔧 Advanced Configuration
 
@@ -490,6 +480,7 @@ criticalIcons.forEach(async (iconName) => {
 
 ## 🔗 Related Packages
 
+- [Heroicons](https://heroicons.com/) - Tailwind CSS icons
 - [`unplugin-vue-components`](https://github.com/antfu/unplugin-vue-components) - Auto-import components
 - [`vite-svg-loader`](https://github.com/jpkleemans/vite-svg-loader) - Load SVG as Vue components
 

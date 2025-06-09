@@ -122,3 +122,15 @@ generate-components-docs:
 generate-components-docs-watch:
 	pnpm --filter cli cli generate-components-docs --watch
 
+build-all-packages:
+	pnpm --filter @maz-ui/icons build
+	pnpm --filter @maz-ui/themes build
+	pnpm --filter @maz-ui/cli build
+	pnpm --filter maz-ui build
+	pnpm --filter @maz-ui/nuxt build
+	pnpm --filter @maz-ui/eslint-config build
+
+build-all-apps:
+	pnpm --filter docs build
+	pnpm --filter nuxt-app nuxt-app:build
+	pnpm --filter vue-app vue-app:build

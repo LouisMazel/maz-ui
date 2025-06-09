@@ -6,6 +6,7 @@
 // biome-ignore lint: disable
 export {}
 declare global {
+  const Number: typeof import('maz-ui')['number']
   const date: typeof import('maz-ui')['date']
   const number: typeof import('maz-ui')['number']
 }

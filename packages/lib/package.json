@@ -208,7 +208,6 @@
   },
   "dependencies": {
     "@maz-ui/cli": "workspace:*",
-    "@maz-ui/icons": "workspace:*",
     "@maz-ui/themes": "workspace:*"
   },
   "devDependencies": {

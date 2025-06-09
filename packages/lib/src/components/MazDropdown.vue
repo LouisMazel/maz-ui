@@ -549,7 +549,7 @@ watch(
   }
 
   .menu {
-    @apply maz-absolute maz-z-default-backdrop maz-flex maz-min-h-max maz-min-w-max maz-flex-col maz-gap-0.5 maz-overflow-auto maz-rounded maz-bg-surface maz-p-2 maz-elevation dark:maz-border dark:maz-border-divider-400;
+    @apply maz-absolute maz-z-default-backdrop maz-flex maz-min-h-max maz-min-w-max maz-flex-col maz-gap-0.5 maz-overflow-auto maz-rounded maz-bg-surface maz-p-2 maz-drop-shadow-md maz-shadow-elevation dark:maz-border dark:maz-border-divider;
 
     &.--top:not(.--right, .--left) {
       @apply maz-bottom-full maz-mb-1 maz-origin-bottom;
