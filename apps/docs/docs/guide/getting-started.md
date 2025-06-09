@@ -1,145 +1,562 @@
 ---
 title: Getting Started
-description: Documentation to help you install the maz-ui library
+description: Build amazing Vue applications faster with Maz-UI v4 - The modern, modular component library
+head:
+  - - meta
+    - name: keywords
+      content: vue ui library, vue components, nuxt ui, maz-ui installation, vue 3 components
 ---
 
-# {{ $frontmatter.title }}
+# Getting Started
 
-## Prerequisites
+<div class="hero-section">
+  <p class="hero-description">
+    Discover Maz-UI v4: The modern, modular Vue component library designed for performance, accessibility, and developer experience. From simple buttons to complex data tables, build stunning interfaces in minutes.
+  </p>
 
-- [Node.js v12+](https://nodejs.org/)
-- [Vue 3](https://v3.vuejs.org/) or [Nuxt 3](https://v3.nuxtjs.org/)
+  <div class="hero-actions">
+    <a href="#quick-installation" class="hero-btn primary">Get Started →</a>
+    <a href="/components/" class="hero-btn secondary">Browse Components</a>
+  </div>
+</div>
 
-## Installation
+::: tip ✨ What's New in v4
+- **Tree-shaking by default** - Import only what you need
+- **Modular CSS** - Each component brings its own styles
+- **Enhanced accessibility** - WCAG 2.1 AA compliant
+- **TypeScript-first** - Full type safety out of the box
+:::
 
-<NpmBadge package="maz-ui" dist-tag="latest" />
+## Quick Installation {#quick-installation}
 
-```bash
+::: code-group
+
+```bash [npm]
 npm install maz-ui
-# or pnpm add maz-ui
-# or yarn add maz-ui
 ```
 
-## Vue JS <NpmBadge package="vue" />
-
-In the `main.js` or `main.ts`, import main maz-ui CSS file before your own CSS
-
-```ts
-import 'maz-ui/styles' // or import 'maz-ui/css/main.css'
-import '@/css/path_to_your_main_file.css'
+```bash [yarn]
+yarn add maz-ui
 ```
 
-## Nuxt JS <NpmBadge package="nuxt" />
-
-A Nuxt Module is available to install the library. Take advantage of the **automatic import** of CSS files, components, composables and plugins.
-
-**Follow the [Nuxt Module Documentation](./nuxt.md) and see options**
-
-```ts
-export default defineNuxtConfig({
-  modules: ['maz-ui/nuxt'],
-})
+```bash [pnpm]
+pnpm add maz-ui
 ```
 
-## Recommendations
+:::
 
-::: tip
+### Prerequisites
 
-<NpmBadge package="unplugin-vue-components"></NpmBadge>
+- **Node.js** v18+
+- **Vue** 3.2+ or **Nuxt** 3.0+
 
-Use [unplugin-vue-components](https://github.com/unplugin/unplugin-vue-components) and the dedicated maz-ui resolver to auto-import components, directives and modules
+## Your First Component
 
-```ts
-// vite.config.mts
+Let's start with a simple button to see Maz-UI in action:
 
-import Components from 'unplugin-vue-components/vite'
-import { MazComponentsResolver, MazDirectivesResolver, MazModulesResolver } from 'maz-ui/resolvers'
+::: code-group
 
-export default defineConfig({
-  plugins: [
-    Components({
-      dts: true,
-      resolvers: [
-        MazComponentsResolver(),
-        MazDirectivesResolver(),
-        MazModulesResolver(),
-      ],
-    }),
-  ]
-})
-```
-
-**Typescript users**: Add this in your `tsconfig.json`
-
-```json
-{
-  ...
-  "include": [
-    "components.d.ts",
-    "auto-imports.d.ts",
-  ],
-  ...
-}
-```
-
-Then, you don't need to import maz-ui components, directives and modules in your files
-
-```vue
+```vue [Vue 3]
 <template>
-  <MazBtn v-click-outside="clikedOutside">Button</MazBtn>
+  <div>
+    <MazBtn @click="handleClick" color="primary">
+      Hello Maz-UI! 👋
+    </MazBtn>
+  </div>
 </template>
 
-<script lang="ts" setup>
-const toast = useToast()
+<script setup lang="ts">
+import { MazBtn } from 'maz-ui/components'
+import 'maz-ui/styles'
 
-toast.message('Hello world!')
+function handleClick() {
+  console.log('Button clicked!')
+}
+</script>
+```
 
-function clikedOutside () {
-  console.log('clicked outside')
+```vue [Nuxt 3]
+<template>
+  <div>
+    <MazBtn @click="handleClick" color="primary">
+      Hello Maz-UI! 👋
+    </MazBtn>
+  </div>
+</template>
+
+<script setup lang="ts">
+// No imports needed with @maz-ui/nuxt module!
+function handleClick() {
+  console.log('Button clicked!')
 }
 </script>
 ```
 
 :::
 
-### Component import
+## Framework Integration
 
-> Import the module chosen directly in your component
+### Vue 3 Setup
 
-```html
+Import the main CSS file and optionally configure the theme plugin in your `main.ts`:
+
+```typescript
+import { createApp } from 'vue'
+import App from './App.vue'
+
+// Import Maz-UI styles before your own CSS
+import 'maz-ui/styles'
+import './style.css'
+
+// Optional: Use the theme plugin for advanced theming
+import { MazUiPlugin } from 'maz-ui/plugins/maz-ui'
+
+const app = createApp(App)
+
+// Install theme plugin with default configuration
+app.use(MazUiPlugin, {
+  // Theme configuration (optional)
+  strategy: 'hybrid', // 'runtime' | 'build' | 'hybrid'
+  darkModeStrategy: 'class' // 'class' | 'media' | 'auto'
+})
+
+app.mount('#app')
+```
+
+::: info Theme Plugin Benefits
+The `MazUiPlugin` enables advanced theming capabilities, dark mode management, and CSS custom properties generation. It's optional but recommended for full theme control.
+:::
+
+### Nuxt 3 Setup <Badge type="tip" text="Recommended" />
+
+Install the dedicated Nuxt module for the best experience:
+
+```bash
+npm install @maz-ui/nuxt
+```
+
+```typescript
+// nuxt.config.ts
+export default defineNuxtConfig({
+  modules: ['@maz-ui/nuxt'],
+  mazUi: {
+    // Auto-import components, composables, and CSS
+    autoImport: true,
+    // Optional: customize theme
+    theme: 'light', // 'light' | 'dark' | 'auto'
+  }
+})
+```
+
+::: info Auto-Import Magic
+With the Nuxt module, all Maz-UI components, composables, and directives are automatically available without explicit imports!
+:::
+
+## Why Choose Maz-UI?
+
+<div class="features-grid">
+
+### 🚀 **Performance First**
+- Tree-shaking reduces bundle size by up to 80%
+- Modular CSS architecture
+- Runtime optimizations
+- Minimal dependencies
+
+### ♿ **Accessibility Built-in**
+- WCAG 2.1 AA compliance
+- Keyboard navigation support
+- Screen reader optimized
+- Focus management
+
+### 🎨 **Design Excellence**
+- Modern, clean aesthetics
+- Dark/Light mode support
+- Customizable themes
+- Consistent design tokens
+
+### 🛠️ **Developer Experience**
+- TypeScript-first approach
+- Comprehensive documentation
+- Auto-completion support
+- Extensive examples
+
+</div>
+
+## Smart Loading
+
+### Auto-Import with unplugin-vue-components & unplugin-auto-import <Badge text="Vue only" />
+
+For the ultimate developer experience, use auto-imports for components, composables, and directives:
+
+::: info Nuxt Users
+Auto-import is already integrated in the [@maz-ui/nuxt module](/guide/nuxt). No additional configuration needed!
+:::
+
+```typescript
+// vite.config.ts
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import Components from 'unplugin-vue-components/vite'
+import AutoImport from 'unplugin-auto-import/vite'
+import {
+  MazComponentsResolver,
+  MazDirectivesResolver,
+  MazModulesResolver
+} from 'maz-ui/resolvers'
+
+export default defineConfig({
+  plugins: [
+    vue(),
+    // Auto-import components
+    Components({
+      resolvers: [
+        MazComponentsResolver(),
+        MazDirectivesResolver(),
+      ],
+      dts: true,
+    }),
+    // Auto-import composables and utilities
+    AutoImport({
+      resolvers: [MazModulesResolver()],
+      dts: true,
+    }),
+  ],
+})
+```
+
+Now use everything without imports:
+
+```vue
 <template>
+  <!-- Auto-imported components -->
   <MazBtn>Button</MazBtn>
+  <MazInput v-model="text" placeholder="Type here..." />
+
+  <!-- Auto-imported directives -->
+  <div v-click-outside="handleClickOutside">
+    Click outside detector
+  </div>
+
+  <!-- Auto-imported tooltip directive -->
+  <MazBtn v-tooltip="'This is a tooltip'">
+    Hover me
+  </MazBtn>
 </template>
 
-<script lang="ts" setup>
-  import { MazBtn } from 'maz-ui/components'
+<script setup lang="ts">
+// Auto-imported composables and utilities
+const text = ref('')
+const toast = useToast()
+
+// Auto-imported utility functions
+const debouncedSearch = debounce((query) => {
+  console.log('Searching:', query)
+}, 300)
+
+function handleClickOutside() {
+  toast.info('Clicked outside!')
+}
 </script>
 ```
 
-### Install components globally
+### Available Resolvers
+
+| Resolver | Purpose | Import |
+|----------|---------|---------|
+| `MazComponentsResolver` | Components (MazBtn, MazInput, etc.) | `'maz-ui/resolvers'` |
+| `MazDirectivesResolver` | Directives (v-click-outside, v-tooltip, etc.) | `'maz-ui/resolvers'` |
+| `MazModulesResolver` | Composables & utilities (useToast, debounce, etc.) | `'maz-ui/resolvers'` |
+
+## Ecosystem Packages
+
+Extend Maz-UI with our specialized companion packages:
+
+### @maz-ui/themes
+**Advanced Theming System**
+
+Modern theme system with HSL variables, dark mode support, and flexible strategies.
+
+```bash
+npm install @maz-ui/themes
+```
+
+**Features:**
+- 🎨 HSL CSS custom properties
+- 🌓 Smart dark mode detection
+- ⚡ Multiple rendering strategies
+- 🛡️ Full TypeScript support
+
+[→ View Theme Documentation](/guide/theme)
+
+---
+
+### @maz-ui/icons
+**Optimized Icon Library**
+
+Comprehensive collection of SVG icons designed for performance and flexibility.
+
+```bash
+npm install @maz-ui/icons
+```
+
+**Features:**
+- 🎯 1000+ handcrafted icons
+- 📦 Tree-shakable imports
+- 🎨 Multiple sizes and variants
+- 📝 Full TypeScript definitions
+
+[→ Browse Icon Library](/icons/)
+
+---
+
+### @maz-ui/nuxt
+**Seamless Nuxt Integration**
+
+Official Nuxt module for effortless Maz-UI integration with auto-imports.
+
+```bash
+npm install @maz-ui/nuxt
+```
+
+**Features:**
+- 🔄 Auto-import components & composables
+- 🚀 SSR optimization
+- ⚙️ Zero-config setup
+- 🎨 Built-in theme support
+
+[→ Nuxt Module Guide](/guide/nuxt)
+
+---
+
+<!-- ### @maz-ui/cli
+**Development Tools**
+
+Command-line tools for scaffolding, theming, and project optimization.
+
+```bash
+npm install -g @maz-ui/cli
+```
+
+**Features:**
+- 🏗️ Component scaffolding
+- 🎨 Theme generation
+- 📊 Bundle analysis
+- 🔄 Migration utilities
+
+[→ CLI Documentation](/guide/cli)
+
+## Advanced Usage Patterns -->
+
+### Modular CSS Architecture
+
+Maz-UI components automatically import their own styles when used, ensuring optimal bundle sizes:
 
 ```typescript
-import { createApp } from 'vue'
+// Each component brings its own CSS
 import { MazBtn } from 'maz-ui/components'
+// MazBtn's CSS is automatically included
 
-const app = createApp(App)
-app.component('MazBtn', MazBtn)
-...
+// No need to manually import component styles
+// The bundler will tree-shake unused component CSS
 ```
 
-### Not recommended - Fully components installation
+::: info Automatic Style Management
+Components handle their own CSS imports internally, so you don't need to worry about manual style imports. This ensures you only get the CSS for components you actually use.
+:::
 
-Before, you have to install all dependencies of components
-Instead use the [MazComponentsResolver](./../guide/getting-started.md#recommendations)
+### Global Component Registration
+
+Register frequently used components globally:
 
 ```typescript
+// main.ts
 import { createApp } from 'vue'
-import * as components from 'maz-ui/components'
-import 'maz-ui/styles' // or import 'maz-ui/css/main.css'
+import { MazBtn, MazInput, MazCard } from 'maz-ui/components'
 
 const app = createApp(App)
 
-Object.entries(components).forEach(([componentName, component]) => {
-  app.component(componentName, component)
-})
+// Register commonly used components
+app.component('MazBtn', MazBtn)
+app.component('MazInput', MazInput)
+app.component('MazCard', MazCard)
 ```
+
+### Theme Customization
+
+For comprehensive theming capabilities including CSS custom properties, dark mode, and preset management, explore our advanced theme system:
+
+[→ **Complete Theme Documentation**](/guide/theme)
+
+The theme system provides:
+- 🎨 HSL-based CSS custom properties
+- 🌓 Automatic dark mode support
+- 🎯 Pre-built themes (Maz-UI, Ocean, Pristine)
+- ⚡ Multiple rendering strategies
+- 🛠️ TypeScript-first configuration
+
+## Performance Optimizations
+
+### Tree-Shaking Benefits
+
+Maz-UI v4 is built with tree-shaking in mind. Import only what you need for optimal bundle sizes:
+
+```typescript
+// ❌ Avoid importing everything
+import * as MazUI from 'maz-ui'
+
+// ✅ Import specific components (good)
+import { MazBtn, MazInput, MazCard } from 'maz-ui/components'
+import { useToast, useBreakpoints } from 'maz-ui/composables'
+import { debounce, currency } from 'maz-ui'
+import { MazUiPlugin } from 'maz-ui/plugins'
+
+// ✅✅ Direct component import (most optimized)
+import MazBtn from 'maz-ui/components/MazBtn'
+import MazInput from 'maz-ui/components/MazInput'
+import MazCard from 'maz-ui/components/MazCard'
+
+// ✅✅ Direct composable import (most optimized)
+import useToast from 'maz-ui/composables/useToast'
+import useBreakpoints from 'maz-ui/composables/useBreakpoints'
+
+// ✅✅ Direct utility import (most optimized)
+import debounce from 'maz-ui/modules/debounce'
+import currency from 'maz-ui/modules/currency'
+
+// ✅✅ Direct plugin import (most optimized)
+import { MazUiPlugin } from 'maz-ui/plugins/maz-ui'
+
+// ✅✅✅ Even better: auto-import does this automatically
+// Components, composables, and utilities are imported only when used
+```
+
+::: tip Maximum Optimization
+**Direct imports** (e.g., `import MazBtn from 'maz-ui/components/MazBtn'`) are the most optimized approach as they bypass index files completely. This ensures the smallest possible bundle size and fastest build times.
+:::
+
+### Import Strategies Comparison
+
+```typescript
+// Strategy 1: Modular imports (best for production)
+import { MazBtn } from 'maz-ui/components'
+import { useToast } from 'maz-ui/composables'
+import { debounce } from 'maz-ui'
+// Bundle impact: ~10-20KB per component/composable
+
+// Strategy 2: Auto-import with resolvers (recommended)
+// No imports needed, automatic tree-shaking
+// Bundle impact: Same as modular, but zero boilerplate
+
+// Strategy 3: Global registration (for commonly used components)
+import { MazBtn, MazInput } from 'maz-ui/components'
+app.component('MazBtn', MazBtn)
+app.component('MazInput', MazInput)
+// Bundle impact: Only registered components included
+```
+
+## Next Steps
+
+<div class="next-steps">
+
+### 🎯 **Explore Components**
+Browse the [component library](./../components/maz-btn.md) with live examples and API documentation.
+
+### 🎨 **Customize Themes**
+Learn about [theming and customization](./theme.md) to match your brand.
+
+### 💬 **Get Help**
+Browse [GitHub discussions](https://github.com/LouisMazel/maz-ui/discussions).
+
+</div>
+
+<style scoped>
+.hero-section {
+  text-align: center;
+  margin: 2rem 0 3rem;
+  padding: 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 1rem;
+  color: white;
+}
+
+.hero-description {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.hero-btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.hero-btn.primary {
+  background: white;
+  color: #667eea;
+}
+
+.hero-btn.secondary {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.hero-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.features-grid > div {
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--vp-c-border);
+  background: var(--vp-c-bg-soft);
+}
+
+
+.next-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.next-steps > div {
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--vp-c-border);
+  background: var(--vp-c-bg-soft);
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .hero-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero-btn {
+    width: 200px;
+  }
+}
+</style>

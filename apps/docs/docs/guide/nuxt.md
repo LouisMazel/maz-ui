@@ -251,7 +251,7 @@ theme: {
 
 ```ts
 components: {
-  // Auto-import all 60+ Maz-UI components
+  // Auto-import all 50+ Maz-UI components
   autoImport: true,
 }
 ```
