@@ -16,8 +16,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "chart.js": "catalog:",
     "@maz-ui/themes": "workspace:*",
+    "chart.js": "catalog:",
     "chartjs-plugin-datalabels": "^2.2.0",
     "dayjs": "^1.11.13",
     "libphonenumber-js": "catalog:",
