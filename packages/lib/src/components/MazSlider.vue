@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-/* eslint-disable sonarjs/no-nested-conditional */
 import type { CSSProperties } from 'vue'
 import type { MazColor } from './types'
 import {

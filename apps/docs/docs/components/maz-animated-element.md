@@ -16,19 +16,19 @@ description: MazAnimatedElement is a standalone component that animates its cont
     <MazAvatar src="https://github.com/LouisMazel.png" size="lg" />
   </MazAnimatedElement>
 
-  <template #code>
+<template #code>
 
-  ```vue
-  <template>
-    <MazAnimatedElement direction="up" :delay="1000" :duration="2000">
-      <MazAvatar src="https://github.com/LouisMazel.png" size="lg" />
-    </MazAnimatedElement>
-  </template>
+```vue
+<script lang="ts" setup>
+import { MazAnimatedElement } from 'maz-ui/components'
+</script>
 
-  <script lang="ts" setup>
-    import { MazAnimatedElement } from 'maz-ui/components'
-  </script>
-  ```
+<template>
+  <MazAnimatedElement direction="up" :delay="1000" :duration="2000">
+    <MazAvatar src="https://github.com/LouisMazel.png" size="lg" />
+  </MazAnimatedElement>
+</template>
+```
 
   </template>
 </ComponentDemo>

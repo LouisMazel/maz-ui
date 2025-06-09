@@ -3,7 +3,6 @@ title: toaster
 description: Displays messages to your users in flexible toasts
 ---
 
-
 # {{ $frontmatter.title }}
 
 {{ $frontmatter.description }}
@@ -19,25 +18,26 @@ This plugin has a composable for easier use, after installing it you can use [us
     Message
   </MazBtn>
 
-  <MazBtn color="info" @click="toast.info('Info message', { position: 'top', button: { href: 'https://www.loicmazuel.com' } })">
-    Info toast on top
-  </MazBtn>
+<MazBtn color="info" @click="toast.info('Info message', { position: 'top', button: { href: 'https://www.loicmazuel.com' } })">
+Info toast on top
+</MazBtn>
 
-  <MazBtn color="destructive" @click="toast.error('Error message', { position: 'bottom', timeout: 1000 })">
-    Error toast on bottom with 1s timeout
-  </MazBtn>
+<MazBtn color="destructive" @click="toast.error('Error message', { position: 'bottom', timeout: 1000 })">
+Error toast on bottom with 1s timeout
+</MazBtn>
 
-  <MazBtn color="warning" @click="toast.warning('Warning message', { position: 'top-right' })">
-    Warning toast on top right
-  </MazBtn>
+<MazBtn color="warning" @click="toast.warning('Warning message', { position: 'top-right' })">
+Warning toast on top right
+</MazBtn>
 
-  <MazBtn color="success" @click="toast.success('Success message', { position: 'bottom-left', persistent: true })">
-    Persistent success toast on bottom left
-  </MazBtn>
+<MazBtn color="success" @click="toast.success('Success message', { position: 'bottom-left', persistent: true })">
+Persistent success toast on bottom left
+</MazBtn>
 
-  <MazBtn color="success" @click="toast.message('No timeout toast', { timeout: false })">
-    Persistent with no timeout
-  </MazBtn>
+<MazBtn color="success" @click="toast.message('No timeout toast', { timeout: false })">
+Persistent with no timeout
+</MazBtn>
+
 </div>
 
 ### Action and link
@@ -59,6 +59,45 @@ Toast can have a link or an action
 ::: details View the code
 
 ```vue
+<script lang="ts" setup>
+import { useToast } from 'maz-ui/composables'
+
+const toast = useToast()
+
+function showInfoWithLink() {
+  toast.info('Toast with link, click -->', {
+    button: {
+      href: 'https://www.loicmazuel.com',
+    }
+  })
+}
+
+function showInfoWithExternalLink() {
+  toast.warning('Toast with link', {
+    button: {
+      href: 'https://www.loicmazuel.com',
+      target: '_blank',
+      closeToast: true,
+      text: 'Follow link'
+    }
+  })
+}
+
+function showInfoWithAction() {
+  toast.error('Toast with action', {
+    button: {
+      onClick: () => new Promise((resolve) => {
+        sleep(3000)
+        resolve()
+        toast.success('Promise executed')
+      }),
+      text: 'Exec promise',
+      closeToast: true
+    }
+  })
+}
+</script>
+
 <template>
   <MazBtn
     color="contrast"
@@ -75,7 +114,7 @@ Toast can have a link or an action
   </MazBtn>
 
   <MazBtn
-    color="destructive"@
+    color="destructive"
     @click="toast.error('Error message', { position: 'bottom', timeout: 1000 })"
   >
     Error toast on bottom with 1s timeout
@@ -102,45 +141,6 @@ Toast can have a link or an action
     Persistent with no timeout
   </MazBtn>
 </template>
-
-<script lang="ts" setup>
-  import { useToast } from 'maz-ui/composables'
-
-  const toast = useToast()
-
-  function showInfoWithLink () {
-    toast.info('Toast with link, click -->', {
-      button: {
-        href: 'https://www.loicmazuel.com',
-      }
-    })
-  }
-
-  function showInfoWithExternalLink () {
-    toast.warning('Toast with link', {
-      button: {
-        href: 'https://www.loicmazuel.com',
-        target: '_blank',
-        closeToast: true,
-        text: 'Follow link'
-      }
-    })
-  }
-
-  function showInfoWithAction () {
-    toast.error('Toast with action', {
-      button: {
-        onClick: () => new Promise(async (resolve) => {
-          await sleep(3000)
-          resolve()
-          toast.success('Promise executed')
-        }),
-        text: 'Exec promise',
-        closeToast: true
-      }
-    })
-  }
-</script>
 ```
 
 :::
@@ -156,7 +156,7 @@ You can close a toast programmatically by using the `close` method returned by t
 </div>
 
 ```typescript
-function showToast () {
+function showToast() {
   const toastMessage = toast.message('Toast message closed by code')
 
   setTimeout(() => {
@@ -247,8 +247,8 @@ function showToast () {
 `main.ts` or `main.js`
 
 ```ts
-import { createApp } from 'vue'
 import { installToaster, ToasterOptions } from 'maz-ui/plugins'
+import { createApp } from 'vue'
 
 const app = createApp(App)
 
@@ -270,7 +270,9 @@ app.mount('#app')
 
 ```ts
 const options: ToasterOptions = {
-  ...
+  position: 'bottom-right',
+  timeout: 10_000,
+  persistent: false,
 }
 
 const toast = useToast()
@@ -281,7 +283,7 @@ toast.message('Message text', options)
 ### Type
 
 ```ts
-type ToasterOptions = {
+interface ToasterOptions {
   /**
    * The position of the toast on the screen
    * @default 'bottom-right'
@@ -316,7 +318,7 @@ type ToasterOptions = {
     target?: string
     /** @default false */
     closeToast?: boolean
-  },
+  }
   buttons?: (MazBtnProps & {
     text: string
     onClick: () => unknown
@@ -328,5 +330,4 @@ type ToasterOptions = {
     closeToast?: boolean
   })[]
 }
-
 ```

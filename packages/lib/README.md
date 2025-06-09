@@ -68,13 +68,13 @@ import 'maz-ui/styles'
 Then, import and use only the components, composables, and more you need:
 
 ```vue
+<script setup lang="ts">
+import { MazBtn } from 'maz-ui/components'
+</script>
+
 <template>
   <MazBtn>Click me!</MazBtn>
 </template>
-
-<script setup lang="ts">
-  import { MazBtn } from 'maz-ui/components'
-</script>
 ```
 
 Use provided resolvers to enjoy auto-imports and TypeScript support: [Resolvers documentation](https://maz-ui.com/guide/getting-started#recommendations)
@@ -101,13 +101,15 @@ export default defineNuxtConfig({
 No need to import components, plugins, composables or directives, they are all auto-imported.
 
 ```vue
-<template>
-  <MazBtn @click="toast.success('Hello Maz UI!')"> Click me! </MazBtn>
-</template>
-
 <script setup lang="ts">
-  const toast = useToast()
+const toast = useToast()
 </script>
+
+<template>
+  <MazBtn @click="toast.success('Hello Maz UI!')">
+    Click me!
+  </MazBtn>
+</template>
 ```
 
 ## 🎨 Theming Made Easy
@@ -158,13 +160,13 @@ Import the icons you need from the package:
 
 ```vue
 <script setup>
-import { MazCheckCircle, MazXMark, MazArrowTopRightOnSquare } from '@maz-ui/icons'
+import { MazArrowTopRightOnSquare, MazCheckCircle, MazXMark } from '@maz-ui/icons'
 </script>
 
 <template>
   <div>
     <CheckCircle class="text-green-500 h-6 w-6" />
-    <XMark @click="close" class="text-red-500 h-5 w-5 cursor-pointer" />
+    <XMark class="text-red-500 h-5 w-5 cursor-pointer" @click="close" />
     <ArrowTopRightOnSquare class="text-blue-500 h-4 w-4" />
   </div>
 </template>

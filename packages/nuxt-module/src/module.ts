@@ -2,8 +2,8 @@ import { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { addComponent, addImports, addPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
 import { defu } from 'defu'
-import { mazUi } from '@maz-ui/themes/presets/mazUi'
-import { capitalize } from 'maz-ui'
+import { mazUi } from './../../themes/src/presets/mazUi.js'
+import { capitalize } from './../../lib/src/formatters/capitalize.js'
 import type { MazUiNuxtOptions } from './types'
 
 type MazUiComposables = keyof typeof import('maz-ui/src/composables/index.js')

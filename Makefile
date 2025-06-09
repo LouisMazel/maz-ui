@@ -123,6 +123,7 @@ generate-components-docs-watch:
 	pnpm --filter cli cli generate-components-docs --watch
 
 build-all-packages:
+	pnpm --filter @maz-ui/eslint-config build
 	pnpm --filter @maz-ui/icons build
 	pnpm --filter @maz-ui/themes build
 	pnpm --filter @maz-ui/cli build

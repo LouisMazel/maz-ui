@@ -39,6 +39,10 @@ description: MazAccordion is a standalone component that allows you to create an
 </MazAccordion>
 
 ```vue
+<script lang="ts" setup>
+import { MazAccordion } from 'maz-ui/components'
+</script>
+
 <template>
   <MazAccordion>
     <template #title-1>
@@ -68,12 +72,9 @@ description: MazAccordion is a standalone component that allows you to create an
     <template #content-4>
       Content 4
     </template>
-  <MazAccordion>
+    <MazAccordion />
+  </mazaccordion>
 </template>
-
-<script lang="ts" setup>
-  import { MazAccordion } from 'maz-ui/components'
-</script>
 ```
 
 <!--@include: ./../.vitepress/generated-docs/maz-accordion.doc.md-->

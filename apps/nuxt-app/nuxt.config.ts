@@ -2,8 +2,10 @@
 import postcss from 'maz-ui/postcss.config.cjs'
 import svgLoader from 'vite-svg-loader'
 
+import mazUiModule from '@maz-ui/nuxt/src/module.js'
+
 export default defineNuxtConfig({
-  modules: ['@maz-ui/nuxt', '@nuxtjs/tailwindcss'],
+  modules: [mazUiModule, '@nuxtjs/tailwindcss'],
 
   devtools: { enabled: true },
 
@@ -34,6 +36,6 @@ export default defineNuxtConfig({
   mazUi: {
     composables: {
       useTheme: true,
-    }
+    },
   },
 })

@@ -33,94 +33,62 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
     </MazBtn>
   </div>
 
-  <template #code>
+<template #code>
 
-  ```html
-  <MazBtn @click="isOpenedTop = !isOpenedTop">
-    Open top drawer
-  </MazBtn>
-  <MazBtn @click="isOpenedLeft = !isOpenedLeft">
-    Open left drawer
-  </MazBtn>
-  <MazBtn @click="isOpenedRight = !isOpenedRight">
-    Open right drawer
-  </MazBtn>
-  <MazBtn @click="isOpenedBottom = !isOpenedBottom">
-    Open bottom drawer
-  </MazBtn>
+```html
+<MazBtn @click="isOpenedTop = !isOpenedTop"> Open top drawer </MazBtn>
+<MazBtn @click="isOpenedLeft = !isOpenedLeft"> Open left drawer </MazBtn>
+<MazBtn @click="isOpenedRight = !isOpenedRight"> Open right drawer </MazBtn>
+<MazBtn @click="isOpenedBottom = !isOpenedBottom"> Open bottom drawer </MazBtn>
 
-  <MazDrawer variant="top" v-model="isOpenedTop">
-    <template #title>
-      Drawer top
-    </template>
-    <template #default="{ close }">
-      <div style="padding: 16px;">
-        <p>
-          Content
-        </p>
-        <div class="maz-flex maz-flex-wrap maz-gap-2 maz-mt-4">
-          <MazBtn color="destructive" @click="close">
-            Close
-          </MazBtn>
-        </div>
+<MazDrawer variant="top" v-model="isOpenedTop">
+  <template #title> Drawer top </template>
+  <template #default="{ close }">
+    <div style="padding: 16px">
+      <p>Content</p>
+      <div class="maz-flex maz-flex-wrap maz-gap-2 maz-mt-4">
+        <MazBtn color="destructive" @click="close"> Close </MazBtn>
       </div>
-    </template>
-  </MazDrawer>
+    </div>
+  </template>
+</MazDrawer>
 
-  <MazDrawer variant="bottom" v-model="isOpenedBottom">
-    <template #title>
-      Drawer bottom
-    </template>
-    <template #default="{ close }">
-      <div style="padding: 16px;">
-        <p>
-          Content
-        </p>
-        <div class="maz-flex maz-flex-wrap maz-gap-2 maz-mt-4">
-          <MazBtn color="destructive" @click="close">
-            Close
-          </MazBtn>
-        </div>
+<MazDrawer variant="bottom" v-model="isOpenedBottom">
+  <template #title> Drawer bottom </template>
+  <template #default="{ close }">
+    <div style="padding: 16px">
+      <p>Content</p>
+      <div class="maz-flex maz-flex-wrap maz-gap-2 maz-mt-4">
+        <MazBtn color="destructive" @click="close"> Close </MazBtn>
       </div>
-    </template>
-  </MazDrawer>
+    </div>
+  </template>
+</MazDrawer>
 
-  <MazDrawer variant="left" v-model="isOpenedLeft">
-    <template #title>
-      Drawer left
-    </template>
-    <template #default="{ close }">
-      <div style="padding: 16px;">
-        <p>
-          Content
-        </p>
-        <div class="maz-flex maz-flex-wrap maz-gap-2 maz-mt-4">
-          <MazBtn color="destructive" @click="close">
-            Close
-          </MazBtn>
-        </div>
+<MazDrawer variant="left" v-model="isOpenedLeft">
+  <template #title> Drawer left </template>
+  <template #default="{ close }">
+    <div style="padding: 16px">
+      <p>Content</p>
+      <div class="maz-flex maz-flex-wrap maz-gap-2 maz-mt-4">
+        <MazBtn color="destructive" @click="close"> Close </MazBtn>
       </div>
-    </template>
-  </MazDrawer>
+    </div>
+  </template>
+</MazDrawer>
 
-  <MazDrawer variant="right" v-model="isOpenedRight">
-    <template #title>
-      Drawer right
-    </template>
-    <template #default="{ close }">
-      <div style="padding: 16px;">
-        <p>
-          Content
-        </p>
-        <div class="maz-flex maz-flex-wrap maz-gap-2 maz-mt-4">
-          <MazBtn color="destructive" @click="close">
-            Close
-          </MazBtn>
-        </div>
+<MazDrawer variant="right" v-model="isOpenedRight">
+  <template #title> Drawer right </template>
+  <template #default="{ close }">
+    <div style="padding: 16px">
+      <p>Content</p>
+      <div class="maz-flex maz-flex-wrap maz-gap-2 maz-mt-4">
+        <MazBtn color="destructive" @click="close"> Close </MazBtn>
       </div>
-    </template>
-  </MazDrawer>
-  ```
+    </div>
+  </template>
+</MazDrawer>
+```
 
   </template>
 </ComponentDemo>

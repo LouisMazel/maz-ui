@@ -8,9 +8,10 @@
   "scripts": {
     "dev": "vitepress dev docs",
     "build": "vitepress build docs",
+    "build:watch": "vitepress build docs --watch",
     "preview": "vitepress preview docs",
     "serve": "vitepress serve docs",
-    "lint": "cross-env NODE_ENV=production eslint",
+    "lint": "cross-env NODE_ENV=production eslint .",
     "pre-commit": "lint-staged",
     "ftp-deploy": "node ./ftp-deploy.mjs",
     "typecheck": "tsc --noEmit"
@@ -39,6 +40,6 @@
     "vue": "catalog:"
   },
   "lint-staged": {
-    "*.{js,ts,vue,mjs,mts,cjs}": "cross-env NODE_ENV=production eslint --fix"
+    "*.{js,ts,vue,mjs,mts,cjs,md}": "cross-env NODE_ENV=production eslint --fix"
   }
 }

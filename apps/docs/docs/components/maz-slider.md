@@ -14,15 +14,15 @@ description: MazSlider is a standalone component that replaces the standard html
 <MazSlider v-model="sliderValue" class="vp-raw" />
 
 ```vue
+<script lang="ts" setup>
+import { MazSlider } from 'maz-ui/components'
+import { ref } from 'vue'
+const sliderValue = ref(50)
+</script>
+
 <template>
   <MazSlider v-model="sliderValue" />
 </template>
-
-<script lang="ts" setup>
-  import { MazSlider } from 'maz-ui/components'
-  import { ref } from 'vue'
-  const sliderValue = ref(50)
-</script>
 ```
 
 ## Options
@@ -40,16 +40,16 @@ description: MazSlider is a standalone component that replaces the standard html
 <MazSlider v-model="multipleSilders" :labels="multipleSildersLabels" />
 
 ```vue
+<script lang="ts" setup>
+import { MazSlider } from 'maz-ui/components'
+import { ref } from 'vue'
+const multipleSilders = ref([25, 50, 75])
+const multipleSildersLabels = ['Small', 'Middle', 'Big']
+</script>
+
 <template>
   <MazSlider v-model="multipleSilders" :labels="multipleSildersLabels" />
 </template>
-
-<script lang="ts" setup>
-  import { MazSlider } from 'maz-ui/components'
-  import { ref } from 'vue'
-  const multipleSilders = ref([25, 50, 75])
-  const multipleSildersLabels = ['Small', 'Middle', 'Big']
-</script>
 ```
 
 ### Sizes & colors
@@ -83,6 +83,13 @@ description: MazSlider is a standalone component that replaces the standard html
 />
 
 ```vue
+<script lang="ts" setup>
+import { MazSlider } from 'maz-ui/components'
+import { ref } from 'vue'
+const multipleSilders = ref([25, 50, 75])
+const multipleSildersLabels = ['Small', 'Middle', 'Big']
+</script>
+
 <template>
   <MazSlider
     v-model="multipleSilders"
@@ -112,13 +119,6 @@ description: MazSlider is a standalone component that replaces the standard html
     size="10px"
   />
 </template>
-
-<script lang="ts" setup>
-  import { ref } from 'vue'
-  import { MazSlider } from 'maz-ui/components'
-  const multipleSilders = ref([25, 50, 75])
-  const multipleSildersLabels = ['Small', 'Middle', 'Big']
-</script>
 ```
 
 ### Logarithmic/exponential
@@ -132,6 +132,13 @@ description: MazSlider is a standalone component that replaces the standard html
 />
 
 ```vue
+<script lang="ts" setup>
+import { MazSlider } from 'maz-ui/components'
+import { ref } from 'vue'
+const logSilders = ref([50, 10000, 30000, 45000])
+const logSildersLabels: ['Micro', 'Small', 'Middle', 'Big']
+</script>
+
 <template>
   <MazSlider
     v-model="logSilders"
@@ -141,13 +148,6 @@ description: MazSlider is a standalone component that replaces the standard html
     logs
   />
 </template>
-
-<script lang="ts" setup>
-  import { ref } from 'vue'
-  import { MazSlider } from 'maz-ui/components'
-  const logSilders = ref([50, 10000, 30000, 45000])
-  const logSildersLabels: ['Micro', 'Small', 'Middle', 'Big']
-</script>
 ```
 
 ## no-divider & no-zoom-animation
@@ -163,6 +163,12 @@ description: MazSlider is a standalone component that replaces the standard html
 />
 
 ```vue
+<script lang="ts" setup>
+import { MazSlider } from 'maz-ui/components'
+import { ref } from 'vue'
+const multipleSilders = ref([25, 50, 75])
+</script>
+
 <template>
   <MazSlider
     v-model="multipleSilders"
@@ -170,12 +176,6 @@ description: MazSlider is a standalone component that replaces the standard html
     no-cursor-anim
   />
 </template>
-
-<script lang="ts" setup>
-  import { ref } from 'vue'
-  import { MazSlider } from 'maz-ui/components'
-  const multipleSilders = ref([25, 50, 75])
-</script>
 ```
 
 <script lang="ts" setup>

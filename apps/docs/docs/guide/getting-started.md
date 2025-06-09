@@ -21,11 +21,12 @@ head:
 </div>
 
 ::: tip ✨ What's New in v4
+
 - **Tree-shaking by default** - Import only what you need
 - **Modular CSS** - Each component brings its own styles
 - **Enhanced accessibility** - WCAG 2.1 AA compliant
 - **TypeScript-first** - Full type safety out of the box
-:::
+  :::
 
 ## Quick Installation {#quick-installation}
 
@@ -57,14 +58,6 @@ Let's start with a simple button to see Maz-UI in action:
 ::: code-group
 
 ```vue [Vue 3]
-<template>
-  <div>
-    <MazBtn @click="handleClick" color="primary">
-      Hello Maz-UI! 👋
-    </MazBtn>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { MazBtn } from 'maz-ui/components'
 import 'maz-ui/styles'
@@ -73,23 +66,31 @@ function handleClick() {
   console.log('Button clicked!')
 }
 </script>
-```
 
-```vue [Nuxt 3]
 <template>
   <div>
-    <MazBtn @click="handleClick" color="primary">
+    <MazBtn color="primary" @click="handleClick">
       Hello Maz-UI! 👋
     </MazBtn>
   </div>
 </template>
+```
 
+```vue [Nuxt 3]
 <script setup lang="ts">
 // No imports needed with @maz-ui/nuxt module!
 function handleClick() {
   console.log('Button clicked!')
 }
 </script>
+
+<template>
+  <div>
+    <MazBtn color="primary" @click="handleClick">
+      Hello Maz-UI! 👋
+    </MazBtn>
+  </div>
+</template>
 ```
 
 :::
@@ -101,15 +102,15 @@ function handleClick() {
 Import the main CSS file and optionally configure the theme plugin in your `main.ts`:
 
 ```typescript
-import { createApp } from 'vue'
-import App from './App.vue'
-
-// Import Maz-UI styles before your own CSS
-import 'maz-ui/styles'
-import './style.css'
-
 // Optional: Use the theme plugin for advanced theming
 import { MazUiPlugin } from 'maz-ui/plugins/maz-ui'
+import { createApp } from 'vue'
+
+import App from './App.vue'
+// Import Maz-UI styles before your own CSS
+import 'maz-ui/styles'
+
+import './style.css'
 
 const app = createApp(App)
 
@@ -157,24 +158,28 @@ With the Nuxt module, all Maz-UI components, composables, and directives are aut
 <div class="features-grid">
 
 ### 🚀 **Performance First**
+
 - Tree-shaking reduces bundle size by up to 80%
 - Modular CSS architecture
 - Runtime optimizations
 - Minimal dependencies
 
 ### ♿ **Accessibility Built-in**
+
 - WCAG 2.1 AA compliance
 - Keyboard navigation support
 - Screen reader optimized
 - Focus management
 
 ### 🎨 **Design Excellence**
+
 - Modern, clean aesthetics
 - Dark/Light mode support
 - Customizable themes
 - Consistent design tokens
 
 ### 🛠️ **Developer Experience**
+
 - TypeScript-first approach
 - Comprehensive documentation
 - Auto-completion support
@@ -193,16 +198,16 @@ Auto-import is already integrated in the [@maz-ui/nuxt module](/guide/nuxt). No 
 :::
 
 ```typescript
-// vite.config.ts
-import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import Components from 'unplugin-vue-components/vite'
-import AutoImport from 'unplugin-auto-import/vite'
 import {
   MazComponentsResolver,
   MazDirectivesResolver,
   MazModulesResolver
 } from 'maz-ui/resolvers'
+import AutoImport from 'unplugin-auto-import/vite'
+import Components from 'unplugin-vue-components/vite'
+// vite.config.ts
+import { defineConfig } from 'vite'
 
 export default defineConfig({
   plugins: [
@@ -227,6 +232,21 @@ export default defineConfig({
 Now use everything without imports:
 
 ```vue
+<script setup lang="ts">
+// Auto-imported composables and utilities
+const text = ref('')
+const toast = useToast()
+
+// Auto-imported utility functions
+const debouncedSearch = debounce((query) => {
+  console.log('Searching:', query)
+}, 300)
+
+function handleClickOutside() {
+  toast.info('Clicked outside!')
+}
+</script>
+
 <template>
   <!-- Auto-imported components -->
   <MazBtn>Button</MazBtn>
@@ -242,30 +262,15 @@ Now use everything without imports:
     Hover me
   </MazBtn>
 </template>
-
-<script setup lang="ts">
-// Auto-imported composables and utilities
-const text = ref('')
-const toast = useToast()
-
-// Auto-imported utility functions
-const debouncedSearch = debounce((query) => {
-  console.log('Searching:', query)
-}, 300)
-
-function handleClickOutside() {
-  toast.info('Clicked outside!')
-}
-</script>
 ```
 
 ### Available Resolvers
 
-| Resolver | Purpose | Import |
-|----------|---------|---------|
-| `MazComponentsResolver` | Components (MazBtn, MazInput, etc.) | `'maz-ui/resolvers'` |
-| `MazDirectivesResolver` | Directives (v-click-outside, v-tooltip, etc.) | `'maz-ui/resolvers'` |
-| `MazModulesResolver` | Composables & utilities (useToast, debounce, etc.) | `'maz-ui/resolvers'` |
+| Resolver                | Purpose                                            | Import               |
+| ----------------------- | -------------------------------------------------- | -------------------- |
+| `MazComponentsResolver` | Components (MazBtn, MazInput, etc.)                | `'maz-ui/resolvers'` |
+| `MazDirectivesResolver` | Directives (v-click-outside, v-tooltip, etc.)      | `'maz-ui/resolvers'` |
+| `MazModulesResolver`    | Composables & utilities (useToast, debounce, etc.) | `'maz-ui/resolvers'` |
 
 ### Avoiding Naming Conflicts
 
@@ -278,7 +283,7 @@ export default defineConfig({
       resolvers: [
         MazComponentsResolver({ prefix: 'Maz' }), // MazMazBtn, MazMazInput
         MazDirectivesResolver({ prefix: 'Maz' }), // v-maz-tooltip
-        ElementPlusResolver({ prefix: 'El' }),    // ElButton, ElInput
+        ElementPlusResolver({ prefix: 'El' }), // ElButton, ElInput
       ],
     }),
     AutoImport({
@@ -309,6 +314,7 @@ npm install @maz-ui/themes
 ```
 
 **Features:**
+
 - 🎨 HSL CSS custom properties
 - 🌓 Smart dark mode detection
 - ⚡ Multiple rendering strategies
@@ -319,6 +325,7 @@ npm install @maz-ui/themes
 ---
 
 ### @maz-ui/icons
+
 **Optimized Icon Library**
 
 Comprehensive collection of SVG icons designed for performance and flexibility.
@@ -328,6 +335,7 @@ npm install @maz-ui/icons
 ```
 
 **Features:**
+
 - 300+ icons
 - Usable as Vue components (e.g. `<MazStar name="maz-ui" />`)
 - Tree-shakable imports
@@ -339,6 +347,7 @@ npm install @maz-ui/icons
 ---
 
 ### @maz-ui/nuxt
+
 **Seamless Nuxt Integration**
 
 Official Nuxt module for effortless Maz-UI integration with auto-imports.
@@ -348,6 +357,7 @@ npm install @maz-ui/nuxt
 ```
 
 **Features:**
+
 - 🔄 Auto-import components & composables
 - 🚀 SSR optimization
 - ⚙️ Zero-config setup
@@ -398,9 +408,9 @@ Components handle their own CSS imports internally, so you don't need to worry a
 Register frequently used components globally:
 
 ```typescript
+import { MazBtn, MazCard, MazInput } from 'maz-ui/components'
 // main.ts
 import { createApp } from 'vue'
-import { MazBtn, MazInput, MazCard } from 'maz-ui/components'
 
 const app = createApp(App)
 
@@ -417,6 +427,7 @@ For comprehensive theming capabilities including CSS custom properties, dark mod
 [→ **Complete Theme Documentation**](/guide/theme)
 
 The theme system provides:
+
 - 🎨 HSL-based CSS custom properties
 - 🌓 Automatic dark mode support
 - 🎯 Pre-built themes (Maz-UI, Ocean, Pristine)
@@ -433,24 +444,24 @@ Maz-UI v4 is built with tree-shaking in mind. Import only what you need for opti
 // ❌ Avoid importing everything
 import * as MazUI from 'maz-ui'
 
+import { currency, debounce } from 'maz-ui'
 // ✅ Import specific components (good)
-import { MazBtn, MazInput, MazCard } from 'maz-ui/components'
-import { useToast, useBreakpoints } from 'maz-ui/composables'
-import { debounce, currency } from 'maz-ui'
-import { MazUiPlugin } from 'maz-ui/plugins'
-
+import { MazBtn, MazCard, MazInput } from 'maz-ui/components'
 // ✅✅ Direct component import (most optimized)
 import MazBtn from 'maz-ui/components/MazBtn'
-import MazInput from 'maz-ui/components/MazInput'
 import MazCard from 'maz-ui/components/MazCard'
+
+import MazInput from 'maz-ui/components/MazInput'
+import { useBreakpoints, useToast } from 'maz-ui/composables'
+import useBreakpoints from 'maz-ui/composables/useBreakpoints'
 
 // ✅✅ Direct composable import (most optimized)
 import useToast from 'maz-ui/composables/useToast'
-import useBreakpoints from 'maz-ui/composables/useBreakpoints'
+import currency from 'maz-ui/modules/currency'
 
 // ✅✅ Direct utility import (most optimized)
 import debounce from 'maz-ui/modules/debounce'
-import currency from 'maz-ui/modules/currency'
+import { MazUiPlugin } from 'maz-ui/plugins'
 
 // ✅✅ Direct plugin import (most optimized)
 import { MazUiPlugin } from 'maz-ui/plugins/maz-ui'
@@ -466,18 +477,18 @@ import { MazUiPlugin } from 'maz-ui/plugins/maz-ui'
 ### Import Strategies Comparison
 
 ```typescript
+import { debounce } from 'maz-ui'
 // Strategy 1: Modular imports (best for production)
 import { MazBtn } from 'maz-ui/components'
-import { useToast } from 'maz-ui/composables'
-import { debounce } from 'maz-ui'
+// Strategy 3: Global registration (for commonly used components)
+import { MazBtn, MazInput } from 'maz-ui/components'
 // Bundle impact: ~10-20KB per component/composable
 
 // Strategy 2: Auto-import with resolvers (recommended)
 // No imports needed, automatic tree-shaking
 // Bundle impact: Same as modular, but zero boilerplate
 
-// Strategy 3: Global registration (for commonly used components)
-import { MazBtn, MazInput } from 'maz-ui/components'
+import { useToast } from 'maz-ui/composables'
 app.component('MazBtn', MazBtn)
 app.component('MazInput', MazInput)
 // Bundle impact: Only registered components included
@@ -488,12 +499,15 @@ app.component('MazInput', MazInput)
 <div class="next-steps">
 
 ### **Explore Components**
+
 Browse the [component library](./../components/maz-btn.md) with live examples and API documentation.
 
 ### **Customize Themes**
+
 Learn about [theming and customization](./theme.md) to match your brand.
 
 ### **Get Help**
+
 Browse [GitHub discussions](https://github.com/LouisMazel/maz-ui/discussions) or open an issue on [GitHub](https://github.com/LouisMazel/maz-ui/issues).
 
 </div>
@@ -561,7 +575,6 @@ Browse [GitHub discussions](https://github.com/LouisMazel/maz-ui/discussions) or
     margin-top: 0;
   }
 }
-
 
 .next-steps {
   display: grid;

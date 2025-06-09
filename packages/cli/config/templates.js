@@ -5,11 +5,9 @@
 /** @type {import('vue-docgen-cli').Templates['component']} */
 
 export function component(renderedUsage, document_, _config, _fileName, requiresMd, _subs) {
-  const { description, tags, functional, name } = document_
+  const { description, tags, functional } = document_
   const { deprecated, author, since, version, see, link } = tags || {}
-  if (name === 'MazPopover') {
-    console.log(renderedUsage, name)
-  }
+
   return `
   ${deprecated ? `> **Deprecated** ${deprecated[0].title}\n` : ''}
   ${description ? `> ${description}` : ''}

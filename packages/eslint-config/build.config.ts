@@ -10,4 +10,5 @@ export default defineBuildConfig({
   rollup: {
     emitCJS: false,
   },
+  externals: ['@antfu/eslint-config', 'eslint-plugin-sonarjs', 'eslint-plugin-tailwindcss', 'eslint-plugin-vuejs-accessibility', 'eslint'],
 })

@@ -37,19 +37,6 @@ You can use this information to implement specific interactions in your applicat
 Here's an example of using the useSwipe composable:
 
 ```vue
-<template>
-  <div ref="swipeContainer" class="swipe-container">
-    <p>
-      Swipe in any direction<br>
-      <span class="maz-text-sm maz-text-muted">
-        (You should use a real device or a mobile simulator to test the swipe functionality)
-      </span>
-      <br><br>
-      Last swipe direction: {{lastSwipeDirection || 'None'}}
-    </p>
-  </div>
-</template>
-
 <script lang="ts" setup>
 import { useSwipe } from 'maz-ui/composables'
 import { onMounted, onUnmounted, ref } from 'vue'
@@ -81,6 +68,19 @@ onUnmounted(() => {
   stop()
 })
 </script>
+
+<template>
+  <div ref="swipeContainer" class="swipe-container">
+    <p>
+      Swipe in any direction<br>
+      <span class="maz-text-sm maz-text-muted">
+        (You should use a real device or a mobile simulator to test the swipe functionality)
+      </span>
+      <br><br>
+      Last swipe direction: {{ lastSwipeDirection || 'None' }}
+    </p>
+  </div>
+</template>
 
 <style>
 .swipe-container {

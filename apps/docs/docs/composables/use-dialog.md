@@ -24,28 +24,28 @@ More info about [dialog plugin](./../plugins/dialog.md) in its documentation
     Open Dialog
   </MazBtn>
 
-  <template #code>
+<template #code>
 
-  ```vue
-  <template>
-    <MazBtn @click="openDialog">
-      Open Dialog
-    </MazBtn>
-  </template>
+```vue
+<script lang="ts" setup>
+import { useDialog } from 'maz-ui/composables'
 
-  <script lang="ts" setup>
-    import { useDialog } from 'maz-ui/composables'
+const dialog = useDialog()
 
-    const dialog = useDialog()
+function openDialog() {
+  dialog.open({
+    title: 'Dialog title',
+    message: 'Dialog message',
+  })
+}
+</script>
 
-    function openDialog() {
-      dialog.open({
-        title: 'Dialog title',
-        message: 'Dialog message',
-      })
-    }
-  </script>
-  ```
+<template>
+  <MazBtn @click="openDialog">
+    Open Dialog
+  </MazBtn>
+</template>
+```
 
   </template>
 

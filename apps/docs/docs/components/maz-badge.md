@@ -16,15 +16,15 @@ description: MazBadge is a standalone component to show short text in colored co
 </MazBadge>
 
 ```vue
+<script lang="ts" setup>
+import { MazBadge } from 'maz-ui/components'
+</script>
+
 <template>
   <MazBadge>
     Badge
   </MazBadge>
 </template>
-
-<script lang="ts" setup>
-  import { MazBadge } from 'maz-ui/components'
-</script>
 ```
 
 ## Options
@@ -42,27 +42,27 @@ description: MazBadge is a standalone component to show short text in colored co
 </div>
 
 ```vue
+<script lang="ts" setup>
+import { MazBadge } from 'maz-ui/components'
+
+const colors = [
+  'primary',
+  'secondary',
+  'info',
+  'success',
+  'warning',
+  'destructive',
+  'contrast',
+  'accent',
+  'gray',
+]
+</script>
+
 <template>
   <MazBadge v-for="color in color" :key="color" :color="color">
     {{ color }}
   </MazBadge>
 </template>
-
-<script lang="ts" setup>
-  import { MazBadge } from 'maz-ui/components'
-
-  const colors = [
-    'primary',
-    'secondary',
-    'info',
-    'success',
-    'warning',
-    'destructive',
-    'contrast',
-    'accent',
-    'gray',
-  ]
-</script>
 ```
 
 ### Outline
@@ -76,27 +76,27 @@ description: MazBadge is a standalone component to show short text in colored co
 </div>
 
 ```vue
+<script lang="ts" setup>
+import { MazBadge } from 'maz-ui/components'
+
+const colors = [
+  'primary',
+  'secondary',
+  'info',
+  'success',
+  'warning',
+  'destructive',
+  'white',
+  'black',
+  'gray',
+]
+</script>
+
 <template>
   <MazBadge v-for="color in color" :key="color" :color="color" outline>
     {{ color }}
   </MazBadge>
 </template>
-
-<script lang="ts" setup>
-  import { MazBadge } from 'maz-ui/components'
-
-  const colors = [
-    'primary',
-    'secondary',
-    'info',
-    'success',
-    'warning',
-    'destructive',
-    'white',
-    'black',
-    'gray',
-  ]
-</script>
 ```
 
 ### Pastel
@@ -110,27 +110,27 @@ description: MazBadge is a standalone component to show short text in colored co
 </div>
 
 ```vue
+<script lang="ts" setup>
+import { MazBadge } from 'maz-ui/components'
+
+const colors = [
+  'primary',
+  'secondary',
+  'info',
+  'success',
+  'warning',
+  'destructive',
+  'white',
+  'black',
+  'gray',
+]
+</script>
+
 <template>
   <MazBadge v-for="color in color" :key="color" :color="color" pastel>
     {{ color }}
   </MazBadge>
 </template>
-
-<script lang="ts" setup>
-  import { MazBadge } from 'maz-ui/components'
-
-  const colors = [
-    'primary',
-    'secondary',
-    'info',
-    'success',
-    'warning',
-    'destructive',
-    'white',
-    'black',
-    'gray',
-  ]
-</script>
 ```
 
 ### Size
@@ -156,6 +156,10 @@ description: MazBadge is a standalone component to show short text in colored co
 </div>
 
 ```vue
+<script lang="ts" setup>
+import { MazBadge } from 'maz-ui/components'
+</script>
+
 <template>
   <MazBadge size="0.8rem">
     0.8rem
@@ -173,10 +177,6 @@ description: MazBadge is a standalone component to show short text in colored co
     2.4rem
   </MazBadge>
 </template>
-
-<script lang="ts" setup>
-  import { MazBadge } from 'maz-ui/components'
-</script>
 ```
 
 ### Rounded sizes
@@ -190,17 +190,17 @@ description: MazBadge is a standalone component to show short text in colored co
 </div>
 
 ```vue
+<script lang="ts" setup>
+import { MazBadge } from 'maz-ui/components'
+
+const roundedSize = ['none', 'sm', 'md', 'lg', 'xl', 'full']
+</script>
+
 <template>
   <MazBadge v-for="size in roundedSize" :key="size" :rounded-size="size" size="1.2rem">
     {{ size }}
   </MazBadge>
 </template>
-
-<script lang="ts" setup>
-  import { MazBadge } from 'maz-ui/components'
-
-  const roundedSize = ['none', 'sm', 'md', 'lg', 'xl', 'full']
-</script>
 ```
 
 <script lang="ts" setup>

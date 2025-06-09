@@ -18,13 +18,13 @@ This component uses [vLazyImg](./../directives/lazy-img.md) directive
 <MazAvatar :lazy="false" src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80" />
 
 ```vue
+<script lang="ts" setup>
+import { MazAvatar } from 'maz-ui/components'
+</script>
+
 <template>
   <MazAvatar src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80" />
 </template>
-
-<script lang="ts" setup>
-  import { MazAvatar } from 'maz-ui/components'
-</script>
 ```
 
 ## Options
@@ -51,24 +51,30 @@ See all the options props [here](#props-event-slots)
     </template>
   </MazAvatar>
 
-  <MazAvatar
-    src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=200"
-    size="2.5rem"
-    clickable
-    rounded-size="xl"
-    button-color="destructive"
-    @click="clicked"
-  />
+<MazAvatar
+src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=200"
+size="2.5rem"
+clickable
+rounded-size="xl"
+button-color="destructive"
+@click="clicked"
+/>
 
-  <MazAvatar
-    src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=600"
-    size="3rem"
-    bordered
-    noElevation
-  />
+<MazAvatar
+  src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=600"
+  size="3rem"
+  bordered
+  noElevation
+/>
+
 </div>
 
 ```vue
+<script lang="ts" setup>
+import { MazAvatar } from 'maz-ui/components'
+function clicked() { console.log('clicked') }
+</script>
+
 <template>
   <MazAvatar
     caption="Louis Mazel"
@@ -100,11 +106,6 @@ See all the options props [here](#props-event-slots)
     bordered
   />
 </template>
-
-<script lang="ts" setup>
-  import { MazAvatar } from 'maz-ui/components'
-  const clicked = () => { console.log('clicked') }
-</script>
 ```
 
 ## On Error
@@ -137,6 +138,7 @@ The props `loading` has 3 possible values: `intersecting`, `lazy`, or `eager`.
 By default, the value is `intersecting` which means the image will be loaded when it's intersecting with the `IntersectionObserver` browser API. This mode uses the [`MazLazyImg`](./maz-lazy-img.md) component with [`vLazyImg`](./../directives/lazy-img.md) directive to handle the lazy loading.
 
 Native modes:
+
 - `lazy`: The image will be loaded only when it's in the viewport
 - `eager`: The image will be loaded immediately
 
@@ -165,14 +167,8 @@ These modes are native use an `HTMLImageElement` with the `loading` attribute. (
   loading="intersecting"
   src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=123"
 />
-<MazAvatar
-  loading="lazy"
-  src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=123"
-/>
-<MazAvatar
-  loading="eager"
-  src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=123"
-/>
+<MazAvatar loading="lazy" src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=123" />
+<MazAvatar loading="eager" src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=123" />
 ```
 
 <script lang="ts" setup>
