@@ -1,24 +1,25 @@
-import type { ColorMode, ThemeConfig } from '@maz-ui/themes'
-import type { Plugin } from 'vue'
+import type { BaseThemePreset, ColorMode, DarkMode, ThemeConfig, ThemeState } from '@maz-ui/themes'
+import type { App, InjectionKey } from 'vue'
 import {
-  _initThemeState,
   generateCriticalCSS,
   generateFullCSS,
   injectCSS,
-} from '@maz-ui/themes'
+} from '@maz-ui/themes/utils'
+
+export const mazThemeInjectionKey: InjectionKey<ThemeState> = Symbol('mazTheme')
 
 export interface MazThemePluginOptions extends ThemeConfig {
   prefix?: string
 }
 
-function applyDarkModeImmediately(darkMode: string, initialColorMode: ColorMode) {
+function applyDarkMode(darkModeStrategy: DarkMode, initialColorMode: ColorMode) {
   if (typeof document === 'undefined')
     return
 
   const isDarkMode = initialColorMode === 'dark'
     || (initialColorMode === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches)
 
-  if (darkMode !== 'class') {
+  if (darkModeStrategy !== 'class') {
     return
   }
 
@@ -30,7 +31,7 @@ function applyDarkModeImmediately(darkMode: string, initialColorMode: ColorMode)
   }
 }
 
-function getInitialColorMode(darkMode: string): ColorMode {
+function getInitialColorMode(darkModeStrategy: DarkMode): ColorMode {
   // 1. Priorité: préférence sauvegardée de l'utilisateur
   if (typeof localStorage !== 'undefined') {
     const savedMode = localStorage.getItem('maz-color-mode') as ColorMode | null
@@ -40,7 +41,7 @@ function getInitialColorMode(darkMode: string): ColorMode {
   }
 
   // 2. Fallback: configuration du plugin
-  if (darkMode === 'auto') {
+  if (darkModeStrategy === 'auto') {
     return 'auto'
   }
 
@@ -54,13 +55,13 @@ function getInitialColorMode(darkMode: string): ColorMode {
 /**
  * Injecte le CSS selon la stratégie
  */
-function injectThemeCSS(finalPreset: any, config: any) {
+function injectThemeCSS(finalPreset: BaseThemePreset, config: MazThemePluginOptions) {
   if (typeof document === 'undefined')
     return
 
   const cssOptions = {
     mode: 'both' as const,
-    darkSelector: config.darkMode === 'media' ? 'media' as const : 'class' as const,
+    darkSelector: config.darkModeStrategy === 'media' ? 'media' as const : 'class' as const,
     prefix: config.prefix,
   }
 
@@ -82,7 +83,7 @@ function injectThemeCSS(finalPreset: any, config: any) {
 /**
  * @example
  * ```ts
- * import { MazUi } from 'maz-ui/src/plugins/index.ts'
+ * import { MazUi } from 'maz-ui/plugins/maz-ui'
  *
  * app.use(MazUi, {
  *   preset: defaultPreset,
@@ -91,14 +92,14 @@ function injectThemeCSS(finalPreset: any, config: any) {
  * })
  * ```
  */
-export const MazUi: Plugin<MazThemePluginOptions> = {
-  async install(app, options = {}) {
+export const MazUiPlugin = {
+  async install(app: App, options: MazThemePluginOptions = {}) {
     const { mazUi } = await import('@maz-ui/themes/presets/mazUi')
 
     const config = {
       preset: mazUi,
       strategy: 'runtime' as const,
-      darkMode: 'class' as const,
+      darkModeStrategy: 'class' as const,
       prefix: 'maz' as const,
       overrides: undefined,
       ...options,
@@ -118,35 +119,33 @@ export const MazUi: Plugin<MazThemePluginOptions> = {
         }
       : config.preset
 
-    const initialColorMode = getInitialColorMode(config.darkMode)
+    const initialColorMode = getInitialColorMode(config.darkModeStrategy)
     const systemPrefersDark = typeof window !== 'undefined'
       && window.matchMedia('(prefers-color-scheme: dark)').matches
     const initialIsDark = initialColorMode === 'auto'
       ? systemPrefersDark
       : initialColorMode === 'dark'
 
-    applyDarkModeImmediately(config.darkMode, initialColorMode)
+    applyDarkMode(config.darkModeStrategy, initialColorMode)
 
     if (config.strategy === 'runtime' || config.strategy === 'hybrid') {
       injectThemeCSS(finalPreset, config)
-
-      _initThemeState({
-        currentPreset: finalPreset,
-        colorMode: initialColorMode,
-        isDark: initialIsDark,
-        strategy: config.strategy,
-      })
     }
 
-    app.config.globalProperties.$mazTheme = {
-      ...config,
-      preset: finalPreset,
-    }
+    app.provide(mazThemeInjectionKey, {
+      currentPreset: finalPreset,
+      colorMode: initialColorMode,
+      isDark: initialIsDark,
+      strategy: config.strategy,
+      darkModeStrategy: config.darkModeStrategy,
+    })
 
-    app.provide('mazTheme', config)
     app.config.globalProperties.$mazTheme = {
-      ...config,
-      preset: finalPreset,
+      currentPreset: finalPreset,
+      colorMode: initialColorMode,
+      isDark: initialIsDark,
+      strategy: config.strategy,
+      darkModeStrategy: config.darkModeStrategy,
     }
   },
 }
@@ -156,7 +155,7 @@ declare module '@vue/runtime-core' {
     /**
      * Maz theme plugin options
      * @description You should install the plugin to use this property
-     * @examl
+     * @example
      * ```ts
      * import { MazUi } from 'maz-ui/plugins/maz-ui'
      * import { createApp } from 'vue'
@@ -168,6 +167,6 @@ declare module '@vue/runtime-core' {
      * setColorMode('dark')
      * toggleDarkMode()
      */
-    $mazTheme: MazThemePluginOptions
+    $mazTheme: ThemeState
   }
 }

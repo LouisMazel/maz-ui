@@ -1,9 +1,9 @@
 export const designTokens = {
   borderRadius: {
-    sm: 'calc(var(--maz-radius) - 4px)',
+    sm: 'calc(var(--maz-radius) - 8px)',
+    md: 'calc(var(--maz-radius) - 6px)',
     DEFAULT: 'var(--maz-radius)',
-    md: 'calc(var(--maz-radius) + 2px)',
-    lg: 'calc(var(--maz-radius) + 4px)',
+    lg: 'calc(var(--maz-radius) + 6px)',
     xl: 'calc(var(--maz-radius) + 8px)',
   },
 

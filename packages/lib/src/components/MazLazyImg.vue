@@ -135,7 +135,7 @@ const sources = computed(() => {
   }
 
   &.m-lazy-error:not(.m-lazy-fallback) {
-    @apply maz-bg-color-light;
+    @apply maz-bg-surface-400;
 
     img {
       @apply maz-h-1/2 maz-w-1/2;

@@ -16,7 +16,7 @@ Enter only numbers
 <MazInput v-model="numberValue" type="number" />
 
 <div
-  style="padding: 16px; margin-top: 16px; background-color: var(--maz-color-bg-lighter);"
+  style="padding: 16px; margin-top: 16px; background-color: hsl(var(--maz-background-300));"
   class="flex flex-center rounded gap-05"
 >
   formatted value: <strong>{{ priceFormatted }}</strong>
@@ -27,7 +27,7 @@ Enter only numbers
   <MazInput v-model="numberValue" type="number" />
 
   <div
-    style="padding: 16px; margin-top: 16px; background-color: var(--maz-color-bg-lighter);"
+    style="padding: 16px; margin-top: 16px; background-color: hsl(var(--maz-background-300));"
   >
     {{ priceFormatted }}
   </div>

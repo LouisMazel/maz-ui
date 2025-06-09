@@ -56,7 +56,7 @@ export interface MazChecklistProps<T, O> {
   color?: MazColor
 }
 
-const { modelValue, query, elevation = false, items, title, search = true, searchOptions, searchFunction, color = 'primary' } = defineProps<MazChecklistProps<T, O>>()
+const { modelValue, query, elevation = false, items, title, search, searchOptions, searchFunction, color = 'primary' } = defineProps<MazChecklistProps<T, O>>()
 
 const emits = defineEmits<{
   /**
@@ -187,7 +187,7 @@ function updateQuery(value?: string) {
   }
 
   :deep(.card-content) {
-    @apply maz-flex maz-flex-col maz-gap-2 maz-overflow-y-auto maz-bg-color maz-px-3 maz-py-2;
+    @apply maz-flex maz-flex-col maz-gap-2 maz-overflow-y-auto maz-bg-surface maz-px-3 maz-py-2;
   }
 
   .no-results {
@@ -207,7 +207,7 @@ function updateQuery(value?: string) {
   }
 
   .m-checklist-item {
-    @apply maz-flex maz-w-full maz-cursor-pointer maz-items-center maz-gap-4 maz-rounded maz-px-3 maz-py-2 maz-text-left hover:maz-bg-color-light;
+    @apply maz-flex maz-w-full maz-cursor-pointer maz-items-center maz-gap-4 maz-rounded maz-px-3 maz-py-2 maz-text-left hover:maz-bg-surface-400;
   }
 
   .item-label {

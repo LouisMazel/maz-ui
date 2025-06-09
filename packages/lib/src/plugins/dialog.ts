@@ -1,4 +1,4 @@
-import type { App } from 'vue'
+import type { App, Plugin } from 'vue'
 import type { DialogOptions } from './dialog/DialogHandler'
 import { DialogHandler } from './dialog/DialogHandler'
 
@@ -6,9 +6,14 @@ export const DialogPlugin = {
   install(app: App, options?: DialogOptions) {
     const dialogHandler = new DialogHandler(app, options)
     app.provide('dialog', dialogHandler)
-    app.config.globalProperties.$dialog = dialogHandler
+
+    // Créez un wrapper sans référence circulaire
+    app.config.globalProperties.$dialog = {
+      open: dialogHandler.open.bind(dialogHandler),
+      globalOptions: dialogHandler.globalOptions,
+    }
   },
-}
+} satisfies Plugin<DialogOptions | undefined>
 
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
@@ -29,7 +34,7 @@ declare module '@vue/runtime-core' {
      *   message: 'This is a dialog',
      * })
      */
-    $dialog: DialogHandler
+    $dialog: Omit<DialogHandler, 'app'>
   }
 }
 

@@ -177,16 +177,15 @@ const hasAppend = computed(() => !!slots.append)
 // eslint-disable-next-line sonarjs/cognitive-complexity
 const borderStyle = computed(() => {
   if (props.error)
-    return 'maz-border-danger'
+    return 'maz-border-destructive'
   if (props.success)
     return 'maz-border-success'
   if (props.warning)
     return 'maz-border-warning'
+
   if (isFocused.value) {
-    if (props.color === 'black')
-      return 'maz-border-black'
-    if (props.color === 'danger')
-      return 'maz-border-danger'
+    if (props.color === 'destructive')
+      return 'maz-border-destructive'
     if (props.color === 'info')
       return 'maz-border-info'
     if (props.color === 'primary')
@@ -197,9 +196,8 @@ const borderStyle = computed(() => {
       return 'maz-border-success'
     if (props.color === 'warning')
       return 'maz-border-warning'
-    if (props.color === 'white')
-      return 'maz-border-white'
   }
+
   return '--default-border'
 })
 
@@ -233,7 +231,7 @@ const hasBorderStyle = computed(() => borderStyle.value !== '--default-border')
       class="m-textarea__label"
       :class="[
         {
-          'maz-text-danger-600': error,
+          'maz-text-destructive-600': error,
           'maz-text-success-600': success,
           'maz-text-warning-600': warning,
           '--has-state': error || warning || success,
@@ -276,19 +274,19 @@ const hasBorderStyle = computed(() => borderStyle.value !== '--default-border')
 
 <style lang="postcss" scoped>
   .m-textarea {
-  @apply maz-min-h-[6.25rem] maz-relative maz-flex maz-flex-col maz-align-top maz-text-normal;
+  @apply maz-min-h-[6.25rem] maz-relative maz-flex maz-flex-col maz-align-top maz-text-foreground;
 
   transition: padding 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
 
   &:not(.--background-transparent, .--is-disabled) {
-    @apply maz-bg-color dark:maz-bg-color-light;
+    @apply maz-bg-surface dark:maz-bg-surface-400;
   }
 
   &.--border:not(.--is-disabled) {
     @apply maz-border maz-border-solid;
 
     &:not(.--has-border-style) {
-      @apply maz-border-border dark:maz-border-color-lighter;
+      @apply maz-border-divider dark:maz-border-divider-400;
     }
   }
 
@@ -335,7 +333,7 @@ const hasBorderStyle = computed(() => borderStyle.value !== '--default-border')
   }
 
   &.--is-disabled {
-    @apply maz-cursor-not-allowed maz-border-border maz-bg-color-lighter maz-text-muted dark:maz-border-color-lighter;
+    @apply maz-cursor-not-allowed maz-border-divider maz-bg-surface-300 maz-text-muted dark:maz-border-divider-400;
 
     & * {
       @apply maz-cursor-not-allowed maz-text-muted;

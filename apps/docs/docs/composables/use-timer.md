@@ -29,7 +29,7 @@ This composable can be used in Vue 3 components to handle timeouts in a flexible
   <MazBtn @click="start">
     Start
   </MazBtn>
-  <MazBtn color="danger" @click="stop">
+  <MazBtn color="destructive" @click="stop">
     Stop
   </MazBtn>
   <MazBtn color="warning" @click="pause">
@@ -63,7 +63,7 @@ This composable can be used in Vue 3 components to handle timeouts in a flexible
   <MazBtn @click="start">
     Start
   </MazBtn>
-  <MazBtn color="danger" @click="stop">
+  <MazBtn color="destructive" @click="stop">
     Stop
   </MazBtn>
   <MazBtn color="warning" @click="pause">

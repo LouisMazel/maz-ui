@@ -10,7 +10,7 @@ export function ViteCompileStyles(): Plugin {
     async buildEnd() {
       try {
         await execPromise(
-          'tailwindcss -i ./tailwindcss/tailwind.css -o dist/css/main.css --config tailwind.config.ts --postcss --minify',
+          'tailwindcss -i ./src/tailwindcss/tailwind.css -o dist/css/main.css --config tailwind.config.ts --postcss --minify',
         )
 
         logger.success('[CompileStyles] ✅ tailwind css compiled')

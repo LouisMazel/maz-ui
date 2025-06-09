@@ -27,16 +27,16 @@ const { hoverable, backgroundEven, backgroundOdd } = useInjectStrict(mazTableKey
 <style lang="postcss" scoped>
   .m-table-row {
   &.--background-odd {
-    @apply odd:maz-bg-color-lighter dark:odd:maz-bg-color-light;
+    @apply odd:maz-bg-surface-300 dark:odd:maz-bg-surface-400;
   }
 
   &.--background-even {
-    @apply even:maz-bg-color-lighter dark:even:maz-bg-color-light;
+    @apply even:maz-bg-surface-300 dark:even:maz-bg-surface-400;
   }
 
   &.--hoverable {
     &:hover {
-      @apply maz-cursor-pointer maz-bg-color-dark;
+      @apply maz-cursor-pointer maz-bg-surface-600;
     }
   }
 }

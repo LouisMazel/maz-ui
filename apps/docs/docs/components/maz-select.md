@@ -18,7 +18,7 @@ description: MazSelect is a standalone component that replaces the standard html
     label="Select color"
     v-model="selectedValue"
     :color="selectedValue"
-    :options="['primary', 'secondary', 'info', 'success', 'danger', 'warning']"
+    :options="['primary', 'secondary', 'info', 'success', 'destructive', 'warning']"
   />
 
   <br />
@@ -34,7 +34,7 @@ description: MazSelect is a standalone component that replaces the standard html
       v-model="selectedValue"
       label="Select color"
       :color="color"
-      :options="['primary', 'secondary', 'info', 'success', 'danger', 'warning']"
+      :options="['primary', 'secondary', 'info', 'success', 'destructive', 'warning']"
     />
 
     selectedValue: {{ selectedValue }}
@@ -198,7 +198,7 @@ Group your options like a native optgroup
     import { ref } from 'vue'
     const selectedValue = ref()
     const optGroup = [
-      { label: 'Basic colors', options: ['primary', 'secondary', 'danger'] },
+      { label: 'Basic colors', options: ['primary', 'secondary', 'destructive'] },
       { label: 'Custom colors', options: [{ label: 'third', value: 'third' }] },
     ]
   </script>
@@ -307,7 +307,7 @@ If you want custom keys of these options, you can use:
 
   <script lang="ts" setup>
     import { ref } from 'vue'
-    const selectedValueCustom = ref('danger')
+    const selectedValueCustom = ref('destructive')
 
     const customOptions = [
       { valueOption: 'primary', labelOption: 'primary label', inputLabel: 'primary input', },
@@ -315,7 +315,7 @@ If you want custom keys of these options, you can use:
       { valueOption: 'info', labelOption: 'info label', inputLabel: 'info input', },
       { valueOption: 'success', labelOption: 'success label', inputLabel: 'success input', },
       { valueOption: 'warning', labelOption: 'warning label', inputLabel: 'warning input', },
-      { valueOption: 'danger', labelOption: 'danger label', inputLabel: 'danger input', },
+      { valueOption: 'destructive', labelOption: 'destructive label', inputLabel: 'destructive input', },
       { valueOption: 'white', labelOption: 'white label', inputLabel: 'white input', },
       { valueOption: 'black', labelOption: 'black label', inputLabel: 'black input', },
     ]
@@ -330,7 +330,7 @@ If you want custom keys of these options, you can use:
 
   const optGroupValue = ref()
   const selectedValue = ref()
-  const selectedValueCustom = ref('danger')
+  const selectedValueCustom = ref('destructive')
   const selectedUser = ref()
   const selectedValues = ref()
 
@@ -340,13 +340,13 @@ If you want custom keys of these options, you can use:
     { label: 'info', value: 'info' },
     { label: 'success', value: 'success' },
     { label: 'warning', value: 'warning' },
-    { label: 'danger', value: 'danger' },
+    { label: 'destructive', value: 'destructive' },
     { label: 'white', value: 'white' },
     { label: 'black', value: 'black' },
   ]
 
   const optGroup = [
-    { label: 'Basic colors', options: ['primary', 'secondary', 'danger'] },
+    { label: 'Basic colors', options: ['primary', 'secondary', 'destructive'] },
     { label: 'Custom colors', options: [{ label: 'third', value: 'third' }] },
   ]
 
@@ -363,7 +363,7 @@ If you want custom keys of these options, you can use:
     { valueOption: 'info', labelOption: 'info label', inputLabel: 'info input', },
     { valueOption: 'success', labelOption: 'success label', inputLabel: 'success input', },
     { valueOption: 'warning', labelOption: 'warning label', inputLabel: 'warning input', },
-    { valueOption: 'danger', labelOption: 'danger label', inputLabel: 'danger input', },
+    { valueOption: 'destructive', labelOption: 'destructive label', inputLabel: 'destructive input', },
     { valueOption: 'white', labelOption: 'white label', inputLabel: 'white input', },
     { valueOption: 'black', labelOption: 'black label', inputLabel: 'black input', },
   ]

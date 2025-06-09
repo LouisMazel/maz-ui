@@ -70,5 +70,16 @@
       "strings": "on"
     },
     "editor.wordBasedSuggestions": "allDocuments"
-  }
+  },
+  "tailwindCSS.includeLanguages": {
+    "vue": "html",
+    "vue-html": "html",
+    "css": "css",
+    "scss": "scss",
+    "sass": "sass",
+    "less": "less",
+    "postcss": "css"
+  },
+  "tailwindCSS.validate": true,
+  "tailwindCSS.experimental.configFile": "./tailwind.config.js"
 }

@@ -41,7 +41,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install modules
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile --ignore-scripts && pnpm store prune
 
       - name: Run others tests
         run: pnpm -F maz-ui test:unit:coverage --silent

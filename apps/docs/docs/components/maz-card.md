@@ -53,7 +53,7 @@ description: MazCard is a standalone component to display some texts and images 
     <MazBtn
       size="md"
       fab
-      color="danger"
+      color="destructive"
       class="maz-mr-2"
     >
       <MazIcon name="trash" class="maz-text-xl" />
@@ -94,7 +94,7 @@ description: MazCard is a standalone component to display some texts and images 
       <MazBtn
         size="md"
         fab
-        color="danger"
+        color="destructive"
         class="maz-mr-2"
       >
         <MazIcon name="trash" />

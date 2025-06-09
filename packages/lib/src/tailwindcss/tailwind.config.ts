@@ -9,27 +9,19 @@ import { zIndex } from './variables/z-indexes'
 
 export { getNumericScreensFromTailwind }
 
-export function defineMazTailwindConfig(config?: Partial<Config> & { content: Config['content'] }): Config {
+export function defineMazTailwindConfig(config?: Partial<Config> & { content: Config['content'] }) {
   return {
-    darkMode: ['class', 'media'],
+    darkMode: ['class', '[class~="dark"]'],
     content: [],
     theme: {
       extend: {
-        // Design tokens du système de thèmes
         ...designTokens,
-
-        // Couleurs avec support alpha
         colors: getColors(),
-
-        // Écrans responsives
         screens,
-
-        // Z-index
         zIndex,
       },
     },
     plugins: [
-      // Plugin utilitaires personnalisés
       plugin(({ addUtilities }) => {
         addUtilities(utilities)
       }),
@@ -37,6 +29,3 @@ export function defineMazTailwindConfig(config?: Partial<Config> & { content: Co
     ...config,
   } satisfies Config
 }
-
-// Export de la config par défaut
-export default defineMazTailwindConfig()

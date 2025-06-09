@@ -1,6 +1,7 @@
 import type { IconComponent } from '@maz-ui/icons'
+import type { MazColor } from 'src/components'
 import type { RouteLocationRaw } from 'vue-router'
-import type { MazBtnProps } from '../../components/index.ts'
+import type { MazBtnProps } from '../../components/MazBtn.vue'
 
 export type ToasterPosition
   = | 'top'
@@ -60,9 +61,9 @@ export interface ToasterOptions {
   html?: boolean
   /**
    * The type of the toast
-   * @default 'theme'
+   * @default 'contrast'
    */
-  type?: 'theme' | 'success' | 'info' | 'warning' | 'danger'
+  type?: MazColor
   /**
    * The maximum number of toasts to display
    * @default 5

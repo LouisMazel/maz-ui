@@ -66,7 +66,7 @@ const emits = defineEmits<{
 }>()
 
 const barColor = computed<string>(() => {
-  return `var(--maz-color-${props.color})`
+  return `hsl(var(--maz-${props.color}))`
 })
 
 const progressBarWidth = ref<string>()

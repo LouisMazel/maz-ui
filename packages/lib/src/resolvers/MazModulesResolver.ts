@@ -1,7 +1,7 @@
 import type { ResolverFunction } from 'unplugin-auto-import/types'
 
-type Composables = keyof typeof import('maz-ui/src/composables/index.ts')
 type Modules = keyof typeof import('maz-ui/src/index.ts')
+type Composables = keyof typeof import('maz-ui/src/composables/index.ts')
 
 const composablesMap: Record<Composables, true> = {
   useInjectStrict: true,
@@ -14,7 +14,6 @@ const composablesMap: Record<Composables, true> = {
   useReadingTime: true,
   useStringMatching: true,
   useSwipe: true,
-  useThemeHandler: true,
   useTimer: true,
   useToast: true,
   useUserVisibility: true,

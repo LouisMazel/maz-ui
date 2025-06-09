@@ -60,7 +60,7 @@ export interface MazInputProps<T = MazInputValue> {
   assistiveText?: string
   /**
    * Theme color that affects the border and focus states of the input
-   * @values primary, secondary, info, success, warning, danger, white, black
+   * @values primary, secondary, accent, info, success, warning, destructive, contrast
    * @type {MazColor}
    * @example "primary"
    */
@@ -313,17 +313,15 @@ const borderStyle = computed(() => {
   if (!props.border)
     return undefined
   if (props.error)
-    return 'maz-border-danger'
+    return 'maz-border-destructive'
   if (props.success)
     return 'maz-border-success'
   if (props.warning)
     return 'maz-border-warning'
 
   if (isFocused.value || props.borderActive) {
-    if (props.color === 'black')
-      return 'maz-border-black'
-    if (props.color === 'danger')
-      return 'maz-border-danger'
+    if (props.color === 'destructive')
+      return 'maz-border-destructive'
     if (props.color === 'info')
       return 'maz-border-info'
     if (props.color === 'primary')
@@ -334,8 +332,10 @@ const borderStyle = computed(() => {
       return 'maz-border-success'
     if (props.color === 'warning')
       return 'maz-border-warning'
-    if (props.color === 'white')
-      return 'maz-border-white'
+    if (props.color === 'accent')
+      return 'maz-border-accent'
+    if (props.color === 'contrast')
+      return 'maz-border-contrast'
   }
   return '--default-border'
 })
@@ -406,7 +406,7 @@ function emitInputEvent(event: Event) {
 
 const stateColor = computed(() => {
   if (props.error)
-    return 'maz-text-danger-600'
+    return 'maz-text-destructive-600'
   if (props.success)
     return 'maz-text-success-600'
   if (props.warning)
@@ -430,7 +430,7 @@ const stateColor = computed(() => {
       },
       props.class,
       `--${color}`,
-    ]" :style
+    ]" :style="[style, { '--maz-input-color': `hsl(var(--maz-${color}-100))` }]"
   >
     <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
     <label v-if="topLabel" :for="instanceId" class="m-input-top-label" :class="stateColor">{{ topLabel }}</label>
@@ -509,7 +509,7 @@ const stateColor = computed(() => {
     <div
       v-if="assistiveText" class="m-input-bottom-text" :class="[
         {
-          'maz-text-danger-600': error,
+          'maz-text-destructive-600': error,
           'maz-text-success-600': success,
           'maz-text-warning-600': warning,
           'maz-text-muted': !error && !success && !warning,
@@ -530,7 +530,7 @@ const stateColor = computed(() => {
   }
 
   &-top-label {
-    @apply maz-mb-2 maz-text-normal;
+    @apply maz-mb-2 maz-text-foreground;
   }
 
   &-bottom-text {
@@ -538,14 +538,14 @@ const stateColor = computed(() => {
   }
 
   &-wrapper {
-    @apply maz-relative maz-z-1 maz-flex maz-flex-1 maz-overflow-hidden maz-border maz-border-solid maz-bg-color maz-transition-colors maz-duration-300;
+    @apply maz-relative maz-z-1 maz-flex maz-flex-1 maz-overflow-hidden maz-border maz-border-solid maz-bg-surface maz-transition-colors maz-duration-300;
 
     &.--block {
       @apply maz-w-full;
     }
 
     &.--default-border {
-      @apply maz-border-border dark:maz-border-color-lighter;
+      @apply maz-border-divider dark:maz-border-divider-400;
     }
 
     &-input {
@@ -638,15 +638,15 @@ const stateColor = computed(() => {
   }
 
   &-input {
-    @apply maz-m-0 maz-h-full maz-w-full maz-appearance-none maz-truncate maz-border-none maz-bg-transparent maz-px-4 maz-py-0 maz-text-normal maz-shadow-none maz-outline-none;
+    @apply maz-m-0 maz-h-full maz-w-full maz-appearance-none maz-truncate maz-border-none maz-bg-transparent maz-px-4 maz-py-0 maz-text-foreground maz-shadow-none maz-outline-none;
 
     transition: padding 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
 
     &:-webkit-autofill,
     &:-webkit-autofill:hover,
     &:-webkit-autofill:focus {
-      -webkit-text-fill-color: var(--maz-color-text);
-      box-shadow: 0 0 0 1000px var(--maz-color-primary-50) inset;
+      -webkit-text-fill-color: hsl(var(--maz-foreground));
+      box-shadow: 0 0 0 1000px var(--maz-input-color) inset;
       transition: background-color 5000s ease-in-out 0s;
     }
 
@@ -696,7 +696,7 @@ const stateColor = computed(() => {
 
   &.--is-disabled {
     & .m-input-wrapper {
-      @apply maz-bg-color-lighter maz-text-muted;
+      @apply maz-bg-surface-300 maz-text-muted;
     }
 
     & .m-input-input {
@@ -706,7 +706,7 @@ const stateColor = computed(() => {
 
   &:not(.--is-disabled) {
     & .m-input-wrapper {
-      @apply dark:maz-bg-color-light;
+      @apply dark:maz-bg-surface-400;
     }
   }
 
@@ -737,8 +737,8 @@ html.dark,
     &:-webkit-autofill,
     &:-webkit-autofill:hover,
     &:-webkit-autofill:focus {
-      -webkit-text-fill-color: var(--maz-color-text);
-      box-shadow: 0 0 0 1000px var(--maz-color-bg-lighter) inset;
+      -webkit-text-fill-color: hsl(var(--maz-foreground));
+      box-shadow: 0 0 0 1000px hsl(var(--maz-background-400)) inset;
       transition: background-color 5000s ease-in-out 0s;
     }
   }

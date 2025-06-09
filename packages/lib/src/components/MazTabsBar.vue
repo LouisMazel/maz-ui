@@ -167,8 +167,8 @@ function getTabStyle(index: number, disabled: boolean): StyleValue {
     return {}
   }
   return currentTab.value === index + 1
-    ? `color: var(--maz-color-text)`
-    : 'color: var(--maz-color-muted)'
+    ? `color: hsl(var(--maz-foreground))`
+    : 'color: hsl(var(--maz-muted))'
 }
 
 onBeforeMount(() => {
@@ -268,7 +268,7 @@ onMounted(() => {
 
 <style lang="postcss" scoped>
 .m-tabs-bar {
-  @apply maz-relative maz-inline-flex maz-max-w-full maz-gap-1 maz-overflow-x-auto maz-rounded maz-p-2 maz-align-top maz-bg-color dark:maz-border dark:maz-border-color-light;
+  @apply maz-relative maz-inline-flex maz-max-w-full maz-gap-1 maz-overflow-x-auto maz-rounded maz-p-2 maz-align-top maz-bg-surface dark:maz-border dark:maz-border-divider-400;
 
   &.--elevation {
     @apply maz-elevation dark:maz-shadow-none;
@@ -279,7 +279,7 @@ onMounted(() => {
   }
 
   &.--bordered {
-    @apply maz-border maz-border-color-light;
+    @apply maz-border maz-border-divider-400;
   }
 
   &__item {
@@ -288,16 +288,16 @@ onMounted(() => {
         maz-py-2 maz-text-center maz-font-medium maz-no-underline maz-transition maz-duration-200 maz-ease-in-out;
 
     &:not(.--disabled) {
-      @apply maz-cursor-pointer hover:!maz-text-normal;
+      @apply maz-cursor-pointer hover:!maz-text-foreground;
     }
 
     &.--disabled {
-      @apply maz-cursor-not-allowed maz-bg-color-lighter maz-text-gray-400 dark:maz-text-gray-500;
+      @apply maz-cursor-not-allowed maz-bg-surface-300 maz-text-gray-400 dark:maz-text-gray-500;
     }
   }
 
   &__indicator {
-    @apply maz-absolute maz-left-0 maz-rounded maz-bg-color-light maz-text-center;
+    @apply maz-absolute maz-left-0 maz-rounded maz-bg-surface-400 maz-text-center;
 
     &.--animated {
       @apply maz-transition-all maz-duration-300 maz-ease-in-out;

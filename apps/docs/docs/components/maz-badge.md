@@ -57,9 +57,9 @@ description: MazBadge is a standalone component to show short text in colored co
     'info',
     'success',
     'warning',
-    'danger',
-    'white',
-    'black',
+    'destructive',
+    'contrast',
+    'accent',
     'gray',
   ]
 </script>
@@ -91,7 +91,7 @@ description: MazBadge is a standalone component to show short text in colored co
     'info',
     'success',
     'warning',
-    'danger',
+    'destructive',
     'white',
     'black',
     'gray',
@@ -125,7 +125,7 @@ description: MazBadge is a standalone component to show short text in colored co
     'info',
     'success',
     'warning',
-    'danger',
+    'destructive',
     'white',
     'black',
     'gray',
@@ -210,11 +210,10 @@ description: MazBadge is a standalone component to show short text in colored co
     'info',
     'success',
     'warning',
-    'danger',
-    'white',
-    'black',
+    'destructive',
+    'contrast',
+    'accent',
     'gray',
-    'theme',
   ]
 
   const roundedSize = ['none', 'sm', 'md', 'lg', 'xl', 'full']

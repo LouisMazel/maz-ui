@@ -1,302 +1,558 @@
 ---
-title: Theme
-description: Maz-ui is customizable using CSS variables. Apply your color & border preferences.
+title: Theme System
+description: Modern and performant theme system for Maz-UI with TypeScript, HSL CSS variables and flexible strategies.
 ---
 
 # {{ $frontmatter.title }}
 
 {{ $frontmatter.description }}
 
-You must override `--maz-***` [CSS variables](#list-of-css-variables)
+<NpmBadge package="@maz-ui/themes"></NpmBadge>
 
-## Generate your theme with the CLI included
+## ✨ Why @maz-ui/themes?
 
-<NpmBadge package="@maz-ui/cli"></NpmBadge>
+- 🎨 **Modern HSL CSS Variables** - Maximum flexibility with colors
+- 🌓 **Smart Dark Mode** - Automatic support with `prefers-color-scheme`
+- 🚀 **Automatic Generation** - Color scales (50-950) created automatically
+- ⚡ **Performance Strategies** - Runtime, build-time or hybrid according to your needs
+- 🛡️ **Strict TypeScript** - Complete types for perfect DX
+- 🎯 **Zero FOUC** - Critical CSS injected inline to avoid flashes
+- 🔧 **Flexible Presets** - Ready-to-use and customizable configurations
 
-### Add maz-ui config file
+## Installation
 
-In the root folder of your project, add a file named `maz-ui.config.{ts, js, mjs, cjs}` as bellow ([typescript interface](#maz-ui-configuration-file-typescript-interface))
+```bash
+npm install @maz-ui/themes
+```
 
-All input colors can be in HEX, RGB, RGBA, HSL, HSLA and named formats.
+## Quick Usage
 
-No theme variables are required, you can put only one if you wish
+### 1. Plugin Configuration
 
-```ts
-import { defineConfig } from '@maz-ui/cli'
+```typescript
+// main.ts
+import { MazThemePlugin } from '@maz-ui/themes'
+import { mazUi } from '@maz-ui/themes/presets'
+import { createApp } from 'vue'
 
-export default defineConfig({
-  outputCssFilePath: './css/maz-ui-variables.css',
-  theme: {
-    colors: {
-      primary: 'hsl(210, 100%, 56%)',
-      secondary: 'hsl(164, 76%, 46%)',
-      info: 'hsl(188, 78%, 41%)',
-      success: 'hsl(80, 61%, 50%)',
-      warning: 'hsl(40, 97%, 59%)',
-      danger: 'hsl(1, 100%, 71%)',
-      bgOverlay: 'hsl(0, 0%, 0% / 30%)',
-      lightTheme: {
-        textColor: 'hsl(0, 0%, 85%)',
-        colorMuted: 'hsla(0, 0%, 0%, 0.54)',
-        bgColor: 'hsl(0, 0%, 100%)',
-      },
-      darkTheme: {
-        textColor: 'hsl(210, 8%, 14%)',
-        colorMuted: 'hsla(0, 0%, 100%, 0.54)',
-        bgColor: 'hsl(235, 16%, 15%)',
-      },
-    },
-    borderColor: 'hsl(220deg 13.04% 90.98%)',
-    borderWidth: '0.125rem',
-    borderRadius: '0.5rem',
-    fontFamily: `system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, oxygen,
-    ubuntu, cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif`,
-  },
+const app = createApp(App)
+
+app.use(MazThemePlugin, {
+  preset: mazUi,
+  strategy: 'hybrid', // 'runtime' | 'build' | 'hybrid'
+  darkModeStrategy: 'class' // 'class' | 'media' | 'auto'
 })
 ```
 
-## Generate CSS file variables
+### 2. Using in your components
 
-Two ways to generate the CSS file:
+```vue
+<script setup>
+import { useTheme } from '@maz-ui/themes'
 
-### Run CLI command
+const { toggleDarkMode, isDark, updateTheme } = useTheme()
+</script>
 
-In your terminal, on your root folder project, run this command:
-
-```bash
-npx maz-ui generate-css-vars
-# or pnpx maz-ui generate-css-vars
+<template>
+  <div class="maz-bg-background maz-text-foreground">
+    <button
+      class="maz-rounded maz-bg-primary maz-text-primary-foreground"
+      @click="toggleDarkMode"
+    >
+      {{ isDark ? '☀️' : '🌙' }} Toggle theme
+    </button>
+  </div>
+</template>
 ```
 
-### With package.json script
+## Interactive Demo
 
-```json
-{
-  "scripts": {
-    "generate-css-vars": "maz-ui generate-css-vars"
-  }
+<ComponentDemo title="Real-time theme control">
+  <div class="demo-theme-controls">
+    <div class="maz-space-y-4">
+      <h3 class="maz-text-xl maz-font-semibold">Demo Interface</h3>
+      <div class="maz-grid maz-grid-cols-1 md:maz-grid-cols-2 maz-gap-4">
+        <MazBtn color="primary">Primary Button</MazBtn>
+        <MazBtn color="secondary">Secondary Button</MazBtn>
+        <MazBtn color="success">Success Button</MazBtn>
+        <MazBtn color="warning">Warning Button</MazBtn>
+      </div>
+      <MazInput />
+      <div class="theme-controls maz-space-y-4">
+        <div class="maz-flex maz-items-center maz-gap-4">
+          <label class="maz-text-sm maz-font-medium">Mode:</label>
+          <MazBtn
+            size="sm"
+            :color="!isDark ? 'primary' : 'secondary'"
+            @click="setColorMode('light')"
+          >
+            ☀️ Light
+          </MazBtn>
+          <MazBtn
+            size="sm"
+            :color="isDark ? 'primary' : 'secondary'"
+            @click="setColorMode('dark')"
+          >
+            🌙 Dark
+          </MazBtn>
+          <MazBtn
+            size="sm"
+            :color="colorMode === 'auto' ? 'primary' : 'secondary'"
+            @click="setColorMode('auto')"
+          >
+            🔄 Auto
+          </MazBtn>
+        </div>
+        <div class="maz-space-y-2">
+          <label class="maz-text-sm maz-font-medium">Preset:</label>
+          <div class="maz-flex maz-gap-2">
+            <MazBtn
+              size="sm"
+              :color="currentPreset.name === 'default' ? 'primary' : 'secondary'"
+              @click="changePreset('mazUi')"
+            >
+              Maz-UI
+            </MazBtn>
+            <MazBtn
+              size="sm"
+              :color="currentPreset.name === 'ocean' ? 'primary' : 'secondary'"
+              @click="changePreset('ocean')"
+            >
+              Ocean
+            </MazBtn>
+            <MazBtn
+              size="sm"
+              :color="currentPreset.name === 'pristine' ? 'primary' : 'secondary'"
+              @click="changePreset('pristine')"
+            >
+              Pristine
+            </MazBtn>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<template #code>
+
+```vue
+<script setup>
+import { useTheme } from '@maz-ui/themes'
+import { mazUi, ocean, pristine } from '@maz-ui/themes/presets'
+
+const {
+  isDark,
+  colorMode,
+  currentPreset,
+  setColorMode,
+  updateTheme
+} = useTheme()
+
+const presets = { mazUi, pristine, ocean }
+const originalPreset = ref(null)
+
+function changePreset(presetName) {
+  updateTheme(presets[presetName])
 }
+</script>
+
+<template>
+  <div class="maz-bg-background maz-text-foreground">
+    <MazBtn
+      :color="isDark ? 'primary' : 'secondary'"
+      @click="setColorMode(isDark ? 'light' : 'dark')"
+    >
+      {{ isDark ? '☀️' : '🌙' }} Toggle
+    </MazBtn>
+
+    <MazBtn @click="changePreset('ocean')">
+      Ocean Theme
+    </MazBtn>
+  </div>
+</template>
 ```
 
-```bash
-npm run generate-css-vars
-# or yanr generate-css-vars
-# or pnpm generate-css-vars
+  </template>
+</ComponentDemo>
+
+## Available Presets
+
+### Maz-UI (Default)
+
+The default theme inspired by Maz-UI identity with vibrant and modern colors.
+
+```typescript
+import { mazUi } from '@maz-ui/themes/presets'
 ```
 
-Then, the file will be generated, and you must import it in your project.
+### Pristine
 
-**Be careful, depending on the chosen colors, some variants may need to be adjusted**
+A minimalist and elegant theme inspired by Apple design with pure black and white aesthetics.
 
-## List of CSS variables
+```typescript
+import { pristine } from '@maz-ui/themes/presets'
+```
 
-::: details Show CSS variables
+### Ocean
+
+A vibrant ocean-inspired theme with deep blues, aquatic greens, and coral accents. Features rounded borders and Poppins font for a fresh, modern look.
+
+```typescript
+import { ocean } from '@maz-ui/themes/presets'
+```
+
+## Rendering Strategies
+
+### 🚀 Hybrid (Recommended)
+
+The hybrid strategy combines the best of both worlds:
+
+- Critical CSS injected inline (zero FOUC)
+- Full CSS loaded asynchronously
+- Optimal performance
+
+```typescript
+app.use(MazThemePlugin, {
+  preset: mazUi,
+  strategy: 'hybrid'
+})
+```
+
+### ⚡ Runtime
+
+CSS generated and injected dynamically on client-side.
+Perfect for applications with frequent theme changes.
+
+```typescript
+app.use(MazThemePlugin, {
+  preset: mazUi,
+  strategy: 'runtime'
+})
+```
+
+### 🏗️ Build
+
+CSS generated at build-time and included in the bundle.
+Optimal for static sites without theme changes.
+
+```typescript
+app.use(MazThemePlugin, {
+  preset: mazUi,
+  strategy: 'build'
+})
+```
+
+## Creating Custom Themes
+
+### Basic Theme
+
+<br />
+
+<ComponentDemo title="Create your own theme">
+  <MazBtn @click="applyCustomTheme" color="info">
+    Apply Custom Theme
+  </MazBtn>
+  <MazBtn @click="resetTheme" color="secondary" class="maz-ml-2">
+    Reset
+  </MazBtn>
+
+  <div class="maz-mt-4 maz-p-4 maz-bg-primary/10 maz-rounded-[var(--maz-radius)]">
+    <p class="maz-text-primary maz-font-medium">
+      Custom theme applied with purple colors!
+    </p>
+  </div>
+
+<template #code>
+
+```typescript
+import { definePreset, mazUi } from '@maz-ui/themes'
+
+const customTheme = definePreset({
+  base: mazUi,
+  overrides: {
+    name: 'custom-purple',
+    appearance: {
+      radius: '1rem'
+    },
+    colors: {
+      light: {
+        primary: '280 100% 60%',
+        secondary: '300 50% 90%',
+        accent: '260 100% 70%'
+      },
+      dark: {
+        primary: '280 100% 70%',
+        secondary: '300 30% 20%',
+        accent: '260 100% 80%'
+      }
+    }
+  }
+})
+
+// Usage
+const { updateTheme } = useTheme()
+updateTheme(customTheme)
+```
+
+  </template>
+</ComponentDemo>
+
+### Advanced Theme with Overrides
+
+```typescript
+import { definePreset, mazUi } from '@maz-ui/themes'
+
+const brandTheme = definePreset({
+  base: mazUi,
+  overrides: {
+    name: 'brand',
+    appearance: {
+      'radius': '0.75rem',
+      'border-width': '2px',
+      'font-family': 'Inter, sans-serif'
+    },
+    colors: {
+      light: {
+        primary: '210 100% 50%',
+        secondary: '210 40% 96%',
+        background: '210 20% 98%',
+        accent: '280 100% 70%'
+      },
+      dark: {
+        primary: '210 100% 60%',
+        secondary: '210 40% 15%',
+        background: '210 20% 8%',
+        accent: '280 100% 80%'
+      }
+    }
+  }
+})
+```
+
+## useTheme Composable API
+
+```typescript
+const {
+  // Reactive state
+  currentPreset, // Ref<BaseThemePreset>
+  colorMode, // Ref<'light' | 'dark' | 'auto'>
+  isDark, // Ref<boolean>
+  strategy, // Ref<'runtime' | 'build' | 'hybrid'>
+
+  // Actions
+  updateTheme, // (preset: ThemePreset | Partial<ThemePreset>) => void
+  setColorMode, // (mode: 'light' | 'dark' | 'auto') => void
+  toggleDarkMode // () => void
+} = useTheme()
+```
+
+### Advanced Usage Examples
+
+```vue
+<script setup>
+import { useTheme } from '@maz-ui/themes'
+import { computed } from 'vue'
+
+const { currentPreset, isDark, updateTheme, setColorMode } = useTheme()
+
+// Computed for interface
+const themeIcon = computed(() => isDark.value ? '☀️' : '🌙')
+const themeName = computed(() => currentPreset.value.name)
+
+// Function to apply a temporary custom theme
+function previewColor(color: string) {
+  updateTheme({
+    colors: {
+      light: { primary: color },
+      dark: { primary: color }
+    }
+  })
+}
+
+// Auto mode with system detection
+function enableAutoMode() {
+  setColorMode('auto')
+}
+</script>
+```
+
+## Build-time and CSS Generation
+
+For projects requiring build-time generated CSS:
+
+```typescript
+import { buildThemeCSS, generateThemeBundle } from '@maz-ui/themes/build'
+import { mazUi, pristine } from '@maz-ui/themes/presets'
+
+// CSS for a single preset
+const css = buildThemeCSS({
+  preset: mazUi,
+  mode: 'both', // 'light' | 'dark' | 'both'
+  darkSelector: 'class', // 'class' | 'media'
+  prefix: 'maz'
+})
+
+// Bundle for multiple presets
+const bundle = generateThemeBundle([mazUi, pristine], {
+  mode: 'both',
+  darkSelector: 'class'
+})
+```
+
+## Generated CSS Variables
+
+The system automatically generates all necessary variables:
+
+### Base Variables
 
 ```css
 :root {
-  /* PRIMARY */
-  --maz-color-primary-50: hsl(210deg 100% 95%);
-  --maz-color-primary-100: hsl(210deg 100% 87%);
-  --maz-color-primary-200: hsl(210deg 100% 79%);
-  --maz-color-primary-300: hsl(210deg 100% 71%);
-  --maz-color-primary-400: hsl(210deg 100% 64%);
-  --maz-color-primary: hsl(210deg 100% 56%);
-  --maz-color-primary-600: hsl(210deg 79% 46%);
-  --maz-color-primary-700: hsl(210deg 78% 36%);
-  --maz-color-primary-800: hsl(210deg 79% 26%);
-  --maz-color-primary-900: hsl(210deg 79% 17%);
-  --maz-color-primary-alpha: hsl(210deg 100% 56% / 60%);
-  --maz-color-primary-alpha-20: hsl(210deg 100% 56% / 20%);
-  --maz-color-primary-alpha-10: hsl(210deg 100% 56% / 10%);
-  --maz-color-primary-alpha-05: hsl(210deg 100% 56% / 05%);
-  --maz-color-primary-contrast: hsl(0deg 0% 100%);
+  /* Main colors */
+  --maz-primary: 210 100% 56%;
+  --maz-primary-foreground: 0 0% 100%;
+  --maz-secondary: 164 76% 46%;
+  --maz-background: 0 0% 100%;
+  --maz-foreground: 210 8% 14%;
 
-  --maz-color-secondary-50: hsl(164deg 65% 93%);
-  --maz-color-secondary-100: hsl(164deg 66% 84%);
-  --maz-color-secondary-200: hsl(164deg 66% 75%);
-  --maz-color-secondary-300: hsl(164deg 66% 65%);
-  --maz-color-secondary-400: hsl(164deg 66% 56%);
-  --maz-color-secondary: hsl(164deg 76% 46%);
-  --maz-color-secondary-600: hsl(164deg 76% 38%);
-  --maz-color-secondary-700: hsl(164deg 77% 30%);
-  --maz-color-secondary-800: hsl(164deg 77% 22%);
-  --maz-color-secondary-900: hsl(164deg 77% 14%);
-  --maz-color-secondary-alpha: hsl(164deg 76% 46% / 60%);
-  --maz-color-secondary-alpha-20: hsl(164deg 76% 46% / 20%);
-  --maz-color-secondary-alpha-10: hsl(164deg 76% 46% / 10%);
-  --maz-color-secondary-alpha-05: hsl(164deg 76% 46% / 05%);
-  --maz-color-secondary-contrast: hsl(0deg 0% 100%);
-
-  --maz-color-info-50: hsl(188deg 53% 93%);
-  --maz-color-info-100: hsl(188deg 54% 82%);
-  --maz-color-info-200: hsl(188deg 53% 72%);
-  --maz-color-info-300: hsl(188deg 53% 61%);
-  --maz-color-info-400: hsl(188deg 53% 51%);
-  --maz-color-info: hsl(188deg 78% 41%);
-  --maz-color-info-600: hsl(188deg 78% 34%);
-  --maz-color-info-700: hsl(188deg 78% 26%);
-  --maz-color-info-800: hsl(188deg 78% 19%);
-  --maz-color-info-900: hsl(188deg 77% 12%);
-  --maz-color-info-alpha: hsl(188deg 78% 41% / 60%);
-  --maz-color-info-alpha-20: hsl(188deg 78% 41% / 20%);
-  --maz-color-info-alpha-10: hsl(188deg 78% 41% / 10%);
-  --maz-color-info-alpha-05: hsl(188deg 78% 41% / 05%);
-  --maz-color-info-contrast: hsl(0deg 0% 100%);
-
-  --maz-color-success-50: hsl(80deg 63% 94%);
-  --maz-color-success-100: hsl(80deg 61% 85%);
-  --maz-color-success-200: hsl(80deg 60% 76%);
-  --maz-color-success-300: hsl(80deg 61% 68%);
-  --maz-color-success-400: hsl(80deg 61% 59%);
-  --maz-color-success: hsl(80deg 61% 50%);
-  --maz-color-success-600: hsl(80deg 61% 41%);
-  --maz-color-success-700: hsl(80deg 60% 33%);
-  --maz-color-success-800: hsl(80deg 60% 24%);
-  --maz-color-success-900: hsl(80deg 61% 15%);
-  --maz-color-success-alpha: hsl(80deg 61% 50% / 60%);
-  --maz-color-success-alpha-20: hsl(80deg 61% 50% / 20%);
-  --maz-color-success-alpha-10: hsl(80deg 61% 50% / 10%);
-  --maz-color-success-alpha-05: hsl(80deg 61% 50% / 05%);
-  --maz-color-success-contrast: hsl(210deg 8% 14%);
-
-  --maz-color-warning-50: hsl(40deg 100% 95%);
-  --maz-color-warning-100: hsl(40deg 97% 88%);
-  --maz-color-warning-200: hsl(40deg 98% 81%);
-  --maz-color-warning-300: hsl(40deg 97% 73%);
-  --maz-color-warning-400: hsl(40deg 98% 66%);
-  --maz-color-warning: hsl(40deg 97% 59%);
-  --maz-color-warning-600: hsl(40deg 68% 49%);
-  --maz-color-warning-700: hsl(40deg 67% 38%);
-  --maz-color-warning-800: hsl(40deg 68% 28%);
-  --maz-color-warning-900: hsl(40deg 67% 18%);
-  --maz-color-warning-alpha: hsl(40deg 97% 59% / 60%);
-  --maz-color-warning-alpha-20: hsl(40deg 97% 59% / 20%);
-  --maz-color-warning-alpha-10: hsl(40deg 97% 59% / 10%);
-  --maz-color-warning-alpha-05: hsl(40deg 97% 59% / 05%);
-  --maz-color-warning-contrast: hsl(217deg 19% 27%);
-
-  --maz-color-danger-50: hsl(1deg 100% 96%);
-  --maz-color-danger-100: hsl(1deg 100% 91%);
-  --maz-color-danger-200: hsl(2deg 100% 86%);
-  --maz-color-danger-300: hsl(1deg 100% 81%);
-  --maz-color-danger-400: hsl(1deg 100% 76%);
-  --maz-color-danger: hsl(1deg 100% 71%);
-  --maz-color-danger-600: hsl(1deg 58% 58%);
-  --maz-color-danger-700: hsl(1deg 41% 46%);
-  --maz-color-danger-800: hsl(1deg 42% 34%);
-  --maz-color-danger-900: hsl(1deg 41% 21%);
-  --maz-color-danger-alpha: hsl(1deg 100% 71% / 60%);
-  --maz-color-danger-alpha-20: hsl(1deg 100% 71% / 20%);
-  --maz-color-danger-alpha-10: hsl(1deg 100% 71% / 10%);
-  --maz-color-danger-alpha-05: hsl(1deg 100% 71% / 05%);
-  --maz-color-danger-contrast: hsl(0deg 0% 100%);
-
-  /* WHITE */
-  --maz-color-white: hsl(0deg 0% 100%);
-  --maz-color-white-contrast: hsl(0deg 0% 0%);
-
-  /* BLACK */
-  --maz-color-black: hsl(0deg 0% 0%);
-  --maz-color-black-contrast: hsl(0deg 0% 100%);
-
-  /** TEXT COLOR LIGHT **/
-  --maz-color-text-light: hsl(210deg 8% 14%);
-  --maz-color-muted-light: hsl(0deg 0% 0% / 54%);
-
-  /** TEXT COLOR DARK **/
-  --maz-color-text-dark: hsl(0deg 0% 85%);
-  --maz-color-muted-dark: hsl(0deg 0% 89% / 54%);
-
-  /** BG OVERLAY **/
-  --maz-bg-overlay: hsl(0deg 0% 0% / 30%);
-
-  /** BG LIGHT COLOR **/
-  --maz-bg-color-light-lighter: hsl(0deg 0% 97%);
-  --maz-bg-color-light-light: hsl(0deg 0% 94%);
-  --maz-bg-color-light: hsl(0deg 0% 100%);
-  --maz-bg-color-light-dark: hsl(0deg 0% 91%);
-  --maz-bg-color-light-darker: hsl(0deg 0% 88%);
-
-  /** BG DARK COLOR **/;
-  --maz-bg-color-dark-lighter: hsl(238deg 16% 25%);
-  --maz-bg-color-dark-light: hsl(237deg 16% 20%);
-  --maz-bg-color-dark: hsl(235deg 16% 15%);
-  --maz-bg-color-dark-dark: hsl(238deg 16% 12%);
-  --maz-bg-color-dark-darker: hsl(238deg 16% 7%);
-
-  /**
-  * Border of components
-  **/
-  --maz-border-color: hsl(220deg 13.04% 90.98%);
-
-  /**
-  * DEFAULT BORDER WIDTH (0.063rem = 1px with a font-size base of 16px)
-  **/
+  /* Design tokens */
+  --maz-radius: 0.7rem;
   --maz-border-width: 0.063rem;
-
-  /**
-  * DEFAULT BORDER RADIUS (0.7rem = 11.2px with a font-size base of 16px)
-  **/
-  --maz-border-radius: 0.7rem;
-
-  /**
-  * FONT FAMILY
-  * Not used in the library --> Use this variable on your <html> element (optional)
-  **/
-  --maz-font-family: system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI',
-    roboto, oxygen, ubuntu, cantarell, 'Fira Sans', 'Droid Sans',
-    'Helvetica Neue', sans-serif;
+  --maz-font-family: Manrope, sans-serif;
 }
 ```
 
-:::
+### Automatic Color Scales
 
-## Maz-UI configuration file Typescript interface
+```css
+:root {
+  /* Primary scale generated automatically */
+  --maz-primary-50: 210 100% 95%;
+  --maz-primary-100: 210 100% 87%;
+  --maz-primary-200: 210 100% 79%;
+  /* ... up to 900 */
+  --maz-primary-900: 210 79% 17%;
+}
+```
 
-::: details Show Typescript interface
+### Dark Mode
 
-```ts
-interface MazUiConfig {
-  /**
-   * Path and name of generate CSS file
-   * @example './css/maz-ui-variables.css'
-   */
-  outputCssFilePath: string
-  theme: {
-    colors: {
-      primary?: string
-      secondary?: string
-      info?: string
-      danger?: string
-      success?: string
-      warning?: string
-      bgOverlay?: string
-      lightTheme?: {
-        textColor?: string
-        colorMuted?: string
-        bgColor?: string
-      }
-      darkTheme?: {
-        textColor?: string
-        colorMuted?: string
-        bgColor?: string
-      }
-    }
-    /**
-     * Border color applied to components like: inputs, card, etc
-     */
-    borderColor?: string
-    /**
-     * Border width applied to components like: inputs, card, etc
-     */
-    borderWidth?: string
-    /**
-     * Radius applied to rounded components like: buttons, inputs, card, etc.
-     */
-    borderRadius?: string
-    fontFamily?: string
+```css
+.dark {
+  --maz-background: 235 16% 15%;
+  --maz-foreground: 0 0% 85%;
+  /* Variables automatically adapted */
+}
+
+/* Or with media query */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --maz-background: 235 16% 15%;
+    --maz-foreground: 0 0% 85%;
   }
 }
 ```
 
+## Usage with Nuxt
+
+For Nuxt users, check the [dedicated Nuxt documentation](/guide/nuxt) which covers installation and framework-specific configuration.
+
+## Migration from Legacy System
+
+If you're using the legacy theme system with CLI:
+
+::: code-group
+
+```typescript [Before (CLI)]
+// maz-ui.config.ts
+export default defineConfig({
+  theme: {
+    colors: {
+      primary: 'hsl(210, 100%, 56%)',
+      secondary: 'hsl(164, 76%, 46%)'
+    }
+  }
+})
+```
+
+```typescript [After (@maz-ui/themes)]
+// main.ts
+import { definePreset, mazUi } from '@maz-ui/themes'
+
+const myTheme = definePreset({
+  base: mazUi,
+  overrides: {
+    colors: {
+      light: {
+        primary: '210 100% 56%',
+        secondary: '164 76% 46%'
+      }
+    }
+  }
+})
+
+app.use(MazThemePlugin, { preset: myTheme })
+```
+
 :::
+
+The new system offers much more flexibility and performance!
+
+<script setup>
+import { useTheme } from '@maz-ui/themes'
+import { mazUi, pristine, ocean } from '@maz-ui/themes/presets'
+import { ref } from 'vue'
+
+const {
+  isDark,
+  colorMode,
+  currentPreset,
+  setColorMode,
+  updateTheme
+} = useTheme()
+
+const presets = { mazUi, pristine, ocean }
+const originalPreset = ref(null)
+
+function changePreset(presetName) {
+  updateTheme(presets[presetName])
+}
+
+function applyCustomTheme() {
+  if (!originalPreset.value) {
+    originalPreset.value = currentPreset.value
+  }
+
+  updateTheme({
+    name: 'custom-purple',
+    colors: {
+      light: {
+        'primary': '280 100% 60%',
+        'secondary': '300 50% 90%',
+        'accent': '260 100% 70%'
+      },
+      dark: {
+        'primary': '280 100% 70%',
+        'secondary': '300 30% 20%',
+        'accent': '260 100% 80%'
+      }
+    }
+  })
+}
+
+function resetTheme() {
+  if (originalPreset.value) {
+    updateTheme(originalPreset.value)
+    originalPreset.value = null
+  }
+}
+</script>
+
+<style scoped>
+.demo-theme-controls {
+  @apply maz-w-full;
+}
+
+.theme-controls {
+  @apply maz-border-t maz-border-divider maz-pt-4;
+}
+</style>

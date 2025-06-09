@@ -1,8 +1,0 @@
-@layer maz-ui-theme {
-  :root {
-    --maz-color-white: hsl(0deg 0% 100%);
-    --maz-color-white-contrast: hsl(0deg 0% 0%);
-    --maz-color-black: hsl(0deg 0% 0%);
-    --maz-color-black-contrast: hsl(0deg 0% 100%);
-  }
-}

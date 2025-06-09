@@ -55,9 +55,9 @@ description: MazRadio is a standalone component
     'info',
     'success',
     'warning',
-    'danger',
-    'white',
-    'black',
+    'destructive',
+    'accent',
+    'contrast',
   ]
 </script>
 ```
@@ -130,9 +130,9 @@ description: MazRadio is a standalone component
     'info',
     'success',
     'warning',
-    'danger',
-    'white',
-    'black',
+    'destructive',
+    'accent',
+    'contrast',
   ]
 
   const sizes: Size[] = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']

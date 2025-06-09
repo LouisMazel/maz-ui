@@ -215,25 +215,9 @@ defineExpose<{
 const listOpened = ref(false)
 const tmpModelValueIndex = ref<number>()
 
-const isBlackOrTransparentColor = computed(() =>
-  ['black', 'transparent', 'white'].includes(props.color),
-)
-
-const selectedTextColor = computed(() =>
-  isBlackOrTransparentColor.value
-    ? `var(--maz-color-black)`
-    : `var(--maz-color-${props.color}-800)`,
-)
-const selectedBgColor = computed(() =>
-  isBlackOrTransparentColor.value
-    ? 'var(--maz-color-muted)'
-    : `var(--maz-color-${props.color}-100)`,
-)
-const keyboardSelectedBgColor = computed(() =>
-  isBlackOrTransparentColor.value
-    ? 'var(--maz-color-muted)'
-    : `var(--maz-color-${props.color}-200)`,
-)
+const selectedTextColor = computed(() => `hsl(var(--maz-${props.color}-800))`)
+const selectedBgColor = computed(() => `hsl(var(--maz-${props.color}-100))`)
+const keyboardSelectedBgColor = computed(() => `hsl(var(--maz-${props.color}-200))`)
 
 const hasListOpened = computed(() => listOpened.value || props.open)
 
@@ -722,7 +706,7 @@ function updateValue(inputOption: MazSelectNormalizedOption, mustCloseList = tru
         -->
         <slot v-if="!optionList || optionList.length <= 0" name="no-results">
           <span class="m-select-list__no-results">
-            <MazNoSymbol class="maz-size-6 maz-text-normal" />
+            <MazNoSymbol class="maz-size-6 maz-text-foreground" />
           </span>
         </slot>
         <div v-else class="m-select-list__scroll-wrapper" tabindex="-1">
@@ -832,7 +816,7 @@ function updateValue(inputOption: MazSelectNormalizedOption, mustCloseList = tru
   }
 
   &-chevron {
-    @apply maz-text-[1.2em] maz-text-normal maz-transition-all maz-duration-300 maz-ease-out;
+    @apply maz-text-[1.2em] maz-text-foreground maz-transition-all maz-duration-300 maz-ease-out;
   }
 
   &.--is-open {
@@ -842,7 +826,7 @@ function updateValue(inputOption: MazSelectNormalizedOption, mustCloseList = tru
   }
 
   .m-select-list {
-    @apply maz-absolute maz-z-default-backdrop maz-flex maz-flex-col maz-gap-1 maz-overflow-hidden maz-rounded maz-bg-color maz-p-2 maz-elevation dark:maz-border dark:maz-border-color-light;
+    @apply maz-absolute maz-z-default-backdrop maz-flex maz-flex-col maz-gap-1 maz-overflow-hidden maz-rounded maz-bg-surface maz-p-2 maz-elevation dark:maz-border dark:maz-border-divider-400;
 
     &-optgroup {
       @apply maz-flex-none maz-p-0.5 maz-text-start maz-text-[0.875em] maz-text-muted;
@@ -868,6 +852,28 @@ function updateValue(inputOption: MazSelectNormalizedOption, mustCloseList = tru
 
     &__scroll-wrapper {
       @apply maz-flex maz-flex-1 maz-flex-col maz-gap-1 maz-overflow-auto;
+
+      /* Custom scrollbar for webkit browsers (Chrome, Safari, Edge) */
+      &::-webkit-scrollbar {
+        width: 0.1875rem;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: hsl(var(--maz-background-200));
+        border-radius: 1000px;
+
+        &:hover {
+          background-color: hsl(var(--maz-background-200));
+        }
+      }
+
+      /* Modern CSS for all browsers (fallback) */
+      scrollbar-width: thin;
+      scrollbar-color: hsl(var(--maz-background-200)) transparent;
     }
 
     &__no-results {
@@ -875,14 +881,14 @@ function updateValue(inputOption: MazSelectNormalizedOption, mustCloseList = tru
     }
 
     &-item {
-      @apply maz-flex maz-w-full maz-cursor-pointer maz-items-center maz-gap-3 maz-truncate maz-rounded maz-bg-transparent maz-px-3 maz-py-[0.5em] maz-text-start maz-text-[1em] maz-transition-colors maz-duration-300 maz-ease-in-out focus-within:maz-bg-color-light hover:maz-bg-color-light;
+      @apply maz-flex maz-w-full maz-cursor-pointer maz-items-center maz-gap-3 maz-truncate maz-rounded maz-bg-transparent maz-px-3 maz-py-[0.5em] maz-text-start maz-text-[1em] maz-transition-colors maz-duration-300 maz-ease-in-out focus-within:maz-bg-surface-400 hover:maz-bg-surface-400;
 
       span {
         @apply maz-truncate;
       }
 
       &.--is-keyboard-selected {
-        @apply maz-bg-color-light dark:maz-bg-color-lighter;
+        @apply maz-bg-surface-400 dark:maz-bg-surface-300;
 
         &.--is-selected {
           background-color: var(--keyboard-selected-bg-color);
@@ -906,7 +912,7 @@ function updateValue(inputOption: MazSelectNormalizedOption, mustCloseList = tru
         }
 
         &.--transparent {
-          @apply maz-bg-color;
+          @apply maz-bg-surface;
         }
       }
     }

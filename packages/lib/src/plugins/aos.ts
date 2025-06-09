@@ -92,40 +92,37 @@ export class AosHandler {
           const duration = element.getAttribute('data-maz-aos-duration')
           const delay = element.getAttribute('data-maz-aos-delay')
 
+          const animationDuration = duration ? Number.parseInt(duration) : this.options.animation.duration
+          const animationDelay = delay ? Number.parseInt(delay) : this.options.animation.delay
+          const totalAnimationTime = animationDuration + animationDelay
+
           if (!duration) {
             element.style.transitionDuration = `${this.options.animation.duration}ms`
-            setTimeout(() => {
-              element.style.transitionDuration = '0'
-            }, 1000)
           }
 
           if (!delay) {
             element.style.transitionDelay = `${this.options.animation.delay}ms`
-            setTimeout(() => {
-              element.style.transitionDelay = '0'
-            }, 1000)
           }
 
           element.classList.add('maz-aos-animate')
 
-          if (!useOnce) {
-            element.classList.remove('maz-aos-animate')
-            return
+          if (useOnce) {
+            // Si once=true, unobserve après l'animation
+            setTimeout(() => {
+              const parentAnchor = element.getAttribute('data-maz-aos-anchor')
+              if (parentAnchor) {
+                const anchorElement = document.querySelector<HTMLElement>(parentAnchor)
+                if (anchorElement) {
+                  observer.unobserve(anchorElement)
+                }
+              }
+              observer.unobserve(element)
+            }, totalAnimationTime + 100) // petit buffer
           }
-
-          const parentAnchor = element.getAttribute('data-maz-aos-anchor')
-          if (!parentAnchor) {
-            return
-          }
-
-          const anchorElement = document.querySelector<HTMLElement>(parentAnchor)
-          if (anchorElement) {
-            observer.unobserve(anchorElement)
-          }
-
-          observer.unobserve(element)
+          // Si once=false, on laisse l'élément observé pour répéter l'animation
         }
-        else {
+        else if (!useOnce) {
+          // Retirer la classe seulement si l'élément sort de vue ET que once=false
           element.classList.remove('maz-aos-animate')
         }
       }

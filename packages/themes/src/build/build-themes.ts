@@ -85,7 +85,6 @@ export function createThemeStylesheet(css: string, options: {
   return styleTag
 }
 
-// Utilitaires supplémentaires pour les builds optimisés
 export function buildSeparateThemeFiles(preset: BaseThemePreset, options: {
   prefix?: string
   darkSelector?: 'class' | 'media'

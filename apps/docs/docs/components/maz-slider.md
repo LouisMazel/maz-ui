@@ -64,7 +64,7 @@ description: MazSlider is a standalone component that replaces the standard html
 <MazSlider
   v-model="multipleSilders"
   :labels="multipleSildersLabels"
-  color="danger"
+  color="destructive"
   size="1.2rem"
 />
 
@@ -94,7 +94,7 @@ description: MazSlider is a standalone component that replaces the standard html
   <MazSlider
     v-model="multipleSilders"
     :labels="multipleSildersLabels"
-    color="danger"
+    color="destructive"
     size="1.2rem"
   />
 

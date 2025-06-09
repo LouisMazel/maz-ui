@@ -26,7 +26,7 @@
               position="bottom right"
             >
               <span class="maz-capitalize">
-                {{ theme }}
+                {{ colorMode }}
               </span>
 
               <template #dropdown>
@@ -34,28 +34,28 @@
                   <MazBtn
                     color="transparent"
                     class="maz-text-nowrap"
-                    @click="autoSetTheme"
+                    @click="colorMode = 'auto'"
                   >
                     Auto
                   </MazBtn>
                   <MazBtn
                     color="transparent"
                     class="maz-text-nowrap"
-                    @click="selectedTheme = 'dark'"
+                    @click="colorMode = 'dark'"
                   >
                     Dark
                   </MazBtn>
                   <MazBtn
                     color="transparent"
                     class="maz-text-nowrap"
-                    @click="selectedTheme = 'light'"
+                    @click="colorMode = 'light'"
                   >
                     Light
                   </MazBtn>
                   <MazBtn
                     color="transparent"
                     class="maz-text-nowrap"
-                    @click="selectedTheme = 'system'"
+                    @click="colorMode = 'system'"
                   >
                     System
                   </MazBtn>
@@ -80,15 +80,13 @@ function action() {
   return sleep(20000)
 }
 
-const { autoSetTheme, selectedTheme, theme } = useThemeHandler()
-
-autoSetTheme()
+const { colorMode } = useTheme()
 </script>
 
 <style lang="postcss">
   html,
   body {
-    @apply maz-h-screen maz-overflow-y-auto maz-bg-color maz-text-normal;
+    @apply maz-h-screen maz-overflow-y-auto maz-bg-surface maz-text-foreground;
   }
 </style>
 
@@ -97,7 +95,7 @@ autoSetTheme()
     @apply maz-flex maz-min-h-screen maz-flex-col maz-padded-container;
 
     header {
-      @apply maz-flex maz-w-full maz-flex-wrap maz-items-center maz-justify-between maz-border-b maz-border-color-lighter maz-px-2 maz-py-4;
+      @apply maz-flex maz-w-full maz-flex-wrap maz-items-center maz-justify-between maz-border-b maz-border-divider-400 maz-px-2 maz-py-4;
 
       nav {
         @apply maz-flex maz-gap-1;

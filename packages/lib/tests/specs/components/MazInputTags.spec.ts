@@ -120,7 +120,7 @@ describe('mazInputTags', () => {
 
     await wrapper.vm.$nextTick()
 
-    expect(wrapper.classes()).toContain('maz-border-danger')
+    expect(wrapper.classes()).toContain('maz-border-destructive')
   })
 
   it('applies success style when success prop is true', async () => {
