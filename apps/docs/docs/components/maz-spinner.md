@@ -32,25 +32,23 @@ By default the color is `theme`
 <div class="maz-flex maz-gap-2 maz-flex-wrap">
   <MazSpinner color="primary" />
   <MazSpinner color="secondary" />
-  <MazSpinner color="danger" />
+  <MazSpinner color="destructive" />
   <MazSpinner color="warning" />
   <MazSpinner color="success" />
   <MazSpinner color="info" />
-  <MazSpinner color="theme" />
-  <MazSpinner color="white" />
-  <MazSpinner color="black" />
+  <MazSpinner color="accent" />
+  <MazSpinner color="contrast" />
 </div>
 
 ```vue
 <MazSpinner color="primary" />
 <MazSpinner color="secondary" />
-<MazSpinner color="danger" />
+<MazSpinner color="destructive" />
 <MazSpinner color="warning" />
 <MazSpinner color="success" />
 <MazSpinner color="info" />
-<MazSpinner color="theme" />
-<MazSpinner color="white" />
-<MazSpinner color="black" />
+<MazSpinner color="accent" />
+<MazSpinner color="contrast" />
 ```
 
 ### Sizes

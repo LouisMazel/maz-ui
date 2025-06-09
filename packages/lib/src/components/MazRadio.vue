@@ -102,21 +102,19 @@ const radioSize = computed(() => {
   }
 })
 
-const radioSelectedColor = computed(() => `var(--maz-color-${props.color})`)
+const radioSelectedColor = computed(() => `hsl(var(--maz-${props.color}))`)
 const radioBoxShadow = computed(() => {
   if (props.error) {
-    return `var(--maz-color-danger)`
+    return `hsl(var(--maz-destructive))`
   }
   else if (props.warning) {
-    return `var(--maz-color-warning)`
+    return `hsl(var(--maz-warning))`
   }
   else if (props.success) {
-    return `var(--maz-color-success)`
+    return `hsl(var(--maz-success))`
   }
 
-  return ['black', 'transparent'].includes(props.color)
-    ? `var(--maz-color-muted)`
-    : `var(--maz-color-${props.color}-alpha)`
+  return undefined
 })
 
 function keyboardHandler(event: KeyboardEvent) {
@@ -200,7 +198,7 @@ function onFocus(event: FocusEvent) {
   @apply maz-relative maz-inline-flex maz-items-center maz-gap-2 maz-align-top maz-outline-none;
 
   > span {
-    @apply maz-relative maz-flex maz-rounded-full maz-border maz-border-border maz-transition-all maz-duration-300 maz-ease-in-out maz-flex-center dark:maz-border-color-lighter;
+    @apply maz-relative maz-flex maz-rounded-full maz-border maz-border-divider maz-transition-all maz-duration-300 maz-ease-in-out maz-flex-center dark:maz-border-divider-400;
 
     width: var(--radio-size);
     height: var(--radio-size);
@@ -213,7 +211,7 @@ function onFocus(event: FocusEvent) {
   }
 
   &:not(.--selected) > span {
-    @apply maz-bg-color dark:maz-bg-color-light;
+    @apply maz-bg-surface dark:maz-bg-surface-400;
   }
 
   &.--selected > span {
@@ -236,12 +234,12 @@ function onFocus(event: FocusEvent) {
     @apply maz-cursor-not-allowed maz-text-muted;
 
     > span {
-      @apply maz-bg-color-light dark:maz-bg-color-lighter;
+      @apply maz-bg-surface-400 dark:maz-bg-surface-300;
     }
 
     &.--selected {
       > span {
-        @apply maz-border-border dark:maz-border-color-lighter;
+        @apply maz-border-divider dark:maz-border-divider-400;
 
         .round {
           @apply maz-bg-muted;
@@ -254,7 +252,7 @@ function onFocus(event: FocusEvent) {
     @apply maz-text-sm maz-text-muted;
 
     &.--error {
-      @apply maz-text-danger-600;
+      @apply maz-text-destructive-600;
     }
 
     &.--success {

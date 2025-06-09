@@ -166,14 +166,14 @@ const currentCalendarDate = computed({
 
 <style lang="postcss" scoped>
   .m-picker-container {
-  @apply maz-overflow-hidden maz-rounded maz-bg-color dark:maz-border dark:maz-border-color-light;
+  @apply maz-overflow-hidden maz-rounded maz-bg-surface dark:maz-border dark:maz-border-divider-400;
 
   &:not(.--is-inline) {
     @apply maz-absolute maz-z-default-backdrop maz-elevation;
   }
 
   &.--is-inline {
-    @apply maz-border maz-border-color-lighter;
+    @apply maz-border maz-border-divider-400;
   }
 
   &.--has-date {
@@ -189,7 +189,7 @@ const currentCalendarDate = computed({
   }
 
   & :deep(button):is(:disabled) {
-    @apply maz-bg-transparent !maz-text-gray-300 !important;
+    @apply maz-bg-transparent maz-text-gray-300 !important;
   }
 
   &:not(.--has-date) {

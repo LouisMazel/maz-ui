@@ -10,11 +10,7 @@ export default defineNuxtPlugin(({ vueApp, $config }) => {
     return
   }
 
-  const mazUiOptions: MazThemePluginOptions = {
-    ...themeConfig,
-  }
-
-  vueApp.use(MazUi, mazUiOptions)
+  vueApp.use(MazUi, themeConfig as MazThemePluginOptions)
 })
 
 declare module '#app' {

@@ -11,8 +11,8 @@ description: MazCardSpotlight is a standalone component
 
 **This component is better in dark mode**
 
-<MazBtn @click="setDarkTheme" color="warning">
-  Switch to dark theme
+<MazBtn @click="setColorMode('dark')" color="warning">
+Switch to dark theme
 </MazBtn>
 
 ::: tip
@@ -27,36 +27,38 @@ If you want to increase the border width, you must just add padding @default: `v
       Hover this component <br />
       To see the magic appear
     </h3>
-    <MazBtn color="theme" @click="setLightTheme">
+    <div class="maz-flex maz-gap-2">
+      <MazBtn color="contrast" @click="setColorMode('light')">
+        Switch to light mode
+      </MazBtn>
+      <MazBtn color="contrast" @click="setColorMode('dark')">
+        Switch to dark mode
+      </MazBtn>
+    </div>
+  </MazCardSpotlight>
+
+<template #code>
+
+```vue
+<script lang="ts" setup>
+import { useTheme } from '@maz-ui/themes/composables/useTheme'
+import MazCardSpotlight from 'maz-ui/components/MazCardSpotlight'
+
+const { setColorMode } = useTheme()
+</script>
+
+<template>
+  <MazCardSpotlight style="width: 500px; max-width: 100%;">
+    <h3 style="margin-top: 0; Fmargin-bottom: 30px;">
+      Hover this component <br>
+      To see the magic appear
+    </h3>
+    <MazBtn color="contrast" @click="setColorMode('light')">
       Switch to light theme
     </MazBtn>
   </MazCardSpotlight>
-
-  <template #code>
-
-  ```vue
-  <template>
-    <MazCardSpotlight style="width: 500px; max-width: 100%;">
-      <h3 style="margin-top: 0; Fmargin-bottom: 30px;">
-        Hover this component <br />
-        To see the magic appear
-      </h3>
-      <MazBtn color="theme" @click="setLightTheme">
-        Switch to light theme
-      </MazBtn>
-    </MazCardSpotlight>
-  </template>
-
-  <script lang="ts" setup>
-    import MazCardSpotlight from 'maz-ui/components/MazCardSpotlight'
-    import { useThemeHandler } from 'maz-ui/composables'
-
-    const {
-      setDarkTheme,
-      setLightTheme,
-    } = useThemeHandler()
-  </script>
-  ```
+</template>
+```
 
   </template>
 </ComponentDemo>
@@ -85,30 +87,26 @@ If you want to increase the border width, you must just add padding @default: `v
     </MazCardSpotlight>
   </div>
 
-  <template #code>
+<template #code>
 
-  ```html
-  <div class="grid gap-4 grid-cols-1 mob-l:grid-cols-2 tab-l:grid-cols-3">
-    <MazCardSpotlight v-for="competition of competitions" :key="competition.label" color="secondary">
-      <div class="flex p-4">
-        <MazAvatar
-          v-if="competition.areaEnsignUrl"
-          :src="competition.areaEnsignUrl"
-          style="margin-right: 16px;"
-          size="0.8rem"
-        />
-        <div class="truncate flex column">
-          <span class="truncate">
-            {{ competition.label }}
-          </span>
-          <span class="truncate">
-            {{ competition.area }}
-          </span>
-        </div>
+```html
+<div class="grid gap-4 grid-cols-1 mob-l:grid-cols-2 tab-l:grid-cols-3">
+  <MazCardSpotlight v-for="competition of competitions" :key="competition.label" color="secondary">
+    <div class="flex p-4">
+      <MazAvatar
+        v-if="competition.areaEnsignUrl"
+        :src="competition.areaEnsignUrl"
+        style="margin-right: 16px"
+        size="0.8rem"
+      />
+      <div class="truncate flex column">
+        <span class="truncate"> {{ competition.label }} </span>
+        <span class="truncate"> {{ competition.area }} </span>
       </div>
-    </MazCardSpotlight>
-  </div>
-  ```
+    </div>
+  </MazCardSpotlight>
+</div>
+```
 
   </template>
 </ComponentDemo>
@@ -116,12 +114,9 @@ If you want to increase the border width, you must just add padding @default: `v
 <!--@include: ./../.vitepress/generated-docs/maz-card-spotlight.doc.md-->
 
 <script lang="ts" setup>
-  import { useThemeHandler } from 'maz-ui/src/composables/useThemeHandler'
+  import { useTheme } from '@maz-ui/themes/composables/useTheme'
 
-  const {
-    setDarkTheme,
-    setLightTheme,
-  } = useThemeHandler()
+  const { setColorMode } = useTheme()
 
   const competitions = [
     {

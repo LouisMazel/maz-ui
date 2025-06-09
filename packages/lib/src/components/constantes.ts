@@ -1,12 +1,11 @@
 export const colors = [
   'primary',
   'secondary',
+  'accent',
   'info',
   'success',
   'warning',
-  'danger',
-  'white',
-  'black',
+  'destructive',
+  'contrast',
   'transparent',
-  'theme',
 ] as const

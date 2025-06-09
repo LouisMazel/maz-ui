@@ -61,12 +61,12 @@ import { vTooltip } from 'maz-ui/directives/vTooltip'
 
 ```typescript
 // ❌ BEFORE - No longer works
-import { useThemeHandler, useToast } from 'maz-ui'
+import { useTimer, useToast } from 'maz-ui'
 
 // ✅ AFTER - Required import
-import { useThemeHandler, useToast } from 'maz-ui/composables'
+import { useTimer, useToast } from 'maz-ui/composables'
 // or better
-import { useThemeHandler } from 'maz-ui/composables/useThemeHandler'
+import { useTimer } from 'maz-ui/composables/useTimer'
 import { useToast } from 'maz-ui/composables/useToast'
 ```
 

@@ -38,7 +38,7 @@ export class ToasterHandler {
   private getLocalOptions(options?: ToasterOptions): ToasterOptions {
     const DEFAULT_BUTTON_OPTIONS: Partial<ToasterButton> = {
       size: 'xs',
-      color: options?.type ?? 'theme',
+      color: options?.type ?? 'contrast',
       closeToast: false,
     }
 
@@ -55,7 +55,7 @@ export class ToasterHandler {
     }))
 
     return {
-      type: options?.type ?? 'theme',
+      type: options?.type ?? 'contrast',
       ...options,
       buttons,
       button,
@@ -71,7 +71,7 @@ export class ToasterHandler {
   }
 
   error(message: string, options?: Omit<ToasterOptions, 'type'>) {
-    return this.show(message, this.getLocalOptions({ ...options, type: 'danger' }))
+    return this.show(message, this.getLocalOptions({ ...options, type: 'destructive' }))
   }
 
   info(message: string, options?: Omit<ToasterOptions, 'type'>) {

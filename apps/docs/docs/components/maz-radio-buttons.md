@@ -380,6 +380,7 @@ export type ButtonsRadioOption = {
 
 <script lang="ts" setup>
   import { ref } from 'vue'
+  import MazRadioButtons from 'maz-ui/src/components/MazRadioButtons.vue'
 
   const selectedCompetition = ref<string>()
 

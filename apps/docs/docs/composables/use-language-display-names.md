@@ -153,7 +153,7 @@ function getAllLanguageDisplayNames(
 
 <script lang="ts" setup>
 import { ref, computed } from 'vue'
-import { useLanguageDisplayNames } from 'maz-ui/src/composables/useLanguageDisplayNames'
+import { useLanguageDisplayNames } from 'maz-ui/composables/useLanguageDisplayNames'
 
 const selectedLocale = ref('fr-FR')
 const code = ref('')

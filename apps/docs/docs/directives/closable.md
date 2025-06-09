@@ -12,7 +12,7 @@ description: vClosable is a Vue 3 directive to trigger a function when the user 
 <ComponentDemo>
   <div
     id="container"
-    style="padding: 50px; background-color: var(--maz-color-bg-lighter);"
+    style="padding: 50px; background-color: hsl(var(--maz-background-300));"
     class="flex flex-center rounded"
   >
     <MazCard v-closable="{
@@ -25,7 +25,7 @@ description: vClosable is a Vue 3 directive to trigger a function when the user 
 
   <div
     v-if="hasClikedOutside"
-    style="padding: 16px; margin-top: 16px; background-color: var(--maz-color-success); color: black;"
+    style="padding: 16px; margin-top: 16px; background-color: hsl(var(--maz-success)); color: black;"
     class="flex flex-center rounded"
   >
     You clicked outside
@@ -37,7 +37,7 @@ description: vClosable is a Vue 3 directive to trigger a function when the user 
   <template>
     <div
       id="container"
-      style="padding: 50px; background-color: var(--maz-color-bg-lighter);"
+      style="padding: 50px; background-color: hsl(var(--maz-background-300));"
       class="flex flex-center rounded"
     >
       <MazCard v-closable="{
@@ -50,7 +50,7 @@ description: vClosable is a Vue 3 directive to trigger a function when the user 
 
     <div
       v-if="hasClikedOutside"
-      style="padding: 16px; margin-top: 16px; background-color: var(--maz-color-success); color: black;"
+      style="padding: 16px; margin-top: 16px; background-color: hsl(var(--maz-success)); color: black;"
       class="flex flex-center rounded"
     >
       You clicked outside

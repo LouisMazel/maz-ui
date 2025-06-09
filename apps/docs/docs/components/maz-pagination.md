@@ -60,7 +60,7 @@ description: MazPagination is a standalone component
   <MazPagination :total-pages="10" v-model="currentPage" active-color="secondary" />
   <MazPagination :total-pages="10" v-model="currentPage" active-color="success" />
   <MazPagination :total-pages="10" v-model="currentPage" active-color="warning" />
-  <MazPagination :total-pages="10" v-model="currentPage" active-color="danger" />
+  <MazPagination :total-pages="10" v-model="currentPage" active-color="destructive" />
 </div>
 
 <script lang="ts" setup>

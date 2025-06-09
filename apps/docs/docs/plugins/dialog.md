@@ -20,7 +20,7 @@ You can display a simple dialog with a title and a message. The dialog will have
 
 <ComponentDemo>
   <div class="maz-flex maz-flex-wrap maz-gap-2">
-    <MazBtn color="theme" @click="openDialogTexts">
+    <MazBtn color="contraste" @click="openDialogTexts">
       Show dialog
     </MazBtn>
   </div>
@@ -29,7 +29,7 @@ You can display a simple dialog with a title and a message. The dialog will have
 
   ```vue
   <template>
-    <MazBtn color="theme" @click="openDialog">
+    <MazBtn color="contraste" @click="openDialog">
       Show dialog
     </MazBtn>
   </template>
@@ -70,7 +70,7 @@ The confirmText and cancelText properties allow you to change the texts of the c
 
 <ComponentDemo>
   <div class="maz-flex maz-flex-wrap maz-gap-2">
-    <MazBtn color="theme" @click="openDialogTexts">
+    <MazBtn color="contraste" @click="openDialogTexts">
       Show dialog with custom button texts
     </MazBtn>
   </div>
@@ -79,7 +79,7 @@ The confirmText and cancelText properties allow you to change the texts of the c
 
   ```vue
   <template>
-    <MazBtn color="theme" @click="openDialogTexts">
+    <MazBtn color="contraste" @click="openDialogTexts">
       Show dialog with custom button texts
     </MazBtn>
   </template>
@@ -110,7 +110,7 @@ The buttons property allows you to display custom buttons in the dialog and repl
 
 <ComponentDemo>
   <div class="maz-flex maz-flex-wrap maz-gap-2">
-    <MazBtn color="theme" @click="openDialogActions">
+    <MazBtn color="contraste" @click="openDialogActions">
       Show dialog with custom buttons
     </MazBtn>
   </div>
@@ -119,7 +119,7 @@ The buttons property allows you to display custom buttons in the dialog and repl
 
   ```vue
   <template>
-    <MazBtn color="theme" @click="openDialogActions">
+    <MazBtn color="contraste" @click="openDialogActions">
       Show dialog with custom buttons
     </MazBtn>
   </template>
@@ -137,7 +137,7 @@ The buttons property allows you to display custom buttons in the dialog and repl
         buttons: [
           {
             text: 'Cancel 😱',
-            color: 'theme',
+            color: 'contraste',
             outline: true,
             onClick: () => {
               toast.info('Custom button clicked', {
@@ -147,7 +147,7 @@ The buttons property allows you to display custom buttons in the dialog and repl
           },
           {
             text: 'Confirm 🚀',
-            color: 'theme',
+            color: 'contraste',
             onClick: () => {
               toast.success('Custom button 2 clicked', {
                 position: 'bottom',
@@ -169,7 +169,7 @@ The buttons property allows you to display custom buttons in the dialog and repl
 
 <ComponentDemo>
   <div class="maz-flex maz-flex-wrap maz-gap-2">
-    <MazBtn color="theme" @click="openDialogPromised">
+    <MazBtn color="contraste" @click="openDialogPromised">
       Show dialog with custom promised buttons
     </MazBtn>
   </div>
@@ -178,7 +178,7 @@ The buttons property allows you to display custom buttons in the dialog and repl
 
   ```vue
   <template>
-    <MazBtn color="theme" @click="openDialogPromised">
+    <MazBtn color="contraste" @click="openDialogPromised">
       Show dialog with custom promised buttons
     </MazBtn>
   </template>
@@ -198,7 +198,7 @@ The buttons property allows you to display custom buttons in the dialog and repl
             text: 'Reject',
             type: 'reject',
             response: 'Rejected Response',
-            color: 'danger',
+            color: 'destructive',
           },
           {
             text: 'Accept',
@@ -233,7 +233,7 @@ You can close the dialog programmatically by calling the close method returned b
 
 <ComponentDemo>
   <div class="maz-flex maz-flex-wrap maz-gap-2">
-    <MazBtn color="theme" @click="openAndCloseDialog">
+    <MazBtn color="contraste" @click="openAndCloseDialog">
       Open and close dialog
     </MazBtn>
   </div>
@@ -242,7 +242,7 @@ You can close the dialog programmatically by calling the close method returned b
 
   ```vue
   <template>
-    <MazBtn color="theme" @click="openAndCloseDialog">
+    <MazBtn color="contraste" @click="openAndCloseDialog">
       Open and close dialog
     </MazBtn>
   </template>
@@ -400,7 +400,7 @@ type DialogOptions = Partial<Omit<MazDialogPromiseProps, 'modelValue'>> & {
       buttons: [
         {
           text: 'Cancel 😱',
-          color: 'theme',
+          color: 'contraste',
           outline: true,
           onClick: () => {
             toast.info('Custom button clicked', {
@@ -410,7 +410,7 @@ type DialogOptions = Partial<Omit<MazDialogPromiseProps, 'modelValue'>> & {
         },
         {
           text: 'Confirm 🚀',
-          color: 'theme',
+          color: 'contraste',
           onClick: () => {
             toast.success('Custom button 2 clicked', {
               position: 'bottom',
@@ -430,7 +430,7 @@ type DialogOptions = Partial<Omit<MazDialogPromiseProps, 'modelValue'>> & {
           text: 'Reject',
           type: 'reject',
           response: 'Rejected Response',
-          color: 'danger',
+          color: 'destructive',
         },
         {
           text: 'Accept',

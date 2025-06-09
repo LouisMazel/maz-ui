@@ -39,7 +39,7 @@ export interface MazBtnProps {
   size?: MazSize
   /**
    * The color of the button
-   * @values `'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'danger' | 'white' | 'black' | 'transparent' | 'theme'`
+   * @values `'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'destructive' | 'transparent' | 'contrast' | 'accent'`
    */
   color?: MazColor
   /**
@@ -207,7 +207,7 @@ const iconClassSize = computed(() => {
 
 <style lang="postcss" scoped>
 .m-btn {
-  @apply maz-relative maz-items-center maz-gap-2 maz-border maz-border-solid maz-border-transparent maz-text-center maz-align-top maz-text-base maz-text-normal;
+  @apply maz-relative maz-items-center maz-gap-2 maz-border maz-border-solid maz-border-transparent maz-text-center maz-align-top maz-text-base maz-text-foreground;
 
   justify-content: var(--justify);
 
@@ -216,12 +216,12 @@ const iconClassSize = computed(() => {
   }
 
   &-loader-container {
-    @apply maz-absolute maz-inset-0 maz-flex maz-items-center maz-justify-center maz-bg-color-light dark:maz-bg-color-lighter;
+    @apply maz-absolute maz-inset-0 maz-flex maz-flex-center maz-bg-surface-400;
   }
 
-  /* &-loader {
+  &-loader {
     @apply maz-absolute;
-  } */
+  }
 
   &.--cursor-pointer {
     @apply maz-cursor-pointer;
@@ -288,14 +288,6 @@ const iconClassSize = computed(() => {
     @apply maz-min-h-6 maz-px-1 maz-text-xs;
   }
 
-  /* Not disabled */
-
-  &:not(.--disabled) {
-    &:hover {
-      @apply maz-bg-border;
-    }
-  }
-
   /* Fab */
 
   &.--fab {
@@ -331,23 +323,23 @@ const iconClassSize = computed(() => {
   }
 
   &.--primary {
-    @apply maz-bg-primary maz-text-primary-contrast;
+    @apply maz-bg-primary maz-text-primary-foreground;
 
     &:not(:disabled):hover {
-      @apply maz-bg-primary-700;
+      @apply maz-bg-primary-600;
     }
   }
 
   &.--secondary {
-    @apply maz-bg-secondary maz-text-secondary-contrast;
+    @apply maz-bg-secondary maz-text-secondary-foreground;
 
     &:not(:disabled):hover {
-      @apply maz-bg-secondary-700;
+      @apply maz-bg-secondary-600;
     }
   }
 
   &.--info {
-    @apply maz-bg-info maz-text-info-contrast;
+    @apply maz-bg-info maz-text-info-foreground;
 
     &:not(:disabled):hover {
       @apply maz-bg-info-700;
@@ -355,42 +347,26 @@ const iconClassSize = computed(() => {
   }
 
   &.--success {
-    @apply maz-bg-success maz-text-success-contrast;
+    @apply maz-bg-success maz-text-success-foreground;
 
     &:not(:disabled):hover {
-      @apply maz-bg-success-700;
+      @apply maz-bg-success-600;
     }
   }
 
   &.--warning {
-    @apply maz-bg-warning maz-text-warning-contrast;
+    @apply maz-bg-warning maz-text-warning-foreground;
 
     &:not(:disabled):hover {
-      @apply maz-bg-warning-700;
+      @apply maz-bg-warning-600;
     }
   }
 
-  &.--danger {
-    @apply maz-bg-danger maz-text-white;
+  &.--destructive {
+    @apply maz-bg-destructive maz-text-destructive-foreground;
 
     &:not(:disabled):hover {
-      @apply maz-bg-danger-700;
-    }
-  }
-
-  &.--white {
-    @apply maz-bg-white maz-text-white-contrast;
-
-    &:not(:disabled):hover {
-      @apply maz-bg-gray-400;
-    }
-  }
-
-  &.--black {
-    @apply maz-bg-black maz-text-black-contrast;
-
-    &:not(:disabled):hover {
-      @apply maz-bg-gray-800;
+      @apply maz-bg-destructive-600;
     }
   }
 
@@ -402,85 +378,85 @@ const iconClassSize = computed(() => {
     }
   }
 
-  &.--theme {
-    @apply maz-bg-theme maz-text-color;
+  &.--contrast {
+    @apply maz-bg-contrast maz-text-contrast-foreground;
 
     &:not(:disabled):hover {
-      @apply maz-bg-theme-hover;
+      @apply maz-bg-contrast-700;
+    }
+  }
+
+  &.--accent {
+    @apply maz-bg-accent maz-text-accent-foreground;
+
+    &:not(:disabled):hover {
+      @apply maz-bg-accent-600;
     }
   }
 
   /* OUTLINE */
 
   &.--primary-outline {
-    @apply maz-bg-primary-alpha-05 maz-text-primary maz-border-primary;
+    @apply maz-bg-primary/5 maz-text-primary maz-border-primary;
 
     &:not(:disabled):hover {
-      @apply maz-bg-primary maz-text-primary-contrast;
+      @apply maz-bg-primary maz-text-primary-foreground;
     }
   }
 
   &.--secondary-outline {
-    @apply maz-border-secondary maz-bg-secondary-alpha-05 maz-text-secondary;
+    @apply maz-border-secondary maz-bg-secondary/5 maz-text-secondary;
 
     &:not(:disabled):hover {
-      @apply maz-bg-secondary maz-text-white;
+      @apply maz-bg-secondary maz-text-secondary-foreground;
     }
   }
 
   &.--info-outline {
-    @apply maz-border-info maz-bg-info-alpha-05 maz-text-info;
+    @apply maz-border-info maz-bg-info/5 maz-text-info;
 
     &:not(:disabled):hover {
-      @apply maz-bg-info maz-text-white;
+      @apply maz-bg-info maz-text-info-foreground;
     }
   }
 
   &.--success-outline {
-    @apply maz-border-success maz-bg-success-alpha-05 maz-text-success;
+    @apply maz-border-success maz-bg-success/5 maz-text-success;
 
     &:not(:disabled):hover {
-      @apply maz-bg-success maz-text-white;
+      @apply maz-bg-success maz-text-success-foreground;
     }
   }
 
-  &.--danger-outline {
-    @apply maz-border-danger maz-bg-danger-alpha-05 maz-text-danger;
+  &.--destructive-outline {
+    @apply maz-border-destructive maz-bg-destructive/5 maz-text-destructive;
 
     &:not(:disabled):hover {
-      @apply maz-bg-danger maz-text-white;
+      @apply maz-bg-destructive maz-text-destructive-foreground;
     }
   }
 
   &.--warning-outline {
-    @apply maz-border-warning maz-bg-warning-alpha-05 maz-text-warning;
+    @apply maz-border-warning maz-bg-warning/5 maz-text-warning;
 
     &:not(:disabled):hover {
-      @apply maz-bg-warning maz-text-white;
+      @apply maz-bg-warning maz-text-warning-foreground;
     }
   }
 
-  &.--white-outline {
-    @apply maz-border-white maz-text-white;
+  &.--contrast-outline {
+    @apply maz-border-divider maz-bg-surface maz-text-contrast;
 
     &:not(:disabled):hover {
-      @apply maz-bg-white maz-text-white-contrast;
+      @apply maz-bg-contrast maz-border-contrast maz-text-contrast-foreground;
     }
   }
 
-  &.--black-outline {
-    @apply maz-border-black maz-text-black;
+  &.--accent-outline {
+    @apply maz-border-accent maz-bg-accent/5 maz-text-accent;
 
     &:not(:disabled):hover {
-      @apply maz-bg-black maz-text-black-contrast;
-    }
-  }
-
-  &.--theme-outline {
-    @apply maz-border-border maz-text-theme dark:maz-border-color-lighter;
-
-    &:not(:disabled):hover {
-      @apply maz-border-theme maz-bg-theme maz-text-color;
+      @apply maz-bg-accent maz-text-accent-foreground;
     }
   }
 
@@ -490,7 +466,7 @@ const iconClassSize = computed(() => {
     @apply maz-bg-primary-50 maz-text-primary;
 
     &:not(:disabled):hover {
-      @apply maz-bg-primary maz-text-primary-contrast;
+      @apply maz-bg-primary maz-text-primary-foreground;
     }
   }
 
@@ -498,7 +474,7 @@ const iconClassSize = computed(() => {
     @apply maz-bg-secondary-50 maz-text-secondary;
 
     &:not(:disabled):hover {
-      @apply maz-bg-secondary maz-text-secondary-contrast;
+      @apply maz-bg-secondary maz-text-secondary-foreground;
     }
   }
 
@@ -506,7 +482,7 @@ const iconClassSize = computed(() => {
     @apply maz-bg-info-50 maz-text-info;
 
     &:not(:disabled):hover {
-      @apply maz-bg-info maz-text-info-contrast;
+      @apply maz-bg-info maz-text-info-foreground;
     }
   }
 
@@ -514,15 +490,15 @@ const iconClassSize = computed(() => {
     @apply maz-bg-success-50 maz-text-success;
 
     &:not(:disabled):hover {
-      @apply maz-bg-success maz-text-success-contrast;
+      @apply maz-bg-success maz-text-success-foreground;
     }
   }
 
-  &.--danger-pastel {
-    @apply maz-bg-danger-50 maz-text-danger;
+  &.--destructive-pastel {
+    @apply maz-bg-destructive-50 maz-text-destructive;
 
     &:not(:disabled):hover {
-      @apply maz-bg-danger maz-text-danger-contrast;
+      @apply maz-bg-destructive maz-text-destructive-foreground;
     }
   }
 
@@ -530,38 +506,30 @@ const iconClassSize = computed(() => {
     @apply maz-bg-warning-50 maz-text-warning;
 
     &:not(:disabled):hover {
-      @apply maz-bg-warning maz-text-warning-contrast;
+      @apply maz-bg-warning maz-text-warning-foreground;
     }
   }
 
-  &.--white-pastel {
-    @apply maz-bg-gray-100 maz-text-white;
+  &.--contrast-pastel {
+    @apply maz-bg-surface-400 dark:maz-bg-contrast dark:maz-text-contrast-foreground maz-text-foreground;
 
     &:not(:disabled):hover {
-      @apply maz-bg-white maz-text-white-contrast;
+      @apply maz-bg-contrast dark:maz-bg-contrast-700 maz-text-contrast-foreground;
     }
   }
 
-  &.--black-pastel {
-    @apply maz-bg-border maz-text-black;
+  &.--accent-pastel {
+    @apply maz-bg-accent maz-text-accent-foreground;
 
     &:not(:disabled):hover {
-      @apply maz-bg-black maz-text-black-contrast;
-    }
-  }
-
-  &.--theme-pastel {
-    @apply maz-bg-border maz-text-black;
-
-    &:not(:disabled):hover {
-      @apply maz-bg-black maz-text-black-contrast;
+      @apply maz-bg-accent maz-text-accent-foreground;
     }
   }
 
   /* DISABLED */
 
   &.--disabled {
-    @apply maz-cursor-not-allowed maz-bg-color-light dark:maz-bg-color-lighter maz-text-gray-400 maz-border-color-light dark:maz-border-color-lighter;
+    @apply maz-cursor-not-allowed maz-bg-surface-400 maz-text-muted maz-border-surface-400;
   }
 
   &.--loading {

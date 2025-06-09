@@ -97,7 +97,7 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
     {
       text: 'Cancel',
       type: 'reject',
-      color: 'danger',
+      color: 'destructive',
       response: new Error('cancel'),
       size: 'sm',
     },
@@ -189,7 +189,7 @@ type Color =
   | 'info'
   | 'success'
   | 'warning'
-  | 'danger'
+  | 'destructive'
   | 'white'
   | 'black'
   | 'transparent'
@@ -237,7 +237,7 @@ type Size = 'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
     {
       text: 'Cancel',
       type: 'reject',
-      color: 'danger',
+      color: 'destructive',
       response: new Error('cancel'),
       size: 'sm',
     },

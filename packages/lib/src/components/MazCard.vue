@@ -144,7 +144,7 @@ function toggleCollapse() {
         '--block': block,
         'maz-overflow-hidden': overflowHidden || !collapseOpenModel,
         'maz-rounded': radius,
-        'maz-border maz-border-solid maz-border-color-light': bordered,
+        'maz-border maz-border-solid maz-border-divider-400': bordered,
       },
     ]"
   >
@@ -153,7 +153,7 @@ function toggleCollapse() {
       v-if="$slots.title || title || collapsible"
       class="m-card__header maz-border-b maz-border-solid"
       :class="[
-        collapseOpenModel ? 'maz-rounded-t maz-border-color-light' : 'maz-border-transparent',
+        collapseOpenModel ? 'maz-rounded-t maz-border-divider-400' : 'maz-border-transparent',
         { '--is-collapsible': collapsible },
         { 'maz-justify-end': (!$slots.title || !title) && collapsible },
         { 'maz-justify-between': $slots.title || title },
@@ -232,7 +232,7 @@ function toggleCollapse() {
       class="m-card__footer maz-overflow-x-auto maz-p-3"
       :class="[
         {
-          'maz-border-t maz-border-color-light': isColumnVariant && haveSomeContent,
+          'maz-border-t maz-border-divider-400': isColumnVariant && haveSomeContent,
         },
         footerAlignClass,
       ]"
@@ -253,7 +253,7 @@ function toggleCollapse() {
 
 <style lang="postcss" scoped>
   .m-card {
-  @apply maz-relative maz-inline-flex maz-max-h-full maz-flex-col maz-bg-color dark:maz-border dark:maz-border-color-light;
+  @apply maz-relative maz-inline-flex maz-max-h-full maz-flex-col maz-bg-surface dark:maz-border dark:maz-border-divider-400;
 
   &.--block {
     @apply maz-w-full;
@@ -263,7 +263,7 @@ function toggleCollapse() {
     @apply maz-flex maz-items-center maz-px-4 maz-py-3 maz-transition-colors maz-duration-200;
 
     &.--is-collapsible {
-      @apply hover:maz-bg-color-light;
+      @apply hover:maz-bg-surface-400;
     }
   }
 
@@ -322,7 +322,7 @@ function toggleCollapse() {
   &__title > * {
     font-size: 1.2em;
 
-    @apply maz-text-normal;
+    @apply maz-text-foreground;
   }
 
   &__subtitle,

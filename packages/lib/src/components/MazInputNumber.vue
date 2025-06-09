@@ -220,9 +220,9 @@ function decrement() {
 
       &:first-child,
       &:last-child {
-        @apply maz-border maz-border-border;
+        @apply maz-border maz-border-divider;
         @apply maz-px-3 maz-py-0;
-        @apply dark:maz-border-color-lighter;
+        @apply dark:maz-border-divider-400;
       }
 
       &:first-child {
@@ -245,7 +245,7 @@ function decrement() {
 
   &__input {
     &:not(.--no-buttons) .m-input-wrapper {
-      @apply maz-z-1 maz-rounded-none;
+      @apply maz-z-1 !maz-rounded-none;
     }
 
     &.--text-center input {

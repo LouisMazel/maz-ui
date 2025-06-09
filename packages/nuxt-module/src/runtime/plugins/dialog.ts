@@ -2,7 +2,7 @@ import { DialogHandler } from 'maz-ui/plugins/dialog'
 import { defineNuxtPlugin } from 'nuxt/app'
 
 export default defineNuxtPlugin(({ vueApp, $config }) => {
-  const dialogOptions = $config.public.mazUi?.injectUseDialog
+  const dialogOptions = $config.public.mazUi?.composables?.useDialog
 
   const options = typeof dialogOptions === 'object' ? dialogOptions : undefined
 

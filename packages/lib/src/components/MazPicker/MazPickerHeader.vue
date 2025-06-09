@@ -193,7 +193,7 @@ watch(
   }
 
   &.--primary {
-    @apply maz-bg-primary maz-text-primary-contrast;
+    @apply maz-bg-primary maz-text-primary-foreground;
 
     & .m-picker-header__year-text {
       @apply maz-text-primary-100;
@@ -201,7 +201,7 @@ watch(
   }
 
   &.--secondary {
-    @apply maz-bg-secondary maz-text-secondary-contrast;
+    @apply maz-bg-secondary maz-text-secondary;
 
     & .m-picker-header__year-text {
       @apply maz-text-secondary-100;
@@ -209,7 +209,7 @@ watch(
   }
 
   &.--info {
-    @apply maz-bg-info maz-text-info-contrast;
+    @apply maz-bg-info maz-text-info-foreground;
 
     & .m-picker-header__year-text {
       @apply maz-text-info-100;
@@ -217,7 +217,7 @@ watch(
   }
 
   &.--success {
-    @apply maz-bg-success maz-text-success-contrast;
+    @apply maz-bg-success maz-text-success-foreground;
 
     & .m-picker-header__year-text {
       @apply maz-text-success-100;
@@ -225,43 +225,39 @@ watch(
   }
 
   &.--warning {
-    @apply maz-bg-warning maz-text-warning-contrast;
+    @apply maz-bg-warning maz-text-warning-foreground;
 
     & .m-picker-header__year-text {
       @apply maz-text-warning-100;
     }
   }
 
-  &.--danger {
-    @apply maz-bg-danger maz-text-danger-contrast;
+  &.--destructive {
+    @apply maz-bg-destructive maz-text-destructive-foreground;
 
     & .m-picker-header__year-text {
-      @apply maz-text-danger-100;
+      @apply maz-text-destructive-100;
     }
   }
 
-  &.--black {
-    @apply maz-bg-black maz-text-black-contrast;
-  }
-
-  &.--white {
-    @apply maz-bg-white maz-text-white-contrast;
+  &.--accent {
+    @apply maz-bg-accent maz-text-accent-foreground;
 
     & .m-picker-header__year-text {
-      @apply maz-text-muted;
+      @apply maz-text-accent-100;
     }
   }
 
-  &.--theme {
-    @apply maz-bg-theme dark:maz-bg-color-light maz-text-color dark:maz-text-normal;
+  &.--contrast {
+    @apply maz-bg-contrast-500 dark:maz-bg-contrast-400 maz-text-foreground dark:maz-text-foreground;
 
     & .m-picker-header__year-text {
-      @apply maz-text-color dark:maz-text-normal;
+      @apply maz-text-foreground;
     }
   }
 
   &.--transparent {
-    @apply maz-border-b maz-border-color-light maz-text-normal;
+    @apply maz-border-b maz-border-divider-400 maz-text-foreground;
   }
 }
 </style>

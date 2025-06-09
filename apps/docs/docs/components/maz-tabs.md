@@ -49,7 +49,7 @@ description: MazTabs is a standalone component to display content in tabs with a
 
   const tabs: MazTabsBarItem[] = [
     { label: 'First Tab', disabled: false },
-    { label: 'Second Tab', disabled: false, badge: { color: 'danger', content: 1, roundedSize: 'full' } },
+    { label: 'Second Tab', disabled: false, badge: { color: 'destructive', content: 1, roundedSize: 'full' } },
     { label: 'Third Tab', disabled: true },
   ]
 </script>
@@ -183,7 +183,7 @@ You can choose the name of this query parameter with the props `query-param` `@d
 
   const tabs: MazTabsBarItem[] = [
     { label: 'First Tab', disabled: false },
-    { label: 'Second Tab', disabled: false, badge: { color: 'danger', content: 1, roundedSize: 'full' } },
+    { label: 'Second Tab', disabled: false, badge: { color: 'destructive', content: 1, roundedSize: 'full' } },
     { label: 'Third Tab', disabled: true },
   ]
 

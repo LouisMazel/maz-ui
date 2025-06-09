@@ -70,10 +70,10 @@ Use the attribute `color` with a value in this [list](./../guide/colors.md), the
 <MazBtn color="info">info</MazBtn>
 <MazBtn color="success">success</MazBtn>
 <MazBtn color="warning">warning</MazBtn>
-<MazBtn color="danger">danger</MazBtn>
-<MazBtn color="white">white</MazBtn>
-<MazBtn color="black">black</MazBtn>
-<MazBtn color="transparent">transparent</MazBtn>
+<MazBtn color="destructive">destructive</MazBtn>
+<MazBtn color="contrast">contrast</MazBtn>
+<MazBtn color="accent">accent</MazBtn>
+<MazBtn color="gray">gray</MazBtn>
 ```
 
   </template>
@@ -96,10 +96,10 @@ Transform the button into an outline button with the attribute `outline`
 <MazBtn color="info" outline>info</MazBtn>
 <MazBtn color="success" outline>success</MazBtn>
 <MazBtn color="warning" outline>warning</MazBtn>
-<MazBtn color="danger" outline>danger</MazBtn>
-<MazBtn color="white" outline>white</MazBtn>
-<MazBtn color="black" outline>black</MazBtn>
-<MazBtn color="transparent" outline>transparent</MazBtn>
+<MazBtn color="destructive" outline>destructive</MazBtn>
+<MazBtn color="contrast" outline>contrast</MazBtn>
+<MazBtn color="accent" outline>accent</MazBtn>
+<MazBtn color="gray" outline>gray</MazBtn>
 ```
 
   </template>
@@ -146,11 +146,10 @@ The loading state is available with the attribute `loading`
       'info',
       'success',
       'warning',
-      'danger',
-      'white',
-      'black',
+      'destructive',
+      'contrast',
+      'accent',
       'transparent',
-      'theme',
     ]
   </script>
   ```
@@ -180,9 +179,9 @@ It's better in light mode
   <MazBtn color="info" pastel>info</MazBtn>
   <MazBtn color="success" pastel>success</MazBtn>
   <MazBtn color="warning" pastel>warning</MazBtn>
-  <MazBtn color="danger" pastel>danger</MazBtn>
-  <MazBtn color="white" pastel>white</MazBtn>
-  <MazBtn color="black" pastel>black</MazBtn>
+  <MazBtn color="destructive" pastel>destructive</MazBtn>
+  <MazBtn color="contrast" pastel>contrast</MazBtn>
+  <MazBtn color="accent" pastel>accent</MazBtn>
   <MazBtn color="transparent" pastel>transparent</MazBtn>
   ```
 
@@ -466,14 +465,13 @@ When `to` attribute is provided, the component automatically becomes a `<RouterL
   const colors = [
     'primary',
     'secondary',
+    'accent',
     'info',
     'success',
     'warning',
-    'danger',
-    'white',
-    'black',
+    'destructive',
+    'contrast',
     'transparent',
-    'theme',
   ]
 
   const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']

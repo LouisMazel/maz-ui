@@ -23,7 +23,7 @@ const emits = defineEmits<
 
 const DEFAULT_BUTTONS_PROPS: Partial<MazBtnProps> = {
   size: 'md',
-  color: 'theme',
+  color: 'contrast',
   outline: true,
   fab: true,
 }
@@ -41,6 +41,7 @@ export interface MazPaginationProps {
   resultsSize?: number
   /**
    * Color of the active button.
+   * @values 'contrast', 'primary', 'secondary', 'info', 'success', 'warning', 'error', 'accent'
    */
   activeColor?: MazColor
   /**
@@ -91,19 +92,21 @@ const lastOne = computed(() =>
 )
 
 const rangeStartAt = computed(() => {
-  return props.modelValue - props.pageRange - 1 < 0
-    ? 0
-    : props.modelValue - props.pageRange - 1 > props.totalPages - props.pageRange
-      ? props.totalPages - props.pageRange
-      : props.modelValue - props.pageRange - 1
+  const baseStart = props.modelValue - props.pageRange - 1
+  if (baseStart < 0)
+    return 0
+  if (baseStart > props.totalPages - props.pageRange)
+    return props.totalPages - props.pageRange
+  return baseStart
 })
-const rangeEndAt = computed(() =>
-  props.modelValue + props.pageRange > props.totalPages
-    ? props.totalPages
-    : props.modelValue + props.pageRange < props.pageRange
-      ? props.pageRange
-      : props.modelValue + props.pageRange,
-)
+const rangeEndAt = computed(() => {
+  const baseEnd = props.modelValue + props.pageRange
+  if (baseEnd > props.totalPages)
+    return props.totalPages
+  if (baseEnd < props.pageRange)
+    return props.pageRange
+  return baseEnd
+})
 const range = computed(() => allPages.value.slice(rangeStartAt.value, rangeEndAt.value))
 
 const firstDivider = computed(() =>
@@ -209,7 +212,7 @@ function setPageNumber(page: number) {
         </template>
 
         <template v-else-if="page.divider">
-          <div v-bind="buttonsPropsMerged" class="flex p-2 flex-center">
+          <div v-bind="buttonsPropsMerged" class="flex-center flex p-2">
             <MazEllipsisHorizontal />
           </div>
         </template>

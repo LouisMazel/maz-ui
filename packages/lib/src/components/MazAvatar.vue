@@ -189,8 +189,8 @@ function handleImageError(event: Event) {
         class="m-avatar__button"
         :style="{
           backgroundColor: src
-            ? `var(--maz-color-${buttonColor}-alpha)`
-            : `var(--maz-color-${buttonColor})`,
+            ? `hsl(var(--maz-${buttonColor}) / 60%)`
+            : `hsl(var(--maz-${buttonColor}))`,
         }"
         @click="$emit('click', $event)"
       >
@@ -251,7 +251,7 @@ function handleImageError(event: Event) {
     }
 
     &.--bordered {
-      @apply maz-border maz-border-solid maz-border-color-light dark:maz-border-color-lighter;
+      @apply maz-border maz-border-solid maz-border-divider-400;
     }
 
     &.--rounded {

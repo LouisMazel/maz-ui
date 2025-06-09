@@ -122,11 +122,13 @@ function handleNewValue(event: Event, item: number) {
 function getEmittedValue(map: ReturnType<typeof getMapValues>) {
   const stringValue = [...map.values()].join('')
 
-  return props.type === 'text'
-    ? stringValue
-    : stringValue && !Number.isNaN(Number(stringValue))
-      ? Number(stringValue)
-      : undefined
+  if (props.type === 'text') {
+    return stringValue
+  }
+
+  return stringValue && !Number.isNaN(Number(stringValue))
+    ? Number(stringValue)
+    : undefined
 }
 
 function getValueSanitized(value: string) {
@@ -213,17 +215,13 @@ function selectInputByIndex(index: number) {
 
 const borderColorState = computed(() => {
   if (props.error)
-    return '!maz-border-danger'
+    return '!maz-border-destructive'
   if (props.success)
     return '!maz-border-success'
   if (props.warning)
     return '!maz-border-warning'
 
   return ''
-})
-
-const borderColor = computed(() => {
-  return `var(--maz-color-${props.color})`
 })
 </script>
 
@@ -232,7 +230,7 @@ const borderColor = computed(() => {
     class="m-input-code m-reset-css"
     :class="[size ? `--${size}` : undefined, props.class]"
     :disabled="disabled"
-    :style="[style, { '--input-border-color': borderColor }]"
+    :style="[style, { '--input-border-color': `hsl(var(--maz-${props.color}))` }]"
   >
     <div class="m-input-code__wrapper">
       <div v-for="item in codeLength" :key="item" class="input-wrapper" :class="borderColorState">
@@ -303,7 +301,7 @@ const borderColor = computed(() => {
     @apply maz-text-sm maz-text-muted;
 
     &.--error {
-      @apply maz-text-danger-600;
+      @apply maz-text-destructive-600;
     }
 
     &.--success {
@@ -316,7 +314,7 @@ const borderColor = computed(() => {
   }
 
   .input-wrapper {
-    @apply maz-relative maz-h-[4em] maz-w-[4em] maz-overflow-hidden maz-rounded maz-border maz-border-solid maz-border-border maz-transition-colors maz-duration-200 maz-ease-in-out dark:maz-border-color-lighter dark:maz-bg-color-light;
+    @apply maz-relative maz-h-[4em] maz-w-[4em] maz-overflow-hidden maz-rounded maz-border maz-border-solid maz-border-divider maz-transition-colors maz-duration-200 maz-ease-in-out dark:maz-border-divider-400 dark:maz-bg-surface-400;
 
     &:focus-within {
       border-color: var(--input-border-color);
@@ -327,7 +325,7 @@ const borderColor = computed(() => {
     }
 
     &:has(input:disabled) {
-      @apply maz-bg-color-lighter maz-text-muted;
+      @apply maz-bg-surface-300 maz-text-muted;
 
       input {
         @apply maz-cursor-not-allowed maz-text-muted;

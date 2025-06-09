@@ -33,7 +33,7 @@ const app = createApp(App)
 app.use(MazThemePlugin, {
   preset: mazUi,
   strategy: 'hybrid',
-  darkMode: 'class'
+  darkModeStrategy: 'class'
 })
 ```
 
@@ -144,12 +144,12 @@ import { buildThemeCSS, generateThemeBundle } from '@maz-ui/themes'
 // CSS pour un preset
 const css = buildThemeCSS({
   preset: myPreset,
-  darkMode: 'class',
+  darkModeStrategy: 'class',
   critical: true
 })
 
 // Bundle pour plusieurs presets
 const bundle = generateThemeBundle([mazUi, darkPreset], {
-  darkMode: 'class'
+  darkModeStrategy: 'class'
 })
 ```
