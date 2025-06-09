@@ -56,13 +56,9 @@
   "homepage": "https://maz-ui.com/",
   "pnpm": {
     "peerDependencyRules": {
-      "ignoreMissing": [
-        "@algolia/client-search",
-        "webpack",
-        "@vue/compiler-dom",
-        "vue",
-        "vitest"
-      ]
+      "allowedVersions": {
+        "jiti": "2.3.3"
+      }
     }
   },
   "config": {

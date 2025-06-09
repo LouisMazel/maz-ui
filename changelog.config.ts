@@ -2,6 +2,7 @@ import type { ChangelogConfig } from 'changelogen'
 
 function getDefaultConfig(): ChangelogConfig {
   return {
+    noAuthors: false,
     types: {
       feat: { title: '🚀 Enhancements', semver: 'minor' },
       perf: { title: '🔥 Performance', semver: 'patch' },
@@ -39,6 +40,7 @@ function getDefaultConfig(): ChangelogConfig {
   }
 }
 
+
 export const config = {
   ...getDefaultConfig(),
   output: 'CHANGELOG.md',
@@ -52,5 +54,10 @@ export const config = {
     commitMessage: 'chore(release): update changelog for v{{newVersion}}',
     tagMessage: '{{newVersion}}',
     tagBody: '{{newVersion}}',
+  },
+  scopeMap: {
+    'maz-ui': 'packages/maz-ui',
+    'components': 'packages/components',
+    'utils': 'packages/utils',
   },
 } satisfies ChangelogConfig

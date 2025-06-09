@@ -28,7 +28,7 @@ catalog:
   glob: ^11.0.2
   jsdom: ^26.1.0
   json-templater: ^1.2.0
-  libphonenumber-js: ^1.12.8
+  libphonenumber-js: 1.12.8
   minimist: ^1.2.8
   nuxt: ^3.17.4
   onchange: ^7.1.0

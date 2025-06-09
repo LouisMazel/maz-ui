@@ -33,7 +33,7 @@ export interface ThemeAppearance {
 }
 
 export interface ThemePreset {
-  name: string
+  name?: string
   colors?: {
     light?: Partial<ThemeColors>
     dark?: Partial<ThemeColors>

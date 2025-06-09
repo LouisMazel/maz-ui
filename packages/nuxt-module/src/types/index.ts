@@ -109,7 +109,7 @@ export interface MazUiNuxtOptions {
     /**
      * Enable auto-import of useTheme composable
      * @description Provides theme management functionality (toggle dark mode, change themes, etc.)
-     * @default true
+     * @default false
      */
     useTheme?: boolean
 
