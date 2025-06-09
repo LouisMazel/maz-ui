@@ -13,26 +13,26 @@ description: MazPagination is a standalone component
 
 <MazPagination v-bind="props" v-model="currentPage" size="md" />
 
-```v-model="{{currentPage}}"```
+`v-model="{{currentPage}}"`
 
 ```vue
+<script lang="ts" setup>
+import { MazPagination, type MazPaginationProps } from 'maz-ui/components'
+
+import { ref } from 'vue'
+
+const currentPage = ref(1)
+
+const props: MazPaginationProps = {
+  resultsSize: 100,
+  totalPages: 10,
+  activeColor: 'primary',
+}
+</script>
+
 <template>
   <MazPagination v-bind="props" v-model="currentPage" size="md" />
 </template>
-
-<script lang="ts" setup>
-  import { MazPagination, type MazPaginationProps } from 'maz-ui/components'
-
-  import { ref } from 'vue'
-
-  const currentPage = ref(1)
-
-  const props: MazPaginationProps = {
-    resultsSize: 100,
-    totalPages: 10,
-    activeColor: 'primary',
-  }
-</script>
 ```
 
 ## Sizes

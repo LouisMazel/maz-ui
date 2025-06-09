@@ -26,9 +26,10 @@ Useful to know if the user is displaying your website
     Start
   </MazBtn>
 
-  <MazBtn @click="userVisibility.destroy()" color="destructive">
-    Destroy
-  </MazBtn>
+<MazBtn @click="userVisibility.destroy()" color="destructive">
+Destroy
+</MazBtn>
+
 </div>
 
 ::: tip
@@ -38,53 +39,53 @@ Switch tabs for a second to see events
 ## How to use it?
 
 ```vue
+<script lang="ts" setup>
+import { useUserVisibility } from 'maz-ui/composables'
+
+import { onBeforeUnmount, onMounted, ref } from 'vue'
+
+const events = ref([])
+
+function callback({ isVisible }) {
+  console.log('isVisible', isVisible)
+  events.value.push({ isVisible })
+}
+
+const options = {
+  immediate: true,
+  once: false,
+  timeout: 1000,
+  ssr: true,
+}
+
+const userVisibility = useUserVisibility({ callback, options })
+
+onMounted(() => {
+  userVisibility.start()
+})
+
+onBeforeUnmount(() => {
+  userVisibility.destroy()
+})
+</script>
+
 <template>
-  <MazBtn @click="userVisibility.destroy()" color="destructive">
+  <MazBtn color="destructive" @click="userVisibility.destroy()">
     Destroy
   </MazBtn>
 
-  <MazBtn @click="userVisibility.destroy()" color="destructive">
+  <MazBtn color="destructive" @click="userVisibility.destroy()">
     Destroy
   </MazBtn>
 
   <MazCard overflow-hidden style="width: 100%;">
     <h3>Logs</h3>
 
-    <div v-for="({isVisible}, i) in events" :key="i">
-      isVisible: {{isVisible}}
+    <div v-for="({ isVisible }, i) in events" :key="i">
+      isVisible: {{ isVisible }}
     </div>
   </MazCard>
 </template>
-
-<script lang="ts" setup>
-  import { onMounted, ref, onBeforeUnmount } from 'vue'
-
-  import { useUserVisibility } from 'maz-ui/composables'
-
-  const events = ref([])
-
-  const callback = ({ isVisible }) => {
-    console.log('isVisible', isVisible)
-    events.value.push({ isVisible: isVisible })
-  }
-
-  const options = {
-    immediate: true,
-    once: false,
-    timeout: 1000,
-    ssr: true,
-  }
-
-  const userVisibility = useUserVisibility({ callback, options })
-
-  onMounted(() => {
-    userVisibility.start()
-  })
-
-  onBeforeUnmount(() => {
-    userVisibility.destroy()
-  })
-</script>
 ```
 
 <script lang="ts" setup>
@@ -130,7 +131,7 @@ export type UserVisibilyCallback = ({
 ## Options
 
 ```ts
-type UserVisibilyStrictOptions = {
+interface UserVisibilyStrictOptions {
   immediate: boolean
   timeout: number
   once: boolean

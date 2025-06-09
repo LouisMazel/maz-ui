@@ -59,6 +59,23 @@ This composable can be used in Vue 3 components to handle timeouts in a flexible
 </script>
 
 ```vue
+<script lang="ts" setup>
+import { useTimer, useToast } from 'maz-ui/composables'
+
+const toast = useToast()
+
+const { start, stop, pause, resume, remainingTime } = useTimer({
+  timeout: 4000,
+  callback: () => toast.info('Timeout end', {
+    button: {
+      onClick: start,
+      text: 're-start',
+      closeToast: true,
+    },
+  })
+})
+</script>
+
 <template>
   <MazBtn @click="start">
     Start
@@ -73,23 +90,6 @@ This composable can be used in Vue 3 components to handle timeouts in a flexible
     Resume
   </MazBtn>
 </template>
-
-<script lang="ts" setup>
-  import { useTimer, useToast } from 'maz-ui/composables'
-
-  const toast = useToast()
-
-  const { start, stop, pause, resume, remainingTime } = useTimer({
-    timeout: 4000,
-    callback: () => toast.info('Timeout end', {
-      button: {
-        onClick: start,
-        text: 're-start',
-        closeToast: true,
-      },
-    })
-  })
-</script>
 ```
 
 ## Set timeout with start function

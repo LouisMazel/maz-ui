@@ -49,18 +49,24 @@ head:
 </MazCarousel>
 
 ```vue
+<script lang="ts" setup>
+import { MazCarousel } from 'maz-ui/components'
+</script>
+
 <template>
   <MazCarousel>
     <template #title>
-      <h4 class="maz-m-0">Carousel</h4>
+      <h4 class="maz-m-0">
+        Carousel
+      </h4>
     </template>
     <MazCard
       v-for="(item, i) in Array(8)"
       :key="i"
       :gallery="{
         images: [
-          'https://loremflickr.com/250/300'
-        ]
+          'https://loremflickr.com/250/300',
+        ],
       }"
       style="min-width: 250px;"
     >
@@ -77,10 +83,6 @@ head:
     </MazCard>
   </MazCarousel>
 </template>
-
-<script lang="ts" setup>
-  import { MazCarousel } from 'maz-ui/components'
-</script>
 ```
 
 ## Options

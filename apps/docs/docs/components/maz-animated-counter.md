@@ -14,25 +14,25 @@ description: MazAnimatedCounter is a standalone component that allows you to ani
 <ComponentDemo expanded>
   <MazAnimatedCounter :count="count" />
 
-  <template #code>
+<template #code>
 
-  ```vue
-  <template>
-    <MazAnimatedCounter :count="4000" />
-  </template>
+```vue
+<script lang="ts" setup>
+import { MazAnimatedCounter } from 'maz-ui/components'
 
-  <script lang="ts" setup>
-    import { MazAnimatedCounter } from 'maz-ui/components'
+const count = ref(Math.floor(Math.random() * 99999))
 
-    const count = ref(Math.floor(Math.random() * 99999))
+onMounted(() => {
+  setInterval(() => {
+    count.value = Math.floor(Math.random() * 99999)
+  }, 3000)
+})
+</script>
 
-    onMounted(() => {
-      setInterval(() => {
-        count.value = Math.floor(Math.random() * 99999)
-      }, 3000)
-    })
-  </script>
-  ```
+<template>
+  <MazAnimatedCounter :count="4000" />
+</template>
+```
 
   </template>
 </ComponentDemo>
@@ -55,11 +55,11 @@ You can set the duration of the animation with the `duration` prop. The default 
 <ComponentDemo>
   <MazAnimatedCounter :count="4000" :duration="5000" />
 
-  <template #code>
+<template #code>
 
-  ```vue
-  <MazAnimatedCounter :count="4000" :duration="5000" />
-  ```
+```vue
+<MazAnimatedCounter :count="4000" :duration="5000" />
+```
 
   </template>
 </ComponentDemo>
@@ -98,29 +98,25 @@ Be careful, you can't use both at the same time.
     <template #suffix>%</template>
   </MazAnimatedCounter>
 
-  <template #code>
+<template #code>
 
-  ```html
-  <p class="maz-font-semibold">
-    Prefixed
-  </p>
+```html
+<p class="maz-font-semibold">Prefixed</p>
 
-  <MazAnimatedCounter :count="20" prefix="$" />
+<MazAnimatedCounter :count="20" prefix="$" />
 
-  <MazAnimatedCounter :count="20">
-    <template #prefix>$</template>
-  </MazAnimatedCounter>
+<MazAnimatedCounter :count="20">
+  <template #prefix>$</template>
+</MazAnimatedCounter>
 
-  <p class="maz-font-semibold">
-    Suffixed
-  </p>
+<p class="maz-font-semibold">Suffixed</p>
 
-  <MazAnimatedCounter :count="100" suffix="%" />
+<MazAnimatedCounter :count="100" suffix="%" />
 
-  <MazAnimatedCounter :count="100">
-    <template #suffix>%</template>
-  </MazAnimatedCounter>
-  ```
+<MazAnimatedCounter :count="100">
+  <template #suffix>%</template>
+</MazAnimatedCounter>
+```
 
   </template>
 </ComponentDemo>

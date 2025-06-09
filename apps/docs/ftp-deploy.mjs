@@ -1,6 +1,5 @@
 // @ts-check
 
-/* eslint-disable no-console */
 import { readFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -33,7 +32,8 @@ function loadEnvFile(envFileName = '.env') {
 
 async function deployToHostinger() {
   const env = loadEnvFile()
-  console.log('🚚 Deploy started')
+  console.warn('🚚 Deploy started')
+
   await deploy({
     'server': process.env.FTP_SERVER || env.FTP_SERVER,
     'username': process.env.FTP_USERNAME || env.FTP_USERNAME,
@@ -43,7 +43,8 @@ async function deployToHostinger() {
     'exclude': [...excludeDefaults, '.env', '.git/**', 'node_modules/**'],
     'timeout': 1000000,
   })
-  console.log('🚀 Deploy done!')
+
+  console.warn('🚀 Deploy done!')
 }
 
 deployToHostinger()

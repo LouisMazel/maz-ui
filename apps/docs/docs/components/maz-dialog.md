@@ -29,11 +29,20 @@ This component usex `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
     </template>
   </MazDialog>
 
-  <template #code>
+<template #code>
 
 ```vue
+<script setup>
+import { MazDialog } from 'maz-ui/components'
+import { ref } from 'vue'
+
+const isOpen = ref(false)
+</script>
+
 <template>
-  <MazBtn @click="isOpen = true">Open Dialog</MazBtn>
+  <MazBtn @click="isOpen = true">
+    Open Dialog
+  </MazBtn>
 
   <MazDialog v-model="isOpen" title="Dialog Title">
     <p>
@@ -47,13 +56,6 @@ This component usex `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
     </template>
   </MazDialog>
 </template>
-
-<script setup>
-  import { ref } from 'vue'
-  import { MazDialog } from 'maz-ui/components'
-
-  const isOpen = ref(false)
-</script>
 ```
 
   </template>
@@ -151,85 +153,45 @@ With this option, an overflow is applied: So, some problems with absolute conten
     </template>
   </MazDialog>
 
-  <template #code>
+<template #code>
 
-  ```html
+```html
 <MazDialog v-model="scollableOpened" title="Dialog Title" max-height="400px" scrollable>
-  <template #title>
-    Scrollable Dialog Title
-  </template>
+  <template #title> Scrollable Dialog Title </template>
 
   <template #default>
-    <p style="padding-bottom: 2rem;">
-        Scroll
-      </p>
-      <p style="padding-bottom: 2rem;">
-        Scroll
-      </p>
-      <p style="padding-bottom: 2rem;">
-        Scroll
-      </p>
-      <p style="padding-bottom: 2rem;">
-        Scroll
-      </p>
-      <p style="padding-bottom: 2rem;">
-        Scroll
-      </p>
-      <p style="padding-bottom: 2rem;">
-        Scroll
-      </p>
-      <p style="padding-bottom: 2rem;">
-        Scroll
-      </p>
-      <p style="padding-bottom: 2rem;">
-        Scroll
-      </p>
-      <p style="padding-bottom: 2rem;">
-        Scroll
-      </p>
-      <p style="padding-bottom: 2rem;">
-        Scroll
-      </p>
-      <p style="padding-bottom: 2rem;">
-        Scroll
-      </p>
-      <p style="padding-bottom: 2rem;">
-        Scroll
-      </p>
-      <p style="padding-bottom: 2rem;">
-        Scroll
-      </p>
-      <p style="padding-bottom: 2rem;">
-        Scroll
-      </p>
-      <p style="padding-bottom: 2rem;">
-        Scroll
-      </p>
-      <p style="padding-bottom: 2rem;">
-        Scroll
-      </p>
-      <p style="padding-bottom: 2rem;">
-        Scroll
-      </p>
-      <p style="padding-bottom: 2rem;">
-        Scroll
-      </p>
+    <p style="padding-bottom: 2rem">Scroll</p>
+    <p style="padding-bottom: 2rem">Scroll</p>
+    <p style="padding-bottom: 2rem">Scroll</p>
+    <p style="padding-bottom: 2rem">Scroll</p>
+    <p style="padding-bottom: 2rem">Scroll</p>
+    <p style="padding-bottom: 2rem">Scroll</p>
+    <p style="padding-bottom: 2rem">Scroll</p>
+    <p style="padding-bottom: 2rem">Scroll</p>
+    <p style="padding-bottom: 2rem">Scroll</p>
+    <p style="padding-bottom: 2rem">Scroll</p>
+    <p style="padding-bottom: 2rem">Scroll</p>
+    <p style="padding-bottom: 2rem">Scroll</p>
+    <p style="padding-bottom: 2rem">Scroll</p>
+    <p style="padding-bottom: 2rem">Scroll</p>
+    <p style="padding-bottom: 2rem">Scroll</p>
+    <p style="padding-bottom: 2rem">Scroll</p>
+    <p style="padding-bottom: 2rem">Scroll</p>
+    <p style="padding-bottom: 2rem">Scroll</p>
     <MazSelect
       :model-value="1"
       :options="[
-        { value: 1, label: 1 },
-        { value: 2, label: 2 },
-        { value: 3, label: 3 },
-        { value: 4, label: 4 },
-        { value: 5, label: 5 },
-        { value: 6, label: 6 },
-      ]"
+      { value: 1, label: 1 },
+      { value: 2, label: 2 },
+      { value: 3, label: 3 },
+      { value: 4, label: 4 },
+      { value: 5, label: 5 },
+      { value: 6, label: 6 },
+    ]"
     />
   </template>
   <template #footer>
-    <MazBtn @click="scollableOpened = false">
-      Confirm
-    </MazBtn>
+    <MazBtn @click="scollableOpened = false"> Confirm </MazBtn>
   </template>
 </MazDialog>
 ```

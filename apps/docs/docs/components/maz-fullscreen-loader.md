@@ -3,7 +3,6 @@ title: MazFullscreenLoader
 description: MazFullscreenLoader is a standalone component
 ---
 
-
 # {{ $frontmatter.title }}
 
 {{ $frontmatter.description }}
@@ -13,6 +12,7 @@ description: MazFullscreenLoader is a standalone component
 ## Basic usage
 
 <MazFullscreenLoader v-if="showLoader" @click="showLoader = false">
+
   <p>
     Loading...
   </p>
@@ -22,10 +22,18 @@ description: MazFullscreenLoader is a standalone component
 </MazFullscreenLoader>
 
 <MazBtn @click="showLoader = true">
-  Show loader
+Show loader
 </MazBtn>
 
 ```vue
+<script lang="ts" setup>
+import { MazBtn, MazFullscreenLoader } from 'maz-ui/components'
+
+import { ref } from 'vue'
+
+const showLoader = ref(false)
+</script>
+
 <template>
   <MazFullscreenLoader v-if="showLoader" @click="showLoader = false">
     <p>
@@ -40,14 +48,6 @@ description: MazFullscreenLoader is a standalone component
     Show loader
   </MazBtn>
 </template>
-
-<script lang="ts" setup>
-  import { ref } from 'vue'
-
-  import { MazFullscreenLoader, MazBtn } from 'maz-ui/components'
-
-  const showLoader = ref(false)
-</script>
 ```
 
 <script lang="ts" setup>

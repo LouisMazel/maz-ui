@@ -16,17 +16,17 @@ description: vLazyImg is a Vue 3 directive to lazy load images with many options
 />
 
 ```vue
+<script lang="ts" setup>
+import { vLazyImg } from 'maz-ui/directives'
+</script>
+
 <template>
   <img
+    v-lazy-img="'https://loremflickr.com/1500/1000'"
     style="background-color: hsl(var(--maz-background-300)); width: 80%;"
     class="flex flex-center rounded"
-    v-lazy-img="'https://loremflickr.com/1500/1000'"
-  />
+  >
 </template>
-
-<script lang="ts" setup>
-  import { vLazyImg } from 'maz-ui/directives'
-</script>
 ```
 
 ## Use background image
@@ -42,9 +42,9 @@ description: vLazyImg is a Vue 3 directive to lazy load images with many options
 ```vue
 <template>
   <div
+    v-lazy-img:bg-image="'https://loremflickr.com/1500/1000'"
     style="height: 200px; width: 100%; background-size: contain;"
     class="flex flex-center rounded"
-    v-lazy-img:bg-image="'https://loremflickr.com/1500/1000'"
   />
 </template>
 ```
@@ -60,33 +60,33 @@ description: vLazyImg is a Vue 3 directive to lazy load images with many options
 />
 
 ```vue
+<script lang="ts" setup>
+import { vLazyImg, vLazyImgBindingValue } from 'maz-ui/directives'
+import { ref } from 'vue'
+
+const lazyBinding: vLazyImgBindingValue = {
+  src: 'https://loremflickr.com/1500/1000',
+  baseClass: 'custom-class',
+  loadingClass: 'custom-class-loading',
+  loadedClass: 'custom-class-loaded',
+  errorClass: 'custom-class-error',
+  fallbackClass: 'custom-class-fallback',
+  observerOnce: false, // launch onIntersecting function each times where the user scrolls on the image
+  loadOnce: false,
+  onLoading: (el: Element) => console.log('loading', el),
+  onLoaded: (el: Element) => console.log('loaded', el),
+  onError: (el: Element) => console.log('error', el),
+  onIntersecting: (el: Element) => console.log('intersecting', el),
+}
+</script>
+
 <template>
   <img
+    v-lazy-img="lazyBinding"
     style="background-color: hsl(var(--maz-background-300)); width: 80%;"
     class="flex flex-center rounded"
-    v-lazy-img="lazyBinding"
-  />
+  >
 </template>
-
-<script lang="ts" setup>
-  import { vLazyImg, vLazyImgBindingValue } from 'maz-ui/directives'
-  import { ref } from 'vue'
-
-  const lazyBinding: vLazyImgBindingValue = {
-    src: 'https://loremflickr.com/1500/1000',
-    baseClass: 'custom-class',
-    loadingClass: 'custom-class-loading',
-    loadedClass: 'custom-class-loaded',
-    errorClass: 'custom-class-error',
-    fallbackClass: 'custom-class-fallback',
-    observerOnce: false, // launch onIntersecting function each times where the user scrolls on the image
-    loadOnce: false,
-    onLoading: (el: Element) => console.log('loading', el),
-    onLoaded: (el: Element) => console.log('loaded', el),
-    onError: (el: Element) => console.log('error', el),
-    onIntersecting: (el: Element) => console.log('intersecting', el),
-  }
-</script>
 ```
 
 ## Global install
@@ -94,9 +94,9 @@ description: vLazyImg is a Vue 3 directive to lazy load images with many options
 `main.ts`
 
 ```typescript
-import { createApp } from 'vue'
-import { vLazyImgInstall, type vLazyImgOptions } from 'maz-ui/directives'
 import errorPhoto from 'path/to/error-photo.png'
+import { vLazyImgInstall, type vLazyImgOptions } from 'maz-ui/directives'
+import { createApp } from 'vue'
 
 const app = createApp(App)
 

@@ -1,8 +1,8 @@
 import type { BaseThemePreset, ColorMode, ThemePreset, ThemeState } from '../types'
 import { computed, getCurrentInstance, ref, watchEffect } from 'vue'
+import { inject } from 'vue'
 import { generateCriticalCSS, generateFullCSS, injectCSS } from '../utils/css-generator'
 import { mergePresets } from '../utils/preset-merger'
-import { inject } from 'vue'
 
 const state = ref<ThemeState | null>(null)
 
@@ -68,7 +68,8 @@ export function useTheme() {
 
   try {
     mazThemeState = inject('mazThemeState', undefined)
-  } catch (error) {
+  }
+  catch {
     const instance = getCurrentInstance()
     if (instance?.appContext?.app?.config?.globalProperties) {
       const props = instance.appContext.app.config.globalProperties
@@ -79,7 +80,6 @@ export function useTheme() {
   if (!state.value && mazThemeState) {
     initializeThemeFromData(mazThemeState)
   }
-
 
   if (!state.value) {
     const defaultState = {

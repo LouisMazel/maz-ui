@@ -46,91 +46,92 @@ A plugin to know the amount of time a user has spent on your website
 
   <p class="maz-text-warning">Wait 5 seconds without any actions to see the dialog popup</p>
 
-  <template #code>
+<template #code>
 
-   ```vue
-  <template>
-    <MazBtn @click="idle.start()" color="info">
-      Start
-    </MazBtn>
-    <MazBtn @click="idle.pause()" color="warning">
-      Pause
-    </MazBtn>
-    <MazBtn @click="idle.resume()">
-      Resume
-    </MazBtn>
-    <MazBtn @click="idle.reset()" color="secondary">
-      Reset
-    </MazBtn>
-    <MazBtn @click="idle.destroy()" color="destructive">
-      Destroy
-    </MazBtn>
+```vue
+<script lang="ts" setup>
+import { MazBtn, MazCard } from 'maz-ui/components'
 
-    <MazCard block>
-      <div style="display: flex;">
-        <div style="flex: 1;">
-          isIdle: {{event.isIdle}}
-        </div>
-        <div v-if="event.eventType" style="flex: 1; padding-left: 10px;">
-          eventType: {{event.eventType}}
-        </div>
-      </div>
-    </MazCard>
-  </template>
+import { useDialog, useIdleTimeout } from 'maz-ui/composables'
 
-  <script lang="ts" setup>
-    import { MazBtn, MazCard } from 'maz-ui/components'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 
-    import { onMounted, ref, onBeforeUnmount } from 'vue'
+const dialog = useDialog()
 
-    import { useIdleTimeout, useDialog } from 'maz-ui/composables'
+const event = ref({})
 
-    const dialog = useDialog()
+const timeout = 5000
 
-    const event = ref({})
+const idleTimeout = useIdleTimeout({
+  callback,
+  options: {
+    timeout,
+    immediate: false,
+    once: false,
+  },
+})
 
-    const timeout = 5000
+async function callback({ isIdle, eventType, instance }) {
+  console.log({ isIdle, eventType })
+  event.value = { isIdle, eventType }
 
-    const idleTimeout = useIdleTimeout({
-      callback,
-      options: {
-        timeout,
-        immediate: false,
-        once: false,
-      },
-    })
-
-    async function callback({ isIdle, eventType, instance }) {
-      console.log({ isIdle, eventType })
-      event.value = { isIdle, eventType }
-
-      if (isIdle) {
-        try {
-          instance.destroy()
-          await dialog.open({
-            title: 'Are you still here?',
-            message: `You have been inactive for ${timeout / 1000} secondes, do you want to continue?`,
-            cancelText: 'No',
-            confirmText: 'Yes',
-          }).promise
-          instance.start()
-        } catch (e) {
-          // do something like logout the user
-        }
-      }
+  if (isIdle) {
+    try {
+      instance.destroy()
+      await dialog.open({
+        title: 'Are you still here?',
+        message: `You have been inactive for ${timeout / 1000} secondes, do you want to continue?`,
+        cancelText: 'No',
+        confirmText: 'Yes',
+      }).promise
+      instance.start()
     }
+    catch (e) {
+      // do something like logout the user
+    }
+  }
+}
 
-    onMounted(() => {
-      // should be executed on client side
-      idleTimeout.start()
-    })
+onMounted(() => {
+  // should be executed on client side
+  idleTimeout.start()
+})
 
-    onBeforeUnmount(() => {
-      // Destroy the instance when the component is destroyed to avoid memory leaks
-      idleTimeout.destroy()
-    })
-  </script>
-  ```
+onBeforeUnmount(() => {
+  // Destroy the instance when the component is destroyed to avoid memory leaks
+  idleTimeout.destroy()
+})
+</script>
+
+<template>
+  <MazBtn color="info" @click="idle.start()">
+    Start
+  </MazBtn>
+  <MazBtn color="warning" @click="idle.pause()">
+    Pause
+  </MazBtn>
+  <MazBtn @click="idle.resume()">
+    Resume
+  </MazBtn>
+  <MazBtn color="secondary" @click="idle.reset()">
+    Reset
+  </MazBtn>
+  <MazBtn color="destructive" @click="idle.destroy()">
+    Destroy
+  </MazBtn>
+
+  <MazCard block>
+    <div style="display: flex;">
+      <div style="flex: 1;">
+        isIdle: {{ event.isIdle }}
+      </div>
+      <div v-if="event.eventType" style="flex: 1; padding-left: 10px;">
+        eventType: {{ event.eventType }}
+      </div>
+    </div>
+  </MazCard>
+</template>
+```
 
   </template>
 </ComponentDemo>

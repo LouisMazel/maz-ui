@@ -24,23 +24,40 @@ description: MazDropzone is a powerful and flexible file upload component with d
 
 ## Error codes
 
-| Error Code | Description | Trigger |
-|------------|-------------|---------|
-| `FILE_SIZE_EXCEEDED` | File size exceeds the allowed limit | When a file is larger than `maxFileSize` (in MB) |
-| `FILE_SIZE_TOO_SMALL` | File size is below the minimum limit | When a file is smaller than `minFileSize` (in MB) |
-| `MAX_FILES_EXCEEDED` | Maximum number of allowed files exceeded | When trying to add more files than `maxFiles` or more than 1 file if `multiple=false` |
-| `FILE_TYPE_NOT_ALLOWED` | File type is not allowed | When the file's MIME type doesn't match the specified `dataTypes` |
-| `FILE_DUPLICATED` | An identical file already exists | When `allowDuplicates=false` and a file with the same name, size and type already exists |
-| `NO_FILES_TO_UPLOAD` | No files to upload | When starting upload but there are no files in the dropzone |
-| `FILE_UPLOAD_ERROR` | Error during individual file upload | When uploading a specific file fails (`single` mode) |
-| `FILE_UPLOAD_ERROR_MULTIPLE` | Error during batch upload | When uploading multiple files fails (`multiple` mode) |
-| `NO_URL` | No upload URL configured | When attempting auto-upload without defining the `url` prop |
+| Error Code                   | Description                              | Trigger                                                                                  |
+| ---------------------------- | ---------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `FILE_SIZE_EXCEEDED`         | File size exceeds the allowed limit      | When a file is larger than `maxFileSize` (in MB)                                         |
+| `FILE_SIZE_TOO_SMALL`        | File size is below the minimum limit     | When a file is smaller than `minFileSize` (in MB)                                        |
+| `MAX_FILES_EXCEEDED`         | Maximum number of allowed files exceeded | When trying to add more files than `maxFiles` or more than 1 file if `multiple=false`    |
+| `FILE_TYPE_NOT_ALLOWED`      | File type is not allowed                 | When the file's MIME type doesn't match the specified `dataTypes`                        |
+| `FILE_DUPLICATED`            | An identical file already exists         | When `allowDuplicates=false` and a file with the same name, size and type already exists |
+| `NO_FILES_TO_UPLOAD`         | No files to upload                       | When starting upload but there are no files in the dropzone                              |
+| `FILE_UPLOAD_ERROR`          | Error during individual file upload      | When uploading a specific file fails (`single` mode)                                     |
+| `FILE_UPLOAD_ERROR_MULTIPLE` | Error during batch upload                | When uploading multiple files fails (`multiple` mode)                                    |
+| `NO_URL`                     | No upload URL configured                 | When attempting auto-upload without defining the `url` prop                              |
 
 ### Error handling example
 
 ::: details View code
 
 ```vue
+<script setup>
+function handleError({ code, files }) {
+  switch (code) {
+    case 'FILE_SIZE_EXCEEDED':
+      console.log('File too large:', files[0].name)
+      break
+    case 'FILE_TYPE_NOT_ALLOWED':
+      console.log('File type not allowed:', files[0].type)
+      break
+    case 'MAX_FILES_EXCEEDED':
+      console.log('Too many files selected')
+      break
+      // ...
+  }
+}
+</script>
+
 <template>
   <MazDropzone
     :max-file-size="5"
@@ -50,23 +67,6 @@ description: MazDropzone is a powerful and flexible file upload component with d
     @error="handleError"
   />
 </template>
-
-<script setup>
-  function handleError({ code, files }) {
-    switch (code) {
-      case 'FILE_SIZE_EXCEEDED':
-        console.log('File too large:', files[0].name)
-        break
-      case 'FILE_TYPE_NOT_ALLOWED':
-        console.log('File type not allowed:', files[0].type)
-        break
-      case 'MAX_FILES_EXCEEDED':
-        console.log('Too many files selected')
-        break
-      // ...
-    }
-  }
-</script>
 ```
 
 :::
@@ -95,54 +95,54 @@ description: MazDropzone is a powerful and flexible file upload component with d
     </MazBtn>
   </div>
 
-  <template #code>
+<template #code>
 
-  ```vue
-  <template>
-    <MazDropzone
-      v-model="files"
-      :data-types="['image/*']"
-      :max-file-size="3"
-      :max-files="5"
-      @upload-success="onUploadSuccess"
-      @upload-error="onUploadError"
-      @error="onError"
-      url="https://httpbin.org/post"
-      :request-options="{
-        headers: { 'My-Awesome-Header': 'header value' },
-      }"
-    />
+```vue
+<script setup lang="ts">
+import { useToast } from 'maz-ui'
+import { ref } from 'vue'
 
-    <MazBtn @click="dropzone?.uploadFiles()" :loading="dropzone?.isUploading">
-      Upload Files
-    </MazBtn>
-  </template>
+const toast = useToast()
 
-  <script setup lang="ts">
-    import { ref } from 'vue'
-    import { useToast } from 'maz-ui'
+const files = ref<File[]>([])
+const dropzone = ref<InstanceType<typeof MazDropzone>>()
 
-    const toast = useToast()
+function onUploadSuccess({ file, response }) {
+  console.log('Upload success:', file, response)
+  toast.success(`File ${file.name} uploaded successfully`)
+}
 
-    const files = ref<File[]>([])
-    const dropzone = ref<InstanceType<typeof MazDropzone>>()
+function onUploadError({ file, code, error }) {
+  console.error('Upload failed:', file, code, error)
+  toast.error(`File ${file.name} upload failed: ${code} - ${error}`)
+}
 
-    const onUploadSuccess = ({ file, response }) => {
-      console.log('Upload success:', file, response)
-      toast.success(`File ${file.name} uploaded successfully`)
-    }
+function onError({ files, event, code }) {
+  console.error('Error:', files, event, code)
+  toast.error(`${files?.length} files upload failed: ${code} - ${files?.map(file => file.name).join(', ')}`)
+}
+</script>
 
-    const onUploadError = ({ file, code, error }) => {
-      console.error('Upload failed:', file, code, error)
-      toast.error(`File ${file.name} upload failed: ${code} - ${error}`)
-    }
+<template>
+  <MazDropzone
+    v-model="files"
+    :data-types="['image/*']"
+    :max-file-size="3"
+    :max-files="5"
+    url="https://httpbin.org/post"
+    :request-options="{
+      headers: { 'My-Awesome-Header': 'header value' },
+    }"
+    @upload-success="onUploadSuccess"
+    @upload-error="onUploadError"
+    @error="onError"
+  />
 
-    const onError = ({ files, event, code }) => {
-      console.error('Error:', files, event, code)
-      toast.error(`${files?.length} files upload failed: ${code} - ${files?.map(file => file.name).join(', ')}`)
-    }
-  </script>
-  ```
+  <MazBtn :loading="dropzone?.isUploading" @click="dropzone?.uploadFiles()">
+    Upload Files
+  </MazBtn>
+</template>
+```
 
   </template>
 </ComponentDemo>
@@ -159,16 +159,11 @@ You can restrict allowed file types using the `data-types` prop:
     @error="onError"
   />
 
-  <template #code>
+<template #code>
 
-  ```html
-  <MazDropzone
-    v-model="files"
-    :data-types="['image/jpeg', 'image/png']"
-    :max-file-size="5"
-    @error="onError"
-  />
-  ```
+```html
+<MazDropzone v-model="files" :data-types="['image/jpeg', 'image/png']" :max-file-size="5" @error="onError" />
+```
 
   </template>
 </ComponentDemo>
@@ -187,18 +182,18 @@ Enable automatic file upload using the `auto-upload` prop. Files can be uploaded
     @error="onError"
   />
 
-  <template #code>
+<template #code>
 
-  ```html
-  <MazDropzone
-    v-model="files"
-    auto-upload="single"
-    url="https://your-upload-endpoint.com/upload"
-    @upload-success="onUploadSuccess"
-    @upload-error="onUploadError"
-    @error="onError"
-  />
-  ```
+```html
+<MazDropzone
+  v-model="files"
+  auto-upload="single"
+  url="https://your-upload-endpoint.com/upload"
+  @upload-success="onUploadSuccess"
+  @upload-error="onUploadError"
+  @error="onError"
+/>
+```
 
   </template>
 </ComponentDemo>
@@ -207,6 +202,7 @@ You can also upload all files at once using `multiple`:
 
 ::: tip
 Multiple upload is allowed:
+
 - when `max-files` is greater than 1
 - when `auto-upload` is set to `multiple`
 - when `multiple` prop is set to `true`
@@ -224,21 +220,21 @@ Multiple upload is allowed:
     @error="onError"
   />
 
-  <template #code>
+<template #code>
 
-  ```html
-  <template>
-    <MazDropzone
-      v-model="files"
-      auto-upload="multiple"
-      url="https://your-upload-endpoint.com/upload"
-      @upload-success-multiple="onUploadSuccessMultiple"
-      @upload-error-multiple="onUploadErrorMultiple"
-      @error="onError"
-    />
-  </template>
+```html
+<template>
+  <MazDropzone
+    v-model="files"
+    auto-upload="multiple"
+    url="https://your-upload-endpoint.com/upload"
+    @upload-success-multiple="onUploadSuccessMultiple"
+    @upload-error-multiple="onUploadErrorMultiple"
+    @error="onError"
+  />
+</template>
 
-  <script setup lang="ts">
+<script setup lang="ts">
   import { ref } from 'vue'
   import { useToast } from 'maz-ui'
 
@@ -255,9 +251,8 @@ Multiple upload is allowed:
     console.error('Upload mulitple failed:', files, code, error)
     toast.error(`${files.length} files upload failed: ${code} - ${error}`)
   }
-
-  </script>
-  ```
+</script>
+```
 
   </template>
 </ComponentDemo>
@@ -279,21 +274,19 @@ Customize the upload area using slots:
     </template>
   </MazDropzone>
 
-  <template #code>
+<template #code>
 
-  ```html
-  <MazDropzone v-model="files" @error="onError">
-    <template #no-files-area="{ handleFileInputClick }">
-      <div class="maz-flex maz-flex-col maz-items-center maz-gap-4">
-        <MazIcon name="arrow-up-on-square" class="maz-text-4xl" />
-        <p>Drop your files here or click to browse</p>
-        <MazBtn @click="handleFileInputClick">
-          Select Files
-        </MazBtn>
-      </div>
-    </template>
-  </MazDropzone>
-  ```
+```html
+<MazDropzone v-model="files" @error="onError">
+  <template #no-files-area="{ handleFileInputClick }">
+    <div class="maz-flex maz-flex-col maz-items-center maz-gap-4">
+      <MazIcon name="arrow-up-on-square" class="maz-text-4xl" />
+      <p>Drop your files here or click to browse</p>
+      <MazBtn @click="handleFileInputClick"> Select Files </MazBtn>
+    </div>
+  </template>
+</MazDropzone>
+```
 
   </template>
 </ComponentDemo>
@@ -313,19 +306,19 @@ Customize text messages using the `translations` prop:
     @error="onError"
   />
 
-  <template #code>
+<template #code>
 
-  ```html
-  <MazDropzone
-    v-model="files"
-    :translations="{
-      dragAndDrop: 'Drag files here',
-      selectFile: 'Browse files',
-      fileInfos: 'Accepted files: Images up to 5MB'
-    }"
-    @error="onError"
-  />
-  ```
+```html
+<MazDropzone
+  v-model="files"
+  :translations="{
+    dragAndDrop: 'Drag files here',
+    selectFile: 'Browse files',
+    fileInfos: 'Accepted files: Images up to 5MB'
+  }"
+  @error="onError"
+/>
+```
 
   </template>
 </ComponentDemo>
@@ -353,27 +346,27 @@ Customize the upload request using `uploadUrl`, `requestOptions` and `transformB
     @error="onError"
   />
 
-  <template #code>
+<template #code>
 
-  ```html
-  <MazDropzone
-    v-model="files"
-    url="/api/upload"
-    :request-options="{
-      method: 'POST',
-      headers: {
-        'Authorization': 'Bearer token123'
-      },
-    }"
-    :transform-body="(formData, files) => {
-      // Add additional data to FormData
-      formData.append('userId', '123')
-      formData.append('fileCount', files.length.toString())
-      return formData
-    }"
-    @error="onError"
-  />
-  ```
+```html
+<MazDropzone
+  v-model="files"
+  url="/api/upload"
+  :request-options="{
+    method: 'POST',
+    headers: {
+      'Authorization': 'Bearer token123'
+    },
+  }"
+  :transform-body="(formData, files) => {
+    // Add additional data to FormData
+    formData.append('userId', '123')
+    formData.append('fileCount', files.length.toString())
+    return formData
+  }"
+  @error="onError"
+/>
+```
 
   </template>
 </ComponentDemo>

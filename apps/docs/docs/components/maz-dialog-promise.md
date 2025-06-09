@@ -48,8 +48,61 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
 </MazDialog>
 
 ```vue
+<script setup>
+import { MazDialog, MazDialogPromise, useMazDialogPromise } from 'maz-ui/components'
+
+import { ref } from 'vue'
+
+const confirmDialog = ref(false)
+
+const { showDialogAndWaitChoice, data } = useMazDialogPromise()
+
+data.value = {
+  title: 'Delete user',
+  message: 'Are you sure you want to delete this user?',
+}
+
+const buttons: DialogCustomButton[] = [
+  {
+    text: 'Cancel',
+    type: 'reject',
+    color: 'destructive',
+    response: new Error('cancel'),
+    size: 'sm',
+  },
+  {
+    text: 'Delete!',
+    type: 'resolve',
+    color: 'success',
+    response: 'delete',
+    size: 'lg',
+  },
+]
+
+async function askToUser() {
+  try {
+    const responseOne = await showDialogAndWaitChoice('one')
+    toast.success(responseOne, {
+      position: 'top-right'
+    })
+    const responseTwo = await showDialogAndWaitChoice('two')
+    toast.success(responseTwo, {
+      position: 'top-right'
+    })
+    confirmDialog.value = true
+  }
+  catch (error) {
+    toast.error(error.message ?? error, {
+      position: 'top-right'
+    })
+  }
+}
+</script>
+
 <template>
-  <MazBtn @click="askToUser">Ask user</MazBtn>
+  <MazBtn @click="askToUser">
+    Ask user
+  </MazBtn>
 
   <MazDialogPromise
     :data="dataPromiseOne"
@@ -78,62 +131,12 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
     </template>
   </MazDialog>
 </template>
-
-<script setup>
-  import { ref } from 'vue'
-
-  import { MazDialog, MazDialogPromise, useMazDialogPromise }'maz-ui/components'
-
-  const confirmDialog = ref(false)
-
-  const { showDialogAndWaitChoice, data } = useMazDialogPromise()
-
-  data.value = {
-    title: 'Delete user',
-    message: 'Are you sure you want to delete this user?',
-  }
-
-  const buttons: DialogCustomButton[] = [
-    {
-      text: 'Cancel',
-      type: 'reject',
-      color: 'destructive',
-      response: new Error('cancel'),
-      size: 'sm',
-    },
-    {
-      text: 'Delete!',
-      type: 'resolve',
-      color: 'success',
-      response: 'delete',
-      size: 'lg',
-    },
-  ]
-
-  async function askToUser () {
-    try {
-      const responseOne = await showDialogAndWaitChoice('one')
-      toast.success(responseOne, {
-        position: 'top-right'
-      })
-      const responseTwo = await showDialogAndWaitChoice('two')
-      toast.success(responseTwo, {
-        position: 'top-right'
-      })
-      confirmDialog.value = true
-    } catch (error) {
-      toast.error(error.message ?? error, {
-        position: 'top-right'
-      })
-    }
-  }
-</script>
 ```
 
 ## Types
 
 ```ts
-type DialogData = {
+interface DialogData {
   /**
    * Dialog title
    */
@@ -166,7 +169,7 @@ type DialogData = {
   buttons?: DialogCustomButton[]
 }
 
- type DialogButton = {
+interface DialogButton {
   text?: string
   block?: boolean
   color?: Color
@@ -183,16 +186,16 @@ type DialogCustomButton = DialogButton & {
   response?: unknown
 }
 
-type Color =
-  | 'primary'
-  | 'secondary'
-  | 'info'
-  | 'success'
-  | 'warning'
-  | 'destructive'
-  | 'white'
-  | 'black'
-  | 'transparent'
+type Color
+  = | 'primary'
+    | 'secondary'
+    | 'info'
+    | 'success'
+    | 'warning'
+    | 'destructive'
+    | 'white'
+    | 'black'
+    | 'transparent'
 
 type Size = 'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 ```

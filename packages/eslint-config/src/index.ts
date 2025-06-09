@@ -8,6 +8,7 @@ import tailwind from 'eslint-plugin-tailwindcss'
 import vueA11y from 'eslint-plugin-vuejs-accessibility'
 
 import { baseRules } from './configs/base'
+import { markdown } from './configs/markdown'
 import { sonarjsRules, sonarjsTestRules } from './configs/sonarjs'
 import { tailwindcssRules } from './configs/tailwindcss'
 import { testRules } from './configs/test'
@@ -46,7 +47,7 @@ const defaultOptions: MazESLintOptions = {
 export function defineConfig(options: MazESLintOptions = {}, ...userConfigs: MazESLintUserConfig[]): MazESLintConfig {
   const opts = { ...defaultOptions, ...options }
 
-  const env = opts.env || process.env.NODE_ENV || 'development'
+  const env = opts.env || process.env.NODE_ENV || 'production'
 
   // Merge all rules
   let allRules: Partial<Rules> = {
@@ -63,7 +64,7 @@ export function defineConfig(options: MazESLintOptions = {}, ...userConfigs: Maz
 
   const additionalConfigs: MazESLintUserConfig[] = []
 
-  if (opts.sonarjs || opts.formatters) {
+  if (opts.sonarjs) {
     additionalConfigs.push(sonarjs.configs.recommended)
 
     additionalConfigs.push({
@@ -79,11 +80,11 @@ export function defineConfig(options: MazESLintOptions = {}, ...userConfigs: Maz
     })
   }
 
-  if (opts.vueAccessibility || opts.formatters) {
+  if (opts.vueAccessibility) {
     additionalConfigs.push(vueA11y.configs['flat/recommended'])
   }
 
-  if (opts.tailwindcss || opts.formatters) {
+  if (opts.tailwindcss) {
     // @ts-expect-error - tailwind.configs['flat/recommended'] is not typed correctly
     additionalConfigs.push(...tailwind.configs['flat/recommended'])
     additionalConfigs.push({
@@ -100,7 +101,7 @@ export function defineConfig(options: MazESLintOptions = {}, ...userConfigs: Maz
     formatters: opts.formatters,
     ...opts,
     rules: allRules,
-  }, ...userConfigs, ...additionalConfigs) as MazESLintConfig
+  }, ...additionalConfigs, ...userConfigs, markdown) as MazESLintConfig
 }
 
 // Export types

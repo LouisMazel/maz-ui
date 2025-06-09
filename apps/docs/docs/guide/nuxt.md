@@ -62,7 +62,7 @@ function showToast() {
 </script>
 
 <template>
-  <div class="maz-bg-background maz-text-foreground p-8">
+  <div class="maz-bg-background p-8 maz-text-foreground">
     <!-- Components are auto-imported -->
     <MazBtn color="primary" @click="showToast">
       Click me!
@@ -184,7 +184,7 @@ export default defineNuxtConfig({
 ### 🎛️ General Configuration
 
 ```ts
-general: {
+const general = {
   // Add prefix to all auto-imported composables
   autoImportPrefix: 'Maz', // only for composables, generates useMazToast, useMazTheme, etc.
 
@@ -199,7 +199,7 @@ general: {
 ### 🎨 CSS Configuration
 
 ```ts
-css: {
+const css = {
   // Auto-inject Maz-UI base styles
   injectMainCss: true,
 }
@@ -210,7 +210,7 @@ css: {
 The most powerful theming system for Nuxt applications:
 
 ```ts
-theme: {
+const theme = {
   // Use predefined presets or create custom ones
   preset: 'mazUi', // 'mazUi' | 'dark' | 'ocean' | CustomThemeObject
 
@@ -250,7 +250,7 @@ theme: {
 ### 🧩 Components
 
 ```ts
-components: {
+const components = {
   // Auto-import all 50+ Maz-UI components
   autoImport: true,
 }
@@ -264,7 +264,7 @@ components: {
 All composables are auto-imported and ready to use:
 
 ```ts
-composables: {
+const composables = {
   // 🎨 Theming
   useTheme: true, // Theme management and dark mode
 
@@ -306,7 +306,7 @@ composables: {
 Powerful Vue directives for enhanced functionality:
 
 ```ts
-directives: {
+const directives = {
   // Image directives
   vLazyImg: { threshold: 0.1 }, // Lazy loading with intersection observer
   vZoomImg: true, // Click to zoom images
@@ -380,25 +380,32 @@ export default defineNuxtConfig({
 If you encounter the error `"useTheme must be used within a MazThemeProvider or after MazUiPlugin installation"`, ensure that:
 
 1. **Enable useTheme composable** in your configuration:
+
 ```ts
-mazUi: {
-  composables: {
-    useTheme: true, // Must be explicitly enabled
+const config = {
+  mazUi: {
+    composables: {
+      useTheme: true, // Must be explicitly enabled
+    }
   }
 }
 ```
 
 2. **Theme system is not disabled**:
+
 ```ts
-mazUi: {
-  theme: {
+const config = {
+  mazUi: {
+    theme: {
     // theme config, not false
-    preset: 'mazUi'
+      preset: 'mazUi'
+    }
   }
 }
 ```
 
 3. **Use useTheme only in client-side code** or with proper SSR handling:
+
 ```vue
 <script setup>
 // ✅ Good - with client check

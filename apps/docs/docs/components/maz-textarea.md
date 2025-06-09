@@ -22,9 +22,16 @@ This component has the "autogrow" feature, so when the user writes, the textarea
     label="Enter your comment"
   />
 
-  <template #code>
+<template #code>
 
 ```vue
+<script lang="ts" setup>
+import { MazTextarea } from 'maz-ui/components'
+import { ref } from 'vue'
+
+const value = ref()
+</script>
+
 <template>
   <MazTextarea
     v-model="value"
@@ -32,13 +39,6 @@ This component has the "autogrow" feature, so when the user writes, the textarea
     label="Enter your comment"
   />
 </template>
-
-<script lang="ts" setup>
-  import { ref } from 'vue'
-  import { MazTextarea } from 'maz-ui/components'
-
-  const value = ref()
-</script>
 ```
 
   </template>
@@ -64,9 +64,25 @@ You can use the `label` and `append` slots to customize the label and the append
     </template>
   </MazTextarea>
 
-  <template #code>
+<template #code>
 
 ```vue
+<script lang="ts" setup>
+import { useToast } from 'maz-ui/composables'
+import { ref } from 'vue'
+
+const value = ref<string>()
+
+const toast = useToast()
+
+function sendMessage() {
+  toast.success('Message sent', {
+    position: 'top-right',
+  })
+  value.value = ''
+}
+</script>
+
 <template>
   <MazTextarea
     v-model="value"
@@ -83,22 +99,6 @@ You can use the `label` and `append` slots to customize the label and the append
     </template>
   </MazTextarea>
 </template>
-
-<script lang="ts" setup>
-  import { ref } from 'vue'
-  import { useToast } from 'maz-ui/composables'
-
-  const value = ref<string>()
-
-  const toast = useToast()
-
-  function sendMessage() {
-    toast.success('Message sent', {
-      position: 'top-right',
-    })
-    value.value = ''
-  }
-</script>
 ```
 
   </template>
@@ -139,7 +139,7 @@ You can use the `hint` attribute to display a hint message. This will replace th
     />
   </div>
 
-  <template #code>
+<template #code>
 
 ```vue
 <template>
@@ -186,9 +186,10 @@ You can use the `hint` attribute to display a hint message. This will replace th
     disabled
   />
 
-  <template #code>
+<template #code>
 
-```html disabled />
+```html
+<MazTextarea v-model="value" name="comment" label="This is a label" disabled />
 ```
 
   </template>
@@ -211,3 +212,7 @@ You can use the `hint` attribute to display a hint message. This will replace th
     value.value = ''
   }
 </script>
+
+```
+
+```

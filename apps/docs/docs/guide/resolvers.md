@@ -58,16 +58,16 @@ Configure your build tool:
 ::: code-group
 
 ```typescript [Vite]
-// vite.config.ts
-import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import Components from 'unplugin-vue-components/vite'
-import AutoImport from 'unplugin-auto-import/vite'
 import {
   MazComponentsResolver,
   MazDirectivesResolver,
   MazModulesResolver
 } from 'maz-ui/resolvers'
+import AutoImport from 'unplugin-auto-import/vite'
+import Components from 'unplugin-vue-components/vite'
+// vite.config.ts
+import { defineConfig } from 'vite'
 
 export default defineConfig({
   plugins: [
@@ -88,10 +88,10 @@ export default defineConfig({
 ```
 
 ```typescript [Webpack]
+const { MazComponentsResolver, MazDirectivesResolver, MazModulesResolver } = require('maz-ui/resolvers')
+const AutoImport = require('unplugin-auto-import/webpack')
 // webpack.config.js
 const Components = require('unplugin-vue-components/webpack')
-const AutoImport = require('unplugin-auto-import/webpack')
-const { MazComponentsResolver, MazDirectivesResolver, MazModulesResolver } = require('maz-ui/resolvers')
 
 module.exports = {
   plugins: [
@@ -117,26 +117,31 @@ module.exports = {
 Auto-imports all Maz-UI components (50+ available):
 
 ```vue
-<template>
-  <!-- All components auto-imported -->
-  <MazBtn color="primary">Button</MazBtn>
-  <MazInput v-model="text" placeholder="Type here..." />
-  <MazSelect v-model="selected" :options="options" />
-  <MazCard>
-    <template #header>Card Title</template>
-    <p>Content goes here</p>
-  </MazCard>
-</template>
-
 <script setup lang="ts">
 // No imports needed!
 const text = ref('')
 const selected = ref('')
 const options = ['Option 1', 'Option 2']
 </script>
+
+<template>
+  <!-- All components auto-imported -->
+  <MazBtn color="primary">
+    Button
+  </MazBtn>
+  <MazInput v-model="text" placeholder="Type here..." />
+  <MazSelect v-model="selected" :options="options" />
+  <MazCard>
+    <template #header>
+      Card Title
+    </template>
+    <p>Content goes here</p>
+  </MazCard>
+</template>
 ```
 
 **Available Components Include:**
+
 - **Form Controls:** `MazBtn`, `MazInput`, `MazSelect`, `MazCheckbox`, `MazRadio`
 - **Layout:** `MazCard`, `MazContainer`, `MazDivider`, `MazSeparator`
 - **Navigation:** `MazTabs`, `MazStepper`, `MazBreadcrumb`, `MazPagination`
@@ -149,6 +154,15 @@ const options = ['Option 1', 'Option 2']
 Auto-imports powerful Vue directives:
 
 ```vue
+<script setup lang="ts">
+// No directive imports needed!
+const showDropdown = ref(false)
+
+function handleClickOutside() {
+  showDropdown.value = false
+}
+</script>
+
 <template>
   <div>
     <!-- Tooltip directive -->
@@ -158,30 +172,26 @@ Auto-imports powerful Vue directives:
 
     <!-- Click outside detection -->
     <div v-click-outside="handleClickOutside" class="dropdown">
-      <button @click="showDropdown = !showDropdown">Toggle</button>
-      <div v-show="showDropdown">Dropdown content</div>
+      <button @click="showDropdown = !showDropdown">
+        Toggle
+      </button>
+      <div v-show="showDropdown">
+        Dropdown content
+      </div>
     </div>
 
     <!-- Lazy image loading -->
-    <img v-lazy-img="{ src: '/large-image.jpg', loading: '/loading.gif' }" />
+    <img v-lazy-img="{ src: '/large-image.jpg', loading: '/loading.gif' }">
 
     <!-- Image zoom and fullscreen -->
-    <img v-zoom-img src="/photo.jpg" alt="Zoomable image" />
-    <img v-fullscreen-img src="/gallery-1.jpg" alt="Gallery image" />
+    <img v-zoom-img src="/photo.jpg" alt="Zoomable image">
+    <img v-fullscreen-img src="/gallery-1.jpg" alt="Gallery image">
   </div>
 </template>
-
-<script setup lang="ts">
-// No directive imports needed!
-const showDropdown = ref(false)
-
-function handleClickOutside() {
-  showDropdown.value = false
-}
-</script>
 ```
 
 **Available Directives:**
+
 - **`v-tooltip`** - Flexible tooltip positioning and content
 - **`v-click-outside`** - Detect clicks outside an element
 - **`v-lazy-img`** - Lazy load images with intersection observer
@@ -226,14 +236,14 @@ function showSuccess() {
 
 **Available Modules:**
 
-| Category | Functions/Composables |
-|----------|----------------------|
-| **UI Management** | `useToast`, `useDialog`, `useTheme`, `useWait` |
-| **Responsive** | `useBreakpoints`, `useWindowSize` |
-| **User Interaction** | `useUserVisibility`, `useIdleTimeout`, `useSwipe` |
-| **Utilities** | `debounce`, `throttle`, `currency`, `date`, `sleep` |
-| **Form Handling** | `useFormValidator`, `useFormField` |
-| **Advanced** | `useTimer`, `useAos`, `useStringMatching` |
+| Category             | Functions/Composables                               |
+| -------------------- | --------------------------------------------------- |
+| **UI Management**    | `useToast`, `useDialog`, `useTheme`, `useWait`      |
+| **Responsive**       | `useBreakpoints`, `useWindowSize`                   |
+| **User Interaction** | `useUserVisibility`, `useIdleTimeout`, `useSwipe`   |
+| **Utilities**        | `debounce`, `throttle`, `currency`, `date`, `sleep` |
+| **Form Handling**    | `useFormValidator`, `useFormField`                  |
+| **Advanced**         | `useTimer`, `useAos`, `useStringMatching`           |
 
 ## Advanced Configuration
 
@@ -264,13 +274,6 @@ export default defineConfig({
 With prefixes enabled:
 
 ```vue
-<template>
-  <!-- Prefixed components -->
-  <MazMazBtn v-maz-tooltip="'Prefixed tooltip'">
-    Prefixed Button
-  </MazMazBtn>
-</template>
-
 <script setup lang="ts">
 // Prefixed composables
 const toast = useMazToast()
@@ -279,6 +282,13 @@ const theme = useMazTheme()
 // Prefixed utilities (for composables only)
 const mazDebounce = debounce // Note: utility functions are not prefixed
 </script>
+
+<template>
+  <!-- Prefixed components -->
+  <MazMazBtn v-maz-tooltip="'Prefixed tooltip'">
+    Prefixed Button
+  </MazMazBtn>
+</template>
 ```
 
 ::: warning Prefix Limitation
@@ -312,13 +322,13 @@ export default defineConfig({
 Combine with other popular resolvers:
 
 ```typescript
-import { defineConfig } from 'vite'
-import Components from 'unplugin-vue-components/vite'
 import {
-  MazComponentsResolver,
+  AntDesignVueResolver,
   ElementPlusResolver,
-  AntDesignVueResolver
+  MazComponentsResolver
 } from 'unplugin-vue-components/resolvers'
+import Components from 'unplugin-vue-components/vite'
+import { defineConfig } from 'vite'
 
 export default defineConfig({
   plugins: [
@@ -339,12 +349,12 @@ export default defineConfig({
 ### Complete Dashboard Setup
 
 ```typescript
+import vue from '@vitejs/plugin-vue'
+import { MazComponentsResolver, MazDirectivesResolver, MazModulesResolver } from 'maz-ui/resolvers'
+import AutoImport from 'unplugin-auto-import/vite'
+import Components from 'unplugin-vue-components/vite'
 // vite.config.ts - Production-ready configuration
 import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import Components from 'unplugin-vue-components/vite'
-import AutoImport from 'unplugin-auto-import/vite'
-import { MazComponentsResolver, MazDirectivesResolver, MazModulesResolver } from 'maz-ui/resolvers'
 
 export default defineConfig({
   plugins: [
@@ -369,72 +379,6 @@ export default defineConfig({
 ### Dashboard Component Example
 
 ```vue
-<template>
-  <div class="dashboard">
-    <!-- Auto-imported components -->
-    <MazCard class="stats-card">
-      <template #header>
-        <div class="flex items-center justify-between">
-          <h2>Statistics</h2>
-          <MazBtn
-            v-tooltip="'Refresh data'"
-            size="sm"
-            variant="outline"
-            @click="refreshData"
-          >
-            <MazIcon name="refresh" />
-          </MazBtn>
-        </div>
-      </template>
-
-      <div class="grid grid-cols-2 gap-4">
-        <div v-for="stat in stats" :key="stat.label">
-          <MazBadge :color="stat.color">{{ stat.value }}</MazBadge>
-          <p class="text-sm text-muted">{{ stat.label }}</p>
-        </div>
-      </div>
-    </MazCard>
-
-    <!-- Data table with pagination -->
-    <MazCard>
-      <template #header>Users</template>
-
-      <MazTable
-        :data="paginatedUsers"
-        :columns="columns"
-        :loading="isLoading"
-      />
-
-      <template #footer>
-        <MazPagination
-          v-model:current-page="currentPage"
-          :total="totalUsers"
-          :per-page="perPage"
-        />
-      </template>
-    </MazCard>
-
-    <!-- Modal dialog -->
-    <MazDialog v-model="showUserDialog" title="User Details">
-      <MazInput
-        v-model="editingUser.name"
-        label="Name"
-        placeholder="Enter user name"
-      />
-      <MazSelect
-        v-model="editingUser.role"
-        label="Role"
-        :options="roleOptions"
-      />
-
-      <template #footer>
-        <MazBtn variant="outline" @click="closeDialog">Cancel</MazBtn>
-        <MazBtn @click="saveUser">Save</MazBtn>
-      </template>
-    </MazDialog>
-  </div>
-</template>
-
 <script setup lang="ts">
 // All auto-imported - no imports needed!
 const toast = useToast()
@@ -496,6 +440,82 @@ function saveUser() {
   closeDialog()
 }
 </script>
+
+<template>
+  <div class="dashboard">
+    <!-- Auto-imported components -->
+    <MazCard class="stats-card">
+      <template #header>
+        <div class="flex items-center justify-between">
+          <h2>Statistics</h2>
+          <MazBtn
+            v-tooltip="'Refresh data'"
+            size="sm"
+            variant="outline"
+            @click="refreshData"
+          >
+            <MazIcon name="refresh" />
+          </MazBtn>
+        </div>
+      </template>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div v-for="stat in stats" :key="stat.label">
+          <MazBadge :color="stat.color">
+            {{ stat.value }}
+          </MazBadge>
+          <p class="text-sm text-muted">
+            {{ stat.label }}
+          </p>
+        </div>
+      </div>
+    </MazCard>
+
+    <!-- Data table with pagination -->
+    <MazCard>
+      <template #header>
+        Users
+      </template>
+
+      <MazTable
+        :data="paginatedUsers"
+        :columns="columns"
+        :loading="isLoading"
+      />
+
+      <template #footer>
+        <MazPagination
+          v-model:current-page="currentPage"
+          :total="totalUsers"
+          :per-page="perPage"
+        />
+      </template>
+    </MazCard>
+
+    <!-- Modal dialog -->
+    <MazDialog v-model="showUserDialog" title="User Details">
+      <MazInput
+        v-model="editingUser.name"
+        label="Name"
+        placeholder="Enter user name"
+      />
+      <MazSelect
+        v-model="editingUser.role"
+        label="Role"
+        :options="roleOptions"
+      />
+
+      <template #footer>
+        <MazBtn variant="outline" @click="closeDialog">
+          Cancel
+        </MazBtn>
+        <MazBtn @click="saveUser">
+          Save
+        </MazBtn>
+      </template>
+    </MazDialog>
+  </div>
+</template>
 ```
 
 ## TypeScript Integration
@@ -571,6 +591,7 @@ export default defineConfig({
 ### Common Issues
 
 **Components not auto-importing:**
+
 ```typescript
 // ✅ Make sure resolvers are properly configured
 Components({
@@ -579,6 +600,7 @@ Components({
 ```
 
 **TypeScript errors:**
+
 ```typescript
 // ✅ Ensure dts generation is enabled
 Components({
@@ -587,12 +609,14 @@ Components({
 ```
 
 **Prefix not working for utilities:**
+
 ```typescript
 // ⚠️ Known limitation: utilities are not prefixed
 MazModulesResolver({ prefix: 'Maz' }) // Only composables are prefixed
 ```
 
 **Development performance:**
+
 ```typescript
 // ✅ Enable development mode for faster builds
 MazComponentsResolver({
@@ -606,10 +630,10 @@ MazComponentsResolver({
 
 ```vue
 <script setup lang="ts">
-import { MazBtn, MazInput, MazCard } from 'maz-ui/components'
-import { useToast, useTheme } from 'maz-ui/composables'
+import { currency, debounce } from 'maz-ui'
+import { MazBtn, MazCard, MazInput } from 'maz-ui/components'
+import { useTheme, useToast } from 'maz-ui/composables'
 import { vTooltip } from 'maz-ui/directives'
-import { debounce, currency } from 'maz-ui'
 
 const toast = useToast()
 // ... rest of component

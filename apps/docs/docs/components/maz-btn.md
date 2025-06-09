@@ -14,17 +14,17 @@ description: MazBtn is a standalone component that replaces the standard html bu
 <ComponentDemo expanded>
   <MazBtn>Button</MazBtn>
 
-  <template #code>
+<template #code>
 
-  ```vue
-  <template>
-    <MazBtn>Button</MazBtn>
-  </template>
+```vue
+<script setup lang="ts">
+import { MazBtn } from 'maz-ui/components'
+</script>
 
-  <script setup lang="ts">
-    import { MazBtn } from 'maz-ui/components'
-  </script>
-  ```
+<template>
+  <MazBtn>Button</MazBtn>
+</template>
+```
 
   </template>
 </ComponentDemo>
@@ -38,17 +38,19 @@ Use the attribute `size` with value `{{ sizes.join(', ') }}`
     <MazBtn v-for="size in sizes" :size="size">{{ size }}</MazBtn>
   </div>
 
-  <template #code>
+<template #code>
 
-  ```vue
-  <template>
-    <MazBtn v-for="size in sizes" :size="size">{{ size }}</MazBtn>
-  </template>
+```vue
+<script setup lang="ts">
+const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
+</script>
 
-  <script setup lang="ts">
-    const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
-  </script>
-  ```
+<template>
+  <MazBtn v-for="size in sizes" :key="size" :size="size">
+    {{ size }}
+  </MazBtn>
+</template>
+```
 
   </template>
 </ComponentDemo>
@@ -62,7 +64,7 @@ Use the attribute `color` with a value in this [list](./../guide/colors.md), the
     <MazBtn v-for="color of colors" :key="color" :color="color">{{ color }}</MazBtn>
   </div>
 
-  <template #code>
+<template #code>
 
 ```html
 <MazBtn>primary</MazBtn>
@@ -125,34 +127,34 @@ The loading state is available with the attribute `loading`
     </div>
   </div>
 
-  <template #code>
+<template #code>
 
-  ```vue
-  <template>
-    <MazBtn
-      v-for="color of colors"
-      :key="color"
-      loading
-      :color="color"
-    >
-      {{ color }}
-    </MazBtn>
-  </template>
+```vue
+<script lang="ts" setup>
+const colors = [
+  'primary',
+  'secondary',
+  'info',
+  'success',
+  'warning',
+  'destructive',
+  'contrast',
+  'accent',
+  'transparent',
+]
+</script>
 
-  <script lang="ts" setup>
-    const colors = [
-      'primary',
-      'secondary',
-      'info',
-      'success',
-      'warning',
-      'destructive',
-      'contrast',
-      'accent',
-      'transparent',
-    ]
-  </script>
-  ```
+<template>
+  <MazBtn
+    v-for="color of colors"
+    :key="color"
+    loading
+    :color="color"
+  >
+    {{ color }}
+  </MazBtn>
+</template>
+```
 
   </template>
 </ComponentDemo>
@@ -171,19 +173,19 @@ It's better in light mode
     <MazBtn v-for="color of colors" :color="color" pastel>{{ color }}</MazBtn>
   </div>
 
-  <template #code>
+<template #code>
 
-  ```html
-  <MazBtn pastel>primary</MazBtn>
-  <MazBtn color="secondary" pastel>secondary</MazBtn>
-  <MazBtn color="info" pastel>info</MazBtn>
-  <MazBtn color="success" pastel>success</MazBtn>
-  <MazBtn color="warning" pastel>warning</MazBtn>
-  <MazBtn color="destructive" pastel>destructive</MazBtn>
-  <MazBtn color="contrast" pastel>contrast</MazBtn>
-  <MazBtn color="accent" pastel>accent</MazBtn>
-  <MazBtn color="transparent" pastel>transparent</MazBtn>
-  ```
+```html
+<MazBtn pastel>primary</MazBtn>
+<MazBtn color="secondary" pastel>secondary</MazBtn>
+<MazBtn color="info" pastel>info</MazBtn>
+<MazBtn color="success" pastel>success</MazBtn>
+<MazBtn color="warning" pastel>warning</MazBtn>
+<MazBtn color="destructive" pastel>destructive</MazBtn>
+<MazBtn color="contrast" pastel>contrast</MazBtn>
+<MazBtn color="accent" pastel>accent</MazBtn>
+<MazBtn color="transparent" pastel>transparent</MazBtn>
+```
 
   </template>
 </ComponentDemo>
@@ -198,16 +200,16 @@ Choose the size of the rounded with the attribute `rounded-size` and value `none
     <MazBtn v-for="size of ['none', 'sm', 'md', 'lg', 'xl', 'full']" :rounded-size="size">{{ size }}</MazBtn>
   </div>
 
-  <template #code>
+<template #code>
 
-  ```html
-  <MazBtn rounded-size="none">none</MazBtn>
-  <MazBtn rounded-size="sm">sm</MazBtn>
-  <MazBtn rounded-size="md">md</MazBtn>
-  <MazBtn rounded-size="lg">lg</MazBtn>
-  <MazBtn rounded-size="xl">xl</MazBtn>
-  <MazBtn rounded-size="full">full</MazBtn>
-  ```
+```html
+<MazBtn rounded-size="none">none</MazBtn>
+<MazBtn rounded-size="sm">sm</MazBtn>
+<MazBtn rounded-size="md">md</MazBtn>
+<MazBtn rounded-size="lg">lg</MazBtn>
+<MazBtn rounded-size="xl">xl</MazBtn>
+<MazBtn rounded-size="full">full</MazBtn>
+```
 
   </template>
 </ComponentDemo>
@@ -228,18 +230,16 @@ The button can be a fab button with the attribute `fab`
     <MazBtn fab icon="sun" size="xl" />
   </div>
 
-  <template #code>
+<template #code>
 
-  ```html
-  <MazBtn fab icon="sun" size="mini" />
-  <MazBtn fab icon="sun" size="xs" />
-  <MazBtn fab icon="sun" size="sm" />
-  <MazBtn fab>
-    fab
-  </MazBtn>
-  <MazBtn fab icon="sun" size="lg" />
-  <MazBtn fab icon="sun" size="xl" />
-  ```
+```html
+<MazBtn fab icon="sun" size="mini" />
+<MazBtn fab icon="sun" size="xs" />
+<MazBtn fab icon="sun" size="sm" />
+<MazBtn fab> fab </MazBtn>
+<MazBtn fab icon="sun" size="lg" />
+<MazBtn fab icon="sun" size="xl" />
+```
 
   </template>
 </ComponentDemo>
@@ -251,11 +251,11 @@ Will take `width: 100%;`
 <ComponentDemo>
   <MazBtn block>block</MazBtn>
 
-  <template #code>
+<template #code>
 
-  ```html
-  <MazBtn block>block</MazBtn>
-  ```
+```html
+<MazBtn block>block</MazBtn>
+```
 
   </template>
 </ComponentDemo>
@@ -276,16 +276,16 @@ By default, the justify is `center`
     <MazBtn block justify="space-evenly" icon="users" right-icon="sun" size="md">evenly</MazBtn>
   </div>
 
-  <template #code>
+<template #code>
 
-  ```html
-  <MazBtn block justify="center" icon="users" right-icon="sun" size="md">center</MazBtn>
-  <MazBtn block justify="start" icon="users" right-icon="sun" size="md">start</MazBtn>
-  <MazBtn block justify="end" icon="users" right-icon="sun" size="md">end</MazBtn>
-  <MazBtn block justify="space-between" icon="users" right-icon="sun" size="md">between</MazBtn>
-  <MazBtn block justify="space-around" icon="users" right-icon="sun" size="md">around</MazBtn>
-  <MazBtn block justify="space-evenly" icon="users" right-icon="sun" size="md">evenly</MazBtn>
-  ```
+```html
+<MazBtn block justify="center" icon="users" right-icon="sun" size="md">center</MazBtn>
+<MazBtn block justify="start" icon="users" right-icon="sun" size="md">start</MazBtn>
+<MazBtn block justify="end" icon="users" right-icon="sun" size="md">end</MazBtn>
+<MazBtn block justify="space-between" icon="users" right-icon="sun" size="md">between</MazBtn>
+<MazBtn block justify="space-around" icon="users" right-icon="sun" size="md">around</MazBtn>
+<MazBtn block justify="space-evenly" icon="users" right-icon="sun" size="md">evenly</MazBtn>
+```
 
   </template>
 
@@ -296,11 +296,11 @@ By default, the justify is `center`
 <ComponentDemo>
   <MazBtn disabled>disabled</MazBtn>
 
-  <template #code>
+<template #code>
 
-  ```html
-  <MazBtn disabled>disabled</MazBtn>
-  ```
+```html
+<MazBtn disabled>disabled</MazBtn>
+```
 
   </template>
 </ComponentDemo>
@@ -321,17 +321,13 @@ By default, the justify is `center`
     </MazBtn>
   </div>
 
-  <template #code>
+<template #code>
 
-  ```html
-  <MazBtn left-icon="check" size="sm">
-    left-icon
-  </MazBtn>
-  <MazBtn right-icon="home">
-    right-icon
-  </MazBtn>
-  <MazBtn icon="command-line" fab size="lg" />
-  ```
+```html
+<MazBtn left-icon="check" size="sm"> left-icon </MazBtn>
+<MazBtn right-icon="home"> right-icon </MazBtn>
+<MazBtn icon="command-line" fab size="lg" />
+```
 
   </template>
 </ComponentDemo>
@@ -345,12 +341,8 @@ When you use the properties `right-icon`, `left-icon` or `icon` with the icon na
 Check out how [MazIcon](./maz-icon.md) works, see all available icons and download them to put them in your public folder.
 
 ```html
-<MazBtn left-icon="check" size="sm">
-  left-icon
-</MazBtn>
-<MazBtn right-icon="home">
-  right-icon
-</MazBtn>
+<MazBtn left-icon="check" size="sm"> left-icon </MazBtn>
+<MazBtn right-icon="home"> right-icon </MazBtn>
 <MazBtn icon="command-line" fab size="lg" />
 ```
 
@@ -361,10 +353,16 @@ Check out how [MazIcon](./maz-icon.md) works, see all available icons and downlo
 ::: details View code
 
 ```html
-<MazBtn  size="sm">
+<MazBtn size="sm">
   <template #left-icon>
     <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M4.5 12.75L10.5 18.75L19.5 5.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path
+        d="M4.5 12.75L10.5 18.75L19.5 5.25"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
     </svg>
   </template>
   left-icon
@@ -372,7 +370,13 @@ Check out how [MazIcon](./maz-icon.md) works, see all available icons and downlo
 <MazBtn>
   <template #right-icon>
     <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M2.25 12L11.2045 3.04549C11.6438 2.60615 12.3562 2.60615 12.7955 3.04549L21.75 12M4.5 9.75V19.875C4.5 20.4963 5.00368 21 5.625 21H9.75V16.125C9.75 15.5037 10.2537 15 10.875 15H13.125C13.7463 15 14.25 15.5037 14.25 16.125V21H18.375C18.9963 21 19.5 20.4963 19.5 19.875V9.75M8.25 21H16.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path
+        d="M2.25 12L11.2045 3.04549C11.6438 2.60615 12.3562 2.60615 12.7955 3.04549L21.75 12M4.5 9.75V19.875C4.5 20.4963 5.00368 21 5.625 21H9.75V16.125C9.75 15.5037 10.2537 15 10.875 15H13.125C13.7463 15 14.25 15.5037 14.25 16.125V21H18.375C18.9963 21 19.5 20.4963 19.5 19.875V9.75M8.25 21H16.5"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
     </svg>
   </template>
   right-icon
@@ -380,7 +384,13 @@ Check out how [MazIcon](./maz-icon.md) works, see all available icons and downlo
 <MazBtn fab size="lg">
   <template #icon>
     <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M6.75 7.5L9.75 9.75L6.75 12M11.25 12H14.25M5.25 20.25H18.75C19.9926 20.25 21 19.2426 21 18V6C21 4.75736 19.9926 3.75 18.75 3.75H5.25C4.00736 3.75 3 4.75736 3 6V18C3 19.2426 4.00736 20.25 5.25 20.25Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path
+        d="M6.75 7.5L9.75 9.75L6.75 12M11.25 12H14.25M5.25 20.25H18.75C19.9926 20.25 21 19.2426 21 18V6C21 4.75736 19.9926 3.75 18.75 3.75H5.25C4.00736 3.75 3 4.75736 3 6V18C3 19.2426 4.00736 20.25 5.25 20.25Z"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
     </svg>
   </template>
 </MazBtn>
@@ -393,6 +403,11 @@ Check out how [MazIcon](./maz-icon.md) works, see all available icons and downlo
 ::: details View code
 
 ```vue
+<script lang="ts" setup>
+import { MazCheck, MazCommandLine, MazHome } from '@maz-ui/icons'
+import { MazBtn } from 'maz-ui/components'
+</script>
+
 <template>
   <MazBtn :left-icon="MazCheck" size="sm">
     left-icon
@@ -402,11 +417,6 @@ Check out how [MazIcon](./maz-icon.md) works, see all available icons and downlo
   </MazBtn>
   <MazBtn fab :icon="MazCommandLine" size="lg" />
 </template>
-
-<script lang="ts" setup>
-  import { MazBtn } from 'maz-ui/components'
-  import { MazCheck, MazHome, MazCommandLine } from '@maz-ui/icons'
-</script>
 ```
 
 :::
@@ -416,15 +426,15 @@ Check out how [MazIcon](./maz-icon.md) works, see all available icons and downlo
 ::: details View code
 
 ```vue
+<script lang="ts" setup>
+import { MazBtn, MazSpinner } from 'maz-ui/components'
+</script>
+
 <template>
   <MazBtn :left-icon="MazSpinner" size="sm" color="info">
     left-icon
   </MazBtn>
 </template>
-
-<script lang="ts" setup>
-  import { MazBtn, MazSpinner } from 'maz-ui/components'
-</script>
 ```
 
 :::
@@ -438,9 +448,7 @@ When `href` attribute is provided, the component automatically becomes a `<a hre
 <MazBtn href="https://www.google.com" target="_blank">Is Button Link</MazBtn>
 
 ```html
-<MazBtn href="https://www.google.com" target="_blank">
-  Is Button Link
-</MazBtn>
+<MazBtn href="https://www.google.com" target="_blank"> Is Button Link </MazBtn>
 ```
 
 ## [RouterLink](https://router.vuejs.org/api/#router-link)
@@ -452,9 +460,7 @@ When `to` attribute is provided, the component automatically becomes a `<RouterL
 <MazBtn :to="{ path: '/made-with-maz-ui.html' }">Is Router Link</MazBtn>
 
 ```html
-<MazBtn :to="{ path: '/made-with-maz-ui.html' }">
-  Is RouterLink
-</MazBtn>
+<MazBtn :to="{ path: '/made-with-maz-ui.html' }"> Is RouterLink </MazBtn>
 ```
 
 <script setup lang="ts">

@@ -1,13 +1,21 @@
 // @ts-check
 
-import { defineConfig } from '@maz-ui/eslint-config/src/index.ts'
+import { defineConfig } from '@maz-ui/eslint-config'
 
 export default defineConfig(
   {
     formatters: true,
     vue: true,
-    sonarjs: true,
+    sonarjs: false,
     tailwindcss: true,
-    vueAccessibility: true,
+    vueAccessibility: false,
+  },
+  {
+    ignores: ['docs/**/*.md'],
+    // rules: {
+    //   'no-console': 'off',
+    //   'vue/no-unused-refs': 'off',
+    //   'style/max-statements-per-line': 'off',
+    // },
   },
 )
