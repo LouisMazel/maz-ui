@@ -166,14 +166,14 @@ const currentCalendarDate = computed({
 
 <style lang="postcss" scoped>
   .m-picker-container {
-  @apply maz-overflow-hidden maz-rounded maz-bg-surface dark:maz-border dark:maz-border-divider-400;
+  @apply maz-overflow-hidden maz-rounded maz-bg-surface dark:maz-border dark:maz-border-divider;
 
   &:not(.--is-inline) {
-    @apply maz-absolute maz-z-default-backdrop maz-elevation;
+    @apply maz-absolute maz-z-default-backdrop maz-drop-shadow-md maz-shadow-elevation;
   }
 
   &.--is-inline {
-    @apply maz-border maz-border-divider-400;
+    @apply maz-border maz-border-divider;
   }
 
   &.--has-date {

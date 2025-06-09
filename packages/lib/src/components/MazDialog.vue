@@ -195,7 +195,7 @@ if (props.scrollable) {
 
 <style lang="postcss" scoped>
 .m-dialog {
-  @apply maz-flex maz-origin-center maz-flex-col maz-min-w-full maz-rounded maz-bg-surface maz-text-foreground dark:maz-border dark:maz-border-divider-400 tab-s:maz-my-8 maz-max-w-full maz-touch-none;
+  @apply maz-flex maz-origin-center maz-flex-col maz-min-w-full maz-rounded maz-bg-surface maz-text-foreground dark:maz-border dark:maz-border-divider tab-s:maz-my-8 maz-max-w-full maz-touch-none;
 
   @screen tab-s {
     max-width: var(--max-width);
@@ -234,7 +234,7 @@ if (props.scrollable) {
     @apply maz-max-h-[95vh] maz-my-0;
 
     .m-dialog-content {
-      @apply maz-overflow-auto maz-border-t maz-border-divider-400 maz-py-4;
+      @apply maz-overflow-auto maz-border-t maz-border-divider maz-py-4;
 
       &:not(.--bottom-padding) {
         @apply maz-border-b;

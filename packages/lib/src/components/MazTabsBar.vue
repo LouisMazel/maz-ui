@@ -268,10 +268,10 @@ onMounted(() => {
 
 <style lang="postcss" scoped>
 .m-tabs-bar {
-  @apply maz-relative maz-inline-flex maz-max-w-full maz-gap-1 maz-overflow-x-auto maz-rounded maz-p-2 maz-align-top maz-bg-surface dark:maz-border dark:maz-border-divider-400;
+  @apply maz-relative maz-inline-flex maz-max-w-full maz-gap-1 maz-overflow-x-auto maz-rounded maz-p-2 maz-align-top maz-bg-surface;
 
   &.--elevation {
-    @apply maz-elevation dark:maz-shadow-none;
+    @apply maz-drop-shadow-md maz-shadow-elevation dark:maz-shadow-none;
   }
 
   &.--block {
@@ -279,7 +279,7 @@ onMounted(() => {
   }
 
   &.--bordered {
-    @apply maz-border maz-border-divider-400;
+    @apply maz-border maz-border-divider;
   }
 
   &__item {

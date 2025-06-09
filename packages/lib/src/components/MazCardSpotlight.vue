@@ -85,7 +85,7 @@ onUnmounted(() => {
 <template>
   <div
     class="m-card-spotlight m-reset-css"
-    :class="{ 'maz-elevation': !noElevation }"
+    :class="{ 'maz-shadow-elevation maz-drop-shadow-md': !noElevation }"
     :style="{ 'backgroundColor': alphaColor20, '--inner-opacity': innerOpacity }"
   >
     <div class="inner">

@@ -16,7 +16,7 @@ head:
 
   <div class="hero-actions">
     <a href="#quick-installation" class="hero-btn primary">Get Started →</a>
-    <a href="/components/" class="hero-btn secondary">Browse Components</a>
+    <a href="/components/maz-btn" class="hero-btn secondary">Browse Components</a>
   </div>
 </div>
 
@@ -267,11 +267,39 @@ function handleClickOutside() {
 | `MazDirectivesResolver` | Directives (v-click-outside, v-tooltip, etc.) | `'maz-ui/resolvers'` |
 | `MazModulesResolver` | Composables & utilities (useToast, debounce, etc.) | `'maz-ui/resolvers'` |
 
+### Avoiding Naming Conflicts
+
+When using multiple UI libraries, use prefixes to prevent conflicts:
+
+```typescript
+export default defineConfig({
+  plugins: [
+    Components({
+      resolvers: [
+        MazComponentsResolver({ prefix: 'Maz' }), // MazMazBtn, MazMazInput
+        MazDirectivesResolver({ prefix: 'Maz' }), // v-maz-tooltip
+        ElementPlusResolver({ prefix: 'El' }),    // ElButton, ElInput
+      ],
+    }),
+    AutoImport({
+      resolvers: [
+        MazModulesResolver({ prefix: 'Maz' }), // useMazToast, useMazTheme
+      ],
+    }),
+  ],
+})
+```
+
+::: info Complete Resolver Documentation
+For comprehensive resolver configuration, advanced options, real-world examples, and troubleshooting, check out our [dedicated resolver guide](/guide/resolvers).
+:::
+
 ## Ecosystem Packages
 
 Extend Maz-UI with our specialized companion packages:
 
 ### @maz-ui/themes
+
 **Advanced Theming System**
 
 Modern theme system with HSL variables, dark mode support, and flexible strategies.
@@ -300,10 +328,11 @@ npm install @maz-ui/icons
 ```
 
 **Features:**
-- 🎯 1000+ handcrafted icons
-- 📦 Tree-shakable imports
-- 🎨 Multiple sizes and variants
-- 📝 Full TypeScript definitions
+- 300+ icons
+- Usable as Vue components (e.g. `<MazStar name="maz-ui" />`)
+- Tree-shakable imports
+- Multiple sizes and variants
+- Full TypeScript definitions
 
 [→ Browse Icon Library](/icons/)
 
@@ -458,14 +487,14 @@ app.component('MazInput', MazInput)
 
 <div class="next-steps">
 
-### 🎯 **Explore Components**
+### **Explore Components**
 Browse the [component library](./../components/maz-btn.md) with live examples and API documentation.
 
-### 🎨 **Customize Themes**
+### **Customize Themes**
 Learn about [theming and customization](./theme.md) to match your brand.
 
-### 💬 **Get Help**
-Browse [GitHub discussions](https://github.com/LouisMazel/maz-ui/discussions).
+### **Get Help**
+Browse [GitHub discussions](https://github.com/LouisMazel/maz-ui/discussions) or open an issue on [GitHub](https://github.com/LouisMazel/maz-ui/issues).
 
 </div>
 
@@ -524,29 +553,28 @@ Browse [GitHub discussions](https://github.com/LouisMazel/maz-ui/discussions).
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 2rem;
   margin: 2rem 0;
-}
 
-.features-grid > div {
-  padding: 1.5rem;
-  border-radius: 0.75rem;
-  border: 1px solid var(--vp-c-border);
-  background: var(--vp-c-bg-soft);
+  h3 {
+    margin-top: 0;
+  }
+  ul {
+    margin-top: 0;
+  }
 }
 
 
 .next-steps {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
+  gap: 1rem;
   margin: 2rem 0;
-}
 
-.next-steps > div {
-  padding: 1.5rem;
-  border-radius: 0.75rem;
-  border: 1px solid var(--vp-c-border);
-  background: var(--vp-c-bg-soft);
-  text-align: center;
+  h3 {
+    margin-top: 0;
+  }
+  p {
+    margin-top: 0;
+  }
 }
 
 @media (max-width: 768px) {

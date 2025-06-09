@@ -17,7 +17,4 @@ export const utilities = {
   '.cap-f::first-letter': {
     'text-transform': 'capitalize',
   },
-  '.elevation': {
-    'box-shadow': 'hsl(var(--maz-shadow) / <alpha-value>)',
-  },
 } satisfies CSSRuleObject

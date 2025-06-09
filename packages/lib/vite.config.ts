@@ -10,7 +10,7 @@ import { libInjectCss } from 'vite-plugin-lib-inject-css'
 import SvgLoader from 'vite-svg-loader'
 import rootPkg from '../../package.json'
 
-import { ViteBuildIcons, ViteBuildMazCli, ViteBuildNuxtModule, ViteBuildThemes, ViteCompileStyles } from './build'
+import { ViteBuildIcons, ViteBuildMazCli, ViteBuildThemes, ViteCompileStyles } from './build'
 
 import pkg from './package.json'
 
@@ -82,10 +82,10 @@ export default defineConfig({
       // ],
     }),
     ViteBuildIcons(),
-    ViteCompileStyles(),
-    ViteBuildNuxtModule(),
     ViteBuildMazCli(),
     ViteBuildThemes(),
+    ViteCompileStyles(),
+    // ViteBuildNuxtModule(),
   ],
   build: {
     cssCodeSplit: true,

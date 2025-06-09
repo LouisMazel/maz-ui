@@ -140,11 +140,11 @@ function toggleCollapse() {
       {
         'm-card--linked': isLinked,
         'm-card--no-scale': !scale,
-        'maz-elevation': elevation,
+        'maz-shadow-elevation maz-drop-shadow-md': elevation,
         '--block': block,
         'maz-overflow-hidden': overflowHidden || !collapseOpenModel,
         'maz-rounded': radius,
-        'maz-border maz-border-solid maz-border-divider-400': bordered,
+        'maz-border maz-border-solid maz-border-divider': bordered,
       },
     ]"
   >
@@ -153,7 +153,7 @@ function toggleCollapse() {
       v-if="$slots.title || title || collapsible"
       class="m-card__header maz-border-b maz-border-solid"
       :class="[
-        collapseOpenModel ? 'maz-rounded-t maz-border-divider-400' : 'maz-border-transparent',
+        collapseOpenModel ? 'maz-rounded-t maz-border-divider' : 'maz-border-transparent',
         { '--is-collapsible': collapsible },
         { 'maz-justify-end': (!$slots.title || !title) && collapsible },
         { 'maz-justify-between': $slots.title || title },
@@ -232,7 +232,7 @@ function toggleCollapse() {
       class="m-card__footer maz-overflow-x-auto maz-p-3"
       :class="[
         {
-          'maz-border-t maz-border-divider-400': isColumnVariant && haveSomeContent,
+          'maz-border-t maz-border-divider': isColumnVariant && haveSomeContent,
         },
         footerAlignClass,
       ]"
@@ -253,7 +253,7 @@ function toggleCollapse() {
 
 <style lang="postcss" scoped>
   .m-card {
-  @apply maz-relative maz-inline-flex maz-max-h-full maz-flex-col maz-bg-surface dark:maz-border dark:maz-border-divider-400;
+  @apply maz-relative maz-inline-flex maz-max-h-full maz-flex-col maz-bg-surface dark:maz-border dark:maz-border-divider;
 
   &.--block {
     @apply maz-w-full;

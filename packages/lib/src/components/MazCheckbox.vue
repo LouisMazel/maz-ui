@@ -277,7 +277,7 @@ function onFocus(event: FocusEvent) {
   }
 
   > span {
-    @apply maz-relative maz-flex maz-rounded-md maz-border maz-border-divider maz-transition-all maz-duration-300 maz-ease-in-out maz-flex-center dark:maz-border-divider-400;
+    @apply maz-relative maz-flex maz-rounded-md maz-border maz-border-divider maz-transition-all maz-duration-300 maz-ease-in-out maz-flex-center dark:maz-border-divider;
   }
 
   input {
@@ -305,7 +305,7 @@ function onFocus(event: FocusEvent) {
     @apply maz-cursor-not-allowed maz-text-muted;
 
     input:checked ~ span {
-      @apply maz-border-divider dark:maz-border-divider-400;
+      @apply maz-border-divider;
 
       .check-icon {
         @apply maz-text-muted;

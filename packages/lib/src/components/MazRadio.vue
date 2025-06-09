@@ -198,7 +198,7 @@ function onFocus(event: FocusEvent) {
   @apply maz-relative maz-inline-flex maz-items-center maz-gap-2 maz-align-top maz-outline-none;
 
   > span {
-    @apply maz-relative maz-flex maz-rounded-full maz-border maz-border-divider maz-transition-all maz-duration-300 maz-ease-in-out maz-flex-center dark:maz-border-divider-400;
+    @apply maz-relative maz-flex maz-rounded-full maz-border maz-border-divider maz-transition-all maz-duration-300 maz-ease-in-out maz-flex-center;
 
     width: var(--radio-size);
     height: var(--radio-size);
@@ -239,7 +239,7 @@ function onFocus(event: FocusEvent) {
 
     &.--selected {
       > span {
-        @apply maz-border-divider dark:maz-border-divider-400;
+        @apply maz-border-divider;
 
         .round {
           @apply maz-bg-muted;

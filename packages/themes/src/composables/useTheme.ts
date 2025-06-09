@@ -3,7 +3,6 @@ import { computed, getCurrentInstance, ref, watchEffect } from 'vue'
 import { generateCriticalCSS, generateFullCSS, injectCSS } from '../utils/css-generator'
 import { mergePresets } from '../utils/preset-merger'
 import { inject } from 'vue'
-import { mazThemeInjectionKey } from 'maz-ui/src/plugins/maz-ui.js'
 
 const state = ref<ThemeState | null>(null)
 
@@ -68,7 +67,7 @@ export function useTheme() {
   let mazThemeState: ThemeState | undefined
 
   try {
-    mazThemeState = inject(mazThemeInjectionKey, undefined)
+    mazThemeState = inject('mazThemeState', undefined)
   } catch (error) {
     const instance = getCurrentInstance()
     if (instance?.appContext?.app?.config?.globalProperties) {
