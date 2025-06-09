@@ -14,17 +14,17 @@ description: MazCircularProgressBar is a standalone component
 <ComponentDemo>
   <MazCircularProgressBar :percentage="75" suffix="%" />
 
-  <template #code>
+<template #code>
 
-  ```vue
-  <template>
-    <MazCircularProgressBar :percentage="75" suffix="%" />
-  </template>
+```vue
+<script lang="ts" setup>
+import { MazCircularProgressBar } from 'maz-ui/components'
+</script>
 
-  <script lang="ts" setup>
-    import { MazCircularProgressBar } from 'maz-ui/components'
-  </script>
-  ```
+<template>
+  <MazCircularProgressBar :percentage="75" suffix="%" />
+</template>
+```
 
   </template>
 </ComponentDemo>
@@ -41,14 +41,17 @@ The size of the component can be changed by passing the `size` prop. The value c
     <MazCircularProgressBar :percentage="75" suffix="%" size="15rem" />
   </div>
 
-  <template #code>
+<template #code>
 
-  ```vue
-  <MazCircularProgressBar :percentage="75" suffix="%" size="3em" />
-  <MazCircularProgressBar :percentage="75" suffix="%" size="100px" />
-  <MazCircularProgressBar :percentage="75" suffix="%" size="10rem" />
-  <MazCircularProgressBar :percentage="75" suffix="%" size="15rem" />
-  ```
+```vue
+<MazCircularProgressBar :percentage="75" suffix="%" size="3em" />
+
+<MazCircularProgressBar :percentage="75" suffix="%" size="100px" />
+
+<MazCircularProgressBar :percentage="75" suffix="%" size="10rem" />
+
+<MazCircularProgressBar :percentage="75" suffix="%" size="15rem" />
+```
 
   </template>
 </ComponentDemo>
@@ -60,11 +63,11 @@ The duration of the animation can be changed by passing the `duration` prop. The
 <ComponentDemo>
   <MazCircularProgressBar :percentage="75" :duration="5000" />
 
-  <template #code>
+<template #code>
 
-  ```vue
-  <MazCircularProgressBar :percentage="75" :duration="5000" />
-  ```
+```vue
+<MazCircularProgressBar :percentage="75" :duration="5000" />
+```
 
   </template>
 </ComponentDemo>
@@ -83,11 +86,11 @@ The color of the component can be changed by passing the `color` prop. Should be
     <MazCircularProgressBar :percentage="75" color="destructive" />
   </div>
 
-  <template #code>
+<template #code>
 
-  ```vue
-  <MazCircularProgressBar :percentage="75" :duration="5000" />
-  ```
+```vue
+<MazCircularProgressBar :percentage="75" :duration="5000" />
+```
 
   </template>
 </ComponentDemo>
@@ -104,14 +107,17 @@ The color of the component is automatically according to the percentage. The col
     <MazCircularProgressBar :percentage="100" auto-color size="9rem" />
   </div>
 
-  <template #code>
+<template #code>
 
-  ```vue
-  <MazCircularProgressBar :percentage="0" auto-color size="9rem" />
-  <MazCircularProgressBar :percentage="25" auto-color size="9rem" />
-  <MazCircularProgressBar :percentage="50" auto-color size="9rem" />
-  <MazCircularProgressBar :percentage="100" auto-color size="9rem" />
-  ```
+```vue
+<MazCircularProgressBar :percentage="0" auto-color size="9rem" />
+
+<MazCircularProgressBar :percentage="25" auto-color size="9rem" />
+
+<MazCircularProgressBar :percentage="50" auto-color size="9rem" />
+
+<MazCircularProgressBar :percentage="100" auto-color size="9rem" />
+```
 
   </template>
 </ComponentDemo>
@@ -129,11 +135,11 @@ Obviously, the "counter animation" will not work in this case.
     </MazCircularProgressBar>
   </div>
 
-  <template #code>
+<template #code>
 
-  ```vue
-  <MazCircularProgressBar :percentage="75" :duration="5000" />
-  ```
+```vue
+<MazCircularProgressBar :percentage="75" :duration="5000" />
+```
 
   </template>
 </ComponentDemo>

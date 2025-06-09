@@ -16,15 +16,15 @@ description: This component creates a customizable input code field with feature
 `v-model="{{code}}"`
 
 ```vue
+<script lang="ts" setup>
+import { MazInputCode } from 'maz-ui/components'
+
+const code = ref()
+</script>
+
 <template>
   <MazInputCode v-model="code" />
 </template>
-
-<script lang="ts" setup>
-  import { MazInputCode } from 'maz-ui/components'
-
-  const code = ref()
-</script>
 ```
 
 ## Size

@@ -26,6 +26,16 @@ description: MazTabs is a standalone component to display content in tabs with a
 </MazTabs>
 
 ```vue
+<script lang="ts" setup>
+import { MazTabs, MazTabsBar, type MazTabsBarItem, MazTabsContent, MazTabsContentItem } from 'maz-ui/components'
+
+const tabs: MazTabsBarItem[] = [
+  { label: 'First Tab', disabled: false },
+  { label: 'Second Tab', disabled: false, badge: { color: 'destructive', content: 1, roundedSize: 'full' } },
+  { label: 'Third Tab', disabled: true },
+]
+</script>
+
 <template>
   <MazTabs>
     <MazTabsBar :items="tabs" />
@@ -43,16 +53,6 @@ description: MazTabs is a standalone component to display content in tabs with a
     </MazTabsContent>
   </MazTabs>
 </template>
-
-<script lang="ts" setup>
-  import { MazTabs, MazTabsBar, type MazTabsBarItem, MazTabsContent, MazTabsContentItem } from 'maz-ui/components'
-
-  const tabs: MazTabsBarItem[] = [
-    { label: 'First Tab', disabled: false },
-    { label: 'Second Tab', disabled: false, badge: { color: 'destructive', content: 1, roundedSize: 'full' } },
-    { label: 'Third Tab', disabled: true },
-  ]
-</script>
 ```
 
 ## With model-value
@@ -76,12 +76,20 @@ description: MazTabs is a standalone component to display content in tabs with a
 <br />
 
 <MazBtn @click="currentTab = currentTab === 1 ? 2 : 1">
-  Set model-value to {{currentTab === 1 ? 2 : 1}}
+Set model-value to {{currentTab === 1 ? 2 : 1}}
 </MazBtn>
 
 ::: details View code
 
 ```vue
+<script lang="ts" setup>
+import { ref } from 'vue'
+
+const currentTab = ref(2)
+
+const tabs: MazTabsBarItem[] = ['First Tab', 'Second Tab', 'Third Tab']
+</script>
+
 <template>
   <MazTabs v-model="currentTab">
     <MazTabsBar :items="tabs" />
@@ -99,20 +107,12 @@ description: MazTabs is a standalone component to display content in tabs with a
     </MazTabsContent>
   </MazTabs>
 
-  <br />
+  <br>
 
   <MazBtn @click="currentTab = currentTab === 1 ? 2 : 1">
-    Set model-value to {{currentTab === 1 ? 2 : 1}}
+    Set model-value to {{ currentTab === 1 ? 2 : 1 }}
   </MazBtn>
 </template>
-
-<script lang="ts" setup>
-  import { ref } from 'vue'
-
-  const currentTab = ref(2)
-
-  const tabs: MazTabsBarItem[] = ['First Tab', 'Second Tab', 'Third Tab']
-</script>
 ```
 
 :::
@@ -164,13 +164,7 @@ You can choose the name of this query parameter with the props `query-param` `@d
     <template #item="{ item, index, active }">
       {{ item.label }}
 
-      <MazBadge
-        size="0.6rem"
-        rounded-size="full"
-        :color="active ? 'primary' : 'gray'"
-      >
-        {{ index }}
-      </MazBadge>
+      <MazBadge size="0.6rem" rounded-size="full" :color="active ? 'primary' : 'gray'"> {{ index }} </MazBadge>
     </template>
   </MazTabsBar>
 </MazTabs>
@@ -193,20 +187,20 @@ You can choose the name of this query parameter with the props `query-param` `@d
 ## Types
 
 ```ts
-type MazTabsBarItem =
-  | {
-      label: string
-      disabled?: boolean
-      badge?: {
-        content: string | number
-        color?: BadgeColor
-        pastel?: boolean
-        outline?: boolean
-        size?: string
-        /** @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'` */
-        roundedSize?: BadgeRoundedSize
-      }
+type MazTabsBarItem
+  = | {
+    label: string
+    disabled?: boolean
+    badge?: {
+      content: string | number
+      color?: BadgeColor
+      pastel?: boolean
+      outline?: boolean
+      size?: string
+      /** @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'` */
+      roundedSize?: BadgeRoundedSize
     }
+  }
   | string
 
 type MazTabsBarItems = MazTabsBarItem[]

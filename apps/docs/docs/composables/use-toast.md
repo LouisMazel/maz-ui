@@ -19,26 +19,26 @@ More info about [toaster plugin](./../plugins/toaster.md) in its documentation
 
 ```vue
 <script lang="ts" setup>
-  import { useToast } from 'maz-ui/composables'
+import { useToast } from 'maz-ui/composables'
 
-  const toast = useToast()
+const toast = useToast()
 
-  toast.info('info message', {
-    button: {
-      onClick: () => toast.success('clicked'),
-      text: 'Click me',
-      closeToast: true
-    }
-  })
-  toast.success('success message', {
-    button: {
-      href: '/composables/use-toast',
-      text: 'Follow me',
-      closeToast: true,
-    }
-  })
-  toast.warning('warning message')
-  toast.error('error message')
+toast.info('info message', {
+  button: {
+    onClick: () => toast.success('clicked'),
+    text: 'Click me',
+    closeToast: true
+  }
+})
+toast.success('success message', {
+  button: {
+    href: '/composables/use-toast',
+    text: 'Follow me',
+    closeToast: true,
+  }
+})
+toast.warning('warning message')
+toast.error('error message')
 </script>
 ```
 

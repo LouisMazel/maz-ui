@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-/* eslint-disable sonarjs/no-nested-conditional */
 import type { Dayjs } from 'dayjs'
 import type { PropType } from 'vue'
 import type { MazColor } from '../types'

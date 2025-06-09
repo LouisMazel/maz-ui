@@ -31,13 +31,10 @@ npm install dayjs
     :input-date-transformer="({ value }) => dayjs(value).format('YYYY/MM/DD')"
   />
 
-  <template #code>
+<template #code>
 
 ```html
-<MazPicker
-  v-model="newDateValue"
-  label="Select date"
-/>
+<MazPicker v-model="newDateValue" label="Select date" />
 ```
 
   </template>
@@ -46,9 +43,10 @@ npm install dayjs
 ## Documentation
 
 - As for the input value, min-date, max-date or disabled-dates you must provide the same and a valid format of [Dayjs](https://day.js.org/docs/en/display/format)
-  - **Simply date**: The better format is `YYYY-MM-DD` - *Example: "2022-03-02" (for range picker "{ start: '2022-03-02', end: '2022-03-28' }")*
-  - **Date Time**: The better format is `YYYY-MM-DD HH:mm` or `YYYY-MM-DD h:mm a`  - *Example: "2022-03-02 16:30" or "2022-03-02 04:30 pm"*
-  - **Only Time**: `HH:mm`, `h:mm a`, etc  - *Example: "16:30" or "4:30 pm"*
+
+  - **Simply date**: The better format is `YYYY-MM-DD` - _Example: "2022-03-02" (for range picker "{ start: '2022-03-02', end: '2022-03-28' }")_
+  - **Date Time**: The better format is `YYYY-MM-DD HH:mm` or `YYYY-MM-DD h:mm a` - _Example: "2022-03-02 16:30" or "2022-03-02 04:30 pm"_
+  - **Only Time**: `HH:mm`, `h:mm a`, etc - _Example: "16:30" or "4:30 pm"_
 
 - The returned value is formatted by [days.format()](https://day.js.org/docs/en/display/format) function with the format provided
 
@@ -103,9 +101,15 @@ npm install dayjs
     color="secondary"
   />
 
-  <template #code>
+<template #code>
 
 ```vue
+<script setup lang="ts">
+import { MazPicker } from 'maz-ui/components'
+import { ref } from 'vue'
+const dateValue = ref('2022-02-03')
+</script>
+
 <template>
   <MazPicker
     v-model="dateValue"
@@ -113,12 +117,6 @@ npm install dayjs
     color="secondary"
   />
 </template>
-
-<script setup lang="ts">
-  import { MazPicker } from 'maz-ui/components'
-  import { ref } from 'vue'
-  const dateValue = ref('2022-02-03')
-</script>
 ```
 
   </template>
@@ -140,9 +138,15 @@ npm install dayjs
   time
 />
 
-  <template #code>
+<template #code>
 
 ```vue
+<script setup lang="ts">
+import { MazPicker } from 'maz-ui/components'
+import { ref } from 'vue'
+const dateTimeValue = ref('2022-02-03 16:30')
+</script>
+
 <template>
   <MazPicker
     v-model="dateTimeValue"
@@ -152,12 +156,6 @@ npm install dayjs
     time
   />
 </template>
-
-<script setup lang="ts">
-  import { MazPicker } from 'maz-ui/components'
-  import { ref } from 'vue'
-  const dateTimeValue = ref('2022-02-03 16:30')
-</script>
 ```
 
   </template>
@@ -177,9 +175,15 @@ npm install dayjs
     time
   />
 
-  <template #code>
+<template #code>
 
 ```vue
+<script setup lang="ts">
+import { MazPicker } from 'maz-ui/components'
+import { ref } from 'vue'
+const dateTime12Value = ref('2022-02-03 04:30 pm')
+</script>
+
 <template>
   <MazPicker
     v-model="dateTime12Value"
@@ -189,12 +193,6 @@ npm install dayjs
     time
   />
 </template>
-
-<script setup lang="ts">
-  import { MazPicker } from 'maz-ui/components'
-  import { ref } from 'vue'
-  const dateTime12Value = ref('2022-02-03 04:30 pm')
-</script>
 ```
 
   </template>
@@ -216,9 +214,15 @@ npm install dayjs
     only-time
   />
 
-  <template #code>
+<template #code>
 
 ```vue
+<script setup lang="ts">
+import { MazPicker } from 'maz-ui/components'
+import { ref } from 'vue'
+const dateTimeValue = ref('2022-02-03 16:30')
+</script>
+
 <template>
   <MazPicker
     v-model="dateTimeValue"
@@ -228,12 +232,6 @@ npm install dayjs
     only-time
   />
 </template>
-
-<script setup lang="ts">
-  import { MazPicker } from 'maz-ui/components'
-  import { ref } from 'vue'
-  const dateTimeValue = ref('2022-02-03 16:30')
-</script>
 ```
 
   </template>
@@ -253,25 +251,25 @@ npm install dayjs
     only-time
   />
 
-  <template #code>
+<template #code>
 
-  ```vue
-  <template>
-    <MazPicker
-      v-model="dateTime12Value"
-      format="YYYY-MM-DD HH:mm a"
-      label="Select time"
-      color="secondary"
-      only-time
-    />
-  </template>
+```vue
+<script setup lang="ts">
+import { MazPicker } from 'maz-ui/components'
+import { ref } from 'vue'
+const dateTime12Value = ref('2022-02-03 04:30 pm')
+</script>
 
-  <script setup lang="ts">
-    import { MazPicker } from 'maz-ui/components'
-    import { ref } from 'vue'
-    const dateTime12Value = ref('2022-02-03 04:30 pm')
-  </script>
-  ```
+<template>
+  <MazPicker
+    v-model="dateTime12Value"
+    format="YYYY-MM-DD HH:mm a"
+    label="Select time"
+    color="secondary"
+    only-time
+  />
+</template>
+```
 
   </template>
 </ComponentDemo>
@@ -294,9 +292,24 @@ To enable the range mode, you should provide an object like this `{ start: undef
     auto-close
   />
 
-  <template #code>
+<template #code>
 
 ```vue
+<script setup lang="ts">
+import { MazPicker } from 'maz-ui/components'
+import { ref } from 'vue'
+
+const rangeValues = ref({
+  start: '2022-02-03',
+  end: '2022-02-28',
+})
+
+const minMaxDates = ref({
+  min: '2022-05-05',
+  max: '2022-06-20',
+})
+</script>
+
 <template>
   <MazPicker
     v-model="rangeValues"
@@ -307,21 +320,6 @@ To enable the range mode, you should provide an object like this `{ start: undef
     double
   />
 </template>
-
-<script setup lang="ts">
-  import { MazPicker } from 'maz-ui/components'
-  import { ref } from 'vue'
-
-  const rangeValues = ref({
-    start: '2022-02-03',
-    end: '2022-02-28',
-  })
-
-  const minMaxDates = ref({
-    min: '2022-05-05',
-    max: '2022-06-20',
-  })
-</script>
 ```
 
   </template>
@@ -349,9 +347,46 @@ To enable the range mode, you should provide an object like this `{ start: undef
     double
   />
 
-  <template #code>
+<template #code>
 
 ```vue
+<script setup lang="ts">
+import { MazPicker, type MazPickerShortcut } from 'maz-ui/components'
+import { ref } from 'vue'
+
+const startDate = dayjs().subtract(1, 'month').set('date', 5)
+const endDate = dayjs().add(1, 'month').set('date', 25)
+
+const rangeValues = ref({ start: startDate.format('YYYY-MM-DD'), end: endDate.format('YYYY-MM-DD') })
+
+const minMaxDates = ref({
+  min: startDate.subtract(2, 'days').format('YYYY-MM-DD'),
+  max: endDate.add(2, 'days').format('YYYY-MM-DD'),
+})
+
+const shortcuts: MazPickerShortcut[] = [
+  {
+    label: 'Next month',
+    identifier: 'nextMonth',
+    value: {
+      start: dayjs().add(1, 'month').set('date', 1).format('YYYY-MM-DD'),
+      end: dayjs()
+        .add(1, 'month')
+        .set('date', dayjs().add(1, 'month').daysInMonth())
+        .format('YYYY-MM-DD'),
+    },
+  },
+  {
+    label: 'Last 3 days',
+    identifier: 'last3Days',
+    value: {
+      start: dayjs().subtract(2, 'days').format('YYYY-MM-DD'),
+      end: dayjs().format('YYYY-MM-DD'),
+    },
+  },
+]
+</script>
+
 <template>
   <MazPicker
     v-model="rangeValues"
@@ -363,42 +398,6 @@ To enable the range mode, you should provide an object like this `{ start: undef
     double
   />
 </template>
-
-<script setup lang="ts">
-  import { ref } from 'vue'
-  import { MazPicker, type MazPickerShortcut } from 'maz-ui/components'
-
-  const startDate = dayjs().subtract(1, 'month').set('date', 5)
-  const endDate = dayjs().add(1, 'month').set('date', 25)
-
-  const rangeValues = ref({ start: startDate.format('YYYY-MM-DD'), end: endDate.format('YYYY-MM-DD') })
-
-  const minMaxDates = ref({
-    min: startDate.subtract(2, 'days').format('YYYY-MM-DD'),
-    max: endDate.add(2, 'days').format('YYYY-MM-DD'),
-  })
-
-  const shortcuts: MazPickerShortcut[] = [
-    {
-      label: 'Next month',
-      identifier: 'nextMonth',
-      value: {
-        start: dayjs().add(1, 'month').set('date', 1).format('YYYY-MM-DD'),
-        end: dayjs()
-          .add(1, 'month')
-          .set('date', dayjs().add(1, 'month').daysInMonth())
-          .format('YYYY-MM-DD'),
-      },
-    }, {
-      label: 'Last 3 days',
-      identifier: 'last3Days',
-      value: {
-        start: dayjs().subtract(2, 'days').format('YYYY-MM-DD'),
-        end: dayjs().format('YYYY-MM-DD'),
-      },
-    },
-  ]
-</script>
 ```
 
   </template>
@@ -416,7 +415,7 @@ You can use the `input-date-transformer` prop to transform the value displayed i
     :input-date-transformer="({ value }) => dayjs(value).format('YYYY/MM/DD')"
   />
 
-  <template #code>
+<template #code>
 
 ```html
 <MazPicker
@@ -452,7 +451,7 @@ type MazPickerShortcuts = MazPickerShortcut[]
 #### Example
 
 ```ts
-import { type MazPickerShortcut } from 'maz-ui/components'
+import type { MazPickerShortcut } from 'maz-ui/components'
 
 const shortcuts: MazPickerShortcut[] = [{
   label: 'Next month',
@@ -545,25 +544,24 @@ const shortcuts = [
 ### PickerValue
 
 ```ts
-type PickerValue = string | undefined | { start: string; end: string }
+type PickerValue = string | undefined | { start: string, end: string }
 ```
 
 ### Position
 
 ```ts
-export type Position =
-  | 'top'
-  | 'top right'
-  | 'top left'
-  | 'bottom'
-  | 'bottom right'
-  | 'bottom left'
-  | 'left'
-  | 'right'
+export type Position
+  = | 'top'
+    | 'top right'
+    | 'top left'
+    | 'bottom'
+    | 'bottom right'
+    | 'bottom left'
+    | 'left'
+    | 'right'
 ```
 
 <!--@include: ./../.vitepress/generated-docs/maz-picker.doc.md-->
-
 
 <script setup lang="ts">
   import { ref } from 'vue'

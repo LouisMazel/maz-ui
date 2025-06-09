@@ -176,10 +176,14 @@ const frozen = useFreezeValue(reactiveValue)
 
 ```vue
 <!-- ❌ BEFORE - variant="link" deprecated -->
-<MazBtn variant="link" href="/path">Link</MazBtn>
+<MazBtn variant="link" href="/path">
+Link
+</MazBtn>
 
 <!-- ✅ AFTER - Use MazLink -->
-<MazLink href="/path">Link</MazLink>
+<MazLink href="/path">
+Link
+</MazLink>
 ```
 
 #### New props added
@@ -187,7 +191,8 @@ const frozen = useFreezeValue(reactiveValue)
 ```vue
 <!-- ✅ NEW PROPS available -->
 <MazBtn
-  :padding="false"           <!-- New: padding control -->
+  :padding="false"           <!-- New: padding control --
+>
   justify="start"            <!-- New: content alignment -->
   :underline="false"         <!-- New: underline control -->
   rounded-size="full"        <!-- New: border-radius control -->
@@ -219,11 +224,11 @@ The component has been renamed and the API has changed:
 **Import also changed:**
 
 ```typescript
-// ❌ BEFORE
-import MazPhoneNumberInput from 'maz-ui/components/MazPhoneNumberInput'
-
 // ✅ AFTER
 import MazInputPhoneNumber from 'maz-ui/components/MazInputPhoneNumber'
+
+// ❌ BEFORE
+import MazPhoneNumberInput from 'maz-ui/components/MazPhoneNumberInput'
 ```
 
 ### 5. 🗑️ Removed Component: MazTransitionExpand
@@ -245,6 +250,7 @@ import MazInputPhoneNumber from 'maz-ui/components/MazInputPhoneNumber'
 ```
 
 **API Changes:**
+
 - `v-model` replaces manual visibility control
 - `duration` replaces `animation-duration`
 - New `timing-function` prop
@@ -268,7 +274,8 @@ npm uninstall dropzone
 <!-- ✅ NEW PROPS -->
 <MazDropzone
   v-model="files"
-  :auto-upload="'single'"        <!-- New: automatic upload -->
+  :auto-upload="'single'"        <!-- New: automatic upload --
+>
   url="/api/upload"              <!-- New: upload URL -->
   :request-options="{ ... }"     <!-- New: fetch options -->
   :transform-body="transformFn"  <!-- New: body transformation -->
@@ -285,7 +292,8 @@ npm uninstall dropzone
 ```vue
 <!-- ✅ NEW PROPS -->
 <MazCard
-  :collapsible="true"           <!-- New: collapsible card -->
+  :collapsible="true"           <!-- New: collapsible card --
+>
   v-model:collapse-open="open"  <!-- New: collapse control -->
   :block="true"                 <!-- New: 100% width -->
 />
@@ -296,7 +304,8 @@ npm uninstall dropzone
 ```vue
 <!-- ✅ NEW PROPS -->
 <MazAvatar
-  :letter-count="2"             <!-- New: number of displayed letters -->
+  :letter-count="2"             <!-- New: number of displayed letters --
+>
   rounded-size="lg"             <!-- New: border-radius control -->
   :loading="'intersecting'"     <!-- New: loading strategy -->
   :fallback-src="/fallback.jpg" <!-- New: fallback image -->
@@ -309,7 +318,8 @@ npm uninstall dropzone
 <!-- ✅ NEW COMPONENT to replace MazBtn variant="link" -->
 <MazLink
   href="/path"
-  :auto-external="true"         <!-- New: automatic external icon -->
+  :auto-external="true"         <!-- New: automatic external icon --
+>
   :underline-only-hover="true"  <!-- New: underline on hover -->
   left-icon="home"              <!-- New: left icon -->
   right-icon="arrow"            <!-- New: right icon -->
@@ -324,10 +334,10 @@ npm uninstall dropzone
 {
   "peerDependencies": {
     // ✅ Major updates
-    "vue": "^3.5.0",                    // was "^3.0.0"
-    "unplugin-auto-import": ">=19.0.0 <20.0.0",  // was ">=0.18.0 <1.0.0"
+    "vue": "^3.5.0", // was "^3.0.0"
+    "unplugin-auto-import": ">=19.0.0 <20.0.0", // was ">=0.18.0 <1.0.0"
     "unplugin-vue-components": ">=28.0.0 <29.0.0", // was ">=0.27.0 <1.0.0"
-    "valibot": ">=0.30.0 <2.0.0",       // was ">=0.30.0 <1.0.0"
+    "valibot": ">=0.30.0 <2.0.0" // was ">=0.30.0 <1.0.0"
 
     // ❌ Removed
     // "dropzone": "^5.9.3" - removed
@@ -413,9 +423,9 @@ const { isIdle, pause, resume, reset } = useIdleTimeout({
 })
 
 // Control via methods
-pause()   // equivalent to stop()
-resume()  // restart
-reset()   // reset timer
+pause() // equivalent to stop()
+resume() // restart
+reset() // reset timer
 ```
 
 #### 3.3 Migrate `userVisibility` → `useUserVisibility`
@@ -446,10 +456,14 @@ grep -r 'variant="link"' --include="*.vue" .
 
 ```vue
 <!-- ❌ BEFORE -->
-<MazBtn variant="link" href="/path">Link</MazBtn>
+<MazBtn variant="link" href="/path">
+Link
+</MazBtn>
 
 <!-- ✅ AFTER -->
-<MazLink href="/path">Link</MazLink>
+<MazLink href="/path">
+Link
+</MazLink>
 ```
 
 #### 4.2 MazPhoneNumberInput → MazInputPhoneNumber
@@ -513,12 +527,12 @@ npm run test:e2e
 
 ### Bundle Size Reduction
 
-| Import Type | v3.x | v4.x | Gain |
-|-------------|------|------|------|
-| Global Import | ~500KB | ~500KB | 0% |
+| Import Type     | v3.x   | v4.x     | Gain   |
+| --------------- | ------ | -------- | ------ |
+| Global Import   | ~500KB | ~500KB   | 0%     |
 | Specific Import | ~200KB | ~15-50KB | 60-90% |
-| Helpers Only | ~50KB | ~5KB | 90% |
-| Components Only | ~300KB | ~30KB | 90% |
+| Helpers Only    | ~50KB  | ~5KB     | 90%    |
+| Components Only | ~300KB | ~30KB    | 90%    |
 
 ### Improved Performance
 
@@ -542,31 +556,35 @@ npm install maz-ui@latest
 ### Error: "idleTimeout is not a function"
 
 ```typescript
-// ❌ Old helper
-import { idleTimeout } from 'maz-ui/helpers'
-
 // ✅ New composable
 import { useIdleTimeout } from 'maz-ui/composables'
+
+// ❌ Old helper
+import { idleTimeout } from 'maz-ui/helpers'
 ```
 
 ### Error: "MazTransitionExpand is not exported"
 
 ```vue
 <!-- ❌ Removed component -->
-<MazTransitionExpand>...</MazTransitionExpand>
+<MazTransitionExpand>
+...
+</MazTransitionExpand>
 
 <!-- ✅ New component -->
-<MazExpandAnimation v-model="isOpen">...</MazExpandAnimation>
+<MazExpandAnimation v-model="isOpen">
+...
+</MazExpandAnimation>
 ```
 
 ### CSS Error in Node.js/SSR
 
 ```typescript
-// ✅ Safe for Node.js - Pure helpers
-import { sleep, debounce } from 'maz-ui/helpers'
-
 // ❌ Avoid on server side - Contains CSS
 import { MazBtn } from 'maz-ui/components'
+
+// ✅ Safe for Node.js - Pure helpers
+import { debounce, sleep } from 'maz-ui/helpers'
 ```
 
 ### Still Large Bundle

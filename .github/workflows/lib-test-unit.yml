@@ -23,7 +23,7 @@ jobs:
 
       - uses: pnpm/action-setup@v4
         with:
-          version: 10.11.1
+          version: 10
 
       - name: Use Node.js
         uses: actions/setup-node@v4
@@ -32,7 +32,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install modules
-        run: pnpm install --frozen-lockfile --ignore-scripts && pnpm store prune
+        run: pnpm install --frozen-lockfile --ignore-scripts
 
       - name: Test & Publish Code Coverage
         uses: paambaati/codeclimate-action@v3.2.0

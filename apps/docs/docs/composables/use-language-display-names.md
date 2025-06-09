@@ -57,55 +57,54 @@ To see `useLanguageDisplayNames` in action, you can try out the following demo. 
     <p>Translated Language: {{ languageDisplayName || 'undefined' }}</p>
   </div>
 
-  <template #code>
+<template #code>
 
-  ```vue
-  <template>
-    <MazSelect
-      v-model="selectedLocale"
-      label="Select a locale"
-      :maxListHeight="350"
-      :options="[
-        { value: 'en-US', label: 'English (en-US)' },
-        { value: 'fr-FR', label: 'French (fr-FR)' },
-        { value: 'es-ES', label: 'Spanish (es-ES)' },
-        { value: 'zh-CN', label: 'Chinese (zh-CN)' },
-        { value: 'de-DE', label: 'German (de-DE)' },
-        { value: 'it-IT', label: 'Italian (it-IT)' },
-        { value: 'ja-JP', label: 'Japanese (ja-JP)' },
-        { value: 'ko-KR', label: 'Korean (ko-KR)' },
-        { value: 'pt-BR', label: 'Portuguese (pt-BR)' },
-        { value: 'ru-RU', label: 'Russian (ru-RU)' },
-      ]"
-      search
-    />
-    <MazSelect
-      v-model="code"
-      label="Select a language"
-      :options="localeOptions"
-      search
-    />
-    <p>Translated Language: {{ languageDisplayName || 'undefined' }}</p>
-  </template>
+```vue
+<script lang="ts" setup>
+import { useLanguageDisplayNames } from 'maz-ui/composables/useLanguageDisplayNames'
+import { computed, ref } from 'vue'
 
-  <script lang="ts" setup>
-    import { ref, computed } from 'vue'
-    import { useLanguageDisplayNames } from 'maz-ui/composables/useLanguageDisplayNames'
+const selectedLocale = ref('en-US')
+const code = ref('')
 
-    const selectedLocale = ref('en-US')
-    const code = ref('')
+const { getLanguageDisplayName, getAllLanguageDisplayNames } = useLanguageDisplayNames(selectedLocale)
 
-    const { getLanguageDisplayName, getAllLanguageDisplayNames } = useLanguageDisplayNames(selectedLocale)
+const languageDisplayName = getLanguageDisplayName({ code })
 
-    const languageDisplayName = getLanguageDisplayName({ code })
+const localeOptions = computed(() => getAllLanguageDisplayNames('en-US').value.map(({ language, code }) => ({
+  label: `${language} (${code})`,
+  value: code
+})))
+</script>
 
-    const localeOptions = computed(() => getAllLanguageDisplayNames('en-US').value.map(({ language, code }) => ({
-      label: `${language} (${code})`,
-      value: code
-    })))
-  </script>
-
-  ```
+<template>
+  <MazSelect
+    v-model="selectedLocale"
+    label="Select a locale"
+    :max-list-height="350"
+    :options="[
+      { value: 'en-US', label: 'English (en-US)' },
+      { value: 'fr-FR', label: 'French (fr-FR)' },
+      { value: 'es-ES', label: 'Spanish (es-ES)' },
+      { value: 'zh-CN', label: 'Chinese (zh-CN)' },
+      { value: 'de-DE', label: 'German (de-DE)' },
+      { value: 'it-IT', label: 'Italian (it-IT)' },
+      { value: 'ja-JP', label: 'Japanese (ja-JP)' },
+      { value: 'ko-KR', label: 'Korean (ko-KR)' },
+      { value: 'pt-BR', label: 'Portuguese (pt-BR)' },
+      { value: 'ru-RU', label: 'Russian (ru-RU)' },
+    ]"
+    search
+  />
+  <MazSelect
+    v-model="code"
+    label="Select a language"
+    :options="localeOptions"
+    search
+  />
+  <p>Translated Language: {{ languageDisplayName || 'undefined' }}</p>
+</template>
+```
 
   </template>
 
@@ -127,7 +126,7 @@ Fetches the display name of a language based on the provided locale and ISO code
 
 ```ts
 function getLanguageDisplayName(options: {
-  locale?: MaybeRefOrGetter<string>,
+  locale?: MaybeRefOrGetter<string>
   code?: MaybeRefOrGetter<string>
 }): ComputedRef<string | undefined>
 ```
@@ -139,7 +138,7 @@ Fetches the display names for all predefined ISO codes for a given locale.
 ```ts
 function getAllLanguageDisplayNames(
   locale?: MaybeRefOrGetter<string>
-): ComputedRef<{ language: string; code: string }[]>
+): ComputedRef<{ language: string, code: string }[]>
 ```
 
 ## Notes

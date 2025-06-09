@@ -23,26 +23,28 @@ More info about the [wait plugin](./../plugins/wait.md) in its documentation
 <p v-else> Loaded </p>
 
 ```vue
+<script lang="ts" setup>
+import { sleep } from 'maz-ui'
+import { useWait } from 'maz-ui/composables'
+import { onMounted } from 'vue'
+
+const wait = useWait()
+
+onMounted(async () => {
+  wait.start('MAIN_LOADER')
+  await sleep(2000)
+  wait.stop('MAIN_LOADER')
+})
+</script>
+
 <template>
   <MazFullscreenLoader v-if="wait.isLoading('MAIN_LOADER')">
     Loading
   </MazFullscreenLoader>
-  <p v-else> Loaded </p>
+  <p v-else>
+    Loaded
+  </p>
 </template>
-
-<script lang="ts" setup>
-  import { onMounted } from 'vue'
-  import { sleep } from 'maz-ui'
-  import { useWait } from 'maz-ui/composables'
-
-  const wait = useWait()
-
-  onMounted(async () => {
-    wait.start('MAIN_LOADER')
-    await sleep(2000)
-    wait.stop('MAIN_LOADER')
-  })
-</script>
 ```
 
 <script lang="ts" setup>
@@ -58,4 +60,3 @@ More info about the [wait plugin](./../plugins/wait.md) in its documentation
     wait.stop('MAIN_LOADER')
   })
 </script>
-

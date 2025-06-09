@@ -18,6 +18,14 @@ description: MazPullToRefresh is a standalone component to add pull to refresh f
 Wrap your app inside this component
 
 ```vue
+<script lang="ts" setup>
+import { MazPullToRefresh } from 'maz-ui/components'
+
+async function pullToRefreshAction() {
+  // do promise or just `window.location.reload()`
+}
+</script>
+
 <template>
   <MazPullToRefresh
     header-class="maz-bg-bg-dark maz-text-foreground-light"
@@ -32,18 +40,10 @@ Wrap your app inside this component
     </div>
   </MazPullToRefresh>
 </template>
-
-<script lang="ts" setup>
-  import { MazPullToRefresh } from 'maz-ui/components'
-
-  async function pullToRefreshAction() {
-    // do promise or just `window.location.reload()`
-  }
-</script>
 ```
 
 ::: warning
-  More documentation to come
+More documentation to come
 :::
 
 <!--@include: ./../.vitepress/generated-docs/maz-pull-to-refresh.doc.md-->

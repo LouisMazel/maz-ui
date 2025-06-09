@@ -11,26 +11,26 @@ description: MazCheckbox is a standalone component that replaces the standard ht
 
 ## Basic usage
 
-```v-model="{{checked}}"```
+`v-model="{{checked}}"`
 
 <MazCheckbox v-model="checked" :label="checked ? 'Checked' : 'Unchecked'" />
 
 ```vue
+<script lang="ts" setup>
+import { MazCheckbox } from 'maz-ui/components'
+import { ref } from 'vue'
+
+const checked = ref(false)
+</script>
+
 <template>
   <MazCheckbox v-model="checked" :label="checked ? 'Checked' : 'Unchecked'" />
 </template>
-
-<script lang="ts" setup>
-  import { ref } from 'vue'
-  import { MazCheckbox } from 'maz-ui/components'
-
-  const checked = ref(false)
-</script>
 ```
 
 ## Colors
 
-```v-model="{{chosenColors}}"```
+`v-model="{{chosenColors}}"`
 
 <div class="maz-flex maz-flex-col maz-gap-2">
   <MazCheckbox
@@ -49,44 +49,44 @@ description: MazCheckbox is a standalone component that replaces the standard ht
 ::: details View code
 
 ```vue
+<script lang="ts" setup>
+import { type Color, MazCheckbox } from 'maz-ui/components'
+import { ref } from 'vue'
+
+const chosenColors = ref([])
+
+const colors: Color[] = [
+  'primary',
+  'secondary',
+  'info',
+  'success',
+  'warning',
+  'destructive',
+  'contrast',
+  'accent',
+]
+</script>
+
 <template>
   <MazCheckbox
     v-for="color in colors"
+    :id="color"
     :key="color"
     v-model="chosenColors"
     :color="color"
-    :id="color"
     name="color"
     :value="color"
   >
     {{ color }}
   </MazCheckbox>
 </template>
-
-<script lang="ts" setup>
-  import { ref } from 'vue'
-  import { MazCheckbox, type Color } from 'maz-ui/components'
-
-  const chosenColors = ref([])
-
-  const colors: Color[] = [
-    'primary',
-    'secondary',
-    'info',
-    'success',
-    'warning',
-    'destructive',
-    'contrast',
-    'accent',
-  ]
-</script>
 ```
 
 :::
 
 ## Sizing
 
-```v-model="{{chosenSizes}}"```
+`v-model="{{chosenSizes}}"`
 
 <div class="maz-flex maz-flex-col maz-gap-2">
   <MazCheckbox
@@ -104,6 +104,15 @@ description: MazCheckbox is a standalone component that replaces the standard ht
 ::: details View code
 
 ```vue
+<script lang="ts" setup>
+import { MazCheckbox, type Size } from 'maz-ui/components'
+import { ref } from 'vue'
+
+const chosenSizes = ref([])
+
+const sizes: Size[] = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
+</script>
+
 <template>
   <MazCheckbox
     v-for="size in sizes"
@@ -116,15 +125,6 @@ description: MazCheckbox is a standalone component that replaces the standard ht
     {{ size }}
   </MazCheckbox>
 </template>
-
-<script lang="ts" setup>
-  import { ref } from 'vue'
-  import { MazCheckbox, type Size } from 'maz-ui/components'
-
-  const chosenSizes = ref([])
-
-  const sizes: Size[] = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
-</script>
 ```
 
 :::
@@ -143,7 +143,7 @@ description: MazCheckbox is a standalone component that replaces the standard ht
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import { type Color, type Size } from 'maz-ui/components'
+  import { type Color, type Size } from 'maz-ui/components'
 
   const checked = ref(false)
   const chosenColors = ref([])

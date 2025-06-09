@@ -48,6 +48,10 @@ npm install @maz-ui/icons vite-svg-loader
 Import and use icons as Vue components:
 
 ```vue
+<script setup lang="ts">
+import { MazCheck, MazHeart, MazUser } from '@maz-ui/icons'
+</script>
+
 <template>
   <div>
     <MazCheck class="text-green-500" />
@@ -55,13 +59,10 @@ Import and use icons as Vue components:
     <MazHeart class="text-red-500 hover:scale-110 transition-transform" />
   </div>
 </template>
-
-<script setup lang="ts">
-import { MazCheck, MazUser, MazHeart } from '@maz-ui/icons'
-</script>
 ```
 
 **Benefits:**
+
 - ✅ Tree-shaking - Only bundled icons are included
 - ✅ TypeScript support with full IntelliSense
 - ✅ Vue 3 optimized with `defineAsyncComponent`
@@ -72,18 +73,8 @@ import { MazCheck, MazUser, MazHeart } from '@maz-ui/icons'
 Access SVG files directly for maximum flexibility:
 
 ```vue
-<template>
-  <div>
-    <!-- Using img tag -->
-    <img src="@maz-ui/icons/svg/check.svg" alt="Check" class="w-6 h-6" />
-
-    <!-- Inline SVG with fetch -->
-    <div v-html="checkSvg" class="text-blue-500"></div>
-  </div>
-</template>
-
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 
 const checkSvg = ref('')
 
@@ -92,9 +83,20 @@ onMounted(async () => {
   checkSvg.value = await response.text()
 })
 </script>
+
+<template>
+  <div>
+    <!-- Using img tag -->
+    <img src="@maz-ui/icons/svg/check.svg" alt="Check" class="w-6 h-6">
+
+    <!-- Inline SVG with fetch -->
+    <div class="text-blue-500" v-html="checkSvg" />
+  </div>
+</template>
 ```
 
 **Benefits:**
+
 - ✅ Direct file access
 - ✅ Smallest possible bundle size
 - ✅ Can be used in any context (not just Vue)
@@ -107,9 +109,9 @@ Transform SVG files into Vue components at build time:
 #### Vite Configuration
 
 ```ts
+import vue from '@vitejs/plugin-vue'
 // vite.config.ts
 import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
 import svgLoader from 'vite-svg-loader'
 
 export default defineConfig({
@@ -125,6 +127,13 @@ export default defineConfig({
 #### Usage in Components
 
 ```vue
+<script setup lang="ts">
+// Import SVGs as Vue components
+import CheckIcon from '@maz-ui/icons/svg/check.svg?component'
+import HeartIcon from '@maz-ui/icons/svg/heart.svg?component'
+import UserIcon from '@maz-ui/icons/svg/user.svg?component'
+</script>
+
 <template>
   <div class="flex items-center gap-2">
     <CheckIcon class="w-5 h-5 text-green-600" />
@@ -132,16 +141,10 @@ export default defineConfig({
     <HeartIcon class="w-4 h-4 text-red-500 animate-pulse" />
   </div>
 </template>
-
-<script setup lang="ts">
-// Import SVGs as Vue components
-import CheckIcon from '@maz-ui/icons/svg/check.svg?component'
-import UserIcon from '@maz-ui/icons/svg/user.svg?component'
-import HeartIcon from '@maz-ui/icons/svg/heart.svg?component'
-</script>
 ```
 
 **Benefits:**
+
 - ✅ Build-time optimization
 - ✅ Full Vue component features (props, slots, etc.)
 - ✅ Better performance than runtime imports
@@ -154,11 +157,11 @@ Never worry about imports again with automatic component resolution:
 #### Setup unplugin-vue-components
 
 ```ts
-// vite.config.ts
-import { defineConfig } from 'vite'
+import { MazIconsResolver } from '@maz-ui/icons/resolvers'
 import vue from '@vitejs/plugin-vue'
 import Components from 'unplugin-vue-components/vite'
-import { MazIconsResolver } from '@maz-ui/icons/resolvers'
+// vite.config.ts
+import { defineConfig } from 'vite'
 
 export default defineConfig({
   plugins: [
@@ -175,6 +178,10 @@ export default defineConfig({
 #### Usage (No Imports Required!)
 
 ```vue
+<script setup lang="ts">
+// No imports needed! Icons are auto-imported
+</script>
+
 <template>
   <div class="navigation">
     <!-- Icons are automatically imported when used -->
@@ -185,10 +192,6 @@ export default defineConfig({
   </div>
 </template>
 
-<script setup lang="ts">
-// No imports needed! Icons are auto-imported
-</script>
-
 <style scoped>
 .nav-icon {
   @apply w-6 h-6 text-gray-600 hover:text-blue-500 transition-colors cursor-pointer;
@@ -197,6 +200,7 @@ export default defineConfig({
 ```
 
 **Benefits:**
+
 - ✅ Zero import boilerplate
 - ✅ Full TypeScript support
 - ✅ Tree-shaking still works
@@ -260,16 +264,17 @@ The library includes **300+ carefully** covering all common use cases:
 ### Icon Naming Convention
 
 All icons follow a consistent naming pattern:
+
 - Vue components: `Maz` + PascalCase (e.g., `MazUserCircle`)
 - SVG files: kebab-case (e.g., `user-circle.svg`)
 
 ```typescript
 // Component imports
 import {
-  MazArrowRight,      // arrow-right.svg
-  MazUserCircle,      // user-circle.svg
-  MazShoppingCart,    // shopping-cart.svg
-  MazChatBubbleLeft   // chat-bubble-left.svg
+  MazArrowRight, // arrow-right.svg
+  MazChatBubbleLeft, // chat-bubble-left.svg
+  MazShoppingCart, // shopping-cart.svg
+  MazUserCircle // user-circle.svg
 } from '@maz-ui/icons'
 ```
 
@@ -293,7 +298,7 @@ interface IconComponents {
 export function createIconLoader(iconNames: string[]): IconComponents {
   const icons: IconComponents = {}
 
-  iconNames.forEach(name => {
+  iconNames.forEach((name) => {
     const componentName = `Maz${name.split('-').map(
       word => word.charAt(0).toUpperCase() + word.slice(1)
     ).join('')}`
@@ -315,14 +320,6 @@ const icons = createIconLoader(['check', 'user', 'heart'])
 Load icons dynamically based on runtime conditions:
 
 ```vue
-<template>
-  <component
-    :is="iconComponent"
-    :class="iconClass"
-    @click="handleClick"
-  />
-</template>
-
 <script setup lang="ts">
 import { computed, defineAsyncComponent } from 'vue'
 
@@ -356,6 +353,14 @@ function handleClick() {
   console.log(`Clicked ${props.name} icon`)
 }
 </script>
+
+<template>
+  <component
+    :is="iconComponent"
+    :class="iconClass"
+    @click="handleClick"
+  />
+</template>
 ```
 
 ### Build-time Icon Optimization
@@ -365,7 +370,7 @@ Optimize icons at build time with custom Vite plugin:
 ```typescript
 // vite-plugin-icon-optimizer.ts
 import type { Plugin } from 'vite'
-import { readFileSync } from 'fs'
+import { readFileSync } from 'node:fs'
 import { optimize } from 'svgo'
 
 export function iconOptimizer(): Plugin {
@@ -407,9 +412,9 @@ export function iconOptimizer(): Plugin {
 ### With Pinia Store
 
 ```typescript
+import type { Component } from 'vue'
 // stores/icons.ts
 import { defineStore } from 'pinia'
-import type { Component } from 'vue'
 
 export const useIconStore = defineStore('icons', () => {
   const loadedIcons = ref<Map<string, Component>>(new Map())
@@ -450,12 +455,15 @@ criticalIcons.forEach(async (iconName) => {
 ### Common Issues
 
 **Icons not displaying:**
+
 - Ensure SVG files are properly served by your build tool
 - Check if CSS `currentColor` is being inherited correctly
 - Verify vite-svg-loader configuration if using component imports
 
 **TypeScript errors:**
+
 - Add `vite-svg-loader` types to your `tsconfig.json`:
+
 ```json
 {
   "compilerOptions": {
@@ -465,18 +473,19 @@ criticalIcons.forEach(async (iconName) => {
 ```
 
 **Auto-import not working:**
+
 - Verify `unplugin-vue-components` is properly configured
 - Check that `MazIconsResolver` is included in resolvers array
 - Ensure icon names match the exact component names
 
 ## 📦 Bundle Size
 
-| Usage Method | Bundle Impact | Best For |
-|--------------|---------------|----------|
-| Direct SVG | Minimal | Static usage, minimal bundles |
-| Vue Components | Tree-shaken | Dynamic usage, Vue apps |
-| Auto-import | Tree-shaken | Development experience |
-| vite-svg-loader | Optimized | Build-time optimization |
+| Usage Method    | Bundle Impact | Best For                      |
+| --------------- | ------------- | ----------------------------- |
+| Direct SVG      | Minimal       | Static usage, minimal bundles |
+| Vue Components  | Tree-shaken   | Dynamic usage, Vue apps       |
+| Auto-import     | Tree-shaken   | Development experience        |
+| vite-svg-loader | Optimized     | Build-time optimization       |
 
 ## 🔗 Related Packages
 

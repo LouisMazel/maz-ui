@@ -37,7 +37,7 @@ lastUpdated: false
     <template #item="{ item }">
       <div class="maz-flex maz-w-full maz-items-center maz-justify-between maz-gap-2">
         <span class="maz-capitalize">{{ item.label }}</span>
-        <MazBadge color="contrast" outline>
+        <MazBadge color="theme" outline>
           {{ item.value }}
         </MazBadge>
       </div>
@@ -69,7 +69,7 @@ lastUpdated: false
       <template #item="{ item }">
         <div class="maz-flex maz-w-full maz-items-center maz-justify-between maz-gap-2">
           <span class="maz-capitalize">{{ item.label }}</span>
-          <MazBadge color="contrast" outline>
+          <MazBadge color="theme" outline>
             {{ item.value }}
           </MazBadge>
         </div>

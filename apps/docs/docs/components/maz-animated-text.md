@@ -18,17 +18,17 @@ This component is SSR friendly. It will display the brut text on the server side
 <ComponentDemo expanded>
   <MazAnimatedText tag="h1" text="Hello" last-word="world" :delay="1000" :duration="2000" direction="up" :column-gap="0.5" :row-gap="0.5" />
 
-  <template #code>
+<template #code>
 
-  ```vue
-  <template>
-    <MazAnimatedText tag="h1" text="Hello" last-word="world" :delay="1000" :duration="2000" direction="up" :column-gap="0.5" :row-gap="0.5" />
-  </template>
+```vue
+<script lang="ts" setup>
+import { MazAnimatedText } from 'maz-ui/components'
+</script>
 
-  <script lang="ts" setup>
-    import { MazAnimatedText } from 'maz-ui/components'
-  </script>
-  ```
+<template>
+  <MazAnimatedText tag="h1" text="Hello" last-word="world" :delay="1000" :duration="2000" direction="up" :column-gap="0.5" :row-gap="0.5" />
+</template>
+```
 
   </template>
 </ComponentDemo>

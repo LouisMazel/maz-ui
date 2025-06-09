@@ -14,13 +14,13 @@ description: MazLoadingBar is a standalone component
 <MazLoadingBar color="secondary" />
 
 ```vue
+<script lang="ts" setup>
+import { MazLoadingBar } from 'maz-ui/components'
+</script>
+
 <template>
   <MazLoadingBar color="secondary" />
 </template>
-
-<script lang="ts" setup>
-  import { MazLoadingBar } from 'maz-ui/components'
-</script>
 ```
 
 <!--@include: ./../.vitepress/generated-docs/maz-loading-bar.doc.md-->
