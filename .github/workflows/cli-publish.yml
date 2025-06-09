@@ -29,7 +29,7 @@ jobs:
         run: git pull origin master
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: Build Cli
         run: pnpm --filter @maz-ui/cli build

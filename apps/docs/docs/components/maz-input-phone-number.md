@@ -219,7 +219,7 @@ Replace the default flags with slots
     <template #selector-flag="{ countryCode }">
       <span
         id="input-flag-element"
-        style="font-size: 0.8rem; background-color: var(--maz-color-secondary); color: var(--maz-color-secondary-contrast); border-radius: 20%; padding: 3px; line-height: 1;"
+        style="font-size: 0.8rem; background-color: hsl(var(--maz-secondary)); color: hsl(var(--maz-secondary-foreground)); border-radius: 20%; padding: 3px; line-height: 1;"
       >
         {{ countryCode }}
       </span>
@@ -242,8 +242,8 @@ Replace the default flags with slots
       id="input-flag-element"
       style="
         font-size: 0.8rem;
-        background-color: var(--maz-color-secondary);
-        color: var(--maz-color-secondary-contrast);
+        background-color: hsl(var(--maz-secondary));
+        color: hsl(var(--maz-secondary-foreground));
         border-radius: 100px;
         padding: 2px;
       "

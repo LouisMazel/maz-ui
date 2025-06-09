@@ -25,7 +25,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile && pnpm store prune
 
       - name: Generate components docs
         run: pnpm --filter cli cli generate-components-docs

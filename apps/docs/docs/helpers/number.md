@@ -12,7 +12,7 @@ description: The module number is a function that formats numbers
 <MazInput v-model="numberValue" type="number" />
 
 <div
-  style="padding: 16px; margin-top: 16px; background-color: var(--maz-color-bg-lighter);"
+  style="padding: 16px; margin-top: 16px; background-color: hsl(var(--maz-background-300));"
   class="flex flex-center rounded gap-05"
 >
   formatted value: <strong>{{ numberFormatted }}</strong>
@@ -23,7 +23,7 @@ description: The module number is a function that formats numbers
   <MazInput v-model="numberValue" type="number" />
 
   <div
-    style="padding: 16px; margin-top: 16px; background-color: var(--maz-color-bg-lighter);"
+    style="padding: 16px; margin-top: 16px; background-color: hsl(var(--maz-background-300));"
   >
     {{ numberFormatted }}
   </div>

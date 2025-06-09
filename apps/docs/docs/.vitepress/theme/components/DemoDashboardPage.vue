@@ -190,7 +190,7 @@ const tableHeaders = [
         <div class="maz-flex maz-items-center maz-gap-4">
           <MazCircularProgressBar
             :percentage="78"
-            color="danger"
+            color="destructive"
             size="3rem"
             :delay
             :once="false"
@@ -241,7 +241,7 @@ const tableHeaders = [
     <!-- Charts Section -->
     <div class="maz-mt-4 maz-grid maz-grid-cols-1 maz-gap-4 lg:maz-grid-cols-2">
       <MazCard bordered :elevation="false" block>
-        <template #header>
+        <template #title>
           <h3 class="maz-text-lg maz-font-semibold">
             Sales Overview
           </h3>
@@ -250,7 +250,7 @@ const tableHeaders = [
       </MazCard>
 
       <MazCard bordered :elevation="false" block>
-        <template #header>
+        <template #title>
           <div class="maz-flex maz-w-full maz-items-center maz-justify-between">
             <h3 class="maz-text-lg maz-font-semibold">
               Sales Target

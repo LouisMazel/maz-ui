@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+/* eslint-disable sonarjs/no-nested-conditional */
 import type { CSSProperties } from 'vue'
 import type { MazColor } from './types'
 import {
@@ -387,12 +388,12 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
     user-select: none;
 
     @apply maz-flex maz-items-center maz-justify-center maz-rounded-full maz-border
-        maz-border-border maz-bg-bg-light maz-shadow-md;
+        maz-border-divider maz-bg-surface-400 maz-shadow-md;
 
     padding: 0.25em 0.5em;
 
     & span {
-      @apply maz-flex maz-items-center maz-text-normal;
+      @apply maz-flex maz-items-center maz-text-foreground;
 
       margin-left: 0.25em;
       margin-right: 0.25em;
@@ -409,11 +410,11 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
       font-size: 0.8em;
       top: -1.5em;
 
-      @apply maz-absolute maz-font-medium maz-text-normal;
+      @apply maz-absolute maz-font-medium maz-text-foreground;
     }
 
     &:hover {
-      @apply maz-bg-border;
+      @apply maz-bg-surface-200;
     }
   }
 
@@ -477,38 +478,38 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
     }
   }
 
-  &--danger {
+  &--destructive {
     & .m-slider {
       &__bar {
-        @apply maz-bg-danger;
+        @apply maz-bg-destructive;
       }
 
       &__btn.active-cursor {
-        @apply maz-border maz-border-danger maz-shadow-lg;
+        @apply maz-border maz-border-destructive maz-shadow-lg;
       }
     }
   }
 
-  &--white {
+  &--contrast {
     & .m-slider {
       &__bar {
-        @apply maz-bg-white;
+        @apply maz-bg-contrast;
       }
 
       &__btn.active-cursor {
-        @apply maz-border maz-border-white maz-shadow-lg;
+        @apply maz-border maz-border-contrast maz-shadow-lg;
       }
     }
   }
 
-  &--black {
+  &--accent {
     & .m-slider {
       &__bar {
-        @apply maz-bg-black;
+        @apply maz-bg-accent;
       }
 
       &__btn.active-cursor {
-        @apply maz-border maz-border-black maz-shadow-lg;
+        @apply maz-border maz-border-accent maz-shadow-lg;
       }
     }
   }

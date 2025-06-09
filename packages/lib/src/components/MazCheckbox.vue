@@ -146,33 +146,33 @@ const checkIconSize = computed(() => {
 })
 
 const checkIconColor = computed(() => {
-  if (props.color === 'theme') {
-    return 'var(--maz-color-bg)'
+  if (props.color === 'contrast') {
+    return 'hsl(var(--maz-background))'
   }
 
-  return `var(--maz-color-${props.color}-contrast)`
+  return `hsl(var(--maz-${props.color}-foreground))`
 })
 const checkboxSelectedColor = computed(() => {
-  if (props.color === 'theme') {
-    return 'var(--maz-color-bg-theme)'
+  if (props.color === 'contrast') {
+    return 'hsl(var(--maz-contrast))'
   }
 
-  return `var(--maz-color-${props.color})`
+  return `hsl(var(--maz-${props.color}))`
 })
 const checkboxBoxShadow = computed(() => {
   if (props.error) {
-    return `var(--maz-color-danger)`
+    return `hsl(var(--maz-destructive))`
   }
   else if (props.warning) {
-    return `var(--maz-color-warning)`
+    return `hsl(var(--maz-warning))`
   }
   else if (props.success) {
-    return `var(--maz-color-success)`
+    return `hsl(var(--maz-success))`
   }
 
-  return ['black', 'transparent', 'theme'].includes(props.color)
-    ? `var(--maz-color-muted)`
-    : `var(--maz-color-${props.color}-alpha)`
+  return ['transparent', 'contrast'].includes(props.color)
+    ? `hsl(var(--maz-muted))`
+    : `hsl(var(--maz-${props.color}) / 60%)`
 })
 
 function keyboardHandler(event: KeyboardEvent) {
@@ -247,7 +247,7 @@ function onFocus(event: FocusEvent) {
     <span :style="{ width: checkboxSize, height: checkboxSize }">
       <MazCheck class="check-icon" :class="checkIconSize" :style="{ color: checkIconColor }" />
     </span>
-    <div class="m-checkbox__text">
+    <div v-if="label || $slots.default || hint" class="m-checkbox__text">
       <slot :value>
         {{ label }}
       </slot>
@@ -277,14 +277,14 @@ function onFocus(event: FocusEvent) {
   }
 
   > span {
-    @apply maz-relative maz-flex maz-rounded-md maz-border maz-border-border maz-transition-all maz-duration-300 maz-ease-in-out maz-flex-center dark:maz-border-color-lighter;
+    @apply maz-relative maz-flex maz-rounded-md maz-border maz-border-divider maz-transition-all maz-duration-300 maz-ease-in-out maz-flex-center dark:maz-border-divider-400;
   }
 
   input {
     @apply maz-hidden;
 
     &:not(:checked) ~ span {
-      @apply maz-bg-color dark:maz-bg-color-light;
+      @apply maz-bg-surface dark:maz-bg-surface-400;
     }
 
     &:checked ~ span {
@@ -297,7 +297,7 @@ function onFocus(event: FocusEvent) {
     }
 
     &:disabled ~ span {
-      @apply maz-bg-color-light dark:maz-bg-color-lighter;
+      @apply maz-bg-surface-400 dark:maz-bg-surface-300;
     }
   }
 
@@ -305,7 +305,7 @@ function onFocus(event: FocusEvent) {
     @apply maz-cursor-not-allowed maz-text-muted;
 
     input:checked ~ span {
-      @apply maz-border-border dark:maz-border-color-lighter;
+      @apply maz-border-divider dark:maz-border-divider-400;
 
       .check-icon {
         @apply maz-text-muted;
@@ -332,7 +332,7 @@ function onFocus(event: FocusEvent) {
     @apply maz-text-sm maz-text-muted;
 
     &.--error {
-      @apply maz-text-danger-600;
+      @apply maz-text-destructive-600;
     }
 
     &.--success {

@@ -290,7 +290,7 @@ export interface MazPickerProps {
   /**
    * The color theme of the component
    * @type {MazColor}
-   * @values primary, secondary, success, danger, warning, info
+   * @values primary, secondary, success, destructive, warning, info, accent, contrast
    * @default 'primary'
    */
   color?: MazColor
@@ -418,18 +418,20 @@ const currentValue = computed<MazPickerValue>({
   get: () => {
     const isRangeMode = typeof props.modelValue === 'object' || props.range
 
-    return isRangeMode
-      ? {
-          start: typeof props.modelValue === 'object' && props.modelValue.start
-            ? dayjs(props.modelValue.start, props.format).format()
-            : undefined,
-          end: typeof props.modelValue === 'object' && props.modelValue.end
-            ? dayjs(props.modelValue.end, props.format).format()
-            : undefined,
-        }
-      : typeof props.modelValue === 'string'
-        ? dayjs(props.modelValue, props.format).format()
-        : undefined
+    if (isRangeMode) {
+      return {
+        start: typeof props.modelValue === 'object' && props.modelValue.start
+          ? dayjs(props.modelValue.start, props.format).format()
+          : undefined,
+        end: typeof props.modelValue === 'object' && props.modelValue.end
+          ? dayjs(props.modelValue.end, props.format).format()
+          : undefined,
+      }
+    }
+
+    return typeof props.modelValue === 'string'
+      ? dayjs(props.modelValue, props.format).format()
+      : undefined
   },
   set: (value) => {
     if (props.disabled) {
@@ -943,7 +945,7 @@ watch(
     @apply maz-flex maz-h-full maz-cursor-not-allowed maz-bg-transparent maz-pr-1 maz-flex-center;
 
     &__chevron {
-      @apply maz-text-normal maz-transition-transform maz-duration-200;
+      @apply maz-text-foreground maz-transition-transform maz-duration-200;
     }
   }
 

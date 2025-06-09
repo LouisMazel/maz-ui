@@ -6,7 +6,7 @@ description: Dark mode is fully supported - How it's works ?
 # {{ $frontmatter.title }}
 
 ::: tip
-To let users manage dark mode, use this composable: [useThemeHandler](./../composables/use-theme-handler.md)
+To let users manage dark mode, use this composable: [useTheme](./../guide/theme.md)
 :::
 
 ## How it's works ?
@@ -18,12 +18,12 @@ To enable dark mode, you just have to add the `dark` class to the `<html />` of 
 ```html
 <!-- Dark mode not enabled -->
 <html>
-<body>
-  <!-- Will be white -->
-  <div id="app">
-    <!-- ... -->
-  </div>
-</body>
+  <body>
+    <!-- Will be white -->
+    <div id="app">
+      <!-- ... -->
+    </div>
+  </body>
 </html>
 ```
 
@@ -32,11 +32,11 @@ To enable dark mode, you just have to add the `dark` class to the `<html />` of 
 ```html
 <!-- Dark mode enabled -->
 <html class="dark">
-<body>
-  <!-- Will be black -->
-  <div id="app">
-    <!-- ... -->
-  </div>
-</body>
+  <body>
+    <!-- Will be black -->
+    <div id="app">
+      <!-- ... -->
+    </div>
+  </body>
 </html>
 ```

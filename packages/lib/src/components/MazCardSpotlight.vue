@@ -70,8 +70,8 @@ function animateBlob({ clientX, clientY }: { clientX: number, clientY: number })
   }
 }
 
-const alphaColor = computed(() => `var(--maz-color-${color}-alpha)`)
-const alphaColor20 = computed(() => `var(--maz-color-${color}-alpha-20)`)
+const alphaColor = computed(() => `hsl(var(--maz-${color}) / 60%)`)
+const alphaColor20 = computed(() => `hsl(var(--maz-${color}) / 20%)`)
 
 onMounted(() => {
   window.addEventListener('mousemove', animateBlob)
@@ -110,12 +110,12 @@ onUnmounted(() => {
   .inner {
     @apply maz-relative maz-h-auto maz-w-full maz-overflow-hidden;
 
-    border-radius: calc(var(--maz-border-radius) - var(--maz-border-width));
+    border-radius: calc(var(--maz-radius) - var(--maz-border-width));
 
     &::before {
       content: '';
 
-      @apply maz-absolute maz-left-0 maz-top-0 maz-z-1 maz-h-full maz-w-full maz-bg-color;
+      @apply maz-absolute maz-left-0 maz-top-0 maz-z-1 maz-h-full maz-w-full maz-bg-surface;
 
       opacity: var(--inner-opacity);
     }

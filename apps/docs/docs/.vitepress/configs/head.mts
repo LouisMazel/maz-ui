@@ -83,5 +83,19 @@ export const head = [
   ['meta', { name: 'og:site_name', content: 'Maz-UI' }],
   ['meta', { name: 'og:locale', content: 'en-US' }],
   ['meta', { name: 'article:author', content: 'Loïc Mazuel' }],
-  // ['script', { src: 'https://www.googletagmanager.com/gtag/js?id=G-EM35TM23ZC', async: 'true' }]
+  [
+    'script',
+    {
+      async: 'true',
+      src: 'https://www.googletagmanager.com/gtag/js?id=G-EM35TM23ZC',
+    },
+  ],
+  [
+    'script',
+    {},
+    `window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-EM35TM23ZC');`,
+  ],
 ] satisfies UserConfig['head']

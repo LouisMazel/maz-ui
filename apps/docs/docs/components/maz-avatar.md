@@ -56,7 +56,7 @@ See all the options props [here](#props-event-slots)
     size="2.5rem"
     clickable
     rounded-size="xl"
-    button-color="danger"
+    button-color="destructive"
     @click="clicked"
   />
 

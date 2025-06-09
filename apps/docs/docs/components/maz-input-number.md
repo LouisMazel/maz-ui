@@ -54,12 +54,6 @@ description: MazInputNumber is a number input component with increment and decre
   </template>
 </ComponentDemo>
 
-<script lang="ts" setup>
-  import { ref } from 'vue'
-
-  const numberValue = ref()
-</script>
-
 ## No buttons
 
 You can remove the buttons with the props `hide-buttons`

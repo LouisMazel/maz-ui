@@ -64,7 +64,7 @@ const iconComponent = computed(() => {
     return undefined
 
   switch (type) {
-    case 'danger': {
+    case 'destructive': {
       return MazExclamationTriangle
     }
     case 'info': {
@@ -162,7 +162,7 @@ const progressBarWidth = ref<string>('100%')
 
 function getProgressBarColor() {
   switch (type) {
-    case 'danger': {
+    case 'destructive': {
       return 'maz-bg-destructive-700'
     }
     case 'info': {
@@ -175,7 +175,7 @@ function getProgressBarColor() {
       return 'maz-bg-warning-700'
     }
     default: {
-      return 'maz-bg-constrast'
+      return 'maz-bg-contrast-700'
     }
   }
 }
@@ -310,7 +310,7 @@ onMounted(() => {
 
         <div
           v-if="typeof timeout === 'number' && timeout > 0 && !persistent"
-          class="m-toast__progress-bar"
+          class="m-toast__progress-bar maz-bg-okokokok"
         >
           <div
             :style="{
@@ -361,7 +361,7 @@ onMounted(() => {
 }
 </style>
 
-<!-- <style lang="postcss" scoped>
+<style lang="postcss" scoped>
 .m-toast {
   box-sizing: border-box;
 
@@ -446,7 +446,7 @@ onMounted(() => {
     }
   }
 
-  &.--danger {
+  &.--destructive {
     .m-toast__button {
       @apply maz-bg-destructive/10 maz-text-destructive-600 maz-border-destructive/20 hover:maz-bg-destructive/20;
     }
@@ -456,13 +456,13 @@ onMounted(() => {
     }
   }
 
-  &.--theme {
+  &.--contrast {
     .m-toast__button {
-      @apply maz-bg-surface maz-text-foreground maz-border-neutral-600/20 dark:maz-border-neutral-600/50 hover:maz-bg-neutral-600/20;
+      @apply maz-bg-contrast maz-text-contrast-foreground maz-border-contrast-600/20 hover:maz-bg-contrast-500 dark:hover:maz-bg-contrast/70;
     }
 
     & .m-toast__close {
-      @apply maz-bg-surface maz-text-foreground hover:maz-bg-neutral-600/20 maz-border-neutral-600/50 dark:maz-border-neutral-600/50;
+      @apply maz-bg-contrast maz-text-contrast-foreground maz-border-contrast-600/20 hover:maz-bg-contrast/70;
     }
   }
 
@@ -527,4 +527,4 @@ onMounted(() => {
   z-index: 0;
   transform: scale(0.6) translateX(-200%);
 }
-</style> -->
+</style>

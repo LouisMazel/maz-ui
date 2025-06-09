@@ -75,10 +75,7 @@ const instanceId = useInstanceUniqId({
 })
 
 const bgColorClassVar = computed(() => {
-  if (props.color === 'theme')
-    return 'var(--maz-color-bg-theme)'
-
-  return `var(--maz-color-${props.color}-alpha)`
+  return `hsl(var(--maz-${props.color}) / 60%)`
 })
 
 function emit() {
@@ -176,13 +173,13 @@ function onFocus(event: FocusEvent) {
       transition: all 200ms ease-in-out;
 
       @apply maz-relative maz-left-0 maz-top-0.5 maz-block maz-h-6 maz-w-[3rem] maz-rounded-full;
-      @apply maz-bg-color-light dark:maz-bg-color-lighter;
+      @apply maz-bg-surface-400 dark:maz-bg-surface-300;
     }
 
     &::after {
       content: '';
 
-      @apply maz-absolute maz-left-0.5 maz-top-1 maz-block maz-h-5 maz-w-5 maz-rounded-full maz-bg-color;
+      @apply maz-absolute maz-left-0.5 maz-top-1 maz-block maz-h-5 maz-w-5 maz-rounded-full maz-bg-surface;
 
       box-shadow: 0 0 4px 0 hsl(0deg 0% 0% / 20%);
       transition: all 200ms ease-in-out;
@@ -202,11 +199,11 @@ function onFocus(event: FocusEvent) {
   &__input:disabled {
     + .m-switch__toggle {
       &::before {
-        @apply maz-bg-color-lighter dark:maz-bg-color-light;
+        @apply maz-bg-surface-300 dark:maz-bg-surface-400;
       }
 
       &::after {
-        @apply maz-bg-color-light dark:maz-bg-color-lighter;
+        @apply maz-bg-surface-400 dark:maz-bg-surface-300;
 
         box-shadow: none;
       }
@@ -221,7 +218,7 @@ function onFocus(event: FocusEvent) {
     @apply maz-text-sm maz-text-muted;
 
     &.--error {
-      @apply maz-text-danger-600;
+      @apply maz-text-destructive-600;
     }
 
     &.--success {

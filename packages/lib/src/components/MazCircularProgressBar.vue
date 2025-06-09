@@ -32,7 +32,7 @@ export interface MazCircularProgressBarProps {
    */
   color?: MazColor
   /**
-   * Auto color based on the count (danger, warning, success)
+   * Auto color based on the count (destructive, warning, success)
    * @default false
    */
   autoColor?: boolean
@@ -127,7 +127,7 @@ const currentColor = computed<MazColor | undefined>(() =>
 )
 function getStatusColor(percent: number) {
   if (percent < dangerPercentage || percent > 100)
-    return 'danger'
+    return 'destructive'
   if (percent < warningPercentage)
     return 'warning'
   if (percent >= successPercentage)
@@ -227,13 +227,13 @@ onBeforeUnmount(() => observer?.disconnect())
           <stop
             offset="0%"
             :stop-color="
-              currentColor ? `var(--maz-color-${currentColor}-400)` : `var(--maz-color-primary)`
+              currentColor ? `hsl(var(--maz-${currentColor}-400))` : `hsl(var(--maz-primary))`
             "
           />
           <stop
             offset="100%"
             :stop-color="
-              currentColor ? `var(--maz-color-${currentColor}-700)` : `var(--maz-color-secondary)`
+              currentColor ? `hsl(var(--maz-${currentColor}-700))` : `hsl(var(--maz-secondary))`
             "
           />
         </linearGradient>

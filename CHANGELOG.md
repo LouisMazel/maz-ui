@@ -195,7 +195,7 @@
 
 ### 🚀 Enhancements
 
-- **maz-ui:** Add new CSS variables - maz-bg-color-dark-dark, maz-bg-color-dark-darker, maz-bg-color-light-dark and maz-bg-color-dark-darker ([a6b653042](https://github.com/LouisMazel/maz-ui/commit/a6b653042))
+- **maz-ui:** Add new CSS variables - maz-bg-color-dark-dark, maz-bg-color-dark-darker, maz-bg-surface-400-dark and maz-bg-color-dark-darker ([a6b653042](https://github.com/LouisMazel/maz-ui/commit/a6b653042))
 - **docs:** Add new sections for populare and latest components and module ([5337d336d](https://github.com/LouisMazel/maz-ui/commit/5337d336d))
 - **maz-ui:** MazInput - add new options: topLabel (label above the input) and assistiveText (text below the input) ([9ac994c75](https://github.com/LouisMazel/maz-ui/commit/9ac994c75))
 - **maz-ui:** MazTextarea - add new prop options: padding (bool), transparent, border (bool), roundedSize. add slots: label and append (with appendJustify props) ([986dcf5d9](https://github.com/LouisMazel/maz-ui/commit/986dcf5d9))

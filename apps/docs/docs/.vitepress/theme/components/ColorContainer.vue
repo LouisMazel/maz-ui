@@ -9,7 +9,7 @@ defineProps<{
   <div
     class="color-container"
     :class="[`--${color}`]"
-    :style="`background-color: var(--maz-color-${color}); color: var(--maz-color-${color}-contrast);`"
+    :style="`background-color: hsl(var(--maz-${color})); color: hsl(var(--maz-${color}-foreground));`"
   >
     <span>
       {{ color }}: {{ hex }}

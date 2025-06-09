@@ -13,7 +13,7 @@ export default defineNuxtConfig({
     theme: {
       preset: 'mazUi',
       strategy: 'hybrid',
-      darkMode: 'class',
+      darkModeStrategy: 'class',
     },
     components: {
       autoImport: true,

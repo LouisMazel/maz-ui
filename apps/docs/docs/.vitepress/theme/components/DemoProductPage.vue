@@ -14,12 +14,12 @@ const price = ref(100)
         <MazGallery
           :images="[
             'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800',
-            'https://images.unsplash.com/photo-1583394838336-acd977736f90?w=800',
             'https://images.unsplash.com/photo-1487215078519-e21cc028cb29?w=800',
+            'https://images.unsplash.com/photo-1583394838336-acd977736f90?w=800',
             'https://images.unsplash.com/photo-1607294846590-fd005d7973e8?w=800',
           ]"
           :height="false"
-          :images-shown-count="4"
+          :displayed-count="2"
           class="maz-mb-6 maz-h-64"
         />
 
@@ -34,7 +34,7 @@ const price = ref(100)
         </div>
 
         <MazCard block :elevation="false" bordered>
-          <template #header>
+          <template #title>
             <h3 class="maz-text-lg maz-font-semibold">
               Technical Specs
             </h3>
@@ -64,7 +64,7 @@ const price = ref(100)
           169,99€
         </div>
 
-        <hr class="maz-my-4 maz-border-t maz-border-color-light">
+        <hr class="maz-my-4 maz-border-t maz-border-divider-400">
 
         <div>
           <h2 class="maz-mb-2 maz-text-xl maz-font-semibold">
@@ -87,8 +87,10 @@ const price = ref(100)
           <h2 class="maz-mb-2 maz-text-xl maz-font-semibold">
             Choose options
           </h2>
+
           <MazChecklist
             v-model="selectedTasks"
+            :search="false"
             :items="[
               { label: 'Active Noise Cancellation', value: 'anc' },
               { label: '40h Battery Life', value: 'battery' },
@@ -109,7 +111,7 @@ const price = ref(100)
             class="maz-flex-1"
           />
 
-          <MazBtn color="theme" outline class="maz-flex-1" right-icon="shopping-cart">
+          <MazBtn color="contrast" outline class="maz-flex-1" right-icon="shopping-cart">
             Make an offer
           </MazBtn>
         </div>
@@ -123,7 +125,7 @@ const price = ref(100)
             class="maz-flex-1"
           />
 
-          <MazBtn color="theme" class="maz-flex-1" right-icon="shopping-cart">
+          <MazBtn color="contrast" class="maz-flex-1" right-icon="shopping-cart">
             Add to Cart
           </MazBtn>
         </div>

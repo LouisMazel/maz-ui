@@ -1,4 +1,4 @@
-import { defineMazTailwindConfig } from './tailwindcss/tailwind.config'
+import { defineMazTailwindConfig } from './src/tailwindcss/tailwind.config'
 
 export default defineMazTailwindConfig({
   content: {

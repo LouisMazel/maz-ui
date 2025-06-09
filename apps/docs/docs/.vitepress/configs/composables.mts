@@ -12,7 +12,6 @@ export const composables = {
     { text: 'useLanguageDisplayNames', link: '/composables/use-language-display-names' },
     { text: 'useReadingTime', link: '/composables/use-reading-time' },
     { text: 'useStringMatching', link: '/composables/use-string-matching' },
-    { text: 'useThemeHandler', link: '/composables/use-theme-handler' },
     { text: 'useSwipe', link: '/composables/use-swipe' },
     { text: 'useTimer', link: '/composables/use-timer' },
     { text: 'useToast', link: '/composables/use-toast' },

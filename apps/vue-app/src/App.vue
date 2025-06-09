@@ -1,7 +1,7 @@
 <script setup lang="ts">
-const { autoSetTheme, setDarkTheme, setLightTheme } = useThemeHandler()
+import { useTheme } from '@maz-ui/themes'
 
-autoSetTheme()
+const { colorMode, setColorMode } = useTheme()
 </script>
 
 <template>
@@ -9,10 +9,10 @@ autoSetTheme()
     <nav class="maz-flex maz-items-center maz-gap-4 maz-p-4">
       <MazLink to="/"> Home </MazLink>
       <MazLink to="/about"> About </MazLink>
-      <MazLink @click="setDarkTheme"> Dark </MazLink>
-      <MazLink @click="setLightTheme"> Light </MazLink>
+      {{ colorMode }}
+      <MazLink @click="setColorMode('dark')"> Dark </MazLink>
+      <MazLink @click="setColorMode('light')"> Light </MazLink>
     </nav>
-
     <main>
       <RouterView />
     </main>

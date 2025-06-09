@@ -11,7 +11,7 @@ const props = withDefaults(defineProps<MazPullToRefreshProps>(), {
   onClick: undefined,
   containerSelector: undefined,
   headerClass: undefined,
-  spinnerColor: 'theme',
+  spinnerColor: 'contrast',
   disabled: false,
   standaloneMode: false,
 })

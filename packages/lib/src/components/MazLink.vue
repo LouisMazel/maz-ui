@@ -151,24 +151,20 @@ export interface MazLinkProps {
     @apply maz-text-warning-600 hover:maz-text-warning-800;
   }
 
-  &.--danger {
-    @apply maz-text-danger-600 hover:maz-text-danger-800;
+  &.--destructive {
+    @apply maz-text-destructive-600 hover:maz-text-destructive-800;
   }
 
   &.--success {
     @apply maz-text-success-600 hover:maz-text-success-800;
   }
 
-  &.--white {
-    @apply maz-text-white hover:maz-text-gray-300;
+  &.--accent {
+    @apply maz-text-accent-600 hover:maz-text-accent-800;
   }
 
-  &.--black {
-    @apply maz-text-black hover:maz-text-gray-800;
-  }
-
-  &.--theme {
-    @apply maz-text-normal hover:maz-text-black dark:hover:maz-text-white;
+  &.--contrast {
+    @apply maz-text-contrast-600 hover:maz-text-contrast-800;
   }
 }
 </style>

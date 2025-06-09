@@ -14,7 +14,7 @@ const showCode = ref(props.expanded)
 
 <template>
   <MazCard class="component-demo" block footer-align="left">
-    <template v-if="$slots.title || title" #header>
+    <template v-if="$slots.title || title" #title>
       <h3 class="vp-raw maz-text-lg maz-font-semibold">
         <slot name="title">
           {{ title }}
@@ -31,7 +31,7 @@ const showCode = ref(props.expanded)
     </template>
 
     <template v-if="$slots.code" #footer>
-      <button class="vp-raw maz-flex maz-w-full maz-items-center maz-justify-between maz-bg-color maz-p-3 maz-transition-all maz-duration-300 hover:maz-bg-color-light" @click="showCode = !showCode">
+      <button class="vp-raw maz-bg-color maz-flex maz-w-full maz-items-center maz-justify-between maz-p-3 maz-transition-all maz-duration-300 hover:maz-bg-surface-400" @click="showCode = !showCode">
         <span class="maz-flex maz-items-center maz-gap-2 maz-text-sm maz-text-primary">
           <MazCodeBracket />
           View code

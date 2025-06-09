@@ -50,6 +50,20 @@ const { currentPreset, colorMode, isDark, strategy, updateTheme, setColorMode, t
       />
     </div>
 
-    <MazBtn @click="showToast"> Show toast </MazBtn>
+    <MazBadge outline color="destructive">COUCOUCOUCOUC</MazBadge>
+
+    <MazBtn pastel color="contrast" @click="showToast"> Show toast contrast </MazBtn>
+    <MazBtn color="primary" @click="showToast"> Show toast primary </MazBtn>
+    <MazBtn color="secondary" @click="colorMode = 'dark'">
+      Set color mode to dark secondary
+    </MazBtn>
+    <MazBtn color="accent" @click="setColorMode('light')"> Set color mode to light accent </MazBtn>
+    <MazBtn color="destructive" @click="setColorMode('auto')">
+      Set color mode to auto destructive
+    </MazBtn>
+    <MazBtn disabled color="success" @click="toggleDarkMode"> Toggle dark mode success </MazBtn>
+    <MazBtn color="warning" @click="toggleDarkMode"> Toggle dark mode warning </MazBtn>
+    <MazBtn color="transparent" @click="toggleDarkMode"> Toggle dark mode transparent </MazBtn>
+    <MazBtn color="info" @click="toggleDarkMode"> Toggle dark mode info </MazBtn>
   </div>
 </template>

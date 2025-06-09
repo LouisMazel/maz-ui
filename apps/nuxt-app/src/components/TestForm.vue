@@ -150,7 +150,7 @@
       ref="dateRef"
       v-model="date"
       :hint="dateError"
-      color="theme"
+      color="contrast"
       :error="!!dateError"
       :success="isValidDate"
       picker-position="top"
