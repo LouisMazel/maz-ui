@@ -27,40 +27,40 @@ description: vClickOutside is a Vue 3 directive to trigger a function when the u
     You clicked outside
   </div>
 
-  <template #code>
+<template #code>
 
-  ```vue
-  <template>
-    <div
-      style="padding: 50px; background-color: hsl(var(--maz-background-300));"
-      class="flex flex-center rounded"
-    >
-      <MazCard v-click-outside="clikedOutside">
-        Click outside me
-      </MazCard>
-    </div>
+```vue
+<script lang="ts" setup>
+import { vClickOutside } from 'maz-ui/directives'
+import { ref } from 'vue'
 
-    <div
-      v-if="hasClikedOutside"
-      style="padding: 16px; margin-top: 16px; background-color: hsl(var(--maz-success)); color: black;"
-      class="flex flex-center rounded"
-    >
-      You clicked outside
-    </div>
-  </template>
+const hasClikedOutside = ref(false)
 
-  <script lang="ts" setup>
-    import { vClickOutside } from 'maz-ui/directives'
-    import { ref } from 'vue'
+function clikedOutside() {
+  hasClikedOutside.value = true
+  setTimeout(() => hasClikedOutside.value = false, 2000)
+}
+</script>
 
-    const hasClikedOutside = ref(false)
+<template>
+  <div
+    style="padding: 50px; background-color: hsl(var(--maz-background-300));"
+    class="flex flex-center rounded"
+  >
+    <MazCard v-click-outside="clikedOutside">
+      Click outside me
+    </MazCard>
+  </div>
 
-    const clikedOutside = () => {
-      hasClikedOutside.value = true
-      setTimeout(() => hasClikedOutside.value = false, 2000)
-    }
-  </script>
-  ```
+  <div
+    v-if="hasClikedOutside"
+    style="padding: 16px; margin-top: 16px; background-color: hsl(var(--maz-success)); color: black;"
+    class="flex flex-center rounded"
+  >
+    You clicked outside
+  </div>
+</template>
+```
 
   </template>
 </ComponentDemo>
@@ -70,8 +70,8 @@ description: vClickOutside is a Vue 3 directive to trigger a function when the u
 `main.ts`
 
 ```typescript
-import { createApp } from 'vue'
 import { vClickOutsideInstall } from 'maz-ui/directives'
+import { createApp } from 'vue'
 
 const app = createApp(App)
 

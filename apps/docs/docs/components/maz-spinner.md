@@ -12,13 +12,13 @@ description: MazSpinner is a standalone component that replaces the standard htm
 <MazSpinner />
 
 ```vue
+<script>
+import { MazSpinner } from 'maz-ui/components'
+</script>
+
 <template>
   <MazSpinner />
 </template>
-
-<script>
-  import { MazSpinner } from 'maz-ui/components'
-</script>
 ```
 
 ## Options
@@ -42,12 +42,19 @@ By default the color is `theme`
 
 ```vue
 <MazSpinner color="primary" />
+
 <MazSpinner color="secondary" />
+
 <MazSpinner color="destructive" />
+
 <MazSpinner color="warning" />
+
 <MazSpinner color="success" />
+
 <MazSpinner color="info" />
+
 <MazSpinner color="accent" />
+
 <MazSpinner color="contrast" />
 ```
 
@@ -69,11 +76,17 @@ The default size is `2em`
 
 ```vue
 <MazSpinner size="1em" />
+
 <MazSpinner size="2em" />
+
 <MazSpinner size="3em" />
+
 <MazSpinner size="4em" />
+
 <MazSpinner size="5em" />
+
 <MazSpinner size="6em" />
+
 <MazSpinner size="7em" />
 ```
 

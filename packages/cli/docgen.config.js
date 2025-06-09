@@ -15,8 +15,6 @@ export default defineConfig({
   getDestFile: (filename, config) => {
     const filenameKebab = filename.replaceAll(/([\da-z])([A-Z])/g, '$1-$2').toLowerCase()
 
-    console.log(filenameKebab)
-
     return join(config.outDir, filenameKebab).replace(/\.vue$/, '.doc.md')
   },
   templates: {

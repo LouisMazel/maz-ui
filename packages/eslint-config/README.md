@@ -57,12 +57,12 @@ export default defineConfig({
 
 ```typescript
 interface MazESLintOptions {
-  typescript?: boolean        // TypeScript support (default: true)
-  tailwindcss?: boolean      // Tailwind CSS rules (default: true)
-  sonarjs?: boolean          // SonarJS rules (default: true)
-  formatters?: boolean       // Formatters support (default: true)
-  env?: 'development' | 'production'  // Environment (default: 'development')
-  ignores?: string[]         // Files to ignore
+  typescript?: boolean // TypeScript support (default: true)
+  tailwindcss?: boolean // Tailwind CSS rules (default: true)
+  sonarjs?: boolean // SonarJS rules (default: true)
+  formatters?: boolean // Formatters support (default: true)
+  env?: 'development' | 'production' // Environment (default: 'development')
+  ignores?: string[] // Files to ignore
   rules?: Record<string, any> // Custom ESLint rules
 }
 ```

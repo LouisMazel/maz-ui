@@ -31,5 +31,5 @@ const {
 ```
 
 ::: warning
-  More documentation to come
+More documentation to come
 :::

@@ -19,6 +19,17 @@ description: The module number is a function that formats numbers
 </div>
 
 ```vue
+<script lang="ts" setup>
+import { number } from 'maz-ui'
+import { computed, ref } from 'vue'
+
+const numberValue = ref(69)
+
+const numberFormatted = computed(() =>
+  number(numberValue.value, 'en-US'),
+)
+</script>
+
 <template>
   <MazInput v-model="numberValue" type="number" />
 
@@ -28,17 +39,6 @@ description: The module number is a function that formats numbers
     {{ numberFormatted }}
   </div>
 </template>
-
-<script lang="ts" setup>
-  import { number } from 'maz-ui'
-  import { ref, computed } from 'vue'
-
-  const numberValue = ref(69)
-
-  const numberFormatted = computed(() =>
-    number(numberValue.value, 'en-US'),
-  )
-</script>
 ```
 
 ## Options

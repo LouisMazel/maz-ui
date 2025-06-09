@@ -18,17 +18,17 @@ More info about the [aos plugin](./../plugins/aos.md) can be found in its docume
 ## Usage
 
 ```vue
-<template>
-  <img data-maz-aos="scale-in" />
-</template>
-
 <script lang="ts" setup>
-  import { useAos } from 'maz-ui'
+import { useAos } from 'maz-ui'
 
-  const aos = useAos()
+const aos = useAos()
 
-  onMounted(() => {
-    aos.runAnimations()
-  })
+onMounted(() => {
+  aos.runAnimations()
+})
 </script>
+
+<template>
+  <img data-maz-aos="scale-in">
+</template>
 ```

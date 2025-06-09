@@ -23,26 +23,27 @@ description: MazExpandAnimation is a standalone component that allows you to ani
     </div>
   </MazExpandAnimation>
 
-  <template #code>
+<template #code>
 
-  ```vue
-  <template>
-    <MazBtn @click="visible = !visible"> Exec animation </MazBtn>
+```vue
+<script lang="ts" setup>
+import { MazExpandAnimation } from 'maz-ui/components'
+import { ref } from 'vue'
 
-    <MazExpandAnimation v-model="visible">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-    </MazExpandAnimation>
+const visible = ref(false)
+</script>
 
-  </template>
+<template>
+  <MazBtn @click="visible = !visible">
+    Exec animation
+  </MazBtn>
 
-  <script lang="ts" setup>
-    import { MazExpandAnimation } from 'maz-ui/components'
-    import { ref } from 'vue'
-
-    const visible = ref(false)
-  </script>
-  ```
+  <MazExpandAnimation v-model="visible">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+  </MazExpandAnimation>
+</template>
+```
 
   </template>
 </ComponentDemo>
@@ -64,26 +65,27 @@ description: MazExpandAnimation is a standalone component that allows you to ani
     </div>
   </MazExpandAnimation>
 
-  <template #code>
+<template #code>
 
-  ```vue
-  <template>
-    <MazBtn @click="visible = !visible"> Exec animation </MazBtn>
+```vue
+<script lang="ts" setup>
+import { MazExpandAnimation } from 'maz-ui/components'
+import { ref } from 'vue'
 
-    <MazExpandAnimation v-model="visible" duration="1000ms" timing-function="linear">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-    </MazExpandAnimation>
+const visible = ref(false)
+</script>
 
-  </template>
+<template>
+  <MazBtn @click="visible = !visible">
+    Exec animation
+  </MazBtn>
 
-  <script lang="ts" setup>
-    import { MazExpandAnimation } from 'maz-ui/components'
-    import { ref } from 'vue'
-
-    const visible = ref(false)
-  </script>
-  ```
+  <MazExpandAnimation v-model="visible" duration="1000ms" timing-function="linear">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+  </MazExpandAnimation>
+</template>
+```
 
   </template>
 </ComponentDemo>

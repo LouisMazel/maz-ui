@@ -26,22 +26,22 @@ description: vZoomImg is a Vue 3 directive to enlarge an image like a modal on c
 </MazBtn>
 
 ```vue
+<script lang="ts" setup>
+import { vZoomImg } from 'maz-ui/directives'
+</script>
+
 <template>
   <MazCard overflow-hidden>
     <img
-      src="https://loremflickr.com/1500/1000"
       v-zoom-img="{ src: 'https://loremflickr.com/1500/1000' }"
-    />
+      src="https://loremflickr.com/1500/1000"
+    >
   </MazCard>
 
   <MazBtn v-zoom-img="{ src: 'https://loremflickr.com/1000/500' }">
     Show photo
   </MazBtn>
 </template>
-
-<script lang="ts" setup>
-  import { vZoomImg } from 'maz-ui/directives'
-</script>
 ```
 
 ## Options
@@ -68,26 +68,26 @@ description: vZoomImg is a Vue 3 directive to enlarge an image like a modal on c
 </script>
 
 ```vue
+<script lang="ts" setup>
+import { vZoomImg, type vZoomImgBindingValue } from 'maz-ui/directives'
+
+const zoomImgBinding: vZoomImgBindingValue = {
+  src: 'https://loremflickr.com/1200/800',
+  alt: 'alt image', // will be set on the zoomed image
+  blur: false,
+  scale: false,
+  disabled: false
+}
+</script>
+
 <template>
   <MazCard overflow-hidden>
     <img
-      src="https://loremflickr.com/1200/800"
       v-zoom-img="zoomImgBinding"
-    />
+      src="https://loremflickr.com/1200/800"
+    >
   </MazCard>
 </template>
-
-<script lang="ts" setup>
-  import { vZoomImg, type vZoomImgBindingValue } from 'maz-ui/directives'
-
-  const zoomImgBinding: vZoomImgBindingValue = {
-    src: 'https://loremflickr.com/1200/800',
-    alt: 'alt image', // will be set on the zoomed image
-    blur: false,
-    scale: false,
-    disabled: false
-  }
-</script>
 ```
 
 ## Global install
@@ -95,8 +95,8 @@ description: vZoomImg is a Vue 3 directive to enlarge an image like a modal on c
 `main.ts`
 
 ```typescript
-import { createApp } from 'vue'
 import { vZoomImgInstall, type vZoomImgOptions } from 'maz-ui/directives'
+import { createApp } from 'vue'
 
 const app = createApp(App)
 

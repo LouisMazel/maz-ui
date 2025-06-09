@@ -5,6 +5,7 @@ The library includes **300+ carefully**
 ## Icon Naming Convention
 
 All icons follow a consistent naming pattern:
+
 - Vue components: `Maz` + PascalCase (e.g., `MazUserCircle`)
 - SVG files: kebab-case (e.g., `user-circle.svg`)
 

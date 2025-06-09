@@ -14,17 +14,19 @@ description: MazLink is a standalone component
 <ComponentDemo>
   <MazLink href="https://maz-ui.com" target="_blank"> View product detail </MazLink>
 
-  <template #code>
+<template #code>
 
-  ```vue
-  <template>
-    <MazLink href="https://maz-ui.com" target="_blank"> View product detail </MazLink>
-  </template>
+```vue
+<script lang="ts" setup>
+import { MazLink } from 'maz-ui/components'
+</script>
 
-  <script lang="ts" setup>
-    import { MazLink } from 'maz-ui/components'
-  </script>
-  ```
+<template>
+  <MazLink href="https://maz-ui.com" target="_blank">
+    View product detail
+  </MazLink>
+</template>
+```
 
   </template>
 </ComponentDemo>
@@ -43,18 +45,18 @@ description: MazLink is a standalone component
     <MazLink color="contrast"> View product detail </MazLink>
   </div>
 
-  <template #code>
+<template #code>
 
-  ```html
-  <MazLink color="primary"> View product detail </MazLink>
-  <MazLink color="secondary"> View product detail </MazLink>
-  <MazLink color="info"> View product detail </MazLink>
-  <MazLink color="success"> View product detail </MazLink>
-  <MazLink color="warning"> View product detail </MazLink>
-  <MazLink color="destructive"> View product detail </MazLink>
-  <MazLink color="accent"> View product detail </MazLink>
-  <MazLink color="contrast"> View product detail </MazLink>
-  ```
+```html
+<MazLink color="primary"> View product detail </MazLink>
+<MazLink color="secondary"> View product detail </MazLink>
+<MazLink color="info"> View product detail </MazLink>
+<MazLink color="success"> View product detail </MazLink>
+<MazLink color="warning"> View product detail </MazLink>
+<MazLink color="destructive"> View product detail </MazLink>
+<MazLink color="accent"> View product detail </MazLink>
+<MazLink color="contrast"> View product detail </MazLink>
+```
 
   </template>
 </ComponentDemo>
@@ -66,11 +68,11 @@ When you use the `to` prop, the component will be a `router-link` and will use t
 <ComponentDemo>
   <MazLink :to="{ path: '/' }"> View product detail </MazLink>
 
-  <template #code>
+<template #code>
 
-  ```html
-  <MazLink :to="{ path: '/' }"> View product detail </MazLink>
-  ```
+```html
+<MazLink :to="{ path: '/' }"> View product detail </MazLink>
+```
 
   </template>
 </ComponentDemo>
@@ -84,19 +86,19 @@ For more information about the icons, please check the [MazBtn](./maz-btn.md#ico
 <ComponentDemo>
   <MazLink left-icon="home" :right-icon="MazCheck"> View product detail </MazLink>
 
-  <template #code>
+<template #code>
 
-  ```vue
-  <template>
-    <MazLink left-icon="home" :right-icon="MazHome">
-      View product detail
-    </MazLink>
-  </template>
+```vue
+<script lang="ts" setup>
+import { MazCheck, MazHome } from '@maz-ui/icons'
+</script>
 
-  <script lang="ts" setup>
-    import { MazCheck, MazHome } from '@maz-ui/icons'
-  </script>
-  ```
+<template>
+  <MazLink left-icon="home" :right-icon="MazHome">
+    View product detail
+  </MazLink>
+</template>
+```
 
   </template>
 </ComponentDemo>
@@ -108,13 +110,11 @@ When you use the `autoExternal` prop, the component will have an external icon i
 <ComponentDemo>
   <MazLink href="https://loicmazuel.com" target="_blank" auto-external> View product detail </MazLink>
 
-  <template #code>
+<template #code>
 
-  ```html
-  <MazLink href="https://loicmazuel.com" target="_blank" auto-external>
-    View product detail
-  </MazLink>
-  ```
+```html
+<MazLink href="https://loicmazuel.com" target="_blank" auto-external> View product detail </MazLink>
+```
 
   </template>
 </ComponentDemo>

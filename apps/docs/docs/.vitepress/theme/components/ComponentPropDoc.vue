@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-/* eslint-disable sonarjs/no-nested-conditional */
 import { onBeforeMount, ref, watch } from 'vue'
 
 const { component, componentInstance, methods } = defineProps<{

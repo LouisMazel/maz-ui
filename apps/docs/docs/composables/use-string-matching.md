@@ -22,31 +22,31 @@ description: Efficient composable for string matching tasks, utilizing Levenshte
     <b>score:</b> {{ score }}
   </p>
 
-  <template #code>
+<template #code>
 
-  ```vue
-  <template>
-    <MazInput v-model="string1" label="Enter first string" />
-    <MazInput v-model="string2" label="Enter second string" />
+```vue
+<script lang="ts" setup>
+import { useStringMatching } from 'maz-ui/composables'
+import { ref } from 'vue'
 
-    <p>
-      <b>isMatching:</b> {{ isMatching }}
-    </p>
-    <p>
-      <b>score:</b> {{ score }}
-    </p>
-  </template>
+const string1 = ref<string>('maz-ui')
+const string2 = ref<string>('màéz-uiok')
 
-  <script lang="ts" setup>
-    import { ref } from 'vue'
-    import { useStringMatching } from 'maz-ui/composables'
+const { score, isMatching } = useStringMatching(string1, string2)
+</script>
 
-    const string1 = ref<string>('maz-ui')
-    const string2 = ref<string>('màéz-uiok')
+<template>
+  <MazInput v-model="string1" label="Enter first string" />
+  <MazInput v-model="string2" label="Enter second string" />
 
-    const { score, isMatching } = useStringMatching(string1, string2)
-  </script>
-  ```
+  <p>
+    <b>isMatching:</b> {{ isMatching }}
+  </p>
+  <p>
+    <b>score:</b> {{ score }}
+  </p>
+</template>
+```
 
   </template>
 

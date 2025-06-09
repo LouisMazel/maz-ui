@@ -95,14 +95,14 @@ This plugin uses the browser native [Intersection Observer API](https://develope
 
 ## Atributes
 
-| Attribute | Description | Example value | Default value |
-|---------------------------|-------------|---------------|---------|
-| data-maz-aos | animation name | fade-up | - |
-| data-maz-aos-duration | *Duration of animation (ms) | 50 to 3000 (with step of 50) | 300 |
-| data-maz-aos-easing | Choose timing function to ease elements in different ways | ease-in-sine | linear |
-| data-maz-aos-delay | Delay animation (ms) | 50 to 3000 (with step of 50) | 0 |
-| data-maz-aos-anchor | Anchor element, whose offset will be counted to trigger animation instead of actual elements offset. ONLY with ID attribute | #selector | undefined |
-| data-maz-aos-once | Choose wheter animation should fire once, or every time you scroll up/down to element | true | false |
+| Attribute             | Description                                                                                                                 | Example value                | Default value |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------------------------- | ------------- |
+| data-maz-aos          | animation name                                                                                                              | fade-up                      | -             |
+| data-maz-aos-duration | \*Duration of animation (ms)                                                                                                | 50 to 3000 (with step of 50) | 300           |
+| data-maz-aos-easing   | Choose timing function to ease elements in different ways                                                                   | ease-in-sine                 | linear        |
+| data-maz-aos-delay    | Delay animation (ms)                                                                                                        | 50 to 3000 (with step of 50) | 0             |
+| data-maz-aos-anchor   | Anchor element, whose offset will be counted to trigger animation instead of actual elements offset. ONLY with ID attribute | #selector                    | undefined     |
+| data-maz-aos-once     | Choose wheter animation should fire once, or every time you scroll up/down to element                                       | true                         | false         |
 
 ## Animations
 
@@ -186,8 +186,8 @@ You can choose one of these timing function to animate elements nicely:
 `main.ts` or `main.js`
 
 ```ts
+import { AosOptions, installAos } from 'maz-ui/plugins'
 import { createApp, useRouter } from 'vue'
-import { installAos, AosOptions } from 'maz-ui/plugins'
 
 // ⚠️ import necessary CSS file ⚠️
 import 'maz-ui/aos-styles' // or import 'maz-ui/css/aos.css'
@@ -221,21 +221,16 @@ Should be executed on client side
 `nuxt.config.(ts|js)`
 
 ```ts
-export default {
-  // optional (nuxt will automatically install plugins in `plugins` folder)
-  plugins: [
-    { '@/plugins/maz-aos.client.ts', mode: 'client' } // ⚠️
-  ],
-  css: [
-    'maz-ui/aos-styles' // or 'maz-ui/css/aos.css'
-  ],
-}
+export default defineNuxtConfig({
+  plugins: [{ src: '@/plugins/maz-aos.client.ts', mode: 'client' }], // optional (nuxt will automatically install plugins in `plugins` folder)
+  css: ['maz-ui/aos-styles'],
+})
 ```
 
 `plugins/maz-aos.client.ts`
 
 ```ts
-import { installAos, AosOptions } from 'maz-ui/plugins'
+import { AosOptions, installAos } from 'maz-ui/plugins'
 
 export default ({ vueApp, $router: router }) => {
   const options: AosOptions = {
@@ -256,8 +251,20 @@ export default ({ vueApp, $router: router }) => {
 You can run animations programatically with the composable
 
 ```vue
+<script lang="ts" setup>
+import { useAos } from 'maz-ui/composables'
+import { onMounted } from 'vue'
+
+const aos = useAos()
+
+onMounted(() => {
+  // should be run on client side
+  aos.runAnimations()
+})
+</script>
+
 <template>
-  <div data-maz-aos="scale-out" id="parentCard">
+  <div id="parentCard" data-maz-aos="scale-out">
     <p
       data-maz-aos-delay="300"
       data-maz-aos="scale-in"
@@ -268,18 +275,6 @@ You can run animations programatically with the composable
     </p>
   </div>
 </template>
-
-<script lang="ts" setup>
-  import { onMounted } from 'vue'
-  import { useAos } from 'maz-ui/composables'
-
-  const aos = useAos()
-
-  onMounted(() => {
-    // should be run on client side
-    aos.runAnimations()
-  })
-</script>
 ```
 
 ## Global Options

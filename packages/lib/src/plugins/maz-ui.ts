@@ -1,5 +1,5 @@
 import type { BaseThemePreset, ColorMode, DarkMode, ThemeConfig, ThemeState } from '@maz-ui/themes/src/types/index.ts'
-import type { App, InjectionKey } from 'vue'
+import type { App } from 'vue'
 import {
   generateCriticalCSS,
   generateFullCSS,
@@ -142,7 +142,8 @@ export const MazUiPlugin = {
 
     try {
       app.config.globalProperties.$mazThemeState = themeState
-    } catch (error) {
+    }
+    catch {
       app.config.globalProperties._mazThemeState = themeState
     }
   },

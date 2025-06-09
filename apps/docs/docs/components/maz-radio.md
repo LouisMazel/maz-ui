@@ -11,7 +11,7 @@ description: MazRadio is a standalone component
 
 ## Basic usage
 
-```v-model="{{chosenColor ?? 'undefined'}}"```
+`v-model="{{chosenColor ?? 'undefined'}}"`
 
 <div class="maz-flex maz-flex-col maz-gap-2">
   <MazRadio
@@ -29,44 +29,44 @@ description: MazRadio is a standalone component
 ::: details View code
 
 ```vue
+<script lang="ts" setup>
+import { MazRadio } from 'maz-ui/components'
+import { ref } from 'vue'
+
+const chosenColor = ref('primary')
+const chosenSize = ref('mini')
+
+const colors: Color[] = [
+  'primary',
+  'secondary',
+  'info',
+  'success',
+  'warning',
+  'destructive',
+  'accent',
+  'contrast',
+]
+</script>
+
 <template>
   <MazRadio
     v-for="color in colors"
+    :key="color"
     v-model="chosenColor"
     name="chosenColor"
     :color="color"
-    :key="color"
     :value="color"
   >
     {{ color }}
   </MazRadio>
 </template>
-
-<script lang="ts" setup>
-  import { ref } from 'vue'
-  import { MazRadio } from 'maz-ui/components'
-
-  const chosenColor = ref('primary')
-  const chosenSize = ref('mini')
-
-  const colors: Color[] = [
-    'primary',
-    'secondary',
-    'info',
-    'success',
-    'warning',
-    'destructive',
-    'accent',
-    'contrast',
-  ]
-</script>
 ```
 
 :::
 
 ## Sizing
 
-```v-model="{{chosenSize ?? 'undefined'}}"```
+`v-model="{{chosenSize ?? 'undefined'}}"`
 
 <div class="maz-flex maz-flex-col maz-gap-2">
   <MazRadio
@@ -83,26 +83,26 @@ description: MazRadio is a standalone component
 ::: details View code
 
 ```vue
+<script lang="ts" setup>
+import { MazRadio, type Size } from 'maz-ui/components'
+import { ref } from 'vue'
+
+const chosenSize = ref('mini')
+
+const sizes: Size[] = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
+</script>
+
 <template>
   <MazRadio
     v-for="size in sizes"
+    :key="size"
     v-model="chosenSize"
     name="chosenSize"
-    :key="size"
     :size="size"
     :value="size"
     :label="size"
   />
 </template>
-
-<script lang="ts" setup>
-  import { ref } from 'vue'
-  import { MazRadio, type Size } from 'maz-ui/components'
-
-  const chosenSize = ref('mini')
-
-  const sizes: Size[] = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
-</script>
 ```
 
 :::

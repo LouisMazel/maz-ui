@@ -13,7 +13,7 @@
     "esModuleInterop": true,
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
-    "skipLibCheck": true,
+    "skipLibCheck": true
   },
   "vueCompilerOptions": {
     "checkUnknownComponents": true

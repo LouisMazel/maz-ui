@@ -170,10 +170,10 @@ This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop
     </div>
   </MazBottomSheet>
 
-  <template #code>
+<template #code>
 
-  ```vue
-  <template>
+```vue
+<template>
   <div class="maz-flex maz-flex-col maz-gap-4">
     <!-- Product Card -->
     <MazCard class="maz-p-6">
@@ -181,8 +181,12 @@ This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop
         <div class="maz-flex maz-items-center maz-gap-3">
           <MazAvatar src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=100" size="lg" />
           <div>
-            <h3 class="maz-text-lg maz-font-semibold">Nike Air Max</h3>
-            <p class="maz-text-muted maz-text-sm">Premium Running Shoes</p>
+            <h3 class="maz-text-lg maz-font-semibold">
+              Nike Air Max
+            </h3>
+            <p class="maz-text-sm maz-text-muted">
+              Premium Running Shoes
+            </p>
           </div>
         </div>
       </template>
@@ -210,7 +214,9 @@ This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop
     <div class="maz-space-y-6 maz-p-6">
       <!-- Size Selection -->
       <div>
-        <h4 class="maz-text-lg maz-font-semibold maz-mb-3">Select Size</h4>
+        <h4 class="maz-mb-3 maz-text-lg maz-font-semibold">
+          Select Size
+        </h4>
         <div class="maz-grid maz-grid-cols-4 maz-gap-2">
           <MazBtn
             v-for="size in sizes"
@@ -226,17 +232,19 @@ This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop
 
       <!-- Color Selection with Visual Swatches -->
       <div>
-        <h4 class="maz-text-lg maz-font-semibold maz-mb-3">Select Color</h4>
+        <h4 class="maz-mb-3 maz-text-lg maz-font-semibold">
+          Select Color
+        </h4>
         <div class="maz-grid maz-grid-cols-3 maz-gap-3">
           <div
             v-for="color in colors"
             :key="color.name"
-            class="maz-flex maz-flex-col maz-items-center maz-cursor-pointer maz-p-3 maz-rounded-lg maz-border-2"
+            class="maz-flex maz-cursor-pointer maz-flex-col maz-items-center maz-rounded-lg maz-border-2 maz-p-3"
             :class="selectedOptions.color === color.name ? 'maz-border-primary' : 'maz-border-border'"
             @click="selectedOptions.color = color.name"
           >
             <div
-              class="maz-w-8 maz-h-8 maz-rounded-full maz-mb-2"
+              class="maz-mb-2 maz-size-8 maz-rounded-full"
               :style="{ backgroundColor: color.value }"
             />
             <span class="maz-text-sm">{{ color.name }}</span>
@@ -263,8 +271,8 @@ This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop
       </div>
     </div>
   </MazBottomSheet>
-  </template>
-  ```
+</template>
+```
 
   </template>
 </ComponentDemo>
