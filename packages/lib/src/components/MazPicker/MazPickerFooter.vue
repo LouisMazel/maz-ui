@@ -21,7 +21,7 @@ defineEmits(['close'])
 
 <style lang="postcss" scoped>
   .maz-picker-footer {
-  @apply maz-flex maz-justify-end maz-space-x-1 maz-border-t maz-border-divider-400 maz-bg-surface maz-p-2;
+  @apply maz-flex maz-justify-end maz-space-x-1 maz-border-t maz-border-divider maz-bg-surface maz-p-2;
 
   & .icon {
     @apply maz-mx-2;

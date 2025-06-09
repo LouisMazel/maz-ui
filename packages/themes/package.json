@@ -54,7 +54,8 @@
     "./build/*": {
       "types": "./dist/types/build/*.d.ts",
       "import": "./dist/build/*.mjs"
-    }
+    },
+    "./*": "./*"
   },
   "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",

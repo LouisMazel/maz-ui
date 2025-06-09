@@ -251,7 +251,7 @@ function handleImageError(event: Event) {
     }
 
     &.--bordered {
-      @apply maz-border maz-border-solid maz-border-divider-400;
+      @apply maz-border maz-border-solid maz-border-divider;
     }
 
     &.--rounded {

@@ -386,7 +386,7 @@ function isLastStep(step: number): boolean {
     }
 
     &:not(.--no-border) {
-      @apply maz-border-divider-400;
+      @apply maz-border-divider;
     }
   }
 }

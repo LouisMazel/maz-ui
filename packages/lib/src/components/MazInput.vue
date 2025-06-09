@@ -545,7 +545,7 @@ const stateColor = computed(() => {
     }
 
     &.--default-border {
-      @apply maz-border-divider dark:maz-border-divider-400;
+      @apply maz-border-divider dark:maz-border-divider;
     }
 
     &-input {

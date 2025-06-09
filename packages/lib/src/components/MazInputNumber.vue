@@ -222,7 +222,6 @@ function decrement() {
       &:last-child {
         @apply maz-border maz-border-divider;
         @apply maz-px-3 maz-py-0;
-        @apply dark:maz-border-divider-400;
       }
 
       &:first-child {

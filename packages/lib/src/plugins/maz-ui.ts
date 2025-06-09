@@ -1,12 +1,10 @@
-import type { BaseThemePreset, ColorMode, DarkMode, ThemeConfig, ThemeState } from '@maz-ui/themes'
+import type { BaseThemePreset, ColorMode, DarkMode, ThemeConfig, ThemeState } from '@maz-ui/themes/src/types/index.ts'
 import type { App, InjectionKey } from 'vue'
 import {
   generateCriticalCSS,
   generateFullCSS,
   injectCSS,
-} from '@maz-ui/themes/utils'
-
-export const mazThemeInjectionKey: InjectionKey<ThemeState> = Symbol('mazTheme')
+} from '@maz-ui/themes/src/utils/css-generator.ts'
 
 export interface MazThemePluginOptions extends ThemeConfig {
   prefix?: string
@@ -94,7 +92,7 @@ function injectThemeCSS(finalPreset: BaseThemePreset, config: MazThemePluginOpti
  */
 export const MazUiPlugin = {
   async install(app: App, options: MazThemePluginOptions = {}) {
-    const { mazUi } = await import('@maz-ui/themes/presets/mazUi')
+    const { mazUi } = await import('@maz-ui/themes/src/presets/mazUi.ts')
 
     const config = {
       preset: mazUi,
@@ -140,7 +138,7 @@ export const MazUiPlugin = {
       darkModeStrategy: config.darkModeStrategy,
     }
 
-    app.provide(mazThemeInjectionKey, themeState)
+    app.provide('mazThemeState', themeState)
 
     try {
       app.config.globalProperties.$mazThemeState = themeState

@@ -329,7 +329,7 @@ async function selectTime(identifier: ColumnIdentifier, value: TimeValue) {
   }
 
   &.--has-date {
-    @apply maz-border-l maz-border-divider-400;
+    @apply maz-border-l maz-border-divider;
   }
 
   &::before {
@@ -337,7 +337,7 @@ async function selectTime(identifier: ColumnIdentifier, value: TimeValue) {
     transform: translateY(-50%);
 
     @apply maz-absolute maz-left-0 maz-right-0 maz-top-1/2
-        maz-mx-auto maz-h-9 maz-border-b maz-border-t maz-border-divider-400;
+        maz-mx-auto maz-h-9 maz-border-b maz-border-t maz-border-divider;
   }
 
   &__column {
