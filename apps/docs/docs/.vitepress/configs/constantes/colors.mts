@@ -4,7 +4,7 @@ export const colors = {
   info: { name: 'info', hex: '#17a2b8' },
   success: { name: 'success', hex: '#9acd32' },
   warning: { name: 'warning', hex: '#fcb731' },
-  danger: { name: 'danger', hex: '#ff6d6a' },
-  white: { name: 'white', hex: '#fff' },
-  black: { name: 'black', hex: '#000' },
+  destructive: { name: 'destructive', hex: '#ff6d6a' },
+  contrast: { name: 'contrast', hex: '#fff' },
+  accent: { name: 'accent', hex: '#000' },
 }

@@ -89,7 +89,7 @@ describe('components/MazTextarea.vue', () => {
     await wrapper.setProps({
       error: true,
     })
-    expect(wrapper.vm.borderStyle).toBe('maz-border-danger')
+    expect(wrapper.vm.borderStyle).toBe('maz-border-destructive')
     await wrapper.setProps({
       error: false,
       warning: true,

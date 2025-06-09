@@ -114,7 +114,7 @@ You can also provide all your data, the table is auto-generated and you can use 
 ---
 
 <ComponentDemo>
-<div class="maz-bg-color-light maz-rounded maz-p-2">
+<div class="maz-bg-surface-400 maz-rounded maz-p-2">
 
 v-model="{{selectedIds ?? 'undefined'}}"
 
@@ -164,7 +164,7 @@ v-model:page-size="{{pageSize ?? 'undefined'}}"
   </template>
 
   <template #actions>
-    <MazBtn fab size="xs" color="danger" icon="trash" />
+    <MazBtn fab size="xs" color="destructive" icon="trash" />
   </template>
 </MazTable>
 
@@ -209,7 +209,7 @@ v-model:page-size="{{pageSize ?? 'undefined'}}"
       </template>
 
       <template #actions>
-        <MazBtn fab size="xs" color="danger" icon="trash" />
+        <MazBtn fab size="xs" color="destructive" icon="trash" />
       </template>
     </MazTable>
   </template>

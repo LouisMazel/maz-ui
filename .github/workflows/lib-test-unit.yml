@@ -32,7 +32,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install modules
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile --ignore-scripts && pnpm store prune
 
       - name: Test & Publish Code Coverage
         uses: paambaati/codeclimate-action@v3.2.0

@@ -37,15 +37,13 @@ export default defineNuxtConfig({
       injectCss: true,
     },
     injectUseToast: true,
-    injectUseThemeHandler: true,
     devtools: true,
   },
-  ...
   // You can also use the public runtime config
   runtimeConfig: {
     public: {
       mazUi: {
-        ...
+        injectUseTheme: true,
       }
     }
   }
@@ -57,23 +55,20 @@ export default defineNuxtConfig({
 The components, plugins and tools are auto-imported
 
 ```vue
+<script lang="ts" setup>
+const toast = useToast()
+const { setColorMode } = useTheme()
+
+toast.show('Success message')
+
+setColorMode('light')
+</script>
+
 <template>
   <MazBtn @click="toggleTheme">
     Button auto-imported
   </MazBtn>
 </template>
-
-<script lang="ts" setup>
-  const toast = useToast()
-  const {
-    autoSetTheme,
-    toggleTheme,
-  } = useThemeHandler()
-
-  toast.show('Success message')
-
-  autoSetTheme()
-</script>
 ```
 
 ## Module Options
@@ -99,17 +94,17 @@ export interface MazUiNuxtOptions {
   injectAos?:
     | boolean
     | (Omit<AosOptions, 'router'> & {
-        /**
-         * Auto inject aos CSS file
-         * @default true
-         */
-        injectCss?: boolean
-        /**
-         * Set `true` to re-run animations on page change
-         * @default false
-         */
-        router?: boolean
-      })
+      /**
+       * Auto inject aos CSS file
+       * @default true
+       */
+      injectCss?: boolean
+      /**
+       * Set `true` to re-run animations on page change
+       * @default false
+       */
+      router?: boolean
+    })
   /**
    * Install toaster plugin and enable auto-import of useToast composable
    * @default true
@@ -121,10 +116,10 @@ export interface MazUiNuxtOptions {
    */
   injectUseWait?: boolean
   /**
-   * Enable auto-import of useThemeHandler composable
+   * Enable auto-import of useTheme composable (useTheme is a composable from @maz-ui/themes)
    * @default true
    */
-  injectUseThemeHandler?: boolean | ThemeHandlerOptions
+  injectUseTheme?: boolean
   /**
    * Enable auto-import of useIdleTimeout composable
    * @default true

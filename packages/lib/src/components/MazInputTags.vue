@@ -101,7 +101,7 @@ function addTags(event: Event) {
 // eslint-disable-next-line sonarjs/cognitive-complexity
 const borderStyle = computed(() => {
   if (props.error)
-    return 'maz-border-danger'
+    return 'maz-border-destructive'
   if (props.success)
     return 'maz-border-success'
   if (props.warning)
@@ -114,19 +114,15 @@ const borderStyle = computed(() => {
       return 'maz-border-secondary'
     if (props.color === 'info')
       return 'maz-border-info'
-    if (props.color === 'danger')
-      return 'maz-border-danger'
+    if (props.color === 'destructive')
+      return 'maz-border-destructive'
     if (props.color === 'success')
       return 'maz-border-success'
     if (props.color === 'warning')
       return 'maz-border-warning'
-    if (props.color === 'black')
-      return 'maz-border-black'
-    if (props.color === 'white')
-      return 'maz-border-white'
   }
 
-  return 'maz-border-border dark:maz-border-color-lighter'
+  return 'maz-border-divider dark:maz-border-divider-400'
 })
 
 function removeLastTag() {
@@ -185,7 +181,7 @@ const buttonSize = computed(() => {
           class="m-input-tags__tag"
           :disabled
           :size="buttonSize"
-          :color="tagsHoveredId === id || lastIdToDelete === id ? 'danger' : color"
+          :color="tagsHoveredId === id || lastIdToDelete === id ? 'destructive' : color"
           :right-icon="tagsHoveredId === id || lastIdToDelete === id ? MazTrash : undefined"
           @click.stop="removeTag(id)"
           @mouseenter="tagsHoveredId = id"
@@ -226,7 +222,7 @@ const buttonSize = computed(() => {
 <style lang="postcss" scoped>
 .m-input-tags {
   @apply maz-relative maz-inline-flex maz-flex-wrap maz-gap-1
-      maz-overflow-hidden maz-rounded maz-border maz-bg-color maz-px-[0.5em] maz-py-[0.25em] maz-align-top maz-transition-colors maz-duration-200 maz-ease-in-out dark:maz-bg-color-light;
+      maz-overflow-hidden maz-rounded maz-border maz-bg-surface maz-px-[0.5em] maz-py-[0.25em] maz-align-top maz-transition-colors maz-duration-200 maz-ease-in-out dark:maz-bg-surface-400;
 
   &.--xl {
     @apply maz-min-h-16;

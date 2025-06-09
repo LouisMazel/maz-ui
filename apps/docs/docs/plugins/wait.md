@@ -18,7 +18,7 @@ This plugin has a composable for easier use, after installing it you can use [us
 </MazBtn>
 <br />
 
-<div v-if="submitted" style="padding: 20px; background-color: var(--maz-color-bg-light); border-radius: 10px; margin-top: 1rem;">
+<div v-if="submitted" style="padding: 20px; background-color: hsl(var(--maz-background-300)); border-radius: 10px; margin-top: 1rem;">
   Data Submitted
 </div>
 
@@ -59,7 +59,7 @@ This plugin has a composable for easier use, after installing it you can use [us
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import { useWait } from 'maz-ui/src/composables/useWait'
+  import { useWait } from 'maz-ui/composables/useWait'
 
   const wait = useWait()
 

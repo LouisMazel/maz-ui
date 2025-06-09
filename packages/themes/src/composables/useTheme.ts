@@ -1,5 +1,5 @@
 import type { BaseThemePreset, ColorMode, ThemePreset, ThemeState } from '../types'
-import { computed, ref, watchEffect } from 'vue'
+import { computed, getCurrentInstance, ref, watchEffect } from 'vue'
 import { generateCriticalCSS, generateFullCSS, injectCSS } from '../utils/css-generator'
 import { mergePresets } from '../utils/preset-merger'
 
@@ -17,14 +17,65 @@ function updateDocumentClass() {
   }
 }
 
+function getInitialColorMode(mazTheme: any, savedMode: ColorMode | null, systemPrefersDark: boolean): ColorMode {
+  if (savedMode && ['light', 'dark', 'auto'].includes(savedMode)) {
+    return savedMode
+  }
+
+  if (mazTheme.darkModeStrategy === 'auto') {
+    return 'auto'
+  }
+
+  return systemPrefersDark ? 'dark' : 'light'
+}
+
+function initializeThemeFromData(themeData: any) {
+  const systemPrefersDark = typeof window !== 'undefined'
+    && window.matchMedia('(prefers-color-scheme: dark)').matches
+
+  const savedMode = typeof localStorage !== 'undefined'
+    ? localStorage.getItem('maz-color-mode') as ColorMode | null
+    : null
+
+  if (themeData.currentPreset && themeData.colorMode !== undefined) {
+    _initThemeState({
+      currentPreset: themeData.currentPreset,
+      colorMode: themeData.colorMode,
+      isDark: themeData.isDark,
+      strategy: themeData.strategy,
+      darkModeStrategy: themeData.darkModeStrategy,
+    })
+    return
+  }
+
+  const initialColorMode = getInitialColorMode(themeData, savedMode, systemPrefersDark)
+  const initialIsDark = initialColorMode === 'auto'
+    ? systemPrefersDark
+    : initialColorMode === 'dark'
+
+  _initThemeState({
+    currentPreset: themeData.preset || themeData.currentPreset,
+    colorMode: initialColorMode,
+    isDark: initialIsDark,
+    strategy: themeData.strategy,
+    darkModeStrategy: themeData.darkModeStrategy,
+  })
+}
+
 export function useTheme() {
+  const instance = getCurrentInstance()
+  const mazTheme = instance?.appContext?.app?.config?.globalProperties?.$mazTheme
+
+  if (!state.value && mazTheme) {
+    initializeThemeFromData(mazTheme)
+  }
+
   if (!state.value) {
-    throw new Error('useTheme must be used after installing MazUi')
+    throw new Error('useTheme must be used within a MazThemeProvider or after MazUiPlugin installation')
   }
 
   const currentPreset = computed(() => state.value!.currentPreset)
 
-  // Rendre colorMode vraiment réactif avec getter/setter
   const colorMode = computed<ColorMode>({
     get: () => state.value!.colorMode,
     set: (mode: ColorMode) => setColorMode(mode),
@@ -50,7 +101,6 @@ export function useTheme() {
         prefix: 'maz',
       }
 
-      // Régénérer le CSS critique et complet
       const criticalCSS = generateCriticalCSS(newPreset, cssOptions)
       const fullCSS = generateFullCSS(newPreset, cssOptions)
 
@@ -74,7 +124,6 @@ export function useTheme() {
 
     updateDocumentClass()
 
-    // Sauvegarder la préférence utilisateur
     if (typeof localStorage !== 'undefined') {
       localStorage.setItem('maz-color-mode', mode)
     }
@@ -101,7 +150,6 @@ export function useTheme() {
 export function _initThemeState(initialState: ThemeState) {
   state.value = initialState
 
-  // Restaurer la préférence utilisateur sauvegardée
   if (typeof localStorage !== 'undefined' && typeof window !== 'undefined') {
     const savedMode = localStorage.getItem('maz-color-mode') as ColorMode | null
 

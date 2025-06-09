@@ -35,7 +35,7 @@ This method is not SSR friendly (only on client side, with Nuxt use this composa
 
 Time to read this page: <strong>{{ durationSelector }} minutes</strong>
 
-<MazCard collapsible class="maz-w-full" header="Content to read">
+<MazCard collapsible class="maz-w-full" title="Content to read">
   <div id="content-to-read" class="maz-px-4">
     <p>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lectus quam id leo in. Placerat vestibulum lectus mauris ultrices eros in cursus turpis. Et tortor consequat id porta nibh venenatis cras sed. Praesent tristique magna sit amet. Iaculis at erat pellentesque adipiscing commodo elit at. Interdum velit euismod in pellentesque massa placerat duis. Eget nunc scelerisque viverra mauris in aliquam. Nulla facilisi morbi tempus iaculis urna id volutpat lacus. Pellentesque eu tincidunt tortor aliquam nulla facilisi cras fermentum odio. Egestas integer eget aliquet nibh praesent tristique magna sit amet. Volutpat blandit aliquam etiam erat velit scelerisque. Eget nullam non nisi est sit amet. Turpis egestas sed tempus urna et pharetra. Nisl rhoncus mattis rhoncus urna neque viverra justo. Rutrum tellus pellentesque eu tincidunt tortor aliquam. Non odio euismod lacinia at. Magna eget est lorem ipsum.
@@ -55,7 +55,7 @@ Time to read this page: <strong>{{ durationSelector }} minutes</strong>
     Time to read this page: <strong>{{ duration }} minutes</strong>
   </div>
 
-  <MazCard collapsible class="maz-w-full" header="Content to read">
+  <MazCard collapsible class="maz-w-full" title="Content to read">
     <div id="content-to-read" class="maz-px-4">
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lectus quam id leo in. Placerat vestibulum lectus mauris ultrices eros in cursus turpis. Et tortor consequat id porta nibh venenatis cras sed. Praesent tristique magna sit amet. Iaculis at erat pellentesque adipiscing commodo elit at. Interdum velit euismod in pellentesque massa placerat duis. Eget nunc scelerisque viverra mauris in aliquam. Nulla facilisi morbi tempus iaculis urna id volutpat lacus. Pellentesque eu tincidunt tortor aliquam nulla facilisi cras fermentum odio. Egestas integer eget aliquet nibh praesent tristique magna sit amet. Volutpat blandit aliquam etiam erat velit scelerisque. Eget nullam non nisi est sit amet. Turpis egestas sed tempus urna et pharetra. Nisl rhoncus mattis rhoncus urna neque viverra justo. Rutrum tellus pellentesque eu tincidunt tortor aliquam. Non odio euismod lacinia at. Magna eget est lorem ipsum.

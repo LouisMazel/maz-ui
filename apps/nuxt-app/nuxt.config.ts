@@ -2,10 +2,8 @@
 import postcss from 'maz-ui/postcss.config.cjs'
 import svgLoader from 'vite-svg-loader'
 
-import mazUiModule from '@maz-ui/nuxt/src/module.js'
-
 export default defineNuxtConfig({
-  modules: [mazUiModule, '@nuxtjs/tailwindcss'],
+  modules: ['@maz-ui/nuxt', '@nuxtjs/tailwindcss'],
 
   devtools: { enabled: true },
 
@@ -44,13 +42,6 @@ export default defineNuxtConfig({
       position: 'bottom-right',
       timeout: 3000,
       persistent: false,
-    },
-    injectUseThemeHandler: {
-      darkClass: 'dark',
-      lightClass: 'light',
-      storageThemeKey: 'theme',
-      storageThemeValueDark: 'dark',
-      storageThemeValueLight: 'light',
     },
     installVLazyImg: true,
     installVTooltip: {

@@ -26,7 +26,7 @@ export default defineNuxtConfig({
     theme: {
       preset: 'mazUi', // ou 'dark', 'ocean', ou preset personnalisé
       strategy: 'hybrid', // 'runtime', 'buildtime', ou 'hybrid'
-      darkMode: 'class', // 'class', 'media', ou 'auto'
+      darkModeStrategy: 'class', // 'class', 'media', ou 'auto'
     },
 
     // Composants
@@ -89,7 +89,7 @@ theme: {
     }
   },
   strategy: 'hybrid', // stratégie de génération CSS
-  darkMode: 'class', // gestion du mode sombre
+  darkModeStrategy: 'class', // gestion du mode sombre
   disabled: false, // désactiver complètement le système
 }
 ```

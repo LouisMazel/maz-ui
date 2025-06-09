@@ -781,7 +781,7 @@ onBeforeMount(() => {
   @apply maz-relative maz-max-w-full;
 
   &-header {
-    @apply maz-flex maz-max-w-full maz-items-center maz-justify-between maz-gap-2 maz-bg-color maz-py-2;
+    @apply maz-flex maz-max-w-full maz-items-center maz-justify-between maz-gap-2 maz-bg-surface maz-py-2;
 
     &-search {
       @apply maz-flex maz-items-center maz-gap-2;
@@ -793,7 +793,7 @@ onBeforeMount(() => {
   }
 
   &-footer {
-    @apply maz-flex maz-max-w-full maz-justify-between maz-gap-2 maz-bg-color maz-p-2;
+    @apply maz-flex maz-max-w-full maz-justify-between maz-gap-2 maz-bg-surface maz-p-2;
 
     &-pagination {
       @apply maz-flex maz-items-center maz-gap-4;
@@ -809,7 +809,7 @@ onBeforeMount(() => {
   }
 
   &-wrapper {
-    @apply maz-border maz-border-solid maz-border-color-light;
+    @apply maz-border maz-border-solid maz-border-divider-400;
 
     &.--scrollable {
       @apply maz-overflow-auto;
@@ -959,7 +959,7 @@ onBeforeMount(() => {
   }
 
   table {
-    @apply maz-table maz-w-full maz-border-collapse maz-bg-color;
+    @apply maz-table maz-w-full maz-border-collapse maz-bg-surface;
 
     table-layout: v-bind('tableLayout');
 
@@ -982,7 +982,7 @@ onBeforeMount(() => {
     }
 
     thead {
-      @apply maz-break-all maz-border-b maz-border-color-light;
+      @apply maz-break-all maz-border-b maz-border-divider-400;
 
       th {
         @apply maz-gap-2 maz-break-all maz-font-normal maz-text-muted maz-tracking-tight;
@@ -992,7 +992,7 @@ onBeforeMount(() => {
         }
 
         &.--sortable {
-          @apply maz-cursor-pointer hover:maz-bg-color-dark;
+          @apply maz-cursor-pointer hover:maz-bg-surface-600;
         }
 
         &.--xl {
@@ -1030,7 +1030,7 @@ onBeforeMount(() => {
             @apply maz-text-muted maz-transition-transform maz-duration-300 maz-ease-out;
 
             &.--sorted {
-              @apply maz-block maz-text-normal;
+              @apply maz-block maz-text-foreground;
 
               &.--up {
                 @apply maz-rotate-0;
@@ -1047,7 +1047,7 @@ onBeforeMount(() => {
 
     tbody {
       &.--divider {
-        @apply maz-divide-y maz-divide-color-light;
+        @apply maz-divide-y maz-divide-divider-400;
       }
     }
   }

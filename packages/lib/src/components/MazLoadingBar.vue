@@ -12,8 +12,8 @@ export interface MazLoadingBarProps {
 const props = withDefaults(defineProps<MazLoadingBarProps>(), { color: 'primary', height: '0.125rem' })
 
 const colorCSSVariables = computed(() => ({
-  alpha: `var(--maz-color-${props.color}-alpha-20)`,
-  main: `var(--maz-color-${props.color})`,
+  alpha: `hsl(var(--maz-${props.color}) / 20%)`,
+  main: `hsl(var(--maz-${props.color}))`,
 }))
 </script>
 

@@ -22,7 +22,7 @@
           <div class="maz-flex maz-w-full maz-items-center maz-justify-between">
             <span>{{ item.label }}</span>
             <MazBadge
-              color="theme"
+              color="contrast"
               outline
             >
               {{ item.value }}

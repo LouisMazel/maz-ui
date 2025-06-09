@@ -62,10 +62,10 @@ describe('given MazDialogPromise component', () => {
     // @ts-expect-error - private value
     expect(wrapper.vm.confirmButtonData).toStrictEqual({ text: 'Yes', color: 'success' })
     // @ts-expect-error - private value
-    expect(wrapper.vm.cancelButtonData).toStrictEqual({ text: 'No', color: 'danger' })
+    expect(wrapper.vm.cancelButtonData).toStrictEqual({ text: 'No', color: 'destructive' })
     // @ts-expect-error - private value
     expect(wrapper.vm.currentData).toStrictEqual({
-      cancelButton: { text: 'Cancel', color: 'danger' },
+      cancelButton: { text: 'Cancel', color: 'destructive' },
       confirmButton: { text: 'Confirm', color: 'success' },
       cancelText: 'No',
       confirmText: 'Yes',

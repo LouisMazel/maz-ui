@@ -584,20 +584,18 @@ const dataTypesString = computed(() => {
 const allFileIsAccepted = computed<boolean>(() => dataTypes?.length === 1 && dataTypes[0] === '*/*')
 
 const t = computed(() => {
+  const fileText = hasMultiple.value ? 'files' : 'file'
+  const dataTypesText = dataTypesString.value ? `${dataTypesString.value} ${fileText}` : ''
   return {
     dragAndDrop: translations?.dragAndDrop || 'Drag and drop your files',
     fileInfos: translations?.fileInfos || [
-      dataTypesString.value ? `${dataTypesString.value} ${hasMultiple.value ? 'files' : 'file'}` : '',
+      dataTypesText,
       maxFileSize ? `${maxFileSize} MB max` : '',
       hasMultiple.value && maxFiles ? `${maxFiles} max files` : '',
     ].filter(Boolean).join(' - '),
     selectFile: translations?.selectFile || 'Select file',
     divider: translations?.divider || '-',
   } satisfies MazDropzoneProps['translations']
-})
-
-const mainColor = computed(() => {
-  return `var(--maz-color-${color})`
 })
 
 function reset() {
@@ -695,7 +693,7 @@ defineExpose({
       'm-dropzone--is-over-error': isOverError,
     }"
     :style="{
-      '--active-color': mainColor,
+      '--active-color': `hsl(var(--maz-${color}))`,
     }"
   >
     <!--
@@ -788,14 +786,14 @@ defineExpose({
 
 <style lang="postcss" scoped>
 .m-dropzone {
-  @apply maz-flex maz-w-full maz-flex-col maz-gap-2 maz-overflow-hidden maz-rounded maz-border maz-border-dashed maz-border-color-light maz-p-6 maz-transition-colors maz-duration-200 maz-ease-in-out maz-flex-center hover:maz-border-color-lighter hover:maz-bg-color-dark dark:hover:maz-bg-color-darker maz-cursor-pointer;
+  @apply maz-flex maz-w-full maz-flex-col maz-gap-2 maz-overflow-hidden maz-rounded maz-border maz-border-dashed maz-border-divider-400 maz-p-6 maz-transition-colors maz-duration-200 maz-ease-in-out maz-flex-center hover:maz-bg-surface-600 dark:hover:maz-bg-surface-700 maz-cursor-pointer;
 
   &--disabled {
     @apply maz-cursor-not-allowed maz-opacity-50;
   }
 
   &--is-over-drop-zone:not(&--is-over-error) {
-    @apply maz-bg-color-darker;
+    @apply maz-bg-surface-700;
 
     border-color: var(--active-color);
 
@@ -805,10 +803,10 @@ defineExpose({
   }
 
   &--is-over-error {
-    @apply maz-border-danger;
+    @apply maz-border-destructive;
 
     .maz-dropzone__upload-icon {
-      @apply maz-text-danger;
+      @apply maz-text-destructive;
     }
   }
 
@@ -823,7 +821,7 @@ defineExpose({
   }
 
   &__file-item {
-    @apply maz-relative maz-flex maz-size-40 maz-cursor-auto maz-flex-col maz-items-center maz-overflow-hidden maz-rounded maz-bg-color-light;
+    @apply maz-relative maz-flex maz-size-40 maz-cursor-auto maz-flex-col maz-items-center maz-overflow-hidden maz-rounded maz-bg-surface-400;
 
     transition: all 300ms ease-in-out;
   }
@@ -849,15 +847,15 @@ defineExpose({
   }
 
   &__error-icon {
-    @apply maz-text-4xl maz-text-danger;
+    @apply maz-text-4xl maz-text-destructive;
   }
 
   &__file-icon {
-    @apply maz-text-3xl maz-text-color-dark dark:maz-text-normal;
+    @apply maz-text-3xl maz-text-foreground dark:maz-text-foreground;
   }
 
   &__description {
-    @apply maz-z-2 maz-flex maz-w-full maz-flex-col maz-gap-1 maz-truncate maz-p-2 maz-text-color-dark dark:maz-text-normal;
+    @apply maz-z-2 maz-flex maz-w-full maz-flex-col maz-gap-1 maz-truncate maz-p-2 maz-text-foreground dark:maz-text-foreground;
   }
 
   &__file-info {

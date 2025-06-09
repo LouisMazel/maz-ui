@@ -80,7 +80,7 @@ The color of the component can be changed by passing the `color` prop. Should be
     <MazCircularProgressBar :percentage="75" color="info" />
     <MazCircularProgressBar :percentage="75" color="success" />
     <MazCircularProgressBar :percentage="75" color="warning" />
-    <MazCircularProgressBar :percentage="75" color="danger" />
+    <MazCircularProgressBar :percentage="75" color="destructive" />
   </div>
 
   <template #code>

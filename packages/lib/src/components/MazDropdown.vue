@@ -120,7 +120,7 @@ export interface MazDropdownProps {
   /**
    * Color theme for the dropdown button
    * @type {MazColor}
-   * @values primary, secondary, info, success, warning, danger, white, black, transparent
+   * @values primary, secondary, info, success, warning, destructive, transparent, contrast, accent
    * @default 'transparent'
    */
   color?: MazColor
@@ -470,7 +470,7 @@ watch(
                   :target="item.href ? item.target ?? '_self' : undefined"
                   :to="item.to"
                   :href="item.href"
-                  :color="item.color ?? 'theme'"
+                  :color="item.color ?? 'contrast'"
                   v-bind="item"
                   :underline-only-hover="item.underlineOnlyHover ?? false"
                   class="menuitem"
@@ -503,7 +503,7 @@ watch(
                       '--is-keyboard-selected': keyboardSelectedIndex === index,
                     },
                     item.class,
-                    `--${item.color ?? 'theme'}`,
+                    `--${item.color ?? 'contrast'}`,
                   ]"
                   @click.stop="runAction(item, $event)"
                 >
@@ -533,7 +533,7 @@ watch(
   }
 
   & [aria-expanded='true'].m-btn {
-    @apply maz-bg-color-light;
+    @apply maz-bg-surface-400;
   }
 
   &__wrapper {
@@ -549,7 +549,7 @@ watch(
   }
 
   .menu {
-    @apply maz-absolute maz-z-default-backdrop maz-flex maz-min-h-max maz-min-w-max maz-flex-col maz-gap-0.5 maz-overflow-auto maz-rounded maz-bg-color maz-p-2 maz-elevation dark:maz-border dark:maz-border-color-light;
+    @apply maz-absolute maz-z-default-backdrop maz-flex maz-min-h-max maz-min-w-max maz-flex-col maz-gap-0.5 maz-overflow-auto maz-rounded maz-bg-surface maz-p-2 maz-elevation dark:maz-border dark:maz-border-divider-400;
 
     &.--top:not(.--right, .--left) {
       @apply maz-bottom-full maz-mb-1 maz-origin-bottom;
@@ -584,10 +584,10 @@ watch(
     }
 
     .menuitem {
-      @apply maz-cursor-pointer maz-whitespace-nowrap maz-rounded maz-px-4 maz-py-2 maz-text-start maz-outline-none maz-transition-colors maz-duration-300 maz-ease-in-out focus-within:maz-bg-color-light hover:maz-bg-color-light;
+      @apply maz-cursor-pointer maz-whitespace-nowrap maz-rounded maz-px-4 maz-py-2 maz-text-start maz-outline-none maz-transition-colors maz-duration-300 maz-ease-in-out focus-within:maz-bg-surface-400 hover:maz-bg-surface-400;
 
       &.--is-keyboard-selected {
-        @apply maz-bg-color-light;
+        @apply maz-bg-surface-400;
       }
 
       &.menuitem__button {
@@ -608,27 +608,19 @@ watch(
         }
 
         &.--warning {
-          @apply maz-text-warning-600 hover:maz-text-warning-800;
+          @apply maz-text-warning-600 hover:maz-text-warning-600;
         }
 
-        &.--danger {
-          @apply maz-text-danger-600 hover:maz-text-danger-800;
+        &.--destructive {
+          @apply maz-text-destructive-600 hover:maz-text-destructive-600;
         }
 
         &.--success {
-          @apply maz-text-success-600 hover:maz-text-success-800;
+          @apply maz-text-success-600 hover:maz-text-success-600;
         }
 
-        &.--white {
-          @apply maz-text-white hover:maz-text-gray-300;
-        }
-
-        &.--black {
-          @apply maz-text-black hover:maz-text-gray-800;
-        }
-
-        &.--theme {
-          @apply maz-text-normal hover:maz-text-black dark:hover:maz-text-white;
+        &.--contrast {
+          @apply maz-text-contrast hover:maz-text-contrast-600;
         }
       }
     }

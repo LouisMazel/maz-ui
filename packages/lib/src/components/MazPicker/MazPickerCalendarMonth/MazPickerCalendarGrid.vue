@@ -44,11 +44,7 @@ const transitionName = ref<'maz-slidenext' | 'maz-slideprev'>('maz-slidenext')
 const calendarDateArray = computed<string[]>(() => [props.calendarDate])
 
 const hoverColor = computed(() => {
-  if (props.color === 'theme') {
-    return ''
-  }
-
-  return `var(--maz-color-${props.color}-alpha-20)`
+  return `hsl(var(--maz-${props.color}) / 20%)`
 })
 
 const modelValue = computed({
@@ -130,12 +126,14 @@ function getDayButtonColor(date: Dayjs): MazColor {
   const value = props.modelValue
 
   if (typeof value === 'object') {
-    return (value.start ? isSameDate(date, value.start, 'date') : false)
-      || (value.end ? isSameDate(date, value.end, 'date') : false)
-      ? props.color
-      : checkIsBetween(date)
-        ? props.color
-        : 'transparent'
+    const isStartDate = value.start ? isSameDate(date, value.start, 'date') : false
+    const isEndDate = value.end ? isSameDate(date, value.end, 'date') : false
+    const isBetweenDates = checkIsBetween(date)
+
+    if (isStartDate || isEndDate || isBetweenDates) {
+      return props.color
+    }
+    return 'transparent'
   }
   else {
     return checkIsSameDate(date) ? props.color : 'transparent'
@@ -361,11 +359,11 @@ watch(
       }
 
       &.--is-between-hoverred {
-        @apply maz-bg-color-light !maz-rounded-none;
+        @apply maz-bg-surface-400 !maz-rounded-none;
       }
 
       &.--is-between {
-        @apply maz-bg-color-light !maz-rounded-none maz-text-normal;
+        @apply maz-bg-surface-400 !maz-rounded-none maz-text-foreground;
 
         &.--white,
         &.--transparent {

@@ -78,7 +78,7 @@ export interface MazGalleryProps {
    */
   scale?: boolean
   /**
-   * Choose color of borders between images - Should be a CSS color or CSS variable - Ex: `#000` or `var(--maz-color-bg-light)`
+   * Choose color of borders between images - Should be a CSS color or CSS variable - Ex: `#000` or `hsl(var(--maz-background-300))`
    * @type string
    * @default 'transparent'
    */
@@ -103,7 +103,7 @@ const {
 onBeforeMount(() => {
   if (displayedCount > 5)
 
-    console.warn('[MazUI](m-gallery) The maximum of "images-shown-count" is 5')
+    console.warn('[MazUI](m-gallery) The maximum of "displayed-count" is 5')
 })
 
 const sizeStyle = computed(() => {
@@ -189,14 +189,14 @@ function shouldHaveRemainingLayer(index: number): boolean {
             blurOnHover: false,
             scaleOnHover: scale,
           }"
-          class="m-gallery__remaining-layer maz-flex maz-bg-overlay maz-flex-center"
+          class="m-gallery__remaining-layer"
         >
-          <span class="maz-text-2xl maz-text-white">+{{ numberImagesRemaining }}</span>
+          <span>+{{ numberImagesRemaining }}</span>
         </div>
       </figure>
       <div
         v-if="hasEmptyLayer && images.length === 0"
-        class="empty-layer maz-flex maz-w-full maz-bg-color-light maz-text-normal maz-flex-center"
+        class="empty-layer maz-flex maz-w-full maz-bg-surface-400 maz-text-foreground maz-flex-center"
         :class="{ 'maz-rounded-xl': radius }"
         :style="[sizeStyle]"
       >
@@ -315,9 +315,10 @@ function shouldHaveRemainingLayer(index: number): boolean {
     position: absolute;
     inset: 0;
 
-    a span {
-      color: hsl(0deg 0% 100%);
-      font-size: 2rem;
+    @apply maz-flex maz-bg-overlay/30 maz-flex-center maz-backdrop-blur-sm;
+
+    span {
+      @apply maz-text-white maz-text-3xl;
     }
   }
 }

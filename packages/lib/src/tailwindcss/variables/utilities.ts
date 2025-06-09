@@ -2,7 +2,6 @@ import type { CSSRuleObject } from 'tailwindcss/types/config'
 
 export const utilities = {
   '.flex-center': {
-    'display': 'flex',
     'align-items': 'center',
     'justify-content': 'center',
   },
@@ -17,5 +16,8 @@ export const utilities = {
 
   '.cap-f::first-letter': {
     'text-transform': 'capitalize',
+  },
+  '.elevation': {
+    'box-shadow': 'hsl(var(--maz-shadow) / <alpha-value>)',
   },
 } satisfies CSSRuleObject

@@ -120,7 +120,7 @@ function onFocus(index: number, event: FocusEvent) {
   <div
     class="m-radio-buttons m-reset-css"
   >
-    <div class="m-radio-buttons__wrapper" :class="[`--${orientation}`, { '--wrap': !wrap, '--block': block }]">
+    <div class="m-radio-buttons__wrapper" :class="[`--${orientation}`, { '--wrap': wrap, '--block': block }]">
       <label
         v-for="(option, i) in options"
         :key="getOptionId(option, i)"
@@ -138,8 +138,8 @@ function onFocus(index: number, event: FocusEvent) {
         :style="[
           isSelected(option.value)
             ? {
-              color: `var(--maz-color-${color}-contrast)`,
-              backgroundColor: `var(--maz-color-${color})`,
+              color: `hsl(var(--maz-${color}-foreground))`,
+              backgroundColor: `hsl(var(--maz-${color}))`,
             }
             : {},
           option.style,
@@ -167,7 +167,7 @@ function onFocus(index: number, event: FocusEvent) {
             }"
             :style="[
               isSelected(option.value)
-                ? { backgroundColor: `var(--maz-color-${props.color}-600)` }
+                ? { backgroundColor: `hsl(var(--maz-${props.color}-600))` }
                 : {},
             ]"
           >
@@ -223,8 +223,8 @@ function onFocus(index: number, event: FocusEvent) {
   }
 
   &__items {
-    @apply maz-flex maz-cursor-pointer maz-gap-4 maz-rounded maz-border maz-border-color-light
-        maz-bg-color maz-px-4 maz-py-2 maz-font-medium maz-transition-colors maz-duration-300;
+    @apply maz-flex maz-cursor-pointer maz-gap-4 maz-rounded maz-border maz-border-divider-400
+        maz-bg-surface maz-px-4 maz-py-2 maz-font-medium maz-transition-colors maz-duration-300;
 
     &.--elevation {
       @apply maz-elevation;
@@ -234,7 +234,7 @@ function onFocus(index: number, event: FocusEvent) {
       @apply maz-flex maz-flex-center;
 
       span {
-        @apply maz-flex maz-h-6 maz-w-6 maz-flex-none maz-rounded-full maz-border maz-border-color-light maz-bg-color-lighter maz-p-0.5 maz-text-white maz-transition-colors maz-duration-300 maz-flex-center dark:maz-border-color-lighter dark:maz-bg-color-light;
+        @apply maz-flex maz-h-6 maz-w-6 maz-flex-none maz-rounded-full maz-border maz-border-divider-400 maz-bg-surface-300 maz-p-0.5 maz-text-white maz-transition-colors maz-duration-300 maz-flex-center dark:maz-bg-surface-400;
 
         transition: border-color 0s;
 
@@ -243,7 +243,7 @@ function onFocus(index: number, event: FocusEvent) {
         }
 
         &:not(.--is-selected) {
-          @apply group-hover:maz-bg-color;
+          @apply group-hover:maz-bg-surface;
         }
       }
     }
@@ -253,7 +253,7 @@ function onFocus(index: number, event: FocusEvent) {
     }
 
     &:not(.--is-selected) {
-      @apply hover:maz-bg-color-light;
+      @apply hover:maz-bg-surface-400;
     }
   }
 
@@ -261,7 +261,7 @@ function onFocus(index: number, event: FocusEvent) {
     @apply maz-text-sm maz-text-muted;
 
     &.--error {
-      @apply maz-text-danger-600;
+      @apply maz-text-destructive-600;
     }
 
     &.--success {

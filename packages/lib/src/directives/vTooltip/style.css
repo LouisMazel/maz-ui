@@ -8,51 +8,39 @@
   }
 
   &--default::before {
-    @apply maz-border-color-light maz-bg-color maz-text-normal dark:maz-border-color-lighter dark:maz-bg-color-light;
+    @apply maz-border-divider-400 maz-bg-surface maz-text-foreground dark:maz-border-divider-300 dark:maz-bg-surface-100;
   }
 
   &--primary::before {
-    @apply maz-border-primary-600 maz-bg-primary maz-text-primary-contrast;
+    @apply maz-border-primary-600 maz-bg-primary maz-text-primary-foreground;
   }
 
   &--secondary::before {
-    @apply maz-border-secondary-600 maz-bg-secondary maz-text-secondary-contrast;
+    @apply maz-border-secondary-600 maz-bg-secondary maz-text-secondary-foreground;
   }
 
   &--success::before {
-    @apply maz-border-success-600 maz-bg-success maz-text-success-contrast;
+    @apply maz-border-success-600 maz-bg-success maz-text-success-foreground;
   }
 
   &--warning::before {
-    @apply maz-border-warning-600 maz-bg-warning maz-text-warning-contrast;
+    @apply maz-border-warning-600 maz-bg-warning maz-text-warning-foreground;
   }
 
-  &--danger::before {
-    @apply maz-border-danger-600 maz-bg-danger maz-text-danger-contrast;
+  &--destructive::before {
+    @apply maz-border-destructive-600 maz-bg-destructive maz-text-destructive-foreground;
   }
 
   &--info::before {
-    @apply maz-border-info-600 maz-bg-info maz-text-info-contrast;
+    @apply maz-border-info-600 maz-bg-info maz-text-info-foreground;
   }
 
-  &--light::before {
-    @apply maz-border-light maz-bg-light maz-text-dark;
+  &--accent::before {
+    @apply maz-border-accent-600 maz-bg-accent maz-text-accent-foreground;
   }
 
-  &--dark::before {
-    @apply maz-border-dark maz-bg-dark maz-text-light;
-  }
-
-  &--white::before {
-    @apply maz-border-white maz-bg-white maz-text-dark;
-  }
-
-  &--black::before {
-    @apply maz-border-black maz-bg-black maz-text-light;
-  }
-
-  &--theme::before {
-    @apply maz-border-theme maz-bg-theme maz-text-color;
+  &--contrast::before {
+    @apply maz-border-contrast-600 maz-bg-contrast maz-text-contrast-foreground;
   }
 
   &--top::before {

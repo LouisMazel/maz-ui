@@ -1,7 +1,4 @@
 @layer maz-ui-reset, maz-ui-theme, maz-ui-animations, maz-ui-utilities;
 @import './reset.css';
-@import './base-variables.css';
-@import './maz-ui-variables.css';
-@import './dark-theme.css';
 @import './padded-container-vars.css';
 @import './animation.css';

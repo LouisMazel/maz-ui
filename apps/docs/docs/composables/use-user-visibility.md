@@ -26,7 +26,7 @@ Useful to know if the user is displaying your website
     Start
   </MazBtn>
 
-  <MazBtn @click="userVisibility.destroy()" color="danger">
+  <MazBtn @click="userVisibility.destroy()" color="destructive">
     Destroy
   </MazBtn>
 </div>
@@ -39,11 +39,11 @@ Switch tabs for a second to see events
 
 ```vue
 <template>
-  <MazBtn @click="userVisibility.destroy()" color="danger">
+  <MazBtn @click="userVisibility.destroy()" color="destructive">
     Destroy
   </MazBtn>
 
-  <MazBtn @click="userVisibility.destroy()" color="danger">
+  <MazBtn @click="userVisibility.destroy()" color="destructive">
     Destroy
   </MazBtn>
 

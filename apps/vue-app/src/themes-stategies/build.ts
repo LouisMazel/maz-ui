@@ -46,13 +46,13 @@ mkdirSync(join(process.cwd(), 'public/themes'), { recursive: true })
 // Générer CSS pour le thème personnalisé
 const customCSS = buildThemeCSS({
   preset: customPreset,
-  darkMode: 'class',
-  critical: false,
+  mode: 'both',
+  criticalOnly: false,
 })
 
 // Générer bundle pour plusieurs thèmes
 const themeBundle = generateThemeBundle([customPreset, mazUi, dark, ocean], {
-  darkMode: 'class',
+  mode: 'both',
 })
 
 // Écrire les fichiers CSS

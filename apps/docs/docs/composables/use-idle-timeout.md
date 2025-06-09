@@ -27,7 +27,7 @@ A plugin to know the amount of time a user has spent on your website
     <MazBtn @click="idleTimeout.reset()" color="secondary">
       Reset
     </MazBtn>
-    <MazBtn @click="idleTimeout.destroy()" color="danger">
+    <MazBtn @click="idleTimeout.destroy()" color="destructive">
       Destroy
     </MazBtn>
   </div>
@@ -62,7 +62,7 @@ A plugin to know the amount of time a user has spent on your website
     <MazBtn @click="idle.reset()" color="secondary">
       Reset
     </MazBtn>
-    <MazBtn @click="idle.destroy()" color="danger">
+    <MazBtn @click="idle.destroy()" color="destructive">
       Destroy
     </MazBtn>
 

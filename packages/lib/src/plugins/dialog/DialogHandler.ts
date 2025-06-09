@@ -16,7 +16,7 @@ const DEFAULT_OPTIONS = {
 export class DialogHandler {
   constructor(
     private readonly app: App,
-    private readonly globalOptions: DialogOptions = DEFAULT_OPTIONS,
+    readonly globalOptions: DialogOptions = DEFAULT_OPTIONS,
   ) {}
 
   public open(options: DialogOptions) {

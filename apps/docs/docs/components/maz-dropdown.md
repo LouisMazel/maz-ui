@@ -15,7 +15,7 @@ description: MazDropdown is a standalone dropdown menu component and versatile d
   :items="[
     { label: 'Action', onClick: () => toast.success('CLICKED') },
     { label: 'Link (href)', href: 'https://www.google.com', target: '_blank', color: 'secondary' },
-    { label: 'Router Link', to: { name: 'index' }, color: 'danger' },
+    { label: 'Router Link', to: { name: 'index' }, color: 'destructive' },
   ]"
 >
   Dropdown Menu
@@ -27,7 +27,7 @@ description: MazDropdown is a standalone dropdown menu component and versatile d
     :items="[
       { label: 'Action', onClick: () => toast.success('CLICKED') },
       { label: 'Link (href)', href: 'https://www.google.com', target: '_blank', color: 'secondary' },
-      { label: 'Router Link', to: { name: 'index' }, color: 'danger' },
+      { label: 'Router Link', to: { name: 'index' }, color: 'destructive' },
     ]"
   >
     Dropdown Menu
@@ -359,7 +359,7 @@ Add `tabindex="-1"` attribute to your element to avoid a double focus with Tab k
     ]"
   >
     <template #element="{ isOpen }">
-      <button class="maz-border maz-border-solid maz-border-color-light maz-p-2 hover:maz-bg-color-light" tabindex="-1">
+      <button class="maz-border maz-border-solid maz-border-divider-400 maz-p-2 hover:maz-bg-surface-400" tabindex="-1">
         HTMLButtonElement: isOpen {{ isOpen }}
       </button>
     </template>
@@ -421,7 +421,7 @@ Add `tabindex="-1"` attribute to your element to avoid a double focus with Tab k
   ]"
 >
   <template #element="{ isOpen }">
-    <button class="maz-border maz-border-solid maz-border-color-light maz-p-2 hover:maz-bg-color-light" tabindex="-1">
+    <button class="maz-border maz-border-solid maz-border-divider-400 maz-p-2 hover:maz-bg-surface-400" tabindex="-1">
       HTMLButtonElement: isOpen {{ isOpen }}
     </button>
   </template>
@@ -481,7 +481,7 @@ isOpen: {{ isOpen }}
 
 <div class="maz-flex maz-gap-3 maz-flex-wrap">
   <MazDropdown
-    color="theme"
+    color="contrast"
     :items="[
       { label: 'Action', onClick: () => toast.success('CLICKED') },
       { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
@@ -493,7 +493,7 @@ isOpen: {{ isOpen }}
     top right
   </MazDropdown>
   <MazDropdown
-    color="theme"
+    color="contrast"
     :items="[
       { label: 'Action', onClick: () => toast.success('CLICKED') },
       { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
@@ -505,7 +505,7 @@ isOpen: {{ isOpen }}
     top left
   </MazDropdown>
   <MazDropdown
-    color="theme"
+    color="contrast"
     :items="[
       { label: 'Action', onClick: () => toast.success('CLICKED') },
       { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
@@ -517,7 +517,7 @@ isOpen: {{ isOpen }}
     bottom left
   </MazDropdown>
   <MazDropdown
-    color="theme"
+    color="contrast"
     :items="[
       { label: 'Action', onClick: () => toast.success('CLICKED') },
       { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
@@ -529,7 +529,7 @@ isOpen: {{ isOpen }}
     bottom right
   </MazDropdown>
   <MazDropdown
-    color="theme"
+    color="contrast"
     :items="[
       { label: 'Action', onClick: () => toast.success('CLICKED') },
       { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
@@ -541,7 +541,7 @@ isOpen: {{ isOpen }}
     right
   </MazDropdown>
   <MazDropdown
-    color="theme"
+    color="contrast"
     :items="[
       { label: 'Action', onClick: () => toast.success('CLICKED') },
       { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
@@ -553,7 +553,7 @@ isOpen: {{ isOpen }}
     left
   </MazDropdown>
   <MazDropdown
-    color="theme"
+    color="contrast"
     :items="[
       { label: 'Action', onClick: () => toast.success('CLICKED') },
       { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
@@ -565,7 +565,7 @@ isOpen: {{ isOpen }}
     top
   </MazDropdown>
   <MazDropdown
-    color="theme"
+    color="contrast"
     :items="[
       { label: 'Action', onClick: () => toast.success('CLICKED') },
       { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },

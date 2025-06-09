@@ -10,7 +10,7 @@ description: vLazyImg is a Vue 3 directive to lazy load images with many options
 ## Basic usage
 
 <img
-  style="background-color: var(--maz-color-bg-lighter); width: 80%;"
+  style="background-color: hsl(var(--maz-background-300)); width: 80%;"
   class="flex flex-center rounded"
   v-lazy-img="'https://loremflickr.com/1500/1000'"
 />
@@ -18,7 +18,7 @@ description: vLazyImg is a Vue 3 directive to lazy load images with many options
 ```vue
 <template>
   <img
-    style="background-color: var(--maz-color-bg-lighter); width: 80%;"
+    style="background-color: hsl(var(--maz-background-300)); width: 80%;"
     class="flex flex-center rounded"
     v-lazy-img="'https://loremflickr.com/1500/1000'"
   />
@@ -54,7 +54,7 @@ description: vLazyImg is a Vue 3 directive to lazy load images with many options
 > Open the developer console to show logs
 
 <img
-  style="background-color: var(--maz-color-bg-lighter); width: 80%;"
+  style="background-color: hsl(var(--maz-background-300)); width: 80%;"
   class="flex flex-center rounded"
   v-lazy-img="lazyBinding"
 />
@@ -62,7 +62,7 @@ description: vLazyImg is a Vue 3 directive to lazy load images with many options
 ```vue
 <template>
   <img
-    style="background-color: var(--maz-color-bg-lighter); width: 80%;"
+    style="background-color: hsl(var(--maz-background-300)); width: 80%;"
     class="flex flex-center rounded"
     v-lazy-img="lazyBinding"
   />
