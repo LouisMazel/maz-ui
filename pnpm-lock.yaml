@@ -25,7 +25,7 @@ catalogs:
       specifier: ^11.0.2
       version: 11.0.2
     libphonenumber-js:
-      specifier: ^1.12.8
+      specifier: 1.12.8
       version: 1.12.8
     nuxt:
       specifier: ^3.17.4
@@ -269,9 +269,6 @@ importers:
       eslint-plugin-oxlint:
         specifier: ^0.18.0
         version: 0.18.0
-      jiti:
-        specifier: ^2.4.2
-        version: 2.4.2
       maz-ui:
         specifier: workspace:*
         version: link:../../packages/lib

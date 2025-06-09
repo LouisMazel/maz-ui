@@ -32,23 +32,8 @@ export default defineNuxtConfig({
   postcss,
 
   mazUi: {
-    defaultMazIconPath: '/icons',
-    injectAos: {
-      router: true,
-      injectCss: true,
-      delay: 1000,
-    },
-    injectUseToast: {
-      position: 'bottom-right',
-      timeout: 3000,
-      persistent: false,
-    },
-    installVLazyImg: true,
-    installVTooltip: {
-      position: 'top',
-    },
-    injectCss: true,
-    injectComponents: true,
-    devtools: true,
+    composables: {
+      useTheme: true,
+    }
   },
 })

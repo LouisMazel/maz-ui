@@ -132,20 +132,20 @@ export const MazUiPlugin = {
       injectThemeCSS(finalPreset, config)
     }
 
-    app.provide(mazThemeInjectionKey, {
+    const themeState = {
       currentPreset: finalPreset,
       colorMode: initialColorMode,
       isDark: initialIsDark,
       strategy: config.strategy,
       darkModeStrategy: config.darkModeStrategy,
-    })
+    }
 
-    app.config.globalProperties.$mazTheme = {
-      currentPreset: finalPreset,
-      colorMode: initialColorMode,
-      isDark: initialIsDark,
-      strategy: config.strategy,
-      darkModeStrategy: config.darkModeStrategy,
+    app.provide(mazThemeInjectionKey, themeState)
+
+    try {
+      app.config.globalProperties.$mazThemeState = themeState
+    } catch (error) {
+      app.config.globalProperties._mazThemeState = themeState
     }
   },
 }
@@ -167,6 +167,6 @@ declare module '@vue/runtime-core' {
      * setColorMode('dark')
      * toggleDarkMode()
      */
-    $mazTheme: ThemeState
+    $mazThemeState: ThemeState
   }
 }

@@ -35,7 +35,7 @@
     </div>
 
     <MazFullscreenLoader
-      v-if="wait.isLoading('APP_LOADING') ?? true"
+      v-if="wait.isLoading('APP_LOADING')"
       color="secondary"
     >
       Loading...
