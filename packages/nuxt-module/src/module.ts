@@ -132,7 +132,15 @@ const defaults: Required<MazUiNuxtOptions> = {
   },
 }
 
-function addMazImport(name: string, path: string, prefix: string) {
+function addMazImport({
+  name,
+  path,
+  prefix,
+}: {
+  name: string
+  path: string
+  prefix: string
+}) {
   addImports({
     from: path,
     name,
@@ -163,14 +171,6 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       nuxt.options.css = ['maz-ui/dist/css/main.css', ...nuxt.options.css]
     }
 
-    if (moduleOptions.composables.useTheme) {
-      addImports({
-        from: '@maz-ui/themes',
-        name: 'useTheme',
-        as: `use${moduleOptions.general?.autoImportPrefix || ''}Theme`,
-      })
-    }
-
     if (moduleOptions.theme !== false) {
       addPlugin(resolve(_dirname, './runtime/plugins/theme'))
     }
@@ -189,11 +189,11 @@ export default defineNuxtModule<MazUiNuxtOptions>({
     if (moduleOptions.composables.useAos) {
       addPlugin(resolve(_dirname, './runtime/plugins/aos'))
 
-      addMazImport(
-        'useAos',
-        resolve(_dirname, './runtime/composables/useAos'),
-        moduleOptions.general?.autoImportPrefix || '',
-      )
+      addMazImport({
+        name: 'useAos',
+        path: resolve(_dirname, './runtime/composables/useAos'),
+        prefix: moduleOptions.general?.autoImportPrefix || '',
+      })
 
       const injectAosCSS
         = typeof moduleOptions.composables.useAos === 'object'
@@ -234,56 +234,56 @@ export default defineNuxtModule<MazUiNuxtOptions>({
     // Composables - Toast
     if (moduleOptions.composables.useToast) {
       addPlugin(resolve(_dirname, './runtime/plugins/toaster'))
-      addMazImport(
-        'useToast',
-        resolve(_dirname, './runtime/composables/useToast'),
-        moduleOptions.general?.autoImportPrefix || '',
-      )
+      addMazImport({
+        name: 'useToast',
+        path: resolve(_dirname, './runtime/composables/useToast'),
+        prefix: moduleOptions.general?.autoImportPrefix || '',
+      })
     }
 
     // Composables - Dialog
     if (moduleOptions.composables.useDialog) {
       addPlugin(resolve(_dirname, './runtime/plugins/dialog'))
-      addMazImport(
-        'useDialog',
-        resolve(_dirname, './runtime/composables/useDialog'),
-        moduleOptions.general?.autoImportPrefix || '',
-      )
+      addMazImport({
+        name: 'useDialog',
+        path: resolve(_dirname, './runtime/composables/useDialog'),
+        prefix: moduleOptions.general?.autoImportPrefix || '',
+      })
     }
 
     // Composables - Wait
     if (moduleOptions.composables.useWait) {
       addPlugin(resolve(_dirname, './runtime/plugins/wait'))
-      addMazImport(
-        'useWait',
-        resolve(_dirname, './runtime/composables/useWait'),
-        moduleOptions.general?.autoImportPrefix || '',
-      )
+      addMazImport({
+        name: 'useWait',
+        path: resolve(_dirname, './runtime/composables/useWait'),
+        prefix: moduleOptions.general?.autoImportPrefix || '',
+      })
     }
 
     // Autres composables
     if (moduleOptions.composables.useIdleTimeout) {
-      addMazImport(
-        'useIdleTimeout',
-        'maz-ui/composables/useIdleTimeout',
-        moduleOptions.general?.autoImportPrefix || '',
-      )
+      addMazImport({
+        name: 'useIdleTimeout',
+        path: 'maz-ui/composables/useIdleTimeout',
+        prefix: moduleOptions.general?.autoImportPrefix || '',
+      })
     }
 
     if (moduleOptions.composables.useReadingTime) {
-      addMazImport(
-        'useReadingTime',
-        'maz-ui/composables/useReadingTime',
-        moduleOptions.general?.autoImportPrefix || '',
-      )
+      addMazImport({
+        name: 'useReadingTime',
+        path: 'maz-ui/composables/useReadingTime',
+        prefix: moduleOptions.general?.autoImportPrefix || '',
+      })
     }
 
     if (moduleOptions.composables.useWindowSize) {
-      addMazImport(
-        'useWindowSize',
-        'maz-ui/composables/useWindowSize',
-        moduleOptions.general?.autoImportPrefix || '',
-      )
+      addMazImport({
+        name: 'useWindowSize',
+        path: 'maz-ui/composables/useWindowSize',
+        prefix: moduleOptions.general?.autoImportPrefix || '',
+      })
     }
 
     if (moduleOptions.composables.useBreakpoints) {
@@ -295,48 +295,56 @@ export default defineNuxtModule<MazUiNuxtOptions>({
     }
 
     if (moduleOptions.composables.useUserVisibility) {
-      addMazImport(
-        'useUserVisibility',
-        'maz-ui/composables/useUserVisibility',
-        moduleOptions.general?.autoImportPrefix || '',
-      )
+      addMazImport({
+        name: 'useUserVisibility',
+        path: 'maz-ui/composables/useUserVisibility',
+        prefix: moduleOptions.general?.autoImportPrefix || '',
+      })
     }
 
     if (moduleOptions.composables.useStringMatching) {
-      addMazImport(
-        'useStringMatching',
-        'maz-ui/composables/useStringMatching',
-        moduleOptions.general?.autoImportPrefix || '',
-      )
+      addMazImport({
+        name: 'useStringMatching',
+        path: 'maz-ui/composables/useStringMatching',
+        prefix: moduleOptions.general?.autoImportPrefix || '',
+      })
     }
 
     if (moduleOptions.composables.useTimer) {
-      addMazImport(
-        'useTimer',
-        'maz-ui/composables/useTimer',
-        moduleOptions.general?.autoImportPrefix || '',
-      )
+      addMazImport({
+        name: 'useTimer',
+        path: 'maz-ui/composables/useTimer',
+        prefix: moduleOptions.general?.autoImportPrefix || '',
+      })
     }
 
     if (moduleOptions.composables.useFormValidator) {
-      addMazImport(
-        'useFormValidator',
-        'maz-ui/composables/useFormValidator',
-        moduleOptions.general?.autoImportPrefix || '',
-      )
-      addMazImport(
-        'useFormField',
-        'maz-ui/composables/useFormField',
-        moduleOptions.general?.autoImportPrefix || '',
-      )
+      addMazImport({
+        name: 'useFormValidator',
+        path: 'maz-ui/composables/useFormValidator',
+        prefix: moduleOptions.general?.autoImportPrefix || '',
+      })
+      addMazImport({
+        name: 'useFormField',
+        path: 'maz-ui/composables/useFormField',
+        prefix: moduleOptions.general?.autoImportPrefix || '',
+      })
     }
 
     if (moduleOptions.composables.useLanguageDisplayNames) {
-      addMazImport(
-        'useLanguageDisplayNames',
-        'maz-ui/composables/useLanguageDisplayNames',
-        moduleOptions.general?.autoImportPrefix || '',
-      )
+      addMazImport({
+        name: 'useLanguageDisplayNames',
+        path: 'maz-ui/composables/useLanguageDisplayNames',
+        prefix: moduleOptions.general?.autoImportPrefix || '',
+      })
+    }
+
+    if (moduleOptions.composables.useTheme) {
+      addMazImport({
+        name: 'useTheme',
+        path: '@maz-ui/themes/composables/useTheme',
+        prefix: moduleOptions.general?.autoImportPrefix || '',
+      })
     }
 
     // Maz Icon Path

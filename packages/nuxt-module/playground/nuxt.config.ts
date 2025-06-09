@@ -1,3 +1,5 @@
+import { mazUi } from '@maz-ui/themes'
+
 export default defineNuxtConfig({
   modules: ['../src/module'],
   devtools: { enabled: true },
@@ -11,7 +13,7 @@ export default defineNuxtConfig({
       injectMainCss: true,
     },
     theme: {
-      preset: 'mazUi',
+      preset: mazUi,
       strategy: 'hybrid',
       darkModeStrategy: 'class',
     },

@@ -163,7 +163,7 @@
     "chart.js": "^4.0.0",
     "dayjs": "^1.1.0",
     "defu": "^6.0.0",
-    "libphonenumber-js": "^1.9.44",
+    "libphonenumber-js": "^1.10.0",
     "nuxt": "^3.4.0",
     "unplugin-auto-import": ">=19.0.0 <20.0.0",
     "unplugin-vue-components": ">=28.0.0 <29.0.0",

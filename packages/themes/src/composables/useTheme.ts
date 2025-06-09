@@ -2,6 +2,8 @@ import type { BaseThemePreset, ColorMode, ThemePreset, ThemeState } from '../typ
 import { computed, getCurrentInstance, ref, watchEffect } from 'vue'
 import { generateCriticalCSS, generateFullCSS, injectCSS } from '../utils/css-generator'
 import { mergePresets } from '../utils/preset-merger'
+import { inject } from 'vue'
+import { mazThemeInjectionKey } from 'maz-ui/src/plugins/maz-ui.js'
 
 const state = ref<ThemeState | null>(null)
 
@@ -63,15 +65,40 @@ function initializeThemeFromData(themeData: any) {
 }
 
 export function useTheme() {
-  const instance = getCurrentInstance()
-  const mazTheme = instance?.appContext?.app?.config?.globalProperties?.$mazTheme
+  let mazThemeState: ThemeState | undefined
 
-  if (!state.value && mazTheme) {
-    initializeThemeFromData(mazTheme)
+  try {
+    mazThemeState = inject(mazThemeInjectionKey, undefined)
+  } catch (error) {
+    const instance = getCurrentInstance()
+    if (instance?.appContext?.app?.config?.globalProperties) {
+      const props = instance.appContext.app.config.globalProperties
+      mazThemeState = props.$mazThemeState || props._mazThemeState
+    }
   }
 
+  if (!state.value && mazThemeState) {
+    initializeThemeFromData(mazThemeState)
+  }
+
+
   if (!state.value) {
-    throw new Error('useTheme must be used within a MazThemeProvider or after MazUiPlugin installation')
+    const defaultState = {
+      currentPreset: null,
+      colorMode: 'light' as ColorMode,
+      isDark: false,
+      strategy: 'hybrid' as const,
+    }
+
+    return {
+      currentPreset: computed(() => defaultState.currentPreset),
+      colorMode: computed(() => defaultState.colorMode),
+      isDark: computed(() => defaultState.isDark),
+      strategy: computed(() => defaultState.strategy),
+      updateTheme: () => {},
+      setColorMode: () => {},
+      toggleDarkMode: () => {},
+    }
   }
 
   const currentPreset = computed(() => state.value!.currentPreset)
