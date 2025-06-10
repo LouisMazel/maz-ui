@@ -1,5 +1,5 @@
 export { AosHandler, type AosOptions, AosPlugin, getAosInstance } from './aos'
 export { type DialogOptions, DialogPlugin } from './dialog'
-export { type MazThemePluginOptions, MazUiPlugin } from './maz-ui'
+export { MazUiPlugin, type MazUiPluginOptions } from './maz-ui'
 export { ToasterHandler, type ToasterOptions, ToasterPlugin, type ToasterPosition } from './toaster'
 export { WaitHandler, waitInstance, WaitPlugin } from './wait'

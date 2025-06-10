@@ -1,6 +1,6 @@
-import type { BaseThemePreset } from '../types'
+import type { ThemePreset } from '../types'
 
-export const pristine: BaseThemePreset = {
+export const pristine: ThemePreset = {
   name: 'pristine',
   appearance: {
     'radius': '0.5rem',

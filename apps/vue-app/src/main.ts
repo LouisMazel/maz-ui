@@ -1,3 +1,4 @@
+import type { MazUiPluginOptions } from 'maz-ui/src/plugins/maz-ui.ts'
 import { DialogPlugin } from 'maz-ui/src/plugins/dialog.ts'
 import { MazUiPlugin } from 'maz-ui/src/plugins/maz-ui.ts'
 import { ToasterPlugin } from 'maz-ui/src/plugins/toaster.ts'
@@ -12,10 +13,12 @@ import './assets/main.css'
 
 const app = createApp(App)
 
-app.use(MazUiPlugin, {
+const config = {
   strategy: 'hybrid',
   darkModeStrategy: 'class',
-})
+} satisfies MazUiPluginOptions
+
+app.use(MazUiPlugin, config)
 
 app.use(router)
 app.use(ToasterPlugin)

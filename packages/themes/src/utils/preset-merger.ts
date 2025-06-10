@@ -1,6 +1,6 @@
-import type { BaseThemePreset, ThemeColors, ThemePreset } from '../types'
+import type { ThemeColors, ThemePreset, ThemePresetOverrides } from '../types'
 
-export function mergePresets(base: BaseThemePreset, overrides: Partial<ThemePreset>): BaseThemePreset {
+export function mergePresets(base: ThemePreset, overrides: ThemePresetOverrides): ThemePreset {
   return {
     name: overrides.name || base.name,
     appearance: {
