@@ -1,8 +1,8 @@
-import type { BaseThemePreset } from '../types'
+import type { ThemePreset } from '../types'
 import { generateCriticalCSS, generateFullCSS } from '../utils/css-generator'
 
 export interface BuildThemeOptions {
-  preset: BaseThemePreset
+  preset: ThemePreset
   /** Mode de thème à générer */
   mode?: 'light' | 'dark' | 'both'
   /** Sélecteur pour le mode sombre */
@@ -39,7 +39,7 @@ export function buildThemeCSS(options: BuildThemeOptions): string {
   return `${criticalCSS}\n${fullCSS}`
 }
 
-export function generateThemeBundle(presets: BaseThemePreset[], options: {
+export function generateThemeBundle(presets: ThemePreset[], options: {
   /** Mode de thème à générer */
   mode?: 'light' | 'dark' | 'both'
   /** Sélecteur pour le mode sombre */
@@ -85,7 +85,7 @@ export function createThemeStylesheet(css: string, options: {
   return styleTag
 }
 
-export function buildSeparateThemeFiles(preset: BaseThemePreset, options: {
+export function buildSeparateThemeFiles(preset: ThemePreset, options: {
   prefix?: string
   darkSelector?: 'class' | 'media'
 } = {}): {

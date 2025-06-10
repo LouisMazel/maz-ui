@@ -107,7 +107,7 @@ const {
   colorMode, // Ref<'light' | 'dark' | 'auto'>
   isDark, // Ref<boolean>
   strategy, // Ref<'runtime' | 'build' | 'hybrid'>
-  updateTheme, // (preset: ThemePreset | Partial<ThemePreset>) => void
+  updateTheme, // (preset: ThemePreset | ThemePresetOverrides) => void
   setColorMode, // (mode: 'light' | 'dark' | 'auto') => void
   toggleDarkMode // () => void
 } = useMazTheme()
