@@ -34,8 +34,8 @@ export default defineNuxtConfig({
   postcss,
 
   mazUi: {
-    composables: {
-      useTheme: true,
+    theme: {
+      // injectFullCSSOnServer: true,
     },
   },
 })

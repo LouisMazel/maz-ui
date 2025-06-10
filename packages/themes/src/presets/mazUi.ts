@@ -1,6 +1,6 @@
-import type { BaseThemePreset } from '../types'
+import type { ThemePreset } from '../types'
 
-export const mazUi: BaseThemePreset = {
+export const mazUi: ThemePreset = {
   name: 'maz-ui',
   appearance: {
     'radius': '0.7rem',

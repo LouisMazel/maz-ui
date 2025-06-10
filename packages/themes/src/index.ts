@@ -1,4 +1,4 @@
-export * from './build/build-themes'
+export * from './build'
 export * from './composables/useTheme'
 export { definePreset } from './define-preset'
 export * from './presets'

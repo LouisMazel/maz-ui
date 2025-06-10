@@ -8,6 +8,5 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "skipLibCheck": true
-  },
-  "include": ["./*.ts"]
+  }
 }

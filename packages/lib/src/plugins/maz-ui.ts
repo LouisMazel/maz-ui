@@ -1,4 +1,4 @@
-import type { BaseThemePreset, ColorMode, DarkMode, ThemeConfig, ThemeState } from '@maz-ui/themes/src/types/index.ts'
+import type { ColorMode, DarkMode, ThemeConfig, ThemePreset, ThemeState } from '@maz-ui/themes/src/types/index.ts'
 import type { App } from 'vue'
 import { mazUi } from '@maz-ui/themes/src/presets/mazUi.ts'
 import {
@@ -7,8 +7,29 @@ import {
   injectCSS,
 } from '@maz-ui/themes/src/utils/css-generator.ts'
 
-export interface MazThemePluginOptions extends ThemeConfig {
+export interface MazUiPluginOptions extends ThemeConfig {
+  /**
+   * CSS variables prefix
+   * @description Prefix for CSS variables
+   * @default 'maz'
+   * @private
+   */
   prefix?: string
+  /**
+   * Inject critical CSS
+   * @description Inject critical CSS to prevent FOUC
+   * @default true
+   * @private
+   */
+  injectCriticalCSS?: boolean
+
+  /**
+   * Inject full CSS
+   * @description Inject full CSS to ensure all styles are loaded
+   * @default true
+   * @private
+   */
+  injectFullCSS?: boolean
 }
 
 function applyDarkMode(darkModeStrategy: DarkMode, initialColorMode: ColorMode) {
@@ -51,7 +72,7 @@ function getInitialColorMode(darkModeStrategy: DarkMode): ColorMode {
   return systemPrefersDark ? 'dark' : 'light'
 }
 
-function injectThemeCSS(finalPreset: BaseThemePreset, config: MazThemePluginOptions) {
+function injectThemeCSS(finalPreset: ThemePreset, config: MazUiPluginOptions) {
   if (typeof document === 'undefined')
     return
 
@@ -61,15 +82,21 @@ function injectThemeCSS(finalPreset: BaseThemePreset, config: MazThemePluginOpti
     prefix: config.prefix,
   }
 
-  const criticalCSS = generateCriticalCSS(finalPreset, cssOptions)
-  injectCSS(criticalCSS, 'maz-theme-critical')
+  if (config.injectCriticalCSS) {
+    const criticalCSS = generateCriticalCSS(finalPreset, cssOptions)
+    injectCSS(criticalCSS, 'maz-theme-critical')
+  }
+
+  if (!config.injectFullCSS) {
+    return
+  }
 
   const fullCSS = generateFullCSS(finalPreset, cssOptions)
 
   if (config.strategy === 'runtime') {
     injectCSS(fullCSS, 'maz-theme-full')
   }
-  else {
+  else if (config.strategy === 'hybrid') {
     requestIdleCallback(() => {
       injectCSS(fullCSS, 'maz-theme-full')
     }, { timeout: 100 })
@@ -94,15 +121,16 @@ function injectThemeState(app: App, themeState: ThemeState) {
  * ```
  */
 export const MazUiPlugin = {
-  install(app: App, options: MazThemePluginOptions = {}) {
+  install(app: App, options: MazUiPluginOptions = {}) {
     const config = {
       preset: mazUi,
       strategy: 'runtime' as const,
       darkModeStrategy: 'class' as const,
       prefix: 'maz' as const,
-      overrides: undefined,
+      injectCriticalCSS: true,
+      injectFullCSS: true,
       ...options,
-    }
+    } satisfies MazUiPluginOptions
 
     const finalPreset = config.overrides
       ? {

@@ -1,4 +1,4 @@
-import type { BaseThemePreset, ColorMode, ThemePreset, ThemeState } from '../types'
+import type { ColorMode, ThemePreset, ThemePresetOverrides, ThemeState } from '../types'
 import { computed, getCurrentInstance, ref, watchEffect } from 'vue'
 import { inject } from 'vue'
 import { generateCriticalCSS, generateFullCSS, injectCSS } from '../utils/css-generator'
@@ -63,104 +63,6 @@ function initializeThemeFromData(themeData: ThemeState) {
   })
 }
 
-export function useTheme() {
-  let mazThemeState: ThemeState | undefined
-
-  try {
-    mazThemeState = inject<ThemeState | undefined>('mazThemeState', undefined)
-
-    if (!mazThemeState) {
-      throw new Error('mazThemeState not found')
-    }
-  }
-  catch {
-    const instance = getCurrentInstance()
-    if (instance?.appContext?.app?.config?.globalProperties) {
-      mazThemeState = instance.appContext.app.config.globalProperties.$mazThemeState
-    }
-  }
-
-  if (!state.value && mazThemeState) {
-    initializeThemeFromData(mazThemeState)
-  }
-
-  if (!state.value) {
-    throw new Error('You must install the MazUiPlugin before using useTheme composable')
-  }
-
-  const currentPreset = computed(() => state.value!.currentPreset)
-
-  const colorMode = computed<ColorMode>({
-    get: () => state.value!.colorMode,
-    set: (mode: ColorMode) => setColorMode(mode),
-  })
-
-  const isDark = computed(() => state.value!.isDark)
-  const strategy = computed(() => state.value!.strategy)
-
-  function updateTheme(preset: ThemePreset | Partial<ThemePreset>) {
-    if (!state.value)
-      return
-
-    const newPreset = 'name' in preset
-      ? preset as BaseThemePreset
-      : mergePresets(state.value.currentPreset, preset)
-
-    state.value.currentPreset = newPreset
-
-    if (state.value.strategy === 'runtime' || state.value.strategy === 'hybrid') {
-      const cssOptions = {
-        mode: 'both' as const,
-        darkSelector: state.value.colorMode === 'auto' ? 'media' as const : 'class' as const,
-        prefix: 'maz',
-      }
-
-      const criticalCSS = generateCriticalCSS(newPreset, cssOptions)
-      const fullCSS = generateFullCSS(newPreset, cssOptions)
-
-      injectCSS(criticalCSS, 'maz-theme-critical')
-      injectCSS(fullCSS, 'maz-theme-full')
-    }
-  }
-
-  function setColorMode(mode: ColorMode) {
-    if (!state.value)
-      return
-
-    state.value.colorMode = mode
-
-    if (mode === 'auto') {
-      state.value.isDark = typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches
-    }
-    else {
-      state.value.isDark = mode === 'dark'
-    }
-
-    updateDocumentClass()
-
-    if (typeof localStorage !== 'undefined') {
-      localStorage.setItem('maz-color-mode', mode)
-    }
-  }
-
-  function toggleDarkMode() {
-    if (!state.value)
-      return
-
-    setColorMode(state.value.isDark ? 'light' : 'dark')
-  }
-
-  return {
-    currentPreset,
-    colorMode,
-    isDark,
-    strategy,
-    updateTheme,
-    setColorMode,
-    toggleDarkMode,
-  }
-}
-
 export function _initThemeState(initialState: ThemeState) {
   state.value = initialState
 
@@ -197,4 +99,102 @@ export function _initThemeState(initialState: ThemeState) {
       updateDocumentClass()
     }
   })
+}
+
+const currentPreset = computed(() => state.value!.currentPreset)
+
+const colorMode = computed<ColorMode>({
+  get: () => state.value!.colorMode,
+  set: (mode: ColorMode) => setColorMode(mode),
+})
+
+const isDark = computed(() => state.value!.isDark)
+const strategy = computed(() => state.value!.strategy)
+
+function updateTheme(preset: ThemePreset | ThemePresetOverrides) {
+  if (!state.value)
+    return
+
+  const newPreset = 'name' in preset
+    ? preset as ThemePreset
+    : mergePresets(state.value.currentPreset, preset)
+
+  state.value.currentPreset = newPreset
+
+  if (state.value.strategy === 'runtime' || state.value.strategy === 'hybrid') {
+    const cssOptions = {
+      mode: 'both' as const,
+      darkSelector: state.value.colorMode === 'auto' ? 'media' as const : 'class' as const,
+      prefix: 'maz',
+    }
+
+    const criticalCSS = generateCriticalCSS(newPreset, cssOptions)
+    const fullCSS = generateFullCSS(newPreset, cssOptions)
+
+    injectCSS(criticalCSS, 'maz-theme-critical')
+    injectCSS(fullCSS, 'maz-theme-full')
+  }
+}
+
+function setColorMode(mode: ColorMode) {
+  if (!state.value)
+    return
+
+  state.value.colorMode = mode
+
+  if (mode === 'auto') {
+    state.value.isDark = typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches
+  }
+  else {
+    state.value.isDark = mode === 'dark'
+  }
+
+  updateDocumentClass()
+
+  if (typeof localStorage !== 'undefined') {
+    localStorage.setItem('maz-color-mode', mode)
+  }
+}
+
+function toggleDarkMode() {
+  if (!state.value)
+    return
+
+  setColorMode(state.value.isDark ? 'light' : 'dark')
+}
+
+export function useTheme() {
+  let mazThemeState: ThemeState | undefined
+
+  try {
+    mazThemeState = inject<ThemeState | undefined>('mazThemeState', undefined)
+
+    if (!mazThemeState) {
+      throw new Error('mazThemeState not found')
+    }
+  }
+  catch {
+    const instance = getCurrentInstance()
+    if (instance?.appContext?.app?.config?.globalProperties) {
+      mazThemeState = instance.appContext.app.config.globalProperties.$mazThemeState
+    }
+  }
+
+  if (!state.value && mazThemeState) {
+    initializeThemeFromData(mazThemeState)
+  }
+
+  if (!state.value) {
+    throw new Error('You must install the MazUiPlugin before using useTheme composable')
+  }
+
+  return {
+    currentPreset,
+    colorMode,
+    isDark,
+    strategy,
+    updateTheme,
+    setColorMode,
+    toggleDarkMode,
+  }
 }

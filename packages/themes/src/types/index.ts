@@ -32,7 +32,11 @@ export interface ThemeAppearance {
   'font-family': string
 }
 
-export interface ThemePreset {
+export interface ThemePresetOverrides {
+  /**
+   * Theme name
+   * @default undefined
+   */
   name?: string
   colors?: {
     light?: Partial<ThemeColors>
@@ -41,7 +45,11 @@ export interface ThemePreset {
   appearance?: Partial<ThemeAppearance>
 }
 
-export interface BaseThemePreset extends Required<ThemePreset> {
+export interface ThemePreset {
+  /**
+   * Theme name
+   */
+  name: string
   colors: {
     light: ThemeColors
     dark: ThemeColors
@@ -50,9 +58,38 @@ export interface BaseThemePreset extends Required<ThemePreset> {
 }
 
 export interface ThemeConfig {
-  preset?: BaseThemePreset
-  overrides?: ThemePreset
+  /**
+   * Theme preset to use
+   * @description Can be a predefined preset name or a custom preset object
+   * @default mazUi preset
+   */
+  preset?: ThemePreset
+
+  /**
+   * Custom preset overrides
+   * @description Allows customizing specific parts of the preset without redefining it entirely
+   * @default undefined
+   */
+  overrides?: ThemePresetOverrides
+
+  /**
+   * CSS generation strategy
+   * @description
+   * - `runtime`: CSS generated and injected dynamically on client-side
+   * - `buildtime`: CSS generated at build time and included in bundle
+   * - `hybrid`: Critical CSS injected inline, full CSS loaded asynchronously (recommended)
+   * @default 'hybrid'
+   */
   strategy?: Strategy
+
+  /**
+   * Dark mode handling
+   * @description
+   * - `class`: Dark mode activated with `.dark` class
+   * - `media`: Dark mode based on `prefers-color-scheme`
+   * - `auto`: Automatic detection of system preferences
+   * @default 'class'
+   */
   darkModeStrategy?: DarkMode
 }
 
@@ -76,7 +113,7 @@ export type DarkMode = 'class' | 'media' | 'auto'
 export type Strategy = 'runtime' | 'buildtime' | 'hybrid'
 
 export interface ThemeState {
-  currentPreset: BaseThemePreset
+  currentPreset: ThemePreset
   colorMode: ColorMode
   isDark: boolean
   strategy: Strategy

@@ -1,6 +1,6 @@
-import type { BaseThemePreset } from '../types'
+import type { ThemePreset } from '../types'
 
-export const ocean: BaseThemePreset = {
+export const ocean: ThemePreset = {
   name: 'ocean',
   appearance: {
     'radius': '1rem',
