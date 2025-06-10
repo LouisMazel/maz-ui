@@ -341,13 +341,13 @@ const brandTheme = definePreset({
 ```typescript
 const {
   // Reactive state
-  currentPreset, // Ref<BaseThemePreset>
+  currentPreset, // Ref<ThemePreset>
   colorMode, // Ref<'light' | 'dark' | 'auto'>
   isDark, // Ref<boolean>
   strategy, // Ref<'runtime' | 'buildtime' | 'hybrid'>
 
   // Actions
-  updateTheme, // (preset: ThemePreset | Partial<ThemePreset>) => void
+  updateTheme, // (preset: ThemePreset | ThemePresetOverrides) => void
   setColorMode, // (mode: 'light' | 'dark' | 'auto') => void
   toggleDarkMode // () => void
 } = useTheme()

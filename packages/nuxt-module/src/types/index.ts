@@ -1,6 +1,23 @@
 import type { VLazyImgOptions, VTooltipOptions, VFullscreenImgOptions } from 'maz-ui/directives'
-import type { AosOptions, DialogOptions, ToasterOptions } from 'maz-ui/plugins'
-import type { BaseThemePreset, ThemePreset, Strategy, DarkMode } from '@maz-ui/themes'
+import type { AosOptions, DialogOptions, MazUiPluginOptions, ToasterOptions } from 'maz-ui/plugins'
+import type { ThemePreset } from '@maz-ui/themes'
+
+export type ThemePresetName = 'mazUi' | 'ocean' | 'pristine'
+
+export interface MazUiNuxtThemeOptions extends Omit<MazUiPluginOptions, 'preset'> {
+  /**
+   * Theme preset to use
+   * @description Can be a predefined preset name or a custom preset object
+   * @default mazUi preset
+   */
+  preset?: ThemePreset | ThemePresetName
+  /**
+   * Inject full CSS on server-side
+   * @description Inject full CSS on server-side to prevent FOUC on client-side
+   * @default true
+   */
+  injectFullCSSOnServer?: boolean
+}
 
 export interface MazUiNuxtOptions {
   /**
@@ -52,43 +69,7 @@ export interface MazUiNuxtOptions {
    *   darkModeStrategy: 'class',
    * }
    */
-  theme?:
-    | false
-    | {
-      /**
-       * Theme preset to use
-       * @description Can be a predefined preset name or a custom preset object
-       * @default mazUi preset
-       */
-      preset?: BaseThemePreset
-
-      /**
-       * Custom preset overrides
-       * @description Allows customizing specific parts of the preset without redefining it entirely
-       * @default undefined
-       */
-      overrides?: Partial<ThemePreset>
-
-      /**
-       * CSS generation strategy
-       * @description
-       * - `runtime`: CSS generated and injected dynamically on client-side
-       * - `buildtime`: CSS generated at build time and included in bundle
-       * - `hybrid`: Critical CSS injected inline, full CSS loaded asynchronously (recommended)
-       * @default 'hybrid'
-       */
-      strategy?: Strategy
-
-      /**
-       * Dark mode handling
-       * @description
-       * - `class`: Dark mode activated with `.dark` class
-       * - `media`: Dark mode based on `prefers-color-scheme`
-       * - `auto`: Automatic detection of system preferences
-       * @default 'class'
-       */
-      darkModeStrategy?: DarkMode
-    }
+  theme?: false | MazUiNuxtThemeOptions
 
   /**
    * Components configuration

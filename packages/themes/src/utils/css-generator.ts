@@ -1,4 +1,4 @@
-import type { BaseThemePreset, ThemeAppearance, ThemeColors } from '../types'
+import type { ThemeAppearance, ThemeColors, ThemePreset } from '../types'
 import { generateColorScale } from './color-utils'
 
 // =============================================================================
@@ -46,6 +46,7 @@ const DEFAULT_CRITICAL_COLORS: (keyof ThemeColors)[] = [
 const DEFAULT_CRITICAL_APPEARANCE: (keyof ThemeAppearance)[] = [
   'radius',
   'font-family',
+  'border-width',
 ]
 
 const scaleColors = ['primary', 'secondary', 'accent', 'destructive', 'success', 'warning', 'info', 'contrast', 'background', 'foreground', 'border', 'muted', 'overlay', 'shadow'] as const
@@ -55,7 +56,7 @@ const scaleColors = ['primary', 'secondary', 'accent', 'destructive', 'success',
  * Contains only essential variables
  */
 export function generateCriticalCSS(
-  preset: BaseThemePreset,
+  preset: ThemePreset,
   options: CriticalCSSOptions = {},
 ): string {
   const {
@@ -106,7 +107,7 @@ export function generateCriticalCSS(
  * Avoids duplication with critical CSS
  */
 export function generateFullCSS(
-  preset: BaseThemePreset,
+  preset: ThemePreset,
   options: FullCSSOptions = {},
 ): string {
   const {
@@ -233,7 +234,7 @@ function generateVariablesBlock({
   appearance?: Partial<ThemeAppearance>
   prefix: string
   includeScales?: boolean
-  preset?: BaseThemePreset
+  preset?: ThemePreset
   isDark?: boolean
 }): string {
   const variables: string[] = []

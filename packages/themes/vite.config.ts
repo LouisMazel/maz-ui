@@ -46,7 +46,7 @@ export default defineConfig({
       entry: {
         ...entries,
         'index': 'src/index.ts',
-        'build/index': 'src/build/build-themes.ts',
+        'build/index': 'src/build/index.ts',
         'presets/index': 'src/presets/index.ts',
         'utils/index': 'src/utils/index.ts',
         'composables/index': 'src/composables/useTheme.ts',

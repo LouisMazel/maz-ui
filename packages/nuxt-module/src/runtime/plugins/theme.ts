@@ -1,8 +1,16 @@
 import { defineNuxtPlugin, useCookie, useHead, useRequestHeaders } from 'nuxt/app'
 import { MazUiPlugin } from 'maz-ui/src/plugins/maz-ui.js'
-import type { ColorMode, CriticalCSSOptions, ThemeState } from '@maz-ui/themes'
-import type { MazThemePluginOptions } from 'maz-ui/plugins'
+import {
+  generateFullCSS,
+  mergePresets,
+  type ColorMode,
+  type CriticalCSSOptions,
+  type ThemePreset,
+  type ThemeState,
+} from '@maz-ui/themes'
+import type { MazUiPluginOptions } from 'maz-ui/src/plugins/maz-ui.js'
 import { generateCriticalCSS } from '@maz-ui/themes/src/index.js'
+import type { ThemePresetName } from '~/src/types'
 
 function getServerInitialColorMode(): ColorMode {
   // 1. Priorité: cookie de préférence utilisateur
@@ -42,6 +50,34 @@ function getServerIsDark(colorMode: ColorMode): boolean {
   return false
 }
 
+async function getPreset(preset: ThemePresetName | ThemePreset | undefined) {
+  if (typeof preset === 'object') {
+    return preset
+  }
+
+  if (!preset) {
+    const { mazUi } = await import('@maz-ui/themes/presets/mazUi')
+    return mazUi
+  }
+
+  if (preset === 'mazUi') {
+    const { mazUi } = await import('@maz-ui/themes/presets/mazUi')
+    return mazUi
+  }
+
+  if (preset === 'ocean') {
+    const { ocean } = await import('@maz-ui/themes/presets/ocean')
+    return ocean
+  }
+
+  if (preset === 'pristine') {
+    const { pristine } = await import('@maz-ui/themes/presets/pristine')
+    return pristine
+  }
+
+  throw new TypeError(`[@maz-ui/nuxt] Preset ${preset} not found`)
+}
+
 export default defineNuxtPlugin(async ({ vueApp, $config }) => {
   const themeConfig = $config.public.mazUi?.theme
 
@@ -49,15 +85,21 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
     return
   }
 
-  const { mazUi } = await import('@maz-ui/themes/presets/mazUi')
+  let preset = await getPreset(themeConfig?.preset)
 
-  const config: Required<Omit<MazThemePluginOptions, 'overrides'>> = {
-    preset: mazUi,
+  if (themeConfig?.overrides) {
+    preset = mergePresets(preset, themeConfig.overrides)
+  }
+
+  const config = {
     strategy: 'hybrid',
     darkModeStrategy: 'class',
     prefix: 'maz',
+    injectCriticalCSS: false,
+    injectFullCSS: true,
     ...themeConfig,
-  }
+    preset,
+  } satisfies MazUiPluginOptions
 
   if (import.meta.server) {
     const initialColorMode = getServerInitialColorMode()
@@ -65,15 +107,14 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
     const initialIsDark
       = initialColorMode === 'dark' || (initialColorMode === 'auto' && serverIsDark)
 
-    const themeState: ThemeState = {
+    const themeState = {
       currentPreset: config.preset,
       colorMode: initialColorMode,
       isDark: initialIsDark,
       strategy: config.strategy,
       darkModeStrategy: config.darkModeStrategy,
-    }
+    } satisfies ThemeState
 
-    // Générer le CSS critique côté serveur
     const cssOptions: CriticalCSSOptions = {
       mode: 'both',
       darkSelector: config.darkModeStrategy === 'media' ? 'media' : 'class',
@@ -81,22 +122,24 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
     } satisfies CriticalCSSOptions
 
     const criticalCSS = generateCriticalCSS(themeState.currentPreset, cssOptions)
-    // const fullCSS = generateFullCSS(themeState.currentPreset, cssOptions)
 
     useHead({
       style: [
         {
           innerHTML: criticalCSS,
-          id: 'maz-theme-critical-ssr',
+          id: 'maz-theme-critical',
         },
-        // {
-        //   innerHTML: fullCSS,
-        //   id: 'maz-theme-full-ssr',
-        // },
       ],
     })
 
-    // Ajouter la classe dark si nécessaire
+    if (config.injectFullCSSOnServer) {
+      const fullCSS = generateFullCSS(themeState.currentPreset, cssOptions)
+
+      useHead({
+        style: [{ innerHTML: fullCSS, id: 'maz-theme-full' }],
+      })
+    }
+
     if (initialIsDark && config.darkModeStrategy === 'class') {
       useHead({
         htmlAttrs: {
@@ -104,18 +147,13 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
         },
       })
     }
-
-    // Injecter dans Vue
-    // vueApp.provide('mazThemeState', themeState)
   }
 
-  const ssrCriticalStyle = document?.getElementById('maz-theme-critical-ssr')
-  if (ssrCriticalStyle) {
-    ssrCriticalStyle.remove()
-  }
-
-  // Côté client : utilisation complète du MazUiPlugin
-  MazUiPlugin.install(vueApp, config)
+  MazUiPlugin.install(vueApp, {
+    ...config,
+    injectFullCSS: !config.injectFullCSSOnServer,
+    injectCriticalCSS: false,
+  })
 })
 
 declare module '#app' {
