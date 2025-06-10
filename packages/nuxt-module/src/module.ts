@@ -2,7 +2,6 @@ import { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { addComponent, addImports, addPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
 import { defu } from 'defu'
-import { mazUi } from './../../themes/src/presets/mazUi.js'
 import { capitalize } from './../../lib/src/formatters/capitalize.js'
 import type { MazUiNuxtOptions } from './types'
 
@@ -97,7 +96,6 @@ const defaults: Required<MazUiNuxtOptions> = {
     injectMainCss: true,
   },
   theme: {
-    preset: mazUi,
     strategy: 'hybrid',
     darkModeStrategy: 'class',
   },
@@ -344,7 +342,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
     if (moduleOptions.composables.useTheme) {
       addMazImport({
         name: 'useTheme',
-        path: '@maz-ui/themes/composables/useTheme',
+        path: '@maz-ui/themes/src/composables/useTheme.js',
         prefix: moduleOptions.general?.autoImportPrefix,
       })
     }

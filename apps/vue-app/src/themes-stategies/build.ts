@@ -2,11 +2,11 @@ import { mkdirSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import {
   buildThemeCSS,
-  dark,
   definePreset,
   generateThemeBundle,
   mazUi,
   ocean,
+  pristine,
 } from '@maz-ui/themes'
 
 // Votre preset personnalisé
@@ -51,7 +51,7 @@ const customCSS = buildThemeCSS({
 })
 
 // Générer bundle pour plusieurs thèmes
-const themeBundle = generateThemeBundle([customPreset, mazUi, dark, ocean], {
+const themeBundle = generateThemeBundle([customPreset, mazUi, pristine, ocean], {
   mode: 'both',
 })
 
@@ -62,4 +62,4 @@ Object.entries(themeBundle).forEach(([name, css]) => {
   writeFileSync(join(process.cwd(), `public/themes/${name}.css`), css)
 })
 
-console.log('✅ Thèmes générés dans public/themes/')
+console.warn('✅ Thèmes générés dans public/themes/')

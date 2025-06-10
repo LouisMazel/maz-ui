@@ -1,5 +1,6 @@
 import type { BaseThemePreset, ColorMode, DarkMode, ThemeConfig, ThemeState } from '@maz-ui/themes/src/types/index.ts'
 import type { App } from 'vue'
+import { mazUi } from '@maz-ui/themes/src/presets/mazUi.ts'
 import {
   generateCriticalCSS,
   generateFullCSS,
@@ -50,9 +51,6 @@ function getInitialColorMode(darkModeStrategy: DarkMode): ColorMode {
   return systemPrefersDark ? 'dark' : 'light'
 }
 
-/**
- * Injecte le CSS selon la stratégie
- */
 function injectThemeCSS(finalPreset: BaseThemePreset, config: MazThemePluginOptions) {
   if (typeof document === 'undefined')
     return
@@ -78,6 +76,11 @@ function injectThemeCSS(finalPreset: BaseThemePreset, config: MazThemePluginOpti
   }
 }
 
+function injectThemeState(app: App, themeState: ThemeState) {
+  app.provide('mazThemeState', themeState)
+  app.config.globalProperties.$mazThemeState = themeState
+}
+
 /**
  * @example
  * ```ts
@@ -91,9 +94,7 @@ function injectThemeCSS(finalPreset: BaseThemePreset, config: MazThemePluginOpti
  * ```
  */
 export const MazUiPlugin = {
-  async install(app: App, options: MazThemePluginOptions = {}) {
-    const { mazUi } = await import('@maz-ui/themes/src/presets/mazUi.ts')
-
+  install(app: App, options: MazThemePluginOptions = {}) {
     const config = {
       preset: mazUi,
       strategy: 'runtime' as const,
@@ -124,12 +125,6 @@ export const MazUiPlugin = {
       ? systemPrefersDark
       : initialColorMode === 'dark'
 
-    applyDarkMode(config.darkModeStrategy, initialColorMode)
-
-    if (config.strategy === 'runtime' || config.strategy === 'hybrid') {
-      injectThemeCSS(finalPreset, config)
-    }
-
     const themeState = {
       currentPreset: finalPreset,
       colorMode: initialColorMode,
@@ -138,14 +133,15 @@ export const MazUiPlugin = {
       darkModeStrategy: config.darkModeStrategy,
     }
 
-    app.provide('mazThemeState', themeState)
+    injectThemeState(app, themeState)
 
-    try {
-      app.config.globalProperties.$mazThemeState = themeState
+    applyDarkMode(config.darkModeStrategy, initialColorMode)
+
+    if (config.strategy === 'buildtime') {
+      return
     }
-    catch {
-      app.config.globalProperties._mazThemeState = themeState
-    }
+
+    injectThemeCSS(finalPreset, config)
   },
 }
 

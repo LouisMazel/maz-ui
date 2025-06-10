@@ -3,15 +3,15 @@ layout: home
 title: Maz UI - Standalone Components and Tools Library for Vue & Nuxt
 description: Build amazing interfaces with Maz-UI - standalone components & tools library for Vue.JS & Nuxt.JS
 # hero:
-  # name: Maz-UI
-  # text: Lightweight and efficient library
-  # tagline: Standalone components and tools for Vue & Nuxt
-  # image:
-  #   src: /img/maz-ui-illu.png
-  #   alt: Logo of Maz-UI
+#   name: Maz-UI
+#   text: Lightweight and efficient library
+#   tagline: Standalone components and tools for Vue & Nuxt
+#   image:
+#     src: /img/maz-ui-illu.png
+#     alt: Logo of Maz-UI
 ---
 
-<!-- <section class="maz-mt-6 vp-raw">
+<section class="maz-mt-6 vp-raw">
   <div class="maz-flex maz-items-center maz-gap-4 maz-bg-surface-400 maz-rounded-lg maz-p-6">
     <span class="maz-text-3xl">🎉</span>
     <div>
@@ -479,7 +479,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
       <MazBtn :color="currentPreset.name === 'pristine' ? 'primary' : 'contrast'" outline size="sm" block href="/components/maz-table">Discover</MazBtn>
     </MazCardSpotlight>
   </div>
-</section> -->
+</section>
 
 <script lang="ts" setup>
   import DemoAuthPage from './.vitepress/theme/components/DemoAuthPage.vue'

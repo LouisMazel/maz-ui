@@ -58,7 +58,7 @@ export interface MazUiNuxtOptions {
       /**
        * Theme preset to use
        * @description Can be a predefined preset name or a custom preset object
-       * @default 'mazUi'
+       * @default mazUi preset
        */
       preset?: BaseThemePreset
 

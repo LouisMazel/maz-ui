@@ -1,5 +1,5 @@
 ---
-title: Theme System
+title: Theming
 description: Modern and performant theme system for Maz-UI with TypeScript, HSL CSS variables and flexible strategies.
 ---
 
@@ -39,7 +39,7 @@ const app = createApp(App)
 
 app.use(MazThemePlugin, {
   preset: mazUi,
-  strategy: 'hybrid', // 'runtime' | 'build' | 'hybrid'
+  strategy: 'hybrid', // 'runtime' | 'buildtime' | 'hybrid'
   darkModeStrategy: 'class' // 'class' | 'media' | 'auto'
 })
 ```
@@ -207,9 +207,11 @@ import { ocean } from '@maz-ui/themes/presets'
 
 The hybrid strategy combines the best of both worlds:
 
-- Critical CSS injected inline (zero FOUC)
-- Full CSS loaded asynchronously
-- Optimal performance
+- **Critical CSS injected immediately** - Prevents FOUC (Flash of Unstyled Content)
+- **Full CSS loaded asynchronously** - Uses `requestIdleCallback` to avoid blocking the main thread
+- **Optimal performance** - Balance between display speed and interface fluidity
+
+The full CSS is injected via `requestIdleCallback` with a 100ms timeout, allowing the browser to prioritize critical tasks while ensuring fast loading of complete styling.
 
 ```typescript
 app.use(MazThemePlugin, {
@@ -223,6 +225,11 @@ app.use(MazThemePlugin, {
 CSS generated and injected dynamically on client-side.
 Perfect for applications with frequent theme changes.
 
+**⚠️ Potential risks:**
+- **Main thread blocking** - Immediate injection can impact performance
+- **Possible FOUC** - Flash of unstyled content during CSS generation
+- **Heavier bundle** - CSS generation utilities included client-side
+
 ```typescript
 app.use(MazThemePlugin, {
   preset: mazUi,
@@ -230,7 +237,7 @@ app.use(MazThemePlugin, {
 })
 ```
 
-### 🏗️ Build
+### 🏗️ Buildtime
 
 CSS generated at build-time and included in the bundle.
 Optimal for static sites without theme changes.
@@ -238,7 +245,7 @@ Optimal for static sites without theme changes.
 ```typescript
 app.use(MazThemePlugin, {
   preset: mazUi,
-  strategy: 'build'
+  strategy: 'buildtime'
 })
 ```
 
@@ -337,7 +344,7 @@ const {
   currentPreset, // Ref<BaseThemePreset>
   colorMode, // Ref<'light' | 'dark' | 'auto'>
   isDark, // Ref<boolean>
-  strategy, // Ref<'runtime' | 'build' | 'hybrid'>
+  strategy, // Ref<'runtime' | 'buildtime' | 'hybrid'>
 
   // Actions
   updateTheme, // (preset: ThemePreset | Partial<ThemePreset>) => void
@@ -376,28 +383,150 @@ function enableAutoMode() {
 </script>
 ```
 
-## Build-time and CSS Generation
+## Build-time Strategy: Complete Guide
 
-For projects requiring build-time generated CSS:
+The build-time strategy allows you to generate your theme CSS files at compile time, offering the best performance in production.
+
+### Step-by-step configuration
+
+#### 1. Create a generation script
+
+Create `scripts/build-themes.ts`:
 
 ```typescript
-import { buildThemeCSS, generateThemeBundle } from '@maz-ui/themes/build'
-import { mazUi, pristine } from '@maz-ui/themes/presets'
+import { mkdirSync, writeFileSync } from 'node:fs'
+import { join } from 'node:path'
+import {
+  buildThemeCSS,
+  generateThemeBundle,
+  buildSeparateThemeFiles,
+  createThemeStylesheet,
+  definePreset,
+  mazUi,
+} from '@maz-ui/themes'
 
-// CSS for a single preset
-const css = buildThemeCSS({
-  preset: mazUi,
-  mode: 'both', // 'light' | 'dark' | 'both'
-  darkSelector: 'class', // 'class' | 'media'
-  prefix: 'maz'
+// Custom theme
+const customPreset = definePreset({
+  base: mazUi,
+  overrides: {
+    name: 'custom',
+    colors: {
+      light: { primary: '221.2 83.2% 53.3%' },
+      dark: { primary: '217.2 91.2% 59.8%' },
+    },
+  },
 })
 
-// Bundle for multiple presets
-const bundle = generateThemeBundle([mazUi, pristine], {
+// Create destination folder
+mkdirSync(join(process.cwd(), 'public/themes'), { recursive: true })
+
+// Generate complete CSS
+const customCSS = buildThemeCSS({
+  preset: customPreset,
   mode: 'both',
-  darkSelector: 'class'
+  criticalOnly: false,
+})
+
+writeFileSync(join(process.cwd(), 'public/themes/custom.css'), customCSS)
+
+// Generate bundle for multiple themes
+const themeBundle = generateThemeBundle([customPreset, mazUi], {
+  mode: 'both',
+})
+
+Object.entries(themeBundle).forEach(([name, css]) => {
+  writeFileSync(join(process.cwd(), `public/themes/${name}.css`), css)
+})
+
+console.log('✅ Themes generated in public/themes/')
+```
+
+#### 2. Add script to package.json
+
+```json
+{
+  "scripts": {
+    "build:themes": "tsx scripts/build-themes.ts",
+    "build": "npm run build:themes && vite build"
+  }
+}
+```
+
+#### 3. Include in your HTML
+
+```html
+<!-- Critical CSS first -->
+<link rel="stylesheet" href="/themes/custom-critical.css">
+
+<!-- Full CSS deferred -->
+<link rel="stylesheet" href="/themes/custom-full.css" media="print" onload="this.media='all'">
+```
+
+#### 4. Plugin configuration
+
+```typescript
+app.use(MazThemePlugin, {
+  strategy: 'buildtime', // Important!
+  darkModeStrategy: 'class',
 })
 ```
+
+### Utility functions
+
+#### `buildThemeCSS(options)`
+Generates complete CSS for a theme.
+
+```typescript
+const css = buildThemeCSS({
+  preset: customPreset,
+  mode: 'both', // 'light' | 'dark' | 'both'
+  darkSelector: 'class', // 'class' | 'media'
+  criticalOnly: false, // true for critical CSS only
+})
+```
+
+#### `generateThemeBundle(presets, options)`
+Generates a bundle containing multiple themes.
+
+```typescript
+const bundle = generateThemeBundle([theme1, theme2], {
+  mode: 'both',
+  darkSelector: 'class',
+})
+// Result: { 'theme1': 'css...', 'theme2': 'css...' }
+```
+
+#### `buildSeparateThemeFiles(preset, options)`
+Generates separate files for different use cases.
+
+```typescript
+const files = buildSeparateThemeFiles(preset)
+// Result: { critical, full, lightOnly, darkOnly }
+```
+
+#### `createThemeStylesheet(css, options)`
+Creates a `<style>` tag with the provided CSS.
+
+```typescript
+const styleTag = createThemeStylesheet(css, {
+  id: 'my-theme',
+  media: 'screen', // optional
+})
+```
+
+### Build-time strategy advantages
+
+- **Optimal performance** - No client-side CSS generation
+- **Efficient caching** - CSS files cached by CDN
+- **Reduced bundle** - Generation utilities excluded from client
+- **Full compatibility** - Works even with JavaScript disabled
+
+### Recommended use cases
+
+- Production applications with static themes
+- Sites with critical performance requirements
+- Projects with multiple predefined themes
+- Applications requiring fine control over CSS loading
 
 ## Generated CSS Variables
 
