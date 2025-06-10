@@ -19,50 +19,41 @@
           >
             Test page
           </MazBtn>
-          <ClientOnly>
-            <MazDropdown
-              id="dropdown"
-              color="transparent"
-              position="bottom right"
-            >
-              <span class="maz-capitalize">
-                {{ colorMode }}
-              </span>
+          <MazDropdown
+            id="dropdown"
+            color="transparent"
+            position="bottom right"
+          >
+            <span class="maz-capitalize">
+              {{ colorMode }}
+            </span>
 
-              <template #dropdown>
-                <div class="maz-grid maz-grid-cols-2">
-                  <MazBtn
-                    color="transparent"
-                    class="maz-text-nowrap"
-                    @click="colorMode = 'auto'"
-                  >
-                    Auto
-                  </MazBtn>
-                  <MazBtn
-                    color="transparent"
-                    class="maz-text-nowrap"
-                    @click="colorMode = 'dark'"
-                  >
-                    Dark
-                  </MazBtn>
-                  <MazBtn
-                    color="transparent"
-                    class="maz-text-nowrap"
-                    @click="colorMode = 'light'"
-                  >
-                    Light
-                  </MazBtn>
-                  <MazBtn
-                    color="transparent"
-                    class="maz-text-nowrap"
-                    @click="colorMode = 'system'"
-                  >
-                    System
-                  </MazBtn>
-                </div>
-              </template>
-            </MazDropdown>
-          </ClientOnly>
+            <template #dropdown>
+              <div class="maz-grid maz-grid-cols-2">
+                <MazBtn
+                  color="transparent"
+                  class="maz-text-nowrap"
+                  @click="colorMode = 'auto'"
+                >
+                  Auto
+                </MazBtn>
+                <MazBtn
+                  color="transparent"
+                  class="maz-text-nowrap"
+                  @click="colorMode = 'dark'"
+                >
+                  Dark
+                </MazBtn>
+                <MazBtn
+                  color="transparent"
+                  class="maz-text-nowrap"
+                  @click="colorMode = 'light'"
+                >
+                  Light
+                </MazBtn>
+              </div>
+            </template>
+          </MazDropdown>
         </nav>
       </header>
 

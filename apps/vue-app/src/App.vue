@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { useTheme } from '@maz-ui/themes'
+import { mazUi, ocean, pristine, useTheme } from '@maz-ui/themes/src/index'
 
-const { colorMode, setColorMode } = useTheme()
+const { updateTheme, setColorMode, isDark } = useTheme()
+
+updateTheme(ocean)
 </script>
 
 <template>
@@ -11,6 +13,9 @@ const { colorMode, setColorMode } = useTheme()
       <MazLink to="/about"> About </MazLink>
       <MazLink @click="setColorMode('dark')"> Dark </MazLink>
       <MazLink @click="setColorMode('light')"> Light </MazLink>
+      <MazLink @click="updateTheme(ocean)"> Ocean </MazLink>
+      <MazLink @click="updateTheme(pristine)"> Pristine </MazLink>
+      <MazLink @click="updateTheme(mazUi)"> MazUi </MazLink>
     </nav>
     <main>
       <RouterView />

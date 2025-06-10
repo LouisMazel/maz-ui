@@ -18,7 +18,7 @@ function updateDocumentClass() {
   }
 }
 
-function getInitialColorMode(mazTheme: any, savedMode: ColorMode | null, systemPrefersDark: boolean): ColorMode {
+function getInitialColorMode(mazTheme: ThemeState, savedMode: ColorMode | null, systemPrefersDark: boolean): ColorMode {
   if (savedMode && ['light', 'dark', 'auto'].includes(savedMode)) {
     return savedMode
   }
@@ -30,7 +30,7 @@ function getInitialColorMode(mazTheme: any, savedMode: ColorMode | null, systemP
   return systemPrefersDark ? 'dark' : 'light'
 }
 
-function initializeThemeFromData(themeData: any) {
+function initializeThemeFromData(themeData: ThemeState) {
   const systemPrefersDark = typeof window !== 'undefined'
     && window.matchMedia('(prefers-color-scheme: dark)').matches
 
@@ -55,7 +55,7 @@ function initializeThemeFromData(themeData: any) {
     : initialColorMode === 'dark'
 
   _initThemeState({
-    currentPreset: themeData.preset || themeData.currentPreset,
+    currentPreset: themeData.currentPreset,
     colorMode: initialColorMode,
     isDark: initialIsDark,
     strategy: themeData.strategy,
@@ -67,13 +67,16 @@ export function useTheme() {
   let mazThemeState: ThemeState | undefined
 
   try {
-    mazThemeState = inject('mazThemeState', undefined)
+    mazThemeState = inject<ThemeState | undefined>('mazThemeState', undefined)
+
+    if (!mazThemeState) {
+      throw new Error('mazThemeState not found')
+    }
   }
   catch {
     const instance = getCurrentInstance()
     if (instance?.appContext?.app?.config?.globalProperties) {
-      const props = instance.appContext.app.config.globalProperties
-      mazThemeState = props.$mazThemeState || props._mazThemeState
+      mazThemeState = instance.appContext.app.config.globalProperties.$mazThemeState
     }
   }
 
@@ -82,22 +85,7 @@ export function useTheme() {
   }
 
   if (!state.value) {
-    const defaultState = {
-      currentPreset: null,
-      colorMode: 'light' as ColorMode,
-      isDark: false,
-      strategy: 'hybrid' as const,
-    }
-
-    return {
-      currentPreset: computed(() => defaultState.currentPreset),
-      colorMode: computed(() => defaultState.colorMode),
-      isDark: computed(() => defaultState.isDark),
-      strategy: computed(() => defaultState.strategy),
-      updateTheme: () => {},
-      setColorMode: () => {},
-      toggleDarkMode: () => {},
-    }
+    throw new Error('You must install the MazUiPlugin before using useTheme composable')
   }
 
   const currentPreset = computed(() => state.value!.currentPreset)
