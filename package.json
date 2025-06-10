@@ -14,7 +14,20 @@
     "release": "pnpm release:bump-version && pnpm release:changelogen",
     "release:bump-version": "lerna version",
     "release:changelogen": "ts-node -e \"import { updateChangelog } from './changelog-generate'; updateChangelog()\"",
-    "release:check-config": "ts-node -e \"import { checkConfig } from './changelog-generate'; checkConfig()\""
+    "release:check-config": "ts-node -e \"import { checkConfig } from './changelog-generate'; checkConfig()\"",
+    "changesets:add": "changeset add",
+    "changesets:version": "changeset version",
+    "changesets:release": "pnpm build:all && changeset publish",
+    "changesets:status": "changeset status",
+    "changesets:tag": "changeset tag",
+    "changesets:validate": "node scripts/validate-changesets.js",
+    "changesets:pre-alpha": "changeset pre enter alpha",
+    "changesets:pre-beta": "changeset pre enter beta",
+    "changesets:pre-exit": "changeset pre exit",
+    "changesets:publish-alpha": "pnpm build:all && changeset publish --tag alpha",
+    "changesets:publish-beta": "pnpm build:all && changeset publish --tag beta",
+    "changesets:snapshot": "changeset version --snapshot && pnpm build:all && changeset publish --tag snapshot",
+    "build:all": "pnpm -r build"
   },
   "lint-staged": {
     "!(node_modules/**/*|packages/**/*|.prettierignore|.gitignore|.editorconfig).*": [
@@ -22,6 +35,8 @@
     ]
   },
   "devDependencies": {
+    "@changesets/changelog-github": "^0.5.1",
+    "@changesets/cli": "^2.29.4",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
     "@commitlint/cz-commitlint": "^19.8.1",

@@ -8,7 +8,7 @@
       "@/*": ["./src/*"]
     },
     "types": ["node"],
-    "noEmit": true,
+    "noEmit": false,
     "verbatimModuleSyntax": false
   },
   "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "components.d.ts", "auto-imports.d.ts"],
