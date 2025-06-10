@@ -188,6 +188,7 @@ const iconClassSize = computed(() => {
       @slot default - The content of the button
     -->
     <slot>
+      coucou
       {{ text }}
     </slot>
 
@@ -445,10 +446,10 @@ const iconClassSize = computed(() => {
   }
 
   &.--contrast-outline {
-    @apply maz-border-divider maz-bg-surface maz-text-contrast;
+    @apply maz-border-contrast maz-bg-contrast/5 maz-text-contrast;
 
     &:not(:disabled):hover {
-      @apply maz-bg-contrast maz-border-contrast maz-text-contrast-foreground;
+      @apply maz-bg-contrast maz-text-contrast-foreground;
     }
   }
 
@@ -511,10 +512,10 @@ const iconClassSize = computed(() => {
   }
 
   &.--contrast-pastel {
-    @apply maz-bg-surface-400 dark:maz-bg-contrast dark:maz-text-contrast-foreground maz-text-foreground;
+    @apply maz-bg-contrast-50/20 maz-text-contrast;
 
     &:not(:disabled):hover {
-      @apply maz-bg-contrast dark:maz-bg-contrast-700 maz-text-contrast-foreground;
+      @apply maz-bg-contrast maz-text-contrast-foreground;
     }
   }
 

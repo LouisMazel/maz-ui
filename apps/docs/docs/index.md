@@ -11,6 +11,25 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
 #     alt: Logo of Maz-UI
 ---
 
+<div class="hero-section vp-raw">
+  <h3 class="hero-description maz-inline-flex maz-gap-4">
+    <span class="maz-text-3xl">🎉</span>
+    Maz-UI v4 is here!
+  </h3>
+  <p class="hero-description">
+    Discover the latest major release with improved performance, better tree-shaking, and enhanced TypeScript support, advanced theming, icons set
+  </p>
+
+  <div class="hero-actions">
+    <MazBtn href="https://github.com/LouisMazel/maz-ui/blob/master/CHANGELOG.md" color="contrast" pastel class="hero-btn" target="blank">
+      Changelog
+    </MazBtn>
+    <MazBtn  href="/guide/migration-v4" color="contrast" class="hero-btn">
+      Migration guide
+    </MazBtn>
+  </div>
+</div>
+
 <section class="maz-mt-6 vp-raw">
   <div class="maz-flex maz-items-center maz-gap-4 maz-bg-surface-400 maz-rounded-lg maz-p-6">
     <span class="maz-text-3xl">🎉</span>
@@ -519,7 +538,6 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
       return data.repo.stars;
     } catch (error) {
       console.error('Erreur lors de la récupération des données:', error);
-      return null;
     }
   }
 
@@ -529,3 +547,46 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
     starCount.value = count
   })
 </script>
+
+<style scoped>
+.hero-section {
+  text-align: center;
+  margin: 2rem 0 3rem;
+  padding: 2rem;
+  background: linear-gradient(135deg, hsl(var(--maz-contrast-500)) 0%, hsl(var(--maz-contrast-500) / 80%) 100%);
+  border-radius: 1rem;
+  color: white;
+}
+
+.hero-description {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.hero-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px  hsl(var(--maz-shadow) / 20%);
+}
+
+@media (max-width: 768px) {
+  .hero-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero-btn {
+    width: 200px;
+  }
+}
+</style>

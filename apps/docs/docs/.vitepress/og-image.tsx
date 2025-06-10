@@ -61,7 +61,8 @@ export async function getOgImage({ outputFolder, filename, title, description }:
     return imagePath
   }
   catch (error) {
-    console.error(`Error generating og image: ${error}`)
-    throw error
+    const message = error instanceof Error ? error.message : String(error)
+    console.error(`Error generating og image: ${message}`)
+    return undefined
   }
 }

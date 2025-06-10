@@ -2,16 +2,13 @@ import type { Plugin } from 'postcss'
 import type { HeadConfig } from 'vitepress'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { MazIconsResolver } from '@maz-ui/icons/resolvers'
 import autoprefixer from 'autoprefixer'
-import { MazComponentsResolver, MazDirectivesResolver } from 'maz-ui/resolvers'
 
 import postcssImport from 'postcss-import'
 import postcssNested from 'postcss-nested'
 import postcssUrl from 'postcss-url'
 import tailwind from 'tailwindcss'
 import tailwindcssNesting from 'tailwindcss/nesting'
-import Components from 'unplugin-vue-components/vite'
 import svgLoader from 'vite-svg-loader'
 import { defineConfig, postcssIsolateStyles } from 'vitepress'
 import { head, nav, sidebar } from './configs/index.mjs'
@@ -100,15 +97,15 @@ export default defineConfig({
 
   vite: {
     plugins: [
-      svgLoader() as any,
-      Components({
-        dts: true,
-        resolvers: [
-          MazComponentsResolver(),
-          MazDirectivesResolver(),
-          MazIconsResolver(),
-        ],
-      }),
+      svgLoader(),
+      // Components({
+      //   dts: true,
+      //   resolvers: [
+      //     MazComponentsResolver(),
+      //     MazDirectivesResolver(),
+      //     MazIconsResolver(),
+      //   ],
+      // }),
     ],
     server: {
       fs: {
