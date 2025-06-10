@@ -1,0 +1,36 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@3.1.1/schema.json",
+  "changelog": [
+    "@changesets/changelog-github",
+    {
+      "repo": "LouisMazel/maz-ui"
+    }
+  ],
+  "commit": true,
+  "commitMessages": {
+    "version": "chore(release): version packages",
+    "publish": "chore(release): publish packages"
+  },
+  "fixed": [
+    [
+      "maz-ui",
+      "@maz-ui/icons",
+      "@maz-ui/nuxt",
+      "@maz-ui/themes",
+      "@maz-ui/eslint-config",
+      "@maz-ui/cli"
+    ]
+  ],
+  "linked": [],
+  "access": "public",
+  "baseBranch": "master",
+  "updateInternalDependencies": "patch",
+  "ignore": [],
+  "snapshot": {
+    "useCalculatedVersion": true,
+    "prereleaseTemplate": "alpha-{tag}-{datetime}"
+  },
+  "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
+    "onlyUpdatePeerDependentsWhenOutOfRange": true
+  }
+}

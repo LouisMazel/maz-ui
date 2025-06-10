@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useTheme } from '@maz-ui/themes'
 import { vTooltip } from 'maz-ui/src/directives/vTooltip.js'
 
 const { message, success, error, info, warning } = useToast()
@@ -30,18 +29,13 @@ function showToast() {
     timeout: 10000,
   })
 }
-
-const isOpen = ref(true)
-
-const { currentPreset, colorMode, isDark, strategy, updateTheme, setColorMode, toggleDarkMode } =
-  useTheme()
 </script>
 
 <template>
   <div id="home" class="maz-flex maz-h-screen maz-flex-col maz-items-center maz-justify-center">
     <MazPopover position="top-start">
       <template #trigger>
-        <MazBtn color="destructive" @click="isOpen = !isOpen"> Hello </MazBtn>
+        <MazBtn color="destructive"> Hello </MazBtn>
       </template>
 
       <template #default>
@@ -49,14 +43,15 @@ const { currentPreset, colorMode, isDark, strategy, updateTheme, setColorMode, t
       </template>
     </MazPopover>
 
+    <MazBtn @click="showToast"> Show toast </MazBtn>
+
     <p
-      v-if="isOpen"
       v-tooltip="{
         text: 'COUCOUCOUCOUC',
       }"
       color="destructive"
     >
-      Tooltipdzadzdzdzss
+      Tooltip
     </p>
   </div>
 </template>
