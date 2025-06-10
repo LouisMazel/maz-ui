@@ -4,9 +4,6 @@ body {
   padding: 0;
   box-sizing: border-box;
   font-family: var(--maz-font-family);
-  transition:
-    color 0.2s ease,
-    background-color 0.2s ease;
 
   @apply maz-text-foreground maz-bg-surface;
 }
