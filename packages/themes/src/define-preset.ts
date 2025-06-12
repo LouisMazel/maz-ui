@@ -7,7 +7,7 @@ export function definePreset({
   overrides = {},
 }: {
   base?: ThemePreset
-  overrides?: ThemePresetOverrides
+  overrides: ThemePresetOverrides
 }): ThemePreset {
   return mergePresets(base, overrides)
 }
