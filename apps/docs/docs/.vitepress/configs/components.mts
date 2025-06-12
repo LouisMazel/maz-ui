@@ -6,7 +6,7 @@ export const components = {
   items: [
     {
       text: 'Forms',
-      collapsed: false,
+      collapsed: true,
       items: [
         { text: 'MazBtn', link: '/components/maz-btn' },
         { text: 'MazCheckbox', link: '/components/maz-checkbox' },
@@ -28,7 +28,7 @@ export const components = {
     },
     {
       text: 'Navigation',
-      collapsed: false,
+      collapsed: true,
       items: [
         { text: 'MazTabs', link: '/components/maz-tabs' },
         { text: 'MazStepper', link: '/components/maz-stepper' },
@@ -40,7 +40,7 @@ export const components = {
     },
     {
       text: 'Overlays',
-      collapsed: false,
+      collapsed: true,
       items: [
         { text: 'MazDialog', link: '/components/maz-dialog' },
         { text: 'MazDialogPromise', link: '/components/maz-dialog-promise' },
@@ -53,7 +53,7 @@ export const components = {
     },
     {
       text: 'Data',
-      collapsed: false,
+      collapsed: true,
       items: [
         { text: 'MazChart', link: '/components/maz-chart' },
         { text: 'MazTable (data-table)', link: '/components/maz-table' },
@@ -62,7 +62,7 @@ export const components = {
     },
     {
       text: 'Feedback',
-      collapsed: false,
+      collapsed: true,
       items: [
         { text: 'MazSpinner', link: '/components/maz-spinner' },
         { text: 'MazLoadingBar', link: '/components/maz-loading-bar' },
@@ -73,7 +73,7 @@ export const components = {
     },
     {
       text: 'Média',
-      collapsed: false,
+      collapsed: true,
       items: [
         { text: 'MazAvatar', link: '/components/maz-avatar' },
         { text: 'MazGallery', link: '/components/maz-gallery' },
@@ -84,7 +84,7 @@ export const components = {
     },
     {
       text: 'Animations',
-      collapsed: false,
+      collapsed: true,
       items: [
         { text: 'MazAnimatedCounter', link: '/components/maz-animated-counter' },
         { text: 'MazAnimatedElement', link: '/components/maz-animated-element' },
@@ -94,7 +94,7 @@ export const components = {
     },
     {
       text: 'Layout',
-      collapsed: false,
+      collapsed: true,
       items: [
         { text: 'MazAccordion', link: '/components/maz-accordion' },
         { text: 'MazCard', link: '/components/maz-card' },

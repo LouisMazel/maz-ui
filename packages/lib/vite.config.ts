@@ -10,7 +10,13 @@ import { libInjectCss } from 'vite-plugin-lib-inject-css'
 import SvgLoader from 'vite-svg-loader'
 import rootPkg from '../../package.json'
 
-import { ViteBuildIcons, ViteBuildMazCli, ViteBuildNuxtModule, ViteBuildThemes, ViteCompileStyles } from './build'
+import {
+  // ViteBuildIcons,
+  // ViteBuildMazCli,
+  // ViteBuildNuxtModule,
+  // ViteBuildThemes,
+  ViteCompileStyles,
+} from './build'
 
 import pkg from './package.json'
 
@@ -43,7 +49,7 @@ const moduleEntries = Object.fromEntries(
     'src/directives/*.ts',
     'src/resolvers/*.ts',
     'src/formatters/*.ts',
-    'src/helpers/*.ts',
+    'src/utils/*.ts',
     'src/plugins/*.ts',
     'src/tailwindcss/**/*.ts',
   ], {
@@ -67,7 +73,7 @@ export default defineConfig({
       //   'src/directives/*.ts',
       //   'src/resolvers/*.ts',
       //   'src/formatters/*.ts',
-      //   'src/helpers/*.ts',
+      //   'src/utils/*.ts',
       //   'src/plugins/*.ts',
       //   'src/components/types.ts',
       //   'src/components/index.ts',
@@ -75,17 +81,17 @@ export default defineConfig({
       //   'src/plugins/index.ts',
       //   'src/directives/index.ts',
       //   'src/resolvers/index.ts',
-      //   'src/helpers/index.ts',
+      //   'src/utils/index.ts',
       //   'src/formatters/index.ts',
       //   'src/index.ts',
       //   'src/types/*.d.ts',
       // ],
     }),
-    ViteBuildIcons(),
-    ViteBuildMazCli(),
-    ViteBuildThemes(),
+    // ViteBuildIcons(),
+    // ViteBuildMazCli(),
+    // ViteBuildThemes(),
     ViteCompileStyles(),
-    ViteBuildNuxtModule(),
+    // ViteBuildNuxtModule(),
   ],
   build: {
     cssCodeSplit: true,
@@ -95,7 +101,7 @@ export default defineConfig({
     minify: 'terser',
     terserOptions: {
       compress: {
-        drop_console: true,
+        drop_console: ['log'],
         drop_debugger: true,
       },
       mangle: true,
@@ -113,7 +119,7 @@ export default defineConfig({
         'plugins/index': resolver('src/plugins/index.ts'),
         'directives/index': resolver('src/directives/index.ts'),
         'resolvers/index': resolver('src/resolvers/index.ts'),
-        'helpers/index': resolver('src/helpers/index.ts'),
+        'utils/index': resolver('src/utils/index.ts'),
         'formatters/index': resolver('src/formatters/index.ts'),
         'tailwindcss/index': resolver('src/tailwindcss/index.ts'),
         'index': resolver('src/index.ts'),
@@ -136,7 +142,7 @@ export default defineConfig({
           assetFileNames: 'assets/[name].[hash][extname]',
           exports: 'named',
           entryFileNames: '[name].mjs',
-          preserveModules: true,
+          preserveModules: false,
           interop: 'auto',
           generatedCode: 'es2015',
         },

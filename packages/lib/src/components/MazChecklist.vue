@@ -1,10 +1,10 @@
 <script lang="ts" setup generic="T extends string, O extends MazChecklistItemOption">
-import type { NormalizeStringOptions } from '../helpers/normalizeString'
+import type { NormalizeStringOptions } from '../utils/normalizeString'
 import type { MazInputProps } from './MazInput.vue'
 import type { MazColor } from './types'
 import { MazMagnifyingGlass, MazNoSymbol } from '@maz-ui/icons'
 import { computed, defineAsyncComponent, ref, watch } from 'vue'
-import { normalizeString } from '../helpers/normalizeString'
+import { normalizeString } from '../utils/normalizeString'
 import MazCardSpotlight from './MazCardSpotlight.vue'
 import MazCheckbox from './MazCheckbox.vue'
 

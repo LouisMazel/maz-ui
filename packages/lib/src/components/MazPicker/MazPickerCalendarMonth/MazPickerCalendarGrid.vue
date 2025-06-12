@@ -5,7 +5,7 @@ import type { MazColor } from '../../types'
 import type { MazPickerValue } from '../types'
 import dayjs from 'dayjs'
 import { computed, ref, watch } from 'vue'
-import { debounce } from '../../../helpers/debounce'
+import { debounce } from '../../../utils/debounce'
 import MazBtn from '../../MazBtn.vue'
 
 import { getDaysInMonth, getFirstDayOfMonth, isRangeValue, isSameDate, isSameDay, isValidDate } from '../utils'

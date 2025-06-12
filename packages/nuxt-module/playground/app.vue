@@ -33,6 +33,12 @@
         >
           Ocean Theme
         </button>
+        <button
+          class="maz-bg-secondary maz-text-secondary-foreground p-4 rounded-[var(--maz-radius)]"
+          @click="switchToTheme('obsidian')"
+        >
+          Obsidian Theme
+        </button>
       </div>
     </div>
   </div>
@@ -41,10 +47,10 @@
 <script setup lang="ts">
 const { toggleDarkMode, colorMode, updateTheme } = useTheme()
 
-async function switchToTheme(themeName: 'mazUi' | 'pristine' | 'ocean') {
-  const { mazUi, pristine, ocean } = await import('@maz-ui/themes')
+async function switchToTheme(themeName: 'mazUi' | 'pristine' | 'ocean' | 'obsidian') {
+  const { mazUi, pristine, ocean, obsidian } = await import('@maz-ui/themes')
 
-  const themes = { mazUi, pristine, ocean }
+  const themes = { mazUi, pristine, ocean, obsidian }
   updateTheme(themes[themeName])
 }
 </script>

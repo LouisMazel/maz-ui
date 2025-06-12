@@ -43,7 +43,7 @@ export interface MazTableProps<T extends MazTableRow<T>> {
   /** class of the table element */
   tableClass?: HTMLAttributes['class']
   /** style of the table element */
-  tableStyle?: StyleValue
+  tableStyle?: HTMLAttributes['style']
   /**
    * v-model of the table - list of selected rows
    * @model
@@ -113,7 +113,7 @@ export interface MazTableProps<T extends MazTableRow<T>> {
   /** pages count */
   totalPages?: number
   /** no paginate rows - useful to make paginate request with your server */
-  noPaginateRows?: boolean
+  paginateRows?: boolean
   /** total number of items */
   totalItems?: number
   /** loading state */
@@ -159,7 +159,7 @@ export const mazTableKey: InjectionKey<MazTableProvide> = Symbol('maz-table')
 </script>
 
 <script lang="ts" setup generic="T extends MazTableRow<T>">
-import type { HTMLAttributes, InjectionKey, Ref, StyleValue, ThHTMLAttributes } from 'vue'
+import type { HTMLAttributes, InjectionKey, Ref, ThHTMLAttributes } from 'vue'
 import type { MazSelectOption } from './MazSelect.vue'
 import type { MazColor, MazSize } from './types'
 import { MazArrowUp, MazChevronDoubleLeft, MazChevronLeft, MazMagnifyingGlass } from '@maz-ui/icons'
@@ -184,6 +184,7 @@ const props = withDefaults(defineProps<MazTableProps<T>>(), {
   color: 'primary',
   roundedSize: 'lg',
   scrollable: false,
+  paginateRows: true,
 })
 const emits = defineEmits<{
   /**
@@ -304,7 +305,7 @@ const totalItemsInternal = computed(() => props.totalItems ?? props.rows?.length
 const rowsOfPage = computed(() => {
   if (
     !props.pagination
-    || props.noPaginateRows
+    || !props.paginateRows
     || pageSizeModel.value === Number.POSITIVE_INFINITY
   ) {
     return rowsNormalized.value
@@ -558,7 +559,7 @@ onBeforeMount(() => {
             @slot thead - content in thead element
           -->
           <slot name="thead">
-            <MazTableRowComponent no-hoverable>
+            <MazTableRowComponent hoverable>
               <MazTableTitle
                 v-if="isSelectable"
                 align="left"
@@ -992,7 +993,7 @@ onBeforeMount(() => {
         }
 
         &.--sortable {
-          @apply maz-cursor-pointer hover:maz-bg-surface-600;
+          @apply maz-cursor-pointer hover:maz-bg-surface-400;
         }
 
         &.--xl {

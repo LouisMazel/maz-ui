@@ -23,7 +23,7 @@
             <span>{{ item.label }}</span>
             <MazBadge
               color="contrast"
-              outline
+              outlined
             >
               {{ item.value }}
             </MazBadge>

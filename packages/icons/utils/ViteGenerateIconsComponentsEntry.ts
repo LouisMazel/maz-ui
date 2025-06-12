@@ -92,6 +92,34 @@ ${imports}
   }
 }
 
+async function generateIconsList(files: string[]) {
+  const outputPath = resolve(_dirname, '../src/icon-list.ts')
+  const iconNames = files
+    .filter(file => file.endsWith('.svg'))
+    .map((file) => {
+      const name = toPascalCase(file.replace('.svg', ''))
+      return `'Maz${name}'`
+    })
+    .join(',\n  ')
+
+  try {
+    const content = `// Ce fichier est généré automatiquement, ne pas modifier manuellement
+export const iconsList = [
+  ${iconNames}
+] as const
+
+export type IconName = typeof iconsList[number]
+`
+
+    await writeFile(outputPath, content)
+    logger.success('[ViteGenerateIconsComponentsEntry](generateIconsList) ✅ icons list generated')
+  }
+  catch (error) {
+    logger.error('[ViteGenerateIconsComponentsEntry](generateIconsList) 🔴 error while generating icons list', error)
+    throw error
+  }
+}
+
 export function ViteGenerateIconsComponentsEntry(): Plugin {
   return {
     name: 'vite-generate-icons-components-entry',
@@ -102,6 +130,7 @@ export function ViteGenerateIconsComponentsEntry(): Plugin {
       try {
         await replaceValuesInSvg(files)
         await generateIconsComponentsEntry(files)
+        await generateIconsList(files)
 
         logger.success('[ViteGenerateIconsComponentsEntry] ✅ icons components entry generated')
       }

@@ -12,12 +12,12 @@ import { useMazInputPhoneNumber } from './useMazInputPhoneNumber'
 type PhoneInputProps = Omit<MazInputProps, 'modelValue'> & {
   id: string
   locales: MazInputPhoneNumberTranslations
-  hideExample?: boolean
+  example: boolean
   hasRadius: boolean
   autoFormat: boolean
 }
 
-const { placeholder, label, hideExample, locales, autoFormat, name, inputmode, autocomplete } = defineProps<PhoneInputProps>()
+const { placeholder, label, example, locales, autoFormat, name, inputmode, autocomplete } = defineProps<PhoneInputProps>()
 
 const { getPhoneNumberExample, getAsYouTypeFormat, loadExamples } = useLibphonenumber()
 const { sanitizePhoneNumber } = useMazInputPhoneNumber()
@@ -50,7 +50,7 @@ const inputLabelOrPlaceholder = computed(() => {
 
   const defaultPlaceholder = locales.phoneInput.placeholder
 
-  if (hideExample || !inputFocused.value) {
+  if (!example || !inputFocused.value) {
     return defaultPlaceholder
   }
   else {
@@ -66,7 +66,7 @@ const inputProps = computed(() => {
 })
 
 onMounted(() => {
-  if (!hideExample)
+  if (example)
     loadExamples()
 })
 </script>

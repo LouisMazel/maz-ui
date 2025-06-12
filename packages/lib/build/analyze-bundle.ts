@@ -28,7 +28,7 @@ interface Analysis {
     }>
     entries: Record<string, { size: number, formattedSize: string, type: string }>
   }
-  summary: { totalFiles: number, totalSize: number, mainEntry: number, componentsIndex: number, helpersIndex: number }
+  summary: { totalFiles: number, totalSize: number, mainEntry: number, componentsIndex: number, utilsIndex: number }
 }
 
 function getFileSize(filePath: string) {
@@ -41,7 +41,7 @@ function getFileSize(filePath: string) {
   }
 }
 
-function formatSize(bytes) {
+function formatSize(bytes: number) {
   const units = ['B', 'KB', 'MB']
   let size = bytes
   let unitIndex = 0
@@ -70,7 +70,7 @@ function analyzeChunks() {
       other: { files: 0, totalSize: 0, chunks: [] },
     },
     entries: {},
-  }
+  } as const
 
   if (!fs.existsSync(CHUNKS_DIR)) {
     logger.log('⚠️ Aucun dossier chunks trouvé')
@@ -108,7 +108,7 @@ function analyzeChunks() {
   Object.entries(chunksAnalysis.types).forEach(([type, data]) => {
     if (data.files > 0) {
       const avgSize = data.totalSize / data.files
-      logger.log(`${getChunkTypeIcon(type)} ${type}: ${data.files} chunks, ${formatSize(data.totalSize)} (moy: ${formatSize(avgSize)})`)
+      logger.log(`${getChunkTypeIcon(type as any)} ${type}: ${data.files} chunks, ${formatSize(data.totalSize)} (moy: ${formatSize(avgSize)})`)
     }
   })
 
@@ -132,7 +132,7 @@ function categorizeChunk(filename: string): string {
     { type: 'components', test: () => name.includes('maz') && !name.includes('icon') && !name.includes('directive') },
     { type: 'directives', test: () => name.includes('directive') },
     { type: 'composables', test: () => name.includes('use') || name.includes('composable') },
-    { type: 'utils', test: () => name.includes('utils') || name.includes('helper') },
+    { type: 'utils', test: () => name.includes('utils') || name.includes('util') },
     { type: 'styles', test: () => name.includes('style') || name.includes('lang') },
     { type: 'icons', test: () => isIconFile(name) },
   ]
@@ -150,7 +150,7 @@ function isIconFile(name: string): boolean {
   return svgFiles.some(file => name.includes(file))
 }
 
-function getChunkTypeIcon(type: string) {
+function getChunkTypeIcon(type: 'components' | 'icons' | 'directives' | 'composables' | 'utils' | 'styles' | 'other'): string {
   const icons = {
     components: '🧩',
     icons: '🎨',
@@ -187,7 +187,7 @@ function analyzeCategoriesAndEntries(analysis: any) {
         }
       })
 
-      logger.log(`${getCategoryIcon(category)} ${category}: ${analysis.categories[category].files} fichiers, ${formatSize(analysis.categories[category].totalSize)}`)
+      logger.log(`${getCategoryIcon(category as any)} ${category}: ${analysis.categories[category].files} fichiers, ${formatSize(analysis.categories[category].totalSize)}`)
     }
   })
 }
@@ -254,7 +254,7 @@ function analyzeBundle() {
     entries: {},
     categories: {
       components: { files: 0, totalSize: 0 },
-      helpers: { files: 0, totalSize: 0 },
+      utils: { files: 0, totalSize: 0 },
       composables: { files: 0, totalSize: 0 },
       plugins: { files: 0, totalSize: 0 },
       directives: { files: 0, totalSize: 0 },
@@ -280,7 +280,7 @@ function analyzeBundle() {
       totalSize: 0,
       mainEntry: 0,
       componentsIndex: 0,
-      helpersIndex: 0,
+      utilsIndex: 0,
     },
   }
 
@@ -290,7 +290,7 @@ function analyzeBundle() {
 
   const categoryIndexes = [
     { name: 'components', file: 'components/index.mjs' },
-    { name: 'helpers', file: 'helpers/index.mjs' },
+    { name: 'utils', file: 'utils/index.mjs' },
     { name: 'composables', file: 'composables/index.mjs' },
     { name: 'plugins', file: 'plugins/index.mjs' },
     { name: 'directives', file: 'directives/index.mjs' },
@@ -302,7 +302,7 @@ function analyzeBundle() {
   categoryIndexes.forEach(({ name, file }) => {
     const filePath = path.join(DIST_DIR, file)
     const size = getFileSize(filePath)
-    analysis.summary[`${name}Index`] = size
+    analysis.summary[`${name}Index` as keyof Analysis['summary']] = size
     logger.log(`📋 Index ${name}: ${formatSize(size)}`)
   })
 
@@ -342,10 +342,10 @@ function analyzeBundle() {
   return analysis
 }
 
-function getCategoryIcon(category) {
+function getCategoryIcon(category: 'components' | 'utils' | 'composables' | 'plugins' | 'directives' | 'formatters' | 'css'): string {
   const icons = {
     components: '🧩',
-    helpers: '🔧',
+    utils: '🔧',
     composables: '🎣',
     plugins: '🔌',
     directives: '📐',

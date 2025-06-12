@@ -50,8 +50,9 @@ export default defineConfig({
     },
     lib: {
       entry: {
-        index: resolver('./src/index.ts'),
-        resolvers: resolver('./src/resolvers.ts'),
+        'index': resolver('./src/index.ts'),
+        'resolvers': resolver('./src/resolvers.ts'),
+        'icon-list': resolver('./src/icon-list.ts'),
       },
       fileName: (format, name) => format === 'es' ? `${name}.mjs` : `${name}.cjs`,
       name: '@maz-ui/icons',

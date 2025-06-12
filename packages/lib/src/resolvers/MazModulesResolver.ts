@@ -45,7 +45,7 @@ const modulesMap: Record<Modules, true> = {
   camelCase: true,
   isStandaloneMode: true,
   debounceId: true,
-  countryFlagUrlFromFlagCdn: true,
+  getCountryFlagUrl: true,
   isEqual: true,
   debounceCallback: true,
   ScriptLoader: true,

@@ -221,7 +221,7 @@ const borderColorState = computed(() => {
   if (props.warning)
     return '!maz-border-warning'
 
-  return ''
+  return undefined
 })
 </script>
 
@@ -229,19 +229,21 @@ const borderColorState = computed(() => {
   <fieldset
     class="m-input-code m-reset-css"
     :class="[size ? `--${size}` : undefined, props.class]"
-    :disabled="disabled"
+    :disabled
     :style="[style, { '--input-border-color': `hsl(var(--maz-${props.color}))` }]"
   >
     <div class="m-input-code__wrapper">
       <div v-for="item in codeLength" :key="item" class="input-wrapper" :class="borderColorState">
         <!-- eslint-disable-next-line vuejs-accessibility/form-control-has-label -->
         <input
+          :id="`m-input-code-${item}`"
           :ref="
             (el) => {
               inputList[item - 1] = el as HTMLInputElement
             }
           "
           type="text"
+          :name="`m-input-code-${item}`"
           minlength="1"
           maxlength="1"
           :inputmode="acceptAlpha ? 'text' : 'numeric'"
@@ -314,7 +316,7 @@ const borderColorState = computed(() => {
   }
 
   .input-wrapper {
-    @apply maz-relative maz-h-[4em] maz-w-[4em] maz-overflow-hidden maz-rounded maz-border maz-border-solid maz-border-divider maz-transition-colors maz-duration-200 maz-ease-in-out dark:maz-bg-surface-400;
+    @apply maz-relative maz-h-[4em] maz-w-[4em] maz-overflow-hidden maz-rounded maz-border maz-border-solid maz-border-divider dark:maz-border-divider-400 maz-transition-colors maz-duration-200 maz-ease-in-out dark:maz-bg-surface-400;
 
     &:focus-within {
       border-color: var(--input-border-color);

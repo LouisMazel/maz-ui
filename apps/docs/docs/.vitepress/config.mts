@@ -98,14 +98,15 @@ export default defineConfig({
   vite: {
     plugins: [
       svgLoader(),
-      // Components({
-      //   dts: true,
-      //   resolvers: [
-      //     MazComponentsResolver(),
-      //     MazDirectivesResolver(),
-      //     MazIconsResolver(),
-      //   ],
-      // }),
+      {
+        name: 'redirect-plugin',
+        configureServer(server) {
+          server.middlewares.use('/components/maz-phone-number-input', (req, res) => {
+            res.writeHead(301, { Location: '/components/maz-input-phone-number' })
+            res.end()
+          })
+        },
+      },
     ],
     server: {
       fs: {

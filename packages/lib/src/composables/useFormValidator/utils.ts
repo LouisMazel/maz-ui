@@ -15,9 +15,9 @@ import type {
 import { getCurrentInstance, inject, nextTick } from 'vue'
 
 import { useFreezeValue } from './../../composables/useFreezeValue'
-import { debounceId } from './../../helpers/debounceId'
-import { isEqual } from './../../helpers/isEqual'
-import { throttleId } from './../../helpers/throttleId'
+import { debounceId } from './../../utils/debounceId'
+import { isEqual } from './../../utils/isEqual'
+import { throttleId } from './../../utils/throttleId'
 import { CONFIG } from './config'
 
 export function fieldHasValidation<Model extends BaseFormPayload, ModelKey extends ExtractModelKey<FormSchema<Model>>>(field: ModelKey, schema: FormSchema<Model>) {

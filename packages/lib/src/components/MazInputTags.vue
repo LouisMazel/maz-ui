@@ -3,7 +3,7 @@ import type { HTMLAttributes } from 'vue'
 import type { MazColor, MazSize } from './types'
 import { MazTrash } from '@maz-ui/icons'
 import { computed, ref } from 'vue'
-import { truthyFilter } from '../helpers/truthyFilter'
+import { truthyFilter } from '../utils/truthyFilter'
 import MazBtn from './MazBtn.vue'
 import MazInput from './MazInput.vue'
 
@@ -122,7 +122,7 @@ const borderStyle = computed(() => {
       return 'maz-border-warning'
   }
 
-  return 'maz-border-divider'
+  return ''
 })
 
 function removeLastTag() {
@@ -169,7 +169,7 @@ const buttonSize = computed(() => {
 
 <template>
   <div
-    class="m-input-tags m-reset-css"
+    class="m-input-tags m-reset-css maz-border-divider-400"
     :class="[borderStyle, `--${color}`, `--${size}`, props.class, { '--block': block }]"
     :style
     @focus.capture="isFocused = true"

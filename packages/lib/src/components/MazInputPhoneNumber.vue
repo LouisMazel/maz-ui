@@ -1,8 +1,13 @@
+/**
+ * A phone number input component with country selector
+ * @displayName MazInputPhoneNumber
+ */
 <script lang="ts" setup>
 import type { CountryCode } from 'libphonenumber-js'
 import type { ComponentPublicInstance, HTMLAttributes } from 'vue'
 import type { MazInputPhoneNumberTranslations, Results } from './MazInputPhoneNumber/types'
-import type { MazColor, MazPosition, MazSize } from './types'
+import type { PopoverPosition } from './MazPopover.vue'
+import type { MazColor, MazSize } from './types'
 import {
   computed,
   defineAsyncComponent,
@@ -14,8 +19,8 @@ import {
   watch,
 } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
-import { defaultLocales } from './MazInputPhoneNumber/default-locales'
 
+import { defaultLocales } from './MazInputPhoneNumber/default-locales'
 import { useLibphonenumber } from './MazInputPhoneNumber/useLibphonenumber'
 import { useMazInputPhoneNumber } from './MazInputPhoneNumber/useMazInputPhoneNumber'
 
@@ -25,7 +30,7 @@ defineOptions({
 })
 
 const props = withDefaults(defineProps<MazInputPhoneNumberProps>(), {
-  listPosition: 'bottom left',
+  listPosition: 'bottom-start',
   color: 'primary',
   size: 'md',
   countrySelectorWidth: '9rem',
@@ -45,27 +50,44 @@ const props = withDefaults(defineProps<MazInputPhoneNumberProps>(), {
   search: true,
   validationError: true,
   validationSuccess: true,
+  example: true,
+  disabled: false,
+  hideCountrySelector: false,
+  showCodeOnList: false,
+  countrySelectorDisplayName: false,
+  countryLocale: undefined,
+  customCountriesList: undefined,
+  excludedSelectors: () => [],
+  hideFlags: false,
 })
 
 const emits = defineEmits<{
   /**
-   * emitted when country or phone number changes
+   * Emitted when country or phone number changes
    * @property {string} phoneNumber - phoneNumber formatted
+   * @example
+   * <MazInputPhoneNumber @update:model-value="handleValueChange" />
    */
   'update:model-value': [value: string | undefined | null]
   /**
-   * emitted when selected country changes
+   * Emitted when selected country changes
    * @property {CountryCode} countryCode - Country code
+   * @example
+   * <MazInputPhoneNumber @country-code="handleCountryChange" />
    */
   'country-code': [countryCode?: CountryCode | undefined | null]
   /**
-   * emitted when country changes
+   * Emitted when country changes
    * @property {CountryCode} countryCode - Country code
+   * @example
+   * <MazInputPhoneNumber @update:country-code="handleCountryChange" />
    */
   'update:country-code': [countryCode?: CountryCode | undefined | null]
   /**
-   * emitted when country or phone number changes
+   * Emitted when country or phone number changes
    * @property {Results} results - metadata of current phone number
+   * @example
+   * <MazInputPhoneNumber @data="handleDataChange" />
    */
   'data': [results: Results]
 }>()
@@ -74,100 +96,228 @@ const CountrySelector = defineAsyncComponent(() => import('./MazInputPhoneNumber
 const PhoneInput = defineAsyncComponent(() => import('./MazInputPhoneNumber/PhoneInput.vue'))
 
 export interface MazInputPhoneNumberProps {
-  /** Style attribut of the component root element */
+  /**
+   * Style attribut of the component root element
+   * @type {HTMLAttributes['style']}
+   */
   style?: HTMLAttributes['style']
-  /** Class attribut of the component root element */
+  /**
+   * Class attribut of the component root element
+   * @type {HTMLAttributes['class']}
+   */
   class?: HTMLAttributes['class']
-  /** @model Country calling code + telephone number in international format */
+  /**
+   * The current value of the input field in international format (e.g. +33612345678)
+   * @model
+   * @type {string | undefined | null}
+   * @example "+33612345678"
+   */
   modelValue?: string | undefined | null
-  /** @model Country code selected - Ex: "FR" */
+  /**
+   * The selected country code (e.g. "FR")
+   * @model
+   * @type {CountryCode | undefined | null}
+   * @example "FR"
+   */
   countryCode?: CountryCode | undefined | null
-  /** Id of the component */
+  /**
+   * Unique identifier for the component
+   * @type {string}
+   * @example "phone-input-1"
+   */
   id?: string
-  /** Placeholder of the input */
+  /**
+   * Text displayed when the input is empty
+   * @type {string}
+   * @example "Enter your phone number"
+   */
   placeholder?: string
-  /** label of the input */
+  /**
+   * Label displayed above the input
+   * @type {string}
+   * @example "Phone Number"
+   */
   label?: string
-  /** List of country codes to place first in the select list - Ex: ['FR', 'BE', 'GE'] */
+  /**
+   * List of country codes to place first in the select list
+   * @type {CountryCode[]}
+   * @example ["FR", "BE", "GE"]
+   */
   preferredCountries?: CountryCode[]
-  /** List of country codes to be removed from the select list - Ex: ['FR', 'BE', 'GE'] */
+  /**
+   * List of country codes to be removed from the select list
+   * @type {CountryCode[]}
+   * @example ["FR", "BE", "GE"]
+   */
   ignoredCountries?: CountryCode[]
-  /** List of country codes to only have the countries selected in the select list - Ex: ['FR', 'BE', 'GE'] */
+  /**
+   * List of country codes to only have the countries selected in the select list
+   * @type {CountryCode[]}
+   * @example ["FR", "BE", "GE"]
+   */
   onlyCountries?: CountryCode[]
-  /** Locale strings of the component */
+  /**
+   * Locale strings of the component
+   * @type {Partial<MazInputPhoneNumberTranslations>}
+   */
   translations?: Partial<MazInputPhoneNumberTranslations>
-  /** Position where the list of countries will be opened */
-  listPosition?: MazPosition
-  /** Component color applied - Ex: "secondary" */
+  /**
+   * Position where the list of countries will be opened
+   * @type {MazPosition}
+   * @values top left, top right, bottom left, bottom right
+   * @default "bottom left"
+   */
+  listPosition?: PopoverPosition
+  /**
+   * Component color applied
+   * @type {MazColor}
+   * @values primary, secondary, accent, info, success, warning, destructive, contrast
+   * @default "primary"
+   */
   color?: MazColor
-  /** Component size applied - Ex: "sm" */
+  /**
+   * Component size applied
+   * @type {MazSize}
+   * @values xs, sm, md, lg, xl, mini
+   * @default "md"
+   */
   size?: MazSize
-  /** Remove flags in country list */
+  /**
+   * Remove flags in country list
+   * @type {boolean}
+   * @default false
+   */
   hideFlags?: boolean
-  /** Disable input */
+  /**
+   * Disable input
+   * @type {boolean}
+   * @default false
+   */
   disabled?: boolean
-  /** No show the phone number example */
-  noExample?: boolean
-  /** Disable search input in country list */
+  /**
+   * Show the phone number example
+   * @type {boolean}
+   * @default true
+   */
+  example?: boolean
+  /**
+   * Disable search input in country list
+   * @type {boolean}
+   * @default true
+   */
   search?: boolean
   /**
    * Threshold of the search input in country list where 1 is a perfect match and 0 is a match with any character
+   * @type {number}
    * @default 0.75
    */
   searchThreshold?: number
   /**
    * If true, the browser locale will be used
+   * @type {boolean}
    * @default true
    */
   useBrowserLocale?: boolean
-  /** The component will make a request (https://ipwho.is) to get the location of the user and use it to set the default country code */
+  /**
+   * The component will make a request (https://ipwho.is) to get the location of the user and use it to set the default country code
+   * @type {boolean}
+   * @default false
+   */
   fetchCountry?: boolean
-  /** No show the country selector */
+  /**
+   * Hide the country selector
+   * @type {boolean}
+   * @default false
+   */
   hideCountrySelector?: boolean
-  /** Show country calling code in the country list */
+  /**
+   * Show country calling code in the country list
+   * @type {boolean}
+   * @default false
+   */
   showCodeOnList?: boolean
-  /** Replace country names */
+  /**
+   * Replace country names
+   * @type {Record<CountryCode, string>}
+   */
   customCountriesList?: Record<CountryCode, string>
   /**
    * Disabled auto-format when phone is valid
+   * @type {boolean}
    * @default true
    */
   autoFormat?: boolean
   /**
-   * locale of country list - Ex: "fr-FR"
-   * @default {string} browser locale
+   * Locale of country list
+   * @type {string}
+   * @example "fr-FR"
    */
   countryLocale?: string
-  /** Disable validation error UI */
+  /**
+   * Disable validation error UI
+   * @type {boolean}
+   * @default true
+   */
   validationError?: boolean
-  /** Disable validation success UI */
+  /**
+   * Disable validation success UI
+   * @type {boolean}
+   * @default true
+   */
   validationSuccess?: boolean
-  /** Add success UI */
+  /**
+   * Add success UI
+   * @type {boolean}
+   * @default false
+   */
   success?: boolean
-  /** Add error UI */
+  /**
+   * Add error UI
+   * @type {boolean}
+   * @default false
+   */
   error?: boolean
-  /** Will replace the calling code by the country name in the country selector */
+  /**
+   * Will replace the calling code by the country name in the country selector
+   * @type {boolean}
+   * @default false
+   */
   countrySelectorDisplayName?: boolean
-  /** Choose the width of the country selector */
+  /**
+   * Choose the width of the country selector
+   * @type {string}
+   * @default "9rem"
+   */
   countrySelectorWidth?: string
-  /** The input will be displayed in full width */
+  /**
+   * The input will be displayed in full width
+   * @type {boolean}
+   * @default false
+   */
   block?: boolean
-  /** Exclude selectors to close country selector list - usefull when you using custom flag */
+  /**
+   * Exclude selectors to close country selector list - useful when you using custom flag
+   * @type {string[]}
+   * @default []
+   */
   excludedSelectors?: string[]
   /**
    * Orientation of the inputs in the component
+   * @type {'row' | 'col' | 'responsive'}
+   * @values row, col, responsive
    * @default "responsive"
-   * @values "row" | "col" | "responsive"
    */
   orientation?: 'row' | 'col' | 'responsive'
   /**
    * Meta attributes of the country input
-   * @default `{Record<string, unknown>}` `{ autocomplete: 'off', name: 'country' }`
+   * @type {Record<string, unknown>}
+   * @default { autocomplete: 'off', name: 'country' }
    */
   countrySelectAttributes?: Record<string, unknown>
   /**
    * Meta attributes of the phone number input
-   * @default `{Record<string, unknown>}` `{ autocomplete: 'tel', name: 'phone', inputmode: 'tel' }`
+   * @type {Record<string, unknown>}
+   * @default { autocomplete: 'tel', name: 'phone', inputmode: 'tel' }
    */
   phoneInputAttributes?: Record<string, unknown>
 }
@@ -451,7 +601,7 @@ provide<MazInputPhoneNumberInjectedData>('data', {
       :color
       :size
       :auto-format="hasAutoFormat"
-      :no-example
+      :example
       block
       :disabled
       :has-radius="!hideCountrySelector"
@@ -466,7 +616,7 @@ provide<MazInputPhoneNumberInjectedData>('data', {
 </template>
 
 <style lang="postcss" scoped>
-  .m-phone-number-input {
+.m-phone-number-input {
   @apply maz-relative maz-inline-flex maz-items-center maz-align-top;
 
   &.--block {
