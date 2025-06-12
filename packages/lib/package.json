@@ -34,8 +34,8 @@
     "**/composables/useToast*",
     "**/composables/useDialog*",
     "**/composables/useMountComponent*",
-    "**/helpers/scriptLoader*",
-    "**/helpers/userVisibility*"
+    "**/utils/scriptLoader*",
+    "**/utils/userVisibility*"
   ],
   "exports": {
     ".": {
@@ -50,9 +50,9 @@
       "types": "./dist/types/composables/index.d.ts",
       "import": "./dist/composables/index.mjs"
     },
-    "./helpers": {
-      "types": "./dist/types/helpers/index.d.ts",
-      "import": "./dist/helpers/index.mjs"
+    "./utils": {
+      "types": "./dist/types/utils/index.d.ts",
+      "import": "./dist/utils/index.mjs"
     },
     "./plugins": {
       "types": "./dist/types/plugins/index.d.ts",
@@ -82,9 +82,9 @@
       "types": "./dist/types/composables/*.d.ts",
       "import": "./dist/composables/*.mjs"
     },
-    "./helpers/*": {
-      "types": "./dist/types/helpers/*.d.ts",
-      "import": "./dist/helpers/*.mjs"
+    "./utils/*": {
+      "types": "./dist/types/utils/*.d.ts",
+      "import": "./dist/utils/*.mjs"
     },
     "./plugins/*": {
       "types": "./dist/types/plugins/*.d.ts",

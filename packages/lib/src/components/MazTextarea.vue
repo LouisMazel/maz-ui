@@ -65,7 +65,7 @@ export interface MazTextareaProps<T extends string | undefined | null> {
 import type { HTMLAttributes } from 'vue'
 import { computed, onBeforeUnmount, onMounted, ref, useSlots } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
-import { TextareaAutogrow } from '../helpers/TextareaAutogrow'
+import { TextareaAutogrow } from '../utils/TextareaAutogrow'
 
 defineOptions({
   inheritAttrs: false,
@@ -286,7 +286,7 @@ const hasBorderStyle = computed(() => borderStyle.value !== '--default-border')
     @apply maz-border maz-border-solid;
 
     &:not(.--has-border-style) {
-      @apply maz-border-divider;
+      @apply maz-border-divider dark:maz-border-divider-400;
     }
   }
 
@@ -333,7 +333,7 @@ const hasBorderStyle = computed(() => borderStyle.value !== '--default-border')
   }
 
   &.--is-disabled {
-    @apply maz-cursor-not-allowed maz-border-divider maz-bg-surface-300 maz-text-muted;
+    @apply maz-cursor-not-allowed maz-border-divider dark:maz-border-divider-400 maz-bg-surface-300 maz-text-muted;
 
     & * {
       @apply maz-cursor-not-allowed maz-text-muted;

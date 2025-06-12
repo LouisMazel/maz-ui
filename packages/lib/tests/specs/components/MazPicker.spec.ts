@@ -29,7 +29,7 @@ describe('given MazPicker component', () => {
       await wrapper.setProps({ modelValue: date })
       const input = wrapper.findComponent(MazInput)
       expect(input.exists()).toBe(true)
-      expect(input.find('input').element.value).toBe('Monday, July 17, 2023')
+      expect(input.find('input').element.value).toBe('Jul 17, 2023, 12:00 AM')
     })
   })
 })

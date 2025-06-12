@@ -1,7 +1,7 @@
 name: Lib Tests Unit (Dependabot)
 
 on:
-  push:
+  pull_request:
     branches:
       - dependabot/**
     paths:

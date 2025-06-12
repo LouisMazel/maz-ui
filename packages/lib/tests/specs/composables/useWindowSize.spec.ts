@@ -1,6 +1,6 @@
 import { useWindowSize } from '@composables/useWindowSize'
 
-vi.mock('@helpers/isClient', () => ({
+vi.mock('@utils/isClient', () => ({
   isClient: vi.fn(() => true),
 }))
 

@@ -1,5 +1,5 @@
 import { defineNuxtPlugin, useCookie, useHead, useRequestHeaders } from 'nuxt/app'
-import { MazUiPlugin } from 'maz-ui/src/plugins/maz-ui.js'
+import { MazUiPlugin } from 'maz-ui/plugins/maz-ui'
 import {
   generateFullCSS,
   mergePresets,
@@ -8,8 +8,8 @@ import {
   type ThemePreset,
   type ThemeState,
 } from '@maz-ui/themes'
-import type { MazUiPluginOptions } from 'maz-ui/src/plugins/maz-ui.js'
-import { generateCriticalCSS } from '@maz-ui/themes/src/index.js'
+import type { MazUiPluginOptions } from 'maz-ui/plugins/maz-ui'
+import { generateCriticalCSS } from '@maz-ui/themes/utils/css-generator'
 import type { ThemePresetName } from '~/src/types'
 
 function getServerInitialColorMode(): ColorMode {
@@ -73,6 +73,11 @@ async function getPreset(preset: ThemePresetName | ThemePreset | undefined) {
   if (preset === 'pristine') {
     const { pristine } = await import('@maz-ui/themes/presets/pristine')
     return pristine
+  }
+
+  if (preset === 'obsidian') {
+    const { obsidian } = await import('@maz-ui/themes/presets/obsidian')
+    return obsidian
   }
 
   throw new TypeError(`[@maz-ui/nuxt] Preset ${preset} not found`)

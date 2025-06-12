@@ -4,18 +4,21 @@ import { mazTableKey } from './MazTable.vue'
 
 export interface MazTableRowProps {
   /** Override hoverable of table props */
-  noHoverable?: boolean
+  hoverable?: boolean
 }
 
-defineProps<MazTableRowProps>()
-const { hoverable, backgroundEven, backgroundOdd } = useInjectStrict(mazTableKey)
+const {
+  hoverable = true,
+} = defineProps<MazTableRowProps>()
+
+const { backgroundEven, backgroundOdd, hoverable: injectedHoverable } = useInjectStrict(mazTableKey)
 </script>
 
 <template>
   <tr
     class="m-table-row m-reset-css"
     :class="{
-      '--hoverable': hoverable && !noHoverable,
+      '--hoverable': injectedHoverable && hoverable,
       '--background-odd': backgroundOdd,
       '--background-even': backgroundEven,
     }"
@@ -35,9 +38,7 @@ const { hoverable, backgroundEven, backgroundOdd } = useInjectStrict(mazTableKey
   }
 
   &.--hoverable {
-    &:hover {
-      @apply maz-cursor-pointer maz-bg-surface-600;
-    }
+    @apply hover:maz-cursor-pointer hover:maz-bg-surface-400;
   }
 }
 </style>

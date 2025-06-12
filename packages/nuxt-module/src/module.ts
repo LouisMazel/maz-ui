@@ -2,11 +2,11 @@ import { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { addComponent, addImports, addPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
 import { defu } from 'defu'
-import { capitalize } from './../../lib/src/formatters/capitalize.js'
+import { capitalize } from 'maz-ui'
 import type { MazUiNuxtOptions } from './types'
 
-type MazUiComposables = keyof typeof import('maz-ui/src/composables/index.js')
-type ThemeComposables = keyof typeof import('@maz-ui/themes/src/composables/useTheme.js')
+type MazUiComposables = keyof typeof import('maz-ui/composables')
+type ThemeComposables = keyof typeof import('@maz-ui/themes/composables/useTheme')
 
 type Composables = MazUiComposables | ThemeComposables
 
@@ -24,7 +24,7 @@ declare module '@nuxt/schema' {
   }
 }
 
-type ComponentNames = keyof typeof import('maz-ui/src/components/index.js')
+type ComponentNames = keyof typeof import('maz-ui/components')
 
 const COMPONENT_NAMES: Omit<Record<ComponentNames, true>, 'useMazDialogPromise'> = {
   MazAccordion: true,

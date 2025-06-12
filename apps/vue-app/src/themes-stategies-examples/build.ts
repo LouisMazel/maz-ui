@@ -5,6 +5,7 @@ import {
   definePreset,
   generateThemeBundle,
   mazUi,
+  obsidian,
   ocean,
   pristine,
 } from '@maz-ui/themes'
@@ -14,7 +15,7 @@ const customPreset = definePreset({
   base: mazUi,
   overrides: {
     name: 'custom',
-    appearance: {
+    foundation: {
       'font-family': 'inter, sans-serif',
       radius: '0.5rem',
       'border-width': '1px',
@@ -51,7 +52,7 @@ const customCSS = buildThemeCSS({
 })
 
 // Générer bundle pour plusieurs thèmes
-const themeBundle = generateThemeBundle([customPreset, mazUi, pristine, ocean], {
+const themeBundle = generateThemeBundle([customPreset, mazUi, pristine, ocean, obsidian], {
   mode: 'both',
 })
 

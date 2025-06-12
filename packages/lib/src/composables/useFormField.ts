@@ -23,8 +23,8 @@ import {
   updateFieldState,
 } from '../composables/useFormValidator/utils'
 import { useFreezeValue } from '../composables/useFreezeValue'
-import { checkAvailability } from '../helpers/checkAvailability'
-import { isEqual } from '../helpers/isEqual'
+import { checkAvailability } from '../utils/checkAvailability'
+import { isEqual } from '../utils/isEqual'
 
 interface UseFormFieldReturn<FieldType> {
   /**

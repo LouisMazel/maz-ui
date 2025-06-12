@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { mazUi, ocean, pristine, useTheme } from '@maz-ui/themes/src/index'
+import { mazUi, obsidian, ocean, pristine, useTheme } from '@maz-ui/themes/src/index'
 
-const { updateTheme, setColorMode, isDark } = useTheme()
+const { updateTheme, setColorMode } = useTheme()
 
 updateTheme(ocean)
 </script>
@@ -16,6 +16,7 @@ updateTheme(ocean)
       <MazLink @click="updateTheme(ocean)"> Ocean </MazLink>
       <MazLink @click="updateTheme(pristine)"> Pristine </MazLink>
       <MazLink @click="updateTheme(mazUi)"> MazUi </MazLink>
+      <MazLink @click="updateTheme(obsidian)"> Obsidian </MazLink>
     </nav>
     <main>
       <RouterView />

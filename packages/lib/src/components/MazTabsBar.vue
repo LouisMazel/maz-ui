@@ -12,7 +12,7 @@ import {
 } from 'vue'
 import { useInjectStrict } from '../composables/useInjectStrict'
 
-import { sleep } from '../helpers/sleep'
+import { sleep } from '../utils/sleep'
 
 const {
   items,
@@ -70,7 +70,7 @@ export type MazTabsBarItem
       content: string | number | boolean
       color?: MazBadgeColor
       pastel?: boolean
-      outline?: boolean
+      outlined?: boolean
       size?: string
       roundedSize?: MazBadgeRoundedSize
     }
@@ -247,7 +247,7 @@ onMounted(() => {
             v-if="item.badge"
             :color="item.badge.color"
             :pastel="item.badge.pastel"
-            :outline="item.badge.outline"
+            :outlined="item.badge.outlined"
             :rounded-size="item.badge.roundedSize"
             :size="item.badge.size ?? '0.7rem'"
             class="m-tabs-bar__item__badge"

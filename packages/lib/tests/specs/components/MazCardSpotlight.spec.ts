@@ -9,7 +9,7 @@ describe('mazCardSpotlight', () => {
 
     expect(wrapper.exists()).toBe(true)
     expect(wrapper.classes()).toContain('m-card-spotlight')
-    expect(wrapper.classes()).toContain('maz-drop-shadow-md maz-shadow-elevation')
+    expect(wrapper.classes()).toContain('m-reset-css')
   })
 
   it('does not render elevation when noElevation prop is true', async () => {

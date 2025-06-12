@@ -164,7 +164,7 @@ const colors = [
 The pastel state is available with the attribute `pastel`
 
 ::: info
-It's better in light mode
+Better in light mode
 :::
 
 <ComponentDemo>
