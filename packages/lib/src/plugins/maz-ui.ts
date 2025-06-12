@@ -135,9 +135,9 @@ export const MazUiPlugin = {
     const finalPreset = config.overrides
       ? {
           ...config.preset,
-          appearance: {
-            ...config.preset.appearance,
-            ...config.overrides.appearance,
+          foundation: {
+            ...config.preset.foundation,
+            ...config.overrides.foundation,
           },
           colors: {
             light: { ...config.preset.colors.light, ...config.overrides.colors?.light },

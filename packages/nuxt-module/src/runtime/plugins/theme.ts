@@ -75,6 +75,11 @@ async function getPreset(preset: ThemePresetName | ThemePreset | undefined) {
     return pristine
   }
 
+  if (preset === 'obsidian') {
+    const { obsidian } = await import('@maz-ui/themes/presets/obsidian')
+    return obsidian
+  }
+
   throw new TypeError(`[@maz-ui/nuxt] Preset ${preset} not found`)
 }
 

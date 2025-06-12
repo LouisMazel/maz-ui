@@ -199,11 +199,11 @@ function onFocus(event: FocusEvent) {
   &__input:disabled {
     + .m-switch__toggle {
       &::before {
-        @apply maz-bg-surface-300 dark:maz-bg-surface-400;
+        @apply maz-bg-surface-600 dark:maz-bg-surface-400;
       }
 
       &::after {
-        @apply maz-bg-surface-400 dark:maz-bg-surface-300;
+        @apply maz-bg-surface-700 dark:maz-bg-surface-300;
 
         box-shadow: none;
       }

@@ -435,7 +435,7 @@ Add `tabindex="-1"` attribute to your element to avoid a double focus with Tab k
 isOpen: {{ isOpen }}
 
 <MazDropdown
-  v-model:open="isOpen"
+  v-model="isOpen"
   :items="[
     { label: 'Action', onClick: () => toast.success('CLICKED') },
     { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
@@ -455,7 +455,7 @@ isOpen: {{ isOpen }}
 ```vue
 <template>
   <MazDropdown
-    v-model:open="isOpen"
+    v-model="isOpen"
     :items="[
       { label: 'Action', onClick: () => toast.success('CLICKED') },
       { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
@@ -488,9 +488,9 @@ isOpen: {{ isOpen }}
       { label: 'Router Link', to: { name: 'index' } },
       { label: 'Long Label To Show Large Menu', to: { name: 'index' } },
     ]"
-    position="top right"
+    position="top-end"
   >
-    top right
+    top-end
   </MazDropdown>
   <MazDropdown
     color="contrast"
@@ -500,9 +500,9 @@ isOpen: {{ isOpen }}
       { label: 'Router Link', to: { name: 'index' } },
       { label: 'Long Label To Show Large Menu', to: { name: 'index' } },
     ]"
-    position="top left"
+    position="top-start"
   >
-    top left
+    top-start
   </MazDropdown>
   <MazDropdown
     color="contrast"
@@ -512,9 +512,9 @@ isOpen: {{ isOpen }}
       { label: 'Router Link', to: { name: 'index' } },
       { label: 'Long Label To Show Large Menu', to: { name: 'index' } },
     ]"
-    position="bottom left"
+    position="bottom-start"
   >
-    bottom left
+    bottom-start
   </MazDropdown>
   <MazDropdown
     color="contrast"
@@ -524,9 +524,9 @@ isOpen: {{ isOpen }}
       { label: 'Router Link', to: { name: 'index' } },
       { label: 'Long Label To Show Large Menu', to: { name: 'index' } },
     ]"
-    position="bottom right"
+    position="bottom-end"
   >
-    bottom right
+    bottom-end
   </MazDropdown>
   <MazDropdown
     color="contrast"

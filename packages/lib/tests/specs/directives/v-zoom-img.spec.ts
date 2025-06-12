@@ -1,6 +1,6 @@
 import type { vZoomImgBinding } from '@directives/vZoomImg/zoom-img.handler'
 import { VueZoomImg } from '@directives/vZoomImg/zoom-img.handler'
-import { sleep } from '@helpers/sleep'
+import { sleep } from '@utils/sleep'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 describe('given VueZoomImg class', () => {

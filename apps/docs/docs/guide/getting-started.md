@@ -36,16 +36,13 @@ head:
 
 ::: code-group
 
-```bash [npm]
+```bash [Vue]
 npm install maz-ui
 ```
 
-```bash [yarn]
-yarn add maz-ui
-```
-
-```bash [pnpm]
-pnpm add maz-ui
+```bash [Nuxt]
+# Install the dedicated Nuxt module for the best experience (recommended)
+npm install @maz-ui/nuxt
 ```
 
 :::
@@ -53,7 +50,48 @@ pnpm add maz-ui
 ### Prerequisites
 
 - **Node.js** v18+
-- **Vue** 3.2+ or **Nuxt** 3.0+
+- **Vue** 3.5+ or **Nuxt** 3.0+
+
+## Framework Integration
+
+::: code-group
+
+```typescript [Vue Setup]
+// main.ts
+// Optional: Use the theme plugin for advanced theming
+import { MazUiPlugin } from 'maz-ui/plugins/maz-ui'
+import { createApp } from 'vue'
+
+import App from './App.vue'
+// Import Maz-UI styles before your own CSS
+import 'maz-ui/styles'
+
+import './style.css'
+
+const app = createApp(App)
+
+// Install theme plugin with default configuration
+app.use(MazUiPlugin, {
+  // Theme configuration (optional)
+  strategy: 'hybrid', // 'runtime' | 'build' | 'hybrid'
+  darkModeStrategy: 'class' // 'class' | 'media' | 'auto'
+})
+
+app.mount('#app')
+```
+
+```typescript [Nuxt Setup]
+// nuxt.config.ts
+export default defineNuxtConfig({
+  modules: ['@maz-ui/nuxt'],
+})
+```
+
+:::
+
+::: info Auto-Import Magic
+With the Nuxt module, all Maz-UI components, composables, and directives are automatically available without explicit imports!
+:::
 
 ## Your First Component
 
@@ -97,64 +135,6 @@ function handleClick() {
 </template>
 ```
 
-:::
-
-## Framework Integration
-
-### Vue 3 Setup
-
-Import the main CSS file and optionally configure the theme plugin in your `main.ts`:
-
-```typescript
-// Optional: Use the theme plugin for advanced theming
-import { MazUiPlugin } from 'maz-ui/plugins/maz-ui'
-import { createApp } from 'vue'
-
-import App from './App.vue'
-// Import Maz-UI styles before your own CSS
-import 'maz-ui/styles'
-
-import './style.css'
-
-const app = createApp(App)
-
-// Install theme plugin with default configuration
-app.use(MazUiPlugin, {
-  // Theme configuration (optional)
-  strategy: 'hybrid', // 'runtime' | 'build' | 'hybrid'
-  darkModeStrategy: 'class' // 'class' | 'media' | 'auto'
-})
-
-app.mount('#app')
-```
-
-::: info Theme Plugin Benefits
-The `MazUiPlugin` enables advanced theming capabilities, dark mode management, and CSS custom properties generation. It's optional but recommended for full theme control.
-:::
-
-### Nuxt 3 Setup <Badge type="tip" text="Recommended" />
-
-Install the dedicated Nuxt module for the best experience:
-
-```bash
-npm install @maz-ui/nuxt
-```
-
-```typescript
-// nuxt.config.ts
-export default defineNuxtConfig({
-  modules: ['@maz-ui/nuxt'],
-  mazUi: {
-    // Auto-import components, composables, and CSS
-    autoImport: true,
-    // Optional: customize theme
-    theme: 'light', // 'light' | 'dark' | 'auto'
-  }
-})
-```
-
-::: info Auto-Import Magic
-With the Nuxt module, all Maz-UI components, composables, and directives are automatically available without explicit imports!
 :::
 
 ## Why Choose Maz-UI?

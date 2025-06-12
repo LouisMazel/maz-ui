@@ -6,7 +6,7 @@ const swipeHandlerMock = {
   stop: vi.fn(),
   onValuesChanged: vi.fn(),
 }
-vi.mock('@helpers/swipeHandler', () => ({
+vi.mock('@utils/swipeHandler', () => ({
   Swipe: vi.fn().mockImplementation(() => swipeHandlerMock),
 }))
 

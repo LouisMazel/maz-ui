@@ -26,8 +26,7 @@ describe('mazPagination.vue', () => {
         buttonProps: {
           size: 'sm',
           color: 'secondary',
-          outline: false,
-          noElevation: false,
+          outlined: false,
           fab: false,
         },
         pageRange: 3,
@@ -42,7 +41,7 @@ describe('mazPagination.vue', () => {
     expect(wrapper.props('buttonProps')).toEqual({
       size: 'sm',
       color: 'secondary',
-      outline: false,
+      outlined: false,
       noElevation: false,
       fab: false,
     })

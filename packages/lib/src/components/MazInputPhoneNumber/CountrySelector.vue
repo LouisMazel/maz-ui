@@ -10,18 +10,18 @@ import type { MazInputPhoneNumberTranslations } from './types'
 import { computed, defineAsyncComponent, ref } from 'vue'
 
 import { useInjectStrict } from '../../composables/useInjectStrict'
-import { countryFlagUrlFromFlagCdn } from '../../helpers/countryFlagFromFlagCdn'
-import { truthyFilter } from '../../helpers/truthyFilter'
+import { getCountryFlagUrl } from '../../utils/getCountryFlagUrl'
+import { truthyFilter } from '../../utils/truthyFilter'
 import MazSelect from '../MazSelect.vue'
 import { useMazInputPhoneNumber } from './../MazInputPhoneNumber/useMazInputPhoneNumber'
 
 const {
-  listPosition = 'bottom left',
-  width = '9rem',
+  listPosition,
   preferredCountries,
   ignoredCountries,
   onlyCountries,
   customCountriesList,
+  excludedSelectors,
   class: className,
   countryLocale,
 } = defineProps<{
@@ -29,27 +29,27 @@ const {
   style?: HTMLAttributes['style']
   /** Class attribut of the component root element */
   class?: HTMLAttributes['class']
-  modelValue?: CountryCode | undefined | null
+  modelValue: CountryCode | undefined | null
   id: string
   color: MazColor
   size: MazSize
-  preferredCountries?: CountryCode[]
-  ignoredCountries?: CountryCode[]
-  onlyCountries?: CountryCode[]
-  customCountriesList?: Record<CountryCode, string>
+  preferredCountries: CountryCode[] | undefined
+  ignoredCountries: CountryCode[] | undefined
+  onlyCountries: CountryCode[] | undefined
+  customCountriesList: Record<CountryCode, string> | undefined
   locales: MazInputPhoneNumberTranslations
-  listPosition?: MazPosition
-  hideFlags?: boolean
-  search?: boolean
-  disabled?: boolean
-  showCodeOnList?: boolean
-  countryLocale?: string
-  success?: boolean
-  error?: boolean
-  countrySelectorDisplayName?: boolean
-  searchThreshold?: number
-  width?: string
-  excludedSelectors?: string[]
+  listPosition: MazPosition | undefined
+  hideFlags: boolean
+  search: boolean
+  disabled: boolean
+  showCodeOnList: boolean
+  countryLocale: string | undefined
+  success: boolean
+  error: boolean
+  countrySelectorDisplayName: boolean
+  searchThreshold: number | undefined
+  width: string | undefined
+  excludedSelectors: string[]
 }>()
 
 defineEmits<(event: 'update:model-value', countryCode?: CountryCode) => void>()
@@ -126,7 +126,7 @@ function focusCountrySelector() {
       -->
       <slot name="selector-flag" :country-code="modelValue">
         <MazLazyImg
-          :src="countryFlagUrlFromFlagCdn(modelValue, 'h20')"
+          :src="getCountryFlagUrl(modelValue, 'h20')"
           :alt="modelValue"
           width="20"
           height="20"
@@ -163,7 +163,7 @@ function focusCountrySelector() {
       :style="{
         width,
       }"
-      :exclude-selectors="[`#country-selector-flag-button-${id}`, ...(excludedSelectors ?? [])]"
+      :exclude-selectors="[`#country-selector-flag-button-${id}`, ...excludedSelectors]"
       @update:model-value="$emit('update:model-value', $event as CountryCode)"
     >
       <template #no-results>
@@ -190,7 +190,7 @@ function focusCountrySelector() {
               :is-selected="isSelected"
             >
               <MazLazyImg
-                :src="countryFlagUrlFromFlagCdn(option.iso2 as CountryCode, 'h20')"
+                :src="getCountryFlagUrl(option.iso2 as CountryCode, 'h20')"
                 :alt="`${option.name} flag`"
                 width="20"
                 height="20"

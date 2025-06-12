@@ -13,7 +13,7 @@ vi.mock('@components/MazDialogPromise/useMazDialogPromise', () => ({
   }),
 }))
 
-vi.mock('@helpers/mountComponent', () => ({
+vi.mock('@utils/mountComponent', () => ({
   mount: () => ({
     destroy: vi.fn(),
     vNode: {

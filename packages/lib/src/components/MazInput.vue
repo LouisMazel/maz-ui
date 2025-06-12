@@ -11,7 +11,7 @@ import {
   useSlots,
 } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
-import { debounce as debounceFn } from '../helpers/debounce'
+import { debounce as debounceFn } from '../utils/debounce'
 
 export type MazInputValue = string | number | null | undefined | boolean
 
@@ -545,7 +545,7 @@ const stateColor = computed(() => {
     }
 
     &.--default-border {
-      @apply maz-border-divider dark:maz-border-divider;
+      @apply maz-border-divider dark:maz-border-divider-400;
     }
 
     &-input {

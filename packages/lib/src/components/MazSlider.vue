@@ -11,7 +11,7 @@ import {
   watch,
 } from 'vue'
 
-import { debounce } from '../helpers/debounce'
+import { debounce } from '../utils/debounce'
 import { getOpacityCoeff, getPos, isBetween } from './MazSlider/utils'
 
 export interface MazSliderProps {
@@ -28,13 +28,13 @@ export interface MazSliderProps {
   /** height size of slider bar */
   size?: string
   /** remove div in different colors */
-  noDivider?: boolean
+  divider?: boolean
   /** become a logarithmic slider (exponential) */
   log?: boolean
   /** main slider color */
   color?: MazColor
   /** disables cursor animation when active */
-  noCursorAnim?: boolean
+  cursorAnim?: boolean
 }
 
 const {
@@ -44,9 +44,9 @@ const {
   max = 100,
   step = 1,
   color = 'primary',
-  noDivider = false,
+  divider = true,
   log = false,
-  noCursorAnim = false,
+  cursorAnim = true,
 } = defineProps<MazSliderProps>()
 
 const emits = defineEmits(['update:model-value'])
@@ -171,7 +171,7 @@ function getLabel(i: number) {
 }
 function setBtnDividers(i: number) {
   setBtnStyle(i)
-  if (!noDivider)
+  if (divider)
     setDividers()
 }
 async function setBtnStyle(i: number) {
@@ -337,7 +337,7 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
         :data-label="getLabel(i)"
         class="m-slider__btn"
         :class="{
-          'active-cursor': i === activeCursor && !noCursorAnim,
+          'active-cursor': i === activeCursor && cursorAnim,
         }"
         :style="[buttonStyles[i]]"
         @mousedown.passive="handleMousedown($event, i)"
@@ -375,7 +375,7 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
     position: absolute;
     outline: none;
     cursor: pointer;
-    font-size: 1em;
+    font-size: 0.8em;
     font-weight: bold;
     line-height: 1;
     transition:

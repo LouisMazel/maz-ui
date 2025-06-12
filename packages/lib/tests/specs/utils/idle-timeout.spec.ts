@@ -1,11 +1,11 @@
 /* eslint-disable ts/ban-ts-comment */
 
-import type { IdleTimeoutCallback, IdleTimeoutOptions } from '@helpers/idleTimeout'
+import type { IdleTimeoutCallback, IdleTimeoutOptions } from '@utils/idleTimeout'
 import {
   IdleTimeout,
 
-} from '@helpers/idleTimeout'
-import { sleep } from '@helpers/sleep'
+} from '@utils/idleTimeout'
+import { sleep } from '@utils/sleep'
 
 const DEFAULT_TIMEOUT = 300
 
@@ -27,7 +27,7 @@ afterAll(() => {
   instance = undefined
 })
 
-describe('@helpers/idle-timeout', () => {
+describe('@utils/idle-timeout', () => {
   describe('given app want trigger user idle', () => {
     describe('when instance is launch', () => {
       it('then instance is IdleTimeout', () => {

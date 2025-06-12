@@ -2,7 +2,7 @@ import type { MaybeRef, MaybeRefOrGetter, Ref } from 'vue'
 
 import { onBeforeUnmount, ref, shallowRef, toValue, unref, watch } from 'vue'
 
-import { isClient } from '../helpers/isClient'
+import { isClient } from '../utils/isClient'
 
 export interface UseDropZoneReturn {
   files: Ref<File[] | null>

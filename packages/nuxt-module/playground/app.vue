@@ -1,8 +1,6 @@
 <template>
   <div class="maz-bg-background maz-text-foreground p-8">
-    <h1 class="text-2xl font-bold mb-4">
-      Maz-UI Theme Test
-    </h1>
+    <h1 class="text-2xl font-bold mb-4">Maz-UI Theme Test</h1>
 
     <div class="space-y-4">
       <MazIcon name="okok" />
@@ -33,18 +31,24 @@
         >
           Ocean Theme
         </button>
+        <button
+          class="maz-bg-secondary maz-text-secondary-foreground p-4 rounded-[var(--maz-radius)]"
+          @click="switchToTheme('obsidian')"
+        >
+          Obsidian Theme
+        </button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-const { toggleDarkMode, colorMode, updateTheme } = useTheme()
+  const { toggleDarkMode, colorMode, updateTheme } = useTheme()
 
-async function switchToTheme(themeName: 'mazUi' | 'pristine' | 'ocean') {
-  const { mazUi, pristine, ocean } = await import('@maz-ui/themes')
+  async function switchToTheme(themeName: 'mazUi' | 'pristine' | 'ocean' | 'obsidian') {
+    const { mazUi, pristine, ocean, obsidian } = await import('@maz-ui/themes')
 
-  const themes = { mazUi, pristine, ocean }
-  updateTheme(themes[themeName])
-}
+    const themes = { mazUi, pristine, ocean, obsidian }
+    updateTheme(themes[themeName])
+  }
 </script>
