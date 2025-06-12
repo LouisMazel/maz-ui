@@ -14,7 +14,7 @@ const {
   roundedSize = 'lg',
   justify = 'center',
   pastel,
-  outline,
+  outlined,
   loading,
   disabled,
   block,
@@ -57,7 +57,7 @@ export interface MazBtnProps {
    * If true, the button have the "border" style
    * @default false
    */
-  outline?: boolean
+  outlined?: boolean
   /**
    * If true, the button will have a pastel color
    * @default false
@@ -120,8 +120,8 @@ const component = computed(() => {
 const btnColorClass = computed(() => {
   if (pastel)
     return `--${color}-pastel`
-  if (outline)
-    return `--${color}-outline`
+  if (outlined)
+    return `--${color}-outlined`
   return `--${color}`
 })
 const isDisabled = computed(
@@ -188,7 +188,6 @@ const iconClassSize = computed(() => {
       @slot default - The content of the button
     -->
     <slot>
-      coucou
       {{ text }}
     </slot>
 
@@ -395,69 +394,69 @@ const iconClassSize = computed(() => {
     }
   }
 
-  /* OUTLINE */
+  /* OUTLINED */
 
-  &.--primary-outline {
-    @apply maz-bg-primary/5 maz-text-primary maz-border-primary;
+  &.--primary-outlined {
+    @apply maz-border-primary-200 dark:maz-border-primary-700 maz-text-primary;
 
     &:not(:disabled):hover {
-      @apply maz-bg-primary maz-text-primary-foreground;
+      @apply maz-bg-primary/10;
     }
   }
 
-  &.--secondary-outline {
-    @apply maz-border-secondary maz-bg-secondary/5 maz-text-secondary;
+  &.--secondary-outlined {
+    @apply maz-border-secondary-200 dark:maz-border-secondary-700 maz-text-secondary;
 
     &:not(:disabled):hover {
-      @apply maz-bg-secondary maz-text-secondary-foreground;
+      @apply maz-bg-secondary/10;
     }
   }
 
-  &.--info-outline {
-    @apply maz-border-info maz-bg-info/5 maz-text-info;
+  &.--info-outlined {
+    @apply maz-border-info-200 dark:maz-border-info-700 maz-text-info;
 
     &:not(:disabled):hover {
-      @apply maz-bg-info maz-text-info-foreground;
+      @apply maz-bg-info/10;
     }
   }
 
-  &.--success-outline {
-    @apply maz-border-success maz-bg-success/5 maz-text-success;
+  &.--success-outlined {
+    @apply maz-border-success-200 dark:maz-border-success-700 maz-text-success;
 
     &:not(:disabled):hover {
-      @apply maz-bg-success maz-text-success-foreground;
+      @apply maz-bg-success/10;
     }
   }
 
-  &.--destructive-outline {
-    @apply maz-border-destructive maz-bg-destructive/5 maz-text-destructive;
+  &.--destructive-outlined {
+    @apply maz-border-destructive-200 dark:maz-border-destructive-700 maz-text-destructive;
 
     &:not(:disabled):hover {
-      @apply maz-bg-destructive maz-text-destructive-foreground;
+      @apply maz-bg-destructive/10;
     }
   }
 
-  &.--warning-outline {
-    @apply maz-border-warning maz-bg-warning/5 maz-text-warning;
+  &.--warning-outlined {
+    @apply maz-border-warning-200 dark:maz-border-warning-700 maz-text-warning;
 
     &:not(:disabled):hover {
-      @apply maz-bg-warning maz-text-warning-foreground;
+      @apply maz-bg-warning/10;
     }
   }
 
-  &.--contrast-outline {
-    @apply maz-border-contrast maz-bg-contrast/5 maz-text-contrast;
+  &.--contrast-outlined {
+    @apply maz-border-contrast-200 dark:maz-border-contrast-700 maz-text-contrast;
 
     &:not(:disabled):hover {
-      @apply maz-bg-contrast maz-text-contrast-foreground;
+      @apply maz-bg-contrast/10;
     }
   }
 
-  &.--accent-outline {
-    @apply maz-border-accent maz-bg-accent/5 maz-text-accent;
+  &.--accent-outlined {
+    @apply maz-border-accent-200 dark:maz-border-accent-700 maz-text-accent;
 
     &:not(:disabled):hover {
-      @apply maz-bg-accent maz-text-accent-foreground;
+      @apply maz-bg-accent/10;
     }
   }
 
@@ -512,7 +511,7 @@ const iconClassSize = computed(() => {
   }
 
   &.--contrast-pastel {
-    @apply maz-bg-contrast-50/20 maz-text-contrast;
+    @apply maz-bg-contrast-50 maz-text-contrast;
 
     &:not(:disabled):hover {
       @apply maz-bg-contrast maz-text-contrast-foreground;
@@ -520,7 +519,7 @@ const iconClassSize = computed(() => {
   }
 
   &.--accent-pastel {
-    @apply maz-bg-accent maz-text-accent-foreground;
+    @apply maz-bg-accent-50 maz-text-accent;
 
     &:not(:disabled):hover {
       @apply maz-bg-accent maz-text-accent-foreground;
