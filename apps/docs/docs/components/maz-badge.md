@@ -65,12 +65,12 @@ const colors = [
 </template>
 ```
 
-### Outline
+### Outlined
 
 <br />
 
 <div class="flex space-between gap-05 items-center flex-wrap">
-  <MazBadge v-for="color in colors" :key="color" :color="color" outline>
+  <MazBadge v-for="color in colors" :key="color" :color="color" outlined>
     {{ color }}
   </MazBadge>
 </div>
@@ -93,7 +93,7 @@ const colors = [
 </script>
 
 <template>
-  <MazBadge v-for="color in color" :key="color" :color="color" outline>
+  <MazBadge v-for="color in color" :key="color" :color="color" outlined>
     {{ color }}
   </MazBadge>
 </template>

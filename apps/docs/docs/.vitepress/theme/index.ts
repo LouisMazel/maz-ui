@@ -1,11 +1,10 @@
 import type { AosOptions, ToasterOptions } from 'maz-ui/plugins'
-
 import type { Theme } from 'vitepress'
-import { vFullscreenImgInstall } from 'maz-ui/directives/vFullscreenImg'
 
-import { MazUiPlugin } from 'maz-ui/plugins/maz-ui'
 import * as components from 'maz-ui/src/components/index.js'
+import { vFullscreenImgInstall } from 'maz-ui/src/directives/vFullscreenImg.js'
 import { AosPlugin, DialogPlugin, ToasterPlugin, WaitPlugin } from 'maz-ui/src/plugins/index.js'
+import { MazUiPlugin } from 'maz-ui/src/plugins/maz-ui.js'
 
 import { inBrowser } from 'vitepress'
 import DefaultTheme from 'vitepress/theme-without-fonts'

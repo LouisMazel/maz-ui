@@ -7,6 +7,12 @@ description: CLI of maz-ui to generate CSS variables file to theming maz-ui
 
 {{ $frontmatter.description }}
 
+::: warning
+
+This module is only for v3.x users, if you are using v4.x, please use the [@maz-ui/themes](./theme.md) package instead.
+
+:::
+
 ## Config file
 
 Then, in your root folder of your project, add a file named `maz-ui.config.{ts,js,mjs,cjs}` as bellow ([model](#maz-ui-configuration-file-typescript-interface))

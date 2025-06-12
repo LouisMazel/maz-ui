@@ -175,7 +175,7 @@ interface DialogButton {
   color?: Color
   disabled?: boolean
   loading?: boolean
-  outline?: boolean
+  outlined?: boolean
   rounded?: boolean
   size?: Size
 }

@@ -195,7 +195,7 @@ type MazTabsBarItem
       content: string | number
       color?: BadgeColor
       pastel?: boolean
-      outline?: boolean
+      outlined?: boolean
       size?: string
       /** @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'` */
       roundedSize?: BadgeRoundedSize

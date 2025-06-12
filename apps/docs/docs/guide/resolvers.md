@@ -140,15 +140,6 @@ const options = ['Option 1', 'Option 2']
 </template>
 ```
 
-**Available Components Include:**
-
-- **Form Controls:** `MazBtn`, `MazInput`, `MazSelect`, `MazCheckbox`, `MazRadio`
-- **Layout:** `MazCard`, `MazContainer`, `MazDivider`, `MazSeparator`
-- **Navigation:** `MazTabs`, `MazStepper`, `MazBreadcrumb`, `MazPagination`
-- **Feedback:** `MazDialog`, `MazToast`, `MazAlert`, `MazBadge`
-- **Data Display:** `MazTable`, `MazList`, `MazAvatar`, `MazIcon`
-- **Advanced:** `MazChart`, `MazCarousel`, `MazGallery`, `MazDropzone`
-
 ### MazDirectivesResolver
 
 Auto-imports powerful Vue directives:
@@ -192,11 +183,12 @@ function handleClickOutside() {
 
 **Available Directives:**
 
-- **`v-tooltip`** - Flexible tooltip positioning and content
-- **`v-click-outside`** - Detect clicks outside an element
-- **`v-lazy-img`** - Lazy load images with intersection observer
-- **`v-zoom-img`** - Click to zoom images with smooth animations
-- **`v-fullscreen-img`** - Fullscreen image viewer with navigation
+- **[`v-tooltip`](./../directives/tooltip.md)** - Flexible tooltip positioning and content
+- **[`v-click-outside`](./../directives/click-outside.md)** - Detect clicks outside an element
+- **[`v-lazy-img`](./../directives/lazy-img.md)** - Lazy load images with intersection observer
+- **[`v-zoom-img`](./../directives/zoom-img.md)** - Click to zoom images with smooth animations
+- **[`v-fullscreen-img`](./../directives/fullscreen-img.md)** - Fullscreen image viewer with navigation
+- **[`v-closable`](./../directives/closable.md)** - Closeable element
 
 ### MazModulesResolver
 
@@ -234,16 +226,22 @@ function showSuccess() {
 </script>
 ```
 
-**Available Modules:**
+**Most used available composables:**
 
-| Category             | Functions/Composables                               |
+| Category             | Composables                               |
 | -------------------- | --------------------------------------------------- |
-| **UI Management**    | `useToast`, `useDialog`, `useTheme`, `useWait`      |
-| **Responsive**       | `useBreakpoints`, `useWindowSize`                   |
-| **User Interaction** | `useUserVisibility`, `useIdleTimeout`, `useSwipe`   |
-| **Utilities**        | `debounce`, `throttle`, `currency`, `date`, `sleep` |
-| **Form Handling**    | `useFormValidator`, `useFormField`                  |
-| **Advanced**         | `useTimer`, `useAos`, `useStringMatching`           |
+| **UI Management**    | [`useToast`](./../composables/use-toast.md), [`useDialog`](./../composables/use-dialog.md), [`useTheme`](./../composables/use-theme.md), [`useWait`](./../composables/use-wait.md)      |
+| **Responsive**       | [`useBreakpoints`](./../composables/use-breakpoints.md), [`useWindowSize`](./../composables/use-window-size.md)                   |
+| **User Interaction** | [`useUserVisibility`](./../composables/use-user-visibility.md), [`useIdleTimeout`](./../composables/use-idle-timeout.md), [`useSwipe`](./../composables/use-swipe.md)   |
+| **Form Handling**    | [`useFormValidator`](./../composables/use-form-validator.md), [`useFormField`](./../composables/use-form-field.md)                  |
+| **Advanced**         | [`useTimer`](./../composables/use-timer.md), [`useStringMatching`](./../composables/use-string-matching.md)           |
+
+**Most used available formatters and utilities:**
+
+| Category             | Utilities/Formatters                               |
+| -------------------- | --------------------------------------------------- |
+| **Formatters**       | [`currency`](./../helpers/currency.md), [`date`](./../helpers/date.md), [`sleep`](./../helpers/sleep.md) |
+| **Utilities**        | [`debounce`](./../helpers/debounce.md), [`throttle`](./../helpers/throttle.md), [`isEqual`](./../helpers/is-equal.md) |
 
 ## Advanced Configuration
 
@@ -451,7 +449,6 @@ function saveUser() {
           <MazBtn
             v-tooltip="'Refresh data'"
             size="sm"
-            variant="outline"
             @click="refreshData"
           >
             <MazIcon name="refresh" />
@@ -506,7 +503,7 @@ function saveUser() {
       />
 
       <template #footer>
-        <MazBtn variant="outline" @click="closeDialog">
+        <MazBtn @click="closeDialog">
           Cancel
         </MazBtn>
         <MazBtn @click="saveUser">

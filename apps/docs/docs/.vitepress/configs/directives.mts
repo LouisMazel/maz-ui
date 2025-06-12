@@ -2,7 +2,7 @@ import type { DefaultTheme } from 'vitepress'
 
 export const directives = {
   text: 'Directives',
-  collapsed: false,
+  collapsed: true,
   items: [
     { text: 'v-click-outside', link: '/directives/click-outside' },
     { text: 'v-closable', link: '/directives/closable' },
