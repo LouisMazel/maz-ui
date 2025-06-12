@@ -33,6 +33,14 @@ export const head = [
   [
     'link',
     {
+      rel: 'stylesheet',
+      href: 'https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;800&display=swap',
+      crossorigin: 'anonymous',
+    },
+  ],
+  [
+    'link',
+    {
       rel: 'icon',
       type: 'image/png',
       sizes: '16x16',

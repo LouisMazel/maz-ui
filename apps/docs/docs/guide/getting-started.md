@@ -9,14 +9,18 @@ head:
 
 # Getting Started
 
-<div class="hero-section">
-  <p class="hero-description">
+<div class="hero-section vp-raw maz-flex maz-flex-col mob-l:maz-flex-center maz-gap-4 dark maz-text-secondary-foreground">
+  <p class="mob-l:maz-text-center maz-text-lg maz-mb-3 mob-l:maz-max-w-3xl dark">
     Discover Maz-UI v4: The modern, modular Vue component library designed for performance, accessibility, and developer experience. From simple buttons to complex data tables, build stunning interfaces in minutes.
   </p>
 
-  <div class="hero-actions">
-    <a href="#quick-installation" class="hero-btn primary">Get Started →</a>
-    <a href="/components/maz-btn" class="hero-btn secondary">Browse Components</a>
+  <div class="maz-flex maz-gap-2 maz-justify-center maz-flex-wrap">
+    <MazBtn  href="/components/maz-btn" color="contrast" class="dark maz-w-full mob-l:maz-w-auto" outlined>
+      Browse Components
+    </MazBtn>
+    <MazBtn href="#quick-installation" color="contrast" class="dark maz-w-full mob-l:maz-w-auto">
+      Get Started
+    </MazBtn>
   </div>
 </div>
 
@@ -430,7 +434,7 @@ The theme system provides:
 
 - 🎨 HSL-based CSS custom properties
 - 🌓 Automatic dark mode support
-- 🎯 Pre-built themes (Maz-UI, Ocean, Pristine)
+- 🎯 Pre-built themes (Maz-UI, Ocean, Pristine, Obsidian)
 - ⚡ Multiple rendering strategies
 - 🛠️ TypeScript-first configuration
 
@@ -514,52 +518,7 @@ Browse [GitHub discussions](https://github.com/LouisMazel/maz-ui/discussions) or
 
 <style scoped>
 .hero-section {
-  text-align: center;
-  margin: 2rem 0 3rem;
-  padding: 2rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 1rem;
-  color: white;
-}
-
-.hero-description {
-  font-size: 1.25rem;
-  line-height: 1.6;
-  margin-bottom: 2rem;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.hero-actions {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.hero-btn {
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  text-decoration: none;
-  font-weight: 600;
-  transition: all 0.2s;
-}
-
-.hero-btn.primary {
-  background: white;
-  color: #667eea;
-}
-
-.hero-btn.secondary {
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-.hero-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  @apply maz-rounded maz-p-8 maz-my-12 maz-from-primary-400 maz-to-secondary-700 maz-bg-gradient-to-br;
 }
 
 .features-grid {

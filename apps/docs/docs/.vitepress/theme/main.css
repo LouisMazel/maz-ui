@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --vp-font-family-base: Manrope, sans-serif;
+  --vp-font-family-base: var(--maz-font-family);
   --vp-c-bg: hsl(var(--maz-background));
   --vp-c-brand: hsl(var(--maz-primary));
   --vp-c-brand-1: hsl(var(--maz-primary));
@@ -22,6 +22,13 @@
   --vp-button-brand-active-border: hsl(var(--maz-primary-700));
   --vp-button-brand-active-text: hsl(var(--maz-primary-contrast));
   --vp-button-brand-active-bg: hsl(var(--maz-primary-600));
+}
+
+html {
+  font-size: var(--maz-base-font-size);
+  font-family: var(--maz-font-family);
+
+  @apply maz-text-foreground;
 }
 
 html.dark {
