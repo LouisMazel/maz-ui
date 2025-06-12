@@ -3,9 +3,9 @@ import type { ThemeColors, ThemePreset, ThemePresetOverrides } from '../types'
 export function mergePresets(base: ThemePreset, overrides: ThemePresetOverrides): ThemePreset {
   return {
     name: overrides.name || base.name,
-    appearance: {
-      ...base.appearance,
-      ...overrides.appearance,
+    foundation: {
+      ...base.foundation,
+      ...overrides.foundation,
     },
     colors: {
       light: mergeColors(base.colors.light, overrides.colors?.light),

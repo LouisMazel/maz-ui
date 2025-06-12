@@ -1,4 +1,4 @@
-import type { ThemeAppearance, ThemeColors, ThemePreset } from '../types'
+import type { ThemeColors, ThemeFoundation, ThemePreset } from '../types'
 import { generateColorScale } from './color-utils'
 
 // =============================================================================
@@ -11,8 +11,8 @@ type DarkSelector = 'class' | 'media'
 export interface CriticalCSSOptions {
   /** Critical color variables to include */
   criticalColors?: (keyof ThemeColors)[]
-  /** Critical appearance variables to include */
-  criticalAppearance?: (keyof ThemeAppearance)[]
+  /** Critical foundation variables to include */
+  criticalFoundation?: (keyof ThemeFoundation)[]
   /** Theme mode to generate */
   mode?: ThemeMode
   /** Dark mode selector: 'class' (.dark) | 'media' (@media) */
@@ -43,7 +43,7 @@ const DEFAULT_CRITICAL_COLORS: (keyof ThemeColors)[] = [
   'border',
 ]
 
-const DEFAULT_CRITICAL_APPEARANCE: (keyof ThemeAppearance)[] = [
+const DEFAULT_CRITICAL_FOUNDATION: (keyof ThemeFoundation)[] = [
   'radius',
   'font-family',
   'border-width',
@@ -61,7 +61,7 @@ export function generateCriticalCSS(
 ): string {
   const {
     criticalColors = DEFAULT_CRITICAL_COLORS,
-    criticalAppearance = DEFAULT_CRITICAL_APPEARANCE,
+    criticalFoundation = DEFAULT_CRITICAL_FOUNDATION,
     mode = 'both',
     darkSelector = 'class',
     prefix = 'maz',
@@ -69,7 +69,7 @@ export function generateCriticalCSS(
 
   const lightCritical = extractCriticalVariables(preset.colors.light, criticalColors)
   const darkCritical = extractCriticalVariables(preset.colors.dark, criticalColors)
-  const appearanceCritical = extractCriticalAppearance(preset.appearance, criticalAppearance)
+  const foundationCritical = extractCriticalFoundation(preset.foundation, criticalFoundation)
 
   let css = '@layer maz-ui-theme {\n'
 
@@ -78,7 +78,7 @@ export function generateCriticalCSS(
     css += generateVariablesBlock({
       selector: ':root',
       colors: lightCritical,
-      appearance: appearanceCritical,
+      foundation: foundationCritical,
       prefix,
     })
   }
@@ -89,7 +89,7 @@ export function generateCriticalCSS(
       selector: darkSelector === 'media' ? ':root' : '.dark',
       mediaQuery: darkSelector === 'media' ? '@media (prefers-color-scheme: dark)' : undefined,
       colors: darkCritical,
-      appearance: mode === 'dark' ? appearanceCritical : undefined, // Appearance only if dark mode only
+      foundation: mode === 'dark' ? foundationCritical : undefined, // Appearance only if dark mode only
       prefix,
     })
   }
@@ -120,7 +120,7 @@ export function generateFullCSS(
 
   const lightColors = excludeVariables(preset.colors.light, excludeCritical)
   const darkColors = excludeVariables(preset.colors.dark, excludeCritical)
-  const appearance = excludeAppearanceVariables(preset.appearance, DEFAULT_CRITICAL_APPEARANCE)
+  const foundation = excludeFoundationVariables(preset.foundation, DEFAULT_CRITICAL_FOUNDATION)
 
   let css = '@layer maz-ui-theme {\n'
 
@@ -128,7 +128,7 @@ export function generateFullCSS(
     css += generateVariablesBlock({
       selector: ':root',
       colors: lightColors,
-      appearance,
+      foundation,
       prefix,
       includeScales: includeColorScales,
       preset,
@@ -141,7 +141,7 @@ export function generateFullCSS(
       selector: darkSelector === 'media' ? ':root' : '.dark',
       mediaQuery: darkSelector === 'media' ? '@media (prefers-color-scheme: dark)' : undefined,
       colors: darkColors,
-      appearance: mode === 'dark' ? appearance : undefined, // Appearance only if dark mode only
+      foundation: mode === 'dark' ? foundation : undefined, // Appearance only if dark mode only
       prefix,
       includeScales: includeColorScales,
       preset,
@@ -172,19 +172,19 @@ function extractCriticalVariables(
 }
 
 /**
- * Extracts critical appearance variables
+ * Extracts critical foundation variables
  */
-function extractCriticalAppearance(
-  appearance: ThemeAppearance | undefined,
-  criticalKeys: (keyof ThemeAppearance)[],
-): Partial<ThemeAppearance> {
-  if (!appearance)
+function extractCriticalFoundation(
+  foundation: ThemeFoundation | undefined,
+  criticalKeys: (keyof ThemeFoundation)[],
+): Partial<ThemeFoundation> {
+  if (!foundation)
     return {}
 
   return Object.fromEntries(
     criticalKeys
-      .filter(key => appearance[key])
-      .map(key => [key, appearance[key]]),
+      .filter(key => foundation[key])
+      .map(key => [key, foundation[key]]),
   )
 }
 
@@ -201,17 +201,17 @@ function excludeVariables(
 }
 
 /**
- * Excludes critical appearance variables
+ * Excludes critical foundation variables
  */
-function excludeAppearanceVariables(
-  appearance: ThemeAppearance | undefined,
-  excludeKeys: (keyof ThemeAppearance)[],
-): Partial<ThemeAppearance> {
-  if (!appearance)
+function excludeFoundationVariables(
+  foundation: ThemeFoundation | undefined,
+  excludeKeys: (keyof ThemeFoundation)[],
+): Partial<ThemeFoundation> {
+  if (!foundation)
     return {}
 
   return Object.fromEntries(
-    Object.entries(appearance).filter(([key]) => !excludeKeys.includes(key as keyof ThemeAppearance)),
+    Object.entries(foundation).filter(([key]) => !excludeKeys.includes(key as keyof ThemeFoundation)),
   )
 }
 
@@ -222,7 +222,7 @@ function generateVariablesBlock({
   selector,
   mediaQuery,
   colors,
-  appearance,
+  foundation,
   prefix,
   includeScales = false,
   preset,
@@ -231,7 +231,7 @@ function generateVariablesBlock({
   selector: string
   mediaQuery?: string
   colors?: Partial<ThemeColors>
-  appearance?: Partial<ThemeAppearance>
+  foundation?: Partial<ThemeFoundation>
   prefix: string
   includeScales?: boolean
   preset?: ThemePreset
@@ -247,8 +247,8 @@ function generateVariablesBlock({
     })
   }
 
-  if (appearance) {
-    Object.entries(appearance).forEach(([key, value]) => {
+  if (foundation) {
+    Object.entries(foundation).forEach(([key, value]) => {
       if (value) {
         variables.push(`  --${prefix}-${key}: ${value};`)
       }
