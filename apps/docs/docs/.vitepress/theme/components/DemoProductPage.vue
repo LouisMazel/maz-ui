@@ -111,7 +111,7 @@ const price = ref(100)
             class="maz-flex-1"
           />
 
-          <MazBtn color="contrast" outline class="maz-flex-1" right-icon="shopping-cart">
+          <MazBtn color="contrast" outlined class="maz-flex-1" right-icon="shopping-cart">
             Make an offer
           </MazBtn>
         </div>
