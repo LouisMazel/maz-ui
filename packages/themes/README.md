@@ -78,6 +78,12 @@ import { dark } from '@maz-ui/themes'
 import { ocean } from '@maz-ui/themes'
 ```
 
+### Obsidian
+
+```typescript
+import { obsidian } from '@maz-ui/themes'
+```
+
 ## Création de presets personnalisés
 
 ```typescript
